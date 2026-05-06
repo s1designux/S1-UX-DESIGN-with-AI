@@ -12,11 +12,12 @@ const SITE_NAV = [
   { type: 'item', id: 'semantic', href: 'semantic.html', rootHref: 'pages/semantic.html', icon: '🌗', text: 'Semantic Tokens', status: 'ready' },
   { type: 'label', text: 'Design System' },
   { type: 'item', id: 'components', href: 'components.html', rootHref: 'pages/components.html', icon: '🧩', text: 'Components', status: 'ready' },
-  { type: 'item', id: 'icons', href: 'icons.html', rootHref: 'pages/icons.html', icon: '✦', text: 'Icons · 112', status: 'ready' },
+  { type: 'item', id: 'icons', href: 'icons.html', rootHref: 'pages/icons.html', icon: '✦', text: 'Icons · 817', status: 'ready' },
   { type: 'item', id: 'patterns', href: 'patterns.html', rootHref: 'pages/patterns.html', icon: '📐', text: 'Patterns', status: 'soon' },
   { type: 'item', id: 'policy', href: 'policy.html', rootHref: 'pages/policy.html', icon: '📋', text: 'Policy' },
   { type: 'item', id: 'legacy', href: 'legacy.html', rootHref: 'pages/legacy.html', icon: '🗂️', text: 'Legacy Guide', status: 'soon' },
   { type: 'label', text: 'AI 워크플로우' },
+  { type: 'item', id: 'ai-snippets', href: 'ai-snippets.html', rootHref: 'pages/ai-snippets.html', icon: '🤖', text: 'AI Snippets', status: 'ready' },
   { type: 'item', id: 'guide-md', href: 'guide-md.html', rootHref: 'pages/guide-md.html', icon: '📋', text: 'Guide MD', status: 'ready' },
   { type: 'item', id: 'md-review', href: 'md-review.html', rootHref: 'pages/md-review.html', icon: '🔍', text: 'MD 리뷰', status: 'ready' },
 ];

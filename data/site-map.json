@@ -1,7 +1,7 @@
 {
   "_meta": {
     "version": "1.0.0",
-    "updatedAt": "2026-04-27",
+    "updatedAt": "2026-04-30",
     "description": "SW Design System Guide 사이트 네비게이션 구조"
   },
   "nav": [
@@ -15,6 +15,14 @@
           "href": "index.html",
           "status": "ready",
           "description": "디자인시스템 소개, 통계, 로드맵"
+        },
+        {
+          "id": "install-prompt",
+          "title": "토큰 설치 프롬프트",
+          "icon": "⚡",
+          "href": "pages/install-prompt.html",
+          "status": "ready",
+          "description": "Semantic + Component 토큰 전체를 한 번에 복사. CSS 스니펫과 AI 컨텍스트 프롬프트 2종 제공"
         }
       ]
     },
@@ -27,12 +35,12 @@
           "icon": "🎨",
           "href": "pages/foundation.html",
           "status": "ready",
-          "description": "Primitive 색상 팔레트, Semantic 토큰, 타이포그래피",
+          "description": "11개 색상 계열 Primitive 팔레트, Spacing, Radius, Typography",
           "sections": [
             "Primitive Colors — Brand + 11 Palettes",
-            "Semantic Colors — Background / Text / Border / Icon / Action / State",
-            "Typography — Title Base / Body Base + Font Weights",
-            "Coming Soon — Spacing, Radius, Shadow, Motion"
+            "Spacing — 8pt 그리드 (2–128)",
+            "Border Radius — 0–full",
+            "Typography — Font Size / Weight / Line Height"
           ]
         },
         {
@@ -40,8 +48,8 @@
           "title": "Semantic Tokens",
           "icon": "🌗",
           "href": "pages/semantic.html",
-          "status": "soon",
-          "description": "역할 기반 토큰, Light/Dark 테마 전환 구조"
+          "status": "ready",
+          "description": "역할 기반 토큰, Light/Dark 테마 전환 구조 — 8개 카테고리 45종"
         }
       ]
     },
@@ -53,8 +61,16 @@
           "title": "Components",
           "icon": "🧩",
           "href": "pages/components.html",
-          "status": "soon",
-          "description": "Core / Domain / Legacy 컴포넌트 라이브러리"
+          "status": "ready",
+          "description": "Core / Domain / Legacy 컴포넌트 라이브러리 — 9개 그룹 119종"
+        },
+        {
+          "id": "icons",
+          "title": "Icons",
+          "icon": "✦",
+          "href": "pages/icons.html",
+          "status": "ready",
+          "description": "아이콘 라이브러리 V2.2 — 817종 · 16개 섹션 · Line / Solid / Color 3 variants"
         },
         {
           "id": "patterns",
@@ -85,6 +101,14 @@
     {
       "group": "AI 워크플로우",
       "items": [
+        {
+          "id": "ai-snippets",
+          "title": "AI Snippets",
+          "icon": "🤖",
+          "href": "pages/ai-snippets.html",
+          "status": "ready",
+          "description": "컴포넌트별 AI 코드 스니펫 모음 — 10개"
+        },
         {
           "id": "guide-md",
           "title": "Guide MD",
