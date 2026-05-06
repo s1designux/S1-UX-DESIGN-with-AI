@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SW Design System Guide</title>
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+<div class="mobile-header">
+  <button class="hamburger" id="sidebar-toggle" aria-label="메뉴 열기">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/>
+    </svg>
+  </button>
+  <span class="mobile-logo">SW Design System</span>
+</div>
+<div class="sidebar-overlay" id="sidebar-overlay"></div>
+
+<div class="app">
+  <aside class="sidebar" id="sidebar"></aside>
+
+  <main class="main-content">
+    <div class="page-header">
+      <div class="page-header-inner">
+        <div class="page-header-text">
+          <h1>Overview</h1>
+          <p>SW UX Guide V2.4 — 디자이너와 개발자가 함께 사용하는 디자인시스템 가이드</p>
+        </div>
+        <div class="page-header-actions">
+          <span class="badge badge-blue">v1.0.0</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="page-content">
+
+      <!-- Hero -->
+      <div class="overview-hero">
+        <div class="hero-version">SW UX GUIDE V2.4</div>
+        <h2>디자인 언어를<br>하나로 통일합니다</h2>
+        <p>Figma 변수 → CSS 토큰 → Tailwind 클래스까지, 하나의 원칙으로 연결된 디자인시스템입니다. 디자이너와 개발자가 같은 언어로 소통할 수 있도록 Foundation부터 Pattern까지 단계적으로 구축합니다.</p>
+      </div>
+
+      <!-- Stats -->
+      <div class="stats-row">
+        <div class="stat-card">
+          <div class="stat-number">107</div>
+          <div class="stat-label">Primitive Colors</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number">27</div>
+          <div class="stat-label">Semantic Tokens</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number">36</div>
+          <div class="stat-label">Component Tokens</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number">2</div>
+          <div class="stat-label">Text Styles</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number">10</div>
+          <div class="stat-label">AI Snippets</div>
+        </div>
+      </div>
+
+      <!-- 개요 -->
+      <div class="section">
+        <div class="section-header">
+          <h2 class="section-title">개요</h2>
+        </div>
+        <div class="overview-grid">
+          <a href="pages/install-prompt.html" class="overview-card">
+            <div class="overview-card-icon">⚡</div>
+            <div class="overview-card-title">토큰 설치 프롬프트</div>
+            <div class="overview-card-desc">Semantic + Component 토큰 전체를 한 번에 복사. CSS 스니펫과 AI 컨텍스트 프롬프트 2종 제공.</div>
+            <div class="overview-card-status status-ready">
+              <span class="status-dot"></span> 완료 — CSS 스니펫 + AI 프롬프트
+            </div>
+          </a>
+        </div>
+      </div>
+
+      <!-- Section Grid -->
+      <div class="section">
+        <div class="section-header">
+          <h2 class="section-title">Foundation</h2>
+        </div>
+        <div class="overview-grid">
+          <a href="pages/foundation.html" class="overview-card">
+            <div class="overview-card-icon">🎨</div>
+            <div class="overview-card-title">Foundation Tokens</div>
+            <div class="overview-card-desc">Color, Typography 원천 토큰. Light/Dark 테마의 기반이 되는 Primitive 팔레트.</div>
+            <div class="overview-card-status status-ready">
+              <span class="status-dot"></span> 완료 — 색상 9팔레트 + 타이포
+            </div>
+          </a>
+          <a href="pages/semantic.html" class="overview-card">
+            <div class="overview-card-icon">🌗</div>
+            <div class="overview-card-title">Semantic Tokens</div>
+            <div class="overview-card-desc">역할 기반 토큰. Light/Dark 테마 전환의 핵심 계층.</div>
+            <div class="overview-card-status status-ready">
+              <span class="status-dot"></span> 완료 — 8개 카테고리 Light/Dark
+            </div>
+          </a>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-header">
+          <h2 class="section-title">Design System</h2>
+        </div>
+        <div class="overview-grid">
+          <a href="pages/components.html" class="overview-card">
+            <div class="overview-card-icon">🧩</div>
+            <div class="overview-card-title">Components</div>
+            <div class="overview-card-desc">Core / Domain / Legacy 컴포넌트 라이브러리.</div>
+            <div class="overview-card-status status-ready">
+              <span class="status-dot"></span> 완료 — 9개 그룹 · PC/Mobile 전환
+            </div>
+          </a>
+          <a href="pages/icons.html" class="overview-card">
+            <div class="overview-card-icon">✦</div>
+            <div class="overview-card-title">Icons</div>
+            <div class="overview-card-desc">아이콘 라이브러리 V2.2 — 61종 보안/근태/식당. Line · Solid · Color 3개 variant.</div>
+            <div class="overview-card-status status-wip">
+              <span class="status-dot"></span> 작성 중 — SVG 입력 필요
+            </div>
+          </a>
+          <a href="pages/patterns.html" class="overview-card disabled">
+            <div class="overview-card-icon">📐</div>
+            <div class="overview-card-title">Patterns</div>
+            <div class="overview-card-desc">Search+Table, Tree+Detail 등 반복 레이아웃 패턴.</div>
+            <div class="overview-card-status status-soon">
+              <span class="status-dot"></span> Coming Soon
+            </div>
+          </a>
+          <a href="pages/policy.html" class="overview-card">
+            <div class="overview-card-icon">📋</div>
+            <div class="overview-card-title">Policy</div>
+            <div class="overview-card-desc">토큰 사용 원칙, 신규/레거시 기준, 다크모드 대응 정책.</div>
+            <div class="overview-card-status status-wip">
+              <span class="status-dot"></span> 작성 중
+            </div>
+          </a>
+          <a href="pages/legacy.html" class="overview-card disabled">
+            <div class="overview-card-icon">🗂️</div>
+            <div class="overview-card-title">Legacy Guide</div>
+            <div class="overview-card-desc">구버전 토큰 → 신규 토큰 마이그레이션 가이드.</div>
+            <div class="overview-card-status status-soon">
+              <span class="status-dot"></span> Coming Soon
+            </div>
+          </a>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-header">
+          <h2 class="section-title">AI 워크플로우</h2>
+        </div>
+        <div class="overview-grid">
+          <a href="pages/guide-md.html" class="overview-card">
+            <div class="overview-card-icon">📋</div>
+            <div class="overview-card-title">Guide MD</div>
+            <div class="overview-card-desc">Semantic · Component 토큰 MD 원본 코드스니펫. AI 프롬프트 복붙용.</div>
+            <div class="overview-card-status status-ready">
+              <span class="status-dot"></span> 완료 — Semantic + Component MD
+            </div>
+          </a>
+          <a href="pages/md-review.html" class="overview-card">
+            <div class="overview-card-icon">🔍</div>
+            <div class="overview-card-title">MD 리뷰</div>
+            <div class="overview-card-desc">수정 제안 · 결정 대기 항목 · Figma 체크리스트 관리.</div>
+            <div class="overview-card-status status-ready">
+              <span class="status-dot"></span> 완료 — 리뷰 · 결정 · 체크리스트
+            </div>
+          </a>
+        </div>
+      </div>
+
+      <!-- Roadmap -->
+      <div class="section">
+        <div class="section-header">
+          <h2 class="section-title">앞으로 추가될 영역</h2>
+        </div>
+        <div style="background:#fff;border:1px solid #e5e7eb;border-radius:16px;padding:24px 28px;">
+          <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:16px;">
+            <div>
+              <div style="font-size:12px;font-weight:700;color:#374151;margin-bottom:8px;">Foundation (2단계)</div>
+              <div style="font-size:12px;color:#6b7280;line-height:2;">
+                Spacing (8pt 그리드)<br>
+                Border Radius<br>
+                Shadow / Elevation<br>
+                Motion / Duration
+              </div>
+            </div>
+            <div>
+              <div style="font-size:12px;font-weight:700;color:#374151;margin-bottom:8px;">Semantic Tokens</div>
+              <div style="font-size:12px;color:#6b7280;line-height:2;">
+                Light/Dark 전환 구조<br>
+                Status 컬러 체계<br>
+                Data Visualization 팔레트
+              </div>
+            </div>
+            <div>
+              <div style="font-size:12px;font-weight:700;color:#374151;margin-bottom:8px;">Components</div>
+              <div style="font-size:12px;color:#6b7280;line-height:2;">
+                Core (Button, Input, Table…)<br>
+                Domain (서비스 특화)<br>
+                Legacy 전환 목록
+              </div>
+            </div>
+            <div>
+              <div style="font-size:12px;font-weight:700;color:#374151;margin-bottom:8px;">Patterns & Policy</div>
+              <div style="font-size:12px;color:#6b7280;line-height:2;">
+                4개 레이아웃 패턴<br>
+                신규/레거시 사용 기준<br>
+                다크모드 대응 기준
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </main>
+</div>
+
+<script src="assets/js/main.js"></script>
+</body>
+</html>

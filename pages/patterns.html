@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Patterns · SW Design System</title>
+  <link rel="stylesheet" href="../assets/css/style.css">
+</head>
+<body>
+
+<div class="mobile-header">
+  <button class="hamburger" id="sidebar-toggle" aria-label="메뉴 열기">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/>
+    </svg>
+  </button>
+  <span class="mobile-logo">SW Design System</span>
+</div>
+<div class="sidebar-overlay" id="sidebar-overlay"></div>
+
+<div class="app">
+  <aside class="sidebar" id="sidebar"></aside>
+
+  <main class="main-content">
+    <div class="page-header">
+      <div class="page-header-inner">
+        <div class="page-header-text">
+          <h1>Patterns</h1>
+          <p>Search+Table, Tree+Detail 등 반복 레이아웃 패턴</p>
+        </div>
+        <div class="page-header-actions">
+          <span class="badge badge-gray">Coming Soon</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="page-content">
+      <div class="coming-soon-placeholder">
+        <div class="coming-soon-icon">📐</div>
+        <div class="coming-soon-title">Patterns 준비 중</div>
+        <div class="coming-soon-desc">
+          Core 컴포넌트를 조합한 반복 레이아웃 패턴입니다.<br>
+          신규 화면 설계 시 패턴을 선택하여 빠르게 구조를 잡을 수 있습니다.
+        </div>
+        <div class="coming-soon-list">
+          <div class="coming-soon-item">
+            <span class="coming-soon-item-icon">🔍</span>
+            <div>
+              <div class="coming-soon-item-title">Search + Table</div>
+              <div class="coming-soon-item-desc">검색 인풋 + 필터 + 데이터 테이블 + 페이지네이션 조합 패턴</div>
+            </div>
+          </div>
+          <div class="coming-soon-item">
+            <span class="coming-soon-item-icon">🌲</span>
+            <div>
+              <div class="coming-soon-item-title">Tree + Detail</div>
+              <div class="coming-soon-item-desc">좌측 트리 탐색 + 우측 상세 뷰 — 계층 데이터 탐색 패턴</div>
+            </div>
+          </div>
+          <div class="coming-soon-item">
+            <span class="coming-soon-item-icon">📊</span>
+            <div>
+              <div class="coming-soon-item-title">Dashboard</div>
+              <div class="coming-soon-item-desc">상태 카드 그리드 + 차트 영역 — 데이터 모니터링 패턴</div>
+            </div>
+          </div>
+          <div class="coming-soon-item">
+            <span class="coming-soon-item-icon">⚙️</span>
+            <div>
+              <div class="coming-soon-item-title">Settings</div>
+              <div class="coming-soon-item-desc">카테고리 탭 + 폼 섹션 — 설정·환경설정 화면 패턴</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<script src="../assets/js/main.js"></script>
+</body>
+</html>

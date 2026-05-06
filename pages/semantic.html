@@ -1,0 +1,831 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Semantic Token · SW Design System</title>
+  <link rel="stylesheet" href="../assets/css/style.css">
+  <style>
+    /* ── Semantic page ── */
+    .sem-section { margin-bottom: 48px; }
+
+    /* ── Theme toggle ── */
+    .theme-bar {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 24px;
+      padding: 12px 16px;
+      background: rgba(255,255,255,0.94);
+      border: 1px solid #e5e7eb;
+      border-radius: 12px;
+      flex-wrap: wrap;
+      position: sticky;
+      top: 100px;
+      z-index: 9;
+      backdrop-filter: blur(10px);
+      box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+    }
+    @media (max-width: 860px) {
+      .theme-bar { top: 54px; }
+    }
+    .theme-bar-label { font-size: 12px; color: #6b7280; font-weight: 500; }
+    .theme-toggle {
+      display: flex;
+      background: #f3f4f6;
+      border-radius: 8px;
+      padding: 3px;
+      gap: 2px;
+    }
+    .theme-btn {
+      padding: 5px 16px;
+      font-size: 12px; font-weight: 500;
+      border-radius: 6px; border: none;
+      background: transparent; color: #6b7280;
+      transition: all 0.15s;
+    }
+    .theme-btn.active { background: #fff; color: #111827; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+    .theme-hint { font-size: 11px; color: #9ca3af; }
+
+    /* ── Category group ── */
+    .cat-group { margin-bottom: 36px; }
+    .cat-label {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+    .cat-name {
+      font-size: 13px; font-weight: 700; color: #111827;
+      font-family: monospace;
+    }
+    .cat-desc { font-size: 12px; color: #6b7280; }
+    .cat-count {
+      font-size: 10px; font-weight: 700;
+      padding: 2px 8px; border-radius: 10px;
+      background: #f3f4f6; color: #6b7280;
+    }
+    .cat-new {
+      font-size: 10px; font-weight: 700;
+      padding: 2px 8px; border-radius: 10px;
+      background: #dcfce7; color: #166534;
+    }
+
+    /* ── Token grid ── */
+    .token-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+      gap: 8px;
+    }
+
+    /* ── Overlay special swatch ── */
+    .overlay-demo {
+      height: 52px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 10px; font-weight: 600; color: #fff;
+      background: rgba(0,0,0,0.5);
+      transition: background 0.3s;
+    }
+
+    /* ── Section nav ── */
+    .sem-nav {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+      margin-bottom: 28px;
+    }
+    .sem-nav-btn {
+      padding: 6px 14px;
+      font-size: 12px; font-weight: 500;
+      border-radius: 20px;
+      border: 1px solid #e5e7eb;
+      background: #fff; color: #374151;
+      transition: all 0.15s;
+    }
+    .sem-nav-btn:hover, .sem-nav-btn.active {
+      background: #0072ce; border-color: #0072ce; color: #fff;
+    }
+
+    /* ── Stats ── */
+    .sem-stats {
+      display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 28px;
+    }
+    .sem-stat {
+      background: #fff; border: 1px solid #e5e7eb;
+      border-radius: 12px; padding: 12px 18px; min-width: 90px;
+    }
+    .sem-stat-num {
+      font-size: 24px; font-weight: 800;
+      color: #1d6ceb; letter-spacing: -0.04em; line-height: 1;
+    }
+    .sem-stat-label { font-size: 11px; color: #6b7280; margin-top: 3px; }
+
+    /* ── Info callout ── */
+    .info-box {
+      background: #f0f9ff; border: 1px solid #bae6fd;
+      border-radius: 10px; padding: 12px 16px;
+      font-size: 12px; color: #075985; line-height: 1.65;
+      margin-bottom: 16px; display: flex; gap: 8px;
+    }
+    .warn-box {
+      background: #fff7ed; border: 1px solid #fed7aa;
+      border-radius: 10px; padding: 12px 16px;
+      font-size: 12px; color: #c2410c; line-height: 1.65;
+      margin-bottom: 16px; display: flex; gap: 8px;
+    }
+
+    /* ── Spacing / Sizing table ── */
+    .spec-table {
+      width: 100%; border-collapse: collapse; font-size: 12.5px;
+    }
+    .spec-table th {
+      padding: 9px 14px; text-align: left;
+      font-size: 10px; font-weight: 700; color: #757575;
+      text-transform: uppercase; letter-spacing: 0.05em;
+      background: #fafafa; border-bottom: 1px solid #e9e9e9;
+    }
+    .spec-table td {
+      padding: 9px 14px; border-bottom: 1px solid #f3f4f6;
+      color: #374151; vertical-align: middle;
+    }
+    .spec-table tr:last-child td { border-bottom: none; }
+    .spec-table tr:hover td { background: #f9fafb; }
+    .spec-var { font-family: monospace; color: #1d4ed8; font-size: 11.5px; }
+    .spec-val { font-family: monospace; font-size: 11px; color: #374151; }
+    .spec-bar {
+      display: inline-block;
+      height: 10px;
+      background: #1d6ceb;
+      border-radius: 2px;
+      vertical-align: middle;
+      opacity: 0.6;
+      min-width: 2px;
+    }
+    .spec-role { font-size: 11.5px; color: #6b7280; }
+    .spec-table-wrap {
+      background: #fff; border: 1px solid #e5e7eb;
+      border-radius: 14px; overflow: hidden;
+      margin-bottom: 20px;
+    }
+    .spec-group-header {
+      padding: 10px 14px;
+      background: #fafafa;
+      border-bottom: 1px solid #e9e9e9;
+      font-size: 11px; font-weight: 700; color: #374151;
+    }
+
+    /* ── Radius demo ── */
+    .radius-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+      gap: 10px;
+    }
+    .radius-card {
+      background: #fff; border: 1px solid #e5e7eb;
+      border-radius: 12px; padding: 16px; text-align: center;
+    }
+    .radius-box {
+      width: 64px; height: 40px;
+      background: #dbeafe; border: 2px solid #1d6ceb;
+      margin: 0 auto 10px;
+    }
+    .radius-var { font-size: 10.5px; font-family: monospace; color: #1d4ed8; }
+    .radius-val { font-size: 11px; color: #6b7280; margin-top: 3px; }
+
+    /* ── Changes summary ── */
+    .change-list { display: flex; flex-direction: column; gap: 8px; }
+    .change-item {
+      display: flex; gap: 12px; align-items: flex-start;
+      background: #fff; border: 1px solid #e5e7eb;
+      border-radius: 10px; padding: 12px 16px;
+    }
+    .change-type {
+      font-size: 10px; font-weight: 700;
+      padding: 3px 8px; border-radius: 6px;
+      white-space: nowrap; flex-shrink: 0;
+    }
+    .change-type.fix  { background: #dcfce7; color: #166534; }
+    .change-type.new  { background: #dbeafe; color: #1d4ed8; }
+    .change-type.warn { background: #fff7ed; color: #c2410c; }
+    .change-type.move { background: #ede9fe; color: #5b21b6; }
+    .change-text { font-size: 12px; color: #374151; line-height: 1.6; }
+
+    /* ── Token Table (replaces token-grid cards) ── */
+    .token-grid { display: block; }
+    .token-table-wrap {
+      background: #fff; border: 1px solid #e5e7eb;
+      border-radius: 14px; overflow: hidden; margin-bottom: 4px;
+    }
+    .token-table { width: 100%; border-collapse: collapse; font-size: 12.5px; }
+    .token-table th {
+      padding: 8px 12px; text-align: left;
+      font-size: 10px; font-weight: 700; color: #9ca3af;
+      text-transform: uppercase; letter-spacing: 0.05em;
+      background: #fafafa; border-bottom: 1px solid #e9e9e9;
+    }
+    .token-table td {
+      padding: 8px 12px; border-bottom: 1px solid #f3f4f6;
+      vertical-align: middle;
+    }
+    .token-table tr:last-child td { border-bottom: none; }
+    .token-row { cursor: pointer; transition: background 0.08s; }
+    .token-row:hover td { background: #f9fafb; }
+    .token-row.token-flash td { background: rgba(29,108,235,0.06); transition: none; }
+    .token-swatch-cell { width: 44px; }
+    .token-swatch {
+      width: 30px; height: 30px; border-radius: 6px;
+      border: 1px solid rgba(0,0,0,0.09);
+      position: relative; overflow: hidden;
+    }
+    .token-swatch.checker {
+      background-image:
+        linear-gradient(45deg,#e5e7eb 25%,transparent 25%),
+        linear-gradient(-45deg,#e5e7eb 25%,transparent 25%),
+        linear-gradient(45deg,transparent 75%,#e5e7eb 75%),
+        linear-gradient(-45deg,transparent 75%,#e5e7eb 75%);
+      background-size: 6px 6px;
+      background-position: 0 0, 0 3px, 3px -3px, -3px 0;
+    }
+    .token-swatch-layer { position: absolute; inset: 0; }
+    .token-var {
+      font-family: 'SF Mono','Fira Code',monospace;
+      font-size: 11px; color: #1d4ed8; font-weight: 600;
+      display: block; margin-bottom: 2px;
+    }
+    .token-role-cell { color: #374151; font-size: 12px; }
+    .token-value { font-family: monospace; font-size: 11px; color: #374151; }
+    .token-primitive-ref { font-family: monospace; font-size: 10.5px; color: #9ca3af; }
+    .token-badge {
+      display: inline-block; font-size: 9.5px; font-weight: 700;
+      padding: 1px 6px; border-radius: 4px; margin-left: 4px;
+      vertical-align: middle;
+    }
+    .token-badge.warn { background: #fff7ed; color: #c2410c; border: 1px solid #fed7aa; }
+    .token-badge.dark-only { background: #1e293b; color: #94a3b8; }
+
+    @media (max-width: 640px) {
+      .token-table th:nth-child(5), .token-table td:nth-child(5),
+      .token-table th:nth-child(6), .token-table td:nth-child(6) { display: none; }
+    }
+  </style>
+</head>
+<body>
+<div class="app">
+
+  <!-- Sidebar -->
+  <aside class="sidebar" id="sidebar"></aside>
+
+  <button class="hamburger" id="sidebar-toggle" aria-label="메뉴 열기">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/>
+    </svg>
+  </button>
+  <div class="sidebar-overlay" id="sidebar-overlay"></div>
+
+  <main class="main-content">
+    <div class="page-header">
+      <div class="page-header-inner">
+        <div>
+          <h1>Semantic Token</h1>
+          <p>역할 기반 색상 토큰 · Light &amp; Dark · Figma semantic 컬렉션 기준 · 2026-04-28</p>
+        </div>
+        <div class="page-header-actions">
+          <span class="badge badge-blue">45 color tokens</span>
+          <span class="badge badge-gray">60+ spacing/sizing</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="page-content">
+
+      <!-- Stats -->
+      <div class="sem-stats">
+        <div class="sem-stat"><div class="sem-stat-num">8</div><div class="sem-stat-label">color-bg</div></div>
+        <div class="sem-stat"><div class="sem-stat-num">2</div><div class="sem-stat-label">color-surface</div></div>
+        <div class="sem-stat"><div class="sem-stat-num">11</div><div class="sem-stat-label">color-text</div></div>
+        <div class="sem-stat"><div class="sem-stat-num">8</div><div class="sem-stat-label">color-border</div></div>
+        <div class="sem-stat"><div class="sem-stat-num">6</div><div class="sem-stat-label">color-icon</div></div>
+        <div class="sem-stat"><div class="sem-stat-num">5</div><div class="sem-stat-label">color-action</div></div>
+        <div class="sem-stat"><div class="sem-stat-num">4</div><div class="sem-stat-label">color-status</div></div>
+        <div class="sem-stat"><div class="sem-stat-num">1</div><div class="sem-stat-label">color-overlay</div></div>
+      </div>
+
+      <!-- Section nav -->
+      <div class="sem-nav">
+        <button class="sem-nav-btn active" onclick="scrollTo('sec-color')">🎨 Color</button>
+        <button class="sem-nav-btn" onclick="scrollTo('sec-spacing')">📏 Spacing</button>
+        <button class="sem-nav-btn" onclick="scrollTo('sec-sizing')">📐 Sizing</button>
+        <button class="sem-nav-btn" onclick="scrollTo('sec-radius')">⬜ Radius</button>
+        <button class="sem-nav-btn" onclick="scrollTo('sec-changes')">📋 변경 이력</button>
+      </div>
+
+      <!-- ═══════ COLOR ═══════ -->
+      <div class="sem-section" id="sec-color">
+        <div class="section-header">
+          <h2 class="section-title">Color Tokens</h2>
+          <p class="section-desc">Foundation Primitive를 역할 기반으로 매핑. 카드를 클릭하면 CSS 변수명이 복사됩니다.</p>
+        </div>
+
+        <!-- Theme toggle -->
+        <div class="theme-bar">
+          <span class="theme-bar-label">미리보기 테마</span>
+          <div class="theme-toggle">
+            <button class="theme-btn active" id="btnLight" onclick="setTheme('light')">☀️ Light</button>
+            <button class="theme-btn" id="btnDark" onclick="setTheme('dark')">🌙 Dark</button>
+          </div>
+          <span class="theme-hint">Dark 값 — Dark Mode Foundation 설계안 기준. Figma 반영 전 확인 필요.</span>
+        </div>
+
+        <!-- color-bg -->
+        <div class="cat-group" id="grp-bg">
+          <div class="cat-label">
+            <span class="cat-name">color-bg</span>
+            <span class="cat-desc">페이지·레이아웃·섹션 배경</span>
+            <span class="cat-count">8</span>
+          </div>
+          <div class="token-grid" id="grid-bg"></div>
+        </div>
+
+        <!-- color-surface -->
+        <div class="cat-group" id="grp-surface">
+          <div class="cat-label">
+            <span class="cat-name">color-surface</span>
+            <span class="cat-desc">컴포넌트 표면 배경 (카드·패널·모달)</span>
+            <span class="cat-count">2</span>
+            <span class="cat-new">신규 제안</span>
+          </div>
+          <div class="info-box">
+            <span>ℹ️</span>
+            <span><strong>color-bg vs color-surface</strong> — bg는 화면 전체 배경, surface는 그 위에 올라오는 컴포넌트 표면입니다. 라이트에서는 둘 다 흰색이지만 <strong>다크 모드에서 레이어 깊이가 시각적으로 분리</strong>됩니다. (bg-default: #131418 / surface-default: #1C1D23)</span>
+          </div>
+          <div class="token-grid" id="grid-surface"></div>
+        </div>
+
+        <!-- color-text -->
+        <div class="cat-group" id="grp-text">
+          <div class="cat-label">
+            <span class="cat-name">color-text</span>
+            <span class="cat-desc">텍스트 색상</span>
+            <span class="cat-count">11</span>
+          </div>
+          <div class="token-grid" id="grid-text"></div>
+        </div>
+
+        <!-- color-border -->
+        <div class="cat-group" id="grp-border">
+          <div class="cat-label">
+            <span class="cat-name">color-border</span>
+            <span class="cat-desc">테두리·구분선</span>
+            <span class="cat-count">8</span>
+          </div>
+          <div class="info-box">
+            <span>ℹ️</span>
+            <span>Dark 모드 border는 <strong>rgba(255,255,255, α)</strong>를 사용합니다. 배경 명도에 무관하게 일관된 레이어 구조를 표현하기 위함이며, Primitive alias가 불가능한 rgba 값은 직접 사용이 허용됩니다.</span>
+          </div>
+          <div class="token-grid" id="grid-border"></div>
+        </div>
+
+        <!-- color-icon -->
+        <div class="cat-group" id="grp-icon">
+          <div class="cat-label">
+            <span class="cat-name">color-icon</span>
+            <span class="cat-desc">아이콘 색상</span>
+            <span class="cat-count">6</span>
+          </div>
+          <div class="token-grid" id="grid-icon"></div>
+        </div>
+
+        <!-- color-action -->
+        <div class="cat-group" id="grp-action">
+          <div class="cat-label">
+            <span class="cat-name">color-action</span>
+            <span class="cat-desc">인터랙션 액션 · Component Token이 참조</span>
+            <span class="cat-count">5</span>
+          </div>
+          <div class="token-grid" id="grid-action"></div>
+        </div>
+
+        <!-- color-status -->
+        <div class="cat-group" id="grp-status">
+          <div class="cat-label">
+            <span class="cat-name">color-status</span>
+            <span class="cat-desc">UI 피드백 상태 (폼 검증·알림)</span>
+            <span class="cat-count">4</span>
+          </div>
+          <div class="info-box">
+            <span>ℹ️</span>
+            <span><strong>color-status 기준</strong> — success/correct = Primary Blue (#1D6CEB). 현재 서비스 실사용 기준이며 <code>--color-text-correct</code>, <code>--color-border-correct</code>와 동일한 값을 공유합니다.</span>
+          </div>
+          <div class="token-grid" id="grid-status"></div>
+        </div>
+
+        <!-- color-domain-status -->
+        <div class="cat-group" id="grp-domain-status">
+          <div class="cat-label">
+            <span class="cat-name">color-domain-status</span>
+            <span class="cat-desc">관제 시스템 장치 상태 · Domain Token으로 이동 예정</span>
+            <span class="cat-count">7</span>
+          </div>
+          <div class="info-box">
+            <span>ℹ️</span>
+            <span>UI 피드백(성공/에러)이 아닌 <strong>관제 화면 장치 상태(활성·정상·대기·비활성)</strong> 전용입니다. 추후 Domain Token 레이어로 이동 예정이며, Dark 값은 도메인 설계 시 별도 정의합니다.</span>
+          </div>
+          <div class="token-grid" id="grid-domain-status"></div>
+        </div>
+
+        <!-- color-overlay -->
+        <div class="cat-group" id="grp-overlay">
+          <div class="cat-label">
+            <span class="cat-name">color-overlay</span>
+            <span class="cat-desc">딤·스크림</span>
+            <span class="cat-count">1</span>
+          </div>
+          <div class="token-grid" id="grid-overlay"></div>
+        </div>
+      </div>
+
+      <!-- ═══════ SPACING ═══════ -->
+      <div class="sem-section" id="sec-spacing">
+        <div class="section-header">
+          <h2 class="section-title">Spacing Tokens</h2>
+          <p class="section-desc">레이아웃 역할 기반 패딩·간격 토큰. Foundation spacing/* Primitive를 참조합니다.</p>
+        </div>
+
+        <div class="spec-table-wrap">
+          <div class="spec-group-header">padding-block · padding-inline</div>
+          <table class="spec-table">
+            <thead><tr><th>CSS Variable</th><th>값</th><th>시각화</th><th>역할</th></tr></thead>
+            <tbody>
+              <tr><td><span class="spec-var">--spacing-padding-block-xxs</span></td><td><span class="spec-val">8px</span></td><td><span class="spec-bar" style="width:8px"></span></td><td><span class="spec-role">블록 패딩 최소</span></td></tr>
+              <tr><td><span class="spec-var">--spacing-padding-block-xs</span></td><td><span class="spec-val">12px</span></td><td><span class="spec-bar" style="width:12px"></span></td><td><span class="spec-role">블록 패딩 소</span></td></tr>
+              <tr><td><span class="spec-var">--spacing-padding-block-sm</span></td><td><span class="spec-val">16px</span></td><td><span class="spec-bar" style="width:16px"></span></td><td><span class="spec-role">블록 패딩 중소</span></td></tr>
+              <tr><td><span class="spec-var">--spacing-padding-block-md</span></td><td><span class="spec-val">20px</span></td><td><span class="spec-bar" style="width:20px"></span></td><td><span class="spec-role">블록 패딩 중</span></td></tr>
+              <tr><td><span class="spec-var">--spacing-padding-block-lg</span></td><td><span class="spec-val">24px</span></td><td><span class="spec-bar" style="width:24px"></span></td><td><span class="spec-role">블록 패딩 대</span></td></tr>
+              <tr><td><span class="spec-var">--spacing-padding-inline-xxs</span></td><td><span class="spec-val">8px</span></td><td><span class="spec-bar" style="width:8px"></span></td><td><span class="spec-role">인라인 패딩 최소</span></td></tr>
+              <tr><td><span class="spec-var">--spacing-padding-inline-xs</span></td><td><span class="spec-val">12px</span></td><td><span class="spec-bar" style="width:12px"></span></td><td><span class="spec-role">인라인 패딩 소</span></td></tr>
+              <tr><td><span class="spec-var">--spacing-padding-inline-sm</span></td><td><span class="spec-val">16px</span></td><td><span class="spec-bar" style="width:16px"></span></td><td><span class="spec-role">인라인 패딩 중소</span></td></tr>
+              <tr><td><span class="spec-var">--spacing-padding-inline-md</span></td><td><span class="spec-val">20px</span></td><td><span class="spec-bar" style="width:20px"></span></td><td><span class="spec-role">인라인 패딩 중</span></td></tr>
+              <tr><td><span class="spec-var">--spacing-padding-inline-lg</span></td><td><span class="spec-val">24px</span></td><td><span class="spec-bar" style="width:24px"></span></td><td><span class="spec-role">인라인 패딩 대</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="spec-table-wrap">
+          <div class="spec-group-header">section · stack · cluster</div>
+          <table class="spec-table">
+            <thead><tr><th>CSS Variable</th><th>값</th><th>시각화</th><th>역할</th></tr></thead>
+            <tbody>
+              <tr><td><span class="spec-var">--spacing-section-xs</span></td><td><span class="spec-val">16px</span></td><td><span class="spec-bar" style="width:16px"></span></td><td><span class="spec-role">섹션 간격 최소</span></td></tr>
+              <tr><td><span class="spec-var">--spacing-section-sm</span></td><td><span class="spec-val">20px</span></td><td><span class="spec-bar" style="width:20px"></span></td><td><span class="spec-role">섹션 간격 소</span></td></tr>
+              <tr><td><span class="spec-var">--spacing-section-md</span></td><td><span class="spec-val">24px</span></td><td><span class="spec-bar" style="width:24px"></span></td><td><span class="spec-role">섹션 간격 중</span></td></tr>
+              <tr><td><span class="spec-var">--spacing-section-lg</span></td><td><span class="spec-val">32px</span></td><td><span class="spec-bar" style="width:32px"></span></td><td><span class="spec-role">섹션 간격 대</span></td></tr>
+              <tr><td><span class="spec-var">--spacing-section-xl</span></td><td><span class="spec-val">40px</span></td><td><span class="spec-bar" style="width:40px"></span></td><td><span class="spec-role">섹션 간격 특대</span></td></tr>
+              <tr><td><span class="spec-var">--spacing-section-xxl</span></td><td><span class="spec-val">48px</span></td><td><span class="spec-bar" style="width:48px"></span></td><td><span class="spec-role">섹션 간격 최대</span></td></tr>
+              <tr><td><span class="spec-var">--spacing-stack-xs</span></td><td><span class="spec-val">12px</span></td><td><span class="spec-bar" style="width:12px"></span></td><td><span class="spec-role">수직 스택 소</span></td></tr>
+              <tr><td><span class="spec-var">--spacing-stack-sm</span></td><td><span class="spec-val">16px</span></td><td><span class="spec-bar" style="width:16px"></span></td><td><span class="spec-role">수직 스택 중소</span></td></tr>
+              <tr><td><span class="spec-var">--spacing-stack-md</span></td><td><span class="spec-val">20px</span></td><td><span class="spec-bar" style="width:20px"></span></td><td><span class="spec-role">수직 스택 중</span></td></tr>
+              <tr><td><span class="spec-var">--spacing-stack-lg</span></td><td><span class="spec-val">24px</span></td><td><span class="spec-bar" style="width:24px"></span></td><td><span class="spec-role">수직 스택 대</span></td></tr>
+              <tr><td><span class="spec-var">--spacing-cluster-xxs</span></td><td><span class="spec-val">8px</span></td><td><span class="spec-bar" style="width:8px"></span></td><td><span class="spec-role">인라인 그룹 최소</span></td></tr>
+              <tr><td><span class="spec-var">--spacing-cluster-xs</span></td><td><span class="spec-val">12px</span></td><td><span class="spec-bar" style="width:12px"></span></td><td><span class="spec-role">인라인 그룹 소</span></td></tr>
+              <tr><td><span class="spec-var">--spacing-cluster-sm</span></td><td><span class="spec-val">16px</span></td><td><span class="spec-bar" style="width:16px"></span></td><td><span class="spec-role">인라인 그룹 중소</span></td></tr>
+              <tr><td><span class="spec-var">--spacing-cluster-md</span></td><td><span class="spec-val">20px</span></td><td><span class="spec-bar" style="width:20px"></span></td><td><span class="spec-role">인라인 그룹 중</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="spec-table-wrap">
+          <div class="spec-group-header">label-gap</div>
+          <table class="spec-table">
+            <thead><tr><th>CSS Variable</th><th>값</th><th>시각화</th><th>역할</th></tr></thead>
+            <tbody>
+              <tr><td><span class="spec-var">--spacing-label-gap-inline-sm</span></td><td><span class="spec-val">8px</span></td><td><span class="spec-bar" style="width:8px"></span></td><td><span class="spec-role">레이블 인라인 간격 소</span></td></tr>
+              <tr><td><span class="spec-var">--spacing-label-gap-inline-md</span></td><td><span class="spec-val">12px</span></td><td><span class="spec-bar" style="width:12px"></span></td><td><span class="spec-role">레이블 인라인 간격 중</span></td></tr>
+              <tr><td><span class="spec-var">--spacing-label-gap-inline-lg</span></td><td><span class="spec-val">16px</span></td><td><span class="spec-bar" style="width:16px"></span></td><td><span class="spec-role">레이블 인라인 간격 대</span></td></tr>
+              <tr><td><span class="spec-var">--spacing-label-gap-block-sm</span></td><td><span class="spec-val">4px</span></td><td><span class="spec-bar" style="width:4px"></span></td><td><span class="spec-role">레이블 블록 간격 소</span></td></tr>
+              <tr><td><span class="spec-var">--spacing-label-gap-block-md</span></td><td><span class="spec-val">8px</span></td><td><span class="spec-bar" style="width:8px"></span></td><td><span class="spec-role">레이블 블록 간격 중</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- ═══════ SIZING ═══════ -->
+      <div class="sem-section" id="sec-sizing">
+        <div class="section-header">
+          <h2 class="section-title">Sizing Tokens</h2>
+          <p class="section-desc">컴포넌트 높이·아이콘 크기 기준값.</p>
+        </div>
+
+        <div class="spec-table-wrap">
+          <div class="spec-group-header">form-control height</div>
+          <table class="spec-table">
+            <thead><tr><th>CSS Variable</th><th>값</th><th>역할</th></tr></thead>
+            <tbody>
+              <tr><td><span class="spec-var">--sizing-form-control-height-xxs</span></td><td><span class="spec-val">28px</span></td><td><span class="spec-role">인풋 높이 최소</span></td></tr>
+              <tr><td><span class="spec-var">--sizing-form-control-height-xs</span></td><td><span class="spec-val">34px</span></td><td><span class="spec-role">인풋 높이 소</span></td></tr>
+              <tr><td><span class="spec-var">--sizing-form-control-height-md</span></td><td><span class="spec-val">44px</span></td><td><span class="spec-role">인풋 높이 중 (기본)</span></td></tr>
+              <tr><td><span class="spec-var">--sizing-form-control-height-lg</span></td><td><span class="spec-val">48px</span></td><td><span class="spec-role">인풋 높이 대</span></td></tr>
+              <tr><td><span class="spec-var">--sizing-form-control-dataview-height-sm</span></td><td><span class="spec-val">28px</span></td><td><span class="spec-role">데이터뷰 인풋 소</span></td></tr>
+              <tr><td><span class="spec-var">--sizing-form-control-dataview-height-md</span></td><td><span class="spec-val">32px</span></td><td><span class="spec-role">데이터뷰 인풋 중</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="spec-table-wrap">
+          <div class="spec-group-header">button height · chip height</div>
+          <table class="spec-table">
+            <thead><tr><th>CSS Variable</th><th>값</th><th>역할</th></tr></thead>
+            <tbody>
+              <tr><td><span class="spec-var">--sizing-button-height-xs</span></td><td><span class="spec-val">34px</span></td><td><span class="spec-role">버튼 높이 최소</span></td></tr>
+              <tr><td><span class="spec-var">--sizing-button-height-sm</span></td><td><span class="spec-val">40px</span></td><td><span class="spec-role">버튼 높이 소</span></td></tr>
+              <tr><td><span class="spec-var">--sizing-button-height-md</span></td><td><span class="spec-val">44px</span></td><td><span class="spec-role">버튼 높이 중 (기본)</span></td></tr>
+              <tr><td><span class="spec-var">--sizing-button-height-lg</span></td><td><span class="spec-val">48px</span></td><td><span class="spec-role">버튼 높이 대</span></td></tr>
+              <tr><td><span class="spec-var">--sizing-button-min-width</span></td><td><span class="spec-val">80px</span></td><td><span class="spec-role">버튼 최소 너비</span></td></tr>
+              <tr><td><span class="spec-var">--sizing-chip-height-sm</span></td><td><span class="spec-val">28px</span></td><td><span class="spec-role">칩 높이 소</span></td></tr>
+              <tr><td><span class="spec-var">--sizing-chip-height-md</span></td><td><span class="spec-val">30px</span></td><td><span class="spec-role">칩 높이 중</span></td></tr>
+              <tr><td><span class="spec-var">--sizing-chip-height-lg</span></td><td><span class="spec-val">34px</span></td><td><span class="spec-role">칩 높이 대</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="spec-table-wrap">
+          <div class="spec-group-header">table row height · icon</div>
+          <table class="spec-table">
+            <thead><tr><th>CSS Variable</th><th>값</th><th>역할</th></tr></thead>
+            <tbody>
+              <tr><td><span class="spec-var">--sizing-table-row-height-xs</span></td><td><span class="spec-val">34px</span></td><td><span class="spec-role">테이블 행 높이 최소</span></td></tr>
+              <tr><td><span class="spec-var">--sizing-table-row-height-sm</span></td><td><span class="spec-val">38px</span></td><td><span class="spec-role">테이블 행 높이 소</span></td></tr>
+              <tr><td><span class="spec-var">--sizing-table-row-height-md</span></td><td><span class="spec-val">44px</span></td><td><span class="spec-role">테이블 행 높이 중</span></td></tr>
+              <tr><td><span class="spec-var">--sizing-icon-10</span></td><td><span class="spec-val">10px</span></td><td><span class="spec-role">아이콘 10</span></td></tr>
+              <tr><td><span class="spec-var">--sizing-icon-16</span></td><td><span class="spec-val">16px</span></td><td><span class="spec-role">아이콘 16</span></td></tr>
+              <tr><td><span class="spec-var">--sizing-icon-18</span></td><td><span class="spec-val">18px</span></td><td><span class="spec-role">아이콘 18</span></td></tr>
+              <tr><td><span class="spec-var">--sizing-icon-20</span></td><td><span class="spec-val">20px</span></td><td><span class="spec-role">아이콘 20</span></td></tr>
+              <tr><td><span class="spec-var">--sizing-icon-24</span></td><td><span class="spec-val">24px</span></td><td><span class="spec-role">아이콘 24</span></td></tr>
+              <tr><td><span class="spec-var">--sizing-icon-28</span></td><td><span class="spec-val">28px</span></td><td><span class="spec-role">아이콘 28</span></td></tr>
+              <tr><td><span class="spec-var">--sizing-icon-32</span></td><td><span class="spec-val">32px</span></td><td><span class="spec-role">아이콘 32</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- ═══════ RADIUS ═══════ -->
+      <div class="sem-section" id="sec-radius">
+        <div class="section-header">
+          <h2 class="section-title">Radius · Border Width</h2>
+          <p class="section-desc">컴포넌트별 모서리 반경 및 선 두께 기준값.</p>
+        </div>
+        <div class="radius-grid" id="grid-radius"></div>
+      </div>
+
+      <!-- ═══════ CHANGES ═══════ -->
+      <div class="sem-section" id="sec-changes">
+        <div class="section-header">
+          <h2 class="section-title">변경 이력</h2>
+          <p class="section-desc">Figma semantic 컬렉션 대비 수정·추가 사항.</p>
+        </div>
+        <div class="change-list">
+          <div class="change-item"><span class="change-type fix">오타수정</span><span class="change-text"><code>color/text/state/placehoder</code> → <code>placeholder</code> (Figma 수정 필요)</span></div>
+          <div class="change-item"><span class="change-type fix">오타수정</span><span class="change-text"><code>color/status-card/text/primary--defualt</code> 외 3건 → <code>--default</code> (Figma 수정 필요)</span></div>
+          <div class="change-item"><span class="change-type fix">통합</span><span class="change-text"><code>title/secondary</code> + <code>body/primary</code> → <code>--color-text-secondary</code> 단일 토큰으로 통합 (값 동일: #353535)</span></div>
+          <div class="change-item"><span class="change-type fix">통합</span><span class="change-text"><code>title/tertiary</code> + <code>body/secondary</code> → <code>--color-text-tertiary</code> 단일 토큰으로 통합 (값 동일: #555555)</span></div>
+          <div class="change-item"><span class="change-type new">신규</span><span class="change-text"><code>color-surface</code> 카테고리 추가 — <code>--color-surface-default</code>, <code>--color-surface-raised</code> (다크모드 레이어 깊이 분리용)</span></div>
+          <div class="change-item"><span class="change-type new">신규</span><span class="change-text"><code>--color-bg-selected</code>, <code>--color-bg-active</code>, <code>--color-bg-deepest</code> 추가 — Dark Mode 설계안 기준 신규 토큰</span></div>
+          <div class="change-item"><span class="change-type move">분리</span><span class="change-text"><code>surface/status/*</code> 토큰 → <code>color-domain-status-*</code>로 분리. UI 피드백과 다른 관제 도메인 상태 토큰.</span></div>
+          <div class="change-item"><span class="change-type move">분리</span><span class="change-text">Figma semantic 컬렉션 내 Component 수준 토큰 9그룹 → <code>component-tokens-extracted.md</code>로 이동</span></div>
+          <div class="change-item"><span class="change-type warn">확인필요</span><span class="change-text"><code>--color-text-primary</code> Light 값 — Figma=#000000(순수검정) / 제안=#202020(gray/900). 디자이너 확정 전 미반영.</span></div>
+          <div class="change-item"><span class="change-type warn">확인필요</span><span class="change-text"><code>--color-bg-home</code> (#F5F6FB) — Foundation에 <code>--color-blue-gray-0</code> 신규 Primitive 추가 or <code>--color-bg-subtle</code>로 통합 결정 필요.</span></div>
+          <div class="change-item"><span class="change-type warn">확인필요</span><span class="change-text"><code>--color-status-success</code> — 현재 서비스: blue / 설계안: green. 디자인팀 확정 후 반영.</span></div>
+        </div>
+      </div>
+
+    </div><!-- /page-content -->
+  </main>
+</div>
+
+<script>
+// ── Token data ──────────────────────────────────────────
+const TOKENS = {
+  bg: [
+    { v: '--color-bg-default',  role: '기본 페이지 배경', light: '#FAFAFA', dark: '#131418', lp: 'color/gray/0',      dp: 'gray-dark/50' },
+    { v: '--color-bg-subtle',   role: '약한 배경', light: '#F5F5F5', dark: '#24252C', lp: 'color/gray/50',     dp: 'gray-dark/200' },
+    { v: '--color-bg-muted',    role: '중간 배경·구분 영역', light: '#E9E9E9', dark: '#2E2F38', lp: 'color/gray/100',    dp: 'gray-dark/300' },
+    { v: '--color-bg-elevated', role: '툴바·높은 배경', light: '#E9E9E9', dark: '#35363F', lp: 'color/gray/100',    dp: 'gray-dark/400' },
+    { v: '--color-bg-active',   role: 'hover·active 배경', light: '#E9E9E9', dark: '#3E4049', lp: 'color/gray/100',    dp: 'gray-dark/500' },
+    { v: '--color-bg-deepest',  role: '최심부 (관제 화면)', light: '#E9E9E9', dark: '#0D0E12', lp: 'color/gray/100',    dp: 'gray-dark/0',  darkOnly: true },
+    { v: '--color-bg-selected', role: '선택 배경', light: '#E2F1FF', dark: '#0C1D38', lp: 'color/blue/50',     dp: 'blue-dark/50' },
+    { v: '--color-bg-home',     role: '홈 화면 배경', light: '#F5F6FB', dark: '#131418', lp: '⚠️ 하드코딩',        dp: 'gray-dark/50', warn: true },
+  ],
+  surface: [
+    { v: '--color-surface-default', role: '카드·패널·인풋 표면', light: '#FFFFFF', dark: '#1C1D23', lp: 'color/base/white', dp: 'gray-dark/100' },
+    { v: '--color-surface-raised',  role: '모달·드롭다운·플로팅', light: '#FFFFFF', dark: '#35363F', lp: 'color/base/white', dp: 'gray-dark/400' },
+  ],
+  text: [
+    { v: '--color-text-primary',     role: '제목·주요 본문',    light: '#202020', dark: '#ECEDF0', lp: 'color/gray/900 ⚠️', dp: 'gray-dark/900', warn: true },
+    { v: '--color-text-secondary',   role: '서브타이틀·일반 본문', light: '#353535', dark: '#B8BABF', lp: 'color/gray/800',   dp: 'gray-dark/800' },
+    { v: '--color-text-tertiary',    role: '보조 텍스트',        light: '#555555', dark: '#8A8C96', lp: 'color/gray/600',   dp: 'gray-dark/700' },
+    { v: '--color-text-caption',     role: '캡션·힌트',          light: '#757575', dark: '#8A8C96', lp: 'color/gray/500',   dp: 'gray-dark/700' },
+    { v: '--color-text-placeholder', role: '플레이스홀더',        light: '#9D9D9D', dark: '#55575F', lp: 'color/gray/400',   dp: 'gray-dark/600' },
+    { v: '--color-text-helper',      role: '도움말 텍스트',       light: '#9D9D9D', dark: '#55575F', lp: 'color/gray/400',   dp: 'gray-dark/600' },
+    { v: '--color-text-link',        role: '링크·액센트',         light: '#1D6CEB', dark: '#6FA5F8', lp: 'color/blue/400',   dp: 'blue-dark/400' },
+    { v: '--color-text-correct',     role: '올바른 입력 피드백',  light: '#1D6CEB', dark: '#6FA5F8', lp: 'color/blue/400',   dp: 'blue-dark/400' },
+    { v: '--color-text-danger',      role: '에러·위험 메시지',    light: '#FF4554', dark: '#F06070', lp: 'color/red/300',    dp: 'status-dark/red' },
+    { v: '--color-text-disabled',    role: '비활성 텍스트',       light: '#C4C4C4', dark: '#35363F', lp: 'color/gray/300',   dp: 'gray-dark/400' },
+    { v: '--color-text-inverse',     role: '색상 배경 위 텍스트', light: '#FFFFFF', dark: '#FFFFFF', lp: 'color/base/white', dp: 'color/base/white' },
+  ],
+  border: [
+    { v: '--color-border-subtle',   role: '미세 구분선',      light: '#E9E9E9', dark: 'rgba(255,255,255,0.04)', lp: 'color/gray/100', dp: '— rgba' },
+    { v: '--color-border-default',  role: '기본 테두리',      light: '#D9D9D9', dark: 'rgba(255,255,255,0.07)', lp: 'color/gray/200', dp: '— rgba' },
+    { v: '--color-border-strong',   role: '강조 테두리',      light: '#C4C4C4', dark: 'rgba(255,255,255,0.12)', lp: 'color/gray/300', dp: '— rgba' },
+    { v: '--color-border-emphasis', role: '헤비 구분선',      light: '#353535', dark: 'rgba(255,255,255,0.20)', lp: 'color/gray/800', dp: '— rgba' },
+    { v: '--color-border-focus',    role: '포커스 링 (접근성)', light: '#1D6CEB', dark: '#4285E8', lp: 'color/blue/400', dp: 'blue-dark/350' },
+    { v: '--color-border-white',    role: '흰 배경 위 구분선', light: '#FFFFFF', dark: '#FFFFFF', lp: 'color/base/white', dp: 'color/base/white' },
+    { v: '--color-border-danger',   role: '에러 인풋 테두리',  light: '#FF4554', dark: '#F06070', lp: 'color/red/300',    dp: 'status-dark/red' },
+    { v: '--color-border-correct',  role: '올바른 입력 테두리', light: '#1D6CEB', dark: '#4285E8', lp: 'color/blue/400',  dp: 'blue-dark/350' },
+  ],
+  icon: [
+    { v: '--color-icon-default',  role: '기본 아이콘',      light: '#757575', dark: '#8A8C96', lp: 'color/gray/500', dp: 'gray-dark/700' },
+    { v: '--color-icon-muted',    role: '비강조·보조 아이콘', light: '#C4C4C4', dark: '#35363F', lp: 'color/gray/300', dp: 'gray-dark/400' },
+    { v: '--color-icon-emphasis', role: '강조 아이콘',       light: '#353535', dark: '#B8BABF', lp: 'color/gray/800', dp: 'gray-dark/800' },
+    { v: '--color-icon-accent',   role: '액션·링크 아이콘',  light: '#1D6CEB', dark: '#6FA5F8', lp: 'color/blue/400', dp: 'blue-dark/400' },
+    { v: '--color-icon-inverse',  role: '색상 배경 위 아이콘', light: '#FFFFFF', dark: '#FFFFFF', lp: 'color/base/white', dp: 'color/base/white' },
+    { v: '--color-icon-danger',   role: '에러·위험 아이콘',  light: '#FF4554', dark: '#F06070', lp: 'color/red/300',  dp: 'status-dark/red' },
+  ],
+  action: [
+    { v: '--color-action-primary-default', role: 'Primary CTA 기본',   light: '#1D6CEB', dark: '#3070D8', lp: 'color/blue/400',  dp: 'blue-dark/300' },
+    { v: '--color-action-primary-hover',   role: 'Primary hover',       light: '#2158C8', dark: '#2A65C8', lp: 'color/blue/450',  dp: 'blue-dark/250' },
+    { v: '--color-action-primary-pressed', role: 'Primary pressed',     light: '#2747B9', dark: '#214EA0', lp: 'color/blue/500',  dp: 'blue-dark/200' },
+    { v: '--color-action-primary-text',    role: 'Primary 버튼 텍스트', light: '#FFFFFF', dark: '#FFFFFF', lp: 'color/base/white', dp: 'color/base/white' },
+    { v: '--color-action-primary-subtle',  role: '선택·강조 배경',      light: '#E2F1FF', dark: '#112B55', lp: 'color/blue/50',   dp: 'blue-dark/100' },
+  ],
+  status: [
+    { v: '--color-status-success', role: '성공·완료·올바름', light: '#1D6CEB', dark: '#4285E8', lp: 'color/blue/400',   dp: 'blue-dark/350' },
+    { v: '--color-status-error',   role: '에러·실패·위험',   light: '#E50533', dark: '#F06070', lp: 'color/red/400',    dp: 'status-dark/red' },
+    { v: '--color-status-warning', role: '경고',             light: '#DBA400', dark: '#E8C048', lp: 'color/yellow/400', dp: 'status-dark/yellow' },
+    { v: '--color-status-info',    role: '정보·중립',        light: '#757575', dark: '#8A8C96', lp: 'color/gray/500',   dp: 'gray-dark/700' },
+  ],
+  domainStatus: [
+    { v: '--color-domain-status-primary',       role: '주요 상태 (활성·정상)',    light: '#1D6CEB', dark: '—', lp: 'color/blue/400' },
+    { v: '--color-domain-status-primary-sub',   role: '주요 상태 보조',           light: '#2158C8', dark: '—', lp: 'color/blue/450' },
+    { v: '--color-domain-status-secondary',     role: '보조 상태',                light: '#1FB279', dark: '—', lp: 'color/green/300' },
+    { v: '--color-domain-status-secondary-sub', role: '보조 상태 보조',           light: '#009E5E', dark: '—', lp: 'color/green/400' },
+    { v: '--color-domain-status-tertiary',      role: '3차 상태 (대기 등)',       light: '#25B9DA', dark: '—', lp: 'color/skyblue/300' },
+    { v: '--color-domain-status-tertiary-sub',  role: '3차 상태 보조',            light: '#159BBC', dark: '—', lp: 'color/skyblue/400' },
+    { v: '--color-domain-status-disabled',      role: '비활성 상태',              light: '#C4C4C4', dark: '—', lp: 'color/gray/300' },
+  ],
+};
+
+const RADIUS = [
+  { v: '--radius-control-xs', val: '2px',  role: '컨트롤 radius 최소' },
+  { v: '--radius-control-sm', val: '4px',  role: '컨트롤 radius 소' },
+  { v: '--radius-button-md',  val: '4px',  role: '버튼 radius' },
+  { v: '--radius-card-md',    val: '10px', role: '카드 radius' },
+  { v: '--radius-modal-md',   val: '8px',  role: '모달 radius' },
+  { v: '--border-width-default', val: '1px', role: '기본 선 두께' },
+  { v: '--border-width-strong',  val: '2px', role: '강조 선 두께' },
+];
+
+// ── State ──
+let currentTheme = 'light';
+
+function isRgba(v) { return typeof v === 'string' && v.startsWith('rgba'); }
+
+function getSwatchBg(token) {
+  const c = currentTheme === 'dark' ? token.dark : token.light;
+  return c && c !== '—' ? c : null;
+}
+
+function needsChecker(color) {
+  if (!color) return false;
+  const upper = color.toUpperCase();
+  return upper === '#FFFFFF' || upper === 'WHITE';
+}
+
+function copyVar(varName) {
+  navigator.clipboard?.writeText(varName).catch(() => {});
+}
+
+function flashCard(el, varName) {
+  copyVar(varName);
+  el.classList.add('flashing');
+  setTimeout(() => el.classList.remove('flashing'), 700);
+}
+
+function buildRow(token) {
+  const tr = document.createElement('tr');
+  tr.className = 'token-row';
+
+  const color = currentTheme === 'dark' ? token.dark : token.light;
+  const validColor = color && color !== '—' ? color : null;
+  const isWhite = validColor && validColor.toUpperCase() === '#FFFFFF';
+
+  tr.onclick = () => {
+    navigator.clipboard?.writeText(token.v).catch(() => {});
+    tr.classList.add('token-flash');
+    setTimeout(() => tr.classList.remove('token-flash'), 500);
+  };
+
+  const swatchStyle = validColor ? `background:${validColor}` : 'background:#e5e7eb';
+  const checkerClass = isWhite ? ' checker' : '';
+  const swatchHtml = `<div class="token-swatch${checkerClass}"><div class="token-swatch-layer" style="${swatchStyle}"></div></div>`;
+
+  const darkVal = token.dark && token.dark !== '—' ? token.dark : '—';
+  const primRef = [token.lp, token.dp].filter(v => v && v !== token.lp || v === token.lp).join(' · ');
+
+  tr.innerHTML = `
+    <td class="token-swatch-cell">${swatchHtml}</td>
+    <td>
+      <code class="token-var">${token.v}</code>
+      ${token.warn ? '<span class="token-badge warn">확인 필요</span>' : ''}
+      ${token.darkOnly ? '<span class="token-badge dark-only">dark only</span>' : ''}
+    </td>
+    <td class="token-role-cell">${token.role}</td>
+    <td class="token-value">${token.light || '—'}</td>
+    <td class="token-value">${darkVal}</td>
+    <td class="token-primitive-ref">${token.lp || ''}${token.dp ? ' · ' + token.dp : ''}</td>
+  `;
+
+  return tr;
+}
+
+function renderGroup(gridId, tokens) {
+  const container = document.getElementById(gridId);
+  if (!container) return;
+
+  const wrap = document.createElement('div');
+  wrap.className = 'token-table-wrap';
+
+  const table = document.createElement('table');
+  table.className = 'token-table';
+  table.innerHTML = `
+    <thead>
+      <tr>
+        <th style="width:44px"></th>
+        <th>CSS Variable</th>
+        <th>역할</th>
+        <th style="width:96px">Light</th>
+        <th style="width:120px">Dark</th>
+        <th>Primitive Ref</th>
+      </tr>
+    </thead>
+  `;
+
+  const tbody = document.createElement('tbody');
+  tokens.forEach(t => tbody.appendChild(buildRow(t)));
+  table.appendChild(tbody);
+  wrap.appendChild(table);
+
+  container.innerHTML = '';
+  container.appendChild(wrap);
+}
+
+function renderAll() {
+  renderGroup('grid-bg',            TOKENS.bg);
+  renderGroup('grid-surface',       TOKENS.surface);
+  renderGroup('grid-text',          TOKENS.text);
+  renderGroup('grid-border',        TOKENS.border);
+  renderGroup('grid-icon',          TOKENS.icon);
+  renderGroup('grid-action',        TOKENS.action);
+  renderGroup('grid-status',        TOKENS.status);
+  renderGroup('grid-domain-status', TOKENS.domainStatus);
+  renderGroup('grid-overlay', [{
+    v: '--color-overlay', role: '딤·스크림 배경',
+    light: 'rgba(0,0,0,0.5)', dark: 'rgba(0,0,0,0.75)',
+    lp: 'rgba 직접 허용'
+  }]);
+}
+
+function setTheme(mode) {
+  currentTheme = mode;
+  document.getElementById('btnLight').classList.toggle('active', mode === 'light');
+  document.getElementById('btnDark').classList.toggle('active', mode === 'dark');
+  renderAll();
+}
+
+// ── Radius ──
+function renderRadius() {
+  const grid = document.getElementById('grid-radius');
+  RADIUS.forEach(r => {
+    const isWidth = r.v.includes('border-width');
+    const card = document.createElement('div');
+    card.className = 'radius-card';
+    card.innerHTML = `
+      <div class="radius-box" style="${isWidth ? `border-width:${r.val};background:#e0f2fe` : `border-radius:${r.val}`}"></div>
+      <div class="radius-var">${r.v}</div>
+      <div class="radius-val">${r.val} · ${r.role}</div>
+    `;
+    grid.appendChild(card);
+  });
+}
+
+// ── Nav scroll ──
+function scrollTo(id) {
+  const el = document.getElementById(id);
+  if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+// ── Init ──
+renderAll();
+renderRadius();
+</script>
+<script src="../assets/js/main.js"></script>
+</body>
+</html>

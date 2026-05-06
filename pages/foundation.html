@@ -1,0 +1,762 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Foundation Tokens — SW Design System</title>
+  <link rel="stylesheet" href="../assets/css/style.css">
+  <style>
+    /* ── Spacing ── */
+    .spacing-scale {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      background: #fff;
+      border: 1px solid #e5e7eb;
+      border-radius: 16px;
+      overflow: hidden;
+      margin-bottom: 20px;
+    }
+    .spacing-row {
+      display: grid;
+      grid-template-columns: 100px 56px 1fr 180px;
+      align-items: center;
+      gap: 16px;
+      padding: 10px 20px;
+      border-bottom: 1px solid #f3f4f6;
+      cursor: pointer;
+      transition: background 0.1s;
+      position: relative;
+    }
+    .spacing-row:last-child { border-bottom: none; }
+    .spacing-row:hover { background: #f9fafb; }
+    .spacing-row.section-head {
+      background: #fafafa;
+      cursor: default;
+      padding: 8px 20px;
+    }
+    .spacing-row.section-head:hover { background: #fafafa; }
+    .spacing-var {
+      font-family: 'SF Mono', 'Fira Code', monospace;
+      font-size: 11.5px;
+      color: #1d4ed8;
+      font-weight: 600;
+    }
+    .spacing-val {
+      font-family: monospace;
+      font-size: 11.5px;
+      color: #374151;
+      font-weight: 600;
+    }
+    .spacing-bar-wrap { display: flex; align-items: center; }
+    .spacing-bar {
+      height: 12px;
+      background: linear-gradient(90deg, #1d6ceb, #60a5fa);
+      border-radius: 2px;
+      min-width: 2px;
+      opacity: 0.7;
+    }
+    .spacing-usage {
+      font-size: 11px;
+      color: #9ca3af;
+    }
+    .spacing-head-label {
+      font-size: 10px;
+      font-weight: 700;
+      color: #9ca3af;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+    .spacing-copy-flash {
+      position: absolute; inset: 0;
+      background: rgba(29,108,235,0.08);
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.1s;
+      border-radius: inherit;
+    }
+    .spacing-row.flashing .spacing-copy-flash { opacity: 1; }
+
+    /* ── Radius ── */
+    .radius-scale {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+    .radius-card {
+      background: #fff;
+      border: 1px solid #e5e7eb;
+      border-radius: 14px;
+      padding: 20px 16px 16px;
+      text-align: center;
+      cursor: pointer;
+      transition: transform 0.13s, box-shadow 0.13s;
+      position: relative;
+      overflow: hidden;
+    }
+    .radius-card:hover { transform: translateY(-2px); box-shadow: 0 4px 14px rgba(0,0,0,0.08); }
+    .radius-demo {
+      width: 64px; height: 40px;
+      background: #dbeafe;
+      border: 2px solid #1d6ceb;
+      margin: 0 auto 12px;
+    }
+    .radius-var {
+      font-family: 'SF Mono', 'Fira Code', monospace;
+      font-size: 10.5px; font-weight: 700;
+      color: #1d4ed8;
+      word-break: break-all;
+    }
+    .radius-val { font-size: 12px; color: #374151; font-weight: 600; margin-top: 4px; }
+    .radius-role { font-size: 11px; color: #9ca3af; margin-top: 3px; line-height: 1.4; }
+    .radius-copy-flash {
+      position: absolute; inset: 0;
+      background: rgba(29,108,235,0.12);
+      display: none; align-items: center; justify-content: center;
+      font-size: 11px; font-weight: 700; color: #1d4ed8;
+      border-radius: 14px;
+    }
+    .radius-card.flashing .radius-copy-flash { display: flex; }
+
+    /* ── Border width sub-section ── */
+    .border-width-grid {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 20px;
+    }
+    .border-width-card {
+      background: #fff; border: 1px solid #e5e7eb;
+      border-radius: 12px; padding: 16px 20px;
+      display: flex; align-items: center; gap: 16px;
+      cursor: pointer; transition: transform 0.13s;
+      position: relative; overflow: hidden; min-width: 220px;
+    }
+    .border-width-card:hover { transform: translateY(-1px); box-shadow: 0 3px 10px rgba(0,0,0,0.07); }
+    .border-width-demo {
+      width: 48px; height: 32px;
+      border-style: solid; border-color: #1d6ceb;
+      border-radius: 6px; background: #f0f9ff;
+      flex-shrink: 0;
+    }
+    .border-width-info { display: flex; flex-direction: column; gap: 2px; }
+    .border-width-var { font-family: monospace; font-size: 11px; font-weight: 700; color: #1d4ed8; }
+    .border-width-val { font-size: 13px; font-weight: 700; color: #111827; }
+    .border-width-role { font-size: 11px; color: #9ca3af; }
+    .border-width-copy-flash {
+      position: absolute; inset: 0;
+      background: rgba(29,108,235,0.1);
+      display: none; align-items: center; justify-content: center;
+      border-radius: 12px;
+    }
+    .border-width-card.flashing .border-width-copy-flash { display: flex; }
+
+    /* ── Typography Tables ── */
+    .typo-weight-wrap { margin-bottom: 28px; }
+    .typo-weight-header {
+      font-size: 11px; font-weight: 700; color: #6b7280;
+      text-transform: uppercase; letter-spacing: 0.07em;
+      margin-bottom: 10px;
+    }
+    .typo-weight-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+      gap: 8px;
+    }
+    .typo-weight-card {
+      background: #fff; border: 1px solid #e5e7eb;
+      border-radius: 12px; padding: 16px 18px;
+    }
+    .typo-weight-sample {
+      font-family: 'Pretendard', sans-serif;
+      font-size: 22px; color: #111827; margin-bottom: 8px; line-height: 1.3;
+    }
+    .typo-weight-var {
+      font-family: 'SF Mono', 'Fira Code', monospace;
+      font-size: 10.5px; color: #1d4ed8; display: block; margin-bottom: 3px;
+    }
+    .typo-weight-meta { font-size: 11px; color: #9ca3af; }
+
+    .typo-category { margin-bottom: 20px; }
+    .typo-category-header {
+      display: flex; align-items: center; gap: 8px; margin-bottom: 6px;
+    }
+    .typo-category-name { font-size: 13px; font-weight: 700; color: #111827; }
+    .typo-category-desc { font-size: 12px; color: #6b7280; }
+    .typo-category-count {
+      font-size: 10px; font-weight: 700;
+      padding: 2px 8px; border-radius: 10px;
+      background: #f3f4f6; color: #6b7280;
+    }
+    .typo-table-wrap {
+      background: #fff; border: 1px solid #e5e7eb;
+      border-radius: 14px; overflow: hidden;
+    }
+    .typo-table { width: 100%; border-collapse: collapse; }
+    .typo-table th {
+      padding: 8px 14px; text-align: left;
+      font-size: 10px; font-weight: 700; color: #9ca3af;
+      text-transform: uppercase; letter-spacing: 0.05em;
+      background: #fafafa; border-bottom: 1px solid #e9e9e9;
+    }
+    .typo-table td {
+      padding: 10px 14px; border-bottom: 1px solid #f3f4f6;
+      vertical-align: middle; color: #374151;
+    }
+    .typo-table tr:last-child td { border-bottom: none; }
+    .typo-table tr:hover td { background: #f9fafb; cursor: pointer; }
+    .typo-token {
+      font-family: 'SF Mono', 'Fira Code', monospace;
+      font-size: 10.5px; color: #1d4ed8; font-weight: 600;
+    }
+    .typo-preview {
+      font-family: 'Pretendard', sans-serif;
+      color: #111827; white-space: nowrap;
+      overflow: hidden; text-overflow: ellipsis; max-width: 260px;
+    }
+    .typo-spec { font-family: monospace; font-size: 11px; color: #374151; }
+    .typo-weight-badge {
+      display: inline-block; padding: 2px 8px; border-radius: 5px;
+      font-size: 10px; font-weight: 600;
+    }
+    .typo-weight-badge.w700 { background: #eff6ff; color: #1d4ed8; }
+    .typo-weight-badge.w500 { background: #f0fdf4; color: #166534; }
+    .typo-weight-badge.w400 { background: #f3f4f6; color: #374151; }
+    .typo-note { font-size: 11px; color: #9ca3af; }
+
+    /* ── Palette pair (Light + Dark) ── */
+    .pal-pair {
+      display: flex;
+      flex-direction: column;
+    }
+    .pal-pair-label {
+      font-size: 10px; font-weight: 700; color: #9ca3af;
+      text-transform: uppercase; letter-spacing: 0.06em;
+      margin-bottom: 8px; display: flex; align-items: center; gap: 5px;
+    }
+    .pal-pair-label .pal-badge {
+      font-size: 9px; padding: 1px 6px; border-radius: 4px; font-weight: 700;
+    }
+    .pal-pair-label .light-badge { background: #fef9c3; color: #854d0e; }
+    .pal-pair-label .dark-badge  { background: #1e293b; color: #94a3b8; }
+
+    /* ── Dark palette column — gray-dark/50 배경 ──
+       gap 없이 light col 바로 아래서 시작, margin 음수로 body 패딩 돌파 → 카드 하단·좌우 full-bleed.
+       padding-top: 16px 으로 light col body-top(16px)과 동일한 리듬 유지.
+       palette-group overflow:hidden 이 border-radius 클리핑 처리. */
+    .pal-pair-col--dark {
+      background: #131418;               /* gray-dark/50 */
+      margin: 0 -20px -16px -20px;       /* body 패딩(16px 20px) 돌파 */
+      padding: 16px 20px 16px;           /* top: light col body-top 16px 과 동일 리듬 */
+    }
+    .pal-pair-col--dark .pal-pair-label {
+      color: #55575F;                    /* gray-dark/600 — placeholder 톤 */
+    }
+    .pal-pair-col--dark .pal-pair-label .dark-badge {
+      background: #24252C;
+      color: #8A8C96;
+    }
+    .pal-pair-col--dark .color-card {
+      background: #1C1D23;               /* gray-dark/100 — 카드 표면 */
+      border-color: rgba(255,255,255,0.08);
+    }
+    .pal-pair-col--dark .color-card:hover {
+      border-color: rgba(255,255,255,0.2);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+    }
+    .pal-pair-col--dark .color-step  { color: #B8BABF; }   /* gray-dark/800 */
+    .pal-pair-col--dark .color-hex   { color: #55575F; }   /* gray-dark/600 */
+  </style>
+</head>
+<body>
+
+<div class="mobile-header">
+  <button class="hamburger" id="sidebar-toggle" aria-label="메뉴">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/>
+    </svg>
+  </button>
+  <span class="mobile-logo">Foundation Tokens</span>
+</div>
+<div class="sidebar-overlay" id="sidebar-overlay"></div>
+
+<div class="app">
+  <aside class="sidebar" id="sidebar"></aside>
+
+  <main class="main-content">
+    <div class="page-header">
+      <div class="page-header-inner">
+        <div class="page-header-text">
+          <h1>🎨 Foundation Tokens</h1>
+          <p>디자인시스템의 원천 색상과 타이포그래피. 클릭하면 CSS 변수명이 클립보드에 복사됩니다.</p>
+        </div>
+        <div class="page-header-actions">
+          <span class="badge badge-green">완료</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="page-content">
+
+      <!-- ── COLOR ── -->
+      <div class="section" id="section-color">
+        <div class="section-header">
+          <h2 class="section-title">Color</h2>
+        </div>
+
+        <!-- Brand -->
+        <div class="palette-group">
+          <div class="palette-group-header">
+            <span class="palette-group-title">Brand Colors</span>
+          </div>
+          <div class="palette-group-body">
+            <div class="brand-grid" id="brand-grid"></div>
+          </div>
+        </div>
+
+        <!-- Palettes (gray · blue: Light + Dark 나란히 비교) -->
+        <div id="palette-groups"></div>
+      </div>
+
+      <!-- ── TYPOGRAPHY ── -->
+      <div class="section" id="section-typography">
+        <div class="section-header">
+          <h2 class="section-title">Typography</h2>
+          <p class="section-desc">SW UX GUIDE V2.4 · Pretendard · 4개 카테고리 26스타일 · 행 클릭 시 토큰명 복사</p>
+        </div>
+        <div id="typo-categoryegories"></div>
+      </div>
+
+      <!-- ── SPACING ── -->
+      <div class="section" id="section-spacing">
+        <div class="section-header">
+          <h2 class="section-title">Spacing</h2>
+          <p class="section-desc">4pt 그리드 기반 Primitive 스페이싱. Semantic Token이 이 값을 참조합니다. 카드 클릭 시 CSS 변수명 복사.</p>
+        </div>
+        <div id="spacing-grid"></div>
+      </div>
+
+      <!-- ── BORDER RADIUS ── -->
+      <div class="section" id="section-radius">
+        <div class="section-header">
+          <h2 class="section-title">Border Radius</h2>
+          <p class="section-desc">컴포넌트별 모서리 반경 Primitive 토큰. 카드 클릭 시 CSS 변수명 복사.</p>
+        </div>
+        <div id="radius-grid"></div>
+      </div>
+
+      <!-- ── SHADOW ── -->
+      <div class="section" id="section-shadow">
+        <div class="section-header">
+          <h2 class="section-title">Shadow / Elevation</h2>
+        </div>
+        <div class="coming-soon">
+          <div class="coming-soon-icon">🌫️</div>
+          <div class="coming-soon-title">Shadow 토큰 준비 중</div>
+          <div class="coming-soon-desc">Elevation 0–4 레벨 Shadow 시스템</div>
+          <div class="coming-soon-badge">Coming Soon</div>
+        </div>
+      </div>
+
+    </div>
+  </main>
+</div>
+
+<script src="../assets/js/main.js"></script>
+<script>
+/* ════════════════════════════════
+   Foundation Token Data (inline)
+   ════════════════════════════════ */
+const BRAND = [
+  { label: 'Brand Blue',  cssVar: '--color-brand-blue', hex: '#0072ce', desc: 'Primary CTA, 링크, 포커스 링' },
+  { label: 'Brand Red',   cssVar: '--color-brand-red',  hex: '#ff312c', desc: 'Danger, 오류 강조' },
+  { label: 'Brand Gray',  cssVar: '--color-brand-gray', hex: '#dfdede', desc: '비활성·보조 장식 요소' },
+  { label: 'CI / Logo',   cssVar: '--color-brand-ci',   hex: '#004097', desc: 'CI·로고 전용. UI에 직접 사용 금지' },
+];
+
+const PALETTES = {
+  gray:         [['0','#fafafa'],['50','#f5f5f5'],['100','#e9e9e9'],['200','#d9d9d9'],['300','#c4c4c4'],['400','#9d9d9d'],['500','#757575'],['600','#555555'],['700','#434343'],['800','#353535'],['900','#202020']],
+  blue:         [['50','#e2f1ff'],['100','#c8e4ff'],['150','#a4d4ff'],['200','#8bc6ff'],['250','#5bb2ff'],['300','#2b9eff'],['350','#268cf8'],['400','#1d6ceb'],['450','#2158c8'],['500','#2747b9']],
+  red:          [['50','#ffebef'],['100','#ffccd6'],['150','#fbb2ba'],['200','#f8979e'],['250','#fc6e79'],['300','#ff4554'],['350','#f22544'],['400','#e50533'],['450','#d60228'],['500','#c8001e']],
+  orange:       [['50','#ffede0'],['100','#fdd8bf'],['150','#fec6a0'],['200','#ffb482'],['250','#ff954e'],['300','#ff761a'],['350','#ee680d'],['400','#da4c00'],['450','#b63c00'],['500','#8e2e00']],
+  yellow:       [['50','#fff4ce'],['100','#fee89a'],['150','#fede6c'],['200','#ffd53d'],['250','#ffcc1e'],['300','#ffc200'],['350','#f5b900'],['400','#dba400'],['450','#ba8900'],['500','#8f6a00']],
+  green:        [['50','#e3f2ea'],['100','#caecda'],['150','#9cd8bd'],['200','#6fc4a2'],['250','#47bb8e'],['300','#1fb279'],['350','#10a86c'],['400','#009e5e'],['450','#008650'],['500','#006f42']],
+  skyblue:      [['50','#c4eef7'],['100','#a5e5f3'],['150','#7bd6ea'],['200','#51c7e1'],['250','#3bc0dd'],['300','#25b9da'],['350','#1daacb'],['400','#159bbc'],['450','#1284a0'],['500','#0f6c84']],
+  purple:       [['50','#e8e9fc'],['100','#cfd1f9'],['150','#c0c0fc'],['200','#b0b0ff'],['250','#8b8bee'],['300','#6666dd'],['350','#4e4ec3'],['400','#3535a8'],['450','#2d2d8f'],['500','#252576']],
+  brown:        [['50','#f6eee9'],['100','#e4d5c8'],['150','#dbc6b3'],['200','#d1b69f'],['250','#a68c75'],['300','#7c614a'],['350','#685240'],['400','#554435'],['450','#483a2d'],['500','#3b3025']],
+  'visual-gray':[['50','#f3f5f7'],['100','#e8ebef'],['150','#dadee5'],['200','#cdd2de'],['250','#abb2bf'],['300','#808796'],['350','#646a74'],['400','#3e4347'],['450','#2b2f32'],['500','#1b1d1f']],
+};
+
+const DARK_PALETTES = {
+  'gray-dark':     [['0','#0D0E12'],['50','#131418'],['100','#1C1D23'],['200','#24252C'],['300','#2E2F38'],['400','#35363F'],['500','#3E4049'],['600','#55575F'],['700','#8A8C96'],['800','#B8BABF'],['900','#ECEDF0']],
+  'blue-dark':     [['50','#0C1D38'],['100','#112B55'],['150','#1A3D72'],['200','#214EA0'],['250','#2A65C8'],['300','#3070D8'],['350','#4285E8'],['400','#6FA5F8'],['450','#96BEF9'],['500','#C0D8FC']],
+  'red-dark':      [['50','#2A0F14'],['100','#3D1520'],['150','#5C1E2E'],['200','#8A2A3E'],['250','#C03850'],['300','#E04860'],['350','#F06070'],['400','#F48890'],['450','#F8A8B0'],['500','#FCD0D5']],
+  'orange-dark':   [['50','#2E1505'],['100','#42200A'],['150','#6B3512'],['200','#A05020'],['250','#D06828'],['300','#E88038'],['350','#F09548'],['400','#F5AA68'],['450','#F8C090'],['500','#FCD8B8']],
+  'yellow-dark':   [['50','#2A2005'],['100','#3D2E08'],['150','#605010'],['200','#907818'],['250','#C09828'],['300','#D8B038'],['350','#E8C048'],['400','#F0D068'],['450','#F5DE90'],['500','#FAEAB8']],
+  'green-dark':    [['50','#0A2018'],['100','#102E22'],['150','#184530'],['200','#206840'],['250','#288A55'],['300','#30A868'],['350','#3FBE7E'],['400','#68D098'],['450','#98E0B8'],['500','#C5F0D8']],
+  'skyblue-dark':  [['50','#081E28'],['100','#102A38'],['150','#184050'],['200','#205A70'],['250','#287890'],['300','#3090A8'],['350','#40A8C0'],['400','#68C0D8'],['450','#98D8E8'],['500','#C0E8F0']],
+  'purple-dark':   [['50','#14142A'],['100','#1E1E3D'],['150','#2A2A58'],['200','#383878'],['250','#4848A0'],['300','#5858B8'],['350','#7070D0'],['400','#9090E0'],['450','#B0B0EA'],['500','#D0D0F5']],
+  'brown-dark':    [['50','#1E1610'],['100','#2A2018'],['150','#3D3025'],['200','#584535'],['250','#786050'],['300','#907868'],['350','#A89080'],['400','#C0A898'],['450','#D8C0B0'],['500','#E8D8C8']],
+  'coolgray-dark': [['50','#12141A'],['100','#1A1D25'],['150','#252830'],['200','#353840'],['250','#484C58'],['300','#606470'],['350','#787C88'],['400','#989CA8'],['450','#B8BCC5'],['500','#D8DBE0']],
+};
+
+const FONT_WEIGHTS = [
+  { label:'Regular', weight:400, cssVar:'--font-weight-regular', usage:'본문, 설명' },
+  { label:'Medium',  weight:500, cssVar:'--font-weight-medium',  usage:'서브타이틀, 레이블, 버튼(SM)' },
+  { label:'Bold',    weight:700, cssVar:'--font-weight-bold',    usage:'제목, 헤딩' },
+];
+
+const TYPOGRAPHY = {
+  title: {
+    label: 'Title', desc: '헤딩·제목 텍스트',
+    styles: [
+      { token:'title/32B', size:'32px', weight:700, lh:'1.3', ls:'0em',     sample:'제목 텍스트 Title' },
+      { token:'title/24B', size:'24px', weight:700, lh:'1.3', ls:'0em',     sample:'제목 텍스트 Title' },
+      { token:'title/20B', size:'20px', weight:700, lh:'1.3', ls:'0em',     sample:'제목 텍스트 Title' },
+      { token:'title/18B', size:'18px', weight:700, lh:'1.3', ls:'0em',     sample:'제목 텍스트 Title' },
+      { token:'title/18M', size:'18px', weight:500, lh:'1.3', ls:'-0.02em', sample:'제목 텍스트 Title' },
+      { token:'title/16B', size:'16px', weight:700, lh:'1.3', ls:'0em',     sample:'제목 텍스트 Title' },
+      { token:'title/16M', size:'16px', weight:500, lh:'1.3', ls:'-0.02em', sample:'제목 텍스트 Title' },
+      { token:'title/14M', size:'14px', weight:500, lh:'1.3', ls:'0em',     sample:'제목 텍스트 Title' },
+    ]
+  },
+  body: {
+    label: 'Body', desc: '본문·콘텐츠 텍스트',
+    styles: [
+      { token:'body/18M', size:'18px', weight:500, lh:'1.3', ls:'-0.02em', sample:'본문 텍스트 Body' },
+      { token:'body/18R', size:'18px', weight:400, lh:'1.3', ls:'-0.02em', sample:'본문 텍스트 Body' },
+      { token:'body/16M', size:'16px', weight:500, lh:'1.3', ls:'-0.02em', sample:'본문 텍스트 Body' },
+      { token:'body/16R', size:'16px', weight:400, lh:'1.3', ls:'-0.02em', sample:'본문 텍스트 Body' },
+      { token:'body/14M', size:'14px', weight:500, lh:'1.3', ls:'-0.02em', sample:'본문 텍스트 Body' },
+      { token:'body/14R', size:'14px', weight:400, lh:'1.3', ls:'-0.02em', sample:'본문 텍스트 Body' },
+      { token:'body/12M', size:'12px', weight:500, lh:'1.3', ls:'0em',     sample:'본문 텍스트 Body' },
+      { token:'body/12R', size:'12px', weight:400, lh:'1.3', ls:'0em',     sample:'본문 텍스트 Body' },
+      { token:'body/10M', size:'10px', weight:500, lh:'1.3', ls:'0.02em',  sample:'본문 텍스트 Body' },
+      { token:'body/10R', size:'10px', weight:400, lh:'1.3', ls:'0.02em',  sample:'본문 텍스트 Body' },
+    ]
+  },
+  supporting: {
+    label: 'Supporting', desc: '보조·캡션·도움말',
+    styles: [
+      { token:'supporting/caption', size:'12px', weight:400, lh:'1.3', ls:'0em', sample:'캡션 Caption 12R' },
+      { token:'supporting/helper',  size:'12px', weight:400, lh:'1.3', ls:'0em', sample:'도움말 Helper 12R' },
+    ]
+  },
+  component: {
+    label: 'Component', desc: '버튼·컨트롤 전용',
+    styles: [
+      { token:'component/button.label.14M',  size:'14px', weight:500, lh:'1.3', ls:'-0.02em', sample:'버튼 레이블 SM',    note:'Mobile SM/MD 버튼' },
+      { token:'component/button.label.16M',  size:'16px', weight:500, lh:'1.3', ls:'-0.02em', sample:'버튼 레이블 LG',    note:'LG 버튼 / Web 기본' },
+      { token:'component/control.label.14R', size:'14px', weight:400, lh:'1.3', ls:'0em',     sample:'컨트롤 레이블 SM', note:'Checkbox · Radio · Toggle (SM)' },
+      { token:'component/control.label.16R', size:'16px', weight:400, lh:'1.3', ls:'0em',     sample:'컨트롤 레이블 LG', note:'Checkbox · Radio · Toggle (LG)' },
+      { token:'component/control.text.14R',  size:'14px', weight:400, lh:'1.3', ls:'-0.02em', sample:'컨트롤 텍스트 SM', note:'Input · Select 내부 텍스트 (SM)' },
+      { token:'component/control.text.16R',  size:'16px', weight:400, lh:'1.3', ls:'-0.02em', sample:'컨트롤 텍스트 LG', note:'Input · Select 내부 텍스트 (LG)' },
+    ]
+  }
+};
+
+/* ── Helpers ── */
+function isDark(hex) {
+  if (hex.startsWith('rgba') || hex.startsWith('rgb')) return false;
+  const c = hex.replace('#','');
+  const r = parseInt(c.slice(0,2),16), g = parseInt(c.slice(2,4),16), b = parseInt(c.slice(4,6),16);
+  return (0.299*r + 0.587*g + 0.114*b) < 128;
+}
+
+function copyFlash(card, text) {
+  navigator.clipboard.writeText(text).catch(()=>{});
+  card.classList.add('flashing');
+  setTimeout(()=>card.classList.remove('flashing'), 900);
+}
+
+/* ── Render Brand ── */
+function renderBrand() {
+  const el = document.getElementById('brand-grid');
+  el.innerHTML = BRAND.map(b => `
+    <div class="brand-card" onclick="copyFlash(this,'${b.cssVar}')" title="${b.cssVar}">
+      <div class="brand-swatch" style="background:${b.hex}"></div>
+      <div class="brand-info">
+        <span class="brand-name">${b.label}</span>
+        <span class="brand-hex">${b.hex}</span>
+      </div>
+      <div class="copy-flash">복사됨!</div>
+    </div>
+  `).join('');
+}
+
+/* ── Color card helper ── */
+function colorCard(name, step, hex) {
+  const cssVar = `--color-${name}-${step}`;
+  return `<div class="color-card" data-hex="${hex}" data-var="${cssVar}" onclick="copyFlash(this,'${cssVar}')" title="${cssVar}">
+    <div class="color-swatch" style="background:${hex}"></div>
+    <div class="color-info">
+      <span class="color-step">${step}</span>
+      <span class="color-hex">${hex}</span>
+    </div>
+    <div class="copy-flash">복사!</div>
+  </div>`;
+}
+
+/* ── Render Palettes ── */
+function renderPalettes() {
+  const el = document.getElementById('palette-groups');
+  const PAIRED = {
+    gray:         'gray-dark',
+    blue:         'blue-dark',
+    red:          'red-dark',
+    orange:       'orange-dark',
+    yellow:       'yellow-dark',
+    green:        'green-dark',
+    skyblue:      'skyblue-dark',
+    purple:       'purple-dark',
+    brown:        'brown-dark',
+    'visual-gray':'coolgray-dark',
+  };
+  const rendered = new Set();
+
+  el.innerHTML = Object.entries(PALETTES).map(([name, steps]) => {
+    const darkKey = PAIRED[name];
+    if (darkKey) {
+      rendered.add(darkKey);
+      const darkSteps = DARK_PALETTES[darkKey] || [];
+      return `
+        <div class="palette-group">
+          <div class="palette-group-header">
+            <span class="palette-group-title">${name.charAt(0).toUpperCase() + name.slice(1)}</span>
+          </div>
+          <div class="palette-group-body">
+            <div class="pal-pair">
+              <div class="pal-pair-col">
+                <div class="pal-pair-label"><span class="pal-badge light-badge">LIGHT</span> color/${name}</div>
+                <div class="color-grid">${steps.map(([s,h]) => colorCard(name,s,h)).join('')}</div>
+              </div>
+              <div class="pal-pair-col pal-pair-col--dark">
+                <div class="pal-pair-label"><span class="pal-badge dark-badge">DARK</span> color/${darkKey}</div>
+                <div class="color-grid">${darkSteps.map(([s,h]) => colorCard(darkKey,s,h)).join('')}</div>
+              </div>
+            </div>
+          </div>
+        </div>`;
+    }
+    return `
+      <div class="palette-group">
+        <div class="palette-group-header">
+          <span class="palette-group-title">${name.charAt(0).toUpperCase() + name.slice(1)}</span>
+        </div>
+        <div class="palette-group-body">
+          <div class="color-grid">${steps.map(([s,h]) => colorCard(name,s,h)).join('')}</div>
+        </div>
+      </div>`;
+  }).join('');
+}
+
+/* ── Render Typography ── */
+function renderTypography() {
+  const container = document.getElementById('typo-categoryegories');
+  if (!container) return;
+
+  const weightSection = `
+    <div class="typo-weight-wrap">
+      <div class="typo-weight-header">Font Family &amp; Weight — Pretendard</div>
+      <div class="typo-weight-grid">
+        ${FONT_WEIGHTS.map(w => `
+          <div class="typo-weight-card">
+            <div class="typo-weight-sample" style="font-weight:${w.weight}">${w.label} Aa 가나다</div>
+            <code class="typo-weight-var">${w.cssVar}</code>
+            <div class="typo-weight-meta">${w.weight} · ${w.usage}</div>
+          </div>
+        `).join('')}
+      </div>
+    </div>
+  `;
+
+  function wBadge(w) {
+    const cls = w === 700 ? 'w700' : w === 500 ? 'w500' : 'w400';
+    const lbl = w === 700 ? 'Bold' : w === 500 ? 'Medium' : 'Regular';
+    return `<span class="typo-weight-badge ${cls}">${lbl} · ${w}</span>`;
+  }
+
+  const catSections = Object.entries(TYPOGRAPHY).map(([key, cat]) => {
+    const hasNote = key === 'component';
+    const rows = cat.styles.map(s => {
+      const tok = `typography/${s.token}`;
+      return `
+        <tr onclick="navigator.clipboard&&navigator.clipboard.writeText('${tok}').catch(()=>{});this.style.background='#eff6ff';setTimeout(()=>this.style.background='',500)">
+          <td><code class="typo-token">${s.token}</code></td>
+          <td class="typo-preview" style="font-size:${s.size};font-weight:${s.weight};line-height:${s.lh};letter-spacing:${s.ls}">${s.sample}</td>
+          <td class="typo-spec">${s.size}</td>
+          <td>${wBadge(s.weight)}</td>
+          <td class="typo-spec">${s.lh}</td>
+          <td class="typo-spec">${s.ls}</td>
+          ${hasNote ? `<td class="typo-note">${s.note || ''}</td>` : ''}
+        </tr>
+      `;
+    }).join('');
+
+    return `
+      <div class="typo-category">
+        <div class="typo-category-header">
+          <span class="typo-category-name">${cat.label}</span>
+          <span class="typo-category-desc">${cat.desc}</span>
+          <span class="typo-category-count">${cat.styles.length}</span>
+        </div>
+        <div class="typo-table-wrap">
+          <table class="typo-table">
+            <thead>
+              <tr>
+                <th style="width:220px">Token</th>
+                <th>미리보기</th>
+                <th style="width:52px">Size</th>
+                <th style="width:110px">Weight</th>
+                <th style="width:52px">L/H</th>
+                <th style="width:68px">L/S</th>
+                ${hasNote ? '<th>참고</th>' : ''}
+              </tr>
+            </thead>
+            <tbody>${rows}</tbody>
+          </table>
+        </div>
+      </div>
+    `;
+  }).join('');
+
+  container.innerHTML = weightSection + catSections;
+}
+
+/* ════════════════════════════════
+   Spacing Primitive Data
+   ════════════════════════════════ */
+const SPACING = [
+  { v: '--spacing-2',  px: 2,   usage: '미세 오프셋·보정' },
+  { v: '--spacing-4',  px: 4,   usage: '아이콘 내부 여백, label-gap-block' },
+  { v: '--spacing-6',  px: 6,   usage: '인라인 소 여백' },
+  { v: '--spacing-8',  px: 8,   usage: '클러스터 최소, 레이블 간격' },
+  { v: '--spacing-10', px: 10,  usage: '컴팩트 padding' },
+  { v: '--spacing-12', px: 12,  usage: '패딩 소, 스택 xs' },
+  { v: '--spacing-14', px: 14,  usage: '인풋 내부 수직 여백' },
+  { v: '--spacing-16', px: 16,  usage: '패딩 중소, 섹션 xs, 스택 sm' },
+  { v: '--spacing-20', px: 20,  usage: '패딩 중, 섹션 sm, 스택 md' },
+  { v: '--spacing-24', px: 24,  usage: '패딩 대, 섹션 md, 스택 lg' },
+  { v: '--spacing-28', px: 28,  usage: '컨테이너 내부 여백' },
+  { v: '--spacing-32', px: 32,  usage: '섹션 lg' },
+  { v: '--spacing-36', px: 36,  usage: '카드 패딩' },
+  { v: '--spacing-40', px: 40,  usage: '섹션 xl' },
+  { v: '--spacing-44', px: 44,  usage: '폼 블록 여백' },
+  { v: '--spacing-48', px: 48,  usage: '섹션 xxl, 페이지 수직 여백' },
+  { v: '--spacing-56', px: 56,  usage: '레이아웃 블록 여백' },
+  { v: '--spacing-64', px: 64,  usage: '대형 섹션 간격' },
+  { v: '--spacing-80', px: 80,  usage: '히어로·모달 여백' },
+  { v: '--spacing-96', px: 96,  usage: '페이지 최상위 여백' },
+  { v: '--spacing-128', px: 128, usage: '풀스크린 섹션 여백' },
+];
+
+/* ════════════════════════════════
+   Radius Primitive Data
+   ════════════════════════════════ */
+const RADIUS_PRIMS = [
+  { v: '--radius-0',    px: 0,    role: '각진 모서리 (없음)' },
+  { v: '--radius-2',    px: 2,    role: '최소 radius · 컨트롤 xs' },
+  { v: '--radius-4',    px: 4,    role: '소 radius · 버튼·컨트롤' },
+  { v: '--radius-6',    px: 6,    role: '중소 radius · 뱃지·태그' },
+  { v: '--radius-8',    px: 8,    role: '중 radius · 모달·팝오버' },
+  { v: '--radius-10',   px: 10,   role: '중대 radius · 카드·패널' },
+  { v: '--radius-12',   px: 12,   role: '대 radius · 토스트·알림' },
+  { v: '--radius-16',   px: 16,   role: '특대 radius · 바텀시트' },
+  { v: '--radius-20',   px: 20,   role: '히어로 카드·랜딩 블록' },
+  { v: '--radius-full', px: 9999, role: '완전 원형 · 칩·아바타' },
+];
+
+const BORDER_WIDTHS = [
+  { v: '--border-width-1', px: 1, role: '기본 선 두께 · 테두리·구분선' },
+  { v: '--border-width-2', px: 2, role: '강조 선 두께 · 포커스 링·선택 표시' },
+];
+
+/* ── Render Spacing ── */
+function renderSpacing() {
+  const el = document.getElementById('spacing-grid');
+  const maxPx = 128;
+
+  const header = `
+    <div class="spacing-scale">
+      <div class="spacing-row section-head">
+        <span class="spacing-head-label">Variable</span>
+        <span class="spacing-head-label">Value</span>
+        <span class="spacing-head-label">Scale</span>
+        <span class="spacing-head-label">Usage</span>
+      </div>
+      ${SPACING.map(s => `
+        <div class="spacing-row" onclick="flashSpacing(this,'${s.v}')" title="클릭하여 복사">
+          <span class="spacing-var">${s.v}</span>
+          <span class="spacing-val">${s.px}px</span>
+          <div class="spacing-bar-wrap">
+            <div class="spacing-bar" style="width:${Math.round((s.px / maxPx) * 260)}px"></div>
+          </div>
+          <span class="spacing-usage">${s.usage}</span>
+          <div class="spacing-copy-flash"></div>
+        </div>
+      `).join('')}
+    </div>`;
+
+  el.innerHTML = header;
+}
+
+function flashSpacing(row, varName) {
+  navigator.clipboard?.writeText(varName).catch(() => {});
+  row.classList.add('flashing');
+  setTimeout(() => row.classList.remove('flashing'), 600);
+}
+
+/* ── Render Radius ── */
+function renderRadius() {
+  const el = document.getElementById('radius-grid');
+  const cards = RADIUS_PRIMS.map(r => `
+    <div class="radius-card" onclick="flashRadius(this,'${r.v}')" title="클릭하여 복사">
+      <div class="radius-demo" style="border-radius:${r.px === 9999 ? '9999px' : r.px+'px'}"></div>
+      <div class="radius-var">${r.v}</div>
+      <div class="radius-val">${r.px === 9999 ? '9999px' : r.px + 'px'}</div>
+      <div class="radius-role">${r.role}</div>
+      <div class="radius-copy-flash">복사됨!</div>
+    </div>
+  `).join('');
+
+  const bwCards = BORDER_WIDTHS.map(b => `
+    <div class="border-width-card" onclick="flashBorderWidth(this,'${b.v}')" title="클릭하여 복사">
+      <div class="border-width-demo" style="border-width:${b.px}px"></div>
+      <div class="border-width-info">
+        <div class="border-width-var">${b.v}</div>
+        <div class="border-width-val">${b.px}px</div>
+        <div class="border-width-role">${b.role}</div>
+      </div>
+      <div class="border-width-copy-flash">복사됨!</div>
+    </div>
+  `).join('');
+
+  el.innerHTML = `
+    <div class="radius-scale">${cards}</div>
+    <div class="palette-label" style="margin-bottom:10px">Border Width</div>
+    <div class="border-width-grid">${bwCards}</div>
+  `;
+}
+
+function flashRadius(card, varName) {
+  navigator.clipboard?.writeText(varName).catch(() => {});
+  card.classList.add('flashing');
+  setTimeout(() => card.classList.remove('flashing'), 700);
+}
+function flashBorderWidth(card, varName) {
+  navigator.clipboard?.writeText(varName).catch(() => {});
+  card.classList.add('flashing');
+  setTimeout(() => card.classList.remove('flashing'), 700);
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  renderBrand();
+  renderPalettes();
+  renderTypography();
+  renderSpacing();
+  renderRadius();
+});
+</script>
+</body>
+</html>

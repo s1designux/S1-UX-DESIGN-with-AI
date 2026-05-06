@@ -1,0 +1,119 @@
+{
+  "_meta": {
+    "version": "1.0.0",
+    "updatedAt": "2026-04-27",
+    "description": "디자이너용 AI 프롬프트 스니펫. Claude / ChatGPT / Figma MCP에서 복붙해서 사용."
+  },
+  "snippets": [
+    {
+      "id": 1,
+      "title": "현재 화면 UX 가이드 기준 검토",
+      "category": "review",
+      "tools": ["claude", "chatgpt"],
+      "purpose": "Figma 프레임 또는 스크린샷이 SW UX GUIDE V2.4 기준에 맞는지 체계적으로 검토",
+      "situation": "디자인 리뷰 전, QA 시점, 혹은 신규 화면을 그리기 전 기존 화면 진단이 필요할 때",
+      "prompt": "당신은 SW UX GUIDE V2.4 기준으로 화면을 검토하는 전문 디자인 리뷰어입니다.\n\n첨부된 Figma 프레임(또는 스크린샷)을 아래 5가지 기준으로 평가해주세요.\n\n[검토 기준]\n1. 색상: foundation token 사용 여부 (--color-* CSS 변수 사용, 하드코딩 hex 금지)\n2. 타이포그래피: title-base(18px/Bold) · body-base(18px/Regular) 스타일 준수\n3. 컴포넌트: legacy component(--legacy-* 변수 참조) 사용 여부\n4. 간격·여백: 8pt 그리드 기준 일관성\n5. 접근성: 텍스트-배경 명도 대비 WCAG AA 기준(4.5:1) 충족 여부\n\n[출력 형식]\n각 항목에 대해 아래 형식으로 답해주세요.\n✅ 준수 | ⚠️ 개선 필요 | ❌ 위반\n- 현황 요약\n- 구체적 개선 방안 (위반/개선 필요 항목만)",
+      "expectedResult": "5개 항목별 준수 여부 + 구체적 개선 제안 리스트",
+      "notes": "스크린샷 또는 Figma 링크를 함께 첨부해야 정확한 검토가 가능합니다. Figma MCP가 연결된 경우 node-id를 직접 제공하세요."
+    },
+    {
+      "id": 2,
+      "title": "Legacy 컴포넌트 사용 여부 확인",
+      "category": "review",
+      "tools": ["figma"],
+      "purpose": "Figma 선택 프레임에서 legacy 토큰 또는 구버전 컴포넌트 사용 항목을 전수 탐색",
+      "situation": "리팩토링 범위 산정, 신규 디자인시스템 전환 계획 수립 시",
+      "prompt": "이 Figma 프레임에서 legacy 컴포넌트와 구버전 토큰을 모두 찾아주세요.\n\n[Legacy 판단 기준]\n- CSS 변수: --legacy-text-*, --legacy-surface-* 참조하는 요소\n- Figma 변수: surface/neutral/*, surface/base-background/*, color/text/state/accent-alt 등 구버전 변수명 사용\n- 컴포넌트: 🗂️ [Legacy] 접두사가 붙거나 구버전 라이브러리에서 import된 것\n\n[출력 형식]\n| 레이어명 | Legacy 항목 | 신규 대체 토큰 | 우선순위 |\n|----------|------------|---------------|--------|\n(테이블 형태로 정리)",
+      "expectedResult": "레이어명 + legacy 토큰명 + 대체 신규 토큰명 + 교체 우선순위가 담긴 마크다운 테이블",
+      "notes": "Figma MCP가 연결된 상태에서 사용하면 자동으로 노드를 탐색합니다. MCP 없이 사용 시 레이어 목록을 직접 붙여넣으세요."
+    },
+    {
+      "id": 3,
+      "title": "Foundation Token 사용 적합성 검토",
+      "category": "review",
+      "tools": ["claude"],
+      "purpose": "작성한 컴포넌트 코드 또는 Figma 변수 사용이 foundation token 원칙을 지키는지 확인",
+      "situation": "개발 코드 리뷰 전, 혹은 Figma에서 직접 색상을 지정한 경우 적합성 확인",
+      "prompt": "아래 코드(또는 Figma 변수 목록)가 SW UX GUIDE V2.4 foundation token 원칙을 지키는지 검토해주세요.\n\n[원칙]\n1. Primitive 레이어: hex 직접 입력 허용 (예: #0072ce)\n2. Semantic 레이어 이상: 반드시 var(--color-*) 형태로 참조, hex 직접 사용 금지\n3. Component 레이어: Semantic token을 var()로 참조, Primitive 직접 참조 금지\n4. 모든 CSS 변수명: kebab-case, 소문자, --prefix 준수\n\n[검토 대상]\n```\n여기에 코드 또는 Figma 변수 목록을 붙여넣으세요.\n```\n\n위반 항목이 있다면 올바른 수정 방법을 함께 제시해주세요.",
+      "expectedResult": "원칙 준수 여부 + 위반 항목별 수정 예시 코드",
+      "notes": "CSS 코드, JS 객체, 또는 Figma variable 목록을 붙여넣어 사용하세요."
+    },
+    {
+      "id": 4,
+      "title": "Semantic Token 변환 제안",
+      "category": "migrate",
+      "tools": ["claude", "chatgpt"],
+      "purpose": "Primitive token 또는 하드코딩된 hex 값을 적절한 semantic token으로 대체 제안",
+      "situation": "기존 코드에서 --color-gray-400 같은 primitive를 직접 사용하거나 hex를 하드코딩한 경우 semantic으로 전환할 때",
+      "prompt": "아래 코드에서 사용 중인 primitive token 또는 hex 값을 semantic token으로 변환해주세요.\n\n[현재 semantic token 목록]\n- 배경: --color-bg-default, --color-bg-subtle, --color-bg-elevated, --color-bg-overlay\n- 텍스트: --color-text-primary, -secondary, -tertiary, -disabled, -on-color, -inverse\n- 테두리: --color-border-default, -subtle, -strong, -focus\n- 아이콘: --color-icon-default, -muted, -on-color\n- 액션: --color-action-primary, -hover, -active, -danger, -danger-hover\n- 상태: --color-state-selected-bg, -hover-bg, -disabled-bg, -error-bg, -warning-bg\n\n[변환 대상 코드]\n```\n여기에 코드를 붙여넣으세요.\n```\n\n변환 후 코드와 변환 이유를 설명해주세요. 적합한 semantic token이 없는 경우 신규 추가를 제안해주세요.",
+      "expectedResult": "변환된 코드 + 각 변환의 이유 설명 + 신규 토큰 제안(필요 시)",
+      "notes": "Light/Dark 테마 전환을 고려해 semantic token을 선택해야 합니다. primitive 직접 참조는 테마 전환이 불가능합니다."
+    },
+    {
+      "id": 5,
+      "title": "Light / Dark 테마 대응 가능성 검토",
+      "category": "review",
+      "tools": ["claude"],
+      "purpose": "현재 컴포넌트 또는 화면이 다크모드 전환에 얼마나 준비되어 있는지 분석",
+      "situation": "다크모드 도입 전 현황 파악, 또는 신규 컴포넌트 설계 시 테마 대응성 점검",
+      "prompt": "아래 컴포넌트 코드를 분석해서 light/dark 테마 전환 대응 가능성을 평가해주세요.\n\n[평가 기준]\n1. semantic token(var(--color-*)) 사용 비율\n2. 하드코딩 hex / primitive token 직접 참조 항목 목록\n3. [data-theme=\"dark\"] 선택자로 자동 전환 가능한 속성 비율\n4. 수동 대응이 필요한 항목 (예: 이미지, SVG fill, 특수 gradient)\n\n[분석 대상]\n```\n여기에 코드를 붙여넣으세요.\n```\n\n[출력]\n- 테마 대응 준비도: X% (semantic token 사용 비율 기준)\n- 즉시 대응 가능 항목\n- 수동 수정 필요 항목 (파일명:라인 형태로)\n- 권장 수정 방안",
+      "expectedResult": "테마 대응 준비도 퍼센트 + 수정 필요 항목 목록 + 수정 방안",
+      "notes": "현재 다크모드 값은 placeholder 상태입니다. theme.css의 [data-theme=\"dark\"] 블록을 확인하세요."
+    },
+    {
+      "id": 6,
+      "title": "신규 화면을 Core + Pattern 기준으로 재구성",
+      "category": "generate",
+      "tools": ["claude", "figma"],
+      "purpose": "기획서 또는 화면 설명을 바탕으로 디자인시스템의 Core 컴포넌트와 Pattern을 조합한 화면 구조 제안",
+      "situation": "신규 기능 설계 시작 시점, 또는 ad-hoc 설계된 화면을 시스템 기반으로 재구성할 때",
+      "prompt": "아래 화면 요구사항을 SW 디자인시스템의 Core 컴포넌트와 Pattern을 활용해 재구성해주세요.\n\n[사용 가능한 Pattern]\n- Search + Table: 검색 인풋 + 필터 + 데이터 테이블 + 페이지네이션\n- Tree + Detail: 좌측 트리 탐색 + 우측 상세 뷰\n- Dashboard: 상태 카드 그리드 + 차트 영역\n- Settings: 카테고리 탭 + 폼 섹션\n\n[화면 요구사항]\n여기에 화면 요구사항 또는 기획 내용을 붙여넣으세요.\n\n[출력 형식]\n1. 추천 Pattern: (이유 포함)\n2. 화면 레이아웃 구조 (텍스트 와이어프레임)\n3. 필요한 Core 컴포넌트 목록\n4. 신규 컴포넌트가 필요한 영역 (있을 경우)",
+      "expectedResult": "추천 패턴 + 화면 구조 제안 + 컴포넌트 목록",
+      "notes": "Pattern 목록은 현재 정의 중입니다. 기존 화면 사례를 참고해 패턴을 구체화해가면서 사용하세요."
+    },
+    {
+      "id": 7,
+      "title": "Legacy UI → 디자인시스템 기준으로 리팩토링",
+      "category": "migrate",
+      "tools": ["claude", "chatgpt"],
+      "purpose": "기존 레거시 UI 코드 또는 Figma 화면을 신규 디자인시스템 기준으로 단계별 리팩토링",
+      "situation": "구버전 서비스 화면을 신규 디자인시스템으로 전환할 때. 일괄 전환보다 점진적 리팩토링이 필요한 경우",
+      "prompt": "아래 legacy UI 코드를 SW UX GUIDE V2.4 기준으로 리팩토링해주세요.\n\n[리팩토링 우선순위]\n1순위: --legacy-* 토큰 → 신규 semantic token 교체\n2순위: primitive token 직접 참조 → semantic token 변환\n3순위: 인라인 스타일 hex → CSS 변수 참조로 전환\n4순위: 구버전 컴포넌트 → 신규 컴포넌트로 교체\n\n[Legacy 코드]\n```\n여기에 리팩토링할 코드를 붙여넣으세요.\n```\n\n[출력]\n- 리팩토링된 전체 코드\n- 변경 항목 요약 (before → after 형식)\n- 4순위(컴포넌트 교체)가 필요한 항목은 별도 표시",
+      "expectedResult": "리팩토링된 코드 전체 + 변경 항목 요약 테이블",
+      "notes": "한 번에 모든 우선순위를 처리하기보다 1→2→3→4 순서로 단계적으로 진행하는 것을 권장합니다."
+    },
+    {
+      "id": 8,
+      "title": "Domain Component 등록 여부 판단",
+      "category": "doc",
+      "tools": ["claude"],
+      "purpose": "서비스 특화 UI 요소가 공용 디자인시스템의 Domain Component로 등록할 가치가 있는지 판단",
+      "situation": "특정 서비스에서 반복적으로 사용되는 UI 패턴이 있을 때, 시스템 레벨로 올릴지 판단이 필요한 경우",
+      "prompt": "아래 UI 요소가 SW 디자인시스템의 Domain Component로 등록할 가치가 있는지 판단해주세요.\n\n[판단 기준]\n1. 반복성: 3개 이상의 화면에서 동일한 형태로 반복 사용\n2. 일관성 필요도: 동일 데이터 유형 표현에 일관된 UI가 필요한가\n3. Core 조합 여부: Core 컴포넌트만으로 대체 가능한가\n4. 도메인 특화도: 이 서비스에만 필요한 UI인가 vs 다른 서비스에도 활용 가능한가\n\n[UI 요소 설명]\n여기에 UI 요소의 목적, 사용 화면, 구성 요소를 설명하거나 스크린샷을 첨부하세요.\n\n[출력]\n- 등록 권장 여부: Yes / No / 조건부\n- 판단 근거\n- 등록 시 컴포넌트명 제안\n- 필요한 Props / 상태값 제안 (등록 권장 시)",
+      "expectedResult": "등록 권장 여부 + 근거 + 컴포넌트 스펙 초안",
+      "notes": "Domain Component는 Core Component를 확장한 개념입니다. 너무 특수한 것은 local component로 유지하는 것이 좋습니다."
+    },
+    {
+      "id": 9,
+      "title": "컴포넌트 상태값 정리 (5-state)",
+      "category": "doc",
+      "tools": ["claude", "figma"],
+      "purpose": "컴포넌트의 5가지 인터랙션 상태(Default / Hover / Pressed / Focus / Disabled)에 맞는 토큰 매핑 정리",
+      "situation": "신규 컴포넌트 설계 시, 또는 기존 컴포넌트에 일관된 상태 정의가 없을 때",
+      "prompt": "아래 컴포넌트의 5가지 인터랙션 상태에 맞는 디자인 토큰을 정리해주세요.\n\n[5-State 정의]\n1. Default: 기본 상태\n2. Hover: 마우스 오버\n3. Pressed / Active: 클릭·탭 중\n4. Focus: 키보드 포커스 (접근성 필수)\n5. Disabled: 비활성\n\n[사용 가능 semantic token]\n- 배경: --color-action-primary / -hover / -active, --color-state-disabled-bg\n- 텍스트: --color-text-primary / -on-color / -disabled\n- 테두리: --color-border-default / -focus / -strong\n\n[컴포넌트 정보]\n컴포넌트명: (예: Primary Button)\n역할: \n현재 사용 중인 토큰: \n\n[출력 형식]\n| 상태 | 배경 | 텍스트 | 테두리 | 기타 |\n|------|------|-------|-------|------|\n(마크다운 테이블로 출력)",
+      "expectedResult": "5가지 상태별 토큰 매핑 테이블 + Figma 변수 설정 가이드",
+      "notes": "Focus 상태에는 반드시 --color-border-focus 를 ring/outline으로 적용해야 합니다. (접근성 필수)"
+    },
+    {
+      "id": 10,
+      "title": "디자인시스템 문서 MD 업데이트 요청",
+      "category": "doc",
+      "tools": ["claude"],
+      "purpose": "Figma에서 새로운 토큰이나 컴포넌트를 정의한 후, 관련 MD 문서를 자동으로 업데이트",
+      "situation": "Figma에서 토큰을 추가·수정한 후, 또는 새 컴포넌트를 정의한 후 문서화가 필요한 시점",
+      "prompt": "아래 내용을 바탕으로 SW 디자인시스템 문서(Markdown)를 업데이트해주세요.\n\n[업데이트 대상 문서]\n- tokens/design-tokens.md (토큰 변경 시)\n- tokens/token-map.json (CSS 변수 매핑 변경 시)\n\n[변경 내용]\n변경 유형: (신규 추가 / 수정 / 삭제)\n변경 항목:\n변경 이유:\nFigma 원본 변수명:\n신규 CSS 변수명:\n\n[출력]\n1. 업데이트된 Markdown 섹션 (붙여넣기 가능한 형태)\n2. token-map.json에 추가할 JSON 스니펫\n3. theme.css에 추가할 CSS Custom Property 선언\n\n각 출력은 코드블록 형태로 제공해주세요.",
+      "expectedResult": "3개 파일에 붙여넣을 수 있는 코드 스니펫 세트",
+      "notes": "Figma 변수명은 kebab-case 변환 규칙을 적용해야 합니다. & 문자 제거, 대문자 소문자 변환, / 를 - 로 변환."
+    }
+  ]
+}

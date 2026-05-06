@@ -1,0 +1,2055 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Component Guide · SW UX GUIDE V2.4</title>
+  <link rel="stylesheet" href="../assets/css/style.css">
+  <style>
+    /* =====================================================
+       SEMANTIC TOKENS — Light
+    ===================================================== */
+    :root {
+      --color-bg-default:    #FAFAFA;
+      --color-bg-subtle:     #F5F5F5;
+      --color-bg-muted:      #E9E9E9;
+      --color-bg-elevated:   #E9E9E9;
+      --color-bg-selected:   #E2F1FF;
+      --color-surface-default: #FFFFFF;
+      --color-surface-raised:  #FFFFFF;
+      --color-text-primary:     #202020;
+      --color-text-secondary:   #353535;
+      --color-text-tertiary:    #555555;
+      --color-text-caption:     #757575;
+      --color-text-placeholder: #9D9D9D;
+      --color-text-helper:      #9D9D9D;
+      --color-text-link:        #1D6CEB;
+      --color-text-correct:     #1D6CEB;
+      --color-text-danger:      #FF4554;
+      --color-text-disabled:    #C4C4C4;
+      --color-text-inverse:     #FFFFFF;
+      --color-border-subtle:   #E9E9E9;
+      --color-border-default:  #D9D9D9;
+      --color-border-strong:   #C4C4C4;
+      --color-border-emphasis: #353535;
+      --color-border-focus:    #1D6CEB;
+      --color-border-danger:   #FF4554;
+      --color-border-correct:  #1D6CEB;
+      --color-icon-default:  #757575;
+      --color-icon-muted:    #C4C4C4;
+      --color-icon-emphasis: #353535;
+      --color-icon-accent:   #1D6CEB;
+      --color-icon-inverse:  #FFFFFF;
+      --color-icon-danger:   #FF4554;
+      --color-action-primary-default:  #1D6CEB;
+      --color-action-primary-hover:    #1756BC;
+      --color-action-primary-pressed:  #2747B9;
+      --color-action-primary-text:     #FFFFFF;
+      --color-action-primary-subtle:   #E2F1FF;
+      --color-status-success: #1D6CEB;
+      --color-status-error:   #E50533;
+      --color-status-warning: #DBA400;
+      --color-status-info:    #757575;
+      --color-overlay: rgba(0,0,0,0.5);
+    }
+
+    /* =====================================================
+       SEMANTIC TOKENS — Dark
+    ===================================================== */
+    [data-theme="dark"] {
+      --color-bg-default:    #131418;
+      --color-bg-subtle:     #24252C;
+      --color-bg-muted:      #2E2F38;
+      --color-bg-elevated:   #35363F;
+      --color-bg-selected:   #0C1D38;
+      --color-surface-default: #1C1D23;
+      --color-surface-raised:  #35363F;
+      --color-text-primary:     #ECEDF0;
+      --color-text-secondary:   #B8BABF;
+      --color-text-tertiary:    #8A8C96;
+      --color-text-caption:     #8A8C96;
+      --color-text-placeholder: #55575F;
+      --color-text-helper:      #55575F;
+      --color-text-link:        #6FA5F8;
+      --color-text-correct:     #6FA5F8;
+      --color-text-danger:      #F06070;
+      --color-text-disabled:    #35363F;
+      --color-text-inverse:     #FFFFFF;
+      --color-border-subtle:   rgba(255,255,255,0.04);
+      --color-border-default:  rgba(255,255,255,0.07);
+      --color-border-strong:   rgba(255,255,255,0.12);
+      --color-border-emphasis: rgba(255,255,255,0.20);
+      --color-border-focus:    #4285E8;
+      --color-border-danger:   #F06070;
+      --color-border-correct:  #4285E8;
+      --color-icon-default:  #8A8C96;
+      --color-icon-muted:    #35363F;
+      --color-icon-emphasis: #B8BABF;
+      --color-icon-accent:   #6FA5F8;
+      --color-icon-inverse:  #FFFFFF;
+      --color-icon-danger:   #F06070;
+      --color-action-primary-default:  #3070D8;
+      --color-action-primary-hover:    #2A65C8;
+      --color-action-primary-pressed:  #214EA0;
+      --color-action-primary-text:     #FFFFFF;
+      --color-action-primary-subtle:   #112B55;
+      --color-status-success: #4285E8;
+      --color-status-error:   #F06070;
+      --color-status-warning: #E8C048;
+      --color-status-info:    #8A8C96;
+      --color-overlay: rgba(0,0,0,0.75);
+    }
+
+    /* =====================================================
+       COMPONENT TOKENS
+    ===================================================== */
+    :root {
+      /* Button */
+      --button-primary-default-bg:      var(--color-action-primary-default);
+      --button-primary-hover-bg:        var(--color-action-primary-hover);
+      --button-primary-pressed-bg:      var(--color-action-primary-pressed);
+      --button-primary-disabled-bg:     var(--color-bg-subtle);
+      --button-primary-disabled-border: var(--color-border-default);
+      --button-primary-default-text:    var(--color-action-primary-text);
+      --button-primary-disabled-text:   var(--color-text-disabled);
+      --button-primary-focus-ring:      var(--color-border-focus);
+      --button-secondary-default-bg:      var(--color-surface-default);
+      --button-secondary-hover-bg:        var(--color-bg-subtle);
+      --button-secondary-pressed-bg:      var(--color-bg-muted);
+      --button-secondary-disabled-bg:     var(--color-bg-subtle);
+      --button-secondary-default-border:  var(--color-border-default);
+      --button-secondary-disabled-border: var(--color-border-default);
+      --button-secondary-default-text:    var(--color-text-secondary);
+      --button-secondary-disabled-text:   var(--color-text-disabled);
+      --button-secondary-focus-ring:      var(--color-border-focus);
+      --button-blue-line-default-bg:       var(--color-surface-default);
+      --button-blue-line-hover-bg:         var(--color-action-primary-subtle);
+      --button-blue-line-pressed-bg:       var(--color-action-primary-subtle);
+      --button-blue-line-disabled-bg:      var(--color-bg-subtle);
+      --button-blue-line-default-border:   var(--color-action-primary-default);
+      --button-blue-line-hover-border:     var(--color-action-primary-default);
+      --button-blue-line-disabled-border:  var(--color-border-default);
+      --button-blue-line-default-text:     var(--color-text-link);
+      --button-blue-line-disabled-text:    var(--color-text-disabled);
+      --button-blue-line-focus-ring:       var(--color-border-focus);
+      /* Input */
+      --input-default-bg:       var(--color-surface-default);
+      --input-disabled-bg:      var(--color-bg-subtle);
+      --input-default-border:   var(--color-border-default);
+      --input-hover-border:     var(--color-border-strong);
+      --input-focus-border:     var(--color-border-focus);
+      --input-error-border:     var(--color-border-danger);
+      --input-correct-border:   var(--color-border-correct);
+      --input-disabled-border:  var(--color-border-default);
+      --input-placeholder-text: var(--color-text-placeholder);
+      --input-helper-text:      var(--color-text-helper);
+      --input-error-text:       var(--color-text-danger);
+      --input-correct-text:     var(--color-text-correct);
+      --input-disabled-text:    var(--color-text-disabled);
+      /* Dropdown */
+      --dropdown-trigger-default-bg:      var(--color-surface-default);
+      --dropdown-trigger-hover-bg:        var(--color-bg-subtle);
+      --dropdown-trigger-disabled-bg:     var(--color-bg-subtle);
+      --dropdown-trigger-default-border:  var(--color-border-default);
+      --dropdown-trigger-hover-border:    var(--color-border-strong);
+      --dropdown-trigger-open-border:     var(--color-border-focus);
+      --dropdown-trigger-disabled-border: var(--color-border-subtle);
+      --dropdown-trigger-default-text:    var(--color-text-secondary);
+      --dropdown-trigger-disabled-text:   var(--color-text-disabled);
+      --dropdown-list-bg:            var(--color-surface-raised);
+      --dropdown-option-hover-bg:    var(--color-bg-subtle);
+      --dropdown-option-selected-bg: var(--color-action-primary-subtle);
+      /* Checkbox */
+      --checkbox-default-bg:       var(--color-surface-default);
+      --checkbox-checked-bg:       var(--color-action-primary-default);
+      --checkbox-indeterminate-bg: var(--color-action-primary-default);
+      --checkbox-disabled-bg:      var(--color-bg-subtle);
+      --checkbox-default-border:   var(--color-border-default);
+      --checkbox-hover-border:     var(--color-border-focus);
+      --checkbox-checked-border:   var(--color-action-primary-default);
+      --checkbox-disabled-border:  var(--color-border-subtle);
+      --checkbox-check-icon:          var(--color-action-primary-text);
+      --checkbox-disabled-check-icon: var(--color-border-strong);
+      /* Radio */
+      --radio-default-bg:      var(--color-surface-default);
+      --radio-disabled-bg:     var(--color-bg-subtle);
+      --radio-default-border:  var(--color-border-default);
+      --radio-selected-border: var(--color-action-primary-default);
+      --radio-disabled-border: var(--color-border-strong);
+      --radio-selected-dot:    var(--color-action-primary-default);
+      --radio-disabled-dot:    var(--color-border-strong);
+      /* Toggle */
+      --toggle-on-bg:       var(--color-action-primary-default);
+      --toggle-off-bg:      var(--color-text-placeholder);
+      --toggle-disabled-bg: var(--color-bg-muted);
+      --toggle-knob:        var(--color-action-primary-text);
+      /* Chip — Line type */
+      --chip-line-default-bg:        var(--color-surface-default);
+      --chip-line-default-border:    var(--color-border-default);
+      --chip-line-default-text:      var(--color-text-caption);
+      --chip-line-selected-bg:       var(--color-surface-default);
+      --chip-line-selected-border:   var(--color-action-primary-default);
+      --chip-line-selected-text:     var(--color-action-primary-default);
+      --chip-line-disabled-bg:       var(--color-bg-subtle);
+      --chip-line-disabled-border:   var(--color-border-default);
+      --chip-line-disabled-text:     var(--color-text-disabled);
+      /* Chip — Solid type */
+      --chip-solid-default-bg:       var(--color-bg-subtle);
+      --chip-solid-default-border:   var(--color-bg-subtle);
+      --chip-solid-default-text:     var(--color-text-caption);
+      --chip-solid-selected-bg:      var(--color-action-primary-default);
+      --chip-solid-selected-border:  var(--color-action-primary-default);
+      --chip-solid-selected-text:    var(--color-action-primary-text);
+      --chip-solid-disabled-bg:      var(--color-bg-subtle);
+      --chip-solid-disabled-border:  var(--color-bg-subtle);
+      --chip-solid-disabled-text:    var(--color-text-disabled);
+    }
+
+    /* =====================================================
+       PAGE STYLES
+    ===================================================== */
+    .page-content { padding-top: 20px; }
+
+    .controls-sticky {
+      position: sticky;
+      top: 120px;
+      z-index: 9;
+      background: #f3f4f6;
+      padding-bottom: 16px;
+    }
+    @media (max-width: 860px) {
+      .controls-sticky { top: 74px; }
+    }
+
+    .comp-section { display: none; }
+    .comp-section.is-active { display: block; margin-bottom: 56px; }
+    .comp-section-header {
+      display: flex; align-items: center; gap: 10px;
+      margin-bottom: 20px; padding-bottom: 14px;
+      border-bottom: 2px solid #f3f4f6;
+    }
+    .comp-section-title { font-size: 18px; font-weight: 700; color: #111827; letter-spacing: -0.02em; }
+    .comp-badge {
+      font-size: 10px; font-weight: 700; padding: 2px 8px;
+      border-radius: 10px; background: #f3f4f6; color: #6b7280;
+    }
+    .comp-badge-blue { background: #eff6ff; color: #1d4ed8; }
+
+    .variant-block { margin-bottom: 24px; }
+    .variant-label {
+      font-size: 11px; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 0.08em; color: #9ca3af; margin-bottom: 10px;
+    }
+
+    .preview-area {
+      background: var(--color-bg-default);
+      border: 1px solid #e5e7eb;
+      border-radius: 12px;
+      padding: 24px 20px;
+      transition: background 0.3s;
+    }
+
+    .state-strip { display: flex; gap: 20px; flex-wrap: wrap; align-items: flex-start; }
+    .state-item { display: flex; flex-direction: column; align-items: center; gap: 10px; }
+    .state-label {
+      font-size: 10px; font-weight: 600; letter-spacing: 0.06em;
+      text-transform: uppercase; color: #9ca3af; white-space: nowrap;
+    }
+    .state-label.sl-live::before {
+      content: '●'; color: #10b981; margin-right: 3px;
+      font-size: 7px; vertical-align: middle;
+    }
+
+    .size-strip { display: flex; gap: 16px; flex-wrap: wrap; align-items: flex-end; }
+    .size-item { display: flex; flex-direction: column; align-items: center; gap: 8px; }
+
+    /* Code block */
+    .code-block {
+      margin-top: 14px; border: 1px solid #e5e7eb;
+      border-radius: 10px; overflow: hidden;
+    }
+    .code-tabs {
+      display: flex; background: #f9fafb;
+      border-bottom: 1px solid #e5e7eb; align-items: center;
+    }
+    .code-tab {
+      padding: 8px 16px; font-size: 11px; font-weight: 600;
+      color: #9ca3af; border: none; background: transparent;
+      cursor: pointer; border-bottom: 2px solid transparent; margin-bottom: -1px;
+    }
+    .code-tab.active { color: #1d4ed8; border-bottom-color: #1d4ed8; background: #fff; }
+    .code-copy-btn {
+      margin-left: auto; margin-right: 10px;
+      font-size: 10px; font-weight: 600; padding: 4px 10px;
+      border-radius: 5px; border: 1px solid #e5e7eb;
+      background: #f9fafb; color: #6b7280; cursor: pointer;
+    }
+    .code-copy-btn:hover { background: #fff; color: #374151; }
+    .code-pane { display: none; }
+    .code-pane.active { display: block; }
+    .code-pane pre {
+      margin: 0; padding: 16px;
+      font-family: 'SF Mono','Fira Code','Consolas',monospace;
+      font-size: 11.5px; line-height: 1.7; color: #374151;
+      background: #fff; overflow-x: auto; white-space: pre;
+    }
+    .c-tag { color: #be185d; }
+    .c-attr { color: #0284c7; }
+    .c-str { color: #15803d; }
+    .c-prop { color: #7c3aed; }
+    .c-val { color: #c2410c; }
+    .c-cmt { color: #9ca3af; font-style: italic; }
+
+    /* Theme bar */
+    .theme-bar {
+      display: flex; align-items: center; gap: 12px;
+      margin-bottom: 12px; padding: 12px 16px;
+      background: rgba(255,255,255,0.94); border: 1px solid #e5e7eb; border-radius: 12px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+    }
+    .theme-bar-label { font-size: 12px; color: #6b7280; font-weight: 500; }
+    .theme-toggle { display: flex; background: #f3f4f6; border-radius: 8px; padding: 3px; gap: 2px; }
+    .theme-btn {
+      padding: 5px 16px; font-size: 12px; font-weight: 500;
+      border-radius: 6px; border: none; background: transparent; color: #6b7280;
+      transition: all 0.15s; cursor: pointer;
+    }
+    .theme-btn.active { background: #fff; color: #111827; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+    .theme-hint { font-size: 11px; color: #9ca3af; }
+    .theme-bar-divider { width: 1px; height: 20px; background: #e5e7eb; flex-shrink: 0; }
+    .view-pc .platform-section-mobile { display: none; }
+    .view-mobile .platform-section-pc { display: none; }
+
+    /* Comp nav */
+    .comp-nav { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 0; }
+    .comp-nav-btn {
+      padding: 6px 14px; font-size: 12px; font-weight: 500;
+      border-radius: 8px; border: 1px solid #e5e7eb;
+      background: #fff; color: #374151; cursor: pointer; transition: all 0.15s;
+    }
+    .comp-nav-btn:hover { background: #f9fafb; border-color: #d1d5db; }
+    .comp-nav-btn.is-active { background: #1d4ed8; color: #fff; border-color: #1d4ed8; }
+
+    /* =====================================================
+       DESIGN SYSTEM COMPONENTS
+    ===================================================== */
+
+    /* Button */
+    .s1-btn {
+      display: inline-flex; align-items: center; justify-content: center;
+      gap: 2px; height: 34px; padding: 0 8px;
+      font-size: 14px; font-weight: 500; border-radius: 4px;
+      border: 1px solid transparent; cursor: pointer;
+      transition: background 0.15s, border-color 0.15s;
+      outline: none; white-space: nowrap; font-family: inherit; line-height: 1;
+      letter-spacing: -0.28px;
+    }
+    .s1-btn-sm { height: 28px; padding: 0 8px; font-size: 14px; border-radius: 4px; }
+    .s1-btn-lg { height: 44px; padding: 0 16px; font-size: 14px; border-radius: 4px; }
+    .s1-btn-mobile { height: 48px; padding: 0 16px; font-size: 16px; border-radius: 4px; letter-spacing: -0.32px; }
+
+    .s1-btn-primary {
+      background: var(--button-primary-default-bg);
+      color: var(--button-primary-default-text);
+    }
+    .s1-btn-primary:hover, .s1-btn-primary.is-hover { background: var(--button-primary-hover-bg); }
+    .s1-btn-primary.is-pressed { background: var(--button-primary-pressed-bg); }
+    .s1-btn-primary.is-focus { outline: 2px solid var(--button-primary-focus-ring); outline-offset: -2px; }
+    .s1-btn-primary.is-disabled, .s1-btn-primary:disabled {
+      background: var(--button-primary-disabled-bg);
+      color: var(--button-primary-disabled-text);
+      border-color: var(--button-primary-disabled-border);
+      cursor: not-allowed; pointer-events: none;
+    }
+    .s1-btn-secondary {
+      background: var(--button-secondary-default-bg);
+      color: var(--button-secondary-default-text);
+      border-color: var(--button-secondary-default-border);
+    }
+    .s1-btn-secondary:hover, .s1-btn-secondary.is-hover {
+      background: var(--button-secondary-hover-bg);
+    }
+    .s1-btn-secondary.is-pressed { background: var(--button-secondary-pressed-bg); }
+    .s1-btn-secondary.is-focus { outline: 2px solid var(--button-secondary-focus-ring); outline-offset: -2px; }
+    .s1-btn-secondary.is-disabled, .s1-btn-secondary:disabled {
+      background: var(--button-secondary-disabled-bg);
+      color: var(--button-secondary-disabled-text);
+      border-color: var(--button-secondary-disabled-border);
+      cursor: not-allowed; pointer-events: none;
+    }
+    .s1-btn-blue-line {
+      background: var(--button-blue-line-default-bg);
+      color: var(--button-blue-line-default-text);
+      border-color: var(--button-blue-line-default-border);
+    }
+    .s1-btn-blue-line:hover, .s1-btn-blue-line.is-hover {
+      background: var(--button-blue-line-hover-bg);
+      border-color: var(--button-blue-line-hover-border);
+    }
+    .s1-btn-blue-line.is-pressed { background: var(--button-blue-line-pressed-bg); }
+    .s1-btn-blue-line.is-focus { outline: 2px solid var(--button-blue-line-focus-ring); outline-offset: -2px; }
+    .s1-btn-blue-line.is-disabled, .s1-btn-blue-line:disabled {
+      background: var(--button-blue-line-disabled-bg);
+      color: var(--button-blue-line-disabled-text);
+      border-color: var(--button-blue-line-disabled-border);
+      cursor: not-allowed; pointer-events: none;
+    }
+
+    /* Button: PC/Mobile matrix layout */
+    .platform-section + .platform-section { margin-top: 20px; }
+    .platform-header {
+      font-size: 11px; font-weight: 700; color: #6b7280;
+      margin-bottom: 12px; display: flex; align-items: center; gap: 6px;
+      text-transform: uppercase; letter-spacing: 0.06em;
+    }
+    .platform-dot { width: 6px; height: 6px; border-radius: 50%; display: inline-block; flex-shrink: 0; }
+    .platform-dot.pc { background: #3b82f6; }
+    .platform-dot.mobile { background: #8b5cf6; }
+    .state-size-matrix {
+      display: grid;
+      grid-template-columns: 68px 1fr 1fr 1fr;
+      gap: 10px 12px;
+      align-items: center;
+    }
+    .matrix-col-header {
+      font-size: 10px; font-weight: 600; color: #9ca3af;
+      text-transform: uppercase; letter-spacing: 0.05em; text-align: center;
+    }
+    .matrix-row-label {
+      font-size: 10px; font-weight: 600; color: #9ca3af;
+      text-align: right; padding-right: 6px; line-height: 1.4;
+    }
+    .matrix-row-label span { display: block; font-weight: 400; color: #c4c4c4; font-size: 9px; }
+    .matrix-cell { display: flex; justify-content: center; }
+    .token-variant-header { background: #f0f9ff !important; }
+    .token-variant-label {
+      display: inline-block; font-size: 10px; font-weight: 700;
+      padding: 2px 7px; border-radius: 4px; background: #dbeafe; color: #1d4ed8; width: fit-content;
+    }
+
+    /* Checkbox */
+    .s1-checkbox {
+      display: inline-flex; align-items: center; gap: 8px;
+      cursor: pointer; user-select: none;
+    }
+    .s1-checkbox-box {
+      width: 18px; height: 18px; border-radius: 2px;
+      border: 1px solid var(--checkbox-default-border);
+      background: var(--checkbox-default-bg);
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0; transition: all 0.15s;
+    }
+    .s1-checkbox.is-checked .s1-checkbox-box {
+      background: var(--checkbox-checked-bg);
+      border-color: var(--checkbox-checked-border);
+    }
+    .s1-checkbox.is-indeterminate .s1-checkbox-box {
+      background: var(--checkbox-indeterminate-bg);
+      border-color: var(--checkbox-checked-border);
+    }
+    .s1-checkbox.is-disabled .s1-checkbox-box {
+      background: var(--checkbox-disabled-bg);
+      border-color: var(--checkbox-disabled-border);
+    }
+    .s1-checkbox.is-checked.is-disabled .s1-checkbox-box {
+      background: var(--checkbox-disabled-bg);
+      border-color: var(--checkbox-disabled-border);
+      color: var(--checkbox-disabled-check-icon);
+    }
+    .s1-checkbox.is-disabled { cursor: not-allowed; }
+    .s1-checkbox-label { font-size: 14px; color: var(--color-text-secondary); }
+    .s1-checkbox.is-disabled .s1-checkbox-label { color: var(--color-text-disabled); }
+    .s1-checkbox-box { color: var(--checkbox-check-icon); }
+    .ds-chk-icon { display: none; }
+    .s1-checkbox.is-checked .ds-chk-icon { display: block; }
+    .ds-ind-icon { display: none; }
+    .s1-checkbox.is-indeterminate .ds-ind-icon { display: block; }
+    /* Checkbox grid layout */
+    .checkbox-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0;
+      align-items: center;
+    }
+    .checkbox-grid-header {
+      font-size: 11px; color: var(--color-text-caption);
+      text-align: center; padding: 0 0 12px; font-weight: 500;
+    }
+    .checkbox-grid-cell {
+      display: flex; justify-content: center; align-items: center;
+      padding: 12px 0;
+    }
+    .chk-row-hidden { display: none; }
+    .chk-label-toggle {
+      display: flex; background: #f3f4f6; border-radius: 8px; padding: 3px; gap: 2px;
+      width: fit-content; margin-bottom: 12px;
+    }
+    .chk-label-btn {
+      padding: 4px 14px; font-size: 12px; font-weight: 500;
+      border-radius: 6px; border: none; background: transparent; color: #6b7280;
+      transition: all 0.15s; cursor: pointer;
+    }
+    .chk-label-btn.active { background: #fff; color: #111827; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+
+    /* Radio */
+    .s1-radio {
+      display: inline-flex; align-items: center; gap: 8px;
+      cursor: pointer; user-select: none;
+    }
+    .s1-radio-circle {
+      width: 18px; height: 18px; border-radius: 50%;
+      border: 1px solid var(--radio-default-border);
+      background: var(--radio-default-bg);
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+    .s1-radio-dot {
+      width: 10px; height: 10px; border-radius: 50%;
+      background: var(--radio-selected-dot); opacity: 0; transition: opacity 0.15s;
+    }
+    .s1-radio.is-selected .s1-radio-circle { border-color: var(--radio-selected-border); }
+    .s1-radio.is-selected .s1-radio-dot { opacity: 1; }
+    .s1-radio.is-disabled .s1-radio-circle {
+      background: var(--radio-disabled-bg);
+      border-color: var(--radio-disabled-border);
+    }
+    .s1-radio.is-disabled.is-selected .s1-radio-dot { background: var(--radio-disabled-dot); }
+    .s1-radio.is-disabled { cursor: not-allowed; }
+    .s1-radio-label { font-size: 14px; color: var(--color-text-secondary); }
+    .s1-radio.is-disabled .s1-radio-label { color: var(--color-text-disabled); }
+
+    /* Toggle */
+    .s1-toggle {
+      display: inline-flex; align-items: center; gap: 8px;
+      cursor: pointer; user-select: none;
+    }
+    .s1-toggle-track {
+      width: 40px; height: 20px; border-radius: 999px;
+      background: var(--toggle-off-bg); position: relative;
+      transition: background 0.2s; flex-shrink: 0;
+    }
+    .s1-toggle-knob {
+      width: 16px; height: 16px; border-radius: 50%;
+      background: var(--toggle-knob); position: absolute;
+      top: 2px; left: 2px; transition: left 0.2s;
+    }
+    .s1-toggle.is-on .s1-toggle-track { background: var(--toggle-on-bg); }
+    .s1-toggle.is-on .s1-toggle-knob { left: 22px; }
+    .s1-toggle.is-disabled { cursor: not-allowed; }
+    .s1-toggle.is-disabled .s1-toggle-track { background: var(--toggle-disabled-bg); }
+    .s1-toggle-label { font-size: 14px; color: var(--color-text-secondary); }
+    .s1-toggle.is-disabled .s1-toggle-label { color: var(--color-text-disabled); }
+
+    /* Chip — Line (default) */
+    .s1-chip {
+      display: inline-flex; align-items: center; gap: 4px;
+      height: 34px; padding: 0 12px; border-radius: 999px;
+      border: 1px solid var(--chip-line-default-border);
+      background: var(--chip-line-default-bg); color: var(--chip-line-default-text);
+      font-size: 14px; font-weight: 500; cursor: pointer;
+      transition: all 0.15s; white-space: nowrap; font-family: inherit;
+    }
+    .s1-chip.is-selected {
+      background: var(--chip-line-selected-bg);
+      border-color: var(--chip-line-selected-border); color: var(--chip-line-selected-text);
+    }
+    .s1-chip.is-disabled {
+      background: var(--chip-line-disabled-bg);
+      border-color: var(--chip-line-disabled-border); color: var(--chip-line-disabled-text);
+      cursor: not-allowed; pointer-events: none;
+    }
+    /* Chip — Solid modifier */
+    .s1-chip--solid {
+      background: var(--chip-solid-default-bg);
+      border-color: var(--chip-solid-default-border); color: var(--chip-solid-default-text);
+    }
+    .s1-chip--solid.is-selected {
+      background: var(--chip-solid-selected-bg);
+      border-color: var(--chip-solid-selected-border); color: var(--chip-solid-selected-text);
+    }
+    .s1-chip--solid.is-disabled {
+      background: var(--chip-solid-disabled-bg);
+      border-color: var(--chip-solid-disabled-border); color: var(--chip-solid-disabled-text);
+    }
+
+    /* Filter Chip (공통 베이스) */
+    .ds-filter-chip {
+      display: inline-flex; align-items: center; height: 34px;
+      padding: 0 6px 0 12px; gap: 4px;
+      border-radius: 999px; border: 1px solid var(--chip-line-default-border);
+      background: var(--chip-line-default-bg); cursor: pointer;
+      transition: all 0.15s; font-family: inherit;
+    }
+    .ds-filter-chip-label {
+      font-size: 14px; font-weight: 500; white-space: nowrap;
+      color: var(--color-text-secondary);
+    }
+    .ds-filter-chip-title {
+      font-size: 14px; font-weight: 500; white-space: nowrap;
+      color: var(--color-text-secondary);
+    }
+    .ds-filter-chip-arrow {
+      flex-shrink: 0; color: var(--color-icon-default);
+    }
+    /* Selected */
+    .ds-filter-chip.is-selected {
+      background: var(--chip-line-selected-bg); border-color: var(--chip-line-selected-border);
+    }
+    .ds-filter-chip.is-selected .ds-filter-chip-label { color: var(--chip-line-selected-text); }
+    .ds-filter-chip.is-selected .ds-filter-chip-arrow { color: var(--color-action-primary-default); }
+    /* Titled: 타이틀은 선택 상태에서도 기본 색 유지 */
+    .ds-filter-chip.is-selected .ds-filter-chip-title { color: var(--color-text-secondary); }
+    /* Disabled */
+    .ds-filter-chip.is-disabled {
+      background: var(--chip-line-disabled-bg); border-color: var(--chip-line-disabled-border);
+      cursor: not-allowed; pointer-events: none;
+    }
+    .ds-filter-chip.is-disabled .ds-filter-chip-label,
+    .ds-filter-chip.is-disabled .ds-filter-chip-title { color: var(--chip-line-disabled-text); }
+    .ds-filter-chip.is-disabled .ds-filter-chip-arrow { color: var(--color-icon-muted); }
+
+    /* Input */
+    .s1-input-wrap { display: flex; flex-direction: column; gap: 6px; width: 180px; }
+    .s1-input-label { font-size: 14px; font-weight: 500; color: var(--color-text-secondary); letter-spacing: -0.028em; line-height: 1.3; }
+    .s1-input-field {
+      display: flex; align-items: center; height: 44px; padding: 0 12px 0 16px;
+      border: 1px solid var(--input-default-border);
+      border-radius: 4px; background: var(--input-default-bg);
+      transition: border-color 0.15s, background 0.15s; gap: 6px;
+    }
+    .s1-input-field.input-size-small  { height: 34px; padding: 0 8px 0 12px; }
+    .s1-input-field.input-size-xsmall { height: 28px; padding: 0 8px 0 12px; }
+    .s1-input-field input {
+      border: none; background: transparent; outline: none;
+      font-size: 14px; font-family: inherit; color: var(--color-text-secondary);
+      letter-spacing: -0.028em; line-height: 1.3; width: 100%;
+    }
+    .s1-input-field.input-size-xsmall input { font-size: 12px; letter-spacing: 0; }
+    .s1-input-field input::placeholder { color: var(--input-placeholder-text); }
+    .s1-input-wrap:hover .s1-input-field,
+    .s1-input-wrap.is-hover .s1-input-field { border-color: var(--input-hover-border); }
+    .s1-input-wrap.is-focus .s1-input-field { border-color: var(--input-focus-border); }
+    .s1-input-wrap.is-error .s1-input-field { border-color: var(--input-error-border); }
+    .s1-input-wrap.is-correct .s1-input-field { border-color: var(--input-correct-border); }
+    .s1-input-wrap.is-disabled .s1-input-field {
+      background: var(--input-disabled-bg); border-color: var(--input-disabled-border);
+    }
+    .s1-input-wrap.is-disabled input { color: var(--input-disabled-text); cursor: not-allowed; }
+    .ds-helper-text { font-size: 12px; color: var(--input-helper-text); line-height: 1.3; }
+    .s1-input-wrap.is-error .ds-helper-text { color: var(--input-error-text); }
+    .s1-input-wrap.is-correct .ds-helper-text { color: var(--input-correct-text); }
+    .s1-input-icon { flex-shrink: 0; color: var(--color-icon-default); }
+    .s1-input-wrap.is-error .s1-input-icon { color: var(--color-icon-danger); }
+    .s1-input-wrap.is-correct .s1-input-icon { color: var(--color-icon-accent); }
+    /* Interactive input (Sizes block) */
+    .input-clear-btn, .s1-input-remove {
+      display: none; align-items: center; justify-content: center;
+      flex-shrink: 0; width: 24px; height: 24px;
+      padding: 0; border: none; background: transparent;
+      cursor: pointer; color: var(--color-icon-default);
+    }
+    .s1-input-remove { display: flex; cursor: default; }
+    .input-interactive .input-clear-btn { display: none; }
+    .input-interactive.has-value .input-clear-btn { display: flex; }
+
+    /* Select */
+    .s1-select-wrap { position: relative; width: 158px; }
+    .s1-select-trigger {
+      display: flex; align-items: center; justify-content: space-between;
+      height: 44px; padding: 0 12px;
+      border: 1px solid var(--dropdown-trigger-default-border);
+      border-radius: 4px; background: var(--dropdown-trigger-default-bg);
+      color: var(--dropdown-trigger-default-text); font-size: 14px;
+      cursor: pointer; transition: all 0.15s; font-family: inherit; white-space: nowrap;
+    }
+    .s1-select-chevron {
+      flex-shrink: 0; margin-left: 6px; color: var(--color-icon-default);
+      transition: transform 0.2s;
+    }
+    .s1-select-wrap:hover .s1-select-trigger,
+    .s1-select-wrap.is-hover .s1-select-trigger {
+      background: var(--dropdown-trigger-hover-bg);
+      border-color: var(--dropdown-trigger-hover-border);
+    }
+    .s1-select-wrap.is-open .s1-select-trigger {
+      background: var(--dropdown-trigger-default-bg);
+      border-color: var(--dropdown-trigger-open-border);
+      border-bottom-left-radius: 0; border-bottom-right-radius: 0;
+    }
+    .s1-select-wrap.is-open .s1-select-chevron { transform: rotate(180deg); }
+    .s1-select-wrap.is-disabled .s1-select-trigger {
+      background: var(--dropdown-trigger-disabled-bg);
+      border-color: var(--dropdown-trigger-disabled-border);
+      color: var(--dropdown-trigger-disabled-text); cursor: not-allowed;
+    }
+    .s1-select-list {
+      position: absolute; top: 100%; left: 0; right: 0;
+      background: var(--dropdown-list-bg);
+      border: 1px solid var(--dropdown-trigger-open-border);
+      border-top: none; border-bottom-left-radius: 4px; border-bottom-right-radius: 4px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.10); display: none; z-index: 20; overflow: hidden;
+    }
+    .s1-select-wrap.is-open .s1-select-list { display: block; }
+    .s1-select-option {
+      padding: 8px 12px; font-size: 14px; color: var(--color-text-secondary); cursor: pointer;
+    }
+    .s1-select-option:hover { background: var(--dropdown-option-hover-bg); }
+    .s1-select-option.is-selected {
+      background: var(--dropdown-option-selected-bg);
+      color: var(--color-action-primary-default); font-weight: 500;
+    }
+
+    /* ── Light · Dark 비교 패널 ── */
+    .theme-compare-wrap {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2px;
+      border-radius: 8px;
+      overflow: hidden;
+      border: 1px solid #e5e7eb;
+    }
+    .theme-compare-panel { padding: 24px 20px; }
+    .theme-compare-light { background: #FAFAFA; }
+    .theme-compare-dark  { background: #131418; }
+    .theme-compare-mode-label {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: #9ca3af;
+      margin-bottom: 20px;
+    }
+    .theme-compare-dark .theme-compare-mode-label { color: #4b5563; }
+    .compare-variant-group { margin-bottom: 20px; }
+    .compare-variant-group:last-child { margin-bottom: 0; }
+    .compare-variant-name {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #d1d5db;
+      margin-bottom: 10px;
+    }
+    .theme-compare-light .compare-variant-name { color: #9ca3af; }
+    .compare-state-row { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+  </style>
+</head>
+<body>
+<div class="app">
+
+  <!-- Sidebar -->
+  <aside class="sidebar" id="sidebar"></aside>
+
+  <button class="hamburger" id="sidebar-toggle" aria-label="메뉴 열기">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/>
+    </svg>
+  </button>
+  <div class="sidebar-overlay" id="sidebar-overlay"></div>
+
+  <main class="main-content">
+    <div class="page-header">
+      <div class="page-header-inner">
+        <div>
+          <h1>Component Guide</h1>
+          <p>Core 컴포넌트 인터랙션 상태 · Component Token 기준 · 2026-04-29</p>
+        </div>
+        <div class="page-header-actions">
+          <span class="badge badge-blue">7 Core Components</span>
+          <span class="badge badge-gray">Token 기반</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="page-content">
+
+      <div class="controls-sticky">
+        <!-- Theme toggle -->
+        <div class="theme-bar">
+          <span class="theme-bar-label">Preview Theme</span>
+          <div class="theme-toggle">
+            <button class="theme-btn active" id="btnLight" onclick="setTheme('light')">Light</button>
+            <button class="theme-btn" id="btnDark" onclick="setTheme('dark')">Dark</button>
+          </div>
+          <div class="theme-bar-divider"></div>
+          <span class="theme-bar-label">Platform</span>
+          <div class="theme-toggle">
+            <button class="theme-btn" id="btnAll" onclick="setPlatform('all')">All</button>
+            <button class="theme-btn active" id="btnPC" onclick="setPlatform('pc')">PC</button>
+            <button class="theme-btn" id="btnMobile" onclick="setPlatform('mobile')">Mobile</button>
+          </div>
+        </div>
+
+        <!-- Component nav -->
+        <div class="comp-nav">
+          <button class="comp-nav-btn is-active" onclick="showSection('button', this)">Button</button>
+          <button class="comp-nav-btn" onclick="showSection('checkbox', this)">Checkbox</button>
+          <button class="comp-nav-btn" onclick="showSection('radio', this)">Radio</button>
+          <button class="comp-nav-btn" onclick="showSection('toggle', this)">Toggle</button>
+          <button class="comp-nav-btn" onclick="showSection('chip', this)">Chip · FilterChip</button>
+          <button class="comp-nav-btn" onclick="showSection('input', this)">Input</button>
+          <button class="comp-nav-btn" onclick="showSection('select', this)">Select</button>
+        </div>
+      </div>
+
+
+      <!-- ═══ BUTTON ═══ -->
+      <section class="comp-section" id="button">
+        <div class="comp-section-header">
+          <h2 class="comp-section-title">Button</h2>
+          <span class="comp-badge comp-badge-blue">Core</span>
+          <span class="comp-badge">3 variants</span>
+          <span class="comp-badge">PC 3sizes · Mobile 1size</span>
+        </div>
+
+        <!-- ─ Primary ─ -->
+        <div class="variant-block">
+          <div class="variant-label">Primary</div>
+          <div class="preview-area">
+            <div class="platform-section platform-section-pc">
+              <div class="platform-header"><span class="platform-dot pc"></span>PC</div>
+              <div class="state-size-matrix">
+                <div></div>
+                <div class="matrix-col-header">Default</div>
+                <div class="matrix-col-header">Hover</div>
+                <div class="matrix-col-header">Disabled</div>
+                <div class="matrix-row-label">medium<span>h44 · px16</span></div>
+                <div class="matrix-cell"><button class="s1-btn s1-btn-primary s1-btn-lg">버튼</button></div>
+                <div class="matrix-cell"><button class="s1-btn s1-btn-primary s1-btn-lg is-hover">버튼</button></div>
+                <div class="matrix-cell"><button class="s1-btn s1-btn-primary s1-btn-lg is-disabled">버튼</button></div>
+                <div class="matrix-row-label">xsmall<span>h34 · px8</span></div>
+                <div class="matrix-cell"><button class="s1-btn s1-btn-primary">버튼</button></div>
+                <div class="matrix-cell"><button class="s1-btn s1-btn-primary is-hover">버튼</button></div>
+                <div class="matrix-cell"><button class="s1-btn s1-btn-primary is-disabled">버튼</button></div>
+                <div class="matrix-row-label">xxsmall<span>h28 · px8</span></div>
+                <div class="matrix-cell"><button class="s1-btn s1-btn-primary s1-btn-sm">버튼</button></div>
+                <div class="matrix-cell"><button class="s1-btn s1-btn-primary s1-btn-sm is-hover">버튼</button></div>
+                <div class="matrix-cell"><button class="s1-btn s1-btn-primary s1-btn-sm is-disabled">버튼</button></div>
+              </div>
+            </div>
+            <div class="platform-section platform-section-mobile">
+              <div class="platform-header"><span class="platform-dot mobile"></span>Mobile</div>
+              <div class="state-size-matrix">
+                <div></div>
+                <div class="matrix-col-header">Default</div>
+                <div class="matrix-col-header">Pressed</div>
+                <div class="matrix-col-header">Disabled</div>
+                <div class="matrix-row-label">mobile<span>h48 · px16</span></div>
+                <div class="matrix-cell"><button class="s1-btn s1-btn-primary s1-btn-mobile">버튼</button></div>
+                <div class="matrix-cell"><button class="s1-btn s1-btn-primary s1-btn-mobile is-pressed">버튼</button></div>
+                <div class="matrix-cell"><button class="s1-btn s1-btn-primary s1-btn-mobile is-disabled">버튼</button></div>
+              </div>
+            </div>
+          </div>
+          <div class="code-block">
+            <div class="code-tabs">
+              <button class="code-tab active" onclick="switchTab(this,'btn-pri-pc')">PC · HTML</button>
+              <button class="code-tab" onclick="switchTab(this,'btn-pri-mo')">Mobile · HTML</button>
+              <button class="code-tab" onclick="switchTab(this,'btn-pri-css')">CSS Token</button>
+              <button class="code-copy-btn" onclick="copyCode('btn-pri-pc-pre')">복사</button>
+            </div>
+            <div class="code-pane active" id="btn-pri-pc">
+              <pre id="btn-pri-pc-pre"><span class="c-cmt">&lt;!-- medium h44 --&gt;</span>
+<span class="c-tag">&lt;button</span> <span class="c-attr">class</span>=<span class="c-str">"s1-btn s1-btn-primary s1-btn-lg"</span><span class="c-tag">&gt;</span>버튼<span class="c-tag">&lt;/button&gt;</span>
+<span class="c-cmt">&lt;!-- xsmall h34 (기본) --&gt;</span>
+<span class="c-tag">&lt;button</span> <span class="c-attr">class</span>=<span class="c-str">"s1-btn s1-btn-primary"</span><span class="c-tag">&gt;</span>버튼<span class="c-tag">&lt;/button&gt;</span>
+<span class="c-cmt">&lt;!-- xxsmall h28 --&gt;</span>
+<span class="c-tag">&lt;button</span> <span class="c-attr">class</span>=<span class="c-str">"s1-btn s1-btn-primary s1-btn-sm"</span><span class="c-tag">&gt;</span>버튼<span class="c-tag">&lt;/button&gt;</span>
+<span class="c-cmt">&lt;!-- Hover --&gt;</span>
+<span class="c-tag">&lt;button</span> <span class="c-attr">class</span>=<span class="c-str">"s1-btn s1-btn-primary s1-btn-lg is-hover"</span><span class="c-tag">&gt;</span>버튼<span class="c-tag">&lt;/button&gt;</span>
+<span class="c-cmt">&lt;!-- Disabled --&gt;</span>
+<span class="c-tag">&lt;button</span> <span class="c-attr">class</span>=<span class="c-str">"s1-btn s1-btn-primary s1-btn-lg"</span> <span class="c-attr">disabled</span><span class="c-tag">&gt;</span>버튼<span class="c-tag">&lt;/button&gt;</span></pre>
+            </div>
+            <div class="code-pane" id="btn-pri-mo">
+              <pre id="btn-pri-mo-pre"><span class="c-cmt">&lt;!-- mobile h48 --&gt;</span>
+<span class="c-tag">&lt;button</span> <span class="c-attr">class</span>=<span class="c-str">"s1-btn s1-btn-primary s1-btn-mobile"</span><span class="c-tag">&gt;</span>버튼<span class="c-tag">&lt;/button&gt;</span>
+<span class="c-cmt">&lt;!-- Pressed --&gt;</span>
+<span class="c-tag">&lt;button</span> <span class="c-attr">class</span>=<span class="c-str">"s1-btn s1-btn-primary s1-btn-mobile is-pressed"</span><span class="c-tag">&gt;</span>버튼<span class="c-tag">&lt;/button&gt;</span>
+<span class="c-cmt">&lt;!-- Disabled --&gt;</span>
+<span class="c-tag">&lt;button</span> <span class="c-attr">class</span>=<span class="c-str">"s1-btn s1-btn-primary s1-btn-mobile"</span> <span class="c-attr">disabled</span><span class="c-tag">&gt;</span>버튼<span class="c-tag">&lt;/button&gt;</span></pre>
+            </div>
+            <div class="code-pane" id="btn-pri-css">
+              <pre><span class="c-prop">--button-primary-default-bg</span>:      <span class="c-val">var(--color-action-primary-default)</span>;
+<span class="c-prop">--button-primary-hover-bg</span>:        <span class="c-val">var(--color-action-primary-hover)</span>;
+<span class="c-prop">--button-primary-pressed-bg</span>:      <span class="c-val">var(--color-action-primary-pressed)</span>;
+<span class="c-prop">--button-primary-disabled-bg</span>:     <span class="c-val">var(--color-bg-subtle)</span>;
+<span class="c-prop">--button-primary-disabled-border</span>: <span class="c-val">var(--color-border-default)</span>;
+<span class="c-prop">--button-primary-default-text</span>:    <span class="c-val">var(--color-action-primary-text)</span>;
+<span class="c-prop">--button-primary-disabled-text</span>:   <span class="c-val">var(--color-text-disabled)</span>;
+<span class="c-prop">--button-primary-focus-ring</span>:      <span class="c-val">var(--color-border-focus)</span>;</pre>
+            </div>
+          </div>
+        </div>
+
+        <!-- ─ Secondary ─ -->
+        <div class="variant-block">
+          <div class="variant-label">Secondary</div>
+          <div class="preview-area">
+            <div class="platform-section platform-section-pc">
+              <div class="platform-header"><span class="platform-dot pc"></span>PC</div>
+              <div class="state-size-matrix">
+                <div></div>
+                <div class="matrix-col-header">Default</div>
+                <div class="matrix-col-header">Hover</div>
+                <div class="matrix-col-header">Disabled</div>
+                <div class="matrix-row-label">medium<span>h44 · px16</span></div>
+                <div class="matrix-cell"><button class="s1-btn s1-btn-secondary s1-btn-lg">버튼</button></div>
+                <div class="matrix-cell"><button class="s1-btn s1-btn-secondary s1-btn-lg is-hover">버튼</button></div>
+                <div class="matrix-cell"><button class="s1-btn s1-btn-secondary s1-btn-lg is-disabled">버튼</button></div>
+                <div class="matrix-row-label">xsmall<span>h34 · px8</span></div>
+                <div class="matrix-cell"><button class="s1-btn s1-btn-secondary">버튼</button></div>
+                <div class="matrix-cell"><button class="s1-btn s1-btn-secondary is-hover">버튼</button></div>
+                <div class="matrix-cell"><button class="s1-btn s1-btn-secondary is-disabled">버튼</button></div>
+                <div class="matrix-row-label">xxsmall<span>h28 · px8</span></div>
+                <div class="matrix-cell"><button class="s1-btn s1-btn-secondary s1-btn-sm">버튼</button></div>
+                <div class="matrix-cell"><button class="s1-btn s1-btn-secondary s1-btn-sm is-hover">버튼</button></div>
+                <div class="matrix-cell"><button class="s1-btn s1-btn-secondary s1-btn-sm is-disabled">버튼</button></div>
+              </div>
+            </div>
+            <div class="platform-section platform-section-mobile">
+              <div class="platform-header"><span class="platform-dot mobile"></span>Mobile</div>
+              <div class="state-size-matrix">
+                <div></div>
+                <div class="matrix-col-header">Default</div>
+                <div class="matrix-col-header">Pressed</div>
+                <div class="matrix-col-header">Disabled</div>
+                <div class="matrix-row-label">mobile<span>h48 · px16</span></div>
+                <div class="matrix-cell"><button class="s1-btn s1-btn-secondary s1-btn-mobile">버튼</button></div>
+                <div class="matrix-cell"><button class="s1-btn s1-btn-secondary s1-btn-mobile is-pressed">버튼</button></div>
+                <div class="matrix-cell"><button class="s1-btn s1-btn-secondary s1-btn-mobile is-disabled">버튼</button></div>
+              </div>
+            </div>
+          </div>
+          <div class="code-block">
+            <div class="code-tabs">
+              <button class="code-tab active" onclick="switchTab(this,'btn-sec-pc')">PC · HTML</button>
+              <button class="code-tab" onclick="switchTab(this,'btn-sec-mo')">Mobile · HTML</button>
+              <button class="code-tab" onclick="switchTab(this,'btn-sec-css')">CSS Token</button>
+              <button class="code-copy-btn" onclick="copyCode('btn-sec-pc-pre')">복사</button>
+            </div>
+            <div class="code-pane active" id="btn-sec-pc">
+              <pre id="btn-sec-pc-pre"><span class="c-cmt">&lt;!-- medium h44 --&gt;</span>
+<span class="c-tag">&lt;button</span> <span class="c-attr">class</span>=<span class="c-str">"s1-btn s1-btn-secondary s1-btn-lg"</span><span class="c-tag">&gt;</span>버튼<span class="c-tag">&lt;/button&gt;</span>
+<span class="c-cmt">&lt;!-- xsmall h34 (기본) --&gt;</span>
+<span class="c-tag">&lt;button</span> <span class="c-attr">class</span>=<span class="c-str">"s1-btn s1-btn-secondary"</span><span class="c-tag">&gt;</span>버튼<span class="c-tag">&lt;/button&gt;</span>
+<span class="c-cmt">&lt;!-- xxsmall h28 --&gt;</span>
+<span class="c-tag">&lt;button</span> <span class="c-attr">class</span>=<span class="c-str">"s1-btn s1-btn-secondary s1-btn-sm"</span><span class="c-tag">&gt;</span>버튼<span class="c-tag">&lt;/button&gt;</span>
+<span class="c-cmt">&lt;!-- Disabled --&gt;</span>
+<span class="c-tag">&lt;button</span> <span class="c-attr">class</span>=<span class="c-str">"s1-btn s1-btn-secondary s1-btn-lg"</span> <span class="c-attr">disabled</span><span class="c-tag">&gt;</span>버튼<span class="c-tag">&lt;/button&gt;</span></pre>
+            </div>
+            <div class="code-pane" id="btn-sec-mo">
+              <pre id="btn-sec-mo-pre"><span class="c-cmt">&lt;!-- mobile h48 --&gt;</span>
+<span class="c-tag">&lt;button</span> <span class="c-attr">class</span>=<span class="c-str">"s1-btn s1-btn-secondary s1-btn-mobile"</span><span class="c-tag">&gt;</span>버튼<span class="c-tag">&lt;/button&gt;</span>
+<span class="c-cmt">&lt;!-- Pressed --&gt;</span>
+<span class="c-tag">&lt;button</span> <span class="c-attr">class</span>=<span class="c-str">"s1-btn s1-btn-secondary s1-btn-mobile is-pressed"</span><span class="c-tag">&gt;</span>버튼<span class="c-tag">&lt;/button&gt;</span>
+<span class="c-cmt">&lt;!-- Disabled --&gt;</span>
+<span class="c-tag">&lt;button</span> <span class="c-attr">class</span>=<span class="c-str">"s1-btn s1-btn-secondary s1-btn-mobile"</span> <span class="c-attr">disabled</span><span class="c-tag">&gt;</span>버튼<span class="c-tag">&lt;/button&gt;</span></pre>
+            </div>
+            <div class="code-pane" id="btn-sec-css">
+              <pre><span class="c-prop">--button-secondary-default-bg</span>:      <span class="c-val">var(--color-surface-default)</span>;
+<span class="c-prop">--button-secondary-hover-bg</span>:        <span class="c-val">var(--color-bg-subtle)</span>;
+<span class="c-prop">--button-secondary-pressed-bg</span>:      <span class="c-val">var(--color-bg-muted)</span>;
+<span class="c-prop">--button-secondary-default-border</span>:  <span class="c-val">var(--color-border-default)</span>;
+<span class="c-prop">--button-secondary-disabled-bg</span>:     <span class="c-val">var(--color-bg-subtle)</span>;
+<span class="c-prop">--button-secondary-disabled-border</span>: <span class="c-val">var(--color-border-default)</span>;
+<span class="c-prop">--button-secondary-default-text</span>:    <span class="c-val">var(--color-text-secondary)</span>;
+<span class="c-prop">--button-secondary-disabled-text</span>:   <span class="c-val">var(--color-text-disabled)</span>;
+<span class="c-prop">--button-secondary-focus-ring</span>:      <span class="c-val">var(--color-border-focus)</span>;</pre>
+            </div>
+          </div>
+        </div>
+
+        <!-- ─ Blue-line ─ -->
+        <div class="variant-block">
+          <div class="variant-label">Blue-line</div>
+          <div class="preview-area">
+            <div class="platform-section platform-section-pc">
+              <div class="platform-header"><span class="platform-dot pc"></span>PC</div>
+              <div class="state-size-matrix">
+                <div></div>
+                <div class="matrix-col-header">Default</div>
+                <div class="matrix-col-header">Hover</div>
+                <div class="matrix-col-header">Disabled</div>
+                <div class="matrix-row-label">medium<span>h44 · px16</span></div>
+                <div class="matrix-cell"><button class="s1-btn s1-btn-blue-line s1-btn-lg">버튼</button></div>
+                <div class="matrix-cell"><button class="s1-btn s1-btn-blue-line s1-btn-lg is-hover">버튼</button></div>
+                <div class="matrix-cell"><button class="s1-btn s1-btn-blue-line s1-btn-lg is-disabled">버튼</button></div>
+                <div class="matrix-row-label">xsmall<span>h34 · px8</span></div>
+                <div class="matrix-cell"><button class="s1-btn s1-btn-blue-line">버튼</button></div>
+                <div class="matrix-cell"><button class="s1-btn s1-btn-blue-line is-hover">버튼</button></div>
+                <div class="matrix-cell"><button class="s1-btn s1-btn-blue-line is-disabled">버튼</button></div>
+                <div class="matrix-row-label">xxsmall<span>h28 · px8</span></div>
+                <div class="matrix-cell"><button class="s1-btn s1-btn-blue-line s1-btn-sm">버튼</button></div>
+                <div class="matrix-cell"><button class="s1-btn s1-btn-blue-line s1-btn-sm is-hover">버튼</button></div>
+                <div class="matrix-cell"><button class="s1-btn s1-btn-blue-line s1-btn-sm is-disabled">버튼</button></div>
+              </div>
+            </div>
+            <div class="platform-section platform-section-mobile">
+              <div class="platform-header"><span class="platform-dot mobile"></span>Mobile</div>
+              <div class="state-size-matrix">
+                <div></div>
+                <div class="matrix-col-header">Default</div>
+                <div class="matrix-col-header">Pressed</div>
+                <div class="matrix-col-header">Disabled</div>
+                <div class="matrix-row-label">mobile<span>h48 · px16</span></div>
+                <div class="matrix-cell"><button class="s1-btn s1-btn-blue-line s1-btn-mobile">버튼</button></div>
+                <div class="matrix-cell"><button class="s1-btn s1-btn-blue-line s1-btn-mobile is-pressed">버튼</button></div>
+                <div class="matrix-cell"><button class="s1-btn s1-btn-blue-line s1-btn-mobile is-disabled">버튼</button></div>
+              </div>
+            </div>
+          </div>
+          <div class="code-block">
+            <div class="code-tabs">
+              <button class="code-tab active" onclick="switchTab(this,'btn-bl-pc')">PC · HTML</button>
+              <button class="code-tab" onclick="switchTab(this,'btn-bl-mo')">Mobile · HTML</button>
+              <button class="code-tab" onclick="switchTab(this,'btn-bl-css')">CSS Token</button>
+              <button class="code-copy-btn" onclick="copyCode('btn-bl-pc-pre')">복사</button>
+            </div>
+            <div class="code-pane active" id="btn-bl-pc">
+              <pre id="btn-bl-pc-pre"><span class="c-cmt">&lt;!-- medium h44 --&gt;</span>
+<span class="c-tag">&lt;button</span> <span class="c-attr">class</span>=<span class="c-str">"s1-btn s1-btn-blue-line s1-btn-lg"</span><span class="c-tag">&gt;</span>버튼<span class="c-tag">&lt;/button&gt;</span>
+<span class="c-cmt">&lt;!-- xsmall h34 (기본) --&gt;</span>
+<span class="c-tag">&lt;button</span> <span class="c-attr">class</span>=<span class="c-str">"s1-btn s1-btn-blue-line"</span><span class="c-tag">&gt;</span>버튼<span class="c-tag">&lt;/button&gt;</span>
+<span class="c-cmt">&lt;!-- xxsmall h28 --&gt;</span>
+<span class="c-tag">&lt;button</span> <span class="c-attr">class</span>=<span class="c-str">"s1-btn s1-btn-blue-line s1-btn-sm"</span><span class="c-tag">&gt;</span>버튼<span class="c-tag">&lt;/button&gt;</span>
+<span class="c-cmt">&lt;!-- Disabled --&gt;</span>
+<span class="c-tag">&lt;button</span> <span class="c-attr">class</span>=<span class="c-str">"s1-btn s1-btn-blue-line s1-btn-lg"</span> <span class="c-attr">disabled</span><span class="c-tag">&gt;</span>버튼<span class="c-tag">&lt;/button&gt;</span></pre>
+            </div>
+            <div class="code-pane" id="btn-bl-mo">
+              <pre id="btn-bl-mo-pre"><span class="c-cmt">&lt;!-- mobile h48 --&gt;</span>
+<span class="c-tag">&lt;button</span> <span class="c-attr">class</span>=<span class="c-str">"s1-btn s1-btn-blue-line s1-btn-mobile"</span><span class="c-tag">&gt;</span>버튼<span class="c-tag">&lt;/button&gt;</span>
+<span class="c-cmt">&lt;!-- Pressed --&gt;</span>
+<span class="c-tag">&lt;button</span> <span class="c-attr">class</span>=<span class="c-str">"s1-btn s1-btn-blue-line s1-btn-mobile is-pressed"</span><span class="c-tag">&gt;</span>버튼<span class="c-tag">&lt;/button&gt;</span>
+<span class="c-cmt">&lt;!-- Disabled --&gt;</span>
+<span class="c-tag">&lt;button</span> <span class="c-attr">class</span>=<span class="c-str">"s1-btn s1-btn-blue-line s1-btn-mobile"</span> <span class="c-attr">disabled</span><span class="c-tag">&gt;</span>버튼<span class="c-tag">&lt;/button&gt;</span></pre>
+            </div>
+            <div class="code-pane" id="btn-bl-css">
+              <pre><span class="c-prop">--button-blue-line-default-bg</span>:     <span class="c-val">var(--color-surface-default)</span>;
+<span class="c-prop">--button-blue-line-hover-bg</span>:       <span class="c-val">var(--color-action-primary-subtle)</span>;
+<span class="c-prop">--button-blue-line-pressed-bg</span>:     <span class="c-val">var(--color-action-primary-subtle)</span>;
+<span class="c-prop">--button-blue-line-default-border</span>: <span class="c-val">var(--color-action-primary-default)</span>;
+<span class="c-prop">--button-blue-line-hover-border</span>:   <span class="c-val">var(--color-action-primary-default)</span>;
+<span class="c-prop">--button-blue-line-disabled-bg</span>:    <span class="c-val">var(--color-bg-subtle)</span>;
+<span class="c-prop">--button-blue-line-disabled-border</span>:<span class="c-val">var(--color-border-default)</span>;
+<span class="c-prop">--button-blue-line-default-text</span>:   <span class="c-val">var(--color-text-link)</span>;
+<span class="c-prop">--button-blue-line-disabled-text</span>:  <span class="c-val">var(--color-text-disabled)</span>;
+<span class="c-prop">--button-blue-line-focus-ring</span>:     <span class="c-val">var(--color-border-focus)</span>;</pre>
+            </div>
+          </div>
+        </div>
+
+        <!-- ─ Light · Dark 비교 ─ -->
+        <div class="variant-block">
+          <div class="variant-label">Light · Dark 비교</div>
+          <div class="theme-compare-wrap">
+
+            <!-- Light 패널 -->
+            <div class="theme-compare-panel theme-compare-light">
+              <div class="theme-compare-mode-label">Light</div>
+
+              <div class="compare-variant-group">
+                <div class="compare-variant-name">Primary</div>
+                <div class="compare-state-row">
+                  <button class="s1-btn s1-btn-primary">Default</button>
+                  <button class="s1-btn s1-btn-primary is-hover">Hover</button>
+                  <button class="s1-btn s1-btn-primary is-pressed">Pressed</button>
+                  <button class="s1-btn s1-btn-primary is-disabled">Disabled</button>
+                </div>
+              </div>
+
+              <div class="compare-variant-group">
+                <div class="compare-variant-name">Secondary</div>
+                <div class="compare-state-row">
+                  <button class="s1-btn s1-btn-secondary">Default</button>
+                  <button class="s1-btn s1-btn-secondary is-hover">Hover</button>
+                  <button class="s1-btn s1-btn-secondary is-pressed">Pressed</button>
+                  <button class="s1-btn s1-btn-secondary is-disabled">Disabled</button>
+                </div>
+              </div>
+
+              <div class="compare-variant-group">
+                <div class="compare-variant-name">Blue-line</div>
+                <div class="compare-state-row">
+                  <button class="s1-btn s1-btn-blue-line">Default</button>
+                  <button class="s1-btn s1-btn-blue-line is-hover">Hover</button>
+                  <button class="s1-btn s1-btn-blue-line is-pressed">Pressed</button>
+                  <button class="s1-btn s1-btn-blue-line is-disabled">Disabled</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Dark 패널 -->
+            <div class="theme-compare-panel theme-compare-dark" data-theme="dark">
+              <div class="theme-compare-mode-label">Dark</div>
+
+              <div class="compare-variant-group">
+                <div class="compare-variant-name">Primary</div>
+                <div class="compare-state-row">
+                  <button class="s1-btn s1-btn-primary">Default</button>
+                  <button class="s1-btn s1-btn-primary is-hover">Hover</button>
+                  <button class="s1-btn s1-btn-primary is-pressed">Pressed</button>
+                  <button class="s1-btn s1-btn-primary is-disabled">Disabled</button>
+                </div>
+              </div>
+
+              <div class="compare-variant-group">
+                <div class="compare-variant-name">Secondary</div>
+                <div class="compare-state-row">
+                  <button class="s1-btn s1-btn-secondary">Default</button>
+                  <button class="s1-btn s1-btn-secondary is-hover">Hover</button>
+                  <button class="s1-btn s1-btn-secondary is-pressed">Pressed</button>
+                  <button class="s1-btn s1-btn-secondary is-disabled">Disabled</button>
+                </div>
+              </div>
+
+              <div class="compare-variant-group">
+                <div class="compare-variant-name">Blue-line</div>
+                <div class="compare-state-row">
+                  <button class="s1-btn s1-btn-blue-line">Default</button>
+                  <button class="s1-btn s1-btn-blue-line is-hover">Hover</button>
+                  <button class="s1-btn s1-btn-blue-line is-pressed">Pressed</button>
+                  <button class="s1-btn s1-btn-blue-line is-disabled">Disabled</button>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+      </section>
+
+
+      <!-- ═══ CHECKBOX ═══ -->
+      <section class="comp-section" id="checkbox">
+        <div class="comp-section-header">
+          <h2 class="comp-section-title">Checkbox</h2>
+          <span class="comp-badge comp-badge-blue">Core</span>
+          <span class="comp-badge">4 states</span>
+        </div>
+
+        <div class="variant-block">
+          <div class="variant-label">States</div>
+          <div class="chk-label-toggle">
+            <button class="chk-label-btn active" onclick="setCheckboxLabel('nolabel', this)">Label 없음</button>
+            <button class="chk-label-btn" onclick="setCheckboxLabel('label', this)">Label 있음</button>
+          </div>
+          <div class="preview-area">
+            <div class="checkbox-grid">
+              <!-- Header row -->
+              <div class="checkbox-grid-header">Default</div>
+              <div class="checkbox-grid-header">Checked</div>
+              <div class="checkbox-grid-header">Disabled</div>
+              <div class="checkbox-grid-header">Disabled+Checked</div>
+
+              <!-- No label row -->
+              <div class="checkbox-grid-cell chk-nolabel-row">
+                <label class="s1-checkbox"><div class="s1-checkbox-box"></div></label>
+              </div>
+              <div class="checkbox-grid-cell chk-nolabel-row">
+                <label class="s1-checkbox is-checked">
+                  <div class="s1-checkbox-box">
+                    <svg class="ds-chk-icon" width="11" height="8" viewBox="0 0 11 8" fill="none"><path d="M1 4L4 7L10 1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                  </div>
+                </label>
+              </div>
+              <div class="checkbox-grid-cell chk-nolabel-row">
+                <label class="s1-checkbox is-disabled"><div class="s1-checkbox-box"></div></label>
+              </div>
+              <div class="checkbox-grid-cell chk-nolabel-row">
+                <label class="s1-checkbox is-checked is-disabled">
+                  <div class="s1-checkbox-box">
+                    <svg class="ds-chk-icon" width="11" height="8" viewBox="0 0 11 8" fill="none"><path d="M1 4L4 7L10 1" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                  </div>
+                </label>
+              </div>
+
+              <!-- Label row (hidden by default) -->
+              <div class="checkbox-grid-cell chk-label-row chk-row-hidden">
+                <label class="s1-checkbox"><div class="s1-checkbox-box"></div><span class="s1-checkbox-label">라벨</span></label>
+              </div>
+              <div class="checkbox-grid-cell chk-label-row chk-row-hidden">
+                <label class="s1-checkbox is-checked">
+                  <div class="s1-checkbox-box">
+                    <svg class="ds-chk-icon" width="11" height="8" viewBox="0 0 11 8" fill="none"><path d="M1 4L4 7L10 1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                  </div>
+                  <span class="s1-checkbox-label">라벨</span>
+                </label>
+              </div>
+              <div class="checkbox-grid-cell chk-label-row chk-row-hidden">
+                <label class="s1-checkbox is-disabled"><div class="s1-checkbox-box"></div><span class="s1-checkbox-label">라벨</span></label>
+              </div>
+              <div class="checkbox-grid-cell chk-label-row chk-row-hidden">
+                <label class="s1-checkbox is-checked is-disabled">
+                  <div class="s1-checkbox-box">
+                    <svg class="ds-chk-icon" width="11" height="8" viewBox="0 0 11 8" fill="none"><path d="M1 4L4 7L10 1" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                  </div>
+                  <span class="s1-checkbox-label">라벨</span>
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="code-block">
+          <div class="code-tabs">
+            <button class="code-tab active" onclick="switchTab(this,'chk-html')">HTML</button>
+            <button class="code-tab" onclick="switchTab(this,'chk-css')">CSS</button>
+            <button class="code-copy-btn" onclick="copyCode(document.getElementById('checkbox').querySelector('.code-pane.active').querySelector('pre').id)">복사</button>
+          </div>
+          <div class="code-pane active" id="chk-html">
+            <pre id="chk-html-pre"><span class="c-cmt">&lt;!-- Default --&gt;</span>
+<span class="c-tag">&lt;label</span> <span class="c-attr">class</span>=<span class="c-str">"s1-checkbox"</span><span class="c-tag">&gt;</span>
+  <span class="c-tag">&lt;div</span> <span class="c-attr">class</span>=<span class="c-str">"s1-checkbox-box"</span><span class="c-tag">&gt;&lt;/div&gt;</span>
+  <span class="c-tag">&lt;span</span> <span class="c-attr">class</span>=<span class="c-str">"s1-checkbox-label"</span><span class="c-tag">&gt;</span>레이블<span class="c-tag">&lt;/span&gt;</span>
+<span class="c-tag">&lt;/label&gt;</span>
+<span class="c-cmt">&lt;!-- Checked --&gt;</span>
+<span class="c-tag">&lt;label</span> <span class="c-attr">class</span>=<span class="c-str">"s1-checkbox is-checked"</span><span class="c-tag">&gt;</span>
+  <span class="c-tag">&lt;div</span> <span class="c-attr">class</span>=<span class="c-str">"s1-checkbox-box"</span><span class="c-tag">&gt;</span>
+    <span class="c-tag">&lt;svg</span> <span class="c-attr">class</span>=<span class="c-str">"ds-chk-icon"</span> <span class="c-attr">width</span>=<span class="c-str">"11"</span> <span class="c-attr">height</span>=<span class="c-str">"8"</span> <span class="c-attr">viewBox</span>=<span class="c-str">"0 0 11 8"</span><span class="c-tag">&gt;</span>
+      <span class="c-tag">&lt;path</span> <span class="c-attr">d</span>=<span class="c-str">"M1 4L4 7L10 1"</span> <span class="c-attr">stroke</span>=<span class="c-str">"white"</span> <span class="c-attr">stroke-width</span>=<span class="c-str">"1.8"</span> <span class="c-attr">stroke-linecap</span>=<span class="c-str">"round"</span> <span class="c-attr">stroke-linejoin</span>=<span class="c-str">"round"</span><span class="c-tag">/&gt;</span>
+    <span class="c-tag">&lt;/svg&gt;</span>
+  <span class="c-tag">&lt;/div&gt;</span>
+  <span class="c-tag">&lt;span</span> <span class="c-attr">class</span>=<span class="c-str">"s1-checkbox-label"</span><span class="c-tag">&gt;</span>레이블<span class="c-tag">&lt;/span&gt;</span>
+<span class="c-tag">&lt;/label&gt;</span>
+<span class="c-cmt">&lt;!-- Disabled --&gt;</span>
+<span class="c-tag">&lt;label</span> <span class="c-attr">class</span>=<span class="c-str">"s1-checkbox is-disabled"</span><span class="c-tag">&gt;</span>
+  <span class="c-tag">&lt;div</span> <span class="c-attr">class</span>=<span class="c-str">"s1-checkbox-box"</span><span class="c-tag">&gt;&lt;/div&gt;</span>
+  <span class="c-tag">&lt;span</span> <span class="c-attr">class</span>=<span class="c-str">"s1-checkbox-label"</span><span class="c-tag">&gt;</span>레이블<span class="c-tag">&lt;/span&gt;</span>
+<span class="c-tag">&lt;/label&gt;</span>
+<span class="c-cmt">&lt;!-- Disabled+Checked --&gt;</span>
+<span class="c-tag">&lt;label</span> <span class="c-attr">class</span>=<span class="c-str">"s1-checkbox is-checked is-disabled"</span><span class="c-tag">&gt;</span>
+  <span class="c-tag">&lt;div</span> <span class="c-attr">class</span>=<span class="c-str">"s1-checkbox-box"</span><span class="c-tag">&gt;</span>
+    <span class="c-tag">&lt;svg</span> <span class="c-attr">class</span>=<span class="c-str">"ds-chk-icon"</span> <span class="c-attr">width</span>=<span class="c-str">"11"</span> <span class="c-attr">height</span>=<span class="c-str">"8"</span> <span class="c-attr">viewBox</span>=<span class="c-str">"0 0 11 8"</span><span class="c-tag">&gt;</span>
+      <span class="c-tag">&lt;path</span> <span class="c-attr">d</span>=<span class="c-str">"M1 4L4 7L10 1"</span> <span class="c-attr">stroke</span>=<span class="c-str">"currentColor"</span> <span class="c-attr">stroke-width</span>=<span class="c-str">"1.8"</span> <span class="c-attr">stroke-linecap</span>=<span class="c-str">"round"</span> <span class="c-attr">stroke-linejoin</span>=<span class="c-str">"round"</span><span class="c-tag">/&gt;</span>
+    <span class="c-tag">&lt;/svg&gt;</span>
+  <span class="c-tag">&lt;/div&gt;</span>
+  <span class="c-tag">&lt;span</span> <span class="c-attr">class</span>=<span class="c-str">"s1-checkbox-label"</span><span class="c-tag">&gt;</span>레이블<span class="c-tag">&lt;/span&gt;</span>
+<span class="c-tag">&lt;/label&gt;</span></pre>
+          </div>
+          <div class="code-pane" id="chk-css">
+            <pre id="chk-css-pre"><span class="c-cmt">/* Checkbox — Component Tokens */</span>
+<span class="c-prop">--checkbox-default-bg</span>:      <span class="c-val">var(--color-surface-default)</span>;
+<span class="c-prop">--checkbox-checked-bg</span>:      <span class="c-val">var(--color-action-primary-default)</span>;
+<span class="c-prop">--checkbox-disabled-bg</span>:     <span class="c-val">var(--color-bg-subtle)</span>;
+<span class="c-prop">--checkbox-default-border</span>:  <span class="c-val">var(--color-border-default)</span>;
+<span class="c-prop">--checkbox-checked-border</span>:  <span class="c-val">var(--color-action-primary-default)</span>;
+<span class="c-prop">--checkbox-disabled-border</span>: <span class="c-val">var(--color-border-subtle)</span>;
+<span class="c-prop">--checkbox-check-icon</span>:      <span class="c-val">var(--color-action-primary-text)</span>;
+
+<span class="c-cmt">/* Structure */</span>
+<span class="c-prop">.s1-checkbox</span> {
+  display: inline-flex; align-items: center;
+  gap: <span class="c-val">8px</span>; cursor: pointer; user-select: none;
+}
+<span class="c-prop">.s1-checkbox-box</span> {
+  width: <span class="c-val">18px</span>; height: <span class="c-val">18px</span>;
+  border-radius: <span class="c-val">2px</span>;
+  border: <span class="c-val">1px</span> solid <span class="c-val">var(--checkbox-default-border)</span>;
+  background: <span class="c-val">var(--checkbox-default-bg)</span>;
+  display: flex; align-items: center; justify-content: center;
+}
+<span class="c-prop">.s1-checkbox-label</span> {
+  font-size: <span class="c-val">14px</span>; color: <span class="c-val">var(--color-text-secondary)</span>;
+}
+
+<span class="c-cmt">/* States */</span>
+<span class="c-prop">.s1-checkbox.is-checked .s1-checkbox-box</span> {
+  background: <span class="c-val">var(--checkbox-checked-bg)</span>;
+  border-color: <span class="c-val">var(--checkbox-checked-border)</span>;
+}
+<span class="c-prop">.s1-checkbox.is-disabled .s1-checkbox-box</span> {
+  background: <span class="c-val">var(--checkbox-disabled-bg)</span>;
+  border-color: <span class="c-val">var(--checkbox-disabled-border)</span>;
+  cursor: not-allowed;
+}
+<span class="c-prop">.s1-checkbox.is-checked.is-disabled .s1-checkbox-box</span> {
+  background: <span class="c-val">var(--checkbox-disabled-bg)</span>;
+  border-color: <span class="c-val">var(--checkbox-disabled-border)</span>;
+  color: <span class="c-val">var(--checkbox-disabled-check-icon)</span>;
+}
+<span class="c-prop">.s1-checkbox.is-disabled .s1-checkbox-label</span> {
+  color: <span class="c-val">var(--color-text-disabled)</span>;
+}</pre>
+          </div>
+        </div>
+      </section>
+
+
+      <!-- ═══ RADIO ═══ -->
+      <section class="comp-section" id="radio">
+        <div class="comp-section-header">
+          <h2 class="comp-section-title">Radio</h2>
+          <span class="comp-badge comp-badge-blue">Core</span>
+          <span class="comp-badge">4 states</span>
+        </div>
+
+        <div class="variant-block">
+          <div class="variant-label">States</div>
+          <div class="preview-area">
+            <div class="state-strip">
+              <div class="state-item">
+                <div class="state-label sl-live">Default</div>
+                <label class="s1-radio"><div class="s1-radio-circle"><div class="s1-radio-dot"></div></div><span class="s1-radio-label">옵션</span></label>
+              </div>
+              <div class="state-item">
+                <div class="state-label">Selected</div>
+                <label class="s1-radio is-selected"><div class="s1-radio-circle"><div class="s1-radio-dot"></div></div><span class="s1-radio-label">옵션</span></label>
+              </div>
+              <div class="state-item">
+                <div class="state-label">Disabled</div>
+                <label class="s1-radio is-disabled"><div class="s1-radio-circle"><div class="s1-radio-dot"></div></div><span class="s1-radio-label">옵션</span></label>
+              </div>
+              <div class="state-item">
+                <div class="state-label">Disabled Selected</div>
+                <label class="s1-radio is-selected is-disabled"><div class="s1-radio-circle"><div class="s1-radio-dot"></div></div><span class="s1-radio-label">옵션</span></label>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="code-block">
+          <div class="code-tabs">
+            <button class="code-tab active" onclick="switchTab(this,'radio-html')">HTML</button>
+            <button class="code-tab" onclick="switchTab(this,'radio-css')">CSS</button>
+            <button class="code-copy-btn" onclick="copyCode('radio-html-pre')">복사</button>
+          </div>
+          <div class="code-pane active" id="radio-html">
+            <pre id="radio-html-pre"><span class="c-cmt">&lt;!-- Default --&gt;</span>
+<span class="c-tag">&lt;label</span> <span class="c-attr">class</span>=<span class="c-str">"s1-radio"</span><span class="c-tag">&gt;</span>
+  <span class="c-tag">&lt;div</span> <span class="c-attr">class</span>=<span class="c-str">"s1-radio-circle"</span><span class="c-tag">&gt;&lt;div</span> <span class="c-attr">class</span>=<span class="c-str">"s1-radio-dot"</span><span class="c-tag">&gt;&lt;/div&gt;&lt;/div&gt;</span>
+  <span class="c-tag">&lt;span</span> <span class="c-attr">class</span>=<span class="c-str">"s1-radio-label"</span><span class="c-tag">&gt;</span>라벨<span class="c-tag">&lt;/span&gt;</span>
+<span class="c-tag">&lt;/label&gt;</span>
+
+<span class="c-cmt">&lt;!-- Selected --&gt;</span>
+<span class="c-tag">&lt;label</span> <span class="c-attr">class</span>=<span class="c-str">"s1-radio is-selected"</span><span class="c-tag">&gt;</span>...<span class="c-tag">&lt;/label&gt;</span>
+
+<span class="c-cmt">&lt;!-- Disabled --&gt;</span>
+<span class="c-tag">&lt;label</span> <span class="c-attr">class</span>=<span class="c-str">"s1-radio is-disabled"</span><span class="c-tag">&gt;</span>...<span class="c-tag">&lt;/label&gt;</span>
+
+<span class="c-cmt">&lt;!-- Disabled + Selected --&gt;</span>
+<span class="c-tag">&lt;label</span> <span class="c-attr">class</span>=<span class="c-str">"s1-radio is-selected is-disabled"</span><span class="c-tag">&gt;</span>...<span class="c-tag">&lt;/label&gt;</span></pre>
+          </div>
+          <div class="code-pane" id="radio-css">
+            <pre id="radio-css-pre"><span class="c-cmt">/* Component Tokens */</span>
+<span class="c-sel">:root</span> {
+  <span class="c-prop">--radio-default-bg</span>:      <span class="c-val">var(--color-surface-default)</span>;
+  <span class="c-prop">--radio-disabled-bg</span>:     <span class="c-val">var(--color-bg-subtle)</span>;
+  <span class="c-prop">--radio-default-border</span>:  <span class="c-val">var(--color-border-default)</span>;
+  <span class="c-prop">--radio-selected-border</span>: <span class="c-val">var(--color-action-primary-default)</span>;
+  <span class="c-prop">--radio-disabled-border</span>: <span class="c-val">var(--color-border-strong)</span>;
+  <span class="c-prop">--radio-selected-dot</span>:    <span class="c-val">var(--color-action-primary-default)</span>;
+  <span class="c-prop">--radio-disabled-dot</span>:    <span class="c-val">var(--color-border-strong)</span>;
+}
+
+<span class="c-cmt">/* Structure */</span>
+<span class="c-sel">.s1-radio</span> {
+  <span class="c-prop">display</span>: <span class="c-val">inline-flex</span>; <span class="c-prop">align-items</span>: <span class="c-val">center</span>; <span class="c-prop">gap</span>: <span class="c-val">8px</span>;
+  <span class="c-prop">cursor</span>: <span class="c-val">pointer</span>; <span class="c-prop">user-select</span>: <span class="c-val">none</span>;
+}
+<span class="c-sel">.s1-radio-circle</span> {
+  <span class="c-prop">width</span>: <span class="c-val">18px</span>; <span class="c-prop">height</span>: <span class="c-val">18px</span>; <span class="c-prop">border-radius</span>: <span class="c-val">50%</span>;
+  <span class="c-prop">border</span>: <span class="c-val">1px solid var(--radio-default-border)</span>;
+  <span class="c-prop">background</span>: <span class="c-val">var(--radio-default-bg)</span>;
+  <span class="c-prop">display</span>: <span class="c-val">flex</span>; <span class="c-prop">align-items</span>: <span class="c-val">center</span>; <span class="c-prop">justify-content</span>: <span class="c-val">center</span>;
+  <span class="c-prop">flex-shrink</span>: <span class="c-val">0</span>;
+}
+<span class="c-sel">.s1-radio-dot</span> {
+  <span class="c-prop">width</span>: <span class="c-val">10px</span>; <span class="c-prop">height</span>: <span class="c-val">10px</span>; <span class="c-prop">border-radius</span>: <span class="c-val">50%</span>;
+  <span class="c-prop">background</span>: <span class="c-val">var(--radio-selected-dot)</span>;
+  <span class="c-prop">opacity</span>: <span class="c-val">0</span>; <span class="c-prop">transition</span>: <span class="c-val">opacity 0.15s</span>;
+}
+<span class="c-sel">.s1-radio-label</span> {
+  <span class="c-prop">font-size</span>: <span class="c-val">14px</span>; <span class="c-prop">color</span>: <span class="c-val">var(--color-text-secondary)</span>;
+}
+
+<span class="c-cmt">/* States */</span>
+<span class="c-sel">.s1-radio.is-selected .s1-radio-circle</span> { <span class="c-prop">border-color</span>: <span class="c-val">var(--radio-selected-border)</span>; }
+<span class="c-sel">.s1-radio.is-selected .s1-radio-dot</span> { <span class="c-prop">opacity</span>: <span class="c-val">1</span>; }
+<span class="c-sel">.s1-radio.is-disabled .s1-radio-circle</span> {
+  <span class="c-prop">background</span>: <span class="c-val">var(--radio-disabled-bg)</span>;
+  <span class="c-prop">border-color</span>: <span class="c-val">var(--radio-disabled-border)</span>;
+}
+<span class="c-sel">.s1-radio.is-disabled.is-selected .s1-radio-dot</span> { <span class="c-prop">background</span>: <span class="c-val">var(--radio-disabled-dot)</span>; }
+<span class="c-sel">.s1-radio.is-disabled</span> { <span class="c-prop">cursor</span>: <span class="c-val">not-allowed</span>; }
+<span class="c-sel">.s1-radio.is-disabled .s1-radio-label</span> { <span class="c-prop">color</span>: <span class="c-val">var(--color-text-disabled)</span>; }</pre>
+          </div>
+        </div>
+      </section>
+
+
+      <!-- ═══ TOGGLE ═══ -->
+      <section class="comp-section" id="toggle">
+        <div class="comp-section-header">
+          <h2 class="comp-section-title">Toggle</h2>
+          <span class="comp-badge comp-badge-blue">Core</span>
+          <span class="comp-badge">4 states</span>
+        </div>
+
+        <div class="variant-block">
+          <div class="variant-label">States</div>
+          <div class="preview-area">
+            <div class="state-strip">
+              <div class="state-item">
+                <div class="state-label">Off</div>
+                <label class="s1-toggle"><div class="s1-toggle-track"><div class="s1-toggle-knob"></div></div><span class="s1-toggle-label">OFF</span></label>
+              </div>
+              <div class="state-item">
+                <div class="state-label">On</div>
+                <label class="s1-toggle is-on"><div class="s1-toggle-track"><div class="s1-toggle-knob"></div></div><span class="s1-toggle-label">ON</span></label>
+              </div>
+              <div class="state-item">
+                <div class="state-label">Disabled Off</div>
+                <label class="s1-toggle is-disabled"><div class="s1-toggle-track"><div class="s1-toggle-knob"></div></div><span class="s1-toggle-label">OFF</span></label>
+              </div>
+              <div class="state-item">
+                <div class="state-label">Disabled On</div>
+                <label class="s1-toggle is-on is-disabled"><div class="s1-toggle-track"><div class="s1-toggle-knob"></div></div><span class="s1-toggle-label">ON</span></label>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="code-block">
+          <div class="code-tabs">
+            <button class="code-tab active" onclick="switchTab(this,'tog-html')">HTML</button>
+            <button class="code-tab" onclick="switchTab(this,'tog-css')">CSS</button>
+            <button class="code-copy-btn" onclick="copyCode('tog-html-pre')">복사</button>
+          </div>
+          <div class="code-pane active" id="tog-html">
+            <pre id="tog-html-pre"><span class="c-tag">&lt;label</span> <span class="c-attr">class</span>=<span class="c-str">"s1-toggle"</span><span class="c-tag">&gt;</span>
+  <span class="c-tag">&lt;div</span> <span class="c-attr">class</span>=<span class="c-str">"s1-toggle-track"</span><span class="c-tag">&gt;</span>
+    <span class="c-tag">&lt;div</span> <span class="c-attr">class</span>=<span class="c-str">"s1-toggle-knob"</span><span class="c-tag">&gt;&lt;/div&gt;</span>
+  <span class="c-tag">&lt;/div&gt;</span>
+  <span class="c-tag">&lt;span</span> <span class="c-attr">class</span>=<span class="c-str">"s1-toggle-label"</span><span class="c-tag">&gt;</span>OFF<span class="c-tag">&lt;/span&gt;</span>
+<span class="c-tag">&lt;/label&gt;</span>
+<span class="c-cmt">&lt;!-- On: add is-on / Disabled: add is-disabled --&gt;</span>
+<span class="c-tag">&lt;label</span> <span class="c-attr">class</span>=<span class="c-str">"s1-toggle is-on"</span><span class="c-tag">&gt;</span>...<span class="c-tag">&lt;/label&gt;</span></pre>
+          </div>
+          <div class="code-pane" id="tog-css">
+            <pre><span class="c-prop">--toggle-on-bg</span>:       <span class="c-val">var(--color-action-primary-default)</span>;
+<span class="c-prop">--toggle-off-bg</span>:      <span class="c-val">var(--color-text-placeholder)</span>;
+<span class="c-prop">--toggle-disabled-bg</span>: <span class="c-val">var(--color-bg-muted)</span>;
+<span class="c-prop">--toggle-knob</span>:        <span class="c-val">var(--color-action-primary-text)</span>;</pre>
+          </div>
+        </div>
+      </section>
+
+
+      <!-- ═══ CHIP ═══ -->
+      <section class="comp-section" id="chip">
+        <div class="comp-section-header">
+          <h2 class="comp-section-title">Chip · Filter Chip</h2>
+          <span class="comp-badge comp-badge-blue">Core</span>
+          <span class="comp-badge">4 states</span>
+          <span class="comp-badge">2 types</span>
+        </div>
+
+        <div class="variant-block">
+          <div class="variant-label">Chip — Line (테두리 표시 · 흰 배경)</div>
+          <div class="preview-area">
+            <div class="state-strip">
+              <div class="state-item">
+                <div class="state-label sl-live">Default</div>
+                <button class="s1-chip">최신순</button>
+              </div>
+              <div class="state-item">
+                <div class="state-label">Selected</div>
+                <button class="s1-chip is-selected">최신순</button>
+              </div>
+              <div class="state-item">
+                <div class="state-label">Disabled</div>
+                <button class="s1-chip is-disabled">최신순</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="variant-block">
+          <div class="variant-label">Chip — Solid (채운 배경 · 테두리=배경색)</div>
+          <div class="preview-area">
+            <div class="state-strip">
+              <div class="state-item">
+                <div class="state-label sl-live">Default</div>
+                <button class="s1-chip s1-chip--solid">최신순</button>
+              </div>
+              <div class="state-item">
+                <div class="state-label">Selected</div>
+                <button class="s1-chip s1-chip--solid is-selected">최신순</button>
+              </div>
+              <div class="state-item">
+                <div class="state-label">Disabled</div>
+                <button class="s1-chip s1-chip--solid is-disabled">최신순</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="variant-block">
+          <div class="variant-label">Filter Chip — 타이틀 없음 (라벨 + 화살표)</div>
+          <div class="preview-area">
+            <div class="state-strip">
+              <div class="state-item">
+                <div class="state-label sl-live">Default</div>
+                <button class="ds-filter-chip">
+                  <span class="ds-filter-chip-label">최신순</span>
+                  <svg class="ds-filter-chip-arrow" width="20" height="20" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"/></svg>
+                </button>
+              </div>
+              <div class="state-item">
+                <div class="state-label">Selected</div>
+                <button class="ds-filter-chip is-selected">
+                  <span class="ds-filter-chip-label">최신순</span>
+                  <svg class="ds-filter-chip-arrow" width="20" height="20" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"/></svg>
+                </button>
+              </div>
+              <div class="state-item">
+                <div class="state-label">Disabled</div>
+                <button class="ds-filter-chip is-disabled">
+                  <span class="ds-filter-chip-label">최신순</span>
+                  <svg class="ds-filter-chip-arrow" width="20" height="20" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"/></svg>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="variant-block">
+          <div class="variant-label">Filter Chip — 타이틀 포함 (카테고리 + 선택값 + 화살표)</div>
+          <div class="preview-area">
+            <div class="state-strip">
+              <div class="state-item">
+                <div class="state-label sl-live">Default</div>
+                <button class="ds-filter-chip">
+                  <span class="ds-filter-chip-title">정렬</span>
+                  <span class="ds-filter-chip-label">최신순</span>
+                  <svg class="ds-filter-chip-arrow" width="20" height="20" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"/></svg>
+                </button>
+              </div>
+              <div class="state-item">
+                <div class="state-label">Selected</div>
+                <button class="ds-filter-chip is-selected">
+                  <span class="ds-filter-chip-title">정렬</span>
+                  <span class="ds-filter-chip-label">최신순</span>
+                  <svg class="ds-filter-chip-arrow" width="20" height="20" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"/></svg>
+                </button>
+              </div>
+              <div class="state-item">
+                <div class="state-label">Disabled</div>
+                <button class="ds-filter-chip is-disabled">
+                  <span class="ds-filter-chip-title">정렬</span>
+                  <span class="ds-filter-chip-label">최신순</span>
+                  <svg class="ds-filter-chip-arrow" width="20" height="20" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"/></svg>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="code-block">
+          <div class="code-tabs">
+            <button class="code-tab active" onclick="switchTab(this,'chip-html')">HTML</button>
+            <button class="code-tab" onclick="switchTab(this,'chip-css')">CSS</button>
+            <button class="code-copy-btn" onclick="copyCode('chip-html-pre')">복사</button>
+          </div>
+          <div class="code-pane active" id="chip-html">
+            <pre id="chip-html-pre"><span class="c-cmt">&lt;!-- Chip Line --&gt;</span>
+<span class="c-tag">&lt;button</span> <span class="c-attr">class</span>=<span class="c-str">"s1-chip"</span><span class="c-tag">&gt;</span>최신순<span class="c-tag">&lt;/button&gt;</span>
+<span class="c-tag">&lt;button</span> <span class="c-attr">class</span>=<span class="c-str">"s1-chip is-selected"</span><span class="c-tag">&gt;</span>최신순<span class="c-tag">&lt;/button&gt;</span>
+
+<span class="c-cmt">&lt;!-- Chip Solid --&gt;</span>
+<span class="c-tag">&lt;button</span> <span class="c-attr">class</span>=<span class="c-str">"s1-chip s1-chip--solid"</span><span class="c-tag">&gt;</span>최신순<span class="c-tag">&lt;/button&gt;</span>
+<span class="c-tag">&lt;button</span> <span class="c-attr">class</span>=<span class="c-str">"s1-chip s1-chip--solid is-selected"</span><span class="c-tag">&gt;</span>최신순<span class="c-tag">&lt;/button&gt;</span>
+
+<span class="c-cmt">&lt;!-- Filter Chip (타이틀 포함) --&gt;</span>
+<span class="c-tag">&lt;button</span> <span class="c-attr">class</span>=<span class="c-str">"ds-filter-chip"</span><span class="c-tag">&gt;</span>
+  <span class="c-tag">&lt;span</span> <span class="c-attr">class</span>=<span class="c-str">"ds-filter-chip-title"</span><span class="c-tag">&gt;</span>정렬<span class="c-tag">&lt;/span&gt;</span>
+  <span class="c-tag">&lt;span</span> <span class="c-attr">class</span>=<span class="c-str">"ds-filter-chip-label"</span><span class="c-tag">&gt;</span>최신순<span class="c-tag">&lt;/span&gt;</span>
+<span class="c-tag">&lt;/button&gt;</span></pre>
+          </div>
+          <div class="code-pane" id="chip-css">
+            <pre><span class="c-cmt">/* Line type */</span>
+<span class="c-prop">--chip-line-default-bg</span>:       <span class="c-val">var(--color-surface-default)</span>;
+<span class="c-prop">--chip-line-default-border</span>:   <span class="c-val">var(--color-border-default)</span>;
+<span class="c-prop">--chip-line-default-text</span>:     <span class="c-val">var(--color-text-caption)</span>;
+<span class="c-prop">--chip-line-selected-border</span>:  <span class="c-val">var(--color-action-primary-default)</span>;
+<span class="c-prop">--chip-line-selected-text</span>:    <span class="c-val">var(--color-action-primary-default)</span>;
+<span class="c-prop">--chip-line-disabled-bg</span>:      <span class="c-val">var(--color-bg-subtle)</span>;
+<span class="c-prop">--chip-line-disabled-text</span>:    <span class="c-val">var(--color-text-disabled)</span>;
+
+<span class="c-cmt">/* Solid type */</span>
+<span class="c-prop">--chip-solid-default-bg</span>:      <span class="c-val">var(--color-bg-subtle)</span>;
+<span class="c-prop">--chip-solid-default-text</span>:    <span class="c-val">var(--color-text-caption)</span>;
+<span class="c-prop">--chip-solid-selected-bg</span>:     <span class="c-val">var(--color-action-primary-default)</span>;
+<span class="c-prop">--chip-solid-selected-text</span>:   <span class="c-val">var(--color-action-primary-text)</span>;
+<span class="c-prop">--chip-solid-disabled-text</span>:   <span class="c-val">var(--color-text-disabled)</span>;</pre>
+          </div>
+        </div>
+      </section>
+
+
+      <!-- ═══ INPUT ═══ -->
+      <section class="comp-section" id="input">
+        <div class="comp-section-header">
+          <h2 class="comp-section-title">Input</h2>
+          <span class="comp-badge comp-badge-blue">Core</span>
+          <span class="comp-badge">3 sizes · 6 states</span>
+        </div>
+
+        <!-- Sizes -->
+        <div class="variant-block">
+          <div class="variant-label">Sizes — Medium (44px) · Small (34px) · XSmall (28px)</div>
+          <div class="preview-area">
+            <div class="state-strip" style="align-items:flex-start;">
+              <div class="state-item">
+                <div class="state-label sl-live">Medium (44px)</div>
+                <div class="s1-input-wrap input-interactive">
+                  <span class="s1-input-label">Label</span>
+                  <div class="s1-input-field">
+                    <input type="text" placeholder="placeholder">
+                    <button class="input-clear-btn" type="button" aria-label="지우기" tabindex="-1">
+                      <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="8" fill="currentColor"/><path d="M5.3 5.3l5.4 5.4M10.7 5.3l-5.4 5.4" stroke="white" stroke-width="1.5" stroke-linecap="round"/></svg>
+                    </button>
+                  </div>
+                  <span class="ds-helper-text">안내 메시지</span>
+                </div>
+              </div>
+              <div class="state-item">
+                <div class="state-label">Small (34px)</div>
+                <div class="s1-input-wrap input-interactive">
+                  <span class="s1-input-label">Label</span>
+                  <div class="s1-input-field input-size-small">
+                    <input type="text" placeholder="placeholder">
+                    <button class="input-clear-btn" type="button" aria-label="지우기" tabindex="-1">
+                      <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="8" fill="currentColor"/><path d="M5.3 5.3l5.4 5.4M10.7 5.3l-5.4 5.4" stroke="white" stroke-width="1.5" stroke-linecap="round"/></svg>
+                    </button>
+                  </div>
+                  <span class="ds-helper-text">안내 메시지</span>
+                </div>
+              </div>
+              <div class="state-item">
+                <div class="state-label">XSmall (28px)</div>
+                <div class="s1-input-wrap input-interactive">
+                  <span class="s1-input-label">Label</span>
+                  <div class="s1-input-field input-size-xsmall">
+                    <input type="text" placeholder="placeholder">
+                    <button class="input-clear-btn" type="button" aria-label="지우기" tabindex="-1">
+                      <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="8" fill="currentColor"/><path d="M5.3 5.3l5.4 5.4M10.7 5.3l-5.4 5.4" stroke="white" stroke-width="1.5" stroke-linecap="round"/></svg>
+                    </button>
+                  </div>
+                  <span class="ds-helper-text">안내 메시지</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- States · Medium -->
+        <div class="variant-block">
+          <div class="variant-label">States · Medium (44px)</div>
+          <div class="preview-area">
+            <div class="state-strip" style="align-items:flex-start;">
+              <div class="state-item">
+                <div class="state-label sl-live">Default</div>
+                <div class="s1-input-wrap">
+                  <span class="s1-input-label">Label</span>
+                  <div class="s1-input-field"><input type="text" placeholder="placeholder"></div>
+                  <span class="ds-helper-text">안내 메시지</span>
+                </div>
+              </div>
+              <div class="state-item">
+                <div class="state-label">Complete</div>
+                <div class="s1-input-wrap">
+                  <span class="s1-input-label">Label</span>
+                  <div class="s1-input-field"><input type="text" value="내용"></div>
+                  <span class="ds-helper-text">안내 메시지</span>
+                </div>
+              </div>
+              <div class="state-item">
+                <div class="state-label">Error</div>
+                <div class="s1-input-wrap is-error">
+                  <span class="s1-input-label">Label</span>
+                  <div class="s1-input-field">
+                    <input type="text" value="내용">
+                  </div>
+                  <span class="ds-helper-text">에러 메시지</span>
+                </div>
+              </div>
+              <div class="state-item">
+                <div class="state-label">Selected</div>
+                <div class="s1-input-wrap is-focus">
+                  <span class="s1-input-label">Label</span>
+                  <div class="s1-input-field">
+                    <input type="text" value="내용">
+                    <span class="s1-input-remove"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="8" fill="currentColor"/><path d="M5.3 5.3l5.4 5.4M10.7 5.3l-5.4 5.4" stroke="white" stroke-width="1.5" stroke-linecap="round"/></svg></span>
+                  </div>
+                  <span class="ds-helper-text">안내 메시지</span>
+                </div>
+              </div>
+              <div class="state-item">
+                <div class="state-label">Success</div>
+                <div class="s1-input-wrap is-correct">
+                  <span class="s1-input-label">Label</span>
+                  <div class="s1-input-field"><input type="text" value="내용"></div>
+                  <span class="ds-helper-text">성공 메시지</span>
+                </div>
+              </div>
+              <div class="state-item">
+                <div class="state-label">Disabled</div>
+                <div class="s1-input-wrap is-disabled">
+                  <span class="s1-input-label">Label</span>
+                  <div class="s1-input-field"><input type="text" value="내용" disabled></div>
+                  <span class="ds-helper-text">안내 메시지</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- States · Small -->
+        <div class="variant-block">
+          <div class="variant-label">States · Small (34px)</div>
+          <div class="preview-area">
+            <div class="state-strip" style="align-items:flex-start;">
+              <div class="state-item">
+                <div class="state-label sl-live">Default</div>
+                <div class="s1-input-wrap">
+                  <span class="s1-input-label">Label</span>
+                  <div class="s1-input-field input-size-small"><input type="text" placeholder="placeholder"></div>
+                  <span class="ds-helper-text">안내 메시지</span>
+                </div>
+              </div>
+              <div class="state-item">
+                <div class="state-label">Complete</div>
+                <div class="s1-input-wrap">
+                  <span class="s1-input-label">Label</span>
+                  <div class="s1-input-field input-size-small"><input type="text" value="내용"></div>
+                  <span class="ds-helper-text">안내 메시지</span>
+                </div>
+              </div>
+              <div class="state-item">
+                <div class="state-label">Error</div>
+                <div class="s1-input-wrap is-error">
+                  <span class="s1-input-label">Label</span>
+                  <div class="s1-input-field input-size-small">
+                    <input type="text" value="내용">
+                  </div>
+                  <span class="ds-helper-text">에러 메시지</span>
+                </div>
+              </div>
+              <div class="state-item">
+                <div class="state-label">Selected</div>
+                <div class="s1-input-wrap is-focus">
+                  <span class="s1-input-label">Label</span>
+                  <div class="s1-input-field input-size-small">
+                    <input type="text" value="내용">
+                    <span class="s1-input-remove"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="8" fill="currentColor"/><path d="M5.3 5.3l5.4 5.4M10.7 5.3l-5.4 5.4" stroke="white" stroke-width="1.5" stroke-linecap="round"/></svg></span>
+                  </div>
+                  <span class="ds-helper-text">안내 메시지</span>
+                </div>
+              </div>
+              <div class="state-item">
+                <div class="state-label">Success</div>
+                <div class="s1-input-wrap is-correct">
+                  <span class="s1-input-label">Label</span>
+                  <div class="s1-input-field input-size-small"><input type="text" value="내용"></div>
+                  <span class="ds-helper-text">성공 메시지</span>
+                </div>
+              </div>
+              <div class="state-item">
+                <div class="state-label">Disabled</div>
+                <div class="s1-input-wrap is-disabled">
+                  <span class="s1-input-label">Label</span>
+                  <div class="s1-input-field input-size-small"><input type="text" value="내용" disabled></div>
+                  <span class="ds-helper-text">안내 메시지</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- States · XSmall -->
+        <div class="variant-block">
+          <div class="variant-label">States · XSmall (28px)</div>
+          <div class="preview-area">
+            <div class="state-strip" style="align-items:flex-start;">
+              <div class="state-item">
+                <div class="state-label sl-live">Default</div>
+                <div class="s1-input-wrap">
+                  <span class="s1-input-label">Label</span>
+                  <div class="s1-input-field input-size-xsmall"><input type="text" placeholder="placeholder"></div>
+                  <span class="ds-helper-text">안내 메시지</span>
+                </div>
+              </div>
+              <div class="state-item">
+                <div class="state-label">Complete</div>
+                <div class="s1-input-wrap">
+                  <span class="s1-input-label">Label</span>
+                  <div class="s1-input-field input-size-xsmall"><input type="text" value="내용"></div>
+                  <span class="ds-helper-text">안내 메시지</span>
+                </div>
+              </div>
+              <div class="state-item">
+                <div class="state-label">Error</div>
+                <div class="s1-input-wrap is-error">
+                  <span class="s1-input-label">Label</span>
+                  <div class="s1-input-field input-size-xsmall">
+                    <input type="text" value="내용">
+                  </div>
+                  <span class="ds-helper-text">에러 메시지</span>
+                </div>
+              </div>
+              <div class="state-item">
+                <div class="state-label">Selected</div>
+                <div class="s1-input-wrap is-focus">
+                  <span class="s1-input-label">Label</span>
+                  <div class="s1-input-field input-size-xsmall">
+                    <input type="text" value="내용">
+                    <span class="s1-input-remove"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="8" fill="currentColor"/><path d="M5.3 5.3l5.4 5.4M10.7 5.3l-5.4 5.4" stroke="white" stroke-width="1.5" stroke-linecap="round"/></svg></span>
+                  </div>
+                  <span class="ds-helper-text">안내 메시지</span>
+                </div>
+              </div>
+              <div class="state-item">
+                <div class="state-label">Success</div>
+                <div class="s1-input-wrap is-correct">
+                  <span class="s1-input-label">Label</span>
+                  <div class="s1-input-field input-size-xsmall"><input type="text" value="내용"></div>
+                  <span class="ds-helper-text">성공 메시지</span>
+                </div>
+              </div>
+              <div class="state-item">
+                <div class="state-label">Disabled</div>
+                <div class="s1-input-wrap is-disabled">
+                  <span class="s1-input-label">Label</span>
+                  <div class="s1-input-field input-size-xsmall"><input type="text" value="내용" disabled></div>
+                  <span class="ds-helper-text">안내 메시지</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="code-block">
+          <div class="code-tabs">
+            <button class="code-tab active" onclick="switchTab(this,'inp-html')">HTML</button>
+            <button class="code-tab" onclick="switchTab(this,'inp-css')">CSS</button>
+            <button class="code-copy-btn" onclick="copyCode('inp-html-pre')">복사</button>
+          </div>
+          <div class="code-pane active" id="inp-html">
+            <pre id="inp-html-pre"><span class="c-cmt">&lt;!-- Medium (44px) — Default --&gt;</span>
+<span class="c-tag">&lt;div</span> <span class="c-attr">class</span>=<span class="c-str">"s1-input-wrap"</span><span class="c-tag">&gt;</span>
+  <span class="c-tag">&lt;span</span> <span class="c-attr">class</span>=<span class="c-str">"s1-input-label"</span><span class="c-tag">&gt;</span>Label<span class="c-tag">&lt;/span&gt;</span>
+  <span class="c-tag">&lt;div</span> <span class="c-attr">class</span>=<span class="c-str">"s1-input-field"</span><span class="c-tag">&gt;</span>
+    <span class="c-tag">&lt;input</span> <span class="c-attr">type</span>=<span class="c-str">"text"</span> <span class="c-attr">placeholder</span>=<span class="c-str">"placeholder"</span><span class="c-tag">&gt;</span>
+  <span class="c-tag">&lt;/div&gt;</span>
+  <span class="c-tag">&lt;span</span> <span class="c-attr">class</span>=<span class="c-str">"ds-helper-text"</span><span class="c-tag">&gt;</span>안내 메시지<span class="c-tag">&lt;/span&gt;</span>
+<span class="c-tag">&lt;/div&gt;</span>
+<span class="c-cmt">&lt;!-- Small (34px): input-size-small 추가 --&gt;</span>
+<span class="c-tag">&lt;div</span> <span class="c-attr">class</span>=<span class="c-str">"s1-input-field input-size-small"</span><span class="c-tag">&gt;</span>...<span class="c-tag">&lt;/div&gt;</span>
+<span class="c-cmt">&lt;!-- XSmall (28px): input-size-xsmall 추가 --&gt;</span>
+<span class="c-tag">&lt;div</span> <span class="c-attr">class</span>=<span class="c-str">"s1-input-field input-size-xsmall"</span><span class="c-tag">&gt;</span>...<span class="c-tag">&lt;/div&gt;</span>
+<span class="c-cmt">&lt;!-- Error: s1-input-wrap에 is-error 추가 --&gt;</span>
+<span class="c-tag">&lt;div</span> <span class="c-attr">class</span>=<span class="c-str">"s1-input-wrap is-error"</span><span class="c-tag">&gt;</span>...<span class="c-tag">&lt;/div&gt;</span>
+<span class="c-cmt">&lt;!-- Success: is-correct / Selected: is-focus / Disabled: is-disabled --&gt;</span></pre>
+          </div>
+          <div class="code-pane" id="inp-css">
+            <pre><span class="c-prop">--input-default-border</span>:   <span class="c-val">var(--color-border-default)</span>;
+<span class="c-prop">--input-hover-border</span>:     <span class="c-val">var(--color-border-strong)</span>;
+<span class="c-prop">--input-focus-border</span>:     <span class="c-val">var(--color-border-focus)</span>;
+<span class="c-prop">--input-error-border</span>:     <span class="c-val">var(--color-border-danger)</span>;
+<span class="c-prop">--input-correct-border</span>:   <span class="c-val">var(--color-border-correct)</span>;
+<span class="c-prop">--input-disabled-bg</span>:      <span class="c-val">var(--color-bg-subtle)</span>;
+<span class="c-prop">--input-disabled-border</span>:  <span class="c-val">var(--color-border-default)</span>;
+<span class="c-prop">--input-placeholder-text</span>: <span class="c-val">var(--color-text-placeholder)</span>;
+<span class="c-prop">--input-error-text</span>:       <span class="c-val">var(--color-text-danger)</span>;
+<span class="c-prop">--input-correct-text</span>:     <span class="c-val">var(--color-text-correct)</span>;</pre>
+          </div>
+        </div>
+      </section>
+
+
+      <!-- ═══ SELECT ═══ -->
+      <section class="comp-section" id="select">
+        <div class="comp-section-header">
+          <h2 class="comp-section-title">Select · Dropdown</h2>
+          <span class="comp-badge comp-badge-blue">Core</span>
+          <span class="comp-badge">4 states</span>
+        </div>
+
+        <div class="variant-block">
+          <div class="variant-label">States</div>
+          <div class="preview-area" style="padding-bottom:72px;">
+            <div class="state-strip" style="align-items:flex-start;">
+              <div class="state-item">
+                <div class="state-label sl-live">Default</div>
+                <div class="s1-select-wrap">
+                  <div class="s1-select-trigger"><span>선택하세요</span><svg class="s1-select-chevron" width="14" height="14" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"/></svg></div>
+                </div>
+              </div>
+              <div class="state-item">
+                <div class="state-label">Open</div>
+                <div class="s1-select-wrap is-open">
+                  <div class="s1-select-trigger"><span>선택하세요</span><svg class="s1-select-chevron" width="14" height="14" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"/></svg></div>
+                  <div class="s1-select-list">
+                    <div class="s1-select-option">옵션 A</div>
+                    <div class="s1-select-option">옵션 B</div>
+                    <div class="s1-select-option">옵션 C</div>
+                  </div>
+                </div>
+              </div>
+              <div class="state-item">
+                <div class="state-label">Selected</div>
+                <div class="s1-select-wrap">
+                  <div class="s1-select-trigger"><span>옵션 A</span><svg class="s1-select-chevron" width="14" height="14" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"/></svg></div>
+                </div>
+              </div>
+              <div class="state-item">
+                <div class="state-label">Disabled</div>
+                <div class="s1-select-wrap is-disabled">
+                  <div class="s1-select-trigger"><span>선택 불가</span><svg class="s1-select-chevron" width="14" height="14" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"/></svg></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="code-block">
+          <div class="code-tabs">
+            <button class="code-tab active" onclick="switchTab(this,'sel-html')">HTML</button>
+            <button class="code-tab" onclick="switchTab(this,'sel-css')">CSS</button>
+            <button class="code-copy-btn" onclick="copyCode('sel-html-pre')">복사</button>
+          </div>
+          <div class="code-pane active" id="sel-html">
+            <pre id="sel-html-pre"><span class="c-cmt">&lt;!-- Trigger --&gt;</span>
+<span class="c-tag">&lt;div</span> <span class="c-attr">class</span>=<span class="c-str">"s1-select-wrap"</span><span class="c-tag">&gt;</span>
+  <span class="c-tag">&lt;div</span> <span class="c-attr">class</span>=<span class="c-str">"s1-select-trigger"</span><span class="c-tag">&gt;</span>
+    <span class="c-tag">&lt;span&gt;</span>선택하세요<span class="c-tag">&lt;/span&gt;</span>
+    <span class="c-cmt">&lt;!-- chevron svg --&gt;</span>
+  <span class="c-tag">&lt;/div&gt;</span>
+<span class="c-tag">&lt;/div&gt;</span>
+<span class="c-cmt">&lt;!-- Open: add is-open to wrap --&gt;</span>
+<span class="c-tag">&lt;div</span> <span class="c-attr">class</span>=<span class="c-str">"s1-select-wrap is-open"</span><span class="c-tag">&gt;</span>
+  <span class="c-tag">&lt;div</span> <span class="c-attr">class</span>=<span class="c-str">"s1-select-trigger"</span><span class="c-tag">&gt;</span>...<span class="c-tag">&lt;/div&gt;</span>
+  <span class="c-tag">&lt;div</span> <span class="c-attr">class</span>=<span class="c-str">"s1-select-list"</span><span class="c-tag">&gt;</span>
+    <span class="c-tag">&lt;div</span> <span class="c-attr">class</span>=<span class="c-str">"s1-select-option"</span><span class="c-tag">&gt;</span>옵션 A<span class="c-tag">&lt;/div&gt;</span>
+    <span class="c-tag">&lt;div</span> <span class="c-attr">class</span>=<span class="c-str">"s1-select-option is-selected"</span><span class="c-tag">&gt;</span>옵션 B<span class="c-tag">&lt;/div&gt;</span>
+  <span class="c-tag">&lt;/div&gt;</span>
+<span class="c-tag">&lt;/div&gt;</span></pre>
+          </div>
+          <div class="code-pane" id="sel-css">
+            <pre><span class="c-prop">--dropdown-trigger-default-bg</span>:      <span class="c-val">var(--color-surface-default)</span>;
+<span class="c-prop">--dropdown-trigger-hover-bg</span>:        <span class="c-val">var(--color-bg-subtle)</span>;
+<span class="c-prop">--dropdown-trigger-open-border</span>:     <span class="c-val">var(--color-border-focus)</span>;
+<span class="c-prop">--dropdown-trigger-disabled-border</span>: <span class="c-val">var(--color-border-subtle)</span>;
+<span class="c-prop">--dropdown-list-bg</span>:                 <span class="c-val">var(--color-surface-raised)</span>;
+<span class="c-prop">--dropdown-option-hover-bg</span>:         <span class="c-val">var(--color-bg-subtle)</span>;
+<span class="c-prop">--dropdown-option-selected-bg</span>:      <span class="c-val">var(--color-action-primary-subtle)</span>;</pre>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </main>
+</div>
+
+<script>
+  function updateTokenComments() {
+    document.querySelectorAll('.code-pane pre .c-val').forEach(valSpan => {
+      const match = valSpan.textContent.match(/var\((--[\w-]+)\)/);
+      if (!match) return;
+      const resolved = getComputedStyle(document.documentElement)
+        .getPropertyValue(match[1]).trim();
+      if (!resolved) return;
+      let node = valSpan.nextSibling;
+      while (node) {
+        if (node.nodeType === 1 && node.classList.contains('c-cmt')) {
+          node.textContent = '/* ' + resolved + ' */';
+          break;
+        }
+        node = node.nextSibling;
+      }
+    });
+  }
+
+  function showSection(id, btn) {
+    document.querySelectorAll('.comp-section').forEach(s => s.classList.remove('is-active'));
+    document.querySelectorAll('.comp-nav-btn').forEach(b => b.classList.remove('is-active'));
+    const target = document.getElementById(id);
+    if (target) target.classList.add('is-active');
+    if (btn) btn.classList.add('is-active');
+  }
+
+  function setTheme(t) {
+    document.documentElement.setAttribute('data-theme', t);
+    document.getElementById('btnLight').classList.toggle('active', t === 'light');
+    document.getElementById('btnDark').classList.toggle('active', t === 'dark');
+    updateTokenComments();
+  }
+  function setPlatform(mode) {
+    const root = document.documentElement;
+    root.classList.remove('view-pc', 'view-mobile');
+    if (mode !== 'all') root.classList.add('view-' + mode);
+    document.getElementById('btnAll').classList.toggle('active', mode === 'all');
+    document.getElementById('btnPC').classList.toggle('active', mode === 'pc');
+    document.getElementById('btnMobile').classList.toggle('active', mode === 'mobile');
+  }
+  function scrollToSection(id) {
+    const el = document.getElementById(id);
+    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+  function setCheckboxLabel(mode, btn) {
+    const section = document.getElementById('checkbox');
+    section.querySelectorAll('.chk-label-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    if (mode === 'nolabel') {
+      section.querySelectorAll('.chk-nolabel-row').forEach(el => el.classList.remove('chk-row-hidden'));
+      section.querySelectorAll('.chk-label-row').forEach(el => el.classList.add('chk-row-hidden'));
+    } else {
+      section.querySelectorAll('.chk-label-row').forEach(el => el.classList.remove('chk-row-hidden'));
+      section.querySelectorAll('.chk-nolabel-row').forEach(el => el.classList.add('chk-row-hidden'));
+    }
+  }
+  function switchTab(btn, paneId) {
+    const block = btn.closest('.code-block');
+    block.querySelectorAll('.code-tab').forEach(b => b.classList.remove('active'));
+    block.querySelectorAll('.code-pane').forEach(p => p.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById(paneId).classList.add('active');
+  }
+  function copyCode(id) {
+    const el = document.getElementById(id);
+    if (!el) return;
+    navigator.clipboard.writeText(el.innerText).then(() => {
+      const btn = el.closest('.code-block').querySelector('.code-copy-btn');
+      const orig = btn.textContent;
+      btn.textContent = '복사됨!';
+      setTimeout(() => { btn.textContent = orig; }, 1500);
+    });
+  }
+  // Interactive inputs in Sizes block
+  document.querySelectorAll('.input-interactive').forEach(wrap => {
+    const input = wrap.querySelector('input');
+    const clearBtn = wrap.querySelector('.input-clear-btn');
+    input.addEventListener('focus', () => wrap.classList.add('is-focus'));
+    input.addEventListener('blur', e => {
+      if (e.relatedTarget === clearBtn) return;
+      wrap.classList.remove('is-focus');
+    });
+    input.addEventListener('input', () => {
+      wrap.classList.toggle('has-value', input.value.length > 0);
+    });
+    clearBtn.addEventListener('mousedown', e => e.preventDefault());
+    clearBtn.addEventListener('click', () => {
+      input.value = '';
+      wrap.classList.remove('has-value');
+      input.focus();
+    });
+  });
+
+  updateTokenComments();
+  showSection('button', document.querySelector('.comp-nav-btn'));
+  setPlatform('pc');
+</script>
+<script src="../assets/js/main.js"></script>
+</body>
+</html>

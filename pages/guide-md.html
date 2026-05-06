@@ -1,0 +1,1206 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Guide MD — SW Design System</title>
+  <link rel="stylesheet" href="../assets/css/style.css">
+  <style>
+    .guide-tabs { display:flex; gap:4px; margin-bottom:28px; background:#f3f4f6; border-radius:12px; padding:4px; }
+    .guide-tab { flex:1; padding:9px 16px; border:none; border-radius:9px; font-size:13px; font-weight:600; color:#6b7280; background:transparent; cursor:pointer; transition:all 0.15s; text-align:center; }
+    .guide-tab.active { background:#fff; color:#111827; box-shadow:0 1px 4px rgba(0,0,0,0.1); }
+    .guide-panel { display:none; }
+    .guide-panel.active { display:block; }
+    .guide-info { display:flex; align-items:center; justify-content:space-between; margin-bottom:12px; flex-wrap:wrap; gap:8px; }
+    .guide-filename { font-size:13px; font-weight:700; color:#374151; font-family:monospace; }
+    .guide-meta { font-size:12px; color:#9ca3af; }
+    .copy-all-btn {
+      display:inline-flex; align-items:center; gap:6px;
+      padding:8px 18px; border-radius:8px; border:none; cursor:pointer;
+      font-size:13px; font-weight:600; background:#1d6ceb; color:#fff;
+      transition:all 0.15s;
+    }
+    .copy-all-btn:hover { background:#2158c8; }
+    .copy-all-btn.copied { background:#10b981; }
+    .md-code-wrap { position:relative; }
+    .md-pre {
+      background:#0f1117; border-radius:12px;
+      padding:24px; overflow-x:auto; overflow-y:auto;
+      max-height:75vh; margin:0;
+      font-family:'SF Mono','Fira Code',monospace;
+      font-size:12px; line-height:1.7; color:#e2e8f0;
+      white-space:pre; tab-size:2;
+    }
+    .line-count { font-size:11px; color:#6b7280; margin-top:8px; text-align:right; }
+  </style>
+</head>
+<body>
+<div class="mobile-header">
+  <button class="hamburger" id="sidebar-toggle" aria-label="메뉴">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/>
+    </svg>
+  </button>
+  <span class="mobile-logo">SW Design System</span>
+</div>
+<div class="sidebar-overlay" id="sidebar-overlay"></div>
+<div class="app">
+  <aside class="sidebar" id="sidebar"></aside>
+  <main class="main-content">
+    <div class="page-header">
+      <div class="page-header-inner">
+        <div class="page-header-text">
+          <h1>📋 Guide MD</h1>
+          <p>디자이너·개발자가 복사해서 바로 쓸 수 있는 토큰 정의 Markdown 원본</p>
+        </div>
+        <div class="page-header-actions">
+          <span class="badge badge-green">3종</span>
+        </div>
+      </div>
+    </div>
+    <div class="page-content">
+      <div class="guide-tabs">
+        <button class="guide-tab active" data-tab="foundation">foundation.md</button>
+        <button class="guide-tab" data-tab="semantic">semantic.md</button>
+        <button class="guide-tab" data-tab="component">component-tokens-extracted.md</button>
+      </div>
+
+      <!-- foundation.md -->
+      <div class="guide-panel active" id="tab-foundation">
+        <div class="guide-info">
+          <div>
+            <div class="guide-filename">tokens/foundation.md</div>
+            <div class="guide-meta">Foundation Token 정의서 · 169줄</div>
+          </div>
+          <button class="copy-all-btn" id="copy-foundation" onclick="copyMd('foundation')">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+            전체 복사
+          </button>
+        </div>
+        <div class="md-code-wrap">
+          <pre class="md-pre" id="code-foundation"># Foundation Token 정의서
+
+&gt; 기준: CLAUDE.md · SW UX GUIDE V2.4
+&gt; 원본: Figma `Foundation` Variable Collection
+&gt; 업데이트: 2026-04-29
+
+---
+
+## 구조 개요
+
+Foundation Token(Primitive)은 디자인시스템의 최하위 원자값이다.
+Semantic Token과 Component Token은 반드시 이 값을 `var()`로 참조한다.
+**HEX 값을 Semantic·Component 레이어에서 직접 사용하는 것은 금지한다.**
+
+```
+Foundation (Primitive)
+  └─ color/gray/0 ~ 900          Light 그레이 스케일
+  └─ color/gray-dark/0 ~ 900     Dark 그레이 스케일
+  └─ color/blue/50 ~ 500         Light 블루 스케일
+  └─ color/blue-dark/50 ~ 500    Dark 블루 스케일
+  └─ color/base/white, black     순수 기준색
+  └─ typography/*                폰트 크기·굵기·행간
+  └─ spacing/*                   간격 스케일
+  └─ radius/*                    모서리 반경
+  └─ shadow/*                    그림자
+```
+
+---
+
+## ⚠️ Dark Primitive 스텝 방향 규칙 (필수)
+
+&gt; **낮은 숫자 = 더 어두운 색, 높은 숫자 = 더 밝은 색**
+
+Dark 팔레트는 Light 팔레트와 **스텝 의미가 반대**다.
+
+| 구분 | Light 팔레트 | Dark 팔레트 |
+|------|-------------|-------------|
+| 낮은 스텝 (0, 50, 100…) | 밝은 색 (흰색 근처) | **어두운 색** (배경·심부) |
+| 높은 스텝 (700, 800, 900) | 어두운 색 (검정 근처) | **밝은 색** (텍스트·하이라이트) |
+
+### 이유
+
+Dark 모드에서 배경은 어두워야 하고(낮은 스텝 = 배경), 텍스트는 밝아야 한다(높은 스텝 = 텍스트).
+Light 팔레트의 스텝 방향을 그대로 따르면 Dark 배경에 어두운 텍스트가 올라오는 역전이 발생한다.
+
+### 적용 체크리스트
+
+새로운 Dark Primitive 팔레트를 추가할 때 반드시 확인:
+
+- [ ] step 0 / 50 / 100 이 가장 어두운 값인가?
+- [ ] step 상위 (전체 스텝의 70~80%) 이후가 밝아지는가?
+- [ ] Semantic Token에서 배경(`bg-default`)이 낮은 스텝을, 텍스트(`text-primary`)가 높은 스텝을 참조하는가?
+- [ ] foundation.html `DARK_PALETTES` 데이터와 semantic.md 값이 일치하는가?
+
+---
+
+## 1. Gray — Light
+
+&gt; CSS 변수 접두사: `--color-gray-{step}`
+
+| Step | Hex | 비고 |
+|------|-----|------|
+| 0 | #FAFAFA | 페이지 기본 배경 |
+| 50 | #F5F5F5 | 섹션·서브 배경 |
+| 100 | #E9E9E9 | 구분선·Muted 배경 |
+| 200 | #D9D9D9 | 테두리 기본 |
+| 300 | #C4C4C4 | 테두리 강조·비활성 |
+| 400 | #9D9D9D | placeholder 텍스트 |
+| 500 | #757575 | 아이콘 기본·보조 텍스트 |
+| 600 | #555555 | 3차 텍스트 |
+| 700 | #434343 | — |
+| 800 | #353535 | 2차 텍스트 |
+| 900 | #202020 | 주요 텍스트 (Off-black) |
+
+---
+
+## 2. Gray — Dark
+
+&gt; CSS 변수 접두사: `--color-gray-dark-{step}`
+&gt; **규칙: 낮은 스텝 = 더 어두운 색 (배경), 높은 스텝 = 더 밝은 색 (텍스트)**
+
+| Step | Hex | 역할 |
+|------|-----|------|
+| 0 | #0D0E12 | 최심부 (관제 화면 배경) |
+| 50 | #131418 | 페이지 기본 배경 (`bg-default`) |
+| 100 | #1C1D23 | 카드·패널 (`surface-default`) |
+| 200 | #24252C | 인풋·섹션 (`bg-subtle`) |
+| 300 | #2E2F38 | 구분선·테이블 헤더 (`bg-muted`) |
+| 400 | #35363F | 툴바·elevated (`bg-elevated`) |
+| 500 | #3E4049 | hover·active 상태 |
+| 600 | #55575F | placeholder 텍스트 |
+| 700 | #8A8C96 | 3차 텍스트 (AA 5.0:1) |
+| 800 | #B8BABF | 보조 텍스트 |
+| 900 | #ECEDF0 | 주요 텍스트 (`text-primary`) |
+
+---
+
+## 3. Blue — Light
+
+&gt; CSS 변수 접두사: `--color-blue-{step}`
+
+| Step | Hex | 비고 |
+|------|-----|------|
+| 50 | #E2F1FF | 선택 배경·subtle tint |
+| 100 | #C8E4FF | hover tint |
+| 150 | #A4D4FF | — |
+| 200 | #8BC6FF | — |
+| 250 | #5BB2FF | — |
+| 300 | #2B9EFF | — |
+| 350 | #268CF8 | Primary (Light) 기본 |
+| 400 | #1D6CEB | **Primary 기본 버튼** |
+| 450 | #2158C8 | hover |
+| 500 | #2747B9 | pressed |
+
+---
+
+## 4. Blue — Dark
+
+&gt; CSS 변수 접두사: `--color-blue-dark-{step}`
+&gt; **규칙: 낮은 스텝 = 더 어두운 색 (배경), 높은 스텝 = 더 밝은 색 (텍스트·링크)**
+
+| Step | Hex | 역할 |
+|------|-----|------|
+| 50 | #0C1D38 | 선택 배경 (deepest) |
+| 100 | #112B55 | 선택 행 |
+| 150 | #1A3D72 | hover accent |
+| 200 | #214EA0 | pressed |
+| 250 | #2A65C8 | primary hover |
+| 300 | #3070D8 | **Primary 기본 버튼** (`action-primary-default`) |
+| 350 | #4285E8 | primary accent / focus ring |
+| 400 | #6FA5F8 | 링크 텍스트 (`text-link`) |
+| 450 | #96BEF9 | soft |
+| 500 | #C0D8FC | tint (lightest) |
+
+---
+
+## 5. 스텝 방향 대조표
+
+두 팔레트의 방향이 서로 반전되는 것을 명확히 보여주는 대조표다.
+
+### Gray
+
+| Step | Light 역할 | Light Hex | Dark Hex | Dark 역할 |
+|------|-----------|-----------|----------|-----------|
+| 0 | 가장 밝은 배경 | #FAFAFA | #0D0E12 | 가장 어두운 배경 |
+| 50 | 섹션 배경 | #F5F5F5 | #131418 | 페이지 배경 |
+| 100 | Muted 배경 | #E9E9E9 | #1C1D23 | 카드 표면 |
+| 400 | placeholder | #9D9D9D | #35363F | 툴바·elevated |
+| 700 | — | #434343 | #8A8C96 | 3차 텍스트 |
+| 900 | 주요 텍스트 | #202020 | #ECEDF0 | 주요 텍스트 |
+
+### Blue
+
+| Step | Light 역할 | Light Hex | Dark Hex | Dark 역할 |
+|------|-----------|-----------|----------|-----------|
+| 50 | 가장 밝은 tint | #E2F1FF | #0C1D38 | 가장 어두운 선택 배경 |
+| 300 | — | #2B9EFF | #3070D8 | Primary 버튼 |
+| 400 | Primary 버튼 | #1D6CEB | #6FA5F8 | 링크 텍스트 |
+| 500 | pressed | #2747B9 | #C0D8FC | 가장 밝은 tint |
+
+---
+
+## 6. Foundation 등록·확장 원칙
+
+1. **HEX 직접 사용 금지** — Semantic/Component 레이어는 항상 `var(--color-gray-dark-*)` 형식으로 참조한다.
+2. **rgba 허용 예외** — `color-border-*` Dark 전용, `color-overlay` Light·Dark 공통만 허용한다.
+3. **Dark Primitive 신규 추가 시** — 위 스텝 방향 규칙을 반드시 따르고, semantic.md와 foundation.html `DARK_PALETTES` 동시에 업데이트한다.
+4. **스텝 값은 원본 그대로** — 반올림·보정 금지. Figma 원본 HEX를 그대로 사용한다.
+5. **신규 컬러 계열 추가 시** — gray-dark / blue-dark 예시를 참고해 낮은 스텝(배경)→높은 스텝(텍스트) 방향으로 정의한다.
+</pre>
+        </div>
+        <div class="line-count">169 lines</div>
+      </div>
+
+      <!-- semantic.md -->
+      <div class="guide-panel" id="tab-semantic">
+        <div class="guide-info">
+          <div>
+            <div class="guide-filename">tokens/semantic.md</div>
+            <div class="guide-meta">Semantic Token 정의서 · 396줄</div>
+          </div>
+          <button class="copy-all-btn" id="copy-semantic" onclick="copyMd('semantic')">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+            전체 복사
+          </button>
+        </div>
+        <div class="md-code-wrap">
+          <pre class="md-pre" id="code-semantic"># Semantic Token 정의서
+
+&gt; 기준: CLAUDE.md · SW UX GUIDE V2.4
+&gt; 원본: Figma `semantic` Variable Collection
+&gt; 업데이트: 2026-04-29
+
+---
+
+## 구조 개요
+
+```
+color-bg        → 페이지·레이아웃 배경
+color-surface   → 컴포넌트 표면 배경 (카드, 모달, 패널)
+color-text      → 텍스트 색상
+color-border    → 테두리·구분선
+color-icon      → 아이콘
+color-action    → 인터랙션 액션 (버튼 등 컴포넌트가 참조)
+color-status    → UI 피드백 상태 (성공·에러·경고·정보)
+color-overlay   → 딤·오버레이
+```
+
+&gt; **`color-surface` 안내**
+&gt; `color-bg`가 페이지/화면 전체 배경이라면, `color-surface`는 그 위에 올라오는 컴포넌트(카드·패널·모달)의 표면 배경입니다.
+&gt; 라이트 모드에서는 둘 다 흰색이라 구분이 어렵지만, 다크 모드에서 레이어 깊이가 명확하게 분리됩니다.
+
+---
+
+## 📌 Dark Primitive 참조 (미확정 — Foundation 등록 대기)
+
+&gt; 아래 값은 Dark Mode 설계안 기반 임시 참조표입니다.
+&gt; Figma Foundation에 해당 Primitive가 추가·승인된 후 `var()` 참조로 전환해야 합니다.
+&gt; **확정 전까지 이 표의 HEX를 직접 토큰 값으로 사용하지 않습니다.**
+
+&gt; #### ⚠️ Dark Primitive 스텝 방향 규칙
+&gt; Dark 팔레트는 Light와 스텝 의미가 반대다.
+&gt; **낮은 스텝(0·50·100) = 더 어두운 색(배경), 높은 스텝(700·800·900) = 더 밝은 색(텍스트).**
+&gt; 상세 근거 및 체크리스트 → `tokens/foundation.md` 참조
+
+| Dark Primitive | Hex | 비고 |
+|----------------|-----|------|
+| gray-dark/0 | #0D0E12 | 최심부 (관제 화면 배경) |
+| gray-dark/50 | #131418 | 페이지 기본 배경 |
+| gray-dark/100 | #1C1D23 | 카드·패널 |
+| gray-dark/200 | #24252C | 인풋·섹션 |
+| gray-dark/300 | #2E2F38 | 구분선·테이블 헤더 |
+| gray-dark/400 | #35363F | 툴바·elevated |
+| gray-dark/500 | #3E4049 | hover·active |
+| gray-dark/600 | #55575F | placeholder 텍스트 |
+| gray-dark/700 | #8A8C96 | 3차 텍스트 (AA 5.0:1) |
+| gray-dark/800 | #B8BABF | 보조 텍스트 |
+| gray-dark/900 | #ECEDF0 | 주요 텍스트 |
+| blue-dark/50 | #0C1D38 | 선택 배경 |
+| blue-dark/100 | #112B55 | 선택 행 |
+| blue-dark/150 | #1A3D72 | hover accent |
+| blue-dark/200 | #214EA0 | pressed |
+| blue-dark/250 | #2A65C8 | primary hover |
+| blue-dark/300 | #3070D8 | 버튼 기본 |
+| blue-dark/350 | #4285E8 | primary accent / focus ring |
+| blue-dark/400 | #6FA5F8 | 링크 텍스트 |
+| blue-dark/450 | #96BEF9 | soft |
+| blue-dark/500 | #C0D8FC | tint |
+| status-dark/red | #F06070 | 에러 (dark) |
+| status-dark/green | #3FBE7E | 성공 (dark) |
+| status-dark/yellow | #E8C048 | 경고 (dark) |
+
+---
+
+## 1. color-bg — 페이지·섹션 배경
+
+**역할**: 페이지 전체, 레이아웃 섹션, 화면 최하위 배경에 사용.
+컴포넌트 표면(카드·패널)에는 `color-surface` 사용 권장.
+
+| CSS Variable | Figma 원본 | Light Hex | Light Primitive | Dark Hex | Dark Primitive |
+|---|---|---|---|---|---|
+| `--color-bg-default` | surface/neutral/bg/base-alt | `#FAFAFA` | color/gray/0 | `#131418` | gray-dark/50 |
+| `--color-bg-subtle` | surface/neutral/bg/subtle | `#F5F5F5` | color/gray/50 | `#24252C` | gray-dark/200 |
+| `--color-bg-muted` | surface/neutral/bg/strong | `#E9E9E9` | color/gray/100 | `#2E2F38` | gray-dark/300 |
+| `--color-bg-elevated` | surface/neutral/bg/support | `#E9E9E9` | color/gray/100 | `#35363F` | gray-dark/400 |
+| `--color-bg-home` | surface/base-background/home | `#F5F6FB` | — (Primitive 미등록) | `#131418` | gray-dark/50 |
+
+&gt; ⚠️ `--color-bg-active`, `--color-bg-deepest`, `--color-bg-selected` 3종은 Figma 원본 미확인 상태로 `tokens/review/pending-review.md` 항목 1에서 검토 중입니다.
+&gt; `--color-bg-home`의 Light Primitive(`#F5F6FB`)는 기존 팔레트 미등록 값으로 `tokens/review/pending-review.md` 항목 2에서 검토 중입니다.
+
+---
+
+## 2. color-surface — 컴포넌트 표면 배경
+
+**역할**: `color-bg` 위에 올라오는 컴포넌트의 배경. 카드, 패널, 모달, 드롭다운.
+라이트에서는 `color-bg`와 동일한 흰색이나, **다크에서 레이어 깊이가 시각적으로 분리됨**.
+
+| CSS Variable | Figma 원본 | 역할 | Light Hex | Light Primitive | Dark Hex | Dark Primitive |
+|---|---|---|---|---|---|---|
+| `--color-surface-default` | surface/neutral/bg/base | 카드·패널·인풋 기본 표면 | `#FFFFFF` | color/base/white | `#1C1D23` | gray-dark/100 |
+| `--color-surface-raised` | surface/base-background/default | 모달·드롭다운·플로팅 표면 | `#FFFFFF` | color/base/white | `#35363F` | gray-dark/400 |
+
+---
+
+## 3. color-text — 텍스트
+
+| CSS Variable | Figma 원본 | Light Hex | Light Primitive | Dark Hex | Dark Primitive | 용도 |
+|---|---|---|---|---|---|---|
+| `--color-text-primary` | color/text/title/primary | `#202020` | color/gray/900 | `#ECEDF0` | gray-dark/900 | 제목·주요 본문 |
+| `--color-text-secondary` | color/text/title/secondary, body/primary | `#353535` | color/gray/800 | `#B8BABF` | gray-dark/800 | 서브타이틀·일반 본문 |
+| `--color-text-tertiary` | color/text/title/tertiary, body/secondary | `#555555` | color/gray/600 | `#8A8C96` | gray-dark/700 | 보조 텍스트 |
+| `--color-text-caption` | color/text/body/tertiary | `#757575` | color/gray/500 | `#8A8C96` | gray-dark/700 | 캡션·힌트 |
+| `--color-text-placeholder` | color/text/state/placeholder | `#9D9D9D` | color/gray/400 | `#55575F` | gray-dark/600 | 플레이스홀더 공통 색상 |
+| `--color-text-helper` | color/text/state/helper | `#9D9D9D` | color/gray/400 | `#55575F` | gray-dark/600 | 도움말 텍스트 |
+| `--color-text-link` | color/text/state/accent | `#1D6CEB` | color/blue/400 | `#6FA5F8` | blue-dark/400 | 링크·액센트 |
+| `--color-text-correct` | color/text/state/correct | `#1D6CEB` | color/blue/400 | `#6FA5F8` | blue-dark/400 | 올바른 입력 피드백 |
+| `--color-text-danger` | color/text/state/caution | `#FF4554` | color/red/300 | `#F06070` | status-dark/red | 에러·위험 메시지 |
+| `--color-text-disabled` | color/text/state/disabled | `#C4C4C4` | color/gray/300 | `#35363F` | gray-dark/400 | 비활성 텍스트 |
+| `--color-text-inverse` | color/text/state/accent-alt | `#FFFFFF` | color/base/white | `#FFFFFF` | color/base/white | 색상 배경 위 텍스트 |
+
+---
+
+## 4. color-border — 테두리·구분선
+
+&gt; 다크모드 border는 고정 hex 대신 rgba를 사용합니다. 배경 명도에 무관하게 일정한 레이어 깊이를 표현할 수 있습니다.
+
+| CSS Variable | Figma 원본 | Light Hex | Light Primitive | Dark Hex | Dark Primitive | 용도 |
+|---|---|---|---|---|---|---|
+| `--color-border-subtle` | color/line/gray/subtle | `#E9E9E9` | color/gray/100 | `rgba(255,255,255,0.04)` | — (rgba) | 미세 구분선 |
+| `--color-border-default` | color/line/gray/default | `#D9D9D9` | color/gray/200 | `rgba(255,255,255,0.07)` | — (rgba) | 기본 테두리 |
+| `--color-border-strong` | — (Figma 확인 필요) | `#C4C4C4` | color/gray/300 | `rgba(255,255,255,0.12)` | — (rgba) | 강조 테두리 |
+| `--color-border-emphasis` | color/line/gray/strong | `#353535` | color/gray/800 | `rgba(255,255,255,0.20)` | — (rgba) | 헤비 구분선·선택 강조선 |
+| `--color-border-focus` | color/line/blue | `#1D6CEB` | color/blue/400 | `#4285E8` | blue-dark/350 | 포커스 링 (접근성 필수) |
+| `--color-border-white` | color/line/white | `#FFFFFF` | color/base/white | `#FFFFFF` | color/base/white | 흰 배경 위 구분선 |
+| `--color-border-danger` | color/form-control/border/error | `#FF4554` | color/red/300 | `#F06070` | status-dark/red | 에러 인풋 테두리 |
+| `--color-border-correct` | color/form-control/border/correct | `#1D6CEB` | color/blue/400 | `#4285E8` | blue-dark/350 | 올바른 입력 피드백 테두리 |
+
+---
+
+## 5. color-icon — 아이콘
+
+| CSS Variable | Figma 원본 | Light Hex | Light Primitive | Dark Hex | Dark Primitive | 용도 |
+|---|---|---|---|---|---|---|
+| `--color-icon-default` | color/icon/gray | `#757575` | color/gray/500 | `#8A8C96` | gray-dark/700 | 기본 아이콘 |
+| `--color-icon-muted` | color/icon/gray-light | `#C4C4C4` | color/gray/300 | `#35363F` | gray-dark/400 | 비강조·보조 아이콘 |
+| `--color-icon-emphasis` | color/icon/gray-dark | `#353535` | color/gray/800 | `#B8BABF` | gray-dark/800 | 강조 아이콘 |
+| `--color-icon-accent` | color/icon/blue | `#1D6CEB` | color/blue/400 | `#6FA5F8` | blue-dark/400 | 액션·링크 아이콘 |
+| `--color-icon-inverse` | color/icon/white | `#FFFFFF` | color/base/white | `#FFFFFF` | color/base/white | 색상 배경 위 아이콘 |
+| `--color-icon-danger` | color/icon/red | `#FF4554` | color/red/300 | `#F06070` | status-dark/red | 에러·위험 아이콘 |
+
+---
+
+## 6. color-action — 인터랙션 액션
+
+&gt; 컴포넌트 Token이 이 레이어를 `var()`로 참조합니다. 직접 스타일에 사용하지 않습니다.
+
+| CSS Variable | Light Hex | Light Primitive | Dark Hex | Dark Primitive | 용도 |
+|---|---|---|---|---|---|
+| `--color-action-primary-default` | `#1D6CEB` | color/blue/400 | `#3070D8` | blue-dark/300 | Primary CTA 기본 |
+| `--color-action-primary-hover` | `#2158C8` | color/blue/450 | `#2A65C8` | blue-dark/250 | Primary hover |
+| `--color-action-primary-pressed` | `#2747B9` | color/blue/500 | `#214EA0` | blue-dark/200 | Primary pressed |
+| `--color-action-primary-text` | `#FFFFFF` | color/base/white | `#FFFFFF` | color/base/white | Primary 버튼 라벨 |
+| `--color-action-primary-subtle` | `#E2F1FF` | color/blue/50 | `#112B55` | blue-dark/100 | 선택·강조 배경 |
+
+---
+
+## 7. color-status — 상태 색상
+
+### 7-1. UI 피드백 상태 (폼 검증·알림)
+
+&gt; 서비스 확정값 기준. success는 현재 서비스에서 blue 계열을 사용 중이며 이를 기준으로 정의.
+
+| CSS Variable | Light Hex | Light Primitive | Dark Hex | Dark Primitive | 용도 |
+|---|---|---|---|---|---|
+| `--color-status-success` | `#1D6CEB` | color/blue/400 | `#4285E8` | blue-dark/350 | 성공·완료·올바름 |
+| `--color-status-error` | `#E50533` | color/red/400 | `#F06070` | status-dark/red | 에러·실패 |
+| `--color-status-warning` | `#DBA400` | color/yellow/400 | `#E8C048` | status-dark/yellow | 경고 |
+| `--color-status-info` | `#757575` | color/gray/500 | `#8A8C96` | gray-dark/700 | 정보 |
+
+### 7-2. 서비스·도메인 상태 (관제 시스템 장치 상태)
+
+&gt; ⚠️ 이 섹션의 `color-domain-status-*` 토큰 8종은 `tokens/review/pending-review.md` 항목 4에서 **Domain Token 레이어 이동** 검토 중입니다.
+&gt; 다크 값 미정의 상태이며, 승인 후 `tokens/domain/status.md`로 분리됩니다.
+
+---
+
+## 8. color-overlay — 오버레이·딤
+
+&gt; rgba 직접 사용 허용 — alpha 채널이 포함된 값은 Foundation Primitive로 alias 불가.
+
+| CSS Variable | Figma 원본 | Light | Dark |
+|---|---|---|---|
+| `--color-overlay` | color/overlay | `rgba(0,0,0,0.5)` | `rgba(0,0,0,0.75)` |
+
+---
+
+## 9. Spacing · Sizing · Radius 토큰
+
+&gt; Figma `semantic` 컬렉션에 포함되어 있으나, 이는 Foundation Primitive를 역할 기반으로 매핑한 **Semantic Spacing** 토큰입니다.
+&gt; Foundation의 `spacing/4`, `spacing/8` 등을 참조하므로 구조는 올바릅니다.
+
+### 9-1. Spacing
+
+| CSS Variable | 역할 | 값 | Primitive 참조 |
+|---|---|---|---|
+| `--spacing-padding-block-xxs` | 블록 패딩 최소 | 8px | spacing/8 |
+| `--spacing-padding-block-xs` | 블록 패딩 소 | 12px | spacing/12 |
+| `--spacing-padding-block-sm` | 블록 패딩 중소 | 16px | spacing/16 |
+| `--spacing-padding-block-md` | 블록 패딩 중 | 20px | spacing/20 |
+| `--spacing-padding-block-lg` | 블록 패딩 대 | 24px | spacing/24 |
+| `--spacing-padding-inline-xxs` | 인라인 패딩 최소 | 8px | spacing/8 |
+| `--spacing-padding-inline-xs` | 인라인 패딩 소 | 12px | spacing/12 |
+| `--spacing-padding-inline-sm` | 인라인 패딩 중소 | 16px | spacing/16 |
+| `--spacing-padding-inline-md` | 인라인 패딩 중 | 20px | spacing/20 |
+| `--spacing-padding-inline-lg` | 인라인 패딩 대 | 24px | spacing/24 |
+| `--spacing-section-xs` | 섹션 간격 최소 | 16px | spacing/16 |
+| `--spacing-section-sm` | 섹션 간격 소 | 20px | spacing/20 |
+| `--spacing-section-md` | 섹션 간격 중 | 24px | spacing/24 |
+| `--spacing-section-lg` | 섹션 간격 대 | 32px | spacing/32 |
+| `--spacing-section-xl` | 섹션 간격 특대 | 40px | spacing/40 |
+| `--spacing-section-xxl` | 섹션 간격 최대 | 48px | spacing/48 |
+| `--spacing-stack-xs` | 수직 스택 소 | 12px | spacing/12 |
+| `--spacing-stack-sm` | 수직 스택 중소 | 16px | spacing/16 |
+| `--spacing-stack-md` | 수직 스택 중 | 20px | spacing/20 |
+| `--spacing-stack-lg` | 수직 스택 대 | 24px | spacing/24 |
+| `--spacing-cluster-xxs` | 인라인 그룹 최소 | 8px | spacing/8 |
+| `--spacing-cluster-xs` | 인라인 그룹 소 | 12px | spacing/12 |
+| `--spacing-cluster-sm` | 인라인 그룹 중소 | 16px | spacing/16 |
+| `--spacing-cluster-md` | 인라인 그룹 중 | 20px | spacing/20 |
+| `--spacing-label-gap-inline-sm` | 레이블 인라인 간격 소 | 8px | spacing/8 |
+| `--spacing-label-gap-inline-md` | 레이블 인라인 간격 중 | 12px | spacing/12 |
+| `--spacing-label-gap-inline-lg` | 레이블 인라인 간격 대 | 16px | spacing/16 |
+| `--spacing-label-gap-block-sm` | 레이블 블록 간격 소 | 4px | spacing/4 |
+| `--spacing-label-gap-block-md` | 레이블 블록 간격 중 | 8px | spacing/8 |
+
+### 9-2. Sizing
+
+| CSS Variable | 역할 | 값 |
+|---|---|---|
+| `--sizing-form-control-height-xxs` | 인풋 높이 최소 | 28px |
+| `--sizing-form-control-height-xs` | 인풋 높이 소 | 34px |
+| `--sizing-form-control-height-md` | 인풋 높이 중 | 44px |
+| `--sizing-form-control-height-lg` | 인풋 높이 대 | 48px |
+| `--sizing-form-control-dataview-height-sm` | 데이터뷰 인풋 소 | 28px |
+| `--sizing-form-control-dataview-height-md` | 데이터뷰 인풋 중 | 32px |
+| `--sizing-button-height-xs` | 버튼 높이 최소 | 34px |
+| `--sizing-button-height-sm` | 버튼 높이 소 | 40px |
+| `--sizing-button-height-md` | 버튼 높이 중 | 44px |
+| `--sizing-button-height-lg` | 버튼 높이 대 | 48px |
+| `--sizing-button-min-width` | 버튼 최소 너비 | 80px |
+| `--sizing-chip-height-sm` | 칩 높이 소 | 28px |
+| `--sizing-chip-height-md` | 칩 높이 중 | 30px |
+| `--sizing-chip-height-lg` | 칩 높이 대 | 34px |
+| `--sizing-table-row-height-xs` | 테이블 행 높이 최소 | 34px |
+| `--sizing-table-row-height-sm` | 테이블 행 높이 소 | 38px |
+| `--sizing-table-row-height-md` | 테이블 행 높이 중 | 44px |
+| `--sizing-icon-10` | 아이콘 10 | 10px |
+| `--sizing-icon-16` | 아이콘 16 | 16px |
+| `--sizing-icon-18` | 아이콘 18 | 18px |
+| `--sizing-icon-20` | 아이콘 20 | 20px |
+| `--sizing-icon-24` | 아이콘 24 | 24px |
+| `--sizing-icon-28` | 아이콘 28 | 28px |
+| `--sizing-icon-32` | 아이콘 32 | 32px |
+
+### 9-3. Radius · Border Width
+
+| CSS Variable | 역할 | 값 |
+|---|---|---|
+| `--radius-control-xs` | 컨트롤 radius 최소 | 2px |
+| `--radius-control-sm` | 컨트롤 radius 소 | 4px |
+| `--radius-button-md` | 버튼 radius | 4px |
+| `--radius-card-md` | 카드 radius | 10px |
+| `--radius-modal-md` | 모달 radius | 8px |
+| `--border-width-default` | 기본 선 두께 | 1px |
+| `--border-width-strong` | 강조 선 두께 | 2px |
+
+---
+
+## 10. CSS 구현 참조
+
+```css
+/* ── Light (기본) ── */
+:root {
+  /* color-bg */
+  --color-bg-default:    #FAFAFA;
+  --color-bg-subtle:     #F5F5F5;
+  --color-bg-muted:      #E9E9E9;
+  --color-bg-elevated:   #E9E9E9;
+  --color-bg-home:       #F5F6FB;
+
+  /* color-surface */
+  --color-surface-default: #FFFFFF;
+  --color-surface-raised:  #FFFFFF;
+
+  /* color-text */
+  --color-text-primary:     #202020;
+  --color-text-secondary:   #353535;
+  --color-text-tertiary:    #555555;
+  --color-text-caption:     #757575;
+  --color-text-placeholder: #9D9D9D;
+  --color-text-helper:      #9D9D9D;
+  --color-text-link:        #1D6CEB;
+  --color-text-correct:     #1D6CEB;
+  --color-text-danger:      #FF4554;
+  --color-text-disabled:    #C4C4C4;
+  --color-text-inverse:     #FFFFFF;
+
+  /* color-border */
+  --color-border-subtle:    #E9E9E9;
+  --color-border-default:   #D9D9D9;
+  --color-border-strong:    #C4C4C4;
+  --color-border-emphasis:  #353535;
+  --color-border-focus:     #1D6CEB;
+  --color-border-white:     #FFFFFF;
+  --color-border-danger:    #FF4554;
+  --color-border-correct:   #1D6CEB;
+
+  /* color-icon */
+  --color-icon-default:  #757575;
+  --color-icon-muted:    #C4C4C4;
+  --color-icon-emphasis: #353535;
+  --color-icon-accent:   #1D6CEB;
+  --color-icon-inverse:  #FFFFFF;
+  --color-icon-danger:   #FF4554;
+
+  /* color-action */
+  --color-action-primary-default: #1D6CEB;
+  --color-action-primary-hover:   #2158C8;
+  --color-action-primary-pressed: #2747B9;
+  --color-action-primary-text:    #FFFFFF;
+  --color-action-primary-subtle:  #E2F1FF;
+
+  /* color-status */
+  --color-status-success: #1D6CEB;
+  --color-status-error:   #E50533;
+  --color-status-warning: #DBA400;
+  --color-status-info:    #757575;
+
+  /* color-overlay */
+  --color-overlay: rgba(0, 0, 0, 0.5);
+}
+
+/* ── Dark ── */
+[data-theme=&quot;dark&quot;] {
+  /* color-bg */
+  --color-bg-default:  #131418;
+  --color-bg-subtle:   #24252C;
+  --color-bg-muted:    #2E2F38;
+  --color-bg-elevated: #35363F;
+  --color-bg-home:     #131418;
+
+  /* color-surface */
+  --color-surface-default: #1C1D23;
+  --color-surface-raised:  #35363F;
+
+  /* color-text */
+  --color-text-primary:     #ECEDF0;
+  --color-text-secondary:   #B8BABF;
+  --color-text-tertiary:    #8A8C96;
+  --color-text-caption:     #8A8C96;
+  --color-text-placeholder: #55575F;
+  --color-text-helper:      #55575F;
+  --color-text-link:        #6FA5F8;
+  --color-text-correct:     #6FA5F8;
+  --color-text-danger:      #F06070;
+  --color-text-disabled:    #35363F;
+  --color-text-inverse:     #FFFFFF;
+
+  /* color-border */
+  --color-border-subtle:   rgba(255, 255, 255, 0.04);
+  --color-border-default:  rgba(255, 255, 255, 0.07);
+  --color-border-strong:   rgba(255, 255, 255, 0.12);
+  --color-border-emphasis: rgba(255, 255, 255, 0.20);
+  --color-border-focus:    #4285E8;
+  --color-border-white:    #FFFFFF;
+  --color-border-danger:   #F06070;
+  --color-border-correct:  #4285E8;
+
+  /* color-icon */
+  --color-icon-default:  #8A8C96;
+  --color-icon-muted:    #35363F;
+  --color-icon-emphasis: #B8BABF;
+  --color-icon-accent:   #6FA5F8;
+  --color-icon-inverse:  #FFFFFF;
+  --color-icon-danger:   #F06070;
+
+  /* color-action */
+  --color-action-primary-default: #3070D8;
+  --color-action-primary-hover:   #2A65C8;
+  --color-action-primary-pressed: #214EA0;
+  --color-action-primary-text:    #FFFFFF;
+  --color-action-primary-subtle:  #112B55;
+
+  /* color-status */
+  --color-status-success: #3FBE7E;
+  --color-status-error:   #F06070;
+  --color-status-warning: #E8C048;
+  --color-status-info:    #8A8C96;
+
+  /* color-overlay */
+  --color-overlay: rgba(0, 0, 0, 0.75);
+}
+```
+</pre>
+        </div>
+        <div class="line-count">396 lines</div>
+      </div>
+
+      <!-- component-tokens-extracted.md -->
+      <div class="guide-panel" id="tab-component">
+        <div class="guide-info">
+          <div>
+            <div class="guide-filename">tokens/component-tokens-extracted.md</div>
+            <div class="guide-meta">Component Token 추출 정의서 · 496줄</div>
+          </div>
+          <button class="copy-all-btn" id="copy-component" onclick="copyMd('component')">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+            전체 복사
+          </button>
+        </div>
+        <div class="md-code-wrap">
+          <pre class="md-pre" id="code-component"># Component Token 추출 정의서
+
+&gt; 기준: CLAUDE.md · SW UX GUIDE V2.4
+&gt; 원본: Figma `semantic` Variable Collection — Component 수준 토큰 분리
+&gt; 업데이트: 2026-04-28
+
+---
+
+## 분리 배경
+
+Figma의 `semantic` 컬렉션에 아래 9개 그룹의 **컴포넌트 수준 토큰**이 혼재되어 있었습니다.
+이 파일은 해당 토큰을 Component Token 레이어 기준으로 재정의합니다.
+
+```
+color/button/*        → Button
+color/chip/*          → Chip
+color/dropdown/*      → Dropdown
+color/form-control/*  → Input / Textarea
+color/control/*       → Checkbox / Radio / Toggle
+color/pagination/*    → Pagination
+color/navigation/*    → Navigation (GNB / LNB)
+color/data/*          → Table / Data Grid
+color/status-card/*   → Status Card (관제 도메인)
+```
+
+---
+
+## 네이밍 규칙
+
+```
+--{component}-{variant}-{state}-{property}
+```
+
+- **component**: button, chip, dropdown, input, checkbox, radio, toggle, pagination, nav, table, status-card
+- **variant**: primary, secondary, ghost, outlined …
+- **state**: default, hover, pressed, focus, selected, disabled, error, correct, loading …
+- **property**: bg, text, border, icon, indicator, check …
+
+Component Token은 **반드시 Semantic Token을 `var()`로 참조**합니다.
+Primitive(Foundation)를 직접 참조하지 않습니다.
+
+---
+
+## 1. Button
+
+### 변수 정의
+
+| Figma 원본 | CSS Variable | Semantic 참조 | 설명 |
+|---|---|---|---|
+| color/button/primary/bg--default | `--button-primary-default-bg` | `var(--color-action-primary-default)` | Primary 기본 배경 |
+| color/button/primary/bg--hover | `--button-primary-hover-bg` | `var(--color-action-primary-hover)` | Primary hover 배경 |
+| color/button/primary/bg--pressed | `--button-primary-pressed-bg` | `var(--color-action-primary-pressed)` | Primary pressed 배경 |
+| color/button/primary/bg--disabled | `--button-primary-disabled-bg` | `var(--color-border-default)` | Primary disabled 배경 |
+| color/button/primary/text--default | `--button-primary-default-text` | `var(--color-action-primary-text)` | Primary 텍스트 |
+| color/button/primary/text--disabled | `--button-primary-disabled-text` | `var(--color-text-disabled)` | Primary disabled 텍스트 |
+| color/button/secondary/bg--default | `--button-secondary-default-bg` | `var(--color-surface-default)` | Secondary 기본 배경 |
+| color/button/secondary/bg--hover | `--button-secondary-hover-bg` | `var(--color-bg-subtle)` | Secondary hover 배경 |
+| color/button/secondary/bg--pressed | `--button-secondary-pressed-bg` | `var(--color-bg-muted)` | Secondary pressed 배경 |
+| color/button/secondary/bg--disabled | `--button-secondary-disabled-bg` | `var(--color-bg-subtle)` | Secondary disabled 배경 |
+| color/button/secondary/border--default | `--button-secondary-default-border` | `var(--color-border-default)` | Secondary 기본 테두리 |
+| color/button/secondary/border--hover | `--button-secondary-hover-border` | `var(--color-border-strong)` | Secondary hover 테두리 |
+| color/button/secondary/border--disabled | `--button-secondary-disabled-border` | `var(--color-border-subtle)` | Secondary disabled 테두리 |
+| color/button/secondary/text--default | `--button-secondary-default-text` | `var(--color-text-secondary)` | Secondary 텍스트 |
+| color/button/secondary/text--disabled | `--button-secondary-disabled-text` | `var(--color-text-disabled)` | Secondary disabled 텍스트 |
+| color/button/ghost/bg--hover | `--button-ghost-hover-bg` | `var(--color-bg-subtle)` | Ghost hover 배경 |
+| color/button/ghost/bg--pressed | `--button-ghost-pressed-bg` | `var(--color-bg-muted)` | Ghost pressed 배경 |
+| color/button/ghost/text--default | `--button-ghost-default-text` | `var(--color-text-secondary)` | Ghost 텍스트 |
+| color/button/ghost/text--disabled | `--button-ghost-disabled-text` | `var(--color-text-disabled)` | Ghost disabled 텍스트 |
+| color/button/primary/icon--default | `--button-primary-default-icon` | `var(--color-action-primary-text)` | Primary 아이콘 |
+| color/button/secondary/icon--default | `--button-secondary-default-icon` | `var(--color-icon-default)` | Secondary 아이콘 |
+| color/button/secondary/icon--disabled | `--button-secondary-disabled-icon` | `var(--color-icon-muted)` | Secondary disabled 아이콘 |
+| color/button/ghost/icon--default | `--button-ghost-default-icon` | `var(--color-icon-default)` | Ghost 아이콘 |
+| color/button/ghost/icon--disabled | `--button-ghost-disabled-icon` | `var(--color-icon-muted)` | Ghost disabled 아이콘 |
+| color/button/primary/focus-ring | `--button-primary-focus-ring` | `var(--color-border-focus)` | Primary focus 링 |
+| color/button/secondary/focus-ring | `--button-secondary-focus-ring` | `var(--color-border-focus)` | Secondary focus 링 |
+
+### 상태 커버리지
+
+| 상태 | primary | secondary | ghost |
+|------|:-------:|:---------:|:-----:|
+| default | ✅ | ✅ | ✅ |
+| hover | ✅ | ✅ | ✅ |
+| pressed | ✅ | ✅ | ✅ |
+| focus | ✅ | ✅ | — |
+| disabled | ✅ | ✅ | ✅ |
+| loading | `--button-primary-default-bg` 재사용 | | |
+
+### CSS 구현
+
+```css
+/* Button — Primary */
+--button-primary-default-bg:  var(--color-action-primary-default);
+--button-primary-hover-bg:    var(--color-action-primary-hover);
+--button-primary-pressed-bg:  var(--color-action-primary-pressed);
+--button-primary-disabled-bg: var(--color-border-default);
+--button-primary-default-text:  var(--color-action-primary-text);
+--button-primary-disabled-text: var(--color-text-disabled);
+--button-primary-default-icon:  var(--color-action-primary-text);
+--button-primary-focus-ring:    var(--color-border-focus);
+
+/* Button — Secondary */
+--button-secondary-default-bg:      var(--color-surface-default);
+--button-secondary-hover-bg:        var(--color-bg-subtle);
+--button-secondary-pressed-bg:      var(--color-bg-muted);
+--button-secondary-disabled-bg:     var(--color-bg-subtle);
+--button-secondary-default-border:  var(--color-border-default);
+--button-secondary-hover-border:    var(--color-border-strong);
+--button-secondary-disabled-border: var(--color-border-subtle);
+--button-secondary-default-text:    var(--color-text-secondary);
+--button-secondary-disabled-text:   var(--color-text-disabled);
+--button-secondary-default-icon:    var(--color-icon-default);
+--button-secondary-disabled-icon:   var(--color-icon-muted);
+--button-secondary-focus-ring:      var(--color-border-focus);
+
+/* Button — Ghost */
+--button-ghost-hover-bg:     var(--color-bg-subtle);
+--button-ghost-pressed-bg:   var(--color-bg-muted);
+--button-ghost-default-text: var(--color-text-secondary);
+--button-ghost-disabled-text: var(--color-text-disabled);
+--button-ghost-default-icon:  var(--color-icon-default);
+--button-ghost-disabled-icon: var(--color-icon-muted);
+
+
+```
+
+---
+
+## 2. Chip
+
+### 변수 정의
+
+| Figma 원본 | CSS Variable | Semantic 참조 | 설명 |
+|---|---|---|---|
+| color/chip/bg--default | `--chip-default-bg` | `var(--color-bg-subtle)` | 기본 배경 |
+| color/chip/bg--hover | `--chip-hover-bg` | `var(--color-bg-muted)` | hover 배경 |
+| color/chip/bg--selected | `--chip-selected-bg` | `var(--color-action-primary-subtle)` | 선택 배경 |
+| color/chip/bg--disabled | `--chip-disabled-bg` | `var(--color-bg-subtle)` | disabled 배경 |
+| color/chip/border--default | `--chip-default-border` | `var(--color-border-default)` | 기본 테두리 |
+| color/chip/border--hover | `--chip-hover-border` | `var(--color-border-strong)` | hover 테두리 |
+| color/chip/border--selected | `--chip-selected-border` | `var(--color-action-primary-default)` | 선택 테두리 |
+| color/chip/border--disabled | `--chip-disabled-border` | `var(--color-border-subtle)` | disabled 테두리 |
+| color/chip/text--default | `--chip-default-text` | `var(--color-text-secondary)` | 기본 텍스트 |
+| color/chip/text--selected | `--chip-selected-text` | `var(--color-action-primary-default)` | 선택 텍스트 |
+| color/chip/text--disabled | `--chip-disabled-text` | `var(--color-text-disabled)` | disabled 텍스트 |
+| color/chip/icon--default | `--chip-default-icon` | `var(--color-icon-default)` | 기본 아이콘 |
+| color/chip/icon--selected | `--chip-selected-icon` | `var(--color-action-primary-default)` | 선택 아이콘 |
+| color/chip/icon--disabled | `--chip-disabled-icon` | `var(--color-icon-muted)` | disabled 아이콘 |
+| color/chip/close-icon--default | `--chip-default-close-icon` | `var(--color-icon-default)` | 닫기 아이콘 |
+| color/chip/close-icon--hover | `--chip-hover-close-icon` | `var(--color-icon-emphasis)` | 닫기 아이콘 hover |
+| color/chip/close-icon--selected | `--chip-selected-close-icon` | `var(--color-action-primary-default)` | 닫기 아이콘 선택 |
+| color/chip/focus-ring | `--chip-focus-ring` | `var(--color-border-focus)` | focus 링 |
+
+### CSS 구현
+
+```css
+/* Chip */
+--chip-default-bg:       var(--color-bg-subtle);
+--chip-hover-bg:         var(--color-bg-muted);
+--chip-selected-bg:      var(--color-action-primary-subtle);
+--chip-disabled-bg:      var(--color-bg-subtle);
+--chip-default-border:   var(--color-border-default);
+--chip-hover-border:     var(--color-border-strong);
+--chip-selected-border:  var(--color-action-primary-default);
+--chip-disabled-border:  var(--color-border-subtle);
+--chip-default-text:     var(--color-text-secondary);
+--chip-selected-text:    var(--color-action-primary-default);
+--chip-disabled-text:    var(--color-text-disabled);
+--chip-default-icon:     var(--color-icon-default);
+--chip-selected-icon:    var(--color-action-primary-default);
+--chip-disabled-icon:    var(--color-icon-muted);
+--chip-default-close-icon:  var(--color-icon-default);
+--chip-hover-close-icon:    var(--color-icon-emphasis);
+--chip-selected-close-icon: var(--color-action-primary-default);
+--chip-focus-ring:       var(--color-border-focus);
+```
+
+---
+
+## 3. Dropdown
+
+### 변수 정의
+
+| Figma 원본 | CSS Variable | Semantic 참조 | 설명 |
+|---|---|---|---|
+| color/dropdown/trigger/bg--default | `--dropdown-trigger-default-bg` | `var(--color-surface-default)` | 트리거 기본 배경 |
+| color/dropdown/trigger/bg--hover | `--dropdown-trigger-hover-bg` | `var(--color-bg-subtle)` | 트리거 hover 배경 |
+| color/dropdown/trigger/bg--open | `--dropdown-trigger-open-bg` | `var(--color-bg-subtle)` | 트리거 열림 배경 |
+| color/dropdown/trigger/bg--disabled | `--dropdown-trigger-disabled-bg` | `var(--color-bg-subtle)` | 트리거 disabled 배경 |
+| color/dropdown/trigger/border--default | `--dropdown-trigger-default-border` | `var(--color-border-default)` | 트리거 기본 테두리 |
+| color/dropdown/trigger/border--hover | `--dropdown-trigger-hover-border` | `var(--color-border-strong)` | 트리거 hover 테두리 |
+| color/dropdown/trigger/border--open | `--dropdown-trigger-open-border` | `var(--color-border-focus)` | 트리거 열림 테두리 |
+| color/dropdown/trigger/border--disabled | `--dropdown-trigger-disabled-border` | `var(--color-border-subtle)` | 트리거 disabled 테두리 |
+| color/dropdown/trigger/text--default | `--dropdown-trigger-default-text` | `var(--color-text-secondary)` | 트리거 텍스트 |
+| color/dropdown/trigger/text--disabled | `--dropdown-trigger-disabled-text` | `var(--color-text-disabled)` | 트리거 disabled 텍스트 |
+| color/dropdown/list/bg | `--dropdown-list-bg` | `var(--color-surface-raised)` | 목록 배경 |
+| color/dropdown/option/bg--hover | `--dropdown-option-hover-bg` | `var(--color-bg-subtle)` | 옵션 hover 배경 |
+| color/dropdown/option/bg--selected | `--dropdown-option-selected-bg` | `var(--color-action-primary-subtle)` | 옵션 선택 배경 |
+
+### CSS 구현
+
+```css
+/* Dropdown — Trigger */
+--dropdown-trigger-default-bg:      var(--color-surface-default);
+--dropdown-trigger-hover-bg:        var(--color-bg-subtle);
+--dropdown-trigger-open-bg:         var(--color-bg-subtle);
+--dropdown-trigger-disabled-bg:     var(--color-bg-subtle);
+--dropdown-trigger-default-border:  var(--color-border-default);
+--dropdown-trigger-hover-border:    var(--color-border-strong);
+--dropdown-trigger-open-border:     var(--color-border-focus);
+--dropdown-trigger-disabled-border: var(--color-border-subtle);
+--dropdown-trigger-default-text:    var(--color-text-secondary);
+--dropdown-trigger-disabled-text:   var(--color-text-disabled);
+
+/* Dropdown — List &amp; Option */
+--dropdown-list-bg:             var(--color-surface-raised);
+--dropdown-option-hover-bg:     var(--color-bg-subtle);
+--dropdown-option-selected-bg:  var(--color-action-primary-subtle);
+```
+
+---
+
+## 4. Input / Form-control
+
+&gt; `border/disabled-alt1`, `border/disabled-alt2` 처리:
+&gt; Semantic 레이어에서 단일 `--color-border-disabled` (= `--color-border-subtle`) 제공.
+&gt; 컴포넌트별로 아래와 같이 override.
+
+### 변수 정의
+
+| Figma 원본 | CSS Variable | Semantic 참조 | 설명 |
+|---|---|---|---|
+| color/form-control/bg--default | `--input-default-bg` | `var(--color-surface-default)` | 기본 배경 |
+| color/form-control/bg--hover | `--input-hover-bg` | `var(--color-surface-default)` | hover 배경 (변화 없음) |
+| color/form-control/bg--focus | `--input-focus-bg` | `var(--color-surface-default)` | focus 배경 |
+| color/form-control/bg--disabled | `--input-disabled-bg` | `var(--color-bg-subtle)` | disabled 배경 |
+| color/form-control/bg--error | `--input-error-bg` | `var(--color-surface-default)` | 에러 배경 |
+| color/form-control/border--default | `--input-default-border` | `var(--color-border-default)` | 기본 테두리 |
+| color/form-control/border--hover | `--input-hover-border` | `var(--color-border-strong)` | hover 테두리 |
+| color/form-control/border--focus | `--input-focus-border` | `var(--color-border-focus)` | focus 테두리 |
+| color/form-control/border--error | `--input-error-border` | `var(--color-border-danger)` | 에러 테두리 |
+| color/form-control/border--correct | `--input-correct-border` | `var(--color-border-correct)` | 올바른 입력 테두리 |
+| color/form-control/border--disabled | `--input-disabled-border` | `var(--color-border-default)` | disabled 테두리 (alt1) |
+
+&gt; **Select / 별도 컴포넌트의 disabled border (alt2)**
+&gt; `--select-disabled-border: var(--color-border-subtle)` — 컴포넌트 파일에서 개별 정의.
+
+### 텍스트 / 아이콘 변수
+
+| Figma 원본 | CSS Variable | Semantic 참조 | 설명 |
+|---|---|---|---|
+| color/form-control/text--placeholder | `--input-placeholder-text` | `var(--color-text-placeholder)` | 플레이스홀더 |
+| color/form-control/text--helper | `--input-helper-text` | `var(--color-text-helper)` | 도움말 텍스트 |
+| color/form-control/text--error | `--input-error-text` | `var(--color-text-danger)` | 에러 메시지 |
+| color/form-control/text--correct | `--input-correct-text` | `var(--color-text-correct)` | 올바른 입력 피드백 |
+| color/form-control/text--disabled | `--input-disabled-text` | `var(--color-text-disabled)` | disabled 텍스트 |
+
+### CSS 구현
+
+```css
+/* Input / Form-control */
+--input-default-bg:      var(--color-surface-default);
+--input-hover-bg:        var(--color-surface-default);
+--input-focus-bg:        var(--color-surface-default);
+--input-disabled-bg:     var(--color-bg-subtle);
+--input-error-bg:        var(--color-surface-default);
+--input-default-border:  var(--color-border-default);
+--input-hover-border:    var(--color-border-strong);
+--input-focus-border:    var(--color-border-focus);
+--input-error-border:    var(--color-border-danger);
+--input-correct-border:  var(--color-border-correct);
+--input-disabled-border: var(--color-border-default);    /* alt1 */
+
+/* Select (disabled border alt2) */
+--select-disabled-border: var(--color-border-subtle);   /* alt2 */
+
+/* Text */
+--input-placeholder-text: var(--color-text-placeholder);
+--input-helper-text:       var(--color-text-helper);
+--input-error-text:        var(--color-text-danger);
+--input-correct-text:      var(--color-text-correct);
+--input-disabled-text:     var(--color-text-disabled);
+```
+
+---
+
+## 5. Control (Checkbox / Radio / Toggle)
+
+### 변수 정의
+
+| Figma 원본 | CSS Variable | Semantic 참조 | 설명 |
+|---|---|---|---|
+| color/control/checkbox/bg--default | `--checkbox-default-bg` | `var(--color-surface-default)` | 체크박스 기본 배경 |
+| color/control/checkbox/bg--checked | `--checkbox-checked-bg` | `var(--color-action-primary-default)` | 체크박스 체크 배경 |
+| color/control/checkbox/bg--indeterminate | `--checkbox-indeterminate-bg` | `var(--color-action-primary-default)` | 체크박스 중간 상태 배경 |
+| color/control/checkbox/bg--disabled | `--checkbox-disabled-bg` | `var(--color-bg-subtle)` | 체크박스 disabled 배경 |
+| color/control/checkbox/border--default | `--checkbox-default-border` | `var(--color-border-default)` | 체크박스 기본 테두리 |
+| color/control/checkbox/border--hover | `--checkbox-hover-border` | `var(--color-border-focus)` | 체크박스 hover 테두리 |
+| color/control/checkbox/border--checked | `--checkbox-checked-border` | `var(--color-action-primary-default)` | 체크박스 체크 테두리 |
+| color/control/checkbox/border--disabled | `--checkbox-disabled-border` | `var(--color-border-subtle)` | 체크박스 disabled 테두리 |
+| color/control/checkbox/check-icon | `--checkbox-check-icon` | `var(--color-action-primary-text)` | 체크 마크 |
+| color/control/radio/bg--default | `--radio-default-bg` | `var(--color-surface-default)` | 라디오 기본 배경 |
+| color/control/radio/bg--disabled | `--radio-disabled-bg` | `var(--color-bg-subtle)` | 라디오 disabled 배경 |
+| color/control/radio/border--default | `--radio-default-border` | `var(--color-border-default)` | 라디오 기본 테두리 |
+| color/control/radio/border--hover | `--radio-hover-border` | `var(--color-border-focus)` | 라디오 hover 테두리 |
+| color/control/radio/border--selected | `--radio-selected-border` | `var(--color-action-primary-default)` | 라디오 선택 테두리 |
+| color/control/radio/border--disabled | `--radio-disabled-border` | `var(--color-border-subtle)` | 라디오 disabled 테두리 |
+| color/control/radio/dot--selected | `--radio-selected-dot` | `var(--color-action-primary-default)` | 라디오 선택 도트 |
+| color/control/toggle/bg--on | `--toggle-on-bg` | `var(--color-action-primary-default)` | 토글 ON 배경 |
+
+### CSS 구현
+
+```css
+/* Checkbox */
+--checkbox-default-bg:       var(--color-surface-default);
+--checkbox-checked-bg:       var(--color-action-primary-default);
+--checkbox-indeterminate-bg: var(--color-action-primary-default);
+--checkbox-disabled-bg:      var(--color-bg-subtle);
+--checkbox-default-border:   var(--color-border-default);
+--checkbox-hover-border:     var(--color-border-focus);
+--checkbox-checked-border:   var(--color-action-primary-default);
+--checkbox-disabled-border:  var(--color-border-subtle);
+--checkbox-check-icon:       var(--color-action-primary-text);
+
+/* Radio */
+--radio-default-bg:      var(--color-surface-default);
+--radio-disabled-bg:     var(--color-bg-subtle);
+--radio-default-border:  var(--color-border-default);
+--radio-hover-border:    var(--color-border-focus);
+--radio-selected-border: var(--color-action-primary-default);
+--radio-disabled-border: var(--color-border-subtle);
+--radio-selected-dot:    var(--color-action-primary-default);
+
+/* Toggle */
+--toggle-on-bg:       var(--color-action-primary-default);
+--toggle-off-bg:      var(--color-border-default);
+--toggle-disabled-bg: var(--color-border-subtle);
+--toggle-knob:        var(--color-action-primary-text);
+```
+
+---
+
+## 6. Pagination
+
+### 변수 정의
+
+| Figma 원본 | CSS Variable | Semantic 참조 | 설명 |
+|---|---|---|---|
+| color/pagination/bg--default | `--pagination-default-bg` | `var(--color-surface-default)` | 기본 배경 |
+| color/pagination/bg--hover | `--pagination-hover-bg` | `var(--color-bg-subtle)` | hover 배경 |
+| color/pagination/bg--active | `--pagination-active-bg` | `var(--color-action-primary-default)` | 현재 페이지 배경 |
+| color/pagination/bg--disabled | `--pagination-disabled-bg` | `var(--color-surface-default)` | disabled 배경 |
+| color/pagination/text--default | `--pagination-default-text` | `var(--color-text-secondary)` | 기본 텍스트 |
+| color/pagination/text--active | `--pagination-active-text` | `var(--color-action-primary-text)` | 현재 페이지 텍스트 |
+
+### CSS 구현
+
+```css
+/* Pagination */
+--pagination-default-bg:   var(--color-surface-default);
+--pagination-hover-bg:     var(--color-bg-subtle);
+--pagination-active-bg:    var(--color-action-primary-default);
+--pagination-disabled-bg:  var(--color-surface-default);
+--pagination-default-text: var(--color-text-secondary);
+--pagination-active-text:  var(--color-action-primary-text);
+--pagination-disabled-text: var(--color-text-disabled);
+--pagination-border:       var(--color-border-default);
+```
+
+---
+
+## 7. Navigation (GNB / LNB)
+
+### 변수 정의
+
+| Figma 원본 | CSS Variable | Semantic 참조 | 설명 |
+|---|---|---|---|
+| color/navigation/bg | `--nav-bg` | `var(--color-surface-default)` | 내비게이션 배경 |
+| color/navigation/item/bg--hover | `--nav-item-hover-bg` | `var(--color-bg-subtle)` | 아이템 hover 배경 |
+| color/navigation/item/bg--active | `--nav-item-active-bg` | `var(--color-action-primary-subtle)` | 아이템 활성 배경 |
+| color/navigation/item/text--default | `--nav-item-default-text` | `var(--color-text-tertiary)` | 기본 텍스트 |
+| color/navigation/item/text--active | `--nav-item-active-text` | `var(--color-action-primary-default)` | 활성 텍스트 |
+| color/navigation/item/icon--default | `--nav-item-default-icon` | `var(--color-icon-default)` | 기본 아이콘 |
+| color/navigation/item/icon--active | `--nav-item-active-icon` | `var(--color-action-primary-default)` | 활성 아이콘 |
+| color/navigation/item/indicator | `--nav-item-indicator` | `var(--color-action-primary-default)` | 활성 인디케이터 |
+
+### CSS 구현
+
+```css
+/* Navigation */
+--nav-bg:                  var(--color-surface-default);
+--nav-item-hover-bg:       var(--color-bg-subtle);
+--nav-item-active-bg:      var(--color-action-primary-subtle);
+--nav-item-default-text:   var(--color-text-tertiary);
+--nav-item-active-text:    var(--color-action-primary-default);
+--nav-item-default-icon:   var(--color-icon-default);
+--nav-item-active-icon:    var(--color-action-primary-default);
+--nav-item-indicator:      var(--color-action-primary-default);
+--nav-divider:             var(--color-border-subtle);
+```
+
+---
+
+## 8. Table / Data Grid
+
+### 변수 정의
+
+| Figma 원본 | CSS Variable | Semantic 참조 | 설명 |
+|---|---|---|---|
+| color/data/table/header-bg | `--table-header-bg` | `var(--color-bg-subtle)` | 헤더 배경 |
+| color/data/table/row-bg--default | `--table-row-default-bg` | `var(--color-surface-default)` | 행 기본 배경 |
+| color/data/table/row-bg--hover | `--table-row-hover-bg` | `var(--color-bg-subtle)` | 행 hover 배경 |
+| color/data/table/row-bg--selected | `--table-row-selected-bg` | `var(--color-bg-selected)` | 행 선택 배경 |
+
+### CSS 구현
+
+```css
+/* Table / Data Grid */
+--table-header-bg:        var(--color-bg-subtle);
+--table-header-text:      var(--color-text-tertiary);
+--table-header-border:    var(--color-border-default);
+--table-row-default-bg:   var(--color-surface-default);
+--table-row-hover-bg:     var(--color-bg-subtle);
+--table-row-selected-bg:  var(--color-bg-selected);
+--table-cell-border:      var(--color-border-subtle);
+--table-cell-text:        var(--color-text-secondary);
+```
+
+---
+
+## 9. Status Card *(관제 도메인)*
+
+&gt; 이 그룹은 관제 시스템의 장치 상태 표시용입니다.
+&gt; 표준 UI 피드백(성공/에러)과 다른 개념으로, **Domain Token 레이어로 이동 예정**입니다.
+&gt; Figma 오타 3건 포함: `--defualt` → `--default`.
+
+### 변수 정의
+
+| Figma 원본 (오타 수정 후) | CSS Variable | Semantic / Domain 참조 | 설명 |
+|---|---|---|---|
+| color/status-card/text/primary--default | `--status-card-primary-text` | `var(--color-domain-status-primary)` | 주요 상태 텍스트 |
+| color/status-card/text/secondary--default | `--status-card-secondary-text` | `var(--color-domain-status-secondary)` | 보조 상태 텍스트 |
+| color/status-card/text/tertiary--default | `--status-card-tertiary-text` | `var(--color-domain-status-tertiary)` | 3차 상태 텍스트 |
+| color/status-card/bg/primary | `--status-card-primary-bg` | `var(--color-action-primary-subtle)` | 주요 상태 배경 |
+| color/status-card/bg/secondary | `--status-card-secondary-bg` | `var(--color-bg-subtle)` | 보조 상태 배경 |
+| color/status-card/icon/primary | `--status-card-primary-icon` | `var(--color-domain-status-primary)` | 주요 상태 아이콘 |
+| color/status-card/icon/secondary | `--status-card-secondary-icon` | `var(--color-domain-status-secondary)` | 보조 상태 아이콘 |
+| color/status-card/icon/tertiary | `--status-card-tertiary-icon` | `var(--color-domain-status-tertiary)` | 3차 상태 아이콘 |
+
+&gt; **오타 수정 필요 (Figma)**
+&gt; `color/status-card/text/primary--defualt` → `color/status-card/text/primary--default`
+&gt; `color/status-card/text/secondary--defualt` → `color/status-card/text/secondary--default`
+&gt; `color/status-card/text/tertiary--defualt` → `color/status-card/text/tertiary--default`
+
+### CSS 구현
+
+```css
+/* Status Card (Domain) */
+--status-card-primary-text:   var(--color-domain-status-primary);
+--status-card-secondary-text: var(--color-domain-status-secondary);
+--status-card-tertiary-text:  var(--color-domain-status-tertiary);
+--status-card-primary-bg:     var(--color-action-primary-subtle);
+--status-card-secondary-bg:   var(--color-bg-subtle);
+--status-card-primary-icon:   var(--color-domain-status-primary);
+--status-card-secondary-icon: var(--color-domain-status-secondary);
+--status-card-tertiary-icon:  var(--color-domain-status-tertiary);
+```
+
+---
+
+## 전체 참조 구조 요약
+
+```
+Component Token
+  └─ var(--color-action-*)      ← 버튼 primary, 컨트롤 체크 등
+  └─ var(--color-bg-*)          ← hover/selected 배경
+  └─ var(--color-surface-*)     ← 컴포넌트 기본 배경
+  └─ var(--color-border-*)      ← 테두리, focus ring
+  └─ var(--color-text-*)        ← 텍스트, 플레이스홀더, 에러
+  └─ var(--color-icon-*)        ← 아이콘
+  └─ var(--color-status-*)      ← UI 피드백 (에러, 경고)
+  └─ var(--color-domain-*)      ← 도메인 상태 (관제 시스템)
+```
+
+&gt; **원칙**: Foundation(Primitive) 직접 참조 금지.
+&gt; 반드시 Semantic Token을 경유합니다.
+
+---
+
+## Figma 작업 체크리스트
+
+- [ ] `semantic` 컬렉션에서 위 9개 그룹을 `component` 컬렉션으로 이동
+- [ ] `color/status-card/text/*--defualt` → `--default` 오타 3건 수정
+- [ ] 각 Component Token이 Semantic Token을 올바르게 alias하는지 검증
+- [ ] `color/dropdown/list/bg` → `surface/raised` 참조로 업데이트
+- [ ] `border/disabled-alt1`, `border/disabled-alt2` → Component 레이어에서 `--input-disabled-border` / `--select-disabled-border`로 분리
+- [ ] `color/status-card/*` → Domain Token 컬렉션 이동 여부 확정
+</pre>
+        </div>
+        <div class="line-count">496 lines</div>
+      </div>
+    </div>
+  </main>
+</div>
+<script src="../assets/js/main.js"></script>
+<script>
+document.querySelectorAll('.guide-tab').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.guide-tab').forEach(b=>b.classList.remove('active'));
+    document.querySelectorAll('.guide-panel').forEach(p=>p.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('tab-'+btn.dataset.tab).classList.add('active');
+  });
+});
+
+function copyMd(id) {
+  const text = document.getElementById('code-'+id).textContent;
+  navigator.clipboard.writeText(text).catch(()=>{});
+  const btn = document.getElementById('copy-'+id);
+  btn.textContent = '복사됨!';
+  btn.classList.add('copied');
+  setTimeout(()=>{ btn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> 전체 복사'; btn.classList.remove('copied'); }, 2000);
+}
+</script>
+</body>
+</html>

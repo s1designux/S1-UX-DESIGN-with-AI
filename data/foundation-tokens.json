@@ -1,0 +1,167 @@
+{
+  "_meta": {
+    "version": "1.0.0",
+    "updatedAt": "2026-04-27",
+    "source": "SW-UX-GUIDE-V2.4 / Figma node 540:7663",
+    "description": "Foundation token 전체 목록. 이 파일을 기준으로 token-map.json, theme.css, theme.js, tailwind.config.js가 생성됨."
+  },
+  "colors": {
+    "primitive": {
+      "base": [
+        { "token": "color/base/black", "cssVar": "--color-black", "hex": "#000000", "label": "Black" },
+        { "token": "color/base/white", "cssVar": "--color-white", "hex": "#ffffff", "label": "White" }
+      ],
+      "brand": [
+        { "token": "color/brand/blue",    "cssVar": "--color-brand-blue", "hex": "#0072ce", "label": "Brand Blue",   "description": "주 브랜드 컬러. CTA, 링크, Primary 버튼에 사용." },
+        { "token": "color/brand/red",     "cssVar": "--color-brand-red",  "hex": "#ff312c", "label": "Brand Red",    "description": "보조 브랜드 컬러. 위험·오류 강조 요소." },
+        { "token": "color/brand/gray",    "cssVar": "--color-brand-gray", "hex": "#dfdede", "label": "Brand Gray",   "description": "브랜드 그레이. 비활성·보조 장식 요소." },
+        { "token": "color/brand/ci/logo", "cssVar": "--color-brand-ci",   "hex": "#004097", "label": "CI / Logo",    "description": "CI·로고 전용 딥 블루. UI 컬러로 직접 사용 금지." }
+      ],
+      "palettes": {
+        "gray": [
+          { "step": 0,   "hex": "#fafafa" },
+          { "step": 50,  "hex": "#f5f5f5" },
+          { "step": 100, "hex": "#e9e9e9" },
+          { "step": 200, "hex": "#d9d9d9" },
+          { "step": 300, "hex": "#c4c4c4" },
+          { "step": 400, "hex": "#9d9d9d" },
+          { "step": 500, "hex": "#757575" },
+          { "step": 600, "hex": "#555555" },
+          { "step": 700, "hex": "#434343" },
+          { "step": 800, "hex": "#353535" },
+          { "step": 900, "hex": "#202020" }
+        ],
+        "blue": [
+          { "step": 50,  "hex": "#e2f1ff" }, { "step": 100, "hex": "#c8e4ff" },
+          { "step": 150, "hex": "#a4d4ff" }, { "step": 200, "hex": "#8bc6ff" },
+          { "step": 250, "hex": "#5bb2ff" }, { "step": 300, "hex": "#2b9eff" },
+          { "step": 350, "hex": "#268cf8" }, { "step": 400, "hex": "#1d6ceb" },
+          { "step": 450, "hex": "#2158c8" }, { "step": 500, "hex": "#2747b9" }
+        ],
+        "red": [
+          { "step": 50,  "hex": "#ffebef" }, { "step": 100, "hex": "#ffccd6" },
+          { "step": 150, "hex": "#fbb2ba" }, { "step": 200, "hex": "#f8979e" },
+          { "step": 250, "hex": "#fc6e79" }, { "step": 300, "hex": "#ff4554" },
+          { "step": 350, "hex": "#f22544" }, { "step": 400, "hex": "#e50533" },
+          { "step": 450, "hex": "#d60228" }, { "step": 500, "hex": "#c8001e" }
+        ],
+        "orange": [
+          { "step": 50,  "hex": "#ffede0" }, { "step": 100, "hex": "#fdd8bf" },
+          { "step": 150, "hex": "#fec6a0" }, { "step": 200, "hex": "#ffb482" },
+          { "step": 250, "hex": "#ff954e" }, { "step": 300, "hex": "#ff761a" },
+          { "step": 350, "hex": "#ee680d" }, { "step": 400, "hex": "#da4c00" },
+          { "step": 450, "hex": "#b63c00" }, { "step": 500, "hex": "#8e2e00" }
+        ],
+        "yellow": [
+          { "step": 50,  "hex": "#fff4ce" }, { "step": 100, "hex": "#fee89a" },
+          { "step": 150, "hex": "#fede6c" }, { "step": 200, "hex": "#ffd53d" },
+          { "step": 250, "hex": "#ffcc1e" }, { "step": 300, "hex": "#ffc200" },
+          { "step": 350, "hex": "#f5b900" }, { "step": 400, "hex": "#dba400" },
+          { "step": 450, "hex": "#ba8900" }, { "step": 500, "hex": "#8f6a00" }
+        ],
+        "green": [
+          { "step": 50,  "hex": "#e3f2ea" }, { "step": 100, "hex": "#caecda" },
+          { "step": 150, "hex": "#9cd8bd" }, { "step": 200, "hex": "#6fc4a2" },
+          { "step": 250, "hex": "#47bb8e" }, { "step": 300, "hex": "#1fb279" },
+          { "step": 350, "hex": "#10a86c" }, { "step": 400, "hex": "#009e5e" },
+          { "step": 450, "hex": "#008650" }, { "step": 500, "hex": "#006f42" }
+        ],
+        "skyblue": [
+          { "step": 50,  "hex": "#c4eef7" }, { "step": 100, "hex": "#a5e5f3" },
+          { "step": 150, "hex": "#7bd6ea" }, { "step": 200, "hex": "#51c7e1" },
+          { "step": 250, "hex": "#3bc0dd" }, { "step": 300, "hex": "#25b9da" },
+          { "step": 350, "hex": "#1daacb" }, { "step": 400, "hex": "#159bbc" },
+          { "step": 450, "hex": "#1284a0" }, { "step": 500, "hex": "#0f6c84" }
+        ],
+        "purple": [
+          { "step": 50,  "hex": "#e8e9fc" }, { "step": 100, "hex": "#cfd1f9" },
+          { "step": 150, "hex": "#c0c0fc" }, { "step": 200, "hex": "#b0b0ff" },
+          { "step": 250, "hex": "#8b8bee" }, { "step": 300, "hex": "#6666dd" },
+          { "step": 350, "hex": "#4e4ec3" }, { "step": 400, "hex": "#3535a8" },
+          { "step": 450, "hex": "#2d2d8f" }, { "step": 500, "hex": "#252576" }
+        ],
+        "brown": [
+          { "step": 50,  "hex": "#f6eee9" }, { "step": 100, "hex": "#e4d5c8" },
+          { "step": 150, "hex": "#dbc6b3" }, { "step": 200, "hex": "#d1b69f" },
+          { "step": 250, "hex": "#a68c75" }, { "step": 300, "hex": "#7c614a" },
+          { "step": 350, "hex": "#685240" }, { "step": 400, "hex": "#554435" },
+          { "step": 450, "hex": "#483a2d" }, { "step": 500, "hex": "#3b3025" }
+        ],
+        "visual-gray": [
+          { "step": 50,  "hex": "#f3f5f7" }, { "step": 100, "hex": "#e8ebef" },
+          { "step": 150, "hex": "#dadee5" }, { "step": 200, "hex": "#cdd2de" },
+          { "step": 250, "hex": "#abb2bf" }, { "step": 300, "hex": "#808796" },
+          { "step": 350, "hex": "#646a74" }, { "step": 400, "hex": "#3e4347" },
+          { "step": 450, "hex": "#2b2f32" }, { "step": 500, "hex": "#1b1d1f" }
+        ]
+      }
+    },
+    "semantic": {
+      "background": [
+        { "cssVar": "--color-bg-default",  "label": "Default",  "light": "#ffffff", "dark": "#1a1a1a", "lightRef": "white",     "darkRef": "#1a1a1a",  "description": "기본 페이지·컨테이너 배경" },
+        { "cssVar": "--color-bg-subtle",   "label": "Subtle",   "light": "#f5f5f5", "dark": "#252525", "lightRef": "gray-50",   "darkRef": "#252525",  "description": "보조 배경 (테이블 헤더, 사이드바)" },
+        { "cssVar": "--color-bg-elevated", "label": "Elevated", "light": "#ffffff", "dark": "#2e2e2e", "lightRef": "white",     "darkRef": "#2e2e2e",  "description": "카드·모달 배경 (약간 높은 레이어)" },
+        { "cssVar": "--color-bg-overlay",  "label": "Overlay",  "light": "rgba(0,0,0,0.5)", "dark": "rgba(0,0,0,0.75)", "lightRef": "rgba(0,0,0,0.5)", "darkRef": "rgba(0,0,0,0.75)", "description": "딤·오버레이" }
+      ],
+      "text": [
+        { "cssVar": "--color-text-primary",   "label": "Primary",   "light": "#000000", "dark": "#f0f0f0", "description": "기본 텍스트 (제목·본문)" },
+        { "cssVar": "--color-text-secondary", "label": "Secondary", "light": "#555555", "dark": "#a0a0a0", "description": "보조 텍스트 (레이블·설명)" },
+        { "cssVar": "--color-text-tertiary",  "label": "Tertiary",  "light": "#9d9d9d", "dark": "#666666", "description": "힌트·placeholder·비강조 캡션" },
+        { "cssVar": "--color-text-disabled",  "label": "Disabled",  "light": "#c4c4c4", "dark": "#444444", "description": "비활성 텍스트" },
+        { "cssVar": "--color-text-on-color",  "label": "On Color",  "light": "#ffffff", "dark": "#ffffff", "description": "색상 배경(버튼·뱃지) 위 텍스트" },
+        { "cssVar": "--color-text-inverse",   "label": "Inverse",   "light": "#ffffff", "dark": "#000000", "description": "반전 텍스트" }
+      ],
+      "border": [
+        { "cssVar": "--color-border-default", "label": "Default", "light": "#e9e9e9", "dark": "#383838", "description": "기본 구분선·테두리" },
+        { "cssVar": "--color-border-subtle",  "label": "Subtle",  "light": "#f5f5f5", "dark": "#2e2e2e", "description": "미세 구분선" },
+        { "cssVar": "--color-border-strong",  "label": "Strong",  "light": "#d9d9d9", "dark": "#4a4a4a", "description": "강조 테두리" },
+        { "cssVar": "--color-border-focus",   "label": "Focus",   "light": "#0072ce", "dark": "#2b9eff", "description": "포커스 링 (접근성)" }
+      ],
+      "icon": [
+        { "cssVar": "--color-icon-default",  "label": "Default",  "light": "#434343", "dark": "#c0c0c0", "description": "기본 아이콘" },
+        { "cssVar": "--color-icon-muted",    "label": "Muted",    "light": "#9d9d9d", "dark": "#666666", "description": "보조·비강조 아이콘" },
+        { "cssVar": "--color-icon-on-color", "label": "On Color", "light": "#ffffff", "dark": "#ffffff", "description": "색상 배경 위 아이콘" }
+      ],
+      "action": [
+        { "cssVar": "--color-action-primary",        "label": "Primary",        "light": "#0072ce", "dark": "#2b9eff", "description": "CTA 버튼 배경" },
+        { "cssVar": "--color-action-primary-hover",  "label": "Primary Hover",  "light": "#2158c8", "dark": "#5bb2ff", "description": "Primary 버튼 hover 상태" },
+        { "cssVar": "--color-action-primary-active", "label": "Primary Active", "light": "#2747b9", "dark": "#8bc6ff", "description": "Primary 버튼 pressed 상태" },
+        { "cssVar": "--color-action-danger",         "label": "Danger",         "light": "#ff312c", "dark": "#ff4554", "description": "삭제·위험 액션 버튼" },
+        { "cssVar": "--color-action-danger-hover",   "label": "Danger Hover",   "light": "#d60228", "dark": "#fc6e79", "description": "Danger 버튼 hover 상태" }
+      ],
+      "state": [
+        { "cssVar": "--color-state-selected-bg", "label": "Selected BG", "light": "#e2f1ff", "dark": "#1a2e4a", "description": "선택된 행·항목 배경" },
+        { "cssVar": "--color-state-hover-bg",    "label": "Hover BG",    "light": "#fafafa", "dark": "#2a2a2a", "description": "hover 배경" },
+        { "cssVar": "--color-state-disabled-bg", "label": "Disabled BG", "light": "#f5f5f5", "dark": "#252525", "description": "비활성 요소 배경" },
+        { "cssVar": "--color-state-error-bg",    "label": "Error BG",    "light": "#ffebef", "dark": "#2e1215", "description": "에러 메시지·인풋 배경" },
+        { "cssVar": "--color-state-warning-bg",  "label": "Warning BG",  "light": "#ffede0", "dark": "#2e1e0e", "description": "경고 메시지 배경" }
+      ]
+    }
+  },
+  "typography": {
+    "styles": [
+      {
+        "name": "Title Base",
+        "cssVar": "typography/title/base-bold",
+        "values": { "fontFamily": "Pretendard", "fontSize": "18px", "fontWeight": "700 (Bold)", "lineHeight": "1.3", "letterSpacing": "0em" },
+        "usage": "페이지 제목, 섹션 헤딩, 카드 타이틀"
+      },
+      {
+        "name": "Body Base",
+        "cssVar": "typography/body/base-regular",
+        "values": { "fontFamily": "Pretendard", "fontSize": "18px", "fontWeight": "400 (Regular)", "lineHeight": "1.3", "letterSpacing": "-0.02em" },
+        "usage": "일반 본문, 레이블, 설명 텍스트"
+      }
+    ],
+    "fontWeights": [
+      { "label": "Regular",  "weight": 400, "cssVar": "--font-weight-regular",  "usage": "본문, 설명" },
+      { "label": "Medium",   "weight": 500, "cssVar": "--font-weight-medium",   "usage": "서브타이틀, 레이블" },
+      { "label": "Semibold", "weight": 600, "cssVar": "--font-weight-semibold", "usage": "버튼, 강조 레이블" },
+      { "label": "Bold",     "weight": 700, "cssVar": "--font-weight-bold",     "usage": "제목, 페이지 헤딩" }
+    ]
+  },
+  "spacing": { "status": "coming-soon", "note": "8pt 그리드 기반 스페이싱 시스템 정의 예정" },
+  "radius":  { "status": "coming-soon", "note": "컴포넌트별 Border Radius 토큰 정의 예정" },
+  "shadow":  { "status": "coming-soon", "note": "Elevation 기반 Shadow 토큰 정의 예정" },
+  "motion":  { "status": "coming-soon", "note": "Duration / Easing 토큰 정의 예정" }
+}

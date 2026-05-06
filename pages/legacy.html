@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Legacy Guide · SW Design System</title>
+  <link rel="stylesheet" href="../assets/css/style.css">
+</head>
+<body>
+
+<div class="mobile-header">
+  <button class="hamburger" id="sidebar-toggle" aria-label="메뉴 열기">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/>
+    </svg>
+  </button>
+  <span class="mobile-logo">SW Design System</span>
+</div>
+<div class="sidebar-overlay" id="sidebar-overlay"></div>
+
+<div class="app">
+  <aside class="sidebar" id="sidebar"></aside>
+
+  <main class="main-content">
+    <div class="page-header">
+      <div class="page-header-inner">
+        <div class="page-header-text">
+          <h1>Legacy Guide</h1>
+          <p>구버전 토큰 → 신규 토큰 마이그레이션 가이드</p>
+        </div>
+        <div class="page-header-actions">
+          <span class="badge badge-gray">Coming Soon</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="page-content">
+      <div class="coming-soon-placeholder">
+        <div class="coming-soon-icon">🗂️</div>
+        <div class="coming-soon-title">Legacy Guide 준비 중</div>
+        <div class="coming-soon-desc">
+          구버전 디자인 토큰에서 신규 디자인시스템으로 전환하는 마이그레이션 가이드입니다.<br>
+          1:1 토큰 매핑 테이블과 단계별 전환 체크리스트를 제공합니다.
+        </div>
+        <div class="coming-soon-list">
+          <div class="coming-soon-item">
+            <span class="coming-soon-item-icon">🗺️</span>
+            <div>
+              <div class="coming-soon-item-title">토큰 매핑 테이블</div>
+              <div class="coming-soon-item-desc">구버전 변수명(--legacy-*) → 신규 Semantic 토큰 1:1 대응표</div>
+            </div>
+          </div>
+          <div class="coming-soon-item">
+            <span class="coming-soon-item-icon">📋</span>
+            <div>
+              <div class="coming-soon-item-title">마이그레이션 체크리스트</div>
+              <div class="coming-soon-item-desc">화면별 전환 완료 여부 추적 체크리스트 + 우선순위 가이드</div>
+            </div>
+          </div>
+          <div class="coming-soon-item">
+            <span class="coming-soon-item-icon">🧩</span>
+            <div>
+              <div class="coming-soon-item-title">Legacy 컴포넌트 대체 목록</div>
+              <div class="coming-soon-item-desc">🗂️ [Legacy] 접두사 컴포넌트 → 신규 Core 컴포넌트 교체 가이드</div>
+            </div>
+          </div>
+          <div class="coming-soon-item">
+            <span class="coming-soon-item-icon">⚡</span>
+            <div>
+              <div class="coming-soon-item-title">자동 마이그레이션 스크립트</div>
+              <div class="coming-soon-item-desc">코드베이스 내 legacy 토큰을 일괄 교체하는 CLI 스크립트 (예정)</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<script src="../assets/js/main.js"></script>
+</body>
+</html>

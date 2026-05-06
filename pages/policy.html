@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Policy · SW Design System</title>
+  <link rel="stylesheet" href="../assets/css/style.css">
+  <style>
+    /* ── Policy specific styles ── */
+    .policy-section {
+      background: #fff;
+      border: 1px solid #e9e9e9;
+      border-radius: 16px;
+      overflow: hidden;
+      margin-bottom: 24px;
+    }
+    .policy-section-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 20px 24px;
+      border-bottom: 1px solid #f5f5f5;
+      background: #fafafa;
+    }
+    .policy-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      flex-shrink: 0;
+    }
+    .policy-section-title {
+      font-size: 15px;
+      font-weight: 700;
+      color: #202020;
+    }
+    .policy-section-desc {
+      font-size: 12.5px;
+      color: #757575;
+      margin-top: 2px;
+    }
+    .policy-body {
+      padding: 24px;
+    }
+    /* ── Layer Stack ── */
+    .layer-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .layer-item {
+      display: grid;
+      grid-template-columns: 140px 1fr auto;
+      align-items: center;
+      gap: 16px;
+      padding: 14px 18px;
+      border-radius: 10px;
+      border: 1px solid transparent;
+    }
+    .layer-item.primitive  { background: #f0faf5; border-color: #a7f3d0; }
+    .layer-item.semantic   { background: #e2f1ff; border-color: #8bc6ff; }
+    .layer-item.component  { background: #e8e9fc; border-color: #c0c0fc; }
+    .layer-item.legacy     { background: #fff4ce; border-color: #fde68a; }
+    .layer-name {
+      font-size: 13px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .layer-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+    .layer-item.primitive .layer-dot  { background: #008650; }
+    .layer-item.semantic .layer-dot   { background: #1d6ceb; }
+    .layer-item.component .layer-dot  { background: #4e4ec3; }
+    .layer-item.legacy .layer-dot     { background: #b45309; }
+    .layer-desc {
+      font-size: 12.5px;
+      color: #555;
+      line-height: 1.6;
+    }
+    .layer-badge {
+      font-size: 11px;
+      font-weight: 600;
+      padding: 3px 10px;
+      border-radius: 20px;
+      white-space: nowrap;
+    }
+    .layer-item.primitive .layer-badge  { background: #dcfce7; color: #166534; }
+    .layer-item.semantic .layer-badge   { background: #dbeafe; color: #1e40af; }
+    .layer-item.component .layer-badge  { background: #ede9fe; color: #5b21b6; }
+    .layer-item.legacy .layer-badge     { background: #fef3c7; color: #92400e; }
+    .layer-arrow {
+      text-align: center;
+      color: #d9d9d9;
+      font-size: 18px;
+      padding: 2px 0;
+      line-height: 1;
+    }
+    /* ── Do / Don't ── */
+    .do-dont-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+    @media (max-width: 640px) { .do-dont-grid { grid-template-columns: 1fr; } }
+    .do-card, .dont-card {
+      border-radius: 10px;
+      overflow: hidden;
+    }
+    .do-header, .dont-header {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 14px;
+      font-size: 12px;
+      font-weight: 700;
+    }
+    .do-header   { background: #dcfce7; color: #166534; }
+    .dont-header { background: #fee2e2; color: #991b1b; }
+    .do-items, .dont-items {
+      padding: 14px;
+      border-radius: 0 0 10px 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .do-items   { background: #f0fdf4; border: 1px solid #bbf7d0; border-top: none; }
+    .dont-items { background: #fff5f5; border: 1px solid #fecaca; border-top: none; }
+    .do-item, .dont-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      font-size: 12.5px;
+      line-height: 1.6;
+    }
+    .do-item   { color: #166534; }
+    .dont-item { color: #991b1b; }
+    .do-item::before   { content: '✓'; font-weight: 700; flex-shrink: 0; margin-top: 1px; }
+    .dont-item::before { content: '✗'; font-weight: 700; flex-shrink: 0; margin-top: 1px; }
+    /* ── Code blocks in policy ── */
+    .policy-code {
+      background: #1b1d1f;
+      border-radius: 10px;
+      overflow: hidden;
+      margin: 16px 0;
+    }
+    .policy-code-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 16px;
+      background: #252526;
+      border-bottom: 1px solid #383838;
+    }
+    .policy-code-lang {
+      font-size: 11px;
+      font-weight: 600;
+      color: #9d9d9d;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+    .policy-code pre {
+      padding: 16px;
+      font-size: 12.5px;
+      font-family: 'Menlo', 'Consolas', monospace;
+      color: #e9e9e9;
+      line-height: 1.7;
+      overflow-x: auto;
+      margin: 0;
+    }
+    .code-comment { color: #6a9955; }
+    .code-var     { color: #9cdcfe; }
+    .code-val     { color: #ce9178; }
+    .code-ok      { color: #4ec9b0; }
+    .code-bad     { color: #f48771; }
+    /* ── Table ── */
+    .policy-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 12.5px;
+    }
+    .policy-table th {
+      padding: 10px 14px;
+      text-align: left;
+      font-size: 11px;
+      font-weight: 700;
+      color: #757575;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      background: #fafafa;
+      border-bottom: 1px solid #e9e9e9;
+    }
+    .policy-table td {
+      padding: 12px 14px;
+      border-bottom: 1px solid #f5f5f5;
+      color: #434343;
+      line-height: 1.5;
+      vertical-align: top;
+    }
+    .policy-table tr:last-child td { border-bottom: none; }
+    .status-ok   { display:inline-flex;align-items:center;gap:4px;color:#008650;font-weight:600; }
+    .status-warn { display:inline-flex;align-items:center;gap:4px;color:#b45309;font-weight:600; }
+    .status-bad  { display:inline-flex;align-items:center;gap:4px;color:#dc2626;font-weight:600; }
+    /* ── Rule List ── */
+    .rule-list { display:flex;flex-direction:column;gap:12px; }
+    .rule-item {
+      display:flex;align-items:flex-start;gap:12px;
+      padding:14px 16px;
+      background:#f9fafb;border:1px solid #e9e9e9;border-radius:10px;
+    }
+    .rule-num {
+      flex-shrink:0;
+      width:24px;height:24px;border-radius:50%;
+      background:#0072ce;color:#fff;
+      display:flex;align-items:center;justify-content:center;
+      font-size:11px;font-weight:700;
+    }
+    .rule-content {}
+    .rule-title { font-size:13px;font-weight:700;color:#202020;margin-bottom:4px; }
+    .rule-desc  { font-size:12.5px;color:#555;line-height:1.6; }
+    /* ── Callout ── */
+    .callout {
+      display:flex;align-items:flex-start;gap:12px;
+      padding:14px 18px;border-radius:10px;
+      margin-bottom:16px;
+    }
+    .callout.info    { background:#e2f1ff;border:1px solid #8bc6ff; }
+    .callout.warning { background:#fffbeb;border:1px solid #fde68a; }
+    .callout.danger  { background:#fff5f5;border:1px solid #fecaca; }
+    .callout-icon { font-size:18px;flex-shrink:0;line-height:1; }
+    .callout-body {}
+    .callout-title { font-size:13px;font-weight:700;margin-bottom:4px; }
+    .callout.info .callout-title    { color:#1d6ceb; }
+    .callout.warning .callout-title { color:#b45309; }
+    .callout.danger .callout-title  { color:#dc2626; }
+    .callout-desc { font-size:12.5px;line-height:1.6; }
+    .callout.info .callout-desc    { color:#2747b9; }
+    .callout.warning .callout-desc { color:#78350f; }
+    .callout.danger .callout-desc  { color:#991b1b; }
+  </style>
+</head>
+<body>
+
+<div class="mobile-header">
+  <button class="hamburger" id="sidebar-toggle" aria-label="메뉴 열기">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/>
+    </svg>
+  </button>
+  <span class="mobile-logo">SW Design System</span>
+</div>
+<div class="sidebar-overlay" id="sidebar-overlay"></div>
+
+<div class="app">
+  <aside class="sidebar" id="sidebar"></aside>
+
+  <main class="main-content">
+    <div class="page-header">
+      <div class="page-header-inner">
+        <div class="page-header-text">
+          <h1>Policy</h1>
+          <p>토큰 사용 원칙, 신규·레거시 사용 기준, 다크모드 대응 정책</p>
+        </div>
+        <div class="page-header-actions">
+          <span class="badge badge-yellow">작성 중</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="page-content">
+
+      <!-- 1. 4-Layer Architecture -->
+      <div class="policy-section">
+        <div class="policy-section-header">
+          <div class="policy-icon" style="background:#f0faf5;">🏗️</div>
+          <div>
+            <div class="policy-section-title">1. 토큰 4계층 구조</div>
+            <div class="policy-section-desc">Primitive → Semantic → Component → Legacy 계층별 역할과 참조 규칙</div>
+          </div>
+        </div>
+        <div class="policy-body">
+          <div class="callout info">
+            <span class="callout-icon">💡</span>
+            <div class="callout-body">
+              <div class="callout-title">핵심 원칙</div>
+              <div class="callout-desc">상위 계층은 반드시 하위 계층을 <code>var()</code>로 참조합니다. 계층을 건너뛰거나, 상위에서 하위를 직접 참조하는 것은 금지입니다.</div>
+            </div>
+          </div>
+
+          <div class="layer-stack">
+            <div class="layer-item primitive">
+              <div class="layer-name"><div class="layer-dot"></div>Primitive</div>
+              <div class="layer-desc">원천 색상값. hex 직접 정의 허용.<br><code>--color-blue-300: #2b9eff</code></div>
+              <span class="layer-badge">hex 정의</span>
+            </div>
+            <div class="layer-arrow">↓</div>
+            <div class="layer-item semantic">
+              <div class="layer-name"><div class="layer-dot"></div>Semantic</div>
+              <div class="layer-desc">역할 기반 토큰. Primitive를 var()로 참조. Light/Dark 분리.<br><code>--color-action-primary: var(--color-blue-300)</code></div>
+              <span class="layer-badge">var() 참조</span>
+            </div>
+            <div class="layer-arrow">↓</div>
+            <div class="layer-item component">
+              <div class="layer-name"><div class="layer-dot"></div>Component</div>
+              <div class="layer-desc">컴포넌트 전용 토큰. Semantic을 var()로 참조.<br><code>--button-primary-bg: var(--color-action-primary)</code></div>
+              <span class="layer-badge">var() 참조</span>
+            </div>
+            <div class="layer-arrow">↓</div>
+            <div class="layer-item legacy">
+              <div class="layer-name"><div class="layer-dot"></div>Legacy</div>
+              <div class="layer-desc">구버전 토큰. 신규 Semantic으로 포워딩.<br><code>--legacy-text-primary: var(--color-text-primary)</code></div>
+              <span class="layer-badge">포워딩</span>
+            </div>
+          </div>
+
+          <div style="margin-top:20px;">
+            <div class="policy-code">
+              <div class="policy-code-header">
+                <span class="policy-code-lang">CSS — 올바른 참조 예시</span>
+              </div>
+              <pre><span class="code-comment">/* ✅ Primitive 정의: hex 직접 사용 허용 */</span>
+<span class="code-var">--color-blue-300</span>: <span class="code-val">#2b9eff</span>;
+
+<span class="code-comment">/* ✅ Semantic 정의: Primitive를 var()로 참조 */</span>
+<span class="code-var">--color-action-primary</span>: <span class="code-ok">var(--color-blue-300)</span>;
+
+<span class="code-comment">/* ✅ Component 정의: Semantic을 var()로 참조 */</span>
+<span class="code-var">--button-primary-bg</span>: <span class="code-ok">var(--color-action-primary)</span>;
+
+<span class="code-comment">/* ❌ 금지: Component에서 Primitive 직접 참조 */</span>
+<span class="code-var">--button-primary-bg</span>: <span class="code-bad">var(--color-blue-300)</span>;
+
+<span class="code-comment">/* ❌ 금지: Semantic에서 hex 직접 사용 */</span>
+<span class="code-var">--color-action-primary</span>: <span class="code-bad">#2b9eff</span>;</pre>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 2. 신규 vs 레거시 사용 기준 -->
+      <div class="policy-section">
+        <div class="policy-section-header">
+          <div class="policy-icon" style="background:#fff4ce;">📋</div>
+          <div>
+            <div class="policy-section-title">2. 신규 vs 레거시 사용 기준</div>
+            <div class="policy-section-desc">어떤 화면·컴포넌트에 신규 토큰을 써야 하는지, 레거시 허용 범위는 어디까지인지</div>
+          </div>
+        </div>
+        <div class="policy-body">
+          <table class="policy-table" style="margin-bottom:20px;">
+            <thead>
+              <tr>
+                <th>구분</th>
+                <th>신규 토큰 사용</th>
+                <th>Legacy 허용</th>
+                <th>비고</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>신규 화면 개발</strong></td>
+                <td><span class="status-ok">✓ 필수</span></td>
+                <td><span class="status-bad">✗ 금지</span></td>
+                <td>신규 기능은 반드시 신규 토큰 사용</td>
+              </tr>
+              <tr>
+                <td><strong>기존 화면 대규모 개편</strong></td>
+                <td><span class="status-ok">✓ 필수</span></td>
+                <td><span class="status-bad">✗ 금지</span></td>
+                <td>리뉴얼 범위 내 전체 마이그레이션</td>
+              </tr>
+              <tr>
+                <td><strong>기존 화면 소규모 수정</strong></td>
+                <td><span class="status-warn">△ 권장</span></td>
+                <td><span class="status-warn">△ 조건부 허용</span></td>
+                <td>수정 영역만이라도 신규 토큰으로 교체 권장</td>
+              </tr>
+              <tr>
+                <td><strong>버그 수정 (UI 변경 없음)</strong></td>
+                <td><span class="status-warn">△ 선택</span></td>
+                <td><span class="status-ok">✓ 허용</span></td>
+                <td>기능 수정 목적, 불필요한 토큰 변경 자제</td>
+              </tr>
+              <tr>
+                <td><strong>레거시 유지보수 전용 화면</strong></td>
+                <td><span class="status-warn">△ 선택</span></td>
+                <td><span class="status-ok">✓ 허용</span></td>
+                <td>레거시 화면 포워딩 토큰 참조 허용</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div class="callout warning">
+            <span class="callout-icon">⚠️</span>
+            <div class="callout-body">
+              <div class="callout-title">Legacy 토큰 사용 시 주의사항</div>
+              <div class="callout-desc">Legacy 토큰(<code>--legacy-*</code>)은 신규 Semantic 토큰으로 포워딩되어 있습니다. 직접 hex를 참조하는 구버전 변수는 포워딩 대상에서 제외될 수 있으므로, 마이그레이션 가이드를 반드시 확인하세요.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 3. 명명 규칙 -->
+      <div class="policy-section">
+        <div class="policy-section-header">
+          <div class="policy-icon" style="background:#e8e9fc;">🏷️</div>
+          <div>
+            <div class="policy-section-title">3. 토큰 명명 규칙</div>
+            <div class="policy-section-desc">CSS Custom Property 이름 작성 원칙</div>
+          </div>
+        </div>
+        <div class="policy-body">
+          <div class="rule-list">
+            <div class="rule-item">
+              <div class="rule-num">1</div>
+              <div class="rule-content">
+                <div class="rule-title">kebab-case + 소문자 필수</div>
+                <div class="rule-desc">모든 토큰명은 <code>--</code> 접두사 + kebab-case(소문자, 하이픈 구분). 대문자, 언더스코어, camelCase 금지.<br>
+                  <code style="color:#008650;">--color-action-primary</code> ✓ &nbsp;
+                  <code style="color:#dc2626;">--colorActionPrimary</code> ✗ &nbsp;
+                  <code style="color:#dc2626;">--Color_Action</code> ✗</div>
+              </div>
+            </div>
+            <div class="rule-item">
+              <div class="rule-num">2</div>
+              <div class="rule-content">
+                <div class="rule-title">카테고리 / 역할 / 상태 순서</div>
+                <div class="rule-desc">패턴: <code>--{카테고리}-{역할}-{상태(선택)}</code><br>
+                  예: <code>--color-action-primary</code>, <code>--button-primary-hover-bg</code>, <code>--color-text-disabled</code></div>
+              </div>
+            </div>
+            <div class="rule-item">
+              <div class="rule-num">3</div>
+              <div class="rule-content">
+                <div class="rule-title">Figma 변수명 변환 규칙</div>
+                <div class="rule-desc">Figma 변수명 → CSS 변수명 변환 시: <code>/</code> → <code>-</code>, 공백 → <code>-</code>, <code>&amp;</code> 제거, 대문자 → 소문자.<br>
+                  <code>color/action/primary</code> → <code>--color-action-primary</code></div>
+              </div>
+            </div>
+            <div class="rule-item">
+              <div class="rule-num">4</div>
+              <div class="rule-content">
+                <div class="rule-title">Layer 접두사 고정</div>
+                <div class="rule-desc">
+                  Primitive: <code>--color-{palette}-{step}</code> (예: <code>--color-blue-300</code>)<br>
+                  Semantic: <code>--color-{role}-{variant}</code> (예: <code>--color-bg-default</code>)<br>
+                  Component: <code>--{component}-{property}</code> (예: <code>--button-primary-bg</code>)<br>
+                  Legacy: <code>--legacy-{originalName}</code> (예: <code>--legacy-text-primary</code>)
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 4. 다크모드 대응 정책 -->
+      <div class="policy-section">
+        <div class="policy-section-header">
+          <div class="policy-icon" style="background:#1b1d1f;font-size:16px;">🌗</div>
+          <div>
+            <div class="policy-section-title">4. 다크모드 대응 정책</div>
+            <div class="policy-section-desc">Light/Dark 테마 전환 구조 및 구현 방식</div>
+          </div>
+        </div>
+        <div class="policy-body">
+          <div class="callout info">
+            <span class="callout-icon">ℹ️</span>
+            <div class="callout-body">
+              <div class="callout-title">현재 상태</div>
+              <div class="callout-desc">다크모드 토큰 구조는 정의되어 있으나, 실제 다크 값은 일부 placeholder 상태입니다. Semantic Tokens 페이지 완성 후 전체 다크 값이 확정됩니다.</div>
+            </div>
+          </div>
+
+          <div class="policy-code">
+            <div class="policy-code-header">
+              <span class="policy-code-lang">CSS — 테마 구조</span>
+            </div>
+            <pre><span class="code-comment">/* Light (기본값): :root에 정의 */</span>
+:root {
+  <span class="code-var">--color-bg-default</span>: <span class="code-val">#ffffff</span>;
+  <span class="code-var">--color-text-primary</span>: <span class="code-val">#000000</span>;
+  <span class="code-var">--color-action-primary</span>: <span class="code-val">#0072ce</span>;
+}
+
+<span class="code-comment">/* Dark: [data-theme="dark"] 속성으로 오버라이드 */</span>
+[data-theme="dark"] {
+  <span class="code-var">--color-bg-default</span>: <span class="code-val">#1a1a1a</span>;
+  <span class="code-var">--color-text-primary</span>: <span class="code-val">#f0f0f0</span>;
+  <span class="code-var">--color-action-primary</span>: <span class="code-val">#2b9eff</span>;
+}</pre>
+          </div>
+
+          <div class="policy-code">
+            <div class="policy-code-header">
+              <span class="policy-code-lang">JS — 테마 전환</span>
+            </div>
+            <pre><span class="code-comment">// document.documentElement에 data-theme 속성 토글</span>
+document.documentElement.setAttribute('data-theme', 'dark');
+document.documentElement.removeAttribute('data-theme'); <span class="code-comment">// light 복원</span>
+
+<span class="code-comment">// Tailwind 사용 시: tailwind.config.js에 darkMode 설정 필요</span>
+<span class="code-comment">// darkMode: ['selector', '[data-theme="dark"]']</span></pre>
+          </div>
+
+          <div class="do-dont-grid" style="margin-top:16px;">
+            <div class="do-card">
+              <div class="do-header">✅ 다크모드 대응 권장</div>
+              <div class="do-items">
+                <div class="do-item">Semantic token(<code>--color-bg-default</code>)만 사용 — 자동 전환</div>
+                <div class="do-item">SVG 아이콘에 <code>fill: currentColor</code> 사용</div>
+                <div class="do-item">이미지는 <code>filter: brightness()</code>로 보정 고려</div>
+                <div class="do-item">Gradient는 시작·끝 모두 Semantic token 사용</div>
+                <div class="do-item">다크 값 확정 전 디자이너와 협의 후 개발</div>
+              </div>
+            </div>
+            <div class="dont-card">
+              <div class="dont-header">❌ 금지 사항</div>
+              <div class="dont-items">
+                <div class="dont-item">Primitive token 직접 사용 — 테마 전환 불가</div>
+                <div class="dont-item">hex 하드코딩 — 다크 전환 안됨</div>
+                <div class="dont-item"><code>prefers-color-scheme</code>만 사용 — <code>data-theme</code>과 충돌</div>
+                <div class="dont-item">SVG 아이콘에 <code>fill="#000"</code> 고정</div>
+                <div class="dont-item"><code>!important</code>로 테마 오버라이드 차단</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 5. 색상 사용 원칙 -->
+      <div class="policy-section">
+        <div class="policy-section-header">
+          <div class="policy-icon" style="background:#e2f1ff;">🎨</div>
+          <div>
+            <div class="policy-section-title">5. 색상 사용 원칙</div>
+            <div class="policy-section-desc">색상 선택 기준, 접근성 요건, CI 색상 사용 제한</div>
+          </div>
+        </div>
+        <div class="policy-body">
+          <div class="rule-list">
+            <div class="rule-item">
+              <div class="rule-num">1</div>
+              <div class="rule-content">
+                <div class="rule-title">접근성 — WCAG AA 필수</div>
+                <div class="rule-desc">모든 텍스트-배경 조합은 명도 대비 <strong>4.5:1 이상</strong>(AA 기준)을 충족해야 합니다. 장식 요소(아이콘, 구분선)는 3:1 이상. 대형 텍스트(18px Bold 이상)는 3:1 이상.</div>
+              </div>
+            </div>
+            <div class="rule-item">
+              <div class="rule-num">2</div>
+              <div class="rule-content">
+                <div class="rule-title">CI / Logo 색상 제한</div>
+                <div class="rule-desc"><code>--color-brand-ci</code> (#004097)는 로고·CI 전용입니다. 일반 UI 버튼, 링크, 배경에 직접 사용 금지. CTA에는 <code>--color-brand-blue</code> (#0072ce) 또는 <code>--color-action-primary</code>를 사용하세요.</div>
+              </div>
+            </div>
+            <div class="rule-item">
+              <div class="rule-num">3</div>
+              <div class="rule-content">
+                <div class="rule-title">상태 색상 일관성</div>
+                <div class="rule-desc">
+                  에러·위험: <code>--color-brand-red</code> / <code>--color-action-danger</code> 계열<br>
+                  성공·확인: Green 팔레트 (<code>--color-green-300</code>~400 기준)<br>
+                  경고: Orange / Yellow 팔레트<br>
+                  정보: Blue 팔레트
+                </div>
+              </div>
+            </div>
+            <div class="rule-item">
+              <div class="rule-num">4</div>
+              <div class="rule-content">
+                <div class="rule-title">데이터 시각화 팔레트 분리 (예정)</div>
+                <div class="rule-desc">차트·그래프에서는 UI 팔레트와 별도의 Data Visualization 팔레트를 사용합니다. (Semantic Tokens 2단계에서 정의 예정)</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 6. 컴포넌트 토큰 정책 -->
+      <div class="policy-section">
+        <div class="policy-section-header">
+          <div class="policy-icon" style="background:#e8e9fc;">🧩</div>
+          <div>
+            <div class="policy-section-title">6. 컴포넌트 토큰 정책</div>
+            <div class="policy-section-desc">컴포넌트 레벨 토큰의 정의 기준과 스코프</div>
+          </div>
+        </div>
+        <div class="policy-body">
+          <table class="policy-table" style="margin-bottom:16px;">
+            <thead>
+              <tr>
+                <th>항목</th>
+                <th>기준</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>등록 조건</strong></td>
+                <td>3개 이상 화면에서 동일 패턴으로 반복되고, Semantic token 조합만으로 표현 불가한 경우</td>
+              </tr>
+              <tr>
+                <td><strong>참조 허용</strong></td>
+                <td>Semantic token만 var()로 참조. Primitive 직접 참조 금지</td>
+              </tr>
+              <tr>
+                <td><strong>스코프</strong></td>
+                <td>:root 전역 정의. 컴포넌트 내부에서만 사용하고 외부에서 직접 참조 금지</td>
+              </tr>
+              <tr>
+                <td><strong>다크 대응</strong></td>
+                <td>Semantic을 var()로 참조하면 자동 대응. 별도 다크 오버라이드 최소화</td>
+              </tr>
+              <tr>
+                <td><strong>네이밍</strong></td>
+                <td><code>--{component}-{property}-{state}</code> 패턴. 예: <code>--button-primary-hover-bg</code></td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div class="callout warning">
+            <span class="callout-icon">⚠️</span>
+            <div class="callout-body">
+              <div class="callout-title">Component 토큰 남용 주의</div>
+              <div class="callout-desc">모든 값을 Component 토큰으로 만들면 오히려 복잡도가 증가합니다. Semantic token으로 직접 표현 가능한 경우 Component 토큰을 별도로 만들지 마세요.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </main>
+</div>
+
+<script src="../assets/js/main.js"></script>
+</body>
+</html>

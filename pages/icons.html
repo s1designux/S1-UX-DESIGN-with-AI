@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Icon Guide · SW UX GUIDE V2.4</title>
+  <link rel="stylesheet" href="../assets/css/style.css">
+  <style>
+    /* ─── SVG Notice ─────────────────────────────── */
+    .svg-notice {
+      display: flex; align-items: flex-start; gap: 12px;
+      background: #fffbeb; border: 1px solid #fde68a;
+      border-radius: 10px; padding: 14px 16px; margin-bottom: 24px;
+      font-size: 12.5px; line-height: 1.6; color: #92400e;
+    }
+    .svg-notice-icon { font-size: 15px; flex-shrink: 0; margin-top: 1px; }
+    .svg-notice code {
+      font-family: 'SF Mono','Fira Code',monospace; font-size: 11px;
+      background: rgba(0,0,0,0.07); padding: 1px 5px; border-radius: 3px;
+    }
+
+    /* ─── Group Nav ──────────────────────────────── */
+    .icon-group-nav {
+      display: flex; gap: 6px; flex-wrap: wrap;
+      margin-bottom: 14px;
+    }
+    .icon-group-btn {
+      padding: 6px 14px; font-size: 12.5px; font-weight: 600;
+      border-radius: 8px; border: 1px solid #e5e7eb;
+      background: #fff; color: #6b7280; cursor: pointer;
+      transition: all 0.12s; display: flex; align-items: center; gap: 6px;
+    }
+    [data-theme="dark"] .icon-group-btn { background: #24252C; border-color: rgba(255,255,255,0.1); color: #8A8C96; }
+    .icon-group-btn:hover { background: #f9fafb; color: #374151; border-color: #d1d5db; }
+    [data-theme="dark"] .icon-group-btn:hover { background: #35363F; color: #B8BABF; }
+    .icon-group-btn.is-active { background: #1d4ed8; color: #fff; border-color: #1d4ed8; }
+    [data-theme="dark"] .icon-group-btn.is-active { background: #3070D8; border-color: #3070D8; }
+    .icon-group-count {
+      background: rgba(255,255,255,0.25); border-radius: 9px;
+      padding: 1px 7px; font-size: 10px; font-weight: 700; min-width: 20px; text-align: center;
+    }
+    .icon-group-btn:not(.is-active) .icon-group-count {
+      background: #f3f4f6; color: #6b7280;
+    }
+    [data-theme="dark"] .icon-group-btn:not(.is-active) .icon-group-count {
+      background: #35363F; color: #8A8C96;
+    }
+    .icon-search-active-hint {
+      font-size: 11px; color: #6b7280; white-space: nowrap;
+      background: #fef9c3; border: 1px solid #fde68a; border-radius: 6px;
+      padding: 3px 8px; display: none;
+    }
+    [data-theme="dark"] .icon-search-active-hint { background: #2E2F38; border-color: rgba(255,255,255,0.1); color: #8A8C96; }
+    .icon-search-active-hint.is-visible { display: inline-block; }
+
+    /* ─── Toolbar ─────────────────────────────────── */
+    .icon-toolbar {
+      display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+      margin-bottom: 20px;
+      position: sticky; top: 8px; z-index: 10;
+      background: rgba(250,250,250,0.96); backdrop-filter: blur(12px);
+      border: 1px solid #e5e7eb; border-radius: 12px;
+      padding: 10px 14px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    }
+    [data-theme="dark"] .icon-toolbar {
+      background: rgba(28,29,35,0.96); border-color: rgba(255,255,255,0.07);
+    }
+    .icon-search-wrap { position: relative; flex: 1; min-width: 180px; }
+    .icon-search {
+      width: 100%; padding: 7px 12px 7px 34px;
+      font-size: 13px; border: 1px solid #e5e7eb;
+      border-radius: 8px; background: #fff; outline: none;
+      transition: border-color 0.15s; font-family: inherit; color: #111827;
+    }
+    [data-theme="dark"] .icon-search { background: #24252C; border-color: rgba(255,255,255,0.1); color: #ECEDF0; }
+    .icon-search:focus { border-color: #1D6CEB; }
+    .search-icon-abs {
+      position: absolute; left: 10px; top: 50%; transform: translateY(-50%);
+      color: #9ca3af; pointer-events: none;
+    }
+    .icon-filter-group { display: flex; gap: 4px; }
+    .icon-filter-btn {
+      padding: 5px 12px; font-size: 11.5px; font-weight: 600;
+      border-radius: 7px; border: 1px solid #e5e7eb;
+      background: #fff; color: #6b7280; cursor: pointer; transition: all 0.12s;
+    }
+    [data-theme="dark"] .icon-filter-btn { background: #24252C; border-color: rgba(255,255,255,0.1); color: #8A8C96; }
+    .icon-filter-btn:hover { background: #f9fafb; color: #374151; }
+    .icon-filter-btn.is-active { background: #111827; color: #fff; border-color: #111827; }
+    .icon-filter-btn[data-filter="line"].is-active   { background: #374151; border-color: #374151; }
+    .icon-filter-btn[data-filter="solid"].is-active  { background: #111827; border-color: #111827; }
+    .icon-filter-btn[data-filter="color"].is-active  { background: #6d28d9; border-color: #6d28d9; }
+    .icon-filter-divider { width: 1px; height: 20px; background: #e5e7eb; flex-shrink: 0; }
+    [data-theme="dark"] .icon-filter-divider { background: rgba(255,255,255,0.1); }
+    .icon-count { font-size: 12px; color: #9ca3af; white-space: nowrap; margin-left: auto; }
+    .icon-count strong { color: #374151; }
+    [data-theme="dark"] .icon-count strong { color: #B8BABF; }
+
+    /* ─── Grid ───────────────────────────────────── */
+    .icon-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(172px, 1fr));
+      gap: 10px;
+    }
+
+    /* ─── Card ───────────────────────────────────── */
+    .icon-card {
+      background: #fff; border: 1px solid #e5e7eb; border-radius: 12px;
+      padding: 14px 12px 11px; display: flex; flex-direction: column; gap: 9px;
+      transition: border-color 0.15s, box-shadow 0.15s;
+    }
+    [data-theme="dark"] .icon-card { background: #1C1D23; border-color: rgba(255,255,255,0.07); }
+    .icon-card:hover { border-color: #1D6CEB; box-shadow: 0 2px 12px rgba(29,108,235,0.1); }
+
+    /* preview */
+    .icon-preview {
+      display: flex; justify-content: center; align-items: center;
+      height: 60px; border-radius: 8px; background: #f9fafb;
+      border: 1px dashed #e5e7eb;
+    }
+    [data-theme="dark"] .icon-preview { background: #24252C; border-color: rgba(255,255,255,0.07); }
+    .icon-preview.has-svg { background: #fff; border-style: solid; border-color: #f3f4f6; }
+    [data-theme="dark"] .icon-preview.has-svg { background: #1C1D23; border-color: rgba(255,255,255,0.07); }
+    .icon-preview svg { width: 28px; height: 28px; color: #202020; }
+    [data-theme="dark"] .icon-preview svg { color: #ECEDF0; }
+    .icon-preview-placeholder {
+      display: flex; flex-direction: column; align-items: center; gap: 3px; color: #d1d5db;
+    }
+    .icon-preview-placeholder svg { width: 24px; height: 24px; }
+    .icon-preview-placeholder span { font-size: 8.5px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; }
+
+    /* variant tabs */
+    .icon-variant-tabs { display: flex; gap: 3px; }
+    .icon-variant-tab {
+      flex: 1; padding: 3px 0; font-size: 9.5px; font-weight: 700;
+      text-align: center; border-radius: 5px; border: 1px solid #e5e7eb;
+      background: #f9fafb; color: #9ca3af; cursor: pointer;
+      transition: all 0.1s; text-transform: uppercase; letter-spacing: 0.04em;
+    }
+    [data-theme="dark"] .icon-variant-tab { background: #24252C; border-color: rgba(255,255,255,0.07); color: #55575F; }
+    .icon-variant-tab:hover { background: #f3f4f6; color: #374151; }
+    .icon-variant-tab.is-active { background: #374151; color: #fff; border-color: #374151; }
+    .icon-variant-tab[data-variant="color"].is-active { background: #6d28d9; border-color: #6d28d9; }
+
+    /* name */
+    .icon-name {
+      font-size: 11.5px; font-weight: 600; color: #111827;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+    [data-theme="dark"] .icon-name { color: #ECEDF0; }
+
+    /* keywords */
+    .icon-keywords {
+      font-size: 9.5px; color: #9ca3af; line-height: 1.5;
+      display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+    }
+
+    /* meta row */
+    .icon-meta-row {
+      display: flex; align-items: center; justify-content: space-between; gap: 4px;
+    }
+    .icon-node-id {
+      font-size: 9px; font-family: 'SF Mono','Fira Code',monospace;
+      color: #c4c4c4; background: #f9fafb; padding: 1px 5px; border-radius: 3px;
+    }
+    [data-theme="dark"] .icon-node-id { background: #24252C; color: #55575F; }
+    .icon-figma-link {
+      display: inline-flex; align-items: center; gap: 3px;
+      font-size: 9.5px; font-weight: 600; color: #9ca3af;
+      text-decoration: none; transition: color 0.12s;
+    }
+    .icon-figma-link:hover { color: #1D6CEB; }
+    .icon-figma-link svg { width: 10px; height: 10px; }
+
+    /* SVG area */
+    .icon-svg-toggle-btn {
+      background: none; border: none; font-size: 9.5px; color: #9ca3af;
+      cursor: pointer; padding: 0; font-weight: 600; transition: color 0.12s;
+    }
+    .icon-svg-toggle-btn:hover { color: #374151; }
+    .icon-svg-area { display: none; margin-top: 2px; }
+    .icon-svg-area.is-visible { display: block; }
+    .icon-svg-code {
+      background: #f9fafb; border: 1px solid #f3f4f6; border-radius: 6px;
+      padding: 8px 9px; font-family: 'SF Mono','Fira Code',monospace;
+      font-size: 9px; color: #374151; line-height: 1.6;
+      max-height: 80px; overflow-y: auto; white-space: pre-wrap; word-break: break-all;
+    }
+    [data-theme="dark"] .icon-svg-code { background: #24252C; border-color: rgba(255,255,255,0.07); color: #8A8C96; }
+    .icon-svg-empty {
+      background: #fffbeb; border: 1px dashed #fde68a; border-radius: 6px;
+      padding: 8px 10px; font-size: 9.5px; color: #92400e; line-height: 1.5;
+    }
+    .icon-svg-empty code { font-family: monospace; font-size: 9px; }
+
+    /* actions */
+    .icon-actions { display: flex; gap: 4px; }
+    .icon-action-btn {
+      flex: 1; padding: 5px 4px; font-size: 10px; font-weight: 600;
+      border-radius: 6px; border: 1px solid #e5e7eb; background: #f9fafb;
+      color: #374151; cursor: pointer; transition: all 0.12s; text-align: center;
+    }
+    [data-theme="dark"] .icon-action-btn { background: #24252C; border-color: rgba(255,255,255,0.07); color: #8A8C96; }
+    .icon-action-btn:hover { background: #fff; border-color: #d1d5db; }
+    .icon-action-btn:disabled { opacity: 0.35; cursor: not-allowed; }
+    .icon-action-btn.is-copied { background: #d1fae5; border-color: #6ee7b7; color: #065f46; }
+
+    /* empty */
+    .icon-empty {
+      grid-column: 1/-1; text-align: center; padding: 56px 20px; color: #9ca3af;
+    }
+    .icon-empty-title { font-size: 15px; font-weight: 600; margin-bottom: 5px; color: #6b7280; }
+  </style>
+</head>
+<body>
+<div class="app">
+
+  <!-- Sidebar -->
+  <aside class="sidebar" id="sidebar"></aside>
+
+  <button class="hamburger" id="sidebar-toggle" aria-label="메뉴 열기">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/>
+    </svg>
+  </button>
+  <div class="sidebar-overlay" id="sidebar-overlay"></div>
+
+  <main class="main-content">
+    <div class="page-header">
+      <div class="page-header-inner">
+        <div>
+          <h1>Icon Guide</h1>
+          <p>보안·근태·식당 / 영상모니터링 · 112개 아이콘 · Line · Solid · Color · Figma V2.2</p>
+        </div>
+        <div class="page-header-actions">
+          <span class="badge badge-blue">112 Icons</span>
+          <span class="badge badge-gray">2 Sections</span>
+          <span class="badge badge-gray">3 Variants</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="page-content">
+
+      <!-- SVG Notice -->
+      <div class="svg-notice" id="svgNotice">
+        <span class="svg-notice-icon">⚠</span>
+        <div>
+          <strong>SVG 코드 추가 필요</strong> — Figma MCP는 벡터를 SVG path 코드로 반환하지 않습니다.
+          각 아이콘을 Figma에서 <code>우클릭 → Copy as SVG</code>로 복사 후
+          <code>data/icons.json</code>의 <code>variants.{type}.svg</code> 필드에 붙여넣으면 미리보기와 복사 기능이 활성화됩니다.
+          카드 하단 <strong>Figma</strong> 링크를 클릭하면 해당 컴포넌트 노드로 바로 이동합니다.
+        </div>
+      </div>
+
+      <!-- Group Nav -->
+      <div class="icon-group-nav" id="iconGroupNav"></div>
+
+      <!-- Search hint -->
+      <span class="icon-search-active-hint" id="iconSearchHint">모든 그룹 통합 검색 중</span>
+
+      <!-- Toolbar -->
+      <div class="icon-toolbar">
+        <div class="icon-search-wrap">
+          <span class="search-icon-abs">
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+          </span>
+          <input class="icon-search" id="iconSearch" type="text" placeholder="아이콘 이름·키워드·영문 검색 (예: 보안, shield, 재생, play)">
+        </div>
+        <div class="icon-filter-group">
+          <button class="icon-filter-btn is-active" data-filter="all">All</button>
+          <button class="icon-filter-btn" data-filter="line">Line</button>
+          <button class="icon-filter-btn" data-filter="solid">Solid</button>
+          <button class="icon-filter-btn" data-filter="color">Color</button>
+        </div>
+        <span class="icon-count"><strong id="iconVisibleCount">112</strong> / <span id="iconTotalCount">112</span>개</span>
+      </div>
+
+      <!-- Grid -->
+      <div class="icon-grid" id="iconGrid">
+        <div class="icon-empty">
+          <div class="icon-empty-title">아이콘 데이터를 불러오는 중...</div>
+        </div>
+      </div>
+
+    </div><!-- /page-content -->
+  </main>
+</div><!-- /app -->
+
+<script src="../assets/js/main.js"></script>
+<script src="../assets/js/icons-data.js"></script>
+<script src="../assets/js/icons.js"></script>
+</body>
+</html>

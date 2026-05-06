@@ -1,0 +1,1098 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>토큰 설치 — SW Design System</title>
+  <link rel="stylesheet" href="../assets/css/style.css">
+  <style>
+    /* ── step layout ── */
+    .install-steps { display:flex; flex-direction:column; gap:20px; }
+    .install-step {
+      border:1.5px solid #e5e7eb; border-radius:16px;
+      overflow:hidden;
+    }
+    .step-header {
+      display:flex; align-items:center; gap:14px;
+      padding:18px 22px; background:#fafafa;
+      border-bottom:1.5px solid #e5e7eb;
+    }
+    .step-number {
+      width:28px; height:28px; border-radius:50%;
+      background:#111827; color:#fff;
+      font-size:12px; font-weight:700;
+      display:flex; align-items:center; justify-content:center;
+      flex-shrink:0;
+    }
+    .step-title { font-size:14px; font-weight:700; color:#111827; }
+    .step-desc  { font-size:12px; color:#6b7280; margin-top:2px; }
+    .step-body  { padding:20px 22px; background:#fff; }
+
+    /* ── file download card ── */
+    .file-card {
+      display:flex; align-items:center; justify-content:space-between;
+      gap:16px; padding:14px 18px;
+      background:#f9fafb; border:1px solid #e5e7eb;
+      border-radius:12px; flex-wrap:wrap;
+    }
+    .file-card-left { display:flex; align-items:center; gap:12px; }
+    .file-icon {
+      width:36px; height:36px; border-radius:8px;
+      background:#eff6ff; display:flex; align-items:center; justify-content:center;
+      font-size:16px; flex-shrink:0;
+    }
+    .file-name { font-size:13px; font-weight:700; color:#111827; font-family:monospace; }
+    .file-meta { font-size:11px; color:#9ca3af; margin-top:2px; }
+    .download-btn {
+      display:inline-flex; align-items:center; gap:6px;
+      padding:8px 16px; border-radius:8px; border:none; cursor:pointer;
+      font-size:13px; font-weight:600; background:#111827; color:#fff;
+      transition:background 0.15s; white-space:nowrap;
+    }
+    .download-btn:hover { background:#374151; }
+
+    /* ── one-liner snippets ── */
+    .env-tabs {
+      display:flex; gap:2px; margin-bottom:14px;
+      background:#f3f4f6; border-radius:10px; padding:3px;
+    }
+    .env-tab {
+      flex:1; padding:6px 10px; border:none; border-radius:8px;
+      font-size:12px; font-weight:600; color:#6b7280;
+      background:transparent; cursor:pointer; transition:all 0.12s; text-align:center;
+    }
+    .env-tab.active { background:#fff; color:#111827; box-shadow:0 1px 3px rgba(0,0,0,0.08); }
+    .env-panel { display:none; }
+    .env-panel.active { display:flex; flex-direction:column; gap:10px; }
+
+    .snippet-row {
+      display:flex; align-items:center; gap:10px;
+    }
+    .snippet-label {
+      font-size:11px; font-weight:600; color:#9ca3af;
+      width:56px; flex-shrink:0; text-align:right;
+    }
+    .snippet-block {
+      flex:1; display:flex; align-items:center; gap:0;
+      background:#0f1117; border-radius:9px; overflow:hidden;
+    }
+    .snippet-code {
+      flex:1; padding:10px 14px;
+      font-family:'SF Mono','Fira Code',monospace;
+      font-size:12.5px; color:#e2e8f0;
+      white-space:nowrap; overflow-x:auto;
+      scrollbar-width:none;
+    }
+    .snippet-code::-webkit-scrollbar { display:none; }
+    .snippet-copy {
+      padding:0 14px; height:100%; border:none;
+      background:rgba(255,255,255,0.06); color:#9ca3af;
+      cursor:pointer; font-size:11px; font-weight:600;
+      transition:all 0.12s; white-space:nowrap;
+      display:flex; align-items:center; gap:5px; align-self:stretch;
+    }
+    .snippet-copy:hover { background:rgba(255,255,255,0.12); color:#e2e8f0; }
+    .snippet-copy.copied { background:rgba(16,185,129,0.2); color:#10b981; }
+
+    /* ── expandable full CSS ── */
+    .expand-toggle {
+      display:flex; align-items:center; gap:8px; width:100%;
+      padding:11px 0; border:none; background:transparent;
+      font-size:13px; font-weight:600; color:#6b7280; cursor:pointer;
+      border-top:1px solid #f3f4f6; margin-top:16px;
+      transition:color 0.12s;
+    }
+    .expand-toggle:hover { color:#111827; }
+    .expand-toggle svg { transition:transform 0.2s; }
+    .expand-toggle.open svg { transform:rotate(180deg); }
+    .expand-body { display:none; margin-top:12px; }
+    .expand-body.open { display:block; }
+    .expand-pre {
+      background:#0f1117; border-radius:12px;
+      padding:20px; overflow-x:auto; overflow-y:auto;
+      max-height:55vh; margin:0;
+      font-family:'SF Mono','Fira Code',monospace;
+      font-size:11.5px; line-height:1.7; color:#e2e8f0;
+      white-space:pre; tab-size:2;
+    }
+
+    /* ── AI prompt tab ── */
+    .top-tabs {
+      display:flex; gap:4px; margin-bottom:24px;
+      background:#f3f4f6; border-radius:12px; padding:4px;
+    }
+    .top-tab {
+      flex:1; padding:9px 16px; border:none; border-radius:9px;
+      font-size:13px; font-weight:600; color:#6b7280;
+      background:transparent; cursor:pointer; transition:all 0.15s; text-align:center;
+    }
+    .top-tab.active { background:#fff; color:#111827; box-shadow:0 1px 4px rgba(0,0,0,0.1); }
+    .top-panel { display:none; }
+    .top-panel.active { display:block; }
+
+    .ai-info { display:flex; align-items:center; justify-content:space-between; margin-bottom:12px; flex-wrap:wrap; gap:8px; }
+    .ai-filename { font-size:13px; font-weight:700; color:#374151; font-family:monospace; }
+    .ai-meta { font-size:12px; color:#9ca3af; margin-top:2px; }
+    .copy-all-btn {
+      display:inline-flex; align-items:center; gap:6px;
+      padding:8px 18px; border-radius:8px; border:none; cursor:pointer;
+      font-size:13px; font-weight:600; background:#1d6ceb; color:#fff;
+      transition:background 0.15s;
+    }
+    .copy-all-btn:hover { background:#2158c8; }
+    .copy-all-btn.copied { background:#10b981; }
+    .ai-pre {
+      background:#0f1117; border-radius:12px;
+      padding:24px; overflow-x:auto; overflow-y:auto;
+      max-height:68vh; margin:0;
+      font-family:'SF Mono','Fira Code',monospace;
+      font-size:12px; line-height:1.7; color:#e2e8f0;
+      white-space:pre; tab-size:2;
+    }
+
+    @media (max-width:640px) {
+      .snippet-label { display:none; }
+      .step-header { padding:14px 16px; }
+      .step-body { padding:16px; }
+    }
+  </style>
+</head>
+<body>
+<div class="mobile-header">
+  <button class="hamburger" id="sidebar-toggle" aria-label="메뉴">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/>
+    </svg>
+  </button>
+  <span class="mobile-logo">SW Design System</span>
+</div>
+<div class="sidebar-overlay" id="sidebar-overlay"></div>
+<div class="app">
+  <aside class="sidebar" id="sidebar"></aside>
+  <main class="main-content">
+    <div class="page-header">
+      <div class="page-header-inner">
+        <div class="page-header-text">
+          <h1>⚡ 토큰 설치</h1>
+          <p>파일 하나로 Semantic + Component 토큰 전체 적용. 두 단계면 끝납니다.</p>
+        </div>
+        <div class="page-header-actions">
+          <span class="badge badge-blue">2-step</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="page-content">
+
+      <!-- ── 상단 탭: 설치 / AI 프롬프트 ── -->
+      <div class="top-tabs">
+        <button class="top-tab active" data-top="install">설치 가이드</button>
+        <button class="top-tab"        data-top="ai">AI 컨텍스트 프롬프트</button>
+      </div>
+
+      <!-- ══ 설치 가이드 패널 ══ -->
+      <div class="top-panel active" id="top-install">
+        <div class="install-steps">
+
+          <!-- Step 1 -->
+          <div class="install-step">
+            <div class="step-header">
+              <div class="step-number">1</div>
+              <div>
+                <div class="step-title">tokens.css 파일 받기</div>
+                <div class="step-desc">Semantic (Light/Dark) + Component 토큰 전체가 담긴 CSS 파일</div>
+              </div>
+            </div>
+            <div class="step-body">
+              <div class="file-card">
+                <div class="file-card-left">
+                  <div class="file-icon">🎨</div>
+                  <div>
+                    <div class="file-name">tokens.css</div>
+                    <div class="file-meta">Semantic 42종 · Component 80종 · Light + Dark</div>
+                  </div>
+                </div>
+                <button class="download-btn" onclick="downloadTokens()">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                  다운로드
+                </button>
+              </div>
+
+              <!-- 전체 CSS 보기 -->
+              <button class="expand-toggle" id="expand-btn" onclick="toggleExpand()">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+                전체 CSS 보기
+              </button>
+              <div class="expand-body" id="expand-body">
+                <pre class="expand-pre" id="code-full">/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   SW Design System V2.4 — tokens.css
+   Foundation → Semantic → Component
+   Updated: 2026-04-30
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+
+
+/* ══ 0. Foundation — Base & Brand ══ */
+:root {
+  --color-base-white: #FFFFFF;
+  --color-base-black: #000000;
+  --color-brand-blue: #0072CE;
+  --color-brand-red:  #FF312C;
+  --color-brand-gray: #DFDEDE;
+  --color-brand-ci:   #004097;
+}
+
+/* ══ 1. Foundation — Color Primitives ══ */
+:root {
+  --color-gray-0: #FAFAFA;   --color-gray-50: #F5F5F5;  --color-gray-100: #E9E9E9;
+  --color-gray-200: #D9D9D9; --color-gray-300: #C4C4C4; --color-gray-400: #9D9D9D;
+  --color-gray-500: #757575; --color-gray-600: #555555; --color-gray-700: #434343;
+  --color-gray-800: #353535; --color-gray-900: #202020;
+  --color-gray-dark-0: #0D0E12;   --color-gray-dark-50: #131418;  --color-gray-dark-100: #1C1D23;
+  --color-gray-dark-200: #24252C; --color-gray-dark-300: #2E2F38; --color-gray-dark-400: #35363F;
+  --color-gray-dark-500: #3E4049; --color-gray-dark-600: #55575F; --color-gray-dark-700: #8A8C96;
+  --color-gray-dark-800: #B8BABF; --color-gray-dark-900: #ECEDF0;
+  --color-blue-50: #E2F1FF;  --color-blue-100: #C8E4FF; --color-blue-150: #A4D4FF;
+  --color-blue-200: #8BC6FF; --color-blue-250: #5BB2FF; --color-blue-300: #2B9EFF;
+  --color-blue-350: #268CF8; --color-blue-400: #1D6CEB; --color-blue-450: #2158C8;
+  --color-blue-500: #2747B9;
+  --color-blue-dark-50: #0C1D38;   --color-blue-dark-100: #112B55; --color-blue-dark-150: #1A3D72;
+  --color-blue-dark-200: #214EA0;  --color-blue-dark-250: #2A65C8; --color-blue-dark-300: #3070D8;
+  --color-blue-dark-350: #4285E8;  --color-blue-dark-400: #6FA5F8; --color-blue-dark-450: #96BEF9;
+  --color-blue-dark-500: #C0D8FC;
+  --color-red-50: #FFEBEF;  --color-red-100: #FFCCD6; --color-red-150: #FBB2BA;
+  --color-red-200: #F8979E; --color-red-250: #FC6E79; --color-red-300: #FF4554;
+  --color-red-350: #F22544; --color-red-400: #E50533; --color-red-450: #D60228;
+  --color-red-500: #C8001E;
+  --color-red-dark-50: #2A0F14;   --color-red-dark-100: #3D1520; --color-red-dark-150: #5C1E2E;
+  --color-red-dark-200: #8A2A3E;  --color-red-dark-250: #C03850; --color-red-dark-300: #E04860;
+  --color-red-dark-350: #F06070;  --color-red-dark-400: #F48890; --color-red-dark-450: #F8A8B0;
+  --color-red-dark-500: #FCD0D5;
+  --color-orange-50: #FFEDE0;  --color-orange-100: #FDDBBF; --color-orange-300: #FF761A;
+  --color-orange-400: #DA4C00;
+  --color-orange-dark-50: #2E1505; --color-orange-dark-350: #F09548; --color-orange-dark-500: #FCD8B8;
+  --color-yellow-50: #FFF4CE;  --color-yellow-300: #FFC200; --color-yellow-400: #DBA400;
+  --color-yellow-dark-50: #2A2005; --color-yellow-dark-350: #E8C048; --color-yellow-dark-500: #FAEAB8;
+  --color-green-50: #E3F2EA;  --color-green-300: #1FB279; --color-green-400: #009E5E;
+  --color-green-dark-50: #0A2018; --color-green-dark-350: #3FBE7E; --color-green-dark-500: #C5F0D8;
+  --color-skyblue-50: #C4EEF7;  --color-skyblue-400: #159BBC;
+  --color-skyblue-dark-50: #081E28; --color-skyblue-dark-500: #C0E8F0;
+  --color-purple-50: #E8E9FC;  --color-purple-400: #3535A8;
+  --color-purple-dark-50: #14142A; --color-purple-dark-500: #D0D0F5;
+  --color-brown-50: #F6EEE9;   --color-brown-400: #554435;
+  --color-brown-dark-50: #1E1610; --color-brown-dark-500: #E8D8C8;
+  --color-visual-gray-50: #F3F5F7; --color-visual-gray-400: #3E4347;
+  --color-coolgray-dark-50: #12141A; --color-coolgray-dark-500: #D8DBE0;
+  --color-status-dark-red:    #F06070;
+  --color-status-dark-green:  #3FBE7E;
+  --color-status-dark-yellow: #E8C048;
+}
+
+/* ══ 2. Foundation — Spacing, Radius, Border Width, Typography ══ */
+:root {
+  --spacing-2: 2px;   --spacing-4: 4px;   --spacing-6: 6px;   --spacing-8: 8px;
+  --spacing-10: 10px; --spacing-12: 12px; --spacing-14: 14px; --spacing-16: 16px;
+  --spacing-20: 20px; --spacing-24: 24px; --spacing-28: 28px; --spacing-32: 32px;
+  --spacing-36: 36px; --spacing-40: 40px; --spacing-44: 44px; --spacing-48: 48px;
+  --spacing-56: 56px; --spacing-64: 64px; --spacing-80: 80px; --spacing-96: 96px;
+  --spacing-128: 128px;
+  --radius-0: 0px;   --radius-2: 2px;   --radius-4: 4px;   --radius-6: 6px;
+  --radius-8: 8px;   --radius-10: 10px; --radius-12: 12px; --radius-16: 16px;
+  --radius-20: 20px; --radius-full: 9999px;
+  --border-width-1: 1px; --border-width-2: 2px;
+  --font-size-10: 10px; --font-size-12: 12px; --font-size-14: 14px; --font-size-16: 16px;
+  --font-size-18: 18px; --font-size-20: 20px; --font-size-24: 24px; --font-size-32: 32px;
+  --font-weight-regular: 400; --font-weight-medium: 500; --font-weight-bold: 700;
+  --line-height-130: 1.3;
+}
+
+/* ══ 3. Semantic Tokens — Light ══ */
+:root {
+  --color-bg-default:  var(--color-gray-0);
+  --color-bg-subtle:   var(--color-gray-50);
+  --color-bg-muted:    var(--color-gray-100);
+  --color-bg-elevated: var(--color-gray-100);
+  --color-bg-home:     #F5F6FB;
+  --color-bg-selected: var(--color-blue-50);
+  --color-surface-default: var(--color-base-white);
+  --color-surface-raised:  var(--color-base-white);
+  --color-text-primary:     var(--color-gray-900);
+  --color-text-secondary:   var(--color-gray-800);
+  --color-text-tertiary:    var(--color-gray-600);
+  --color-text-caption:     var(--color-gray-500);
+  --color-text-placeholder: var(--color-gray-400);
+  --color-text-helper:      var(--color-gray-400);
+  --color-text-link:        var(--color-blue-400);
+  --color-text-correct:     var(--color-blue-400);
+  --color-text-danger:      var(--color-red-300);
+  --color-text-disabled:    var(--color-gray-300);
+  --color-text-inverse:     var(--color-base-white);
+  --color-border-subtle:   var(--color-gray-100);
+  --color-border-default:  var(--color-gray-200);
+  --color-border-strong:   var(--color-gray-300);
+  --color-border-emphasis: var(--color-gray-800);
+  --color-border-focus:    var(--color-blue-400);
+  --color-border-white:    var(--color-base-white);
+  --color-border-danger:   var(--color-red-300);
+  --color-border-correct:  var(--color-blue-400);
+  --color-icon-default:  var(--color-gray-500);
+  --color-icon-muted:    var(--color-gray-300);
+  --color-icon-emphasis: var(--color-gray-800);
+  --color-icon-accent:   var(--color-blue-400);
+  --color-icon-inverse:  var(--color-base-white);
+  --color-icon-danger:   var(--color-red-300);
+  --color-action-primary-default: var(--color-blue-400);
+  --color-action-primary-hover:   var(--color-blue-450);
+  --color-action-primary-pressed: var(--color-blue-500);
+  --color-action-primary-text:    var(--color-base-white);
+  --color-action-primary-subtle:  var(--color-blue-50);
+  --color-status-success: var(--color-blue-400);
+  --color-status-error:   var(--color-red-400);
+  --color-status-warning: var(--color-yellow-400);
+  --color-status-info:    var(--color-gray-500);
+  --color-overlay: rgba(0, 0, 0, 0.5);
+  --spacing-padding-block-xxs: var(--spacing-8);  --spacing-padding-block-xs: var(--spacing-12);
+  --spacing-padding-block-sm: var(--spacing-16);  --spacing-padding-block-md: var(--spacing-20);
+  --spacing-padding-block-lg: var(--spacing-24);
+  --spacing-padding-inline-xxs: var(--spacing-8); --spacing-padding-inline-xs: var(--spacing-12);
+  --spacing-padding-inline-sm: var(--spacing-16); --spacing-padding-inline-md: var(--spacing-20);
+  --spacing-padding-inline-lg: var(--spacing-24);
+  --spacing-section-xs: var(--spacing-16);  --spacing-section-sm: var(--spacing-20);
+  --spacing-section-md: var(--spacing-24);  --spacing-section-lg: var(--spacing-32);
+  --spacing-section-xl: var(--spacing-40);  --spacing-section-xxl: var(--spacing-48);
+  --spacing-stack-xs: var(--spacing-12); --spacing-stack-sm: var(--spacing-16);
+  --spacing-stack-md: var(--spacing-20); --spacing-stack-lg: var(--spacing-24);
+  --spacing-cluster-xxs: var(--spacing-8); --spacing-cluster-xs: var(--spacing-12);
+  --spacing-cluster-sm: var(--spacing-16); --spacing-cluster-md: var(--spacing-20);
+  --spacing-label-gap-inline-sm: var(--spacing-8);  --spacing-label-gap-inline-md: var(--spacing-12);
+  --spacing-label-gap-inline-lg: var(--spacing-16); --spacing-label-gap-block-sm: var(--spacing-4);
+  --spacing-label-gap-block-md: var(--spacing-8);
+  --sizing-form-control-height-xxs: var(--spacing-28); --sizing-form-control-height-xs: 34px;
+  --sizing-form-control-height-md: var(--spacing-44);  --sizing-form-control-height-lg: var(--spacing-48);
+  --sizing-form-control-dataview-height-sm: var(--spacing-28); --sizing-form-control-dataview-height-md: 32px;
+  --sizing-button-height-xs: 34px; --sizing-button-height-sm: var(--spacing-40);
+  --sizing-button-height-md: var(--spacing-44); --sizing-button-height-lg: var(--spacing-48);
+  --sizing-button-min-width: 80px;
+  --sizing-chip-height-sm: var(--spacing-28); --sizing-chip-height-md: 30px; --sizing-chip-height-lg: 34px;
+  --sizing-table-row-height-xs: 34px; --sizing-table-row-height-sm: 38px;
+  --sizing-table-row-height-md: var(--spacing-44);
+  --sizing-icon-10: 10px; --sizing-icon-16: var(--spacing-16); --sizing-icon-18: 18px;
+  --sizing-icon-20: var(--spacing-20); --sizing-icon-24: var(--spacing-24);
+  --sizing-icon-28: var(--spacing-28); --sizing-icon-32: var(--spacing-32);
+  --radius-control-xs: var(--radius-2); --radius-control-sm: var(--radius-4);
+  --radius-button-md: var(--radius-4); --radius-card-md: var(--radius-10); --radius-modal-md: var(--radius-8);
+  --border-width-default: var(--border-width-1); --border-width-strong: var(--border-width-2);
+}
+
+/* ══ 4. Semantic Tokens — Dark ══ */
+[data-theme="dark"] {
+  --color-bg-default:  var(--color-gray-dark-50);
+  --color-bg-subtle:   var(--color-gray-dark-200);
+  --color-bg-muted:    var(--color-gray-dark-300);
+  --color-bg-elevated: var(--color-gray-dark-400);
+  --color-bg-home:     var(--color-gray-dark-50);
+  --color-bg-selected: var(--color-blue-dark-100);
+  --color-surface-default: var(--color-gray-dark-100);
+  --color-surface-raised:  var(--color-gray-dark-400);
+  --color-text-primary:     var(--color-gray-dark-900);
+  --color-text-secondary:   var(--color-gray-dark-800);
+  --color-text-tertiary:    var(--color-gray-dark-700);
+  --color-text-caption:     var(--color-gray-dark-700);
+  --color-text-placeholder: var(--color-gray-dark-600);
+  --color-text-helper:      var(--color-gray-dark-600);
+  --color-text-link:        var(--color-blue-dark-400);
+  --color-text-correct:     var(--color-blue-dark-400);
+  --color-text-danger:      var(--color-status-dark-red);
+  --color-text-disabled:    var(--color-gray-dark-400);
+  --color-text-inverse:     var(--color-base-white);
+  --color-border-subtle:   rgba(255,255,255,0.04);
+  --color-border-default:  rgba(255,255,255,0.07);
+  --color-border-strong:   rgba(255,255,255,0.12);
+  --color-border-emphasis: rgba(255,255,255,0.20);
+  --color-border-focus:    var(--color-blue-dark-350);
+  --color-border-white:    var(--color-base-white);
+  --color-border-danger:   var(--color-status-dark-red);
+  --color-border-correct:  var(--color-blue-dark-350);
+  --color-icon-default:  var(--color-gray-dark-700);
+  --color-icon-muted:    var(--color-gray-dark-400);
+  --color-icon-emphasis: var(--color-gray-dark-800);
+  --color-icon-accent:   var(--color-blue-dark-400);
+  --color-icon-inverse:  var(--color-base-white);
+  --color-icon-danger:   var(--color-status-dark-red);
+  --color-action-primary-default: var(--color-blue-dark-300);
+  --color-action-primary-hover:   var(--color-blue-dark-250);
+  --color-action-primary-pressed: var(--color-blue-dark-200);
+  --color-action-primary-text:    var(--color-base-white);
+  --color-action-primary-subtle:  var(--color-blue-dark-100);
+  --color-status-success: var(--color-status-dark-green);
+  --color-status-error:   var(--color-status-dark-red);
+  --color-status-warning: var(--color-status-dark-yellow);
+  --color-status-info:    var(--color-gray-dark-700);
+  --color-overlay: rgba(0, 0, 0, 0.75);
+}
+
+/* ══ 5. Component Tokens ══ */
+:root {
+  --button-primary-default-bg:    var(--color-action-primary-default);
+  --button-primary-hover-bg:      var(--color-action-primary-hover);
+  --button-primary-pressed-bg:    var(--color-action-primary-pressed);
+  --button-primary-disabled-bg:   var(--color-border-default);
+  --button-primary-default-text:  var(--color-action-primary-text);
+  --button-primary-disabled-text: var(--color-text-disabled);
+  --button-primary-default-icon:  var(--color-action-primary-text);
+  --button-primary-focus-ring:    var(--color-border-focus);
+  --button-secondary-default-bg:      var(--color-surface-default);
+  --button-secondary-hover-bg:        var(--color-bg-subtle);
+  --button-secondary-pressed-bg:      var(--color-bg-muted);
+  --button-secondary-disabled-bg:     var(--color-bg-subtle);
+  --button-secondary-default-border:  var(--color-border-default);
+  --button-secondary-hover-border:    var(--color-border-strong);
+  --button-secondary-disabled-border: var(--color-border-subtle);
+  --button-secondary-default-text:    var(--color-text-secondary);
+  --button-secondary-disabled-text:   var(--color-text-disabled);
+  --button-secondary-default-icon:    var(--color-icon-default);
+  --button-secondary-disabled-icon:   var(--color-icon-muted);
+  --button-secondary-focus-ring:      var(--color-border-focus);
+  --button-ghost-hover-bg:      var(--color-bg-subtle);
+  --button-ghost-pressed-bg:    var(--color-bg-muted);
+  --button-ghost-default-text:  var(--color-text-secondary);
+  --button-ghost-disabled-text: var(--color-text-disabled);
+  --button-ghost-default-icon:  var(--color-icon-default);
+  --button-ghost-disabled-icon: var(--color-icon-muted);
+  --chip-default-bg:      var(--color-bg-subtle);
+  --chip-hover-bg:        var(--color-bg-muted);
+  --chip-selected-bg:     var(--color-action-primary-subtle);
+  --chip-disabled-bg:     var(--color-bg-subtle);
+  --chip-default-border:  var(--color-border-default);
+  --chip-hover-border:    var(--color-border-strong);
+  --chip-selected-border: var(--color-action-primary-default);
+  --chip-disabled-border: var(--color-border-subtle);
+  --chip-default-text:    var(--color-text-secondary);
+  --chip-selected-text:   var(--color-action-primary-default);
+  --chip-disabled-text:   var(--color-text-disabled);
+  --chip-default-icon:    var(--color-icon-default);
+  --chip-selected-icon:   var(--color-action-primary-default);
+  --chip-disabled-icon:   var(--color-icon-muted);
+  --chip-focus-ring:      var(--color-border-focus);
+  --dropdown-trigger-default-bg:      var(--color-surface-default);
+  --dropdown-trigger-hover-bg:        var(--color-bg-subtle);
+  --dropdown-trigger-open-bg:         var(--color-bg-subtle);
+  --dropdown-trigger-disabled-bg:     var(--color-bg-subtle);
+  --dropdown-trigger-default-border:  var(--color-border-default);
+  --dropdown-trigger-hover-border:    var(--color-border-strong);
+  --dropdown-trigger-open-border:     var(--color-border-focus);
+  --dropdown-trigger-disabled-border: var(--color-border-subtle);
+  --dropdown-trigger-default-text:    var(--color-text-secondary);
+  --dropdown-trigger-disabled-text:   var(--color-text-disabled);
+  --dropdown-list-bg:            var(--color-surface-raised);
+  --dropdown-option-hover-bg:    var(--color-bg-subtle);
+  --dropdown-option-selected-bg: var(--color-action-primary-subtle);
+  --input-default-bg:      var(--color-surface-default);
+  --input-hover-bg:        var(--color-surface-default);
+  --input-focus-bg:        var(--color-surface-default);
+  --input-disabled-bg:     var(--color-bg-subtle);
+  --input-error-bg:        var(--color-surface-default);
+  --input-default-border:  var(--color-border-default);
+  --input-hover-border:    var(--color-border-strong);
+  --input-focus-border:    var(--color-border-focus);
+  --input-error-border:    var(--color-border-danger);
+  --input-correct-border:  var(--color-border-correct);
+  --input-disabled-border: var(--color-border-default);
+  --select-disabled-border: var(--color-border-subtle);
+  --input-placeholder-text: var(--color-text-placeholder);
+  --input-helper-text:      var(--color-text-helper);
+  --input-error-text:       var(--color-text-danger);
+  --input-correct-text:     var(--color-text-correct);
+  --input-disabled-text:    var(--color-text-disabled);
+  --checkbox-default-bg:       var(--color-surface-default);
+  --checkbox-checked-bg:       var(--color-action-primary-default);
+  --checkbox-indeterminate-bg: var(--color-action-primary-default);
+  --checkbox-disabled-bg:      var(--color-bg-subtle);
+  --checkbox-default-border:   var(--color-border-default);
+  --checkbox-hover-border:     var(--color-border-focus);
+  --checkbox-checked-border:   var(--color-action-primary-default);
+  --checkbox-disabled-border:  var(--color-border-subtle);
+  --checkbox-check-icon:       var(--color-action-primary-text);
+  --radio-default-bg:      var(--color-surface-default);
+  --radio-disabled-bg:     var(--color-bg-subtle);
+  --radio-default-border:  var(--color-border-default);
+  --radio-hover-border:    var(--color-border-focus);
+  --radio-selected-border: var(--color-action-primary-default);
+  --radio-disabled-border: var(--color-border-subtle);
+  --radio-selected-dot:    var(--color-action-primary-default);
+  --toggle-on-bg:       var(--color-action-primary-default);
+  --toggle-off-bg:      var(--color-border-default);
+  --toggle-disabled-bg: var(--color-border-subtle);
+  --toggle-knob:        var(--color-action-primary-text);
+  --pagination-default-bg:    var(--color-surface-default);
+  --pagination-hover-bg:      var(--color-bg-subtle);
+  --pagination-active-bg:     var(--color-action-primary-default);
+  --pagination-disabled-bg:   var(--color-surface-default);
+  --pagination-default-text:  var(--color-text-secondary);
+  --pagination-active-text:   var(--color-action-primary-text);
+  --pagination-disabled-text: var(--color-text-disabled);
+  --pagination-border:        var(--color-border-default);
+  --nav-bg:                var(--color-surface-default);
+  --nav-item-hover-bg:     var(--color-bg-subtle);
+  --nav-item-active-bg:    var(--color-action-primary-subtle);
+  --nav-item-default-text: var(--color-text-tertiary);
+  --nav-item-active-text:  var(--color-action-primary-default);
+  --nav-item-default-icon: var(--color-icon-default);
+  --nav-item-active-icon:  var(--color-action-primary-default);
+  --nav-item-indicator:    var(--color-action-primary-default);
+  --nav-divider:           var(--color-border-subtle);
+  --table-header-bg:       var(--color-bg-subtle);
+  --table-header-text:     var(--color-text-tertiary);
+  --table-header-border:   var(--color-border-default);
+  --table-row-default-bg:  var(--color-surface-default);
+  --table-row-hover-bg:    var(--color-bg-subtle);
+  --table-row-selected-bg: var(--color-bg-selected);
+  --table-cell-border:     var(--color-border-subtle);
+  --table-cell-text:       var(--color-text-secondary);
+}</pre>
+              </div>
+            </div>
+          </div>
+
+          <!-- Step 2 -->
+          <div class="install-step">
+            <div class="step-header">
+              <div class="step-number">2</div>
+              <div>
+                <div class="step-title">프로젝트에 추가</div>
+                <div class="step-desc">다운받은 tokens.css를 프로젝트에 복사한 뒤 아래 한 줄 추가</div>
+              </div>
+            </div>
+            <div class="step-body">
+              <div class="env-tabs">
+                <button class="env-tab active" data-env="css">CSS</button>
+                <button class="env-tab" data-env="html">HTML</button>
+                <button class="env-tab" data-env="react">React</button>
+                <button class="env-tab" data-env="vue">Vue</button>
+                <button class="env-tab" data-env="next">Next.js</button>
+              </div>
+
+              <div class="env-panel active" id="env-css">
+                <div class="snippet-row">
+                  <span class="snippet-label">globals.css</span>
+                  <div class="snippet-block">
+                    <code class="snippet-code">@import './tokens.css';</code>
+                    <button class="snippet-copy" onclick="copySnippet(this, '@import \'./tokens.css\';')">복사</button>
+                  </div>
+                </div>
+              </div>
+
+              <div class="env-panel" id="env-html">
+                <div class="snippet-row">
+                  <span class="snippet-label">&lt;head&gt;</span>
+                  <div class="snippet-block">
+                    <code class="snippet-code">&lt;link rel="stylesheet" href="./tokens.css"&gt;</code>
+                    <button class="snippet-copy" onclick="copySnippet(this, '<link rel=&quot;stylesheet&quot; href=&quot;./tokens.css&quot;>')">복사</button>
+                  </div>
+                </div>
+              </div>
+
+              <div class="env-panel" id="env-react">
+                <div class="snippet-row">
+                  <span class="snippet-label">App.tsx</span>
+                  <div class="snippet-block">
+                    <code class="snippet-code">import './tokens.css';</code>
+                    <button class="snippet-copy" onclick="copySnippet(this, `import './tokens.css';`)">복사</button>
+                  </div>
+                </div>
+              </div>
+
+              <div class="env-panel" id="env-vue">
+                <div class="snippet-row">
+                  <span class="snippet-label">main.ts</span>
+                  <div class="snippet-block">
+                    <code class="snippet-code">import './assets/tokens.css';</code>
+                    <button class="snippet-copy" onclick="copySnippet(this, `import './assets/tokens.css';`)">복사</button>
+                  </div>
+                </div>
+              </div>
+
+              <div class="env-panel" id="env-next">
+                <div class="snippet-row">
+                  <span class="snippet-label">_app.tsx</span>
+                  <div class="snippet-block">
+                    <code class="snippet-code">import '../styles/tokens.css';</code>
+                    <button class="snippet-copy" onclick="copySnippet(this, `import '../styles/tokens.css';`)">복사</button>
+                  </div>
+                </div>
+                <div class="snippet-row">
+                  <span class="snippet-label">globals.css</span>
+                  <div class="snippet-block">
+                    <code class="snippet-code">@import '../styles/tokens.css';</code>
+                    <button class="snippet-copy" onclick="copySnippet(this, `@import '../styles/tokens.css';`)">복사</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div><!-- /install-steps -->
+      </div><!-- /top-install -->
+
+      <!-- ══ AI 컨텍스트 프롬프트 패널 ══ -->
+      <div class="top-panel" id="top-ai">
+        <div class="ai-info">
+          <div>
+            <div class="ai-filename">AI 컨텍스트 프롬프트 (Claude · GPT 등)</div>
+            <div class="ai-meta">대화 시작 시 첫 메시지로 붙여넣기</div>
+          </div>
+          <button class="copy-all-btn" id="btn-ai" onclick="copyAi()">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+            전체 복사
+          </button>
+        </div>
+        <pre class="ai-pre" id="code-ai">## SW 디자인 시스템 V2.4 — 토큰 컨텍스트
+
+아래 CSS 토큰은 SW 디자인 시스템 V2.4의 공식 정의입니다.
+이 토큰만 사용하여 UI를 구현해주세요.
+
+---
+
+### 핵심 규칙
+
+1. **색상은 반드시 Semantic 토큰 경유**
+   - Component Token → Semantic Token → Foundation Primitive
+   - HEX 값 직접 사용 금지 (예외: rgba overlay, dark border)
+
+2. **크기·간격은 Semantic 또는 Foundation 참조**
+   - 여러 컴포넌트가 공유하는 값 → Semantic 경유
+   - 컴포넌트 전용 값 → Foundation 직접 참조 가능
+
+3. **Light/Dark 테마**
+   - :root = Light (기본)
+   - [data-theme="dark"] = Dark
+   - 변수명은 동일, 값만 변경
+
+4. **컴포넌트 토큰은 Semantic 참조**
+   - --button-primary-default-bg: var(--color-action-primary-default)
+   - Foundation Primitive를 Component에서 직접 참조하지 않음
+
+---
+
+### 전체 토큰 정의
+
+/* ══ 0. Foundation — Base & Brand ══ */
+:root {
+  --color-base-white: #FFFFFF;  --color-base-black: #000000;
+  --color-brand-blue: #0072CE;  --color-brand-red:  #FF312C;
+  --color-brand-gray: #DFDEDE;  --color-brand-ci:   #004097;
+}
+
+/* ══ 1. Foundation — Color Primitives ══ */
+:root {
+  /* Gray · Light */
+  --color-gray-0: #FAFAFA;   --color-gray-50: #F5F5F5;  --color-gray-100: #E9E9E9;
+  --color-gray-200: #D9D9D9; --color-gray-300: #C4C4C4; --color-gray-400: #9D9D9D;
+  --color-gray-500: #757575; --color-gray-600: #555555; --color-gray-700: #434343;
+  --color-gray-800: #353535; --color-gray-900: #202020;
+  /* Gray · Dark  [낮은 스텝=어두운 배경, 높은 스텝=밝은 텍스트] */
+  --color-gray-dark-0: #0D0E12;   --color-gray-dark-50: #131418;  --color-gray-dark-100: #1C1D23;
+  --color-gray-dark-200: #24252C; --color-gray-dark-300: #2E2F38; --color-gray-dark-400: #35363F;
+  --color-gray-dark-500: #3E4049; --color-gray-dark-600: #55575F; --color-gray-dark-700: #8A8C96;
+  --color-gray-dark-800: #B8BABF; --color-gray-dark-900: #ECEDF0;
+  /* Blue · Light */
+  --color-blue-50: #E2F1FF;  --color-blue-100: #C8E4FF; --color-blue-150: #A4D4FF;
+  --color-blue-200: #8BC6FF; --color-blue-250: #5BB2FF; --color-blue-300: #2B9EFF;
+  --color-blue-350: #268CF8; --color-blue-400: #1D6CEB; --color-blue-450: #2158C8;
+  --color-blue-500: #2747B9;
+  /* Blue · Dark */
+  --color-blue-dark-50: #0C1D38;  --color-blue-dark-100: #112B55; --color-blue-dark-150: #1A3D72;
+  --color-blue-dark-200: #214EA0; --color-blue-dark-250: #2A65C8; --color-blue-dark-300: #3070D8;
+  --color-blue-dark-350: #4285E8; --color-blue-dark-400: #6FA5F8; --color-blue-dark-450: #96BEF9;
+  --color-blue-dark-500: #C0D8FC;
+  /* Red · Light */
+  --color-red-50: #FFEBEF;  --color-red-100: #FFCCD6; --color-red-150: #FBB2BA;
+  --color-red-200: #F8979E; --color-red-250: #FC6E79; --color-red-300: #FF4554;
+  --color-red-350: #F22544; --color-red-400: #E50533; --color-red-450: #D60228;
+  --color-red-500: #C8001E;
+  /* Red · Dark */
+  --color-red-dark-50: #2A0F14;  --color-red-dark-100: #3D1520; --color-red-dark-150: #5C1E2E;
+  --color-red-dark-200: #8A2A3E; --color-red-dark-250: #C03850; --color-red-dark-300: #E04860;
+  --color-red-dark-350: #F06070; --color-red-dark-400: #F48890; --color-red-dark-450: #F8A8B0;
+  --color-red-dark-500: #FCD0D5;
+  /* Orange · Light/Dark */
+  --color-orange-50: #FFEDE0; --color-orange-100: #FDDBBF; --color-orange-300: #FF761A; --color-orange-400: #DA4C00;
+  --color-orange-dark-50: #2E1505; --color-orange-dark-350: #F09548; --color-orange-dark-500: #FCD8B8;
+  /* Yellow · Light/Dark */
+  --color-yellow-50: #FFF4CE; --color-yellow-300: #FFC200; --color-yellow-400: #DBA400;
+  --color-yellow-dark-50: #2A2005; --color-yellow-dark-350: #E8C048; --color-yellow-dark-500: #FAEAB8;
+  /* Green · Light/Dark */
+  --color-green-50: #E3F2EA; --color-green-300: #1FB279; --color-green-400: #009E5E;
+  --color-green-dark-50: #0A2018; --color-green-dark-350: #3FBE7E; --color-green-dark-500: #C5F0D8;
+  /* Skyblue · Light/Dark */
+  --color-skyblue-50: #C4EEF7; --color-skyblue-400: #159BBC;
+  --color-skyblue-dark-50: #081E28; --color-skyblue-dark-500: #C0E8F0;
+  /* Purple · Light/Dark */
+  --color-purple-50: #E8E9FC; --color-purple-400: #3535A8;
+  --color-purple-dark-50: #14142A; --color-purple-dark-500: #D0D0F5;
+  /* Brown · Light/Dark */
+  --color-brown-50: #F6EEE9; --color-brown-400: #554435;
+  --color-brown-dark-50: #1E1610; --color-brown-dark-500: #E8D8C8;
+  /* Visual Gray / Cool Gray Dark */
+  --color-visual-gray-50: #F3F5F7; --color-visual-gray-400: #3E4347;
+  --color-coolgray-dark-50: #12141A; --color-coolgray-dark-500: #D8DBE0;
+  /* Status Dark Alias (피드백 상태 전용) */
+  --color-status-dark-red:    #F06070;
+  --color-status-dark-green:  #3FBE7E;
+  --color-status-dark-yellow: #E8C048;
+}
+
+/* ══ 2. Foundation — Spacing, Radius, Typography ══ */
+:root {
+  /* Spacing */
+  --spacing-2: 2px;   --spacing-4: 4px;   --spacing-6: 6px;   --spacing-8: 8px;
+  --spacing-10: 10px; --spacing-12: 12px; --spacing-14: 14px; --spacing-16: 16px;
+  --spacing-20: 20px; --spacing-24: 24px; --spacing-28: 28px; --spacing-32: 32px;
+  --spacing-36: 36px; --spacing-40: 40px; --spacing-44: 44px; --spacing-48: 48px;
+  --spacing-56: 56px; --spacing-64: 64px; --spacing-80: 80px; --spacing-96: 96px;
+  --spacing-128: 128px;
+  /* Radius */
+  --radius-0: 0px;  --radius-2: 2px;  --radius-4: 4px;   --radius-6: 6px;
+  --radius-8: 8px;  --radius-10: 10px; --radius-12: 12px; --radius-16: 16px;
+  --radius-20: 20px; --radius-full: 9999px;
+  /* Border Width */
+  --border-width-1: 1px; --border-width-2: 2px;
+  /* Font Size */
+  --font-size-10: 10px; --font-size-12: 12px; --font-size-14: 14px; --font-size-16: 16px;
+  --font-size-18: 18px; --font-size-20: 20px; --font-size-24: 24px; --font-size-32: 32px;
+  /* Font Weight */
+  --font-weight-regular: 400; --font-weight-medium: 500; --font-weight-bold: 700;
+  /* Line Height */
+  --line-height-130: 1.3;
+}
+
+/* ══ 3. Semantic Tokens — Light ══ */
+:root {
+  --color-bg-default:  var(--color-gray-0);
+  --color-bg-subtle:   var(--color-gray-50);
+  --color-bg-muted:    var(--color-gray-100);
+  --color-bg-elevated: var(--color-gray-100);
+  --color-bg-home:     #F5F6FB;
+  --color-bg-selected: var(--color-blue-50);
+  --color-surface-default: var(--color-base-white);
+  --color-surface-raised:  var(--color-base-white);
+  --color-text-primary:     var(--color-gray-900);
+  --color-text-secondary:   var(--color-gray-800);
+  --color-text-tertiary:    var(--color-gray-600);
+  --color-text-caption:     var(--color-gray-500);
+  --color-text-placeholder: var(--color-gray-400);
+  --color-text-helper:      var(--color-gray-400);
+  --color-text-link:        var(--color-blue-400);
+  --color-text-correct:     var(--color-blue-400);
+  --color-text-danger:      var(--color-red-300);
+  --color-text-disabled:    var(--color-gray-300);
+  --color-text-inverse:     var(--color-base-white);
+  --color-border-subtle:   var(--color-gray-100);
+  --color-border-default:  var(--color-gray-200);
+  --color-border-strong:   var(--color-gray-300);
+  --color-border-emphasis: var(--color-gray-800);
+  --color-border-focus:    var(--color-blue-400);
+  --color-border-white:    var(--color-base-white);
+  --color-border-danger:   var(--color-red-300);
+  --color-border-correct:  var(--color-blue-400);
+  --color-icon-default:  var(--color-gray-500);
+  --color-icon-muted:    var(--color-gray-300);
+  --color-icon-emphasis: var(--color-gray-800);
+  --color-icon-accent:   var(--color-blue-400);
+  --color-icon-inverse:  var(--color-base-white);
+  --color-icon-danger:   var(--color-red-300);
+  --color-action-primary-default: var(--color-blue-400);
+  --color-action-primary-hover:   var(--color-blue-450);
+  --color-action-primary-pressed: var(--color-blue-500);
+  --color-action-primary-text:    var(--color-base-white);
+  --color-action-primary-subtle:  var(--color-blue-50);
+  --color-status-success: var(--color-blue-400);
+  --color-status-error:   var(--color-red-400);
+  --color-status-warning: var(--color-yellow-400);
+  --color-status-info:    var(--color-gray-500);
+  --color-overlay: rgba(0, 0, 0, 0.5);
+  /* Semantic Spacing */
+  --spacing-padding-block-xxs: var(--spacing-8);   --spacing-padding-block-xs: var(--spacing-12);
+  --spacing-padding-block-sm:  var(--spacing-16);  --spacing-padding-block-md: var(--spacing-20);
+  --spacing-padding-block-lg:  var(--spacing-24);
+  --spacing-padding-inline-xxs: var(--spacing-8);  --spacing-padding-inline-xs: var(--spacing-12);
+  --spacing-padding-inline-sm:  var(--spacing-16); --spacing-padding-inline-md: var(--spacing-20);
+  --spacing-padding-inline-lg:  var(--spacing-24);
+  --spacing-section-xs: var(--spacing-16); --spacing-section-sm: var(--spacing-20);
+  --spacing-section-md: var(--spacing-24); --spacing-section-lg: var(--spacing-32);
+  --spacing-section-xl: var(--spacing-40); --spacing-section-xxl: var(--spacing-48);
+  --spacing-stack-xs: var(--spacing-12); --spacing-stack-sm: var(--spacing-16);
+  --spacing-stack-md: var(--spacing-20); --spacing-stack-lg: var(--spacing-24);
+  --spacing-cluster-xxs: var(--spacing-8);  --spacing-cluster-xs: var(--spacing-12);
+  --spacing-cluster-sm:  var(--spacing-16); --spacing-cluster-md: var(--spacing-20);
+  --spacing-label-gap-inline-sm: var(--spacing-8);  --spacing-label-gap-inline-md: var(--spacing-12);
+  --spacing-label-gap-inline-lg: var(--spacing-16); --spacing-label-gap-block-sm: var(--spacing-4);
+  --spacing-label-gap-block-md:  var(--spacing-8);
+  /* Semantic Sizing */
+  --sizing-form-control-height-xxs: var(--spacing-28); --sizing-form-control-height-xs: 34px;
+  --sizing-form-control-height-md:  var(--spacing-44); --sizing-form-control-height-lg: var(--spacing-48);
+  --sizing-form-control-dataview-height-sm: var(--spacing-28); --sizing-form-control-dataview-height-md: 32px;
+  --sizing-button-height-xs: 34px; --sizing-button-height-sm: var(--spacing-40);
+  --sizing-button-height-md: var(--spacing-44); --sizing-button-height-lg: var(--spacing-48);
+  --sizing-button-min-width: 80px;
+  --sizing-chip-height-sm: var(--spacing-28); --sizing-chip-height-md: 30px; --sizing-chip-height-lg: 34px;
+  --sizing-table-row-height-xs: 34px; --sizing-table-row-height-sm: 38px;
+  --sizing-table-row-height-md: var(--spacing-44);
+  --sizing-icon-10: 10px; --sizing-icon-16: var(--spacing-16); --sizing-icon-18: 18px;
+  --sizing-icon-20: var(--spacing-20); --sizing-icon-24: var(--spacing-24);
+  --sizing-icon-28: var(--spacing-28); --sizing-icon-32: var(--spacing-32);
+  /* Semantic Radius / Border Width */
+  --radius-control-xs: var(--radius-2); --radius-control-sm: var(--radius-4);
+  --radius-button-md:  var(--radius-4); --radius-card-md: var(--radius-10);
+  --radius-modal-md:   var(--radius-8);
+  --border-width-default: var(--border-width-1); --border-width-strong: var(--border-width-2);
+}
+
+/* ══ 4. Semantic Tokens — Dark ══ */
+[data-theme="dark"] {
+  --color-bg-default:  var(--color-gray-dark-50);
+  --color-bg-subtle:   var(--color-gray-dark-200);
+  --color-bg-muted:    var(--color-gray-dark-300);
+  --color-bg-elevated: var(--color-gray-dark-400);
+  --color-bg-home:     var(--color-gray-dark-50);
+  --color-bg-selected: var(--color-blue-dark-100);
+  --color-surface-default: var(--color-gray-dark-100);
+  --color-surface-raised:  var(--color-gray-dark-400);
+  --color-text-primary:     var(--color-gray-dark-900);
+  --color-text-secondary:   var(--color-gray-dark-800);
+  --color-text-tertiary:    var(--color-gray-dark-700);
+  --color-text-caption:     var(--color-gray-dark-700);
+  --color-text-placeholder: var(--color-gray-dark-600);
+  --color-text-helper:      var(--color-gray-dark-600);
+  --color-text-link:        var(--color-blue-dark-400);
+  --color-text-correct:     var(--color-blue-dark-400);
+  --color-text-danger:      var(--color-status-dark-red);
+  --color-text-disabled:    var(--color-gray-dark-400);
+  --color-text-inverse:     var(--color-base-white);
+  --color-border-subtle:   rgba(255,255,255,0.04);
+  --color-border-default:  rgba(255,255,255,0.07);
+  --color-border-strong:   rgba(255,255,255,0.12);
+  --color-border-emphasis: rgba(255,255,255,0.20);
+  --color-border-focus:    var(--color-blue-dark-350);
+  --color-border-white:    var(--color-base-white);
+  --color-border-danger:   var(--color-status-dark-red);
+  --color-border-correct:  var(--color-blue-dark-350);
+  --color-icon-default:  var(--color-gray-dark-700);
+  --color-icon-muted:    var(--color-gray-dark-400);
+  --color-icon-emphasis: var(--color-gray-dark-800);
+  --color-icon-accent:   var(--color-blue-dark-400);
+  --color-icon-inverse:  var(--color-base-white);
+  --color-icon-danger:   var(--color-status-dark-red);
+  --color-action-primary-default: var(--color-blue-dark-300);
+  --color-action-primary-hover:   var(--color-blue-dark-250);
+  --color-action-primary-pressed: var(--color-blue-dark-200);
+  --color-action-primary-text:    var(--color-base-white);
+  --color-action-primary-subtle:  var(--color-blue-dark-100);
+  --color-status-success: var(--color-status-dark-green);
+  --color-status-error:   var(--color-status-dark-red);
+  --color-status-warning: var(--color-status-dark-yellow);
+  --color-status-info:    var(--color-gray-dark-700);
+  --color-overlay: rgba(0, 0, 0, 0.75);
+}
+
+/* ══ 5. Component Tokens ══ */
+:root {
+  --button-primary-default-bg:    var(--color-action-primary-default);
+  --button-primary-hover-bg:      var(--color-action-primary-hover);
+  --button-primary-pressed-bg:    var(--color-action-primary-pressed);
+  --button-primary-disabled-bg:   var(--color-border-default);
+  --button-primary-default-text:  var(--color-action-primary-text);
+  --button-primary-disabled-text: var(--color-text-disabled);
+  --button-primary-default-icon:  var(--color-action-primary-text);
+  --button-primary-focus-ring:    var(--color-border-focus);
+  --button-secondary-default-bg:      var(--color-surface-default);
+  --button-secondary-hover-bg:        var(--color-bg-subtle);
+  --button-secondary-pressed-bg:      var(--color-bg-muted);
+  --button-secondary-disabled-bg:     var(--color-bg-subtle);
+  --button-secondary-default-border:  var(--color-border-default);
+  --button-secondary-hover-border:    var(--color-border-strong);
+  --button-secondary-disabled-border: var(--color-border-subtle);
+  --button-secondary-default-text:    var(--color-text-secondary);
+  --button-secondary-disabled-text:   var(--color-text-disabled);
+  --button-secondary-default-icon:    var(--color-icon-default);
+  --button-secondary-disabled-icon:   var(--color-icon-muted);
+  --button-secondary-focus-ring:      var(--color-border-focus);
+  --button-ghost-hover-bg:      var(--color-bg-subtle);
+  --button-ghost-pressed-bg:    var(--color-bg-muted);
+  --button-ghost-default-text:  var(--color-text-secondary);
+  --button-ghost-disabled-text: var(--color-text-disabled);
+  --button-ghost-default-icon:  var(--color-icon-default);
+  --button-ghost-disabled-icon: var(--color-icon-muted);
+  --chip-default-bg:      var(--color-bg-subtle);
+  --chip-hover-bg:        var(--color-bg-muted);
+  --chip-selected-bg:     var(--color-action-primary-subtle);
+  --chip-disabled-bg:     var(--color-bg-subtle);
+  --chip-default-border:  var(--color-border-default);
+  --chip-hover-border:    var(--color-border-strong);
+  --chip-selected-border: var(--color-action-primary-default);
+  --chip-disabled-border: var(--color-border-subtle);
+  --chip-default-text:    var(--color-text-secondary);
+  --chip-selected-text:   var(--color-action-primary-default);
+  --chip-disabled-text:   var(--color-text-disabled);
+  --chip-default-icon:    var(--color-icon-default);
+  --chip-selected-icon:   var(--color-action-primary-default);
+  --chip-disabled-icon:   var(--color-icon-muted);
+  --chip-focus-ring:      var(--color-border-focus);
+  --dropdown-trigger-default-bg:      var(--color-surface-default);
+  --dropdown-trigger-hover-bg:        var(--color-bg-subtle);
+  --dropdown-trigger-open-bg:         var(--color-bg-subtle);
+  --dropdown-trigger-disabled-bg:     var(--color-bg-subtle);
+  --dropdown-trigger-default-border:  var(--color-border-default);
+  --dropdown-trigger-hover-border:    var(--color-border-strong);
+  --dropdown-trigger-open-border:     var(--color-border-focus);
+  --dropdown-trigger-disabled-border: var(--color-border-subtle);
+  --dropdown-trigger-default-text:    var(--color-text-secondary);
+  --dropdown-trigger-disabled-text:   var(--color-text-disabled);
+  --dropdown-list-bg:            var(--color-surface-raised);
+  --dropdown-option-hover-bg:    var(--color-bg-subtle);
+  --dropdown-option-selected-bg: var(--color-action-primary-subtle);
+  --input-default-bg:      var(--color-surface-default);
+  --input-hover-bg:        var(--color-surface-default);
+  --input-focus-bg:        var(--color-surface-default);
+  --input-disabled-bg:     var(--color-bg-subtle);
+  --input-error-bg:        var(--color-surface-default);
+  --input-default-border:  var(--color-border-default);
+  --input-hover-border:    var(--color-border-strong);
+  --input-focus-border:    var(--color-border-focus);
+  --input-error-border:    var(--color-border-danger);
+  --input-correct-border:  var(--color-border-correct);
+  --input-disabled-border: var(--color-border-default);
+  --select-disabled-border: var(--color-border-subtle);
+  --input-placeholder-text: var(--color-text-placeholder);
+  --input-helper-text:      var(--color-text-helper);
+  --input-error-text:       var(--color-text-danger);
+  --input-correct-text:     var(--color-text-correct);
+  --input-disabled-text:    var(--color-text-disabled);
+  --checkbox-default-bg:       var(--color-surface-default);
+  --checkbox-checked-bg:       var(--color-action-primary-default);
+  --checkbox-indeterminate-bg: var(--color-action-primary-default);
+  --checkbox-disabled-bg:      var(--color-bg-subtle);
+  --checkbox-default-border:   var(--color-border-default);
+  --checkbox-hover-border:     var(--color-border-focus);
+  --checkbox-checked-border:   var(--color-action-primary-default);
+  --checkbox-disabled-border:  var(--color-border-subtle);
+  --checkbox-check-icon:       var(--color-action-primary-text);
+  --radio-default-bg:      var(--color-surface-default);
+  --radio-disabled-bg:     var(--color-bg-subtle);
+  --radio-default-border:  var(--color-border-default);
+  --radio-hover-border:    var(--color-border-focus);
+  --radio-selected-border: var(--color-action-primary-default);
+  --radio-disabled-border: var(--color-border-subtle);
+  --radio-selected-dot:    var(--color-action-primary-default);
+  --toggle-on-bg:       var(--color-action-primary-default);
+  --toggle-off-bg:      var(--color-border-default);
+  --toggle-disabled-bg: var(--color-border-subtle);
+  --toggle-knob:        var(--color-action-primary-text);
+  --pagination-default-bg:    var(--color-surface-default);
+  --pagination-hover-bg:      var(--color-bg-subtle);
+  --pagination-active-bg:     var(--color-action-primary-default);
+  --pagination-disabled-bg:   var(--color-surface-default);
+  --pagination-default-text:  var(--color-text-secondary);
+  --pagination-active-text:   var(--color-action-primary-text);
+  --pagination-disabled-text: var(--color-text-disabled);
+  --pagination-border:        var(--color-border-default);
+  --nav-bg:                var(--color-surface-default);
+  --nav-item-hover-bg:     var(--color-bg-subtle);
+  --nav-item-active-bg:    var(--color-action-primary-subtle);
+  --nav-item-default-text: var(--color-text-tertiary);
+  --nav-item-active-text:  var(--color-action-primary-default);
+  --nav-item-default-icon: var(--color-icon-default);
+  --nav-item-active-icon:  var(--color-action-primary-default);
+  --nav-item-indicator:    var(--color-action-primary-default);
+  --nav-divider:           var(--color-border-subtle);
+  --table-header-bg:       var(--color-bg-subtle);
+  --table-header-text:     var(--color-text-tertiary);
+  --table-header-border:   var(--color-border-default);
+  --table-row-default-bg:  var(--color-surface-default);
+  --table-row-hover-bg:    var(--color-bg-subtle);
+  --table-row-selected-bg: var(--color-bg-selected);
+  --table-cell-border:     var(--color-border-subtle);
+  --table-cell-text:       var(--color-text-secondary);
+}
+
+---
+
+위 토큰을 기반으로 UI 컴포넌트를 구현할 때:
+- 임의 HEX 색상값 사용 금지
+- 정의되지 않은 토큰명 생성 금지
+- Figma 원본 SW UX GUIDE V2.4 기준을 따름</pre>
+      </div><!-- /top-ai -->
+
+    </div><!-- /page-content -->
+  </main>
+</div>
+
+<script src="../assets/js/main.js"></script>
+<script>
+  /* ── top tabs ── */
+  document.querySelectorAll('.top-tab').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.top-tab').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.top-panel').forEach(p => p.classList.remove('active'));
+      btn.classList.add('active');
+      document.getElementById('top-' + btn.dataset.top).classList.add('active');
+    });
+  });
+
+  /* ── env tabs ── */
+  document.querySelectorAll('.env-tab').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.env-tab').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.env-panel').forEach(p => p.classList.remove('active'));
+      btn.classList.add('active');
+      document.getElementById('env-' + btn.dataset.env).classList.add('active');
+    });
+  });
+
+  /* ── expand full CSS ── */
+  function toggleExpand() {
+    const btn  = document.getElementById('expand-btn');
+    const body = document.getElementById('expand-body');
+    const open = body.classList.toggle('open');
+    btn.classList.toggle('open', open);
+    btn.querySelector('svg').style.transform = open ? 'rotate(180deg)' : '';
+    btn.childNodes[1].textContent = open ? ' 전체 CSS 접기' : ' 전체 CSS 보기';
+  }
+
+  /* ── download tokens.css ── */
+  function downloadTokens() {
+    const css = document.getElementById('code-full').textContent;
+    const blob = new Blob([css], { type: 'text/css' });
+    const url  = URL.createObjectURL(blob);
+    const a    = document.createElement('a');
+    a.href = url; a.download = 'tokens.css';
+    a.click();
+    URL.revokeObjectURL(url);
+  }
+
+  /* ── copy one-liner snippet ── */
+  function copySnippet(btn, text) {
+    const decoded = text
+      .replace(/&lt;/g,  '<')
+      .replace(/&gt;/g,  '>')
+      .replace(/&amp;/g, '&')
+      .replace(/&quot;/g, '"');
+    navigator.clipboard.writeText(decoded).catch(() => {});
+    const orig = btn.textContent;
+    btn.textContent = '✓';
+    btn.classList.add('copied');
+    setTimeout(() => { btn.textContent = orig; btn.classList.remove('copied'); }, 1800);
+  }
+
+  /* ── copy AI prompt ── */
+  function copyAi() {
+    const text = document.getElementById('code-ai').textContent;
+    navigator.clipboard.writeText(text).catch(() => {});
+    const btn = document.getElementById('btn-ai');
+    const orig = btn.innerHTML;
+    btn.classList.add('copied');
+    btn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> 복사됨!';
+    setTimeout(() => { btn.classList.remove('copied'); btn.innerHTML = orig; }, 2000);
+  }
+</script>
+</body>
+</html>
