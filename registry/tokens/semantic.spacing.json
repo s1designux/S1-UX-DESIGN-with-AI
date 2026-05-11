@@ -1,0 +1,55 @@
+{
+  "meta": {
+    "name": "SW Semantic Spacing",
+    "version": "2.4",
+    "status": "stable",
+    "updatedAt": "2026-05-11",
+    "source": "registry/tokens/sw-v2.4.tokens.css",
+    "description": "Role-based semantic spacing tokens referencing Foundation primitives."
+  },
+  "tokens": {
+    "paddingBlock": [
+      { "cssVar": "--spacing-padding-block-xxs", "value": "var(--spacing-8)",  "status": "stable" },
+      { "cssVar": "--spacing-padding-block-xs",  "value": "var(--spacing-12)", "status": "stable" },
+      { "cssVar": "--spacing-padding-block-sm",  "value": "var(--spacing-16)", "status": "stable" },
+      { "cssVar": "--spacing-padding-block-md",  "value": "var(--spacing-20)", "status": "stable" },
+      { "cssVar": "--spacing-padding-block-lg",  "value": "var(--spacing-24)", "status": "stable" }
+    ],
+    "paddingInline": [
+      { "cssVar": "--spacing-padding-inline-xxs", "value": "var(--spacing-8)",  "status": "stable" },
+      { "cssVar": "--spacing-padding-inline-xs",  "value": "var(--spacing-12)", "status": "stable" },
+      { "cssVar": "--spacing-padding-inline-sm",  "value": "var(--spacing-16)", "status": "stable" },
+      { "cssVar": "--spacing-padding-inline-md",  "value": "var(--spacing-20)", "status": "stable" },
+      { "cssVar": "--spacing-padding-inline-lg",  "value": "var(--spacing-24)", "status": "stable" }
+    ],
+    "section": [
+      { "cssVar": "--spacing-section-xs",  "value": "var(--spacing-16)", "status": "stable" },
+      { "cssVar": "--spacing-section-sm",  "value": "var(--spacing-20)", "status": "stable" },
+      { "cssVar": "--spacing-section-md",  "value": "var(--spacing-24)", "status": "stable" },
+      { "cssVar": "--spacing-section-lg",  "value": "var(--spacing-32)", "status": "stable" },
+      { "cssVar": "--spacing-section-xl",  "value": "var(--spacing-40)", "status": "stable" },
+      { "cssVar": "--spacing-section-xxl", "value": "var(--spacing-48)", "status": "stable" }
+    ],
+    "stack": [
+      { "cssVar": "--spacing-stack-xs", "value": "var(--spacing-12)", "status": "stable" },
+      { "cssVar": "--spacing-stack-sm", "value": "var(--spacing-16)", "status": "stable" },
+      { "cssVar": "--spacing-stack-md", "value": "var(--spacing-20)", "status": "stable" },
+      { "cssVar": "--spacing-stack-lg", "value": "var(--spacing-24)", "status": "stable" }
+    ],
+    "cluster": [
+      { "cssVar": "--spacing-cluster-xxs", "value": "var(--spacing-8)",  "status": "stable" },
+      { "cssVar": "--spacing-cluster-xs",  "value": "var(--spacing-12)", "status": "stable" },
+      { "cssVar": "--spacing-cluster-sm",  "value": "var(--spacing-16)", "status": "stable" },
+      { "cssVar": "--spacing-cluster-md",  "value": "var(--spacing-20)", "status": "stable" }
+    ],
+    "labelGapInline": [
+      { "cssVar": "--spacing-label-gap-inline-sm", "value": "var(--spacing-8)",  "status": "stable" },
+      { "cssVar": "--spacing-label-gap-inline-md", "value": "var(--spacing-12)", "status": "stable" },
+      { "cssVar": "--spacing-label-gap-inline-lg", "value": "var(--spacing-16)", "status": "stable" }
+    ],
+    "labelGapBlock": [
+      { "cssVar": "--spacing-label-gap-block-sm", "value": "var(--spacing-4)", "status": "stable" },
+      { "cssVar": "--spacing-label-gap-block-md", "value": "var(--spacing-8)", "status": "stable" }
+    ]
+  }
+}

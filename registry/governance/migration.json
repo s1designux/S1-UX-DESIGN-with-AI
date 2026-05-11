@@ -1,0 +1,12 @@
+{
+  "_meta": { "version": "0.1.0", "updatedAt": "2026-05-11" },
+  "migrations": [
+    {
+      "id": "M01",
+      "title": "Legacy → Semantic Token 전환",
+      "status": "planned",
+      "description": "기존 서비스에서 HEX 직접 사용 또는 legacy 토큰을 사용하는 경우 Semantic Token으로 전환",
+      "guide": "pages/legacy.html 참조 (작성 예정)"
+    }
+  ]
+}

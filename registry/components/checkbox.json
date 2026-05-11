@@ -1,0 +1,24 @@
+{
+  "_meta": {
+    "id": "checkbox",
+    "name": "Checkbox",
+    "category": "Core",
+    "updatedAt": "2026-05-11",
+    "tokenStatus": "stable",
+    "codeStatus": "not-started",
+    "darkModeStatus": "pending",
+    "description": "Checkbox control with default, checked, indeterminate, and disabled states."
+  },
+  "variants": {
+    "default": {
+      "tokenStatus": "stable",
+      "codeStatus": "not-started",
+      "darkModeStatus": "pending",
+      "tokens": [
+        "--checkbox-default-bg", "--checkbox-checked-bg", "--checkbox-indeterminate-bg", "--checkbox-disabled-bg",
+        "--checkbox-default-border", "--checkbox-hover-border", "--checkbox-checked-border", "--checkbox-disabled-border",
+        "--checkbox-check-icon"
+      ]
+    }
+  }
+}

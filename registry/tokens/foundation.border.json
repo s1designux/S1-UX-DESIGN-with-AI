@@ -1,0 +1,13 @@
+{
+  "meta": {
+    "name": "SW Foundation Border Width",
+    "version": "2.4",
+    "status": "stable",
+    "updatedAt": "2026-05-11",
+    "source": "registry/tokens/sw-v2.4.tokens.css"
+  },
+  "borderWidth": {
+    "1": { "value": "1px", "cssVar": "--border-width-1", "status": "stable" },
+    "2": { "value": "2px", "cssVar": "--border-width-2", "status": "stable" }
+  }
+}

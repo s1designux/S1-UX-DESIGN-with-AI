@@ -99,6 +99,59 @@
       ]
     },
     {
+      "group": "Registry",
+      "items": [
+        {
+          "id": "registry-health",
+          "title": "Registry Health",
+          "icon": "📊",
+          "href": "pages/registry-health.html",
+          "status": "new",
+          "description": "Registry 전체 상태 요약 — token count, component status, governance"
+        },
+        {
+          "id": "foundation-tokens",
+          "title": "Foundation Tokens (Registry)",
+          "icon": "🏗",
+          "href": "pages/foundation-tokens.html",
+          "status": "new",
+          "description": "registry/tokens/foundation.colors.json 기반 Foundation 색상 팔레트"
+        },
+        {
+          "id": "semantic-tokens",
+          "title": "Semantic Tokens (Registry)",
+          "icon": "🌗",
+          "href": "pages/semantic-tokens.html",
+          "status": "new",
+          "description": "registry/tokens/semantic.colors.json 기반 Semantic 토큰 Light/Dark 구조"
+        },
+        {
+          "id": "component-tokens",
+          "title": "Component Tokens (Registry)",
+          "icon": "🧩",
+          "href": "pages/component-tokens.html",
+          "status": "new",
+          "description": "registry/tokens/component.tokens.json 기반 컴포넌트 토큰"
+        },
+        {
+          "id": "component-registry",
+          "title": "Component Registry",
+          "icon": "📋",
+          "href": "pages/component-registry.html",
+          "status": "new",
+          "description": "registry/components/*.json 기반 컴포넌트 상태 현황"
+        },
+        {
+          "id": "button-harness",
+          "title": "Button Harness",
+          "icon": "🔲",
+          "href": "pages/button-harness.html",
+          "status": "new",
+          "description": "Button 컴포넌트 V2.4 공식 토큰 기반 Harness — 3 variants × 4 states × 3 sizes (PC) + 1 size (Mobile)"
+        }
+      ]
+    },
+    {
       "group": "AI 워크플로우",
       "items": [
         {

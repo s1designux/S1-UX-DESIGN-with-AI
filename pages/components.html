@@ -407,12 +407,16 @@
     .platform-dot.mobile { background: #8b5cf6; }
     .state-size-matrix {
       display: grid;
-      grid-template-columns: 68px 1fr 1fr 1fr;
+      grid-template-columns: 68px 90px 1fr 1fr 1fr;
       gap: 10px 12px;
       align-items: center;
     }
     .matrix-col-header {
       font-size: 10px; font-weight: 600; color: #9ca3af;
+      text-transform: uppercase; letter-spacing: 0.05em; text-align: center;
+    }
+    .matrix-col-header-action {
+      font-size: 10px; font-weight: 700; color: #16a34a;
       text-transform: uppercase; letter-spacing: 0.05em; text-align: center;
     }
     .matrix-row-label {
@@ -421,6 +425,18 @@
     }
     .matrix-row-label span { display: block; font-weight: 400; color: #c4c4c4; font-size: 9px; }
     .matrix-cell { display: flex; justify-content: center; }
+    .is-preview { pointer-events: none; cursor: default; }
+    /* ACTION cell */
+    .action-cell { flex-direction: column; gap: 5px; }
+    .action-tools { display: flex; gap: 4px; align-items: center; justify-content: center; flex-wrap: wrap; }
+    .action-tool-btn {
+      padding: 1px 5px; font-size: 9px; font-weight: 600; line-height: 1.6;
+      border: 1px solid #d1d5db; border-radius: 3px; background: #f9fafb;
+      color: #374151; cursor: pointer; white-space: nowrap;
+    }
+    .action-tool-btn:hover { background: #e5e7eb; }
+    .action-tool-btn.is-on { background: #fee2e2; color: #991b1b; border-color: #fca5a5; }
+    .action-click-count { font-size: 9px; color: #9ca3af; font-variant-numeric: tabular-nums; min-width: 24px; text-align: center; }
     .token-variant-header { background: #f0f9ff !important; }
     .token-variant-label {
       display: inline-block; font-size: 10px; font-weight: 700;
@@ -810,20 +826,24 @@
               <div class="platform-header"><span class="platform-dot pc"></span>PC</div>
               <div class="state-size-matrix">
                 <div></div>
+                <div class="matrix-col-header-action">Action</div>
                 <div class="matrix-col-header">Default</div>
                 <div class="matrix-col-header">Hover</div>
                 <div class="matrix-col-header">Disabled</div>
                 <div class="matrix-row-label">medium<span>h44 · px16</span></div>
-                <div class="matrix-cell"><button class="s1-btn s1-btn-primary s1-btn-lg">버튼</button></div>
-                <div class="matrix-cell"><button class="s1-btn s1-btn-primary s1-btn-lg is-hover">버튼</button></div>
+                <div class="matrix-cell action-cell" data-action-cell><button type="button" class="s1-btn s1-btn-primary s1-btn-lg" data-action-test>버튼</button><div class="action-tools"><button type="button" class="action-tool-btn" data-toggle-disabled>off</button><button type="button" class="action-tool-btn" data-toggle-loading>load</button><span class="action-click-count" data-click-count>0</span></div></div>
+                <div class="matrix-cell"><button class="s1-btn s1-btn-primary s1-btn-lg is-preview">버튼</button></div>
+                <div class="matrix-cell"><button class="s1-btn s1-btn-primary s1-btn-lg is-hover is-preview">버튼</button></div>
                 <div class="matrix-cell"><button class="s1-btn s1-btn-primary s1-btn-lg is-disabled">버튼</button></div>
                 <div class="matrix-row-label">xsmall<span>h34 · px8</span></div>
-                <div class="matrix-cell"><button class="s1-btn s1-btn-primary">버튼</button></div>
-                <div class="matrix-cell"><button class="s1-btn s1-btn-primary is-hover">버튼</button></div>
+                <div class="matrix-cell action-cell" data-action-cell><button type="button" class="s1-btn s1-btn-primary" data-action-test>버튼</button><div class="action-tools"><button type="button" class="action-tool-btn" data-toggle-disabled>off</button><button type="button" class="action-tool-btn" data-toggle-loading>load</button><span class="action-click-count" data-click-count>0</span></div></div>
+                <div class="matrix-cell"><button class="s1-btn s1-btn-primary is-preview">버튼</button></div>
+                <div class="matrix-cell"><button class="s1-btn s1-btn-primary is-hover is-preview">버튼</button></div>
                 <div class="matrix-cell"><button class="s1-btn s1-btn-primary is-disabled">버튼</button></div>
                 <div class="matrix-row-label">xxsmall<span>h28 · px8</span></div>
-                <div class="matrix-cell"><button class="s1-btn s1-btn-primary s1-btn-sm">버튼</button></div>
-                <div class="matrix-cell"><button class="s1-btn s1-btn-primary s1-btn-sm is-hover">버튼</button></div>
+                <div class="matrix-cell action-cell" data-action-cell><button type="button" class="s1-btn s1-btn-primary s1-btn-sm" data-action-test>버튼</button><div class="action-tools"><button type="button" class="action-tool-btn" data-toggle-disabled>off</button><button type="button" class="action-tool-btn" data-toggle-loading>load</button><span class="action-click-count" data-click-count>0</span></div></div>
+                <div class="matrix-cell"><button class="s1-btn s1-btn-primary s1-btn-sm is-preview">버튼</button></div>
+                <div class="matrix-cell"><button class="s1-btn s1-btn-primary s1-btn-sm is-hover is-preview">버튼</button></div>
                 <div class="matrix-cell"><button class="s1-btn s1-btn-primary s1-btn-sm is-disabled">버튼</button></div>
               </div>
             </div>
@@ -831,12 +851,14 @@
               <div class="platform-header"><span class="platform-dot mobile"></span>Mobile</div>
               <div class="state-size-matrix">
                 <div></div>
+                <div class="matrix-col-header-action">Action</div>
                 <div class="matrix-col-header">Default</div>
                 <div class="matrix-col-header">Pressed</div>
                 <div class="matrix-col-header">Disabled</div>
                 <div class="matrix-row-label">mobile<span>h48 · px16</span></div>
-                <div class="matrix-cell"><button class="s1-btn s1-btn-primary s1-btn-mobile">버튼</button></div>
-                <div class="matrix-cell"><button class="s1-btn s1-btn-primary s1-btn-mobile is-pressed">버튼</button></div>
+                <div class="matrix-cell action-cell" data-action-cell><button type="button" class="s1-btn s1-btn-primary s1-btn-mobile" data-action-test>버튼</button><div class="action-tools"><button type="button" class="action-tool-btn" data-toggle-disabled>off</button><button type="button" class="action-tool-btn" data-toggle-loading>load</button><span class="action-click-count" data-click-count>0</span></div></div>
+                <div class="matrix-cell"><button class="s1-btn s1-btn-primary s1-btn-mobile is-preview">버튼</button></div>
+                <div class="matrix-cell"><button class="s1-btn s1-btn-primary s1-btn-mobile is-pressed is-preview">버튼</button></div>
                 <div class="matrix-cell"><button class="s1-btn s1-btn-primary s1-btn-mobile is-disabled">버튼</button></div>
               </div>
             </div>
@@ -889,20 +911,24 @@
               <div class="platform-header"><span class="platform-dot pc"></span>PC</div>
               <div class="state-size-matrix">
                 <div></div>
+                <div class="matrix-col-header-action">Action</div>
                 <div class="matrix-col-header">Default</div>
                 <div class="matrix-col-header">Hover</div>
                 <div class="matrix-col-header">Disabled</div>
                 <div class="matrix-row-label">medium<span>h44 · px16</span></div>
-                <div class="matrix-cell"><button class="s1-btn s1-btn-secondary s1-btn-lg">버튼</button></div>
-                <div class="matrix-cell"><button class="s1-btn s1-btn-secondary s1-btn-lg is-hover">버튼</button></div>
+                <div class="matrix-cell action-cell" data-action-cell><button type="button" class="s1-btn s1-btn-secondary s1-btn-lg" data-action-test>버튼</button><div class="action-tools"><button type="button" class="action-tool-btn" data-toggle-disabled>off</button><button type="button" class="action-tool-btn" data-toggle-loading>load</button><span class="action-click-count" data-click-count>0</span></div></div>
+                <div class="matrix-cell"><button class="s1-btn s1-btn-secondary s1-btn-lg is-preview">버튼</button></div>
+                <div class="matrix-cell"><button class="s1-btn s1-btn-secondary s1-btn-lg is-hover is-preview">버튼</button></div>
                 <div class="matrix-cell"><button class="s1-btn s1-btn-secondary s1-btn-lg is-disabled">버튼</button></div>
                 <div class="matrix-row-label">xsmall<span>h34 · px8</span></div>
-                <div class="matrix-cell"><button class="s1-btn s1-btn-secondary">버튼</button></div>
-                <div class="matrix-cell"><button class="s1-btn s1-btn-secondary is-hover">버튼</button></div>
+                <div class="matrix-cell action-cell" data-action-cell><button type="button" class="s1-btn s1-btn-secondary" data-action-test>버튼</button><div class="action-tools"><button type="button" class="action-tool-btn" data-toggle-disabled>off</button><button type="button" class="action-tool-btn" data-toggle-loading>load</button><span class="action-click-count" data-click-count>0</span></div></div>
+                <div class="matrix-cell"><button class="s1-btn s1-btn-secondary is-preview">버튼</button></div>
+                <div class="matrix-cell"><button class="s1-btn s1-btn-secondary is-hover is-preview">버튼</button></div>
                 <div class="matrix-cell"><button class="s1-btn s1-btn-secondary is-disabled">버튼</button></div>
                 <div class="matrix-row-label">xxsmall<span>h28 · px8</span></div>
-                <div class="matrix-cell"><button class="s1-btn s1-btn-secondary s1-btn-sm">버튼</button></div>
-                <div class="matrix-cell"><button class="s1-btn s1-btn-secondary s1-btn-sm is-hover">버튼</button></div>
+                <div class="matrix-cell action-cell" data-action-cell><button type="button" class="s1-btn s1-btn-secondary s1-btn-sm" data-action-test>버튼</button><div class="action-tools"><button type="button" class="action-tool-btn" data-toggle-disabled>off</button><button type="button" class="action-tool-btn" data-toggle-loading>load</button><span class="action-click-count" data-click-count>0</span></div></div>
+                <div class="matrix-cell"><button class="s1-btn s1-btn-secondary s1-btn-sm is-preview">버튼</button></div>
+                <div class="matrix-cell"><button class="s1-btn s1-btn-secondary s1-btn-sm is-hover is-preview">버튼</button></div>
                 <div class="matrix-cell"><button class="s1-btn s1-btn-secondary s1-btn-sm is-disabled">버튼</button></div>
               </div>
             </div>
@@ -910,12 +936,14 @@
               <div class="platform-header"><span class="platform-dot mobile"></span>Mobile</div>
               <div class="state-size-matrix">
                 <div></div>
+                <div class="matrix-col-header-action">Action</div>
                 <div class="matrix-col-header">Default</div>
                 <div class="matrix-col-header">Pressed</div>
                 <div class="matrix-col-header">Disabled</div>
                 <div class="matrix-row-label">mobile<span>h48 · px16</span></div>
-                <div class="matrix-cell"><button class="s1-btn s1-btn-secondary s1-btn-mobile">버튼</button></div>
-                <div class="matrix-cell"><button class="s1-btn s1-btn-secondary s1-btn-mobile is-pressed">버튼</button></div>
+                <div class="matrix-cell action-cell" data-action-cell><button type="button" class="s1-btn s1-btn-secondary s1-btn-mobile" data-action-test>버튼</button><div class="action-tools"><button type="button" class="action-tool-btn" data-toggle-disabled>off</button><button type="button" class="action-tool-btn" data-toggle-loading>load</button><span class="action-click-count" data-click-count>0</span></div></div>
+                <div class="matrix-cell"><button class="s1-btn s1-btn-secondary s1-btn-mobile is-preview">버튼</button></div>
+                <div class="matrix-cell"><button class="s1-btn s1-btn-secondary s1-btn-mobile is-pressed is-preview">버튼</button></div>
                 <div class="matrix-cell"><button class="s1-btn s1-btn-secondary s1-btn-mobile is-disabled">버튼</button></div>
               </div>
             </div>
@@ -967,20 +995,24 @@
               <div class="platform-header"><span class="platform-dot pc"></span>PC</div>
               <div class="state-size-matrix">
                 <div></div>
+                <div class="matrix-col-header-action">Action</div>
                 <div class="matrix-col-header">Default</div>
                 <div class="matrix-col-header">Hover</div>
                 <div class="matrix-col-header">Disabled</div>
                 <div class="matrix-row-label">medium<span>h44 · px16</span></div>
-                <div class="matrix-cell"><button class="s1-btn s1-btn-blue-line s1-btn-lg">버튼</button></div>
-                <div class="matrix-cell"><button class="s1-btn s1-btn-blue-line s1-btn-lg is-hover">버튼</button></div>
+                <div class="matrix-cell action-cell" data-action-cell><button type="button" class="s1-btn s1-btn-blue-line s1-btn-lg" data-action-test>버튼</button><div class="action-tools"><button type="button" class="action-tool-btn" data-toggle-disabled>off</button><button type="button" class="action-tool-btn" data-toggle-loading>load</button><span class="action-click-count" data-click-count>0</span></div></div>
+                <div class="matrix-cell"><button class="s1-btn s1-btn-blue-line s1-btn-lg is-preview">버튼</button></div>
+                <div class="matrix-cell"><button class="s1-btn s1-btn-blue-line s1-btn-lg is-hover is-preview">버튼</button></div>
                 <div class="matrix-cell"><button class="s1-btn s1-btn-blue-line s1-btn-lg is-disabled">버튼</button></div>
                 <div class="matrix-row-label">xsmall<span>h34 · px8</span></div>
-                <div class="matrix-cell"><button class="s1-btn s1-btn-blue-line">버튼</button></div>
-                <div class="matrix-cell"><button class="s1-btn s1-btn-blue-line is-hover">버튼</button></div>
+                <div class="matrix-cell action-cell" data-action-cell><button type="button" class="s1-btn s1-btn-blue-line" data-action-test>버튼</button><div class="action-tools"><button type="button" class="action-tool-btn" data-toggle-disabled>off</button><button type="button" class="action-tool-btn" data-toggle-loading>load</button><span class="action-click-count" data-click-count>0</span></div></div>
+                <div class="matrix-cell"><button class="s1-btn s1-btn-blue-line is-preview">버튼</button></div>
+                <div class="matrix-cell"><button class="s1-btn s1-btn-blue-line is-hover is-preview">버튼</button></div>
                 <div class="matrix-cell"><button class="s1-btn s1-btn-blue-line is-disabled">버튼</button></div>
                 <div class="matrix-row-label">xxsmall<span>h28 · px8</span></div>
-                <div class="matrix-cell"><button class="s1-btn s1-btn-blue-line s1-btn-sm">버튼</button></div>
-                <div class="matrix-cell"><button class="s1-btn s1-btn-blue-line s1-btn-sm is-hover">버튼</button></div>
+                <div class="matrix-cell action-cell" data-action-cell><button type="button" class="s1-btn s1-btn-blue-line s1-btn-sm" data-action-test>버튼</button><div class="action-tools"><button type="button" class="action-tool-btn" data-toggle-disabled>off</button><button type="button" class="action-tool-btn" data-toggle-loading>load</button><span class="action-click-count" data-click-count>0</span></div></div>
+                <div class="matrix-cell"><button class="s1-btn s1-btn-blue-line s1-btn-sm is-preview">버튼</button></div>
+                <div class="matrix-cell"><button class="s1-btn s1-btn-blue-line s1-btn-sm is-hover is-preview">버튼</button></div>
                 <div class="matrix-cell"><button class="s1-btn s1-btn-blue-line s1-btn-sm is-disabled">버튼</button></div>
               </div>
             </div>
@@ -988,12 +1020,14 @@
               <div class="platform-header"><span class="platform-dot mobile"></span>Mobile</div>
               <div class="state-size-matrix">
                 <div></div>
+                <div class="matrix-col-header-action">Action</div>
                 <div class="matrix-col-header">Default</div>
                 <div class="matrix-col-header">Pressed</div>
                 <div class="matrix-col-header">Disabled</div>
                 <div class="matrix-row-label">mobile<span>h48 · px16</span></div>
-                <div class="matrix-cell"><button class="s1-btn s1-btn-blue-line s1-btn-mobile">버튼</button></div>
-                <div class="matrix-cell"><button class="s1-btn s1-btn-blue-line s1-btn-mobile is-pressed">버튼</button></div>
+                <div class="matrix-cell action-cell" data-action-cell><button type="button" class="s1-btn s1-btn-blue-line s1-btn-mobile" data-action-test>버튼</button><div class="action-tools"><button type="button" class="action-tool-btn" data-toggle-disabled>off</button><button type="button" class="action-tool-btn" data-toggle-loading>load</button><span class="action-click-count" data-click-count>0</span></div></div>
+                <div class="matrix-cell"><button class="s1-btn s1-btn-blue-line s1-btn-mobile is-preview">버튼</button></div>
+                <div class="matrix-cell"><button class="s1-btn s1-btn-blue-line s1-btn-mobile is-pressed is-preview">버튼</button></div>
                 <div class="matrix-cell"><button class="s1-btn s1-btn-blue-line s1-btn-mobile is-disabled">버튼</button></div>
               </div>
             </div>
@@ -2049,6 +2083,38 @@
   updateTokenComments();
   showSection('button', document.querySelector('.comp-nav-btn'));
   setPlatform('pc');
+
+  // ── ACTION test setup ──
+  function setupButtonActionTests() {
+    document.querySelectorAll('[data-action-cell]').forEach((wrapper) => {
+      const btn = wrapper.querySelector('[data-action-test]');
+      const disabledToggle = wrapper.querySelector('[data-toggle-disabled]');
+      const loadingToggle  = wrapper.querySelector('[data-toggle-loading]');
+      const counter        = wrapper.querySelector('[data-click-count]');
+      if (!btn) return;
+      let count = 0;
+
+      btn.addEventListener('click', () => {
+        if (btn.disabled || btn.classList.contains('is-loading')) return;
+        count += 1;
+        if (counter) counter.textContent = String(count);
+      });
+
+      disabledToggle?.addEventListener('click', () => {
+        const isOff = btn.toggleAttribute('disabled');
+        disabledToggle.classList.toggle('is-on', isOff);
+        disabledToggle.textContent = isOff ? 'on' : 'off';
+      });
+
+      loadingToggle?.addEventListener('click', () => {
+        const isLoading = btn.classList.toggle('is-loading');
+        btn.setAttribute('aria-busy', isLoading ? 'true' : 'false');
+        loadingToggle.classList.toggle('is-on', isLoading);
+        loadingToggle.textContent = isLoading ? 'stop' : 'load';
+      });
+    });
+  }
+  setupButtonActionTests();
 </script>
 <script src="../assets/js/main.js"></script>
 </body>

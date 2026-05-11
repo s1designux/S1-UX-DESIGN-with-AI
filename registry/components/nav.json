@@ -1,0 +1,27 @@
+{
+  "_meta": {
+    "id": "nav",
+    "name": "Navigation",
+    "category": "Core",
+    "updatedAt": "2026-05-11",
+    "tokenStatus": "stable",
+    "codeStatus": "not-started",
+    "darkModeStatus": "pending",
+    "description": "Sidebar/top navigation component with item hover, active states, divider, and active indicator."
+  },
+  "variants": {
+    "default": {
+      "tokenStatus": "stable",
+      "codeStatus": "not-started",
+      "darkModeStatus": "pending",
+      "tokens": [
+        "--nav-bg",
+        "--nav-item-hover-bg", "--nav-item-active-bg",
+        "--nav-item-default-text", "--nav-item-active-text",
+        "--nav-item-default-icon", "--nav-item-active-icon",
+        "--nav-item-indicator",
+        "--nav-divider"
+      ]
+    }
+  }
+}

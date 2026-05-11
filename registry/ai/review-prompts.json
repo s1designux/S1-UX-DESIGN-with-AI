@@ -1,0 +1,15 @@
+{
+  "_meta": { "version": "0.1.0", "updatedAt": "2026-05-11" },
+  "prompts": [
+    {
+      "id": "token-audit",
+      "title": "토큰 구조 검증 프롬프트",
+      "prompt": "registry/tokens/ JSON을 읽어 다음을 검증하라: 1) Component Token이 Foundation을 직접 참조하는 경우 2) darkStatus가 candidate인 항목 목록 3) 네이밍이 kebab-case를 위반하는 경우. 결과를 reports/token-review.md에 작성하라."
+    },
+    {
+      "id": "darkmode-audit",
+      "title": "다크모드 후보값 검토 프롬프트",
+      "prompt": "registry/tokens/semantic.colors.json에서 darkStatus가 candidate인 모든 항목을 찾아 현재 값과 대안을 reports/darkmode-review.md에 정리하라."
+    }
+  ]
+}

@@ -1,0 +1,93 @@
+{
+  "_meta": {
+    "version": "0.2.0",
+    "updatedAt": "2026-05-11",
+    "description": "Documented exceptions to the standard token usage rules. Each entry must include a rationale and an approval record."
+  },
+  "exceptions": [
+    {
+      "id": "EX01",
+      "rule": "R02 (no-raw-hex-in-component)",
+      "scope": "Foundation color primitives",
+      "description": "HEX values are allowed only in foundation.colors.json. This is the single source of truth for all raw color values.",
+      "approvedAt": "2026-04-29",
+      "approvedBy": "design-system-lead"
+    },
+    {
+      "id": "EX02",
+      "rule": "rgba() prohibition",
+      "scope": "color-border-* Dark mode only",
+      "description": "rgba() is allowed for dark-mode border tokens (--color-border-subtle/default/strong/emphasis) because the wide range of background luminance in dark mode makes it impossible to achieve consistent contrast with a fixed HEX value. An alpha-based approach is the only reliable solution.",
+      "affectedTokens": [
+        "--color-border-subtle (dark)",
+        "--color-border-default (dark)",
+        "--color-border-strong (dark)",
+        "--color-border-emphasis (dark)"
+      ],
+      "approvedAt": "2026-04-29",
+      "approvedBy": "design-system-lead"
+    },
+    {
+      "id": "EX03",
+      "rule": "rgba() prohibition",
+      "scope": "color-overlay (Light + Dark)",
+      "description": "rgba() is required for overlay/dim tokens because the alpha channel is the functional intent of the token. A Foundation primitive alias is not possible for alpha-channel values.",
+      "affectedTokens": [
+        "--color-overlay (light: rgba(0,0,0,0.5))",
+        "--color-overlay (dark: rgba(0,0,0,0.75))"
+      ],
+      "approvedAt": "2026-04-29",
+      "approvedBy": "design-system-lead"
+    },
+    {
+      "id": "EX04",
+      "rule": "Semantic-via required for sizing",
+      "scope": "Component sizing tokens with no shared usage",
+      "description": "Component sizing/spacing/radius tokens that are not shared across components may reference Foundation primitives directly. The Semantic intermediary layer adds no value when only one component uses a value.",
+      "examples": [
+        "--modal-border-radius: var(--radius-8)",
+        "--chip-height-sm: var(--spacing-28)"
+      ],
+      "approvedAt": "2026-04-29",
+      "approvedBy": "design-system-lead"
+    },
+    {
+      "id": "EX05",
+      "rule": "Foundation Primitive required",
+      "scope": "Semantic sizing tokens with no Foundation step",
+      "description": "Certain product-required sizes (34px, 32px, 38px, 30px, 80px, 10px, 18px) have no corresponding Foundation primitive step. These values are used as raw px in Semantic sizing tokens only, never in Component or Foundation tokens.",
+      "affectedTokens": [
+        "--sizing-form-control-height-xs: 34px",
+        "--sizing-form-control-dataview-height-md: 32px",
+        "--sizing-button-height-xs: 34px",
+        "--sizing-button-min-width: 80px",
+        "--sizing-chip-height-md: 30px",
+        "--sizing-chip-height-lg: 34px",
+        "--sizing-table-row-height-xs: 34px",
+        "--sizing-table-row-height-sm: 38px",
+        "--sizing-icon-10: 10px",
+        "--sizing-icon-18: 18px"
+      ],
+      "approvedAt": "2026-04-30",
+      "approvedBy": "design-system-lead"
+    },
+    {
+      "id": "EX06",
+      "rule": "dark-border-opacity-composition",
+      "scope": "Dark semantic border tokens — migration candidates only",
+      "description": "Figma opacity-composed dark border values (e.g. #FFFFFF 4%, 7%, 12%, 20%) are allowed ONLY as migration candidates. Stable semantic border tokens must use resolved HEX values or foundation dark scale references. rgba() values from opacity composition must not be marked stable.",
+      "allowedIn": ["semanticTokens.candidate", "migration"],
+      "requiresNote": true,
+      "stableAllowed": false,
+      "affectedTokens": [
+        "--color-border-subtle (dark)",
+        "--color-border-default (dark)",
+        "--color-border-strong (dark)",
+        "--color-border-emphasis (dark)"
+      ],
+      "requiredFollowUp": "Resolve actual HEX values for each dark border token after visual approval. Do not calculate or invent HEX values — human decision required.",
+      "addedAt": "2026-05-11",
+      "addedBy": "design-system-lead"
+    }
+  ]
+}

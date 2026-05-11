@@ -1,0 +1,63 @@
+{
+  "color": {
+    "bg": {
+      "default":  { "$value": "{color.gray-dark.50}",  "$type": "color", "$description": "페이지 기본 배경" },
+      "subtle":   { "$value": "{color.gray-dark.200}", "$type": "color", "$description": "보조 배경" },
+      "muted":    { "$value": "{color.gray-dark.300}", "$type": "color", "$description": "강조 배경" },
+      "elevated": { "$value": "{color.gray-dark.400}", "$type": "color", "$description": "툴바·elevated" },
+      "home":     { "$value": "{color.gray-dark.50}",  "$type": "color", "$description": "홈 배경" },
+      "selected": { "$value": "{color.blue-dark.100}", "$type": "color", "$description": "선택 행 배경 — 임시값, Figma 검증 후 확정 필요" }
+    },
+    "surface": {
+      "default": { "$value": "{color.gray-dark.100}", "$type": "color", "$description": "카드·패널 표면" },
+      "raised":  { "$value": "{color.gray-dark.400}", "$type": "color", "$description": "팝오버·드롭다운" }
+    },
+    "text": {
+      "primary":     { "$value": "{color.gray-dark.900}", "$type": "color", "$description": "주요 텍스트" },
+      "secondary":   { "$value": "{color.gray-dark.800}", "$type": "color", "$description": "보조 텍스트" },
+      "tertiary":    { "$value": "{color.gray-dark.700}", "$type": "color", "$description": "3차 텍스트" },
+      "caption":     { "$value": "{color.gray-dark.700}", "$type": "color", "$description": "캡션·레이블" },
+      "placeholder": { "$value": "{color.gray-dark.600}", "$type": "color", "$description": "placeholder" },
+      "helper":      { "$value": "{color.gray-dark.600}", "$type": "color", "$description": "도움말 텍스트" },
+      "link":        { "$value": "{color.blue-dark.400}", "$type": "color", "$description": "링크 텍스트" },
+      "correct":     { "$value": "{color.blue-dark.400}", "$type": "color", "$description": "성공 입력 텍스트" },
+      "danger":      { "$value": "{color.status-dark.red}", "$type": "color", "$description": "에러 텍스트" },
+      "disabled":    { "$value": "{color.gray-dark.400}", "$type": "color", "$description": "비활성 텍스트 — #35363F, #55575F 조정 검토 중" },
+      "inverse":     { "$value": "{color.base.white}", "$type": "color", "$description": "색상 배경 위 텍스트" }
+    },
+    "border": {
+      "subtle":   { "$value": "rgba(255,255,255,0.04)", "$type": "color", "$description": "미세 구분선 — rgba 허용 예외, Dark 전용" },
+      "default":  { "$value": "rgba(255,255,255,0.07)", "$type": "color", "$description": "기본 테두리 — rgba 허용 예외, Dark 전용" },
+      "strong":   { "$value": "rgba(255,255,255,0.12)", "$type": "color", "$description": "강조 테두리 — rgba 허용 예외, Dark 전용" },
+      "emphasis": { "$value": "rgba(255,255,255,0.20)", "$type": "color", "$description": "헤비 구분선 — rgba 허용 예외, Dark 전용" },
+      "focus":    { "$value": "{color.blue-dark.350}",  "$type": "color", "$description": "포커스 링" },
+      "white":    { "$value": "{color.base.white}",     "$type": "color", "$description": "흰 배경 위 구분선" },
+      "danger":   { "$value": "{color.status-dark.red}", "$type": "color", "$description": "에러 테두리" },
+      "correct":  { "$value": "{color.blue-dark.350}",  "$type": "color", "$description": "성공 테두리" }
+    },
+    "icon": {
+      "default":  { "$value": "{color.gray-dark.700}",   "$type": "color", "$description": "기본 아이콘" },
+      "muted":    { "$value": "{color.gray-dark.400}",   "$type": "color", "$description": "비활성 아이콘" },
+      "emphasis": { "$value": "{color.gray-dark.800}",   "$type": "color", "$description": "강조 아이콘" },
+      "accent":   { "$value": "{color.blue-dark.400}",   "$type": "color", "$description": "강조 아이콘" },
+      "inverse":  { "$value": "{color.base.white}",      "$type": "color", "$description": "색상 배경 위 아이콘" },
+      "danger":   { "$value": "{color.status-dark.red}", "$type": "color", "$description": "에러 아이콘" }
+    },
+    "action": {
+      "primary": {
+        "default": { "$value": "{color.blue-dark.300}", "$type": "color", "$description": "Primary 액션 기본" },
+        "hover":   { "$value": "{color.blue-dark.250}", "$type": "color", "$description": "Primary hover" },
+        "pressed": { "$value": "{color.blue-dark.200}", "$type": "color", "$description": "Primary pressed" },
+        "text":    { "$value": "{color.base.white}",    "$type": "color", "$description": "Primary 버튼 텍스트" },
+        "subtle":  { "$value": "{color.blue-dark.100}", "$type": "color", "$description": "선택·강조 배경" }
+      }
+    },
+    "status": {
+      "success": { "$value": "{color.status-dark.green}",  "$type": "color", "$description": "성공 — Dark는 green 계열" },
+      "error":   { "$value": "{color.status-dark.red}",    "$type": "color", "$description": "에러" },
+      "warning": { "$value": "{color.status-dark.yellow}", "$type": "color", "$description": "경고" },
+      "info":    { "$value": "{color.gray-dark.700}",      "$type": "color", "$description": "정보" }
+    },
+    "overlay": { "$value": "rgba(0,0,0,0.75)", "$type": "color", "$description": "딤·오버레이 — rgba 허용 예외" }
+  }
+}

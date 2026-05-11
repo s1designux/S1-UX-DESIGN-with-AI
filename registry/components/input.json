@@ -1,0 +1,28 @@
+{
+  "_meta": {
+    "id": "input",
+    "name": "Input",
+    "category": "Core",
+    "updatedAt": "2026-05-11",
+    "tokenStatus": "stable",
+    "codeStatus": "not-started",
+    "darkModeStatus": "pending",
+    "description": "Text input and form control component. Includes select disabled border variant."
+  },
+  "variants": {
+    "default": {
+      "tokenStatus": "stable",
+      "codeStatus": "not-started",
+      "darkModeStatus": "pending",
+      "tokens": [
+        "--input-default-bg", "--input-hover-bg", "--input-focus-bg",
+        "--input-disabled-bg", "--input-error-bg",
+        "--input-default-border", "--input-hover-border", "--input-focus-border",
+        "--input-error-border", "--input-correct-border", "--input-disabled-border",
+        "--select-disabled-border",
+        "--input-placeholder-text", "--input-helper-text",
+        "--input-error-text", "--input-correct-text", "--input-disabled-text"
+      ]
+    }
+  }
+}

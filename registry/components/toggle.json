@@ -1,0 +1,26 @@
+{
+  "_meta": {
+    "id": "toggle",
+    "name": "Toggle",
+    "category": "Core",
+    "updatedAt": "2026-05-11",
+    "tokenStatus": "stable",
+    "codeStatus": "not-started",
+    "darkModeStatus": "pending",
+    "description": "Toggle switch control with on, off, and disabled states.",
+    "openIssues": [
+      "tokens/component-tokens-extracted.md: --toggle-off-bg references var(--color-text-placeholder).",
+      "tokens.css: --toggle-off-bg references var(--color-border-default). Mismatch needs resolution."
+    ]
+  },
+  "variants": {
+    "default": {
+      "tokenStatus": "stable",
+      "codeStatus": "not-started",
+      "darkModeStatus": "pending",
+      "tokens": [
+        "--toggle-on-bg", "--toggle-off-bg", "--toggle-disabled-bg", "--toggle-knob"
+      ]
+    }
+  }
+}

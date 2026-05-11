@@ -1,0 +1,269 @@
+{
+  "meta": {
+    "name": "SW Foundation Colors",
+    "version": "2.4",
+    "status": "stable",
+    "updatedAt": "2026-05-11",
+    "source": "registry/tokens/sw-v2.4.tokens.css",
+    "description": "Official SW Design System V2.4 foundation color primitives. Raw HEX values are allowed here only."
+  },
+  "color": {
+    "base": {
+      "white": { "value": "#FFFFFF", "cssVar": "--color-base-white", "status": "stable" },
+      "black": { "value": "#000000", "cssVar": "--color-base-black", "status": "stable" }
+    },
+    "brand": {
+      "blue": { "value": "#0072CE", "cssVar": "--color-brand-blue", "status": "stable", "description": "Primary brand blue. Do not use directly in product UI." },
+      "red":  { "value": "#FF312C", "cssVar": "--color-brand-red",  "status": "stable" },
+      "gray": { "value": "#DFDEDE", "cssVar": "--color-brand-gray", "status": "stable" },
+      "ci":   { "value": "#004097", "cssVar": "--color-brand-ci",   "status": "stable", "description": "CI/logo only. Do not use in product UI." }
+    },
+    "gray": {
+      "0":   { "value": "#FAFAFA", "cssVar": "--color-gray-0",   "status": "stable" },
+      "50":  { "value": "#F5F5F5", "cssVar": "--color-gray-50",  "status": "stable" },
+      "100": { "value": "#E9E9E9", "cssVar": "--color-gray-100", "status": "stable" },
+      "200": { "value": "#D9D9D9", "cssVar": "--color-gray-200", "status": "stable" },
+      "300": { "value": "#C4C4C4", "cssVar": "--color-gray-300", "status": "stable" },
+      "400": { "value": "#9D9D9D", "cssVar": "--color-gray-400", "status": "stable" },
+      "500": { "value": "#757575", "cssVar": "--color-gray-500", "status": "stable" },
+      "600": { "value": "#555555", "cssVar": "--color-gray-600", "status": "stable" },
+      "700": { "value": "#434343", "cssVar": "--color-gray-700", "status": "stable" },
+      "800": { "value": "#353535", "cssVar": "--color-gray-800", "status": "stable" },
+      "900": { "value": "#202020", "cssVar": "--color-gray-900", "status": "stable" }
+    },
+    "grayDark": {
+      "0":   { "value": "#0D0E12", "cssVar": "--color-gray-dark-0",   "status": "stable" },
+      "50":  { "value": "#131418", "cssVar": "--color-gray-dark-50",  "status": "stable" },
+      "100": { "value": "#1C1D23", "cssVar": "--color-gray-dark-100", "status": "stable" },
+      "200": { "value": "#24252C", "cssVar": "--color-gray-dark-200", "status": "stable" },
+      "300": { "value": "#2E2F38", "cssVar": "--color-gray-dark-300", "status": "stable" },
+      "400": { "value": "#35363F", "cssVar": "--color-gray-dark-400", "status": "stable" },
+      "500": { "value": "#3E4049", "cssVar": "--color-gray-dark-500", "status": "stable" },
+      "600": { "value": "#55575F", "cssVar": "--color-gray-dark-600", "status": "stable" },
+      "700": { "value": "#8A8C96", "cssVar": "--color-gray-dark-700", "status": "stable" },
+      "800": { "value": "#B8BABF", "cssVar": "--color-gray-dark-800", "status": "stable" },
+      "900": { "value": "#ECEDF0", "cssVar": "--color-gray-dark-900", "status": "stable" }
+    },
+    "blue": {
+      "50":  { "value": "#E2F1FF", "cssVar": "--color-blue-50",  "status": "stable" },
+      "100": { "value": "#C8E4FF", "cssVar": "--color-blue-100", "status": "stable" },
+      "150": { "value": "#A4D4FF", "cssVar": "--color-blue-150", "status": "stable" },
+      "200": { "value": "#8BC6FF", "cssVar": "--color-blue-200", "status": "stable" },
+      "250": { "value": "#5BB2FF", "cssVar": "--color-blue-250", "status": "stable" },
+      "300": { "value": "#2B9EFF", "cssVar": "--color-blue-300", "status": "stable" },
+      "350": { "value": "#268CF8", "cssVar": "--color-blue-350", "status": "stable" },
+      "400": { "value": "#1D6CEB", "cssVar": "--color-blue-400", "status": "stable" },
+      "450": { "value": "#2158C8", "cssVar": "--color-blue-450", "status": "stable" },
+      "500": { "value": "#2747B9", "cssVar": "--color-blue-500", "status": "stable" }
+    },
+    "blueDark": {
+      "50":  { "value": "#0C1D38", "cssVar": "--color-blue-dark-50",  "status": "stable" },
+      "100": { "value": "#112B55", "cssVar": "--color-blue-dark-100", "status": "stable" },
+      "150": { "value": "#1A3D72", "cssVar": "--color-blue-dark-150", "status": "stable" },
+      "200": { "value": "#214EA0", "cssVar": "--color-blue-dark-200", "status": "stable" },
+      "250": { "value": "#2A65C8", "cssVar": "--color-blue-dark-250", "status": "stable" },
+      "300": { "value": "#3070D8", "cssVar": "--color-blue-dark-300", "status": "stable" },
+      "350": { "value": "#4285E8", "cssVar": "--color-blue-dark-350", "status": "stable" },
+      "400": { "value": "#6FA5F8", "cssVar": "--color-blue-dark-400", "status": "stable" },
+      "450": { "value": "#96BEF9", "cssVar": "--color-blue-dark-450", "status": "stable" },
+      "500": { "value": "#C0D8FC", "cssVar": "--color-blue-dark-500", "status": "stable" }
+    },
+    "red": {
+      "50":  { "value": "#FFEBEF", "cssVar": "--color-red-50",  "status": "stable" },
+      "100": { "value": "#FFCCD6", "cssVar": "--color-red-100", "status": "stable" },
+      "150": { "value": "#FBB2BA", "cssVar": "--color-red-150", "status": "stable" },
+      "200": { "value": "#F8979E", "cssVar": "--color-red-200", "status": "stable" },
+      "250": { "value": "#FC6E79", "cssVar": "--color-red-250", "status": "stable" },
+      "300": { "value": "#FF4554", "cssVar": "--color-red-300", "status": "stable" },
+      "350": { "value": "#F22544", "cssVar": "--color-red-350", "status": "stable" },
+      "400": { "value": "#E50533", "cssVar": "--color-red-400", "status": "stable" },
+      "450": { "value": "#D60228", "cssVar": "--color-red-450", "status": "stable" },
+      "500": { "value": "#C8001E", "cssVar": "--color-red-500", "status": "stable" }
+    },
+    "redDark": {
+      "50":  { "value": "#2A0F14", "cssVar": "--color-red-dark-50",  "status": "stable" },
+      "100": { "value": "#3D1520", "cssVar": "--color-red-dark-100", "status": "stable" },
+      "150": { "value": "#5C1E2E", "cssVar": "--color-red-dark-150", "status": "stable" },
+      "200": { "value": "#8A2A3E", "cssVar": "--color-red-dark-200", "status": "stable" },
+      "250": { "value": "#C03850", "cssVar": "--color-red-dark-250", "status": "stable" },
+      "300": { "value": "#E04860", "cssVar": "--color-red-dark-300", "status": "stable" },
+      "350": { "value": "#F06070", "cssVar": "--color-red-dark-350", "status": "stable" },
+      "400": { "value": "#F48890", "cssVar": "--color-red-dark-400", "status": "stable" },
+      "450": { "value": "#F8A8B0", "cssVar": "--color-red-dark-450", "status": "stable" },
+      "500": { "value": "#FCD0D5", "cssVar": "--color-red-dark-500", "status": "stable" }
+    },
+    "orange": {
+      "50":  { "value": "#FFEDE0", "cssVar": "--color-orange-50",  "status": "stable" },
+      "100": { "value": "#FDDBBF", "cssVar": "--color-orange-100", "status": "stable" },
+      "150": { "value": "#FEC6A0", "cssVar": "--color-orange-150", "status": "stable" },
+      "200": { "value": "#FFB482", "cssVar": "--color-orange-200", "status": "stable" },
+      "250": { "value": "#FF954E", "cssVar": "--color-orange-250", "status": "stable" },
+      "300": { "value": "#FF761A", "cssVar": "--color-orange-300", "status": "stable" },
+      "350": { "value": "#EE680D", "cssVar": "--color-orange-350", "status": "stable" },
+      "400": { "value": "#DA4C00", "cssVar": "--color-orange-400", "status": "stable" },
+      "450": { "value": "#B63C00", "cssVar": "--color-orange-450", "status": "stable" },
+      "500": { "value": "#8E2E00", "cssVar": "--color-orange-500", "status": "stable" }
+    },
+    "orangeDark": {
+      "50":  { "value": "#2E1505", "cssVar": "--color-orange-dark-50",  "status": "stable" },
+      "100": { "value": "#42200A", "cssVar": "--color-orange-dark-100", "status": "stable" },
+      "150": { "value": "#6B3512", "cssVar": "--color-orange-dark-150", "status": "stable" },
+      "200": { "value": "#A05020", "cssVar": "--color-orange-dark-200", "status": "stable" },
+      "250": { "value": "#D06828", "cssVar": "--color-orange-dark-250", "status": "stable" },
+      "300": { "value": "#E88038", "cssVar": "--color-orange-dark-300", "status": "stable" },
+      "350": { "value": "#F09548", "cssVar": "--color-orange-dark-350", "status": "stable" },
+      "400": { "value": "#F5AA68", "cssVar": "--color-orange-dark-400", "status": "stable" },
+      "450": { "value": "#F8C090", "cssVar": "--color-orange-dark-450", "status": "stable" },
+      "500": { "value": "#FCD8B8", "cssVar": "--color-orange-dark-500", "status": "stable" }
+    },
+    "yellow": {
+      "50":  { "value": "#FFF4CE", "cssVar": "--color-yellow-50",  "status": "stable" },
+      "100": { "value": "#FEE89A", "cssVar": "--color-yellow-100", "status": "stable" },
+      "150": { "value": "#FEDE6C", "cssVar": "--color-yellow-150", "status": "stable" },
+      "200": { "value": "#FFD53D", "cssVar": "--color-yellow-200", "status": "stable" },
+      "250": { "value": "#FFCC1E", "cssVar": "--color-yellow-250", "status": "stable" },
+      "300": { "value": "#FFC200", "cssVar": "--color-yellow-300", "status": "stable" },
+      "350": { "value": "#F5B900", "cssVar": "--color-yellow-350", "status": "stable" },
+      "400": { "value": "#DBA400", "cssVar": "--color-yellow-400", "status": "stable" },
+      "450": { "value": "#BA8900", "cssVar": "--color-yellow-450", "status": "stable" },
+      "500": { "value": "#8F6A00", "cssVar": "--color-yellow-500", "status": "stable" }
+    },
+    "yellowDark": {
+      "50":  { "value": "#2A2005", "cssVar": "--color-yellow-dark-50",  "status": "stable" },
+      "100": { "value": "#3D2E08", "cssVar": "--color-yellow-dark-100", "status": "stable" },
+      "150": { "value": "#605010", "cssVar": "--color-yellow-dark-150", "status": "stable" },
+      "200": { "value": "#907818", "cssVar": "--color-yellow-dark-200", "status": "stable" },
+      "250": { "value": "#C09828", "cssVar": "--color-yellow-dark-250", "status": "stable" },
+      "300": { "value": "#D8B038", "cssVar": "--color-yellow-dark-300", "status": "stable" },
+      "350": { "value": "#E8C048", "cssVar": "--color-yellow-dark-350", "status": "stable" },
+      "400": { "value": "#F0D068", "cssVar": "--color-yellow-dark-400", "status": "stable" },
+      "450": { "value": "#F5DE90", "cssVar": "--color-yellow-dark-450", "status": "stable" },
+      "500": { "value": "#FAEAB8", "cssVar": "--color-yellow-dark-500", "status": "stable" }
+    },
+    "green": {
+      "50":  { "value": "#E3F2EA", "cssVar": "--color-green-50",  "status": "stable" },
+      "100": { "value": "#CAECDA", "cssVar": "--color-green-100", "status": "stable" },
+      "150": { "value": "#9CD8BD", "cssVar": "--color-green-150", "status": "stable" },
+      "200": { "value": "#6FC4A2", "cssVar": "--color-green-200", "status": "stable" },
+      "250": { "value": "#47BB8E", "cssVar": "--color-green-250", "status": "stable" },
+      "300": { "value": "#1FB279", "cssVar": "--color-green-300", "status": "stable" },
+      "350": { "value": "#10A86C", "cssVar": "--color-green-350", "status": "stable" },
+      "400": { "value": "#009E5E", "cssVar": "--color-green-400", "status": "stable" },
+      "450": { "value": "#008650", "cssVar": "--color-green-450", "status": "stable" },
+      "500": { "value": "#006F42", "cssVar": "--color-green-500", "status": "stable" }
+    },
+    "greenDark": {
+      "50":  { "value": "#0A2018", "cssVar": "--color-green-dark-50",  "status": "stable" },
+      "100": { "value": "#102E22", "cssVar": "--color-green-dark-100", "status": "stable" },
+      "150": { "value": "#184530", "cssVar": "--color-green-dark-150", "status": "stable" },
+      "200": { "value": "#206840", "cssVar": "--color-green-dark-200", "status": "stable" },
+      "250": { "value": "#288A55", "cssVar": "--color-green-dark-250", "status": "stable" },
+      "300": { "value": "#30A868", "cssVar": "--color-green-dark-300", "status": "stable" },
+      "350": { "value": "#3FBE7E", "cssVar": "--color-green-dark-350", "status": "stable" },
+      "400": { "value": "#68D098", "cssVar": "--color-green-dark-400", "status": "stable" },
+      "450": { "value": "#98E0B8", "cssVar": "--color-green-dark-450", "status": "stable" },
+      "500": { "value": "#C5F0D8", "cssVar": "--color-green-dark-500", "status": "stable" }
+    },
+    "skyblue": {
+      "50":  { "value": "#C4EEF7", "cssVar": "--color-skyblue-50",  "status": "stable" },
+      "100": { "value": "#A5E5F3", "cssVar": "--color-skyblue-100", "status": "stable" },
+      "150": { "value": "#7BD6EA", "cssVar": "--color-skyblue-150", "status": "stable" },
+      "200": { "value": "#51C7E1", "cssVar": "--color-skyblue-200", "status": "stable" },
+      "250": { "value": "#3BC0DD", "cssVar": "--color-skyblue-250", "status": "stable" },
+      "300": { "value": "#25B9DA", "cssVar": "--color-skyblue-300", "status": "stable" },
+      "350": { "value": "#1DAACB", "cssVar": "--color-skyblue-350", "status": "stable" },
+      "400": { "value": "#159BBC", "cssVar": "--color-skyblue-400", "status": "stable" },
+      "450": { "value": "#1284A0", "cssVar": "--color-skyblue-450", "status": "stable" },
+      "500": { "value": "#0F6C84", "cssVar": "--color-skyblue-500", "status": "stable" }
+    },
+    "skyblueDark": {
+      "50":  { "value": "#081E28", "cssVar": "--color-skyblue-dark-50",  "status": "stable" },
+      "100": { "value": "#102A38", "cssVar": "--color-skyblue-dark-100", "status": "stable" },
+      "150": { "value": "#184050", "cssVar": "--color-skyblue-dark-150", "status": "stable" },
+      "200": { "value": "#205A70", "cssVar": "--color-skyblue-dark-200", "status": "stable" },
+      "250": { "value": "#287890", "cssVar": "--color-skyblue-dark-250", "status": "stable" },
+      "300": { "value": "#3090A8", "cssVar": "--color-skyblue-dark-300", "status": "stable" },
+      "350": { "value": "#40A8C0", "cssVar": "--color-skyblue-dark-350", "status": "stable" },
+      "400": { "value": "#68C0D8", "cssVar": "--color-skyblue-dark-400", "status": "stable" },
+      "450": { "value": "#98D8E8", "cssVar": "--color-skyblue-dark-450", "status": "stable" },
+      "500": { "value": "#C0E8F0", "cssVar": "--color-skyblue-dark-500", "status": "stable" }
+    },
+    "purple": {
+      "50":  { "value": "#E8E9FC", "cssVar": "--color-purple-50",  "status": "stable" },
+      "100": { "value": "#CFD1F9", "cssVar": "--color-purple-100", "status": "stable" },
+      "150": { "value": "#C0C0FC", "cssVar": "--color-purple-150", "status": "stable" },
+      "200": { "value": "#B0B0FF", "cssVar": "--color-purple-200", "status": "stable" },
+      "250": { "value": "#8B8BEE", "cssVar": "--color-purple-250", "status": "stable" },
+      "300": { "value": "#6666DD", "cssVar": "--color-purple-300", "status": "stable" },
+      "350": { "value": "#4E4EC3", "cssVar": "--color-purple-350", "status": "stable" },
+      "400": { "value": "#3535A8", "cssVar": "--color-purple-400", "status": "stable" },
+      "450": { "value": "#2D2D8F", "cssVar": "--color-purple-450", "status": "stable" },
+      "500": { "value": "#252576", "cssVar": "--color-purple-500", "status": "stable" }
+    },
+    "purpleDark": {
+      "50":  { "value": "#14142A", "cssVar": "--color-purple-dark-50",  "status": "stable" },
+      "100": { "value": "#1E1E3D", "cssVar": "--color-purple-dark-100", "status": "stable" },
+      "150": { "value": "#2A2A58", "cssVar": "--color-purple-dark-150", "status": "stable" },
+      "200": { "value": "#383878", "cssVar": "--color-purple-dark-200", "status": "stable" },
+      "250": { "value": "#4848A0", "cssVar": "--color-purple-dark-250", "status": "stable" },
+      "300": { "value": "#5858B8", "cssVar": "--color-purple-dark-300", "status": "stable" },
+      "350": { "value": "#7070D0", "cssVar": "--color-purple-dark-350", "status": "stable" },
+      "400": { "value": "#9090E0", "cssVar": "--color-purple-dark-400", "status": "stable" },
+      "450": { "value": "#B0B0EA", "cssVar": "--color-purple-dark-450", "status": "stable" },
+      "500": { "value": "#D0D0F5", "cssVar": "--color-purple-dark-500", "status": "stable" }
+    },
+    "brown": {
+      "50":  { "value": "#F6EEE9", "cssVar": "--color-brown-50",  "status": "stable" },
+      "100": { "value": "#E4D5C8", "cssVar": "--color-brown-100", "status": "stable" },
+      "150": { "value": "#DBC6B3", "cssVar": "--color-brown-150", "status": "stable" },
+      "200": { "value": "#D1B69F", "cssVar": "--color-brown-200", "status": "stable" },
+      "250": { "value": "#A68C75", "cssVar": "--color-brown-250", "status": "stable" },
+      "300": { "value": "#7C614A", "cssVar": "--color-brown-300", "status": "stable" },
+      "350": { "value": "#685240", "cssVar": "--color-brown-350", "status": "stable" },
+      "400": { "value": "#554435", "cssVar": "--color-brown-400", "status": "stable" },
+      "450": { "value": "#483A2D", "cssVar": "--color-brown-450", "status": "stable" },
+      "500": { "value": "#3B3025", "cssVar": "--color-brown-500", "status": "stable" }
+    },
+    "brownDark": {
+      "50":  { "value": "#1E1610", "cssVar": "--color-brown-dark-50",  "status": "stable" },
+      "100": { "value": "#2A2018", "cssVar": "--color-brown-dark-100", "status": "stable" },
+      "150": { "value": "#3D3025", "cssVar": "--color-brown-dark-150", "status": "stable" },
+      "200": { "value": "#584535", "cssVar": "--color-brown-dark-200", "status": "stable" },
+      "250": { "value": "#786050", "cssVar": "--color-brown-dark-250", "status": "stable" },
+      "300": { "value": "#907868", "cssVar": "--color-brown-dark-300", "status": "stable" },
+      "350": { "value": "#A89080", "cssVar": "--color-brown-dark-350", "status": "stable" },
+      "400": { "value": "#C0A898", "cssVar": "--color-brown-dark-400", "status": "stable" },
+      "450": { "value": "#D8C0B0", "cssVar": "--color-brown-dark-450", "status": "stable" },
+      "500": { "value": "#E8D8C8", "cssVar": "--color-brown-dark-500", "status": "stable" }
+    },
+    "visualGray": {
+      "50":  { "value": "#F3F5F7", "cssVar": "--color-visual-gray-50",  "status": "stable" },
+      "100": { "value": "#E8EBEF", "cssVar": "--color-visual-gray-100", "status": "stable" },
+      "150": { "value": "#DADEE5", "cssVar": "--color-visual-gray-150", "status": "stable" },
+      "200": { "value": "#CDD2DE", "cssVar": "--color-visual-gray-200", "status": "stable" },
+      "250": { "value": "#ABB2BF", "cssVar": "--color-visual-gray-250", "status": "stable" },
+      "300": { "value": "#808796", "cssVar": "--color-visual-gray-300", "status": "stable" },
+      "350": { "value": "#646A74", "cssVar": "--color-visual-gray-350", "status": "stable" },
+      "400": { "value": "#3E4347", "cssVar": "--color-visual-gray-400", "status": "stable" },
+      "450": { "value": "#2B2F32", "cssVar": "--color-visual-gray-450", "status": "stable" },
+      "500": { "value": "#1B1D1F", "cssVar": "--color-visual-gray-500", "status": "stable" }
+    },
+    "coolgrayDark": {
+      "50":  { "value": "#12141A", "cssVar": "--color-coolgray-dark-50",  "status": "stable" },
+      "100": { "value": "#1A1D25", "cssVar": "--color-coolgray-dark-100", "status": "stable" },
+      "150": { "value": "#252830", "cssVar": "--color-coolgray-dark-150", "status": "stable" },
+      "200": { "value": "#353840", "cssVar": "--color-coolgray-dark-200", "status": "stable" },
+      "250": { "value": "#484C58", "cssVar": "--color-coolgray-dark-250", "status": "stable" },
+      "300": { "value": "#606470", "cssVar": "--color-coolgray-dark-300", "status": "stable" },
+      "350": { "value": "#787C88", "cssVar": "--color-coolgray-dark-350", "status": "stable" },
+      "400": { "value": "#989CA8", "cssVar": "--color-coolgray-dark-400", "status": "stable" },
+      "450": { "value": "#B8BCC5", "cssVar": "--color-coolgray-dark-450", "status": "stable" },
+      "500": { "value": "#D8DBE0", "cssVar": "--color-coolgray-dark-500", "status": "stable" }
+    },
+    "statusDarkAlias": {
+      "red":    { "value": "#F06070", "cssVar": "--color-status-dark-red",    "status": "stable", "description": "= red-dark-350 alias" },
+      "green":  { "value": "#3FBE7E", "cssVar": "--color-status-dark-green",  "status": "stable", "description": "= green-dark-350 alias" },
+      "yellow": { "value": "#E8C048", "cssVar": "--color-status-dark-yellow", "status": "stable", "description": "= yellow-dark-350 alias" }
+    }
+  }
+}

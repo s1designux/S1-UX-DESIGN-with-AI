@@ -1,0 +1,24 @@
+{
+  "_meta": {
+    "id": "pagination",
+    "name": "Pagination",
+    "category": "Core",
+    "updatedAt": "2026-05-11",
+    "tokenStatus": "stable",
+    "codeStatus": "not-started",
+    "darkModeStatus": "pending",
+    "description": "Pagination control with default, hover, active, and disabled page item states."
+  },
+  "variants": {
+    "default": {
+      "tokenStatus": "stable",
+      "codeStatus": "not-started",
+      "darkModeStatus": "pending",
+      "tokens": [
+        "--pagination-default-bg", "--pagination-hover-bg", "--pagination-active-bg", "--pagination-disabled-bg",
+        "--pagination-default-text", "--pagination-active-text", "--pagination-disabled-text",
+        "--pagination-border"
+      ]
+    }
+  }
+}

@@ -1,0 +1,46 @@
+{
+  "meta": {
+    "name": "SW Semantic Sizing",
+    "version": "2.4",
+    "status": "stable",
+    "updatedAt": "2026-05-11",
+    "source": "registry/tokens/sw-v2.4.tokens.css",
+    "description": "Role-based semantic sizing tokens. Values without a Foundation primitive step use raw px."
+  },
+  "tokens": {
+    "formControl": [
+      { "cssVar": "--sizing-form-control-height-xxs",         "value": "var(--spacing-28)", "status": "stable" },
+      { "cssVar": "--sizing-form-control-height-xs",          "value": "34px",              "status": "stable", "note": "No Foundation step for 34px." },
+      { "cssVar": "--sizing-form-control-height-md",          "value": "var(--spacing-44)", "status": "stable" },
+      { "cssVar": "--sizing-form-control-height-lg",          "value": "var(--spacing-48)", "status": "stable" },
+      { "cssVar": "--sizing-form-control-dataview-height-sm", "value": "var(--spacing-28)", "status": "stable" },
+      { "cssVar": "--sizing-form-control-dataview-height-md", "value": "32px",              "status": "stable", "note": "No Foundation step for 32px." }
+    ],
+    "button": [
+      { "cssVar": "--sizing-button-height-xs",  "value": "34px",              "status": "stable", "note": "No Foundation step for 34px." },
+      { "cssVar": "--sizing-button-height-sm",  "value": "var(--spacing-40)", "status": "stable" },
+      { "cssVar": "--sizing-button-height-md",  "value": "var(--spacing-44)", "status": "stable" },
+      { "cssVar": "--sizing-button-height-lg",  "value": "var(--spacing-48)", "status": "stable" },
+      { "cssVar": "--sizing-button-min-width",  "value": "80px",              "status": "stable", "note": "No Foundation step for 80px." }
+    ],
+    "chip": [
+      { "cssVar": "--sizing-chip-height-sm", "value": "var(--spacing-28)", "status": "stable" },
+      { "cssVar": "--sizing-chip-height-md", "value": "30px",              "status": "stable", "note": "No Foundation step for 30px." },
+      { "cssVar": "--sizing-chip-height-lg", "value": "34px",              "status": "stable", "note": "No Foundation step for 34px." }
+    ],
+    "tableRow": [
+      { "cssVar": "--sizing-table-row-height-xs", "value": "34px",              "status": "stable", "note": "No Foundation step for 34px." },
+      { "cssVar": "--sizing-table-row-height-sm", "value": "38px",              "status": "stable", "note": "No Foundation step for 38px." },
+      { "cssVar": "--sizing-table-row-height-md", "value": "var(--spacing-44)", "status": "stable" }
+    ],
+    "icon": [
+      { "cssVar": "--sizing-icon-10", "value": "10px",              "status": "stable", "note": "No Foundation step for 10px." },
+      { "cssVar": "--sizing-icon-16", "value": "var(--spacing-16)", "status": "stable" },
+      { "cssVar": "--sizing-icon-18", "value": "18px",              "status": "stable", "note": "No Foundation step for 18px." },
+      { "cssVar": "--sizing-icon-20", "value": "var(--spacing-20)", "status": "stable" },
+      { "cssVar": "--sizing-icon-24", "value": "var(--spacing-24)", "status": "stable" },
+      { "cssVar": "--sizing-icon-28", "value": "var(--spacing-28)", "status": "stable" },
+      { "cssVar": "--sizing-icon-32", "value": "var(--spacing-32)", "status": "stable" }
+    ]
+  }
+}

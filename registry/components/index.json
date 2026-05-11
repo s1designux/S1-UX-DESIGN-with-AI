@@ -1,0 +1,93 @@
+{
+  "meta": {
+    "name": "SW Core Component Registry Index",
+    "version": "0.1.0",
+    "status": "mvp3.1",
+    "updatedAt": "2026-05-11",
+    "description": "Core Component Harness의 entry point. Theme / Platform / Component 목록을 관리한다."
+  },
+  "harness": {
+    "defaultComponent": "button",
+    "supportedThemes": ["light", "dark"],
+    "defaultTheme": "light",
+    "supportedPlatforms": ["all", "pc", "mobile"],
+    "defaultPlatform": "pc"
+  },
+  "components": [
+    {
+      "id": "button",
+      "name": "Button",
+      "label": "Button",
+      "category": "core",
+      "path": "registry/components/button.json",
+      "status": "in-progress",
+      "harnessStatus": "implemented",
+      "priority": 1
+    },
+    {
+      "id": "checkbox",
+      "name": "Checkbox",
+      "label": "Checkbox",
+      "category": "core",
+      "path": "registry/components/checkbox.json",
+      "status": "planned",
+      "harnessStatus": "skeleton",
+      "priority": 2
+    },
+    {
+      "id": "radio",
+      "name": "Radio",
+      "label": "Radio",
+      "category": "core",
+      "path": "registry/components/radio.json",
+      "status": "planned",
+      "harnessStatus": "skeleton",
+      "priority": 3
+    },
+    {
+      "id": "toggle",
+      "name": "Toggle",
+      "label": "Toggle",
+      "category": "core",
+      "path": "registry/components/toggle.json",
+      "status": "planned",
+      "harnessStatus": "skeleton",
+      "priority": 4
+    },
+    {
+      "id": "chip",
+      "name": "Chip",
+      "label": "Chip · FilterChip",
+      "category": "core",
+      "path": "registry/components/chip.json",
+      "status": "planned",
+      "harnessStatus": "skeleton",
+      "priority": 5,
+      "notes": [
+        "Chip과 FilterChip을 하나의 tab으로 표시한다.",
+        "내부 registry는 chip.json 단일 파일로 관리하되, FilterChip variant를 별도 type으로 구분할 수 있다.",
+        "추후 chip.json과 filter-chip.json 분리 여부 결정 필요."
+      ]
+    },
+    {
+      "id": "input",
+      "name": "Input",
+      "label": "Input",
+      "category": "core",
+      "path": "registry/components/input.json",
+      "status": "planned",
+      "harnessStatus": "skeleton",
+      "priority": 6
+    },
+    {
+      "id": "select",
+      "name": "Select",
+      "label": "Select",
+      "category": "core",
+      "path": "registry/components/select.json",
+      "status": "planned",
+      "harnessStatus": "skeleton",
+      "priority": 7
+    }
+  ]
+}

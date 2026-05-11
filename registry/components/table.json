@@ -1,0 +1,24 @@
+{
+  "_meta": {
+    "id": "table",
+    "name": "Table",
+    "category": "Core",
+    "updatedAt": "2026-05-11",
+    "tokenStatus": "stable",
+    "codeStatus": "not-started",
+    "darkModeStatus": "pending",
+    "description": "Data grid / table component with header, row hover, row selected, and cell styles."
+  },
+  "variants": {
+    "default": {
+      "tokenStatus": "stable",
+      "codeStatus": "not-started",
+      "darkModeStatus": "pending",
+      "tokens": [
+        "--table-header-bg", "--table-header-text", "--table-header-border",
+        "--table-row-default-bg", "--table-row-hover-bg", "--table-row-selected-bg",
+        "--table-cell-border", "--table-cell-text"
+      ]
+    }
+  }
+}

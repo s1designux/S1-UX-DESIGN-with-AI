@@ -1,0 +1,41 @@
+{
+  "_meta": {
+    "id": "select",
+    "name": "Select",
+    "category": "Core",
+    "updatedAt": "2026-05-11",
+    "tokenStatus": "pending",
+    "codeStatus": "not-started",
+    "darkModeStatus": "pending",
+    "a11yStatus": "pending",
+    "figmaStatus": "existing",
+    "harnessStatus": "skeleton",
+    "description": "Selection control component. Single / Multi select dropdown.",
+    "notes": [
+      "Created because the current Core Component Harness includes Select.",
+      "Official token policy should be reviewed: Select may share Dropdown Trigger tokens or Input field tokens.",
+      "Requires Figma componentSetKey lookup before implementation.",
+      "MVP3.1: skeleton entry only. Full implementation deferred."
+    ]
+  },
+  "variants": {},
+  "tokens": {
+    "background": [],
+    "text": [],
+    "border": [],
+    "icon": [],
+    "focus": []
+  },
+  "figma": {
+    "componentSetKey": "",
+    "componentName": "Select",
+    "propertyMap": {},
+    "valueMap": {}
+  },
+  "governance": {
+    "owner": "Design System Team",
+    "deprecated": false,
+    "replacement": null,
+    "breakingChange": false
+  }
+}

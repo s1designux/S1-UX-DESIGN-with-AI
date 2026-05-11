@@ -1,0 +1,24 @@
+{
+  "_meta": {
+    "id": "radio",
+    "name": "Radio",
+    "category": "Core",
+    "updatedAt": "2026-05-11",
+    "tokenStatus": "stable",
+    "codeStatus": "not-started",
+    "darkModeStatus": "pending",
+    "description": "Radio button control with default, selected, hover, and disabled states."
+  },
+  "variants": {
+    "default": {
+      "tokenStatus": "stable",
+      "codeStatus": "not-started",
+      "darkModeStatus": "pending",
+      "tokens": [
+        "--radio-default-bg", "--radio-disabled-bg",
+        "--radio-default-border", "--radio-hover-border", "--radio-selected-border", "--radio-disabled-border",
+        "--radio-selected-dot"
+      ]
+    }
+  }
+}

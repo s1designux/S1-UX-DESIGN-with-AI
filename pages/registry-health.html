@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>System Status — SW Design System</title>
+  <link rel="stylesheet" href="../assets/css/style.css">
+  <link rel="stylesheet" href="../assets/css/tokens.css">
+  <style>
+    /* ── registry 공통 ── */
+    .registry-error-box {
+      background: #fff5f5; border: 1px solid #fecaca; border-radius: 12px;
+      padding: 24px; margin: 24px 0;
+    }
+    .registry-error-title { font-weight: 700; color: #dc2626; margin-bottom: 8px; }
+    .registry-error-msg { font-family: monospace; font-size: 13px; color: #374151; margin-bottom: 8px; }
+    .registry-error-hint { font-size: 12px; color: #6b7280; }
+    .registry-error-hint code { background: #f3f4f6; padding: 2px 6px; border-radius: 4px; }
+    .registry-badge { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; }
+    .badge-stable { background: #d1fae5; color: #065f46; }
+    .badge-candidate { background: #fef3c7; color: #92400e; }
+    .badge-planned { background: #e0e7ff; color: #3730a3; }
+    .badge-deprecated { background: #fee2e2; color: #991b1b; }
+    .badge-wip { background: #e0f2fe; color: #0c4a6e; }
+    .badge-notstarted { background: #f3f4f6; color: #6b7280; }
+    .badge-unknown { background: #f3f4f6; color: #6b7280; }
+
+    /* ── Health 페이지 ── */
+    .health-header { margin-bottom: 32px; }
+    .health-meta { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+    .health-phase-badge {
+      background: #1d4ed8; color: #fff; font-size: 11px; font-weight: 700;
+      padding: 3px 10px; border-radius: 6px; letter-spacing: 0.05em;
+    }
+    .health-version { font-size: 14px; font-weight: 600; color: #111827; }
+    .health-source { font-size: 12px; color: #6b7280; font-family: monospace; }
+
+    .health-stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+      gap: 12px; margin-bottom: 40px;
+    }
+    .health-stat-card {
+      background: #fff; border: 1px solid #e5e7eb; border-radius: 12px;
+      padding: 20px 16px; text-align: center;
+    }
+    .health-stat-card.is-warning { border-color: #fbbf24; background: #fffbeb; }
+    .health-stat-card.is-candidate { border-color: #f59e0b; background: #fffbeb; }
+    .health-stat-number { font-size: 32px; font-weight: 700; color: #111827; line-height: 1; margin-bottom: 6px; }
+    .health-stat-label { font-size: 12px; color: #6b7280; }
+
+    .health-section { margin-bottom: 40px; }
+    .health-section h3 { font-size: 16px; font-weight: 700; color: #111827; margin-bottom: 16px; border-bottom: 2px solid #e5e7eb; padding-bottom: 8px; }
+
+    .health-gov-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 8px; }
+    .health-gov-item {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 10px 14px; background: #f9fafb; border-radius: 8px; border: 1px solid #e5e7eb;
+    }
+    .gov-label { font-size: 13px; font-family: monospace; color: #374151; }
+
+    .health-pending-list { list-style: none; padding: 0; margin: 0; }
+    .health-pending-list li {
+      padding: 10px 14px; margin-bottom: 6px;
+      background: #fffbeb; border: 1px solid #fef08a; border-radius: 8px;
+      font-size: 13px; color: #713f12;
+    }
+    .health-pending-list li::before { content: '⚠ '; }
+
+    .health-comp-table { border: 1px solid #e5e7eb; border-radius: 12px; overflow: hidden; }
+    .health-comp-head, .health-comp-row {
+      display: grid; grid-template-columns: 160px 1fr 1fr 1fr;
+      gap: 8px; padding: 10px 16px;
+    }
+    .health-comp-head { background: #f9fafb; font-size: 12px; font-weight: 600; color: #6b7280; }
+    .health-comp-row { border-top: 1px solid #f3f4f6; font-size: 13px; }
+    .health-comp-row:hover { background: #f9fafb; }
+    .health-comp-row small { font-size: 10px; color: #9ca3af; margin-left: 4px; }
+    .comp-name { font-weight: 600; color: #111827; }
+  </style>
+</head>
+<body>
+<div class="layout">
+  <aside class="sidebar"><div id="sidebar-inner"></div></aside>
+  <div class="sidebar-overlay" id="sidebar-overlay"></div>
+  <main class="main-content">
+    <button class="sidebar-toggle" id="sidebar-toggle">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/>
+      </svg>
+    </button>
+
+    <div class="page-header">
+      <h1 class="page-title">System Status</h1>
+      <p class="page-desc">Registry 전체 상태 요약 — token count, component status, governance, pending work</p>
+    </div>
+
+    <div id="app"><div style="padding:40px;color:#9ca3af;text-align:center">Registry 로드 중...</div></div>
+  </main>
+</div>
+
+<script src="../assets/js/registry-loader.js"></script>
+<script src="../assets/js/registry-health.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', async () => {
+    const app = document.getElementById('app');
+    await renderRegistryHealth(app);
+  });
+</script>
+<script src="../assets/js/main.js"></script>
+</body>
+</html>

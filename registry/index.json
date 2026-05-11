@@ -1,0 +1,53 @@
+{
+  "_meta": {
+    "version": "0.3.0",
+    "phase": "mvp3",
+    "updatedAt": "2026-05-11",
+    "description": "SW Design System Registry — 모든 토큰·컴포넌트·Figma 매핑의 기준 인덱스",
+    "consumers": ["HTML Portal", "Claude AI", "Figma Plugin (planned)", "Source Guard (planned)"],
+    "tokenSourceCss": "registry/tokens/sw-v2.4.tokens.css"
+  },
+  "tokens": {
+    "foundation": {
+      "colors":     "registry/tokens/foundation.colors.json",
+      "spacing":    "registry/tokens/foundation.spacing.json",
+      "radius":     "registry/tokens/foundation.radius.json",
+      "typography": "registry/tokens/foundation.typography.json",
+      "border":     "registry/tokens/foundation.border.json"
+    },
+    "semantic": {
+      "colors":  "registry/tokens/semantic.colors.json",
+      "spacing": "registry/tokens/semantic.spacing.json",
+      "sizing":  "registry/tokens/semantic.sizing.json",
+      "radius":  "registry/tokens/semantic.radius.json",
+      "border":  "registry/tokens/semantic.border.json"
+    },
+    "component": "registry/tokens/component.tokens.json"
+  },
+  "componentIndex": "registry/components/index.json",
+  "components": {
+    "button":     "registry/components/button.json",
+    "chip":       "registry/components/chip.json",
+    "dropdown":   "registry/components/dropdown.json",
+    "input":      "registry/components/input.json",
+    "checkbox":   "registry/components/checkbox.json",
+    "radio":      "registry/components/radio.json",
+    "toggle":     "registry/components/toggle.json",
+    "pagination": "registry/components/pagination.json",
+    "nav":        "registry/components/nav.json",
+    "table":      "registry/components/table.json",
+    "select":     "registry/components/select.json"
+  },
+  "figma": "registry/figma/figma-map.json",
+  "governance": {
+    "versions":        "registry/governance/versions.json",
+    "auditRules":      "registry/governance/audit-rules.json",
+    "tokenExceptions": "registry/governance/token-exceptions.json",
+    "deprecated":      "registry/governance/deprecated.json",
+    "migration":       "registry/governance/migration.json"
+  },
+  "ai": {
+    "snippets":       "registry/ai/snippets.json",
+    "reviewPrompts":  "registry/ai/review-prompts.json"
+  }
+}

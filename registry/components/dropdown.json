@@ -1,0 +1,27 @@
+{
+  "_meta": {
+    "id": "dropdown",
+    "name": "Dropdown",
+    "category": "Core",
+    "updatedAt": "2026-05-11",
+    "tokenStatus": "stable",
+    "codeStatus": "not-started",
+    "darkModeStatus": "pending",
+    "description": "Select/dropdown trigger and option list component."
+  },
+  "variants": {
+    "default": {
+      "tokenStatus": "stable",
+      "codeStatus": "not-started",
+      "darkModeStatus": "pending",
+      "tokens": [
+        "--dropdown-trigger-default-bg", "--dropdown-trigger-hover-bg",
+        "--dropdown-trigger-open-bg", "--dropdown-trigger-disabled-bg",
+        "--dropdown-trigger-default-border", "--dropdown-trigger-hover-border",
+        "--dropdown-trigger-open-border", "--dropdown-trigger-disabled-border",
+        "--dropdown-trigger-default-text", "--dropdown-trigger-disabled-text",
+        "--dropdown-list-bg", "--dropdown-option-hover-bg", "--dropdown-option-selected-bg"
+      ]
+    }
+  }
+}

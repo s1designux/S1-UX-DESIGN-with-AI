@@ -2,7 +2,7 @@
 
 > 이 문서는 Claude가 디자인 시스템을 **수집, 정리, 구조화, 검증**하기 위한 기준입니다.
 > 현재 목표는 UI 구현이 아니라 **디자인 시스템을 구축하는 것**입니다.
-> 마지막 업데이트: 2026-04-30 (토큰 파일 전수 검수 후 반영)
+> 마지막 업데이트: 2026-05-11 (MVP3.2 Button variant 정합, blue-line token 추가, ghost deprecated)
 
 ---
 
@@ -19,6 +19,9 @@
 |------|----------|------|------|
 | 2026-04-29 | 초기 하네스 구성 | 전체 | revfactory/harness 기반 신규 구축 |
 | 2026-04-30 | 토큰 파일 전수 검수 후 CLAUDE.md 동기화 | Foundation·Semantic·Component | tokens.css·MD 파일과 불일치 항목 수정 |
+| 2026-05-11 | MVP3.2 Button variant 정합 | tokens.css·component.tokens.json·button.css·button-harness.html | blue-line 토큰 추가, ghost deprecated, HTML/CSS code view 추가 |
+| 2026-05-11 | MVP3.3 Portal IA 재편 | assets/js/main.js·pages/registry-health.html·pages/button-harness.html | System 그룹 분리, Button 탭 구조 추가 |
+| 2026-05-11 | MVP3.3 Button Components 통합 | pages/components.html·registry/components/button.json·assets/js/main.js | Button Harness 메뉴 제거, ACTION 컬럼 추가, registry 사이즈 정합 |
 
 ---
 
@@ -31,9 +34,10 @@
 * ✅ Semantic Token — 8개 카테고리 Light/Dark 값 전체 정의 완료 (`tokens/semantic.md`)
 * ✅ Component Token — 9개 그룹 추출 및 Semantic 참조 구조 정의 완료 (`tokens/component-tokens-extracted.md`)
   > ⚠️ Chip: MD는 line/solid 2타입 분리 정의, tokens.css는 단일 구조로 통합 — 불일치 미결
-* ✅ Button variants — primary / secondary / ghost 토큰 완료 (Danger 삭제 확정)
-* ⬜ Button blue-line variant — Figma 설계 확정, CSS 토큰 미추출 (pending)
+* ✅ Button variants — primary / secondary / blue-line 토큰 완료 (Danger 삭제, ghost deprecated 확정)
+* ✅ Button blue-line variant — tokens.css + component.tokens.json 추가 완료 (2026-05-11)
 * ✅ 가이드 HTML — foundation / semantic / components / guide-md / md-review 페이지 완료
+* ✅ MVP3.3 Portal IA 재편 — System 그룹 분리, Button 페이지 6탭 구조 전환 완료 (2026-05-11)
 
 ## 미결 사항 (다음 우선순위)
 
@@ -42,7 +46,7 @@
    - --color-text-disabled dark 값: 현재 #35363F → #55575F 조정 검토 중
    - --button-primary-disabled-bg dark: 현재 var(--color-border-default) = rgba(255,255,255,0.07)
      → var(--color-bg-muted) 참조 수정 검토 중
-   - ghost focus ring 미정의: --button-ghost-focus-ring 추가 필요
+   - blue-line variant dark mode 시각 검증 미완료 (darkModeStatus: pending)
    - toggle tokens 불일치: MD는 var(--color-text-placeholder), CSS는 var(--color-border-default)
 
 2. Chip 토큰 구조 정합
@@ -50,15 +54,17 @@
    - tokens.css: 단일 구조(--chip-default-*, --chip-selected-* 등) 통합
    - 어느 구조로 확정할지 결정 필요
 
-3. Button blue-line 토큰 추출
-   - Figma 설계 확정 상태, CSS 변수 미정의
-
-4. Semantic Token Figma 반영 (Figma 파일 직접 수정 필요)
+3. Semantic Token Figma 반영 (Figma 파일 직접 수정 필요)
    - 오타 수정: color/status-card/text/*--defualt → --default (3건)
    - surface/status/* → Domain Token 이동 여부 확정
 
-5. Pattern 페이지 설계 (search-table, tree-detail)
-6. Legacy 가이드 작성
+4. Dark border 4 토큰 확정
+   - --color-border-subtle/default/strong/emphasis dark 값 candidate 상태
+   - resolved HEX 또는 foundation dark scale 참조 확정 필요 (Human decision)
+
+5. 다음 Core Component: Checkbox 또는 Input implementation
+6. Pattern 페이지 설계 (search-table, tree-detail)
+7. Legacy 가이드 작성
 ```
 
 ---
@@ -312,9 +318,9 @@ Foundation을 직접 참조하면 테마 전환 시 올바른 값을 얻을 수 
 * 공통 UI
 * 버튼, 인풋, 셀렉트, 팝업, 바텀시트 등
 
-**CSS 토큰 추출 완료 variants**: `primary` / `secondary` / `ghost`
-**Figma 설계 확정, 토큰 미추출**: `blue-line`
-> Danger variant는 사용하지 않음 — 삭제 확정 (2026-04-29)
+**CSS 토큰 추출 완료 variants**: `primary` / `secondary` / `blue-line`
+> `ghost`: tokens.css에 legacy 보존. CSS 구현 없음 (deprecated 확정 2026-05-11)
+> `danger`: 삭제 확정 (2026-04-29). 공식 V2.4 token 없음. 재추가 금지.
 
 ### 2. Domain Component
 
@@ -403,6 +409,45 @@ loading
 | `data/site-map.json` | 페이지 메타데이터 |
 
 > 새 페이지 추가 시 `main.js`의 `SITE_NAV` 배열과 `site-map.json` 모두 업데이트 필요.
+
+## MVP3.3 Portal IA 규칙 (2026-05-11 확정)
+
+### SITE_NAV 그룹 구조
+
+SITE_NAV는 사용자 대면 그룹과 System 운영 그룹으로 분리한다.
+
+**사용자 대면 그룹** (디자이너·개발자 탐색용):
+- `개요`: Overview, 토큰 설치 프롬프트
+- `Foundation`: Foundation Tokens, Semantic Tokens
+- `Design System`: Components, Button, Icons, Patterns, Policy, Legacy Guide
+- `AI 워크플로우`: AI Snippets, Guide MD, MD 리뷰
+
+**System 그룹** (운영·검증용, 사이드바 하단):
+- System Status (구: Registry Health)
+- Foundation Registry, Semantic Registry, Component Tokens, Component Registry
+
+### 규칙
+
+1. **System 그룹 격리** — 레지스트리 뷰어·거버넌스·상태 대시보드는 System 그룹에만 배치한다. 사용자 대면 그룹에 혼재 금지.
+2. **Button 위치** — Button 컴포넌트 페이지는 Design System 그룹에 위치한다. Registry/System에 두지 않는다.
+3. **리네임 규칙** — "Registry Health"는 항상 "System Status"로 표시한다. 코드(id, 파일명)는 유지, 텍스트만 변경.
+4. **컴포넌트 상세 페이지 탭 구조** — 컴포넌트 harness 페이지는 Preview / Usage / Code / Figma / Review / Token Details 탭을 기본 구조로 사용한다.
+
+## MVP3.3 Button Components Integration 규칙 (2026-05-11 확정)
+
+Button 페이지 편집 시:
+
+1. **단일 진입점** — Components > Button (`pages/components.html`)이 Button의 유일한 사용자-facing 진입점이다.
+2. **기존 문서 우선** — 기존 `components.html` + 기존 컴포넌트 가이드 내용이 우선 기준이다. registry와 충돌하면 기존 문서 기준으로 registry를 수정한다.
+3. **Button Harness 메뉴 제거** — `pages/button-harness.html`은 별도 메인 메뉴로 노출하지 않는다.
+4. **Registry/System 메뉴** — Component Registry, Component Tokens는 별도 사용자-facing 메뉴로 노출하지 않는다.
+5. **ACTION 컬럼** — Button matrix에서 DEFAULT 앞에 ACTION 컬럼을 배치한다.
+6. **ACTION = 인터랙션 전용** — ACTION 셀만 실제 클릭/disabled/loading 테스트가 가능하다.
+7. **DEFAULT = 정적 프리뷰** — DEFAULT 셀 버튼에는 `.is-preview`를 적용한다 (pointer-events: none).
+8. **공식 variants** — primary / secondary / blue-line만 공식 노출. ghost는 노출 금지.
+9. **Size 명칭** — PC: medium(h44) / xsmall(h34) / xxsmall(h28), Mobile: mobile(h48).
+10. **Class naming** — `s1-btn` 기반 (s1-btn-lg=medium, 무수식어=xsmall, s1-btn-sm=xxsmall, s1-btn-mobile=mobile).
+11. **변경 기록** — `reports/mvp3-3-button-components-integration.md`에 기록한다.
 
 ---
 
@@ -680,3 +725,106 @@ pages/
 
 👉 디자인 시스템은 "컴포넌트"가 아니라
 👉 **토큰 + 구조 + 규칙의 시스템이다**
+
+---
+
+# 🗂️ MVP0 Registry 운영 기준 (추가: 2026-05-11)
+
+## Registry 위치와 역할
+
+```
+registry/index.json           ← 모든 Registry 파일의 진입점
+registry/tokens/              ← 토큰 기준 데이터 (JSON)
+registry/components/          ← Core Component 사양 (JSON)
+registry/figma/               ← Figma 노드 매핑
+registry/governance/          ← 버전·검증규칙·deprecated·마이그레이션
+registry/ai/                  ← AI 스니펫·리뷰 프롬프트
+reports/                      ← 검수 결과물 (MD)
+```
+
+## Claude가 registry를 사용하는 방법
+
+- 토큰 이름·값을 확인할 때: `registry/tokens/*.json` 우선 참조
+- 컴포넌트 사양을 확인할 때: `registry/components/*.json` 참조
+- 새 토큰 생성 전: `registry/governance/audit-rules.json` 검증 규칙 확인
+- Deprecated 항목: `registry/governance/deprecated.json` 확인 후 재추가 금지
+
+## 상태값 (status / darkStatus)
+
+| 값 | 의미 |
+|----|------|
+| `stable` | 확정 완료, 그대로 사용 |
+| `candidate` | 미확정 — md-review.html 등록 후 사용자 승인 필요 |
+| `planned` | 작성 예정 |
+| `deprecated` | 삭제 확정, 사용 금지 |
+
+## 기존 MD 파일과의 관계
+
+`tokens/*.md` 파일은 인간 가독 문서로 유지된다.
+**기준 데이터는 registry JSON이며, MD는 설명 문서다.**
+충돌 시 registry JSON이 우선한다.
+
+---
+
+# 🖥️ MVP2 Portal Registry Rendering 규칙 (추가: 2026-05-11)
+
+포털 페이지 편집 시 반드시 준수한다.
+
+1. **registry 우선** — 하드코딩 토큰 테이블보다 registry 기반 렌더링을 우선한다.
+2. **index 먼저** — `registry/index.json`을 먼저 읽고, 그 안의 경로로 각 JSON을 로드한다.
+3. **HTML에 값 중복 금지** — token 값을 HTML에 다시 하드코딩하지 않는다.
+4. **legacy 보존** — 교체가 검증될 때까지 기존 하드코딩 콘텐츠를 삭제하지 않는다.
+5. **Vanilla JS** — 명시적 승인 없이 외부 프레임워크를 도입하지 않는다.
+6. **에러 표시** — registry JSON 로드 실패 시 화면에 명확한 오류 메시지를 표시한다.
+7. **호환성 유지** — Portal 렌더링은 향후 Figma Plugin, Source Guard 워크플로우와 호환 가능하게 유지한다.
+
+## 신규 JS 모듈 역할
+
+| 파일 | 역할 |
+|------|------|
+| `assets/js/registry-loader.js` | `loadJson`, `loadRegistryIndex`, `loadRegistryResource`, `loadAllComponents`, `renderError` 제공 |
+| `assets/js/token-renderer.js` | `renderFoundationColors`, `renderSemanticColors`, `renderComponentTokens` 제공 |
+| `assets/js/component-renderer.js` | `renderComponentList`, `renderComponentDetail`, `renderComponentStatusBadge` 제공 |
+| `assets/js/registry-health.js` | `renderRegistryHealth` 제공 |
+
+## fetch 경로 규칙
+
+- pages/*.html에서 registry 로드: `REGISTRY_BASE = '../'` (자동 감지)
+- index.html(root)에서: `REGISTRY_BASE = './'` (자동 감지)
+- 경로 예: `../registry/tokens/foundation.colors.json`
+
+---
+
+# 🔲 MVP3 / MVP3.1 Core Component Harness 규칙 (추가: 2026-05-11)
+
+## Core Component Harness 편집 시
+
+1. `registry/components/index.json`을 먼저 읽는다.
+2. registry 데이터가 있으면 component tab 목록을 하드코딩하지 않는다.
+3. Theme과 Platform 컨트롤은 registry harness config와 일관되게 유지한다.
+4. Button이 첫 번째 상세 구현 대상이다.
+5. Button 외 컴포넌트는 해당 MVP 구현 단계 전까지 skeleton으로 유지한다.
+6. 없는 component token을 임의로 생성하지 않는다.
+7. Figma componentSetKey를 모르면 빈 문자열로 둔다.
+8. Harness 변경 사항은 `reports/mvp3-core-harness-review.md`에 기록한다.
+
+## Button 편집 시
+
+1. `registry/tokens/component.tokens.json`을 먼저 읽는다.
+2. 공식 Button component token만 사용한다.
+3. raw HEX를 사용하지 않는다.
+4. Foundation color primitive를 직접 참조하지 않는다.
+5. 없는 Button token을 임의로 생성하지 않는다.
+6. 공식 component token이 없는 variant는 pending으로 표시한다.
+7. Light/Dark 지원은 semantic token remapping으로 유지한다.
+8. Button 변경 후 button-harness를 업데이트한다.
+9. 검토 결과는 `reports/mvp3-button-review.md`에 기록한다.
+
+## Dark Border Token 편집 시
+
+1. opacity-composed dark border 값을 stable로 표시하지 않는다.
+2. foundation dark scale 참조 또는 resolved HEX 값을 사용한다.
+3. Figma opacity composition은 source metadata로만 보존한다.
+4. resolved 값이 승인되기 전까지 candidate 상태를 유지한다.
+5. Product UI 컴포넌트에서 raw rgba border 값을 직접 사용하지 않는다.
+6. unresolved opacity 기반 border 값은 report에 기록한다.

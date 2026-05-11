@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+  body { font-family: -apple-system, sans-serif; margin: 0; padding: 16px; background: #fff; }
+  h3   { margin: 0 0 8px; font-size: 13px; color: #111; }
+  p    { margin: 0 0 12px; font-size: 11px; color: #555; line-height: 1.5; }
+  button {
+    width: 100%; padding: 10px; border: none; border-radius: 6px;
+    background: #1D6CEB; color: #fff; font-size: 13px; font-weight: 600;
+    cursor: pointer;
+  }
+  button:disabled { background: #C4C4C4; cursor: not-allowed; }
+  #status { margin-top: 12px; font-size: 11px; color: #333; min-height: 40px; white-space: pre-line; }
+  .done  { color: #009E5E; font-weight: 600; }
+  .error { color: #E50533; }
+</style>
+</head>
+<body>
+  <h3>SW Design System Variables</h3>
+  <p>Primitive (211개) · Semantic (43개, Light/Dark)<br>를 Figma Variables로 생성합니다.</p>
+  <button id="btn" onclick="run()">Variables 생성 시작</button>
+  <div id="status">버튼을 눌러 시작하세요.</div>
+
+  <script>
+    function run() {
+      document.getElementById('btn').disabled = true;
+      document.getElementById('status').textContent = '생성 중...';
+      parent.postMessage({ pluginMessage: { type: 'CREATE' } }, '*');
+    }
+
+    window.onmessage = (e) => {
+      const msg = e.data.pluginMessage;
+      if (!msg) return;
+      const el = document.getElementById('status');
+      if (msg.type === 'DONE') {
+        el.className = 'done';
+        el.textContent = msg.text;
+      } else if (msg.type === 'ERROR') {
+        el.className = 'error';
+        el.textContent = '❌ ' + msg.text;
+        document.getElementById('btn').disabled = false;
+      } else if (msg.type === 'LOG') {
+        el.textContent = msg.text;
+      }
+    };
+  </script>
+</body>
+</html>

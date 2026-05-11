@@ -20,6 +20,12 @@ const SITE_NAV = [
   { type: 'item', id: 'ai-snippets', href: 'ai-snippets.html', rootHref: 'pages/ai-snippets.html', icon: '🤖', text: 'AI Snippets', status: 'ready' },
   { type: 'item', id: 'guide-md', href: 'guide-md.html', rootHref: 'pages/guide-md.html', icon: '📋', text: 'Guide MD', status: 'ready' },
   { type: 'item', id: 'md-review', href: 'md-review.html', rootHref: 'pages/md-review.html', icon: '🔍', text: 'MD 리뷰', status: 'ready' },
+  { type: 'label', text: 'System' },
+  { type: 'item', id: 'registry-health', href: 'registry-health.html', rootHref: 'pages/registry-health.html', icon: '📊', text: 'System Status', status: 'new' },
+  { type: 'item', id: 'foundation-tokens', href: 'foundation-tokens.html', rootHref: 'pages/foundation-tokens.html', icon: '🏗', text: 'Foundation Registry', status: 'new' },
+  { type: 'item', id: 'semantic-tokens', href: 'semantic-tokens.html', rootHref: 'pages/semantic-tokens.html', icon: '🌗', text: 'Semantic Registry', status: 'new' },
+  { type: 'item', id: 'component-tokens', href: 'component-tokens.html', rootHref: 'pages/component-tokens.html', icon: '🧩', text: 'Component Tokens', status: 'new' },
+  { type: 'item', id: 'component-registry', href: 'component-registry.html', rootHref: 'pages/component-registry.html', icon: '📋', text: 'Component Registry', status: 'new' },
 ];
 
 /* ── Sidebar Render ── */

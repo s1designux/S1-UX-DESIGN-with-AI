@@ -1,0 +1,21 @@
+{
+  "meta": {
+    "name": "SW Foundation Radius",
+    "version": "2.4",
+    "status": "stable",
+    "updatedAt": "2026-05-11",
+    "source": "registry/tokens/sw-v2.4.tokens.css"
+  },
+  "radius": {
+    "0":    { "value": "0px",    "cssVar": "--radius-0",    "status": "stable" },
+    "2":    { "value": "2px",    "cssVar": "--radius-2",    "status": "stable" },
+    "4":    { "value": "4px",    "cssVar": "--radius-4",    "status": "stable" },
+    "6":    { "value": "6px",    "cssVar": "--radius-6",    "status": "stable" },
+    "8":    { "value": "8px",    "cssVar": "--radius-8",    "status": "stable" },
+    "10":   { "value": "10px",   "cssVar": "--radius-10",   "status": "stable" },
+    "12":   { "value": "12px",   "cssVar": "--radius-12",   "status": "stable" },
+    "16":   { "value": "16px",   "cssVar": "--radius-16",   "status": "stable" },
+    "20":   { "value": "20px",   "cssVar": "--radius-20",   "status": "stable" },
+    "full": { "value": "9999px", "cssVar": "--radius-full", "status": "stable" }
+  }
+}

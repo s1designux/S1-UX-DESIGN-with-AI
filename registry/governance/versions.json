@@ -1,0 +1,19 @@
+{
+  "_meta": { "updatedAt": "2026-05-11" },
+  "history": [
+    {
+      "version": "0.1.0",
+      "phase": "MVP0",
+      "date": "2026-05-11",
+      "summary": "Registry 초기 구조 구축. foundation.colors / semantic.colors / component.tokens JSON 생성. Button 첫 Core Component 등록.",
+      "breaking": false
+    },
+    {
+      "version": "0.2.0",
+      "phase": "MVP1",
+      "date": "2026-05-11",
+      "summary": "Foundation 토큰 분리 (spacing, radius, typography, border). Semantic 토큰 분리 (spacing, sizing, radius, border). Semantic/Component colors 전면 업데이트 (V2.4 원본 기준). 9개 Core Component skeleton 추가 (chip, dropdown, input, checkbox, radio, toggle, pagination, nav, table). token-exceptions.json 신규. audit-rules.json 5개 규칙 추가. figma-map.json 10개 컴포넌트 확장. coolgrayDark 실제 값 반영.",
+      "breaking": false
+    }
+  ]
+}

@@ -1,0 +1,80 @@
+{
+  "_meta": {
+    "version": "0.2.0",
+    "updatedAt": "2026-05-11",
+    "figmaFileKey": "yE5UCFEbmXJBlYJWB24Lz2",
+    "figmaFileName": "SW-UX-GUIDE V2.4",
+    "note": "componentSetKey는 Figma Plugin 연동 전까지 빈 문자열로 유지"
+  },
+  "variableCollections": {
+    "foundation": { "figmaNodeId": "540:7663", "description": "Foundation Token Primitive 컬렉션" },
+    "semantic":   { "figmaNodeId": "",          "description": "Semantic Token 컬렉션 — 노드 미확인" }
+  },
+  "components": {
+    "button": {
+      "componentSetKey": "",
+      "figmaNodeId": "",
+      "variants": {
+        "primary":   { "figmaNodeId": "" },
+        "secondary": { "figmaNodeId": "" },
+        "blue-line": { "figmaNodeId": "", "note": "Figma design confirmed. CSS tokens extracted in tokens.css (2026-05-11)." },
+        "ghost":     { "figmaNodeId": "", "status": "deprecated", "note": "Not an official V2.4 variant. Replaced by blue-line." }
+      }
+    },
+    "chip": {
+      "componentSetKey": "",
+      "figmaNodeId": "",
+      "note": "line/solid 2타입 구조 미확정. Figma 원본 확인 필요."
+    },
+    "dropdown": {
+      "componentSetKey": "",
+      "figmaNodeId": ""
+    },
+    "input": {
+      "componentSetKey": "",
+      "figmaNodeId": ""
+    },
+    "checkbox": {
+      "componentSetKey": "",
+      "figmaNodeId": ""
+    },
+    "radio": {
+      "componentSetKey": "",
+      "figmaNodeId": ""
+    },
+    "toggle": {
+      "componentSetKey": "",
+      "figmaNodeId": "",
+      "note": "--toggle-off-bg 불일치 (MD vs CSS). Figma 원본 확인 필요."
+    },
+    "pagination": {
+      "componentSetKey": "",
+      "figmaNodeId": ""
+    },
+    "nav": {
+      "componentSetKey": "",
+      "figmaNodeId": ""
+    },
+    "table": {
+      "componentSetKey": "",
+      "figmaNodeId": ""
+    }
+  },
+  "iconSections": [
+    { "id": "security",               "figmaNodeId": "8:804" },
+    { "id": "video",                  "figmaNodeId": "8:2264" },
+    { "id": "product",                "figmaNodeId": "27:207" },
+    { "id": "security-pc",            "figmaNodeId": "35:1973" },
+    { "id": "security-network",       "figmaNodeId": "35:3491" },
+    { "id": "computer-file",          "figmaNodeId": "46:256" },
+    { "id": "building-management",    "figmaNodeId": "61:317" },
+    { "id": "transport-parking",      "figmaNodeId": "70:205" },
+    { "id": "business",               "figmaNodeId": "77:847" },
+    { "id": "people-communication-1", "figmaNodeId": "86:300" },
+    { "id": "people-communication-2", "figmaNodeId": "87:493" },
+    { "id": "safety",                 "figmaNodeId": "96:913" },
+    { "id": "hygiene",                "figmaNodeId": "96:1038" },
+    { "id": "weather",                "figmaNodeId": "97:67" },
+    { "id": "ui",                     "figmaNodeId": "97:377" }
+  ]
+}

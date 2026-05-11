@@ -1,0 +1,14 @@
+{
+  "meta": {
+    "name": "SW Semantic Border Width",
+    "version": "2.4",
+    "status": "stable",
+    "updatedAt": "2026-05-11",
+    "source": "registry/tokens/sw-v2.4.tokens.css",
+    "description": "Role-based semantic border-width tokens referencing Foundation primitives."
+  },
+  "tokens": [
+    { "cssVar": "--border-width-default", "value": "var(--border-width-1)", "status": "stable", "description": "Standard borders, inputs, cards" },
+    { "cssVar": "--border-width-strong",  "value": "var(--border-width-2)", "status": "stable", "description": "Focus rings, emphasis borders" }
+  ]
+}

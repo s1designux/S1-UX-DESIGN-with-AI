@@ -1,0 +1,27 @@
+{
+  "meta": {
+    "name": "SW Foundation Typography",
+    "version": "2.4",
+    "status": "stable",
+    "updatedAt": "2026-05-11",
+    "source": "registry/tokens/sw-v2.4.tokens.css"
+  },
+  "fontSize": {
+    "10": { "value": "10px", "cssVar": "--font-size-10", "status": "stable" },
+    "12": { "value": "12px", "cssVar": "--font-size-12", "status": "stable" },
+    "14": { "value": "14px", "cssVar": "--font-size-14", "status": "stable" },
+    "16": { "value": "16px", "cssVar": "--font-size-16", "status": "stable" },
+    "18": { "value": "18px", "cssVar": "--font-size-18", "status": "stable" },
+    "20": { "value": "20px", "cssVar": "--font-size-20", "status": "stable" },
+    "24": { "value": "24px", "cssVar": "--font-size-24", "status": "stable" },
+    "32": { "value": "32px", "cssVar": "--font-size-32", "status": "stable" }
+  },
+  "fontWeight": {
+    "regular": { "value": "400", "cssVar": "--font-weight-regular", "status": "stable" },
+    "medium":  { "value": "500", "cssVar": "--font-weight-medium",  "status": "stable" },
+    "bold":    { "value": "700", "cssVar": "--font-weight-bold",    "status": "stable" }
+  },
+  "lineHeight": {
+    "130": { "value": "1.3", "cssVar": "--line-height-130", "status": "stable" }
+  }
+}

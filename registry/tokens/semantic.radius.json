@@ -1,0 +1,17 @@
+{
+  "meta": {
+    "name": "SW Semantic Radius",
+    "version": "2.4",
+    "status": "stable",
+    "updatedAt": "2026-05-11",
+    "source": "registry/tokens/sw-v2.4.tokens.css",
+    "description": "Role-based semantic radius tokens referencing Foundation radius primitives."
+  },
+  "tokens": [
+    { "cssVar": "--radius-control-xs", "value": "var(--radius-2)",  "status": "stable", "description": "Form controls, small inputs" },
+    { "cssVar": "--radius-control-sm", "value": "var(--radius-4)",  "status": "stable", "description": "Form controls, standard inputs" },
+    { "cssVar": "--radius-button-md",  "value": "var(--radius-4)",  "status": "stable", "description": "Buttons (all sizes)" },
+    { "cssVar": "--radius-card-md",    "value": "var(--radius-10)", "status": "stable", "description": "Cards, panels" },
+    { "cssVar": "--radius-modal-md",   "value": "var(--radius-8)",  "status": "stable", "description": "Modals, dialogs" }
+  ]
+}

@@ -1,0 +1,32 @@
+{
+  "_meta": {
+    "id": "chip",
+    "name": "Chip",
+    "category": "Core",
+    "updatedAt": "2026-05-11",
+    "tokenStatus": "stable",
+    "codeStatus": "not-started",
+    "darkModeStatus": "pending",
+    "description": "Filter/selection chip component.",
+    "openIssues": [
+      "tokens/component-tokens-extracted.md defines line/solid as 2 separate types.",
+      "tokens.css uses unified structure (--chip-default-*, --chip-selected-*, etc.).",
+      "Final structure needs to be confirmed before implementation."
+    ]
+  },
+  "variants": {
+    "default": {
+      "tokenStatus": "stable",
+      "codeStatus": "not-started",
+      "darkModeStatus": "pending",
+      "tokens": [
+        "--chip-default-bg", "--chip-hover-bg", "--chip-selected-bg", "--chip-disabled-bg",
+        "--chip-default-border", "--chip-hover-border", "--chip-selected-border", "--chip-disabled-border",
+        "--chip-default-text", "--chip-selected-text", "--chip-disabled-text",
+        "--chip-default-icon", "--chip-selected-icon", "--chip-disabled-icon",
+        "--chip-default-close-icon", "--chip-hover-close-icon", "--chip-selected-close-icon",
+        "--chip-focus-ring"
+      ]
+    }
+  }
+}

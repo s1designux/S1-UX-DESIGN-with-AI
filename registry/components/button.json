@@ -1,0 +1,200 @@
+{
+  "_meta": {
+    "id": "button",
+    "name": "Button",
+    "category": "Core",
+    "updatedAt": "2026-05-11",
+    "version": "0.3.0",
+    "tokenStatus": "stable",
+    "codeStatus": "in-progress",
+    "darkModeStatus": "candidate",
+    "a11yStatus": "pending",
+    "figmaStatus": "existing",
+    "harnessStatus": "implemented",
+    "description": "Core interactive button component. Primary / Secondary / Blue-line variants with PC 3 sizes and Mobile 1 size.",
+    "notes": [
+      "MVP3 Button HTML harness created in pages/button-harness.html.",
+      "Button uses official V2.4 component tokens (registry/tokens/component.tokens.json).",
+      "Dark mode behavior is available through semantic token remapping, but requires visual validation.",
+      "Danger variant is not implemented — no official component tokens exist for danger.",
+      "blue-line variant: Figma design confirmed, CSS tokens extracted in tokens.css.",
+      "Dark mode disabled state under review: --button-primary-disabled-bg references --color-border-default (rgba). Candidate fix: reference --color-bg-muted.",
+      "ghost variant tokens exist in tokens.css but harness uses blue-line instead."
+    ]
+  },
+  "summary": {
+    "badge": "Core",
+    "variantCount": 3,
+    "pcSizeCount": 3,
+    "mobileSizeCount": 1
+  },
+  "platformSupport": {
+    "all": true,
+    "pc": true,
+    "mobile": true
+  },
+  "themeSupport": {
+    "light": true,
+    "dark": true
+  },
+  "variants": {
+    "list": ["primary", "secondary", "blue-line"],
+    "pcSize": ["medium", "xsmall", "xxsmall"],
+    "mobileSize": ["mobile"],
+    "state": ["default", "hover", "pressed", "disabled"],
+    "primary": {
+      "tokenStatus": "stable",
+      "codeStatus": "in-progress",
+      "darkModeStatus": "candidate",
+      "tokens": [
+        "--button-primary-default-bg",
+        "--button-primary-hover-bg",
+        "--button-primary-pressed-bg",
+        "--button-primary-disabled-bg",
+        "--button-primary-default-text",
+        "--button-primary-disabled-text",
+        "--button-primary-default-icon",
+        "--button-primary-focus-ring"
+      ]
+    },
+    "secondary": {
+      "tokenStatus": "stable",
+      "codeStatus": "in-progress",
+      "darkModeStatus": "candidate",
+      "tokens": [
+        "--button-secondary-default-bg",
+        "--button-secondary-hover-bg",
+        "--button-secondary-pressed-bg",
+        "--button-secondary-disabled-bg",
+        "--button-secondary-default-border",
+        "--button-secondary-hover-border",
+        "--button-secondary-disabled-border",
+        "--button-secondary-default-text",
+        "--button-secondary-disabled-text",
+        "--button-secondary-default-icon",
+        "--button-secondary-disabled-icon",
+        "--button-secondary-focus-ring"
+      ]
+    },
+    "blue-line": {
+      "tokenStatus": "stable",
+      "codeStatus": "in-progress",
+      "darkModeStatus": "pending",
+      "tokens": [
+        "--button-blue-line-default-bg",
+        "--button-blue-line-hover-bg",
+        "--button-blue-line-pressed-bg",
+        "--button-blue-line-disabled-bg",
+        "--button-blue-line-default-border",
+        "--button-blue-line-hover-border",
+        "--button-blue-line-disabled-border",
+        "--button-blue-line-default-text",
+        "--button-blue-line-disabled-text",
+        "--button-blue-line-focus-ring"
+      ]
+    }
+  },
+  "tokens": {
+    "background": [
+      "--button-primary-default-bg",
+      "--button-primary-hover-bg",
+      "--button-primary-pressed-bg",
+      "--button-primary-disabled-bg",
+      "--button-secondary-default-bg",
+      "--button-secondary-hover-bg",
+      "--button-secondary-pressed-bg",
+      "--button-secondary-disabled-bg",
+      "--button-blue-line-default-bg",
+      "--button-blue-line-hover-bg",
+      "--button-blue-line-pressed-bg",
+      "--button-blue-line-disabled-bg"
+    ],
+    "text": [
+      "--button-primary-default-text",
+      "--button-primary-disabled-text",
+      "--button-secondary-default-text",
+      "--button-secondary-disabled-text",
+      "--button-blue-line-default-text",
+      "--button-blue-line-disabled-text"
+    ],
+    "border": [
+      "--button-secondary-default-border",
+      "--button-secondary-hover-border",
+      "--button-secondary-disabled-border",
+      "--button-blue-line-default-border",
+      "--button-blue-line-hover-border",
+      "--button-blue-line-disabled-border"
+    ],
+    "icon": [
+      "--button-primary-default-icon",
+      "--button-secondary-default-icon",
+      "--button-secondary-disabled-icon"
+    ],
+    "focus": [
+      "--button-primary-focus-ring",
+      "--button-secondary-focus-ring",
+      "--button-blue-line-focus-ring"
+    ]
+  },
+  "sizing": {
+    "pc": [
+      { "id": "medium",   "label": "medium",   "height": "h44", "cssClass": "s1-btn-lg",     "token": "--sizing-button-height-md" },
+      { "id": "xsmall",   "label": "xsmall",   "height": "h34", "cssClass": "",              "token": "--sizing-button-height-xs", "note": "기본 사이즈 — 크기 수식어 없음" },
+      { "id": "xxsmall",  "label": "xxsmall",  "height": "h28", "cssClass": "s1-btn-sm",     "token": "--sizing-button-height-xxs", "note": "신규 토큰 — 2026-05-11 tokens.css에 추가됨" }
+    ],
+    "mobile": [
+      { "id": "mobile",   "label": "mobile",   "height": "h48", "cssClass": "s1-btn-mobile", "token": "--sizing-button-height-lg" }
+    ],
+    "minWidth": "--sizing-button-min-width",
+    "radius": "--radius-button-md"
+  },
+  "harness": {
+    "columns": ["action", "default", "hover", "pressed", "disabled"],
+    "interactiveColumn": "action",
+    "staticPreviewColumns": ["default", "hover", "pressed", "disabled"],
+    "pcColumns": ["action", "default", "hover", "disabled"],
+    "mobileColumns": ["action", "default", "pressed", "disabled"],
+    "note": "ACTION column = real interactive test. DEFAULT/HOVER/PRESSED/DISABLED = static preview (is-preview class)."
+  },
+  "pendingVariants": [
+    {
+      "name": "danger",
+      "reason": "Official V2.4 button danger component tokens are not defined. Danger variant deleted (confirmed 2026-04-29). Do not re-add until official tokens are established.",
+      "status": "deprecated"
+    },
+    {
+      "name": "ghost",
+      "reason": "ghost tokens exist in tokens.css but the official harness uses blue-line instead. Tokens are preserved for backwards compatibility but not actively shown in the harness.",
+      "status": "legacy"
+    }
+  ],
+  "figma": {
+    "componentSetKey": "",
+    "componentName": "Button",
+    "propertyMap": {
+      "variant": "Variant",
+      "size": "Size",
+      "state": "State"
+    },
+    "valueMap": {
+      "primary": "Primary",
+      "secondary": "Secondary",
+      "blue-line": "Blue Line",
+      "medium": "Large",
+      "xsmall": "Medium",
+      "xxsmall": "XSmall",
+      "mobile": "Large",
+      "default": "Default",
+      "hover": "Hover",
+      "pressed": "Pressed",
+      "disabled": "Disabled",
+      "_note": "Figma size names differ from components.html labels. medium(h44)=Figma Large, xsmall(h34)=Figma Medium, xxsmall(h28)=Figma XSmall."
+    }
+  },
+  "governance": {
+    "owner": "Design System Team",
+    "deprecated": false,
+    "replacement": null,
+    "breakingChange": false
+  }
+}

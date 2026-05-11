@@ -1,0 +1,170 @@
+{
+  "meta": {
+    "name": "SW Component Tokens",
+    "version": "2.4",
+    "status": "stable",
+    "updatedAt": "2026-05-11",
+    "source": "registry/tokens/sw-v2.4.tokens.css",
+    "description": "All component tokens. Colors reference Semantic layer only (no direct Foundation color refs).",
+    "rule": "All color values must reference Semantic tokens via var(). Sizing/spacing may reference Foundation directly."
+  },
+  "tokens": {
+    "button": {
+      "primary": [
+        { "cssVar": "--button-primary-default-bg",    "value": "var(--color-action-primary-default)", "status": "stable", "usedBy": ["Button"] },
+        { "cssVar": "--button-primary-hover-bg",      "value": "var(--color-action-primary-hover)",   "status": "stable", "usedBy": ["Button"] },
+        { "cssVar": "--button-primary-pressed-bg",    "value": "var(--color-action-primary-pressed)", "status": "stable", "usedBy": ["Button"] },
+        { "cssVar": "--button-primary-disabled-bg",   "value": "var(--color-border-default)",         "status": "stable", "usedBy": ["Button"] },
+        { "cssVar": "--button-primary-default-text",  "value": "var(--color-action-primary-text)",    "status": "stable", "usedBy": ["Button"] },
+        { "cssVar": "--button-primary-disabled-text", "value": "var(--color-text-disabled)",          "status": "stable", "usedBy": ["Button"] },
+        { "cssVar": "--button-primary-default-icon",  "value": "var(--color-action-primary-text)",    "status": "stable", "usedBy": ["Button"] },
+        { "cssVar": "--button-primary-focus-ring",    "value": "var(--color-border-focus)",           "status": "stable", "usedBy": ["Button"] }
+      ],
+      "secondary": [
+        { "cssVar": "--button-secondary-default-bg",      "value": "var(--color-surface-default)",  "status": "stable", "usedBy": ["Button"] },
+        { "cssVar": "--button-secondary-hover-bg",        "value": "var(--color-bg-subtle)",        "status": "stable", "usedBy": ["Button"] },
+        { "cssVar": "--button-secondary-pressed-bg",      "value": "var(--color-bg-muted)",         "status": "stable", "usedBy": ["Button"] },
+        { "cssVar": "--button-secondary-disabled-bg",     "value": "var(--color-bg-subtle)",        "status": "stable", "usedBy": ["Button"] },
+        { "cssVar": "--button-secondary-default-border",  "value": "var(--color-border-default)",   "status": "stable", "usedBy": ["Button"] },
+        { "cssVar": "--button-secondary-hover-border",    "value": "var(--color-border-strong)",    "status": "stable", "usedBy": ["Button"] },
+        { "cssVar": "--button-secondary-disabled-border", "value": "var(--color-border-subtle)",    "status": "stable", "usedBy": ["Button"] },
+        { "cssVar": "--button-secondary-default-text",    "value": "var(--color-text-secondary)",   "status": "stable", "usedBy": ["Button"] },
+        { "cssVar": "--button-secondary-disabled-text",   "value": "var(--color-text-disabled)",    "status": "stable", "usedBy": ["Button"] },
+        { "cssVar": "--button-secondary-default-icon",    "value": "var(--color-icon-default)",     "status": "stable", "usedBy": ["Button"] },
+        { "cssVar": "--button-secondary-disabled-icon",   "value": "var(--color-icon-muted)",       "status": "stable", "usedBy": ["Button"] },
+        { "cssVar": "--button-secondary-focus-ring",      "value": "var(--color-border-focus)",     "status": "stable", "usedBy": ["Button"] }
+      ],
+      "blue-line": [
+        { "cssVar": "--button-blue-line-default-bg",      "value": "var(--color-surface-default)",         "status": "stable", "usedBy": ["Button"] },
+        { "cssVar": "--button-blue-line-hover-bg",        "value": "var(--color-action-primary-subtle)",   "status": "stable", "usedBy": ["Button"] },
+        { "cssVar": "--button-blue-line-pressed-bg",      "value": "var(--color-action-primary-subtle)",   "status": "stable", "usedBy": ["Button"] },
+        { "cssVar": "--button-blue-line-disabled-bg",     "value": "var(--color-bg-subtle)",               "status": "stable", "usedBy": ["Button"] },
+        { "cssVar": "--button-blue-line-default-border",  "value": "var(--color-action-primary-default)",  "status": "stable", "usedBy": ["Button"] },
+        { "cssVar": "--button-blue-line-hover-border",    "value": "var(--color-action-primary-hover)",    "status": "stable", "usedBy": ["Button"] },
+        { "cssVar": "--button-blue-line-disabled-border", "value": "var(--color-border-subtle)",           "status": "stable", "usedBy": ["Button"] },
+        { "cssVar": "--button-blue-line-default-text",    "value": "var(--color-action-primary-default)",  "status": "stable", "usedBy": ["Button"] },
+        { "cssVar": "--button-blue-line-disabled-text",   "value": "var(--color-text-disabled)",           "status": "stable", "usedBy": ["Button"] },
+        { "cssVar": "--button-blue-line-focus-ring",      "value": "var(--color-border-focus)",            "status": "stable", "usedBy": ["Button"] }
+      ],
+      "ghost": [
+        { "cssVar": "--button-ghost-hover-bg",      "value": "var(--color-bg-subtle)",      "status": "deprecated", "note": "legacy — use blue-line instead", "usedBy": [] },
+        { "cssVar": "--button-ghost-pressed-bg",    "value": "var(--color-bg-muted)",       "status": "deprecated", "note": "legacy — use blue-line instead", "usedBy": [] },
+        { "cssVar": "--button-ghost-default-text",  "value": "var(--color-text-secondary)", "status": "deprecated", "note": "legacy — use blue-line instead", "usedBy": [] },
+        { "cssVar": "--button-ghost-disabled-text", "value": "var(--color-text-disabled)",  "status": "deprecated", "note": "legacy — use blue-line instead", "usedBy": [] },
+        { "cssVar": "--button-ghost-default-icon",  "value": "var(--color-icon-default)",   "status": "deprecated", "note": "legacy — use blue-line instead", "usedBy": [] },
+        { "cssVar": "--button-ghost-disabled-icon", "value": "var(--color-icon-muted)",     "status": "deprecated", "note": "legacy — use blue-line instead", "usedBy": [] }
+      ]
+    },
+    "chip": [
+      { "cssVar": "--chip-default-bg",      "value": "var(--color-bg-subtle)",              "status": "stable", "usedBy": ["Chip"] },
+      { "cssVar": "--chip-hover-bg",        "value": "var(--color-bg-muted)",               "status": "stable", "usedBy": ["Chip"] },
+      { "cssVar": "--chip-selected-bg",     "value": "var(--color-action-primary-subtle)",  "status": "stable", "usedBy": ["Chip"] },
+      { "cssVar": "--chip-disabled-bg",     "value": "var(--color-bg-subtle)",              "status": "stable", "usedBy": ["Chip"] },
+      { "cssVar": "--chip-default-border",  "value": "var(--color-border-default)",         "status": "stable", "usedBy": ["Chip"] },
+      { "cssVar": "--chip-hover-border",    "value": "var(--color-border-strong)",          "status": "stable", "usedBy": ["Chip"] },
+      { "cssVar": "--chip-selected-border", "value": "var(--color-action-primary-default)", "status": "stable", "usedBy": ["Chip"] },
+      { "cssVar": "--chip-disabled-border", "value": "var(--color-border-subtle)",          "status": "stable", "usedBy": ["Chip"] },
+      { "cssVar": "--chip-default-text",    "value": "var(--color-text-secondary)",         "status": "stable", "usedBy": ["Chip"] },
+      { "cssVar": "--chip-selected-text",   "value": "var(--color-action-primary-default)", "status": "stable", "usedBy": ["Chip"] },
+      { "cssVar": "--chip-disabled-text",   "value": "var(--color-text-disabled)",          "status": "stable", "usedBy": ["Chip"] },
+      { "cssVar": "--chip-default-icon",    "value": "var(--color-icon-default)",           "status": "stable", "usedBy": ["Chip"] },
+      { "cssVar": "--chip-selected-icon",   "value": "var(--color-action-primary-default)", "status": "stable", "usedBy": ["Chip"] },
+      { "cssVar": "--chip-disabled-icon",   "value": "var(--color-icon-muted)",             "status": "stable", "usedBy": ["Chip"] },
+      { "cssVar": "--chip-default-close-icon",  "value": "var(--color-icon-default)",           "status": "stable", "usedBy": ["Chip"] },
+      { "cssVar": "--chip-hover-close-icon",    "value": "var(--color-icon-emphasis)",           "status": "stable", "usedBy": ["Chip"] },
+      { "cssVar": "--chip-selected-close-icon", "value": "var(--color-action-primary-default)",  "status": "stable", "usedBy": ["Chip"] },
+      { "cssVar": "--chip-focus-ring",      "value": "var(--color-border-focus)",           "status": "stable", "usedBy": ["Chip"] }
+    ],
+    "dropdown": [
+      { "cssVar": "--dropdown-trigger-default-bg",      "value": "var(--color-surface-default)", "status": "stable", "usedBy": ["Dropdown"] },
+      { "cssVar": "--dropdown-trigger-hover-bg",        "value": "var(--color-bg-subtle)",       "status": "stable", "usedBy": ["Dropdown"] },
+      { "cssVar": "--dropdown-trigger-open-bg",         "value": "var(--color-bg-subtle)",       "status": "stable", "usedBy": ["Dropdown"] },
+      { "cssVar": "--dropdown-trigger-disabled-bg",     "value": "var(--color-bg-subtle)",       "status": "stable", "usedBy": ["Dropdown"] },
+      { "cssVar": "--dropdown-trigger-default-border",  "value": "var(--color-border-default)",  "status": "stable", "usedBy": ["Dropdown"] },
+      { "cssVar": "--dropdown-trigger-hover-border",    "value": "var(--color-border-strong)",   "status": "stable", "usedBy": ["Dropdown"] },
+      { "cssVar": "--dropdown-trigger-open-border",     "value": "var(--color-border-focus)",    "status": "stable", "usedBy": ["Dropdown"] },
+      { "cssVar": "--dropdown-trigger-disabled-border", "value": "var(--color-border-subtle)",   "status": "stable", "usedBy": ["Dropdown"] },
+      { "cssVar": "--dropdown-trigger-default-text",    "value": "var(--color-text-secondary)",  "status": "stable", "usedBy": ["Dropdown"] },
+      { "cssVar": "--dropdown-trigger-disabled-text",   "value": "var(--color-text-disabled)",   "status": "stable", "usedBy": ["Dropdown"] },
+      { "cssVar": "--dropdown-list-bg",            "value": "var(--color-surface-raised)",        "status": "stable", "usedBy": ["Dropdown"] },
+      { "cssVar": "--dropdown-option-hover-bg",    "value": "var(--color-bg-subtle)",             "status": "stable", "usedBy": ["Dropdown"] },
+      { "cssVar": "--dropdown-option-selected-bg", "value": "var(--color-action-primary-subtle)", "status": "stable", "usedBy": ["Dropdown"] }
+    ],
+    "input": [
+      { "cssVar": "--input-default-bg",      "value": "var(--color-surface-default)", "status": "stable", "usedBy": ["Input"] },
+      { "cssVar": "--input-hover-bg",        "value": "var(--color-surface-default)", "status": "stable", "usedBy": ["Input"] },
+      { "cssVar": "--input-focus-bg",        "value": "var(--color-surface-default)", "status": "stable", "usedBy": ["Input"] },
+      { "cssVar": "--input-disabled-bg",     "value": "var(--color-bg-subtle)",       "status": "stable", "usedBy": ["Input"] },
+      { "cssVar": "--input-error-bg",        "value": "var(--color-surface-default)", "status": "stable", "usedBy": ["Input"] },
+      { "cssVar": "--input-default-border",  "value": "var(--color-border-default)",  "status": "stable", "usedBy": ["Input"] },
+      { "cssVar": "--input-hover-border",    "value": "var(--color-border-strong)",   "status": "stable", "usedBy": ["Input"] },
+      { "cssVar": "--input-focus-border",    "value": "var(--color-border-focus)",    "status": "stable", "usedBy": ["Input"] },
+      { "cssVar": "--input-error-border",    "value": "var(--color-border-danger)",   "status": "stable", "usedBy": ["Input"] },
+      { "cssVar": "--input-correct-border",  "value": "var(--color-border-correct)",  "status": "stable", "usedBy": ["Input"] },
+      { "cssVar": "--input-disabled-border", "value": "var(--color-border-default)",  "status": "stable", "usedBy": ["Input"] },
+      { "cssVar": "--select-disabled-border","value": "var(--color-border-subtle)",   "status": "stable", "usedBy": ["Select"] },
+      { "cssVar": "--input-placeholder-text","value": "var(--color-text-placeholder)","status": "stable", "usedBy": ["Input"] },
+      { "cssVar": "--input-helper-text",     "value": "var(--color-text-helper)",     "status": "stable", "usedBy": ["Input"] },
+      { "cssVar": "--input-error-text",      "value": "var(--color-text-danger)",     "status": "stable", "usedBy": ["Input"] },
+      { "cssVar": "--input-correct-text",    "value": "var(--color-text-correct)",    "status": "stable", "usedBy": ["Input"] },
+      { "cssVar": "--input-disabled-text",   "value": "var(--color-text-disabled)",   "status": "stable", "usedBy": ["Input"] }
+    ],
+    "checkbox": [
+      { "cssVar": "--checkbox-default-bg",       "value": "var(--color-surface-default)",  "status": "stable", "usedBy": ["Checkbox"] },
+      { "cssVar": "--checkbox-checked-bg",       "value": "var(--color-action-primary-default)", "status": "stable", "usedBy": ["Checkbox"] },
+      { "cssVar": "--checkbox-indeterminate-bg", "value": "var(--color-action-primary-default)", "status": "stable", "usedBy": ["Checkbox"] },
+      { "cssVar": "--checkbox-disabled-bg",      "value": "var(--color-bg-subtle)",        "status": "stable", "usedBy": ["Checkbox"] },
+      { "cssVar": "--checkbox-default-border",   "value": "var(--color-border-default)",   "status": "stable", "usedBy": ["Checkbox"] },
+      { "cssVar": "--checkbox-hover-border",     "value": "var(--color-border-focus)",     "status": "stable", "usedBy": ["Checkbox"] },
+      { "cssVar": "--checkbox-checked-border",   "value": "var(--color-action-primary-default)", "status": "stable", "usedBy": ["Checkbox"] },
+      { "cssVar": "--checkbox-disabled-border",  "value": "var(--color-border-subtle)",    "status": "stable", "usedBy": ["Checkbox"] },
+      { "cssVar": "--checkbox-check-icon",       "value": "var(--color-action-primary-text)", "status": "stable", "usedBy": ["Checkbox"] }
+    ],
+    "radio": [
+      { "cssVar": "--radio-default-bg",      "value": "var(--color-surface-default)",  "status": "stable", "usedBy": ["Radio"] },
+      { "cssVar": "--radio-disabled-bg",     "value": "var(--color-bg-subtle)",        "status": "stable", "usedBy": ["Radio"] },
+      { "cssVar": "--radio-default-border",  "value": "var(--color-border-default)",   "status": "stable", "usedBy": ["Radio"] },
+      { "cssVar": "--radio-hover-border",    "value": "var(--color-border-focus)",     "status": "stable", "usedBy": ["Radio"] },
+      { "cssVar": "--radio-selected-border", "value": "var(--color-action-primary-default)", "status": "stable", "usedBy": ["Radio"] },
+      { "cssVar": "--radio-disabled-border", "value": "var(--color-border-subtle)",    "status": "stable", "usedBy": ["Radio"] },
+      { "cssVar": "--radio-selected-dot",    "value": "var(--color-action-primary-default)", "status": "stable", "usedBy": ["Radio"] }
+    ],
+    "toggle": [
+      { "cssVar": "--toggle-on-bg",       "value": "var(--color-action-primary-default)", "status": "stable", "usedBy": ["Toggle"] },
+      { "cssVar": "--toggle-off-bg",      "value": "var(--color-border-default)",         "status": "stable", "usedBy": ["Toggle"] },
+      { "cssVar": "--toggle-disabled-bg", "value": "var(--color-border-subtle)",          "status": "stable", "usedBy": ["Toggle"] },
+      { "cssVar": "--toggle-knob",        "value": "var(--color-action-primary-text)",    "status": "stable", "usedBy": ["Toggle"] }
+    ],
+    "pagination": [
+      { "cssVar": "--pagination-default-bg",    "value": "var(--color-surface-default)",  "status": "stable", "usedBy": ["Pagination"] },
+      { "cssVar": "--pagination-hover-bg",      "value": "var(--color-bg-subtle)",        "status": "stable", "usedBy": ["Pagination"] },
+      { "cssVar": "--pagination-active-bg",     "value": "var(--color-action-primary-default)", "status": "stable", "usedBy": ["Pagination"] },
+      { "cssVar": "--pagination-disabled-bg",   "value": "var(--color-surface-default)",  "status": "stable", "usedBy": ["Pagination"] },
+      { "cssVar": "--pagination-default-text",  "value": "var(--color-text-secondary)",   "status": "stable", "usedBy": ["Pagination"] },
+      { "cssVar": "--pagination-active-text",   "value": "var(--color-action-primary-text)", "status": "stable", "usedBy": ["Pagination"] },
+      { "cssVar": "--pagination-disabled-text", "value": "var(--color-text-disabled)",    "status": "stable", "usedBy": ["Pagination"] },
+      { "cssVar": "--pagination-border",        "value": "var(--color-border-default)",   "status": "stable", "usedBy": ["Pagination"] }
+    ],
+    "nav": [
+      { "cssVar": "--nav-bg",                "value": "var(--color-surface-default)",  "status": "stable", "usedBy": ["Nav"] },
+      { "cssVar": "--nav-item-hover-bg",     "value": "var(--color-bg-subtle)",        "status": "stable", "usedBy": ["Nav"] },
+      { "cssVar": "--nav-item-active-bg",    "value": "var(--color-action-primary-subtle)", "status": "stable", "usedBy": ["Nav"] },
+      { "cssVar": "--nav-item-default-text", "value": "var(--color-text-tertiary)",    "status": "stable", "usedBy": ["Nav"] },
+      { "cssVar": "--nav-item-active-text",  "value": "var(--color-action-primary-default)", "status": "stable", "usedBy": ["Nav"] },
+      { "cssVar": "--nav-item-default-icon", "value": "var(--color-icon-default)",     "status": "stable", "usedBy": ["Nav"] },
+      { "cssVar": "--nav-item-active-icon",  "value": "var(--color-action-primary-default)", "status": "stable", "usedBy": ["Nav"] },
+      { "cssVar": "--nav-item-indicator",    "value": "var(--color-action-primary-default)", "status": "stable", "usedBy": ["Nav"] },
+      { "cssVar": "--nav-divider",           "value": "var(--color-border-subtle)",    "status": "stable", "usedBy": ["Nav"] }
+    ],
+    "table": [
+      { "cssVar": "--table-header-bg",       "value": "var(--color-bg-subtle)",      "status": "stable", "usedBy": ["Table"] },
+      { "cssVar": "--table-header-text",     "value": "var(--color-text-tertiary)",  "status": "stable", "usedBy": ["Table"] },
+      { "cssVar": "--table-header-border",   "value": "var(--color-border-default)", "status": "stable", "usedBy": ["Table"] },
+      { "cssVar": "--table-row-default-bg",  "value": "var(--color-surface-default)","status": "stable", "usedBy": ["Table"] },
+      { "cssVar": "--table-row-hover-bg",    "value": "var(--color-bg-subtle)",      "status": "stable", "usedBy": ["Table"] },
+      { "cssVar": "--table-row-selected-bg", "value": "var(--color-bg-selected)",    "status": "stable", "usedBy": ["Table"] },
+      { "cssVar": "--table-cell-border",     "value": "var(--color-border-subtle)",  "status": "stable", "usedBy": ["Table"] },
+      { "cssVar": "--table-cell-text",       "value": "var(--color-text-secondary)", "status": "stable", "usedBy": ["Table"] }
+    ]
+  }
+}

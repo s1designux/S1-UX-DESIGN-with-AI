@@ -440,7 +440,6 @@
   --sizing-form-control-height-lg:          var(--spacing-48);
   --sizing-form-control-dataview-height-sm: var(--spacing-28);
   --sizing-form-control-dataview-height-md: 32px; /* Foundation step 없음 */
-  --sizing-button-height-xxs:  var(--spacing-28);
   --sizing-button-height-xs:   34px; /* Foundation step 없음 */
   --sizing-button-height-sm:   var(--spacing-40);
   --sizing-button-height-md:   var(--spacing-44);
@@ -569,19 +568,7 @@
   --button-secondary-disabled-icon:   var(--color-icon-muted);
   --button-secondary-focus-ring:      var(--color-border-focus);
 
-  /* ── Button — Blue-line ── */
-  --button-blue-line-default-bg:      var(--color-surface-default);
-  --button-blue-line-hover-bg:        var(--color-action-primary-subtle);
-  --button-blue-line-pressed-bg:      var(--color-action-primary-subtle);
-  --button-blue-line-disabled-bg:     var(--color-bg-subtle);
-  --button-blue-line-default-border:  var(--color-action-primary-default);
-  --button-blue-line-hover-border:    var(--color-action-primary-hover);
-  --button-blue-line-disabled-border: var(--color-border-subtle);
-  --button-blue-line-default-text:    var(--color-action-primary-default);
-  --button-blue-line-disabled-text:   var(--color-text-disabled);
-  --button-blue-line-focus-ring:      var(--color-border-focus);
-
-  /* ── Button — Ghost (legacy — do not use in new code) ── */
+  /* ── Button — Ghost ── */
   --button-ghost-hover-bg:      var(--color-bg-subtle);
   --button-ghost-pressed-bg:    var(--color-bg-muted);
   --button-ghost-default-text:  var(--color-text-secondary);

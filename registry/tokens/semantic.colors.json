@@ -1,0 +1,72 @@
+{
+  "meta": {
+    "name": "SW Semantic Colors",
+    "version": "2.4",
+    "status": "stable",
+    "updatedAt": "2026-05-11",
+    "source": "registry/tokens/sw-v2.4.tokens.css",
+    "description": "Light values from :root, Dark values from [data-theme='dark']. Same CSS variable names for both themes.",
+    "rgbaAllowed": "rgba() is allowed for overlay and dark-mode border tokens only."
+  },
+  "tokens": {
+    "bg": [
+      { "cssVar": "--color-bg-default",  "light": "var(--color-gray-0)",      "dark": "var(--color-gray-dark-50)",   "status": "stable" },
+      { "cssVar": "--color-bg-subtle",   "light": "var(--color-gray-50)",     "dark": "var(--color-gray-dark-200)",  "status": "stable" },
+      { "cssVar": "--color-bg-muted",    "light": "var(--color-gray-100)",    "dark": "var(--color-gray-dark-300)",  "status": "stable" },
+      { "cssVar": "--color-bg-elevated", "light": "var(--color-gray-100)",    "dark": "var(--color-gray-dark-400)",  "status": "stable" },
+      { "cssVar": "--color-bg-home",     "light": "#F5F6FB",                  "dark": "var(--color-gray-dark-50)",   "status": "candidate", "note": "Light value not in Foundation primitive. Under review." },
+      { "cssVar": "--color-bg-selected", "light": "var(--color-blue-50)",     "dark": "var(--color-blue-dark-100)",  "status": "candidate", "note": "Needs Figma validation." }
+    ],
+    "surface": [
+      { "cssVar": "--color-surface-default", "light": "var(--color-base-white)", "dark": "var(--color-gray-dark-100)", "status": "stable" },
+      { "cssVar": "--color-surface-raised",  "light": "var(--color-base-white)", "dark": "var(--color-gray-dark-400)", "status": "stable" }
+    ],
+    "text": [
+      { "cssVar": "--color-text-primary",     "light": "var(--color-gray-900)", "dark": "var(--color-gray-dark-900)", "status": "stable" },
+      { "cssVar": "--color-text-secondary",   "light": "var(--color-gray-800)", "dark": "var(--color-gray-dark-800)", "status": "stable" },
+      { "cssVar": "--color-text-tertiary",    "light": "var(--color-gray-600)", "dark": "var(--color-gray-dark-700)", "status": "stable" },
+      { "cssVar": "--color-text-caption",     "light": "var(--color-gray-500)", "dark": "var(--color-gray-dark-700)", "status": "stable" },
+      { "cssVar": "--color-text-placeholder", "light": "var(--color-gray-400)", "dark": "var(--color-gray-dark-600)", "status": "stable" },
+      { "cssVar": "--color-text-helper",      "light": "var(--color-gray-400)", "dark": "var(--color-gray-dark-600)", "status": "stable" },
+      { "cssVar": "--color-text-link",        "light": "var(--color-blue-400)", "dark": "var(--color-blue-dark-400)", "status": "stable" },
+      { "cssVar": "--color-text-correct",     "light": "var(--color-blue-400)", "dark": "var(--color-blue-dark-400)", "status": "stable" },
+      { "cssVar": "--color-text-danger",      "light": "var(--color-red-300)",  "dark": "var(--color-status-dark-red)", "status": "stable" },
+      { "cssVar": "--color-text-disabled",    "light": "var(--color-gray-300)", "dark": "var(--color-gray-dark-400)", "status": "candidate", "note": "Dark value under review. Candidate: #55575F (gray-dark-600)." },
+      { "cssVar": "--color-text-inverse",     "light": "var(--color-base-white)", "dark": "var(--color-base-white)", "status": "stable" }
+    ],
+    "border": [
+      { "cssVar": "--color-border-subtle",   "light": "var(--color-gray-100)", "dark": "rgba(255,255,255,0.04)", "status": "candidate", "source": { "figma": "color/gray/100 + #FFFFFF 4%", "previousValue": "rgba(255,255,255,0.04)" }, "description": "Figma opacity composition. Needs resolved HEX or foundation dark scale before stable release.", "note": "Human decision needed." },
+      { "cssVar": "--color-border-default",  "light": "var(--color-gray-200)", "dark": "rgba(255,255,255,0.07)", "status": "candidate", "source": { "figma": "color/gray/200 + #FFFFFF 7%", "previousValue": "rgba(255,255,255,0.07)" }, "description": "Figma opacity composition. Needs resolved HEX or foundation dark scale before stable release.", "note": "Human decision needed." },
+      { "cssVar": "--color-border-strong",   "light": "var(--color-gray-300)", "dark": "rgba(255,255,255,0.12)", "status": "candidate", "source": { "figma": "color/gray/300 + #FFFFFF 12%", "previousValue": "rgba(255,255,255,0.12)" }, "description": "Figma opacity composition. Needs resolved HEX or foundation dark scale before stable release.", "note": "Human decision needed." },
+      { "cssVar": "--color-border-emphasis", "light": "var(--color-gray-800)", "dark": "rgba(255,255,255,0.20)", "status": "candidate", "source": { "figma": "color/gray/800 + #FFFFFF 20%", "previousValue": "rgba(255,255,255,0.20)" }, "description": "Figma opacity composition. Needs resolved HEX or foundation dark scale before stable release.", "note": "Human decision needed." },
+      { "cssVar": "--color-border-focus",    "light": "var(--color-blue-400)", "dark": "var(--color-blue-dark-350)", "status": "stable" },
+      { "cssVar": "--color-border-white",    "light": "var(--color-base-white)", "dark": "var(--color-base-white)", "status": "stable" },
+      { "cssVar": "--color-border-danger",   "light": "var(--color-red-300)",  "dark": "var(--color-status-dark-red)", "status": "stable" },
+      { "cssVar": "--color-border-correct",  "light": "var(--color-blue-400)", "dark": "var(--color-blue-dark-350)", "status": "stable" }
+    ],
+    "icon": [
+      { "cssVar": "--color-icon-default",  "light": "var(--color-gray-500)", "dark": "var(--color-gray-dark-700)", "status": "stable" },
+      { "cssVar": "--color-icon-muted",    "light": "var(--color-gray-300)", "dark": "var(--color-gray-dark-400)", "status": "stable" },
+      { "cssVar": "--color-icon-emphasis", "light": "var(--color-gray-800)", "dark": "var(--color-gray-dark-800)", "status": "stable" },
+      { "cssVar": "--color-icon-accent",   "light": "var(--color-blue-400)", "dark": "var(--color-blue-dark-400)", "status": "stable" },
+      { "cssVar": "--color-icon-inverse",  "light": "var(--color-base-white)", "dark": "var(--color-base-white)", "status": "stable" },
+      { "cssVar": "--color-icon-danger",   "light": "var(--color-red-300)",  "dark": "var(--color-status-dark-red)", "status": "stable" }
+    ],
+    "action": [
+      { "cssVar": "--color-action-primary-default", "light": "var(--color-blue-400)", "dark": "var(--color-blue-dark-300)", "status": "stable" },
+      { "cssVar": "--color-action-primary-hover",   "light": "var(--color-blue-450)", "dark": "var(--color-blue-dark-250)", "status": "stable" },
+      { "cssVar": "--color-action-primary-pressed", "light": "var(--color-blue-500)", "dark": "var(--color-blue-dark-200)", "status": "stable" },
+      { "cssVar": "--color-action-primary-text",    "light": "var(--color-base-white)", "dark": "var(--color-base-white)", "status": "stable" },
+      { "cssVar": "--color-action-primary-subtle",  "light": "var(--color-blue-50)",  "dark": "var(--color-blue-dark-100)", "status": "stable" }
+    ],
+    "status": [
+      { "cssVar": "--color-status-success", "light": "var(--color-blue-400)",   "dark": "var(--color-status-dark-green)",  "status": "stable", "note": "Light uses blue per service convention." },
+      { "cssVar": "--color-status-error",   "light": "var(--color-red-400)",    "dark": "var(--color-status-dark-red)",    "status": "stable" },
+      { "cssVar": "--color-status-warning", "light": "var(--color-yellow-400)", "dark": "var(--color-status-dark-yellow)", "status": "stable" },
+      { "cssVar": "--color-status-info",    "light": "var(--color-gray-500)",   "dark": "var(--color-gray-dark-700)",      "status": "stable" }
+    ],
+    "overlay": [
+      { "cssVar": "--color-overlay", "light": "rgba(0,0,0,0.5)", "dark": "rgba(0,0,0,0.75)", "status": "stable", "rgbaException": "overlay" }
+    ]
+  }
+}
