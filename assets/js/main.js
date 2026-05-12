@@ -6,7 +6,6 @@
 const SITE_NAV = [
   { type: 'label', text: '개요' },
   { type: 'item', id: 'index', href: '../index.html', rootHref: 'index.html', icon: '🏠', text: 'Overview' },
-  { type: 'item', id: 'install-prompt', href: 'install-prompt.html', rootHref: 'pages/install-prompt.html', icon: '⚡', text: '토큰 설치 프롬프트', status: 'ready' },
   { type: 'label', text: 'Foundation' },
   { type: 'item', id: 'foundation', href: 'foundation.html', rootHref: 'pages/foundation.html', icon: '🎨', text: 'Foundation Tokens', status: 'ready' },
   { type: 'item', id: 'semantic', href: 'semantic.html', rootHref: 'pages/semantic.html', icon: '🌗', text: 'Semantic Tokens', status: 'ready' },
@@ -16,10 +15,11 @@ const SITE_NAV = [
   { type: 'item', id: 'patterns', href: 'patterns.html', rootHref: 'pages/patterns.html', icon: '📐', text: 'Patterns', status: 'soon' },
   { type: 'item', id: 'policy', href: 'policy.html', rootHref: 'pages/policy.html', icon: '📋', text: 'Policy' },
   { type: 'item', id: 'legacy', href: 'legacy.html', rootHref: 'pages/legacy.html', icon: '🗂️', text: 'Legacy Guide', status: 'soon' },
-  { type: 'label', text: 'AI 워크플로우' },
-  { type: 'item', id: 'ai-snippets', href: 'ai-snippets.html', rootHref: 'pages/ai-snippets.html', icon: '🤖', text: 'AI Snippets', status: 'ready' },
-  { type: 'item', id: 'guide-md', href: 'guide-md.html', rootHref: 'pages/guide-md.html', icon: '📋', text: 'Guide MD', status: 'ready' },
-  { type: 'item', id: 'md-review', href: 'md-review.html', rootHref: 'pages/md-review.html', icon: '🔍', text: 'MD 리뷰', status: 'ready' },
+  { type: 'label', text: 'AI 워크플로우', collapsible: true, defaultCollapsed: true, groupId: 'ai-workflow' },
+  { type: 'item', id: 'install-prompt', href: 'install-prompt.html', rootHref: 'pages/install-prompt.html', icon: '⚡', text: '토큰 설치 프롬프트', status: 'ready', group: 'ai-workflow' },
+  { type: 'item', id: 'ai-snippets', href: 'ai-snippets.html', rootHref: 'pages/ai-snippets.html', icon: '🤖', text: 'AI Snippets', status: 'ready', group: 'ai-workflow' },
+  { type: 'item', id: 'guide-md', href: 'guide-md.html', rootHref: 'pages/guide-md.html', icon: '📋', text: 'Guide MD', status: 'ready', group: 'ai-workflow' },
+  { type: 'item', id: 'md-review', href: 'md-review.html', rootHref: 'pages/md-review.html', icon: '🔍', text: 'MD 리뷰', status: 'ready', group: 'ai-workflow' },
   { type: 'label', text: 'System' },
   { type: 'item', id: 'registry-health', href: 'registry-health.html', rootHref: 'pages/registry-health.html', icon: '📊', text: 'System Status', status: 'new' },
   { type: 'item', id: 'foundation-tokens', href: 'foundation-tokens.html', rootHref: 'pages/foundation-tokens.html', icon: '🏗', text: 'Foundation Registry', status: 'new' },
@@ -32,10 +32,29 @@ const SITE_NAV = [
 function renderSidebar() {
   const isRoot = !window.location.pathname.includes('/pages/');
 
+  // Pre-detect active group IDs so we don't collapse groups with active items
+  const activeGroupIds = new Set();
+  SITE_NAV.forEach(item => {
+    if (item.type === 'item' && item.group) {
+      const href = isRoot ? item.rootHref : item.href;
+      if (window.location.pathname.endsWith(href) || window.location.pathname.endsWith(item.href)) {
+        activeGroupIds.add(item.group);
+      }
+    }
+  });
+
   const items = SITE_NAV.map(item => {
     if (item.type === 'label') {
+      if (item.collapsible) {
+        const collapsed = item.defaultCollapsed && !activeGroupIds.has(item.groupId);
+        return `<button class="nav-group-toggle${collapsed ? ' is-collapsed' : ''}" data-group-id="${item.groupId}" onclick="toggleNavGroup('${item.groupId}', this)">
+          <span>${item.text}</span>
+          <svg class="nav-toggle-chevron" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>`;
+      }
       return `<div class="nav-group-label">${item.text}</div>`;
     }
+
     const href = isRoot ? item.rootHref : item.href;
     const active = window.location.pathname.endsWith(item.rootHref) ||
                    window.location.pathname.endsWith(item.href)
@@ -45,7 +64,15 @@ function renderSidebar() {
       : item.status === 'new'
       ? `<span class="nav-badge new">New</span>`
       : '';
-    return `<a href="${href}" class="nav-item ${active}" data-id="${item.id}">
+
+    let groupAttrs = '';
+    if (item.group) {
+      const parentLabel = SITE_NAV.find(n => n.type === 'label' && n.groupId === item.group);
+      const shouldHide = parentLabel?.defaultCollapsed && !activeGroupIds.has(item.group);
+      groupAttrs = ` data-group="${item.group}"${shouldHide ? ' style="display:none"' : ''}`;
+    }
+
+    return `<a href="${href}" class="nav-item ${active}" data-id="${item.id}"${groupAttrs}>
       <span class="nav-icon">${item.icon}</span>
       <span class="nav-label">${item.text}</span>
       ${badge}
@@ -74,6 +101,14 @@ function renderSidebar() {
       <a href="https://www.figma.com/design/yE5UCFEbmXJBlYJWB24Lz2/" style="color:#0072ce" target="_blank">Figma 열기 ↗</a>
     </div>
   `;
+}
+
+/* ── Collapsible Nav Group ── */
+function toggleNavGroup(groupId, btn) {
+  const collapsed = btn.classList.toggle('is-collapsed');
+  document.querySelectorAll(`.nav-item[data-group="${groupId}"]`).forEach(el => {
+    el.style.display = collapsed ? 'none' : '';
+  });
 }
 
 /* ── Mobile Toggle ── */

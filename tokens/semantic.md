@@ -121,6 +121,7 @@ color-overlay   → 딤·오버레이
 |---|---|---|---|---|---|---|
 | `--color-border-subtle` | color/line/gray/subtle | `#E9E9E9` | color/gray/100 | `rgba(255,255,255,0.04)` | — (rgba) | 미세 구분선 |
 | `--color-border-default` | color/line/gray/default | `#D9D9D9` | color/gray/200 | `rgba(255,255,255,0.07)` | — (rgba) | 기본 테두리 |
+| `--color-border-disabled` | color/button/border/disabled | `#D9D9D9` | color/gray/200 | `rgba(255,255,255,0.07)` | — (rgba) | 비활성(disabled) 컴포넌트 테두리 |
 | `--color-border-strong` | — (Figma 확인 필요) | `#C4C4C4` | color/gray/300 | `rgba(255,255,255,0.12)` | — (rgba) | 강조 테두리 |
 | `--color-border-emphasis` | color/line/gray/strong | `#353535` | color/gray/800 | `rgba(255,255,255,0.20)` | — (rgba) | 헤비 구분선·선택 강조선 |
 | `--color-border-focus` | color/line/blue | `#1D6CEB` | color/blue/400 | `#4285E8` | blue-dark/350 | 포커스 링 (접근성 필수) |
@@ -301,6 +302,7 @@ color-overlay   → 딤·오버레이
   /* color-border */
   --color-border-subtle:    #E9E9E9;
   --color-border-default:   #D9D9D9;
+  --color-border-disabled:  #D9D9D9;
   --color-border-strong:    #C4C4C4;
   --color-border-emphasis:  #353535;
   --color-border-focus:     #1D6CEB;
@@ -362,6 +364,7 @@ color-overlay   → 딤·오버레이
   /* color-border */
   --color-border-subtle:   rgba(255, 255, 255, 0.04);
   --color-border-default:  rgba(255, 255, 255, 0.07);
+  --color-border-disabled: rgba(255, 255, 255, 0.07);
   --color-border-strong:   rgba(255, 255, 255, 0.12);
   --color-border-emphasis: rgba(255, 255, 255, 0.20);
   --color-border-focus:    #4285E8;

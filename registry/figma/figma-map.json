@@ -1,7 +1,7 @@
 {
   "_meta": {
-    "version": "0.2.0",
-    "updatedAt": "2026-05-11",
+    "version": "0.3.0",
+    "updatedAt": "2026-05-12",
     "figmaFileKey": "yE5UCFEbmXJBlYJWB24Lz2",
     "figmaFileName": "SW-UX-GUIDE V2.4",
     "note": "componentSetKey는 Figma Plugin 연동 전까지 빈 문자열로 유지"
@@ -13,12 +13,39 @@
   "components": {
     "button": {
       "componentSetKey": "",
-      "figmaNodeId": "",
+      "figmaNodeId": "6440:4032",
+      "figmaNote": "Section 2 — PC + Mobile button overview. Confirmed via MCP 2026-05-12.",
+      "frames": {
+        "pc": "540:4440",
+        "mobile": "540:4626"
+      },
       "variants": {
-        "primary":   { "figmaNodeId": "" },
-        "secondary": { "figmaNodeId": "" },
-        "blue-line": { "figmaNodeId": "", "note": "Figma design confirmed. CSS tokens extracted in tokens.css (2026-05-11)." },
-        "ghost":     { "figmaNodeId": "", "status": "deprecated", "note": "Not an official V2.4 variant. Replaced by blue-line." }
+        "primary": {
+          "figmaNodeId": "540:4501",
+          "stateNodes": {
+            "medium-default":  "540:4501",
+            "medium-hover":    "540:4521",
+            "medium-disabled": "540:4441"
+          }
+        },
+        "secondary": {
+          "figmaNodeId": "540:4541",
+          "stateNodes": {
+            "medium-default":  "540:4541",
+            "medium-hover":    "540:4561",
+            "medium-disabled": "540:4461"
+          }
+        },
+        "blue-line": {
+          "figmaNodeId": "540:4581",
+          "note": "Figma design confirmed. CSS tokens extracted in tokens.css (2026-05-11). MCP comparison done 2026-05-12.",
+          "stateNodes": {
+            "medium-default":  "540:4581",
+            "medium-hover":    "540:4601",
+            "medium-disabled": "540:4481"
+          }
+        },
+        "ghost": { "figmaNodeId": "", "status": "deprecated", "note": "Not an official V2.4 variant. Replaced by blue-line." }
       }
     },
     "chip": {
@@ -32,7 +59,17 @@
     },
     "input": {
       "componentSetKey": "",
-      "figmaNodeId": ""
+      "figmaNodeId": "6443:4408",
+      "figmaNote": "Base Input frame = 'Login input' in Figma. Section 2 (6443:5451). Confirmed via MCP 2026-05-12.",
+      "relatedFrames": {
+        "base-input":            "6443:4408",
+        "pc-input-with-slots":   "6443:4203",
+        "mobile-input-with-slots":"6443:4105",
+        "input-plus-button":     "6443:4033",
+        "inputbox-large":        "6443:4072",
+        "timepicker-input":      "6443:4606",
+        "datepicker-input":      "6443:4655"
+      }
     },
     "checkbox": {
       "componentSetKey": "",

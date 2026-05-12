@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>Bad Service — Source Guard Test Fixture</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Ghost button — deprecated variant -->
+  <button class="sw-button sw-button--ghost">Ghost Button</button>
+
+  <!-- Danger button — deleted variant -->
+  <button class="s1-btn s1-btn-danger">Danger Button</button>
+
+  <!-- Inline style with raw HEX -->
+  <div style="color: #0072CE">Inline HEX color</div>
+
+  <!-- Inline style with rgba -->
+  <div style="background: rgba(0, 114, 206, 0.5)">Inline rgba background</div>
+
+  <!-- JSX-style inline (treated as HTML here for test purposes) -->
+  <span style="backgroundColor: #FFFFFF">White background span</span>
+
+  <!-- Correct usage — should pass -->
+  <button class="sw-button sw-button--primary">Primary Button</button>
+  <button class="s1-btn">Secondary (default)</button>
+
+  <!-- outline variant — warning (blue-line confusion) -->
+  <button class="btn-outline">Outline Button</button>
+
+</body>
+</html>

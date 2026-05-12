@@ -1,0 +1,12 @@
+{
+  "name": "sw-design-system-guide",
+  "version": "1.0.0",
+  "private": true,
+  "description": "SW Design System Guide — SW UX GUIDE V2.4",
+  "scripts": {
+    "sync:button": "node scripts/sync/button-sync-check.js",
+    "guard": "node scripts/guard/index.js",
+    "guard:suggest": "node scripts/guard/suggest-fixes.js",
+    "guard:apply": "node scripts/guard/apply-fixes.js"
+  }
+}

@@ -1,0 +1,31 @@
+/* Source Guard Test Fixture — intentionally bad CSS */
+
+.card {
+  /* Raw HEX — should be error */
+  background: #ffffff;
+
+  /* rgb() — should be error */
+  color: rgb(32, 32, 32);
+
+  /* rgba() — should be warning */
+  border-color: rgba(0, 0, 0, 0.1);
+
+  /* Foundation color primitive direct reference — should be warning */
+  border-color: var(--color-blue-400);
+
+  /* Undefined token — should be error */
+  color: var(--unknown-token);
+}
+
+.header {
+  /* Correct semantic token usage — should pass */
+  background: var(--color-bg-default);
+  color: var(--color-text-primary);
+  border-bottom: 1px solid var(--color-border-default);
+}
+
+.ghost-btn {
+  /* Raw HEX in a component class */
+  background: #0072CE;
+  color: #fff;
+}

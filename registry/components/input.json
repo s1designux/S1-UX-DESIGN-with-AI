@@ -3,26 +3,237 @@
     "id": "input",
     "name": "Input",
     "category": "Core",
-    "updatedAt": "2026-05-11",
+    "updatedAt": "2026-05-12 (MVP4.2)",
     "tokenStatus": "stable",
     "codeStatus": "not-started",
     "darkModeStatus": "pending",
-    "description": "Text input and form control component. Includes select disabled border variant."
+    "figmaNodeId": "6443:4408",
+    "figmaNote": "Base Input frame = 'Login input' in Figma. Section 2 (6443:5451). Confirmed via MCP 2026-05-12.",
+    "description": "Base text input field. Pure input element without label/helper wrapper. Label/Helper combo = Input Slots pattern.",
+    "hdResolved": "HD-1 through HD-8 resolved 2026-05-12. Token corrections applied after re-examination."
   },
+  "platforms": {
+    "pc-medium": {
+      "height": "44px",
+      "heightToken": "--sizing/form-control/height/md",
+      "paddingBlock": "8px",
+      "paddingBlockToken": "--spacing/padding/block/xxs",
+      "radiusToken": "--radius/control/sm"
+    },
+    "pc-xsmall": {
+      "height": "34px",
+      "heightToken": "(미확인)",
+      "paddingBlock": "8px",
+      "paddingBlockToken": "--spacing/padding/block/xxs",
+      "radiusToken": "--radius/control/sm"
+    },
+    "pc-xxsmall": {
+      "height": "28px",
+      "heightToken": "(미확인)",
+      "paddingBlock": "8px",
+      "paddingBlockToken": "--spacing/padding/block/xxs",
+      "radiusToken": "--radius/control/sm"
+    },
+    "mobile": {
+      "height": "48px",
+      "heightToken": "--sizing/form-control/height/lg",
+      "paddingBlock": "12px",
+      "paddingBlockToken": "--spacing/padding/block/xs",
+      "radiusToken": "raw 4px (토큰 미참조 — Figma 원본 기준)"
+    }
+  },
+  "platformDifferences": {
+    "padding": "PC: block/xxs(8px) / Mobile: block/xs(12px)",
+    "radius": "PC: --radius/control/sm 토큰 / Mobile: raw 4px",
+    "iconSlot-success": "PC: pw-hide 아이콘 유지 / Mobile: remove(X) 버튼 노출"
+  },
+  "states": ["default", "focus", "complete", "error", "correct", "disabled"],
+  "stateNotes": {
+    "focus":    "Figma: 'selected'. border → --input-focus-border(blue). bg 변경 없음.",
+    "complete": "HD-3: 별도 bg/border 없음. default와 동일 시각. text/default 색상으로만 구분(placeholder→typed).",
+    "correct":  "HD-4: correct로 통일(Figma: success). border = focus와 동일(blue, --color/form-control/border/selected). helper text = --color/text/state/correct(#1D6CEB).",
+    "error":    "border → --input-error-border(#FF4554). helper text → error 메시지.",
+    "hover":    "삭제(HD-2). Figma 미정의."
+  },
+  "iconSlots": ["off", "1", "2+"],
+  "inputTypes": ["normal", "password"],
   "variants": {
     "default": {
       "tokenStatus": "stable",
       "codeStatus": "not-started",
       "darkModeStatus": "pending",
-      "tokens": [
-        "--input-default-bg", "--input-hover-bg", "--input-focus-bg",
-        "--input-disabled-bg", "--input-error-bg",
-        "--input-default-border", "--input-hover-border", "--input-focus-border",
-        "--input-error-border", "--input-correct-border", "--input-disabled-border",
-        "--select-disabled-border",
-        "--input-placeholder-text", "--input-helper-text",
-        "--input-error-text", "--input-correct-text", "--input-disabled-text"
-      ]
+      "semanticTokens": {
+        "background": {
+          "--color-form-control-bg-default":  "var(--color-surface-default)",
+          "--color-form-control-bg-disabled": "var(--color-bg-subtle)"
+        },
+        "border": {
+          "--color-form-control-border-default":  "var(--color-border-default)",
+          "--color-form-control-border-selected": "var(--color-border-focus)",
+          "--color-form-control-border-error":    "var(--color-status-error)",
+          "--color-form-control-border-correct":  "var(--color-border-focus)",
+          "--color-form-control-border-disabled": "var(--color-border-subtle)"
+        },
+        "text": {
+          "--color-form-control-text-default":     "var(--color-text-primary)",
+          "--color-form-control-text-placeholder": "var(--color-text-secondary)",
+          "--color-form-control-text-disabled":    "var(--color-text-disabled)"
+        },
+        "label": {
+          "--color-text-title-secondary": "var(--color-text-primary)",
+          "note": "Label은 --color/text/title/secondary (#353535) 사용. form-control 네임스페이스 밖. --color-text-primary와 동일 값."
+        },
+        "helper": {
+          "--color-text-state-helper":  "var(--color-text-secondary)",
+          "--color-text-state-correct": "#1D6CEB",
+          "--color-text-state-error":   "var(--color-status-error)",
+          "note": "--color/text/state/correct = #1D6CEB (파란색). correct 상태 border와 동일 색조."
+        }
+      },
+      "componentTokens": {
+        "background": {
+          "--input-default-bg":  "var(--color-form-control-bg-default)",
+          "--input-disabled-bg": "var(--color-form-control-bg-disabled)"
+        },
+        "border": {
+          "--input-default-border":  "var(--color-form-control-border-default)",
+          "--input-focus-border":    "var(--color-form-control-border-selected)",
+          "--input-error-border":    "var(--color-form-control-border-error)",
+          "--input-correct-border":  "var(--color-form-control-border-correct)",
+          "--input-disabled-border": "var(--color-form-control-border-disabled)"
+        },
+        "text": {
+          "--input-placeholder-text": "var(--color-form-control-text-placeholder)",
+          "--input-disabled-text":    "var(--color-form-control-text-disabled)",
+          "--input-helper-text":      "var(--color-text-state-helper)",
+          "--input-correct-text":     "var(--color-text-state-correct)",
+          "--input-error-text":       "var(--color-status-error)"
+        }
+      },
+      "removedTokens": {
+        "--input-hover-bg":          "HD-2: Figma 미정의",
+        "--input-hover-border":      "HD-2: Figma 미정의",
+        "--input-focus-bg":          "HD-3: complete/focus bg = default와 동일",
+        "--input-error-bg":          "HD-8: error bg = default와 동일",
+        "--input-label-text":        "수정: Label은 --color-text-title-secondary (form-control 밖)",
+        "--select-disabled-border":  "HD-5: Select 컴포넌트로 이동"
+      },
+      "corrections": {
+        "border-correct": "초기 분류 오류 수정. correct border ≠ --color-status-success. Figma 원본 = --color/form-control/border/selected (#1D6CEB, 파란색).",
+        "label-token": "초기 분류 오류 수정. Label token = --color/text/title/secondary, form-control 네임스페이스 외부.",
+        "color-text-state-correct": "신규 발견. --color/text/state/correct = #1D6CEB (correct helper text 색상)."
+      }
     }
-  }
+  },
+  "relatedComponents": {
+    "inputbox-large": "Textarea 컴포넌트로 편입 (HD-6). registry/components/textarea.json 예정.",
+    "timepicker-input": "Picker 계열. MVP5 이후 구현. figmaNodeId: 6443:4606",
+    "datepicker-input": "Picker 계열. MVP5 이후 구현. figmaNodeId: 6443:4655"
+  },
+  "relatedComposedFields": [
+    {
+      "id": "search-input",
+      "name": "Search Input",
+      "type": "related-composed-field",
+      "baseComponent": "Input",
+      "includedInBaseVariants": false,
+      "notFullPattern": true,
+      "documentedUnder": "Components > Input",
+      "composition": ["Input", "suffixActionGroup: clearAction + searchAction"],
+      "slotStructure": {
+        "suffixActionGroup": {
+          "description": "오른쪽 액션 버튼 그룹. 두 액션이 flex row로 나란히 배치됨.",
+          "slots": [
+            {
+              "id": "clearAction",
+              "figmaIconName": "remove",
+              "figmaNodeId": "882:4061",
+              "icon": "remove",
+              "visibility": "conditional",
+              "condition": "has-value",
+              "position": "left-of-searchAction",
+              "ariaLabel": "검색어 지우기",
+              "description": "값이 있을 때만 표시. searchAction 왼쪽에 위치. hidden attribute로 제어."
+            },
+            {
+              "id": "searchAction",
+              "figmaIconName": "ic_찾기/조회",
+              "figmaNodeId": "6452:5930",
+              "icon": "ic_찾기/조회",
+              "visibility": "always",
+              "position": "rightmost",
+              "ariaLabel": "검색",
+              "description": "항상 표시. 그룹의 가장 오른쪽 고정."
+            }
+          ]
+        }
+      },
+      "interaction": {
+        "clearAction": "입력값 삭제. 값이 없으면 hidden. 클릭 후 input focus 유지.",
+        "searchAction": "검색 트리거 또는 시각적 어포던스. Figma 기준: 항상 표시되는 ic_찾기/조회 아이콘."
+      },
+      "prefixIconSlot": false,
+      "states": ["empty", "filled"],
+      "iconStatus": "candidate",
+      "iconNote": "Figma 노드명 확인 완료. 로컬 SVG asset 미등록 — candidate inline SVG 사용 중.",
+      "tokenStatus": "reuses-base-input",
+      "figmaStatus": "confirmed",
+      "figmaNote": "Section 3 (6452:5955). Empty=6452:5907, Filled=6452:5908. 확인일: 2026-05-12.",
+      "status": "candidate",
+      "updatedAt": "2026-05-12"
+    },
+    {
+      "id": "password-field",
+      "name": "Password Field",
+      "type": "related-composed-field",
+      "baseComponent": "Input",
+      "includedInBaseVariants": false,
+      "notFullPattern": true,
+      "documentedUnder": "Components > Input",
+      "composition": ["Input", "suffixActionGroup: visibilityToggle + clearAction"],
+      "slotStructure": {
+        "suffixActionGroup": {
+          "description": "오른쪽 액션 버튼 그룹.",
+          "slots": [
+            {
+              "id": "visibilityToggle",
+              "figmaIconName": "ic_비밀번호미표시",
+              "figmaNodeId": "135:6692",
+              "icon": "ic_비밀번호미표시 / ic_비밀번호표시(미확인)",
+              "visibility": "always",
+              "position": "left",
+              "ariaLabel": "비밀번호 보기 / 비밀번호 숨기기",
+              "ariaPressed": true,
+              "description": "항상 표시. 비밀번호 표시/숨김 전환. 숨김 = ic_비밀번호미표시 아이콘, 표시 = eye-off(Figma 노드명 미확인)."
+            },
+            {
+              "id": "clearAction",
+              "figmaIconName": "remove",
+              "figmaNodeId": "882:4061",
+              "icon": "remove",
+              "visibility": "conditional",
+              "condition": "has-value",
+              "position": "right-of-visibilityToggle",
+              "ariaLabel": "비밀번호 지우기",
+              "description": "값이 있을 때만 표시. visibilityToggle 오른쪽에 위치. hidden attribute로 제어."
+            }
+          ]
+        }
+      },
+      "interaction": {
+        "visibilityToggle": "input type password/text 전환. aria-label·aria-pressed 상태에 따라 변경.",
+        "clearAction": "입력값 삭제. 값이 없으면 hidden."
+      },
+      "states": ["hidden", "visible"],
+      "iconStatus": "candidate",
+      "iconNote": "visibilityToggle hidden 상태 아이콘: ic_비밀번호미표시 확인. visible 상태 eye-off 아이콘 Figma 노드명 미확인.",
+      "tokenStatus": "reuses-base-input",
+      "figmaStatus": "confirmed",
+      "figmaNote": "Section 3 (6452:5955). Hidden=6452:5891, Filled=6452:5877. 확인일: 2026-05-12.",
+      "status": "candidate",
+      "updatedAt": "2026-05-12"
+    }
+  ],
+  "separateComponentCandidates": ["DatePicker", "TimePicker", "Textarea"],
+  "patternModuleCandidates": ["Login Form", "Search Module", "Address Search", "Date Range Selection"]
 }

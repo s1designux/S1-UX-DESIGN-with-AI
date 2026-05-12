@@ -14,11 +14,11 @@
         { "cssVar": "--button-primary-default-bg",    "value": "var(--color-action-primary-default)", "status": "stable", "usedBy": ["Button"] },
         { "cssVar": "--button-primary-hover-bg",      "value": "var(--color-action-primary-hover)",   "status": "stable", "usedBy": ["Button"] },
         { "cssVar": "--button-primary-pressed-bg",    "value": "var(--color-action-primary-pressed)", "status": "stable", "usedBy": ["Button"] },
-        { "cssVar": "--button-primary-disabled-bg",   "value": "var(--color-border-default)",         "status": "stable", "usedBy": ["Button"] },
+        { "cssVar": "--button-primary-disabled-bg",     "value": "var(--color-bg-subtle)",              "status": "stable", "usedBy": ["Button"] },
+        { "cssVar": "--button-primary-disabled-border","value": "var(--color-border-disabled)",        "status": "stable", "usedBy": ["Button"] },
         { "cssVar": "--button-primary-default-text",  "value": "var(--color-action-primary-text)",    "status": "stable", "usedBy": ["Button"] },
         { "cssVar": "--button-primary-disabled-text", "value": "var(--color-text-disabled)",          "status": "stable", "usedBy": ["Button"] },
-        { "cssVar": "--button-primary-default-icon",  "value": "var(--color-action-primary-text)",    "status": "stable", "usedBy": ["Button"] },
-        { "cssVar": "--button-primary-focus-ring",    "value": "var(--color-border-focus)",           "status": "stable", "usedBy": ["Button"] }
+        { "cssVar": "--button-primary-default-icon",  "value": "var(--color-action-primary-text)",    "status": "stable", "usedBy": ["Button"] }
       ],
       "secondary": [
         { "cssVar": "--button-secondary-default-bg",      "value": "var(--color-surface-default)",  "status": "stable", "usedBy": ["Button"] },
@@ -26,13 +26,11 @@
         { "cssVar": "--button-secondary-pressed-bg",      "value": "var(--color-bg-muted)",         "status": "stable", "usedBy": ["Button"] },
         { "cssVar": "--button-secondary-disabled-bg",     "value": "var(--color-bg-subtle)",        "status": "stable", "usedBy": ["Button"] },
         { "cssVar": "--button-secondary-default-border",  "value": "var(--color-border-default)",   "status": "stable", "usedBy": ["Button"] },
-        { "cssVar": "--button-secondary-hover-border",    "value": "var(--color-border-strong)",    "status": "stable", "usedBy": ["Button"] },
-        { "cssVar": "--button-secondary-disabled-border", "value": "var(--color-border-subtle)",    "status": "stable", "usedBy": ["Button"] },
+        { "cssVar": "--button-secondary-disabled-border", "value": "var(--color-border-disabled)",  "status": "stable", "usedBy": ["Button"] },
         { "cssVar": "--button-secondary-default-text",    "value": "var(--color-text-secondary)",   "status": "stable", "usedBy": ["Button"] },
         { "cssVar": "--button-secondary-disabled-text",   "value": "var(--color-text-disabled)",    "status": "stable", "usedBy": ["Button"] },
         { "cssVar": "--button-secondary-default-icon",    "value": "var(--color-icon-default)",     "status": "stable", "usedBy": ["Button"] },
-        { "cssVar": "--button-secondary-disabled-icon",   "value": "var(--color-icon-muted)",       "status": "stable", "usedBy": ["Button"] },
-        { "cssVar": "--button-secondary-focus-ring",      "value": "var(--color-border-focus)",     "status": "stable", "usedBy": ["Button"] }
+        { "cssVar": "--button-secondary-disabled-icon",   "value": "var(--color-icon-muted)",       "status": "stable", "usedBy": ["Button"] }
       ],
       "blue-line": [
         { "cssVar": "--button-blue-line-default-bg",      "value": "var(--color-surface-default)",         "status": "stable", "usedBy": ["Button"] },
@@ -40,11 +38,10 @@
         { "cssVar": "--button-blue-line-pressed-bg",      "value": "var(--color-action-primary-subtle)",   "status": "stable", "usedBy": ["Button"] },
         { "cssVar": "--button-blue-line-disabled-bg",     "value": "var(--color-bg-subtle)",               "status": "stable", "usedBy": ["Button"] },
         { "cssVar": "--button-blue-line-default-border",  "value": "var(--color-action-primary-default)",  "status": "stable", "usedBy": ["Button"] },
-        { "cssVar": "--button-blue-line-hover-border",    "value": "var(--color-action-primary-hover)",    "status": "stable", "usedBy": ["Button"] },
-        { "cssVar": "--button-blue-line-disabled-border", "value": "var(--color-border-subtle)",           "status": "stable", "usedBy": ["Button"] },
+        { "cssVar": "--button-blue-line-hover-border",    "value": "var(--color-action-primary-default)",  "status": "stable", "usedBy": ["Button"] },
+        { "cssVar": "--button-blue-line-disabled-border", "value": "var(--color-border-disabled)",         "status": "stable", "usedBy": ["Button"] },
         { "cssVar": "--button-blue-line-default-text",    "value": "var(--color-action-primary-default)",  "status": "stable", "usedBy": ["Button"] },
-        { "cssVar": "--button-blue-line-disabled-text",   "value": "var(--color-text-disabled)",           "status": "stable", "usedBy": ["Button"] },
-        { "cssVar": "--button-blue-line-focus-ring",      "value": "var(--color-border-focus)",            "status": "stable", "usedBy": ["Button"] }
+        { "cssVar": "--button-blue-line-disabled-text",   "value": "var(--color-text-disabled)",           "status": "stable", "usedBy": ["Button"] }
       ],
       "ghost": [
         { "cssVar": "--button-ghost-hover-bg",      "value": "var(--color-bg-subtle)",      "status": "deprecated", "note": "legacy — use blue-line instead", "usedBy": [] },

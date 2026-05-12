@@ -371,6 +371,7 @@
   /* ── color-border ── */
   --color-border-subtle:   var(--color-gray-100);
   --color-border-default:  var(--color-gray-200);
+  --color-border-disabled: var(--color-gray-200);
   --color-border-strong:   var(--color-gray-300);
   --color-border-emphasis: var(--color-gray-800);
   --color-border-focus:    var(--color-blue-400);
@@ -506,6 +507,7 @@
   /* ── color-border (rgba 허용 예외 — Dark 전용) ── */
   --color-border-subtle:   rgba(255, 255, 255, 0.04);
   --color-border-default:  rgba(255, 255, 255, 0.07);
+  --color-border-disabled: rgba(255, 255, 255, 0.07);
   --color-border-strong:   rgba(255, 255, 255, 0.12);
   --color-border-emphasis: rgba(255, 255, 255, 0.20);
   --color-border-focus:    var(--color-blue-dark-350);
@@ -549,11 +551,11 @@
   --button-primary-default-bg:    var(--color-action-primary-default);
   --button-primary-hover-bg:      var(--color-action-primary-hover);
   --button-primary-pressed-bg:    var(--color-action-primary-pressed);
-  --button-primary-disabled-bg:   var(--color-border-default);
-  --button-primary-default-text:  var(--color-action-primary-text);
+  --button-primary-disabled-bg:     var(--color-bg-subtle);
+  --button-primary-disabled-border: var(--color-border-disabled);
+  --button-primary-default-text:    var(--color-action-primary-text);
   --button-primary-disabled-text: var(--color-text-disabled);
   --button-primary-default-icon:  var(--color-action-primary-text);
-  --button-primary-focus-ring:    var(--color-border-focus);
 
   /* ── Button — Secondary ── */
   --button-secondary-default-bg:      var(--color-surface-default);
@@ -561,13 +563,11 @@
   --button-secondary-pressed-bg:      var(--color-bg-muted);
   --button-secondary-disabled-bg:     var(--color-bg-subtle);
   --button-secondary-default-border:  var(--color-border-default);
-  --button-secondary-hover-border:    var(--color-border-strong);
-  --button-secondary-disabled-border: var(--color-border-subtle);
+  --button-secondary-disabled-border: var(--color-border-disabled);
   --button-secondary-default-text:    var(--color-text-secondary);
   --button-secondary-disabled-text:   var(--color-text-disabled);
   --button-secondary-default-icon:    var(--color-icon-default);
   --button-secondary-disabled-icon:   var(--color-icon-muted);
-  --button-secondary-focus-ring:      var(--color-border-focus);
 
   /* ── Button — Blue-line ── */
   --button-blue-line-default-bg:      var(--color-surface-default);
@@ -575,11 +575,10 @@
   --button-blue-line-pressed-bg:      var(--color-action-primary-subtle);
   --button-blue-line-disabled-bg:     var(--color-bg-subtle);
   --button-blue-line-default-border:  var(--color-action-primary-default);
-  --button-blue-line-hover-border:    var(--color-action-primary-hover);
-  --button-blue-line-disabled-border: var(--color-border-subtle);
+  --button-blue-line-hover-border:    var(--color-action-primary-default);
+  --button-blue-line-disabled-border: var(--color-border-disabled);
   --button-blue-line-default-text:    var(--color-action-primary-default);
   --button-blue-line-disabled-text:   var(--color-text-disabled);
-  --button-blue-line-focus-ring:      var(--color-border-focus);
 
   /* ── Button — Ghost (legacy — do not use in new code) ── */
   --button-ghost-hover-bg:      var(--color-bg-subtle);

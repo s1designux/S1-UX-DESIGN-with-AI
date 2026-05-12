@@ -3,8 +3,8 @@
     "id": "button",
     "name": "Button",
     "category": "Core",
-    "updatedAt": "2026-05-11",
-    "version": "0.3.0",
+    "updatedAt": "2026-05-12",
+    "version": "0.4.0",
     "tokenStatus": "stable",
     "codeStatus": "in-progress",
     "darkModeStatus": "candidate",
@@ -17,9 +17,11 @@
       "Button uses official V2.4 component tokens (registry/tokens/component.tokens.json).",
       "Dark mode behavior is available through semantic token remapping, but requires visual validation.",
       "Danger variant is not implemented — no official component tokens exist for danger.",
-      "blue-line variant: Figma design confirmed, CSS tokens extracted in tokens.css.",
-      "Dark mode disabled state under review: --button-primary-disabled-bg references --color-border-default (rgba). Candidate fix: reference --color-bg-muted.",
-      "ghost variant tokens exist in tokens.css but harness uses blue-line instead."
+      "blue-line variant: Figma design confirmed via MCP 2026-05-12. Tokens aligned to Figma.",
+      "MVP3.4 Figma MCP comparison complete: 6 token mismatches corrected (see reports/mvp3-4-button-figma-mcp-comparison.md).",
+      "ghost variant tokens exist in tokens.css but harness uses blue-line instead.",
+      "secondary hover border removed: Figma confirms hover border = same as default (no change).",
+      "primary disabled-border added: Figma confirms all disabled borders = color-border-default."
     ]
   },
   "summary": {
@@ -41,7 +43,7 @@
     "list": ["primary", "secondary", "blue-line"],
     "pcSize": ["medium", "xsmall", "xxsmall"],
     "mobileSize": ["mobile"],
-    "state": ["default", "hover", "pressed", "disabled"],
+    "state": ["default", "hover", "pressed", "disabled", "loading"],
     "primary": {
       "tokenStatus": "stable",
       "codeStatus": "in-progress",
@@ -51,6 +53,7 @@
         "--button-primary-hover-bg",
         "--button-primary-pressed-bg",
         "--button-primary-disabled-bg",
+        "--button-primary-disabled-border",
         "--button-primary-default-text",
         "--button-primary-disabled-text",
         "--button-primary-default-icon",
@@ -67,7 +70,6 @@
         "--button-secondary-pressed-bg",
         "--button-secondary-disabled-bg",
         "--button-secondary-default-border",
-        "--button-secondary-hover-border",
         "--button-secondary-disabled-border",
         "--button-secondary-default-text",
         "--button-secondary-disabled-text",
@@ -118,8 +120,8 @@
       "--button-blue-line-disabled-text"
     ],
     "border": [
+      "--button-primary-disabled-border",
       "--button-secondary-default-border",
-      "--button-secondary-hover-border",
       "--button-secondary-disabled-border",
       "--button-blue-line-default-border",
       "--button-blue-line-hover-border",
@@ -149,12 +151,12 @@
     "radius": "--radius-button-md"
   },
   "harness": {
-    "columns": ["action", "default", "hover", "pressed", "disabled"],
+    "columns": ["action", "default", "hover", "pressed", "disabled", "loading"],
     "interactiveColumn": "action",
-    "staticPreviewColumns": ["default", "hover", "pressed", "disabled"],
-    "pcColumns": ["action", "default", "hover", "disabled"],
-    "mobileColumns": ["action", "default", "pressed", "disabled"],
-    "note": "ACTION column = real interactive test. DEFAULT/HOVER/PRESSED/DISABLED = static preview (is-preview class)."
+    "staticPreviewColumns": ["default", "hover", "pressed", "disabled", "loading"],
+    "pcColumns": ["action", "default", "hover", "pressed", "disabled", "loading"],
+    "mobileColumns": ["action", "default", "pressed", "disabled", "loading"],
+    "note": "ACTION = real interactive test (click / disabled / loading toggle). DEFAULT/HOVER/PRESSED/DISABLED/LOADING = static preview (is-preview class). ACTION is not a Figma state."
   },
   "pendingVariants": [
     {

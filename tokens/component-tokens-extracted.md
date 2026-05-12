@@ -32,7 +32,7 @@ color/status-card/*   → Status Card (관제 도메인)
 ```
 
 - **component**: button, chip, dropdown, input, checkbox, radio, toggle, pagination, nav, table, status-card
-- **variant**: primary, secondary, ghost, outlined …
+- **variant**: primary, secondary, blue-line (ghost deprecated — 2026-04-29 확정) …
 - **state**: default, hover, pressed, focus, selected, disabled, error, correct, loading …
 - **property**: bg, text, border, icon, indicator, check …
 
@@ -50,7 +50,8 @@ Primitive(Foundation)를 직접 참조하지 않습니다.
 | color/button/primary/bg--default | `--button-primary-default-bg` | `var(--color-action-primary-default)` | Primary 기본 배경 |
 | color/button/primary/bg--hover | `--button-primary-hover-bg` | `var(--color-action-primary-hover)` | Primary hover 배경 |
 | color/button/primary/bg--pressed | `--button-primary-pressed-bg` | `var(--color-action-primary-pressed)` | Primary pressed 배경 |
-| color/button/primary/bg--disabled | `--button-primary-disabled-bg` | `var(--color-border-default)` | Primary disabled 배경 |
+| color/button/primary/bg--disabled | `--button-primary-disabled-bg` | `var(--color-bg-subtle)` | Primary disabled 배경 |
+| color/button/primary/border--disabled | `--button-primary-disabled-border` | `var(--color-border-disabled)` | Primary disabled 테두리 |
 | color/button/primary/text--default | `--button-primary-default-text` | `var(--color-action-primary-text)` | Primary 텍스트 |
 | color/button/primary/text--disabled | `--button-primary-disabled-text` | `var(--color-text-disabled)` | Primary disabled 텍스트 |
 | color/button/secondary/bg--default | `--button-secondary-default-bg` | `var(--color-surface-default)` | Secondary 기본 배경 |
@@ -58,45 +59,53 @@ Primitive(Foundation)를 직접 참조하지 않습니다.
 | color/button/secondary/bg--pressed | `--button-secondary-pressed-bg` | `var(--color-bg-muted)` | Secondary pressed 배경 |
 | color/button/secondary/bg--disabled | `--button-secondary-disabled-bg` | `var(--color-bg-subtle)` | Secondary disabled 배경 |
 | color/button/secondary/border--default | `--button-secondary-default-border` | `var(--color-border-default)` | Secondary 기본 테두리 |
-| color/button/secondary/border--hover | `--button-secondary-hover-border` | `var(--color-border-strong)` | Secondary hover 테두리 |
-| color/button/secondary/border--disabled | `--button-secondary-disabled-border` | `var(--color-border-subtle)` | Secondary disabled 테두리 |
+| color/button/secondary/border--disabled | `--button-secondary-disabled-border` | `var(--color-border-disabled)` | Secondary disabled 테두리 |
 | color/button/secondary/text--default | `--button-secondary-default-text` | `var(--color-text-secondary)` | Secondary 텍스트 |
 | color/button/secondary/text--disabled | `--button-secondary-disabled-text` | `var(--color-text-disabled)` | Secondary disabled 텍스트 |
-| color/button/ghost/bg--hover | `--button-ghost-hover-bg` | `var(--color-bg-subtle)` | Ghost hover 배경 |
-| color/button/ghost/bg--pressed | `--button-ghost-pressed-bg` | `var(--color-bg-muted)` | Ghost pressed 배경 |
-| color/button/ghost/text--default | `--button-ghost-default-text` | `var(--color-text-secondary)` | Ghost 텍스트 |
-| color/button/ghost/text--disabled | `--button-ghost-disabled-text` | `var(--color-text-disabled)` | Ghost disabled 텍스트 |
+| color/button/blue-line/bg--default | `--button-blue-line-default-bg` | `var(--color-surface-default)` | Blue-line 기본 배경 |
+| color/button/blue-line/bg--hover | `--button-blue-line-hover-bg` | `var(--color-action-primary-subtle)` | Blue-line hover 배경 |
+| color/button/blue-line/bg--pressed | `--button-blue-line-pressed-bg` | `var(--color-action-primary-subtle)` | Blue-line pressed 배경 |
+| color/button/blue-line/bg--disabled | `--button-blue-line-disabled-bg` | `var(--color-bg-subtle)` | Blue-line disabled 배경 |
+| color/button/blue-line/border--default | `--button-blue-line-default-border` | `var(--color-action-primary-default)` | Blue-line 기본 테두리 |
+| color/button/blue-line/border--hover | `--button-blue-line-hover-border` | `var(--color-action-primary-default)` | Blue-line hover 테두리 (Figma 확인: default와 동일) |
+| color/button/blue-line/border--disabled | `--button-blue-line-disabled-border` | `var(--color-border-disabled)` | Blue-line disabled 테두리 |
+| color/button/blue-line/text--default | `--button-blue-line-default-text` | `var(--color-action-primary-default)` | Blue-line 텍스트 |
+| color/button/blue-line/text--disabled | `--button-blue-line-disabled-text` | `var(--color-text-disabled)` | Blue-line disabled 텍스트 |
+| color/button/blue-line/focus-ring | `--button-blue-line-focus-ring` | `var(--color-border-focus)` | Blue-line focus 링 |
 | color/button/primary/icon--default | `--button-primary-default-icon` | `var(--color-action-primary-text)` | Primary 아이콘 |
 | color/button/secondary/icon--default | `--button-secondary-default-icon` | `var(--color-icon-default)` | Secondary 아이콘 |
 | color/button/secondary/icon--disabled | `--button-secondary-disabled-icon` | `var(--color-icon-muted)` | Secondary disabled 아이콘 |
-| color/button/ghost/icon--default | `--button-ghost-default-icon` | `var(--color-icon-default)` | Ghost 아이콘 |
-| color/button/ghost/icon--disabled | `--button-ghost-disabled-icon` | `var(--color-icon-muted)` | Ghost disabled 아이콘 |
 | color/button/primary/focus-ring | `--button-primary-focus-ring` | `var(--color-border-focus)` | Primary focus 링 |
 | color/button/secondary/focus-ring | `--button-secondary-focus-ring` | `var(--color-border-focus)` | Secondary focus 링 |
 
+> **Ghost variant — Deprecated (2026-04-29):** ghost는 공식 V2.4 variant가 아닙니다. blue-line으로 대체됩니다. 토큰은 backwards compatibility를 위해 tokens.css에 보존되나 신규 사용 금지입니다.
+
 ### 상태 커버리지
 
-| 상태 | primary | secondary | ghost |
-|------|:-------:|:---------:|:-----:|
+| 상태 | primary | secondary | blue-line |
+|------|:-------:|:---------:|:---------:|
 | default | ✅ | ✅ | ✅ |
 | hover | ✅ | ✅ | ✅ |
 | pressed | ✅ | ✅ | ✅ |
-| focus | ✅ | ✅ | — |
+| focus | ✅ | ✅ | ✅ |
 | disabled | ✅ | ✅ | ✅ |
-| loading | `--button-primary-default-bg` 재사용 | | |
+| loading | ⚠️ Human Decision 필요 | ⚠️ | ⚠️ |
+
+> **loading 상태:** Figma 원본 확인 전까지 visual 기준 미확정. sw-button.css에 `.sw-button--loading` 골격 존재.
 
 ### CSS 구현
 
 ```css
 /* Button — Primary */
---button-primary-default-bg:  var(--color-action-primary-default);
---button-primary-hover-bg:    var(--color-action-primary-hover);
---button-primary-pressed-bg:  var(--color-action-primary-pressed);
---button-primary-disabled-bg: var(--color-border-default);
---button-primary-default-text:  var(--color-action-primary-text);
---button-primary-disabled-text: var(--color-text-disabled);
---button-primary-default-icon:  var(--color-action-primary-text);
---button-primary-focus-ring:    var(--color-border-focus);
+--button-primary-default-bg:      var(--color-action-primary-default);
+--button-primary-hover-bg:        var(--color-action-primary-hover);
+--button-primary-pressed-bg:      var(--color-action-primary-pressed);
+--button-primary-disabled-bg:     var(--color-bg-subtle);        /* Figma: #F5F5F5 */
+--button-primary-disabled-border: var(--color-border-disabled);  /* Figma: #D9D9D9 — 추가됨 */
+--button-primary-default-text:    var(--color-action-primary-text);
+--button-primary-disabled-text:   var(--color-text-disabled);
+--button-primary-default-icon:    var(--color-action-primary-text);
+--button-primary-focus-ring:      var(--color-border-focus);
 
 /* Button — Secondary */
 --button-secondary-default-bg:      var(--color-surface-default);
@@ -104,21 +113,28 @@ Primitive(Foundation)를 직접 참조하지 않습니다.
 --button-secondary-pressed-bg:      var(--color-bg-muted);
 --button-secondary-disabled-bg:     var(--color-bg-subtle);
 --button-secondary-default-border:  var(--color-border-default);
---button-secondary-hover-border:    var(--color-border-strong);
---button-secondary-disabled-border: var(--color-border-subtle);
+/* secondary hover border — Figma 확인: hover 시 border 변화 없음 (default와 동일) */
+--button-secondary-disabled-border: var(--color-border-disabled);  /* Figma: #D9D9D9 */
 --button-secondary-default-text:    var(--color-text-secondary);
 --button-secondary-disabled-text:   var(--color-text-disabled);
 --button-secondary-default-icon:    var(--color-icon-default);
 --button-secondary-disabled-icon:   var(--color-icon-muted);
 --button-secondary-focus-ring:      var(--color-border-focus);
 
-/* Button — Ghost */
---button-ghost-hover-bg:     var(--color-bg-subtle);
---button-ghost-pressed-bg:   var(--color-bg-muted);
---button-ghost-default-text: var(--color-text-secondary);
---button-ghost-disabled-text: var(--color-text-disabled);
---button-ghost-default-icon:  var(--color-icon-default);
---button-ghost-disabled-icon: var(--color-icon-muted);
+/* Button — Blue-line (Figma MCP 확인 완료 2026-05-12) */
+--button-blue-line-default-bg:      var(--color-surface-default);
+--button-blue-line-hover-bg:        var(--color-action-primary-subtle);
+--button-blue-line-pressed-bg:      var(--color-action-primary-subtle);
+--button-blue-line-disabled-bg:     var(--color-bg-subtle);
+--button-blue-line-default-border:  var(--color-action-primary-default);
+--button-blue-line-hover-border:    var(--color-action-primary-default); /* Figma: hover = default와 동일 */
+--button-blue-line-disabled-border: var(--color-border-disabled);
+--button-blue-line-default-text:    var(--color-action-primary-default);
+--button-blue-line-disabled-text:   var(--color-text-disabled);
+--button-blue-line-focus-ring:      var(--color-border-focus);
+
+/* Button — Ghost (DEPRECATED 2026-04-29 — 신규 사용 금지, blue-line 사용) */
+/* --button-ghost-*: tokens.css에 legacy 보존, 구현 금지 */
 
 
 ```

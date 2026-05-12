@@ -1,0 +1,11 @@
+# Source Guard Patch Candidates — bad-service
+# Generated: 2026-05-12
+# WARNING: Review each hunk before applying. Do not apply blindly.
+# Apply command (review first!): patch -p0 < patch-candidates-bad-service.diff
+
+--- a/scripts/guard/__fixtures__/bad-service/style.css
++++ b/scripts/guard/__fixtures__/bad-service/style.css
+@@ line 8 @@
+-color: rgb(32, 32, 32);
++color: var(--color-text-primary);
+# Confidence: high | Rule: raw-rgb

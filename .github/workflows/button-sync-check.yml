@@ -1,0 +1,29 @@
+name: Button Sync Check
+
+on:
+  schedule:
+    # 09:30 KST = 00:30 UTC
+    - cron: '30 0 * * *'
+  workflow_dispatch:
+
+jobs:
+  sync-check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Run Button Sync Check
+        run: node scripts/sync/button-sync-check.js
+
+      - name: Upload report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: button-sync-report
+          path: reports/button-sync-check.md
+          retention-days: 30

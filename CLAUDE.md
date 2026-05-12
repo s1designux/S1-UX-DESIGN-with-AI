@@ -2,7 +2,7 @@
 
 > 이 문서는 Claude가 디자인 시스템을 **수집, 정리, 구조화, 검증**하기 위한 기준입니다.
 > 현재 목표는 UI 구현이 아니라 **디자인 시스템을 구축하는 것**입니다.
-> 마지막 업데이트: 2026-05-11 (MVP3.2 Button variant 정합, blue-line token 추가, ghost deprecated)
+> 마지막 업데이트: 2026-05-12 (Button 토큰 불일치 수정 완료 — focus-ring 삭제, s1-btn 공식화, --color-border-disabled 문서화)
 
 ---
 
@@ -22,6 +22,16 @@
 | 2026-05-11 | MVP3.2 Button variant 정합 | tokens.css·component.tokens.json·button.css·button-harness.html | blue-line 토큰 추가, ghost deprecated, HTML/CSS code view 추가 |
 | 2026-05-11 | MVP3.3 Portal IA 재편 | assets/js/main.js·pages/registry-health.html·pages/button-harness.html | System 그룹 분리, Button 탭 구조 추가 |
 | 2026-05-11 | MVP3.3 Button Components 통합 | pages/components.html·registry/components/button.json·assets/js/main.js | Button Harness 메뉴 제거, ACTION 컬럼 추가, registry 사이즈 정합 |
+| 2026-05-12 | MVP3.4 Button Figma MCP 비교 | reports/mvp3-4-button-figma-mcp-comparison.md | 토큰 불일치 7건·이중 CSS 구조 문서화, Figma nodeId 미등록 확인 |
+| 2026-05-12 | MVP3.4.1 Button Sync 자동화 | scripts/sync/button-sync-check.js·package.json·.github/workflows | 37개 정합성 검사, 일일 09:30 KST 자동 실행 |
+| 2026-05-12 | MVP3.5 Source Guard MVP | scripts/guard/·reports/source-guard-*.md | 외부 서비스 프로젝트 디자인시스템 준수 여부 검사기 |
+| 2026-05-12 | MVP3.6 Source Guard Fix Suggestions | scripts/guard/suggest-fixes.js·token-suggestion.js·fix-suggestion-rules.js·patch-writer.js | HEX→semantic token 역매핑 + 수정 후보 생성기 |
+| 2026-05-12 | MVP3.7 Source Guard Apply Mode | scripts/guard/apply-fixes.js·apply-rules.js·patch-utils.js·backup-utils.js | high-confidence 자동 적용, dry-run/apply 분기, backup 생성 |
+| 2026-05-12 | MVP3.8 Source Guard CI Dry-run | .github/workflows/source-guard-dry-run.yml | GitHub Actions 자동 검수: daily 09:30 KST + PR trigger + artifact 업로드 |
+| 2026-05-12 | Pre-MVP4 Input 분류 | reports/pre-mvp4-input-classification.md·registry/components/input.json·registry/figma/figma-map.json | Figma MCP 8 nodes 분석, Base Input·Slots·Pattern·Picker 분류, 토큰 Gap 분석, HD 8개 |
+| 2026-05-12 | MVP4.1 Input Related Composed Fields | pages/components.html·registry/components/input.json·README.md·CLAUDE.md·reports/mvp4-1-input-patterns.md | Search Input·Password Field·Input with Unit을 Components>Input 하단 Related Composed Fields로 정리 |
+| 2026-05-12 | MVP4.2 Input Composed Fields Slot Correction | pages/components.html·registry/components/input.json·README.md·CLAUDE.md·reports/mvp4-2-input-composed-fields.md | Search Input prefixIcon 구조 정정 → suffixActionGroup 구조 반영. 2-state 프리뷰 추가. |
+| 2026-05-12 | MVP4.2 Revision — Related Composed Fields Interactive | pages/components.html·registry/components/input.json·CLAUDE.md·reports/mvp4-2-input-composed-fields.md | 정적 is-preview → 실제 인터랙션. Figma MCP 아이콘 노드 확인. setupRelatedComposedFields() 추가. |
 
 ---
 
@@ -38,33 +48,65 @@
 * ✅ Button blue-line variant — tokens.css + component.tokens.json 추가 완료 (2026-05-11)
 * ✅ 가이드 HTML — foundation / semantic / components / guide-md / md-review 페이지 완료
 * ✅ MVP3.3 Portal IA 재편 — System 그룹 분리, Button 페이지 6탭 구조 전환 완료 (2026-05-11)
+* ✅ MVP3.4 Button Figma MCP 비교 — 토큰 불일치 7건 + 이중 CSS 구조 문서화 완료 (2026-05-12)
+* ✅ MVP3.4.1 Button Sync 자동화 — 37개 정합성 검사 스크립트 + GitHub Actions 일일 자동화 완료 (2026-05-12)
+* ✅ MVP3.5 Source Guard MVP — 외부 서비스 프로젝트 6종 위반 탐지 + 리포트 생성 완료 (2026-05-12)
+* ✅ MVP3.6 Source Guard Fix Suggestions — HEX→semantic token 역매핑 엔진 + before/after 수정 후보 + patch diff 생성 완료 (2026-05-12)
+* ✅ MVP3.7 Source Guard Apply Mode — high-confidence 자동 적용 + dry-run/apply 분기 + backup + apply log 완료 (2026-05-12)
+* ✅ MVP3.8 Source Guard CI Dry-run — GitHub Actions 자동 검수 파이프라인 구축 완료 (2026-05-12)
+* ✅ Pre-MVP4 Input 분류 — Figma MCP 8 nodes 분석, Base Input/Slots/Pattern/Picker 분류, 토큰 Gap 17개, HD 8개 도출 (2026-05-12)
 
 ## 미결 사항 (다음 우선순위)
 
 ```
-1. Dark Mode 버튼·컨트롤 색상 확정
+1. Button 토큰 불일치 수정 ✅ 2026-05-12 완료
+   결정 내용:
+   - focus-ring 삭제: 디자인시스템 기준 없음. --button-*-focus-ring 3개 토큰 제거, .is-focus outline CSS 제거.
+   - s1-btn 공식화: sw-button(button.css)은 deprecated. s1-btn(components.html)이 공식 CSS 시스템.
+   - --color-border-disabled: semantic.md Light/Dark 섹션에 문서화 완료.
+   이미 적용된 토큰 수정: primary-disabled-bg, blue-line-hover-border, blue-line-default-text, disabled-border 계열.
+
+2. Figma Button nodeId 등록
+   - registry/figma/figma-map.json 의 Button componentSetKey / figmaNodeId 모두 빈 문자열
+   - Figma URL (node-id 포함) 제공 시 즉시 등록 가능
+
+3. Dark Mode 버튼·컨트롤 색상 확정
    - --color-text-disabled dark 값: 현재 #35363F → #55575F 조정 검토 중
-   - --button-primary-disabled-bg dark: 현재 var(--color-border-default) = rgba(255,255,255,0.07)
-     → var(--color-bg-muted) 참조 수정 검토 중
    - blue-line variant dark mode 시각 검증 미완료 (darkModeStatus: pending)
    - toggle tokens 불일치: MD는 var(--color-text-placeholder), CSS는 var(--color-border-default)
 
-2. Chip 토큰 구조 정합
+4. Chip 토큰 구조 정합
    - component-tokens-extracted.md: line/solid 2타입 분리 정의
    - tokens.css: 단일 구조(--chip-default-*, --chip-selected-* 등) 통합
    - 어느 구조로 확정할지 결정 필요
 
-3. Semantic Token Figma 반영 (Figma 파일 직접 수정 필요)
+5. Semantic Token Figma 반영 (Figma 파일 직접 수정 필요)
    - 오타 수정: color/status-card/text/*--defualt → --default (3건)
    - surface/status/* → Domain Token 이동 여부 확정
 
-4. Dark border 4 토큰 확정
+6. Dark border 4 토큰 확정
    - --color-border-subtle/default/strong/emphasis dark 값 candidate 상태
    - resolved HEX 또는 foundation dark scale 참조 확정 필요 (Human decision)
 
-5. 다음 Core Component: Checkbox 또는 Input implementation
-6. Pattern 페이지 설계 (search-table, tree-detail)
-7. Legacy 가이드 작성
+7. Input 토큰 Human Decision → ✅ 2026-05-12 전체 결정 완료
+   HD-1: --color-form-control-* Semantic 유지, --input-*은 Component alias
+   HD-2: hover 상태 삭제 (Figma 미정의)
+   HD-3: complete = 별도 bg/border 없음. default와 동일. text 차이로 구분
+   HD-4: correct로 통일
+   HD-5: --select-disabled-border → Select registry로 이동
+   HD-6: Inputbox_large → Textarea 컴포넌트로 편입
+   HD-7: Label 색상 → --color-text-primary 연결
+   HD-8: --input-error-bg 불필요 (default와 동일)
+   상세: reports/pre-mvp4-input-classification.md
+
+8. MVP4 Input 구현 (HD 완료, 구현 시작 가능)
+   - tokens/semantic.md에 color-form-control-* 카테고리 추가
+   - tokens/component-tokens-extracted.md에 --input-* alias 추가
+   - assets/css/tokens.css에 CSS 정의 추가
+   - pages/components.html에 Input harness 추가
+9. Textarea 컴포넌트 registry 생성 (registry/components/textarea.json)
+10. Pattern 페이지 설계 (search-table, tree-detail)
+11. Legacy 가이드 작성
 ```
 
 ---
@@ -432,6 +474,22 @@ SITE_NAV는 사용자 대면 그룹과 System 운영 그룹으로 분리한다.
 2. **Button 위치** — Button 컴포넌트 페이지는 Design System 그룹에 위치한다. Registry/System에 두지 않는다.
 3. **리네임 규칙** — "Registry Health"는 항상 "System Status"로 표시한다. 코드(id, 파일명)는 유지, 텍스트만 변경.
 4. **컴포넌트 상세 페이지 탭 구조** — 컴포넌트 harness 페이지는 Preview / Usage / Code / Figma / Review / Token Details 탭을 기본 구조로 사용한다.
+
+## Current Button Standard (MVP3.4.2 — 2026-05-12 확정)
+
+Button을 편집하거나 검토할 때 아래 기준을 단일 참조점으로 사용한다.
+
+1. **공식 variants** — primary / secondary / blue-line. ghost는 공식 variant가 아니다. danger는 삭제됨.
+2. **Figma states** — default / hover / pressed / disabled / loading
+3. **Harness columns** — action / default / hover / pressed / disabled / loading
+4. **action ≠ Figma state** — action은 Figma 디자인 상태가 아니다. HTML harness의 실제 인터랙션 테스트 컬럼이다.
+5. **default = static preview** — default 컬럼 버튼에는 `.is-preview`를 적용한다.
+6. **Size** — PC: medium(h44) / xsmall(h34) / xxsmall(h28), Mobile: mobile(h48)
+7. **CSS class** — s1-btn-lg=medium, 무수식어=xsmall, s1-btn-sm=xxsmall, s1-btn-mobile=mobile. **s1-btn이 공식 CSS 시스템. sw-button(button.css)은 deprecated.**
+8. **Token policy** — 색상은 반드시 Semantic 경유. raw HEX 금지. Foundation 직접 참조 금지.
+9. **focus-ring 없음** — 디자인시스템 기준 미정의. --button-*-focus-ring 토큰 없음. is-focus outline CSS 없음.
+10. **Sync** — Button 기준 변경 시 registry / HTML / md / reports를 함께 수정. `npm run sync:button`으로 정합성 검사.
+11. **불일치 발견 시** — 임의 결정 금지. `reports/button-sync-check.md`에 기록 후 사용자 확인.
 
 ## MVP3.3 Button Components Integration 규칙 (2026-05-11 확정)
 
@@ -828,3 +886,131 @@ reports/                      ← 검수 결과물 (MD)
 4. resolved 값이 승인되기 전까지 candidate 상태를 유지한다.
 5. Product UI 컴포넌트에서 raw rgba border 값을 직접 사용하지 않는다.
 6. unresolved opacity 기반 border 값은 report에 기록한다.
+
+---
+
+# 🛡️ MVP3.5 Source Guard Rules (추가: 2026-05-12)
+
+## Source Guard 편집 시
+
+1. **디자인시스템 폴더 자체를 검사 대상으로 보지 않는다.** Source Guard는 `--target`으로 전달된 외부 서비스 프로젝트를 검사한다.
+2. **registry가 기준 원장이다.** Guard rules와 allowed token 목록은 항상 registry JSON에서 로드한다.
+3. **실행 방법:**
+   ```bash
+   npm run guard -- --target ../service-project
+   ```
+4. **MVP3.5에서는 자동 수정하지 않는다.** 리포트 생성 후 Human 확인이 선행되어야 서비스 파일을 수정할 수 있다.
+5. **리포트 위치:** `reports/source-guard-[target-name].md`
+6. **exit code 기준:** error 발견 시 1, warning만이면 0, 이상 없으면 0.
+
+## Guard 검사 항목
+
+| 검사 | 심각도 | 규칙 |
+|------|--------|------|
+| Raw HEX (#color) | error | R02 |
+| rgb() | error | R02 |
+| rgba() | warning | EX02/EX03 예외 확인 필요 |
+| Foundation color 직접 참조 | warning | R01 |
+| Undefined CSS variable | error | — |
+| Ghost/Danger button variant | error | R05 |
+| Outline/Line button variant | warning | 혼동 가능성 |
+| Inline style color | error | — |
+
+## MVP3.8 Source Guard CI Rules
+
+When editing Source Guard CI workflow:
+
+1. **CI에서는 `--apply`를 사용하지 않는다.** CI는 항상 dry-run / report mode만 실행한다.
+2. **`--dry-run`은 CI에서 허용된다.** 파일을 수정하지 않기 때문이다.
+3. **reports는 artifact로 업로드해야 한다.** `retention-days: 30`.
+4. **디자인시스템 repository가 source of truth다.** target은 `--target` 옵션으로 전달한다.
+5. **외부 서비스 프로젝트가 CI 환경에 없을 경우** `scripts/guard/__fixtures__/bad-service`를 기본 target으로 사용한다.
+6. **CI에서 자동으로 commit/push하지 않는다.** 리포트 생성만 수행한다.
+7. **guard step이 실패(error)해도 suggest와 dry-run은 실행된다.** `if: always()` + `continue-on-error: true`로 처리한다.
+8. **최종 job 실패 여부는 guard exit code를 따른다.** error가 있으면 CI 실패.
+
+## MVP3.7 Source Guard Apply Mode Rules
+
+When applying Source Guard fixes:
+
+1. **외부 서비스 파일은 `--apply` 옵션이 있을 때만 수정한다.** 없으면 절대 파일을 수정하지 않는다.
+2. **`--dry-run`을 먼저 실행해서 적용 예정 내용을 확인한다.**
+3. **High-confidence 항목만 자동 적용한다.** Medium 이하는 needs-review로 분류한다.
+4. **아래 항목은 절대 자동 적용하지 않는다:**
+   - ghost / danger button variant
+   - rgba() 값
+   - 다의적 색상 (#FFFFFF 등 여러 semantic token이 공유하는 색상)
+   - foundation color → semantic 교체 중 후보가 여러 개인 경우
+   - inline style → class 구조 변경
+   - 새 token 생성
+5. **`--apply` 실행 시 수정 전 반드시 backup을 생성한다.** (`reports/apply-backups/`)
+6. **apply log는 항상 생성한다.** (`reports/source-guard-apply-log-[target].md`)
+7. **파일 치환 안전성:** before 내용이 파일에 정확히 1번 존재할 때만 적용한다. 0번이거나 2번 이상이면 skip.
+
+## MVP3.6 Source Guard Fix Suggestion Rules
+
+When generating Source Guard fix suggestions:
+
+1. **디자인시스템 폴더가 source of truth다.** 외부 서비스 프로젝트는 `--target`으로 전달된다.
+2. **MVP3.6에서는 외부 서비스 파일을 직접 수정하지 않는다.** 리포트와 patch 후보만 생성한다.
+3. **High confidence 항목만 patch candidate에 포함한다.** 모호한 항목은 Needs Review로 분류한다.
+4. **rgba는 자동 치환하지 않는다.** token-exceptions EX02/EX03 해당 여부를 Human이 확인해야 한다.
+5. **ghost → secondary/blue-line 교체는 Human decision 필수다.** 자동 수정 금지.
+6. **HEX 역매핑 엔진:** foundation.colors.json HEX → semantic.colors.json light value 경로로 역추적한다.
+7. **Confidence 기준:**
+   - `high`: semantic token 1개 exact match
+   - `medium`: foundation token exact match (semantic 없음)
+   - `needs-review`: 여러 semantic token이 동일 HEX를 공유
+   - `needs-human`: rgba, ghost/danger variant, 구조 변경 필요
+   - `unmapped`: 어떤 token도 매핑되지 않음
+
+## Guard 추가 확장 시
+
+- `scripts/guard/check-*.js` 패턴으로 새 검사기를 추가한다.
+- 새 검사기는 `index.js`에서 import 후 `allFindings.push(...)` 형태로 연결한다.
+- registry에 새 token 카테고리 추가 시 `load-registry.js`의 `knownTokens` 수집 로직을 업데이트한다.
+
+## Input 편집 시 (HD 확정 2026-05-12)
+
+Input 컴포넌트를 편집하거나 토큰을 정의할 때:
+
+1. **Figma Base Input = `Login input` frame (6443:4408).** 이 이름이 이상해도 올바른 원본이다.
+2. **Figma 상태 이름 ≠ registry 상태 이름.** `selected` = `focus`, `success` = `correct`.
+3. **토큰 2레이어 구조:** Semantic = `--color-form-control-*`, Component alias = `--input-*` (→ form-control 참조).
+4. **`complete` 상태는 별도 bg/border 토큰 없다.** default와 동일한 시각. text 차이로만 구분.
+5. **`hover` 상태 토큰 없다.** Figma 미정의, registry에서 삭제됨.
+6. **`--select-disabled-border`는 Input에 없다.** Select 컴포넌트로 이동.
+7. **Picker (timepicker/datepicker)는 별도 컴포넌트로 취급.** error/correct 상태 없음. MVP5 이후 구현.
+8. **Inputbox_large = Textarea 컴포넌트.** Input의 variant가 아님.
+9. **Label 색상 = `--color-form-control-text-label` → `var(--color-text-primary)`.**
+10. **`--input-error-bg` 없다.** error bg = default bg와 동일 (white), 별도 토큰 불필요.
+11. **확정 토큰 목록은 `registry/components/input.json` 참조.**
+
+## Input Related Composed Fields Rules (MVP4.1 — 2026-05-12 확정)
+
+Input 컴포넌트를 편집하거나 구성 필드를 추가할 때:
+
+1. **Search Input, Password Field, Input with Unit은 Components > Input 하단에 위치한다.** 별도 Pattern 페이지로 분리하지 않는다.
+2. **Basic Input 설명 최하단 `Related Composed Fields` 섹션에 배치한다.** Base Input의 state/variant 매트릭스에 추가하지 않는다.
+3. **이 항목들은 Base Input 공식 상태(state)가 아니다.** `is-search`, `is-password` 등 modifier class로 처리하지 않는다.
+4. **드롭다운·리스트·폼·결과 패널을 포함하는 더 큰 흐름은 Pattern/Module로 분리한다.** Search Input + Dropdown + Result List = Search Module Pattern.
+5. **DatePicker, TimePicker, Textarea는 별도 Component 후보로 유지한다.** Input 섹션에 혼재하지 않는다.
+6. **registry/components/input.json의 `relatedComposedFields` 배열이 기준 원장이다.**
+
+## Input Composed Field Slot Rules (MVP4.2 — 2026-05-12 확정)
+
+Related Composed Fields의 slot 구조를 편집할 때:
+
+1. **Search Input은 prefixIcon 구조가 아니다.** 검색 아이콘은 `suffixActionGroup` 안에 위치한다.
+2. **Search Input suffixActionGroup 순서:** `clearAction` (조건부, 왼쪽) → `searchAction` (항상, 오른쪽). clearAction은 값이 있을 때만 나타나며, searchAction의 왼쪽에 위치한다.
+3. **Password Field suffixActionGroup 순서:** `visibilityToggle` (항상, 왼쪽) → `clearAction` (조건부, 오른쪽). clearAction은 값이 있을 때만 나타난다.
+4. **Input with Unit은 `suffixText: unitLabel` 구조다.** 버튼이 아닌 텍스트 레이블이며 `flex-shrink: 0`.
+5. **suffixActionGroup은 flex row 컨테이너다.** gap: 2px. `.s1-suffix-action-group` CSS 클래스 사용.
+6. **카드 프리뷰는 단일 interactive 상태로 제공한다.** 정적 2-state(Empty/Filled, Hidden/Visible) 대신 실제 입력 가능한 interactive preview 1개를 사용한다. MVP4.2 Revision에서 전환됨.
+7. **registry `slotStructure` 필드가 slot 정의의 기준 원장이다.** 기존 `slots: []` 배열 형식은 MVP4.2에서 `slotStructure` 객체로 교체됨.
+8. **Related Composed Fields preview는 실제 interactive다.** 정적 is-preview가 아니라 입력 가능한 실제 input 요소를 사용한다. pointer-events:none / is-preview 클래스 사용 금지.
+9. **인터랙션 JS는 `setupRelatedComposedFields()` 함수로 초기화한다.** DOMContentLoaded 직후 또는 script 말미에 `setupRelatedComposedFields(document)` 호출. `setupSearchInputField(root)` + `setupPasswordFieldInput(root)` 두 함수로 구성.
+10. **Search Input / Password Field clear 버튼은 `hidden` attribute로 제어한다.** CSS `display:none`이 아닌 HTML `hidden`으로 가시성 관리. `[data-clear-action]` 셀렉터 사용.
+11. **Password Field visibility toggle은 `aria-pressed` attribute를 업데이트한다.** 상태 전환 시 aria-label도 함께 변경 ("비밀번호 보기" / "비밀번호 숨기기"). `[data-icon-hidden]` / `[data-icon-visible]` data attribute로 아이콘 전환.
+12. **Figma 아이콘 노드명 확인 완료 (2026-05-12).** `ic_찾기/조회` (검색, 6452:5930), `ic_비밀번호미표시` (비밀번호 숨김, 135:6692), `remove` (삭제, 882:4061). eye-off(visible) 아이콘 노드명 미확인 — candidate SVG 사용 중.
+13. **`data-related-field` attribute가 각 composed field 컨테이너의 식별자다.** `data-related-field="search-input"` / `"password-field"` / `"input-with-unit"`. JS는 이 attribute로 스코프를 한정한다.

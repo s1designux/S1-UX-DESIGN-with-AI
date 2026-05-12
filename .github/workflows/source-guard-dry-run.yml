@@ -1,0 +1,96 @@
+name: Source Guard Dry Run
+
+on:
+  workflow_dispatch:
+    inputs:
+      target:
+        description: "Target path to scan (default: test fixture)"
+        required: false
+        default: "scripts/guard/__fixtures__/bad-service"
+
+  pull_request:
+    paths:
+      - "registry/**"
+      - "scripts/guard/**"
+      - "package.json"
+      - "CLAUDE.md"
+      - "README.md"
+
+  schedule:
+    # 09:30 KST = 00:30 UTC
+    - cron: "30 0 * * *"
+
+jobs:
+  source-guard-dry-run:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Resolve target path
+        id: target
+        run: |
+          TARGET="${{ github.event.inputs.target }}"
+          if [ -z "$TARGET" ]; then
+            TARGET="scripts/guard/__fixtures__/bad-service"
+          fi
+          echo "target=$TARGET" >> "$GITHUB_OUTPUT"
+          echo "Target: $TARGET"
+
+      - name: Run Source Guard
+        id: guard
+        run: npm run guard -- --target "${{ steps.target.outputs.target }}"
+        continue-on-error: true
+
+      - name: Generate Source Guard Fix Suggestions
+        id: suggest
+        run: npm run guard:suggest -- --target "${{ steps.target.outputs.target }}"
+        if: always()
+        continue-on-error: true
+
+      - name: Run Source Guard Apply Dry Run
+        id: dry_run
+        run: npm run guard:apply -- --target "${{ steps.target.outputs.target }}" --dry-run
+        if: always()
+        continue-on-error: true
+
+      - name: Upload Source Guard reports
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: source-guard-reports
+          path: |
+            reports/source-guard-*.md
+            reports/patch-candidates-*.diff
+            reports/source-guard-apply-log-*.md
+          retention-days: 30
+
+      - name: Report summary
+        if: always()
+        run: |
+          echo "## Source Guard CI Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "| Step | Result |" >> $GITHUB_STEP_SUMMARY
+          echo "|---|---|" >> $GITHUB_STEP_SUMMARY
+          echo "| Source Guard (detect) | ${{ steps.guard.outcome }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Fix Suggestions | ${{ steps.suggest.outcome }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Apply Dry Run | ${{ steps.dry_run.outcome }} |" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Target:** \`${{ steps.target.outputs.target }}\`" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "Reports uploaded as artifact \`source-guard-reports\`." >> $GITHUB_STEP_SUMMARY
+
+      - name: Fail job if errors found
+        if: steps.guard.outcome == 'failure'
+        run: |
+          echo "Source Guard detected errors. Review the uploaded reports."
+          exit 1

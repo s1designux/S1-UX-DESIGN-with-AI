@@ -109,29 +109,26 @@
       --button-primary-hover-bg:        var(--color-action-primary-hover);
       --button-primary-pressed-bg:      var(--color-action-primary-pressed);
       --button-primary-disabled-bg:     var(--color-bg-subtle);
-      --button-primary-disabled-border: var(--color-border-default);
+      --button-primary-disabled-border: var(--color-border-disabled);
       --button-primary-default-text:    var(--color-action-primary-text);
       --button-primary-disabled-text:   var(--color-text-disabled);
-      --button-primary-focus-ring:      var(--color-border-focus);
       --button-secondary-default-bg:      var(--color-surface-default);
       --button-secondary-hover-bg:        var(--color-bg-subtle);
       --button-secondary-pressed-bg:      var(--color-bg-muted);
       --button-secondary-disabled-bg:     var(--color-bg-subtle);
       --button-secondary-default-border:  var(--color-border-default);
-      --button-secondary-disabled-border: var(--color-border-default);
+      --button-secondary-disabled-border: var(--color-border-disabled);
       --button-secondary-default-text:    var(--color-text-secondary);
       --button-secondary-disabled-text:   var(--color-text-disabled);
-      --button-secondary-focus-ring:      var(--color-border-focus);
       --button-blue-line-default-bg:       var(--color-surface-default);
       --button-blue-line-hover-bg:         var(--color-action-primary-subtle);
       --button-blue-line-pressed-bg:       var(--color-action-primary-subtle);
       --button-blue-line-disabled-bg:      var(--color-bg-subtle);
       --button-blue-line-default-border:   var(--color-action-primary-default);
       --button-blue-line-hover-border:     var(--color-action-primary-default);
-      --button-blue-line-disabled-border:  var(--color-border-default);
-      --button-blue-line-default-text:     var(--color-text-link);
+      --button-blue-line-disabled-border:  var(--color-border-disabled);
+      --button-blue-line-default-text:     var(--color-action-primary-default);
       --button-blue-line-disabled-text:    var(--color-text-disabled);
-      --button-blue-line-focus-ring:       var(--color-border-focus);
       /* Input */
       --input-default-bg:       var(--color-surface-default);
       --input-disabled-bg:      var(--color-bg-subtle);
@@ -247,6 +244,7 @@
       border-radius: 12px;
       padding: 24px 20px;
       transition: background 0.3s;
+      overflow-x: auto;
     }
 
     .state-strip { display: flex; gap: 20px; flex-wrap: wrap; align-items: flex-start; }
@@ -354,7 +352,6 @@
     }
     .s1-btn-primary:hover, .s1-btn-primary.is-hover { background: var(--button-primary-hover-bg); }
     .s1-btn-primary.is-pressed { background: var(--button-primary-pressed-bg); }
-    .s1-btn-primary.is-focus { outline: 2px solid var(--button-primary-focus-ring); outline-offset: -2px; }
     .s1-btn-primary.is-disabled, .s1-btn-primary:disabled {
       background: var(--button-primary-disabled-bg);
       color: var(--button-primary-disabled-text);
@@ -370,7 +367,6 @@
       background: var(--button-secondary-hover-bg);
     }
     .s1-btn-secondary.is-pressed { background: var(--button-secondary-pressed-bg); }
-    .s1-btn-secondary.is-focus { outline: 2px solid var(--button-secondary-focus-ring); outline-offset: -2px; }
     .s1-btn-secondary.is-disabled, .s1-btn-secondary:disabled {
       background: var(--button-secondary-disabled-bg);
       color: var(--button-secondary-disabled-text);
@@ -387,7 +383,6 @@
       border-color: var(--button-blue-line-hover-border);
     }
     .s1-btn-blue-line.is-pressed { background: var(--button-blue-line-pressed-bg); }
-    .s1-btn-blue-line.is-focus { outline: 2px solid var(--button-blue-line-focus-ring); outline-offset: -2px; }
     .s1-btn-blue-line.is-disabled, .s1-btn-blue-line:disabled {
       background: var(--button-blue-line-disabled-bg);
       color: var(--button-blue-line-disabled-text);
@@ -396,7 +391,7 @@
     }
 
     /* Button: PC/Mobile matrix layout */
-    .platform-section + .platform-section { margin-top: 20px; }
+    .platform-section + .platform-section { margin-top: 24px; }
     .platform-header {
       font-size: 11px; font-weight: 700; color: #6b7280;
       margin-bottom: 12px; display: flex; align-items: center; gap: 6px;
@@ -407,9 +402,18 @@
     .platform-dot.mobile { background: #8b5cf6; }
     .state-size-matrix {
       display: grid;
-      grid-template-columns: 68px 90px 1fr 1fr 1fr;
-      gap: 10px 12px;
-      align-items: center;
+      grid-template-columns: 100px 200px 150px 150px 150px;
+      column-gap: 16px;
+      row-gap: 14px;
+      align-items: start;
+      justify-content: center;
+      max-width: 1060px;
+    }
+    @media (max-width: 1024px) {
+      .state-size-matrix {
+        grid-template-columns: 80px 180px repeat(3, minmax(110px, 1fr));
+        column-gap: 12px;
+      }
     }
     .matrix-col-header {
       font-size: 10px; font-weight: 600; color: #9ca3af;
@@ -421,26 +425,66 @@
     }
     .matrix-row-label {
       font-size: 10px; font-weight: 600; color: #9ca3af;
-      text-align: right; padding-right: 6px; line-height: 1.4;
+      text-align: left; justify-self: start; line-height: 1.4;
     }
     .matrix-row-label span { display: block; font-weight: 400; color: #c4c4c4; font-size: 9px; }
-    .matrix-cell { display: flex; justify-content: center; }
+    .matrix-cell { display: flex; justify-content: center; align-items: center; }
+    .state-size-matrix .s1-btn { width: 60px; }
+    .state-size-matrix .s1-btn-lg { width: 90px; }
+    .state-size-matrix .s1-btn-mobile { width: 90px; }
     .is-preview { pointer-events: none; cursor: default; }
     /* ACTION cell */
-    .action-cell { flex-direction: column; gap: 5px; }
-    .action-tools { display: flex; gap: 4px; align-items: center; justify-content: center; flex-wrap: wrap; }
-    .action-tool-btn {
-      padding: 1px 5px; font-size: 9px; font-weight: 600; line-height: 1.6;
-      border: 1px solid #d1d5db; border-radius: 3px; background: #f9fafb;
-      color: #374151; cursor: pointer; white-space: nowrap;
+    .action-cell { flex-direction: column; align-items: center; gap: 0; }
+    .action-test-controls {
+      margin-top: 8px;
+      display: flex; gap: 6px; align-items: center;
+      justify-content: center; flex-wrap: wrap;
+      font-size: 11px; color: #8b95a1;
     }
-    .action-tool-btn:hover { background: #e5e7eb; }
-    .action-tool-btn.is-on { background: #fee2e2; color: #991b1b; border-color: #fca5a5; }
-    .action-click-count { font-size: 9px; color: #9ca3af; font-variant-numeric: tabular-nums; min-width: 24px; text-align: center; }
+    .action-mini-toggle {
+      height: 22px; padding: 0 8px;
+      border-radius: 5px; border: 1px solid #d9dfe8;
+      background: #fff; font-size: 11px; line-height: 1;
+      cursor: pointer; white-space: nowrap; color: #374151;
+    }
+    .action-mini-toggle:hover { background: #f3f4f6; }
+    .action-mini-toggle.is-on { background: #fee2e2; color: #991b1b; border-color: #fca5a5; }
+    [data-theme="dark"] .action-mini-toggle {
+      background: #2E2F38; border-color: rgba(255,255,255,0.12); color: #B8BABF;
+    }
+    [data-theme="dark"] .action-mini-toggle:hover { background: #35363F; }
+    [data-theme="dark"] .action-mini-toggle.is-on { background: #3D1515; color: #F06070; border-color: #F06070; }
+    .action-click-count { font-size: 11px; color: #9ca3af; font-variant-numeric: tabular-nums; }
     .token-variant-header { background: #f0f9ff !important; }
     .token-variant-label {
       display: inline-block; font-size: 10px; font-weight: 700;
       padding: 2px 7px; border-radius: 4px; background: #dbeafe; color: #1d4ed8; width: fit-content;
+    }
+
+    /* ─ General component state matrix ─ */
+    .comp-state-matrix {
+      display: grid;
+      column-gap: 16px;
+      row-gap: 14px;
+      align-items: start;
+      justify-content: center;
+      max-width: 1060px;
+    }
+    /* 행 레이블이 있는 경우(Chip, Input) */
+    .comp-row-label {
+      font-size: 10px; font-weight: 600; color: #9ca3af;
+      text-align: left; justify-self: start; line-height: 1.4;
+    }
+    .comp-state-cell {
+      display: flex; justify-content: center; align-items: flex-start;
+    }
+    .comp-action-cell {
+      display: flex; flex-direction: column; align-items: center;
+    }
+    @media (max-width: 1024px) {
+      .comp-state-matrix {
+        column-gap: 12px;
+      }
     }
 
     /* Checkbox */
@@ -635,6 +679,7 @@
     }
     .s1-input-field.input-size-small  { height: 34px; padding: 0 8px 0 12px; }
     .s1-input-field.input-size-xsmall { height: 28px; padding: 0 8px 0 12px; }
+    .s1-input-field.input-size-mobile { height: 48px; padding: 0 12px 0 16px; }
     .s1-input-field input {
       border: none; background: transparent; outline: none;
       font-size: 14px; font-family: inherit; color: var(--color-text-secondary);
@@ -667,6 +712,71 @@
     .s1-input-remove { display: flex; cursor: default; }
     .input-interactive .input-clear-btn { display: none; }
     .input-interactive.has-value .input-clear-btn { display: flex; }
+
+    /* Related Composed Fields */
+    .related-composed-header {
+      border-top: 1px solid var(--color-border-subtle);
+      padding-top: 24px; margin-bottom: 16px;
+      display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap;
+    }
+    .related-composed-title {
+      font-size: 13px; font-weight: 700; color: var(--color-text-primary);
+    }
+    .related-composed-subtitle {
+      font-size: 11px; color: var(--color-text-secondary); line-height: 1.5;
+    }
+    .related-composed-grid {
+      display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px;
+    }
+    @media (max-width: 700px) { .related-composed-grid { grid-template-columns: 1fr; } }
+    .related-composed-card {
+      border: 1px solid var(--color-border-subtle);
+      border-radius: 8px; padding: 18px 16px;
+      background: var(--color-surface-default);
+    }
+    .related-composed-card-name {
+      font-size: 13px; font-weight: 600; color: var(--color-text-primary); margin-bottom: 4px;
+    }
+    .related-composed-card-desc {
+      font-size: 11px; color: var(--color-text-secondary); line-height: 1.5; margin-bottom: 14px;
+    }
+    .related-composed-badge {
+      display: inline-block; font-size: 10px; font-weight: 600;
+      padding: 2px 8px; border-radius: 4px; margin-bottom: 14px;
+      background: #eff6ff; color: #1d4ed8; border: 1px solid #bfdbfe;
+    }
+    [data-theme="dark"] .related-composed-badge {
+      background: rgba(29,108,235,0.12); color: #6FA5F8; border-color: rgba(29,108,235,0.3);
+    }
+    .s1-input-unit {
+      flex-shrink: 0; font-size: 13px; color: var(--color-text-secondary);
+      padding: 0 8px 0 4px; white-space: nowrap;
+    }
+    .s1-input-action-btn {
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0; width: 28px; height: 28px;
+      padding: 0; border: none; background: transparent;
+      cursor: pointer; color: var(--color-icon-default); border-radius: 4px;
+      transition: color 0.15s, background 0.15s;
+    }
+    .s1-input-action-btn:hover { background: var(--color-bg-subtle); }
+    .s1-suffix-action-group {
+      display: flex; align-items: center; gap: 2px; flex-shrink: 0;
+    }
+    .related-composed-meta {
+      font-size: 10px; font-family: monospace; color: var(--color-text-secondary);
+      background: var(--color-bg-subtle); border-radius: 4px;
+      padding: 3px 8px; margin-bottom: 12px; display: inline-block;
+    }
+    .related-composed-preview-label {
+      font-size: 10px; font-weight: 600; color: var(--color-text-secondary);
+      text-transform: uppercase; letter-spacing: 0.05em; margin-top: 8px; margin-bottom: 4px;
+    }
+    .related-composed-states { display: flex; flex-direction: column; }
+    /* Related Composed Fields — interactive 보정 */
+    [data-related-field] .s1-input-wrap { width: 100%; }
+    [data-related-field] .input-clear-btn[hidden] { display: none !important; }
+    [data-related-field] .input-clear-btn { display: flex; }
 
     /* Select */
     .s1-select-wrap { position: relative; width: 158px; }
@@ -831,17 +941,17 @@
                 <div class="matrix-col-header">Hover</div>
                 <div class="matrix-col-header">Disabled</div>
                 <div class="matrix-row-label">medium<span>h44 · px16</span></div>
-                <div class="matrix-cell action-cell" data-action-cell><button type="button" class="s1-btn s1-btn-primary s1-btn-lg" data-action-test>버튼</button><div class="action-tools"><button type="button" class="action-tool-btn" data-toggle-disabled>off</button><button type="button" class="action-tool-btn" data-toggle-loading>load</button><span class="action-click-count" data-click-count>0</span></div></div>
+                <div class="matrix-cell action-cell" data-action-cell><button type="button" class="s1-btn s1-btn-primary s1-btn-lg" data-action-test>버튼</button><div class="action-test-controls"><button type="button" class="action-mini-toggle" data-toggle-disabled>Disabled: off</button><span class="action-click-count">Clicks: <span data-click-count>0</span></span></div></div>
                 <div class="matrix-cell"><button class="s1-btn s1-btn-primary s1-btn-lg is-preview">버튼</button></div>
                 <div class="matrix-cell"><button class="s1-btn s1-btn-primary s1-btn-lg is-hover is-preview">버튼</button></div>
                 <div class="matrix-cell"><button class="s1-btn s1-btn-primary s1-btn-lg is-disabled">버튼</button></div>
                 <div class="matrix-row-label">xsmall<span>h34 · px8</span></div>
-                <div class="matrix-cell action-cell" data-action-cell><button type="button" class="s1-btn s1-btn-primary" data-action-test>버튼</button><div class="action-tools"><button type="button" class="action-tool-btn" data-toggle-disabled>off</button><button type="button" class="action-tool-btn" data-toggle-loading>load</button><span class="action-click-count" data-click-count>0</span></div></div>
+                <div class="matrix-cell action-cell" data-action-cell><button type="button" class="s1-btn s1-btn-primary" data-action-test>버튼</button><div class="action-test-controls"><button type="button" class="action-mini-toggle" data-toggle-disabled>Disabled: off</button><span class="action-click-count">Clicks: <span data-click-count>0</span></span></div></div>
                 <div class="matrix-cell"><button class="s1-btn s1-btn-primary is-preview">버튼</button></div>
                 <div class="matrix-cell"><button class="s1-btn s1-btn-primary is-hover is-preview">버튼</button></div>
                 <div class="matrix-cell"><button class="s1-btn s1-btn-primary is-disabled">버튼</button></div>
                 <div class="matrix-row-label">xxsmall<span>h28 · px8</span></div>
-                <div class="matrix-cell action-cell" data-action-cell><button type="button" class="s1-btn s1-btn-primary s1-btn-sm" data-action-test>버튼</button><div class="action-tools"><button type="button" class="action-tool-btn" data-toggle-disabled>off</button><button type="button" class="action-tool-btn" data-toggle-loading>load</button><span class="action-click-count" data-click-count>0</span></div></div>
+                <div class="matrix-cell action-cell" data-action-cell><button type="button" class="s1-btn s1-btn-primary s1-btn-sm" data-action-test>버튼</button><div class="action-test-controls"><button type="button" class="action-mini-toggle" data-toggle-disabled>Disabled: off</button><span class="action-click-count">Clicks: <span data-click-count>0</span></span></div></div>
                 <div class="matrix-cell"><button class="s1-btn s1-btn-primary s1-btn-sm is-preview">버튼</button></div>
                 <div class="matrix-cell"><button class="s1-btn s1-btn-primary s1-btn-sm is-hover is-preview">버튼</button></div>
                 <div class="matrix-cell"><button class="s1-btn s1-btn-primary s1-btn-sm is-disabled">버튼</button></div>
@@ -856,7 +966,7 @@
                 <div class="matrix-col-header">Pressed</div>
                 <div class="matrix-col-header">Disabled</div>
                 <div class="matrix-row-label">mobile<span>h48 · px16</span></div>
-                <div class="matrix-cell action-cell" data-action-cell><button type="button" class="s1-btn s1-btn-primary s1-btn-mobile" data-action-test>버튼</button><div class="action-tools"><button type="button" class="action-tool-btn" data-toggle-disabled>off</button><button type="button" class="action-tool-btn" data-toggle-loading>load</button><span class="action-click-count" data-click-count>0</span></div></div>
+                <div class="matrix-cell action-cell" data-action-cell><button type="button" class="s1-btn s1-btn-primary s1-btn-mobile" data-action-test>버튼</button><div class="action-test-controls"><button type="button" class="action-mini-toggle" data-toggle-disabled>Disabled: off</button><span class="action-click-count">Clicks: <span data-click-count>0</span></span></div></div>
                 <div class="matrix-cell"><button class="s1-btn s1-btn-primary s1-btn-mobile is-preview">버튼</button></div>
                 <div class="matrix-cell"><button class="s1-btn s1-btn-primary s1-btn-mobile is-pressed is-preview">버튼</button></div>
                 <div class="matrix-cell"><button class="s1-btn s1-btn-primary s1-btn-mobile is-disabled">버튼</button></div>
@@ -895,10 +1005,9 @@
 <span class="c-prop">--button-primary-hover-bg</span>:        <span class="c-val">var(--color-action-primary-hover)</span>;
 <span class="c-prop">--button-primary-pressed-bg</span>:      <span class="c-val">var(--color-action-primary-pressed)</span>;
 <span class="c-prop">--button-primary-disabled-bg</span>:     <span class="c-val">var(--color-bg-subtle)</span>;
-<span class="c-prop">--button-primary-disabled-border</span>: <span class="c-val">var(--color-border-default)</span>;
+<span class="c-prop">--button-primary-disabled-border</span>: <span class="c-val">var(--color-border-disabled)</span>;
 <span class="c-prop">--button-primary-default-text</span>:    <span class="c-val">var(--color-action-primary-text)</span>;
-<span class="c-prop">--button-primary-disabled-text</span>:   <span class="c-val">var(--color-text-disabled)</span>;
-<span class="c-prop">--button-primary-focus-ring</span>:      <span class="c-val">var(--color-border-focus)</span>;</pre>
+<span class="c-prop">--button-primary-disabled-text</span>:   <span class="c-val">var(--color-text-disabled)</span>;</pre>
             </div>
           </div>
         </div>
@@ -916,17 +1025,17 @@
                 <div class="matrix-col-header">Hover</div>
                 <div class="matrix-col-header">Disabled</div>
                 <div class="matrix-row-label">medium<span>h44 · px16</span></div>
-                <div class="matrix-cell action-cell" data-action-cell><button type="button" class="s1-btn s1-btn-secondary s1-btn-lg" data-action-test>버튼</button><div class="action-tools"><button type="button" class="action-tool-btn" data-toggle-disabled>off</button><button type="button" class="action-tool-btn" data-toggle-loading>load</button><span class="action-click-count" data-click-count>0</span></div></div>
+                <div class="matrix-cell action-cell" data-action-cell><button type="button" class="s1-btn s1-btn-secondary s1-btn-lg" data-action-test>버튼</button><div class="action-test-controls"><button type="button" class="action-mini-toggle" data-toggle-disabled>Disabled: off</button><span class="action-click-count">Clicks: <span data-click-count>0</span></span></div></div>
                 <div class="matrix-cell"><button class="s1-btn s1-btn-secondary s1-btn-lg is-preview">버튼</button></div>
                 <div class="matrix-cell"><button class="s1-btn s1-btn-secondary s1-btn-lg is-hover is-preview">버튼</button></div>
                 <div class="matrix-cell"><button class="s1-btn s1-btn-secondary s1-btn-lg is-disabled">버튼</button></div>
                 <div class="matrix-row-label">xsmall<span>h34 · px8</span></div>
-                <div class="matrix-cell action-cell" data-action-cell><button type="button" class="s1-btn s1-btn-secondary" data-action-test>버튼</button><div class="action-tools"><button type="button" class="action-tool-btn" data-toggle-disabled>off</button><button type="button" class="action-tool-btn" data-toggle-loading>load</button><span class="action-click-count" data-click-count>0</span></div></div>
+                <div class="matrix-cell action-cell" data-action-cell><button type="button" class="s1-btn s1-btn-secondary" data-action-test>버튼</button><div class="action-test-controls"><button type="button" class="action-mini-toggle" data-toggle-disabled>Disabled: off</button><span class="action-click-count">Clicks: <span data-click-count>0</span></span></div></div>
                 <div class="matrix-cell"><button class="s1-btn s1-btn-secondary is-preview">버튼</button></div>
                 <div class="matrix-cell"><button class="s1-btn s1-btn-secondary is-hover is-preview">버튼</button></div>
                 <div class="matrix-cell"><button class="s1-btn s1-btn-secondary is-disabled">버튼</button></div>
                 <div class="matrix-row-label">xxsmall<span>h28 · px8</span></div>
-                <div class="matrix-cell action-cell" data-action-cell><button type="button" class="s1-btn s1-btn-secondary s1-btn-sm" data-action-test>버튼</button><div class="action-tools"><button type="button" class="action-tool-btn" data-toggle-disabled>off</button><button type="button" class="action-tool-btn" data-toggle-loading>load</button><span class="action-click-count" data-click-count>0</span></div></div>
+                <div class="matrix-cell action-cell" data-action-cell><button type="button" class="s1-btn s1-btn-secondary s1-btn-sm" data-action-test>버튼</button><div class="action-test-controls"><button type="button" class="action-mini-toggle" data-toggle-disabled>Disabled: off</button><span class="action-click-count">Clicks: <span data-click-count>0</span></span></div></div>
                 <div class="matrix-cell"><button class="s1-btn s1-btn-secondary s1-btn-sm is-preview">버튼</button></div>
                 <div class="matrix-cell"><button class="s1-btn s1-btn-secondary s1-btn-sm is-hover is-preview">버튼</button></div>
                 <div class="matrix-cell"><button class="s1-btn s1-btn-secondary s1-btn-sm is-disabled">버튼</button></div>
@@ -941,7 +1050,7 @@
                 <div class="matrix-col-header">Pressed</div>
                 <div class="matrix-col-header">Disabled</div>
                 <div class="matrix-row-label">mobile<span>h48 · px16</span></div>
-                <div class="matrix-cell action-cell" data-action-cell><button type="button" class="s1-btn s1-btn-secondary s1-btn-mobile" data-action-test>버튼</button><div class="action-tools"><button type="button" class="action-tool-btn" data-toggle-disabled>off</button><button type="button" class="action-tool-btn" data-toggle-loading>load</button><span class="action-click-count" data-click-count>0</span></div></div>
+                <div class="matrix-cell action-cell" data-action-cell><button type="button" class="s1-btn s1-btn-secondary s1-btn-mobile" data-action-test>버튼</button><div class="action-test-controls"><button type="button" class="action-mini-toggle" data-toggle-disabled>Disabled: off</button><span class="action-click-count">Clicks: <span data-click-count>0</span></span></div></div>
                 <div class="matrix-cell"><button class="s1-btn s1-btn-secondary s1-btn-mobile is-preview">버튼</button></div>
                 <div class="matrix-cell"><button class="s1-btn s1-btn-secondary s1-btn-mobile is-pressed is-preview">버튼</button></div>
                 <div class="matrix-cell"><button class="s1-btn s1-btn-secondary s1-btn-mobile is-disabled">버튼</button></div>
@@ -979,10 +1088,9 @@
 <span class="c-prop">--button-secondary-pressed-bg</span>:      <span class="c-val">var(--color-bg-muted)</span>;
 <span class="c-prop">--button-secondary-default-border</span>:  <span class="c-val">var(--color-border-default)</span>;
 <span class="c-prop">--button-secondary-disabled-bg</span>:     <span class="c-val">var(--color-bg-subtle)</span>;
-<span class="c-prop">--button-secondary-disabled-border</span>: <span class="c-val">var(--color-border-default)</span>;
+<span class="c-prop">--button-secondary-disabled-border</span>: <span class="c-val">var(--color-border-disabled)</span>;
 <span class="c-prop">--button-secondary-default-text</span>:    <span class="c-val">var(--color-text-secondary)</span>;
-<span class="c-prop">--button-secondary-disabled-text</span>:   <span class="c-val">var(--color-text-disabled)</span>;
-<span class="c-prop">--button-secondary-focus-ring</span>:      <span class="c-val">var(--color-border-focus)</span>;</pre>
+<span class="c-prop">--button-secondary-disabled-text</span>:   <span class="c-val">var(--color-text-disabled)</span>;</pre>
             </div>
           </div>
         </div>
@@ -1000,17 +1108,17 @@
                 <div class="matrix-col-header">Hover</div>
                 <div class="matrix-col-header">Disabled</div>
                 <div class="matrix-row-label">medium<span>h44 · px16</span></div>
-                <div class="matrix-cell action-cell" data-action-cell><button type="button" class="s1-btn s1-btn-blue-line s1-btn-lg" data-action-test>버튼</button><div class="action-tools"><button type="button" class="action-tool-btn" data-toggle-disabled>off</button><button type="button" class="action-tool-btn" data-toggle-loading>load</button><span class="action-click-count" data-click-count>0</span></div></div>
+                <div class="matrix-cell action-cell" data-action-cell><button type="button" class="s1-btn s1-btn-blue-line s1-btn-lg" data-action-test>버튼</button><div class="action-test-controls"><button type="button" class="action-mini-toggle" data-toggle-disabled>Disabled: off</button><span class="action-click-count">Clicks: <span data-click-count>0</span></span></div></div>
                 <div class="matrix-cell"><button class="s1-btn s1-btn-blue-line s1-btn-lg is-preview">버튼</button></div>
                 <div class="matrix-cell"><button class="s1-btn s1-btn-blue-line s1-btn-lg is-hover is-preview">버튼</button></div>
                 <div class="matrix-cell"><button class="s1-btn s1-btn-blue-line s1-btn-lg is-disabled">버튼</button></div>
                 <div class="matrix-row-label">xsmall<span>h34 · px8</span></div>
-                <div class="matrix-cell action-cell" data-action-cell><button type="button" class="s1-btn s1-btn-blue-line" data-action-test>버튼</button><div class="action-tools"><button type="button" class="action-tool-btn" data-toggle-disabled>off</button><button type="button" class="action-tool-btn" data-toggle-loading>load</button><span class="action-click-count" data-click-count>0</span></div></div>
+                <div class="matrix-cell action-cell" data-action-cell><button type="button" class="s1-btn s1-btn-blue-line" data-action-test>버튼</button><div class="action-test-controls"><button type="button" class="action-mini-toggle" data-toggle-disabled>Disabled: off</button><span class="action-click-count">Clicks: <span data-click-count>0</span></span></div></div>
                 <div class="matrix-cell"><button class="s1-btn s1-btn-blue-line is-preview">버튼</button></div>
                 <div class="matrix-cell"><button class="s1-btn s1-btn-blue-line is-hover is-preview">버튼</button></div>
                 <div class="matrix-cell"><button class="s1-btn s1-btn-blue-line is-disabled">버튼</button></div>
                 <div class="matrix-row-label">xxsmall<span>h28 · px8</span></div>
-                <div class="matrix-cell action-cell" data-action-cell><button type="button" class="s1-btn s1-btn-blue-line s1-btn-sm" data-action-test>버튼</button><div class="action-tools"><button type="button" class="action-tool-btn" data-toggle-disabled>off</button><button type="button" class="action-tool-btn" data-toggle-loading>load</button><span class="action-click-count" data-click-count>0</span></div></div>
+                <div class="matrix-cell action-cell" data-action-cell><button type="button" class="s1-btn s1-btn-blue-line s1-btn-sm" data-action-test>버튼</button><div class="action-test-controls"><button type="button" class="action-mini-toggle" data-toggle-disabled>Disabled: off</button><span class="action-click-count">Clicks: <span data-click-count>0</span></span></div></div>
                 <div class="matrix-cell"><button class="s1-btn s1-btn-blue-line s1-btn-sm is-preview">버튼</button></div>
                 <div class="matrix-cell"><button class="s1-btn s1-btn-blue-line s1-btn-sm is-hover is-preview">버튼</button></div>
                 <div class="matrix-cell"><button class="s1-btn s1-btn-blue-line s1-btn-sm is-disabled">버튼</button></div>
@@ -1025,7 +1133,7 @@
                 <div class="matrix-col-header">Pressed</div>
                 <div class="matrix-col-header">Disabled</div>
                 <div class="matrix-row-label">mobile<span>h48 · px16</span></div>
-                <div class="matrix-cell action-cell" data-action-cell><button type="button" class="s1-btn s1-btn-blue-line s1-btn-mobile" data-action-test>버튼</button><div class="action-tools"><button type="button" class="action-tool-btn" data-toggle-disabled>off</button><button type="button" class="action-tool-btn" data-toggle-loading>load</button><span class="action-click-count" data-click-count>0</span></div></div>
+                <div class="matrix-cell action-cell" data-action-cell><button type="button" class="s1-btn s1-btn-blue-line s1-btn-mobile" data-action-test>버튼</button><div class="action-test-controls"><button type="button" class="action-mini-toggle" data-toggle-disabled>Disabled: off</button><span class="action-click-count">Clicks: <span data-click-count>0</span></span></div></div>
                 <div class="matrix-cell"><button class="s1-btn s1-btn-blue-line s1-btn-mobile is-preview">버튼</button></div>
                 <div class="matrix-cell"><button class="s1-btn s1-btn-blue-line s1-btn-mobile is-pressed is-preview">버튼</button></div>
                 <div class="matrix-cell"><button class="s1-btn s1-btn-blue-line s1-btn-mobile is-disabled">버튼</button></div>
@@ -1064,10 +1172,9 @@
 <span class="c-prop">--button-blue-line-default-border</span>: <span class="c-val">var(--color-action-primary-default)</span>;
 <span class="c-prop">--button-blue-line-hover-border</span>:   <span class="c-val">var(--color-action-primary-default)</span>;
 <span class="c-prop">--button-blue-line-disabled-bg</span>:    <span class="c-val">var(--color-bg-subtle)</span>;
-<span class="c-prop">--button-blue-line-disabled-border</span>:<span class="c-val">var(--color-border-default)</span>;
-<span class="c-prop">--button-blue-line-default-text</span>:   <span class="c-val">var(--color-text-link)</span>;
-<span class="c-prop">--button-blue-line-disabled-text</span>:  <span class="c-val">var(--color-text-disabled)</span>;
-<span class="c-prop">--button-blue-line-focus-ring</span>:     <span class="c-val">var(--color-border-focus)</span>;</pre>
+<span class="c-prop">--button-blue-line-disabled-border</span>:<span class="c-val">var(--color-border-disabled)</span>;
+<span class="c-prop">--button-blue-line-default-text</span>:   <span class="c-val">var(--color-action-primary-default)</span>;
+<span class="c-prop">--button-blue-line-disabled-text</span>:  <span class="c-val">var(--color-text-disabled)</span>;</pre>
             </div>
           </div>
         </div>
@@ -1163,61 +1270,54 @@
 
         <div class="variant-block">
           <div class="variant-label">States</div>
-          <div class="chk-label-toggle">
-            <button class="chk-label-btn active" onclick="setCheckboxLabel('nolabel', this)">Label 없음</button>
-            <button class="chk-label-btn" onclick="setCheckboxLabel('label', this)">Label 있음</button>
-          </div>
           <div class="preview-area">
-            <div class="checkbox-grid">
-              <!-- Header row -->
-              <div class="checkbox-grid-header">Default</div>
-              <div class="checkbox-grid-header">Checked</div>
-              <div class="checkbox-grid-header">Disabled</div>
-              <div class="checkbox-grid-header">Disabled+Checked</div>
-
-              <!-- No label row -->
-              <div class="checkbox-grid-cell chk-nolabel-row">
-                <label class="s1-checkbox"><div class="s1-checkbox-box"></div></label>
-              </div>
-              <div class="checkbox-grid-cell chk-nolabel-row">
-                <label class="s1-checkbox is-checked">
+            <div class="comp-state-matrix" style="grid-template-columns: 200px repeat(5, 110px);">
+              <!-- Header -->
+              <div class="matrix-col-header-action">Action</div>
+              <div class="matrix-col-header">Default</div>
+              <div class="matrix-col-header">Checked</div>
+              <div class="matrix-col-header">Indeterminate</div>
+              <div class="matrix-col-header">Disabled</div>
+              <div class="matrix-col-header">Dis+Checked</div>
+              <!-- Row -->
+              <div class="comp-action-cell" data-comp-action="checkbox">
+                <label class="s1-checkbox" id="chk-action-target">
                   <div class="s1-checkbox-box">
                     <svg class="ds-chk-icon" width="11" height="8" viewBox="0 0 11 8" fill="none"><path d="M1 4L4 7L10 1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    <svg class="ds-ind-icon" width="11" height="3" viewBox="0 0 11 3" fill="none"><path d="M1 1.5h9" stroke="white" stroke-width="2" stroke-linecap="round"/></svg>
                   </div>
+                  <span class="s1-checkbox-label chk-action-label" style="display:none;">라벨</span>
+                </label>
+                <div class="action-test-controls">
+                  <button type="button" class="action-mini-toggle" data-chk-indeterminate>Indet: off</button>
+                  <button type="button" class="action-mini-toggle" data-chk-disabled>Disabled: off</button>
+                  <button type="button" class="action-mini-toggle" data-chk-label>Label: off</button>
+                </div>
+              </div>
+              <!-- Default -->
+              <div class="comp-state-cell">
+                <label class="s1-checkbox is-preview"><div class="s1-checkbox-box"></div></label>
+              </div>
+              <!-- Checked -->
+              <div class="comp-state-cell">
+                <label class="s1-checkbox is-checked is-preview">
+                  <div class="s1-checkbox-box"><svg class="ds-chk-icon" width="11" height="8" viewBox="0 0 11 8" fill="none"><path d="M1 4L4 7L10 1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
                 </label>
               </div>
-              <div class="checkbox-grid-cell chk-nolabel-row">
-                <label class="s1-checkbox is-disabled"><div class="s1-checkbox-box"></div></label>
-              </div>
-              <div class="checkbox-grid-cell chk-nolabel-row">
-                <label class="s1-checkbox is-checked is-disabled">
-                  <div class="s1-checkbox-box">
-                    <svg class="ds-chk-icon" width="11" height="8" viewBox="0 0 11 8" fill="none"><path d="M1 4L4 7L10 1" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                  </div>
+              <!-- Indeterminate -->
+              <div class="comp-state-cell">
+                <label class="s1-checkbox is-indeterminate is-preview">
+                  <div class="s1-checkbox-box"><svg class="ds-ind-icon" width="11" height="3" viewBox="0 0 11 3" fill="none"><path d="M1 1.5h9" stroke="white" stroke-width="2" stroke-linecap="round"/></svg></div>
                 </label>
               </div>
-
-              <!-- Label row (hidden by default) -->
-              <div class="checkbox-grid-cell chk-label-row chk-row-hidden">
-                <label class="s1-checkbox"><div class="s1-checkbox-box"></div><span class="s1-checkbox-label">라벨</span></label>
+              <!-- Disabled -->
+              <div class="comp-state-cell">
+                <label class="s1-checkbox is-disabled is-preview"><div class="s1-checkbox-box"></div></label>
               </div>
-              <div class="checkbox-grid-cell chk-label-row chk-row-hidden">
-                <label class="s1-checkbox is-checked">
-                  <div class="s1-checkbox-box">
-                    <svg class="ds-chk-icon" width="11" height="8" viewBox="0 0 11 8" fill="none"><path d="M1 4L4 7L10 1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                  </div>
-                  <span class="s1-checkbox-label">라벨</span>
-                </label>
-              </div>
-              <div class="checkbox-grid-cell chk-label-row chk-row-hidden">
-                <label class="s1-checkbox is-disabled"><div class="s1-checkbox-box"></div><span class="s1-checkbox-label">라벨</span></label>
-              </div>
-              <div class="checkbox-grid-cell chk-label-row chk-row-hidden">
-                <label class="s1-checkbox is-checked is-disabled">
-                  <div class="s1-checkbox-box">
-                    <svg class="ds-chk-icon" width="11" height="8" viewBox="0 0 11 8" fill="none"><path d="M1 4L4 7L10 1" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                  </div>
-                  <span class="s1-checkbox-label">라벨</span>
+              <!-- Disabled+Checked -->
+              <div class="comp-state-cell">
+                <label class="s1-checkbox is-checked is-disabled is-preview">
+                  <div class="s1-checkbox-box"><svg class="ds-chk-icon" width="11" height="8" viewBox="0 0 11 8" fill="none"><path d="M1 4L4 7L10 1" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
                 </label>
               </div>
             </div>
@@ -1320,23 +1420,25 @@
         <div class="variant-block">
           <div class="variant-label">States</div>
           <div class="preview-area">
-            <div class="state-strip">
-              <div class="state-item">
-                <div class="state-label sl-live">Default</div>
-                <label class="s1-radio"><div class="s1-radio-circle"><div class="s1-radio-dot"></div></div><span class="s1-radio-label">옵션</span></label>
+            <div class="comp-state-matrix" style="grid-template-columns: 200px repeat(4, 130px);">
+              <!-- Header -->
+              <div class="matrix-col-header-action">Action</div>
+              <div class="matrix-col-header">Default</div>
+              <div class="matrix-col-header">Selected</div>
+              <div class="matrix-col-header">Disabled</div>
+              <div class="matrix-col-header">Dis+Selected</div>
+              <!-- Row -->
+              <div class="comp-action-cell" data-comp-action="radio">
+                <label class="s1-radio" id="radio-action-target"><div class="s1-radio-circle"><div class="s1-radio-dot"></div></div><span class="s1-radio-label">옵션</span></label>
+                <div class="action-test-controls">
+
+                  <button type="button" class="action-mini-toggle" data-radio-disabled>Disabled: off</button>
+                </div>
               </div>
-              <div class="state-item">
-                <div class="state-label">Selected</div>
-                <label class="s1-radio is-selected"><div class="s1-radio-circle"><div class="s1-radio-dot"></div></div><span class="s1-radio-label">옵션</span></label>
-              </div>
-              <div class="state-item">
-                <div class="state-label">Disabled</div>
-                <label class="s1-radio is-disabled"><div class="s1-radio-circle"><div class="s1-radio-dot"></div></div><span class="s1-radio-label">옵션</span></label>
-              </div>
-              <div class="state-item">
-                <div class="state-label">Disabled Selected</div>
-                <label class="s1-radio is-selected is-disabled"><div class="s1-radio-circle"><div class="s1-radio-dot"></div></div><span class="s1-radio-label">옵션</span></label>
-              </div>
+              <div class="comp-state-cell"><label class="s1-radio is-preview"><div class="s1-radio-circle"><div class="s1-radio-dot"></div></div><span class="s1-radio-label">옵션</span></label></div>
+              <div class="comp-state-cell"><label class="s1-radio is-selected is-preview"><div class="s1-radio-circle"><div class="s1-radio-dot"></div></div><span class="s1-radio-label">옵션</span></label></div>
+              <div class="comp-state-cell"><label class="s1-radio is-disabled is-preview"><div class="s1-radio-circle"><div class="s1-radio-dot"></div></div><span class="s1-radio-label">옵션</span></label></div>
+              <div class="comp-state-cell"><label class="s1-radio is-selected is-disabled is-preview"><div class="s1-radio-circle"><div class="s1-radio-dot"></div></div><span class="s1-radio-label">옵션</span></label></div>
             </div>
           </div>
         </div>
@@ -1422,23 +1524,25 @@
         <div class="variant-block">
           <div class="variant-label">States</div>
           <div class="preview-area">
-            <div class="state-strip">
-              <div class="state-item">
-                <div class="state-label">Off</div>
-                <label class="s1-toggle"><div class="s1-toggle-track"><div class="s1-toggle-knob"></div></div><span class="s1-toggle-label">OFF</span></label>
+            <div class="comp-state-matrix" style="grid-template-columns: 200px repeat(4, 130px);">
+              <!-- Header -->
+              <div class="matrix-col-header-action">Action</div>
+              <div class="matrix-col-header">Off</div>
+              <div class="matrix-col-header">On</div>
+              <div class="matrix-col-header">Disabled Off</div>
+              <div class="matrix-col-header">Disabled On</div>
+              <!-- Row -->
+              <div class="comp-action-cell" data-comp-action="toggle">
+                <label class="s1-toggle" id="toggle-action-target"><div class="s1-toggle-track"><div class="s1-toggle-knob"></div></div><span class="s1-toggle-label">OFF</span></label>
+                <div class="action-test-controls">
+
+                  <button type="button" class="action-mini-toggle" data-toggle-comp-disabled>Disabled: off</button>
+                </div>
               </div>
-              <div class="state-item">
-                <div class="state-label">On</div>
-                <label class="s1-toggle is-on"><div class="s1-toggle-track"><div class="s1-toggle-knob"></div></div><span class="s1-toggle-label">ON</span></label>
-              </div>
-              <div class="state-item">
-                <div class="state-label">Disabled Off</div>
-                <label class="s1-toggle is-disabled"><div class="s1-toggle-track"><div class="s1-toggle-knob"></div></div><span class="s1-toggle-label">OFF</span></label>
-              </div>
-              <div class="state-item">
-                <div class="state-label">Disabled On</div>
-                <label class="s1-toggle is-on is-disabled"><div class="s1-toggle-track"><div class="s1-toggle-knob"></div></div><span class="s1-toggle-label">ON</span></label>
-              </div>
+              <div class="comp-state-cell"><label class="s1-toggle is-preview"><div class="s1-toggle-track"><div class="s1-toggle-knob"></div></div><span class="s1-toggle-label">OFF</span></label></div>
+              <div class="comp-state-cell"><label class="s1-toggle is-on is-preview"><div class="s1-toggle-track"><div class="s1-toggle-knob"></div></div><span class="s1-toggle-label">ON</span></label></div>
+              <div class="comp-state-cell"><label class="s1-toggle is-disabled is-preview"><div class="s1-toggle-track"><div class="s1-toggle-knob"></div></div><span class="s1-toggle-label">OFF</span></label></div>
+              <div class="comp-state-cell"><label class="s1-toggle is-on is-disabled is-preview"><div class="s1-toggle-track"><div class="s1-toggle-knob"></div></div><span class="s1-toggle-label">ON</span></label></div>
             </div>
           </div>
         </div>
@@ -1479,101 +1583,85 @@
         </div>
 
         <div class="variant-block">
-          <div class="variant-label">Chip — Line (테두리 표시 · 흰 배경)</div>
+          <div class="variant-label">States</div>
           <div class="preview-area">
-            <div class="state-strip">
-              <div class="state-item">
-                <div class="state-label sl-live">Default</div>
-                <button class="s1-chip">최신순</button>
-              </div>
-              <div class="state-item">
-                <div class="state-label">Selected</div>
-                <button class="s1-chip is-selected">최신순</button>
-              </div>
-              <div class="state-item">
-                <div class="state-label">Disabled</div>
-                <button class="s1-chip is-disabled">최신순</button>
-              </div>
-            </div>
-          </div>
-        </div>
+            <div class="comp-state-matrix" style="grid-template-columns: 100px 180px repeat(3, 130px);">
+              <!-- Header -->
+              <div></div>
+              <div class="matrix-col-header-action">Action</div>
+              <div class="matrix-col-header">Default</div>
+              <div class="matrix-col-header">Selected</div>
+              <div class="matrix-col-header">Disabled</div>
 
-        <div class="variant-block">
-          <div class="variant-label">Chip — Solid (채운 배경 · 테두리=배경색)</div>
-          <div class="preview-area">
-            <div class="state-strip">
-              <div class="state-item">
-                <div class="state-label sl-live">Default</div>
-                <button class="s1-chip s1-chip--solid">최신순</button>
-              </div>
-              <div class="state-item">
-                <div class="state-label">Selected</div>
-                <button class="s1-chip s1-chip--solid is-selected">최신순</button>
-              </div>
-              <div class="state-item">
-                <div class="state-label">Disabled</div>
-                <button class="s1-chip s1-chip--solid is-disabled">최신순</button>
-              </div>
-            </div>
-          </div>
-        </div>
+              <!-- Line -->
+              <div class="comp-row-label">Chip<span style="display:block;font-weight:400;color:#c4c4c4;font-size:9px;">Line</span></div>
+              <div class="comp-action-cell" data-comp-action="chip-line">
+                <button class="s1-chip" id="chip-line-action">최신순</button>
+                <div class="action-test-controls">
 
-        <div class="variant-block">
-          <div class="variant-label">Filter Chip — 타이틀 없음 (라벨 + 화살표)</div>
-          <div class="preview-area">
-            <div class="state-strip">
-              <div class="state-item">
-                <div class="state-label sl-live">Default</div>
-                <button class="ds-filter-chip">
+                  <button type="button" class="action-mini-toggle" data-chip-line-disabled>Disabled: off</button>
+                </div>
+              </div>
+              <div class="comp-state-cell"><button class="s1-chip is-preview">최신순</button></div>
+              <div class="comp-state-cell"><button class="s1-chip is-selected is-preview">최신순</button></div>
+              <div class="comp-state-cell"><button class="s1-chip is-disabled is-preview">최신순</button></div>
+
+              <!-- Solid -->
+              <div class="comp-row-label">Chip<span style="display:block;font-weight:400;color:#c4c4c4;font-size:9px;">Solid</span></div>
+              <div class="comp-action-cell" data-comp-action="chip-solid">
+                <button class="s1-chip s1-chip--solid" id="chip-solid-action">최신순</button>
+                <div class="action-test-controls">
+
+                  <button type="button" class="action-mini-toggle" data-chip-solid-disabled>Disabled: off</button>
+                </div>
+              </div>
+              <div class="comp-state-cell"><button class="s1-chip s1-chip--solid is-preview">최신순</button></div>
+              <div class="comp-state-cell"><button class="s1-chip s1-chip--solid is-selected is-preview">최신순</button></div>
+              <div class="comp-state-cell"><button class="s1-chip s1-chip--solid is-disabled is-preview">최신순</button></div>
+
+              <!-- Filter — no title -->
+              <div class="comp-row-label">Filter<span style="display:block;font-weight:400;color:#c4c4c4;font-size:9px;">Label only</span></div>
+              <div class="comp-action-cell" data-comp-action="filter-chip">
+                <button class="ds-filter-chip" id="filter-chip-action">
                   <span class="ds-filter-chip-label">최신순</span>
                   <svg class="ds-filter-chip-arrow" width="20" height="20" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"/></svg>
                 </button>
-              </div>
-              <div class="state-item">
-                <div class="state-label">Selected</div>
-                <button class="ds-filter-chip is-selected">
-                  <span class="ds-filter-chip-label">최신순</span>
-                  <svg class="ds-filter-chip-arrow" width="20" height="20" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"/></svg>
-                </button>
-              </div>
-              <div class="state-item">
-                <div class="state-label">Disabled</div>
-                <button class="ds-filter-chip is-disabled">
-                  <span class="ds-filter-chip-label">최신순</span>
-                  <svg class="ds-filter-chip-arrow" width="20" height="20" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"/></svg>
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
+                <div class="action-test-controls">
 
-        <div class="variant-block">
-          <div class="variant-label">Filter Chip — 타이틀 포함 (카테고리 + 선택값 + 화살표)</div>
-          <div class="preview-area">
-            <div class="state-strip">
-              <div class="state-item">
-                <div class="state-label sl-live">Default</div>
-                <button class="ds-filter-chip">
+                  <button type="button" class="action-mini-toggle" data-filter-disabled>Disabled: off</button>
+                </div>
+              </div>
+              <div class="comp-state-cell">
+                <button class="ds-filter-chip is-preview"><span class="ds-filter-chip-label">최신순</span><svg class="ds-filter-chip-arrow" width="20" height="20" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"/></svg></button>
+              </div>
+              <div class="comp-state-cell">
+                <button class="ds-filter-chip is-selected is-preview"><span class="ds-filter-chip-label">최신순</span><svg class="ds-filter-chip-arrow" width="20" height="20" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"/></svg></button>
+              </div>
+              <div class="comp-state-cell">
+                <button class="ds-filter-chip is-disabled is-preview"><span class="ds-filter-chip-label">최신순</span><svg class="ds-filter-chip-arrow" width="20" height="20" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"/></svg></button>
+              </div>
+
+              <!-- Filter — with title -->
+              <div class="comp-row-label">Filter<span style="display:block;font-weight:400;color:#c4c4c4;font-size:9px;">With title</span></div>
+              <div class="comp-action-cell" data-comp-action="filter-chip-title">
+                <button class="ds-filter-chip" id="filter-chip-title-action">
                   <span class="ds-filter-chip-title">정렬</span>
                   <span class="ds-filter-chip-label">최신순</span>
                   <svg class="ds-filter-chip-arrow" width="20" height="20" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"/></svg>
                 </button>
+                <div class="action-test-controls">
+
+                  <button type="button" class="action-mini-toggle" data-filter-title-disabled>Disabled: off</button>
+                </div>
               </div>
-              <div class="state-item">
-                <div class="state-label">Selected</div>
-                <button class="ds-filter-chip is-selected">
-                  <span class="ds-filter-chip-title">정렬</span>
-                  <span class="ds-filter-chip-label">최신순</span>
-                  <svg class="ds-filter-chip-arrow" width="20" height="20" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"/></svg>
-                </button>
+              <div class="comp-state-cell">
+                <button class="ds-filter-chip is-preview"><span class="ds-filter-chip-title">정렬</span><span class="ds-filter-chip-label">최신순</span><svg class="ds-filter-chip-arrow" width="20" height="20" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"/></svg></button>
               </div>
-              <div class="state-item">
-                <div class="state-label">Disabled</div>
-                <button class="ds-filter-chip is-disabled">
-                  <span class="ds-filter-chip-title">정렬</span>
-                  <span class="ds-filter-chip-label">최신순</span>
-                  <svg class="ds-filter-chip-arrow" width="20" height="20" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"/></svg>
-                </button>
+              <div class="comp-state-cell">
+                <button class="ds-filter-chip is-selected is-preview"><span class="ds-filter-chip-title">정렬</span><span class="ds-filter-chip-label">최신순</span><svg class="ds-filter-chip-arrow" width="20" height="20" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"/></svg></button>
+              </div>
+              <div class="comp-state-cell">
+                <button class="ds-filter-chip is-disabled is-preview"><span class="ds-filter-chip-title">정렬</span><span class="ds-filter-chip-label">최신순</span><svg class="ds-filter-chip-arrow" width="20" height="20" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"/></svg></button>
               </div>
             </div>
           </div>
@@ -1629,239 +1717,274 @@
           <span class="comp-badge">3 sizes · 6 states</span>
         </div>
 
-        <!-- Sizes -->
-        <div class="variant-block">
-          <div class="variant-label">Sizes — Medium (44px) · Small (34px) · XSmall (28px)</div>
-          <div class="preview-area">
-            <div class="state-strip" style="align-items:flex-start;">
-              <div class="state-item">
-                <div class="state-label sl-live">Medium (44px)</div>
-                <div class="s1-input-wrap input-interactive">
-                  <span class="s1-input-label">Label</span>
-                  <div class="s1-input-field">
-                    <input type="text" placeholder="placeholder">
-                    <button class="input-clear-btn" type="button" aria-label="지우기" tabindex="-1">
-                      <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="8" fill="currentColor"/><path d="M5.3 5.3l5.4 5.4M10.7 5.3l-5.4 5.4" stroke="white" stroke-width="1.5" stroke-linecap="round"/></svg>
-                    </button>
-                  </div>
-                  <span class="ds-helper-text">안내 메시지</span>
-                </div>
-              </div>
-              <div class="state-item">
-                <div class="state-label">Small (34px)</div>
-                <div class="s1-input-wrap input-interactive">
-                  <span class="s1-input-label">Label</span>
-                  <div class="s1-input-field input-size-small">
-                    <input type="text" placeholder="placeholder">
-                    <button class="input-clear-btn" type="button" aria-label="지우기" tabindex="-1">
-                      <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="8" fill="currentColor"/><path d="M5.3 5.3l5.4 5.4M10.7 5.3l-5.4 5.4" stroke="white" stroke-width="1.5" stroke-linecap="round"/></svg>
-                    </button>
-                  </div>
-                  <span class="ds-helper-text">안내 메시지</span>
-                </div>
-              </div>
-              <div class="state-item">
-                <div class="state-label">XSmall (28px)</div>
-                <div class="s1-input-wrap input-interactive">
-                  <span class="s1-input-label">Label</span>
-                  <div class="s1-input-field input-size-xsmall">
-                    <input type="text" placeholder="placeholder">
-                    <button class="input-clear-btn" type="button" aria-label="지우기" tabindex="-1">
-                      <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="8" fill="currentColor"/><path d="M5.3 5.3l5.4 5.4M10.7 5.3l-5.4 5.4" stroke="white" stroke-width="1.5" stroke-linecap="round"/></svg>
-                    </button>
-                  </div>
-                  <span class="ds-helper-text">안내 메시지</span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+        <!-- ── PC ── -->
+        <div class="platform-section platform-section-pc">
+          <div class="platform-header"><span class="platform-dot pc"></span>PC</div>
 
-        <!-- States · Medium -->
-        <div class="variant-block">
-          <div class="variant-label">States · Medium (44px)</div>
-          <div class="preview-area">
-            <div class="state-strip" style="align-items:flex-start;">
-              <div class="state-item">
-                <div class="state-label sl-live">Default</div>
-                <div class="s1-input-wrap">
-                  <span class="s1-input-label">Label</span>
-                  <div class="s1-input-field"><input type="text" placeholder="placeholder"></div>
-                  <span class="ds-helper-text">안내 메시지</span>
-                </div>
-              </div>
-              <div class="state-item">
-                <div class="state-label">Complete</div>
-                <div class="s1-input-wrap">
-                  <span class="s1-input-label">Label</span>
-                  <div class="s1-input-field"><input type="text" value="내용"></div>
-                  <span class="ds-helper-text">안내 메시지</span>
-                </div>
-              </div>
-              <div class="state-item">
-                <div class="state-label">Error</div>
-                <div class="s1-input-wrap is-error">
-                  <span class="s1-input-label">Label</span>
-                  <div class="s1-input-field">
-                    <input type="text" value="내용">
+          <!-- Sizes -->
+          <div class="variant-block">
+            <div class="variant-label">Sizes — Medium (44px) · Small (34px) · XSmall (28px)</div>
+            <div class="preview-area">
+              <div class="comp-state-matrix" style="grid-template-columns: 200px repeat(2, 170px);">
+                <div class="matrix-col-header-action">Action · Medium (44px)</div>
+                <div class="matrix-col-header">Small (34px)</div>
+                <div class="matrix-col-header">XSmall (28px)</div>
+                <div class="comp-action-cell">
+                  <div class="s1-input-wrap input-interactive" style="width:180px;">
+                    <span class="s1-input-label">Label</span>
+                    <div class="s1-input-field">
+                      <input type="text" placeholder="placeholder">
+                      <button class="input-clear-btn" type="button" aria-label="지우기" tabindex="-1">
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="8" fill="currentColor"/><path d="M5.3 5.3l5.4 5.4M10.7 5.3l-5.4 5.4" stroke="white" stroke-width="1.5" stroke-linecap="round"/></svg>
+                      </button>
+                    </div>
+                    <span class="ds-helper-text">안내 메시지</span>
                   </div>
-                  <span class="ds-helper-text">에러 메시지</span>
                 </div>
-              </div>
-              <div class="state-item">
-                <div class="state-label">Selected</div>
-                <div class="s1-input-wrap is-focus">
-                  <span class="s1-input-label">Label</span>
-                  <div class="s1-input-field">
-                    <input type="text" value="내용">
-                    <span class="s1-input-remove"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="8" fill="currentColor"/><path d="M5.3 5.3l5.4 5.4M10.7 5.3l-5.4 5.4" stroke="white" stroke-width="1.5" stroke-linecap="round"/></svg></span>
+                <div class="comp-state-cell">
+                  <div class="s1-input-wrap is-preview" style="width:160px;">
+                    <span class="s1-input-label">Label</span>
+                    <div class="s1-input-field input-size-small"><input type="text" placeholder="placeholder"></div>
+                    <span class="ds-helper-text">안내 메시지</span>
                   </div>
-                  <span class="ds-helper-text">안내 메시지</span>
                 </div>
-              </div>
-              <div class="state-item">
-                <div class="state-label">Success</div>
-                <div class="s1-input-wrap is-correct">
-                  <span class="s1-input-label">Label</span>
-                  <div class="s1-input-field"><input type="text" value="내용"></div>
-                  <span class="ds-helper-text">성공 메시지</span>
-                </div>
-              </div>
-              <div class="state-item">
-                <div class="state-label">Disabled</div>
-                <div class="s1-input-wrap is-disabled">
-                  <span class="s1-input-label">Label</span>
-                  <div class="s1-input-field"><input type="text" value="내용" disabled></div>
-                  <span class="ds-helper-text">안내 메시지</span>
+                <div class="comp-state-cell">
+                  <div class="s1-input-wrap is-preview" style="width:160px;">
+                    <span class="s1-input-label">Label</span>
+                    <div class="s1-input-field input-size-xsmall"><input type="text" placeholder="placeholder"></div>
+                    <span class="ds-helper-text">안내 메시지</span>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
 
-        <!-- States · Small -->
-        <div class="variant-block">
-          <div class="variant-label">States · Small (34px)</div>
-          <div class="preview-area">
-            <div class="state-strip" style="align-items:flex-start;">
-              <div class="state-item">
-                <div class="state-label sl-live">Default</div>
-                <div class="s1-input-wrap">
-                  <span class="s1-input-label">Label</span>
-                  <div class="s1-input-field input-size-small"><input type="text" placeholder="placeholder"></div>
-                  <span class="ds-helper-text">안내 메시지</span>
-                </div>
-              </div>
-              <div class="state-item">
-                <div class="state-label">Complete</div>
-                <div class="s1-input-wrap">
-                  <span class="s1-input-label">Label</span>
-                  <div class="s1-input-field input-size-small"><input type="text" value="내용"></div>
-                  <span class="ds-helper-text">안내 메시지</span>
-                </div>
-              </div>
-              <div class="state-item">
-                <div class="state-label">Error</div>
-                <div class="s1-input-wrap is-error">
-                  <span class="s1-input-label">Label</span>
-                  <div class="s1-input-field input-size-small">
-                    <input type="text" value="내용">
+          <!-- States · Medium -->
+          <div class="variant-block">
+            <div class="variant-label">States · Medium (44px)</div>
+            <div class="preview-area">
+              <div class="comp-state-matrix" style="grid-template-columns: 200px repeat(4, 170px);">
+                <div class="matrix-col-header-action">Action · Default</div>
+                <div class="matrix-col-header">Complete</div>
+                <div class="matrix-col-header">Error</div>
+                <div class="matrix-col-header">Correct</div>
+                <div class="matrix-col-header">Disabled</div>
+                <div class="comp-action-cell">
+                  <div class="s1-input-wrap input-interactive" style="width:180px;">
+                    <span class="s1-input-label">Label</span>
+                    <div class="s1-input-field">
+                      <input type="text" placeholder="placeholder">
+                      <button class="input-clear-btn" type="button" aria-label="지우기" tabindex="-1">
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="8" fill="currentColor"/><path d="M5.3 5.3l5.4 5.4M10.7 5.3l-5.4 5.4" stroke="white" stroke-width="1.5" stroke-linecap="round"/></svg>
+                      </button>
+                    </div>
+                    <span class="ds-helper-text">안내 메시지</span>
                   </div>
-                  <span class="ds-helper-text">에러 메시지</span>
                 </div>
-              </div>
-              <div class="state-item">
-                <div class="state-label">Selected</div>
-                <div class="s1-input-wrap is-focus">
-                  <span class="s1-input-label">Label</span>
-                  <div class="s1-input-field input-size-small">
-                    <input type="text" value="내용">
-                    <span class="s1-input-remove"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="8" fill="currentColor"/><path d="M5.3 5.3l5.4 5.4M10.7 5.3l-5.4 5.4" stroke="white" stroke-width="1.5" stroke-linecap="round"/></svg></span>
+                <div class="comp-state-cell">
+                  <div class="s1-input-wrap is-preview" style="width:160px;">
+                    <span class="s1-input-label">Label</span>
+                    <div class="s1-input-field"><input type="text" value="내용"></div>
+                    <span class="ds-helper-text">안내 메시지</span>
                   </div>
-                  <span class="ds-helper-text">안내 메시지</span>
                 </div>
-              </div>
-              <div class="state-item">
-                <div class="state-label">Success</div>
-                <div class="s1-input-wrap is-correct">
-                  <span class="s1-input-label">Label</span>
-                  <div class="s1-input-field input-size-small"><input type="text" value="내용"></div>
-                  <span class="ds-helper-text">성공 메시지</span>
+                <div class="comp-state-cell">
+                  <div class="s1-input-wrap is-error is-preview" style="width:160px;">
+                    <span class="s1-input-label">Label</span>
+                    <div class="s1-input-field"><input type="text" value="잘못된 값"></div>
+                    <span class="ds-helper-text is-error-text">오류 메시지</span>
+                  </div>
                 </div>
-              </div>
-              <div class="state-item">
-                <div class="state-label">Disabled</div>
-                <div class="s1-input-wrap is-disabled">
-                  <span class="s1-input-label">Label</span>
-                  <div class="s1-input-field input-size-small"><input type="text" value="내용" disabled></div>
-                  <span class="ds-helper-text">안내 메시지</span>
+                <div class="comp-state-cell">
+                  <div class="s1-input-wrap is-correct is-preview" style="width:160px;">
+                    <span class="s1-input-label">Label</span>
+                    <div class="s1-input-field"><input type="text" value="올바른 값"></div>
+                    <span class="ds-helper-text is-correct-text">확인 메시지</span>
+                  </div>
+                </div>
+                <div class="comp-state-cell">
+                  <div class="s1-input-wrap is-disabled is-preview" style="width:160px;">
+                    <span class="s1-input-label">Label</span>
+                    <div class="s1-input-field"><input type="text" placeholder="비활성" disabled></div>
+                    <span class="ds-helper-text">안내 메시지</span>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
 
-        <!-- States · XSmall -->
-        <div class="variant-block">
-          <div class="variant-label">States · XSmall (28px)</div>
-          <div class="preview-area">
-            <div class="state-strip" style="align-items:flex-start;">
-              <div class="state-item">
-                <div class="state-label sl-live">Default</div>
-                <div class="s1-input-wrap">
-                  <span class="s1-input-label">Label</span>
-                  <div class="s1-input-field input-size-xsmall"><input type="text" placeholder="placeholder"></div>
-                  <span class="ds-helper-text">안내 메시지</span>
-                </div>
-              </div>
-              <div class="state-item">
-                <div class="state-label">Complete</div>
-                <div class="s1-input-wrap">
-                  <span class="s1-input-label">Label</span>
-                  <div class="s1-input-field input-size-xsmall"><input type="text" value="내용"></div>
-                  <span class="ds-helper-text">안내 메시지</span>
-                </div>
-              </div>
-              <div class="state-item">
-                <div class="state-label">Error</div>
-                <div class="s1-input-wrap is-error">
-                  <span class="s1-input-label">Label</span>
-                  <div class="s1-input-field input-size-xsmall">
-                    <input type="text" value="내용">
+          <!-- States · Small -->
+          <div class="variant-block">
+            <div class="variant-label">States · Small (34px)</div>
+            <div class="preview-area">
+              <div class="comp-state-matrix" style="grid-template-columns: 200px repeat(4, 170px);">
+                <div class="matrix-col-header-action">Action · Default</div>
+                <div class="matrix-col-header">Complete</div>
+                <div class="matrix-col-header">Error</div>
+                <div class="matrix-col-header">Correct</div>
+                <div class="matrix-col-header">Disabled</div>
+                <div class="comp-action-cell">
+                  <div class="s1-input-wrap input-interactive" style="width:180px;">
+                    <span class="s1-input-label">Label</span>
+                    <div class="s1-input-field input-size-small">
+                      <input type="text" placeholder="placeholder">
+                      <button class="input-clear-btn" type="button" aria-label="지우기" tabindex="-1">
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="8" fill="currentColor"/><path d="M5.3 5.3l5.4 5.4M10.7 5.3l-5.4 5.4" stroke="white" stroke-width="1.5" stroke-linecap="round"/></svg>
+                      </button>
+                    </div>
+                    <span class="ds-helper-text">안내 메시지</span>
                   </div>
-                  <span class="ds-helper-text">에러 메시지</span>
                 </div>
-              </div>
-              <div class="state-item">
-                <div class="state-label">Selected</div>
-                <div class="s1-input-wrap is-focus">
-                  <span class="s1-input-label">Label</span>
-                  <div class="s1-input-field input-size-xsmall">
-                    <input type="text" value="내용">
-                    <span class="s1-input-remove"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="8" fill="currentColor"/><path d="M5.3 5.3l5.4 5.4M10.7 5.3l-5.4 5.4" stroke="white" stroke-width="1.5" stroke-linecap="round"/></svg></span>
+                <div class="comp-state-cell">
+                  <div class="s1-input-wrap is-preview" style="width:160px;">
+                    <span class="s1-input-label">Label</span>
+                    <div class="s1-input-field input-size-small"><input type="text" value="내용"></div>
+                    <span class="ds-helper-text">안내 메시지</span>
                   </div>
-                  <span class="ds-helper-text">안내 메시지</span>
                 </div>
-              </div>
-              <div class="state-item">
-                <div class="state-label">Success</div>
-                <div class="s1-input-wrap is-correct">
-                  <span class="s1-input-label">Label</span>
-                  <div class="s1-input-field input-size-xsmall"><input type="text" value="내용"></div>
-                  <span class="ds-helper-text">성공 메시지</span>
+                <div class="comp-state-cell">
+                  <div class="s1-input-wrap is-error is-preview" style="width:160px;">
+                    <span class="s1-input-label">Label</span>
+                    <div class="s1-input-field input-size-small"><input type="text" value="잘못된 값"></div>
+                    <span class="ds-helper-text is-error-text">오류 메시지</span>
+                  </div>
                 </div>
-              </div>
-              <div class="state-item">
-                <div class="state-label">Disabled</div>
-                <div class="s1-input-wrap is-disabled">
-                  <span class="s1-input-label">Label</span>
-                  <div class="s1-input-field input-size-xsmall"><input type="text" value="내용" disabled></div>
-                  <span class="ds-helper-text">안내 메시지</span>
+                <div class="comp-state-cell">
+                  <div class="s1-input-wrap is-correct is-preview" style="width:160px;">
+                    <span class="s1-input-label">Label</span>
+                    <div class="s1-input-field input-size-small"><input type="text" value="올바른 값"></div>
+                    <span class="ds-helper-text is-correct-text">확인 메시지</span>
+                  </div>
+                </div>
+                <div class="comp-state-cell">
+                  <div class="s1-input-wrap is-disabled is-preview" style="width:160px;">
+                    <span class="s1-input-label">Label</span>
+                    <div class="s1-input-field input-size-small"><input type="text" placeholder="비활성" disabled></div>
+                    <span class="ds-helper-text">안내 메시지</span>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
+
+          <!-- States · XSmall -->
+          <div class="variant-block">
+            <div class="variant-label">States · XSmall (28px)</div>
+            <div class="preview-area">
+              <div class="comp-state-matrix" style="grid-template-columns: 200px repeat(4, 170px);">
+                <div class="matrix-col-header-action">Action · Default</div>
+                <div class="matrix-col-header">Complete</div>
+                <div class="matrix-col-header">Error</div>
+                <div class="matrix-col-header">Correct</div>
+                <div class="matrix-col-header">Disabled</div>
+                <div class="comp-action-cell">
+                  <div class="s1-input-wrap input-interactive" style="width:180px;">
+                    <span class="s1-input-label">Label</span>
+                    <div class="s1-input-field input-size-xsmall">
+                      <input type="text" placeholder="placeholder">
+                      <button class="input-clear-btn" type="button" aria-label="지우기" tabindex="-1">
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="8" fill="currentColor"/><path d="M5.3 5.3l5.4 5.4M10.7 5.3l-5.4 5.4" stroke="white" stroke-width="1.5" stroke-linecap="round"/></svg>
+                      </button>
+                    </div>
+                    <span class="ds-helper-text">안내 메시지</span>
+                  </div>
+                </div>
+                <div class="comp-state-cell">
+                  <div class="s1-input-wrap is-preview" style="width:160px;">
+                    <span class="s1-input-label">Label</span>
+                    <div class="s1-input-field input-size-xsmall"><input type="text" value="내용"></div>
+                    <span class="ds-helper-text">안내 메시지</span>
+                  </div>
+                </div>
+                <div class="comp-state-cell">
+                  <div class="s1-input-wrap is-error is-preview" style="width:160px;">
+                    <span class="s1-input-label">Label</span>
+                    <div class="s1-input-field input-size-xsmall"><input type="text" value="잘못된 값"></div>
+                    <span class="ds-helper-text is-error-text">오류 메시지</span>
+                  </div>
+                </div>
+                <div class="comp-state-cell">
+                  <div class="s1-input-wrap is-correct is-preview" style="width:160px;">
+                    <span class="s1-input-label">Label</span>
+                    <div class="s1-input-field input-size-xsmall"><input type="text" value="올바른 값"></div>
+                    <span class="ds-helper-text is-correct-text">확인 메시지</span>
+                  </div>
+                </div>
+                <div class="comp-state-cell">
+                  <div class="s1-input-wrap is-disabled is-preview" style="width:160px;">
+                    <span class="s1-input-label">Label</span>
+                    <div class="s1-input-field input-size-xsmall"><input type="text" placeholder="비활성" disabled></div>
+                    <span class="ds-helper-text">안내 메시지</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div><!-- /platform-section-pc -->
+
+        <!-- ── Mobile ── -->
+        <div class="platform-section platform-section-mobile">
+          <div class="platform-header"><span class="platform-dot mobile"></span>Mobile</div>
+
+          <!-- States · Mobile -->
+          <div class="variant-block">
+            <div class="variant-label">States · Mobile (48px)</div>
+            <div class="preview-area">
+              <div class="comp-state-matrix" style="grid-template-columns: 200px repeat(4, 170px);">
+                <div class="matrix-col-header-action">Action · Default</div>
+                <div class="matrix-col-header">Complete</div>
+                <div class="matrix-col-header">Error</div>
+                <div class="matrix-col-header">Correct</div>
+                <div class="matrix-col-header">Disabled</div>
+                <div class="comp-action-cell">
+                  <div class="s1-input-wrap input-interactive" style="width:180px;">
+                    <span class="s1-input-label">Label</span>
+                    <div class="s1-input-field input-size-mobile">
+                      <input type="text" placeholder="placeholder">
+                      <button class="input-clear-btn" type="button" aria-label="지우기" tabindex="-1">
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="8" fill="currentColor"/><path d="M5.3 5.3l5.4 5.4M10.7 5.3l-5.4 5.4" stroke="white" stroke-width="1.5" stroke-linecap="round"/></svg>
+                      </button>
+                    </div>
+                    <span class="ds-helper-text">안내 메시지</span>
+                  </div>
+                </div>
+                <div class="comp-state-cell">
+                  <div class="s1-input-wrap is-preview" style="width:160px;">
+                    <span class="s1-input-label">Label</span>
+                    <div class="s1-input-field input-size-mobile"><input type="text" value="내용"></div>
+                    <span class="ds-helper-text">안내 메시지</span>
+                  </div>
+                </div>
+                <div class="comp-state-cell">
+                  <div class="s1-input-wrap is-error is-preview" style="width:160px;">
+                    <span class="s1-input-label">Label</span>
+                    <div class="s1-input-field input-size-mobile"><input type="text" value="잘못된 값"></div>
+                    <span class="ds-helper-text is-error-text">오류 메시지</span>
+                  </div>
+                </div>
+                <div class="comp-state-cell">
+                  <div class="s1-input-wrap is-correct is-preview" style="width:160px;">
+                    <span class="s1-input-label">Label</span>
+                    <div class="s1-input-field input-size-mobile">
+                      <input type="text" value="올바른 값">
+                      <span class="s1-input-remove">
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="8" fill="currentColor"/><path d="M5.3 5.3l5.4 5.4" stroke="white" stroke-width="1.5" stroke-linecap="round"/><path d="M10.7 5.3l-5.4 5.4" stroke="white" stroke-width="1.5" stroke-linecap="round"/></svg>
+                      </span>
+                    </div>
+                    <span class="ds-helper-text is-correct-text">확인 메시지</span>
+                  </div>
+                </div>
+                <div class="comp-state-cell">
+                  <div class="s1-input-wrap is-disabled is-preview" style="width:160px;">
+                    <span class="s1-input-label">Label</span>
+                    <div class="s1-input-field input-size-mobile"><input type="text" placeholder="비활성" disabled></div>
+                    <span class="ds-helper-text">안내 메시지</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div><!-- /platform-section-mobile -->
 
         <div class="code-block">
           <div class="code-tabs">
@@ -1899,6 +2022,141 @@
 <span class="c-prop">--input-correct-text</span>:     <span class="c-val">var(--color-text-correct)</span>;</pre>
           </div>
         </div>
+
+        <!-- ── Related Composed Fields ── -->
+        <div class="variant-block" style="margin-top:8px;">
+          <div class="related-composed-header">
+            <span class="related-composed-title">Related Composed Fields</span>
+            <span class="related-composed-subtitle">아래 항목은 Base Input의 공식 state/variant가 아니라, Input slot과 보조 액션을 조합한 사용 예시입니다. 실제 입력 및 인터랙션이 동작합니다.</span>
+          </div>
+          <div class="related-composed-grid">
+
+            <!-- Search Input -->
+            <div class="related-composed-card">
+              <div class="related-composed-badge">composed-field</div>
+              <div class="related-composed-card-name">Search Input</div>
+              <div class="related-composed-card-desc">
+                Base Input + suffixActionGroup.<br>
+                검색 아이콘(<code>ic_찾기/조회</code>)은 오른쪽 고정. 값 입력 시 clear 아이콘(<code>remove</code>)이 검색 아이콘 왼쪽에 나타남.<br>
+                드롭다운/결과 패널이 있는 Search Module은 Pattern으로 분리.
+              </div>
+              <div class="related-composed-meta">suffixActionGroup: clearAction + searchAction</div>
+              <div class="related-composed-states">
+                <div class="related-composed-preview-label">Interactive</div>
+                <div data-related-field="search-input">
+                  <div class="s1-input-wrap" style="width:100%;">
+                    <div class="s1-input-field">
+                      <input
+                        type="text"
+                        placeholder="검색어 입력"
+                        data-search-input
+                        autocomplete="off"
+                      >
+                      <span class="s1-suffix-action-group">
+                        <!-- clearAction: 값 있을 때만 표시 (Figma: remove, 노드 882:4061) -->
+                        <button
+                          type="button"
+                          class="s1-input-action-btn input-clear-btn"
+                          data-clear-action
+                          aria-label="검색어 지우기"
+                          hidden
+                        >
+                          <!-- remove icon (Figma: remove 노드 882:4061) — 24×24 candidate SVG -->
+                          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                            <circle cx="8" cy="8" r="8" fill="currentColor" opacity=".2"/>
+                            <path d="M5 5l6 6M11 5l-6 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                          </svg>
+                        </button>
+                        <!-- searchAction: 항상 표시 (Figma: ic_찾기/조회, 노드 6452:5930) -->
+                        <button
+                          type="button"
+                          class="s1-input-action-btn"
+                          data-search-action
+                          aria-label="검색"
+                        >
+                          <!-- ic_찾기/조회 icon (Figma 노드 6452:5930) — candidate SVG -->
+                          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                            <circle cx="7" cy="7" r="4.5" stroke="currentColor" stroke-width="1.5"/>
+                            <path d="M11 11l2.5 2.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                          </svg>
+                        </button>
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Password Field -->
+            <div class="related-composed-card">
+              <div class="related-composed-badge">composed-field</div>
+              <div class="related-composed-card-name">Password Field</div>
+              <div class="related-composed-card-desc">
+                Base Input + suffixActionGroup.<br>
+                visibilityToggle(<code>ic_비밀번호미표시</code>)은 항상 표시. clearAction(<code>remove</code>)은 값 입력 시 표시.<br>
+                Login Form은 별도 Pattern/Module.
+              </div>
+              <div class="related-composed-meta">suffixActionGroup: visibilityToggle + clearAction</div>
+              <div class="related-composed-states">
+                <div class="related-composed-preview-label">Interactive</div>
+                <div data-related-field="password-field">
+                  <div class="s1-input-wrap" style="width:100%;">
+                    <div class="s1-input-field">
+                      <input
+                        type="password"
+                        placeholder="비밀번호 입력"
+                        data-password-input
+                        autocomplete="current-password"
+                      >
+                      <span class="s1-suffix-action-group">
+                        <!-- visibilityToggle: 항상 표시 (Figma: ic_비밀번호미표시, 노드 135:6692) -->
+                        <button
+                          type="button"
+                          class="s1-input-action-btn"
+                          data-visibility-toggle
+                          aria-label="비밀번호 보기"
+                          aria-pressed="false"
+                        >
+                          <!-- eye icon: hidden state (Figma: ic_비밀번호미표시 노드 135:6692) — candidate SVG -->
+                          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true" data-icon-hidden>
+                            <ellipse cx="8" cy="8" rx="7" ry="5" stroke="currentColor" stroke-width="1.5"/>
+                            <circle cx="8" cy="8" r="2" stroke="currentColor" stroke-width="1.5"/>
+                          </svg>
+                          <!-- eye-off icon: visible state — candidate SVG (Figma 노드명 미확인) -->
+                          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true" data-icon-visible style="display:none;">
+                            <ellipse cx="8" cy="8" rx="7" ry="5" stroke="currentColor" stroke-width="1.5"/>
+                            <line x1="3" y1="3" x2="13" y2="13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                          </svg>
+                        </button>
+                        <!-- clearAction: 값 있을 때만 표시 (Figma: remove, 노드 882:4061) -->
+                        <button
+                          type="button"
+                          class="s1-input-action-btn input-clear-btn"
+                          data-clear-action
+                          aria-label="비밀번호 지우기"
+                          hidden
+                        >
+                          <!-- remove icon (Figma: remove 노드 882:4061) — candidate SVG -->
+                          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                            <circle cx="8" cy="8" r="8" fill="currentColor" opacity=".2"/>
+                            <path d="M5 5l6 6M11 5l-6 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                          </svg>
+                        </button>
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+          <p style="font-size:11px;color:var(--color-text-secondary);margin-top:14px;line-height:1.6;">
+            DatePicker · TimePicker · Textarea는 별도 Component 후보로 분리됩니다.<br>
+            Login Form · Search Module · Address Search는 Pattern / Module 후보입니다.<br>
+            아이콘: Figma 노드명 확인 완료 (<code>ic_찾기/조회</code> · <code>ic_비밀번호미표시</code> · <code>remove</code>). 로컬 asset 미등록 — candidate SVG 사용 중.
+          </p>
+        </div>
+
       </section>
 
 
@@ -1912,17 +2170,38 @@
 
         <div class="variant-block">
           <div class="variant-label">States</div>
-          <div class="preview-area" style="padding-bottom:72px;">
-            <div class="state-strip" style="align-items:flex-start;">
-              <div class="state-item">
-                <div class="state-label sl-live">Default</div>
-                <div class="s1-select-wrap">
+          <div class="preview-area" style="padding-bottom:80px;">
+            <div class="comp-state-matrix" style="grid-template-columns: 200px repeat(4, 140px);">
+              <div class="matrix-col-header-action">Action</div>
+              <div class="matrix-col-header">Default</div>
+              <div class="matrix-col-header">Open</div>
+              <div class="matrix-col-header">Selected</div>
+              <div class="matrix-col-header">Disabled</div>
+
+              <!-- Action -->
+              <div class="comp-action-cell" data-comp-action="select">
+                <div class="s1-select-wrap" id="select-action-target" style="width:160px;">
+                  <div class="s1-select-trigger"><span>선택하세요</span><svg class="s1-select-chevron" width="14" height="14" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"/></svg></div>
+                  <div class="s1-select-list">
+                    <div class="s1-select-option">옵션 A</div>
+                    <div class="s1-select-option">옵션 B</div>
+                    <div class="s1-select-option">옵션 C</div>
+                  </div>
+                </div>
+                <div class="action-test-controls">
+
+                  <button type="button" class="action-mini-toggle" data-select-disabled>Disabled: off</button>
+                </div>
+              </div>
+              <!-- Default -->
+              <div class="comp-state-cell">
+                <div class="s1-select-wrap is-preview" style="width:120px;">
                   <div class="s1-select-trigger"><span>선택하세요</span><svg class="s1-select-chevron" width="14" height="14" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"/></svg></div>
                 </div>
               </div>
-              <div class="state-item">
-                <div class="state-label">Open</div>
-                <div class="s1-select-wrap is-open">
+              <!-- Open -->
+              <div class="comp-state-cell">
+                <div class="s1-select-wrap is-open is-preview" style="width:120px;">
                   <div class="s1-select-trigger"><span>선택하세요</span><svg class="s1-select-chevron" width="14" height="14" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"/></svg></div>
                   <div class="s1-select-list">
                     <div class="s1-select-option">옵션 A</div>
@@ -1931,15 +2210,15 @@
                   </div>
                 </div>
               </div>
-              <div class="state-item">
-                <div class="state-label">Selected</div>
-                <div class="s1-select-wrap">
+              <!-- Selected -->
+              <div class="comp-state-cell">
+                <div class="s1-select-wrap is-preview" style="width:120px;">
                   <div class="s1-select-trigger"><span>옵션 A</span><svg class="s1-select-chevron" width="14" height="14" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"/></svg></div>
                 </div>
               </div>
-              <div class="state-item">
-                <div class="state-label">Disabled</div>
-                <div class="s1-select-wrap is-disabled">
+              <!-- Disabled -->
+              <div class="comp-state-cell">
+                <div class="s1-select-wrap is-disabled is-preview" style="width:120px;">
                   <div class="s1-select-trigger"><span>선택 불가</span><svg class="s1-select-chevron" width="14" height="14" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"/></svg></div>
                 </div>
               </div>
@@ -2087,34 +2366,229 @@
   // ── ACTION test setup ──
   function setupButtonActionTests() {
     document.querySelectorAll('[data-action-cell]').forEach((wrapper) => {
-      const btn = wrapper.querySelector('[data-action-test]');
+      const btn            = wrapper.querySelector('[data-action-test]');
       const disabledToggle = wrapper.querySelector('[data-toggle-disabled]');
-      const loadingToggle  = wrapper.querySelector('[data-toggle-loading]');
       const counter        = wrapper.querySelector('[data-click-count]');
       if (!btn) return;
       let count = 0;
 
       btn.addEventListener('click', () => {
-        if (btn.disabled || btn.classList.contains('is-loading')) return;
+        if (btn.disabled) return;
         count += 1;
         if (counter) counter.textContent = String(count);
       });
 
       disabledToggle?.addEventListener('click', () => {
-        const isOff = btn.toggleAttribute('disabled');
-        disabledToggle.classList.toggle('is-on', isOff);
-        disabledToggle.textContent = isOff ? 'on' : 'off';
-      });
-
-      loadingToggle?.addEventListener('click', () => {
-        const isLoading = btn.classList.toggle('is-loading');
-        btn.setAttribute('aria-busy', isLoading ? 'true' : 'false');
-        loadingToggle.classList.toggle('is-on', isLoading);
-        loadingToggle.textContent = isLoading ? 'stop' : 'load';
+        const isDisabled = btn.toggleAttribute('disabled');
+        disabledToggle.classList.toggle('is-on', isDisabled);
+        disabledToggle.textContent = isDisabled ? 'Disabled: on' : 'Disabled: off';
       });
     });
   }
   setupButtonActionTests();
+
+  // ── Component ACTION setup ──
+  function setupCompActionTests() {
+    // ── Checkbox: click → toggle checked ──
+    const chkTarget = document.getElementById('chk-action-target');
+    if (chkTarget) {
+      chkTarget.style.cursor = 'pointer';
+      chkTarget.addEventListener('click', () => {
+        if (chkTarget.classList.contains('is-disabled')) return;
+        const checked = chkTarget.classList.toggle('is-checked');
+        if (checked) chkTarget.classList.remove('is-indeterminate');
+      });
+      document.querySelector('[data-chk-indeterminate]')?.addEventListener('click', (e) => {
+        const on = chkTarget.classList.toggle('is-indeterminate');
+        if (on) chkTarget.classList.remove('is-checked');
+        e.target.classList.toggle('is-on', on);
+        e.target.textContent = on ? 'Indet: on' : 'Indet: off';
+      });
+      document.querySelector('[data-chk-disabled]')?.addEventListener('click', (e) => {
+        const on = chkTarget.classList.toggle('is-disabled');
+        e.target.classList.toggle('is-on', on);
+        e.target.textContent = on ? 'Disabled: on' : 'Disabled: off';
+      });
+      document.querySelector('[data-chk-label]')?.addEventListener('click', (e) => {
+        const lbl = chkTarget.querySelector('.chk-action-label');
+        const visible = lbl.style.display !== 'none' && lbl.style.display !== '';
+        lbl.style.display = visible ? 'none' : 'inline';
+        e.target.classList.toggle('is-on', !visible);
+        e.target.textContent = visible ? 'Label: off' : 'Label: on';
+      });
+    }
+
+    // ── Radio: click → toggle selected ──
+    const radioTarget = document.getElementById('radio-action-target');
+    if (radioTarget) {
+      radioTarget.style.cursor = 'pointer';
+      radioTarget.addEventListener('click', () => {
+        if (radioTarget.classList.contains('is-disabled')) return;
+        radioTarget.classList.toggle('is-selected');
+      });
+      document.querySelector('[data-radio-disabled]')?.addEventListener('click', (e) => {
+        const on = radioTarget.classList.toggle('is-disabled');
+        e.target.classList.toggle('is-on', on);
+        e.target.textContent = on ? 'Disabled: on' : 'Disabled: off';
+      });
+    }
+
+    // ── Toggle: click → toggle on/off ──
+    const togTarget = document.getElementById('toggle-action-target');
+    if (togTarget) {
+      togTarget.style.cursor = 'pointer';
+      togTarget.addEventListener('click', () => {
+        if (togTarget.classList.contains('is-disabled')) return;
+        const on = togTarget.classList.toggle('is-on');
+        togTarget.querySelector('.s1-toggle-label').textContent = on ? 'ON' : 'OFF';
+      });
+      document.querySelector('[data-toggle-comp-disabled]')?.addEventListener('click', (e) => {
+        const on = togTarget.classList.toggle('is-disabled');
+        e.target.classList.toggle('is-on', on);
+        e.target.textContent = on ? 'Disabled: on' : 'Disabled: off';
+      });
+    }
+
+    // ── Chip Line: click → toggle selected ──
+    const chipLine = document.getElementById('chip-line-action');
+    if (chipLine) {
+      chipLine.addEventListener('click', () => chipLine.classList.toggle('is-selected'));
+      document.querySelector('[data-chip-line-disabled]')?.addEventListener('click', (e) => {
+        const on = chipLine.classList.toggle('is-disabled');
+        chipLine.style.pointerEvents = on ? 'none' : '';
+        e.target.classList.toggle('is-on', on);
+        e.target.textContent = on ? 'Disabled: on' : 'Disabled: off';
+      });
+    }
+
+    // ── Chip Solid: click → toggle selected ──
+    const chipSolid = document.getElementById('chip-solid-action');
+    if (chipSolid) {
+      chipSolid.addEventListener('click', () => chipSolid.classList.toggle('is-selected'));
+      document.querySelector('[data-chip-solid-disabled]')?.addEventListener('click', (e) => {
+        const on = chipSolid.classList.toggle('is-disabled');
+        chipSolid.style.pointerEvents = on ? 'none' : '';
+        e.target.classList.toggle('is-on', on);
+        e.target.textContent = on ? 'Disabled: on' : 'Disabled: off';
+      });
+    }
+
+    // ── Filter Chip: click → toggle selected ──
+    const filterChip = document.getElementById('filter-chip-action');
+    if (filterChip) {
+      filterChip.addEventListener('click', () => filterChip.classList.toggle('is-selected'));
+      document.querySelector('[data-filter-disabled]')?.addEventListener('click', (e) => {
+        const on = filterChip.classList.toggle('is-disabled');
+        filterChip.style.pointerEvents = on ? 'none' : '';
+        e.target.classList.toggle('is-on', on);
+        e.target.textContent = on ? 'Disabled: on' : 'Disabled: off';
+      });
+    }
+
+    // ── Filter Chip with title: click → toggle selected ──
+    const filterChipTitle = document.getElementById('filter-chip-title-action');
+    if (filterChipTitle) {
+      filterChipTitle.addEventListener('click', () => filterChipTitle.classList.toggle('is-selected'));
+      document.querySelector('[data-filter-title-disabled]')?.addEventListener('click', (e) => {
+        const on = filterChipTitle.classList.toggle('is-disabled');
+        filterChipTitle.style.pointerEvents = on ? 'none' : '';
+        e.target.classList.toggle('is-on', on);
+        e.target.textContent = on ? 'Disabled: on' : 'Disabled: off';
+      });
+    }
+
+    // ── Select: click trigger → toggle open ──
+    const selectTarget = document.getElementById('select-action-target');
+    if (selectTarget) {
+      selectTarget.querySelector('.s1-select-trigger')?.addEventListener('click', () => {
+        if (selectTarget.classList.contains('is-disabled')) return;
+        selectTarget.classList.toggle('is-open');
+      });
+      document.querySelector('[data-select-disabled]')?.addEventListener('click', (e) => {
+        const on = selectTarget.classList.toggle('is-disabled');
+        if (on) selectTarget.classList.remove('is-open');
+        e.target.classList.toggle('is-on', on);
+        e.target.textContent = on ? 'Disabled: on' : 'Disabled: off';
+      });
+    }
+  }
+  setupCompActionTests();
+
+  // ── Related Composed Fields: interactive setup ──
+  function setupRelatedComposedFields(root) {
+    root = root || document;
+    setupSearchInputField(root);
+    setupPasswordFieldInput(root);
+  }
+
+  function setupSearchInputField(root) {
+    root.querySelectorAll('[data-related-field="search-input"]').forEach(function(field) {
+      var input = field.querySelector('[data-search-input]');
+      var clearBtn = field.querySelector('[data-clear-action]');
+      if (!input || !clearBtn) return;
+      function syncClear() {
+        clearBtn.hidden = input.value.length === 0;
+      }
+      input.addEventListener('input', syncClear);
+      input.addEventListener('focus', function() {
+        field.querySelector('.s1-input-wrap').classList.add('is-focus');
+      });
+      input.addEventListener('blur', function() {
+        field.querySelector('.s1-input-wrap').classList.remove('is-focus');
+      });
+      clearBtn.addEventListener('click', function() {
+        input.value = '';
+        syncClear();
+        input.focus();
+      });
+      syncClear();
+    });
+  }
+
+  function setupPasswordFieldInput(root) {
+    root.querySelectorAll('[data-related-field="password-field"]').forEach(function(field) {
+      var input = field.querySelector('[data-password-input]');
+      var toggleBtn = field.querySelector('[data-visibility-toggle]');
+      var clearBtn = field.querySelector('[data-clear-action]');
+      if (!input || !toggleBtn) return;
+      function syncClear() {
+        if (clearBtn) clearBtn.hidden = input.value.length === 0;
+      }
+      function syncToggle() {
+        var isVisible = input.type === 'text';
+        toggleBtn.setAttribute('aria-label', isVisible ? '비밀번호 숨기기' : '비밀번호 보기');
+        toggleBtn.setAttribute('aria-pressed', isVisible ? 'true' : 'false');
+        var iconHidden = toggleBtn.querySelector('[data-icon-hidden]');
+        var iconVisible = toggleBtn.querySelector('[data-icon-visible]');
+        if (iconHidden) iconHidden.style.display = isVisible ? 'none' : '';
+        if (iconVisible) iconVisible.style.display = isVisible ? '' : 'none';
+      }
+      input.addEventListener('input', syncClear);
+      input.addEventListener('focus', function() {
+        field.querySelector('.s1-input-wrap').classList.add('is-focus');
+      });
+      input.addEventListener('blur', function(e) {
+        if (e.relatedTarget === toggleBtn || e.relatedTarget === clearBtn) return;
+        field.querySelector('.s1-input-wrap').classList.remove('is-focus');
+      });
+      toggleBtn.addEventListener('click', function() {
+        input.type = input.type === 'password' ? 'text' : 'password';
+        syncToggle();
+        input.focus();
+      });
+      if (clearBtn) {
+        clearBtn.addEventListener('click', function() {
+          input.value = '';
+          syncClear();
+          input.focus();
+        });
+      }
+      syncClear();
+      syncToggle();
+    });
+  }
+
+  setupRelatedComposedFields(document);
 </script>
 <script src="../assets/js/main.js"></script>
 </body>

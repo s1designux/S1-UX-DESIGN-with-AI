@@ -1,7 +1,9 @@
 /* ============================================================
-   SW Design System · Button Component CSS
-   Source: registry/tokens/component.tokens.json → button
-   Naming: sw-button (standalone, separate from legacy s1-btn)
+   SW Design System · Button Component CSS — UNOFFICIAL
+   Status: deprecated (2026-05-12)
+   Official: s1-btn class system in pages/components.html
+   Reason: s1-btn confirmed as the official CSS system.
+           This file is retained for reference only.
    Rule: No raw HEX. Only component or semantic tokens.
    ============================================================ */
 
@@ -77,12 +79,6 @@
   background: var(--button-primary-pressed-bg);
 }
 
-.sw-button--primary:focus-visible,
-.sw-button--primary.is-focus {
-  outline: var(--border-width-strong) solid var(--button-primary-focus-ring);
-  outline-offset: 2px;
-}
-
 .sw-button--primary:disabled,
 .sw-button--primary.is-disabled {
   background: var(--button-primary-disabled-bg);
@@ -105,18 +101,11 @@
 .sw-button--secondary:hover,
 .sw-button--secondary.is-hover {
   background: var(--button-secondary-hover-bg);
-  border-color: var(--button-secondary-hover-border);
 }
 
 .sw-button--secondary:active,
 .sw-button--secondary.is-pressed {
   background: var(--button-secondary-pressed-bg);
-}
-
-.sw-button--secondary:focus-visible,
-.sw-button--secondary.is-focus {
-  outline: var(--border-width-strong) solid var(--button-secondary-focus-ring);
-  outline-offset: 2px;
 }
 
 .sw-button--secondary:disabled,
@@ -147,12 +136,6 @@
 .sw-button--blue-line:active,
 .sw-button--blue-line.is-pressed {
   background: var(--button-blue-line-pressed-bg);
-}
-
-.sw-button--blue-line:focus-visible,
-.sw-button--blue-line.is-focus {
-  outline: var(--border-width-strong) solid var(--button-blue-line-focus-ring);
-  outline-offset: 2px;
 }
 
 .sw-button--blue-line:disabled,
