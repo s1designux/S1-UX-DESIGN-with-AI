@@ -1,0 +1,86 @@
+{
+  "meta": {
+    "name": "SW Design System Deprecated Tokens",
+    "version": "0.1.0",
+    "status": "draft",
+    "createdAt": "2026-05-18",
+    "description": "Records deprecated states, tokens, and naming conventions. Merged with governance/deprecated.json scope."
+  },
+  "deprecatedStates": [
+    {
+      "name": "hover",
+      "canonical": null,
+      "scope": "input",
+      "reason": "HD-2: Figma does not define a hover state for Input. Hover tokens removed.",
+      "affectedTokens": [
+        "--input-hover-bg",
+        "--input-hover-border"
+      ],
+      "deprecatedAt": "2026-05-12 (HD-2 resolution)",
+      "removedAt": "2026-05-12"
+    }
+  ],
+  "deprecatedTokens": [
+    {
+      "id": "input.hover.bg",
+      "cssVariable": "--input-hover-bg",
+      "replacedBy": null,
+      "reason": "HD-2: Figma does not define hover for Input. Removed.",
+      "removedAt": "2026-05-12",
+      "status": "removed"
+    },
+    {
+      "id": "input.hover.border",
+      "cssVariable": "--input-hover-border",
+      "replacedBy": null,
+      "reason": "HD-2: Figma does not define hover for Input. Removed.",
+      "removedAt": "2026-05-12",
+      "status": "removed"
+    },
+    {
+      "id": "input.focus.bg",
+      "cssVariable": "--input-focus-bg",
+      "replacedBy": "--input-default-bg",
+      "reason": "HD-3: Focus bg = default bg (white). No visual change. Token redundant.",
+      "removedAt": "2026-05-12",
+      "status": "removed"
+    },
+    {
+      "id": "input.error.bg",
+      "cssVariable": "--input-error-bg",
+      "replacedBy": "--input-default-bg",
+      "reason": "HD-8: Error bg = default bg (white). No visual change. Token redundant.",
+      "removedAt": "2026-05-12",
+      "status": "removed"
+    },
+    {
+      "id": "button.ghost.all",
+      "cssVariable": "--button-ghost-*",
+      "replacedBy": "--button-blue-line-*",
+      "reason": "Ghost is not an official V2.4 variant. Deprecated 2026-05-11. Replaced by blue-line.",
+      "deprecatedAt": "2026-05-11",
+      "removedAt": "pending (legacy tokens still in tokens.css for backward compat)",
+      "status": "deprecated"
+    },
+    {
+      "id": "button.danger.all",
+      "cssVariable": "--button-danger-*",
+      "replacedBy": null,
+      "reason": "Danger variant deleted. No service usage. Re-addition prohibited.",
+      "removedAt": "2026-04-29",
+      "status": "removed"
+    },
+    {
+      "id": "select.disabled.border.in.input",
+      "cssVariable": "--select-disabled-border",
+      "replacedBy": "registry/components/select.json — pending",
+      "reason": "HD-5: --select-disabled-border was incorrectly placed in input token group. Moved to Select component registry.",
+      "removedAt": "2026-05-12",
+      "status": "relocated"
+    }
+  ],
+  "referenceLinks": {
+    "governance": "registry/governance/deprecated.json",
+    "note": "Component variant deprecations (button-danger) live in governance/deprecated.json. Token-level deprecations live here."
+  }
+}

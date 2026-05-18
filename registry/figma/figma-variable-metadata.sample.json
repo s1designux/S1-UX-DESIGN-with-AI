@@ -1,0 +1,55 @@
+{
+  "_comment": "This is a sample showing the normalized structure from fetch-figma-variables.mjs. PAT is never stored here. Run fetch script to generate figma-variable-metadata.local.json with real data.",
+  "meta": {
+    "source": "figma-rest-api",
+    "fileKey": "yE5UCFEbmXJBlYJWB24Lz2",
+    "fetchedAt": "2026-05-18T00:00:00.000Z",
+    "endpoint": "/v1/files/{fileKey}/variables/local",
+    "note": "PAT not stored. Raw response not stored. Read-only collection."
+  },
+  "collections": [
+    {
+      "id": "VariableCollectionId:xxxx:yyyy",
+      "key": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+      "name": "Semantic",
+      "modes": [
+        { "modeId": "xxxx:0", "name": "Light" },
+        { "modeId": "xxxx:1", "name": "Dark" }
+      ],
+      "variableIds": [
+        "VariableID:xxxx:1",
+        "VariableID:xxxx:2"
+      ]
+    }
+  ],
+  "variables": [
+    {
+      "id": "VariableID:xxxx:1",
+      "key": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+      "name": "color/form-control/bg/default",
+      "collectionId": "VariableCollectionId:xxxx:yyyy",
+      "collectionName": "Semantic",
+      "resolvedType": "COLOR",
+      "valuesByMode": {
+        "xxxx:0": { "r": 1, "g": 1, "b": 1, "a": 1 },
+        "xxxx:1": { "type": "VARIABLE_ALIAS", "id": "VariableID:xxxx:foundation-white" }
+      },
+      "remote": false,
+      "scopes": ["ALL_FILLS"]
+    },
+    {
+      "id": "VariableID:xxxx:2",
+      "key": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+      "name": "color/form-control/border/default",
+      "collectionId": "VariableCollectionId:xxxx:yyyy",
+      "collectionName": "Semantic",
+      "resolvedType": "COLOR",
+      "valuesByMode": {
+        "xxxx:0": { "r": 0.851, "g": 0.851, "b": 0.851, "a": 1 },
+        "xxxx:1": { "type": "VARIABLE_ALIAS", "id": "VariableID:xxxx:foundation-gray-dark" }
+      },
+      "remote": false,
+      "scopes": ["STROKE_COLOR"]
+    }
+  ]
+}

@@ -1,0 +1,1248 @@
+{
+  "meta": {
+    "name": "SW Design System Figma CSS Token Map",
+    "version": "0.2.0",
+    "status": "draft",
+    "createdAt": "2026-05-18",
+    "description": "Maps CSS custom properties, registry token ids, and Figma Variables by meaning. Code registry is source of truth. Figma Variable names and CSS names may differ — mapping is meaning-based.",
+    "sourceOfTruth": "code-registry",
+    "figmaFileKey": "yE5UCFEbmXJBlYJWB24Lz2",
+    "figmaFileName": "SW-UX-GUIDE V2.4",
+    "notes": [
+      "Figma Variable names use slash-separated paths (e.g. color/form-control/border/focus).",
+      "CSS variable names use hyphen-separated paths with -- prefix (e.g. --color-form-control-border-focus).",
+      "Mapping is based on meaning and usage, not name equality.",
+      "status: stable = confirmed from both code and Figma. pending = Figma Variable name unconfirmed. needs-review = conflict or ambiguity detected.",
+      "Figma error/success input state variables not confirmed via MCP — marked pending.",
+      "v0.2.0: figma metadata block added to sync-ready items. collectionId/variableId/modeId required before write activation."
+    ],
+    "updatedAt": "2026-05-18"
+  },
+  "mappings": [
+    {
+      "_group": "Form Control Semantic — Background",
+      "items": [
+        {
+          "id": "form-control.bg.default",
+          "meaning": "Form control default background (white surface)",
+          "category": "semantic",
+          "scope": "form-control",
+          "figmaVariable": "color/form-control/bg/default",
+          "figmaValue": "#ffffff",
+          "figmaSource": "node:540:3794 (datepicker_input) — confirmed 2026-05-18",
+          "cssVariable": "--color-form-control-bg-default",
+          "cssValue": "var(--color-surface-default)",
+          "registryToken": "color.formControl.bg.default",
+          "componentAliases": [
+            "--input-default-bg",
+            "--select-default-bg",
+            "--date-picker-trigger-bg",
+            "--time-picker-trigger-bg"
+          ],
+          "value": "#ffffff",
+          "modes": {
+            "light": "#ffffff",
+            "dark": "var(--color-gray-dark-100) — pending Figma dark confirmation"
+          },
+          "status": "stable",
+          "notes": [
+            "Figma: color/form-control/bg/default = #ffffff confirmed. CSS aliases via var(--color-surface-default)."
+          ],
+          "figma": {
+            "collectionName": "",
+            "collectionId": "",
+            "modeName": "",
+            "modeId": "",
+            "variableId": "",
+            "variableKey": "",
+            "resolvedType": "COLOR",
+            "currentValue": "#ffffff",
+            "targetValue": "#ffffff",
+            "writeStatus": "metadata-required"
+          }
+        },
+        {
+          "id": "form-control.bg.disabled",
+          "meaning": "Form control disabled background",
+          "category": "semantic",
+          "scope": "form-control",
+          "figmaVariable": "color/form-control/bg/disabled",
+          "figmaValue": "#f5f5f5",
+          "figmaSource": "node:540:3794 — confirmed 2026-05-18",
+          "cssVariable": "--color-form-control-bg-disabled",
+          "cssValue": "var(--color-bg-subtle)",
+          "registryToken": "color.formControl.bg.disabled",
+          "componentAliases": [
+            "--input-disabled-bg",
+            "--select-disabled-bg",
+            "--date-picker-trigger-disabled-bg",
+            "--time-picker-trigger-disabled-bg"
+          ],
+          "value": "#f5f5f5",
+          "modes": {
+            "light": "#f5f5f5",
+            "dark": "var(--color-gray-dark-200) — pending"
+          },
+          "status": "stable",
+          "notes": [
+            "Figma: color/form-control/bg/disabled = #f5f5f5 confirmed."
+          ],
+          "figma": {
+            "collectionName": "",
+            "collectionId": "",
+            "modeName": "",
+            "modeId": "",
+            "variableId": "",
+            "variableKey": "",
+            "resolvedType": "COLOR",
+            "currentValue": "#f5f5f5",
+            "targetValue": "#f5f5f5",
+            "writeStatus": "metadata-required"
+          }
+        }
+      ]
+    },
+    {
+      "_group": "Form Control Semantic — Border",
+      "items": [
+        {
+          "id": "form-control.border.default",
+          "meaning": "Form control default border",
+          "category": "semantic",
+          "scope": "form-control",
+          "figmaVariable": "color/form-control/border/default",
+          "figmaValue": "#d9d9d9",
+          "figmaSource": "node:540:3794 — confirmed 2026-05-18",
+          "cssVariable": "--color-form-control-border-default",
+          "cssValue": "var(--color-border-default)",
+          "registryToken": "color.formControl.border.default",
+          "componentAliases": [
+            "--input-default-border",
+            "--select-default-border",
+            "--date-picker-trigger-default-border",
+            "--time-picker-trigger-default-border"
+          ],
+          "value": "#d9d9d9",
+          "modes": {
+            "light": "#d9d9d9",
+            "dark": "rgba(255,255,255,0.07) — candidate (--color-border-default dark)"
+          },
+          "status": "stable",
+          "notes": [
+            "Figma: color/form-control/border/default = #d9d9d9 confirmed. CSS: var(--color-border-default)."
+          ],
+          "figma": {
+            "collectionName": "",
+            "collectionId": "",
+            "modeName": "",
+            "modeId": "",
+            "variableId": "",
+            "variableKey": "",
+            "resolvedType": "COLOR",
+            "currentValue": "#d9d9d9",
+            "targetValue": "#d9d9d9",
+            "writeStatus": "metadata-required"
+          }
+        },
+        {
+          "id": "form-control.border.selected",
+          "meaning": "Form control focus/selected border (blue)",
+          "category": "semantic",
+          "scope": "form-control",
+          "figmaVariable": "color/form-control/border/selected",
+          "figmaValue": "#1d6ceb",
+          "figmaSource": "node:540:3794 — confirmed 2026-05-18",
+          "cssVariable": "--color-form-control-border-selected",
+          "cssValue": "var(--color-border-focus)",
+          "registryToken": "color.formControl.border.selected",
+          "figmaStateMapping": {
+            "figmaState": "selected",
+            "codeState": "focus",
+            "note": "Figma uses 'selected' for the focus/active state. Code uses 'focus'."
+          },
+          "componentAliases": [
+            "--input-focus-border",
+            "--select-focus-border",
+            "--date-picker-trigger-focus-border",
+            "--time-picker-trigger-focus-border"
+          ],
+          "value": "#1d6ceb",
+          "modes": {
+            "light": "#1d6ceb",
+            "dark": "var(--color-blue-dark-350)"
+          },
+          "status": "stable",
+          "notes": [
+            "Figma state 'selected' = code state 'focus'. Name mismatch intentional.",
+            "Also used for --color-form-control-border-correct (correct/success state shares same blue border)."
+          ],
+          "figma": {
+            "collectionName": "",
+            "collectionId": "",
+            "modeName": "",
+            "modeId": "",
+            "variableId": "",
+            "variableKey": "",
+            "resolvedType": "COLOR",
+            "currentValue": "#1d6ceb",
+            "targetValue": "#1d6ceb",
+            "writeStatus": "metadata-required"
+          }
+        },
+        {
+          "id": "form-control.border.error",
+          "meaning": "Form control error border (red)",
+          "category": "semantic",
+          "scope": "form-control",
+          "figmaVariable": "color/form-control/border/error",
+          "figmaValue": "#e50533",
+          "figmaSource": "pending — not directly confirmed from MCP. Inferred from color/red/400 = #e50533 via --color-status-error.",
+          "cssVariable": "--color-form-control-border-error",
+          "cssValue": "var(--color-status-error)",
+          "registryToken": "color.formControl.border.error",
+          "componentAliases": [
+            "--input-error-border"
+          ],
+          "value": "#e50533",
+          "modes": {
+            "light": "#e50533",
+            "dark": "var(--color-status-dark-red)"
+          },
+          "status": "pending",
+          "notes": [
+            "Figma Variable name unconfirmed. Value inferred from --color-status-error = var(--color-red-400) = #e50533."
+          ]
+        },
+        {
+          "id": "form-control.border.correct",
+          "meaning": "Form control correct/success border (blue — same as focus)",
+          "category": "semantic",
+          "scope": "form-control",
+          "figmaVariable": "color/form-control/border/selected",
+          "figmaValue": "#1d6ceb",
+          "figmaSource": "node:540:3794 — confirmed. Correct state shares same variable as selected/focus.",
+          "cssVariable": "--color-form-control-border-correct",
+          "cssValue": "var(--color-border-focus)",
+          "registryToken": "color.formControl.border.correct",
+          "figmaStateMapping": {
+            "figmaState": "success",
+            "codeState": "correct",
+            "note": "Figma uses 'success'. Code/registry canonical is 'correct' (HD-4). Figma 'success' → code 'correct'."
+          },
+          "componentAliases": [
+            "--input-correct-border"
+          ],
+          "value": "#1d6ceb",
+          "modes": {
+            "light": "#1d6ceb",
+            "dark": "var(--color-blue-dark-350)"
+          },
+          "status": "stable",
+          "notes": [
+            "Correct border = focus border. Same Figma variable (color/form-control/border/selected).",
+            "Figma calls this state 'success'. Code canonical = 'correct' (HD-4). --input-correct-border is canonical, not deprecated."
+          ],
+          "figma": {
+            "collectionName": "",
+            "collectionId": "",
+            "modeName": "",
+            "modeId": "",
+            "variableId": "",
+            "variableKey": "",
+            "resolvedType": "COLOR",
+            "currentValue": "#1d6ceb",
+            "targetValue": "#1d6ceb",
+            "writeStatus": "metadata-required"
+          }
+        },
+        {
+          "id": "form-control.border.disabled",
+          "meaning": "Form control disabled border",
+          "category": "semantic",
+          "scope": "form-control",
+          "figmaVariable": "color/form-control/border/disabled",
+          "figmaValue": "#d9d9d9",
+          "figmaSource": "node:540:3794 — confirmed 2026-05-18",
+          "cssVariable": "--color-form-control-border-disabled",
+          "cssValue": "var(--color-border-subtle)",
+          "registryToken": "color.formControl.border.disabled",
+          "componentAliases": [
+            "--input-disabled-border"
+          ],
+          "value": "#d9d9d9",
+          "modes": {
+            "light": "#d9d9d9",
+            "dark": "rgba(255,255,255,0.04) — candidate (--color-border-subtle dark)"
+          },
+          "status": "stable",
+          "notes": [
+            "Figma: color/form-control/border/disabled = #d9d9d9 confirmed. Note: same value as default border — subtle variant."
+          ],
+          "figma": {
+            "collectionName": "",
+            "collectionId": "",
+            "modeName": "",
+            "modeId": "",
+            "variableId": "",
+            "variableKey": "",
+            "resolvedType": "COLOR",
+            "currentValue": "#d9d9d9",
+            "targetValue": "#d9d9d9",
+            "writeStatus": "metadata-required"
+          }
+        }
+      ]
+    },
+    {
+      "_group": "Form Control Semantic — Text",
+      "items": [
+        {
+          "id": "form-control.text.default",
+          "meaning": "Form control typed value text (primary body text)",
+          "category": "semantic",
+          "scope": "form-control",
+          "figmaVariable": "color/form-control/text/default",
+          "figmaValue": "#353535",
+          "figmaSource": "node:540:3794 — confirmed 2026-05-18",
+          "cssVariable": "--color-form-control-text-default",
+          "cssValue": "var(--color-text-secondary)",
+          "registryToken": "color.formControl.text.default",
+          "componentAliases": [],
+          "value": "#353535",
+          "modes": {
+            "light": "#353535",
+            "dark": "var(--color-gray-dark-800)"
+          },
+          "status": "stable",
+          "notes": [
+            "Figma: color/form-control/text/default = #353535 = gray/800. CSS: var(--color-text-secondary) = var(--color-gray-800) = #353535. Confirmed correct — secondary, not primary."
+          ],
+          "figma": {
+            "collectionName": "",
+            "collectionId": "",
+            "modeName": "",
+            "modeId": "",
+            "variableId": "",
+            "variableKey": "",
+            "resolvedType": "COLOR",
+            "currentValue": "#353535",
+            "targetValue": "#353535",
+            "writeStatus": "metadata-required"
+          }
+        },
+        {
+          "id": "form-control.text.placeholder",
+          "meaning": "Form control placeholder text",
+          "category": "semantic",
+          "scope": "form-control",
+          "figmaVariable": "color/form-control/text/placeholder",
+          "figmaValue": "#757575",
+          "figmaSource": "node:540:3794 — confirmed 2026-05-18",
+          "cssVariable": "--color-form-control-text-placeholder",
+          "cssValue": "var(--color-text-placeholder)",
+          "registryToken": "color.formControl.text.placeholder",
+          "componentAliases": [
+            "--input-placeholder-text"
+          ],
+          "value": "#757575",
+          "modes": {
+            "light": "var(--color-gray-500) = #757575",
+            "dark": "var(--color-gray-dark-600)"
+          },
+          "status": "stable",
+          "notes": [
+            "Figma: color/form-control/text/placeholder = #757575 (gray/500). 확정 2026-05-18.",
+            "CSS: var(--color-text-placeholder) = var(--color-gray-500) = #757575. Figma와 일치.",
+            "caption(gray/500)과 placeholder(gray/500)는 동일 값이나 별개 토큰으로 관리."
+          ],
+          "figma": {
+            "collectionName": "",
+            "collectionId": "",
+            "modeName": "",
+            "modeId": "",
+            "variableId": "",
+            "variableKey": "",
+            "resolvedType": "COLOR",
+            "currentValue": "#757575",
+            "targetValue": "#757575",
+            "writeStatus": "metadata-required"
+          }
+        },
+        {
+          "id": "form-control.text.disabled",
+          "meaning": "Form control disabled text",
+          "category": "semantic",
+          "scope": "form-control",
+          "figmaVariable": "color/form-control/text/disabled",
+          "figmaValue": "#c4c4c4",
+          "figmaSource": "node:540:3794 — confirmed 2026-05-18",
+          "cssVariable": "--color-form-control-text-disabled",
+          "cssValue": "var(--color-text-disabled)",
+          "registryToken": "color.formControl.text.disabled",
+          "componentAliases": [
+            "--input-disabled-text"
+          ],
+          "value": "#c4c4c4",
+          "modes": {
+            "light": "#c4c4c4",
+            "dark": "var(--color-gray-dark-400) — candidate"
+          },
+          "status": "stable",
+          "notes": [
+            "Figma: color/form-control/text/disabled = #c4c4c4 = gray/300. Matches --color-text-disabled light value."
+          ],
+          "figma": {
+            "collectionName": "",
+            "collectionId": "",
+            "modeName": "",
+            "modeId": "",
+            "variableId": "",
+            "variableKey": "",
+            "resolvedType": "COLOR",
+            "currentValue": "#c4c4c4",
+            "targetValue": "#c4c4c4",
+            "writeStatus": "metadata-required"
+          }
+        },
+        {
+          "id": "form-control.text.label",
+          "meaning": "Form control label text (outside form-control namespace)",
+          "category": "semantic",
+          "scope": "form-control",
+          "figmaVariable": "color/text/title/secondary",
+          "figmaValue": "#353535",
+          "figmaSource": "pending — inferred from input.json label note. Direct Figma confirmation needed.",
+          "cssVariable": "--color-text-title-secondary",
+          "cssValue": "var(--color-text-primary)",
+          "registryToken": "color.text.title.secondary",
+          "componentAliases": [],
+          "value": "#353535",
+          "modes": {
+            "light": "#353535",
+            "dark": "pending"
+          },
+          "status": "pending",
+          "notes": [
+            "Label uses --color/text/title/secondary — outside form-control namespace.",
+            "input.json HD-7: Label = --color-text-title-secondary = same value as --color-text-primary (#353535).",
+            "Figma Variable name 'color/text/title/secondary' not confirmed via MCP."
+          ]
+        }
+      ]
+    },
+    {
+      "_group": "Form Control Semantic — Helper / State Text",
+      "items": [
+        {
+          "id": "color.text.state.helper",
+          "meaning": "Helper text default (secondary color)",
+          "category": "semantic",
+          "scope": "text-state",
+          "figmaVariable": "color/text/state/helper",
+          "figmaValue": "#757575",
+          "figmaSource": "pending — name not confirmed via MCP. Value inferred from --color-text-secondary usage.",
+          "cssVariable": "--color-text-state-helper",
+          "cssValue": "var(--color-text-secondary)",
+          "registryToken": "color.text.state.helper",
+          "componentAliases": [
+            "--input-helper-text"
+          ],
+          "value": "#757575",
+          "modes": {
+            "light": "#757575",
+            "dark": "var(--color-gray-dark-800)"
+          },
+          "status": "pending",
+          "notes": [
+            "Figma variable name unconfirmed. Candidate: color/text/state/helper."
+          ]
+        },
+        {
+          "id": "color.text.state.correct",
+          "meaning": "Correct/success helper text (blue)",
+          "category": "semantic",
+          "scope": "text-state",
+          "figmaVariable": "color/text/state/accent",
+          "figmaValue": "#1d6ceb",
+          "figmaSource": "node:540:3836 (mobile_bottomsheet) — confirmed 2026-05-18. color/text/state/accent = #1d6ceb.",
+          "cssVariable": "--color-text-state-correct",
+          "cssValue": "var(--color-blue-400)",
+          "registryToken": "color.text.state.correct",
+          "figmaStateMapping": {
+            "figmaName": "color/text/state/accent",
+            "codeName": "--color-text-state-correct",
+            "note": "Figma uses 'accent' for the blue state text. Code uses 'correct'."
+          },
+          "componentAliases": [
+            "--input-correct-text"
+          ],
+          "value": "#1d6ceb",
+          "modes": {
+            "light": "#1d6ceb",
+            "dark": "var(--color-blue-dark-400)"
+          },
+          "status": "stable",
+          "notes": [
+            "Figma: color/text/state/accent = #1d6ceb confirmed from DatePicker bottomsheet node.",
+            "CSS: --color-text-state-correct = var(--color-blue-400). Name differs but meaning aligns."
+          ],
+          "figma": {
+            "collectionName": "",
+            "collectionId": "",
+            "modeName": "",
+            "modeId": "",
+            "variableId": "",
+            "variableKey": "",
+            "resolvedType": "COLOR",
+            "currentValue": "#1d6ceb",
+            "targetValue": "#1d6ceb",
+            "writeStatus": "metadata-required"
+          }
+        },
+        {
+          "id": "color.text.state.error",
+          "meaning": "Error helper text (red)",
+          "category": "semantic",
+          "scope": "text-state",
+          "figmaVariable": "color/text/state/error",
+          "figmaValue": "#e50533",
+          "figmaSource": "pending — name not confirmed via MCP.",
+          "cssVariable": "--color-text-state-error",
+          "cssValue": "var(--color-status-error)",
+          "registryToken": "color.text.state.error",
+          "componentAliases": [
+            "--input-error-text"
+          ],
+          "value": "#e50533",
+          "modes": {
+            "light": "#e50533",
+            "dark": "var(--color-status-dark-red)"
+          },
+          "status": "pending",
+          "notes": [
+            "Figma variable name unconfirmed. Candidate: color/text/state/error. Value = --color-status-error = var(--color-red-400) = #e50533."
+          ]
+        }
+      ]
+    },
+    {
+      "_group": "Input Component Aliases",
+      "items": [
+        {
+          "id": "input.default.bg",
+          "meaning": "Input default background",
+          "category": "component-alias",
+          "scope": "input",
+          "figmaVariable": "color/form-control/bg/default",
+          "cssVariable": "--input-default-bg",
+          "semanticVariable": "--color-form-control-bg-default",
+          "registryToken": "input.background.default",
+          "status": "stable",
+          "notes": [
+            "Input default bg aliases form-control semantic background."
+          ]
+        },
+        {
+          "id": "input.disabled.bg",
+          "meaning": "Input disabled background",
+          "category": "component-alias",
+          "scope": "input",
+          "figmaVariable": "color/form-control/bg/disabled",
+          "cssVariable": "--input-disabled-bg",
+          "semanticVariable": "--color-form-control-bg-disabled",
+          "registryToken": "input.background.disabled",
+          "status": "stable",
+          "notes": []
+        },
+        {
+          "id": "input.default.border",
+          "meaning": "Input default border",
+          "category": "component-alias",
+          "scope": "input",
+          "figmaVariable": "color/form-control/border/default",
+          "cssVariable": "--input-default-border",
+          "semanticVariable": "--color-form-control-border-default",
+          "registryToken": "input.border.default",
+          "status": "stable",
+          "notes": []
+        },
+        {
+          "id": "input.focus.border",
+          "meaning": "Input focus state border (blue)",
+          "category": "component-alias",
+          "scope": "input",
+          "figmaVariable": "color/form-control/border/selected",
+          "figmaStateNote": "Figma state 'selected' = code state 'focus'",
+          "cssVariable": "--input-focus-border",
+          "semanticVariable": "--color-form-control-border-selected",
+          "registryToken": "input.border.focus",
+          "status": "stable",
+          "notes": [
+            "Figma 'selected' state → code 'focus' state."
+          ]
+        },
+        {
+          "id": "input.error.border",
+          "meaning": "Input error state border (red)",
+          "category": "component-alias",
+          "scope": "input",
+          "figmaVariable": "color/form-control/border/error",
+          "cssVariable": "--input-error-border",
+          "semanticVariable": "--color-form-control-border-error",
+          "registryToken": "input.border.error",
+          "status": "pending",
+          "notes": [
+            "Figma variable name pending confirmation."
+          ]
+        },
+        {
+          "id": "input.success.border",
+          "meaning": "Input success/correct state border (blue — same as focus)",
+          "category": "component-alias",
+          "scope": "input",
+          "figmaVariable": "color/form-control/border/selected",
+          "figmaStateNote": "Figma 'success' state reuses border/selected variable",
+          "cssVariable": "--input-correct-border",
+          "semanticVariable": "--color-form-control-border-correct",
+          "registryToken": "input.border.correct",
+          "figmaStateMapping": {
+            "figmaState": "success",
+            "codeState": "correct",
+            "canonicalState": "correct"
+          },
+          "status": "stable",
+          "notes": [
+            "CSS uses '--input-correct-border'. Figma uses 'success' state. Code canonical = 'correct' (HD-4).",
+            "'--input-correct-border' is canonical. 'success' is Figma alias name only."
+          ]
+        },
+        {
+          "id": "input.disabled.border",
+          "meaning": "Input disabled state border",
+          "category": "component-alias",
+          "scope": "input",
+          "figmaVariable": "color/form-control/border/disabled",
+          "cssVariable": "--input-disabled-border",
+          "semanticVariable": "--color-form-control-border-disabled",
+          "registryToken": "input.border.disabled",
+          "status": "stable",
+          "notes": []
+        },
+        {
+          "id": "input.placeholder.text",
+          "meaning": "Input placeholder text",
+          "category": "component-alias",
+          "scope": "input",
+          "figmaVariable": "color/form-control/text/placeholder",
+          "cssVariable": "--input-placeholder-text",
+          "semanticVariable": "--color-form-control-text-placeholder",
+          "registryToken": "input.text.placeholder",
+          "status": "stable",
+          "notes": [
+            "Figma: color/form-control/text/placeholder = #757575 (gray/500). 확정 2026-05-18.",
+            "CSS: --color-form-control-text-placeholder → var(--color-text-placeholder) = var(--color-gray-500) = #757575. Figma 일치."
+          ]
+        },
+        {
+          "id": "input.disabled.text",
+          "meaning": "Input disabled text",
+          "category": "component-alias",
+          "scope": "input",
+          "figmaVariable": "color/form-control/text/disabled",
+          "cssVariable": "--input-disabled-text",
+          "semanticVariable": "--color-form-control-text-disabled",
+          "registryToken": "input.text.disabled",
+          "status": "stable",
+          "notes": []
+        },
+        {
+          "id": "input.helper.text",
+          "meaning": "Input helper text (default state)",
+          "category": "component-alias",
+          "scope": "input",
+          "figmaVariable": "color/text/state/helper",
+          "cssVariable": "--input-helper-text",
+          "semanticVariable": "--color-text-state-helper",
+          "registryToken": "input.text.helper",
+          "status": "pending",
+          "notes": [
+            "Figma variable name pending."
+          ]
+        },
+        {
+          "id": "input.correct.text",
+          "meaning": "Input correct/success helper text (blue)",
+          "category": "component-alias",
+          "scope": "input",
+          "figmaVariable": "color/text/state/accent",
+          "cssVariable": "--input-correct-text",
+          "semanticVariable": "--color-text-state-correct",
+          "registryToken": "input.text.correct",
+          "figmaStateMapping": {
+            "figmaName": "color/text/state/accent",
+            "codeName": "--input-correct-text",
+            "canonicalState": "correct"
+          },
+          "status": "stable",
+          "notes": [
+            "Figma 'color/text/state/accent' = code 'correct'. --input-correct-text is canonical (HD-4). Figma 'success' → code 'correct'."
+          ]
+        },
+        {
+          "id": "input.error.text",
+          "meaning": "Input error helper text (red)",
+          "category": "component-alias",
+          "scope": "input",
+          "figmaVariable": "color/text/state/error",
+          "cssVariable": "--input-error-text",
+          "semanticVariable": "--color-text-state-error",
+          "registryToken": "input.text.error",
+          "status": "pending",
+          "notes": [
+            "Figma variable name pending."
+          ]
+        },
+        {
+          "id": "input.action.icon",
+          "meaning": "Input suffix action icon (calendar, search, visibility toggle)",
+          "category": "component-alias",
+          "scope": "input",
+          "figmaVariable": "color/icon/gray-dark",
+          "figmaValue": "#353535",
+          "figmaSource": "node:540:3794 — color/icon/gray-dark = #353535",
+          "cssVariable": "--color-icon-emphasis",
+          "semanticVariable": "--color-icon-emphasis",
+          "registryToken": "input.icon.action",
+          "status": "needs-review",
+          "notes": [
+            "Figma uses color/icon/gray-dark (#353535) for input action icons.",
+            "CSS currently has no --input-action-icon token. Uses --color-icon-emphasis (var(--color-gray-800) = #353535).",
+            "Recommend creating --input-action-icon as component alias → --color-icon-emphasis."
+          ]
+        }
+      ]
+    },
+    {
+      "_group": "Button Primary Component Tokens",
+      "items": [
+        {
+          "id": "button.primary.default.bg",
+          "meaning": "Button primary default background",
+          "category": "component",
+          "scope": "button",
+          "figmaVariable": "color/button/bg/primary--default",
+          "figmaValue": "#1d6ceb",
+          "figmaSource": "node:540:4501 — confirmed 2026-05-18",
+          "cssVariable": "--button-primary-default-bg",
+          "cssValue": "var(--color-action-primary-default)",
+          "registryToken": "button.primary.default.bg",
+          "value": "#1d6ceb",
+          "modes": {
+            "light": "#1d6ceb",
+            "dark": "var(--color-blue-dark-300)"
+          },
+          "status": "stable",
+          "notes": [
+            "Figma: color/button/bg/primary--default = #1d6ceb confirmed."
+          ],
+          "figma": {
+            "collectionName": "",
+            "collectionId": "",
+            "modeName": "",
+            "modeId": "",
+            "variableId": "",
+            "variableKey": "",
+            "resolvedType": "COLOR",
+            "currentValue": "#1d6ceb",
+            "targetValue": "#1d6ceb",
+            "writeStatus": "metadata-required"
+          }
+        },
+        {
+          "id": "button.primary.default.text",
+          "meaning": "Button primary label text (white)",
+          "category": "component",
+          "scope": "button",
+          "figmaVariable": "color/button/label/primary--default",
+          "figmaValue": "#ffffff",
+          "figmaSource": "node:540:4501 — confirmed 2026-05-18",
+          "cssVariable": "--button-primary-default-text",
+          "cssValue": "var(--color-action-primary-text)",
+          "registryToken": "button.primary.default.text",
+          "value": "#ffffff",
+          "modes": {
+            "light": "#ffffff",
+            "dark": "#ffffff"
+          },
+          "status": "stable",
+          "notes": [
+            "Figma: color/button/label/primary--default = #ffffff confirmed."
+          ],
+          "figma": {
+            "collectionName": "",
+            "collectionId": "",
+            "modeName": "",
+            "modeId": "",
+            "variableId": "",
+            "variableKey": "",
+            "resolvedType": "COLOR",
+            "currentValue": "#ffffff",
+            "targetValue": "#ffffff",
+            "writeStatus": "metadata-required"
+          }
+        },
+        {
+          "id": "button.primary.default.border",
+          "meaning": "Button primary default border (same as bg)",
+          "category": "component",
+          "scope": "button",
+          "figmaVariable": "color/button/border/primary--default",
+          "figmaValue": "#1d6ceb",
+          "figmaSource": "node:540:4501 — confirmed 2026-05-18",
+          "cssVariable": null,
+          "cssValue": null,
+          "registryToken": null,
+          "value": "#1d6ceb",
+          "status": "needs-review",
+          "notes": [
+            "Figma has color/button/border/primary--default = #1d6ceb but code has no --button-primary-default-border token.",
+            "Primary button border matches bg color. Consider adding token or documenting as no-border-token-needed."
+          ]
+        },
+        {
+          "id": "button.primary.hover.bg",
+          "meaning": "Button primary hover background",
+          "category": "component",
+          "scope": "button",
+          "figmaVariable": "color/button/bg/primary--hover",
+          "figmaValue": "#2158c8",
+          "figmaSource": "pending — not confirmed via MCP",
+          "cssVariable": "--button-primary-hover-bg",
+          "cssValue": "var(--color-action-primary-hover)",
+          "registryToken": "button.primary.hover.bg",
+          "value": "#2158c8",
+          "modes": {
+            "light": "var(--color-blue-450) = #2158c8",
+            "dark": "var(--color-blue-dark-250)"
+          },
+          "status": "pending",
+          "notes": [
+            "Figma Variable name for hover state pending confirmation."
+          ]
+        },
+        {
+          "id": "button.primary.pressed.bg",
+          "meaning": "Button primary pressed background",
+          "category": "component",
+          "scope": "button",
+          "figmaVariable": "color/button/bg/primary--pressed",
+          "figmaSource": "pending",
+          "cssVariable": "--button-primary-pressed-bg",
+          "cssValue": "var(--color-action-primary-pressed)",
+          "registryToken": "button.primary.pressed.bg",
+          "status": "pending",
+          "notes": [
+            "Figma Variable name for pressed state pending confirmation."
+          ]
+        },
+        {
+          "id": "button.primary.disabled.bg",
+          "meaning": "Button primary disabled background",
+          "category": "component",
+          "scope": "button",
+          "figmaVariable": "color/button/bg/primary--disabled",
+          "figmaSource": "pending",
+          "cssVariable": "--button-primary-disabled-bg",
+          "cssValue": "var(--color-bg-subtle)",
+          "registryToken": "button.primary.disabled.bg",
+          "status": "pending",
+          "notes": []
+        }
+      ]
+    },
+    {
+      "_group": "Button Secondary Component Tokens",
+      "items": [
+        {
+          "id": "button.secondary.default.bg",
+          "meaning": "Button secondary default background (white surface)",
+          "category": "component",
+          "scope": "button",
+          "figmaVariable": "color/button/bg/secondary--default",
+          "figmaSource": "pending",
+          "cssVariable": "--button-secondary-default-bg",
+          "cssValue": "var(--color-surface-default)",
+          "registryToken": "button.secondary.default.bg",
+          "status": "pending",
+          "notes": []
+        },
+        {
+          "id": "button.secondary.default.border",
+          "meaning": "Button secondary default border",
+          "category": "component",
+          "scope": "button",
+          "figmaVariable": "color/button/border/secondary--default",
+          "figmaSource": "pending",
+          "cssVariable": "--button-secondary-default-border",
+          "cssValue": "var(--color-border-default)",
+          "registryToken": "button.secondary.default.border",
+          "status": "pending",
+          "notes": []
+        }
+      ]
+    },
+    {
+      "_group": "Button Blue-line Component Tokens",
+      "items": [
+        {
+          "id": "button.blue-line.default.border",
+          "meaning": "Button blue-line default border (blue)",
+          "category": "component",
+          "scope": "button",
+          "figmaVariable": "color/button/border/blue-line--default",
+          "figmaSource": "pending — blue-line is SW-specific variant, Figma variable name unconfirmed",
+          "cssVariable": "--button-blue-line-default-border",
+          "cssValue": "var(--color-action-primary-default)",
+          "registryToken": "button.blueLine.default.border",
+          "status": "pending",
+          "notes": [
+            "blue-line is SW-specific variant. Figma Variable naming convention unconfirmed."
+          ]
+        },
+        {
+          "id": "button.blue-line.default.text",
+          "meaning": "Button blue-line default text (blue)",
+          "category": "component",
+          "scope": "button",
+          "figmaVariable": "color/button/label/blue-line--default",
+          "figmaSource": "pending",
+          "cssVariable": "--button-blue-line-default-text",
+          "cssValue": "var(--color-action-primary-default)",
+          "registryToken": "button.blueLine.default.text",
+          "status": "pending",
+          "notes": []
+        }
+      ]
+    },
+    {
+      "_group": "DatePicker Cell Tokens (from Figma mobile bottomsheet 540:3836)",
+      "items": [
+        {
+          "id": "date-picker.cell.selected.bg",
+          "meaning": "DatePicker selected day cell background (filled circle)",
+          "category": "component",
+          "scope": "date-picker",
+          "figmaVariable": "color/control/bg/selected",
+          "figmaValue": "#1d6ceb",
+          "figmaSource": "node:540:3836 — confirmed 2026-05-18",
+          "cssVariable": "--date-picker-cell-selected-bg",
+          "cssValue": "var(--color-action-primary-default)",
+          "registryToken": "datePicker.cell.selected.bg",
+          "status": "stable",
+          "notes": [
+            "Figma: color/control/bg/selected = #1d6ceb confirmed."
+          ],
+          "figma": {
+            "collectionName": "",
+            "collectionId": "",
+            "modeName": "",
+            "modeId": "",
+            "variableId": "",
+            "variableKey": "",
+            "resolvedType": "COLOR",
+            "currentValue": "#1d6ceb",
+            "targetValue": "#1d6ceb",
+            "writeStatus": "metadata-required"
+          }
+        },
+        {
+          "id": "date-picker.cell.today.border",
+          "meaning": "DatePicker today cell border accent",
+          "category": "component",
+          "scope": "date-picker",
+          "figmaVariable": "color/control/border/selected",
+          "figmaValue": "#1d6ceb",
+          "figmaSource": "node:540:3836 — confirmed 2026-05-18",
+          "cssVariable": "--date-picker-cell-today-border",
+          "cssValue": "var(--color-action-primary-default)",
+          "registryToken": "datePicker.cell.today.border",
+          "status": "stable",
+          "notes": [
+            "Figma: color/control/border/selected = #1d6ceb confirmed."
+          ],
+          "figma": {
+            "collectionName": "",
+            "collectionId": "",
+            "modeName": "",
+            "modeId": "",
+            "variableId": "",
+            "variableKey": "",
+            "resolvedType": "COLOR",
+            "currentValue": "#1d6ceb",
+            "targetValue": "#1d6ceb",
+            "writeStatus": "metadata-required"
+          }
+        },
+        {
+          "id": "date-picker.cell.selected.text",
+          "meaning": "DatePicker selected day text (white on blue)",
+          "category": "component",
+          "scope": "date-picker",
+          "figmaVariable": "color/text/state/accent-alt",
+          "figmaValue": "#ffffff",
+          "figmaSource": "node:540:3836 — confirmed 2026-05-18",
+          "cssVariable": "--date-picker-cell-selected-text",
+          "cssValue": "var(--color-base-white)",
+          "registryToken": "datePicker.cell.selected.text",
+          "status": "stable",
+          "notes": [
+            "Figma: color/text/state/accent-alt = #ffffff confirmed."
+          ],
+          "figma": {
+            "collectionName": "",
+            "collectionId": "",
+            "modeName": "",
+            "modeId": "",
+            "variableId": "",
+            "variableKey": "",
+            "resolvedType": "COLOR",
+            "currentValue": "#ffffff",
+            "targetValue": "#ffffff",
+            "writeStatus": "metadata-required"
+          }
+        },
+        {
+          "id": "date-picker.cell.today.text",
+          "meaning": "DatePicker today cell text (blue)",
+          "category": "component",
+          "scope": "date-picker",
+          "figmaVariable": "color/text/state/accent",
+          "figmaValue": "#1d6ceb",
+          "figmaSource": "node:540:3836 — confirmed 2026-05-18",
+          "cssVariable": "--date-picker-cell-today-text",
+          "cssValue": "var(--color-action-primary-default)",
+          "registryToken": "datePicker.cell.today.text",
+          "status": "stable",
+          "notes": [
+            "Figma: color/text/state/accent = #1d6ceb confirmed."
+          ],
+          "figma": {
+            "collectionName": "",
+            "collectionId": "",
+            "modeName": "",
+            "modeId": "",
+            "variableId": "",
+            "variableKey": "",
+            "resolvedType": "COLOR",
+            "currentValue": "#1d6ceb",
+            "targetValue": "#1d6ceb",
+            "writeStatus": "metadata-required"
+          }
+        },
+        {
+          "id": "date-picker.cell.other-month.text",
+          "meaning": "DatePicker other-month day text (disabled style)",
+          "category": "component",
+          "scope": "date-picker",
+          "figmaVariable": "color/text/state/disabled",
+          "figmaValue": "#c4c4c4",
+          "figmaSource": "node:540:3836 — confirmed 2026-05-18",
+          "cssVariable": "--date-picker-cell-other-month-text",
+          "cssValue": "var(--color-text-disabled)",
+          "registryToken": "datePicker.cell.otherMonth.text",
+          "status": "stable",
+          "notes": [
+            "Figma: color/text/state/disabled = #c4c4c4 confirmed."
+          ],
+          "figma": {
+            "collectionName": "",
+            "collectionId": "",
+            "modeName": "",
+            "modeId": "",
+            "variableId": "",
+            "variableKey": "",
+            "resolvedType": "COLOR",
+            "currentValue": "#c4c4c4",
+            "targetValue": "#c4c4c4",
+            "writeStatus": "metadata-required"
+          }
+        },
+        {
+          "id": "date-picker.cell.default.bg",
+          "meaning": "DatePicker today cell (today-alt) background — white",
+          "category": "component",
+          "scope": "date-picker",
+          "figmaVariable": "color/control/bg/selected-alt",
+          "figmaValue": "#ffffff",
+          "figmaSource": "node:540:3836 — confirmed 2026-05-18",
+          "cssVariable": "--date-picker-cell-today-bg",
+          "cssValue": "var(--color-surface-default)",
+          "registryToken": "datePicker.cell.today.bg",
+          "status": "stable",
+          "notes": [
+            "Figma: color/control/bg/selected-alt = #ffffff (today cell bg is white, with border only)."
+          ],
+          "figma": {
+            "collectionName": "",
+            "collectionId": "",
+            "modeName": "",
+            "modeId": "",
+            "variableId": "",
+            "variableKey": "",
+            "resolvedType": "COLOR",
+            "currentValue": "#ffffff",
+            "targetValue": "#ffffff",
+            "writeStatus": "metadata-required"
+          }
+        }
+      ]
+    }
+  ],
+  "stateAliases": {
+    "complete": {
+      "canonical": "filled",
+      "source": "figma",
+      "status": "alias",
+      "notes": [
+        "Figma 'complete' state maps to 'filled' / content state in code and registry.",
+        "Container bg/border is same as default. Only text changes from placeholder to typed value.",
+        "No separate bg or border tokens needed for this state."
+      ]
+    },
+    "correct": {
+      "canonical": "correct",
+      "source": "code-registry",
+      "status": "stable",
+      "notes": [
+        "HD-4 결정: 코드/registry 기준 canonical 이름은 'correct'.",
+        "Figma는 'success'라고 부르지만, 코드 기준 correct로 통일.",
+        "CSS tokens --input-correct-border / --input-correct-text 는 canonical — deprecated 아님.",
+        "Figma 'success' state → code 'correct' state (단방향 alias)."
+      ]
+    },
+    "selected": {
+      "canonical": "focus",
+      "source": "figma",
+      "status": "alias",
+      "notes": [
+        "Figma uses 'selected' to mean the focused/active input state.",
+        "Code uses 'focus'. Figma variable: color/form-control/border/selected.",
+        "CSS token: --color-form-control-border-selected maps to focus state."
+      ]
+    },
+    "success": {
+      "canonical": "correct",
+      "source": "figma",
+      "status": "figma-alias",
+      "notes": [
+        "Figma calls this state 'success'. Code/registry canonical is 'correct' (HD-4).",
+        "Mapping direction: Figma 'success' → code 'correct'.",
+        "Do not rename code tokens to 'success'. 'correct' is the canonical code name."
+      ]
+    }
+  },
+  "deprecated": [
+    {
+      "id": "input.hover.bg",
+      "cssVariable": "--input-hover-bg",
+      "reason": "HD-2: Figma does not define a hover state for Input. Token removed from registry.",
+      "removedAt": "2026-05-12"
+    },
+    {
+      "id": "input.hover.border",
+      "cssVariable": "--input-hover-border",
+      "reason": "HD-2: Figma does not define a hover state for Input. Token removed from registry.",
+      "removedAt": "2026-05-12"
+    },
+    {
+      "id": "input.focus.bg",
+      "cssVariable": "--input-focus-bg",
+      "reason": "HD-3: Focus/complete bg = default bg. No visual difference. Token unnecessary.",
+      "removedAt": "2026-05-12"
+    },
+    {
+      "id": "input.error.bg",
+      "cssVariable": "--input-error-bg",
+      "reason": "HD-8: Error bg = default bg (white). No visual difference. Token unnecessary.",
+      "removedAt": "2026-05-12"
+    },
+    {
+      "id": "button.ghost",
+      "cssVariable": "all --button-ghost-* tokens",
+      "reason": "Ghost is not an official V2.4 variant. Replaced by blue-line.",
+      "removedAt": "2026-05-11"
+    },
+    {
+      "id": "button.danger",
+      "cssVariable": "all --button-danger-* tokens",
+      "reason": "Danger variant deleted. No service usage. Re-addition prohibited.",
+      "removedAt": "2026-04-29"
+    }
+  ],
+  "unmapped": [
+    {
+      "id": "input.value.text",
+      "meaning": "Input typed value text color",
+      "cssVariable": null,
+      "semanticVariable": "--color-form-control-text-default",
+      "figmaVariable": "color/form-control/text/default",
+      "note": "No component-level --input-value-text token exists. Uses semantic --color-form-control-text-default directly. Consider adding component alias."
+    },
+    {
+      "id": "input.unit.text",
+      "meaning": "Input with Unit suffix text label color",
+      "cssVariable": null,
+      "semanticVariable": "--color-text-secondary",
+      "figmaVariable": "pending",
+      "note": "No --input-unit-text token. Unit label uses text-secondary by convention. Figma variable not confirmed."
+    },
+    {
+      "id": "select.tokens",
+      "meaning": "All Select component tokens",
+      "cssVariable": "pending",
+      "semanticVariable": "--color-form-control-* (shared)",
+      "figmaVariable": "pending",
+      "note": "Select registry (select.json) is skeleton. Tokens pending. Should reuse form-control semantic layer like Input."
+    },
+    {
+      "id": "time-picker.tokens",
+      "meaning": "All TimePicker component tokens",
+      "cssVariable": "pending",
+      "semanticVariable": "--color-form-control-* (shared)",
+      "figmaVariable": "pending",
+      "note": "TimePicker (figmaNodeId: 6443:4606) not yet analysed. MVP5 target."
+    },
+    {
+      "id": "date-picker.panel.shadow",
+      "meaning": "DatePicker panel drop shadow",
+      "cssVariable": "--date-picker-panel-shadow",
+      "cssValue": "candidate: 0 4px 16px rgba(0,0,0,0.10)",
+      "figmaVariable": "pending — shadow not a Figma variable",
+      "note": "Shadow is not a Figma Variable. rgba exception allowed for shadows per CLAUDE.md."
+    },
+    {
+      "id": "button.primary.border",
+      "meaning": "Button primary border — Figma has color/button/border/primary--default but code has no equivalent token",
+      "cssVariable": null,
+      "figmaVariable": "color/button/border/primary--default",
+      "figmaValue": "#1d6ceb",
+      "note": "Code skips primary button border token (bg = border color). Consider documenting as intentional."
+    }
+  ],
+  "needsReview": [
+    {
+      "id": "button-primary-border-token-gap",
+      "severity": "low",
+      "issue": "Figma has color/button/border/primary--default = #1d6ceb but code has no --button-primary-default-border token.",
+      "recommendation": "Either add --button-primary-default-border = var(--color-action-primary-default) or explicitly document that primary button has no border token (bg color serves as full fill).",
+      "humanDecisionNeeded": false
+    },
+    {
+      "id": "input-action-icon-token-missing",
+      "severity": "low",
+      "issue": "No --input-action-icon token. Figma uses color/icon/gray-dark (#353535) for input suffix action icons.",
+      "recommendation": "Add --input-action-icon → var(--color-icon-emphasis) as component token.",
+      "humanDecisionNeeded": false
+    }
+  ]
+}

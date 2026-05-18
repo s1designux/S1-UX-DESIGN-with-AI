@@ -4,6 +4,10 @@
 > 원본: Figma `semantic` Variable Collection — Component 수준 토큰 분리
 > 업데이트: 2026-04-28
 
+> **📋 참고 문서** — 이 파일은 인간 가독 참고 문서입니다.  
+> 기준 데이터는 `registry/tokens/` JSON 파일입니다. 충돌 시 **registry가 우선**합니다.  
+> 이 파일 수정 시 반드시 `assets/css/tokens.css`와 동기화해야 합니다.
+
 ---
 
 ## 분리 배경
@@ -211,7 +215,7 @@ Primitive(Foundation)를 직접 참조하지 않습니다.
 | color/dropdown/trigger/bg--hover | `--dropdown-trigger-hover-bg` | `var(--color-bg-subtle)` | 트리거 hover 배경 |
 | color/dropdown/trigger/bg--open | `--dropdown-trigger-open-bg` | `var(--color-bg-subtle)` | 트리거 열림 배경 |
 | color/dropdown/trigger/bg--disabled | `--dropdown-trigger-disabled-bg` | `var(--color-bg-subtle)` | 트리거 disabled 배경 |
-| color/dropdown/trigger/border--default | `--dropdown-trigger-default-border` | `var(--color-border-default)` | 트리거 기본 테두리 |
+| color/dropdown/trigger/border--default | `--dropdown-trigger-default-border` | `var(--color-form-control-border-default)` | 트리거 기본 테두리 |
 | color/dropdown/trigger/border--hover | `--dropdown-trigger-hover-border` | `var(--color-border-strong)` | 트리거 hover 테두리 |
 | color/dropdown/trigger/border--open | `--dropdown-trigger-open-border` | `var(--color-border-focus)` | 트리거 열림 테두리 |
 | color/dropdown/trigger/border--disabled | `--dropdown-trigger-disabled-border` | `var(--color-border-subtle)` | 트리거 disabled 테두리 |
@@ -229,7 +233,7 @@ Primitive(Foundation)를 직접 참조하지 않습니다.
 --dropdown-trigger-hover-bg:        var(--color-bg-subtle);
 --dropdown-trigger-open-bg:         var(--color-bg-subtle);
 --dropdown-trigger-disabled-bg:     var(--color-bg-subtle);
---dropdown-trigger-default-border:  var(--color-border-default);
+--dropdown-trigger-default-border:  var(--color-form-control-border-default);
 --dropdown-trigger-hover-border:    var(--color-border-strong);
 --dropdown-trigger-open-border:     var(--color-border-focus);
 --dropdown-trigger-disabled-border: var(--color-border-subtle);
@@ -246,64 +250,90 @@ Primitive(Foundation)를 직접 참조하지 않습니다.
 
 ## 4. Input / Form-control
 
-> `border/disabled-alt1`, `border/disabled-alt2` 처리:
-> Semantic 레이어에서 단일 `--color-border-disabled` (= `--color-border-subtle`) 제공.
-> 컴포넌트별로 아래와 같이 override.
+> **토큰 2-레이어 구조 (MVP4 — 2026-05-18 확정)**
+> Semantic = `--color-form-control-*` / Component alias = `--input-*` (form-control 참조)
+> HD-2 hover 삭제 · HD-3/8 focus-bg/error-bg 삭제 (default와 동일, 별도 토큰 불필요)
 
-### 변수 정의
+### Semantic 레이어 (color-form-control-*)
+
+| CSS Variable | 참조 | 설명 |
+|---|---|---|
+| `--color-form-control-bg-default` | `var(--color-surface-default)` | 기본 배경 |
+| `--color-form-control-bg-disabled` | `var(--color-bg-subtle)` | disabled 배경 |
+| `--color-form-control-border-default` | `var(--color-border-default)` | 기본 테두리 |
+| `--color-form-control-border-selected` | `var(--color-border-focus)` | focus/selected 테두리 (파란색) |
+| `--color-form-control-border-error` | `var(--color-status-error)` | 에러 테두리 |
+| `--color-form-control-border-correct` | `var(--color-border-focus)` | correct 테두리 (= selected, 파란색) |
+| `--color-form-control-border-disabled` | `var(--color-border-subtle)` | disabled 테두리 |
+| `--color-form-control-text-default` | `var(--color-text-secondary)` | 입력 텍스트 (#353535) |
+| `--color-form-control-text-placeholder` | `var(--color-text-placeholder)` | 플레이스홀더 |
+| `--color-form-control-text-disabled` | `var(--color-text-disabled)` | disabled 텍스트 |
+
+### Semantic 레이어 (color-text-state-*)
+
+| CSS Variable | Light | Dark | 설명 |
+|---|---|---|---|
+| `--color-text-state-helper` | `var(--color-text-secondary)` | (상속) | 도움말 텍스트 |
+| `--color-text-state-correct` | `var(--color-blue-400)` = #1D6CEB | `var(--color-blue-dark-400)` | correct 피드백 텍스트 |
+| `--color-text-state-error` | `var(--color-status-error)` | (상속) | 에러 메시지 텍스트 |
+
+### Component alias (--input-*)
 
 | Figma 원본 | CSS Variable | Semantic 참조 | 설명 |
 |---|---|---|---|
-| color/form-control/bg--default | `--input-default-bg` | `var(--color-surface-default)` | 기본 배경 |
-| color/form-control/bg--hover | `--input-hover-bg` | `var(--color-surface-default)` | hover 배경 (변화 없음) |
-| color/form-control/bg--focus | `--input-focus-bg` | `var(--color-surface-default)` | focus 배경 |
-| color/form-control/bg--disabled | `--input-disabled-bg` | `var(--color-bg-subtle)` | disabled 배경 |
-| color/form-control/bg--error | `--input-error-bg` | `var(--color-surface-default)` | 에러 배경 |
-| color/form-control/border--default | `--input-default-border` | `var(--color-border-default)` | 기본 테두리 |
-| color/form-control/border--hover | `--input-hover-border` | `var(--color-border-strong)` | hover 테두리 |
-| color/form-control/border--focus | `--input-focus-border` | `var(--color-border-focus)` | focus 테두리 |
-| color/form-control/border--error | `--input-error-border` | `var(--color-border-danger)` | 에러 테두리 |
-| color/form-control/border--correct | `--input-correct-border` | `var(--color-border-correct)` | 올바른 입력 테두리 |
-| color/form-control/border--disabled | `--input-disabled-border` | `var(--color-border-default)` | disabled 테두리 (alt1) |
+| color/form-control/bg--default | `--input-default-bg` | `var(--color-form-control-bg-default)` | 기본 배경 |
+| color/form-control/bg--disabled | `--input-disabled-bg` | `var(--color-form-control-bg-disabled)` | disabled 배경 |
+| color/form-control/border--default | `--input-default-border` | `var(--color-form-control-border-default)` | 기본 테두리 |
+| color/form-control/border--selected | `--input-focus-border` | `var(--color-form-control-border-selected)` | focus 테두리 |
+| color/form-control/border--error | `--input-error-border` | `var(--color-form-control-border-error)` | 에러 테두리 |
+| color/form-control/border--correct | `--input-correct-border` | `var(--color-form-control-border-correct)` | correct 테두리 |
+| color/form-control/border--disabled | `--input-disabled-border` | `var(--color-form-control-border-disabled)` | disabled 테두리 |
+| color/form-control/text--placeholder | `--input-placeholder-text` | `var(--color-form-control-text-placeholder)` | 플레이스홀더 |
+| color/form-control/text--disabled | `--input-disabled-text` | `var(--color-form-control-text-disabled)` | disabled 텍스트 |
+| color/text/state/helper | `--input-helper-text` | `var(--color-text-state-helper)` | 도움말 텍스트 |
+| color/text/state/correct | `--input-correct-text` | `var(--color-text-state-correct)` | correct 피드백 텍스트 |
+| color/text/state/error | `--input-error-text` | `var(--color-text-state-error)` | 에러 메시지 텍스트 |
 
-> **Select / 별도 컴포넌트의 disabled border (alt2)**
-> `--select-disabled-border: var(--color-border-subtle)` — 컴포넌트 파일에서 개별 정의.
+> **Select disabled border** `--select-disabled-border: var(--color-border-subtle)` — Select 컴포넌트 개별 정의.
 
-### 텍스트 / 아이콘 변수
-
-| Figma 원본 | CSS Variable | Semantic 참조 | 설명 |
-|---|---|---|---|
-| color/form-control/text--placeholder | `--input-placeholder-text` | `var(--color-text-placeholder)` | 플레이스홀더 |
-| color/form-control/text--helper | `--input-helper-text` | `var(--color-text-helper)` | 도움말 텍스트 |
-| color/form-control/text--error | `--input-error-text` | `var(--color-text-danger)` | 에러 메시지 |
-| color/form-control/text--correct | `--input-correct-text` | `var(--color-text-correct)` | 올바른 입력 피드백 |
-| color/form-control/text--disabled | `--input-disabled-text` | `var(--color-text-disabled)` | disabled 텍스트 |
+> **삭제된 토큰** (HD-2/3/8): `--input-hover-bg`, `--input-focus-bg`, `--input-error-bg`, `--input-hover-border`
 
 ### CSS 구현
 
 ```css
-/* Input / Form-control */
---input-default-bg:      var(--color-surface-default);
---input-hover-bg:        var(--color-surface-default);
---input-focus-bg:        var(--color-surface-default);
---input-disabled-bg:     var(--color-bg-subtle);
---input-error-bg:        var(--color-surface-default);
---input-default-border:  var(--color-border-default);
---input-hover-border:    var(--color-border-strong);
---input-focus-border:    var(--color-border-focus);
---input-error-border:    var(--color-border-danger);
---input-correct-border:  var(--color-border-correct);
---input-disabled-border: var(--color-border-default);    /* alt1 */
+/* Semantic: Form-control */
+--color-form-control-bg-default:       var(--color-surface-default);
+--color-form-control-bg-disabled:      var(--color-bg-subtle);
+--color-form-control-border-default:   var(--color-border-default);
+--color-form-control-border-selected:  var(--color-border-focus);
+--color-form-control-border-error:     var(--color-status-error);
+--color-form-control-border-correct:   var(--color-border-focus);
+--color-form-control-border-disabled:  var(--color-border-subtle);
+--color-form-control-text-default:     var(--color-text-secondary);
+--color-form-control-text-placeholder: var(--color-text-placeholder);
+--color-form-control-text-disabled:    var(--color-text-disabled);
 
-/* Select (disabled border alt2) */
---select-disabled-border: var(--color-border-subtle);   /* alt2 */
+/* Semantic: Text state */
+--color-text-state-helper:  var(--color-text-secondary);
+--color-text-state-correct: var(--color-blue-400);   /* Light: #1D6CEB */
+--color-text-state-error:   var(--color-status-error);
 
-/* Text */
---input-placeholder-text: var(--color-text-placeholder);
---input-helper-text:       var(--color-text-helper);
---input-error-text:        var(--color-text-danger);
---input-correct-text:      var(--color-text-correct);
---input-disabled-text:     var(--color-text-disabled);
+/* [data-theme="dark"] */
+--color-text-state-correct: var(--color-blue-dark-400);
+
+/* Component alias: Input */
+--input-default-bg:       var(--color-form-control-bg-default);
+--input-disabled-bg:      var(--color-form-control-bg-disabled);
+--input-default-border:   var(--color-form-control-border-default);
+--input-focus-border:     var(--color-form-control-border-selected);
+--input-error-border:     var(--color-form-control-border-error);
+--input-correct-border:   var(--color-form-control-border-correct);
+--input-disabled-border:  var(--color-form-control-border-disabled);
+--input-placeholder-text: var(--color-form-control-text-placeholder);
+--input-disabled-text:    var(--color-form-control-text-disabled);
+--input-helper-text:      var(--color-text-state-helper);
+--input-correct-text:     var(--color-text-state-correct);
+--input-error-text:       var(--color-text-state-error);
 ```
 
 ---
@@ -318,16 +348,17 @@ Primitive(Foundation)를 직접 참조하지 않습니다.
 | color/control/checkbox/bg--checked | `--checkbox-checked-bg` | `var(--color-action-primary-default)` | 체크박스 체크 배경 |
 | color/control/checkbox/bg--indeterminate | `--checkbox-indeterminate-bg` | `var(--color-action-primary-default)` | 체크박스 중간 상태 배경 |
 | color/control/checkbox/bg--disabled | `--checkbox-disabled-bg` | `var(--color-bg-subtle)` | 체크박스 disabled 배경 |
-| color/control/checkbox/border--default | `--checkbox-default-border` | `var(--color-border-default)` | 체크박스 기본 테두리 |
-| color/control/checkbox/border--hover | `--checkbox-hover-border` | `var(--color-border-focus)` | 체크박스 hover 테두리 |
-| color/control/checkbox/border--checked | `--checkbox-checked-border` | `var(--color-action-primary-default)` | 체크박스 체크 테두리 |
-| color/control/checkbox/border--disabled | `--checkbox-disabled-border` | `var(--color-border-subtle)` | 체크박스 disabled 테두리 |
+| color/control/checkbox/border--default | `--checkbox-default-border` | `var(--color-control-border-default)` | 체크박스 기본 테두리 |
+| color/control/checkbox/border--hover | `--checkbox-hover-border` | `var(--color-control-border-hover)` | 체크박스 hover 테두리 |
+| color/control/checkbox/border--checked | `--checkbox-checked-border` | `var(--color-control-border-selected)` | 체크박스 체크 테두리 |
+| color/control/checkbox/border--disabled | `--checkbox-disabled-border` | `var(--color-control-border-disabled)` | 체크박스 disabled 테두리 |
 | color/control/checkbox/check-icon | `--checkbox-check-icon` | `var(--color-action-primary-text)` | 체크 마크 |
 | color/control/radio/bg--default | `--radio-default-bg` | `var(--color-surface-default)` | 라디오 기본 배경 |
 | color/control/radio/bg--disabled | `--radio-disabled-bg` | `var(--color-bg-subtle)` | 라디오 disabled 배경 |
-| color/control/radio/border--default | `--radio-default-border` | `var(--color-border-default)` | 라디오 기본 테두리 |
-| color/control/radio/border--selected | `--radio-selected-border` | `var(--color-action-primary-default)` | 라디오 선택 테두리 |
-| color/control/radio/border--disabled | `--radio-disabled-border` | `var(--color-border-strong)` | 라디오 disabled 테두리 (#C4C4C4) |
+| color/control/radio/border--default | `--radio-default-border` | `var(--color-control-border-default)` | 라디오 기본 테두리 |
+| color/control/radio/border--hover | `--radio-hover-border` | `var(--color-control-border-hover)` | 라디오 hover 테두리 |
+| color/control/radio/border--selected | `--radio-selected-border` | `var(--color-control-border-selected)` | 라디오 선택 테두리 |
+| color/control/radio/border--disabled | `--radio-disabled-border` | `var(--color-control-border-disabled)` | 라디오 disabled 테두리 |
 | color/control/radio/dot--selected | `--radio-selected-dot` | `var(--color-action-primary-default)` | 라디오 선택 도트 |
 | color/control/radio/dot--disabled | `--radio-disabled-dot` | `var(--color-border-strong)` | 라디오 disabled-selected 도트 (#C4C4C4) |
 | color/control/toggle/bg--on | `--toggle-on-bg` | `var(--color-action-primary-default)` | 토글 ON 배경 |
@@ -343,18 +374,19 @@ Primitive(Foundation)를 직접 참조하지 않습니다.
 --checkbox-checked-bg:       var(--color-action-primary-default);
 --checkbox-indeterminate-bg: var(--color-action-primary-default);
 --checkbox-disabled-bg:      var(--color-bg-subtle);
---checkbox-default-border:   var(--color-border-default);
---checkbox-hover-border:     var(--color-border-focus);
---checkbox-checked-border:   var(--color-action-primary-default);
---checkbox-disabled-border:  var(--color-border-subtle);
+--checkbox-default-border:   var(--color-control-border-default);
+--checkbox-hover-border:     var(--color-control-border-hover);
+--checkbox-checked-border:   var(--color-control-border-selected);
+--checkbox-disabled-border:  var(--color-control-border-disabled);
 --checkbox-check-icon:       var(--color-action-primary-text);
 
 /* Radio */
 --radio-default-bg:      var(--color-surface-default);
 --radio-disabled-bg:     var(--color-bg-subtle);
---radio-default-border:  var(--color-border-default);
---radio-selected-border: var(--color-action-primary-default);
---radio-disabled-border: var(--color-border-strong);
+--radio-default-border:  var(--color-control-border-default);
+--radio-hover-border:    var(--color-control-border-hover);
+--radio-selected-border: var(--color-control-border-selected);
+--radio-disabled-border: var(--color-control-border-disabled);
 --radio-selected-dot:    var(--color-action-primary-default);
 --radio-disabled-dot:    var(--color-border-strong);
 

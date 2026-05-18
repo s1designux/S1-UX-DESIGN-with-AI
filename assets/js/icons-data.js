@@ -8110,7 +8110,7 @@ window.ICONS_DATA = {
       properties: { type: ["line","solid","color"] },
       variants: {
         line: { figmaNodeId: "97:69", svg: "" },
-        solid: { figmaNodeId: "97:68", svg: "" },
+        solid: { figmaNodeId: "97:68", svg: `<svg viewBox="0 0 18 17.7456" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8.00701 9.73842L5.06789 6.7993L4.28043 7.58676L7.60773 10.9141C7.71864 11.025 7.86283 11.0804 7.99592 11.0804C8.12901 11.0804 8.28428 11.025 8.3841 10.9141L18 1.32035L17.2125 0.532888L8.00701 9.73842Z" fill="currentColor"/><path d="M12.7879 1.1091V0H0.55455C0.244002 0 0 0.244002 0 0.55455V17.1911C0 17.5016 0.244002 17.7456 0.55455 17.7456H17.1911C17.5016 17.7456 17.7456 17.5016 17.7456 17.1911V6.47714H16.6365V16.6365H1.1091V1.1091H12.7879Z" fill="currentColor"/></svg>` },
         color: { figmaNodeId: "97:70", svg: "" }
       }
     },
@@ -8136,7 +8136,7 @@ window.ICONS_DATA = {
       properties: { type: ["line","solid","color"] },
       variants: {
         line: { figmaNodeId: "97:77", svg: "" },
-        solid: { figmaNodeId: "97:76", svg: "" },
+        solid: { figmaNodeId: "97:76", svg: `<svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M0.723106 16L7.99491 8.71801L15.2769 16L16 15.2769L8.71801 7.99491L16 0.723106L15.2769 0L7.99491 7.28199L0.723106 0L0 0.723106L7.28199 7.99491L0 15.2769L0.723106 16Z" fill="currentColor"/></svg>` },
         color: { figmaNodeId: "97:78", svg: "" }
       }
     },
@@ -8214,7 +8214,7 @@ window.ICONS_DATA = {
       properties: { type: ["line","solid","color"] },
       variants: {
         line: { figmaNodeId: "97:102", svg: "" },
-        solid: { figmaNodeId: "97:101", svg: "" },
+        solid: { figmaNodeId: "97:101", svg: `<svg viewBox="0 0 15.5842 18" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M14.8544 9.68361L8.30611 16.2319V0H7.27813V16.2319L0.729869 9.68361L0 10.4135L7.43232 17.8458C7.53512 17.9486 7.66876 18 7.79212 18C7.91548 18 8.05939 17.9486 8.15191 17.8458L15.5842 10.4135L14.8544 9.68361Z" fill="currentColor"/></svg>` },
         color: { figmaNodeId: "97:100", svg: "" }
       }
     },
@@ -9071,7 +9071,7 @@ window.ICONS_DATA = {
       section: "ui",
       properties: { type: ["line","solid","color"] },
       variants: {
-        line: { figmaNodeId: "439:84", svg: "" },
+        line: { figmaNodeId: "439:84", svg: `<svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M16 8C16 3.58588 12.4141 0 8 0C3.58588 0 0 3.58588 0 8C0 12.4141 3.58588 16 8 16C12.4141 16 16 12.4141 16 8ZM8 15.0588C4.10353 15.0588 0.941176 11.8965 0.941176 8C0.941176 4.10353 4.10353 0.941176 8 0.941176C11.8965 0.941176 15.0588 4.10353 15.0588 8C15.0588 11.8965 11.8965 15.0588 8 15.0588Z" fill="currentColor"/><path d="M5.5 5.5L10.8333 10.8333" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><path d="M10.8333 5.5L5.5 10.8333" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>` },
         solid: { figmaNodeId: "439:86", svg: "" },
         color: { figmaNodeId: "439:85", svg: "" }
       }

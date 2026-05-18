@@ -30,8 +30,8 @@
       "label": "Checkbox",
       "category": "core",
       "path": "registry/components/checkbox.json",
-      "status": "planned",
-      "harnessStatus": "skeleton",
+      "status": "in-progress",
+      "harnessStatus": "implemented",
       "priority": 2
     },
     {
@@ -40,8 +40,8 @@
       "label": "Radio",
       "category": "core",
       "path": "registry/components/radio.json",
-      "status": "planned",
-      "harnessStatus": "skeleton",
+      "status": "in-progress",
+      "harnessStatus": "implemented",
       "priority": 3
     },
     {
@@ -50,8 +50,8 @@
       "label": "Toggle",
       "category": "core",
       "path": "registry/components/toggle.json",
-      "status": "planned",
-      "harnessStatus": "skeleton",
+      "status": "in-progress",
+      "harnessStatus": "implemented",
       "priority": 4
     },
     {
@@ -75,8 +75,8 @@
       "label": "Input",
       "category": "core",
       "path": "registry/components/input.json",
-      "status": "planned",
-      "harnessStatus": "skeleton",
+      "status": "in-progress",
+      "harnessStatus": "implemented",
       "priority": 6
     },
     {
@@ -88,6 +88,22 @@
       "status": "planned",
       "harnessStatus": "skeleton",
       "priority": 7
+    },
+    {
+      "id": "date-picker",
+      "name": "DatePicker",
+      "label": "Date Picker / Day Picker",
+      "category": "core-candidate",
+      "path": "registry/components/date-picker.json",
+      "status": "candidate",
+      "harnessStatus": "candidate",
+      "priority": 8,
+      "notes": [
+        "Base Input (s1-input-wrap) trigger를 재사용한다.",
+        "calendar panel + day grid가 있어 Related Composed Field가 아닌 별도 컴포넌트 후보다.",
+        "Figma node 6443:4655 확인 — MCP 접근 불가, componentSetKey 미등록.",
+        "Mobile 인터랙션 미확정 (bottom sheet 가능성)."
+      ]
     }
   ]
 }

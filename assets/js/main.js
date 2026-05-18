@@ -97,6 +97,10 @@ function renderSidebar() {
     </div>
     <nav class="sidebar-nav">${items}</nav>
     <div class="sidebar-footer">
+      <div class="sidebar-theme-row">
+        <button class="sidebar-theme-btn" id="global-btn-light" onclick="setGlobalTheme('light')">Light</button>
+        <button class="sidebar-theme-btn" id="global-btn-dark"  onclick="setGlobalTheme('dark')">Dark</button>
+      </div>
       v1.0.0 · Figma node 540:7663<br>
       <a href="https://www.figma.com/design/yE5UCFEbmXJBlYJWB24Lz2/" style="color:#0072ce" target="_blank">Figma 열기 ↗</a>
     </div>
@@ -214,6 +218,22 @@ function initFilterBtns() {
   });
 }
 
+/* ── Global Theme (localStorage 기반, 모든 페이지 공유) ── */
+function setGlobalTheme(t) {
+  document.documentElement.setAttribute('data-theme', t);
+  localStorage.setItem('sw-ds-theme', t);
+  document.getElementById('global-btn-light')?.classList.toggle('active', t === 'light');
+  document.getElementById('global-btn-dark')?.classList.toggle('active', t === 'dark');
+  // components.html 자체 토글 버튼이 있으면 동기화
+  document.getElementById('btnLight')?.classList.toggle('active', t === 'light');
+  document.getElementById('btnDark')?.classList.toggle('active', t === 'dark');
+}
+
+function initGlobalTheme() {
+  const saved = localStorage.getItem('sw-ds-theme') || 'light';
+  setGlobalTheme(saved);
+}
+
 /* ── Semantic Theme Toggle ── */
 function initThemeToggle() {
   const btns = document.querySelectorAll('[data-mode]');
@@ -236,10 +256,17 @@ function initThemeToggle() {
 }
 
 /* ── Init ── */
+// 테마를 DOMContentLoaded 이전에 적용해 flash 방지
+(function() {
+  const saved = localStorage.getItem('sw-ds-theme');
+  if (saved) document.documentElement.setAttribute('data-theme', saved);
+})();
+
 document.addEventListener('DOMContentLoaded', () => {
   const sidebar = document.querySelector('.sidebar');
   if (sidebar) sidebar.innerHTML = renderSidebar();
 
+  initGlobalTheme();
   initMobile();
   initTabs();
   initCopyBtns();

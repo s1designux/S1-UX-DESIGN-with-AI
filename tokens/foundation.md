@@ -4,6 +4,10 @@
 > 원본: Figma `Foundation` Variable Collection
 > 업데이트: 2026-04-29
 
+> **📋 참고 문서** — 이 파일은 인간 가독 참고 문서입니다.  
+> 기준 데이터는 `registry/tokens/` JSON 파일입니다. 충돌 시 **registry가 우선**합니다.  
+> 이 파일 수정 시 반드시 `assets/css/tokens.css`와 동기화해야 합니다.
+
 ---
 
 ## 구조 개요

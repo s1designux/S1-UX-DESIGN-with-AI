@@ -1,0 +1,110 @@
+{
+  "meta": {
+    "name": "SW Design System Token Aliases",
+    "version": "0.1.0",
+    "status": "draft",
+    "createdAt": "2026-05-18",
+    "description": "State aliases and token aliases that bridge Figma naming, legacy naming, and canonical code naming.",
+    "sourceOfTruth": "code-registry"
+  },
+  "stateAliases": {
+    "complete": {
+      "canonical": "filled",
+      "direction": "figma → code",
+      "description": "Figma 'complete' state = code 'filled' / content state. Container bg/border unchanged from default. Only text changes: placeholder → typed value.",
+      "notes": [
+        "No separate bg or border tokens for 'complete' state.",
+        "Applies to: Input, DatePicker trigger, TimePicker trigger."
+      ]
+    },
+    "correct": {
+      "canonical": "correct",
+      "direction": "figma 'success' → code 'correct'",
+      "description": "HD-4: 코드/registry canonical 이름은 'correct'. Figma는 'success'라고 부르지만 코드 기준 correct로 통일.",
+      "notes": [
+        "--input-correct-border / --input-correct-text 는 canonical 토큰 — deprecated 아님.",
+        "Figma 'success' state → code 'correct' state (단방향 매핑).",
+        "'success'는 Figma alias일 뿐, 코드 토큰 리네임 불필요."
+      ]
+    },
+    "selected": {
+      "canonical": "focus",
+      "direction": "figma → code",
+      "description": "Figma 'selected' state for Input = code 'focus' state. Figma variable: color/form-control/border/selected.",
+      "notes": [
+        "Applies only to form-control (Input, Select, DatePicker trigger) — not Chip/Nav where 'selected' means chosen item.",
+        "CSS token name: --color-form-control-border-selected (preserves Figma naming).",
+        "Alias in input layer: --input-focus-border."
+      ]
+    },
+    "success": {
+      "canonical": "correct",
+      "direction": "figma → code",
+      "description": "Figma 'success' state = code 'correct' state. Mapping을 위한 Figma alias 기록.",
+      "notes": [
+        "Figma 원본 state name. 코드에서는 'correct' 사용.",
+        "코드 토큰 이름을 'success'로 리네임하지 않는다."
+      ]
+    }
+  },
+  "tokenAliases": [
+    {
+      "alias": "--input-filled-bg",
+      "canonical": "--input-default-bg",
+      "semanticSource": "--color-form-control-bg-default",
+      "reason": "Filled (complete) state uses the same container background as default. No visual difference.",
+      "status": "canonical-is-sufficient"
+    },
+    {
+      "alias": "--input-filled-border",
+      "canonical": "--input-default-border",
+      "semanticSource": "--color-form-control-border-default",
+      "reason": "Filled (complete) state uses the same container border as default. No visual difference.",
+      "status": "canonical-is-sufficient"
+    },
+    {
+      "alias": "--color-form-control-border-correct",
+      "canonical": "--color-form-control-border-selected",
+      "semanticSource": "--color-border-focus",
+      "reason": "Correct border reuses the selected (focus) border value. Same Figma variable (color/form-control/border/selected).",
+      "status": "alias"
+    }
+  ],
+  "figmaStateMapping": [
+    {
+      "figmaState": "complete",
+      "codeState": "filled",
+      "scope": "form-control",
+      "tokenBehavior": "no-visual-token-change",
+      "description": "No bg/border token change. Placeholder text is replaced by typed value text token."
+    },
+    {
+      "figmaState": "selected",
+      "codeState": "focus",
+      "scope": "form-control",
+      "tokenBehavior": "border-change",
+      "description": "Border changes from default to selected/focus (blue). No bg change."
+    },
+    {
+      "figmaState": "success",
+      "codeState": "correct",
+      "scope": "form-control",
+      "tokenBehavior": "border-change + helper-text-change",
+      "description": "Border = same as focus (blue). Helper text = --color-text-state-correct (blue). Deprecated: 'correct'. Canonical: 'success'."
+    },
+    {
+      "figmaState": "error",
+      "codeState": "error",
+      "scope": "form-control",
+      "tokenBehavior": "border-change + helper-text-change",
+      "description": "Border → red (--input-error-border). Helper text → red (--input-error-text)."
+    },
+    {
+      "figmaState": "disabled",
+      "codeState": "disabled",
+      "scope": "form-control",
+      "tokenBehavior": "bg-change + border-change + text-change",
+      "description": "bg → disabled-bg. border → disabled-border. text → disabled-text."
+    }
+  ]
+}

@@ -209,7 +209,7 @@
                   <div class="file-icon">🎨</div>
                   <div>
                     <div class="file-name">tokens.css</div>
-                    <div class="file-meta">Semantic 42종 · Component 80종 · Light + Dark</div>
+                    <div class="file-meta">Semantic 61종 · Component 124종 · Light + Dark</div>
                   </div>
                 </div>
                 <button class="download-btn" onclick="downloadTokens()">
@@ -227,7 +227,7 @@
                 <pre class="expand-pre" id="code-full">/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
    SW Design System V2.4 — tokens.css
    Foundation → Semantic → Component
-   Updated: 2026-04-30
+   Updated: 2026-05-18
    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
 
 
@@ -346,7 +346,7 @@
   --color-text-secondary:   var(--color-gray-800);
   --color-text-tertiary:    var(--color-gray-600);
   --color-text-caption:     var(--color-gray-500);
-  --color-text-placeholder: var(--color-gray-400);
+  --color-text-placeholder: var(--color-gray-500);
   --color-text-helper:      var(--color-gray-400);
   --color-text-link:        var(--color-blue-400);
   --color-text-correct:     var(--color-blue-400);
@@ -355,6 +355,7 @@
   --color-text-inverse:     var(--color-base-white);
   --color-border-subtle:   var(--color-gray-100);
   --color-border-default:  var(--color-gray-200);
+  --color-border-disabled: var(--color-gray-200);
   --color-border-strong:   var(--color-gray-300);
   --color-border-emphasis: var(--color-gray-800);
   --color-border-focus:    var(--color-blue-400);
@@ -376,6 +377,23 @@
   --color-status-error:   var(--color-red-400);
   --color-status-warning: var(--color-yellow-400);
   --color-status-info:    var(--color-gray-500);
+  --color-control-border-default:  var(--color-gray-200);
+  --color-control-border-hover:    var(--color-blue-400);
+  --color-control-border-selected: var(--color-blue-400);
+  --color-control-border-disabled: var(--color-gray-300);
+  --color-form-control-bg-default:       var(--color-surface-default);
+  --color-form-control-bg-disabled:      var(--color-bg-subtle);
+  --color-form-control-border-default:   var(--color-control-border-default);
+  --color-form-control-border-selected:  var(--color-border-focus);
+  --color-form-control-border-error:     var(--color-status-error);
+  --color-form-control-border-correct:   var(--color-border-focus);
+  --color-form-control-border-disabled:  var(--color-border-subtle);
+  --color-form-control-text-default:     var(--color-text-secondary);
+  --color-form-control-text-placeholder: var(--color-text-placeholder);
+  --color-form-control-text-disabled:    var(--color-text-disabled);
+  --color-text-state-helper:  var(--color-text-secondary);
+  --color-text-state-correct: var(--color-blue-400);
+  --color-text-state-error:   var(--color-status-error);
   --color-overlay: rgba(0, 0, 0, 0.5);
   --spacing-padding-block-xxs: var(--spacing-8);  --spacing-padding-block-xs: var(--spacing-12);
   --spacing-padding-block-sm: var(--spacing-16);  --spacing-padding-block-md: var(--spacing-20);
@@ -396,9 +414,9 @@
   --sizing-form-control-height-xxs: var(--spacing-28); --sizing-form-control-height-xs: 34px;
   --sizing-form-control-height-md: var(--spacing-44);  --sizing-form-control-height-lg: var(--spacing-48);
   --sizing-form-control-dataview-height-sm: var(--spacing-28); --sizing-form-control-dataview-height-md: 32px;
-  --sizing-button-height-xs: 34px; --sizing-button-height-sm: var(--spacing-40);
-  --sizing-button-height-md: var(--spacing-44); --sizing-button-height-lg: var(--spacing-48);
-  --sizing-button-min-width: 80px;
+  --sizing-button-height-xxs: var(--spacing-28); --sizing-button-height-xs: 34px;
+  --sizing-button-height-sm: var(--spacing-40);  --sizing-button-height-md: var(--spacing-44);
+  --sizing-button-height-lg: var(--spacing-48);  --sizing-button-min-width: 80px;
   --sizing-chip-height-sm: var(--spacing-28); --sizing-chip-height-md: 30px; --sizing-chip-height-lg: 34px;
   --sizing-table-row-height-xs: 34px; --sizing-table-row-height-sm: 38px;
   --sizing-table-row-height-md: var(--spacing-44);
@@ -433,6 +451,7 @@
   --color-text-inverse:     var(--color-base-white);
   --color-border-subtle:   rgba(255,255,255,0.04);
   --color-border-default:  rgba(255,255,255,0.07);
+  --color-border-disabled: rgba(255,255,255,0.07);
   --color-border-strong:   rgba(255,255,255,0.12);
   --color-border-emphasis: rgba(255,255,255,0.20);
   --color-border-focus:    var(--color-blue-dark-350);
@@ -443,7 +462,7 @@
   --color-icon-muted:    var(--color-gray-dark-400);
   --color-icon-emphasis: var(--color-gray-dark-800);
   --color-icon-accent:   var(--color-blue-dark-400);
-  --color-icon-inverse:  var(--color-base-white);
+  --color-icon-inverse:  var(--color-gray-dark-900);
   --color-icon-danger:   var(--color-status-dark-red);
   --color-action-primary-default: var(--color-blue-dark-300);
   --color-action-primary-hover:   var(--color-blue-dark-250);
@@ -454,31 +473,46 @@
   --color-status-error:   var(--color-status-dark-red);
   --color-status-warning: var(--color-status-dark-yellow);
   --color-status-info:    var(--color-gray-dark-700);
+  --color-text-state-correct: var(--color-blue-dark-400);
+  --color-control-border-default:  var(--color-gray-dark-500);
+  --color-control-border-hover:    var(--color-blue-dark-300);
+  --color-control-border-selected: var(--color-blue-dark-300);
+  --color-control-border-disabled: var(--color-gray-dark-300);
+  --color-form-control-bg-default:      var(--color-gray-dark-50);
+  --color-form-control-border-disabled: var(--color-control-border-disabled);
+  --dropdown-trigger-hover-bg: var(--color-gray-dark-450);
   --color-overlay: rgba(0, 0, 0, 0.75);
 }
 
 /* ══ 5. Component Tokens ══ */
 :root {
-  --button-primary-default-bg:    var(--color-action-primary-default);
-  --button-primary-hover-bg:      var(--color-action-primary-hover);
-  --button-primary-pressed-bg:    var(--color-action-primary-pressed);
-  --button-primary-disabled-bg:   var(--color-border-default);
-  --button-primary-default-text:  var(--color-action-primary-text);
-  --button-primary-disabled-text: var(--color-text-disabled);
-  --button-primary-default-icon:  var(--color-action-primary-text);
-  --button-primary-focus-ring:    var(--color-border-focus);
+  --button-primary-default-bg:      var(--color-action-primary-default);
+  --button-primary-hover-bg:        var(--color-action-primary-hover);
+  --button-primary-pressed-bg:      var(--color-action-primary-pressed);
+  --button-primary-disabled-bg:     var(--color-bg-subtle);
+  --button-primary-disabled-border: var(--color-border-disabled);
+  --button-primary-default-text:    var(--color-action-primary-text);
+  --button-primary-disabled-text:   var(--color-text-disabled);
+  --button-primary-default-icon:    var(--color-action-primary-text);
   --button-secondary-default-bg:      var(--color-surface-default);
   --button-secondary-hover-bg:        var(--color-bg-subtle);
   --button-secondary-pressed-bg:      var(--color-bg-muted);
   --button-secondary-disabled-bg:     var(--color-bg-subtle);
   --button-secondary-default-border:  var(--color-border-default);
-  --button-secondary-hover-border:    var(--color-border-strong);
-  --button-secondary-disabled-border: var(--color-border-subtle);
+  --button-secondary-disabled-border: var(--color-border-disabled);
   --button-secondary-default-text:    var(--color-text-secondary);
   --button-secondary-disabled-text:   var(--color-text-disabled);
   --button-secondary-default-icon:    var(--color-icon-default);
   --button-secondary-disabled-icon:   var(--color-icon-muted);
-  --button-secondary-focus-ring:      var(--color-border-focus);
+  --button-blue-line-default-bg:      var(--color-surface-default);
+  --button-blue-line-hover-bg:        var(--color-action-primary-subtle);
+  --button-blue-line-pressed-bg:      var(--color-action-primary-subtle);
+  --button-blue-line-disabled-bg:     var(--color-bg-subtle);
+  --button-blue-line-default-border:  var(--color-action-primary-default);
+  --button-blue-line-hover-border:    var(--color-action-primary-default);
+  --button-blue-line-disabled-border: var(--color-border-disabled);
+  --button-blue-line-default-text:    var(--color-action-primary-default);
+  --button-blue-line-disabled-text:   var(--color-text-disabled);
   --button-ghost-hover-bg:      var(--color-bg-subtle);
   --button-ghost-pressed-bg:    var(--color-bg-muted);
   --button-ghost-default-text:  var(--color-text-secondary);
@@ -499,12 +533,15 @@
   --chip-default-icon:    var(--color-icon-default);
   --chip-selected-icon:   var(--color-action-primary-default);
   --chip-disabled-icon:   var(--color-icon-muted);
+  --chip-default-close-icon:  var(--color-icon-default);
+  --chip-hover-close-icon:    var(--color-icon-emphasis);
+  --chip-selected-close-icon: var(--color-action-primary-default);
   --chip-focus-ring:      var(--color-border-focus);
   --dropdown-trigger-default-bg:      var(--color-surface-default);
   --dropdown-trigger-hover-bg:        var(--color-bg-subtle);
   --dropdown-trigger-open-bg:         var(--color-bg-subtle);
   --dropdown-trigger-disabled-bg:     var(--color-bg-subtle);
-  --dropdown-trigger-default-border:  var(--color-border-default);
+  --dropdown-trigger-default-border:  var(--color-form-control-border-default);
   --dropdown-trigger-hover-border:    var(--color-border-strong);
   --dropdown-trigger-open-border:     var(--color-border-focus);
   --dropdown-trigger-disabled-border: var(--color-border-subtle);
@@ -513,42 +550,40 @@
   --dropdown-list-bg:            var(--color-surface-raised);
   --dropdown-option-hover-bg:    var(--color-bg-subtle);
   --dropdown-option-selected-bg: var(--color-action-primary-subtle);
-  --input-default-bg:      var(--color-surface-default);
-  --input-hover-bg:        var(--color-surface-default);
-  --input-focus-bg:        var(--color-surface-default);
-  --input-disabled-bg:     var(--color-bg-subtle);
-  --input-error-bg:        var(--color-surface-default);
-  --input-default-border:  var(--color-border-default);
-  --input-hover-border:    var(--color-border-strong);
-  --input-focus-border:    var(--color-border-focus);
-  --input-error-border:    var(--color-border-danger);
-  --input-correct-border:  var(--color-border-correct);
-  --input-disabled-border: var(--color-border-default);
+  --input-default-bg:       var(--color-form-control-bg-default);
+  --input-disabled-bg:      var(--color-form-control-bg-disabled);
+  --input-default-border:   var(--color-form-control-border-default);
+  --input-focus-border:     var(--color-form-control-border-selected);
+  --input-error-border:     var(--color-form-control-border-error);
+  --input-correct-border:   var(--color-form-control-border-correct);
+  --input-disabled-border:  var(--color-form-control-border-disabled);
   --select-disabled-border: var(--color-border-subtle);
-  --input-placeholder-text: var(--color-text-placeholder);
-  --input-helper-text:      var(--color-text-helper);
-  --input-error-text:       var(--color-text-danger);
-  --input-correct-text:     var(--color-text-correct);
-  --input-disabled-text:    var(--color-text-disabled);
-  --checkbox-default-bg:       var(--color-surface-default);
-  --checkbox-checked-bg:       var(--color-action-primary-default);
-  --checkbox-indeterminate-bg: var(--color-action-primary-default);
-  --checkbox-disabled-bg:      var(--color-bg-subtle);
-  --checkbox-default-border:   var(--color-border-default);
-  --checkbox-hover-border:     var(--color-border-focus);
-  --checkbox-checked-border:   var(--color-action-primary-default);
-  --checkbox-disabled-border:  var(--color-border-subtle);
-  --checkbox-check-icon:       var(--color-action-primary-text);
-  --radio-default-bg:      var(--color-surface-default);
+  --input-placeholder-text: var(--color-form-control-text-placeholder);
+  --input-disabled-text:    var(--color-form-control-text-disabled);
+  --input-helper-text:      var(--color-text-state-helper);
+  --input-correct-text:     var(--color-text-state-correct);
+  --input-error-text:       var(--color-text-state-error);
+  --checkbox-default-bg:          var(--color-form-control-bg-default);
+  --checkbox-checked-bg:          var(--color-action-primary-default);
+  --checkbox-indeterminate-bg:    var(--color-action-primary-default);
+  --checkbox-disabled-bg:         var(--color-bg-subtle);
+  --checkbox-default-border:      var(--color-control-border-default);
+  --checkbox-hover-border:        var(--color-control-border-hover);
+  --checkbox-checked-border:      var(--color-control-border-selected);
+  --checkbox-disabled-border:     var(--color-control-border-disabled);
+  --checkbox-check-icon:          var(--color-action-primary-text);
+  --checkbox-disabled-check-icon: var(--color-border-strong);
+  --radio-default-bg:      var(--color-form-control-bg-default);
   --radio-disabled-bg:     var(--color-bg-subtle);
-  --radio-default-border:  var(--color-border-default);
-  --radio-hover-border:    var(--color-border-focus);
-  --radio-selected-border: var(--color-action-primary-default);
-  --radio-disabled-border: var(--color-border-subtle);
+  --radio-default-border:  var(--color-control-border-default);
+  --radio-hover-border:    var(--color-control-border-hover);
+  --radio-selected-border: var(--color-control-border-selected);
+  --radio-disabled-border: var(--color-control-border-disabled);
   --radio-selected-dot:    var(--color-action-primary-default);
+  --radio-disabled-dot:    var(--color-border-strong);
   --toggle-on-bg:       var(--color-action-primary-default);
-  --toggle-off-bg:      var(--color-border-default);
-  --toggle-disabled-bg: var(--color-border-subtle);
+  --toggle-off-bg:      var(--color-text-placeholder);
+  --toggle-disabled-bg: var(--color-bg-muted);
   --toggle-knob:        var(--color-action-primary-text);
   --pagination-default-bg:    var(--color-surface-default);
   --pagination-hover-bg:      var(--color-bg-subtle);
@@ -841,7 +876,7 @@
   --color-text-secondary:   var(--color-gray-800);
   --color-text-tertiary:    var(--color-gray-600);
   --color-text-caption:     var(--color-gray-500);
-  --color-text-placeholder: var(--color-gray-400);
+  --color-text-placeholder: var(--color-gray-500);
   --color-text-helper:      var(--color-gray-400);
   --color-text-link:        var(--color-blue-400);
   --color-text-correct:     var(--color-blue-400);
@@ -850,6 +885,7 @@
   --color-text-inverse:     var(--color-base-white);
   --color-border-subtle:   var(--color-gray-100);
   --color-border-default:  var(--color-gray-200);
+  --color-border-disabled: var(--color-gray-200);
   --color-border-strong:   var(--color-gray-300);
   --color-border-emphasis: var(--color-gray-800);
   --color-border-focus:    var(--color-blue-400);
@@ -871,6 +907,23 @@
   --color-status-error:   var(--color-red-400);
   --color-status-warning: var(--color-yellow-400);
   --color-status-info:    var(--color-gray-500);
+  --color-control-border-default:  var(--color-gray-200);
+  --color-control-border-hover:    var(--color-blue-400);
+  --color-control-border-selected: var(--color-blue-400);
+  --color-control-border-disabled: var(--color-gray-300);
+  --color-form-control-bg-default:       var(--color-surface-default);
+  --color-form-control-bg-disabled:      var(--color-bg-subtle);
+  --color-form-control-border-default:   var(--color-control-border-default);
+  --color-form-control-border-selected:  var(--color-border-focus);
+  --color-form-control-border-error:     var(--color-status-error);
+  --color-form-control-border-correct:   var(--color-border-focus);
+  --color-form-control-border-disabled:  var(--color-border-subtle);
+  --color-form-control-text-default:     var(--color-text-secondary);
+  --color-form-control-text-placeholder: var(--color-text-placeholder);
+  --color-form-control-text-disabled:    var(--color-text-disabled);
+  --color-text-state-helper:  var(--color-text-secondary);
+  --color-text-state-correct: var(--color-blue-400);
+  --color-text-state-error:   var(--color-status-error);
   --color-overlay: rgba(0, 0, 0, 0.5);
   /* Semantic Spacing */
   --spacing-padding-block-xxs: var(--spacing-8);   --spacing-padding-block-xs: var(--spacing-12);
@@ -893,9 +946,9 @@
   --sizing-form-control-height-xxs: var(--spacing-28); --sizing-form-control-height-xs: 34px;
   --sizing-form-control-height-md:  var(--spacing-44); --sizing-form-control-height-lg: var(--spacing-48);
   --sizing-form-control-dataview-height-sm: var(--spacing-28); --sizing-form-control-dataview-height-md: 32px;
-  --sizing-button-height-xs: 34px; --sizing-button-height-sm: var(--spacing-40);
-  --sizing-button-height-md: var(--spacing-44); --sizing-button-height-lg: var(--spacing-48);
-  --sizing-button-min-width: 80px;
+  --sizing-button-height-xxs: var(--spacing-28); --sizing-button-height-xs: 34px;
+  --sizing-button-height-sm: var(--spacing-40);  --sizing-button-height-md: var(--spacing-44);
+  --sizing-button-height-lg: var(--spacing-48);  --sizing-button-min-width: 80px;
   --sizing-chip-height-sm: var(--spacing-28); --sizing-chip-height-md: 30px; --sizing-chip-height-lg: 34px;
   --sizing-table-row-height-xs: 34px; --sizing-table-row-height-sm: 38px;
   --sizing-table-row-height-md: var(--spacing-44);
@@ -932,6 +985,7 @@
   --color-text-inverse:     var(--color-base-white);
   --color-border-subtle:   rgba(255,255,255,0.04);
   --color-border-default:  rgba(255,255,255,0.07);
+  --color-border-disabled: rgba(255,255,255,0.07);
   --color-border-strong:   rgba(255,255,255,0.12);
   --color-border-emphasis: rgba(255,255,255,0.20);
   --color-border-focus:    var(--color-blue-dark-350);
@@ -942,7 +996,7 @@
   --color-icon-muted:    var(--color-gray-dark-400);
   --color-icon-emphasis: var(--color-gray-dark-800);
   --color-icon-accent:   var(--color-blue-dark-400);
-  --color-icon-inverse:  var(--color-base-white);
+  --color-icon-inverse:  var(--color-gray-dark-900);
   --color-icon-danger:   var(--color-status-dark-red);
   --color-action-primary-default: var(--color-blue-dark-300);
   --color-action-primary-hover:   var(--color-blue-dark-250);
@@ -953,31 +1007,46 @@
   --color-status-error:   var(--color-status-dark-red);
   --color-status-warning: var(--color-status-dark-yellow);
   --color-status-info:    var(--color-gray-dark-700);
+  --color-text-state-correct: var(--color-blue-dark-400);
+  --color-control-border-default:  var(--color-gray-dark-500);
+  --color-control-border-hover:    var(--color-blue-dark-300);
+  --color-control-border-selected: var(--color-blue-dark-300);
+  --color-control-border-disabled: var(--color-gray-dark-300);
+  --color-form-control-bg-default:      var(--color-gray-dark-50);
+  --color-form-control-border-disabled: var(--color-control-border-disabled);
+  --dropdown-trigger-hover-bg: var(--color-gray-dark-450);
   --color-overlay: rgba(0, 0, 0, 0.75);
 }
 
 /* ══ 5. Component Tokens ══ */
 :root {
-  --button-primary-default-bg:    var(--color-action-primary-default);
-  --button-primary-hover-bg:      var(--color-action-primary-hover);
-  --button-primary-pressed-bg:    var(--color-action-primary-pressed);
-  --button-primary-disabled-bg:   var(--color-border-default);
-  --button-primary-default-text:  var(--color-action-primary-text);
-  --button-primary-disabled-text: var(--color-text-disabled);
-  --button-primary-default-icon:  var(--color-action-primary-text);
-  --button-primary-focus-ring:    var(--color-border-focus);
+  --button-primary-default-bg:      var(--color-action-primary-default);
+  --button-primary-hover-bg:        var(--color-action-primary-hover);
+  --button-primary-pressed-bg:      var(--color-action-primary-pressed);
+  --button-primary-disabled-bg:     var(--color-bg-subtle);
+  --button-primary-disabled-border: var(--color-border-disabled);
+  --button-primary-default-text:    var(--color-action-primary-text);
+  --button-primary-disabled-text:   var(--color-text-disabled);
+  --button-primary-default-icon:    var(--color-action-primary-text);
   --button-secondary-default-bg:      var(--color-surface-default);
   --button-secondary-hover-bg:        var(--color-bg-subtle);
   --button-secondary-pressed-bg:      var(--color-bg-muted);
   --button-secondary-disabled-bg:     var(--color-bg-subtle);
   --button-secondary-default-border:  var(--color-border-default);
-  --button-secondary-hover-border:    var(--color-border-strong);
-  --button-secondary-disabled-border: var(--color-border-subtle);
+  --button-secondary-disabled-border: var(--color-border-disabled);
   --button-secondary-default-text:    var(--color-text-secondary);
   --button-secondary-disabled-text:   var(--color-text-disabled);
   --button-secondary-default-icon:    var(--color-icon-default);
   --button-secondary-disabled-icon:   var(--color-icon-muted);
-  --button-secondary-focus-ring:      var(--color-border-focus);
+  --button-blue-line-default-bg:      var(--color-surface-default);
+  --button-blue-line-hover-bg:        var(--color-action-primary-subtle);
+  --button-blue-line-pressed-bg:      var(--color-action-primary-subtle);
+  --button-blue-line-disabled-bg:     var(--color-bg-subtle);
+  --button-blue-line-default-border:  var(--color-action-primary-default);
+  --button-blue-line-hover-border:    var(--color-action-primary-default);
+  --button-blue-line-disabled-border: var(--color-border-disabled);
+  --button-blue-line-default-text:    var(--color-action-primary-default);
+  --button-blue-line-disabled-text:   var(--color-text-disabled);
   --button-ghost-hover-bg:      var(--color-bg-subtle);
   --button-ghost-pressed-bg:    var(--color-bg-muted);
   --button-ghost-default-text:  var(--color-text-secondary);
@@ -998,12 +1067,15 @@
   --chip-default-icon:    var(--color-icon-default);
   --chip-selected-icon:   var(--color-action-primary-default);
   --chip-disabled-icon:   var(--color-icon-muted);
+  --chip-default-close-icon:  var(--color-icon-default);
+  --chip-hover-close-icon:    var(--color-icon-emphasis);
+  --chip-selected-close-icon: var(--color-action-primary-default);
   --chip-focus-ring:      var(--color-border-focus);
   --dropdown-trigger-default-bg:      var(--color-surface-default);
   --dropdown-trigger-hover-bg:        var(--color-bg-subtle);
   --dropdown-trigger-open-bg:         var(--color-bg-subtle);
   --dropdown-trigger-disabled-bg:     var(--color-bg-subtle);
-  --dropdown-trigger-default-border:  var(--color-border-default);
+  --dropdown-trigger-default-border:  var(--color-form-control-border-default);
   --dropdown-trigger-hover-border:    var(--color-border-strong);
   --dropdown-trigger-open-border:     var(--color-border-focus);
   --dropdown-trigger-disabled-border: var(--color-border-subtle);
@@ -1012,42 +1084,40 @@
   --dropdown-list-bg:            var(--color-surface-raised);
   --dropdown-option-hover-bg:    var(--color-bg-subtle);
   --dropdown-option-selected-bg: var(--color-action-primary-subtle);
-  --input-default-bg:      var(--color-surface-default);
-  --input-hover-bg:        var(--color-surface-default);
-  --input-focus-bg:        var(--color-surface-default);
-  --input-disabled-bg:     var(--color-bg-subtle);
-  --input-error-bg:        var(--color-surface-default);
-  --input-default-border:  var(--color-border-default);
-  --input-hover-border:    var(--color-border-strong);
-  --input-focus-border:    var(--color-border-focus);
-  --input-error-border:    var(--color-border-danger);
-  --input-correct-border:  var(--color-border-correct);
-  --input-disabled-border: var(--color-border-default);
+  --input-default-bg:       var(--color-form-control-bg-default);
+  --input-disabled-bg:      var(--color-form-control-bg-disabled);
+  --input-default-border:   var(--color-form-control-border-default);
+  --input-focus-border:     var(--color-form-control-border-selected);
+  --input-error-border:     var(--color-form-control-border-error);
+  --input-correct-border:   var(--color-form-control-border-correct);
+  --input-disabled-border:  var(--color-form-control-border-disabled);
   --select-disabled-border: var(--color-border-subtle);
-  --input-placeholder-text: var(--color-text-placeholder);
-  --input-helper-text:      var(--color-text-helper);
-  --input-error-text:       var(--color-text-danger);
-  --input-correct-text:     var(--color-text-correct);
-  --input-disabled-text:    var(--color-text-disabled);
-  --checkbox-default-bg:       var(--color-surface-default);
-  --checkbox-checked-bg:       var(--color-action-primary-default);
-  --checkbox-indeterminate-bg: var(--color-action-primary-default);
-  --checkbox-disabled-bg:      var(--color-bg-subtle);
-  --checkbox-default-border:   var(--color-border-default);
-  --checkbox-hover-border:     var(--color-border-focus);
-  --checkbox-checked-border:   var(--color-action-primary-default);
-  --checkbox-disabled-border:  var(--color-border-subtle);
-  --checkbox-check-icon:       var(--color-action-primary-text);
-  --radio-default-bg:      var(--color-surface-default);
+  --input-placeholder-text: var(--color-form-control-text-placeholder);
+  --input-disabled-text:    var(--color-form-control-text-disabled);
+  --input-helper-text:      var(--color-text-state-helper);
+  --input-correct-text:     var(--color-text-state-correct);
+  --input-error-text:       var(--color-text-state-error);
+  --checkbox-default-bg:          var(--color-form-control-bg-default);
+  --checkbox-checked-bg:          var(--color-action-primary-default);
+  --checkbox-indeterminate-bg:    var(--color-action-primary-default);
+  --checkbox-disabled-bg:         var(--color-bg-subtle);
+  --checkbox-default-border:      var(--color-control-border-default);
+  --checkbox-hover-border:        var(--color-control-border-hover);
+  --checkbox-checked-border:      var(--color-control-border-selected);
+  --checkbox-disabled-border:     var(--color-control-border-disabled);
+  --checkbox-check-icon:          var(--color-action-primary-text);
+  --checkbox-disabled-check-icon: var(--color-border-strong);
+  --radio-default-bg:      var(--color-form-control-bg-default);
   --radio-disabled-bg:     var(--color-bg-subtle);
-  --radio-default-border:  var(--color-border-default);
-  --radio-hover-border:    var(--color-border-focus);
-  --radio-selected-border: var(--color-action-primary-default);
-  --radio-disabled-border: var(--color-border-subtle);
+  --radio-default-border:  var(--color-control-border-default);
+  --radio-hover-border:    var(--color-control-border-hover);
+  --radio-selected-border: var(--color-control-border-selected);
+  --radio-disabled-border: var(--color-control-border-disabled);
   --radio-selected-dot:    var(--color-action-primary-default);
+  --radio-disabled-dot:    var(--color-border-strong);
   --toggle-on-bg:       var(--color-action-primary-default);
-  --toggle-off-bg:      var(--color-border-default);
-  --toggle-disabled-bg: var(--color-border-subtle);
+  --toggle-off-bg:      var(--color-text-placeholder);
+  --toggle-disabled-bg: var(--color-bg-muted);
   --toggle-knob:        var(--color-action-primary-text);
   --pagination-default-bg:    var(--color-surface-default);
   --pagination-hover-bg:      var(--color-bg-subtle);

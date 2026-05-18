@@ -1,7 +1,10 @@
 {
   "_meta": {
-    "version": "0.3.0",
-    "updatedAt": "2026-05-12",
+    "version": "0.4.0",
+    "updatedAt": "2026-05-18",
+    "tokenMap":         "registry/tokens/figma-css-token-map.json",
+    "tokenAliases":     "registry/tokens/token-aliases.json",
+    "deprecatedTokens": "registry/tokens/deprecated-tokens.json",
     "figmaFileKey": "yE5UCFEbmXJBlYJWB24Lz2",
     "figmaFileName": "SW-UX-GUIDE V2.4",
     "note": "componentSetKey는 Figma Plugin 연동 전까지 빈 문자열로 유지"
@@ -56,6 +59,16 @@
     "dropdown": {
       "componentSetKey": "",
       "figmaNodeId": ""
+    },
+    "datePicker": {
+      "componentName": "DatePicker",
+      "componentSetKey": "",
+      "figmaNodeId": "6443:4655",
+      "registryPath": "registry/components/date-picker.json",
+      "propertyMap": {},
+      "valueMap": {},
+      "status": "figma-unconfirmed",
+      "note": "input.json relatedComponents에서 figmaNodeId 확인. MCP get_design_context 호출 시 invalid node 오류 발생 (2026-05-12). componentSetKey는 Figma 직접 확인 후 업데이트 예정."
     },
     "input": {
       "componentSetKey": "",

@@ -3,9 +3,9 @@
     "id": "input",
     "name": "Input",
     "category": "Core",
-    "updatedAt": "2026-05-12 (MVP4.2)",
+    "updatedAt": "2026-05-18 (MVP4-token)",
     "tokenStatus": "stable",
-    "codeStatus": "not-started",
+    "codeStatus": "implemented",
     "darkModeStatus": "pending",
     "figmaNodeId": "6443:4408",
     "figmaNote": "Base Input frame = 'Login input' in Figma. Section 2 (6443:5451). Confirmed via MCP 2026-05-12.",
@@ -75,8 +75,8 @@
           "--color-form-control-border-disabled": "var(--color-border-subtle)"
         },
         "text": {
-          "--color-form-control-text-default":     "var(--color-text-primary)",
-          "--color-form-control-text-placeholder": "var(--color-text-secondary)",
+          "--color-form-control-text-default":     "var(--color-text-secondary)",
+          "--color-form-control-text-placeholder": "var(--color-text-placeholder)",
           "--color-form-control-text-disabled":    "var(--color-text-disabled)"
         },
         "label": {

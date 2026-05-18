@@ -1,0 +1,771 @@
+{
+  "meta": {
+    "name": "S1 UX Guide Canonical Token Architecture Draft",
+    "version": "0.1.0",
+    "status": "draft",
+    "createdAt": "2026-05-18",
+    "sourceOfTruth": "code-registry",
+    "source": "mvp-l1-legacy-token-audit + registry/tokens + assets/css/tokens.css",
+    "description": "3-layer canonical token naming architecture draft. Foundation → Semantic → Component. Based on legacy audit (419 vars), existing registry JSON, and confirmed tokens.css state as of 2026-05-18.",
+    "prohibitions": [
+      "Figma Variable rename/write/delete prohibited in this step",
+      "Legacy token deletion prohibited in this step",
+      "Canonical names are DRAFT — not confirmed as final",
+      "Direct Figma file modification prohibited"
+    ],
+    "referenceFiles": [
+      "reports/mvp-l1-legacy-token-audit.md",
+      "registry/tokens/semantic.colors.json",
+      "registry/tokens/foundation.colors.json",
+      "registry/tokens/figma-css-token-map.json",
+      "registry/tokens/token-aliases.json",
+      "registry/tokens/deprecated-tokens.json",
+      "assets/css/tokens.css"
+    ],
+    "tokenCounts": {
+      "foundationColorGroups": 23,
+      "foundationColorPrimitives": 221,
+      "semanticColorTokens": 61,
+      "semanticNonColorTokens": 41,
+      "componentTokens": 123,
+      "componentTokensOfficial": 117,
+      "componentTokensLegacy": 6
+    }
+  },
+
+  "layers": {
+    "foundation": {
+      "description": "Primitive raw values. HEX/px/number only. No CSS variable references. Single source of truth for all downstream layers.",
+      "colorGroups": [
+        {
+          "group": "base",
+          "cssVarPrefix": "--color-base-",
+          "lightOnly": true,
+          "steps": ["white", "black"],
+          "count": 2,
+          "status": "stable",
+          "note": "Universal constants. Used in Semantic inverse/white tokens."
+        },
+        {
+          "group": "brand",
+          "cssVarPrefix": "--color-brand-",
+          "lightOnly": true,
+          "steps": ["blue", "red", "gray", "ci"],
+          "count": 4,
+          "status": "stable",
+          "note": "CI/logo only. Do not reference directly in product UI tokens."
+        },
+        {
+          "group": "gray",
+          "cssVarPrefixLight": "--color-gray-",
+          "cssVarPrefixDark": "--color-gray-dark-",
+          "stepsLight": ["0", "50", "100", "200", "300", "400", "500", "600", "700", "800", "900"],
+          "stepsDark": ["0", "50", "100", "200", "300", "400", "500", "600", "700", "800", "900"],
+          "countLight": 11,
+          "countDark": 11,
+          "status": "stable",
+          "note": "Primary neutral scale. Dark steps: 0=darkest → 900=lightest (inverted direction). Gray-dark-450 NOT defined — gap between 400 and 500."
+        },
+        {
+          "group": "blue",
+          "cssVarPrefixLight": "--color-blue-",
+          "cssVarPrefixDark": "--color-blue-dark-",
+          "stepRange": "50–500 (10 steps each)",
+          "countLight": 10,
+          "countDark": 10,
+          "status": "stable",
+          "note": "Primary interactive/brand scale. Dark steps: 50=darkest → 500=lightest."
+        },
+        {
+          "group": "red",
+          "cssVarPrefixLight": "--color-red-",
+          "cssVarPrefixDark": "--color-red-dark-",
+          "stepRange": "50–500 (10 steps each)",
+          "countLight": 10,
+          "countDark": 10,
+          "status": "stable"
+        },
+        {
+          "group": "orange",
+          "cssVarPrefixLight": "--color-orange-",
+          "cssVarPrefixDark": "--color-orange-dark-",
+          "stepRange": "50–500 (10 steps each)",
+          "countLight": 10,
+          "countDark": 10,
+          "status": "stable"
+        },
+        {
+          "group": "yellow",
+          "cssVarPrefixLight": "--color-yellow-",
+          "cssVarPrefixDark": "--color-yellow-dark-",
+          "stepRange": "50–500 (10 steps each)",
+          "countLight": 10,
+          "countDark": 10,
+          "status": "stable"
+        },
+        {
+          "group": "green",
+          "cssVarPrefixLight": "--color-green-",
+          "cssVarPrefixDark": "--color-green-dark-",
+          "stepRange": "50–500 (10 steps each)",
+          "countLight": 10,
+          "countDark": 10,
+          "status": "stable"
+        },
+        {
+          "group": "skyblue",
+          "cssVarPrefixLight": "--color-skyblue-",
+          "cssVarPrefixDark": "--color-skyblue-dark-",
+          "stepRange": "50–500 (10 steps each)",
+          "countLight": 10,
+          "countDark": 10,
+          "status": "stable"
+        },
+        {
+          "group": "purple",
+          "cssVarPrefixLight": "--color-purple-",
+          "cssVarPrefixDark": "--color-purple-dark-",
+          "stepRange": "50–500 (10 steps each)",
+          "countLight": 10,
+          "countDark": 10,
+          "status": "stable"
+        },
+        {
+          "group": "brown",
+          "cssVarPrefixLight": "--color-brown-",
+          "cssVarPrefixDark": "--color-brown-dark-",
+          "stepRange": "50–500 (10 steps each)",
+          "countLight": 10,
+          "countDark": 10,
+          "status": "stable"
+        },
+        {
+          "group": "visual-gray",
+          "cssVarPrefixLight": "--color-visual-gray-",
+          "cssVarPrefixDark": null,
+          "stepRange": "50–500 (10 steps, light only)",
+          "countLight": 10,
+          "countDark": 0,
+          "status": "stable",
+          "note": "Light-only decorative scale. No dark counterpart defined."
+        },
+        {
+          "group": "coolgray-dark",
+          "cssVarPrefixLight": null,
+          "cssVarPrefixDark": "--color-coolgray-dark-",
+          "stepRange": "50–500 (10 steps, dark only)",
+          "countLight": 0,
+          "countDark": 10,
+          "status": "stable",
+          "note": "Dark-only cooler gray scale."
+        },
+        {
+          "group": "status-dark-aliases",
+          "cssVarPrefix": "--color-status-dark-",
+          "tokens": [
+            { "cssVar": "--color-status-dark-red",    "value": "#F06070", "alias": "--color-red-dark-350"    },
+            { "cssVar": "--color-status-dark-green",  "value": "#3FBE7E", "alias": "--color-green-dark-350"  },
+            { "cssVar": "--color-status-dark-yellow", "value": "#E8C048", "alias": "--color-yellow-dark-350" }
+          ],
+          "count": 3,
+          "status": "stable",
+          "note": "Aliases of dark scale step-350 values. Used only by semantic status tokens in dark mode."
+        }
+      ],
+      "spacing": {
+        "primitives": {
+          "cssVarPrefix": "--spacing-",
+          "steps": ["2","4","6","8","10","12","14","16","20","24","28","32","36","40","44","48","56","64","80","96","128"],
+          "count": 21,
+          "status": "stable"
+        }
+      },
+      "typography": {
+        "fontSize": {
+          "cssVarPrefix": "--font-size-",
+          "steps": ["10","12","14","16","18","20","24","32"],
+          "count": 8,
+          "status": "stable",
+          "note": "No --font-size-38."
+        },
+        "fontWeight": {
+          "tokens": [
+            { "cssVar": "--font-weight-regular", "value": 400 },
+            { "cssVar": "--font-weight-medium",  "value": 500 },
+            { "cssVar": "--font-weight-bold",    "value": 700 }
+          ],
+          "count": 3,
+          "status": "stable"
+        },
+        "lineHeight": {
+          "tokens": [
+            { "cssVar": "--line-height-130", "value": 1.3 }
+          ],
+          "count": 1,
+          "status": "stable"
+        }
+      },
+      "radius": {
+        "primitives": {
+          "cssVarPrefix": "--radius-",
+          "steps": ["0","2","4","6","8","10","12","16","20","full"],
+          "count": 10,
+          "status": "stable"
+        }
+      },
+      "borderWidth": {
+        "primitives": {
+          "tokens": [
+            { "cssVar": "--border-width-1", "value": "1px" },
+            { "cssVar": "--border-width-2", "value": "2px" }
+          ],
+          "count": 2,
+          "status": "stable"
+        }
+      }
+    },
+
+    "semantic": {
+      "description": "Role-based tokens. Light values in :root, dark overrides in [data-theme='dark']. Component tokens MUST reference this layer for colors.",
+      "colorBg": [
+        { "cssVar": "--color-bg-default",  "light": "var(--color-gray-0)",    "dark": "var(--color-gray-dark-50)",  "status": "stable",    "role": "Page/layout background" },
+        { "cssVar": "--color-bg-subtle",   "light": "var(--color-gray-50)",   "dark": "var(--color-gray-dark-200)", "status": "stable",    "role": "Subtle background, disabled bg" },
+        { "cssVar": "--color-bg-muted",    "light": "var(--color-gray-100)",  "dark": "var(--color-gray-dark-300)", "status": "stable",    "role": "Muted/inactive bg" },
+        { "cssVar": "--color-bg-elevated", "light": "var(--color-gray-100)",  "dark": "var(--color-gray-dark-400)", "status": "stable",    "role": "Elevated surface alternative" },
+        { "cssVar": "--color-bg-home",     "light": "#F5F6FB",                "dark": "var(--color-gray-dark-50)",  "status": "candidate", "note": "Light value is raw HEX — not a foundation primitive. Needs Foundation registration or replacement with closest gray step." },
+        { "cssVar": "--color-bg-selected", "light": "var(--color-blue-50)",   "dark": "var(--color-blue-dark-100)","status": "candidate", "note": "Needs Figma validation before stable." }
+      ],
+      "colorSurface": [
+        { "cssVar": "--color-surface-default", "light": "var(--color-base-white)", "dark": "var(--color-gray-dark-100)", "status": "stable", "role": "Component surface (card, panel, modal)" },
+        { "cssVar": "--color-surface-raised",  "light": "var(--color-base-white)", "dark": "var(--color-gray-dark-400)", "status": "stable", "role": "Elevated component surface (dropdown list)" }
+      ],
+      "colorText": [
+        { "cssVar": "--color-text-primary",     "light": "var(--color-gray-900)", "dark": "var(--color-gray-dark-900)", "status": "stable",    "role": "Primary text (#202020 confirmed)" },
+        { "cssVar": "--color-text-secondary",   "light": "var(--color-gray-800)", "dark": "var(--color-gray-dark-800)", "status": "stable",    "role": "Secondary/body text" },
+        { "cssVar": "--color-text-tertiary",    "light": "var(--color-gray-600)", "dark": "var(--color-gray-dark-700)", "status": "stable",    "role": "Label/caption" },
+        { "cssVar": "--color-text-caption",     "light": "var(--color-gray-500)", "dark": "var(--color-gray-dark-700)", "status": "stable",    "role": "Small caption text" },
+        { "cssVar": "--color-text-placeholder", "light": "var(--color-gray-500)", "dark": "var(--color-gray-dark-600)", "status": "stable",    "role": "Input placeholder. Confirmed gray/500 (#757575) per MVP-T1." },
+        { "cssVar": "--color-text-helper",      "light": "var(--color-gray-400)", "dark": "var(--color-gray-dark-600)", "status": "stable",    "role": "Form helper text (neutral)" },
+        { "cssVar": "--color-text-link",        "light": "var(--color-blue-400)", "dark": "var(--color-blue-dark-400)","status": "stable",    "role": "Hyperlink text" },
+        { "cssVar": "--color-text-correct",     "light": "var(--color-blue-400)", "dark": "var(--color-blue-dark-400)","status": "stable",    "role": "Correct/success form feedback text" },
+        { "cssVar": "--color-text-danger",      "light": "var(--color-red-300)",  "dark": "var(--color-status-dark-red)", "status": "stable", "role": "Error/danger text" },
+        { "cssVar": "--color-text-disabled",    "light": "var(--color-gray-300)", "dark": "var(--color-gray-dark-400)", "status": "candidate","note": "Dark value #35363F. Candidate upgrade to #55575F (gray-dark-600). Human decision needed." },
+        { "cssVar": "--color-text-inverse",     "light": "var(--color-base-white)", "dark": "var(--color-base-white)", "status": "stable",   "role": "Text on dark/colored backgrounds" }
+      ],
+      "colorBorder": [
+        { "cssVar": "--color-border-subtle",   "light": "var(--color-gray-100)", "dark": "rgba(255,255,255,0.04)", "status": "candidate", "note": "Dark rgba — Figma opacity composition. Needs resolved HEX or foundation dark alias. Human decision." },
+        { "cssVar": "--color-border-default",  "light": "var(--color-gray-200)", "dark": "rgba(255,255,255,0.07)", "status": "candidate", "note": "Dark rgba — same issue as subtle." },
+        { "cssVar": "--color-border-disabled", "light": "var(--color-gray-200)", "dark": "rgba(255,255,255,0.07)", "status": "stable",    "role": "Disabled control/input border", "note": "Light same as border-default. Dark same as border-default (candidate until rgba resolved)." },
+        { "cssVar": "--color-border-strong",   "light": "var(--color-gray-300)", "dark": "rgba(255,255,255,0.12)", "status": "candidate", "note": "Dark rgba." },
+        { "cssVar": "--color-border-emphasis", "light": "var(--color-gray-800)", "dark": "rgba(255,255,255,0.20)", "status": "candidate", "note": "Dark rgba." },
+        { "cssVar": "--color-border-focus",    "light": "var(--color-blue-400)", "dark": "var(--color-blue-dark-350)", "status": "stable", "role": "Focus ring / focused input border" },
+        { "cssVar": "--color-border-white",    "light": "var(--color-base-white)", "dark": "var(--color-base-white)", "status": "stable", "role": "Border on dark bg surfaces" },
+        { "cssVar": "--color-border-danger",   "light": "var(--color-red-300)",  "dark": "var(--color-status-dark-red)", "status": "stable", "role": "Error state border" },
+        { "cssVar": "--color-border-correct",  "light": "var(--color-blue-400)", "dark": "var(--color-blue-dark-350)", "status": "stable", "role": "Correct/success state border" }
+      ],
+      "colorIcon": [
+        { "cssVar": "--color-icon-default",  "light": "var(--color-gray-500)", "dark": "var(--color-gray-dark-700)", "status": "stable" },
+        { "cssVar": "--color-icon-muted",    "light": "var(--color-gray-300)", "dark": "var(--color-gray-dark-400)", "status": "stable" },
+        { "cssVar": "--color-icon-emphasis", "light": "var(--color-gray-800)", "dark": "var(--color-gray-dark-800)", "status": "stable" },
+        { "cssVar": "--color-icon-accent",   "light": "var(--color-blue-400)", "dark": "var(--color-blue-dark-400)","status": "stable" },
+        { "cssVar": "--color-icon-inverse",  "light": "var(--color-base-white)", "dark": "var(--color-gray-dark-900)", "status": "stable" },
+        { "cssVar": "--color-icon-danger",   "light": "var(--color-red-300)",  "dark": "var(--color-status-dark-red)", "status": "stable" }
+      ],
+      "colorAction": [
+        { "cssVar": "--color-action-primary-default", "light": "var(--color-blue-400)", "dark": "var(--color-blue-dark-300)", "status": "stable" },
+        { "cssVar": "--color-action-primary-hover",   "light": "var(--color-blue-450)", "dark": "var(--color-blue-dark-250)","status": "stable" },
+        { "cssVar": "--color-action-primary-pressed", "light": "var(--color-blue-500)", "dark": "var(--color-blue-dark-200)","status": "stable" },
+        { "cssVar": "--color-action-primary-text",    "light": "var(--color-base-white)", "dark": "var(--color-base-white)", "status": "stable" },
+        { "cssVar": "--color-action-primary-subtle",  "light": "var(--color-blue-50)",  "dark": "var(--color-blue-dark-100)","status": "stable" }
+      ],
+      "colorStatus": [
+        { "cssVar": "--color-status-success", "light": "var(--color-blue-400)", "dark": "var(--color-status-dark-green)", "status": "stable", "note": "Light uses blue by service convention." },
+        { "cssVar": "--color-status-error",   "light": "var(--color-red-400)",  "dark": "var(--color-status-dark-red)",   "status": "stable" },
+        { "cssVar": "--color-status-warning", "light": "var(--color-yellow-400)", "dark": "var(--color-status-dark-yellow)", "status": "stable" },
+        { "cssVar": "--color-status-info",    "light": "var(--color-gray-500)", "dark": "var(--color-gray-dark-700)",     "status": "stable" }
+      ],
+      "colorControlBorder": {
+        "description": "Checkbox·Radio·Toggle border — independent from general divider border. Added MVP4.4 (2026-05-18).",
+        "tokens": [
+          { "cssVar": "--color-control-border-default",  "light": "var(--color-gray-200)", "dark": "var(--color-gray-dark-500)", "status": "stable",    "role": "Default control border" },
+          { "cssVar": "--color-control-border-hover",    "light": "var(--color-blue-400)", "dark": "var(--color-blue-dark-300)","status": "stable",    "role": "Hovered control border" },
+          { "cssVar": "--color-control-border-selected", "light": "var(--color-blue-400)", "dark": "var(--color-blue-dark-300)","status": "stable",    "role": "Checked/selected control border" },
+          { "cssVar": "--color-control-border-disabled", "light": "var(--color-gray-300)", "dark": "var(--color-gray-dark-300)","status": "stable",    "role": "Disabled control border" }
+        ]
+      },
+      "colorFormControl": {
+        "description": "Shared semantic layer for Input, Select, DatePicker, TimePicker. Added MVP4-token (2026-05-18).",
+        "tokens": [
+          { "cssVar": "--color-form-control-bg-default",       "light": "var(--color-surface-default)", "dark": "var(--color-gray-dark-50)", "status": "stable" },
+          { "cssVar": "--color-form-control-bg-disabled",      "light": "var(--color-bg-subtle)",       "dark": "(inherits light logic)",     "status": "stable" },
+          { "cssVar": "--color-form-control-border-default",   "light": "var(--color-control-border-default)",  "dark": "var(--color-control-border-default)", "status": "stable" },
+          { "cssVar": "--color-form-control-border-selected",  "light": "var(--color-border-focus)",    "dark": "var(--color-border-focus)",  "status": "stable", "note": "Focus state of form control. Figma 'selected' = code 'focus'." },
+          { "cssVar": "--color-form-control-border-error",     "light": "var(--color-status-error)",   "dark": "var(--color-status-error)",  "status": "stable" },
+          { "cssVar": "--color-form-control-border-correct",   "light": "var(--color-border-focus)",   "dark": "var(--color-border-focus)",  "status": "stable", "note": "Alias of border-selected. Figma 'success' = code 'correct'." },
+          { "cssVar": "--color-form-control-border-disabled",  "light": "var(--color-border-subtle)",  "dark": "var(--color-control-border-disabled)", "status": "stable" },
+          { "cssVar": "--color-form-control-text-default",     "light": "var(--color-text-secondary)", "dark": "(inherits)",                "status": "stable", "note": "Input typed text. gray/800 (#353535) confirmed per MVP-T1." },
+          { "cssVar": "--color-form-control-text-placeholder", "light": "var(--color-text-placeholder)", "dark": "(inherits)",             "status": "stable", "note": "gray/500 (#757575) confirmed per MVP-T1." },
+          { "cssVar": "--color-form-control-text-disabled",    "light": "var(--color-text-disabled)",  "dark": "(inherits)",               "status": "stable" }
+        ]
+      },
+      "colorTextState": {
+        "description": "Form helper/feedback text state tokens. Added MVP4-token (2026-05-18).",
+        "tokens": [
+          { "cssVar": "--color-text-state-helper",  "light": "var(--color-text-secondary)", "dark": "(inherits)",                 "status": "stable", "role": "Neutral helper text" },
+          { "cssVar": "--color-text-state-correct", "light": "var(--color-blue-400)",        "dark": "var(--color-blue-dark-400)","status": "stable", "role": "Success/correct feedback text" },
+          { "cssVar": "--color-text-state-error",   "light": "var(--color-status-error)",    "dark": "(inherits)",               "status": "stable", "role": "Error feedback text" }
+        ]
+      },
+      "colorOverlay": [
+        { "cssVar": "--color-overlay", "light": "rgba(0,0,0,0.5)", "dark": "rgba(0,0,0,0.75)", "status": "stable", "rgbaException": true, "note": "rgba allowed — alpha channel cannot use foundation primitive." }
+      ],
+      "spacingSemantic": {
+        "paddingBlock": ["--spacing-padding-block-xxs","--spacing-padding-block-xs","--spacing-padding-block-sm","--spacing-padding-block-md","--spacing-padding-block-lg"],
+        "paddingInline": ["--spacing-padding-inline-xxs","--spacing-padding-inline-xs","--spacing-padding-inline-sm","--spacing-padding-inline-md","--spacing-padding-inline-lg"],
+        "section": ["--spacing-section-xs","--spacing-section-sm","--spacing-section-md","--spacing-section-lg","--spacing-section-xl","--spacing-section-xxl"],
+        "stack": ["--spacing-stack-xs","--spacing-stack-sm","--spacing-stack-md","--spacing-stack-lg"],
+        "cluster": ["--spacing-cluster-xxs","--spacing-cluster-xs","--spacing-cluster-sm","--spacing-cluster-md"],
+        "labelGapInline": ["--spacing-label-gap-inline-sm","--spacing-label-gap-inline-md","--spacing-label-gap-inline-lg"],
+        "labelGapBlock": ["--spacing-label-gap-block-sm","--spacing-label-gap-block-md"],
+        "totalCount": 29
+      },
+      "sizingSemantic": {
+        "formControlHeight": ["--sizing-form-control-height-xxs","--sizing-form-control-height-xs","--sizing-form-control-height-md","--sizing-form-control-height-lg"],
+        "formControlDataviewHeight": ["--sizing-form-control-dataview-height-sm","--sizing-form-control-dataview-height-md"],
+        "buttonHeight": ["--sizing-button-height-xxs","--sizing-button-height-xs","--sizing-button-height-sm","--sizing-button-height-md","--sizing-button-height-lg"],
+        "buttonMinWidth": ["--sizing-button-min-width"],
+        "chipHeight": ["--sizing-chip-height-sm","--sizing-chip-height-md","--sizing-chip-height-lg"],
+        "tableRowHeight": ["--sizing-table-row-height-xs","--sizing-table-row-height-sm","--sizing-table-row-height-md"],
+        "icon": ["--sizing-icon-10","--sizing-icon-16","--sizing-icon-18","--sizing-icon-20","--sizing-icon-24","--sizing-icon-28","--sizing-icon-32"],
+        "totalCount": 25
+      },
+      "radiusSemantic": {
+        "tokens": ["--radius-control-xs","--radius-control-sm","--radius-button-md","--radius-card-md","--radius-modal-md"],
+        "totalCount": 5
+      },
+      "borderWidthSemantic": {
+        "tokens": ["--border-width-default","--border-width-strong"],
+        "totalCount": 2
+      }
+    },
+
+    "component": {
+      "description": "Component-scoped tokens. Color tokens MUST reference Semantic layer (never Foundation directly). Size/spacing may reference Foundation directly if component-exclusive.",
+      "button": {
+        "primary": {
+          "status": "stable",
+          "tokens": [
+            { "cssVar": "--button-primary-default-bg",    "ref": "var(--color-action-primary-default)", "state": "default",  "property": "bg" },
+            { "cssVar": "--button-primary-hover-bg",      "ref": "var(--color-action-primary-hover)",   "state": "hover",    "property": "bg" },
+            { "cssVar": "--button-primary-pressed-bg",    "ref": "var(--color-action-primary-pressed)", "state": "pressed",  "property": "bg" },
+            { "cssVar": "--button-primary-disabled-bg",   "ref": "var(--color-bg-subtle)",              "state": "disabled", "property": "bg" },
+            { "cssVar": "--button-primary-disabled-border","ref": "var(--color-border-disabled)",       "state": "disabled", "property": "border" },
+            { "cssVar": "--button-primary-default-text",  "ref": "var(--color-action-primary-text)",   "state": "default",  "property": "text" },
+            { "cssVar": "--button-primary-disabled-text", "ref": "var(--color-text-disabled)",          "state": "disabled", "property": "text" },
+            { "cssVar": "--button-primary-default-icon",  "ref": "var(--color-action-primary-text)",   "state": "default",  "property": "icon" }
+          ]
+        },
+        "secondary": {
+          "status": "stable",
+          "tokens": [
+            { "cssVar": "--button-secondary-default-bg",      "ref": "var(--color-surface-default)",   "state": "default",  "property": "bg" },
+            { "cssVar": "--button-secondary-hover-bg",        "ref": "var(--color-bg-subtle)",         "state": "hover",    "property": "bg" },
+            { "cssVar": "--button-secondary-pressed-bg",      "ref": "var(--color-bg-muted)",          "state": "pressed",  "property": "bg" },
+            { "cssVar": "--button-secondary-disabled-bg",     "ref": "var(--color-bg-subtle)",         "state": "disabled", "property": "bg" },
+            { "cssVar": "--button-secondary-default-border",  "ref": "var(--color-border-default)",    "state": "default",  "property": "border" },
+            { "cssVar": "--button-secondary-disabled-border", "ref": "var(--color-border-disabled)",   "state": "disabled", "property": "border" },
+            { "cssVar": "--button-secondary-default-text",    "ref": "var(--color-text-secondary)",    "state": "default",  "property": "text" },
+            { "cssVar": "--button-secondary-disabled-text",   "ref": "var(--color-text-disabled)",     "state": "disabled", "property": "text" },
+            { "cssVar": "--button-secondary-default-icon",    "ref": "var(--color-icon-default)",      "state": "default",  "property": "icon" },
+            { "cssVar": "--button-secondary-disabled-icon",   "ref": "var(--color-icon-muted)",        "state": "disabled", "property": "icon" }
+          ]
+        },
+        "blueLine": {
+          "status": "stable",
+          "tokens": [
+            { "cssVar": "--button-blue-line-default-bg",      "ref": "var(--color-surface-default)",          "state": "default",  "property": "bg" },
+            { "cssVar": "--button-blue-line-hover-bg",        "ref": "var(--color-action-primary-subtle)",    "state": "hover",    "property": "bg" },
+            { "cssVar": "--button-blue-line-pressed-bg",      "ref": "var(--color-action-primary-subtle)",    "state": "pressed",  "property": "bg" },
+            { "cssVar": "--button-blue-line-disabled-bg",     "ref": "var(--color-bg-subtle)",                "state": "disabled", "property": "bg" },
+            { "cssVar": "--button-blue-line-default-border",  "ref": "var(--color-action-primary-default)",   "state": "default",  "property": "border" },
+            { "cssVar": "--button-blue-line-hover-border",    "ref": "var(--color-action-primary-default)",   "state": "hover",    "property": "border" },
+            { "cssVar": "--button-blue-line-disabled-border", "ref": "var(--color-border-disabled)",          "state": "disabled", "property": "border" },
+            { "cssVar": "--button-blue-line-default-text",    "ref": "var(--color-action-primary-default)",   "state": "default",  "property": "text" },
+            { "cssVar": "--button-blue-line-disabled-text",   "ref": "var(--color-text-disabled)",            "state": "disabled", "property": "text" }
+          ]
+        },
+        "ghost": {
+          "status": "legacy",
+          "note": "Deprecated. Use blue-line instead. Kept in tokens.css for backward compatibility only.",
+          "tokens": [
+            { "cssVar": "--button-ghost-hover-bg",      "ref": "var(--color-bg-subtle)",      "state": "hover",    "property": "bg" },
+            { "cssVar": "--button-ghost-pressed-bg",    "ref": "var(--color-bg-muted)",       "state": "pressed",  "property": "bg" },
+            { "cssVar": "--button-ghost-default-text",  "ref": "var(--color-text-secondary)", "state": "default",  "property": "text" },
+            { "cssVar": "--button-ghost-disabled-text", "ref": "var(--color-text-disabled)",  "state": "disabled", "property": "text" },
+            { "cssVar": "--button-ghost-default-icon",  "ref": "var(--color-icon-default)",   "state": "default",  "property": "icon" },
+            { "cssVar": "--button-ghost-disabled-icon", "ref": "var(--color-icon-muted)",     "state": "disabled", "property": "icon" }
+          ]
+        }
+      },
+      "chip": {
+        "status": "stable",
+        "note": "MD (component-tokens-extracted.md) defines line/solid 2-type separation. tokens.css uses unified structure. Structure decision pending.",
+        "tokens": [
+          { "cssVar": "--chip-default-bg",         "ref": "var(--color-bg-subtle)",              "state": "default",  "property": "bg" },
+          { "cssVar": "--chip-hover-bg",           "ref": "var(--color-bg-muted)",               "state": "hover",    "property": "bg" },
+          { "cssVar": "--chip-selected-bg",        "ref": "var(--color-action-primary-subtle)",  "state": "selected", "property": "bg" },
+          { "cssVar": "--chip-disabled-bg",        "ref": "var(--color-bg-subtle)",              "state": "disabled", "property": "bg" },
+          { "cssVar": "--chip-default-border",     "ref": "var(--color-border-default)",         "state": "default",  "property": "border" },
+          { "cssVar": "--chip-hover-border",       "ref": "var(--color-border-strong)",          "state": "hover",    "property": "border" },
+          { "cssVar": "--chip-selected-border",    "ref": "var(--color-action-primary-default)", "state": "selected", "property": "border" },
+          { "cssVar": "--chip-disabled-border",    "ref": "var(--color-border-subtle)",          "state": "disabled", "property": "border" },
+          { "cssVar": "--chip-default-text",       "ref": "var(--color-text-secondary)",         "state": "default",  "property": "text" },
+          { "cssVar": "--chip-selected-text",      "ref": "var(--color-action-primary-default)", "state": "selected", "property": "text" },
+          { "cssVar": "--chip-disabled-text",      "ref": "var(--color-text-disabled)",          "state": "disabled", "property": "text" },
+          { "cssVar": "--chip-default-icon",       "ref": "var(--color-icon-default)",           "state": "default",  "property": "icon" },
+          { "cssVar": "--chip-selected-icon",      "ref": "var(--color-action-primary-default)", "state": "selected", "property": "icon" },
+          { "cssVar": "--chip-disabled-icon",      "ref": "var(--color-icon-muted)",             "state": "disabled", "property": "icon" },
+          { "cssVar": "--chip-default-close-icon", "ref": "var(--color-icon-default)",           "state": "default",  "property": "closeIcon" },
+          { "cssVar": "--chip-hover-close-icon",   "ref": "var(--color-icon-emphasis)",          "state": "hover",    "property": "closeIcon" },
+          { "cssVar": "--chip-selected-close-icon","ref": "var(--color-action-primary-default)", "state": "selected", "property": "closeIcon" }
+        ]
+      },
+      "dropdown": {
+        "status": "stable",
+        "tokens": [
+          { "cssVar": "--dropdown-trigger-default-bg",      "ref": "var(--color-surface-default)",                "state": "default",  "property": "bg" },
+          { "cssVar": "--dropdown-trigger-hover-bg",        "ref": "var(--color-bg-subtle)",                      "state": "hover",    "property": "bg", "note": "Dark override: var(--color-gray-dark-500). ND-1 resolved 2026-05-18." },
+          { "cssVar": "--dropdown-trigger-open-bg",         "ref": "var(--color-bg-subtle)",                      "state": "open",     "property": "bg" },
+          { "cssVar": "--dropdown-trigger-disabled-bg",     "ref": "var(--color-bg-subtle)",                      "state": "disabled", "property": "bg" },
+          { "cssVar": "--dropdown-trigger-default-border",  "ref": "var(--color-form-control-border-default)",   "state": "default",  "property": "border" },
+          { "cssVar": "--dropdown-trigger-hover-border",    "ref": "var(--color-border-strong)",                  "state": "hover",    "property": "border" },
+          { "cssVar": "--dropdown-trigger-open-border",     "ref": "var(--color-border-focus)",                   "state": "open",     "property": "border" },
+          { "cssVar": "--dropdown-trigger-disabled-border", "ref": "var(--color-border-subtle)",                  "state": "disabled", "property": "border" },
+          { "cssVar": "--dropdown-trigger-default-text",    "ref": "var(--color-text-secondary)",                 "state": "default",  "property": "text" },
+          { "cssVar": "--dropdown-trigger-disabled-text",   "ref": "var(--color-text-disabled)",                  "state": "disabled", "property": "text" },
+          { "cssVar": "--dropdown-list-bg",                 "ref": "var(--color-surface-raised)",                 "state": "open",     "property": "listBg" },
+          { "cssVar": "--dropdown-option-hover-bg",         "ref": "var(--color-bg-subtle)",                      "state": "hover",    "property": "optionBg" },
+          { "cssVar": "--dropdown-option-selected-bg",      "ref": "var(--color-action-primary-subtle)",          "state": "selected", "property": "optionBg" }
+        ]
+      },
+      "input": {
+        "status": "stable",
+        "note": "2-layer: --input-* → --color-form-control-* → Semantic. hover/focus/error bg removed per HD-2/3/8.",
+        "tokens": [
+          { "cssVar": "--input-default-bg",       "ref": "var(--color-form-control-bg-default)",      "state": "default",  "property": "bg" },
+          { "cssVar": "--input-disabled-bg",      "ref": "var(--color-form-control-bg-disabled)",     "state": "disabled", "property": "bg" },
+          { "cssVar": "--input-default-border",   "ref": "var(--color-form-control-border-default)",  "state": "default",  "property": "border" },
+          { "cssVar": "--input-focus-border",     "ref": "var(--color-form-control-border-selected)", "state": "focus",    "property": "border", "note": "Figma 'selected' = code 'focus'" },
+          { "cssVar": "--input-error-border",     "ref": "var(--color-form-control-border-error)",    "state": "error",    "property": "border" },
+          { "cssVar": "--input-correct-border",   "ref": "var(--color-form-control-border-correct)",  "state": "correct",  "property": "border", "note": "Figma 'success' = code 'correct'" },
+          { "cssVar": "--input-disabled-border",  "ref": "var(--color-form-control-border-disabled)", "state": "disabled", "property": "border" },
+          { "cssVar": "--select-disabled-border", "ref": "var(--color-border-subtle)",                "state": "disabled", "property": "border", "note": "Stray Select token. Should relocate to Select component registry per HD-5." },
+          { "cssVar": "--input-placeholder-text", "ref": "var(--color-form-control-text-placeholder)","state": "default",  "property": "placeholderText" },
+          { "cssVar": "--input-disabled-text",    "ref": "var(--color-form-control-text-disabled)",   "state": "disabled", "property": "text" },
+          { "cssVar": "--input-helper-text",      "ref": "var(--color-text-state-helper)",            "state": "default",  "property": "helperText" },
+          { "cssVar": "--input-correct-text",     "ref": "var(--color-text-state-correct)",           "state": "correct",  "property": "helperText" },
+          { "cssVar": "--input-error-text",       "ref": "var(--color-text-state-error)",             "state": "error",    "property": "helperText" }
+        ]
+      },
+      "checkbox": {
+        "status": "stable",
+        "tokens": [
+          { "cssVar": "--checkbox-default-bg",          "ref": "var(--color-form-control-bg-default)", "state": "default",       "property": "bg" },
+          { "cssVar": "--checkbox-checked-bg",          "ref": "var(--color-action-primary-default)",  "state": "checked",       "property": "bg" },
+          { "cssVar": "--checkbox-indeterminate-bg",    "ref": "var(--color-action-primary-default)",  "state": "indeterminate", "property": "bg" },
+          { "cssVar": "--checkbox-disabled-bg",         "ref": "var(--color-bg-subtle)",               "state": "disabled",      "property": "bg" },
+          { "cssVar": "--checkbox-default-border",      "ref": "var(--color-control-border-default)",  "state": "default",       "property": "border" },
+          { "cssVar": "--checkbox-hover-border",        "ref": "var(--color-control-border-hover)",    "state": "hover",         "property": "border" },
+          { "cssVar": "--checkbox-checked-border",      "ref": "var(--color-control-border-selected)", "state": "checked",       "property": "border" },
+          { "cssVar": "--checkbox-disabled-border",     "ref": "var(--color-control-border-disabled)", "state": "disabled",      "property": "border" },
+          { "cssVar": "--checkbox-check-icon",          "ref": "var(--color-action-primary-text)",     "state": "checked",       "property": "checkIcon" },
+          { "cssVar": "--checkbox-disabled-check-icon", "ref": "var(--color-border-strong)",           "state": "disabled",      "property": "checkIcon" }
+        ]
+      },
+      "radio": {
+        "status": "stable",
+        "tokens": [
+          { "cssVar": "--radio-default-bg",      "ref": "var(--color-form-control-bg-default)", "state": "default",  "property": "bg" },
+          { "cssVar": "--radio-disabled-bg",     "ref": "var(--color-bg-subtle)",               "state": "disabled", "property": "bg" },
+          { "cssVar": "--radio-default-border",  "ref": "var(--color-control-border-default)",  "state": "default",  "property": "border" },
+          { "cssVar": "--radio-hover-border",    "ref": "var(--color-control-border-hover)",    "state": "hover",    "property": "border" },
+          { "cssVar": "--radio-selected-border", "ref": "var(--color-control-border-selected)", "state": "selected", "property": "border" },
+          { "cssVar": "--radio-disabled-border", "ref": "var(--color-control-border-disabled)", "state": "disabled", "property": "border" },
+          { "cssVar": "--radio-selected-dot",    "ref": "var(--color-action-primary-default)",  "state": "selected", "property": "dot" },
+          { "cssVar": "--radio-disabled-dot",    "ref": "var(--color-border-strong)",           "state": "disabled", "property": "dot" }
+        ]
+      },
+      "toggle": {
+        "status": "stable",
+        "tokens": [
+          { "cssVar": "--toggle-on-bg",       "ref": "var(--color-action-primary-default)", "state": "on",       "property": "bg" },
+          { "cssVar": "--toggle-off-bg",      "ref": "var(--color-text-placeholder)",       "state": "off",      "property": "bg" },
+          { "cssVar": "--toggle-disabled-bg", "ref": "var(--color-bg-muted)",               "state": "disabled", "property": "bg" },
+          { "cssVar": "--toggle-knob",        "ref": "var(--color-action-primary-text)",    "state": "all",      "property": "knob" }
+        ]
+      },
+      "pagination": {
+        "status": "stable",
+        "tokens": [
+          { "cssVar": "--pagination-default-bg",    "ref": "var(--color-surface-default)",       "state": "default",  "property": "bg" },
+          { "cssVar": "--pagination-hover-bg",      "ref": "var(--color-bg-subtle)",             "state": "hover",    "property": "bg" },
+          { "cssVar": "--pagination-active-bg",     "ref": "var(--color-action-primary-default)","state": "active",   "property": "bg" },
+          { "cssVar": "--pagination-disabled-bg",   "ref": "var(--color-surface-default)",       "state": "disabled", "property": "bg" },
+          { "cssVar": "--pagination-default-text",  "ref": "var(--color-text-secondary)",        "state": "default",  "property": "text" },
+          { "cssVar": "--pagination-active-text",   "ref": "var(--color-action-primary-text)",   "state": "active",   "property": "text" },
+          { "cssVar": "--pagination-disabled-text", "ref": "var(--color-text-disabled)",         "state": "disabled", "property": "text" },
+          { "cssVar": "--pagination-border",        "ref": "var(--color-border-default)",        "state": "default",  "property": "border" }
+        ]
+      },
+      "navigation": {
+        "status": "stable",
+        "tokens": [
+          { "cssVar": "--nav-bg",                "ref": "var(--color-surface-default)",        "state": "default", "property": "bg" },
+          { "cssVar": "--nav-item-hover-bg",     "ref": "var(--color-bg-subtle)",              "state": "hover",   "property": "itemBg" },
+          { "cssVar": "--nav-item-active-bg",    "ref": "var(--color-action-primary-subtle)",  "state": "active",  "property": "itemBg" },
+          { "cssVar": "--nav-item-default-text", "ref": "var(--color-text-tertiary)",          "state": "default", "property": "text" },
+          { "cssVar": "--nav-item-active-text",  "ref": "var(--color-action-primary-default)", "state": "active",  "property": "text" },
+          { "cssVar": "--nav-item-default-icon", "ref": "var(--color-icon-default)",           "state": "default", "property": "icon" },
+          { "cssVar": "--nav-item-active-icon",  "ref": "var(--color-action-primary-default)", "state": "active",  "property": "icon" },
+          { "cssVar": "--nav-item-indicator",    "ref": "var(--color-action-primary-default)", "state": "active",  "property": "indicator" },
+          { "cssVar": "--nav-divider",           "ref": "var(--color-border-subtle)",          "state": "default", "property": "divider" }
+        ]
+      },
+      "table": {
+        "status": "stable",
+        "tokens": [
+          { "cssVar": "--table-header-bg",       "ref": "var(--color-bg-subtle)",             "state": "default",  "property": "headerBg" },
+          { "cssVar": "--table-header-text",     "ref": "var(--color-text-tertiary)",         "state": "default",  "property": "headerText" },
+          { "cssVar": "--table-header-border",   "ref": "var(--color-border-default)",        "state": "default",  "property": "headerBorder" },
+          { "cssVar": "--table-row-default-bg",  "ref": "var(--color-surface-default)",       "state": "default",  "property": "rowBg" },
+          { "cssVar": "--table-row-hover-bg",    "ref": "var(--color-bg-subtle)",             "state": "hover",    "property": "rowBg" },
+          { "cssVar": "--table-row-selected-bg", "ref": "var(--color-bg-selected)",           "state": "selected", "property": "rowBg" },
+          { "cssVar": "--table-cell-border",     "ref": "var(--color-border-subtle)",         "state": "default",  "property": "cellBorder" },
+          { "cssVar": "--table-cell-text",       "ref": "var(--color-text-secondary)",        "state": "default",  "property": "text" }
+        ]
+      }
+    }
+  },
+
+  "aliases": [
+    {
+      "type": "state-alias",
+      "figmaState": "complete",
+      "codeState": "filled",
+      "rule": "Figma 'complete' state = code 'filled'. No separate bg/border — visually same as default. Only text differs.",
+      "appliesTo": ["input", "form-control"],
+      "confirmedAt": "2026-05-18"
+    },
+    {
+      "type": "state-alias",
+      "figmaState": "selected",
+      "codeState": "focus",
+      "rule": "Figma 'selected' (form-control context) = code 'focus'. NOT the same as item selection. Only applies to Input/Select focus state.",
+      "appliesTo": ["input", "form-control", "select"],
+      "confirmedAt": "2026-05-18"
+    },
+    {
+      "type": "state-alias",
+      "figmaState": "success",
+      "codeState": "correct",
+      "rule": "Figma 'success' feedback = code 'correct'. 'correct' is canonical. Do not rename tokens to 'success'.",
+      "appliesTo": ["input", "form-control", "text-state"],
+      "confirmedAt": "2026-05-18"
+    },
+    {
+      "type": "token-alias",
+      "from": "--input-filled-bg",
+      "to": "--input-default-bg",
+      "rule": "Filled state bg is identical to default bg. No separate token needed.",
+      "confirmedAt": "2026-05-18"
+    },
+    {
+      "type": "token-alias",
+      "from": "--input-filled-border",
+      "to": "--input-default-border",
+      "rule": "Filled state border is identical to default border. No separate token needed.",
+      "confirmedAt": "2026-05-18"
+    },
+    {
+      "type": "token-alias",
+      "from": "--color-form-control-border-correct",
+      "to": "--color-form-control-border-selected",
+      "rule": "correct border visually equals selected/focus border. Kept as separate named token for semantic clarity.",
+      "confirmedAt": "2026-05-18"
+    }
+  ],
+
+  "deprecatedCandidates": [
+    {
+      "cssVar": "--button-ghost-*",
+      "count": 6,
+      "status": "legacy",
+      "reason": "Ghost variant deprecated in favor of blue-line (2026-05-11). Kept in tokens.css for backward compatibility only.",
+      "migration": "Replace with --button-blue-line-* tokens.",
+      "action": "Do NOT remove until all consumer code is migrated."
+    },
+    {
+      "cssVar": "--button-danger-*",
+      "count": 0,
+      "status": "deleted",
+      "reason": "Danger variant deleted (2026-04-29). Not in V2.4 official token set.",
+      "migration": "No migration path. Do not recreate.",
+      "action": "Permanently excluded."
+    },
+    {
+      "cssVar": "--input-hover-bg",
+      "status": "removed",
+      "reason": "HD-2: Figma does not define hover bg for input. Removed 2026-05-12.",
+      "migration": "No replacement. Input has no hover background state."
+    },
+    {
+      "cssVar": "--input-hover-border",
+      "status": "removed",
+      "reason": "HD-2: Figma does not define hover border for input. Removed 2026-05-12.",
+      "migration": "No replacement."
+    },
+    {
+      "cssVar": "--input-focus-bg",
+      "status": "removed",
+      "reason": "HD-3: Focus bg = default bg. No visual difference. Removed 2026-05-12.",
+      "migration": "Use --input-default-bg."
+    },
+    {
+      "cssVar": "--input-error-bg",
+      "status": "removed",
+      "reason": "HD-8: Error bg = default bg (white). No visual difference. Removed 2026-05-12.",
+      "migration": "Use --input-default-bg."
+    },
+    {
+      "cssVar": "--select-disabled-border",
+      "status": "relocated",
+      "reason": "HD-5: Belongs to Select component, not Input. Stray token in input section.",
+      "migration": "Will move to registry/components/select.json when Select component is registered.",
+      "currentLocation": "tokens.css input section (temporary)"
+    }
+  ],
+
+  "duplicates": [
+    {
+      "id": "dup-1",
+      "tokens": ["--color-text-placeholder", "--color-text-caption"],
+      "sharedValue": "var(--color-gray-500) light",
+      "assessment": "Same resolved value in light mode. Different semantic roles (placeholder vs caption). Kept as separate tokens intentionally.",
+      "action": "No change needed."
+    },
+    {
+      "id": "dup-2",
+      "tokens": ["--color-border-focus", "--color-border-correct"],
+      "sharedValue": "var(--color-blue-400) light / var(--color-blue-dark-350) dark",
+      "assessment": "Identical values. Different semantic roles (focus ring vs correct-state border). Kept separate for semantic clarity.",
+      "action": "No change needed. May consolidate in future if design confirms identical treatment."
+    },
+    {
+      "id": "dup-3",
+      "tokens": ["--color-text-correct", "--color-text-link"],
+      "sharedValue": "var(--color-blue-400) light / var(--color-blue-dark-400) dark",
+      "assessment": "Same value. Different semantic roles. Intentionally separate.",
+      "action": "No change needed."
+    },
+    {
+      "id": "dup-4",
+      "tokens": ["--color-border-default", "--color-border-disabled"],
+      "sharedValue": "var(--color-gray-200) light",
+      "assessment": "Same light value. Different dark values (default: rgba 0.07, disabled: rgba 0.07 — also same in dark). Redundant pair.",
+      "action": "Needs decision: Should border-disabled be a separate token or alias of border-default?"
+    },
+    {
+      "id": "dup-5",
+      "tokens": ["--input-focus-border", "--color-form-control-border-selected", "--color-border-focus"],
+      "assessment": "3-level alias chain. input-focus-border → form-control-border-selected → border-focus. Intentional 2-layer architecture. Not a bug.",
+      "action": "No change. Chain depth is by design."
+    }
+  ],
+
+  "needsDecision": [
+    {
+      "id": "nd-1",
+      "priority": "resolved",
+      "title": "--color-gray-dark-450 undefined → resolved",
+      "description": "tokens.css dark override for --dropdown-trigger-hover-bg was referencing var(--color-gray-dark-450), which does NOT exist in Foundation primitives.",
+      "resolution": "Replaced with var(--color-gray-dark-500) (#3E4049). Decision confirmed 2026-05-18.",
+      "impactedTokens": ["--dropdown-trigger-hover-bg (dark override)"],
+      "resolvedBy": "Human",
+      "resolvedAt": "2026-05-18"
+    },
+    {
+      "id": "nd-2",
+      "priority": "high",
+      "title": "Dark border rgba → resolved values",
+      "description": "border-subtle/default/strong/emphasis use rgba(255,255,255,x) in dark mode. These are Figma opacity compositions that need resolved HEX values or foundation dark scale aliases.",
+      "impactedTokens": ["--color-border-subtle","--color-border-default","--color-border-strong","--color-border-emphasis"],
+      "options": [
+        "A: Resolve to specific gray-dark steps (e.g., border-default dark → --color-gray-dark-500)",
+        "B: Keep rgba as permanent values (document as allowed exception)"
+      ],
+      "requiredBy": "Human"
+    },
+    {
+      "id": "nd-3",
+      "priority": "medium",
+      "title": "--color-text-disabled dark candidate",
+      "description": "Current dark value: var(--color-gray-dark-400) = #35363F. Candidate upgrade: var(--color-gray-dark-600) = #55575F for better contrast.",
+      "currentValue": "var(--color-gray-dark-400) dark",
+      "candidateValue": "var(--color-gray-dark-600) dark",
+      "requiredBy": "Human",
+      "impactedTokens": ["--color-text-disabled", "--button-*-disabled-text", "--input-disabled-text"]
+    },
+    {
+      "id": "nd-4",
+      "priority": "medium",
+      "title": "--color-bg-home light is raw HEX",
+      "description": "--color-bg-home light = #F5F6FB, which is not a Foundation primitive. Either register it as a new gray step or replace with closest available primitive.",
+      "currentValue": "#F5F6FB",
+      "options": [
+        "A: Register --color-home-bg or similar as a new foundation primitive",
+        "B: Replace with --color-gray-0 (#FAFAFA) — slightly off-white",
+        "C: Replace with --color-visual-gray-50 (#F3F5F7) — closest match"
+      ],
+      "requiredBy": "Human"
+    },
+    {
+      "id": "nd-5",
+      "priority": "medium",
+      "title": "Chip structure: unified vs. line/solid split",
+      "description": "component-tokens-extracted.md defines chip as 2-type: line (--chip-line-*) and solid (--chip-solid-*). tokens.css uses unified structure (--chip-*). Which is canonical?",
+      "options": [
+        "A: Keep unified tokens.css structure (current stable implementation)",
+        "B: Adopt MD split — add --chip-line-* and --chip-solid-* variants"
+      ],
+      "requiredBy": "Human"
+    },
+    {
+      "id": "nd-6",
+      "priority": "resolved",
+      "title": "--chip-focus-ring removed",
+      "description": "Button focus-ring policy (미정의) aligned to chip — removed for consistency.",
+      "resolution": "--chip-focus-ring deleted from tokens.css. Decision confirmed 2026-05-18.",
+      "resolvedBy": "Human",
+      "resolvedAt": "2026-05-18"
+    },
+    {
+      "id": "nd-7",
+      "priority": "low",
+      "title": "semantic.colors.json missing newer semantic layers",
+      "description": "registry/tokens/semantic.colors.json was last updated 2026-05-11. It does NOT include: --color-border-disabled, --color-control-border-*, --color-form-control-*, --color-text-state-*. These exist in tokens.css but are not registered in the JSON.",
+      "options": [
+        "A: Update semantic.colors.json to include all 61 semantic color tokens",
+        "B: Create separate registry files: control-border.json, form-control.json, text-state.json"
+      ],
+      "requiredBy": "Human or Claude (low risk)"
+    },
+    {
+      "id": "nd-8",
+      "priority": "low",
+      "title": "--select-disabled-border location",
+      "description": "Per HD-5, --select-disabled-border should be in Select component registry, not Input. Currently in tokens.css input section. Needs relocating when Select component is registered.",
+      "action": "Create registry/components/select.json and move this token.",
+      "requiredBy": "Claude (after Human approves Select component registration)"
+    }
+  ]
+}

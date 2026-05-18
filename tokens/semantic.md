@@ -4,6 +4,10 @@
 > 원본: Figma `semantic` Variable Collection
 > 업데이트: 2026-04-29
 
+> **📋 참고 문서** — 이 파일은 인간 가독 참고 문서입니다.  
+> 기준 데이터는 `registry/tokens/` JSON 파일입니다. 충돌 시 **registry가 우선**합니다.  
+> 이 파일 수정 시 반드시 `assets/css/tokens.css`와 동기화해야 합니다.
+
 ---
 
 ## 구조 개요
@@ -103,7 +107,7 @@ color-overlay   → 딤·오버레이
 | `--color-text-secondary` | color/text/title/secondary, body/primary | `#353535` | color/gray/800 | `#B8BABF` | gray-dark/800 | 서브타이틀·일반 본문 |
 | `--color-text-tertiary` | color/text/title/tertiary, body/secondary | `#555555` | color/gray/600 | `#8A8C96` | gray-dark/700 | 보조 텍스트 |
 | `--color-text-caption` | color/text/body/tertiary | `#757575` | color/gray/500 | `#8A8C96` | gray-dark/700 | 캡션·힌트 |
-| `--color-text-placeholder` | color/text/state/placeholder | `#9D9D9D` | color/gray/400 | `#55575F` | gray-dark/600 | 플레이스홀더 공통 색상 |
+| `--color-text-placeholder` | color/text/state/placeholder | `#757575` | color/gray/500 | `#55575F` | gray-dark/600 | 플레이스홀더 공통 색상 |
 | `--color-text-helper` | color/text/state/helper | `#9D9D9D` | color/gray/400 | `#55575F` | gray-dark/600 | 도움말 텍스트 |
 | `--color-text-link` | color/text/state/accent | `#1D6CEB` | color/blue/400 | `#6FA5F8` | blue-dark/400 | 링크·액센트 |
 | `--color-text-correct` | color/text/state/correct | `#1D6CEB` | color/blue/400 | `#6FA5F8` | blue-dark/400 | 올바른 입력 피드백 |
@@ -128,6 +132,21 @@ color-overlay   → 딤·오버레이
 | `--color-border-white` | color/line/white | `#FFFFFF` | color/base/white | `#FFFFFF` | color/base/white | 흰 배경 위 구분선 |
 | `--color-border-danger` | color/form-control/border/error | `#FF4554` | color/red/300 | `#F06070` | status-dark/red | 에러 인풋 테두리 |
 | `--color-border-correct` | color/form-control/border/correct | `#1D6CEB` | color/blue/400 | `#4285E8` | blue-dark/350 | 올바른 입력 피드백 테두리 |
+
+---
+
+## 4-B. color-control-border — 컨트롤 컴포넌트 전용 테두리
+
+> `color-border-*`(디바이더·구분선)와 완전 독립 그룹. Checkbox, Radio 등 인터랙티브 컨트롤의 박스/원 테두리에만 사용.
+> Foundation Primitive를 직접 참조하므로 다크 값을 별도로 튜닝할 수 있다.
+> Dark 값은 **candidate** 상태 — 화면 검증 후 확정 예정.
+
+| CSS Variable | Light Primitive | Light Hex | Dark Primitive | Dark Hex | 용도 |
+|---|---|---|---|---|---|
+| `--color-control-border-default` | color/gray/200 | `#D9D9D9` | color/gray-dark/500 | `#3E4049` (candidate) | 기본 상태 테두리 |
+| `--color-control-border-hover` | color/blue/400 | `#1D6CEB` | color/blue-dark/300 | `#3B82F6` (candidate) | hover 강조 테두리 |
+| `--color-control-border-selected` | color/blue/400 | `#1D6CEB` | color/blue-dark/300 | `#3B82F6` (candidate) | checked/selected 테두리 |
+| `--color-control-border-disabled` | color/gray/300 | `#C4C4C4` | color/gray-dark/300 | `#2E2F38` (candidate) | disabled 상태 테두리 |
 
 ---
 
@@ -291,7 +310,7 @@ color-overlay   → 딤·오버레이
   --color-text-secondary:   #353535;
   --color-text-tertiary:    #555555;
   --color-text-caption:     #757575;
-  --color-text-placeholder: #9D9D9D;
+  --color-text-placeholder: #757575;
   --color-text-helper:      #9D9D9D;
   --color-text-link:        #1D6CEB;
   --color-text-correct:     #1D6CEB;
@@ -330,6 +349,29 @@ color-overlay   → 딤·오버레이
   --color-status-error:   #E50533;
   --color-status-warning: #DBA400;
   --color-status-info:    #757575;
+
+  /* color-form-control */
+  --color-form-control-bg-default:          var(--color-surface-default);  /* #FFFFFF */
+  --color-form-control-bg-disabled:         var(--color-bg-subtle);        /* #F5F5F5 */
+  --color-form-control-border-default:      var(--color-control-border-default);   /* #D9D9D9 — checkbox·radio와 동일 foundation */
+  --color-form-control-border-selected:     var(--color-border-focus);     /* #1D6CEB */
+  --color-form-control-border-error:        var(--color-status-error);     /* #E50533 */
+  --color-form-control-border-correct:      var(--color-border-focus);     /* #1D6CEB */
+  --color-form-control-border-disabled:     var(--color-border-subtle);    /* #F0F0F0 */
+  --color-form-control-text-default:        var(--color-text-secondary);   /* #353535 */
+  --color-form-control-text-placeholder:    var(--color-text-placeholder);  /* #757575 */
+  --color-form-control-text-disabled:       var(--color-text-disabled);    /* #BDBDBD */
+
+  /* color-text-state */
+  --color-text-state-helper:  var(--color-text-secondary);  /* #353535 */
+  --color-text-state-correct: #1D6CEB;  /* Figma confirmed: --color/text/state/correct = blue-400 */
+  --color-text-state-error:   var(--color-status-error);    /* #E50533 */
+
+  /* color-control-border (컨트롤 컴포넌트 전용 — Foundation 직접 참조) */
+  --color-control-border-default:  var(--color-gray-200);  /* #D9D9D9 */
+  --color-control-border-hover:    var(--color-blue-400);  /* #1D6CEB */
+  --color-control-border-selected: var(--color-blue-400);  /* #1D6CEB */
+  --color-control-border-disabled: var(--color-gray-300);  /* #C4C4C4 */
 
   /* color-overlay */
   --color-overlay: rgba(0, 0, 0, 0.5);
@@ -392,6 +434,15 @@ color-overlay   → 딤·오버레이
   --color-status-error:   #F06070;
   --color-status-warning: #E8C048;
   --color-status-info:    #8A8C96;
+
+  /* color-text-state (dark) */
+  --color-text-state-correct: #3D9BF2;  /* blue-dark-400 — Figma dark correct text */
+
+  /* color-control-border (dark — candidate) */
+  --color-control-border-default:  var(--color-gray-dark-500);  /* #3E4049 — candidate */
+  --color-control-border-hover:    var(--color-blue-dark-300);  /* #3B82F6 — candidate */
+  --color-control-border-selected: var(--color-blue-dark-300);  /* #3B82F6 — candidate */
+  --color-control-border-disabled: var(--color-gray-dark-300);  /* #2E2F38 — candidate */
 
   /* color-overlay */
   --color-overlay: rgba(0, 0, 0, 0.75);

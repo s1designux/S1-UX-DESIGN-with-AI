@@ -304,6 +304,9 @@
         <div class="sem-stat"><div class="sem-stat-num">2</div><div class="sem-stat-label">color-surface</div></div>
         <div class="sem-stat"><div class="sem-stat-num">11</div><div class="sem-stat-label">color-text</div></div>
         <div class="sem-stat"><div class="sem-stat-num">8</div><div class="sem-stat-label">color-border</div></div>
+        <div class="sem-stat"><div class="sem-stat-num">4</div><div class="sem-stat-label">color-control-border</div></div>
+        <div class="sem-stat"><div class="sem-stat-num">10</div><div class="sem-stat-label">color-form-control</div></div>
+        <div class="sem-stat"><div class="sem-stat-num">3</div><div class="sem-stat-label">color-text-state</div></div>
         <div class="sem-stat"><div class="sem-stat-num">6</div><div class="sem-stat-label">color-icon</div></div>
         <div class="sem-stat"><div class="sem-stat-num">5</div><div class="sem-stat-label">color-action</div></div>
         <div class="sem-stat"><div class="sem-stat-num">4</div><div class="sem-stat-label">color-status</div></div>
@@ -383,6 +386,40 @@
             <span>Dark 모드 border는 <strong>rgba(255,255,255, α)</strong>를 사용합니다. 배경 명도에 무관하게 일관된 레이어 구조를 표현하기 위함이며, Primitive alias가 불가능한 rgba 값은 직접 사용이 허용됩니다.</span>
           </div>
           <div class="token-grid" id="grid-border"></div>
+        </div>
+
+        <!-- color-control-border -->
+        <div class="cat-group" id="grp-control-border">
+          <div class="cat-label">
+            <span class="cat-name">color-control-border</span>
+            <span class="cat-desc">Checkbox·Radio 전용 테두리 — color-border와 독립</span>
+            <span class="cat-count">4</span>
+          </div>
+          <div class="token-grid" id="grid-control-border"></div>
+        </div>
+
+        <!-- color-form-control -->
+        <div class="cat-group" id="grp-form-control">
+          <div class="cat-label">
+            <span class="cat-name">color-form-control</span>
+            <span class="cat-desc">Input·Select·DatePicker 공유 Semantic 레이어</span>
+            <span class="cat-count">10</span>
+          </div>
+          <div class="info-box">
+            <span>ℹ️</span>
+            <span>Component Token(<code>--input-*</code>, <code>--dropdown-*</code>)이 이 레이어를 참조합니다. 직접 컴포넌트에 사용하지 않습니다.</span>
+          </div>
+          <div class="token-grid" id="grid-form-control"></div>
+        </div>
+
+        <!-- color-text-state -->
+        <div class="cat-group" id="grp-text-state">
+          <div class="cat-label">
+            <span class="cat-name">color-text-state</span>
+            <span class="cat-desc">폼 헬퍼·Correct·Error 텍스트 상태</span>
+            <span class="cat-count">3</span>
+          </div>
+          <div class="token-grid" id="grid-text-state"></div>
         </div>
 
         <!-- color-icon -->
@@ -535,6 +572,7 @@
           <table class="spec-table">
             <thead><tr><th>CSS Variable</th><th>값</th><th>역할</th></tr></thead>
             <tbody>
+              <tr><td><span class="spec-var">--sizing-button-height-xxs</span></td><td><span class="spec-val">28px</span></td><td><span class="spec-role">버튼 높이 극소 (xxsmall)</span></td></tr>
               <tr><td><span class="spec-var">--sizing-button-height-xs</span></td><td><span class="spec-val">34px</span></td><td><span class="spec-role">버튼 높이 최소</span></td></tr>
               <tr><td><span class="spec-var">--sizing-button-height-sm</span></td><td><span class="spec-val">40px</span></td><td><span class="spec-role">버튼 높이 소</span></td></tr>
               <tr><td><span class="spec-var">--sizing-button-height-md</span></td><td><span class="spec-val">44px</span></td><td><span class="spec-role">버튼 높이 중 (기본)</span></td></tr>
@@ -611,7 +649,7 @@ const TOKENS = {
     { v: '--color-bg-elevated', role: '툴바·높은 배경', light: '#E9E9E9', dark: '#35363F', lp: 'color/gray/100',    dp: 'gray-dark/400' },
     { v: '--color-bg-active',   role: 'hover·active 배경', light: '#E9E9E9', dark: '#3E4049', lp: 'color/gray/100',    dp: 'gray-dark/500' },
     { v: '--color-bg-deepest',  role: '최심부 (관제 화면)', light: '#E9E9E9', dark: '#0D0E12', lp: 'color/gray/100',    dp: 'gray-dark/0',  darkOnly: true },
-    { v: '--color-bg-selected', role: '선택 배경', light: '#E2F1FF', dark: '#0C1D38', lp: 'color/blue/50',     dp: 'blue-dark/50' },
+    { v: '--color-bg-selected', role: '선택 배경', light: '#E2F1FF', dark: '#112B55', lp: 'color/blue/50',     dp: 'blue-dark/100' },
     { v: '--color-bg-home',     role: '홈 화면 배경', light: '#F5F6FB', dark: '#131418', lp: '⚠️ 하드코딩',        dp: 'gray-dark/50', warn: true },
   ],
   surface: [
@@ -623,7 +661,7 @@ const TOKENS = {
     { v: '--color-text-secondary',   role: '서브타이틀·일반 본문', light: '#353535', dark: '#B8BABF', lp: 'color/gray/800',   dp: 'gray-dark/800' },
     { v: '--color-text-tertiary',    role: '보조 텍스트',        light: '#555555', dark: '#8A8C96', lp: 'color/gray/600',   dp: 'gray-dark/700' },
     { v: '--color-text-caption',     role: '캡션·힌트',          light: '#757575', dark: '#8A8C96', lp: 'color/gray/500',   dp: 'gray-dark/700' },
-    { v: '--color-text-placeholder', role: '플레이스홀더',        light: '#9D9D9D', dark: '#55575F', lp: 'color/gray/400',   dp: 'gray-dark/600' },
+    { v: '--color-text-placeholder', role: '플레이스홀더',        light: '#757575', dark: '#55575F', lp: 'color/gray/500',   dp: 'gray-dark/600' },
     { v: '--color-text-helper',      role: '도움말 텍스트',       light: '#9D9D9D', dark: '#55575F', lp: 'color/gray/400',   dp: 'gray-dark/600' },
     { v: '--color-text-link',        role: '링크·액센트',         light: '#1D6CEB', dark: '#6FA5F8', lp: 'color/blue/400',   dp: 'blue-dark/400' },
     { v: '--color-text-correct',     role: '올바른 입력 피드백',  light: '#1D6CEB', dark: '#6FA5F8', lp: 'color/blue/400',   dp: 'blue-dark/400' },
@@ -647,7 +685,7 @@ const TOKENS = {
     { v: '--color-icon-muted',    role: '비강조·보조 아이콘', light: '#C4C4C4', dark: '#35363F', lp: 'color/gray/300', dp: 'gray-dark/400' },
     { v: '--color-icon-emphasis', role: '강조 아이콘',       light: '#353535', dark: '#B8BABF', lp: 'color/gray/800', dp: 'gray-dark/800' },
     { v: '--color-icon-accent',   role: '액션·링크 아이콘',  light: '#1D6CEB', dark: '#6FA5F8', lp: 'color/blue/400', dp: 'blue-dark/400' },
-    { v: '--color-icon-inverse',  role: '색상 배경 위 아이콘', light: '#FFFFFF', dark: '#FFFFFF', lp: 'color/base/white', dp: 'color/base/white' },
+    { v: '--color-icon-inverse',  role: '색상 배경 위 아이콘', light: '#FFFFFF', dark: '#ECEDF0', lp: 'color/base/white', dp: 'gray-dark/900' },
     { v: '--color-icon-danger',   role: '에러·위험 아이콘',  light: '#FF4554', dark: '#F06070', lp: 'color/red/300',  dp: 'status-dark/red' },
   ],
   action: [
@@ -658,10 +696,33 @@ const TOKENS = {
     { v: '--color-action-primary-subtle',  role: '선택·강조 배경',      light: '#E2F1FF', dark: '#112B55', lp: 'color/blue/50',   dp: 'blue-dark/100' },
   ],
   status: [
-    { v: '--color-status-success', role: '성공·완료·올바름', light: '#1D6CEB', dark: '#4285E8', lp: 'color/blue/400',   dp: 'blue-dark/350' },
+    { v: '--color-status-success', role: '성공·완료·올바름', light: '#1D6CEB', dark: '#3FBE7E', lp: 'color/blue/400',   dp: 'status-dark/green' },
     { v: '--color-status-error',   role: '에러·실패·위험',   light: '#E50533', dark: '#F06070', lp: 'color/red/400',    dp: 'status-dark/red' },
     { v: '--color-status-warning', role: '경고',             light: '#DBA400', dark: '#E8C048', lp: 'color/yellow/400', dp: 'status-dark/yellow' },
     { v: '--color-status-info',    role: '정보·중립',        light: '#757575', dark: '#8A8C96', lp: 'color/gray/500',   dp: 'gray-dark/700' },
+  ],
+  controlBorder: [
+    { v: '--color-control-border-default',  role: '컨트롤 기본 테두리',     light: '#D9D9D9', dark: '#3E4049', lp: 'color/gray/200',  dp: 'gray-dark/500' },
+    { v: '--color-control-border-hover',    role: '컨트롤 hover 테두리',    light: '#1D6CEB', dark: '#3070D8', lp: 'color/blue/400',  dp: 'blue-dark/300' },
+    { v: '--color-control-border-selected', role: '컨트롤 checked/선택 테두리', light: '#1D6CEB', dark: '#3070D8', lp: 'color/blue/400', dp: 'blue-dark/300' },
+    { v: '--color-control-border-disabled', role: '컨트롤 disabled 테두리', light: '#C4C4C4', dark: '#2E2F38', lp: 'color/gray/300',  dp: 'gray-dark/300' },
+  ],
+  formControl: [
+    { v: '--color-form-control-bg-default',          role: '폼 컨트롤 기본 배경',     light: '#FFFFFF', dark: '#131418', lp: 'color/base/white',   dp: 'gray-dark/50' },
+    { v: '--color-form-control-bg-disabled',         role: '폼 컨트롤 비활성 배경',   light: '#F5F5F5', dark: '#24252C', lp: 'color/gray/50',      dp: 'gray-dark/200' },
+    { v: '--color-form-control-border-default',      role: '폼 컨트롤 기본 테두리',   light: '#D9D9D9', dark: '#3E4049', lp: 'control-border/default', dp: 'gray-dark/500' },
+    { v: '--color-form-control-border-selected',     role: '폼 컨트롤 포커스 테두리', light: '#1D6CEB', dark: '#4285E8', lp: 'color/border/focus',  dp: 'blue-dark/350' },
+    { v: '--color-form-control-border-error',        role: '폼 컨트롤 에러 테두리',   light: '#E50533', dark: '#F06070', lp: 'color/red/400',       dp: 'status-dark/red' },
+    { v: '--color-form-control-border-correct',      role: '폼 컨트롤 correct 테두리', light: '#1D6CEB', dark: '#4285E8', lp: 'color/border/focus', dp: 'blue-dark/350' },
+    { v: '--color-form-control-border-disabled',     role: '폼 컨트롤 비활성 테두리', light: '#E9E9E9', dark: '#2E2F38', lp: 'color/gray/100',      dp: 'gray-dark/300' },
+    { v: '--color-form-control-text-default',        role: '폼 컨트롤 입력 텍스트',   light: '#353535', dark: '#B8BABF', lp: 'color/gray/800',      dp: 'gray-dark/800' },
+    { v: '--color-form-control-text-placeholder',    role: '폼 컨트롤 플레이스홀더',  light: '#757575', dark: '#55575F', lp: 'color/gray/500',      dp: 'gray-dark/600' },
+    { v: '--color-form-control-text-disabled',       role: '폼 컨트롤 비활성 텍스트', light: '#C4C4C4', dark: '#35363F', lp: 'color/gray/300',      dp: 'gray-dark/400' },
+  ],
+  textState: [
+    { v: '--color-text-state-helper',  role: '헬퍼 텍스트 (기본)', light: '#353535', dark: '#B8BABF', lp: 'color/gray/800',  dp: 'gray-dark/800' },
+    { v: '--color-text-state-correct', role: 'Correct 상태 텍스트', light: '#1D6CEB', dark: '#6FA5F8', lp: 'color/blue/400',  dp: 'blue-dark/400' },
+    { v: '--color-text-state-error',   role: 'Error 상태 텍스트',  light: '#E50533', dark: '#F06070', lp: 'color/red/400',   dp: 'status-dark/red' },
   ],
   domainStatus: [
     { v: '--color-domain-status-primary',       role: '주요 상태 (활성·정상)',    light: '#1D6CEB', dark: '—', lp: 'color/blue/400' },
@@ -782,8 +843,11 @@ function renderAll() {
   renderGroup('grid-bg',            TOKENS.bg);
   renderGroup('grid-surface',       TOKENS.surface);
   renderGroup('grid-text',          TOKENS.text);
-  renderGroup('grid-border',        TOKENS.border);
-  renderGroup('grid-icon',          TOKENS.icon);
+  renderGroup('grid-border',         TOKENS.border);
+  renderGroup('grid-control-border', TOKENS.controlBorder);
+  renderGroup('grid-form-control',   TOKENS.formControl);
+  renderGroup('grid-text-state',     TOKENS.textState);
+  renderGroup('grid-icon',           TOKENS.icon);
   renderGroup('grid-action',        TOKENS.action);
   renderGroup('grid-status',        TOKENS.status);
   renderGroup('grid-domain-status', TOKENS.domainStatus);

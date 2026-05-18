@@ -1,3 +1,16 @@
 .DS_Store
 **/.DS_Store
 .claude/
+
+# 환경변수 — 절대 커밋하지 않음
+.env
+.env.local
+
+# Figma Variables 수집 결과 — PAT 정보 포함 가능, 커밋하지 않음
+registry/figma/figma-variable-metadata.local.json
+
+# npm
+node_modules/
+
+# Figma plugin build output
+plugins/*/dist/

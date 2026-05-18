@@ -141,6 +141,21 @@ ul { list-style: none; }
   color: #9ca3af;
   flex-shrink: 0;
 }
+.sidebar-theme-row {
+  display: flex; gap: 4px; margin-bottom: 8px;
+}
+.sidebar-theme-btn {
+  flex: 1; padding: 5px 0; font-size: 11px; font-weight: 500;
+  border: 1px solid #e5e7eb; border-radius: 6px;
+  background: #f9fafb; color: #6b7280;
+  cursor: pointer; transition: all 0.12s; font-family: inherit;
+}
+.sidebar-theme-btn:hover { background: #f3f4f6; color: #374151; }
+.sidebar-theme-btn.active { background: #1e293b; color: #f8fafc; border-color: #1e293b; }
+[data-theme="dark"] .sidebar-footer { border-color: rgba(255,255,255,0.07); color: #55575F; }
+[data-theme="dark"] .sidebar-theme-btn { background: #24252C; border-color: rgba(255,255,255,0.1); color: #8A8C96; }
+[data-theme="dark"] .sidebar-theme-btn:hover { background: #35363F; color: #B8BABF; }
+[data-theme="dark"] .sidebar-theme-btn.active { background: #ECEDF0; color: #131418; border-color: #ECEDF0; }
 
 /* ── Main Content ── */
 .main-content {

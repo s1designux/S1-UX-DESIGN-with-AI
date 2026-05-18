@@ -1,0 +1,206 @@
+{
+  "_meta": {
+    "id": "date-picker",
+    "name": "DatePicker",
+    "label": "Date Picker / Day Picker",
+    "category": "core-candidate",
+    "status": "candidate",
+    "tokenStatus": "candidate",
+    "codeStatus": "preview",
+    "darkModeStatus": "pending",
+    "a11yStatus": "partial",
+    "harnessStatus": "candidate",
+    "figmaNodeId": "6456:4033",
+    "figmaNote": "Section 2 (6456:4033) 성공. datepicker_input frame (540:3794), mobile_datepicker_bottomsheet (540:3836) 확인. 2026-05-12.",
+    "description": "Date selection component. Uses Base Input as trigger field. PC popover calendar panel (figma-unconfirmed) or Mobile bottom sheet (Figma confirmed)."
+  },
+  "baseComponent": "Input",
+  "composition": [
+    "Input trigger (s1-input-wrap + s1-input-field)",
+    "suffixIcon: ic_날짜/근태,달력 (Figma node 221:3835, 24×24px, s1-input-action-btn)",
+    "calendarPanel (absolute positioned, hidden by default)",
+    "calendarHeader: prevMonth | YYYY.MM | nextMonth",
+    "weekdayRow: 일~토 (PC weekStart figma-unconfirmed, HD-9)",
+    "dayGrid: 7-col grid, 44×44px cells with 30×30px inner circle"
+  ],
+  "states": {
+    "trigger": ["default", "selected(=open)", "completed(=filled)", "disabled", "error(figma-unconfirmed)"],
+    "dayCell": ["default", "hover", "today(selected-alt)", "selected(filled)", "other-month(disabled-text)", "disabled-date"]
+  },
+  "platformSupport": {
+    "pc": {
+      "sizes": ["pc-md(h44)", "pc-xsm(h34)", "pc-xxsm(h28)"],
+      "panel": "popover — figma-unconfirmed"
+    },
+    "mobile": {
+      "sizes": ["mobile(h48)"],
+      "panel": "bottom-sheet (540:3836 확인)"
+    }
+  },
+  "dateFormat": {
+    "figmaConfirmed": "YY.MM.DD (2자리 연도, 예: 25.12.30)",
+    "note": "uvis amobe_datepicker.js: format 'yy.mm.dd'. Figma 동일.",
+    "humanDecision": "HD-10: 서비스 URL/DB에서 YYYY.MM.DD 형식 사용 시 변환 로직 필요"
+  },
+  "tokens": {
+    "trigger": {
+      "note": "Base Input tokens 재사용 (Figma --color/form-control/* 확인)",
+      "reuses": [
+        "--input-default-bg",
+        "--input-default-border",
+        "--input-focus-border",
+        "--input-disabled-bg",
+        "--input-disabled-border",
+        "--input-error-border",
+        "--input-placeholder-text",
+        "--input-disabled-text"
+      ],
+      "figmaVariables": {
+        "--color/form-control/bg/default": "white (--input-default-bg)",
+        "--color/form-control/border/default": "#d9d9d9 (--input-default-border)",
+        "--color/form-control/border/selected": "#1d6ceb (--input-focus-border)",
+        "--color/form-control/bg/disabled": "#f5f5f5 (--input-disabled-bg)",
+        "--color/form-control/border/disabled": "#d9d9d9 (--input-disabled-border)",
+        "--color/form-control/text/placeholder": "#757575 (--input-placeholder-text)",
+        "--color/form-control/text/default": "#353535 (completed state text)",
+        "--color/form-control/text/disabled": "#c4c4c4 (--input-disabled-text)"
+      }
+    },
+    "panel": {
+      "note": "PC popover panel — figma-unconfirmed. mobile bottomsheet 구조 참고.",
+      "--date-picker-panel-bg": "candidate: var(--color-surface-default)",
+      "--date-picker-panel-border": "candidate: var(--color-border-default)",
+      "--date-picker-panel-shadow": "candidate: 0 4px 16px rgba(0,0,0,0.10) — shadow에 한해 rgba 허용"
+    },
+    "cell": {
+      "note": "Figma mobile bottomsheet (540:3836) 확인값",
+      "--date-picker-cell-text": "candidate: var(--color-text-secondary) (Figma: --color/text/body/tertiary #757575)",
+      "--date-picker-cell-other-month-text": "stable: var(--color-text-disabled) (Figma: --color/text/state/disabled #c4c4c4 확인)",
+      "--date-picker-cell-hover-bg": "candidate: var(--color-bg-subtle)",
+      "--date-picker-cell-selected-bg": "stable: var(--color-action-primary-default) (Figma: --color/control/bg/selected #1d6ceb 확인)",
+      "--date-picker-cell-selected-text": "stable: var(--color-base-white) (Figma: --color/text/state/accent-alt white 확인)",
+      "--date-picker-cell-today-border": "stable: var(--color-action-primary-default) (Figma: --color/control/border/selected #1d6ceb 확인)",
+      "--date-picker-cell-today-text": "stable: var(--color-action-primary-default) (Figma: --color/text/state/accent #1d6ceb 확인)",
+      "--date-picker-cell-today-bg": "stable: var(--color-surface-default) (Figma: --color/control/bg/selected-alt white 확인)",
+      "--date-picker-cell-disabled-text": "candidate: var(--color-text-disabled)"
+    },
+    "header": {
+      "--date-picker-header-text": "candidate: var(--color-text-primary) (Figma: --color/text/title/primary black 확인)",
+      "--date-picker-nav-hover-bg": "candidate: var(--color-bg-subtle)"
+    },
+    "icon": {
+      "figmaNode": "ic_날짜/근태,달력 (node 221:3835)",
+      "size": "24×24px (Figma 확인)",
+      "--date-picker-icon-color": "candidate: var(--color-icon-default)"
+    },
+    "weekday": {
+      "note": "Figma mobile: 월화수목금토일 순서. weekday text color Figma: --color/text/body/primary(#353535)",
+      "--date-picker-weekday-text": "candidate: var(--color-text-primary) (Figma: --color/text/body/primary #353535 확인)",
+      "--date-picker-sunday-text": "candidate: var(--color-status-error) (HD-8 미결)",
+      "--date-picker-saturday-text": "candidate: var(--color-action-primary-default) (HD-8 미결)"
+    }
+  },
+  "cellGeometry": {
+    "figmaSource": "540:3836 mobile bottomsheet",
+    "outerCell": "44×44px",
+    "innerCircle": "30×30px, border-radius: radius-full (50%)",
+    "padding": "5px",
+    "note": "PC popover cell geometry figma-unconfirmed — mobile 동일 구조 적용 추정"
+  },
+  "figma": {
+    "componentSetKey": "",
+    "componentName": "datepicker_input",
+    "figmaNodeId": "540:3794",
+    "figmaSectionNodeId": "6456:4033",
+    "figmaMobileBottomsheetNodeId": "540:3836",
+    "figmaFileKey": "yE5UCFEbmXJBlYJWB24Lz2",
+    "propertyMap": {
+      "platform": ["mobile", "pc-md", "pc-xsm", "pc-xxsm"],
+      "state": ["default", "selected", "completed", "disabled"]
+    },
+    "stateMapping": {
+      "selected": "trigger open / focused 상태 (Figma 확인)",
+      "completed": "날짜 선택 완료(filled) 상태 (Figma 확인)",
+      "default": "기본 상태",
+      "disabled": "비활성 상태"
+    },
+    "valueMap": {
+      "heightByPlatform": {
+        "pc-md": "44px (--sizing/form-control/height/md)",
+        "pc-xsm": "34px (--sizing/form-control/height/xs)",
+        "pc-xxsm": "28px (--sizing/form-control/height/xxs)",
+        "mobile": "48px (--sizing/form-control/height/lg)"
+      },
+      "paddingInline": {
+        "pc-md": "16px left (--spacing/padding/inline/sm)",
+        "pc-xsm": "12px left (--spacing/padding/inline/xs)",
+        "pc-xxsm": "12px left",
+        "mobile": "16px left"
+      },
+      "borderRadius": {
+        "pc-md": "4px (--radius/control/sm)",
+        "pc-xsm": "4px (--radius/control/sm)",
+        "pc-xxsm": "4px (--radius/control/sm)",
+        "mobile": "4px (--radius/4)"
+      }
+    },
+    "status": "partial",
+    "note": "Section 2 (6456:4033) 성공. datepicker_input frame (540:3794), mobile bottomsheet (540:3836) 확인. PC calendar popup panel 별도 노드 조회 미완료 (figma-unconfirmed). 2026-05-12."
+  },
+  "cssClass": {
+    "wrapper": "s1-date-picker",
+    "panel": "s1-date-picker__panel",
+    "header": "s1-date-picker__header",
+    "navBtn": "s1-date-picker__nav-btn",
+    "monthLabel": "s1-date-picker__month-label",
+    "weekdays": "s1-date-picker__weekdays",
+    "weekday": "s1-date-picker__weekday",
+    "grid": "s1-date-picker__grid",
+    "day": "s1-date-picker__day",
+    "dayInner": "day-inner",
+    "modifiers": {
+      "otherMonth": "is-other-month",
+      "today": "is-today",
+      "selected": "is-selected",
+      "sunday": "is-sunday",
+      "saturday": "is-saturday"
+    }
+  },
+  "publishingReference": {
+    "source": "s1_uvis_admin_publish-main-pc",
+    "datepickerLib": "bootstrap-datepicker (jQuery-based)",
+    "customModule": "pc/dist/assets/js/amobe_datepicker.js",
+    "cssFile": "pc/dist/resources/css/datepicker.css (bootstrap-datepicker CSS — 교체 대상)",
+    "reusable": [
+      "날짜 형식 yy.mm.dd (YY.MM.DD) — Figma와 일치 확인",
+      "normalizeDateInputValue: 4자리/2자리 연도 정규화 로직 참고",
+      "weekStart: 0 (일요일 시작) — PC figma-unconfirmed 동안 유지",
+      "todayHighlight: true (today 강조) — 구현 반영",
+      "autoclose: true — 선택 후 자동 닫기 구현 반영"
+    ],
+    "replaced": [
+      "bootstrap-datepicker CSS → s1-date-picker__* 시스템으로 교체",
+      "raw HEX 색상 (#0088cc, #006dcc 등) → CSS token으로 교체",
+      "jQuery 의존성 → Vanilla JS setupDatePicker 함수로 교체",
+      "table 기반 grid → CSS grid 44×44px 구조로 교체",
+      "20×20px cell → 44×44px 컨테이너 + 30×30px inner circle으로 교체",
+      "linear-gradient today → 단색 border+text accent으로 교체 (Figma 기준)"
+    ]
+  },
+  "notBaseInputState": true,
+  "notRelatedComposedField": true,
+  "separateComponentCandidate": true,
+  "humanDecisionsNeeded": [
+    "HD-1: componentSetKey 확인 (Figma plugin 직접 접근 필요)",
+    "HD-2: 공식 컴포넌트명 확정 — DatePicker vs DayPicker vs Date Input",
+    "HD-3: calendar icon 정식 등록 — ic_날짜/근태,달력 (node 221:3835) SVG 추출 및 assets 등록",
+    "HD-4: Mobile 인터랙션 확정 — bottom sheet 구현 (540:3836 구조 확인 완료, 구현 시작 가능)",
+    "HD-5: DatePicker 전용 token candidate → stable 전환 여부 결정",
+    "HD-6: disabled-date 기준 확정 (어떤 날짜를 비활성으로 처리할지)",
+    "HD-7: other-month date 클릭 허용 여부 (현재 disabled)",
+    "HD-8: 일/토 요일 색상 토큰 별도 생성 여부 (Figma 미정의, 현재 status-error / action-primary 재사용)",
+    "HD-9: PC weekday 시작 요일 확인 (Figma mobile=월요일 시작 확인, PC calendar popup figma-unconfirmed → 현재 일요일 시작)",
+    "HD-10: 날짜 형식 서비스 적용 기준 (YY.MM.DD vs YYYY.MM.DD — DB/API 연동 시 변환 필요)"
+  ],
+  "updatedAt": "2026-05-12"
+}

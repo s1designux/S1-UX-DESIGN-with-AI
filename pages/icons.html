@@ -211,6 +211,23 @@
       grid-column: 1/-1; text-align: center; padding: 56px 20px; color: #9ca3af;
     }
     .icon-empty-title { font-size: 15px; font-weight: 600; margin-bottom: 5px; color: #6b7280; }
+
+    /* theme bar */
+    .controls-sticky {
+      position: sticky; top: 56px; z-index: 100;
+      background: var(--color-bg-default, #fff);
+      border-bottom: 1px solid #e5e7eb;
+      padding: 8px 24px; display: flex; align-items: center; gap: 12px;
+    }
+    .theme-bar { display: flex; align-items: center; gap: 10px; }
+    .theme-bar-label { font-size: 12px; color: #6b7280; font-weight: 500; }
+    .theme-toggle { display: flex; background: #f3f4f6; border-radius: 8px; padding: 3px; gap: 2px; }
+    .theme-btn {
+      padding: 5px 16px; font-size: 12px; font-weight: 500;
+      border-radius: 6px; border: none; background: transparent; color: #6b7280;
+      transition: all 0.15s; cursor: pointer;
+    }
+    .theme-btn.active { background: #fff; color: #111827; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
   </style>
 </head>
 <body>
@@ -237,6 +254,16 @@
           <span class="badge badge-blue">112 Icons</span>
           <span class="badge badge-gray">2 Sections</span>
           <span class="badge badge-gray">3 Variants</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="controls-sticky">
+      <div class="theme-bar">
+        <span class="theme-bar-label">Theme</span>
+        <div class="theme-toggle">
+          <button class="theme-btn active" id="iconBtnLight" onclick="setIconTheme('light')">Light</button>
+          <button class="theme-btn" id="iconBtnDark" onclick="setIconTheme('dark')">Dark</button>
         </div>
       </div>
     </div>
@@ -291,5 +318,13 @@
 <script src="../assets/js/main.js"></script>
 <script src="../assets/js/icons-data.js"></script>
 <script src="../assets/js/icons.js"></script>
+<script>
+  function setIconTheme(t) {
+    const pageContent = document.querySelector('.page-content');
+    if (pageContent) pageContent.setAttribute('data-theme', t);
+    document.getElementById('iconBtnLight').classList.toggle('active', t === 'light');
+    document.getElementById('iconBtnDark').classList.toggle('active', t === 'dark');
+  }
+</script>
 </body>
 </html>

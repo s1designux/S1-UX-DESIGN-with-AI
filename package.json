@@ -7,6 +7,16 @@
     "sync:button": "node scripts/sync/button-sync-check.js",
     "guard": "node scripts/guard/index.js",
     "guard:suggest": "node scripts/guard/suggest-fixes.js",
-    "guard:apply": "node scripts/guard/apply-fixes.js"
+    "guard:apply": "node scripts/guard/apply-fixes.js",
+    "plugin:check": "tsc --project plugins/figma-token-sync/tsconfig.json --noEmit",
+    "plugin:build": "esbuild plugins/figma-token-sync/src/code.ts --bundle --outfile=plugins/figma-token-sync/dist/code.js --target=es2017 --platform=browser",
+    "figma:fetch": "node --env-file=.env scripts/figma/fetch-figma-variables.mjs",
+    "figma:match": "node scripts/figma/match-figma-variable-metadata.mjs",
+    "figma:audit": "node scripts/figma/match-figma-variable-metadata.mjs --profile ux-guide-2.4"
+  },
+  "devDependencies": {
+    "@figma/plugin-typings": "^1.97.0",
+    "esbuild": "^0.21.5",
+    "typescript": "^5.4.5"
   }
 }

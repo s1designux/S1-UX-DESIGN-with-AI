@@ -35,6 +35,10 @@
       --color-border-focus:    #1D6CEB;
       --color-border-danger:   #FF4554;
       --color-border-correct:  #1D6CEB;
+      --color-control-border-default:  #D9D9D9;
+      --color-control-border-hover:    #1D6CEB;
+      --color-control-border-selected: #1D6CEB;
+      --color-control-border-disabled: #C4C4C4;
       --color-icon-default:  #757575;
       --color-icon-muted:    #C4C4C4;
       --color-icon-emphasis: #353535;
@@ -82,11 +86,16 @@
       --color-border-focus:    #4285E8;
       --color-border-danger:   #F06070;
       --color-border-correct:  #4285E8;
+      --color-control-border-default:  #3E4049;
+      --color-control-border-hover:    #3B82F6;
+      --color-control-border-selected: #3B82F6;
+      --color-control-border-disabled: #2E2F38;
+      --color-form-control-border-disabled: var(--color-control-border-disabled);
       --color-icon-default:  #8A8C96;
       --color-icon-muted:    #35363F;
       --color-icon-emphasis: #B8BABF;
       --color-icon-accent:   #6FA5F8;
-      --color-icon-inverse:  #FFFFFF;
+      --color-icon-inverse:  #ECEDF0;
       --color-icon-danger:   #F06070;
       --color-action-primary-default:  #3070D8;
       --color-action-primary-hover:    #2A65C8;
@@ -129,50 +138,64 @@
       --button-blue-line-disabled-border:  var(--color-border-disabled);
       --button-blue-line-default-text:     var(--color-action-primary-default);
       --button-blue-line-disabled-text:    var(--color-text-disabled);
-      /* Input */
-      --input-default-bg:       var(--color-surface-default);
-      --input-disabled-bg:      var(--color-bg-subtle);
-      --input-default-border:   var(--color-border-default);
-      --input-hover-border:     var(--color-border-strong);
-      --input-focus-border:     var(--color-border-focus);
-      --input-error-border:     var(--color-border-danger);
-      --input-correct-border:   var(--color-border-correct);
-      --input-disabled-border:  var(--color-border-default);
-      --input-placeholder-text: var(--color-text-placeholder);
-      --input-helper-text:      var(--color-text-helper);
-      --input-error-text:       var(--color-text-danger);
-      --input-correct-text:     var(--color-text-correct);
-      --input-disabled-text:    var(--color-text-disabled);
-      /* Dropdown */
+      /* Input — form-control 2-layer: --input-* → --color-form-control-* → semantic */
+      --color-form-control-bg-default:       var(--color-surface-default);
+      --color-form-control-bg-disabled:      var(--color-bg-subtle);
+      --color-form-control-border-default:   var(--color-control-border-default);
+      --color-form-control-border-selected:  var(--color-border-focus);
+      --color-form-control-border-error:     var(--color-status-error);
+      --color-form-control-border-correct:   var(--color-border-focus);
+      --color-form-control-border-disabled:  var(--color-border-subtle);
+      --color-form-control-text-placeholder: var(--color-text-placeholder);
+      --color-form-control-text-disabled:    var(--color-text-disabled);
+      --color-text-state-helper:             var(--color-text-secondary);
+      --color-text-state-correct:            var(--color-blue-400);
+      --color-text-state-error:              var(--color-status-error);
+      --input-default-bg:       var(--color-form-control-bg-default);
+      --input-disabled-bg:      var(--color-form-control-bg-disabled);
+      --input-default-border:   var(--color-form-control-border-default);
+      --input-focus-border:     var(--color-form-control-border-selected);
+      --input-error-border:     var(--color-form-control-border-error);
+      --input-correct-border:   var(--color-form-control-border-correct);
+      --input-disabled-border:  var(--color-form-control-border-disabled);
+      --input-placeholder-text: var(--color-form-control-text-placeholder);
+      --input-disabled-text:    var(--color-form-control-text-disabled);
+      --input-helper-text:      var(--color-text-state-helper);
+      --input-correct-text:     var(--color-text-state-correct);
+      --input-error-text:       var(--color-text-state-error);
+      /* Dropdown — Figma 6466:4103 기준 (2026-05-18) */
       --dropdown-trigger-default-bg:      var(--color-surface-default);
       --dropdown-trigger-hover-bg:        var(--color-bg-subtle);
       --dropdown-trigger-disabled-bg:     var(--color-bg-subtle);
-      --dropdown-trigger-default-border:  var(--color-border-default);
+      --dropdown-trigger-default-border:  var(--color-form-control-border-default);
       --dropdown-trigger-hover-border:    var(--color-border-strong);
       --dropdown-trigger-open-border:     var(--color-border-focus);
       --dropdown-trigger-disabled-border: var(--color-border-subtle);
-      --dropdown-trigger-default-text:    var(--color-text-secondary);
-      --dropdown-trigger-disabled-text:   var(--color-text-disabled);
-      --dropdown-list-bg:            var(--color-surface-raised);
-      --dropdown-option-hover-bg:    var(--color-bg-subtle);
-      --dropdown-option-selected-bg: var(--color-action-primary-subtle);
+      --dropdown-trigger-default-text:      var(--color-text-secondary);
+      --dropdown-trigger-placeholder-text: var(--color-text-placeholder);
+      --dropdown-trigger-selected-text:    var(--color-text-primary);
+      --dropdown-trigger-disabled-text:    var(--color-text-disabled);
+      --dropdown-list-bg:                  var(--color-surface-default);
+      --dropdown-list-border:              var(--color-border-default);
+      --dropdown-option-hover-bg:          var(--color-bg-subtle);
+      --dropdown-option-selected-text:     var(--color-action-primary-default);
       /* Checkbox */
-      --checkbox-default-bg:       var(--color-surface-default);
+      --checkbox-default-bg:       var(--color-form-control-bg-default);
       --checkbox-checked-bg:       var(--color-action-primary-default);
-      --checkbox-indeterminate-bg: var(--color-action-primary-default);
       --checkbox-disabled-bg:      var(--color-bg-subtle);
-      --checkbox-default-border:   var(--color-border-default);
-      --checkbox-hover-border:     var(--color-border-focus);
-      --checkbox-checked-border:   var(--color-action-primary-default);
-      --checkbox-disabled-border:  var(--color-border-subtle);
+      --checkbox-default-border:   var(--color-control-border-default);
+      --checkbox-hover-border:     var(--color-control-border-hover);
+      --checkbox-checked-border:   var(--color-control-border-selected);
+      --checkbox-disabled-border:  var(--color-control-border-disabled);
       --checkbox-check-icon:          var(--color-action-primary-text);
       --checkbox-disabled-check-icon: var(--color-border-strong);
       /* Radio */
-      --radio-default-bg:      var(--color-surface-default);
+      --radio-default-bg:      var(--color-form-control-bg-default);
       --radio-disabled-bg:     var(--color-bg-subtle);
-      --radio-default-border:  var(--color-border-default);
-      --radio-selected-border: var(--color-action-primary-default);
-      --radio-disabled-border: var(--color-border-strong);
+      --radio-default-border:  var(--color-control-border-default);
+      --radio-hover-border:    var(--color-control-border-hover);
+      --radio-selected-border: var(--color-control-border-selected);
+      --radio-disabled-border: var(--color-control-border-disabled);
       --radio-selected-dot:    var(--color-action-primary-default);
       --radio-disabled-dot:    var(--color-border-strong);
       /* Toggle */
@@ -200,6 +223,12 @@
       --chip-solid-disabled-bg:      var(--color-bg-subtle);
       --chip-solid-disabled-border:  var(--color-bg-subtle);
       --chip-solid-disabled-text:    var(--color-text-disabled);
+    }
+
+    /* component token dark overrides — :root 이후에 위치해야 우선 적용됨 */
+    [data-theme="dark"] {
+      --color-form-control-bg-default: #131418;
+      --dropdown-trigger-hover-bg: var(--color-bg-subtle);
     }
 
     /* =====================================================
@@ -503,10 +532,6 @@
       background: var(--checkbox-checked-bg);
       border-color: var(--checkbox-checked-border);
     }
-    .s1-checkbox.is-indeterminate .s1-checkbox-box {
-      background: var(--checkbox-indeterminate-bg);
-      border-color: var(--checkbox-checked-border);
-    }
     .s1-checkbox.is-disabled .s1-checkbox-box {
       background: var(--checkbox-disabled-bg);
       border-color: var(--checkbox-disabled-border);
@@ -516,14 +541,13 @@
       border-color: var(--checkbox-disabled-border);
       color: var(--checkbox-disabled-check-icon);
     }
+
     .s1-checkbox.is-disabled { cursor: not-allowed; }
     .s1-checkbox-label { font-size: 14px; color: var(--color-text-secondary); }
     .s1-checkbox.is-disabled .s1-checkbox-label { color: var(--color-text-disabled); }
     .s1-checkbox-box { color: var(--checkbox-check-icon); }
     .ds-chk-icon { display: none; }
     .s1-checkbox.is-checked .ds-chk-icon { display: block; }
-    .ds-ind-icon { display: none; }
-    .s1-checkbox.is-indeterminate .ds-ind-icon { display: block; }
     /* Checkbox grid layout */
     .checkbox-grid {
       display: grid;
@@ -567,6 +591,7 @@
       width: 10px; height: 10px; border-radius: 50%;
       background: var(--radio-selected-dot); opacity: 0; transition: opacity 0.15s;
     }
+
     .s1-radio.is-selected .s1-radio-circle { border-color: var(--radio-selected-border); }
     .s1-radio.is-selected .s1-radio-dot { opacity: 1; }
     .s1-radio.is-disabled .s1-radio-circle {
@@ -635,7 +660,7 @@
     /* Filter Chip (공통 베이스) */
     .ds-filter-chip {
       display: inline-flex; align-items: center; height: 34px;
-      padding: 0 6px 0 12px; gap: 4px;
+      padding: 0 8px 0 12px; gap: 4px;
       border-radius: 999px; border: 1px solid var(--chip-line-default-border);
       background: var(--chip-line-default-bg); cursor: pointer;
       transition: all 0.15s; font-family: inherit;
@@ -648,16 +673,27 @@
       font-size: 14px; font-weight: 500; white-space: nowrap;
       color: var(--color-text-secondary);
     }
+    .ds-filter-chip-wrap {
+      position: relative; display: inline-flex;
+    }
     .ds-filter-chip-arrow {
       flex-shrink: 0; color: var(--color-icon-default);
+      transform: rotate(90deg);
     }
-    /* Selected */
-    .ds-filter-chip.is-selected {
-      background: var(--chip-line-selected-bg); border-color: var(--chip-line-selected-border);
+    .ds-filter-chip-wrap.is-open .ds-filter-chip-arrow { transform: rotate(270deg); }
+    .ds-filter-chip-wrap.is-open .s1-select-list { display: block; }
+    /* Open: 드롭다운 열릴 때 보더 파란색 */
+    .ds-filter-chip-wrap.is-open .ds-filter-chip { border-color: var(--chip-line-selected-border); }
+    /* Selecting: static preview용 — 드롭다운을 in-flow로 전환해 grid row 높이에 반영 */
+    .ds-filter-chip-wrap.is-open.is-preview {
+      flex-direction: column; align-items: flex-start;
     }
+    .ds-filter-chip-wrap.is-open.is-preview .s1-select-list {
+      position: relative; top: auto; left: auto; right: auto;
+      margin-top: 4px; z-index: auto; min-width: 130px;
+    }
+    /* Selected: 옵션 선택 후 — 보더/배경은 default 유지, 라벨만 파란색 */
     .ds-filter-chip.is-selected .ds-filter-chip-label { color: var(--chip-line-selected-text); }
-    .ds-filter-chip.is-selected .ds-filter-chip-arrow { color: var(--color-action-primary-default); }
-    /* Titled: 타이틀은 선택 상태에서도 기본 색 유지 */
     .ds-filter-chip.is-selected .ds-filter-chip-title { color: var(--color-text-secondary); }
     /* Disabled */
     .ds-filter-chip.is-disabled {
@@ -687,8 +723,7 @@
     }
     .s1-input-field.input-size-xsmall input { font-size: 12px; letter-spacing: 0; }
     .s1-input-field input::placeholder { color: var(--input-placeholder-text); }
-    .s1-input-wrap:hover .s1-input-field,
-    .s1-input-wrap.is-hover .s1-input-field { border-color: var(--input-hover-border); }
+
     .s1-input-wrap.is-focus .s1-input-field { border-color: var(--input-focus-border); }
     .s1-input-wrap.is-error .s1-input-field { border-color: var(--input-error-border); }
     .s1-input-wrap.is-correct .s1-input-field { border-color: var(--input-correct-border); }
@@ -708,7 +743,9 @@
       flex-shrink: 0; width: 24px; height: 24px;
       padding: 0; border: none; background: transparent;
       cursor: pointer; color: var(--color-icon-default);
+      border-radius: 4px; transition: background 0.15s;
     }
+    .input-clear-btn:hover { background: var(--color-bg-subtle); }
     .s1-input-remove { display: flex; cursor: default; }
     .input-interactive .input-clear-btn { display: none; }
     .input-interactive.has-value .input-clear-btn { display: flex; }
@@ -778,19 +815,129 @@
     [data-related-field] .input-clear-btn[hidden] { display: none !important; }
     [data-related-field] .input-clear-btn { display: flex; }
 
+    /* Date Picker — MVP4.3-A Revision (Figma 6456:4033 / 540:3794, 540:3836 기준) */
+    .s1-date-picker { position: relative; display: inline-block; width: 100%; max-width: 280px; }
+    /* PC popover panel — figma-unconfirmed: PC popup 노드 직접 조회 미완료. mobile bottomsheet 구조 참고하여 추정. */
+    .s1-date-picker__panel {
+      position: absolute; top: calc(100% + 4px); left: 0; z-index: 100;
+      min-width: 308px; /* Figma mobile grid 308px 참고 */
+      background: var(--color-surface-default);
+      border: 1px solid var(--color-border-default);
+      border-radius: var(--radius-card-md, 8px);
+      box-shadow: 0 4px 16px rgba(0,0,0,0.10); /* shadow 전용 rgba 허용 */
+      padding: 16px; /* Figma mobile: padding-block 20px 참고, PC 추정 16px */
+      user-select: none;
+    }
+    .s1-date-picker__panel[hidden] { display: none; }
+    .s1-date-picker__header {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 16px; /* Figma gap/section/xs=16px */
+      height: 32px; /* Figma mobile header 32px 확인 */
+    }
+    .s1-date-picker__nav-btn {
+      display: flex; align-items: center; justify-content: center;
+      width: 24px; height: 24px; /* Figma CalendarArrow 24×24px 확인 */
+      border: none; background: transparent;
+      color: var(--color-text-primary); cursor: pointer;
+      border-radius: var(--radius-4, 4px);
+    }
+    .s1-date-picker__nav-btn:hover { background: var(--color-bg-subtle); }
+    .s1-date-picker__month-label {
+      font-size: 20px; font-weight: 700; /* Figma mobile: title/20B. PC panel figma-unconfirmed → 18px 추정 */
+      color: var(--color-text-primary);
+      font-size: 18px; /* PC 추정값 — figma-unconfirmed */
+    }
+    .s1-date-picker__weekdays {
+      display: grid; grid-template-columns: repeat(7, 44px);
+      margin-bottom: 0; /* Figma: weekday row는 grid row와 inline */
+    }
+    .s1-date-picker__weekday {
+      display: flex; align-items: center; justify-content: center;
+      width: 44px; height: 44px; /* Figma calendar cell 44×44px 확인 */
+      text-align: center; font-size: 14px; font-weight: 500; /* Figma: 16M, PC 추정 14px */
+      color: var(--color-text-primary); /* Figma: --color/text/body/primary */
+    }
+    /* 일/토 weekday 색상: candidate (HD-8) */
+    .s1-date-picker__weekday.is-sunday { color: var(--color-status-error); }
+    .s1-date-picker__weekday.is-saturday { color: var(--color-action-primary-default); }
+    .s1-date-picker__grid {
+      display: grid; grid-template-columns: repeat(7, 44px); gap: 0;
+    }
+    /* Day cell — Figma: 44×44px container + inner 30×30px circle */
+    .s1-date-picker__day {
+      display: flex; align-items: center; justify-content: center;
+      width: 44px; height: 44px; /* Figma 44×44px outer container */
+      padding: 5px; /* Figma padding 5px 확인 */
+      border: none; background: transparent; cursor: pointer;
+      font-size: 14px; font-weight: 500; /* Figma: 16M, PC 추정 14px */
+      color: var(--color-text-primary); /* Figma: --color/text/body/tertiary(#757575) — candidate */
+      box-sizing: border-box;
+    }
+    /* Inner circle wrapper — Figma: 30×30px rounded-full */
+    .s1-date-picker__day > .day-inner {
+      display: flex; align-items: center; justify-content: center;
+      width: 30px; height: 30px;
+      border-radius: 50%; /* Figma: radius-full */
+      border: 1px solid transparent;
+      font-size: inherit; font-weight: inherit; color: inherit;
+      background: transparent;
+    }
+    .s1-date-picker__day:hover:not([disabled]):not(.is-other-month) > .day-inner {
+      background: var(--color-bg-subtle);
+    }
+    .s1-date-picker__day.is-other-month {
+      color: var(--color-text-disabled); /* Figma: --color/text/state/disabled(#c4c4c4) 확인 */
+      cursor: default;
+    }
+    /* Today: Figma selected-alt state — border+text accent, white bg */
+    .s1-date-picker__day.is-today > .day-inner {
+      border: 1px solid var(--color-action-primary-default); /* Figma: --color/control/border/selected(#1d6ceb) 확인 */
+      color: var(--color-action-primary-default); /* Figma: --color/text/state/accent(#1d6ceb) 확인 */
+      background: var(--color-surface-default); /* Figma: --color/control/bg/selected-alt(white) 확인 */
+    }
+    /* Selected: Figma — filled blue circle, white text */
+    .s1-date-picker__day.is-selected > .day-inner {
+      background: var(--color-action-primary-default); /* Figma: --color/control/bg/selected(#1d6ceb) 확인 */
+      border-color: var(--color-action-primary-default);
+      color: var(--color-base-white); /* Figma: --color/text/state/accent-alt(white) 확인 */
+      font-weight: 700;
+    }
+    .s1-date-picker__day[disabled] {
+      color: var(--color-text-disabled); cursor: not-allowed;
+    }
+    .s1-date-picker__day.is-today.is-selected > .day-inner {
+      background: var(--color-action-primary-default);
+      border-color: var(--color-action-primary-default);
+      color: var(--color-base-white);
+    }
+    /* Trigger opened state */
+    .s1-date-picker--opened .s1-input-wrap,
+    .s1-date-picker__trigger-opened .s1-input-wrap { border-color: var(--input-focus-border); }
+    /* Trigger state: selected (Figma property: state=selected) */
+    .s1-input-wrap.is-selected-open { border-color: var(--input-focus-border); }
+    .s1-dp-states {
+      display: flex; flex-wrap: wrap; gap: 16px; align-items: flex-start;
+    }
+    .s1-dp-state-label {
+      font-size: 10px; font-weight: 600; color: var(--color-text-secondary);
+      text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 4px;
+    }
+
     /* Select */
     .s1-select-wrap { position: relative; width: 158px; }
     .s1-select-trigger {
       display: flex; align-items: center; justify-content: space-between;
-      height: 44px; padding: 0 12px;
+      height: 44px; padding: 0 8px 0 16px;
       border: 1px solid var(--dropdown-trigger-default-border);
       border-radius: 4px; background: var(--dropdown-trigger-default-bg);
-      color: var(--dropdown-trigger-default-text); font-size: 14px;
+      font-size: 14px;
       cursor: pointer; transition: all 0.15s; font-family: inherit; white-space: nowrap;
     }
+    .s1-select-trigger span { color: var(--dropdown-trigger-placeholder-text); }
+    .s1-select-wrap.has-value .s1-select-trigger span { color: var(--dropdown-trigger-selected-text); }
     .s1-select-chevron {
       flex-shrink: 0; margin-left: 6px; color: var(--color-icon-default);
-      transition: transform 0.2s;
+      transform: rotate(90deg);
     }
     .s1-select-wrap:hover .s1-select-trigger,
     .s1-select-wrap.is-hover .s1-select-trigger {
@@ -800,29 +947,33 @@
     .s1-select-wrap.is-open .s1-select-trigger {
       background: var(--dropdown-trigger-default-bg);
       border-color: var(--dropdown-trigger-open-border);
-      border-bottom-left-radius: 0; border-bottom-right-radius: 0;
     }
-    .s1-select-wrap.is-open .s1-select-chevron { transform: rotate(180deg); }
+    .s1-select-wrap.is-open .s1-select-chevron { transform: rotate(270deg); }
     .s1-select-wrap.is-disabled .s1-select-trigger {
       background: var(--dropdown-trigger-disabled-bg);
       border-color: var(--dropdown-trigger-disabled-border);
       color: var(--dropdown-trigger-disabled-text); cursor: not-allowed;
     }
     .s1-select-list {
-      position: absolute; top: 100%; left: 0; right: 0;
+      position: absolute; top: calc(100% + 8px); left: 0; right: 0;
       background: var(--dropdown-list-bg);
-      border: 1px solid var(--dropdown-trigger-open-border);
-      border-top: none; border-bottom-left-radius: 4px; border-bottom-right-radius: 4px;
+      border: 1px solid var(--dropdown-list-border);
+      border-radius: 4px; padding: 12px 0;
       box-shadow: 0 4px 16px rgba(0,0,0,0.10); display: none; z-index: 20; overflow: hidden;
     }
     .s1-select-wrap.is-open .s1-select-list { display: block; }
+    .s1-select-wrap.is-preview .s1-select-list {
+      position: relative; top: auto; left: auto; right: auto;
+      margin-top: 4px; box-shadow: none; z-index: auto;
+    }
     .s1-select-option {
-      padding: 8px 12px; font-size: 14px; color: var(--color-text-secondary); cursor: pointer;
+      height: 44px; display: flex; align-items: center;
+      padding: 0 16px; font-size: 14px; color: var(--color-text-secondary); cursor: pointer;
     }
     .s1-select-option:hover { background: var(--dropdown-option-hover-bg); }
     .s1-select-option.is-selected {
-      background: var(--dropdown-option-selected-bg);
-      color: var(--color-action-primary-default); font-weight: 500;
+      background: transparent;
+      color: var(--dropdown-option-selected-text); font-weight: 400;
     }
 
     /* ── Light · Dark 비교 패널 ── */
@@ -934,27 +1085,33 @@
           <div class="preview-area">
             <div class="platform-section platform-section-pc">
               <div class="platform-header"><span class="platform-dot pc"></span>PC</div>
-              <div class="state-size-matrix">
-                <div></div>
-                <div class="matrix-col-header-action">Action</div>
-                <div class="matrix-col-header">Default</div>
-                <div class="matrix-col-header">Hover</div>
-                <div class="matrix-col-header">Disabled</div>
-                <div class="matrix-row-label">medium<span>h44 · px16</span></div>
-                <div class="matrix-cell action-cell" data-action-cell><button type="button" class="s1-btn s1-btn-primary s1-btn-lg" data-action-test>버튼</button><div class="action-test-controls"><button type="button" class="action-mini-toggle" data-toggle-disabled>Disabled: off</button><span class="action-click-count">Clicks: <span data-click-count>0</span></span></div></div>
-                <div class="matrix-cell"><button class="s1-btn s1-btn-primary s1-btn-lg is-preview">버튼</button></div>
-                <div class="matrix-cell"><button class="s1-btn s1-btn-primary s1-btn-lg is-hover is-preview">버튼</button></div>
-                <div class="matrix-cell"><button class="s1-btn s1-btn-primary s1-btn-lg is-disabled">버튼</button></div>
-                <div class="matrix-row-label">xsmall<span>h34 · px8</span></div>
-                <div class="matrix-cell action-cell" data-action-cell><button type="button" class="s1-btn s1-btn-primary" data-action-test>버튼</button><div class="action-test-controls"><button type="button" class="action-mini-toggle" data-toggle-disabled>Disabled: off</button><span class="action-click-count">Clicks: <span data-click-count>0</span></span></div></div>
-                <div class="matrix-cell"><button class="s1-btn s1-btn-primary is-preview">버튼</button></div>
-                <div class="matrix-cell"><button class="s1-btn s1-btn-primary is-hover is-preview">버튼</button></div>
-                <div class="matrix-cell"><button class="s1-btn s1-btn-primary is-disabled">버튼</button></div>
-                <div class="matrix-row-label">xxsmall<span>h28 · px8</span></div>
-                <div class="matrix-cell action-cell" data-action-cell><button type="button" class="s1-btn s1-btn-primary s1-btn-sm" data-action-test>버튼</button><div class="action-test-controls"><button type="button" class="action-mini-toggle" data-toggle-disabled>Disabled: off</button><span class="action-click-count">Clicks: <span data-click-count>0</span></span></div></div>
-                <div class="matrix-cell"><button class="s1-btn s1-btn-primary s1-btn-sm is-preview">버튼</button></div>
-                <div class="matrix-cell"><button class="s1-btn s1-btn-primary s1-btn-sm is-hover is-preview">버튼</button></div>
-                <div class="matrix-cell"><button class="s1-btn s1-btn-primary s1-btn-sm is-disabled">버튼</button></div>
+              <div data-action-group="primary-pc">
+                <div class="state-size-matrix">
+                  <div></div>
+                  <div class="matrix-col-header-action">Action</div>
+                  <div class="matrix-col-header">Default</div>
+                  <div class="matrix-col-header">Hover</div>
+                  <div class="matrix-col-header">Disabled</div>
+                  <div class="matrix-row-label">medium<span>h44 · px16</span></div>
+                  <div class="matrix-cell action-cell" data-action-cell><button type="button" class="s1-btn s1-btn-primary s1-btn-lg" data-action-test>버튼</button><div class="action-test-controls"><span class="action-click-count">Clicks: <span data-click-count>0</span></span></div></div>
+                  <div class="matrix-cell"><button class="s1-btn s1-btn-primary s1-btn-lg is-preview">버튼</button></div>
+                  <div class="matrix-cell"><button class="s1-btn s1-btn-primary s1-btn-lg is-hover is-preview">버튼</button></div>
+                  <div class="matrix-cell"><button class="s1-btn s1-btn-primary s1-btn-lg is-disabled">버튼</button></div>
+                  <div class="matrix-row-label">xsmall<span>h34 · px8</span></div>
+                  <div class="matrix-cell action-cell" data-action-cell><button type="button" class="s1-btn s1-btn-primary" data-action-test>버튼</button><div class="action-test-controls"><span class="action-click-count">Clicks: <span data-click-count>0</span></span></div></div>
+                  <div class="matrix-cell"><button class="s1-btn s1-btn-primary is-preview">버튼</button></div>
+                  <div class="matrix-cell"><button class="s1-btn s1-btn-primary is-hover is-preview">버튼</button></div>
+                  <div class="matrix-cell"><button class="s1-btn s1-btn-primary is-disabled">버튼</button></div>
+                  <div class="matrix-row-label">xxsmall<span>h28 · px8</span></div>
+                  <div class="matrix-cell action-cell" data-action-cell><button type="button" class="s1-btn s1-btn-primary s1-btn-sm" data-action-test>버튼</button><div class="action-test-controls"><span class="action-click-count">Clicks: <span data-click-count>0</span></span></div></div>
+                  <div class="matrix-cell"><button class="s1-btn s1-btn-primary s1-btn-sm is-preview">버튼</button></div>
+                  <div class="matrix-cell"><button class="s1-btn s1-btn-primary s1-btn-sm is-hover is-preview">버튼</button></div>
+                  <div class="matrix-cell"><button class="s1-btn s1-btn-primary s1-btn-sm is-disabled">버튼</button></div>
+                  <div></div>
+                  <div class="action-test-controls">
+                    <button type="button" class="action-mini-toggle" data-group-disabled>Disabled: off</button>
+                  </div>
+                </div>
               </div>
             </div>
             <div class="platform-section platform-section-mobile">
@@ -1018,27 +1175,33 @@
           <div class="preview-area">
             <div class="platform-section platform-section-pc">
               <div class="platform-header"><span class="platform-dot pc"></span>PC</div>
-              <div class="state-size-matrix">
-                <div></div>
-                <div class="matrix-col-header-action">Action</div>
-                <div class="matrix-col-header">Default</div>
-                <div class="matrix-col-header">Hover</div>
-                <div class="matrix-col-header">Disabled</div>
-                <div class="matrix-row-label">medium<span>h44 · px16</span></div>
-                <div class="matrix-cell action-cell" data-action-cell><button type="button" class="s1-btn s1-btn-secondary s1-btn-lg" data-action-test>버튼</button><div class="action-test-controls"><button type="button" class="action-mini-toggle" data-toggle-disabled>Disabled: off</button><span class="action-click-count">Clicks: <span data-click-count>0</span></span></div></div>
-                <div class="matrix-cell"><button class="s1-btn s1-btn-secondary s1-btn-lg is-preview">버튼</button></div>
-                <div class="matrix-cell"><button class="s1-btn s1-btn-secondary s1-btn-lg is-hover is-preview">버튼</button></div>
-                <div class="matrix-cell"><button class="s1-btn s1-btn-secondary s1-btn-lg is-disabled">버튼</button></div>
-                <div class="matrix-row-label">xsmall<span>h34 · px8</span></div>
-                <div class="matrix-cell action-cell" data-action-cell><button type="button" class="s1-btn s1-btn-secondary" data-action-test>버튼</button><div class="action-test-controls"><button type="button" class="action-mini-toggle" data-toggle-disabled>Disabled: off</button><span class="action-click-count">Clicks: <span data-click-count>0</span></span></div></div>
-                <div class="matrix-cell"><button class="s1-btn s1-btn-secondary is-preview">버튼</button></div>
-                <div class="matrix-cell"><button class="s1-btn s1-btn-secondary is-hover is-preview">버튼</button></div>
-                <div class="matrix-cell"><button class="s1-btn s1-btn-secondary is-disabled">버튼</button></div>
-                <div class="matrix-row-label">xxsmall<span>h28 · px8</span></div>
-                <div class="matrix-cell action-cell" data-action-cell><button type="button" class="s1-btn s1-btn-secondary s1-btn-sm" data-action-test>버튼</button><div class="action-test-controls"><button type="button" class="action-mini-toggle" data-toggle-disabled>Disabled: off</button><span class="action-click-count">Clicks: <span data-click-count>0</span></span></div></div>
-                <div class="matrix-cell"><button class="s1-btn s1-btn-secondary s1-btn-sm is-preview">버튼</button></div>
-                <div class="matrix-cell"><button class="s1-btn s1-btn-secondary s1-btn-sm is-hover is-preview">버튼</button></div>
-                <div class="matrix-cell"><button class="s1-btn s1-btn-secondary s1-btn-sm is-disabled">버튼</button></div>
+              <div data-action-group="secondary-pc">
+                <div class="state-size-matrix">
+                  <div></div>
+                  <div class="matrix-col-header-action">Action</div>
+                  <div class="matrix-col-header">Default</div>
+                  <div class="matrix-col-header">Hover</div>
+                  <div class="matrix-col-header">Disabled</div>
+                  <div class="matrix-row-label">medium<span>h44 · px16</span></div>
+                  <div class="matrix-cell action-cell" data-action-cell><button type="button" class="s1-btn s1-btn-secondary s1-btn-lg" data-action-test>버튼</button><div class="action-test-controls"><span class="action-click-count">Clicks: <span data-click-count>0</span></span></div></div>
+                  <div class="matrix-cell"><button class="s1-btn s1-btn-secondary s1-btn-lg is-preview">버튼</button></div>
+                  <div class="matrix-cell"><button class="s1-btn s1-btn-secondary s1-btn-lg is-hover is-preview">버튼</button></div>
+                  <div class="matrix-cell"><button class="s1-btn s1-btn-secondary s1-btn-lg is-disabled">버튼</button></div>
+                  <div class="matrix-row-label">xsmall<span>h34 · px8</span></div>
+                  <div class="matrix-cell action-cell" data-action-cell><button type="button" class="s1-btn s1-btn-secondary" data-action-test>버튼</button><div class="action-test-controls"><span class="action-click-count">Clicks: <span data-click-count>0</span></span></div></div>
+                  <div class="matrix-cell"><button class="s1-btn s1-btn-secondary is-preview">버튼</button></div>
+                  <div class="matrix-cell"><button class="s1-btn s1-btn-secondary is-hover is-preview">버튼</button></div>
+                  <div class="matrix-cell"><button class="s1-btn s1-btn-secondary is-disabled">버튼</button></div>
+                  <div class="matrix-row-label">xxsmall<span>h28 · px8</span></div>
+                  <div class="matrix-cell action-cell" data-action-cell><button type="button" class="s1-btn s1-btn-secondary s1-btn-sm" data-action-test>버튼</button><div class="action-test-controls"><span class="action-click-count">Clicks: <span data-click-count>0</span></span></div></div>
+                  <div class="matrix-cell"><button class="s1-btn s1-btn-secondary s1-btn-sm is-preview">버튼</button></div>
+                  <div class="matrix-cell"><button class="s1-btn s1-btn-secondary s1-btn-sm is-hover is-preview">버튼</button></div>
+                  <div class="matrix-cell"><button class="s1-btn s1-btn-secondary s1-btn-sm is-disabled">버튼</button></div>
+                  <div></div>
+                  <div class="action-test-controls">
+                    <button type="button" class="action-mini-toggle" data-group-disabled>Disabled: off</button>
+                  </div>
+                </div>
               </div>
             </div>
             <div class="platform-section platform-section-mobile">
@@ -1101,27 +1264,33 @@
           <div class="preview-area">
             <div class="platform-section platform-section-pc">
               <div class="platform-header"><span class="platform-dot pc"></span>PC</div>
-              <div class="state-size-matrix">
-                <div></div>
-                <div class="matrix-col-header-action">Action</div>
-                <div class="matrix-col-header">Default</div>
-                <div class="matrix-col-header">Hover</div>
-                <div class="matrix-col-header">Disabled</div>
-                <div class="matrix-row-label">medium<span>h44 · px16</span></div>
-                <div class="matrix-cell action-cell" data-action-cell><button type="button" class="s1-btn s1-btn-blue-line s1-btn-lg" data-action-test>버튼</button><div class="action-test-controls"><button type="button" class="action-mini-toggle" data-toggle-disabled>Disabled: off</button><span class="action-click-count">Clicks: <span data-click-count>0</span></span></div></div>
-                <div class="matrix-cell"><button class="s1-btn s1-btn-blue-line s1-btn-lg is-preview">버튼</button></div>
-                <div class="matrix-cell"><button class="s1-btn s1-btn-blue-line s1-btn-lg is-hover is-preview">버튼</button></div>
-                <div class="matrix-cell"><button class="s1-btn s1-btn-blue-line s1-btn-lg is-disabled">버튼</button></div>
-                <div class="matrix-row-label">xsmall<span>h34 · px8</span></div>
-                <div class="matrix-cell action-cell" data-action-cell><button type="button" class="s1-btn s1-btn-blue-line" data-action-test>버튼</button><div class="action-test-controls"><button type="button" class="action-mini-toggle" data-toggle-disabled>Disabled: off</button><span class="action-click-count">Clicks: <span data-click-count>0</span></span></div></div>
-                <div class="matrix-cell"><button class="s1-btn s1-btn-blue-line is-preview">버튼</button></div>
-                <div class="matrix-cell"><button class="s1-btn s1-btn-blue-line is-hover is-preview">버튼</button></div>
-                <div class="matrix-cell"><button class="s1-btn s1-btn-blue-line is-disabled">버튼</button></div>
-                <div class="matrix-row-label">xxsmall<span>h28 · px8</span></div>
-                <div class="matrix-cell action-cell" data-action-cell><button type="button" class="s1-btn s1-btn-blue-line s1-btn-sm" data-action-test>버튼</button><div class="action-test-controls"><button type="button" class="action-mini-toggle" data-toggle-disabled>Disabled: off</button><span class="action-click-count">Clicks: <span data-click-count>0</span></span></div></div>
-                <div class="matrix-cell"><button class="s1-btn s1-btn-blue-line s1-btn-sm is-preview">버튼</button></div>
-                <div class="matrix-cell"><button class="s1-btn s1-btn-blue-line s1-btn-sm is-hover is-preview">버튼</button></div>
-                <div class="matrix-cell"><button class="s1-btn s1-btn-blue-line s1-btn-sm is-disabled">버튼</button></div>
+              <div data-action-group="blue-line-pc">
+                <div class="state-size-matrix">
+                  <div></div>
+                  <div class="matrix-col-header-action">Action</div>
+                  <div class="matrix-col-header">Default</div>
+                  <div class="matrix-col-header">Hover</div>
+                  <div class="matrix-col-header">Disabled</div>
+                  <div class="matrix-row-label">medium<span>h44 · px16</span></div>
+                  <div class="matrix-cell action-cell" data-action-cell><button type="button" class="s1-btn s1-btn-blue-line s1-btn-lg" data-action-test>버튼</button><div class="action-test-controls"><span class="action-click-count">Clicks: <span data-click-count>0</span></span></div></div>
+                  <div class="matrix-cell"><button class="s1-btn s1-btn-blue-line s1-btn-lg is-preview">버튼</button></div>
+                  <div class="matrix-cell"><button class="s1-btn s1-btn-blue-line s1-btn-lg is-hover is-preview">버튼</button></div>
+                  <div class="matrix-cell"><button class="s1-btn s1-btn-blue-line s1-btn-lg is-disabled">버튼</button></div>
+                  <div class="matrix-row-label">xsmall<span>h34 · px8</span></div>
+                  <div class="matrix-cell action-cell" data-action-cell><button type="button" class="s1-btn s1-btn-blue-line" data-action-test>버튼</button><div class="action-test-controls"><span class="action-click-count">Clicks: <span data-click-count>0</span></span></div></div>
+                  <div class="matrix-cell"><button class="s1-btn s1-btn-blue-line is-preview">버튼</button></div>
+                  <div class="matrix-cell"><button class="s1-btn s1-btn-blue-line is-hover is-preview">버튼</button></div>
+                  <div class="matrix-cell"><button class="s1-btn s1-btn-blue-line is-disabled">버튼</button></div>
+                  <div class="matrix-row-label">xxsmall<span>h28 · px8</span></div>
+                  <div class="matrix-cell action-cell" data-action-cell><button type="button" class="s1-btn s1-btn-blue-line s1-btn-sm" data-action-test>버튼</button><div class="action-test-controls"><span class="action-click-count">Clicks: <span data-click-count>0</span></span></div></div>
+                  <div class="matrix-cell"><button class="s1-btn s1-btn-blue-line s1-btn-sm is-preview">버튼</button></div>
+                  <div class="matrix-cell"><button class="s1-btn s1-btn-blue-line s1-btn-sm is-hover is-preview">버튼</button></div>
+                  <div class="matrix-cell"><button class="s1-btn s1-btn-blue-line s1-btn-sm is-disabled">버튼</button></div>
+                  <div></div>
+                  <div class="action-test-controls">
+                    <button type="button" class="action-mini-toggle" data-group-disabled>Disabled: off</button>
+                  </div>
+                </div>
               </div>
             </div>
             <div class="platform-section platform-section-mobile">
@@ -1271,25 +1440,22 @@
         <div class="variant-block">
           <div class="variant-label">States</div>
           <div class="preview-area">
-            <div class="comp-state-matrix" style="grid-template-columns: 200px repeat(5, 110px);">
+            <div class="comp-state-matrix" style="grid-template-columns: 200px repeat(4, 110px);">
               <!-- Header -->
               <div class="matrix-col-header-action">Action</div>
               <div class="matrix-col-header">Default</div>
               <div class="matrix-col-header">Checked</div>
-              <div class="matrix-col-header">Indeterminate</div>
               <div class="matrix-col-header">Disabled</div>
               <div class="matrix-col-header">Dis+Checked</div>
               <!-- Row -->
               <div class="comp-action-cell" data-comp-action="checkbox">
                 <label class="s1-checkbox" id="chk-action-target">
                   <div class="s1-checkbox-box">
-                    <svg class="ds-chk-icon" width="11" height="8" viewBox="0 0 11 8" fill="none"><path d="M1 4L4 7L10 1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                    <svg class="ds-ind-icon" width="11" height="3" viewBox="0 0 11 3" fill="none"><path d="M1 1.5h9" stroke="white" stroke-width="2" stroke-linecap="round"/></svg>
+                    <svg class="ds-chk-icon" width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2.9375 8L6.13252 11.375L13.0625 4.625" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>
                   </div>
                   <span class="s1-checkbox-label chk-action-label" style="display:none;">라벨</span>
                 </label>
                 <div class="action-test-controls">
-                  <button type="button" class="action-mini-toggle" data-chk-indeterminate>Indet: off</button>
                   <button type="button" class="action-mini-toggle" data-chk-disabled>Disabled: off</button>
                   <button type="button" class="action-mini-toggle" data-chk-label>Label: off</button>
                 </div>
@@ -1301,13 +1467,7 @@
               <!-- Checked -->
               <div class="comp-state-cell">
                 <label class="s1-checkbox is-checked is-preview">
-                  <div class="s1-checkbox-box"><svg class="ds-chk-icon" width="11" height="8" viewBox="0 0 11 8" fill="none"><path d="M1 4L4 7L10 1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-                </label>
-              </div>
-              <!-- Indeterminate -->
-              <div class="comp-state-cell">
-                <label class="s1-checkbox is-indeterminate is-preview">
-                  <div class="s1-checkbox-box"><svg class="ds-ind-icon" width="11" height="3" viewBox="0 0 11 3" fill="none"><path d="M1 1.5h9" stroke="white" stroke-width="2" stroke-linecap="round"/></svg></div>
+                  <div class="s1-checkbox-box"><svg class="ds-chk-icon" width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2.9375 8L6.13252 11.375L13.0625 4.625" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg></div>
                 </label>
               </div>
               <!-- Disabled -->
@@ -1317,7 +1477,7 @@
               <!-- Disabled+Checked -->
               <div class="comp-state-cell">
                 <label class="s1-checkbox is-checked is-disabled is-preview">
-                  <div class="s1-checkbox-box"><svg class="ds-chk-icon" width="11" height="8" viewBox="0 0 11 8" fill="none"><path d="M1 4L4 7L10 1" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+                  <div class="s1-checkbox-box"><svg class="ds-chk-icon" width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2.9375 8L6.13252 11.375L13.0625 4.625" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg></div>
                 </label>
               </div>
             </div>
@@ -1339,8 +1499,8 @@
 <span class="c-cmt">&lt;!-- Checked --&gt;</span>
 <span class="c-tag">&lt;label</span> <span class="c-attr">class</span>=<span class="c-str">"s1-checkbox is-checked"</span><span class="c-tag">&gt;</span>
   <span class="c-tag">&lt;div</span> <span class="c-attr">class</span>=<span class="c-str">"s1-checkbox-box"</span><span class="c-tag">&gt;</span>
-    <span class="c-tag">&lt;svg</span> <span class="c-attr">class</span>=<span class="c-str">"ds-chk-icon"</span> <span class="c-attr">width</span>=<span class="c-str">"11"</span> <span class="c-attr">height</span>=<span class="c-str">"8"</span> <span class="c-attr">viewBox</span>=<span class="c-str">"0 0 11 8"</span><span class="c-tag">&gt;</span>
-      <span class="c-tag">&lt;path</span> <span class="c-attr">d</span>=<span class="c-str">"M1 4L4 7L10 1"</span> <span class="c-attr">stroke</span>=<span class="c-str">"white"</span> <span class="c-attr">stroke-width</span>=<span class="c-str">"1.8"</span> <span class="c-attr">stroke-linecap</span>=<span class="c-str">"round"</span> <span class="c-attr">stroke-linejoin</span>=<span class="c-str">"round"</span><span class="c-tag">/&gt;</span>
+    <span class="c-tag">&lt;svg</span> <span class="c-attr">class</span>=<span class="c-str">"ds-chk-icon"</span> <span class="c-attr">width</span>=<span class="c-str">"16"</span> <span class="c-attr">height</span>=<span class="c-str">"16"</span> <span class="c-attr">viewBox</span>=<span class="c-str">"0 0 16 16"</span> <span class="c-attr">fill</span>=<span class="c-str">"none"</span><span class="c-tag">&gt;</span>
+      <span class="c-tag">&lt;path</span> <span class="c-attr">d</span>=<span class="c-str">"M2.9375 8L6.13252 11.375L13.0625 4.625"</span> <span class="c-attr">stroke</span>=<span class="c-str">"currentColor"</span> <span class="c-attr">stroke-width</span>=<span class="c-str">"1.5"</span> <span class="c-attr">stroke-linejoin</span>=<span class="c-str">"round"</span><span class="c-tag">/&gt;</span>
     <span class="c-tag">&lt;/svg&gt;</span>
   <span class="c-tag">&lt;/div&gt;</span>
   <span class="c-tag">&lt;span</span> <span class="c-attr">class</span>=<span class="c-str">"s1-checkbox-label"</span><span class="c-tag">&gt;</span>레이블<span class="c-tag">&lt;/span&gt;</span>
@@ -1353,8 +1513,8 @@
 <span class="c-cmt">&lt;!-- Disabled+Checked --&gt;</span>
 <span class="c-tag">&lt;label</span> <span class="c-attr">class</span>=<span class="c-str">"s1-checkbox is-checked is-disabled"</span><span class="c-tag">&gt;</span>
   <span class="c-tag">&lt;div</span> <span class="c-attr">class</span>=<span class="c-str">"s1-checkbox-box"</span><span class="c-tag">&gt;</span>
-    <span class="c-tag">&lt;svg</span> <span class="c-attr">class</span>=<span class="c-str">"ds-chk-icon"</span> <span class="c-attr">width</span>=<span class="c-str">"11"</span> <span class="c-attr">height</span>=<span class="c-str">"8"</span> <span class="c-attr">viewBox</span>=<span class="c-str">"0 0 11 8"</span><span class="c-tag">&gt;</span>
-      <span class="c-tag">&lt;path</span> <span class="c-attr">d</span>=<span class="c-str">"M1 4L4 7L10 1"</span> <span class="c-attr">stroke</span>=<span class="c-str">"currentColor"</span> <span class="c-attr">stroke-width</span>=<span class="c-str">"1.8"</span> <span class="c-attr">stroke-linecap</span>=<span class="c-str">"round"</span> <span class="c-attr">stroke-linejoin</span>=<span class="c-str">"round"</span><span class="c-tag">/&gt;</span>
+    <span class="c-tag">&lt;svg</span> <span class="c-attr">class</span>=<span class="c-str">"ds-chk-icon"</span> <span class="c-attr">width</span>=<span class="c-str">"16"</span> <span class="c-attr">height</span>=<span class="c-str">"16"</span> <span class="c-attr">viewBox</span>=<span class="c-str">"0 0 16 16"</span> <span class="c-attr">fill</span>=<span class="c-str">"none"</span><span class="c-tag">&gt;</span>
+      <span class="c-tag">&lt;path</span> <span class="c-attr">d</span>=<span class="c-str">"M2.9375 8L6.13252 11.375L13.0625 4.625"</span> <span class="c-attr">stroke</span>=<span class="c-str">"currentColor"</span> <span class="c-attr">stroke-width</span>=<span class="c-str">"1.5"</span> <span class="c-attr">stroke-linejoin</span>=<span class="c-str">"round"</span><span class="c-tag">/&gt;</span>
     <span class="c-tag">&lt;/svg&gt;</span>
   <span class="c-tag">&lt;/div&gt;</span>
   <span class="c-tag">&lt;span</span> <span class="c-attr">class</span>=<span class="c-str">"s1-checkbox-label"</span><span class="c-tag">&gt;</span>레이블<span class="c-tag">&lt;/span&gt;</span>
@@ -1365,9 +1525,9 @@
 <span class="c-prop">--checkbox-default-bg</span>:      <span class="c-val">var(--color-surface-default)</span>;
 <span class="c-prop">--checkbox-checked-bg</span>:      <span class="c-val">var(--color-action-primary-default)</span>;
 <span class="c-prop">--checkbox-disabled-bg</span>:     <span class="c-val">var(--color-bg-subtle)</span>;
-<span class="c-prop">--checkbox-default-border</span>:  <span class="c-val">var(--color-border-default)</span>;
-<span class="c-prop">--checkbox-checked-border</span>:  <span class="c-val">var(--color-action-primary-default)</span>;
-<span class="c-prop">--checkbox-disabled-border</span>: <span class="c-val">var(--color-border-subtle)</span>;
+<span class="c-prop">--checkbox-default-border</span>:  <span class="c-val">var(--color-control-border-default)</span>;
+<span class="c-prop">--checkbox-checked-border</span>:  <span class="c-val">var(--color-control-border-selected)</span>;
+<span class="c-prop">--checkbox-disabled-border</span>: <span class="c-val">var(--color-control-border-disabled)</span>;
 <span class="c-prop">--checkbox-check-icon</span>:      <span class="c-val">var(--color-action-primary-text)</span>;
 
 <span class="c-cmt">/* Structure */</span>
@@ -1470,9 +1630,9 @@
 <span class="c-sel">:root</span> {
   <span class="c-prop">--radio-default-bg</span>:      <span class="c-val">var(--color-surface-default)</span>;
   <span class="c-prop">--radio-disabled-bg</span>:     <span class="c-val">var(--color-bg-subtle)</span>;
-  <span class="c-prop">--radio-default-border</span>:  <span class="c-val">var(--color-border-default)</span>;
-  <span class="c-prop">--radio-selected-border</span>: <span class="c-val">var(--color-action-primary-default)</span>;
-  <span class="c-prop">--radio-disabled-border</span>: <span class="c-val">var(--color-border-strong)</span>;
+  <span class="c-prop">--radio-default-border</span>:  <span class="c-val">var(--color-control-border-default)</span>;
+  <span class="c-prop">--radio-selected-border</span>: <span class="c-val">var(--color-control-border-selected)</span>;
+  <span class="c-prop">--radio-disabled-border</span>: <span class="c-val">var(--color-control-border-disabled)</span>;
   <span class="c-prop">--radio-selected-dot</span>:    <span class="c-val">var(--color-action-primary-default)</span>;
   <span class="c-prop">--radio-disabled-dot</span>:    <span class="c-val">var(--color-border-strong)</span>;
 }
@@ -1578,90 +1738,117 @@
         <div class="comp-section-header">
           <h2 class="comp-section-title">Chip · Filter Chip</h2>
           <span class="comp-badge comp-badge-blue">Core</span>
-          <span class="comp-badge">4 states</span>
+          <span class="comp-badge">5 states</span>
           <span class="comp-badge">2 types</span>
         </div>
 
         <div class="variant-block">
           <div class="variant-label">States</div>
-          <div class="preview-area">
-            <div class="comp-state-matrix" style="grid-template-columns: 100px 180px repeat(3, 130px);">
-              <!-- Header -->
-              <div></div>
-              <div class="matrix-col-header-action">Action</div>
-              <div class="matrix-col-header">Default</div>
-              <div class="matrix-col-header">Selected</div>
-              <div class="matrix-col-header">Disabled</div>
+          <div class="preview-area" style="overflow: visible; padding-bottom: 200px;">
+            <div data-action-group="chip-states">
+              <div class="comp-state-matrix" style="grid-template-columns: 100px 180px repeat(4, 130px);">
+                <!-- Header -->
+                <div></div>
+                <div class="matrix-col-header-action">Action</div>
+                <div class="matrix-col-header">Default</div>
+                <div class="matrix-col-header">Selecting</div>
+                <div class="matrix-col-header">Selected</div>
+                <div class="matrix-col-header">Disabled</div>
 
-              <!-- Line -->
-              <div class="comp-row-label">Chip<span style="display:block;font-weight:400;color:#c4c4c4;font-size:9px;">Line</span></div>
-              <div class="comp-action-cell" data-comp-action="chip-line">
-                <button class="s1-chip" id="chip-line-action">최신순</button>
-                <div class="action-test-controls">
-
-                  <button type="button" class="action-mini-toggle" data-chip-line-disabled>Disabled: off</button>
+                <!-- Line -->
+                <div class="comp-row-label">Chip<span style="display:block;font-weight:400;color:#c4c4c4;font-size:9px;">Line</span></div>
+                <div class="comp-action-cell" data-comp-action="chip-line">
+                  <button class="s1-chip" id="chip-line-action">최신순</button>
                 </div>
-              </div>
-              <div class="comp-state-cell"><button class="s1-chip is-preview">최신순</button></div>
-              <div class="comp-state-cell"><button class="s1-chip is-selected is-preview">최신순</button></div>
-              <div class="comp-state-cell"><button class="s1-chip is-disabled is-preview">최신순</button></div>
+                <div class="comp-state-cell"><button class="s1-chip is-preview">최신순</button></div>
+                <div class="comp-state-cell">—</div>
+                <div class="comp-state-cell"><button class="s1-chip is-selected is-preview">최신순</button></div>
+                <div class="comp-state-cell"><button class="s1-chip is-disabled is-preview">최신순</button></div>
 
-              <!-- Solid -->
-              <div class="comp-row-label">Chip<span style="display:block;font-weight:400;color:#c4c4c4;font-size:9px;">Solid</span></div>
-              <div class="comp-action-cell" data-comp-action="chip-solid">
-                <button class="s1-chip s1-chip--solid" id="chip-solid-action">최신순</button>
-                <div class="action-test-controls">
-
-                  <button type="button" class="action-mini-toggle" data-chip-solid-disabled>Disabled: off</button>
+                <!-- Solid -->
+                <div class="comp-row-label">Chip<span style="display:block;font-weight:400;color:#c4c4c4;font-size:9px;">Solid</span></div>
+                <div class="comp-action-cell" data-comp-action="chip-solid">
+                  <button class="s1-chip s1-chip--solid" id="chip-solid-action">최신순</button>
                 </div>
-              </div>
-              <div class="comp-state-cell"><button class="s1-chip s1-chip--solid is-preview">최신순</button></div>
-              <div class="comp-state-cell"><button class="s1-chip s1-chip--solid is-selected is-preview">최신순</button></div>
-              <div class="comp-state-cell"><button class="s1-chip s1-chip--solid is-disabled is-preview">최신순</button></div>
+                <div class="comp-state-cell"><button class="s1-chip s1-chip--solid is-preview">최신순</button></div>
+                <div class="comp-state-cell">—</div>
+                <div class="comp-state-cell"><button class="s1-chip s1-chip--solid is-selected is-preview">최신순</button></div>
+                <div class="comp-state-cell"><button class="s1-chip s1-chip--solid is-disabled is-preview">최신순</button></div>
 
-              <!-- Filter — no title -->
-              <div class="comp-row-label">Filter<span style="display:block;font-weight:400;color:#c4c4c4;font-size:9px;">Label only</span></div>
-              <div class="comp-action-cell" data-comp-action="filter-chip">
-                <button class="ds-filter-chip" id="filter-chip-action">
-                  <span class="ds-filter-chip-label">최신순</span>
-                  <svg class="ds-filter-chip-arrow" width="20" height="20" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"/></svg>
-                </button>
-                <div class="action-test-controls">
-
-                  <button type="button" class="action-mini-toggle" data-filter-disabled>Disabled: off</button>
+                <!-- Filter — no title -->
+                <div class="comp-row-label">Filter<span style="display:block;font-weight:400;color:#c4c4c4;font-size:9px;">Label only</span></div>
+                <div class="comp-action-cell" data-comp-action="filter-chip">
+                  <div class="ds-filter-chip-wrap" id="filter-chip-action-wrap">
+                    <button class="ds-filter-chip" id="filter-chip-action">
+                      <span class="ds-filter-chip-label">최신순</span>
+                      <svg class="ds-filter-chip-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M9 6L15 12L9 18" stroke="currentColor" stroke-width="2" stroke-linecap="square"/></svg>
+                    </button>
+                    <div class="s1-select-list">
+                      <div class="s1-select-option is-selected">최신순</div>
+                      <div class="s1-select-option">과거순</div>
+                      <div class="s1-select-option">인기순</div>
+                    </div>
+                  </div>
                 </div>
-              </div>
-              <div class="comp-state-cell">
-                <button class="ds-filter-chip is-preview"><span class="ds-filter-chip-label">최신순</span><svg class="ds-filter-chip-arrow" width="20" height="20" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"/></svg></button>
-              </div>
-              <div class="comp-state-cell">
-                <button class="ds-filter-chip is-selected is-preview"><span class="ds-filter-chip-label">최신순</span><svg class="ds-filter-chip-arrow" width="20" height="20" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"/></svg></button>
-              </div>
-              <div class="comp-state-cell">
-                <button class="ds-filter-chip is-disabled is-preview"><span class="ds-filter-chip-label">최신순</span><svg class="ds-filter-chip-arrow" width="20" height="20" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"/></svg></button>
-              </div>
-
-              <!-- Filter — with title -->
-              <div class="comp-row-label">Filter<span style="display:block;font-weight:400;color:#c4c4c4;font-size:9px;">With title</span></div>
-              <div class="comp-action-cell" data-comp-action="filter-chip-title">
-                <button class="ds-filter-chip" id="filter-chip-title-action">
-                  <span class="ds-filter-chip-title">정렬</span>
-                  <span class="ds-filter-chip-label">최신순</span>
-                  <svg class="ds-filter-chip-arrow" width="20" height="20" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"/></svg>
-                </button>
-                <div class="action-test-controls">
-
-                  <button type="button" class="action-mini-toggle" data-filter-title-disabled>Disabled: off</button>
+                <div class="comp-state-cell">
+                  <button class="ds-filter-chip is-preview"><span class="ds-filter-chip-label">최신순</span><svg class="ds-filter-chip-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M9 6L15 12L9 18" stroke="currentColor" stroke-width="2" stroke-linecap="square"/></svg></button>
                 </div>
-              </div>
-              <div class="comp-state-cell">
-                <button class="ds-filter-chip is-preview"><span class="ds-filter-chip-title">정렬</span><span class="ds-filter-chip-label">최신순</span><svg class="ds-filter-chip-arrow" width="20" height="20" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"/></svg></button>
-              </div>
-              <div class="comp-state-cell">
-                <button class="ds-filter-chip is-selected is-preview"><span class="ds-filter-chip-title">정렬</span><span class="ds-filter-chip-label">최신순</span><svg class="ds-filter-chip-arrow" width="20" height="20" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"/></svg></button>
-              </div>
-              <div class="comp-state-cell">
-                <button class="ds-filter-chip is-disabled is-preview"><span class="ds-filter-chip-title">정렬</span><span class="ds-filter-chip-label">최신순</span><svg class="ds-filter-chip-arrow" width="20" height="20" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"/></svg></button>
+                <div class="comp-state-cell">
+                  <div class="ds-filter-chip-wrap is-open is-preview">
+                    <button class="ds-filter-chip is-preview"><span class="ds-filter-chip-label">최신순</span><svg class="ds-filter-chip-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M9 6L15 12L9 18" stroke="currentColor" stroke-width="2" stroke-linecap="square"/></svg></button>
+                    <div class="s1-select-list">
+                      <div class="s1-select-option is-selected">최신순</div>
+                      <div class="s1-select-option">과거순</div>
+                      <div class="s1-select-option">인기순</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="comp-state-cell">
+                  <button class="ds-filter-chip is-selected is-preview"><span class="ds-filter-chip-label">최신순</span><svg class="ds-filter-chip-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M9 6L15 12L9 18" stroke="currentColor" stroke-width="2" stroke-linecap="square"/></svg></button>
+                </div>
+                <div class="comp-state-cell">
+                  <button class="ds-filter-chip is-disabled is-preview"><span class="ds-filter-chip-label">최신순</span><svg class="ds-filter-chip-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M9 6L15 12L9 18" stroke="currentColor" stroke-width="2" stroke-linecap="square"/></svg></button>
+                </div>
+
+                <!-- Filter — with title -->
+                <div class="comp-row-label">Filter<span style="display:block;font-weight:400;color:#c4c4c4;font-size:9px;">With title</span></div>
+                <div class="comp-action-cell" data-comp-action="filter-chip-title">
+                  <div class="ds-filter-chip-wrap" id="filter-chip-title-action-wrap">
+                    <button class="ds-filter-chip" id="filter-chip-title-action">
+                      <span class="ds-filter-chip-title">정렬</span>
+                      <span class="ds-filter-chip-label">최신순</span>
+                      <svg class="ds-filter-chip-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M9 6L15 12L9 18" stroke="currentColor" stroke-width="2" stroke-linecap="square"/></svg>
+                    </button>
+                    <div class="s1-select-list">
+                      <div class="s1-select-option is-selected">최신순</div>
+                      <div class="s1-select-option">과거순</div>
+                      <div class="s1-select-option">인기순</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="comp-state-cell">
+                  <button class="ds-filter-chip is-preview"><span class="ds-filter-chip-title">정렬</span><span class="ds-filter-chip-label">최신순</span><svg class="ds-filter-chip-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M9 6L15 12L9 18" stroke="currentColor" stroke-width="2" stroke-linecap="square"/></svg></button>
+                </div>
+                <div class="comp-state-cell">
+                  <div class="ds-filter-chip-wrap is-open is-preview">
+                    <button class="ds-filter-chip is-preview"><span class="ds-filter-chip-title">정렬</span><span class="ds-filter-chip-label">최신순</span><svg class="ds-filter-chip-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M9 6L15 12L9 18" stroke="currentColor" stroke-width="2" stroke-linecap="square"/></svg></button>
+                    <div class="s1-select-list">
+                      <div class="s1-select-option is-selected">최신순</div>
+                      <div class="s1-select-option">과거순</div>
+                      <div class="s1-select-option">인기순</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="comp-state-cell">
+                  <button class="ds-filter-chip is-selected is-preview"><span class="ds-filter-chip-title">정렬</span><span class="ds-filter-chip-label">최신순</span><svg class="ds-filter-chip-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M9 6L15 12L9 18" stroke="currentColor" stroke-width="2" stroke-linecap="square"/></svg></button>
+                </div>
+                <div class="comp-state-cell">
+                  <button class="ds-filter-chip is-disabled is-preview"><span class="ds-filter-chip-title">정렬</span><span class="ds-filter-chip-label">최신순</span><svg class="ds-filter-chip-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M9 6L15 12L9 18" stroke="currentColor" stroke-width="2" stroke-linecap="square"/></svg></button>
+                </div>
+                <div></div>
+                <div class="action-test-controls">
+                  <button type="button" class="action-mini-toggle" data-group-disabled>Disabled: off</button>
+                </div>
               </div>
             </div>
           </div>
@@ -1727,34 +1914,48 @@
             <div class="preview-area">
               <div class="comp-state-matrix" style="grid-template-columns: 200px repeat(2, 170px);">
                 <div class="matrix-col-header-action">Action · Medium (44px)</div>
-                <div class="matrix-col-header">Small (34px)</div>
-                <div class="matrix-col-header">XSmall (28px)</div>
+                <div class="matrix-col-header-action">Action · Small (34px)</div>
+                <div class="matrix-col-header-action">Action · XSmall (28px)</div>
                 <div class="comp-action-cell">
-                  <div class="s1-input-wrap input-interactive" style="width:180px;">
+                  <div class="s1-input-wrap input-interactive" data-input-sizes-cell style="width:180px;">
                     <span class="s1-input-label">Label</span>
                     <div class="s1-input-field">
                       <input type="text" placeholder="placeholder">
                       <button class="input-clear-btn" type="button" aria-label="지우기" tabindex="-1">
-                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="8" fill="currentColor"/><path d="M5.3 5.3l5.4 5.4M10.7 5.3l-5.4 5.4" stroke="white" stroke-width="1.5" stroke-linecap="round"/></svg>
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6" stroke="currentColor" stroke-width="1.3"/><path d="M5.3 5.3l5.4 5.4M10.7 5.3l-5.4 5.4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
                       </button>
                     </div>
-                    <span class="ds-helper-text">안내 메시지</span>
+                    <span class="ds-helper-text" hidden>안내 메시지</span>
                   </div>
                 </div>
-                <div class="comp-state-cell">
-                  <div class="s1-input-wrap is-preview" style="width:160px;">
+                <div class="comp-action-cell">
+                  <div class="s1-input-wrap input-interactive" data-input-sizes-cell style="width:160px;">
                     <span class="s1-input-label">Label</span>
-                    <div class="s1-input-field input-size-small"><input type="text" placeholder="placeholder"></div>
-                    <span class="ds-helper-text">안내 메시지</span>
+                    <div class="s1-input-field input-size-small">
+                      <input type="text" placeholder="placeholder">
+                      <button class="input-clear-btn" type="button" aria-label="지우기" tabindex="-1">
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6" stroke="currentColor" stroke-width="1.3"/><path d="M5.3 5.3l5.4 5.4M10.7 5.3l-5.4 5.4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+                      </button>
+                    </div>
+                    <span class="ds-helper-text" hidden>안내 메시지</span>
                   </div>
                 </div>
-                <div class="comp-state-cell">
-                  <div class="s1-input-wrap is-preview" style="width:160px;">
+                <div class="comp-action-cell">
+                  <div class="s1-input-wrap input-interactive" data-input-sizes-cell style="width:160px;">
                     <span class="s1-input-label">Label</span>
-                    <div class="s1-input-field input-size-xsmall"><input type="text" placeholder="placeholder"></div>
-                    <span class="ds-helper-text">안내 메시지</span>
+                    <div class="s1-input-field input-size-xsmall">
+                      <input type="text" placeholder="placeholder">
+                      <button class="input-clear-btn" type="button" aria-label="지우기" tabindex="-1">
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6" stroke="currentColor" stroke-width="1.3"/><path d="M5.3 5.3l5.4 5.4M10.7 5.3l-5.4 5.4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+                      </button>
+                    </div>
+                    <span class="ds-helper-text" hidden>안내 메시지</span>
                   </div>
                 </div>
+              </div>
+              <div class="action-test-controls" style="margin-top:12px;">
+                <button type="button" class="action-mini-toggle" data-sizes-disabled>Disabled: off</button>
+                <button type="button" class="action-mini-toggle" data-sizes-helper>서브텍스트: off</button>
               </div>
             </div>
           </div>
@@ -1769,16 +1970,20 @@
                 <div class="matrix-col-header">Error</div>
                 <div class="matrix-col-header">Correct</div>
                 <div class="matrix-col-header">Disabled</div>
-                <div class="comp-action-cell">
+                <div class="comp-action-cell" data-comp-action="input">
                   <div class="s1-input-wrap input-interactive" style="width:180px;">
                     <span class="s1-input-label">Label</span>
                     <div class="s1-input-field">
                       <input type="text" placeholder="placeholder">
                       <button class="input-clear-btn" type="button" aria-label="지우기" tabindex="-1">
-                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="8" fill="currentColor"/><path d="M5.3 5.3l5.4 5.4M10.7 5.3l-5.4 5.4" stroke="white" stroke-width="1.5" stroke-linecap="round"/></svg>
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6" stroke="currentColor" stroke-width="1.3"/><path d="M5.3 5.3l5.4 5.4M10.7 5.3l-5.4 5.4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
                       </button>
                     </div>
-                    <span class="ds-helper-text">안내 메시지</span>
+                    <span class="ds-helper-text" hidden>안내 메시지</span>
+                  </div>
+                  <div class="action-test-controls">
+                    <button type="button" class="action-mini-toggle" data-input-disabled>Disabled: off</button>
+                    <button type="button" class="action-mini-toggle" data-input-helper>서브텍스트: off</button>
                   </div>
                 </div>
                 <div class="comp-state-cell">
@@ -1823,16 +2028,20 @@
                 <div class="matrix-col-header">Error</div>
                 <div class="matrix-col-header">Correct</div>
                 <div class="matrix-col-header">Disabled</div>
-                <div class="comp-action-cell">
+                <div class="comp-action-cell" data-comp-action="input">
                   <div class="s1-input-wrap input-interactive" style="width:180px;">
                     <span class="s1-input-label">Label</span>
                     <div class="s1-input-field input-size-small">
                       <input type="text" placeholder="placeholder">
                       <button class="input-clear-btn" type="button" aria-label="지우기" tabindex="-1">
-                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="8" fill="currentColor"/><path d="M5.3 5.3l5.4 5.4M10.7 5.3l-5.4 5.4" stroke="white" stroke-width="1.5" stroke-linecap="round"/></svg>
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6" stroke="currentColor" stroke-width="1.3"/><path d="M5.3 5.3l5.4 5.4M10.7 5.3l-5.4 5.4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
                       </button>
                     </div>
-                    <span class="ds-helper-text">안내 메시지</span>
+                    <span class="ds-helper-text" hidden>안내 메시지</span>
+                  </div>
+                  <div class="action-test-controls">
+                    <button type="button" class="action-mini-toggle" data-input-disabled>Disabled: off</button>
+                    <button type="button" class="action-mini-toggle" data-input-helper>서브텍스트: off</button>
                   </div>
                 </div>
                 <div class="comp-state-cell">
@@ -1877,16 +2086,20 @@
                 <div class="matrix-col-header">Error</div>
                 <div class="matrix-col-header">Correct</div>
                 <div class="matrix-col-header">Disabled</div>
-                <div class="comp-action-cell">
+                <div class="comp-action-cell" data-comp-action="input">
                   <div class="s1-input-wrap input-interactive" style="width:180px;">
                     <span class="s1-input-label">Label</span>
                     <div class="s1-input-field input-size-xsmall">
                       <input type="text" placeholder="placeholder">
                       <button class="input-clear-btn" type="button" aria-label="지우기" tabindex="-1">
-                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="8" fill="currentColor"/><path d="M5.3 5.3l5.4 5.4M10.7 5.3l-5.4 5.4" stroke="white" stroke-width="1.5" stroke-linecap="round"/></svg>
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6" stroke="currentColor" stroke-width="1.3"/><path d="M5.3 5.3l5.4 5.4M10.7 5.3l-5.4 5.4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
                       </button>
                     </div>
-                    <span class="ds-helper-text">안내 메시지</span>
+                    <span class="ds-helper-text" hidden>안내 메시지</span>
+                  </div>
+                  <div class="action-test-controls">
+                    <button type="button" class="action-mini-toggle" data-input-disabled>Disabled: off</button>
+                    <button type="button" class="action-mini-toggle" data-input-helper>서브텍스트: off</button>
                   </div>
                 </div>
                 <div class="comp-state-cell">
@@ -1936,16 +2149,20 @@
                 <div class="matrix-col-header">Error</div>
                 <div class="matrix-col-header">Correct</div>
                 <div class="matrix-col-header">Disabled</div>
-                <div class="comp-action-cell">
+                <div class="comp-action-cell" data-comp-action="input">
                   <div class="s1-input-wrap input-interactive" style="width:180px;">
                     <span class="s1-input-label">Label</span>
                     <div class="s1-input-field input-size-mobile">
                       <input type="text" placeholder="placeholder">
                       <button class="input-clear-btn" type="button" aria-label="지우기" tabindex="-1">
-                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="8" fill="currentColor"/><path d="M5.3 5.3l5.4 5.4M10.7 5.3l-5.4 5.4" stroke="white" stroke-width="1.5" stroke-linecap="round"/></svg>
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6" stroke="currentColor" stroke-width="1.3"/><path d="M5.3 5.3l5.4 5.4M10.7 5.3l-5.4 5.4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
                       </button>
                     </div>
-                    <span class="ds-helper-text">안내 메시지</span>
+                    <span class="ds-helper-text" hidden>안내 메시지</span>
+                  </div>
+                  <div class="action-test-controls">
+                    <button type="button" class="action-mini-toggle" data-input-disabled>Disabled: off</button>
+                    <button type="button" class="action-mini-toggle" data-input-helper>서브텍스트: off</button>
                   </div>
                 </div>
                 <div class="comp-state-cell">
@@ -1968,7 +2185,7 @@
                     <div class="s1-input-field input-size-mobile">
                       <input type="text" value="올바른 값">
                       <span class="s1-input-remove">
-                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="8" fill="currentColor"/><path d="M5.3 5.3l5.4 5.4" stroke="white" stroke-width="1.5" stroke-linecap="round"/><path d="M10.7 5.3l-5.4 5.4" stroke="white" stroke-width="1.5" stroke-linecap="round"/></svg>
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6" stroke="currentColor" stroke-width="1.3"/><path d="M5.3 5.3l5.4 5.4M10.7 5.3l-5.4 5.4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
                       </span>
                     </div>
                     <span class="ds-helper-text is-correct-text">확인 메시지</span>
@@ -2061,10 +2278,10 @@
                           aria-label="검색어 지우기"
                           hidden
                         >
-                          <!-- remove icon (Figma: remove 노드 882:4061) — 24×24 candidate SVG -->
-                          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-                            <circle cx="8" cy="8" r="8" fill="currentColor" opacity=".2"/>
-                            <path d="M5 5l6 6M11 5l-6 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                          <!-- remove icon (Figma: remove 노드 882:4061) -->
+                          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                            <circle cx="12" cy="12" r="8" stroke="currentColor" stroke-width="1.5"/>
+                            <path d="M9.333 9.333L14.663 14.663M14.663 9.333L9.333 14.663" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
                           </svg>
                         </button>
                         <!-- searchAction: 항상 표시 (Figma: ic_찾기/조회, 노드 6452:5930) -->
@@ -2074,10 +2291,9 @@
                           data-search-action
                           aria-label="검색"
                         >
-                          <!-- ic_찾기/조회 icon (Figma 노드 6452:5930) — candidate SVG -->
-                          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-                            <circle cx="7" cy="7" r="4.5" stroke="currentColor" stroke-width="1.5"/>
-                            <path d="M11 11l2.5 2.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                          <!-- ic_찾기/조회 icon (Figma 노드 6452:5930 · 6471:4119) — Figma 원본 path -->
+                          <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M7.58918 15.2371C9.42481 15.2342 11.1973 14.564 12.579 13.3505L17.271 18L18 17.268L13.3387 12.5876C14.4678 11.27 15.1142 9.6044 15.1707 7.86713C15.2272 6.12985 14.6903 4.42542 13.6492 3.0367C12.6082 1.64798 11.1254 0.658482 9.44717 0.23242C7.7689 -0.193641 5.99599 -0.0306429 4.42267 0.694362C2.84936 1.41937 1.57026 2.66278 0.797641 4.21825C0.0250252 5.77372 -0.194642 7.5477 0.175096 9.24579C0.544834 10.9439 1.48174 12.464 2.83033 13.5538C4.17892 14.6435 5.8581 15.2375 7.58918 15.2371ZM7.58918 1.02062C8.88966 1.01858 10.1615 1.40407 11.2437 2.12828C12.3258 2.85249 13.1696 3.88284 13.6682 5.08887C14.1668 6.29491 14.2978 7.62239 14.0446 8.90322C13.7914 10.1841 13.1654 11.3606 12.2458 12.284C11.3262 13.2074 10.1544 13.836 8.87885 14.0902C7.60326 14.3445 6.28122 14.2129 5.08012 13.7123C3.87902 13.2116 2.85289 12.3643 2.13164 11.2777C1.4104 10.1911 1.02649 8.91408 1.02852 7.60825C1.02582 6.74093 1.19345 5.88159 1.52182 5.07938C1.85019 4.27717 2.33285 3.54784 2.9422 2.93312C3.55155 2.31839 4.27562 1.83033 5.073 1.49686C5.87038 1.16339 6.72541 0.991047 7.58918 0.989696V1.02062Z" fill="currentColor"/>
                           </svg>
                         </button>
                       </span>
@@ -2117,15 +2333,18 @@
                           aria-label="비밀번호 보기"
                           aria-pressed="false"
                         >
-                          <!-- eye icon: hidden state (Figma: ic_비밀번호미표시 노드 135:6692) — candidate SVG -->
-                          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true" data-icon-hidden>
-                            <ellipse cx="8" cy="8" rx="7" ry="5" stroke="currentColor" stroke-width="1.5"/>
-                            <circle cx="8" cy="8" r="2" stroke="currentColor" stroke-width="1.5"/>
+                          <!-- ic_비밀번호미표시 (540:7279) — 비밀번호 숨김 상태 -->
+                          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true" data-icon-hidden>
+                            <path d="M11.9945 6.63965C11.0054 6.63965 10.0362 6.76954 9.12695 7.00933L9.97623 7.85861C10.6357 7.72872 11.3051 7.6388 12.0045 7.6388C15.4616 7.6388 18.5389 9.34734 19.9378 12.0051C19.2983 13.2141 18.2992 14.2232 17.0802 14.9626L17.7996 15.682C19.1584 14.8027 20.2575 13.6337 20.9469 12.2149C21.0168 12.075 21.0168 11.9152 20.9469 11.7853C19.4482 8.65793 15.9312 6.63965 12.0045 6.63965H11.9945Z" fill="currentColor"/>
+                            <path d="M11.9948 16.3615C8.53779 16.3615 5.46041 14.653 4.0616 11.9952C4.70105 10.7863 5.7002 9.77712 6.91917 9.03775L6.19978 8.31836C4.84093 9.19761 3.73188 10.3666 3.05246 11.7854C2.98251 11.9253 2.98251 12.0852 3.05246 12.215C4.56117 15.3424 8.06819 17.3607 11.9948 17.3607C12.984 17.3607 13.9532 17.2308 14.8624 16.991L14.0131 16.1417C13.3537 16.2716 12.6843 16.3615 11.9849 16.3615H11.9948Z" fill="currentColor"/>
+                            <path d="M12.9236 15.052L8.93698 11.0654C8.84706 11.3652 8.78711 11.6749 8.78711 11.9946C8.78711 13.7631 10.2259 15.2019 11.9944 15.2019C12.3241 15.2019 12.6338 15.142 12.9236 15.052Z" fill="currentColor"/>
+                            <path d="M15.2009 11.9944C15.2009 10.2259 13.7622 8.78711 11.9937 8.78711C11.6639 8.78711 11.3542 8.84706 11.0645 8.93698L15.0511 12.9236C15.141 12.6238 15.2009 12.3141 15.2009 11.9944Z" fill="currentColor"/>
+                            <path d="M16.1506 15.4522L14.5819 13.8735L10.1157 9.41731L8.84682 8.14839L8.06748 7.35906L5.3498 4.65137L4.65039 5.36076L7.08832 7.79869L7.83768 8.54805L9.40634 10.1167L13.8725 14.5829L15.1415 15.8518L15.9208 16.6312L18.6385 19.3489L19.3379 18.6395L16.9 16.1916L16.1506 15.4522Z" fill="currentColor"/>
                           </svg>
-                          <!-- eye-off icon: visible state — candidate SVG (Figma 노드명 미확인) -->
-                          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true" data-icon-visible style="display:none;">
-                            <ellipse cx="8" cy="8" rx="7" ry="5" stroke="currentColor" stroke-width="1.5"/>
-                            <line x1="3" y1="3" x2="13" y2="13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                          <!-- ic_비밀번호표시 (540:7285) — 비밀번호 표시 상태 -->
+                          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true" data-icon-visible style="display:none;">
+                            <path d="M12 6.63672C8.07109 6.63672 4.55207 8.65616 3.05249 11.7853C2.9825 11.9252 2.9825 12.0852 3.05249 12.2152C4.55207 15.3443 8.07109 17.3637 12 17.3637C15.9289 17.3637 19.4379 15.3443 20.9475 12.2152C21.0175 12.0752 21.0175 11.9153 20.9475 11.7853C19.4379 8.65616 15.9289 6.63672 12 6.63672ZM12 16.364C8.54096 16.364 5.46182 14.6545 4.0622 11.9952C5.46182 9.34597 8.54096 7.63644 12 7.63644C15.459 7.63644 18.5382 9.34597 19.9378 12.0052C18.5382 14.6645 15.459 16.374 12 16.374V16.364Z" fill="currentColor"/>
+                            <path d="M12.0001 15.2141C13.7725 15.2141 15.2092 13.7773 15.2092 12.005C15.2092 10.2327 13.7725 8.7959 12.0001 8.7959C10.2278 8.7959 8.79102 10.2327 8.79102 12.005C8.79102 13.7773 10.2278 15.2141 12.0001 15.2141Z" fill="currentColor"/>
                           </svg>
                         </button>
                         <!-- clearAction: 값 있을 때만 표시 (Figma: remove, 노드 882:4061) -->
@@ -2136,10 +2355,10 @@
                           aria-label="비밀번호 지우기"
                           hidden
                         >
-                          <!-- remove icon (Figma: remove 노드 882:4061) — candidate SVG -->
-                          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-                            <circle cx="8" cy="8" r="8" fill="currentColor" opacity=".2"/>
-                            <path d="M5 5l6 6M11 5l-6 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                          <!-- remove icon (Figma: remove 노드 882:4061) -->
+                          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                            <circle cx="12" cy="12" r="8" stroke="currentColor" stroke-width="1.5"/>
+                            <path d="M9.333 9.333L14.663 14.663M14.663 9.333L9.333 14.663" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
                           </svg>
                         </button>
                       </span>
@@ -2153,8 +2372,244 @@
           <p style="font-size:11px;color:var(--color-text-secondary);margin-top:14px;line-height:1.6;">
             DatePicker · TimePicker · Textarea는 별도 Component 후보로 분리됩니다.<br>
             Login Form · Search Module · Address Search는 Pattern / Module 후보입니다.<br>
-            아이콘: Figma 노드명 확인 완료 (<code>ic_찾기/조회</code> · <code>ic_비밀번호미표시</code> · <code>remove</code>). 로컬 asset 미등록 — candidate SVG 사용 중.
+            아이콘: Figma 노드명 확인 완료 (<code>ic_찾기/조회</code> · <code>ic_비밀번호미표시</code> · <code>remove</code>). SVG 인라인 구현 완료. ic_비밀번호표시(eye-on) 노드명 미확인 — candidate SVG 사용 중.
           </p>
+        </div>
+
+      </section>
+
+
+      <!-- ═══ DATE PICKER ═══ -->
+      <section class="comp-section" id="date-picker">
+        <div class="comp-section-header">
+          <h2 class="comp-section-title">Date Picker</h2>
+          <span class="comp-badge comp-badge-blue">Core Candidate</span>
+          <span class="comp-badge">10 states</span>
+          <!-- Figma node: Section 2 (6456:4033) / datepicker_input frame (540:3794) / mobile bottomsheet (540:3836) — 2026-05-12 -->
+        </div>
+
+        <!-- Trigger States — Figma: datepicker_input frame (540:3794) 기준 -->
+        <!-- Figma states: default / selected(=open/focus) / completed(=filled) / disabled -->
+        <!-- format: YY.MM.DD (Figma 확인값 "25.12.30", 2자리 연도) -->
+        <div class="variant-block">
+          <div class="variant-label">Trigger States (PC-MD, h44)</div>
+          <p style="font-size:11px;color:var(--color-text-secondary);margin-bottom:8px;line-height:1.6;">
+            Figma 확인: platform=pc-md, h44. 날짜 형식: YY.MM.DD (2자리 연도). 아이콘: ic_날짜/근태,달력 (node 221:3835, 24×24px).
+          </p>
+          <div class="s1-dp-states">
+
+            <!-- Default (Figma: state=default) -->
+            <div>
+              <div class="s1-dp-state-label">Default</div>
+              <div class="s1-date-picker">
+                <div class="s1-input-wrap" style="width:220px;">
+                  <div class="s1-input-field">
+                    <input type="text" placeholder="날짜를 선택하세요" readonly style="pointer-events:none;">
+                    <button type="button" class="s1-input-action-btn" style="pointer-events:none;" aria-label="달력 열기">
+                      <!-- Figma: ic_날짜/근태,달력 (node 221:3835), 24×24. candidate inline SVG -->
+                      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><rect x="2" y="3" width="12" height="11" rx="1.5" stroke="currentColor" stroke-width="1.5"/><path d="M5 1v4M11 1v4M2 7h12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Selected/Open (Figma: state=selected — trigger open 상태) -->
+            <div>
+              <div class="s1-dp-state-label">Selected (Open)</div>
+              <div class="s1-date-picker">
+                <div class="s1-input-wrap is-focus" style="width:220px;">
+                  <div class="s1-input-field">
+                    <input type="text" placeholder="날짜를 선택하세요" readonly style="pointer-events:none;">
+                    <button type="button" class="s1-input-action-btn" style="pointer-events:none;" aria-label="달력 열기">
+                      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><rect x="2" y="3" width="12" height="11" rx="1.5" stroke="currentColor" stroke-width="1.5"/><path d="M5 1v4M11 1v4M2 7h12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Completed/Filled (Figma: state=completed — 날짜 선택 완료) -->
+            <div>
+              <div class="s1-dp-state-label">Completed (Filled)</div>
+              <div class="s1-date-picker">
+                <div class="s1-input-wrap" style="width:220px;">
+                  <div class="s1-input-field">
+                    <!-- Figma: completed text "25.12.30" — 2자리 연도 -->
+                    <input type="text" value="26.05.12" readonly style="pointer-events:none;">
+                    <button type="button" class="s1-input-action-btn" style="pointer-events:none;" aria-label="달력 열기">
+                      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><rect x="2" y="3" width="12" height="11" rx="1.5" stroke="currentColor" stroke-width="1.5"/><path d="M5 1v4M11 1v4M2 7h12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Disabled (Figma: state=disabled) -->
+            <div>
+              <div class="s1-dp-state-label">Disabled</div>
+              <div class="s1-date-picker">
+                <div class="s1-input-wrap is-disabled" style="width:220px;">
+                  <div class="s1-input-field">
+                    <input type="text" placeholder="날짜를 선택하세요" readonly disabled style="pointer-events:none;">
+                    <button type="button" class="s1-input-action-btn" disabled style="pointer-events:none;" aria-label="달력 열기">
+                      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><rect x="2" y="3" width="12" height="11" rx="1.5" stroke="currentColor" stroke-width="1.5"/><path d="M5 1v4M11 1v4M2 7h12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Error (Base Input 재사용 — Figma datepicker_input에 error state 없음, figma-unconfirmed) -->
+            <div>
+              <div class="s1-dp-state-label">Error <span style="font-weight:400;opacity:0.7;">(figma-unconfirmed)</span></div>
+              <div class="s1-date-picker">
+                <div class="s1-input-wrap is-error" style="width:220px;">
+                  <div class="s1-input-field">
+                    <input type="text" placeholder="날짜를 선택하세요" readonly style="pointer-events:none;">
+                    <button type="button" class="s1-input-action-btn" style="pointer-events:none;" aria-label="달력 열기">
+                      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><rect x="2" y="3" width="12" height="11" rx="1.5" stroke="currentColor" stroke-width="1.5"/><path d="M5 1v4M11 1v4M2 7h12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+                    </button>
+                  </div>
+                </div>
+                <div style="font-size:11px;color:var(--input-error-text);margin-top:4px;">날짜를 선택해주세요</div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Size Variants — Figma 확인 4종 -->
+        <div class="variant-block" style="margin-top:20px;">
+          <div class="variant-label">Size Variants (Figma 확인)</div>
+          <div class="s1-dp-states">
+            <div>
+              <div class="s1-dp-state-label">PC-MD (h44)</div>
+              <div class="s1-input-wrap" style="width:190px;height:44px;">
+                <div class="s1-input-field"><input type="text" placeholder="날짜를 선택하세요" readonly style="pointer-events:none;font-size:14px;">
+                  <button class="s1-input-action-btn" style="pointer-events:none;" aria-label="달력 열기"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="2" y="3" width="12" height="11" rx="1.5" stroke="currentColor" stroke-width="1.5"/><path d="M5 1v4M11 1v4M2 7h12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></button>
+                </div>
+              </div>
+            </div>
+            <div>
+              <div class="s1-dp-state-label">PC-XSM (h34)</div>
+              <div class="s1-input-wrap s1-input-wrap--xsmall" style="width:190px;height:34px;">
+                <div class="s1-input-field"><input type="text" placeholder="날짜를 선택하세요" readonly style="pointer-events:none;font-size:13px;">
+                  <button class="s1-input-action-btn" style="pointer-events:none;" aria-label="달력 열기"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="2" y="3" width="12" height="11" rx="1.5" stroke="currentColor" stroke-width="1.5"/><path d="M5 1v4M11 1v4M2 7h12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></button>
+                </div>
+              </div>
+            </div>
+            <div>
+              <div class="s1-dp-state-label">PC-XXSM (h28)</div>
+              <div class="s1-input-wrap s1-input-wrap--xxsmall" style="width:190px;height:28px;">
+                <div class="s1-input-field"><input type="text" placeholder="날짜를 선택하세요" readonly style="pointer-events:none;font-size:12px;">
+                  <button class="s1-input-action-btn" style="pointer-events:none;width:16px;height:16px;" aria-label="달력 열기"><svg width="14" height="14" viewBox="0 0 16 16" fill="none"><rect x="2" y="3" width="12" height="11" rx="1.5" stroke="currentColor" stroke-width="1.5"/><path d="M5 1v4M11 1v4M2 7h12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></button>
+                </div>
+              </div>
+            </div>
+            <div>
+              <div class="s1-dp-state-label">Mobile (h48)</div>
+              <div class="s1-input-wrap" style="width:190px;height:48px;border-radius:4px;">
+                <div class="s1-input-field"><input type="text" placeholder="날짜를 선택하세요" readonly style="pointer-events:none;font-size:14px;">
+                  <button class="s1-input-action-btn" style="pointer-events:none;" aria-label="달력 열기"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="2" y="3" width="12" height="11" rx="1.5" stroke="currentColor" stroke-width="1.5"/><path d="M5 1v4M11 1v4M2 7h12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Interactive Preview — PC Popover (figma-unconfirmed panel layout) -->
+        <div class="variant-block" style="margin-top:24px;">
+          <div class="variant-label">Interactive Preview (PC — 날짜 형식: YY.MM.DD)</div>
+          <p style="font-size:11px;color:var(--color-text-secondary);margin-bottom:8px;line-height:1.6;">
+            Day cell: 44×44px 컨테이너 + 30×30px 원형 내부셀 (Figma mobile bottomsheet 540:3836 확인).<br>
+            PC 달력 패널 레이아웃은 figma-unconfirmed — mobile bottomsheet 구조 참고하여 추정 구현.
+          </p>
+          <div class="s1-date-picker" data-date-picker style="max-width:340px;">
+            <div class="s1-dp-state-label" style="margin-bottom:4px;">날짜 선택</div>
+            <div class="s1-input-wrap" style="width:220px;">
+              <div class="s1-input-field">
+                <input
+                  type="text"
+                  placeholder="날짜를 선택하세요"
+                  readonly
+                  data-date-picker-input
+                  aria-haspopup="dialog"
+                  aria-expanded="false"
+                  style="cursor:pointer;"
+                >
+                <button
+                  type="button"
+                  class="s1-input-action-btn"
+                  data-date-picker-toggle
+                  aria-label="달력 열기"
+                  aria-expanded="false"
+                >
+                  <!-- Figma: ic_날짜/근태,달력 (node 221:3835) — candidate inline SVG -->
+                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                    <rect x="2" y="3" width="12" height="11" rx="1.5" stroke="currentColor" stroke-width="1.5"/>
+                    <path d="M5 1v4M11 1v4M2 7h12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                  </svg>
+                </button>
+              </div>
+            </div>
+            <div
+              class="s1-date-picker__panel"
+              data-date-picker-panel
+              role="dialog"
+              aria-label="날짜 선택"
+              hidden
+            >
+              <div class="s1-date-picker__header">
+                <button type="button" class="s1-date-picker__nav-btn" data-prev-month aria-label="이전 달">
+                  <!-- Figma: CalendarArrow prev (node 540:4200) -->
+                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M10 12L6 8l4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </button>
+                <strong class="s1-date-picker__month-label" data-current-month></strong>
+                <button type="button" class="s1-date-picker__nav-btn" data-next-month aria-label="다음 달">
+                  <!-- Figma: CalendarArrow next (node 540:4203) -->
+                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M6 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </button>
+              </div>
+              <!-- weekday 순서: Figma mobile 확인값 월화수목금토일 (weekStart=1) — HD-9: PC weekStart 확인 필요 -->
+              <div class="s1-date-picker__weekdays" data-weekdays>
+                <!-- JS가 weekStart 기준으로 렌더링함. 기본값: 일(0) 시작 -->
+              </div>
+              <div class="s1-date-picker__grid" data-date-grid></div>
+            </div>
+          </div>
+          <p style="font-size:11px;color:var(--color-text-secondary);margin-top:12px;line-height:1.6;">
+            calendar icon 또는 input 클릭 시 달력 패널이 열립니다. 날짜 클릭 시 YY.MM.DD 형식으로 반영됩니다.<br>
+            ESC / 외부 클릭으로 닫힙니다. 키보드: ArrowKey 날짜 이동, Enter 선택.<br>
+            <strong>HD-9:</strong> PC weekday 시작 요일 확인 필요 (Figma mobile=월요일 시작, PC 미확인 → 현재 일요일 시작으로 표시)
+          </p>
+        </div>
+
+        <!-- Token Candidates (Figma 확인값 반영) -->
+        <div class="variant-block" style="margin-top:24px;">
+          <div class="variant-label">Token Candidates (Figma 6456:4033 / 540:3836 기준)</div>
+          <div style="font-size:12px;color:var(--color-text-secondary);line-height:1.8;font-family:monospace;">
+            <div><strong>Trigger — Base Input 토큰 재사용 (Figma 확인):</strong></div>
+            <div>--color/form-control/bg/default → --input-default-bg</div>
+            <div>--color/form-control/border/default (#d9d9d9) → --input-default-border</div>
+            <div>--color/form-control/border/selected (#1d6ceb) → --input-focus-border</div>
+            <div>--color/form-control/bg/disabled (#f5f5f5) → --input-disabled-bg</div>
+            <div>--color/form-control/border/disabled (#d9d9d9) → --input-disabled-border</div>
+            <div>--color/form-control/text/placeholder (#757575) → --input-placeholder-text</div>
+            <div>--color/form-control/text/default (#353535) → completed text</div>
+            <div>--color/form-control/text/disabled (#c4c4c4) → --input-disabled-text</div>
+            <div style="margin-top:8px;"><strong>Panel — candidate (PC panel figma-unconfirmed):</strong></div>
+            <div>--date-picker-panel-bg: var(--color-surface-default)</div>
+            <div>--date-picker-panel-border: var(--color-border-default)</div>
+            <div style="margin-top:8px;"><strong>Day Cell — Figma 확인 (540:3836):</strong></div>
+            <div>selected bg: --color/control/bg/selected (#1d6ceb) → var(--color-action-primary-default)</div>
+            <div>selected text: --color/text/state/accent-alt (white) → var(--color-base-white)</div>
+            <div>today border: --color/control/border/selected (#1d6ceb) → var(--color-action-primary-default)</div>
+            <div>today text: --color/text/state/accent (#1d6ceb) → var(--color-action-primary-default)</div>
+            <div>today bg: --color/control/bg/selected-alt (white) → var(--color-surface-default)</div>
+            <div>other-month/disabled text: --color/text/state/disabled (#c4c4c4) → var(--color-text-disabled)</div>
+            <div>default text: --color/text/body/tertiary (#757575) → var(--color-text-secondary) (candidate)</div>
+          </div>
         </div>
 
       </section>
@@ -2170,7 +2625,7 @@
 
         <div class="variant-block">
           <div class="variant-label">States</div>
-          <div class="preview-area" style="padding-bottom:80px;">
+          <div class="preview-area" style="overflow: visible;">
             <div class="comp-state-matrix" style="grid-template-columns: 200px repeat(4, 140px);">
               <div class="matrix-col-header-action">Action</div>
               <div class="matrix-col-header">Default</div>
@@ -2181,7 +2636,7 @@
               <!-- Action -->
               <div class="comp-action-cell" data-comp-action="select">
                 <div class="s1-select-wrap" id="select-action-target" style="width:160px;">
-                  <div class="s1-select-trigger"><span>선택하세요</span><svg class="s1-select-chevron" width="14" height="14" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"/></svg></div>
+                  <div class="s1-select-trigger"><span>선택하세요</span><svg class="s1-select-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M9 6L15 12L9 18" stroke="currentColor" stroke-width="2" stroke-linecap="square"/></svg></div>
                   <div class="s1-select-list">
                     <div class="s1-select-option">옵션 A</div>
                     <div class="s1-select-option">옵션 B</div>
@@ -2196,13 +2651,13 @@
               <!-- Default -->
               <div class="comp-state-cell">
                 <div class="s1-select-wrap is-preview" style="width:120px;">
-                  <div class="s1-select-trigger"><span>선택하세요</span><svg class="s1-select-chevron" width="14" height="14" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"/></svg></div>
+                  <div class="s1-select-trigger"><span>선택하세요</span><svg class="s1-select-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M9 6L15 12L9 18" stroke="currentColor" stroke-width="2" stroke-linecap="square"/></svg></div>
                 </div>
               </div>
               <!-- Open -->
               <div class="comp-state-cell">
                 <div class="s1-select-wrap is-open is-preview" style="width:120px;">
-                  <div class="s1-select-trigger"><span>선택하세요</span><svg class="s1-select-chevron" width="14" height="14" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"/></svg></div>
+                  <div class="s1-select-trigger"><span>선택하세요</span><svg class="s1-select-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M9 6L15 12L9 18" stroke="currentColor" stroke-width="2" stroke-linecap="square"/></svg></div>
                   <div class="s1-select-list">
                     <div class="s1-select-option">옵션 A</div>
                     <div class="s1-select-option">옵션 B</div>
@@ -2212,14 +2667,14 @@
               </div>
               <!-- Selected -->
               <div class="comp-state-cell">
-                <div class="s1-select-wrap is-preview" style="width:120px;">
-                  <div class="s1-select-trigger"><span>옵션 A</span><svg class="s1-select-chevron" width="14" height="14" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"/></svg></div>
+                <div class="s1-select-wrap is-preview has-value" style="width:120px;">
+                  <div class="s1-select-trigger"><span>옵션 A</span><svg class="s1-select-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M9 6L15 12L9 18" stroke="currentColor" stroke-width="2" stroke-linecap="square"/></svg></div>
                 </div>
               </div>
               <!-- Disabled -->
               <div class="comp-state-cell">
                 <div class="s1-select-wrap is-disabled is-preview" style="width:120px;">
-                  <div class="s1-select-trigger"><span>선택 불가</span><svg class="s1-select-chevron" width="14" height="14" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"/></svg></div>
+                  <div class="s1-select-trigger"><span>선택 불가</span><svg class="s1-select-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M9 6L15 12L9 18" stroke="currentColor" stroke-width="2" stroke-linecap="square"/></svg></div>
                 </div>
               </div>
             </div>
@@ -2254,9 +2709,10 @@
 <span class="c-prop">--dropdown-trigger-hover-bg</span>:        <span class="c-val">var(--color-bg-subtle)</span>;
 <span class="c-prop">--dropdown-trigger-open-border</span>:     <span class="c-val">var(--color-border-focus)</span>;
 <span class="c-prop">--dropdown-trigger-disabled-border</span>: <span class="c-val">var(--color-border-subtle)</span>;
-<span class="c-prop">--dropdown-list-bg</span>:                 <span class="c-val">var(--color-surface-raised)</span>;
+<span class="c-prop">--dropdown-list-bg</span>:                 <span class="c-val">var(--color-surface-default)</span>;
+<span class="c-prop">--dropdown-list-border</span>:             <span class="c-val">var(--color-border-default)</span>;
 <span class="c-prop">--dropdown-option-hover-bg</span>:         <span class="c-val">var(--color-bg-subtle)</span>;
-<span class="c-prop">--dropdown-option-selected-bg</span>:      <span class="c-val">var(--color-action-primary-subtle)</span>;</pre>
+<span class="c-prop">--dropdown-option-selected-text</span>:    <span class="c-val">var(--color-action-primary-default)</span>;</pre>
           </div>
         </div>
       </section>
@@ -2293,9 +2749,7 @@
   }
 
   function setTheme(t) {
-    document.documentElement.setAttribute('data-theme', t);
-    document.getElementById('btnLight').classList.toggle('active', t === 'light');
-    document.getElementById('btnDark').classList.toggle('active', t === 'dark');
+    setGlobalTheme(t);
     updateTokenComments();
   }
   function setPlatform(mode) {
@@ -2396,13 +2850,6 @@
       chkTarget.addEventListener('click', () => {
         if (chkTarget.classList.contains('is-disabled')) return;
         const checked = chkTarget.classList.toggle('is-checked');
-        if (checked) chkTarget.classList.remove('is-indeterminate');
-      });
-      document.querySelector('[data-chk-indeterminate]')?.addEventListener('click', (e) => {
-        const on = chkTarget.classList.toggle('is-indeterminate');
-        if (on) chkTarget.classList.remove('is-checked');
-        e.target.classList.toggle('is-on', on);
-        e.target.textContent = on ? 'Indet: on' : 'Indet: off';
       });
       document.querySelector('[data-chk-disabled]')?.addEventListener('click', (e) => {
         const on = chkTarget.classList.toggle('is-disabled');
@@ -2474,41 +2921,62 @@
     }
 
     // ── Filter Chip: click → toggle selected ──
-    const filterChip = document.getElementById('filter-chip-action');
-    if (filterChip) {
-      filterChip.addEventListener('click', () => filterChip.classList.toggle('is-selected'));
-      document.querySelector('[data-filter-disabled]')?.addEventListener('click', (e) => {
-        const on = filterChip.classList.toggle('is-disabled');
-        filterChip.style.pointerEvents = on ? 'none' : '';
+    function setupFilterChipDropdown(wrapId, disabledAttr) {
+      const wrap = document.getElementById(wrapId);
+      if (!wrap) return;
+      const chip = wrap.querySelector('.ds-filter-chip');
+      const list = wrap.querySelector('.s1-select-list');
+      chip.addEventListener('click', () => {
+        if (chip.classList.contains('is-disabled')) return;
+        wrap.classList.toggle('is-open');
+      });
+      list.querySelectorAll('.s1-select-option').forEach(opt => {
+        opt.addEventListener('click', () => {
+          list.querySelectorAll('.s1-select-option').forEach(o => o.classList.remove('is-selected'));
+          opt.classList.add('is-selected');
+          wrap.querySelector('.ds-filter-chip-label').textContent = opt.textContent;
+          chip.classList.add('is-selected');
+          wrap.classList.remove('is-open');
+        });
+      });
+      document.querySelector('[' + disabledAttr + ']')?.addEventListener('click', (e) => {
+        const on = chip.classList.toggle('is-disabled');
+        if (on) wrap.classList.remove('is-open');
         e.target.classList.toggle('is-on', on);
         e.target.textContent = on ? 'Disabled: on' : 'Disabled: off';
       });
-    }
-
-    // ── Filter Chip with title: click → toggle selected ──
-    const filterChipTitle = document.getElementById('filter-chip-title-action');
-    if (filterChipTitle) {
-      filterChipTitle.addEventListener('click', () => filterChipTitle.classList.toggle('is-selected'));
-      document.querySelector('[data-filter-title-disabled]')?.addEventListener('click', (e) => {
-        const on = filterChipTitle.classList.toggle('is-disabled');
-        filterChipTitle.style.pointerEvents = on ? 'none' : '';
-        e.target.classList.toggle('is-on', on);
-        e.target.textContent = on ? 'Disabled: on' : 'Disabled: off';
+      document.addEventListener('click', (e) => {
+        if (!wrap.contains(e.target)) wrap.classList.remove('is-open');
       });
     }
+    setupFilterChipDropdown('filter-chip-action-wrap', 'data-filter-disabled');
+    setupFilterChipDropdown('filter-chip-title-action-wrap', 'data-filter-title-disabled');
 
-    // ── Select: click trigger → toggle open ──
+    // ── Select: click trigger → toggle open, option click → select ──
     const selectTarget = document.getElementById('select-action-target');
     if (selectTarget) {
+      const triggerSpan = selectTarget.querySelector('.s1-select-trigger span');
       selectTarget.querySelector('.s1-select-trigger')?.addEventListener('click', () => {
         if (selectTarget.classList.contains('is-disabled')) return;
         selectTarget.classList.toggle('is-open');
+      });
+      selectTarget.querySelectorAll('.s1-select-option').forEach(opt => {
+        opt.addEventListener('click', () => {
+          selectTarget.querySelectorAll('.s1-select-option').forEach(o => o.classList.remove('is-selected'));
+          opt.classList.add('is-selected');
+          triggerSpan.textContent = opt.textContent;
+          selectTarget.classList.add('has-value');
+          selectTarget.classList.remove('is-open');
+        });
       });
       document.querySelector('[data-select-disabled]')?.addEventListener('click', (e) => {
         const on = selectTarget.classList.toggle('is-disabled');
         if (on) selectTarget.classList.remove('is-open');
         e.target.classList.toggle('is-on', on);
         e.target.textContent = on ? 'Disabled: on' : 'Disabled: off';
+      });
+      document.addEventListener('click', (e) => {
+        if (!selectTarget.contains(e.target)) selectTarget.classList.remove('is-open');
       });
     }
   }
@@ -2588,7 +3056,248 @@
     });
   }
 
+  /* ── Date Picker — MVP4.3-A Revision (Figma 6456:4033 기준) ── */
+  /* 날짜 형식: YY.MM.DD (Figma 확인값 "25.12.30", 2자리 연도)                 */
+  /* Day cell: 44×44px 컨테이너 + 30×30px inner circle (Figma 540:3836 확인) */
+  /* weekStart: 0(일) — PC weekStart figma-unconfirmed, HD-9 결정 대기          */
+  function setupDatePicker(root) {
+    root = root || document;
+    root.querySelectorAll('[data-date-picker]').forEach(function(picker) {
+      var input = picker.querySelector('[data-date-picker-input]');
+      var toggle = picker.querySelector('[data-date-picker-toggle]');
+      var panel = picker.querySelector('[data-date-picker-panel]');
+      var grid = picker.querySelector('[data-date-grid]');
+      var monthLabel = picker.querySelector('[data-current-month]');
+      var weekdaysContainer = picker.querySelector('[data-weekdays]');
+      var prevBtn = picker.querySelector('[data-prev-month]');
+      var nextBtn = picker.querySelector('[data-next-month]');
+      if (!input || !panel || !grid) return;
+
+      var today = new Date();
+      var curYear = today.getFullYear();
+      var curMonth = today.getMonth();
+      var selectedDate = null;
+
+      // weekStart=0: 일(HD-9 대기) / weekStart=1: 월(Figma mobile 확인)
+      // PC figma-unconfirmed → 현재 0(일요일 시작)으로 유지
+      var WEEK_START = 0;
+      var WEEKDAY_LABELS = ['일', '월', '화', '수', '목', '금', '토'];
+
+      function pad(n) { return n < 10 ? '0' + n : '' + n; }
+
+      /* Figma 확인: YY.MM.DD (2자리 연도) — uvis amobe_datepicker.js format: 'yy.mm.dd' */
+      function formatDate(d) {
+        var yy = String(d.getFullYear()).slice(-2);
+        return yy + '.' + pad(d.getMonth() + 1) + '.' + pad(d.getDate());
+      }
+
+      function isSame(a, b) {
+        return a && b && a.getFullYear() === b.getFullYear() && a.getMonth() === b.getMonth() && a.getDate() === b.getDate();
+      }
+
+      /* Weekday header 렌더링 */
+      function renderWeekdays() {
+        if (!weekdaysContainer) return;
+        weekdaysContainer.innerHTML = '';
+        for (var wi = 0; wi < 7; wi++) {
+          var idx = (WEEK_START + wi) % 7;
+          var span = document.createElement('span');
+          span.className = 's1-date-picker__weekday';
+          if (idx === 0) span.classList.add('is-sunday');
+          if (idx === 6) span.classList.add('is-saturday');
+          span.textContent = WEEKDAY_LABELS[idx];
+          weekdaysContainer.appendChild(span);
+        }
+      }
+
+      function renderGrid() {
+        if (monthLabel) monthLabel.textContent = curYear + '.' + pad(curMonth + 1);
+        grid.innerHTML = '';
+        /* weekStart 기준 첫 번째 셀 계산 */
+        var firstDow = new Date(curYear, curMonth, 1).getDay();
+        var leadCells = (firstDow - WEEK_START + 7) % 7;
+        var days = new Date(curYear, curMonth + 1, 0).getDate();
+        /* 이전 달 trailing cells */
+        for (var i = 0; i < leadCells; i++) {
+          var d = new Date(curYear, curMonth, -(leadCells - 1 - i));
+          grid.appendChild(makeDay(d, true));
+        }
+        /* 현재 달 */
+        for (var d2 = 1; d2 <= days; d2++) {
+          grid.appendChild(makeDay(new Date(curYear, curMonth, d2), false));
+        }
+        /* 다음 달 trailing cells — 6행 고정(42셀) */
+        var total = leadCells + days;
+        var trailing = total % 7 === 0 ? 0 : 7 - (total % 7);
+        /* 최소 1행(7칸) 채우기 */
+        if (trailing < 7) {
+          for (var k = 1; k <= trailing; k++) {
+            grid.appendChild(makeDay(new Date(curYear, curMonth + 1, k), true));
+          }
+        }
+      }
+
+      /* Figma day cell: 44×44px outer + 30×30px inner circle */
+      function makeDay(date, isOther) {
+        var btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 's1-date-picker__day';
+        /* Inner circle (Figma 30×30px, radius-full) */
+        var inner = document.createElement('span');
+        inner.className = 'day-inner';
+        inner.textContent = date.getDate();
+        btn.appendChild(inner);
+        if (isOther) btn.classList.add('is-other-month');
+        if (isSame(date, today)) btn.classList.add('is-today');
+        if (isSame(date, selectedDate)) btn.classList.add('is-selected');
+        btn.setAttribute('aria-label', formatDate(date));
+        btn.setAttribute('data-date', date.getFullYear() + '-' + pad(date.getMonth()+1) + '-' + pad(date.getDate()));
+        if (!isOther) {
+          btn.addEventListener('click', function() {
+            selectedDate = date;
+            input.value = formatDate(date);
+            /* is-selected 상태 갱신 */
+            grid.querySelectorAll('.s1-date-picker__day').forEach(function(b) {
+              b.classList.remove('is-selected');
+            });
+            btn.classList.add('is-selected');
+            closePanel();
+          });
+        } else {
+          btn.disabled = true;
+        }
+        return btn;
+      }
+
+      function openPanel() {
+        panel.hidden = false;
+        input.setAttribute('aria-expanded', 'true');
+        if (toggle) toggle.setAttribute('aria-expanded', 'true');
+        picker.querySelector('.s1-input-wrap').classList.add('is-focus');
+        renderWeekdays();
+        renderGrid();
+        /* focus first focusable cell for keyboard nav */
+        var firstActive = grid.querySelector('.s1-date-picker__day:not([disabled])');
+        if (firstActive) firstActive.focus();
+      }
+
+      function closePanel() {
+        panel.hidden = true;
+        input.setAttribute('aria-expanded', 'false');
+        if (toggle) toggle.setAttribute('aria-expanded', 'false');
+        picker.querySelector('.s1-input-wrap').classList.remove('is-focus');
+      }
+
+      function togglePanel() {
+        if (panel.hidden) { openPanel(); } else { closePanel(); }
+      }
+
+      input.addEventListener('click', togglePanel);
+      if (toggle) toggle.addEventListener('click', togglePanel);
+
+      if (prevBtn) prevBtn.addEventListener('click', function() {
+        curMonth--;
+        if (curMonth < 0) { curMonth = 11; curYear--; }
+        renderGrid();
+      });
+      if (nextBtn) nextBtn.addEventListener('click', function() {
+        curMonth++;
+        if (curMonth > 11) { curMonth = 0; curYear++; }
+        renderGrid();
+      });
+
+      /* 외부 클릭 닫기 */
+      document.addEventListener('click', function(e) {
+        if (!picker.contains(e.target)) closePanel();
+      });
+
+      /* 키보드 네비게이션 */
+      panel.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') { closePanel(); input.focus(); return; }
+        var focused = document.activeElement;
+        if (!focused || !focused.classList.contains('s1-date-picker__day')) return;
+        var cells = Array.prototype.slice.call(grid.querySelectorAll('.s1-date-picker__day:not([disabled])'));
+        var idx = cells.indexOf(focused);
+        if (idx === -1) return;
+        var next = idx;
+        if (e.key === 'ArrowRight') next = idx + 1;
+        else if (e.key === 'ArrowLeft') next = idx - 1;
+        else if (e.key === 'ArrowDown') next = idx + 7;
+        else if (e.key === 'ArrowUp') next = idx - 7;
+        else if (e.key === 'Enter' || e.key === ' ') { focused.click(); e.preventDefault(); return; }
+        else return;
+        e.preventDefault();
+        if (next >= 0 && next < cells.length) cells[next].focus();
+      });
+    });
+  }
+
+  setupDatePicker(document);
+
   setupRelatedComposedFields(document);
+
+  document.querySelectorAll('.comp-action-cell[data-comp-action="input"]').forEach(function(cell) {
+    var wrap = cell.querySelector('.s1-input-wrap');
+    var input = cell.querySelector('input');
+    var helper = cell.querySelector('.ds-helper-text');
+    cell.querySelector('[data-input-disabled]')?.addEventListener('click', function() {
+      var on = wrap.classList.toggle('is-disabled');
+      if (input) input.disabled = on;
+      this.classList.toggle('is-on', on);
+      this.textContent = on ? 'Disabled: on' : 'Disabled: off';
+    });
+    cell.querySelector('[data-input-helper]')?.addEventListener('click', function() {
+      var isHidden = helper.hidden;
+      helper.hidden = !isHidden;
+      this.classList.toggle('is-on', isHidden);
+      this.textContent = isHidden ? '서브텍스트: on' : '서브텍스트: off';
+    });
+  });
+
+  (function() {
+    var sizesWraps = document.querySelectorAll('[data-input-sizes-cell]');
+    var btnDisabled = document.querySelector('[data-sizes-disabled]');
+    var btnHelper = document.querySelector('[data-sizes-helper]');
+    btnDisabled?.addEventListener('click', function() {
+      var on = this.classList.toggle('is-on');
+      this.textContent = on ? 'Disabled: on' : 'Disabled: off';
+      sizesWraps.forEach(function(wrap) {
+        wrap.classList.toggle('is-disabled', on);
+        var inp = wrap.querySelector('input');
+        if (inp) inp.disabled = on;
+      });
+    });
+    btnHelper?.addEventListener('click', function() {
+      var on = this.classList.toggle('is-on');
+      this.textContent = on ? '서브텍스트: on' : '서브텍스트: off';
+      sizesWraps.forEach(function(wrap) {
+        var h = wrap.querySelector('.ds-helper-text');
+        if (h) h.hidden = !on;
+      });
+    });
+  })();
+
+  document.querySelectorAll('[data-action-group]').forEach(function(group) {
+    var btn = group.querySelector('[data-group-disabled]');
+    if (!btn) return;
+    btn.addEventListener('click', function() {
+      var on = this.classList.toggle('is-on');
+      this.textContent = on ? 'Disabled: on' : 'Disabled: off';
+      group.querySelectorAll('[data-action-test]').forEach(function(el) {
+        el.disabled = on;
+        el.classList.toggle('is-disabled', on);
+      });
+      group.querySelectorAll('.comp-action-cell .s1-chip, .comp-action-cell .ds-filter-chip').forEach(function(el) {
+        el.disabled = on;
+        el.classList.toggle('is-disabled', on);
+      });
+      if (on) {
+        group.querySelectorAll('.comp-action-cell .ds-filter-chip-wrap').forEach(function(w) {
+          w.classList.remove('is-open');
+        });
+      }
+    });
+  });
 </script>
 <script src="../assets/js/main.js"></script>
 </body>

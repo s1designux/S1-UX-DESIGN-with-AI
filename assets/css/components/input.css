@@ -1,0 +1,167 @@
+/* ============================================================
+   SW Design System · Input Component CSS
+   Status: stable (2026-05-18)
+   Official: s1-input-wrap / s1-input-field class system
+   Token layer: --input-* → --color-form-control-* → semantic
+   Rule: No raw HEX. Color tokens via Semantic layer only.
+   ============================================================ */
+
+/* ── Wrapper ── */
+.s1-input-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+/* ── Label ── */
+.s1-input-label {
+  font-size: var(--font-size-14);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text-primary);
+  letter-spacing: -0.028em;
+  line-height: var(--line-height-130);
+}
+
+/* ── Field ── */
+.s1-input-field {
+  display: flex;
+  align-items: center;
+  height: var(--sizing-form-control-height-md);   /* Medium: 44px */
+  padding: 0 var(--spacing-12);
+  gap: var(--spacing-4);
+  border: var(--border-width-default) solid var(--input-default-border);
+  border-radius: var(--radius-control-sm);
+  background: var(--input-default-bg);
+  transition: border-color 0.15s;
+}
+
+.s1-input-field input {
+  flex: 1 1 auto;
+  min-width: 0;
+  border: none;
+  background: transparent;
+  font-size: var(--font-size-14);
+  font-weight: var(--font-weight-regular);
+  color: var(--color-form-control-text-default);
+  letter-spacing: -0.028em;
+  line-height: var(--line-height-130);
+  outline: none;
+}
+
+.s1-input-field input::placeholder {
+  color: var(--input-placeholder-text);
+}
+
+/* ── Sizes ── */
+.s1-input-field.input-size-small {
+  height: var(--sizing-form-control-height-xs);   /* Small: 34px */
+  padding: 0 var(--spacing-8) 0 var(--spacing-12);
+}
+
+.s1-input-field.input-size-xsmall {
+  height: var(--sizing-form-control-height-xxs);  /* XSmall: 28px */
+  padding: 0 var(--spacing-8) 0 var(--spacing-12);
+}
+
+.s1-input-field.input-size-xsmall input {
+  font-size: var(--font-size-12);
+  letter-spacing: 0;
+}
+
+.s1-input-field.input-size-mobile {
+  height: var(--sizing-form-control-height-lg);   /* Mobile: 48px */
+  padding: 0 var(--spacing-12) 0 var(--spacing-16);
+  border-radius: 4px; /* Figma 원본 기준 — radius token 미확인 */
+}
+
+/* ── States ── */
+.s1-input-wrap:focus-within .s1-input-field,
+.s1-input-wrap.is-focus .s1-input-field {
+  border-color: var(--input-focus-border);
+}
+
+.s1-input-wrap.is-error .s1-input-field {
+  border-color: var(--input-error-border);
+}
+
+.s1-input-wrap.is-correct .s1-input-field {
+  border-color: var(--input-correct-border);
+}
+
+.s1-input-wrap.is-disabled .s1-input-field {
+  background: var(--input-disabled-bg);
+  border-color: var(--input-disabled-border);
+  cursor: not-allowed;
+}
+
+.s1-input-wrap.is-disabled input {
+  color: var(--input-disabled-text);
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+/* ── Helper Text ── */
+.ds-helper-text {
+  font-size: var(--font-size-12);
+  color: var(--input-helper-text);
+  line-height: var(--line-height-130);
+}
+
+.s1-input-wrap.is-error .ds-helper-text {
+  color: var(--input-error-text);
+}
+
+.s1-input-wrap.is-correct .ds-helper-text {
+  color: var(--input-correct-text);
+}
+
+/* ── Icon Slot ── */
+.s1-input-icon {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  color: var(--color-icon-default);
+}
+
+.s1-input-wrap.is-error .s1-input-icon {
+  color: var(--color-icon-danger);
+}
+
+.s1-input-wrap.is-correct .s1-input-icon {
+  color: var(--color-icon-accent);
+}
+
+/* ── Suffix Action Group ── */
+.s1-suffix-action-group {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+  gap: 2px;
+}
+
+.s1-input-action-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  border: none;
+  background: transparent;
+  border-radius: var(--radius-4);
+  color: var(--color-icon-default);
+  cursor: pointer;
+  transition: background 0.12s;
+}
+
+.s1-input-action-btn:hover {
+  background: var(--color-bg-subtle);
+}
+
+/* ── Suffix Text (Unit) ── */
+.s1-input-unit {
+  flex-shrink: 0;
+  font-size: var(--font-size-14);
+  color: var(--color-text-secondary);
+  white-space: nowrap;
+}

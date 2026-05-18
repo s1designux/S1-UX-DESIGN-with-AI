@@ -360,7 +360,7 @@
   --color-text-secondary:   var(--color-gray-800);
   --color-text-tertiary:    var(--color-gray-600);
   --color-text-caption:     var(--color-gray-500);
-  --color-text-placeholder: var(--color-gray-400);
+  --color-text-placeholder: var(--color-gray-500);
   --color-text-helper:      var(--color-gray-400);
   --color-text-link:        var(--color-blue-400);
   --color-text-correct:     var(--color-blue-400);
@@ -399,6 +399,29 @@
   --color-status-error:   var(--color-red-400);
   --color-status-warning: var(--color-yellow-400);
   --color-status-info:    var(--color-gray-500);
+
+  /* ── color-control-border (컨트롤 컴포넌트 전용 — 디바이더와 독립) ── */
+  --color-control-border-default:  var(--color-gray-200);   /* checkbox·radio 기본 테두리 */
+  --color-control-border-hover:    var(--color-blue-400);   /* hover 시 강조 */
+  --color-control-border-selected: var(--color-blue-400);   /* checked/selected 상태 */
+  --color-control-border-disabled: var(--color-gray-300);   /* disabled 상태 */
+
+  /* ── color-form-control ── */
+  --color-form-control-bg-default:          var(--color-surface-default);
+  --color-form-control-bg-disabled:         var(--color-bg-subtle);
+  --color-form-control-border-default:      var(--color-control-border-default);
+  --color-form-control-border-selected:     var(--color-border-focus);
+  --color-form-control-border-error:        var(--color-status-error);
+  --color-form-control-border-correct:      var(--color-border-focus);
+  --color-form-control-border-disabled:     var(--color-border-subtle);
+  --color-form-control-text-default:        var(--color-text-secondary);
+  --color-form-control-text-placeholder:    var(--color-text-placeholder);
+  --color-form-control-text-disabled:       var(--color-text-disabled);
+
+  /* ── color-text-state ── */
+  --color-text-state-helper:  var(--color-text-secondary);
+  --color-text-state-correct: var(--color-blue-400);
+  --color-text-state-error:   var(--color-status-error);
 
   /* ── color-overlay ── */
   --color-overlay: rgba(0, 0, 0, 0.5); /* rgba 허용 예외 — alpha 채널 포함 */
@@ -520,7 +543,7 @@
   --color-icon-muted:    var(--color-gray-dark-400);
   --color-icon-emphasis: var(--color-gray-dark-800);
   --color-icon-accent:   var(--color-blue-dark-400);
-  --color-icon-inverse:  var(--color-base-white);
+  --color-icon-inverse:  var(--color-gray-dark-900);
   --color-icon-danger:   var(--color-status-dark-red);
 
   /* ── color-action ── */
@@ -535,6 +558,23 @@
   --color-status-error:   var(--color-status-dark-red);
   --color-status-warning: var(--color-status-dark-yellow);
   --color-status-info:    var(--color-gray-dark-700);
+
+  /* ── color-text-state (dark overrides) ── */
+  --color-text-state-correct: var(--color-blue-dark-400);
+
+  /* ── color-control-border (dark overrides — candidate) ── */
+  --color-control-border-default:  var(--color-gray-dark-500);
+  --color-control-border-hover:    var(--color-blue-dark-300);
+  --color-control-border-selected: var(--color-blue-dark-300);
+  --color-control-border-disabled: var(--color-gray-dark-300);
+
+  /* ── color-form-control bg dark ── */
+  --color-form-control-bg-default: var(--color-gray-dark-50);
+
+  --color-form-control-border-disabled: var(--color-control-border-disabled);
+
+  /* ── dropdown hover bg dark ── */
+  --dropdown-trigger-hover-bg: var(--color-gray-dark-500);
 
   /* ── color-overlay ── */
   --color-overlay: rgba(0, 0, 0, 0.75); /* rgba 허용 예외 */
@@ -606,14 +646,13 @@
   --chip-default-close-icon:  var(--color-icon-default);
   --chip-hover-close-icon:    var(--color-icon-emphasis);
   --chip-selected-close-icon: var(--color-action-primary-default);
-  --chip-focus-ring:      var(--color-border-focus);
 
   /* ── Dropdown ── */
   --dropdown-trigger-default-bg:      var(--color-surface-default);
   --dropdown-trigger-hover-bg:        var(--color-bg-subtle);
   --dropdown-trigger-open-bg:         var(--color-bg-subtle);
   --dropdown-trigger-disabled-bg:     var(--color-bg-subtle);
-  --dropdown-trigger-default-border:  var(--color-border-default);
+  --dropdown-trigger-default-border:  var(--color-form-control-border-default);
   --dropdown-trigger-hover-border:    var(--color-border-strong);
   --dropdown-trigger-open-border:     var(--color-border-focus);
   --dropdown-trigger-disabled-border: var(--color-border-subtle);
@@ -624,48 +663,46 @@
   --dropdown-option-selected-bg: var(--color-action-primary-subtle);
 
   /* ── Input / Form-control ── */
-  --input-default-bg:      var(--color-surface-default);
-  --input-hover-bg:        var(--color-surface-default);
-  --input-focus-bg:        var(--color-surface-default);
-  --input-disabled-bg:     var(--color-bg-subtle);
-  --input-error-bg:        var(--color-surface-default);
-  --input-default-border:  var(--color-border-default);
-  --input-hover-border:    var(--color-border-strong);
-  --input-focus-border:    var(--color-border-focus);
-  --input-error-border:    var(--color-border-danger);
-  --input-correct-border:  var(--color-border-correct);
-  --input-disabled-border: var(--color-border-default);
+  --input-default-bg:       var(--color-form-control-bg-default);
+  --input-disabled-bg:      var(--color-form-control-bg-disabled);
+  --input-default-border:   var(--color-form-control-border-default);
+  --input-focus-border:     var(--color-form-control-border-selected);
+  --input-error-border:     var(--color-form-control-border-error);
+  --input-correct-border:   var(--color-form-control-border-correct);
+  --input-disabled-border:  var(--color-form-control-border-disabled);
   --select-disabled-border: var(--color-border-subtle);
-  --input-placeholder-text: var(--color-text-placeholder);
-  --input-helper-text:      var(--color-text-helper);
-  --input-error-text:       var(--color-text-danger);
-  --input-correct-text:     var(--color-text-correct);
-  --input-disabled-text:    var(--color-text-disabled);
+  --input-placeholder-text: var(--color-form-control-text-placeholder);
+  --input-disabled-text:    var(--color-form-control-text-disabled);
+  --input-helper-text:      var(--color-text-state-helper);
+  --input-correct-text:     var(--color-text-state-correct);
+  --input-error-text:       var(--color-text-state-error);
 
   /* ── Checkbox ── */
-  --checkbox-default-bg:       var(--color-surface-default);
-  --checkbox-checked-bg:       var(--color-action-primary-default);
-  --checkbox-indeterminate-bg: var(--color-action-primary-default);
-  --checkbox-disabled-bg:      var(--color-bg-subtle);
-  --checkbox-default-border:   var(--color-border-default);
-  --checkbox-hover-border:     var(--color-border-focus);
-  --checkbox-checked-border:   var(--color-action-primary-default);
-  --checkbox-disabled-border:  var(--color-border-subtle);
-  --checkbox-check-icon:       var(--color-action-primary-text);
+  --checkbox-default-bg:          var(--color-form-control-bg-default);
+  --checkbox-checked-bg:          var(--color-action-primary-default);
+  --checkbox-indeterminate-bg:    var(--color-action-primary-default);
+  --checkbox-disabled-bg:         var(--color-bg-subtle);
+  --checkbox-default-border:      var(--color-control-border-default);
+  --checkbox-hover-border:        var(--color-control-border-hover);
+  --checkbox-checked-border:      var(--color-control-border-selected);
+  --checkbox-disabled-border:     var(--color-control-border-disabled);
+  --checkbox-check-icon:          var(--color-action-primary-text);
+  --checkbox-disabled-check-icon: var(--color-border-strong);
 
   /* ── Radio ── */
-  --radio-default-bg:      var(--color-surface-default);
+  --radio-default-bg:      var(--color-form-control-bg-default);
   --radio-disabled-bg:     var(--color-bg-subtle);
-  --radio-default-border:  var(--color-border-default);
-  --radio-hover-border:    var(--color-border-focus);
-  --radio-selected-border: var(--color-action-primary-default);
-  --radio-disabled-border: var(--color-border-subtle);
+  --radio-default-border:  var(--color-control-border-default);
+  --radio-hover-border:    var(--color-control-border-hover);
+  --radio-selected-border: var(--color-control-border-selected);
+  --radio-disabled-border: var(--color-control-border-disabled);
   --radio-selected-dot:    var(--color-action-primary-default);
+  --radio-disabled-dot:    var(--color-border-strong);
 
   /* ── Toggle ── */
   --toggle-on-bg:       var(--color-action-primary-default);
-  --toggle-off-bg:      var(--color-border-default);
-  --toggle-disabled-bg: var(--color-border-subtle);
+  --toggle-off-bg:      var(--color-text-placeholder);
+  --toggle-disabled-bg: var(--color-bg-muted);
   --toggle-knob:        var(--color-action-primary-text);
 
   /* ── Pagination ── */

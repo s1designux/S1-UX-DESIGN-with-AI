@@ -2,7 +2,7 @@
 
 > 이 문서는 Claude가 디자인 시스템을 **수집, 정리, 구조화, 검증**하기 위한 기준입니다.
 > 현재 목표는 UI 구현이 아니라 **디자인 시스템을 구축하는 것**입니다.
-> 마지막 업데이트: 2026-05-12 (Button 토큰 불일치 수정 완료 — focus-ring 삭제, s1-btn 공식화, --color-border-disabled 문서화)
+> 마지막 업데이트: 2026-05-18 (MVP-L3 — Canonical Token Architecture Draft 생성. registry/tokens/canonical-token-draft.json + reports/mvp-l3-canonical-token-architecture-draft.md. 3-레이어 구조(Foundation/Semantic/Component) 정리. 8개 ND 항목 도출. ND-1 gray-dark-450 미정의 버그 발견.)
 
 ---
 
@@ -32,6 +32,15 @@
 | 2026-05-12 | MVP4.1 Input Related Composed Fields | pages/components.html·registry/components/input.json·README.md·CLAUDE.md·reports/mvp4-1-input-patterns.md | Search Input·Password Field·Input with Unit을 Components>Input 하단 Related Composed Fields로 정리 |
 | 2026-05-12 | MVP4.2 Input Composed Fields Slot Correction | pages/components.html·registry/components/input.json·README.md·CLAUDE.md·reports/mvp4-2-input-composed-fields.md | Search Input prefixIcon 구조 정정 → suffixActionGroup 구조 반영. 2-state 프리뷰 추가. |
 | 2026-05-12 | MVP4.2 Revision — Related Composed Fields Interactive | pages/components.html·registry/components/input.json·CLAUDE.md·reports/mvp4-2-input-composed-fields.md | 정적 is-preview → 실제 인터랙션. Figma MCP 아이콘 노드 확인. setupRelatedComposedFields() 추가. |
+| 2026-05-12 | MVP4.3-A DatePicker Component Candidate | registry/components/date-picker.json·registry/components/index.json·pages/components.html·CLAUDE.md·README.md·reports/mvp4-3-a-date-picker.md | DatePicker를 별도 컴포넌트 후보로 등록. Figma node 6443:4655 조회 시도(MCP invalid — 미확인). Interactive preview 구현. |
+| 2026-05-12 | MVP4.3-A Revision — DatePicker Figma 6456:4033 + uvis 참고 | pages/components.html·registry/components/date-picker.json·reports/mvp4-3-a-date-picker.md | Figma node 6456:4033(Section 2), 540:3794(datepicker_input), 540:3836(mobile bottomsheet) 조회. uvis amobe_datepicker.js 분석 및 재사용/교체 분리. YY.MM.DD 형식·44×44px day cell·30px inner circle·키보드 네비게이션 반영. |
+| 2026-05-18 | MVP4-token Input 토큰 레이어 확정 | assets/css/tokens.css·pages/components.html·assets/css/components/input.css·tokens/semantic.md·tokens/component-tokens-extracted.md·registry/components/input.json·registry/components/index.json | --color-form-control-* semantic 레이어 추가. --color-text-state-* helper/correct/error 토큰 추가. --input-* 2-layer 구조(→form-control→semantic) 확정. 삭제: hover-bg/border·focus-bg·error-bg(HD-2/3/8). input.css 생성. |
+| 2026-05-18 | Checkbox·Radio·Toggle 토큰 정합 | assets/css/tokens.css·pages/components.html·registry/components/index.json | 누락 토큰 추가(--checkbox-disabled-check-icon·--radio-disabled-dot). 불일치 수정(--radio-disabled-border·--toggle-off-bg·--toggle-disabled-bg tokens.css→components.html 기준). hover CSS 규칙 추가. harnessStatus: implemented. |
+| 2026-05-18 | MVP4.4 color-control-border Semantic 분리 | assets/css/tokens.css·pages/components.html·tokens/semantic.md·tokens/component-tokens-extracted.md | --color-control-border-{default/hover/selected/disabled} 신설 (Foundation 직접 참조). Checkbox·Radio border 토큰을 --color-border-*/--color-action-primary-*에서 분리. Dark candidate 적용. |
+| 2026-05-18 | MVP-T1 Figma CSS Token Mapping Registry | registry/tokens/figma-css-token-map.json·token-aliases.json·deprecated-tokens.json·registry/index.json·registry/figma/figma-map.json·README.md·CLAUDE.md·reports/mvp-t1-token-mapping.md | Figma MCP 확인 Variables와 CSS 토큰의 의미 기반 매핑표 생성. complete→filled·success→correct(HD-4 확정)·selected→focus alias 확정. placeholder gray/500 확정. form-control-text-default var(--color-text-secondary) 확정. |
+| 2026-05-18 | MVP-T2 Figma Token Sync Plugin 구조 | plugins/figma-token-sync/**·package.json·README.md·CLAUDE.md·reports/mvp-t2-token-sync.md | TypeScript 플러그인 4-모듈 구조 생성. esbuild 번들 환경. SyncClassification 분류 로직. FIGMA_SEMANTIC_COLLECTION_ID 미확정으로 전체 preview-only. syncStableTokens() 의도적 throw. |
+| 2026-05-18 | MVP-L1 Legacy UX Guide 2.4 Token Audit 단계 수립 | scripts/figma/match-figma-variable-metadata.mjs·package.json·README.md·CLAUDE.md·registry/figma/snapshots/ | --source/--profile CLI 옵션 추가. ux-guide-2.4 legacy audit 모드 신설. darkmode-test snapshot 격리. figma:audit 스크립트 추가. |
+| 2026-05-18 | MVP-L3 Canonical Token Architecture Draft | registry/tokens/canonical-token-draft.json·reports/mvp-l3-canonical-token-architecture-draft.md·CLAUDE.md | Foundation/Semantic/Component 3-레이어 canonical 구조 정리. 61개 semantic·124개 component 토큰 전수 문서화. 8개 ND 항목 도출. ND-1(gray-dark-450 미정의 버그)·ND-2(dark border rgba) 고우선순위 확인. |
 
 ---
 
@@ -55,6 +64,7 @@
 * ✅ MVP3.7 Source Guard Apply Mode — high-confidence 자동 적용 + dry-run/apply 분기 + backup + apply log 완료 (2026-05-12)
 * ✅ MVP3.8 Source Guard CI Dry-run — GitHub Actions 자동 검수 파이프라인 구축 완료 (2026-05-12)
 * ✅ Pre-MVP4 Input 분류 — Figma MCP 8 nodes 분석, Base Input/Slots/Pattern/Picker 분류, 토큰 Gap 17개, HD 8개 도출 (2026-05-12)
+* ✅ MVP4.3-A DatePicker Component Candidate — 별도 컴포넌트 후보 등록, Figma node 6443:4655 시도, Interactive preview 구현 완료 (2026-05-12)
 
 ## 미결 사항 (다음 우선순위)
 
@@ -99,14 +109,30 @@
    HD-8: --input-error-bg 불필요 (default와 동일)
    상세: reports/pre-mvp4-input-classification.md
 
-8. MVP4 Input 구현 (HD 완료, 구현 시작 가능)
-   - tokens/semantic.md에 color-form-control-* 카테고리 추가
-   - tokens/component-tokens-extracted.md에 --input-* alias 추가
-   - assets/css/tokens.css에 CSS 정의 추가
-   - pages/components.html에 Input harness 추가
-9. Textarea 컴포넌트 registry 생성 (registry/components/textarea.json)
-10. Pattern 페이지 설계 (search-table, tree-detail)
-11. Legacy 가이드 작성
+8. MVP4 Input 구현 → ✅ 2026-05-18 토큰 레이어 완료
+   - tokens/semantic.md: color-form-control-* + color-text-state-* 추가 완료
+   - tokens/component-tokens-extracted.md: --input-* 2-layer 구조 반영 완료
+   - assets/css/tokens.css: form-control semantic 레이어 + 정정된 --input-* 완료
+   - assets/css/components/input.css: 신규 생성 완료
+   - pages/components.html: 하네스 + 인라인 CSS 동기화 완료
+   미완: darkModeStatus pending (--input-* dark 시각 검증 필요)
+9. DatePicker component candidate Human Decisions (MVP4.3-A)
+   - HD-1: Figma node 6443:4655 componentSetKey 확인 (MCP invalid — Figma 직접 확인 필요)
+   - HD-2: 공식 컴포넌트명 확정 (DatePicker vs DayPicker)
+   - HD-3: calendar icon Figma 노드명 확정 (현재 candidate SVG)
+   - HD-4: Mobile 인터랙션 확정 (bottom sheet vs inline vs popover)
+   - HD-5: DatePicker 전용 token candidate → stable 전환 여부 결정
+   상세: reports/mvp4-3-a-date-picker.md
+10. Textarea 컴포넌트 registry 생성 (registry/components/textarea.json)
+11. TimePicker component candidate 정리 (figmaNodeId: 6443:4606)
+12. Pattern 페이지 설계 (search-table, tree-detail)
+13. Legacy 가이드 작성
+14. MVP-L1 UX Guide 2.4 Variables export → npm run figma:audit 실행
+    - Figma에서 실제 S1 UX 디자인가이드 2.4 파일 열기
+    - SW Token Sync 플러그인 → Export Variables → Download JSON
+    - registry/figma/snapshots/figma-variable-metadata.ux-guide-2.4.json으로 저장
+    - npm run figma:audit 실행 → reports/mvp-l1-legacy-token-audit.md 생성
+15. MVP-L2 legacy-to-canonical 마이그레이션 맵 작성 (MVP-L1 완료 후)
 ```
 
 ---
@@ -145,6 +171,27 @@ Claude는 다음 역할만 수행한다:
 ---
 
 # 🎨 Foundation Token 규칙
+
+## 이 프로젝트 공식 token layer 용어
+
+```
+Foundation Token   (기본 팔레트 — gray/blue/red scale 등)
+       ↓
+Semantic Token     (역할 기반 — bg/text/border/action 등)
+       ↓
+Component Token    (컴포넌트 별칭 — --input-* / --button-* 등)
+```
+
+| 기존/일반 용어 | 이 프로젝트 공식 용어 |
+|---|---|
+| Primitive | **Foundation** |
+| Base Palette | **Foundation** |
+| Raw Color | **Foundation** |
+| Semantic | Semantic |
+| Component Alias | Component |
+
+> **Foundation은 Primitive가 아니다.** 이 프로젝트에서 기본 팔레트 계층은 항상 "Foundation"으로 부른다.
+> `Primitive`, `Base`, `Raw` 등의 용어는 다른 디자인시스템에서의 동의어이며, 이 프로젝트에서는 사용하지 않는다.
 
 ## 색상
 
@@ -1014,3 +1061,103 @@ Related Composed Fields의 slot 구조를 편집할 때:
 11. **Password Field visibility toggle은 `aria-pressed` attribute를 업데이트한다.** 상태 전환 시 aria-label도 함께 변경 ("비밀번호 보기" / "비밀번호 숨기기"). `[data-icon-hidden]` / `[data-icon-visible]` data attribute로 아이콘 전환.
 12. **Figma 아이콘 노드명 확인 완료 (2026-05-12).** `ic_찾기/조회` (검색, 6452:5930), `ic_비밀번호미표시` (비밀번호 숨김, 135:6692), `remove` (삭제, 882:4061). eye-off(visible) 아이콘 노드명 미확인 — candidate SVG 사용 중.
 13. **`data-related-field` attribute가 각 composed field 컨테이너의 식별자다.** `data-related-field="search-input"` / `"password-field"` / `"input-with-unit"`. JS는 이 attribute로 스코프를 한정한다.
+
+## MVP4.3-A DatePicker Rules (2026-05-12)
+
+DatePicker를 편집하거나 토큰을 정의할 때:
+
+1. **DatePicker는 Base Input의 state/variant가 아니다.** 별도 컴포넌트 후보로 분리한다.
+2. **DatePicker는 Related Composed Field로 축소하지 않는다.** calendar panel + day grid가 있어서 별도 컴포넌트다.
+3. **Trigger는 Base Input (s1-input-wrap + s1-input-field)을 재사용한다.** 별도 shell을 만들지 않는다.
+4. **calendar icon은 suffixIcon (s1-input-action-btn)으로 배치한다.**
+5. **panel token은 candidate 상태다.** --date-picker-panel-bg 등 신규 토큰은 임의 확정하지 않는다.
+6. **Figma componentSetKey를 임의로 생성하지 않는다.** 빈 문자열로 유지하며 Figma 직접 확인 후 등록한다.
+7. **Figma node 6443:4655는 MCP get_design_context 접근 불가 상태다.** invalid node 오류 발생. Figma URL 또는 Plugin 직접 접근으로 재확인 필요.
+8. **인터랙션 JS는 `setupDatePicker()` 함수로 초기화한다.** components.html script 말미에 `setupDatePicker(document)` 호출.
+9. **panel shadow에 한해 rgba 1회 허용한다.** `box-shadow: 0 4px 16px rgba(0,0,0,0.10)`. 이 외 HEX/rgba 직접 사용 금지.
+10. **미결 사항은 reports/mvp4-3-a-date-picker.md에 기록한다.**
+
+## MVP-T1 Token Mapping Rules (2026-05-18)
+
+Token Mapping 파일을 편집하거나 Figma Variable을 참조할 때:
+
+1. **Code registry remains the source of truth.** Figma Variable names and CSS token names do not need to be identical.
+2. **Always map tokens by meaning, not by name alone.** Slash-separated Figma paths convert to hyphen-separated CSS vars.
+3. **Keep form-control semantic tokens as common standards.** `--color-form-control-*` is the shared semantic layer for Input, Select, DatePicker, and TimePicker.
+4. **Component tokens such as `--input-*` are aliases when they reference shared form-control semantics.** Direct-reference only if the component diverges from shared form-control.
+5. **Map Figma `complete` to registry/code `filled`.** No separate bg or border token needed — only text changes.
+6. **Map Figma `selected` (form-control context) to code `focus`.** `selected` means focused/active state, not chosen item.
+7. **Use `correct` as the canonical state name (HD-4).** Figma calls it 'success' — that is a Figma alias only. `--input-correct-border` / `--input-correct-text` are canonical tokens, not deprecated. Do not rename to 'success'.
+8. **Do not invent confirmed Figma Variable names without MCP evidence.** Mark uncertain mappings as `pending` or `needs-review`.
+9. **Placeholder = gray/500 (#757575) 확정 (2026-05-18).** `--color-text-placeholder` = `var(--color-gray-500)`. Figma 일치. `--color-form-control-text-default` = `var(--color-text-secondary)` (#353535) 확정. tokens.css·semantic.md·input.json 수정 완료.
+10. **Record mapping decisions in `reports/mvp-t1-token-mapping.md`.**
+11. **Figma Variables confirmed via MCP nodes:** form-control (540:3794), button-primary (540:4501), date-picker-mobile (540:3836). Other Variables are pending.
+12. **Token mapping file locations:**
+    - `registry/tokens/figma-css-token-map.json` — main mapping table
+    - `registry/tokens/token-aliases.json` — state and token alias definitions
+    - `registry/tokens/deprecated-tokens.json` — removed/renamed tokens
+
+## MVP-T2 Token Sync Plugin Rules (2026-05-18)
+
+Figma Token Sync Plugin 파일을 편집하거나 플러그인 동작을 수정할 때:
+
+1. **플러그인 진입점은 `plugins/figma-token-sync/src/code.ts`다.** Figma sandbox에서 실행. `figma.showUI(__html__)` + `figma.ui.onmessage` 패턴 사용.
+2. **UI는 `src/ui.html`이다.** `parent.postMessage({ pluginMessage: {...} }, "*")`로 code.ts와 통신한다.
+3. **레지스트리 JSON은 esbuild 번들 시점에 인라인된다.** 런타임에 파일 접근 없음. `require("../../../../registry/tokens/figma-css-token-map.json")` 상대경로 사용.
+4. **`tsc --noEmit`는 타입 체크 전용이다.** 실제 빌드는 `esbuild`로 한다. `npm run plugin:check`(타입체크)와 `npm run plugin:build`(빌드)를 분리한다.
+5. **SyncClassification 기준을 엄수한다:** stable + cssVariable + registryToken + figmaVariable 모두 있음 → `sync-ready`, pending + 비-alias → `preview-only`, needs-review → `needs-review`, component-alias 또는 deprecated → `excluded`.
+6. **sync-ready 분류는 collection ID 존재 여부와 무관하다.** 분류는 token ref 완전성 기준. collection ID gate는 `syncStableTokens()`에서 별도로 처리한다.
+7. **`syncStableTokens()`는 항상 throw한다.** Figma Variables collection ID 미확정 상태에서 실수로 쓰기가 실행되는 것을 방지한다.
+8. **component-alias 항목은 excluded로 처리한다.** 같은 figmaVariable을 semantic 항목이 이미 대표하기 때문에 중복 쓰기를 방지한다.
+9. **`manifest.json`의 `permissions`는 현재 빈 배열이다.** 실제 Figma Variables 쓰기를 활성화하려면 `"variables:write"`를 추가해야 한다. 이는 Human Decision 후에만 변경한다.
+10. **플러그인 빌드 결과물은 `plugins/figma-token-sync/dist/code.js`다.** 이 파일은 gitignore 대상이다.
+11. **동기화 활성화 조건 3가지 모두 충족 후에만 쓰기를 활성화한다:** (1) FIGMA_SEMANTIC_COLLECTION_ID 확정, (2) manifest permissions에 variables:write 추가, (3) Dry-run 미리보기 결과 사람이 검토·승인.
+12. **플러그인 작업 결과는 `reports/mvp-t2-token-sync.md`에 기록한다.**
+
+## MVP-T2 REST API Metadata Collector Rules (2026-05-18)
+
+`scripts/figma/fetch-figma-variables.mjs` 및 `scripts/figma/match-figma-variable-metadata.mjs`를 편집하거나 실행할 때:
+
+1. **PAT(`FIGMA_TOKEN`)는 환경변수로만 전달한다.** 코드·출력 JSON·리포트 어디에도 저장하지 않는다. `.env` 파일은 `.gitignore` 대상.
+2. **fetch script는 Read-only다.** Figma Variables 쓰기 API를 호출하지 않는다. 출력은 `figma-variable-metadata.local.json` 하나뿐.
+3. **`figma-variable-metadata.local.json`은 gitignore 대상이다.** PAT 정보가 간접 포함될 수 있으므로 커밋하지 않는다. `.gitignore`에 등록됨.
+4. **fetch endpoint는 `GET /v1/files/{fileKey}/variables/local`만 사용한다.** write endpoint(`POST /v1/files/{fileKey}/variables`) 호출 금지.
+5. **match script는 `figma-css-token-map.json`을 직접 수정하지 않는다.** 출력은 리포트 MD와 patch 후보 JSON뿐. 레지스트리 자동 반영 금지.
+6. **`figma-variable-metadata.patch.json`은 사람이 검토 후 registry에 반영한다.** 자동 적용 금지. 파일 헤더에 "자동 적용 금지" 명시됨.
+7. **matchStatus `dedup-required` 항목은 write 시 1회만 실행한다.** 여러 registry 항목이 같은 variableId를 공유하는 경우 중복 쓰기를 방지한다.
+8. **`not-found` 항목은 Figma Variables 패널에서 이름을 직접 확인해야 한다.** 임의로 이름을 추측하거나 수정하지 않는다.
+9. **실행 명령: `npm run figma:fetch` → `npm run figma:match`.** 순서를 지킨다. match는 local.json이 있어야 실행 가능. REST API가 막혀 있으면 Plugin Export 방식 사용.
+10. **`figma-variable-metadata.sample.json`은 API 응답 구조 샘플이다.** 실제 데이터가 아님. 구조 파악 용도로만 사용. PAT 없음.
+11. **match script는 `meta.source`가 `"figma-plugin-api"`와 `"figma-rest-api"` 모두 처리한다.** `meta.fileKey`(REST) 또는 `meta.fileName`(Plugin) 중 존재하는 값을 `figmaFileRef`로 사용.
+
+## MVP-T2 Plugin Read Metadata Export Rules (2026-05-18)
+
+Figma Plugin의 Export Variables 기능을 편집하거나 실행할 때:
+
+1. **플러그인 manifest에 `"variables:read"`만 추가한다.** `"variables:write"`는 추가하지 않는다.
+2. **`figma.variables.getLocalVariablesAsync()`와 `figma.variables.getLocalVariableCollectionsAsync()`만 사용한다.** write 계열 API(`figma.variables.setVariableValue`, `figma.variables.createVariable` 등) 호출 금지.
+3. **Export 결과는 `meta.source: "figma-plugin-api"`, `meta.writeEnabled: false`로 마킹된다.** 이 필드는 변경하지 않는다.
+4. **Export 결과 JSON은 `registry/figma/figma-variable-metadata.local.json`에 저장한다.** 파일이 gitignore 대상이므로 커밋하지 않는다.
+5. **Download 파일명은 `figma-variable-metadata.local.json`으로 고정한다.** 사용자가 올바른 경로에 저장할 수 있게 안내한다.
+6. **export 결과의 구조는 REST API fetch 결과와 동일하다.** `collections` 배열, `variables` 배열, `meta` 객체. match script는 둘 다 처리한다.
+7. **Plugin export는 현재 열린 Figma 파일의 Local Variables만 읽는다.** Remote Variables는 읽지 않는다.
+8. **export-variables 메시지 처리는 async다.** `figma.ui.onmessage` 내부에서 즉시 return하고 async IIFE로 처리한다.
+9. **Export 후 match 실행 순서:** Plugin Export → Download JSON → 저장 → `npm run figma:match`.
+10. **REST API Collector는 유지한다.** Figma Variables REST 권한이 향후 확보되면 REST API 방식으로 자동화할 수 있다. 현재는 Plugin Read 방식이 우선.
+
+## MVP-L1 Legacy UX Guide 2.4 Token Audit Rules (2026-05-18)
+
+`scripts/figma/match-figma-variable-metadata.mjs --profile ux-guide-2.4`를 실행하거나, Legacy Token Audit 관련 파일을 편집할 때:
+
+1. **Code Registry가 canonical source of truth다.** UX Guide 2.4 Figma Variables는 레거시 소스 스냅샷일 뿐, 규범적 기준이 아니다. UX Guide 2.4 Variable 이름이 달라도 CSS 토큰을 바꾸지 않는다.
+2. **UX Guide 2.4 스냅샷은 `registry/figma/snapshots/figma-variable-metadata.ux-guide-2.4.json`에 저장한다.** `figma-variable-metadata.local.json` (gitignore)과 구분한다.
+3. **darkmode-test 결과는 `snapshots/figma-variable-metadata.darkmode-test.json`에 격리한다.** production registry에 섞지 않는다. "S1VaaS — Screen Designs" 파일 출처 스냅샷임.
+4. **`--profile ux-guide-2.4` 모드는 레거시 매핑 분석만 한다.** Figma Variables를 canonical token으로 교체하거나 registry를 자동 수정하지 않는다.
+5. **Legacy audit 출력물은 사람이 검토 후 registry에 반영한다.** `registry/tokens/legacy-token-map.json`은 초안이며 자동 적용 금지.
+6. **legacy-token-map.json은 UX Guide 2.4 Variable → canonical CSS token의 의미 기반 매핑이다.** 이름 기반 자동 매칭이 아니라 의미·역할·값을 비교한 후 사람이 확정한 매핑만 `status: "confirmed"`로 표시한다.
+7. **`suggestCanonical()` 함수는 제안일 뿐이다.** 자동으로 registry에 적용하지 않는다. 제안 confidence가 high여도 사람 검토 없이 확정하지 않는다.
+8. **프로파일 종류:** `token-sync`(기본, T2 sync match) / `ux-guide-2.4`(legacy audit) / `darkmode-test`(실험 참조). 프로파일에 따라 소스 파일과 출력 파일이 달라진다.
+9. **스냅샷 파일은 git에 커밋한다.** local.json(gitignore)과 달리 snapshots/ 내 파일은 변경 이력을 보존한다. PAT·민감 정보가 포함되지 않음을 확인 후 커밋.
+10. **UX Guide 2.4 export 절차:** Figma에서 실제 `S1 UX 디자인가이드 2.4` 파일 열기 → SW Token Sync 플러그인 → Export Variables → Download JSON → `registry/figma/snapshots/figma-variable-metadata.ux-guide-2.4.json`으로 저장 → `npm run figma:audit` 실행.
+11. **mvp-l1-legacy-token-audit.md는 `reports/`에 생성된다.** 그룹별 분류, canonical 추천, no-candidate 항목, 미결 사항을 포함한다.
+12. **MVP-L2는 legacy-to-canonical 마이그레이션 맵을 완성하는 단계다.** MVP-L1 결과를 바탕으로 `reports/mvp-l2-legacy-to-canonical-token-map.md`를 작성한다. MVP-L1이 완료되기 전까지 MVP-L2를 시작하지 않는다.

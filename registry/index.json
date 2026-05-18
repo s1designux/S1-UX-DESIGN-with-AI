@@ -1,8 +1,8 @@
 {
   "_meta": {
-    "version": "0.3.0",
-    "phase": "mvp3",
-    "updatedAt": "2026-05-11",
+    "version": "0.4.0",
+    "phase": "mvp-t1",
+    "updatedAt": "2026-05-18",
     "description": "SW Design System Registry — 모든 토큰·컴포넌트·Figma 매핑의 기준 인덱스",
     "consumers": ["HTML Portal", "Claude AI", "Figma Plugin (planned)", "Source Guard (planned)"],
     "tokenSourceCss": "registry/tokens/sw-v2.4.tokens.css"
@@ -22,7 +22,10 @@
       "radius":  "registry/tokens/semantic.radius.json",
       "border":  "registry/tokens/semantic.border.json"
     },
-    "component": "registry/tokens/component.tokens.json"
+    "component": "registry/tokens/component.tokens.json",
+    "figmaCssTokenMap": "registry/tokens/figma-css-token-map.json",
+    "tokenAliases":     "registry/tokens/token-aliases.json",
+    "deprecatedTokens": "registry/tokens/deprecated-tokens.json"
   },
   "componentIndex": "registry/components/index.json",
   "components": {
