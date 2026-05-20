@@ -100,6 +100,13 @@
   pointer-events: none;
 }
 
+.s1-input-wrap.is-disabled .s1-input-action-btn,
+.s1-input-wrap.is-disabled .s1-input-icon {
+  color: var(--color-icon-muted);
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
 /* ── Helper Text ── */
 .ds-helper-text {
   font-size: var(--font-size-12);

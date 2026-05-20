@@ -7,8 +7,8 @@
     "tokenStatus": "stable",
     "codeStatus": "implemented",
     "darkModeStatus": "pending",
-    "figmaNodeId": "6443:4408",
-    "figmaNote": "Base Input frame = 'Login input' in Figma. Section 2 (6443:5451). Confirmed via MCP 2026-05-12.",
+    "figmaNodeId": "540:3328",
+    "figmaNote": "2026-05-20 MVP-F1 플러그인 스캔으로 확인. Figma 내 프레임명이 'Login input'으로 잘못 등록된 상태 — canonical 명칭은 'Input'. 이전 stale nodeId: 6443:4408.",
     "description": "Base text input field. Pure input element without label/helper wrapper. Label/Helper combo = Input Slots pattern.",
     "hdResolved": "HD-1 through HD-8 resolved 2026-05-12. Token corrections applied after re-examination."
   },
@@ -47,10 +47,10 @@
     "radius": "PC: --radius/control/sm 토큰 / Mobile: raw 4px",
     "iconSlot-success": "PC: pw-hide 아이콘 유지 / Mobile: remove(X) 버튼 노출"
   },
-  "states": ["default", "focus", "complete", "error", "correct", "disabled"],
+  "states": ["default", "focus", "filled", "error", "correct", "disabled"],
   "stateNotes": {
     "focus":    "Figma: 'selected'. border → --input-focus-border(blue). bg 변경 없음.",
-    "complete": "HD-3: 별도 bg/border 없음. default와 동일 시각. text/default 색상으로만 구분(placeholder→typed).",
+    "filled":   "Figma: 'complete'. HD-3: 별도 bg/border 없음. default와 동일 시각. text/default 색상으로만 구분(placeholder→typed). canonical: filled (token-aliases.json 확정).",
     "correct":  "HD-4: correct로 통일(Figma: success). border = focus와 동일(blue, --color/form-control/border/selected). helper text = --color/text/state/correct(#1D6CEB).",
     "error":    "border → --input-error-border(#FF4554). helper text → error 메시지.",
     "hover":    "삭제(HD-2). Figma 미정의."

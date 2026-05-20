@@ -16,23 +16,23 @@
   --color-bg-deepest  Light: #E9E9E9 (color/gray/100)   Dark: #0D0E12 (gray-dark/0)
   --color-bg-selected Light: #E2F1FF (color/blue/50)    Dark: #0C1D38 (blue-dark/50)
   ```
-- **제안 값**: Figma SW UX GUIDE V2.4 `semantic` 컬렉션에서 해당 토큰 존재 여부 확인 후, 존재하면 원본 경로와 함께 등록 / 없으면 신규 Primitive 및 Semantic 추가를 Figma에서 먼저 정의
+- **제안 값**: Figma SW UX GUIDE V2.4 `semantic` 컬렉션에서 해당 토큰 존재 여부 확인 후, 존재하면 원본 경로와 함께 등록 / 없으면 신규 Foundation 및 Semantic 추가를 Figma에서 먼저 정의
 - **수정 이유**: 원본 없는 토큰이 확정 토큰 파일에 혼재되면 구현 시 임의 값 사용 위험 있음
 - **영향 범위**: semantic.md color-bg 테이블, CSS 구현 참조 블록
 - **승인 여부**: ⬜ 대기 중
 
 ---
 
-## 리뷰 항목 2 — `--color-bg-home` Primitive 미등록
+## 리뷰 항목 2 — `--color-bg-home` Foundation 미등록
 
 - **유형**: 구조 개선
 - **대상 파일**: tokens/semantic.md → color-bg 테이블
-- **발견 내용**: `surface/base-background/home`의 Light 값 `#F5F6FB`이 기존 `color/gray` Primitive 팔레트에 없는 값으로, 현재 하드코딩 상태임.
+- **발견 내용**: `surface/base-background/home`의 Light 값 `#F5F6FB`이 기존 `color/gray` Foundation 팔레트에 없는 값으로, 현재 하드코딩 상태임.
 - **현재 값**:
   ```
   --color-bg-home | surface/base-background/home | #F5F6FB | ⚠️ 하드코딩 | #131418 | gray-dark/50
   ```
-- **제안 값**: `color/gray` 팔레트에 신규 Primitive 추가 (`color/gray/25: #F5F6FB`) 후 `var(--color-gray-25)` 참조로 전환
+- **제안 값**: `color/gray` 팔레트에 신규 Foundation 추가 (`color/gray/25: #F5F6FB`) 후 `var(--color-gray-25)` 참조로 전환
 - **수정 이유**: Foundation을 거치지 않는 직접 HEX 사용은 다크모드 전환 및 토큰 관리 일관성을 해침
 - **영향 범위**: Foundation Token 팔레트, semantic.md `--color-bg-home`
 - **승인 여부**: ⬜ 대기 중

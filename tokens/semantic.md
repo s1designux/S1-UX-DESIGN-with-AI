@@ -20,6 +20,7 @@ color-border    → 테두리·구분선
 color-icon      → 아이콘
 color-action    → 인터랙션 액션 (버튼 등 컴포넌트가 참조)
 color-status    → UI 피드백 상태 (성공·에러·경고·정보)
+color-data      → 데이터 그리드/테이블 전용 상태 (행 hover 등)
 color-overlay   → 딤·오버레이
 ```
 
@@ -29,18 +30,18 @@ color-overlay   → 딤·오버레이
 
 ---
 
-## 📌 Dark Primitive 참조 (미확정 — Foundation 등록 대기)
+## 📌 Dark Foundation 참조 (미확정 — Foundation 등록 대기)
 
 > 아래 값은 Dark Mode 설계안 기반 임시 참조표입니다.
-> Figma Foundation에 해당 Primitive가 추가·승인된 후 `var()` 참조로 전환해야 합니다.
+> Figma Foundation에 해당 Foundation가 추가·승인된 후 `var()` 참조로 전환해야 합니다.
 > **확정 전까지 이 표의 HEX를 직접 토큰 값으로 사용하지 않습니다.**
 
-> #### ⚠️ Dark Primitive 스텝 방향 규칙
+> #### ⚠️ Dark Foundation 스텝 방향 규칙
 > Dark 팔레트는 Light와 스텝 의미가 반대다.
 > **낮은 스텝(0·50·100) = 더 어두운 색(배경), 높은 스텝(700·800·900) = 더 밝은 색(텍스트).**
 > 상세 근거 및 체크리스트 → `tokens/foundation.md` 참조
 
-| Dark Primitive | Hex | 비고 |
+| Dark Foundation | Hex | 비고 |
 |----------------|-----|------|
 | gray-dark/0 | #0D0E12 | 최심부 (관제 화면 배경) |
 | gray-dark/50 | #131418 | 페이지 기본 배경 |
@@ -74,16 +75,16 @@ color-overlay   → 딤·오버레이
 **역할**: 페이지 전체, 레이아웃 섹션, 화면 최하위 배경에 사용.
 컴포넌트 표면(카드·패널)에는 `color-surface` 사용 권장.
 
-| CSS Variable | Figma 원본 | Light Hex | Light Primitive | Dark Hex | Dark Primitive |
+| CSS Variable | Figma 원본 | Light Hex | Light Foundation | Dark Hex | Dark Foundation |
 |---|---|---|---|---|---|
 | `--color-bg-default` | surface/neutral/bg/base-alt | `#FAFAFA` | color/gray/0 | `#131418` | gray-dark/50 |
 | `--color-bg-subtle` | surface/neutral/bg/subtle | `#F5F5F5` | color/gray/50 | `#24252C` | gray-dark/200 |
 | `--color-bg-muted` | surface/neutral/bg/strong | `#E9E9E9` | color/gray/100 | `#2E2F38` | gray-dark/300 |
 | `--color-bg-elevated` | surface/neutral/bg/support | `#E9E9E9` | color/gray/100 | `#35363F` | gray-dark/400 |
-| `--color-bg-home` | surface/base-background/home | `#F5F6FB` | — (Primitive 미등록) | `#131418` | gray-dark/50 |
+| `--color-bg-home` | surface/base-background/home | `#F5F6FB` | — (Foundation 미등록) | `#131418` | gray-dark/50 |
 
 > ⚠️ `--color-bg-active`, `--color-bg-deepest`, `--color-bg-selected` 3종은 Figma 원본 미확인 상태로 `tokens/review/pending-review.md` 항목 1에서 검토 중입니다.
-> `--color-bg-home`의 Light Primitive(`#F5F6FB`)는 기존 팔레트 미등록 값으로 `tokens/review/pending-review.md` 항목 2에서 검토 중입니다.
+> `--color-bg-home`의 Light Foundation(`#F5F6FB`)는 기존 팔레트 미등록 값으로 `tokens/review/pending-review.md` 항목 2에서 검토 중입니다.
 
 ---
 
@@ -92,7 +93,7 @@ color-overlay   → 딤·오버레이
 **역할**: `color-bg` 위에 올라오는 컴포넌트의 배경. 카드, 패널, 모달, 드롭다운.
 라이트에서는 `color-bg`와 동일한 흰색이나, **다크에서 레이어 깊이가 시각적으로 분리됨**.
 
-| CSS Variable | Figma 원본 | 역할 | Light Hex | Light Primitive | Dark Hex | Dark Primitive |
+| CSS Variable | Figma 원본 | 역할 | Light Hex | Light Foundation | Dark Hex | Dark Foundation |
 |---|---|---|---|---|---|---|
 | `--color-surface-default` | surface/neutral/bg/base | 카드·패널·인풋 기본 표면 | `#FFFFFF` | color/base/white | `#1C1D23` | gray-dark/100 |
 | `--color-surface-raised` | surface/base-background/default | 모달·드롭다운·플로팅 표면 | `#FFFFFF` | color/base/white | `#35363F` | gray-dark/400 |
@@ -101,7 +102,7 @@ color-overlay   → 딤·오버레이
 
 ## 3. color-text — 텍스트
 
-| CSS Variable | Figma 원본 | Light Hex | Light Primitive | Dark Hex | Dark Primitive | 용도 |
+| CSS Variable | Figma 원본 | Light Hex | Light Foundation | Dark Hex | Dark Foundation | 용도 |
 |---|---|---|---|---|---|---|
 | `--color-text-primary` | color/text/title/primary | `#202020` | color/gray/900 | `#ECEDF0` | gray-dark/900 | 제목·주요 본문 |
 | `--color-text-secondary` | color/text/title/secondary, body/primary | `#353535` | color/gray/800 | `#B8BABF` | gray-dark/800 | 서브타이틀·일반 본문 |
@@ -121,7 +122,7 @@ color-overlay   → 딤·오버레이
 
 > 다크모드 border는 고정 hex 대신 rgba를 사용합니다. 배경 명도에 무관하게 일정한 레이어 깊이를 표현할 수 있습니다.
 
-| CSS Variable | Figma 원본 | Light Hex | Light Primitive | Dark Hex | Dark Primitive | 용도 |
+| CSS Variable | Figma 원본 | Light Hex | Light Foundation | Dark Hex | Dark Foundation | 용도 |
 |---|---|---|---|---|---|---|
 | `--color-border-subtle` | color/line/gray/subtle | `#E9E9E9` | color/gray/100 | `rgba(255,255,255,0.04)` | — (rgba) | 미세 구분선 |
 | `--color-border-default` | color/line/gray/default | `#D9D9D9` | color/gray/200 | `rgba(255,255,255,0.07)` | — (rgba) | 기본 테두리 |
@@ -138,21 +139,22 @@ color-overlay   → 딤·오버레이
 ## 4-B. color-control-border — 컨트롤 컴포넌트 전용 테두리
 
 > `color-border-*`(디바이더·구분선)와 완전 독립 그룹. Checkbox, Radio 등 인터랙티브 컨트롤의 박스/원 테두리에만 사용.
-> Foundation Primitive를 직접 참조하므로 다크 값을 별도로 튜닝할 수 있다.
+> Foundation Foundation를 직접 참조하므로 다크 값을 별도로 튜닝할 수 있다.
 > Dark 값은 **candidate** 상태 — 화면 검증 후 확정 예정.
 
-| CSS Variable | Light Primitive | Light Hex | Dark Primitive | Dark Hex | 용도 |
+| CSS Variable | Light Foundation | Light Hex | Dark Foundation | Dark Hex | 용도 |
 |---|---|---|---|---|---|
 | `--color-control-border-default` | color/gray/200 | `#D9D9D9` | color/gray-dark/500 | `#3E4049` (candidate) | 기본 상태 테두리 |
 | `--color-control-border-hover` | color/blue/400 | `#1D6CEB` | color/blue-dark/300 | `#3B82F6` (candidate) | hover 강조 테두리 |
 | `--color-control-border-selected` | color/blue/400 | `#1D6CEB` | color/blue-dark/300 | `#3B82F6` (candidate) | checked/selected 테두리 |
 | `--color-control-border-disabled` | color/gray/300 | `#C4C4C4` | color/gray-dark/300 | `#2E2F38` (candidate) | disabled 상태 테두리 |
+| `--color-control-bg-hover` | --color-bg-subtle | `#F5F5F5` | --color-bg-subtle (dark) | `#26272F` (candidate) | hover 시 control 배경 — Figma: color/control/bg/hover |
 
 ---
 
 ## 5. color-icon — 아이콘
 
-| CSS Variable | Figma 원본 | Light Hex | Light Primitive | Dark Hex | Dark Primitive | 용도 |
+| CSS Variable | Figma 원본 | Light Hex | Light Foundation | Dark Hex | Dark Foundation | 용도 |
 |---|---|---|---|---|---|---|
 | `--color-icon-default` | color/icon/gray | `#757575` | color/gray/500 | `#8A8C96` | gray-dark/700 | 기본 아이콘 |
 | `--color-icon-muted` | color/icon/gray-light | `#C4C4C4` | color/gray/300 | `#35363F` | gray-dark/400 | 비강조·보조 아이콘 |
@@ -167,7 +169,7 @@ color-overlay   → 딤·오버레이
 
 > 컴포넌트 Token이 이 레이어를 `var()`로 참조합니다. 직접 스타일에 사용하지 않습니다.
 
-| CSS Variable | Light Hex | Light Primitive | Dark Hex | Dark Primitive | 용도 |
+| CSS Variable | Light Hex | Light Foundation | Dark Hex | Dark Foundation | 용도 |
 |---|---|---|---|---|---|
 | `--color-action-primary-default` | `#1D6CEB` | color/blue/400 | `#3070D8` | blue-dark/300 | Primary CTA 기본 |
 | `--color-action-primary-hover` | `#2158C8` | color/blue/450 | `#2A65C8` | blue-dark/250 | Primary hover |
@@ -183,7 +185,7 @@ color-overlay   → 딤·오버레이
 
 > 서비스 확정값 기준. success는 현재 서비스에서 blue 계열을 사용 중이며 이를 기준으로 정의.
 
-| CSS Variable | Light Hex | Light Primitive | Dark Hex | Dark Primitive | 용도 |
+| CSS Variable | Light Hex | Light Foundation | Dark Hex | Dark Foundation | 용도 |
 |---|---|---|---|---|---|
 | `--color-status-success` | `#1D6CEB` | color/blue/400 | `#4285E8` | blue-dark/350 | 성공·완료·올바름 |
 | `--color-status-error` | `#E50533` | color/red/400 | `#F06070` | status-dark/red | 에러·실패 |
@@ -199,7 +201,7 @@ color-overlay   → 딤·오버레이
 
 ## 8. color-overlay — 오버레이·딤
 
-> rgba 직접 사용 허용 — alpha 채널이 포함된 값은 Foundation Primitive로 alias 불가.
+> rgba 직접 사용 허용 — alpha 채널이 포함된 값은 Foundation Foundation로 alias 불가.
 
 | CSS Variable | Figma 원본 | Light | Dark |
 |---|---|---|---|
@@ -209,12 +211,12 @@ color-overlay   → 딤·오버레이
 
 ## 9. Spacing · Sizing · Radius 토큰
 
-> Figma `semantic` 컬렉션에 포함되어 있으나, 이는 Foundation Primitive를 역할 기반으로 매핑한 **Semantic Spacing** 토큰입니다.
+> Figma `semantic` 컬렉션에 포함되어 있으나, 이는 Foundation Foundation를 역할 기반으로 매핑한 **Semantic Spacing** 토큰입니다.
 > Foundation의 `spacing/4`, `spacing/8` 등을 참조하므로 구조는 올바릅니다.
 
 ### 9-1. Spacing
 
-| CSS Variable | 역할 | 값 | Primitive 참조 |
+| CSS Variable | 역할 | 값 | Foundation 참조 |
 |---|---|---|---|
 | `--spacing-padding-block-xxs` | 블록 패딩 최소 | 8px | spacing/8 |
 | `--spacing-padding-block-xs` | 블록 패딩 소 | 12px | spacing/12 |
@@ -361,6 +363,8 @@ color-overlay   → 딤·오버레이
   --color-form-control-text-default:        var(--color-text-secondary);   /* #353535 */
   --color-form-control-text-placeholder:    var(--color-text-placeholder);  /* #757575 */
   --color-form-control-text-disabled:       var(--color-text-disabled);    /* #BDBDBD */
+  --color-form-control-label-default:       var(--color-text-secondary);   /* #353535 — TimePicker select "시"/"분" 라벨 */
+  --color-form-control-label-disabled:      var(--color-text-disabled);    /* #BDBDBD */
 
   /* color-text-state */
   --color-text-state-helper:  var(--color-text-secondary);  /* #353535 */
@@ -372,6 +376,9 @@ color-overlay   → 딤·오버레이
   --color-control-border-hover:    var(--color-blue-400);  /* #1D6CEB */
   --color-control-border-selected: var(--color-blue-400);  /* #1D6CEB */
   --color-control-border-disabled: var(--color-gray-300);  /* #C4C4C4 */
+
+  /* color-data (데이터 그리드/테이블 전용 — Figma: color/data/state/*) */
+  --color-data-state-hover: var(--color-blue-50);  /* #E2F1FF — 행 hover 배경 */
 
   /* color-overlay */
   --color-overlay: rgba(0, 0, 0, 0.5);
@@ -443,6 +450,9 @@ color-overlay   → 딤·오버레이
   --color-control-border-hover:    var(--color-blue-dark-300);  /* #3B82F6 — candidate */
   --color-control-border-selected: var(--color-blue-dark-300);  /* #3B82F6 — candidate */
   --color-control-border-disabled: var(--color-gray-dark-300);  /* #2E2F38 — candidate */
+
+  /* color-data (dark — candidate: Figma dark 미확인) */
+  --color-data-state-hover: var(--color-blue-dark-100);  /* #112B55 — candidate, HD-Table-1 */
 
   /* color-overlay */
   --color-overlay: rgba(0, 0, 0, 0.75);

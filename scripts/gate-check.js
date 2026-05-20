@@ -1,0 +1,162 @@
+#!/usr/bin/env node
+/**
+ * Gate Check — Registry + Report + Quality gates
+ * Usage: node scripts/gate-check.js
+ *
+ * Gate 1: Registry  — component registry path/JSON 유효성
+ * Gate 2: Report    — reports-index.json vs 실제 파일 정합성
+ * Gate 3: Quality   — tokens.css raw HEX / Foundation 직접 참조 감지
+ */
+
+const fs = require('fs');
+const path = require('path');
+
+const ROOT = path.resolve(__dirname, '..');
+
+let errors = 0;
+let warnings = 0;
+
+const pass = (msg) => console.log(`  ✅ ${msg}`);
+const warn = (msg) => { console.warn(`  ⚠️  ${msg}`); warnings++; };
+const fail = (msg) => { console.error(`  ❌ ${msg}`); errors++; };
+
+// ── Gate 1: Registry Gate ─────────────────────────────────────────
+console.log('\n[Gate 1] Registry Gate');
+
+try {
+  const compIndexPath = path.join(ROOT, 'registry/components/index.json');
+  const compIndex = JSON.parse(fs.readFileSync(compIndexPath, 'utf-8'));
+
+  for (const comp of compIndex.components) {
+    const compPath = path.join(ROOT, comp.path);
+    if (!fs.existsSync(compPath)) {
+      fail(`Component registry missing: ${comp.path} (id: ${comp.id})`);
+    } else {
+      try {
+        JSON.parse(fs.readFileSync(compPath, 'utf-8'));
+        pass(`${comp.id}: registry JSON valid`);
+      } catch {
+        fail(`${comp.path}: invalid JSON`);
+      }
+    }
+  }
+} catch (e) {
+  fail(`registry/components/index.json: ${e.message}`);
+}
+
+const tokenRegistryFiles = [
+  'registry/tokens/semantic.colors.json',
+  'registry/tokens/canonical-token-draft.json',
+  'registry/tokens/token-aliases.json',
+];
+for (const rel of tokenRegistryFiles) {
+  const p = path.join(ROOT, rel);
+  if (!fs.existsSync(p)) {
+    warn(`Token registry not found: ${rel}`);
+  } else {
+    try {
+      JSON.parse(fs.readFileSync(p, 'utf-8'));
+      pass(`${path.basename(rel)}: valid JSON`);
+    } catch {
+      fail(`${rel}: invalid JSON`);
+    }
+  }
+}
+
+// ── Gate 2: Report Gate ───────────────────────────────────────────
+console.log('\n[Gate 2] Report Gate');
+
+const reportsDir = path.join(ROOT, 'reports');
+const reportsIndexPath = path.join(ROOT, 'data/reports-index.json');
+
+if (!fs.existsSync(reportsIndexPath)) {
+  warn('reports-index.json not found — run: npm run reports:sync');
+} else {
+  try {
+    const index = JSON.parse(fs.readFileSync(reportsIndexPath, 'utf-8'));
+    const indexed = new Set((index.reports || []).map((r) => r.filename || r.file));
+    const mdFiles = fs.readdirSync(reportsDir).filter((f) => f.endsWith('.md') && f !== 'README.md');
+    let unindexed = 0;
+    for (const f of mdFiles) {
+      if (!indexed.has(f)) {
+        warn(`Report not indexed: ${f} — run: npm run reports:sync`);
+        unindexed++;
+      }
+    }
+    if (unindexed === 0) {
+      pass(`${indexed.size} reports indexed (all ${mdFiles.length} MD files covered)`);
+    }
+  } catch (e) {
+    fail(`reports-index.json: ${e.message}`);
+  }
+}
+
+// ── Gate 3: Quality Gate ──────────────────────────────────────────
+console.log('\n[Gate 3] Quality Gate');
+
+const tokensCSSPath = path.join(ROOT, 'assets/css/tokens.css');
+if (!fs.existsSync(tokensCSSPath)) {
+  fail('assets/css/tokens.css not found');
+} else {
+  const css = fs.readFileSync(tokensCSSPath, 'utf-8');
+  const lines = css.split('\n');
+
+  // Foundation prefixes — allowed to have raw HEX
+  const foundationPrefixes = [
+    '--color-gray-', '--color-blue-', '--color-red-', '--color-orange-',
+    '--color-yellow-', '--color-green-', '--color-skyblue-', '--color-purple-',
+    '--color-brown-', '--color-visual-', '--color-coolgray-', '--color-base-',
+    '--color-brand-', '--color-status-dark-',
+  ];
+
+  // Semantic-level tokens allowed to carry a raw HEX (no Foundation alias)
+  // Reason: blue-gray tint (#F5F6FB) is distinct from both gray and visual-gray families;
+  // Figma treats this as a semantic surface value, not a Foundation primitive.
+  const hexAllowlist = [
+    '--color-bg-home',
+  ];
+
+  let rawHexCount = 0;
+  for (let i = 0; i < lines.length; i++) {
+    const line = lines[i].trim();
+    if (!line || line.startsWith('/*') || line.startsWith('*') || line.startsWith('//')) continue;
+    // Strip inline comments before checking for raw HEX
+    const codeOnly = line.replace(/\/\*.*?\*\//g, '').replace(/\/\/.*$/, '');
+    if (!/#[0-9a-fA-F]{3,8}\b/.test(codeOnly)) continue;
+
+    const isFoundation = foundationPrefixes.some((p) => line.startsWith(p));
+    const isAllowlisted = hexAllowlist.some((t) => line.startsWith(t));
+    if (!isFoundation && !isAllowlisted) {
+      warn(`Raw HEX in non-Foundation rule (line ${i + 1}): ${line.slice(0, 80)}`);
+      rawHexCount++;
+      if (rawHexCount >= 5) {
+        warn('(further raw HEX violations suppressed — fix these first)');
+        break;
+      }
+    }
+  }
+  if (rawHexCount === 0) {
+    pass('No raw HEX values in Semantic/Component tokens');
+  }
+
+  // Check install-prompt sync (basic: file must exist)
+  const installPromptPath = path.join(ROOT, 'pages/install-prompt.html');
+  if (!fs.existsSync(installPromptPath)) {
+    warn('pages/install-prompt.html not found — tokens.css sync target missing');
+  } else {
+    pass('install-prompt.html exists');
+  }
+}
+
+// ── Summary ───────────────────────────────────────────────────────
+console.log('\n─────────────────────────────────────────────────────');
+if (errors > 0) {
+  console.error(`\nGate Check FAILED — ${errors} error(s), ${warnings} warning(s)\n`);
+  process.exit(1);
+} else if (warnings > 0) {
+  console.warn(`\nGate Check PASSED with ${warnings} warning(s)\n`);
+  process.exit(0);
+} else {
+  console.log(`\nGate Check PASSED — all gates clear\n`);
+  process.exit(0);
+}

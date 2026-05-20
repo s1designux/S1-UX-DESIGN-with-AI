@@ -1,0 +1,12 @@
+{
+  "name": "S1 Design Variables Installer",
+  "id": "sw-design-system-vars-installer",
+  "api": "1.0.0",
+  "main": "code.js",
+  "ui": "ui.html",
+  "permissions": ["variables:write"],
+  "editorType": ["figma"],
+  "networkAccess": {
+    "allowedDomains": ["none"]
+  }
+}

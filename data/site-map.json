@@ -1,12 +1,12 @@
 {
   "_meta": {
-    "version": "1.0.0",
-    "updatedAt": "2026-04-30",
-    "description": "SW Design System Guide 사이트 네비게이션 구조"
+    "version": "2.0.0",
+    "updatedAt": "2026-05-18",
+    "description": "SW Design System Guide 사이트 네비게이션 구조 — Guide / Setup / Harness Admin / Archive"
   },
   "nav": [
     {
-      "group": "개요",
+      "group": "top",
       "items": [
         {
           "id": "index",
@@ -15,33 +15,27 @@
           "href": "index.html",
           "status": "ready",
           "description": "디자인시스템 소개, 통계, 로드맵"
-        },
-        {
-          "id": "install-prompt",
-          "title": "토큰 설치 프롬프트",
-          "icon": "⚡",
-          "href": "pages/install-prompt.html",
-          "status": "ready",
-          "description": "Semantic + Component 토큰 전체를 한 번에 복사. CSS 스니펫과 AI 컨텍스트 프롬프트 2종 제공"
         }
       ]
     },
     {
-      "group": "Foundation",
+      "group": "Guide",
       "items": [
+        {
+          "id": "install-prompt",
+          "title": "Download Tokens",
+          "icon": "⚡",
+          "href": "pages/install-prompt.html",
+          "status": "ready",
+          "description": "개발자용(tokens.css + AI 프롬프트)과 디자이너용(Figma Plugin) 2탭 제공"
+        },
         {
           "id": "foundation",
           "title": "Foundation Tokens",
           "icon": "🎨",
           "href": "pages/foundation.html",
           "status": "ready",
-          "description": "11개 색상 계열 Primitive 팔레트, Spacing, Radius, Typography",
-          "sections": [
-            "Primitive Colors — Brand + 11 Palettes",
-            "Spacing — 8pt 그리드 (2–128)",
-            "Border Radius — 0–full",
-            "Typography — Font Size / Weight / Line Height"
-          ]
+          "description": "11개 색상 계열 Primitive 팔레트, Spacing, Radius, Typography"
         },
         {
           "id": "semantic",
@@ -49,20 +43,15 @@
           "icon": "🌗",
           "href": "pages/semantic.html",
           "status": "ready",
-          "description": "역할 기반 토큰, Light/Dark 테마 전환 구조 — 8개 카테고리 45종"
-        }
-      ]
-    },
-    {
-      "group": "Design System",
-      "items": [
+          "description": "역할 기반 토큰, Light/Dark 테마 전환 구조 — 8개 카테고리"
+        },
         {
           "id": "components",
           "title": "Components",
           "icon": "🧩",
           "href": "pages/components.html",
           "status": "ready",
-          "description": "Core / Domain / Legacy 컴포넌트 라이브러리 — 9개 그룹 119종"
+          "description": "Core / Domain / Legacy 컴포넌트 라이브러리"
         },
         {
           "id": "icons",
@@ -87,104 +76,71 @@
           "href": "pages/policy.html",
           "status": "wip",
           "description": "토큰 사용 원칙, 신규/레거시 기준, 다크모드 대응 정책"
-        },
-        {
-          "id": "legacy",
-          "title": "Legacy Guide",
-          "icon": "🗂️",
-          "href": "pages/legacy.html",
-          "status": "soon",
-          "description": "구버전 토큰 → 신규 토큰 마이그레이션 가이드"
         }
       ]
     },
     {
-      "group": "Registry",
+      "group": "Harness Admin",
+      "collapsible": true,
+      "defaultCollapsed": true,
       "items": [
         {
-          "id": "registry-health",
-          "title": "Registry Health",
+          "id": "harness-overview",
+          "title": "Harness Overview",
+          "icon": "🧭",
+          "href": "pages/harness-overview.html",
+          "description": "하네스가 무엇인지, 왜 만들고 있는지, 자동화 흐름 — 비개발자용 설명서"
+        },
+        {
+          "id": "registry-explorer",
+          "title": "Registry Explorer",
+          "icon": "🗄",
+          "href": "pages/registry-explorer.html",
+          "description": "Foundation / Semantic / Component / Raw JSON 탭 통합 — registry 원장 검수"
+        },
+        {
+          "id": "token-mapping",
+          "title": "Token Mapping",
+          "icon": "🔗",
+          "href": "pages/token-mapping.html",
+          "description": "Figma ↔ CSS / Legacy → Canonical / Alias · Deprecated 매핑 검수"
+        },
+        {
+          "id": "migration-board",
+          "title": "Migration Board",
           "icon": "📊",
+          "href": "pages/migration-board.html",
+          "description": "canonical-token-promotion-plan 기반 승격 상태 추적"
+        },
+        {
+          "id": "registry-health",
+          "title": "System Status",
+          "icon": "💚",
           "href": "pages/registry-health.html",
-          "status": "new",
           "description": "Registry 전체 상태 요약 — token count, component status, governance"
         },
         {
-          "id": "foundation-tokens",
-          "title": "Foundation Tokens (Registry)",
-          "icon": "🏗",
-          "href": "pages/foundation-tokens.html",
-          "status": "new",
-          "description": "registry/tokens/foundation.colors.json 기반 Foundation 색상 팔레트"
-        },
-        {
-          "id": "semantic-tokens",
-          "title": "Semantic Tokens (Registry)",
-          "icon": "🌗",
-          "href": "pages/semantic-tokens.html",
-          "status": "new",
-          "description": "registry/tokens/semantic.colors.json 기반 Semantic 토큰 Light/Dark 구조"
-        },
-        {
-          "id": "component-tokens",
-          "title": "Component Tokens (Registry)",
-          "icon": "🧩",
-          "href": "pages/component-tokens.html",
-          "status": "new",
-          "description": "registry/tokens/component.tokens.json 기반 컴포넌트 토큰"
-        },
-        {
-          "id": "component-registry",
-          "title": "Component Registry",
-          "icon": "📋",
-          "href": "pages/component-registry.html",
-          "status": "new",
-          "description": "registry/components/*.json 기반 컴포넌트 상태 현황"
-        },
-        {
-          "id": "button-harness",
-          "title": "Button Harness",
-          "icon": "🔲",
-          "href": "pages/button-harness.html",
-          "status": "new",
-          "description": "Button 컴포넌트 V2.4 공식 토큰 기반 Harness — 3 variants × 4 states × 3 sizes (PC) + 1 size (Mobile)"
-        }
-      ]
-    },
-    {
-      "group": "AI 워크플로우",
-      "items": [
-        {
-          "id": "ai-snippets",
-          "title": "AI Snippets",
-          "icon": "🤖",
-          "href": "pages/ai-snippets.html",
-          "status": "ready",
-          "description": "컴포넌트별 AI 코드 스니펫 모음 — 10개"
-        },
-        {
-          "id": "guide-md",
-          "title": "Guide MD",
-          "icon": "📋",
-          "href": "pages/guide-md.html",
-          "status": "ready",
-          "description": "Semantic · Component Token 정의서 — 복사 가능한 원본 Markdown"
-        },
-        {
-          "id": "md-review",
-          "title": "MD 리뷰",
-          "icon": "🔍",
-          "href": "pages/md-review.html",
-          "status": "ready",
-          "description": "수정 제안 · 결정 대기 항목 · Figma 작업 체크리스트"
+          "id": "reports",
+          "title": "Reports",
+          "icon": "📁",
+          "href": "pages/reports.html",
+          "description": "MVP 단계별 검수·설계·의사결정 문서 인덱스"
         }
       ]
     }
   ],
+  "_archive": {
+    "_note": "Archive 파일은 nav에서 제거됨. 직접 URL 접근 가능. 삭제 금지.",
+    "items": [
+      { "id": "legacy",      "href": "pages/legacy.html" },
+      { "id": "ai-snippets", "href": "pages/ai-snippets.html" },
+      { "id": "guide-md",    "href": "pages/guide-md.html" },
+      { "id": "md-review",   "href": "pages/md-review.html" }
+    ]
+  },
   "statusLegend": {
     "ready": "완료",
     "wip": "작성 중",
-    "soon": "Coming Soon",
-    "new": "신규"
+    "soon": "Coming Soon"
   }
 }

@@ -1,0 +1,81 @@
+{
+  "meta": {
+    "description": "ACCESS-01 Figma node targets for variable usage export. Plugin reads this file at build time (bundled inline).",
+    "expectedFileKey": "yE5UCFEbmXJBlYJWB24Lz2",
+    "schemaVersion": "1.0.0",
+    "nodeIdStatus": "valid — 2026-05-20 MVP-F1 플러그인 스캔으로 전체 nodeId 확인 완료. 7개 COMPONENT_SET 등록."
+  },
+  "targets": [
+    {
+      "id": "input",
+      "nodeId": "540:3328",
+      "name": "Input",
+      "component": "Input",
+      "accessStatus": "valid",
+      "validatedAt": "2026-05-20",
+      "figmaOriginalName": "Login input",
+      "figmaNameNote": "Figma 내 프레임명이 'Login input'으로 잘못 등록된 상태. 디자인시스템 canonical 명칭은 'Input'으로 확정 (2026-05-20).",
+      "notes": "2026-05-20 MVP-F1 Plugin 스캔으로 nodeId 540:3328 확인. 이전 stale nodeId 6443:4408 대체."
+    },
+    {
+      "id": "date-picker",
+      "nodeId": "540:3794",
+      "name": "DatePicker Input",
+      "component": "DatePicker",
+      "accessStatus": "valid",
+      "validatedAt": "2026-05-20",
+      "figmaOriginalName": "datepicker_input",
+      "notes": "2026-05-20 MVP-F1 Plugin 스캔으로 nodeId 540:3794 확인. 이전 stale nodeId 6443:4655 대체."
+    },
+    {
+      "id": "time-picker-input",
+      "nodeId": "540:3690",
+      "name": "TimePicker Input",
+      "component": "TimePicker",
+      "accessStatus": "valid",
+      "validatedAt": "2026-05-20",
+      "figmaOriginalName": "timepicker_input",
+      "notes": "TimePicker 기본 입력 컴포넌트. 이전 stale nodeId 6443:4606 대체."
+    },
+    {
+      "id": "time-picker-select",
+      "nodeId": "540:3636",
+      "name": "TimePicker Select",
+      "component": "TimePicker",
+      "accessStatus": "valid",
+      "validatedAt": "2026-05-20",
+      "figmaOriginalName": "timepicker_select",
+      "notes": "TimePicker 셀렉트 variant."
+    },
+    {
+      "id": "time-picker-select-dropdown",
+      "nodeId": "540:3489",
+      "name": "TimePicker Select Dropdown",
+      "component": "TimePicker",
+      "accessStatus": "valid",
+      "validatedAt": "2026-05-20",
+      "figmaOriginalName": "timepicker_select_dropdown",
+      "notes": "TimePicker 드롭다운 variant."
+    },
+    {
+      "id": "time-picker-pc-input-dropdown",
+      "nodeId": "540:3506",
+      "name": "TimePicker PC Input Dropdown",
+      "component": "TimePicker",
+      "accessStatus": "valid",
+      "validatedAt": "2026-05-20",
+      "figmaOriginalName": "pc_timepicker_input_dropdown",
+      "notes": "PC TimePicker 인풋+드롭다운 복합 variant."
+    },
+    {
+      "id": "time-picker-pc-calendar",
+      "nodeId": "540:4216",
+      "name": "TimePicker PC Calendar",
+      "component": "TimePicker",
+      "accessStatus": "valid",
+      "validatedAt": "2026-05-20",
+      "figmaOriginalName": "pc_timepicker_calendar",
+      "notes": "PC TimePicker 캘린더 패널."
+    }
+  ]
+}

@@ -1,0 +1,390 @@
+{
+  "meta": {
+    "name": "S1 UX Guide Component Token Coverage",
+    "version": "0.1.0",
+    "status": "draft",
+    "source": "component-code-pilot",
+    "updatedAt": "2026-05-19",
+    "description": "Tracks token coverage issues found while auditing core component HTML/CSS in pages/components.html against canonical-token-draft.json and tokens.css. MVP-C0 pilot result."
+  },
+
+  "components": [
+    {
+      "component": "Button",
+      "status": "pilot",
+      "implementedIn": "pages/components.html",
+      "variantsImplemented": ["primary", "secondary", "blue-line"],
+      "variantsMissing": [],
+      "statesImplemented": ["default", "hover", "pressed", "disabled"],
+      "statesMissing": [],
+      "tokensUsed": [
+        { "token": "--button-primary-default-bg",    "layer": "component", "status": "stable", "usedFor": "primary default bg" },
+        { "token": "--button-primary-hover-bg",      "layer": "component", "status": "stable", "usedFor": "primary hover bg" },
+        { "token": "--button-primary-pressed-bg",    "layer": "component", "status": "stable", "usedFor": "primary pressed bg" },
+        { "token": "--button-primary-disabled-bg",   "layer": "component", "status": "stable", "usedFor": "primary disabled bg" },
+        { "token": "--button-primary-disabled-border","layer": "component","status": "stable", "usedFor": "primary disabled border" },
+        { "token": "--button-primary-default-text",  "layer": "component", "status": "stable", "usedFor": "primary text" },
+        { "token": "--button-primary-disabled-text", "layer": "component", "status": "stable", "usedFor": "primary disabled text" },
+        { "token": "--button-secondary-default-bg",      "layer": "component", "status": "stable", "usedFor": "secondary default bg" },
+        { "token": "--button-secondary-hover-bg",        "layer": "component", "status": "stable", "usedFor": "secondary hover bg" },
+        { "token": "--button-secondary-pressed-bg",      "layer": "component", "status": "stable", "usedFor": "secondary pressed bg" },
+        { "token": "--button-secondary-disabled-bg",     "layer": "component", "status": "stable", "usedFor": "secondary disabled bg" },
+        { "token": "--button-secondary-default-border",  "layer": "component", "status": "stable", "usedFor": "secondary default border" },
+        { "token": "--button-secondary-disabled-border", "layer": "component", "status": "stable", "usedFor": "secondary disabled border" },
+        { "token": "--button-secondary-default-text",    "layer": "component", "status": "stable", "usedFor": "secondary text" },
+        { "token": "--button-secondary-disabled-text",   "layer": "component", "status": "stable", "usedFor": "secondary disabled text" },
+        { "token": "--button-blue-line-default-bg",      "layer": "component", "status": "stable", "usedFor": "blue-line default bg" },
+        { "token": "--button-blue-line-hover-bg",        "layer": "component", "status": "stable", "usedFor": "blue-line hover bg" },
+        { "token": "--button-blue-line-pressed-bg",      "layer": "component", "status": "stable", "usedFor": "blue-line pressed bg" },
+        { "token": "--button-blue-line-disabled-bg",     "layer": "component", "status": "stable", "usedFor": "blue-line disabled bg" },
+        { "token": "--button-blue-line-default-border",  "layer": "component", "status": "stable", "usedFor": "blue-line default border" },
+        { "token": "--button-blue-line-hover-border",    "layer": "component", "status": "stable", "usedFor": "blue-line hover border" },
+        { "token": "--button-blue-line-disabled-border", "layer": "component", "status": "stable", "usedFor": "blue-line disabled border" },
+        { "token": "--button-blue-line-default-text",    "layer": "component", "status": "stable", "usedFor": "blue-line text" },
+        { "token": "--button-blue-line-disabled-text",   "layer": "component", "status": "stable", "usedFor": "blue-line disabled text" },
+        { "token": "--color-border-disabled",            "layer": "semantic",  "status": "stable", "usedFor": "all variants disabled border (via component alias)" }
+      ],
+      "coverageIssues": [
+        {
+          "type": "missing-token",
+          "description": "--button-primary-default-icon, --button-secondary-default-icon, --button-secondary-disabled-icon token이 tokens.css에 정의되어 있으나 components.html CSS에서 사용되지 않음. icon color가 text color로 암묵적 상속됨.",
+          "recommendation": "icon token을 HTML button 내 svg 색상에 명시적으로 적용하거나, 암묵적 상속을 문서화할 것"
+        },
+        {
+          "type": "token-ref-issue",
+          "description": "--color-border-disabled가 components.html dark 섹션에 정의되지 않음. tokens.css에는 dark override 존재. components.html은 인라인 토큰 정의를 사용하므로 dark 모드에서 disabled border가 올바르게 반영되지 않을 수 있음.",
+          "recommendation": "components.html dark 섹션에 --color-border-disabled: var(--color-gray-dark-200) 추가 필요"
+        }
+      ],
+      "decisionsRequired": []
+    },
+
+    {
+      "component": "Input",
+      "status": "pilot",
+      "implementedIn": "pages/components.html",
+      "variantsImplemented": ["default", "error", "correct", "disabled", "complete (filled)"],
+      "variantsMissing": ["focus (interactive only, not static preview)"],
+      "statesImplemented": ["default", "focus", "complete/filled", "error", "correct", "disabled", "readonly (token defined)"],
+      "statesMissing": [],
+      "tokensUsed": [
+        { "token": "--input-default-bg",       "layer": "component", "status": "stable", "usedFor": "input default bg" },
+        { "token": "--input-disabled-bg",      "layer": "component", "status": "stable", "usedFor": "input disabled bg" },
+        { "token": "--input-default-border",   "layer": "component", "status": "stable", "usedFor": "input default border" },
+        { "token": "--input-focus-border",     "layer": "component", "status": "stable", "usedFor": "focus border" },
+        { "token": "--input-error-border",     "layer": "component", "status": "stable", "usedFor": "error border" },
+        { "token": "--input-correct-border",   "layer": "component", "status": "stable", "usedFor": "correct border (canonical)" },
+        { "token": "--input-disabled-border",  "layer": "component", "status": "stable", "usedFor": "disabled border" },
+        { "token": "--input-placeholder-text", "layer": "component", "status": "stable", "usedFor": "placeholder color" },
+        { "token": "--input-disabled-text",    "layer": "component", "status": "stable", "usedFor": "disabled text" },
+        { "token": "--input-helper-text",      "layer": "component", "status": "stable", "usedFor": "helper text color" },
+        { "token": "--input-correct-text",     "layer": "component", "status": "stable", "usedFor": "correct feedback text" },
+        { "token": "--input-error-text",       "layer": "component", "status": "stable", "usedFor": "error feedback text" },
+        { "token": "--color-form-control-bg-default",      "layer": "semantic", "status": "stable", "usedFor": "form-control bg" },
+        { "token": "--color-form-control-bg-disabled",     "layer": "semantic", "status": "stable", "usedFor": "form-control disabled bg" },
+        { "token": "--color-form-control-border-default",  "layer": "semantic", "status": "stable", "usedFor": "form-control default border" },
+        { "token": "--color-form-control-border-selected", "layer": "semantic", "status": "stable", "usedFor": "form-control focus border" },
+        { "token": "--color-form-control-border-error",    "layer": "semantic", "status": "stable", "usedFor": "form-control error border" },
+        { "token": "--color-form-control-border-correct",  "layer": "semantic", "status": "stable", "usedFor": "form-control correct border" },
+        { "token": "--color-form-control-border-disabled", "layer": "semantic", "status": "stable", "usedFor": "form-control disabled border" },
+        { "token": "--color-text-state-helper",            "layer": "semantic", "status": "stable", "usedFor": "helper text" },
+        { "token": "--color-text-state-correct",           "layer": "semantic", "status": "stable", "usedFor": "correct feedback text" },
+        { "token": "--color-text-state-error",             "layer": "semantic", "status": "stable", "usedFor": "error feedback text" }
+      ],
+      "coverageIssues": [
+        {
+          "type": "missing-state",
+          "description": "readonly 상태 미구현. registry/components/input.json에도 readonly state 없음. Figma 원본 확인 필요.",
+          "recommendation": "--color-form-control-border-readonly / --input-readonly-border 신설 여부 Human Decision 필요"
+        },
+        {
+          "type": "helper-text-class-gap",
+          "description": "components.html에서 ds-helper-text에 is-error-text, is-correct-text 클래스가 직접 붙어 있으나 해당 클래스에 대응하는 CSS 규칙이 없음. 실제 색상 변경은 부모 .is-error / .is-correct 클래스에 의존함. 클래스명이 오해를 유발할 수 있음.",
+          "recommendation": ".ds-helper-text.is-error-text { color: var(--input-error-text); } 등 독립 클래스 규칙 추가하거나, 클래스명을 제거하고 부모 state 방식만 사용"
+        },
+        {
+          "type": "token-ref-issue",
+          "description": "components.html :root에서 --color-text-state-correct: var(--color-blue-400) 로 Foundation 직접 참조. tokens.css의 올바른 구조는 --color-text-state-correct: var(--color-blue-400) (light). 이 자체는 Foundation 참조이므로 components.html 인라인 :root에서 --color-text-state-correct를 --color-blue-400으로 직접 정의하는 것은 아키텍처 원칙 위반.",
+          "recommendation": "components.html :root의 --color-text-state-correct 값을 고정 HEX #1D6CEB로 교체하거나, tokens.css 임포트 방식으로 전환. 또는 인라인 섹션 정의를 --color-text-state-correct: #1D6CEB로 변경하여 Foundation var() 참조 제거"
+        },
+        {
+          "type": "missing-token",
+          "description": "--input-action-icon 토큰 없음. 검색/비밀번호/삭제 아이콘 색상이 --color-icon-default를 직접 참조. 컴포넌트 alias token 미정의.",
+          "recommendation": "--input-action-icon → var(--color-icon-emphasis) 또는 var(--color-icon-default) 신설 검토 (MVP-L4 review.component.input.action-icon 항목과 연계)"
+        },
+        {
+          "type": "missing-token",
+          "description": "--color-form-control-text-default 토큰이 tokens.css에 존재하지만 components.html 인라인 :root에 미정의. input 내 typed text color가 암묵적으로 --color-text-secondary에 의존.",
+          "recommendation": "components.html :root에 --color-form-control-text-default: var(--color-text-secondary) 추가"
+        }
+      ],
+      "decisionsRequired": []
+    },
+
+    {
+      "component": "Search Input",
+      "status": "pilot",
+      "implementedIn": "pages/components.html (Related Composed Fields)",
+      "variantsImplemented": ["suffixActionGroup: clearAction + searchAction"],
+      "variantsMissing": [],
+      "statesImplemented": ["default", "focus", "filled (value entered)"],
+      "statesMissing": ["error", "disabled"],
+      "tokensUsed": [
+        { "token": "--input-*",            "layer": "component", "status": "stable", "usedFor": "inherits from Base Input" },
+        { "token": "--color-icon-default", "layer": "semantic",  "status": "stable", "usedFor": "search/clear icon color (direct semantic ref)" }
+      ],
+      "coverageIssues": [
+        {
+          "type": "missing-state",
+          "description": "error / disabled 상태가 Related Composed Fields 카드에 없음. 인터랙티브 프리뷰만 제공됨.",
+          "recommendation": "C0 pilot 단계에서는 허용. L5 이후 2-state 확장 고려"
+        },
+        {
+          "type": "missing-token",
+          "description": "suffix action icon token 없음 — --input-action-icon 미정의로 인해 --color-icon-default 직접 참조.",
+          "recommendation": "--input-action-icon alias token 신설 시 연동 필요"
+        }
+      ],
+      "decisionsRequired": []
+    },
+
+    {
+      "component": "Password Field",
+      "status": "pilot",
+      "implementedIn": "pages/components.html (Related Composed Fields)",
+      "variantsImplemented": ["suffixActionGroup: visibilityToggle + clearAction"],
+      "variantsMissing": [],
+      "statesImplemented": ["default", "focus", "filled (visibility toggle)"],
+      "statesMissing": ["error", "disabled"],
+      "tokensUsed": [
+        { "token": "--input-*",            "layer": "component", "status": "stable", "usedFor": "inherits from Base Input" },
+        { "token": "--color-icon-default", "layer": "semantic",  "status": "stable", "usedFor": "visibility toggle / clear icon color" }
+      ],
+      "coverageIssues": [
+        {
+          "type": "missing-state",
+          "description": "error / disabled 상태 미구현 (동일 이유 — 인터랙티브 단일 프리뷰 방식).",
+          "recommendation": "C0 단계에서 허용"
+        }
+      ],
+      "decisionsRequired": []
+    },
+
+    {
+      "component": "Input with Unit",
+      "status": "pilot",
+      "implementedIn": "pages/components.html (Related Composed Fields)",
+      "variantsImplemented": ["suffixText: unitLabel"],
+      "variantsMissing": [],
+      "statesImplemented": ["default", "focus"],
+      "statesMissing": ["error", "disabled"],
+      "tokensUsed": [
+        { "token": "--input-*",               "layer": "component", "status": "stable", "usedFor": "inherits from Base Input" },
+        { "token": "--color-text-secondary",  "layer": "semantic",  "status": "stable", "usedFor": "unit label text color (direct semantic ref)" }
+      ],
+      "coverageIssues": [],
+      "decisionsRequired": []
+    },
+
+    {
+      "component": "Select",
+      "status": "pilot",
+      "implementedIn": "pages/components.html (id=select section)",
+      "variantsImplemented": ["default"],
+      "variantsMissing": [],
+      "statesImplemented": ["default", "open", "selected/filled", "disabled"],
+      "statesMissing": ["error", "correct"],
+      "tokensUsed": [
+        { "token": "--dropdown-trigger-default-bg",       "layer": "component", "status": "stable", "usedFor": "trigger default bg" },
+        { "token": "--dropdown-trigger-hover-bg",         "layer": "component", "status": "stable", "usedFor": "trigger hover bg" },
+        { "token": "--dropdown-trigger-disabled-bg",      "layer": "component", "status": "stable", "usedFor": "trigger disabled bg" },
+        { "token": "--dropdown-trigger-default-border",   "layer": "component", "status": "stable", "usedFor": "trigger default border" },
+        { "token": "--dropdown-trigger-hover-border",     "layer": "component", "status": "stable", "usedFor": "trigger hover border" },
+        { "token": "--dropdown-trigger-open-border",      "layer": "component", "status": "stable", "usedFor": "trigger open border" },
+        { "token": "--dropdown-trigger-disabled-border",  "layer": "component", "status": "stable", "usedFor": "trigger disabled border" },
+        { "token": "--dropdown-trigger-placeholder-text", "layer": "component", "status": "draft",  "usedFor": "placeholder text color — non-canonical token", "note": "Not in canonical-token-draft.json" },
+        { "token": "--dropdown-trigger-selected-text",    "layer": "component", "status": "draft",  "usedFor": "selected option text color — non-canonical token", "note": "Not in canonical-token-draft.json" },
+        { "token": "--dropdown-trigger-default-text",     "layer": "component", "status": "stable", "usedFor": "trigger default text" },
+        { "token": "--dropdown-trigger-disabled-text",    "layer": "component", "status": "stable", "usedFor": "trigger disabled text" },
+        { "token": "--dropdown-list-bg",                  "layer": "component", "status": "stable", "usedFor": "list bg" },
+        { "token": "--dropdown-list-border",              "layer": "component", "status": "draft",  "usedFor": "list border — not in canonical draft", "note": "canonical-token-draft.json uses --dropdown-list-bg only; border is extra" },
+        { "token": "--dropdown-option-hover-bg",          "layer": "component", "status": "stable", "usedFor": "option hover bg" },
+        { "token": "--dropdown-option-selected-text",     "layer": "component", "status": "draft",  "usedFor": "selected option text — not in canonical draft" },
+        { "token": "--select-disabled-border",            "layer": "component", "status": "draft",  "usedFor": "select disabled border — stray token (HD-5, ND-8)" }
+      ],
+      "coverageIssues": [
+        {
+          "type": "extra-tokens",
+          "description": "components.html에서 --dropdown-trigger-placeholder-text, --dropdown-trigger-selected-text, --dropdown-list-border, --dropdown-option-selected-text 4개 토큰을 추가로 정의하여 사용 중이나, canonical-token-draft.json과 tokens.css의 공식 dropdown 토큰 목록에 없음.",
+          "recommendation": "4개 토큰을 canonical-token-draft.json dropdown 섹션에 추가하거나, 시멘틱 직접 참조로 교체"
+        },
+        {
+          "type": "mismatched-token",
+          "description": "canonical-token-draft.json의 --dropdown-list-bg는 var(--color-surface-raised)를 참조하지만, components.html 구현은 --dropdown-list-bg: var(--color-surface-default)로 정의함. canonical과 구현 불일치.",
+          "recommendation": "--dropdown-list-bg 값을 canonical 기준 var(--color-surface-raised)로 통일 여부 결정 필요"
+        },
+        {
+          "type": "stray-token",
+          "description": "--select-disabled-border: var(--color-border-subtle) — Input 그룹에 위치한 stray token. Select 컴포넌트에 속함 (HD-5, ND-8).",
+          "recommendation": "registry/components/select.json 생성 후 이전"
+        },
+        {
+          "type": "missing-state",
+          "description": "error, correct 상태 없음. Select는 form-control 계열이나 error/correct 상태 구현 미완료.",
+          "recommendation": "Figma Select error/correct 상태 조회 후 토큰 및 HTML 추가 검토"
+        }
+      ],
+      "decisionsRequired": []
+    },
+
+    {
+      "component": "Textarea",
+      "status": "not-implemented",
+      "rescanStatus": "access-failed",
+      "l4_5_note": "ACCESS-01 해소 (2026-05-20): Input 540:3328 · DatePicker 540:3794 · TimePicker 540:3690 외 4종. MVP-F1 플러그인 스캔으로 확인 완료. Textarea는 Figma에서 'Inputbox_large'로 존재하나 nodeId 미확인. Plugin Export Variable Usage 모드(MVP-F1) 실행 전 전수 확정 불가.",
+      "implementedIn": null,
+      "variantsImplemented": [],
+      "variantsMissing": ["all"],
+      "statesImplemented": [],
+      "statesMissing": ["all"],
+      "tokensUsed": [],
+      "coverageIssues": [
+        {
+          "type": "not-implemented",
+          "description": "Textarea는 components.html에 미구현. registry/components/textarea.json 미존재. CLAUDE.md 미결 항목 #10.",
+          "recommendation": "Input 토큰 안정화 후 Textarea 구현. --input-* 토큰 대부분 재사용 가능 (HD-6: Inputbox_large = Textarea)"
+        }
+      ],
+      "decisionsRequired": [],
+      "accessFailedComponents": [
+        {
+          "component": "DatePicker",
+          "nodeId": "6443:4655",
+          "error": "invalid node — Figma Debug UUID 0b52f46d",
+          "rescanStatus": "access-failed",
+          "action": "Plugin Export Variable Usage 모드(MVP-F1) 실행 또는 Figma 직접 접근 필요"
+        },
+        {
+          "component": "TimePicker",
+          "nodeId": "6443:4606",
+          "error": "invalid node — Figma Debug UUID 40f7e142",
+          "rescanStatus": "access-failed",
+          "action": "Plugin Export Variable Usage 모드(MVP-F1) 실행 또는 Figma 직접 접근 필요"
+        },
+        {
+          "component": "Input",
+          "nodeId": "6443:4408",
+          "error": "invalid node — Figma Debug UUID 57f814a0",
+          "rescanStatus": "access-failed",
+          "action": "Plugin Export Variable Usage 모드(MVP-F1) 실행 또는 Figma 직접 접근 필요"
+        }
+      ]
+    }
+  ],
+
+  "missingTokens": [
+    {
+      "id": "missing-001",
+      "component": "Input",
+      "state": "readonly",
+      "property": "border-color",
+      "currentValue": "없음 (state 미정의)",
+      "recommendation": "--color-form-control-border-readonly 신설 검토",
+      "layer": "semantic",
+      "priority": "medium"
+    },
+    {
+      "id": "missing-002",
+      "component": "Input, Search Input, Password Field",
+      "state": "default",
+      "property": "action-icon-color",
+      "currentValue": "--color-icon-default (direct semantic ref)",
+      "recommendation": "--input-action-icon → var(--color-icon-emphasis) component alias 신설",
+      "layer": "component",
+      "priority": "low"
+    },
+    {
+      "id": "missing-003",
+      "component": "Input",
+      "state": "default",
+      "property": "typed-text-color",
+      "currentValue": "--color-text-secondary (implicit, not via form-control layer)",
+      "recommendation": "--color-form-control-text-default을 components.html :root에 명시 추가",
+      "layer": "semantic",
+      "priority": "low"
+    },
+    {
+      "id": "missing-005",
+      "component": "Select",
+      "state": "default",
+      "property": "placeholder-text, selected-text, list-border, selected-option-text",
+      "currentValue": "components.html에 임의 정의 — canonical 미등록",
+      "recommendation": "canonical-token-draft.json dropdown 섹션에 4개 토큰 추가",
+      "layer": "component",
+      "priority": "medium"
+    }
+  ],
+
+  "aliasCandidates": [
+    {
+      "id": "alias-001",
+      "from": "--input-action-icon",
+      "to": "--color-icon-default",
+      "component": "Input / Search Input / Password Field",
+      "reason": "suffix action icon color가 매번 semantic 직접 참조. component alias 생성 시 일관성 확보",
+      "confidence": "medium",
+      "prerequisite": "Figma variable name 확인 (review.component.input.action-icon)"
+    }
+  ],
+
+  "semanticCandidates": [
+    {
+      "id": "semantic-001",
+      "proposedToken": "--color-form-control-border-readonly",
+      "proposedValue": "var(--color-border-subtle) 또는 var(--color-border-default)",
+      "reason": "Input readonly 상태 대응 semantic token 신설 필요",
+      "prerequisite": "Human Decision C0-D001 해결 후"
+    }
+  ],
+
+  "needsDecision": [
+    {
+      "id": "C0-D001",
+      "topic": "Input readonly 상태 공식 등록",
+      "component": "Input",
+      "status": "resolved",
+      "resolution": "readonly 신설. disabled와 동일 bg/border, text만 2단계 진하게 (--color-text-readonly: var(--color-gray-500)). --input-readonly-* 3개 토큰 tokens.css에 추가 완료."
+    },
+    {
+      "id": "C0-D002",
+      "topic": "--dropdown-list-bg: surface-raised vs surface-default 통일",
+      "component": "Select",
+      "status": "resolved",
+      "resolution": "surface-raised로 통일. components.html 및 canonical-token-draft.json 기준 일치."
+    },
+    {
+      "id": "C0-D003",
+      "topic": "components.html 인라인 dark border token 보완",
+      "component": "All",
+      "status": "resolved",
+      "resolution": "tokens.css <link> 추가. 인라인 semantic token 섹션 제거. dark border rgba 구버전 값이 자동 제거되고 tokens.css gray-dark scale 값으로 대체됨."
+    }
+  ],
+
+  "deprecatedUsage": [
+    {
+      "component": "Input (components.html :root)",
+      "token": "--color-text-state-correct: var(--color-blue-400)",
+      "reason": "--color-blue-400은 Foundation token. semantic 또는 component :root에서 Foundation을 var()로 직접 참조하는 것은 아키텍처 원칙 위반. tokens.css에서는 동일하게 Foundation 직접 참조 중이나 이는 semantic 레이어 정의 내에 허용된 예외.",
+      "action": "components.html :root에서 해당 줄을 --color-text-state-correct: #1D6CEB (HEX 인라인)로 교체. Foundation var() 참조 제거. coverageIssues에도 기록됨.",
+      "severity": "low"
+    },
+    {
+      "component": "components.html dark section (color-border-*)",
+      "token": "--color-border-subtle, --color-border-default, --color-border-strong, --color-border-emphasis (dark)",
+      "reason": "ND-2에서 tokens.css는 dark border rgba를 Foundation gray-dark scale로 교체 완료. 그러나 components.html dark 섹션은 여전히 rgba(255,255,255,0.04/0.07/0.12/0.20) 값을 사용 중.",
+      "action": "components.html dark border 값을 tokens.css 기준으로 동기화: subtle→var(--color-gray-dark-200), default→var(--color-gray-dark-300), strong→var(--color-gray-dark-500), emphasis→var(--color-gray-dark-700). 현재는 coverageIssues 기록 후 사용자 승인 필요.",
+      "severity": "medium"
+    }
+  ]
+}

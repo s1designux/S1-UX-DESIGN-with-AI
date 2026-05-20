@@ -2,7 +2,7 @@
 
 > 이 문서는 Claude가 디자인 시스템을 **수집, 정리, 구조화, 검증**하기 위한 기준입니다.
 > 현재 목표는 UI 구현이 아니라 **디자인 시스템을 구축하는 것**입니다.
-> 마지막 업데이트: 2026-05-18 (MVP-L3 — Canonical Token Architecture Draft 생성. registry/tokens/canonical-token-draft.json + reports/mvp-l3-canonical-token-architecture-draft.md. 3-레이어 구조(Foundation/Semantic/Component) 정리. 8개 ND 항목 도출. ND-1 gray-dark-450 미정의 버그 발견.)
+> 마지막 업데이트: 2026-05-20 (DatePicker PC Calendar 구현. Figma 540:4216 기준 356px 패널·44×44px 직사각형 셀. mobile circle 방식 제거. Static PC Calendar Panel 프리뷰 추가. Interactive Preview min-height 확보.)
 
 ---
 
@@ -41,6 +41,28 @@
 | 2026-05-18 | MVP-T2 Figma Token Sync Plugin 구조 | plugins/figma-token-sync/**·package.json·README.md·CLAUDE.md·reports/mvp-t2-token-sync.md | TypeScript 플러그인 4-모듈 구조 생성. esbuild 번들 환경. SyncClassification 분류 로직. FIGMA_SEMANTIC_COLLECTION_ID 미확정으로 전체 preview-only. syncStableTokens() 의도적 throw. |
 | 2026-05-18 | MVP-L1 Legacy UX Guide 2.4 Token Audit 단계 수립 | scripts/figma/match-figma-variable-metadata.mjs·package.json·README.md·CLAUDE.md·registry/figma/snapshots/ | --source/--profile CLI 옵션 추가. ux-guide-2.4 legacy audit 모드 신설. darkmode-test snapshot 격리. figma:audit 스크립트 추가. |
 | 2026-05-18 | MVP-L3 Canonical Token Architecture Draft | registry/tokens/canonical-token-draft.json·reports/mvp-l3-canonical-token-architecture-draft.md·CLAUDE.md | Foundation/Semantic/Component 3-레이어 canonical 구조 정리. 61개 semantic·124개 component 토큰 전수 문서화. 8개 ND 항목 도출. ND-1(gray-dark-450 미정의 버그)·ND-2(dark border rgba) 고우선순위 확인. |
+| 2026-05-18 | MVP-L4 Canonical Token Review & Promotion Plan | registry/tokens/canonical-token-promotion-plan.json·reports/mvp-l4-canonical-token-review.md·CLAUDE.md | 42개 promote-candidate / 8개 hold / 7개 needsDecision 분류. ND-NAMING-01(correct vs success 충돌) 발견. token-aliases.json 내부 모순 발견. 8개 component registry JSON 생성 준비 완료(Claude 승인 후 실행). |
+| 2026-05-18 | ND-2 Dark Border rgba → Foundation Dark Scale | assets/css/tokens.css·registry/tokens/semantic.colors.json·registry/tokens/canonical-token-draft.json·CLAUDE.md | 5개 dark border rgba 값을 Foundation gray-dark 스케일로 교체. subtle→200, default→300, disabled→200, strong→500, emphasis→700. semantic.colors.json 상태 candidate→stable. rgba 예외 border 항목 제거. |
+| 2026-05-18 | ND-5 Chip Line/Solid Split | assets/css/tokens.css·tokens/component-tokens-extracted.md·registry/tokens/canonical-token-draft.json | --chip-* 17개 unified 토큰 삭제 → --chip-line-* 17개 + --chip-solid-* 17개 분리. component-tokens-extracted.md hover/icon/close-icon 행 추가. component token 총계 123→140. |
+| 2026-05-19 | MVP-C0 D001~D003 반영 | assets/css/tokens.css·pages/components.html·registry/tokens/component-token-coverage.json | readonly 토큰 신설(D001)·dropdown-list-bg surface-raised 통일(D002)·components.html tokens.css 링크 전환 + 인라인 semantic 제거(D003) |
+| 2026-05-19 | MVP-L5 Canonical Token v0.1 Promotion Plan (재작성) | registry/tokens/canonical-token-promotion-plan.json·reports/mvp-l5-canonical-token-promotion-plan.md | L1~L4.5 통합. HD-L4.5-A/B/C 반영. promote-candidate 44그룹/hold 11/alias-only 3/deprecated-alias 6/remove 5/future 2 분류. chip line/solid 분리·readonly 신설·ND-7 미결 포함. 7개 Human Decision 도출. |
+| 2026-05-19 | ND-7 Semantic Colors Registry 동기화 | registry/tokens/semantic.colors.json·canonical-token-promotion-plan.json·reports/mvp-l5-canonical-token-promotion-plan.md | controlBorder·formControl·textState 3개 카테고리 신규. text·border 각 1개 추가. 총 19개 등록(43→62개). CSS 변경 없음. |
+| 2026-05-19 | decision-003 Component Registry JSON 업데이트 | registry/components/checkbox·radio·toggle·dropdown·select·nav·pagination·table.json | checkbox(10)·radio(8)·toggle(4)·dropdown(17) 토큰 채움. select·nav·pagination·table 미정의 상태 기록. |
+| 2026-05-19 | MVP-C0 Component Token Coverage Pilot | registry/tokens/component-token-coverage.json·reports/mvp-c0-component-token-coverage-pilot.md | 7개 컴포넌트 토큰 커버리지 분석, missing 5건·deprecated 2건·needs-decision 4건 도출. Textarea 미구현 확인. components.html vs tokens.css 불일치(dark border·placeholder·dropdown-list-bg) 발견. |
+| 2026-05-19 | MVP-L4.5 Token Coverage Review (F0+C0 합산) | reports/mvp-l4-5-token-coverage-review.md·registry/tokens/canonical-token-draft.json·legacy-token-usage-map.json·component-token-coverage.json | F0+C0 합산 분류. form-control semantic-confirm·button component-alias·accent-alt rename·title/primary value-mismatch·dedup 5건·rescan-needed 3건. canonical-token-draft notes 보정. |
+| 2026-05-19 | Textarea 컴포넌트 registry 생성 | registry/components/textarea.json·registry/components/index.json | HD-6 확정 기반. Inputbox_large → Textarea 별도 컴포넌트. --input-* semantic alias 재사용 여부 pending. plannedTokens 10개 정의. |
+| 2026-05-19 | Pattern 페이지 설계 | pages/patterns.html | Search+Table·Tree+Detail·Dashboard·Settings 4개 패턴. 각 패턴별 레이아웃 다이어그램·컴포넌트 구성·토큰·사용 규칙 탭 구조. Coming Soon 플레이스홀더 교체. |
+| 2026-05-19 | Legacy 가이드 작성 | pages/legacy.html | confirmed 44건·needs-review 44건 매핑 테이블. 마이그레이션 단계·Source Guard 사용법·체크리스트 포함. MVP-L1 완료 전 상태 노출. Coming Soon 플레이스홀더 교체. |
+| 2026-05-19 | MVP-F0 Figma Variable Usage Audit | registry/figma/snapshots/figma-variable-usage.ux-guide-2.4.json·registry/tokens/legacy-token-usage-map.json·reports/mvp-f0-figma-variable-usage-audit.md | MCP를 통해 접근 가능한 컴포넌트 노드의 variable usage 스캔. semantic/component/deprecated 후보 분류. 8개 노드 스캔, 63개 unique variable 사용 확인, 7개 needs-review·3개 invalid-node(6443:4408/6443:4655/6443:4606) 도출. |
+| 2026-05-19 | MVP-F1 Figma Variable Usage Export 자동화 | plugins/figma-token-sync/src/code.ts·types.ts·ui.html·registry/figma/figma-usage-targets.json·scripts/figma/check-figma-usage.mjs·apply-figma-usage.mjs·package.json | ACCESS-01 자동화. target 설정 파일 분리. export-variable-usage 핸들러. check(7항목)·apply(legacy-map+plan+report) 스크립트. figma:usage:check/apply npm 명령어. |
+| 2026-05-19 | MVP-C1 Chip 컴포넌트 구현 | registry/components/chip.json·registry/components/index.json·pages/components.html | chip.json unified→line/solid split 재작성(17토큰×2). hover·icon·close-icon variant CSS 추가. 매트릭스 Selecting→Hover 전환. Token Details 탭(34행) 추가. harnessStatus: implemented. |
+| 2026-05-20 | Table 컴포넌트 토큰 정합 | registry/components/table.json·assets/css/tokens.css·tokens/semantic.md·tokens/component-tokens-extracted.md·registry/tokens/semantic.colors.json | Figma MCP pc_table_header(540:4940)·pc_table_body(540:4851) 직접 조회. color-data semantic 카테고리 신설(--color-data-state-hover=blue-50). 토큰 수정 3건(header-bg→bg-default, header-text→text-secondary, header-border→border-subtle). 신규 1건(--table-header-hover-bg). --table-row-hover-bg=blue-50(#E2F1FF)로 교체. HD-Table-1(dark)/HD-Table-2(selected≠hover) 2건 도출. |
+| 2026-05-20 | --color-bg-home Quality Gate 해소 | scripts/gate-check.js | B안: hexAllowlist 추가. inline comment HEX false positive 수정(codeOnly 처리). |
+| 2026-05-20 | Textarea Token Details 구현 + figmaNodeId 등록 | pages/components.html·registry/components/textarea.json | Token Details 탭 15개 토큰 전체 문서화. --input-* 공유 확정(--textarea-* 불필요). figmaNodeId: 641:4060 (Mobile Inputbox_large). tokenStatus→stable, harnessStatus→implemented. |
+| 2026-05-20 | MVP-L2 Legacy Token Classification v1.1 | reports/mvp-l2-legacy-token-classification.md | 115건 전량 분류 완료. alias-only 74건·future-component-token 18건·hold-missing-usage 18건·hold-duplicate 2건·deprecated-alias 2건·promote-candidate 1건. hold-needs-review 15건 Figma snapshot VariableID(1:3=white, 1:11=light-gray, 2:26=blue-400, 1:28=gray-500) 분석으로 전량 해소. |
+| 2026-05-20 | MVP-L2 v1.2 — Group A~F 결정 반영 | reports/mvp-l2-legacy-token-classification.md·assets/css/tokens.css·registry/components/nav.json·table.json·registry/tokens/semantic.colors.json·tokens/semantic.md·tokens/component-tokens-extracted.md | alias-only 79건·no-canonical-needed 13건·hold-missing-usage 0건 최종 확정. --color-control-bg-hover·--nav-item-indicator-default·--table-border-light/strong 신규 구현. CSS cascade override 한글 주석 추가(control-border·nav 섹션). |
+| 2026-05-20 | 레이아웃 정합 — 신규 컴포넌트 코드블록 표준화 | pages/components.html | DatePicker·Table·TimePicker·Pagination 4개 섹션. HTML→CSS→Token Details 탭 순서 통일. DatePicker Token Candidates 플레인텍스트 → code-block(HTML·CSS·Token Details 탭) 전환. DatePicker s1-dp-states(Trigger·Size·Interactive) preview-area 래핑. Pagination Status 컬럼 제거 → 표준 4컬럼 헤더 적용. |
+| 2026-05-20 | DatePicker PC Calendar 구현 (Figma 540:4216) | pages/components.html | Figma 540:4216 기준. 패널 CSS: width=356px, py=20px, px=24px, border=--color-border-strong, radius=4px. Day cell: mobile circle(day-inner span) 제거 → 44×44px 직사각형 border:1px transparent. is-today=파란테두리, is-selected=파란배경. Static PC Calendar Panel 프리뷰 신규 추가(2026.05 May · 15일 선택 · 20일 오늘). Interactive Preview min-height=420px. |
 
 ---
 
@@ -52,7 +74,6 @@
 * ✅ Dark Primitive — `gray-dark` (0–900), `blue-dark` (50–500) 추가 완료
 * ✅ Semantic Token — 8개 카테고리 Light/Dark 값 전체 정의 완료 (`tokens/semantic.md`)
 * ✅ Component Token — 9개 그룹 추출 및 Semantic 참조 구조 정의 완료 (`tokens/component-tokens-extracted.md`)
-  > ⚠️ Chip: MD는 line/solid 2타입 분리 정의, tokens.css는 단일 구조로 통합 — 불일치 미결
 * ✅ Button variants — primary / secondary / blue-line 토큰 완료 (Danger 삭제, ghost deprecated 확정)
 * ✅ Button blue-line variant — tokens.css + component.tokens.json 추가 완료 (2026-05-11)
 * ✅ 가이드 HTML — foundation / semantic / components / guide-md / md-review 페이지 완료
@@ -65,6 +86,7 @@
 * ✅ MVP3.8 Source Guard CI Dry-run — GitHub Actions 자동 검수 파이프라인 구축 완료 (2026-05-12)
 * ✅ Pre-MVP4 Input 분류 — Figma MCP 8 nodes 분석, Base Input/Slots/Pattern/Picker 분류, 토큰 Gap 17개, HD 8개 도출 (2026-05-12)
 * ✅ MVP4.3-A DatePicker Component Candidate — 별도 컴포넌트 후보 등록, Figma node 6443:4655 시도, Interactive preview 구현 완료 (2026-05-12)
+* ✅ MVP-C1 Chip 컴포넌트 구현 — chip.json line/solid split 재작성. hover·icon·close-icon variant CSS + 매트릭스. Token Details 탭 34개 토큰 전체 문서화. harnessStatus: implemented (2026-05-19)
 
 ## 미결 사항 (다음 우선순위)
 
@@ -85,10 +107,8 @@
    - blue-line variant dark mode 시각 검증 미완료 (darkModeStatus: pending)
    - toggle tokens 불일치: MD는 var(--color-text-placeholder), CSS는 var(--color-border-default)
 
-4. Chip 토큰 구조 정합
-   - component-tokens-extracted.md: line/solid 2타입 분리 정의
-   - tokens.css: 단일 구조(--chip-default-*, --chip-selected-* 등) 통합
-   - 어느 구조로 확정할지 결정 필요
+4. Chip 토큰 구조 정합 → ✅ 2026-05-19 완료
+   - line/solid split 확정. chip.json·components.html 반영. hover·icon·close-icon variant 구현.
 
 5. Semantic Token Figma 반영 (Figma 파일 직접 수정 필요)
    - 오타 수정: color/status-card/text/*--defualt → --default (3건)
@@ -123,7 +143,10 @@
    - HD-4: Mobile 인터랙션 확정 (bottom sheet vs inline vs popover)
    - HD-5: DatePicker 전용 token candidate → stable 전환 여부 결정
    상세: reports/mvp4-3-a-date-picker.md
-10. Textarea 컴포넌트 registry 생성 (registry/components/textarea.json)
+10. Textarea 컴포넌트 registry 생성 → ✅ 2026-05-20 완료
+    - registry/components/textarea.json: tokenStatus→stable, harnessStatus→implemented, figmaNodeId→641:4060
+    - Token Details 탭 15개 --input-* 토큰 문서화 완료 (--textarea-* 별도 불필요)
+    - PC 버전 figmaNodeId 미확인 (Figma 직접 확인 필요)
 11. TimePicker component candidate 정리 (figmaNodeId: 6443:4606)
 12. Pattern 페이지 설계 (search-table, tree-detail)
 13. Legacy 가이드 작성
@@ -132,7 +155,11 @@
     - SW Token Sync 플러그인 → Export Variables → Download JSON
     - registry/figma/snapshots/figma-variable-metadata.ux-guide-2.4.json으로 저장
     - npm run figma:audit 실행 → reports/mvp-l1-legacy-token-audit.md 생성
-15. MVP-L2 legacy-to-canonical 마이그레이션 맵 작성 (MVP-L1 완료 후)
+15. MVP-L2 Legacy Token Classification → ✅ 2026-05-20 완료
+    - 115건 전량 분류: alias-only 74·future-component-token 18·hold-missing-usage 18·기타 5건
+    - hold-needs-review 15건 Figma snapshot VariableID 분석으로 전량 해소
+    - hold-missing-usage 18건 (버튼 hover border x2·control hover bg·dropdown option hover border 포함) — 신규 canonical 신설 여부 Human Decision 필요
+    - 상세: reports/mvp-l2-legacy-token-classification.md
 ```
 
 ---
@@ -205,14 +232,15 @@ Component Token    (컴포넌트 별칭 — --input-* / --button-* 등)
 --color-blue-dark-300
 ```
 
-**예외 — rgba 허용 범위 (2가지만)**
+**예외 — rgba 허용 범위 (1가지만)**
 
 | 토큰 카테고리 | 모드 | 허용 이유 |
 |---|---|---|
-| `color-border-*` | Dark 전용 | 배경 명도 편차가 넓어 HEX로 일관 대비 유지 불가 |
 | `color-overlay` | Light·Dark 공통 | alpha 채널 포함 값은 Foundation Primitive alias 불가 |
 
-위 두 경우 외 rgba 직접 사용은 금지한다.
+> ~~`color-border-*` Dark 예외~~ — 2026-05-18 ND-2 해소. Dark border는 Foundation gray-dark 스케일로 교체됨.
+
+위 경우 외 rgba 직접 사용은 금지한다.
 
 ---
 
@@ -718,7 +746,7 @@ Claude는 "구현"이 아니라 "구조"를 만든다.
 
 # ⛔ 금지사항
 
-* HEX 직접 사용 금지 (예외: `color-border-*` Dark 값·`color-overlay`는 rgba 허용)
+* HEX 직접 사용 금지 (예외: `color-overlay`만 rgba 허용. border rgba 예외 ND-2로 제거됨 2026-05-18)
 * Foundation 직접 참조 남용 금지
 * 의미 없는 이름 금지
 * Legacy를 신규 기준처럼 사용 금지
@@ -1021,7 +1049,7 @@ When generating Source Guard fix suggestions:
 
 Input 컴포넌트를 편집하거나 토큰을 정의할 때:
 
-1. **Figma Base Input = `Login input` frame (6443:4408).** 이 이름이 이상해도 올바른 원본이다.
+1. **Figma Base Input 프레임명은 `Login input`으로 잘못 등록되어 있다.** 이는 Figma 원본의 오류. 디자인시스템 canonical 명칭은 `Input`으로 확정 (2026-05-20). nodeId 6443:4408은 동일하게 유지.
 2. **Figma 상태 이름 ≠ registry 상태 이름.** `selected` = `focus`, `success` = `correct`.
 3. **토큰 2레이어 구조:** Semantic = `--color-form-control-*`, Component alias = `--input-*` (→ form-control 참조).
 4. **`complete` 상태는 별도 bg/border 토큰 없다.** default와 동일한 시각. text 차이로만 구분.
@@ -1161,3 +1189,136 @@ Figma Plugin의 Export Variables 기능을 편집하거나 실행할 때:
 10. **UX Guide 2.4 export 절차:** Figma에서 실제 `S1 UX 디자인가이드 2.4` 파일 열기 → SW Token Sync 플러그인 → Export Variables → Download JSON → `registry/figma/snapshots/figma-variable-metadata.ux-guide-2.4.json`으로 저장 → `npm run figma:audit` 실행.
 11. **mvp-l1-legacy-token-audit.md는 `reports/`에 생성된다.** 그룹별 분류, canonical 추천, no-candidate 항목, 미결 사항을 포함한다.
 12. **MVP-L2는 legacy-to-canonical 마이그레이션 맵을 완성하는 단계다.** MVP-L1 결과를 바탕으로 `reports/mvp-l2-legacy-to-canonical-token-map.md`를 작성한다. MVP-L1이 완료되기 전까지 MVP-L2를 시작하지 않는다.
+
+---
+
+# 🎛️ Main Orchestrator & Gate Check 구조 (2026-05-20 확정)
+
+## Main Orchestrator 역할
+
+Claude는 단일 **Main Orchestrator**로서 모든 작업 흐름을 직접 조율한다.
+
+- 작업 요청 → 내부 Gate 검사 → 구현 → 완료 보고 (순서 고정)
+- 사용자에게 하위 에이전트 호출을 별도 노출하지 않는다
+- 모든 Gate 체크는 내부적으로 수행하고 결과를 Orchestrator Summary에 포함한다
+- 완료 보고는 반드시 **Orchestrator Summary** 형식을 사용한다
+
+## 5개 Gate 정의
+
+### Gate 1: Registry Gate
+**파일:** `.claude/agents/token-validator.md`
+**트리거:** 컴포넌트 registry JSON 생성/수정, 토큰 추가/삭제, `tokens/*.md` 변경
+**체크 항목:**
+- `registry/components/index.json` path → 실제 파일 존재
+- Component Token → Semantic 경유 여부 (Foundation 직접 참조 금지)
+- 네이밍 규칙 (`--{component}-{variant}-{state}-{property}`)
+- 신규 컴포넌트의 `harnessStatus / tokenStatus / darkModeStatus` 필드 존재
+**자동 스크립트:** `npm run gate:check` (Gate 1 + Gate 3 포함)
+
+### Gate 2: Figma Gate
+**파일:** `.claude/agents/figma-inspector.md`
+**트리거:** `registry/*.json`의 `figmaNodeId / componentSetKey / componentKey` 변경, Figma MCP 조회
+**체크 항목:**
+- 등록된 `figmaNodeId`가 Figma MCP에서 유효한 노드인지 확인
+- `componentKey` → Figma 라이브러리 실존 여부
+- ACCESS-01: `figma-usage-targets.json`의 stale nodeId 경고
+- MCP 접근 실패 시 스냅샷으로 대체, SKIP으로 기록
+**주의:** MCP 접근 실패 = SKIP (FAIL 아님). nodeId 미확인 = WARN.
+
+### Gate 3: Quality Gate
+**파일:** `scripts/gate-check.js` (Gate 3 섹션)
+**트리거:** `assets/css/tokens.css` 변경, 모든 완료 보고 전
+**체크 항목:**
+- Foundation 이외 구역에 raw HEX 없음
+- rgba 허용 예외 (`--color-overlay-*`)만 사용
+- `pages/install-prompt.html` 존재 확인
+**자동 스크립트:** `npm run gate:check`
+
+### Gate 4: Report Gate
+**파일:** `scripts/gate-check.js` (Gate 2 섹션)
+**트리거:** `reports/*.md` 추가/수정, 작업 완료 전
+**체크 항목:**
+- `reports/reports-index.json` vs 실제 `.md` 파일 커버리지
+- 미색인 report 파일 탐지
+**자동 스크립트:** `npm run reports:sync && npm run reports:check`
+
+### Gate 5: UI Gate
+**파일:** `.claude/agents/guide-builder.md`
+**트리거:** `pages/*.html` 추가/수정, SITE_NAV 변경
+**체크 항목:**
+- 신규 페이지 → `assets/js/main.js` SITE_NAV 등록
+- 신규 페이지 → `data/site-map.json` 메타데이터 등록
+- HTML 인라인 HEX 색상 없음 (`style="color:#..."` 패턴)
+- 금지 약어 미사용 (tok-, type-, bw-, fw-, cat-, cnt-)
+
+## Gate 실행 순서
+
+```
+작업 완료 직전:
+  1. Gate 1 (Registry)  — 항상
+  2. Gate 2 (Figma)     — figmaNodeId 관련 변경 시
+  3. Gate 3 (Quality)   — tokens.css 변경 시 / 항상
+  4. Gate 4 (Report)    — reports/*.md 추가 시
+  5. Gate 5 (UI)        — pages/*.html 변경 시
+```
+
+스크립트 일괄 실행: `npm run gate:check` (Gate 1 + 3 + 4 자동)
+
+## Orchestrator Summary (완료 보고 형식)
+
+작업 완료 시 반드시 아래 형식으로 보고한다. 섹션은 해당 항목이 있을 때만 포함한다.
+
+```
+## Orchestrator Summary — {작업명}
+
+### 변경 내용
+| 파일 | 변경 내용 |
+|------|---------|
+| path/to/file | 변경 설명 |
+
+### Gate 결과
+| Gate | 결과 | 비고 |
+|------|------|------|
+| Registry | ✅ PASS | |
+| Figma    | ⚠️ WARN | {component} figmaNodeId 미확인 |
+| Quality  | ✅ PASS | |
+| Report   | ✅ PASS | |
+| UI       | ✅ PASS | |
+
+### 미결 사항 (Human Decision 필요)
+- HD-X: {내용}
+
+### 다음 단계
+- {다음 작업}
+```
+
+## 금지 행동
+
+- Gate 실패(error)를 숨기고 완료 보고하는 것
+- 사용자 승인 없이 gate-check.js를 수정해 체크 항목을 약화하는 것
+- Orchestrator Summary 없이 작업 완료를 선언하는 것
+- Figma Gate SKIP을 FAIL로 잘못 기록하는 것
+
+## ACCESS-01: Figma Plugin 재등록 절차
+
+`npm run figma:usage:check`에서 stale nodeId 경고 3건이 지속되는 경우:
+
+```
+1. Figma Desktop 실행 → SW UX 디자인가이드 2.4 파일 열기
+2. 메뉴: Plugins > Development > Import plugin from manifest
+   경로: {project_root}/plugins/figma-token-sync/manifest.json
+3. 플러그인 실행 → UI에서 "Scan from Selection" 탭 선택
+4. Figma 캔버스에서 검사할 컴포넌트 프레임 선택
+5. Scan 버튼 클릭 → nodeId 확인
+6. registry/figma/figma-usage-targets.json targets 배열 업데이트
+7. npm run figma:usage:check 재실행 → 경고 해소 확인
+```
+
+ACCESS-01 해소 (2026-05-20 MVP-F1 플러그인 스캔 완료):
+- `540:3328` — Input (Figma 내 잘못된 명칭 'Login input' — canonical: 'Input')
+- `540:3794` — DatePicker (datepicker_input)
+- `540:3690` — TimePicker Input (timepicker_input)
+- `540:3636` — TimePicker Select
+- `540:3489` — TimePicker Select Dropdown
+- `540:3506` — TimePicker PC Input Dropdown
+- `540:4216` — TimePicker PC Calendar

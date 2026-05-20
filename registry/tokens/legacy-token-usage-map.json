@@ -1,0 +1,1787 @@
+{
+  "meta": {
+    "name": "S1 UX Guide 2.4 Legacy Token Usage Map",
+    "version": "0.1.0",
+    "status": "partial",
+    "source": "figma-mcp-audit + legacy-token-map",
+    "updatedAt": "2026-05-19",
+    "figmaFileRef": "yE5UCFEbmXJBlYJWB24Lz2 (S1 UX Design Guide V2.4)",
+    "description": "Legacy Figma Variable → canonical CSS token mapping with observed usage from MVP-F0 MCP audit. Confidence and canonicalCandidate fields are based on (1) registry/figma-css-token-map.json, (2) registry/tokens/legacy-token-map.json, and (3) observed component usage. status='confirmed' = MCP usage확인 + canonical 매핑 명확. status='needs-review' = MCP usage 확인되었으나 canonical 후보 다수 또는 충돌. status='no-usage-observed' = MCP scan에서 사용 미확인 (registry에는 존재).",
+    "scannedComponents": [
+      "540:3794 (form-control / datepicker input)",
+      "540:4501 (button-primary)",
+      "540:3836 (datepicker mobile bottomsheet)",
+      "6456:4033 (DatePicker Section 2 composite)",
+      "540:7663 (style guide palette frame)",
+      "540:7368 (typography frame)",
+      "540:7665 (style guide child node)"
+    ]
+  },
+  "tokens": [
+    {
+      "legacyVariableName": "color/form-control/bg/default",
+      "usageCount": 2,
+      "usedInComponents": [
+        "540:3794",
+        "6456:4033"
+      ],
+      "usedInProperties": [
+        "background"
+      ],
+      "inferredRole": "background",
+      "canonicalCandidate": "--color-form-control-bg-default",
+      "registryToken": "color-form-control-bg-default",
+      "status": "confirmed",
+      "notes": "form-control semantic layer. Input/Select/DatePicker trigger 공용.",
+      "mvp_f1_usageCount": 54,
+      "mvp_f1_usedInNodes": [
+        "540:3328",
+        "540:3636",
+        "540:3690",
+        "540:3794"
+      ],
+      "mvp_f1_properties": [
+        "fills"
+      ]
+    },
+    {
+      "legacyVariableName": "color/form-control/bg/disabled",
+      "usageCount": 2,
+      "usedInComponents": [
+        "540:3794",
+        "6456:4033"
+      ],
+      "usedInProperties": [
+        "background"
+      ],
+      "inferredRole": "background",
+      "canonicalCandidate": "--color-form-control-bg-disabled",
+      "registryToken": "color-form-control-bg-disabled",
+      "status": "confirmed",
+      "mvp_f1_usageCount": 19,
+      "mvp_f1_usedInNodes": [
+        "540:3328",
+        "540:3636",
+        "540:3690",
+        "540:3794"
+      ],
+      "mvp_f1_properties": [
+        "fills"
+      ]
+    },
+    {
+      "legacyVariableName": "color/form-control/border/default",
+      "usageCount": 2,
+      "usedInComponents": [
+        "540:3794",
+        "6456:4033"
+      ],
+      "usedInProperties": [
+        "border"
+      ],
+      "inferredRole": "border",
+      "canonicalCandidate": "--color-form-control-border-default",
+      "registryToken": "color-form-control-border-default",
+      "status": "confirmed",
+      "mvp_f1_usageCount": 44,
+      "mvp_f1_usedInNodes": [
+        "540:3328",
+        "540:3636",
+        "540:3690",
+        "540:3794"
+      ],
+      "mvp_f1_properties": [
+        "strokes"
+      ]
+    },
+    {
+      "legacyVariableName": "color/form-control/border/selected",
+      "usageCount": 2,
+      "usedInComponents": [
+        "540:3794",
+        "6456:4033"
+      ],
+      "usedInProperties": [
+        "border"
+      ],
+      "inferredRole": "border",
+      "canonicalCandidate": "--color-form-control-border-focus",
+      "registryToken": "color-form-control-border-focus",
+      "status": "confirmed",
+      "notes": "Figma 'selected' → canonical 'focus' (MVP-T1 token-aliases.json 확정).",
+      "mvp_f1_usageCount": 21,
+      "mvp_f1_usedInNodes": [
+        "540:3328",
+        "540:3636",
+        "540:3690",
+        "540:3794"
+      ],
+      "mvp_f1_properties": [
+        "strokes"
+      ]
+    },
+    {
+      "legacyVariableName": "color/form-control/border/disabled",
+      "usageCount": 2,
+      "usedInComponents": [
+        "540:3794",
+        "6456:4033"
+      ],
+      "usedInProperties": [
+        "border"
+      ],
+      "inferredRole": "border",
+      "canonicalCandidate": "--color-form-control-border-disabled",
+      "registryToken": "color-form-control-border-disabled",
+      "status": "confirmed",
+      "mvp_f1_usageCount": 20,
+      "mvp_f1_usedInNodes": [
+        "540:3328",
+        "540:3636",
+        "540:3690",
+        "540:3794"
+      ],
+      "mvp_f1_properties": [
+        "strokes"
+      ]
+    },
+    {
+      "legacyVariableName": "color/form-control/text/default",
+      "usageCount": 2,
+      "usedInComponents": [
+        "540:3794",
+        "6456:4033"
+      ],
+      "usedInProperties": [
+        "text"
+      ],
+      "inferredRole": "text",
+      "canonicalCandidate": "--color-form-control-text-default",
+      "registryToken": "color-form-control-text-default",
+      "status": "confirmed",
+      "mvp_f1_usageCount": 30,
+      "mvp_f1_usedInNodes": [
+        "540:3328",
+        "540:3690",
+        "540:3794"
+      ],
+      "mvp_f1_properties": [
+        "fills"
+      ]
+    },
+    {
+      "legacyVariableName": "color/form-control/text/placeholder",
+      "usageCount": 2,
+      "usedInComponents": [
+        "540:3794",
+        "6456:4033"
+      ],
+      "usedInProperties": [
+        "text"
+      ],
+      "inferredRole": "text",
+      "canonicalCandidate": "--color-text-placeholder",
+      "registryToken": "color-text-placeholder",
+      "status": "confirmed",
+      "notes": "Figma #757575 = color-gray-500. MVP-T1에서 확정.",
+      "mvp_f1_usageCount": 27,
+      "mvp_f1_usedInNodes": [
+        "540:3328",
+        "540:3690",
+        "540:3794"
+      ],
+      "mvp_f1_properties": [
+        "fills"
+      ]
+    },
+    {
+      "legacyVariableName": "color/form-control/text/disabled",
+      "usageCount": 2,
+      "usedInComponents": [
+        "540:3794",
+        "6456:4033"
+      ],
+      "usedInProperties": [
+        "text"
+      ],
+      "inferredRole": "text",
+      "canonicalCandidate": "--color-form-control-text-disabled",
+      "registryToken": "color-form-control-text-disabled",
+      "status": "confirmed",
+      "mvp_f1_usageCount": 16,
+      "mvp_f1_usedInNodes": [
+        "540:3328",
+        "540:3690",
+        "540:3794"
+      ],
+      "mvp_f1_properties": [
+        "fills"
+      ]
+    },
+    {
+      "legacyVariableName": "color/button/bg/primary--default",
+      "usageCount": 3,
+      "usedInComponents": [
+        "540:4501",
+        "540:3836",
+        "6456:4033"
+      ],
+      "usedInProperties": [
+        "background"
+      ],
+      "inferredRole": "background",
+      "canonicalCandidate": "--button-primary-default-bg",
+      "registryToken": "button-primary-default-bg",
+      "status": "confirmed",
+      "notes": "component-alias 토큰. semantic 경유는 --color-action-primary-default."
+    },
+    {
+      "legacyVariableName": "color/button/border/primary--default",
+      "usageCount": 3,
+      "usedInComponents": [
+        "540:4501",
+        "540:3836",
+        "6456:4033"
+      ],
+      "usedInProperties": [
+        "border"
+      ],
+      "inferredRole": "border",
+      "canonicalCandidate": "--button-primary-default-border",
+      "registryToken": "button-primary-default-border",
+      "status": "confirmed"
+    },
+    {
+      "legacyVariableName": "color/button/label/primary--default",
+      "usageCount": 4,
+      "usedInComponents": [
+        "540:4501",
+        "540:4502",
+        "540:3836",
+        "6456:4033"
+      ],
+      "usedInProperties": [
+        "text"
+      ],
+      "inferredRole": "text",
+      "canonicalCandidate": "--button-primary-default-text",
+      "registryToken": "button-primary-default-text",
+      "status": "confirmed"
+    },
+    {
+      "legacyVariableName": "color/text/title/primary",
+      "usageCount": 4,
+      "usedInComponents": [
+        "540:3836",
+        "6456:4033",
+        "540:7663",
+        "540:7368"
+      ],
+      "usedInProperties": [
+        "text"
+      ],
+      "inferredRole": "text",
+      "canonicalCandidate": "--color-text-primary",
+      "registryToken": "color-text-primary",
+      "status": "needs-review",
+      "l4_5_status": "value-mismatch + human-decision-required",
+      "l4_5_valueMismatch": {
+        "figmaValue": "#000000",
+        "canonicalValue": "#202020 (var(--color-gray-900))",
+        "usagePattern": "4개 노드 모두 style guide/datepicker composite frame — 실제 UI 컴포넌트 사용인지 문서화 전용 사용인지 불명확",
+        "options": [
+          "A: legacy token으로 분리 보존 (--color-text-title-primary: #000000). canonical text-primary와 별도 운용.",
+          "B: canonical #202020으로 Figma 업데이트 (Figma 수정 필요 — 현재 단계 금지)",
+          "C: 사용처가 문서 노드 전용이면 canonical에 매핑하지 않고 '문서용 foundation 직접 참조'로 처리"
+        ],
+        "recommendation": "C 검토 권장. style guide root(540:7663)와 typography frame(540:7368)은 문서 노드이므로 canonical 매핑 불필요. datepicker mobile(540:3836)·Section2(6456:4033) 적용 확인 후 결정.",
+        "humanDecisionRequired": true
+      },
+      "notes": "Figma resolved #000000 ≠ canonical --color-text-primary (#202020). 값 불일치. L4.5: value-mismatch + human-decision-required. 옵션 3가지 제시. 확정 전 canonical 변경 금지."
+    },
+    {
+      "legacyVariableName": "color/text/title/secondary",
+      "usageCount": 1,
+      "usedInComponents": [
+        "540:7368"
+      ],
+      "usedInProperties": [
+        "text"
+      ],
+      "inferredRole": "text",
+      "canonicalCandidate": "--color-text-secondary",
+      "registryToken": "color-text-secondary",
+      "status": "confirmed",
+      "notes": "값 #353535 일치."
+    },
+    {
+      "legacyVariableName": "color/text/title/tertiary",
+      "usageCount": 1,
+      "usedInComponents": [
+        "540:7368"
+      ],
+      "usedInProperties": [
+        "text"
+      ],
+      "inferredRole": "text",
+      "canonicalCandidate": "--color-text-tertiary",
+      "registryToken": "color-text-tertiary",
+      "status": "needs-review",
+      "notes": "값 #555555. canonical --color-text-tertiary 확인 필요."
+    },
+    {
+      "legacyVariableName": "color/text/body/primary",
+      "usageCount": 2,
+      "usedInComponents": [
+        "540:3836",
+        "6456:4033"
+      ],
+      "usedInProperties": [
+        "text"
+      ],
+      "inferredRole": "text",
+      "canonicalCandidate": "--color-text-secondary",
+      "registryToken": "color-text-secondary",
+      "status": "needs-review",
+      "notes": "값 #353535 = --color-text-secondary와 동일. 'title/primary'와 'body/primary' 의미 분리가 코드에는 없음. legacy 통합 후보."
+    },
+    {
+      "legacyVariableName": "color/text/body/tertiary",
+      "usageCount": 2,
+      "usedInComponents": [
+        "540:3836",
+        "6456:4033"
+      ],
+      "usedInProperties": [
+        "text"
+      ],
+      "inferredRole": "text",
+      "canonicalCandidate": "--color-text-placeholder",
+      "registryToken": "color-text-placeholder",
+      "status": "needs-review",
+      "notes": "값 #757575 = placeholder와 동일. 의미 충돌: body-tertiary vs placeholder."
+    },
+    {
+      "legacyVariableName": "color/text/state/disabled",
+      "usageCount": 2,
+      "usedInComponents": [
+        "540:3836",
+        "6456:4033"
+      ],
+      "usedInProperties": [
+        "text"
+      ],
+      "inferredRole": "text",
+      "canonicalCandidate": "--color-text-disabled",
+      "registryToken": "color-text-disabled",
+      "status": "confirmed",
+      "notes": "값 #c4c4c4 일치."
+    },
+    {
+      "legacyVariableName": "color/text/state/accent",
+      "usageCount": 2,
+      "usedInComponents": [
+        "540:3836",
+        "6456:4033"
+      ],
+      "usedInProperties": [
+        "text"
+      ],
+      "inferredRole": "text",
+      "canonicalCandidate": "--color-text-state-accent",
+      "registryToken": "color-text-state-accent",
+      "status": "needs-review",
+      "notes": "값 #1d6ceb = brand blue. 코드 canonical 후보: --color-text-state-accent (semantic) or --color-text-link."
+    },
+    {
+      "legacyVariableName": "color/text/state/accent-alt",
+      "usageCount": 5,
+      "usedInComponents": [
+        "540:3836",
+        "6456:4033",
+        "540:7663",
+        "540:7665",
+        "540:7368"
+      ],
+      "usedInProperties": [
+        "text"
+      ],
+      "inferredRole": "text",
+      "canonicalCandidate": "--color-text-inverse",
+      "registryToken": "color-text-inverse",
+      "status": "confirmed",
+      "l4_5_status": "resolved-as-alias",
+      "l4_5_resolved": {
+        "decision": "HD-L4.5-C(2026-05-19): --color-text-inverse alias로 확정.",
+        "value": "#ffffff (white)",
+        "canonical": "--color-text-inverse",
+        "cssTokenRequired": false,
+        "figmaVariableKept": true,
+        "notes": "Figma Variable 'color/text/state/accent-alt' 이름은 유지. 코드에서는 --color-text-inverse를 사용. 별도 CSS token 신설 없음."
+      },
+      "notes": "값 #ffffff. --color-text-inverse와 동일값. HD-L4.5-C 확정(2026-05-19): alias 처리."
+    },
+    {
+      "legacyVariableName": "color/icon/gray-dark",
+      "usageCount": 3,
+      "usedInComponents": [
+        "540:3794",
+        "540:3836",
+        "6456:4033"
+      ],
+      "usedInProperties": [
+        "icon"
+      ],
+      "inferredRole": "icon",
+      "canonicalCandidate": "--color-icon-default",
+      "registryToken": "color-icon-default",
+      "status": "needs-review",
+      "notes": "값 #353535 = --color-text-secondary와 동일. icon role 분리 가치 확인."
+    },
+    {
+      "legacyVariableName": "color/icon/gray-light",
+      "usageCount": 2,
+      "usedInComponents": [
+        "540:3794",
+        "6456:4033"
+      ],
+      "usedInProperties": [
+        "icon"
+      ],
+      "inferredRole": "icon",
+      "canonicalCandidate": "--color-icon-disabled",
+      "registryToken": "color-icon-disabled",
+      "status": "needs-review",
+      "notes": "값 #c4c4c4. canonical --color-icon-disabled 확인 필요."
+    },
+    {
+      "legacyVariableName": "color/icon/red",
+      "usageCount": 1,
+      "usedInComponents": [
+        "540:7368"
+      ],
+      "usedInProperties": [
+        "icon"
+      ],
+      "inferredRole": "icon",
+      "canonicalCandidate": "",
+      "registryToken": "",
+      "status": "needs-review",
+      "notes": "값 #ff4554 = color/red/300. 'icon/red'는 typography 프레임에서 1회 사용 — required-asterisk 추정. canonical 후보: --color-icon-error or --color-status-error-icon."
+    },
+    {
+      "legacyVariableName": "color/control/bg/default",
+      "usageCount": 2,
+      "usedInComponents": [
+        "540:3836",
+        "6456:4033"
+      ],
+      "usedInProperties": [
+        "background"
+      ],
+      "inferredRole": "background",
+      "canonicalCandidate": "",
+      "registryToken": "",
+      "status": "needs-review",
+      "notes": "값 #ffffff. 'control' = day-cell, checkbox 등 form-control 외 컨트롤. canonical 분리 필요."
+    },
+    {
+      "legacyVariableName": "color/control/bg/selected",
+      "usageCount": 2,
+      "usedInComponents": [
+        "540:3836",
+        "6456:4033"
+      ],
+      "usedInProperties": [
+        "background"
+      ],
+      "inferredRole": "background",
+      "canonicalCandidate": "--color-action-primary-default",
+      "registryToken": "color-action-primary-default",
+      "status": "needs-review",
+      "notes": "값 #1d6ceb = brand blue. day-cell selected, checkbox selected 등."
+    },
+    {
+      "legacyVariableName": "color/control/bg/selected-alt",
+      "usageCount": 2,
+      "usedInComponents": [
+        "540:3836",
+        "6456:4033"
+      ],
+      "usedInProperties": [
+        "background"
+      ],
+      "inferredRole": "background",
+      "canonicalCandidate": "",
+      "registryToken": "",
+      "status": "needs-review",
+      "notes": "값 #ffffff. selected 상태의 alt background. 의미 모호."
+    },
+    {
+      "legacyVariableName": "color/control/bg/disabled",
+      "usageCount": 1,
+      "usedInComponents": [
+        "6456:4033"
+      ],
+      "usedInProperties": [
+        "background"
+      ],
+      "inferredRole": "background",
+      "canonicalCandidate": "--color-control-bg-disabled",
+      "registryToken": "color-control-bg-disabled",
+      "status": "needs-review",
+      "l4_5_status": "dedup-candidate",
+      "l4_5_dedup": {
+        "pair": "color/control/bg/disabled ≡ color/form-control/bg/disabled",
+        "sharedValue": "#f5f5f5 (= color-gray-50 = color-bg-subtle)",
+        "scopeAnalysis": "control = day-cell, checkbox 등 generic control. form-control = input/select/datepicker trigger. 값은 동일하나 의미 범위 다름.",
+        "resolution": "의도적 분리 가능성 높음. form-control은 form input 전용, control은 더 넓은 범위. 각각 유지하되 역할 명시 문서화 권장.",
+        "action": "통합하지 않고 각 역할 주석으로 보강. human-decision-required는 아님."
+      },
+      "notes": "값 #f5f5f5 = form-control/bg/disabled와 동일. L4.5: dedup-candidate 평가 — 의도적 범위 분리로 판단. 통합 권장 안 함. 역할 명시 문서화 필요."
+    },
+    {
+      "legacyVariableName": "color/control/border/selected",
+      "usageCount": 2,
+      "usedInComponents": [
+        "540:3836",
+        "6456:4033"
+      ],
+      "usedInProperties": [
+        "border"
+      ],
+      "inferredRole": "border",
+      "canonicalCandidate": "--color-control-border-selected",
+      "registryToken": "color-control-border-selected",
+      "status": "confirmed",
+      "notes": "MVP4.4에서 신설된 --color-control-border-* 시리즈와 매핑."
+    },
+    {
+      "legacyVariableName": "color/control/border/default",
+      "usageCount": 1,
+      "usedInComponents": [
+        "6456:4033"
+      ],
+      "usedInProperties": [
+        "border"
+      ],
+      "inferredRole": "border",
+      "canonicalCandidate": "--color-control-border-default",
+      "registryToken": "color-control-border-default",
+      "status": "confirmed",
+      "mvp_f1_usageCount": 5,
+      "mvp_f1_usedInNodes": [
+        "540:4216"
+      ],
+      "mvp_f1_properties": [
+        "strokes"
+      ]
+    },
+    {
+      "legacyVariableName": "color/control/border/disabled-alt1",
+      "usageCount": 1,
+      "usedInComponents": [
+        "6456:4033"
+      ],
+      "usedInProperties": [
+        "border"
+      ],
+      "inferredRole": "border",
+      "canonicalCandidate": "--color-control-border-disabled",
+      "registryToken": "color-control-border-disabled",
+      "status": "dedup-candidate",
+      "l4_5_status": "remove-candidate",
+      "l4_5_dedup": {
+        "pair": "color/control/border/disabled-alt1 ≡ color/control/border/default",
+        "sharedValue": "#d9d9d9",
+        "canonicalKeep": "color/control/border/disabled → --color-control-border-disabled",
+        "action": "-alt1은 legacy suffix. 값이 동일하고 의미도 같음. deprecated-tokens.json 추가 후보. 사용처 1개 교체 후 제거 가능."
+      },
+      "notes": "-alt1 접미사가 legacy variant 표시. 값 #d9d9d9 = color/control/border/default와 동일. L4.5: remove-candidate (dedup). canonical은 --color-control-border-disabled."
+    },
+    {
+      "legacyVariableName": "color/navigation/background",
+      "usageCount": 1,
+      "usedInComponents": [
+        "6456:4033"
+      ],
+      "usedInProperties": [
+        "background"
+      ],
+      "inferredRole": "background",
+      "canonicalCandidate": "",
+      "registryToken": "",
+      "status": "needs-review",
+      "notes": "DatePicker month/year nav 탭에서 사용. navigation component-alias로 분리 또는 surface/neutral/bg/base로 통합."
+    },
+    {
+      "legacyVariableName": "color/navigation/label/default",
+      "usageCount": 1,
+      "usedInComponents": [
+        "6456:4033"
+      ],
+      "usedInProperties": [
+        "text"
+      ],
+      "inferredRole": "text",
+      "canonicalCandidate": "",
+      "registryToken": "",
+      "status": "needs-review",
+      "notes": "값 #555555. tertiary text와 동일 값."
+    },
+    {
+      "legacyVariableName": "color/navigation/label/selected",
+      "usageCount": 1,
+      "usedInComponents": [
+        "6456:4033"
+      ],
+      "usedInProperties": [
+        "text"
+      ],
+      "inferredRole": "text",
+      "canonicalCandidate": "--color-text-state-accent",
+      "registryToken": "color-text-state-accent",
+      "status": "needs-review"
+    },
+    {
+      "legacyVariableName": "color/navigation/indicator/default",
+      "usageCount": 1,
+      "usedInComponents": [
+        "6456:4033"
+      ],
+      "usedInProperties": [
+        "border"
+      ],
+      "inferredRole": "border",
+      "canonicalCandidate": "--color-border-default",
+      "registryToken": "color-border-default",
+      "status": "needs-review"
+    },
+    {
+      "legacyVariableName": "color/navigation/indicator/selected",
+      "usageCount": 1,
+      "usedInComponents": [
+        "6456:4033"
+      ],
+      "usedInProperties": [
+        "border"
+      ],
+      "inferredRole": "border",
+      "canonicalCandidate": "--color-action-primary-default",
+      "registryToken": "color-action-primary-default",
+      "status": "needs-review"
+    },
+    {
+      "legacyVariableName": "color/line/gray/default",
+      "usageCount": 1,
+      "usedInComponents": [
+        "540:7368"
+      ],
+      "usedInProperties": [
+        "border"
+      ],
+      "inferredRole": "border",
+      "canonicalCandidate": "--color-border-default",
+      "registryToken": "color-border-default",
+      "status": "needs-review",
+      "notes": "값 #d9d9d9. legacy 'line/gray' → canonical 'border-default' 매핑."
+    },
+    {
+      "legacyVariableName": "color/base/white",
+      "usageCount": 3,
+      "usedInComponents": [
+        "540:3836",
+        "6456:4033",
+        "540:7663"
+      ],
+      "usedInProperties": [
+        "background",
+        "palette-display"
+      ],
+      "inferredRole": "foundation-base",
+      "canonicalCandidate": "--color-base-white",
+      "registryToken": "color-base-white",
+      "status": "confirmed"
+    },
+    {
+      "legacyVariableName": "color/base/black",
+      "usageCount": 1,
+      "usedInComponents": [
+        "540:7663"
+      ],
+      "usedInProperties": [
+        "palette-display"
+      ],
+      "inferredRole": "foundation-base",
+      "canonicalCandidate": "--color-base-black",
+      "registryToken": "color-base-black",
+      "status": "confirmed"
+    },
+    {
+      "legacyVariableName": "color/blue/50",
+      "usageCount": 3,
+      "usedInComponents": [
+        "540:3836",
+        "6456:4033",
+        "540:7663"
+      ],
+      "usedInProperties": [
+        "background-range",
+        "palette-display"
+      ],
+      "inferredRole": "foundation-palette",
+      "canonicalCandidate": "--color-blue-50",
+      "registryToken": "color-blue-50",
+      "status": "confirmed",
+      "notes": "DatePicker 범위 선택 배경(range fill)에서 사용."
+    },
+    {
+      "legacyVariableName": "color/red/300",
+      "usageCount": 2,
+      "usedInComponents": [
+        "540:7663",
+        "540:7665"
+      ],
+      "usedInProperties": [
+        "palette-display"
+      ],
+      "inferredRole": "foundation-palette",
+      "canonicalCandidate": "--color-red-300",
+      "registryToken": "color-red-300",
+      "status": "confirmed"
+    },
+    {
+      "legacyVariableName": "surface/base-background/default",
+      "usageCount": 2,
+      "usedInComponents": [
+        "540:7663",
+        "540:7368"
+      ],
+      "usedInProperties": [
+        "background"
+      ],
+      "inferredRole": "background",
+      "canonicalCandidate": "--color-bg-default",
+      "registryToken": "color-bg-default",
+      "status": "needs-review",
+      "notes": "값 #ffffff. canonical 매핑 --color-bg-default 또는 --color-surface-default 확인."
+    },
+    {
+      "legacyVariableName": "surface/neutral/bg/base",
+      "usageCount": 2,
+      "usedInComponents": [
+        "540:3836",
+        "6456:4033"
+      ],
+      "usedInProperties": [
+        "background"
+      ],
+      "inferredRole": "background",
+      "canonicalCandidate": "--color-surface-default",
+      "registryToken": "color-surface-default",
+      "status": "needs-review",
+      "notes": "DatePicker panel surface.",
+      "mvp_f1_usageCount": 10,
+      "mvp_f1_usedInNodes": [
+        "540:4216"
+      ],
+      "mvp_f1_properties": [
+        "fills"
+      ]
+    },
+    {
+      "legacyVariableName": "surface/neutral/bg/subtle",
+      "usageCount": 3,
+      "usedInComponents": [
+        "6456:4033",
+        "540:7663",
+        "540:7368"
+      ],
+      "usedInProperties": [
+        "background"
+      ],
+      "inferredRole": "background",
+      "canonicalCandidate": "--color-bg-subtle",
+      "registryToken": "color-bg-subtle",
+      "status": "needs-review",
+      "mvp_f1_usageCount": 1,
+      "mvp_f1_usedInNodes": [
+        "540:3636"
+      ],
+      "mvp_f1_properties": [
+        "fills"
+      ]
+    },
+    {
+      "legacyVariableName": "surface/neutral/border/border",
+      "usageCount": 2,
+      "usedInComponents": [
+        "540:7663",
+        "540:7368"
+      ],
+      "usedInProperties": [
+        "border"
+      ],
+      "inferredRole": "border",
+      "canonicalCandidate": "--color-border-subtle",
+      "registryToken": "color-border-subtle",
+      "status": "needs-review",
+      "notes": "값 #e9e9e9 = gray/100."
+    },
+    {
+      "legacyVariableName": "color/brand/look&feel/blue",
+      "usageCount": 1,
+      "usedInComponents": [
+        "540:7663"
+      ],
+      "usedInProperties": [
+        "palette-display"
+      ],
+      "inferredRole": "brand-reference",
+      "canonicalCandidate": "--color-brand-blue",
+      "registryToken": "color-brand-blue",
+      "status": "needs-review",
+      "notes": "값 #0072ce. 실제 컴포넌트에서 거의 사용 안 됨 (look&feel reference)."
+    },
+    {
+      "legacyVariableName": "color/brand/look&feel/red",
+      "usageCount": 1,
+      "usedInComponents": [
+        "540:7663"
+      ],
+      "usedInProperties": [
+        "palette-display"
+      ],
+      "inferredRole": "brand-reference",
+      "canonicalCandidate": "--color-brand-red",
+      "registryToken": "color-brand-red",
+      "status": "needs-review"
+    },
+    {
+      "legacyVariableName": "color/brand/look&feel/gray",
+      "usageCount": 1,
+      "usedInComponents": [
+        "540:7663"
+      ],
+      "usedInProperties": [
+        "palette-display"
+      ],
+      "inferredRole": "brand-reference",
+      "canonicalCandidate": "--color-brand-gray",
+      "registryToken": "color-brand-gray",
+      "status": "needs-review"
+    },
+    {
+      "legacyVariableName": "color/brand/CI/logo",
+      "usageCount": 1,
+      "usedInComponents": [
+        "540:7663"
+      ],
+      "usedInProperties": [
+        "palette-display"
+      ],
+      "inferredRole": "brand-reference",
+      "canonicalCandidate": "--color-brand-ci",
+      "registryToken": "color-brand-ci",
+      "status": "needs-review"
+    },
+    {
+      "legacyVariableName": "sizing/form-control/height/md",
+      "usageCount": 2,
+      "usedInComponents": [
+        "540:3794",
+        "6456:4033"
+      ],
+      "usedInProperties": [
+        "sizing"
+      ],
+      "inferredRole": "sizing",
+      "canonicalCandidate": "--sizing-form-control-height-md",
+      "registryToken": "sizing-form-control-height-md",
+      "status": "confirmed",
+      "mvp_f1_usageCount": 34,
+      "mvp_f1_usedInNodes": [
+        "540:3328",
+        "540:3489",
+        "540:3636",
+        "540:3690",
+        "540:3794"
+      ],
+      "mvp_f1_properties": [
+        "height"
+      ]
+    },
+    {
+      "legacyVariableName": "sizing/form-control/height/lg",
+      "usageCount": 1,
+      "usedInComponents": [
+        "540:3794"
+      ],
+      "usedInProperties": [
+        "sizing"
+      ],
+      "inferredRole": "sizing",
+      "canonicalCandidate": "--sizing-form-control-height-lg",
+      "registryToken": "sizing-form-control-height-lg",
+      "status": "confirmed",
+      "mvp_f1_usageCount": 18,
+      "mvp_f1_usedInNodes": [
+        "540:3328",
+        "540:3690",
+        "540:3794"
+      ],
+      "mvp_f1_properties": [
+        "height"
+      ]
+    },
+    {
+      "legacyVariableName": "sizing/form-control/height/xs",
+      "usageCount": 1,
+      "usedInComponents": [
+        "540:3794"
+      ],
+      "usedInProperties": [
+        "sizing"
+      ],
+      "inferredRole": "sizing",
+      "canonicalCandidate": "--sizing-form-control-height-xs",
+      "registryToken": "sizing-form-control-height-xs",
+      "status": "confirmed",
+      "mvp_f1_usageCount": 34,
+      "mvp_f1_usedInNodes": [
+        "540:3328",
+        "540:3489",
+        "540:3636",
+        "540:3690",
+        "540:3794"
+      ],
+      "mvp_f1_properties": [
+        "height"
+      ]
+    },
+    {
+      "legacyVariableName": "sizing/form-control/height/xxs",
+      "usageCount": 1,
+      "usedInComponents": [
+        "540:3794"
+      ],
+      "usedInProperties": [
+        "sizing"
+      ],
+      "inferredRole": "sizing",
+      "canonicalCandidate": "--sizing-form-control-height-xxs",
+      "registryToken": "sizing-form-control-height-xxs",
+      "status": "confirmed",
+      "mvp_f1_usageCount": 14,
+      "mvp_f1_usedInNodes": [
+        "540:3328",
+        "540:3690",
+        "540:3794"
+      ],
+      "mvp_f1_properties": [
+        "height"
+      ]
+    },
+    {
+      "legacyVariableName": "sizing/button/height/md",
+      "usageCount": 1,
+      "usedInComponents": [
+        "540:4501"
+      ],
+      "usedInProperties": [
+        "sizing"
+      ],
+      "inferredRole": "sizing",
+      "canonicalCandidate": "--sizing-button-height-md",
+      "registryToken": "sizing-button-height-md",
+      "status": "confirmed"
+    },
+    {
+      "legacyVariableName": "sizing/icon/24",
+      "usageCount": 2,
+      "usedInComponents": [
+        "540:3836",
+        "6456:4033"
+      ],
+      "usedInProperties": [
+        "sizing"
+      ],
+      "inferredRole": "sizing",
+      "canonicalCandidate": "--sizing-icon-24",
+      "registryToken": "sizing-icon-24",
+      "status": "confirmed",
+      "mvp_f1_usageCount": 24,
+      "mvp_f1_usedInNodes": [
+        "540:3328"
+      ],
+      "mvp_f1_properties": [
+        "width",
+        "height"
+      ]
+    },
+    {
+      "legacyVariableName": "radius/4",
+      "usageCount": 5,
+      "usedInComponents": [
+        "540:3794",
+        "540:4501",
+        "540:3836",
+        "6456:4033",
+        "540:7368"
+      ],
+      "usedInProperties": [
+        "radius"
+      ],
+      "inferredRole": "radius",
+      "canonicalCandidate": "--radius-4",
+      "registryToken": "radius-4",
+      "status": "confirmed",
+      "notes": "foundation radius. 5회 사용 — 가장 자주 쓰이는 radius.",
+      "mvp_f1_usageCount": 32,
+      "mvp_f1_usedInNodes": [
+        "540:3328",
+        "540:3794"
+      ],
+      "mvp_f1_properties": [
+        "topLeftRadius",
+        "topRightRadius",
+        "bottomLeftRadius",
+        "bottomRightRadius"
+      ]
+    },
+    {
+      "legacyVariableName": "radius/control/sm",
+      "usageCount": 1,
+      "usedInComponents": [
+        "540:3794"
+      ],
+      "usedInProperties": [
+        "radius"
+      ],
+      "inferredRole": "radius",
+      "canonicalCandidate": "--radius-control-sm",
+      "registryToken": "radius-control-sm",
+      "status": "needs-review",
+      "l4_5_status": "dedup-candidate",
+      "l4_5_dedup": {
+        "pair": "radius/4 (usageCount:5) ≡ radius/control/sm (usageCount:1)",
+        "sharedValue": "4",
+        "resolution": "값은 동일하나 역할이 다름. radius/4는 foundation primitive(여러 컴포넌트 공유). radius/control/sm은 semantic(form-control 전용). 각각 유지. 단, datepicker_input(540:3794)이 동시에 두 토큰을 사용 — 의도적 분리 또는 실수 확인 필요.",
+        "recommendation": "두 토큰 모두 유지. radius/control/sm → --radius-control-sm은 semantic 레이어에서 form-control 전용 반경 제어용으로 의미가 있음."
+      },
+      "notes": "radius/4와 같은 4px. L4.5: dedup-candidate 평가 결과 — 의미 역할이 달라 유지 권장. 단 동일 노드에서 두 토큰 동시 사용 패턴 확인 필요.",
+      "mvp_f1_usageCount": 280,
+      "mvp_f1_usedInNodes": [
+        "540:3328",
+        "540:3489",
+        "540:3506",
+        "540:3636",
+        "540:3690",
+        "540:3794"
+      ],
+      "mvp_f1_properties": [
+        "topLeftRadius",
+        "topRightRadius",
+        "bottomLeftRadius",
+        "bottomRightRadius"
+      ]
+    },
+    {
+      "legacyVariableName": "radius/full",
+      "usageCount": 2,
+      "usedInComponents": [
+        "540:3836",
+        "6456:4033"
+      ],
+      "usedInProperties": [
+        "radius"
+      ],
+      "inferredRole": "radius",
+      "canonicalCandidate": "--radius-full",
+      "registryToken": "radius-full",
+      "status": "confirmed",
+      "notes": "DatePicker day-cell 원형 모양에서 사용."
+    },
+    {
+      "legacyVariableName": "border-width/default",
+      "usageCount": 4,
+      "usedInComponents": [
+        "540:3794",
+        "540:4501",
+        "540:3836",
+        "6456:4033"
+      ],
+      "usedInProperties": [
+        "border-width"
+      ],
+      "inferredRole": "border-width",
+      "canonicalCandidate": "--border-width-default",
+      "registryToken": "border-width-default",
+      "status": "confirmed",
+      "mvp_f1_usageCount": 420,
+      "mvp_f1_usedInNodes": [
+        "540:3328",
+        "540:3489",
+        "540:3506",
+        "540:3636",
+        "540:3690",
+        "540:3794",
+        "540:4216"
+      ],
+      "mvp_f1_properties": [
+        "strokeTopWeight",
+        "strokeBottomWeight",
+        "strokeLeftWeight",
+        "strokeRightWeight"
+      ]
+    },
+    {
+      "legacyVariableName": "border-width/100",
+      "usageCount": 2,
+      "usedInComponents": [
+        "540:3836",
+        "6456:4033"
+      ],
+      "usedInProperties": [
+        "border-width"
+      ],
+      "inferredRole": "border-width",
+      "canonicalCandidate": "--border-width-default",
+      "registryToken": "border-width-default",
+      "status": "dedup-candidate",
+      "l4_5_status": "dedup-candidate",
+      "l4_5_dedup": {
+        "pair": "border-width/100 ≡ border-width/default",
+        "sharedValue": "1",
+        "canonicalKeep": "border-width/default (--border-width-default)",
+        "action": "border-width/100 → deprecated-tokens.json에 추가 후보. CSS 변수로는 --border-width-default 유지."
+      },
+      "notes": "border-width/default와 동일 값 1px. legacy 중복. L4.5: dedup-candidate — canonical은 border-width/default."
+    },
+    {
+      "legacyVariableName": "spacing/padding/inline/sm",
+      "usageCount": 4,
+      "usedInComponents": [
+        "540:3794",
+        "540:4501",
+        "540:3836",
+        "6456:4033"
+      ],
+      "usedInProperties": [
+        "spacing"
+      ],
+      "inferredRole": "spacing",
+      "canonicalCandidate": "--spacing-padding-inline-sm",
+      "registryToken": "spacing-padding-inline-sm",
+      "status": "confirmed",
+      "mvp_f1_usageCount": 58,
+      "mvp_f1_usedInNodes": [
+        "540:3328",
+        "540:3489",
+        "540:3636",
+        "540:3690",
+        "540:3794"
+      ],
+      "mvp_f1_properties": [
+        "paddingLeft",
+        "paddingRight"
+      ]
+    },
+    {
+      "legacyVariableName": "spacing/padding/inline/xs",
+      "usageCount": 2,
+      "usedInComponents": [
+        "540:3794",
+        "6456:4033"
+      ],
+      "usedInProperties": [
+        "spacing"
+      ],
+      "inferredRole": "spacing",
+      "canonicalCandidate": "--spacing-padding-inline-xs",
+      "registryToken": "spacing-padding-inline-xs",
+      "status": "confirmed",
+      "mvp_f1_usageCount": 86,
+      "mvp_f1_usedInNodes": [
+        "540:3328",
+        "540:3489",
+        "540:3636",
+        "540:3690",
+        "540:3794"
+      ],
+      "mvp_f1_properties": [
+        "paddingRight",
+        "paddingLeft"
+      ]
+    },
+    {
+      "legacyVariableName": "spacing/padding/inline/xxs",
+      "usageCount": 1,
+      "usedInComponents": [
+        "540:3794"
+      ],
+      "usedInProperties": [
+        "spacing"
+      ],
+      "inferredRole": "spacing",
+      "canonicalCandidate": "--spacing-padding-inline-xxs",
+      "registryToken": "spacing-padding-inline-xxs",
+      "status": "confirmed",
+      "mvp_f1_usageCount": 72,
+      "mvp_f1_usedInNodes": [
+        "540:3328",
+        "540:3506",
+        "540:3636",
+        "540:3690",
+        "540:3794"
+      ],
+      "mvp_f1_properties": [
+        "paddingRight",
+        "itemSpacing",
+        "paddingLeft"
+      ]
+    },
+    {
+      "legacyVariableName": "spacing/padding/inline/md",
+      "usageCount": 2,
+      "usedInComponents": [
+        "540:3836",
+        "6456:4033"
+      ],
+      "usedInProperties": [
+        "spacing"
+      ],
+      "inferredRole": "spacing",
+      "canonicalCandidate": "--spacing-padding-inline-md",
+      "registryToken": "spacing-padding-inline-md",
+      "status": "confirmed"
+    },
+    {
+      "legacyVariableName": "spacing/padding/inline/lg",
+      "usageCount": 2,
+      "usedInComponents": [
+        "540:3836",
+        "6456:4033"
+      ],
+      "usedInProperties": [
+        "spacing"
+      ],
+      "inferredRole": "spacing",
+      "canonicalCandidate": "--spacing-padding-inline-lg",
+      "registryToken": "spacing-padding-inline-lg",
+      "status": "confirmed",
+      "mvp_f1_usageCount": 8,
+      "mvp_f1_usedInNodes": [
+        "540:4216"
+      ],
+      "mvp_f1_properties": [
+        "paddingLeft",
+        "paddingRight"
+      ]
+    },
+    {
+      "legacyVariableName": "spacing/padding/block/xxs",
+      "usageCount": 1,
+      "usedInComponents": [
+        "540:3794"
+      ],
+      "usedInProperties": [
+        "spacing"
+      ],
+      "inferredRole": "spacing",
+      "canonicalCandidate": "--spacing-padding-block-xxs",
+      "registryToken": "spacing-padding-block-xxs",
+      "status": "confirmed",
+      "mvp_f1_usageCount": 98,
+      "mvp_f1_usedInNodes": [
+        "540:3328",
+        "540:3489",
+        "540:3636",
+        "540:3690",
+        "540:3794"
+      ],
+      "mvp_f1_properties": [
+        "paddingTop",
+        "paddingBottom"
+      ]
+    },
+    {
+      "legacyVariableName": "spacing/padding/block/xs",
+      "usageCount": 2,
+      "usedInComponents": [
+        "540:4501",
+        "6456:4033"
+      ],
+      "usedInProperties": [
+        "spacing"
+      ],
+      "inferredRole": "spacing",
+      "canonicalCandidate": "--spacing-padding-block-xs",
+      "registryToken": "spacing-padding-block-xs",
+      "status": "confirmed",
+      "mvp_f1_usageCount": 28,
+      "mvp_f1_usedInNodes": [
+        "540:3328",
+        "540:3489",
+        "540:3506"
+      ],
+      "mvp_f1_properties": [
+        "paddingTop",
+        "paddingBottom"
+      ]
+    },
+    {
+      "legacyVariableName": "spacing/padding/block/sm",
+      "usageCount": 2,
+      "usedInComponents": [
+        "540:3836",
+        "6456:4033"
+      ],
+      "usedInProperties": [
+        "spacing"
+      ],
+      "inferredRole": "spacing",
+      "canonicalCandidate": "--spacing-padding-block-sm",
+      "registryToken": "spacing-padding-block-sm",
+      "status": "confirmed"
+    },
+    {
+      "legacyVariableName": "spacing/padding/block/md",
+      "usageCount": 2,
+      "usedInComponents": [
+        "540:3836",
+        "6456:4033"
+      ],
+      "usedInProperties": [
+        "spacing"
+      ],
+      "inferredRole": "spacing",
+      "canonicalCandidate": "--spacing-padding-block-md",
+      "registryToken": "spacing-padding-block-md",
+      "status": "confirmed",
+      "mvp_f1_usageCount": 10,
+      "mvp_f1_usedInNodes": [
+        "540:4216"
+      ],
+      "mvp_f1_properties": [
+        "paddingTop",
+        "paddingBottom"
+      ]
+    },
+    {
+      "legacyVariableName": "spacing/section/xs",
+      "usageCount": 2,
+      "usedInComponents": [
+        "540:3836",
+        "6456:4033"
+      ],
+      "usedInProperties": [
+        "spacing"
+      ],
+      "inferredRole": "spacing",
+      "canonicalCandidate": "--spacing-section-xs",
+      "registryToken": "spacing-section-xs",
+      "status": "confirmed",
+      "mvp_f1_usageCount": 2,
+      "mvp_f1_usedInNodes": [
+        "540:4216"
+      ],
+      "mvp_f1_properties": [
+        "itemSpacing"
+      ]
+    },
+    {
+      "legacyVariableName": "spacing/section/lg",
+      "usageCount": 2,
+      "usedInComponents": [
+        "540:3836",
+        "6456:4033"
+      ],
+      "usedInProperties": [
+        "spacing"
+      ],
+      "inferredRole": "spacing",
+      "canonicalCandidate": "--spacing-section-lg",
+      "registryToken": "spacing-section-lg",
+      "status": "confirmed"
+    },
+    {
+      "legacyVariableName": "spacing/cluster/xs",
+      "usageCount": 1,
+      "usedInComponents": [
+        "6456:4033"
+      ],
+      "usedInProperties": [
+        "spacing"
+      ],
+      "inferredRole": "spacing",
+      "canonicalCandidate": "--spacing-cluster-xs",
+      "registryToken": "spacing-cluster-xs",
+      "status": "confirmed",
+      "mvp_f1_usageCount": 3,
+      "mvp_f1_usedInNodes": [
+        "540:3636"
+      ],
+      "mvp_f1_properties": [
+        "itemSpacing"
+      ]
+    },
+    {
+      "legacyVariableName": "spacing/stack/xs",
+      "usageCount": 1,
+      "usedInComponents": [
+        "6456:4033"
+      ],
+      "usedInProperties": [
+        "spacing"
+      ],
+      "inferredRole": "spacing",
+      "canonicalCandidate": "--spacing-stack-xs",
+      "registryToken": "spacing-stack-xs",
+      "status": "confirmed",
+      "mvp_f1_usageCount": 3,
+      "mvp_f1_usedInNodes": [
+        "540:4216"
+      ],
+      "mvp_f1_properties": [
+        "itemSpacing"
+      ]
+    },
+    {
+      "legacyVariableName": "spacing/4",
+      "usageCount": 1,
+      "usedInComponents": [
+        "540:3794"
+      ],
+      "usedInProperties": [
+        "spacing"
+      ],
+      "inferredRole": "spacing",
+      "canonicalCandidate": "--spacing-4",
+      "registryToken": "spacing-4",
+      "status": "confirmed",
+      "notes": "foundation spacing primitive.",
+      "mvp_f1_usageCount": 118,
+      "mvp_f1_usedInNodes": [
+        "540:3328",
+        "540:3636",
+        "540:3690",
+        "540:3794"
+      ],
+      "mvp_f1_properties": [
+        "paddingTop",
+        "paddingBottom",
+        "paddingRight",
+        "itemSpacing"
+      ]
+    },
+    {
+      "legacyVariableName": "spacing/32",
+      "usageCount": 1,
+      "usedInComponents": [
+        "6456:4033"
+      ],
+      "usedInProperties": [
+        "spacing"
+      ],
+      "inferredRole": "spacing",
+      "canonicalCandidate": "--spacing-32",
+      "registryToken": "spacing-32",
+      "status": "confirmed",
+      "mvp_f1_usageCount": 8,
+      "mvp_f1_usedInNodes": [
+        "540:4216"
+      ],
+      "mvp_f1_properties": [
+        "paddingLeft",
+        "paddingRight"
+      ]
+    },
+    {
+      "legacyVariableName": "sizing/24",
+      "usageCount": 2,
+      "usedInComponents": [
+        "540:3836",
+        "6456:4033"
+      ],
+      "usedInProperties": [
+        "sizing"
+      ],
+      "inferredRole": "sizing",
+      "canonicalCandidate": "",
+      "registryToken": "",
+      "status": "needs-review",
+      "notes": "sizing/icon/24와 동일 값 24. sizing/24는 foundation primitive 후보."
+    },
+    {
+      "legacyVariableName": "sizing/30",
+      "usageCount": 2,
+      "usedInComponents": [
+        "540:3836",
+        "6456:4033"
+      ],
+      "usedInProperties": [
+        "sizing"
+      ],
+      "inferredRole": "sizing",
+      "canonicalCandidate": "",
+      "registryToken": "",
+      "status": "needs-review",
+      "notes": "DatePicker day-cell inner circle. 30px."
+    },
+    {
+      "legacyVariableName": "sizing/44",
+      "usageCount": 2,
+      "usedInComponents": [
+        "540:3836",
+        "6456:4033"
+      ],
+      "usedInProperties": [
+        "sizing"
+      ],
+      "inferredRole": "sizing",
+      "canonicalCandidate": "",
+      "registryToken": "",
+      "status": "needs-review",
+      "notes": "DatePicker day-cell outer 44x44. canonical primitive sizing 후보."
+    },
+    {
+      "legacyVariableName": "sizing/56",
+      "usageCount": 1,
+      "usedInComponents": [
+        "6456:4033"
+      ],
+      "usedInProperties": [
+        "sizing"
+      ],
+      "inferredRole": "sizing",
+      "canonicalCandidate": "",
+      "registryToken": "",
+      "status": "needs-review"
+    },
+    {
+      "legacyVariableName": "sizing/80",
+      "usageCount": 1,
+      "usedInComponents": [
+        "6456:4033"
+      ],
+      "usedInProperties": [
+        "sizing"
+      ],
+      "inferredRole": "sizing",
+      "canonicalCandidate": "",
+      "registryToken": "",
+      "status": "needs-review"
+    },
+    {
+      "legacyVariableName": "component/control/text/14R",
+      "usageCount": 1,
+      "usedInComponents": [
+        "540:3794"
+      ],
+      "usedInProperties": [
+        "typography"
+      ],
+      "inferredRole": "typography",
+      "canonicalCandidate": "",
+      "registryToken": "",
+      "status": "needs-review",
+      "notes": "Pretendard 14 Regular. canonical typography 토큰 매핑 필요."
+    },
+    {
+      "legacyVariableName": "component/control/label/12R",
+      "usageCount": 1,
+      "usedInComponents": [
+        "540:3794"
+      ],
+      "usedInProperties": [
+        "typography"
+      ],
+      "inferredRole": "typography",
+      "canonicalCandidate": "",
+      "registryToken": "",
+      "status": "needs-review"
+    },
+    {
+      "legacyVariableName": "component/button/label/14M",
+      "usageCount": 2,
+      "usedInComponents": [
+        "540:4501",
+        "540:4502"
+      ],
+      "usedInProperties": [
+        "typography"
+      ],
+      "inferredRole": "typography",
+      "canonicalCandidate": "",
+      "registryToken": "",
+      "status": "needs-review",
+      "notes": "Pretendard 14 Medium. button component-alias typography."
+    },
+    {
+      "legacyVariableName": "component/button/label/16M",
+      "usageCount": 2,
+      "usedInComponents": [
+        "540:3836",
+        "6456:4033"
+      ],
+      "usedInProperties": [
+        "typography"
+      ],
+      "inferredRole": "typography",
+      "canonicalCandidate": "",
+      "registryToken": "",
+      "status": "needs-review"
+    },
+    {
+      "legacyVariableName": "title/20B",
+      "usageCount": 2,
+      "usedInComponents": [
+        "540:3836",
+        "6456:4033"
+      ],
+      "usedInProperties": [
+        "typography"
+      ],
+      "inferredRole": "typography",
+      "canonicalCandidate": "",
+      "registryToken": "",
+      "status": "needs-review"
+    },
+    {
+      "legacyVariableName": "title/24B",
+      "usageCount": 2,
+      "usedInComponents": [
+        "540:3836",
+        "6456:4033"
+      ],
+      "usedInProperties": [
+        "typography"
+      ],
+      "inferredRole": "typography",
+      "canonicalCandidate": "",
+      "registryToken": "",
+      "status": "needs-review"
+    },
+    {
+      "legacyVariableName": "title/16M",
+      "usageCount": 2,
+      "usedInComponents": [
+        "540:3836",
+        "6456:4033"
+      ],
+      "usedInProperties": [
+        "typography"
+      ],
+      "inferredRole": "typography",
+      "canonicalCandidate": "",
+      "registryToken": "",
+      "status": "needs-review"
+    },
+    {
+      "legacyVariableName": "title/16B",
+      "usageCount": 1,
+      "usedInComponents": [
+        "6456:4033"
+      ],
+      "usedInProperties": [
+        "typography"
+      ],
+      "inferredRole": "typography",
+      "canonicalCandidate": "",
+      "registryToken": "",
+      "status": "needs-review"
+    },
+    {
+      "legacyVariableName": "Title/16M",
+      "usageCount": 2,
+      "usedInComponents": [
+        "540:3836",
+        "6456:4033"
+      ],
+      "usedInProperties": [
+        "typography"
+      ],
+      "inferredRole": "typography",
+      "canonicalCandidate": "",
+      "registryToken": "",
+      "status": "dedup-candidate",
+      "l4_5_status": "dedup-candidate",
+      "l4_5_dedup": {
+        "pair": "title/16M (lowercase) ≡ Title/16M (capitalized)",
+        "sharedValue": "Pretendard 16 Medium",
+        "canonicalKeep": "title/16M (lowercase) — 일관된 네이밍 규칙 준수",
+        "action": "Title/16M(대문자)를 deprecated-alias로 처리. Figma Variable rename 금지 — 코드 레지스트리에서 uppercase variant를 deprecated로 표시."
+      },
+      "notes": "title/16M의 대문자 변형 — Figma 중복 정의 추정. L4.5: dedup-candidate. canonical = title/16M(lowercase). Title/16M → deprecated-alias 처리 권장."
+    },
+    {
+      "legacyVariableName": "Title/18M",
+      "usageCount": 1,
+      "usedInComponents": [
+        "540:7368"
+      ],
+      "usedInProperties": [
+        "typography"
+      ],
+      "inferredRole": "typography",
+      "canonicalCandidate": "",
+      "registryToken": "",
+      "status": "needs-review"
+    },
+    {
+      "legacyVariableName": "title/32B",
+      "usageCount": 1,
+      "usedInComponents": [
+        "540:7368"
+      ],
+      "usedInProperties": [
+        "typography"
+      ],
+      "inferredRole": "typography",
+      "canonicalCandidate": "",
+      "registryToken": "",
+      "status": "needs-review"
+    },
+    {
+      "legacyVariableName": "typography/title/base-bold",
+      "usageCount": 1,
+      "usedInComponents": [
+        "540:7663"
+      ],
+      "usedInProperties": [
+        "typography"
+      ],
+      "inferredRole": "typography",
+      "canonicalCandidate": "",
+      "registryToken": "",
+      "status": "needs-review",
+      "notes": "Pretendard 18 Bold. style guide reference에서 사용."
+    },
+    {
+      "legacyVariableName": "typography/body/base-regular",
+      "usageCount": 1,
+      "usedInComponents": [
+        "540:7663"
+      ],
+      "usedInProperties": [
+        "typography"
+      ],
+      "inferredRole": "typography",
+      "canonicalCandidate": "",
+      "registryToken": "",
+      "status": "needs-review"
+    },
+    {
+      "legacyVariableName": "color/orange/* (50~500, 9 steps)",
+      "usageCount": 0,
+      "usedInComponents": [],
+      "usedInProperties": [],
+      "inferredRole": "foundation-palette",
+      "canonicalCandidate": "--color-orange-{step}",
+      "registryToken": "color-orange-{step}",
+      "status": "no-usage-observed",
+      "notes": "palette 표시 외 실제 컴포넌트 사용 미확인. Foundation에 유지하되 deprecated 전환 검토 가능."
+    }
+  ]
+}

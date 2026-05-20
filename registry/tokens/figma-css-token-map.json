@@ -13,10 +13,10 @@
       "CSS variable names use hyphen-separated paths with -- prefix (e.g. --color-form-control-border-focus).",
       "Mapping is based on meaning and usage, not name equality.",
       "status: stable = confirmed from both code and Figma. pending = Figma Variable name unconfirmed. needs-review = conflict or ambiguity detected.",
-      "Figma error/success input state variables not confirmed via MCP — marked pending.",
+      "Figma form-control/border/error confirmed 2026-05-19. form-control/text/state/error and helper pending.",
       "v0.2.0: figma metadata block added to sync-ready items. collectionId/variableId/modeId required before write activation."
     ],
-    "updatedAt": "2026-05-18"
+    "updatedAt": "2026-05-19"
   },
   "mappings": [
     {
@@ -196,7 +196,7 @@
           "scope": "form-control",
           "figmaVariable": "color/form-control/border/error",
           "figmaValue": "#e50533",
-          "figmaSource": "pending — not directly confirmed from MCP. Inferred from color/red/400 = #e50533 via --color-status-error.",
+          "figmaSource": "confirmed 2026-05-19",
           "cssVariable": "--color-form-control-border-error",
           "cssValue": "var(--color-status-error)",
           "registryToken": "color.formControl.border.error",
@@ -208,10 +208,23 @@
             "light": "#e50533",
             "dark": "var(--color-status-dark-red)"
           },
-          "status": "pending",
+          "status": "stable",
           "notes": [
-            "Figma Variable name unconfirmed. Value inferred from --color-status-error = var(--color-red-400) = #e50533."
-          ]
+            "Figma Variable name color/form-control/border/error confirmed 2026-05-19.",
+            "Value = --color-status-error = var(--color-red-400) = #e50533."
+          ],
+          "figma": {
+            "collectionName": "",
+            "collectionId": "",
+            "modeName": "",
+            "modeId": "",
+            "variableId": "",
+            "variableKey": "",
+            "resolvedType": "COLOR",
+            "currentValue": "#e50533",
+            "targetValue": "#e50533",
+            "writeStatus": "metadata-required"
+          }
         },
         {
           "id": "form-control.border.correct",
@@ -590,9 +603,9 @@
           "cssVariable": "--input-error-border",
           "semanticVariable": "--color-form-control-border-error",
           "registryToken": "input.border.error",
-          "status": "pending",
+          "status": "stable",
           "notes": [
-            "Figma variable name pending confirmation."
+            "Figma variable name color/form-control/border/error confirmed 2026-05-19."
           ]
         },
         {

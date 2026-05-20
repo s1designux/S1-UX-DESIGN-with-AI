@@ -3,25 +3,51 @@
     "id": "dropdown",
     "name": "Dropdown",
     "category": "Core",
-    "updatedAt": "2026-05-11",
+    "updatedAt": "2026-05-19",
+    "version": "0.1.0",
     "tokenStatus": "stable",
-    "codeStatus": "not-started",
+    "codeStatus": "implemented",
     "darkModeStatus": "pending",
-    "description": "Select/dropdown trigger and option list component."
+    "a11yStatus": "pending",
+    "figmaStatus": "existing",
+    "harnessStatus": "implemented",
+    "description": "드롭다운 트리거 + 옵션 목록 컴포넌트. trigger 상태(default·hover·open·disabled)와 option 상태(hover·selected) 포함.",
+    "notes": [
+      "--dropdown-list-bg: D002(2026-05-19) 결정 — var(--color-surface-raised)로 확정. surface-default 아님.",
+      "trigger placeholder text / selected text / list border / option selected text는 D001(2026-05-19) 추가 4개 candidate 토큰."
+    ]
   },
-  "variants": {
-    "default": {
-      "tokenStatus": "stable",
-      "codeStatus": "not-started",
-      "darkModeStatus": "pending",
-      "tokens": [
-        "--dropdown-trigger-default-bg", "--dropdown-trigger-hover-bg",
-        "--dropdown-trigger-open-bg", "--dropdown-trigger-disabled-bg",
-        "--dropdown-trigger-default-border", "--dropdown-trigger-hover-border",
-        "--dropdown-trigger-open-border", "--dropdown-trigger-disabled-border",
-        "--dropdown-trigger-default-text", "--dropdown-trigger-disabled-text",
-        "--dropdown-list-bg", "--dropdown-option-hover-bg", "--dropdown-option-selected-bg"
-      ]
-    }
+  "states": {
+    "trigger": ["default", "hover", "open", "disabled"],
+    "option": ["default", "hover", "selected"]
+  },
+  "tokens": [
+    { "cssVar": "--dropdown-trigger-default-bg",      "value": "var(--color-surface-default)",              "semanticRef": "color-surface-default",              "part": "trigger", "state": "default",  "property": "background" },
+    { "cssVar": "--dropdown-trigger-hover-bg",        "value": "var(--color-bg-subtle)",                    "semanticRef": "color-bg-subtle",                    "part": "trigger", "state": "hover",    "property": "background" },
+    { "cssVar": "--dropdown-trigger-open-bg",         "value": "var(--color-bg-subtle)",                    "semanticRef": "color-bg-subtle",                    "part": "trigger", "state": "open",     "property": "background" },
+    { "cssVar": "--dropdown-trigger-disabled-bg",     "value": "var(--color-bg-subtle)",                    "semanticRef": "color-bg-subtle",                    "part": "trigger", "state": "disabled", "property": "background" },
+    { "cssVar": "--dropdown-trigger-default-border",  "value": "var(--color-form-control-border-default)",  "semanticRef": "color-form-control-border-default",  "part": "trigger", "state": "default",  "property": "border" },
+    { "cssVar": "--dropdown-trigger-hover-border",    "value": "var(--color-border-strong)",                "semanticRef": "color-border-strong",                "part": "trigger", "state": "hover",    "property": "border" },
+    { "cssVar": "--dropdown-trigger-open-border",     "value": "var(--color-border-focus)",                 "semanticRef": "color-border-focus",                 "part": "trigger", "state": "open",     "property": "border" },
+    { "cssVar": "--dropdown-trigger-disabled-border", "value": "var(--color-border-subtle)",                "semanticRef": "color-border-subtle",                "part": "trigger", "state": "disabled", "property": "border" },
+    { "cssVar": "--dropdown-trigger-default-text",    "value": "var(--color-text-secondary)",               "semanticRef": "color-text-secondary",               "part": "trigger", "state": "default",  "property": "text" },
+    { "cssVar": "--dropdown-trigger-disabled-text",   "value": "var(--color-text-disabled)",                "semanticRef": "color-text-disabled",                "part": "trigger", "state": "disabled", "property": "text" },
+    { "cssVar": "--dropdown-trigger-placeholder-text","value": "var(--color-text-placeholder)",             "semanticRef": "color-text-placeholder",             "part": "trigger", "state": "empty",    "property": "text" },
+    { "cssVar": "--dropdown-trigger-selected-text",   "value": "var(--color-text-primary)",                 "semanticRef": "color-text-primary",                 "part": "trigger", "state": "filled",   "property": "text" },
+    { "cssVar": "--dropdown-list-bg",                 "value": "var(--color-surface-raised)",               "semanticRef": "color-surface-raised",               "part": "list",    "state": "all",      "property": "background" },
+    { "cssVar": "--dropdown-list-border",             "value": "var(--color-border-default)",               "semanticRef": "color-border-default",               "part": "list",    "state": "all",      "property": "border" },
+    { "cssVar": "--dropdown-option-hover-bg",         "value": "var(--color-bg-subtle)",                    "semanticRef": "color-bg-subtle",                    "part": "option",  "state": "hover",    "property": "background" },
+    { "cssVar": "--dropdown-option-selected-bg",      "value": "var(--color-action-primary-subtle)",        "semanticRef": "color-action-primary-subtle",        "part": "option",  "state": "selected", "property": "background" },
+    { "cssVar": "--dropdown-option-selected-text",    "value": "var(--color-action-primary-default)",       "semanticRef": "color-action-primary-default",       "part": "option",  "state": "selected", "property": "text" }
+  ],
+  "figma": {
+    "componentSetKey": "",
+    "figmaNodeId": "",
+    "propertyMap": {}
+  },
+  "governance": {
+    "owner": "Design System Team",
+    "deprecated": false,
+    "replacement": null
   }
 }

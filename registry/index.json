@@ -23,9 +23,11 @@
       "border":  "registry/tokens/semantic.border.json"
     },
     "component": "registry/tokens/component.tokens.json",
-    "figmaCssTokenMap": "registry/tokens/figma-css-token-map.json",
-    "tokenAliases":     "registry/tokens/token-aliases.json",
-    "deprecatedTokens": "registry/tokens/deprecated-tokens.json"
+    "figmaCssTokenMap":       "registry/tokens/figma-css-token-map.json",
+    "tokenAliases":           "registry/tokens/token-aliases.json",
+    "deprecatedTokens":       "registry/tokens/deprecated-tokens.json",
+    "canonicalDraft":         "registry/tokens/canonical-token-draft.json",
+    "canonicalPromotionPlan": "registry/tokens/canonical-token-promotion-plan.json"
   },
   "componentIndex": "registry/components/index.json",
   "components": {

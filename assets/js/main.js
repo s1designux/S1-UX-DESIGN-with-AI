@@ -4,28 +4,33 @@
 
 /* ── Site Map ── */
 const SITE_NAV = [
-  { type: 'label', text: '개요' },
-  { type: 'item', id: 'index', href: '../index.html', rootHref: 'index.html', icon: '🏠', text: 'Overview' },
-  { type: 'label', text: 'Foundation' },
+  /* ── Guide ── */
+  { type: 'label', text: 'Guide' },
+  { type: 'item', id: 'policy', href: 'policy.html', rootHref: 'pages/policy.html', icon: '📋', text: 'Policy' },
+  { type: 'item', id: 'install-prompt', href: 'install-prompt.html', rootHref: 'pages/install-prompt.html', icon: '⚡', text: 'Download Tokens', status: 'ready' },
   { type: 'item', id: 'foundation', href: 'foundation.html', rootHref: 'pages/foundation.html', icon: '🎨', text: 'Foundation Tokens', status: 'ready' },
   { type: 'item', id: 'semantic', href: 'semantic.html', rootHref: 'pages/semantic.html', icon: '🌗', text: 'Semantic Tokens', status: 'ready' },
-  { type: 'label', text: 'Design System' },
+
+  /* ── Source ── */
+  { type: 'label', text: 'Source' },
   { type: 'item', id: 'components', href: 'components.html', rootHref: 'pages/components.html', icon: '🧩', text: 'Components', status: 'ready' },
   { type: 'item', id: 'icons', href: 'icons.html', rootHref: 'pages/icons.html', icon: '✦', text: 'Icons · 817', status: 'ready' },
   { type: 'item', id: 'patterns', href: 'patterns.html', rootHref: 'pages/patterns.html', icon: '📐', text: 'Patterns', status: 'soon' },
-  { type: 'item', id: 'policy', href: 'policy.html', rootHref: 'pages/policy.html', icon: '📋', text: 'Policy' },
-  { type: 'item', id: 'legacy', href: 'legacy.html', rootHref: 'pages/legacy.html', icon: '🗂️', text: 'Legacy Guide', status: 'soon' },
-  { type: 'label', text: 'AI 워크플로우', collapsible: true, defaultCollapsed: true, groupId: 'ai-workflow' },
-  { type: 'item', id: 'install-prompt', href: 'install-prompt.html', rootHref: 'pages/install-prompt.html', icon: '⚡', text: '토큰 설치 프롬프트', status: 'ready', group: 'ai-workflow' },
-  { type: 'item', id: 'ai-snippets', href: 'ai-snippets.html', rootHref: 'pages/ai-snippets.html', icon: '🤖', text: 'AI Snippets', status: 'ready', group: 'ai-workflow' },
-  { type: 'item', id: 'guide-md', href: 'guide-md.html', rootHref: 'pages/guide-md.html', icon: '📋', text: 'Guide MD', status: 'ready', group: 'ai-workflow' },
-  { type: 'item', id: 'md-review', href: 'md-review.html', rootHref: 'pages/md-review.html', icon: '🔍', text: 'MD 리뷰', status: 'ready', group: 'ai-workflow' },
-  { type: 'label', text: 'System' },
-  { type: 'item', id: 'registry-health', href: 'registry-health.html', rootHref: 'pages/registry-health.html', icon: '📊', text: 'System Status', status: 'new' },
-  { type: 'item', id: 'foundation-tokens', href: 'foundation-tokens.html', rootHref: 'pages/foundation-tokens.html', icon: '🏗', text: 'Foundation Registry', status: 'new' },
-  { type: 'item', id: 'semantic-tokens', href: 'semantic-tokens.html', rootHref: 'pages/semantic-tokens.html', icon: '🌗', text: 'Semantic Registry', status: 'new' },
-  { type: 'item', id: 'component-tokens', href: 'component-tokens.html', rootHref: 'pages/component-tokens.html', icon: '🧩', text: 'Component Tokens', status: 'new' },
-  { type: 'item', id: 'component-registry', href: 'component-registry.html', rootHref: 'pages/component-registry.html', icon: '📋', text: 'Component Registry', status: 'new' },
+
+  /* ── Harness Admin ── */
+  { type: 'label', text: 'Harness Admin', collapsible: true, defaultCollapsed: false, groupId: 'admin' },
+  { type: 'item', id: 'harness-overview', href: 'harness-overview.html', rootHref: 'pages/harness-overview.html', icon: '🧭', text: 'Harness Overview', group: 'admin' },
+  { type: 'item', id: 'registry-explorer', href: 'registry-explorer.html', rootHref: 'pages/registry-explorer.html', icon: '🗄', text: 'Registry Explorer', group: 'admin' },
+  { type: 'item', id: 'token-mapping', href: 'token-mapping.html', rootHref: 'pages/token-mapping.html', icon: '🔗', text: 'Token Mapping', group: 'admin' },
+  { type: 'item', id: 'migration-board', href: 'migration-board.html', rootHref: 'pages/migration-board.html', icon: '📊', text: 'Migration Board', group: 'admin' },
+  { type: 'item', id: 'registry-health', href: 'registry-health.html', rootHref: 'pages/registry-health.html', icon: '💚', text: 'System Status', group: 'admin' },
+  { type: 'item', id: 'reports', href: 'reports.html', rootHref: 'pages/reports.html', icon: '📁', text: 'Reports', group: 'admin' },
+  { type: 'item', id: 'legacy', href: 'legacy.html', rootHref: 'pages/legacy.html', icon: '📦', text: 'Legacy Guide', group: 'admin' },
+
+  /* ── Archive (hidden — nav에서 제거, 파일/route 보존) ──────────────
+     ai-snippets.html / guide-md.html / md-review.html
+     직접 URL 접근 가능. 사용자-facing nav에는 노출하지 않음.
+  ──────────────────────────────────────────────────────────────── */
 ];
 
 /* ── Sidebar Render ── */
@@ -81,10 +86,10 @@ function renderSidebar() {
 
   return `
     <div class="sidebar-logo">
-      <div class="logo-mark">
+      <a href="${isRoot ? 'index.html' : '../index.html'}" class="logo-mark" style="text-decoration:none;color:inherit;display:flex;align-items:center;gap:8px;">
         <div class="logo-dot"></div>
-        <span class="logo-title">SW Design System</span>
-      </div>
+        <span class="logo-title">S1 UX DESIGN GUIDE</span>
+      </a>
       <div class="logo-version">UX Guide V2.4 · 2026</div>
     </div>
     <div class="sidebar-search">
@@ -97,11 +102,7 @@ function renderSidebar() {
     </div>
     <nav class="sidebar-nav">${items}</nav>
     <div class="sidebar-footer">
-      <div class="sidebar-theme-row">
-        <button class="sidebar-theme-btn" id="global-btn-light" onclick="setGlobalTheme('light')">Light</button>
-        <button class="sidebar-theme-btn" id="global-btn-dark"  onclick="setGlobalTheme('dark')">Dark</button>
-      </div>
-      v1.0.0 · Figma node 540:7663<br>
+v1.0.0 · Figma node 540:7663<br>
       <a href="https://www.figma.com/design/yE5UCFEbmXJBlYJWB24Lz2/" style="color:#0072ce" target="_blank">Figma 열기 ↗</a>
     </div>
   `;
@@ -183,21 +184,183 @@ function initColorCards(root) {
   });
 }
 
+/* ── Sidebar Search Index ── */
+var SEARCH_INDEX = [
+  // Pages
+  { label: 'Foundation Tokens', sublabel: '색상·타이포·간격', type: 'page', page: 'foundation.html', keywords: 'foundation token color palette typography spacing radius border font' },
+  { label: 'Semantic Tokens',   sublabel: '역할 기반 토큰',  type: 'page', page: 'semantic.html',   keywords: 'semantic token bg surface text border action status overlay icon form-control' },
+  { label: 'Components',        sublabel: '컴포넌트 가이드', type: 'page', page: 'components.html', keywords: 'component button checkbox radio toggle chip input select dropdown textarea datepicker 컴포넌트' },
+  { label: 'Icons',             sublabel: '아이콘 817개',    type: 'page', page: 'icons.html',       keywords: 'icon svg 아이콘' },
+  { label: 'Legacy Guide',      sublabel: '마이그레이션',    type: 'page', page: 'legacy.html',      keywords: 'legacy migration guide 레거시 마이그레이션' },
+  { label: 'Token Mapping',     sublabel: 'Figma ↔ CSS',    type: 'page', page: 'token-mapping.html', keywords: 'token mapping figma css 토큰 매핑' },
+  { label: 'Reports',           sublabel: '리포트 목록',     type: 'page', page: 'reports.html',     keywords: 'report mvp 리포트' },
+
+  // Components
+  { label: 'Button',          sublabel: 'Components', type: 'component', page: 'components.html', anchor: 'button',      keywords: 'button primary secondary blue-line s1-btn 버튼' },
+  { label: 'Checkbox',        sublabel: 'Components', type: 'component', page: 'components.html', anchor: 'checkbox',    keywords: 'checkbox s1-checkbox 체크박스' },
+  { label: 'Radio',           sublabel: 'Components', type: 'component', page: 'components.html', anchor: 'radio',       keywords: 'radio s1-radio 라디오' },
+  { label: 'Toggle',          sublabel: 'Components', type: 'component', page: 'components.html', anchor: 'toggle',      keywords: 'toggle switch s1-toggle 토글 스위치' },
+  { label: 'Chip · FilterChip', sublabel: 'Components', type: 'component', page: 'components.html', anchor: 'chip',     keywords: 'chip filter filterchip s1-chip ds-filter-chip 칩 필터칩' },
+  { label: 'Input',           sublabel: 'Components', type: 'component', page: 'components.html', anchor: 'input',       keywords: 'input text field s1-input 인풋 입력' },
+  { label: 'Select',          sublabel: 'Components', type: 'component', page: 'components.html', anchor: 'select',      keywords: 'select s1-select 셀렉트' },
+  { label: 'Textarea',        sublabel: 'Components', type: 'component', page: 'components.html', anchor: 'textarea',    keywords: 'textarea 텍스트에리어' },
+  { label: 'Date Picker',     sublabel: 'Components', type: 'component', page: 'components.html', anchor: 'date-picker', keywords: 'date picker datepicker calendar 날짜 달력 데이트피커' },
+
+  // Foundation tokens
+  { label: '--color-gray-*',      sublabel: 'Foundation', type: 'token', page: 'foundation.html', keywords: 'color gray grey 그레이 0 50 100 200 300 400 500 600 700 800 900' },
+  { label: '--color-blue-*',      sublabel: 'Foundation', type: 'token', page: 'foundation.html', keywords: 'color blue 블루 50 100 200 300 400 500' },
+  { label: '--color-red-*',       sublabel: 'Foundation', type: 'token', page: 'foundation.html', keywords: 'color red 레드 50 100 200 300 400 500' },
+  { label: '--color-green-*',     sublabel: 'Foundation', type: 'token', page: 'foundation.html', keywords: 'color green 그린 50 100 200 300 400 500' },
+  { label: '--color-orange-*',    sublabel: 'Foundation', type: 'token', page: 'foundation.html', keywords: 'color orange 오렌지 50 100 200 300 400 500' },
+  { label: '--color-yellow-*',    sublabel: 'Foundation', type: 'token', page: 'foundation.html', keywords: 'color yellow 옐로우 50 100 200 300 400 500' },
+  { label: '--color-purple-*',    sublabel: 'Foundation', type: 'token', page: 'foundation.html', keywords: 'color purple 퍼플 50 100 200 300 400 500' },
+  { label: '--color-skyblue-*',   sublabel: 'Foundation', type: 'token', page: 'foundation.html', keywords: 'color skyblue sky 스카이블루 50 100 200 300 400 500' },
+  { label: '--color-gray-dark-*', sublabel: 'Foundation Dark', type: 'token', page: 'foundation.html', keywords: 'color gray dark 다크 dark mode 0 50 100 200 300 400 500 600 700 800 900' },
+  { label: '--color-blue-dark-*', sublabel: 'Foundation Dark', type: 'token', page: 'foundation.html', keywords: 'color blue dark 다크 50 100 200 300 400 500' },
+  { label: '--font-size-*',       sublabel: 'Foundation', type: 'token', page: 'foundation.html', keywords: 'font size typography 타이포 폰트 10 12 14 16 18 20 24 32' },
+  { label: '--font-weight-*',     sublabel: 'Foundation', type: 'token', page: 'foundation.html', keywords: 'font weight bold medium regular 400 500 700' },
+  { label: '--spacing-*',         sublabel: 'Foundation', type: 'token', page: 'foundation.html', keywords: 'spacing gap padding margin 간격 2 4 8 12 16 20 24 28 32' },
+  { label: '--radius-*',          sublabel: 'Foundation', type: 'token', page: 'foundation.html', keywords: 'radius border-radius rounded 반경 0 2 4 6 8 10 12 16 20 full' },
+  { label: '--border-width-*',    sublabel: 'Foundation', type: 'token', page: 'foundation.html', keywords: 'border width stroke 1px 2px' },
+
+  // Semantic tokens
+  { label: '--color-bg-*',           sublabel: 'Semantic', type: 'token', page: 'semantic.html', keywords: 'color bg background default subtle muted selected 배경' },
+  { label: '--color-surface-*',      sublabel: 'Semantic', type: 'token', page: 'semantic.html', keywords: 'color surface default raised 서피스 카드 패널' },
+  { label: '--color-text-*',         sublabel: 'Semantic', type: 'token', page: 'semantic.html', keywords: 'color text primary secondary caption disabled placeholder 텍스트' },
+  { label: '--color-border-*',       sublabel: 'Semantic', type: 'token', page: 'semantic.html', keywords: 'color border default subtle strong emphasis focus disabled 보더 테두리' },
+  { label: '--color-action-*',       sublabel: 'Semantic', type: 'token', page: 'semantic.html', keywords: 'color action primary secondary hover pressed 액션 인터랙션' },
+  { label: '--color-status-*',       sublabel: 'Semantic', type: 'token', page: 'semantic.html', keywords: 'color status success error warning info correct 상태 피드백' },
+  { label: '--color-icon-*',         sublabel: 'Semantic', type: 'token', page: 'semantic.html', keywords: 'color icon default muted emphasis 아이콘' },
+  { label: '--color-overlay-*',      sublabel: 'Semantic', type: 'token', page: 'semantic.html', keywords: 'color overlay dim backdrop 오버레이 딤' },
+  { label: '--color-form-control-*', sublabel: 'Semantic', type: 'token', page: 'semantic.html', keywords: 'color form control input bg border text label 폼 컨트롤' },
+
+  // Component tokens
+  { label: '--button-*',          sublabel: 'Component Token', type: 'token', page: 'components.html', anchor: 'button',      keywords: 'button primary secondary blue-line hover pressed disabled bg border text 버튼 토큰' },
+  { label: '--checkbox-*',        sublabel: 'Component Token', type: 'token', page: 'components.html', anchor: 'checkbox',    keywords: 'checkbox bg border icon selected disabled 체크박스 토큰' },
+  { label: '--radio-*',           sublabel: 'Component Token', type: 'token', page: 'components.html', anchor: 'radio',       keywords: 'radio border dot selected disabled 라디오 토큰' },
+  { label: '--toggle-*',          sublabel: 'Component Token', type: 'token', page: 'components.html', anchor: 'toggle',      keywords: 'toggle on off bg knob disabled 토글 토큰' },
+  { label: '--chip-line-* / --chip-solid-*', sublabel: 'Component Token', type: 'token', page: 'components.html', anchor: 'chip', keywords: 'chip line solid hover selected disabled bg border text 칩 토큰' },
+  { label: '--input-*',           sublabel: 'Component Token', type: 'token', page: 'components.html', anchor: 'input',       keywords: 'input default focus error correct disabled bg border text 인풋 토큰' },
+  { label: '--select-* / --dropdown-*', sublabel: 'Component Token', type: 'token', page: 'components.html', anchor: 'select', keywords: 'select dropdown bg border text 셀렉트 드롭다운 토큰' },
+];
+
 /* ── Sidebar Search ── */
 function initSidebarSearch() {
-  const input = document.getElementById('sidebar-search-input');
+  var input = document.getElementById('sidebar-search-input');
   if (!input) return;
-  input.addEventListener('input', () => {
-    const q = input.value.toLowerCase().trim();
-    if (!q) {
-      document.querySelectorAll('[data-searchable]').forEach(el => el.closest('.color-card, .brand-card, .semantic-card')?.style.removeProperty('display'));
+
+  var sidebarSearch = input.closest('.sidebar-search');
+  var dropdown = document.createElement('div');
+  dropdown.className = 'search-results';
+  sidebarSearch.appendChild(dropdown);
+
+  var focusedIdx = -1;
+  var currentResults = [];
+
+  function getPageFilename() {
+    var parts = window.location.pathname.split('/');
+    return parts[parts.length - 1] || 'index.html';
+  }
+
+  function resolveHref(page, anchor) {
+    var isRoot = !window.location.pathname.includes('/pages/');
+    var base = isRoot ? 'pages/' + page : page;
+    return anchor ? base + '#' + anchor : base;
+  }
+
+  function navigate(item) {
+    input.value = '';
+    closeDropdown();
+    var currentPage = getPageFilename();
+    if (currentPage === item.page) {
+      if (item.anchor) {
+        if (typeof showSection === 'function') {
+          var btn = document.querySelector('.comp-nav-btn[onclick*="\'' + item.anchor + '\'"]');
+          showSection(item.anchor, btn);
+          setTimeout(function() {
+            var el = document.getElementById(item.anchor);
+            if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          }, 60);
+        } else {
+          var el = document.getElementById(item.anchor);
+          if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      } else {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+    } else {
+      window.location.href = resolveHref(item.page, item.anchor);
+    }
+  }
+
+  function closeDropdown() {
+    dropdown.classList.remove('is-open');
+    focusedIdx = -1;
+    currentResults = [];
+  }
+
+  function updateFocus() {
+    dropdown.querySelectorAll('.search-result-item').forEach(function(el, i) {
+      el.classList.toggle('is-focused', i === focusedIdx);
+      if (i === focusedIdx) el.scrollIntoView({ block: 'nearest' });
+    });
+  }
+
+  function renderResults(results) {
+    currentResults = results;
+    if (!results.length) {
+      dropdown.innerHTML = '<div class="search-no-results">검색 결과 없음</div>';
+      dropdown.classList.add('is-open');
       return;
     }
-    document.querySelectorAll('[data-searchable]').forEach(el => {
-      const text = el.getAttribute('data-searchable').toLowerCase();
-      const card = el.closest('.color-card, .brand-card, .semantic-card');
-      if (card) card.style.display = text.includes(q) ? '' : 'none';
+    dropdown.innerHTML = results.map(function(item, i) {
+      var bc = item.type === 'page' ? 'srb-page' : item.type === 'component' ? 'srb-component' : 'srb-token';
+      var bt = item.type === 'page' ? 'Page' : item.type === 'component' ? 'Comp' : 'Token';
+      return '<div class="search-result-item" data-idx="' + i + '">' +
+        '<span class="search-result-badge ' + bc + '">' + bt + '</span>' +
+        '<span class="search-result-label">' + item.label + '</span>' +
+        '<span class="search-result-hint">' + item.sublabel + '</span>' +
+        '</div>';
+    }).join('');
+    dropdown.classList.add('is-open');
+    dropdown.querySelectorAll('.search-result-item').forEach(function(el) {
+      el.addEventListener('mousedown', function(e) {
+        e.preventDefault();
+        navigate(results[parseInt(el.dataset.idx)]);
+      });
     });
+  }
+
+  input.addEventListener('input', function() {
+    var q = input.value.toLowerCase().trim();
+    focusedIdx = -1;
+    if (!q) { closeDropdown(); return; }
+    var hits = SEARCH_INDEX.filter(function(item) {
+      return item.label.toLowerCase().includes(q) || item.keywords.toLowerCase().includes(q);
+    }).slice(0, 8);
+    renderResults(hits);
+  });
+
+  input.addEventListener('keydown', function(e) {
+    if (!dropdown.classList.contains('is-open')) return;
+    if (e.key === 'ArrowDown') {
+      e.preventDefault();
+      focusedIdx = Math.min(focusedIdx + 1, currentResults.length - 1);
+      updateFocus();
+    } else if (e.key === 'ArrowUp') {
+      e.preventDefault();
+      focusedIdx = Math.max(focusedIdx - 1, -1);
+      updateFocus();
+    } else if (e.key === 'Enter' && focusedIdx >= 0) {
+      navigate(currentResults[focusedIdx]);
+    } else if (e.key === 'Escape') {
+      closeDropdown();
+      input.blur();
+    }
+  });
+
+  input.addEventListener('blur', function() {
+    setTimeout(closeDropdown, 150);
   });
 }
 
@@ -255,11 +418,62 @@ function initThemeToggle() {
   });
 }
 
+/* ── Zoom (keyboard + wheel 기반, localStorage 영속) ── */
+const ZOOM_STEPS = [50, 67, 75, 80, 90, 100, 110, 125, 150, 175, 200];
+const ZOOM_KEY = 'sw-ds-zoom';
+
+function getZoom() {
+  return parseInt(localStorage.getItem(ZOOM_KEY) || '100', 10);
+}
+
+function applyZoom(level) {
+  const clamped = Math.max(ZOOM_STEPS[0], Math.min(ZOOM_STEPS[ZOOM_STEPS.length - 1], level));
+  document.documentElement.style.zoom = clamped + '%';
+  localStorage.setItem(ZOOM_KEY, clamped);
+}
+
+function stepZoom(direction) {
+  const cur = getZoom();
+  const idx = ZOOM_STEPS.indexOf(cur);
+  if (direction > 0) {
+    const next = idx >= 0 && idx < ZOOM_STEPS.length - 1
+      ? ZOOM_STEPS[idx + 1]
+      : ZOOM_STEPS.find(s => s > cur) || ZOOM_STEPS[ZOOM_STEPS.length - 1];
+    applyZoom(next);
+  } else {
+    const next = idx > 0
+      ? ZOOM_STEPS[idx - 1]
+      : [...ZOOM_STEPS].reverse().find(s => s < cur) || ZOOM_STEPS[0];
+    applyZoom(next);
+  }
+}
+
+function initZoom() {
+  applyZoom(getZoom());
+
+  // Ctrl/Cmd + 키보드 단축키 가로채기
+  document.addEventListener('keydown', e => {
+    if (!e.ctrlKey && !e.metaKey) return;
+    if (e.key === '=' || e.key === '+') { e.preventDefault(); stepZoom(1); }
+    else if (e.key === '-')            { e.preventDefault(); stepZoom(-1); }
+    else if (e.key === '0')            { e.preventDefault(); applyZoom(100); }
+  });
+
+  // Ctrl + 마우스 휠 가로채기
+  document.addEventListener('wheel', e => {
+    if (!e.ctrlKey) return;
+    e.preventDefault();
+    stepZoom(e.deltaY < 0 ? 1 : -1);
+  }, { passive: false });
+}
+
 /* ── Init ── */
-// 테마를 DOMContentLoaded 이전에 적용해 flash 방지
+// 테마·줌을 DOMContentLoaded 이전에 적용해 flash 방지
 (function() {
-  const saved = localStorage.getItem('sw-ds-theme');
-  if (saved) document.documentElement.setAttribute('data-theme', saved);
+  const savedTheme = localStorage.getItem('sw-ds-theme');
+  if (savedTheme) document.documentElement.setAttribute('data-theme', savedTheme);
+  const savedZoom = localStorage.getItem(ZOOM_KEY);
+  if (savedZoom) document.documentElement.style.zoom = savedZoom + '%';
 })();
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -274,4 +488,10 @@ document.addEventListener('DOMContentLoaded', () => {
   initSidebarSearch();
   initFilterBtns();
   initThemeToggle();
+  initZoom();
+});
+
+// bfcache(뒤로/앞으로) 복원 시에도 줌 재적용
+window.addEventListener('pageshow', e => {
+  if (e.persisted) applyZoom(getZoom());
 });

@@ -3,30 +3,108 @@
     "id": "chip",
     "name": "Chip",
     "category": "Core",
-    "updatedAt": "2026-05-11",
+    "updatedAt": "2026-05-19",
     "tokenStatus": "stable",
-    "codeStatus": "not-started",
+    "codeStatus": "implemented",
     "darkModeStatus": "pending",
-    "description": "Filter/selection chip component.",
+    "description": "Selection and filter chip component. Line type (outlined) and Solid type (filled background). Filter chip extends Line with a dropdown.",
+    "figmaNodeId": "",
+    "figmaFileKey": "yE5UCFEbmXJBlYJWB24Lz2",
+    "cssClass": "s1-chip",
     "openIssues": [
-      "tokens/component-tokens-extracted.md defines line/solid as 2 separate types.",
-      "tokens.css uses unified structure (--chip-default-*, --chip-selected-*, etc.).",
-      "Final structure needs to be confirmed before implementation."
+      "figmaNodeId: Figma Chip componentSetKey 미확인 — Scan from Selection으로 확인 필요.",
+      "darkModeStatus: pending — dark mode 시각 검증 미완료."
     ]
   },
   "variants": {
-    "default": {
+    "line": {
+      "description": "Outlined chip. Background = surface-default, border changes on state. Default selection chip type.",
       "tokenStatus": "stable",
-      "codeStatus": "not-started",
+      "codeStatus": "implemented",
       "darkModeStatus": "pending",
+      "cssModifier": null,
       "tokens": [
-        "--chip-default-bg", "--chip-hover-bg", "--chip-selected-bg", "--chip-disabled-bg",
-        "--chip-default-border", "--chip-hover-border", "--chip-selected-border", "--chip-disabled-border",
-        "--chip-default-text", "--chip-selected-text", "--chip-disabled-text",
-        "--chip-default-icon", "--chip-selected-icon", "--chip-disabled-icon",
-        "--chip-default-close-icon", "--chip-hover-close-icon", "--chip-selected-close-icon",
-        "--chip-focus-ring"
+        { "name": "--chip-line-default-bg",          "value": "var(--color-surface-default)",       "state": "default",  "property": "background" },
+        { "name": "--chip-line-hover-bg",             "value": "var(--color-bg-subtle)",             "state": "hover",    "property": "background" },
+        { "name": "--chip-line-selected-bg",          "value": "var(--color-surface-default)",       "state": "selected", "property": "background" },
+        { "name": "--chip-line-disabled-bg",          "value": "var(--color-bg-subtle)",             "state": "disabled", "property": "background" },
+        { "name": "--chip-line-default-border",       "value": "var(--color-border-default)",        "state": "default",  "property": "border-color" },
+        { "name": "--chip-line-hover-border",         "value": "var(--color-border-strong)",         "state": "hover",    "property": "border-color" },
+        { "name": "--chip-line-selected-border",      "value": "var(--color-action-primary-default)","state": "selected", "property": "border-color" },
+        { "name": "--chip-line-disabled-border",      "value": "var(--color-border-default)",        "state": "disabled", "property": "border-color" },
+        { "name": "--chip-line-default-text",         "value": "var(--color-text-caption)",          "state": "default",  "property": "color" },
+        { "name": "--chip-line-selected-text",        "value": "var(--color-action-primary-default)","state": "selected", "property": "color" },
+        { "name": "--chip-line-disabled-text",        "value": "var(--color-text-disabled)",         "state": "disabled", "property": "color" },
+        { "name": "--chip-line-default-icon",         "value": "var(--color-icon-default)",          "state": "default",  "property": "icon-color" },
+        { "name": "--chip-line-selected-icon",        "value": "var(--color-action-primary-default)","state": "selected", "property": "icon-color" },
+        { "name": "--chip-line-disabled-icon",        "value": "var(--color-icon-muted)",            "state": "disabled", "property": "icon-color" },
+        { "name": "--chip-line-default-close-icon",   "value": "var(--color-icon-default)",          "state": "default",  "property": "close-icon-color" },
+        { "name": "--chip-line-hover-close-icon",     "value": "var(--color-icon-emphasis)",         "state": "hover",    "property": "close-icon-color" },
+        { "name": "--chip-line-selected-close-icon",  "value": "var(--color-action-primary-default)","state": "selected", "property": "close-icon-color" }
+      ]
+    },
+    "solid": {
+      "description": "Filled chip. Background = bg-subtle by default, action-primary-default when selected.",
+      "tokenStatus": "stable",
+      "codeStatus": "implemented",
+      "darkModeStatus": "pending",
+      "cssModifier": "s1-chip--solid",
+      "tokens": [
+        { "name": "--chip-solid-default-bg",          "value": "var(--color-bg-subtle)",              "state": "default",  "property": "background" },
+        { "name": "--chip-solid-hover-bg",            "value": "var(--color-bg-muted)",               "state": "hover",    "property": "background" },
+        { "name": "--chip-solid-selected-bg",         "value": "var(--color-action-primary-default)", "state": "selected", "property": "background" },
+        { "name": "--chip-solid-disabled-bg",         "value": "var(--color-bg-subtle)",              "state": "disabled", "property": "background" },
+        { "name": "--chip-solid-default-border",      "value": "var(--color-bg-subtle)",              "state": "default",  "property": "border-color", "note": "border = background (invisible)" },
+        { "name": "--chip-solid-hover-border",        "value": "var(--color-bg-muted)",               "state": "hover",    "property": "border-color" },
+        { "name": "--chip-solid-selected-border",     "value": "var(--color-action-primary-default)", "state": "selected", "property": "border-color" },
+        { "name": "--chip-solid-disabled-border",     "value": "var(--color-bg-subtle)",              "state": "disabled", "property": "border-color" },
+        { "name": "--chip-solid-default-text",        "value": "var(--color-text-caption)",           "state": "default",  "property": "color" },
+        { "name": "--chip-solid-selected-text",       "value": "var(--color-action-primary-text)",    "state": "selected", "property": "color" },
+        { "name": "--chip-solid-disabled-text",       "value": "var(--color-text-disabled)",          "state": "disabled", "property": "color" },
+        { "name": "--chip-solid-default-icon",        "value": "var(--color-icon-default)",           "state": "default",  "property": "icon-color" },
+        { "name": "--chip-solid-selected-icon",       "value": "var(--color-action-primary-text)",    "state": "selected", "property": "icon-color" },
+        { "name": "--chip-solid-disabled-icon",       "value": "var(--color-icon-muted)",             "state": "disabled", "property": "icon-color" },
+        { "name": "--chip-solid-default-close-icon",  "value": "var(--color-icon-default)",           "state": "default",  "property": "close-icon-color" },
+        { "name": "--chip-solid-hover-close-icon",    "value": "var(--color-icon-emphasis)",          "state": "hover",    "property": "close-icon-color" },
+        { "name": "--chip-solid-selected-close-icon", "value": "var(--color-action-primary-text)",    "state": "selected", "property": "close-icon-color" }
+      ]
+    },
+    "filter": {
+      "description": "Filter chip with dropdown. Available in line and solid types. Sub-variants: label-only and with-title.",
+      "tokenStatus": "stable",
+      "codeStatus": "implemented",
+      "darkModeStatus": "pending",
+      "cssClass": "ds-filter-chip",
+      "cssModifierSolid": "ds-filter-chip--solid",
+      "subVariants": ["label-only", "with-title"],
+      "types": ["line", "solid"],
+      "notes": [
+        "Filter chip uses chip-line/solid tokens — no separate filter-specific tokens.",
+        "label-only selected: border changes to action-primary (line) or bg fills action-primary (solid).",
+        "with-title: title text always shows as selected-text color when not disabled."
+      ],
+      "tokenRefsLine": [
+        "--chip-line-default-bg", "--chip-line-default-border", "--chip-line-default-text",
+        "--chip-line-selected-border", "--chip-line-selected-text",
+        "--chip-line-disabled-bg", "--chip-line-disabled-border", "--chip-line-disabled-text"
+      ],
+      "tokenRefsSolid": [
+        "--chip-solid-default-bg", "--chip-solid-default-border", "--chip-solid-default-text",
+        "--chip-solid-selected-bg", "--chip-solid-selected-border", "--chip-solid-selected-text",
+        "--chip-solid-disabled-bg", "--chip-solid-disabled-text"
       ]
     }
-  }
+  },
+  "sizing": {
+    "--sizing-chip-height-sm": { "value": "var(--spacing-28)", "note": "28px — xsmall" },
+    "--sizing-chip-height-md": { "value": "30px",             "note": "Foundation step 없음 — design spec 직접 반영" },
+    "--sizing-chip-height-lg": { "value": "34px",             "note": "Foundation step 없음 — design spec 직접 반영, harness default" }
+  },
+  "states": ["default", "hover", "selected", "complete", "disabled"],
+  "stateNotes": {
+    "selected":  "Selection chip: 선택됨. Filter chip: 드롭다운 열린 상태.",
+    "complete":  "Filter chip 전용. 필터 적용 완료 상태 — 선택값 노출 + 닫기(X) 아이콘 표시. Selection chip에는 없음. form-control 'filled'와 다른 개념."
+  },
+  "subVariants": ["text-only", "with-icon", "with-close"],
+  "filterSubVariants": ["label-only", "with-title"]
 }

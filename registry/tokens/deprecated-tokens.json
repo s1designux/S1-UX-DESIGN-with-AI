@@ -79,6 +79,41 @@
       "status": "relocated"
     }
   ],
+  "figmaVariableAliases": [
+    {
+      "id": "figma.text.state.accent-alt",
+      "figmaVariable": "color/text/state/accent-alt",
+      "cssVariable": null,
+      "canonicalCssVariable": "--color-text-inverse",
+      "value": "#ffffff",
+      "reason": "HD-L4.5-C(2026-05-19): accent-alt는 --color-text-inverse와 동일값. 별도 CSS 토큰 신설 없이 Figma Variable → canonical CSS token 매핑만 문서화.",
+      "status": "alias-documented",
+      "resolvedAt": "2026-05-19"
+    }
+  ],
+  "needsReview": [
+    {
+      "id": "nd-naming-01",
+      "topic": "correct vs success canonical name conflict",
+      "description": "HD-4(2026-05-12)에서 'correct'가 canonical로 확정됨. 그러나 mvp-l4 canonical-token-review.md에서 ND-NAMING-01로 correct↔success 충돌이 재발견됨. --color-text-correct, --color-border-correct, --color-form-control-border-correct, --color-text-state-correct 등 correct 계열 semantic token이 stable 상태. CLAUDE.md MVP-T1 규칙 7번도 correct를 canonical로 명시.",
+      "affectedTokens": [
+        "--input-correct-border",
+        "--input-correct-text",
+        "--color-form-control-border-correct",
+        "--color-text-state-correct",
+        "--color-text-correct",
+        "--color-border-correct"
+      ],
+      "currentStatus": "correct = canonical (stable). success = Figma alias only.",
+      "options": [
+        "A: correct 유지 (현재 상태). HD-4 결정 준수.",
+        "B: success로 전체 rename. 기존 --input-correct-* 모두 deprecated 처리 필요. CLAUDE.md 규칙 재작성 필요."
+      ],
+      "recommendation": "Option A 유지 권장. HD-4 결정 번복은 대규모 변경이며 Human Decision 필요.",
+      "detectedAt": "2026-05-19",
+      "detectedIn": "MVP-L4.5 Token Coverage Review"
+    }
+  ],
   "referenceLinks": {
     "governance": "registry/governance/deprecated.json",
     "note": "Component variant deprecations (button-danger) live in governance/deprecated.json. Token-level deprecations live here."

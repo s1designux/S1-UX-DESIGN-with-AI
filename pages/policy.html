@@ -2,8 +2,9 @@
 <html lang="ko">
 <head>
   <meta charset="UTF-8">
+  <script>!function(){var z=localStorage.getItem("sw-ds-zoom");if(z)document.documentElement.style.zoom=z+"%"}();</script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Policy · SW Design System</title>
+  <title>Policy · S1 UX DESIGN GUIDE</title>
   <link rel="stylesheet" href="../assets/css/style.css">
   <style>
     /* ── Policy specific styles ── */
@@ -60,7 +61,7 @@
       border-radius: 10px;
       border: 1px solid transparent;
     }
-    .layer-item.primitive  { background: #f0faf5; border-color: #a7f3d0; }
+    .layer-item.foundation  { background: #f0faf5; border-color: #a7f3d0; }
     .layer-item.semantic   { background: #e2f1ff; border-color: #8bc6ff; }
     .layer-item.component  { background: #e8e9fc; border-color: #c0c0fc; }
     .layer-item.legacy     { background: #fff4ce; border-color: #fde68a; }
@@ -77,7 +78,7 @@
       border-radius: 50%;
       flex-shrink: 0;
     }
-    .layer-item.primitive .layer-dot  { background: #008650; }
+    .layer-item.foundation .layer-dot  { background: #008650; }
     .layer-item.semantic .layer-dot   { background: #1d6ceb; }
     .layer-item.component .layer-dot  { background: #4e4ec3; }
     .layer-item.legacy .layer-dot     { background: #b45309; }
@@ -93,7 +94,7 @@
       border-radius: 20px;
       white-space: nowrap;
     }
-    .layer-item.primitive .layer-badge  { background: #dcfce7; color: #166534; }
+    .layer-item.foundation .layer-badge  { background: #dcfce7; color: #166534; }
     .layer-item.semantic .layer-badge   { background: #dbeafe; color: #1e40af; }
     .layer-item.component .layer-badge  { background: #ede9fe; color: #5b21b6; }
     .layer-item.legacy .layer-badge     { background: #fef3c7; color: #92400e; }
@@ -255,7 +256,7 @@
       <line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/>
     </svg>
   </button>
-  <span class="mobile-logo">SW Design System</span>
+  <span class="mobile-logo">S1 UX DESIGN GUIDE</span>
 </div>
 <div class="sidebar-overlay" id="sidebar-overlay"></div>
 
@@ -283,7 +284,7 @@
           <div class="policy-icon" style="background:#f0faf5;">🏗️</div>
           <div>
             <div class="policy-section-title">1. 토큰 4계층 구조</div>
-            <div class="policy-section-desc">Primitive → Semantic → Component → Legacy 계층별 역할과 참조 규칙</div>
+            <div class="policy-section-desc">Foundation → Semantic → Component → Legacy 계층별 역할과 참조 규칙</div>
           </div>
         </div>
         <div class="policy-body">
@@ -296,15 +297,15 @@
           </div>
 
           <div class="layer-stack">
-            <div class="layer-item primitive">
-              <div class="layer-name"><div class="layer-dot"></div>Primitive</div>
+            <div class="layer-item foundation">
+              <div class="layer-name"><div class="layer-dot"></div>Foundation</div>
               <div class="layer-desc">원천 색상값. hex 직접 정의 허용.<br><code>--color-blue-300: #2b9eff</code></div>
               <span class="layer-badge">hex 정의</span>
             </div>
             <div class="layer-arrow">↓</div>
             <div class="layer-item semantic">
               <div class="layer-name"><div class="layer-dot"></div>Semantic</div>
-              <div class="layer-desc">역할 기반 토큰. Primitive를 var()로 참조. Light/Dark 분리.<br><code>--color-action-primary: var(--color-blue-300)</code></div>
+              <div class="layer-desc">역할 기반 토큰. Foundation를 var()로 참조. Light/Dark 분리.<br><code>--color-action-primary: var(--color-blue-300)</code></div>
               <span class="layer-badge">var() 참조</span>
             </div>
             <div class="layer-arrow">↓</div>
@@ -326,16 +327,16 @@
               <div class="policy-code-header">
                 <span class="policy-code-lang">CSS — 올바른 참조 예시</span>
               </div>
-              <pre><span class="code-comment">/* ✅ Primitive 정의: hex 직접 사용 허용 */</span>
+              <pre><span class="code-comment">/* ✅ Foundation 정의: hex 직접 사용 허용 */</span>
 <span class="code-var">--color-blue-300</span>: <span class="code-val">#2b9eff</span>;
 
-<span class="code-comment">/* ✅ Semantic 정의: Primitive를 var()로 참조 */</span>
+<span class="code-comment">/* ✅ Semantic 정의: Foundation를 var()로 참조 */</span>
 <span class="code-var">--color-action-primary</span>: <span class="code-ok">var(--color-blue-300)</span>;
 
 <span class="code-comment">/* ✅ Component 정의: Semantic을 var()로 참조 */</span>
 <span class="code-var">--button-primary-bg</span>: <span class="code-ok">var(--color-action-primary)</span>;
 
-<span class="code-comment">/* ❌ 금지: Component에서 Primitive 직접 참조 */</span>
+<span class="code-comment">/* ❌ 금지: Component에서 Foundation 직접 참조 */</span>
 <span class="code-var">--button-primary-bg</span>: <span class="code-bad">var(--color-blue-300)</span>;
 
 <span class="code-comment">/* ❌ 금지: Semantic에서 hex 직접 사용 */</span>
@@ -450,7 +451,7 @@
               <div class="rule-content">
                 <div class="rule-title">Layer 접두사 고정</div>
                 <div class="rule-desc">
-                  Primitive: <code>--color-{palette}-{step}</code> (예: <code>--color-blue-300</code>)<br>
+                  Foundation: <code>--color-{palette}-{step}</code> (예: <code>--color-blue-300</code>)<br>
                   Semantic: <code>--color-{role}-{variant}</code> (예: <code>--color-bg-default</code>)<br>
                   Component: <code>--{component}-{property}</code> (예: <code>--button-primary-bg</code>)<br>
                   Legacy: <code>--legacy-{originalName}</code> (예: <code>--legacy-text-primary</code>)
@@ -524,7 +525,7 @@ document.documentElement.removeAttribute('data-theme'); <span class="code-commen
             <div class="dont-card">
               <div class="dont-header">❌ 금지 사항</div>
               <div class="dont-items">
-                <div class="dont-item">Primitive token 직접 사용 — 테마 전환 불가</div>
+                <div class="dont-item">Foundation token 직접 사용 — 테마 전환 불가</div>
                 <div class="dont-item">hex 하드코딩 — 다크 전환 안됨</div>
                 <div class="dont-item"><code>prefers-color-scheme</code>만 사용 — <code>data-theme</code>과 충돌</div>
                 <div class="dont-item">SVG 아이콘에 <code>fill="#000"</code> 고정</div>
@@ -607,7 +608,7 @@ document.documentElement.removeAttribute('data-theme'); <span class="code-commen
               </tr>
               <tr>
                 <td><strong>참조 허용</strong></td>
-                <td>Semantic token만 var()로 참조. Primitive 직접 참조 금지</td>
+                <td>Semantic token만 var()로 참조. Foundation 직접 참조 금지</td>
               </tr>
               <tr>
                 <td><strong>스코프</strong></td>

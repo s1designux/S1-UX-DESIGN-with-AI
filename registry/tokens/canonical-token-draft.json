@@ -24,7 +24,7 @@
     ],
     "tokenCounts": {
       "foundationColorGroups": 23,
-      "foundationColorPrimitives": 221,
+      "foundationColorFoundation": 221,
       "semanticColorTokens": 61,
       "semanticNonColorTokens": 41,
       "componentTokens": 123,
@@ -35,7 +35,7 @@
 
   "layers": {
     "foundation": {
-      "description": "Primitive raw values. HEX/px/number only. No CSS variable references. Single source of truth for all downstream layers.",
+      "description": "Foundation raw values. HEX/px/number only. No CSS variable references. Single source of truth for all downstream layers.",
       "colorGroups": [
         {
           "group": "base",
@@ -173,7 +173,7 @@
         }
       ],
       "spacing": {
-        "primitives": {
+        "foundation": {
           "cssVarPrefix": "--spacing-",
           "steps": ["2","4","6","8","10","12","14","16","20","24","28","32","36","40","44","48","56","64","80","96","128"],
           "count": 21,
@@ -206,7 +206,7 @@
         }
       },
       "radius": {
-        "primitives": {
+        "foundation": {
           "cssVarPrefix": "--radius-",
           "steps": ["0","2","4","6","8","10","12","16","20","full"],
           "count": 10,
@@ -214,7 +214,7 @@
         }
       },
       "borderWidth": {
-        "primitives": {
+        "foundation": {
           "tokens": [
             { "cssVar": "--border-width-1", "value": "1px" },
             { "cssVar": "--border-width-2", "value": "2px" }
@@ -232,7 +232,7 @@
         { "cssVar": "--color-bg-subtle",   "light": "var(--color-gray-50)",   "dark": "var(--color-gray-dark-200)", "status": "stable",    "role": "Subtle background, disabled bg" },
         { "cssVar": "--color-bg-muted",    "light": "var(--color-gray-100)",  "dark": "var(--color-gray-dark-300)", "status": "stable",    "role": "Muted/inactive bg" },
         { "cssVar": "--color-bg-elevated", "light": "var(--color-gray-100)",  "dark": "var(--color-gray-dark-400)", "status": "stable",    "role": "Elevated surface alternative" },
-        { "cssVar": "--color-bg-home",     "light": "#F5F6FB",                "dark": "var(--color-gray-dark-50)",  "status": "candidate", "note": "Light value is raw HEX — not a foundation primitive. Needs Foundation registration or replacement with closest gray step." },
+        { "cssVar": "--color-bg-home",     "light": "#F5F6FB",                "dark": "var(--color-gray-dark-50)",  "status": "candidate", "note": "Light value is raw HEX — not a foundation foundation. Needs Foundation registration or replacement with closest gray step." },
         { "cssVar": "--color-bg-selected", "light": "var(--color-blue-50)",   "dark": "var(--color-blue-dark-100)","status": "candidate", "note": "Needs Figma validation before stable." }
       ],
       "colorSurface": [
@@ -240,7 +240,9 @@
         { "cssVar": "--color-surface-raised",  "light": "var(--color-base-white)", "dark": "var(--color-gray-dark-400)", "status": "stable", "role": "Elevated component surface (dropdown list)" }
       ],
       "colorText": [
-        { "cssVar": "--color-text-primary",     "light": "var(--color-gray-900)", "dark": "var(--color-gray-dark-900)", "status": "stable",    "role": "Primary text (#202020 confirmed)" },
+        { "cssVar": "--color-text-primary",     "light": "var(--color-gray-900)", "dark": "var(--color-gray-dark-900)", "status": "stable",    "role": "Primary text (#202020 confirmed)",
+          "l4_5_value_mismatch_resolved": "HD-L4.5-B 확정(2026-05-19): canonical #202020 유지. Figma color/text/title/primary = #000000은 doc-only(스타일가이드 문서 노드). UI 컴포넌트 binding 아님. 토큰 변경 없음.",
+          "l4_5_status": "resolved" },
         { "cssVar": "--color-text-secondary",   "light": "var(--color-gray-800)", "dark": "var(--color-gray-dark-800)", "status": "stable",    "role": "Secondary/body text" },
         { "cssVar": "--color-text-tertiary",    "light": "var(--color-gray-600)", "dark": "var(--color-gray-dark-700)", "status": "stable",    "role": "Label/caption" },
         { "cssVar": "--color-text-caption",     "light": "var(--color-gray-500)", "dark": "var(--color-gray-dark-700)", "status": "stable",    "role": "Small caption text" },
@@ -295,6 +297,9 @@
       },
       "colorFormControl": {
         "description": "Shared semantic layer for Input, Select, DatePicker, TimePicker. Added MVP4-token (2026-05-18).",
+        "l4_5_status": "semantic-confirm-candidate",
+        "usageEvidence": "F0: Input(540:3794) + DatePicker(540:3836, 6456:4033) 공통 사용 확인. Select/Textarea/TimePicker rescan-needed — MCP접근 실패(ACCESS-01). F0 partial scan 기준 8개 중 2개 component에서 확인됨.",
+        "l4_5_notes": "F0+C0 합산 결과 semantic 유지 타당. Select/Textarea/TimePicker가 동일 form-control 레이어를 사용하는지 추가 확인 필요(Plugin Export 또는 직접 Figma 확인).",
         "tokens": [
           { "cssVar": "--color-form-control-bg-default",       "light": "var(--color-surface-default)", "dark": "var(--color-gray-dark-50)", "status": "stable" },
           { "cssVar": "--color-form-control-bg-disabled",      "light": "var(--color-bg-subtle)",       "dark": "(inherits light logic)",     "status": "stable" },
@@ -310,6 +315,13 @@
       },
       "colorTextState": {
         "description": "Form helper/feedback text state tokens. Added MVP4-token (2026-05-18).",
+        "l4_5_rename_resolved": {
+          "legacyFigmaVariable": "color/text/state/accent-alt",
+          "legacyValue": "#ffffff",
+          "resolution": "HD-L4.5-C 확정(2026-05-19): --color-text-inverse의 alias로 처리. 값 동일(#ffffff). 별도 CSS token 신설 없음. Figma Variable 이름은 유지(변경 금지). code registry에서 color/text/state/accent-alt → --color-text-inverse 매핑으로 문서화.",
+          "canonicalMapping": "--color-text-inverse",
+          "l4_5_status": "resolved-as-alias"
+        },
         "tokens": [
           { "cssVar": "--color-text-state-helper",  "light": "var(--color-text-secondary)", "dark": "(inherits)",                 "status": "stable", "role": "Neutral helper text" },
           { "cssVar": "--color-text-state-correct", "light": "var(--color-blue-400)",        "dark": "var(--color-blue-dark-400)","status": "stable", "role": "Success/correct feedback text" },
@@ -317,7 +329,7 @@
         ]
       },
       "colorOverlay": [
-        { "cssVar": "--color-overlay", "light": "rgba(0,0,0,0.5)", "dark": "rgba(0,0,0,0.75)", "status": "stable", "rgbaException": true, "note": "rgba allowed — alpha channel cannot use foundation primitive." }
+        { "cssVar": "--color-overlay", "light": "rgba(0,0,0,0.5)", "dark": "rgba(0,0,0,0.75)", "status": "stable", "rgbaException": true, "note": "rgba allowed — alpha channel cannot use foundation foundation." }
       ],
       "spacingSemantic": {
         "paddingBlock": ["--spacing-padding-block-xxs","--spacing-padding-block-xs","--spacing-padding-block-sm","--spacing-padding-block-md","--spacing-padding-block-lg"],
@@ -352,6 +364,9 @@
     "component": {
       "description": "Component-scoped tokens. Color tokens MUST reference Semantic layer (never Foundation directly). Size/spacing may reference Foundation directly if component-exclusive.",
       "button": {
+        "l4_5_status": "component-alias-candidate",
+        "usageEvidence": "F0: color/button/bg/primary--default, color/button/border/primary--default, color/button/label/primary--default — 3개 노드(540:4501 button-primary, 540:3836 datepicker_mobile, 6456:4033 DatePicker Section2)에서 확인. button 전용 사용. semantic 경유 가능 확인: value=#1d6ceb = --color-action-primary-default.",
+        "l4_5_notes": "button component variables는 button 전용 사용으로 확인됨. semantic --color-action-primary-* 계열로 교체 가능하나 Figma Variable 단계에서 component-alias 구조가 이미 존재. canonical 분류: component-alias-candidate.",
         "primary": {
           "status": "stable",
           "tokens": [
@@ -445,12 +460,16 @@
           { "cssVar": "--dropdown-trigger-disabled-text",   "ref": "var(--color-text-disabled)",                  "state": "disabled", "property": "text" },
           { "cssVar": "--dropdown-list-bg",                 "ref": "var(--color-surface-raised)",                 "state": "open",     "property": "listBg" },
           { "cssVar": "--dropdown-option-hover-bg",         "ref": "var(--color-bg-subtle)",                      "state": "hover",    "property": "optionBg" },
-          { "cssVar": "--dropdown-option-selected-bg",      "ref": "var(--color-action-primary-subtle)",          "state": "selected", "property": "optionBg" }
+          { "cssVar": "--dropdown-option-selected-bg",      "ref": "var(--color-action-primary-subtle)",          "state": "selected", "property": "optionBg" },
+          { "cssVar": "--dropdown-trigger-placeholder-text", "ref": "var(--color-text-placeholder)",           "state": "default",  "property": "placeholderText", "status": "candidate", "notes": "C0 pilot에서 발견. Select 컴포넌트에서 사용 중. canonical-token-draft에 미등록 상태였음. form-control 계열과 일관성 확보." },
+          { "cssVar": "--dropdown-trigger-selected-text",    "ref": "var(--color-text-primary)",               "state": "filled",   "property": "text",            "status": "candidate", "notes": "C0 pilot에서 발견. 선택된 옵션 값 표시 텍스트. primary text로 표시." },
+          { "cssVar": "--dropdown-list-border",              "ref": "var(--color-border-default)",             "state": "open",     "property": "listBorder",      "status": "candidate", "notes": "C0 pilot에서 발견. dropdown list panel 외곽선. components.html에서 사용 중." },
+          { "cssVar": "--dropdown-option-selected-text",     "ref": "var(--color-action-primary-default)",    "state": "selected", "property": "optionText",      "status": "candidate", "notes": "C0 pilot에서 발견. 선택된 옵션 항목의 강조 텍스트 색상." }
         ]
       },
       "input": {
         "status": "stable",
-        "note": "2-layer: --input-* → --color-form-control-* → Semantic. hover/focus/error bg removed per HD-2/3/8.",
+        "note": "2-layer: --input-* → --color-form-control-* → Semantic. hover/focus/error bg removed per HD-2/3/8. filled state: NO separate bg/border token — identical to default. filled is a content state (placeholder text → typed value). See aliases.complete→filled.",
         "tokens": [
           { "cssVar": "--input-default-bg",       "ref": "var(--color-form-control-bg-default)",      "state": "default",  "property": "bg" },
           { "cssVar": "--input-disabled-bg",      "ref": "var(--color-form-control-bg-disabled)",     "state": "disabled", "property": "bg" },
@@ -459,7 +478,7 @@
           { "cssVar": "--input-error-border",     "ref": "var(--color-form-control-border-error)",    "state": "error",    "property": "border" },
           { "cssVar": "--input-correct-border",   "ref": "var(--color-form-control-border-correct)",  "state": "correct",  "property": "border", "note": "Figma 'success' = code 'correct'" },
           { "cssVar": "--input-disabled-border",  "ref": "var(--color-form-control-border-disabled)", "state": "disabled", "property": "border" },
-          { "cssVar": "--select-disabled-border", "ref": "var(--color-border-subtle)",                "state": "disabled", "property": "border", "note": "Stray Select token. Should relocate to Select component registry per HD-5." },
+          { "cssVar": "--select-disabled-border", "ref": "var(--color-border-subtle)",                "state": "disabled", "property": "border", "status": "needs-review", "note": "Stray Select token (HD-5, ND-8). L4.5 action: move to Select component registry once select.json is created." },
           { "cssVar": "--input-placeholder-text", "ref": "var(--color-form-control-text-placeholder)","state": "default",  "property": "placeholderText" },
           { "cssVar": "--input-disabled-text",    "ref": "var(--color-form-control-text-disabled)",   "state": "disabled", "property": "text" },
           { "cssVar": "--input-helper-text",      "ref": "var(--color-text-state-helper)",            "state": "default",  "property": "helperText" },
@@ -687,7 +706,7 @@
       "id": "nd-1",
       "priority": "resolved",
       "title": "--color-gray-dark-450 undefined → resolved",
-      "description": "tokens.css dark override for --dropdown-trigger-hover-bg was referencing var(--color-gray-dark-450), which does NOT exist in Foundation primitives.",
+      "description": "tokens.css dark override for --dropdown-trigger-hover-bg was referencing var(--color-gray-dark-450), which does NOT exist in Foundation foundation.",
       "resolution": "Replaced with var(--color-gray-dark-500) (#3E4049). Decision confirmed 2026-05-18.",
       "impactedTokens": ["--dropdown-trigger-hover-bg (dark override)"],
       "resolvedBy": "Human",
@@ -695,34 +714,30 @@
     },
     {
       "id": "nd-2",
-      "priority": "high",
-      "title": "Dark border rgba → resolved values",
-      "description": "border-subtle/default/strong/emphasis use rgba(255,255,255,x) in dark mode. These are Figma opacity compositions that need resolved HEX values or foundation dark scale aliases.",
-      "impactedTokens": ["--color-border-subtle","--color-border-default","--color-border-strong","--color-border-emphasis"],
-      "options": [
-        "A: Resolve to specific gray-dark steps (e.g., border-default dark → --color-gray-dark-500)",
-        "B: Keep rgba as permanent values (document as allowed exception)"
-      ],
-      "requiredBy": "Human"
+      "priority": "resolved",
+      "title": "Dark border rgba → Foundation dark scale",
+      "description": "Replaced 5 dark border rgba values with Foundation gray-dark scale references. rgba exception for border removed from project rules.",
+      "resolution": "subtle→gray-dark-200, default→gray-dark-300, disabled→gray-dark-200, strong→gray-dark-500, emphasis→gray-dark-700. tokens.css + semantic.colors.json updated to stable. 2026-05-18.",
+      "resolvedBy": "Human",
+      "resolvedAt": "2026-05-18"
     },
     {
       "id": "nd-3",
-      "priority": "medium",
-      "title": "--color-text-disabled dark candidate",
-      "description": "Current dark value: var(--color-gray-dark-400) = #35363F. Candidate upgrade: var(--color-gray-dark-600) = #55575F for better contrast.",
-      "currentValue": "var(--color-gray-dark-400) dark",
-      "candidateValue": "var(--color-gray-dark-600) dark",
-      "requiredBy": "Human",
-      "impactedTokens": ["--color-text-disabled", "--button-*-disabled-text", "--input-disabled-text"]
+      "priority": "resolved",
+      "title": "--color-text-disabled dark = var(--color-gray-dark-400)",
+      "description": "Confirmed: keep current dark value var(--color-gray-dark-400) = #35363F. Candidate upgrade to gray-dark-600 (#55575F) rejected.",
+      "resolution": "var(--color-gray-dark-400) confirmed. No change to tokens.css. 2026-05-18.",
+      "resolvedBy": "Human",
+      "resolvedAt": "2026-05-18"
     },
     {
       "id": "nd-4",
       "priority": "medium",
       "title": "--color-bg-home light is raw HEX",
-      "description": "--color-bg-home light = #F5F6FB, which is not a Foundation primitive. Either register it as a new gray step or replace with closest available primitive.",
+      "description": "--color-bg-home light = #F5F6FB, which is not a Foundation foundation. Either register it as a new gray step or replace with closest available foundation.",
       "currentValue": "#F5F6FB",
       "options": [
-        "A: Register --color-home-bg or similar as a new foundation primitive",
+        "A: Register --color-home-bg or similar as a new foundation foundation",
         "B: Replace with --color-gray-0 (#FAFAFA) — slightly off-white",
         "C: Replace with --color-visual-gray-50 (#F3F5F7) — closest match"
       ],
@@ -730,14 +745,12 @@
     },
     {
       "id": "nd-5",
-      "priority": "medium",
-      "title": "Chip structure: unified vs. line/solid split",
-      "description": "component-tokens-extracted.md defines chip as 2-type: line (--chip-line-*) and solid (--chip-solid-*). tokens.css uses unified structure (--chip-*). Which is canonical?",
-      "options": [
-        "A: Keep unified tokens.css structure (current stable implementation)",
-        "B: Adopt MD split — add --chip-line-* and --chip-solid-* variants"
-      ],
-      "requiredBy": "Human"
+      "priority": "resolved",
+      "title": "Chip structure: line/solid split adopted",
+      "description": "Unified --chip-* tokens replaced with --chip-line-* (17) and --chip-solid-* (17) variants per Figma definition and component-tokens-extracted.md.",
+      "resolution": "tokens.css chip section replaced: 17 unified → 34 split tokens. component-tokens-extracted.md updated with hover + icon + close-icon rows. 2026-05-18.",
+      "resolvedBy": "Human",
+      "resolvedAt": "2026-05-18"
     },
     {
       "id": "nd-6",

@@ -41,7 +41,7 @@ color/status-card/*   → Status Card (관제 도메인)
 - **property**: bg, text, border, icon, indicator, check …
 
 Component Token은 **반드시 Semantic Token을 `var()`로 참조**합니다.
-Primitive(Foundation)를 직접 참조하지 않습니다.
+Foundation(Foundation)를 직접 참조하지 않습니다.
 
 ---
 
@@ -154,53 +154,85 @@ Primitive(Foundation)를 직접 참조하지 않습니다.
 | Figma 원본 | CSS Variable | Semantic 참조 | 설명 |
 |---|---|---|---|
 | color/chip/line/bg--default | `--chip-line-default-bg` | `var(--color-surface-default)` | 기본 배경 |
-| color/chip/line/border--default | `--chip-line-default-border` | `var(--color-border-default)` | 기본 테두리 |
-| color/chip/line/text--default | `--chip-line-default-text` | `var(--color-text-caption)` | 기본 텍스트 |
+| color/chip/line/bg--hover | `--chip-line-hover-bg` | `var(--color-bg-subtle)` | hover 배경 |
 | color/chip/line/bg--selected | `--chip-line-selected-bg` | `var(--color-surface-default)` | 선택 배경 |
-| color/chip/line/border--selected | `--chip-line-selected-border` | `var(--color-action-primary-default)` | 선택 테두리 |
-| color/chip/line/text--selected | `--chip-line-selected-text` | `var(--color-action-primary-default)` | 선택 텍스트 |
 | color/chip/line/bg--disabled | `--chip-line-disabled-bg` | `var(--color-bg-subtle)` | disabled 배경 |
+| color/chip/line/border--default | `--chip-line-default-border` | `var(--color-border-default)` | 기본 테두리 |
+| color/chip/line/border--hover | `--chip-line-hover-border` | `var(--color-border-strong)` | hover 테두리 |
+| color/chip/line/border--selected | `--chip-line-selected-border` | `var(--color-action-primary-default)` | 선택 테두리 |
 | color/chip/line/border--disabled | `--chip-line-disabled-border` | `var(--color-border-default)` | disabled 테두리 |
+| color/chip/line/text--default | `--chip-line-default-text` | `var(--color-text-caption)` | 기본 텍스트 |
+| color/chip/line/text--selected | `--chip-line-selected-text` | `var(--color-action-primary-default)` | 선택 텍스트 |
 | color/chip/line/text--disabled | `--chip-line-disabled-text` | `var(--color-text-disabled)` | disabled 텍스트 |
+| color/chip/line/icon--default | `--chip-line-default-icon` | `var(--color-icon-default)` | 기본 아이콘 |
+| color/chip/line/icon--selected | `--chip-line-selected-icon` | `var(--color-action-primary-default)` | 선택 아이콘 |
+| color/chip/line/icon--disabled | `--chip-line-disabled-icon` | `var(--color-icon-muted)` | disabled 아이콘 |
+| color/chip/line/close-icon--default | `--chip-line-default-close-icon` | `var(--color-icon-default)` | 닫기 아이콘 기본 |
+| color/chip/line/close-icon--hover | `--chip-line-hover-close-icon` | `var(--color-icon-emphasis)` | 닫기 아이콘 hover |
+| color/chip/line/close-icon--selected | `--chip-line-selected-close-icon` | `var(--color-action-primary-default)` | 닫기 아이콘 선택 |
 
 ### 변수 정의 — Solid type
 
 | Figma 원본 | CSS Variable | Semantic 참조 | 설명 |
 |---|---|---|---|
 | color/chip/solid/bg--default | `--chip-solid-default-bg` | `var(--color-bg-subtle)` | 기본 배경 |
-| color/chip/solid/border--default | `--chip-solid-default-border` | `var(--color-bg-subtle)` | 기본 테두리 (=배경) |
-| color/chip/solid/text--default | `--chip-solid-default-text` | `var(--color-text-caption)` | 기본 텍스트 |
+| color/chip/solid/bg--hover | `--chip-solid-hover-bg` | `var(--color-bg-muted)` | hover 배경 |
 | color/chip/solid/bg--selected | `--chip-solid-selected-bg` | `var(--color-action-primary-default)` | 선택 배경 |
-| color/chip/solid/border--selected | `--chip-solid-selected-border` | `var(--color-action-primary-default)` | 선택 테두리 |
-| color/chip/solid/text--selected | `--chip-solid-selected-text` | `var(--color-action-primary-text)` | 선택 텍스트 |
 | color/chip/solid/bg--disabled | `--chip-solid-disabled-bg` | `var(--color-bg-subtle)` | disabled 배경 |
+| color/chip/solid/border--default | `--chip-solid-default-border` | `var(--color-bg-subtle)` | 기본 테두리 (=배경) |
+| color/chip/solid/border--hover | `--chip-solid-hover-border` | `var(--color-bg-muted)` | hover 테두리 (=배경) |
+| color/chip/solid/border--selected | `--chip-solid-selected-border` | `var(--color-action-primary-default)` | 선택 테두리 |
 | color/chip/solid/border--disabled | `--chip-solid-disabled-border` | `var(--color-bg-subtle)` | disabled 테두리 |
+| color/chip/solid/text--default | `--chip-solid-default-text` | `var(--color-text-caption)` | 기본 텍스트 |
+| color/chip/solid/text--selected | `--chip-solid-selected-text` | `var(--color-action-primary-text)` | 선택 텍스트 |
 | color/chip/solid/text--disabled | `--chip-solid-disabled-text` | `var(--color-text-disabled)` | disabled 텍스트 |
+| color/chip/solid/icon--default | `--chip-solid-default-icon` | `var(--color-icon-default)` | 기본 아이콘 |
+| color/chip/solid/icon--selected | `--chip-solid-selected-icon` | `var(--color-action-primary-text)` | 선택 아이콘 |
+| color/chip/solid/icon--disabled | `--chip-solid-disabled-icon` | `var(--color-icon-muted)` | disabled 아이콘 |
+| color/chip/solid/close-icon--default | `--chip-solid-default-close-icon` | `var(--color-icon-default)` | 닫기 아이콘 기본 |
+| color/chip/solid/close-icon--hover | `--chip-solid-hover-close-icon` | `var(--color-icon-emphasis)` | 닫기 아이콘 hover |
+| color/chip/solid/close-icon--selected | `--chip-solid-selected-close-icon` | `var(--color-action-primary-text)` | 닫기 아이콘 선택 |
 
 ### CSS 구현
 
 ```css
 /* Chip — Line type */
---chip-line-default-bg:        var(--color-surface-default);
---chip-line-default-border:    var(--color-border-default);
---chip-line-default-text:      var(--color-text-caption);
---chip-line-selected-bg:       var(--color-surface-default);
---chip-line-selected-border:   var(--color-action-primary-default);
---chip-line-selected-text:     var(--color-action-primary-default);
---chip-line-disabled-bg:       var(--color-bg-subtle);
---chip-line-disabled-border:   var(--color-border-default);
---chip-line-disabled-text:     var(--color-text-disabled);
+--chip-line-default-bg:          var(--color-surface-default);
+--chip-line-hover-bg:            var(--color-bg-subtle);
+--chip-line-selected-bg:         var(--color-surface-default);
+--chip-line-disabled-bg:         var(--color-bg-subtle);
+--chip-line-default-border:      var(--color-border-default);
+--chip-line-hover-border:        var(--color-border-strong);
+--chip-line-selected-border:     var(--color-action-primary-default);
+--chip-line-disabled-border:     var(--color-border-default);
+--chip-line-default-text:        var(--color-text-caption);
+--chip-line-selected-text:       var(--color-action-primary-default);
+--chip-line-disabled-text:       var(--color-text-disabled);
+--chip-line-default-icon:        var(--color-icon-default);
+--chip-line-selected-icon:       var(--color-action-primary-default);
+--chip-line-disabled-icon:       var(--color-icon-muted);
+--chip-line-default-close-icon:  var(--color-icon-default);
+--chip-line-hover-close-icon:    var(--color-icon-emphasis);
+--chip-line-selected-close-icon: var(--color-action-primary-default);
 
 /* Chip — Solid type */
---chip-solid-default-bg:       var(--color-bg-subtle);
---chip-solid-default-border:   var(--color-bg-subtle);
---chip-solid-default-text:     var(--color-text-caption);
---chip-solid-selected-bg:      var(--color-action-primary-default);
---chip-solid-selected-border:  var(--color-action-primary-default);
---chip-solid-selected-text:    var(--color-action-primary-text);
---chip-solid-disabled-bg:      var(--color-bg-subtle);
---chip-solid-disabled-border:  var(--color-bg-subtle);
---chip-solid-disabled-text:    var(--color-text-disabled);
+--chip-solid-default-bg:          var(--color-bg-subtle);
+--chip-solid-hover-bg:            var(--color-bg-muted);
+--chip-solid-selected-bg:         var(--color-action-primary-default);
+--chip-solid-disabled-bg:         var(--color-bg-subtle);
+--chip-solid-default-border:      var(--color-bg-subtle);
+--chip-solid-hover-border:        var(--color-bg-muted);
+--chip-solid-selected-border:     var(--color-action-primary-default);
+--chip-solid-disabled-border:     var(--color-bg-subtle);
+--chip-solid-default-text:        var(--color-text-caption);
+--chip-solid-selected-text:       var(--color-action-primary-text);
+--chip-solid-disabled-text:       var(--color-text-disabled);
+--chip-solid-default-icon:        var(--color-icon-default);
+--chip-solid-selected-icon:       var(--color-action-primary-text);
+--chip-solid-disabled-icon:       var(--color-icon-muted);
+--chip-solid-default-close-icon:  var(--color-icon-default);
+--chip-solid-hover-close-icon:    var(--color-icon-emphasis);
+--chip-solid-selected-close-icon: var(--color-action-primary-text);
 ```
 
 ---
@@ -401,29 +433,39 @@ Primitive(Foundation)를 직접 참조하지 않습니다.
 
 ## 6. Pagination
 
+> **Figma 확인 (2026-05-20):** 선택 페이지 = bg 변화 없음, 텍스트 색만 변경 (#9D9D9D → #353535).
+> disabled 화살표 = opacity:0.9만 적용 (bg/border 변화 없음).
+> `--pagination-control-hover-bg` — Figma 미정의, assumed (gray-50). candidate 상태.
+
+### 컨트롤 구조
+
+- **화살표 컨트롤**: first(`<<`) / prev(`<`) / next(`>`) / last(`>>`) — 테두리 있음, 28×28px
+- **페이지 번호**: default / selected — 테두리 없음, 텍스트 색으로만 구분
+
 ### 변수 정의
 
-| Figma 원본 | CSS Variable | Semantic 참조 | 설명 |
-|---|---|---|---|
-| color/pagination/bg--default | `--pagination-default-bg` | `var(--color-surface-default)` | 기본 배경 |
-| color/pagination/bg--hover | `--pagination-hover-bg` | `var(--color-bg-subtle)` | hover 배경 |
-| color/pagination/bg--active | `--pagination-active-bg` | `var(--color-action-primary-default)` | 현재 페이지 배경 |
-| color/pagination/bg--disabled | `--pagination-disabled-bg` | `var(--color-surface-default)` | disabled 배경 |
-| color/pagination/text--default | `--pagination-default-text` | `var(--color-text-secondary)` | 기본 텍스트 |
-| color/pagination/text--active | `--pagination-active-text` | `var(--color-action-primary-text)` | 현재 페이지 텍스트 |
+| Figma 원본 | CSS Variable | Semantic 참조 | 설명 | 상태 |
+|---|---|---|---|---|
+| color/pagination/control/bg/default | `--pagination-control-bg` | `var(--color-surface-default)` | 화살표·번호 공통 배경 | stable |
+| color/pagination/control/border/default | `--pagination-control-border` | `var(--color-border-subtle)` | 화살표 버튼 테두리 (번호 없음) | stable |
+| — (Figma 미정의) | `--pagination-control-hover-bg` | `var(--color-bg-subtle)` | hover 배경 — assumed | candidate |
+| color/gray/400 | `--pagination-number-text` | `var(--color-gray-400)` | 비선택 번호 텍스트 (#9D9D9D) | stable |
+| color/text/body/primary | `--pagination-number-text-selected` | `var(--color-text-secondary)` | 선택 번호 텍스트 (#353535) | stable |
+
+> **삭제된 토큰 (2026-05-20):**
+> `--pagination-active-bg` (action-primary-default) — Figma에 없음, 선택 페이지에 bg 변화 없음
+> `--pagination-active-text` (action-primary-text) — Figma에 없음, 선택 페이지는 텍스트 색만 변경
+> `--pagination-disabled-bg / disabled-text / border` — opacity:0.9로 처리, 별도 토큰 없음
 
 ### CSS 구현
 
 ```css
 /* Pagination */
---pagination-default-bg:   var(--color-surface-default);
---pagination-hover-bg:     var(--color-bg-subtle);
---pagination-active-bg:    var(--color-action-primary-default);
---pagination-disabled-bg:  var(--color-surface-default);
---pagination-default-text: var(--color-text-secondary);
---pagination-active-text:  var(--color-action-primary-text);
---pagination-disabled-text: var(--color-text-disabled);
---pagination-border:       var(--color-border-default);
+--pagination-control-bg:           var(--color-surface-default);  /* #FFFFFF */
+--pagination-control-border:       var(--color-border-subtle);     /* #E9E9E9 */
+--pagination-control-hover-bg:     var(--color-bg-subtle);         /* #F5F5F5 — candidate */
+--pagination-number-text:          var(--color-gray-400);          /* #9D9D9D */
+--pagination-number-text-selected: var(--color-text-secondary);    /* #353535 */
 ```
 
 ---
@@ -442,48 +484,103 @@ Primitive(Foundation)를 직접 참조하지 않습니다.
 | color/navigation/item/icon--default | `--nav-item-default-icon` | `var(--color-icon-default)` | 기본 아이콘 |
 | color/navigation/item/icon--active | `--nav-item-active-icon` | `var(--color-action-primary-default)` | 활성 아이콘 |
 | color/navigation/item/indicator | `--nav-item-indicator` | `var(--color-action-primary-default)` | 활성 인디케이터 |
+| color/navigation/indicator/default | `--nav-item-indicator-default` | `var(--color-border-subtle)` | 비선택 항목 인디케이터 |
 
 ### CSS 구현
 
 ```css
 /* Navigation */
---nav-bg:                  var(--color-surface-default);
---nav-item-hover-bg:       var(--color-bg-subtle);
---nav-item-active-bg:      var(--color-action-primary-subtle);
---nav-item-default-text:   var(--color-text-tertiary);
---nav-item-active-text:    var(--color-action-primary-default);
---nav-item-default-icon:   var(--color-icon-default);
---nav-item-active-icon:    var(--color-action-primary-default);
---nav-item-indicator:      var(--color-action-primary-default);
---nav-divider:             var(--color-border-subtle);
+--nav-bg:                      var(--color-surface-default);
+--nav-item-hover-bg:           var(--color-bg-subtle);
+--nav-item-active-bg:          var(--color-action-primary-subtle);
+--nav-item-default-text:       var(--color-text-tertiary);
+--nav-item-active-text:        var(--color-action-primary-default);
+--nav-item-default-icon:       var(--color-icon-default);
+--nav-item-active-icon:        var(--color-action-primary-default);
+--nav-item-indicator:          var(--color-action-primary-default);
+--nav-item-indicator-default:  var(--color-border-subtle);
+--nav-divider:                 var(--color-border-subtle);
 ```
 
 ---
 
 ## 8. Table / Data Grid
 
+> Figma node: `pc_table_header` (540:4940) · `pc_table_body` (540:4851)
+> 확인 일시: 2026-05-20 — MCP get_design_context 직접 조회
+
 ### 변수 정의
 
 | Figma 원본 | CSS Variable | Semantic 참조 | 설명 |
 |---|---|---|---|
-| color/data/table/header-bg | `--table-header-bg` | `var(--color-bg-subtle)` | 헤더 배경 |
-| color/data/table/row-bg--default | `--table-row-default-bg` | `var(--color-surface-default)` | 행 기본 배경 |
-| color/data/table/row-bg--hover | `--table-row-hover-bg` | `var(--color-bg-subtle)` | 행 hover 배경 |
-| color/data/table/row-bg--selected | `--table-row-selected-bg` | `var(--color-bg-selected)` | 행 선택 배경 |
+| surface/neutral/bg/base-alt | `--table-header-bg` | `var(--color-bg-default)` | 헤더 기본 배경 (#FAFAFA) |
+| surface/neutral/bg/subtle | `--table-header-hover-bg` | `var(--color-bg-subtle)` | 헤더 hover 배경 (#F5F5F5) |
+| color/text/title/secondary | `--table-header-text` | `var(--color-text-secondary)` | 헤더 텍스트 (#353535) |
+| color/data/border/light  | `--table-border-light`   | `var(--color-border-subtle)`  | 행 구분선 기준 토큰 (#E9E9E9) |
+| color/data/border/strong | `--table-border-strong`  | `var(--color-border-default)` | 열·외곽 강조 구분선 (#D9D9D9) |
+| color/data/border/light  | `--table-header-border`  | `var(--table-border-light)`   | 헤더 하단 테두리 |
+| color/data/state/default | `--table-row-default-bg` | `var(--color-surface-default)` | 행 기본 배경 (#FFFFFF) |
+| color/data/state/hover   | `--table-row-hover-bg`   | `var(--color-data-state-hover)` | 행 hover 배경 (#E2F1FF — blue-50) |
+| —                        | `--table-row-selected-bg`| `var(--color-bg-selected)`    | 행 선택 배경 (candidate — HD-Table-2) |
+| color/data/border/light  | `--table-cell-border`    | `var(--table-border-light)`   | 셀 하단 테두리 |
+| color/text/body/primary  | `--table-cell-text`      | `var(--color-text-secondary)` | 셀 본문 텍스트 (#353535) |
+
+### Figma 확인 변수 정보
+
+| Figma 변수 경로 | 값 (Light) | 비고 |
+|---|---|---|
+| `surface/neutral/bg/base-alt` | #FAFAFA (gray-0) | 헤더 default bg |
+| `surface/neutral/bg/subtle` | #F5F5F5 (gray-50) | 헤더 hover bg |
+| `color/data/border/light` | #E9E9E9 (gray-100) | 헤더·셀 border |
+| `color/data/state/default` | #FFFFFF (white) | 행 default bg |
+| `color/data/state/hover` | #E2F1FF (blue-50) | 행 hover bg |
+| `color/text/title/secondary` | #353535 (gray-800) | 헤더 텍스트 |
+| `color/text/body/primary` | #353535 (gray-800) | 셀 본문 텍스트 |
+
+### Figma 컴포넌트 Variant 구조
+
+**pc_table_header (헤더 셀)**
+- size: md(h44) / sm(h38)
+- position: middle / last
+- align: center / left
+- state: default / hover
+- icon: on(정렬 아이콘 포함) / off
+- check box: on(체크박스 컬럼) / off
+
+**pc_table_body (바디 셀)**
+- size: md(h44) / sm(h38)
+- position: middle / last
+- align: center / left
+- state: default / hover
+
+**Sizing**
+- 행 높이 md: 44px (`--sizing-table-row-height-md`)
+- 행 높이 sm: 38px (`--sizing-table-row-height-sm`)
+- 패딩 좌: 12px (`--spacing-padding-inline-xs`)
+- 패딩 우(last column): 16px (`--spacing-padding-inline-sm`)
+- 폰트: Pretendard Medium 14px (헤더), Regular 14px (바디)
 
 ### CSS 구현
 
 ```css
 /* Table / Data Grid */
---table-header-bg:        var(--color-bg-subtle);
---table-header-text:      var(--color-text-tertiary);
---table-header-border:    var(--color-border-default);
---table-row-default-bg:   var(--color-surface-default);
---table-row-hover-bg:     var(--color-bg-subtle);
---table-row-selected-bg:  var(--color-bg-selected);
---table-cell-border:      var(--color-border-subtle);
---table-cell-text:        var(--color-text-secondary);
+--table-header-bg:        var(--color-bg-default);       /* #FAFAFA */
+--table-header-hover-bg:  var(--color-bg-subtle);        /* #F5F5F5 */
+--table-header-text:      var(--color-text-secondary);   /* #353535 */
+--table-header-border:    var(--color-border-subtle);    /* #E9E9E9 */
+--table-row-default-bg:   var(--color-surface-default);  /* #FFFFFF */
+--table-row-hover-bg:     var(--color-data-state-hover);  /* #E2F1FF — Figma: color/data/state/hover = blue-50 */
+--table-row-selected-bg:  var(--color-bg-selected);      /* #E2F1FF — candidate */
+--table-cell-border:      var(--color-border-subtle);    /* #E9E9E9 */
+--table-cell-text:        var(--color-text-secondary);   /* #353535 */
 ```
+
+### Human Decisions (미결)
+
+| ID | 항목 | 내용 |
+|---|---|---|
+| HD-Table-1 | dark row hover | `--color-data-state-hover` dark값 = `var(--color-blue-dark-100)` (#112B55) candidate — Figma 확인 필요 |
+| HD-Table-2 | selected ≠ hover | 현재 `--table-row-selected-bg` = blue-50 = hover와 동일. 선택 행은 더 강한 시각 처리 필요 여부 결정 |
 
 ---
 
@@ -527,6 +624,76 @@ Primitive(Foundation)를 직접 참조하지 않습니다.
 
 ---
 
+## 10. TimePicker
+
+> **Figma 확인 (2026-05-20):** 5개 Figma COMPONENT_SET 확인 (MVP-F1).
+> **색상 토큰 100% `--color-form-control-*` Semantic 재사용.** 전용 색상 토큰 없음.
+> **신규 Semantic 2개:** `--color-form-control-label-default/disabled` — timepicker_select "시"/"분" 라벨 전용.
+
+### 컴포넌트 구조
+
+| variant | Figma 노드 | 설명 | PC/Mobile |
+|---|---|---|---|
+| `timepicker_input` | `540:3690` | 단일 인풋 + 클릭 시 드롭다운 패널 | PC(md/xsm/xxsm) + Mobile |
+| `timepicker_select` | `540:3636` | 시/분 분리 셀렉트 2개 | PC only (md/sm) |
+| `pc_timepicker_input_dropdown` | `540:3506` | 드롭다운 패널 (24h/12h) | PC only |
+
+### 사이즈
+
+| platform | height | font-size |
+|---|---|---|
+| mobile | `var(--sizing-form-control-height-lg)` 48px | 14px |
+| pc-md | `var(--sizing-form-control-height-md)` 44px | 14px |
+| pc-xsm | `var(--sizing-form-control-height-xs)` 34px | 14px |
+| pc-xxsm | `var(--sizing-form-control-height-xxs)` 28px | **12px** |
+
+### Figma State → Code Canonical 매핑
+
+| Figma state | Code canonical | token-aliases.json |
+|---|---|---|
+| `selected` | `focus` | ✅ 기존 |
+| `completed` | `filled` | ✅ 기존 |
+| `editing` (timepicker_select) | `focus` | ✅ 2026-05-20 추가 |
+
+### 변수 정의 — 공유 Semantic (form-control 재사용)
+
+| Figma Variable | CSS Variable | Semantic 참조 | 설명 |
+|---|---|---|---|
+| color/form-control/bg/default | `--color-form-control-bg-default` | `var(--color-surface-default)` | 기본 배경 |
+| color/form-control/bg/disabled | `--color-form-control-bg-disabled` | `var(--color-bg-subtle)` | disabled 배경 |
+| color/form-control/border/default | `--color-form-control-border-default` | `var(--color-control-border-default)` | 기본 테두리 |
+| color/form-control/border/selected | `--color-form-control-border-selected` | `var(--color-border-focus)` | focus 테두리 |
+| color/form-control/border/disabled | `--color-form-control-border-disabled` | `var(--color-border-subtle)` | disabled 테두리 |
+| color/form-control/text/placeholder | `--color-form-control-text-placeholder` | `var(--color-text-placeholder)` | placeholder 텍스트 |
+| color/form-control/text/default | `--color-form-control-text-default` | `var(--color-text-secondary)` | 입력값 텍스트 |
+| color/form-control/text/disabled | `--color-form-control-text-disabled` | `var(--color-text-disabled)` | disabled 텍스트 |
+
+### 변수 정의 — 신규 Semantic (2026-05-20)
+
+| Figma Variable | CSS Variable | Semantic 참조 | 설명 |
+|---|---|---|---|
+| color/form-control/label/default | `--color-form-control-label-default` | `var(--color-text-secondary)` | "시"/"분" 라벨 기본 색상 |
+| color/form-control/label/disabled | `--color-form-control-label-disabled` | `var(--color-text-disabled)` | "시"/"분" 라벨 disabled 색상 |
+
+### CSS 구현
+
+```css
+/* TimePicker — form-control 100% 재사용 */
+/* 신규 semantic (TimePicker select 라벨용) */
+--color-form-control-label-default:  var(--color-text-secondary);  /* #353535 */
+--color-form-control-label-disabled: var(--color-text-disabled);   /* #BDBDBD */
+```
+
+### 미결 사항 (Human Decision)
+
+| ID | 내용 |
+|---|---|
+| HD-Time-1 | `timepicker_input` disabled suffix icon 교체 (ic_시계 → ic_알람) — 의도인지 Figma 실수인지 |
+| HD-Time-4 | Mobile 인터랙션 방식 (bottom sheet vs inline vs dropdown) |
+| HD-Time-5 | 드롭다운 패널 shadow `rgba(0,0,0,0.15)` — token 처리 vs DatePicker 예외 패턴 동일 적용 |
+
+---
+
 ## 전체 참조 구조 요약
 
 ```
@@ -541,7 +708,7 @@ Component Token
   └─ var(--color-domain-*)      ← 도메인 상태 (관제 시스템)
 ```
 
-> **원칙**: Foundation(Primitive) 직접 참조 금지.
+> **원칙**: Foundation(Foundation) 직접 참조 금지.
 > 반드시 Semantic Token을 경유합니다.
 
 ---

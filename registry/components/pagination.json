@@ -2,23 +2,99 @@
   "_meta": {
     "id": "pagination",
     "name": "Pagination",
-    "category": "Core",
-    "updatedAt": "2026-05-11",
+    "category": "data",
+    "updatedAt": "2026-05-20",
+    "version": "0.2.0",
     "tokenStatus": "stable",
     "codeStatus": "not-started",
     "darkModeStatus": "pending",
-    "description": "Pagination control with default, hover, active, and disabled page item states."
+    "a11yStatus": "pending",
+    "figmaStatus": "confirmed",
+    "harnessStatus": "skeleton",
+    "description": "페이지네이션 컨트롤. 화살표(first/prev/next/last) + 페이지 번호. 선택 페이지는 텍스트 색으로만 구분.",
+    "notes": [
+      "Figma 확인: 선택 페이지 = bg 변화 없음, 텍스트 색만 변경 (#9D9D9D → #353535).",
+      "Disabled 화살표 = bg/border 동일, opacity:0.9만 적용.",
+      "--pagination-control-hover-bg는 Figma 미정의 — assumed (gray-50).",
+      "dark mode: 미확인 — candidate 상태."
+    ]
   },
   "variants": {
-    "default": {
-      "tokenStatus": "stable",
-      "codeStatus": "not-started",
-      "darkModeStatus": "pending",
-      "tokens": [
-        "--pagination-default-bg", "--pagination-hover-bg", "--pagination-active-bg", "--pagination-disabled-bg",
-        "--pagination-default-text", "--pagination-active-text", "--pagination-disabled-text",
-        "--pagination-border"
-      ]
+    "arrow": {
+      "direction": ["<<", "<", ">", ">>"],
+      "state": ["default", "disabled"]
+    },
+    "number": {
+      "state": ["default", "selected"]
     }
+  },
+  "sizing": {
+    "controlSize": "28px (var(--spacing-28))",
+    "radius": "var(--radius-control-xs)",
+    "font": "Pretendard Medium 14px",
+    "gap": "4px (화살표 그룹 내) / 8px (그룹 간)"
+  },
+  "states": ["default", "hover", "selected", "disabled"],
+  "tokens": [
+    {
+      "name": "--pagination-control-bg",
+      "value": "var(--color-surface-default)",
+      "resolvedLight": "#FFFFFF",
+      "figmaVariable": "color/pagination/control/bg/default",
+      "status": "stable",
+      "description": "화살표·페이지 번호 공통 배경"
+    },
+    {
+      "name": "--pagination-control-border",
+      "value": "var(--color-border-subtle)",
+      "resolvedLight": "#E9E9E9",
+      "figmaVariable": "color/pagination/control/border/default",
+      "status": "stable",
+      "description": "화살표 버튼 테두리 (페이지 번호에는 테두리 없음)"
+    },
+    {
+      "name": "--pagination-control-hover-bg",
+      "value": "var(--color-bg-subtle)",
+      "resolvedLight": "#F5F5F5",
+      "figmaVariable": "",
+      "status": "candidate",
+      "description": "화살표·번호 hover 배경 — Figma 미정의, assumed"
+    },
+    {
+      "name": "--pagination-number-text",
+      "value": "var(--color-gray-400)",
+      "resolvedLight": "#9D9D9D",
+      "figmaVariable": "color/gray/400",
+      "status": "stable",
+      "description": "비선택 페이지 번호 텍스트"
+    },
+    {
+      "name": "--pagination-number-text-selected",
+      "value": "var(--color-text-secondary)",
+      "resolvedLight": "#353535",
+      "figmaVariable": "color/text/body/primary",
+      "status": "stable",
+      "description": "선택된 페이지 번호 텍스트"
+    }
+  ],
+  "figma": {
+    "componentSetKey": "",
+    "figmaNodeId": "540:5281",
+    "nodes": {
+      "pcPagination": "540:5281",
+      "paginationArrow": "57:6244",
+      "paginationNumber": "57:6235"
+    },
+    "propertyMap": {
+      "direction": "direction",
+      "property1": "property1",
+      "selected": "selected",
+      "hover": "hover"
+    }
+  },
+  "governance": {
+    "owner": "Design System Team",
+    "deprecated": false,
+    "replacement": null
   }
 }

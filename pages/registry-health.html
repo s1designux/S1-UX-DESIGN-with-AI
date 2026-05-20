@@ -2,8 +2,9 @@
 <html lang="ko">
 <head>
   <meta charset="UTF-8">
+  <script>!function(){var z=localStorage.getItem("sw-ds-zoom");if(z)document.documentElement.style.zoom=z+"%"}();</script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>System Status — SW Design System</title>
+  <title>System Status — S1 UX DESIGN GUIDE</title>
   <link rel="stylesheet" href="../assets/css/style.css">
   <link rel="stylesheet" href="../assets/css/tokens.css">
   <style>
@@ -77,6 +78,9 @@
     .health-comp-row:hover { background: #f9fafb; }
     .health-comp-row small { font-size: 10px; color: #9ca3af; margin-left: 4px; }
     .comp-name { font-weight: 600; color: #111827; }
+      /* ── 전체 너비 사용 ── */
+    .page-content { max-width: none; padding: 28px 32px; }
+    .page-header-inner { max-width: none; }
   </style>
 </head>
 <body>
@@ -90,7 +94,7 @@
           <line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/>
         </svg>
       </button>
-      <span class="mobile-logo">SW Design System</span>
+      <span class="mobile-logo">S1 UX DESIGN GUIDE</span>
     </div>
 
     <div class="page-header">
@@ -104,6 +108,7 @@
   </main>
 </div>
 
+<script src="../assets/js/registry-data-bundle.js"></script>
 <script src="../assets/js/registry-loader.js"></script>
 <script src="../assets/js/registry-health.js"></script>
 <script>

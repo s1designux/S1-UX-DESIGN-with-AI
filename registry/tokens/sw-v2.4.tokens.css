@@ -20,7 +20,7 @@
 
 
 /* ══════════════════════════════════════════════════
-   1. FOUNDATION — Color Primitives
+   1. FOUNDATION — Color Foundation
    ══════════════════════════════════════════════════ */
 :root {
 
@@ -266,7 +266,7 @@
   --color-coolgray-dark-450: #B8BCC5;
   --color-coolgray-dark-500: #D8DBE0;
 
-  /* ── Status · Dark (피드백 상태 전용 Dark Primitive) ── */
+  /* ── Status · Dark (피드백 상태 전용 Dark Foundation) ── */
   --color-status-dark-red:    #F06070; /* = color-red-dark-350 */
   --color-status-dark-green:  #3FBE7E; /* = color-green-dark-350 */
   --color-status-dark-yellow: #E8C048; /* = color-yellow-dark-350 */
@@ -347,7 +347,7 @@
   --color-bg-subtle:   var(--color-gray-50);
   --color-bg-muted:    var(--color-gray-100);
   --color-bg-elevated: var(--color-gray-100);
-  --color-bg-home:     #F5F6FB; /* Foundation Primitive 미등록 — 검토 중 */
+  --color-bg-home:     #F5F6FB; /* Foundation 미등록 — 검토 중 */
   /* ⚠️ --color-bg-active / --color-bg-deepest / --color-bg-selected : Figma 원본 미확인, pending-review 항목 1 */
   --color-bg-selected: var(--color-blue-50); /* 임시값 — Figma 검증 후 확정 필요 */
 

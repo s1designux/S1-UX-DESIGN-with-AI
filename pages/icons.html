@@ -2,9 +2,11 @@
 <html lang="ko">
 <head>
   <meta charset="UTF-8">
+  <script>!function(){var z=localStorage.getItem("sw-ds-zoom");if(z)document.documentElement.style.zoom=z+"%"}();</script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Icon Guide · SW UX GUIDE V2.4</title>
   <link rel="stylesheet" href="../assets/css/style.css">
+  <link rel="stylesheet" href="../assets/css/tokens.css">
   <style>
     /* ─── SVG Notice ─────────────────────────────── */
     .svg-notice {
@@ -75,6 +77,7 @@
     }
     [data-theme="dark"] .icon-search { background: #24252C; border-color: rgba(255,255,255,0.1); color: #ECEDF0; }
     .icon-search:focus { border-color: #1D6CEB; }
+    .icon-search::placeholder { color: var(--color-text-placeholder); }
     .search-icon-abs {
       position: absolute; left: 10px; top: 50%; transform: translateY(-50%);
       color: #9ca3af; pointer-events: none;

@@ -1,9 +1,9 @@
 {
   "meta": {
     "name": "SW Core Component Registry Index",
-    "version": "0.1.0",
+    "version": "0.2.0",
     "status": "mvp3.1",
-    "updatedAt": "2026-05-11",
+    "updatedAt": "2026-05-20",
     "description": "Core Component Harness의 entry point. Theme / Platform / Component 목록을 관리한다."
   },
   "harness": {
@@ -13,12 +13,19 @@
     "supportedPlatforms": ["all", "pc", "mobile"],
     "defaultPlatform": "pc"
   },
+  "categories": [
+    { "id": "all",       "label": "All" },
+    { "id": "actions",   "label": "Actions" },
+    { "id": "selection", "label": "Selection" },
+    { "id": "form",      "label": "Form" },
+    { "id": "data",      "label": "Data" }
+  ],
   "components": [
     {
       "id": "button",
       "name": "Button",
       "label": "Button",
-      "category": "core",
+      "category": "actions",
       "path": "registry/components/button.json",
       "status": "in-progress",
       "harnessStatus": "implemented",
@@ -28,7 +35,7 @@
       "id": "checkbox",
       "name": "Checkbox",
       "label": "Checkbox",
-      "category": "core",
+      "category": "selection",
       "path": "registry/components/checkbox.json",
       "status": "in-progress",
       "harnessStatus": "implemented",
@@ -38,7 +45,7 @@
       "id": "radio",
       "name": "Radio",
       "label": "Radio",
-      "category": "core",
+      "category": "selection",
       "path": "registry/components/radio.json",
       "status": "in-progress",
       "harnessStatus": "implemented",
@@ -48,7 +55,7 @@
       "id": "toggle",
       "name": "Toggle",
       "label": "Toggle",
-      "category": "core",
+      "category": "selection",
       "path": "registry/components/toggle.json",
       "status": "in-progress",
       "harnessStatus": "implemented",
@@ -58,22 +65,23 @@
       "id": "chip",
       "name": "Chip",
       "label": "Chip · FilterChip",
-      "category": "core",
+      "category": "selection",
       "path": "registry/components/chip.json",
-      "status": "planned",
-      "harnessStatus": "skeleton",
+      "status": "in-progress",
+      "harnessStatus": "implemented",
       "priority": 5,
       "notes": [
-        "Chip과 FilterChip을 하나의 tab으로 표시한다.",
-        "내부 registry는 chip.json 단일 파일로 관리하되, FilterChip variant를 별도 type으로 구분할 수 있다.",
-        "추후 chip.json과 filter-chip.json 분리 여부 결정 필요."
+        "2026-05-19 MVP-C1: line/solid split token 구조 확정. hover·icon·close-icon variant 추가. Token Details 탭 구현.",
+        "chip.json 구식 unified 구조 → line/solid split 재작성.",
+        "darkModeStatus: pending — dark mode 시각 검증 미완료.",
+        "figmaNodeId: '' — Scan from Selection으로 확인 필요."
       ]
     },
     {
       "id": "input",
       "name": "Input",
       "label": "Input",
-      "category": "core",
+      "category": "form",
       "path": "registry/components/input.json",
       "status": "in-progress",
       "harnessStatus": "implemented",
@@ -82,28 +90,87 @@
     {
       "id": "select",
       "name": "Select",
-      "label": "Select",
-      "category": "core",
+      "label": "Select · Dropdown",
+      "category": "form",
       "path": "registry/components/select.json",
-      "status": "planned",
-      "harnessStatus": "skeleton",
-      "priority": 7
+      "status": "in-progress",
+      "harnessStatus": "implemented",
+      "priority": 7,
+      "notes": [
+        "2026-05-19 MVP-C2: --dropdown-* 토큰 재사용 확정. Trigger States + Size Variants + Option States + Token Details 탭 구현.",
+        "Hover 컬럼 추가. CSS 버그 2건 수정 (open-bg, selected-option-bg).",
+        "figmaNodeId: 미확인 — pc_dropdown componentKey 발견, Scan from Selection으로 nodeId 확인 필요."
+      ]
+    },
+    {
+      "id": "textarea",
+      "name": "Textarea",
+      "label": "Textarea",
+      "category": "form",
+      "path": "registry/components/textarea.json",
+      "status": "in-progress",
+      "harnessStatus": "implemented",
+      "priority": 8,
+      "notes": [
+        "HD-6(2026-05-12) 확정: Figma Inputbox_large → 별도 Textarea 컴포넌트.",
+        "2026-05-20: tokenStatus→stable, harnessStatus→implemented, figmaNodeId→641:4060.",
+        "Token Details 탭 15개 --input-* 토큰 문서화 완료."
+      ]
     },
     {
       "id": "date-picker",
       "name": "DatePicker",
-      "label": "Date Picker / Day Picker",
-      "category": "core-candidate",
+      "label": "Date Picker",
+      "category": "form",
       "path": "registry/components/date-picker.json",
       "status": "candidate",
       "harnessStatus": "candidate",
-      "priority": 8,
+      "priority": 9,
       "notes": [
         "Base Input (s1-input-wrap) trigger를 재사용한다.",
         "calendar panel + day grid가 있어 Related Composed Field가 아닌 별도 컴포넌트 후보다.",
         "Figma node 6443:4655 확인 — MCP 접근 불가, componentSetKey 미등록.",
         "Mobile 인터랙션 미확정 (bottom sheet 가능성)."
       ]
+    },
+    {
+      "id": "time-picker",
+      "name": "TimePicker",
+      "label": "Time Picker",
+      "category": "form",
+      "path": "registry/components/time-picker.json",
+      "status": "candidate",
+      "harnessStatus": "candidate",
+      "priority": 10,
+      "notes": [
+        "2026-05-20 MVP-F1: 5개 COMPONENT_SET nodeId 확인 완료. candidate 등록.",
+        "구현 착수 전 HD-1~HD-5 결정 필요 (input 방식 vs select 방식 등).",
+        "primary figmaNodeId: 540:3690 (timepicker_input)."
+      ]
+    },
+    {
+      "id": "table",
+      "name": "Table",
+      "label": "Table",
+      "category": "data",
+      "path": "registry/components/table.json",
+      "status": "in-progress",
+      "harnessStatus": "implemented",
+      "priority": 11,
+      "notes": [
+        "2026-05-20: Figma MCP pc_table_header(540:4940)·pc_table_body(540:4851) 조회 완료.",
+        "HD-Table-1(dark mode)·HD-Table-2(selected≠hover) 미결."
+      ]
+    },
+    {
+      "id": "pagination",
+      "name": "Pagination",
+      "label": "Pagination",
+      "category": "data",
+      "path": "registry/components/pagination.json",
+      "status": "in-progress",
+      "harnessStatus": "implemented",
+      "priority": 12
     }
   ]
 }

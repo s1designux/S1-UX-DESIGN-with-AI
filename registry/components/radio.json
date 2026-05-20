@@ -3,22 +3,35 @@
     "id": "radio",
     "name": "Radio",
     "category": "Core",
-    "updatedAt": "2026-05-11",
+    "updatedAt": "2026-05-19",
+    "version": "0.1.0",
     "tokenStatus": "stable",
-    "codeStatus": "not-started",
+    "codeStatus": "implemented",
     "darkModeStatus": "pending",
-    "description": "Radio button control with default, selected, hover, and disabled states."
+    "a11yStatus": "pending",
+    "figmaStatus": "existing",
+    "harnessStatus": "implemented",
+    "description": "라디오 버튼 컨트롤. default·hover·selected·disabled 상태."
   },
-  "variants": {
-    "default": {
-      "tokenStatus": "stable",
-      "codeStatus": "not-started",
-      "darkModeStatus": "pending",
-      "tokens": [
-        "--radio-default-bg", "--radio-disabled-bg",
-        "--radio-default-border", "--radio-hover-border", "--radio-selected-border", "--radio-disabled-border",
-        "--radio-selected-dot"
-      ]
-    }
+  "states": ["default", "hover", "selected", "disabled"],
+  "tokens": [
+    { "cssVar": "--radio-default-bg",      "value": "var(--color-form-control-bg-default)", "semanticRef": "color-form-control-bg-default", "state": "default",  "property": "background" },
+    { "cssVar": "--radio-disabled-bg",     "value": "var(--color-bg-subtle)",               "semanticRef": "color-bg-subtle",               "state": "disabled", "property": "background" },
+    { "cssVar": "--radio-default-border",  "value": "var(--color-control-border-default)",  "semanticRef": "color-control-border-default",  "state": "default",  "property": "border" },
+    { "cssVar": "--radio-hover-border",    "value": "var(--color-control-border-hover)",    "semanticRef": "color-control-border-hover",    "state": "hover",    "property": "border" },
+    { "cssVar": "--radio-selected-border", "value": "var(--color-control-border-selected)", "semanticRef": "color-control-border-selected", "state": "selected", "property": "border" },
+    { "cssVar": "--radio-disabled-border", "value": "var(--color-control-border-disabled)", "semanticRef": "color-control-border-disabled", "state": "disabled", "property": "border" },
+    { "cssVar": "--radio-selected-dot",    "value": "var(--color-action-primary-default)",  "semanticRef": "color-action-primary-default",  "state": "selected", "property": "dot-icon" },
+    { "cssVar": "--radio-disabled-dot",    "value": "var(--color-border-strong)",           "semanticRef": "color-border-strong",           "state": "disabled", "property": "dot-icon" }
+  ],
+  "figma": {
+    "componentSetKey": "",
+    "figmaNodeId": "",
+    "propertyMap": {}
+  },
+  "governance": {
+    "owner": "Design System Team",
+    "deprecated": false,
+    "replacement": null
   }
 }

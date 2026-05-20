@@ -2,8 +2,9 @@
 <html lang="ko">
 <head>
   <meta charset="UTF-8">
+  <script>!function(){var z=localStorage.getItem("sw-ds-zoom");if(z)document.documentElement.style.zoom=z+"%"}();</script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>SW Design System Guide</title>
+  <title>S1 UX DESIGN GUIDE</title>
   <link rel="stylesheet" href="assets/css/style.css">
 </head>
 <body>
@@ -14,7 +15,7 @@
       <line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/>
     </svg>
   </button>
-  <span class="mobile-logo">SW Design System</span>
+  <span class="mobile-logo">S1 UX DESIGN GUIDE</span>
 </div>
 <div class="sidebar-overlay" id="sidebar-overlay"></div>
 
@@ -85,29 +86,20 @@
         </div>
       </div>
 
-      <!-- 개요 -->
+      <!-- Guide -->
       <div class="section">
         <div class="section-header">
-          <h2 class="section-title">개요</h2>
+          <h2 class="section-title">Guide</h2>
         </div>
         <div class="overview-grid">
           <a href="pages/install-prompt.html" class="overview-card">
             <div class="overview-card-icon">⚡</div>
-            <div class="overview-card-title">토큰 설치 프롬프트</div>
-            <div class="overview-card-desc">Semantic + Component 토큰 전체를 한 번에 복사. CSS 스니펫과 AI 컨텍스트 프롬프트 2종 제공.</div>
+            <div class="overview-card-title">Download Tokens</div>
+            <div class="overview-card-desc">개발자용(tokens.css + AI 프롬프트)과 디자이너용(Figma Plugin 연동) 2탭 제공.</div>
             <div class="overview-card-status status-ready">
-              <span class="status-dot"></span> 완료 — CSS 스니펫 + AI 프롬프트
+              <span class="status-dot"></span> 완료 — 개발자용 · 디자이너용
             </div>
           </a>
-        </div>
-      </div>
-
-      <!-- Section Grid -->
-      <div class="section">
-        <div class="section-header">
-          <h2 class="section-title">Foundation</h2>
-        </div>
-        <div class="overview-grid">
           <a href="pages/foundation.html" class="overview-card">
             <div class="overview-card-icon">🎨</div>
             <div class="overview-card-title">Foundation Tokens</div>
@@ -124,14 +116,6 @@
               <span class="status-dot"></span> 완료 — 8개 카테고리 Light/Dark
             </div>
           </a>
-        </div>
-      </div>
-
-      <div class="section">
-        <div class="section-header">
-          <h2 class="section-title">Design System</h2>
-        </div>
-        <div class="overview-grid">
           <a href="pages/components.html" class="overview-card">
             <div class="overview-card-icon">🧩</div>
             <div class="overview-card-title">Components</div>
@@ -162,46 +146,6 @@
             <div class="overview-card-desc">토큰 사용 원칙, 신규/레거시 기준, 다크모드 대응 정책.</div>
             <div class="overview-card-status status-wip">
               <span class="status-dot"></span> 작성 중
-            </div>
-          </a>
-          <a href="pages/legacy.html" class="overview-card disabled">
-            <div class="overview-card-icon">🗂️</div>
-            <div class="overview-card-title">Legacy Guide</div>
-            <div class="overview-card-desc">구버전 토큰 → 신규 토큰 마이그레이션 가이드.</div>
-            <div class="overview-card-status status-soon">
-              <span class="status-dot"></span> Coming Soon
-            </div>
-          </a>
-        </div>
-      </div>
-
-      <div class="section">
-        <div class="section-header">
-          <h2 class="section-title">AI 워크플로우</h2>
-        </div>
-        <div class="overview-grid">
-          <a href="pages/ai-snippets.html" class="overview-card">
-            <div class="overview-card-icon">🤖</div>
-            <div class="overview-card-title">AI Snippets</div>
-            <div class="overview-card-desc">컴포넌트별 AI 코드 스니펫 모음. 토큰 기반 구현 예제.</div>
-            <div class="overview-card-status status-ready">
-              <span class="status-dot"></span> 완료 — 10개 스니펫
-            </div>
-          </a>
-          <a href="pages/guide-md.html" class="overview-card">
-            <div class="overview-card-icon">📋</div>
-            <div class="overview-card-title">Guide MD</div>
-            <div class="overview-card-desc">Semantic · Component 토큰 MD 원본 코드스니펫. AI 프롬프트 복붙용.</div>
-            <div class="overview-card-status status-ready">
-              <span class="status-dot"></span> 완료 — Semantic + Component MD
-            </div>
-          </a>
-          <a href="pages/md-review.html" class="overview-card">
-            <div class="overview-card-icon">🔍</div>
-            <div class="overview-card-title">MD 리뷰</div>
-            <div class="overview-card-desc">수정 제안 · 결정 대기 항목 · Figma 체크리스트 관리.</div>
-            <div class="overview-card-status status-ready">
-              <span class="status-dot"></span> 완료 — 리뷰 · 결정 · 체크리스트
             </div>
           </a>
         </div>

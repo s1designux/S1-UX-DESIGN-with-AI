@@ -2,9 +2,178 @@
 <html lang="ko">
 <head>
   <meta charset="UTF-8">
+  <script>!function(){var z=localStorage.getItem("sw-ds-zoom");if(z)document.documentElement.style.zoom=z+"%"}();</script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Legacy Guide · SW Design System</title>
+  <title>Legacy Guide · S1 UX DESIGN GUIDE</title>
   <link rel="stylesheet" href="../assets/css/style.css">
+  <style>
+    /* ── Legacy page ── */
+
+    /* ── Notice banners ── */
+    .notice-banner {
+      display: flex;
+      gap: 12px;
+      padding: 14px 18px;
+      border-radius: 10px;
+      font-size: 13px;
+      margin-bottom: 20px;
+      line-height: 1.6;
+    }
+    .notice-banner-icon { font-size: 16px; flex-shrink: 0; margin-top: 1px; }
+    .notice-info    { background: #eff6ff; border: 1px solid #bfdbfe; color: #1e3a8a; }
+    .notice-warning { background: #fffbeb; border: 1px solid #fde68a; color: #78350f; }
+    .notice-success { background: #f0fdf4; border: 1px solid #bbf7d0; color: #14532d; }
+    .notice-muted   { background: #f8fafc; border: 1px solid #e2e8f0; color: #475569; }
+
+    /* ── Stat bar ── */
+    .stat-bar {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 24px;
+      flex-wrap: wrap;
+    }
+    .stat-card {
+      flex: 1;
+      min-width: 120px;
+      padding: 14px 18px;
+      background: #fff;
+      border: 1px solid #e5e7eb;
+      border-radius: 10px;
+      text-align: center;
+    }
+    .stat-number { font-size: 28px; font-weight: 700; letter-spacing: -0.04em; }
+    .stat-label  { font-size: 11px; color: #6b7280; margin-top: 4px; }
+    .stat-green  .stat-number { color: #16a34a; }
+    .stat-yellow .stat-number { color: #d97706; }
+    .stat-gray   .stat-number { color: #6b7280; }
+
+    /* ── Token mapping table ── */
+    .mapping-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 12px;
+    }
+    .mapping-table th {
+      text-align: left;
+      padding: 8px 12px;
+      background: #f9fafb;
+      color: #6b7280;
+      font-weight: 600;
+      border-bottom: 2px solid #e5e7eb;
+      white-space: nowrap;
+    }
+    .mapping-table td {
+      padding: 7px 12px;
+      border-bottom: 1px solid #f3f4f6;
+      vertical-align: middle;
+    }
+    .mapping-table tr:last-child td { border-bottom: none; }
+    .mapping-table tr:hover td { background: #fafafa; }
+    .token-mono { font-family: monospace; font-size: 11px; }
+    .token-legacy { color: #9a3412; }
+    .token-canonical { color: #1d4ed8; }
+    .token-arrow { color: #9ca3af; font-size: 13px; text-align: center; }
+
+    /* ── Layer badges ── */
+    .layer-badge {
+      display: inline-block;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-size: 10px;
+      font-weight: 700;
+    }
+    .layer-semantic   { background: #dbeafe; color: #1e40af; }
+    .layer-component  { background: #f0fdf4; color: #166534; }
+    .layer-foundation { background: #fef9c3; color: #713f12; }
+    .layer-sizing     { background: #fae8ff; color: #701a75; }
+    .layer-spacing    { background: #ecfdf5; color: #065f46; }
+
+    /* ── Status dot ── */
+    .status-dot {
+      display: inline-flex; align-items: center; gap: 5px; font-size: 11px; font-weight: 600;
+    }
+    .dot { width: 7px; height: 7px; border-radius: 50%; display: inline-block; }
+    .dot-confirmed { background: #22c55e; }
+    .dot-review    { background: #f59e0b; }
+    .dot-no-data   { background: #94a3b8; }
+
+    /* ── Section group header ── */
+    .group-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 12px;
+      background: #f9fafb;
+      border-radius: 8px;
+      margin: 20px 0 8px;
+      font-size: 12px;
+      font-weight: 700;
+      color: #374151;
+    }
+
+    /* ── Step list ── */
+    .step-list { counter-reset: steps; list-style: none; padding: 0; margin: 0; }
+    .step-item {
+      display: flex;
+      gap: 14px;
+      padding: 12px 0;
+      border-bottom: 1px solid #f3f4f6;
+      font-size: 13px;
+      color: #374151;
+      line-height: 1.6;
+    }
+    .step-item:last-child { border-bottom: none; }
+    .step-num {
+      flex-shrink: 0;
+      width: 24px; height: 24px;
+      background: #0072ce;
+      color: #fff;
+      border-radius: 50%;
+      font-size: 12px;
+      font-weight: 700;
+      display: flex; align-items: center; justify-content: center;
+      margin-top: 1px;
+    }
+    .step-content { flex: 1; }
+    .step-title { font-weight: 700; color: #111827; margin-bottom: 3px; }
+    .step-detail { font-size: 12px; color: #6b7280; }
+
+    /* ── Code block ── */
+    .code-block {
+      background: #0f172a;
+      color: #e2e8f0;
+      border-radius: 8px;
+      padding: 14px 18px;
+      font-family: monospace;
+      font-size: 12px;
+      line-height: 1.8;
+      overflow-x: auto;
+      margin: 12px 0;
+    }
+    .code-comment { color: #64748b; }
+    .code-token   { color: #7dd3fc; }
+    .code-value   { color: #86efac; }
+    .code-arrow   { color: #fbbf24; }
+
+    /* ── Filter bar ── */
+    .filter-bar {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 14px;
+      flex-wrap: wrap;
+    }
+    .filter-btn {
+      padding: 4px 12px;
+      border-radius: 16px;
+      font-size: 12px;
+      font-weight: 500;
+      border: 1px solid #e5e7eb;
+      background: #fff;
+      color: #6b7280;
+      cursor: pointer;
+    }
+    .filter-btn.active { background: #0072ce; color: #fff; border-color: #0072ce; }
+  </style>
 </head>
 <body>
 
@@ -14,7 +183,7 @@
       <line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/>
     </svg>
   </button>
-  <span class="mobile-logo">SW Design System</span>
+  <span class="mobile-logo">S1 UX DESIGN GUIDE</span>
 </div>
 <div class="sidebar-overlay" id="sidebar-overlay"></div>
 
@@ -26,57 +195,367 @@
       <div class="page-header-inner">
         <div class="page-header-text">
           <h1>Legacy Guide</h1>
-          <p>구버전 토큰 → 신규 토큰 마이그레이션 가이드</p>
+          <p>Figma UX Guide 2.4 레거시 토큰 → S1 Design System v0.1 신규 토큰 마이그레이션 가이드</p>
         </div>
         <div class="page-header-actions">
-          <span class="badge badge-gray">Coming Soon</span>
+          <span class="badge badge-yellow">MVP-L1 준비 중</span>
         </div>
       </div>
     </div>
 
     <div class="page-content">
-      <div class="coming-soon-placeholder">
-        <div class="coming-soon-icon">🗂️</div>
-        <div class="coming-soon-title">Legacy Guide 준비 중</div>
-        <div class="coming-soon-desc">
-          구버전 디자인 토큰에서 신규 디자인시스템으로 전환하는 마이그레이션 가이드입니다.<br>
-          1:1 토큰 매핑 테이블과 단계별 전환 체크리스트를 제공합니다.
-        </div>
-        <div class="coming-soon-list">
-          <div class="coming-soon-item">
-            <span class="coming-soon-item-icon">🗺️</span>
-            <div>
-              <div class="coming-soon-item-title">토큰 매핑 테이블</div>
-              <div class="coming-soon-item-desc">구버전 변수명(--legacy-*) → 신규 Semantic 토큰 1:1 대응표</div>
-            </div>
-          </div>
-          <div class="coming-soon-item">
-            <span class="coming-soon-item-icon">📋</span>
-            <div>
-              <div class="coming-soon-item-title">마이그레이션 체크리스트</div>
-              <div class="coming-soon-item-desc">화면별 전환 완료 여부 추적 체크리스트 + 우선순위 가이드</div>
-            </div>
-          </div>
-          <div class="coming-soon-item">
-            <span class="coming-soon-item-icon">🧩</span>
-            <div>
-              <div class="coming-soon-item-title">Legacy 컴포넌트 대체 목록</div>
-              <div class="coming-soon-item-desc">🗂️ [Legacy] 접두사 컴포넌트 → 신규 Core 컴포넌트 교체 가이드</div>
-            </div>
-          </div>
-          <div class="coming-soon-item">
-            <span class="coming-soon-item-icon">⚡</span>
-            <div>
-              <div class="coming-soon-item-title">자동 마이그레이션 스크립트</div>
-              <div class="coming-soon-item-desc">코드베이스 내 legacy 토큰을 일괄 교체하는 CLI 스크립트 (예정)</div>
-            </div>
-          </div>
+
+      <!-- Notice -->
+      <div class="notice-banner notice-warning">
+        <span class="notice-banner-icon">⚠️</span>
+        <div>
+          <strong>MVP-L1 완료 전 상태입니다.</strong>
+          이 페이지의 매핑 테이블은 Figma MCP 스캔(MVP-F0) 결과 기준입니다.
+          Figma Plugin → Export Variables를 실행한 후 <code>npm run figma:audit</code>으로 전수 검증하면 내용이 보강됩니다.
+          confirmed 매핑은 즉시 사용 가능합니다.
         </div>
       </div>
-    </div>
+
+      <!-- Stats -->
+      <div class="stat-bar">
+        <div class="stat-card stat-green">
+          <div class="stat-number">44</div>
+          <div class="stat-label">confirmed 매핑</div>
+        </div>
+        <div class="stat-card stat-yellow">
+          <div class="stat-number">44</div>
+          <div class="stat-label">needs-review</div>
+        </div>
+        <div class="stat-card stat-gray">
+          <div class="stat-number">1</div>
+          <div class="stat-label">usage 미확인</div>
+        </div>
+        <div class="stat-card stat-gray">
+          <div class="stat-number">92</div>
+          <div class="stat-label">전체 항목</div>
+        </div>
+      </div>
+
+      <!-- ===== SECTION 1: What is Legacy ===== -->
+      <div class="section" id="what-is-legacy">
+        <div class="section-header">
+          <div class="section-title">Legacy란?</div>
+          <div class="section-desc">이 디자인시스템에서 "Legacy"의 정의와 운영 원칙</div>
+        </div>
+
+        <div class="notice-banner notice-muted">
+          <span class="notice-banner-icon">📦</span>
+          <div>
+            <strong>Legacy</strong>는 <code>S1 UX Design Guide 2.4</code> Figma 파일에 정의된 구버전 Variable/Style을 가리킵니다.
+            신규 디자인시스템(v0.1)의 Semantic / Component 토큰으로 전환 중인 항목입니다.
+            Legacy 토큰은 기존 서비스 유지용으로만 허용하며, 신규 화면에서는 사용하지 않습니다.
+          </div>
+        </div>
+
+        <table class="mapping-table">
+          <thead>
+            <tr><th>분류</th><th>설명</th><th>신규 사용</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><span class="badge badge-green">confirmed</span></td>
+              <td>canonical 매핑이 확정되어 교체 가능한 항목</td>
+              <td>신규 토큰으로 교체 권장</td>
+            </tr>
+            <tr>
+              <td><span class="badge badge-yellow">needs-review</span></td>
+              <td>canonical 후보가 있으나 사람 검토 필요 항목</td>
+              <td>보류 — 검토 완료 후 교체</td>
+            </tr>
+            <tr>
+              <td><span class="badge badge-gray">no-usage-observed</span></td>
+              <td>MCP 스캔에서 사용 미확인 항목</td>
+              <td>MVP-L1 완료 후 재판단</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- ===== SECTION 2: Migration Approach ===== -->
+      <div class="section" id="migration-approach">
+        <div class="section-header">
+          <div class="section-title">마이그레이션 접근 방법</div>
+          <div class="section-desc">단계적 전환 전략과 도구</div>
+        </div>
+
+        <ol class="step-list">
+          <li class="step-item">
+            <span class="step-num">1</span>
+            <div class="step-content">
+              <div class="step-title">Source Guard로 현황 파악</div>
+              <div class="step-detail">
+                <code>npm run guard -- --target ../service-project</code>를 실행하면 서비스 프로젝트 내 HEX 직접 사용, Foundation 직접 참조, Legacy 토큰 사용 등을 자동으로 검출합니다.
+              </div>
+            </div>
+          </li>
+          <li class="step-item">
+            <span class="step-num">2</span>
+            <div class="step-content">
+              <div class="step-title">confirmed 항목부터 교체</div>
+              <div class="step-detail">
+                아래 "확정 매핑 테이블"의 confirmed 항목은 즉시 교체 가능합니다. Legacy 변수명을 canonical CSS 변수로 1:1 교체합니다.
+              </div>
+            </div>
+          </li>
+          <li class="step-item">
+            <span class="step-num">3</span>
+            <div class="step-content">
+              <div class="step-title">needs-review 항목 개별 검토</div>
+              <div class="step-detail">
+                canonical 후보가 있으나 불확실한 항목은 <code>pages/md-review.html</code>에 검토 항목으로 등록 후 결정합니다. 임의로 교체하지 않습니다.
+              </div>
+            </div>
+          </li>
+          <li class="step-item">
+            <span class="step-num">4</span>
+            <div class="step-content">
+              <div class="step-title">MVP-L1 완료 후 전수 감사</div>
+              <div class="step-detail">
+                Figma Plugin → Export Variables → <code>npm run figma:audit</code>를 실행하면 Legacy Variable 전체 목록을 canonical 토큰과 자동 매핑합니다.
+              </div>
+            </div>
+          </li>
+        </ol>
+
+        <div class="code-block">
+<span class="code-comment"># Source Guard 사용 예시</span>
+<span class="code-token">npm run guard</span> -- <span class="code-value">--target ../my-service</span>                   <span class="code-comment"># 검사 리포트 생성</span>
+<span class="code-token">npm run guard:suggest</span> -- <span class="code-value">--target ../my-service</span>             <span class="code-comment"># 수정 후보 생성</span>
+<span class="code-token">npm run guard:apply:dry</span> -- <span class="code-value">--target ../my-service</span>           <span class="code-comment"># dry-run (파일 수정 없음)</span>
+<span class="code-token">npm run guard:apply</span> -- <span class="code-value">--target ../my-service</span>                <span class="code-comment"># high-confidence 자동 적용</span>
+        </div>
+      </div>
+
+      <!-- ===== SECTION 3: Confirmed Mapping Table ===== -->
+      <div class="section" id="confirmed-mappings">
+        <div class="section-header">
+          <div class="section-title">확정 매핑 테이블 (confirmed)</div>
+          <div class="section-desc">즉시 교체 가능한 44개 항목. Figma Variable 경로 → canonical CSS 변수 1:1 대응.</div>
+        </div>
+
+        <div class="filter-bar">
+          <button class="filter-btn active" data-filter="all">전체 (44)</button>
+          <button class="filter-btn" data-filter="color">색상</button>
+          <button class="filter-btn" data-filter="sizing">사이즈</button>
+          <button class="filter-btn" data-filter="spacing">간격</button>
+          <button class="filter-btn" data-filter="other">기타</button>
+        </div>
+
+        <!-- 색상 그룹 -->
+        <div class="group-header" data-group="color">
+          <span class="layer-badge layer-semantic">Semantic / Component</span>
+          색상 토큰 (14개)
+        </div>
+        <table class="mapping-table" data-category="color">
+          <thead>
+            <tr>
+              <th>Legacy Variable (Figma)</th>
+              <th></th>
+              <th>canonical CSS 변수</th>
+              <th>레이어</th>
+              <th>역할</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td class="token-mono token-legacy">color/form-control/bg/default</td><td class="token-arrow">→</td><td class="token-mono token-canonical">--color-form-control-bg-default</td><td><span class="layer-badge layer-semantic">Semantic</span></td><td>Input/Select bg</td></tr>
+            <tr><td class="token-mono token-legacy">color/form-control/bg/disabled</td><td class="token-arrow">→</td><td class="token-mono token-canonical">--color-form-control-bg-disabled</td><td><span class="layer-badge layer-semantic">Semantic</span></td><td>disabled 배경</td></tr>
+            <tr><td class="token-mono token-legacy">color/form-control/border/default</td><td class="token-arrow">→</td><td class="token-mono token-canonical">--color-form-control-border-default</td><td><span class="layer-badge layer-semantic">Semantic</span></td><td>입력 테두리</td></tr>
+            <tr><td class="token-mono token-legacy">color/form-control/border/selected</td><td class="token-arrow">→</td><td class="token-mono token-canonical">--color-form-control-border-selected</td><td><span class="layer-badge layer-semantic">Semantic</span></td><td>focus 테두리</td></tr>
+            <tr><td class="token-mono token-legacy">color/form-control/border/disabled</td><td class="token-arrow">→</td><td class="token-mono token-canonical">--color-form-control-border-disabled</td><td><span class="layer-badge layer-semantic">Semantic</span></td><td>disabled 테두리</td></tr>
+            <tr><td class="token-mono token-legacy">color/form-control/text/default</td><td class="token-arrow">→</td><td class="token-mono token-canonical">--color-form-control-text-default</td><td><span class="layer-badge layer-semantic">Semantic</span></td><td>입력값 텍스트</td></tr>
+            <tr><td class="token-mono token-legacy">color/form-control/text/placeholder</td><td class="token-arrow">→</td><td class="token-mono token-canonical">--color-text-placeholder</td><td><span class="layer-badge layer-semantic">Semantic</span></td><td>placeholder</td></tr>
+            <tr><td class="token-mono token-legacy">color/form-control/text/disabled</td><td class="token-arrow">→</td><td class="token-mono token-canonical">--color-form-control-text-disabled</td><td><span class="layer-badge layer-semantic">Semantic</span></td><td>disabled 텍스트</td></tr>
+            <tr><td class="token-mono token-legacy">color/button/bg/primary--default</td><td class="token-arrow">→</td><td class="token-mono token-canonical">--button-primary-default-bg</td><td><span class="layer-badge layer-component">Component</span></td><td>primary 버튼 bg</td></tr>
+            <tr><td class="token-mono token-legacy">color/button/border/primary--default</td><td class="token-arrow">→</td><td class="token-mono token-canonical">--button-primary-default-border</td><td><span class="layer-badge layer-component">Component</span></td><td>primary 버튼 border</td></tr>
+            <tr><td class="token-mono token-legacy">color/button/label/primary--default</td><td class="token-arrow">→</td><td class="token-mono token-canonical">--button-primary-default-text</td><td><span class="layer-badge layer-component">Component</span></td><td>primary 버튼 텍스트</td></tr>
+            <tr><td class="token-mono token-legacy">color/text/title/secondary</td><td class="token-arrow">→</td><td class="token-mono token-canonical">--color-text-secondary</td><td><span class="layer-badge layer-semantic">Semantic</span></td><td>부제목·보조 텍스트</td></tr>
+            <tr><td class="token-mono token-legacy">color/text/state/disabled</td><td class="token-arrow">→</td><td class="token-mono token-canonical">--color-text-disabled</td><td><span class="layer-badge layer-semantic">Semantic</span></td><td>disabled 텍스트</td></tr>
+            <tr><td class="token-mono token-legacy">color/text/state/accent-alt</td><td class="token-arrow">→</td><td class="token-mono token-canonical">--color-text-inverse</td><td><span class="layer-badge layer-semantic">Semantic</span></td><td>반전(흰색) 텍스트 (HD-L4.5-C)</td></tr>
+            <tr><td class="token-mono token-legacy">color/control/border/selected</td><td class="token-arrow">→</td><td class="token-mono token-canonical">--color-control-border-selected</td><td><span class="layer-badge layer-semantic">Semantic</span></td><td>체크박스/라디오 selected</td></tr>
+            <tr><td class="token-mono token-legacy">color/control/border/default</td><td class="token-arrow">→</td><td class="token-mono token-canonical">--color-control-border-default</td><td><span class="layer-badge layer-semantic">Semantic</span></td><td>체크박스/라디오 default</td></tr>
+            <tr><td class="token-mono token-legacy">color/base/white</td><td class="token-arrow">→</td><td class="token-mono token-canonical">--color-base-white</td><td><span class="layer-badge layer-foundation">Foundation</span></td><td>#FFFFFF</td></tr>
+            <tr><td class="token-mono token-legacy">color/base/black</td><td class="token-arrow">→</td><td class="token-mono token-canonical">--color-base-black</td><td><span class="layer-badge layer-foundation">Foundation</span></td><td>#000000</td></tr>
+            <tr><td class="token-mono token-legacy">color/blue/50</td><td class="token-arrow">→</td><td class="token-mono token-canonical">--color-blue-50</td><td><span class="layer-badge layer-foundation">Foundation</span></td><td>blue palette</td></tr>
+            <tr><td class="token-mono token-legacy">color/red/300</td><td class="token-arrow">→</td><td class="token-mono token-canonical">--color-red-300</td><td><span class="layer-badge layer-foundation">Foundation</span></td><td>red palette</td></tr>
+          </tbody>
+        </table>
+
+        <!-- 사이즈 그룹 -->
+        <div class="group-header" data-group="sizing">
+          <span class="layer-badge layer-sizing">Sizing / Radius / Border</span>
+          사이즈·반경·테두리 (9개)
+        </div>
+        <table class="mapping-table" data-category="sizing">
+          <thead>
+            <tr><th>Legacy Variable (Figma)</th><th></th><th>canonical CSS 변수</th><th>레이어</th><th>비고</th></tr>
+          </thead>
+          <tbody>
+            <tr><td class="token-mono token-legacy">sizing/form-control/height/md</td><td class="token-arrow">→</td><td class="token-mono token-canonical">--sizing-form-control-height-md</td><td><span class="layer-badge layer-sizing">Foundation</span></td><td>44px (PC medium)</td></tr>
+            <tr><td class="token-mono token-legacy">sizing/form-control/height/lg</td><td class="token-arrow">→</td><td class="token-mono token-canonical">--sizing-form-control-height-lg</td><td><span class="layer-badge layer-sizing">Foundation</span></td><td>48px (Mobile)</td></tr>
+            <tr><td class="token-mono token-legacy">sizing/form-control/height/xs</td><td class="token-arrow">→</td><td class="token-mono token-canonical">--sizing-form-control-height-xs</td><td><span class="layer-badge layer-sizing">Foundation</span></td><td>34px (xsmall)</td></tr>
+            <tr><td class="token-mono token-legacy">sizing/form-control/height/xxs</td><td class="token-arrow">→</td><td class="token-mono token-canonical">--sizing-form-control-height-xxs</td><td><span class="layer-badge layer-sizing">Foundation</span></td><td>28px (xxsmall)</td></tr>
+            <tr><td class="token-mono token-legacy">sizing/button/height/md</td><td class="token-arrow">→</td><td class="token-mono token-canonical">--sizing-button-height-md</td><td><span class="layer-badge layer-sizing">Foundation</span></td><td>44px</td></tr>
+            <tr><td class="token-mono token-legacy">sizing/icon/24</td><td class="token-arrow">→</td><td class="token-mono token-canonical">--sizing-icon-24</td><td><span class="layer-badge layer-sizing">Foundation</span></td><td>24px</td></tr>
+            <tr><td class="token-mono token-legacy">radius/4</td><td class="token-arrow">→</td><td class="token-mono token-canonical">--radius-4</td><td><span class="layer-badge layer-sizing">Foundation</span></td><td>border-radius: 4px</td></tr>
+            <tr><td class="token-mono token-legacy">radius/full</td><td class="token-arrow">→</td><td class="token-mono token-canonical">--radius-full</td><td><span class="layer-badge layer-sizing">Foundation</span></td><td>border-radius: 9999px</td></tr>
+            <tr><td class="token-mono token-legacy">border-width/default</td><td class="token-arrow">→</td><td class="token-mono token-canonical">--border-width-default</td><td><span class="layer-badge layer-sizing">Foundation</span></td><td>1px</td></tr>
+          </tbody>
+        </table>
+
+        <!-- 간격 그룹 -->
+        <div class="group-header" data-group="spacing">
+          <span class="layer-badge layer-spacing">Spacing</span>
+          간격 토큰 (14개)
+        </div>
+        <table class="mapping-table" data-category="spacing">
+          <thead>
+            <tr><th>Legacy Variable (Figma)</th><th></th><th>canonical CSS 변수</th><th>레이어</th></tr>
+          </thead>
+          <tbody>
+            <tr><td class="token-mono token-legacy">spacing/padding/inline/sm</td><td class="token-arrow">→</td><td class="token-mono token-canonical">--spacing-padding-inline-sm</td><td><span class="layer-badge layer-spacing">Foundation</span></td></tr>
+            <tr><td class="token-mono token-legacy">spacing/padding/inline/xs</td><td class="token-arrow">→</td><td class="token-mono token-canonical">--spacing-padding-inline-xs</td><td><span class="layer-badge layer-spacing">Foundation</span></td></tr>
+            <tr><td class="token-mono token-legacy">spacing/padding/inline/xxs</td><td class="token-arrow">→</td><td class="token-mono token-canonical">--spacing-padding-inline-xxs</td><td><span class="layer-badge layer-spacing">Foundation</span></td></tr>
+            <tr><td class="token-mono token-legacy">spacing/padding/inline/md</td><td class="token-arrow">→</td><td class="token-mono token-canonical">--spacing-padding-inline-md</td><td><span class="layer-badge layer-spacing">Foundation</span></td></tr>
+            <tr><td class="token-mono token-legacy">spacing/padding/inline/lg</td><td class="token-arrow">→</td><td class="token-mono token-canonical">--spacing-padding-inline-lg</td><td><span class="layer-badge layer-spacing">Foundation</span></td></tr>
+            <tr><td class="token-mono token-legacy">spacing/padding/block/xxs</td><td class="token-arrow">→</td><td class="token-mono token-canonical">--spacing-padding-block-xxs</td><td><span class="layer-badge layer-spacing">Foundation</span></td></tr>
+            <tr><td class="token-mono token-legacy">spacing/padding/block/xs</td><td class="token-arrow">→</td><td class="token-mono token-canonical">--spacing-padding-block-xs</td><td><span class="layer-badge layer-spacing">Foundation</span></td></tr>
+            <tr><td class="token-mono token-legacy">spacing/padding/block/sm</td><td class="token-arrow">→</td><td class="token-mono token-canonical">--spacing-padding-block-sm</td><td><span class="layer-badge layer-spacing">Foundation</span></td></tr>
+            <tr><td class="token-mono token-legacy">spacing/padding/block/md</td><td class="token-arrow">→</td><td class="token-mono token-canonical">--spacing-padding-block-md</td><td><span class="layer-badge layer-spacing">Foundation</span></td></tr>
+            <tr><td class="token-mono token-legacy">spacing/section/xs</td><td class="token-arrow">→</td><td class="token-mono token-canonical">--spacing-section-xs</td><td><span class="layer-badge layer-spacing">Foundation</span></td></tr>
+            <tr><td class="token-mono token-legacy">spacing/section/lg</td><td class="token-arrow">→</td><td class="token-mono token-canonical">--spacing-section-lg</td><td><span class="layer-badge layer-spacing">Foundation</span></td></tr>
+            <tr><td class="token-mono token-legacy">spacing/cluster/xs</td><td class="token-arrow">→</td><td class="token-mono token-canonical">--spacing-cluster-xs</td><td><span class="layer-badge layer-spacing">Foundation</span></td></tr>
+            <tr><td class="token-mono token-legacy">spacing/stack/xs</td><td class="token-arrow">→</td><td class="token-mono token-canonical">--spacing-stack-xs</td><td><span class="layer-badge layer-spacing">Foundation</span></td></tr>
+            <tr><td class="token-mono token-legacy">spacing/4</td><td class="token-arrow">→</td><td class="token-mono token-canonical">--spacing-4</td><td><span class="layer-badge layer-spacing">Foundation</span></td></tr>
+            <tr><td class="token-mono token-legacy">spacing/32</td><td class="token-arrow">→</td><td class="token-mono token-canonical">--spacing-32</td><td><span class="layer-badge layer-spacing">Foundation</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- ===== SECTION 4: Needs Review ===== -->
+      <div class="section" id="needs-review">
+        <div class="section-header">
+          <div class="section-title">검토 대기 매핑 (needs-review)</div>
+          <div class="section-desc">canonical 후보가 있으나 최종 결정이 필요한 44개 항목. 임의로 교체하지 않는다.</div>
+        </div>
+
+        <div class="notice-banner notice-info">
+          <span class="notice-banner-icon">ℹ️</span>
+          <div>
+            아래 항목은 <strong>canonical 후보</strong>가 제안된 상태입니다. 최종 확정 전까지 기존 Legacy 값을 유지하고,
+            결정이 필요하면 <a href="md-review.html" style="color:#1d4ed8;font-weight:600;">MD Review 페이지</a>에 등록해 주세요.
+          </div>
+        </div>
+
+        <table class="mapping-table">
+          <thead>
+            <tr>
+              <th>Legacy Variable (Figma)</th>
+              <th>canonical 후보</th>
+              <th>검토 사유</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td class="token-mono token-legacy">color/text/title/primary</td><td class="token-mono token-canonical">--color-text-primary</td><td>Figma #000000 vs canonical #202020 값 불일치 (HD-L4.5-B: #202020 확정)</td></tr>
+            <tr><td class="token-mono token-legacy">color/text/title/tertiary</td><td class="token-mono token-canonical">--color-text-tertiary</td><td>canonical에 tertiary 미정의</td></tr>
+            <tr><td class="token-mono token-legacy">color/text/body/primary</td><td class="token-mono token-canonical">--color-text-secondary</td><td>body/primary ↔ title/secondary 의미 중복 검토</td></tr>
+            <tr><td class="token-mono token-legacy">color/text/body/tertiary</td><td class="token-mono token-canonical">--color-text-placeholder</td><td>body/tertiary = placeholder 값 일치 여부 확인 필요</td></tr>
+            <tr><td class="token-mono token-legacy">color/text/state/accent</td><td class="token-mono token-canonical">--color-text-state-accent</td><td>canonical accent 토큰 미확정</td></tr>
+            <tr><td class="token-mono token-legacy">color/icon/gray-dark</td><td class="token-mono token-canonical">--color-icon-default</td><td>icon semantic 토큰 미확정</td></tr>
+            <tr><td class="token-mono token-legacy">color/icon/gray-light</td><td class="token-mono token-canonical">--color-icon-disabled</td><td>icon semantic 토큰 미확정</td></tr>
+            <tr><td class="token-mono token-legacy">color/icon/red</td><td>—</td><td>status-error icon? 후보 없음</td></tr>
+            <tr><td class="token-mono token-legacy">color/control/bg/default</td><td>—</td><td>Checkbox/Radio bg = form-control? 별도 분리? 미결</td></tr>
+            <tr><td class="token-mono token-legacy">color/control/bg/selected</td><td class="token-mono token-canonical">--color-action-primary-default</td><td>action-primary vs control-bg 레이어 분리 필요</td></tr>
+            <tr><td class="token-mono token-legacy">color/control/bg/selected-alt</td><td>—</td><td>Indeterminate 상태 bg 후보 없음</td></tr>
+            <tr><td class="token-mono token-legacy">color/control/bg/disabled</td><td class="token-mono token-canonical">--color-bg-subtle</td><td>bg-subtle vs form-control-bg-disabled 구분 불명확</td></tr>
+            <tr><td class="token-mono token-legacy">color/navigation/background</td><td>—</td><td>--nav-bg 토큰 미정의</td></tr>
+            <tr><td class="token-mono token-legacy">color/navigation/label/default</td><td>—</td><td>--nav-item-default-text 미정의</td></tr>
+            <tr><td class="token-mono token-legacy">color/navigation/label/selected</td><td class="token-mono token-canonical">--color-action-primary-default</td><td>navigation semantic 토큰 필요</td></tr>
+            <tr><td class="token-mono token-legacy">color/navigation/indicator/default</td><td class="token-mono token-canonical">--color-border-default</td><td>divider vs active indicator 역할 구분 필요</td></tr>
+            <tr><td class="token-mono token-legacy">color/navigation/indicator/selected</td><td class="token-mono token-canonical">--color-action-primary-default</td><td>navigation component token 정의 후 확정</td></tr>
+            <tr><td class="token-mono token-legacy">color/line/gray/default</td><td class="token-mono token-canonical">--color-border-default</td><td>구분선 전용 별칭 필요 여부 검토</td></tr>
+            <tr><td class="token-mono token-legacy">surface/base-background/default</td><td class="token-mono token-canonical">--color-bg-default</td><td>Legacy naming 경로 불일치 (surface vs bg)</td></tr>
+            <tr><td class="token-mono token-legacy">surface/neutral/bg/base</td><td class="token-mono token-canonical">--color-surface-default</td><td>surface 레이어 의미 일치 확인 필요</td></tr>
+          </tbody>
+        </table>
+        <p style="font-size:12px;color:#9ca3af;margin-top:8px;">* 나머지 24개 항목은 MVP-L1 완료 후 표시됩니다.</p>
+      </div>
+
+      <!-- ===== SECTION 5: Migration Checklist ===== -->
+      <div class="section" id="checklist">
+        <div class="section-header">
+          <div class="section-title">마이그레이션 체크리스트</div>
+          <div class="section-desc">서비스 프로젝트 전환 시 순서대로 진행한다.</div>
+        </div>
+
+        <table class="mapping-table">
+          <thead>
+            <tr><th>#</th><th>항목</th><th>도구</th><th>완료 기준</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td style="font-weight:700;color:#374151;">1</td>
+              <td>Source Guard 검사 실행 — Legacy 토큰 및 HEX 위반 현황 파악</td>
+              <td><code style="font-size:11px;">npm run guard</code></td>
+              <td>reports/source-guard-{target}.md 생성됨</td>
+            </tr>
+            <tr>
+              <td style="font-weight:700;color:#374151;">2</td>
+              <td>confirmed 항목 일괄 교체</td>
+              <td><code style="font-size:11px;">npm run guard:apply:dry</code></td>
+              <td>high-confidence 자동 적용 완료 (backup 생성 확인)</td>
+            </tr>
+            <tr>
+              <td style="font-weight:700;color:#374151;">3</td>
+              <td>needs-review 항목 개별 검토 + MD Review 등록</td>
+              <td>md-review.html</td>
+              <td>결정 항목 모두 confirmed 또는 deprecated 처리됨</td>
+            </tr>
+            <tr>
+              <td style="font-weight:700;color:#374151;">4</td>
+              <td>Dark Mode 토큰 전환 검증</td>
+              <td>semantic.html 테마 전환 탭</td>
+              <td>data-theme="dark"에서 시각 이상 없음</td>
+            </tr>
+            <tr>
+              <td style="font-weight:700;color:#374151;">5</td>
+              <td>Source Guard 재실행 — 위반 0건 확인</td>
+              <td><code style="font-size:11px;">npm run guard</code></td>
+              <td>error 0건, warning 수용 가능 수준</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+    </div><!-- /page-content -->
   </main>
 </div>
 
 <script src="../assets/js/main.js"></script>
+<script>
+  // Filter bar — show/hide table groups
+  document.querySelectorAll(".filter-btn").forEach(function(btn) {
+    btn.addEventListener("click", function() {
+      document.querySelectorAll(".filter-btn").forEach(function(b) { b.classList.remove("active"); });
+      this.classList.add("active");
+      const filter = this.dataset.filter;
+      const groups = document.querySelectorAll(".group-header, .mapping-table[data-category]");
+      if (filter === "all") {
+        groups.forEach(function(el) { el.style.display = ""; });
+      } else {
+        document.querySelectorAll(".group-header").forEach(function(el) {
+          el.style.display = (el.dataset.group === filter) ? "" : "none";
+        });
+        document.querySelectorAll(".mapping-table[data-category]").forEach(function(el) {
+          el.style.display = (el.dataset.category === filter) ? "" : "none";
+        });
+      }
+    });
+  });
+</script>
 </body>
 </html>

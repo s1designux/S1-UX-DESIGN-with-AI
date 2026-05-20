@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-size: 13px; color: #111827;
+    background: #fff; padding: 20px;
+  }
+
+  .header {
+    display: flex; align-items: center; gap: 10px;
+    margin-bottom: 18px;
+  }
+  .header-icon {
+    width: 36px; height: 36px; border-radius: 10px;
+    background: #111827; display: flex; align-items: center;
+    justify-content: center; font-size: 18px; flex-shrink: 0;
+  }
+  .header-title { font-size: 15px; font-weight: 700; color: #111827; }
+  .header-sub   { font-size: 11px; color: #9ca3af; margin-top: 2px; }
+
+  .info-box {
+    background: #f9fafb; border: 1px solid #e5e7eb;
+    border-radius: 10px; padding: 14px 16px;
+    margin-bottom: 18px;
+    display: flex; flex-direction: column; gap: 8px;
+  }
+  .info-row {
+    display: flex; align-items: center; gap: 10px;
+    font-size: 12px; color: #374151;
+  }
+  .badge {
+    display: inline-block; padding: 2px 8px; border-radius: 20px;
+    font-size: 11px; font-weight: 600; white-space: nowrap;
+  }
+  .badge-blue   { background: #eff6ff; color: #1d6ceb; }
+  .badge-green  { background: #f0fdf4; color: #166534; }
+  .badge-gray   { background: #f3f4f6; color: #374151; }
+
+  .warn-box {
+    background: #fffbeb; border: 1px solid #fde68a;
+    border-radius: 8px; padding: 10px 14px;
+    font-size: 11px; color: #92400e; margin-bottom: 18px;
+    line-height: 1.6;
+  }
+
+  /* ── progress ── */
+  #progress-wrap { display: none; margin-bottom: 18px; }
+  #progress-label { font-size: 11px; color: #6b7280; margin-bottom: 6px; }
+  #progress-bar-track {
+    height: 6px; background: #e5e7eb; border-radius: 3px; overflow: hidden;
+  }
+  #progress-bar-fill {
+    height: 100%; background: #1d6ceb; border-radius: 3px;
+    width: 0%; transition: width 0.2s ease;
+  }
+
+  /* ── result ── */
+  #result { display: none; }
+  .result-success {
+    background: #f0fdf4; border: 1px solid #bbf7d0;
+    border-radius: 10px; padding: 16px; margin-bottom: 18px;
+  }
+  .result-title { font-size: 14px; font-weight: 700; color: #166534; margin-bottom: 6px; }
+  .result-sub { font-size: 12px; color: #374151; line-height: 1.6; }
+  .result-error {
+    background: #fef2f2; border: 1px solid #fecaca;
+    border-radius: 10px; padding: 16px; margin-bottom: 18px;
+  }
+  .result-error-title { font-size: 14px; font-weight: 700; color: #991b1b; margin-bottom: 6px; }
+
+  /* ── buttons ── */
+  .btn-row { display: flex; gap: 8px; }
+  .btn {
+    flex: 1; padding: 10px; border-radius: 8px; border: none;
+    font-size: 13px; font-weight: 600; cursor: pointer;
+    transition: background 0.15s;
+  }
+  .btn-primary { background: #111827; color: #fff; }
+  .btn-primary:hover { background: #374151; }
+  .btn-primary:disabled { background: #d1d5db; color: #9ca3af; cursor: not-allowed; }
+  .btn-secondary { background: #f3f4f6; color: #374151; }
+  .btn-secondary:hover { background: #e5e7eb; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-icon">📦</div>
+  <div>
+    <div class="header-title">S1 Design Variables Installer</div>
+    <div class="header-sub">S1 디자인시스템 Variables를 이 파일에 설치합니다</div>
+  </div>
+</div>
+
+<div class="info-box">
+  <div class="info-row">
+    <span class="badge badge-blue">Foundation</span>
+    <span>~200개 색상 원본값 (Gray, Blue, Red … 전체 팔레트)</span>
+  </div>
+  <div class="info-row">
+    <span class="badge badge-green">semantic</span>
+    <span>~50개 역할 기반 변수 (Light / Dark 2모드)</span>
+  </div>
+  <div class="info-row">
+    <span class="badge badge-gray">업데이트 모드</span>
+    <span>이미 설치되어 있으면 값을 덮어씁니다. 삭제 없음.</span>
+  </div>
+</div>
+
+<div class="warn-box">
+  ⚠️ <strong>설치 전 확인:</strong> 이 파일에 같은 이름의 Variables Collection이 있으면
+  값이 업데이트됩니다. 기존 컴포넌트 연결은 유지됩니다.
+</div>
+
+<!-- progress -->
+<div id="progress-wrap">
+  <div id="progress-label">설치 중…</div>
+  <div id="progress-bar-track">
+    <div id="progress-bar-fill"></div>
+  </div>
+</div>
+
+<!-- result -->
+<div id="result"></div>
+
+<div class="btn-row" id="btn-row">
+  <button class="btn btn-secondary" id="btn-cancel" onclick="cancel()">취소</button>
+  <button class="btn btn-primary"   id="btn-install" onclick="install()">Variables 설치하기</button>
+</div>
+
+<script>
+  function install() {
+    document.getElementById('btn-install').disabled = true;
+    document.getElementById('btn-cancel').disabled  = true;
+    document.getElementById('progress-wrap').style.display = 'block';
+    parent.postMessage({ pluginMessage: { type: 'install' } }, '*');
+  }
+
+  function cancel() {
+    parent.postMessage({ pluginMessage: { type: 'cancel' } }, '*');
+  }
+
+  onmessage = (event) => {
+    const msg = event.data.pluginMessage;
+    if (!msg) return;
+
+    if (msg.type === 'progress') {
+      document.getElementById('progress-label').textContent = msg.step;
+      document.getElementById('progress-bar-fill').style.width = msg.pct + '%';
+    }
+
+    if (msg.type === 'done') {
+      document.getElementById('progress-wrap').style.display = 'none';
+      document.getElementById('btn-row').style.display = 'none';
+      const r = document.getElementById('result');
+      r.style.display = 'block';
+      r.innerHTML = `
+        <div class="result-success">
+          <div class="result-title">✅ 설치 완료</div>
+          <div class="result-sub">
+            Foundation: <strong>${msg.foundationCount}개</strong> 변수 설치됨<br>
+            semantic: <strong>${msg.semanticCount}개</strong> 변수 설치됨 (Light / Dark)<br><br>
+            왼쪽 패널 <strong>Local variables</strong>에서 확인하세요.
+          </div>
+        </div>
+        <div class="btn-row">
+          <button class="btn btn-primary" onclick="parent.postMessage({pluginMessage:{type:'cancel'}},'*')">닫기</button>
+        </div>
+      `;
+    }
+
+    if (msg.type === 'error') {
+      document.getElementById('progress-wrap').style.display = 'none';
+      document.getElementById('btn-row').style.display = 'none';
+      const r = document.getElementById('result');
+      r.style.display = 'block';
+      r.innerHTML = `
+        <div class="result-error">
+          <div class="result-error-title">❌ 오류 발생</div>
+          <div class="result-sub">${msg.message}</div>
+        </div>
+        <div class="btn-row">
+          <button class="btn btn-secondary" onclick="parent.postMessage({pluginMessage:{type:'cancel'}},'*')">닫기</button>
+        </div>
+      `;
+    }
+  };
+</script>
+</body>
+</html>

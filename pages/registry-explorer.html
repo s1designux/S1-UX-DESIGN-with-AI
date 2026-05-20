@@ -1,0 +1,706 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <script>!function(){var z=localStorage.getItem("sw-ds-zoom");if(z)document.documentElement.style.zoom=z+"%"}();</script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Registry Explorer — S1 UX DESIGN GUIDE</title>
+  <link rel="stylesheet" href="../assets/css/style.css">
+  <link rel="stylesheet" href="../assets/css/tokens.css">
+  <style>
+    /* ── registry 공통 (registry-health.html과 동일 패턴) ── */
+    .registry-error-box {
+      background: #fff5f5; border: 1px solid #fecaca; border-radius: 12px;
+      padding: 24px; margin: 24px 0;
+    }
+    .registry-error-title { font-weight: 700; color: #dc2626; margin-bottom: 8px; }
+    .registry-error-msg { font-family: monospace; font-size: 13px; color: #374151; margin-bottom: 8px; }
+    .registry-error-hint { font-size: 12px; color: #6b7280; }
+    .registry-error-hint code { background: #f3f4f6; padding: 2px 6px; border-radius: 4px; }
+    .registry-badge { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; }
+    .badge-stable { background: #d1fae5; color: #065f46; }
+    .badge-candidate { background: #fef3c7; color: #92400e; }
+    .badge-planned { background: #e0e7ff; color: #3730a3; }
+    .badge-draft { background: #ede9fe; color: #5b21b6; }
+    .badge-deprecated { background: #fee2e2; color: #991b1b; }
+    .badge-wip { background: #e0f2fe; color: #0c4a6e; }
+    .badge-unknown { background: #f3f4f6; color: #6b7280; }
+
+    /* ── Admin Tabs ── */
+    .admin-tabs {
+      display: flex; gap: 2px; padding: 4px;
+      background: #f3f4f6; border-radius: 10px;
+      margin-bottom: 24px; flex-wrap: wrap;
+    }
+    .admin-tab {
+      flex: 1; min-width: 120px;
+      padding: 10px 16px;
+      background: transparent; border: 0; border-radius: 8px;
+      font-size: 13px; font-weight: 600; color: #6b7280;
+      cursor: pointer; transition: all 0.15s;
+    }
+    .admin-tab:hover { color: #111827; background: rgba(255,255,255,0.5); }
+    .admin-tab.active {
+      background: #fff; color: #111827;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.06);
+    }
+    .admin-tab-panel { display: none; }
+    .admin-tab-panel.active { display: block; }
+
+    /* ── 요약 카드 grid ── */
+    .summary-card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      gap: 12px; margin-bottom: 28px;
+    }
+    .summary-card {
+      background: #fff; border: 1px solid #e5e7eb; border-radius: 12px;
+      padding: 18px 16px;
+    }
+    .summary-card-value {
+      font-size: 28px; font-weight: 700; color: #111827; line-height: 1;
+      margin-bottom: 6px;
+    }
+    .summary-card-label {
+      font-size: 12px; color: #6b7280; font-weight: 500;
+    }
+    .summary-card-meta {
+      font-size: 11px; color: #9ca3af; font-family: monospace;
+      margin-top: 4px; word-break: break-all;
+    }
+
+    /* ── Admin Table ── */
+    .admin-table-wrap {
+      border: 1px solid #e5e7eb; border-radius: 12px;
+      overflow: hidden; margin-bottom: 24px;
+    }
+    .admin-table {
+      width: 100%; border-collapse: collapse;
+      font-size: 13px;
+    }
+    .admin-table thead th {
+      background: #f9fafb; color: #6b7280;
+      font-size: 11px; font-weight: 600; text-transform: uppercase;
+      letter-spacing: 0.04em;
+      padding: 10px 14px; text-align: left;
+      border-bottom: 1px solid #e5e7eb;
+    }
+    .admin-table tbody td {
+      padding: 10px 14px;
+      border-bottom: 1px solid #f3f4f6;
+      color: #374151; vertical-align: middle;
+    }
+    .admin-table tbody tr:last-child td { border-bottom: 0; }
+    .admin-table tbody tr:hover { background: #f9fafb; }
+    .admin-table td.col-mono { font-family: monospace; font-size: 12px; color: #111827; }
+    .admin-table td.col-num  { font-variant-numeric: tabular-nums; color: #111827; font-weight: 600; }
+    .admin-table td.col-note { color: #6b7280; font-size: 12px; }
+
+    .swatch-inline {
+      display: inline-block; width: 14px; height: 14px;
+      border-radius: 3px; border: 1px solid rgba(0,0,0,0.08);
+      vertical-align: middle; margin-right: 6px;
+    }
+    .var-pill {
+      display: inline-block; padding: 1px 6px;
+      background: #f3f4f6; border-radius: 4px;
+      font-family: monospace; font-size: 11px; color: #374151;
+    }
+
+    /* ── Section title ── */
+    .admin-section { margin-bottom: 36px; }
+    .admin-section h2 {
+      font-size: 18px; font-weight: 700; color: #111827;
+      margin: 0 0 12px;
+    }
+    .admin-section-meta {
+      font-size: 12px; color: #6b7280; margin-bottom: 16px;
+    }
+    .admin-section-meta code {
+      background: #f3f4f6; padding: 2px 6px; border-radius: 4px;
+      font-size: 11px; color: #374151;
+    }
+
+    /* ── Raw JSON viewer ── */
+    .raw-json-block {
+      border: 1px solid #e5e7eb; border-radius: 12px;
+      margin-bottom: 16px; overflow: hidden;
+      background: #fff;
+    }
+    .raw-json-header {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 12px 16px; cursor: pointer;
+      background: #f9fafb; border-bottom: 1px solid transparent;
+      transition: border-color 0.15s;
+      user-select: none;
+    }
+    .raw-json-block.is-open .raw-json-header {
+      border-bottom-color: #e5e7eb;
+    }
+    .raw-json-header:hover { background: #f3f4f6; }
+    .raw-json-title {
+      font-family: monospace; font-size: 13px; font-weight: 600;
+      color: #111827;
+    }
+    .raw-json-meta {
+      font-size: 11px; color: #6b7280; margin-left: 8px;
+    }
+    .raw-json-toggle {
+      font-size: 12px; color: #6b7280; font-weight: 600;
+    }
+    .raw-json-body {
+      display: none;
+      max-height: 480px; overflow: auto;
+      padding: 0;
+    }
+    .raw-json-block.is-open .raw-json-body { display: block; }
+    .raw-json-body pre {
+      margin: 0; padding: 16px;
+      font-family: monospace; font-size: 12px; line-height: 1.5;
+      color: #111827; background: #fff;
+      white-space: pre; tab-size: 2;
+    }
+
+    .empty-note {
+      padding: 16px; color: #9ca3af;
+      font-size: 13px; text-align: center;
+      border: 1px dashed #e5e7eb; border-radius: 8px;
+    }
+      /* ── 전체 너비 사용 ── */
+    .page-content { max-width: none; padding: 28px 32px; }
+    .page-header-inner { max-width: none; }
+  </style>
+</head>
+<body>
+<div class="layout">
+  <aside class="sidebar"><div id="sidebar-inner"></div></aside>
+  <div class="sidebar-overlay" id="sidebar-overlay"></div>
+  <main class="main-content">
+    <div class="mobile-header">
+      <button class="hamburger" id="sidebar-toggle" aria-label="메뉴">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/>
+        </svg>
+      </button>
+      <span class="mobile-logo">S1 UX DESIGN GUIDE</span>
+    </div>
+
+    <div class="page-header">
+      <h1 class="page-title">Registry Explorer</h1>
+      <p class="page-desc">Registry 원장 데이터 검수용 Admin 화면 — Foundation / Semantic / Component / Raw JSON</p>
+    </div>
+
+    <div class="page-content">
+      <div class="admin-tabs" role="tablist">
+        <button class="admin-tab active" data-tab="foundation" role="tab">Foundation</button>
+        <button class="admin-tab" data-tab="semantic" role="tab">Semantic</button>
+        <button class="admin-tab" data-tab="component" role="tab">Component</button>
+        <button class="admin-tab" data-tab="raw" role="tab">Raw JSON</button>
+      </div>
+
+      <section class="admin-tab-panel active" data-panel="foundation">
+        <div id="panel-foundation"><div class="empty-note">Foundation registry 로드 중...</div></div>
+      </section>
+
+      <section class="admin-tab-panel" data-panel="semantic">
+        <div id="panel-semantic"><div class="empty-note">Semantic registry 로드 중...</div></div>
+      </section>
+
+      <section class="admin-tab-panel" data-panel="component">
+        <div id="panel-component"><div class="empty-note">Component registry 로드 중...</div></div>
+      </section>
+
+      <section class="admin-tab-panel" data-panel="raw">
+        <div id="panel-raw"><div class="empty-note">Raw JSON 로드 중...</div></div>
+      </section>
+    </div>
+  </main>
+</div>
+
+<script src="../assets/js/registry-data-bundle.js"></script>
+<script src="../assets/js/registry-loader.js"></script>
+<script>
+(() => {
+  'use strict';
+
+  /* ============================================================
+     Registry Explorer
+     ------------------------------------------------------------
+     - foundation.colors.json / semantic.colors.json /
+       component.tokens.json 을 로드하여 4개 탭으로 표시
+     - 모든 데이터는 graceful fallback 처리
+     ============================================================ */
+
+  const FILES = {
+    foundation: 'registry/tokens/foundation.colors.json',
+    semantic:   'registry/tokens/semantic.colors.json',
+    component:  'registry/tokens/component.tokens.json',
+    canonical:  'registry/tokens/canonical-token-draft.json',
+  };
+
+  /* ---------- 공통 유틸 ---------- */
+  function safeBadge(status) {
+    const s = (status || 'unknown').toString().toLowerCase();
+    const cls = ({
+      stable: 'badge-stable',
+      candidate: 'badge-candidate',
+      planned: 'badge-planned',
+      draft: 'badge-draft',
+      deprecated: 'badge-deprecated',
+      wip: 'badge-wip',
+    })[s] || 'badge-unknown';
+    return `<span class="registry-badge ${cls}">${escapeHtml(s)}</span>`;
+  }
+
+  function hexFromValue(value) {
+    if (typeof value !== 'string') return null;
+    const m = value.trim().match(/^#([0-9a-fA-F]{3,8})$/);
+    return m ? `#${m[1]}` : null;
+  }
+
+  function setActiveTab(name) {
+    document.querySelectorAll('.admin-tab').forEach(t => {
+      t.classList.toggle('active', t.dataset.tab === name);
+    });
+    document.querySelectorAll('.admin-tab-panel').forEach(p => {
+      p.classList.toggle('active', p.dataset.panel === name);
+    });
+  }
+
+  /* ============================================================
+     Tab 1 · Foundation
+     foundation.colors.json 구조:
+       meta.{ name, version, status, updatedAt, source }
+       color.{ groupName }.{ stepOrKey: { value, cssVar, status } }
+     ============================================================ */
+  function renderFoundation(container, data) {
+    if (!data || typeof data !== 'object') {
+      renderError(container, 'Foundation registry 데이터가 비어 있습니다.');
+      return;
+    }
+    const meta = data.meta || {};
+    const colorRoot = data.color || {};
+    const groupEntries = Object.entries(colorRoot);
+
+    let totalTokens = 0;
+    const groupRows = groupEntries.map(([groupKey, groupVal]) => {
+      if (!groupVal || typeof groupVal !== 'object') {
+        return { groupKey, count: 0, prefixes: [], statuses: [], sample: null };
+      }
+      const tokens = Object.values(groupVal).filter(t => t && typeof t === 'object');
+      const prefixSet = new Set();
+      const statusSet = new Set();
+      tokens.forEach(t => {
+        if (typeof t.cssVar === 'string') {
+          // --color-gray-50 → --color-gray
+          const stripped = t.cssVar.replace(/-(\d+|white|black|blue|red|gray|ci)$/, '');
+          prefixSet.add(stripped);
+        }
+        if (t.status) statusSet.add(t.status);
+      });
+      totalTokens += tokens.length;
+      return {
+        groupKey,
+        count: tokens.length,
+        prefixes: Array.from(prefixSet),
+        statuses: Array.from(statusSet),
+        sample: tokens[0] || null,
+      };
+    });
+
+    const summaryHtml = `
+      <div class="summary-card-grid">
+        <div class="summary-card">
+          <div class="summary-card-value">${totalTokens}</div>
+          <div class="summary-card-label">Foundation 토큰 총 수</div>
+        </div>
+        <div class="summary-card">
+          <div class="summary-card-value">${groupEntries.length}</div>
+          <div class="summary-card-label">색상 그룹 수</div>
+        </div>
+        <div class="summary-card">
+          <div class="summary-card-value">${escapeHtml(meta.version || '-')}</div>
+          <div class="summary-card-label">Version</div>
+          <div class="summary-card-meta">${escapeHtml(meta.updatedAt || '')}</div>
+        </div>
+        <div class="summary-card">
+          <div class="summary-card-value">${safeBadge(meta.status)}</div>
+          <div class="summary-card-label">Meta status</div>
+          <div class="summary-card-meta">${escapeHtml(meta.source || '')}</div>
+        </div>
+      </div>
+    `;
+
+    const rowsHtml = groupRows.length
+      ? groupRows.map(r => {
+          const prefixStr = r.prefixes.length
+            ? r.prefixes.map(p => `<span class="var-pill">${escapeHtml(p)}-{step}</span>`).join(' ')
+            : '<span style="color:#9ca3af">—</span>';
+          const statusStr = r.statuses.length
+            ? r.statuses.map(s => safeBadge(s)).join(' ')
+            : safeBadge('unknown');
+          const sampleHex = r.sample ? hexFromValue(r.sample.value) : null;
+          const sampleSwatch = sampleHex
+            ? `<span class="swatch-inline" style="background:${sampleHex}"></span>${escapeHtml(sampleHex)}`
+            : '<span style="color:#9ca3af">—</span>';
+          return `
+            <tr>
+              <td class="col-mono">${escapeHtml(r.groupKey)}</td>
+              <td>${prefixStr}</td>
+              <td class="col-num">${r.count}</td>
+              <td>${statusStr}</td>
+              <td>${sampleSwatch}</td>
+            </tr>
+          `;
+        }).join('')
+      : `<tr><td colspan="5" class="empty-note">색상 그룹이 없습니다.</td></tr>`;
+
+    container.innerHTML = `
+      <div class="admin-section">
+        <h2>${escapeHtml(meta.name || 'Foundation Colors')}</h2>
+        <div class="admin-section-meta">
+          source: <code>${escapeHtml(meta.source || '-')}</code>
+          ${meta.description ? ` · ${escapeHtml(meta.description)}` : ''}
+        </div>
+        ${summaryHtml}
+        <div class="admin-table-wrap">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>색상 그룹</th>
+                <th>CSS 변수 접두사</th>
+                <th>토큰 수</th>
+                <th>상태</th>
+                <th>샘플</th>
+              </tr>
+            </thead>
+            <tbody>${rowsHtml}</tbody>
+          </table>
+        </div>
+      </div>
+    `;
+  }
+
+  /* ============================================================
+     Tab 2 · Semantic
+     semantic.colors.json 구조:
+       meta.{ name, version, status, updatedAt, source }
+       tokens.{ category: [ { cssVar, light, dark, status, note } ] }
+     ============================================================ */
+  function renderSemantic(container, data) {
+    if (!data || typeof data !== 'object') {
+      renderError(container, 'Semantic registry 데이터가 비어 있습니다.');
+      return;
+    }
+    const meta = data.meta || {};
+    const tokens = data.tokens || {};
+    const categoryEntries = Object.entries(tokens);
+
+    let totalTokens = 0;
+    let pairsBoth = 0; // light/dark 모두 가진 항목 수
+    const catRows = categoryEntries.map(([catName, arr]) => {
+      const list = Array.isArray(arr) ? arr : [];
+      list.forEach(t => {
+        totalTokens += 1;
+        if (t && t.light && t.dark) pairsBoth += 1;
+      });
+      const statuses = Array.from(new Set(list.map(t => (t && t.status) || 'unknown')));
+      const sample = list.find(t => t && t.cssVar) || null;
+      return { catName, count: list.length, statuses, sample };
+    });
+
+    const summaryHtml = `
+      <div class="summary-card-grid">
+        <div class="summary-card">
+          <div class="summary-card-value">${totalTokens}</div>
+          <div class="summary-card-label">Semantic 토큰 총 수</div>
+        </div>
+        <div class="summary-card">
+          <div class="summary-card-value">${pairsBoth}</div>
+          <div class="summary-card-label">Light / Dark 쌍</div>
+        </div>
+        <div class="summary-card">
+          <div class="summary-card-value">${categoryEntries.length}</div>
+          <div class="summary-card-label">카테고리 수</div>
+        </div>
+        <div class="summary-card">
+          <div class="summary-card-value">${safeBadge(meta.status)}</div>
+          <div class="summary-card-label">Meta status</div>
+          <div class="summary-card-meta">${escapeHtml(meta.source || '')}</div>
+        </div>
+      </div>
+    `;
+
+    const rowsHtml = catRows.length
+      ? catRows.map(r => {
+          const lightSample = r.sample && r.sample.light
+            ? `<span class="var-pill">${escapeHtml(r.sample.light)}</span>`
+            : '<span style="color:#9ca3af">—</span>';
+          const darkSample = r.sample && r.sample.dark
+            ? `<span class="var-pill">${escapeHtml(r.sample.dark)}</span>`
+            : '<span style="color:#9ca3af">—</span>';
+          const statusStr = r.statuses.map(s => safeBadge(s)).join(' ');
+          return `
+            <tr>
+              <td class="col-mono">${escapeHtml(r.catName)}</td>
+              <td class="col-num">${r.count}</td>
+              <td>${lightSample}</td>
+              <td>${darkSample}</td>
+              <td>${statusStr || safeBadge('unknown')}</td>
+            </tr>
+          `;
+        }).join('')
+      : `<tr><td colspan="5" class="empty-note">Semantic 카테고리가 없습니다.</td></tr>`;
+
+    container.innerHTML = `
+      <div class="admin-section">
+        <h2>${escapeHtml(meta.name || 'Semantic Colors')}</h2>
+        <div class="admin-section-meta">
+          source: <code>${escapeHtml(meta.source || '-')}</code>
+          ${meta.description ? ` · ${escapeHtml(meta.description)}` : ''}
+        </div>
+        ${summaryHtml}
+        <div class="admin-table-wrap">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>카테고리</th>
+                <th>토큰 수</th>
+                <th>Light 샘플 var</th>
+                <th>Dark 샘플 var</th>
+                <th>상태</th>
+              </tr>
+            </thead>
+            <tbody>${rowsHtml}</tbody>
+          </table>
+        </div>
+      </div>
+    `;
+  }
+
+  /* ============================================================
+     Tab 3 · Component
+     component.tokens.json 구조:
+       meta.{ name, version, status, updatedAt, source }
+       tokens.{ groupName: [array] OR { variant: [array] } }
+       (예: tokens.button.primary[], tokens.chip[])
+     ============================================================ */
+  function renderComponent(container, data) {
+    if (!data || typeof data !== 'object') {
+      renderError(container, 'Component registry 데이터가 비어 있습니다.');
+      return;
+    }
+    const meta = data.meta || {};
+    const tokens = data.tokens || {};
+    const groupEntries = Object.entries(tokens);
+
+    let totalTokens = 0;
+    const groupRows = groupEntries.map(([groupKey, groupVal]) => {
+      let count = 0;
+      let variants = [];
+      const statuses = new Set();
+      if (Array.isArray(groupVal)) {
+        count = groupVal.length;
+        variants = []; // flat group, no variant split
+        groupVal.forEach(t => {
+          if (t && t.status) statuses.add(t.status);
+        });
+      } else if (groupVal && typeof groupVal === 'object') {
+        Object.entries(groupVal).forEach(([variantName, arr]) => {
+          const list = Array.isArray(arr) ? arr : [];
+          count += list.length;
+          variants.push(`${variantName}(${list.length})`);
+          list.forEach(t => {
+            if (t && t.status) statuses.add(t.status);
+          });
+        });
+      }
+      totalTokens += count;
+      return {
+        groupKey,
+        count,
+        variants,
+        statuses: Array.from(statuses),
+      };
+    });
+
+    const summaryHtml = `
+      <div class="summary-card-grid">
+        <div class="summary-card">
+          <div class="summary-card-value">${totalTokens}</div>
+          <div class="summary-card-label">Component 토큰 총 수</div>
+        </div>
+        <div class="summary-card">
+          <div class="summary-card-value">${groupEntries.length}</div>
+          <div class="summary-card-label">컴포넌트 그룹 수</div>
+        </div>
+        <div class="summary-card">
+          <div class="summary-card-value">${escapeHtml(meta.version || '-')}</div>
+          <div class="summary-card-label">Version</div>
+          <div class="summary-card-meta">${escapeHtml(meta.updatedAt || '')}</div>
+        </div>
+        <div class="summary-card">
+          <div class="summary-card-value">${safeBadge(meta.status)}</div>
+          <div class="summary-card-label">Meta status</div>
+          <div class="summary-card-meta">${escapeHtml(meta.source || '')}</div>
+        </div>
+      </div>
+    `;
+
+    const rowsHtml = groupRows.length
+      ? groupRows.map(r => {
+          const variantStr = r.variants.length
+            ? r.variants.map(v => `<span class="var-pill">${escapeHtml(v)}</span>`).join(' ')
+            : '<span style="color:#9ca3af">flat</span>';
+          const statusStr = r.statuses.length
+            ? r.statuses.map(s => safeBadge(s)).join(' ')
+            : safeBadge('unknown');
+          return `
+            <tr>
+              <td class="col-mono">${escapeHtml(r.groupKey)}</td>
+              <td class="col-num">${r.count}</td>
+              <td>${variantStr}</td>
+              <td>${statusStr}</td>
+            </tr>
+          `;
+        }).join('')
+      : `<tr><td colspan="4" class="empty-note">컴포넌트 그룹이 없습니다.</td></tr>`;
+
+    container.innerHTML = `
+      <div class="admin-section">
+        <h2>${escapeHtml(meta.name || 'Component Tokens')}</h2>
+        <div class="admin-section-meta">
+          source: <code>${escapeHtml(meta.source || '-')}</code>
+          ${meta.description ? ` · ${escapeHtml(meta.description)}` : ''}
+        </div>
+        ${summaryHtml}
+        <div class="admin-table-wrap">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>컴포넌트 그룹</th>
+                <th>토큰 수</th>
+                <th>variant 목록</th>
+                <th>상태</th>
+              </tr>
+            </thead>
+            <tbody>${rowsHtml}</tbody>
+          </table>
+        </div>
+      </div>
+    `;
+  }
+
+  /* ============================================================
+     Tab 4 · Raw JSON
+     3개 파일 (foundation / semantic / component) 접기/펼치기
+     ============================================================ */
+  function renderRawJson(container, payloads) {
+    const blocks = [
+      { key: 'foundation', label: FILES.foundation, payload: payloads.foundation },
+      { key: 'semantic',   label: FILES.semantic,   payload: payloads.semantic },
+      { key: 'component',  label: FILES.component,  payload: payloads.component },
+    ];
+
+    const html = blocks.map(b => {
+      const ok = b.payload && b.payload.data;
+      const sizeNote = ok
+        ? `${(JSON.stringify(b.payload.data).length / 1024).toFixed(1)} KB`
+        : 'load failed';
+      const body = ok
+        ? `<pre>${escapeHtml(JSON.stringify(b.payload.data, null, 2))}</pre>`
+        : `<div class="registry-error-box" style="margin:16px"><div class="registry-error-title">⚠ 로드 실패</div><div class="registry-error-msg">${escapeHtml((b.payload && b.payload.error) || 'unknown error')}</div></div>`;
+      return `
+        <div class="raw-json-block" data-raw-key="${escapeHtml(b.key)}">
+          <div class="raw-json-header" role="button" tabindex="0">
+            <div>
+              <span class="raw-json-title">${escapeHtml(b.label)}</span>
+              <span class="raw-json-meta">${sizeNote}</span>
+            </div>
+            <span class="raw-json-toggle">펼치기 ▾</span>
+          </div>
+          <div class="raw-json-body">${body}</div>
+        </div>
+      `;
+    }).join('');
+
+    container.innerHTML = `
+      <div class="admin-section">
+        <h2>Raw JSON</h2>
+        <div class="admin-section-meta">
+          각 파일의 원본 JSON. 헤더 클릭으로 펼치기/접기. 기본 상태는 접힘.
+        </div>
+        ${html}
+      </div>
+    `;
+
+    container.querySelectorAll('.raw-json-block').forEach(block => {
+      const header = block.querySelector('.raw-json-header');
+      const toggle = block.querySelector('.raw-json-toggle');
+      const flip = () => {
+        const open = block.classList.toggle('is-open');
+        if (toggle) toggle.textContent = open ? '접기 ▴' : '펼치기 ▾';
+      };
+      header.addEventListener('click', flip);
+      header.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          flip();
+        }
+      });
+    });
+  }
+
+  /* ============================================================
+     Bootstrap
+     ============================================================ */
+  document.addEventListener('DOMContentLoaded', async () => {
+    // Tab switcher
+    document.querySelectorAll('.admin-tab').forEach(tab => {
+      tab.addEventListener('click', () => setActiveTab(tab.dataset.tab));
+    });
+
+    // Load all 3 files in parallel
+    const [foundationRes, semanticRes, componentRes] = await Promise.all([
+      loadJson(FILES.foundation),
+      loadJson(FILES.semantic),
+      loadJson(FILES.component),
+    ]);
+
+    // Tab 1 · Foundation
+    const fcEl = document.getElementById('panel-foundation');
+    if (foundationRes.error) {
+      renderError(fcEl, foundationRes.error);
+    } else {
+      renderFoundation(fcEl, foundationRes.data);
+    }
+
+    // Tab 2 · Semantic
+    const scEl = document.getElementById('panel-semantic');
+    if (semanticRes.error) {
+      renderError(scEl, semanticRes.error);
+    } else {
+      renderSemantic(scEl, semanticRes.data);
+    }
+
+    // Tab 3 · Component
+    const ctEl = document.getElementById('panel-component');
+    if (componentRes.error) {
+      renderError(ctEl, componentRes.error);
+    } else {
+      renderComponent(ctEl, componentRes.data);
+    }
+
+    // Tab 4 · Raw JSON
+    const rawEl = document.getElementById('panel-raw');
+    renderRawJson(rawEl, {
+      foundation: foundationRes,
+      semantic: semanticRes,
+      component: componentRes,
+    });
+  });
+})();
+</script>
+<script src="../assets/js/main.js"></script>
+</body>
+</html>

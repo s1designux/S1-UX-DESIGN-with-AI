@@ -1,0 +1,175 @@
+{
+  "_meta": {
+    "id": "time-picker",
+    "name": "TimePicker",
+    "category": "Core",
+    "updatedAt": "2026-05-20",
+    "version": "0.2.0",
+    "tokenStatus": "stable",
+    "codeStatus": "not-started",
+    "darkModeStatus": "pending",
+    "a11yStatus": "pending",
+    "figmaStatus": "confirmed",
+    "harnessStatus": "skeleton",
+    "description": "시간 선택 컴포넌트. input 방식(클릭 → 드롭다운 패널)과 select 방식(시/분 분리 셀렉트) 2가지 variant.",
+    "notes": [
+      "색상 토큰 100% -- color-form-control-* semantic 재사용. 전용 색상 토큰 없음.",
+      "신규 semantic 2개: --color-form-control-label-default/disabled (timepicker_select '시'/'분' 라벨용).",
+      "HD-Time-1: disabled 상태에서 suffix icon이 ic_시계 → ic_알람으로 교체됨 — 의도 여부 확인 필요.",
+      "HD-Time-2: token-aliases.json에 editing→focus alias 추가 완료 (2026-05-20).",
+      "HD-Time-3: --color-form-control-label-default = var(--color-text-secondary)(#353535). Figma 원본 일치.",
+      "HD-Time-4: Mobile 인터랙션 미정의 — timepicker_input mobile variant 있으나 bottom sheet 여부 미확정.",
+      "HD-Time-5: 드롭다운 패널 전용 토큰(shadow, column divider) — dropdown semantic 재사용으로 처리.",
+      "pc-xxsm (h28) size만 font-size 12px. 나머지는 모두 14px."
+    ]
+  },
+  "variants": {
+    "input": {
+      "platform": ["pc-md", "pc-xsm", "pc-xxsm", "mobile"],
+      "state": ["default", "focus", "filled", "disabled"],
+      "type": ["24h", "12h"]
+    },
+    "select": {
+      "size": ["md", "sm"],
+      "state": ["default", "focus", "disabled"]
+    },
+    "dropdown_panel": {
+      "type": ["24h", "12h"]
+    }
+  },
+  "sizing": {
+    "mobile":   "48px (var(--sizing-form-control-height-lg))",
+    "pc-md":    "44px (var(--sizing-form-control-height-md))",
+    "pc-xsm":   "34px (var(--sizing-form-control-height-xs))",
+    "pc-xxsm":  "28px (var(--sizing-form-control-height-xxs))",
+    "minWidth": "78px",
+    "dropdownOptionHeight": "32px",
+    "radius": "var(--radius-control-xs) — 4px",
+    "font": "Pretendard Regular 14px (xxsm: 12px)"
+  },
+  "states": ["default", "focus", "filled", "disabled"],
+  "tokens": [
+    {
+      "name": "--color-form-control-bg-default",
+      "type": "semantic-shared",
+      "value": "var(--color-surface-default)",
+      "resolvedLight": "#FFFFFF",
+      "figmaVariable": "color/form-control/bg/default",
+      "status": "stable",
+      "description": "기본 배경 — Input과 공유"
+    },
+    {
+      "name": "--color-form-control-bg-disabled",
+      "type": "semantic-shared",
+      "value": "var(--color-bg-subtle)",
+      "resolvedLight": "#F5F5F5",
+      "figmaVariable": "color/form-control/bg/disabled",
+      "status": "stable",
+      "description": "disabled 배경 — Input과 공유"
+    },
+    {
+      "name": "--color-form-control-border-default",
+      "type": "semantic-shared",
+      "value": "var(--color-control-border-default)",
+      "resolvedLight": "#D9D9D9",
+      "figmaVariable": "color/form-control/border/default",
+      "status": "stable",
+      "description": "기본 테두리"
+    },
+    {
+      "name": "--color-form-control-border-selected",
+      "type": "semantic-shared",
+      "value": "var(--color-border-focus)",
+      "resolvedLight": "#1D6CEB",
+      "figmaVariable": "color/form-control/border/selected",
+      "status": "stable",
+      "description": "focus 상태 테두리 (Figma: selected = focus)"
+    },
+    {
+      "name": "--color-form-control-border-disabled",
+      "type": "semantic-shared",
+      "value": "var(--color-border-subtle)",
+      "resolvedLight": "#E9E9E9",
+      "figmaVariable": "color/form-control/border/disabled",
+      "status": "stable",
+      "description": "disabled 테두리"
+    },
+    {
+      "name": "--color-form-control-text-placeholder",
+      "type": "semantic-shared",
+      "value": "var(--color-text-placeholder)",
+      "resolvedLight": "#757575",
+      "figmaVariable": "color/form-control/text/placeholder",
+      "status": "stable",
+      "description": "placeholder 텍스트 — '시간을 선택하세요'"
+    },
+    {
+      "name": "--color-form-control-text-default",
+      "type": "semantic-shared",
+      "value": "var(--color-text-secondary)",
+      "resolvedLight": "#353535",
+      "figmaVariable": "color/form-control/text/default",
+      "status": "stable",
+      "description": "입력값 텍스트 ('00:00')"
+    },
+    {
+      "name": "--color-form-control-text-disabled",
+      "type": "semantic-shared",
+      "value": "var(--color-text-disabled)",
+      "resolvedLight": "#C4C4C4",
+      "figmaVariable": "color/form-control/text/disabled",
+      "status": "stable",
+      "description": "disabled 텍스트"
+    },
+    {
+      "name": "--color-form-control-label-default",
+      "type": "semantic-new",
+      "value": "var(--color-text-secondary)",
+      "resolvedLight": "#353535",
+      "figmaVariable": "color/form-control/label/default",
+      "status": "stable",
+      "description": "timepicker_select '시'/'분' 라벨 텍스트 — 2026-05-20 신설"
+    },
+    {
+      "name": "--color-form-control-label-disabled",
+      "type": "semantic-new",
+      "value": "var(--color-text-disabled)",
+      "resolvedLight": "#C4C4C4",
+      "figmaVariable": "color/form-control/label/disabled",
+      "status": "stable",
+      "description": "timepicker_select disabled 라벨 텍스트 — 2026-05-20 신설"
+    }
+  ],
+  "figma": {
+    "componentSetKey": "",
+    "figmaNodeId": "540:3690",
+    "nodes": {
+      "timepicker_input":            "540:3690",
+      "timepicker_select":           "540:3636",
+      "timepicker_select_dropdown":  "540:3489",
+      "pc_timepicker_input_dropdown":"540:3506",
+      "pc_timepicker_calendar":      "540:4216"
+    },
+    "propertyMap": {
+      "platform": "platform",
+      "state":    "state",
+      "type":     "type",
+      "size":     "size"
+    },
+    "stateAliases": {
+      "selected":  "focus",
+      "completed": "filled",
+      "editing":   "focus"
+    }
+  },
+  "openDecisions": [
+    "HD-Time-1: timepicker_input disabled suffix icon이 ic_시계→ic_알람으로 교체되는 이유 확인 — 의도인지 Figma 실수인지",
+    "HD-Time-4: Mobile 인터랙션 방식 확정 — bottom sheet vs inline vs dropdown (DatePicker HD-4와 동일 이슈)",
+    "HD-Time-5: 드롭다운 패널 shadow는 rgba(0,0,0,0.15) — Token 또는 예외 처리 여부 결정 (DatePicker panel shadow 예외와 동일)"
+  ],
+  "governance": {
+    "owner": "Design System Team",
+    "deprecated": false,
+    "replacement": null
+  }
+}

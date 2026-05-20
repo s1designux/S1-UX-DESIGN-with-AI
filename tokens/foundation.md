@@ -12,12 +12,12 @@
 
 ## 구조 개요
 
-Foundation Token(Primitive)은 디자인시스템의 최하위 원자값이다.
+Foundation Token(Foundation)은 디자인시스템의 최하위 원자값이다.
 Semantic Token과 Component Token은 반드시 이 값을 `var()`로 참조한다.
 **HEX 값을 Semantic·Component 레이어에서 직접 사용하는 것은 금지한다.**
 
 ```
-Foundation (Primitive)
+Foundation (Foundation)
   └─ color/gray/0 ~ 900          Light 그레이 스케일
   └─ color/gray-dark/0 ~ 900     Dark 그레이 스케일
   └─ color/blue/50 ~ 500         Light 블루 스케일
@@ -31,7 +31,7 @@ Foundation (Primitive)
 
 ---
 
-## ⚠️ Dark Primitive 스텝 방향 규칙 (필수)
+## ⚠️ Dark Foundation 스텝 방향 규칙 (필수)
 
 > **낮은 숫자 = 더 어두운 색, 높은 숫자 = 더 밝은 색**
 
@@ -49,7 +49,7 @@ Light 팔레트의 스텝 방향을 그대로 따르면 Dark 배경에 어두운
 
 ### 적용 체크리스트
 
-새로운 Dark Primitive 팔레트를 추가할 때 반드시 확인:
+새로운 Dark Foundation 팔레트를 추가할 때 반드시 확인:
 
 - [ ] step 0 / 50 / 100 이 가장 어두운 값인가?
 - [ ] step 상위 (전체 스텝의 70~80%) 이후가 밝아지는가?
@@ -474,6 +474,6 @@ Light 팔레트의 스텝 방향을 그대로 따르면 Dark 배경에 어두운
 
 1. **HEX 직접 사용 금지** — Semantic/Component 레이어는 항상 `var(--color-gray-dark-*)` 형식으로 참조한다.
 2. **rgba 허용 예외** — `color-border-*` Dark 전용, `color-overlay` Light·Dark 공통만 허용한다.
-3. **Dark Primitive 신규 추가 시** — 위 스텝 방향 규칙을 반드시 따르고, semantic.md와 foundation.html `DARK_PALETTES` 동시에 업데이트한다.
+3. **Dark Foundation 신규 추가 시** — 위 스텝 방향 규칙을 반드시 따르고, semantic.md와 foundation.html `DARK_PALETTES` 동시에 업데이트한다.
 4. **스텝 값은 원본 그대로** — 반올림·보정 금지. Figma 원본 HEX를 그대로 사용한다.
 5. **신규 컬러 계열 추가 시** — gray-dark / blue-dark 예시를 참고해 낮은 스텝(배경)→높은 스텝(텍스트) 방향으로 정의한다.

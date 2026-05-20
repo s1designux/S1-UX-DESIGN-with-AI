@@ -20,7 +20,7 @@
 
 
 /* ══════════════════════════════════════════════════
-   1. FOUNDATION — Color Primitives
+   1. FOUNDATION — Color Foundation
    ══════════════════════════════════════════════════ */
 :root {
 
@@ -266,7 +266,7 @@
   --color-coolgray-dark-450: #B8BCC5;
   --color-coolgray-dark-500: #D8DBE0;
 
-  /* ── Status · Dark (피드백 상태 전용 Dark Primitive) ── */
+  /* ── Status · Dark (피드백 상태 전용 Dark Foundation) ── */
   --color-status-dark-red:    #F06070; /* = color-red-dark-350 */
   --color-status-dark-green:  #3FBE7E; /* = color-green-dark-350 */
   --color-status-dark-yellow: #E8C048; /* = color-yellow-dark-350 */
@@ -347,7 +347,7 @@
   --color-bg-subtle:   var(--color-gray-50);
   --color-bg-muted:    var(--color-gray-100);
   --color-bg-elevated: var(--color-gray-100);
-  --color-bg-home:     #F5F6FB; /* Foundation Primitive 미등록 — 검토 중 */
+  --color-bg-home:     #F5F6FB; /* blue-gray tint — Figma semantic 값. Foundation 계열 없음, gate allowlist 등록 */
   /* ⚠️ --color-bg-active / --color-bg-deepest / --color-bg-selected : Figma 원본 미확인, pending-review 항목 1 */
   --color-bg-selected: var(--color-blue-50); /* 임시값 — Figma 검증 후 확정 필요 */
 
@@ -366,6 +366,7 @@
   --color-text-correct:     var(--color-blue-400);
   --color-text-danger:      var(--color-red-300);
   --color-text-disabled:    var(--color-gray-300);
+  --color-text-readonly:    var(--color-gray-500);
   --color-text-inverse:     var(--color-base-white);
 
   /* ── color-border ── */
@@ -400,11 +401,29 @@
   --color-status-warning: var(--color-yellow-400);
   --color-status-info:    var(--color-gray-500);
 
-  /* ── color-control-border (컨트롤 컴포넌트 전용 — 디바이더와 독립) ── */
-  --color-control-border-default:  var(--color-gray-200);   /* checkbox·radio 기본 테두리 */
-  --color-control-border-hover:    var(--color-blue-400);   /* hover 시 강조 */
-  --color-control-border-selected: var(--color-blue-400);   /* checked/selected 상태 */
-  --color-control-border-disabled: var(--color-gray-300);   /* disabled 상태 */
+  /*
+   * ── color-control-border (컨트롤 컴포넌트 전용 — 디바이더와 독립) ──
+   *
+   * 여러 컴포넌트(Checkbox, Radio 등)가 이 토큰을 공유한다.
+   * Figma에는 어두운 배경이나 컬러 카드 위에서 쓰이는 "-alt" 변형이 존재하지만,
+   * 별도 alt 토큰을 만들지 않는다.
+   * 대신, 특수한 배경 위에 컨트롤을 배치하는 부모 컴포넌트가 이 토큰 값을
+   * 자신의 CSS 스코프 안에서 직접 재정의(override)한다.
+   * 이렇게 하면 토큰 이름은 그대로 유지되면서 맥락에 따라 값만 바뀐다.
+   *
+   * 사용 예시:
+   *   .s1-status-card--on-dark {
+   *     --color-control-border-default:  var(--color-gray-dark-300);
+   *     --color-control-border-selected: var(--color-blue-dark-400);
+   *   }
+   */
+  --color-control-border-default:     var(--color-gray-200);
+  --color-control-border-hover:       var(--color-blue-400);
+  --color-control-border-selected:    var(--color-blue-400);
+  --color-control-border-disabled:    var(--color-gray-300);
+  --color-control-indicator-selected: var(--color-action-primary-default);
+  --color-control-indicator-disabled: var(--color-gray-300);
+  --color-control-bg-hover:           var(--color-bg-subtle);
 
   /* ── color-form-control ── */
   --color-form-control-bg-default:          var(--color-surface-default);
@@ -417,11 +436,16 @@
   --color-form-control-text-default:        var(--color-text-secondary);
   --color-form-control-text-placeholder:    var(--color-text-placeholder);
   --color-form-control-text-disabled:       var(--color-text-disabled);
+  --color-form-control-label-default:       var(--color-text-secondary);
+  --color-form-control-label-disabled:      var(--color-text-disabled);
 
   /* ── color-text-state ── */
   --color-text-state-helper:  var(--color-text-secondary);
   --color-text-state-correct: var(--color-blue-400);
   --color-text-state-error:   var(--color-status-error);
+
+  /* ── color-data (데이터 그리드/테이블 전용 — Figma: color/data/state/*) ── */
+  --color-data-state-hover: var(--color-blue-50);   /* #E2F1FF — 행 hover 배경 */
 
   /* ── color-overlay ── */
   --color-overlay: rgba(0, 0, 0, 0.5); /* rgba 허용 예외 — alpha 채널 포함 */
@@ -525,14 +549,15 @@
   --color-text-correct:     var(--color-blue-dark-400);
   --color-text-danger:      var(--color-status-dark-red);
   --color-text-disabled:    var(--color-gray-dark-400);
+  --color-text-readonly:    var(--color-gray-dark-500);
   --color-text-inverse:     var(--color-base-white);
 
-  /* ── color-border (rgba 허용 예외 — Dark 전용) ── */
-  --color-border-subtle:   rgba(255, 255, 255, 0.04);
-  --color-border-default:  rgba(255, 255, 255, 0.07);
-  --color-border-disabled: rgba(255, 255, 255, 0.07);
-  --color-border-strong:   rgba(255, 255, 255, 0.12);
-  --color-border-emphasis: rgba(255, 255, 255, 0.20);
+  /* ── color-border (dark override) ── */
+  --color-border-subtle:   var(--color-gray-dark-200);
+  --color-border-default:  var(--color-gray-dark-300);
+  --color-border-disabled: var(--color-gray-dark-200);
+  --color-border-strong:   var(--color-gray-dark-500);
+  --color-border-emphasis: var(--color-gray-dark-700);
   --color-border-focus:    var(--color-blue-dark-350);
   --color-border-white:    var(--color-base-white);
   --color-border-danger:   var(--color-status-dark-red);
@@ -563,18 +588,28 @@
   --color-text-state-correct: var(--color-blue-dark-400);
 
   /* ── color-control-border (dark overrides — candidate) ── */
-  --color-control-border-default:  var(--color-gray-dark-500);
-  --color-control-border-hover:    var(--color-blue-dark-300);
-  --color-control-border-selected: var(--color-blue-dark-300);
-  --color-control-border-disabled: var(--color-gray-dark-300);
+  --color-control-border-default:     var(--color-gray-dark-500);
+  --color-control-border-hover:       var(--color-blue-dark-300);
+  --color-control-border-selected:    var(--color-blue-dark-300);
+  --color-control-border-disabled:    var(--color-gray-dark-300);
+  --color-control-indicator-selected: var(--color-action-primary-default);
+  --color-control-indicator-disabled: var(--color-gray-dark-300);
+  --color-control-bg-hover:           var(--color-bg-subtle);
 
   /* ── color-form-control bg dark ── */
   --color-form-control-bg-default: var(--color-gray-dark-50);
 
   --color-form-control-border-disabled: var(--color-control-border-disabled);
 
+  /* ── color-form-control label dark ── */
+  --color-form-control-label-default:  var(--color-text-secondary);
+  --color-form-control-label-disabled: var(--color-text-disabled);
+
   /* ── dropdown hover bg dark ── */
   --dropdown-trigger-hover-bg: var(--color-gray-dark-500);
+
+  /* ── color-data (dark — candidate: Figma dark 미확인) ── */
+  --color-data-state-hover: var(--color-blue-dark-100); /* #112B55 — candidate, HD-Table-1 */
 
   /* ── color-overlay ── */
   --color-overlay: rgba(0, 0, 0, 0.75); /* rgba 허용 예외 */
@@ -628,24 +663,40 @@
   --button-ghost-default-icon:  var(--color-icon-default);
   --button-ghost-disabled-icon: var(--color-icon-muted);
 
-  /* ── Chip ── */
-  --chip-default-bg:      var(--color-bg-subtle);
-  --chip-hover-bg:        var(--color-bg-muted);
-  --chip-selected-bg:     var(--color-action-primary-subtle);
-  --chip-disabled-bg:     var(--color-bg-subtle);
-  --chip-default-border:  var(--color-border-default);
-  --chip-hover-border:    var(--color-border-strong);
-  --chip-selected-border: var(--color-action-primary-default);
-  --chip-disabled-border: var(--color-border-subtle);
-  --chip-default-text:    var(--color-text-secondary);
-  --chip-selected-text:   var(--color-action-primary-default);
-  --chip-disabled-text:   var(--color-text-disabled);
-  --chip-default-icon:    var(--color-icon-default);
-  --chip-selected-icon:   var(--color-action-primary-default);
-  --chip-disabled-icon:   var(--color-icon-muted);
-  --chip-default-close-icon:  var(--color-icon-default);
-  --chip-hover-close-icon:    var(--color-icon-emphasis);
-  --chip-selected-close-icon: var(--color-action-primary-default);
+  /* ── Chip — Line ── */
+  --chip-line-default-bg:          var(--color-surface-default);
+  --chip-line-hover-bg:            var(--color-bg-subtle);
+  --chip-line-selected-bg:         var(--color-surface-default);
+  --chip-line-disabled-bg:         var(--color-bg-subtle);
+  --chip-line-default-border:      var(--color-border-default);
+  --chip-line-hover-border:        var(--color-border-strong);
+  --chip-line-selected-border:     var(--color-action-primary-default);
+  --chip-line-disabled-border:     var(--color-border-disabled);
+  --chip-line-default-text:        var(--color-text-caption);
+  --chip-line-selected-text:       var(--color-action-primary-default);
+  --chip-line-disabled-text:       var(--color-text-disabled);
+  --chip-line-default-icon:        var(--color-icon-default);
+  --chip-line-selected-icon:       var(--color-action-primary-default);
+  --chip-line-disabled-icon:       var(--color-icon-muted);
+  --chip-line-default-close-icon:  var(--color-icon-default);
+  --chip-line-hover-close-icon:    var(--color-icon-emphasis);
+  --chip-line-selected-close-icon: var(--color-action-primary-default);
+
+  /* ── Chip — Solid ── */
+  --chip-solid-default-bg:          var(--color-bg-subtle);
+  --chip-solid-hover-bg:            var(--color-bg-muted);
+  --chip-solid-selected-bg:         var(--color-action-primary-default);
+  --chip-solid-disabled-bg:         var(--color-bg-subtle);
+  --chip-solid-selected-border:     var(--color-action-primary-default);
+  --chip-solid-default-text:        var(--color-text-caption);
+  --chip-solid-selected-text:       var(--color-action-primary-text);
+  --chip-solid-disabled-text:       var(--color-text-disabled);
+  --chip-solid-default-icon:        var(--color-icon-default);
+  --chip-solid-selected-icon:       var(--color-action-primary-text);
+  --chip-solid-disabled-icon:       var(--color-icon-muted);
+  --chip-solid-default-close-icon:  var(--color-icon-default);
+  --chip-solid-hover-close-icon:    var(--color-icon-emphasis);
+  --chip-solid-selected-close-icon: var(--color-action-primary-text);
 
   /* ── Dropdown ── */
   --dropdown-trigger-default-bg:      var(--color-surface-default);
@@ -661,6 +712,11 @@
   --dropdown-list-bg:            var(--color-surface-raised);
   --dropdown-option-hover-bg:    var(--color-bg-subtle);
   --dropdown-option-selected-bg: var(--color-action-primary-subtle);
+  /* candidate tokens — C0 pilot 발견, canonical-token-draft candidate 상태 */
+  --dropdown-trigger-placeholder-text: var(--color-text-placeholder);
+  --dropdown-trigger-selected-text:    var(--color-text-primary);
+  --dropdown-list-border:              var(--color-border-default);
+  --dropdown-option-selected-text:     var(--color-action-primary-default);
 
   /* ── Input / Form-control ── */
   --input-default-bg:       var(--color-form-control-bg-default);
@@ -670,6 +726,9 @@
   --input-error-border:     var(--color-form-control-border-error);
   --input-correct-border:   var(--color-form-control-border-correct);
   --input-disabled-border:  var(--color-form-control-border-disabled);
+  --input-readonly-bg:      var(--color-form-control-bg-disabled);
+  --input-readonly-border:  var(--color-form-control-border-disabled);
+  --input-readonly-text:    var(--color-text-readonly);
   --select-disabled-border: var(--color-border-subtle);
   --input-placeholder-text: var(--color-form-control-text-placeholder);
   --input-disabled-text:    var(--color-form-control-text-disabled);
@@ -706,16 +765,27 @@
   --toggle-knob:        var(--color-action-primary-text);
 
   /* ── Pagination ── */
-  --pagination-default-bg:    var(--color-surface-default);
-  --pagination-hover-bg:      var(--color-bg-subtle);
-  --pagination-active-bg:     var(--color-action-primary-default);
-  --pagination-disabled-bg:   var(--color-surface-default);
-  --pagination-default-text:  var(--color-text-secondary);
-  --pagination-active-text:   var(--color-action-primary-text);
-  --pagination-disabled-text: var(--color-text-disabled);
-  --pagination-border:        var(--color-border-default);
+  /* Figma node: 540:5281 (pc_pagination) — 2026-05-20 확인 */
+  --pagination-control-bg:           var(--color-surface-default);  /* #FFFFFF — 화살표·페이지 공통 배경 */
+  --pagination-control-border:       var(--color-border-subtle);    /* #E9E9E9 — 화살표 버튼 테두리 */
+  --pagination-control-hover-bg:     var(--color-bg-subtle);        /* #F5F5F5 — hover (Figma 미정의, assumed) */
+  --pagination-number-text:          var(--color-gray-400);         /* #9D9D9D — 비선택 페이지 번호 */
+  --pagination-number-text-selected: var(--color-text-secondary);   /* #353535 — 선택된 페이지 번호 */
 
-  /* ── Navigation ── */
+  /*
+   * ── Navigation ──
+   *
+   * Figma에는 "label/default-alt", "indicator/default-alt" 등 배경 맥락에 따른 변형이 있다.
+   * 별도 alt 토큰을 만들지 않는다.
+   * 네비게이션을 특수 배경(예: 헤더 컬러 바) 위에 배치하는 쪽에서
+   * 아래 토큰 값을 CSS 스코프 안에서 재정의(override)한다.
+   *
+   * 사용 예시:
+   *   .s1-header--colored {
+   *     --nav-item-default-text: var(--color-text-inverse);
+   *     --nav-item-indicator-default: transparent;
+   *   }
+   */
   --nav-bg:                var(--color-surface-default);
   --nav-item-hover-bg:     var(--color-bg-subtle);
   --nav-item-active-bg:    var(--color-action-primary-subtle);
@@ -723,16 +793,20 @@
   --nav-item-active-text:  var(--color-action-primary-default);
   --nav-item-default-icon: var(--color-icon-default);
   --nav-item-active-icon:  var(--color-action-primary-default);
-  --nav-item-indicator:    var(--color-action-primary-default);
-  --nav-divider:           var(--color-border-subtle);
+  --nav-item-indicator:         var(--color-action-primary-default);  /* 선택된 항목 indicator */
+  --nav-item-indicator-default: var(--color-border-subtle);           /* 비선택 항목 indicator */
+  --nav-divider:                var(--color-border-subtle);
 
   /* ── Table / Data Grid ── */
-  --table-header-bg:       var(--color-bg-subtle);
-  --table-header-text:     var(--color-text-tertiary);
-  --table-header-border:   var(--color-border-default);
-  --table-row-default-bg:  var(--color-surface-default);
-  --table-row-hover-bg:    var(--color-bg-subtle);
-  --table-row-selected-bg: var(--color-bg-selected);
-  --table-cell-border:     var(--color-border-subtle);
-  --table-cell-text:       var(--color-text-secondary);
+  --table-header-bg:        var(--color-bg-default);        /* #FAFAFA — Figma: surface/neutral/bg/base-alt */
+  --table-header-hover-bg:  var(--color-bg-subtle);         /* #F5F5F5 — Figma: surface/neutral/bg/subtle */
+  --table-header-text:      var(--color-text-secondary);    /* #353535 — Figma: color/text/title/secondary */
+  --table-border-light:     var(--color-border-subtle);      /* Figma: color/data/border/light — 행 구분선 */
+  --table-border-strong:    var(--color-border-default);     /* Figma: color/data/border/strong — 열·외곽 구분선 */
+  --table-header-border:    var(--table-border-light);
+  --table-row-default-bg:   var(--color-surface-default);   /* #FFFFFF */
+  --table-row-hover-bg:     var(--color-data-state-hover);   /* #E2F1FF — Figma: color/data/state/hover = blue-50 */
+  --table-row-selected-bg:  var(--color-bg-selected);       /* #E2F1FF — blue-50 확정 */
+  --table-cell-border:      var(--table-border-light);
+  --table-cell-text:        var(--color-text-secondary);    /* #353535 — Figma: color/text/body/primary */
 }

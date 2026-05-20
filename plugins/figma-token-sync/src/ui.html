@@ -225,6 +225,69 @@
     }
     #state-export-loading.visible { display: block; }
 
+    /* ── Variable Usage Export panel (MVP-F1) ────────────────── */
+    #usage-panel {
+      display: none;
+      flex-direction: column;
+      gap: 8px;
+      padding: 12px 16px;
+      border-top: 1px solid #e5e5e5;
+      flex-shrink: 0;
+      background: #f4f8ff;
+    }
+    #usage-panel.visible { display: flex; }
+    #usage-panel h3 {
+      font-size: 12px;
+      font-weight: 600;
+      color: #1d3a6e;
+      margin: 0;
+    }
+    #usage-panel .desc {
+      font-size: 10px;
+      color: #555;
+      line-height: 1.6;
+      margin: 0;
+    }
+    #usage-panel .usage-actions {
+      display: flex;
+      gap: 6px;
+    }
+    #btn-export-usage {
+      background: #1d6ceb;
+      color: #fff;
+      border-color: #1d6ceb;
+      font-size: 11px;
+      font-weight: 600;
+      padding: 6px 12px;
+      border-radius: 5px;
+      cursor: pointer;
+      border: 1px solid transparent;
+    }
+    #btn-export-usage:hover { background: #1658c4; }
+    #btn-export-usage:disabled { background: #8ab0ef; cursor: not-allowed; }
+    #btn-toggle-usage-panel {
+      background: transparent;
+      color: #888;
+      border: 1px solid #d0d0d0;
+      border-radius: 5px;
+      font-size: 11px;
+      padding: 6px 10px;
+      cursor: pointer;
+    }
+    #usage-status {
+      font-size: 10px;
+      color: #1a7f45;
+      min-height: 14px;
+    }
+    #usage-status.error { color: #c0392b; }
+    #state-usage-loading {
+      font-size: 11px;
+      color: #888;
+      padding: 4px 0;
+      display: none;
+    }
+    #state-usage-loading.visible { display: block; }
+
     footer {
       display: flex;
       gap: 8px;
@@ -323,9 +386,43 @@
   </div>
 </div>
 
+<!-- Variable Usage Export panel (MVP-F1) -->
+<div id="usage-panel">
+  <h3>Variable Usage 스캔</h3>
+
+  <!-- Mode A: Scan from selection (NEW) -->
+  <div id="usage-mode-selection" style="margin-bottom:14px;padding:12px;background:#f0f9ff;border:1px solid #bae6fd;border-radius:8px;">
+    <div style="font-size:12px;font-weight:700;color:#0369a1;margin-bottom:6px;">선택한 노드 스캔 (권장)</div>
+    <p class="desc" style="margin-bottom:8px;">Figma 캔버스에서 스캔할 컴포넌트를 선택하고 아래 버튼을 누르세요.</p>
+    <div id="selection-display" style="min-height:32px;padding:6px 10px;background:#fff;border:1px solid #e0f2fe;border-radius:6px;font-size:11px;color:#374151;margin-bottom:8px;">
+      <span id="selection-hint" style="color:#94a3b8;">Figma에서 노드를 선택하면 여기에 표시됩니다.</span>
+      <ul id="selection-list" style="margin:0;padding:0 0 0 14px;display:none;"></ul>
+    </div>
+    <div style="display:flex;gap:6px;">
+      <button id="btn-scan-selection" style="background:#0072ce;color:#fff;border:none;border-radius:6px;padding:6px 16px;font-size:12px;font-weight:600;cursor:pointer;">선택한 노드 스캔 &amp; 내보내기</button>
+    </div>
+  </div>
+
+  <!-- Mode B: Fixed targets (legacy ACCESS-01) -->
+  <details style="margin-bottom:10px;">
+    <summary style="font-size:11px;color:#6b7280;cursor:pointer;padding:4px 0;">고정 타겟 스캔 (ACCESS-01 — 현재 노드 ID stale)</summary>
+    <div style="padding:10px 0 4px;">
+      <p class="desc" style="color:#f59e0b;">⚠️ 등록된 3개 노드(6443:4408 / 4655 / 4606)가 현재 Figma에서 찾을 수 없는 상태입니다. 위 "선택한 노드 스캔"을 사용하세요.</p>
+      <button id="btn-export-usage" style="font-size:11px;">고정 타겟 Export (Legacy)</button>
+    </div>
+  </details>
+
+  <div id="state-usage-loading" style="display:none;font-size:12px;color:#0072ce;">노드 스캔 중...</div>
+  <div id="usage-status" style="margin-top:8px;font-size:12px;"></div>
+  <div style="margin-top:10px;">
+    <button id="btn-toggle-usage-panel" style="font-size:11px;background:#f3f4f6;border:1px solid #e5e7eb;border-radius:6px;padding:4px 12px;color:#6b7280;cursor:pointer;">닫기</button>
+  </div>
+</div>
+
 <footer>
   <button id="btn-dry-check">Run Dry Check</button>
   <button id="btn-export-vars">Export Variables</button>
+  <button id="btn-usage-open">Variable Usage</button>
   <button id="btn-export">Export Report</button>
   <button id="btn-sync" disabled title="Figma collection ID 미확정 — Sync Stable Tokens 비활성">Sync</button>
 </footer>
@@ -433,6 +530,32 @@
     showExportPanel(true);
   }
 
+  function showUsagePanel(show) {
+    el("usage-panel").classList.toggle("visible", show);
+  }
+
+  function showUsageLoading(show) {
+    el("state-usage-loading").classList.toggle("visible", show);
+    if (show) {
+      el("btn-export-usage").disabled = true;
+      el("usage-status").textContent = "";
+      el("usage-status").className = "";
+    } else {
+      el("btn-export-usage").disabled = false;
+    }
+  }
+
+  function downloadUsageJson(usageData) {
+    var json = JSON.stringify(usageData, null, 2);
+    var blob = new Blob([json], { type: "application/json" });
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement("a");
+    a.href = url;
+    a.download = "figma-variable-usage.mvp-f1.json";
+    a.click();
+    URL.revokeObjectURL(url);
+  }
+
   window.onmessage = function (event) {
     var msg = event.data.pluginMessage;
     if (!msg) return;
@@ -449,6 +572,48 @@
       showExportLoading(false);
       el("error-message").textContent = "Export 오류: " + (msg.error || "알 수 없는 오류");
       showState("state-error");
+      return;
+    }
+    if (msg.type === "selection-info") {
+      var nodes = msg.selectionInfo || [];
+      var listEl = el("selection-list");
+      var hintEl = el("selection-hint");
+      listEl.innerHTML = "";
+      if (nodes.length === 0) {
+        hintEl.style.display = "";
+        listEl.style.display = "none";
+      } else {
+        hintEl.style.display = "none";
+        listEl.style.display = "";
+        nodes.forEach(function(n) {
+          var li = document.createElement("li");
+          li.style.marginBottom = "2px";
+          li.innerHTML = "<strong style='color:#0369a1'>" + escapeHtml(n.name) + "</strong> <span style='color:#94a3b8;font-size:10px;'>" + n.type + " · " + n.id + "</span>";
+          listEl.appendChild(li);
+        });
+      }
+      return;
+    }
+    if (msg.type === "usage-result") {
+      showUsageLoading(false);
+      var usageData = msg.usageData;
+      var meta = usageData.exportMeta;
+      var successCount = usageData.nodeUsages.length;
+      var errCount = usageData.errors.length;
+      var totalBindings = meta.totalUsageCount;
+      var bindingDetail = usageData.nodeUsages.map(function(n) {
+        return n.nodeName + " (" + n.bindings.length + "개)";
+      }).join(", ") || "binding 없음";
+      el("usage-status").innerHTML =
+        "<span style='color:#16a34a;font-weight:600;'>완료</span> — " + successCount + "개 노드 / " + totalBindings + "개 binding / 오류 " + errCount + "건<br>" +
+        "<span style='color:#6b7280;font-size:10px;'>" + bindingDetail + "</span><br>" +
+        "<span style='color:#0072ce;font-size:11px;'>↓ 파일을 registry/figma/snapshots/figma-variable-usage.mvp-f1.json 으로 저장하세요</span>";
+      downloadUsageJson(usageData);
+      return;
+    }
+    if (msg.type === "usage-error") {
+      showUsageLoading(false);
+      el("usage-status").innerHTML = "<span style='color:#dc2626;'>오류: " + escapeHtml(msg.error || "알 수 없는 오류") + "</span>";
       return;
     }
     if (msg.type === "sync-error") {
@@ -505,6 +670,32 @@
 
   el("btn-sync").addEventListener("click", function () {
     parent.postMessage({ pluginMessage: { type: "sync" } }, "*");
+  });
+
+  function escapeHtml(str) {
+    return String(str).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");
+  }
+
+  el("btn-usage-open").addEventListener("click", function () {
+    showUsagePanel(true);
+    // request current selection immediately
+    parent.postMessage({ pluginMessage: { type: "get-selection" } }, "*");
+  });
+
+  el("btn-toggle-usage-panel").addEventListener("click", function () {
+    showUsagePanel(false);
+  });
+
+  el("btn-export-usage").addEventListener("click", function () {
+    showUsageLoading(true);
+    el("usage-status").textContent = "";
+    parent.postMessage({ pluginMessage: { type: "export-variable-usage" } }, "*");
+  });
+
+  el("btn-scan-selection").addEventListener("click", function () {
+    el("usage-status").textContent = "";
+    showUsageLoading(true);
+    parent.postMessage({ pluginMessage: { type: "scan-selection" } }, "*");
   });
 })();
 </script>

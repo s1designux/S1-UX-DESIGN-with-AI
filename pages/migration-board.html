@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <script>!function(){var z=localStorage.getItem("sw-ds-zoom");if(z)document.documentElement.style.zoom=z+"%"}();</script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Migration Board — S1 UX DESIGN GUIDE</title>
+  <link rel="stylesheet" href="../assets/css/style.css">
+  <link rel="stylesheet" href="../assets/css/tokens.css">
+  <style>
+    /* ── 공통 에러 박스 ── */
+    .registry-error-box {
+      background: #fff5f5; border: 1px solid #fecaca; border-radius: 12px;
+      padding: 24px; margin: 16px 0;
+    }
+    .registry-error-title { font-weight: 700; color: #dc2626; margin-bottom: 8px; }
+    .registry-error-msg { font-family: monospace; font-size: 13px; color: #374151; margin-bottom: 8px; }
+    .registry-error-hint { font-size: 12px; color: #6b7280; }
+    .registry-error-hint code { background: #f3f4f6; padding: 2px 6px; border-radius: 4px; }
+
+    /* ── 요약 카드 ── */
+    .summary-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+      gap: 12px; margin-bottom: 28px;
+    }
+    .summary-card {
+      background: #fff; border: 1px solid #e5e7eb; border-radius: 12px;
+      padding: 20px 16px; text-align: center;
+    }
+    .summary-card.is-blue { border-color: #93c5fd; background: #eff6ff; }
+    .summary-card.is-yellow { border-color: #fcd34d; background: #fffbeb; }
+    .summary-card.is-orange { border-color: #fdba74; background: #fff7ed; }
+    .summary-card.is-gray { border-color: #d1d5db; background: #f9fafb; }
+    .summary-card.is-green { border-color: #6ee7b7; background: #ecfdf5; }
+    .summary-number { font-size: 28px; font-weight: 700; color: #111827; line-height: 1; }
+    .summary-label { font-size: 12px; color: #6b7280; margin-top: 4px; }
+
+    /* ── 필터 바 ── */
+    .filter-bar { display: flex; gap: 6px; margin-bottom: 16px; flex-wrap: wrap; }
+    .filter-chip {
+      padding: 4px 12px; border-radius: 20px; border: 1px solid #e5e7eb;
+      background: #fff; font-size: 12px; cursor: pointer; color: #374151;
+    }
+    .filter-chip:hover { background: #f9fafb; }
+    .filter-chip.active { background: #111827; color: #fff; border-color: #111827; }
+
+    /* ── 배지 ── */
+    .badge {
+      display: inline-block; padding: 2px 8px; border-radius: 4px;
+      font-size: 11px; font-weight: 600; white-space: nowrap;
+    }
+    .badge-green { background: #d1fae5; color: #065f46; }
+    .badge-yellow { background: #fef3c7; color: #92400e; }
+    .badge-orange { background: #fed7aa; color: #9a3412; }
+    .badge-red { background: #fee2e2; color: #991b1b; }
+    .badge-gray { background: #f3f4f6; color: #6b7280; }
+    .badge-blue { background: #dbeafe; color: #1e40af; }
+
+    /* ── 섹션 제목 ── */
+    .section-title {
+      font-size: 15px; font-weight: 700; color: #111827;
+      margin: 24px 0 12px; padding-bottom: 8px; border-bottom: 2px solid #e5e7eb;
+    }
+    .section-note { font-size: 12px; color: #6b7280; margin-bottom: 12px; }
+
+    /* ── 테이블 ── */
+    .table-wrap {
+      background: #fff; border: 1px solid #e5e7eb; border-radius: 12px;
+      overflow: auto; margin-bottom: 24px;
+    }
+    .data-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+    .data-table thead th {
+      background: #f9fafb; padding: 10px 14px; text-align: left;
+      font-size: 12px; font-weight: 600; color: #6b7280;
+      border-bottom: 1px solid #e5e7eb; white-space: nowrap;
+    }
+    .data-table tbody td {
+      padding: 10px 14px; border-bottom: 1px solid #f3f4f6;
+      vertical-align: top; color: #374151;
+    }
+    .data-table tbody tr:last-child td { border-bottom: none; }
+    .data-table tbody tr:hover { background: #f9fafb; }
+    .data-table code {
+      font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+      font-size: 12px; color: #111827; background: #f3f4f6;
+      padding: 1px 6px; border-radius: 4px;
+    }
+    .data-table td.muted { color: #9ca3af; font-style: italic; }
+    .reason-cell { font-size: 12px; color: #6b7280; line-height: 1.5; }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      gap: 12px; margin-bottom: 24px;
+    }
+    .stat-card {
+      background: #fff; border: 1px solid #e5e7eb; border-radius: 12px;
+      padding: 16px;
+    }
+    .stat-card-number { font-size: 22px; font-weight: 700; color: #111827; }
+    .stat-card-label { font-size: 12px; color: #6b7280; margin-top: 4px; }
+
+    .summary-note {
+      background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 12px;
+      padding: 14px 18px; font-size: 12px; color: #374151; line-height: 1.6;
+      margin-bottom: 28px;
+    }
+    .summary-note strong { color: #111827; }
+
+    .loading-msg { padding: 40px; color: #9ca3af; text-align: center; }
+    .empty-msg { padding: 24px; color: #9ca3af; text-align: center; font-size: 13px; }
+
+    /* ── 전체 너비 사용 ── */
+    .page-content { max-width: none; padding: 28px 32px; }
+    .page-header-inner { max-width: none; }
+  </style>
+</head>
+<body>
+<div class="layout">
+  <aside class="sidebar"><div id="sidebar-inner"></div></aside>
+  <div class="sidebar-overlay" id="sidebar-overlay"></div>
+  <main class="main-content">
+    <div class="mobile-header">
+      <button class="hamburger" id="sidebar-toggle" aria-label="메뉴">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/>
+        </svg>
+      </button>
+      <span class="mobile-logo">S1 UX DESIGN GUIDE</span>
+    </div>
+
+    <div class="page-header">
+      <h1 class="page-title">Migration Board</h1>
+      <p class="page-desc">Foundation → Semantic → Component 레이어 전환 상태 추적. canonical-token-promotion-plan 기반 promote / hold / needs-decision 현황 대시보드.</p>
+    </div>
+
+    <div class="page-content">
+      <div id="app"><div class="loading-msg">Migration Board 로드 중...</div></div>
+    </div>
+  </main>
+</div>
+
+<script src="../assets/js/registry-data-bundle.js"></script>
+<script src="../assets/js/registry-loader.js"></script>
+<script>
+  /* ──────────────────────────────────────────────────────────
+     유틸
+     ────────────────────────────────────────────────────────── */
+  function fb(v) {
+    if (v == null || v === '') return '<span class="muted">—</span>';
+    return escapeHtml(String(v));
+  }
+  function code(v) {
+    if (v == null || v === '') return '<span class="muted">—</span>';
+    return `<code>${escapeHtml(String(v))}</code>`;
+  }
+  function statusBadgeClass(status) {
+    const s = String(status || '').toLowerCase();
+    if (s === 'promote-candidate') return 'badge-green';
+    if (s === 'hold' || s.startsWith('hold-')) return 'badge-yellow';
+    if (s === 'needsdecision' || s === 'needs-decision') return 'badge-orange';
+    return 'badge-gray';
+  }
+  function confidenceBadgeClass(c) {
+    const s = String(c || '').toLowerCase();
+    if (s === 'high') return 'badge-green';
+    if (s === 'medium') return 'badge-yellow';
+    if (s === 'low') return 'badge-red';
+    if (s === 'pending') return 'badge-gray';
+    if (s === 'resolved') return 'badge-blue';
+    return 'badge-gray';
+  }
+
+  /* ──────────────────────────────────────────────────────────
+     렌더링
+     ────────────────────────────────────────────────────────── */
+  async function renderBoard() {
+    const app = document.getElementById('app');
+
+    const [planRes, draftRes] = await Promise.all([
+      loadJson('registry/tokens/canonical-token-promotion-plan.json'),
+      loadJson('registry/tokens/canonical-token-draft.json')
+    ]);
+
+    if (planRes.error) { renderError(app, planRes.error); return; }
+    const plan = planRes.data;
+    const summary = plan.summary || {};
+
+    // promotedCandidates, holdCandidates, needsDecision 합치기
+    const promote = (plan.promoteCandidates || []).map(it => ({ ...it, _kind: 'promote-candidate' }));
+    const hold = (plan.holdCandidates || []).map(it => ({ ...it, _kind: 'hold' }));
+    const needs = (plan.needsDecision || []).map(it => ({ ...it, _kind: 'needsDecision' }));
+    const allItems = [...promote, ...hold, ...needs];
+
+    // Total Tokens Covered: summary.note 또는 합산 사용
+    let totalTokens = 0;
+    promote.forEach(it => { if (typeof it.tokenCount === 'number') totalTokens += it.tokenCount; });
+    if (totalTokens === 0) totalTokens = 186; // fallback per note
+
+    // 상단 요약 + 필터 + 테이블 + 통계
+    app.innerHTML = `
+      <div class="summary-grid">
+        <div class="summary-card is-blue">
+          <div class="summary-number">${summary.promoteCandidates ?? promote.length}</div>
+          <div class="summary-label">Promote Candidates</div>
+        </div>
+        <div class="summary-card is-yellow">
+          <div class="summary-number">${summary.holdCandidates ?? hold.length}</div>
+          <div class="summary-label">Hold</div>
+        </div>
+        <div class="summary-card is-orange">
+          <div class="summary-number">${summary.needsDecision ?? needs.length}</div>
+          <div class="summary-label">Needs Decision</div>
+        </div>
+        <div class="summary-card is-gray">
+          <div class="summary-number">~${totalTokens}</div>
+          <div class="summary-label">Total Tokens Covered</div>
+        </div>
+      </div>
+
+      ${summary.note ? `<div class="summary-note"><strong>Plan note:</strong> ${escapeHtml(summary.note)}</div>` : ''}
+
+      <h3 class="section-title">Promotion Items</h3>
+      <div class="filter-bar" id="mb-filter-bar">
+        <button class="filter-chip active" data-filter="all">All (${allItems.length})</button>
+        <button class="filter-chip" data-filter="promote-candidate">promote-candidate (${promote.length})</button>
+        <button class="filter-chip" data-filter="hold">hold (${hold.length})</button>
+        <button class="filter-chip" data-filter="needsDecision">needsDecision (${needs.length})</button>
+      </div>
+
+      <div class="table-wrap">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Layer</th>
+              <th>Group</th>
+              <th>Token Count</th>
+              <th>Status</th>
+              <th>Confidence</th>
+              <th>Reason</th>
+            </tr>
+          </thead>
+          <tbody id="mb-tbody"></tbody>
+        </table>
+      </div>
+
+      <h3 class="section-title">Token Draft Statistics</h3>
+      <div class="section-note">canonical-token-draft.json tokenCounts 기준 — Foundation·Semantic·Component 레이어별 토큰 수</div>
+      <div id="draft-stats"></div>
+    `;
+
+    function renderRows(filter) {
+      const tbody = document.getElementById('mb-tbody');
+      const rows = allItems.filter(it => filter === 'all' || it._kind === filter);
+      if (rows.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="7" class="empty-msg">해당 항목 없음</td></tr>`;
+        return;
+      }
+      tbody.innerHTML = rows.map(it => {
+        const kind = it._kind;
+        // needsDecision 항목은 layer/group/tokenCount이 없음. title/description으로 fallback.
+        const layer = it.layer || (kind === 'needsDecision' ? (it.priority ? `priority: ${it.priority}` : '—') : '—');
+        const group = it.group || it.title || '—';
+        const tokenCount = typeof it.tokenCount === 'number' ? it.tokenCount : '—';
+        const statusLabel = kind === 'promote-candidate' ? 'promote-candidate'
+                          : kind === 'hold' ? (it.promotionStatus || 'hold')
+                          : 'needsDecision';
+        const confidence = it.confidence || (kind === 'needsDecision' ? (it.priority === 'resolved' ? 'resolved' : 'pending') : '—');
+        const reason = it.reason || it.description || (Array.isArray(it.requiredReview) ? it.requiredReview.join(' · ') : '');
+        return `
+          <tr>
+            <td>${code(it.id)}</td>
+            <td>${fb(layer)}</td>
+            <td>${fb(group)}</td>
+            <td>${tokenCount}</td>
+            <td><span class="badge ${statusBadgeClass(statusLabel)}">${escapeHtml(statusLabel)}</span></td>
+            <td><span class="badge ${confidenceBadgeClass(confidence)}">${fb(confidence)}</span></td>
+            <td class="reason-cell">${fb(reason)}</td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    document.querySelectorAll('#mb-filter-bar .filter-chip').forEach(chip => {
+      chip.addEventListener('click', () => {
+        document.querySelectorAll('#mb-filter-bar .filter-chip').forEach(c => c.classList.toggle('active', c === chip));
+        renderRows(chip.dataset.filter);
+      });
+    });
+    renderRows('all');
+
+    // Token Draft Statistics 카드
+    const draftRoot = document.getElementById('draft-stats');
+    if (draftRes.error) {
+      renderError(draftRoot, draftRes.error);
+    } else {
+      const counts = (draftRes.data && draftRes.data.meta && draftRes.data.meta.tokenCounts) || {};
+      const order = [
+        ['foundationColorGroups', 'Foundation Color Groups'],
+        ['foundationColorFoundation', 'Foundation Color Foundation'],
+        ['semanticColorTokens', 'Semantic Color Tokens'],
+        ['semanticNonColorTokens', 'Semantic Non-Color Tokens'],
+        ['componentTokens', 'Component Tokens'],
+        ['componentTokensOfficial', 'Component Tokens (Official)'],
+        ['componentTokensLegacy', 'Component Tokens (Legacy)']
+      ];
+      const entries = order.filter(([k]) => k in counts);
+      if (entries.length === 0) {
+        draftRoot.innerHTML = '<div class="empty-msg">tokenCounts 데이터 없음</div>';
+      } else {
+        draftRoot.innerHTML = `
+          <div class="stats-grid">
+            ${entries.map(([k, label]) => `
+              <div class="stat-card">
+                <div class="stat-card-number">${counts[k]}</div>
+                <div class="stat-card-label">${label}</div>
+              </div>
+            `).join('')}
+          </div>
+        `;
+      }
+    }
+  }
+
+  document.addEventListener('DOMContentLoaded', renderBoard);
+</script>
+<script src="../assets/js/main.js"></script>
+</body>
+</html>

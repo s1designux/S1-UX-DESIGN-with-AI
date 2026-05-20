@@ -1,6 +1,6 @@
 # MVP-L2 — Foundation Layer 재분류 결과
 
-**Date:** 2026-05-18
+**Date:** 2026-05-20
 **Phase:** MVP-L2 (Foundation Reclassification)
 **Source:** reports/mvp-l1-legacy-token-audit.md + registry/figma/snapshots/figma-variable-metadata.ux-guide-2.4.json
 

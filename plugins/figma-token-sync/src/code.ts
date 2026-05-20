@@ -1,13 +1,97 @@
 /// <reference types="@figma/plugin-typings" />
 
-import type { PluginMessage, PluginResponse, FigmaVariableExport } from "./sync/types";
+import type {
+  PluginMessage,
+  PluginResponse,
+  FigmaVariableExport,
+  FigmaVariableBinding,
+  FigmaNodeVariableUsage,
+  FigmaVariableUsageExport,
+  SelectionNodeInfo,
+} from "./sync/types";
 import { buildSyncPreviewFromRegistry, syncStableTokens } from "./sync/tokenSync";
+
+// bundled at build time via esbuild require resolution
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const usageTargets = require("../../../registry/figma/figma-usage-targets.json") as {
+  meta: { expectedFileKey: string };
+  targets: Array<{ id: string; nodeId: string; name: string; component: string }>;
+};
+
+// ── MVP-F1 helpers ────────────────────────────────────────────────────────────
+
+async function collectNodeUsage(
+  node: BaseNode,
+  depth: number,
+): Promise<FigmaNodeVariableUsage> {
+  const bindings: FigmaVariableBinding[] = [];
+
+  const raw = (node as SceneNode & { boundVariables?: Record<string, unknown> }).boundVariables ?? {};
+
+  for (const [property, aliasOrArray] of Object.entries(raw)) {
+    const aliases = Array.isArray(aliasOrArray) ? aliasOrArray : [aliasOrArray];
+    for (const alias of aliases) {
+      if (!alias || typeof alias !== "object") continue;
+      const { type, id } = alias as { type: string; id: string };
+      if (type !== "VARIABLE_ALIAS" || !id) continue;
+
+      try {
+        const variable = await figma.variables.getVariableByIdAsync(id);
+        bindings.push({
+          property,
+          variableId: id,
+          variableName: variable?.name ?? "",
+          collectionName: variable
+            ? ((await figma.variables.getVariableCollectionByIdAsync(variable.variableCollectionId))?.name ?? "")
+            : "",
+          resolvedType: variable?.resolvedType ?? "",
+        });
+      } catch {
+        bindings.push({ property, variableId: id, variableName: "", collectionName: "", resolvedType: "" });
+      }
+    }
+  }
+
+  // Recurse into children up to depth 3
+  let childCount = 0;
+  if (depth < 3 && "children" in node) {
+    const children = (node as ChildrenMixin).children;
+    childCount = children.length;
+    for (const child of children) {
+      const childUsage = await collectNodeUsage(child, depth + 1);
+      bindings.push(...childUsage.bindings);
+    }
+  }
+
+  return {
+    nodeId: node.id,
+    nodeName: node.name,
+    nodeType: node.type,
+    parentId: node.parent?.id,
+    bindings,
+    childCount,
+  };
+}
 
 figma.showUI(__html__, {
   width: 520,
   height: 640,
   title: "SW DS Token Sync — Dry Run Preview",
 });
+
+// Push selection info to UI whenever selection changes
+function pushSelectionInfo(): void {
+  const sel = figma.currentPage.selection;
+  const selectionInfo: SelectionNodeInfo[] = sel.map((n) => ({
+    id: n.id,
+    name: n.name,
+    type: n.type,
+  }));
+  const response: PluginResponse = { type: "selection-info", selectionInfo };
+  figma.ui.postMessage(response);
+}
+
+figma.on("selectionchange", pushSelectionInfo);
 
 figma.ui.onmessage = (msg: PluginMessage) => {
   if (msg.type === "preview") {
@@ -71,6 +155,105 @@ figma.ui.onmessage = (msg: PluginMessage) => {
         const response: PluginResponse = { type: "export-error", error: String(e) };
         figma.ui.postMessage(response);
       }
+    })();
+    return;
+  }
+
+  if (msg.type === "export-variable-usage") {
+    (async () => {
+      const nodeIds = usageTargets.targets.map((t) => t.nodeId);
+      const nodeUsages: FigmaNodeVariableUsage[] = [];
+      const errors: Array<{ nodeId: string; reason: string }> = [];
+
+      for (const nodeId of nodeIds) {
+        const node = figma.getNodeById(nodeId);
+        if (!node) {
+          errors.push({ nodeId, reason: "Node not found — may have been moved or deleted in Figma." });
+          continue;
+        }
+        try {
+          const usage = await collectNodeUsage(node, 0);
+          nodeUsages.push(usage);
+        } catch (e) {
+          errors.push({ nodeId, reason: String(e) });
+        }
+      }
+
+      const totalUsageCount = nodeUsages.reduce((sum, n) => sum + n.bindings.length, 0);
+
+      const usageData: FigmaVariableUsageExport = {
+        exportMeta: {
+          type: "figma-variable-usage",
+          schemaVersion: "1.0.0",
+          figmaFileKey: usageTargets.meta.expectedFileKey,
+          figmaFileName: figma.root.name,
+          pluginName: "SW DS Token Sync",
+          exportedAt: new Date().toISOString(),
+          targetNodeIds: nodeIds,
+          totalUsageCount,
+          errorCount: errors.length,
+          source: "figma-plugin-api",
+          writeEnabled: false,
+        },
+        nodeUsages,
+        errors,
+      };
+
+      const response: PluginResponse = { type: "usage-result", usageData };
+      figma.ui.postMessage(response);
+    })();
+    return;
+  }
+
+  if (msg.type === "get-selection") {
+    pushSelectionInfo();
+    return;
+  }
+
+  if (msg.type === "scan-selection") {
+    (async () => {
+      const selection = figma.currentPage.selection;
+      if (selection.length === 0) {
+        const response: PluginResponse = { type: "usage-error", error: "선택된 노드가 없습니다. Figma 캔버스에서 스캔할 컴포넌트를 선택한 뒤 다시 시도하세요." };
+        figma.ui.postMessage(response);
+        return;
+      }
+
+      const nodeUsages: FigmaNodeVariableUsage[] = [];
+      const errors: Array<{ nodeId: string; reason: string }> = [];
+
+      for (const node of selection) {
+        try {
+          const usage = await collectNodeUsage(node, 0);
+          nodeUsages.push(usage);
+        } catch (e) {
+          errors.push({ nodeId: node.id, reason: String(e) });
+        }
+      }
+
+      const totalUsageCount = nodeUsages.reduce((sum, n) => sum + n.bindings.length, 0);
+      const nodeIds = selection.map((n) => n.id);
+
+      const usageData: FigmaVariableUsageExport = {
+        exportMeta: {
+          type: "figma-variable-usage",
+          schemaVersion: "1.0.0",
+          figmaFileKey: figma.fileKey ?? usageTargets.meta.expectedFileKey,
+          figmaFileName: figma.root.name,
+          pluginName: "SW DS Token Sync",
+          exportedAt: new Date().toISOString(),
+          targetNodeIds: nodeIds,
+          totalUsageCount,
+          errorCount: errors.length,
+          source: "figma-plugin-api",
+          writeEnabled: false,
+        },
+        nodeUsages,
+        errors,
+      };
+
+      const response: PluginResponse = { type: "usage-result", usageData };
+      figma.ui.postMessage(response);
     })();
     return;
   }

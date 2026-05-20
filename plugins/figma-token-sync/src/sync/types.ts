@@ -107,12 +107,60 @@ export interface FigmaVariableExport {
 }
 
 export interface PluginMessage {
-  type: "preview" | "sync" | "cancel" | "export-variables";
+  type: "preview" | "sync" | "cancel" | "export-variables" | "export-variable-usage" | "scan-selection" | "get-selection";
+}
+
+export interface SelectionNodeInfo {
+  id: string;
+  name: string;
+  type: string;
 }
 
 export interface PluginResponse {
-  type: "preview-result" | "sync-error" | "loading" | "export-result" | "export-error";
+  type: "preview-result" | "sync-error" | "loading" | "export-result" | "export-error" | "usage-result" | "usage-error" | "selection-info";
   result?: TokenSyncSummary;
   exportData?: FigmaVariableExport;
+  usageData?: FigmaVariableUsageExport;
+  selectionInfo?: SelectionNodeInfo[];
   error?: string;
+}
+
+// ── MVP-F1: Variable Usage Export types ──────────────────────────────────────
+
+export interface FigmaVariableBinding {
+  property: string;
+  variableId: string;
+  variableName: string;
+  collectionName: string;
+  resolvedType: string;
+}
+
+export interface FigmaNodeVariableUsage {
+  nodeId: string;
+  nodeName: string;
+  nodeType: string;
+  parentId?: string;
+  bindings: FigmaVariableBinding[];
+  childCount: number;
+  error?: string;
+}
+
+export interface FigmaUsageExportMeta {
+  type: "figma-variable-usage";
+  schemaVersion: "1.0.0";
+  figmaFileKey: string;
+  figmaFileName: string;
+  pluginName: "SW DS Token Sync";
+  exportedAt: string;
+  targetNodeIds: string[];
+  totalUsageCount: number;
+  errorCount: number;
+  source: "figma-plugin-api";
+  writeEnabled: false;
+}
+
+export interface FigmaVariableUsageExport {
+  exportMeta: FigmaUsageExportMeta;
+  nodeUsages: FigmaNodeVariableUsage[];
+  errors: Array<{ nodeId: string; reason: string }>;
 }

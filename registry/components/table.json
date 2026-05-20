@@ -2,23 +2,158 @@
   "_meta": {
     "id": "table",
     "name": "Table",
-    "category": "Core",
-    "updatedAt": "2026-05-11",
+    "category": "data",
+    "updatedAt": "2026-05-20",
+    "version": "0.2.0",
     "tokenStatus": "stable",
     "codeStatus": "not-started",
-    "darkModeStatus": "pending",
-    "description": "Data grid / table component with header, row hover, row selected, and cell styles."
+    "darkModeStatus": "candidate",
+    "a11yStatus": "pending",
+    "figmaStatus": "confirmed",
+    "harnessStatus": "skeleton",
+    "description": "데이터 그리드/테이블 컴포넌트. 헤더(정렬 아이콘·체크박스 포함), 행 hover·selected, 셀 스타일 포함.",
+    "notes": [
+      "HD-Table-1: --color-data-state-hover dark값 = blue-dark-100(#112B55) candidate — Figma dark 미확인.",
+      "HD-Table-2: --table-row-selected-bg = blue-50 (hover와 동일). 선택 행 강조 방식 결정 필요.",
+      "체크박스 first column: Checkbox 컴포넌트 참조 (position=middle, check box=on).",
+      "정렬 아이콘: combobox_arrow SVG, 18×18px (icon=on 헤더 variant)."
+    ]
   },
   "variants": {
-    "default": {
-      "tokenStatus": "stable",
-      "codeStatus": "not-started",
-      "darkModeStatus": "pending",
-      "tokens": [
-        "--table-header-bg", "--table-header-text", "--table-header-border",
-        "--table-row-default-bg", "--table-row-hover-bg", "--table-row-selected-bg",
-        "--table-cell-border", "--table-cell-text"
-      ]
+    "header": {
+      "size": ["md", "sm"],
+      "position": ["middle", "last"],
+      "align": ["center", "left"],
+      "state": ["default", "hover"],
+      "icon": ["on", "off"],
+      "checkBox": ["on", "off"]
+    },
+    "body": {
+      "size": ["md", "sm"],
+      "position": ["middle", "last"],
+      "align": ["center", "left"],
+      "state": ["default", "hover", "selected"]
     }
+  },
+  "sizing": {
+    "rowHeightMd": "var(--sizing-table-row-height-md)",
+    "rowHeightSm": "var(--sizing-table-row-height-sm)",
+    "paddingInlineStart": "var(--spacing-padding-inline-xs)",
+    "paddingInlineEnd": "var(--spacing-padding-inline-sm)",
+    "headerFont": "Pretendard Medium 14px",
+    "bodyFont": "Pretendard Regular 14px"
+  },
+  "states": ["default", "hover", "selected"],
+  "tokens": [
+    {
+      "name": "--table-header-bg",
+      "value": "var(--color-bg-default)",
+      "resolvedLight": "#FAFAFA",
+      "figmaVariable": "surface/neutral/bg/base-alt",
+      "status": "stable",
+      "description": "헤더 셀 기본 배경"
+    },
+    {
+      "name": "--table-header-hover-bg",
+      "value": "var(--color-bg-subtle)",
+      "resolvedLight": "#F5F5F5",
+      "figmaVariable": "surface/neutral/bg/subtle",
+      "status": "stable",
+      "description": "헤더 셀 hover 배경"
+    },
+    {
+      "name": "--table-header-text",
+      "value": "var(--color-text-secondary)",
+      "resolvedLight": "#353535",
+      "figmaVariable": "color/text/title/secondary",
+      "status": "stable",
+      "description": "헤더 셀 텍스트 색상"
+    },
+    {
+      "name": "--table-border-light",
+      "value": "var(--color-border-subtle)",
+      "resolvedLight": "#E9E9E9",
+      "figmaVariable": "color/data/border/light",
+      "status": "stable",
+      "description": "행 구분선 — 헤더·바디 셀 공통 참조"
+    },
+    {
+      "name": "--table-border-strong",
+      "value": "var(--color-border-default)",
+      "resolvedLight": "#D9D9D9",
+      "figmaVariable": "color/data/border/strong",
+      "status": "stable",
+      "description": "열 구분선·외곽 강조 테두리"
+    },
+    {
+      "name": "--table-header-border",
+      "value": "var(--table-border-light)",
+      "resolvedLight": "#E9E9E9",
+      "figmaVariable": "color/data/border/light",
+      "status": "stable",
+      "description": "헤더 셀 하단 구분선"
+    },
+    {
+      "name": "--table-row-default-bg",
+      "value": "var(--color-surface-default)",
+      "resolvedLight": "#FFFFFF",
+      "figmaVariable": "color/data/state/default",
+      "status": "stable",
+      "description": "행 기본 배경"
+    },
+    {
+      "name": "--table-row-hover-bg",
+      "value": "var(--color-data-state-hover)",
+      "resolvedLight": "#E2F1FF",
+      "figmaVariable": "color/data/state/hover",
+      "status": "stable",
+      "description": "행 hover 배경 — Figma: color/data/state/hover = blue-50(#E2F1FF). dark: candidate(HD-Table-1)."
+    },
+    {
+      "name": "--table-row-selected-bg",
+      "value": "var(--color-bg-selected)",
+      "resolvedLight": "#E2F1FF",
+      "figmaVariable": "",
+      "status": "candidate",
+      "description": "행 선택 배경 — HD-Table-2: hover와 동일값, 시각 구분 필요 여부 결정 대기"
+    },
+    {
+      "name": "--table-cell-border",
+      "value": "var(--table-border-light)",
+      "resolvedLight": "#E9E9E9",
+      "figmaVariable": "color/data/border/light",
+      "status": "stable",
+      "description": "바디 셀 하단 구분선"
+    },
+    {
+      "name": "--table-cell-text",
+      "value": "var(--color-text-secondary)",
+      "resolvedLight": "#353535",
+      "figmaVariable": "color/text/body/primary",
+      "status": "stable",
+      "description": "바디 셀 본문 텍스트 색상"
+    }
+  ],
+  "figma": {
+    "componentSetKey": "",
+    "figmaNodeId": "6515:4142",
+    "nodes": {
+      "pcTableHeader": "540:4940",
+      "pcTableBody": "540:4851",
+      "fullExample": "540:5241"
+    },
+    "propertyMap": {
+      "size": "size",
+      "position": "position",
+      "align": "align",
+      "state": "state",
+      "icon": "icon",
+      "checkBox": "check box"
+    }
+  },
+  "governance": {
+    "owner": "Design System Team",
+    "deprecated": false,
+    "replacement": null
   }
 }

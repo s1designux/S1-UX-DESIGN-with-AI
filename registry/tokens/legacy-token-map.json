@@ -4,7 +4,7 @@
     "version": "0.2.0",
     "status": "draft",
     "source": "ux-guide-2.4",
-    "generatedAt": "2026-05-18T07:33:20.997Z",
+    "generatedAt": "2026-05-20T00:31:46.681Z",
     "figmaFileRef": "SW UX GUIDE V2.4",
     "description": "Maps legacy Figma Variables from S1 UX Guide 2.4 to canonical registry tokens. v0.2.0: suggestedLayer / suggestedGroup / classificationReason 추가.",
     "sourceOfTruth": "code-registry",
@@ -12,7 +12,9 @@
       "Foundation Token",
       "Semantic Token",
       "Component Token"
-    ]
+    ],
+    "mvpL2ClassifiedAt": "2026-05-20",
+    "mvpL2Version": "1.0"
   },
   "sources": [
     {
@@ -3591,9 +3593,12 @@
       "canonicalRegistryToken": "button.primary.default.bg / button.primary.default.text / button.primary.hover.bg / button.primary.pressed.bg / button.primary.disabled.bg",
       "canonicalCssVariable": "",
       "canonicalFigmaVariableCandidate": "",
-      "migrationStatus": "needs-review",
+      "migrationStatus": "future-component-token",
       "canonicalConfidence": "low",
-      "notes": []
+      "notes": [],
+      "mvpL2Status": "future-component-token",
+      "mvpL2Reason": "서비스별 StatusCard 배경색 — Domain Component 전용. blue/green/skyblue = 서비스 분류, gray = 비활성, red = 오류. Core Semantic 아님.",
+      "mvpL2ClassifiedAt": "2026-05-20"
     },
     {
       "id": "legacy.surface.status.sub.primary",
@@ -3613,9 +3618,12 @@
       "canonicalRegistryToken": "button.primary.default.bg / button.primary.default.text / button.primary.hover.bg / button.primary.pressed.bg / button.primary.disabled.bg",
       "canonicalCssVariable": "",
       "canonicalFigmaVariableCandidate": "",
-      "migrationStatus": "needs-review",
+      "migrationStatus": "future-component-token",
       "canonicalConfidence": "low",
-      "notes": []
+      "notes": [],
+      "mvpL2Status": "future-component-token",
+      "mvpL2Reason": "서비스별 StatusCard 배경색 — Domain Component 전용. blue/green/skyblue = 서비스 분류, gray = 비활성, red = 오류. Core Semantic 아님.",
+      "mvpL2ClassifiedAt": "2026-05-20"
     },
     {
       "id": "legacy.surface.status.main.secondary",
@@ -3635,9 +3643,12 @@
       "canonicalRegistryToken": "form-control.text.label / button.secondary.default.bg / button.secondary.default.border",
       "canonicalCssVariable": "",
       "canonicalFigmaVariableCandidate": "",
-      "migrationStatus": "needs-review",
+      "migrationStatus": "future-component-token",
       "canonicalConfidence": "low",
-      "notes": []
+      "notes": [],
+      "mvpL2Status": "future-component-token",
+      "mvpL2Reason": "서비스별 StatusCard 배경색 — Domain Component 전용. blue/green/skyblue = 서비스 분류, gray = 비활성, red = 오류. Core Semantic 아님.",
+      "mvpL2ClassifiedAt": "2026-05-20"
     },
     {
       "id": "legacy.surface.status.sub.secondary",
@@ -3657,9 +3668,12 @@
       "canonicalRegistryToken": "form-control.text.label / button.secondary.default.bg / button.secondary.default.border",
       "canonicalCssVariable": "",
       "canonicalFigmaVariableCandidate": "",
-      "migrationStatus": "needs-review",
+      "migrationStatus": "future-component-token",
       "canonicalConfidence": "low",
-      "notes": []
+      "notes": [],
+      "mvpL2Status": "future-component-token",
+      "mvpL2Reason": "서비스별 StatusCard 배경색 — Domain Component 전용. blue/green/skyblue = 서비스 분류, gray = 비활성, red = 오류. Core Semantic 아님.",
+      "mvpL2ClassifiedAt": "2026-05-20"
     },
     {
       "id": "legacy.surface.status.main.tertiary",
@@ -3679,9 +3693,12 @@
       "canonicalRegistryToken": "",
       "canonicalCssVariable": "",
       "canonicalFigmaVariableCandidate": "",
-      "migrationStatus": "needs-review",
+      "migrationStatus": "future-component-token",
       "canonicalConfidence": "no-candidate",
-      "notes": []
+      "notes": [],
+      "mvpL2Status": "future-component-token",
+      "mvpL2Reason": "서비스별 StatusCard 배경색 — Domain Component 전용. blue/green/skyblue = 서비스 분류, gray = 비활성, red = 오류. Core Semantic 아님.",
+      "mvpL2ClassifiedAt": "2026-05-20"
     },
     {
       "id": "legacy.surface.status.sub.tertiary",
@@ -3701,9 +3718,12 @@
       "canonicalRegistryToken": "",
       "canonicalCssVariable": "",
       "canonicalFigmaVariableCandidate": "",
-      "migrationStatus": "needs-review",
+      "migrationStatus": "future-component-token",
       "canonicalConfidence": "no-candidate",
-      "notes": []
+      "notes": [],
+      "mvpL2Status": "future-component-token",
+      "mvpL2Reason": "서비스별 StatusCard 배경색 — Domain Component 전용. blue/green/skyblue = 서비스 분류, gray = 비활성, red = 오류. Core Semantic 아님.",
+      "mvpL2ClassifiedAt": "2026-05-20"
     },
     {
       "id": "legacy.surface.status.state.disabled",
@@ -3721,11 +3741,14 @@
       "classificationReason": "no foundation pattern detected",
       "layerConfidence": "medium",
       "canonicalRegistryToken": "form-control.bg.disabled / form-control.border.disabled / form-control.text.disabled / input.disabled.bg / input.disabled.border / input.disabled.text / button.primary.disabled.bg",
-      "canonicalCssVariable": "",
+      "canonicalCssVariable": "--color-form-control-bg-disabled",
       "canonicalFigmaVariableCandidate": "",
-      "migrationStatus": "needs-review",
+      "migrationStatus": "hold-duplicate",
       "canonicalConfidence": "low",
-      "notes": []
+      "notes": [],
+      "mvpL2Status": "hold-duplicate",
+      "mvpL2Reason": "disabled 개념이 --color-form-control-bg-disabled로 이미 커버됨. 중복.",
+      "mvpL2ClassifiedAt": "2026-05-20"
     },
     {
       "id": "legacy.surface.status.state.error",
@@ -3743,11 +3766,14 @@
       "classificationReason": "no foundation pattern detected",
       "layerConfidence": "medium",
       "canonicalRegistryToken": "form-control.border.error / color.text.state.error / input.error.border / input.error.text",
-      "canonicalCssVariable": "",
+      "canonicalCssVariable": "--color-form-control-border-error",
       "canonicalFigmaVariableCandidate": "",
-      "migrationStatus": "needs-review",
+      "migrationStatus": "hold-duplicate",
       "canonicalConfidence": "low",
-      "notes": []
+      "notes": [],
+      "mvpL2Status": "hold-duplicate",
+      "mvpL2Reason": "error 개념이 --color-form-control-border-error / --color-text-state-error로 이미 커버됨. 중복.",
+      "mvpL2ClassifiedAt": "2026-05-20"
     },
     {
       "id": "legacy.color.control.bg.default",
@@ -3767,9 +3793,12 @@
       "canonicalRegistryToken": "form-control.bg.default / form-control.border.default / form-control.text.default / input.default.bg / input.default.border / button.primary.default.bg / button.primary.default.text / button.secondary.default.bg / button.secondary.default.border / button.blue-line.default.border / button.blue-line.default.text",
       "canonicalCssVariable": "",
       "canonicalFigmaVariableCandidate": "",
-      "migrationStatus": "needs-review",
+      "migrationStatus": "hold-needs-review",
       "canonicalConfidence": "low",
-      "notes": []
+      "notes": [],
+      "mvpL2Status": "hold-needs-review",
+      "mvpL2Reason": "다중 후보(form-control-bg-default, surface-default). Checkbox/Radio 기본 bg는 transparent일 수 있음. Figma 실제값 확인 필요.",
+      "mvpL2ClassifiedAt": "2026-05-20"
     },
     {
       "id": "legacy.color.control.bg.default-alt",
@@ -3789,9 +3818,12 @@
       "canonicalRegistryToken": "",
       "canonicalCssVariable": "",
       "canonicalFigmaVariableCandidate": "",
-      "migrationStatus": "needs-review",
+      "migrationStatus": "hold-missing-usage",
       "canonicalConfidence": "no-candidate",
-      "notes": []
+      "notes": [],
+      "mvpL2Status": "hold-missing-usage",
+      "mvpL2Reason": "no-candidate. \"-alt\" 변형 목적 불명확.",
+      "mvpL2ClassifiedAt": "2026-05-20"
     },
     {
       "id": "legacy.color.control.bg.hover",
@@ -3811,9 +3843,12 @@
       "canonicalRegistryToken": "button.primary.hover.bg",
       "canonicalCssVariable": "--button-primary-hover-bg",
       "canonicalFigmaVariableCandidate": "",
-      "migrationStatus": "needs-review",
+      "migrationStatus": "hold-needs-review",
       "canonicalConfidence": "medium",
-      "notes": []
+      "notes": [],
+      "mvpL2Status": "hold-needs-review",
+      "mvpL2Reason": "control hover bg — --color-control-border-hover 존재하지만 bg 미정의. 실제 Figma 값 확인 필요.",
+      "mvpL2ClassifiedAt": "2026-05-20"
     },
     {
       "id": "legacy.color.control.bg.disabled",
@@ -3831,11 +3866,14 @@
       "classificationReason": "no foundation pattern detected",
       "layerConfidence": "medium",
       "canonicalRegistryToken": "form-control.bg.disabled / form-control.border.disabled / form-control.text.disabled / input.disabled.bg / input.disabled.border / input.disabled.text / button.primary.disabled.bg",
-      "canonicalCssVariable": "",
+      "canonicalCssVariable": "--color-form-control-bg-disabled",
       "canonicalFigmaVariableCandidate": "",
-      "migrationStatus": "needs-review",
+      "migrationStatus": "alias-only",
       "canonicalConfidence": "low",
-      "notes": []
+      "notes": [],
+      "mvpL2Status": "alias-only",
+      "mvpL2Reason": "disabled bg = form-control disabled bg. alias-only.",
+      "mvpL2ClassifiedAt": "2026-05-20"
     },
     {
       "id": "legacy.color.control.border.default",
@@ -3853,11 +3891,14 @@
       "classificationReason": "no foundation pattern detected",
       "layerConfidence": "medium",
       "canonicalRegistryToken": "form-control.bg.default / form-control.border.default / form-control.text.default / input.default.bg / input.default.border / button.primary.default.bg / button.primary.default.text / button.secondary.default.bg / button.secondary.default.border / button.blue-line.default.border / button.blue-line.default.text",
-      "canonicalCssVariable": "",
+      "canonicalCssVariable": "--color-control-border-default",
       "canonicalFigmaVariableCandidate": "",
-      "migrationStatus": "needs-review",
+      "migrationStatus": "alias-only",
       "canonicalConfidence": "low",
-      "notes": []
+      "notes": [],
+      "mvpL2Status": "alias-only",
+      "mvpL2Reason": "MVP4.4에서 신설. 이미 존재.",
+      "mvpL2ClassifiedAt": "2026-05-20"
     },
     {
       "id": "legacy.color.control.border.default-alt",
@@ -3877,9 +3918,12 @@
       "canonicalRegistryToken": "",
       "canonicalCssVariable": "",
       "canonicalFigmaVariableCandidate": "",
-      "migrationStatus": "needs-review",
+      "migrationStatus": "hold-missing-usage",
       "canonicalConfidence": "no-candidate",
-      "notes": []
+      "notes": [],
+      "mvpL2Status": "hold-missing-usage",
+      "mvpL2Reason": "no-candidate. \"-alt\" 변형 목적 불명확.",
+      "mvpL2ClassifiedAt": "2026-05-20"
     },
     {
       "id": "legacy.color.control.border.disabled",
@@ -3897,11 +3941,14 @@
       "classificationReason": "no foundation pattern detected",
       "layerConfidence": "medium",
       "canonicalRegistryToken": "form-control.bg.disabled / form-control.border.disabled / form-control.text.disabled / input.disabled.bg / input.disabled.border / input.disabled.text / button.primary.disabled.bg",
-      "canonicalCssVariable": "",
+      "canonicalCssVariable": "--color-control-border-disabled",
       "canonicalFigmaVariableCandidate": "",
-      "migrationStatus": "needs-review",
+      "migrationStatus": "alias-only",
       "canonicalConfidence": "low",
-      "notes": []
+      "notes": [],
+      "mvpL2Status": "alias-only",
+      "mvpL2Reason": "MVP4.4에서 신설. 이미 존재.",
+      "mvpL2ClassifiedAt": "2026-05-20"
     },
     {
       "id": "legacy.color.control.border.disabled-alt2",
@@ -3921,9 +3968,12 @@
       "canonicalRegistryToken": "",
       "canonicalCssVariable": "",
       "canonicalFigmaVariableCandidate": "",
-      "migrationStatus": "needs-review",
+      "migrationStatus": "hold-missing-usage",
       "canonicalConfidence": "no-candidate",
-      "notes": []
+      "notes": [],
+      "mvpL2Status": "hold-missing-usage",
+      "mvpL2Reason": "no-candidate. disabled alt variant 목적 불명확.",
+      "mvpL2ClassifiedAt": "2026-05-20"
     },
     {
       "id": "legacy.color.control.text.selected",
@@ -3943,9 +3993,12 @@
       "canonicalRegistryToken": "form-control.border.selected / date-picker.cell.selected.bg / date-picker.cell.selected.text",
       "canonicalCssVariable": "",
       "canonicalFigmaVariableCandidate": "",
-      "migrationStatus": "needs-review",
+      "migrationStatus": "hold-needs-review",
       "canonicalConfidence": "low",
-      "notes": []
+      "notes": [],
+      "mvpL2Status": "hold-needs-review",
+      "mvpL2Reason": "control text when checked/selected. --color-action-primary-default 가능성. Figma 값 확인 필요.",
+      "mvpL2ClassifiedAt": "2026-05-20"
     },
     {
       "id": "legacy.color.control.text.disabled",
@@ -3963,11 +4016,14 @@
       "classificationReason": "no foundation pattern detected",
       "layerConfidence": "medium",
       "canonicalRegistryToken": "form-control.bg.disabled / form-control.border.disabled / form-control.text.disabled / input.disabled.bg / input.disabled.border / input.disabled.text / button.primary.disabled.bg",
-      "canonicalCssVariable": "",
+      "canonicalCssVariable": "--color-text-disabled",
       "canonicalFigmaVariableCandidate": "",
-      "migrationStatus": "needs-review",
+      "migrationStatus": "alias-only",
       "canonicalConfidence": "low",
-      "notes": []
+      "notes": [],
+      "mvpL2Status": "alias-only",
+      "mvpL2Reason": "disabled text = semantic disabled text.",
+      "mvpL2ClassifiedAt": "2026-05-20"
     },
     {
       "id": "legacy.color.control.indicator.selected",
@@ -3985,11 +4041,15 @@
       "classificationReason": "no foundation pattern detected",
       "layerConfidence": "medium",
       "canonicalRegistryToken": "form-control.border.selected / date-picker.cell.selected.bg / date-picker.cell.selected.text",
-      "canonicalCssVariable": "",
+      "canonicalCssVariable": "--color-control-indicator-selected",
       "canonicalFigmaVariableCandidate": "",
-      "migrationStatus": "needs-review",
+      "migrationStatus": "promote-candidate",
       "canonicalConfidence": "low",
-      "notes": []
+      "notes": [],
+      "mvpL2Status": "promote-candidate",
+      "canonicalValue": "var(--color-action-primary-default)",
+      "mvpL2Reason": "Checkbox checkmark / Radio dot fill when checked. --color-control-border-* 시리즈와 대칭. 미정의 semantic 토큰.",
+      "mvpL2ClassifiedAt": "2026-05-20"
     },
     {
       "id": "legacy.color.control.indicator.selected-alt",
@@ -4009,9 +4069,12 @@
       "canonicalRegistryToken": "",
       "canonicalCssVariable": "",
       "canonicalFigmaVariableCandidate": "",
-      "migrationStatus": "needs-review",
+      "migrationStatus": "hold-missing-usage",
       "canonicalConfidence": "no-candidate",
-      "notes": []
+      "notes": [],
+      "mvpL2Status": "hold-missing-usage",
+      "mvpL2Reason": "no-candidate. alt indicator 목적 불명확.",
+      "mvpL2ClassifiedAt": "2026-05-20"
     },
     {
       "id": "legacy.color.control.indicator.unselected",
@@ -4031,9 +4094,12 @@
       "canonicalRegistryToken": "",
       "canonicalCssVariable": "",
       "canonicalFigmaVariableCandidate": "",
-      "migrationStatus": "needs-review",
+      "migrationStatus": "hold-missing-usage",
       "canonicalConfidence": "no-candidate",
-      "notes": []
+      "notes": [],
+      "mvpL2Status": "hold-missing-usage",
+      "mvpL2Reason": "no-candidate. unselected indicator는 transparent일 가능성. 토큰 불필요 여부 확인 필요.",
+      "mvpL2ClassifiedAt": "2026-05-20"
     },
     {
       "id": "legacy.color.control.indicator.unselected-alt",
@@ -4053,9 +4119,12 @@
       "canonicalRegistryToken": "",
       "canonicalCssVariable": "",
       "canonicalFigmaVariableCandidate": "",
-      "migrationStatus": "needs-review",
+      "migrationStatus": "hold-missing-usage",
       "canonicalConfidence": "no-candidate",
-      "notes": []
+      "notes": [],
+      "mvpL2Status": "hold-missing-usage",
+      "mvpL2Reason": "no-candidate. alt 목적 불명확.",
+      "mvpL2ClassifiedAt": "2026-05-20"
     },
     {
       "id": "legacy.color.control.indicator.disabled",
@@ -4073,11 +4142,14 @@
       "classificationReason": "no foundation pattern detected",
       "layerConfidence": "medium",
       "canonicalRegistryToken": "form-control.bg.disabled / form-control.border.disabled / form-control.text.disabled / input.disabled.bg / input.disabled.border / input.disabled.text / button.primary.disabled.bg",
-      "canonicalCssVariable": "",
+      "canonicalCssVariable": "--color-text-disabled",
       "canonicalFigmaVariableCandidate": "",
-      "migrationStatus": "needs-review",
+      "migrationStatus": "alias-only",
       "canonicalConfidence": "low",
-      "notes": []
+      "notes": [],
+      "mvpL2Status": "alias-only",
+      "mvpL2Reason": "disabled indicator fill = disabled text color.",
+      "mvpL2ClassifiedAt": "2026-05-20"
     },
     {
       "id": "legacy.color.text.title.primary",
@@ -4095,11 +4167,14 @@
       "classificationReason": "no foundation pattern detected",
       "layerConfidence": "medium",
       "canonicalRegistryToken": "button.primary.default.bg / button.primary.default.text / button.primary.hover.bg / button.primary.pressed.bg / button.primary.disabled.bg",
-      "canonicalCssVariable": "",
+      "canonicalCssVariable": "--color-text-primary",
       "canonicalFigmaVariableCandidate": "",
-      "migrationStatus": "needs-review",
+      "migrationStatus": "alias-only",
       "canonicalConfidence": "low",
-      "notes": []
+      "notes": [],
+      "mvpL2Status": "alias-only",
+      "mvpL2Reason": "title primary = --color-text-primary (#202020). Rule 2 기준.",
+      "mvpL2ClassifiedAt": "2026-05-20"
     },
     {
       "id": "legacy.color.text.title.tertiary",
@@ -4119,9 +4194,12 @@
       "canonicalRegistryToken": "",
       "canonicalCssVariable": "",
       "canonicalFigmaVariableCandidate": "",
-      "migrationStatus": "needs-review",
+      "migrationStatus": "hold-needs-review",
       "canonicalConfidence": "no-candidate",
-      "notes": []
+      "notes": [],
+      "mvpL2Status": "hold-needs-review",
+      "mvpL2Reason": "title/tertiary text. --color-text-tertiary 가능성이나 실제 값 미확인.",
+      "mvpL2ClassifiedAt": "2026-05-20"
     },
     {
       "id": "legacy.color.text.body.primary",
@@ -4139,11 +4217,14 @@
       "classificationReason": "no foundation pattern detected",
       "layerConfidence": "medium",
       "canonicalRegistryToken": "button.primary.default.bg / button.primary.default.text / button.primary.hover.bg / button.primary.pressed.bg / button.primary.disabled.bg",
-      "canonicalCssVariable": "",
+      "canonicalCssVariable": "--color-text-primary",
       "canonicalFigmaVariableCandidate": "",
-      "migrationStatus": "needs-review",
+      "migrationStatus": "alias-only",
       "canonicalConfidence": "low",
-      "notes": []
+      "notes": [],
+      "mvpL2Status": "alias-only",
+      "mvpL2Reason": "body primary text = --color-text-primary.",
+      "mvpL2ClassifiedAt": "2026-05-20"
     },
     {
       "id": "legacy.color.text.body.secondary",
@@ -4161,11 +4242,14 @@
       "classificationReason": "no foundation pattern detected",
       "layerConfidence": "medium",
       "canonicalRegistryToken": "form-control.text.label / button.secondary.default.bg / button.secondary.default.border",
-      "canonicalCssVariable": "",
+      "canonicalCssVariable": "--color-text-secondary",
       "canonicalFigmaVariableCandidate": "",
-      "migrationStatus": "needs-review",
+      "migrationStatus": "alias-only",
       "canonicalConfidence": "low",
-      "notes": []
+      "notes": [],
+      "mvpL2Status": "alias-only",
+      "mvpL2Reason": "body secondary = --color-text-secondary.",
+      "mvpL2ClassifiedAt": "2026-05-20"
     },
     {
       "id": "legacy.color.text.body.tertiary",
@@ -4185,9 +4269,12 @@
       "canonicalRegistryToken": "",
       "canonicalCssVariable": "",
       "canonicalFigmaVariableCandidate": "",
-      "migrationStatus": "needs-review",
+      "migrationStatus": "hold-needs-review",
       "canonicalConfidence": "no-candidate",
-      "notes": []
+      "notes": [],
+      "mvpL2Status": "hold-needs-review",
+      "mvpL2Reason": "body/tertiary text. --color-text-tertiary 가능성. 실제 값 미확인.",
+      "mvpL2ClassifiedAt": "2026-05-20"
     },
     {
       "id": "legacy.color.text.state.correct",
@@ -4205,11 +4292,14 @@
       "classificationReason": "no foundation pattern detected",
       "layerConfidence": "medium",
       "canonicalRegistryToken": "form-control.border.correct / color.text.state.correct / input.success.border / input.correct.text",
-      "canonicalCssVariable": "",
+      "canonicalCssVariable": "--color-text-state-correct",
       "canonicalFigmaVariableCandidate": "",
-      "migrationStatus": "needs-review",
+      "migrationStatus": "deprecated-alias",
       "canonicalConfidence": "low",
-      "notes": []
+      "notes": [],
+      "mvpL2Status": "deprecated-alias",
+      "mvpL2Reason": "Rule 5: correct는 success의 deprecated alias. CSS canonical --color-text-state-correct로 매핑. Figma legacy variable 유지, CSS 토큰은 이미 존재.",
+      "mvpL2ClassifiedAt": "2026-05-20"
     },
     {
       "id": "legacy.color.text.state.caution",
@@ -4227,11 +4317,14 @@
       "classificationReason": "no foundation pattern detected",
       "layerConfidence": "medium",
       "canonicalRegistryToken": "",
-      "canonicalCssVariable": "",
+      "canonicalCssVariable": "--color-text-state-error",
       "canonicalFigmaVariableCandidate": "",
-      "migrationStatus": "needs-review",
+      "migrationStatus": "alias-only",
       "canonicalConfidence": "no-candidate",
-      "notes": []
+      "notes": [],
+      "mvpL2Status": "alias-only",
+      "mvpL2Reason": "사용자 결정(2026-05-20): caution = error로 처리. --color-text-state-error alias.",
+      "mvpL2ClassifiedAt": "2026-05-20"
     },
     {
       "id": "legacy.color.text.state.caption",
@@ -4251,9 +4344,12 @@
       "canonicalRegistryToken": "",
       "canonicalCssVariable": "",
       "canonicalFigmaVariableCandidate": "",
-      "migrationStatus": "needs-review",
+      "migrationStatus": "hold-needs-review",
       "canonicalConfidence": "no-candidate",
-      "notes": []
+      "notes": [],
+      "mvpL2Status": "hold-needs-review",
+      "mvpL2Reason": "state/caption. --color-text-caption 가능성. 실제 Figma 값 확인 필요.",
+      "mvpL2ClassifiedAt": "2026-05-20"
     },
     {
       "id": "legacy.color.text.state.placehoder",
@@ -4271,11 +4367,14 @@
       "classificationReason": "no foundation pattern detected",
       "layerConfidence": "medium",
       "canonicalRegistryToken": "",
-      "canonicalCssVariable": "",
+      "canonicalCssVariable": "--color-text-placeholder",
       "canonicalFigmaVariableCandidate": "",
-      "migrationStatus": "needs-review",
+      "migrationStatus": "alias-only",
       "canonicalConfidence": "no-candidate",
-      "notes": []
+      "notes": [],
+      "mvpL2Status": "alias-only",
+      "mvpL2Reason": "placeholder text (Figma typo \"placehoder\"). --color-text-placeholder로 매핑.",
+      "mvpL2ClassifiedAt": "2026-05-20"
     },
     {
       "id": "legacy.color.form-control.label.default",
@@ -4293,11 +4392,14 @@
       "classificationReason": "no foundation pattern detected",
       "layerConfidence": "medium",
       "canonicalRegistryToken": "form-control.bg.default / form-control.border.default / form-control.text.default / input.default.bg / input.default.border / button.primary.default.bg / button.primary.default.text / button.secondary.default.bg / button.secondary.default.border / button.blue-line.default.border / button.blue-line.default.text",
-      "canonicalCssVariable": "",
+      "canonicalCssVariable": "--color-form-control-text-label",
       "canonicalFigmaVariableCandidate": "",
-      "migrationStatus": "needs-review",
+      "migrationStatus": "alias-only",
       "canonicalConfidence": "low",
-      "notes": []
+      "notes": [],
+      "mvpL2Status": "alias-only",
+      "mvpL2Reason": "form-control label default text.",
+      "mvpL2ClassifiedAt": "2026-05-20"
     },
     {
       "id": "legacy.color.form-control.label.disabled",
@@ -4315,11 +4417,14 @@
       "classificationReason": "no foundation pattern detected",
       "layerConfidence": "medium",
       "canonicalRegistryToken": "form-control.bg.disabled / form-control.border.disabled / form-control.text.disabled / input.disabled.bg / input.disabled.border / input.disabled.text / button.primary.disabled.bg",
-      "canonicalCssVariable": "",
+      "canonicalCssVariable": "--color-form-control-text-disabled",
       "canonicalFigmaVariableCandidate": "",
-      "migrationStatus": "needs-review",
+      "migrationStatus": "alias-only",
       "canonicalConfidence": "low",
-      "notes": []
+      "notes": [],
+      "mvpL2Status": "alias-only",
+      "mvpL2Reason": "form-control label disabled.",
+      "mvpL2ClassifiedAt": "2026-05-20"
     },
     {
       "id": "legacy.color.button.bg.secondary--hover",
@@ -4337,11 +4442,14 @@
       "classificationReason": "no foundation pattern detected",
       "layerConfidence": "medium",
       "canonicalRegistryToken": "button.primary.hover.bg",
-      "canonicalCssVariable": "--button-primary-hover-bg",
+      "canonicalCssVariable": "--button-secondary-hover-bg",
       "canonicalFigmaVariableCandidate": "",
-      "migrationStatus": "needs-review",
+      "migrationStatus": "alias-only",
       "canonicalConfidence": "medium",
-      "notes": []
+      "notes": [],
+      "mvpL2Status": "alias-only",
+      "mvpL2Reason": "--button-secondary-hover-bg = var(--color-bg-subtle). 이미 존재.",
+      "mvpL2ClassifiedAt": "2026-05-20"
     },
     {
       "id": "legacy.color.button.bg.disabled",
@@ -4359,11 +4467,14 @@
       "classificationReason": "no foundation pattern detected",
       "layerConfidence": "medium",
       "canonicalRegistryToken": "form-control.bg.disabled / form-control.border.disabled / form-control.text.disabled / input.disabled.bg / input.disabled.border / input.disabled.text / button.primary.disabled.bg",
-      "canonicalCssVariable": "",
+      "canonicalCssVariable": "--color-form-control-bg-disabled",
       "canonicalFigmaVariableCandidate": "",
-      "migrationStatus": "needs-review",
+      "migrationStatus": "alias-only",
       "canonicalConfidence": "low",
-      "notes": []
+      "notes": [],
+      "mvpL2Status": "alias-only",
+      "mvpL2Reason": "button disabled bg = form-control disabled bg.",
+      "mvpL2ClassifiedAt": "2026-05-20"
     },
     {
       "id": "legacy.color.button.border.primary--hover",
@@ -4383,9 +4494,12 @@
       "canonicalRegistryToken": "button.primary.hover.bg",
       "canonicalCssVariable": "--button-primary-hover-bg",
       "canonicalFigmaVariableCandidate": "",
-      "migrationStatus": "needs-review",
+      "migrationStatus": "hold-needs-review",
       "canonicalConfidence": "medium",
-      "notes": []
+      "notes": [],
+      "mvpL2Status": "hold-needs-review",
+      "mvpL2Reason": "primary button border on hover. 현재 canonical에 primary hover border 토큰 없음. 값 확인 필요.",
+      "mvpL2ClassifiedAt": "2026-05-20"
     },
     {
       "id": "legacy.color.button.border.secondary--hover",
@@ -4405,9 +4519,12 @@
       "canonicalRegistryToken": "button.primary.hover.bg",
       "canonicalCssVariable": "--button-primary-hover-bg",
       "canonicalFigmaVariableCandidate": "",
-      "migrationStatus": "needs-review",
+      "migrationStatus": "hold-needs-review",
       "canonicalConfidence": "medium",
-      "notes": []
+      "notes": [],
+      "mvpL2Status": "hold-needs-review",
+      "mvpL2Reason": "secondary button border on hover. canonical 토큰 미정의. 값 확인 필요.",
+      "mvpL2ClassifiedAt": "2026-05-20"
     },
     {
       "id": "legacy.color.button.border.disabled",
@@ -4425,11 +4542,14 @@
       "classificationReason": "no foundation pattern detected",
       "layerConfidence": "medium",
       "canonicalRegistryToken": "form-control.bg.disabled / form-control.border.disabled / form-control.text.disabled / input.disabled.bg / input.disabled.border / input.disabled.text / button.primary.disabled.bg",
-      "canonicalCssVariable": "",
+      "canonicalCssVariable": "--color-control-border-disabled",
       "canonicalFigmaVariableCandidate": "",
-      "migrationStatus": "needs-review",
+      "migrationStatus": "alias-only",
       "canonicalConfidence": "low",
-      "notes": []
+      "notes": [],
+      "mvpL2Status": "alias-only",
+      "mvpL2Reason": "button disabled border = control disabled border.",
+      "mvpL2ClassifiedAt": "2026-05-20"
     },
     {
       "id": "legacy.color.button.label.primary--hover",
@@ -4449,9 +4569,12 @@
       "canonicalRegistryToken": "button.primary.hover.bg",
       "canonicalCssVariable": "--button-primary-hover-bg",
       "canonicalFigmaVariableCandidate": "",
-      "migrationStatus": "needs-review",
+      "migrationStatus": "hold-needs-review",
       "canonicalConfidence": "medium",
-      "notes": []
+      "notes": [],
+      "mvpL2Status": "hold-needs-review",
+      "mvpL2Reason": "primary button label on hover. canonical 미정의. Figma 값 확인 필요.",
+      "mvpL2ClassifiedAt": "2026-05-20"
     },
     {
       "id": "legacy.color.button.label.secondary--default",
@@ -4471,9 +4594,12 @@
       "canonicalRegistryToken": "form-control.bg.default / form-control.border.default / form-control.text.default / input.default.bg / input.default.border / button.primary.default.bg / button.primary.default.text / button.secondary.default.bg / button.secondary.default.border / button.blue-line.default.border / button.blue-line.default.text",
       "canonicalCssVariable": "",
       "canonicalFigmaVariableCandidate": "",
-      "migrationStatus": "needs-review",
+      "migrationStatus": "hold-needs-review",
       "canonicalConfidence": "low",
-      "notes": []
+      "notes": [],
+      "mvpL2Status": "hold-needs-review",
+      "mvpL2Reason": "--button-secondary-default-text 미정의. secondary label default색 확인 필요.",
+      "mvpL2ClassifiedAt": "2026-05-20"
     },
     {
       "id": "legacy.color.button.label.secondary--hover",
@@ -4493,9 +4619,12 @@
       "canonicalRegistryToken": "button.primary.hover.bg",
       "canonicalCssVariable": "--button-primary-hover-bg",
       "canonicalFigmaVariableCandidate": "",
-      "migrationStatus": "needs-review",
+      "migrationStatus": "hold-needs-review",
       "canonicalConfidence": "medium",
-      "notes": []
+      "notes": [],
+      "mvpL2Status": "hold-needs-review",
+      "mvpL2Reason": "--button-secondary-hover-text 미정의. secondary label hover색 확인 필요.",
+      "mvpL2ClassifiedAt": "2026-05-20"
     },
     {
       "id": "legacy.color.button.label.disabled",
@@ -4513,11 +4642,14 @@
       "classificationReason": "no foundation pattern detected",
       "layerConfidence": "medium",
       "canonicalRegistryToken": "form-control.bg.disabled / form-control.border.disabled / form-control.text.disabled / input.disabled.bg / input.disabled.border / input.disabled.text / button.primary.disabled.bg",
-      "canonicalCssVariable": "",
+      "canonicalCssVariable": "--color-text-disabled",
       "canonicalFigmaVariableCandidate": "",
-      "migrationStatus": "needs-review",
+      "migrationStatus": "alias-only",
       "canonicalConfidence": "low",
-      "notes": []
+      "notes": [],
+      "mvpL2Status": "alias-only",
+      "mvpL2Reason": "button label disabled = semantic disabled text.",
+      "mvpL2ClassifiedAt": "2026-05-20"
     },
     {
       "id": "legacy.color.button.bg.assist--hover",
@@ -4537,9 +4669,12 @@
       "canonicalRegistryToken": "button.primary.hover.bg",
       "canonicalCssVariable": "--button-primary-hover-bg",
       "canonicalFigmaVariableCandidate": "",
-      "migrationStatus": "needs-review",
+      "migrationStatus": "future-component-token",
       "canonicalConfidence": "medium",
-      "notes": []
+      "notes": [],
+      "mvpL2Status": "future-component-token",
+      "mvpL2Reason": "별도 컴포넌트로 분리 확정(2026-05-20). assist variant는 canonical button(primary/secondary/blue-line)에 흡수하지 않음.",
+      "mvpL2ClassifiedAt": "2026-05-20"
     },
     {
       "id": "legacy.color.button.bg.assist--default",
@@ -4559,9 +4694,12 @@
       "canonicalRegistryToken": "form-control.bg.default / form-control.border.default / form-control.text.default / input.default.bg / input.default.border / button.primary.default.bg / button.primary.default.text / button.secondary.default.bg / button.secondary.default.border / button.blue-line.default.border / button.blue-line.default.text",
       "canonicalCssVariable": "",
       "canonicalFigmaVariableCandidate": "",
-      "migrationStatus": "needs-review",
+      "migrationStatus": "future-component-token",
       "canonicalConfidence": "low",
-      "notes": []
+      "notes": [],
+      "mvpL2Status": "future-component-token",
+      "mvpL2Reason": "별도 컴포넌트로 분리 확정(2026-05-20). assist variant는 canonical button(primary/secondary/blue-line)에 흡수하지 않음.",
+      "mvpL2ClassifiedAt": "2026-05-20"
     },
     {
       "id": "legacy.color.button.border.assist--hover",
@@ -4581,9 +4719,12 @@
       "canonicalRegistryToken": "button.primary.hover.bg",
       "canonicalCssVariable": "--button-primary-hover-bg",
       "canonicalFigmaVariableCandidate": "",
-      "migrationStatus": "needs-review",
+      "migrationStatus": "future-component-token",
       "canonicalConfidence": "medium",
-      "notes": []
+      "notes": [],
+      "mvpL2Status": "future-component-token",
+      "mvpL2Reason": "별도 컴포넌트로 분리 확정(2026-05-20). assist variant는 canonical button(primary/secondary/blue-line)에 흡수하지 않음.",
+      "mvpL2ClassifiedAt": "2026-05-20"
     },
     {
       "id": "legacy.color.button.border.assist--default",
@@ -4603,9 +4744,12 @@
       "canonicalRegistryToken": "form-control.bg.default / form-control.border.default / form-control.text.default / input.default.bg / input.default.border / button.primary.default.bg / button.primary.default.text / button.secondary.default.bg / button.secondary.default.border / button.blue-line.default.border / button.blue-line.default.text",
       "canonicalCssVariable": "",
       "canonicalFigmaVariableCandidate": "",
-      "migrationStatus": "needs-review",
+      "migrationStatus": "future-component-token",
       "canonicalConfidence": "low",
-      "notes": []
+      "notes": [],
+      "mvpL2Status": "future-component-token",
+      "mvpL2Reason": "별도 컴포넌트로 분리 확정(2026-05-20). assist variant는 canonical button(primary/secondary/blue-line)에 흡수하지 않음.",
+      "mvpL2ClassifiedAt": "2026-05-20"
     },
     {
       "id": "legacy.color.button.label.assist--hover",
@@ -4625,9 +4769,12 @@
       "canonicalRegistryToken": "button.primary.hover.bg",
       "canonicalCssVariable": "--button-primary-hover-bg",
       "canonicalFigmaVariableCandidate": "",
-      "migrationStatus": "needs-review",
+      "migrationStatus": "future-component-token",
       "canonicalConfidence": "medium",
-      "notes": []
+      "notes": [],
+      "mvpL2Status": "future-component-token",
+      "mvpL2Reason": "별도 컴포넌트로 분리 확정(2026-05-20). assist variant는 canonical button(primary/secondary/blue-line)에 흡수하지 않음.",
+      "mvpL2ClassifiedAt": "2026-05-20"
     },
     {
       "id": "legacy.color.button.label.assist--default",
@@ -4647,9 +4794,12 @@
       "canonicalRegistryToken": "form-control.bg.default / form-control.border.default / form-control.text.default / input.default.bg / input.default.border / button.primary.default.bg / button.primary.default.text / button.secondary.default.bg / button.secondary.default.border / button.blue-line.default.border / button.blue-line.default.text",
       "canonicalCssVariable": "",
       "canonicalFigmaVariableCandidate": "",
-      "migrationStatus": "needs-review",
+      "migrationStatus": "future-component-token",
       "canonicalConfidence": "low",
-      "notes": []
+      "notes": [],
+      "mvpL2Status": "future-component-token",
+      "mvpL2Reason": "별도 컴포넌트로 분리 확정(2026-05-20). assist variant는 canonical button(primary/secondary/blue-line)에 흡수하지 않음.",
+      "mvpL2ClassifiedAt": "2026-05-20"
     },
     {
       "id": "legacy.color.form-control.text.selected",
@@ -4667,11 +4817,14 @@
       "classificationReason": "no foundation pattern detected",
       "layerConfidence": "medium",
       "canonicalRegistryToken": "form-control.border.selected / date-picker.cell.selected.bg / date-picker.cell.selected.text",
-      "canonicalCssVariable": "",
+      "canonicalCssVariable": "--color-form-control-text-default",
       "canonicalFigmaVariableCandidate": "",
-      "migrationStatus": "needs-review",
+      "migrationStatus": "alias-only",
       "canonicalConfidence": "low",
-      "notes": []
+      "notes": [],
+      "mvpL2Status": "alias-only",
+      "mvpL2Reason": "Rule 6: complete/filled = default text. selected = focus 상태이지만 텍스트는 default.",
+      "mvpL2ClassifiedAt": "2026-05-20"
     },
     {
       "id": "legacy.color.form-control.bg.selected",
@@ -4689,11 +4842,14 @@
       "classificationReason": "no foundation pattern detected",
       "layerConfidence": "medium",
       "canonicalRegistryToken": "form-control.border.selected / date-picker.cell.selected.bg / date-picker.cell.selected.text",
-      "canonicalCssVariable": "",
+      "canonicalCssVariable": "--color-form-control-bg-default",
       "canonicalFigmaVariableCandidate": "",
-      "migrationStatus": "needs-review",
+      "migrationStatus": "alias-only",
       "canonicalConfidence": "low",
-      "notes": []
+      "notes": [],
+      "mvpL2Status": "alias-only",
+      "mvpL2Reason": "Rule 7: filled은 container bg/border 변경 없음. focus bg = default bg.",
+      "mvpL2ClassifiedAt": "2026-05-20"
     },
     {
       "id": "legacy.color.form-control.border.correct",
@@ -4711,11 +4867,14 @@
       "classificationReason": "no foundation pattern detected",
       "layerConfidence": "medium",
       "canonicalRegistryToken": "form-control.border.correct / color.text.state.correct / input.success.border / input.correct.text",
-      "canonicalCssVariable": "",
+      "canonicalCssVariable": "--color-form-control-border-correct",
       "canonicalFigmaVariableCandidate": "",
-      "migrationStatus": "needs-review",
+      "migrationStatus": "deprecated-alias",
       "canonicalConfidence": "low",
-      "notes": []
+      "notes": [],
+      "mvpL2Status": "deprecated-alias",
+      "mvpL2Reason": "Rule 5: correct border는 deprecated alias. CSS canonical --color-form-control-border-correct로 매핑. 이미 존재.",
+      "mvpL2ClassifiedAt": "2026-05-20"
     },
     {
       "id": "legacy.color.dropdown.option.bg.default",
@@ -4733,11 +4892,14 @@
       "classificationReason": "no foundation pattern detected",
       "layerConfidence": "medium",
       "canonicalRegistryToken": "form-control.bg.default / form-control.border.default / form-control.text.default / input.default.bg / input.default.border / button.primary.default.bg / button.primary.default.text / button.secondary.default.bg / button.secondary.default.border / button.blue-line.default.border / button.blue-line.default.text",
-      "canonicalCssVariable": "",
+      "canonicalCssVariable": "--color-surface-default",
       "canonicalFigmaVariableCandidate": "",
-      "migrationStatus": "needs-review",
+      "migrationStatus": "alias-only",
       "canonicalConfidence": "low",
-      "notes": []
+      "notes": [],
+      "mvpL2Status": "alias-only",
+      "mvpL2Reason": "dropdown option bg default = surface default.",
+      "mvpL2ClassifiedAt": "2026-05-20"
     },
     {
       "id": "legacy.color.dropdown.option.bg.hover",
@@ -4755,11 +4917,14 @@
       "classificationReason": "no foundation pattern detected",
       "layerConfidence": "medium",
       "canonicalRegistryToken": "button.primary.hover.bg",
-      "canonicalCssVariable": "--button-primary-hover-bg",
+      "canonicalCssVariable": "--dropdown-option-hover-bg",
       "canonicalFigmaVariableCandidate": "",
-      "migrationStatus": "needs-review",
+      "migrationStatus": "alias-only",
       "canonicalConfidence": "medium",
-      "notes": []
+      "notes": [],
+      "mvpL2Status": "alias-only",
+      "mvpL2Reason": "--dropdown-option-hover-bg 이미 존재.",
+      "mvpL2ClassifiedAt": "2026-05-20"
     },
     {
       "id": "legacy.color.dropdown.option.bg.selected",
@@ -4777,11 +4942,14 @@
       "classificationReason": "no foundation pattern detected",
       "layerConfidence": "medium",
       "canonicalRegistryToken": "form-control.border.selected / date-picker.cell.selected.bg / date-picker.cell.selected.text",
-      "canonicalCssVariable": "",
+      "canonicalCssVariable": "--dropdown-option-selected-bg",
       "canonicalFigmaVariableCandidate": "",
-      "migrationStatus": "needs-review",
+      "migrationStatus": "alias-only",
       "canonicalConfidence": "low",
-      "notes": []
+      "notes": [],
+      "mvpL2Status": "alias-only",
+      "mvpL2Reason": "--dropdown-option-selected-bg 이미 존재.",
+      "mvpL2ClassifiedAt": "2026-05-20"
     },
     {
       "id": "legacy.color.dropdown.option.bg.disabled",
@@ -4799,11 +4967,14 @@
       "classificationReason": "no foundation pattern detected",
       "layerConfidence": "medium",
       "canonicalRegistryToken": "form-control.bg.disabled / form-control.border.disabled / form-control.text.disabled / input.disabled.bg / input.disabled.border / input.disabled.text / button.primary.disabled.bg",
-      "canonicalCssVariable": "",
+      "canonicalCssVariable": "--color-form-control-bg-disabled",
       "canonicalFigmaVariableCandidate": "",
-      "migrationStatus": "needs-review",
+      "migrationStatus": "alias-only",
       "canonicalConfidence": "low",
-      "notes": []
+      "notes": [],
+      "mvpL2Status": "alias-only",
+      "mvpL2Reason": "dropdown option disabled = form-control disabled bg.",
+      "mvpL2ClassifiedAt": "2026-05-20"
     },
     {
       "id": "legacy.color.dropdown.option.label.default",
@@ -4821,11 +4992,14 @@
       "classificationReason": "no foundation pattern detected",
       "layerConfidence": "medium",
       "canonicalRegistryToken": "form-control.bg.default / form-control.border.default / form-control.text.default / input.default.bg / input.default.border / button.primary.default.bg / button.primary.default.text / button.secondary.default.bg / button.secondary.default.border / button.blue-line.default.border / button.blue-line.default.text",
-      "canonicalCssVariable": "",
+      "canonicalCssVariable": "--color-text-primary",
       "canonicalFigmaVariableCandidate": "",
-      "migrationStatus": "needs-review",
+      "migrationStatus": "alias-only",
       "canonicalConfidence": "low",
-      "notes": []
+      "notes": [],
+      "mvpL2Status": "alias-only",
+      "mvpL2Reason": "dropdown option label = primary text.",
+      "mvpL2ClassifiedAt": "2026-05-20"
     },
     {
       "id": "legacy.color.dropdown.option.label.hover",
@@ -4843,11 +5017,14 @@
       "classificationReason": "no foundation pattern detected",
       "layerConfidence": "medium",
       "canonicalRegistryToken": "button.primary.hover.bg",
-      "canonicalCssVariable": "--button-primary-hover-bg",
+      "canonicalCssVariable": "--color-text-primary",
       "canonicalFigmaVariableCandidate": "",
-      "migrationStatus": "needs-review",
+      "migrationStatus": "alias-only",
       "canonicalConfidence": "medium",
-      "notes": []
+      "notes": [],
+      "mvpL2Status": "alias-only",
+      "mvpL2Reason": "dropdown option hover label = primary text (unchanged).",
+      "mvpL2ClassifiedAt": "2026-05-20"
     },
     {
       "id": "legacy.color.dropdown.option.label.selected",
@@ -4865,11 +5042,14 @@
       "classificationReason": "no foundation pattern detected",
       "layerConfidence": "medium",
       "canonicalRegistryToken": "form-control.border.selected / date-picker.cell.selected.bg / date-picker.cell.selected.text",
-      "canonicalCssVariable": "",
+      "canonicalCssVariable": "--dropdown-trigger-selected-text",
       "canonicalFigmaVariableCandidate": "",
-      "migrationStatus": "needs-review",
+      "migrationStatus": "alias-only",
       "canonicalConfidence": "low",
-      "notes": []
+      "notes": [],
+      "mvpL2Status": "alias-only",
+      "mvpL2Reason": "--dropdown-trigger-selected-text = --color-text-primary. 이미 존재.",
+      "mvpL2ClassifiedAt": "2026-05-20"
     },
     {
       "id": "legacy.color.dropdown.option.label.disabled",
@@ -4887,11 +5067,14 @@
       "classificationReason": "no foundation pattern detected",
       "layerConfidence": "medium",
       "canonicalRegistryToken": "form-control.bg.disabled / form-control.border.disabled / form-control.text.disabled / input.disabled.bg / input.disabled.border / input.disabled.text / button.primary.disabled.bg",
-      "canonicalCssVariable": "",
+      "canonicalCssVariable": "--color-text-disabled",
       "canonicalFigmaVariableCandidate": "",
-      "migrationStatus": "needs-review",
+      "migrationStatus": "alias-only",
       "canonicalConfidence": "low",
-      "notes": []
+      "notes": [],
+      "mvpL2Status": "alias-only",
+      "mvpL2Reason": "dropdown option disabled label = semantic disabled.",
+      "mvpL2ClassifiedAt": "2026-05-20"
     },
     {
       "id": "legacy.color.dropdown.list.bg",
@@ -4909,11 +5092,14 @@
       "classificationReason": "no foundation pattern detected",
       "layerConfidence": "medium",
       "canonicalRegistryToken": "form-control.bg.default / form-control.bg.disabled / input.default.bg / input.disabled.bg / button.primary.default.bg / button.primary.hover.bg / button.primary.pressed.bg / button.primary.disabled.bg / button.secondary.default.bg / date-picker.cell.selected.bg / date-picker.cell.default.bg",
-      "canonicalCssVariable": "",
+      "canonicalCssVariable": "--dropdown-list-bg",
       "canonicalFigmaVariableCandidate": "",
-      "migrationStatus": "needs-review",
+      "migrationStatus": "alias-only",
       "canonicalConfidence": "low",
-      "notes": []
+      "notes": [],
+      "mvpL2Status": "alias-only",
+      "mvpL2Reason": "--dropdown-list-bg 이미 존재.",
+      "mvpL2ClassifiedAt": "2026-05-20"
     },
     {
       "id": "legacy.color.dropdown.list.border",
@@ -4931,11 +5117,14 @@
       "classificationReason": "no foundation pattern detected",
       "layerConfidence": "medium",
       "canonicalRegistryToken": "form-control.border.default / form-control.border.selected / form-control.border.error / form-control.border.correct / form-control.border.disabled / input.default.border / input.focus.border / input.error.border / input.success.border / input.disabled.border / button.secondary.default.border / button.blue-line.default.border / date-picker.cell.today.border",
-      "canonicalCssVariable": "",
+      "canonicalCssVariable": "--dropdown-list-border",
       "canonicalFigmaVariableCandidate": "",
-      "migrationStatus": "needs-review",
+      "migrationStatus": "alias-only",
       "canonicalConfidence": "low",
-      "notes": []
+      "notes": [],
+      "mvpL2Status": "alias-only",
+      "mvpL2Reason": "--dropdown-list-border 이미 존재.",
+      "mvpL2ClassifiedAt": "2026-05-20"
     },
     {
       "id": "legacy.color.chip.solid.bg.default",
@@ -4953,11 +5142,14 @@
       "classificationReason": "no foundation pattern detected",
       "layerConfidence": "medium",
       "canonicalRegistryToken": "form-control.bg.default / form-control.border.default / form-control.text.default / input.default.bg / input.default.border / button.primary.default.bg / button.primary.default.text / button.secondary.default.bg / button.secondary.default.border / button.blue-line.default.border / button.blue-line.default.text",
-      "canonicalCssVariable": "",
+      "canonicalCssVariable": "--chip-solid-default-bg",
       "canonicalFigmaVariableCandidate": "",
-      "migrationStatus": "needs-review",
+      "migrationStatus": "alias-only",
       "canonicalConfidence": "low",
-      "notes": []
+      "notes": [],
+      "mvpL2Status": "alias-only",
+      "mvpL2Reason": "MVP-C1에서 정의.",
+      "mvpL2ClassifiedAt": "2026-05-20"
     },
     {
       "id": "legacy.color.chip.solid.bg.selected",
@@ -4975,11 +5167,14 @@
       "classificationReason": "no foundation pattern detected",
       "layerConfidence": "medium",
       "canonicalRegistryToken": "form-control.border.selected / date-picker.cell.selected.bg / date-picker.cell.selected.text",
-      "canonicalCssVariable": "",
+      "canonicalCssVariable": "--chip-solid-selected-bg",
       "canonicalFigmaVariableCandidate": "",
-      "migrationStatus": "needs-review",
+      "migrationStatus": "alias-only",
       "canonicalConfidence": "low",
-      "notes": []
+      "notes": [],
+      "mvpL2Status": "alias-only",
+      "mvpL2Reason": "MVP-C1에서 정의.",
+      "mvpL2ClassifiedAt": "2026-05-20"
     },
     {
       "id": "legacy.color.chip.solid.bg.disabled",
@@ -4997,11 +5192,14 @@
       "classificationReason": "no foundation pattern detected",
       "layerConfidence": "medium",
       "canonicalRegistryToken": "form-control.bg.disabled / form-control.border.disabled / form-control.text.disabled / input.disabled.bg / input.disabled.border / input.disabled.text / button.primary.disabled.bg",
-      "canonicalCssVariable": "",
+      "canonicalCssVariable": "--chip-solid-disabled-bg",
       "canonicalFigmaVariableCandidate": "",
-      "migrationStatus": "needs-review",
+      "migrationStatus": "alias-only",
       "canonicalConfidence": "low",
-      "notes": []
+      "notes": [],
+      "mvpL2Status": "alias-only",
+      "mvpL2Reason": "MVP-C1에서 정의.",
+      "mvpL2ClassifiedAt": "2026-05-20"
     },
     {
       "id": "legacy.color.chip.solid.border.default",
@@ -5019,11 +5217,14 @@
       "classificationReason": "no foundation pattern detected",
       "layerConfidence": "medium",
       "canonicalRegistryToken": "form-control.bg.default / form-control.border.default / form-control.text.default / input.default.bg / input.default.border / button.primary.default.bg / button.primary.default.text / button.secondary.default.bg / button.secondary.default.border / button.blue-line.default.border / button.blue-line.default.text",
-      "canonicalCssVariable": "",
+      "canonicalCssVariable": "--chip-solid-default-border",
       "canonicalFigmaVariableCandidate": "",
-      "migrationStatus": "needs-review",
+      "migrationStatus": "alias-only",
       "canonicalConfidence": "low",
-      "notes": []
+      "notes": [],
+      "mvpL2Status": "alias-only",
+      "mvpL2Reason": "MVP-C1에서 정의.",
+      "mvpL2ClassifiedAt": "2026-05-20"
     },
     {
       "id": "legacy.color.chip.solid.border.selected",
@@ -5041,11 +5242,14 @@
       "classificationReason": "no foundation pattern detected",
       "layerConfidence": "medium",
       "canonicalRegistryToken": "form-control.border.selected / date-picker.cell.selected.bg / date-picker.cell.selected.text",
-      "canonicalCssVariable": "",
+      "canonicalCssVariable": "--chip-solid-selected-border",
       "canonicalFigmaVariableCandidate": "",
-      "migrationStatus": "needs-review",
+      "migrationStatus": "alias-only",
       "canonicalConfidence": "low",
-      "notes": []
+      "notes": [],
+      "mvpL2Status": "alias-only",
+      "mvpL2Reason": "MVP-C1에서 정의.",
+      "mvpL2ClassifiedAt": "2026-05-20"
     },
     {
       "id": "legacy.color.chip.solid.border.disabled",
@@ -5063,11 +5267,14 @@
       "classificationReason": "no foundation pattern detected",
       "layerConfidence": "medium",
       "canonicalRegistryToken": "form-control.bg.disabled / form-control.border.disabled / form-control.text.disabled / input.disabled.bg / input.disabled.border / input.disabled.text / button.primary.disabled.bg",
-      "canonicalCssVariable": "",
+      "canonicalCssVariable": "--chip-solid-disabled-border",
       "canonicalFigmaVariableCandidate": "",
-      "migrationStatus": "needs-review",
+      "migrationStatus": "alias-only",
       "canonicalConfidence": "low",
-      "notes": []
+      "notes": [],
+      "mvpL2Status": "alias-only",
+      "mvpL2Reason": "MVP-C1에서 정의.",
+      "mvpL2ClassifiedAt": "2026-05-20"
     },
     {
       "id": "legacy.color.chip.line.bg.default",
@@ -5085,11 +5292,14 @@
       "classificationReason": "no foundation pattern detected",
       "layerConfidence": "medium",
       "canonicalRegistryToken": "form-control.bg.default / form-control.border.default / form-control.text.default / input.default.bg / input.default.border / button.primary.default.bg / button.primary.default.text / button.secondary.default.bg / button.secondary.default.border / button.blue-line.default.border / button.blue-line.default.text",
-      "canonicalCssVariable": "",
+      "canonicalCssVariable": "--chip-line-default-bg",
       "canonicalFigmaVariableCandidate": "",
-      "migrationStatus": "needs-review",
+      "migrationStatus": "alias-only",
       "canonicalConfidence": "low",
-      "notes": []
+      "notes": [],
+      "mvpL2Status": "alias-only",
+      "mvpL2Reason": "MVP-C1에서 정의.",
+      "mvpL2ClassifiedAt": "2026-05-20"
     },
     {
       "id": "legacy.color.chip.line.bg.selected",
@@ -5107,11 +5317,14 @@
       "classificationReason": "no foundation pattern detected",
       "layerConfidence": "medium",
       "canonicalRegistryToken": "form-control.border.selected / date-picker.cell.selected.bg / date-picker.cell.selected.text",
-      "canonicalCssVariable": "",
+      "canonicalCssVariable": "--chip-line-selected-bg",
       "canonicalFigmaVariableCandidate": "",
-      "migrationStatus": "needs-review",
+      "migrationStatus": "alias-only",
       "canonicalConfidence": "low",
-      "notes": []
+      "notes": [],
+      "mvpL2Status": "alias-only",
+      "mvpL2Reason": "MVP-C1에서 정의.",
+      "mvpL2ClassifiedAt": "2026-05-20"
     },
     {
       "id": "legacy.color.chip.line.bg.disabled",
@@ -5129,11 +5342,14 @@
       "classificationReason": "no foundation pattern detected",
       "layerConfidence": "medium",
       "canonicalRegistryToken": "form-control.bg.disabled / form-control.border.disabled / form-control.text.disabled / input.disabled.bg / input.disabled.border / input.disabled.text / button.primary.disabled.bg",
-      "canonicalCssVariable": "",
+      "canonicalCssVariable": "--chip-line-disabled-bg",
       "canonicalFigmaVariableCandidate": "",
-      "migrationStatus": "needs-review",
+      "migrationStatus": "alias-only",
       "canonicalConfidence": "low",
-      "notes": []
+      "notes": [],
+      "mvpL2Status": "alias-only",
+      "mvpL2Reason": "MVP-C1에서 정의.",
+      "mvpL2ClassifiedAt": "2026-05-20"
     },
     {
       "id": "legacy.color.chip.line.border.default",
@@ -5151,11 +5367,14 @@
       "classificationReason": "no foundation pattern detected",
       "layerConfidence": "medium",
       "canonicalRegistryToken": "form-control.bg.default / form-control.border.default / form-control.text.default / input.default.bg / input.default.border / button.primary.default.bg / button.primary.default.text / button.secondary.default.bg / button.secondary.default.border / button.blue-line.default.border / button.blue-line.default.text",
-      "canonicalCssVariable": "",
+      "canonicalCssVariable": "--chip-line-default-border",
       "canonicalFigmaVariableCandidate": "",
-      "migrationStatus": "needs-review",
+      "migrationStatus": "alias-only",
       "canonicalConfidence": "low",
-      "notes": []
+      "notes": [],
+      "mvpL2Status": "alias-only",
+      "mvpL2Reason": "MVP-C1에서 정의.",
+      "mvpL2ClassifiedAt": "2026-05-20"
     },
     {
       "id": "legacy.color.chip.line.border.selected",
@@ -5173,11 +5392,14 @@
       "classificationReason": "no foundation pattern detected",
       "layerConfidence": "medium",
       "canonicalRegistryToken": "form-control.border.selected / date-picker.cell.selected.bg / date-picker.cell.selected.text",
-      "canonicalCssVariable": "",
+      "canonicalCssVariable": "--chip-line-selected-border",
       "canonicalFigmaVariableCandidate": "",
-      "migrationStatus": "needs-review",
+      "migrationStatus": "alias-only",
       "canonicalConfidence": "low",
-      "notes": []
+      "notes": [],
+      "mvpL2Status": "alias-only",
+      "mvpL2Reason": "MVP-C1에서 정의.",
+      "mvpL2ClassifiedAt": "2026-05-20"
     },
     {
       "id": "legacy.color.chip.line.border.disabled",
@@ -5195,11 +5417,14 @@
       "classificationReason": "no foundation pattern detected",
       "layerConfidence": "medium",
       "canonicalRegistryToken": "form-control.bg.disabled / form-control.border.disabled / form-control.text.disabled / input.disabled.bg / input.disabled.border / input.disabled.text / button.primary.disabled.bg",
-      "canonicalCssVariable": "",
+      "canonicalCssVariable": "--chip-line-disabled-border",
       "canonicalFigmaVariableCandidate": "",
-      "migrationStatus": "needs-review",
+      "migrationStatus": "alias-only",
       "canonicalConfidence": "low",
-      "notes": []
+      "notes": [],
+      "mvpL2Status": "alias-only",
+      "mvpL2Reason": "MVP-C1에서 정의.",
+      "mvpL2ClassifiedAt": "2026-05-20"
     },
     {
       "id": "legacy.color.chip.solid.label.default",
@@ -5217,11 +5442,14 @@
       "classificationReason": "no foundation pattern detected",
       "layerConfidence": "medium",
       "canonicalRegistryToken": "form-control.bg.default / form-control.border.default / form-control.text.default / input.default.bg / input.default.border / button.primary.default.bg / button.primary.default.text / button.secondary.default.bg / button.secondary.default.border / button.blue-line.default.border / button.blue-line.default.text",
-      "canonicalCssVariable": "",
+      "canonicalCssVariable": "--chip-solid-default-text",
       "canonicalFigmaVariableCandidate": "",
-      "migrationStatus": "needs-review",
+      "migrationStatus": "alias-only",
       "canonicalConfidence": "low",
-      "notes": []
+      "notes": [],
+      "mvpL2Status": "alias-only",
+      "mvpL2Reason": "MVP-C1에서 정의.",
+      "mvpL2ClassifiedAt": "2026-05-20"
     },
     {
       "id": "legacy.color.chip.solid.label.selected",
@@ -5239,11 +5467,14 @@
       "classificationReason": "no foundation pattern detected",
       "layerConfidence": "medium",
       "canonicalRegistryToken": "form-control.border.selected / date-picker.cell.selected.bg / date-picker.cell.selected.text",
-      "canonicalCssVariable": "",
+      "canonicalCssVariable": "--chip-solid-selected-text",
       "canonicalFigmaVariableCandidate": "",
-      "migrationStatus": "needs-review",
+      "migrationStatus": "alias-only",
       "canonicalConfidence": "low",
-      "notes": []
+      "notes": [],
+      "mvpL2Status": "alias-only",
+      "mvpL2Reason": "MVP-C1에서 정의.",
+      "mvpL2ClassifiedAt": "2026-05-20"
     },
     {
       "id": "legacy.color.chip.solid.label.disabled",
@@ -5261,11 +5492,14 @@
       "classificationReason": "no foundation pattern detected",
       "layerConfidence": "medium",
       "canonicalRegistryToken": "form-control.bg.disabled / form-control.border.disabled / form-control.text.disabled / input.disabled.bg / input.disabled.border / input.disabled.text / button.primary.disabled.bg",
-      "canonicalCssVariable": "",
+      "canonicalCssVariable": "--chip-solid-disabled-text",
       "canonicalFigmaVariableCandidate": "",
-      "migrationStatus": "needs-review",
+      "migrationStatus": "alias-only",
       "canonicalConfidence": "low",
-      "notes": []
+      "notes": [],
+      "mvpL2Status": "alias-only",
+      "mvpL2Reason": "MVP-C1에서 정의.",
+      "mvpL2ClassifiedAt": "2026-05-20"
     },
     {
       "id": "legacy.color.chip.line.label.default",
@@ -5283,11 +5517,14 @@
       "classificationReason": "no foundation pattern detected",
       "layerConfidence": "medium",
       "canonicalRegistryToken": "form-control.bg.default / form-control.border.default / form-control.text.default / input.default.bg / input.default.border / button.primary.default.bg / button.primary.default.text / button.secondary.default.bg / button.secondary.default.border / button.blue-line.default.border / button.blue-line.default.text",
-      "canonicalCssVariable": "",
+      "canonicalCssVariable": "--chip-line-default-text",
       "canonicalFigmaVariableCandidate": "",
-      "migrationStatus": "needs-review",
+      "migrationStatus": "alias-only",
       "canonicalConfidence": "low",
-      "notes": []
+      "notes": [],
+      "mvpL2Status": "alias-only",
+      "mvpL2Reason": "MVP-C1에서 정의.",
+      "mvpL2ClassifiedAt": "2026-05-20"
     },
     {
       "id": "legacy.color.chip.line.label.selected",
@@ -5305,11 +5542,14 @@
       "classificationReason": "no foundation pattern detected",
       "layerConfidence": "medium",
       "canonicalRegistryToken": "form-control.border.selected / date-picker.cell.selected.bg / date-picker.cell.selected.text",
-      "canonicalCssVariable": "",
+      "canonicalCssVariable": "--chip-line-selected-text",
       "canonicalFigmaVariableCandidate": "",
-      "migrationStatus": "needs-review",
+      "migrationStatus": "alias-only",
       "canonicalConfidence": "low",
-      "notes": []
+      "notes": [],
+      "mvpL2Status": "alias-only",
+      "mvpL2Reason": "MVP-C1에서 정의.",
+      "mvpL2ClassifiedAt": "2026-05-20"
     },
     {
       "id": "legacy.color.chip.line.label.disabled",
@@ -5327,11 +5567,14 @@
       "classificationReason": "no foundation pattern detected",
       "layerConfidence": "medium",
       "canonicalRegistryToken": "form-control.bg.disabled / form-control.border.disabled / form-control.text.disabled / input.disabled.bg / input.disabled.border / input.disabled.text / button.primary.disabled.bg",
-      "canonicalCssVariable": "",
+      "canonicalCssVariable": "--chip-line-disabled-text",
       "canonicalFigmaVariableCandidate": "",
-      "migrationStatus": "needs-review",
+      "migrationStatus": "alias-only",
       "canonicalConfidence": "low",
-      "notes": []
+      "notes": [],
+      "mvpL2Status": "alias-only",
+      "mvpL2Reason": "MVP-C1에서 정의.",
+      "mvpL2ClassifiedAt": "2026-05-20"
     },
     {
       "id": "legacy.color.control.label.default",
@@ -5349,11 +5592,14 @@
       "classificationReason": "no foundation pattern detected",
       "layerConfidence": "medium",
       "canonicalRegistryToken": "form-control.bg.default / form-control.border.default / form-control.text.default / input.default.bg / input.default.border / button.primary.default.bg / button.primary.default.text / button.secondary.default.bg / button.secondary.default.border / button.blue-line.default.border / button.blue-line.default.text",
-      "canonicalCssVariable": "",
+      "canonicalCssVariable": "--color-text-primary",
       "canonicalFigmaVariableCandidate": "",
-      "migrationStatus": "needs-review",
+      "migrationStatus": "alias-only",
       "canonicalConfidence": "low",
-      "notes": []
+      "notes": [],
+      "mvpL2Status": "alias-only",
+      "mvpL2Reason": "control label = primary text color.",
+      "mvpL2ClassifiedAt": "2026-05-20"
     },
     {
       "id": "legacy.color.control.label.disabled",
@@ -5371,11 +5617,14 @@
       "classificationReason": "no foundation pattern detected",
       "layerConfidence": "medium",
       "canonicalRegistryToken": "form-control.bg.disabled / form-control.border.disabled / form-control.text.disabled / input.disabled.bg / input.disabled.border / input.disabled.text / button.primary.disabled.bg",
-      "canonicalCssVariable": "",
+      "canonicalCssVariable": "--color-text-disabled",
       "canonicalFigmaVariableCandidate": "",
-      "migrationStatus": "needs-review",
+      "migrationStatus": "alias-only",
       "canonicalConfidence": "low",
-      "notes": []
+      "notes": [],
+      "mvpL2Status": "alias-only",
+      "mvpL2Reason": "disabled label = semantic disabled text.",
+      "mvpL2ClassifiedAt": "2026-05-20"
     },
     {
       "id": "legacy.color.data.border.strong",
@@ -5395,9 +5644,12 @@
       "canonicalRegistryToken": "",
       "canonicalCssVariable": "",
       "canonicalFigmaVariableCandidate": "",
-      "migrationStatus": "needs-review",
+      "migrationStatus": "hold-missing-usage",
       "canonicalConfidence": "no-candidate",
-      "notes": []
+      "notes": [],
+      "mvpL2Status": "hold-missing-usage",
+      "mvpL2Reason": "no-candidate. data/table 전용 strong border 토큰 미정의.",
+      "mvpL2ClassifiedAt": "2026-05-20"
     },
     {
       "id": "legacy.color.data.state.default",
@@ -5415,11 +5667,14 @@
       "classificationReason": "no foundation pattern detected",
       "layerConfidence": "medium",
       "canonicalRegistryToken": "form-control.bg.default / form-control.border.default / form-control.text.default / input.default.bg / input.default.border / button.primary.default.bg / button.primary.default.text / button.secondary.default.bg / button.secondary.default.border / button.blue-line.default.border / button.blue-line.default.text",
-      "canonicalCssVariable": "",
+      "canonicalCssVariable": "--color-surface-default",
       "canonicalFigmaVariableCandidate": "",
-      "migrationStatus": "needs-review",
+      "migrationStatus": "alias-only",
       "canonicalConfidence": "low",
-      "notes": []
+      "notes": [],
+      "mvpL2Status": "alias-only",
+      "mvpL2Reason": "table row default bg = surface default.",
+      "mvpL2ClassifiedAt": "2026-05-20"
     },
     {
       "id": "legacy.color.data.state.hover",
@@ -5437,11 +5692,14 @@
       "classificationReason": "no foundation pattern detected",
       "layerConfidence": "medium",
       "canonicalRegistryToken": "button.primary.hover.bg",
-      "canonicalCssVariable": "--button-primary-hover-bg",
+      "canonicalCssVariable": "--color-data-state-hover",
       "canonicalFigmaVariableCandidate": "",
-      "migrationStatus": "needs-review",
+      "migrationStatus": "alias-only",
       "canonicalConfidence": "medium",
-      "notes": []
+      "notes": [],
+      "mvpL2Status": "alias-only",
+      "mvpL2Reason": "--color-data-state-hover = var(--color-blue-50). 이미 존재.",
+      "mvpL2ClassifiedAt": "2026-05-20"
     },
     {
       "id": "legacy.color.data.border.light",
@@ -5461,9 +5719,12 @@
       "canonicalRegistryToken": "",
       "canonicalCssVariable": "",
       "canonicalFigmaVariableCandidate": "",
-      "migrationStatus": "needs-review",
+      "migrationStatus": "hold-missing-usage",
       "canonicalConfidence": "no-candidate",
-      "notes": []
+      "notes": [],
+      "mvpL2Status": "hold-missing-usage",
+      "mvpL2Reason": "no-candidate. data/table 전용 light border 토큰 미정의.",
+      "mvpL2ClassifiedAt": "2026-05-20"
     },
     {
       "id": "legacy.color.pagination.control.bg.default",
@@ -5481,11 +5742,14 @@
       "classificationReason": "no foundation pattern detected",
       "layerConfidence": "medium",
       "canonicalRegistryToken": "form-control.bg.default / form-control.border.default / form-control.text.default / input.default.bg / input.default.border / button.primary.default.bg / button.primary.default.text / button.secondary.default.bg / button.secondary.default.border / button.blue-line.default.border / button.blue-line.default.text",
-      "canonicalCssVariable": "",
+      "canonicalCssVariable": "--pagination-default-bg",
       "canonicalFigmaVariableCandidate": "",
-      "migrationStatus": "needs-review",
+      "migrationStatus": "alias-only",
       "canonicalConfidence": "low",
-      "notes": []
+      "notes": [],
+      "mvpL2Status": "alias-only",
+      "mvpL2Reason": "pagination component token 이미 존재.",
+      "mvpL2ClassifiedAt": "2026-05-20"
     },
     {
       "id": "legacy.color.pagination.control.bg.hover",
@@ -5503,11 +5767,14 @@
       "classificationReason": "no foundation pattern detected",
       "layerConfidence": "medium",
       "canonicalRegistryToken": "button.primary.hover.bg",
-      "canonicalCssVariable": "--button-primary-hover-bg",
+      "canonicalCssVariable": "--pagination-hover-bg",
       "canonicalFigmaVariableCandidate": "",
-      "migrationStatus": "needs-review",
+      "migrationStatus": "alias-only",
       "canonicalConfidence": "medium",
-      "notes": []
+      "notes": [],
+      "mvpL2Status": "alias-only",
+      "mvpL2Reason": "pagination component token 이미 존재.",
+      "mvpL2ClassifiedAt": "2026-05-20"
     },
     {
       "id": "legacy.color.pagination.control.border.default",
@@ -5525,11 +5792,14 @@
       "classificationReason": "no foundation pattern detected",
       "layerConfidence": "medium",
       "canonicalRegistryToken": "form-control.bg.default / form-control.border.default / form-control.text.default / input.default.bg / input.default.border / button.primary.default.bg / button.primary.default.text / button.secondary.default.bg / button.secondary.default.border / button.blue-line.default.border / button.blue-line.default.text",
-      "canonicalCssVariable": "",
+      "canonicalCssVariable": "--pagination-border",
       "canonicalFigmaVariableCandidate": "",
-      "migrationStatus": "needs-review",
+      "migrationStatus": "alias-only",
       "canonicalConfidence": "low",
-      "notes": []
+      "notes": [],
+      "mvpL2Status": "alias-only",
+      "mvpL2Reason": "pagination 단일 border token. 이미 존재.",
+      "mvpL2ClassifiedAt": "2026-05-20"
     },
     {
       "id": "legacy.color.pagination.control.border.hover",
@@ -5547,11 +5817,14 @@
       "classificationReason": "no foundation pattern detected",
       "layerConfidence": "medium",
       "canonicalRegistryToken": "button.primary.hover.bg",
-      "canonicalCssVariable": "--button-primary-hover-bg",
+      "canonicalCssVariable": "--pagination-border",
       "canonicalFigmaVariableCandidate": "",
-      "migrationStatus": "needs-review",
+      "migrationStatus": "alias-only",
       "canonicalConfidence": "medium",
-      "notes": []
+      "notes": [],
+      "mvpL2Status": "alias-only",
+      "mvpL2Reason": "pagination hover border = 동일 토큰. 이미 존재.",
+      "mvpL2ClassifiedAt": "2026-05-20"
     },
     {
       "id": "legacy.color.pagination.control.border.disabled",
@@ -5569,11 +5842,14 @@
       "classificationReason": "no foundation pattern detected",
       "layerConfidence": "medium",
       "canonicalRegistryToken": "form-control.bg.disabled / form-control.border.disabled / form-control.text.disabled / input.disabled.bg / input.disabled.border / input.disabled.text / button.primary.disabled.bg",
-      "canonicalCssVariable": "",
+      "canonicalCssVariable": "--pagination-border",
       "canonicalFigmaVariableCandidate": "",
-      "migrationStatus": "needs-review",
+      "migrationStatus": "alias-only",
       "canonicalConfidence": "low",
-      "notes": []
+      "notes": [],
+      "mvpL2Status": "alias-only",
+      "mvpL2Reason": "pagination disabled border = 동일 토큰. 이미 존재.",
+      "mvpL2ClassifiedAt": "2026-05-20"
     },
     {
       "id": "legacy.color.pagination.control.bg.disabled",
@@ -5591,11 +5867,14 @@
       "classificationReason": "no foundation pattern detected",
       "layerConfidence": "medium",
       "canonicalRegistryToken": "form-control.bg.disabled / form-control.border.disabled / form-control.text.disabled / input.disabled.bg / input.disabled.border / input.disabled.text / button.primary.disabled.bg",
-      "canonicalCssVariable": "",
+      "canonicalCssVariable": "--pagination-disabled-bg",
       "canonicalFigmaVariableCandidate": "",
-      "migrationStatus": "needs-review",
+      "migrationStatus": "alias-only",
       "canonicalConfidence": "low",
-      "notes": []
+      "notes": [],
+      "mvpL2Status": "alias-only",
+      "mvpL2Reason": "pagination component token 이미 존재.",
+      "mvpL2ClassifiedAt": "2026-05-20"
     },
     {
       "id": "legacy.color.control.text.unselected",
@@ -5615,9 +5894,12 @@
       "canonicalRegistryToken": "",
       "canonicalCssVariable": "",
       "canonicalFigmaVariableCandidate": "",
-      "migrationStatus": "needs-review",
+      "migrationStatus": "hold-missing-usage",
       "canonicalConfidence": "no-candidate",
-      "notes": []
+      "notes": [],
+      "mvpL2Status": "hold-missing-usage",
+      "mvpL2Reason": "no-candidate. unselected text 개념 미정의.",
+      "mvpL2ClassifiedAt": "2026-05-20"
     },
     {
       "id": "legacy.color.overlay",
@@ -5635,11 +5917,14 @@
       "classificationReason": "no foundation pattern detected",
       "layerConfidence": "medium",
       "canonicalRegistryToken": "",
-      "canonicalCssVariable": "",
+      "canonicalCssVariable": "--color-overlay",
       "canonicalFigmaVariableCandidate": "",
-      "migrationStatus": "needs-review",
+      "migrationStatus": "alias-only",
       "canonicalConfidence": "no-candidate",
-      "notes": []
+      "notes": [],
+      "mvpL2Status": "alias-only",
+      "mvpL2Reason": "--color-overlay 이미 존재. rgba 허용 예외.",
+      "mvpL2ClassifiedAt": "2026-05-20"
     },
     {
       "id": "legacy.color.navigation.label.default",
@@ -5657,11 +5942,14 @@
       "classificationReason": "no foundation pattern detected",
       "layerConfidence": "medium",
       "canonicalRegistryToken": "form-control.bg.default / form-control.border.default / form-control.text.default / input.default.bg / input.default.border / button.primary.default.bg / button.primary.default.text / button.secondary.default.bg / button.secondary.default.border / button.blue-line.default.border / button.blue-line.default.text",
-      "canonicalCssVariable": "",
+      "canonicalCssVariable": "--nav-item-default-text",
       "canonicalFigmaVariableCandidate": "",
-      "migrationStatus": "needs-review",
+      "migrationStatus": "alias-only",
       "canonicalConfidence": "low",
-      "notes": []
+      "notes": [],
+      "mvpL2Status": "alias-only",
+      "mvpL2Reason": "--nav-item-default-text = --color-text-tertiary. 이미 존재.",
+      "mvpL2ClassifiedAt": "2026-05-20"
     },
     {
       "id": "legacy.color.navigation.label.default-alt",
@@ -5681,9 +5969,12 @@
       "canonicalRegistryToken": "",
       "canonicalCssVariable": "",
       "canonicalFigmaVariableCandidate": "",
-      "migrationStatus": "needs-review",
+      "migrationStatus": "hold-missing-usage",
       "canonicalConfidence": "no-candidate",
-      "notes": []
+      "notes": [],
+      "mvpL2Status": "hold-missing-usage",
+      "mvpL2Reason": "no-candidate. alt nav label 목적 불명확.",
+      "mvpL2ClassifiedAt": "2026-05-20"
     },
     {
       "id": "legacy.color.navigation.label.selected",
@@ -5701,11 +5992,14 @@
       "classificationReason": "no foundation pattern detected",
       "layerConfidence": "medium",
       "canonicalRegistryToken": "form-control.border.selected / date-picker.cell.selected.bg / date-picker.cell.selected.text",
-      "canonicalCssVariable": "",
+      "canonicalCssVariable": "--nav-item-active-text",
       "canonicalFigmaVariableCandidate": "",
-      "migrationStatus": "needs-review",
+      "migrationStatus": "alias-only",
       "canonicalConfidence": "low",
-      "notes": []
+      "notes": [],
+      "mvpL2Status": "alias-only",
+      "mvpL2Reason": "--nav-item-active-text = --color-action-primary-default. 이미 존재.",
+      "mvpL2ClassifiedAt": "2026-05-20"
     },
     {
       "id": "legacy.color.navigation.label.hover",
@@ -5725,9 +6019,12 @@
       "canonicalRegistryToken": "button.primary.hover.bg",
       "canonicalCssVariable": "--button-primary-hover-bg",
       "canonicalFigmaVariableCandidate": "",
-      "migrationStatus": "needs-review",
+      "migrationStatus": "hold-needs-review",
       "canonicalConfidence": "medium",
-      "notes": []
+      "notes": [],
+      "mvpL2Status": "hold-needs-review",
+      "mvpL2Reason": "nav label on hover. --nav-item-default-text와 동일할 가능성. 실제 Figma 값 확인 필요.",
+      "mvpL2ClassifiedAt": "2026-05-20"
     },
     {
       "id": "legacy.color.navigation.background",
@@ -5747,9 +6044,12 @@
       "canonicalRegistryToken": "",
       "canonicalCssVariable": "",
       "canonicalFigmaVariableCandidate": "",
-      "migrationStatus": "needs-review",
+      "migrationStatus": "hold-missing-usage",
       "canonicalConfidence": "no-candidate",
-      "notes": []
+      "notes": [],
+      "mvpL2Status": "hold-missing-usage",
+      "mvpL2Reason": "no-candidate. --nav-bg 존재하지만 Figma legacy값 매핑 미확인.",
+      "mvpL2ClassifiedAt": "2026-05-20"
     },
     {
       "id": "legacy.color.navigation.indicator.default",
@@ -5769,9 +6069,12 @@
       "canonicalRegistryToken": "form-control.bg.default / form-control.border.default / form-control.text.default / input.default.bg / input.default.border / button.primary.default.bg / button.primary.default.text / button.secondary.default.bg / button.secondary.default.border / button.blue-line.default.border / button.blue-line.default.text",
       "canonicalCssVariable": "",
       "canonicalFigmaVariableCandidate": "",
-      "migrationStatus": "needs-review",
+      "migrationStatus": "hold-missing-usage",
       "canonicalConfidence": "low",
-      "notes": []
+      "notes": [],
+      "mvpL2Status": "hold-missing-usage",
+      "mvpL2Reason": "no-candidate. default 상태에서 indicator 미노출. 토큰 불필요 여부 확인.",
+      "mvpL2ClassifiedAt": "2026-05-20"
     },
     {
       "id": "legacy.color.navigation.indicator.default-alt",
@@ -5791,9 +6094,12 @@
       "canonicalRegistryToken": "",
       "canonicalCssVariable": "",
       "canonicalFigmaVariableCandidate": "",
-      "migrationStatus": "needs-review",
+      "migrationStatus": "hold-missing-usage",
       "canonicalConfidence": "no-candidate",
-      "notes": []
+      "notes": [],
+      "mvpL2Status": "hold-missing-usage",
+      "mvpL2Reason": "no-candidate. alt indicator 목적 불명확.",
+      "mvpL2ClassifiedAt": "2026-05-20"
     },
     {
       "id": "legacy.color.navigation.indicator.selected",
@@ -5811,11 +6117,14 @@
       "classificationReason": "no foundation pattern detected",
       "layerConfidence": "medium",
       "canonicalRegistryToken": "form-control.border.selected / date-picker.cell.selected.bg / date-picker.cell.selected.text",
-      "canonicalCssVariable": "",
+      "canonicalCssVariable": "--nav-item-indicator",
       "canonicalFigmaVariableCandidate": "",
-      "migrationStatus": "needs-review",
+      "migrationStatus": "alias-only",
       "canonicalConfidence": "low",
-      "notes": []
+      "notes": [],
+      "mvpL2Status": "alias-only",
+      "mvpL2Reason": "--nav-item-indicator = --color-action-primary-default. 이미 존재.",
+      "mvpL2ClassifiedAt": "2026-05-20"
     },
     {
       "id": "legacy.color.navigation.indicator.hover",
@@ -5833,11 +6142,14 @@
       "classificationReason": "no foundation pattern detected",
       "layerConfidence": "medium",
       "canonicalRegistryToken": "button.primary.hover.bg",
-      "canonicalCssVariable": "--button-primary-hover-bg",
+      "canonicalCssVariable": "--nav-item-indicator",
       "canonicalFigmaVariableCandidate": "",
-      "migrationStatus": "needs-review",
+      "migrationStatus": "alias-only",
       "canonicalConfidence": "medium",
-      "notes": []
+      "notes": [],
+      "mvpL2Status": "alias-only",
+      "mvpL2Reason": "hover indicator = selected indicator (동일 시각). 이미 존재.",
+      "mvpL2ClassifiedAt": "2026-05-20"
     },
     {
       "id": "legacy.color.dropdown.option.border.default",
@@ -5857,9 +6169,12 @@
       "canonicalRegistryToken": "form-control.bg.default / form-control.border.default / form-control.text.default / input.default.bg / input.default.border / button.primary.default.bg / button.primary.default.text / button.secondary.default.bg / button.secondary.default.border / button.blue-line.default.border / button.blue-line.default.text",
       "canonicalCssVariable": "",
       "canonicalFigmaVariableCandidate": "",
-      "migrationStatus": "needs-review",
+      "migrationStatus": "hold-needs-review",
       "canonicalConfidence": "low",
-      "notes": []
+      "notes": [],
+      "mvpL2Status": "hold-needs-review",
+      "mvpL2Reason": "dropdown option border token 미정의. 실제 Figma 값 확인 필요.",
+      "mvpL2ClassifiedAt": "2026-05-20"
     },
     {
       "id": "legacy.color.dropdown.option.border.hover",
@@ -5879,9 +6194,12 @@
       "canonicalRegistryToken": "button.primary.hover.bg",
       "canonicalCssVariable": "--button-primary-hover-bg",
       "canonicalFigmaVariableCandidate": "",
-      "migrationStatus": "needs-review",
+      "migrationStatus": "hold-needs-review",
       "canonicalConfidence": "medium",
-      "notes": []
+      "notes": [],
+      "mvpL2Status": "hold-needs-review",
+      "mvpL2Reason": "dropdown option hover border 미정의. 실제 값 확인 필요.",
+      "mvpL2ClassifiedAt": "2026-05-20"
     },
     {
       "id": "legacy.color.dropdown.option.border.selected",
@@ -5901,9 +6219,12 @@
       "canonicalRegistryToken": "form-control.border.selected / date-picker.cell.selected.bg / date-picker.cell.selected.text",
       "canonicalCssVariable": "",
       "canonicalFigmaVariableCandidate": "",
-      "migrationStatus": "needs-review",
+      "migrationStatus": "hold-needs-review",
       "canonicalConfidence": "low",
-      "notes": []
+      "notes": [],
+      "mvpL2Status": "hold-needs-review",
+      "mvpL2Reason": "dropdown option selected border 미정의. 실제 값 확인 필요.",
+      "mvpL2ClassifiedAt": "2026-05-20"
     },
     {
       "id": "legacy.color.control.border.disabled-alt1",
@@ -5923,9 +6244,12 @@
       "canonicalRegistryToken": "",
       "canonicalCssVariable": "",
       "canonicalFigmaVariableCandidate": "",
-      "migrationStatus": "needs-review",
+      "migrationStatus": "hold-missing-usage",
       "canonicalConfidence": "no-candidate",
-      "notes": []
+      "notes": [],
+      "mvpL2Status": "hold-missing-usage",
+      "mvpL2Reason": "no-candidate. disabled alt variant 목적 불명확.",
+      "mvpL2ClassifiedAt": "2026-05-20"
     },
     {
       "id": "legacy.color.status-card.text.primary--defualt",
@@ -5945,9 +6269,12 @@
       "canonicalRegistryToken": "",
       "canonicalCssVariable": "",
       "canonicalFigmaVariableCandidate": "",
-      "migrationStatus": "needs-review",
+      "migrationStatus": "future-component-token",
       "canonicalConfidence": "no-candidate",
-      "notes": []
+      "notes": [],
+      "mvpL2Status": "future-component-token",
+      "mvpL2Reason": "서비스별 StatusCard 텍스트색 — Domain Component 전용. primary/secondary/tertiary = 서비스 분류 색상 계열.",
+      "mvpL2ClassifiedAt": "2026-05-20"
     },
     {
       "id": "legacy.color.status-card.text.primary--sub",
@@ -5967,9 +6294,12 @@
       "canonicalRegistryToken": "",
       "canonicalCssVariable": "",
       "canonicalFigmaVariableCandidate": "",
-      "migrationStatus": "needs-review",
+      "migrationStatus": "future-component-token",
       "canonicalConfidence": "no-candidate",
-      "notes": []
+      "notes": [],
+      "mvpL2Status": "future-component-token",
+      "mvpL2Reason": "서비스별 StatusCard 텍스트색 — Domain Component 전용. primary/secondary/tertiary = 서비스 분류 색상 계열.",
+      "mvpL2ClassifiedAt": "2026-05-20"
     },
     {
       "id": "legacy.color.status-card.text.secondary--defualt",
@@ -5989,9 +6319,12 @@
       "canonicalRegistryToken": "",
       "canonicalCssVariable": "",
       "canonicalFigmaVariableCandidate": "",
-      "migrationStatus": "needs-review",
+      "migrationStatus": "future-component-token",
       "canonicalConfidence": "no-candidate",
-      "notes": []
+      "notes": [],
+      "mvpL2Status": "future-component-token",
+      "mvpL2Reason": "서비스별 StatusCard 텍스트색 — Domain Component 전용. primary/secondary/tertiary = 서비스 분류 색상 계열.",
+      "mvpL2ClassifiedAt": "2026-05-20"
     },
     {
       "id": "legacy.color.status-card.text.secondary--sub",
@@ -6011,9 +6344,12 @@
       "canonicalRegistryToken": "",
       "canonicalCssVariable": "",
       "canonicalFigmaVariableCandidate": "",
-      "migrationStatus": "needs-review",
+      "migrationStatus": "future-component-token",
       "canonicalConfidence": "no-candidate",
-      "notes": []
+      "notes": [],
+      "mvpL2Status": "future-component-token",
+      "mvpL2Reason": "서비스별 StatusCard 텍스트색 — Domain Component 전용. primary/secondary/tertiary = 서비스 분류 색상 계열.",
+      "mvpL2ClassifiedAt": "2026-05-20"
     },
     {
       "id": "legacy.color.status-card.text.tertiary--defualt",
@@ -6033,9 +6369,12 @@
       "canonicalRegistryToken": "",
       "canonicalCssVariable": "",
       "canonicalFigmaVariableCandidate": "",
-      "migrationStatus": "needs-review",
+      "migrationStatus": "future-component-token",
       "canonicalConfidence": "no-candidate",
-      "notes": []
+      "notes": [],
+      "mvpL2Status": "future-component-token",
+      "mvpL2Reason": "서비스별 StatusCard 텍스트색 — Domain Component 전용. primary/secondary/tertiary = 서비스 분류 색상 계열.",
+      "mvpL2ClassifiedAt": "2026-05-20"
     },
     {
       "id": "legacy.color.status-card.text.tertiary--sub",
@@ -6055,9 +6394,12 @@
       "canonicalRegistryToken": "",
       "canonicalCssVariable": "",
       "canonicalFigmaVariableCandidate": "",
-      "migrationStatus": "needs-review",
+      "migrationStatus": "future-component-token",
       "canonicalConfidence": "no-candidate",
-      "notes": []
+      "notes": [],
+      "mvpL2Status": "future-component-token",
+      "mvpL2Reason": "서비스별 StatusCard 텍스트색 — Domain Component 전용. primary/secondary/tertiary = 서비스 분류 색상 계열.",
+      "mvpL2ClassifiedAt": "2026-05-20"
     },
     {
       "id": "legacy.color.status-card.text.disabled",
@@ -6075,11 +6417,14 @@
       "classificationReason": "no foundation pattern detected",
       "layerConfidence": "medium",
       "canonicalRegistryToken": "form-control.bg.disabled / form-control.border.disabled / form-control.text.disabled / input.disabled.bg / input.disabled.border / input.disabled.text / button.primary.disabled.bg",
-      "canonicalCssVariable": "",
+      "canonicalCssVariable": "--color-text-disabled",
       "canonicalFigmaVariableCandidate": "",
-      "migrationStatus": "needs-review",
+      "migrationStatus": "alias-only",
       "canonicalConfidence": "low",
-      "notes": []
+      "notes": [],
+      "mvpL2Status": "alias-only",
+      "mvpL2Reason": "status-card disabled text = semantic disabled.",
+      "mvpL2ClassifiedAt": "2026-05-20"
     },
     {
       "id": "legacy.color.status-card.text.error",
@@ -6097,11 +6442,14 @@
       "classificationReason": "no foundation pattern detected",
       "layerConfidence": "medium",
       "canonicalRegistryToken": "form-control.border.error / color.text.state.error / input.error.border / input.error.text",
-      "canonicalCssVariable": "",
+      "canonicalCssVariable": "--color-text-state-error",
       "canonicalFigmaVariableCandidate": "",
-      "migrationStatus": "needs-review",
+      "migrationStatus": "alias-only",
       "canonicalConfidence": "low",
-      "notes": []
+      "notes": [],
+      "mvpL2Status": "alias-only",
+      "mvpL2Reason": "status-card error text = semantic error state text.",
+      "mvpL2ClassifiedAt": "2026-05-20"
     }
   ],
   "deprecatedAliases": []

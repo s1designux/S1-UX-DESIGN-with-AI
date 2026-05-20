@@ -4,15 +4,25 @@
   "private": true,
   "description": "SW Design System Guide — SW UX GUIDE V2.4",
   "scripts": {
+    "reports:sync":  "node scripts/reports-sync.js",
+    "reports:check": "node scripts/reports-check.js",
+    "build":         "npm run reports:sync && npm run build:bundle",
+    "build:bundle":  "node scripts/build-registry-bundle.js",
     "sync:button": "node scripts/sync/button-sync-check.js",
     "guard": "node scripts/guard/index.js",
     "guard:suggest": "node scripts/guard/suggest-fixes.js",
     "guard:apply": "node scripts/guard/apply-fixes.js",
     "plugin:check": "tsc --project plugins/figma-token-sync/tsconfig.json --noEmit",
     "plugin:build": "esbuild plugins/figma-token-sync/src/code.ts --bundle --outfile=plugins/figma-token-sync/dist/code.js --target=es2017 --platform=browser",
+    "installer:check": "tsc --project plugins/figma-vars-installer/tsconfig.json --noEmit",
+    "installer:build": "esbuild plugins/figma-vars-installer/src/code.ts --bundle --outfile=plugins/figma-vars-installer/dist/code.js --target=es2017 --platform=browser && zip -j assets/downloads/s1-design-vars-installer.zip plugins/figma-vars-installer/manifest.json plugins/figma-vars-installer/dist/code.js plugins/figma-vars-installer/src/ui.html",
     "figma:fetch": "node --env-file=.env scripts/figma/fetch-figma-variables.mjs",
     "figma:match": "node scripts/figma/match-figma-variable-metadata.mjs",
-    "figma:audit": "node scripts/figma/match-figma-variable-metadata.mjs --profile ux-guide-2.4"
+    "figma:audit": "node scripts/figma/match-figma-variable-metadata.mjs --profile ux-guide-2.4",
+    "figma:usage:check": "node scripts/figma/check-figma-usage.mjs",
+    "figma:usage:apply": "npm run figma:usage:check && node scripts/figma/apply-figma-usage.mjs && npm run reports:sync && npm run reports:check",
+    "figma:usage:dry-run": "node scripts/figma/apply-figma-usage.mjs --dry-run",
+    "gate:check": "node scripts/gate-check.js"
   },
   "devDependencies": {
     "@figma/plugin-typings": "^1.97.0",

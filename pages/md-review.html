@@ -2,8 +2,9 @@
 <html lang="ko">
 <head>
   <meta charset="UTF-8">
+  <script>!function(){var z=localStorage.getItem("sw-ds-zoom");if(z)document.documentElement.style.zoom=z+"%"}();</script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>MD 리뷰 — SW Design System</title>
+  <title>MD 리뷰 — S1 UX DESIGN GUIDE</title>
   <link rel="stylesheet" href="../assets/css/style.css">
   <style>
     /* ── Review Page Layout ── */
@@ -339,7 +340,7 @@
       <line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/>
     </svg>
   </button>
-  <span class="mobile-logo">SW Design System</span>
+  <span class="mobile-logo">S1 UX DESIGN GUIDE</span>
 </div>
 <div class="sidebar-overlay" id="sidebar-overlay"></div>
 <div class="app">
@@ -358,6 +359,11 @@
       </div>
     </div>
     <div class="page-content">
+      <div style="background:#f8fafc;border:1.5px solid #cbd5e1;border-radius:10px;padding:12px 18px;margin-bottom:20px;display:flex;gap:10px;align-items:center;font-size:13px;">
+        <span style="font-size:15px;flex-shrink:0">📦</span>
+        <span style="color:#475569;">이 페이지는 <strong>Archive</strong> 보관 상태입니다. 사이드바에 노출되지 않으며 직접 URL로만 접근 가능합니다.</span>
+        <a href="reports.html" style="margin-left:auto;background:#475569;color:#fff;padding:5px 14px;border-radius:6px;font-size:12px;font-weight:600;text-decoration:none;flex-shrink:0;">Reports →</a>
+      </div>
       <div class="review-grid">
 
         <!-- ① 변경 요약 -->
@@ -386,15 +392,15 @@
                 </tr>
                 <tr>
                   <td>하드코딩 제안</td>
-                  <td><code>surface/base-background/home</code> → 새 Primitive 추가 제안</td>
+                  <td><code>surface/base-background/home</code> → 새 Foundation 추가 제안</td>
                 </tr>
                 <tr>
                   <td>하드코딩 허용</td>
-                  <td><code>color/overlay</code> → rgba 계열은 Primitive alias 불가, 직접 사용 허용</td>
+                  <td><code>color/overlay</code> → rgba 계열은 Foundation alias 불가, 직접 사용 허용</td>
                 </tr>
                 <tr>
                   <td>다크모드 값</td>
-                  <td>Dark Primitive(gray-dark, blue-dark, status-dark) 기반 전체 값 정의</td>
+                  <td>Dark Foundation(gray-dark, blue-dark, status-dark) 기반 전체 값 정의</td>
                 </tr>
                 <tr>
                   <td>신규 카테고리</td>
@@ -475,12 +481,12 @@
               <div class="decision-question"><code>--color-bg-home</code> 처리 방식 선택</div>
               <div class="decision-desc">
                 Figma에서 <code>#F5F6FB</code> (미세한 Blue-tinted gray)를 직접 하드코딩 중.<br>
-                기존 Primitive와 값 차이가 작아 아래 두 방향 중 하나를 확정해야 합니다.
+                기존 Foundation와 값 차이가 작아 아래 두 방향 중 하나를 확정해야 합니다.
               </div>
               <div class="option-list">
                 <div class="option-item preferred">
                   <span class="option-tag a">A</span>
-                  <span><strong>권장</strong> — Foundation에 <code>--color-blue-gray-0: #F5F6FB</code> 신규 Primitive 추가.<br>홈 배경의 독립적인 의미를 보존하고, 향후 다른 값으로 교체 가능.</span>
+                  <span><strong>권장</strong> — Foundation에 <code>--color-blue-gray-0: #F5F6FB</code> 신규 Foundation 추가.<br>홈 배경의 독립적인 의미를 보존하고, 향후 다른 값으로 교체 가능.</span>
                 </div>
                 <div class="option-item">
                   <span class="option-tag b">B</span>
@@ -708,7 +714,7 @@
               <div class="checklist-item" onclick="toggleCheck(this)">
                 <div class="checklist-box"></div>
                 <div>
-                  <div class="checklist-text"><code>surface/base-background/home</code> — Primitive 신규 추가(Option A) 또는 근접값 통합(Option B) 확정</div>
+                  <div class="checklist-text"><code>surface/base-background/home</code> — Foundation 신규 추가(Option A) 또는 근접값 통합(Option B) 확정</div>
                   <div class="checklist-source">semantic.md · 1. color-bg</div>
                 </div>
               </div>

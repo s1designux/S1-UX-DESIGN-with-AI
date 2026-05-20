@@ -1,0 +1,1506 @@
+{
+  "meta": {
+    "name": "S1 UX Guide Canonical Token Promotion Plan",
+    "version": "0.1.0",
+    "status": "draft",
+    "createdAt": "2026-05-19",
+    "source": "l1-l4.5-review",
+    "sourceOfTruth": "code-registry",
+    "description": "Promotion plan for canonical token v0.1 candidates based on legacy audit (MVP-L1 ~ L4.5), component coverage (C0), and Figma variable usage audit (F0). Incorporates HD-L4.5-A, HD-L4.5-B, HD-L4.5-C decisions.",
+    "prohibitions": [
+      "Figma Variable rename/write/delete prohibited",
+      "Legacy token deletion prohibited",
+      "deprecated-alias must NOT be promoted to canonical",
+      "needs-review items must NOT be auto-confirmed",
+      "darkmode-test results must NOT be used as production standard",
+      "accent-alt must NOT be added as a new CSS token — alias-only",
+      "input-correct-* tokens must NOT be deprecated — they are canonical stable (HD-4)"
+    ],
+    "confirmedDecisions": [
+      "HD-L4.5-A: DatePicker nav = component alias only (--date-picker-nav-*). No new semantic category.",
+      "HD-L4.5-B: --color-text-primary canonical value = #202020. Figma color/text/title/primary #000000 = doc-only node.",
+      "HD-L4.5-C: color/text/state/accent-alt = alias of --color-text-inverse (#ffffff). No new CSS token.",
+      "HD-4: correct is canonical. success is Figma alias only. --input-correct-* are canonical stable.",
+      "ND-2: Dark border rgba replaced with Foundation gray-dark scale (tokens.css + semantic.colors.json updated).",
+      "ND-5: Chip tokens split into --chip-line-* (17) + --chip-solid-* (17). tokens.css updated.",
+      "C0-D001: readonly token added. --input-readonly-* 3 tokens in tokens.css.",
+      "C0-D002: --dropdown-list-bg = var(--color-surface-raised). canonical standard.",
+      "C0-D003: tokens.css linked in components.html. Inline semantic token section removed."
+    ],
+    "nd7": "ND-7 완료(2026-05-19): semantic.colors.json에 19개 토큰 등록. controlBorder·formControl·textState 3개 카테고리 신규. text·border 각 1개 추가. promote-candidate 수 변동 없음."
+  },
+  "summary": {
+    "promoteCandidates": 48,
+    "holdNeedsReview": 4,
+    "holdAccessLimited": 3,
+    "holdLayerAmbiguous": 2,
+    "holdRemoveCandidate": 1,
+    "aliasOnly": 3,
+    "deprecatedAliases": 6,
+    "removeCandidates": 5,
+    "futureComponentTokens": 2,
+    "decisionsRequired": 7,
+    "notes": "promoteCandidates=48 groups/entries. Foundation 13 + Semantic 19 + Component 16 (incl. chip-line, chip-solid separately). holds total=10 (4 needs-review + 3 access-limited + 2 layer-ambiguous + 1 remove-candidate). removeCandidates=5 (4 already removed + 1 dedup-remove pending). deprecated-aliases=6 (state+token aliases documented)."
+  },
+  "promoteCandidates": [
+    {
+      "id": "foundation.color.base",
+      "layer": "foundation",
+      "group": "base",
+      "cssVariables": [
+        "--color-base-white",
+        "--color-base-black"
+      ],
+      "figmaVariableCandidate": "color/base/*",
+      "evidence": [
+        "stable in canonical-token-draft",
+        "F0: confirmed in palette frame 540:7663"
+      ],
+      "promotionStatus": "promote-candidate",
+      "confidence": "high",
+      "notes": [
+        "Universal constants. Used in inverse/white tokens. Light-only. Registered in foundation.colors.json."
+      ]
+    },
+    {
+      "id": "foundation.color.gray",
+      "layer": "foundation",
+      "group": "gray",
+      "cssVariables": [
+        "--color-gray-{0..900}",
+        "--color-gray-dark-{0..900}"
+      ],
+      "figmaVariableCandidate": "color/gray/*",
+      "evidence": [
+        "stable in canonical-token-draft",
+        "referenced by all semantic tokens"
+      ],
+      "promotionStatus": "promote-candidate",
+      "confidence": "high",
+      "notes": [
+        "11 light steps + 11 dark steps. gray-dark-450 gap confirmed (steps jump 400→500). Registered in foundation.colors.json."
+      ]
+    },
+    {
+      "id": "foundation.color.blue",
+      "layer": "foundation",
+      "group": "blue",
+      "cssVariables": [
+        "--color-blue-{50..500}",
+        "--color-blue-dark-{50..500}"
+      ],
+      "figmaVariableCandidate": "color/blue/*",
+      "evidence": [
+        "stable in canonical-token-draft",
+        "F0: color/blue/50 confirmed in DatePicker range bg (540:3836, 6456:4033, 540:7663)"
+      ],
+      "promotionStatus": "promote-candidate",
+      "confidence": "high",
+      "notes": [
+        "10 light steps + 10 dark steps. 50→500 in 50-unit increments. Registered in foundation.colors.json."
+      ]
+    },
+    {
+      "id": "foundation.color.red",
+      "layer": "foundation",
+      "group": "red",
+      "cssVariables": [
+        "--color-red-{50..500}",
+        "--color-red-dark-{50..500}"
+      ],
+      "figmaVariableCandidate": "color/red/*",
+      "evidence": [
+        "stable in canonical-token-draft",
+        "F0: color/red/300 confirmed in palette frame"
+      ],
+      "promotionStatus": "promote-candidate",
+      "confidence": "high",
+      "notes": [
+        "10 light steps + 10 dark steps. Registered in foundation.colors.json."
+      ]
+    },
+    {
+      "id": "foundation.color.chromatic-scales",
+      "layer": "foundation",
+      "group": "chromatic",
+      "cssVariablePrefixes": [
+        "--color-orange-",
+        "--color-orange-dark-",
+        "--color-yellow-",
+        "--color-yellow-dark-",
+        "--color-green-",
+        "--color-green-dark-",
+        "--color-skyblue-",
+        "--color-skyblue-dark-",
+        "--color-purple-",
+        "--color-purple-dark-",
+        "--color-brown-",
+        "--color-brown-dark-"
+      ],
+      "figmaVariableCandidate": "color/{scale}/*",
+      "evidence": [
+        "stable in canonical-token-draft",
+        "referenced by semantic status tokens (yellow/green for status-dark)"
+      ],
+      "promotionStatus": "promote-candidate",
+      "confidence": "high",
+      "notes": [
+        "6 chromatic scales × 10 light + 10 dark = 120 tokens. Registered in foundation.colors.json. Orange palette has no confirmed component usage (F0) but kept as foundation primitive."
+      ]
+    },
+    {
+      "id": "foundation.color.visual-gray",
+      "layer": "foundation",
+      "group": "visual-gray",
+      "cssVariables": [
+        "--color-visual-gray-{50..500}"
+      ],
+      "figmaVariableCandidate": "color/visual-gray/*",
+      "evidence": [
+        "stable in canonical-token-draft"
+      ],
+      "promotionStatus": "promote-candidate",
+      "confidence": "high",
+      "notes": [
+        "10 light-only steps. No dark counterpart defined. Decorative scale. Registered in foundation.colors.json."
+      ]
+    },
+    {
+      "id": "foundation.color.coolgray-dark",
+      "layer": "foundation",
+      "group": "coolgray-dark",
+      "cssVariables": [
+        "--color-coolgray-dark-{50..500}"
+      ],
+      "figmaVariableCandidate": "color/coolgray-dark/*",
+      "evidence": [
+        "stable in canonical-token-draft"
+      ],
+      "promotionStatus": "promote-candidate",
+      "confidence": "high",
+      "notes": [
+        "10 dark-only steps. Registered in foundation.colors.json."
+      ]
+    },
+    {
+      "id": "foundation.color.status-dark-aliases",
+      "layer": "foundation",
+      "group": "status-dark",
+      "cssVariables": [
+        "--color-status-dark-red",
+        "--color-status-dark-green",
+        "--color-status-dark-yellow"
+      ],
+      "figmaVariableCandidate": "color/status-dark/*",
+      "evidence": [
+        "stable in canonical-token-draft",
+        "referenced by semantic status tokens dark values"
+      ],
+      "promotionStatus": "promote-candidate",
+      "confidence": "high",
+      "notes": [
+        "Aliases of dark scale step-350. Used only by semantic status tokens in dark mode. Registered in foundation.colors.json."
+      ]
+    },
+    {
+      "id": "foundation.color.brand",
+      "layer": "foundation",
+      "group": "brand",
+      "cssVariables": [
+        "--color-brand-blue",
+        "--color-brand-red",
+        "--color-brand-gray",
+        "--color-brand-ci"
+      ],
+      "figmaVariableCandidate": "color/brand/*",
+      "evidence": [
+        "stable in canonical-token-draft",
+        "F0: color/brand/look&feel/blue,red,gray,CI confirmed in palette frame 540:7663"
+      ],
+      "promotionStatus": "promote-candidate",
+      "confidence": "high",
+      "notes": [
+        "CI/logo only. Not for product UI token reference. 4 tokens. Registered in foundation.colors.json."
+      ]
+    },
+    {
+      "id": "foundation.spacing",
+      "layer": "foundation",
+      "group": "spacing",
+      "cssVariables": [
+        "--spacing-{2..128}"
+      ],
+      "figmaVariableCandidate": "spacing/*",
+      "evidence": [
+        "stable in canonical-token-draft",
+        "F0: spacing/4 + spacing/32 confirmed. spacing/padding/* semantic tokens confirmed in F0 across multiple components."
+      ],
+      "promotionStatus": "promote-candidate",
+      "confidence": "high",
+      "notes": [
+        "21 tokens. 2~128px in defined increments. Registered in foundation.spacing.json."
+      ]
+    },
+    {
+      "id": "foundation.typography",
+      "layer": "foundation",
+      "group": "typography",
+      "cssVariables": [
+        "--font-size-{10..32}",
+        "--font-weight-regular",
+        "--font-weight-medium",
+        "--font-weight-bold",
+        "--line-height-130"
+      ],
+      "figmaVariableCandidate": "typography/*",
+      "evidence": [
+        "stable in canonical-token-draft",
+        "Referenced in component harness pages"
+      ],
+      "promotionStatus": "promote-candidate",
+      "confidence": "high",
+      "notes": [
+        "8 font-size + 3 font-weight + 1 line-height = 12 tokens. No --font-size-38. Registered in foundation.typography.json."
+      ]
+    },
+    {
+      "id": "foundation.radius",
+      "layer": "foundation",
+      "group": "radius",
+      "cssVariables": [
+        "--radius-0",
+        "--radius-2",
+        "--radius-4",
+        "--radius-6",
+        "--radius-8",
+        "--radius-10",
+        "--radius-12",
+        "--radius-16",
+        "--radius-20",
+        "--radius-full"
+      ],
+      "figmaVariableCandidate": "radius/*",
+      "evidence": [
+        "stable in canonical-token-draft",
+        "F0: radius/4 confirmed 5× across form-control/button/datepicker. radius/full confirmed 2× in DatePicker day-cell."
+      ],
+      "promotionStatus": "promote-candidate",
+      "confidence": "high",
+      "notes": [
+        "10 tokens. Registered in foundation.radius.json."
+      ]
+    },
+    {
+      "id": "foundation.border-width",
+      "layer": "foundation",
+      "group": "borderWidth",
+      "cssVariables": [
+        "--border-width-1",
+        "--border-width-2"
+      ],
+      "figmaVariableCandidate": "border-width/*",
+      "evidence": [
+        "stable in canonical-token-draft",
+        "F0: border-width/default confirmed 4× across components"
+      ],
+      "promotionStatus": "promote-candidate",
+      "confidence": "high",
+      "notes": [
+        "2 tokens. --border-width-1 is the foundation primitive. --border-width-default (semantic) maps to this. Registered in foundation.border.json. NOTE: border-width/100 (Figma legacy) = dedup/remove-candidate per L4.5-F1."
+      ]
+    },
+    {
+      "id": "semantic.color.bg.stable",
+      "layer": "semantic",
+      "group": "colorBg",
+      "cssVariables": [
+        "--color-bg-default",
+        "--color-bg-subtle",
+        "--color-bg-muted",
+        "--color-bg-elevated"
+      ],
+      "figmaVariableCandidate": "color/bg/*",
+      "evidence": [
+        "stable in canonical-token-draft",
+        "F0: surface/neutral/bg/subtle confirmed 3× (6456:4033, 540:7663, 540:7368)"
+      ],
+      "promotionStatus": "promote-candidate",
+      "confidence": "high",
+      "notes": [
+        "4 tokens. Light/Dark Foundation reference verified. --color-bg-home and --color-bg-selected are in hold."
+      ]
+    },
+    {
+      "id": "semantic.color.surface",
+      "layer": "semantic",
+      "group": "colorSurface",
+      "cssVariables": [
+        "--color-surface-default",
+        "--color-surface-raised"
+      ],
+      "figmaVariableCandidate": "color/surface/*",
+      "evidence": [
+        "stable in canonical-token-draft",
+        "F0: surface/neutral/bg/base confirmed 2× in DatePicker panel. C0: --dropdown-list-bg → surface-raised confirmed (C0-D002)."
+      ],
+      "promotionStatus": "promote-candidate",
+      "confidence": "high",
+      "notes": [
+        "2 tokens. Registered in semantic.colors.json."
+      ]
+    },
+    {
+      "id": "semantic.color.text.primary",
+      "layer": "semantic",
+      "group": "colorText",
+      "cssVariable": "--color-text-primary",
+      "figmaVariableCandidate": "color/text/primary",
+      "evidence": [
+        "stable in canonical-token-draft",
+        "HD-L4.5-B confirmed #202020 canonical",
+        "F0: color/text/title/primary usage = doc-only node (style guide/datepicker frames)"
+      ],
+      "promotionStatus": "promote-candidate",
+      "confidence": "high",
+      "notes": [
+        "HD-L4.5-B resolved 2026-05-19. Figma color/text/title/primary #000000 is doc-only node — not a product UI binding. --color-text-primary canonical value = #202020 (var(--color-gray-900)) confirmed."
+      ]
+    },
+    {
+      "id": "semantic.color.text.stable",
+      "layer": "semantic",
+      "group": "colorText",
+      "cssVariables": [
+        "--color-text-secondary",
+        "--color-text-tertiary",
+        "--color-text-caption",
+        "--color-text-placeholder",
+        "--color-text-helper",
+        "--color-text-link",
+        "--color-text-correct",
+        "--color-text-danger",
+        "--color-text-inverse"
+      ],
+      "figmaVariableCandidate": "color/text/*",
+      "evidence": [
+        "stable in canonical-token-draft",
+        "F0: color/text/title/secondary, body/primary, state/disabled confirmed.",
+        "MVP-T1: placeholder=gray-500(#757575) confirmed. HD-4: correct is canonical."
+      ],
+      "promotionStatus": "promote-candidate",
+      "confidence": "high",
+      "notes": [
+        "9 tokens. --color-text-placeholder = var(--color-gray-500) = #757575 confirmed per MVP-T1. correct is canonical (ND-NAMING-01 resolved). --color-text-disabled is in hold (dark value review)."
+      ]
+    },
+    {
+      "id": "semantic.color.text-readonly",
+      "layer": "semantic",
+      "group": "colorText",
+      "cssVariable": "--color-text-readonly",
+      "figmaVariableCandidate": null,
+      "evidence": [
+        "Added C0-D001 resolution 2026-05-19. Defined in tokens.css: var(--color-gray-500) light / var(--color-gray-dark-500) dark.",
+        "C0: readonly state required for Input component."
+      ],
+      "promotionStatus": "promote-candidate",
+      "confidence": "medium",
+      "notes": [
+        "New token added per C0-D001. readonly text = 2 levels darker than disabled. Light: var(--color-gray-500). Dark: var(--color-gray-dark-500). Figma Variable name unconfirmed."
+      ]
+    },
+    {
+      "id": "semantic.color.border.stable",
+      "layer": "semantic",
+      "group": "colorBorder",
+      "cssVariables": [
+        "--color-border-subtle",
+        "--color-border-default",
+        "--color-border-strong",
+        "--color-border-emphasis",
+        "--color-border-focus",
+        "--color-border-white",
+        "--color-border-danger",
+        "--color-border-correct"
+      ],
+      "figmaVariableCandidate": "color/border/*",
+      "evidence": [
+        "ND-2 resolved 2026-05-18: dark rgba replaced with Foundation gray-dark scale in tokens.css and semantic.colors.json",
+        "F0: surface/neutral/border/border confirmed"
+      ],
+      "promotionStatus": "promote-candidate",
+      "confidence": "high",
+      "notes": [
+        "8 tokens. ND-2 resolved — all dark values now use Foundation gray-dark scale (subtle→200, default→300, disabled→200, strong→500, emphasis→700). --color-border-disabled is classified separately (hold-duplicate)."
+      ]
+    },
+    {
+      "id": "semantic.color.border-disabled",
+      "layer": "semantic",
+      "group": "colorBorder",
+      "cssVariable": "--color-border-disabled",
+      "figmaVariableCandidate": null,
+      "evidence": [
+        "Defined in tokens.css. Light: var(--color-gray-200) = same as border-default. Dark: var(--color-gray-dark-200).",
+        "C0: used by all button variants disabled border."
+      ],
+      "promotionStatus": "promote-candidate",
+      "confidence": "medium",
+      "notes": [
+        "Light value = same as --color-border-default. Dark value = gray-dark-200 (differs from border-default dark = gray-dark-300). Intentional: disabled elements use lighter border. dup-4 in canonical-token-draft assessed as 'needs decision' but dark mode differentiation justifies keeping separate."
+      ]
+    },
+    {
+      "id": "semantic.color.icon",
+      "layer": "semantic",
+      "group": "colorIcon",
+      "cssVariables": [
+        "--color-icon-default",
+        "--color-icon-muted",
+        "--color-icon-emphasis",
+        "--color-icon-accent",
+        "--color-icon-inverse",
+        "--color-icon-danger"
+      ],
+      "figmaVariableCandidate": "color/icon/*",
+      "evidence": [
+        "stable in canonical-token-draft",
+        "F0: color/icon/gray-dark confirmed 3× (icon default role). color/icon/gray-light confirmed 2× (icon disabled role)."
+      ],
+      "promotionStatus": "promote-candidate",
+      "confidence": "high",
+      "notes": [
+        "6 tokens. All stable. Registered in semantic.colors.json."
+      ]
+    },
+    {
+      "id": "semantic.color.action",
+      "layer": "semantic",
+      "group": "colorAction",
+      "cssVariables": [
+        "--color-action-primary-default",
+        "--color-action-primary-hover",
+        "--color-action-primary-pressed",
+        "--color-action-primary-text",
+        "--color-action-primary-subtle"
+      ],
+      "figmaVariableCandidate": "color/action/primary/*",
+      "evidence": [
+        "stable in canonical-token-draft",
+        "F0: color/button/bg/primary--default = #1d6ceb = --color-action-primary-default confirmed in 3 nodes."
+      ],
+      "promotionStatus": "promote-candidate",
+      "confidence": "high",
+      "notes": [
+        "5 tokens. All stable. Registered in semantic.colors.json."
+      ]
+    },
+    {
+      "id": "semantic.color.status",
+      "layer": "semantic",
+      "group": "colorStatus",
+      "cssVariables": [
+        "--color-status-success",
+        "--color-status-error",
+        "--color-status-warning",
+        "--color-status-info"
+      ],
+      "figmaVariableCandidate": "color/status/*",
+      "evidence": [
+        "stable in canonical-token-draft"
+      ],
+      "promotionStatus": "promote-candidate",
+      "confidence": "high",
+      "notes": [
+        "4 tokens. Light success=blue by service convention (documented). Registered in semantic.colors.json."
+      ]
+    },
+    {
+      "id": "semantic.color.overlay",
+      "layer": "semantic",
+      "group": "colorOverlay",
+      "cssVariable": "--color-overlay",
+      "figmaVariableCandidate": "color/overlay",
+      "evidence": [
+        "stable in canonical-token-draft"
+      ],
+      "promotionStatus": "promote-candidate",
+      "confidence": "high",
+      "notes": [
+        "1 token. rgba exception documented — alpha channel cannot use foundation alias. Registered in semantic.colors.json."
+      ]
+    },
+    {
+      "id": "semantic.color.control-border",
+      "layer": "semantic",
+      "group": "colorControlBorder",
+      "cssVariables": [
+        "--color-control-border-default",
+        "--color-control-border-hover",
+        "--color-control-border-selected",
+        "--color-control-border-disabled"
+      ],
+      "figmaVariableCandidate": "color/control/border/*",
+      "evidence": [
+        "stable in canonical-token-draft",
+        "F0: color/control/border/selected confirmed 2× (540:3836, 6456:4033). color/control/border/default confirmed 1× (6456:4033).",
+        "MVP4.4 added 2026-05-18."
+      ],
+      "promotionStatus": "promote-candidate",
+      "confidence": "high",
+      "notes": [
+        "4 tokens. Semantically separate from general color-border (correct dark values for form controls). NOT in semantic.colors.json yet — addition needed (ND-7)."
+      ]
+    },
+    {
+      "id": "semantic.color.form-control.bg",
+      "layer": "semantic",
+      "group": "colorFormControl",
+      "cssVariables": [
+        "--color-form-control-bg-default",
+        "--color-form-control-bg-disabled"
+      ],
+      "figmaVariableCandidate": "color/form-control/bg/*",
+      "evidence": [
+        "stable in canonical-token-draft",
+        "F0: confirmed in nodes 540:3794 (form-control) and 6456:4033 (DatePicker Section 2). usageCount: 2 each.",
+        "L4.5: semantic-confirm-candidate resolved."
+      ],
+      "promotionStatus": "promote-candidate",
+      "confidence": "high",
+      "notes": [
+        "2 tokens. Shared by Input + DatePicker trigger confirmed. NOT in semantic.colors.json yet — ND-7 pending."
+      ]
+    },
+    {
+      "id": "semantic.color.form-control.border",
+      "layer": "semantic",
+      "group": "colorFormControl",
+      "cssVariables": [
+        "--color-form-control-border-default",
+        "--color-form-control-border-selected",
+        "--color-form-control-border-error",
+        "--color-form-control-border-correct",
+        "--color-form-control-border-disabled"
+      ],
+      "figmaVariableCandidate": "color/form-control/border/*",
+      "evidence": [
+        "stable in canonical-token-draft",
+        "F0: all 3 border variables confirmed in 540:3794 and 6456:4033.",
+        "HD-4: correct is canonical. Figma 'success' = code 'correct'."
+      ],
+      "promotionStatus": "promote-candidate",
+      "confidence": "high",
+      "notes": [
+        "5 tokens. selected=focus alias confirmed (token-aliases.json). correct is canonical stable — do NOT deprecate. border-correct shares value with border-selected by design. NOT in semantic.colors.json yet — ND-7 pending."
+      ]
+    },
+    {
+      "id": "semantic.color.form-control.text",
+      "layer": "semantic",
+      "group": "colorFormControl",
+      "cssVariables": [
+        "--color-form-control-text-default",
+        "--color-form-control-text-placeholder",
+        "--color-form-control-text-disabled"
+      ],
+      "figmaVariableCandidate": "color/form-control/text/*",
+      "evidence": [
+        "stable in canonical-token-draft",
+        "F0: all 3 text variables confirmed in 540:3794 and 6456:4033.",
+        "MVP-T1: text-default=#353535 (gray-800) confirmed. text-placeholder=#757575 (gray-500) confirmed."
+      ],
+      "promotionStatus": "promote-candidate",
+      "confidence": "high",
+      "notes": [
+        "3 tokens. Values confirmed via Figma MCP. NOT in semantic.colors.json yet — ND-7 pending."
+      ]
+    },
+    {
+      "id": "semantic.color.form-control.border-readonly",
+      "layer": "semantic",
+      "group": "colorFormControl",
+      "cssVariable": "--color-form-control-border-readonly",
+      "figmaVariableCandidate": null,
+      "evidence": [
+        "C0-D001 resolution 2026-05-19. --input-readonly-border: var(--color-form-control-border-disabled) defined in tokens.css. Implicit canonical semantic token."
+      ],
+      "promotionStatus": "promote-candidate",
+      "confidence": "medium",
+      "notes": [
+        "Inferred semantic token. readonly border uses same value as disabled border. Figma readonly state not confirmed via MCP. Promote candidate pending Figma confirmation."
+      ]
+    },
+    {
+      "id": "semantic.color.text-state",
+      "layer": "semantic",
+      "group": "colorTextState",
+      "cssVariables": [
+        "--color-text-state-helper",
+        "--color-text-state-correct",
+        "--color-text-state-error"
+      ],
+      "figmaVariableCandidate": "color/text/state/*",
+      "evidence": [
+        "stable in canonical-token-draft",
+        "C0: all 3 tokens used in Input component",
+        "F0: color/text/state/accent confirmed for correct text role (540:3836)"
+      ],
+      "promotionStatus": "promote-candidate",
+      "confidence": "high",
+      "notes": [
+        "3 tokens. correct is canonical (HD-4). NOT in semantic.colors.json yet — ND-7 pending. HD-L4.5-C: accent-alt alias resolved separately."
+      ]
+    },
+    {
+      "id": "semantic.spacing.all",
+      "layer": "semantic",
+      "group": "spacingSemantic",
+      "cssVariablePrefixes": [
+        "--spacing-padding-block-",
+        "--spacing-padding-inline-",
+        "--spacing-section-",
+        "--spacing-stack-",
+        "--spacing-cluster-",
+        "--spacing-label-gap-"
+      ],
+      "figmaVariableCandidate": "spacing/semantic/*",
+      "evidence": [
+        "stable in canonical-token-draft",
+        "F0: spacing/padding/inline/sm confirmed 4×. spacing/padding/block/xs confirmed 2×. spacing/section/xs + lg confirmed. spacing/cluster/xs + stack/xs confirmed."
+      ],
+      "promotionStatus": "promote-candidate",
+      "confidence": "high",
+      "notes": [
+        "29 tokens. All stable. Registered in semantic.spacing.json."
+      ]
+    },
+    {
+      "id": "semantic.sizing.all",
+      "layer": "semantic",
+      "group": "sizingSemantic",
+      "cssVariablePrefixes": [
+        "--sizing-form-control-height-",
+        "--sizing-button-height-",
+        "--sizing-chip-height-",
+        "--sizing-table-row-height-",
+        "--sizing-icon-"
+      ],
+      "figmaVariableCandidate": "sizing/semantic/*",
+      "evidence": [
+        "stable in canonical-token-draft",
+        "F0: sizing/form-control/height/md(2×), lg(1×), xs(1×), xxs(1×) confirmed. sizing/button/height/md confirmed. sizing/icon/24 confirmed 2×."
+      ],
+      "promotionStatus": "promote-candidate",
+      "confidence": "high",
+      "notes": [
+        "25 tokens. All stable. Registered in semantic.sizing.json."
+      ]
+    },
+    {
+      "id": "semantic.radius.all",
+      "layer": "semantic",
+      "group": "radiusSemantic",
+      "cssVariables": [
+        "--radius-control-xs",
+        "--radius-control-sm",
+        "--radius-button-md",
+        "--radius-card-md",
+        "--radius-modal-md"
+      ],
+      "figmaVariableCandidate": "radius/semantic/*",
+      "evidence": [
+        "stable in canonical-token-draft",
+        "F0: radius/control/sm confirmed in form-control node 540:3794"
+      ],
+      "promotionStatus": "promote-candidate",
+      "confidence": "high",
+      "notes": [
+        "5 tokens. All stable. radius/control/sm dedup with radius/4 evaluated — intentional semantic separation maintained."
+      ]
+    },
+    {
+      "id": "semantic.border-width.all",
+      "layer": "semantic",
+      "group": "borderWidthSemantic",
+      "cssVariables": [
+        "--border-width-default",
+        "--border-width-strong"
+      ],
+      "figmaVariableCandidate": "border-width/semantic/*",
+      "evidence": [
+        "stable in canonical-token-draft",
+        "F0: border-width/default confirmed 4× across all component types"
+      ],
+      "promotionStatus": "promote-candidate",
+      "confidence": "high",
+      "notes": [
+        "2 tokens. All stable. --border-width-default = 1px. --border-width-strong = 2px."
+      ]
+    },
+    {
+      "id": "component.button.primary",
+      "layer": "component",
+      "group": "button",
+      "cssVariables": [
+        "--button-primary-default-bg",
+        "--button-primary-hover-bg",
+        "--button-primary-pressed-bg",
+        "--button-primary-disabled-bg",
+        "--button-primary-disabled-border",
+        "--button-primary-default-text",
+        "--button-primary-disabled-text",
+        "--button-primary-default-icon"
+      ],
+      "figmaVariableCandidate": "color/button/*primary*",
+      "evidence": [
+        "stable in canonical-token-draft",
+        "F0: color/button/bg/primary--default confirmed 3×. label confirmed 4×. border confirmed 3×.",
+        "C0: all 7 non-icon tokens used in components.html"
+      ],
+      "promotionStatus": "promote-candidate",
+      "confidence": "high",
+      "notes": [
+        "8 tokens. All Semantic references confirmed. Figma variable usage confirmed via F0. Registered in registry/components/button.json."
+      ]
+    },
+    {
+      "id": "component.button.secondary",
+      "layer": "component",
+      "group": "button",
+      "cssVariables": [
+        "--button-secondary-default-bg",
+        "--button-secondary-hover-bg",
+        "--button-secondary-pressed-bg",
+        "--button-secondary-disabled-bg",
+        "--button-secondary-default-border",
+        "--button-secondary-disabled-border",
+        "--button-secondary-default-text",
+        "--button-secondary-disabled-text",
+        "--button-secondary-default-icon",
+        "--button-secondary-disabled-icon"
+      ],
+      "figmaVariableCandidate": "color/button/*secondary*",
+      "evidence": [
+        "stable in canonical-token-draft",
+        "C0: all non-icon tokens confirmed in components.html"
+      ],
+      "promotionStatus": "promote-candidate",
+      "confidence": "high",
+      "notes": [
+        "10 tokens. All Semantic references. Registered in registry/components/button.json."
+      ]
+    },
+    {
+      "id": "component.button.blue-line",
+      "layer": "component",
+      "group": "button",
+      "cssVariables": [
+        "--button-blue-line-default-bg",
+        "--button-blue-line-hover-bg",
+        "--button-blue-line-pressed-bg",
+        "--button-blue-line-disabled-bg",
+        "--button-blue-line-default-border",
+        "--button-blue-line-hover-border",
+        "--button-blue-line-disabled-border",
+        "--button-blue-line-default-text",
+        "--button-blue-line-disabled-text"
+      ],
+      "figmaVariableCandidate": "color/button/*blue-line*",
+      "evidence": [
+        "stable in canonical-token-draft",
+        "C0: all tokens used in components.html"
+      ],
+      "promotionStatus": "promote-candidate",
+      "confidence": "high",
+      "notes": [
+        "9 tokens. All Semantic references. SW-specific variant. Figma variable name unconfirmed for hover/pressed — Figma nodeId for blue-line variant not confirmed. Registered in registry/components/button.json."
+      ]
+    },
+    {
+      "id": "component.input",
+      "layer": "component",
+      "group": "input",
+      "cssVariables": [
+        "--input-default-bg",
+        "--input-disabled-bg",
+        "--input-default-border",
+        "--input-focus-border",
+        "--input-error-border",
+        "--input-correct-border",
+        "--input-disabled-border",
+        "--input-placeholder-text",
+        "--input-disabled-text",
+        "--input-helper-text",
+        "--input-correct-text",
+        "--input-error-text"
+      ],
+      "figmaVariableCandidate": "color/form-control/*",
+      "evidence": [
+        "stable in canonical-token-draft",
+        "F0: 8 form-control variables confirmed in 540:3794 and 6456:4033",
+        "C0: all 12 tokens confirmed in components.html"
+      ],
+      "promotionStatus": "promote-candidate",
+      "confidence": "high",
+      "notes": [
+        "12 tokens. 2-layer architecture: --input-* → --color-form-control-* → Semantic. HD-4: correct is canonical stable. --input-correct-border and --input-correct-text are canonical — do NOT deprecate. Registered in registry/components/input.json."
+      ]
+    },
+    {
+      "id": "component.input.readonly",
+      "layer": "component",
+      "group": "input",
+      "cssVariables": [
+        "--input-readonly-bg",
+        "--input-readonly-border",
+        "--input-readonly-text"
+      ],
+      "figmaVariableCandidate": null,
+      "evidence": [
+        "C0-D001 resolved 2026-05-19. Added to tokens.css."
+      ],
+      "promotionStatus": "promote-candidate",
+      "confidence": "medium",
+      "notes": [
+        "3 tokens. readonly bg = disabled bg. readonly border = disabled border. readonly text = --color-text-readonly (gray-500 light). Added after C0-D001 human decision. Figma Variable names unconfirmed."
+      ]
+    },
+    {
+      "id": "component.chip.line",
+      "layer": "component",
+      "group": "chip",
+      "cssVariables": [
+        "--chip-line-default-bg",
+        "--chip-line-hover-bg",
+        "--chip-line-selected-bg",
+        "--chip-line-disabled-bg",
+        "--chip-line-default-border",
+        "--chip-line-hover-border",
+        "--chip-line-selected-border",
+        "--chip-line-disabled-border",
+        "--chip-line-default-text",
+        "--chip-line-selected-text",
+        "--chip-line-disabled-text",
+        "--chip-line-default-icon",
+        "--chip-line-selected-icon",
+        "--chip-line-disabled-icon",
+        "--chip-line-default-close-icon",
+        "--chip-line-hover-close-icon",
+        "--chip-line-selected-close-icon"
+      ],
+      "figmaVariableCandidate": "color/chip/line/*",
+      "evidence": [
+        "ND-5 resolved 2026-05-18. tokens.css updated with line/solid split. 17 unified tokens replaced.",
+        "component-tokens-extracted.md updated."
+      ],
+      "promotionStatus": "promote-candidate",
+      "confidence": "high",
+      "notes": [
+        "17 tokens. Line variant (outlined). All Semantic references. ND-5: split adopted. Figma Chip nodeId not confirmed via MCP."
+      ]
+    },
+    {
+      "id": "component.chip.solid",
+      "layer": "component",
+      "group": "chip",
+      "cssVariables": [
+        "--chip-solid-default-bg",
+        "--chip-solid-hover-bg",
+        "--chip-solid-selected-bg",
+        "--chip-solid-disabled-bg",
+        "--chip-solid-default-border",
+        "--chip-solid-hover-border",
+        "--chip-solid-selected-border",
+        "--chip-solid-disabled-border",
+        "--chip-solid-default-text",
+        "--chip-solid-selected-text",
+        "--chip-solid-disabled-text",
+        "--chip-solid-default-icon",
+        "--chip-solid-selected-icon",
+        "--chip-solid-disabled-icon",
+        "--chip-solid-default-close-icon",
+        "--chip-solid-hover-close-icon",
+        "--chip-solid-selected-close-icon"
+      ],
+      "figmaVariableCandidate": "color/chip/solid/*",
+      "evidence": [
+        "ND-5 resolved 2026-05-18. tokens.css updated with line/solid split.",
+        "component-tokens-extracted.md updated."
+      ],
+      "promotionStatus": "promote-candidate",
+      "confidence": "high",
+      "notes": [
+        "17 tokens. Solid variant (filled). All Semantic references. ND-5: split adopted. Figma Chip nodeId not confirmed via MCP."
+      ]
+    },
+    {
+      "id": "component.checkbox",
+      "layer": "component",
+      "group": "checkbox",
+      "cssVariables": [
+        "--checkbox-default-bg",
+        "--checkbox-checked-bg",
+        "--checkbox-indeterminate-bg",
+        "--checkbox-disabled-bg",
+        "--checkbox-default-border",
+        "--checkbox-hover-border",
+        "--checkbox-checked-border",
+        "--checkbox-disabled-border",
+        "--checkbox-check-icon",
+        "--checkbox-disabled-check-icon"
+      ],
+      "figmaVariableCandidate": "color/checkbox/*",
+      "evidence": [
+        "stable in canonical-token-draft",
+        "MVP4.4 confirmed 2026-05-18"
+      ],
+      "promotionStatus": "promote-candidate",
+      "confidence": "high",
+      "notes": [
+        "10 tokens. All Semantic references via control-border layer. NOT registered — registry/components/checkbox.json needs creation (decision-004)."
+      ]
+    },
+    {
+      "id": "component.radio",
+      "layer": "component",
+      "group": "radio",
+      "cssVariables": [
+        "--radio-default-bg",
+        "--radio-disabled-bg",
+        "--radio-default-border",
+        "--radio-hover-border",
+        "--radio-selected-border",
+        "--radio-disabled-border",
+        "--radio-selected-dot",
+        "--radio-disabled-dot"
+      ],
+      "figmaVariableCandidate": "color/radio/*",
+      "evidence": [
+        "stable in canonical-token-draft",
+        "MVP4.4 confirmed 2026-05-18"
+      ],
+      "promotionStatus": "promote-candidate",
+      "confidence": "high",
+      "notes": [
+        "8 tokens. All Semantic references. NOT registered — registry/components/radio.json needs creation."
+      ]
+    },
+    {
+      "id": "component.toggle",
+      "layer": "component",
+      "group": "toggle",
+      "cssVariables": [
+        "--toggle-on-bg",
+        "--toggle-off-bg",
+        "--toggle-disabled-bg",
+        "--toggle-knob"
+      ],
+      "figmaVariableCandidate": "color/toggle/*",
+      "evidence": [
+        "stable in canonical-token-draft",
+        "MVP4.4 confirmed 2026-05-18"
+      ],
+      "promotionStatus": "promote-candidate",
+      "confidence": "high",
+      "notes": [
+        "4 tokens. All Semantic references. NOT registered — registry/components/toggle.json needs creation."
+      ]
+    },
+    {
+      "id": "component.dropdown",
+      "layer": "component",
+      "group": "dropdown",
+      "cssVariables": [
+        "--dropdown-trigger-default-bg",
+        "--dropdown-trigger-hover-bg",
+        "--dropdown-trigger-open-bg",
+        "--dropdown-trigger-disabled-bg",
+        "--dropdown-trigger-default-border",
+        "--dropdown-trigger-hover-border",
+        "--dropdown-trigger-open-border",
+        "--dropdown-trigger-disabled-border",
+        "--dropdown-trigger-default-text",
+        "--dropdown-trigger-disabled-text",
+        "--dropdown-list-bg",
+        "--dropdown-list-border",
+        "--dropdown-option-hover-bg",
+        "--dropdown-option-selected-bg",
+        "--dropdown-trigger-placeholder-text",
+        "--dropdown-trigger-selected-text",
+        "--dropdown-option-selected-text"
+      ],
+      "figmaVariableCandidate": "color/dropdown/*",
+      "evidence": [
+        "stable in canonical-token-draft (base 13 tokens)",
+        "C0: 4 extra tokens confirmed as needed (missing-005)",
+        "ND-1 resolved (hover-bg dark: gray-dark-500)"
+      ],
+      "promotionStatus": "promote-candidate",
+      "confidence": "high",
+      "notes": [
+        "17 tokens. 13 stable + 4 C0-confirmed extras (placeholder-text, selected-text, list-border, option-selected-text). C0-D002: --dropdown-list-bg → surface-raised confirmed. NOT registered — registry/components/dropdown.json needs creation."
+      ]
+    },
+    {
+      "id": "component.pagination",
+      "layer": "component",
+      "group": "pagination",
+      "cssVariables": [
+        "--pagination-default-bg",
+        "--pagination-hover-bg",
+        "--pagination-active-bg",
+        "--pagination-disabled-bg",
+        "--pagination-default-text",
+        "--pagination-active-text",
+        "--pagination-disabled-text",
+        "--pagination-border"
+      ],
+      "figmaVariableCandidate": "color/pagination/*",
+      "evidence": [
+        "stable in canonical-token-draft"
+      ],
+      "promotionStatus": "promote-candidate",
+      "confidence": "medium",
+      "notes": [
+        "8 tokens. All Semantic references. No F0 Figma confirmation (pagination node not scanned). NOT registered — registry/components/pagination.json needs creation."
+      ]
+    },
+    {
+      "id": "component.navigation",
+      "layer": "component",
+      "group": "navigation",
+      "cssVariables": [
+        "--nav-bg",
+        "--nav-item-hover-bg",
+        "--nav-item-active-bg",
+        "--nav-item-default-text",
+        "--nav-item-active-text",
+        "--nav-item-default-icon",
+        "--nav-item-active-icon",
+        "--nav-item-indicator",
+        "--nav-divider"
+      ],
+      "figmaVariableCandidate": "color/nav/*",
+      "evidence": [
+        "stable in canonical-token-draft",
+        "HD-L4.5-A: navigation = existing component tokens reuse (not new semantic category). DatePicker nav maps to existing --nav-* semantic values."
+      ],
+      "promotionStatus": "promote-candidate",
+      "confidence": "medium",
+      "notes": [
+        "9 tokens. All Semantic references. HD-L4.5-A: DatePicker nav will use component alias --date-picker-nav-* pointing to same values. NOT registered — registry/components/navigation.json needs creation."
+      ]
+    },
+    {
+      "id": "component.table",
+      "layer": "component",
+      "group": "table",
+      "cssVariables": [
+        "--table-header-bg",
+        "--table-header-text",
+        "--table-header-border",
+        "--table-row-default-bg",
+        "--table-row-hover-bg",
+        "--table-row-selected-bg",
+        "--table-cell-border",
+        "--table-cell-text"
+      ],
+      "figmaVariableCandidate": "color/table/*",
+      "evidence": [
+        "stable in canonical-token-draft"
+      ],
+      "promotionStatus": "promote-candidate",
+      "confidence": "medium",
+      "notes": [
+        "8 tokens. All Semantic references. --table-row-selected-bg references --color-bg-selected (which is in hold). Promotion conditional on bg-selected resolution.",
+        "NOT registered — registry/components/table.json needs creation."
+      ]
+    }
+  ],
+  "holds": [
+    {
+      "id": "hold.semantic.bg-home",
+      "layer": "semantic",
+      "group": "colorBg",
+      "cssVariable": "--color-bg-home",
+      "promotionStatus": "hold-needs-review",
+      "reason": "Light value is raw HEX #F5F6FB — not a Foundation primitive. Violates token architecture rules.",
+      "neededAction": "ND-4: Register #F5F6FB as new Foundation primitive (Option A), or replace with --color-visual-gray-50 (#F3F5F7) (Option B), or --color-gray-0 (#FAFAFA) (Option C). Human decision required."
+    },
+    {
+      "id": "hold.semantic.bg-selected",
+      "layer": "semantic",
+      "group": "colorBg",
+      "cssVariable": "--color-bg-selected",
+      "promotionStatus": "hold-needs-review",
+      "reason": "Candidate status — Figma validation not yet complete. Dark value not confirmed.",
+      "neededAction": "Validate --color-bg-selected usage in Figma design context. Confirm dark value var(--color-blue-dark-100) is correct. Also needed for --table-row-selected-bg promotion."
+    },
+    {
+      "id": "hold.semantic.text-disabled",
+      "layer": "semantic",
+      "group": "colorText",
+      "cssVariable": "--color-text-disabled",
+      "promotionStatus": "hold-needs-review",
+      "reason": "Dark value at candidate state. Current: var(--color-gray-dark-400) = #35363F. WCAG contrast review recommended for dark mode accessibility.",
+      "neededAction": "Verify WCAG contrast for gray-dark-400 (#35363F) on dark backgrounds. Confirm whether upgrade to gray-dark-600 (#55575F) improves accessibility enough to justify change."
+    },
+    {
+      "id": "hold.semantic.colors-json-sync",
+      "layer": "semantic",
+      "group": "multiple",
+      "cssVariables": [
+        "--color-border-disabled",
+        "--color-control-border-default",
+        "--color-control-border-hover",
+        "--color-control-border-selected",
+        "--color-control-border-disabled",
+        "--color-form-control-bg-default",
+        "--color-form-control-bg-disabled",
+        "--color-form-control-border-default",
+        "--color-form-control-border-selected",
+        "--color-form-control-border-error",
+        "--color-form-control-border-correct",
+        "--color-form-control-border-disabled",
+        "--color-form-control-text-default",
+        "--color-form-control-text-placeholder",
+        "--color-form-control-text-disabled",
+        "--color-text-state-helper",
+        "--color-text-state-correct",
+        "--color-text-state-error",
+        "--color-text-readonly",
+        "--color-form-control-border-readonly"
+      ],
+      "promotionStatus": "hold-needs-review",
+      "reason": "ND-7: These 20 semantic tokens exist in tokens.css and canonical-token-draft.json but are NOT registered in registry/tokens/semantic.colors.json (last updated 2026-05-11). Functionally stable but lack JSON registry entries.",
+      "neededAction": "ND-7: Decide Option A (add all 20 to semantic.colors.json) or Option B (split into semantic.control-border.json, semantic.form-control.json, semantic.text-state.json). Claude can execute after human decision."
+    },
+    {
+      "id": "hold.component.select-disabled-border",
+      "layer": "component",
+      "group": "input",
+      "cssVariable": "--select-disabled-border",
+      "promotionStatus": "hold-layer-ambiguous",
+      "reason": "Stray token placed in Input group but belongs to Select component per HD-5 (ND-8). Select component JSON not yet created.",
+      "neededAction": "Create registry/components/select.json and relocate this token. Pending decision-004 completion."
+    },
+    {
+      "id": "hold.component.chip.unified",
+      "layer": "component",
+      "group": "chip",
+      "cssVariables": [
+        "--chip-default-bg",
+        "--chip-hover-bg",
+        "--chip-selected-bg",
+        "--chip-disabled-bg",
+        "--chip-default-border",
+        "--chip-hover-border",
+        "--chip-selected-border",
+        "--chip-disabled-border",
+        "--chip-default-text",
+        "--chip-selected-text",
+        "--chip-disabled-text",
+        "--chip-default-icon",
+        "--chip-selected-icon",
+        "--chip-disabled-icon",
+        "--chip-default-close-icon",
+        "--chip-hover-close-icon",
+        "--chip-selected-close-icon"
+      ],
+      "promotionStatus": "remove-candidate",
+      "reason": "ND-5 resolved: unified --chip-* tokens were replaced by --chip-line-* and --chip-solid-* in tokens.css. The unified tokens no longer exist in tokens.css. The canonical-token-draft.json chip section still shows unified — draft needs update.",
+      "neededAction": "Update canonical-token-draft.json chip section to remove unified tokens and reflect line/solid split. Then unified chip tokens become remove-candidates."
+    },
+    {
+      "id": "hold.component.ghost-button-migration",
+      "layer": "component",
+      "group": "button",
+      "cssVariables": [
+        "--button-ghost-hover-bg",
+        "--button-ghost-pressed-bg",
+        "--button-ghost-default-text",
+        "--button-ghost-disabled-text",
+        "--button-ghost-default-icon",
+        "--button-ghost-disabled-icon"
+      ],
+      "promotionStatus": "hold-layer-ambiguous",
+      "reason": "Ghost variant is deprecated but 6 tokens remain in tokens.css for backward compatibility. Cannot be removed until all consumer code is migrated.",
+      "neededAction": "Track consumer code migration to --button-blue-line-*. Remove tokens from tokens.css only after all service code migrated."
+    },
+    {
+      "id": "hold.component.textarea",
+      "layer": "component",
+      "group": "input",
+      "cssVariables": [],
+      "promotionStatus": "promote-candidate",
+      "reason": "ACCESS-01 해소 (2026-05-20): Input nodeId 540:3328 확인 완료. MVP-F1 플러그인 스캔. Textarea registry JSON (registry/components/textarea.json) not created. CLAUDE.md unresolved item #10.",
+      "neededAction": "Resolve ACCESS-01 via Plugin Export MVP-F1. Then create registry/components/textarea.json. Most --input-* tokens are reusable (HD-6: Inputbox_large = Textarea).",
+      "usageEvidence": "MVP-F1 Plugin Export confirmed variable bindings in nodes: 540:3328.",
+      "promotedAt": "2026-05-20"
+    },
+    {
+      "id": "hold.component.date-picker.tokens",
+      "layer": "component",
+      "group": "datePicker",
+      "cssVariables": [
+        "--date-picker-panel-bg",
+        "--date-picker-cell-selected-bg",
+        "--date-picker-cell-today-border",
+        "--date-picker-cell-selected-text",
+        "--date-picker-cell-today-text",
+        "--date-picker-cell-other-month-text",
+        "--date-picker-cell-today-bg",
+        "--date-picker-cell-range-bg"
+      ],
+      "promotionStatus": "promote-candidate",
+      "reason": "ACCESS-01: Figma nodeId 6443:4655 (DatePicker component) invalid — MCP access failed. Some tokens inferred from node 540:3836/6456:4033 but full component scope unconfirmed.",
+      "neededAction": "Resolve ACCESS-01. Complete registry/components/date-picker.json with confirmed tokens. Human Decision HD-5 (DatePicker tokens candidate → stable) pending.",
+      "usageEvidence": "MVP-F1 Plugin Export confirmed variable bindings in nodes: 540:3794.",
+      "promotedAt": "2026-05-20"
+    },
+    {
+      "id": "hold.component.time-picker",
+      "layer": "component",
+      "group": "timePicker",
+      "cssVariables": [],
+      "promotionStatus": "promote-candidate",
+      "reason": "ACCESS-01: Figma nodeId 6443:4606 (TimePicker component) invalid — MCP access failed. TimePicker component not implemented. Tokens unknown.",
+      "neededAction": "Resolve ACCESS-01 via Plugin Export. Then define TimePicker token scope. Pending CLAUDE.md unresolved item #11.",
+      "usageEvidence": "MVP-F1 Plugin Export confirmed variable bindings in nodes: 540:3489, 540:3506, 540:3636, 540:3690, 540:4216.",
+      "promotedAt": "2026-05-20"
+    }
+  ],
+  "aliasOnly": [
+    {
+      "id": "figma.text.state.accent-alt",
+      "figmaVariable": "color/text/state/accent-alt",
+      "figmaValue": "#ffffff",
+      "cssAlias": "--color-text-inverse",
+      "cssAliasValue": "#ffffff",
+      "promotionStatus": "alias-only",
+      "reason": "HD-L4.5-C resolved 2026-05-19: Figma Variable 'color/text/state/accent-alt' has identical value to --color-text-inverse (#ffffff). No new CSS token created. Figma Variable name kept as-is (no rename). Code uses --color-text-inverse.",
+      "resolvedAt": "2026-05-19"
+    },
+    {
+      "id": "figma.state.complete-to-filled",
+      "figmaVariable": "state: complete",
+      "codeAlias": "filled",
+      "promotionStatus": "alias-only",
+      "reason": "Figma 'complete' state = code 'filled'. No separate bg/border token — visually identical to default state. Only placeholder → typed text transition occurs. Documented in token-aliases.json.",
+      "resolvedAt": "2026-05-18"
+    },
+    {
+      "id": "figma.state.selected-to-focus",
+      "figmaVariable": "state: selected (form-control context)",
+      "codeAlias": "focus",
+      "cssTokenMapping": "--color-form-control-border-selected → --input-focus-border",
+      "promotionStatus": "alias-only",
+      "reason": "Figma 'selected' in form-control context = code 'focus'. NOT item selection. --color-form-control-border-selected preserves Figma name. --input-focus-border is the component alias. ONLY applies to form-control, not Chip/Nav.",
+      "resolvedAt": "2026-05-18"
+    }
+  ],
+  "deprecatedAliases": [
+    {
+      "legacyName": "success (Figma form-control state name)",
+      "canonicalName": "correct",
+      "cssVariableLegacy": null,
+      "cssVariableCanonical": "--input-correct-border, --input-correct-text, --color-border-correct, --color-text-correct, --color-form-control-border-correct, --color-text-state-correct",
+      "promotionStatus": "deprecated-alias",
+      "action": "figma-alias-only",
+      "notes": "Figma uses 'success' state. Code canonical = 'correct'. HD-4 confirmed 2026-05-12. NEVER rename code tokens to 'success'. ND-NAMING-01 resolved."
+    },
+    {
+      "legacyName": "complete",
+      "canonicalName": "filled",
+      "cssVariableLegacy": "--input-complete-bg, --input-complete-border",
+      "cssVariableCanonical": "--input-default-bg, --input-default-border",
+      "promotionStatus": "deprecated-alias",
+      "action": "alias-confirmed-no-separate-token",
+      "notes": "Filled state = default state visually. No separate bg/border tokens needed. Confirmed 2026-05-18."
+    },
+    {
+      "legacyName": "--input-filled-bg",
+      "canonicalName": "no-token-needed",
+      "cssVariableLegacy": "--input-filled-bg",
+      "cssVariableCanonical": "--input-default-bg",
+      "promotionStatus": "deprecated-alias",
+      "action": "alias-resolved-no-separate-token",
+      "notes": "Filled state bg = default bg. Confirmed in token-aliases.json."
+    },
+    {
+      "legacyName": "--input-filled-border",
+      "canonicalName": "no-token-needed",
+      "cssVariableLegacy": "--input-filled-border",
+      "cssVariableCanonical": "--input-default-border",
+      "promotionStatus": "deprecated-alias",
+      "action": "alias-resolved-no-separate-token",
+      "notes": "Filled state border = default border. Confirmed in token-aliases.json."
+    },
+    {
+      "legacyName": "border-width/100",
+      "canonicalName": "--border-width-default",
+      "cssVariableLegacy": "Figma Variable: border-width/100",
+      "cssVariableCanonical": "--border-width-default",
+      "promotionStatus": "deprecated-alias",
+      "action": "dedup-remove",
+      "notes": "L4.5 F-1: border-width/100 ≡ border-width/default (both 1px). Legacy Figma Variable. canonical is border-width/default. Add to deprecated-tokens.json."
+    },
+    {
+      "legacyName": "Title/16M (capitalized)",
+      "canonicalName": "title/16M (lowercase)",
+      "cssVariableLegacy": "Figma Variable: Title/16M",
+      "cssVariableCanonical": "Figma Variable: title/16M → CSS typography tokens",
+      "promotionStatus": "deprecated-alias",
+      "action": "dedup-document",
+      "notes": "L4.5 F-3: Title/16M ≡ title/16M (capitalized duplicate). Canonical = title/16M (lowercase). Figma Variable rename prohibited. Code registry marks uppercase as deprecated-alias. Confirmed 2026-05-19."
+    }
+  ],
+  "removeCandidates": [
+    {
+      "id": "remove.input.hover-bg",
+      "cssVariable": "--input-hover-bg",
+      "promotionStatus": "remove-candidate",
+      "currentStatus": "removed",
+      "reason": "HD-2: Figma does not define hover bg for Input. Removed 2026-05-12.",
+      "action": "Already removed. Recorded in deprecated-tokens.json."
+    },
+    {
+      "id": "remove.input.hover-border",
+      "cssVariable": "--input-hover-border",
+      "promotionStatus": "remove-candidate",
+      "currentStatus": "removed",
+      "reason": "HD-2: Figma does not define hover border for Input. Removed 2026-05-12.",
+      "action": "Already removed. Recorded in deprecated-tokens.json."
+    },
+    {
+      "id": "remove.input.focus-bg",
+      "cssVariable": "--input-focus-bg",
+      "promotionStatus": "remove-candidate",
+      "currentStatus": "removed",
+      "reason": "HD-3: Focus bg = default bg (white). Redundant. Removed 2026-05-12.",
+      "action": "Already removed."
+    },
+    {
+      "id": "remove.input.error-bg",
+      "cssVariable": "--input-error-bg",
+      "promotionStatus": "remove-candidate",
+      "currentStatus": "removed",
+      "reason": "HD-8: Error bg = default bg (white). Redundant. Removed 2026-05-12.",
+      "action": "Already removed."
+    },
+    {
+      "id": "remove.legacy.control-border-disabled-alt1",
+      "cssVariable": "Figma Variable: color/control/border/disabled-alt1",
+      "promotionStatus": "remove-candidate",
+      "currentStatus": "dedup-candidate",
+      "reason": "L4.5 F-5: color/control/border/disabled-alt1 value (#d9d9d9) = color/control/border/default. -alt1 suffix = legacy variant. usageCount: 1. Canonical = --color-control-border-disabled.",
+      "action": "Replace single usage with --color-control-border-disabled. Add to deprecated-tokens.json. Figma Variable rename prohibited."
+    }
+  ],
+  "futureComponentTokens": [
+    {
+      "id": "future.date-picker.nav",
+      "layer": "component",
+      "group": "datePicker",
+      "proposedCssVariables": [
+        "--date-picker-nav-bg",
+        "--date-picker-nav-label-default",
+        "--date-picker-nav-label-selected",
+        "--date-picker-nav-indicator-default",
+        "--date-picker-nav-indicator-selected"
+      ],
+      "promotionStatus": "future-component-token",
+      "reason": "HD-L4.5-A: DatePicker nav buttons = icon action buttons. No new semantic category. Component alias --date-picker-nav-* only. Values map to existing --nav-* semantic tokens. Access to Figma node 6443:4655 failed (ACCESS-01).",
+      "prerequisite": "Resolve ACCESS-01. Confirm DatePicker nav structure in Figma. Then register as component alias pointing to --nav-* values.",
+      "readyCondition": "MVP-F1 Plugin Export + DatePicker HD-1 resolution"
+    },
+    {
+      "id": "future.component.input-action-icon",
+      "layer": "component",
+      "group": "input",
+      "proposedCssVariable": "--input-action-icon",
+      "proposedValue": "var(--color-icon-emphasis)",
+      "promotionStatus": "future-component-token",
+      "reason": "C0 missing-002: suffix action icon color (search/visibility-toggle/clear) has no component alias. Currently uses --color-icon-default direct semantic ref. F0: color/icon/gray-dark (#353535) confirmed in 540:3794.",
+      "prerequisite": "Human confirmation of Figma variable name: color/icon/gray-dark → --input-action-icon → var(--color-icon-emphasis or --color-icon-default)",
+      "readyCondition": "Figma Variable name confirmed via Plugin Export or MCP"
+    }
+  ],
+  "decisionsRequired": [
+    {
+      "id": "decision-001",
+      "topic": "ND-4: --color-bg-home light raw HEX (#F5F6FB)",
+      "options": [
+        "A: Register new Foundation primitive (e.g., --color-gray-home: #F5F6FB)",
+        "B: Replace with --color-visual-gray-50 (#F3F5F7) — closest visual match",
+        "C: Replace with --color-gray-0 (#FAFAFA) — closest semantic match"
+      ],
+      "recommendation": "Option A if Figma-validated. Option B if visual match sufficient.",
+      "priority": "medium"
+    },
+    {
+      "id": "decision-002",
+      "topic": "ND-7: semantic.colors.json sync — add ~20 missing semantic tokens",
+      "options": [
+        "A: Add all to existing semantic.colors.json (border-disabled, control-border×4, form-control×13, text-state×3)",
+        "B: Split into separate files: semantic.control-border.json + semantic.form-control.json + semantic.text-state.json"
+      ],
+      "recommendation": "Option A for simplicity. Option B for governance. Either way, Claude can execute after human decision.",
+      "priority": "high"
+    },
+    {
+      "id": "decision-003",
+      "topic": "8+ missing component registry JSON files",
+      "options": [
+        "A: Create all in one batch (checkbox, radio, toggle, dropdown, pagination, navigation, table, select.json)",
+        "B: Create incrementally as each component is formally reviewed"
+      ],
+      "recommendation": "Option A. Claude can generate all files using canonical-token-draft.json data after human approval.",
+      "priority": "medium"
+    },
+    {
+      "id": "decision-004",
+      "topic": "Ghost button legacy removal timeline",
+      "options": [
+        "A: Track consumer code manually, remove when cleared",
+        "B: Set a deadline and force migration"
+      ],
+      "recommendation": "Option A. Add to backlog with explicit target milestone.",
+      "priority": "low"
+    },
+    {
+      "id": "decision-005",
+      "topic": "ACCESS-01: Resolve invalid Figma nodeIds (6443:4408, 6443:4655, 6443:4606)",
+      "options": [
+        "A: Run MVP-F1 Plugin Export Variable Usage to get all bindings",
+        "B: Manually locate nodes in Figma and update registry/figma/figma-map.json with correct nodeIds"
+      ],
+      "recommendation": "Option A for automation. Option B for immediate access.",
+      "priority": "high"
+    },
+    {
+      "id": "decision-006",
+      "topic": "DatePicker HD-1~5 (MVP4.3-A unresolved human decisions)",
+      "options": [
+        "HD-1: Figma componentSetKey for DatePicker node",
+        "HD-2: Component name DatePicker vs DayPicker",
+        "HD-3: Calendar icon Figma node name",
+        "HD-4: Mobile interaction pattern (bottom sheet vs inline vs popover)",
+        "HD-5: DatePicker candidate tokens → stable promotion"
+      ],
+      "recommendation": "Resolve HD-5 first after ACCESS-01 is resolved. Other HDs depend on Figma direct access.",
+      "priority": "medium"
+    },
+    {
+      "id": "decision-007",
+      "topic": "--color-text-disabled dark value: gray-dark-400 vs gray-dark-600",
+      "options": [
+        "A: Keep gray-dark-400 (#35363F) — current value, confirmed by ND-3",
+        "B: Upgrade to gray-dark-600 (#55575F) for improved WCAG contrast"
+      ],
+      "recommendation": "Verify WCAG AA contrast ratio for disabled text on dark backgrounds before deciding.",
+      "priority": "low"
+    }
+  ]
+}

@@ -10,8 +10,8 @@
     "darkModeStatus": "pending",
     "a11yStatus": "partial",
     "harnessStatus": "candidate",
-    "figmaNodeId": "6456:4033",
-    "figmaNote": "Section 2 (6456:4033) 성공. datepicker_input frame (540:3794), mobile_datepicker_bottomsheet (540:3836) 확인. 2026-05-12.",
+    "figmaNodeId": "540:3794",
+    "figmaNote": "2026-05-20 MVP-F1 플러그인 스캔으로 COMPONENT_SET nodeId 540:3794 확인. Section 노드 6456:4033은 figma.figmaSectionNodeId에 보존. mobile bottomsheet 540:3836 확인.",
     "description": "Date selection component. Uses Base Input as trigger field. PC popover calendar panel (figma-unconfirmed) or Mobile bottom sheet (Figma confirmed)."
   },
   "baseComponent": "Input",

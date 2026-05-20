@@ -3,24 +3,34 @@
     "id": "toggle",
     "name": "Toggle",
     "category": "Core",
-    "updatedAt": "2026-05-11",
+    "updatedAt": "2026-05-19",
+    "version": "0.1.0",
     "tokenStatus": "stable",
-    "codeStatus": "not-started",
+    "codeStatus": "implemented",
     "darkModeStatus": "pending",
-    "description": "Toggle switch control with on, off, and disabled states.",
-    "openIssues": [
-      "tokens/component-tokens-extracted.md: --toggle-off-bg references var(--color-text-placeholder).",
-      "tokens.css: --toggle-off-bg references var(--color-border-default). Mismatch needs resolution."
+    "a11yStatus": "pending",
+    "figmaStatus": "existing",
+    "harnessStatus": "implemented",
+    "description": "토글 스위치 컨트롤. on·off·disabled 상태.",
+    "notes": [
+      "--toggle-off-bg: tokens.css 기준 var(--color-text-placeholder). component-tokens-extracted.md도 동일값으로 정합 완료(2026-05-18)."
     ]
   },
-  "variants": {
-    "default": {
-      "tokenStatus": "stable",
-      "codeStatus": "not-started",
-      "darkModeStatus": "pending",
-      "tokens": [
-        "--toggle-on-bg", "--toggle-off-bg", "--toggle-disabled-bg", "--toggle-knob"
-      ]
-    }
+  "states": ["on", "off", "disabled"],
+  "tokens": [
+    { "cssVar": "--toggle-on-bg",       "value": "var(--color-action-primary-default)", "semanticRef": "color-action-primary-default", "state": "on",       "property": "background" },
+    { "cssVar": "--toggle-off-bg",      "value": "var(--color-text-placeholder)",       "semanticRef": "color-text-placeholder",       "state": "off",      "property": "background" },
+    { "cssVar": "--toggle-disabled-bg", "value": "var(--color-bg-muted)",               "semanticRef": "color-bg-muted",               "state": "disabled", "property": "background" },
+    { "cssVar": "--toggle-knob",        "value": "var(--color-action-primary-text)",    "semanticRef": "color-action-primary-text",    "state": "all",      "property": "knob-color" }
+  ],
+  "figma": {
+    "componentSetKey": "",
+    "figmaNodeId": "",
+    "propertyMap": {}
+  },
+  "governance": {
+    "owner": "Design System Team",
+    "deprecated": false,
+    "replacement": null
   }
 }

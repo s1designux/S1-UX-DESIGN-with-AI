@@ -3,39 +3,54 @@
     "id": "select",
     "name": "Select",
     "category": "Core",
-    "updatedAt": "2026-05-11",
-    "tokenStatus": "pending",
-    "codeStatus": "not-started",
+    "updatedAt": "2026-05-19",
+    "version": "0.2.0",
+    "tokenStatus": "stable",
+    "codeStatus": "implemented",
     "darkModeStatus": "pending",
     "a11yStatus": "pending",
     "figmaStatus": "existing",
-    "harnessStatus": "skeleton",
-    "description": "Selection control component. Single / Multi select dropdown.",
+    "harnessStatus": "implemented",
+    "description": "셀렉트 컴포넌트. 단일 선택 드롭다운. --dropdown-* 토큰 재사용 (trigger + list + option).",
     "notes": [
-      "Created because the current Core Component Harness includes Select.",
-      "Official token policy should be reviewed: Select may share Dropdown Trigger tokens or Input field tokens.",
-      "Requires Figma componentSetKey lookup before implementation.",
-      "MVP3.1: skeleton entry only. Full implementation deferred."
+      "Select는 dropdown.json의 --dropdown-* 토큰을 공유한다. 별도 --select-* 토큰 없음.",
+      "Figma componentSetKey: 미확인 (pc_dropdown 컴포넌트 키 발견 — Scan from Selection으로 nodeId 확인 필요).",
+      "darkModeStatus: pending — dark mode 시각 검증 미완료.",
+      "CSS 버그 수정 (2026-05-19): is-open trigger bg → var(--dropdown-trigger-open-bg), option.is-selected bg → var(--dropdown-option-selected-bg)."
     ]
   },
-  "variants": {},
-  "tokens": {
-    "background": [],
-    "text": [],
-    "border": [],
-    "icon": [],
-    "focus": []
+  "tokenDecision": "Select는 --dropdown-* 토큰을 재사용한다. --select-* 신규 토큰 불필요.",
+  "tokenRef": "registry/components/dropdown.json",
+  "states": ["default", "hover", "open", "filled", "disabled"],
+  "optionStates": ["default", "hover", "selected"],
+  "sizes": {
+    "pc-md":   { "height": "44px", "token": "--sizing-form-control-height-md",  "cssModifier": null,                      "fontSize": "14px" },
+    "pc-xsm":  { "height": "34px", "token": "--sizing-form-control-height-xs",  "cssModifier": "s1-select-wrap--xsm",     "fontSize": "14px" },
+    "pc-xxsm": { "height": "28px", "token": "--sizing-form-control-height-xxs", "cssModifier": "s1-select-wrap--xxsm",    "fontSize": "12px" },
+    "mobile":  { "height": "48px", "token": "--sizing-form-control-height-lg",  "cssModifier": "s1-select-wrap--mobile",  "fontSize": "14px" }
+  },
+  "cssClasses": {
+    "wrap":      "s1-select-wrap",
+    "trigger":   "s1-select-trigger",
+    "chevron":   "s1-select-chevron",
+    "list":      "s1-select-list",
+    "option":    "s1-select-option",
+    "stateOpen":     "is-open",
+    "stateFilled":   "has-value",
+    "stateDisabled": "is-disabled",
+    "optionSelected": "is-selected"
   },
   "figma": {
     "componentSetKey": "",
-    "componentName": "Select",
-    "propertyMap": {},
-    "valueMap": {}
+    "figmaNodeId": "",
+    "figmaComponentName": "pc_dropdown",
+    "libraryName": "S/W UX GUIDE V2.4(컴포넌트 정리중)",
+    "componentKey": "2b522174bf5ff44a437a5d706ee15ff3f1c2b787",
+    "propertyMap": {}
   },
   "governance": {
     "owner": "Design System Team",
     "deprecated": false,
-    "replacement": null,
-    "breakingChange": false
+    "replacement": null
   }
 }
