@@ -711,7 +711,7 @@
   --dropdown-trigger-disabled-text:   var(--color-text-disabled);
   --dropdown-list-bg:            var(--color-surface-raised);
   --dropdown-option-hover-bg:    var(--color-bg-subtle);
-  --dropdown-option-selected-bg: var(--color-action-primary-subtle);
+  --dropdown-option-selected-bg: transparent;
   /* candidate tokens — C0 pilot 발견, canonical-token-draft candidate 상태 */
   --dropdown-trigger-placeholder-text: var(--color-text-placeholder);
   --dropdown-trigger-selected-text:    var(--color-text-primary);

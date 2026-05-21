@@ -37,7 +37,7 @@
     { "cssVar": "--dropdown-list-bg",                 "value": "var(--color-surface-raised)",               "semanticRef": "color-surface-raised",               "part": "list",    "state": "all",      "property": "background" },
     { "cssVar": "--dropdown-list-border",             "value": "var(--color-border-default)",               "semanticRef": "color-border-default",               "part": "list",    "state": "all",      "property": "border" },
     { "cssVar": "--dropdown-option-hover-bg",         "value": "var(--color-bg-subtle)",                    "semanticRef": "color-bg-subtle",                    "part": "option",  "state": "hover",    "property": "background" },
-    { "cssVar": "--dropdown-option-selected-bg",      "value": "var(--color-action-primary-subtle)",        "semanticRef": "color-action-primary-subtle",        "part": "option",  "state": "selected", "property": "background" },
+    { "cssVar": "--dropdown-option-selected-bg",      "value": "transparent",                               "semanticRef": null,                                 "part": "option",  "state": "selected", "property": "background" },
     { "cssVar": "--dropdown-option-selected-text",    "value": "var(--color-action-primary-default)",       "semanticRef": "color-action-primary-default",       "part": "option",  "state": "selected", "property": "text" }
   ],
   "figma": {
