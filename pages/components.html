@@ -112,24 +112,27 @@
       --chip-solid-disabled-bg:      var(--color-bg-subtle);
       --chip-solid-disabled-text:    var(--color-text-disabled);
       /* Table */
+      --table-border-light:     var(--color-border-subtle);
+      --table-border-strong:    var(--color-border-emphasis);
       --table-header-bg:        var(--color-bg-default);
-      --table-header-hover-bg:  var(--color-bg-subtle);
       --table-header-text:      var(--color-text-secondary);
-      --table-header-border:    var(--color-border-subtle);
+      --table-header-border:    var(--table-border-light);
       --table-row-default-bg:   var(--color-surface-default);
-      --table-row-hover-bg:     var(--color-data-state-hover); /* #E2F1FF — Figma: color/data/state/hover */
+      --table-row-hover-bg:     var(--color-bg-subtle);        /* #F5F5F5 — gray-50 */
       --table-row-selected-bg:  var(--color-bg-selected);
-      --table-cell-border:      var(--color-border-subtle);
+      --table-cell-border:      var(--table-border-light);
       --table-cell-text:        var(--color-text-secondary);
       /* form-control label (TimePicker select 라벨) */
       --color-form-control-label-default:  var(--color-text-secondary);
       --color-form-control-label-disabled: var(--color-text-disabled);
       /* Pagination */
-      --pagination-control-bg:           var(--color-surface-default);
-      --pagination-control-border:       var(--color-border-subtle);
-      --pagination-control-hover-bg:     var(--color-bg-subtle);
-      --pagination-number-text:          var(--color-gray-400);
-      --pagination-number-text-selected: var(--color-text-secondary);
+      --pagination-control-bg:              var(--color-surface-default);
+      --pagination-control-border:          var(--color-border-default);
+      --pagination-control-hover-bg:        var(--color-bg-subtle);
+      --pagination-arrow-disabled-bg:       var(--color-bg-subtle);
+      --pagination-arrow-disabled-color:    var(--color-icon-muted);
+      --pagination-number-text:             var(--color-gray-400);
+      --pagination-number-text-selected:    var(--color-text-secondary);
     }
 
     /* =====================================================
@@ -1084,7 +1087,30 @@
     .theme-compare-light .compare-variant-name { color: #9ca3af; }
     .compare-state-row { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
     /* Table */
+    .s1-table-section { width: 100%; }
+    .s1-table-wrap {
+      width: 100%; overflow-x: auto;
+      border-top: 2px solid var(--table-border-strong);
+      border-bottom: 1px solid var(--table-border-strong);
+    }
     .s1-table { border-collapse: collapse; width: 100%; }
+    .s1-table-footer {
+      display: flex; align-items: center; justify-content: center;
+      position: relative;
+      padding: 8px 12px;
+    }
+    .s1-table-perpage-select {
+      position: absolute; right: 12px;
+      height: 28px;
+      padding: 0 4px 0 8px;
+      border: 1px solid var(--color-border-default);
+      border-radius: var(--radius-control-xs);
+      font-size: var(--font-size-12);
+      color: var(--color-text-secondary);
+      background: var(--color-surface-default);
+      cursor: pointer;
+      appearance: auto;
+    }
     .s1-table-header-row {}
     .s1-table-th {
       background: var(--table-header-bg);
@@ -1097,7 +1123,6 @@
       letter-spacing: -0.02em;
     }
     .s1-table--sm .s1-table-th { height: var(--sizing-table-row-height-sm); }
-    .s1-table-th:hover { background: var(--table-header-hover-bg); }
     .s1-table-th-inner {
       display: flex; align-items: center; gap: 4px; height: 100%;
     }
@@ -1119,16 +1144,18 @@
     .s1-table-row:hover .s1-table-td,
     .s1-table-row.is-hover .s1-table-td { background: var(--table-row-hover-bg); }
     .s1-table-row.is-selected .s1-table-td { background: var(--table-row-selected-bg); }
-    .s1-table-checkbox { accent-color: var(--color-action-primary-default); cursor: pointer; }
+    /* Table selection cell — placement only (checkbox style is from core s1-checkbox) */
+    .s1-table-td--selection { padding: 0 8px; text-align: center; width: 48px; }
+    .s1-table-th--selection { width: 48px; }
     /* Pagination */
     .s1-pagination {
-      display: flex; align-items: center; gap: 4px;
+      display: flex; align-items: center; gap: 8px;  /* Figma: var(--spacing/cluster/xxs,8px) */
     }
     .s1-pagination-group {
-      display: flex; align-items: center; gap: 4px;
+      display: flex; align-items: center; gap: 4px;  /* Figma: var(--spacing/4,4px) — arrow 그룹 */
     }
-    .s1-pagination-group + .s1-pagination-group {
-      margin-left: 4px;
+    .s1-pagination-group--numbers {
+      gap: 0;  /* Figma: 숫자 버튼은 gap 없이 인접 배치 */
     }
     .s1-pagination-arrow {
       display: flex; align-items: center; justify-content: center;
@@ -1146,7 +1173,10 @@
       background: var(--pagination-control-hover-bg);
     }
     .s1-pagination-arrow:disabled {
-      opacity: 0.9; cursor: default;
+      background: var(--pagination-arrow-disabled-bg);
+      color: var(--pagination-arrow-disabled-color);
+      opacity: 0.9;
+      cursor: default;
     }
     .s1-pagination-number {
       display: flex; align-items: center; justify-content: center;
@@ -1156,16 +1186,21 @@
       color: var(--pagination-number-text);
       cursor: pointer; font-size: 14px; font-weight: 500;
       border: none; padding: 0;
-      transition: background 0.1s;
-      letter-spacing: -0.01em;
-    }
-    .s1-pagination-number:hover:not(.is-selected) {
-      background: var(--pagination-control-hover-bg);
+      letter-spacing: -0.028em;  /* Figma: body/14M tracking -2 = -0.28px */
     }
     .s1-pagination-number.is-selected {
       color: var(--pagination-number-text-selected);
-      font-weight: 500; /* Figma: body/14M = Medium 500 — 모든 state 동일 weight */
       cursor: default;
+    }
+    /* Scenario rows */
+    .pg-scenario-bar { display: flex; align-items: center; gap: 8px; margin-top: 6px; flex-wrap: wrap; }
+    .pg-scenario-label { display: flex; align-items: center; gap: 8px; font-size: 12px; color: var(--color-text-secondary); }
+    .pg-scenario-badge {
+      display: inline-flex; align-items: center; justify-content: center;
+      min-width: 30px; height: 18px; padding: 0 6px;
+      background: var(--color-bg-subtle); border: 1px solid var(--color-border-subtle);
+      border-radius: var(--radius-4); font-size: 11px; font-weight: 600;
+      color: var(--color-text-secondary);
     }
     /* Time Picker */
     .s1-timepicker-wrap {
@@ -1989,7 +2024,6 @@
               <tbody>
                 <tr><td class="token-name">--checkbox-default-bg</td><td class="token-value">var(--color-surface-default)</td><td>기본 배경색</td></tr>
                 <tr><td class="token-name">--checkbox-checked-bg</td><td class="token-value">var(--color-action-primary-default)</td><td>선택됨 배경색</td></tr>
-                <tr><td class="token-name">--checkbox-indeterminate-bg</td><td class="token-value">var(--color-action-primary-default)</td><td>중간 상태 배경색</td></tr>
                 <tr><td class="token-name">--checkbox-disabled-bg</td><td class="token-value">var(--color-bg-subtle)</td><td>비활성 배경색</td></tr>
                 <tr><td class="token-name">--checkbox-default-border</td><td class="token-value">var(--color-control-border-default)</td><td>기본 테두리</td></tr>
                 <tr><td class="token-name">--checkbox-hover-border</td><td class="token-value">var(--color-control-border-hover)</td><td>호버 테두리</td></tr>
@@ -2455,6 +2489,7 @@
             <button class="code-tab active" onclick="switchTab(this,'chip-html')">HTML</button>
             <button class="code-tab" onclick="switchTab(this,'chip-css')">CSS</button>
             <button class="code-tab" onclick="switchTab(this,'chip-tokens')">Token Details</button>
+            <button class="code-tab" onclick="switchTab(this,'chip-js')">JavaScript</button>
             <button class="code-copy-btn" onclick="copyCode('chip-html-pre')">복사</button>
           </div>
           <div class="code-pane active" id="chip-html">
@@ -2585,6 +2620,33 @@
                 </tbody>
               </table>
             </div>
+          </div>
+          <div class="code-pane" id="chip-js"><pre>// Filter Chip — 드롭다운 연동
+const wrap = document.getElementById('filter-chip-wrap');
+const chip = wrap.querySelector('.ds-filter-chip');
+const list = wrap.querySelector('.s1-select-list');
+
+// Chip 클릭 → 드롭다운 토글
+chip.addEventListener('click', () => {
+  if (chip.classList.contains('is-disabled')) return;
+  wrap.classList.toggle('is-open');
+});
+
+// 옵션 선택 → 라벨 갱신
+list.querySelectorAll('.s1-select-option').forEach(opt => {
+  opt.addEventListener('click', () => {
+    list.querySelectorAll('.s1-select-option')
+        .forEach(o => o.classList.remove('is-selected'));
+    opt.classList.add('is-selected');
+    chip.querySelector('.ds-filter-chip-label').textContent = opt.textContent;
+    wrap.classList.remove('is-open');
+  });
+});
+
+// 외부 클릭 시 드롭다운 닫기
+document.addEventListener('click', e => {
+  if (!wrap.contains(e.target)) wrap.classList.remove('is-open');
+});</pre>
           </div>
         </div>
       </section>
@@ -2902,6 +2964,7 @@
             <button class="code-tab active" onclick="switchTab(this,'inp-html')">HTML</button>
             <button class="code-tab" onclick="switchTab(this,'inp-css')">CSS</button>
             <button class="code-tab" onclick="switchTab(this,'inp-tokens')">Token Details</button>
+            <button class="code-tab" onclick="switchTab(this,'inp-js')">JavaScript</button>
             <button class="code-copy-btn" onclick="copyCode('inp-html-pre')">복사</button>
           </div>
           <div class="code-pane active" id="inp-html">
@@ -2954,6 +3017,41 @@
                 <tr><td class="token-name">--input-error-text</td><td class="token-value">var(--color-text-danger)</td><td>에러 메시지 텍스트</td></tr>
               </tbody>
             </table>
+          </div>
+          <div class="code-pane" id="inp-js"><pre>// Search Input — clear 버튼
+const searchField = document.querySelector('[data-related-field="search-input"]');
+const searchInput = searchField.querySelector('[data-search-input]');
+const clearBtn    = searchField.querySelector('[data-clear-action]');
+
+searchInput.addEventListener('input', () => {
+  clearBtn.hidden = searchInput.value.length === 0;
+});
+clearBtn.addEventListener('click', () => {
+  searchInput.value = '';
+  clearBtn.hidden = true;
+  searchInput.focus();
+});
+
+// Password Field — 비밀번호 표시/숨기기
+const pwField   = document.querySelector('[data-related-field="password-field"]');
+const pwInput   = pwField.querySelector('[data-password-input]');
+const toggleBtn = pwField.querySelector('[data-visibility-toggle]');
+const pwClear   = pwField.querySelector('[data-clear-action]');
+
+toggleBtn.addEventListener('click', () => {
+  pwInput.type = pwInput.type === 'password' ? 'text' : 'password';
+  const visible = pwInput.type === 'text';
+  toggleBtn.setAttribute('aria-pressed', String(visible));
+  toggleBtn.setAttribute('aria-label', visible ? '비밀번호 숨기기' : '비밀번호 보기');
+  // 아이콘 전환: [data-icon-hidden] / [data-icon-visible]
+  toggleBtn.querySelector('[data-icon-hidden]').style.display  = visible ? 'none' : '';
+  toggleBtn.querySelector('[data-icon-visible]').style.display = visible ? '' : 'none';
+  pwInput.focus();
+});
+if (pwClear) {
+  pwInput.addEventListener('input', () => { pwClear.hidden = pwInput.value.length === 0; });
+  pwClear.addEventListener('click', () => { pwInput.value = ''; pwClear.hidden = true; pwInput.focus(); });
+}</pre>
           </div>
         </div>
 
@@ -4177,172 +4275,156 @@
         <!-- HD 미결 노트 -->
         <div class="hd-note-block" style="margin-bottom:20px;">
           <div class="hd-note-item">
-            <span class="hd-note-tag">HD-Table-1 미정</span>
-            <span class="hd-note-text">Dark 모드에서 <code>--table-row-hover-bg</code>의 값이 미확인입니다. 현재 candidate: <code>blue-dark-100 (#112B55)</code> — Figma dark 시각 검증 필요.</span>
+            <span class="hd-note-tag">HD-Table-1</span>
+            <span class="hd-note-text">Dark 모드 <code>--table-row-hover-bg</code>: 현재 <code>--color-bg-subtle</code>(= <code>gray-dark-200 #24252C</code>)로 자동 적용됩니다. Figma dark 시각 검증 권장.</span>
           </div>
           <div class="hd-note-item">
             <span class="hd-note-tag">HD-Table-2 미정</span>
-            <span class="hd-note-text">Hover 행과 Selected 행의 배경색이 현재 동일(<code>blue-50 #E2F1FF</code>)합니다. 시각적으로 구분할지 여부를 결정해주세요.</span>
+            <span class="hd-note-text">Hover(<code>gray-50 #F5F5F5</code>)와 Selected(<code>blue-50 #E2F1FF</code>) 배경색이 구분됩니다. Selected 색상 최종 확인 필요.</span>
           </div>
         </div>
 
-        <!-- States Matrix -->
+        <!-- Header + Body row states + Footer -->
         <div class="variant-block">
-          <div class="variant-label">States</div>
-          <div class="preview-area" style="overflow-x:auto;">
-            <div class="comp-state-matrix" style="grid-template-columns: 200px repeat(3, minmax(140px,1fr));">
-              <div class="matrix-col-header-action">Action</div>
-              <div class="matrix-col-header">Default</div>
-              <div class="matrix-col-header">Hover</div>
-              <div class="matrix-col-header">Selected</div>
-
-              <!-- Action -->
-              <div class="comp-action-cell" data-comp-action="table-row" style="align-items:flex-start;padding:8px;">
-                <table class="s1-table" style="width:100%;border-collapse:collapse;" id="table-action-demo">
-                  <tbody>
-                    <tr class="s1-table-row" id="table-action-row">
-                      <td class="s1-table-td" style="font-size:12px;">마우스를 올려보세요</td>
+          <div class="variant-label">Row States + Footer — md (h44)</div>
+          <div class="preview-area" style="padding:20px; overflow-x:auto;">
+            <div class="s1-table-section">
+              <div class="s1-table-wrap">
+                <table class="s1-table s1-table--md" style="width:100%; min-width:640px; border-collapse:collapse;">
+                  <thead>
+                    <tr class="s1-table-header-row">
+                      <th class="s1-table-th s1-table-th--selection">
+                        <div class="s1-table-th-inner" style="justify-content:center;">
+                          <label class="s1-checkbox" aria-label="전체 선택" id="tbl-header-chk">
+                            <div class="s1-checkbox-box">
+                              <svg class="ds-chk-icon" width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2.9375 8L6.13252 11.375L13.0625 4.625" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>
+                            </div>
+                          </label>
+                        </div>
+                      </th>
+                      <th class="s1-table-th">
+                        <div class="s1-table-th-inner">항목명</div>
+                      </th>
+                      <th class="s1-table-th">
+                        <div class="s1-table-th-inner">
+                          항목명 (정렬)
+                          <svg class="s1-table-sort-icon" width="10" height="14" viewBox="0 0 10 14" fill="none"><path d="M5 1v12M1 5l4-4 4 4M1 9l4 4 4-4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                        </div>
+                      </th>
+                      <th class="s1-table-th">
+                        <div class="s1-table-th-inner" style="justify-content:center;">수량</div>
+                      </th>
+                      <th class="s1-table-th s1-table-th--last">
+                        <div class="s1-table-th-inner" style="justify-content:center;">관리</div>
+                      </th>
                     </tr>
-                  </tbody>
-                </table>
-                <div class="action-test-controls" style="margin-top:6px;">
-                  <button type="button" class="action-mini-toggle" data-table-row-selected>Selected: off</button>
-                </div>
-              </div>
-
-              <!-- Default -->
-              <div class="comp-state-cell">
-                <table class="s1-table is-preview" style="border-collapse:collapse;width:100%;">
+                  </thead>
                   <tbody>
+                    <tr class="s1-table-row" data-table-state="default">
+                      <td class="s1-table-td s1-table-td--selection">
+                        <label class="s1-checkbox" aria-label="행 선택">
+                          <div class="s1-checkbox-box"><svg class="ds-chk-icon" width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2.9375 8L6.13252 11.375L13.0625 4.625" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg></div>
+                        </label>
+                      </td>
+                      <td class="s1-table-td">Default 상태 행</td>
+                      <td class="s1-table-td">값 텍스트</td>
+                      <td class="s1-table-td" style="text-align:center;">128</td>
+                      <td class="s1-table-td s1-table-td--last" style="text-align:center;"><button class="s1-btn s1-btn-sm" style="min-width:0;padding:0 10px;">편집</button></td>
+                    </tr>
+                    <tr class="s1-table-row is-hover" data-table-state="hover">
+                      <td class="s1-table-td s1-table-td--selection">
+                        <label class="s1-checkbox" aria-label="행 선택">
+                          <div class="s1-checkbox-box"><svg class="ds-chk-icon" width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2.9375 8L6.13252 11.375L13.0625 4.625" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg></div>
+                        </label>
+                      </td>
+                      <td class="s1-table-td">Hover 상태 행 (is-hover)</td>
+                      <td class="s1-table-td">값 텍스트</td>
+                      <td class="s1-table-td" style="text-align:center;">56</td>
+                      <td class="s1-table-td s1-table-td--last" style="text-align:center;"><button class="s1-btn s1-btn-sm" style="min-width:0;padding:0 10px;">편집</button></td>
+                    </tr>
+                    <tr class="s1-table-row is-selected" data-table-state="selected">
+                      <td class="s1-table-td s1-table-td--selection">
+                        <label class="s1-checkbox is-checked" aria-label="행 선택">
+                          <div class="s1-checkbox-box"><svg class="ds-chk-icon" width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2.9375 8L6.13252 11.375L13.0625 4.625" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg></div>
+                        </label>
+                      </td>
+                      <td class="s1-table-td">Selected 상태 행 (is-selected)</td>
+                      <td class="s1-table-td">값 텍스트</td>
+                      <td class="s1-table-td" style="text-align:center;">33</td>
+                      <td class="s1-table-td s1-table-td--last" style="text-align:center;"><button class="s1-btn s1-btn-sm" style="min-width:0;padding:0 10px;">편집</button></td>
+                    </tr>
                     <tr class="s1-table-row">
-                      <td class="s1-table-td" style="font-size:12px;padding:0 8px;">Default 행</td>
+                      <td class="s1-table-td s1-table-td--selection">
+                        <label class="s1-checkbox" aria-label="행 선택">
+                          <div class="s1-checkbox-box"><svg class="ds-chk-icon" width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2.9375 8L6.13252 11.375L13.0625 4.625" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg></div>
+                        </label>
+                      </td>
+                      <td class="s1-table-td">마우스를 올려보세요 (interactive hover)</td>
+                      <td class="s1-table-td">값 텍스트</td>
+                      <td class="s1-table-td" style="text-align:center;">7</td>
+                      <td class="s1-table-td s1-table-td--last" style="text-align:center;"><button class="s1-btn s1-btn-sm" style="min-width:0;padding:0 10px;">편집</button></td>
                     </tr>
                   </tbody>
                 </table>
               </div>
-              <!-- Hover -->
-              <div class="comp-state-cell">
-                <table class="s1-table is-preview" style="border-collapse:collapse;width:100%;">
-                  <tbody>
-                    <tr class="s1-table-row is-hover">
-                      <td class="s1-table-td" style="font-size:12px;padding:0 8px;">Hover 행</td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-              <!-- Selected -->
-              <div class="comp-state-cell">
-                <table class="s1-table is-preview" style="border-collapse:collapse;width:100%;">
-                  <tbody>
-                    <tr class="s1-table-row is-selected">
-                      <td class="s1-table-td" style="font-size:12px;padding:0 8px;">Selected 행</td>
-                    </tr>
-                  </tbody>
-                </table>
+              <!-- Table Footer: outside wrap — 1px border-bottom of wrap separates table from footer -->
+              <div class="s1-table-footer">
+                <nav class="s1-pagination" aria-label="페이지 이동">
+                  <div class="s1-pagination-group">
+                    <button class="s1-pagination-arrow" disabled aria-label="처음 페이지">
+                      <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M10 3.5L6.5 7l3.5 3.5M3.5 3.5v7" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    </button>
+                    <button class="s1-pagination-arrow" disabled aria-label="이전 페이지">
+                      <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M9 3.5L5 7l4 3.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    </button>
+                  </div>
+                  <div class="s1-pagination-group s1-pagination-group--numbers">
+                    <button class="s1-pagination-number is-selected" aria-current="page">1</button>
+                    <button class="s1-pagination-number">2</button>
+                    <button class="s1-pagination-number">3</button>
+                    <button class="s1-pagination-number">4</button>
+                    <button class="s1-pagination-number">5</button>
+                  </div>
+                  <div class="s1-pagination-group">
+                    <button class="s1-pagination-arrow" aria-label="다음 페이지">
+                      <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M5 3.5l4 3.5-4 3.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    </button>
+                    <button class="s1-pagination-arrow" aria-label="마지막 페이지">
+                      <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M4 3.5l3.5 3.5-3.5 3.5M10.5 3.5v7" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    </button>
+                  </div>
+                </nav>
+                <select class="s1-table-perpage-select" aria-label="페이지당 행 수">
+                  <option>10개씩 보기</option>
+                  <option selected>15개씩 보기</option>
+                  <option>20개씩 보기</option>
+                  <option>50개씩 보기</option>
+                </select>
               </div>
             </div>
-          </div>
-        </div>
-
-        <!-- Header + Body row states -->
-        <div class="variant-block">
-          <div class="variant-label">Row States — md (h44)</div>
-          <div class="preview-area" style="padding:0; overflow-x:auto;">
-            <table class="s1-table s1-table--md" style="width:100%; min-width:640px; border-collapse:collapse;">
-              <thead>
-                <tr class="s1-table-header-row">
-                  <th class="s1-table-th s1-table-th--first" style="width:48px;">
-                    <div class="s1-table-th-inner" style="justify-content:center;">
-                      <input type="checkbox" class="s1-table-checkbox" aria-label="전체 선택">
-                    </div>
-                  </th>
-                  <th class="s1-table-th">
-                    <div class="s1-table-th-inner">항목명</div>
-                  </th>
-                  <th class="s1-table-th">
-                    <div class="s1-table-th-inner">
-                      항목명 (정렬)
-                      <svg class="s1-table-sort-icon" width="10" height="14" viewBox="0 0 10 14" fill="none"><path d="M5 1v12M1 5l4-4 4 4M1 9l4 4 4-4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                    </div>
-                  </th>
-                  <th class="s1-table-th">
-                    <div class="s1-table-th-inner" style="justify-content:center;">수량</div>
-                  </th>
-                  <th class="s1-table-th s1-table-th--last">
-                    <div class="s1-table-th-inner" style="justify-content:center;">관리</div>
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                <!-- Default -->
-                <tr class="s1-table-row" data-table-state="default">
-                  <td class="s1-table-td s1-table-td--first" style="text-align:center;">
-                    <input type="checkbox" class="s1-table-checkbox" aria-label="행 선택">
-                  </td>
-                  <td class="s1-table-td">Default 상태 행</td>
-                  <td class="s1-table-td">값 텍스트</td>
-                  <td class="s1-table-td" style="text-align:center;">128</td>
-                  <td class="s1-table-td s1-table-td--last" style="text-align:center;"><button class="s1-btn s1-btn-sm" style="min-width:0;padding:0 10px;">편집</button></td>
-                </tr>
-                <!-- Hover (static) -->
-                <tr class="s1-table-row is-hover" data-table-state="hover">
-                  <td class="s1-table-td s1-table-td--first" style="text-align:center;">
-                    <input type="checkbox" class="s1-table-checkbox" aria-label="행 선택">
-                  </td>
-                  <td class="s1-table-td">Hover 상태 행 (is-hover)</td>
-                  <td class="s1-table-td">값 텍스트</td>
-                  <td class="s1-table-td" style="text-align:center;">56</td>
-                  <td class="s1-table-td s1-table-td--last" style="text-align:center;"><button class="s1-btn s1-btn-sm" style="min-width:0;padding:0 10px;">편집</button></td>
-                </tr>
-                <!-- Selected -->
-                <tr class="s1-table-row is-selected" data-table-state="selected">
-                  <td class="s1-table-td s1-table-td--first" style="text-align:center;">
-                    <input type="checkbox" class="s1-table-checkbox" aria-label="행 선택" checked>
-                  </td>
-                  <td class="s1-table-td">Selected 상태 행 (is-selected)</td>
-                  <td class="s1-table-td">값 텍스트</td>
-                  <td class="s1-table-td" style="text-align:center;">33</td>
-                  <td class="s1-table-td s1-table-td--last" style="text-align:center;"><button class="s1-btn s1-btn-sm" style="min-width:0;padding:0 10px;">편집</button></td>
-                </tr>
-                <!-- Default 2 (interactive hover) -->
-                <tr class="s1-table-row" data-table-state="default">
-                  <td class="s1-table-td s1-table-td--first" style="text-align:center;">
-                    <input type="checkbox" class="s1-table-checkbox" aria-label="행 선택">
-                  </td>
-                  <td class="s1-table-td">마우스를 올려보세요 (interactive hover)</td>
-                  <td class="s1-table-td">값 텍스트</td>
-                  <td class="s1-table-td" style="text-align:center;">7</td>
-                  <td class="s1-table-td s1-table-td--last" style="text-align:center;"><button class="s1-btn s1-btn-sm" style="min-width:0;padding:0 10px;">편집</button></td>
-                </tr>
-              </tbody>
-            </table>
           </div>
         </div>
 
         <!-- sm size -->
         <div class="variant-block">
           <div class="variant-label">Size — sm (h38)</div>
-          <div class="preview-area" style="padding:0; overflow-x:auto;">
-            <table class="s1-table s1-table--sm" style="width:100%; min-width:480px; border-collapse:collapse;">
-              <thead>
-                <tr class="s1-table-header-row">
-                  <th class="s1-table-th">
-                    <div class="s1-table-th-inner">항목명</div>
-                  </th>
-                  <th class="s1-table-th">
-                    <div class="s1-table-th-inner">카테고리</div>
-                  </th>
-                  <th class="s1-table-th s1-table-th--last">
-                    <div class="s1-table-th-inner" style="justify-content:center;">수량</div>
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr class="s1-table-row"><td class="s1-table-td">데이터 항목 A</td><td class="s1-table-td">카테고리 1</td><td class="s1-table-td s1-table-td--last" style="text-align:center;">10</td></tr>
-                <tr class="s1-table-row is-hover"><td class="s1-table-td">데이터 항목 B (hover)</td><td class="s1-table-td">카테고리 2</td><td class="s1-table-td s1-table-td--last" style="text-align:center;">5</td></tr>
-                <tr class="s1-table-row is-selected"><td class="s1-table-td">데이터 항목 C (selected)</td><td class="s1-table-td">카테고리 1</td><td class="s1-table-td s1-table-td--last" style="text-align:center;">22</td></tr>
-              </tbody>
-            </table>
+          <div class="preview-area" style="padding:20px; overflow-x:auto;">
+            <div class="s1-table-wrap">
+              <table class="s1-table s1-table--sm" style="width:100%; min-width:480px; border-collapse:collapse;">
+                <thead>
+                  <tr class="s1-table-header-row">
+                    <th class="s1-table-th"><div class="s1-table-th-inner">항목명</div></th>
+                    <th class="s1-table-th"><div class="s1-table-th-inner">카테고리</div></th>
+                    <th class="s1-table-th s1-table-th--last"><div class="s1-table-th-inner" style="justify-content:center;">수량</div></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr class="s1-table-row"><td class="s1-table-td">데이터 항목 A</td><td class="s1-table-td">카테고리 1</td><td class="s1-table-td s1-table-td--last" style="text-align:center;">10</td></tr>
+                  <tr class="s1-table-row is-hover"><td class="s1-table-td">데이터 항목 B (hover)</td><td class="s1-table-td">카테고리 2</td><td class="s1-table-td s1-table-td--last" style="text-align:center;">5</td></tr>
+                  <tr class="s1-table-row is-selected"><td class="s1-table-td">데이터 항목 C (selected)</td><td class="s1-table-td">카테고리 1</td><td class="s1-table-td s1-table-td--last" style="text-align:center;">22</td></tr>
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
 
@@ -4352,6 +4434,7 @@
             <button class="code-tab active" onclick="switchTab(this,'table-html')">HTML</button>
             <button class="code-tab" onclick="switchTab(this,'table-css')">CSS</button>
             <button class="code-tab" onclick="switchTab(this,'table-tokens')">Token Details</button>
+            <button class="code-tab" onclick="switchTab(this,'table-js')">JavaScript</button>
           </div>
           <div class="code-pane active" id="table-html">
             <pre id="table-html-pre"><span class="c-cmt">&lt;!-- Table (size: md / sm) --&gt;</span>
@@ -4382,12 +4465,13 @@
             <table class="token-detail-table">
               <thead><tr><th>Token</th><th>Value (Semantic)</th><th>Resolved</th><th>Role</th></tr></thead>
               <tbody>
+                <tr><td class="token-name">--table-border-light</td><td class="token-value">var(--color-border-subtle)</td><td class="token-resolved" data-token="--table-border-light"></td><td>셀 구분선 (#E9E9E9) — Figma: color/data/border/light</td></tr>
+                <tr><td class="token-name">--table-border-strong</td><td class="token-value">var(--color-border-emphasis)</td><td class="token-resolved" data-token="--table-border-strong"></td><td>외곽 상단 2px 테두리 (#353535) — Figma: color/data/border/strong</td></tr>
                 <tr><td class="token-name">--table-header-bg</td><td class="token-value">var(--color-bg-default)</td><td class="token-resolved" data-token="--table-header-bg"></td><td>헤더 기본 배경</td></tr>
-                <tr><td class="token-name">--table-header-hover-bg</td><td class="token-value">var(--color-bg-subtle)</td><td class="token-resolved" data-token="--table-header-hover-bg"></td><td>헤더 hover 배경</td></tr>
                 <tr><td class="token-name">--table-header-text</td><td class="token-value">var(--color-text-secondary)</td><td class="token-resolved" data-token="--table-header-text"></td><td>헤더 텍스트</td></tr>
                 <tr><td class="token-name">--table-header-border</td><td class="token-value">var(--color-border-subtle)</td><td class="token-resolved" data-token="--table-header-border"></td><td>헤더 하단 구분선</td></tr>
                 <tr><td class="token-name">--table-row-default-bg</td><td class="token-value">var(--color-surface-default)</td><td class="token-resolved" data-token="--table-row-default-bg"></td><td>행 기본 배경</td></tr>
-                <tr class="token-row-candidate"><td class="token-name">--table-row-hover-bg <span class="token-badge-pending" title="HD-Table-1: dark 미정">미정</span></td><td class="token-value">var(--color-data-state-hover)</td><td class="token-resolved" data-token="--table-row-hover-bg"></td><td>행 hover 배경 — Light: blue-50. Dark: candidate (HD-Table-1)</td></tr>
+                <tr><td class="token-name">--table-row-hover-bg</td><td class="token-value">var(--color-bg-subtle)</td><td class="token-resolved" data-token="--table-row-hover-bg"></td><td>행 hover 배경 — Light: #F5F5F5 (gray-50). Dark: #24252C (gray-dark-200)</td></tr>
                 <tr class="token-row-candidate"><td class="token-name">--table-row-selected-bg <span class="token-badge-pending" title="HD-Table-2: hover와 동일값">미정</span></td><td class="token-value">var(--color-bg-selected)</td><td class="token-resolved" data-token="--table-row-selected-bg"></td><td>행 선택 배경 — 현재 hover와 동일값 (HD-Table-2)</td></tr>
                 <tr><td class="token-name">--table-cell-border</td><td class="token-value">var(--color-border-subtle)</td><td class="token-resolved" data-token="--table-cell-border"></td><td>셀 하단 구분선</td></tr>
                 <tr><td class="token-name">--table-cell-text</td><td class="token-value">var(--color-text-secondary)</td><td class="token-resolved" data-token="--table-cell-text"></td><td>셀 본문 텍스트</td></tr>
@@ -4404,9 +4488,6 @@
   padding: 0 var(--spacing-padding-inline-xs);
   font-size: 14px; font-weight: 500;
 }
-.s1-table-th:hover {
-  background: var(--table-header-hover-bg);
-}
 .s1-table-td {
   background: var(--table-row-default-bg);
   color: var(--table-cell-text);
@@ -4422,6 +4503,40 @@
 .s1-table-row.is-selected .s1-table-td {
   background: var(--table-row-selected-bg);
 }</pre>
+          </div>
+          <div class="code-pane" id="table-js"><pre>// Table 행 선택 — 헤더 Checkbox indeterminate 포함
+const section   = document.querySelector('.s1-table-section');
+const headerChk = section.querySelector('thead .s1-checkbox');
+const rows      = Array.from(section.querySelectorAll('tbody .s1-table-row'));
+const rowChks   = rows.map(r => r.querySelector('.s1-table-td--selection .s1-checkbox'));
+
+function updateHeader() {
+  const checked = rowChks.filter(c => c?.classList.contains('is-checked')).length;
+  headerChk.classList.toggle('is-checked',       checked === rows.length &amp;&amp; rows.length > 0);
+  headerChk.classList.toggle('is-indeterminate', checked > 0 &amp;&amp; checked &lt; rows.length);
+}
+
+// 행 체크박스 클릭
+rowChks.forEach((chk, i) => {
+  chk?.addEventListener('click', e => {
+    e.stopPropagation();
+    rows[i].classList.toggle('is-selected', chk.classList.toggle('is-checked'));
+    updateHeader();
+  });
+});
+
+// 헤더 체크박스 클릭 (전체 선택/해제)
+headerChk?.addEventListener('click', e => {
+  e.stopPropagation();
+  const allChecked = rowChks.every(c => c?.classList.contains('is-checked'));
+  rowChks.forEach((chk, i) => {
+    chk?.classList.toggle('is-checked', !allChecked);
+    rows[i].classList.toggle('is-selected', !allChecked);
+  });
+  updateHeader();
+});
+
+updateHeader(); // 초기 헤더 상태 동기화</pre>
           </div>
         </div>
       </section>
@@ -4687,6 +4802,7 @@
         <div class="code-block" style="margin-top:32px;">
           <div class="code-tabs">
             <button class="code-tab active" onclick="switchTab(this,'timepicker-tokens')">Token Details</button>
+            <button class="code-tab" onclick="switchTab(this,'timepicker-js')">JavaScript</button>
           </div>
           <div class="code-pane active" id="timepicker-tokens">
             <table class="token-detail-table">
@@ -4704,6 +4820,69 @@
               </tbody>
             </table>
           </div>
+          <div class="code-pane" id="timepicker-js"><pre>// TimePicker Input 형 — 드롭다운 패널 (시/분 선택)
+const trigger  = document.querySelector('[data-tp-input-trigger]');
+const dropdown = document.getElementById('tp-input-dropdown');
+const hourCol  = document.getElementById('tp-hour-col');
+const minCol   = document.getElementById('tp-min-col');
+let selHour = -1, selMin = -1;
+
+// 1~24시 / 00~59분 목록 동적 생성
+for (let h = 1; h &lt;= 24; h++) {
+  const el = document.createElement('div');
+  el.className = 's1-tp-col-item';
+  el.textContent = String(h);
+  el.dataset.tpHour = h;
+  hourCol.appendChild(el);
+}
+for (let m = 0; m &lt;= 59; m++) {
+  const el = document.createElement('div');
+  el.className = 's1-tp-col-item';
+  el.textContent = String(m).padStart(2, '0');
+  el.dataset.tpMin = m;
+  minCol.appendChild(el);
+}
+
+// 트리거 클릭 → 패널 토글
+trigger.addEventListener('click', () => dropdown.classList.toggle('is-open'));
+
+// 시 선택
+hourCol.addEventListener('click', e => {
+  const item = e.target.closest('.s1-tp-col-item');
+  if (!item) return;
+  hourCol.querySelectorAll('.s1-tp-col-item').forEach(i => i.classList.remove('is-selected'));
+  item.classList.add('is-selected');
+  selHour = parseInt(item.dataset.tpHour, 10);
+  applyValue();
+});
+
+// 분 선택
+minCol.addEventListener('click', e => {
+  const item = e.target.closest('.s1-tp-col-item');
+  if (!item) return;
+  minCol.querySelectorAll('.s1-tp-col-item').forEach(i => i.classList.remove('is-selected'));
+  item.classList.add('is-selected');
+  selMin = parseInt(item.dataset.tpMin, 10);
+  applyValue();
+});
+
+function applyValue() {
+  if (selHour &lt; 0 || selMin &lt; 0) return;
+  const str = String(selHour).padStart(2,'0') + ':' + String(selMin).padStart(2,'0');
+  trigger.querySelector('.s1-timepicker-value').textContent = str;
+  trigger.classList.add('is-filled');
+}
+
+// 외부 클릭 시 패널 닫기
+document.addEventListener('click', e => {
+  if (!trigger.contains(e.target) &amp;&amp; !dropdown.contains(e.target))
+    dropdown.classList.remove('is-open');
+});
+
+// TimePicker Select 형 — 커스텀 드롭다운 필드
+// s1-timepicker-select-field 클릭 → 드롭다운 생성 후 값 선택
+// 각 필드는 data-tp-field="hour" / "min" 로 구분</pre>
+          </div>
         </div>
       </section>
 
@@ -4716,134 +4895,181 @@
           <span class="comp-badge">interactive</span>
         </div>
 
-        <!-- States Matrix -->
+        <!-- States Matrix — ACTION 셀이 Arrow+Number 행에 걸쳐 interactive 전체 표시 -->
         <div class="variant-block">
           <div class="variant-label">States</div>
           <div class="preview-area" style="overflow-x:auto;">
-            <div class="comp-state-matrix" style="grid-template-columns: 120px 200px repeat(4, minmax(100px,1fr));">
-              <div class="matrix-col-header-action">Element</div>
-              <div class="matrix-col-header-action">Action</div>
-              <div class="matrix-col-header">Default</div>
-              <div class="matrix-col-header">Hover</div>
-              <div class="matrix-col-header">Selected</div>
-              <div class="matrix-col-header">Disabled</div>
+            <div class="comp-state-matrix" style="
+              grid-template-columns: 80px minmax(360px,auto) repeat(4, minmax(90px,1fr));
+              grid-template-rows: auto auto auto;
+            ">
+              <!-- ── 헤더 행 ── -->
+              <div class="matrix-col-header-action" style="grid-column:1;grid-row:1;">Element</div>
+              <div class="matrix-col-header-action" style="grid-column:2;grid-row:1;">Action</div>
+              <div class="matrix-col-header" style="grid-column:3;grid-row:1;">Default</div>
+              <div class="matrix-col-header" style="grid-column:4;grid-row:1;">Hover</div>
+              <div class="matrix-col-header" style="grid-column:5;grid-row:1;">Selected</div>
+              <div class="matrix-col-header" style="grid-column:6;grid-row:1;">Disabled</div>
 
-              <!-- Row 1: Arrow button -->
-              <div class="comp-state-cell" style="font-size:11px;font-weight:600;color:#9ca3af;justify-content:center;">Arrow</div>
-              <div class="comp-action-cell" data-comp-action="pagination-arrow" style="padding:8px;gap:6px;">
-                <button class="s1-pagination-arrow" aria-label="이전 페이지">
-                  <svg width="7" height="12" viewBox="0 0 7 12" fill="none"><path d="M6 1L1 6l5 5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                </button>
-                <button class="s1-pagination-arrow" aria-label="다음 페이지">
-                  <svg width="7" height="12" viewBox="0 0 7 12" fill="none"><path d="M1 1l5 5-5 5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                </button>
-                <div class="action-test-controls" style="margin-top:6px;">
-                  <button type="button" class="action-mini-toggle" data-pg-arrow-disabled>Disabled: off</button>
+              <!-- ── ACTION 셀: rows 2–3 span (Arrow + Number 공유) ── -->
+              <div class="comp-action-cell" data-comp-action="pagination-arrow"
+                   style="grid-column:2; grid-row:2/4; padding:16px 20px; flex-direction:column; align-items:flex-start; gap:10px;">
+                <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
+                  <div class="s1-pagination" id="pagination-demo">
+                    <div class="s1-pagination-group">
+                      <button class="s1-pagination-arrow" data-pg-action="first" aria-label="첫 페이지"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M10 3.5L6.5 7l3.5 3.5M3.5 3.5v7" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+                      <button class="s1-pagination-arrow" data-pg-action="prev" aria-label="이전 페이지"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M9 3.5L5 7l4 3.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+                    </div>
+                    <div class="s1-pagination-group s1-pagination-group--numbers" id="pg-numbers"></div>
+                    <div class="s1-pagination-group">
+                      <button class="s1-pagination-arrow" data-pg-action="next" aria-label="다음 페이지"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M5 3.5l4 3.5-4 3.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+                      <button class="s1-pagination-arrow" data-pg-action="last" aria-label="마지막 페이지"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M4 3.5l3.5 3.5-3.5 3.5M10.5 3.5v7" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+                    </div>
+                  </div>
                 </div>
               </div>
-              <!-- Default -->
-              <div class="comp-state-cell">
-                <button class="s1-pagination-arrow is-preview" aria-label="이전">
-                  <svg width="7" height="12" viewBox="0 0 7 12" fill="none"><path d="M6 1L1 6l5 5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                </button>
+
+              <!-- ── Arrow 행 ── -->
+              <div class="comp-state-cell" style="grid-column:1;grid-row:2;font-size:11px;font-weight:600;color:#9ca3af;justify-content:center;">Arrow</div>
+              <div class="comp-state-cell" style="grid-column:3;grid-row:2;">
+                <button class="s1-pagination-arrow is-preview" aria-label="이전"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M9 3.5L5 7l4 3.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
               </div>
-              <!-- Hover -->
-              <div class="comp-state-cell">
-                <button class="s1-pagination-arrow is-hover is-preview" aria-label="이전">
-                  <svg width="7" height="12" viewBox="0 0 7 12" fill="none"><path d="M6 1L1 6l5 5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                </button>
+              <div class="comp-state-cell" style="grid-column:4;grid-row:2;">
+                <button class="s1-pagination-arrow is-hover is-preview" aria-label="이전"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M9 3.5L5 7l4 3.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
               </div>
-              <!-- Selected (N/A for arrow) -->
-              <div class="comp-state-cell" style="color:#d1d5db;font-size:12px;justify-content:center;">—</div>
-              <!-- Disabled -->
-              <div class="comp-state-cell">
-                <button class="s1-pagination-arrow is-preview" disabled aria-label="이전">
-                  <svg width="7" height="12" viewBox="0 0 7 12" fill="none"><path d="M6 1L1 6l5 5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                </button>
+              <div class="comp-state-cell" style="grid-column:5;grid-row:2;color:#d1d5db;font-size:12px;justify-content:center;">—</div>
+              <div class="comp-state-cell" style="grid-column:6;grid-row:2;">
+                <button class="s1-pagination-arrow is-preview" disabled aria-label="이전"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M9 3.5L5 7l4 3.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
               </div>
 
-              <!-- Row 2: Number button -->
-              <div class="comp-state-cell" style="font-size:11px;font-weight:600;color:#9ca3af;justify-content:center;">Number</div>
-              <div class="comp-action-cell" data-comp-action="pagination-number" style="padding:8px;gap:4px;flex-wrap:wrap;">
-                <button class="s1-pagination-number">1</button>
-                <button class="s1-pagination-number">2</button>
-                <button class="s1-pagination-number is-selected">3</button>
-                <button class="s1-pagination-number">4</button>
+              <!-- ── Number 행 ── -->
+              <div class="comp-state-cell" style="grid-column:1;grid-row:3;font-size:11px;font-weight:600;color:#9ca3af;justify-content:center;">Number</div>
+              <div class="comp-state-cell" style="grid-column:3;grid-row:3;">
+                <button class="s1-pagination-number is-preview">3</button>
               </div>
-              <!-- Default -->
-              <div class="comp-state-cell">
-                <button class="s1-pagination-number is-preview">5</button>
+              <div class="comp-state-cell" style="grid-column:4;grid-row:3;">
+                <button class="s1-pagination-number is-hover is-preview">3</button>
               </div>
-              <!-- Hover -->
-              <div class="comp-state-cell">
-                <button class="s1-pagination-number is-hover is-preview">6</button>
+              <div class="comp-state-cell" style="grid-column:5;grid-row:3;">
+                <button class="s1-pagination-number is-selected is-preview">3</button>
               </div>
-              <!-- Selected -->
-              <div class="comp-state-cell">
-                <button class="s1-pagination-number is-selected is-preview">7</button>
-              </div>
-              <!-- Disabled (N/A for number — no disabled state in Figma) -->
-              <div class="comp-state-cell" style="color:#d1d5db;font-size:12px;justify-content:center;">—</div>
+              <div class="comp-state-cell" style="grid-column:6;grid-row:3;color:#d1d5db;font-size:12px;justify-content:center;">—</div>
             </div>
           </div>
         </div>
 
-        <!-- Interactive Pagination -->
+        <!-- State Scenarios — 사양 4케이스 -->
         <div class="variant-block">
-          <div class="variant-label">Default — Arrow + Number (interactive)</div>
+          <div class="variant-label">State Scenarios</div>
           <div class="preview-area" style="display:flex; flex-direction:column; gap:24px;">
-            <div class="s1-pagination" id="pagination-demo">
-              <!-- Arrow group: first, prev -->
-              <div class="s1-pagination-group">
-                <button class="s1-pagination-arrow" data-pg-action="first" aria-label="첫 페이지">
-                  <svg width="14" height="10" viewBox="0 0 14 10" fill="none"><path d="M1 1v8M4 5h9M8 1l4 4-4 4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                </button>
-                <button class="s1-pagination-arrow" data-pg-action="prev" aria-label="이전 페이지">
-                  <svg width="7" height="12" viewBox="0 0 7 12" fill="none"><path d="M6 1L1 6l5 5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                </button>
-              </div>
-              <!-- Number group -->
-              <div class="s1-pagination-group" id="pg-numbers"></div>
-              <!-- Arrow group: next, last -->
-              <div class="s1-pagination-group">
-                <button class="s1-pagination-arrow" data-pg-action="next" aria-label="다음 페이지">
-                  <svg width="7" height="12" viewBox="0 0 7 12" fill="none"><path d="M1 1l5 5-5 5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                </button>
-                <button class="s1-pagination-arrow" data-pg-action="last" aria-label="마지막 페이지">
-                  <svg width="14" height="10" viewBox="0 0 14 10" fill="none"><path d="M13 1v8M10 5H1M6 1L2 5l4 4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
 
-        <!-- Static state showcase -->
-        <div class="variant-block">
-          <div class="variant-label">States — Arrow / Number</div>
-          <div class="preview-area" style="display:flex; flex-direction:column; gap:16px;">
-            <!-- Arrow states -->
-            <div style="display:flex; align-items:center; gap:12px; flex-wrap:wrap;">
-              <span style="font-size:11px;color:#9ca3af;min-width:80px;">Arrow default</span>
-              <button class="s1-pagination-arrow" aria-label="이전">
-                <svg width="7" height="12" viewBox="0 0 7 12" fill="none"><path d="M6 1L1 6l5 5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
-              </button>
+            <!-- Case 1: 원페이지 (리스트 15개까지) -->
+            <div>
+              <div class="pg-scenario-label">
+                <span class="pg-scenario-badge">1</span>
+                원페이지 (리스트 15개까지) — 이동버튼 전체 비활성
+              </div>
+              <div class="pg-scenario-bar">
+                <nav class="s1-pagination" aria-label="페이지 이동">
+                  <div class="s1-pagination-group">
+                    <button class="s1-pagination-arrow" disabled aria-label="첫 페이지"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M10 3.5L6.5 7l3.5 3.5M3.5 3.5v7" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+                    <button class="s1-pagination-arrow" disabled aria-label="이전 페이지"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M9 3.5L5 7l4 3.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+                  </div>
+                  <div class="s1-pagination-group s1-pagination-group--numbers">
+                    <button class="s1-pagination-number is-selected" aria-current="page">1</button>
+                  </div>
+                  <div class="s1-pagination-group">
+                    <button class="s1-pagination-arrow" disabled aria-label="다음 페이지"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M5 3.5l4 3.5-4 3.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+                    <button class="s1-pagination-arrow" disabled aria-label="마지막 페이지"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M4 3.5l3.5 3.5-3.5 3.5M10.5 3.5v7" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+                  </div>
+                </nav>
+              </div>
             </div>
-            <div style="display:flex; align-items:center; gap:12px; flex-wrap:wrap;">
-              <span style="font-size:11px;color:#9ca3af;min-width:80px;">Arrow disabled</span>
-              <button class="s1-pagination-arrow" disabled aria-label="이전">
-                <svg width="7" height="12" viewBox="0 0 7 12" fill="none"><path d="M6 1L1 6l5 5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
-              </button>
-              <span style="font-size:11px;color:#9ca3af;">opacity: 0.9 (bg/border 변화 없음)</span>
+
+            <!-- Case 2-1: 맨앞 페이지 -->
+            <div>
+              <div class="pg-scenario-label">
+                <span class="pg-scenario-badge">2-1</span>
+                맨앞 페이지 — |&lt; &lt; 비활성, &gt; &gt;| 활성
+              </div>
+              <div class="pg-scenario-bar">
+                <nav class="s1-pagination" aria-label="페이지 이동">
+                  <div class="s1-pagination-group">
+                    <button class="s1-pagination-arrow" disabled aria-label="첫 페이지"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M10 3.5L6.5 7l3.5 3.5M3.5 3.5v7" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+                    <button class="s1-pagination-arrow" disabled aria-label="이전 페이지"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M9 3.5L5 7l4 3.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+                  </div>
+                  <div class="s1-pagination-group s1-pagination-group--numbers">
+                    <button class="s1-pagination-number is-selected" aria-current="page">1</button>
+                    <button class="s1-pagination-number">2</button>
+                    <button class="s1-pagination-number">3</button>
+                    <button class="s1-pagination-number">4</button>
+                    <button class="s1-pagination-number">5</button>
+                    <button class="s1-pagination-number">6</button>
+                  </div>
+                  <div class="s1-pagination-group">
+                    <button class="s1-pagination-arrow" aria-label="다음 페이지"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M5 3.5l4 3.5-4 3.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+                    <button class="s1-pagination-arrow" aria-label="마지막 페이지"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M4 3.5l3.5 3.5-3.5 3.5M10.5 3.5v7" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+                  </div>
+                </nav>
+              </div>
             </div>
-            <div style="display:flex; align-items:center; gap:12px; flex-wrap:wrap;">
-              <span style="font-size:11px;color:#9ca3af;min-width:80px;">Number default</span>
-              <button class="s1-pagination-number">3</button>
+
+            <!-- Case 2-2: 맨뒤 페이지 -->
+            <div>
+              <div class="pg-scenario-label">
+                <span class="pg-scenario-badge">2-2</span>
+                맨뒤 페이지 — |&lt; &lt; 활성, &gt; &gt;| 비활성
+              </div>
+              <div class="pg-scenario-bar">
+                <nav class="s1-pagination" aria-label="페이지 이동">
+                  <div class="s1-pagination-group">
+                    <button class="s1-pagination-arrow" aria-label="첫 페이지"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M10 3.5L6.5 7l3.5 3.5M3.5 3.5v7" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+                    <button class="s1-pagination-arrow" aria-label="이전 페이지"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M9 3.5L5 7l4 3.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+                  </div>
+                  <div class="s1-pagination-group s1-pagination-group--numbers">
+                    <button class="s1-pagination-number">1</button>
+                    <button class="s1-pagination-number">2</button>
+                    <button class="s1-pagination-number">3</button>
+                    <button class="s1-pagination-number">4</button>
+                    <button class="s1-pagination-number">5</button>
+                    <button class="s1-pagination-number is-selected" aria-current="page">6</button>
+                  </div>
+                  <div class="s1-pagination-group">
+                    <button class="s1-pagination-arrow" disabled aria-label="다음 페이지"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M5 3.5l4 3.5-4 3.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+                    <button class="s1-pagination-arrow" disabled aria-label="마지막 페이지"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M4 3.5l3.5 3.5-3.5 3.5M10.5 3.5v7" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+                  </div>
+                </nav>
+              </div>
             </div>
-            <div style="display:flex; align-items:center; gap:12px; flex-wrap:wrap;">
-              <span style="font-size:11px;color:#9ca3af;min-width:80px;">Number selected</span>
-              <button class="s1-pagination-number is-selected">3</button>
-              <span style="font-size:11px;color:#9ca3af;">텍스트 색만 변경 — bg 없음 (Figma 확인)</span>
+
+            <!-- Case 2-3: 중간 페이지 -->
+            <div>
+              <div class="pg-scenario-label">
+                <span class="pg-scenario-badge">2-3</span>
+                중간 페이지 — |&lt; &lt; &gt; &gt;| 모두 활성
+              </div>
+              <div class="pg-scenario-bar">
+                <nav class="s1-pagination" aria-label="페이지 이동">
+                  <div class="s1-pagination-group">
+                    <button class="s1-pagination-arrow" aria-label="첫 페이지"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M10 3.5L6.5 7l3.5 3.5M3.5 3.5v7" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+                    <button class="s1-pagination-arrow" aria-label="이전 페이지"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M9 3.5L5 7l4 3.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+                  </div>
+                  <div class="s1-pagination-group s1-pagination-group--numbers">
+                    <button class="s1-pagination-number">1</button>
+                    <button class="s1-pagination-number">2</button>
+                    <button class="s1-pagination-number">3</button>
+                    <button class="s1-pagination-number is-selected" aria-current="page">4</button>
+                    <button class="s1-pagination-number">5</button>
+                    <button class="s1-pagination-number">6</button>
+                  </div>
+                  <div class="s1-pagination-group">
+                    <button class="s1-pagination-arrow" aria-label="다음 페이지"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M5 3.5l4 3.5-4 3.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+                    <button class="s1-pagination-arrow" aria-label="마지막 페이지"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M4 3.5l3.5 3.5-3.5 3.5M10.5 3.5v7" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+                  </div>
+                </nav>
+              </div>
             </div>
+
           </div>
         </div>
 
@@ -4853,6 +5079,7 @@
             <button class="code-tab active" onclick="switchTab(this,'pagination-html')">HTML</button>
             <button class="code-tab" onclick="switchTab(this,'pagination-css')">CSS</button>
             <button class="code-tab" onclick="switchTab(this,'pagination-tokens')">Token Details</button>
+            <button class="code-tab" onclick="switchTab(this,'pagination-js')">JavaScript</button>
           </div>
           <div class="code-pane active" id="pagination-html">
             <pre id="pagination-html-pre"><span class="c-tag">&lt;div</span> <span class="c-attr">class</span>=<span class="c-str">"s1-pagination"</span><span class="c-tag">&gt;</span>
@@ -4886,15 +5113,27 @@
                 </tr>
                 <tr>
                   <td class="token-name">--pagination-control-border</td>
-                  <td class="token-value">var(--color-border-subtle)</td>
+                  <td class="token-value">var(--color-border-default)</td>
                   <td class="token-resolved" data-token="--pagination-control-border"></td>
-                  <td>화살표 버튼 테두리 (번호 없음)</td>
+                  <td>화살표 버튼 테두리 — Figma: #D9D9D9</td>
                 </tr>
                 <tr>
                   <td class="token-name">--pagination-control-hover-bg</td>
                   <td class="token-value">var(--color-bg-subtle)</td>
                   <td class="token-resolved" data-token="--pagination-control-hover-bg"></td>
-                  <td>hover 배경 (Figma 미정의 — candidate)</td>
+                  <td>hover 배경 — Figma: white+5% overlay ≈ #F5F5F5</td>
+                </tr>
+                <tr>
+                  <td class="token-name">--pagination-arrow-disabled-bg</td>
+                  <td class="token-value">var(--color-bg-subtle)</td>
+                  <td class="token-resolved" data-token="--pagination-arrow-disabled-bg"></td>
+                  <td>disabled 버튼 배경 — Figma: #F5F5F5</td>
+                </tr>
+                <tr>
+                  <td class="token-name">--pagination-arrow-disabled-color</td>
+                  <td class="token-value">var(--color-icon-muted)</td>
+                  <td class="token-resolved" data-token="--pagination-arrow-disabled-color"></td>
+                  <td>disabled 아이콘 색상 — Figma: lighter icon (#C4C4C4)</td>
                 </tr>
                 <tr>
                   <td class="token-name">--pagination-number-text</td>
@@ -4924,7 +5163,11 @@
 .s1-pagination-arrow:hover:not(:disabled) {
   background: var(--pagination-control-hover-bg);
 }
-.s1-pagination-arrow:disabled { opacity: 0.9; }
+.s1-pagination-arrow:disabled {
+  background: var(--pagination-arrow-disabled-bg);
+  color: var(--pagination-arrow-disabled-color);
+  opacity: 0.9;
+}
 
 .s1-pagination-number {
   width: var(--spacing-28);
@@ -4940,6 +5183,84 @@
   color: var(--pagination-number-text-selected);
   font-weight: 700;
 }</pre>
+          </div>
+          <div class="code-pane" id="pagination-js"><pre>let totalItems = 150, perPage = 15, currentPage = 1;
+const WINDOW = 6;
+
+const totalPages = () => Math.max(1, Math.ceil(totalItems / perPage));
+
+// 윈도우 시작/끝 계산
+function calcWindow(cp, tp) {
+  const half = Math.floor(WINDOW / 2);
+  let start = Math.max(1, cp - half);
+  let end   = Math.min(tp, start + WINDOW - 1);
+  if (end - start + 1 &lt; WINDOW) start = Math.max(1, end - WINDOW + 1);
+  return { start, end };
+}
+
+// 페이지 번호 버튼 동적 렌더링
+function renderNumbers() {
+  const container = document.getElementById('pg-numbers');
+  container.innerHTML = '';
+  const tp = totalPages();
+  const { start, end } = calcWindow(currentPage, tp);
+  for (let p = start; p &lt;= end; p++) {
+    const btn = document.createElement('button');
+    btn.className = 's1-pagination-number' + (p === currentPage ? ' is-selected' : '');
+    btn.textContent = p;
+    btn.addEventListener('click', () => { currentPage = p; update(); });
+    container.appendChild(btn);
+  }
+}
+
+// 화살표 disabled 상태 및 보기옵션 업데이트
+function update() {
+  const tp = totalPages(), single = tp &lt;= 1;
+  renderNumbers();
+  const demo = document.getElementById('pagination-demo');
+  demo.querySelector('[data-pg-action="first"]').disabled = currentPage === 1  || single;
+  demo.querySelector('[data-pg-action="prev"]').disabled  = currentPage === 1  || single;
+  demo.querySelector('[data-pg-action="next"]').disabled  = currentPage === tp  || single;
+  demo.querySelector('[data-pg-action="last"]').disabled  = currentPage === tp  || single;
+  document.getElementById('pg-view-btn').disabled = single;
+}
+
+// 이동 버튼 이벤트
+const demo = document.getElementById('pagination-demo');
+demo.querySelector('[data-pg-action="first"]').addEventListener('click', () => { currentPage = 1; update(); });
+demo.querySelector('[data-pg-action="prev"]').addEventListener('click',  () => { if (currentPage > 1) { currentPage--; update(); } });
+demo.querySelector('[data-pg-action="next"]').addEventListener('click',  () => {
+  const tp = totalPages();
+  if (currentPage >= tp) return;
+  const win = calcWindow(currentPage, tp);
+  currentPage = win.start > 3 ? tp : win.end;
+  update();
+});
+demo.querySelector('[data-pg-action="last"]').addEventListener('click',  () => { currentPage = totalPages(); update(); });
+
+// 보기 옵션 드롭다운 (15 / 30 / 50 / 100개씩 보기)
+const viewBtn = document.getElementById('pg-view-btn');
+const viewDD  = document.getElementById('pg-view-dropdown');
+
+viewBtn.addEventListener('click', () => {
+  viewDD.hasAttribute('hidden') ? viewDD.removeAttribute('hidden') : viewDD.setAttribute('hidden', '');
+});
+viewDD.addEventListener('click', e => {
+  const item = e.target.closest('[data-pg-view]');
+  if (!item) return;
+  perPage = parseInt(item.dataset.pgView, 10);
+  document.getElementById('pg-view-label').textContent = perPage + '개씩 보기';
+  viewDD.querySelectorAll('[data-pg-view]').forEach(el => el.classList.toggle('is-selected', el === item));
+  viewDD.setAttribute('hidden', '');
+  currentPage = 1;
+  update();
+});
+document.addEventListener('click', e => {
+  if (!document.getElementById('pg-view-wrapper').contains(e.target))
+    viewDD.setAttribute('hidden', '');
+});
+
+update(); // 초기화</pre>
           </div>
         </div>
       </section>
@@ -5624,19 +5945,29 @@
 
   // ── Pagination interactive ──
   (function setupPagination() {
-    var totalPages = 10;
+    var totalItems = 150;
+    var perPage = 15;
     var currentPage = 3;
-    var windowSize = 5;
+    var windowSize = 6;
+
+    function totalPages() { return Math.max(1, Math.ceil(totalItems / perPage)); }
+    function isSinglePage() { return totalPages() <= 1; }
+
+    function calcWindow(cp, tp) {
+      var half = Math.floor(windowSize / 2);
+      var start = Math.max(1, cp - half);
+      var end = Math.min(tp, start + windowSize - 1);
+      if (end - start + 1 < windowSize) start = Math.max(1, end - windowSize + 1);
+      return { start: start, end: end };
+    }
 
     function renderNumbers() {
       var container = document.getElementById('pg-numbers');
       if (!container) return;
       container.innerHTML = '';
-      var half = Math.floor(windowSize / 2);
-      var start = Math.max(1, currentPage - half);
-      var end = Math.min(totalPages, start + windowSize - 1);
-      if (end - start + 1 < windowSize) start = Math.max(1, end - windowSize + 1);
-      for (var p = start; p <= end; p++) {
+      var tp = totalPages();
+      var win = calcWindow(currentPage, tp);
+      for (var p = win.start; p <= win.end; p++) {
         (function(page) {
           var btn = document.createElement('button');
           btn.className = 's1-pagination-number' + (page === currentPage ? ' is-selected' : '');
@@ -5651,13 +5982,16 @@
     }
 
     function update() {
+      var tp = totalPages();
+      var single = isSinglePage();
       renderNumbers();
       var demo = document.getElementById('pagination-demo');
-      if (!demo) return;
-      demo.querySelector('[data-pg-action="first"]').disabled = currentPage === 1;
-      demo.querySelector('[data-pg-action="prev"]').disabled = currentPage === 1;
-      demo.querySelector('[data-pg-action="next"]').disabled = currentPage === totalPages;
-      demo.querySelector('[data-pg-action="last"]').disabled = currentPage === totalPages;
+      if (demo) {
+        demo.querySelector('[data-pg-action="first"]').disabled = currentPage === 1 || single;
+        demo.querySelector('[data-pg-action="prev"]').disabled  = currentPage === 1 || single;
+        demo.querySelector('[data-pg-action="next"]').disabled  = currentPage === tp  || single;
+        demo.querySelector('[data-pg-action="last"]').disabled  = currentPage === tp  || single;
+      }
     }
 
     var demo = document.getElementById('pagination-demo');
@@ -5669,10 +6003,14 @@
         if (currentPage > 1) { currentPage--; update(); }
       });
       demo.querySelector('[data-pg-action="next"]').addEventListener('click', function() {
-        if (currentPage < totalPages) { currentPage++; update(); }
+        var tp = totalPages();
+        if (currentPage >= tp) return;
+        var win = calcWindow(currentPage, tp);
+        currentPage = win.start > 3 ? tp : win.end;
+        update();
       });
       demo.querySelector('[data-pg-action="last"]').addEventListener('click', function() {
-        currentPage = totalPages; update();
+        currentPage = totalPages(); update();
       });
     }
 
@@ -5952,19 +6290,53 @@
   }
   setupTimePicker(document);
 
-  // ── Pagination arrow action ──
-  (function() {
-    var btn = document.querySelector('[data-pg-arrow-disabled]');
-    var cell = document.querySelector('[data-comp-action="pagination-arrow"]');
-    if (!btn || !cell) return;
-    btn.addEventListener('click', function() {
-      var on = this.classList.toggle('is-on');
-      this.textContent = on ? 'Disabled: on' : 'Disabled: off';
-      cell.querySelectorAll('.s1-pagination-arrow').forEach(function(arrow) {
-        arrow.disabled = on;
+  // ── Table selection (uses s1-checkbox core component) ──
+  function setupTableSelection(root) {
+    root.querySelectorAll('.s1-table-section').forEach(function(section) {
+      var headerChk = section.querySelector('thead .s1-checkbox');
+      var rows = Array.from(section.querySelectorAll('tbody .s1-table-row'));
+      var rowChks = rows.map(function(row) {
+        return row.querySelector('.s1-table-td--selection .s1-checkbox');
       });
+
+      function updateHeaderState() {
+        if (!headerChk) return;
+        var checkedCount = rowChks.filter(function(c) { return c && c.classList.contains('is-checked'); }).length;
+        headerChk.classList.remove('is-checked');
+        if (checkedCount === rows.length && rows.length > 0) {
+          headerChk.classList.add('is-checked');
+        }
+      }
+
+      rowChks.forEach(function(chk, i) {
+        if (!chk) return;
+        chk.addEventListener('click', function(e) {
+          e.stopPropagation();
+          var checked = chk.classList.toggle('is-checked');
+          rows[i].classList.toggle('is-selected', checked);
+          updateHeaderState();
+        });
+      });
+
+      if (headerChk) {
+        headerChk.addEventListener('click', function(e) {
+          e.stopPropagation();
+          var allChecked = rowChks.every(function(c) { return c && c.classList.contains('is-checked'); });
+          rowChks.forEach(function(chk, i) {
+            if (!chk) return;
+            chk.classList.toggle('is-checked', !allChecked);
+            rows[i].classList.toggle('is-selected', !allChecked);
+          });
+          updateHeaderState();
+        });
+      }
+
+      // Set initial header state based on pre-selected rows
+      updateHeaderState();
     });
-  })();
+  }
+  setupTableSelection(document);
+
 </script>
 <script src="../assets/js/main.js"></script>
 </body>

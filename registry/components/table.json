@@ -4,19 +4,36 @@
     "name": "Table",
     "category": "data",
     "updatedAt": "2026-05-20",
-    "version": "0.2.0",
+    "version": "0.3.0",
     "tokenStatus": "stable",
     "codeStatus": "not-started",
-    "darkModeStatus": "candidate",
+    "darkModeStatus": "stable",
     "a11yStatus": "pending",
     "figmaStatus": "confirmed",
     "harnessStatus": "skeleton",
     "description": "데이터 그리드/테이블 컴포넌트. 헤더(정렬 아이콘·체크박스 포함), 행 hover·selected, 셀 스타일 포함.",
     "notes": [
-      "HD-Table-1: --color-data-state-hover dark값 = blue-dark-100(#112B55) candidate — Figma dark 미확인.",
-      "HD-Table-2: --table-row-selected-bg = blue-50 (hover와 동일). 선택 행 강조 방식 결정 필요.",
-      "체크박스 first column: Checkbox 컴포넌트 참조 (position=middle, check box=on).",
-      "정렬 아이콘: combobox_arrow SVG, 18×18px (icon=on 헤더 variant)."
+      "정렬 아이콘: combobox_arrow SVG, 18×18px (icon=on 헤더 variant).",
+      "Checkbox: 선택 컬럼은 s1-checkbox 코어 컴포넌트 재사용. Table에서 별도 체크박스 구현 금지."
+    ]
+  },
+  "dependencies": {
+    "coreComponents": [
+      {
+        "id": "checkbox",
+        "usage": ["header-selection", "row-selection"],
+        "sourceOfTruth": "registry/components/checkbox.json",
+        "tableResponsibility": ["cell-placement", "alignment", "selection-state-connection"],
+        "notAllowed": [
+          "redefine-checkbox-visual-style",
+          "create-table-specific-checkbox-class",
+          "override-checkbox-tokens"
+        ],
+        "notes": [
+          "indeterminate: 토큰(--checkbox-indeterminate-bg) + CSS(.is-indeterminate) 코어에 추가됨(2026-05-20).",
+          "header checkbox: 전체/일부/미선택 → is-checked/is-indeterminate/default 상태로 연동."
+        ]
+      }
     ]
   },
   "variants": {
@@ -40,6 +57,7 @@
     "rowHeightSm": "var(--sizing-table-row-height-sm)",
     "paddingInlineStart": "var(--spacing-padding-inline-xs)",
     "paddingInlineEnd": "var(--spacing-padding-inline-sm)",
+    "selectionCellWidth": "48px",
     "headerFont": "Pretendard Medium 14px",
     "bodyFont": "Pretendard Regular 14px"
   },
@@ -52,14 +70,6 @@
       "figmaVariable": "surface/neutral/bg/base-alt",
       "status": "stable",
       "description": "헤더 셀 기본 배경"
-    },
-    {
-      "name": "--table-header-hover-bg",
-      "value": "var(--color-bg-subtle)",
-      "resolvedLight": "#F5F5F5",
-      "figmaVariable": "surface/neutral/bg/subtle",
-      "status": "stable",
-      "description": "헤더 셀 hover 배경"
     },
     {
       "name": "--table-header-text",
@@ -79,11 +89,11 @@
     },
     {
       "name": "--table-border-strong",
-      "value": "var(--color-border-default)",
-      "resolvedLight": "#D9D9D9",
+      "value": "var(--color-border-emphasis)",
+      "resolvedLight": "#353535",
       "figmaVariable": "color/data/border/strong",
       "status": "stable",
-      "description": "열 구분선·외곽 강조 테두리"
+      "description": "테이블 외곽 강조 테두리 — wrap 상단 2px + 하단 1px"
     },
     {
       "name": "--table-header-border",
@@ -103,19 +113,19 @@
     },
     {
       "name": "--table-row-hover-bg",
-      "value": "var(--color-data-state-hover)",
-      "resolvedLight": "#E2F1FF",
+      "value": "var(--color-bg-subtle)",
+      "resolvedLight": "#F5F5F5",
       "figmaVariable": "color/data/state/hover",
       "status": "stable",
-      "description": "행 hover 배경 — Figma: color/data/state/hover = blue-50(#E2F1FF). dark: candidate(HD-Table-1)."
+      "description": "행 hover 배경 — Light: gray-50 (#F5F5F5) / Dark: blue-dark-100 (#112B55, --color-data-state-hover)"
     },
     {
       "name": "--table-row-selected-bg",
       "value": "var(--color-bg-selected)",
       "resolvedLight": "#E2F1FF",
       "figmaVariable": "",
-      "status": "candidate",
-      "description": "행 선택 배경 — HD-Table-2: hover와 동일값, 시각 구분 필요 여부 결정 대기"
+      "status": "stable",
+      "description": "행 선택 배경 — Light: blue-50 (#E2F1FF) / Dark: blue-dark-100 (#112B55). hover(gray-50)와 시각 구분 확정(HD-Table-2)"
     },
     {
       "name": "--table-cell-border",

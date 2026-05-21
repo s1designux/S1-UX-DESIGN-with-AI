@@ -2,7 +2,7 @@
 
 > 이 문서는 Claude가 디자인 시스템을 **수집, 정리, 구조화, 검증**하기 위한 기준입니다.
 > 현재 목표는 UI 구현이 아니라 **디자인 시스템을 구축하는 것**입니다.
-> 마지막 업데이트: 2026-05-20 (DatePicker PC Calendar 구현. Figma 540:4216 기준 356px 패널·44×44px 직사각형 셀. mobile circle 방식 제거. Static PC Calendar Panel 프리뷰 추가. Interactive Preview min-height 확보.)
+> 마지막 업데이트: 2026-05-20 (Table Checkbox Core Reuse. s1-table-checkbox 제거 → s1-checkbox 코어 재사용. indeterminate CSS 코어 추가. table.json dependencies 명시. Core Component Reuse Rule 추가.)
 
 ---
 
@@ -462,6 +462,59 @@ Foundation을 직접 참조하면 테마 전환 시 올바른 값을 얻을 수 
 * Domain은 허용
 * Pattern으로 재사용
 * Legacy는 분리 관리
+
+---
+
+## 🔁 Core Component Reuse Rule (2026-05-20 확정)
+
+모듈·패턴을 만들기 전에 component registry에서 기존 코어 컴포넌트를 먼저 확인한다.
+
+### 원칙
+
+1. **새로 만들기 전에 확인** — Button, Checkbox, Radio, Toggle, Input, Select, Textarea, Chip 등 이미 정의된 컴포넌트는 새로 만들지 않는다.
+2. **모듈의 역할은 조합** — 모듈은 코어 컴포넌트의 배치·조합·상태 연결을 담당한다.
+3. **시각 스타일 override 금지** — 코어 컴포넌트의 시각 스타일, 상태 스타일, 토큰을 모듈에서 재정의하지 않는다.
+4. **없는 상태는 기록** — 필요한 상태·variant가 코어에 없으면 `needs-core-update` 또는 `decision-required`로 기록한다. 임의 구현 금지.
+5. **dependency 명시 의무** — 모듈 registry JSON에 사용한 코어 컴포넌트를 `dependencies.coreComponents`로 명시한다.
+6. **중복 발견 시 수정** — 모듈 안에서 임의로 만든 유사 컴포넌트가 발견되면 중복 구현으로 보고 코어로 교체한다.
+
+### 확정 사례
+
+| 모듈 | 사용 코어 컴포넌트 | 비고 |
+|------|-----------------|------|
+| Table selection | Checkbox (`s1-checkbox`) | header indeterminate 포함, `is-indeterminate` CSS 코어에 추가됨 |
+| Filter group | Checkbox / Radio / Chip | 예정 |
+| Form row | Input / Select / Textarea | 예정 |
+| Action area | Button | 예정 |
+| Toggle setting row | Toggle | 예정 |
+
+### 금지 패턴
+
+```css
+/* 금지 — Table이 Checkbox를 재정의하는 class */
+.s1-table-checkbox { accent-color: ...; }
+```
+
+```html
+<!-- 금지 — 모듈 전용 체크박스 -->
+<input type="checkbox" class="s1-table-checkbox">
+
+<!-- 올바른 사용 — 코어 컴포넌트 배치 -->
+<td class="s1-table-td--selection">
+  <label class="s1-checkbox" aria-label="행 선택">
+    <div class="s1-checkbox-box">…</div>
+  </label>
+</td>
+```
+
+### 모듈 편집 시 체크리스트
+
+```
+□ component registry에서 재사용 가능한 코어 컴포넌트 확인
+□ 모듈 전용 class로 코어 컴포넌트를 재정의하지 않았는지 확인
+□ registry JSON에 dependencies.coreComponents 명시
+□ 필요한 상태가 코어에 없으면 needs-core-update 기록
+```
 
 ---
 

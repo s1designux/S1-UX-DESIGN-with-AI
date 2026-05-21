@@ -13,12 +13,11 @@
     "harnessStatus": "implemented",
     "description": "체크박스 컨트롤. default·hover·checked·indeterminate·disabled 상태."
   },
-  "states": ["default", "hover", "checked", "indeterminate", "disabled"],
+  "states": ["default", "hover", "checked", "disabled"],
   "tokens": [
-    { "cssVar": "--checkbox-default-bg",         "value": "var(--color-form-control-bg-default)", "semanticRef": "color-form-control-bg-default", "state": "default",      "property": "background" },
-    { "cssVar": "--checkbox-checked-bg",          "value": "var(--color-action-primary-default)",  "semanticRef": "color-action-primary-default",  "state": "checked",      "property": "background" },
-    { "cssVar": "--checkbox-indeterminate-bg",    "value": "var(--color-action-primary-default)",  "semanticRef": "color-action-primary-default",  "state": "indeterminate","property": "background" },
-    { "cssVar": "--checkbox-disabled-bg",         "value": "var(--color-bg-subtle)",               "semanticRef": "color-bg-subtle",               "state": "disabled",     "property": "background" },
+    { "cssVar": "--checkbox-default-bg",         "value": "var(--color-form-control-bg-default)", "semanticRef": "color-form-control-bg-default", "state": "default",  "property": "background" },
+    { "cssVar": "--checkbox-checked-bg",          "value": "var(--color-action-primary-default)",  "semanticRef": "color-action-primary-default",  "state": "checked",  "property": "background" },
+    { "cssVar": "--checkbox-disabled-bg",         "value": "var(--color-bg-subtle)",               "semanticRef": "color-bg-subtle",               "state": "disabled", "property": "background" },
     { "cssVar": "--checkbox-default-border",      "value": "var(--color-control-border-default)",  "semanticRef": "color-control-border-default",  "state": "default",      "property": "border" },
     { "cssVar": "--checkbox-hover-border",        "value": "var(--color-control-border-hover)",    "semanticRef": "color-control-border-hover",    "state": "hover",        "property": "border" },
     { "cssVar": "--checkbox-checked-border",      "value": "var(--color-control-border-selected)", "semanticRef": "color-control-border-selected", "state": "checked",      "property": "border" },

@@ -82,8 +82,10 @@ color-overlay   → 딤·오버레이
 | `--color-bg-muted` | surface/neutral/bg/strong | `#E9E9E9` | color/gray/100 | `#2E2F38` | gray-dark/300 |
 | `--color-bg-elevated` | surface/neutral/bg/support | `#E9E9E9` | color/gray/100 | `#35363F` | gray-dark/400 |
 | `--color-bg-home` | surface/base-background/home | `#F5F6FB` | — (Foundation 미등록) | `#131418` | gray-dark/50 |
+| `--color-bg-selected` | — (Figma 원본 미확인) | `#E2F1FF` | color/blue/50 | `#112B55` | blue-dark/100 |
 
-> ⚠️ `--color-bg-active`, `--color-bg-deepest`, `--color-bg-selected` 3종은 Figma 원본 미확인 상태로 `tokens/review/pending-review.md` 항목 1에서 검토 중입니다.
+> ⚠️ `--color-bg-active`, `--color-bg-deepest` 2종은 Figma 원본 미확인 상태로 `tokens/review/pending-review.md` 항목 1에서 검토 중입니다.
+> `--color-bg-selected` — HD-Table-2 확정(2026-05-20): 선택 행 = blue-50(L) / blue-dark-100(D), hover(gray-50)와 시각 구분 확정.
 > `--color-bg-home`의 Light Foundation(`#F5F6FB`)는 기존 팔레트 미등록 값으로 `tokens/review/pending-review.md` 항목 2에서 검토 중입니다.
 
 ---
@@ -206,6 +208,19 @@ color-overlay   → 딤·오버레이
 | CSS Variable | Figma 원본 | Light | Dark |
 |---|---|---|---|
 | `--color-overlay` | color/overlay | `rgba(0,0,0,0.5)` | `rgba(0,0,0,0.75)` |
+
+---
+
+## 8-2. color-data — 데이터 그리드 전용 상태
+
+**역할**: 테이블·데이터 그리드의 행 상태 배경. Figma `color/data/state/*` 경로.
+
+| CSS Variable | Figma 원본 | Light Hex | Light Foundation | Dark Hex | Dark Foundation |
+|---|---|---|---|---|---|
+| `--color-data-state-hover` | color/data/state/hover | `#E2F1FF` | color/blue/50 | `#112B55` | blue-dark/100 |
+
+> HD-Table-1 확정(2026-05-20): dark = blue-dark-100 (#112B55).
+> **참고**: `--table-row-hover-bg` Light는 gray-50 (`--color-bg-subtle`)을 사용. `--color-data-state-hover`는 Figma 원본 참조 semantic 토큰으로 유지.
 
 ---
 
@@ -451,8 +466,8 @@ color-overlay   → 딤·오버레이
   --color-control-border-selected: var(--color-blue-dark-300);  /* #3B82F6 — candidate */
   --color-control-border-disabled: var(--color-gray-dark-300);  /* #2E2F38 — candidate */
 
-  /* color-data (dark — candidate: Figma dark 미확인) */
-  --color-data-state-hover: var(--color-blue-dark-100);  /* #112B55 — candidate, HD-Table-1 */
+  /* color-data (dark) */
+  --color-data-state-hover: var(--color-blue-dark-100);  /* #112B55 */
 
   /* color-overlay */
   --color-overlay: rgba(0, 0, 0, 0.75);

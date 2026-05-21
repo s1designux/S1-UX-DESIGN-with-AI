@@ -532,7 +532,7 @@
   --color-bg-muted:    var(--color-gray-dark-300);
   --color-bg-elevated: var(--color-gray-dark-400);
   --color-bg-home:     var(--color-gray-dark-50);
-  --color-bg-selected: var(--color-blue-dark-100); /* 임시값 — Figma 검증 후 확정 필요 */
+  --color-bg-selected: var(--color-blue-dark-100); /* #112B55 — HD-Table-2 확정 */
 
   /* ── color-surface ── */
   --color-surface-default: var(--color-gray-dark-100);
@@ -608,8 +608,8 @@
   /* ── dropdown hover bg dark ── */
   --dropdown-trigger-hover-bg: var(--color-gray-dark-500);
 
-  /* ── color-data (dark — candidate: Figma dark 미확인) ── */
-  --color-data-state-hover: var(--color-blue-dark-100); /* #112B55 — candidate, HD-Table-1 */
+  /* ── color-data (dark) ── */
+  --color-data-state-hover: var(--color-blue-dark-100); /* #112B55 */
 
   /* ── color-overlay ── */
   --color-overlay: rgba(0, 0, 0, 0.75); /* rgba 허용 예외 */
@@ -739,7 +739,6 @@
   /* ── Checkbox ── */
   --checkbox-default-bg:          var(--color-form-control-bg-default);
   --checkbox-checked-bg:          var(--color-action-primary-default);
-  --checkbox-indeterminate-bg:    var(--color-action-primary-default);
   --checkbox-disabled-bg:         var(--color-bg-subtle);
   --checkbox-default-border:      var(--color-control-border-default);
   --checkbox-hover-border:        var(--color-control-border-hover);
@@ -766,11 +765,13 @@
 
   /* ── Pagination ── */
   /* Figma node: 540:5281 (pc_pagination) — 2026-05-20 확인 */
-  --pagination-control-bg:           var(--color-surface-default);  /* #FFFFFF — 화살표·페이지 공통 배경 */
-  --pagination-control-border:       var(--color-border-subtle);    /* #E9E9E9 — 화살표 버튼 테두리 */
-  --pagination-control-hover-bg:     var(--color-bg-subtle);        /* #F5F5F5 — hover (Figma 미정의, assumed) */
-  --pagination-number-text:          var(--color-gray-400);         /* #9D9D9D — 비선택 페이지 번호 */
-  --pagination-number-text-selected: var(--color-text-secondary);   /* #353535 — 선택된 페이지 번호 */
+  --pagination-control-bg:              var(--color-surface-default);  /* #FFFFFF — 화살표·번호 공통 배경 */
+  --pagination-control-border:          var(--color-border-default);   /* #D9D9D9 — 화살표 버튼 테두리 (Figma: button/border/secondary--default) */
+  --pagination-control-hover-bg:        var(--color-bg-subtle);        /* #F5F5F5 — hover 배경 (≈ Figma white+5% overlay) */
+  --pagination-arrow-disabled-bg:       var(--color-bg-subtle);        /* #F5F5F5 — disabled 버튼 배경 (Figma: button/bg/disabled) */
+  --pagination-arrow-disabled-color:    var(--color-icon-muted);       /* #C4C4C4 — disabled 아이콘 색상 (Figma: lighter icon) */
+  --pagination-number-text:             var(--color-gray-400);         /* #9D9D9D — 비선택 페이지 번호 */
+  --pagination-number-text-selected:    var(--color-text-secondary);   /* #353535 — 선택된 페이지 번호 */
 
   /*
    * ── Navigation ──
@@ -799,13 +800,12 @@
 
   /* ── Table / Data Grid ── */
   --table-header-bg:        var(--color-bg-default);        /* #FAFAFA — Figma: surface/neutral/bg/base-alt */
-  --table-header-hover-bg:  var(--color-bg-subtle);         /* #F5F5F5 — Figma: surface/neutral/bg/subtle */
   --table-header-text:      var(--color-text-secondary);    /* #353535 — Figma: color/text/title/secondary */
   --table-border-light:     var(--color-border-subtle);      /* Figma: color/data/border/light — 행 구분선 */
-  --table-border-strong:    var(--color-border-default);     /* Figma: color/data/border/strong — 열·외곽 구분선 */
+  --table-border-strong:    var(--color-border-emphasis);    /* #353535 — Figma: color/data/border/strong — 외곽 상단 2px */
   --table-header-border:    var(--table-border-light);
   --table-row-default-bg:   var(--color-surface-default);   /* #FFFFFF */
-  --table-row-hover-bg:     var(--color-data-state-hover);   /* #E2F1FF — Figma: color/data/state/hover = blue-50 */
+  --table-row-hover-bg:     var(--color-bg-subtle);          /* #F5F5F5 — Figma: 행 hover = gray-50 */
   --table-row-selected-bg:  var(--color-bg-selected);       /* #E2F1FF — blue-50 확정 */
   --table-cell-border:      var(--table-border-light);
   --table-cell-text:        var(--color-text-secondary);    /* #353535 — Figma: color/text/body/primary */
