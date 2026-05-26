@@ -6,16 +6,16 @@
     "updatedAt": "2026-05-20",
     "version": "0.2.0",
     "tokenStatus": "stable",
-    "codeStatus": "not-started",
+    "codeStatus": "preview",
     "darkModeStatus": "pending",
     "a11yStatus": "pending",
     "figmaStatus": "confirmed",
-    "harnessStatus": "skeleton",
+    "harnessStatus": "implemented",
     "description": "시간 선택 컴포넌트. input 방식(클릭 → 드롭다운 패널)과 select 방식(시/분 분리 셀렉트) 2가지 variant.",
     "notes": [
       "색상 토큰 100% -- color-form-control-* semantic 재사용. 전용 색상 토큰 없음.",
       "신규 semantic 2개: --color-form-control-label-default/disabled (timepicker_select '시'/'분' 라벨용).",
-      "HD-Time-1: disabled 상태에서 suffix icon이 ic_시계 → ic_알람으로 교체됨 — 의도 여부 확인 필요.",
+      "HD-Time-1: 확정 — ic_시계 아이콘 통일. disabled color 처리로 시각 구분.",
       "HD-Time-2: token-aliases.json에 editing→focus alias 추가 완료 (2026-05-20).",
       "HD-Time-3: --color-form-control-label-default = var(--color-text-secondary)(#353535). Figma 원본 일치.",
       "HD-Time-4: Mobile 인터랙션 미정의 — timepicker_input mobile variant 있으나 bottom sheet 여부 미확정.",
@@ -162,11 +162,11 @@
       "editing":   "focus"
     }
   },
-  "openDecisions": [
-    "HD-Time-1: timepicker_input disabled suffix icon이 ic_시계→ic_알람으로 교체되는 이유 확인 — 의도인지 Figma 실수인지",
-    "HD-Time-4: Mobile 인터랙션 방식 확정 — bottom sheet vs inline vs dropdown (DatePicker HD-4와 동일 이슈)",
-    "HD-Time-5: 드롭다운 패널 shadow는 rgba(0,0,0,0.15) — Token 또는 예외 처리 여부 결정 (DatePicker panel shadow 예외와 동일)"
-  ],
+  "humanDecisions": {
+    "HD-Time-1": "확정 — ic_시계 아이콘 통일. disabled 상태도 동일 아이콘, color: var(--color-form-control-text-disabled)로 시각 처리",
+    "HD-Time-4": "결정 — Mobile bottom sheet 채택 (DatePicker HD-4와 동일 기준). harness 구현 완료 (2026-05-26)",
+    "HD-Time-5": "결정 — 드롭다운 패널 shadow rgba(0,0,0,0.15) 예외 허용 (DatePicker panel shadow 예외와 동일 정책)"
+  },
   "governance": {
     "owner": "Design System Team",
     "deprecated": false,

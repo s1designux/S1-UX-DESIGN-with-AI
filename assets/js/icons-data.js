@@ -4893,13 +4893,16 @@ window.ICONS_DATA = {
     },
     {
       name: "ic_날짜/근태,달력", id: "ic_날짜근태달력",
-      description: "날짜/근태,달력",
-      keywords: ["날짜/근태,달력"],
+      description: "날짜, 근태, 달력, 일정관리, date, attendance, calendar, schedule management",
+      keywords: ["날짜","근태","달력","일정","calendar","date","attendance","schedule"],
       figmaNodeId: "70:664",
+      figmaComponentNodeId: "221:3835",
+      figmaDatePickerNodeId: "540:3800",
+      assetPath: "assets/icons/ic_calendar.svg",
       section: "business",
       properties: { type: ["line","solid","color"] },
       variants: {
-        line: { figmaNodeId: "70:663", svg: "" },
+        line: { figmaNodeId: "70:663", svg: "<svg width=\"24\" height=\"24\" viewBox=\"0 0 16.2581 16.8\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M0 1.08387V16.2581C0 16.5615 0.238452 16.8 0.541936 16.8H15.7161C16.0196 16.8 16.2581 16.5615 16.2581 16.2581V1.08387C16.2581 0.780387 16.0196 0.541935 15.7161 0.541935H13.0065V0H11.9226V0.541935H4.33548V0H3.25161V0.541935H0.541936C0.238452 0.541935 0 0.780387 0 1.08387ZM4.33548 2.16774V1.62581H11.9226V2.16774H13.0065V1.62581H15.1742V3.79355H1.08387V1.62581H3.25161V2.16774H4.33548ZM15.1742 15.7161H1.08387V4.87742H15.1742V15.7161Z\" fill=\"currentColor\"/><path d=\"M5.14859 9.21302H3.52279V10.8388H5.14859V9.21302Z\" fill=\"currentColor\"/><path d=\"M8.94208 9.21302H7.31628V10.8388H8.94208V9.21302Z\" fill=\"currentColor\"/><path d=\"M12.7356 9.21302H11.1098V10.8388H12.7356V9.21302Z\" fill=\"currentColor\"/></svg>" },
         solid: { figmaNodeId: "70:662", svg: "" },
         color: { figmaNodeId: "70:661", svg: "" }
       }

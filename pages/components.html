@@ -930,12 +930,11 @@
       font-size: inherit; font-weight: inherit; color: inherit;
       background: transparent; box-sizing: border-box;
     }
-    .s1-date-picker__day:hover:not([disabled]):not(.is-other-month) > .day-inner {
+    .s1-date-picker__day:hover:not([disabled]) > .day-inner {
       background: var(--color-bg-subtle);
     }
     .s1-date-picker__day.is-other-month {
       color: var(--color-text-disabled);
-      cursor: default;
     }
     /* Today: Figma selected-alt — blue border circle + blue text, white bg */
     .s1-date-picker__day.is-today > .day-inner {
@@ -1418,7 +1417,7 @@
           <p>Core 컴포넌트 인터랙션 상태 · Component Token 기준 · 2026-04-29</p>
         </div>
         <div class="page-header-actions">
-          <span class="badge badge-blue">7 Core Components</span>
+          <span class="badge badge-blue">12 Core Components</span>
           <span class="badge badge-gray">Token 기반</span>
         </div>
       </div>
@@ -3198,9 +3197,10 @@ if (pwClear) {
       <section class="comp-section" id="date-picker">
         <div class="comp-section-header">
           <h2 class="comp-section-title">Date Picker</h2>
-          <span class="comp-badge comp-badge-blue">Core Candidate</span>
+          <span class="comp-badge comp-badge-blue">Core</span>
+          <span class="comp-badge comp-badge-green">Stable</span>
           <span class="comp-badge">10 states</span>
-          <!-- Figma node: Section 2 (6456:4033) / datepicker_input frame (540:3794) / mobile bottomsheet (540:3836) — 2026-05-12 -->
+          <!-- Figma: 540:3794 (datepicker_input) / 540:3836 (mobile bottomsheet) — 2026-05-26 HD 확정 -->
         </div>
 
         <!-- States Matrix -->
@@ -3218,7 +3218,7 @@ if (pwClear) {
 
               <!-- Action — 캘린더 아이콘 클릭 시 패널 열림 -->
               <div class="comp-action-cell" data-comp-action="date-picker" style="align-items:flex-start;">
-                <div class="s1-date-picker" data-date-picker id="dp-action-wrap" style="max-width:200px; width:180px;">
+                <div class="s1-date-picker" data-date-picker id="dp-action-wrap" style="max-width:200px; width:180px;" data-disabled-dates="2026-05-08,2026-05-12,2026-05-19">
                   <div class="s1-input-wrap" style="width:180px;">
                     <div class="s1-input-field">
                       <input type="text" placeholder="YY.MM.DD" readonly id="dp-action-input"
@@ -3292,11 +3292,11 @@ if (pwClear) {
                       <span class="s1-date-picker__weekday is-saturday">토</span>
                     </div>
                     <div class="s1-date-picker__grid">
-                      <button class="s1-date-picker__day is-other-month" disabled tabindex="-1"><span class="day-inner">26</span></button>
-                      <button class="s1-date-picker__day is-other-month" disabled tabindex="-1"><span class="day-inner">27</span></button>
-                      <button class="s1-date-picker__day is-other-month" disabled tabindex="-1"><span class="day-inner">28</span></button>
-                      <button class="s1-date-picker__day is-other-month" disabled tabindex="-1"><span class="day-inner">29</span></button>
-                      <button class="s1-date-picker__day is-other-month" disabled tabindex="-1"><span class="day-inner">30</span></button>
+                      <button class="s1-date-picker__day is-other-month" tabindex="-1"><span class="day-inner">26</span></button>
+                      <button class="s1-date-picker__day is-other-month" tabindex="-1"><span class="day-inner">27</span></button>
+                      <button class="s1-date-picker__day is-other-month" tabindex="-1"><span class="day-inner">28</span></button>
+                      <button class="s1-date-picker__day is-other-month" tabindex="-1"><span class="day-inner">29</span></button>
+                      <button class="s1-date-picker__day is-other-month" tabindex="-1"><span class="day-inner">30</span></button>
                       <button class="s1-date-picker__day" tabindex="-1"><span class="day-inner">1</span></button>
                       <button class="s1-date-picker__day" tabindex="-1"><span class="day-inner">2</span></button>
                       <button class="s1-date-picker__day" tabindex="-1"><span class="day-inner">3</span></button>
@@ -3328,12 +3328,12 @@ if (pwClear) {
                       <button class="s1-date-picker__day" tabindex="-1"><span class="day-inner">29</span></button>
                       <button class="s1-date-picker__day" tabindex="-1"><span class="day-inner">30</span></button>
                       <button class="s1-date-picker__day" tabindex="-1"><span class="day-inner">31</span></button>
-                      <button class="s1-date-picker__day is-other-month" disabled tabindex="-1"><span class="day-inner">1</span></button>
-                      <button class="s1-date-picker__day is-other-month" disabled tabindex="-1"><span class="day-inner">2</span></button>
-                      <button class="s1-date-picker__day is-other-month" disabled tabindex="-1"><span class="day-inner">3</span></button>
-                      <button class="s1-date-picker__day is-other-month" disabled tabindex="-1"><span class="day-inner">4</span></button>
-                      <button class="s1-date-picker__day is-other-month" disabled tabindex="-1"><span class="day-inner">5</span></button>
-                      <button class="s1-date-picker__day is-other-month" disabled tabindex="-1"><span class="day-inner">6</span></button>
+                      <button class="s1-date-picker__day is-other-month" tabindex="-1"><span class="day-inner">1</span></button>
+                      <button class="s1-date-picker__day is-other-month" tabindex="-1"><span class="day-inner">2</span></button>
+                      <button class="s1-date-picker__day is-other-month" tabindex="-1"><span class="day-inner">3</span></button>
+                      <button class="s1-date-picker__day is-other-month" tabindex="-1"><span class="day-inner">4</span></button>
+                      <button class="s1-date-picker__day is-other-month" tabindex="-1"><span class="day-inner">5</span></button>
+                      <button class="s1-date-picker__day is-other-month" tabindex="-1"><span class="day-inner">6</span></button>
                     </div>
                   </div>
                 </div>
@@ -3503,7 +3503,7 @@ if (pwClear) {
                     <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M6 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
                   </button>
                 </div>
-                <!-- Weekdays: Sun start (HD-9 대기) -->
+                <!-- Weekdays: Sun start (HD-9 확정 — 일요일 시작) -->
                 <div class="s1-date-picker__weekdays">
                   <span class="s1-date-picker__weekday is-sunday">일</span>
                   <span class="s1-date-picker__weekday">월</span>
@@ -3513,14 +3513,14 @@ if (pwClear) {
                   <span class="s1-date-picker__weekday">금</span>
                   <span class="s1-date-picker__weekday is-saturday">토</span>
                 </div>
-                <!-- May 2026: starts Friday (day5), 5 lead cells from April -->
+                <!-- May 2026: May 1=Friday(idx5 from Sun), 5 lead cells from April — 6 rows -->
                 <div class="s1-date-picker__grid">
                   <!-- Row 1: Apr 26-30 (other), May 1-2 -->
-                  <button class="s1-date-picker__day is-other-month" disabled><span class="day-inner">26</span></button>
-                  <button class="s1-date-picker__day is-other-month" disabled><span class="day-inner">27</span></button>
-                  <button class="s1-date-picker__day is-other-month" disabled><span class="day-inner">28</span></button>
-                  <button class="s1-date-picker__day is-other-month" disabled><span class="day-inner">29</span></button>
-                  <button class="s1-date-picker__day is-other-month" disabled><span class="day-inner">30</span></button>
+                  <button class="s1-date-picker__day is-other-month"><span class="day-inner">26</span></button>
+                  <button class="s1-date-picker__day is-other-month"><span class="day-inner">27</span></button>
+                  <button class="s1-date-picker__day is-other-month"><span class="day-inner">28</span></button>
+                  <button class="s1-date-picker__day is-other-month"><span class="day-inner">29</span></button>
+                  <button class="s1-date-picker__day is-other-month"><span class="day-inner">30</span></button>
                   <button class="s1-date-picker__day"><span class="day-inner">1</span></button>
                   <button class="s1-date-picker__day"><span class="day-inner">2</span></button>
                   <!-- Row 2 -->
@@ -3529,20 +3529,20 @@ if (pwClear) {
                   <button class="s1-date-picker__day"><span class="day-inner">5</span></button>
                   <button class="s1-date-picker__day"><span class="day-inner">6</span></button>
                   <button class="s1-date-picker__day"><span class="day-inner">7</span></button>
-                  <button class="s1-date-picker__day"><span class="day-inner">8</span></button>
+                  <button class="s1-date-picker__day" disabled aria-disabled="true"><span class="day-inner">8</span></button>
                   <button class="s1-date-picker__day"><span class="day-inner">9</span></button>
-                  <!-- Row 3 -->
+                  <!-- Row 3: 15=Fri selected -->
                   <button class="s1-date-picker__day"><span class="day-inner">10</span></button>
                   <button class="s1-date-picker__day"><span class="day-inner">11</span></button>
-                  <button class="s1-date-picker__day"><span class="day-inner">12</span></button>
+                  <button class="s1-date-picker__day" disabled aria-disabled="true"><span class="day-inner">12</span></button>
                   <button class="s1-date-picker__day"><span class="day-inner">13</span></button>
                   <button class="s1-date-picker__day"><span class="day-inner">14</span></button>
                   <button class="s1-date-picker__day is-selected"><span class="day-inner">15</span></button>
                   <button class="s1-date-picker__day"><span class="day-inner">16</span></button>
-                  <!-- Row 4 -->
+                  <!-- Row 4: 20=Wed today -->
                   <button class="s1-date-picker__day"><span class="day-inner">17</span></button>
                   <button class="s1-date-picker__day"><span class="day-inner">18</span></button>
-                  <button class="s1-date-picker__day"><span class="day-inner">19</span></button>
+                  <button class="s1-date-picker__day" disabled aria-disabled="true"><span class="day-inner">19</span></button>
                   <button class="s1-date-picker__day is-today"><span class="day-inner">20</span></button>
                   <button class="s1-date-picker__day"><span class="day-inner">21</span></button>
                   <button class="s1-date-picker__day"><span class="day-inner">22</span></button>
@@ -3557,12 +3557,12 @@ if (pwClear) {
                   <button class="s1-date-picker__day"><span class="day-inner">30</span></button>
                   <!-- Row 6: May 31, Jun 1-6 (other) -->
                   <button class="s1-date-picker__day"><span class="day-inner">31</span></button>
-                  <button class="s1-date-picker__day is-other-month" disabled><span class="day-inner">1</span></button>
-                  <button class="s1-date-picker__day is-other-month" disabled><span class="day-inner">2</span></button>
-                  <button class="s1-date-picker__day is-other-month" disabled><span class="day-inner">3</span></button>
-                  <button class="s1-date-picker__day is-other-month" disabled><span class="day-inner">4</span></button>
-                  <button class="s1-date-picker__day is-other-month" disabled><span class="day-inner">5</span></button>
-                  <button class="s1-date-picker__day is-other-month" disabled><span class="day-inner">6</span></button>
+                  <button class="s1-date-picker__day is-other-month"><span class="day-inner">1</span></button>
+                  <button class="s1-date-picker__day is-other-month"><span class="day-inner">2</span></button>
+                  <button class="s1-date-picker__day is-other-month"><span class="day-inner">3</span></button>
+                  <button class="s1-date-picker__day is-other-month"><span class="day-inner">4</span></button>
+                  <button class="s1-date-picker__day is-other-month"><span class="day-inner">5</span></button>
+                  <button class="s1-date-picker__day is-other-month"><span class="day-inner">6</span></button>
                 </div>
               </div>
             </div>
@@ -3632,6 +3632,111 @@ if (pwClear) {
           </div>
         </div>
 
+        <!-- Dark Mode Preview -->
+        <div class="variant-block" style="margin-top:24px;">
+          <div class="variant-label">Dark Mode Preview</div>
+          <p style="font-size:11px;color:var(--color-text-secondary);margin-bottom:12px;line-height:1.6;">
+            모든 색상이 semantic token 자동 적용 → 별도 <code>--date-picker-*</code> dark 재정의 불필요.<br>
+            아래 배경에서 시각 검증 후 최종 확정 가능.
+          </p>
+          <div data-theme="dark" style="background:var(--color-bg-default);padding:24px;border-radius:8px;display:flex;gap:32px;align-items:flex-start;flex-wrap:wrap;">
+            <!-- Default -->
+            <div>
+              <div class="s1-dp-state-label" style="color:var(--color-text-secondary);margin-bottom:6px;">Default</div>
+              <div class="s1-input-wrap" style="width:220px;">
+                <div class="s1-input-field">
+                  <input type="text" placeholder="날짜를 선택하세요" readonly style="cursor:pointer;">
+                  <button type="button" class="s1-input-action-btn" aria-label="달력 열기" style="pointer-events:none;"><svg width="16" height="16" viewBox="0 0 16.2581 16.8" fill="none"><path d="M0 1.08387V16.2581C0 16.5615 0.238452 16.8 0.541936 16.8H15.7161C16.0196 16.8 16.2581 16.5615 16.2581 16.2581V1.08387C16.2581 0.780387 16.0196 0.541935 15.7161 0.541935H13.0065V0H11.9226V0.541935H4.33548V0H3.25161V0.541935H0.541936C0.238452 0.541935 0 0.780387 0 1.08387ZM4.33548 2.16774V1.62581H11.9226V2.16774H13.0065V1.62581H15.1742V3.79355H1.08387V1.62581H3.25161V2.16774H4.33548ZM15.1742 15.7161H1.08387V4.87742H15.1742V15.7161Z" fill="currentColor"/><path d="M5.14859 9.21302H3.52279V10.8388H5.14859V9.21302Z" fill="currentColor"/><path d="M8.94208 9.21302H7.31628V10.8388H8.94208V9.21302Z" fill="currentColor"/><path d="M12.7356 9.21302H11.1098V10.8388H12.7356V9.21302Z" fill="currentColor"/></svg></button>
+                </div>
+              </div>
+            </div>
+            <!-- Filled -->
+            <div>
+              <div class="s1-dp-state-label" style="color:var(--color-text-secondary);margin-bottom:6px;">Filled</div>
+              <div class="s1-input-wrap" style="width:220px;">
+                <div class="s1-input-field">
+                  <input type="text" value="26.05.15" readonly style="cursor:pointer;">
+                  <button type="button" class="s1-input-action-btn" aria-label="달력 열기" style="pointer-events:none;"><svg width="16" height="16" viewBox="0 0 16.2581 16.8" fill="none"><path d="M0 1.08387V16.2581C0 16.5615 0.238452 16.8 0.541936 16.8H15.7161C16.0196 16.8 16.2581 16.5615 16.2581 16.2581V1.08387C16.2581 0.780387 16.0196 0.541935 15.7161 0.541935H13.0065V0H11.9226V0.541935H4.33548V0H3.25161V0.541935H0.541936C0.238452 0.541935 0 0.780387 0 1.08387ZM4.33548 2.16774V1.62581H11.9226V2.16774H13.0065V1.62581H15.1742V3.79355H1.08387V1.62581H3.25161V2.16774H4.33548ZM15.1742 15.7161H1.08387V4.87742H15.1742V15.7161Z" fill="currentColor"/><path d="M5.14859 9.21302H3.52279V10.8388H5.14859V9.21302Z" fill="currentColor"/><path d="M8.94208 9.21302H7.31628V10.8388H8.94208V9.21302Z" fill="currentColor"/><path d="M12.7356 9.21302H11.1098V10.8388H12.7356V9.21302Z" fill="currentColor"/></svg></button>
+                </div>
+              </div>
+            </div>
+            <!-- Disabled -->
+            <div>
+              <div class="s1-dp-state-label" style="color:var(--color-text-secondary);margin-bottom:6px;">Disabled</div>
+              <div class="s1-input-wrap is-disabled" style="width:220px;">
+                <div class="s1-input-field">
+                  <input type="text" placeholder="날짜를 선택하세요" readonly disabled>
+                  <button type="button" class="s1-input-action-btn" disabled aria-label="달력 열기" style="pointer-events:none;"><svg width="16" height="16" viewBox="0 0 16.2581 16.8" fill="none"><path d="M0 1.08387V16.2581C0 16.5615 0.238452 16.8 0.541936 16.8H15.7161C16.0196 16.8 16.2581 16.5615 16.2581 16.2581V1.08387C16.2581 0.780387 16.0196 0.541935 15.7161 0.541935H13.0065V0H11.9226V0.541935H4.33548V0H3.25161V0.541935H0.541936C0.238452 0.541935 0 0.780387 0 1.08387ZM4.33548 2.16774V1.62581H11.9226V2.16774H13.0065V1.62581H15.1742V3.79355H1.08387V1.62581H3.25161V2.16774H4.33548ZM15.1742 15.7161H1.08387V4.87742H15.1742V15.7161Z" fill="currentColor"/><path d="M5.14859 9.21302H3.52279V10.8388H5.14859V9.21302Z" fill="currentColor"/><path d="M8.94208 9.21302H7.31628V10.8388H8.94208V9.21302Z" fill="currentColor"/><path d="M12.7356 9.21302H11.1098V10.8388H12.7356V9.21302Z" fill="currentColor"/></svg></button>
+                </div>
+              </div>
+            </div>
+            <!-- Panel Open -->
+            <div style="position:relative;">
+              <div class="s1-dp-state-label" style="color:var(--color-text-secondary);margin-bottom:6px;">Panel Open</div>
+              <div class="s1-date-picker__panel" style="position:relative;top:auto;left:auto;display:flex;width:308px;min-height:auto;padding:16px;">
+                <div class="s1-date-picker__header" style="margin-bottom:8px;">
+                  <button type="button" class="s1-date-picker__nav-btn"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M10 12L6 8l4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+                  <strong class="s1-date-picker__month-label" style="font-size:18px;">2026.05</strong>
+                  <button type="button" class="s1-date-picker__nav-btn"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M6 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+                </div>
+                <div class="s1-date-picker__weekdays" style="grid-template-columns:repeat(7,40px);">
+                  <span class="s1-date-picker__weekday is-sunday" style="width:40px;height:36px;font-size:13px;">일</span>
+                  <span class="s1-date-picker__weekday" style="width:40px;height:36px;font-size:13px;">월</span>
+                  <span class="s1-date-picker__weekday" style="width:40px;height:36px;font-size:13px;">화</span>
+                  <span class="s1-date-picker__weekday" style="width:40px;height:36px;font-size:13px;">수</span>
+                  <span class="s1-date-picker__weekday" style="width:40px;height:36px;font-size:13px;">목</span>
+                  <span class="s1-date-picker__weekday" style="width:40px;height:36px;font-size:13px;">금</span>
+                  <span class="s1-date-picker__weekday is-saturday" style="width:40px;height:36px;font-size:13px;">토</span>
+                </div>
+                <div class="s1-date-picker__grid" style="grid-template-columns:repeat(7,40px);">
+                  <button class="s1-date-picker__day is-other-month" style="width:40px;height:40px;font-size:13px;padding:4px;"><span class="day-inner" style="width:28px;height:28px;">26</span></button>
+                  <button class="s1-date-picker__day is-other-month" style="width:40px;height:40px;font-size:13px;padding:4px;"><span class="day-inner" style="width:28px;height:28px;">27</span></button>
+                  <button class="s1-date-picker__day is-other-month" style="width:40px;height:40px;font-size:13px;padding:4px;"><span class="day-inner" style="width:28px;height:28px;">28</span></button>
+                  <button class="s1-date-picker__day is-other-month" style="width:40px;height:40px;font-size:13px;padding:4px;"><span class="day-inner" style="width:28px;height:28px;">29</span></button>
+                  <button class="s1-date-picker__day is-other-month" style="width:40px;height:40px;font-size:13px;padding:4px;"><span class="day-inner" style="width:28px;height:28px;">30</span></button>
+                  <button class="s1-date-picker__day" style="width:40px;height:40px;font-size:13px;padding:4px;"><span class="day-inner" style="width:28px;height:28px;">1</span></button>
+                  <button class="s1-date-picker__day is-saturday" style="width:40px;height:40px;font-size:13px;padding:4px;"><span class="day-inner" style="width:28px;height:28px;">2</span></button>
+                  <button class="s1-date-picker__day is-sunday" style="width:40px;height:40px;font-size:13px;padding:4px;"><span class="day-inner" style="width:28px;height:28px;">3</span></button>
+                  <button class="s1-date-picker__day" style="width:40px;height:40px;font-size:13px;padding:4px;"><span class="day-inner" style="width:28px;height:28px;">4</span></button>
+                  <button class="s1-date-picker__day" style="width:40px;height:40px;font-size:13px;padding:4px;"><span class="day-inner" style="width:28px;height:28px;">5</span></button>
+                  <button class="s1-date-picker__day" style="width:40px;height:40px;font-size:13px;padding:4px;"><span class="day-inner" style="width:28px;height:28px;">6</span></button>
+                  <button class="s1-date-picker__day" style="width:40px;height:40px;font-size:13px;padding:4px;"><span class="day-inner" style="width:28px;height:28px;">7</span></button>
+                  <button class="s1-date-picker__day" style="width:40px;height:40px;font-size:13px;padding:4px;"><span class="day-inner" style="width:28px;height:28px;">8</span></button>
+                  <button class="s1-date-picker__day is-saturday" style="width:40px;height:40px;font-size:13px;padding:4px;"><span class="day-inner" style="width:28px;height:28px;">9</span></button>
+                  <button class="s1-date-picker__day is-sunday" style="width:40px;height:40px;font-size:13px;padding:4px;"><span class="day-inner" style="width:28px;height:28px;">10</span></button>
+                  <button class="s1-date-picker__day" style="width:40px;height:40px;font-size:13px;padding:4px;"><span class="day-inner" style="width:28px;height:28px;">11</span></button>
+                  <button class="s1-date-picker__day" style="width:40px;height:40px;font-size:13px;padding:4px;"><span class="day-inner" style="width:28px;height:28px;">12</span></button>
+                  <button class="s1-date-picker__day" style="width:40px;height:40px;font-size:13px;padding:4px;"><span class="day-inner" style="width:28px;height:28px;">13</span></button>
+                  <button class="s1-date-picker__day" style="width:40px;height:40px;font-size:13px;padding:4px;"><span class="day-inner" style="width:28px;height:28px;">14</span></button>
+                  <button class="s1-date-picker__day is-selected" style="width:40px;height:40px;font-size:13px;padding:4px;"><span class="day-inner" style="width:28px;height:28px;">15</span></button>
+                  <button class="s1-date-picker__day is-saturday" style="width:40px;height:40px;font-size:13px;padding:4px;"><span class="day-inner" style="width:28px;height:28px;">16</span></button>
+                  <button class="s1-date-picker__day is-sunday" style="width:40px;height:40px;font-size:13px;padding:4px;"><span class="day-inner" style="width:28px;height:28px;">17</span></button>
+                  <button class="s1-date-picker__day" style="width:40px;height:40px;font-size:13px;padding:4px;"><span class="day-inner" style="width:28px;height:28px;">18</span></button>
+                  <button class="s1-date-picker__day" style="width:40px;height:40px;font-size:13px;padding:4px;"><span class="day-inner" style="width:28px;height:28px;">19</span></button>
+                  <button class="s1-date-picker__day is-today" style="width:40px;height:40px;font-size:13px;padding:4px;"><span class="day-inner" style="width:28px;height:28px;">20</span></button>
+                  <button class="s1-date-picker__day" style="width:40px;height:40px;font-size:13px;padding:4px;"><span class="day-inner" style="width:28px;height:28px;">21</span></button>
+                  <button class="s1-date-picker__day" style="width:40px;height:40px;font-size:13px;padding:4px;"><span class="day-inner" style="width:28px;height:28px;">22</span></button>
+                  <button class="s1-date-picker__day" style="width:40px;height:40px;font-size:13px;padding:4px;"><span class="day-inner" style="width:28px;height:28px;">23</span></button>
+                  <button class="s1-date-picker__day is-saturday" style="width:40px;height:40px;font-size:13px;padding:4px;"><span class="day-inner" style="width:28px;height:28px;">24</span></button>
+                  <button class="s1-date-picker__day is-sunday" style="width:40px;height:40px;font-size:13px;padding:4px;"><span class="day-inner" style="width:28px;height:28px;">25</span></button>
+                  <button class="s1-date-picker__day" style="width:40px;height:40px;font-size:13px;padding:4px;"><span class="day-inner" style="width:28px;height:28px;">26</span></button>
+                  <button class="s1-date-picker__day" style="width:40px;height:40px;font-size:13px;padding:4px;"><span class="day-inner" style="width:28px;height:28px;">27</span></button>
+                  <button class="s1-date-picker__day" style="width:40px;height:40px;font-size:13px;padding:4px;"><span class="day-inner" style="width:28px;height:28px;">28</span></button>
+                  <button class="s1-date-picker__day" style="width:40px;height:40px;font-size:13px;padding:4px;"><span class="day-inner" style="width:28px;height:28px;">29</span></button>
+                  <button class="s1-date-picker__day" style="width:40px;height:40px;font-size:13px;padding:4px;"><span class="day-inner" style="width:28px;height:28px;">30</span></button>
+                  <button class="s1-date-picker__day" style="width:40px;height:40px;font-size:13px;padding:4px;"><span class="day-inner" style="width:28px;height:28px;">31</span></button>
+                  <button class="s1-date-picker__day is-other-month" style="width:40px;height:40px;font-size:13px;padding:4px;"><span class="day-inner" style="width:28px;height:28px;">1</span></button>
+                  <button class="s1-date-picker__day is-other-month" style="width:40px;height:40px;font-size:13px;padding:4px;"><span class="day-inner" style="width:28px;height:28px;">2</span></button>
+                  <button class="s1-date-picker__day is-other-month" style="width:40px;height:40px;font-size:13px;padding:4px;"><span class="day-inner" style="width:28px;height:28px;">3</span></button>
+                  <button class="s1-date-picker__day is-other-month" style="width:40px;height:40px;font-size:13px;padding:4px;"><span class="day-inner" style="width:28px;height:28px;">4</span></button>
+                  <button class="s1-date-picker__day is-other-month is-saturday" style="width:40px;height:40px;font-size:13px;padding:4px;"><span class="day-inner" style="width:28px;height:28px;">5</span></button>
+                  <button class="s1-date-picker__day is-other-month is-sunday" style="width:40px;height:40px;font-size:13px;padding:4px;"><span class="day-inner" style="width:28px;height:28px;">6</span></button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
         <!-- Code / Token Details -->
         <div class="code-block" style="margin-top:24px;">
           <div class="code-tabs">
@@ -3642,7 +3747,9 @@ if (pwClear) {
           </div>
           <div class="code-pane active" id="dp-html">
             <pre id="dp-html-pre"><span class="c-cmt">&lt;!-- DatePicker Trigger (Base Input 재사용) --&gt;</span>
-<span class="c-tag">&lt;div</span> <span class="c-attr">class</span>=<span class="c-str">"s1-date-picker"</span> <span class="c-attr">data-date-picker</span><span class="c-tag">&gt;</span>
+<span class="c-cmt">&lt;!-- HD-6: 비활성 날짜는 data-disabled-dates 로 주입 (서비스 레벨 결정) --&gt;</span>
+<span class="c-tag">&lt;div</span> <span class="c-attr">class</span>=<span class="c-str">"s1-date-picker"</span> <span class="c-attr">data-date-picker</span>
+     <span class="c-attr">data-disabled-dates</span>=<span class="c-str">"2026-06-08,2026-06-12"</span><span class="c-tag">&gt;</span>
   <span class="c-tag">&lt;div</span> <span class="c-attr">class</span>=<span class="c-str">"s1-input-wrap"</span><span class="c-tag">&gt;</span>
     <span class="c-tag">&lt;div</span> <span class="c-attr">class</span>=<span class="c-str">"s1-input-field"</span><span class="c-tag">&gt;</span>
       <span class="c-tag">&lt;input</span> <span class="c-attr">type</span>=<span class="c-str">"text"</span> <span class="c-attr">placeholder</span>=<span class="c-str">"YY.MM.DD"</span> <span class="c-attr">readonly</span><span class="c-tag">/&gt;</span>
@@ -3721,6 +3828,14 @@ if (pwClear) {
     <span class="c-kw">var</span> nextBtn    = picker.<span class="c-fn">querySelector</span>(<span class="c-str">'[data-next-month]'</span>);
     <span class="c-kw">if</span> (!input || !panel || !grid) <span class="c-kw">return</span>;
 
+    <span class="c-cmt">// HD-6: 서비스가 data-disabled-dates="YYYY-MM-DD,..." 로 주입. Core는 인터페이스만 제공.</span>
+    <span class="c-kw">var</span> disabledSet = (<span class="c-kw">function</span>() {
+      <span class="c-kw">var</span> raw = picker.<span class="c-fn">getAttribute</span>(<span class="c-str">'data-disabled-dates'</span>) || <span class="c-str">''</span>;
+      <span class="c-kw">var</span> s = {};
+      raw.<span class="c-fn">split</span>(<span class="c-str">','</span>).<span class="c-fn">forEach</span>(<span class="c-kw">function</span>(d) { <span class="c-kw">if</span> (d.<span class="c-fn">trim</span>()) s[d.<span class="c-fn">trim</span>()] = <span class="c-kw">true</span>; });
+      <span class="c-kw">return</span> s;
+    })();
+
     <span class="c-kw">var</span> today        = <span class="c-kw">new</span> Date();
     <span class="c-kw">var</span> curYear      = today.<span class="c-fn">getFullYear</span>();
     <span class="c-kw">var</span> curMonth     = today.<span class="c-fn">getMonth</span>();
@@ -3774,6 +3889,10 @@ if (pwClear) {
 
     <span class="c-cmt">// 5. 날짜 셀 생성</span>
     <span class="c-kw">function</span> <span class="c-fn">makeDay</span>(date, isOther) {
+      <span class="c-kw">var</span> dateKey = date.<span class="c-fn">getFullYear</span>() + <span class="c-str">'-'</span>
+        + String(date.<span class="c-fn">getMonth</span>() + <span class="c-num">1</span>).<span class="c-fn">padStart</span>(<span class="c-num">2</span>, <span class="c-str">'0'</span>) + <span class="c-str">'-'</span>
+        + String(date.<span class="c-fn">getDate</span>()).<span class="c-fn">padStart</span>(<span class="c-num">2</span>, <span class="c-str">'0'</span>);
+      <span class="c-kw">var</span> isDisabled = !!disabledSet[dateKey]; <span class="c-cmt">// HD-6: 서비스 주입 날짜</span>
       <span class="c-kw">var</span> btn = document.<span class="c-fn">createElement</span>(<span class="c-str">'button'</span>);
       btn.type = <span class="c-str">'button'</span>;
       btn.className = <span class="c-str">'s1-date-picker__day'</span>;
@@ -3781,13 +3900,15 @@ if (pwClear) {
       inner.className = <span class="c-str">'day-inner'</span>;
       inner.textContent = date.<span class="c-fn">getDate</span>();
       btn.<span class="c-fn">appendChild</span>(inner);
-      <span class="c-kw">if</span> (isOther)  { btn.classList.<span class="c-fn">add</span>(<span class="c-str">'is-other-month'</span>); btn.disabled = <span class="c-kw">true</span>; }
+      <span class="c-kw">if</span> (isOther)    btn.classList.<span class="c-fn">add</span>(<span class="c-str">'is-other-month'</span>); <span class="c-cmt">// HD-7: 클릭 허용</span>
       <span class="c-kw">if</span> (<span class="c-fn">isSame</span>(date, today))        btn.classList.<span class="c-fn">add</span>(<span class="c-str">'is-today'</span>);
       <span class="c-kw">if</span> (<span class="c-fn">isSame</span>(date, selectedDate)) btn.classList.<span class="c-fn">add</span>(<span class="c-str">'is-selected'</span>);
-      <span class="c-kw">if</span> (!isOther) btn.<span class="c-fn">addEventListener</span>(<span class="c-str">'click'</span>, <span class="c-kw">function</span>() {
+      <span class="c-kw">if</span> (isDisabled) { btn.disabled = <span class="c-kw">true</span>; btn.<span class="c-fn">setAttribute</span>(<span class="c-str">'aria-disabled'</span>, <span class="c-str">'true'</span>); }
+      <span class="c-kw">if</span> (!isDisabled) btn.<span class="c-fn">addEventListener</span>(<span class="c-str">'click'</span>, <span class="c-kw">function</span>() {
+        <span class="c-kw">if</span> (isOther) { curYear = date.<span class="c-fn">getFullYear</span>(); curMonth = date.<span class="c-fn">getMonth</span>(); }
         selectedDate = date;
         input.value = <span class="c-fn">formatDate</span>(date); <span class="c-cmt">// "YY.MM.DD"</span>
-        <span class="c-fn">closePanel</span>();
+        <span class="c-fn">renderGrid</span>(); <span class="c-fn">closePanel</span>();
       });
       <span class="c-kw">return</span> btn;
     }
@@ -4261,6 +4382,7 @@ if (pwClear) {
         </div>
       </section>
 
+
       <!-- ══════════════════════════════════════════════════
            TABLE
       ══════════════════════════════════════════════════ -->
@@ -4545,7 +4667,8 @@ updateHeader(); // 초기 헤더 상태 동기화</pre>
       <section class="comp-section" id="time-picker">
         <div class="comp-section-header">
           <h2 class="comp-section-title">Time Picker</h2>
-          <span class="comp-badge comp-badge-gray">Candidate</span>
+          <span class="comp-badge comp-badge-blue">Core</span>
+          <span class="comp-badge comp-badge-green">Stable Tokens</span>
           <span class="comp-badge">Input형 · Select형</span>
           <span class="comp-badge">Figma: 540:3690 ~ 540:3506</span>
         </div>
@@ -4795,6 +4918,164 @@ updateHeader(); // 초기 헤더 상태 동기화</pre>
 .s1-timepicker-select-field.is-disabled + .s1-timepicker-select-label {
   color: var(--color-form-control-label-disabled);
 }</pre></div>
+          </div>
+        </div>
+
+        <!-- Mobile Bottom Sheet (HD-Time-4) -->
+        <div class="variant-group" style="margin-top:24px;">
+          <h3 class="variant-group-title">Mobile — Bottom Sheet <span class="comp-badge comp-badge-green" style="font-size:10px;margin-left:8px;">HD-Time-4 확정</span></h3>
+          <p class="variant-group-desc">모바일에서는 inline 드롭다운 대신 바텀시트 패널. 트리거 높이 48px (--sizing-form-control-height-lg). 반투명 dim 오버레이 + 슬라이드업 패널.</p>
+          <div class="variant-block">
+            <div class="variant-label">States</div>
+            <div class="preview-area" style="display:flex;gap:32px;align-items:flex-start;flex-wrap:wrap;">
+              <!-- Closed -->
+              <div>
+                <div class="s1-dp-state-label">Closed</div>
+                <div style="width:280px;height:360px;background:var(--color-bg-subtle);border-radius:12px;padding:20px;position:relative;overflow:hidden;margin-top:6px;">
+                  <div style="margin-bottom:12px;font-size:12px;color:var(--color-text-placeholder);">앱 콘텐츠 영역</div>
+                  <div class="s1-timepicker-wrap" style="height:48px;width:100%;pointer-events:none;">
+                    <span class="s1-timepicker-placeholder">시간을 선택하세요</span>
+                    <span class="s1-timepicker-icon"><svg width="18" height="18" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="7.5" stroke="currentColor" stroke-width="1.2"/><path d="M9 5v4l2.5 2.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg></span>
+                  </div>
+                </div>
+              </div>
+              <!-- Open (static) -->
+              <div>
+                <div class="s1-dp-state-label">Open (static)</div>
+                <div style="width:280px;height:360px;background:var(--color-bg-subtle);border-radius:12px;padding:20px;position:relative;overflow:hidden;margin-top:6px;">
+                  <div style="margin-bottom:12px;font-size:12px;color:var(--color-text-placeholder);">앱 콘텐츠 영역</div>
+                  <div class="s1-timepicker-wrap" style="height:48px;width:100%;opacity:0.4;pointer-events:none;">
+                    <span class="s1-timepicker-placeholder">시간을 선택하세요</span>
+                    <span class="s1-timepicker-icon"><svg width="18" height="18" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="7.5" stroke="currentColor" stroke-width="1.2"/><path d="M9 5v4l2.5 2.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg></span>
+                  </div>
+                  <!-- Dim overlay -->
+                  <div style="position:absolute;inset:0;background:rgba(0,0,0,0.35);z-index:1;"></div>
+                  <!-- Bottom Sheet -->
+                  <div style="position:absolute;bottom:0;left:0;right:0;background:var(--color-surface-default);border-radius:16px 16px 0 0;box-shadow:0 -4px 16px rgba(0,0,0,0.15);padding:12px 0 20px;z-index:2;">
+                    <div style="display:flex;justify-content:center;padding-bottom:10px;">
+                      <div style="width:40px;height:4px;background:var(--color-border-subtle);border-radius:2px;"></div>
+                    </div>
+                    <div style="padding:0 16px 12px;font-size:15px;font-weight:600;color:var(--color-text-primary);">시간 선택</div>
+                    <div style="display:flex;align-items:stretch;height:136px;padding:0 16px;">
+                      <div style="flex:1;overflow:hidden;display:flex;flex-direction:column;gap:0;">
+                        <div class="s1-tp-col-item" style="width:100%;height:32px;font-size:14px;">8</div>
+                        <div class="s1-tp-col-item is-selected" style="width:100%;height:32px;font-size:14px;">9</div>
+                        <div class="s1-tp-col-item" style="width:100%;height:32px;font-size:14px;">10</div>
+                        <div class="s1-tp-col-item" style="width:100%;height:32px;font-size:14px;">11</div>
+                      </div>
+                      <div style="display:flex;align-items:center;padding:0 10px;color:var(--color-text-secondary);font-size:16px;font-weight:600;">:</div>
+                      <div style="flex:1;overflow:hidden;display:flex;flex-direction:column;gap:0;">
+                        <div class="s1-tp-col-item" style="width:100%;height:32px;font-size:14px;">28</div>
+                        <div class="s1-tp-col-item" style="width:100%;height:32px;font-size:14px;">29</div>
+                        <div class="s1-tp-col-item is-selected" style="width:100%;height:32px;font-size:14px;">30</div>
+                        <div class="s1-tp-col-item" style="width:100%;height:32px;font-size:14px;">31</div>
+                      </div>
+                    </div>
+                    <div style="display:flex;justify-content:flex-end;padding:8px 16px 0;">
+                      <button type="button" class="is-preview" style="height:36px;padding:0 20px;background:var(--color-action-primary-default);color:var(--color-base-white);border:none;border-radius:4px;font-size:14px;font-weight:500;cursor:pointer;">확인</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!-- Interactive -->
+              <div>
+                <div class="s1-dp-state-label">Interactive</div>
+                <div id="tp-mobile-frame" style="width:280px;height:360px;background:var(--color-bg-subtle);border-radius:12px;padding:20px;position:relative;overflow:hidden;margin-top:6px;">
+                  <div style="margin-bottom:12px;font-size:12px;color:var(--color-text-placeholder);">앱 콘텐츠 영역 (트리거 클릭)</div>
+                  <div id="tp-mobile-trigger" class="s1-timepicker-wrap" style="height:48px;width:100%;cursor:pointer;" tabindex="0" role="button" aria-haspopup="dialog">
+                    <span id="tp-mobile-ph" class="s1-timepicker-placeholder">시간을 선택하세요</span>
+                    <span id="tp-mobile-val" class="s1-timepicker-value" style="display:none;"></span>
+                    <span class="s1-timepicker-icon"><svg width="18" height="18" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="7.5" stroke="currentColor" stroke-width="1.2"/><path d="M9 5v4l2.5 2.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg></span>
+                  </div>
+                  <!-- Dim -->
+                  <div id="tp-mobile-dim" style="display:none;position:absolute;inset:0;background:rgba(0,0,0,0.35);z-index:1;" aria-hidden="true"></div>
+                  <!-- Sheet -->
+                  <div id="tp-mobile-sheet" role="dialog" aria-label="시간 선택" style="display:none;position:absolute;bottom:0;left:0;right:0;background:var(--color-surface-default);border-radius:16px 16px 0 0;box-shadow:0 -4px 16px rgba(0,0,0,0.15);padding:12px 0 20px;z-index:2;">
+                    <div style="display:flex;justify-content:center;padding-bottom:10px;">
+                      <div style="width:40px;height:4px;background:var(--color-border-subtle);border-radius:2px;"></div>
+                    </div>
+                    <div style="padding:0 16px 12px;font-size:15px;font-weight:600;color:var(--color-text-primary);">시간 선택</div>
+                    <div style="display:flex;align-items:stretch;height:160px;padding:0 16px;">
+                      <div id="tp-mobile-hour-col" style="flex:1;overflow-y:auto;scroll-behavior:smooth;"></div>
+                      <div style="display:flex;align-items:center;padding:0 10px;color:var(--color-text-secondary);font-size:16px;font-weight:600;">:</div>
+                      <div id="tp-mobile-min-col" style="flex:1;overflow-y:auto;scroll-behavior:smooth;"></div>
+                    </div>
+                    <div style="display:flex;justify-content:flex-end;padding:8px 16px 0;">
+                      <button id="tp-mobile-confirm" type="button" style="height:36px;padding:0 20px;background:var(--color-action-primary-default);color:var(--color-base-white);border:none;border-radius:4px;font-size:14px;font-weight:500;cursor:pointer;">확인</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Dark Mode Preview -->
+        <div class="variant-block" style="margin-top:24px;">
+          <div class="variant-label">Dark Mode Preview</div>
+          <p style="font-size:11px;color:var(--color-text-secondary);margin-bottom:12px;line-height:1.6;">
+            TimePicker는 <code>--color-form-control-*</code> semantic 100% 재사용 → dark token 자동 적용. 아래에서 시각 검증 가능.
+          </p>
+          <div data-theme="dark" style="background:var(--color-bg-default);padding:24px;border-radius:8px;display:flex;gap:32px;align-items:flex-start;flex-wrap:wrap;">
+            <!-- Default -->
+            <div>
+              <div class="s1-dp-state-label" style="color:var(--color-text-secondary);margin-bottom:6px;">Default</div>
+              <div class="s1-timepicker-wrap is-preview" style="width:180px;height:44px;">
+                <span class="s1-timepicker-placeholder">시간을 선택하세요</span>
+                <span class="s1-timepicker-icon"><svg width="18" height="18" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="7.5" stroke="currentColor" stroke-width="1.2"/><path d="M9 5v4l2.5 2.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg></span>
+              </div>
+            </div>
+            <!-- Filled -->
+            <div>
+              <div class="s1-dp-state-label" style="color:var(--color-text-secondary);margin-bottom:6px;">Filled</div>
+              <div class="s1-timepicker-wrap is-filled is-preview" style="width:180px;height:44px;">
+                <span class="s1-timepicker-value">09:30</span>
+                <span class="s1-timepicker-icon"><svg width="18" height="18" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="7.5" stroke="currentColor" stroke-width="1.2"/><path d="M9 5v4l2.5 2.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg></span>
+              </div>
+            </div>
+            <!-- Focus / Open -->
+            <div>
+              <div class="s1-dp-state-label" style="color:var(--color-text-secondary);margin-bottom:6px;">Focus (Open)</div>
+              <div class="s1-timepicker-wrap is-focus is-preview" style="width:180px;height:44px;">
+                <span class="s1-timepicker-value">09:30</span>
+                <span class="s1-timepicker-icon"><svg width="18" height="18" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="7.5" stroke="currentColor" stroke-width="1.2"/><path d="M9 5v4l2.5 2.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg></span>
+              </div>
+            </div>
+            <!-- Disabled -->
+            <div>
+              <div class="s1-dp-state-label" style="color:var(--color-text-secondary);margin-bottom:6px;">Disabled</div>
+              <div class="s1-timepicker-wrap is-disabled is-filled is-preview" style="width:180px;height:44px;">
+                <span class="s1-timepicker-value">00:00</span>
+                <span class="s1-timepicker-icon"><svg width="18" height="18" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="7.5" stroke="currentColor" stroke-width="1.2"/><path d="M9 5v4l2.5 2.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg></span>
+              </div>
+            </div>
+            <!-- Dropdown Panel -->
+            <div style="position:relative;">
+              <div class="s1-dp-state-label" style="color:var(--color-text-secondary);margin-bottom:6px;">Dropdown Panel</div>
+              <div class="s1-tp-dropdown is-open is-preview" style="position:relative;top:auto;left:auto;display:flex !important;width:190px;min-height:200px;">
+                <div class="s1-tp-dropdown-cols">
+                  <div class="s1-tp-col" style="max-height:160px;overflow-y:hidden;">
+                    <div class="s1-tp-col-item">8</div>
+                    <div class="s1-tp-col-item is-selected">9</div>
+                    <div class="s1-tp-col-item">10</div>
+                    <div class="s1-tp-col-item">11</div>
+                    <div class="s1-tp-col-item">12</div>
+                  </div>
+                  <div class="s1-tp-col-sep"></div>
+                  <div class="s1-tp-col" style="max-height:160px;overflow-y:hidden;">
+                    <div class="s1-tp-col-item">28</div>
+                    <div class="s1-tp-col-item">29</div>
+                    <div class="s1-tp-col-item is-selected">30</div>
+                    <div class="s1-tp-col-item">31</div>
+                    <div class="s1-tp-col-item">32</div>
+                  </div>
+                </div>
+                <div class="s1-tp-footer-sep"></div>
+                <div class="s1-tp-footer">
+                  <button type="button" class="s1-tp-confirm-btn is-active">확인</button>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -5693,7 +5974,7 @@ update(); // 초기화</pre>
   /* ── Date Picker — PC Calendar (Figma 540:4216 확인) ── */
   /* Panel: 356px, py=20px, px=24px, radius=4px, border=#d9d9d9, shadow       */
   /* Day cell: 44×44px rectangular bordered square (no inner circle)           */
-  /* weekStart: 0(일) — HD-9 결정 대기 (Figma mobile=월요일 시작, PC 미확인)    */
+  /* weekStart: 1(월) — HD-9 확정 (Figma mobile 월요일 시작 기준 적용)           */
   function setupDatePicker(root) {
     root = root || document;
     root.querySelectorAll('[data-date-picker]').forEach(function(picker) {
@@ -5716,7 +5997,15 @@ update(); // 초기화</pre>
       var view = 'calendar'; // 'calendar' | 'month' | 'year'
       var decadeStart = Math.floor(today.getFullYear() / 10) * 10;
 
-      // weekStart=0: 일(HD-9 대기) / weekStart=1: 월(Figma mobile 확인)
+      // HD-6: 서비스가 data-disabled-dates="YYYY-MM-DD,..." 로 주입. Core는 인터페이스만 제공.
+      var disabledSet = (function() {
+        var raw = picker.getAttribute('data-disabled-dates') || '';
+        var s = {};
+        raw.split(',').forEach(function(d) { if (d.trim()) s[d.trim()] = true; });
+        return s;
+      })();
+
+      // weekStart=0: 일 (HD-9 확정 — 일요일 시작)
       var WEEK_START = 0;
       var WEEKDAY_LABELS = ['일', '월', '화', '수', '목', '금', '토'];
       var MONTH_LABELS = ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'];
@@ -5827,6 +6116,8 @@ update(); // 초기화</pre>
 
       /* Day cell: 44×44px outer + 30×30px inner circle (Figma 540:4216) */
       function makeDay(date, isOther) {
+        var dateKey = date.getFullYear() + '-' + pad(date.getMonth()+1) + '-' + pad(date.getDate());
+        var isDisabled = !!disabledSet[dateKey];
         var btn = document.createElement('button');
         btn.type = 'button';
         btn.className = 's1-date-picker__day';
@@ -5837,20 +6128,21 @@ update(); // 초기화</pre>
         if (isOther) btn.classList.add('is-other-month');
         if (isSame(date, today)) btn.classList.add('is-today');
         if (isSame(date, selectedDate)) btn.classList.add('is-selected');
+        if (isDisabled) { btn.disabled = true; btn.setAttribute('aria-disabled', 'true'); }
         btn.setAttribute('aria-label', formatDate(date));
-        btn.setAttribute('data-date', date.getFullYear() + '-' + pad(date.getMonth()+1) + '-' + pad(date.getDate()));
-        if (!isOther) {
+        btn.setAttribute('data-date', dateKey);
+        if (!isDisabled) {
           btn.addEventListener('click', function() {
+            // HD-7: 이전달/다음달 날짜도 항상 선택 허용
+            if (isOther) {
+              curYear = date.getFullYear();
+              curMonth = date.getMonth();
+            }
             selectedDate = date;
             input.value = formatDate(date);
-            grid.querySelectorAll('.s1-date-picker__day').forEach(function(b) {
-              b.classList.remove('is-selected');
-            });
-            btn.classList.add('is-selected');
+            renderGrid(); // 선택 반영 후 재렌더 (is-selected 자동 반영)
             closePanel();
           });
-        } else {
-          btn.disabled = true;
         }
         return btn;
       }
@@ -6289,6 +6581,71 @@ update(); // 초기화</pre>
     });
   }
   setupTimePicker(document);
+
+  // ── TimePicker Mobile Bottom Sheet (HD-Time-4) ──
+  (function() {
+    var trigger = document.getElementById('tp-mobile-trigger');
+    var dim     = document.getElementById('tp-mobile-dim');
+    var sheet   = document.getElementById('tp-mobile-sheet');
+    var confirm = document.getElementById('tp-mobile-confirm');
+    var ph      = document.getElementById('tp-mobile-ph');
+    var val     = document.getElementById('tp-mobile-val');
+    var hourCol = document.getElementById('tp-mobile-hour-col');
+    var minCol  = document.getElementById('tp-mobile-min-col');
+    if (!trigger || !sheet) return;
+
+    var selHour = 9, selMin = 30;
+
+    function pad2(n) { return n < 10 ? '0' + n : '' + n; }
+
+    function buildCol(col, count, selected, labelFn) {
+      col.innerHTML = '';
+      for (var i = 0; i < count; i++) {
+        var el = document.createElement('div');
+        el.className = 's1-tp-col-item' + (i === selected ? ' is-selected' : '');
+        el.textContent = labelFn ? labelFn(i) : pad2(i);
+        (function(idx, isHour) {
+          el.addEventListener('click', function() {
+            col.querySelectorAll('.s1-tp-col-item').forEach(function(x) { x.classList.remove('is-selected'); });
+            el.classList.add('is-selected');
+            if (isHour) selHour = idx; else selMin = idx;
+          });
+        })(i, col === hourCol);
+        col.appendChild(el);
+      }
+    }
+
+    function openSheet() {
+      buildCol(hourCol, 24, selHour, function(i) { return pad2(i); });
+      buildCol(minCol, 60, selMin, function(i) { return pad2(i); });
+      dim.style.display = 'block';
+      sheet.style.display = 'block';
+      // scroll to selected
+      var selH = hourCol.querySelector('.is-selected');
+      var selM = minCol.querySelector('.is-selected');
+      if (selH) hourCol.scrollTop = selH.offsetTop - 64;
+      if (selM) minCol.scrollTop = selM.offsetTop - 64;
+    }
+
+    function closeSheet() {
+      dim.style.display = 'none';
+      sheet.style.display = 'none';
+    }
+
+    function confirmTime() {
+      var t = pad2(selHour) + ':' + pad2(selMin);
+      ph.style.display = 'none';
+      val.textContent = t;
+      val.style.display = '';
+      trigger.classList.add('is-filled');
+      closeSheet();
+    }
+
+    trigger.addEventListener('click', openSheet);
+    trigger.addEventListener('keydown', function(e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openSheet(); } });
+    dim.addEventListener('click', closeSheet);
+    confirm.addEventListener('click', confirmTime);
+  })();
 
   // ── Table selection (uses s1-checkbox core component) ──
   function setupTableSelection(root) {

@@ -4,12 +4,12 @@
     "name": "DatePicker",
     "label": "Date Picker / Day Picker",
     "category": "core-candidate",
-    "status": "candidate",
-    "tokenStatus": "candidate",
-    "codeStatus": "preview",
+    "status": "in-progress",
+    "tokenStatus": "stable",
+    "codeStatus": "implemented",
     "darkModeStatus": "pending",
     "a11yStatus": "partial",
-    "harnessStatus": "candidate",
+    "harnessStatus": "implemented",
     "figmaNodeId": "540:3794",
     "figmaNote": "2026-05-20 MVP-F1 플러그인 스캔으로 COMPONENT_SET nodeId 540:3794 확인. Section 노드 6456:4033은 figma.figmaSectionNodeId에 보존. mobile bottomsheet 540:3836 확인.",
     "description": "Date selection component. Uses Base Input as trigger field. PC popover calendar panel (figma-unconfirmed) or Mobile bottom sheet (Figma confirmed)."
@@ -190,17 +190,17 @@
   "notBaseInputState": true,
   "notRelatedComposedField": true,
   "separateComponentCandidate": true,
-  "humanDecisionsNeeded": [
-    "HD-1: componentSetKey 확인 (Figma plugin 직접 접근 필요)",
-    "HD-2: 공식 컴포넌트명 확정 — DatePicker vs DayPicker vs Date Input",
-    "HD-3: calendar icon 정식 등록 — ic_날짜/근태,달력 (node 221:3835) SVG 추출 및 assets 등록",
-    "HD-4: Mobile 인터랙션 확정 — bottom sheet 구현 (540:3836 구조 확인 완료, 구현 시작 가능)",
-    "HD-5: DatePicker 전용 token candidate → stable 전환 여부 결정",
-    "HD-6: disabled-date 기준 확정 (어떤 날짜를 비활성으로 처리할지)",
-    "HD-7: other-month date 클릭 허용 여부 (현재 disabled)",
-    "HD-8: 일/토 요일 색상 토큰 별도 생성 여부 (Figma 미정의, 현재 status-error / action-primary 재사용)",
-    "HD-9: PC weekday 시작 요일 확인 (Figma mobile=월요일 시작 확인, PC calendar popup figma-unconfirmed → 현재 일요일 시작)",
-    "HD-10: 날짜 형식 서비스 적용 기준 (YY.MM.DD vs YYYY.MM.DD — DB/API 연동 시 변환 필요)"
-  ],
-  "updatedAt": "2026-05-12"
+  "humanDecisions": {
+    "HD-2": "확정 — 공식 컴포넌트명: DatePicker",
+    "HD-5": "확정 — 전용 토큰 candidate → stable 전환. panel/cell/header/weekday 토큰 stable.",
+    "HD-9": "확정 — weekStart=0 (일요일 시작). PC popover 동일.",
+    "HD-10": "확정 — YY.MM.DD 형식. Figma 일치. DB 연동 시 서비스 레벨 변환 처리.",
+    "HD-8": "결정 — 별도 전용 토큰 불생성. 서비스별 override로 처리.",
+    "HD-4": "결정 — Mobile bottom sheet 구조 채택 (Figma 540:3836 확인). 별도 구현 단계 필요.",
+    "HD-1": "보류 — 현재 불필요. figmaNodeId(540:3794)로 충분. 향후 Figma 라이브러리 publish 단계에서 재검토",
+    "HD-3": "확정 — ic_날짜/근태,달력 SVG assets/icons/ic_calendar.svg 등록 완료 (2026-05-26). figmaDatePickerNodeId: 540:3800.",
+    "HD-6": "확정 — Core는 인터페이스만 제공. data-disabled-dates=\"YYYY-MM-DD,...\" 속성으로 날짜 주입. 비활성 기준은 서비스 레벨 결정.",
+    "HD-7": "확정 — 이전달/다음달 날짜 항상 클릭 허용. 클릭 시 해당 월로 이동 후 날짜 선택."
+  },
+  "updatedAt": "2026-05-26"
 }

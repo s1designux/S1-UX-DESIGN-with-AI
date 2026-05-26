@@ -123,14 +123,12 @@
       "label": "Date Picker",
       "category": "form",
       "path": "registry/components/date-picker.json",
-      "status": "candidate",
-      "harnessStatus": "candidate",
+      "status": "in-progress",
+      "harnessStatus": "implemented",
       "priority": 9,
       "notes": [
-        "Base Input (s1-input-wrap) trigger를 재사용한다.",
-        "calendar panel + day grid가 있어 Related Composed Field가 아닌 별도 컴포넌트 후보다.",
-        "Figma node 6443:4655 확인 — MCP 접근 불가, componentSetKey 미등록.",
-        "Mobile 인터랙션 미확정 (bottom sheet 가능성)."
+        "2026-05-26 HD 확정: tokenStatus→stable, weekStart=1(월), YY.MM.DD 형식, mobile bottom sheet.",
+        "figmaNodeId: 540:3794 (datepicker_input). 미결: componentSetKey, icon assets."
       ]
     },
     {
@@ -139,12 +137,13 @@
       "label": "Time Picker",
       "category": "form",
       "path": "registry/components/time-picker.json",
-      "status": "candidate",
-      "harnessStatus": "candidate",
+      "status": "in-progress",
+      "harnessStatus": "implemented",
       "priority": 10,
       "notes": [
-        "2026-05-20 MVP-F1: 5개 COMPONENT_SET nodeId 확인 완료. candidate 등록.",
-        "구현 착수 전 HD-1~HD-5 결정 필요 (input 방식 vs select 방식 등).",
+        "2026-05-26: codeStatus→preview, harnessStatus→implemented.",
+        "HD-Time-4 확정: Mobile bottom sheet. HD-Time-5 확정: shadow rgba 예외 허용.",
+        "미결: HD-Time-1 (disabled suffix icon 변경 의도 확인 필요).",
         "primary figmaNodeId: 540:3690 (timepicker_input)."
       ]
     },
@@ -171,6 +170,21 @@
       "status": "in-progress",
       "harnessStatus": "implemented",
       "priority": 12
+    },
+    {
+      "id": "dropdown",
+      "name": "Dropdown",
+      "label": "Dropdown (Token Source)",
+      "category": "form",
+      "path": "registry/components/dropdown.json",
+      "status": "in-progress",
+      "harnessStatus": "implemented",
+      "priority": 14,
+      "notes": [
+        "17개 --dropdown-* 토큰의 canonical source.",
+        "harness는 Select (id=select) 섹션에서 공유. 별도 harness 섹션 없음.",
+        "Select (priority 7) tokenRef: registry/components/dropdown.json."
+      ]
     }
   ]
 }
