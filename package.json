@@ -4,10 +4,10 @@
   "private": true,
   "description": "SW Design System Guide — SW UX GUIDE V2.4",
   "scripts": {
-    "reports:sync":  "node scripts/reports-sync.js",
+    "reports:sync": "node scripts/reports-sync.js",
     "reports:check": "node scripts/reports-check.js",
-    "build":         "npm run reports:sync && npm run build:bundle",
-    "build:bundle":  "node scripts/build-registry-bundle.js",
+    "build": "npm run reports:sync && npm run build:bundle",
+    "build:bundle": "node scripts/build-registry-bundle.js",
     "sync:button": "node scripts/sync/button-sync-check.js",
     "guard": "node scripts/guard/index.js",
     "guard:suggest": "node scripts/guard/suggest-fixes.js",
@@ -22,7 +22,9 @@
     "figma:usage:check": "node scripts/figma/check-figma-usage.mjs",
     "figma:usage:apply": "npm run figma:usage:check && node scripts/figma/apply-figma-usage.mjs && npm run reports:sync && npm run reports:check",
     "figma:usage:dry-run": "node scripts/figma/apply-figma-usage.mjs --dry-run",
-    "gate:check": "node scripts/gate-check.js"
+    "gate:check": "node scripts/gate-check.js",
+    "harness:audit": "node scripts/harness-audit.js",
+    "harness:fix": "node scripts/harness-audit.js --fix"
   },
   "devDependencies": {
     "@figma/plugin-typings": "^1.97.0",
