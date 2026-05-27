@@ -430,6 +430,7 @@
   --color-form-control-bg-hover:            var(--color-surface-default); /* light: 기본과 동일 — 시각 변화 없음 */
   --color-form-control-bg-disabled:         var(--color-bg-subtle);
   --color-form-control-border-default:      var(--color-control-border-default);
+  --color-form-control-border-hover:        var(--color-border-strong);
   --color-form-control-border-selected:     var(--color-border-focus);
   --color-form-control-border-error:        var(--color-status-error);
   --color-form-control-border-correct:      var(--color-border-focus);
@@ -439,6 +440,7 @@
   --color-form-control-text-disabled:       var(--color-text-disabled);
   --color-form-control-label-default:       var(--color-text-secondary);
   --color-form-control-label-disabled:      var(--color-text-disabled);
+  --color-form-control-icon-default:        var(--color-gray-800);       /* Light: form-control 기본 아이콘 — #353535 */
 
   /* ── color-text-state ── */
   --color-text-state-helper:  var(--color-text-secondary);
@@ -501,6 +503,8 @@
   --sizing-table-row-height-xs: 34px; /* Foundation step 없음 */
   --sizing-table-row-height-sm: 38px; /* Foundation step 없음 */
   --sizing-table-row-height-md: var(--spacing-44);
+  --sizing-dropdown-item-height-md: var(--sizing-form-control-height-md); /* 44px — Select 옵션 */
+  --sizing-dropdown-item-height-xs: var(--sizing-form-control-height-xs); /* 34px — 컴팩트 (TimePicker) */
   --sizing-icon-10: 10px; /* Foundation step 없음 */
   --sizing-icon-16: var(--spacing-16);
   --sizing-icon-18: 18px; /* Foundation step 없음 */
@@ -598,16 +602,18 @@
   --color-control-bg-hover:           var(--color-bg-subtle);
 
   /* ── color-form-control dark — fill-prominent (2026-05-27) ── */
-  --color-form-control-bg-default:     var(--color-surface-default); /* gray-dark-100 = #1C1D23 — Select 기준과 동일 */
-  --color-form-control-bg-hover:       var(--color-bg-subtle);       /* gray-dark-200 = #24252C — hover 1단계 밝게 */
-  --color-form-control-bg-disabled:        var(--color-surface-default); /* gray-dark-100 = #1C1D23 */
-  --color-form-control-border-default:     var(--color-border-subtle);   /* gray-dark-200 = fill과 동일 → 테두리 안보임 */
-  --color-form-control-border-disabled:    var(--color-surface-default); /* gray-dark-100 = fill과 동일 → 테두리 없음 */
+  --color-form-control-bg-default:     var(--color-bg-subtle);       /* gray-dark-200 = #24252C — 1단계 밝게 상향 */
+  --color-form-control-bg-hover:       var(--color-bg-muted);        /* gray-dark-300 = #2E2F38 — hover 1단계 밝게 */
+  --color-form-control-bg-disabled:        var(--color-surface-default); /* gray-dark-100 = #1C1D23 — default보다 1단계 어둡게 */
+  --color-form-control-border-default:     var(--color-border-default);  /* gray-dark-300 = #2E2F38 — 1단계 밝게 상향 */
+  --color-form-control-border-hover:       var(--color-border-strong);   /* gray-dark-500 = #3E4049 */
+  --color-form-control-border-disabled:    var(--color-border-default);  /* gray-dark-300 = #2E2F38 — default stroke와 동일 */
   --color-form-control-text-disabled:      var(--color-text-readonly);   /* gray-dark-500 = #3E4049 — placeholder 한단계 어둡게 */
 
   /* ── color-form-control label dark ── */
   --color-form-control-label-default:  var(--color-text-secondary);
   --color-form-control-label-disabled: var(--color-text-disabled);
+  --color-form-control-icon-default:   var(--color-gray-dark-700);  /* Dark: form-control 기본 아이콘 — #8A8C96 */
 
   /* ── button secondary dark ── */
   --button-secondary-default-bg:     var(--color-bg-elevated);    /* gray-dark-400 = #35363F */
@@ -615,12 +621,19 @@
   --button-secondary-pressed-bg:     var(--color-bg-subtle);      /* gray-dark-200 = #24252C */
   --button-secondary-default-border: var(--color-border-strong);  /* gray-dark-500 = #3E4049 */
 
-  /* ── dropdown hover bg dark ── */
-  --dropdown-trigger-hover-bg:  var(--color-gray-dark-500);
-  --dropdown-option-hover-bg:   var(--color-bg-muted); /* dark: gray-dark-300 */
+  /* ── dropdown dark override ── */
+  --dropdown-list-bg:           var(--color-bg-subtle); /* gray-dark-200 = #24252C — 1단계 밝게 */
+  --dropdown-option-hover-bg:   var(--color-bg-muted);  /* gray-dark-300 */
 
   /* ── color-data (dark) ── */
   --color-data-state-hover: var(--color-blue-dark-100); /* #112B55 */
+
+  /* ── table component dark override ──
+     헤더(bg-default=gray-dark-50) < 행(surface-default=gray-dark-100) 레이어 역전 해소.
+     상하 강선(border-emphasis=gray-dark-700=#8A8C96) 과밝음 해소. */
+  --table-header-bg:     var(--color-bg-subtle);      /* gray-dark-200 = #24252C — 행보다 1단계 밝게 */
+  --table-header-border: var(--color-border-default); /* gray-dark-300 = #2E2F38 — 헤더bg와 구분 */
+  --table-border-strong: var(--color-border-strong);  /* gray-dark-500 = #3E4049 — 상하 강선 적정 명암 */
 
   /* ── color-overlay ── */
   --color-overlay: rgba(0, 0, 0, 0.75); /* rgba 허용 예외 */
@@ -710,14 +723,14 @@
   --chip-solid-selected-close-icon: var(--color-action-primary-text);
 
   /* ── Dropdown ── */
-  --dropdown-trigger-default-bg:      var(--color-surface-default);
-  --dropdown-trigger-hover-bg:        var(--color-bg-subtle);
-  --dropdown-trigger-open-bg:         var(--color-bg-subtle);
-  --dropdown-trigger-disabled-bg:     var(--color-bg-subtle);
+  --dropdown-trigger-default-bg:      var(--color-form-control-bg-default);
+  --dropdown-trigger-hover-bg:        var(--color-form-control-bg-hover);
+  --dropdown-trigger-open-bg:         var(--color-form-control-bg-hover);
+  --dropdown-trigger-disabled-bg:     var(--color-form-control-bg-disabled);
   --dropdown-trigger-default-border:  var(--color-form-control-border-default);
-  --dropdown-trigger-hover-border:    var(--color-border-strong);
+  --dropdown-trigger-hover-border:    var(--color-form-control-border-hover);
   --dropdown-trigger-open-border:     var(--color-border-focus);
-  --dropdown-trigger-disabled-border: var(--color-border-subtle);
+  --dropdown-trigger-disabled-border: var(--color-form-control-border-disabled);
   --dropdown-trigger-default-text:    var(--color-text-secondary);
   --dropdown-trigger-disabled-text:   var(--color-text-disabled);
   --dropdown-list-bg:            var(--color-surface-default);

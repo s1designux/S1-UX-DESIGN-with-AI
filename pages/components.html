@@ -126,6 +126,7 @@
       /* form-control label (TimePicker select 라벨) */
       --color-form-control-label-default:  var(--color-text-secondary);
       --color-form-control-label-disabled: var(--color-text-disabled);
+      --color-form-control-icon-default:   var(--color-gray-800);
       /* Pagination */
       --pagination-control-bg:              var(--color-surface-default);
       --pagination-control-border:          var(--color-border-default);
@@ -775,7 +776,7 @@
     .ds-helper-text { font-size: 12px; color: var(--input-helper-text); line-height: 1.3; }
     .s1-input-wrap.is-error .ds-helper-text { color: var(--input-error-text); }
     .s1-input-wrap.is-correct .ds-helper-text { color: var(--input-correct-text); }
-    .s1-input-icon { flex-shrink: 0; color: var(--color-icon-default); }
+    .s1-input-icon { flex-shrink: 0; color: var(--color-form-control-icon-default); }
     .s1-input-wrap.is-error .s1-input-icon { color: var(--color-icon-danger); }
     .s1-input-wrap.is-correct .s1-input-icon { color: var(--color-icon-accent); }
     /* Interactive input (Sizes block) */
@@ -834,15 +835,12 @@
       display: flex; align-items: center; justify-content: center;
       flex-shrink: 0; width: 28px; height: 28px;
       padding: 0; border: none; background: transparent;
-      cursor: pointer; color: var(--color-icon-default); border-radius: 4px;
+      cursor: pointer; color: var(--color-form-control-icon-default); border-radius: 4px;
       transition: color 0.15s, background 0.15s;
     }
     .s1-input-action-btn:hover { background: var(--color-bg-subtle); }
     .s1-input-wrap.is-disabled .s1-input-action-btn,
     .s1-input-wrap.is-disabled .s1-input-icon { color: var(--color-icon-muted); cursor: not-allowed; pointer-events: none; }
-    /* DatePicker 달력 트리거 아이콘 — .s1-timepicker-icon 동일 패턴 */
-    .s1-input-action-btn[aria-label="달력 열기"] { color: var(--color-text-secondary); }
-    .s1-input-wrap.is-disabled .s1-input-action-btn[aria-label="달력 열기"] { color: var(--color-form-control-text-disabled); }
     /* DatePicker 인풋 오른쪽 패딩 — 아이콘 자체 여백 있으므로 TimePicker(8px) 기준 */
     .s1-input-field:has([aria-label="달력 열기"]) { padding-right: 8px; }
     .s1-suffix-action-group {
@@ -1023,7 +1021,7 @@
     .s1-select-trigger span { color: var(--dropdown-trigger-placeholder-text); }
     .s1-select-wrap.has-value .s1-select-trigger span { color: var(--dropdown-trigger-selected-text); }
     .s1-select-chevron {
-      flex-shrink: 0; margin-left: 6px; color: var(--color-icon-default);
+      flex-shrink: 0; margin-left: 6px; color: var(--color-form-control-icon-default);
       transform: rotate(90deg);
     }
     .s1-select-wrap:hover .s1-select-trigger,
@@ -1238,7 +1236,7 @@
     .s1-timepicker-wrap.is-disabled .s1-timepicker-icon {
       color: var(--color-form-control-text-disabled);
     }
-    .s1-timepicker-icon { flex-shrink: 0; color: var(--color-text-secondary); display:flex;align-items:center; }
+    .s1-timepicker-icon { flex-shrink: 0; color: var(--color-form-control-icon-default); display:flex;align-items:center; }
     /* TimePicker Select */
     .s1-timepicker-select-group {
       display: inline-flex; align-items: center; gap: 16px;
@@ -1272,7 +1270,7 @@
       color: var(--color-form-control-text-disabled); cursor: default;
     }
     .s1-timepicker-select-arrow {
-      flex-shrink: 0; color: var(--color-text-secondary);
+      flex-shrink: 0; color: var(--color-form-control-icon-default);
       display:flex;align-items:center;
     }
     .s1-timepicker-select-field.is-focus .s1-timepicker-select-arrow { transform: rotate(180deg); }
@@ -1394,6 +1392,8 @@
     [data-theme="dark"] .token-detail-table .token-name  { color: #9ca3af; }
     [data-theme="dark"] .token-detail-table .token-value { color: #c084fc; }
     [data-theme="dark"] .token-detail-table .token-resolved { color: #9ca3af; }
+    /* Dark 스와치 열 — 테마 무관 항상 어두운 배경 유지 */
+    .token-detail-table .token-dark-col { background: #111827 !important; color: #9ca3af !important; }
 
     /* States matrix — static hover preview for pagination */
     .s1-pagination-arrow.is-hover,
@@ -1406,8 +1406,9 @@
        <style> 태그가 tokens.css link 이후라 :root 정의가 dark override를 덮어쓰는 문제.
        같은 <style> 내에서 [data-theme="dark"] 를 뒤에 두면 소스 순서 우선으로 적용됨. */
     [data-theme="dark"] {
-      --dropdown-list-bg:         var(--color-bg-subtle); /* gray-dark-200 = #24252C — 1단계 밝게 */
-      --dropdown-option-hover-bg: var(--color-bg-muted); /* gray-dark-300 */
+      --dropdown-list-bg:               var(--color-bg-subtle); /* gray-dark-200 = #24252C — 1단계 밝게 */
+      --dropdown-option-hover-bg:       var(--color-bg-muted); /* gray-dark-300 */
+      --color-form-control-icon-default: var(--color-gray-dark-700); /* #8A8C96 */
       /* ── button secondary dark — cascade 차단 해소 ── */
       --button-secondary-default-bg:     var(--color-bg-elevated);   /* gray-dark-400 = #35363F */
       --button-secondary-hover-bg:       var(--color-bg-muted);      /* gray-dark-300 = #2E2F38 */
@@ -1902,6 +1903,7 @@
           <div class="code-tabs">
             <button class="code-tab active" onclick="switchTab(this,'chk-html')">HTML</button>
             <button class="code-tab" onclick="switchTab(this,'chk-css')">CSS</button>
+            <button class="code-tab" onclick="switchTab(this,'chk-js')">JavaScript</button>
             <button class="code-tab" onclick="switchTab(this,'chk-tokens')">Token Details</button>
             <button class="code-copy-btn" onclick="copyCode(document.getElementById('checkbox').querySelector('.code-pane.active').querySelector('pre').id)">복사</button>
           </div>
@@ -1996,6 +1998,28 @@
               </tbody>
             </table>
           </div>
+          <div class="code-pane" id="chk-js"><pre>// ── Checkbox ──
+// label 클릭 → is-checked 토글
+// disabled 상태일 때는 변경 없음
+
+var checkbox = document.querySelector('.s1-checkbox');
+
+checkbox.addEventListener('click', function() {
+  if (checkbox.classList.contains('is-disabled')) return;
+  checkbox.classList.toggle('is-checked');
+});
+
+// Indeterminate (테이블 전체선택 중간값)
+// checkbox.classList.add('is-indeterminate');
+
+// 그룹 내 복수 체크박스
+var checkboxes = document.querySelectorAll('.s1-checkbox');
+checkboxes.forEach(function(chk) {
+  chk.addEventListener('click', function() {
+    if (chk.classList.contains('is-disabled')) return;
+    chk.classList.toggle('is-checked');
+  });
+});</pre></div>
         </div>
 
       </section>
@@ -2039,6 +2063,7 @@
           <div class="code-tabs">
             <button class="code-tab active" onclick="switchTab(this,'radio-html')">HTML</button>
             <button class="code-tab" onclick="switchTab(this,'radio-css')">CSS</button>
+            <button class="code-tab" onclick="switchTab(this,'radio-js')">JavaScript</button>
             <button class="code-tab" onclick="switchTab(this,'radio-tokens')">Token Details</button>
             <button class="code-copy-btn" onclick="copyCode('radio-html-pre')">복사</button>
           </div>
@@ -2117,6 +2142,26 @@
               </tbody>
             </table>
           </div>
+          <div class="code-pane" id="radio-js"><pre>// ── Radio ──
+// 클릭 → 그룹 내 단일 선택 (다른 항목 해제 + 현재 항목 선택)
+// disabled 상태일 때는 변경 없음
+
+var radios = document.querySelectorAll('.s1-radio');
+
+radios.forEach(function(radio) {
+  radio.addEventListener('click', function() {
+    if (radio.classList.contains('is-disabled')) return;
+    // 그룹 내 기존 선택 해제
+    radios.forEach(function(r) { r.classList.remove('is-selected'); });
+    // 클릭한 항목 선택
+    radio.classList.add('is-selected');
+  });
+});
+
+// 단일 Radio 토글 (is-selected only)
+// radio.addEventListener('click', function() {
+//   radio.classList.toggle('is-selected');
+// });</pre></div>
         </div>
 
       </section>
@@ -2160,6 +2205,7 @@
           <div class="code-tabs">
             <button class="code-tab active" onclick="switchTab(this,'tog-html')">HTML</button>
             <button class="code-tab" onclick="switchTab(this,'tog-css')">CSS</button>
+            <button class="code-tab" onclick="switchTab(this,'tog-js')">JavaScript</button>
             <button class="code-tab" onclick="switchTab(this,'tog-tokens')">Token Details</button>
             <button class="code-copy-btn" onclick="copyCode('tog-html-pre')">복사</button>
           </div>
@@ -2190,6 +2236,21 @@
               </tbody>
             </table>
           </div>
+          <div class="code-pane" id="tog-js"><pre>// ── Toggle ──
+// 클릭 → is-on 토글 + 라벨 텍스트 갱신
+// disabled 상태일 때는 변경 없음
+
+var toggle = document.querySelector('.s1-toggle');
+var label  = toggle.querySelector('.s1-toggle-label');
+
+toggle.addEventListener('click', function() {
+  if (toggle.classList.contains('is-disabled')) return;
+  var isOn = toggle.classList.toggle('is-on');
+  if (label) label.textContent = isOn ? 'ON' : 'OFF';
+});
+
+// Disabled 전환 예시
+// toggle.classList.add('is-disabled');</pre></div>
         </div>
 
       </section>
@@ -2737,6 +2798,8 @@ document.addEventListener('click', e => {
               <div class="action-test-controls" style="margin-top:12px;">
                 <button type="button" class="action-mini-toggle" data-sizes-disabled>Disabled: off</button>
                 <button type="button" class="action-mini-toggle" data-sizes-helper>서브텍스트: off</button>
+                <button type="button" class="action-mini-toggle" data-sizes-error>Error: off</button>
+                <button type="button" class="action-mini-toggle" data-sizes-correct>Correct: off</button>
               </div>
             </div>
           </div>
@@ -2792,122 +2855,6 @@ document.addEventListener('click', e => {
                   <div class="s1-input-wrap is-disabled is-preview" style="width:160px;">
                     <span class="s1-input-label">Label</span>
                     <div class="s1-input-field"><input type="text" placeholder="비활성" disabled></div>
-                    <span class="ds-helper-text">안내 메시지</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- States · Small -->
-          <div class="variant-block">
-            <div class="variant-label">States · Small (34px)</div>
-            <div class="preview-area">
-              <div class="comp-state-matrix" style="grid-template-columns: 260px repeat(4, minmax(110px, 1fr));">
-                <div class="matrix-col-header-action">Action · Default</div>
-                <div class="matrix-col-header">Filled</div>
-                <div class="matrix-col-header">Error</div>
-                <div class="matrix-col-header">Correct</div>
-                <div class="matrix-col-header">Disabled</div>
-                <div class="comp-action-cell" data-comp-action="input">
-                  <div class="s1-input-wrap input-interactive" style="width:180px;">
-                    <span class="s1-input-label">Label</span>
-                    <div class="s1-input-field input-size-small">
-                      <input type="text" placeholder="placeholder">
-                      <button class="input-clear-btn" type="button" aria-label="지우기" tabindex="-1">
-                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6" stroke="currentColor" stroke-width="1.3"/><path d="M5.3 5.3l5.4 5.4M10.7 5.3l-5.4 5.4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
-                      </button>
-                    </div>
-                    <span class="ds-helper-text" hidden>안내 메시지</span>
-                  </div>
-                  <div class="action-test-controls">
-                    <button type="button" class="action-mini-toggle" data-input-disabled>Disabled: off</button>
-                    <button type="button" class="action-mini-toggle" data-input-helper>서브텍스트: off</button>
-                  </div>
-                </div>
-                <div class="comp-state-cell">
-                  <div class="s1-input-wrap is-preview" style="width:160px;">
-                    <span class="s1-input-label">Label</span>
-                    <div class="s1-input-field input-size-small"><input type="text" value="내용"></div>
-                    <span class="ds-helper-text">안내 메시지</span>
-                  </div>
-                </div>
-                <div class="comp-state-cell">
-                  <div class="s1-input-wrap is-error is-preview" style="width:160px;">
-                    <span class="s1-input-label">Label</span>
-                    <div class="s1-input-field input-size-small"><input type="text" value="잘못된 값"></div>
-                    <span class="ds-helper-text is-error-text">오류 메시지</span>
-                  </div>
-                </div>
-                <div class="comp-state-cell">
-                  <div class="s1-input-wrap is-correct is-preview" style="width:160px;">
-                    <span class="s1-input-label">Label</span>
-                    <div class="s1-input-field input-size-small"><input type="text" value="올바른 값"></div>
-                    <span class="ds-helper-text is-correct-text">확인 메시지</span>
-                  </div>
-                </div>
-                <div class="comp-state-cell">
-                  <div class="s1-input-wrap is-disabled is-preview" style="width:160px;">
-                    <span class="s1-input-label">Label</span>
-                    <div class="s1-input-field input-size-small"><input type="text" placeholder="비활성" disabled></div>
-                    <span class="ds-helper-text">안내 메시지</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- States · XSmall -->
-          <div class="variant-block">
-            <div class="variant-label">States · XSmall (28px)</div>
-            <div class="preview-area">
-              <div class="comp-state-matrix" style="grid-template-columns: 260px repeat(4, minmax(110px, 1fr));">
-                <div class="matrix-col-header-action">Action · Default</div>
-                <div class="matrix-col-header">Filled</div>
-                <div class="matrix-col-header">Error</div>
-                <div class="matrix-col-header">Correct</div>
-                <div class="matrix-col-header">Disabled</div>
-                <div class="comp-action-cell" data-comp-action="input">
-                  <div class="s1-input-wrap input-interactive" style="width:180px;">
-                    <span class="s1-input-label">Label</span>
-                    <div class="s1-input-field input-size-xsmall">
-                      <input type="text" placeholder="placeholder">
-                      <button class="input-clear-btn" type="button" aria-label="지우기" tabindex="-1">
-                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6" stroke="currentColor" stroke-width="1.3"/><path d="M5.3 5.3l5.4 5.4M10.7 5.3l-5.4 5.4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
-                      </button>
-                    </div>
-                    <span class="ds-helper-text" hidden>안내 메시지</span>
-                  </div>
-                  <div class="action-test-controls">
-                    <button type="button" class="action-mini-toggle" data-input-disabled>Disabled: off</button>
-                    <button type="button" class="action-mini-toggle" data-input-helper>서브텍스트: off</button>
-                  </div>
-                </div>
-                <div class="comp-state-cell">
-                  <div class="s1-input-wrap is-preview" style="width:160px;">
-                    <span class="s1-input-label">Label</span>
-                    <div class="s1-input-field input-size-xsmall"><input type="text" value="내용"></div>
-                    <span class="ds-helper-text">안내 메시지</span>
-                  </div>
-                </div>
-                <div class="comp-state-cell">
-                  <div class="s1-input-wrap is-error is-preview" style="width:160px;">
-                    <span class="s1-input-label">Label</span>
-                    <div class="s1-input-field input-size-xsmall"><input type="text" value="잘못된 값"></div>
-                    <span class="ds-helper-text is-error-text">오류 메시지</span>
-                  </div>
-                </div>
-                <div class="comp-state-cell">
-                  <div class="s1-input-wrap is-correct is-preview" style="width:160px;">
-                    <span class="s1-input-label">Label</span>
-                    <div class="s1-input-field input-size-xsmall"><input type="text" value="올바른 값"></div>
-                    <span class="ds-helper-text is-correct-text">확인 메시지</span>
-                  </div>
-                </div>
-                <div class="comp-state-cell">
-                  <div class="s1-input-wrap is-disabled is-preview" style="width:160px;">
-                    <span class="s1-input-label">Label</span>
-                    <div class="s1-input-field input-size-xsmall"><input type="text" placeholder="비활성" disabled></div>
                     <span class="ds-helper-text">안내 메시지</span>
                   </div>
                 </div>
@@ -3080,61 +3027,82 @@ if (pwClear) {
           </div>
         </div>
 
-        <!-- ── Related Composed Fields ── -->
-        <div class="variant-block" style="margin-top:8px;">
-          <div class="related-composed-header">
-            <span class="related-composed-title">Related Composed Fields</span>
-            <span class="related-composed-subtitle">아래 항목은 Base Input의 공식 state/variant가 아니라, Input slot과 보조 액션을 조합한 사용 예시입니다. 실제 입력 및 인터랙션이 동작합니다.</span>
+        <!-- ── Search Input ── -->
+        <div class="variant-group">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:16px;">
+            <h3 class="variant-group-title">Search Input</h3>
+            <span class="comp-badge comp-badge-blue">Core</span>
+            <span class="comp-badge">3 states</span>
+            <span class="comp-badge">Base Input 조합</span>
           </div>
-          <div class="related-composed-grid">
 
-            <!-- Search Input -->
-            <div class="related-composed-card">
-              <div class="related-composed-badge">composed-field</div>
-              <div class="related-composed-card-name">Search Input</div>
-              <div class="related-composed-card-desc">
-                Base Input + suffixActionGroup.<br>
-                검색 아이콘(<code>ic_찾기/조회</code>)은 오른쪽 고정. 값 입력 시 clear 아이콘(<code>remove</code>)이 검색 아이콘 왼쪽에 나타남.<br>
-                드롭다운/결과 패널이 있는 Search Module은 Pattern으로 분리.
-              </div>
-              <div class="related-composed-meta">suffixActionGroup: clearAction + searchAction</div>
-              <div class="related-composed-states">
-                <div class="related-composed-preview-label">Interactive</div>
-                <div data-related-field="search-input">
-                  <div class="s1-input-wrap" style="width:100%;">
+          <div class="variant-block">
+            <div class="variant-label">States</div>
+            <div class="preview-area" style="overflow:visible;">
+              <div class="comp-state-matrix" style="grid-template-columns:230px repeat(3, minmax(160px,1fr));">
+                <div class="matrix-col-header-action">Action</div>
+                <div class="matrix-col-header">Default</div>
+                <div class="matrix-col-header">Filled</div>
+                <div class="matrix-col-header">Disabled</div>
+
+                <!-- Action -->
+                <div class="comp-action-cell" data-comp-action="search-input">
+                  <div data-related-field="search-input" style="width:200px;">
+                    <div class="s1-input-wrap">
+                      <div class="s1-input-field">
+                        <input type="text" placeholder="검색어 입력" data-search-input autocomplete="off">
+                        <span class="s1-suffix-action-group">
+                          <button type="button" class="s1-input-action-btn input-clear-btn" data-clear-action aria-label="검색어 지우기" hidden>
+                            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><circle cx="8" cy="8" r="6" stroke="currentColor" stroke-width="1.3"/><path d="M5.3 5.3l5.4 5.4M10.7 5.3l-5.4 5.4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+                          </button>
+                          <button type="button" class="s1-input-action-btn" data-search-action aria-label="검색">
+                            <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true"><path d="M7.58918 15.2371C9.42481 15.2342 11.1973 14.564 12.579 13.3505L17.271 18L18 17.268L13.3387 12.5876C14.4678 11.27 15.1142 9.6044 15.1707 7.86713C15.2272 6.12985 14.6903 4.42542 13.6492 3.0367C12.6082 1.64798 11.1254 0.658482 9.44717 0.23242C7.7689 -0.193641 5.99599 -0.0306429 4.42267 0.694362C2.84936 1.41937 1.57026 2.66278 0.797641 4.21825C0.0250252 5.77372 -0.194642 7.5477 0.175096 9.24579C0.544834 10.9439 1.48174 12.464 2.83033 13.5538C4.17892 14.6435 5.8581 15.2375 7.58918 15.2371ZM7.58918 1.02062C8.88966 1.01858 10.1615 1.40407 11.2437 2.12828C12.3258 2.85249 13.1696 3.88284 13.6682 5.08887C14.1668 6.29491 14.2978 7.62239 14.0446 8.90322C13.7914 10.1841 13.1654 11.3606 12.2458 12.284C11.3262 13.2074 10.1544 13.836 8.87885 14.0902C7.60326 14.3445 6.28122 14.2129 5.08012 13.7123C3.87902 13.2116 2.85289 12.3643 2.13164 11.2777C1.4104 10.1911 1.02649 8.91408 1.02852 7.60825C1.02582 6.74093 1.19345 5.88159 1.52182 5.07938C1.85019 4.27717 2.33285 3.54784 2.9422 2.93312C3.55155 2.31839 4.27562 1.83033 5.073 1.49686C5.87038 1.16339 6.72541 0.991047 7.58918 0.989696V1.02062Z" fill="currentColor"/></svg>
+                          </button>
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Default -->
+                <div class="comp-state-cell">
+                  <div class="s1-input-wrap is-preview" style="width:160px;">
                     <div class="s1-input-field">
-                      <input
-                        type="text"
-                        placeholder="검색어 입력"
-                        data-search-input
-                        autocomplete="off"
-                      >
+                      <input type="text" placeholder="검색어 입력" tabindex="-1">
                       <span class="s1-suffix-action-group">
-                        <!-- clearAction: 값 있을 때만 표시 (Figma: remove, 노드 882:4061) -->
-                        <button
-                          type="button"
-                          class="s1-input-action-btn input-clear-btn"
-                          data-clear-action
-                          aria-label="검색어 지우기"
-                          hidden
-                        >
-                          <!-- remove icon (Figma: remove 노드 882:4061) -->
-                          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                            <circle cx="12" cy="12" r="8" stroke="currentColor" stroke-width="1.5"/>
-                            <path d="M9.333 9.333L14.663 14.663M14.663 9.333L9.333 14.663" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-                          </svg>
+                        <button class="s1-input-action-btn" tabindex="-1" style="pointer-events:none;" aria-label="검색">
+                          <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true"><path d="M7.58918 15.2371C9.42481 15.2342 11.1973 14.564 12.579 13.3505L17.271 18L18 17.268L13.3387 12.5876C14.4678 11.27 15.1142 9.6044 15.1707 7.86713C15.2272 6.12985 14.6903 4.42542 13.6492 3.0367C12.6082 1.64798 11.1254 0.658482 9.44717 0.23242C7.7689 -0.193641 5.99599 -0.0306429 4.42267 0.694362C2.84936 1.41937 1.57026 2.66278 0.797641 4.21825C0.0250252 5.77372 -0.194642 7.5477 0.175096 9.24579C0.544834 10.9439 1.48174 12.464 2.83033 13.5538C4.17892 14.6435 5.8581 15.2375 7.58918 15.2371ZM7.58918 1.02062C8.88966 1.01858 10.1615 1.40407 11.2437 2.12828C12.3258 2.85249 13.1696 3.88284 13.6682 5.08887C14.1668 6.29491 14.2978 7.62239 14.0446 8.90322C13.7914 10.1841 13.1654 11.3606 12.2458 12.284C11.3262 13.2074 10.1544 13.836 8.87885 14.0902C7.60326 14.3445 6.28122 14.2129 5.08012 13.7123C3.87902 13.2116 2.85289 12.3643 2.13164 11.2777C1.4104 10.1911 1.02649 8.91408 1.02852 7.60825C1.02582 6.74093 1.19345 5.88159 1.52182 5.07938C1.85019 4.27717 2.33285 3.54784 2.9422 2.93312C3.55155 2.31839 4.27562 1.83033 5.073 1.49686C5.87038 1.16339 6.72541 0.991047 7.58918 0.989696V1.02062Z" fill="currentColor"/></svg>
                         </button>
-                        <!-- searchAction: 항상 표시 (Figma: ic_찾기/조회, 노드 6452:5930) -->
-                        <button
-                          type="button"
-                          class="s1-input-action-btn"
-                          data-search-action
-                          aria-label="검색"
-                        >
-                          <!-- ic_찾기/조회 icon (Figma 노드 6452:5930 · 6471:4119) — Figma 원본 path -->
-                          <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M7.58918 15.2371C9.42481 15.2342 11.1973 14.564 12.579 13.3505L17.271 18L18 17.268L13.3387 12.5876C14.4678 11.27 15.1142 9.6044 15.1707 7.86713C15.2272 6.12985 14.6903 4.42542 13.6492 3.0367C12.6082 1.64798 11.1254 0.658482 9.44717 0.23242C7.7689 -0.193641 5.99599 -0.0306429 4.42267 0.694362C2.84936 1.41937 1.57026 2.66278 0.797641 4.21825C0.0250252 5.77372 -0.194642 7.5477 0.175096 9.24579C0.544834 10.9439 1.48174 12.464 2.83033 13.5538C4.17892 14.6435 5.8581 15.2375 7.58918 15.2371ZM7.58918 1.02062C8.88966 1.01858 10.1615 1.40407 11.2437 2.12828C12.3258 2.85249 13.1696 3.88284 13.6682 5.08887C14.1668 6.29491 14.2978 7.62239 14.0446 8.90322C13.7914 10.1841 13.1654 11.3606 12.2458 12.284C11.3262 13.2074 10.1544 13.836 8.87885 14.0902C7.60326 14.3445 6.28122 14.2129 5.08012 13.7123C3.87902 13.2116 2.85289 12.3643 2.13164 11.2777C1.4104 10.1911 1.02649 8.91408 1.02852 7.60825C1.02582 6.74093 1.19345 5.88159 1.52182 5.07938C1.85019 4.27717 2.33285 3.54784 2.9422 2.93312C3.55155 2.31839 4.27562 1.83033 5.073 1.49686C5.87038 1.16339 6.72541 0.991047 7.58918 0.989696V1.02062Z" fill="currentColor"/>
-                          </svg>
+                      </span>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Filled -->
+                <div class="comp-state-cell">
+                  <div class="s1-input-wrap is-preview" style="width:160px;">
+                    <div class="s1-input-field">
+                      <input type="text" value="검색어" tabindex="-1">
+                      <span class="s1-suffix-action-group">
+                        <button class="s1-input-action-btn" tabindex="-1" style="pointer-events:none;" aria-label="지우기">
+                          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><circle cx="8" cy="8" r="6" stroke="currentColor" stroke-width="1.3"/><path d="M5.3 5.3l5.4 5.4M10.7 5.3l-5.4 5.4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+                        </button>
+                        <button class="s1-input-action-btn" tabindex="-1" style="pointer-events:none;" aria-label="검색">
+                          <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true"><path d="M7.58918 15.2371C9.42481 15.2342 11.1973 14.564 12.579 13.3505L17.271 18L18 17.268L13.3387 12.5876C14.4678 11.27 15.1142 9.6044 15.1707 7.86713C15.2272 6.12985 14.6903 4.42542 13.6492 3.0367C12.6082 1.64798 11.1254 0.658482 9.44717 0.23242C7.7689 -0.193641 5.99599 -0.0306429 4.42267 0.694362C2.84936 1.41937 1.57026 2.66278 0.797641 4.21825C0.0250252 5.77372 -0.194642 7.5477 0.175096 9.24579C0.544834 10.9439 1.48174 12.464 2.83033 13.5538C4.17892 14.6435 5.8581 15.2375 7.58918 15.2371ZM7.58918 1.02062C8.88966 1.01858 10.1615 1.40407 11.2437 2.12828C12.3258 2.85249 13.1696 3.88284 13.6682 5.08887C14.1668 6.29491 14.2978 7.62239 14.0446 8.90322C13.7914 10.1841 13.1654 11.3606 12.2458 12.284C11.3262 13.2074 10.1544 13.836 8.87885 14.0902C7.60326 14.3445 6.28122 14.2129 5.08012 13.7123C3.87902 13.2116 2.85289 12.3643 2.13164 11.2777C1.4104 10.1911 1.02649 8.91408 1.02852 7.60825C1.02582 6.74093 1.19345 5.88159 1.52182 5.07938C1.85019 4.27717 2.33285 3.54784 2.9422 2.93312C3.55155 2.31839 4.27562 1.83033 5.073 1.49686C5.87038 1.16339 6.72541 0.991047 7.58918 0.989696V1.02062Z" fill="currentColor"/></svg>
+                        </button>
+                      </span>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Disabled -->
+                <div class="comp-state-cell">
+                  <div class="s1-input-wrap is-disabled is-preview" style="width:160px;">
+                    <div class="s1-input-field">
+                      <input type="text" placeholder="검색어 입력" disabled tabindex="-1">
+                      <span class="s1-suffix-action-group">
+                        <button class="s1-input-action-btn" tabindex="-1" style="pointer-events:none;" aria-label="검색" disabled>
+                          <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true"><path d="M7.58918 15.2371C9.42481 15.2342 11.1973 14.564 12.579 13.3505L17.271 18L18 17.268L13.3387 12.5876C14.4678 11.27 15.1142 9.6044 15.1707 7.86713C15.2272 6.12985 14.6903 4.42542 13.6492 3.0367C12.6082 1.64798 11.1254 0.658482 9.44717 0.23242C7.7689 -0.193641 5.99599 -0.0306429 4.42267 0.694362C2.84936 1.41937 1.57026 2.66278 0.797641 4.21825C0.0250252 5.77372 -0.194642 7.5477 0.175096 9.24579C0.544834 10.9439 1.48174 12.464 2.83033 13.5538C4.17892 14.6435 5.8581 15.2375 7.58918 15.2371ZM7.58918 1.02062C8.88966 1.01858 10.1615 1.40407 11.2437 2.12828C12.3258 2.85249 13.1696 3.88284 13.6682 5.08887C14.1668 6.29491 14.2978 7.62239 14.0446 8.90322C13.7914 10.1841 13.1654 11.3606 12.2458 12.284C11.3262 13.2074 10.1544 13.836 8.87885 14.0902C7.60326 14.3445 6.28122 14.2129 5.08012 13.7123C3.87902 13.2116 2.85289 12.3643 2.13164 11.2777C1.4104 10.1911 1.02649 8.91408 1.02852 7.60825C1.02582 6.74093 1.19345 5.88159 1.52182 5.07938C1.85019 4.27717 2.33285 3.54784 2.9422 2.93312C3.55155 2.31839 4.27562 1.83033 5.073 1.49686C5.87038 1.16339 6.72541 0.991047 7.58918 0.989696V1.02062Z" fill="currentColor"/></svg>
                         </button>
                       </span>
                     </div>
@@ -3142,79 +3110,279 @@ if (pwClear) {
                 </div>
               </div>
             </div>
-
-            <!-- Password Field -->
-            <div class="related-composed-card">
-              <div class="related-composed-badge">composed-field</div>
-              <div class="related-composed-card-name">Password Field</div>
-              <div class="related-composed-card-desc">
-                Base Input + suffixActionGroup.<br>
-                visibilityToggle(<code>ic_비밀번호미표시</code>)은 항상 표시. clearAction(<code>remove</code>)은 값 입력 시 표시.<br>
-                Login Form은 별도 Pattern/Module.
-              </div>
-              <div class="related-composed-meta">suffixActionGroup: visibilityToggle + clearAction</div>
-              <div class="related-composed-states">
-                <div class="related-composed-preview-label">Interactive</div>
-                <div data-related-field="password-field">
-                  <div class="s1-input-wrap" style="width:100%;">
-                    <div class="s1-input-field">
-                      <input
-                        type="password"
-                        placeholder="비밀번호 입력"
-                        data-password-input
-                        autocomplete="current-password"
-                      >
-                      <span class="s1-suffix-action-group">
-                        <!-- visibilityToggle: 항상 표시 (Figma: ic_비밀번호미표시, 노드 135:6692) -->
-                        <button
-                          type="button"
-                          class="s1-input-action-btn"
-                          data-visibility-toggle
-                          aria-label="비밀번호 보기"
-                          aria-pressed="false"
-                        >
-                          <!-- ic_비밀번호미표시 (540:7279) — 비밀번호 숨김 상태 -->
-                          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true" data-icon-hidden>
-                            <path d="M11.9945 6.63965C11.0054 6.63965 10.0362 6.76954 9.12695 7.00933L9.97623 7.85861C10.6357 7.72872 11.3051 7.6388 12.0045 7.6388C15.4616 7.6388 18.5389 9.34734 19.9378 12.0051C19.2983 13.2141 18.2992 14.2232 17.0802 14.9626L17.7996 15.682C19.1584 14.8027 20.2575 13.6337 20.9469 12.2149C21.0168 12.075 21.0168 11.9152 20.9469 11.7853C19.4482 8.65793 15.9312 6.63965 12.0045 6.63965H11.9945Z" fill="currentColor"/>
-                            <path d="M11.9948 16.3615C8.53779 16.3615 5.46041 14.653 4.0616 11.9952C4.70105 10.7863 5.7002 9.77712 6.91917 9.03775L6.19978 8.31836C4.84093 9.19761 3.73188 10.3666 3.05246 11.7854C2.98251 11.9253 2.98251 12.0852 3.05246 12.215C4.56117 15.3424 8.06819 17.3607 11.9948 17.3607C12.984 17.3607 13.9532 17.2308 14.8624 16.991L14.0131 16.1417C13.3537 16.2716 12.6843 16.3615 11.9849 16.3615H11.9948Z" fill="currentColor"/>
-                            <path d="M12.9236 15.052L8.93698 11.0654C8.84706 11.3652 8.78711 11.6749 8.78711 11.9946C8.78711 13.7631 10.2259 15.2019 11.9944 15.2019C12.3241 15.2019 12.6338 15.142 12.9236 15.052Z" fill="currentColor"/>
-                            <path d="M15.2009 11.9944C15.2009 10.2259 13.7622 8.78711 11.9937 8.78711C11.6639 8.78711 11.3542 8.84706 11.0645 8.93698L15.0511 12.9236C15.141 12.6238 15.2009 12.3141 15.2009 11.9944Z" fill="currentColor"/>
-                            <path d="M16.1506 15.4522L14.5819 13.8735L10.1157 9.41731L8.84682 8.14839L8.06748 7.35906L5.3498 4.65137L4.65039 5.36076L7.08832 7.79869L7.83768 8.54805L9.40634 10.1167L13.8725 14.5829L15.1415 15.8518L15.9208 16.6312L18.6385 19.3489L19.3379 18.6395L16.9 16.1916L16.1506 15.4522Z" fill="currentColor"/>
-                          </svg>
-                          <!-- ic_비밀번호표시 (540:7285) — 비밀번호 표시 상태 -->
-                          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true" data-icon-visible style="display:none;">
-                            <path d="M12 6.63672C8.07109 6.63672 4.55207 8.65616 3.05249 11.7853C2.9825 11.9252 2.9825 12.0852 3.05249 12.2152C4.55207 15.3443 8.07109 17.3637 12 17.3637C15.9289 17.3637 19.4379 15.3443 20.9475 12.2152C21.0175 12.0752 21.0175 11.9153 20.9475 11.7853C19.4379 8.65616 15.9289 6.63672 12 6.63672ZM12 16.364C8.54096 16.364 5.46182 14.6545 4.0622 11.9952C5.46182 9.34597 8.54096 7.63644 12 7.63644C15.459 7.63644 18.5382 9.34597 19.9378 12.0052C18.5382 14.6645 15.459 16.374 12 16.374V16.364Z" fill="currentColor"/>
-                            <path d="M12.0001 15.2141C13.7725 15.2141 15.2092 13.7773 15.2092 12.005C15.2092 10.2327 13.7725 8.7959 12.0001 8.7959C10.2278 8.7959 8.79102 10.2327 8.79102 12.005C8.79102 13.7773 10.2278 15.2141 12.0001 15.2141Z" fill="currentColor"/>
-                          </svg>
-                        </button>
-                        <!-- clearAction: 값 있을 때만 표시 (Figma: remove, 노드 882:4061) -->
-                        <button
-                          type="button"
-                          class="s1-input-action-btn input-clear-btn"
-                          data-clear-action
-                          aria-label="비밀번호 지우기"
-                          hidden
-                        >
-                          <!-- remove icon (Figma: remove 노드 882:4061) -->
-                          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                            <circle cx="12" cy="12" r="8" stroke="currentColor" stroke-width="1.5"/>
-                            <path d="M9.333 9.333L14.663 14.663M14.663 9.333L9.333 14.663" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-                          </svg>
-                        </button>
-                      </span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
           </div>
-          <p style="font-size:11px;color:var(--color-text-secondary);margin-top:14px;line-height:1.6;">
-            DatePicker · TimePicker · Textarea는 별도 Component 후보로 분리됩니다.<br>
-            Login Form · Search Module · Address Search는 Pattern / Module 후보입니다.<br>
-            아이콘: Figma 노드명 확인 완료 (<code>ic_찾기/조회</code> · <code>ic_비밀번호미표시</code> · <code>remove</code>). SVG 인라인 구현 완료. ic_비밀번호표시(eye-on) 노드명 미확인 — candidate SVG 사용 중.
-          </p>
+
+          <div class="code-block">
+            <div class="code-tabs">
+              <button class="code-tab active" onclick="switchTab(this,'si-html')">HTML</button>
+              <button class="code-tab" onclick="switchTab(this,'si-css')">CSS</button>
+              <button class="code-tab" onclick="switchTab(this,'si-js')">JavaScript</button>
+              <button class="code-copy-btn" onclick="copyCode('si-html-pre')">복사</button>
+            </div>
+            <div class="code-pane active" id="si-html">
+              <pre id="si-html-pre"><span class="c-cmt">&lt;!-- Search Input --&gt;</span>
+<span class="c-tag">&lt;div</span> <span class="c-attr">class</span>=<span class="c-str">"s1-input-wrap"</span><span class="c-tag">&gt;</span>
+  <span class="c-tag">&lt;div</span> <span class="c-attr">class</span>=<span class="c-str">"s1-input-field"</span><span class="c-tag">&gt;</span>
+    <span class="c-tag">&lt;input</span> <span class="c-attr">type</span>=<span class="c-str">"text"</span> <span class="c-attr">placeholder</span>=<span class="c-str">"검색어 입력"</span> <span class="c-attr">autocomplete</span>=<span class="c-str">"off"</span><span class="c-tag">&gt;</span>
+    <span class="c-tag">&lt;span</span> <span class="c-attr">class</span>=<span class="c-str">"s1-suffix-action-group"</span><span class="c-tag">&gt;</span>
+      <span class="c-cmt">&lt;!-- clearAction: 값 있을 때만 표시 --&gt;</span>
+      <span class="c-tag">&lt;button</span> <span class="c-attr">type</span>=<span class="c-str">"button"</span> <span class="c-attr">class</span>=<span class="c-str">"s1-input-action-btn"</span>
+              <span class="c-attr">aria-label</span>=<span class="c-str">"검색어 지우기"</span> <span class="c-attr">hidden</span><span class="c-tag">&gt;</span>
+        <span class="c-cmt">&lt;!-- remove icon --&gt;</span>
+      <span class="c-tag">&lt;/button&gt;</span>
+      <span class="c-cmt">&lt;!-- searchAction: 항상 표시 --&gt;</span>
+      <span class="c-tag">&lt;button</span> <span class="c-attr">type</span>=<span class="c-str">"button"</span> <span class="c-attr">class</span>=<span class="c-str">"s1-input-action-btn"</span>
+              <span class="c-attr">aria-label</span>=<span class="c-str">"검색"</span><span class="c-tag">&gt;</span>
+        <span class="c-cmt">&lt;!-- ic_찾기/조회 icon --&gt;</span>
+      <span class="c-tag">&lt;/button&gt;</span>
+    <span class="c-tag">&lt;/span&gt;</span>
+  <span class="c-tag">&lt;/div&gt;</span>
+<span class="c-tag">&lt;/div&gt;</span></pre>
+            </div>
+            <div class="code-pane" id="si-css">
+              <pre><span class="c-cmt">/* suffixActionGroup — Search Input 전용 */</span>
+<span class="c-sel">.s1-suffix-action-group</span> {
+  <span class="c-prop">display</span>: <span class="c-val">flex</span>;
+  <span class="c-prop">align-items</span>: <span class="c-val">center</span>;
+  <span class="c-prop">gap</span>: <span class="c-val">2px</span>;
+  <span class="c-prop">flex-shrink</span>: <span class="c-val">0</span>;
+}
+<span class="c-sel">.s1-input-action-btn</span> {
+  <span class="c-prop">display</span>: <span class="c-val">flex</span>;
+  <span class="c-prop">align-items</span>: <span class="c-val">center</span>;
+  <span class="c-prop">justify-content</span>: <span class="c-val">center</span>;
+  <span class="c-prop">width</span>: <span class="c-val">28px</span>; <span class="c-prop">height</span>: <span class="c-val">28px</span>;
+  <span class="c-prop">border</span>: <span class="c-val">none</span>; <span class="c-prop">background</span>: <span class="c-val">transparent</span>;
+  <span class="c-prop">cursor</span>: <span class="c-val">pointer</span>;
+  <span class="c-prop">color</span>: <span class="c-val">var(--color-form-control-icon-default)</span>;
+  <span class="c-prop">border-radius</span>: <span class="c-val">4px</span>;
+}
+<span class="c-sel">.s1-input-action-btn:hover</span> {
+  <span class="c-prop">background</span>: <span class="c-val">var(--color-bg-subtle)</span>;
+}
+<span class="c-cmt">/* clearAction — 값 있을 때만 표시 (hidden attribute로 제어) */</span>
+<span class="c-sel">[hidden]</span> { <span class="c-prop">display</span>: <span class="c-val">none !important</span>; }</pre>
+            </div>
+            <div class="code-pane" id="si-js">
+              <pre><span class="c-cmt">// Search Input — clear + search 연동</span>
+<span class="c-key">const</span> wrap     = document.<span class="c-fn">querySelector</span>(<span class="c-str">'.s1-input-wrap'</span>);
+<span class="c-key">const</span> input    = wrap.<span class="c-fn">querySelector</span>(<span class="c-str">'input[type="text"]'</span>);
+<span class="c-key">const</span> clearBtn = wrap.<span class="c-fn">querySelector</span>(<span class="c-str">'[aria-label="검색어 지우기"]'</span>);
+<span class="c-key">const</span> searchBtn = wrap.<span class="c-fn">querySelector</span>(<span class="c-str">'[aria-label="검색"]'</span>);
+
+<span class="c-cmt">// 입력값 변경 시 clear 버튼 표시/숨김</span>
+input.<span class="c-fn">addEventListener</span>(<span class="c-str">'input'</span>, () =&gt; {
+  clearBtn.hidden = input.value.length === <span class="c-num">0</span>;
+});
+
+<span class="c-cmt">// clear 버튼 클릭</span>
+clearBtn.<span class="c-fn">addEventListener</span>(<span class="c-str">'click'</span>, () =&gt; {
+  input.value = <span class="c-str">''</span>;
+  clearBtn.hidden = <span class="c-key">true</span>;
+  input.<span class="c-fn">focus</span>();
+});
+
+<span class="c-cmt">// search 버튼 클릭 (검색 로직 연결)</span>
+searchBtn.<span class="c-fn">addEventListener</span>(<span class="c-str">'click'</span>, () =&gt; {
+  <span class="c-cmt">// TODO: 검색 실행 로직</span>
+  console.<span class="c-fn">log</span>(<span class="c-str">'검색:'</span>, input.value);
+});</pre>
+            </div>
+          </div>
         </div>
+
+        <!-- ── Password Field ── -->
+        <div class="variant-group">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:16px;">
+            <h3 class="variant-group-title">Password Field</h3>
+            <span class="comp-badge comp-badge-blue">Core</span>
+            <span class="comp-badge">4 states</span>
+            <span class="comp-badge">Base Input 조합</span>
+          </div>
+
+          <div class="variant-block">
+            <div class="variant-label">States</div>
+            <div class="preview-area" style="overflow:visible;">
+              <div class="comp-state-matrix" style="grid-template-columns:230px repeat(4, minmax(150px,1fr));">
+                <div class="matrix-col-header-action">Action</div>
+                <div class="matrix-col-header">Default</div>
+                <div class="matrix-col-header">Filled (hidden)</div>
+                <div class="matrix-col-header">Filled (visible)</div>
+                <div class="matrix-col-header">Disabled</div>
+
+                <!-- Action -->
+                <div class="comp-action-cell" data-comp-action="password-field">
+                  <div data-related-field="password-field" style="width:200px;" data-pw-wrap>
+                    <div class="s1-input-wrap">
+                      <div class="s1-input-field">
+                        <input type="password" placeholder="비밀번호 입력" data-password-input autocomplete="current-password">
+                        <span class="s1-suffix-action-group">
+                          <button type="button" class="s1-input-action-btn" data-visibility-toggle aria-label="비밀번호 보기" aria-pressed="false">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true" data-icon-hidden><path d="M11.9945 6.63965C11.0054 6.63965 10.0362 6.76954 9.12695 7.00933L9.97623 7.85861C10.6357 7.72872 11.3051 7.6388 12.0045 7.6388C15.4616 7.6388 18.5389 9.34734 19.9378 12.0051C19.2983 13.2141 18.2992 14.2232 17.0802 14.9626L17.7996 15.682C19.1584 14.8027 20.2575 13.6337 20.9469 12.2149C21.0168 12.075 21.0168 11.9152 20.9469 11.7853C19.4482 8.65793 15.9312 6.63965 12.0045 6.63965H11.9945Z" fill="currentColor"/><path d="M11.9948 16.3615C8.53779 16.3615 5.46041 14.653 4.0616 11.9952C4.70105 10.7863 5.7002 9.77712 6.91917 9.03775L6.19978 8.31836C4.84093 9.19761 3.73188 10.3666 3.05246 11.7854C2.98251 11.9253 2.98251 12.0852 3.05246 12.215C4.56117 15.3424 8.06819 17.3607 11.9948 17.3607C12.984 17.3607 13.9532 17.2308 14.8624 16.991L14.0131 16.1417C13.3537 16.2716 12.6843 16.3615 11.9849 16.3615H11.9948Z" fill="currentColor"/><path d="M12.9236 15.052L8.93698 11.0654C8.84706 11.3652 8.78711 11.6749 8.78711 11.9946C8.78711 13.7631 10.2259 15.2019 11.9944 15.2019C12.3241 15.2019 12.6338 15.142 12.9236 15.052Z" fill="currentColor"/><path d="M15.2009 11.9944C15.2009 10.2259 13.7622 8.78711 11.9937 8.78711C11.6639 8.78711 11.3542 8.84706 11.0645 8.93698L15.0511 12.9236C15.141 12.6238 15.2009 12.3141 15.2009 11.9944Z" fill="currentColor"/><path d="M16.1506 15.4522L14.5819 13.8735L10.1157 9.41731L8.84682 8.14839L8.06748 7.35906L5.3498 4.65137L4.65039 5.36076L7.08832 7.79869L7.83768 8.54805L9.40634 10.1167L13.8725 14.5829L15.1415 15.8518L15.9208 16.6312L18.6385 19.3489L19.3379 18.6395L16.9 16.1916L16.1506 15.4522Z" fill="currentColor"/></svg>
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true" data-icon-visible style="display:none;"><path d="M12 6.63672C8.07109 6.63672 4.55207 8.65616 3.05249 11.7853C2.9825 11.9252 2.9825 12.0852 3.05249 12.2152C4.55207 15.3443 8.07109 17.3637 12 17.3637C15.9289 17.3637 19.4379 15.3443 20.9475 12.2152C21.0175 12.0752 21.0175 11.9153 20.9475 11.7853C19.4379 8.65616 15.9289 6.63672 12 6.63672ZM12 16.364C8.54096 16.364 5.46182 14.6545 4.0622 11.9952C5.46182 9.34597 8.54096 7.63644 12 7.63644C15.459 7.63644 18.5382 9.34597 19.9378 12.0052C18.5382 14.6645 15.459 16.374 12 16.374V16.364Z" fill="currentColor"/><path d="M12.0001 15.2141C13.7725 15.2141 15.2092 13.7773 15.2092 12.005C15.2092 10.2327 13.7725 8.7959 12.0001 8.7959C10.2278 8.7959 8.79102 10.2327 8.79102 12.005C8.79102 13.7773 10.2278 15.2141 12.0001 15.2141Z" fill="currentColor"/></svg>
+                          </button>
+                          <button type="button" class="s1-input-action-btn input-clear-btn" data-clear-action aria-label="비밀번호 지우기" hidden>
+                            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><circle cx="8" cy="8" r="6" stroke="currentColor" stroke-width="1.3"/><path d="M5.3 5.3l5.4 5.4M10.7 5.3l-5.4 5.4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+                          </button>
+                        </span>
+                      </div>
+                      <span class="ds-helper-text" hidden>안내 메시지</span>
+                    </div>
+                  </div>
+                  <div class="action-test-controls">
+                    <button type="button" class="action-mini-toggle" data-pw-error>Error: off</button>
+                    <button type="button" class="action-mini-toggle" data-pw-correct>Correct: off</button>
+                  </div>
+                </div>
+
+                <!-- Default -->
+                <div class="comp-state-cell">
+                  <div class="s1-input-wrap is-preview" style="width:148px;">
+                    <div class="s1-input-field">
+                      <input type="password" placeholder="비밀번호 입력" tabindex="-1">
+                      <span class="s1-suffix-action-group">
+                        <button class="s1-input-action-btn" tabindex="-1" style="pointer-events:none;" aria-label="비밀번호 보기">
+                          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M11.9945 6.63965C11.0054 6.63965 10.0362 6.76954 9.12695 7.00933L9.97623 7.85861C10.6357 7.72872 11.3051 7.6388 12.0045 7.6388C15.4616 7.6388 18.5389 9.34734 19.9378 12.0051C19.2983 13.2141 18.2992 14.2232 17.0802 14.9626L17.7996 15.682C19.1584 14.8027 20.2575 13.6337 20.9469 12.2149C21.0168 12.075 21.0168 11.9152 20.9469 11.7853C19.4482 8.65793 15.9312 6.63965 12.0045 6.63965H11.9945Z" fill="currentColor"/><path d="M11.9948 16.3615C8.53779 16.3615 5.46041 14.653 4.0616 11.9952C4.70105 10.7863 5.7002 9.77712 6.91917 9.03775L6.19978 8.31836C4.84093 9.19761 3.73188 10.3666 3.05246 11.7854C2.98251 11.9253 2.98251 12.0852 3.05246 12.215C4.56117 15.3424 8.06819 17.3607 11.9948 17.3607C12.984 17.3607 13.9532 17.2308 14.8624 16.991L14.0131 16.1417C13.3537 16.2716 12.6843 16.3615 11.9849 16.3615H11.9948Z" fill="currentColor"/><path d="M12.9236 15.052L8.93698 11.0654C8.84706 11.3652 8.78711 11.6749 8.78711 11.9946C8.78711 13.7631 10.2259 15.2019 11.9944 15.2019C12.3241 15.2019 12.6338 15.142 12.9236 15.052Z" fill="currentColor"/><path d="M15.2009 11.9944C15.2009 10.2259 13.7622 8.78711 11.9937 8.78711C11.6639 8.78711 11.3542 8.84706 11.0645 8.93698L15.0511 12.9236C15.141 12.6238 15.2009 12.3141 15.2009 11.9944Z" fill="currentColor"/><path d="M16.1506 15.4522L14.5819 13.8735L10.1157 9.41731L8.84682 8.14839L8.06748 7.35906L5.3498 4.65137L4.65039 5.36076L7.08832 7.79869L7.83768 8.54805L9.40634 10.1167L13.8725 14.5829L15.1415 15.8518L15.9208 16.6312L18.6385 19.3489L19.3379 18.6395L16.9 16.1916L16.1506 15.4522Z" fill="currentColor"/></svg>
+                        </button>
+                      </span>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Filled (hidden) -->
+                <div class="comp-state-cell">
+                  <div class="s1-input-wrap is-preview" style="width:148px;">
+                    <div class="s1-input-field">
+                      <input type="password" value="password1234" tabindex="-1">
+                      <span class="s1-suffix-action-group">
+                        <button class="s1-input-action-btn" tabindex="-1" style="pointer-events:none;" aria-label="비밀번호 보기">
+                          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M11.9945 6.63965C11.0054 6.63965 10.0362 6.76954 9.12695 7.00933L9.97623 7.85861C10.6357 7.72872 11.3051 7.6388 12.0045 7.6388C15.4616 7.6388 18.5389 9.34734 19.9378 12.0051C19.2983 13.2141 18.2992 14.2232 17.0802 14.9626L17.7996 15.682C19.1584 14.8027 20.2575 13.6337 20.9469 12.2149C21.0168 12.075 21.0168 11.9152 20.9469 11.7853C19.4482 8.65793 15.9312 6.63965 12.0045 6.63965H11.9945Z" fill="currentColor"/><path d="M11.9948 16.3615C8.53779 16.3615 5.46041 14.653 4.0616 11.9952C4.70105 10.7863 5.7002 9.77712 6.91917 9.03775L6.19978 8.31836C4.84093 9.19761 3.73188 10.3666 3.05246 11.7854C2.98251 11.9253 2.98251 12.0852 3.05246 12.215C4.56117 15.3424 8.06819 17.3607 11.9948 17.3607C12.984 17.3607 13.9532 17.2308 14.8624 16.991L14.0131 16.1417C13.3537 16.2716 12.6843 16.3615 11.9849 16.3615H11.9948Z" fill="currentColor"/><path d="M12.9236 15.052L8.93698 11.0654C8.84706 11.3652 8.78711 11.6749 8.78711 11.9946C8.78711 13.7631 10.2259 15.2019 11.9944 15.2019C12.3241 15.2019 12.6338 15.142 12.9236 15.052Z" fill="currentColor"/><path d="M15.2009 11.9944C15.2009 10.2259 13.7622 8.78711 11.9937 8.78711C11.6639 8.78711 11.3542 8.84706 11.0645 8.93698L15.0511 12.9236C15.141 12.6238 15.2009 12.3141 15.2009 11.9944Z" fill="currentColor"/><path d="M16.1506 15.4522L14.5819 13.8735L10.1157 9.41731L8.84682 8.14839L8.06748 7.35906L5.3498 4.65137L4.65039 5.36076L7.08832 7.79869L7.83768 8.54805L9.40634 10.1167L13.8725 14.5829L15.1415 15.8518L15.9208 16.6312L18.6385 19.3489L19.3379 18.6395L16.9 16.1916L16.1506 15.4522Z" fill="currentColor"/></svg>
+                        </button>
+                        <button class="s1-input-action-btn" tabindex="-1" style="pointer-events:none;" aria-label="지우기">
+                          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><circle cx="8" cy="8" r="6" stroke="currentColor" stroke-width="1.3"/><path d="M5.3 5.3l5.4 5.4M10.7 5.3l-5.4 5.4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+                        </button>
+                      </span>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Filled (visible) -->
+                <div class="comp-state-cell">
+                  <div class="s1-input-wrap is-preview" style="width:148px;">
+                    <div class="s1-input-field">
+                      <input type="text" value="password1234" tabindex="-1">
+                      <span class="s1-suffix-action-group">
+                        <button class="s1-input-action-btn" tabindex="-1" style="pointer-events:none;" aria-label="비밀번호 숨기기">
+                          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 6.63672C8.07109 6.63672 4.55207 8.65616 3.05249 11.7853C2.9825 11.9252 2.9825 12.0852 3.05249 12.2152C4.55207 15.3443 8.07109 17.3637 12 17.3637C15.9289 17.3637 19.4379 15.3443 20.9475 12.2152C21.0175 12.0752 21.0175 11.9153 20.9475 11.7853C19.4379 8.65616 15.9289 6.63672 12 6.63672ZM12 16.364C8.54096 16.364 5.46182 14.6545 4.0622 11.9952C5.46182 9.34597 8.54096 7.63644 12 7.63644C15.459 7.63644 18.5382 9.34597 19.9378 12.0052C18.5382 14.6645 15.459 16.374 12 16.374V16.364Z" fill="currentColor"/><path d="M12.0001 15.2141C13.7725 15.2141 15.2092 13.7773 15.2092 12.005C15.2092 10.2327 13.7725 8.7959 12.0001 8.7959C10.2278 8.7959 8.79102 10.2327 8.79102 12.005C8.79102 13.7773 10.2278 15.2141 12.0001 15.2141Z" fill="currentColor"/></svg>
+                        </button>
+                        <button class="s1-input-action-btn" tabindex="-1" style="pointer-events:none;" aria-label="지우기">
+                          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><circle cx="8" cy="8" r="6" stroke="currentColor" stroke-width="1.3"/><path d="M5.3 5.3l5.4 5.4M10.7 5.3l-5.4 5.4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+                        </button>
+                      </span>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Disabled -->
+                <div class="comp-state-cell">
+                  <div class="s1-input-wrap is-disabled is-preview" style="width:148px;">
+                    <div class="s1-input-field">
+                      <input type="password" placeholder="비밀번호 입력" disabled tabindex="-1">
+                      <span class="s1-suffix-action-group">
+                        <button class="s1-input-action-btn" tabindex="-1" style="pointer-events:none;" aria-label="비밀번호 보기" disabled>
+                          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M11.9945 6.63965C11.0054 6.63965 10.0362 6.76954 9.12695 7.00933L9.97623 7.85861C10.6357 7.72872 11.3051 7.6388 12.0045 7.6388C15.4616 7.6388 18.5389 9.34734 19.9378 12.0051C19.2983 13.2141 18.2992 14.2232 17.0802 14.9626L17.7996 15.682C19.1584 14.8027 20.2575 13.6337 20.9469 12.2149C21.0168 12.075 21.0168 11.9152 20.9469 11.7853C19.4482 8.65793 15.9312 6.63965 12.0045 6.63965H11.9945Z" fill="currentColor"/><path d="M11.9948 16.3615C8.53779 16.3615 5.46041 14.653 4.0616 11.9952C4.70105 10.7863 5.7002 9.77712 6.91917 9.03775L6.19978 8.31836C4.84093 9.19761 3.73188 10.3666 3.05246 11.7854C2.98251 11.9253 2.98251 12.0852 3.05246 12.215C4.56117 15.3424 8.06819 17.3607 11.9948 17.3607C12.984 17.3607 13.9532 17.2308 14.8624 16.991L14.0131 16.1417C13.3537 16.2716 12.6843 16.3615 11.9849 16.3615H11.9948Z" fill="currentColor"/><path d="M12.9236 15.052L8.93698 11.0654C8.84706 11.3652 8.78711 11.6749 8.78711 11.9946C8.78711 13.7631 10.2259 15.2019 11.9944 15.2019C12.3241 15.2019 12.6338 15.142 12.9236 15.052Z" fill="currentColor"/><path d="M15.2009 11.9944C15.2009 10.2259 13.7622 8.78711 11.9937 8.78711C11.6639 8.78711 11.3542 8.84706 11.0645 8.93698L15.0511 12.9236C15.141 12.6238 15.2009 12.3141 15.2009 11.9944Z" fill="currentColor"/><path d="M16.1506 15.4522L14.5819 13.8735L10.1157 9.41731L8.84682 8.14839L8.06748 7.35906L5.3498 4.65137L4.65039 5.36076L7.08832 7.79869L7.83768 8.54805L9.40634 10.1167L13.8725 14.5829L15.1415 15.8518L15.9208 16.6312L18.6385 19.3489L19.3379 18.6395L16.9 16.1916L16.1506 15.4522Z" fill="currentColor"/></svg>
+                        </button>
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="code-block">
+            <div class="code-tabs">
+              <button class="code-tab active" onclick="switchTab(this,'pf-html')">HTML</button>
+              <button class="code-tab" onclick="switchTab(this,'pf-css')">CSS</button>
+              <button class="code-tab" onclick="switchTab(this,'pf-js')">JavaScript</button>
+              <button class="code-copy-btn" onclick="copyCode('pf-html-pre')">복사</button>
+            </div>
+            <div class="code-pane active" id="pf-html">
+              <pre id="pf-html-pre"><span class="c-cmt">&lt;!-- Password Field --&gt;</span>
+<span class="c-tag">&lt;div</span> <span class="c-attr">class</span>=<span class="c-str">"s1-input-wrap"</span><span class="c-tag">&gt;</span>
+  <span class="c-tag">&lt;div</span> <span class="c-attr">class</span>=<span class="c-str">"s1-input-field"</span><span class="c-tag">&gt;</span>
+    <span class="c-tag">&lt;input</span> <span class="c-attr">type</span>=<span class="c-str">"password"</span> <span class="c-attr">placeholder</span>=<span class="c-str">"비밀번호 입력"</span> <span class="c-attr">autocomplete</span>=<span class="c-str">"current-password"</span><span class="c-tag">&gt;</span>
+    <span class="c-tag">&lt;span</span> <span class="c-attr">class</span>=<span class="c-str">"s1-suffix-action-group"</span><span class="c-tag">&gt;</span>
+      <span class="c-cmt">&lt;!-- visibilityToggle: 항상 표시 --&gt;</span>
+      <span class="c-tag">&lt;button</span> <span class="c-attr">type</span>=<span class="c-str">"button"</span> <span class="c-attr">class</span>=<span class="c-str">"s1-input-action-btn"</span>
+              <span class="c-attr">aria-label</span>=<span class="c-str">"비밀번호 보기"</span> <span class="c-attr">aria-pressed</span>=<span class="c-str">"false"</span><span class="c-tag">&gt;</span>
+        <span class="c-cmt">&lt;!-- data-icon-hidden: 숨김 상태 아이콘 --&gt;</span>
+        <span class="c-cmt">&lt;!-- data-icon-visible: 표시 상태 아이콘 (style="display:none") --&gt;</span>
+      <span class="c-tag">&lt;/button&gt;</span>
+      <span class="c-cmt">&lt;!-- clearAction: 값 있을 때만 표시 --&gt;</span>
+      <span class="c-tag">&lt;button</span> <span class="c-attr">type</span>=<span class="c-str">"button"</span> <span class="c-attr">class</span>=<span class="c-str">"s1-input-action-btn"</span>
+              <span class="c-attr">aria-label</span>=<span class="c-str">"비밀번호 지우기"</span> <span class="c-attr">hidden</span><span class="c-tag">&gt;</span>
+        <span class="c-cmt">&lt;!-- remove icon --&gt;</span>
+      <span class="c-tag">&lt;/button&gt;</span>
+    <span class="c-tag">&lt;/span&gt;</span>
+  <span class="c-tag">&lt;/div&gt;</span>
+<span class="c-tag">&lt;/div&gt;</span></pre>
+            </div>
+            <div class="code-pane" id="pf-css">
+              <pre><span class="c-cmt">/* Password Field — Base Input + suffix 동일 구조 */</span>
+<span class="c-cmt">/* suffixActionGroup: visibilityToggle(좌) + clearAction(우, 조건부) */</span>
+<span class="c-sel">.s1-suffix-action-group</span> {
+  <span class="c-prop">display</span>: <span class="c-val">flex</span>;
+  <span class="c-prop">align-items</span>: <span class="c-val">center</span>;
+  <span class="c-prop">gap</span>: <span class="c-val">2px</span>;
+  <span class="c-prop">flex-shrink</span>: <span class="c-val">0</span>;
+}
+
+<span class="c-cmt">/* 아이콘 전환 — JS가 display 토글 */</span>
+<span class="c-sel">[data-icon-hidden]</span>, <span class="c-sel">[data-icon-visible]</span> {
+  <span class="c-prop">transition</span>: <span class="c-val">opacity 0.1s</span>;
+}</pre>
+            </div>
+            <div class="code-pane" id="pf-js">
+              <pre><span class="c-cmt">// Password Field — 비밀번호 표시/숨기기</span>
+<span class="c-key">const</span> wrap      = document.<span class="c-fn">querySelector</span>(<span class="c-str">'.s1-input-wrap'</span>);
+<span class="c-key">const</span> input     = wrap.<span class="c-fn">querySelector</span>(<span class="c-str">'input[type="password"], input[type="text"]'</span>);
+<span class="c-key">const</span> toggle    = wrap.<span class="c-fn">querySelector</span>(<span class="c-str">'[aria-label="비밀번호 보기"], [aria-label="비밀번호 숨기기"]'</span>);
+<span class="c-key">const</span> clearBtn  = wrap.<span class="c-fn">querySelector</span>(<span class="c-str">'[aria-label="비밀번호 지우기"]'</span>);
+<span class="c-key">const</span> iconHidden = toggle.<span class="c-fn">querySelector</span>(<span class="c-str">'[data-icon-hidden]'</span>);
+<span class="c-key">const</span> iconVisible = toggle.<span class="c-fn">querySelector</span>(<span class="c-str">'[data-icon-visible]'</span>);
+
+<span class="c-cmt">// 가시성 토글</span>
+toggle.<span class="c-fn">addEventListener</span>(<span class="c-str">'click'</span>, () =&gt; {
+  <span class="c-key">const</span> visible = input.type === <span class="c-str">'password'</span>;
+  input.type = visible ? <span class="c-str">'text'</span> : <span class="c-str">'password'</span>;
+  toggle.<span class="c-fn">setAttribute</span>(<span class="c-str">'aria-pressed'</span>, String(visible));
+  toggle.<span class="c-fn">setAttribute</span>(<span class="c-str">'aria-label'</span>, visible ? <span class="c-str">'비밀번호 숨기기'</span> : <span class="c-str">'비밀번호 보기'</span>);
+  iconHidden.style.display  = visible ? <span class="c-str">'none'</span> : <span class="c-str">''</span>;
+  iconVisible.style.display = visible ? <span class="c-str">''</span>    : <span class="c-str">'none'</span>;
+  input.<span class="c-fn">focus</span>();
+});
+
+<span class="c-cmt">// clear 버튼</span>
+input.<span class="c-fn">addEventListener</span>(<span class="c-str">'input'</span>, () =&gt; {
+  clearBtn.hidden = input.value.length === <span class="c-num">0</span>;
+});
+clearBtn.<span class="c-fn">addEventListener</span>(<span class="c-str">'click'</span>, () =&gt; {
+  input.value = <span class="c-str">''</span>;
+  clearBtn.hidden = <span class="c-key">true</span>;
+  input.<span class="c-fn">focus</span>();
+});
+
+<span class="c-cmt">// error / correct 상태 토글 (외부 제어 예시)</span>
+<span class="c-key">function</span> <span class="c-fn">setPasswordState</span>(state) {
+  wrap.<span class="c-fn">classList</span>.<span class="c-fn">remove</span>(<span class="c-str">'is-error'</span>, <span class="c-str">'is-correct'</span>);
+  <span class="c-key">if</span> (state) wrap.<span class="c-fn">classList</span>.<span class="c-fn">add</span>(state);
+}
+<span class="c-cmt">// 사용: setPasswordState('is-error') / setPasswordState('is-correct') / setPasswordState(null)</span></pre>
+            </div>
+          </div>
+        </div>
+
 
       </section>
 
@@ -4000,6 +4168,7 @@ if (pwClear) {
           <div class="code-tabs">
             <button class="code-tab active" onclick="switchTab(this,'ta-html')">HTML</button>
             <button class="code-tab" onclick="switchTab(this,'ta-css')">CSS Tokens</button>
+            <button class="code-tab" onclick="switchTab(this,'ta-js')">JavaScript</button>
             <button class="code-tab" onclick="switchTab(this,'ta-tokens')">Token Details</button>
             <button class="code-copy-btn" onclick="copyCode('ta-html-pre')">복사</button>
           </div>
@@ -4090,6 +4259,34 @@ if (pwClear) {
               <p style="margin:10px 0 0;font-size:11px;color:var(--color-text-secondary);">Textarea는 Input과 동일한 <code>--input-*</code> 토큰을 공유합니다. <code>--textarea-*</code> 별도 정의 없음 (2026-05-20 확정).</p>
             </div>
           </div>
+          <div class="code-pane" id="ta-js"><pre>// ── Textarea ──
+// focus / blur → is-focus 토글
+// readonly 전환 패턴
+// Textarea는 .s1-input-wrap--textarea 에 is-focus/is-readonly/is-disabled 클래스 사용
+
+var wrap     = document.querySelector('.s1-input-wrap--textarea');
+var textarea = wrap.querySelector('textarea');
+
+// Focus / Blur
+textarea.addEventListener('focus', function() { wrap.classList.add('is-focus'); });
+textarea.addEventListener('blur',  function() { wrap.classList.remove('is-focus'); });
+
+// Readonly 전환
+function setReadonly(on) {
+  if (on) {
+    textarea.setAttribute('readonly', '');
+    wrap.classList.add('is-readonly');
+  } else {
+    textarea.removeAttribute('readonly');
+    wrap.classList.remove('is-readonly');
+  }
+}
+
+// Disabled 전환
+function setDisabled(on) {
+  textarea.disabled = on;
+  wrap.classList.toggle('is-disabled', on);
+}</pre></div>
         </div>
       </section>
 
@@ -4246,6 +4443,7 @@ if (pwClear) {
           <div class="code-tabs">
             <button class="code-tab active" onclick="switchTab(this,'sel-html')">HTML</button>
             <button class="code-tab" onclick="switchTab(this,'sel-css')">CSS Tokens</button>
+            <button class="code-tab" onclick="switchTab(this,'sel-js')">JavaScript</button>
             <button class="code-tab" onclick="switchTab(this,'sel-tokens')">Token Details</button>
             <button class="code-copy-btn" onclick="copyCode('sel-html-pre')">복사</button>
           </div>
@@ -4326,6 +4524,37 @@ if (pwClear) {
               </tbody>
             </table>
           </div>
+          <div class="code-pane" id="sel-js"><pre>// ── Select / Dropdown ──
+// trigger 클릭 → is-open 토글
+// 옵션 클릭 → 선택값 반영 + 드롭다운 닫기
+// 외부 클릭 시 닫기
+
+var wrap        = document.querySelector('.s1-select-wrap');
+var trigger     = wrap.querySelector('.s1-select-trigger');
+var triggerText = trigger.querySelector('span');
+var options     = wrap.querySelectorAll('.s1-select-option');
+
+// 트리거 클릭 → 드롭다운 토글
+trigger.addEventListener('click', function() {
+  if (wrap.classList.contains('is-disabled')) return;
+  wrap.classList.toggle('is-open');
+});
+
+// 옵션 클릭 → 선택값 반영, 드롭다운 닫기
+options.forEach(function(opt) {
+  opt.addEventListener('click', function() {
+    options.forEach(function(o) { o.classList.remove('is-selected'); });
+    opt.classList.add('is-selected');
+    triggerText.textContent = opt.textContent;
+    wrap.classList.add('has-value');
+    wrap.classList.remove('is-open');
+  });
+});
+
+// 외부 클릭 시 드롭다운 닫기
+document.addEventListener('click', function(e) {
+  if (!wrap.contains(e.target)) wrap.classList.remove('is-open');
+});</pre></div>
         </div>
       </section>
 
@@ -5052,6 +5281,7 @@ updateHeader(); // 초기 헤더 상태 동기화</pre>
             <div class="code-tabs">
               <button class="code-tab active" onclick="switchTab(this,'tp-input-html')">HTML</button>
               <button class="code-tab" onclick="switchTab(this,'tp-input-css')">CSS</button>
+              <button class="code-tab" onclick="switchTab(this,'tp-input-js')">JavaScript</button>
             </div>
             <div class="code-pane active" id="tp-input-html"><pre><span class="c-cmt">&lt;!-- default (MD · h44) --&gt;</span>
 <span class="c-tag">&lt;div</span> <span class="c-attr">class</span>=<span class="c-str">"s1-timepicker-wrap"</span> <span class="c-attr">tabindex</span>=<span class="c-str">"0"</span><span class="c-tag">&gt;</span>
@@ -5087,6 +5317,93 @@ updateHeader(); // 초기 헤더 상태 동기화</pre>
 .s1-timepicker-wrap--xsm    { height: var(--sizing-form-control-height-xs);  padding: 0 8px 0 12px; }   /* 34px */
 .s1-timepicker-wrap--xxsm   { height: var(--sizing-form-control-height-xxs); padding: 0 6px 0 10px; font-size: 12px; } /* 28px */
 .s1-timepicker-wrap--mobile { height: var(--sizing-form-control-height-lg); }                             /* 48px */</pre></div>
+            <div class="code-pane" id="tp-input-js"><pre>// ── TimePicker Input형 ──
+// [data-tp-input-trigger] 클릭 → 시/분 드롭다운 패널 토글
+
+var trigger    = document.querySelector('[data-tp-input-trigger]');
+var dropdown   = document.getElementById('tp-input-dropdown');
+var hourCol    = document.getElementById('tp-hour-col');
+var minCol     = document.getElementById('tp-min-col');
+var confirmBtn = document.getElementById('tp-confirm-btn');
+var selHour = -1, selMin = -1;
+
+// 1~24시 / 00~59분 목록 동적 생성
+for (var h = 1; h &lt;= 24; h++) {
+  var hi = document.createElement('div');
+  hi.className = 's1-tp-col-item';
+  hi.textContent = String(h);
+  hi.dataset.tpHour = h;
+  hourCol.appendChild(hi);
+}
+for (var m = 0; m &lt;= 59; m++) {
+  var mi = document.createElement('div');
+  mi.className = 's1-tp-col-item';
+  mi.textContent = String(m).padStart(2, '0');
+  mi.dataset.tpMin = m;
+  minCol.appendChild(mi);
+}
+
+function applyValue() {
+  if (selHour &lt; 0 || selMin &lt; 0) return;
+  var str = String(selHour).padStart(2,'0') + ':' + String(selMin).padStart(2,'0');
+  var valEl = trigger.querySelector('.s1-timepicker-value');
+  var phEl  = trigger.querySelector('.s1-timepicker-placeholder');
+  if (valEl) { valEl.textContent = str; valEl.style.display = ''; }
+  trigger.classList.add('is-filled');
+  if (phEl) phEl.style.display = 'none';
+}
+
+function openPanel() {
+  dropdown.style.width = Math.max(190, trigger.offsetWidth) + 'px';
+  dropdown.classList.add('is-open');
+  trigger.classList.add('is-focus');
+  var sh = hourCol.querySelector('.is-selected');
+  var sm = minCol.querySelector('.is-selected');
+  if (sh) setTimeout(function(){ sh.scrollIntoView({block:'center'}); }, 10);
+  if (sm) setTimeout(function(){ sm.scrollIntoView({block:'center'}); }, 12);
+}
+function closePanel() {
+  dropdown.classList.remove('is-open');
+  trigger.classList.remove('is-focus');
+}
+
+// 트리거 클릭 → 패널 토글
+trigger.addEventListener('click', function() {
+  dropdown.classList.contains('is-open') ? closePanel() : openPanel();
+});
+
+// 시 선택
+hourCol.addEventListener('click', function(e) {
+  var item = e.target.closest('.s1-tp-col-item');
+  if (!item) return;
+  hourCol.querySelectorAll('.s1-tp-col-item').forEach(function(i){ i.classList.remove('is-selected'); });
+  item.classList.add('is-selected');
+  selHour = parseInt(item.dataset.tpHour, 10);
+  applyValue();
+});
+
+// 분 선택
+minCol.addEventListener('click', function(e) {
+  var item = e.target.closest('.s1-tp-col-item');
+  if (!item) return;
+  minCol.querySelectorAll('.s1-tp-col-item').forEach(function(i){ i.classList.remove('is-selected'); });
+  item.classList.add('is-selected');
+  selMin = parseInt(item.dataset.tpMin, 10);
+  applyValue();
+});
+
+// 확인 버튼 — 선택 완료 시 패널 닫기
+if (confirmBtn) {
+  confirmBtn.addEventListener('click', function(e) {
+    e.stopPropagation();
+    closePanel();
+  });
+}
+
+// 외부 클릭 시 패널 닫기
+document.addEventListener('click', function(e) {
+  if (!trigger.contains(e.target) &amp;&amp; !dropdown.contains(e.target)) closePanel();
+});</pre></div>
           </div>
         </div>
 
@@ -5170,6 +5487,7 @@ updateHeader(); // 초기 헤더 상태 동기화</pre>
             <div class="code-tabs">
               <button class="code-tab active" onclick="switchTab(this,'tp-select-html')">HTML</button>
               <button class="code-tab" onclick="switchTab(this,'tp-select-css')">CSS</button>
+              <button class="code-tab" onclick="switchTab(this,'tp-select-js')">JavaScript</button>
             </div>
             <div class="code-pane active" id="tp-select-html"><pre><span class="c-tag">&lt;div</span> <span class="c-attr">class</span>=<span class="c-str">"s1-timepicker-select-group"</span><span class="c-tag">&gt;</span>
   <span class="c-tag">&lt;div</span> <span class="c-attr">class</span>=<span class="c-str">"s1-timepicker-select-unit"</span><span class="c-tag">&gt;</span>
@@ -5206,6 +5524,83 @@ updateHeader(); // 초기 헤더 상태 동기화</pre>
 .s1-timepicker-select-field.is-open .s1-timepicker-select-arrow {
   transform: rotate(180deg);
 }</pre></div>
+            <div class="code-pane" id="tp-select-js"><pre>// ── TimePicker Select형 ──
+// 시 / 분 필드 클릭 → 커스텀 드롭다운 목록 생성
+
+var selectGroup = document.getElementById('tp-select-action');
+var hours   = Array.from({length: 24}, function(_, i){ return i; });
+var minutes = Array.from({length: 60}, function(_, i){ return i; });
+var curHour = 0, curMin = 0;
+var activeDD = null;
+
+// 열려있는 드롭다운 닫기
+function closeActiveDD() {
+  if (!activeDD) return;
+  activeDD.remove(); activeDD = null;
+  selectGroup.querySelectorAll('.s1-timepicker-select-field').forEach(function(f){
+    f.classList.remove('is-focus');
+    var arr = f.querySelector('.s1-timepicker-select-arrow');
+    if (arr) arr.style.transform = '';
+  });
+}
+
+// 드롭다운 요소 생성
+function makeDD(values, curVal, onPick) {
+  var dd = document.createElement('div');
+  dd.className = 's1-tp-select-dropdown';
+  values.forEach(function(v) {
+    var item = document.createElement('div');
+    item.className = 's1-tp-select-dropdown-item' + (v === curVal ? ' is-selected' : '');
+    item.textContent = String(v).padStart(2, '0');
+    item.addEventListener('click', function(e) {
+      e.stopPropagation(); onPick(v); closeActiveDD();
+    });
+    dd.appendChild(item);
+  });
+  return dd;
+}
+
+// 필드 이벤트 바인딩
+function bindField(field, valSpan, values, getCur, setCur) {
+  if (!field) return;
+  field.addEventListener('click', function(e) {
+    e.stopPropagation();
+    if (activeDD &amp;&amp; field.parentElement.contains(activeDD)) { closeActiveDD(); return; }
+    closeActiveDD();
+    var dd = makeDD(values, getCur(), function(v) {
+      setCur(v);
+      if (valSpan) valSpan.textContent = String(v).padStart(2,'0');
+    });
+    field.appendChild(dd);
+    activeDD = dd;
+    field.classList.add('is-focus');
+    var arr = field.querySelector('.s1-timepicker-select-arrow');
+    if (arr) arr.style.transform = 'rotate(180deg)';
+    var sel = dd.querySelector('.is-selected');
+    if (sel) setTimeout(function(){ sel.scrollIntoView({block:'center'}); }, 10);
+  });
+}
+
+// 시 / 분 필드 바인딩
+bindField(
+  document.getElementById('tp-select-hour-field'),
+  document.getElementById('tp-select-hour-val'),
+  hours,
+  function(){ return curHour; },
+  function(v){ curHour = v; }
+);
+bindField(
+  document.getElementById('tp-select-min-field'),
+  document.getElementById('tp-select-min-val'),
+  minutes,
+  function(){ return curMin; },
+  function(v){ curMin = v; }
+);
+
+// 외부 클릭 시 드롭다운 닫기
+document.addEventListener('click', function(e) {
+  if (!selectGroup.contains(e.target)) closeActiveDD();
+});</pre></div>
           </div>
         </div>
 
@@ -5302,7 +5697,6 @@ updateHeader(); // 초기 헤더 상태 동기화</pre>
         <div class="code-block" style="margin-top:32px;">
           <div class="code-tabs">
             <button class="code-tab active" onclick="switchTab(this,'timepicker-tokens')">Token Details</button>
-            <button class="code-tab" onclick="switchTab(this,'timepicker-js')">JavaScript</button>
           </div>
           <div class="code-pane active" id="timepicker-tokens">
             <table class="token-detail-table">
@@ -5319,69 +5713,6 @@ updateHeader(); // 초기 헤더 상태 동기화</pre>
                 <tr style="background:#f0fdf4;"><td class="token-name">--color-form-control-label-disabled</td><td class="token-value">var(--color-text-disabled)</td><td class="token-resolved" data-token="--color-form-control-label-disabled"></td><td>"시"/"분" disabled 라벨 (Select형 전용)</td></tr>
               </tbody>
             </table>
-          </div>
-          <div class="code-pane" id="timepicker-js"><pre>// TimePicker Input 형 — 드롭다운 패널 (시/분 선택)
-const trigger  = document.querySelector('[data-tp-input-trigger]');
-const dropdown = document.getElementById('tp-input-dropdown');
-const hourCol  = document.getElementById('tp-hour-col');
-const minCol   = document.getElementById('tp-min-col');
-let selHour = -1, selMin = -1;
-
-// 1~24시 / 00~59분 목록 동적 생성
-for (let h = 1; h &lt;= 24; h++) {
-  const el = document.createElement('div');
-  el.className = 's1-tp-col-item';
-  el.textContent = String(h);
-  el.dataset.tpHour = h;
-  hourCol.appendChild(el);
-}
-for (let m = 0; m &lt;= 59; m++) {
-  const el = document.createElement('div');
-  el.className = 's1-tp-col-item';
-  el.textContent = String(m).padStart(2, '0');
-  el.dataset.tpMin = m;
-  minCol.appendChild(el);
-}
-
-// 트리거 클릭 → 패널 토글
-trigger.addEventListener('click', () => dropdown.classList.toggle('is-open'));
-
-// 시 선택
-hourCol.addEventListener('click', e => {
-  const item = e.target.closest('.s1-tp-col-item');
-  if (!item) return;
-  hourCol.querySelectorAll('.s1-tp-col-item').forEach(i => i.classList.remove('is-selected'));
-  item.classList.add('is-selected');
-  selHour = parseInt(item.dataset.tpHour, 10);
-  applyValue();
-});
-
-// 분 선택
-minCol.addEventListener('click', e => {
-  const item = e.target.closest('.s1-tp-col-item');
-  if (!item) return;
-  minCol.querySelectorAll('.s1-tp-col-item').forEach(i => i.classList.remove('is-selected'));
-  item.classList.add('is-selected');
-  selMin = parseInt(item.dataset.tpMin, 10);
-  applyValue();
-});
-
-function applyValue() {
-  if (selHour &lt; 0 || selMin &lt; 0) return;
-  const str = String(selHour).padStart(2,'0') + ':' + String(selMin).padStart(2,'0');
-  trigger.querySelector('.s1-timepicker-value').textContent = str;
-  trigger.classList.add('is-filled');
-}
-
-// 외부 클릭 시 패널 닫기
-document.addEventListener('click', e => {
-  if (!trigger.contains(e.target) &amp;&amp; !dropdown.contains(e.target))
-    dropdown.classList.remove('is-open');
-});
-
-// TimePicker Select 형 — 커스텀 드롭다운 필드
-// s1-timepicker-select-field 클릭 → 드롭다운 생성 후 값 선택
-// 각 필드는 data-tp-field="hour" / "min" 로 구분</pre>
           </div>
         </div>
       </section>
@@ -5685,25 +6016,24 @@ document.addEventListener('click', e => {
 }</pre>
           </div>
           <div class="code-pane" id="pagination-js"><pre>let totalItems = 150, perPage = 15, currentPage = 1;
-const WINDOW = 6;
+const BLOCK = 6; // 한 번에 표시할 페이지 번호 수
 
 const totalPages = () => Math.max(1, Math.ceil(totalItems / perPage));
 
-// 윈도우 시작/끝 계산
-function calcWindow(cp, tp) {
-  const half = Math.floor(WINDOW / 2);
-  let start = Math.max(1, cp - half);
-  let end   = Math.min(tp, start + WINDOW - 1);
-  if (end - start + 1 &lt; WINDOW) start = Math.max(1, end - WINDOW + 1);
-  return { start, end };
+// 고정 블록: currentPage가 속한 블록의 start/end/blockIndex 반환
+function calcBlock(cp, tp) {
+  const blockIndex = Math.floor((cp - 1) / BLOCK);
+  const start = blockIndex * BLOCK + 1;
+  const end   = Math.min(tp, start + BLOCK - 1);
+  return { start, end, blockIndex };
 }
 
-// 페이지 번호 버튼 동적 렌더링
+// 페이지 번호 버튼 동적 렌더링 (블록 고정)
 function renderNumbers() {
   const container = document.getElementById('pg-numbers');
   container.innerHTML = '';
   const tp = totalPages();
-  const { start, end } = calcWindow(currentPage, tp);
+  const { start, end } = calcBlock(currentPage, tp);
   for (let p = start; p &lt;= end; p++) {
     const btn = document.createElement('button');
     btn.className = 's1-pagination-number' + (p === currentPage ? ' is-selected' : '');
@@ -5716,27 +6046,38 @@ function renderNumbers() {
 // 화살표 disabled 상태 및 보기옵션 업데이트
 function update() {
   const tp = totalPages(), single = tp &lt;= 1;
+  const block = calcBlock(currentPage, tp);
   renderNumbers();
   const demo = document.getElementById('pagination-demo');
-  demo.querySelector('[data-pg-action="first"]').disabled = currentPage === 1  || single;
-  demo.querySelector('[data-pg-action="prev"]').disabled  = currentPage === 1  || single;
-  demo.querySelector('[data-pg-action="next"]').disabled  = currentPage === tp  || single;
-  demo.querySelector('[data-pg-action="last"]').disabled  = currentPage === tp  || single;
+  // |< : 맨 처음 페이지 — 1페이지이면 비활성
+  demo.querySelector('[data-pg-action="first"]').disabled = currentPage === 1 || single;
+  // <  : 이전 블록 — 첫 번째 블록이면 비활성
+  demo.querySelector('[data-pg-action="prev"]').disabled  = block.blockIndex === 0 || single;
+  // >  : 다음 블록 — 마지막 블록이면 비활성
+  demo.querySelector('[data-pg-action="next"]').disabled  = block.end >= tp || single;
+  // >| : 맨 마지막 페이지 — 마지막 페이지이면 비활성
+  demo.querySelector('[data-pg-action="last"]').disabled  = currentPage === tp || single;
   document.getElementById('pg-view-btn').disabled = single;
 }
 
 // 이동 버튼 이벤트
 const demo = document.getElementById('pagination-demo');
+// |< 첫 페이지로
 demo.querySelector('[data-pg-action="first"]').addEventListener('click', () => { currentPage = 1; update(); });
-demo.querySelector('[data-pg-action="prev"]').addEventListener('click',  () => { if (currentPage > 1) { currentPage--; update(); } });
-demo.querySelector('[data-pg-action="next"]').addEventListener('click',  () => {
-  const tp = totalPages();
-  if (currentPage >= tp) return;
-  const win = calcWindow(currentPage, tp);
-  currentPage = win.start > 3 ? tp : win.end;
-  update();
+// < 이전 블록의 첫 페이지로
+demo.querySelector('[data-pg-action="prev"]').addEventListener('click', () => {
+  const block = calcBlock(currentPage, totalPages());
+  if (block.blockIndex > 0) { currentPage = (block.blockIndex - 1) * BLOCK + 1; update(); }
 });
-demo.querySelector('[data-pg-action="last"]').addEventListener('click',  () => { currentPage = totalPages(); update(); });
+// > 다음 블록의 첫 페이지로
+demo.querySelector('[data-pg-action="next"]').addEventListener('click', () => {
+  const tp = totalPages();
+  const block = calcBlock(currentPage, tp);
+  const nextStart = block.end + 1;
+  if (nextStart &lt;= tp) { currentPage = nextStart; update(); }
+});
+// >| 마지막 페이지로
+demo.querySelector('[data-pg-action="last"]').addEventListener('click', () => { currentPage = totalPages(); update(); });
 
 // 보기 옵션 드롭다운 (15 / 30 / 50 / 100개씩 보기)
 const viewBtn = document.getElementById('pg-view-btn');
@@ -5876,19 +6217,121 @@ update(); // 초기화</pre>
 
   updateTokenComments();
 
-  // Token resolved value cells (data-token attribute)
-  document.querySelectorAll('.token-resolved[data-token]').forEach(function(cell) {
-    var token = cell.getAttribute('data-token');
-    var val = getComputedStyle(document.documentElement).getPropertyValue(token).trim();
-    if (val) {
-      var swatch = val.match(/^#[0-9a-fA-F]{3,8}$/) || val.match(/^rgb/);
-      cell.innerHTML = swatch
-        ? '<span style="display:inline-flex;align-items:center;gap:5px;">'
-          + '<span style="display:inline-block;width:12px;height:12px;border-radius:2px;border:1px solid #e5e7eb;background:' + val + ';flex-shrink:0;"></span>'
-          + val + '</span>'
-        : val;
+  // ── Token Detail Tables: Light / Dark dual-swatch resolver ──
+  (function() {
+    var html = document.documentElement;
+    var origTheme = html.getAttribute('data-theme');
+
+    // Single probe element — we switch html[data-theme] to force light/dark context.
+    // All reads happen synchronously; browser does not repaint mid-function.
+    var probe = document.createElement('span');
+    probe.style.cssText = 'position:fixed;top:-9999px;left:-9999px;width:1px;height:1px;visibility:hidden;pointer-events:none;';
+    document.body.appendChild(probe);
+
+    function measure(tokenName, theme) {
+      if (theme === 'light') html.removeAttribute('data-theme');
+      else html.setAttribute('data-theme', 'dark');
+      probe.style.background = 'var(' + tokenName + ')';
+      var bg = getComputedStyle(probe).backgroundColor;
+      if (!bg || bg === 'rgba(0, 0, 0, 0)' || bg === 'transparent') return null;
+      return bg;
     }
-  });
+
+    function rgbToHex(rgb) {
+      var m = rgb.match(/rgb\(\s*(\d+),\s*(\d+),\s*(\d+)\)/);
+      if (!m) return rgb;
+      return '#' + [m[1], m[2], m[3]]
+        .map(function(n) { return ('0' + parseInt(n).toString(16)).slice(-2).toUpperCase(); })
+        .join('');
+    }
+
+    function makeSwatchHtml(color, isDark) {
+      if (!color) return '<span style="color:#6b7280;font-size:10px;">—</span>';
+      var hex = rgbToHex(color);
+      var border = isDark ? '1px solid rgba(255,255,255,0.15)' : '1px solid #d1d5db';
+      return '<span style="display:inline-flex;align-items:center;gap:4px;">'
+        + '<span style="display:inline-block;width:12px;height:12px;border-radius:2px;border:' + border + ';background:' + color + ';flex-shrink:0;"></span>'
+        + '<span style="font-family:monospace;font-size:10px;">' + hex + '</span>'
+        + '</span>';
+    }
+
+    document.querySelectorAll('.token-detail-table').forEach(function(table) {
+      var thead = table.querySelector('thead tr');
+      if (!thead) return;
+      var ths = Array.from(thead.querySelectorAll('th'));
+      var headers = ths.map(function(th) { return th.textContent.trim(); });
+
+      // Skip if already upgraded
+      if (headers.includes('Light') || headers.includes('Dark')) return;
+
+      // Accept both "Value (Semantic)" and "Value" as the value column
+      var valueIdx = headers.indexOf('Value (Semantic)');
+      if (valueIdx === -1) valueIdx = headers.indexOf('Value');
+      if (valueIdx === -1) return;
+
+      var resolvedIdx = headers.indexOf('Resolved');
+      var isTypeB = resolvedIdx !== -1;
+
+      // ── Update header ──
+      ths[valueIdx].textContent = 'Semantic Alias';
+
+      if (isTypeB) {
+        ths[resolvedIdx].textContent = 'Light';
+        var darkTh = document.createElement('th');
+        darkTh.textContent = 'Dark';
+        darkTh.className = 'token-dark-col';
+        ths[resolvedIdx].insertAdjacentElement('afterend', darkTh);
+      } else {
+        var lightTh = document.createElement('th');
+        lightTh.textContent = 'Light';
+        var darkThA = document.createElement('th');
+        darkThA.textContent = 'Dark';
+        darkThA.className = 'token-dark-col';
+        ths[valueIdx].insertAdjacentElement('afterend', lightTh);
+        lightTh.insertAdjacentElement('afterend', darkThA);
+      }
+
+      // ── Update rows ──
+      table.querySelectorAll('tbody tr').forEach(function(row) {
+        var cells = row.querySelectorAll('td');
+        if (!cells.length) return;
+
+        // Group/section rows (no td content in first cell resembling a token name) — skip
+        var existingResolved = row.querySelector('.token-resolved[data-token]');
+        var tokenName = existingResolved
+          ? existingResolved.getAttribute('data-token')
+          : (cells[0] ? cells[0].textContent.trim() : '');
+        if (!tokenName || !tokenName.startsWith('--')) return;
+
+        var lightColor = measure(tokenName, 'light');
+        var darkColor  = measure(tokenName, 'dark');
+
+        if (isTypeB && existingResolved) {
+          existingResolved.innerHTML = makeSwatchHtml(lightColor, false);
+          var darkTdB = document.createElement('td');
+          darkTdB.className = 'token-resolved token-dark-col';
+          darkTdB.innerHTML = makeSwatchHtml(darkColor, true);
+          existingResolved.insertAdjacentElement('afterend', darkTdB);
+        } else {
+          var valueCell = cells[valueIdx];
+          if (!valueCell) return;
+          var lightTd = document.createElement('td');
+          lightTd.className = 'token-resolved';
+          lightTd.innerHTML = makeSwatchHtml(lightColor, false);
+          var darkTdA = document.createElement('td');
+          darkTdA.className = 'token-resolved token-dark-col';
+          darkTdA.innerHTML = makeSwatchHtml(darkColor, true);
+          valueCell.insertAdjacentElement('afterend', lightTd);
+          lightTd.insertAdjacentElement('afterend', darkTdA);
+        }
+      });
+    });
+
+    // Restore original theme and clean up
+    if (origTheme) html.setAttribute('data-theme', origTheme);
+    else html.removeAttribute('data-theme');
+    probe.remove();
+  })();
 
   (function initFromHash() {
     var valid = ['button','checkbox','radio','toggle','chip','input','select','textarea','date-picker','table','pagination','time-picker'];
@@ -6190,6 +6633,55 @@ update(); // 초기화</pre>
     });
   }
 
+  /* ── Password Field error/correct state toggle ── */
+  (function() {
+    var cell = document.querySelector('[data-comp-action="password-field"]');
+    if (!cell) return;
+    var wrap = cell.querySelector('.s1-input-wrap');
+    var btnErr = cell.querySelector('[data-pw-error]');
+    var btnCor = cell.querySelector('[data-pw-correct]');
+    if (!wrap) return;
+
+    function applyPwHelper(state) {
+      var h = wrap.querySelector('.ds-helper-text');
+      if (!h) return;
+      if (state === 'error') {
+        h.hidden = false;
+        h.className = 'ds-helper-text is-error-text';
+        h.textContent = '오류 메시지';
+      } else if (state === 'correct') {
+        h.hidden = false;
+        h.className = 'ds-helper-text is-correct-text';
+        h.textContent = '확인 메시지';
+      } else {
+        h.className = 'ds-helper-text';
+        h.textContent = '안내 메시지';
+        h.hidden = true;
+      }
+    }
+
+    btnErr && btnErr.addEventListener('click', function() {
+      var on = this.classList.toggle('is-on');
+      this.textContent = on ? 'Error: on' : 'Error: off';
+      wrap.classList.toggle('is-error', on);
+      if (on) {
+        wrap.classList.remove('is-correct');
+        if (btnCor) { btnCor.classList.remove('is-on'); btnCor.textContent = 'Correct: off'; }
+      }
+      applyPwHelper(on ? 'error' : null);
+    });
+    btnCor && btnCor.addEventListener('click', function() {
+      var on = this.classList.toggle('is-on');
+      this.textContent = on ? 'Correct: on' : 'Correct: off';
+      wrap.classList.toggle('is-correct', on);
+      if (on) {
+        wrap.classList.remove('is-error');
+        if (btnErr) { btnErr.classList.remove('is-on'); btnErr.textContent = 'Error: off'; }
+      }
+      applyPwHelper(on ? 'correct' : null);
+    });
+  })();
+
   /* ── Date Picker — PC Calendar (Figma 540:4216 확인) ── */
   /* Panel: 356px, py=20px, px=24px, radius=4px, border=#d9d9d9, shadow       */
   /* Day cell: 44×44px rectangular bordered square (no inner circle)           */
@@ -6458,18 +6950,18 @@ update(); // 초기화</pre>
   (function setupPagination() {
     var totalItems = 150;
     var perPage = 15;
-    var currentPage = 3;
-    var windowSize = 6;
+    var currentPage = 1;
+    var blockSize = 6;
 
     function totalPages() { return Math.max(1, Math.ceil(totalItems / perPage)); }
     function isSinglePage() { return totalPages() <= 1; }
 
-    function calcWindow(cp, tp) {
-      var half = Math.floor(windowSize / 2);
-      var start = Math.max(1, cp - half);
-      var end = Math.min(tp, start + windowSize - 1);
-      if (end - start + 1 < windowSize) start = Math.max(1, end - windowSize + 1);
-      return { start: start, end: end };
+    // 고정 블록: currentPage가 속한 블록의 start/end/blockIndex 반환
+    function calcBlock(cp, tp) {
+      var blockIndex = Math.floor((cp - 1) / blockSize);
+      var start = blockIndex * blockSize + 1;
+      var end = Math.min(tp, start + blockSize - 1);
+      return { start: start, end: end, blockIndex: blockIndex };
     }
 
     function renderNumbers() {
@@ -6477,16 +6969,14 @@ update(); // 초기화</pre>
       if (!container) return;
       container.innerHTML = '';
       var tp = totalPages();
-      var win = calcWindow(currentPage, tp);
-      for (var p = win.start; p <= win.end; p++) {
+      var block = calcBlock(currentPage, tp);
+      for (var p = block.start; p <= block.end; p++) {
         (function(page) {
           var btn = document.createElement('button');
           btn.className = 's1-pagination-number' + (page === currentPage ? ' is-selected' : '');
           btn.textContent = page;
           btn.setAttribute('aria-label', page + '페이지' + (page === currentPage ? ' (현재)' : ''));
-          if (page !== currentPage) {
-            btn.addEventListener('click', function() { currentPage = page; update(); });
-          }
+          btn.addEventListener('click', function() { currentPage = page; update(); });
           container.appendChild(btn);
         })(p);
       }
@@ -6495,31 +6985,46 @@ update(); // 초기화</pre>
     function update() {
       var tp = totalPages();
       var single = isSinglePage();
+      var block = calcBlock(currentPage, tp);
       renderNumbers();
       var demo = document.getElementById('pagination-demo');
       if (demo) {
+        // |< : 맨 처음 페이지 — 현재 1페이지이면 비활성
         demo.querySelector('[data-pg-action="first"]').disabled = currentPage === 1 || single;
-        demo.querySelector('[data-pg-action="prev"]').disabled  = currentPage === 1 || single;
-        demo.querySelector('[data-pg-action="next"]').disabled  = currentPage === tp  || single;
-        demo.querySelector('[data-pg-action="last"]').disabled  = currentPage === tp  || single;
+        // <  : 이전 블록 — 첫 번째 블록이면 비활성
+        demo.querySelector('[data-pg-action="prev"]').disabled  = block.blockIndex === 0 || single;
+        // >  : 다음 블록 — 마지막 블록이면 비활성
+        demo.querySelector('[data-pg-action="next"]').disabled  = block.end >= tp || single;
+        // >| : 맨 마지막 페이지 — 현재 마지막 페이지이면 비활성
+        demo.querySelector('[data-pg-action="last"]').disabled  = currentPage === tp || single;
       }
     }
 
     var demo = document.getElementById('pagination-demo');
     if (demo) {
+      // |< 첫 페이지로
       demo.querySelector('[data-pg-action="first"]').addEventListener('click', function() {
         currentPage = 1; update();
       });
+      // < 이전 블록의 첫 페이지로
       demo.querySelector('[data-pg-action="prev"]').addEventListener('click', function() {
-        if (currentPage > 1) { currentPage--; update(); }
+        var block = calcBlock(currentPage, totalPages());
+        if (block.blockIndex > 0) {
+          currentPage = (block.blockIndex - 1) * blockSize + 1;
+          update();
+        }
       });
+      // > 다음 블록의 첫 페이지로
       demo.querySelector('[data-pg-action="next"]').addEventListener('click', function() {
         var tp = totalPages();
-        if (currentPage >= tp) return;
-        var win = calcWindow(currentPage, tp);
-        currentPage = win.start > 3 ? tp : win.end;
-        update();
+        var block = calcBlock(currentPage, tp);
+        var nextStart = block.end + 1;
+        if (nextStart <= tp) {
+          currentPage = nextStart;
+          update();
+        }
       });
+      // >| 마지막 페이지로
       demo.querySelector('[data-pg-action="last"]').addEventListener('click', function() {
         currentPage = totalPages(); update();
       });
@@ -6549,7 +7054,29 @@ update(); // 초기화</pre>
   (function() {
     var sizesWraps = document.querySelectorAll('[data-input-sizes-cell]');
     var btnDisabled = document.querySelector('[data-sizes-disabled]');
-    var btnHelper = document.querySelector('[data-sizes-helper]');
+    var btnHelper   = document.querySelector('[data-sizes-helper]');
+    var btnError    = document.querySelector('[data-sizes-error]');
+    var btnCorrect  = document.querySelector('[data-sizes-correct]');
+
+    function helperIsOn() { return btnHelper && btnHelper.classList.contains('is-on'); }
+
+    function applyHelper(wrap, h, state) {
+      /* state: 'error' | 'correct' | null */
+      if (state === 'error') {
+        h.hidden = false;
+        h.className = 'ds-helper-text is-error-text';
+        h.textContent = '오류 메시지';
+      } else if (state === 'correct') {
+        h.hidden = false;
+        h.className = 'ds-helper-text is-correct-text';
+        h.textContent = '확인 메시지';
+      } else {
+        h.className = 'ds-helper-text';
+        h.textContent = '안내 메시지';
+        h.hidden = !helperIsOn();
+      }
+    }
+
     btnDisabled?.addEventListener('click', function() {
       var on = this.classList.toggle('is-on');
       this.textContent = on ? 'Disabled: on' : 'Disabled: off';
@@ -6564,7 +7091,32 @@ update(); // 초기화</pre>
       this.textContent = on ? '서브텍스트: on' : '서브텍스트: off';
       sizesWraps.forEach(function(wrap) {
         var h = wrap.querySelector('.ds-helper-text');
-        if (h) h.hidden = !on;
+        if (!h) return;
+        /* error/correct가 활성화된 경우 서브텍스트 버튼은 영향 없음 */
+        if (wrap.classList.contains('is-error') || wrap.classList.contains('is-correct')) return;
+        h.hidden = !on;
+      });
+    });
+    btnError?.addEventListener('click', function() {
+      var on = this.classList.toggle('is-on');
+      this.textContent = on ? 'Error: on' : 'Error: off';
+      if (on && btnCorrect) { btnCorrect.classList.remove('is-on'); btnCorrect.textContent = 'Correct: off'; }
+      sizesWraps.forEach(function(wrap) {
+        wrap.classList.toggle('is-error', on);
+        if (on) wrap.classList.remove('is-correct');
+        var h = wrap.querySelector('.ds-helper-text');
+        if (h) applyHelper(wrap, h, on ? 'error' : null);
+      });
+    });
+    btnCorrect?.addEventListener('click', function() {
+      var on = this.classList.toggle('is-on');
+      this.textContent = on ? 'Correct: on' : 'Correct: off';
+      if (on && btnError) { btnError.classList.remove('is-on'); btnError.textContent = 'Error: off'; }
+      sizesWraps.forEach(function(wrap) {
+        wrap.classList.toggle('is-correct', on);
+        if (on) wrap.classList.remove('is-error');
+        var h = wrap.querySelector('.ds-helper-text');
+        if (h) applyHelper(wrap, h, on ? 'correct' : null);
       });
     });
   })();

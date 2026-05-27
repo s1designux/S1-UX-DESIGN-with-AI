@@ -2,9 +2,21 @@
    Run: npm run reports:sync
 */
 window.REPORTS_INDEX = {
-  "generatedAt": "2026-05-20T01:09:47.700Z",
-  "totalCount": 43,
+  "generatedAt": "2026-05-27T07:22:06.268Z",
+  "totalCount": 44,
   "reports": [
+    {
+      "id": "harness-audit-2026-05-27",
+      "filename": "harness-audit-2026-05-27.md",
+      "title": "Harness Audit Report — 2026-05-27",
+      "stage": "Audit",
+      "category": "audit",
+      "status": "archive",
+      "sourcePath": "reports/harness-audit-2026-05-27.md",
+      "updatedAt": "2026-05-27",
+      "summary": "- ✅ [button] 모든 사이즈 분기 존재 (medium (h44) / xsmall (h34) / xxsmall (h28) / mobile (h48))",
+      "fileSizeKB": 1.3
+    },
     {
       "id": "mvp-f1-apply-result",
       "filename": "mvp-f1-apply-result.md",
@@ -51,7 +63,7 @@ window.REPORTS_INDEX = {
       "sourcePath": "reports/mvp-l2-legacy-token-classification.md",
       "updatedAt": "2026-05-20",
       "summary": "`surface/status/main/primary`, `/sub/primary`, `/main/secondary`, `/sub/secondary`, `/main/tertiary`, `/sub/tertiary`",
-      "fileSizeKB": 11.4
+      "fileSizeKB": 13.1
     },
     {
       "id": "mvp-c0-component-token-coverage-pilot",
