@@ -1257,6 +1257,7 @@
       display: inline-flex; align-items: center; gap: 8px;
     }
     .s1-timepicker-select-field {
+      position: relative; /* 드롭다운 앵커 — unit이 아닌 field 기준 */
       display: inline-flex; align-items: center;
       height: var(--sizing-form-control-height-md);
       min-width: 60px;
@@ -1282,7 +1283,6 @@
     }
     .s1-timepicker-select-arrow {
       flex-shrink: 0; color: var(--color-text-secondary);
-      transition: transform 0.15s;
       display:flex;align-items:center;
     }
     .s1-timepicker-select-field.is-focus .s1-timepicker-select-arrow { transform: rotate(180deg); }
@@ -4987,14 +4987,14 @@ updateHeader(); // 초기 헤더 상태 동기화</pre>
                 <!-- Action -->
                 <div class="comp-action-cell" style="overflow:visible; align-items:flex-start;">
                   <div class="s1-timepicker-select-group" id="tp-select-action">
-                    <div class="s1-timepicker-select-unit" style="position:relative;">
+                    <div class="s1-timepicker-select-unit">
                       <div class="s1-timepicker-select-field" id="tp-select-hour-field" data-tp-select-field="hour">
                         <span id="tp-select-hour-val">00</span>
                         <span class="s1-timepicker-select-arrow"><svg width="10" height="6" viewBox="0 0 10 6" fill="none"><path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg></span>
                       </div>
                       <span class="s1-timepicker-select-label">시</span>
                     </div>
-                    <div class="s1-timepicker-select-unit" style="position:relative;">
+                    <div class="s1-timepicker-select-unit">
                       <div class="s1-timepicker-select-field" id="tp-select-min-field" data-tp-select-field="min">
                         <span id="tp-select-min-val">00</span>
                         <span class="s1-timepicker-select-arrow"><svg width="10" height="6" viewBox="0 0 10 6" fill="none"><path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg></span>
@@ -6715,7 +6715,7 @@ update(); // 초기화</pre>
           setCur(v);
           if (valSpan) valSpan.textContent = String(v).padStart(2,'0');
         });
-        field.parentElement.appendChild(dd);
+        field.appendChild(dd);
         activeDD = dd;
         field.classList.add('is-focus');
         var arr = field.querySelector('.s1-timepicker-select-arrow');
