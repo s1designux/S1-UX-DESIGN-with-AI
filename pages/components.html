@@ -862,7 +862,7 @@
     /* PC popover panel — Figma 540:4216: width=356px, py=20px, px=24px, border=1px #d9d9d9, radius=4px, shadow */
     /* z-index: 8 — sticky page-header(10)·controls-sticky(9) 아래에 위치하여 헤더 위로 올라오지 않음 */
     .s1-date-picker__panel {
-      position: absolute; top: calc(100% + 4px); left: 0; z-index: 8;
+      position: absolute; top: calc(100% + 8px); left: 0; z-index: 8;
       width: 356px;
       background: var(--color-surface-default);
       border: 1px solid var(--color-border-strong); /* Figma: #d9d9d9 = --color-border-strong */
@@ -1295,7 +1295,7 @@
     /* 트리거 is-focus = 드롭다운 열림. Figma "selected" = 코드 "is-focus" = 동작 "open" */
     /* z-index: 8 — controls-sticky(9)·page-header(10) 아래. preview-area isolation: isolate로 헤더 위 노출 방지 */
     .s1-tp-dropdown {
-      position: absolute; top: calc(100% + 4px); left: 0;
+      position: absolute; top: calc(100% + 8px); left: 0;
       z-index: 8; min-width: 190px; width: 190px;
       background: var(--color-surface-default);
       border: 1px solid var(--color-border-default);
@@ -1351,7 +1351,7 @@
     .s1-tp-confirm-btn.is-active { color: var(--color-action-primary-default); }
     /* Select형 custom dropdown — z-index: 8 동일 규칙 */
     .s1-tp-select-dropdown {
-      position: absolute; top: calc(100% + 2px); left: 0; right: 0;
+      position: absolute; top: calc(100% + 8px); left: 0; right: 0;
       z-index: 8;
       background: var(--color-surface-default);
       border: 1px solid var(--dropdown-list-border);
@@ -1421,6 +1421,12 @@
       --button-secondary-hover-bg:       var(--color-bg-muted);      /* gray-dark-300 = #2E2F38 */
       --button-secondary-pressed-bg:     var(--color-bg-subtle);     /* gray-dark-200 = #24252C */
       --button-secondary-default-border: var(--color-border-strong); /* gray-dark-500 = #3E4049 */
+      /* ── table dark — cascade 차단 해소 ──
+         문제: 헤더(bg-default=gray-dark-50) < 행(surface-default=gray-dark-100) → 레이어 역전
+               상하 강선(border-emphasis=gray-dark-700=#8A8C96) → 과도하게 밝아 텍스트 수준 */
+      --table-header-bg:     var(--color-bg-subtle);      /* gray-dark-200 = #24252C — 행보다 1단계 밝게 */
+      --table-header-border: var(--color-border-default); /* gray-dark-300 = #2E2F38 — 헤더bg와 구분 */
+      --table-border-strong: var(--color-border-strong);  /* gray-dark-500 = #3E4049 — 상하 강선 적정 명암 */
     }
     [data-theme="dark"] .s1-date-picker__day:hover:not([disabled]) > .day-inner {
       background: var(--color-bg-muted);
@@ -3432,7 +3438,7 @@ if (pwClear) {
                       </button>
                     </div>
                   </div>
-                  <div class="s1-date-picker__panel" style="position:absolute; top:calc(100% + 4px); left:0; display:block;">
+                  <div class="s1-date-picker__panel" style="position:absolute; top:calc(100% + 8px); left:0; display:block;">
                     <div class="s1-date-picker__header">
                       <button type="button" class="s1-date-picker__nav-btn" style="pointer-events:none;" aria-label="이전 달">
                         <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M10 12L6 8l4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
