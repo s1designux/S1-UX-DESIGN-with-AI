@@ -1,0 +1,81 @@
+{
+  "_meta": {
+    "description": "사용자가 반복 요청한 패턴 추적 파일. count >= 3 이면 자동 감사 규칙 승격 후보.",
+    "promotionThreshold": 3,
+    "updatedAt": "2026-05-27"
+  },
+  "patterns": [
+    {
+      "id": "harness-layout-fix",
+      "category": "harness-ux",
+      "label": "Harness 레이아웃 개선 (spacing · overflow · alignment)",
+      "description": "컴포넌트 매트릭스의 간격·정렬·오버플로우가 잘못되어 수동 수정 요청",
+      "count": 3,
+      "promotionStatus": "promoted",
+      "promotedRule": "RULE-1b CSS_SIZE_SPLIT (harness-audit.js)",
+      "occurrences": [
+        { "date": "2026-05-20", "summary": "레이아웃 정합 — 신규 컴포넌트 코드블록 표준화" },
+        { "date": "2026-05-27", "summary": "Action 열 오른쪽 gap 32px, 상태 열 minmax 전환, Input overflow 해소" },
+        { "date": "2026-05-27", "summary": "버튼 좌측정렬 복원, 우측 빈공간 미사용 수정" }
+      ],
+      "automationNote": "harness-audit RULE-1(SIZE_SPLIT) + CSS_SIZE_SPLIT으로 일부 커버됨. 간격·정렬 자동 검사는 추가 필요."
+    },
+    {
+      "id": "size-split-missing",
+      "category": "harness-completeness",
+      "label": "컴포넌트 HTML 코드탭 사이즈별 분기 누락",
+      "description": "사이즈 variant가 있는 컴포넌트인데 HTML 코드탭에 단일 예시만 있고 각 사이즈별 분기가 없음",
+      "count": 3,
+      "promotionStatus": "promoted",
+      "promotedRule": "RULE-1 SIZE_SPLIT (harness-audit.js)",
+      "occurrences": [
+        { "date": "2026-05-27", "summary": "Table md/sm 사이즈 비교 뷰 없음 → 추가 요청" },
+        { "date": "2026-05-27", "summary": "Table HTML 코드탭에 s1-table--md/sm 분기 없음 → 추가 요청" },
+        { "date": "2026-05-27", "summary": "TimePicker HTML 탭 사이즈 분기 누락 확인 → SIZE_RULES에 추가" }
+      ],
+      "automationNote": "harness-audit RULE-1 SIZE_SPLIT으로 완전 커버됨. Button/Chip/Table/TimePicker 등록 완료."
+    },
+    {
+      "id": "harnessStatus-not-updated",
+      "category": "registry-sync",
+      "label": "구현 완료 후 registry harnessStatus 갱신 누락",
+      "description": "components.html에 harness가 구현됐는데 registry JSON의 harnessStatus가 skeleton으로 남아있음",
+      "count": 2,
+      "promotionStatus": "candidate",
+      "promotedRule": null,
+      "occurrences": [
+        { "date": "2026-05-20", "summary": "Textarea harnessStatus skeleton → implemented 갱신 요청" },
+        { "date": "2026-05-27", "summary": "Table harnessStatus skeleton → implemented 갱신 — 질문 후 파악" }
+      ],
+      "automationNote": "registry JSON harnessStatus vs components.html 섹션 존재 여부 비교 검사 필요. Gate 1(Registry)에 추가 가능."
+    },
+    {
+      "id": "code-tab-order",
+      "category": "harness-completeness",
+      "label": "컴포넌트 코드탭 순서·구성 불통일",
+      "description": "HTML → CSS → Token Details 탭 순서가 일부 컴포넌트에서 다르거나 탭이 누락됨",
+      "count": 2,
+      "promotionStatus": "candidate",
+      "promotedRule": null,
+      "occurrences": [
+        { "date": "2026-05-20", "summary": "레이아웃 정합 — HTML·CSS·Token Details 탭 순서 통일 작업" },
+        { "date": "2026-05-27", "summary": "Table HTML 코드탭 단일 예시만 있고 구성 불완전" }
+      ],
+      "automationNote": "각 컴포넌트 섹션에 code-pane HTML/CSS/Token Details가 모두 존재하는지 검사. harness-audit RULE-4 후보."
+    },
+    {
+      "id": "dropdown-gap-inconsistency",
+      "category": "css-token",
+      "label": "드롭다운 패널 trigger 간격 불일치",
+      "description": "Select / DatePicker / TimePicker 등 드롭다운 패널의 trigger 하단 간격이 컴포넌트마다 달랐음",
+      "count": 2,
+      "promotionStatus": "candidate",
+      "promotedRule": null,
+      "occurrences": [
+        { "date": "2026-05-27", "summary": "TimePicker Select 드롭다운 gap 이상 → 검수 요청" },
+        { "date": "2026-05-27", "summary": "Select·DatePicker·TimePicker 드롭다운 gap 8px 통일 요청" }
+      ],
+      "automationNote": "각 컴포넌트 드롭다운 패널 top 값이 calc(100% + 8px)인지 검사. harness-audit RULE 추가 가능."
+    }
+  ]
+}
