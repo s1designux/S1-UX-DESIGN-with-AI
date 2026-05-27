@@ -41,6 +41,7 @@
       /* Input — form-control 2-layer: --input-* → --color-form-control-* → semantic */
       /* (--color-form-control-* and --color-text-state-* defined in tokens.css) */
       --input-default-bg:       var(--color-form-control-bg-default);
+      --input-hover-bg:         var(--color-form-control-bg-hover);
       --input-disabled-bg:      var(--color-form-control-bg-disabled);
       --input-default-border:   var(--color-form-control-border-default);
       --input-focus-border:     var(--color-form-control-border-selected);
@@ -64,7 +65,7 @@
       --dropdown-trigger-placeholder-text: var(--color-text-placeholder);
       --dropdown-trigger-selected-text:    var(--color-text-primary);
       --dropdown-trigger-disabled-text:    var(--color-text-disabled);
-      --dropdown-list-bg:                  var(--color-surface-raised);
+      --dropdown-list-bg:                  var(--color-surface-default);
       --dropdown-list-border:              var(--color-border-default);
       --dropdown-option-hover-bg:          var(--color-bg-subtle);
       --dropdown-option-selected-text:     var(--color-action-primary-default);
@@ -384,17 +385,15 @@
     .platform-dot.mobile { background: #8b5cf6; }
     .state-size-matrix {
       display: grid;
-      grid-template-columns: 100px 200px 150px 150px 150px;
-      column-gap: 16px;
+      grid-template-columns: 100px 200px repeat(3, minmax(110px, 1fr));
+      column-gap: 10px;
       row-gap: 14px;
       align-items: start;
-      justify-content: center;
-      max-width: 1060px;
     }
     @media (max-width: 1024px) {
       .state-size-matrix {
-        grid-template-columns: 80px 180px repeat(3, minmax(110px, 1fr));
-        column-gap: 12px;
+        grid-template-columns: 80px 180px repeat(3, minmax(100px, 1fr));
+        column-gap: 8px;
       }
     }
     .matrix-col-header {
@@ -404,6 +403,7 @@
     .matrix-col-header-action {
       font-size: 10px; font-weight: 700; color: #16a34a;
       text-transform: uppercase; letter-spacing: 0.05em; text-align: center;
+      padding-right: 32px;
     }
     .matrix-row-label {
       font-size: 10px; font-weight: 600; color: #9ca3af;
@@ -416,7 +416,7 @@
     .state-size-matrix .s1-btn-mobile { width: 90px; }
     .is-preview { pointer-events: none; cursor: default; }
     /* ACTION cell */
-    .action-cell { flex-direction: column; align-items: center; gap: 0; }
+    .action-cell { flex-direction: column; align-items: center; gap: 0; padding-right: 32px; }
     .action-test-controls {
       margin-top: 8px;
       display: flex; gap: 6px; align-items: center;
@@ -446,7 +446,7 @@
     /* ─ General component state matrix ─ */
     .comp-state-matrix {
       display: grid;
-      column-gap: 16px;
+      column-gap: 10px;
       row-gap: 14px;
       align-items: start;
     }
@@ -461,10 +461,11 @@
     }
     .comp-action-cell {
       display: flex; flex-direction: column; align-items: center;
+      padding-right: 32px;
     }
     @media (max-width: 1024px) {
       .comp-state-matrix {
-        column-gap: 12px;
+        column-gap: 8px;
       }
     }
 
@@ -749,6 +750,7 @@
       background: var(--input-disabled-bg); border-color: var(--input-disabled-border);
     }
     .s1-input-wrap.is-disabled input { color: var(--input-disabled-text); cursor: not-allowed; }
+    .s1-input-wrap.is-disabled .s1-input-field input::placeholder { color: var(--input-disabled-text); }
     .s1-input-wrap.is-readonly .s1-input-field {
       background: var(--input-readonly-bg); border-color: var(--input-readonly-border);
     }
@@ -802,7 +804,7 @@
     .related-composed-card {
       border: 1px solid var(--color-border-subtle);
       border-radius: 8px; padding: 18px 16px;
-      background: var(--color-surface-default);
+      background: var(--color-bg-default); /* preview-area 동일 — dark: gray-dark-50, light: gray-0 */
     }
     .related-composed-card-name {
       font-size: 13px; font-weight: 600; color: var(--color-text-primary); margin-bottom: 4px;
@@ -893,8 +895,10 @@
       font-size: 24px; font-weight: 700; /* Figma: title/24B = Pretendard Bold 24px */
       color: var(--color-text-primary); /* Figma: color/text/title/primary ≈ #202020 */
       cursor: pointer; user-select: none;
+      padding: 2px 8px; border-radius: var(--radius-4, 4px);
+      transition: background 0.1s;
     }
-    .s1-date-picker__month-label:hover { color: var(--color-action-primary-default); }
+    .s1-date-picker__month-label:hover { background: var(--color-bg-subtle); }
     .s1-date-picker__weekdays {
       display: grid; grid-template-columns: repeat(7, 44px);
       flex-shrink: 0; /* flex 패널 안에서 높이 유지 */
@@ -1062,8 +1066,8 @@
       border: 1px solid #e5e7eb;
     }
     .theme-compare-panel { padding: 24px 20px; }
-    .theme-compare-light { background: #FAFAFA; }
-    .theme-compare-dark  { background: #131418; }
+    .theme-compare-light { background: var(--color-bg-default); }
+    .theme-compare-dark  { background: var(--color-bg-default); }
     .theme-compare-mode-label {
       font-size: 10px;
       font-weight: 700;
@@ -1309,7 +1313,7 @@
       background: var(--color-surface-default);
       cursor: pointer;
       font-size: 14px; text-align: center;
-      color: var(--color-text-placeholder);
+      color: var(--color-text-secondary);
       letter-spacing: -0.02em;
     }
     .s1-tp-col-item:hover { background: var(--color-bg-subtle); border-color: var(--color-bg-subtle); }
@@ -1346,7 +1350,7 @@
     .s1-tp-select-dropdown-item {
       height: 32px; display: flex; align-items: center;
       padding: 0 12px; cursor: pointer;
-      font-size: 14px; color: var(--color-text-placeholder);
+      font-size: 14px; color: var(--color-text-secondary);
       letter-spacing: -0.02em;
     }
     .s1-tp-select-dropdown-item:hover { background: var(--color-bg-subtle); }
@@ -1392,6 +1396,32 @@
     .s1-pagination-arrow.is-hover,
     .s1-pagination-number.is-hover {
       background: var(--pagination-control-hover-bg);
+    }
+
+    /* ── Dark mode hover 2단계 밝게 (gray-dark-200 → gray-dark-400 = --color-bg-elevated) ──
+       차단 해소: inline :root 와 tokens.css [data-theme="dark"] 는 명시도 동일(0,1,0).
+       <style> 태그가 tokens.css link 이후라 :root 정의가 dark override를 덮어쓰는 문제.
+       같은 <style> 내에서 [data-theme="dark"] 를 뒤에 두면 소스 순서 우선으로 적용됨. */
+    [data-theme="dark"] {
+      --dropdown-option-hover-bg: var(--color-bg-muted); /* gray-dark-300 */
+      /* ── button secondary dark — cascade 차단 해소 ── */
+      --button-secondary-default-bg:     var(--color-bg-elevated);   /* gray-dark-400 = #35363F */
+      --button-secondary-hover-bg:       var(--color-bg-muted);      /* gray-dark-300 = #2E2F38 */
+      --button-secondary-pressed-bg:     var(--color-bg-subtle);     /* gray-dark-200 = #24252C */
+      --button-secondary-default-border: var(--color-border-strong); /* gray-dark-500 = #3E4049 */
+    }
+    [data-theme="dark"] .s1-date-picker__day:hover:not([disabled]) > .day-inner {
+      background: var(--color-bg-muted);
+    }
+    [data-theme="dark"] .s1-date-picker__nav-btn:hover { background: var(--color-bg-muted); }
+    [data-theme="dark"] .s1-date-picker__month-label:hover { background: var(--color-bg-muted); }
+    [data-theme="dark"] .s1-date-picker__selector-btn:hover { background: var(--color-bg-muted); }
+    [data-theme="dark"] .s1-tp-col-item:hover {
+      background: var(--color-bg-muted);
+      border-color: var(--color-bg-muted);
+    }
+    [data-theme="dark"] .s1-tp-select-dropdown-item:hover {
+      background: var(--color-bg-muted);
     }
   </style>
 </head>
@@ -1805,7 +1835,7 @@
           <div class="theme-compare-wrap">
 
             <!-- Light 패널 -->
-            <div class="theme-compare-panel theme-compare-light">
+            <div class="theme-compare-panel theme-compare-light" data-theme="light">
               <div class="theme-compare-mode-label">Light</div>
 
               <div class="compare-variant-group">
@@ -1891,7 +1921,7 @@
         <div class="variant-block">
           <div class="variant-label">States</div>
           <div class="preview-area">
-            <div class="comp-state-matrix" style="grid-template-columns: 200px repeat(4, 110px);">
+            <div class="comp-state-matrix" style="grid-template-columns: 200px repeat(4, minmax(90px, 1fr));">
               <!-- Header -->
               <div class="matrix-col-header-action">Action</div>
               <div class="matrix-col-header">Default</div>
@@ -2034,6 +2064,26 @@
             </table>
           </div>
         </div>
+
+        <!-- Dark Mode Preview -->
+        <div class="variant-block">
+          <div class="variant-label">Dark Mode Preview</div>
+          <div class="preview-area" data-theme="dark" style="background:var(--color-bg-default);padding:24px;border-radius:8px;display:flex;gap:32px;align-items:center;flex-wrap:wrap;">
+            <div style="display:flex;flex-direction:column;gap:6px;align-items:center;">
+              <label class="s1-checkbox is-preview"><div class="s1-checkbox-box"></div><span class="s1-checkbox-label">Default</span></label>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:6px;align-items:center;">
+              <label class="s1-checkbox is-checked is-preview"><div class="s1-checkbox-box"><svg class="ds-chk-icon" width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2.9375 8L6.13252 11.375L13.0625 4.625" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg></div><span class="s1-checkbox-label">Checked</span></label>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:6px;align-items:center;">
+              <label class="s1-checkbox is-disabled is-preview"><div class="s1-checkbox-box"></div><span class="s1-checkbox-label">Disabled</span></label>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:6px;align-items:center;">
+              <label class="s1-checkbox is-checked is-disabled is-preview"><div class="s1-checkbox-box"><svg class="ds-chk-icon" width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2.9375 8L6.13252 11.375L13.0625 4.625" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg></div><span class="s1-checkbox-label">Dis+Checked</span></label>
+            </div>
+          </div>
+        </div>
+
       </section>
 
 
@@ -2048,7 +2098,7 @@
         <div class="variant-block">
           <div class="variant-label">States</div>
           <div class="preview-area">
-            <div class="comp-state-matrix" style="grid-template-columns: 200px repeat(4, 130px);">
+            <div class="comp-state-matrix" style="grid-template-columns: 200px repeat(4, minmax(110px, 1fr));">
               <!-- Header -->
               <div class="matrix-col-header-action">Action</div>
               <div class="matrix-col-header">Default</div>
@@ -2154,6 +2204,26 @@
             </table>
           </div>
         </div>
+
+        <!-- Dark Mode Preview -->
+        <div class="variant-block">
+          <div class="variant-label">Dark Mode Preview</div>
+          <div class="preview-area" data-theme="dark" style="background:var(--color-bg-default);padding:24px;border-radius:8px;display:flex;gap:32px;align-items:center;flex-wrap:wrap;">
+            <div style="display:flex;flex-direction:column;gap:6px;align-items:center;">
+              <label class="s1-radio is-preview"><div class="s1-radio-circle"><div class="s1-radio-dot"></div></div><span class="s1-radio-label">Default</span></label>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:6px;align-items:center;">
+              <label class="s1-radio is-selected is-preview"><div class="s1-radio-circle"><div class="s1-radio-dot"></div></div><span class="s1-radio-label">Selected</span></label>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:6px;align-items:center;">
+              <label class="s1-radio is-disabled is-preview"><div class="s1-radio-circle"><div class="s1-radio-dot"></div></div><span class="s1-radio-label">Disabled</span></label>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:6px;align-items:center;">
+              <label class="s1-radio is-selected is-disabled is-preview"><div class="s1-radio-circle"><div class="s1-radio-dot"></div></div><span class="s1-radio-label">Dis+Selected</span></label>
+            </div>
+          </div>
+        </div>
+
       </section>
 
 
@@ -2168,7 +2238,7 @@
         <div class="variant-block">
           <div class="variant-label">States</div>
           <div class="preview-area">
-            <div class="comp-state-matrix" style="grid-template-columns: 200px repeat(4, 130px);">
+            <div class="comp-state-matrix" style="grid-template-columns: 200px repeat(4, minmax(110px, 1fr));">
               <!-- Header -->
               <div class="matrix-col-header-action">Action</div>
               <div class="matrix-col-header">Off</div>
@@ -2226,6 +2296,26 @@
             </table>
           </div>
         </div>
+
+        <!-- Dark Mode Preview -->
+        <div class="variant-block">
+          <div class="variant-label">Dark Mode Preview</div>
+          <div class="preview-area" data-theme="dark" style="background:var(--color-bg-default);padding:24px;border-radius:8px;display:flex;gap:32px;align-items:center;flex-wrap:wrap;">
+            <div style="display:flex;flex-direction:column;gap:6px;align-items:center;">
+              <label class="s1-toggle is-preview"><div class="s1-toggle-track"><div class="s1-toggle-knob"></div></div><span class="s1-toggle-label">OFF</span></label>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:6px;align-items:center;">
+              <label class="s1-toggle is-on is-preview"><div class="s1-toggle-track"><div class="s1-toggle-knob"></div></div><span class="s1-toggle-label">ON</span></label>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:6px;align-items:center;">
+              <label class="s1-toggle is-disabled is-preview"><div class="s1-toggle-track"><div class="s1-toggle-knob"></div></div><span class="s1-toggle-label">Disabled OFF</span></label>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:6px;align-items:center;">
+              <label class="s1-toggle is-on is-disabled is-preview"><div class="s1-toggle-track"><div class="s1-toggle-knob"></div></div><span class="s1-toggle-label">Disabled ON</span></label>
+            </div>
+          </div>
+        </div>
+
       </section>
 
 
@@ -2243,7 +2333,7 @@
           <div class="variant-label">States</div>
           <div class="preview-area">
             <div data-action-group="chip-states">
-              <div class="comp-state-matrix" style="grid-template-columns: 120px 180px repeat(4, 130px);">
+              <div class="comp-state-matrix" style="grid-template-columns: 120px 180px repeat(4, minmax(110px, 1fr));">
                 <!-- Header -->
                 <div></div>
                 <div class="matrix-col-header-action">Action</div>
@@ -2286,7 +2376,7 @@
           <div class="variant-label">Filter Chip (Label only)</div>
           <div class="preview-area" style="overflow: visible; padding-bottom: 28px;">
             <div data-action-group="filter-chip-label-states">
-              <div class="comp-state-matrix" style="grid-template-columns: 140px 180px repeat(5, 130px);">
+              <div class="comp-state-matrix" style="grid-template-columns: 140px 180px repeat(5, minmax(100px, 1fr));">
                 <!-- Header -->
                 <div></div>
                 <div class="matrix-col-header-action">Action</div>
@@ -2386,7 +2476,7 @@
           <div class="variant-label">Filter+Title Chip</div>
           <div class="preview-area" style="overflow: visible; padding-bottom: 28px;">
             <div data-action-group="filter-chip-title-states">
-              <div class="comp-state-matrix" style="grid-template-columns: 140px 180px repeat(5, 130px);">
+              <div class="comp-state-matrix" style="grid-template-columns: 140px 180px repeat(5, minmax(100px, 1fr));">
                 <!-- Header -->
                 <div></div>
                 <div class="matrix-col-header-action">Action</div>
@@ -2667,7 +2757,7 @@ document.addEventListener('click', e => {
           <div class="variant-block">
             <div class="variant-label">Sizes — Medium (44px) · Small (34px) · XSmall (28px)</div>
             <div class="preview-area">
-              <div class="comp-state-matrix" style="grid-template-columns: 200px repeat(2, 170px);">
+              <div class="comp-state-matrix" style="grid-template-columns: repeat(3, minmax(200px, 1fr));">
                 <div class="matrix-col-header-action">Action · Medium (44px)</div>
                 <div class="matrix-col-header-action">Action · Small (34px)</div>
                 <div class="matrix-col-header-action">Action · XSmall (28px)</div>
@@ -2719,7 +2809,7 @@ document.addEventListener('click', e => {
           <div class="variant-block">
             <div class="variant-label">States · Medium (44px)</div>
             <div class="preview-area">
-              <div class="comp-state-matrix" style="grid-template-columns: 200px repeat(4, 170px);">
+              <div class="comp-state-matrix" style="grid-template-columns: 260px repeat(4, minmax(110px, 1fr));">
                 <div class="matrix-col-header-action">Action · Default</div>
                 <div class="matrix-col-header">Filled</div>
                 <div class="matrix-col-header">Error</div>
@@ -2777,7 +2867,7 @@ document.addEventListener('click', e => {
           <div class="variant-block">
             <div class="variant-label">States · Small (34px)</div>
             <div class="preview-area">
-              <div class="comp-state-matrix" style="grid-template-columns: 200px repeat(4, 170px);">
+              <div class="comp-state-matrix" style="grid-template-columns: 260px repeat(4, minmax(110px, 1fr));">
                 <div class="matrix-col-header-action">Action · Default</div>
                 <div class="matrix-col-header">Filled</div>
                 <div class="matrix-col-header">Error</div>
@@ -2835,7 +2925,7 @@ document.addEventListener('click', e => {
           <div class="variant-block">
             <div class="variant-label">States · XSmall (28px)</div>
             <div class="preview-area">
-              <div class="comp-state-matrix" style="grid-template-columns: 200px repeat(4, 170px);">
+              <div class="comp-state-matrix" style="grid-template-columns: 260px repeat(4, minmax(110px, 1fr));">
                 <div class="matrix-col-header-action">Action · Default</div>
                 <div class="matrix-col-header">Filled</div>
                 <div class="matrix-col-header">Error</div>
@@ -2898,7 +2988,7 @@ document.addEventListener('click', e => {
           <div class="variant-block">
             <div class="variant-label">States · Mobile (48px)</div>
             <div class="preview-area">
-              <div class="comp-state-matrix" style="grid-template-columns: 200px repeat(4, 170px);">
+              <div class="comp-state-matrix" style="grid-template-columns: 260px repeat(4, minmax(110px, 1fr));">
                 <div class="matrix-col-header-action">Action · Default</div>
                 <div class="matrix-col-header">Filled</div>
                 <div class="matrix-col-header">Error</div>
@@ -3190,6 +3280,64 @@ if (pwClear) {
           </p>
         </div>
 
+        <!-- Dark Mode Preview -->
+        <div class="variant-block">
+          <div class="variant-label">Dark Mode Preview — fill-prominent</div>
+          <div class="preview-area" data-theme="dark" style="background:var(--color-bg-default);padding:24px;border-radius:8px;display:flex;gap:24px;align-items:flex-start;flex-wrap:wrap;">
+
+            <!-- Default -->
+            <div style="display:flex;flex-direction:column;gap:6px;min-width:200px;">
+              <span style="font-size:10px;font-weight:700;color:var(--color-text-tertiary);text-transform:uppercase;letter-spacing:.08em;">Default</span>
+              <div class="s1-input-wrap">
+                <div class="s1-input-field">
+                  <input type="text" placeholder="시간을 입력하세요">
+                </div>
+              </div>
+            </div>
+
+            <!-- Hover -->
+            <div style="display:flex;flex-direction:column;gap:6px;min-width:200px;">
+              <span style="font-size:10px;font-weight:700;color:var(--color-text-tertiary);text-transform:uppercase;letter-spacing:.08em;">Hover</span>
+              <div class="s1-input-wrap is-hover">
+                <div class="s1-input-field">
+                  <input type="text" placeholder="시간을 입력하세요">
+                </div>
+              </div>
+            </div>
+
+            <!-- Focus -->
+            <div style="display:flex;flex-direction:column;gap:6px;min-width:200px;">
+              <span style="font-size:10px;font-weight:700;color:var(--color-text-tertiary);text-transform:uppercase;letter-spacing:.08em;">Focus</span>
+              <div class="s1-input-wrap is-focus">
+                <div class="s1-input-field">
+                  <input type="text" placeholder="시간을 입력하세요">
+                </div>
+              </div>
+            </div>
+
+            <!-- Filled -->
+            <div style="display:flex;flex-direction:column;gap:6px;min-width:200px;">
+              <span style="font-size:10px;font-weight:700;color:var(--color-text-tertiary);text-transform:uppercase;letter-spacing:.08em;">Filled</span>
+              <div class="s1-input-wrap">
+                <div class="s1-input-field">
+                  <input type="text" value="입력된 텍스트">
+                </div>
+              </div>
+            </div>
+
+            <!-- Disabled -->
+            <div style="display:flex;flex-direction:column;gap:6px;min-width:200px;">
+              <span style="font-size:10px;font-weight:700;color:var(--color-text-tertiary);text-transform:uppercase;letter-spacing:.08em;">Disabled</span>
+              <div class="s1-input-wrap is-disabled">
+                <div class="s1-input-field">
+                  <input type="text" placeholder="비활성" disabled>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
       </section>
 
 
@@ -3209,7 +3357,7 @@ if (pwClear) {
           <div class="preview-area" style="overflow:visible; padding-bottom:420px;">
             <div class="platform-section platform-section-pc">
               <div class="platform-header"><span class="platform-dot pc"></span>PC · MD (h44)</div>
-            <div class="comp-state-matrix" style="grid-template-columns: 200px repeat(4, minmax(130px,1fr));">
+            <div class="comp-state-matrix" style="grid-template-columns: 260px repeat(4, minmax(120px,1fr));">
               <div class="matrix-col-header-action">Action</div>
               <div class="matrix-col-header">Default</div>
               <div class="matrix-col-header">Open (Focus)</div>
@@ -3364,7 +3512,7 @@ if (pwClear) {
             </div><!-- /platform-section-pc -->
             <div class="platform-section platform-section-mobile">
               <div class="platform-header"><span class="platform-dot mobile"></span>Mobile (h48)</div>
-              <div class="comp-state-matrix" style="grid-template-columns: 200px repeat(4, minmax(130px,1fr));">
+              <div class="comp-state-matrix" style="grid-template-columns: 260px repeat(4, minmax(120px,1fr));">
                 <div class="matrix-col-header-action">Action</div>
                 <div class="matrix-col-header">Default</div>
                 <div class="matrix-col-header">Open</div>
@@ -3989,7 +4137,7 @@ if (pwClear) {
         <div class="variant-block">
           <div class="variant-label">States</div>
           <div class="preview-area" style="overflow: visible;">
-            <div class="comp-state-matrix" style="grid-template-columns: 200px repeat(4, 180px); align-items: start;">
+            <div class="comp-state-matrix" style="grid-template-columns: 260px repeat(4, minmax(120px, 1fr)); align-items: start;">
               <div class="matrix-col-header-action">Action</div>
               <div class="matrix-col-header">Default</div>
               <div class="matrix-col-header">Focus</div>
@@ -4166,7 +4314,7 @@ if (pwClear) {
             <!-- PC -->
             <div class="platform-section platform-section-pc">
               <div class="platform-header"><span class="platform-dot pc"></span>PC · MD (h44)</div>
-              <div class="comp-state-matrix" style="grid-template-columns: 200px repeat(5, 130px);">
+              <div class="comp-state-matrix" style="grid-template-columns: 200px repeat(5, minmax(100px, 1fr));">
                 <div class="matrix-col-header-action">Action</div>
                 <div class="matrix-col-header">Default</div>
                 <div class="matrix-col-header">Hover</div>
@@ -4197,7 +4345,7 @@ if (pwClear) {
             <!-- Mobile -->
             <div class="platform-section platform-section-mobile">
               <div class="platform-header"><span class="platform-dot mobile"></span>Mobile (h48)</div>
-              <div class="comp-state-matrix" style="grid-template-columns: 200px repeat(5, 130px);">
+              <div class="comp-state-matrix" style="grid-template-columns: 200px repeat(5, minmax(100px, 1fr));">
                 <div class="matrix-col-header-action">Action</div>
                 <div class="matrix-col-header">Default</div>
                 <div class="matrix-col-header">Hover</div>
@@ -4348,7 +4496,7 @@ if (pwClear) {
 <span class="c-prop">--dropdown-trigger-placeholder-text</span>: <span class="c-val">var(--color-text-placeholder)</span>;
 <span class="c-prop">--dropdown-trigger-selected-text</span>:    <span class="c-val">var(--color-text-primary)</span>;
 <span class="c-cmt">/* List */</span>
-<span class="c-prop">--dropdown-list-bg</span>:                  <span class="c-val">var(--color-surface-raised)</span>;
+<span class="c-prop">--dropdown-list-bg</span>:                  <span class="c-val">var(--color-surface-default)</span>;
 <span class="c-prop">--dropdown-list-border</span>:              <span class="c-val">var(--color-border-default)</span>;
 <span class="c-cmt">/* Options */</span>
 <span class="c-prop">--dropdown-option-hover-bg</span>:          <span class="c-val">var(--color-bg-subtle)</span>;
@@ -4371,7 +4519,7 @@ if (pwClear) {
                 <tr><td><code>--dropdown-trigger-disabled-text</code></td><td><span class="c-val">var(--color-text-disabled)</span></td><td>trigger</td><td>disabled</td></tr>
                 <tr><td><code>--dropdown-trigger-placeholder-text</code></td><td><span class="c-val">var(--color-text-placeholder)</span></td><td>trigger</td><td>empty</td></tr>
                 <tr><td><code>--dropdown-trigger-selected-text</code></td><td><span class="c-val">var(--color-text-primary)</span></td><td>trigger</td><td>filled</td></tr>
-                <tr><td><code>--dropdown-list-bg</code></td><td><span class="c-val">var(--color-surface-raised)</span></td><td>list</td><td>—</td></tr>
+                <tr><td><code>--dropdown-list-bg</code></td><td><span class="c-val">var(--color-surface-default)</span></td><td>list</td><td>—</td></tr>
                 <tr><td><code>--dropdown-list-border</code></td><td><span class="c-val">var(--color-border-default)</span></td><td>list</td><td>—</td></tr>
                 <tr><td><code>--dropdown-option-hover-bg</code></td><td><span class="c-val">var(--color-bg-subtle)</span></td><td>option</td><td>hover</td></tr>
                 <tr><td><code>--dropdown-option-selected-bg</code></td><td><span class="c-val">transparent</span></td><td>option</td><td>selected</td></tr>
@@ -4681,7 +4829,7 @@ updateHeader(); // 초기 헤더 상태 동기화</pre>
           <div class="variant-block">
             <div class="variant-label">States</div>
             <div class="preview-area" style="overflow:visible;">
-              <div class="comp-state-matrix" style="grid-template-columns: 200px repeat(4, 150px); overflow:visible; align-items:start;">
+              <div class="comp-state-matrix" style="grid-template-columns: 260px repeat(4, minmax(110px, 1fr)); overflow:visible; align-items:start;">
                 <div class="matrix-col-header-action">Action</div>
                 <div class="matrix-col-header">Default</div>
                 <div class="matrix-col-header">Open</div>
@@ -4819,7 +4967,7 @@ updateHeader(); // 초기 헤더 상태 동기화</pre>
           <div class="variant-block">
             <div class="variant-label">States</div>
             <div class="preview-area" style="overflow:visible;">
-              <div class="comp-state-matrix" style="grid-template-columns: 200px repeat(3, 180px); overflow:visible;">
+              <div class="comp-state-matrix" style="grid-template-columns: 260px repeat(3, minmax(130px, 1fr)); overflow:visible;">
                 <div class="matrix-col-header-action">Action</div>
                 <div class="matrix-col-header">Default</div>
                 <div class="matrix-col-header">Focus (시 열림)</div>

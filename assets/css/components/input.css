@@ -75,6 +75,11 @@
 }
 
 /* ── States ── */
+.s1-input-wrap:hover .s1-input-field,
+.s1-input-wrap.is-hover .s1-input-field {
+  background: var(--input-hover-bg);
+}
+
 .s1-input-wrap:focus-within .s1-input-field,
 .s1-input-wrap.is-focus .s1-input-field {
   border-color: var(--input-focus-border);
@@ -98,6 +103,10 @@
   color: var(--input-disabled-text);
   cursor: not-allowed;
   pointer-events: none;
+}
+
+.s1-input-wrap.is-disabled .s1-input-field input::placeholder {
+  color: var(--input-disabled-text); /* disabled placeholder도 동일 토큰 적용 */
 }
 
 .s1-input-wrap.is-disabled .s1-input-action-btn,

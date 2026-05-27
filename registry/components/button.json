@@ -3,11 +3,11 @@
     "id": "button",
     "name": "Button",
     "category": "Core",
-    "updatedAt": "2026-05-12",
-    "version": "0.4.0",
+    "updatedAt": "2026-05-27",
+    "version": "0.4.1",
     "tokenStatus": "stable",
     "codeStatus": "in-progress",
-    "darkModeStatus": "candidate",
+    "darkModeStatus": "stable",
     "a11yStatus": "pending",
     "figmaStatus": "existing",
     "harnessStatus": "implemented",
@@ -15,7 +15,7 @@
     "notes": [
       "MVP3 Button HTML harness created in pages/button-harness.html.",
       "Button uses official V2.4 component tokens (registry/tokens/component.tokens.json).",
-      "Dark mode behavior is available through semantic token remapping, but requires visual validation.",
+      "Dark mode secondary: fill=gray-dark-400(bg-elevated), stroke=gray-dark-500(border-strong), hover=gray-dark-300(bg-muted) — 2026-05-27 확정.",
       "Danger variant is not implemented — no official component tokens exist for danger.",
       "blue-line variant: Figma design confirmed via MCP 2026-05-12. Tokens aligned to Figma.",
       "MVP3.4 Figma MCP comparison complete: 6 token mismatches corrected (see reports/mvp3-4-button-figma-mcp-comparison.md).",
@@ -47,7 +47,7 @@
     "primary": {
       "tokenStatus": "stable",
       "codeStatus": "in-progress",
-      "darkModeStatus": "candidate",
+      "darkModeStatus": "stable",
       "tokens": [
         "--button-primary-default-bg",
         "--button-primary-hover-bg",
@@ -63,7 +63,7 @@
     "secondary": {
       "tokenStatus": "stable",
       "codeStatus": "in-progress",
-      "darkModeStatus": "candidate",
+      "darkModeStatus": "stable",
       "tokens": [
         "--button-secondary-default-bg",
         "--button-secondary-hover-bg",
@@ -81,7 +81,7 @@
     "blue-line": {
       "tokenStatus": "stable",
       "codeStatus": "in-progress",
-      "darkModeStatus": "pending",
+      "darkModeStatus": "stable",
       "tokens": [
         "--button-blue-line-default-bg",
         "--button-blue-line-hover-bg",
