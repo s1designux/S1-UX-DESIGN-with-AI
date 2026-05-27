@@ -2,7 +2,7 @@
 
 > 이 문서는 Claude가 디자인 시스템을 **수집, 정리, 구조화, 검증**하기 위한 기준입니다.
 > 현재 목표는 UI 구현이 아니라 **디자인 시스템을 구축하는 것**입니다.
-> 마지막 업데이트: 2026-05-27 (Button Secondary 다크모드 확정. Checkbox·Radio·Toggle darkModeStatus stable 갱신. CSS cascade 차단 해소(button-secondary).
+> 마지막 업데이트: 2026-05-27 (컴포넌트 harness 레이아웃 개선. Table md/sm Sizes 비교 뷰 추가. table.json harnessStatus→implemented. DatePicker·TimePicker·Select 드롭다운 gap 8px 통일.)
 
 ---
 
@@ -66,6 +66,7 @@
 | 2026-05-26 | Navigation + Dropdown Core 컴포넌트 등록 | registry/components/index.json·pages/components.html | nav(priority 13)·dropdown(priority 14) index.json 등록. "Navigation" 카테고리 신설. Nav Item States Matrix + Token Details 탭(10토큰) 구현. .s1-nav/.s1-nav-item/.s1-nav-divider CSS 추가. 클릭 시 active 전환 JS 핸들러. 뱃지 7→13 업데이트. |
 | 2026-05-26 | DatePicker·TimePicker HD 해소 및 harness 완성 | pages/components.html·registry/components/date-picker.json·time-picker.json·assets/icons/ic_calendar.svg·assets/js/icons-data.js | HD-9(weekStart=0 일요일). HD-7(is-other-month 클릭 허용 → 월 이동). HD-3(ic_calendar.svg 등록). HD-Time-1(ic_시계 통일). HD-Time-4(Mobile Bottom Sheet 구현). DatePicker·TimePicker Dark Mode Preview 추가. |
 | 2026-05-27 | Button Secondary 다크모드 확정 + Dark 시각검증 | assets/css/tokens.css·pages/components.html·registry/components/button.json·checkbox.json·radio.json·toggle.json | Button Secondary dark: fill=gray-dark-400(bg-elevated)·stroke=gray-dark-500(border-strong)·hover=gray-dark-300(bg-muted) Figma 796:20068 검수 일치. CSS cascade 차단 해소(button-secondary inline :root 차단 → [data-theme="dark"] 블록 추가). Button·Checkbox·Radio·Toggle darkModeStatus: pending/candidate → stable 전환. |
+| 2026-05-27 | 컴포넌트 harness 레이아웃 개선 + Table Sizes 비교 뷰 추가 | pages/components.html·registry/components/table.json | Action 열 padding-right 32px로 시각 분리. 상태 열 minmax(Xpx, 1fr) 전환으로 우측 공간 완전 활용. 버튼 좌측정렬 복원. Input/Textarea 오버플로우 해소(minmax(200px,1fr)). DatePicker·TimePicker 입력 hover = Select hover 통일(--dropdown-trigger-hover-bg/border). TimePicker Select형 드롭다운 border color 수정(--dropdown-list-border). Select·DatePicker·TimePicker 드롭다운 gap 8px 통일(top: calc(100% + 8px)). Table md/sm Sizes 비교 블록 신규 추가(행높이 md=44px/sm=38px 나란히 비교). table.json harnessStatus skeleton→implemented, v0.3.0→v0.4.0. |
 
 ---
 
