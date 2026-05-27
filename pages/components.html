@@ -959,6 +959,12 @@
       border-color: var(--color-action-primary-default);
       color: var(--color-base-white);
     }
+    /* DatePicker trigger hover — Select hover와 동일 */
+    .s1-date-picker:not(.s1-date-picker--opened):hover .s1-input-field,
+    .s1-date-picker.is-hover .s1-input-field {
+      background: var(--dropdown-trigger-hover-bg);
+      border-color: var(--dropdown-trigger-hover-border);
+    }
     /* Trigger opened state */
     .s1-date-picker--opened .s1-input-wrap,
     .s1-date-picker__trigger-opened .s1-input-wrap { border-color: var(--input-focus-border); }
@@ -1219,7 +1225,10 @@
       font-size: 14px; font-weight: 400;
       letter-spacing: -0.02em;
     }
-    .s1-timepicker-wrap:hover { border-color: var(--color-control-border-hover); }
+    .s1-timepicker-wrap:hover {
+      background: var(--dropdown-trigger-hover-bg);
+      border-color: var(--dropdown-trigger-hover-border);
+    }
     .s1-timepicker-wrap.is-focus { border-color: var(--color-form-control-border-selected); }
     .s1-timepicker-wrap.is-filled .s1-timepicker-placeholder { display: none; }
     .s1-timepicker-wrap.is-disabled {
