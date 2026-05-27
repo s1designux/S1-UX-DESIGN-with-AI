@@ -1265,12 +1265,15 @@
       border-radius: var(--radius-control-sm); /* Figma: radius/control/sm = 4px */
       background: var(--color-form-control-bg-default);
       gap: 8px; cursor: pointer;
-      transition: border-color 0.15s;
+      transition: background 0.15s, border-color 0.15s;
       font-size: 14px; font-weight: 400;
       color: var(--color-form-control-text-default);
       letter-spacing: -0.02em;
     }
-    .s1-timepicker-select-field:hover { border-color: var(--color-control-border-hover); }
+    .s1-timepicker-select-field:hover {
+      background: var(--dropdown-trigger-hover-bg);
+      border-color: var(--dropdown-trigger-hover-border);
+    }
     .s1-timepicker-select-field.is-focus { border-color: var(--color-form-control-border-selected); }
     .s1-timepicker-select-field.is-disabled {
       background: var(--color-form-control-bg-disabled);
