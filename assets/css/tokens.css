@@ -450,6 +450,13 @@
   /* ── color-data (데이터 그리드/테이블 전용 — Figma: color/data/state/*) ── */
   --color-data-state-hover: var(--color-blue-50);   /* #E2F1FF — 행 hover 배경 */
 
+  /* ── color-navigation (라인탭·네비게이션 공통 — Figma: color/navigation/*) ── */
+  --color-navigation-bg:                 var(--color-surface-default); /* white */
+  --color-navigation-label-default:      var(--color-gray-600);        /* #555555 — 미선택 탭 라벨 */
+  --color-navigation-label-selected:     var(--color-action-primary-default); /* #1D6CEB */
+  --color-navigation-indicator-default:  var(--color-gray-200);        /* #D9D9D9 — 탭바 기본 구분선 */
+  --color-navigation-indicator-selected: var(--color-action-primary-default); /* #1D6CEB */
+
   /* ── color-overlay ── */
   --color-overlay: rgba(0, 0, 0, 0.5); /* rgba 허용 예외 — alpha 채널 포함 */
 
@@ -625,6 +632,13 @@
   --dropdown-list-bg:           var(--color-bg-subtle); /* gray-dark-200 = #24252C — 1단계 밝게 */
   --dropdown-option-hover-bg:   var(--color-bg-muted);  /* gray-dark-300 */
 
+  /* ── color-navigation (dark) — candidate: Figma dark 시각 검증 필요 ── */
+  --color-navigation-bg:                 var(--color-surface-default);       /* gray-dark-100 */
+  --color-navigation-label-default:      var(--color-gray-dark-600);         /* 미선택 라벨 — HD-Tab-1 */
+  --color-navigation-label-selected:     var(--color-action-primary-default); /* blue-dark-300 */
+  --color-navigation-indicator-default:  var(--color-gray-dark-300);         /* 탭바 구분선 */
+  --color-navigation-indicator-selected: var(--color-action-primary-default); /* blue-dark-300 */
+
   /* ── color-data (dark) ── */
   --color-data-state-hover: var(--color-blue-dark-100); /* #112B55 */
 
@@ -717,7 +731,11 @@
   --chip-solid-hover-bg:            var(--color-bg-muted);
   --chip-solid-selected-bg:         var(--color-action-primary-default);
   --chip-solid-disabled-bg:         var(--color-bg-subtle);
+  /* border: transparent → 1px 유지(line chip과 box model 동일) + 시각적 스트록 없음 */
+  --chip-solid-default-border:      transparent;
+  --chip-solid-hover-border:        transparent;
   --chip-solid-selected-border:     var(--color-action-primary-default);
+  --chip-solid-disabled-border:     transparent;
   --chip-solid-default-text:        var(--color-text-caption);
   --chip-solid-selected-text:       var(--color-action-primary-text);
   --chip-solid-disabled-text:       var(--color-text-disabled);
@@ -828,6 +846,13 @@
   --nav-item-indicator:         var(--color-action-primary-default);  /* 선택된 항목 indicator */
   --nav-item-indicator-default: var(--color-border-subtle);           /* 비선택 항목 indicator */
   --nav-divider:                var(--color-border-subtle);
+
+  /* ── Line Tab ── */
+  --tab-bg:                   var(--color-navigation-bg);
+  --tab-label-default:        var(--color-navigation-label-default);
+  --tab-label-selected:       var(--color-navigation-label-selected);
+  --tab-indicator-default:    var(--color-navigation-indicator-default);
+  --tab-indicator-selected:   var(--color-navigation-indicator-selected);
 
   /* ── Table / Data Grid ── */
   --table-header-bg:        var(--color-bg-default);        /* #FAFAFA — Figma: surface/neutral/bg/base-alt */
