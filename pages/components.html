@@ -95,7 +95,7 @@
       --toggle-knob:        var(--color-action-primary-text);
       /* Chip — Line type */
       --chip-line-default-bg:        var(--color-surface-default);
-      --chip-line-default-border:    var(--color-border-default);
+      --chip-line-default-border:    var(--color-border-strong); /* gray-300=#C4C4C4 — default(#D9D9D9)보다 선명 */
       --chip-line-default-text:      var(--color-text-caption);
       --chip-line-hover-bg:          var(--color-bg-subtle);
       --chip-line-selected-bg:       var(--color-surface-default);
@@ -1367,8 +1367,7 @@
     .token-detail-table .token-resolved { font-family: monospace; font-size: 11px; }
 
     /* Dark mode — code block */
-    /* [data-theme="dark"] .preview-area — bg-default(gray-dark-50=#131418) 유지.
-       gray-dark-100으로 override시 chip(surface-default=gray-dark-100)이 배경에 묻힘. */
+    [data-theme="dark"] .preview-area { background: var(--color-gray-dark-100); } /* surface-level 컨테이너 bg */
     [data-theme="dark"] .code-block { border-color: #374151; }
     [data-theme="dark"] .code-tabs { background: #1f2937; border-bottom-color: #374151; }
     [data-theme="dark"] .code-tab { color: #6b7280; }
@@ -1421,6 +1420,11 @@
       --table-header-bg:     var(--color-bg-subtle);      /* gray-dark-200 = #24252C — 행보다 1단계 밝게 */
       --table-header-border: var(--color-border-default); /* gray-dark-300 = #2E2F38 — 헤더bg와 구분 */
       --table-border-strong: var(--color-border-strong);  /* gray-dark-500 = #3E4049 — 상하 강선 적정 명암 */
+      /* ── chip-line dark — cascade 차단 해소 ──
+         칩bg=surface-default=gray-dark-100(#1C1D23), preview-area도 동일색 → border가 유일한 윤곽.
+         border-emphasis(gray-dark-700=#8A8C96) → 대비 ~5.2:1 확보 */
+      --chip-line-default-border: var(--color-border-emphasis); /* gray-dark-700 = #8A8C96 */
+      --chip-line-hover-border:   var(--color-border-emphasis); /* gray-dark-700 = #8A8C96 */
     }
     [data-theme="dark"] .s1-date-picker__day:hover:not([disabled]) > .day-inner {
       background: var(--color-bg-elevated); /* gray-dark-400 = #35363F — 1단계 밝게 */
@@ -1435,6 +1439,84 @@
     }
     [data-theme="dark"] .s1-tp-select-dropdown-item:hover {
       background: var(--color-bg-muted);
+    }
+
+    /* ─────────────────────────────────────────────────────────
+       Design Mode (Token Inspector)
+       ───────────────────────────────────────────────────────── */
+    /* 활성화 시 preview-area 내 모든 요소에 점선 외곽선 */
+    .dm-active .preview-area { cursor: crosshair; }
+    .dm-active .preview-area *:hover {
+      outline: 1.5px dashed rgba(99, 102, 241, 0.65) !important;
+      outline-offset: 2px;
+    }
+
+    /* 플로팅 인스펙터 툴팁 */
+    #dm-tooltip {
+      position: fixed;
+      z-index: 99999;
+      min-width: 210px;
+      max-width: 315px;
+      padding: 10px 13px;
+      background: #16161e;
+      border: 1px solid #3b4261;
+      border-radius: 8px;
+      box-shadow: 0 10px 32px rgba(0,0,0,0.6);
+      font-family: 'SF Mono', 'JetBrains Mono', 'Consolas', monospace;
+      font-size: 11px;
+      line-height: 1.5;
+      color: #c0caf5;
+      pointer-events: none;
+      display: none;
+    }
+    .dm-el-label {
+      font-size: 9.5px;
+      font-weight: 700;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+      color: #565f89;
+      margin-bottom: 7px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .dm-prop-group { margin-bottom: 7px; }
+    .dm-prop-group:last-child { margin-bottom: 0; }
+    .dm-divider { height: 1px; background: #2a2a3e; margin: 6px 0; }
+    .dm-prop-label { font-size: 9.5px; color: #565f89; margin-bottom: 3px; }
+    .dm-color-row { display: flex; align-items: center; gap: 7px; margin-bottom: 5px; }
+    .dm-swatch {
+      width: 14px; height: 14px;
+      border-radius: 3px;
+      border: 1px solid rgba(255,255,255,0.12);
+      flex-shrink: 0;
+    }
+    .dm-hex { color: #e0af68; font-weight: 700; font-size: 12px; }
+    .dm-token-row { display: flex; align-items: flex-start; gap: 5px; margin-bottom: 2px; }
+    .dm-badge {
+      font-size: 8.5px;
+      font-weight: 800;
+      letter-spacing: 0.05em;
+      padding: 1px 5px;
+      border-radius: 3px;
+      flex-shrink: 0;
+      margin-top: 2px;
+      white-space: nowrap;
+    }
+    .dm-badge-F { background: #162316; color: #9ece6a; border: 1px solid #2d5030; }
+    .dm-badge-S { background: #131c2e; color: #7aa2f7; border: 1px solid #2a4070; }
+    .dm-badge-C { background: #1e1228; color: #bb9af7; border: 1px solid #4a2d6e; }
+    .dm-token-name { color: #cdd6f4; word-break: break-all; font-size: 10.5px; }
+
+    /* Design Mode 툴바 버튼 */
+    #btnDesignMode { display: flex; align-items: center; gap: 5px; }
+    #btnDesignMode.active {
+      background: #4f46e5 !important;
+      color: #fff !important;
+      box-shadow: 0 1px 4px rgba(79, 70, 229, 0.5);
+    }
+    [data-theme="dark"] #btnDesignMode.active {
+      background: #6366f1 !important;
     }
   </style>
 </head>
@@ -1507,6 +1589,16 @@
             <button class="theme-btn" id="btnAll" onclick="setPlatform('all')">All</button>
             <button class="theme-btn active" id="btnPC" onclick="setPlatform('pc')">PC</button>
             <button class="theme-btn" id="btnMobile" onclick="setPlatform('mobile')">Mobile</button>
+          </div>
+          <div class="theme-bar-divider"></div>
+          <div class="theme-toggle">
+            <button class="theme-btn" id="btnDesignMode" onclick="toggleDesignMode()" title="컴포넌트 위에 마우스를 올리면 Semantic·Foundation 토큰명과 HEX 코드가 표시됩니다">
+              <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true">
+                <circle cx="6" cy="6" r="2" stroke="currentColor" stroke-width="1.3"/>
+                <path d="M6 1v1.5M6 9.5V11M1 6h1.5M9.5 6H11M2.64 2.64l1.06 1.06M8.3 8.3l1.06 1.06M9.36 2.64L8.3 3.7M3.7 8.3l-1.06 1.06" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
+              </svg>
+              Design Mode
+            </button>
           </div>
         </div>
       </div><!-- /controls-sticky -->
@@ -6192,6 +6284,8 @@ update(); // 초기화</pre>
   function setTheme(t) {
     setGlobalTheme(t);
     updateTokenComments();
+    // 테마 변경 시 Design Mode 토큰 맵 재빌드 (light/dark 값이 달라짐)
+    if (window.resetDesignModeCache) window.resetDesignModeCache();
   }
   function setPlatform(mode) {
     const root = document.documentElement;
@@ -7503,6 +7597,188 @@ update(); // 초기화</pre>
     });
   }
   setupTableSelection(document);
+
+  // ── Design Mode (Token Inspector) ──────────────────────────
+  (function setupDesignMode() {
+    var isActive = false;
+    var tokenColorMap = null; // { '#RRGGBB': [{name, type}] }
+    var probeEl = null;
+
+    /* ── helpers ── */
+    function rgbToHex(rgb) {
+      var m = String(rgb).match(/rgba?\((\d+),\s*(\d+),\s*(\d+)/);
+      if (!m) return null;
+      return '#' + [m[1], m[2], m[3]].map(function(v) {
+        return ('0' + parseInt(v, 10).toString(16)).slice(-2).toUpperCase();
+      }).join('');
+    }
+
+    // 토큰 레이어 분류: F(Foundation) · S(Semantic) · C(Component)
+    function classifyToken(name) {
+      if (/^--color-(gray|blue|red|orange|yellow|green|skyblue|purple|brown|visual|coolgray|base|brand|status-dark)/.test(name)) return 'F';
+      if (/^--color-/.test(name)) return 'S';
+      return 'C';
+    }
+
+    // probe div로 CSS 변수를 최종 HEX까지 해소
+    function resolveVarHex(varName) {
+      probeEl.style.backgroundColor = 'var(' + varName + ')';
+      var rgb = getComputedStyle(probeEl).backgroundColor;
+      probeEl.style.backgroundColor = '';
+      if (!rgb || rgb === 'rgba(0, 0, 0, 0)') return null;
+      return rgbToHex(rgb);
+    }
+
+    /* ── 토큰 역매핑 테이블 빌드 ── */
+    function buildTokenMap() {
+      probeEl = document.createElement('div');
+      probeEl.style.cssText = 'position:fixed;visibility:hidden;pointer-events:none;top:-9999px;left:-9999px;width:0;height:0;';
+      document.body.appendChild(probeEl);
+
+      var map = {};
+      var seen = {};
+      // 색상 관련 토큰 접두사만 스캔
+      var relevant = /^--(color-|button-|input-|chip-|checkbox-|radio-|toggle-|select-|dropdown-|nav-|pagination-|table-|date-picker|time-picker)/;
+      var varRe = /(--[\w-]+)\s*:/g;
+
+      for (var si = 0; si < document.styleSheets.length; si++) {
+        var rules;
+        try { rules = document.styleSheets[si].cssRules; } catch(e) { continue; }
+        for (var ri = 0; ri < rules.length; ri++) {
+          var text = rules[ri].cssText || '';
+          var m;
+          varRe.lastIndex = 0;
+          while ((m = varRe.exec(text)) !== null) {
+            var name = m[1];
+            if (seen[name] || !relevant.test(name)) continue;
+            seen[name] = true;
+            var hex = resolveVarHex(name);
+            if (!hex) continue;
+            if (!map[hex]) map[hex] = [];
+            map[hex].push({ name: name, type: classifyToken(name) });
+          }
+        }
+      }
+
+      // 레이어 순서(F→S→C) 정렬 + 중복 이름 제거
+      var order = { F: 0, S: 1, C: 2 };
+      Object.keys(map).forEach(function(hex) {
+        var dedupe = {};
+        map[hex] = map[hex].filter(function(t) {
+          if (dedupe[t.name]) return false;
+          return (dedupe[t.name] = true);
+        });
+        map[hex].sort(function(a, b) { return order[a.type] - order[b.type]; });
+      });
+
+      document.body.removeChild(probeEl);
+      probeEl = null;
+      return map;
+    }
+
+    /* ── 툴팁 콘텐츠 빌드 ── */
+    var badgeLabel = { F: 'Foundation', S: 'Semantic', C: 'Component' };
+
+    function buildPropSection(propLabel, rgbValue) {
+      if (!rgbValue || rgbValue === 'rgba(0, 0, 0, 0)') return '';
+      var hex = rgbToHex(rgbValue);
+      if (!hex) return '';
+      var tokens = tokenColorMap ? (tokenColorMap[hex] || []) : [];
+
+      var html = '<div class="dm-prop-group">';
+      html += '<div class="dm-prop-label">' + propLabel + '</div>';
+      html += '<div class="dm-color-row"><span class="dm-swatch" style="background:' + hex + '"></span>';
+      html += '<span class="dm-hex">' + hex + '</span></div>';
+      tokens.forEach(function(t) {
+        html += '<div class="dm-token-row"><span class="dm-badge dm-badge-' + t.type + '">' + badgeLabel[t.type] + '</span>';
+        html += '<span class="dm-token-name">' + t.name + '</span></div>';
+      });
+      html += '</div>';
+      return html;
+    }
+
+    /* ── 툴팁 표시/이동 ── */
+    function showTooltip(e) {
+      var tt = document.getElementById('dm-tooltip');
+      if (!tt) return;
+      var el = e.target;
+      if (!el || el.id === 'dm-tooltip') return;
+
+      var cs = getComputedStyle(el);
+      var bgProp = cs.backgroundColor;
+      var fgProp = cs.color;
+      var hasBorder = parseFloat(cs.borderTopWidth) > 0;
+      var bdProp = hasBorder ? cs.borderTopColor : null;
+
+      // 배경도 없고 테두리도 없으면 툴팁 숨김
+      if (bgProp === 'rgba(0, 0, 0, 0)' && !bdProp) {
+        tt.style.display = 'none';
+        return;
+      }
+
+      // 엘리먼트 레이블: s1-* 클래스 우선, 없으면 tag
+      var s1Classes = Array.from(el.classList).filter(function(c) { return /^s1-/.test(c); });
+      var label = s1Classes.length ? s1Classes.join(' ') :
+                  el.tagName.toLowerCase() + (el.className ? '.' + Array.from(el.classList).slice(0, 2).join('.') : '');
+
+      var bgSection = buildPropSection('background-color', bgProp);
+      var bdSection = bdProp ? buildPropSection('border-color', bdProp) : '';
+      var fgSection = buildPropSection('color', fgProp);
+
+      var content = '<div class="dm-el-label">' + label + '</div>';
+      content += bgSection;
+      if (bdSection) { if (bgSection) content += '<div class="dm-divider"></div>'; content += bdSection; }
+      if (fgSection) { if (bgSection || bdSection) content += '<div class="dm-divider"></div>'; content += fgSection; }
+
+      tt.innerHTML = content;
+      tt.style.display = 'block';
+
+      // 위치 결정: 커서 우하단 → 화면 밖이면 좌/상으로 flip
+      var x = e.clientX + 18;
+      var y = e.clientY + 18;
+      var tw = 315;
+      var th = tt.offsetHeight || 150;
+      if (x + tw > window.innerWidth - 8)  x = e.clientX - tw - 10;
+      if (y + th > window.innerHeight - 8) y = e.clientY - th - 10;
+      tt.style.left = Math.max(4, x) + 'px';
+      tt.style.top  = Math.max(4, y) + 'px';
+    }
+
+    /* ── 공개 API ── */
+    window.toggleDesignMode = function() {
+      isActive = !isActive;
+      // 첫 활성화(또는 테마 변경 후) 시 토큰 맵 재빌드
+      if (isActive && !tokenColorMap) tokenColorMap = buildTokenMap();
+
+      document.documentElement.classList.toggle('dm-active', isActive);
+      var btn = document.getElementById('btnDesignMode');
+      if (btn) btn.classList.toggle('active', isActive);
+
+      if (!isActive) {
+        var tt = document.getElementById('dm-tooltip');
+        if (tt) tt.style.display = 'none';
+      }
+    };
+
+    // 테마 변경 시 캐시 무효화 (setTheme에서 호출)
+    window.resetDesignModeCache = function() { tokenColorMap = null; };
+
+    /* ── 이벤트 위임 ── */
+    document.addEventListener('mousemove', function(e) {
+      if (!isActive) return;
+      if (e.target.closest && e.target.closest('.preview-area')) {
+        showTooltip(e);
+      } else {
+        var tt = document.getElementById('dm-tooltip');
+        if (tt) tt.style.display = 'none';
+      }
+    });
+
+    /* ── 툴팁 DOM 생성 ── */
+    var tt = document.createElement('div');
+    tt.id = 'dm-tooltip';
+    document.body.appendChild(tt);
+  })();
 
 </script>
 <script src="../assets/js/main.js"></script>
