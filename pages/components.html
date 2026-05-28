@@ -811,7 +811,7 @@
     .related-composed-card {
       border: 1px solid var(--color-border-subtle);
       border-radius: 8px; padding: 18px 16px;
-      background: var(--color-bg-default); /* preview-area 동일 — dark: gray-dark-100, light: gray-0 */
+      background: var(--color-bg-default); /* preview-area 동일 — dark: gray-dark-50=#131418, light: gray-0 */
     }
     .related-composed-card-name {
       font-size: 13px; font-weight: 600; color: var(--color-text-primary); margin-bottom: 4px;
@@ -1367,7 +1367,8 @@
     .token-detail-table .token-resolved { font-family: monospace; font-size: 11px; }
 
     /* Dark mode — code block */
-    [data-theme="dark"] .preview-area { background: var(--color-gray-dark-100); }
+    /* [data-theme="dark"] .preview-area — bg-default(gray-dark-50=#131418) 유지.
+       gray-dark-100으로 override시 chip(surface-default=gray-dark-100)이 배경에 묻힘. */
     [data-theme="dark"] .code-block { border-color: #374151; }
     [data-theme="dark"] .code-tabs { background: #1f2937; border-bottom-color: #374151; }
     [data-theme="dark"] .code-tab { color: #6b7280; }
@@ -1420,11 +1421,6 @@
       --table-header-bg:     var(--color-bg-subtle);      /* gray-dark-200 = #24252C — 행보다 1단계 밝게 */
       --table-header-border: var(--color-border-default); /* gray-dark-300 = #2E2F38 — 헤더bg와 구분 */
       --table-border-strong: var(--color-border-strong);  /* gray-dark-500 = #3E4049 — 상하 강선 적정 명암 */
-      /* ── chip-line dark — cascade 차단 해소 ──
-         칩bg=surface-default=gray-dark-100(#1C1D23). preview-area bg도 동일색 → border가 유일한 윤곽.
-         border-emphasis(gray-dark-700=#8A8C96) → 대비 ~5.2:1로 명확히 구분됨. */
-      --chip-line-default-border: var(--color-border-emphasis); /* gray-dark-700 = #8A8C96 */
-      --chip-line-hover-border:   var(--color-border-emphasis); /* gray-dark-700 = #8A8C96 — hover는 bg로 구분 */
     }
     [data-theme="dark"] .s1-date-picker__day:hover:not([disabled]) > .day-inner {
       background: var(--color-bg-elevated); /* gray-dark-400 = #35363F — 1단계 밝게 */
