@@ -8,17 +8,39 @@
   },
   "harness": {
     "defaultComponent": "button",
-    "supportedThemes": ["light", "dark"],
+    "supportedThemes": [
+      "light",
+      "dark"
+    ],
     "defaultTheme": "light",
-    "supportedPlatforms": ["all", "pc", "mobile"],
+    "supportedPlatforms": [
+      "all",
+      "pc",
+      "mobile"
+    ],
     "defaultPlatform": "pc"
   },
   "categories": [
-    { "id": "all",       "label": "All" },
-    { "id": "actions",   "label": "Actions" },
-    { "id": "selection", "label": "Selection" },
-    { "id": "form",      "label": "Form" },
-    { "id": "data",      "label": "Data" }
+    {
+      "id": "all",
+      "label": "All"
+    },
+    {
+      "id": "actions",
+      "label": "Actions"
+    },
+    {
+      "id": "selection",
+      "label": "Selection"
+    },
+    {
+      "id": "form",
+      "label": "Form"
+    },
+    {
+      "id": "data",
+      "label": "Data"
+    }
   ],
   "components": [
     {
@@ -185,6 +207,14 @@
         "harness는 Select (id=select) 섹션에서 공유. 별도 harness 섹션 없음.",
         "Select (priority 7) tokenRef: registry/components/dropdown.json."
       ]
+    },
+    {
+      "id": "tab",
+      "name": "Line Tab",
+      "category": "navigation",
+      "priority": 15,
+      "path": "registry/components/tab.json",
+      "status": "stable"
     }
   ]
 }

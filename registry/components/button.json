@@ -43,7 +43,7 @@
     "list": ["primary", "secondary", "blue-line"],
     "pcSize": ["medium", "xsmall", "xxsmall"],
     "mobileSize": ["mobile"],
-    "state": ["default", "hover", "pressed", "disabled", "loading"],
+    "state": ["default", "hover", "pressed", "disabled"],
     "primary": {
       "tokenStatus": "stable",
       "codeStatus": "in-progress",
@@ -151,12 +151,12 @@
     "radius": "--radius-button-md"
   },
   "harness": {
-    "columns": ["action", "default", "hover", "pressed", "disabled", "loading"],
+    "columns": ["action", "default", "hover", "pressed", "disabled"],
     "interactiveColumn": "action",
-    "staticPreviewColumns": ["default", "hover", "pressed", "disabled", "loading"],
-    "pcColumns": ["action", "default", "hover", "pressed", "disabled", "loading"],
-    "mobileColumns": ["action", "default", "pressed", "disabled", "loading"],
-    "note": "ACTION = real interactive test (click / disabled / loading toggle). DEFAULT/HOVER/PRESSED/DISABLED/LOADING = static preview (is-preview class). ACTION is not a Figma state."
+    "staticPreviewColumns": ["default", "hover", "pressed", "disabled"],
+    "pcColumns": ["action", "default", "hover", "pressed", "disabled"],
+    "mobileColumns": ["action", "default", "pressed", "disabled"],
+    "note": "ACTION = real interactive test (click / disabled toggle). DEFAULT/HOVER/PRESSED/DISABLED = static preview (is-preview class). ACTION is not a Figma state."
   },
   "pendingVariants": [
     {

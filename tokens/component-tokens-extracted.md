@@ -37,7 +37,7 @@ color/status-card/*   → Status Card (관제 도메인)
 
 - **component**: button, chip, dropdown, input, checkbox, radio, toggle, pagination, nav, table, status-card
 - **variant**: primary, secondary, blue-line (ghost deprecated — 2026-04-29 확정) …
-- **state**: default, hover, pressed, focus, selected, disabled, error, correct, loading …
+- **state**: default, hover, pressed, focus, selected, disabled, error, correct …
 - **property**: bg, text, border, icon, indicator, check …
 
 Component Token은 **반드시 Semantic Token을 `var()`로 참조**합니다.
@@ -93,9 +93,6 @@ Foundation(Foundation)를 직접 참조하지 않습니다.
 | pressed | ✅ | ✅ | ✅ |
 | focus | ✅ | ✅ | ✅ |
 | disabled | ✅ | ✅ | ✅ |
-| loading | ⚠️ Human Decision 필요 | ⚠️ | ⚠️ |
-
-> **loading 상태:** Figma 원본 확인 전까지 visual 기준 미확정. sw-button.css에 `.sw-button--loading` 골격 존재.
 
 ### CSS 구현
 

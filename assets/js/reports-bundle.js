@@ -2,9 +2,21 @@
    Run: npm run reports:sync
 */
 window.REPORTS_INDEX = {
-  "generatedAt": "2026-05-27T07:22:06.268Z",
-  "totalCount": 44,
+  "generatedAt": "2026-05-28T03:23:38.602Z",
+  "totalCount": 45,
   "reports": [
+    {
+      "id": "harness-audit-2026-05-28",
+      "filename": "harness-audit-2026-05-28.md",
+      "title": "Harness Audit Report — 2026-05-28",
+      "stage": "Audit",
+      "category": "audit",
+      "status": "archive",
+      "sourcePath": "reports/harness-audit-2026-05-28.md",
+      "updatedAt": "2026-05-28",
+      "summary": "- ✅ [button] 모든 사이즈 분기 존재 (medium (h44) / xsmall (h34) / xxsmall (h28) / mobile (h48))",
+      "fileSizeKB": 1.4
+    },
     {
       "id": "harness-audit-2026-05-27",
       "filename": "harness-audit-2026-05-27.md",

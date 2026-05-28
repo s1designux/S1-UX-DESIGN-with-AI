@@ -650,10 +650,11 @@
   --table-border-strong: var(--color-border-strong);  /* gray-dark-500 = #3E4049 — 상하 강선 적정 명암 */
 
   /* ── chip-line dark override ──
-     칩bg=surface-default=gray-dark-100(#1C1D23), preview-area도 동일색 → border가 유일한 윤곽.
-     border-emphasis(gray-dark-700=#8A8C96) → 대비 ~5.2:1 확보 */
-  --chip-line-default-border: var(--color-border-emphasis); /* gray-dark-700 = #8A8C96 */
-  --chip-line-hover-border:   var(--color-border-emphasis);
+     selected-text: action-primary-default(blue-dark-300=#3070D8)는 버튼 배경용 값 →
+       다크bg 위 텍스트에 쓰면 어두워짐. text-link(blue-dark-400=#6FA5F8)으로 분리. */
+  --chip-line-selected-text:       var(--color-text-link);       /* blue-dark-400 = #6FA5F8 */
+  --chip-line-selected-icon:       var(--color-text-link);
+  --chip-line-selected-close-icon: var(--color-text-link);
 
   /* ── color-overlay ── */
   --color-overlay: rgba(0, 0, 0, 0.75); /* rgba 허용 예외 */

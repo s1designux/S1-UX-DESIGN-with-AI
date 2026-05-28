@@ -93,6 +93,8 @@ npm run harness:fix            # (향후) 자동 수정 모드
 | Chip | `chip-html` | `s1-chip"` / `s1-chip--sm` / `s1-chip--mobile` |
 | Table | `table-html` | `s1-table--md` / `s1-table--sm` |
 | TimePicker (input형) | `tp-input-html` | `s1-timepicker-wrap"` / `--xsm` / `--xxsm` / `--mobile` |
+| Line Tab (PC) | `tab-pc-html` | `s1-tab--pc-md` / `s1-tab--pc-sm` |
+| Line Tab (Mobile) | `tab-mo-html` | `s1-tab--mobile` |
 
 **새 컴포넌트 추가 시:** `scripts/harness-audit.js`의 `SIZE_RULES` 배열에 항목 추가.
 

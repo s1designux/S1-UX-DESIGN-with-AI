@@ -2,7 +2,7 @@
 
 > 이 문서는 Claude가 디자인 시스템을 **수집, 정리, 구조화, 검증**하기 위한 기준입니다.
 > 현재 목표는 UI 구현이 아니라 **디자인 시스템을 구축하는 것**입니다.
-> 마지막 업데이트: 2026-05-27 (컴포넌트 harness 레이아웃 개선. Table md/sm Sizes 비교 뷰 추가. table.json harnessStatus→implemented. DatePicker·TimePicker·Select 드롭다운 gap 8px 통일.)
+> 마지막 업데이트: 2026-05-28 (Line Tab 컴포넌트 구현. harness-audit.js SIZE_RULES + CSS_SIZE_SPLIT Tab 등록. 자동 감사 10/10 PASS.)
 
 ---
 
@@ -67,6 +67,7 @@
 | 2026-05-26 | DatePicker·TimePicker HD 해소 및 harness 완성 | pages/components.html·registry/components/date-picker.json·time-picker.json·assets/icons/ic_calendar.svg·assets/js/icons-data.js | HD-9(weekStart=0 일요일). HD-7(is-other-month 클릭 허용 → 월 이동). HD-3(ic_calendar.svg 등록). HD-Time-1(ic_시계 통일). HD-Time-4(Mobile Bottom Sheet 구현). DatePicker·TimePicker Dark Mode Preview 추가. |
 | 2026-05-27 | Button Secondary 다크모드 확정 + Dark 시각검증 | assets/css/tokens.css·pages/components.html·registry/components/button.json·checkbox.json·radio.json·toggle.json | Button Secondary dark: fill=gray-dark-400(bg-elevated)·stroke=gray-dark-500(border-strong)·hover=gray-dark-300(bg-muted) Figma 796:20068 검수 일치. CSS cascade 차단 해소(button-secondary inline :root 차단 → [data-theme="dark"] 블록 추가). Button·Checkbox·Radio·Toggle darkModeStatus: pending/candidate → stable 전환. |
 | 2026-05-27 | 컴포넌트 harness 레이아웃 개선 + Table Sizes 비교 뷰 추가 | pages/components.html·registry/components/table.json | Action 열 padding-right 32px로 시각 분리. 상태 열 minmax(Xpx, 1fr) 전환으로 우측 공간 완전 활용. 버튼 좌측정렬 복원. Input/Textarea 오버플로우 해소(minmax(200px,1fr)). DatePicker·TimePicker 입력 hover = Select hover 통일(--dropdown-trigger-hover-bg/border). TimePicker Select형 드롭다운 border color 수정(--dropdown-list-border). Select·DatePicker·TimePicker 드롭다운 gap 8px 통일(top: calc(100% + 8px)). Table md/sm Sizes 비교 블록 신규 추가(행높이 md=44px/sm=38px 나란히 비교). table.json harnessStatus skeleton→implemented, v0.3.0→v0.4.0. |
+| 2026-05-28 | Line Tab 컴포넌트 harness 구현 + 자동 감사 체계 정립 | pages/components.html·registry/components/tab.json·assets/css/tokens.css·registry/components/index.json·scripts/harness-audit.js·.claude/agents/guide-builder.md·reports/repeated-requests.json | Figma 540:6032 기준. --color-navigation-* semantic 5개 신설(Light gray-600/gray-200/action-primary + Dark candidate). --tab-* component 5개. Navigation 카테고리 신설. Line Tab nav 버튼·Sizes 비교·States Matrix(PC MD/SM/Mobile × Unselected/Selected/Hover)·HTML·CSS·Token Details 탭 구현. 인터랙션 JS setupTabStrip(). harness-audit SIZE_RULES에 tab 추가(tab-html). 감사 결과 10/10 PASS. guide-builder.md RULE-1 표 갱신. 반복 요청 추적 파일 신설(repeated-requests.json 5패턴). |
 
 ---
 
@@ -546,7 +547,6 @@ focus
 selected
 disabled
 error
-loading
 ```
 
 ---
@@ -612,8 +612,8 @@ SITE_NAV는 사용자 대면 그룹과 System 운영 그룹으로 분리한다.
 Button을 편집하거나 검토할 때 아래 기준을 단일 참조점으로 사용한다.
 
 1. **공식 variants** — primary / secondary / blue-line. ghost는 공식 variant가 아니다. danger는 삭제됨.
-2. **Figma states** — default / hover / pressed / disabled / loading
-3. **Harness columns** — action / default / hover / pressed / disabled / loading
+2. **Figma states** — default / hover / pressed / disabled
+3. **Harness columns** — action / default / hover / pressed / disabled
 4. **action ≠ Figma state** — action은 Figma 디자인 상태가 아니다. HTML harness의 실제 인터랙션 테스트 컬럼이다.
 5. **default = static preview** — default 컬럼 버튼에는 `.is-preview`를 적용한다.
 6. **Size** — PC: medium(h44) / xsmall(h34) / xxsmall(h28), Mobile: mobile(h48)
@@ -632,7 +632,7 @@ Button 페이지 편집 시:
 3. **Button Harness 메뉴 제거** — `pages/button-harness.html`은 별도 메인 메뉴로 노출하지 않는다.
 4. **Registry/System 메뉴** — Component Registry, Component Tokens는 별도 사용자-facing 메뉴로 노출하지 않는다.
 5. **ACTION 컬럼** — Button matrix에서 DEFAULT 앞에 ACTION 컬럼을 배치한다.
-6. **ACTION = 인터랙션 전용** — ACTION 셀만 실제 클릭/disabled/loading 테스트가 가능하다.
+6. **ACTION = 인터랙션 전용** — ACTION 셀만 실제 클릭/disabled 테스트가 가능하다.
 7. **DEFAULT = 정적 프리뷰** — DEFAULT 셀 버튼에는 `.is-preview`를 적용한다 (pointer-events: none).
 8. **공식 variants** — primary / secondary / blue-line만 공식 노출. ghost는 노출 금지.
 9. **Size 명칭** — PC: medium(h44) / xsmall(h34) / xxsmall(h28), Mobile: mobile(h48).
