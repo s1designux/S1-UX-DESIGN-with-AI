@@ -1395,6 +1395,61 @@
     /* Dark 스와치 열 — 테마 무관 항상 어두운 배경 유지 */
     .token-detail-table .token-dark-col { background: #111827 !important; color: #9ca3af !important; }
 
+    /* ── Line Tab ─────────────────────────────────────── */
+    .s1-tab {
+      display: flex;
+      align-items: flex-end;
+      background: var(--tab-bg);
+      border-bottom: 1px solid var(--tab-indicator-default);
+      gap: 0;
+    }
+    .s1-tab-item {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0 var(--spacing-padding-inline-lg);
+      height: 40px; /* pc-md, pc-sm default */
+      font-size: 16px;
+      font-weight: var(--font-weight-medium);
+      color: var(--tab-label-default);
+      background: none;
+      border: none;
+      border-bottom: 1px solid transparent;
+      margin-bottom: -1px; /* overlap container border */
+      cursor: pointer;
+      white-space: nowrap;
+      letter-spacing: -0.32px;
+      line-height: var(--line-height-130);
+      transition: color 0.12s;
+    }
+    .s1-tab-item:not(.is-disabled):not(.is-preview):hover,
+    .s1-tab-item.is-hover {
+      color: var(--tab-label-selected);
+    }
+    .s1-tab-item.is-selected {
+      color: var(--tab-label-selected);
+      font-weight: var(--font-weight-bold);
+      border-bottom: 2px solid var(--tab-indicator-selected);
+    }
+    .s1-tab-item.is-disabled {
+      color: var(--color-text-disabled);
+      cursor: not-allowed;
+    }
+    /* PC MD — font 20px, indicator 4px */
+    .s1-tab--pc-md .s1-tab-item {
+      font-size: 20px;
+      letter-spacing: 0;
+    }
+    .s1-tab--pc-md .s1-tab-item.is-selected {
+      border-bottom-width: 4px;
+    }
+    /* Mobile — height 30px, padding-inline sm */
+    .s1-tab--mobile .s1-tab-item {
+      height: 30px;
+      padding: 0 var(--spacing-padding-inline-sm);
+    }
+
     /* States matrix — static hover preview for pagination */
     .s1-pagination-arrow.is-hover,
     .s1-pagination-number.is-hover {
@@ -1584,7 +1639,7 @@
           <p>Core 컴포넌트 인터랙션 상태 · Component Token 기준 · 2026-04-29</p>
         </div>
         <div class="page-header-actions">
-          <span class="badge badge-blue">12 Core Components</span>
+          <span class="badge badge-blue">13 Core Components</span>
           <span class="badge badge-gray">Token 기반</span>
         </div>
       </div>
@@ -1600,6 +1655,7 @@
           <button class="category-btn" onclick="filterByCategory('selection', this)">Selection</button>
           <button class="category-btn" onclick="filterByCategory('form', this)">Form</button>
           <button class="category-btn" onclick="filterByCategory('data', this)">Data</button>
+          <button class="category-btn" onclick="filterByCategory('navigation', this)">Navigation</button>
         </div>
         <div class="comp-nav">
           <button class="comp-nav-btn is-active" data-category="actions" onclick="showSection('button', this)">Button</button>
@@ -1614,6 +1670,7 @@
           <button class="comp-nav-btn" data-category="form" onclick="showSection('time-picker', this)">Time Picker</button>
           <button class="comp-nav-btn" data-category="data" onclick="showSection('table', this)">Table</button>
           <button class="comp-nav-btn" data-category="data" onclick="showSection('pagination', this)">Pagination</button>
+          <button class="comp-nav-btn" data-category="navigation" onclick="showSection('tab', this)">Line Tab</button>
         </div><!-- /comp-nav -->
       </div><!-- /component-filter -->
 
@@ -7646,7 +7703,7 @@ update(); // 초기화</pre>
     var tokenColorMap = null;
     var probeEl = null;
     var lastPreviewArea = null;
-    var ZOOM = 3, MAGN_W = 220, MAGN_H = 165;
+    var ZOOM = 4, MAGN_W = 220, MAGN_H = 165;
     var magnPos = { x: 4, y: 4 }; // 돋보기 최종 위치 (tooltip 배치 기준)
 
     /* ── helpers ── */
@@ -7727,7 +7784,7 @@ update(); // 초기화</pre>
       m.appendChild(mc);
       var bar = document.createElement('div');
       bar.id = 'dm-magnifier-bar';
-      bar.textContent = '×' + ZOOM + '  Magnifier';
+      bar.textContent = '×' + ZOOM + '  Magnifier'; // ZOOM 변수값 자동 반영
       m.appendChild(bar);
       document.body.appendChild(m);
     }
@@ -7814,12 +7871,21 @@ update(); // 초기화</pre>
       var maxBd = Math.max.apply(null, bdWidths);
       var bdProp = maxBd > 0 ? cs.borderTopColor : null; // 색은 top 기준 (보통 4방향 동일)
 
-      // SVG 요소 · s1-* 요소: 배경 없어도 텍스트/아이콘 색상 토큰이 있으면 표시
+      // SVG 요소 판별
       var isSvg = /^(svg|path|circle|rect|g|polyline|line|use|ellipse)$/i.test(el.tagName);
-      var isS1  = Array.from(el.classList).some(function(c) { return /^s1-/.test(c); });
       var fgHex    = rgbToHex(fgProp);
-      var fgTokens = (tokenColorMap && fgHex) ? (tokenColorMap[fgHex] || []) : [];
-      var hasMeaningfulFg = (isSvg || isS1) && fgTokens.length > 0;
+      var fgTokens = (tokenColorMap && fgHex) ? (tokenColorMap[fgHex] || []).filter(function(t) { return t.type === 'F'; }) : [];
+
+      // 리프 요소: 자식 엘리먼트 없음 → 직접 텍스트/아이콘을 담은 요소
+      // 컨테이너(자식 있음)에는 text color 표시하지 않음 → bg+border만 표시
+      var isLeaf = el.children.length === 0;
+
+      // 부모 색상과 비교: 같으면 상속값(의미없는 기본색) → 표시 제외
+      // SVG는 currentColor 특성상 항상 명시적 값이므로 예외 처리
+      var parentFg = el.parentElement ? getComputedStyle(el.parentElement).color : null;
+      var fgExplicit = isSvg || (!parentFg) || (fgProp !== parentFg);
+      // text/icon 색상: SVG이거나 리프 요소(자식 없음)이고 토큰 매핑됨
+      var hasMeaningfulFg = fgExplicit && fgTokens.length > 0 && (isSvg || isLeaf);
 
       var hasBg = bgProp !== 'rgba(0, 0, 0, 0)';
       if (!hasBg && !bdProp && !hasMeaningfulFg) {
@@ -7827,17 +7893,24 @@ update(); // 초기화</pre>
         return;
       }
 
-      // 엘리먼트 레이블: s1-* 클래스 우선
+      // 엘리먼트 레이블: s1-* 클래스 우선 → 없으면 부모 s1-* 컨텍스트 표시
       var s1Classes = Array.from(el.classList).filter(function(c) { return /^s1-/.test(c); });
-      var label = s1Classes.length ? s1Classes.join(' ') :
-                  el.tagName.toLowerCase() + (!isSvg && el.className ? '.' + Array.from(el.classList).slice(0, 2).join('.') : '');
+      var parentS1  = !s1Classes.length && el.parentElement
+        ? Array.from(el.parentElement.classList).filter(function(c) { return /^s1-/.test(c); })
+        : [];
+      var label = s1Classes.length
+        ? s1Classes[0]
+        : parentS1.length
+          ? parentS1[0] + ' > ' + el.tagName.toLowerCase()
+          : el.tagName.toLowerCase() + (!isSvg && el.className ? '.' + Array.from(el.classList).slice(0, 2).join('.') : '');
 
       // 색상 프로퍼티 레이블: SVG이면 "icon color", 아니면 "text color"
       var colorLabel = isSvg ? 'icon color' : 'text color';
 
       var bgSection = buildPropSection('background-color', bgProp);
       var bdSection = bdProp ? buildPropSection('border-color', bdProp) : '';
-      var fgSection = (hasBg || bdProp || hasMeaningfulFg) ? buildPropSection(colorLabel, fgProp) : '';
+      // fgSection: hasMeaningfulFg 조건만 사용 (hasBg 연계 제거 → 상속 black 오표시 방지)
+      var fgSection = hasMeaningfulFg ? buildPropSection(colorLabel, fgProp) : '';
 
       if (!bgSection && !bdSection && !fgSection) { tt.style.display = 'none'; return; }
 
