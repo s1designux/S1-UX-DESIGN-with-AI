@@ -3117,6 +3117,7 @@ if (pwClear) {
               <button class="code-tab active" onclick="switchTab(this,'si-html')">HTML</button>
               <button class="code-tab" onclick="switchTab(this,'si-css')">CSS</button>
               <button class="code-tab" onclick="switchTab(this,'si-js')">JavaScript</button>
+              <button class="code-tab" onclick="switchTab(this,'si-tokens')">Token Details</button>
               <button class="code-copy-btn" onclick="copyCode('si-html-pre')">복사</button>
             </div>
             <div class="code-pane active" id="si-html">
@@ -3187,6 +3188,22 @@ searchBtn.<span class="c-fn">addEventListener</span>(<span class="c-str">'click'
   <span class="c-cmt">// TODO: 검색 실행 로직</span>
   console.<span class="c-fn">log</span>(<span class="c-str">'검색:'</span>, input.value);
 });</pre>
+            </div>
+            <div class="code-pane" id="si-tokens">
+              <table class="token-detail-table">
+                <thead><tr><th>Token</th><th>Value (Semantic)</th><th>Resolved</th><th>Role</th></tr></thead>
+                <tbody>
+                  <tr><td class="token-name">--input-default-bg</td><td class="token-value">var(--color-form-control-bg-default)</td><td class="token-resolved" data-token="--input-default-bg"></td><td>기본 배경</td></tr>
+                  <tr><td class="token-name">--input-disabled-bg</td><td class="token-value">var(--color-form-control-bg-disabled)</td><td class="token-resolved" data-token="--input-disabled-bg"></td><td>disabled 배경</td></tr>
+                  <tr><td class="token-name">--input-default-border</td><td class="token-value">var(--color-form-control-border-default)</td><td class="token-resolved" data-token="--input-default-border"></td><td>기본 테두리</td></tr>
+                  <tr><td class="token-name">--input-focus-border</td><td class="token-value">var(--color-form-control-border-selected)</td><td class="token-resolved" data-token="--input-focus-border"></td><td>focus 테두리</td></tr>
+                  <tr><td class="token-name">--input-disabled-border</td><td class="token-value">var(--color-form-control-border-disabled)</td><td class="token-resolved" data-token="--input-disabled-border"></td><td>disabled 테두리</td></tr>
+                  <tr><td class="token-name">--input-placeholder-text</td><td class="token-value">var(--color-form-control-text-placeholder)</td><td class="token-resolved" data-token="--input-placeholder-text"></td><td>placeholder 텍스트</td></tr>
+                  <tr><td class="token-name">--input-disabled-text</td><td class="token-value">var(--color-form-control-text-disabled)</td><td class="token-resolved" data-token="--input-disabled-text"></td><td>disabled 텍스트</td></tr>
+                  <tr style="background:var(--color-bg-subtle);"><td class="token-name">--color-form-control-icon-default</td><td class="token-value">var(--color-gray-800) / dark: var(--color-gray-dark-700)</td><td class="token-resolved" data-token="--color-form-control-icon-default"></td><td>검색·클리어 아이콘 색상</td></tr>
+                </tbody>
+              </table>
+              <p style="margin:8px 10px 4px;font-size:11px;color:var(--color-text-secondary);">Search Input은 Base Input의 <code>--input-*</code> 토큰을 공유합니다. error/correct 상태 없음. 전용 컴포넌트 토큰 없음.</p>
             </div>
           </div>
         </div>
@@ -3305,6 +3322,7 @@ searchBtn.<span class="c-fn">addEventListener</span>(<span class="c-str">'click'
               <button class="code-tab active" onclick="switchTab(this,'pf-html')">HTML</button>
               <button class="code-tab" onclick="switchTab(this,'pf-css')">CSS</button>
               <button class="code-tab" onclick="switchTab(this,'pf-js')">JavaScript</button>
+              <button class="code-tab" onclick="switchTab(this,'pf-tokens')">Token Details</button>
               <button class="code-copy-btn" onclick="copyCode('pf-html-pre')">복사</button>
             </div>
             <div class="code-pane active" id="pf-html">
@@ -3379,6 +3397,26 @@ clearBtn.<span class="c-fn">addEventListener</span>(<span class="c-str">'click'<
   <span class="c-key">if</span> (state) wrap.<span class="c-fn">classList</span>.<span class="c-fn">add</span>(state);
 }
 <span class="c-cmt">// 사용: setPasswordState('is-error') / setPasswordState('is-correct') / setPasswordState(null)</span></pre>
+            </div>
+            <div class="code-pane" id="pf-tokens">
+              <table class="token-detail-table">
+                <thead><tr><th>Token</th><th>Value (Semantic)</th><th>Resolved</th><th>Role</th></tr></thead>
+                <tbody>
+                  <tr><td class="token-name">--input-default-bg</td><td class="token-value">var(--color-form-control-bg-default)</td><td class="token-resolved" data-token="--input-default-bg"></td><td>기본 배경</td></tr>
+                  <tr><td class="token-name">--input-disabled-bg</td><td class="token-value">var(--color-form-control-bg-disabled)</td><td class="token-resolved" data-token="--input-disabled-bg"></td><td>disabled 배경</td></tr>
+                  <tr><td class="token-name">--input-default-border</td><td class="token-value">var(--color-form-control-border-default)</td><td class="token-resolved" data-token="--input-default-border"></td><td>기본 테두리</td></tr>
+                  <tr><td class="token-name">--input-focus-border</td><td class="token-value">var(--color-form-control-border-selected)</td><td class="token-resolved" data-token="--input-focus-border"></td><td>focus 테두리</td></tr>
+                  <tr><td class="token-name">--input-error-border</td><td class="token-value">var(--color-form-control-border-error)</td><td class="token-resolved" data-token="--input-error-border"></td><td>error 테두리</td></tr>
+                  <tr><td class="token-name">--input-correct-border</td><td class="token-value">var(--color-form-control-border-correct)</td><td class="token-resolved" data-token="--input-correct-border"></td><td>correct 테두리</td></tr>
+                  <tr><td class="token-name">--input-disabled-border</td><td class="token-value">var(--color-form-control-border-disabled)</td><td class="token-resolved" data-token="--input-disabled-border"></td><td>disabled 테두리</td></tr>
+                  <tr><td class="token-name">--input-placeholder-text</td><td class="token-value">var(--color-form-control-text-placeholder)</td><td class="token-resolved" data-token="--input-placeholder-text"></td><td>placeholder 텍스트</td></tr>
+                  <tr><td class="token-name">--input-disabled-text</td><td class="token-value">var(--color-form-control-text-disabled)</td><td class="token-resolved" data-token="--input-disabled-text"></td><td>disabled 텍스트</td></tr>
+                  <tr><td class="token-name">--input-error-text</td><td class="token-value">var(--color-text-state-error)</td><td class="token-resolved" data-token="--input-error-text"></td><td>error helper 텍스트</td></tr>
+                  <tr><td class="token-name">--input-correct-text</td><td class="token-value">var(--color-text-state-correct)</td><td class="token-resolved" data-token="--input-correct-text"></td><td>correct helper 텍스트</td></tr>
+                  <tr style="background:var(--color-bg-subtle);"><td class="token-name">--color-form-control-icon-default</td><td class="token-value">var(--color-gray-800) / dark: var(--color-gray-dark-700)</td><td class="token-resolved" data-token="--color-form-control-icon-default"></td><td>비밀번호 토글·클리어 아이콘 색상</td></tr>
+                </tbody>
+              </table>
+              <p style="margin:8px 10px 4px;font-size:11px;color:var(--color-text-secondary);">Password Field는 Base Input의 <code>--input-*</code> 토큰을 공유합니다. 전용 컴포넌트 토큰 없음.</p>
             </div>
           </div>
         </div>
