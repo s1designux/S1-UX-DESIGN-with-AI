@@ -1505,6 +1505,12 @@
       outline: 1.5px dashed rgba(99, 102, 241, 0.65) !important;
       outline-offset: 2px;
     }
+    /* Design mode ON: is-preview pointer-events 복원 → 상태 셀 인스펙션 가능
+       (클릭 방지는 JS capture phase에서 처리) */
+    .dm-active .preview-area .is-preview,
+    .dm-active .preview-area .is-preview * {
+      pointer-events: auto !important;
+    }
 
     /* 플로팅 인스펙터 툴팁 */
     #dm-tooltip {
@@ -6336,6 +6342,253 @@ update(); // 초기화</pre>
         </div>
       </section>
 
+
+      <!-- ═══ LINE TAB ═══ -->
+      <section class="comp-section" id="tab">
+        <div class="comp-section-header">
+          <h2 class="comp-section-title">Line Tab</h2>
+          <span class="comp-badge comp-badge-blue">Core</span>
+          <span class="comp-badge">3 sizes</span>
+          <span class="comp-badge">interactive</span>
+        </div>
+
+        <!-- Sizes comparison -->
+        <div class="variant-block">
+          <div class="variant-label">Sizes</div>
+          <div class="preview-area" style="display:flex; flex-direction:column; gap:28px; padding:20px 16px;">
+            <div>
+              <div style="font-size:11px;font-weight:600;color:var(--color-text-caption);margin-bottom:8px;letter-spacing:0.04em;text-transform:uppercase;">PC MD — height 40px · indicator 4px · font 20px</div>
+              <div class="s1-tab s1-tab--pc-md" id="tab-size-pcmd">
+                <button class="s1-tab-item" type="button">홈</button>
+                <button class="s1-tab-item is-selected" type="button">대시보드</button>
+                <button class="s1-tab-item" type="button">설정</button>
+                <button class="s1-tab-item" type="button">알림</button>
+              </div>
+            </div>
+            <div>
+              <div style="font-size:11px;font-weight:600;color:var(--color-text-caption);margin-bottom:8px;letter-spacing:0.04em;text-transform:uppercase;">PC SM — height 40px · indicator 2px · font 16px</div>
+              <div class="s1-tab s1-tab--pc-sm" id="tab-size-pcsm">
+                <button class="s1-tab-item" type="button">홈</button>
+                <button class="s1-tab-item is-selected" type="button">대시보드</button>
+                <button class="s1-tab-item" type="button">설정</button>
+                <button class="s1-tab-item" type="button">알림</button>
+              </div>
+            </div>
+            <div>
+              <div style="font-size:11px;font-weight:600;color:var(--color-text-caption);margin-bottom:8px;letter-spacing:0.04em;text-transform:uppercase;">Mobile — height 30px · indicator 2px · font 16px · padding-inline sm</div>
+              <div class="s1-tab s1-tab--mobile" id="tab-size-mobile">
+                <button class="s1-tab-item" type="button">홈</button>
+                <button class="s1-tab-item is-selected" type="button">대시보드</button>
+                <button class="s1-tab-item" type="button">설정</button>
+                <button class="s1-tab-item" type="button">알림</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- States Matrix -->
+        <div class="variant-block">
+          <div class="variant-label">States</div>
+          <div class="preview-area" style="overflow-x:auto;">
+            <div class="comp-state-matrix" style="
+              grid-template-columns: 72px minmax(280px,auto) repeat(3, minmax(160px,1fr));
+            ">
+              <!-- Header -->
+              <div class="matrix-col-header-action" style="grid-column:1;grid-row:1;">Size</div>
+              <div class="matrix-col-header-action" style="grid-column:2;grid-row:1;">Action</div>
+              <div class="matrix-col-header" style="grid-column:3;grid-row:1;">Unselected</div>
+              <div class="matrix-col-header" style="grid-column:4;grid-row:1;">Selected</div>
+              <div class="matrix-col-header" style="grid-column:5;grid-row:1;">Hover</div>
+
+              <!-- PC MD row -->
+              <div class="comp-state-cell" style="grid-column:1;grid-row:2;font-size:11px;font-weight:600;color:var(--color-text-caption);justify-content:center;">PC MD</div>
+              <div class="comp-action-cell" data-comp-action="tab-pcmd" style="grid-column:2;grid-row:2;padding:14px 16px;">
+                <div class="s1-tab s1-tab--pc-md" id="tab-action-pcmd">
+                  <button class="s1-tab-item" type="button">홈</button>
+                  <button class="s1-tab-item is-selected" type="button">대시보드</button>
+                  <button class="s1-tab-item" type="button">설정</button>
+                </div>
+              </div>
+              <div class="comp-state-cell" style="grid-column:3;grid-row:2;">
+                <button class="s1-tab-item is-preview" style="font-size:20px;height:40px;letter-spacing:0;padding:0 16px;">홈</button>
+              </div>
+              <div class="comp-state-cell" style="grid-column:4;grid-row:2;">
+                <button class="s1-tab-item is-selected is-preview" style="font-size:20px;height:40px;letter-spacing:0;padding:0 16px;border-bottom-width:4px;">대시보드</button>
+              </div>
+              <div class="comp-state-cell" style="grid-column:5;grid-row:2;">
+                <button class="s1-tab-item is-hover is-preview" style="font-size:20px;height:40px;letter-spacing:0;padding:0 16px;">설정</button>
+              </div>
+
+              <!-- PC SM row -->
+              <div class="comp-state-cell" style="grid-column:1;grid-row:3;font-size:11px;font-weight:600;color:var(--color-text-caption);justify-content:center;">PC SM</div>
+              <div class="comp-action-cell" data-comp-action="tab-pcsm" style="grid-column:2;grid-row:3;padding:14px 16px;">
+                <div class="s1-tab s1-tab--pc-sm" id="tab-action-pcsm">
+                  <button class="s1-tab-item" type="button">홈</button>
+                  <button class="s1-tab-item is-selected" type="button">대시보드</button>
+                  <button class="s1-tab-item" type="button">설정</button>
+                </div>
+              </div>
+              <div class="comp-state-cell" style="grid-column:3;grid-row:3;">
+                <button class="s1-tab-item is-preview" style="font-size:16px;height:40px;padding:0 16px;">홈</button>
+              </div>
+              <div class="comp-state-cell" style="grid-column:4;grid-row:3;">
+                <button class="s1-tab-item is-selected is-preview" style="font-size:16px;height:40px;padding:0 16px;">대시보드</button>
+              </div>
+              <div class="comp-state-cell" style="grid-column:5;grid-row:3;">
+                <button class="s1-tab-item is-hover is-preview" style="font-size:16px;height:40px;padding:0 16px;">설정</button>
+              </div>
+
+              <!-- Mobile row -->
+              <div class="comp-state-cell" style="grid-column:1;grid-row:4;font-size:11px;font-weight:600;color:var(--color-text-caption);justify-content:center;">Mobile</div>
+              <div class="comp-action-cell" data-comp-action="tab-mobile" style="grid-column:2;grid-row:4;padding:14px 16px;">
+                <div class="s1-tab s1-tab--mobile" id="tab-action-mobile">
+                  <button class="s1-tab-item" type="button">홈</button>
+                  <button class="s1-tab-item is-selected" type="button">대시보드</button>
+                  <button class="s1-tab-item" type="button">설정</button>
+                </div>
+              </div>
+              <div class="comp-state-cell" style="grid-column:3;grid-row:4;">
+                <button class="s1-tab-item is-preview" style="font-size:16px;height:30px;padding:0 12px;">홈</button>
+              </div>
+              <div class="comp-state-cell" style="grid-column:4;grid-row:4;">
+                <button class="s1-tab-item is-selected is-preview" style="font-size:16px;height:30px;padding:0 12px;">대시보드</button>
+              </div>
+              <div class="comp-state-cell" style="grid-column:5;grid-row:4;">
+                <button class="s1-tab-item is-hover is-preview" style="font-size:16px;height:30px;padding:0 12px;">설정</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Code Block -->
+        <div class="code-block">
+          <div class="code-tabs">
+            <button class="code-tab active" onclick="switchTab(this,'tab-html')">HTML</button>
+            <button class="code-tab" onclick="switchTab(this,'tab-css')">CSS</button>
+            <button class="code-tab" onclick="switchTab(this,'tab-tokens')">Token Details</button>
+            <button class="code-copy-btn" onclick="copyCode('tab-html-pre')">복사</button>
+          </div>
+          <div class="code-pane active" id="tab-html">
+            <pre id="tab-html-pre"><span class="c-cmt">&lt;!-- ① size: pc-md (font 20px · height 40px · indicator 4px) --&gt;</span>
+<span class="c-tag">&lt;div</span> <span class="c-attr">class</span>=<span class="c-str">"s1-tab s1-tab--pc-md"</span><span class="c-tag">&gt;</span>
+  <span class="c-tag">&lt;button</span> <span class="c-attr">class</span>=<span class="c-str">"s1-tab-item"</span> <span class="c-attr">type</span>=<span class="c-str">"button"</span><span class="c-tag">&gt;</span>홈<span class="c-tag">&lt;/button&gt;</span>
+  <span class="c-tag">&lt;button</span> <span class="c-attr">class</span>=<span class="c-str">"s1-tab-item is-selected"</span> <span class="c-attr">type</span>=<span class="c-str">"button"</span> <span class="c-attr">aria-selected</span>=<span class="c-str">"true"</span><span class="c-tag">&gt;</span>대시보드<span class="c-tag">&lt;/button&gt;</span>
+  <span class="c-tag">&lt;button</span> <span class="c-attr">class</span>=<span class="c-str">"s1-tab-item"</span> <span class="c-attr">type</span>=<span class="c-str">"button"</span><span class="c-tag">&gt;</span>설정<span class="c-tag">&lt;/button&gt;</span>
+<span class="c-tag">&lt;/div&gt;</span>
+
+<span class="c-cmt">&lt;!-- ② size: pc-sm (font 16px · height 40px · indicator 2px) --&gt;</span>
+<span class="c-tag">&lt;div</span> <span class="c-attr">class</span>=<span class="c-str">"s1-tab s1-tab--pc-sm"</span><span class="c-tag">&gt;</span>
+  <span class="c-tag">&lt;button</span> <span class="c-attr">class</span>=<span class="c-str">"s1-tab-item"</span> <span class="c-attr">type</span>=<span class="c-str">"button"</span><span class="c-tag">&gt;</span>홈<span class="c-tag">&lt;/button&gt;</span>
+  <span class="c-tag">&lt;button</span> <span class="c-attr">class</span>=<span class="c-str">"s1-tab-item is-selected"</span> <span class="c-attr">type</span>=<span class="c-str">"button"</span> <span class="c-attr">aria-selected</span>=<span class="c-str">"true"</span><span class="c-tag">&gt;</span>대시보드<span class="c-tag">&lt;/button&gt;</span>
+  <span class="c-tag">&lt;button</span> <span class="c-attr">class</span>=<span class="c-str">"s1-tab-item"</span> <span class="c-attr">type</span>=<span class="c-str">"button"</span><span class="c-tag">&gt;</span>설정<span class="c-tag">&lt;/button&gt;</span>
+<span class="c-tag">&lt;/div&gt;</span>
+
+<span class="c-cmt">&lt;!-- ③ size: mobile (font 16px · height 30px · indicator 2px · padding-inline sm) --&gt;</span>
+<span class="c-tag">&lt;div</span> <span class="c-attr">class</span>=<span class="c-str">"s1-tab s1-tab--mobile"</span><span class="c-tag">&gt;</span>
+  <span class="c-tag">&lt;button</span> <span class="c-attr">class</span>=<span class="c-str">"s1-tab-item"</span> <span class="c-attr">type</span>=<span class="c-str">"button"</span><span class="c-tag">&gt;</span>홈<span class="c-tag">&lt;/button&gt;</span>
+  <span class="c-tag">&lt;button</span> <span class="c-attr">class</span>=<span class="c-str">"s1-tab-item is-selected"</span> <span class="c-attr">type</span>=<span class="c-str">"button"</span> <span class="c-attr">aria-selected</span>=<span class="c-str">"true"</span><span class="c-tag">&gt;</span>대시보드<span class="c-tag">&lt;/button&gt;</span>
+  <span class="c-tag">&lt;button</span> <span class="c-attr">class</span>=<span class="c-str">"s1-tab-item"</span> <span class="c-attr">type</span>=<span class="c-str">"button"</span><span class="c-tag">&gt;</span>설정<span class="c-tag">&lt;/button&gt;</span>
+<span class="c-tag">&lt;/div&gt;</span></pre>
+          </div>
+          <div class="code-pane" id="tab-css">
+            <pre><span class="c-cmt">/* ── Tab strip ───────────────────────── */</span>
+<span class="c-sel">.s1-tab</span> {
+  <span class="c-prop">display</span>: <span class="c-val">flex</span>;
+  <span class="c-prop">align-items</span>: <span class="c-val">flex-end</span>;
+  <span class="c-prop">background</span>: <span class="c-val">var(--tab-bg)</span>;
+  <span class="c-prop">border-bottom</span>: <span class="c-val">1px solid var(--tab-indicator-default)</span>;
+}
+
+<span class="c-cmt">/* ── Tab item (base) ─────────────────── */</span>
+<span class="c-sel">.s1-tab-item</span> {
+  <span class="c-prop">height</span>: <span class="c-val">40px</span>;           <span class="c-cmt">/* pc-md, pc-sm */</span>
+  <span class="c-prop">padding</span>: <span class="c-val">0 var(--spacing-padding-inline-lg)</span>;
+  <span class="c-prop">font-size</span>: <span class="c-val">16px</span>;         <span class="c-cmt">/* pc-sm, mobile */</span>
+  <span class="c-prop">font-weight</span>: <span class="c-val">var(--font-weight-medium)</span>;
+  <span class="c-prop">color</span>: <span class="c-val">var(--tab-label-default)</span>;
+  <span class="c-prop">letter-spacing</span>: <span class="c-val">-0.32px</span>; <span class="c-cmt">/* pc-sm, mobile unselected */</span>
+  <span class="c-prop">border-bottom</span>: <span class="c-val">1px solid transparent</span>;
+  <span class="c-prop">margin-bottom</span>: <span class="c-val">-1px</span>;     <span class="c-cmt">/* overlap container border */</span>
+}
+<span class="c-sel">.s1-tab-item.is-selected</span> {
+  <span class="c-prop">color</span>: <span class="c-val">var(--tab-label-selected)</span>;
+  <span class="c-prop">font-weight</span>: <span class="c-val">var(--font-weight-bold)</span>;
+  <span class="c-prop">border-bottom</span>: <span class="c-val">2px solid var(--tab-indicator-selected)</span>; <span class="c-cmt">/* pc-sm, mobile */</span>
+  <span class="c-prop">letter-spacing</span>: <span class="c-val">0</span>;
+}
+
+<span class="c-cmt">/* ── Size: pc-md (20px · indicator 4px) */</span>
+<span class="c-sel">.s1-tab--pc-md .s1-tab-item</span>                { <span class="c-prop">font-size</span>: <span class="c-val">20px</span>; <span class="c-prop">letter-spacing</span>: <span class="c-val">0</span>; }
+<span class="c-sel">.s1-tab--pc-md .s1-tab-item.is-selected</span>    { <span class="c-prop">border-bottom-width</span>: <span class="c-val">4px</span>; }
+
+<span class="c-cmt">/* ── Size: mobile (30px · padding-inline sm) */</span>
+<span class="c-sel">.s1-tab--mobile .s1-tab-item</span> {
+  <span class="c-prop">height</span>: <span class="c-val">30px</span>;
+  <span class="c-prop">padding</span>: <span class="c-val">0 var(--spacing-padding-inline-sm)</span>;
+}
+
+<span class="c-cmt">/* ── Tokens ──────────────────────────── */</span>
+<span class="c-prop">--tab-bg</span>:                 <span class="c-val">var(--color-navigation-bg)</span>;          <span class="c-cmt">/* #FFFFFF */</span>
+<span class="c-prop">--tab-label-default</span>:      <span class="c-val">var(--color-navigation-label-default)</span>;   <span class="c-cmt">/* #555555 */</span>
+<span class="c-prop">--tab-label-selected</span>:     <span class="c-val">var(--color-navigation-label-selected)</span>;  <span class="c-cmt">/* #1D6CEB */</span>
+<span class="c-prop">--tab-indicator-default</span>:  <span class="c-val">var(--color-navigation-indicator-default)</span>; <span class="c-cmt">/* #D9D9D9 */</span>
+<span class="c-prop">--tab-indicator-selected</span>: <span class="c-val">var(--color-navigation-indicator-selected)</span>; <span class="c-cmt">/* #1D6CEB */</span></pre>
+          </div>
+          <div class="code-pane" id="tab-tokens">
+            <div style="padding:16px;overflow:auto;">
+              <table class="token-detail-table" style="width:100%;border-collapse:collapse;font-size:12px;">
+                <thead>
+                  <tr style="border-bottom:1px solid var(--color-border-default);">
+                    <th style="text-align:left;padding:6px 8px;color:var(--color-text-secondary);font-weight:600;">Token</th>
+                    <th style="text-align:left;padding:6px 8px;color:var(--color-text-secondary);font-weight:600;">Value</th>
+                    <th style="text-align:left;padding:6px 8px;color:var(--color-text-secondary);font-weight:600;">Resolved (Light)</th>
+                    <th style="text-align:left;padding:6px 8px;color:var(--color-text-secondary);font-weight:600;">State</th>
+                    <th style="text-align:left;padding:6px 8px;color:var(--color-text-secondary);font-weight:600;">Prop</th>
+                  </tr>
+                </thead>
+                <tbody style="font-family:monospace;">
+                  <tr><td colspan="5" style="padding:6px 8px;font-family:sans-serif;font-size:11px;font-weight:700;color:var(--color-text-caption);background:var(--color-bg-subtle);">Component Tokens → Semantic (color-navigation-*)</td></tr>
+                  <tr><td style="padding:4px 8px;">--tab-bg</td><td style="padding:4px 8px;color:var(--color-text-secondary);">var(--color-navigation-bg)</td><td style="padding:4px 8px;">#FFFFFF</td><td style="padding:4px 8px;">—</td><td style="padding:4px 8px;">bg</td></tr>
+                  <tr><td style="padding:4px 8px;">--tab-label-default</td><td style="padding:4px 8px;color:var(--color-text-secondary);">var(--color-navigation-label-default)</td><td style="padding:4px 8px;">#555555</td><td style="padding:4px 8px;">default</td><td style="padding:4px 8px;">color</td></tr>
+                  <tr><td style="padding:4px 8px;">--tab-label-selected</td><td style="padding:4px 8px;color:var(--color-text-secondary);">var(--color-navigation-label-selected)</td><td style="padding:4px 8px;">#1D6CEB</td><td style="padding:4px 8px;">selected / hover</td><td style="padding:4px 8px;">color</td></tr>
+                  <tr><td style="padding:4px 8px;">--tab-indicator-default</td><td style="padding:4px 8px;color:var(--color-text-secondary);">var(--color-navigation-indicator-default)</td><td style="padding:4px 8px;">#D9D9D9</td><td style="padding:4px 8px;">default</td><td style="padding:4px 8px;">border-bottom</td></tr>
+                  <tr><td style="padding:4px 8px;">--tab-indicator-selected</td><td style="padding:4px 8px;color:var(--color-text-secondary);">var(--color-navigation-indicator-selected)</td><td style="padding:4px 8px;">#1D6CEB</td><td style="padding:4px 8px;">selected</td><td style="padding:4px 8px;">border-bottom</td></tr>
+                  <tr><td colspan="5" style="padding:6px 8px;font-family:sans-serif;font-size:11px;font-weight:700;color:var(--color-text-caption);background:var(--color-bg-subtle);">Semantic Tokens → Foundation</td></tr>
+                  <tr><td style="padding:4px 8px;">--color-navigation-bg</td><td style="padding:4px 8px;color:var(--color-text-secondary);">var(--color-surface-default)</td><td style="padding:4px 8px;">#FFFFFF</td><td style="padding:4px 8px;">—</td><td style="padding:4px 8px;">bg</td></tr>
+                  <tr><td style="padding:4px 8px;">--color-navigation-label-default</td><td style="padding:4px 8px;color:var(--color-text-secondary);">var(--color-gray-600)</td><td style="padding:4px 8px;">#555555</td><td style="padding:4px 8px;">default</td><td style="padding:4px 8px;">color</td></tr>
+                  <tr><td style="padding:4px 8px;">--color-navigation-label-selected</td><td style="padding:4px 8px;color:var(--color-text-secondary);">var(--color-action-primary-default)</td><td style="padding:4px 8px;">#1D6CEB</td><td style="padding:4px 8px;">selected</td><td style="padding:4px 8px;">color</td></tr>
+                  <tr><td style="padding:4px 8px;">--color-navigation-indicator-default</td><td style="padding:4px 8px;color:var(--color-text-secondary);">var(--color-gray-200)</td><td style="padding:4px 8px;">#D9D9D9</td><td style="padding:4px 8px;">default</td><td style="padding:4px 8px;">border</td></tr>
+                  <tr><td style="padding:4px 8px;">--color-navigation-indicator-selected</td><td style="padding:4px 8px;color:var(--color-text-secondary);">var(--color-action-primary-default)</td><td style="padding:4px 8px;">#1D6CEB</td><td style="padding:4px 8px;">selected</td><td style="padding:4px 8px;">border</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <script>
+        // ── Line Tab 인터랙션 ────────────────────────────────────────
+        ;(function() {
+          function setupTabStrip(el) {
+            if (!el) return;
+            el.querySelectorAll('.s1-tab-item').forEach(function(btn) {
+              btn.addEventListener('click', function() {
+                el.querySelectorAll('.s1-tab-item').forEach(function(b) {
+                  b.classList.remove('is-selected');
+                  b.removeAttribute('aria-selected');
+                });
+                btn.classList.add('is-selected');
+                btn.setAttribute('aria-selected', 'true');
+              });
+            });
+          }
+          ['tab-size-pcmd','tab-size-pcsm','tab-size-mobile',
+           'tab-action-pcmd','tab-action-pcsm','tab-action-mobile'].forEach(function(id) {
+            setupTabStrip(document.getElementById(id));
+          });
+        })();
+        </script>
+      </section>
+
     </div>
   </main>
 </div>
@@ -7970,6 +8223,15 @@ update(); // 초기화</pre>
         if (magn) magn.style.display = 'none';
       }
     });
+
+    // Design mode ON: preview-area 내 클릭 차단 (is-preview pointer-events 복원 후 오동작 방지)
+    document.addEventListener('click', function(e) {
+      if (!isActive) return;
+      if (e.target.closest && e.target.closest('.preview-area')) {
+        e.preventDefault();
+        e.stopImmediatePropagation();
+      }
+    }, true); // capture phase — 다른 핸들러보다 먼저 차단
 
     /* ── DOM 생성 ── */
     var tt = document.createElement('div');
