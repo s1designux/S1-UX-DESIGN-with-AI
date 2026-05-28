@@ -1477,8 +1477,9 @@
        <style> 태그가 tokens.css link 이후라 :root 정의가 dark override를 덮어쓰는 문제.
        같은 <style> 내에서 [data-theme="dark"] 를 뒤에 두면 소스 순서 우선으로 적용됨. */
     [data-theme="dark"] {
-      --dropdown-list-bg:               var(--color-bg-subtle); /* gray-dark-200 = #24252C — 1단계 밝게 */
-      --dropdown-option-hover-bg:       var(--color-bg-muted); /* gray-dark-300 */
+      --dropdown-list-bg:               var(--color-bg-subtle);    /* gray-dark-200 = #24252C — 1단계 밝게 */
+      --dropdown-option-hover-bg:       var(--color-bg-muted);     /* gray-dark-300 */
+      --dropdown-trigger-selected-text: var(--color-text-secondary); /* gray-dark-800 = #B8BABF — filled 텍스트 */
       --color-form-control-icon-default: var(--color-gray-dark-700); /* #8A8C96 */
       /* ── button secondary dark — cascade 차단 해소 ── */
       --button-secondary-default-bg:     var(--color-bg-elevated);   /* gray-dark-400 = #35363F */
@@ -1579,6 +1580,10 @@
     .dm-badge-S { background: #131c2e; color: #7aa2f7; border: 1px solid #2a4070; }
     .dm-badge-C { background: #1e1228; color: #bb9af7; border: 1px solid #4a2d6e; }
     .dm-token-name { color: #cdd6f4; word-break: break-all; font-size: 10.5px; }
+    .dm-typo-row { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+    .dm-typo-item { display: flex; align-items: center; gap: 4px; }
+    .dm-typo-key { font-size: 9.5px; color: #565f89; }
+    .dm-typo-val { color: #9ece6a; font-weight: 700; font-size: 11px; }
 
     /* Design Mode 툴바 버튼 */
     #btnDesignMode { display: flex; align-items: center; gap: 5px; }
@@ -8126,6 +8131,20 @@ update(); // 초기화</pre>
       return html;
     }
 
+    function buildTypoSection(fsVal, fwVal) {
+      var fwLabel = fwVal === '700' || fwVal === 'bold'   ? 'Bold · 700'
+                  : fwVal === '500'                       ? 'Medium · 500'
+                  : fwVal === '400' || fwVal === 'normal' ? 'Regular · 400'
+                  : fwVal;
+      var html = '<div class="dm-prop-group">';
+      html += '<div class="dm-prop-label">typography</div>';
+      html += '<div class="dm-typo-row">';
+      html += '<span class="dm-typo-item"><span class="dm-typo-key">size</span><span class="dm-typo-val">' + fsVal + 'px</span></span>';
+      html += '<span class="dm-typo-item"><span class="dm-typo-key">weight</span><span class="dm-typo-val">' + fwLabel + '</span></span>';
+      html += '</div></div>';
+      return html;
+    }
+
     /* ── 툴팁 표시/이동 ── */
     function showTooltip(e) {
       var tt = document.getElementById('dm-tooltip');
@@ -8164,7 +8183,18 @@ update(); // 초기화</pre>
       var hasMeaningfulFg = fgExplicit && fgTokens.length > 0 && (isSvg || isLeaf);
 
       var hasBg = bgProp !== 'rgba(0, 0, 0, 0)';
-      if (!hasBg && !bdProp && !hasMeaningfulFg) {
+
+      // Typography: 리프 요소이거나 직접 텍스트를 담는 요소에서 표시
+      var fsVal = Math.round(parseFloat(cs.fontSize) || 0);
+      var fwVal = cs.fontWeight;
+      var parentFs = el.parentElement ? Math.round(parseFloat(getComputedStyle(el.parentElement).fontSize) || 0) : 0;
+      var parentFw = el.parentElement ? getComputedStyle(el.parentElement).fontWeight : null;
+      var fsExplicit = fsVal !== parentFs;
+      var fwExplicit = fwVal !== parentFw;
+      var showTypo = fsVal >= 8 && (isLeaf || !isSvg) && (fsExplicit || fwExplicit);
+      var typoSection = showTypo ? buildTypoSection(fsVal, fwVal) : '';
+
+      if (!hasBg && !bdProp && !hasMeaningfulFg && !showTypo) {
         tt.style.display = 'none';
         return;
       }
@@ -8188,12 +8218,13 @@ update(); // 초기화</pre>
       // fgSection: hasMeaningfulFg 조건만 사용 (hasBg 연계 제거 → 상속 black 오표시 방지)
       var fgSection = hasMeaningfulFg ? buildPropSection(colorLabel, fgProp) : '';
 
-      if (!bgSection && !bdSection && !fgSection) { tt.style.display = 'none'; return; }
+      if (!bgSection && !bdSection && !fgSection && !typoSection) { tt.style.display = 'none'; return; }
 
       var content = '<div class="dm-el-label">' + label + '</div>';
       content += bgSection;
       if (bdSection) { if (bgSection) content += '<div class="dm-divider"></div>'; content += bdSection; }
       if (fgSection) { if (bgSection || bdSection) content += '<div class="dm-divider"></div>'; content += fgSection; }
+      if (typoSection) { if (bgSection || bdSection || fgSection) content += '<div class="dm-divider"></div>'; content += typoSection; }
 
       tt.innerHTML = content;
       tt.style.display = 'block';

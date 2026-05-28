@@ -629,8 +629,9 @@
   --button-secondary-default-border: var(--color-border-strong);  /* gray-dark-500 = #3E4049 */
 
   /* ── dropdown dark override ── */
-  --dropdown-list-bg:           var(--color-bg-subtle); /* gray-dark-200 = #24252C — 1단계 밝게 */
-  --dropdown-option-hover-bg:   var(--color-bg-muted);  /* gray-dark-300 */
+  --dropdown-list-bg:              var(--color-bg-subtle);    /* gray-dark-200 = #24252C — 1단계 밝게 */
+  --dropdown-option-hover-bg:      var(--color-bg-muted);     /* gray-dark-300 */
+  --dropdown-trigger-selected-text: var(--color-text-secondary); /* gray-dark-800 = #B8BABF — filled 텍스트 */
 
   /* ── color-navigation (dark) — candidate: Figma dark 시각 검증 필요 ── */
   --color-navigation-bg:                 var(--color-surface-default);       /* gray-dark-100 */
