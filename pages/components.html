@@ -1420,6 +1420,10 @@
       --table-header-bg:     var(--color-bg-subtle);      /* gray-dark-200 = #24252C — 행보다 1단계 밝게 */
       --table-header-border: var(--color-border-default); /* gray-dark-300 = #2E2F38 — 헤더bg와 구분 */
       --table-border-strong: var(--color-border-strong);  /* gray-dark-500 = #3E4049 — 상하 강선 적정 명암 */
+      /* ── chip-line dark — cascade 차단 해소 ──
+         문제: --color-border-default dark=gray-dark-300(#2E2F38) → 칩bg(#1C1D23) 대비 미미 → 라인 블랙 */
+      --chip-line-default-border: var(--color-border-strong);   /* gray-dark-500 = #3E4049 */
+      --chip-line-hover-border:   var(--color-border-emphasis); /* gray-dark-700 = #8A8C96 */
     }
     [data-theme="dark"] .s1-date-picker__day:hover:not([disabled]) > .day-inner {
       background: var(--color-bg-elevated); /* gray-dark-400 = #35363F — 1단계 밝게 */

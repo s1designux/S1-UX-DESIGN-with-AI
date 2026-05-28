@@ -635,6 +635,12 @@
   --table-header-border: var(--color-border-default); /* gray-dark-300 = #2E2F38 — 헤더bg와 구분 */
   --table-border-strong: var(--color-border-strong);  /* gray-dark-500 = #3E4049 — 상하 강선 적정 명암 */
 
+  /* ── chip-line dark override ──
+     문제: --color-border-default dark = gray-dark-300 (#2E2F38) → 칩 bg(gray-dark-100=#1C1D23)와 명도차 미미 → 라인 블랙처럼 보임
+     해소: default→border-strong(gray-dark-500=#3E4049), hover→border-emphasis(gray-dark-700=#8A8C96) */
+  --chip-line-default-border: var(--color-border-strong);   /* gray-dark-500 = #3E4049 */
+  --chip-line-hover-border:   var(--color-border-emphasis); /* gray-dark-700 = #8A8C96 */
+
   /* ── color-overlay ── */
   --color-overlay: rgba(0, 0, 0, 0.75); /* rgba 허용 예외 */
 }
