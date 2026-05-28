@@ -4624,31 +4624,6 @@ function setDisabled(on) {
           </div>
         </div>
 
-        <!-- ── Option List States ── -->
-        <div class="variant-block">
-          <div class="variant-label">Option List States</div>
-          <div class="preview-area">
-            <div style="display:flex;gap:24px;flex-wrap:wrap;align-items:flex-start;">
-              <div>
-                <div style="font-size:11px;color:var(--color-text-secondary);font-weight:500;margin-bottom:6px;">Option States</div>
-                <div class="s1-select-list" style="position:relative;top:auto;display:block;width:200px;box-shadow:0 4px 16px rgba(0,0,0,0.10);">
-                  <div class="s1-select-option">Default option</div>
-                  <div class="s1-select-option is-hover">Hover option</div>
-                  <div class="s1-select-option is-selected">Selected option</div>
-                  <div class="s1-select-option">Another option</div>
-                </div>
-              </div>
-              <div style="font-size:11px;color:var(--color-text-secondary);line-height:1.8;padding-top:2px;">
-                <strong style="color:var(--color-text-primary);display:block;margin-bottom:4px;">옵션 색상 규칙</strong>
-                Default: <code>--color-text-secondary</code><br>
-                Hover bg: <code>--dropdown-option-hover-bg</code><br>
-                Selected bg: <code>--dropdown-option-selected-bg</code><br>
-                Selected text: <code>--dropdown-option-selected-text</code>
-              </div>
-            </div>
-          </div>
-        </div>
-
         <!-- ── Size Variants ── -->
         <div class="variant-block platform-section platform-section-pc">
           <div class="variant-label">Size Variants</div>
@@ -4685,6 +4660,31 @@ function setDisabled(on) {
                   </div>
                   <div style="font-size:10px;color:var(--color-text-secondary);line-height:1.5;">Mobile · h48<br><code style="font-size:10px;">--sizing-form-control-height-lg</code><br><code style="font-size:10px;">s1-select-wrap--mobile</code></div>
                 </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── Option List States ── -->
+        <div class="variant-block">
+          <div class="variant-label">Option List States</div>
+          <div class="preview-area">
+            <div style="display:flex;gap:24px;flex-wrap:wrap;align-items:flex-start;">
+              <div>
+                <div style="font-size:11px;color:var(--color-text-secondary);font-weight:500;margin-bottom:6px;">Option States</div>
+                <div class="s1-select-list" style="position:relative;top:auto;display:block;width:200px;box-shadow:0 4px 16px rgba(0,0,0,0.10);">
+                  <div class="s1-select-option">Default option</div>
+                  <div class="s1-select-option is-hover">Hover option</div>
+                  <div class="s1-select-option is-selected">Selected option</div>
+                  <div class="s1-select-option">Another option</div>
+                </div>
+              </div>
+              <div style="font-size:11px;color:var(--color-text-secondary);line-height:1.8;padding-top:2px;">
+                <strong style="color:var(--color-text-primary);display:block;margin-bottom:4px;">옵션 색상 규칙</strong>
+                Default: <code>--color-text-secondary</code><br>
+                Hover bg: <code>--dropdown-option-hover-bg</code><br>
+                Selected bg: <code>--dropdown-option-selected-bg</code><br>
+                Selected text: <code>--dropdown-option-selected-text</code>
               </div>
             </div>
           </div>
@@ -6584,20 +6584,28 @@ update(); // 초기화</pre>
 
         <script>
         ;(function() {
+          // 초기 상태는 CSS border-bottom(.is-selected)으로 표시.
+          // has-sliding-indicator 는 첫 클릭 시 활성화하여
+          // 레이아웃 미완성 시점의 offsetLeft/Width=0 버그를 방지한다.
           function setupTabStrip(el) {
             if (!el) return;
-            el.classList.add('has-sliding-indicator');
             var indicator = document.createElement('span');
             indicator.className = 's1-tab-indicator';
             el.appendChild(indicator);
+            var activated = false;
             function placeIndicator(btn) {
               indicator.style.left = btn.offsetLeft + 'px';
               indicator.style.width = btn.offsetWidth + 'px';
             }
-            var initBtn = el.querySelector('.s1-tab-item.is-selected');
-            if (initBtn) placeIndicator(initBtn);
             el.querySelectorAll('.s1-tab-item').forEach(function(btn) {
               btn.addEventListener('click', function() {
+                if (!activated) {
+                  activated = true;
+                  // 현재 선택 항목 위치로 인디케이터 먼저 배치(transition 없이)
+                  var cur = el.querySelector('.s1-tab-item.is-selected');
+                  if (cur) placeIndicator(cur);
+                  el.classList.add('has-sliding-indicator');
+                }
                 el.querySelectorAll('.s1-tab-item').forEach(function(b) {
                   b.classList.remove('is-selected');
                   b.removeAttribute('aria-selected');
