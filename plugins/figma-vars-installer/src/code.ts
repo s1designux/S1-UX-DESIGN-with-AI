@@ -2,8 +2,11 @@
  * SW Variables Installer — code.ts
  *
  * 새 Figma 파일에 S1 디자인시스템 Variables를 생성한다.
- *   - Foundation collection (Default 모드, ~200개 색상 원본값)
- *   - semantic collection (Light / Dark 2모드, ~50개 Semantic alias)
+ *   - Foundation collection (Light / Dark 2모드, ~127개 색상 원본값)
+ *   - semantic collection (Light / Dark 2모드, ~44개 Semantic alias)
+ *
+ * Foundation·Semantic 모두 같은 모드명("Light"·"Dark")을 사용하므로
+ * 프레임이 한 컬렉션의 모드를 바꾸면 다른 컬렉션도 같은 모드로 따라간다.
  *
  * 이미 같은 이름의 collection이 있으면 업데이트(add/overwrite) 모드로 동작한다.
  * 삭제는 하지 않는다.
@@ -12,7 +15,7 @@
 import {
   FOUNDATION, SEMANTIC,
   FOUNDATION_COLLECTION, SEMANTIC_COLLECTION,
-  SEMANTIC_LIGHT_MODE, SEMANTIC_DARK_MODE,
+  LIGHT_MODE, DARK_MODE,
 } from "./vars-data";
 
 figma.showUI(__html__, { width: 400, height: 480, title: "SW Variables Installer" });
@@ -84,25 +87,46 @@ function ensureMode(collection: VariableCollection, modeName: string): string {
   return collection.addMode(modeName);
 }
 
+/**
+ * 컬렉션의 기본 모드("Mode 1" 등)를 Light로 리네임한 뒤
+ * Light·Dark 모드 ID를 확보한다.
+ *
+ * 순서 중요: rename → ensureMode 순으로 호출해야
+ *           "Mode 1" + 새 "Light" + 새 "Dark" = 3모드 중복 버그를 피한다.
+ */
+function setupLightDarkModes(collection: VariableCollection): {
+  lightId: string; darkId: string;
+} {
+  // 1) 기본 모드명이 Light/Dark 둘 다 아니면 Light로 리네임
+  const first = collection.modes[0];
+  if (first.name !== LIGHT_MODE && first.name !== DARK_MODE) {
+    collection.renameMode(first.modeId, LIGHT_MODE);
+  }
+  // 2) Light/Dark 모드 확보 (없으면 생성)
+  const lightId = ensureMode(collection, LIGHT_MODE);
+  const darkId  = ensureMode(collection, DARK_MODE);
+  return { lightId, darkId };
+}
+
 // ── 메인 설치 로직 ───────────────────────────────────────────────────────────
 
 async function runInstall() {
   try {
     post("progress", { step: "Foundation collection 준비 중…", pct: 5 });
 
-    // ── 1. Foundation collection ──────────────────────────────────────────
+    // ── 1. Foundation collection (Light + Dark) ────────────────────────────
     const fc = await getOrCreateCollection(FOUNDATION_COLLECTION);
-    const defaultModeId = fc.modes[0].modeId;
-    fc.renameMode(defaultModeId, "Default");
+    const { lightId: fLightId, darkId: fDarkId } = setupLightDarkModes(fc);
 
     const foundationVarMap: Record<string, Variable> = {};
     const foundationKeys = Object.keys(FOUNDATION);
 
     for (let i = 0; i < foundationKeys.length; i++) {
-      const path = foundationKeys[i];
-      const hex  = FOUNDATION[path];
+      const path  = foundationKeys[i];
+      const modes = FOUNDATION[path];
       const v = await getOrCreateVariable(path, fc, "COLOR");
-      v.setValueForMode(defaultModeId, hexToRgb(hex));
+      v.setValueForMode(fLightId, hexToRgb(modes.light));
+      v.setValueForMode(fDarkId,  hexToRgb(modes.dark));
       foundationVarMap[path] = v;
 
       if (i % 20 === 0) {
@@ -113,15 +137,9 @@ async function runInstall() {
 
     post("progress", { step: "semantic collection 준비 중…", pct: 50 });
 
-    // ── 2. semantic collection ────────────────────────────────────────────
+    // ── 2. semantic collection (Light + Dark) ──────────────────────────────
     const sc = await getOrCreateCollection(SEMANTIC_COLLECTION);
-    const lightModeId = ensureMode(sc, SEMANTIC_LIGHT_MODE);
-    const darkModeId  = ensureMode(sc, SEMANTIC_DARK_MODE);
-
-    // 기본 모드명이 "Mode 1"인 경우 Light로 이름 변경
-    if (sc.modes[0].name !== SEMANTIC_LIGHT_MODE && sc.modes[0].name !== SEMANTIC_DARK_MODE) {
-      sc.renameMode(sc.modes[0].modeId, SEMANTIC_LIGHT_MODE);
-    }
+    const { lightId: sLightId, darkId: sDarkId } = setupLightDarkModes(sc);
 
     const semanticKeys = Object.keys(SEMANTIC);
 
@@ -129,11 +147,8 @@ async function runInstall() {
       const path  = semanticKeys[i];
       const entry = SEMANTIC[path];
       const v = await getOrCreateVariable(path, sc, "COLOR");
-
-      // Light 값 설정
-      v.setValueForMode(lightModeId, resolveRef(entry.light, foundationVarMap));
-      // Dark 값 설정
-      v.setValueForMode(darkModeId,  resolveRef(entry.dark,  foundationVarMap));
+      v.setValueForMode(sLightId, resolveRef(entry.light, foundationVarMap));
+      v.setValueForMode(sDarkId,  resolveRef(entry.dark,  foundationVarMap));
 
       if (i % 10 === 0) {
         const pct = 50 + Math.round((i / semanticKeys.length) * 45);
