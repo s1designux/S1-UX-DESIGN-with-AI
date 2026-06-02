@@ -2,8 +2,14 @@
  * SW Variables Installer — code.ts
  *
  * 새 Figma 파일에 S1 디자인시스템 Variables를 생성한다.
- *   - Foundation collection (Light / Dark 2모드, ~127개 색상 원본값)
- *   - semantic collection (Light / Dark 2모드, ~44개 Semantic alias)
+ *
+ *   Foundation collection (Light / Dark 2모드)
+ *     - COLOR: 색상 원본값 (~127개)
+ *     - FLOAT: spacing·radius·border-width·font-size·font-weight·line-height (~45개)
+ *
+ *   semantic collection (Light / Dark 2모드)
+ *     - COLOR: 역할 기반 색상 alias (~44개)
+ *     - FLOAT: padding·section·stack·sizing·radius 등 역할 alias (~50개)
  *
  * Foundation·Semantic 모두 같은 모드명("Light"·"Dark")을 사용하므로
  * 프레임이 한 컬렉션의 모드를 바꾸면 다른 컬렉션도 같은 모드로 따라간다.
@@ -13,7 +19,8 @@
  */
 
 import {
-  FOUNDATION, SEMANTIC,
+  FOUNDATION_COLOR, FOUNDATION_NUMBER,
+  SEMANTIC_COLOR, SEMANTIC_NUMBER,
   FOUNDATION_COLLECTION, SEMANTIC_COLLECTION,
   LIGHT_MODE, DARK_MODE,
 } from "./vars-data";
@@ -55,7 +62,7 @@ function post(type: string, payload?: object) {
   figma.ui.postMessage({ type, ...payload });
 }
 
-// ── 컬렉션 get-or-create ──────────────────────────────────────────────────────
+// ── 컬렉션 / 변수 get-or-create ───────────────────────────────────────────────
 
 async function getOrCreateCollection(name: string): Promise<VariableCollection> {
   const all = await figma.variables.getLocalVariableCollectionsAsync();
@@ -63,8 +70,6 @@ async function getOrCreateCollection(name: string): Promise<VariableCollection> 
   if (existing) return existing;
   return figma.variables.createVariableCollection(name);
 }
-
-// ── 변수 get-or-create ────────────────────────────────────────────────────────
 
 async function getOrCreateVariable(
   name: string,
@@ -79,8 +84,6 @@ async function getOrCreateVariable(
   return figma.variables.createVariable(name, collection, resolvedType);
 }
 
-// ── 모드 확보 ─────────────────────────────────────────────────────────────────
-
 function ensureMode(collection: VariableCollection, modeName: string): string {
   const found = collection.modes.find((m) => m.name === modeName);
   if (found) return found.modeId;
@@ -88,50 +91,125 @@ function ensureMode(collection: VariableCollection, modeName: string): string {
 }
 
 /**
- * 컬렉션의 기본 모드("Mode 1" 등)를 Light로 리네임한 뒤
- * Light·Dark 모드 ID를 확보한다.
- *
- * 순서 중요: rename → ensureMode 순으로 호출해야
- *           "Mode 1" + 새 "Light" + 새 "Dark" = 3모드 중복 버그를 피한다.
+ * 컬렉션의 기본 모드를 Light로 리네임한 뒤 Light·Dark 모드 ID를 확보한다.
+ * 순서: rename → ensureMode 로 호출해야 "Mode 1" + 새 Light + 새 Dark = 3모드 중복 버그를 피한다.
  */
 function setupLightDarkModes(collection: VariableCollection): {
   lightId: string; darkId: string;
 } {
-  // 1) 기본 모드명이 Light/Dark 둘 다 아니면 Light로 리네임
   const first = collection.modes[0];
   if (first.name !== LIGHT_MODE && first.name !== DARK_MODE) {
     collection.renameMode(first.modeId, LIGHT_MODE);
   }
-  // 2) Light/Dark 모드 확보 (없으면 생성)
   const lightId = ensureMode(collection, LIGHT_MODE);
   const darkId  = ensureMode(collection, DARK_MODE);
   return { lightId, darkId };
+}
+
+// ── Scope 분배 ────────────────────────────────────────────────────────────────
+
+function colorScopes(path: string): VariableScope[] {
+  if (path.startsWith("color/bg/") || path.startsWith("color/surface/")) {
+    return ["FRAME_FILL", "SHAPE_FILL"];
+  }
+  if (path.startsWith("color/text/"))   return ["TEXT_FILL"];
+  if (path.startsWith("color/border/")) return ["STROKE_COLOR"];
+  if (path.startsWith("color/icon/"))   return ["SHAPE_FILL", "STROKE_COLOR"];
+  if (path.startsWith("color/action/")) return ["FRAME_FILL", "SHAPE_FILL", "TEXT_FILL"];
+  if (path.startsWith("color/status/")) return ["FRAME_FILL", "TEXT_FILL", "STROKE_COLOR"];
+  if (path === "color/overlay")         return ["FRAME_FILL"];
+  // Foundation primitives — 광범위 허용
+  return ["ALL_SCOPES"];
+}
+
+function numberScopes(path: string): VariableScope[] {
+  if (path.startsWith("spacing/"))      return ["GAP"];
+  if (path.startsWith("sizing/icon"))   return ["WIDTH_HEIGHT"];
+  if (path.startsWith("sizing/"))       return ["WIDTH_HEIGHT"];
+  if (path.startsWith("radius/"))       return ["CORNER_RADIUS"];
+  if (path.startsWith("border-width/")) return ["STROKE_FLOAT"];
+  if (path.startsWith("font-size/"))    return ["FONT_SIZE"];
+  if (path.startsWith("font-weight/"))  return ["FONT_WEIGHT"];
+  if (path.startsWith("line-height/"))  return ["LINE_HEIGHT"];
+  return ["ALL_SCOPES"];
+}
+
+// ── Ref 해석 ──────────────────────────────────────────────────────────────────
+
+function resolveColorRef(
+  ref: string,
+  foundationColorMap: Record<string, Variable>
+): VariableValue {
+  if (ref.startsWith("rgba")) return rgbaStringToRgb(ref);
+  if (ref.startsWith("#"))    return hexToRgb(ref);
+  const target = foundationColorMap[ref];
+  if (!target) {
+    console.warn(`[SW Installer] Foundation color alias not found: ${ref}`);
+    return { r: 1, g: 0, b: 1, a: 1 };
+  }
+  return figma.variables.createVariableAlias(target);
+}
+
+function resolveNumberRef(
+  ref: string | number,
+  foundationNumberMap: Record<string, Variable>
+): VariableValue {
+  if (typeof ref === "number") return ref;
+  const target = foundationNumberMap[ref];
+  if (!target) {
+    console.warn(`[SW Installer] Foundation number alias not found: ${ref}`);
+    return 0;
+  }
+  return figma.variables.createVariableAlias(target);
 }
 
 // ── 메인 설치 로직 ───────────────────────────────────────────────────────────
 
 async function runInstall() {
   try {
-    post("progress", { step: "Foundation collection 준비 중…", pct: 5 });
+    post("progress", { step: "Foundation collection 준비 중…", pct: 3 });
 
     // ── 1. Foundation collection (Light + Dark) ────────────────────────────
     const fc = await getOrCreateCollection(FOUNDATION_COLLECTION);
     const { lightId: fLightId, darkId: fDarkId } = setupLightDarkModes(fc);
 
-    const foundationVarMap: Record<string, Variable> = {};
-    const foundationKeys = Object.keys(FOUNDATION);
+    // 1-A. Foundation COLOR
+    const foundationColorMap: Record<string, Variable> = {};
+    const fcColorKeys = Object.keys(FOUNDATION_COLOR);
 
-    for (let i = 0; i < foundationKeys.length; i++) {
-      const path  = foundationKeys[i];
-      const modes = FOUNDATION[path];
+    for (let i = 0; i < fcColorKeys.length; i++) {
+      const path  = fcColorKeys[i];
+      const modes = FOUNDATION_COLOR[path];
       const v = await getOrCreateVariable(path, fc, "COLOR");
       v.setValueForMode(fLightId, hexToRgb(modes.light));
       v.setValueForMode(fDarkId,  hexToRgb(modes.dark));
-      foundationVarMap[path] = v;
+      v.scopes = colorScopes(path);
+      foundationColorMap[path] = v;
 
       if (i % 20 === 0) {
-        const pct = 5 + Math.round((i / foundationKeys.length) * 40);
-        post("progress", { step: `Foundation: ${path}`, pct });
+        const pct = 3 + Math.round((i / fcColorKeys.length) * 25);
+        post("progress", { step: `Foundation Color: ${path}`, pct });
+      }
+    }
+
+    post("progress", { step: "Foundation Number 준비 중…", pct: 28 });
+
+    // 1-B. Foundation NUMBER
+    const foundationNumberMap: Record<string, Variable> = {};
+    const fcNumberKeys = Object.keys(FOUNDATION_NUMBER);
+
+    for (let i = 0; i < fcNumberKeys.length; i++) {
+      const path  = fcNumberKeys[i];
+      const value = FOUNDATION_NUMBER[path];
+      const v = await getOrCreateVariable(path, fc, "FLOAT");
+      v.setValueForMode(fLightId, value);
+      v.setValueForMode(fDarkId,  value);
+      v.scopes = numberScopes(path);
+      foundationNumberMap[path] = v;
+
+      if (i % 10 === 0) {
+        const pct = 28 + Math.round((i / fcNumberKeys.length) * 17);
+        post("progress", { step: `Foundation Number: ${path}`, pct });
       }
     }
 
@@ -141,49 +219,51 @@ async function runInstall() {
     const sc = await getOrCreateCollection(SEMANTIC_COLLECTION);
     const { lightId: sLightId, darkId: sDarkId } = setupLightDarkModes(sc);
 
-    const semanticKeys = Object.keys(SEMANTIC);
+    // 2-A. Semantic COLOR
+    const scColorKeys = Object.keys(SEMANTIC_COLOR);
 
-    for (let i = 0; i < semanticKeys.length; i++) {
-      const path  = semanticKeys[i];
-      const entry = SEMANTIC[path];
+    for (let i = 0; i < scColorKeys.length; i++) {
+      const path  = scColorKeys[i];
+      const entry = SEMANTIC_COLOR[path];
       const v = await getOrCreateVariable(path, sc, "COLOR");
-      v.setValueForMode(sLightId, resolveRef(entry.light, foundationVarMap));
-      v.setValueForMode(sDarkId,  resolveRef(entry.dark,  foundationVarMap));
+      v.setValueForMode(sLightId, resolveColorRef(entry.light, foundationColorMap));
+      v.setValueForMode(sDarkId,  resolveColorRef(entry.dark,  foundationColorMap));
+      v.scopes = colorScopes(path);
 
       if (i % 10 === 0) {
-        const pct = 50 + Math.round((i / semanticKeys.length) * 45);
-        post("progress", { step: `semantic: ${path}`, pct });
+        const pct = 50 + Math.round((i / scColorKeys.length) * 25);
+        post("progress", { step: `semantic Color: ${path}`, pct });
+      }
+    }
+
+    post("progress", { step: "semantic Number 준비 중…", pct: 75 });
+
+    // 2-B. Semantic NUMBER
+    const scNumberKeys = Object.keys(SEMANTIC_NUMBER);
+
+    for (let i = 0; i < scNumberKeys.length; i++) {
+      const path = scNumberKeys[i];
+      const ref  = SEMANTIC_NUMBER[path];
+      const v = await getOrCreateVariable(path, sc, "FLOAT");
+      const value = resolveNumberRef(ref, foundationNumberMap);
+      v.setValueForMode(sLightId, value);
+      v.setValueForMode(sDarkId,  value);
+      v.scopes = numberScopes(path);
+
+      if (i % 10 === 0) {
+        const pct = 75 + Math.round((i / scNumberKeys.length) * 20);
+        post("progress", { step: `semantic Number: ${path}`, pct });
       }
     }
 
     post("progress", { step: "완료", pct: 100 });
     post("done", {
-      foundationCount: foundationKeys.length,
-      semanticCount: semanticKeys.length,
+      foundationCount: fcColorKeys.length + fcNumberKeys.length,
+      semanticCount: scColorKeys.length + scNumberKeys.length,
     });
 
   } catch (err: unknown) {
     const msg = err instanceof Error ? err.message : String(err);
     post("error", { message: msg });
   }
-}
-
-// ref 문자열 → Figma Variable 값 (alias 또는 RGBA)
-function resolveRef(
-  ref: string,
-  foundationVarMap: Record<string, Variable>
-): VariableValue {
-  if (ref.startsWith("rgba")) {
-    return rgbaStringToRgb(ref);
-  }
-  if (ref.startsWith("#")) {
-    return hexToRgb(ref);
-  }
-  // Foundation alias
-  const target = foundationVarMap[ref];
-  if (!target) {
-    console.warn(`[SW Installer] Foundation alias not found: ${ref}`);
-    return { r: 1, g: 0, b: 1, a: 1 }; // 핑크 — 누락 표시용
-  }
-  return figma.variables.createVariableAlias(target);
 }

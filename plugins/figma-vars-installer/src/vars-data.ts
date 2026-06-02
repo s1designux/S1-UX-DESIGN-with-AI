@@ -2,14 +2,19 @@
  * vars-data.ts
  * S1 디자인시스템 Variables 정의 — Foundation + Semantic (모두 Light/Dark 2모드)
  *
- * Foundation: HEX 원본값 — 한 변수에 Light/Dark 값 모두 보유
- *   - gray, blue, red 등 페어 스케일은 Light·Dark 양쪽 정의
- *   - visual-gray, coolgray 등 단일 스케일은 양쪽 동일값
+ * Foundation:
+ *   - COLOR: 한 변수에 Light/Dark 값 모두 보유 (gray/N, blue/N 등)
+ *   - NUMBER: 모드 무관 단일값 (spacing, radius, border-width, font-* 등)
  *
- * Semantic: Foundation 변수명을 alias 참조 (Light / Dark 2모드)
- *   - "gray/N" 형태 → Foundation alias (다크값은 Foundation Dark 모드가 해석)
- *   - "#HEX" 형태 → 직접 색상값 (Foundation 미등록 항목)
- *   - "rgba(r,g,b,a)" 형태 → alpha 포함 색상값
+ * Semantic:
+ *   - COLOR: Foundation alias (Light/Dark mode-aware)
+ *   - NUMBER: Foundation alias 또는 직접값 (사이즈·간격 역할 토큰)
+ *
+ * 참조 형식:
+ *   - "gray/N", "spacing/16" → Foundation alias
+ *   - "#HEX" → 직접 색상값
+ *   - "rgba(r,g,b,a)" → alpha 포함 색상값
+ *   - number 그대로 → FLOAT 직접값
  */
 
 export const FOUNDATION_COLLECTION = "Foundation";
@@ -17,13 +22,14 @@ export const SEMANTIC_COLLECTION   = "semantic";
 export const LIGHT_MODE = "Light";
 export const DARK_MODE  = "Dark";
 
-export interface ModeValues {
+// ── Color ─────────────────────────────────────────────────────────────────────
+
+export interface ColorModeValues {
   light: string;
   dark: string;
 }
 
-// Foundation: path → { light, dark }
-export const FOUNDATION: Record<string, ModeValues> = {
+export const FOUNDATION_COLOR: Record<string, ColorModeValues> = {
   // ── Base ──────────────────────────────────────────
   "base/white": { light: "#FFFFFF", dark: "#FFFFFF" },
   "base/black": { light: "#000000", dark: "#000000" },
@@ -35,7 +41,6 @@ export const FOUNDATION: Record<string, ModeValues> = {
   "brand/ci":   { light: "#004097", dark: "#004097" },
 
   // ── Gray ──────────────────────────────────────────
-  // Light: 0(밝음) → 900(어두움), Dark: 0(어두움) → 900(밝음)
   "gray/0":   { light: "#FAFAFA", dark: "#0D0E12" },
   "gray/50":  { light: "#F5F5F5", dark: "#131418" },
   "gray/100": { light: "#E9E9E9", dark: "#1C1D23" },
@@ -169,14 +174,75 @@ export const FOUNDATION: Record<string, ModeValues> = {
   "coolgray/500": { light: "#D8DBE0", dark: "#D8DBE0" },
 };
 
-// Semantic 변수: path → { light, dark }
-// ref: "foundation/path" (alias), "#HEX" (직접값), "rgba(r,g,b,a)" (alpha)
-export interface SemanticEntry {
+// ── Number (Foundation primitives — spacing·radius·border-width·font·line) ─
+
+export const FOUNDATION_NUMBER: Record<string, number> = {
+  // ── Spacing ─────────────────────────────
+  "spacing/2":   2,
+  "spacing/4":   4,
+  "spacing/6":   6,
+  "spacing/8":   8,
+  "spacing/10":  10,
+  "spacing/12":  12,
+  "spacing/14":  14,
+  "spacing/16":  16,
+  "spacing/20":  20,
+  "spacing/24":  24,
+  "spacing/28":  28,
+  "spacing/32":  32,
+  "spacing/36":  36,
+  "spacing/40":  40,
+  "spacing/44":  44,
+  "spacing/48":  48,
+  "spacing/56":  56,
+  "spacing/64":  64,
+  "spacing/80":  80,
+  "spacing/96":  96,
+  "spacing/128": 128,
+
+  // ── Radius ──────────────────────────────
+  "radius/0":    0,
+  "radius/2":    2,
+  "radius/4":    4,
+  "radius/6":    6,
+  "radius/8":    8,
+  "radius/10":   10,
+  "radius/12":   12,
+  "radius/16":   16,
+  "radius/20":   20,
+  "radius/full": 9999,
+
+  // ── Border Width ───────────────────────
+  "border-width/1": 1,
+  "border-width/2": 2,
+
+  // ── Font Size ──────────────────────────
+  "font-size/10": 10,
+  "font-size/12": 12,
+  "font-size/14": 14,
+  "font-size/16": 16,
+  "font-size/18": 18,
+  "font-size/20": 20,
+  "font-size/24": 24,
+  "font-size/32": 32,
+
+  // ── Font Weight ────────────────────────
+  "font-weight/regular": 400,
+  "font-weight/medium":  500,
+  "font-weight/bold":    700,
+
+  // ── Line Height (배수) ─────────────────
+  "line-height/130": 1.3,
+};
+
+// ── Semantic Color ───────────────────────────────────────────────────────────
+
+export interface SemanticColorEntry {
   light: string;
   dark: string;
 }
 
-export const SEMANTIC: Record<string, SemanticEntry> = {
+export const SEMANTIC_COLOR: Record<string, SemanticColorEntry> = {
   // ── color/bg ──────────────────────────────────────
   "color/bg/default":  { light: "gray/0",      dark: "gray/50" },
   "color/bg/subtle":   { light: "gray/50",     dark: "gray/200" },
@@ -236,4 +302,95 @@ export const SEMANTIC: Record<string, SemanticEntry> = {
 
   // ── color/overlay (alpha 포함 — alias 불가, 직접값) ──
   "color/overlay": { light: "rgba(0,0,0,0.5)", dark: "rgba(0,0,0,0.75)" },
+};
+
+// ── Semantic Number ──────────────────────────────────────────────────────────
+// 값: string = Foundation alias path / number = 직접값
+
+export const SEMANTIC_NUMBER: Record<string, string | number> = {
+  // ── spacing/padding-block ─────────────
+  "spacing/padding-block/xxs": "spacing/8",
+  "spacing/padding-block/xs":  "spacing/12",
+  "spacing/padding-block/sm":  "spacing/16",
+  "spacing/padding-block/md":  "spacing/20",
+  "spacing/padding-block/lg":  "spacing/24",
+
+  // ── spacing/padding-inline ────────────
+  "spacing/padding-inline/xxs": "spacing/8",
+  "spacing/padding-inline/xs":  "spacing/12",
+  "spacing/padding-inline/sm":  "spacing/16",
+  "spacing/padding-inline/md":  "spacing/20",
+  "spacing/padding-inline/lg":  "spacing/24",
+
+  // ── spacing/section ───────────────────
+  "spacing/section/xs":  "spacing/16",
+  "spacing/section/sm":  "spacing/20",
+  "spacing/section/md":  "spacing/24",
+  "spacing/section/lg":  "spacing/32",
+  "spacing/section/xl":  "spacing/40",
+  "spacing/section/xxl": "spacing/48",
+
+  // ── spacing/stack ─────────────────────
+  "spacing/stack/xs": "spacing/12",
+  "spacing/stack/sm": "spacing/16",
+  "spacing/stack/md": "spacing/20",
+  "spacing/stack/lg": "spacing/24",
+
+  // ── spacing/cluster ───────────────────
+  "spacing/cluster/xxs": "spacing/8",
+  "spacing/cluster/xs":  "spacing/12",
+  "spacing/cluster/sm":  "spacing/16",
+  "spacing/cluster/md":  "spacing/20",
+
+  // ── spacing/label-gap ─────────────────
+  "spacing/label-gap-inline/sm": "spacing/8",
+  "spacing/label-gap-inline/md": "spacing/12",
+  "spacing/label-gap-inline/lg": "spacing/16",
+  "spacing/label-gap-block/sm":  "spacing/4",
+  "spacing/label-gap-block/md":  "spacing/8",
+
+  // ── sizing/form-control-height ────────
+  "sizing/form-control-height/xxs": "spacing/28",
+  "sizing/form-control-height/xs":  34, // Foundation step 없음
+  "sizing/form-control-height/md":  "spacing/44",
+  "sizing/form-control-height/lg":  "spacing/48",
+  "sizing/form-control-dataview-height/sm": "spacing/28",
+  "sizing/form-control-dataview-height/md": 32, // Foundation step 없음
+
+  // ── sizing/button-height ──────────────
+  "sizing/button-height/xxs": "spacing/28",
+  "sizing/button-height/xs":  34, // Foundation step 없음
+  "sizing/button-height/sm":  "spacing/40",
+  "sizing/button-height/md":  "spacing/44",
+  "sizing/button-height/lg":  "spacing/48",
+  "sizing/button-min-width":  80, // Foundation step 없음
+
+  // ── sizing/chip-height ────────────────
+  "sizing/chip-height/sm": "spacing/28",
+  "sizing/chip-height/md": 30, // Foundation step 없음
+  "sizing/chip-height/lg": 34, // Foundation step 없음
+
+  // ── sizing/table-row-height ───────────
+  "sizing/table-row-height/xs": 34, // Foundation step 없음
+  "sizing/table-row-height/sm": 38, // Foundation step 없음
+  "sizing/table-row-height/md": "spacing/44",
+
+  // ── sizing/dropdown-item-height ───────
+  "sizing/dropdown-item-height/md": "spacing/44", // 44 — Select 옵션
+  "sizing/dropdown-item-height/xs": 34,           // 34 — 컴팩트 (TimePicker)
+
+  // ── sizing/icon ───────────────────────
+  "sizing/icon/10": 10, // Foundation step 없음
+  "sizing/icon/16": "spacing/16",
+  "sizing/icon/18": 18, // Foundation step 없음
+  "sizing/icon/20": "spacing/20",
+  "sizing/icon/24": "spacing/24",
+  "sizing/icon/28": "spacing/28",
+
+  // ── radius semantic ───────────────────
+  "radius/control/xs": "radius/2",
+  "radius/control/sm": "radius/4",
+  "radius/button/md":  "radius/4",
+  "radius/card/md":    "radius/10",
+  "radius/modal/md":   "radius/8",
 };
