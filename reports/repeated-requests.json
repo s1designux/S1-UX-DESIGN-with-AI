@@ -2,7 +2,7 @@
   "_meta": {
     "description": "사용자가 반복 요청한 패턴 추적 파일. count >= 3 이면 자동 감사 규칙 승격 후보.",
     "promotionThreshold": 3,
-    "updatedAt": "2026-05-27"
+    "updatedAt": "2026-06-02"
   },
   "patterns": [
     {
@@ -62,6 +62,19 @@
         { "date": "2026-05-27", "summary": "Table HTML 코드탭 단일 예시만 있고 구성 불완전" }
       ],
       "automationNote": "각 컴포넌트 섹션에 code-pane HTML/CSS/Token Details가 모두 존재하는지 검사. harness-audit RULE-4 후보."
+    },
+    {
+      "id": "installer-coverage-gap",
+      "category": "external-artifact-sync",
+      "label": "figma-vars-installer가 tokens.css의 전체 토큰을 반영하지 않음",
+      "description": "tokens.css에 추가된 토큰(spacing·sizing·radius·typography 등)이 figma-vars-installer/src/vars-data.ts에 누락. 사용자가 Figma 플러그인 설치 후 시각적으로 발견.",
+      "count": 1,
+      "promotionStatus": "promoted",
+      "promotedRule": "Gate 4 Installer Coverage (scripts/installer-coverage-check.js + gate-check.js)",
+      "occurrences": [
+        { "date": "2026-06-02", "summary": "Figma Variables installer에 spacing·icon-size 등 누락 — 색상만 들어있음 → FOUNDATION_NUMBER + SEMANTIC_NUMBER 추가 + Gate 4 신설" }
+      ],
+      "automationNote": "Gate 4가 tokens.css의 Foundation·Semantic CSS var와 vars-data.ts의 Figma 경로를 자동 대조. installer-coverage-check.js가 누락분 ERROR/WARN 보고."
     },
     {
       "id": "dropdown-gap-inconsistency",

@@ -16,6 +16,7 @@
     "plugin:build": "esbuild plugins/figma-token-sync/src/code.ts --bundle --outfile=plugins/figma-token-sync/dist/code.js --target=es2017 --platform=browser",
     "installer:check": "tsc --project plugins/figma-vars-installer/tsconfig.json --noEmit",
     "installer:build": "esbuild plugins/figma-vars-installer/src/code.ts --bundle --outfile=plugins/figma-vars-installer/dist/code.js --target=es2017 --platform=browser && zip -j assets/downloads/s1-design-vars-installer.zip plugins/figma-vars-installer/manifest.json plugins/figma-vars-installer/dist/code.js plugins/figma-vars-installer/src/ui.html",
+    "installer:coverage": "node scripts/installer-coverage-check.js",
     "figma:fetch": "node --env-file=.env scripts/figma/fetch-figma-variables.mjs",
     "figma:match": "node scripts/figma/match-figma-variable-metadata.mjs",
     "figma:audit": "node scripts/figma/match-figma-variable-metadata.mjs --profile ux-guide-2.4",

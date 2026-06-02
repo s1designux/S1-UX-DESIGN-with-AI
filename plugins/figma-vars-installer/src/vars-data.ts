@@ -266,6 +266,7 @@ export const SEMANTIC_COLOR: Record<string, SemanticColorEntry> = {
   "color/text/correct":     { light: "blue/400",   dark: "blue/400" },
   "color/text/danger":      { light: "red/300",    dark: "red/350" },
   "color/text/disabled":    { light: "gray/300",   dark: "gray/400" },
+  "color/text/readonly":    { light: "gray/500",   dark: "gray/500" },
   "color/text/inverse":     { light: "base/white", dark: "base/white" },
 
   // ── color/border ──────────────────────────────────
@@ -386,6 +387,7 @@ export const SEMANTIC_NUMBER: Record<string, string | number> = {
   "sizing/icon/20": "spacing/20",
   "sizing/icon/24": "spacing/24",
   "sizing/icon/28": "spacing/28",
+  "sizing/icon/32": "spacing/32",
 
   // ── radius semantic ───────────────────
   "radius/control/xs": "radius/2",

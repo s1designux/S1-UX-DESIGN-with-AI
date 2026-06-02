@@ -1,11 +1,13 @@
 #!/usr/bin/env node
 /**
- * Gate Check — Registry + Report + Quality gates
+ * Gate Check — Registry + Report + Quality + Installer Coverage gates
  * Usage: node scripts/gate-check.js
  *
- * Gate 1: Registry  — component registry path/JSON 유효성
- * Gate 2: Report    — reports-index.json vs 실제 파일 정합성
- * Gate 3: Quality   — tokens.css raw HEX / Foundation 직접 참조 감지
+ * Gate 1: Registry            — component registry path/JSON 유효성
+ * Gate 2: Report              — reports-index.json vs 실제 파일 정합성
+ * Gate 3: Quality             — tokens.css raw HEX / Foundation 직접 참조 감지
+ * Gate 4: Installer Coverage  — tokens.css 의 Foundation·Semantic 토큰이
+ *                                figma-vars-installer 의 Variables 정의에 반영됐는지
  */
 
 const fs = require('fs');
@@ -146,6 +148,32 @@ if (!fs.existsSync(tokensCSSPath)) {
   } else {
     pass('install-prompt.html exists');
   }
+}
+
+// ── Gate 4: Installer Coverage Gate ──────────────────────────────
+console.log('\n[Gate 4] Installer Coverage Gate');
+
+try {
+  const { audit } = require('./installer-coverage-check');
+  const cov = audit();
+  let covMissing = 0;
+  for (const kind of Object.keys(cov.missing)) {
+    covMissing += cov.missing[kind].length;
+  }
+  if (covMissing === 0) {
+    pass(`installer ↔ tokens.css 완전 커버 (Foundation ${cov.stats.FOUNDATION_COLOR.expected + cov.stats.FOUNDATION_NUMBER.expected}, Semantic ${cov.stats.SEMANTIC_COLOR.expected + cov.stats.SEMANTIC_NUMBER.expected})`);
+  } else {
+    for (const kind of Object.keys(cov.missing)) {
+      for (const item of cov.missing[kind]) {
+        fail(`[${kind}] ${item.cssName} → expected Figma path: ${item.figmaPath}`);
+      }
+    }
+  }
+  if (cov.outOfScopeSemanticColor.length > 0) {
+    warn(`installer SEMANTIC_COLOR 미반영 역할: ${cov.outOfScopeSemanticColor.length}개 (run: npm run installer:coverage)`);
+  }
+} catch (e) {
+  fail(`installer-coverage-check 실패: ${e.message}`);
 }
 
 // ── Summary ───────────────────────────────────────────────────────
