@@ -139,6 +139,44 @@ color-overlay   → 딤·오버레이
 
 ---
 
+## 4-A. color-form-control — 폼 컨트롤 전용 (Input·Select·Textarea·DatePicker·TimePicker 공용)
+
+> 입력 필드 군의 배경·테두리·텍스트·라벨·아이콘 공용 토큰. Component Token(`--input-*`, `--dropdown-*` 등)이 이 레이어를 참조한다.
+> MVP4-token(2026-05-18) 신설. ND-7(2026-05-19) registry 등록.
+> Dark 값이 별도 override 없는 항목은 참조 Semantic의 Dark 값을 상속한다.
+
+| CSS Variable | Light 참조 | Light Hex | Dark 참조 | Dark Hex | 용도 |
+|---|---|---|---|---|---|
+| `--color-form-control-bg-default` | `--color-surface-default` | `#FFFFFF` | `--color-gray-dark-50` (override) | `#131418` | 입력 필드 기본 배경 |
+| `--color-form-control-bg-hover` | `--color-surface-default` | `#FFFFFF` | `--color-bg-muted` (override) | `#2E2F38` | hover 시 배경 (light에선 default와 동일) |
+| `--color-form-control-bg-disabled` | `--color-bg-subtle` | `#F5F5F5` | `--color-surface-default` (override) | `#1C1D23` | 비활성 배경 |
+| `--color-form-control-border-default` | `--color-control-border-default` | `#D9D9D9` | `--color-border-default` (override) | `#2E2F38` | 기본 테두리 |
+| `--color-form-control-border-hover` | `--color-border-strong` | `#C4C4C4` | `--color-border-strong` (상속) | `#3E4049` | hover 강조 테두리 |
+| `--color-form-control-border-selected` | `--color-border-focus` | `#1D6CEB` | `--color-border-focus` (상속) | `#4285E8` | 포커스·선택 상태 테두리 |
+| `--color-form-control-border-error` | `--color-status-error` | `#E50533` | `--color-status-error` (상속) | `#F06070` | 오류 상태 테두리 |
+| `--color-form-control-border-correct` | `--color-border-focus` | `#1D6CEB` | `--color-border-focus` (상속) | `#4285E8` | correct 상태 테두리 (HD-4: focus와 동일) |
+| `--color-form-control-border-disabled` | `--color-border-subtle` | `#E9E9E9` | `--color-border-default` (override) | `#2E2F38` | 비활성 테두리 |
+| `--color-form-control-text-default` | `--color-text-secondary` | `#353535` | `--color-text-secondary` (상속) | `#B8BABF` | 입력된 텍스트 (gray/800 MVP-T1) |
+| `--color-form-control-text-placeholder` | `--color-text-placeholder` | `#757575` | `--color-text-placeholder` (상속) | `#55575F` | 플레이스홀더 |
+| `--color-form-control-text-disabled` | `--color-text-disabled` | `#C4C4C4` | `--color-text-readonly` (override) | `#3E4049` | 비활성 텍스트 (placeholder 한 단계 어둡게) |
+| `--color-form-control-label-default` | `--color-text-secondary` | `#353535` | `--color-text-secondary` (재선언) | `#B8BABF` | TimePicker "시/분" 등 form-control 라벨 |
+| `--color-form-control-label-disabled` | `--color-text-disabled` | `#C4C4C4` | `--color-text-disabled` (재선언) | `#35363F` | 비활성 라벨 |
+| `--color-form-control-icon-default` | `--color-gray-800` | `#353535` | `--color-gray-dark-700` (override) | `#8A8C96` | form-control 기본 아이콘 |
+
+---
+
+## 4-A-1. color-text-state — 폼 필드 도움말 텍스트 상태
+
+> 입력 필드 하단 helper/correct/error 메시지 텍스트 전용. Input·Search·Password 필드 helper text가 참조.
+
+| CSS Variable | Light 참조 | Light Hex | Dark 참조 | Dark Hex | 용도 |
+|---|---|---|---|---|---|
+| `--color-text-state-helper` | `--color-text-secondary` | `#353535` | `--color-text-secondary` (상속) | `#B8BABF` | 중립 도움말 텍스트 (기본) |
+| `--color-text-state-correct` | `--color-blue-400` | `#1D6CEB` | `--color-blue-dark-400` (override) | `#3D9BF2` | correct 상태 도움말 (HD-4) |
+| `--color-text-state-error` | `--color-status-error` | `#E50533` | `--color-status-error` (상속) | `#F06070` | 오류 상태 도움말 |
+
+---
+
 ## 4-B. color-control-border — 컨트롤 컴포넌트 전용 테두리
 
 > `color-border-*`(디바이더·구분선)와 완전 독립 그룹. Checkbox, Radio 등 인터랙티브 컨트롤의 박스/원 테두리에만 사용.
@@ -222,6 +260,22 @@ color-overlay   → 딤·오버레이
 
 > HD-Table-1 확정(2026-05-20): dark = blue-dark-100 (#112B55).
 > **참고**: `--table-row-hover-bg` Light는 gray-50 (`--color-bg-subtle`)을 사용. `--color-data-state-hover`는 Figma 원본 참조 semantic 토큰으로 유지.
+
+---
+
+## 8-3. color-navigation — 네비게이션·라인탭 전용
+
+> 라인탭(Line Tab)·GNB/LNB의 배경·라벨·indicator 전용. Component Token(`--tab-*`·`--nav-*`)이 이 레이어를 참조한다.
+> 2026-05-28 Line Tab 컴포넌트 신설 시 등재 (Figma 540:6032).
+> Dark 값은 candidate — Figma dark 시각 검증 후 확정 예정.
+
+| CSS Variable | Light 참조 | Light Hex | Dark 참조 | Dark Hex | 용도 |
+|---|---|---|---|---|---|
+| `--color-navigation-bg` | `--color-surface-default` | `#FFFFFF` | `--color-surface-default` (상속) | `#1C1D23` | 라인탭 컨테이너 배경 |
+| `--color-navigation-label-default` | `--color-gray-600` | `#555555` | `--color-gray-dark-600` | `#55575F` (candidate) | 미선택 라벨 텍스트 |
+| `--color-navigation-label-selected` | `--color-action-primary-default` | `#1D6CEB` | `--color-action-primary-default` (상속) | `#3070D8` (candidate) | 선택 라벨 텍스트 |
+| `--color-navigation-indicator-default` | `--color-gray-200` | `#D9D9D9` | `--color-gray-dark-300` | `#2E2F38` (candidate) | 탭 하단 구분선 |
+| `--color-navigation-indicator-selected` | `--color-action-primary-default` | `#1D6CEB` | `--color-action-primary-default` (상속) | `#3070D8` (candidate) | 선택 탭 하단 indicator |
 
 ---
 

@@ -1,13 +1,14 @@
 {
   "meta": {
     "name": "SW Semantic Colors",
-    "version": "2.4",
+    "version": "2.5",
     "status": "stable",
-    "updatedAt": "2026-05-19",
+    "updatedAt": "2026-06-04",
     "source": "registry/tokens/sw-v2.4.tokens.css",
     "description": "Light values from :root, Dark values from [data-theme='dark']. Same CSS variable names for both themes.",
     "rgbaAllowed": "rgba() is allowed for overlay tokens only. Dark-mode border tokens now reference Foundation dark scale.",
-    "nd7": "ND-7(2026-05-19): controlBorder·formControl·textState 3개 카테고리 추가. text·border 각 1개 추가. 총 19개 토큰 등록."
+    "nd7": "ND-7(2026-05-19): controlBorder·formControl·textState 3개 카테고리 추가. text·border 각 1개 추가. 총 19개 토큰 등록.",
+    "v2_5": "2026-06-04: formControl 5건 보강 (bg-hover·border-hover·text-disabled dark override·label-default·label-disabled·icon-default), navigation 카테고리 신설 (Line Tab 5건). 총 25개 토큰 추가 → 누계 등록 항목 확대."
   },
   "tokens": {
     "bg": [
@@ -82,18 +83,23 @@
       ]
     },
     "formControl": {
-      "_description": "입력 필드(Input·Select·DatePicker·TimePicker) 공용 배경·테두리·텍스트. MVP4-token(2026-05-18) 신설. ND-7(2026-05-19) registry 등록.",
+      "_description": "입력 필드(Input·Select·DatePicker·TimePicker) 공용 배경·테두리·텍스트·라벨·아이콘. MVP4-token(2026-05-18) 신설. ND-7(2026-05-19) registry 등록. 2026-06-04 hover·icon·label 5건 보강.",
       "tokens": [
         { "cssVar": "--color-form-control-bg-default",         "light": "var(--color-surface-default)", "dark": "var(--color-gray-dark-50)",              "status": "stable", "role": "입력 필드 기본 배경" },
-        { "cssVar": "--color-form-control-bg-disabled",        "light": "var(--color-bg-subtle)",       "dark": "var(--color-bg-subtle)",                 "status": "stable", "role": "비활성 배경 (dark는 --color-bg-subtle 다크 값 상속)", "darkNote": "no explicit override — inherits dark value of --color-bg-subtle" },
-        { "cssVar": "--color-form-control-border-default",     "light": "var(--color-control-border-default)", "dark": "var(--color-control-border-default)", "status": "stable", "role": "기본 테두리 (dark는 --color-control-border-default 다크 값 상속)", "darkNote": "inherits dark value of --color-control-border-default → var(--color-gray-dark-500)" },
-        { "cssVar": "--color-form-control-border-selected",    "light": "var(--color-border-focus)",    "dark": "var(--color-border-focus)",              "status": "stable", "role": "포커스·선택 상태 테두리 (dark는 --color-border-focus 다크 값 상속)", "darkNote": "inherits → var(--color-blue-dark-350)" },
-        { "cssVar": "--color-form-control-border-error",       "light": "var(--color-status-error)",    "dark": "var(--color-status-error)",              "status": "stable", "role": "오류 상태 테두리 (dark 상속)", "darkNote": "inherits → var(--color-status-dark-red)" },
+        { "cssVar": "--color-form-control-bg-hover",           "light": "var(--color-surface-default)", "dark": "var(--color-bg-muted)",                  "status": "stable", "role": "hover 시 배경 (light에선 default와 동일, dark에서 1단계 밝게). Dropdown·Input·TimePicker 공용", "darkNote": "explicit dark override: var(--color-bg-muted) → gray-dark/300" },
+        { "cssVar": "--color-form-control-bg-disabled",        "light": "var(--color-bg-subtle)",       "dark": "var(--color-surface-default)",           "status": "stable", "role": "비활성 배경", "darkNote": "explicit dark override: var(--color-surface-default) → gray-dark/100" },
+        { "cssVar": "--color-form-control-border-default",     "light": "var(--color-control-border-default)", "dark": "var(--color-border-default)",     "status": "stable", "role": "기본 테두리", "darkNote": "explicit dark override: var(--color-border-default) → gray-dark/300" },
+        { "cssVar": "--color-form-control-border-hover",       "light": "var(--color-border-strong)",   "dark": "var(--color-border-strong)",             "status": "stable", "role": "hover 강조 테두리. Dropdown trigger hover에서 사용", "darkNote": "inherits → var(--color-gray-dark-500)" },
+        { "cssVar": "--color-form-control-border-selected",    "light": "var(--color-border-focus)",    "dark": "var(--color-border-focus)",              "status": "stable", "role": "포커스·선택 상태 테두리", "darkNote": "inherits → var(--color-blue-dark-350)" },
+        { "cssVar": "--color-form-control-border-error",       "light": "var(--color-status-error)",    "dark": "var(--color-status-error)",              "status": "stable", "role": "오류 상태 테두리", "darkNote": "inherits → var(--color-status-dark-red)" },
         { "cssVar": "--color-form-control-border-correct",     "light": "var(--color-border-focus)",    "dark": "var(--color-border-focus)",              "status": "stable", "role": "correct 상태 테두리 = focus와 동일값. HD-4: correct 확정.", "darkNote": "inherits → var(--color-blue-dark-350)" },
-        { "cssVar": "--color-form-control-border-disabled",    "light": "var(--color-border-subtle)",   "dark": "var(--color-control-border-disabled)",   "status": "stable", "role": "비활성 테두리", "darkNote": "explicit dark override: var(--color-control-border-disabled)" },
+        { "cssVar": "--color-form-control-border-disabled",    "light": "var(--color-border-subtle)",   "dark": "var(--color-border-default)",            "status": "stable", "role": "비활성 테두리", "darkNote": "explicit dark override: var(--color-border-default) → gray-dark/300" },
         { "cssVar": "--color-form-control-text-default",       "light": "var(--color-text-secondary)",  "dark": "var(--color-text-secondary)",            "status": "stable", "role": "입력된 텍스트. gray/800 확정 (MVP-T1).", "darkNote": "inherits → var(--color-gray-dark-800)" },
         { "cssVar": "--color-form-control-text-placeholder",   "light": "var(--color-text-placeholder)","dark": "var(--color-text-placeholder)",          "status": "stable", "role": "플레이스홀더 텍스트. gray/500 확정 (MVP-T1).", "darkNote": "inherits → var(--color-gray-dark-600)" },
-        { "cssVar": "--color-form-control-text-disabled",      "light": "var(--color-text-disabled)",   "dark": "var(--color-text-disabled)",             "status": "stable", "role": "비활성 텍스트", "darkNote": "inherits → var(--color-gray-dark-400)" }
+        { "cssVar": "--color-form-control-text-disabled",      "light": "var(--color-text-disabled)",   "dark": "var(--color-text-readonly)",             "status": "stable", "role": "비활성 텍스트", "darkNote": "explicit dark override: var(--color-text-readonly) → gray-dark/500 — placeholder 한단계 어둡게" },
+        { "cssVar": "--color-form-control-label-default",      "light": "var(--color-text-secondary)",  "dark": "var(--color-text-secondary)",            "status": "stable", "role": "TimePicker '시/분' 등 form-control 라벨" },
+        { "cssVar": "--color-form-control-label-disabled",     "light": "var(--color-text-disabled)",   "dark": "var(--color-text-disabled)",             "status": "stable", "role": "비활성 라벨" },
+        { "cssVar": "--color-form-control-icon-default",       "light": "var(--color-gray-800)",        "dark": "var(--color-gray-dark-700)",             "status": "stable", "role": "form-control 기본 아이콘 색", "note": "Semantic→Foundation 직접 참조 (4-B 패턴과 동일 허용 구조)" }
       ]
     },
     "textState": {
@@ -118,6 +124,16 @@
           "role": "데이터 행 hover 배경. Figma: color/data/state/hover = blue-50.",
           "darkNote": "candidate — blue-dark-100(#112B55). Figma dark 미확인. HD-Table-1"
         }
+      ]
+    },
+    "navigation": {
+      "_description": "라인탭(Line Tab) 전용 배경·라벨·indicator. 2026-05-28 Tab 컴포넌트 신설(Figma 540:6032) 시 등재. 2026-06-04 registry 등록. GNB/LNB의 --nav-* 와 별개.",
+      "tokens": [
+        { "cssVar": "--color-navigation-bg",                 "light": "var(--color-surface-default)",          "dark": "var(--color-surface-default)",          "resolvedLight": "#FFFFFF", "resolvedDark": "#1C1D23", "status": "stable", "darkStatus": "candidate", "role": "라인탭 컨테이너 배경", "darkNote": "inherits → gray-dark/100" },
+        { "cssVar": "--color-navigation-label-default",      "light": "var(--color-gray-600)",                 "dark": "var(--color-gray-dark-600)",            "resolvedLight": "#555555", "resolvedDark": "#55575F", "status": "stable", "darkStatus": "candidate", "role": "미선택 라벨 텍스트", "darkNote": "Figma dark 미확인 — HD-Tab-1" },
+        { "cssVar": "--color-navigation-label-selected",     "light": "var(--color-action-primary-default)",   "dark": "var(--color-action-primary-default)",   "resolvedLight": "#1D6CEB", "resolvedDark": "#3070D8", "status": "stable", "darkStatus": "candidate", "role": "선택 라벨 텍스트", "darkNote": "inherits → blue-dark/300" },
+        { "cssVar": "--color-navigation-indicator-default",  "light": "var(--color-gray-200)",                 "dark": "var(--color-gray-dark-300)",            "resolvedLight": "#D9D9D9", "resolvedDark": "#2E2F38", "status": "stable", "darkStatus": "candidate", "role": "탭 하단 구분선 (비선택)", "darkNote": "Figma dark 미확인 — HD-Tab-1" },
+        { "cssVar": "--color-navigation-indicator-selected", "light": "var(--color-action-primary-default)",   "dark": "var(--color-action-primary-default)",   "resolvedLight": "#1D6CEB", "resolvedDark": "#3070D8", "status": "stable", "darkStatus": "candidate", "role": "선택 탭 하단 indicator (2px)", "darkNote": "inherits → blue-dark/300" }
       ]
     }
   }

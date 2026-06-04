@@ -288,15 +288,20 @@ Foundation(Foundation)를 직접 참조하지 않습니다.
 | CSS Variable | 참조 | 설명 |
 |---|---|---|
 | `--color-form-control-bg-default` | `var(--color-surface-default)` | 기본 배경 |
+| `--color-form-control-bg-hover` | `var(--color-surface-default)` (light), `var(--color-bg-muted)` (dark override) | hover 배경. Dropdown·Input·TimePicker 공용 |
 | `--color-form-control-bg-disabled` | `var(--color-bg-subtle)` | disabled 배경 |
-| `--color-form-control-border-default` | `var(--color-border-default)` | 기본 테두리 |
+| `--color-form-control-border-default` | `var(--color-control-border-default)` | 기본 테두리 |
+| `--color-form-control-border-hover` | `var(--color-border-strong)` | hover 강조 테두리. Dropdown trigger hover에서 사용 |
 | `--color-form-control-border-selected` | `var(--color-border-focus)` | focus/selected 테두리 (파란색) |
 | `--color-form-control-border-error` | `var(--color-status-error)` | 에러 테두리 |
 | `--color-form-control-border-correct` | `var(--color-border-focus)` | correct 테두리 (= selected, 파란색) |
 | `--color-form-control-border-disabled` | `var(--color-border-subtle)` | disabled 테두리 |
 | `--color-form-control-text-default` | `var(--color-text-secondary)` | 입력 텍스트 (#353535) |
 | `--color-form-control-text-placeholder` | `var(--color-text-placeholder)` | 플레이스홀더 |
-| `--color-form-control-text-disabled` | `var(--color-text-disabled)` | disabled 텍스트 |
+| `--color-form-control-text-disabled` | `var(--color-text-disabled)` (light), `var(--color-text-readonly)` (dark override) | disabled 텍스트 |
+| `--color-form-control-label-default` | `var(--color-text-secondary)` | TimePicker "시"/"분" 등 form-control 라벨 |
+| `--color-form-control-label-disabled` | `var(--color-text-disabled)` | 비활성 라벨 |
+| `--color-form-control-icon-default` | `var(--color-gray-800)` (light), `var(--color-gray-dark-700)` (dark override) | form-control 기본 아이콘 색 |
 
 ### Semantic 레이어 (color-text-state-*)
 
@@ -694,6 +699,60 @@ Foundation(Foundation)를 직접 참조하지 않습니다.
 | HD-Time-1 | `timepicker_input` disabled suffix icon 교체 (ic_시계 → ic_알람) — 의도인지 Figma 실수인지 |
 | HD-Time-4 | Mobile 인터랙션 방식 (bottom sheet vs inline vs dropdown) |
 | HD-Time-5 | 드롭다운 패널 shadow `rgba(0,0,0,0.15)` — token 처리 vs DatePicker 예외 패턴 동일 적용 |
+
+---
+
+## 11. Line Tab (Navigation 카테고리)
+
+> 2026-05-28 신설 (Figma 540:6032). Semantic 카테고리 `color-navigation`(semantic.md ## 8-3) 위에 정의된 Component alias.
+> Dark 값은 candidate — Figma dark 시각 검증 후 확정 예정.
+
+### Semantic 레이어 (color-navigation-*)
+
+| CSS Variable | 참조 | 설명 |
+|---|---|---|
+| `--color-navigation-bg` | `var(--color-surface-default)` | 라인탭 컨테이너 배경 |
+| `--color-navigation-label-default` | `var(--color-gray-600)` | 미선택 라벨 텍스트 |
+| `--color-navigation-label-selected` | `var(--color-action-primary-default)` | 선택 라벨 텍스트 |
+| `--color-navigation-indicator-default` | `var(--color-gray-200)` | 탭 하단 구분선 (비선택) |
+| `--color-navigation-indicator-selected` | `var(--color-action-primary-default)` | 선택 탭 하단 indicator |
+
+### Component alias (--tab-*)
+
+| Figma 원본 | CSS Variable | Semantic 참조 | 설명 |
+|---|---|---|---|
+| color/navigation/bg | `--tab-bg` | `var(--color-navigation-bg)` | 라인탭 배경 |
+| color/navigation/label/default | `--tab-label-default` | `var(--color-navigation-label-default)` | 미선택 라벨 |
+| color/navigation/label/selected | `--tab-label-selected` | `var(--color-navigation-label-selected)` | 선택 라벨 |
+| color/navigation/indicator/default | `--tab-indicator-default` | `var(--color-navigation-indicator-default)` | 비선택 indicator |
+| color/navigation/indicator/selected | `--tab-indicator-selected` | `var(--color-navigation-indicator-selected)` | 선택 indicator (2px line) |
+
+### CSS 구현
+
+```css
+/* Semantic: Navigation */
+--color-navigation-bg:                 var(--color-surface-default);
+--color-navigation-label-default:      var(--color-gray-600);
+--color-navigation-label-selected:     var(--color-action-primary-default);
+--color-navigation-indicator-default:  var(--color-gray-200);
+--color-navigation-indicator-selected: var(--color-action-primary-default);
+
+/* [data-theme="dark"] (candidate — 시각 검증 필요) */
+--color-navigation-bg:                 var(--color-surface-default);  /* gray-dark-100 */
+--color-navigation-label-default:      var(--color-gray-dark-600);    /* #55575F */
+--color-navigation-label-selected:     var(--color-action-primary-default);  /* blue-dark-300 */
+--color-navigation-indicator-default:  var(--color-gray-dark-300);    /* #2E2F38 */
+--color-navigation-indicator-selected: var(--color-action-primary-default);  /* blue-dark-300 */
+
+/* Component alias: Line Tab */
+--tab-bg:                 var(--color-navigation-bg);
+--tab-label-default:      var(--color-navigation-label-default);
+--tab-label-selected:     var(--color-navigation-label-selected);
+--tab-indicator-default:  var(--color-navigation-indicator-default);
+--tab-indicator-selected: var(--color-navigation-indicator-selected);
+```
+
+> **주의**: `## 7. Navigation (GNB / LNB)`의 `--nav-*` 토큰과 별개. LNB/GNB는 사이드바·헤더 네비게이션 컴포넌트 전용, Line Tab은 본문 내 탭 전용.
 
 ---
 
