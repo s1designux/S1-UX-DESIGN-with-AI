@@ -3180,7 +3180,11 @@ document.addEventListener('click', e => {
 <span class="c-prop">--input-disabled-border</span>:  <span class="c-val">var(--color-border-default)</span>;
 <span class="c-prop">--input-placeholder-text</span>: <span class="c-val">var(--color-text-placeholder)</span>;
 <span class="c-prop">--input-error-text</span>:       <span class="c-val">var(--color-text-danger)</span>;
-<span class="c-prop">--input-correct-text</span>:     <span class="c-val">var(--color-text-correct)</span>;</pre>
+<span class="c-prop">--input-correct-text</span>:     <span class="c-val">var(--color-text-correct)</span>;
+<span class="c-cmt">/* Readonly (2026-05-18 신설) */</span>
+<span class="c-prop">--input-readonly-bg</span>:      <span class="c-val">var(--color-form-control-bg-disabled)</span>;
+<span class="c-prop">--input-readonly-border</span>:  <span class="c-val">var(--color-form-control-border-disabled)</span>;
+<span class="c-prop">--input-readonly-text</span>:    <span class="c-val">var(--color-text-readonly)</span>;</pre>
           </div>
           <div class="code-pane" id="inp-tokens">
             <table class="token-detail-table">
@@ -3188,14 +3192,14 @@ document.addEventListener('click', e => {
               <tbody>
                 <tr><td class="token-name">--input-default-bg</td><td class="token-value">var(--color-form-control-bg-default)</td><td>기본 배경색</td></tr>
                 <tr><td class="token-name">--input-disabled-bg</td><td class="token-value">var(--color-form-control-bg-disabled)</td><td>비활성 배경색</td></tr>
-                <tr><td class="token-name">--input-readonly-bg</td><td class="token-value">var(--color-bg-subtle)</td><td>읽기전용 배경색</td></tr>
+                <tr><td class="token-name">--input-readonly-bg</td><td class="token-value">var(--color-form-control-bg-disabled)</td><td>읽기전용 배경색 (disabled와 동일)</td></tr>
                 <tr><td class="token-name">--input-default-border</td><td class="token-value">var(--color-border-default)</td><td>기본 테두리</td></tr>
                 <tr><td class="token-name">--input-focus-border</td><td class="token-value">var(--color-border-focus)</td><td>포커스 테두리</td></tr>
                 <tr><td class="token-name">--input-error-border</td><td class="token-value">var(--color-border-danger)</td><td>에러 테두리</td></tr>
                 <tr><td class="token-name">--input-correct-border</td><td class="token-value">var(--color-border-correct)</td><td>정상(correct) 테두리</td></tr>
                 <tr><td class="token-name">--input-disabled-border</td><td class="token-value">var(--color-border-default)</td><td>비활성 테두리</td></tr>
-                <tr><td class="token-name">--input-readonly-border</td><td class="token-value">var(--color-border-default)</td><td>읽기전용 테두리</td></tr>
-                <tr><td class="token-name">--input-readonly-text</td><td class="token-value">var(--color-text-secondary)</td><td>읽기전용 텍스트</td></tr>
+                <tr><td class="token-name">--input-readonly-border</td><td class="token-value">var(--color-form-control-border-disabled)</td><td>읽기전용 테두리 (disabled와 동일)</td></tr>
+                <tr><td class="token-name">--input-readonly-text</td><td class="token-value">var(--color-text-readonly)</td><td>읽기전용 텍스트 (text-disabled보다 한 단계 진함)</td></tr>
                 <tr><td class="token-name">--input-placeholder-text</td><td class="token-value">var(--color-text-placeholder)</td><td>placeholder 텍스트</td></tr>
                 <tr><td class="token-name">--input-disabled-text</td><td class="token-value">var(--color-text-disabled)</td><td>비활성 텍스트</td></tr>
                 <tr><td class="token-name">--input-helper-text</td><td class="token-value">var(--color-text-secondary)</td><td>안내 메시지 텍스트</td></tr>

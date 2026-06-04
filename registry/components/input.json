@@ -108,6 +108,12 @@
           "--input-helper-text":      "var(--color-text-state-helper)",
           "--input-correct-text":     "var(--color-text-state-correct)",
           "--input-error-text":       "var(--color-status-error)"
+        },
+        "readonly": {
+          "--input-readonly-bg":     "var(--color-form-control-bg-disabled)",
+          "--input-readonly-border": "var(--color-form-control-border-disabled)",
+          "--input-readonly-text":   "var(--color-text-readonly)",
+          "note": "Textarea 와 공유. 2026-05-18 MVP4-token 신설. readonly bg/border = disabled와 동일, text는 --color-text-readonly로 한 단계 진함."
         }
       },
       "removedTokens": {

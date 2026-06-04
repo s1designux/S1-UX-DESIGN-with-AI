@@ -312,13 +312,16 @@ Foundation(Foundation)를 직접 참조하지 않습니다.
 |---|---|---|---|
 | color/form-control/bg--default | `--input-default-bg` | `var(--color-form-control-bg-default)` | 기본 배경 |
 | color/form-control/bg--disabled | `--input-disabled-bg` | `var(--color-form-control-bg-disabled)` | disabled 배경 |
+| color/form-control/bg--disabled | `--input-readonly-bg` | `var(--color-form-control-bg-disabled)` | readonly 배경 (disabled와 동일) |
 | color/form-control/border--default | `--input-default-border` | `var(--color-form-control-border-default)` | 기본 테두리 |
 | color/form-control/border--selected | `--input-focus-border` | `var(--color-form-control-border-selected)` | focus 테두리 |
 | color/form-control/border--error | `--input-error-border` | `var(--color-form-control-border-error)` | 에러 테두리 |
 | color/form-control/border--correct | `--input-correct-border` | `var(--color-form-control-border-correct)` | correct 테두리 |
 | color/form-control/border--disabled | `--input-disabled-border` | `var(--color-form-control-border-disabled)` | disabled 테두리 |
+| color/form-control/border--disabled | `--input-readonly-border` | `var(--color-form-control-border-disabled)` | readonly 테두리 (disabled와 동일) |
 | color/form-control/text--placeholder | `--input-placeholder-text` | `var(--color-form-control-text-placeholder)` | 플레이스홀더 |
 | color/form-control/text--disabled | `--input-disabled-text` | `var(--color-form-control-text-disabled)` | disabled 텍스트 |
+| color/text/state/readonly | `--input-readonly-text` | `var(--color-text-readonly)` | readonly 텍스트 (text-disabled보다 한 단계 진함) |
 | color/text/state/helper | `--input-helper-text` | `var(--color-text-state-helper)` | 도움말 텍스트 |
 | color/text/state/correct | `--input-correct-text` | `var(--color-text-state-correct)` | correct 피드백 텍스트 |
 | color/text/state/error | `--input-error-text` | `var(--color-text-state-error)` | 에러 메시지 텍스트 |
@@ -353,13 +356,16 @@ Foundation(Foundation)를 직접 참조하지 않습니다.
 /* Component alias: Input */
 --input-default-bg:       var(--color-form-control-bg-default);
 --input-disabled-bg:      var(--color-form-control-bg-disabled);
+--input-readonly-bg:      var(--color-form-control-bg-disabled);
 --input-default-border:   var(--color-form-control-border-default);
 --input-focus-border:     var(--color-form-control-border-selected);
 --input-error-border:     var(--color-form-control-border-error);
 --input-correct-border:   var(--color-form-control-border-correct);
 --input-disabled-border:  var(--color-form-control-border-disabled);
+--input-readonly-border:  var(--color-form-control-border-disabled);
 --input-placeholder-text: var(--color-form-control-text-placeholder);
 --input-disabled-text:    var(--color-form-control-text-disabled);
+--input-readonly-text:    var(--color-text-readonly);
 --input-helper-text:      var(--color-text-state-helper);
 --input-correct-text:     var(--color-text-state-correct);
 --input-error-text:       var(--color-text-state-error);

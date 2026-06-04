@@ -116,6 +116,7 @@ color-overlay   → 딤·오버레이
 | `--color-text-correct` | color/text/state/correct | `#1D6CEB` | color/blue/400 | `#6FA5F8` | blue-dark/400 | 올바른 입력 피드백 |
 | `--color-text-danger` | color/text/state/caution | `#FF4554` | color/red/300 | `#F06070` | status-dark/red | 에러·위험 메시지 |
 | `--color-text-disabled` | color/text/state/disabled | `#C4C4C4` | color/gray/300 | `#35363F` | gray-dark/400 | 비활성 텍스트 |
+| `--color-text-readonly` | color/text/state/readonly | `#757575` | color/gray/500 | `#3E4049` | gray-dark/500 | 읽기전용 텍스트 (D001 신설, 2026-05-19). form-control-text-disabled 한 단계 강조 |
 | `--color-text-inverse` | color/text/state/accent-alt | `#FFFFFF` | color/base/white | `#FFFFFF` | color/base/white | 색상 배경 위 텍스트 |
 
 ---
@@ -333,6 +334,7 @@ color-overlay   → 딤·오버레이
   --color-text-correct:     #1D6CEB;
   --color-text-danger:      #FF4554;
   --color-text-disabled:    #C4C4C4;
+  --color-text-readonly:    #757575;
   --color-text-inverse:     #FFFFFF;
 
   /* color-border */
@@ -423,6 +425,7 @@ color-overlay   → 딤·오버레이
   --color-text-correct:     #6FA5F8;
   --color-text-danger:      #F06070;
   --color-text-disabled:    #35363F;
+  --color-text-readonly:    #3E4049;
   --color-text-inverse:     #FFFFFF;
 
   /* color-border */
