@@ -2,7 +2,7 @@
   "_meta": {
     "description": "사용자가 반복 요청한 패턴 추적 파일. count >= 3 이면 자동 감사 규칙 승격 후보.",
     "promotionThreshold": 3,
-    "updatedAt": "2026-06-02"
+    "updatedAt": "2026-06-05"
   },
   "patterns": [
     {
@@ -62,6 +62,19 @@
         { "date": "2026-05-27", "summary": "Table HTML 코드탭 단일 예시만 있고 구성 불완전" }
       ],
       "automationNote": "각 컴포넌트 섹션에 code-pane HTML/CSS/Token Details가 모두 존재하는지 검사. harness-audit RULE-4 후보."
+    },
+    {
+      "id": "install-prompt-out-of-sync",
+      "category": "external-artifact-sync",
+      "label": "다운로드 tokens.css 가 실제 tokens.css 와 동기화 안 됨",
+      "description": "pages/install-prompt.html 의 <pre id='code-full'> 인라인 CSS 가 다운로드 파일 원본. 토큰 추가/수정 시 수동 갱신이 누락되어 사용자가 받는 파일이 최신 토큰 절반 가까이 누락.",
+      "count": 1,
+      "promotionStatus": "promoted",
+      "promotedRule": "Gate 3 install-prompt 동기화 검사 + scripts/sync-install-prompt.js + npm run tokens:sync-prompt",
+      "occurrences": [
+        { "date": "2026-06-05", "summary": "사용자 시각 확인 — 다운로드 파일 240/549 토큰 누락 발견. 자동 동기화 스크립트 신설 + Gate 3 통합" }
+      ],
+      "automationNote": "Gate 3 Quality 가 tokens.css 변경 시마다 install-prompt.html 인라인 동기화 여부 자동 검증. 불일치 시 FAIL. 동기화는 npm run tokens:sync-prompt 로 자동 실행."
     },
     {
       "id": "installer-coverage-gap",

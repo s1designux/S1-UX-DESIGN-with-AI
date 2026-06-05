@@ -147,6 +147,19 @@ if (!fs.existsSync(tokensCSSPath)) {
     warn('pages/install-prompt.html not found — tokens.css sync target missing');
   } else {
     pass('install-prompt.html exists');
+
+    // 인라인 다운로드 CSS 가 tokens.css 와 동기화됐는지 검증
+    try {
+      const { spawnSync } = require('child_process');
+      const r = spawnSync('node', [path.join(ROOT, 'scripts/sync-install-prompt.js'), '--check'], { encoding: 'utf-8' });
+      if (r.status === 0) {
+        pass(r.stdout.trim().replace(/^✅\s*/, ''));
+      } else {
+        fail(`install-prompt.html 다운로드 인라인 CSS 가 tokens.css 와 불일치 — 실행: npm run tokens:sync-prompt`);
+      }
+    } catch (e) {
+      warn(`install-prompt 동기화 검사 실행 실패: ${e.message}`);
+    }
   }
 }
 
