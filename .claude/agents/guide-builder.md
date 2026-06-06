@@ -114,6 +114,7 @@ npm run harness:fix            # (향후) 자동 수정 모드
 | TimePicker (select형) | `tp-select-html` | `s1-timepicker-select-group"` / `s1-timepicker-select-group--sm` |
 | Line Tab (PC) | `tab-pc-html` | `s1-tab--pc-md` / `s1-tab--pc-sm` |
 | Line Tab (Mobile) | `tab-mo-html` | `s1-tab--mobile` |
+| GNB (menu slot) | `gnb-pc-html` | `s1-gnb-menu is-selected` (md) / `s1-gnb-menu--sm` / `s1-gnb-menu--xsm` |
 
 **새 컴포넌트 추가 시:** `scripts/harness-audit.js`의 `SIZE_RULES` 배열에 항목 추가.
 

@@ -14,20 +14,6 @@
       "approvedBy": "design-system-lead"
     },
     {
-      "id": "EX02",
-      "rule": "rgba() prohibition",
-      "scope": "color-border-* Dark mode only",
-      "description": "rgba() is allowed for dark-mode border tokens (--color-border-subtle/default/strong/emphasis) because the wide range of background luminance in dark mode makes it impossible to achieve consistent contrast with a fixed HEX value. An alpha-based approach is the only reliable solution.",
-      "affectedTokens": [
-        "--color-border-subtle (dark)",
-        "--color-border-default (dark)",
-        "--color-border-strong (dark)",
-        "--color-border-emphasis (dark)"
-      ],
-      "approvedAt": "2026-04-29",
-      "approvedBy": "design-system-lead"
-    },
-    {
       "id": "EX03",
       "rule": "rgba() prohibition",
       "scope": "color-overlay (Light + Dark)",
@@ -70,24 +56,6 @@
       ],
       "approvedAt": "2026-04-30",
       "approvedBy": "design-system-lead"
-    },
-    {
-      "id": "EX06",
-      "rule": "dark-border-opacity-composition",
-      "scope": "Dark semantic border tokens — migration candidates only",
-      "description": "Figma opacity-composed dark border values (e.g. #FFFFFF 4%, 7%, 12%, 20%) are allowed ONLY as migration candidates. Stable semantic border tokens must use resolved HEX values or foundation dark scale references. rgba() values from opacity composition must not be marked stable.",
-      "allowedIn": ["semanticTokens.candidate", "migration"],
-      "requiresNote": true,
-      "stableAllowed": false,
-      "affectedTokens": [
-        "--color-border-subtle (dark)",
-        "--color-border-default (dark)",
-        "--color-border-strong (dark)",
-        "--color-border-emphasis (dark)"
-      ],
-      "requiredFollowUp": "Resolve actual HEX values for each dark border token after visual approval. Do not calculate or invent HEX values — human decision required.",
-      "addedAt": "2026-05-11",
-      "addedBy": "design-system-lead"
     }
   ]
 }

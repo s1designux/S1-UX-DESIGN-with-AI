@@ -109,13 +109,14 @@
       "category": "verification-quality",
       "label": "검수 통과했으나 시각·레이아웃이 Figma와 다름",
       "description": "4단계 자가대조가 CSS 선언값만 비교하고 렌더 레이아웃을 실측하지 않아, 값은 맞지만 시각이 다른 불일치(아이콘 컨테이너 치수 누락 등)를 놓침",
-      "count": 1,
-      "promotionStatus": "tracking",
+      "count": 2,
+      "promotionStatus": "candidate",
       "promotedRule": null,
       "occurrences": [
-        { "date": "2026-06-05", "summary": "TimePicker Select 화살표 24px 박스 누락 → 값 검증 PASS였으나 화살표가 가운데 떠 우측 28.3px 빈공간. 사용자 이미지 제보로 발견. component-verifier·skill Stage 4에 preview_eval 실측+Figma 스크린샷 시각 대조 필수화." }
+        { "date": "2026-06-05", "summary": "TimePicker Select 화살표 24px 박스 누락 → 값 검증 PASS였으나 화살표가 가운데 떠 우측 28.3px 빈공간. 사용자 이미지 제보로 발견. component-verifier·skill Stage 4에 preview_eval 실측+Figma 스크린샷 시각 대조 필수화." },
+        { "date": "2026-06-06", "summary": "GNB 유틸 아이콘이 32px(프레임)로 렌더돼 너무 큼. 실제 글리프는 프레임 inset 12.5% 적용 24px(md/sm)/18px(xsm)여야. verifier가 박스(40px)는 쟀으나 글리프 크기를 Figma 스크린샷과 비교 안 함 → 사용자 '아이콘 너무 큼' 제보. get_screenshot 원본 대조로 확인·수정." }
       ],
-      "automationNote": "component-verifier가 preview_eval bounding box 실측 + Figma 스크린샷 시각 대조를 수행하도록 강화함. 반복 시 harness-audit에 레이아웃 실측 RULE 추가 검토."
+      "automationNote": "아이콘은 '프레임 크기'가 아니라 '글리프 렌더 크기'(프레임×(1-2×inset))로 검증해야 함. component-verifier 시각 대조 시 아이콘 글리프를 Figma get_screenshot과 비례 비교하도록 강화. 2회 도달 — 승격 검토."
     }
   ]
 }

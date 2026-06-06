@@ -1485,6 +1485,103 @@
       transition: left 0.22s cubic-bezier(0.4, 0, 0.2, 1), width 0.22s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
+    /* ── GNB (Global Navigation Bar) ─────────────────────── */
+    /* 메뉴 슬롯 (slots_menu) */
+    .s1-gnb-menu {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      box-sizing: border-box;
+      min-width: 116px;
+      height: 56px; /* md */
+      padding: 12px 40px; /* py block-xs 12 / px = 외곽 lg24 + 내부 sm16 = 40 (md) */
+      font-family: 'Pretendard', sans-serif;
+      font-size: 18px;
+      font-weight: var(--font-weight-medium);
+      line-height: var(--line-height-130);
+      letter-spacing: -0.36px;
+      color: var(--gnb-menu-label-default);
+      background: none;
+      border: none;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: color 0.12s;
+    }
+    /* 밑줄 = 슬롯 외곽 px만큼 inset된 내부 콘텐츠 폭 (Figma: underline = 외곽 content-box) */
+    .s1-gnb-menu::after {
+      content: '';
+      position: absolute; left: 24px; right: 24px; bottom: 0; height: 2px;
+      background: transparent; pointer-events: none;
+    }
+    .s1-gnb-menu:not(.is-preview):hover,
+    .s1-gnb-menu.is-hover,
+    .s1-gnb-menu.is-selected {
+      color: var(--gnb-menu-label-active);
+    }
+    .s1-gnb-menu:not(.is-preview):hover::after,
+    .s1-gnb-menu.is-hover::after,
+    .s1-gnb-menu.is-selected::after {
+      background: var(--gnb-menu-underline-active);
+    }
+    /* sm — height 48, px = 외곽 md20 + 내부 xs12 = 32, 밑줄 inset 20 */
+    .s1-gnb-menu--sm { height: 48px; padding: 12px 32px; }
+    .s1-gnb-menu--sm::after { left: 20px; right: 20px; }
+    /* xsm — height 36, px 32, font 14, ls 0, 밑줄 inset 20 */
+    .s1-gnb-menu--xsm { height: 36px; padding: 12px 32px; font-size: 14px; letter-spacing: 0; }
+    .s1-gnb-menu--xsm::after { left: 20px; right: 20px; }
+
+    /* GNB 바 (pc_gnb) */
+    .s1-gnb {
+      display: flex;
+      align-items: center;
+      box-sizing: border-box;
+      width: 100%;
+      height: 56px; /* md */
+      padding-left: 24px;  /* pl lg */
+      padding-right: 20px; /* pr md */
+      background: var(--gnb-bg);
+      border-bottom: var(--border-width-default) solid var(--gnb-border);
+    }
+    .s1-gnb--sm  { height: 48px; }
+    .s1-gnb--xsm { height: 36px; padding-left: 20px; padding-right: 24px; } /* xsm 좌우 반전 — Figma 582:7770 (spacing/20·24) */
+    /* align center-between — 3분할 */
+    .s1-gnb--center-between { justify-content: space-between; }
+    /* align start — 로고+메뉴 좌측 묶음, 유틸 우측 */
+    .s1-gnb--start { justify-content: flex-start; }
+    .s1-gnb--start .s1-gnb-util { margin-left: auto; }
+
+    .s1-gnb-logo {
+      font-family: 'Pretendard', sans-serif;
+      font-size: 20px;
+      font-weight: var(--font-weight-bold);
+      line-height: var(--line-height-130);
+      color: var(--gnb-logo-text);
+      white-space: nowrap;
+    }
+    /* 메뉴 그룹 — 바 내부에서 메뉴 슬롯들을 가로 묶음 */
+    .s1-gnb-menus { display: flex; align-items: stretch; height: 100%; }
+    /* start 정렬: 로고↔메뉴 gap 64, 메뉴 묶음 좌측. 메뉴 슬롯은 인접(gap 0) — 분리는 슬롯 px로만 (참고 기준: 2슬롯 282×48 연속) */
+    .s1-gnb--start .s1-gnb-leading { display: flex; align-items: center; gap: 64px; height: 100%; }
+    /* 유틸리티 영역 */
+    .s1-gnb-util { display: flex; align-items: center; gap: var(--spacing-cluster-xxs); }
+    .s1-gnb-util-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 40px;  /* md/sm */
+      height: 40px;
+      padding: 0;
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: var(--gnb-icon);
+    }
+    .s1-gnb-util-btn svg { width: 24px; height: 24px; display: block; } /* Figma 아이콘 글리프: 32px 프레임 내 inset 12.5% → 실제 24px */
+    /* xsm — 박스 32, 아이콘 24 */
+    .s1-gnb--xsm .s1-gnb-util-btn { width: 32px; height: 32px; }
+    .s1-gnb--xsm .s1-gnb-util-btn svg { width: 18px; height: 18px; } /* xsm: 24px 프레임 내 inset → 실제 18px */
+
     /* States matrix — static hover preview for pagination */
     .s1-pagination-arrow.is-hover,
     .s1-pagination-number.is-hover {
@@ -1712,6 +1809,7 @@
           <button class="comp-nav-btn" data-category="data" onclick="showSection('table', this)">Table</button>
           <button class="comp-nav-btn" data-category="data" onclick="showSection('pagination', this)">Pagination</button>
           <button class="comp-nav-btn" data-category="navigation" onclick="showSection('tab', this)">Line Tab</button>
+          <button class="comp-nav-btn" data-category="navigation" onclick="showSection('gnb', this)">GNB</button>
         </div><!-- /comp-nav -->
       </div><!-- /component-filter -->
 
@@ -6710,6 +6808,330 @@ update(); // 초기화</pre>
           ['tab-size-pcmd','tab-size-pcsm','tab-size-mobile',
            'tab-action-pcmd','tab-action-pcsm','tab-action-mobile'].forEach(function(id) {
             setupTabStrip(document.getElementById(id));
+          });
+        })();
+        </script>
+      </section>
+
+      <!-- ════════════════════ GNB ════════════════════ -->
+      <section class="comp-section" id="gnb">
+        <div class="comp-section-header">
+          <h2 class="comp-section-title">GNB</h2>
+          <span class="comp-badge comp-badge-blue">Core</span>
+          <span class="comp-badge">Navigation</span>
+          <span class="comp-badge">15 variants</span>
+          <span class="comp-badge">PC only</span>
+        </div>
+
+        <!-- ── variant-group: 메뉴 슬롯 ── -->
+        <div class="variant-group">
+          <h3 class="variant-group-title">메뉴 슬롯 (slots_menu)</h3>
+          <p class="variant-group-desc">GNB 바를 구성하는 원자 단위. 라벨 + 하단 2px 라인. 기본 라벨 <code>--gnb-menu-label-default</code>(#000000), hover·selected 라벨·밑줄 <code>--gnb-menu-label-active</code> / <code>--gnb-menu-underline-active</code>(#1D6CEB). 메뉴 슬롯 자체에는 아이콘 없음.</p>
+          <div class="variant-block">
+            <div class="variant-label">States</div>
+            <div class="preview-area" style="display:flex;flex-direction:column;gap:0;padding:0;overflow-x:auto;">
+              <div class="platform-section platform-section-pc" style="padding:20px 20px 20px;">
+                <div class="platform-header"><span class="platform-dot pc"></span>PC</div>
+                <div style="overflow-x:auto;">
+                  <div class="comp-state-matrix" style="grid-template-columns: 88px minmax(180px,auto) repeat(3, auto);">
+                    <div class="matrix-col-header-action" style="grid-column:1;grid-row:1;">Size</div>
+                    <div class="matrix-col-header-action" style="grid-column:2;grid-row:1;">Action</div>
+                    <div class="matrix-col-header" style="grid-column:3;grid-row:1;">Default</div>
+                    <div class="matrix-col-header" style="grid-column:4;grid-row:1;">Hover</div>
+                    <div class="matrix-col-header" style="grid-column:5;grid-row:1;">Selected</div>
+
+                    <!-- md row -->
+                    <div class="comp-state-cell" style="grid-column:1;grid-row:2;font-size:11px;font-weight:600;color:var(--color-text-caption);justify-content:center;">md<br><span style="font-weight:400;">h56 · 18px</span></div>
+                    <div class="comp-action-cell" data-comp-action="gnb-md" style="grid-column:2;grid-row:2;padding:8px 12px;">
+                      <div style="display:flex;" id="gnb-action-md">
+                        <button class="s1-gnb-menu is-selected" type="button">메뉴1</button>
+                        <button class="s1-gnb-menu" type="button">메뉴2</button>
+                      </div>
+                    </div>
+                    <div class="comp-state-cell" style="grid-column:3;grid-row:2;"><button class="s1-gnb-menu is-preview" type="button">메뉴타이틀</button></div>
+                    <div class="comp-state-cell" style="grid-column:4;grid-row:2;"><button class="s1-gnb-menu is-hover is-preview" type="button">메뉴타이틀</button></div>
+                    <div class="comp-state-cell" style="grid-column:5;grid-row:2;"><button class="s1-gnb-menu is-selected is-preview" type="button">메뉴타이틀</button></div>
+
+                    <!-- sm row -->
+                    <div class="comp-state-cell" style="grid-column:1;grid-row:3;font-size:11px;font-weight:600;color:var(--color-text-caption);justify-content:center;">sm<br><span style="font-weight:400;">h48 · 18px</span></div>
+                    <div class="comp-action-cell" data-comp-action="gnb-sm" style="grid-column:2;grid-row:3;padding:8px 12px;">
+                      <div style="display:flex;" id="gnb-action-sm">
+                        <button class="s1-gnb-menu s1-gnb-menu--sm is-selected" type="button">메뉴1</button>
+                        <button class="s1-gnb-menu s1-gnb-menu--sm" type="button">메뉴2</button>
+                      </div>
+                    </div>
+                    <div class="comp-state-cell" style="grid-column:3;grid-row:3;"><button class="s1-gnb-menu s1-gnb-menu--sm is-preview" type="button">메뉴타이틀</button></div>
+                    <div class="comp-state-cell" style="grid-column:4;grid-row:3;"><button class="s1-gnb-menu s1-gnb-menu--sm is-hover is-preview" type="button">메뉴타이틀</button></div>
+                    <div class="comp-state-cell" style="grid-column:5;grid-row:3;"><button class="s1-gnb-menu s1-gnb-menu--sm is-selected is-preview" type="button">메뉴타이틀</button></div>
+
+                    <!-- xsm row -->
+                    <div class="comp-state-cell" style="grid-column:1;grid-row:4;font-size:11px;font-weight:600;color:var(--color-text-caption);justify-content:center;">xsm<br><span style="font-weight:400;">h36 · 14px</span></div>
+                    <div class="comp-action-cell" data-comp-action="gnb-xsm" style="grid-column:2;grid-row:4;padding:8px 12px;">
+                      <div style="display:flex;" id="gnb-action-xsm">
+                        <button class="s1-gnb-menu s1-gnb-menu--xsm is-selected" type="button">메뉴1</button>
+                        <button class="s1-gnb-menu s1-gnb-menu--xsm" type="button">메뉴2</button>
+                      </div>
+                    </div>
+                    <div class="comp-state-cell" style="grid-column:3;grid-row:4;"><button class="s1-gnb-menu s1-gnb-menu--xsm is-preview" type="button">메뉴타이틀</button></div>
+                    <div class="comp-state-cell" style="grid-column:4;grid-row:4;"><button class="s1-gnb-menu s1-gnb-menu--xsm is-hover is-preview" type="button">메뉴타이틀</button></div>
+                    <div class="comp-state-cell" style="grid-column:5;grid-row:4;"><button class="s1-gnb-menu s1-gnb-menu--xsm is-selected is-preview" type="button">메뉴타이틀</button></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── variant-group: GNB 바 ── -->
+        <div class="variant-group">
+          <h3 class="variant-group-title">GNB 바 (pc_gnb)</h3>
+          <p class="variant-group-desc">로고 + 메뉴 슬롯 + 유틸리티(아이콘 3종) 조립체. 배경 <code>--gnb-bg</code>, 하단 1px <code>--gnb-border</code>. 정렬 <strong>center-between</strong>(로고·메뉴·유틸 3분할) / <strong>start</strong>(로고+메뉴 좌측 묶음, 유틸 우측). viewport(1280/1440/1920)는 full-width 반응형으로 통합(내부 패딩 pl 24 / pr 20).</p>
+          <div class="variant-block">
+            <div class="variant-label">size × align</div>
+            <div class="preview-area" style="display:flex;flex-direction:column;gap:24px;padding:24px;overflow-x:auto;">
+
+              <!-- center-between · md -->
+              <div>
+                <div style="font-size:11px;font-weight:600;color:var(--color-text-caption);margin-bottom:8px;letter-spacing:0.04em;text-transform:uppercase;">center-between · md — h56</div>
+                <div class="s1-gnb s1-gnb--md s1-gnb--center-between">
+                  <span class="s1-gnb-logo">SAMPLE LOGO</span>
+                  <div class="s1-gnb-menus">
+                    <button class="s1-gnb-menu is-selected" type="button">메뉴1</button>
+                    <button class="s1-gnb-menu" type="button">메뉴2</button>
+                    <button class="s1-gnb-menu" type="button">메뉴3</button>
+                  </div>
+                  <div class="s1-gnb-util">
+                    <button class="s1-gnb-util-btn" type="button" aria-label="언어"><svg viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M9 18C13.9659 18 18 13.9659 18 9C18 4.03412 13.9659 0 9 0C4.03412 0 0 4.03412 0 9C0 13.9659 4.03412 18 9 18ZM2.97529 3.84353C3.56824 4.09765 4.18235 4.32 4.81765 4.5C4.42588 5.80235 4.20353 7.13647 4.16118 8.47059H1.09059C1.20706 6.71294 1.89529 5.10353 2.97529 3.84353ZM5.99294 1.65176C5.67529 2.25529 5.4 2.86941 5.16706 3.49412C4.69059 3.35647 4.22471 3.20824 3.78 3.02824C4.43647 2.45647 5.17765 1.99059 5.99294 1.65176ZM8.47059 1.09059V4.01294C7.71882 3.98118 6.95647 3.89647 6.20471 3.73765C6.53294 2.88 6.93529 2.03294 7.43294 1.21765C7.77177 1.15412 8.12118 1.11176 8.47059 1.09059ZM10.5671 1.21765C11.0647 2.03294 11.4671 2.88 11.7953 3.73765C11.0435 3.88588 10.2918 3.98118 9.52941 4.01294V1.09059C9.87882 1.11176 10.2282 1.15412 10.5671 1.21765ZM14.22 3.02824C13.7753 3.20824 13.3094 3.36706 12.8329 3.49412C12.6 2.86941 12.3247 2.25529 12.0071 1.65176C12.8224 1.99059 13.5635 2.45647 14.22 3.02824ZM16.9094 8.47059H13.8388C13.7965 7.13647 13.5741 5.80235 13.1824 4.5C13.8282 4.32 14.4424 4.09765 15.0247 3.84353C16.1047 5.10353 16.7929 6.71294 16.9094 8.47059ZM15.0247 14.1565C14.4424 13.9024 13.8176 13.68 13.1824 13.5C13.5741 12.1976 13.7965 10.8635 13.8388 9.52941H16.9094C16.7929 11.2871 16.1047 12.8965 15.0247 14.1565ZM12.0071 16.3482C12.3247 15.7447 12.6 15.1306 12.8329 14.5059C13.3094 14.6435 13.7753 14.7918 14.22 14.9718C13.5635 15.5435 12.8224 16.0094 12.0071 16.3482ZM9.52941 16.9094V13.9871C10.2812 14.0188 11.0435 14.1035 11.7953 14.2624C11.4671 15.12 11.0647 15.9671 10.5671 16.7824C10.2282 16.8459 9.87882 16.8882 9.52941 16.9094ZM7.43294 16.7824C6.93529 15.9671 6.53294 15.12 6.20471 14.2624C6.95647 14.1141 7.70824 14.0188 8.47059 13.9871V16.9094C8.12118 16.8882 7.77177 16.8459 7.43294 16.7824ZM3.78 14.9718C4.22471 14.7918 4.69059 14.6329 5.16706 14.5059C5.4 15.1306 5.67529 15.7447 5.99294 16.3482C5.17765 16.0094 4.43647 15.5435 3.78 14.9718ZM5.84471 4.74353C6.71294 4.92353 7.59177 5.04 8.47059 5.07176V8.47059H5.22C5.26235 7.22118 5.47412 5.97177 5.85529 4.74353H5.84471ZM12.1553 4.74353C12.5259 5.97177 12.7376 7.22118 12.7906 8.47059H9.54V5.07176C10.4188 5.04 11.2871 4.93412 12.1659 4.74353H12.1553ZM12.1553 13.2565C11.2871 13.0765 10.4082 12.96 9.52941 12.9388V9.54H12.78C12.7376 10.7894 12.5259 12.0388 12.1447 13.2671L12.1553 13.2565ZM8.47059 9.52941V12.9282C7.59177 12.96 6.72353 13.0659 5.84471 13.2459C5.47412 12.0176 5.26235 10.7682 5.20941 9.51882H8.46L8.47059 9.52941ZM4.16118 9.52941C4.20353 10.8635 4.42588 12.1976 4.81765 13.5C4.17177 13.68 3.55765 13.9024 2.97529 14.1565C1.89529 12.8965 1.20706 11.2871 1.09059 9.52941H4.16118Z" fill="currentColor"/></svg></button>
+                    <button class="s1-gnb-util-btn" type="button" aria-label="계정"><svg viewBox="0 0 24 21.5816" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M16.561 13.7324H7.43901C5.67118 13.7324 4.00236 14.3971 2.84266 15.5568C0.494991 17.9186 0.0141426 21.2704 0 21.3977L1.37183 21.5816C1.37183 21.5816 1.81025 18.5409 3.8185 16.5185C4.72363 15.6134 6.03889 15.1042 7.43901 15.1042H16.561C17.9611 15.1042 19.2764 15.6275 20.1815 16.5185C22.1897 18.5409 22.6282 21.5391 22.6282 21.5816L24 21.3977C23.9859 21.2563 23.505 17.9045 21.1573 15.5568C19.9976 14.3971 18.3288 13.7324 16.561 13.7324Z" fill="currentColor"/><path d="M5.9968 6.01061C5.9968 9.31998 8.69803 12.0212 12.0074 12.0212C15.3168 12.0212 18.018 9.31998 18.018 6.01061C18.018 2.70124 15.3168 0 12.0074 0C8.69803 0 5.9968 2.70124 5.9968 6.01061ZM16.6037 6.01061C16.6037 8.54213 14.5389 10.607 12.0074 10.607C9.47588 10.607 7.41106 8.54213 7.41106 6.01061C7.41106 3.47908 9.47588 1.41426 12.0074 1.41426C14.5389 1.41426 16.6037 3.47908 16.6037 6.01061Z" fill="currentColor"/></svg></button>
+                    <button class="s1-gnb-util-btn" type="button" aria-label="메뉴"><svg viewBox="0 0 24 16.9274" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M0 1.41176H24V0.705882V0H0V1.41176Z" fill="currentColor"/><path d="M0 9.17647H24V8.47059V7.76471H0V9.17647Z" fill="currentColor"/><path d="M0 16.9274H24V16.2215V15.5156H0V16.9274Z" fill="currentColor"/></svg></button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- center-between · sm -->
+              <div>
+                <div style="font-size:11px;font-weight:600;color:var(--color-text-caption);margin-bottom:8px;letter-spacing:0.04em;text-transform:uppercase;">center-between · sm — h48</div>
+                <div class="s1-gnb s1-gnb--sm s1-gnb--center-between">
+                  <span class="s1-gnb-logo">SAMPLE LOGO</span>
+                  <div class="s1-gnb-menus">
+                    <button class="s1-gnb-menu s1-gnb-menu--sm is-selected" type="button">메뉴1</button>
+                    <button class="s1-gnb-menu s1-gnb-menu--sm" type="button">메뉴2</button>
+                    <button class="s1-gnb-menu s1-gnb-menu--sm" type="button">메뉴3</button>
+                  </div>
+                  <div class="s1-gnb-util">
+                    <button class="s1-gnb-util-btn" type="button" aria-label="언어"><svg viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M9 18C13.9659 18 18 13.9659 18 9C18 4.03412 13.9659 0 9 0C4.03412 0 0 4.03412 0 9C0 13.9659 4.03412 18 9 18ZM2.97529 3.84353C3.56824 4.09765 4.18235 4.32 4.81765 4.5C4.42588 5.80235 4.20353 7.13647 4.16118 8.47059H1.09059C1.20706 6.71294 1.89529 5.10353 2.97529 3.84353ZM5.99294 1.65176C5.67529 2.25529 5.4 2.86941 5.16706 3.49412C4.69059 3.35647 4.22471 3.20824 3.78 3.02824C4.43647 2.45647 5.17765 1.99059 5.99294 1.65176ZM8.47059 1.09059V4.01294C7.71882 3.98118 6.95647 3.89647 6.20471 3.73765C6.53294 2.88 6.93529 2.03294 7.43294 1.21765C7.77177 1.15412 8.12118 1.11176 8.47059 1.09059ZM10.5671 1.21765C11.0647 2.03294 11.4671 2.88 11.7953 3.73765C11.0435 3.88588 10.2918 3.98118 9.52941 4.01294V1.09059C9.87882 1.11176 10.2282 1.15412 10.5671 1.21765ZM14.22 3.02824C13.7753 3.20824 13.3094 3.36706 12.8329 3.49412C12.6 2.86941 12.3247 2.25529 12.0071 1.65176C12.8224 1.99059 13.5635 2.45647 14.22 3.02824ZM16.9094 8.47059H13.8388C13.7965 7.13647 13.5741 5.80235 13.1824 4.5C13.8282 4.32 14.4424 4.09765 15.0247 3.84353C16.1047 5.10353 16.7929 6.71294 16.9094 8.47059ZM15.0247 14.1565C14.4424 13.9024 13.8176 13.68 13.1824 13.5C13.5741 12.1976 13.7965 10.8635 13.8388 9.52941H16.9094C16.7929 11.2871 16.1047 12.8965 15.0247 14.1565ZM12.0071 16.3482C12.3247 15.7447 12.6 15.1306 12.8329 14.5059C13.3094 14.6435 13.7753 14.7918 14.22 14.9718C13.5635 15.5435 12.8224 16.0094 12.0071 16.3482ZM9.52941 16.9094V13.9871C10.2812 14.0188 11.0435 14.1035 11.7953 14.2624C11.4671 15.12 11.0647 15.9671 10.5671 16.7824C10.2282 16.8459 9.87882 16.8882 9.52941 16.9094ZM7.43294 16.7824C6.93529 15.9671 6.53294 15.12 6.20471 14.2624C6.95647 14.1141 7.70824 14.0188 8.47059 13.9871V16.9094C8.12118 16.8882 7.77177 16.8459 7.43294 16.7824ZM3.78 14.9718C4.22471 14.7918 4.69059 14.6329 5.16706 14.5059C5.4 15.1306 5.67529 15.7447 5.99294 16.3482C5.17765 16.0094 4.43647 15.5435 3.78 14.9718ZM5.84471 4.74353C6.71294 4.92353 7.59177 5.04 8.47059 5.07176V8.47059H5.22C5.26235 7.22118 5.47412 5.97177 5.85529 4.74353H5.84471ZM12.1553 4.74353C12.5259 5.97177 12.7376 7.22118 12.7906 8.47059H9.54V5.07176C10.4188 5.04 11.2871 4.93412 12.1659 4.74353H12.1553ZM12.1553 13.2565C11.2871 13.0765 10.4082 12.96 9.52941 12.9388V9.54H12.78C12.7376 10.7894 12.5259 12.0388 12.1447 13.2671L12.1553 13.2565ZM8.47059 9.52941V12.9282C7.59177 12.96 6.72353 13.0659 5.84471 13.2459C5.47412 12.0176 5.26235 10.7682 5.20941 9.51882H8.46L8.47059 9.52941ZM4.16118 9.52941C4.20353 10.8635 4.42588 12.1976 4.81765 13.5C4.17177 13.68 3.55765 13.9024 2.97529 14.1565C1.89529 12.8965 1.20706 11.2871 1.09059 9.52941H4.16118Z" fill="currentColor"/></svg></button>
+                    <button class="s1-gnb-util-btn" type="button" aria-label="계정"><svg viewBox="0 0 24 21.5816" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M16.561 13.7324H7.43901C5.67118 13.7324 4.00236 14.3971 2.84266 15.5568C0.494991 17.9186 0.0141426 21.2704 0 21.3977L1.37183 21.5816C1.37183 21.5816 1.81025 18.5409 3.8185 16.5185C4.72363 15.6134 6.03889 15.1042 7.43901 15.1042H16.561C17.9611 15.1042 19.2764 15.6275 20.1815 16.5185C22.1897 18.5409 22.6282 21.5391 22.6282 21.5816L24 21.3977C23.9859 21.2563 23.505 17.9045 21.1573 15.5568C19.9976 14.3971 18.3288 13.7324 16.561 13.7324Z" fill="currentColor"/><path d="M5.9968 6.01061C5.9968 9.31998 8.69803 12.0212 12.0074 12.0212C15.3168 12.0212 18.018 9.31998 18.018 6.01061C18.018 2.70124 15.3168 0 12.0074 0C8.69803 0 5.9968 2.70124 5.9968 6.01061ZM16.6037 6.01061C16.6037 8.54213 14.5389 10.607 12.0074 10.607C9.47588 10.607 7.41106 8.54213 7.41106 6.01061C7.41106 3.47908 9.47588 1.41426 12.0074 1.41426C14.5389 1.41426 16.6037 3.47908 16.6037 6.01061Z" fill="currentColor"/></svg></button>
+                    <button class="s1-gnb-util-btn" type="button" aria-label="메뉴"><svg viewBox="0 0 24 16.9274" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M0 1.41176H24V0.705882V0H0V1.41176Z" fill="currentColor"/><path d="M0 9.17647H24V8.47059V7.76471H0V9.17647Z" fill="currentColor"/><path d="M0 16.9274H24V16.2215V15.5156H0V16.9274Z" fill="currentColor"/></svg></button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- center-between · xsm -->
+              <div>
+                <div style="font-size:11px;font-weight:600;color:var(--color-text-caption);margin-bottom:8px;letter-spacing:0.04em;text-transform:uppercase;">center-between · xsm — h36</div>
+                <div class="s1-gnb s1-gnb--xsm s1-gnb--center-between">
+                  <span class="s1-gnb-logo">SAMPLE LOGO</span>
+                  <div class="s1-gnb-menus">
+                    <button class="s1-gnb-menu s1-gnb-menu--xsm is-selected" type="button">메뉴1</button>
+                    <button class="s1-gnb-menu s1-gnb-menu--xsm" type="button">메뉴2</button>
+                    <button class="s1-gnb-menu s1-gnb-menu--xsm" type="button">메뉴3</button>
+                  </div>
+                  <div class="s1-gnb-util">
+                    <button class="s1-gnb-util-btn" type="button" aria-label="언어"><svg viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M9 18C13.9659 18 18 13.9659 18 9C18 4.03412 13.9659 0 9 0C4.03412 0 0 4.03412 0 9C0 13.9659 4.03412 18 9 18ZM2.97529 3.84353C3.56824 4.09765 4.18235 4.32 4.81765 4.5C4.42588 5.80235 4.20353 7.13647 4.16118 8.47059H1.09059C1.20706 6.71294 1.89529 5.10353 2.97529 3.84353ZM5.99294 1.65176C5.67529 2.25529 5.4 2.86941 5.16706 3.49412C4.69059 3.35647 4.22471 3.20824 3.78 3.02824C4.43647 2.45647 5.17765 1.99059 5.99294 1.65176ZM8.47059 1.09059V4.01294C7.71882 3.98118 6.95647 3.89647 6.20471 3.73765C6.53294 2.88 6.93529 2.03294 7.43294 1.21765C7.77177 1.15412 8.12118 1.11176 8.47059 1.09059ZM10.5671 1.21765C11.0647 2.03294 11.4671 2.88 11.7953 3.73765C11.0435 3.88588 10.2918 3.98118 9.52941 4.01294V1.09059C9.87882 1.11176 10.2282 1.15412 10.5671 1.21765ZM14.22 3.02824C13.7753 3.20824 13.3094 3.36706 12.8329 3.49412C12.6 2.86941 12.3247 2.25529 12.0071 1.65176C12.8224 1.99059 13.5635 2.45647 14.22 3.02824ZM16.9094 8.47059H13.8388C13.7965 7.13647 13.5741 5.80235 13.1824 4.5C13.8282 4.32 14.4424 4.09765 15.0247 3.84353C16.1047 5.10353 16.7929 6.71294 16.9094 8.47059ZM15.0247 14.1565C14.4424 13.9024 13.8176 13.68 13.1824 13.5C13.5741 12.1976 13.7965 10.8635 13.8388 9.52941H16.9094C16.7929 11.2871 16.1047 12.8965 15.0247 14.1565ZM12.0071 16.3482C12.3247 15.7447 12.6 15.1306 12.8329 14.5059C13.3094 14.6435 13.7753 14.7918 14.22 14.9718C13.5635 15.5435 12.8224 16.0094 12.0071 16.3482ZM9.52941 16.9094V13.9871C10.2812 14.0188 11.0435 14.1035 11.7953 14.2624C11.4671 15.12 11.0647 15.9671 10.5671 16.7824C10.2282 16.8459 9.87882 16.8882 9.52941 16.9094ZM7.43294 16.7824C6.93529 15.9671 6.53294 15.12 6.20471 14.2624C6.95647 14.1141 7.70824 14.0188 8.47059 13.9871V16.9094C8.12118 16.8882 7.77177 16.8459 7.43294 16.7824ZM3.78 14.9718C4.22471 14.7918 4.69059 14.6329 5.16706 14.5059C5.4 15.1306 5.67529 15.7447 5.99294 16.3482C5.17765 16.0094 4.43647 15.5435 3.78 14.9718ZM5.84471 4.74353C6.71294 4.92353 7.59177 5.04 8.47059 5.07176V8.47059H5.22C5.26235 7.22118 5.47412 5.97177 5.85529 4.74353H5.84471ZM12.1553 4.74353C12.5259 5.97177 12.7376 7.22118 12.7906 8.47059H9.54V5.07176C10.4188 5.04 11.2871 4.93412 12.1659 4.74353H12.1553ZM12.1553 13.2565C11.2871 13.0765 10.4082 12.96 9.52941 12.9388V9.54H12.78C12.7376 10.7894 12.5259 12.0388 12.1447 13.2671L12.1553 13.2565ZM8.47059 9.52941V12.9282C7.59177 12.96 6.72353 13.0659 5.84471 13.2459C5.47412 12.0176 5.26235 10.7682 5.20941 9.51882H8.46L8.47059 9.52941ZM4.16118 9.52941C4.20353 10.8635 4.42588 12.1976 4.81765 13.5C4.17177 13.68 3.55765 13.9024 2.97529 14.1565C1.89529 12.8965 1.20706 11.2871 1.09059 9.52941H4.16118Z" fill="currentColor"/></svg></button>
+                    <button class="s1-gnb-util-btn" type="button" aria-label="계정"><svg viewBox="0 0 24 21.5816" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M16.561 13.7324H7.43901C5.67118 13.7324 4.00236 14.3971 2.84266 15.5568C0.494991 17.9186 0.0141426 21.2704 0 21.3977L1.37183 21.5816C1.37183 21.5816 1.81025 18.5409 3.8185 16.5185C4.72363 15.6134 6.03889 15.1042 7.43901 15.1042H16.561C17.9611 15.1042 19.2764 15.6275 20.1815 16.5185C22.1897 18.5409 22.6282 21.5391 22.6282 21.5816L24 21.3977C23.9859 21.2563 23.505 17.9045 21.1573 15.5568C19.9976 14.3971 18.3288 13.7324 16.561 13.7324Z" fill="currentColor"/><path d="M5.9968 6.01061C5.9968 9.31998 8.69803 12.0212 12.0074 12.0212C15.3168 12.0212 18.018 9.31998 18.018 6.01061C18.018 2.70124 15.3168 0 12.0074 0C8.69803 0 5.9968 2.70124 5.9968 6.01061ZM16.6037 6.01061C16.6037 8.54213 14.5389 10.607 12.0074 10.607C9.47588 10.607 7.41106 8.54213 7.41106 6.01061C7.41106 3.47908 9.47588 1.41426 12.0074 1.41426C14.5389 1.41426 16.6037 3.47908 16.6037 6.01061Z" fill="currentColor"/></svg></button>
+                    <button class="s1-gnb-util-btn" type="button" aria-label="메뉴"><svg viewBox="0 0 24 16.9274" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M0 1.41176H24V0.705882V0H0V1.41176Z" fill="currentColor"/><path d="M0 9.17647H24V8.47059V7.76471H0V9.17647Z" fill="currentColor"/><path d="M0 16.9274H24V16.2215V15.5156H0V16.9274Z" fill="currentColor"/></svg></button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- start · md -->
+              <div>
+                <div style="font-size:11px;font-weight:600;color:var(--color-text-caption);margin-bottom:8px;letter-spacing:0.04em;text-transform:uppercase;">start · md — h56 · 로고↔메뉴 gap64</div>
+                <div class="s1-gnb s1-gnb--md s1-gnb--start">
+                  <div class="s1-gnb-leading">
+                    <span class="s1-gnb-logo">SAMPLE LOGO</span>
+                    <div class="s1-gnb-menus">
+                      <button class="s1-gnb-menu is-selected" type="button">메뉴1</button>
+                      <button class="s1-gnb-menu" type="button">메뉴2</button>
+                      <button class="s1-gnb-menu" type="button">메뉴3</button>
+                    </div>
+                  </div>
+                  <div class="s1-gnb-util">
+                    <button class="s1-gnb-util-btn" type="button" aria-label="언어"><svg viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M9 18C13.9659 18 18 13.9659 18 9C18 4.03412 13.9659 0 9 0C4.03412 0 0 4.03412 0 9C0 13.9659 4.03412 18 9 18ZM2.97529 3.84353C3.56824 4.09765 4.18235 4.32 4.81765 4.5C4.42588 5.80235 4.20353 7.13647 4.16118 8.47059H1.09059C1.20706 6.71294 1.89529 5.10353 2.97529 3.84353ZM5.99294 1.65176C5.67529 2.25529 5.4 2.86941 5.16706 3.49412C4.69059 3.35647 4.22471 3.20824 3.78 3.02824C4.43647 2.45647 5.17765 1.99059 5.99294 1.65176ZM8.47059 1.09059V4.01294C7.71882 3.98118 6.95647 3.89647 6.20471 3.73765C6.53294 2.88 6.93529 2.03294 7.43294 1.21765C7.77177 1.15412 8.12118 1.11176 8.47059 1.09059ZM10.5671 1.21765C11.0647 2.03294 11.4671 2.88 11.7953 3.73765C11.0435 3.88588 10.2918 3.98118 9.52941 4.01294V1.09059C9.87882 1.11176 10.2282 1.15412 10.5671 1.21765ZM14.22 3.02824C13.7753 3.20824 13.3094 3.36706 12.8329 3.49412C12.6 2.86941 12.3247 2.25529 12.0071 1.65176C12.8224 1.99059 13.5635 2.45647 14.22 3.02824ZM16.9094 8.47059H13.8388C13.7965 7.13647 13.5741 5.80235 13.1824 4.5C13.8282 4.32 14.4424 4.09765 15.0247 3.84353C16.1047 5.10353 16.7929 6.71294 16.9094 8.47059ZM15.0247 14.1565C14.4424 13.9024 13.8176 13.68 13.1824 13.5C13.5741 12.1976 13.7965 10.8635 13.8388 9.52941H16.9094C16.7929 11.2871 16.1047 12.8965 15.0247 14.1565ZM12.0071 16.3482C12.3247 15.7447 12.6 15.1306 12.8329 14.5059C13.3094 14.6435 13.7753 14.7918 14.22 14.9718C13.5635 15.5435 12.8224 16.0094 12.0071 16.3482ZM9.52941 16.9094V13.9871C10.2812 14.0188 11.0435 14.1035 11.7953 14.2624C11.4671 15.12 11.0647 15.9671 10.5671 16.7824C10.2282 16.8459 9.87882 16.8882 9.52941 16.9094ZM7.43294 16.7824C6.93529 15.9671 6.53294 15.12 6.20471 14.2624C6.95647 14.1141 7.70824 14.0188 8.47059 13.9871V16.9094C8.12118 16.8882 7.77177 16.8459 7.43294 16.7824ZM3.78 14.9718C4.22471 14.7918 4.69059 14.6329 5.16706 14.5059C5.4 15.1306 5.67529 15.7447 5.99294 16.3482C5.17765 16.0094 4.43647 15.5435 3.78 14.9718ZM5.84471 4.74353C6.71294 4.92353 7.59177 5.04 8.47059 5.07176V8.47059H5.22C5.26235 7.22118 5.47412 5.97177 5.85529 4.74353H5.84471ZM12.1553 4.74353C12.5259 5.97177 12.7376 7.22118 12.7906 8.47059H9.54V5.07176C10.4188 5.04 11.2871 4.93412 12.1659 4.74353H12.1553ZM12.1553 13.2565C11.2871 13.0765 10.4082 12.96 9.52941 12.9388V9.54H12.78C12.7376 10.7894 12.5259 12.0388 12.1447 13.2671L12.1553 13.2565ZM8.47059 9.52941V12.9282C7.59177 12.96 6.72353 13.0659 5.84471 13.2459C5.47412 12.0176 5.26235 10.7682 5.20941 9.51882H8.46L8.47059 9.52941ZM4.16118 9.52941C4.20353 10.8635 4.42588 12.1976 4.81765 13.5C4.17177 13.68 3.55765 13.9024 2.97529 14.1565C1.89529 12.8965 1.20706 11.2871 1.09059 9.52941H4.16118Z" fill="currentColor"/></svg></button>
+                    <button class="s1-gnb-util-btn" type="button" aria-label="계정"><svg viewBox="0 0 24 21.5816" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M16.561 13.7324H7.43901C5.67118 13.7324 4.00236 14.3971 2.84266 15.5568C0.494991 17.9186 0.0141426 21.2704 0 21.3977L1.37183 21.5816C1.37183 21.5816 1.81025 18.5409 3.8185 16.5185C4.72363 15.6134 6.03889 15.1042 7.43901 15.1042H16.561C17.9611 15.1042 19.2764 15.6275 20.1815 16.5185C22.1897 18.5409 22.6282 21.5391 22.6282 21.5816L24 21.3977C23.9859 21.2563 23.505 17.9045 21.1573 15.5568C19.9976 14.3971 18.3288 13.7324 16.561 13.7324Z" fill="currentColor"/><path d="M5.9968 6.01061C5.9968 9.31998 8.69803 12.0212 12.0074 12.0212C15.3168 12.0212 18.018 9.31998 18.018 6.01061C18.018 2.70124 15.3168 0 12.0074 0C8.69803 0 5.9968 2.70124 5.9968 6.01061ZM16.6037 6.01061C16.6037 8.54213 14.5389 10.607 12.0074 10.607C9.47588 10.607 7.41106 8.54213 7.41106 6.01061C7.41106 3.47908 9.47588 1.41426 12.0074 1.41426C14.5389 1.41426 16.6037 3.47908 16.6037 6.01061Z" fill="currentColor"/></svg></button>
+                    <button class="s1-gnb-util-btn" type="button" aria-label="메뉴"><svg viewBox="0 0 24 16.9274" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M0 1.41176H24V0.705882V0H0V1.41176Z" fill="currentColor"/><path d="M0 9.17647H24V8.47059V7.76471H0V9.17647Z" fill="currentColor"/><path d="M0 16.9274H24V16.2215V15.5156H0V16.9274Z" fill="currentColor"/></svg></button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- start · sm -->
+              <div>
+                <div style="font-size:11px;font-weight:600;color:var(--color-text-caption);margin-bottom:8px;letter-spacing:0.04em;text-transform:uppercase;">start · sm — h48 · 로고↔메뉴 gap64</div>
+                <div class="s1-gnb s1-gnb--sm s1-gnb--start">
+                  <div class="s1-gnb-leading">
+                    <span class="s1-gnb-logo">SAMPLE LOGO</span>
+                    <div class="s1-gnb-menus">
+                      <button class="s1-gnb-menu s1-gnb-menu--sm is-selected" type="button">메뉴1</button>
+                      <button class="s1-gnb-menu s1-gnb-menu--sm" type="button">메뉴2</button>
+                      <button class="s1-gnb-menu s1-gnb-menu--sm" type="button">메뉴3</button>
+                    </div>
+                  </div>
+                  <div class="s1-gnb-util">
+                    <button class="s1-gnb-util-btn" type="button" aria-label="언어"><svg viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M9 18C13.9659 18 18 13.9659 18 9C18 4.03412 13.9659 0 9 0C4.03412 0 0 4.03412 0 9C0 13.9659 4.03412 18 9 18ZM2.97529 3.84353C3.56824 4.09765 4.18235 4.32 4.81765 4.5C4.42588 5.80235 4.20353 7.13647 4.16118 8.47059H1.09059C1.20706 6.71294 1.89529 5.10353 2.97529 3.84353ZM5.99294 1.65176C5.67529 2.25529 5.4 2.86941 5.16706 3.49412C4.69059 3.35647 4.22471 3.20824 3.78 3.02824C4.43647 2.45647 5.17765 1.99059 5.99294 1.65176ZM8.47059 1.09059V4.01294C7.71882 3.98118 6.95647 3.89647 6.20471 3.73765C6.53294 2.88 6.93529 2.03294 7.43294 1.21765C7.77177 1.15412 8.12118 1.11176 8.47059 1.09059ZM10.5671 1.21765C11.0647 2.03294 11.4671 2.88 11.7953 3.73765C11.0435 3.88588 10.2918 3.98118 9.52941 4.01294V1.09059C9.87882 1.11176 10.2282 1.15412 10.5671 1.21765ZM14.22 3.02824C13.7753 3.20824 13.3094 3.36706 12.8329 3.49412C12.6 2.86941 12.3247 2.25529 12.0071 1.65176C12.8224 1.99059 13.5635 2.45647 14.22 3.02824ZM16.9094 8.47059H13.8388C13.7965 7.13647 13.5741 5.80235 13.1824 4.5C13.8282 4.32 14.4424 4.09765 15.0247 3.84353C16.1047 5.10353 16.7929 6.71294 16.9094 8.47059ZM15.0247 14.1565C14.4424 13.9024 13.8176 13.68 13.1824 13.5C13.5741 12.1976 13.7965 10.8635 13.8388 9.52941H16.9094C16.7929 11.2871 16.1047 12.8965 15.0247 14.1565ZM12.0071 16.3482C12.3247 15.7447 12.6 15.1306 12.8329 14.5059C13.3094 14.6435 13.7753 14.7918 14.22 14.9718C13.5635 15.5435 12.8224 16.0094 12.0071 16.3482ZM9.52941 16.9094V13.9871C10.2812 14.0188 11.0435 14.1035 11.7953 14.2624C11.4671 15.12 11.0647 15.9671 10.5671 16.7824C10.2282 16.8459 9.87882 16.8882 9.52941 16.9094ZM7.43294 16.7824C6.93529 15.9671 6.53294 15.12 6.20471 14.2624C6.95647 14.1141 7.70824 14.0188 8.47059 13.9871V16.9094C8.12118 16.8882 7.77177 16.8459 7.43294 16.7824ZM3.78 14.9718C4.22471 14.7918 4.69059 14.6329 5.16706 14.5059C5.4 15.1306 5.67529 15.7447 5.99294 16.3482C5.17765 16.0094 4.43647 15.5435 3.78 14.9718ZM5.84471 4.74353C6.71294 4.92353 7.59177 5.04 8.47059 5.07176V8.47059H5.22C5.26235 7.22118 5.47412 5.97177 5.85529 4.74353H5.84471ZM12.1553 4.74353C12.5259 5.97177 12.7376 7.22118 12.7906 8.47059H9.54V5.07176C10.4188 5.04 11.2871 4.93412 12.1659 4.74353H12.1553ZM12.1553 13.2565C11.2871 13.0765 10.4082 12.96 9.52941 12.9388V9.54H12.78C12.7376 10.7894 12.5259 12.0388 12.1447 13.2671L12.1553 13.2565ZM8.47059 9.52941V12.9282C7.59177 12.96 6.72353 13.0659 5.84471 13.2459C5.47412 12.0176 5.26235 10.7682 5.20941 9.51882H8.46L8.47059 9.52941ZM4.16118 9.52941C4.20353 10.8635 4.42588 12.1976 4.81765 13.5C4.17177 13.68 3.55765 13.9024 2.97529 14.1565C1.89529 12.8965 1.20706 11.2871 1.09059 9.52941H4.16118Z" fill="currentColor"/></svg></button>
+                    <button class="s1-gnb-util-btn" type="button" aria-label="계정"><svg viewBox="0 0 24 21.5816" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M16.561 13.7324H7.43901C5.67118 13.7324 4.00236 14.3971 2.84266 15.5568C0.494991 17.9186 0.0141426 21.2704 0 21.3977L1.37183 21.5816C1.37183 21.5816 1.81025 18.5409 3.8185 16.5185C4.72363 15.6134 6.03889 15.1042 7.43901 15.1042H16.561C17.9611 15.1042 19.2764 15.6275 20.1815 16.5185C22.1897 18.5409 22.6282 21.5391 22.6282 21.5816L24 21.3977C23.9859 21.2563 23.505 17.9045 21.1573 15.5568C19.9976 14.3971 18.3288 13.7324 16.561 13.7324Z" fill="currentColor"/><path d="M5.9968 6.01061C5.9968 9.31998 8.69803 12.0212 12.0074 12.0212C15.3168 12.0212 18.018 9.31998 18.018 6.01061C18.018 2.70124 15.3168 0 12.0074 0C8.69803 0 5.9968 2.70124 5.9968 6.01061ZM16.6037 6.01061C16.6037 8.54213 14.5389 10.607 12.0074 10.607C9.47588 10.607 7.41106 8.54213 7.41106 6.01061C7.41106 3.47908 9.47588 1.41426 12.0074 1.41426C14.5389 1.41426 16.6037 3.47908 16.6037 6.01061Z" fill="currentColor"/></svg></button>
+                    <button class="s1-gnb-util-btn" type="button" aria-label="메뉴"><svg viewBox="0 0 24 16.9274" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M0 1.41176H24V0.705882V0H0V1.41176Z" fill="currentColor"/><path d="M0 9.17647H24V8.47059V7.76471H0V9.17647Z" fill="currentColor"/><path d="M0 16.9274H24V16.2215V15.5156H0V16.9274Z" fill="currentColor"/></svg></button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- start · xsm -->
+              <div>
+                <div style="font-size:11px;font-weight:600;color:var(--color-text-caption);margin-bottom:8px;letter-spacing:0.04em;text-transform:uppercase;">start · xsm — h36 · 로고↔메뉴 gap64</div>
+                <div class="s1-gnb s1-gnb--xsm s1-gnb--start">
+                  <div class="s1-gnb-leading">
+                    <span class="s1-gnb-logo">SAMPLE LOGO</span>
+                    <div class="s1-gnb-menus">
+                      <button class="s1-gnb-menu s1-gnb-menu--xsm is-selected" type="button">메뉴1</button>
+                      <button class="s1-gnb-menu s1-gnb-menu--xsm" type="button">메뉴2</button>
+                      <button class="s1-gnb-menu s1-gnb-menu--xsm" type="button">메뉴3</button>
+                    </div>
+                  </div>
+                  <div class="s1-gnb-util">
+                    <button class="s1-gnb-util-btn" type="button" aria-label="언어"><svg viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M9 18C13.9659 18 18 13.9659 18 9C18 4.03412 13.9659 0 9 0C4.03412 0 0 4.03412 0 9C0 13.9659 4.03412 18 9 18ZM2.97529 3.84353C3.56824 4.09765 4.18235 4.32 4.81765 4.5C4.42588 5.80235 4.20353 7.13647 4.16118 8.47059H1.09059C1.20706 6.71294 1.89529 5.10353 2.97529 3.84353ZM5.99294 1.65176C5.67529 2.25529 5.4 2.86941 5.16706 3.49412C4.69059 3.35647 4.22471 3.20824 3.78 3.02824C4.43647 2.45647 5.17765 1.99059 5.99294 1.65176ZM8.47059 1.09059V4.01294C7.71882 3.98118 6.95647 3.89647 6.20471 3.73765C6.53294 2.88 6.93529 2.03294 7.43294 1.21765C7.77177 1.15412 8.12118 1.11176 8.47059 1.09059ZM10.5671 1.21765C11.0647 2.03294 11.4671 2.88 11.7953 3.73765C11.0435 3.88588 10.2918 3.98118 9.52941 4.01294V1.09059C9.87882 1.11176 10.2282 1.15412 10.5671 1.21765ZM14.22 3.02824C13.7753 3.20824 13.3094 3.36706 12.8329 3.49412C12.6 2.86941 12.3247 2.25529 12.0071 1.65176C12.8224 1.99059 13.5635 2.45647 14.22 3.02824ZM16.9094 8.47059H13.8388C13.7965 7.13647 13.5741 5.80235 13.1824 4.5C13.8282 4.32 14.4424 4.09765 15.0247 3.84353C16.1047 5.10353 16.7929 6.71294 16.9094 8.47059ZM15.0247 14.1565C14.4424 13.9024 13.8176 13.68 13.1824 13.5C13.5741 12.1976 13.7965 10.8635 13.8388 9.52941H16.9094C16.7929 11.2871 16.1047 12.8965 15.0247 14.1565ZM12.0071 16.3482C12.3247 15.7447 12.6 15.1306 12.8329 14.5059C13.3094 14.6435 13.7753 14.7918 14.22 14.9718C13.5635 15.5435 12.8224 16.0094 12.0071 16.3482ZM9.52941 16.9094V13.9871C10.2812 14.0188 11.0435 14.1035 11.7953 14.2624C11.4671 15.12 11.0647 15.9671 10.5671 16.7824C10.2282 16.8459 9.87882 16.8882 9.52941 16.9094ZM7.43294 16.7824C6.93529 15.9671 6.53294 15.12 6.20471 14.2624C6.95647 14.1141 7.70824 14.0188 8.47059 13.9871V16.9094C8.12118 16.8882 7.77177 16.8459 7.43294 16.7824ZM3.78 14.9718C4.22471 14.7918 4.69059 14.6329 5.16706 14.5059C5.4 15.1306 5.67529 15.7447 5.99294 16.3482C5.17765 16.0094 4.43647 15.5435 3.78 14.9718ZM5.84471 4.74353C6.71294 4.92353 7.59177 5.04 8.47059 5.07176V8.47059H5.22C5.26235 7.22118 5.47412 5.97177 5.85529 4.74353H5.84471ZM12.1553 4.74353C12.5259 5.97177 12.7376 7.22118 12.7906 8.47059H9.54V5.07176C10.4188 5.04 11.2871 4.93412 12.1659 4.74353H12.1553ZM12.1553 13.2565C11.2871 13.0765 10.4082 12.96 9.52941 12.9388V9.54H12.78C12.7376 10.7894 12.5259 12.0388 12.1447 13.2671L12.1553 13.2565ZM8.47059 9.52941V12.9282C7.59177 12.96 6.72353 13.0659 5.84471 13.2459C5.47412 12.0176 5.26235 10.7682 5.20941 9.51882H8.46L8.47059 9.52941ZM4.16118 9.52941C4.20353 10.8635 4.42588 12.1976 4.81765 13.5C4.17177 13.68 3.55765 13.9024 2.97529 14.1565C1.89529 12.8965 1.20706 11.2871 1.09059 9.52941H4.16118Z" fill="currentColor"/></svg></button>
+                    <button class="s1-gnb-util-btn" type="button" aria-label="계정"><svg viewBox="0 0 24 21.5816" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M16.561 13.7324H7.43901C5.67118 13.7324 4.00236 14.3971 2.84266 15.5568C0.494991 17.9186 0.0141426 21.2704 0 21.3977L1.37183 21.5816C1.37183 21.5816 1.81025 18.5409 3.8185 16.5185C4.72363 15.6134 6.03889 15.1042 7.43901 15.1042H16.561C17.9611 15.1042 19.2764 15.6275 20.1815 16.5185C22.1897 18.5409 22.6282 21.5391 22.6282 21.5816L24 21.3977C23.9859 21.2563 23.505 17.9045 21.1573 15.5568C19.9976 14.3971 18.3288 13.7324 16.561 13.7324Z" fill="currentColor"/><path d="M5.9968 6.01061C5.9968 9.31998 8.69803 12.0212 12.0074 12.0212C15.3168 12.0212 18.018 9.31998 18.018 6.01061C18.018 2.70124 15.3168 0 12.0074 0C8.69803 0 5.9968 2.70124 5.9968 6.01061ZM16.6037 6.01061C16.6037 8.54213 14.5389 10.607 12.0074 10.607C9.47588 10.607 7.41106 8.54213 7.41106 6.01061C7.41106 3.47908 9.47588 1.41426 12.0074 1.41426C14.5389 1.41426 16.6037 3.47908 16.6037 6.01061Z" fill="currentColor"/></svg></button>
+                    <button class="s1-gnb-util-btn" type="button" aria-label="메뉴"><svg viewBox="0 0 24 16.9274" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M0 1.41176H24V0.705882V0H0V1.41176Z" fill="currentColor"/><path d="M0 9.17647H24V8.47059V7.76471H0V9.17647Z" fill="currentColor"/><path d="M0 16.9274H24V16.2215V15.5156H0V16.9274Z" fill="currentColor"/></svg></button>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+        <!-- ── code-block: PC · HTML / CSS / Token Details (Mobile 없음) ── -->
+        <div class="code-block">
+          <div class="code-tabs">
+            <button class="code-tab active" onclick="switchTab(this,'gnb-pc-html')">PC · HTML</button>
+            <button class="code-tab" onclick="switchTab(this,'gnb-css')">CSS</button>
+            <button class="code-tab" onclick="switchTab(this,'gnb-tokens')">Token Details</button>
+            <button class="code-copy-btn" onclick="copyCode('gnb-pc-html-pre')">복사</button>
+          </div>
+          <div class="code-pane active" id="gnb-pc-html">
+            <pre id="gnb-pc-html-pre"><span class="c-cmt">&lt;!-- 메뉴 슬롯: md (h56 · 18px) / sm (h48 · 18px) / xsm (h36 · 14px) --&gt;</span>
+<span class="c-tag">&lt;button</span> <span class="c-attr">class</span>=<span class="c-str">"s1-gnb-menu is-selected"</span><span class="c-tag">&gt;</span>메뉴타이틀<span class="c-tag">&lt;/button&gt;</span>
+<span class="c-tag">&lt;button</span> <span class="c-attr">class</span>=<span class="c-str">"s1-gnb-menu s1-gnb-menu--sm"</span><span class="c-tag">&gt;</span>메뉴타이틀<span class="c-tag">&lt;/button&gt;</span>
+<span class="c-tag">&lt;button</span> <span class="c-attr">class</span>=<span class="c-str">"s1-gnb-menu s1-gnb-menu--xsm"</span><span class="c-tag">&gt;</span>메뉴타이틀<span class="c-tag">&lt;/button&gt;</span>
+
+<span class="c-cmt">&lt;!-- GNB 바: center-between (로고·메뉴·유틸 3분할) --&gt;</span>
+<span class="c-tag">&lt;div</span> <span class="c-attr">class</span>=<span class="c-str">"s1-gnb s1-gnb--md s1-gnb--center-between"</span><span class="c-tag">&gt;</span>
+  <span class="c-tag">&lt;span</span> <span class="c-attr">class</span>=<span class="c-str">"s1-gnb-logo"</span><span class="c-tag">&gt;</span>SAMPLE LOGO<span class="c-tag">&lt;/span&gt;</span>
+  <span class="c-tag">&lt;div</span> <span class="c-attr">class</span>=<span class="c-str">"s1-gnb-menus"</span><span class="c-tag">&gt;</span>
+    <span class="c-tag">&lt;button</span> <span class="c-attr">class</span>=<span class="c-str">"s1-gnb-menu is-selected"</span><span class="c-tag">&gt;</span>메뉴1<span class="c-tag">&lt;/button&gt;</span>
+    <span class="c-tag">&lt;button</span> <span class="c-attr">class</span>=<span class="c-str">"s1-gnb-menu"</span><span class="c-tag">&gt;</span>메뉴2<span class="c-tag">&lt;/button&gt;</span>
+  <span class="c-tag">&lt;/div&gt;</span>
+  <span class="c-tag">&lt;div</span> <span class="c-attr">class</span>=<span class="c-str">"s1-gnb-util"</span><span class="c-tag">&gt;</span>
+    <span class="c-tag">&lt;button</span> <span class="c-attr">class</span>=<span class="c-str">"s1-gnb-util-btn"</span> <span class="c-attr">aria-label</span>=<span class="c-str">"언어"</span><span class="c-tag">&gt;</span><span class="c-cmt">&lt;!-- ic_인터넷 --&gt;</span><span class="c-tag">&lt;/button&gt;</span>
+    <span class="c-tag">&lt;button</span> <span class="c-attr">class</span>=<span class="c-str">"s1-gnb-util-btn"</span> <span class="c-attr">aria-label</span>=<span class="c-str">"계정"</span><span class="c-tag">&gt;</span><span class="c-cmt">&lt;!-- ic_계정/사용자/ID --&gt;</span><span class="c-tag">&lt;/button&gt;</span>
+    <span class="c-tag">&lt;button</span> <span class="c-attr">class</span>=<span class="c-str">"s1-gnb-util-btn"</span> <span class="c-attr">aria-label</span>=<span class="c-str">"메뉴"</span><span class="c-tag">&gt;</span><span class="c-cmt">&lt;!-- ic_메뉴 --&gt;</span><span class="c-tag">&lt;/button&gt;</span>
+  <span class="c-tag">&lt;/div&gt;</span>
+<span class="c-tag">&lt;/div&gt;</span>
+
+<span class="c-cmt">&lt;!-- GNB 바: start (로고+메뉴 좌측 묶음, 유틸 우측) --&gt;</span>
+<span class="c-tag">&lt;div</span> <span class="c-attr">class</span>=<span class="c-str">"s1-gnb s1-gnb--md s1-gnb--start"</span><span class="c-tag">&gt;</span>
+  <span class="c-tag">&lt;div</span> <span class="c-attr">class</span>=<span class="c-str">"s1-gnb-leading"</span><span class="c-tag">&gt;</span>
+    <span class="c-tag">&lt;span</span> <span class="c-attr">class</span>=<span class="c-str">"s1-gnb-logo"</span><span class="c-tag">&gt;</span>SAMPLE LOGO<span class="c-tag">&lt;/span&gt;</span>
+    <span class="c-tag">&lt;div</span> <span class="c-attr">class</span>=<span class="c-str">"s1-gnb-menus"</span><span class="c-tag">&gt;</span> … <span class="c-tag">&lt;/div&gt;</span>
+  <span class="c-tag">&lt;/div&gt;</span>
+  <span class="c-tag">&lt;div</span> <span class="c-attr">class</span>=<span class="c-str">"s1-gnb-util"</span><span class="c-tag">&gt;</span> … <span class="c-tag">&lt;/div&gt;</span>
+<span class="c-tag">&lt;/div&gt;</span></pre>
+          </div>
+          <div class="code-pane" id="gnb-css">
+            <pre><span class="c-cmt">/* ── 메뉴 슬롯 ──────────────────────── */</span>
+<span class="c-sel">.s1-gnb-menu</span> {
+  <span class="c-prop">min-width</span>: <span class="c-val">116px</span>;
+  <span class="c-prop">height</span>: <span class="c-val">56px</span>;
+  <span class="c-prop">padding</span>: <span class="c-val">12px 40px</span>; <span class="c-cmt">/* 외곽 lg24 + 내부 sm16 */</span>
+  <span class="c-prop">font-size</span>: <span class="c-val">18px</span>;
+  <span class="c-prop">color</span>: <span class="c-val">var(--gnb-menu-label-default)</span>;
+}
+<span class="c-cmt">/* 밑줄 = 외곽 px만큼 inset (내부 콘텐츠 폭) */</span>
+<span class="c-sel">.s1-gnb-menu::after</span> {
+  <span class="c-prop">content</span>: <span class="c-val">''</span>; <span class="c-prop">position</span>: <span class="c-val">absolute</span>;
+  <span class="c-prop">left</span>: <span class="c-val">24px</span>; <span class="c-prop">right</span>: <span class="c-val">24px</span>; <span class="c-prop">bottom</span>: <span class="c-val">0</span>; <span class="c-prop">height</span>: <span class="c-val">2px</span>;
+  <span class="c-prop">background</span>: <span class="c-val">transparent</span>;
+}
+<span class="c-sel">.s1-gnb-menu:hover, .s1-gnb-menu.is-selected</span> { <span class="c-prop">color</span>: <span class="c-val">var(--gnb-menu-label-active)</span>; }
+<span class="c-sel">.s1-gnb-menu:hover::after, .s1-gnb-menu.is-selected::after</span> { <span class="c-prop">background</span>: <span class="c-val">var(--gnb-menu-underline-active)</span>; }
+<span class="c-sel">.s1-gnb-menu--sm</span>  { <span class="c-prop">height</span>: <span class="c-val">48px</span>; <span class="c-prop">padding</span>: <span class="c-val">12px 32px</span>; }
+<span class="c-sel">.s1-gnb-menu--sm::after</span> { <span class="c-prop">left</span>: <span class="c-val">20px</span>; <span class="c-prop">right</span>: <span class="c-val">20px</span>; }
+<span class="c-sel">.s1-gnb-menu--xsm</span> { <span class="c-prop">height</span>: <span class="c-val">36px</span>; <span class="c-prop">padding</span>: <span class="c-val">12px 32px</span>; <span class="c-prop">font-size</span>: <span class="c-val">14px</span>; }
+<span class="c-sel">.s1-gnb-menu--xsm::after</span> { <span class="c-prop">left</span>: <span class="c-val">20px</span>; <span class="c-prop">right</span>: <span class="c-val">20px</span>; }
+
+<span class="c-cmt">/* ── GNB 바 ─────────────────────────── */</span>
+<span class="c-sel">.s1-gnb</span> {
+  <span class="c-prop">display</span>: <span class="c-val">flex</span>;
+  <span class="c-prop">align-items</span>: <span class="c-val">center</span>;
+  <span class="c-prop">width</span>: <span class="c-val">100%</span>;
+  <span class="c-prop">height</span>: <span class="c-val">56px</span>;
+  <span class="c-prop">padding</span>: <span class="c-val">0 20px 0 24px</span>;
+  <span class="c-prop">background</span>: <span class="c-val">var(--gnb-bg)</span>;
+  <span class="c-prop">border-bottom</span>: <span class="c-val">1px solid var(--gnb-border)</span>;
+}
+<span class="c-sel">.s1-gnb--sm</span>  { <span class="c-prop">height</span>: <span class="c-val">48px</span>; }
+<span class="c-sel">.s1-gnb--xsm</span> { <span class="c-prop">height</span>: <span class="c-val">36px</span>; <span class="c-prop">padding-left</span>: <span class="c-val">20px</span>; <span class="c-prop">padding-right</span>: <span class="c-val">24px</span>; }
+<span class="c-sel">.s1-gnb--center-between</span> { <span class="c-prop">justify-content</span>: <span class="c-val">space-between</span>; }
+<span class="c-sel">.s1-gnb--start .s1-gnb-util</span> { <span class="c-prop">margin-left</span>: <span class="c-val">auto</span>; }
+<span class="c-sel">.s1-gnb--start .s1-gnb-leading</span> { <span class="c-prop">display</span>: <span class="c-val">flex</span>; <span class="c-prop">gap</span>: <span class="c-val">64px</span>; } <span class="c-cmt">/* 로고↔메뉴 */</span>
+<span class="c-cmt">/* 메뉴 슬롯은 인접(gap 없음) — 분리는 슬롯 px로만 */</span>
+<span class="c-sel">.s1-gnb-logo</span> { <span class="c-prop">font-size</span>: <span class="c-val">20px</span>; <span class="c-prop">font-weight</span>: <span class="c-val">var(--font-weight-bold)</span>; <span class="c-prop">color</span>: <span class="c-val">var(--gnb-logo-text)</span>; }
+<span class="c-sel">.s1-gnb-util</span> { <span class="c-prop">display</span>: <span class="c-val">flex</span>; <span class="c-prop">gap</span>: <span class="c-val">var(--spacing-cluster-xxs)</span>; }
+<span class="c-sel">.s1-gnb-util-btn</span> { <span class="c-prop">width</span>: <span class="c-val">40px</span>; <span class="c-prop">height</span>: <span class="c-val">40px</span>; <span class="c-prop">color</span>: <span class="c-val">var(--gnb-icon)</span>; }
+<span class="c-sel">.s1-gnb-util-btn svg</span> { <span class="c-prop">width</span>: <span class="c-val">24px</span>; <span class="c-prop">height</span>: <span class="c-val">24px</span>; }
+<span class="c-sel">.s1-gnb--xsm .s1-gnb-util-btn</span> { <span class="c-prop">width</span>: <span class="c-val">32px</span>; <span class="c-prop">height</span>: <span class="c-val">32px</span>; }
+<span class="c-sel">.s1-gnb--xsm .s1-gnb-util-btn svg</span> { <span class="c-prop">width</span>: <span class="c-val">24px</span>; <span class="c-prop">height</span>: <span class="c-val">24px</span>; }</pre>
+          </div>
+          <div class="code-pane" id="gnb-tokens">
+            <div style="padding:16px;overflow:auto;">
+              <table class="token-detail-table" style="width:100%;border-collapse:collapse;font-size:12px;">
+                <thead>
+                  <tr style="border-bottom:1px solid var(--color-border-default);">
+                    <th style="text-align:left;padding:6px 8px;color:var(--color-text-secondary);font-weight:600;">Token</th>
+                    <th style="text-align:left;padding:6px 8px;color:var(--color-text-secondary);font-weight:600;">Value</th>
+                    <th style="text-align:left;padding:6px 8px;color:var(--color-text-secondary);font-weight:600;">Resolved (Light)</th>
+                    <th style="text-align:left;padding:6px 8px;color:var(--color-text-secondary);font-weight:600;">Figma Variable</th>
+                  </tr>
+                </thead>
+                <tbody style="font-family:monospace;">
+                  <tr><td colspan="4" style="padding:6px 8px;font-family:sans-serif;font-size:11px;font-weight:700;color:var(--color-text-caption);background:var(--color-bg-subtle);">Component Tokens → Semantic</td></tr>
+                  <tr><td style="padding:4px 8px;">--gnb-bg</td><td style="padding:4px 8px;color:var(--color-text-secondary);">var(--color-navigation-bg)</td><td style="padding:4px 8px;">#FFFFFF</td><td style="padding:4px 8px;">color/navigation/background</td></tr>
+                  <tr><td style="padding:4px 8px;">--gnb-border</td><td style="padding:4px 8px;color:var(--color-text-secondary);">var(--color-border-subtle)</td><td style="padding:4px 8px;">#E9E9E9</td><td style="padding:4px 8px;">color/line/gray/subtle</td></tr>
+                  <tr><td style="padding:4px 8px;">--gnb-menu-label-default</td><td style="padding:4px 8px;color:var(--color-text-secondary);">var(--color-navigation-label-default-alt)</td><td style="padding:4px 8px;">#000000</td><td style="padding:4px 8px;">color/navigation/label/default-alt</td></tr>
+                  <tr><td style="padding:4px 8px;">--gnb-menu-label-active</td><td style="padding:4px 8px;color:var(--color-text-secondary);">var(--color-navigation-label-selected)</td><td style="padding:4px 8px;">#1D6CEB</td><td style="padding:4px 8px;">color/navigation/label/hover</td></tr>
+                  <tr><td style="padding:4px 8px;">--gnb-menu-underline-active</td><td style="padding:4px 8px;color:var(--color-text-secondary);">var(--color-navigation-indicator-selected)</td><td style="padding:4px 8px;">#1D6CEB</td><td style="padding:4px 8px;">color/line/blue</td></tr>
+                  <tr><td style="padding:4px 8px;">--gnb-logo-text</td><td style="padding:4px 8px;color:var(--color-text-secondary);">var(--color-text-primary)</td><td style="padding:4px 8px;">#202020</td><td style="padding:4px 8px;">color/base/black (HD-GNB-1)</td></tr>
+                  <tr><td style="padding:4px 8px;">--gnb-icon</td><td style="padding:4px 8px;color:var(--color-text-secondary);">var(--color-navigation-icon)</td><td style="padding:4px 8px;">#353535</td><td style="padding:4px 8px;">color/icon/gray-dark (HD-GNB-2)</td></tr>
+                  <tr><td colspan="4" style="padding:6px 8px;font-family:sans-serif;font-size:11px;font-weight:700;color:var(--color-text-caption);background:var(--color-bg-subtle);">Semantic Tokens (신규) → Foundation</td></tr>
+                  <tr><td style="padding:4px 8px;">--color-navigation-label-default-alt</td><td style="padding:4px 8px;color:var(--color-text-secondary);">var(--color-base-black)</td><td style="padding:4px 8px;">#000000</td><td style="padding:4px 8px;">color/navigation/label/default-alt</td></tr>
+                  <tr><td style="padding:4px 8px;">--color-navigation-icon</td><td style="padding:4px 8px;color:var(--color-text-secondary);">var(--color-gray-800)</td><td style="padding:4px 8px;">#353535</td><td style="padding:4px 8px;">color/icon/gray-dark</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <script>
+        ;(function() {
+          function setupGnb(el) {
+            if (!el) return;
+            el.querySelectorAll('.s1-gnb-menu').forEach(function(btn) {
+              btn.addEventListener('click', function() {
+                el.querySelectorAll('.s1-gnb-menu').forEach(function(b) { b.classList.remove('is-selected'); });
+                btn.classList.add('is-selected');
+              });
+            });
+          }
+          ['gnb-action-md','gnb-action-sm','gnb-action-xsm'].forEach(function(id) {
+            setupGnb(document.getElementById(id));
           });
         })();
         </script>

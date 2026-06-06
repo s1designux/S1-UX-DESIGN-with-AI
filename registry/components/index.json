@@ -40,6 +40,10 @@
     {
       "id": "data",
       "label": "Data"
+    },
+    {
+      "id": "navigation",
+      "label": "Navigation"
     }
   ],
   "components": [
@@ -215,6 +219,24 @@
       "priority": 15,
       "path": "registry/components/tab.json",
       "status": "stable"
+    },
+    {
+      "id": "gnb",
+      "name": "GNB",
+      "label": "GNB",
+      "category": "navigation",
+      "priority": 16,
+      "path": "registry/components/gnb.json",
+      "status": "in-progress",
+      "harnessStatus": "implemented",
+      "notes": [
+        "2026-06-06 figma-to-code: 메뉴 슬롯 9(size×state) + GNB 바 6(size×align) 구현. PC only.",
+        "신규 semantic --color-navigation-label-default-alt(#000000)·--color-navigation-icon(#353535).",
+        "신규 component --gnb-* 7종.",
+        "viewport(1280/1440/1920)는 full-width 반응형으로 통합. 데모 캔버스 px-240 미구현.",
+        "figmaNodeId: 540:5942(pc_gnb). 미결: HD-GNB-1(로고 색상)·HD-GNB-2(유틸 아이콘 색상) 사용자 확인 대기.",
+        "darkModeStatus: candidate — dark 시각 검증 미완료."
+      ]
     }
   ]
 }

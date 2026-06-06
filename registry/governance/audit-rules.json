@@ -7,12 +7,10 @@
     { "id": "R04", "name": "naming-kebab-case",              "severity": "error",   "description": "모든 CSS 변수명은 kebab-case를 따른다." },
     { "id": "R05", "name": "no-danger-variant",              "severity": "error",   "description": "Button danger variant는 삭제 확정(2026-04-29). 재추가 금지." },
     { "id": "R06", "name": "candidate-requires-review",      "severity": "warning", "description": "status가 candidate인 토큰은 md-review.html에 등록 후 사용자 승인 후 stable 전환한다." },
-    { "id": "R07", "name": "rgba-allowed-exceptions-only",   "severity": "error",   "description": "rgba()는 token-exceptions.json의 EX02(dark border), EX03(overlay) 두 경우에만 허용한다. 그 외 사용은 금지." },
+    { "id": "R07", "name": "rgba-allowed-exceptions-only",   "severity": "error",   "description": "rgba()는 token-exceptions.json의 EX03(overlay)에만 허용한다. 그 외 사용은 금지. (EX02 dark border 예외는 ND-2로 폐지, 2026-06-06)" },
     { "id": "R08", "name": "component-token-naming-pattern", "severity": "warning", "description": "Component Token 네이밍은 --{component}-{variant}-{state}-{property} 패턴을 따른다." },
     { "id": "R09", "name": "no-foundation-step-px-in-component", "severity": "error", "description": "Foundation step이 없는 raw px 값(34px, 32px 등)은 Semantic sizing 토큰 경유로만 사용 가능. Component 토큰에서 직접 사용 금지." },
     { "id": "R10", "name": "token-source-must-be-figma",     "severity": "warning", "description": "새 토큰을 생성하기 전 Figma 원본(SW UX GUIDE V2.4)에서 존재 여부를 확인해야 한다. 임의 생성 금지." },
-    { "id": "R11", "name": "no-class-abbreviation",          "severity": "warning", "description": "가이드 HTML CSS 클래스는 약어 없이 의미 중심으로 작성한다. 허용 접두사: typo-, token-, border-width-, color-, spacing-, radius-, palette-, pal-, platform-." },
-    { "id": "R12", "name": "no-stable-opacity-composition-for-dark-border", "severity": "warning", "description": "Dark semantic border tokens should not use rgba or Figma opacity composition as stable definitions. Use resolved HEX values or foundation dark scale references.", "appliesTo": ["semanticTokens"] },
-    { "id": "R13", "name": "dark-border-resolved-value-required", "severity": "warning", "description": "Dark border semantic tokens imported from Figma opacity composition must be resolved to explicit HEX or foundation dark scale before stable release. Mark as candidate until resolved.", "appliesTo": ["semanticTokens"] }
+    { "id": "R11", "name": "no-class-abbreviation",          "severity": "warning", "description": "가이드 HTML CSS 클래스는 약어 없이 의미 중심으로 작성한다. 허용 접두사: typo-, token-, border-width-, color-, spacing-, radius-, palette-, pal-, platform-." }
   ]
 }

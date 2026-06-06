@@ -3,6 +3,8 @@
 **SW UX GUIDE V2.4** 기반 디자인시스템 가이드 사이트입니다.  
 디자이너와 개발자가 함께 사용하는 Foundation Token, Component, Pattern 문서를 제공합니다.
 
+> 📌 **규칙·AI 작업 기준의 정본은 [`CLAUDE.md`](CLAUDE.md)다.** 이 README의 규칙성 섹션(Button 표준·Token Layer·MVP IA·Input 분류 등)은 **요약**이며, 상세·최신 규칙이 충돌하면 CLAUDE.md가 우선한다. 기계 검사 규칙은 `registry/governance/audit-rules.json`(R01~R11)이 정본.
+
 ---
 
 ## 최신 디자인시스템 기준
@@ -142,21 +144,8 @@ Registry data is still used internally to render and validate the Button guide a
 
 ## Button Current Standard
 
-The current Button standard as of MVP3.4.1 (2026-05-12):
-
-- **Variants:** primary, secondary, blue-line
-- **Figma states:** default, hover, pressed, disabled, loading
-- **Harness columns:** action, default, hover, pressed, disabled, loading
-- **Sizes — PC:** medium (h44) / xsmall (h34) / xxsmall (h28)
-- **Sizes — Mobile:** mobile (h48)
-- **CSS class (s1-btn):** `s1-btn-lg` = medium, no modifier = xsmall, `s1-btn-sm` = xxsmall, `s1-btn-mobile` = mobile
-
-`action` is not a Figma state. It is an interactive HTML harness column for real click / disabled / loading testing.  
-`default` is a static preview state only (`.is-preview` class, no pointer events).  
-`ghost` is not an official Button variant (deprecated 2026-04-29).  
-`danger` is not an official Button variant (deleted 2026-04-29).
-
-Sync script: `npm run sync:button` (reports/button-sync-check.md 생성)
+> **규칙 정본: [`CLAUDE.md` → "Current Button Standard"](CLAUDE.md).** 공식 variant = primary·secondary·blue-line (ghost deprecated·danger 삭제), Figma states = default·hover·pressed·disabled. 정합성 검사 `npm run sync:button`.
+> (이 섹션은 요약. 상세·최신은 CLAUDE.md 우선.)
 
 ---
 
@@ -429,21 +418,7 @@ reports/
 
 ## Token Layer 기준 (이 프로젝트 공식)
 
-```
-Foundation Token   (기본 팔레트 — gray/blue/red scale 등)
-       ↓
-Semantic Token     (역할 기반 — bg/text/border/action 등)
-       ↓
-Component Token    (컴포넌트 별칭 — --input-* / --button-* 등)
-```
-
-| 기존/일반 용어 | 이 프로젝트 공식 용어 |
-|---|---|
-| Primitive | Foundation |
-| Base Palette | Foundation |
-| Raw Color | Foundation |
-| Semantic | Semantic |
-| Component Alias | Component |
+> **정본: [`CLAUDE.md` → "Foundation Token 규칙 / 공식 token layer 용어"](CLAUDE.md).** 요약: `Foundation → Semantic → Component` 3층. Primitive·Base·Raw = 이 프로젝트에선 모두 **Foundation**으로 부른다.
 
 ---
 

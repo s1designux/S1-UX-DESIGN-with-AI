@@ -2,7 +2,7 @@
 
 > 이 문서는 컴포넌트 가이드 사이트(`components.html`)에 새 컴포넌트를 추가할 때
 > **반드시 먼저 읽어야 하는 고정 기준**이다. 추측 금지. 여기 적힌 순서·클래스·GUI 규칙을 그대로 따른다.
-> 기준 원본(golden sample)은 `components.html`의 **Button 섹션(`#button`)**.
+> 기준 원본(golden sample)은 `components.html`의 **comp-state-matrix 컴포넌트(예: Line Tab `#tab`, Checkbox `#checkbox`)**. (Button `#button`은 레거시 `state-size-matrix`를 쓰므로 golden이 아니다 — 신규는 따라하지 말 것)
 
 ---
 
@@ -44,7 +44,7 @@ All · Actions · Selection · Form · Data · Navigation
 | `selection` | Checkbox, Radio, Toggle, Chip·FilterChip |
 | `form` | Input, Select, Textarea, Date Picker, Time Picker |
 | `data` | Table, Pagination |
-| `navigation` | Line Tab |
+| `navigation` | Line Tab, GNB |
 
 새 컴포넌트는 성격에 맞는 기존 카테고리에 넣는다. 새 카테고리 신설은 임의로 하지 않는다.
 
@@ -62,10 +62,10 @@ section.comp-section#{id}
 │     ├─ div.preview-area             ← 미리보기 (PC/Mobile)
 │     │    ├─ div.platform-section.platform-section-pc
 │     │    │    ├─ div.platform-header  (dot + "PC")
-│     │    │    └─ div.state-size-matrix   ← §3 그리드
+│     │    │    └─ div.comp-state-matrix   ← §3 그리드
 │     │    └─ div.platform-section.platform-section-mobile  (모바일 있을 때만)
 │     │         ├─ div.platform-header  (dot + "Mobile")
-│     │         └─ div.state-size-matrix
+│     │         └─ div.comp-state-matrix
 │     └─ ③ div.code-block             ← §4 코드탭
 └─ (필요 시 §5 variant-group 으로 sub-type 묶음)
 ```
@@ -92,43 +92,49 @@ section.comp-section#{id}
 
 ---
 
-## 3. state-size-matrix (가장 중요한 고정 그리드)
+## 3. comp-state-matrix (가장 중요한 고정 그리드)
 
-미리보기의 핵심. **세로=사이즈, 가로=[라벨][Action][상태들]**.
+미리보기의 핵심. **세로=사이즈, 가로=[Size][Action][상태들]**.
+**표준은 `comp-state-matrix`** (Button 1개만 레거시 `state-size-matrix` — 신규는 절대 따라하지 말 것. 나머지 13개 컴포넌트가 `comp-state-matrix`를 쓴다).
 
 ```css
-.state-size-matrix{
+.comp-state-matrix{
   display:grid;
-  grid-template-columns: 100px 200px repeat({상태수}, minmax(110px,1fr));
   column-gap:10px; row-gap:14px; align-items:start;
+  /* grid-template-columns 는 컴포넌트별로 인라인 지정한다.
+     예) grid-template-columns: 88px minmax(180px,auto) repeat({상태수}, auto); */
 }
 ```
-- 1번째 열(100px) = 사이즈 라벨, 2번째 열(200px) = **Action(라이브 동작)**, 그 뒤 `repeat()` = 상태 미리보기.
-- `repeat()`의 숫자와 헤더 개수는 **그 컴포넌트의 상태 수에 맞춘다**(유연). 패턴 자체는 고정.
+- 1번째 열 = **Size 라벨**, 2번째 열 = **Action(라이브 동작)**, 그 뒤 = 상태 미리보기.
+- 열 수·헤더 개수는 **그 컴포넌트의 상태 수에 맞춘다**(유연). 패턴 자체는 고정.
+- 셀 배치는 자연 그리드 흐름, 또는 셀마다 인라인 `grid-column`/`grid-row` 지정(컴포넌트별).
 
 ### 헤더 행 (그리드 첫 줄)
 ```html
-<div></div>                                   <!-- 라벨 열: 비움 -->
-<div class="matrix-col-header-action">Action</div>   <!-- 초록 #16a34a, 고정 -->
+<div class="matrix-col-header-action">Size</div>     <!-- 1열: Size (강조) -->
+<div class="matrix-col-header-action">Action</div>   <!-- 2열: Action (강조) -->
 <div class="matrix-col-header">Default</div>  <!-- 상태명: 컴포넌트마다 다름(유연) -->
 <div class="matrix-col-header">Hover</div>
-<div class="matrix-col-header">Disabled</div>
+<div class="matrix-col-header">Selected</div>
 ```
-- `matrix-col-header-action`는 항상 초록·"Action". 나머지 상태 헤더는 회색 `#9ca3af`.
+- `matrix-col-header-action` = Size·Action 헤더(강조). 나머지 상태 헤더 = `matrix-col-header`(회색).
 
 ### 사이즈 행 (사이즈마다 반복)
 ```html
-<div class="matrix-row-label">medium<span>h44 · px16</span></div>   <!-- 이름 + 보조수치 -->
-<div class="matrix-cell action-cell" data-action-cell>
-   {라이브 동작하는 실제 컴포넌트} <div class="action-test-controls">…</div>
+<div class="comp-state-cell">md<br><span>h56 · 18px</span></div>   <!-- Size 라벨 + 보조수치 -->
+<div class="comp-action-cell" data-comp-action="{id}-md">
+   {라이브 동작하는 실제 컴포넌트}
 </div>
-<div class="matrix-cell">{상태1 미리보기 .is-preview}</div>
-<div class="matrix-cell">{상태2 미리보기 .is-preview}</div>
-<div class="matrix-cell">{상태3 미리보기 .is-preview}</div>
+<div class="comp-state-cell">{상태1 미리보기 .is-preview}</div>
+<div class="comp-state-cell">{상태2 미리보기 .is-preview}</div>
+<div class="comp-state-cell">{상태3 미리보기 .is-preview}</div>
 ```
-- 라벨 보조수치(`<span>`): 사이즈 높이·폰트 등 `h44 · px16` 형식.
-- Action 열은 **실제로 클릭/입력되는 라이브 인스턴스**(`data-action-test`), 상태 열은 **고정 미리보기**(`.is-preview`, `pointer-events:none`).
+- Size 라벨 보조수치(`<span>`): 사이즈 높이·폰트 등 `h56 · 18px` 형식.
+- Action 열은 **실제로 클릭/입력되는 라이브 인스턴스**(`.comp-action-cell` + `data-comp-action`), 상태 열은 **고정 미리보기**(`.comp-state-cell` 안에 `.is-preview`, `pointer-events:none`).
 - 행 순서: 큰 사이즈 → 작은 사이즈.
+- 행 레이블 방식(Chip·Input 등 가로=상태, 세로=variant)은 `.comp-row-label` 사용 가능.
+
+> **레거시 (Button 전용):** `state-size-matrix` + `matrix-cell`/`matrix-row-label`/`action-cell data-action-test`. **신규 컴포넌트에 쓰지 않는다.**
 
 ---
 
@@ -178,10 +184,9 @@ section.comp-section#{id}
 - [ ] `comp-nav`에 버튼 추가 + 올바른 `data-category` 부여
 - [ ] 섹션 블록 순서가 §2와 동일 (헤더 → variant-block → code-block)
 - [ ] 헤더에 제목 + 뱃지(분류/개수/사이즈) 존재
-- [ ] 미리보기가 `state-size-matrix` 그리드 사용 (자체 레이아웃 만들지 않음)
+- [ ] 미리보기가 `comp-state-matrix` 그리드 사용 (자체 레이아웃 만들지 않음. Button 레거시 `state-size-matrix` 따라하지 말 것)
 - [ ] 그리드 1·2열 = 라벨·Action, 상태 헤더 개수 = `repeat()` 수와 일치
-- [ ] Action 헤더는 초록 "Action", Action 셀은 라이브 인스턴스(`data-action-test`)
-- [ ] 상태 셀은 `.is-preview` 사용
+- [ ] Action 셀은 라이브 인스턴스(`.comp-action-cell` + `data-comp-action`), 상태 셀은 `.comp-state-cell` + `.is-preview`(pointer-events:none)
 - [ ] 사이즈 행 순서 = 큰 것 → 작은 것, 보조수치(`h.. · px..`) 표기
 - [ ] 코드탭 순서 = PC·HTML → Mobile·HTML → CSS → Token, `id` 매칭 정확
 - [ ] 새로 정의한 색/간격/폰트 없음 — 기존 클래스·토큰만 재사용

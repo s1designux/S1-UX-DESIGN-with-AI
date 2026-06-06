@@ -106,7 +106,7 @@ MCP 접근 실패 시: `figma-variable-usage.ux-guide-2.4.json` 스냅샷으로 
 ## 작업 원칙
 
 1. **읽기 전용** — Figma 파일을 절대 수정하지 않는다
-2. **Figma가 기준** — Figma 값과 registry 값이 다를 경우 항상 Figma가 우선
+2. **Figma DS 2.4는 참고 출발점(레거시)이지 정답지가 아니다** — Figma 값과 registry/코드 값이 다를 때 자동으로 Figma 우선으로 단정하지 않는다. 두 갈래로 분류: (a) 코드 실수 → 코드 수정 / (b) 사전 등록된 개선 → 코드 유지+"Figma 개선 필요 목록" / (c) 애매 → 사용자 확인. (CLAUDE.md 공통 규칙 참조)
 3. **임의 추측 금지** — nodeId·componentKey를 MCP 조회 없이 생성하지 않는다
 4. **stale nodeId 처리** — invalid 응답 시 빈 문자열로 유지하고 Orchestrator Summary에 기록
 

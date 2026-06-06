@@ -5487,7 +5487,7 @@ window.ICONS_DATA = {
       section: "people-communication-1",
       properties: { type: ["line","solid","color"] },
       variants: {
-        line: { figmaNodeId: "86:56", svg: "" },
+        line: { figmaNodeId: "86:56", svg: `<svg viewBox="0 0 24 21.5816" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M16.561 13.7324H7.43901C5.67118 13.7324 4.00236 14.3971 2.84266 15.5568C0.494991 17.9186 0.0141426 21.2704 0 21.3977L1.37183 21.5816C1.37183 21.5816 1.81025 18.5409 3.8185 16.5185C4.72363 15.6134 6.03889 15.1042 7.43901 15.1042H16.561C17.9611 15.1042 19.2764 15.6275 20.1815 16.5185C22.1897 18.5409 22.6282 21.5391 22.6282 21.5816L24 21.3977C23.9859 21.2563 23.505 17.9045 21.1573 15.5568C19.9976 14.3971 18.3288 13.7324 16.561 13.7324Z" fill="currentColor"/><path d="M5.9968 6.01061C5.9968 9.31998 8.69803 12.0212 12.0074 12.0212C15.3168 12.0212 18.018 9.31998 18.018 6.01061C18.018 2.70124 15.3168 0 12.0074 0C8.69803 0 5.9968 2.70124 5.9968 6.01061ZM16.6037 6.01061C16.6037 8.54213 14.5389 10.607 12.0074 10.607C9.47588 10.607 7.41106 8.54213 7.41106 6.01061C7.41106 3.47908 9.47588 1.41426 12.0074 1.41426C14.5389 1.41426 16.6037 3.47908 16.6037 6.01061Z" fill="currentColor"/></svg>` },
         solid: { figmaNodeId: "86:55", svg: "" },
         color: { figmaNodeId: "86:57", svg: "" }
       }
@@ -8593,7 +8593,7 @@ window.ICONS_DATA = {
       section: "ui",
       properties: { type: ["line","solid","color"] },
       variants: {
-        line: { figmaNodeId: "97:226", svg: "" },
+        line: { figmaNodeId: "97:226", svg: `<svg viewBox="0 0 24 16.9274" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M0 1.41176H24V0.705882V0H0V1.41176Z" fill="currentColor"/><path d="M0 9.17647H24V8.47059V7.76471H0V9.17647Z" fill="currentColor"/><path d="M0 16.9274H24V16.2215V15.5156H0V16.9274Z" fill="currentColor"/></svg>` },
         solid: { figmaNodeId: "97:225", svg: "" },
         color: { figmaNodeId: "97:224", svg: "" }
       }

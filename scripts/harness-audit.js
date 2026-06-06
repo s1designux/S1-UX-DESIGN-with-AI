@@ -98,6 +98,16 @@ const SIZE_RULES = [
       { label: 'mobile (h30 · padding-inline sm)', mustContain: 's1-tab--mobile' },
     ],
   },
+  {
+    compId: 'gnb (menu slot)',
+    htmlPaneId: 'gnb-pc-html',   // GNB PC HTML pane (메뉴 슬롯 md/sm/xsm)
+    description: 'GNB 메뉴 슬롯 HTML 코드탭 — md / sm / xsm 사이즈 분기',
+    sizes: [
+      { label: 'md (h56 · 18px)',  mustContain: 's1-gnb-menu is-selected' }, // 무수식어(base)
+      { label: 'sm (h48 · 18px)',  mustContain: 's1-gnb-menu--sm'         },
+      { label: 'xsm (h36 · 14px)', mustContain: 's1-gnb-menu--xsm'        },
+    ],
+  },
 ];
 
 /**

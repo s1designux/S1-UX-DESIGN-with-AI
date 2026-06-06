@@ -1,0 +1,186 @@
+{
+  "_meta": {
+    "id": "gnb",
+    "name": "GNB",
+    "category": "navigation",
+    "updatedAt": "2026-06-06",
+    "version": "0.1.0",
+    "tokenStatus": "stable",
+    "codeStatus": "in-progress",
+    "darkModeStatus": "candidate",
+    "a11yStatus": "pending",
+    "figmaStatus": "confirmed",
+    "harnessStatus": "implemented",
+    "description": "Global Navigation Bar. 로고 + 메뉴 슬롯(slots_menu) + 유틸리티(아이콘 3종) 조립체. 메뉴 슬롯 9 variant(size md/sm/xsm × state default/hover/selected) + GNB 바 6 variant(size md/sm/xsm × align center-between/start). PC only. viewport(1280/1440/1920)는 full-width 반응형으로 통합."
+  },
+  "variants": {
+    "menuSlot": {
+      "size": ["md", "sm", "xsm"],
+      "state": ["default", "hover", "selected"]
+    },
+    "bar": {
+      "size": ["md", "sm", "xsm"],
+      "align": ["center-between", "start"]
+    }
+  },
+  "sizing": {
+    "menuSlotHeightMd": "56px",
+    "menuSlotHeightSm": "48px",
+    "menuSlotHeightXsm": "36px",
+    "menuSlotMinWidth": "116px",
+    "menuSlotPaddingMd": "12px 16px",
+    "menuSlotPaddingSm": "12px",
+    "menuSlotPaddingXsm": "12px",
+    "menuSlotUnderline": "2px",
+    "barHeightMd": "56px",
+    "barHeightSm": "48px",
+    "barHeightXsm": "36px",
+    "barBorderBottom": "var(--border-width-default)",
+    "barPaddingLeft": "var(--spacing-padding-inline-lg)",
+    "barPaddingRight": "var(--spacing-padding-inline-md)",
+    "startLogoMenuGap": "64px",
+    "startMenusGap": "0 (메뉴 슬롯 인접 — 참고 기준: 2슬롯 282×48 연속. Figma 540:6008 gap-24는 사용자 기준으로 제거)",
+    "menuSlotPaddingX": "md 40(외곽 lg24+내부 sm16) / sm·xsm 32(외곽 md20+내부 xs12)",
+    "menuUnderline": "내부 콘텐츠 폭 — 슬롯 외곽 px만큼 inset(md 24 / sm·xsm 20), ::after로 구현",
+    "utilGap": "var(--spacing-cluster-xxs)",
+    "utilBtnBoxMdSm": "40px",
+    "utilBtnBoxXsm": "32px",
+    "utilIconFrameMdSm": "32px",
+    "utilIconFrameXsm": "24px",
+    "utilIconGlyphMdSm": "24px (프레임 32 내 inset 12.5% — 실제 렌더 글리프)",
+    "utilIconGlyphXsm": "18px (프레임 24 내 inset — 실제 렌더 글리프)",
+    "barPaddingXsmNote": "xsm 바는 좌우 반전 — pl 20 / pr 24 (md/sm은 pl 24 / pr 20)"
+  },
+  "typography": {
+    "menuLabelMd": "Pretendard Medium 18px / line-height 1.3 / letter-spacing -0.36px",
+    "menuLabelSm": "Pretendard Medium 18px / line-height 1.3 / letter-spacing -0.36px",
+    "menuLabelXsm": "Pretendard Medium 14px / line-height 1.3 / letter-spacing 0",
+    "logo": "Pretendard Bold 20px / line-height 1.3 / letter-spacing 0"
+  },
+  "tokens": [
+    {
+      "name": "--gnb-bg",
+      "value": "var(--color-navigation-bg)",
+      "resolvedLight": "#FFFFFF",
+      "figmaVariable": "color/navigation/background",
+      "status": "stable",
+      "description": "GNB 바 배경"
+    },
+    {
+      "name": "--gnb-border",
+      "value": "var(--color-border-subtle)",
+      "resolvedLight": "#E9E9E9",
+      "figmaVariable": "color/line/gray/subtle",
+      "status": "stable",
+      "description": "GNB 바 하단 1px 라인"
+    },
+    {
+      "name": "--gnb-menu-label-default",
+      "value": "var(--color-navigation-label-default-alt)",
+      "resolvedLight": "#000000",
+      "figmaVariable": "color/navigation/label/default-alt",
+      "status": "stable",
+      "description": "메뉴 슬롯 기본 라벨(black)"
+    },
+    {
+      "name": "--gnb-menu-label-active",
+      "value": "var(--color-navigation-label-selected)",
+      "resolvedLight": "#1D6CEB",
+      "figmaVariable": "color/navigation/label/hover",
+      "status": "stable",
+      "description": "메뉴 슬롯 hover·selected 라벨"
+    },
+    {
+      "name": "--gnb-menu-underline-active",
+      "value": "var(--color-navigation-indicator-selected)",
+      "resolvedLight": "#1D6CEB",
+      "figmaVariable": "color/line/blue",
+      "status": "stable",
+      "description": "메뉴 슬롯 hover·selected 하단 밑줄"
+    },
+    {
+      "name": "--gnb-logo-text",
+      "value": "var(--color-text-primary)",
+      "resolvedLight": "#202020",
+      "figmaVariable": "color/base/black",
+      "status": "candidate",
+      "description": "로고 텍스트 색상 — HD-GNB-1: Figma=#000000, code text-primary=#202020 차이 확인 대기"
+    },
+    {
+      "name": "--gnb-icon",
+      "value": "var(--color-navigation-icon)",
+      "resolvedLight": "#353535",
+      "figmaVariable": "color/icon/gray-dark",
+      "status": "candidate",
+      "description": "유틸리티 아이콘 색상 — HD-GNB-2: 신규 navigation-icon(#353535) 사용. 사용자 확인 대기"
+    }
+  ],
+  "newSemanticTokens": [
+    {
+      "name": "--color-navigation-label-default-alt",
+      "value": "var(--color-base-black)",
+      "resolvedLight": "#000000",
+      "resolvedDark": "var(--color-gray-dark-800)",
+      "figmaVariable": "color/navigation/label/default-alt",
+      "status": "stable"
+    },
+    {
+      "name": "--color-navigation-icon",
+      "value": "var(--color-gray-800)",
+      "resolvedLight": "#353535",
+      "resolvedDark": "var(--color-gray-dark-700)",
+      "figmaVariable": "color/icon/gray-dark",
+      "status": "stable"
+    }
+  ],
+  "icons": [
+    { "role": "language", "name": "ic_인터넷", "figmaNodeId": "150:5007", "source": "icons-data.js (line, currentColor)" },
+    { "role": "account", "name": "ic_계정/사용자/ID", "figmaNodeId": "150:5086", "source": "MCP 원본 (viewBox 0 0 24 21.5816, currentColor)" },
+    { "role": "menu", "name": "ic_메뉴", "figmaNodeId": "150:5206", "source": "MCP 원본 (viewBox 0 0 24 16.9274, currentColor)" }
+  ],
+  "figma": {
+    "componentSetKey": "",
+    "figmaNodeId": "540:5942",
+    "nodes": {
+      "barMdCenterBetween": "540:5943",
+      "barMdStart": "540:6003",
+      "barSmCenterBetween": "540:5953",
+      "barSmStart": "540:6014",
+      "barXsmCenterBetween": "582:7770",
+      "barXsmStart": "582:7773",
+      "menuSlotMdDefault": "540:6086",
+      "menuSlotMdHover": "540:6070",
+      "menuSlotMdSelected": "540:6074",
+      "menuSlotSmDefault": "540:6092",
+      "menuSlotSmHover": "540:6078",
+      "menuSlotSmSelected": "540:6082",
+      "menuSlotXsmDefault": "582:7888",
+      "menuSlotXsmHover": "582:7889",
+      "menuSlotXsmSelected": "582:7890"
+    },
+    "propertyMap": {
+      "size": "variant",
+      "state": "state",
+      "align": "variant"
+    }
+  },
+  "humanDecisions": [
+    {
+      "id": "HD-GNB-1",
+      "topic": "로고 색상",
+      "detail": "Figma 로고 = color/base/black #000000. code --color-text-primary = #202020(off-black). 색상값(레거시 개선 여지) → 두갈래 분류 대상. 현재 text-primary로 연결(코드 기준). 사용자 확인 대기.",
+      "status": "open"
+    },
+    {
+      "id": "HD-GNB-2",
+      "topic": "유틸 아이콘 색상",
+      "detail": "Figma = color/icon/gray-dark #353535. 기존 --color-icon-default=#757575(불일치). 신규 --color-navigation-icon(=gray-800 #353535) 사용. 사용자 확인 대기.",
+      "status": "open"
+    }
+  ],
+  "governance": {
+    "owner": "Design System Team",
+    "deprecated": false,
+    "replacement": null
+  }
+}

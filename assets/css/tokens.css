@@ -456,6 +456,8 @@
   --color-navigation-label-selected:     var(--color-action-primary-default); /* #1D6CEB */
   --color-navigation-indicator-default:  var(--color-gray-200);        /* #D9D9D9 — 탭바 기본 구분선 */
   --color-navigation-indicator-selected: var(--color-action-primary-default); /* #1D6CEB */
+  --color-navigation-label-default-alt:  var(--color-base-black);      /* #000000 — GNB 메뉴 기본 라벨(black, label/default-alt) */
+  --color-navigation-icon:               var(--color-gray-800);        /* #353535 — GNB 유틸 아이콘(icon/gray-dark) */
 
   /* ── color-overlay ── */
   --color-overlay: rgba(0, 0, 0, 0.5); /* rgba 허용 예외 — alpha 채널 포함 */
@@ -639,6 +641,8 @@
   --color-navigation-label-selected:     var(--color-action-primary-default); /* blue-dark-300 */
   --color-navigation-indicator-default:  var(--color-gray-dark-300);         /* 탭바 구분선 */
   --color-navigation-indicator-selected: var(--color-action-primary-default); /* blue-dark-300 */
+  --color-navigation-label-default-alt:  var(--color-gray-dark-800);         /* GNB 메뉴 기본 라벨 — candidate */
+  --color-navigation-icon:               var(--color-gray-dark-700);         /* GNB 유틸 아이콘 — candidate */
 
   /* ── color-data (dark) ── */
   --color-data-state-hover: var(--color-blue-dark-100); /* #112B55 */
@@ -855,6 +859,15 @@
   --tab-label-selected:       var(--color-navigation-label-selected);
   --tab-indicator-default:    var(--color-navigation-indicator-default);
   --tab-indicator-selected:   var(--color-navigation-indicator-selected);
+
+  /* ── GNB (Global Navigation Bar) ── */
+  --gnb-bg:                   var(--color-navigation-bg);
+  --gnb-border:               var(--color-border-subtle);
+  --gnb-menu-label-default:   var(--color-navigation-label-default-alt);
+  --gnb-menu-label-active:    var(--color-navigation-label-selected);
+  --gnb-menu-underline-active: var(--color-navigation-indicator-selected);
+  --gnb-logo-text:            var(--color-text-primary);
+  --gnb-icon:                 var(--color-navigation-icon);
 
   /* ── Table / Data Grid ── */
   --table-header-bg:        var(--color-bg-default);        /* #FAFAFA — Figma: surface/neutral/bg/base-alt */
