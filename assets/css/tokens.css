@@ -434,7 +434,7 @@
   --color-form-control-border-selected:     var(--color-border-focus);
   --color-form-control-border-error:        var(--color-status-error);
   --color-form-control-border-correct:      var(--color-border-focus);
-  --color-form-control-border-disabled:     var(--color-border-subtle);
+  --color-form-control-border-disabled:     var(--color-control-border-default); /* #D9D9D9 — Figma form-control/border/disabled 기준 통일 (HD-TPS-1, 2026-06-05). 구 border-subtle(#E9E9E9)에서 변경. Input·Select·DatePicker·TimePicker 공유 */
   --color-form-control-text-default:        var(--color-text-secondary);
   --color-form-control-text-placeholder:    var(--color-text-placeholder);
   --color-form-control-text-disabled:       var(--color-text-disabled);

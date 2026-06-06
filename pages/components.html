@@ -1241,26 +1241,30 @@
     }
     .s1-timepicker-icon { flex-shrink: 0; color: var(--color-form-control-icon-default); display:flex;align-items:center; }
     /* TimePicker Select */
+    /* ── TimePicker Select (timepicker_select 540:3636) — md(h44) / sm(h28) ── */
     .s1-timepicker-select-group {
-      display: inline-flex; align-items: center; gap: 16px;
+      display: inline-flex; align-items: center;
+      gap: var(--spacing-cluster-sm); /* md 시그룹↔분그룹 16px */
     }
     .s1-timepicker-select-unit {
-      display: inline-flex; align-items: center; gap: 8px;
+      display: inline-flex; align-items: center;
+      gap: 8px; /* md 박스↔라벨 8px */
     }
     .s1-timepicker-select-field {
       position: relative; /* 드롭다운 앵커 — unit이 아닌 field 기준 */
       display: inline-flex; align-items: center;
-      height: var(--sizing-form-control-height-md);
-      min-width: 60px;
-      padding: 0 8px 0 16px;
-      border: 1px solid var(--color-form-control-border-default);
+      height: var(--sizing-form-control-height-md); /* 44px */
+      min-width: 78px; /* Figma md min-width */
+      padding: var(--spacing-padding-block-xxs) var(--spacing-padding-inline-xxs) var(--spacing-padding-block-xxs) var(--spacing-padding-inline-sm); /* 8 / 8 / 8 / 16 */
+      border: var(--border-width-default) solid var(--color-form-control-border-default);
       border-radius: var(--radius-control-sm); /* Figma: radius/control/sm = 4px */
       background: var(--color-form-control-bg-default);
-      gap: 8px; cursor: pointer;
+      gap: 10px; /* 값↔화살표 (Figma raw 10px) */
+      cursor: pointer;
       transition: background 0.15s, border-color 0.15s;
-      font-size: 14px; font-weight: 400;
+      font-size: 14px; font-weight: 400; line-height: 1.3;
       color: var(--color-form-control-text-default);
-      letter-spacing: -0.02em;
+      letter-spacing: 0; /* md 값 텍스트 ls 0 */
     }
     .s1-timepicker-select-field:hover {
       background: var(--dropdown-trigger-hover-bg);
@@ -1273,15 +1277,30 @@
       color: var(--color-form-control-text-disabled); cursor: default;
     }
     .s1-timepicker-select-arrow {
-      flex-shrink: 0; color: var(--color-form-control-icon-default);
-      display:flex;align-items:center;
+      flex-shrink: 0; width: 24px; height: 24px; /* Figma 아이콘 박스 size-[24px] — 내용폭이 min-width를 채워 화살표가 우측에 붙음 */
+      color: var(--color-form-control-icon-default);
+      display:flex; align-items:center; justify-content:center;
     }
-    .s1-timepicker-select-field.is-focus .s1-timepicker-select-arrow { transform: rotate(180deg); }
+    /* 원본 ic_화살표,더보기 (563:3158): 우향 chevron → 90° 회전해 아래 방향. 24px 박스 내 중앙 */
+    .s1-timepicker-select-arrow svg { transform: rotate(90deg); transition: transform 0.15s; }
+    .s1-timepicker-select-field.is-focus .s1-timepicker-select-arrow svg,
+    .s1-timepicker-select-field.is-open  .s1-timepicker-select-arrow svg { transform: rotate(-90deg); }
     .s1-timepicker-select-field.is-disabled .s1-timepicker-select-arrow { color: var(--color-form-control-text-disabled); }
     .s1-timepicker-select-label {
-      font-size: 14px; color: var(--color-form-control-label-default); white-space: nowrap;
+      font-size: 16px; line-height: 1.3; /* md 라벨 16px */
+      color: var(--color-form-control-label-default); white-space: nowrap;
     }
     .s1-timepicker-select-field.is-disabled + .s1-timepicker-select-label { color: var(--color-form-control-label-disabled); }
+    /* ── sm (h28) ── */
+    .s1-timepicker-select-group--sm { gap: var(--spacing-cluster-xs); } /* 12px */
+    .s1-timepicker-select-group--sm .s1-timepicker-select-unit { gap: var(--spacing-4); } /* 4px */
+    .s1-timepicker-select-group--sm .s1-timepicker-select-field {
+      height: var(--sizing-form-control-height-xxs); /* 28px */
+      min-width: 0;
+      padding: var(--spacing-4) var(--spacing-4) var(--spacing-4) var(--spacing-padding-inline-xs); /* 4 / 4 / 4 / 12 */
+      letter-spacing: -0.28px; /* sm 값 텍스트 ls -0.28px (Figma -2%) */
+    }
+    .s1-timepicker-select-group--sm .s1-timepicker-select-label { font-size: 14px; } /* sm 라벨 14px */
     /* TimePicker Input형 dropdown — Figma pc_timepicker_input_dropdown (540:3507) */
     /* 트리거 is-focus = 드롭다운 열림. Figma "selected" = 코드 "is-focus" = 동작 "open" */
     /* z-index: 8 — controls-sticky(9)·page-header(10) 아래. preview-area isolation: isolate로 헤더 위 노출 방지 */
@@ -5654,7 +5673,7 @@ document.addEventListener('click', function(e) {
         <!-- ════ Select 형 ════ -->
         <div class="variant-group">
           <h3 class="variant-group-title">Select 형</h3>
-          <p class="variant-group-desc">시/분 분리 셀렉트 · <code>s1-timepicker-select-group</code> · Figma: timepicker_select (540:3636) · Filled 상태 없음 · 단일 사이즈 h44 (PC 전용 — <code>--sizing-form-control-height-md</code>)</p>
+          <p class="variant-group-desc">시/분 분리 셀렉트 · <code>s1-timepicker-select-group</code> · Figma: timepicker_select (540:3636) · Filled 상태 없음 · State: default / focus / disabled · Size: md(h44) / sm(h28) — PC 전용 · 화살표 = 원본 <code>ic_화살표,더보기</code>(563:3158)</p>
 
           <div class="variant-block">
             <div class="variant-label">States</div>
@@ -5670,14 +5689,14 @@ document.addEventListener('click', function(e) {
                     <div class="s1-timepicker-select-unit">
                       <div class="s1-timepicker-select-field" id="tp-select-hour-field" data-tp-select-field="hour">
                         <span id="tp-select-hour-val">00</span>
-                        <span class="s1-timepicker-select-arrow"><svg width="10" height="6" viewBox="0 0 10 6" fill="none"><path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg></span>
+                        <span class="s1-timepicker-select-arrow"><svg width="6" height="10" viewBox="0 0 5.66421 9.91421" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M0.707107 0.707107L4.95711 4.95711L0.707107 9.20711" stroke="currentColor" stroke-linecap="square"/></svg></span>
                       </div>
                       <span class="s1-timepicker-select-label">시</span>
                     </div>
                     <div class="s1-timepicker-select-unit">
                       <div class="s1-timepicker-select-field" id="tp-select-min-field" data-tp-select-field="min">
                         <span id="tp-select-min-val">00</span>
-                        <span class="s1-timepicker-select-arrow"><svg width="10" height="6" viewBox="0 0 10 6" fill="none"><path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg></span>
+                        <span class="s1-timepicker-select-arrow"><svg width="6" height="10" viewBox="0 0 5.66421 9.91421" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M0.707107 0.707107L4.95711 4.95711L0.707107 9.20711" stroke="currentColor" stroke-linecap="square"/></svg></span>
                       </div>
                       <span class="s1-timepicker-select-label">분</span>
                     </div>
@@ -5687,11 +5706,11 @@ document.addEventListener('click', function(e) {
                 <div class="comp-state-cell">
                   <div class="s1-timepicker-select-group">
                     <div class="s1-timepicker-select-unit">
-                      <div class="s1-timepicker-select-field is-preview"><span>00</span><span class="s1-timepicker-select-arrow"><svg width="10" height="6" viewBox="0 0 10 6" fill="none"><path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg></span></div>
+                      <div class="s1-timepicker-select-field is-preview"><span>00</span><span class="s1-timepicker-select-arrow"><svg width="6" height="10" viewBox="0 0 5.66421 9.91421" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M0.707107 0.707107L4.95711 4.95711L0.707107 9.20711" stroke="currentColor" stroke-linecap="square"/></svg></span></div>
                       <span class="s1-timepicker-select-label">시</span>
                     </div>
                     <div class="s1-timepicker-select-unit">
-                      <div class="s1-timepicker-select-field is-preview"><span>00</span><span class="s1-timepicker-select-arrow"><svg width="10" height="6" viewBox="0 0 10 6" fill="none"><path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg></span></div>
+                      <div class="s1-timepicker-select-field is-preview"><span>00</span><span class="s1-timepicker-select-arrow"><svg width="6" height="10" viewBox="0 0 5.66421 9.91421" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M0.707107 0.707107L4.95711 4.95711L0.707107 9.20711" stroke="currentColor" stroke-linecap="square"/></svg></span></div>
                       <span class="s1-timepicker-select-label">분</span>
                     </div>
                   </div>
@@ -5700,11 +5719,11 @@ document.addEventListener('click', function(e) {
                 <div class="comp-state-cell">
                   <div class="s1-timepicker-select-group">
                     <div class="s1-timepicker-select-unit">
-                      <div class="s1-timepicker-select-field is-focus is-preview"><span>09</span><span class="s1-timepicker-select-arrow" style="transform:rotate(180deg);"><svg width="10" height="6" viewBox="0 0 10 6" fill="none"><path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg></span></div>
+                      <div class="s1-timepicker-select-field is-focus is-preview"><span>09</span><span class="s1-timepicker-select-arrow"><svg width="6" height="10" viewBox="0 0 5.66421 9.91421" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M0.707107 0.707107L4.95711 4.95711L0.707107 9.20711" stroke="currentColor" stroke-linecap="square"/></svg></span></div>
                       <span class="s1-timepicker-select-label">시</span>
                     </div>
                     <div class="s1-timepicker-select-unit">
-                      <div class="s1-timepicker-select-field is-preview"><span>30</span><span class="s1-timepicker-select-arrow"><svg width="10" height="6" viewBox="0 0 10 6" fill="none"><path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg></span></div>
+                      <div class="s1-timepicker-select-field is-preview"><span>30</span><span class="s1-timepicker-select-arrow"><svg width="6" height="10" viewBox="0 0 5.66421 9.91421" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M0.707107 0.707107L4.95711 4.95711L0.707107 9.20711" stroke="currentColor" stroke-linecap="square"/></svg></span></div>
                       <span class="s1-timepicker-select-label">분</span>
                     </div>
                   </div>
@@ -5713,13 +5732,46 @@ document.addEventListener('click', function(e) {
                 <div class="comp-state-cell">
                   <div class="s1-timepicker-select-group">
                     <div class="s1-timepicker-select-unit">
-                      <div class="s1-timepicker-select-field is-disabled is-preview"><span>00</span><span class="s1-timepicker-select-arrow"><svg width="10" height="6" viewBox="0 0 10 6" fill="none"><path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg></span></div>
+                      <div class="s1-timepicker-select-field is-disabled is-preview"><span>00</span><span class="s1-timepicker-select-arrow"><svg width="6" height="10" viewBox="0 0 5.66421 9.91421" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M0.707107 0.707107L4.95711 4.95711L0.707107 9.20711" stroke="currentColor" stroke-linecap="square"/></svg></span></div>
                       <span class="s1-timepicker-select-label" style="color:var(--color-form-control-label-disabled);">시</span>
                     </div>
                     <div class="s1-timepicker-select-unit">
-                      <div class="s1-timepicker-select-field is-disabled is-preview"><span>00</span><span class="s1-timepicker-select-arrow"><svg width="10" height="6" viewBox="0 0 10 6" fill="none"><path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg></span></div>
+                      <div class="s1-timepicker-select-field is-disabled is-preview"><span>00</span><span class="s1-timepicker-select-arrow"><svg width="6" height="10" viewBox="0 0 5.66421 9.91421" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M0.707107 0.707107L4.95711 4.95711L0.707107 9.20711" stroke="currentColor" stroke-linecap="square"/></svg></span></div>
                       <span class="s1-timepicker-select-label" style="color:var(--color-form-control-label-disabled);">분</span>
                     </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Sizes (md / sm) — Figma timepicker_select size variant -->
+          <div class="variant-block">
+            <div class="variant-label">Sizes</div>
+            <div class="preview-area" style="overflow:visible; display:flex; gap:48px; align-items:flex-start; flex-wrap:wrap;">
+              <div style="display:flex; flex-direction:column; gap:8px;">
+                <span style="font-size:12px; color:var(--color-text-secondary);">md · h44 (라벨 16px)</span>
+                <div class="s1-timepicker-select-group">
+                  <div class="s1-timepicker-select-unit">
+                    <div class="s1-timepicker-select-field is-preview"><span>09</span><span class="s1-timepicker-select-arrow"><svg width="6" height="10" viewBox="0 0 5.66421 9.91421" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M0.707107 0.707107L4.95711 4.95711L0.707107 9.20711" stroke="currentColor" stroke-linecap="square"/></svg></span></div>
+                    <span class="s1-timepicker-select-label">시</span>
+                  </div>
+                  <div class="s1-timepicker-select-unit">
+                    <div class="s1-timepicker-select-field is-preview"><span>30</span><span class="s1-timepicker-select-arrow"><svg width="6" height="10" viewBox="0 0 5.66421 9.91421" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M0.707107 0.707107L4.95711 4.95711L0.707107 9.20711" stroke="currentColor" stroke-linecap="square"/></svg></span></div>
+                    <span class="s1-timepicker-select-label">분</span>
+                  </div>
+                </div>
+              </div>
+              <div style="display:flex; flex-direction:column; gap:8px;">
+                <span style="font-size:12px; color:var(--color-text-secondary);">sm · h28 (라벨 14px)</span>
+                <div class="s1-timepicker-select-group s1-timepicker-select-group--sm">
+                  <div class="s1-timepicker-select-unit">
+                    <div class="s1-timepicker-select-field is-preview"><span>09</span><span class="s1-timepicker-select-arrow"><svg width="6" height="10" viewBox="0 0 5.66421 9.91421" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M0.707107 0.707107L4.95711 4.95711L0.707107 9.20711" stroke="currentColor" stroke-linecap="square"/></svg></span></div>
+                    <span class="s1-timepicker-select-label">시</span>
+                  </div>
+                  <div class="s1-timepicker-select-unit">
+                    <div class="s1-timepicker-select-field is-preview"><span>30</span><span class="s1-timepicker-select-arrow"><svg width="6" height="10" viewBox="0 0 5.66421 9.91421" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M0.707107 0.707107L4.95711 4.95711L0.707107 9.20711" stroke="currentColor" stroke-linecap="square"/></svg></span></div>
+                    <span class="s1-timepicker-select-label">분</span>
                   </div>
                 </div>
               </div>
@@ -5748,26 +5800,60 @@ document.addEventListener('click', function(e) {
     <span class="c-tag">&lt;/div&gt;</span>
     <span class="c-tag">&lt;span</span> <span class="c-attr">class</span>=<span class="c-str">"s1-timepicker-select-label"</span><span class="c-tag">&gt;</span>분<span class="c-tag">&lt;/span&gt;</span>
   <span class="c-tag">&lt;/div&gt;</span>
+<span class="c-tag">&lt;/div&gt;</span>
+
+<span class="c-str">&lt;!-- sm (h28): group에 --sm 추가, 내부 구조 동일 --&gt;</span>
+<span class="c-tag">&lt;div</span> <span class="c-attr">class</span>=<span class="c-str">"s1-timepicker-select-group s1-timepicker-select-group--sm"</span><span class="c-tag">&gt;</span>
+  <span class="c-tag">&lt;div</span> <span class="c-attr">class</span>=<span class="c-str">"s1-timepicker-select-unit"</span><span class="c-tag">&gt;</span>
+    <span class="c-tag">&lt;div</span> <span class="c-attr">class</span>=<span class="c-str">"s1-timepicker-select-field"</span><span class="c-tag">&gt;</span><span class="c-tag">&lt;span&gt;</span>09<span class="c-tag">&lt;/span&gt;</span><span class="c-tag">&lt;span</span> <span class="c-attr">class</span>=<span class="c-str">"s1-timepicker-select-arrow"</span><span class="c-tag">&gt;</span>…<span class="c-tag">&lt;/span&gt;&lt;/div&gt;</span>
+    <span class="c-tag">&lt;span</span> <span class="c-attr">class</span>=<span class="c-str">"s1-timepicker-select-label"</span><span class="c-tag">&gt;</span>시<span class="c-tag">&lt;/span&gt;</span>
+  <span class="c-tag">&lt;/div&gt;</span>
+  <span class="c-tag">&lt;div</span> <span class="c-attr">class</span>=<span class="c-str">"s1-timepicker-select-unit"</span><span class="c-tag">&gt;</span>…<span class="c-tag">&lt;/div&gt;</span>
 <span class="c-tag">&lt;/div&gt;</span></pre></div>
-            <div class="code-pane" id="tp-select-css"><pre>.s1-timepicker-select-field {
-  border: 1px solid var(--color-form-control-border-default);
+            <div class="code-pane" id="tp-select-css"><pre>/* md (h44) */
+.s1-timepicker-select-group { gap: var(--spacing-cluster-sm); } /* 16px */
+.s1-timepicker-select-unit  { gap: 8px; }
+.s1-timepicker-select-field {
+  height: var(--sizing-form-control-height-md);   /* 44px */
+  min-width: 78px;
+  padding: var(--spacing-padding-block-xxs) var(--spacing-padding-inline-xxs)
+           var(--spacing-padding-block-xxs) var(--spacing-padding-inline-sm); /* 8/8/8/16 */
+  border: var(--border-width-default) solid var(--color-form-control-border-default);
+  border-radius: var(--radius-control-sm);        /* 4px */
   background: var(--color-form-control-bg-default);
   color: var(--color-form-control-text-default);
+  gap: 10px; font-size: 14px; letter-spacing: 0;  /* md 값 ls 0 */
 }
-.s1-timepicker-select-field.is-focus { border-color: var(--color-form-control-border-selected); }
-.s1-timepicker-select-label { color: var(--color-form-control-label-default); }
+.s1-timepicker-select-field.is-focus    { border-color: var(--color-form-control-border-selected); }
+.s1-timepicker-select-field.is-disabled {
+  background: var(--color-form-control-bg-disabled);
+  border-color: var(--color-form-control-border-disabled);
+  color: var(--color-form-control-text-disabled);
+}
+.s1-timepicker-select-label { font-size: 16px; color: var(--color-form-control-label-default); } /* md 라벨 16px */
 .s1-timepicker-select-field.is-disabled + .s1-timepicker-select-label {
   color: var(--color-form-control-label-disabled);
 }
-/* 화살표 아이콘 — 인스턴트 플립 (transition 없음) */
-.s1-timepicker-select-arrow {
-  flex-shrink: 0;
-  color: var(--color-text-secondary);
-  display: flex; align-items: center;
+/* 원본 ic_화살표,더보기(563:3158) — 우향 chevron 90° 회전 → 아래, focus 시 위로 */
+.s1-timepicker-select-arrow {            /* Figma 아이콘 박스 24px */
+  width: 24px; height: 24px; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--color-form-control-icon-default);
 }
-.s1-timepicker-select-field.is-open .s1-timepicker-select-arrow {
-  transform: rotate(180deg);
-}</pre></div>
+.s1-timepicker-select-arrow svg { transform: rotate(90deg); transition: transform .15s; }
+.s1-timepicker-select-field.is-focus .s1-timepicker-select-arrow svg,
+.s1-timepicker-select-field.is-open  .s1-timepicker-select-arrow svg { transform: rotate(-90deg); }
+
+/* sm (h28) */
+.s1-timepicker-select-group--sm { gap: var(--spacing-cluster-xs); } /* 12px */
+.s1-timepicker-select-group--sm .s1-timepicker-select-unit  { gap: var(--spacing-4); } /* 4px */
+.s1-timepicker-select-group--sm .s1-timepicker-select-field {
+  height: var(--sizing-form-control-height-xxs); /* 28px */
+  min-width: 0;
+  padding: var(--spacing-4) var(--spacing-4) var(--spacing-4) var(--spacing-padding-inline-xs); /* 4/4/4/12 */
+  letter-spacing: -0.28px;  /* sm 값 ls -0.28px */
+}
+.s1-timepicker-select-group--sm .s1-timepicker-select-label { font-size: 14px; } /* sm 라벨 14px */</pre></div>
             <div class="code-pane" id="tp-select-js"><pre>// ── TimePicker Select형 ──
 // 시 / 분 필드 클릭 → 커스텀 드롭다운 목록 생성
 

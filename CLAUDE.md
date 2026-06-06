@@ -2,7 +2,7 @@
 
 > 이 문서는 Claude가 디자인 시스템을 **수집, 정리, 구조화, 검증**하기 위한 기준입니다.
 > 현재 목표는 UI 구현이 아니라 **디자인 시스템을 구축하는 것**입니다.
-> 마지막 업데이트: 2026-05-28 (Line Tab 컴포넌트 구현. harness-audit.js SIZE_RULES + CSS_SIZE_SPLIT Tab 등록. 자동 감사 10/10 PASS.)
+> 마지막 업데이트: 2026-06-05 (Figma → 코드 5단계 검문소 워크플로우 신설. figma-to-code 스킬 + component-verifier 검증 전용 에이전트 추가. 만드는 자 ≠ 검증하는 자 분리.)
 
 ---
 
@@ -10,9 +10,11 @@
 
 **목표:** 토큰 검증·HTML 가이드 생성·Figma 동기화·리뷰 관리를 자동화한다.
 
-**트리거:** 토큰 검증, 가이드 페이지 업데이트, Figma 동기화, MD 리뷰 등록 작업 요청 시 `design-system` 스킬을 사용하라. 단순 질문과 직접 편집은 스킬 없이 직접 응답 가능.
+**트리거:** 토큰 검증, 가이드 페이지 업데이트, Figma 동기화, MD 리뷰 등록 작업 요청 시 `design-system` 스킬을 사용하라. **Figma 컴포넌트를 코드로 옮기는 작업**("Figma ~ 구현/변환/만들어줘")은 `figma-to-code` 스킬을 사용하라. 단순 질문과 직접 편집은 스킬 없이 직접 응답 가능.
 
-**에이전트:** `.claude/agents/` — token-validator · guide-builder · figma-inspector
+**에이전트:** `.claude/agents/` — token-validator · guide-builder · figma-inspector · component-verifier
+
+**워크플로우 스킬:** `figma-to-code` — Figma 컴포넌트를 코드로 옮기는 5단계 검문소 워크플로우(재고조사 → 수치추출 → 구현 → 자가대조 → 다크모드). 상세: 아래 "🪜 Figma → 코드 5단계 워크플로우" 섹션.
 
 **변경 이력:**
 | 날짜 | 변경 내용 | 대상 | 사유 |
@@ -68,6 +70,8 @@
 | 2026-05-27 | Button Secondary 다크모드 확정 + Dark 시각검증 | assets/css/tokens.css·pages/components.html·registry/components/button.json·checkbox.json·radio.json·toggle.json | Button Secondary dark: fill=gray-dark-400(bg-elevated)·stroke=gray-dark-500(border-strong)·hover=gray-dark-300(bg-muted) Figma 796:20068 검수 일치. CSS cascade 차단 해소(button-secondary inline :root 차단 → [data-theme="dark"] 블록 추가). Button·Checkbox·Radio·Toggle darkModeStatus: pending/candidate → stable 전환. |
 | 2026-05-27 | 컴포넌트 harness 레이아웃 개선 + Table Sizes 비교 뷰 추가 | pages/components.html·registry/components/table.json | Action 열 padding-right 32px로 시각 분리. 상태 열 minmax(Xpx, 1fr) 전환으로 우측 공간 완전 활용. 버튼 좌측정렬 복원. Input/Textarea 오버플로우 해소(minmax(200px,1fr)). DatePicker·TimePicker 입력 hover = Select hover 통일(--dropdown-trigger-hover-bg/border). TimePicker Select형 드롭다운 border color 수정(--dropdown-list-border). Select·DatePicker·TimePicker 드롭다운 gap 8px 통일(top: calc(100% + 8px)). Table md/sm Sizes 비교 블록 신규 추가(행높이 md=44px/sm=38px 나란히 비교). table.json harnessStatus skeleton→implemented, v0.3.0→v0.4.0. |
 | 2026-05-28 | Line Tab 컴포넌트 harness 구현 + 자동 감사 체계 정립 | pages/components.html·registry/components/tab.json·assets/css/tokens.css·registry/components/index.json·scripts/harness-audit.js·.claude/agents/guide-builder.md·reports/repeated-requests.json | Figma 540:6032 기준. --color-navigation-* semantic 5개 신설(Light gray-600/gray-200/action-primary + Dark candidate). --tab-* component 5개. Navigation 카테고리 신설. Line Tab nav 버튼·Sizes 비교·States Matrix(PC MD/SM/Mobile × Unselected/Selected/Hover)·HTML·CSS·Token Details 탭 구현. 인터랙션 JS setupTabStrip(). harness-audit SIZE_RULES에 tab 추가(tab-html). 감사 결과 10/10 PASS. guide-builder.md RULE-1 표 갱신. 반복 요청 추적 파일 신설(repeated-requests.json 5패턴). |
+| 2026-06-05 | Figma → 코드 5단계 검문소 워크플로우 신설 | .claude/skills/figma-to-code/SKILL.md·.claude/agents/component-verifier.md·.claude/agents/figma-inspector.md·.claude/agents/guide-builder.md·CLAUDE.md·reports/figma-to-code/README.md | 단계형 워크플로우(재고조사→수치추출→구현→자가대조→다크모드) + 검문소 STOP 신설. 만드는 자(guide-builder) ≠ 검증하는 자(component-verifier 신규) 분리. figma-inspector에 1·2단계 추출 모드 추가(기존 Gate 2 보존). 절대규칙 4개(추측 금지·아이콘 원본 강제·막히면 보고·목록 책임). 산출물 reports/figma-to-code/{component}/. 기존 6 Gate(사후)와 5단계(사전 검문소) 층위 분리. |
+| 2026-06-05 | TimePicker Select harness md/sm 완성 (figma-to-code 첫 적용) | pages/components.html·assets/css/tokens.css·registry/components/time-picker.json·scripts/harness-audit.js·.claude/agents/guide-builder.md·reports/figma-to-code/time-picker-select/* | Figma timepicker_select 540:3636(라이트 전용) 실측. sm(h28) 신규 추가 + md 수치 정정(min-w 60→78·라벨 14→16px·값 ls 0). HD-TPS-1: --color-form-control-border-disabled #E9E9E9→#D9D9D9(Light, 공유). HD-TPS-2: 손그림 chevron→원본 ic_화살표,더보기(563:3158) 벡터. harness-audit SIZE_RULES tp-select 등록(12/12 PASS). component-verifier 4단계 대조 ❌0. 사용자 "데이트피커"라 했으나 원본=타임피커 셀렉트로 확인·정정. |
 
 ---
 
@@ -1246,6 +1250,51 @@ Figma Plugin의 Export Variables 기능을 편집하거나 실행할 때:
 10. **UX Guide 2.4 export 절차:** Figma에서 실제 `S1 UX 디자인가이드 2.4` 파일 열기 → SW Token Sync 플러그인 → Export Variables → Download JSON → `registry/figma/snapshots/figma-variable-metadata.ux-guide-2.4.json`으로 저장 → `npm run figma:audit` 실행.
 11. **mvp-l1-legacy-token-audit.md는 `reports/`에 생성된다.** 그룹별 분류, canonical 추천, no-candidate 항목, 미결 사항을 포함한다.
 12. **MVP-L2는 legacy-to-canonical 마이그레이션 맵을 완성하는 단계다.** MVP-L1 결과를 바탕으로 `reports/mvp-l2-legacy-to-canonical-token-map.md`를 작성한다. MVP-L1이 완료되기 전까지 MVP-L2를 시작하지 않는다.
+
+---
+
+# 🪜 Figma → 코드 5단계 워크플로우 (2026-06-05 확정)
+
+Figma 원본 컴포넌트를 **누락·추측 없이** 코드로 옮기기 위한 단계형 워크플로우다.
+**진입:** `figma-to-code` 스킬 (`.claude/skills/figma-to-code/SKILL.md`). "Figma {URL/nodeId}의 {컴포넌트} 구현/변환해줘" 요청 시 발동.
+
+## 5단계 + 검문소
+
+각 단계는 **검문소(STOP)** 를 가지며, 통과 전엔 다음 단계로 못 넘어간다.
+
+| 단계 | 담당 에이전트 | 산출물 | 🚦 검문소 |
+|------|-------------|--------|----------|
+| 1 재고조사 | figma-inspector (추출 모드) | `1-inventory.md` | 총 variant 개수 명시 후 **사용자 확인** |
+| 2 수치추출 | figma-inspector + token-validator | `2-extraction.md` | 빈칸(`MCP 미제공`) 있으면 **3단계 금지** |
+| 3 구현 | guide-builder | components.html + registry JSON | — |
+| 4 자가대조 | **component-verifier** (검증 전용) | `4-verification.md` | **❌ 0** 될 때까지 3단계 반복 |
+| 5 다크모드 | guide-builder + component-verifier | `5-darkmode.md` | 1차안 후 **개선안 먼저 제안** |
+
+산출물 위치: `reports/figma-to-code/{component}/`
+
+## 핵심 — 만드는 자 ≠ 검증하는 자
+
+- **구현**은 `guide-builder`, **4단계 대조**는 별도 `component-verifier`가 한다.
+- 자기 작업을 자기가 검사해 관대해지는 것을 막기 위함. **구현자는 4단계 대조를 직접 하지 않는다.**
+- `component-verifier`는 1·2단계 표를 기준으로 결과물을 항목별 대조하고 ❌ 목록만 반환한다(직접 수정 금지).
+
+## 절대 규칙 (모든 단계)
+
+1. **추측 금지** — 모든 수치는 Figma MCP에서 실제로 읽은 값만 사용.
+2. **아이콘 원본 강제** — MCP 제공 SVG/localhost 에셋을 그대로 사용. 새로 그리거나 외부 패키지 추가 금지.
+3. **막히면 보고** — MCP에서 값·에셋을 못 받으면 임의로 채우지 말고 어떤 항목인지 사용자에게 알린다(표에 `MCP 미제공` 표기).
+4. **목록 책임** — 1단계 목록은 끝까지 지키고 4단계에서 반드시 대조.
+
+## 6 Gate와의 관계 (층위 분리)
+
+| 구분 | 5단계 워크플로우 | 6 Gate |
+|------|----------------|--------|
+| 시점 | 작업 **진행 중** (사전 검문소) | 작업 **완료 직전** (사후 검문) |
+| 작동 | 검문소에서 STOP, 사용자 확인/❌0 대기 | `npm run gate:check` 자동 판정 |
+| 관계 | 5단계가 위에 얹힘 | 그대로 유지, 완료 보고에 함께 포함 |
+
+> 두 층은 충돌하지 않는다. 5단계 완료 후 6 Gate(특히 Gate 1 Registry·Gate 5 UI)를 실행하고, Orchestrator Summary에 함께 보고한다.
+> Harness Audit(`npm run harness:audit`)은 Gate 5 사후 검문이자, figma-to-code 4단계에서 component-verifier의 대조 도구로도 쓰인다.
 
 ---
 

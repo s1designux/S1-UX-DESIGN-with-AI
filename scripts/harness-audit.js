@@ -73,6 +73,15 @@ const SIZE_RULES = [
     ],
   },
   {
+    compId: 'time-picker (select형)',
+    htmlPaneId: 'tp-select-html',
+    description: 'TimePicker 셀렉트형 HTML 코드탭 — md(h44) / sm(h28) 사이즈 분기',
+    sizes: [
+      { label: 'md (h44)', mustContain: 's1-timepicker-select-group"'      },
+      { label: 'sm (h28)', mustContain: 's1-timepicker-select-group--sm' },
+    ],
+  },
+  {
     compId: 'tab (line tab)',
     htmlPaneId: 'tab-pc-html',   // PC HTML pane (pc-md + pc-sm)
     description: 'Line Tab PC HTML 코드탭 — pc-md / pc-sm 사이즈 분기',
