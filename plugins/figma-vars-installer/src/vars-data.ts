@@ -398,11 +398,11 @@ export const SEMANTIC_COLOR: Record<string, SemanticColorEntry> = {
   "color/button/label/secondary--hover": { light: "gray/800", dark: "gray-dark/800" },
 
   // ── chip ────────────────────────────────
-  "color/chip/line/bg/default": { light: "base/white", dark: "base/white" },
+  "color/chip/line/bg/default": { light: "base/white", dark: "gray-dark/400" },
   "color/chip/line/bg/disabled": { light: "gray/50", dark: "gray-dark/200" },
-  "color/chip/line/bg/selected": { light: "base/white", dark: "base/white" },
-  "color/chip/line/border/default": { light: "gray/300", dark: "gray-dark/400" },
-  "color/chip/line/border/disabled": { light: "gray/100", dark: "gray-dark/300" },
+  "color/chip/line/bg/selected": { light: "base/white", dark: "gray-dark/400" },
+  "color/chip/line/border/default": { light: "gray/300", dark: "gray-dark/200" },
+  "color/chip/line/border/disabled": { light: "gray/100", dark: "gray-dark/200" },
   "color/chip/line/border/selected": { light: "blue/400", dark: "blue-dark/300" },
   "color/chip/line/label/default": { light: "gray/500", dark: "gray-dark/700" },
   "color/chip/line/label/disabled": { light: "gray/300", dark: "gray-dark/400" },
@@ -413,7 +413,7 @@ export const SEMANTIC_COLOR: Record<string, SemanticColorEntry> = {
   "color/chip/solid/border/default": { light: "gray/50", dark: "gray-dark/200" },
   "color/chip/solid/border/disabled": { light: "gray/50", dark: "gray-dark/200" },
   "color/chip/solid/border/selected": { light: "blue/400", dark: "blue-dark/300" },
-  "color/chip/solid/label/default": { light: "gray/800", dark: "gray-dark/800" },
+  "color/chip/solid/label/default": { light: "gray/800", dark: "gray-dark/700" },
   "color/chip/solid/label/disabled": { light: "gray/300", dark: "gray-dark/400" },
   "color/chip/solid/label/selected": { light: "base/white", dark: "base/white" },
 
@@ -448,9 +448,9 @@ export const SEMANTIC_COLOR: Record<string, SemanticColorEntry> = {
   "color/data/state/hover": { light: "blue/50", dark: "blue-dark/100" },
 
   // ── dropdown ────────────────────────────────
-  "color/dropdown/list/bg": { light: "base/white", dark: "base/white" },
-  "color/dropdown/list/border": { light: "gray/200", dark: "gray-dark/300" },
-  "color/dropdown/option/bg/default": { light: "base/white", dark: "base/white" },
+  "color/dropdown/list/bg": { light: "base/white", dark: "gray-dark/400" },
+  "color/dropdown/list/border": { light: "gray/200", dark: "gray-dark/200" },
+  "color/dropdown/option/bg/default": { light: "base/white", dark: "gray-dark/400" },
   "color/dropdown/option/bg/disabled": { light: "gray/50", dark: "gray-dark/200" },
   "color/dropdown/option/bg/hover": { light: "gray/50", dark: "gray-dark/200" },
   "color/dropdown/option/bg/selected": { light: "blue/50", dark: "blue-dark/100" },
@@ -463,20 +463,20 @@ export const SEMANTIC_COLOR: Record<string, SemanticColorEntry> = {
   "color/dropdown/option/label/selected": { light: "blue/400", dark: "blue-dark/300" },
 
   // ── form-control ────────────────────────────────
-  "color/form-control/bg/default": { light: "base/white", dark: "base/white" },
-  "color/form-control/bg/disabled": { light: "gray/50", dark: "gray-dark/200" },
-  "color/form-control/bg/selected": { light: "base/white", dark: "base/white" },
-  "color/form-control/border/correct": { light: "blue/400", dark: "blue-dark/300" },
+  "color/form-control/bg/default": { light: "base/white", dark: "gray-dark/200" },
+  "color/form-control/bg/disabled": { light: "gray/50", dark: "gray-dark/100" },
+  "color/form-control/bg/selected": { light: "base/white", dark: "gray-dark/200" },
+  "color/form-control/border/correct": { light: "blue/400", dark: "blue-dark/350" },
   "color/form-control/border/default": { light: "gray/200", dark: "gray-dark/300" },
   "color/form-control/border/disabled": { light: "gray/100", dark: "gray-dark/300" },
   "color/form-control/border/error": { light: "red/400", dark: "red-dark/350" },
-  "color/form-control/border/selected": { light: "blue/400", dark: "blue-dark/300" },
+  "color/form-control/border/selected": { light: "blue/400", dark: "blue-dark/350" },
   "color/form-control/label/default": { light: "gray/800", dark: "gray-dark/800" },
   "color/form-control/label/disabled": { light: "gray/300", dark: "gray-dark/400" },
   "color/form-control/text/default": { light: "gray/800", dark: "gray-dark/800" },
-  "color/form-control/text/disabled": { light: "gray/300", dark: "gray-dark/400" },
+  "color/form-control/text/disabled": { light: "gray/300", dark: "gray-dark/500" },
   "color/form-control/text/placeholder": { light: "gray/500", dark: "gray-dark/700" },
-  "color/form-control/text/selected": { light: "gray/900", dark: "gray-dark/900" },
+  "color/form-control/text/selected": { light: "gray/900", dark: "gray-dark/800" },
 
   // ── icon ────────────────────────────────
   "color/icon/blue": { light: "blue/400", dark: "blue-dark/300" },
@@ -494,12 +494,12 @@ export const SEMANTIC_COLOR: Record<string, SemanticColorEntry> = {
   "color/line/white": { light: "base/white", dark: "base/white" },
 
   // ── navigation ────────────────────────────────
-  "color/navigation/background": { light: "base/white", dark: "base/white" },
-  "color/navigation/indicator/default": { light: "gray/200", dark: "gray-dark/300" },
+  "color/navigation/background": { light: "base/white", dark: "gray-dark/400" },
+  "color/navigation/indicator/default": { light: "gray/200", dark: "gray-dark/200" },
   "color/navigation/indicator/default-alt": { light: "gray/100", dark: "gray-dark/300" },
   "color/navigation/indicator/hover": { light: "blue/400", dark: "blue-dark/300" },
   "color/navigation/indicator/selected": { light: "blue/400", dark: "blue-dark/300" },
-  "color/navigation/label/default": { light: "gray/600", dark: "gray-dark/700" },
+  "color/navigation/label/default": { light: "gray/600", dark: "gray-dark/600" },
   "color/navigation/label/default-alt": { light: "gray/700", dark: "gray-dark/700" },
   "color/navigation/label/hover": { light: "blue/400", dark: "blue-dark/300" },
   "color/navigation/label/selected": { light: "blue/400", dark: "blue-dark/300" },
