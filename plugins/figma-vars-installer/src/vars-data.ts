@@ -419,8 +419,8 @@ export const SEMANTIC_COLOR: Record<string, SemanticColorEntry> = {
 
   // ── control ────────────────────────────────
   "color/control/bg/default": { light: "base/white", dark: "base/white" },
-  "color/control/bg/default-alt": { light: "gray/50", dark: "gray-dark/200" },
-  "color/control/bg/disabled": { light: "gray/50", dark: "gray-dark/200" },
+  "color/control/bg/default-alt": { light: "gray/50", dark: "gray-dark/600" },
+  "color/control/bg/disabled": { light: "gray/50", dark: "gray-dark/300" },
   "color/control/bg/hover": { light: "gray/50", dark: "gray-dark/200" },
   "color/control/bg/selected": { light: "blue/400", dark: "blue-dark/300" },
   "color/control/bg/selected-alt": { light: "blue/400", dark: "blue-dark/300" },
