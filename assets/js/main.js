@@ -16,7 +16,7 @@ const SITE_NAV = [
   { type: 'item', id: 'layer-policy', href: 'layer-policy.html', rootHref: 'pages/layer-policy.html', icon: '🗂', text: 'Layer Policy', status: 'ready' },
   { type: 'item', id: 'components', href: 'components.html', rootHref: 'pages/components.html', icon: '🧩', text: 'Components', status: 'ready' },
   { type: 'item', id: 'icons', href: 'icons.html', rootHref: 'pages/icons.html', icon: '✦', text: 'Icons · 817', status: 'ready' },
-  { type: 'item', id: 'patterns', href: 'patterns.html', rootHref: 'pages/patterns.html', icon: '📐', text: 'Patterns', status: 'soon' },
+  { type: 'item', id: 'patterns', href: 'patterns.html', rootHref: 'pages/patterns.html', icon: '📐', text: 'Patterns', status: 'ready' },
 
   /* ── Harness Admin ── */
   { type: 'label', text: 'Harness Admin', collapsible: true, defaultCollapsed: false, groupId: 'admin' },

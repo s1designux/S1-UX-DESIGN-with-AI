@@ -1,0 +1,17 @@
+{
+  "meta": {
+    "name": "SW Pattern Registry Index",
+    "version": "0.1.0",
+    "status": "mvp-pattern",
+    "updatedAt": "2026-06-08",
+    "description": "Pattern Harness entry point. 패턴은 코어 컴포넌트를 조합한 반복 레이아웃이며 components/index.json과 분리 관리한다."
+  },
+  "patterns": [
+    {
+      "id": "modal",
+      "label": "Modal",
+      "path": "registry/patterns/modal.json",
+      "status": "implemented"
+    }
+  ]
+}

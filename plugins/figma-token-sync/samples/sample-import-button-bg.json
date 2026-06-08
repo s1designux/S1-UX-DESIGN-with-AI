@@ -1,0 +1,55 @@
+{
+  "meta": {
+    "source": "legacy-semantic-extraction",
+    "extractedFrom": "SW UX GUIDE V2.4",
+    "collectionName": "semantic_v2",
+    "note": "테스트 샘플 — button/bg 9개 (전체 135개 적용 전 안전장치 검증용)"
+  },
+  "tokens": [
+    {
+      "name": "color/button/bg/primary--default",
+      "resolvedType": "COLOR",
+      "scopes": ["FRAME_FILL", "SHAPE_FILL"]
+    },
+    {
+      "name": "color/button/bg/primary--hover",
+      "resolvedType": "COLOR",
+      "scopes": ["FRAME_FILL", "SHAPE_FILL"]
+    },
+    {
+      "name": "color/button/bg/secondary--default",
+      "resolvedType": "COLOR",
+      "scopes": ["FRAME_FILL", "SHAPE_FILL"]
+    },
+    {
+      "name": "color/button/bg/secondary--hover",
+      "resolvedType": "COLOR",
+      "scopes": ["FRAME_FILL", "SHAPE_FILL"]
+    },
+    {
+      "name": "color/button/bg/blue-line--default",
+      "resolvedType": "COLOR",
+      "scopes": ["FRAME_FILL", "SHAPE_FILL"]
+    },
+    {
+      "name": "color/button/bg/blue-line--hover",
+      "resolvedType": "COLOR",
+      "scopes": ["FRAME_FILL", "SHAPE_FILL"]
+    },
+    {
+      "name": "color/button/bg/assist--default",
+      "resolvedType": "COLOR",
+      "scopes": ["FRAME_FILL", "SHAPE_FILL"]
+    },
+    {
+      "name": "color/button/bg/assist--hover",
+      "resolvedType": "COLOR",
+      "scopes": ["FRAME_FILL", "SHAPE_FILL"]
+    },
+    {
+      "name": "color/button/bg/disabled",
+      "resolvedType": "COLOR",
+      "scopes": ["FRAME_FILL", "SHAPE_FILL"]
+    }
+  ]
+}

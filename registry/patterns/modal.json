@@ -1,0 +1,81 @@
+{
+  "_meta": {
+    "id": "modal",
+    "name": "Modal",
+    "category": "pattern",
+    "updatedAt": "2026-06-08",
+    "version": "0.1.0",
+    "tokenStatus": "stable",
+    "harnessStatus": "implemented",
+    "darkModeStatus": "candidate",
+    "figmaStatus": "confirmed",
+    "description": "오버레이 다이얼로그 패턴. 코어 컴포넌트(Button·Table)를 배치·조합하여 구성한다. 신규 보여주기 컴포넌트를 만들지 않는다.",
+    "notes": [
+      "닫기 아이콘: ic_닫기 solid 원본(인라인 svg, currentColor).",
+      "오버레이/딤: var(--color-overlay) (EX03 rgba 허용).",
+      "Small: border 없음 + 그림자. Medium: border 1px.",
+      "모달 자체 forced-dark 금지 — 전역 테마 토글만 사용."
+    ]
+  },
+  "dependencies": {
+    "coreComponents": ["button", "table", "input"]
+  },
+  "sizes": [
+    {
+      "id": "small",
+      "label": "Small",
+      "figmaNodeId": "6706:4218",
+      "figmaName": "modal_small",
+      "role": "텍스트 확인 다이얼로그",
+      "constraints": {
+        "minWidth": "260px",
+        "maxWidth": "360px",
+        "width": "max-content",
+        "border": "none",
+        "shadow": "0 4px 16px var(--color-overlay)",
+        "gap": "32px (section/lg)",
+        "paddingBlock": "20px (padding/block/md)",
+        "paddingInline": "24px"
+      }
+    },
+    {
+      "id": "medium",
+      "label": "Medium",
+      "figmaNodeId": "6714:8020",
+      "figmaName": "modal_large",
+      "role": "콘텐츠 가변 (코어 Table·Form 포함)",
+      "constraints": {
+        "minWidth": "400px",
+        "maxWidth": "1200px",
+        "width": "fit-content",
+        "maxHeight": "70vh",
+        "border": "1px solid var(--color-border-default)",
+        "headerHeight": "52px",
+        "headerPadding": "16px 24px 8px",
+        "bodyPadding": "16px 24px",
+        "bodyOverflow": "auto",
+        "footerPadding": "16px 24px"
+      }
+    }
+  ],
+  "tokens": {
+    "--modal-bg": "var(--color-surface-default)",
+    "--modal-border": "var(--color-border-default)",
+    "--modal-radius": "var(--radius-8)",
+    "--modal-overlay": "var(--color-overlay)",
+    "--modal-title-text": "var(--color-text-primary)",
+    "--modal-body-text": "var(--color-text-secondary)",
+    "--modal-close-icon": "var(--color-icon-default)"
+  },
+  "cssClasses": [
+    "s1-modal-overlay",
+    "s1-modal",
+    "s1-modal--small",
+    "s1-modal--medium",
+    "s1-modal-header",
+    "s1-modal-title",
+    "s1-modal-close",
+    "s1-modal-body",
+    "s1-modal-footer"
+  ]
+}
