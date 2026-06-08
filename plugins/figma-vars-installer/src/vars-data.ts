@@ -1,20 +1,30 @@
 /**
  * vars-data.ts
- * S1 디자인시스템 Variables 정의 — Foundation + Semantic (모두 Light/Dark 2모드)
+ * S1 디자인시스템 Variables 정의 — Hybrid 패턴 (2026-06-08 v3 재설계)
  *
- * Foundation:
- *   - COLOR: 한 변수에 Light/Dark 값 모두 보유 (gray/N, blue/N 등)
- *   - NUMBER: 모드 무관 단일값 (spacing, radius, border-width, font-* 등)
+ * 구조 (업계 표준 — Material 3 · Apple HIG · IBM Carbon · Atlassian 동일):
  *
- * Semantic:
- *   - COLOR: Foundation alias (Light/Dark mode-aware)
- *   - NUMBER: Foundation alias 또는 직접값 (사이즈·간격 역할 토큰)
+ *   Foundation 컬렉션 (단일 Default 모드)
+ *     - COLOR: raw 색상값. 라이트/다크 팔레트는 별도 변수명으로 분리
+ *       (gray/N · gray-dark/N · blue/N · blue-dark/N ...)
+ *     - NUMBER: spacing·radius·border-width·font·line (모드 무관 단일값)
+ *
+ *   Semantic 컬렉션 (Light / Dark 2-mode)
+ *     - COLOR: Light 모드는 light 팔레트 alias, Dark 모드는 -dark 팔레트 alias
+ *       (예: color/bg/default Light → gray/0, Dark → gray-dark/50)
+ *     - NUMBER: Foundation NUMBER alias 또는 직접값
+ *
+ * 이유:
+ *   · Foundation 이름이 명확히 light/dark 구분 → 디자이너가 raw 색상 즉시 인지
+ *   · Semantic만 모드 전환 → 컴포넌트 디자이너는 모드 토글로 자동 다크 전환
+ *   · CSS tokens.css의 --color-X-N / --color-X-dark-N 구조와 1:1 정합
+ *   · Foundation에 모드 부여는 raw 색이라 의미 없음 — Semantic의 책임으로 위임
  *
  * 참조 형식:
- *   - "gray/N", "spacing/16" → Foundation alias
- *   - "#HEX" → 직접 색상값
+ *   - "gray/N", "gray-dark/N", "spacing/16" → Foundation alias
+ *   - "#HEX" → 직접 색상값 (Foundation 미등록 항목)
  *   - "rgba(r,g,b,a)" → alpha 포함 색상값
- *   - number 그대로 → FLOAT 직접값
+ *   - number → FLOAT 직접값
  */
 
 export const FOUNDATION_COLLECTION = "Foundation";
@@ -22,156 +32,252 @@ export const SEMANTIC_COLLECTION   = "semantic";
 export const LIGHT_MODE = "Light";
 export const DARK_MODE  = "Dark";
 
-// ── Color ─────────────────────────────────────────────────────────────────────
+// ── Color (Foundation: 단일 모드, raw 값) ─────────────────────────────────────
 
-export interface ColorModeValues {
-  light: string;
-  dark: string;
-}
-
-export const FOUNDATION_COLOR: Record<string, ColorModeValues> = {
+export const FOUNDATION_COLOR: Record<string, string> = {
   // ── Base ──────────────────────────────────────────
-  "base/white": { light: "#FFFFFF", dark: "#FFFFFF" },
-  "base/black": { light: "#000000", dark: "#000000" },
+  "base/white": "#FFFFFF",
+  "base/black": "#000000",
 
   // ── Brand ─────────────────────────────────────────
-  "brand/blue": { light: "#0072CE", dark: "#0072CE" },
-  "brand/red":  { light: "#FF312C", dark: "#FF312C" },
-  "brand/gray": { light: "#DFDEDE", dark: "#DFDEDE" },
-  "brand/ci":   { light: "#004097", dark: "#004097" },
+  "brand/blue": "#0072CE",
+  "brand/red":  "#FF312C",
+  "brand/gray": "#DFDEDE",
+  "brand/ci":   "#004097",
 
-  // ── Gray ──────────────────────────────────────────
-  "gray/0":   { light: "#FAFAFA", dark: "#0D0E12" },
-  "gray/50":  { light: "#F5F5F5", dark: "#131418" },
-  "gray/100": { light: "#E9E9E9", dark: "#1C1D23" },
-  "gray/200": { light: "#D9D9D9", dark: "#24252C" },
-  "gray/300": { light: "#C4C4C4", dark: "#2E2F38" },
-  "gray/400": { light: "#9D9D9D", dark: "#35363F" },
-  "gray/500": { light: "#757575", dark: "#3E4049" },
-  "gray/600": { light: "#555555", dark: "#55575F" },
-  "gray/700": { light: "#434343", dark: "#8A8C96" },
-  "gray/800": { light: "#353535", dark: "#B8BABF" },
-  "gray/900": { light: "#202020", dark: "#ECEDF0" },
+  // ── Gray (Light scale) ────────────────────────────
+  "gray/0":   "#FAFAFA",
+  "gray/50":  "#F5F5F5",
+  "gray/100": "#E9E9E9",
+  "gray/200": "#D9D9D9",
+  "gray/300": "#C4C4C4",
+  "gray/400": "#9D9D9D",
+  "gray/500": "#757575",
+  "gray/600": "#555555",
+  "gray/700": "#434343",
+  "gray/800": "#353535",
+  "gray/900": "#202020",
+
+  // ── Gray Dark (Dark scale) ────────────────────────
+  "gray-dark/0":   "#0D0E12",
+  "gray-dark/50":  "#131418",
+  "gray-dark/100": "#1C1D23",
+  "gray-dark/200": "#24252C",
+  "gray-dark/300": "#2E2F38",
+  "gray-dark/400": "#35363F",
+  "gray-dark/500": "#3E4049",
+  "gray-dark/600": "#55575F",
+  "gray-dark/700": "#8A8C96",
+  "gray-dark/800": "#B8BABF",
+  "gray-dark/900": "#ECEDF0",
 
   // ── Blue ──────────────────────────────────────────
-  "blue/50":  { light: "#E2F1FF", dark: "#0C1D38" },
-  "blue/100": { light: "#C8E4FF", dark: "#112B55" },
-  "blue/150": { light: "#A4D4FF", dark: "#1A3D72" },
-  "blue/200": { light: "#8BC6FF", dark: "#214EA0" },
-  "blue/250": { light: "#5BB2FF", dark: "#2A65C8" },
-  "blue/300": { light: "#2B9EFF", dark: "#3070D8" },
-  "blue/350": { light: "#268CF8", dark: "#4285E8" },
-  "blue/400": { light: "#1D6CEB", dark: "#6FA5F8" },
-  "blue/450": { light: "#2158C8", dark: "#96BEF9" },
-  "blue/500": { light: "#2747B9", dark: "#C0D8FC" },
+  "blue/50":  "#E2F1FF",
+  "blue/100": "#C8E4FF",
+  "blue/150": "#A4D4FF",
+  "blue/200": "#8BC6FF",
+  "blue/250": "#5BB2FF",
+  "blue/300": "#2B9EFF",
+  "blue/350": "#268CF8",
+  "blue/400": "#1D6CEB",
+  "blue/450": "#2158C8",
+  "blue/500": "#2747B9",
+
+  "blue-dark/50":  "#0C1D38",
+  "blue-dark/100": "#112B55",
+  "blue-dark/150": "#1A3D72",
+  "blue-dark/200": "#214EA0",
+  "blue-dark/250": "#2A65C8",
+  "blue-dark/300": "#3070D8",
+  "blue-dark/350": "#4285E8",
+  "blue-dark/400": "#6FA5F8",
+  "blue-dark/450": "#96BEF9",
+  "blue-dark/500": "#C0D8FC",
 
   // ── Red ───────────────────────────────────────────
-  "red/50":  { light: "#FFEBEF", dark: "#2A0F14" },
-  "red/100": { light: "#FFCCD6", dark: "#3D1520" },
-  "red/150": { light: "#FBB2BA", dark: "#5C1E2E" },
-  "red/200": { light: "#F8979E", dark: "#8A2A3E" },
-  "red/250": { light: "#FC6E79", dark: "#C03850" },
-  "red/300": { light: "#FF4554", dark: "#E04860" },
-  "red/350": { light: "#F22544", dark: "#F06070" },
-  "red/400": { light: "#E50533", dark: "#F48890" },
-  "red/450": { light: "#D60228", dark: "#F8A8B0" },
-  "red/500": { light: "#C8001E", dark: "#FCD0D5" },
+  "red/50":  "#FFEBEF",
+  "red/100": "#FFCCD6",
+  "red/150": "#FBB2BA",
+  "red/200": "#F8979E",
+  "red/250": "#FC6E79",
+  "red/300": "#FF4554",
+  "red/350": "#F22544",
+  "red/400": "#E50533",
+  "red/450": "#D60228",
+  "red/500": "#C8001E",
+
+  "red-dark/50":  "#2A0F14",
+  "red-dark/100": "#3D1520",
+  "red-dark/150": "#5C1E2E",
+  "red-dark/200": "#8A2A3E",
+  "red-dark/250": "#C03850",
+  "red-dark/300": "#E04860",
+  "red-dark/350": "#F06070",
+  "red-dark/400": "#F48890",
+  "red-dark/450": "#F8A8B0",
+  "red-dark/500": "#FCD0D5",
 
   // ── Orange ────────────────────────────────────────
-  "orange/50":  { light: "#FFEDE0", dark: "#2E1505" },
-  "orange/100": { light: "#FDDBBF", dark: "#42200A" },
-  "orange/150": { light: "#FEC6A0", dark: "#6B3512" },
-  "orange/200": { light: "#FFB482", dark: "#A05020" },
-  "orange/250": { light: "#FF954E", dark: "#D06828" },
-  "orange/300": { light: "#FF761A", dark: "#E88038" },
-  "orange/350": { light: "#EE680D", dark: "#F09548" },
-  "orange/400": { light: "#DA4C00", dark: "#F5AA68" },
-  "orange/450": { light: "#B63C00", dark: "#F8C090" },
-  "orange/500": { light: "#8E2E00", dark: "#FCD8B8" },
+  "orange/50":  "#FFEDE0",
+  "orange/100": "#FDDBBF",
+  "orange/150": "#FEC6A0",
+  "orange/200": "#FFB482",
+  "orange/250": "#FF954E",
+  "orange/300": "#FF761A",
+  "orange/350": "#EE680D",
+  "orange/400": "#DA4C00",
+  "orange/450": "#B63C00",
+  "orange/500": "#8E2E00",
+
+  "orange-dark/50":  "#2E1505",
+  "orange-dark/100": "#42200A",
+  "orange-dark/150": "#6B3512",
+  "orange-dark/200": "#A05020",
+  "orange-dark/250": "#D06828",
+  "orange-dark/300": "#E88038",
+  "orange-dark/350": "#F09548",
+  "orange-dark/400": "#F5AA68",
+  "orange-dark/450": "#F8C090",
+  "orange-dark/500": "#FCD8B8",
 
   // ── Yellow ────────────────────────────────────────
-  "yellow/50":  { light: "#FFF4CE", dark: "#2A2005" },
-  "yellow/100": { light: "#FEE89A", dark: "#3D2E08" },
-  "yellow/150": { light: "#FEDE6C", dark: "#605010" },
-  "yellow/200": { light: "#FFD53D", dark: "#907818" },
-  "yellow/250": { light: "#FFCC1E", dark: "#C09828" },
-  "yellow/300": { light: "#FFC200", dark: "#D8B038" },
-  "yellow/350": { light: "#F5B900", dark: "#E8C048" },
-  "yellow/400": { light: "#DBA400", dark: "#F0D068" },
-  "yellow/450": { light: "#BA8900", dark: "#F5DE90" },
-  "yellow/500": { light: "#8F6A00", dark: "#FAEAB8" },
+  "yellow/50":  "#FFF4CE",
+  "yellow/100": "#FEE89A",
+  "yellow/150": "#FEDE6C",
+  "yellow/200": "#FFD53D",
+  "yellow/250": "#FFCC1E",
+  "yellow/300": "#FFC200",
+  "yellow/350": "#F5B900",
+  "yellow/400": "#DBA400",
+  "yellow/450": "#BA8900",
+  "yellow/500": "#8F6A00",
+
+  "yellow-dark/50":  "#2A2005",
+  "yellow-dark/100": "#3D2E08",
+  "yellow-dark/150": "#605010",
+  "yellow-dark/200": "#907818",
+  "yellow-dark/250": "#C09828",
+  "yellow-dark/300": "#D8B038",
+  "yellow-dark/350": "#E8C048",
+  "yellow-dark/400": "#F0D068",
+  "yellow-dark/450": "#F5DE90",
+  "yellow-dark/500": "#FAEAB8",
 
   // ── Green ─────────────────────────────────────────
-  "green/50":  { light: "#E3F2EA", dark: "#0A2018" },
-  "green/100": { light: "#CAECDA", dark: "#102E22" },
-  "green/150": { light: "#9CD8BD", dark: "#184530" },
-  "green/200": { light: "#6FC4A2", dark: "#206840" },
-  "green/250": { light: "#47BB8E", dark: "#288A55" },
-  "green/300": { light: "#1FB279", dark: "#30A868" },
-  "green/350": { light: "#10A86C", dark: "#3FBE7E" },
-  "green/400": { light: "#009E5E", dark: "#68D098" },
-  "green/450": { light: "#008650", dark: "#98E0B8" },
-  "green/500": { light: "#006F42", dark: "#C5F0D8" },
+  "green/50":  "#E3F2EA",
+  "green/100": "#CAECDA",
+  "green/150": "#9CD8BD",
+  "green/200": "#6FC4A2",
+  "green/250": "#47BB8E",
+  "green/300": "#1FB279",
+  "green/350": "#10A86C",
+  "green/400": "#009E5E",
+  "green/450": "#008650",
+  "green/500": "#006F42",
+
+  "green-dark/50":  "#0A2018",
+  "green-dark/100": "#102E22",
+  "green-dark/150": "#184530",
+  "green-dark/200": "#206840",
+  "green-dark/250": "#288A55",
+  "green-dark/300": "#30A868",
+  "green-dark/350": "#3FBE7E",
+  "green-dark/400": "#68D098",
+  "green-dark/450": "#98E0B8",
+  "green-dark/500": "#C5F0D8",
 
   // ── Skyblue ───────────────────────────────────────
-  "skyblue/50":  { light: "#C4EEF7", dark: "#081E28" },
-  "skyblue/100": { light: "#A5E5F3", dark: "#102A38" },
-  "skyblue/150": { light: "#7BD6EA", dark: "#184050" },
-  "skyblue/200": { light: "#51C7E1", dark: "#205A70" },
-  "skyblue/250": { light: "#3BC0DD", dark: "#287890" },
-  "skyblue/300": { light: "#25B9DA", dark: "#3090A8" },
-  "skyblue/350": { light: "#1DAACB", dark: "#40A8C0" },
-  "skyblue/400": { light: "#159BBC", dark: "#68C0D8" },
-  "skyblue/450": { light: "#1284A0", dark: "#98D8E8" },
-  "skyblue/500": { light: "#0F6C84", dark: "#C0E8F0" },
+  "skyblue/50":  "#C4EEF7",
+  "skyblue/100": "#A5E5F3",
+  "skyblue/150": "#7BD6EA",
+  "skyblue/200": "#51C7E1",
+  "skyblue/250": "#3BC0DD",
+  "skyblue/300": "#25B9DA",
+  "skyblue/350": "#1DAACB",
+  "skyblue/400": "#159BBC",
+  "skyblue/450": "#1284A0",
+  "skyblue/500": "#0F6C84",
+
+  "skyblue-dark/50":  "#081E28",
+  "skyblue-dark/100": "#102A38",
+  "skyblue-dark/150": "#184050",
+  "skyblue-dark/200": "#205A70",
+  "skyblue-dark/250": "#287890",
+  "skyblue-dark/300": "#3090A8",
+  "skyblue-dark/350": "#40A8C0",
+  "skyblue-dark/400": "#68C0D8",
+  "skyblue-dark/450": "#98D8E8",
+  "skyblue-dark/500": "#C0E8F0",
 
   // ── Purple ────────────────────────────────────────
-  "purple/50":  { light: "#E8E9FC", dark: "#14142A" },
-  "purple/100": { light: "#CFD1F9", dark: "#1E1E3D" },
-  "purple/150": { light: "#C0C0FC", dark: "#2A2A58" },
-  "purple/200": { light: "#B0B0FF", dark: "#383878" },
-  "purple/250": { light: "#8B8BEE", dark: "#4848A0" },
-  "purple/300": { light: "#6666DD", dark: "#5858B8" },
-  "purple/350": { light: "#4E4EC3", dark: "#7070D0" },
-  "purple/400": { light: "#3535A8", dark: "#9090E0" },
-  "purple/450": { light: "#2D2D8F", dark: "#B0B0EA" },
-  "purple/500": { light: "#252576", dark: "#D0D0F5" },
+  "purple/50":  "#E8E9FC",
+  "purple/100": "#CFD1F9",
+  "purple/150": "#C0C0FC",
+  "purple/200": "#B0B0FF",
+  "purple/250": "#8B8BEE",
+  "purple/300": "#6666DD",
+  "purple/350": "#4E4EC3",
+  "purple/400": "#3535A8",
+  "purple/450": "#2D2D8F",
+  "purple/500": "#252576",
+
+  "purple-dark/50":  "#14142A",
+  "purple-dark/100": "#1E1E3D",
+  "purple-dark/150": "#2A2A58",
+  "purple-dark/200": "#383878",
+  "purple-dark/250": "#4848A0",
+  "purple-dark/300": "#5858B8",
+  "purple-dark/350": "#7070D0",
+  "purple-dark/400": "#9090E0",
+  "purple-dark/450": "#B0B0EA",
+  "purple-dark/500": "#D0D0F5",
 
   // ── Brown ─────────────────────────────────────────
-  "brown/50":  { light: "#F6EEE9", dark: "#1E1610" },
-  "brown/100": { light: "#E4D5C8", dark: "#2A2018" },
-  "brown/150": { light: "#DBC6B3", dark: "#3D3025" },
-  "brown/200": { light: "#D1B69F", dark: "#584535" },
-  "brown/250": { light: "#A68C75", dark: "#786050" },
-  "brown/300": { light: "#7C614A", dark: "#907868" },
-  "brown/350": { light: "#685240", dark: "#A89080" },
-  "brown/400": { light: "#554435", dark: "#C0A898" },
-  "brown/450": { light: "#483A2D", dark: "#D8C0B0" },
-  "brown/500": { light: "#3B3025", dark: "#E8D8C8" },
+  "brown/50":  "#F6EEE9",
+  "brown/100": "#E4D5C8",
+  "brown/150": "#DBC6B3",
+  "brown/200": "#D1B69F",
+  "brown/250": "#A68C75",
+  "brown/300": "#7C614A",
+  "brown/350": "#685240",
+  "brown/400": "#554435",
+  "brown/450": "#483A2D",
+  "brown/500": "#3B3025",
 
-  // ── Visual Gray (Light 전용 스케일, Dark=Light 동일) ──
-  "visual-gray/50":  { light: "#F3F5F7", dark: "#F3F5F7" },
-  "visual-gray/100": { light: "#E8EBEF", dark: "#E8EBEF" },
-  "visual-gray/150": { light: "#DADEE5", dark: "#DADEE5" },
-  "visual-gray/200": { light: "#CDD2DE", dark: "#CDD2DE" },
-  "visual-gray/250": { light: "#ABB2BF", dark: "#ABB2BF" },
-  "visual-gray/300": { light: "#808796", dark: "#808796" },
-  "visual-gray/350": { light: "#646A74", dark: "#646A74" },
-  "visual-gray/400": { light: "#3E4347", dark: "#3E4347" },
-  "visual-gray/450": { light: "#2B2F32", dark: "#2B2F32" },
-  "visual-gray/500": { light: "#1B1D1F", dark: "#1B1D1F" },
+  "brown-dark/50":  "#1E1610",
+  "brown-dark/100": "#2A2018",
+  "brown-dark/150": "#3D3025",
+  "brown-dark/200": "#584535",
+  "brown-dark/250": "#786050",
+  "brown-dark/300": "#907868",
+  "brown-dark/350": "#A89080",
+  "brown-dark/400": "#C0A898",
+  "brown-dark/450": "#D8C0B0",
+  "brown-dark/500": "#E8D8C8",
 
-  // ── Cool Gray (Dark 전용 스케일, Light=Dark 동일) ─────
-  "coolgray/50":  { light: "#12141A", dark: "#12141A" },
-  "coolgray/100": { light: "#1A1D25", dark: "#1A1D25" },
-  "coolgray/150": { light: "#252830", dark: "#252830" },
-  "coolgray/200": { light: "#353840", dark: "#353840" },
-  "coolgray/250": { light: "#484C58", dark: "#484C58" },
-  "coolgray/300": { light: "#606470", dark: "#606470" },
-  "coolgray/350": { light: "#787C88", dark: "#787C88" },
-  "coolgray/400": { light: "#989CA8", dark: "#989CA8" },
-  "coolgray/450": { light: "#B8BCC5", dark: "#B8BCC5" },
-  "coolgray/500": { light: "#D8DBE0", dark: "#D8DBE0" },
+  // ── Visual Gray (Light 전용 스케일) ───────────────
+  "visual-gray/50":  "#F3F5F7",
+  "visual-gray/100": "#E8EBEF",
+  "visual-gray/150": "#DADEE5",
+  "visual-gray/200": "#CDD2DE",
+  "visual-gray/250": "#ABB2BF",
+  "visual-gray/300": "#808796",
+  "visual-gray/350": "#646A74",
+  "visual-gray/400": "#3E4347",
+  "visual-gray/450": "#2B2F32",
+  "visual-gray/500": "#1B1D1F",
+
+  // ── Cool Gray Dark (Dark 전용 스케일) ─────────────
+  "coolgray-dark/50":  "#12141A",
+  "coolgray-dark/100": "#1A1D25",
+  "coolgray-dark/150": "#252830",
+  "coolgray-dark/200": "#353840",
+  "coolgray-dark/250": "#484C58",
+  "coolgray-dark/300": "#606470",
+  "coolgray-dark/350": "#787C88",
+  "coolgray-dark/400": "#989CA8",
+  "coolgray-dark/450": "#B8BCC5",
+  "coolgray-dark/500": "#D8DBE0",
 };
 
 // ── Number (Foundation primitives — spacing·radius·border-width·font·line) ─
@@ -235,7 +341,7 @@ export const FOUNDATION_NUMBER: Record<string, number> = {
   "line-height/130": 1.3,
 };
 
-// ── Semantic Color ───────────────────────────────────────────────────────────
+// ── Semantic Color (Light → light 팔레트, Dark → -dark 팔레트) ───────────────
 
 export interface SemanticColorEntry {
   light: string;
@@ -244,62 +350,62 @@ export interface SemanticColorEntry {
 
 export const SEMANTIC_COLOR: Record<string, SemanticColorEntry> = {
   // ── color/bg ──────────────────────────────────────
-  "color/bg/default":  { light: "gray/0",      dark: "gray/50" },
-  "color/bg/subtle":   { light: "gray/50",     dark: "gray/200" },
-  "color/bg/muted":    { light: "gray/100",    dark: "gray/300" },
-  "color/bg/elevated": { light: "gray/100",    dark: "gray/400" },
-  "color/bg/home":     { light: "#F5F6FB",     dark: "gray/50" },
-  "color/bg/selected": { light: "blue/50",     dark: "blue/100" },
+  "color/bg/default":  { light: "gray/0",      dark: "gray-dark/50" },
+  "color/bg/subtle":   { light: "gray/50",     dark: "gray-dark/200" },
+  "color/bg/muted":    { light: "gray/100",    dark: "gray-dark/300" },
+  "color/bg/elevated": { light: "gray/100",    dark: "gray-dark/400" },
+  "color/bg/home":     { light: "#F5F6FB",     dark: "gray-dark/50" },
+  "color/bg/selected": { light: "blue/50",     dark: "blue-dark/100" },
 
   // ── color/surface ─────────────────────────────────
-  "color/surface/default": { light: "base/white", dark: "gray/100" },
-  "color/surface/raised":  { light: "base/white", dark: "gray/400" },
+  "color/surface/default": { light: "base/white", dark: "gray-dark/100" },
+  "color/surface/raised":  { light: "base/white", dark: "gray-dark/400" },
 
   // ── color/text ────────────────────────────────────
-  "color/text/primary":     { light: "gray/900",   dark: "gray/900" },
-  "color/text/secondary":   { light: "gray/800",   dark: "gray/800" },
-  "color/text/tertiary":    { light: "gray/600",   dark: "gray/700" },
-  "color/text/caption":     { light: "gray/500",   dark: "gray/700" },
-  "color/text/placeholder": { light: "gray/500",   dark: "gray/600" },
-  "color/text/helper":      { light: "gray/400",   dark: "gray/600" },
-  "color/text/link":        { light: "blue/400",   dark: "blue/400" },
-  "color/text/correct":     { light: "blue/400",   dark: "blue/400" },
-  "color/text/danger":      { light: "red/300",    dark: "red/350" },
-  "color/text/disabled":    { light: "gray/300",   dark: "gray/400" },
-  "color/text/readonly":    { light: "gray/500",   dark: "gray/500" },
+  "color/text/primary":     { light: "gray/900",   dark: "gray-dark/900" },
+  "color/text/secondary":   { light: "gray/800",   dark: "gray-dark/800" },
+  "color/text/tertiary":    { light: "gray/600",   dark: "gray-dark/700" },
+  "color/text/caption":     { light: "gray/500",   dark: "gray-dark/700" },
+  "color/text/placeholder": { light: "gray/500",   dark: "gray-dark/600" },
+  "color/text/helper":      { light: "gray/400",   dark: "gray-dark/600" },
+  "color/text/link":        { light: "blue/400",   dark: "blue-dark/400" },
+  "color/text/correct":     { light: "blue/400",   dark: "blue-dark/400" },
+  "color/text/danger":      { light: "red/300",    dark: "red-dark/350" },
+  "color/text/disabled":    { light: "gray/300",   dark: "gray-dark/400" },
+  "color/text/readonly":    { light: "gray/500",   dark: "gray-dark/500" },
   "color/text/inverse":     { light: "base/white", dark: "base/white" },
 
   // ── color/border ──────────────────────────────────
-  "color/border/subtle":   { light: "gray/100",    dark: "gray/200" },
-  "color/border/default":  { light: "gray/200",    dark: "gray/300" },
-  "color/border/disabled": { light: "gray/200",    dark: "gray/200" },
-  "color/border/strong":   { light: "gray/300",    dark: "gray/500" },
-  "color/border/emphasis": { light: "gray/800",    dark: "gray/700" },
-  "color/border/focus":    { light: "blue/400",    dark: "blue/350" },
+  "color/border/subtle":   { light: "gray/100",    dark: "gray-dark/200" },
+  "color/border/default":  { light: "gray/200",    dark: "gray-dark/300" },
+  "color/border/disabled": { light: "gray/200",    dark: "gray-dark/200" },
+  "color/border/strong":   { light: "gray/300",    dark: "gray-dark/500" },
+  "color/border/emphasis": { light: "gray/800",    dark: "gray-dark/700" },
+  "color/border/focus":    { light: "blue/400",    dark: "blue-dark/350" },
   "color/border/white":    { light: "base/white",  dark: "base/white" },
-  "color/border/danger":   { light: "red/300",     dark: "red/350" },
-  "color/border/correct":  { light: "blue/400",    dark: "blue/350" },
+  "color/border/danger":   { light: "red/300",     dark: "red-dark/350" },
+  "color/border/correct":  { light: "blue/400",    dark: "blue-dark/350" },
 
   // ── color/icon ────────────────────────────────────
-  "color/icon/default":  { light: "gray/500",      dark: "gray/700" },
-  "color/icon/muted":    { light: "gray/300",      dark: "gray/400" },
-  "color/icon/emphasis": { light: "gray/800",      dark: "gray/800" },
-  "color/icon/accent":   { light: "blue/400",      dark: "blue/400" },
-  "color/icon/inverse":  { light: "base/white",    dark: "gray/900" },
-  "color/icon/danger":   { light: "red/300",       dark: "red/350" },
+  "color/icon/default":  { light: "gray/500",      dark: "gray-dark/700" },
+  "color/icon/muted":    { light: "gray/300",      dark: "gray-dark/400" },
+  "color/icon/emphasis": { light: "gray/800",      dark: "gray-dark/800" },
+  "color/icon/accent":   { light: "blue/400",      dark: "blue-dark/400" },
+  "color/icon/inverse":  { light: "base/white",    dark: "gray-dark/900" },
+  "color/icon/danger":   { light: "red/300",       dark: "red-dark/350" },
 
   // ── color/action ──────────────────────────────────
-  "color/action/primary/default": { light: "blue/400",   dark: "blue/300" },
-  "color/action/primary/hover":   { light: "blue/450",   dark: "blue/250" },
-  "color/action/primary/pressed": { light: "blue/500",   dark: "blue/200" },
+  "color/action/primary/default": { light: "blue/400",   dark: "blue-dark/300" },
+  "color/action/primary/hover":   { light: "blue/450",   dark: "blue-dark/250" },
+  "color/action/primary/pressed": { light: "blue/500",   dark: "blue-dark/200" },
   "color/action/primary/text":    { light: "base/white", dark: "base/white" },
-  "color/action/primary/subtle":  { light: "blue/50",    dark: "blue/100" },
+  "color/action/primary/subtle":  { light: "blue/50",    dark: "blue-dark/100" },
 
   // ── color/status ──────────────────────────────────
-  "color/status/success": { light: "blue/400",   dark: "green/350" },
-  "color/status/error":   { light: "red/400",    dark: "red/350" },
-  "color/status/warning": { light: "yellow/400", dark: "yellow/350" },
-  "color/status/info":    { light: "gray/500",   dark: "gray/700" },
+  "color/status/success": { light: "blue/400",   dark: "green-dark/350" },
+  "color/status/error":   { light: "red/400",    dark: "red-dark/350" },
+  "color/status/warning": { light: "yellow/400", dark: "yellow-dark/350" },
+  "color/status/info":    { light: "gray/500",   dark: "gray-dark/700" },
 
   // ── color/overlay (alpha 포함 — alias 불가, 직접값) ──
   "color/overlay": { light: "rgba(0,0,0,0.5)", dark: "rgba(0,0,0,0.75)" },

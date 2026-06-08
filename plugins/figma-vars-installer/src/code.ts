@@ -1,18 +1,20 @@
 /**
- * SW Variables Installer — code.ts
+ * SW Variables Installer — code.ts (Hybrid 패턴, 2026-06-08 v3)
  *
  * 새 Figma 파일에 S1 디자인시스템 Variables를 생성한다.
  *
- *   Foundation collection (Light / Dark 2모드)
- *     - COLOR: 색상 원본값 (~127개)
- *     - FLOAT: spacing·radius·border-width·font-size·font-weight·line-height (~45개)
+ *   Foundation collection (단일 Default 모드)
+ *     - COLOR: raw 색상값. light/dark 팔레트는 별도 변수명 (gray/N · gray-dark/N · ...)
+ *     - FLOAT: spacing·radius·border-width·font·line (모드 무관)
  *
  *   semantic collection (Light / Dark 2모드)
- *     - COLOR: 역할 기반 색상 alias (~44개)
- *     - FLOAT: padding·section·stack·sizing·radius 등 역할 alias (~50개)
+ *     - COLOR: Light 모드는 light 팔레트 alias, Dark 모드는 -dark 팔레트 alias
+ *     - FLOAT: Foundation FLOAT alias (모드 양쪽 동일)
  *
- * Foundation·Semantic 모두 같은 모드명("Light"·"Dark")을 사용하므로
- * 프레임이 한 컬렉션의 모드를 바꾸면 다른 컬렉션도 같은 모드로 따라간다.
+ * 표준 디자인 시스템 패턴 (Material 3·Apple HIG·IBM Carbon·Atlassian 동일):
+ *   · Foundation은 raw 색이라 모드 부여 무의미 → 이름 분리(gray vs gray-dark)
+ *   · Semantic만 모드 전환 → 컴포넌트 디자이너는 프레임 모드 토글로 자동 다크 전환
+ *   · CSS tokens.css의 --color-X-N / --color-X-dark-N 와 1:1 정합
  *
  * 이미 같은 이름의 collection이 있으면 업데이트(add/overwrite) 모드로 동작한다.
  * 삭제는 하지 않는다.
@@ -165,24 +167,35 @@ function resolveNumberRef(
 
 // ── 메인 설치 로직 ───────────────────────────────────────────────────────────
 
+/**
+ * Foundation 컬렉션의 기본 모드를 "Default"로 정리한다.
+ * Foundation은 raw 색이라 모드 부여가 무의미 → 단일 모드 유지 (Hybrid 패턴).
+ */
+function setupSingleMode(collection: VariableCollection, modeName: string): string {
+  const first = collection.modes[0];
+  if (first.name !== modeName) {
+    collection.renameMode(first.modeId, modeName);
+  }
+  return first.modeId;
+}
+
 async function runInstall() {
   try {
     post("progress", { step: "Foundation collection 준비 중…", pct: 3 });
 
-    // ── 1. Foundation collection (Light + Dark) ────────────────────────────
+    // ── 1. Foundation collection (단일 Default 모드) ───────────────────────
     const fc = await getOrCreateCollection(FOUNDATION_COLLECTION);
-    const { lightId: fLightId, darkId: fDarkId } = setupLightDarkModes(fc);
+    const fDefaultId = setupSingleMode(fc, "Default");
 
     // 1-A. Foundation COLOR
     const foundationColorMap: Record<string, Variable> = {};
     const fcColorKeys = Object.keys(FOUNDATION_COLOR);
 
     for (let i = 0; i < fcColorKeys.length; i++) {
-      const path  = fcColorKeys[i];
-      const modes = FOUNDATION_COLOR[path];
+      const path = fcColorKeys[i];
+      const hex  = FOUNDATION_COLOR[path];
       const v = await getOrCreateVariable(path, fc, "COLOR");
-      v.setValueForMode(fLightId, hexToRgb(modes.light));
-      v.setValueForMode(fDarkId,  hexToRgb(modes.dark));
+      v.setValueForMode(fDefaultId, hexToRgb(hex));
       v.scopes = colorScopes(path);
       foundationColorMap[path] = v;
 
@@ -202,8 +215,7 @@ async function runInstall() {
       const path  = fcNumberKeys[i];
       const value = FOUNDATION_NUMBER[path];
       const v = await getOrCreateVariable(path, fc, "FLOAT");
-      v.setValueForMode(fLightId, value);
-      v.setValueForMode(fDarkId,  value);
+      v.setValueForMode(fDefaultId, value);
       v.scopes = numberScopes(path);
       foundationNumberMap[path] = v;
 
@@ -215,7 +227,7 @@ async function runInstall() {
 
     post("progress", { step: "semantic collection 준비 중…", pct: 50 });
 
-    // ── 2. semantic collection (Light + Dark) ──────────────────────────────
+    // ── 2. semantic collection (Light + Dark 2-mode) ───────────────────────
     const sc = await getOrCreateCollection(SEMANTIC_COLLECTION);
     const { lightId: sLightId, darkId: sDarkId } = setupLightDarkModes(sc);
 

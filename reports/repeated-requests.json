@@ -2,9 +2,22 @@
   "_meta": {
     "description": "사용자가 반복 요청한 패턴 추적 파일. count >= 3 이면 자동 감사 규칙 승격 후보.",
     "promotionThreshold": 3,
-    "updatedAt": "2026-06-05"
+    "updatedAt": "2026-06-08"
   },
   "patterns": [
+    {
+      "id": "figma-foundation-hybrid-pattern",
+      "category": "design-system-architecture",
+      "label": "Figma Foundation mode vs name 분리 — 표준 Hybrid 패턴 채택",
+      "description": "초기 installer는 Foundation을 light/dark 2-mode 통합 변수로 만들었으나, 사용자가 Figma DS와 CSS 이름 비정합 + raw 색에 모드 부여 무의미함을 지적. 업계 표준(Material 3·Apple HIG·IBM Carbon·Atlassian)인 Hybrid 패턴으로 재설계.",
+      "count": 1,
+      "promotionStatus": "promoted",
+      "promotedRule": "plugins/figma-vars-installer/src/{vars-data,code}.ts Hybrid 모델 + scripts/installer-coverage-check.js DARK_FOLDED 카테고리 폐기",
+      "occurrences": [
+        { "date": "2026-06-08", "summary": "Foundation 컬렉션 단일 Default 모드 + light/dark 팔레트 별도 변수(gray/N·gray-dark/N). Semantic만 Light/Dark 2-mode (Dark는 -dark alias). CSS tokens.css와 1:1 정합. Foundation Color 검증 208/208 PASS." }
+      ],
+      "automationNote": "Gate 6 Installer Coverage가 light·dark 팔레트 모두 별도 검증. dark 팔레트 별도 변수로 등재된 후 'DARK_FOLDED' 흡수 분류 폐기."
+    },
     {
       "id": "harness-layout-fix",
       "category": "harness-ux",

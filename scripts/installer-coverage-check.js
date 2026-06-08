@@ -106,13 +106,9 @@ function categorize(cssName) {
   if (/^--font-weight-(regular|medium|bold)$/.test(cssName))          return 'FOUNDATION_NUMBER';
   if (/^--line-height-\d+$/.test(cssName))                            return 'FOUNDATION_NUMBER';
 
-  // Foundation Color — Dark palette 은 light 의 Dark 모드로 흡수돼 별도 변수 없음 → 검사 스코프 밖
-  for (const pal of DARK_PALETTES) {
-    if (new RegExp(`^--color-${pal}-\\d+$`).test(cssName)) return 'FOUNDATION_COLOR_DARK_FOLDED';
-  }
-  // Foundation Color — Light palette
+  // Foundation Color — Hybrid 패턴(2026-06-08): light/dark 팔레트 모두 별도 변수
+  // gray/N · gray-dark/N 모두 Figma Foundation 컬렉션에 단일 모드 변수로 등재됨
   for (const pal of COLOR_PALETTES) {
-    if (DARK_PALETTES.includes(pal)) continue;
     if (new RegExp(`^--color-${pal}-\\d+$`).test(cssName)) return 'FOUNDATION_COLOR';
   }
   if (/^--color-base-(white|black)$/.test(cssName))     return 'FOUNDATION_COLOR';
@@ -237,17 +233,12 @@ function audit() {
   const missing = Object.fromEntries(STRICT_KINDS.map((k) => [k, []]));
   const stats   = Object.fromEntries(STRICT_KINDS.map((k) => [k, { expected: 0, present: 0 }]));
   const outOfScopeSemanticColor = []; // 신규 역할 — installer 미반영 (정책 결정 필요)
-  const darkFolded = [];               // 다크 팔레트 CSS var — 정보용 카운트
   const unresolved = [];               // 매핑 함수가 null 반환
 
   for (const cssName of cssNames) {
     const kind = categorize(cssName);
     if (!kind) continue;
 
-    if (kind === 'FOUNDATION_COLOR_DARK_FOLDED') {
-      darkFolded.push(cssName);
-      continue;
-    }
     if (kind === 'SEMANTIC_COLOR_OUT_OF_SCOPE') {
       outOfScopeSemanticColor.push(cssName);
       continue;
@@ -267,13 +258,13 @@ function audit() {
     }
   }
 
-  return { missing, outOfScopeSemanticColor, darkFolded, unresolved, stats, figmaSets };
+  return { missing, outOfScopeSemanticColor, unresolved, stats, figmaSets };
 }
 
 // ── 메인 ──────────────────────────────────────────────────────────────────────
 
 function main() {
-  const { missing, outOfScopeSemanticColor, darkFolded, unresolved, stats } = audit();
+  const { missing, outOfScopeSemanticColor, unresolved, stats } = audit();
 
   let errors = 0;
   let warnings = 0;
@@ -303,11 +294,7 @@ function main() {
     }
   }
 
-  // 2) Dark palette 흡수 — 정보용
-  console.log(`\n[Foundation Color Dark palette (light 의 Dark 모드로 흡수)]`);
-  console.log(`  ℹ️  ${darkFolded.length}개 CSS var → Figma 에선 light 변수의 Dark 모드 값`);
-
-  // 3) Out-of-scope semantic colors — WARN (정책 결정 필요)
+  // 2) Out-of-scope semantic colors — WARN (정책 결정 필요)
   if (outOfScopeSemanticColor.length > 0) {
     console.log(`\n[Semantic Color (installer 미반영 역할)]`);
     console.log(`  ⚠️  ${outOfScopeSemanticColor.length}개 CSS var — installer SEMANTIC_COLOR 확장 검토 필요`);
