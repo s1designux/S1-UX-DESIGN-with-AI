@@ -1115,52 +1115,52 @@ window.REGISTRY_BUNDLE = {
           "coolgrayDark": {
             "50": {
               "value": "#12141A",
-              "cssVar": "--color-coolgray-dark-50",
+              "cssVar": "--color-visual-gray-dark-50",
               "status": "stable"
             },
             "100": {
               "value": "#1A1D25",
-              "cssVar": "--color-coolgray-dark-100",
+              "cssVar": "--color-visual-gray-dark-100",
               "status": "stable"
             },
             "150": {
               "value": "#252830",
-              "cssVar": "--color-coolgray-dark-150",
+              "cssVar": "--color-visual-gray-dark-150",
               "status": "stable"
             },
             "200": {
               "value": "#353840",
-              "cssVar": "--color-coolgray-dark-200",
+              "cssVar": "--color-visual-gray-dark-200",
               "status": "stable"
             },
             "250": {
               "value": "#484C58",
-              "cssVar": "--color-coolgray-dark-250",
+              "cssVar": "--color-visual-gray-dark-250",
               "status": "stable"
             },
             "300": {
               "value": "#606470",
-              "cssVar": "--color-coolgray-dark-300",
+              "cssVar": "--color-visual-gray-dark-300",
               "status": "stable"
             },
             "350": {
               "value": "#787C88",
-              "cssVar": "--color-coolgray-dark-350",
+              "cssVar": "--color-visual-gray-dark-350",
               "status": "stable"
             },
             "400": {
               "value": "#989CA8",
-              "cssVar": "--color-coolgray-dark-400",
+              "cssVar": "--color-visual-gray-dark-400",
               "status": "stable"
             },
             "450": {
               "value": "#B8BCC5",
-              "cssVar": "--color-coolgray-dark-450",
+              "cssVar": "--color-visual-gray-dark-450",
               "status": "stable"
             },
             "500": {
               "value": "#D8DBE0",
-              "cssVar": "--color-coolgray-dark-500",
+              "cssVar": "--color-visual-gray-dark-500",
               "status": "stable"
             }
           },
@@ -1464,13 +1464,14 @@ window.REGISTRY_BUNDLE = {
       "colors": {
         "meta": {
           "name": "SW Semantic Colors",
-          "version": "2.4",
+          "version": "2.5",
           "status": "stable",
-          "updatedAt": "2026-05-19",
+          "updatedAt": "2026-06-04",
           "source": "registry/tokens/sw-v2.4.tokens.css",
           "description": "Light values from :root, Dark values from [data-theme='dark']. Same CSS variable names for both themes.",
           "rgbaAllowed": "rgba() is allowed for overlay tokens only. Dark-mode border tokens now reference Foundation dark scale.",
-          "nd7": "ND-7(2026-05-19): controlBorder·formControl·textState 3개 카테고리 추가. text·border 각 1개 추가. 총 19개 토큰 등록."
+          "nd7": "ND-7(2026-05-19): controlBorder·formControl·textState 3개 카테고리 추가. text·border 각 1개 추가. 총 19개 토큰 등록.",
+          "v2_5": "2026-06-04: formControl 5건 보강 (bg-hover·border-hover·text-disabled dark override·label-default·label-disabled·icon-default), navigation 카테고리 신설 (Line Tab 5건). 총 25개 토큰 추가 → 누계 등록 항목 확대."
         },
         "tokens": {
           "bg": [
@@ -1812,11 +1813,19 @@ window.REGISTRY_BUNDLE = {
                 "dark": "var(--color-gray-dark-300)",
                 "status": "stable",
                 "role": "비활성 상태 테두리"
+              },
+              {
+                "cssVar": "--color-control-bg-hover",
+                "light": "var(--color-bg-subtle)",
+                "dark": "var(--color-bg-subtle)",
+                "status": "stable",
+                "role": "hover 시 control 배경 (Figma: color/control/bg/hover = VariableID:1:11 = light gray)",
+                "darkNote": "inherits dark value of --color-bg-subtle"
               }
             ]
           },
           "formControl": {
-            "_description": "입력 필드(Input·Select·DatePicker·TimePicker) 공용 배경·테두리·텍스트. MVP4-token(2026-05-18) 신설. ND-7(2026-05-19) registry 등록.",
+            "_description": "입력 필드(Input·Select·DatePicker·TimePicker) 공용 배경·테두리·텍스트·라벨·아이콘. MVP4-token(2026-05-18) 신설. ND-7(2026-05-19) registry 등록. 2026-06-04 hover·icon·label 5건 보강.",
             "tokens": [
               {
                 "cssVar": "--color-form-control-bg-default",
@@ -1826,27 +1835,43 @@ window.REGISTRY_BUNDLE = {
                 "role": "입력 필드 기본 배경"
               },
               {
+                "cssVar": "--color-form-control-bg-hover",
+                "light": "var(--color-surface-default)",
+                "dark": "var(--color-bg-muted)",
+                "status": "stable",
+                "role": "hover 시 배경 (light에선 default와 동일, dark에서 1단계 밝게). Dropdown·Input·TimePicker 공용",
+                "darkNote": "explicit dark override: var(--color-bg-muted) → gray-dark/300"
+              },
+              {
                 "cssVar": "--color-form-control-bg-disabled",
                 "light": "var(--color-bg-subtle)",
-                "dark": "var(--color-bg-subtle)",
+                "dark": "var(--color-surface-default)",
                 "status": "stable",
-                "role": "비활성 배경 (dark는 --color-bg-subtle 다크 값 상속)",
-                "darkNote": "no explicit override — inherits dark value of --color-bg-subtle"
+                "role": "비활성 배경",
+                "darkNote": "explicit dark override: var(--color-surface-default) → gray-dark/100"
               },
               {
                 "cssVar": "--color-form-control-border-default",
                 "light": "var(--color-control-border-default)",
-                "dark": "var(--color-control-border-default)",
+                "dark": "var(--color-border-default)",
                 "status": "stable",
-                "role": "기본 테두리 (dark는 --color-control-border-default 다크 값 상속)",
-                "darkNote": "inherits dark value of --color-control-border-default → var(--color-gray-dark-500)"
+                "role": "기본 테두리",
+                "darkNote": "explicit dark override: var(--color-border-default) → gray-dark/300"
+              },
+              {
+                "cssVar": "--color-form-control-border-hover",
+                "light": "var(--color-border-strong)",
+                "dark": "var(--color-border-strong)",
+                "status": "stable",
+                "role": "hover 강조 테두리. Dropdown trigger hover에서 사용",
+                "darkNote": "inherits → var(--color-gray-dark-500)"
               },
               {
                 "cssVar": "--color-form-control-border-selected",
                 "light": "var(--color-border-focus)",
                 "dark": "var(--color-border-focus)",
                 "status": "stable",
-                "role": "포커스·선택 상태 테두리 (dark는 --color-border-focus 다크 값 상속)",
+                "role": "포커스·선택 상태 테두리",
                 "darkNote": "inherits → var(--color-blue-dark-350)"
               },
               {
@@ -1854,7 +1879,7 @@ window.REGISTRY_BUNDLE = {
                 "light": "var(--color-status-error)",
                 "dark": "var(--color-status-error)",
                 "status": "stable",
-                "role": "오류 상태 테두리 (dark 상속)",
+                "role": "오류 상태 테두리",
                 "darkNote": "inherits → var(--color-status-dark-red)"
               },
               {
@@ -1868,10 +1893,10 @@ window.REGISTRY_BUNDLE = {
               {
                 "cssVar": "--color-form-control-border-disabled",
                 "light": "var(--color-border-subtle)",
-                "dark": "var(--color-control-border-disabled)",
+                "dark": "var(--color-border-default)",
                 "status": "stable",
                 "role": "비활성 테두리",
-                "darkNote": "explicit dark override: var(--color-control-border-disabled)"
+                "darkNote": "explicit dark override: var(--color-border-default) → gray-dark/300"
               },
               {
                 "cssVar": "--color-form-control-text-default",
@@ -1892,10 +1917,32 @@ window.REGISTRY_BUNDLE = {
               {
                 "cssVar": "--color-form-control-text-disabled",
                 "light": "var(--color-text-disabled)",
-                "dark": "var(--color-text-disabled)",
+                "dark": "var(--color-text-readonly)",
                 "status": "stable",
                 "role": "비활성 텍스트",
-                "darkNote": "inherits → var(--color-gray-dark-400)"
+                "darkNote": "explicit dark override: var(--color-text-readonly) → gray-dark/500 — placeholder 한단계 어둡게"
+              },
+              {
+                "cssVar": "--color-form-control-label-default",
+                "light": "var(--color-text-secondary)",
+                "dark": "var(--color-text-secondary)",
+                "status": "stable",
+                "role": "TimePicker '시/분' 등 form-control 라벨"
+              },
+              {
+                "cssVar": "--color-form-control-label-disabled",
+                "light": "var(--color-text-disabled)",
+                "dark": "var(--color-text-disabled)",
+                "status": "stable",
+                "role": "비활성 라벨"
+              },
+              {
+                "cssVar": "--color-form-control-icon-default",
+                "light": "var(--color-gray-800)",
+                "dark": "var(--color-gray-dark-700)",
+                "status": "stable",
+                "role": "form-control 기본 아이콘 색",
+                "note": "Semantic→Foundation 직접 참조 (4-B 패턴과 동일 허용 구조)"
               }
             ]
           },
@@ -1924,6 +1971,82 @@ window.REGISTRY_BUNDLE = {
                 "status": "stable",
                 "role": "오류 상태 도움말 텍스트",
                 "darkNote": "inherits → var(--color-status-dark-red)"
+              }
+            ]
+          },
+          "dataState": {
+            "_description": "데이터 그리드/테이블 전용 상태 색상. Figma: color/data/state/*. 2026-05-20 Table MCP 조회 기반 신설.",
+            "tokens": [
+              {
+                "cssVar": "--color-data-state-hover",
+                "light": "var(--color-blue-50)",
+                "dark": "var(--color-blue-dark-100)",
+                "resolvedLight": "#E2F1FF",
+                "resolvedDark": "#112B55",
+                "status": "stable",
+                "darkStatus": "candidate",
+                "role": "데이터 행 hover 배경. Figma: color/data/state/hover = blue-50.",
+                "darkNote": "candidate — blue-dark-100(#112B55). Figma dark 미확인. HD-Table-1"
+              }
+            ]
+          },
+          "navigation": {
+            "_description": "라인탭(Line Tab) 전용 배경·라벨·indicator. 2026-05-28 Tab 컴포넌트 신설(Figma 540:6032) 시 등재. 2026-06-04 registry 등록. GNB/LNB의 --nav-* 와 별개.",
+            "tokens": [
+              {
+                "cssVar": "--color-navigation-bg",
+                "light": "var(--color-surface-default)",
+                "dark": "var(--color-surface-default)",
+                "resolvedLight": "#FFFFFF",
+                "resolvedDark": "#1C1D23",
+                "status": "stable",
+                "darkStatus": "candidate",
+                "role": "라인탭 컨테이너 배경",
+                "darkNote": "inherits → gray-dark/100"
+              },
+              {
+                "cssVar": "--color-navigation-label-default",
+                "light": "var(--color-gray-600)",
+                "dark": "var(--color-gray-dark-600)",
+                "resolvedLight": "#555555",
+                "resolvedDark": "#55575F",
+                "status": "stable",
+                "darkStatus": "candidate",
+                "role": "미선택 라벨 텍스트",
+                "darkNote": "Figma dark 미확인 — HD-Tab-1"
+              },
+              {
+                "cssVar": "--color-navigation-label-selected",
+                "light": "var(--color-action-primary-default)",
+                "dark": "var(--color-action-primary-default)",
+                "resolvedLight": "#1D6CEB",
+                "resolvedDark": "#3070D8",
+                "status": "stable",
+                "darkStatus": "candidate",
+                "role": "선택 라벨 텍스트",
+                "darkNote": "inherits → blue-dark/300"
+              },
+              {
+                "cssVar": "--color-navigation-indicator-default",
+                "light": "var(--color-gray-200)",
+                "dark": "var(--color-gray-dark-300)",
+                "resolvedLight": "#D9D9D9",
+                "resolvedDark": "#2E2F38",
+                "status": "stable",
+                "darkStatus": "candidate",
+                "role": "탭 하단 구분선 (비선택)",
+                "darkNote": "Figma dark 미확인 — HD-Tab-1"
+              },
+              {
+                "cssVar": "--color-navigation-indicator-selected",
+                "light": "var(--color-action-primary-default)",
+                "dark": "var(--color-action-primary-default)",
+                "resolvedLight": "#1D6CEB",
+                "resolvedDark": "#3070D8",
+                "status": "stable",
+                "darkStatus": "candidate",
+                "role": "선택 탭 하단 indicator (2px)",
+                "darkNote": "inherits → blue-dark/300"
               }
             ]
           }
@@ -4671,6 +4794,16 @@ window.REGISTRY_BUNDLE = {
             "Figma 원본 state name. 코드에서는 'correct' 사용.",
             "코드 토큰 이름을 'success'로 리네임하지 않는다."
           ]
+        },
+        "editing": {
+          "canonical": "focus",
+          "direction": "figma → code",
+          "description": "Figma 'editing' state (timepicker_select) = code 'focus' state. TimePicker Select에서 사용자가 시/분 셀렉트를 열었을 때의 상태.",
+          "notes": [
+            "Applies to: timepicker_select (540:3636) only.",
+            "Token behavior: border default → focus (파란색), arrow icon 180° 회전 (▼ → ▲).",
+            "Added 2026-05-20 based on Figma MCP inspection of timepicker_select."
+          ]
         }
       },
       "tokenAliases": [
@@ -5047,9 +5180,9 @@ window.REGISTRY_BUNDLE = {
               "note": "Light-only decorative scale. No dark counterpart defined."
             },
             {
-              "group": "coolgray-dark",
+              "group": "visual-gray-dark",
               "cssVarPrefixLight": null,
-              "cssVarPrefixDark": "--color-coolgray-dark-",
+              "cssVarPrefixDark": "--color-visual-gray-dark-",
               "stepRange": "50–500 (10 steps, dark only)",
               "countLight": 0,
               "countDark": 10,
@@ -7015,13 +7148,13 @@ window.REGISTRY_BUNDLE = {
           ]
         },
         {
-          "id": "foundation.color.coolgray-dark",
+          "id": "foundation.color.visual-gray-dark",
           "layer": "foundation",
-          "group": "coolgray-dark",
+          "group": "visual-gray-dark",
           "cssVariables": [
-            "--color-coolgray-dark-{50..500}"
+            "--color-visual-gray-dark-{50..500}"
           ],
-          "figmaVariableCandidate": "color/coolgray-dark/*",
+          "figmaVariableCandidate": "color/visual-gray-dark/*",
           "evidence": [
             "stable in canonical-token-draft"
           ],
@@ -8082,9 +8215,11 @@ window.REGISTRY_BUNDLE = {
           "layer": "component",
           "group": "input",
           "cssVariables": [],
-          "promotionStatus": "hold-access-limited",
-          "reason": "ACCESS-01: Figma nodeId 6443:4408 (Login input/Textarea base) invalid — MCP access failed. Textarea registry JSON (registry/components/textarea.json) not created. CLAUDE.md unresolved item #10.",
-          "neededAction": "Resolve ACCESS-01 via Plugin Export MVP-F1. Then create registry/components/textarea.json. Most --input-* tokens are reusable (HD-6: Inputbox_large = Textarea)."
+          "promotionStatus": "promote-candidate",
+          "reason": "ACCESS-01 해소 (2026-05-20): Input nodeId 540:3328 확인 완료. MVP-F1 플러그인 스캔. Textarea registry JSON (registry/components/textarea.json) not created. CLAUDE.md unresolved item #10.",
+          "neededAction": "Resolve ACCESS-01 via Plugin Export MVP-F1. Then create registry/components/textarea.json. Most --input-* tokens are reusable (HD-6: Inputbox_large = Textarea).",
+          "usageEvidence": "MVP-F1 Plugin Export confirmed variable bindings in nodes: 540:3328.",
+          "promotedAt": "2026-05-20"
         },
         {
           "id": "hold.component.date-picker.tokens",
@@ -8100,18 +8235,22 @@ window.REGISTRY_BUNDLE = {
             "--date-picker-cell-today-bg",
             "--date-picker-cell-range-bg"
           ],
-          "promotionStatus": "hold-access-limited",
+          "promotionStatus": "promote-candidate",
           "reason": "ACCESS-01: Figma nodeId 6443:4655 (DatePicker component) invalid — MCP access failed. Some tokens inferred from node 540:3836/6456:4033 but full component scope unconfirmed.",
-          "neededAction": "Resolve ACCESS-01. Complete registry/components/date-picker.json with confirmed tokens. Human Decision HD-5 (DatePicker tokens candidate → stable) pending."
+          "neededAction": "Resolve ACCESS-01. Complete registry/components/date-picker.json with confirmed tokens. Human Decision HD-5 (DatePicker tokens candidate → stable) pending.",
+          "usageEvidence": "MVP-F1 Plugin Export confirmed variable bindings in nodes: 540:3794.",
+          "promotedAt": "2026-05-20"
         },
         {
           "id": "hold.component.time-picker",
           "layer": "component",
           "group": "timePicker",
           "cssVariables": [],
-          "promotionStatus": "hold-access-limited",
+          "promotionStatus": "promote-candidate",
           "reason": "ACCESS-01: Figma nodeId 6443:4606 (TimePicker component) invalid — MCP access failed. TimePicker component not implemented. Tokens unknown.",
-          "neededAction": "Resolve ACCESS-01 via Plugin Export. Then define TimePicker token scope. Pending CLAUDE.md unresolved item #11."
+          "neededAction": "Resolve ACCESS-01 via Plugin Export. Then define TimePicker token scope. Pending CLAUDE.md unresolved item #11.",
+          "usageEvidence": "MVP-F1 Plugin Export confirmed variable bindings in nodes: 540:3489, 540:3506, 540:3636, 540:3690, 540:4216.",
+          "promotedAt": "2026-05-20"
         }
       ],
       "aliasOnly": [
@@ -8351,9 +8490,9 @@ window.REGISTRY_BUNDLE = {
   "componentIndex": {
     "meta": {
       "name": "SW Core Component Registry Index",
-      "version": "0.1.0",
+      "version": "0.2.0",
       "status": "mvp3.1",
-      "updatedAt": "2026-05-11",
+      "updatedAt": "2026-05-20",
       "description": "Core Component Harness의 entry point. Theme / Platform / Component 목록을 관리한다."
     },
     "harness": {
@@ -8370,12 +8509,38 @@ window.REGISTRY_BUNDLE = {
       ],
       "defaultPlatform": "pc"
     },
+    "categories": [
+      {
+        "id": "all",
+        "label": "All"
+      },
+      {
+        "id": "actions",
+        "label": "Actions"
+      },
+      {
+        "id": "selection",
+        "label": "Selection"
+      },
+      {
+        "id": "form",
+        "label": "Form"
+      },
+      {
+        "id": "data",
+        "label": "Data"
+      },
+      {
+        "id": "navigation",
+        "label": "Navigation"
+      }
+    ],
     "components": [
       {
         "id": "button",
         "name": "Button",
         "label": "Button",
-        "category": "core",
+        "category": "actions",
         "path": "registry/components/button.json",
         "status": "in-progress",
         "harnessStatus": "implemented",
@@ -8385,7 +8550,7 @@ window.REGISTRY_BUNDLE = {
         "id": "checkbox",
         "name": "Checkbox",
         "label": "Checkbox",
-        "category": "core",
+        "category": "selection",
         "path": "registry/components/checkbox.json",
         "status": "in-progress",
         "harnessStatus": "implemented",
@@ -8395,7 +8560,7 @@ window.REGISTRY_BUNDLE = {
         "id": "radio",
         "name": "Radio",
         "label": "Radio",
-        "category": "core",
+        "category": "selection",
         "path": "registry/components/radio.json",
         "status": "in-progress",
         "harnessStatus": "implemented",
@@ -8405,7 +8570,7 @@ window.REGISTRY_BUNDLE = {
         "id": "toggle",
         "name": "Toggle",
         "label": "Toggle",
-        "category": "core",
+        "category": "selection",
         "path": "registry/components/toggle.json",
         "status": "in-progress",
         "harnessStatus": "implemented",
@@ -8415,7 +8580,7 @@ window.REGISTRY_BUNDLE = {
         "id": "chip",
         "name": "Chip",
         "label": "Chip · FilterChip",
-        "category": "core",
+        "category": "selection",
         "path": "registry/components/chip.json",
         "status": "in-progress",
         "harnessStatus": "implemented",
@@ -8431,7 +8596,7 @@ window.REGISTRY_BUNDLE = {
         "id": "input",
         "name": "Input",
         "label": "Input",
-        "category": "core",
+        "category": "form",
         "path": "registry/components/input.json",
         "status": "in-progress",
         "harnessStatus": "implemented",
@@ -8441,7 +8606,7 @@ window.REGISTRY_BUNDLE = {
         "id": "select",
         "name": "Select",
         "label": "Select · Dropdown",
-        "category": "core",
+        "category": "form",
         "path": "registry/components/select.json",
         "status": "in-progress",
         "harnessStatus": "implemented",
@@ -8453,34 +8618,113 @@ window.REGISTRY_BUNDLE = {
         ]
       },
       {
-        "id": "date-picker",
-        "name": "DatePicker",
-        "label": "Date Picker / Day Picker",
-        "category": "core-candidate",
-        "path": "registry/components/date-picker.json",
-        "status": "candidate",
-        "harnessStatus": "candidate",
-        "priority": 8,
-        "notes": [
-          "Base Input (s1-input-wrap) trigger를 재사용한다.",
-          "calendar panel + day grid가 있어 Related Composed Field가 아닌 별도 컴포넌트 후보다.",
-          "Figma node 6443:4655 확인 — MCP 접근 불가, componentSetKey 미등록.",
-          "Mobile 인터랙션 미확정 (bottom sheet 가능성)."
-        ]
-      },
-      {
         "id": "textarea",
         "name": "Textarea",
         "label": "Textarea",
-        "category": "core",
+        "category": "form",
         "path": "registry/components/textarea.json",
-        "status": "planned",
-        "harnessStatus": "skeleton",
-        "priority": 9,
+        "status": "in-progress",
+        "harnessStatus": "implemented",
+        "priority": 8,
         "notes": [
           "HD-6(2026-05-12) 확정: Figma Inputbox_large → 별도 Textarea 컴포넌트.",
-          "--input-* semantic alias 재사용 또는 --textarea-* 신규 정의 결정 필요.",
-          "Figma 'Inputbox_large' 노드 ID 미확인."
+          "2026-05-20: tokenStatus→stable, harnessStatus→implemented, figmaNodeId→641:4060.",
+          "Token Details 탭 15개 --input-* 토큰 문서화 완료."
+        ]
+      },
+      {
+        "id": "date-picker",
+        "name": "DatePicker",
+        "label": "Date Picker",
+        "category": "form",
+        "path": "registry/components/date-picker.json",
+        "status": "in-progress",
+        "harnessStatus": "implemented",
+        "priority": 9,
+        "notes": [
+          "2026-05-26 HD 확정: tokenStatus→stable, weekStart=1(월), YY.MM.DD 형식, mobile bottom sheet.",
+          "figmaNodeId: 540:3794 (datepicker_input). 미결: componentSetKey, icon assets."
+        ]
+      },
+      {
+        "id": "time-picker",
+        "name": "TimePicker",
+        "label": "Time Picker",
+        "category": "form",
+        "path": "registry/components/time-picker.json",
+        "status": "in-progress",
+        "harnessStatus": "implemented",
+        "priority": 10,
+        "notes": [
+          "2026-05-26: codeStatus→preview, harnessStatus→implemented.",
+          "HD-Time-4 확정: Mobile bottom sheet. HD-Time-5 확정: shadow rgba 예외 허용.",
+          "미결: HD-Time-1 (disabled suffix icon 변경 의도 확인 필요).",
+          "primary figmaNodeId: 540:3690 (timepicker_input)."
+        ]
+      },
+      {
+        "id": "table",
+        "name": "Table",
+        "label": "Table",
+        "category": "data",
+        "path": "registry/components/table.json",
+        "status": "in-progress",
+        "harnessStatus": "implemented",
+        "priority": 11,
+        "notes": [
+          "2026-05-20: Figma MCP pc_table_header(540:4940)·pc_table_body(540:4851) 조회 완료.",
+          "HD-Table-1(dark mode)·HD-Table-2(selected≠hover) 미결."
+        ]
+      },
+      {
+        "id": "pagination",
+        "name": "Pagination",
+        "label": "Pagination",
+        "category": "data",
+        "path": "registry/components/pagination.json",
+        "status": "in-progress",
+        "harnessStatus": "implemented",
+        "priority": 12
+      },
+      {
+        "id": "dropdown",
+        "name": "Dropdown",
+        "label": "Dropdown (Token Source)",
+        "category": "form",
+        "path": "registry/components/dropdown.json",
+        "status": "in-progress",
+        "harnessStatus": "implemented",
+        "priority": 14,
+        "notes": [
+          "17개 --dropdown-* 토큰의 canonical source.",
+          "harness는 Select (id=select) 섹션에서 공유. 별도 harness 섹션 없음.",
+          "Select (priority 7) tokenRef: registry/components/dropdown.json."
+        ]
+      },
+      {
+        "id": "tab",
+        "name": "Line Tab",
+        "category": "navigation",
+        "priority": 15,
+        "path": "registry/components/tab.json",
+        "status": "stable"
+      },
+      {
+        "id": "gnb",
+        "name": "GNB",
+        "label": "GNB",
+        "category": "navigation",
+        "priority": 16,
+        "path": "registry/components/gnb.json",
+        "status": "in-progress",
+        "harnessStatus": "implemented",
+        "notes": [
+          "2026-06-06 figma-to-code: 메뉴 슬롯 9(size×state) + GNB 바 6(size×align) 구현. PC only.",
+          "신규 semantic --color-navigation-label-default-alt(#000000)·--color-navigation-icon(#353535).",
+          "신규 component --gnb-* 7종.",
+          "viewport(1280/1440/1920)는 full-width 반응형으로 통합. 데모 캔버스 px-240 미구현.",
+          "figmaNodeId: 540:5942(pc_gnb). 미결: HD-GNB-1(로고 색상)·HD-GNB-2(유틸 아이콘 색상) 사용자 확인 대기.",
+          "darkModeStatus: candidate — dark 시각 검증 미완료."
         ]
       }
     ]
@@ -8491,11 +8735,11 @@ window.REGISTRY_BUNDLE = {
         "id": "button",
         "name": "Button",
         "category": "Core",
-        "updatedAt": "2026-05-12",
-        "version": "0.4.0",
+        "updatedAt": "2026-05-27",
+        "version": "0.4.1",
         "tokenStatus": "stable",
         "codeStatus": "in-progress",
-        "darkModeStatus": "candidate",
+        "darkModeStatus": "stable",
         "a11yStatus": "pending",
         "figmaStatus": "existing",
         "harnessStatus": "implemented",
@@ -8503,7 +8747,7 @@ window.REGISTRY_BUNDLE = {
         "notes": [
           "MVP3 Button HTML harness created in pages/button-harness.html.",
           "Button uses official V2.4 component tokens (registry/tokens/component.tokens.json).",
-          "Dark mode behavior is available through semantic token remapping, but requires visual validation.",
+          "Dark mode secondary: fill=gray-dark-400(bg-elevated), stroke=gray-dark-500(border-strong), hover=gray-dark-300(bg-muted) — 2026-05-27 확정.",
           "Danger variant is not implemented — no official component tokens exist for danger.",
           "blue-line variant: Figma design confirmed via MCP 2026-05-12. Tokens aligned to Figma.",
           "MVP3.4 Figma MCP comparison complete: 6 token mismatches corrected (see reports/mvp3-4-button-figma-mcp-comparison.md).",
@@ -8545,13 +8789,12 @@ window.REGISTRY_BUNDLE = {
           "default",
           "hover",
           "pressed",
-          "disabled",
-          "loading"
+          "disabled"
         ],
         "primary": {
           "tokenStatus": "stable",
           "codeStatus": "in-progress",
-          "darkModeStatus": "candidate",
+          "darkModeStatus": "stable",
           "tokens": [
             "--button-primary-default-bg",
             "--button-primary-hover-bg",
@@ -8567,7 +8810,7 @@ window.REGISTRY_BUNDLE = {
         "secondary": {
           "tokenStatus": "stable",
           "codeStatus": "in-progress",
-          "darkModeStatus": "candidate",
+          "darkModeStatus": "stable",
           "tokens": [
             "--button-secondary-default-bg",
             "--button-secondary-hover-bg",
@@ -8585,7 +8828,7 @@ window.REGISTRY_BUNDLE = {
         "blue-line": {
           "tokenStatus": "stable",
           "codeStatus": "in-progress",
-          "darkModeStatus": "pending",
+          "darkModeStatus": "stable",
           "tokens": [
             "--button-blue-line-default-bg",
             "--button-blue-line-hover-bg",
@@ -8686,33 +8929,29 @@ window.REGISTRY_BUNDLE = {
           "default",
           "hover",
           "pressed",
-          "disabled",
-          "loading"
+          "disabled"
         ],
         "interactiveColumn": "action",
         "staticPreviewColumns": [
           "default",
           "hover",
           "pressed",
-          "disabled",
-          "loading"
+          "disabled"
         ],
         "pcColumns": [
           "action",
           "default",
           "hover",
           "pressed",
-          "disabled",
-          "loading"
+          "disabled"
         ],
         "mobileColumns": [
           "action",
           "default",
           "pressed",
-          "disabled",
-          "loading"
+          "disabled"
         ],
-        "note": "ACTION = real interactive test (click / disabled / loading toggle). DEFAULT/HOVER/PRESSED/DISABLED/LOADING = static preview (is-preview class). ACTION is not a Figma state."
+        "note": "ACTION = real interactive test (click / disabled toggle). DEFAULT/HOVER/PRESSED/DISABLED = static preview (is-preview class). ACTION is not a Figma state."
       },
       "pendingVariants": [
         {
@@ -9058,8 +9297,13 @@ window.REGISTRY_BUNDLE = {
         "default",
         "hover",
         "selected",
+        "complete",
         "disabled"
       ],
+      "stateNotes": {
+        "selected": "Selection chip: 선택됨. Filter chip: 드롭다운 열린 상태.",
+        "complete": "Filter chip 전용. 필터 적용 완료 상태 — 선택값 노출 + 닫기(X) 아이콘 표시. Selection chip에는 없음. form-control 'filled'와 다른 개념."
+      },
       "subVariants": [
         "text-only",
         "with-icon",
@@ -9225,8 +9469,8 @@ window.REGISTRY_BUNDLE = {
         },
         {
           "cssVar": "--dropdown-option-selected-bg",
-          "value": "var(--color-action-primary-subtle)",
-          "semanticRef": "color-action-primary-subtle",
+          "value": "transparent",
+          "semanticRef": null,
           "part": "option",
           "state": "selected",
           "property": "background"
@@ -9260,8 +9504,8 @@ window.REGISTRY_BUNDLE = {
         "tokenStatus": "stable",
         "codeStatus": "implemented",
         "darkModeStatus": "pending",
-        "figmaNodeId": "6443:4408",
-        "figmaNote": "Base Input frame = 'Login input' in Figma. Section 2 (6443:5451). Confirmed via MCP 2026-05-12.",
+        "figmaNodeId": "540:3328",
+        "figmaNote": "2026-05-20 MVP-F1 플러그인 스캔으로 확인. Figma 내 프레임명이 'Login input'으로 잘못 등록된 상태 — canonical 명칭은 'Input'. 이전 stale nodeId: 6443:4408.",
         "description": "Base text input field. Pure input element without label/helper wrapper. Label/Helper combo = Input Slots pattern.",
         "hdResolved": "HD-1 through HD-8 resolved 2026-05-12. Token corrections applied after re-examination."
       },
@@ -9303,14 +9547,14 @@ window.REGISTRY_BUNDLE = {
       "states": [
         "default",
         "focus",
-        "complete",
+        "filled",
         "error",
         "correct",
         "disabled"
       ],
       "stateNotes": {
         "focus": "Figma: 'selected'. border → --input-focus-border(blue). bg 변경 없음.",
-        "complete": "HD-3: 별도 bg/border 없음. default와 동일 시각. text/default 색상으로만 구분(placeholder→typed).",
+        "filled": "Figma: 'complete'. HD-3: 별도 bg/border 없음. default와 동일 시각. text/default 색상으로만 구분(placeholder→typed). canonical: filled (token-aliases.json 확정).",
         "correct": "HD-4: correct로 통일(Figma: success). border = focus와 동일(blue, --color/form-control/border/selected). helper text = --color/text/state/correct(#1D6CEB).",
         "error": "border → --input-error-border(#FF4554). helper text → error 메시지.",
         "hover": "삭제(HD-2). Figma 미정의."
@@ -9375,6 +9619,12 @@ window.REGISTRY_BUNDLE = {
               "--input-helper-text": "var(--color-text-state-helper)",
               "--input-correct-text": "var(--color-text-state-correct)",
               "--input-error-text": "var(--color-status-error)"
+            },
+            "readonly": {
+              "--input-readonly-bg": "var(--color-form-control-bg-disabled)",
+              "--input-readonly-border": "var(--color-form-control-border-disabled)",
+              "--input-readonly-text": "var(--color-text-readonly)",
+              "note": "Textarea 와 공유. 2026-05-18 MVP4-token 신설. readonly bg/border = disabled와 동일, text는 --color-text-readonly로 한 단계 진함."
             }
           },
           "removedTokens": {
@@ -9530,11 +9780,11 @@ window.REGISTRY_BUNDLE = {
         "id": "checkbox",
         "name": "Checkbox",
         "category": "Core",
-        "updatedAt": "2026-05-19",
+        "updatedAt": "2026-05-27",
         "version": "0.1.0",
         "tokenStatus": "stable",
         "codeStatus": "implemented",
-        "darkModeStatus": "pending",
+        "darkModeStatus": "stable",
         "a11yStatus": "pending",
         "figmaStatus": "existing",
         "harnessStatus": "implemented",
@@ -9544,7 +9794,6 @@ window.REGISTRY_BUNDLE = {
         "default",
         "hover",
         "checked",
-        "indeterminate",
         "disabled"
       ],
       "tokens": [
@@ -9560,13 +9809,6 @@ window.REGISTRY_BUNDLE = {
           "value": "var(--color-action-primary-default)",
           "semanticRef": "color-action-primary-default",
           "state": "checked",
-          "property": "background"
-        },
-        {
-          "cssVar": "--checkbox-indeterminate-bg",
-          "value": "var(--color-action-primary-default)",
-          "semanticRef": "color-action-primary-default",
-          "state": "indeterminate",
           "property": "background"
         },
         {
@@ -9635,11 +9877,11 @@ window.REGISTRY_BUNDLE = {
         "id": "radio",
         "name": "Radio",
         "category": "Core",
-        "updatedAt": "2026-05-19",
+        "updatedAt": "2026-05-27",
         "version": "0.1.0",
         "tokenStatus": "stable",
         "codeStatus": "implemented",
-        "darkModeStatus": "pending",
+        "darkModeStatus": "stable",
         "a11yStatus": "pending",
         "figmaStatus": "existing",
         "harnessStatus": "implemented",
@@ -9725,11 +9967,11 @@ window.REGISTRY_BUNDLE = {
         "id": "toggle",
         "name": "Toggle",
         "category": "Core",
-        "updatedAt": "2026-05-19",
+        "updatedAt": "2026-05-27",
         "version": "0.1.0",
         "tokenStatus": "stable",
         "codeStatus": "implemented",
-        "darkModeStatus": "pending",
+        "darkModeStatus": "stable",
         "a11yStatus": "pending",
         "figmaStatus": "existing",
         "harnessStatus": "implemented",
@@ -9788,43 +10030,111 @@ window.REGISTRY_BUNDLE = {
       "_meta": {
         "id": "pagination",
         "name": "Pagination",
-        "category": "Core",
-        "updatedAt": "2026-05-19",
-        "version": "0.1.0",
-        "tokenStatus": "pending",
+        "category": "data",
+        "updatedAt": "2026-05-20",
+        "version": "0.2.0",
+        "tokenStatus": "stable",
         "codeStatus": "not-started",
         "darkModeStatus": "pending",
         "a11yStatus": "pending",
-        "figmaStatus": "existing",
+        "figmaStatus": "confirmed",
         "harnessStatus": "skeleton",
-        "description": "페이지네이션 컨트롤. 페이지 항목 default·hover·active·disabled 상태.",
+        "description": "페이지네이션 컨트롤. 화살표(first/prev/next/last) + 페이지 번호. 선택 페이지는 텍스트 색으로만 구분.",
         "notes": [
-          "토큰 미정의 — tokens.css에 --pagination-* 토큰 없음.",
-          "다음 단계: Figma Pagination 노드 확인 후 토큰 정의."
+          "Figma 확인: 선택 페이지 = bg 변화 없음, 텍스트 색만 변경 (#9D9D9D → #353535).",
+          "Disabled 화살표 = bg/border 동일, opacity:0.9만 적용.",
+          "--pagination-control-hover-bg는 Figma 미정의 — assumed (gray-50).",
+          "dark mode: 미확인 — candidate 상태."
         ]
+      },
+      "variants": {
+        "arrow": {
+          "direction": [
+            "<<",
+            "<",
+            ">",
+            ">>"
+          ],
+          "state": [
+            "default",
+            "disabled"
+          ]
+        },
+        "number": {
+          "state": [
+            "default",
+            "selected"
+          ]
+        }
+      },
+      "sizing": {
+        "controlSize": "28px (var(--spacing-28))",
+        "radius": "var(--radius-control-xs)",
+        "font": "Pretendard Medium 14px",
+        "gap": "4px (화살표 그룹 내) / 8px (그룹 간)"
       },
       "states": [
         "default",
         "hover",
-        "active",
+        "selected",
         "disabled"
       ],
-      "tokens": [],
-      "tokenNote": "tokens.css에 --pagination-* 미정의. Figma 노드 확인 후 정의 예정.",
-      "plannedTokens": [
-        "--pagination-default-bg",
-        "--pagination-hover-bg",
-        "--pagination-active-bg",
-        "--pagination-disabled-bg",
-        "--pagination-default-text",
-        "--pagination-active-text",
-        "--pagination-disabled-text",
-        "--pagination-border"
+      "tokens": [
+        {
+          "name": "--pagination-control-bg",
+          "value": "var(--color-surface-default)",
+          "resolvedLight": "#FFFFFF",
+          "figmaVariable": "color/pagination/control/bg/default",
+          "status": "stable",
+          "description": "화살표·페이지 번호 공통 배경"
+        },
+        {
+          "name": "--pagination-control-border",
+          "value": "var(--color-border-subtle)",
+          "resolvedLight": "#E9E9E9",
+          "figmaVariable": "color/pagination/control/border/default",
+          "status": "stable",
+          "description": "화살표 버튼 테두리 (페이지 번호에는 테두리 없음)"
+        },
+        {
+          "name": "--pagination-control-hover-bg",
+          "value": "var(--color-bg-subtle)",
+          "resolvedLight": "#F5F5F5",
+          "figmaVariable": "",
+          "status": "candidate",
+          "description": "화살표·번호 hover 배경 — Figma 미정의, assumed"
+        },
+        {
+          "name": "--pagination-number-text",
+          "value": "var(--color-gray-400)",
+          "resolvedLight": "#9D9D9D",
+          "figmaVariable": "color/gray/400",
+          "status": "stable",
+          "description": "비선택 페이지 번호 텍스트"
+        },
+        {
+          "name": "--pagination-number-text-selected",
+          "value": "var(--color-text-secondary)",
+          "resolvedLight": "#353535",
+          "figmaVariable": "color/text/body/primary",
+          "status": "stable",
+          "description": "선택된 페이지 번호 텍스트"
+        }
       ],
       "figma": {
         "componentSetKey": "",
-        "figmaNodeId": "",
-        "propertyMap": {}
+        "figmaNodeId": "540:5281",
+        "nodes": {
+          "pcPagination": "540:5281",
+          "paginationArrow": "57:6244",
+          "paginationNumber": "57:6235"
+        },
+        "propertyMap": {
+          "direction": "direction",
+          "property1": "property1",
+          "selected": "selected",
+          "hover": "hover"
+        }
       },
       "governance": {
         "owner": "Design System Team",
@@ -9837,9 +10147,9 @@ window.REGISTRY_BUNDLE = {
         "id": "nav",
         "name": "Navigation",
         "category": "Core",
-        "updatedAt": "2026-05-19",
-        "version": "0.1.0",
-        "tokenStatus": "pending",
+        "updatedAt": "2026-05-20",
+        "version": "0.3.0",
+        "tokenStatus": "stable",
         "codeStatus": "not-started",
         "darkModeStatus": "pending",
         "a11yStatus": "pending",
@@ -9847,9 +10157,9 @@ window.REGISTRY_BUNDLE = {
         "harnessStatus": "skeleton",
         "description": "사이드바/상단 네비게이션 컴포넌트. 항목 hover·active 상태, 구분선, 활성 인디케이터 포함.",
         "notes": [
-          "토큰 미정의 — tokens.css에 --nav-* 토큰 없음.",
           "HD-L4.5-A: DatePicker nav 버튼과는 다른 개념. 이 컴포넌트는 사이트 네비게이션(사이드바) 전용.",
-          "다음 단계: Figma Navigation 노드 확인 후 --nav-* 토큰 정의."
+          "--nav-item-indicator-default 신설(2026-05-20): Figma color/navigation/indicator/default 대응. 비선택 항목 indicator.",
+          "alt 변형(label/default-alt, indicator/default-alt)은 CSS Cascade Override로 대응. 별도 canonical token 미신설."
         ]
       },
       "states": [
@@ -9858,19 +10168,75 @@ window.REGISTRY_BUNDLE = {
         "active",
         "disabled"
       ],
-      "tokens": [],
-      "tokenNote": "tokens.css에 --nav-* 미정의. Figma 노드 확인 후 정의 예정.",
-      "plannedTokens": [
-        "--nav-bg",
-        "--nav-item-hover-bg",
-        "--nav-item-active-bg",
-        "--nav-item-default-text",
-        "--nav-item-active-text",
-        "--nav-item-default-icon",
-        "--nav-item-active-icon",
-        "--nav-item-indicator",
-        "--nav-divider"
+      "tokens": [
+        {
+          "name": "--nav-bg",
+          "value": "var(--color-surface-default)",
+          "state": "all",
+          "property": "bg",
+          "figmaVariable": "color/navigation/background"
+        },
+        {
+          "name": "--nav-item-hover-bg",
+          "value": "var(--color-bg-subtle)",
+          "state": "hover",
+          "property": "bg"
+        },
+        {
+          "name": "--nav-item-active-bg",
+          "value": "var(--color-action-primary-subtle)",
+          "state": "active",
+          "property": "bg"
+        },
+        {
+          "name": "--nav-item-default-text",
+          "value": "var(--color-text-tertiary)",
+          "state": "default",
+          "property": "color",
+          "figmaVariable": "color/navigation/label/default"
+        },
+        {
+          "name": "--nav-item-active-text",
+          "value": "var(--color-action-primary-default)",
+          "state": "active",
+          "property": "color",
+          "figmaVariable": "color/navigation/label/selected"
+        },
+        {
+          "name": "--nav-item-default-icon",
+          "value": "var(--color-icon-default)",
+          "state": "default",
+          "property": "icon"
+        },
+        {
+          "name": "--nav-item-active-icon",
+          "value": "var(--color-action-primary-default)",
+          "state": "active",
+          "property": "icon"
+        },
+        {
+          "name": "--nav-item-indicator",
+          "value": "var(--color-action-primary-default)",
+          "state": "active",
+          "property": "indicator",
+          "figmaVariable": "color/navigation/indicator/selected"
+        },
+        {
+          "name": "--nav-item-indicator-default",
+          "value": "var(--color-border-subtle)",
+          "state": "default",
+          "property": "indicator",
+          "figmaVariable": "color/navigation/indicator/default"
+        },
+        {
+          "name": "--nav-divider",
+          "value": "var(--color-border-subtle)",
+          "state": "all",
+          "property": "border"
+        }
       ],
+      "plannedTokens": [],
+      "altVariantNote": "color/navigation/label/default-alt 및 indicator/default-alt는 별도 canonical token 미신설. 특수 surface 배치 시 부모 컴포넌트 CSS 스코프에서 override 방식 권장.",
       "figma": {
         "componentSetKey": "",
         "figmaNodeId": "",
@@ -9886,44 +10252,206 @@ window.REGISTRY_BUNDLE = {
       "_meta": {
         "id": "table",
         "name": "Table",
-        "category": "Core",
-        "updatedAt": "2026-05-19",
-        "version": "0.1.0",
-        "tokenStatus": "pending",
+        "category": "data",
+        "updatedAt": "2026-05-27",
+        "version": "0.4.0",
+        "tokenStatus": "stable",
         "codeStatus": "not-started",
-        "darkModeStatus": "pending",
+        "darkModeStatus": "stable",
         "a11yStatus": "pending",
-        "figmaStatus": "existing",
-        "harnessStatus": "skeleton",
-        "description": "데이터 그리드/테이블 컴포넌트. 헤더, 행 hover·selected, 셀 스타일 포함.",
+        "figmaStatus": "confirmed",
+        "harnessStatus": "implemented",
+        "description": "데이터 그리드/테이블 컴포넌트. 헤더(정렬 아이콘·체크박스 포함), 행 hover·selected, 셀 스타일 포함.",
         "notes": [
-          "토큰 미정의 — tokens.css에 --table-* 토큰 없음.",
-          "--table-row-selected-bg는 --color-bg-selected(candidate)를 참조할 예정. bg-selected 확정 후 연결.",
-          "다음 단계: Figma Table 노드 확인 후 토큰 정의."
+          "정렬 아이콘: combobox_arrow SVG, 18×18px (icon=on 헤더 variant).",
+          "Checkbox: 선택 컬럼은 s1-checkbox 코어 컴포넌트 재사용. Table에서 별도 체크박스 구현 금지."
         ]
+      },
+      "dependencies": {
+        "coreComponents": [
+          {
+            "id": "checkbox",
+            "usage": [
+              "header-selection",
+              "row-selection"
+            ],
+            "sourceOfTruth": "registry/components/checkbox.json",
+            "tableResponsibility": [
+              "cell-placement",
+              "alignment",
+              "selection-state-connection"
+            ],
+            "notAllowed": [
+              "redefine-checkbox-visual-style",
+              "create-table-specific-checkbox-class",
+              "override-checkbox-tokens"
+            ],
+            "notes": [
+              "indeterminate: 토큰(--checkbox-indeterminate-bg) + CSS(.is-indeterminate) 코어에 추가됨(2026-05-20).",
+              "header checkbox: 전체/일부/미선택 → is-checked/is-indeterminate/default 상태로 연동."
+            ]
+          }
+        ]
+      },
+      "variants": {
+        "header": {
+          "size": [
+            "md",
+            "sm"
+          ],
+          "position": [
+            "middle",
+            "last"
+          ],
+          "align": [
+            "center",
+            "left"
+          ],
+          "state": [
+            "default",
+            "hover"
+          ],
+          "icon": [
+            "on",
+            "off"
+          ],
+          "checkBox": [
+            "on",
+            "off"
+          ]
+        },
+        "body": {
+          "size": [
+            "md",
+            "sm"
+          ],
+          "position": [
+            "middle",
+            "last"
+          ],
+          "align": [
+            "center",
+            "left"
+          ],
+          "state": [
+            "default",
+            "hover",
+            "selected"
+          ]
+        }
+      },
+      "sizing": {
+        "rowHeightMd": "var(--sizing-table-row-height-md)",
+        "rowHeightSm": "var(--sizing-table-row-height-sm)",
+        "paddingInlineStart": "var(--spacing-padding-inline-xs)",
+        "paddingInlineEnd": "var(--spacing-padding-inline-sm)",
+        "selectionCellWidth": "48px",
+        "headerFont": "Pretendard Medium 14px",
+        "bodyFont": "Pretendard Regular 14px"
       },
       "states": [
         "default",
         "hover",
-        "selected",
-        "disabled"
+        "selected"
       ],
-      "tokens": [],
-      "tokenNote": "tokens.css에 --table-* 미정의. Figma 노드 확인 후 정의 예정.",
-      "plannedTokens": [
-        "--table-header-bg",
-        "--table-header-text",
-        "--table-header-border",
-        "--table-row-default-bg",
-        "--table-row-hover-bg",
-        "--table-row-selected-bg",
-        "--table-cell-border",
-        "--table-cell-text"
+      "tokens": [
+        {
+          "name": "--table-header-bg",
+          "value": "var(--color-bg-default)",
+          "resolvedLight": "#FAFAFA",
+          "figmaVariable": "surface/neutral/bg/base-alt",
+          "status": "stable",
+          "description": "헤더 셀 기본 배경"
+        },
+        {
+          "name": "--table-header-text",
+          "value": "var(--color-text-secondary)",
+          "resolvedLight": "#353535",
+          "figmaVariable": "color/text/title/secondary",
+          "status": "stable",
+          "description": "헤더 셀 텍스트 색상"
+        },
+        {
+          "name": "--table-border-light",
+          "value": "var(--color-border-subtle)",
+          "resolvedLight": "#E9E9E9",
+          "figmaVariable": "color/data/border/light",
+          "status": "stable",
+          "description": "행 구분선 — 헤더·바디 셀 공통 참조"
+        },
+        {
+          "name": "--table-border-strong",
+          "value": "var(--color-border-emphasis)",
+          "resolvedLight": "#353535",
+          "figmaVariable": "color/data/border/strong",
+          "status": "stable",
+          "description": "테이블 외곽 강조 테두리 — wrap 상단 2px + 하단 1px"
+        },
+        {
+          "name": "--table-header-border",
+          "value": "var(--table-border-light)",
+          "resolvedLight": "#E9E9E9",
+          "figmaVariable": "color/data/border/light",
+          "status": "stable",
+          "description": "헤더 셀 하단 구분선"
+        },
+        {
+          "name": "--table-row-default-bg",
+          "value": "var(--color-surface-default)",
+          "resolvedLight": "#FFFFFF",
+          "figmaVariable": "color/data/state/default",
+          "status": "stable",
+          "description": "행 기본 배경"
+        },
+        {
+          "name": "--table-row-hover-bg",
+          "value": "var(--color-bg-subtle)",
+          "resolvedLight": "#F5F5F5",
+          "figmaVariable": "color/data/state/hover",
+          "status": "stable",
+          "description": "행 hover 배경 — Light: gray-50 (#F5F5F5) / Dark: blue-dark-100 (#112B55, --color-data-state-hover)"
+        },
+        {
+          "name": "--table-row-selected-bg",
+          "value": "var(--color-bg-selected)",
+          "resolvedLight": "#E2F1FF",
+          "figmaVariable": "",
+          "status": "stable",
+          "description": "행 선택 배경 — Light: blue-50 (#E2F1FF) / Dark: blue-dark-100 (#112B55). hover(gray-50)와 시각 구분 확정(HD-Table-2)"
+        },
+        {
+          "name": "--table-cell-border",
+          "value": "var(--table-border-light)",
+          "resolvedLight": "#E9E9E9",
+          "figmaVariable": "color/data/border/light",
+          "status": "stable",
+          "description": "바디 셀 하단 구분선"
+        },
+        {
+          "name": "--table-cell-text",
+          "value": "var(--color-text-secondary)",
+          "resolvedLight": "#353535",
+          "figmaVariable": "color/text/body/primary",
+          "status": "stable",
+          "description": "바디 셀 본문 텍스트 색상"
+        }
       ],
       "figma": {
         "componentSetKey": "",
-        "figmaNodeId": "",
-        "propertyMap": {}
+        "figmaNodeId": "6515:4142",
+        "nodes": {
+          "pcTableHeader": "540:4940",
+          "pcTableBody": "540:4851",
+          "fullExample": "540:5241"
+        },
+        "propertyMap": {
+          "size": "size",
+          "position": "position",
+          "align": "align",
+          "state": "state",
+          "icon": "icon",
+          "checkBox": "check box"
+        }
       },
       "governance": {
         "owner": "Design System Team",
@@ -10103,7 +10631,7 @@ window.REGISTRY_BUNDLE = {
       "input": {
         "componentSetKey": "",
         "figmaNodeId": "6443:4408",
-        "figmaNote": "Base Input frame = 'Login input' in Figma. Section 2 (6443:5451). Confirmed via MCP 2026-05-12.",
+        "figmaNote": "Figma 내 프레임명이 'Login input'으로 잘못 등록된 상태. 디자인시스템 canonical 명칭은 'Input'. Section 2 (6443:5451). Confirmed via MCP 2026-05-12.",
         "relatedFrames": {
           "base-input": "6443:4408",
           "pc-input-with-slots": "6443:4203",
@@ -10271,7 +10799,7 @@ window.REGISTRY_BUNDLE = {
           "id": "R07",
           "name": "rgba-allowed-exceptions-only",
           "severity": "error",
-          "description": "rgba()는 token-exceptions.json의 EX02(dark border), EX03(overlay) 두 경우에만 허용한다. 그 외 사용은 금지."
+          "description": "rgba()는 token-exceptions.json의 EX03(overlay)에만 허용한다. 그 외 사용은 금지. (EX02 dark border 예외는 ND-2로 폐지, 2026-06-06)"
         },
         {
           "id": "R08",
@@ -10296,24 +10824,6 @@ window.REGISTRY_BUNDLE = {
           "name": "no-class-abbreviation",
           "severity": "warning",
           "description": "가이드 HTML CSS 클래스는 약어 없이 의미 중심으로 작성한다. 허용 접두사: typo-, token-, border-width-, color-, spacing-, radius-, palette-, pal-, platform-."
-        },
-        {
-          "id": "R12",
-          "name": "no-stable-opacity-composition-for-dark-border",
-          "severity": "warning",
-          "description": "Dark semantic border tokens should not use rgba or Figma opacity composition as stable definitions. Use resolved HEX values or foundation dark scale references.",
-          "appliesTo": [
-            "semanticTokens"
-          ]
-        },
-        {
-          "id": "R13",
-          "name": "dark-border-resolved-value-required",
-          "severity": "warning",
-          "description": "Dark border semantic tokens imported from Figma opacity composition must be resolved to explicit HEX or foundation dark scale before stable release. Mark as candidate until resolved.",
-          "appliesTo": [
-            "semanticTokens"
-          ]
         }
       ]
     },
@@ -10329,20 +10839,6 @@ window.REGISTRY_BUNDLE = {
           "rule": "R02 (no-raw-hex-in-component)",
           "scope": "Foundation color primitives",
           "description": "HEX values are allowed only in foundation.colors.json. This is the single source of truth for all raw color values.",
-          "approvedAt": "2026-04-29",
-          "approvedBy": "design-system-lead"
-        },
-        {
-          "id": "EX02",
-          "rule": "rgba() prohibition",
-          "scope": "color-border-* Dark mode only",
-          "description": "rgba() is allowed for dark-mode border tokens (--color-border-subtle/default/strong/emphasis) because the wide range of background luminance in dark mode makes it impossible to achieve consistent contrast with a fixed HEX value. An alpha-based approach is the only reliable solution.",
-          "affectedTokens": [
-            "--color-border-subtle (dark)",
-            "--color-border-default (dark)",
-            "--color-border-strong (dark)",
-            "--color-border-emphasis (dark)"
-          ],
           "approvedAt": "2026-04-29",
           "approvedBy": "design-system-lead"
         },
@@ -10389,27 +10885,6 @@ window.REGISTRY_BUNDLE = {
           ],
           "approvedAt": "2026-04-30",
           "approvedBy": "design-system-lead"
-        },
-        {
-          "id": "EX06",
-          "rule": "dark-border-opacity-composition",
-          "scope": "Dark semantic border tokens — migration candidates only",
-          "description": "Figma opacity-composed dark border values (e.g. #FFFFFF 4%, 7%, 12%, 20%) are allowed ONLY as migration candidates. Stable semantic border tokens must use resolved HEX values or foundation dark scale references. rgba() values from opacity composition must not be marked stable.",
-          "allowedIn": [
-            "semanticTokens.candidate",
-            "migration"
-          ],
-          "requiresNote": true,
-          "stableAllowed": false,
-          "affectedTokens": [
-            "--color-border-subtle (dark)",
-            "--color-border-default (dark)",
-            "--color-border-strong (dark)",
-            "--color-border-emphasis (dark)"
-          ],
-          "requiredFollowUp": "Resolve actual HEX values for each dark border token after visual approval. Do not calculate or invent HEX values — human decision required.",
-          "addedAt": "2026-05-11",
-          "addedBy": "design-system-lead"
         }
       ]
     },
@@ -10489,9 +10964,117 @@ window.REGISTRY_BUNDLE = {
     }
   },
   "reportsIndex": {
-    "generatedAt": "2026-05-19T23:21:02.627Z",
-    "totalCount": 41,
+    "generatedAt": "2026-06-08T01:43:54.763Z",
+    "totalCount": 48,
     "reports": [
+      {
+        "id": "harness-audit-2026-06-08",
+        "filename": "harness-audit-2026-06-08.md",
+        "title": "Harness Audit Report — 2026-06-08",
+        "stage": "Audit",
+        "category": "audit",
+        "status": "archive",
+        "sourcePath": "reports/harness-audit-2026-06-08.md",
+        "updatedAt": "2026-06-08",
+        "summary": "- ✅ [button] 모든 사이즈 분기 존재 (medium (h44) / xsmall (h34) / xxsmall (h28) / mobile (h48))",
+        "fileSizeKB": 1.7
+      },
+      {
+        "id": "harness-audit-2026-06-06",
+        "filename": "harness-audit-2026-06-06.md",
+        "title": "Harness Audit Report — 2026-06-06",
+        "stage": "Audit",
+        "category": "audit",
+        "status": "archive",
+        "sourcePath": "reports/harness-audit-2026-06-06.md",
+        "updatedAt": "2026-06-06",
+        "summary": "- ✅ [button] 모든 사이즈 분기 존재 (medium (h44) / xsmall (h34) / xxsmall (h28) / mobile (h48))",
+        "fileSizeKB": 1.7
+      },
+      {
+        "id": "harness-audit-2026-06-05",
+        "filename": "harness-audit-2026-06-05.md",
+        "title": "Harness Audit Report — 2026-06-05",
+        "stage": "Audit",
+        "category": "audit",
+        "status": "archive",
+        "sourcePath": "reports/harness-audit-2026-06-05.md",
+        "updatedAt": "2026-06-05",
+        "summary": "- ✅ [button] 모든 사이즈 분기 존재 (medium (h44) / xsmall (h34) / xxsmall (h28) / mobile (h48))",
+        "fileSizeKB": 1.6
+      },
+      {
+        "id": "harness-audit-2026-05-28",
+        "filename": "harness-audit-2026-05-28.md",
+        "title": "Harness Audit Report — 2026-05-28",
+        "stage": "Audit",
+        "category": "audit",
+        "status": "archive",
+        "sourcePath": "reports/harness-audit-2026-05-28.md",
+        "updatedAt": "2026-05-28",
+        "summary": "- ✅ [button] 모든 사이즈 분기 존재 (medium (h44) / xsmall (h34) / xxsmall (h28) / mobile (h48))",
+        "fileSizeKB": 1.5
+      },
+      {
+        "id": "harness-audit-2026-05-27",
+        "filename": "harness-audit-2026-05-27.md",
+        "title": "Harness Audit Report — 2026-05-27",
+        "stage": "Audit",
+        "category": "audit",
+        "status": "archive",
+        "sourcePath": "reports/harness-audit-2026-05-27.md",
+        "updatedAt": "2026-05-27",
+        "summary": "- ✅ [button] 모든 사이즈 분기 존재 (medium (h44) / xsmall (h34) / xxsmall (h28) / mobile (h48))",
+        "fileSizeKB": 1.3
+      },
+      {
+        "id": "mvp-f1-apply-result",
+        "filename": "mvp-f1-apply-result.md",
+        "title": "MVP-F1 — Figma Variable Usage Apply Result",
+        "stage": "Audit",
+        "category": "legacy",
+        "status": "archive",
+        "sourcePath": "reports/mvp-f1-apply-result.md",
+        "updatedAt": "2026-05-20",
+        "summary": "총 53개 unique variable 확인. legacy-token-usage-map.json 미등록 항목: **22개**.",
+        "fileSizeKB": 95
+      },
+      {
+        "id": "mvp-l1-legacy-token-audit",
+        "filename": "mvp-l1-legacy-token-audit.md",
+        "title": "MVP-L1 — UX Guide 2.4 Legacy Token Audit",
+        "stage": "L1",
+        "category": "legacy",
+        "status": "archive",
+        "sourcePath": "reports/mvp-l1-legacy-token-audit.md",
+        "updatedAt": "2026-05-20",
+        "summary": "S1 UX 디자인가이드 2.4의 현재 Figma Variables를 legacy source snapshot으로 수집하고,",
+        "fileSizeKB": 26.4
+      },
+      {
+        "id": "mvp-l2-foundation-reclassification",
+        "filename": "mvp-l2-foundation-reclassification.md",
+        "title": "MVP-L2 — Foundation Layer 재분류 결과",
+        "stage": "L2",
+        "category": "legacy",
+        "status": "archive",
+        "sourcePath": "reports/mvp-l2-foundation-reclassification.md",
+        "updatedAt": "2026-05-20",
+        "summary": "Foundation Token → Semantic Token → Component Token",
+        "fileSizeKB": 4.4
+      },
+      {
+        "id": "mvp-l2-legacy-token-classification",
+        "filename": "mvp-l2-legacy-token-classification.md",
+        "title": "MVP-L2 Legacy Token Classification Report",
+        "stage": "L2",
+        "category": "legacy",
+        "status": "archive",
+        "sourcePath": "reports/mvp-l2-legacy-token-classification.md",
+        "updatedAt": "2026-05-20",
+        "summary": "`surface/status/main/primary`, `/sub/primary`, `/main/secondary`, `/sub/secondary`, `/main/tertiary`, `/sub/tertiary`",
+        "fileSizeKB": 13.1
+      },
       {
         "id": "mvp-c0-component-token-coverage-pilot",
         "filename": "mvp-c0-component-token-coverage-pilot.md",
@@ -10541,30 +11124,6 @@ window.REGISTRY_BUNDLE = {
         "fileSizeKB": 28.4,
         "version": "0.1.0",
         "enrichedFrom": "registry/tokens/canonical-token-promotion-plan.json"
-      },
-      {
-        "id": "mvp-l1-legacy-token-audit",
-        "filename": "mvp-l1-legacy-token-audit.md",
-        "title": "MVP-L1 — UX Guide 2.4 Legacy Token Audit",
-        "stage": "L1",
-        "category": "legacy",
-        "status": "archive",
-        "sourcePath": "reports/mvp-l1-legacy-token-audit.md",
-        "updatedAt": "2026-05-18",
-        "summary": "S1 UX 디자인가이드 2.4의 현재 Figma Variables를 legacy source snapshot으로 수집하고,",
-        "fileSizeKB": 26.4
-      },
-      {
-        "id": "mvp-l2-foundation-reclassification",
-        "filename": "mvp-l2-foundation-reclassification.md",
-        "title": "MVP-L2 — Foundation Layer 재분류 결과",
-        "stage": "L2",
-        "category": "legacy",
-        "status": "archive",
-        "sourcePath": "reports/mvp-l2-foundation-reclassification.md",
-        "updatedAt": "2026-05-18",
-        "summary": "Foundation Token → Semantic Token → Component Token",
-        "fileSizeKB": 4.4
       },
       {
         "id": "mvp-l3-canonical-token-architecture-draft",

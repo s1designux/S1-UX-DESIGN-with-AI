@@ -46,7 +46,7 @@ function countTokens(css) {
       else if (/^--sizing-/.test(n)) semantic++;
       else if (/^--radius-(control|button|card|modal)-/.test(n)) semantic++;
       else foundation++;
-    } else if (/^--color-(gray|gray-dark|blue|blue-dark|red|red-dark|orange|orange-dark|yellow|yellow-dark|green|green-dark|skyblue|skyblue-dark|purple|purple-dark|brown|brown-dark|visual-gray|coolgray-dark)-\d+$/.test(n)) {
+    } else if (/^--color-(gray|gray-dark|blue|blue-dark|red|red-dark|orange|orange-dark|yellow|yellow-dark|green|green-dark|skyblue|skyblue-dark|purple|purple-dark|brown|brown-dark|visual-gray|visual-gray-dark)-\d+$/.test(n)) {
       foundation++;
     } else if (/^--color-(base|brand|status-dark)-/.test(n)) {
       foundation++;

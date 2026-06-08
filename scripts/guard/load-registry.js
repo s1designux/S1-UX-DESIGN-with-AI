@@ -73,7 +73,7 @@ function loadRegistry() {
     '--color-purple-',
     '--color-brown-',
     '--color-visual-gray-',
-    '--color-coolgray-dark-',
+    '--color-visual-gray-dark-',
     '--color-gray-dark-',
     '--color-blue-dark-',
     '--color-red-dark-',

@@ -426,7 +426,7 @@ Light 팔레트의 스텝 방향을 그대로 따르면 Dark 배경에 어두운
 
 ## 20. Cool Gray — Dark
 
-> CSS 변수 접두사: `--color-coolgray-dark-{step}`
+> CSS 변수 접두사: `--color-visual-gray-dark-{step}`
 > Light 버전 없음 — Dark 모드 UI 전용 중립 팔레트
 
 | Step | Hex |

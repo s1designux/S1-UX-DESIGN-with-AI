@@ -268,16 +268,16 @@ export const FOUNDATION_COLOR: Record<string, string> = {
   "visual-gray/500": "#1B1D1F",
 
   // ── Cool Gray Dark (Dark 전용 스케일) ─────────────
-  "coolgray-dark/50":  "#12141A",
-  "coolgray-dark/100": "#1A1D25",
-  "coolgray-dark/150": "#252830",
-  "coolgray-dark/200": "#353840",
-  "coolgray-dark/250": "#484C58",
-  "coolgray-dark/300": "#606470",
-  "coolgray-dark/350": "#787C88",
-  "coolgray-dark/400": "#989CA8",
-  "coolgray-dark/450": "#B8BCC5",
-  "coolgray-dark/500": "#D8DBE0",
+  "visual-gray-dark/50":  "#12141A",
+  "visual-gray-dark/100": "#1A1D25",
+  "visual-gray-dark/150": "#252830",
+  "visual-gray-dark/200": "#353840",
+  "visual-gray-dark/250": "#484C58",
+  "visual-gray-dark/300": "#606470",
+  "visual-gray-dark/350": "#787C88",
+  "visual-gray-dark/400": "#989CA8",
+  "visual-gray-dark/450": "#B8BCC5",
+  "visual-gray-dark/500": "#D8DBE0",
 };
 
 // ── Number (Foundation primitives — spacing·radius·border-width·font·line) ─

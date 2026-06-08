@@ -69,7 +69,7 @@ const COLOR_PALETTES = [
   'gray', 'gray-dark', 'blue', 'blue-dark', 'red', 'red-dark',
   'orange', 'orange-dark', 'yellow', 'yellow-dark', 'green', 'green-dark',
   'skyblue', 'skyblue-dark', 'purple', 'purple-dark', 'brown', 'brown-dark',
-  'visual-gray', 'coolgray-dark',
+  'visual-gray', 'visual-gray-dark',
 ];
 
 const COMPONENT_PREFIXES = [
@@ -90,7 +90,7 @@ const INSTALLED_SEMANTIC_COLOR_ROLES = ['bg', 'surface', 'text', 'border', 'icon
 const OUT_OF_SCOPE_SEMANTIC_COLOR_ROLES = ['control-bg', 'control-border', 'form-control', 'navigation', 'data', 'text-state'];
 
 const DARK_PALETTES = ['gray-dark', 'blue-dark', 'red-dark', 'orange-dark', 'yellow-dark',
-                       'green-dark', 'skyblue-dark', 'purple-dark', 'brown-dark', 'coolgray-dark'];
+                       'green-dark', 'skyblue-dark', 'purple-dark', 'brown-dark', 'visual-gray-dark'];
 
 function categorize(cssName) {
   // 컴포넌트 토큰 제외

@@ -76,6 +76,7 @@
 | 2026-06-06 | 규칙 체계 정리 (흩어진 규칙 정본화 + 두 갈래 분류 원리) | CLAUDE.md·README.md·.claude/agents/{token-validator,component-verifier,figma-inspector}.md·.claude/skills/figma-to-code/SKILL.md·registry/governance/{audit-rules,token-exceptions}.json | **최상위 원리:** Figma DS 2.4 = 정답지 아닌 참고 출발점. 불일치는 (a)코드실수→수정/(b)사전등록 개선→유지+개선목록/(c)애매→사용자확인(임의 (b) 금지). **rgba:** EX02·EX06 삭제·R12/R13 제거 → EX03(overlay)만. **hover:** 코드 hover가 Figma 누락이면 위반 아님(개선목록). **중복 정본화:** 기계규칙=audit-rules.json·사람규칙=CLAUDE.md(§🤖 공통 규칙 허브)·README는 요약+링크. **죽은 규칙:** §🎯 완료항목 이력 안내(물리삭제는 사용자 확인). Source Guard=유지(활성). |
 | 2026-06-08 | figma-vars-installer Hybrid 패턴 재설계 (Foundation 이름분리·Semantic만 모드) | plugins/figma-vars-installer/src/{vars-data,code}.ts·assets/downloads/s1-design-vars-installer.zip·scripts/installer-coverage-check.js | **표준 디자인 시스템 패턴** (Material 3·Apple HIG·IBM Carbon·Atlassian 동일) 적용. Foundation 컬렉션 단일 Default 모드 + light/dark 팔레트 별도 변수(gray/N · gray-dark/N). Semantic 컬렉션만 Light/Dark 2-mode (Dark는 -dark 변수 alias 참조). 이유: Foundation은 raw 색이라 모드 부여 무의미. CSS tokens.css의 --color-X-N / --color-X-dark-N 와 1:1 정합. installer-coverage-check.js 'DARK_FOLDED' 카테고리 폐기·Foundation Color 검증 208/208 PASS. Figma 디자이너 모드 토글 시 컴포넌트 자동 다크 전환 유지. |
 | 2026-06-08 | figma-token-sync Import 기능에 Hybrid 패턴 적용 (모드 선택 UI) | plugins/figma-token-sync/src/sync/{importTokens,types}.ts·plugins/figma-token-sync/src/{code,ui.html}.ts | Import 기능은 모든 신규 컬렉션을 LIGHT/DARK 2-mode로 강제 생성했음 → Foundation 성격 컬렉션 import 시 잘못된 구조. `CollectionMode` 타입 신설("single"=Foundation 단일 Default / "light-dark"=Semantic 2-mode). applyImport(tokens, name, mode) 시그니처 확장 (기본 light-dark, 기존 호출자 호환). UI에 라디오 버튼 2개 추가 (Semantic 기본 선택). PluginMessage.importCollectionMode 페이로드 전달. 보호된 이름(semantic·Foundation) 차단 로직 유지. |
+| 2026-06-08 | `coolgray-dark` → `visual-gray-dark` 통일 (페어 명명 일관성) | assets/css/tokens.css·plugins/figma-vars-installer/src/vars-data.ts·tokens/foundation.md·CLAUDE.md·registry/tokens/{foundation.colors,canonical-token-draft,canonical-token-promotion-plan,sw-v2.4.tokens}.{json,css}·scripts/{gate-check,sync-install-prompt,installer-coverage-check,guard/load-registry}.js·data/figma-tokens/{*.json,*.js}·pages/foundation.html·assets/downloads/s1-design-vars-installer.zip | 사용자 지적: 다른 팔레트는 모두 `{name} + {name}-dark` 페어인데 `visual-gray`만 `coolgray-dark`라는 다른 이름과 짝지어져 일관성 깨짐. visual-gray와 coolgray-dark가 사실상 같은 cool gray 계열의 light/dark 페어임 확인(visual-gray/500=#1B1D1F, coolgray-dark/50=#12141A — 인접 톤). 17 파일 80건 sed 일괄 치환. CSS·HTML 사용처 0건이라 안전. CLAUDE.md 표 통합 (Visual Gray 한 줄로). Gate Check / 빌드 / install-prompt sync 모두 PASS. |
 
 ---
 
@@ -272,8 +273,7 @@ Component Token    (컴포넌트 별칭 — --input-* / --button-* 등)
 | Skyblue | `--color-skyblue-{step}` | `--color-skyblue-dark-{step}` | 50 ~ 500 |
 | Purple | `--color-purple-{step}` | `--color-purple-dark-{step}` | 50 ~ 500 |
 | Brown | `--color-brown-{step}` | `--color-brown-dark-{step}` | 50 ~ 500 |
-| Visual Gray | `--color-visual-gray-{step}` | — | 50 ~ 500 |
-| Cool Gray Dark | — | `--color-coolgray-dark-{step}` | 50 ~ 500 |
+| Visual Gray | `--color-visual-gray-{step}` | `--color-visual-gray-dark-{step}` | 50 ~ 500 |
 | Base | `--color-base-white` / `--color-base-black` | — | — |
 | Brand | `--color-brand-blue` / `-red` / `-gray` / `-ci` | — | — |
 | Status Dark | `--color-status-dark-red` / `-green` / `-yellow` | — | alias |

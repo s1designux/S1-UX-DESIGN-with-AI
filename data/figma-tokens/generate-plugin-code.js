@@ -9,7 +9,7 @@
  *   ... (9개 계열 페어링)
  *   color/status-dark/* → 단일 값 (Dark 전용 alias)
  *   color/visual-gray/* → Light 전용
- *   color/coolgray-dark/* → Dark 전용
+ *   color/visual-gray-dark/* → Dark 전용
  *   color/base/*, color/brand/* → 동일 값 (모드 무관)
  */
 
@@ -65,7 +65,7 @@ function flatten(obj, prefix = '') {
 const prim = tokens.primitive;
 
 // 페어링 맵: lightKey → darkKey (Figma에서 같은 변수 이름, Light/Dark 모드)
-// visual-gray Light + coolgray-dark Dark → color/visual-gray/{step}
+// visual-gray Light + visual-gray-dark Dark → color/visual-gray/{step}
 const PAIRED_MAP = {
   'gray':        'gray-dark',
   'blue':        'blue-dark',
@@ -76,7 +76,7 @@ const PAIRED_MAP = {
   'skyblue':     'skyblue-dark',
   'purple':      'purple-dark',
   'brown':       'brown-dark',
-  'visual-gray': 'coolgray-dark',
+  'visual-gray': 'visual-gray-dark',
 };
 
 // 페어 팔레트 데이터 생성
