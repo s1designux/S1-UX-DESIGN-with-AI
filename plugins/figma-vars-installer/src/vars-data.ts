@@ -507,6 +507,24 @@ export const SEMANTIC_COLOR: Record<string, SemanticColorEntry> = {
   // ── overlay ────────────────────────────────
   "color/overlay": { light: "rgba(0,0,0,0.5)", dark: "rgba(0,0,0,0.75)" },
 
+  // ── date-picker ────────────────────────────────
+  // 신설: components.html 의 .s1-date-picker__* CSS 토큰 사용 기반
+  // 레거시 semantic 컬렉션에 없던 그룹 — 우리 코드의 datepicker 디자인 정합
+  "color/date-picker/bg/panel":         { light: "base/white", dark: "gray-dark/100" },
+  "color/date-picker/bg/hover":         { light: "gray/50",    dark: "gray-dark/200" },
+  "color/date-picker/bg/today":         { light: "base/white", dark: "gray-dark/100" },
+  "color/date-picker/bg/selected":      { light: "blue/400",   dark: "blue-dark/300" },
+  "color/date-picker/border/panel":     { light: "gray/300",   dark: "gray-dark/500" },
+  "color/date-picker/border/today":     { light: "blue/400",   dark: "blue-dark/300" },
+  "color/date-picker/text/primary":     { light: "gray/900",   dark: "gray-dark/900" },
+  "color/date-picker/text/secondary":   { light: "gray/800",   dark: "gray-dark/800" },
+  "color/date-picker/text/disabled":    { light: "gray/300",   dark: "gray-dark/400" },
+  "color/date-picker/text/other-month": { light: "gray/300",   dark: "gray-dark/400" },
+  "color/date-picker/text/sunday":      { light: "red/400",    dark: "red-dark/350" },
+  "color/date-picker/text/saturday":    { light: "blue/400",   dark: "blue-dark/300" },
+  "color/date-picker/text/today":       { light: "blue/400",   dark: "blue-dark/300" },
+  "color/date-picker/text/selected":    { light: "base/white", dark: "base/white" },
+
   // ── pagination ────────────────────────────────
   "color/pagination/control/bg/default": { light: "base/white", dark: "base/white" },
   "color/pagination/control/bg/disabled": { light: "gray/50", dark: "gray-dark/200" },
