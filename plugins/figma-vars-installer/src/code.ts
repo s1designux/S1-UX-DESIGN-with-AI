@@ -34,6 +34,12 @@ figma.ui.onmessage = async (msg: { type: string }) => {
     await runInstall();
   } else if (msg.type === "cancel") {
     figma.closePlugin();
+  } else if (msg.type === "get-collection-names") {
+    figma.ui.postMessage({
+      type: "collection-names",
+      foundation: FOUNDATION_COLLECTION,
+      semantic: SEMANTIC_COLLECTION,
+    });
   }
 };
 
@@ -105,12 +111,25 @@ function setupLightDarkModes(collection: VariableCollection): {
   }
   const lightId = ensureMode(collection, LIGHT_MODE);
   const darkId  = ensureMode(collection, DARK_MODE);
+  // Light/Dark 외 모드 제거 — 옛 plugin 의 "LIGHT"/"DARK" 대문자 모드나 "Mode 1" 잔존 정리
+  const allowed = new Set([lightId, darkId]);
+  const extras = collection.modes.filter((m) => !allowed.has(m.modeId));
+  for (const m of extras) {
+    try { collection.removeMode(m.modeId); } catch (e) { /* skip */ }
+  }
   return { lightId, darkId };
 }
 
 // ── Scope 분배 ────────────────────────────────────────────────────────────────
 
 function colorScopes(path: string): VariableScope[] {
+  // 레거시 DS 2.4 컴포넌트별 토큰 — 슬롯 패턴 (button/bg/, button/border/, button/label/ 등)
+  if (/^color\/[a-z-]+\/bg\//.test(path))     return ["FRAME_FILL", "SHAPE_FILL"];
+  if (/^color\/[a-z-]+\/border\//.test(path)) return ["STROKE_COLOR"];
+  if (/^color\/[a-z-]+\/label\//.test(path))  return ["TEXT_FILL"];
+  if (/^color\/[a-z-]+\/icon\//.test(path))   return ["SHAPE_FILL", "STROKE_COLOR"];
+
+  // 역할 기반 (Material 3 스타일 — 기존)
   if (path.startsWith("color/bg/") || path.startsWith("color/surface/")) {
     return ["FRAME_FILL", "SHAPE_FILL"];
   }
@@ -170,11 +189,18 @@ function resolveNumberRef(
 /**
  * Foundation 컬렉션의 기본 모드를 "Default"로 정리한다.
  * Foundation은 raw 색이라 모드 부여가 무의미 → 단일 모드 유지 (Hybrid 패턴).
+ * 기존 컬렉션에 LIGHT/DARK 등 추가 모드가 있으면 제거 (옛 plugin 호환 정리).
  */
 function setupSingleMode(collection: VariableCollection, modeName: string): string {
   const first = collection.modes[0];
   if (first.name !== modeName) {
     collection.renameMode(first.modeId, modeName);
+  }
+  // 추가 모드 제거 — Foundation 은 단일 Default 만 유지
+  // (Figma 는 마지막 모드 제거 불가하므로 first 외 모두 제거)
+  const extras = collection.modes.filter((m) => m.modeId !== first.modeId);
+  for (const m of extras) {
+    try { collection.removeMode(m.modeId); } catch (e) { /* skip */ }
   }
   return first.modeId;
 }

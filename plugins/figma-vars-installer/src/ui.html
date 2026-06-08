@@ -98,18 +98,33 @@
 
 <div class="info-box">
   <div class="info-row">
-    <span class="badge badge-blue">Foundation</span>
-    <span>색상 팔레트 + spacing · radius · font-size 등 원시값 (~170개, Light / Dark 2모드)</span>
+    <span class="badge badge-blue">Foundation V2 <span id="meta-date-1"></span></span>
+    <span>색상 팔레트 (light + dark 분리) + spacing · radius · font-size 등 원시값. 단일 Default 모드.</span>
   </div>
   <div class="info-row">
-    <span class="badge badge-green">semantic</span>
-    <span>색상 역할 + padding · sizing · radius 역할 alias (~95개, Light / Dark 2모드)</span>
+    <span class="badge badge-green">Semantic V2 <span id="meta-date-2"></span></span>
+    <span>색상·간격·사이즈 역할 alias + 레거시 컴포넌트별 토큰 (button 등). Light / Dark 2모드.</span>
   </div>
   <div class="info-row">
-    <span class="badge badge-gray">업데이트 모드</span>
-    <span>이미 설치되어 있으면 값을 덮어씁니다. 삭제 없음.</span>
+    <span class="badge badge-gray">버전 관리</span>
+    <span>매 빌드마다 yymmdd 자동 갱신 → 기존 컬렉션과 충돌 없이 새 컬렉션 생성.</span>
   </div>
 </div>
+<script>
+  // 컬렉션 이름 메타 표시 — 빌드 시점 yymmdd 를 UI 에 노출
+  (function setupCollectionMeta() {
+    parent.postMessage({ pluginMessage: { type: "get-collection-names" } }, "*");
+  })();
+  window.addEventListener("message", function (e) {
+    var msg = e.data && e.data.pluginMessage;
+    if (msg && msg.type === "collection-names") {
+      var fd = (msg.foundation || "").replace(/^Foundation V2 /, "");
+      var sd = (msg.semantic || "").replace(/^Semantic V2 /, "");
+      var f = document.getElementById("meta-date-1"); if (f) f.textContent = fd;
+      var s = document.getElementById("meta-date-2"); if (s) s.textContent = sd;
+    }
+  });
+</script>
 
 <div class="warn-box">
   ⚠️ <strong>설치 전 확인:</strong> 이 파일에 같은 이름의 Variables Collection이 있으면

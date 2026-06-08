@@ -1,0 +1,928 @@
+{
+  "meta": {
+    "source": "registry/figma/snapshots/figma-variable-metadata.ux-guide-2.4.json",
+    "extractedAt": "2026-06-08T02:54:42.163Z",
+    "description": "레거시 semantic 컴포넌트별 토큰 — Light alias는 레거시 그대로. Dark는 사용자가 컴포넌트별로 자료 제공 시 채움.",
+    "totalTokens": 147,
+    "excludedFoundationPalettes": [
+      "gray",
+      "blue",
+      "red",
+      "orange",
+      "yellow",
+      "green",
+      "skyblue",
+      "purple",
+      "brown",
+      "visual-gray",
+      "base",
+      "brand"
+    ],
+    "lastUpdated": "2026-06-08T03:16:53.932Z",
+    "button": "Figma node 1352:3467 (에스원 GUI) 기반 dark 매핑. assist 6개는 Figma 미확인 — 사용자 결정 대기."
+  },
+  "groups": {
+    "control": [
+      {
+        "name": "color/control/bg/default",
+        "light": "UNRESOLVED:VariableID:1:3",
+        "dark": null
+      },
+      {
+        "name": "color/control/bg/default-alt",
+        "light": "UNRESOLVED:VariableID:1:11",
+        "dark": null
+      },
+      {
+        "name": "color/control/bg/hover",
+        "light": "UNRESOLVED:VariableID:1:11",
+        "dark": null
+      },
+      {
+        "name": "color/control/bg/selected",
+        "light": "UNRESOLVED:VariableID:2:26",
+        "dark": null
+      },
+      {
+        "name": "color/control/bg/disabled",
+        "light": "UNRESOLVED:VariableID:1:11",
+        "dark": null
+      },
+      {
+        "name": "color/control/border/default",
+        "light": "UNRESOLVED:VariableID:1:17",
+        "dark": null
+      },
+      {
+        "name": "color/control/border/default-alt",
+        "light": "UNRESOLVED:VariableID:1:11",
+        "dark": null
+      },
+      {
+        "name": "color/control/border/selected",
+        "light": "UNRESOLVED:VariableID:2:26",
+        "dark": null
+      },
+      {
+        "name": "color/control/border/disabled",
+        "light": "UNRESOLVED:VariableID:1:20",
+        "dark": null
+      },
+      {
+        "name": "color/control/border/disabled-alt2",
+        "light": "UNRESOLVED:VariableID:1:11",
+        "dark": null
+      },
+      {
+        "name": "color/control/text/selected",
+        "light": "UNRESOLVED:VariableID:1:3",
+        "dark": null
+      },
+      {
+        "name": "color/control/text/disabled",
+        "light": "UNRESOLVED:VariableID:1:20",
+        "dark": null
+      },
+      {
+        "name": "color/control/indicator/selected",
+        "light": "UNRESOLVED:VariableID:2:26",
+        "dark": null
+      },
+      {
+        "name": "color/control/indicator/selected-alt",
+        "light": "UNRESOLVED:VariableID:1:3",
+        "dark": null
+      },
+      {
+        "name": "color/control/indicator/unselected",
+        "light": "UNRESOLVED:VariableID:1:28",
+        "dark": null
+      },
+      {
+        "name": "color/control/indicator/unselected-alt",
+        "light": "UNRESOLVED:VariableID:1:17",
+        "dark": null
+      },
+      {
+        "name": "color/control/indicator/disabled",
+        "light": "UNRESOLVED:VariableID:1:20",
+        "dark": null
+      },
+      {
+        "name": "color/control/bg/selected-alt",
+        "light": "UNRESOLVED:VariableID:1:3",
+        "dark": null
+      },
+      {
+        "name": "color/control/label/default",
+        "light": "UNRESOLVED:VariableID:1:34",
+        "dark": null
+      },
+      {
+        "name": "color/control/label/disabled",
+        "light": "UNRESOLVED:VariableID:1:20",
+        "dark": null
+      },
+      {
+        "name": "color/control/text/unselected",
+        "light": "UNRESOLVED:VariableID:1:28",
+        "dark": null
+      },
+      {
+        "name": "color/control/border/disabled-alt1",
+        "light": "UNRESOLVED:VariableID:1:17",
+        "dark": null
+      }
+    ],
+    "text": [
+      {
+        "name": "color/text/title/primary",
+        "light": "color/base/black",
+        "dark": null
+      },
+      {
+        "name": "color/text/title/secondary",
+        "light": "color/gray/800",
+        "dark": null
+      },
+      {
+        "name": "color/text/title/tertiary",
+        "light": "color/gray/600",
+        "dark": null
+      },
+      {
+        "name": "color/text/body/primary",
+        "light": "UNRESOLVED:VariableID:1:34",
+        "dark": null
+      },
+      {
+        "name": "color/text/body/secondary",
+        "light": "UNRESOLVED:VariableID:1:29",
+        "dark": null
+      },
+      {
+        "name": "color/text/body/tertiary",
+        "light": "UNRESOLVED:VariableID:1:28",
+        "dark": null
+      },
+      {
+        "name": "color/text/state/accent",
+        "light": "UNRESOLVED:VariableID:2:26",
+        "dark": null
+      },
+      {
+        "name": "color/text/state/correct",
+        "light": "UNRESOLVED:VariableID:2:26",
+        "dark": null
+      },
+      {
+        "name": "color/text/state/caution",
+        "light": "UNRESOLVED:VariableID:2:49",
+        "dark": null
+      },
+      {
+        "name": "color/text/state/caption",
+        "light": "UNRESOLVED:VariableID:1:28",
+        "dark": null
+      },
+      {
+        "name": "color/text/state/placehoder",
+        "light": "UNRESOLVED:VariableID:1:28",
+        "dark": null
+      },
+      {
+        "name": "color/text/state/helper",
+        "light": "UNRESOLVED:VariableID:1:28",
+        "dark": null
+      },
+      {
+        "name": "color/text/state/disabled",
+        "light": "UNRESOLVED:VariableID:1:20",
+        "dark": null
+      },
+      {
+        "name": "color/text/state/accent-alt",
+        "light": "UNRESOLVED:VariableID:1:3",
+        "dark": null
+      }
+    ],
+    "form-control": [
+      {
+        "name": "color/form-control/label/default",
+        "light": "UNRESOLVED:VariableID:1:34",
+        "dark": null
+      },
+      {
+        "name": "color/form-control/label/disabled",
+        "light": "UNRESOLVED:VariableID:1:20",
+        "dark": null
+      },
+      {
+        "name": "color/form-control/text/default",
+        "light": "UNRESOLVED:VariableID:1:34",
+        "dark": null
+      },
+      {
+        "name": "color/form-control/text/selected",
+        "light": "UNRESOLVED:VariableID:2:26",
+        "dark": null
+      },
+      {
+        "name": "color/form-control/text/disabled",
+        "light": "UNRESOLVED:VariableID:1:20",
+        "dark": null
+      },
+      {
+        "name": "color/form-control/text/placeholder",
+        "light": "UNRESOLVED:VariableID:1:28",
+        "dark": null
+      },
+      {
+        "name": "color/form-control/bg/default",
+        "light": "UNRESOLVED:VariableID:1:3",
+        "dark": null
+      },
+      {
+        "name": "color/form-control/bg/selected",
+        "light": "UNRESOLVED:VariableID:1:3",
+        "dark": null
+      },
+      {
+        "name": "color/form-control/bg/disabled",
+        "light": "UNRESOLVED:VariableID:1:11",
+        "dark": null
+      },
+      {
+        "name": "color/form-control/border/default",
+        "light": "UNRESOLVED:VariableID:1:17",
+        "dark": null
+      },
+      {
+        "name": "color/form-control/border/selected",
+        "light": "UNRESOLVED:VariableID:2:26",
+        "dark": null
+      },
+      {
+        "name": "color/form-control/border/disabled",
+        "light": "UNRESOLVED:VariableID:1:17",
+        "dark": null
+      },
+      {
+        "name": "color/form-control/border/correct",
+        "light": "UNRESOLVED:VariableID:2:26",
+        "dark": null
+      },
+      {
+        "name": "color/form-control/border/error",
+        "light": "UNRESOLVED:VariableID:2:49",
+        "dark": null
+      }
+    ],
+    "button": [
+      {
+        "name": "color/button/bg/primary--default",
+        "light": "color/blue/400",
+        "dark": "blue-dark/300",
+        "darkHex": "#3070D8",
+        "darkSource": "color/action/primary/default",
+        "lightFoundation": "blue/400",
+        "lightSource": "color/blue/400",
+        "lightHex": "#1D6CEB"
+      },
+      {
+        "name": "color/button/bg/primary--hover",
+        "light": "color/blue/500",
+        "dark": "blue-dark/250",
+        "darkHex": "#2A65C8",
+        "darkSource": "color/action/primary/hover",
+        "lightFoundation": "blue/500",
+        "lightSource": "color/blue/500",
+        "lightHex": "#2747B9"
+      },
+      {
+        "name": "color/button/bg/secondary--hover",
+        "light": "color/gray/50",
+        "dark": "gray-dark/200",
+        "darkHex": "#24252C",
+        "darkSource": "color/bg/subtle (large=bg/muted #2E2F38)",
+        "lightFoundation": "gray/50",
+        "lightSource": "color/gray/50",
+        "lightHex": "#F5F5F5"
+      },
+      {
+        "name": "color/button/bg/secondary--default",
+        "light": "color/base/white",
+        "dark": "gray-dark/400",
+        "darkHex": "#35363F",
+        "darkSource": "color/surface/default",
+        "lightFoundation": "base/white",
+        "lightSource": "color/base/white",
+        "lightHex": "#FFFFFF"
+      },
+      {
+        "name": "color/button/bg/blue-line--default",
+        "light": "color/base/white",
+        "dark": "gray-dark/400",
+        "darkHex": "#35363F",
+        "darkSource": "color/surface/default",
+        "lightFoundation": "base/white",
+        "lightSource": "color/base/white",
+        "lightHex": "#FFFFFF"
+      },
+      {
+        "name": "color/button/bg/blue-line--hover",
+        "light": "color/blue/50",
+        "dark": "blue-dark/100",
+        "darkHex": "#112B55",
+        "darkSource": "color/action/primary/subtle",
+        "lightFoundation": "blue/50",
+        "lightSource": "color/blue/50",
+        "lightHex": "#E2F1FF"
+      },
+      {
+        "name": "color/button/bg/disabled",
+        "light": "color/gray/50",
+        "dark": "gray-dark/200",
+        "darkHex": "#24252C",
+        "darkSource": "color/bg/subtle",
+        "lightFoundation": "gray/50",
+        "lightSource": "color/gray/50",
+        "lightHex": "#F5F5F5"
+      },
+      {
+        "name": "color/button/border/primary--default",
+        "light": "color/blue/400",
+        "dark": null,
+        "darkHex": "transparent",
+        "darkSource": "transparent (no border)",
+        "lightFoundation": "blue/400",
+        "lightSource": "color/blue/400",
+        "lightHex": "#1D6CEB"
+      },
+      {
+        "name": "color/button/border/primary--hover",
+        "light": "color/blue/500",
+        "dark": null,
+        "darkHex": "transparent",
+        "darkSource": "transparent (no border)",
+        "lightFoundation": "blue/500",
+        "lightSource": "color/blue/500",
+        "lightHex": "#2747B9"
+      },
+      {
+        "name": "color/button/border/secondary--default",
+        "light": "color/gray/200",
+        "dark": "gray-dark/200",
+        "darkHex": "#24252C",
+        "darkSource": "color/border/default",
+        "lightFoundation": "gray/200",
+        "lightSource": "color/gray/200",
+        "lightHex": "#D9D9D9"
+      },
+      {
+        "name": "color/button/border/secondary--hover",
+        "light": "color/gray/200",
+        "dark": "gray-dark/200",
+        "darkHex": "#24252C",
+        "darkSource": "color/border/default",
+        "lightFoundation": "gray/200",
+        "lightSource": "color/gray/200",
+        "lightHex": "#D9D9D9"
+      },
+      {
+        "name": "color/button/border/blue-line--default",
+        "light": "UNRESOLVED:VariableID:2:26",
+        "dark": "blue-dark/300",
+        "darkHex": "#3070D8",
+        "darkSource": "color/action/primary/default",
+        "lightFoundation": "blue/400",
+        "lightSource": null,
+        "lightHex": null
+      },
+      {
+        "name": "color/button/border/blue-line--hover",
+        "light": "UNRESOLVED:VariableID:2:26",
+        "dark": "blue-dark/300",
+        "darkHex": "#3070D8",
+        "darkSource": "color/action/primary/default",
+        "lightFoundation": "blue/500",
+        "lightSource": null,
+        "lightHex": null
+      },
+      {
+        "name": "color/button/border/disabled",
+        "light": "UNRESOLVED:VariableID:1:17",
+        "dark": "gray-dark/200",
+        "darkHex": "#24252C",
+        "darkSource": "color/border/disabled",
+        "lightFoundation": "gray/200",
+        "lightSource": null,
+        "lightHex": null
+      },
+      {
+        "name": "color/button/label/primary--default",
+        "light": "UNRESOLVED:VariableID:1:3",
+        "dark": "base/white",
+        "darkHex": "#FFFFFF",
+        "darkSource": "color/action/primary/text",
+        "lightFoundation": "base/white",
+        "lightSource": null,
+        "lightHex": null
+      },
+      {
+        "name": "color/button/label/primary--hover",
+        "light": "UNRESOLVED:VariableID:1:3",
+        "dark": "base/white",
+        "darkHex": "#FFFFFF",
+        "darkSource": "color/action/primary/text",
+        "lightFoundation": "base/white",
+        "lightSource": null,
+        "lightHex": null
+      },
+      {
+        "name": "color/button/label/secondary--default",
+        "light": "UNRESOLVED:VariableID:1:34",
+        "dark": "gray-dark/800",
+        "darkHex": "#B8BABF",
+        "darkSource": "color/text/secondary",
+        "lightFoundation": "gray/800",
+        "lightSource": null,
+        "lightHex": null
+      },
+      {
+        "name": "color/button/label/secondary--hover",
+        "light": "UNRESOLVED:VariableID:1:34",
+        "dark": "gray-dark/800",
+        "darkHex": "#B8BABF",
+        "darkSource": "color/text/secondary",
+        "lightFoundation": "gray/800",
+        "lightSource": null,
+        "lightHex": null
+      },
+      {
+        "name": "color/button/label/blue-line--default",
+        "light": "UNRESOLVED:VariableID:2:26",
+        "dark": "blue-dark/300",
+        "darkHex": "#3070D8",
+        "darkSource": "color/action/primary/default",
+        "lightFoundation": "blue/400",
+        "lightSource": null,
+        "lightHex": null
+      },
+      {
+        "name": "color/button/label/blue-line--hover",
+        "light": "UNRESOLVED:VariableID:2:26",
+        "dark": "blue-dark/300",
+        "darkHex": "#3070D8",
+        "darkSource": "color/action/primary/default",
+        "lightFoundation": "blue/500",
+        "lightSource": null,
+        "lightHex": null
+      },
+      {
+        "name": "color/button/label/disabled",
+        "light": "UNRESOLVED:VariableID:1:20",
+        "dark": "gray-dark/400",
+        "darkHex": "#35363F",
+        "darkSource": "color/text/disabled",
+        "lightFoundation": "gray/300",
+        "lightSource": null,
+        "lightHex": null
+      },
+      {
+        "name": "color/button/bg/assist--hover",
+        "light": "color/gray/50",
+        "dark": null,
+        "darkHex": null,
+        "darkSource": "TODO: Figma 미확인",
+        "lightFoundation": "gray/50",
+        "lightSource": "color/gray/50",
+        "lightHex": "#F5F5F5",
+        "exclude": true
+      },
+      {
+        "name": "color/button/bg/assist--default",
+        "light": "color/base/white",
+        "dark": null,
+        "darkHex": null,
+        "darkSource": "TODO: Figma 미확인",
+        "lightFoundation": "base/white",
+        "lightSource": "color/base/white",
+        "lightHex": "#FFFFFF",
+        "exclude": true
+      },
+      {
+        "name": "color/button/border/assist--hover",
+        "light": "UNRESOLVED:VariableID:1:17",
+        "dark": null,
+        "darkHex": null,
+        "darkSource": "TODO: Figma 미확인",
+        "lightFoundation": null,
+        "lightSource": null,
+        "lightHex": null,
+        "exclude": true
+      },
+      {
+        "name": "color/button/border/assist--default",
+        "light": "UNRESOLVED:VariableID:1:17",
+        "dark": null,
+        "darkHex": null,
+        "darkSource": "TODO: Figma 미확인",
+        "lightFoundation": null,
+        "lightSource": null,
+        "lightHex": null,
+        "exclude": true
+      },
+      {
+        "name": "color/button/label/assist--hover",
+        "light": "UNRESOLVED:VariableID:1:28",
+        "dark": null,
+        "darkHex": null,
+        "darkSource": "TODO: Figma 미확인",
+        "lightFoundation": null,
+        "lightSource": null,
+        "lightHex": null,
+        "exclude": true
+      },
+      {
+        "name": "color/button/label/assist--default",
+        "light": "UNRESOLVED:VariableID:1:28",
+        "dark": null,
+        "darkHex": null,
+        "darkSource": "TODO: Figma 미확인",
+        "lightFoundation": null,
+        "lightSource": null,
+        "lightHex": null,
+        "exclude": true
+      }
+    ],
+    "dropdown": [
+      {
+        "name": "color/dropdown/option/bg/default",
+        "light": "UNRESOLVED:VariableID:1:3",
+        "dark": null
+      },
+      {
+        "name": "color/dropdown/option/bg/hover",
+        "light": "UNRESOLVED:VariableID:1:11",
+        "dark": null
+      },
+      {
+        "name": "color/dropdown/option/bg/selected",
+        "light": "UNRESOLVED:VariableID:1:3",
+        "dark": null
+      },
+      {
+        "name": "color/dropdown/option/bg/disabled",
+        "light": "UNRESOLVED:VariableID:1:3",
+        "dark": null
+      },
+      {
+        "name": "color/dropdown/option/label/default",
+        "light": "UNRESOLVED:VariableID:1:28",
+        "dark": null
+      },
+      {
+        "name": "color/dropdown/option/label/hover",
+        "light": "UNRESOLVED:VariableID:1:28",
+        "dark": null
+      },
+      {
+        "name": "color/dropdown/option/label/selected",
+        "light": "UNRESOLVED:VariableID:2:26",
+        "dark": null
+      },
+      {
+        "name": "color/dropdown/option/label/disabled",
+        "light": "UNRESOLVED:VariableID:1:20",
+        "dark": null
+      },
+      {
+        "name": "color/dropdown/list/bg",
+        "light": "UNRESOLVED:VariableID:1:3",
+        "dark": null
+      },
+      {
+        "name": "color/dropdown/list/border",
+        "light": "UNRESOLVED:VariableID:1:17",
+        "dark": null
+      },
+      {
+        "name": "color/dropdown/option/border/default",
+        "light": "UNRESOLVED:VariableID:1:3",
+        "dark": null
+      },
+      {
+        "name": "color/dropdown/option/border/hover",
+        "light": "UNRESOLVED:VariableID:1:11",
+        "dark": null
+      },
+      {
+        "name": "color/dropdown/option/border/selected",
+        "light": "UNRESOLVED:VariableID:2:26",
+        "dark": null
+      }
+    ],
+    "icon": [
+      {
+        "name": "color/icon/blue",
+        "light": "UNRESOLVED:VariableID:2:26",
+        "dark": null
+      },
+      {
+        "name": "color/icon/gray-light",
+        "light": "UNRESOLVED:VariableID:1:20",
+        "dark": null
+      },
+      {
+        "name": "color/icon/gray",
+        "light": "UNRESOLVED:VariableID:1:28",
+        "dark": null
+      },
+      {
+        "name": "color/icon/gray-dark",
+        "light": "UNRESOLVED:VariableID:1:34",
+        "dark": null
+      },
+      {
+        "name": "color/icon/white",
+        "light": "UNRESOLVED:VariableID:1:3",
+        "dark": null
+      },
+      {
+        "name": "color/icon/red",
+        "light": "UNRESOLVED:VariableID:2:49",
+        "dark": null
+      }
+    ],
+    "line": [
+      {
+        "name": "color/line/gray/default",
+        "light": "UNRESOLVED:VariableID:1:17",
+        "dark": null
+      },
+      {
+        "name": "color/line/gray/subtle",
+        "light": "UNRESOLVED:VariableID:1:14",
+        "dark": null
+      },
+      {
+        "name": "color/line/gray/strong",
+        "light": "UNRESOLVED:VariableID:1:34",
+        "dark": null
+      },
+      {
+        "name": "color/line/white",
+        "light": "UNRESOLVED:VariableID:1:3",
+        "dark": null
+      },
+      {
+        "name": "color/line/blue",
+        "light": "UNRESOLVED:VariableID:2:26",
+        "dark": null
+      }
+    ],
+    "chip": [
+      {
+        "name": "color/chip/solid/bg/default",
+        "light": "UNRESOLVED:VariableID:1:11",
+        "dark": null
+      },
+      {
+        "name": "color/chip/solid/bg/selected",
+        "light": "UNRESOLVED:VariableID:2:26",
+        "dark": null
+      },
+      {
+        "name": "color/chip/solid/bg/disabled",
+        "light": "UNRESOLVED:VariableID:1:11",
+        "dark": null
+      },
+      {
+        "name": "color/chip/solid/border/default",
+        "light": "UNRESOLVED:VariableID:1:11",
+        "dark": null
+      },
+      {
+        "name": "color/chip/solid/border/selected",
+        "light": "UNRESOLVED:VariableID:2:26",
+        "dark": null
+      },
+      {
+        "name": "color/chip/solid/border/disabled",
+        "light": "UNRESOLVED:VariableID:1:11",
+        "dark": null
+      },
+      {
+        "name": "color/chip/line/bg/default",
+        "light": "UNRESOLVED:VariableID:1:3",
+        "dark": null
+      },
+      {
+        "name": "color/chip/line/bg/selected",
+        "light": "UNRESOLVED:VariableID:1:3",
+        "dark": null
+      },
+      {
+        "name": "color/chip/line/bg/disabled",
+        "light": "UNRESOLVED:VariableID:1:11",
+        "dark": null
+      },
+      {
+        "name": "color/chip/line/border/default",
+        "light": "UNRESOLVED:VariableID:1:17",
+        "dark": null
+      },
+      {
+        "name": "color/chip/line/border/selected",
+        "light": "UNRESOLVED:VariableID:2:26",
+        "dark": null
+      },
+      {
+        "name": "color/chip/line/border/disabled",
+        "light": "UNRESOLVED:VariableID:1:17",
+        "dark": null
+      },
+      {
+        "name": "color/chip/solid/label/default",
+        "light": "UNRESOLVED:VariableID:1:28",
+        "dark": null
+      },
+      {
+        "name": "color/chip/solid/label/selected",
+        "light": "UNRESOLVED:VariableID:1:3",
+        "dark": null
+      },
+      {
+        "name": "color/chip/solid/label/disabled",
+        "light": "UNRESOLVED:VariableID:1:20",
+        "dark": null
+      },
+      {
+        "name": "color/chip/line/label/default",
+        "light": "UNRESOLVED:VariableID:1:28",
+        "dark": null
+      },
+      {
+        "name": "color/chip/line/label/selected",
+        "light": "UNRESOLVED:VariableID:2:26",
+        "dark": null
+      },
+      {
+        "name": "color/chip/line/label/disabled",
+        "light": "UNRESOLVED:VariableID:1:20",
+        "dark": null
+      }
+    ],
+    "data": [
+      {
+        "name": "color/data/border/strong",
+        "light": "color/gray/800",
+        "dark": null
+      },
+      {
+        "name": "color/data/state/default",
+        "light": "UNRESOLVED:VariableID:1:3",
+        "dark": null
+      },
+      {
+        "name": "color/data/state/hover",
+        "light": "UNRESOLVED:VariableID:1:39",
+        "dark": null
+      },
+      {
+        "name": "color/data/border/light",
+        "light": "color/gray/100",
+        "dark": null
+      }
+    ],
+    "pagination": [
+      {
+        "name": "color/pagination/control/bg/default",
+        "light": "UNRESOLVED:VariableID:1:3",
+        "dark": null
+      },
+      {
+        "name": "color/pagination/control/bg/hover",
+        "light": "UNRESOLVED:VariableID:1:11",
+        "dark": null
+      },
+      {
+        "name": "color/pagination/control/border/default",
+        "light": "UNRESOLVED:VariableID:1:14",
+        "dark": null
+      },
+      {
+        "name": "color/pagination/control/border/hover",
+        "light": "UNRESOLVED:VariableID:1:14",
+        "dark": null
+      },
+      {
+        "name": "color/pagination/control/border/disabled",
+        "light": "UNRESOLVED:VariableID:1:14",
+        "dark": null
+      },
+      {
+        "name": "color/pagination/control/bg/disabled",
+        "light": "UNRESOLVED:VariableID:1:3",
+        "dark": null
+      }
+    ],
+    "overlay": [
+      {
+        "name": "color/overlay",
+        "light": "#000000",
+        "dark": null
+      }
+    ],
+    "navigation": [
+      {
+        "name": "color/navigation/label/default",
+        "light": "UNRESOLVED:VariableID:1:29",
+        "dark": null
+      },
+      {
+        "name": "color/navigation/label/default-alt",
+        "light": "UNRESOLVED:VariableID:1:5",
+        "dark": null
+      },
+      {
+        "name": "color/navigation/label/selected",
+        "light": "UNRESOLVED:VariableID:2:26",
+        "dark": null
+      },
+      {
+        "name": "color/navigation/label/hover",
+        "light": "UNRESOLVED:VariableID:2:26",
+        "dark": null
+      },
+      {
+        "name": "color/navigation/background",
+        "light": "UNRESOLVED:VariableID:1:3",
+        "dark": null
+      },
+      {
+        "name": "color/navigation/indicator/default",
+        "light": "UNRESOLVED:VariableID:1:17",
+        "dark": null
+      },
+      {
+        "name": "color/navigation/indicator/default-alt",
+        "light": "UNRESOLVED:VariableID:1:3",
+        "dark": null
+      },
+      {
+        "name": "color/navigation/indicator/selected",
+        "light": "UNRESOLVED:VariableID:2:26",
+        "dark": null
+      },
+      {
+        "name": "color/navigation/indicator/hover",
+        "light": "UNRESOLVED:VariableID:2:26",
+        "dark": null
+      }
+    ],
+    "status-card": [
+      {
+        "name": "color/status-card/text/primary--defualt",
+        "light": "UNRESOLVED:VariableID:1:3",
+        "dark": null
+      },
+      {
+        "name": "color/status-card/text/primary--sub",
+        "light": "UNRESOLVED:VariableID:2:8",
+        "dark": null
+      },
+      {
+        "name": "color/status-card/text/secondary--defualt",
+        "light": "UNRESOLVED:VariableID:1:3",
+        "dark": null
+      },
+      {
+        "name": "color/status-card/text/secondary--sub",
+        "light": "UNRESOLVED:VariableID:2:83",
+        "dark": null
+      },
+      {
+        "name": "color/status-card/text/tertiary--defualt",
+        "light": "UNRESOLVED:VariableID:1:3",
+        "dark": null
+      },
+      {
+        "name": "color/status-card/text/tertiary--sub",
+        "light": "UNRESOLVED:VariableID:2:92",
+        "dark": null
+      },
+      {
+        "name": "color/status-card/text/disabled",
+        "light": "UNRESOLVED:VariableID:1:3",
+        "dark": null
+      },
+      {
+        "name": "color/status-card/text/error",
+        "light": "UNRESOLVED:VariableID:9:107",
+        "dark": null
+      }
+    ]
+  }
+}

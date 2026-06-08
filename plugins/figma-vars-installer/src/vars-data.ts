@@ -27,8 +27,10 @@
  *   - number → FLOAT 직접값
  */
 
-export const FOUNDATION_COLLECTION = "Foundation";
-export const SEMANTIC_COLLECTION   = "semantic";
+// 빌드 시점에 npm run installer:build 가 yymmdd 를 자동 갱신 (package.json scripts 참조)
+// 매 빌드마다 새 이름으로 컬렉션 생성 → 기존 Foundation·semantic 컬렉션과 충돌 없음
+export const FOUNDATION_COLLECTION = "Foundation V2 260608";
+export const SEMANTIC_COLLECTION   = "Semantic V2 260608";
 export const LIGHT_MODE = "Light";
 export const DARK_MODE  = "Dark";
 
@@ -409,6 +411,36 @@ export const SEMANTIC_COLOR: Record<string, SemanticColorEntry> = {
 
   // ── color/overlay (alpha 포함 — alias 불가, 직접값) ──
   "color/overlay": { light: "rgba(0,0,0,0.5)", dark: "rgba(0,0,0,0.75)" },
+
+  // ──────────────────────────────────────────────────────────────────────────
+  // 레거시 DS 2.4 컴포넌트별 토큰 (2026-06-08 — 점진 도입, 1차: button 21개)
+  // 출처: registry/tokens/legacy-semantic-dark-mapping.json
+  //       Light = 레거시 alias / Dark = Figma 새 다크 컴포넌트(1352:3467) 기준
+  // assist 6개 제외 (Figma 미확인)
+  // ──────────────────────────────────────────────────────────────────────────
+
+  // ── button ────────────────────────────────────────────────────────
+  "color/button/bg/primary--default":       { light: "blue/400",   dark: "blue-dark/300" },
+  "color/button/bg/primary--hover":         { light: "blue/500",   dark: "blue-dark/250" },
+  "color/button/bg/secondary--default":     { light: "base/white", dark: "gray-dark/400" },
+  "color/button/bg/secondary--hover":       { light: "gray/50",    dark: "gray-dark/200" },
+  "color/button/bg/blue-line--default":     { light: "base/white", dark: "gray-dark/400" },
+  "color/button/bg/blue-line--hover":       { light: "blue/50",    dark: "blue-dark/100" },
+  "color/button/bg/disabled":               { light: "gray/50",    dark: "gray-dark/200" },
+  "color/button/border/primary--default":   { light: "blue/400",   dark: "rgba(0,0,0,0)" },
+  "color/button/border/primary--hover":     { light: "blue/500",   dark: "rgba(0,0,0,0)" },
+  "color/button/border/secondary--default": { light: "gray/200",   dark: "gray-dark/200" },
+  "color/button/border/secondary--hover":   { light: "gray/200",   dark: "gray-dark/200" },
+  "color/button/border/blue-line--default": { light: "blue/400",   dark: "blue-dark/300" },
+  "color/button/border/blue-line--hover":   { light: "blue/500",   dark: "blue-dark/300" },
+  "color/button/border/disabled":           { light: "gray/200",   dark: "gray-dark/200" },
+  "color/button/label/primary--default":    { light: "base/white", dark: "base/white" },
+  "color/button/label/primary--hover":      { light: "base/white", dark: "base/white" },
+  "color/button/label/secondary--default":  { light: "gray/800",   dark: "gray-dark/800" },
+  "color/button/label/secondary--hover":    { light: "gray/800",   dark: "gray-dark/800" },
+  "color/button/label/blue-line--default":  { light: "blue/400",   dark: "blue-dark/300" },
+  "color/button/label/blue-line--hover":    { light: "blue/500",   dark: "blue-dark/300" },
+  "color/button/label/disabled":            { light: "gray/300",   dark: "gray-dark/400" },
 };
 
 // ── Semantic Number ──────────────────────────────────────────────────────────
