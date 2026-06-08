@@ -350,75 +350,24 @@ export interface SemanticColorEntry {
   dark: string;
 }
 
+// ──────────────────────────────────────────────────────────────────────────
+// SEMANTIC_COLOR — 레거시 DS 2.4 컴포넌트별 구조 (2026-06-08 전환)
+//
+// 사용자 결정:
+// - 역할 기반(bg/surface/text/border/icon/action/status/overlay) 제거
+// - 레거시 컴포넌트별 폴더 구조 (button/chip/control/dropdown/form-control/
+//   navigation/pagination/status-card/text/icon/line/data/overlay)만 유지
+// - Light = 레거시 alias 그대로 / Dark = Figma 새 다크 컴포넌트 헥사 기준 매핑
+//
+// 매핑 방식: Figma 컴포넌트 디자인의 헥사 코드를 추출 → Foundation -dark
+//          변수와 1:1 매칭 (Figma 코드의 잘못된 토큰명은 무시).
+//
+// 점진 도입 (컴포넌트별로 사용자가 Figma URL 제공 시 추가):
+//   ✅ button (Figma 1352:3467) — 21개 (assist 6 제외)
+//   ⏳ checkbox, toggle, chip, dropdown, form-control, navigation, ...
+// ──────────────────────────────────────────────────────────────────────────
+
 export const SEMANTIC_COLOR: Record<string, SemanticColorEntry> = {
-  // ── color/bg ──────────────────────────────────────
-  "color/bg/default":  { light: "gray/0",      dark: "gray-dark/50" },
-  "color/bg/subtle":   { light: "gray/50",     dark: "gray-dark/200" },
-  "color/bg/muted":    { light: "gray/100",    dark: "gray-dark/300" },
-  "color/bg/elevated": { light: "gray/100",    dark: "gray-dark/400" },
-  "color/bg/home":     { light: "#F5F6FB",     dark: "gray-dark/50" },
-  "color/bg/selected": { light: "blue/50",     dark: "blue-dark/100" },
-
-  // ── color/surface ─────────────────────────────────
-  "color/surface/default": { light: "base/white", dark: "gray-dark/100" },
-  "color/surface/raised":  { light: "base/white", dark: "gray-dark/400" },
-
-  // ── color/text ────────────────────────────────────
-  "color/text/primary":     { light: "gray/900",   dark: "gray-dark/900" },
-  "color/text/secondary":   { light: "gray/800",   dark: "gray-dark/800" },
-  "color/text/tertiary":    { light: "gray/600",   dark: "gray-dark/700" },
-  "color/text/caption":     { light: "gray/500",   dark: "gray-dark/700" },
-  "color/text/placeholder": { light: "gray/500",   dark: "gray-dark/600" },
-  "color/text/helper":      { light: "gray/400",   dark: "gray-dark/600" },
-  "color/text/link":        { light: "blue/400",   dark: "blue-dark/400" },
-  "color/text/correct":     { light: "blue/400",   dark: "blue-dark/400" },
-  "color/text/danger":      { light: "red/300",    dark: "red-dark/350" },
-  "color/text/disabled":    { light: "gray/300",   dark: "gray-dark/400" },
-  "color/text/readonly":    { light: "gray/500",   dark: "gray-dark/500" },
-  "color/text/inverse":     { light: "base/white", dark: "base/white" },
-
-  // ── color/border ──────────────────────────────────
-  "color/border/subtle":   { light: "gray/100",    dark: "gray-dark/200" },
-  "color/border/default":  { light: "gray/200",    dark: "gray-dark/300" },
-  "color/border/disabled": { light: "gray/200",    dark: "gray-dark/200" },
-  "color/border/strong":   { light: "gray/300",    dark: "gray-dark/500" },
-  "color/border/emphasis": { light: "gray/800",    dark: "gray-dark/700" },
-  "color/border/focus":    { light: "blue/400",    dark: "blue-dark/350" },
-  "color/border/white":    { light: "base/white",  dark: "base/white" },
-  "color/border/danger":   { light: "red/300",     dark: "red-dark/350" },
-  "color/border/correct":  { light: "blue/400",    dark: "blue-dark/350" },
-
-  // ── color/icon ────────────────────────────────────
-  "color/icon/default":  { light: "gray/500",      dark: "gray-dark/700" },
-  "color/icon/muted":    { light: "gray/300",      dark: "gray-dark/400" },
-  "color/icon/emphasis": { light: "gray/800",      dark: "gray-dark/800" },
-  "color/icon/accent":   { light: "blue/400",      dark: "blue-dark/400" },
-  "color/icon/inverse":  { light: "base/white",    dark: "gray-dark/900" },
-  "color/icon/danger":   { light: "red/300",       dark: "red-dark/350" },
-
-  // ── color/action ──────────────────────────────────
-  "color/action/primary/default": { light: "blue/400",   dark: "blue-dark/300" },
-  "color/action/primary/hover":   { light: "blue/450",   dark: "blue-dark/250" },
-  "color/action/primary/pressed": { light: "blue/500",   dark: "blue-dark/200" },
-  "color/action/primary/text":    { light: "base/white", dark: "base/white" },
-  "color/action/primary/subtle":  { light: "blue/50",    dark: "blue-dark/100" },
-
-  // ── color/status ──────────────────────────────────
-  "color/status/success": { light: "blue/400",   dark: "green-dark/350" },
-  "color/status/error":   { light: "red/400",    dark: "red-dark/350" },
-  "color/status/warning": { light: "yellow/400", dark: "yellow-dark/350" },
-  "color/status/info":    { light: "gray/500",   dark: "gray-dark/700" },
-
-  // ── color/overlay (alpha 포함 — alias 불가, 직접값) ──
-  "color/overlay": { light: "rgba(0,0,0,0.5)", dark: "rgba(0,0,0,0.75)" },
-
-  // ──────────────────────────────────────────────────────────────────────────
-  // 레거시 DS 2.4 컴포넌트별 토큰 (2026-06-08 — 점진 도입, 1차: button 21개)
-  // 출처: registry/tokens/legacy-semantic-dark-mapping.json
-  //       Light = 레거시 alias / Dark = Figma 새 다크 컴포넌트(1352:3467) 기준
-  // assist 6개 제외 (Figma 미확인)
-  // ──────────────────────────────────────────────────────────────────────────
-
   // ── button ────────────────────────────────────────────────────────
   "color/button/bg/primary--default":       { light: "blue/400",   dark: "blue-dark/300" },
   "color/button/bg/primary--hover":         { light: "blue/500",   dark: "blue-dark/250" },

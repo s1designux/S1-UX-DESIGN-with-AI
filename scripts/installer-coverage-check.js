@@ -84,10 +84,16 @@ const SEMANTIC_COLOR_ROLES = [
   'control-bg', 'control-border', 'form-control', 'navigation', 'data', 'text-state',
 ];
 
-// installer 에 이미 반영된 semantic 역할 — 신규 카테고리와 구분
-const INSTALLED_SEMANTIC_COLOR_ROLES = ['bg', 'surface', 'text', 'border', 'icon', 'action', 'status'];
-// installer 미반영 — 갭으로 별도 보고
-const OUT_OF_SCOPE_SEMANTIC_COLOR_ROLES = ['control-bg', 'control-border', 'form-control', 'navigation', 'data', 'text-state'];
+// 2026-06-08: figma-vars-installer SEMANTIC_COLOR 가 레거시 컴포넌트별 구조로 전환
+// (color/button/*, color/chip/*, color/control/* ...). 더 이상 tokens.css 의 역할 기반
+// 토큰과 1:1 매핑 안 함 — 두 시스템 분리.
+//
+// 따라서 모든 역할 기반 카테고리를 OUT_OF_SCOPE 로 분류해 정보용 WARN 으로만 표시.
+const INSTALLED_SEMANTIC_COLOR_ROLES = [];
+const OUT_OF_SCOPE_SEMANTIC_COLOR_ROLES = [
+  'bg', 'surface', 'text', 'border', 'icon', 'action', 'status',
+  'control-bg', 'control-border', 'form-control', 'navigation', 'data', 'text-state',
+];
 
 const DARK_PALETTES = ['gray-dark', 'blue-dark', 'red-dark', 'orange-dark', 'yellow-dark',
                        'green-dark', 'skyblue-dark', 'purple-dark', 'brown-dark', 'visual-gray-dark'];
@@ -119,7 +125,7 @@ function categorize(cssName) {
   if (/^--border-width-(default|strong)$/.test(cssName)) return null;
 
   // Semantic Color — 가장 긴 prefix 우선 매칭 (text-state 가 text 보다 먼저 매치돼야 함)
-  if (cssName === '--color-overlay') return 'SEMANTIC_COLOR';
+  if (cssName === '--color-overlay') return 'SEMANTIC_COLOR_OUT_OF_SCOPE';
   const allSemanticRoles = [
     ...OUT_OF_SCOPE_SEMANTIC_COLOR_ROLES.map((r) => ({ role: r, kind: 'SEMANTIC_COLOR_OUT_OF_SCOPE' })),
     ...INSTALLED_SEMANTIC_COLOR_ROLES.map((r) => ({ role: r, kind: 'SEMANTIC_COLOR' })),
