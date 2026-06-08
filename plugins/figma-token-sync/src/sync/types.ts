@@ -107,7 +107,25 @@ export interface FigmaVariableExport {
 }
 
 export interface PluginMessage {
-  type: "preview" | "sync" | "cancel" | "export-variables" | "export-variable-usage" | "scan-selection" | "get-selection";
+  type:
+    | "preview"
+    | "sync"
+    | "cancel"
+    | "export-variables"
+    | "export-variable-usage"
+    | "scan-selection"
+    | "get-selection"
+    | "import-dry-run"
+    | "import-apply";
+  // import 전용 페이로드
+  importTokens?: Array<{
+    name: string;
+    resolvedType: "COLOR" | "FLOAT" | "STRING" | "BOOLEAN";
+    scopes?: string[];
+  }>;
+  importCollectionName?: string;
+  // Hybrid 패턴(2026-06-08): "single"=Foundation 단일 Default, "light-dark"=Semantic 2-mode
+  importCollectionMode?: "single" | "light-dark";
 }
 
 export interface SelectionNodeInfo {
@@ -117,11 +135,25 @@ export interface SelectionNodeInfo {
 }
 
 export interface PluginResponse {
-  type: "preview-result" | "sync-error" | "loading" | "export-result" | "export-error" | "usage-result" | "usage-error" | "selection-info";
+  type:
+    | "preview-result"
+    | "sync-error"
+    | "loading"
+    | "export-result"
+    | "export-error"
+    | "usage-result"
+    | "usage-error"
+    | "selection-info"
+    | "import-dry-run-result"
+    | "import-dry-run-error"
+    | "import-apply-result"
+    | "import-apply-error";
   result?: TokenSyncSummary;
   exportData?: FigmaVariableExport;
   usageData?: FigmaVariableUsageExport;
   selectionInfo?: SelectionNodeInfo[];
+  importDryRunResult?: import("./importTokens").ImportDryRunResult;
+  importApplyResult?: import("./importTokens").ImportApplyResult;
   error?: string;
 }
 

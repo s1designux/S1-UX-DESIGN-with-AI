@@ -14,7 +14,8 @@
       "promotionStatus": "promoted",
       "promotedRule": "plugins/figma-vars-installer/src/{vars-data,code}.ts Hybrid 모델 + scripts/installer-coverage-check.js DARK_FOLDED 카테고리 폐기",
       "occurrences": [
-        { "date": "2026-06-08", "summary": "Foundation 컬렉션 단일 Default 모드 + light/dark 팔레트 별도 변수(gray/N·gray-dark/N). Semantic만 Light/Dark 2-mode (Dark는 -dark alias). CSS tokens.css와 1:1 정합. Foundation Color 검증 208/208 PASS." }
+        { "date": "2026-06-08", "summary": "Foundation 컬렉션 단일 Default 모드 + light/dark 팔레트 별도 변수(gray/N·gray-dark/N). Semantic만 Light/Dark 2-mode (Dark는 -dark alias). CSS tokens.css와 1:1 정합. Foundation Color 검증 208/208 PASS." },
+        { "date": "2026-06-08", "summary": "figma-token-sync Import 기능에도 동일 패턴 적용. CollectionMode 타입(single|light-dark) + UI 라디오. Foundation 성격 컬렉션 import 시 잘못된 2-mode 강제 방지." }
       ],
       "automationNote": "Gate 6 Installer Coverage가 light·dark 팔레트 모두 별도 검증. dark 팔레트 별도 변수로 등재된 후 'DARK_FOLDED' 흡수 분류 폐기."
     },

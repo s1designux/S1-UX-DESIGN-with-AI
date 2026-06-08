@@ -10,6 +10,7 @@ import type {
   SelectionNodeInfo,
 } from "./sync/types";
 import { buildSyncPreviewFromRegistry, syncStableTokens } from "./sync/tokenSync";
+import { dryRunImport, applyImport } from "./sync/importTokens";
 
 // bundled at build time via esbuild require resolution
 // eslint-disable-next-line @typescript-eslint/no-var-requires
@@ -263,6 +264,54 @@ figma.ui.onmessage = (msg: PluginMessage) => {
       const response: PluginResponse = { type: "sync-error", error: String(e) };
       figma.ui.postMessage(response);
     });
+    return;
+  }
+
+  // ── Import 기능 (MVP-Import) ──────────────────────────────────────────────
+  // 기존 export / tokenSync 기능과 완전히 분리된 별도 핸들러
+
+  if (msg.type === "import-dry-run") {
+    (async () => {
+      try {
+        const tokens = msg.importTokens ?? [];
+        const collectionName = msg.importCollectionName ?? "semantic_v2";
+        const importDryRunResult = await dryRunImport(tokens, collectionName);
+        const response: PluginResponse = {
+          type: "import-dry-run-result",
+          importDryRunResult,
+        };
+        figma.ui.postMessage(response);
+      } catch (e) {
+        const response: PluginResponse = {
+          type: "import-dry-run-error",
+          error: String(e),
+        };
+        figma.ui.postMessage(response);
+      }
+    })();
+    return;
+  }
+
+  if (msg.type === "import-apply") {
+    (async () => {
+      try {
+        const tokens = msg.importTokens ?? [];
+        const collectionName = msg.importCollectionName ?? "semantic_v2";
+        const collectionMode = msg.importCollectionMode ?? "light-dark";
+        const importApplyResult = await applyImport(tokens, collectionName, collectionMode);
+        const response: PluginResponse = {
+          type: "import-apply-result",
+          importApplyResult,
+        };
+        figma.ui.postMessage(response);
+      } catch (e) {
+        const response: PluginResponse = {
+          type: "import-apply-error",
+          error: String(e),
+        };
+        figma.ui.postMessage(response);
+      }
+    })();
     return;
   }
 

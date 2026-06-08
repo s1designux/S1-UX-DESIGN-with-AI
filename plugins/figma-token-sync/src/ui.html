@@ -333,6 +333,128 @@
       padding-left: 14px;
       padding-right: 14px;
     }
+
+    /* ── Import Variables panel ──────────────────────────────── */
+    #import-panel {
+      display: none;
+      flex-direction: column;
+      gap: 10px;
+      padding: 12px 16px;
+      border-top: 1px solid #e5e5e5;
+      flex-shrink: 0;
+      background: #f8f4ff;
+    }
+    #import-panel.visible { display: flex; }
+    #import-panel-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    #import-panel-header span {
+      font-size: 11px;
+      font-weight: 600;
+      color: #4b2d8c;
+    }
+    #import-json {
+      width: 100%;
+      height: 100px;
+      font-family: "Menlo", "Monaco", monospace;
+      font-size: 10px;
+      border: 1px solid #c4aaf0;
+      border-radius: 4px;
+      padding: 6px 8px;
+      resize: vertical;
+      background: #fff;
+      color: #1a1a1a;
+    }
+    #import-collection-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    #import-collection-row label {
+      font-size: 11px;
+      color: #555;
+      white-space: nowrap;
+    }
+    #import-collection-name {
+      flex: 1;
+      font-size: 11px;
+      border: 1px solid #c4aaf0;
+      border-radius: 4px;
+      padding: 4px 8px;
+      background: #fff;
+      color: #1a1a1a;
+    }
+    .import-actions { display: flex; gap: 6px; }
+    .import-actions button {
+      flex: 1;
+      padding: 6px 10px;
+      border-radius: 5px;
+      font-size: 11px;
+      font-weight: 500;
+      cursor: pointer;
+      border: 1px solid transparent;
+    }
+    #btn-import-dry-run {
+      background: #7c3aed;
+      color: #fff;
+      border-color: #7c3aed;
+    }
+    #btn-import-dry-run:hover { background: #6d28d9; }
+    #btn-import-dry-run:disabled { background: #c4b5fd; cursor: not-allowed; }
+    #btn-import-apply {
+      background: #fff;
+      color: #7c3aed;
+      border-color: #c4aaf0;
+      font-weight: 600;
+      display: none;
+    }
+    #btn-import-apply.visible { display: block; }
+    #btn-import-apply:hover { background: #f5f0ff; }
+    #btn-import-apply:disabled { color: #c4b5fd; cursor: not-allowed; }
+    #btn-close-import {
+      background: transparent;
+      color: #888;
+      border-color: transparent;
+      flex: 0 0 auto;
+      padding: 4px 8px;
+      font-size: 11px;
+    }
+    #btn-close-import:hover { color: #333; }
+    #import-dry-run-result {
+      display: none;
+      flex-direction: column;
+      gap: 6px;
+    }
+    #import-dry-run-result.visible { display: flex; }
+    .import-result-summary {
+      font-size: 11px;
+      font-weight: 600;
+      padding: 6px 10px;
+      border-radius: 5px;
+    }
+    .import-result-summary.ok { background: #ede9fe; color: #4b2d8c; }
+    .import-result-summary.blocked { background: #fdf2f2; color: #c0392b; }
+    #import-skip-list {
+      font-size: 10px;
+      color: #888;
+      max-height: 64px;
+      overflow-y: auto;
+      padding: 4px 8px;
+      background: #fff;
+      border: 1px solid #e5e5e5;
+      border-radius: 4px;
+      display: none;
+    }
+    #import-skip-list.visible { display: block; }
+    #import-apply-status {
+      font-size: 11px;
+      min-height: 16px;
+      padding: 2px 0;
+    }
+    #import-apply-status.ok { color: #1a7f45; font-weight: 600; }
+    #import-apply-status.error { color: #c0392b; }
   </style>
 </head>
 <body>
@@ -419,11 +541,59 @@
   </div>
 </div>
 
+<!-- Import Variables panel (MVP-Import) -->
+<div id="import-panel">
+  <div id="import-panel-header">
+    <span>시맨틱 이름 체계 Import</span>
+    <button id="btn-close-import">닫기</button>
+  </div>
+
+  <div id="import-collection-row">
+    <label for="import-collection-name">컬렉션 이름:</label>
+    <input id="import-collection-name" type="text" value="semantic_v2"
+           placeholder="semantic_v2" spellcheck="false" />
+  </div>
+
+  <div id="import-mode-row" style="display:flex;gap:14px;align-items:center;font-size:11px;color:#374151;padding:6px 0 8px;">
+    <span style="font-weight:600;">컬렉션 모드:</span>
+    <label style="display:flex;align-items:center;gap:4px;cursor:pointer;">
+      <input type="radio" name="import-collection-mode" value="light-dark" checked />
+      Semantic (Light/Dark 2-mode)
+    </label>
+    <label style="display:flex;align-items:center;gap:4px;cursor:pointer;">
+      <input type="radio" name="import-collection-mode" value="single" />
+      Foundation (단일 Default)
+    </label>
+  </div>
+
+  <textarea id="import-json" spellcheck="false"
+    placeholder='{"meta":{"collectionName":"semantic_v2"},"tokens":[{"name":"color/button/bg/primary--default","resolvedType":"COLOR","scopes":["FRAME_FILL","SHAPE_FILL"]}]}'></textarea>
+
+  <div class="import-actions">
+    <button id="btn-import-dry-run">① Dry-run (미리보기)</button>
+    <button id="btn-import-apply">② 실제 생성</button>
+    <button id="btn-close-import" style="display:none"></button>
+  </div>
+
+  <div id="import-dry-run-result">
+    <div id="import-result-summary" class="import-result-summary ok"></div>
+    <div id="import-skip-list"></div>
+  </div>
+
+  <div id="import-apply-status"></div>
+
+  <div style="font-size:10px;color:#888;line-height:1.6;">
+    ① Dry-run으로 생성 예정·건너뜀 목록을 먼저 확인한 뒤 ② 실제 생성 버튼을 누르세요.<br>
+    기존 Foundation / semantic 컬렉션은 절대 건드리지 않습니다.
+  </div>
+</div>
+
 <footer>
   <button id="btn-dry-check">Run Dry Check</button>
   <button id="btn-export-vars">Export Variables</button>
   <button id="btn-usage-open">Variable Usage</button>
   <button id="btn-export">Export Report</button>
+  <button id="btn-import-open" style="background:#fff;color:#7c3aed;border:1px solid #c4aaf0;font-weight:600;">Import Vars</button>
   <button id="btn-sync" disabled title="Figma collection ID 미확정 — Sync Stable Tokens 비활성">Sync</button>
 </footer>
 
@@ -697,6 +867,171 @@
     showUsageLoading(true);
     parent.postMessage({ pluginMessage: { type: "scan-selection" } }, "*");
   });
+
+  // ── Import Variables 기능 (MVP-Import) ─────────────────────────────────────
+  var lastDryRunResult = null;
+
+  function showImportPanel(show) {
+    el("import-panel").classList.toggle("visible", show);
+    if (!show) {
+      // 패널 닫을 때 상태 초기화
+      lastDryRunResult = null;
+      el("import-dry-run-result").classList.remove("visible");
+      el("btn-import-apply").classList.remove("visible");
+      el("import-apply-status").textContent = "";
+      el("import-apply-status").className = "import-apply-status";
+    }
+  }
+
+  function parseImportJson() {
+    var raw = el("import-json").value.trim();
+    if (!raw) return null;
+    try {
+      return JSON.parse(raw);
+    } catch (e) {
+      return null;
+    }
+  }
+
+  function getCollectionName() {
+    return el("import-collection-name").value.trim() || "semantic_v2";
+  }
+
+  // window.onmessage에 import 메시지 처리 추가
+  var _origOnMessage = window.onmessage;
+  window.onmessage = function (event) {
+    var msg = event.data.pluginMessage;
+    if (!msg) return;
+
+    if (msg.type === "import-dry-run-result") {
+      var r = msg.importDryRunResult;
+      lastDryRunResult = r;
+      el("import-dry-run-result").classList.add("visible");
+      el("btn-import-dry-run").disabled = false;
+
+      if (r.blocked) {
+        el("import-result-summary").className = "import-result-summary blocked";
+        el("import-result-summary").textContent =
+          "🚫 차단 — " + r.blocked.detail;
+        el("btn-import-apply").classList.remove("visible");
+        el("import-skip-list").classList.remove("visible");
+      } else {
+        el("import-result-summary").className = "import-result-summary ok";
+        el("import-result-summary").textContent =
+          "✅ 생성 예정: " + r.toCreateCount + "개 / 건너뜀: " + r.toSkipCount + "개 — \"" + r.collectionName + "\" (LIGHT + DARK 모드 신설)";
+
+        // 건너뜀 목록 표시
+        var skipped = (r.items || []).filter(function(i) { return i.action === "skip"; });
+        if (skipped.length > 0) {
+          el("import-skip-list").classList.add("visible");
+          el("import-skip-list").textContent =
+            "건너뜀: " + skipped.map(function(i) { return i.name; }).join(", ");
+        } else {
+          el("import-skip-list").classList.remove("visible");
+        }
+
+        // 생성 예정 있을 때만 실제 생성 버튼 활성
+        if (r.toCreateCount > 0) {
+          el("btn-import-apply").classList.add("visible");
+          el("btn-import-apply").disabled = false;
+        } else {
+          el("btn-import-apply").classList.remove("visible");
+        }
+      }
+      return;
+    }
+
+    if (msg.type === "import-dry-run-error") {
+      el("import-dry-run-result").classList.add("visible");
+      el("import-result-summary").className = "import-result-summary blocked";
+      el("import-result-summary").textContent = "오류: " + escapeHtml(msg.error || "알 수 없는 오류");
+      el("btn-import-dry-run").disabled = false;
+      el("btn-import-apply").classList.remove("visible");
+      return;
+    }
+
+    if (msg.type === "import-apply-result") {
+      var ar = msg.importApplyResult;
+      el("btn-import-apply").disabled = false;
+      el("import-apply-status").className = "import-apply-status ok";
+      var errNote = ar.errors.length > 0 ? " / 오류 " + ar.errors.length + "건" : "";
+      el("import-apply-status").textContent =
+        "✅ 완료 — 생성 " + ar.created + "개 / 건너뜀 " + ar.skipped + "개" + errNote;
+      el("btn-import-apply").classList.remove("visible");
+      return;
+    }
+
+    if (msg.type === "import-apply-error") {
+      el("btn-import-apply").disabled = false;
+      el("import-apply-status").className = "import-apply-status error";
+      el("import-apply-status").textContent = "🚫 생성 중단: " + escapeHtml(msg.error || "알 수 없는 오류");
+      return;
+    }
+
+    // 나머지는 기존 �핸들러로 위임
+    if (_origOnMessage) _origOnMessage.call(window, event);
+  };
+
+  el("btn-import-open").addEventListener("click", function () {
+    showImportPanel(true);
+  });
+
+  el("btn-close-import").addEventListener("click", function () {
+    showImportPanel(false);
+  });
+
+  el("btn-import-dry-run").addEventListener("click", function () {
+    var parsed = parseImportJson();
+    if (!parsed) {
+      el("import-dry-run-result").classList.add("visible");
+      el("import-result-summary").className = "import-result-summary blocked";
+      el("import-result-summary").textContent = "JSON 파싱 오류 — 올바른 형식인지 확인하세요.";
+      return;
+    }
+    var tokens = parsed.tokens || [];
+    var collectionName = el("import-collection-name").value.trim() ||
+      (parsed.meta && parsed.meta.collectionName) || "semantic_v2";
+    el("btn-import-dry-run").disabled = true;
+    el("import-dry-run-result").classList.remove("visible");
+    el("btn-import-apply").classList.remove("visible");
+    el("import-apply-status").textContent = "";
+    parent.postMessage({
+      pluginMessage: {
+        type: "import-dry-run",
+        importTokens: tokens,
+        importCollectionName: collectionName,
+      }
+    }, "*");
+  });
+
+  el("btn-import-apply").addEventListener("click", function () {
+    if (!lastDryRunResult || lastDryRunResult.blocked) return;
+    var toCreate = (lastDryRunResult.items || [])
+      .filter(function(i) { return i.action === "create"; });
+    if (toCreate.length === 0) return;
+    el("btn-import-apply").disabled = true;
+    el("import-apply-status").textContent = "생성 중...";
+    el("import-apply-status").className = "import-apply-status";
+    // 원본 전체 tokens에서 to-create 이름만 필터링해서 전송
+    var parsed = parseImportJson();
+    var allTokens = parsed ? (parsed.tokens || []) : [];
+    var createNames = new Set(toCreate.map(function(i) { return i.name; }));
+    var tokensToCreate = allTokens.filter(function(t) {
+      return createNames.has(t.name);
+    });
+    // 라디오 버튼에서 컬렉션 모드 읽기 (default: light-dark)
+    var modeRadio = document.querySelector('input[name="import-collection-mode"]:checked');
+    var importCollectionMode = modeRadio ? modeRadio.value : "light-dark";
+    parent.postMessage({
+      pluginMessage: {
+        type: "import-apply",
+        importTokens: tokensToCreate,
+        importCollectionName: lastDryRunResult.collectionName,
+        importCollectionMode: importCollectionMode,
+      }
+    }, "*");
+  });
+
 })();
 </script>
 </body>
