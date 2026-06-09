@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<title>S1 Component Audit</title>
+<style>
+  :root {
+    --bg: #fff; --fg: #1c1d23; --muted: #767880; --line: #e6e7ea;
+    --high: #1d6ceb; --med: #ff7a18; --low: #767880;
+    --btn-bg: #1d6ceb; --btn-fg: #fff;
+    --code-bg: #f5f5f5;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root { --bg:#2c2c2c; --fg:#fff; --muted:#a0a0a0; --line:#3a3a3a; --code-bg:#1c1d23; }
+  }
+  * { box-sizing: border-box; }
+  body { margin:0; padding:0; font:13px/1.45 -apple-system, "SF Pro Text", Pretendard, sans-serif; color:var(--fg); background:var(--bg); }
+  header { padding:12px 16px; border-bottom:1px solid var(--line); display:flex; align-items:center; gap:12px; }
+  header h1 { margin:0; font-size:13px; font-weight:600; }
+  header .stats { margin-left:auto; color:var(--muted); font-size:11px; }
+  .toolbar { padding:8px 16px; border-bottom:1px solid var(--line); display:flex; gap:8px; align-items:center; }
+  .toolbar.mode-bar { background:var(--code-bg); }
+  .mode-label { font-size:11px; color:var(--muted); margin-right:4px; }
+  .tabs { display:flex; padding:0 16px; border-bottom:1px solid var(--line); gap:0; }
+  .tabs button { background:transparent; border:none; border-bottom:2px solid transparent; padding:8px 12px; border-radius:0; color:var(--muted); font-size:12px; }
+  .tabs button.active { color:var(--fg); border-bottom-color:var(--btn-bg); font-weight:600; }
+  .tabs .count { display:inline-block; padding:1px 6px; margin-left:4px; background:var(--code-bg); border-radius:8px; font-size:10px; }
+  .tabs button.active .count { background:var(--btn-bg); color:var(--btn-fg); }
+  button { font:inherit; cursor:pointer; padding:6px 12px; border-radius:6px; border:1px solid var(--line); background:transparent; color:var(--fg); }
+  button.primary { background:var(--btn-bg); color:var(--btn-fg); border-color:var(--btn-bg); }
+  button.primary:disabled { opacity:0.4; cursor:not-allowed; }
+  button:hover:not(:disabled) { filter: brightness(0.95); }
+  .list { padding:8px 0; max-height:calc(100vh - 200px); overflow-y:auto; }
+  .empty { padding:48px 16px; text-align:center; color:var(--muted); }
+  .issue { padding:10px 16px; border-bottom:1px solid var(--line); cursor:pointer; }
+  .issue:hover { background:var(--code-bg); }
+  .issue-head { display:flex; align-items:center; gap:8px; }
+  .issue-head .swatch { width:14px; height:14px; border-radius:3px; border:1px solid var(--line); }
+  .issue-head .name { font-weight:500; flex:1; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .issue-head .kind { font-size:11px; padding:2px 6px; border-radius:4px; background:var(--code-bg); color:var(--muted); }
+  .issue-head .node-kind { font-size:10px; padding:1px 5px; border-radius:3px; font-weight:600; letter-spacing:0.4px; }
+  .issue-head .node-kind.text { background:#E2F1FF; color:#1D6CEB; }
+  .issue-head .node-kind.icon { background:#FFF4CE; color:#8F6A00; }
+  .issue-head .node-kind.shape { background:var(--code-bg); color:var(--muted); }
+  @media (prefers-color-scheme: dark) {
+    .issue-head .node-kind.text { background:#112B55; color:#6FA5F8; }
+    .issue-head .node-kind.icon { background:#3D2E08; color:#F0D068; }
+  }
+  .issue-meta { margin-top:4px; font-size:11px; color:var(--muted); font-family:ui-monospace, "SF Mono", monospace; }
+  .issue-meta .hex { padding:1px 5px; background:var(--code-bg); border-radius:3px; }
+  .sugs { margin-top:8px; display:flex; flex-direction:column; gap:4px; }
+  .sug { display:flex; align-items:center; gap:8px; padding:6px 8px; background:var(--code-bg); border-radius:4px; font-size:11px; cursor:pointer; border:1px solid transparent; }
+  .sug:hover { border-color:var(--line); }
+  .sug.picked { border-color:var(--btn-bg); background:rgba(29,108,235,0.08); }
+  .sug input[type=radio] { margin:0; cursor:pointer; flex-shrink:0; }
+  .sug .name { flex:1; min-width:0; font-family:ui-monospace, "SF Mono", monospace; word-break:break-all; line-height:1.4; }
+  .sug .col { color:var(--muted); font-size:10px; flex-shrink:0; }
+  .sug .conf-high { color: var(--high); font-weight:600; font-size:10px; }
+  .sug .conf-medium { color: var(--med); font-size:10px; }
+  .sug .conf-low { color: var(--low); font-size:10px; }
+  .sug .mt { font-size:9px; padding:1px 4px; border-radius:3px; background:var(--bg); color:var(--muted); flex-shrink:0; }
+  .sug .mt.role { background:#E2F1FF; color:#1D6CEB; }
+  .sug .mt.exact { background:#E3F2EA; color:#006F42; }
+  .sug .mt.near { background:#FFEDE0; color:#DA4C00; }
+  .sug button { padding:3px 8px; font-size:11px; flex-shrink:0; }
+  @media (prefers-color-scheme: dark) {
+    .sug .mt.role { background:#112B55; color:#6FA5F8; }
+    .sug .mt.exact { background:#102E22; color:#3FBE7E; }
+    .sug .mt.near { background:#42200A; color:#F5AA68; }
+  }
+  .footer { position:sticky; bottom:0; padding:10px 16px; border-top:1px solid var(--line); background:var(--bg); display:flex; align-items:center; gap:8px; }
+  .footer .selected-info { flex:1; font-size:11px; color:var(--muted); }
+  .footer .selected-info b { color:var(--fg); font-weight:600; }
+  .resize-handle { position:fixed; right:0; bottom:0; width:18px; height:18px; cursor:se-resize; z-index:100; }
+  .resize-handle::before { content:''; position:absolute; right:3px; bottom:3px; width:11px; height:11px; border-right:2px solid var(--muted); border-bottom:2px solid var(--muted); opacity:0.5; }
+  .resize-handle:hover::before { opacity:1; }
+  .toast { position:fixed; bottom:12px; left:16px; right:16px; padding:8px 12px; border-radius:6px; background:var(--high); color:#fff; font-size:12px; opacity:0; transition:opacity 0.2s; }
+  .toast.show { opacity:1; }
+</style>
+</head>
+<body>
+<header>
+  <h1>S1 Component Audit</h1>
+  <div class="stats" id="stats">대기 중</div>
+</header>
+<div class="toolbar">
+  <button class="primary" id="btn-scan">Scan Selection</button>
+  <span class="mode-label" style="margin-left:8px;">선택 노드 모드 일괄 적용</span>
+  <button id="btn-mode-light">Light</button>
+  <button id="btn-mode-dark">Dark</button>
+  <button id="btn-mode-clear">Clear</button>
+</div>
+<div class="tabs">
+  <button data-tab="component" class="active">Component-matched <span class="count" id="tab-count-component">0</span></button>
+  <button data-tab="generic">Generic <span class="count" id="tab-count-generic">0</span></button>
+</div>
+<div class="list" id="list">
+  <div class="empty">
+    Figma에서 컴포넌트·프레임을 선택한 후 <b>Scan Selection</b>을 누르세요.<br/>
+    Semantic Color V2 / Foundation V2 외 변수와 raw HEX를 찾아 V2 토큰을 제안합니다.
+  </div>
+</div>
+<div class="footer">
+  <div class="selected-info"><b id="picked-count">0</b>개 항목 선택됨</div>
+  <button class="primary" id="btn-apply-selected" disabled>Apply Selected</button>
+</div>
+<div class="resize-handle" id="resize-handle" title="드래그하여 크기 조절"></div>
+<div class="toast" id="toast"></div>
+<script>
+let lastIssues = [];
+let activeTab = "component"; // component | generic
+let picks = {}; // { issueId: suggestionIndex }
+
+const $ = (sel) => document.querySelector(sel);
+const list = $("#list");
+const stats = $("#stats");
+const btnScan = $("#btn-scan");
+const toast = $("#toast");
+
+function showToast(msg) {
+  toast.textContent = msg;
+  toast.classList.add("show");
+  setTimeout(() => toast.classList.remove("show"), 1800);
+}
+
+function send(type, payload) {
+  parent.postMessage({ pluginMessage: { type, payload } }, "*");
+}
+
+btnScan.addEventListener("click", () => {
+  list.innerHTML = '<div class="empty">스캔 중...</div>';
+  stats.textContent = "스캔 중...";
+  picks = {};
+  updatePickedCount();
+  send("scan");
+});
+
+$("#btn-mode-light").addEventListener("click", () => send("set-mode", { mode: "light" }));
+$("#btn-mode-dark").addEventListener("click", () => send("set-mode", { mode: "dark" }));
+$("#btn-mode-clear").addEventListener("click", () => send("set-mode", { mode: "clear" }));
+
+document.querySelectorAll(".tabs button").forEach((btn) => {
+  btn.addEventListener("click", () => {
+    activeTab = btn.dataset.tab;
+    document.querySelectorAll(".tabs button").forEach((b) => b.classList.toggle("active", b === btn));
+    rerenderTab();
+  });
+});
+
+const btnApplySelected = $("#btn-apply-selected");
+btnApplySelected.addEventListener("click", () => {
+  const picksList = [];
+  for (const id in picks) {
+    const issue = lastIssues.find((i) => i.id === id);
+    if (!issue) continue;
+    picksList.push({ issue, suggestionIndex: picks[id] });
+  }
+  if (picksList.length === 0) return;
+  btnApplySelected.disabled = true;
+  btnApplySelected.textContent = "Applying...";
+  send("apply-multi", { picks: picksList });
+});
+
+// 우하단 핸들 드래그로 플러그인 창 리사이즈
+(function setupResize() {
+  const handle = $("#resize-handle");
+  let startX = 0, startY = 0, startW = 0, startH = 0, dragging = false;
+  handle.addEventListener("pointerdown", (e) => {
+    dragging = true;
+    startX = e.clientX; startY = e.clientY;
+    startW = window.innerWidth; startH = window.innerHeight;
+    handle.setPointerCapture(e.pointerId);
+    e.preventDefault();
+  });
+  handle.addEventListener("pointermove", (e) => {
+    if (!dragging) return;
+    const w = startW + (e.clientX - startX);
+    const h = startH + (e.clientY - startY);
+    send("resize", { w, h });
+  });
+  handle.addEventListener("pointerup", (e) => {
+    dragging = false;
+    handle.releasePointerCapture(e.pointerId);
+  });
+})();
+
+function updatePickedCount() {
+  const n = Object.keys(picks).length;
+  $("#picked-count").textContent = n;
+  btnApplySelected.disabled = n === 0;
+  btnApplySelected.textContent = n > 0 ? `Apply Selected (${n})` : "Apply Selected";
+}
+
+function rerenderTab() {
+  const componentMatched = lastIssues.filter((i) => i.hasComponentMatch);
+  const generic = lastIssues.filter((i) => !i.hasComponentMatch);
+  $("#tab-count-component").textContent = componentMatched.length;
+  $("#tab-count-generic").textContent = generic.length;
+  const filtered = activeTab === "component" ? componentMatched : generic;
+  if (lastIssues.length === 0) {
+    list.innerHTML = '<div class="empty">위반 사항 없음 ✓<br/>모든 색상이 V2 토큰에 바인딩되어 있습니다.</div>';
+    return;
+  }
+  if (filtered.length === 0) {
+    const otherLabel = activeTab === "component" ? "Generic" : "Component-matched";
+    list.innerHTML = `<div class="empty">이 탭에 해당하는 항목 없음<br/><span style="color:var(--muted);font-size:11px;">${otherLabel} 탭 확인</span></div>`;
+    return;
+  }
+  list.innerHTML = "";
+  for (const issue of filtered) {
+    const div = document.createElement("div");
+    div.className = "issue";
+    div.dataset.id = issue.id;
+    const kindLabel = issue.reasonKind === "external-var" ? "외부 변수" : "Unbound HEX";
+    const pickedIdx = picks[issue.id];
+    const sugsHtml = issue.suggestions.length === 0
+      ? '<div class="sug"><span class="name" style="color:var(--muted)">매칭되는 V2 토큰 없음</span></div>'
+      : issue.suggestions.map((s, i) => {
+          const mtClass = s.matchType === "role+component" ? "role" : s.matchType === "role" ? "role" : s.matchType;
+          const mtLabel = s.matchType === "role+component" ? "component·role" : s.matchType + (s.matchInfo ? ` ${s.matchInfo}` : "");
+          const isPicked = pickedIdx === i;
+          return `
+            <label class="sug ${isPicked ? 'picked' : ''}" data-sug-idx="${i}">
+              <input type="radio" name="pick-${issue.id}" data-issue-id="${issue.id}" data-sug-idx="${i}" ${isPicked ? 'checked' : ''}/>
+              <span class="name">${s.variableName}</span>
+              <span class="mt ${mtClass}">${mtLabel}</span>
+              <span class="col">${s.collectionName.replace(" V2", "")}</span>
+              <span class="conf-${s.confidence}">${s.confidence}</span>
+              <button data-action="apply" data-sug="${i}">Apply</button>
+            </label>
+          `;
+        }).join("");
+    div.innerHTML = `
+      <div class="issue-head">
+        <div class="swatch" style="background:${issue.hex}"></div>
+        <div class="name">${escape(issue.nodeName)}</div>
+        <span class="node-kind ${issue.nodeKind}">${issue.nodeKind.toUpperCase()}</span>
+        <span class="kind">${kindLabel}</span>
+      </div>
+      <div class="issue-meta">
+        ${issue.property} · ${escape(issue.sourceLabel)} · <span class="hex">${issue.hex}</span>
+      </div>
+      <div class="sugs">${sugsHtml}</div>
+    `;
+    div.addEventListener("click", (e) => {
+      const t = e.target;
+      const action = t.dataset && t.dataset.action;
+      // Apply 단건 버튼
+      if (action === "apply") {
+        const idx = parseInt(t.dataset.sug, 10);
+        send("apply-one", { issue, suggestionIndex: idx });
+        t.disabled = true;
+        t.textContent = "...";
+        e.stopPropagation();
+        return;
+      }
+      // 라디오 또는 sug 라벨 클릭 → 선택
+      if (t.tagName === "INPUT" && t.type === "radio") {
+        const issueId = t.dataset.issueId;
+        const sugIdx = parseInt(t.dataset.sugIdx, 10);
+        picks[issueId] = sugIdx;
+        // 같은 issue의 모든 sug 라벨에서 picked class 갱신
+        div.querySelectorAll(".sug").forEach((el) => {
+          const elIdx = parseInt(el.dataset.sugIdx, 10);
+          el.classList.toggle("picked", elIdx === sugIdx);
+        });
+        updatePickedCount();
+        e.stopPropagation();
+        return;
+      }
+      // sug label 영역 클릭 → 해당 라디오 선택
+      const sugEl = t.closest && t.closest(".sug");
+      if (sugEl && sugEl.dataset.sugIdx !== undefined) {
+        const radio = sugEl.querySelector('input[type="radio"]');
+        if (radio && !radio.checked) {
+          radio.checked = true;
+          radio.dispatchEvent(new Event("click", { bubbles: true }));
+        }
+        e.stopPropagation();
+        return;
+      }
+      // 그 외 (issue 카드 빈 영역, head, meta) → 노드 선택
+      send("select-node", { nodeId: issue.nodeId });
+    });
+    list.appendChild(div);
+  }
+}
+
+function escape(s) {
+  return String(s).replace(/[<>&"]/g, (c) => ({"<":"&lt;",">":"&gt;","&":"&amp;",'"':"&quot;"}[c]));
+}
+
+window.onmessage = (event) => {
+  const msg = event.data.pluginMessage;
+  if (!msg) return;
+  if (msg.type === "scan-result") {
+    lastIssues = msg.payload.issues;
+    const s = msg.payload.stats;
+    stats.textContent = `${s.scanned} 노드 · 위반 ${s.issuesCount}건`;
+    rerenderTab();
+  } else if (msg.type === "apply-result") {
+    if (msg.payload.ok) {
+      const el = list.querySelector(`[data-id="${msg.payload.issueId}"]`);
+      if (el) {
+        el.style.opacity = "0.4";
+        el.querySelectorAll('button[data-action="apply"]').forEach((b) => { b.disabled = true; b.textContent = "Applied"; });
+      }
+      showToast("Applied");
+    } else {
+      showToast("Apply failed");
+    }
+  } else if (msg.type === "apply-high-result") {
+    showToast(`${msg.payload.count}건 자동 적용 완료. Re-scan 권장.`);
+  } else if (msg.type === "apply-multi-result") {
+    const p = msg.payload;
+    for (const id of p.appliedIds) {
+      const el = list.querySelector(`[data-id="${id}"]`);
+      if (el) {
+        el.style.opacity = "0.4";
+        el.querySelectorAll('button[data-action="apply"]').forEach((b) => { b.disabled = true; b.textContent = "Applied"; });
+      }
+      delete picks[id];
+    }
+    updatePickedCount();
+    showToast(`${p.ok}건 적용 완료${p.fail ? ` · ${p.fail}건 실패` : ""}. Re-scan 권장.`);
+  } else if (msg.type === "set-mode-result") {
+    const p = msg.payload;
+    if (p.message) {
+      showToast(p.message);
+    } else {
+      showToast(`${p.count}개 노드 적용${p.skipped ? ` · ${p.skipped}개 skip` : ""}`);
+    }
+  } else if (msg.type === "error") {
+    showToast("Error: " + msg.payload.message);
+  }
+};
+</script>
+</body>
+</html>

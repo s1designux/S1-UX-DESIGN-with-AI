@@ -13,31 +13,7 @@
        (semantic tokens loaded via tokens.css link)
     ===================================================== */
     :root {
-      /* Button */
-      --button-primary-default-bg:      var(--color-action-primary-default);
-      --button-primary-hover-bg:        var(--color-action-primary-hover);
-      --button-primary-pressed-bg:      var(--color-action-primary-pressed);
-      --button-primary-disabled-bg:     var(--color-bg-subtle);
-      --button-primary-disabled-border: var(--color-border-disabled);
-      --button-primary-default-text:    var(--color-action-primary-text);
-      --button-primary-disabled-text:   var(--color-text-disabled);
-      --button-secondary-default-bg:      var(--color-surface-default);
-      --button-secondary-hover-bg:        var(--color-bg-subtle);
-      --button-secondary-pressed-bg:      var(--color-bg-muted);
-      --button-secondary-disabled-bg:     var(--color-bg-subtle);
-      --button-secondary-default-border:  var(--color-border-default);
-      --button-secondary-disabled-border: var(--color-border-disabled);
-      --button-secondary-default-text:    var(--color-text-secondary);
-      --button-secondary-disabled-text:   var(--color-text-disabled);
-      --button-blue-line-default-bg:       var(--color-surface-default);
-      --button-blue-line-hover-bg:         var(--color-action-primary-subtle);
-      --button-blue-line-pressed-bg:       var(--color-action-primary-subtle);
-      --button-blue-line-disabled-bg:      var(--color-bg-subtle);
-      --button-blue-line-default-border:   var(--color-action-primary-default);
-      --button-blue-line-hover-border:     var(--color-action-primary-default);
-      --button-blue-line-disabled-border:  var(--color-border-disabled);
-      --button-blue-line-default-text:     var(--color-action-primary-default);
-      --button-blue-line-disabled-text:    var(--color-text-disabled);
+      /* Button — Figma 1459:16264 기준. Variables(color/button/*)를 CSS에서 직접 사용 (Phase 2, 2026-06-09) */
       /* Input — form-control 2-layer: --input-* → --color-form-control-* → semantic */
       /* (--color-form-control-* and --color-text-state-* defined in tokens.css) */
       --input-default-bg:       var(--color-form-control-bg-default);
@@ -50,9 +26,9 @@
       --input-disabled-border:  var(--color-form-control-border-disabled);
       --input-placeholder-text: var(--color-form-control-text-placeholder);
       --input-disabled-text:    var(--color-form-control-text-disabled);
-      --input-helper-text:      var(--color-text-state-helper);
-      --input-correct-text:     var(--color-text-state-correct);
-      --input-error-text:       var(--color-text-state-error);
+      --input-helper-text:      var(--color-text-state-caption);   /* Figma: 안내 메세지 = text/state/caption */
+      --input-correct-text:     var(--color-text-state-correct);   /* Figma: 확인 메세지 = text/state/correct */
+      --input-error-text:       var(--color-text-state-caution);   /* Figma: 오류 메세지 = text/state/caution */
       /* Dropdown — form-control 경유 (tokens.css 동기화) */
       --dropdown-trigger-default-bg:      var(--color-form-control-bg-default);
       --dropdown-trigger-hover-bg:        var(--color-form-control-bg-hover);
@@ -330,47 +306,53 @@
     .s1-btn-lg { height: 44px; padding: 0 16px; font-size: 14px; border-radius: 4px; }
     .s1-btn-mobile { height: 48px; padding: 0 16px; font-size: 16px; border-radius: 4px; letter-spacing: -0.32px; }
 
+    /* Variant별 bg/border/label = Figma color/button/* 직접 사용. pressed = hover, disabled = 공통 */
     .s1-btn-primary {
-      background: var(--button-primary-default-bg);
-      color: var(--button-primary-default-text);
+      background: var(--color-button-bg-primary--default);
+      border-color: var(--color-button-border-primary--default);
+      color: var(--color-button-label-primary--default);
     }
-    .s1-btn-primary:hover, .s1-btn-primary.is-hover { background: var(--button-primary-hover-bg); }
-    .s1-btn-primary.is-pressed { background: var(--button-primary-pressed-bg); }
+    .s1-btn-primary:hover, .s1-btn-primary.is-hover, .s1-btn-primary.is-pressed {
+      background: var(--color-button-bg-primary--hover);
+      border-color: var(--color-button-border-primary--hover);
+      color: var(--color-button-label-primary--hover);
+    }
     .s1-btn-primary.is-disabled, .s1-btn-primary:disabled {
-      background: var(--button-primary-disabled-bg);
-      color: var(--button-primary-disabled-text);
-      border-color: var(--button-primary-disabled-border);
+      background: var(--color-button-bg-disabled);
+      border-color: var(--color-button-border-disabled);
+      color: var(--color-button-label-disabled);
       cursor: not-allowed; pointer-events: none;
     }
     .s1-btn-secondary {
-      background: var(--button-secondary-default-bg);
-      color: var(--button-secondary-default-text);
-      border-color: var(--button-secondary-default-border);
+      background: var(--color-button-bg-secondary--default);
+      border-color: var(--color-button-border-secondary--default);
+      color: var(--color-button-label-secondary--default);
     }
-    .s1-btn-secondary:hover, .s1-btn-secondary.is-hover {
-      background: var(--button-secondary-hover-bg);
+    .s1-btn-secondary:hover, .s1-btn-secondary.is-hover, .s1-btn-secondary.is-pressed {
+      background: var(--color-button-bg-secondary--hover);
+      border-color: var(--color-button-border-secondary--hover);
+      color: var(--color-button-label-secondary--hover);
     }
-    .s1-btn-secondary.is-pressed { background: var(--button-secondary-pressed-bg); }
     .s1-btn-secondary.is-disabled, .s1-btn-secondary:disabled {
-      background: var(--button-secondary-disabled-bg);
-      color: var(--button-secondary-disabled-text);
-      border-color: var(--button-secondary-disabled-border);
+      background: var(--color-button-bg-disabled);
+      border-color: var(--color-button-border-disabled);
+      color: var(--color-button-label-disabled);
       cursor: not-allowed; pointer-events: none;
     }
     .s1-btn-blue-line {
-      background: var(--button-blue-line-default-bg);
-      color: var(--button-blue-line-default-text);
-      border-color: var(--button-blue-line-default-border);
+      background: var(--color-button-bg-blue-line--default);
+      border-color: var(--color-button-border-blue-line--default);
+      color: var(--color-button-label-blue-line--default);
     }
-    .s1-btn-blue-line:hover, .s1-btn-blue-line.is-hover {
-      background: var(--button-blue-line-hover-bg);
-      border-color: var(--button-blue-line-hover-border);
+    .s1-btn-blue-line:hover, .s1-btn-blue-line.is-hover, .s1-btn-blue-line.is-pressed {
+      background: var(--color-button-bg-blue-line--hover);
+      border-color: var(--color-button-border-blue-line--hover);
+      color: var(--color-button-label-blue-line--hover);
     }
-    .s1-btn-blue-line.is-pressed { background: var(--button-blue-line-pressed-bg); }
     .s1-btn-blue-line.is-disabled, .s1-btn-blue-line:disabled {
-      background: var(--button-blue-line-disabled-bg);
-      color: var(--button-blue-line-disabled-text);
-      border-color: var(--button-blue-line-disabled-border);
+      background: var(--color-button-bg-disabled);
+      border-color: var(--color-button-border-disabled);
+      color: var(--color-button-label-disabled);
       cursor: not-allowed; pointer-events: none;
     }
 
@@ -735,7 +717,7 @@
 
     /* Input */
     .s1-input-wrap { display: flex; flex-direction: column; gap: 6px; width: 180px; }
-    .s1-input-label { font-size: 14px; font-weight: 500; color: var(--color-text-secondary); letter-spacing: -0.028em; line-height: 1.3; }
+    .s1-input-label { font-size: 14px; font-weight: 500; color: var(--color-form-control-label-default); letter-spacing: -0.028em; line-height: 1.3; }
     .s1-input-field {
       display: flex; align-items: center; height: 44px; padding: 0 12px 0 16px;
       border: 1px solid var(--input-default-border);
@@ -747,7 +729,7 @@
     .s1-input-field.input-size-mobile { height: 48px; padding: 0 12px 0 16px; }
     .s1-input-field input {
       border: none; background: transparent; outline: none;
-      font-size: 14px; font-family: inherit; color: var(--color-text-secondary);
+      font-size: 14px; font-family: inherit; color: var(--color-form-control-text-default);
       letter-spacing: -0.028em; line-height: 1.3; width: 100%;
     }
     .s1-input-field.input-size-xsmall input { font-size: 12px; letter-spacing: 0; }
@@ -772,7 +754,7 @@
     }
     .s1-input-wrap--textarea textarea {
       width: 100%; min-height: 72px; border: none; background: transparent; outline: none;
-      font-size: 14px; font-family: inherit; color: var(--color-text-secondary);
+      font-size: 14px; font-family: inherit; color: var(--color-form-control-text-default);
       letter-spacing: -0.028em; line-height: 1.6; resize: vertical;
     }
     .s1-input-wrap--textarea textarea::placeholder { color: var(--input-placeholder-text); }
@@ -780,17 +762,17 @@
     .s1-input-wrap.is-error .ds-helper-text { color: var(--input-error-text); }
     .s1-input-wrap.is-correct .ds-helper-text { color: var(--input-correct-text); }
     .s1-input-icon { flex-shrink: 0; color: var(--color-form-control-icon-default); }
-    .s1-input-wrap.is-error .s1-input-icon { color: var(--color-icon-danger); }
-    .s1-input-wrap.is-correct .s1-input-icon { color: var(--color-icon-accent); }
+    .s1-input-wrap.is-error .s1-input-icon { color: var(--color-icon-red); }
+    .s1-input-wrap.is-correct .s1-input-icon { color: var(--color-icon-blue); }
     /* Interactive input (Sizes block) */
     .input-clear-btn, .s1-input-remove {
       display: none; align-items: center; justify-content: center;
       flex-shrink: 0; width: 24px; height: 24px;
       padding: 0; border: none; background: transparent;
-      cursor: pointer; color: var(--color-icon-default);
+      cursor: pointer; color: var(--color-form-control-icon-default);
       border-radius: 4px; transition: background 0.15s;
     }
-    .input-clear-btn:hover { background: var(--color-bg-subtle); }
+    .input-clear-btn:hover { background: var(--color-form-control-bg-hover); }
     .s1-input-remove { display: flex; cursor: default; }
     .input-interactive .input-clear-btn { display: none; }
     .input-interactive.has-value .input-clear-btn { display: flex; }
@@ -1597,11 +1579,7 @@
       --dropdown-option-hover-bg:       var(--color-bg-muted);     /* gray-dark-300 */
       --dropdown-trigger-selected-text: var(--color-text-secondary); /* gray-dark-800 = #B8BABF — filled 텍스트 */
       --color-form-control-icon-default: var(--color-gray-dark-700); /* #8A8C96 */
-      /* ── button secondary dark — cascade 차단 해소 ── */
-      --button-secondary-default-bg:     var(--color-bg-elevated);   /* gray-dark-400 = #35363F */
-      --button-secondary-hover-bg:       var(--color-bg-muted);      /* gray-dark-300 = #2E2F38 */
-      --button-secondary-pressed-bg:     var(--color-bg-subtle);     /* gray-dark-200 = #24252C */
-      --button-secondary-default-border: var(--color-border-strong); /* gray-dark-500 = #3E4049 */
+      /* button secondary dark override 제거 (2026-06-09): Variables color/button/* 가 다크값 보유 → 자동 전환 */
       /* ── table dark — cascade 차단 해소 ──
          문제: 헤더(bg-default=gray-dark-50) < 행(surface-default=gray-dark-100) → 레이어 역전
                상하 강선(border-emphasis=gray-dark-700=#8A8C96) → 과도하게 밝아 텍스트 수준 */
@@ -1933,25 +1911,29 @@
 <span class="c-tag">&lt;button</span> <span class="c-attr">class</span>=<span class="c-str">"s1-btn s1-btn-primary s1-btn-mobile"</span> <span class="c-attr">disabled</span><span class="c-tag">&gt;</span>버튼<span class="c-tag">&lt;/button&gt;</span></pre>
             </div>
             <div class="code-pane" id="btn-pri-css">
-              <pre><span class="c-prop">--button-primary-default-bg</span>:      <span class="c-val">var(--color-action-primary-default)</span>;
-<span class="c-prop">--button-primary-hover-bg</span>:        <span class="c-val">var(--color-action-primary-hover)</span>;
-<span class="c-prop">--button-primary-pressed-bg</span>:      <span class="c-val">var(--color-action-primary-pressed)</span>;
-<span class="c-prop">--button-primary-disabled-bg</span>:     <span class="c-val">var(--color-bg-subtle)</span>;
-<span class="c-prop">--button-primary-disabled-border</span>: <span class="c-val">var(--color-border-disabled)</span>;
-<span class="c-prop">--button-primary-default-text</span>:    <span class="c-val">var(--color-action-primary-text)</span>;
-<span class="c-prop">--button-primary-disabled-text</span>:   <span class="c-val">var(--color-text-disabled)</span>;</pre>
+              <pre><span class="c-prop">--color-button-bg-primary--default</span>:     <span class="c-val">var(--color-blue-400)</span>;
+<span class="c-prop">--color-button-bg-primary--hover</span>:       <span class="c-val">var(--color-blue-500)</span>;   <span class="c-cmt">/* hover · pressed */</span>
+<span class="c-prop">--color-button-bg-disabled</span>:             <span class="c-val">var(--color-gray-50)</span>;
+<span class="c-prop">--color-button-border-primary--default</span>: <span class="c-val">var(--color-blue-400)</span>;
+<span class="c-prop">--color-button-border-primary--hover</span>:   <span class="c-val">var(--color-blue-500)</span>;
+<span class="c-prop">--color-button-border-disabled</span>:         <span class="c-val">var(--color-gray-200)</span>;
+<span class="c-prop">--color-button-label-primary--default</span>:  <span class="c-val">var(--color-base-white)</span>;
+<span class="c-prop">--color-button-label-primary--hover</span>:    <span class="c-val">var(--color-base-white)</span>;
+<span class="c-prop">--color-button-label-disabled</span>:          <span class="c-val">var(--color-gray-300)</span>;</pre>
             </div>
             <div class="code-pane" id="btn-pri-tokens">
               <table class="token-detail-table">
                 <thead><tr><th>Token</th><th>Value (Semantic)</th><th>Role</th></tr></thead>
                 <tbody>
-                  <tr><td class="token-name">--button-primary-default-bg</td><td class="token-value">var(--color-action-primary-default)</td><td>기본 배경색</td></tr>
-                  <tr><td class="token-name">--button-primary-hover-bg</td><td class="token-value">var(--color-action-primary-hover)</td><td>호버 배경색</td></tr>
-                  <tr><td class="token-name">--button-primary-pressed-bg</td><td class="token-value">var(--color-action-primary-pressed)</td><td>눌림 배경색</td></tr>
-                  <tr><td class="token-name">--button-primary-disabled-bg</td><td class="token-value">var(--color-bg-subtle)</td><td>비활성 배경색</td></tr>
-                  <tr><td class="token-name">--button-primary-disabled-border</td><td class="token-value">var(--color-border-disabled)</td><td>비활성 테두리</td></tr>
-                  <tr><td class="token-name">--button-primary-default-text</td><td class="token-value">var(--color-action-primary-text)</td><td>기본 텍스트 · 아이콘색</td></tr>
-                  <tr><td class="token-name">--button-primary-disabled-text</td><td class="token-value">var(--color-text-disabled)</td><td>비활성 텍스트</td></tr>
+                  <tr><td class="token-name">--color-button-bg-primary--default</td><td class="token-value">var(--color-blue-400)</td><td>기본 배경</td></tr>
+                  <tr><td class="token-name">--color-button-bg-primary--hover</td><td class="token-value">var(--color-blue-500)</td><td>hover · pressed 배경</td></tr>
+                  <tr><td class="token-name">--color-button-bg-disabled</td><td class="token-value">var(--color-gray-50)</td><td>비활성 배경 (공통)</td></tr>
+                  <tr><td class="token-name">--color-button-border-primary--default</td><td class="token-value">var(--color-blue-400)</td><td>기본 테두리</td></tr>
+                  <tr><td class="token-name">--color-button-border-primary--hover</td><td class="token-value">var(--color-blue-500)</td><td>hover 테두리</td></tr>
+                  <tr><td class="token-name">--color-button-border-disabled</td><td class="token-value">var(--color-gray-200)</td><td>비활성 테두리 (공통)</td></tr>
+                  <tr><td class="token-name">--color-button-label-primary--default</td><td class="token-value">var(--color-base-white)</td><td>기본 텍스트 · 아이콘</td></tr>
+                  <tr><td class="token-name">--color-button-label-primary--hover</td><td class="token-value">var(--color-base-white)</td><td>hover 텍스트</td></tr>
+                  <tr><td class="token-name">--color-button-label-disabled</td><td class="token-value">var(--color-gray-300)</td><td>비활성 텍스트 (공통)</td></tr>
                 </tbody>
               </table>
             </div>
@@ -2036,29 +2018,29 @@
 <span class="c-tag">&lt;button</span> <span class="c-attr">class</span>=<span class="c-str">"s1-btn s1-btn-secondary s1-btn-mobile"</span> <span class="c-attr">disabled</span><span class="c-tag">&gt;</span>버튼<span class="c-tag">&lt;/button&gt;</span></pre>
             </div>
             <div class="code-pane" id="btn-sec-css">
-              <pre><span class="c-prop">--button-secondary-default-bg</span>:      <span class="c-val">var(--color-surface-default)</span>;
-<span class="c-prop">--button-secondary-hover-bg</span>:        <span class="c-val">var(--color-bg-subtle)</span>;
-<span class="c-prop">--button-secondary-pressed-bg</span>:      <span class="c-val">var(--color-bg-muted)</span>;
-<span class="c-prop">--button-secondary-default-border</span>:  <span class="c-val">var(--color-border-default)</span>;
-<span class="c-prop">--button-secondary-disabled-bg</span>:     <span class="c-val">var(--color-bg-subtle)</span>;
-<span class="c-prop">--button-secondary-disabled-border</span>: <span class="c-val">var(--color-border-disabled)</span>;
-<span class="c-prop">--button-secondary-default-text</span>:    <span class="c-val">var(--color-text-secondary)</span>;
-<span class="c-prop">--button-secondary-disabled-text</span>:   <span class="c-val">var(--color-text-disabled)</span>;</pre>
+              <pre><span class="c-prop">--color-button-bg-secondary--default</span>:     <span class="c-val">var(--color-base-white)</span>;
+<span class="c-prop">--color-button-bg-secondary--hover</span>:       <span class="c-val">var(--color-gray-50)</span>;   <span class="c-cmt">/* hover · pressed */</span>
+<span class="c-prop">--color-button-bg-disabled</span>:               <span class="c-val">var(--color-gray-50)</span>;
+<span class="c-prop">--color-button-border-secondary--default</span>: <span class="c-val">var(--color-gray-200)</span>;
+<span class="c-prop">--color-button-border-secondary--hover</span>:   <span class="c-val">var(--color-gray-200)</span>;
+<span class="c-prop">--color-button-border-disabled</span>:           <span class="c-val">var(--color-gray-200)</span>;
+<span class="c-prop">--color-button-label-secondary--default</span>:  <span class="c-val">var(--color-gray-800)</span>;
+<span class="c-prop">--color-button-label-secondary--hover</span>:    <span class="c-val">var(--color-gray-800)</span>;
+<span class="c-prop">--color-button-label-disabled</span>:            <span class="c-val">var(--color-gray-300)</span>;</pre>
             </div>
             <div class="code-pane" id="btn-sec-tokens">
               <table class="token-detail-table">
                 <thead><tr><th>Token</th><th>Value (Semantic)</th><th>Role</th></tr></thead>
                 <tbody>
-                  <tr><td class="token-name">--button-secondary-default-bg</td><td class="token-value">var(--color-surface-default)</td><td>기본 배경색</td></tr>
-                  <tr><td class="token-name">--button-secondary-hover-bg</td><td class="token-value">var(--color-bg-subtle)</td><td>호버 배경색</td></tr>
-                  <tr><td class="token-name">--button-secondary-pressed-bg</td><td class="token-value">var(--color-bg-muted)</td><td>눌림 배경색</td></tr>
-                  <tr><td class="token-name">--button-secondary-default-border</td><td class="token-value">var(--color-border-default)</td><td>기본 테두리</td></tr>
-                  <tr><td class="token-name">--button-secondary-disabled-bg</td><td class="token-value">var(--color-bg-subtle)</td><td>비활성 배경색</td></tr>
-                  <tr><td class="token-name">--button-secondary-disabled-border</td><td class="token-value">var(--color-border-disabled)</td><td>비활성 테두리</td></tr>
-                  <tr><td class="token-name">--button-secondary-default-text</td><td class="token-value">var(--color-text-secondary)</td><td>기본 텍스트</td></tr>
-                  <tr><td class="token-name">--button-secondary-disabled-text</td><td class="token-value">var(--color-text-disabled)</td><td>비활성 텍스트</td></tr>
-                  <tr><td class="token-name">--button-secondary-default-icon</td><td class="token-value">var(--color-icon-default)</td><td>기본 아이콘색</td></tr>
-                  <tr><td class="token-name">--button-secondary-disabled-icon</td><td class="token-value">var(--color-icon-muted)</td><td>비활성 아이콘색</td></tr>
+                  <tr><td class="token-name">--color-button-bg-secondary--default</td><td class="token-value">var(--color-base-white)</td><td>기본 배경</td></tr>
+                  <tr><td class="token-name">--color-button-bg-secondary--hover</td><td class="token-value">var(--color-gray-50)</td><td>hover · pressed 배경</td></tr>
+                  <tr><td class="token-name">--color-button-bg-disabled</td><td class="token-value">var(--color-gray-50)</td><td>비활성 배경 (공통)</td></tr>
+                  <tr><td class="token-name">--color-button-border-secondary--default</td><td class="token-value">var(--color-gray-200)</td><td>기본 테두리</td></tr>
+                  <tr><td class="token-name">--color-button-border-secondary--hover</td><td class="token-value">var(--color-gray-200)</td><td>hover 테두리</td></tr>
+                  <tr><td class="token-name">--color-button-border-disabled</td><td class="token-value">var(--color-gray-200)</td><td>비활성 테두리 (공통)</td></tr>
+                  <tr><td class="token-name">--color-button-label-secondary--default</td><td class="token-value">var(--color-gray-800)</td><td>기본 텍스트 · 아이콘</td></tr>
+                  <tr><td class="token-name">--color-button-label-secondary--hover</td><td class="token-value">var(--color-gray-800)</td><td>hover 텍스트</td></tr>
+                  <tr><td class="token-name">--color-button-label-disabled</td><td class="token-value">var(--color-gray-300)</td><td>비활성 텍스트 (공통)</td></tr>
                 </tbody>
               </table>
             </div>
@@ -2143,29 +2125,29 @@
 <span class="c-tag">&lt;button</span> <span class="c-attr">class</span>=<span class="c-str">"s1-btn s1-btn-blue-line s1-btn-mobile"</span> <span class="c-attr">disabled</span><span class="c-tag">&gt;</span>버튼<span class="c-tag">&lt;/button&gt;</span></pre>
             </div>
             <div class="code-pane" id="btn-bl-css">
-              <pre><span class="c-prop">--button-blue-line-default-bg</span>:     <span class="c-val">var(--color-surface-default)</span>;
-<span class="c-prop">--button-blue-line-hover-bg</span>:       <span class="c-val">var(--color-action-primary-subtle)</span>;
-<span class="c-prop">--button-blue-line-pressed-bg</span>:     <span class="c-val">var(--color-action-primary-subtle)</span>;
-<span class="c-prop">--button-blue-line-default-border</span>: <span class="c-val">var(--color-action-primary-default)</span>;
-<span class="c-prop">--button-blue-line-hover-border</span>:   <span class="c-val">var(--color-action-primary-default)</span>;
-<span class="c-prop">--button-blue-line-disabled-bg</span>:    <span class="c-val">var(--color-bg-subtle)</span>;
-<span class="c-prop">--button-blue-line-disabled-border</span>:<span class="c-val">var(--color-border-disabled)</span>;
-<span class="c-prop">--button-blue-line-default-text</span>:   <span class="c-val">var(--color-action-primary-default)</span>;
-<span class="c-prop">--button-blue-line-disabled-text</span>:  <span class="c-val">var(--color-text-disabled)</span>;</pre>
+              <pre><span class="c-prop">--color-button-bg-blue-line--default</span>:     <span class="c-val">var(--color-base-white)</span>;
+<span class="c-prop">--color-button-bg-blue-line--hover</span>:       <span class="c-val">var(--color-blue-50)</span>;   <span class="c-cmt">/* hover · pressed */</span>
+<span class="c-prop">--color-button-bg-disabled</span>:               <span class="c-val">var(--color-gray-50)</span>;
+<span class="c-prop">--color-button-border-blue-line--default</span>: <span class="c-val">var(--color-blue-400)</span>;
+<span class="c-prop">--color-button-border-blue-line--hover</span>:   <span class="c-val">var(--color-blue-500)</span>;
+<span class="c-prop">--color-button-border-disabled</span>:           <span class="c-val">var(--color-gray-200)</span>;
+<span class="c-prop">--color-button-label-blue-line--default</span>:  <span class="c-val">var(--color-blue-400)</span>;
+<span class="c-prop">--color-button-label-blue-line--hover</span>:    <span class="c-val">var(--color-blue-500)</span>;
+<span class="c-prop">--color-button-label-disabled</span>:            <span class="c-val">var(--color-gray-300)</span>;</pre>
             </div>
             <div class="code-pane" id="btn-bl-tokens">
               <table class="token-detail-table">
                 <thead><tr><th>Token</th><th>Value (Semantic)</th><th>Role</th></tr></thead>
                 <tbody>
-                  <tr><td class="token-name">--button-blue-line-default-bg</td><td class="token-value">var(--color-surface-default)</td><td>기본 배경색</td></tr>
-                  <tr><td class="token-name">--button-blue-line-hover-bg</td><td class="token-value">var(--color-action-primary-subtle)</td><td>호버 배경색</td></tr>
-                  <tr><td class="token-name">--button-blue-line-pressed-bg</td><td class="token-value">var(--color-action-primary-subtle)</td><td>눌림 배경색</td></tr>
-                  <tr><td class="token-name">--button-blue-line-default-border</td><td class="token-value">var(--color-action-primary-default)</td><td>기본 테두리</td></tr>
-                  <tr><td class="token-name">--button-blue-line-hover-border</td><td class="token-value">var(--color-action-primary-default)</td><td>호버 테두리</td></tr>
-                  <tr><td class="token-name">--button-blue-line-disabled-bg</td><td class="token-value">var(--color-bg-subtle)</td><td>비활성 배경색</td></tr>
-                  <tr><td class="token-name">--button-blue-line-disabled-border</td><td class="token-value">var(--color-border-disabled)</td><td>비활성 테두리</td></tr>
-                  <tr><td class="token-name">--button-blue-line-default-text</td><td class="token-value">var(--color-action-primary-default)</td><td>기본 텍스트</td></tr>
-                  <tr><td class="token-name">--button-blue-line-disabled-text</td><td class="token-value">var(--color-text-disabled)</td><td>비활성 텍스트</td></tr>
+                  <tr><td class="token-name">--color-button-bg-blue-line--default</td><td class="token-value">var(--color-base-white)</td><td>기본 배경</td></tr>
+                  <tr><td class="token-name">--color-button-bg-blue-line--hover</td><td class="token-value">var(--color-blue-50)</td><td>hover · pressed 배경</td></tr>
+                  <tr><td class="token-name">--color-button-bg-disabled</td><td class="token-value">var(--color-gray-50)</td><td>비활성 배경 (공통)</td></tr>
+                  <tr><td class="token-name">--color-button-border-blue-line--default</td><td class="token-value">var(--color-blue-400)</td><td>기본 테두리</td></tr>
+                  <tr><td class="token-name">--color-button-border-blue-line--hover</td><td class="token-value">var(--color-blue-500)</td><td>hover 테두리</td></tr>
+                  <tr><td class="token-name">--color-button-border-disabled</td><td class="token-value">var(--color-gray-200)</td><td>비활성 테두리 (공통)</td></tr>
+                  <tr><td class="token-name">--color-button-label-blue-line--default</td><td class="token-value">var(--color-blue-400)</td><td>기본 텍스트</td></tr>
+                  <tr><td class="token-name">--color-button-label-blue-line--hover</td><td class="token-value">var(--color-blue-500)</td><td>hover 텍스트</td></tr>
+                  <tr><td class="token-name">--color-button-label-disabled</td><td class="token-value">var(--color-gray-300)</td><td>비활성 텍스트 (공통)</td></tr>
                 </tbody>
               </table>
             </div>

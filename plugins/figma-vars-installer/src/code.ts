@@ -17,7 +17,13 @@
  *   · CSS tokens.css의 --color-X-N / --color-X-dark-N 와 1:1 정합
  *
  * 이미 같은 이름의 collection이 있으면 업데이트(add/overwrite) 모드로 동작한다.
- * 삭제는 하지 않는다.
+ *
+ * Prune (2026-06-09): 플러그인이 소유한 4개 컬렉션(Foundation·Semantic Color·
+ *   Semantic Number) 안에서, 현재 데이터셋에 없는 변수는 제거한다.
+ *   - 유지 변수는 이름으로 get-or-create 되어 같은 Variable 객체 재사용 → 바인딩 보존.
+ *   - 옛 plugin 잔재(역할기반 color/bg·surface·action·status 등)만 삭제되며,
+ *     해당 잔재에 걸린 연결만 끊어진다(의도된 동작).
+ *   - prune 범위는 위 컬렉션·해당 resolvedType 으로만 한정 — 다른 컬렉션 영향 없음.
  */
 
 import {
@@ -92,6 +98,28 @@ async function getOrCreateVariable(
   );
   if (existing) return existing;
   return figma.variables.createVariable(name, collection, resolvedType);
+}
+
+/**
+ * 컬렉션에서 현재 데이터셋(validNames)에 없는 변수를 제거한다.
+ * - 유지 변수는 getOrCreateVariable 로 이미 같은 Variable 객체를 재사용 → 바인딩 보존.
+ * - 삭제 변수(옛 역할기반 bg/surface/action/status 등)에 걸린 연결만 끊어진다 (의도된 동작).
+ * 같은 컬렉션·같은 resolvedType 범위로만 한정해 다른 컬렉션에 영향 없음.
+ */
+async function pruneCollection(
+  collection: VariableCollection,
+  validNames: Set<string>,
+  resolvedType: VariableResolvedDataType
+): Promise<string[]> {
+  const all = await figma.variables.getLocalVariablesAsync(resolvedType);
+  const removed: string[] = [];
+  for (const v of all) {
+    if (v.variableCollectionId !== collection.id) continue;
+    if (validNames.has(v.name)) continue;
+    removed.push(v.name);
+    try { v.remove(); } catch (e) { /* skip */ }
+  }
+  return removed;
 }
 
 function ensureMode(collection: VariableCollection, modeName: string): string {
@@ -233,6 +261,11 @@ async function runInstall() {
       }
     }
 
+    // 1-A 잔재 정리: 현재 FOUNDATION_COLOR 에 없는 옛 Foundation COLOR 제거
+    const removedFoundationColor = await pruneCollection(
+      fc, new Set(fcColorKeys), "COLOR"
+    );
+
     post("progress", { step: "Foundation Number 준비 중…", pct: 28 });
 
     // 1-B. Foundation NUMBER
@@ -252,6 +285,11 @@ async function runInstall() {
         post("progress", { step: `Foundation Number: ${path}`, pct });
       }
     }
+
+    // 1-B 잔재 정리: 현재 FOUNDATION_NUMBER 에 없는 옛 Foundation FLOAT 제거
+    const removedFoundationNumber = await pruneCollection(
+      fc, new Set(fcNumberKeys), "FLOAT"
+    );
 
     post("progress", { step: "Semantic Color collection 준비 중…", pct: 50 });
 
@@ -275,6 +313,13 @@ async function runInstall() {
       }
     }
 
+    // 2 잔재 정리: 현재 SEMANTIC_COLOR 에 없는 옛 역할기반 변수 제거
+    //   (옛 plugin 이 남긴 color/bg/*, color/surface/*, color/action/*, color/status/* 등)
+    //   유지 변수는 위 루프에서 getOrCreate 로 재사용되어 바인딩 보존됨.
+    const removedSemanticColor = await pruneCollection(
+      scc, new Set(scColorKeys), "COLOR"
+    );
+
     post("progress", { step: "Semantic Number collection 준비 중…", pct: 75 });
 
     // ── 3. Semantic Number collection (단일 Default 모드) ──────────────────
@@ -297,10 +342,24 @@ async function runInstall() {
       }
     }
 
+    // 3 잔재 정리: 현재 SEMANTIC_NUMBER 에 없는 옛 Semantic FLOAT 제거
+    const removedSemanticNumber = await pruneCollection(
+      scn, new Set(scNumberKeys), "FLOAT"
+    );
+
+    const removedAll = [
+      ...removedFoundationColor,
+      ...removedFoundationNumber,
+      ...removedSemanticColor,
+      ...removedSemanticNumber,
+    ];
+
     post("progress", { step: "완료", pct: 100 });
     post("done", {
       foundationCount: fcColorKeys.length + fcNumberKeys.length,
       semanticCount: scColorKeys.length + scNumberKeys.length,
+      removedCount: removedAll.length,
+      removedNames: removedAll,
     });
 
   } catch (err: unknown) {

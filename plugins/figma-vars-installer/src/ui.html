@@ -167,7 +167,8 @@
           <div class="result-title">✅ 설치 완료</div>
           <div class="result-sub">
             Foundation: <strong>${msg.foundationCount}개</strong> 변수 설치됨<br>
-            semantic: <strong>${msg.semanticCount}개</strong> 변수 설치됨 (Light / Dark)<br><br>
+            semantic: <strong>${msg.semanticCount}개</strong> 변수 설치됨 (Light / Dark)<br>
+            ${msg.removedCount ? `옛 잔재 변수 <strong>${msg.removedCount}개</strong> 정리됨<br>` : ''}<br>
             왼쪽 패널 <strong>Local variables</strong>에서 확인하세요.
           </div>
         </div>
