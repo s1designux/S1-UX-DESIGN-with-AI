@@ -385,9 +385,9 @@ export const SEMANTIC_COLOR: Record<string, SemanticColorEntry> = {
   "color/button/border/assist--hover": { light: "gray/200", dark: "gray-dark/300" },
   "color/button/border/blue-line--default": { light: "blue/400", dark: "blue-dark/300" },
   "color/button/border/blue-line--hover": { light: "blue/500", dark: "blue-dark/300" },
-  "color/button/border/disabled": { light: "gray/200", dark: "gray-dark/200" },
-  "color/button/border/primary--default": { light: "blue/400", dark: "rgba(0,0,0,0)" },
-  "color/button/border/primary--hover": { light: "blue/500", dark: "rgba(0,0,0,0)" },
+  "color/button/border/disabled": { light: "gray/200", dark: "gray-dark/300" },
+  "color/button/border/primary--default": { light: "blue/400", dark: "blue-dark/300" },
+  "color/button/border/primary--hover": { light: "blue/500", dark: "blue-dark/250" },
   "color/button/border/secondary--default": { light: "gray/200", dark: "gray-dark/500" },
   "color/button/border/secondary--hover": { light: "gray/200", dark: "gray-dark/500" },
   "color/button/label/assist--default": { light: "gray/800", dark: "gray-dark/800" },
@@ -401,10 +401,10 @@ export const SEMANTIC_COLOR: Record<string, SemanticColorEntry> = {
   "color/button/label/secondary--hover": { light: "gray/800", dark: "gray-dark/800" },
 
   // ── chip ────────────────────────────────
-  "color/chip/line/bg/default": { light: "base/white", dark: "gray-dark/400" },
-  "color/chip/line/bg/disabled": { light: "gray/50", dark: "gray-dark/300" },
+  "color/chip/line/bg/default": { light: "base/white", dark: "gray-dark/100" },
+  "color/chip/line/bg/disabled": { light: "gray/50", dark: "gray-dark/200" },
   "color/chip/line/bg/hover": { light: "gray/0", dark: "gray-dark/200" },
-  "color/chip/line/bg/selected": { light: "base/white", dark: "gray-dark/400" },
+  "color/chip/line/bg/selected": { light: "base/white", dark: "gray-dark/100" },
   "color/chip/line/border/default": { light: "gray/300", dark: "gray-dark/500" },
   "color/chip/line/border/disabled": { light: "gray/100", dark: "gray-dark/200" },
   "color/chip/line/border/selected": { light: "blue/400", dark: "blue-dark/300" },
@@ -412,7 +412,7 @@ export const SEMANTIC_COLOR: Record<string, SemanticColorEntry> = {
   "color/chip/line/label/disabled": { light: "gray/300", dark: "gray-dark/600" },
   "color/chip/line/label/selected": { light: "blue/400", dark: "blue-dark/350" },
   "color/chip/solid/bg/default": { light: "gray/50", dark: "gray-dark/300" },
-  "color/chip/solid/bg/disabled": { light: "gray/50", dark: "gray-dark/300" },
+  "color/chip/solid/bg/disabled": { light: "gray/50", dark: "gray-dark/200" },
   "color/chip/solid/bg/hover": { light: "gray/100", dark: "gray-dark/400" },
   "color/chip/solid/bg/selected": { light: "blue/400", dark: "blue-dark/300" },
   "color/chip/solid/border/default": { light: "gray/50", dark: "gray-dark/200" },
@@ -425,7 +425,7 @@ export const SEMANTIC_COLOR: Record<string, SemanticColorEntry> = {
   // ── control ────────────────────────────────
   "color/control/bg/default": { light: "base/white", dark: "gray-dark/100" },
   "color/control/bg/default-alt": { light: "gray/50", dark: "gray-dark/600" },
-  "color/control/bg/disabled": { light: "gray/50", dark: "gray-dark/200" },
+  "color/control/bg/disabled": { light: "gray/50", dark: "gray-dark/300" },
   "color/control/bg/hover": { light: "gray/50", dark: "gray-dark/200" },
   "color/control/bg/selected": { light: "blue/400", dark: "blue-dark/300" },
   "color/control/bg/selected-alt": { light: "blue/400", dark: "blue-dark/300" },
@@ -449,12 +449,14 @@ export const SEMANTIC_COLOR: Record<string, SemanticColorEntry> = {
   // ── data ────────────────────────────────
   "color/data/border/light": { light: "gray/100", dark: "gray-dark/300" },
   "color/data/border/strong": { light: "gray/300", dark: "gray-dark/400" },
-  "color/data/state/default": { light: "base/white", dark: "base/white" },
-  "color/data/state/hover": { light: "blue/50", dark: "blue-dark/100" },
+  "color/data/header/bg": { light: "gray/50", dark: "gray-dark/300" },
+  "color/data/state/default": { light: "base/white", dark: "gray-dark/100" },
+  "color/data/state/hover": { light: "blue/50", dark: "gray-dark/200" },
+  "color/data/state/selected": { light: "blue/100", dark: "blue-dark/150" },
 
   // ── dropdown ────────────────────────────────
-  "color/dropdown/list/bg": { light: "base/white", dark: "gray-dark/200" },
-  "color/dropdown/list/border": { light: "gray/200", dark: "gray-dark/200" },
+  "color/dropdown/list/bg": { light: "base/white", dark: "gray-dark/100" },
+  "color/dropdown/list/border": { light: "gray/200", dark: "gray-dark/500" },
   "color/dropdown/option/bg/default": { light: "base/white", dark: "gray-dark/400" },
   "color/dropdown/option/bg/disabled": { light: "gray/50", dark: "gray-dark/200" },
   "color/dropdown/option/bg/hover": { light: "gray/50", dark: "gray-dark/300" },
@@ -468,12 +470,12 @@ export const SEMANTIC_COLOR: Record<string, SemanticColorEntry> = {
   "color/dropdown/option/label/selected": { light: "blue/400", dark: "blue-dark/350" },
 
   // ── form-control ────────────────────────────────
-  "color/form-control/bg/default": { light: "base/white", dark: "gray-dark/200" },
-  "color/form-control/bg/disabled": { light: "gray/50", dark: "gray-dark/100" },
-  "color/form-control/bg/hover": { light: "gray/0", dark: "gray-dark/300" },
+  "color/form-control/bg/default": { light: "base/white", dark: "gray-dark/100" },
+  "color/form-control/bg/disabled": { light: "gray/50", dark: "gray-dark/200" },
+  "color/form-control/bg/hover": { light: "gray/0", dark: "gray-dark/200" },
   "color/form-control/bg/selected": { light: "base/white", dark: "gray-dark/200" },
   "color/form-control/border/correct": { light: "blue/400", dark: "blue-dark/350" },
-  "color/form-control/border/default": { light: "gray/200", dark: "gray-dark/300" },
+  "color/form-control/border/default": { light: "gray/200", dark: "gray-dark/500" },
   "color/form-control/border/disabled": { light: "gray/100", dark: "gray-dark/200" },
   "color/form-control/border/error": { light: "red/400", dark: "red-dark/350" },
   "color/form-control/border/selected": { light: "blue/400", dark: "blue-dark/350" },
@@ -481,7 +483,7 @@ export const SEMANTIC_COLOR: Record<string, SemanticColorEntry> = {
   "color/form-control/label/disabled": { light: "gray/300", dark: "gray-dark/600" },
   "color/form-control/text/default": { light: "gray/800", dark: "gray-dark/800" },
   "color/form-control/text/disabled": { light: "gray/300", dark: "gray-dark/600" },
-  "color/form-control/text/placeholder": { light: "gray/500", dark: "gray-dark/700" },
+  "color/form-control/text/placeholder": { light: "gray/500", dark: "gray-dark/600" },
   "color/form-control/text/selected": { light: "gray/900", dark: "gray-dark/800" },
 
   // ── icon ────────────────────────────────
@@ -500,8 +502,8 @@ export const SEMANTIC_COLOR: Record<string, SemanticColorEntry> = {
   "color/line/white": { light: "base/white", dark: "base/white" },
 
   // ── navigation ────────────────────────────────
-  "color/navigation/background": { light: "base/white", dark: "gray-dark/400" },
-  "color/navigation/indicator/default": { light: "gray/200", dark: "gray-dark/200" },
+  "color/navigation/background": { light: "base/white", dark: "gray-dark/100" },
+  "color/navigation/indicator/default": { light: "gray/200", dark: "gray-dark/300" },
   "color/navigation/indicator/default-alt": { light: "gray/100", dark: "gray-dark/300" },
   "color/navigation/indicator/hover": { light: "blue/400", dark: "blue-dark/300" },
   "color/navigation/indicator/selected": { light: "blue/400", dark: "blue-dark/300" },
@@ -564,6 +566,11 @@ export const SEMANTIC_COLOR: Record<string, SemanticColorEntry> = {
   "color/text/title/primary": { light: "gray/900", dark: "gray-dark/900" },
   "color/text/title/secondary": { light: "gray/800", dark: "gray-dark/800" },
   "color/text/title/tertiary": { light: "gray/600", dark: "gray-dark/700" },
+  "color/form-control/icon/default":   { light: "gray/800", dark: "gray-dark/700" },
+  "color/form-control/icon/disabled":  { light: "gray/300", dark: "gray-dark/500" },
+  "color/scroll/bg":                   { light: "gray/200", dark: "gray-dark/600" },
+  "color/form-control/text_caret":     { light: "blue/400", dark: "blue-dark/350" },
+  "color/form-control/text/read_only": { light: "gray/500", dark: "gray-dark/700" },
 };
 
 // ── Semantic Number ──────────────────────────────────────────────────────────

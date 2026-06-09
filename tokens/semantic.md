@@ -252,14 +252,21 @@ color-overlay   → 딤·오버레이
 
 ## 8-2. color-data — 데이터 그리드 전용 상태
 
-**역할**: 테이블·데이터 그리드의 행 상태 배경. Figma `color/data/state/*` 경로.
+**역할**: 테이블·데이터 그리드의 행/헤더 상태 배경·구분선. Figma `color/data/*` 경로.
 
 | CSS Variable | Figma 원본 | Light Hex | Light Foundation | Dark Hex | Dark Foundation |
 |---|---|---|---|---|---|
+| `--color-data-state-default` | color/data/state/default | `#FFFFFF` | base/white | `#1C1D23` | gray-dark/100 |
 | `--color-data-state-hover` | color/data/state/hover | `#E2F1FF` | color/blue/50 | `#112B55` | blue-dark/100 |
+| `--color-data-state-selected` | color/data/state/selected | `#C8E4FF` | color/blue/100 | `#1A3D72` | blue-dark/150 |
+| `--color-data-header-bg` | color/data/header/bg | `#F5F5F5` | color/gray/50 | `#2E2F38` | gray-dark/300 |
+| `--color-data-border-light` | color/data/border/light | `#E9E9E9` | color/gray/100 | `#2E2F38` | gray-dark/300 |
+| `--color-data-border-strong` | color/data/border/strong | `#C4C4C4` | color/gray/300 | `#35363F` | gray-dark/400 |
 
-> HD-Table-1 확정(2026-05-20): dark = blue-dark-100 (#112B55).
-> **참고**: `--table-row-hover-bg` Light는 gray-50 (`--color-bg-subtle`)을 사용. `--color-data-state-hover`는 Figma 원본 참조 semantic 토큰으로 유지.
+> HD-Table-1 확정(2026-05-20): hover dark = blue-dark-100 (#112B55).
+> HD-Table-2 해소(2026-06-09): selected ≠ hover. `--color-data-state-selected` = blue-100(L)/blue-dark-150(D) 신설 — hover보다 한 단계 진한 파랑.
+> `--color-data-state-default` Dark 버그수정(2026-06-09): white → gray-dark-100 (#1C1D23). `--color-data-header-bg` 신설(헤더 회색).
+> **참고**: 가이드의 `--table-*` 컴포넌트 토큰은 아직 구(舊) 매핑(hover=gray, selected=blue-50)을 사용. Cell(Figma) 마이그레이션은 `--color-data-*` 신(新) 구조 기준. Table 가이드 컴포넌트 갱신은 후속 과제.
 
 ---
 
@@ -448,8 +455,13 @@ color-overlay   → 딤·오버레이
   --color-control-border-selected: var(--color-blue-400);  /* #1D6CEB */
   --color-control-border-disabled: var(--color-gray-300);  /* #C4C4C4 */
 
-  /* color-data (데이터 그리드/테이블 전용 — Figma: color/data/state/*) */
-  --color-data-state-hover: var(--color-blue-50);  /* #E2F1FF — 행 hover 배경 */
+  /* color-data (데이터 그리드/테이블 전용 — Figma: color/data/*) */
+  --color-data-state-default:  var(--color-base-white);    /* #FFFFFF — 행 기본 배경 */
+  --color-data-state-hover:    var(--color-blue-50);       /* #E2F1FF — 행 hover 배경 */
+  --color-data-state-selected: var(--color-blue-100);      /* #C8E4FF — 행 selected 배경 (hover보다 진함) */
+  --color-data-header-bg:      var(--color-gray-50);       /* #F5F5F5 — 헤더 배경 */
+  --color-data-border-light:   var(--color-gray-100);      /* #E9E9E9 — 행 구분선 */
+  --color-data-border-strong:  var(--color-gray-300);      /* #C4C4C4 — 헤더/외곽 강선 */
 
   /* color-overlay */
   --color-overlay: rgba(0, 0, 0, 0.5);
@@ -524,7 +536,12 @@ color-overlay   → 딤·오버레이
   --color-control-border-disabled: var(--color-gray-dark-300);  /* #2E2F38 — candidate */
 
   /* color-data (dark) */
-  --color-data-state-hover: var(--color-blue-dark-100);  /* #112B55 */
+  --color-data-state-default:  var(--color-gray-dark-100); /* #1C1D23 — 다크 행 기본 (버그수정: white→dark) */
+  --color-data-state-hover:    var(--color-blue-dark-100); /* #112B55 */
+  --color-data-state-selected: var(--color-blue-dark-150); /* #1A3D72 — selected (hover보다 진함) */
+  --color-data-header-bg:      var(--color-gray-dark-300); /* #2E2F38 — 헤더 배경 */
+  --color-data-border-light:   var(--color-gray-dark-300); /* #2E2F38 — 행 구분선 */
+  --color-data-border-strong:  var(--color-gray-dark-400); /* #35363F — 헤더/외곽 강선 */
 
   /* color-overlay */
   --color-overlay: rgba(0, 0, 0, 0.75);

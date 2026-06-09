@@ -447,8 +447,13 @@
   --color-text-state-correct: var(--color-blue-400);
   --color-text-state-error:   var(--color-status-error);
 
-  /* ── color-data (데이터 그리드/테이블 전용 — Figma: color/data/state/*) ── */
-  --color-data-state-hover: var(--color-blue-50);   /* #E2F1FF — 행 hover 배경 */
+  /* ── color-data (데이터 그리드/테이블 전용 — Figma: color/data/*) ── */
+  --color-data-state-default:  var(--color-base-white);    /* #FFFFFF — 행 기본 배경 */
+  --color-data-state-hover:    var(--color-blue-50);       /* #E2F1FF — 행 hover 배경 */
+  --color-data-state-selected: var(--color-blue-100);      /* #C8E4FF — 행 selected 배경 (hover보다 진함) */
+  --color-data-header-bg:      var(--color-gray-50);       /* #F5F5F5 — 헤더 배경 */
+  --color-data-border-light:   var(--color-gray-100);      /* #E9E9E9 — 행 구분선 */
+  --color-data-border-strong:  var(--color-gray-300);      /* #C4C4C4 — 헤더/외곽 강선 */
 
   /* ── color-navigation (라인탭·네비게이션 공통 — Figma: color/navigation/*) ── */
   --color-navigation-bg:                 var(--color-surface-default); /* white */
@@ -645,7 +650,12 @@
   --color-navigation-icon:               var(--color-gray-dark-700);         /* GNB 유틸 아이콘 — candidate */
 
   /* ── color-data (dark) ── */
-  --color-data-state-hover: var(--color-blue-dark-100); /* #112B55 */
+  --color-data-state-default:  var(--color-gray-dark-100); /* #1C1D23 — 다크 행 기본 (버그수정: white→dark) */
+  --color-data-state-hover:    var(--color-blue-dark-100); /* #112B55 */
+  --color-data-state-selected: var(--color-blue-dark-150); /* #1A3D72 — selected (hover보다 진함) */
+  --color-data-header-bg:      var(--color-gray-dark-300); /* #2E2F38 — 헤더 배경 */
+  --color-data-border-light:   var(--color-gray-dark-300); /* #2E2F38 — 행 구분선 */
+  --color-data-border-strong:  var(--color-gray-dark-400); /* #35363F — 헤더/외곽 강선 */
 
   /* ── table component dark override ──
      헤더(bg-default=gray-dark-50) < 행(surface-default=gray-dark-100) 레이어 역전 해소.
