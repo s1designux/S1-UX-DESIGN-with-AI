@@ -257,15 +257,15 @@ color-overlay   → 딤·오버레이
 | CSS Variable | Figma 원본 | Light Hex | Light Foundation | Dark Hex | Dark Foundation |
 |---|---|---|---|---|---|
 | `--color-data-state-default` | color/data/state/default | `#FFFFFF` | base/white | `#1C1D23` | gray-dark/100 |
-| `--color-data-state-hover` | color/data/state/hover | `#E2F1FF` | color/blue/50 | `#112B55` | blue-dark/100 |
-| `--color-data-state-selected` | color/data/state/selected | `#C8E4FF` | color/blue/100 | `#1A3D72` | blue-dark/150 |
-| `--color-data-header-bg` | color/data/header/bg | `#F5F5F5` | color/gray/50 | `#2E2F38` | gray-dark/300 |
+| `--color-data-state-hover` | color/data/state/hover | `#E2F1FF` | color/blue/50 | `#24252C` | gray-dark/200 |
+| `--color-data-state-selected` | color/data/state/selected | `#C8E4FF` | color/blue/100 | `#112B55` | blue-dark/100 |
+| `--color-data-header-bg` | color/data/header/bg | `#F5F5F5` | color/gray/50 | `#24252C` | gray-dark/200 |
 | `--color-data-border-light` | color/data/border/light | `#E9E9E9` | color/gray/100 | `#2E2F38` | gray-dark/300 |
 | `--color-data-border-strong` | color/data/border/strong | `#C4C4C4` | color/gray/300 | `#35363F` | gray-dark/400 |
 
-> HD-Table-1 확정(2026-05-20): hover dark = blue-dark-100 (#112B55).
-> HD-Table-2 해소(2026-06-09): selected ≠ hover. `--color-data-state-selected` = blue-100(L)/blue-dark-150(D) 신설 — hover보다 한 단계 진한 파랑.
-> `--color-data-state-default` Dark 버그수정(2026-06-09): white → gray-dark-100 (#1C1D23). `--color-data-header-bg` 신설(헤더 회색).
+> HD-Table-2 해소(2026-06-09): selected ≠ hover. Light는 hover=blue-50 / selected=blue-100. Dark는 vars-data 기준으로 hover=gray-dark-200(#24252C) / selected=blue-dark-100(#112B55) — 다크에서 hover=회색, selected=파랑으로 구분.
+> `--color-data-state-default` Dark 버그수정(2026-06-09): white → gray-dark-100 (#1C1D23). `--color-data-header-bg` 신설(헤더 회색, dark=gray-dark-200).
+> Dark 값은 vars-data.ts(=Figma Semantic Color V2)를 정본으로 정합(2026-06-09).
 > **참고**: 가이드의 `--table-*` 컴포넌트 토큰은 아직 구(舊) 매핑(hover=gray, selected=blue-50)을 사용. Cell(Figma) 마이그레이션은 `--color-data-*` 신(新) 구조 기준. Table 가이드 컴포넌트 갱신은 후속 과제.
 
 ---
@@ -537,9 +537,9 @@ color-overlay   → 딤·오버레이
 
   /* color-data (dark) */
   --color-data-state-default:  var(--color-gray-dark-100); /* #1C1D23 — 다크 행 기본 (버그수정: white→dark) */
-  --color-data-state-hover:    var(--color-blue-dark-100); /* #112B55 */
-  --color-data-state-selected: var(--color-blue-dark-150); /* #1A3D72 — selected (hover보다 진함) */
-  --color-data-header-bg:      var(--color-gray-dark-300); /* #2E2F38 — 헤더 배경 */
+  --color-data-state-hover:    var(--color-gray-dark-200); /* #24252C — vars-data 기준(다크 hover=회색) */
+  --color-data-state-selected: var(--color-blue-dark-100); /* #112B55 — vars-data 기준 */
+  --color-data-header-bg:      var(--color-gray-dark-200); /* #24252C — vars-data 기준 */
   --color-data-border-light:   var(--color-gray-dark-300); /* #2E2F38 — 행 구분선 */
   --color-data-border-strong:  var(--color-gray-dark-400); /* #35363F — 헤더/외곽 강선 */
 

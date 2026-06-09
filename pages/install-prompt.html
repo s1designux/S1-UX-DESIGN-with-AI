@@ -28,6 +28,15 @@
     .step-title { font-size:14px; font-weight:700; color:#111827; }
     .step-desc  { font-size:12px; color:#6b7280; margin-top:2px; }
     .step-body  { padding:20px 22px; background:#fff; }
+    .update-stamp {
+      margin-left:auto; flex-shrink:0;
+      display:inline-flex; align-items:center; gap:5px;
+      padding:4px 10px; border-radius:7px;
+      background:#eef1f4; color:#6b7280;
+      font-size:11px; font-weight:600; white-space:nowrap;
+      font-variant-numeric:tabular-nums;
+    }
+    .update-stamp svg { opacity:0.65; flex-shrink:0; }
 
     /* ── file download card ── */
     .file-card {
@@ -165,8 +174,9 @@
 
     @media (max-width:640px) {
       .snippet-label { display:none; }
-      .step-header { padding:14px 16px; }
+      .step-header { padding:14px 16px; flex-wrap:wrap; }
       .step-body { padding:16px; }
+      .update-stamp { margin-left:42px; margin-top:2px; }
     }
   </style>
 </head>
@@ -213,6 +223,7 @@
                 <div class="step-title">전체 기본 토큰 CSS 받기</div>
                 <div class="step-desc">Semantic (Light/Dark) + Component 토큰 전체 CSS</div>
               </div>
+              <span class="update-stamp" data-update-file="assets/css/tokens.css"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> 업데이트 2026-06-09 15:57</span>
             </div>
             <div class="step-body">
               <div class="file-card">
@@ -220,7 +231,7 @@
                   <div class="file-icon">🎨</div>
                   <div>
                     <div class="file-name">tokens.css</div>
-                    <div class="file-meta">Foundation 258종 + Semantic 144종 + Component 161종 · Light + Dark</div>
+                    <div class="file-meta">Foundation 256종 + Semantic 171종 + Component 0종 · Light + Dark</div>
                   </div>
                 </div>
                 <button class="download-btn" onclick="downloadTokens()">
@@ -244,8 +255,9 @@
 
 /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
    SW Design System V2.4 — tokens.css
-   Foundation → Semantic → Component
-   Updated: 2026-04-30
+   Foundation → Semantic (Variables 정본 · npm run tokens:gen 자동생성)
+   컴포넌트 토큰은 component-tokens.css 로 분리 보존 (Phase 2 재매칭 예정)
+   Updated: 2026-06-09
    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
 
 
@@ -581,560 +593,419 @@
 }
 
 
+/* &gt;&gt;&gt; GEN:SEMANTIC &gt;&gt;&gt; Auto-generated from vars-data.ts (npm run tokens:gen) — Variables 정본. 수동 편집 금지. */
 /* ══════════════════════════════════════════════════
-   3. SEMANTIC TOKENS — Light (기본)
+   SEMANTIC TOKENS — Light (Variables 기준 자동 생성)
    ══════════════════════════════════════════════════ */
 :root {
+  /* ── button ── */
+  --color-button-bg-assist--default       : var(--color-base-white);
+  --color-button-bg-assist--hover         : var(--color-gray-50);
+  --color-button-bg-blue-line--default    : var(--color-base-white);
+  --color-button-bg-blue-line--hover      : var(--color-blue-50);
+  --color-button-bg-disabled              : var(--color-gray-50);
+  --color-button-bg-primary--default      : var(--color-blue-400);
+  --color-button-bg-primary--hover        : var(--color-blue-500);
+  --color-button-bg-secondary--default    : var(--color-base-white);
+  --color-button-bg-secondary--hover      : var(--color-gray-50);
+  --color-button-border-assist--default   : var(--color-gray-200);
+  --color-button-border-assist--hover     : var(--color-gray-200);
+  --color-button-border-blue-line--default: var(--color-blue-400);
+  --color-button-border-blue-line--hover  : var(--color-blue-500);
+  --color-button-border-disabled          : var(--color-gray-200);
+  --color-button-border-primary--default  : var(--color-blue-400);
+  --color-button-border-primary--hover    : var(--color-blue-500);
+  --color-button-border-secondary--default: var(--color-gray-200);
+  --color-button-border-secondary--hover  : var(--color-gray-200);
+  --color-button-label-assist--default    : var(--color-gray-800);
+  --color-button-label-assist--hover      : var(--color-gray-800);
+  --color-button-label-blue-line--default : var(--color-blue-400);
+  --color-button-label-blue-line--hover   : var(--color-blue-500);
+  --color-button-label-disabled           : var(--color-gray-300);
+  --color-button-label-primary--default   : var(--color-base-white);
+  --color-button-label-primary--hover     : var(--color-base-white);
+  --color-button-label-secondary--default : var(--color-gray-800);
+  --color-button-label-secondary--hover   : var(--color-gray-800);
 
-  /* ── color-bg ── */
-  --color-bg-default:  var(--color-gray-0);
-  --color-bg-subtle:   var(--color-gray-50);
-  --color-bg-muted:    var(--color-gray-100);
-  --color-bg-elevated: var(--color-gray-100);
-  --color-bg-home:     #F5F6FB; /* blue-gray tint — Figma semantic 값. Foundation 계열 없음, gate allowlist 등록 */
-  /* ⚠️ --color-bg-active / --color-bg-deepest / --color-bg-selected : Figma 원본 미확인, pending-review 항목 1 */
-  --color-bg-selected: var(--color-blue-50); /* 임시값 — Figma 검증 후 확정 필요 */
+  /* ── chip ── */
+  --color-chip-line-bg-default      : var(--color-base-white);
+  --color-chip-line-bg-disabled     : var(--color-gray-50);
+  --color-chip-line-bg-hover        : var(--color-gray-0);
+  --color-chip-line-bg-selected     : var(--color-base-white);
+  --color-chip-line-border-default  : var(--color-gray-300);
+  --color-chip-line-border-disabled : var(--color-gray-100);
+  --color-chip-line-border-selected : var(--color-blue-400);
+  --color-chip-line-label-default   : var(--color-gray-500);
+  --color-chip-line-label-disabled  : var(--color-gray-300);
+  --color-chip-line-label-selected  : var(--color-blue-400);
+  --color-chip-solid-bg-default     : var(--color-gray-50);
+  --color-chip-solid-bg-disabled    : var(--color-gray-50);
+  --color-chip-solid-bg-hover       : var(--color-gray-100);
+  --color-chip-solid-bg-selected    : var(--color-blue-400);
+  --color-chip-solid-border-default : var(--color-gray-50);
+  --color-chip-solid-border-disabled: var(--color-gray-50);
+  --color-chip-solid-border-selected: var(--color-blue-400);
+  --color-chip-solid-label-default  : var(--color-gray-800);
+  --color-chip-solid-label-disabled : var(--color-gray-300);
+  --color-chip-solid-label-selected : var(--color-base-white);
 
-  /* ── color-surface ── */
-  --color-surface-default: var(--color-base-white);
-  --color-surface-raised:  var(--color-base-white);
+  /* ── control ── */
+  --color-control-bg-default              : var(--color-base-white);
+  --color-control-bg-default-alt          : var(--color-gray-50);
+  --color-control-bg-disabled             : var(--color-gray-50);
+  --color-control-bg-hover                : var(--color-gray-50);
+  --color-control-bg-selected             : var(--color-blue-400);
+  --color-control-bg-selected-alt         : var(--color-blue-400);
+  --color-control-border-default          : var(--color-gray-200);
+  --color-control-border-default-alt      : var(--color-gray-100);
+  --color-control-border-disabled         : var(--color-gray-300);
+  --color-control-border-disabled-alt1    : var(--color-gray-200);
+  --color-control-border-disabled-alt2    : var(--color-gray-100);
+  --color-control-border-selected         : var(--color-blue-400);
+  --color-control-indicator-disabled      : var(--color-gray-300);
+  --color-control-indicator-selected      : var(--color-base-white);
+  --color-control-indicator-selected-alt  : var(--color-blue-400);
+  --color-control-indicator-unselected    : var(--color-gray-300);
+  --color-control-indicator-unselected-alt: var(--color-gray-200);
+  --color-control-label-default           : var(--color-gray-800);
+  --color-control-label-disabled          : var(--color-gray-300);
+  --color-control-text-disabled           : var(--color-gray-300);
+  --color-control-text-selected           : var(--color-base-white);
+  --color-control-text-unselected         : var(--color-gray-800);
 
-  /* ── color-text ── */
-  --color-text-primary:     var(--color-gray-900);
-  --color-text-secondary:   var(--color-gray-800);
-  --color-text-tertiary:    var(--color-gray-600);
-  --color-text-caption:     var(--color-gray-500);
-  --color-text-placeholder: var(--color-gray-500);
-  --color-text-helper:      var(--color-gray-400);
-  --color-text-link:        var(--color-blue-400);
-  --color-text-correct:     var(--color-blue-400);
-  --color-text-danger:      var(--color-red-300);
-  --color-text-disabled:    var(--color-gray-300);
-  --color-text-readonly:    var(--color-gray-500);
-  --color-text-inverse:     var(--color-base-white);
+  /* ── data ── */
+  --color-data-border-light  : var(--color-gray-100);
+  --color-data-border-strong : var(--color-gray-300);
+  --color-data-header-bg     : var(--color-gray-50);
+  --color-data-state-default : var(--color-base-white);
+  --color-data-state-hover   : var(--color-blue-50);
+  --color-data-state-selected: var(--color-blue-100);
 
-  /* ── color-border ── */
-  --color-border-subtle:   var(--color-gray-100);
-  --color-border-default:  var(--color-gray-200);
-  --color-border-disabled: var(--color-gray-200);
-  --color-border-strong:   var(--color-gray-300);
-  --color-border-emphasis: var(--color-gray-800);
-  --color-border-focus:    var(--color-blue-400);
-  --color-border-white:    var(--color-base-white);
-  --color-border-danger:   var(--color-red-300);
-  --color-border-correct:  var(--color-blue-400);
+  /* ── dropdown ── */
+  --color-dropdown-list-bg               : var(--color-base-white);
+  --color-dropdown-list-border           : var(--color-gray-200);
+  --color-dropdown-option-bg-default     : var(--color-base-white);
+  --color-dropdown-option-bg-disabled    : var(--color-gray-50);
+  --color-dropdown-option-bg-hover       : var(--color-gray-50);
+  --color-dropdown-option-bg-selected    : var(--color-blue-50);
+  --color-dropdown-option-border-default : var(--color-gray-100);
+  --color-dropdown-option-border-hover   : var(--color-blue-400);
+  --color-dropdown-option-border-selected: var(--color-blue-400);
+  --color-dropdown-option-label-default  : var(--color-gray-800);
+  --color-dropdown-option-label-disabled : var(--color-gray-300);
+  --color-dropdown-option-label-hover    : var(--color-gray-900);
+  --color-dropdown-option-label-selected : var(--color-blue-400);
 
-  /* ── color-icon ── */
-  --color-icon-default:  var(--color-gray-500);
-  --color-icon-muted:    var(--color-gray-300);
-  --color-icon-emphasis: var(--color-gray-800);
-  --color-icon-accent:   var(--color-blue-400);
-  --color-icon-inverse:  var(--color-base-white);
-  --color-icon-danger:   var(--color-red-300);
+  /* ── form-control ── */
+  --color-form-control-bg-default      : var(--color-base-white);
+  --color-form-control-bg-disabled     : var(--color-gray-50);
+  --color-form-control-bg-hover        : var(--color-gray-0);
+  --color-form-control-bg-selected     : var(--color-base-white);
+  --color-form-control-border-correct  : var(--color-blue-400);
+  --color-form-control-border-default  : var(--color-gray-200);
+  --color-form-control-border-disabled : var(--color-gray-100);
+  --color-form-control-border-error    : var(--color-red-400);
+  --color-form-control-border-selected : var(--color-blue-400);
+  --color-form-control-label-default   : var(--color-gray-800);
+  --color-form-control-label-disabled  : var(--color-gray-300);
+  --color-form-control-text-default    : var(--color-gray-800);
+  --color-form-control-text-disabled   : var(--color-gray-300);
+  --color-form-control-text-placeholder: var(--color-gray-500);
+  --color-form-control-text-selected   : var(--color-gray-900);
+  --color-form-control-icon-default    : var(--color-gray-800);
+  --color-form-control-icon-disabled   : var(--color-gray-300);
+  --color-form-control-text-caret      : var(--color-blue-400);
+  --color-form-control-text-read-only  : var(--color-gray-500);
 
-  /* ── color-action ── */
-  --color-action-primary-default: var(--color-blue-400);
-  --color-action-primary-hover:   var(--color-blue-450);
-  --color-action-primary-pressed: var(--color-blue-500);
-  --color-action-primary-text:    var(--color-base-white);
-  --color-action-primary-subtle:  var(--color-blue-50);
+  /* ── icon ── */
+  --color-icon-blue      : var(--color-blue-400);
+  --color-icon-gray      : var(--color-gray-500);
+  --color-icon-gray-dark : var(--color-gray-800);
+  --color-icon-gray-light: var(--color-gray-300);
+  --color-icon-red       : var(--color-red-300);
+  --color-icon-white     : var(--color-base-white);
 
-  /* ── color-status ── */
-  --color-status-success: var(--color-blue-400);
-  --color-status-error:   var(--color-red-400);
-  --color-status-warning: var(--color-yellow-400);
-  --color-status-info:    var(--color-gray-500);
+  /* ── line ── */
+  --color-line-blue        : var(--color-blue-400);
+  --color-line-gray-default: var(--color-gray-200);
+  --color-line-gray-strong : var(--color-gray-300);
+  --color-line-gray-subtle : var(--color-gray-100);
+  --color-line-white       : var(--color-base-white);
 
-  /*
-   * ── color-control-border (컨트롤 컴포넌트 전용 — 디바이더와 독립) ──
-   *
-   * 여러 컴포넌트(Checkbox, Radio 등)가 이 토큰을 공유한다.
-   * Figma에는 어두운 배경이나 컬러 카드 위에서 쓰이는 "-alt" 변형이 존재하지만,
-   * 별도 alt 토큰을 만들지 않는다.
-   * 대신, 특수한 배경 위에 컨트롤을 배치하는 부모 컴포넌트가 이 토큰 값을
-   * 자신의 CSS 스코프 안에서 직접 재정의(override)한다.
-   * 이렇게 하면 토큰 이름은 그대로 유지되면서 맥락에 따라 값만 바뀐다.
-   *
-   * 사용 예시:
-   *   .s1-status-card--on-dark {
-   *     --color-control-border-default:  var(--color-gray-dark-300);
-   *     --color-control-border-selected: var(--color-blue-dark-400);
-   *   }
-   */
-  --color-control-border-default:     var(--color-gray-200);
-  --color-control-border-hover:       var(--color-blue-400);
-  --color-control-border-selected:    var(--color-blue-400);
-  --color-control-border-disabled:    var(--color-gray-300);
-  --color-control-indicator-selected: var(--color-action-primary-default);
-  --color-control-indicator-disabled: var(--color-gray-300);
-  --color-control-bg-hover:           var(--color-bg-subtle);
+  /* ── navigation ── */
+  --color-navigation-background           : var(--color-base-white);
+  --color-navigation-indicator-default    : var(--color-gray-200);
+  --color-navigation-indicator-default-alt: var(--color-gray-100);
+  --color-navigation-indicator-hover      : var(--color-blue-400);
+  --color-navigation-indicator-selected   : var(--color-blue-400);
+  --color-navigation-label-default        : var(--color-gray-600);
+  --color-navigation-label-default-alt    : var(--color-gray-700);
+  --color-navigation-label-hover          : var(--color-blue-400);
+  --color-navigation-label-selected       : var(--color-blue-400);
 
-  /* ── color-form-control ── */
-  --color-form-control-bg-default:          var(--color-surface-default);
-  --color-form-control-bg-hover:            var(--color-surface-default); /* light: 기본과 동일 — 시각 변화 없음 */
-  --color-form-control-bg-disabled:         var(--color-bg-subtle);
-  --color-form-control-border-default:      var(--color-control-border-default);
-  --color-form-control-border-hover:        var(--color-border-strong);
-  --color-form-control-border-selected:     var(--color-border-focus);
-  --color-form-control-border-error:        var(--color-status-error);
-  --color-form-control-border-correct:      var(--color-border-focus);
-  --color-form-control-border-disabled:     var(--color-control-border-default); /* #D9D9D9 — Figma form-control/border/disabled 기준 통일 (HD-TPS-1, 2026-06-05). 구 border-subtle(#E9E9E9)에서 변경. Input·Select·DatePicker·TimePicker 공유 */
-  --color-form-control-text-default:        var(--color-text-secondary);
-  --color-form-control-text-placeholder:    var(--color-text-placeholder);
-  --color-form-control-text-disabled:       var(--color-text-disabled);
-  --color-form-control-label-default:       var(--color-text-secondary);
-  --color-form-control-label-disabled:      var(--color-text-disabled);
-  --color-form-control-icon-default:        var(--color-gray-800);       /* Light: form-control 기본 아이콘 — #353535 */
+  /* ── overlay ── */
+  --color-overlay: rgba(0,0,0,0.5);
 
-  /* ── color-text-state ── */
-  --color-text-state-helper:  var(--color-text-secondary);
-  --color-text-state-correct: var(--color-blue-400);
-  --color-text-state-error:   var(--color-status-error);
+  /* ── date-picker ── */
+  --color-date-picker-bg-panel        : var(--color-base-white);
+  --color-date-picker-bg-hover        : var(--color-gray-50);
+  --color-date-picker-bg-today        : var(--color-base-white);
+  --color-date-picker-bg-selected     : var(--color-blue-400);
+  --color-date-picker-border-panel    : var(--color-gray-300);
+  --color-date-picker-border-today    : var(--color-blue-400);
+  --color-date-picker-text-primary    : var(--color-gray-900);
+  --color-date-picker-text-secondary  : var(--color-gray-800);
+  --color-date-picker-text-disabled   : var(--color-gray-300);
+  --color-date-picker-text-other-month: var(--color-gray-300);
+  --color-date-picker-text-sunday     : var(--color-red-400);
+  --color-date-picker-text-saturday   : var(--color-blue-400);
+  --color-date-picker-text-today      : var(--color-blue-400);
+  --color-date-picker-text-selected   : var(--color-base-white);
 
-  /* ── color-data (데이터 그리드/테이블 전용 — Figma: color/data/*) ── */
-  --color-data-state-default:  var(--color-base-white);    /* #FFFFFF — 행 기본 배경 */
-  --color-data-state-hover:    var(--color-blue-50);       /* #E2F1FF — 행 hover 배경 */
-  --color-data-state-selected: var(--color-blue-100);      /* #C8E4FF — 행 selected 배경 (hover보다 진함) */
-  --color-data-header-bg:      var(--color-gray-50);       /* #F5F5F5 — 헤더 배경 */
-  --color-data-border-light:   var(--color-gray-100);      /* #E9E9E9 — 행 구분선 */
-  --color-data-border-strong:  var(--color-gray-300);      /* #C4C4C4 — 헤더/외곽 강선 */
+  /* ── pagination ── */
+  --color-pagination-control-bg-default     : var(--color-base-white);
+  --color-pagination-control-bg-disabled    : var(--color-gray-50);
+  --color-pagination-control-bg-hover       : var(--color-gray-50);
+  --color-pagination-control-border-default : var(--color-gray-100);
+  --color-pagination-control-border-disabled: var(--color-gray-100);
+  --color-pagination-control-border-hover   : var(--color-gray-200);
 
-  /* ── color-navigation (라인탭·네비게이션 공통 — Figma: color/navigation/*) ── */
-  --color-navigation-bg:                 var(--color-surface-default); /* white */
-  --color-navigation-label-default:      var(--color-gray-600);        /* #555555 — 미선택 탭 라벨 */
-  --color-navigation-label-selected:     var(--color-action-primary-default); /* #1D6CEB */
-  --color-navigation-indicator-default:  var(--color-gray-200);        /* #D9D9D9 — 탭바 기본 구분선 */
-  --color-navigation-indicator-selected: var(--color-action-primary-default); /* #1D6CEB */
-  --color-navigation-label-default-alt:  var(--color-base-black);      /* #000000 — GNB 메뉴 기본 라벨(black, label/default-alt) */
-  --color-navigation-icon:               var(--color-gray-800);        /* #353535 — GNB 유틸 아이콘(icon/gray-dark) */
+  /* ── status-card ── */
+  --color-status-card-text-disabled          : var(--color-gray-300);
+  --color-status-card-text-error             : var(--color-red-400);
+  --color-status-card-text-primary--default  : var(--color-gray-900);
+  --color-status-card-text-primary--sub      : var(--color-gray-800);
+  --color-status-card-text-secondary--default: var(--color-gray-600);
+  --color-status-card-text-secondary--sub    : var(--color-gray-500);
+  --color-status-card-text-tertiary--default : var(--color-gray-400);
+  --color-status-card-text-tertiary--sub     : var(--color-gray-300);
 
-  /* ── color-overlay ── */
-  --color-overlay: rgba(0, 0, 0, 0.5); /* rgba 허용 예외 — alpha 채널 포함 */
+  /* ── text ── */
+  --color-text-body-primary     : var(--color-gray-900);
+  --color-text-body-secondary   : var(--color-gray-800);
+  --color-text-body-tertiary    : var(--color-gray-500);
+  --color-text-state-accent     : var(--color-blue-400);
+  --color-text-state-accent-alt : var(--color-base-white);
+  --color-text-state-caption    : var(--color-gray-500);
+  --color-text-state-caution    : var(--color-red-300);
+  --color-text-state-correct    : var(--color-blue-400);
+  --color-text-state-disabled   : var(--color-gray-300);
+  --color-text-state-helper     : var(--color-gray-400);
+  --color-text-state-placeholder: var(--color-gray-500);
+  --color-text-title-primary    : var(--color-gray-900);
+  --color-text-title-secondary  : var(--color-gray-800);
+  --color-text-title-tertiary   : var(--color-gray-600);
 
-  /* ── spacing (semantic) ── */
-  --spacing-padding-block-xxs: var(--spacing-8);
-  --spacing-padding-block-xs:  var(--spacing-12);
-  --spacing-padding-block-sm:  var(--spacing-16);
-  --spacing-padding-block-md:  var(--spacing-20);
-  --spacing-padding-block-lg:  var(--spacing-24);
-  --spacing-padding-inline-xxs: var(--spacing-8);
-  --spacing-padding-inline-xs:  var(--spacing-12);
-  --spacing-padding-inline-sm:  var(--spacing-16);
-  --spacing-padding-inline-md:  var(--spacing-20);
-  --spacing-padding-inline-lg:  var(--spacing-24);
-  --spacing-section-xs:  var(--spacing-16);
-  --spacing-section-sm:  var(--spacing-20);
-  --spacing-section-md:  var(--spacing-24);
-  --spacing-section-lg:  var(--spacing-32);
-  --spacing-section-xl:  var(--spacing-40);
-  --spacing-section-xxl: var(--spacing-48);
-  --spacing-stack-xs: var(--spacing-12);
-  --spacing-stack-sm: var(--spacing-16);
-  --spacing-stack-md: var(--spacing-20);
-  --spacing-stack-lg: var(--spacing-24);
-  --spacing-cluster-xxs: var(--spacing-8);
-  --spacing-cluster-xs:  var(--spacing-12);
-  --spacing-cluster-sm:  var(--spacing-16);
-  --spacing-cluster-md:  var(--spacing-20);
-  --spacing-label-gap-inline-sm: var(--spacing-8);
-  --spacing-label-gap-inline-md: var(--spacing-12);
-  --spacing-label-gap-inline-lg: var(--spacing-16);
-  --spacing-label-gap-block-sm:  var(--spacing-4);
-  --spacing-label-gap-block-md:  var(--spacing-8);
-
-  /* ── sizing (semantic) ── */
-  --sizing-form-control-height-xxs:         var(--spacing-28);
-  --sizing-form-control-height-xs:          34px; /* Foundation step 없음 */
-  --sizing-form-control-height-md:          var(--spacing-44);
-  --sizing-form-control-height-lg:          var(--spacing-48);
-  --sizing-form-control-dataview-height-sm: var(--spacing-28);
-  --sizing-form-control-dataview-height-md: 32px; /* Foundation step 없음 */
-  --sizing-button-height-xxs:  var(--spacing-28);
-  --sizing-button-height-xs:   34px; /* Foundation step 없음 */
-  --sizing-button-height-sm:   var(--spacing-40);
-  --sizing-button-height-md:   var(--spacing-44);
-  --sizing-button-height-lg:   var(--spacing-48);
-  --sizing-button-min-width:   80px; /* Foundation step 없음 */
-  --sizing-chip-height-sm:     var(--spacing-28);
-  --sizing-chip-height-md:     30px; /* Foundation step 없음 */
-  --sizing-chip-height-lg:     34px; /* Foundation step 없음 */
-  --sizing-table-row-height-xs: 34px; /* Foundation step 없음 */
-  --sizing-table-row-height-sm: 38px; /* Foundation step 없음 */
-  --sizing-table-row-height-md: var(--spacing-44);
-  --sizing-dropdown-item-height-md: var(--sizing-form-control-height-md); /* 44px — Select 옵션 */
-  --sizing-dropdown-item-height-xs: var(--sizing-form-control-height-xs); /* 34px — 컴팩트 (TimePicker) */
-  --sizing-icon-10: 10px; /* Foundation step 없음 */
-  --sizing-icon-16: var(--spacing-16);
-  --sizing-icon-18: 18px; /* Foundation step 없음 */
-  --sizing-icon-20: var(--spacing-20);
-  --sizing-icon-24: var(--spacing-24);
-  --sizing-icon-28: var(--spacing-28);
-  --sizing-icon-32: var(--spacing-32);
-
-  /* ── radius (semantic) ── */
-  --radius-control-xs: var(--radius-2);
-  --radius-control-sm: var(--radius-4);
-  --radius-button-md:  var(--radius-4);
-  --radius-card-md:    var(--radius-10);
-  --radius-modal-md:   var(--radius-8);
-
-  /* ── border-width (semantic) ── */
-  --border-width-default: var(--border-width-1);
-  --border-width-strong:  var(--border-width-2);
+  /* ── scroll ── */
+  --color-scroll-bg: var(--color-gray-200);
 }
 
-
 /* ══════════════════════════════════════════════════
-   4. SEMANTIC TOKENS — Dark
+   SEMANTIC TOKENS — Dark (Variables 기준 자동 생성)
    ══════════════════════════════════════════════════ */
 [data-theme="dark"] {
+  /* ── button ── */
+  --color-button-bg-assist--default       : var(--color-base-white);
+  --color-button-bg-assist--hover         : var(--color-gray-dark-200);
+  --color-button-bg-blue-line--default    : var(--color-gray-dark-100);
+  --color-button-bg-blue-line--hover      : var(--color-gray-dark-200);
+  --color-button-bg-disabled              : var(--color-gray-dark-300);
+  --color-button-bg-primary--default      : var(--color-blue-dark-300);
+  --color-button-bg-primary--hover        : var(--color-blue-dark-250);
+  --color-button-bg-secondary--default    : var(--color-gray-dark-100);
+  --color-button-bg-secondary--hover      : var(--color-gray-dark-200);
+  --color-button-border-assist--default   : var(--color-gray-dark-300);
+  --color-button-border-assist--hover     : var(--color-gray-dark-300);
+  --color-button-border-blue-line--default: var(--color-blue-dark-300);
+  --color-button-border-blue-line--hover  : var(--color-blue-dark-300);
+  --color-button-border-disabled          : var(--color-gray-dark-300);
+  --color-button-border-primary--default  : var(--color-blue-dark-300);
+  --color-button-border-primary--hover    : var(--color-blue-dark-250);
+  --color-button-border-secondary--default: var(--color-gray-dark-500);
+  --color-button-border-secondary--hover  : var(--color-gray-dark-500);
+  --color-button-label-assist--default    : var(--color-gray-dark-800);
+  --color-button-label-assist--hover      : var(--color-gray-dark-800);
+  --color-button-label-blue-line--default : var(--color-blue-dark-300);
+  --color-button-label-blue-line--hover   : var(--color-blue-dark-300);
+  --color-button-label-disabled           : var(--color-gray-dark-600);
+  --color-button-label-primary--default   : var(--color-base-white);
+  --color-button-label-primary--hover     : var(--color-base-white);
+  --color-button-label-secondary--default : var(--color-gray-dark-800);
+  --color-button-label-secondary--hover   : var(--color-gray-dark-800);
 
-  /* ── color-bg ── */
-  --color-bg-default:  var(--color-gray-dark-50);
-  --color-bg-subtle:   var(--color-gray-dark-200);
-  --color-bg-muted:    var(--color-gray-dark-300);
-  --color-bg-elevated: var(--color-gray-dark-400);
-  --color-bg-home:     var(--color-gray-dark-50);
-  --color-bg-selected: var(--color-blue-dark-100); /* #112B55 — HD-Table-2 확정 */
+  /* ── chip ── */
+  --color-chip-line-bg-default      : var(--color-gray-dark-100);
+  --color-chip-line-bg-disabled     : var(--color-gray-dark-200);
+  --color-chip-line-bg-hover        : var(--color-gray-dark-200);
+  --color-chip-line-bg-selected     : var(--color-gray-dark-100);
+  --color-chip-line-border-default  : var(--color-gray-dark-500);
+  --color-chip-line-border-disabled : var(--color-gray-dark-200);
+  --color-chip-line-border-selected : var(--color-blue-dark-300);
+  --color-chip-line-label-default   : var(--color-gray-dark-700);
+  --color-chip-line-label-disabled  : var(--color-gray-dark-600);
+  --color-chip-line-label-selected  : var(--color-blue-dark-350);
+  --color-chip-solid-bg-default     : var(--color-gray-dark-300);
+  --color-chip-solid-bg-disabled    : var(--color-gray-dark-200);
+  --color-chip-solid-bg-hover       : var(--color-gray-dark-400);
+  --color-chip-solid-bg-selected    : var(--color-blue-dark-300);
+  --color-chip-solid-border-default : var(--color-gray-dark-200);
+  --color-chip-solid-border-disabled: var(--color-gray-dark-200);
+  --color-chip-solid-border-selected: var(--color-blue-dark-300);
+  --color-chip-solid-label-default  : var(--color-gray-dark-700);
+  --color-chip-solid-label-disabled : var(--color-gray-dark-600);
+  --color-chip-solid-label-selected : var(--color-base-white);
 
-  /* ── color-surface ── */
-  --color-surface-default: var(--color-gray-dark-100);
-  --color-surface-raised:  var(--color-gray-dark-400);
+  /* ── control ── */
+  --color-control-bg-default              : var(--color-gray-dark-100);
+  --color-control-bg-default-alt          : var(--color-gray-dark-600);
+  --color-control-bg-disabled             : var(--color-gray-dark-300);
+  --color-control-bg-hover                : var(--color-gray-dark-200);
+  --color-control-bg-selected             : var(--color-blue-dark-300);
+  --color-control-bg-selected-alt         : var(--color-blue-dark-300);
+  --color-control-border-default          : var(--color-gray-dark-500);
+  --color-control-border-default-alt      : var(--color-gray-dark-300);
+  --color-control-border-disabled         : var(--color-gray-dark-300);
+  --color-control-border-disabled-alt1    : var(--color-gray-dark-300);
+  --color-control-border-disabled-alt2    : var(--color-gray-dark-300);
+  --color-control-border-selected         : var(--color-blue-dark-300);
+  --color-control-indicator-disabled      : var(--color-gray-dark-500);
+  --color-control-indicator-selected      : var(--color-base-white);
+  --color-control-indicator-selected-alt  : var(--color-blue-dark-300);
+  --color-control-indicator-unselected    : var(--color-gray-dark-400);
+  --color-control-indicator-unselected-alt: var(--color-gray-dark-300);
+  --color-control-label-default           : var(--color-gray-dark-800);
+  --color-control-label-disabled          : var(--color-gray-dark-600);
+  --color-control-text-disabled           : var(--color-gray-dark-400);
+  --color-control-text-selected           : var(--color-base-white);
+  --color-control-text-unselected         : var(--color-gray-dark-800);
 
-  /* ── color-text ── */
-  --color-text-primary:     var(--color-gray-dark-900);
-  --color-text-secondary:   var(--color-gray-dark-800);
-  --color-text-tertiary:    var(--color-gray-dark-700);
-  --color-text-caption:     var(--color-gray-dark-700);
-  --color-text-placeholder: var(--color-gray-dark-600);
-  --color-text-helper:      var(--color-gray-dark-600);
-  --color-text-link:        var(--color-blue-dark-400);
-  --color-text-correct:     var(--color-blue-dark-400);
-  --color-text-danger:      var(--color-status-dark-red);
-  --color-text-disabled:    var(--color-gray-dark-400);
-  --color-text-readonly:    var(--color-gray-dark-500);
-  --color-text-inverse:     var(--color-base-white);
+  /* ── data ── */
+  --color-data-border-light  : var(--color-gray-dark-300);
+  --color-data-border-strong : var(--color-gray-dark-400);
+  --color-data-header-bg     : var(--color-gray-dark-200);
+  --color-data-state-default : var(--color-gray-dark-100);
+  --color-data-state-hover   : var(--color-gray-dark-200);
+  --color-data-state-selected: var(--color-blue-dark-100);
 
-  /* ── color-border (dark override) ── */
-  --color-border-subtle:   var(--color-gray-dark-200);
-  --color-border-default:  var(--color-gray-dark-300);
-  --color-border-disabled: var(--color-gray-dark-200);
-  --color-border-strong:   var(--color-gray-dark-500);
-  --color-border-emphasis: var(--color-gray-dark-700);
-  --color-border-focus:    var(--color-blue-dark-350);
-  --color-border-white:    var(--color-base-white);
-  --color-border-danger:   var(--color-status-dark-red);
-  --color-border-correct:  var(--color-blue-dark-350);
+  /* ── dropdown ── */
+  --color-dropdown-list-bg               : var(--color-gray-dark-100);
+  --color-dropdown-list-border           : var(--color-gray-dark-500);
+  --color-dropdown-option-bg-default     : var(--color-gray-dark-400);
+  --color-dropdown-option-bg-disabled    : var(--color-gray-dark-200);
+  --color-dropdown-option-bg-hover       : var(--color-gray-dark-200);
+  --color-dropdown-option-bg-selected    : var(--color-blue-dark-100);
+  --color-dropdown-option-border-default : var(--color-gray-dark-300);
+  --color-dropdown-option-border-hover   : var(--color-blue-dark-300);
+  --color-dropdown-option-border-selected: var(--color-blue-dark-300);
+  --color-dropdown-option-label-default  : var(--color-gray-dark-800);
+  --color-dropdown-option-label-disabled : var(--color-gray-dark-400);
+  --color-dropdown-option-label-hover    : var(--color-gray-dark-900);
+  --color-dropdown-option-label-selected : var(--color-blue-dark-350);
 
-  /* ── color-icon ── */
-  --color-icon-default:  var(--color-gray-dark-700);
-  --color-icon-muted:    var(--color-gray-dark-400);
-  --color-icon-emphasis: var(--color-gray-dark-800);
-  --color-icon-accent:   var(--color-blue-dark-400);
-  --color-icon-inverse:  var(--color-gray-dark-900);
-  --color-icon-danger:   var(--color-status-dark-red);
+  /* ── form-control ── */
+  --color-form-control-bg-default      : var(--color-gray-dark-100);
+  --color-form-control-bg-disabled     : var(--color-gray-dark-200);
+  --color-form-control-bg-hover        : var(--color-gray-dark-200);
+  --color-form-control-bg-selected     : var(--color-gray-dark-200);
+  --color-form-control-border-correct  : var(--color-blue-dark-350);
+  --color-form-control-border-default  : var(--color-gray-dark-500);
+  --color-form-control-border-disabled : var(--color-gray-dark-200);
+  --color-form-control-border-error    : var(--color-red-dark-350);
+  --color-form-control-border-selected : var(--color-blue-dark-350);
+  --color-form-control-label-default   : var(--color-gray-dark-800);
+  --color-form-control-label-disabled  : var(--color-gray-dark-600);
+  --color-form-control-text-default    : var(--color-gray-dark-800);
+  --color-form-control-text-disabled   : var(--color-gray-dark-600);
+  --color-form-control-text-placeholder: var(--color-gray-dark-600);
+  --color-form-control-text-selected   : var(--color-gray-dark-800);
+  --color-form-control-icon-default    : var(--color-gray-dark-700);
+  --color-form-control-icon-disabled   : var(--color-gray-dark-500);
+  --color-form-control-text-caret      : var(--color-blue-dark-350);
+  --color-form-control-text-read-only  : var(--color-gray-dark-700);
 
-  /* ── color-action ── */
-  --color-action-primary-default: var(--color-blue-dark-300);
-  --color-action-primary-hover:   var(--color-blue-dark-250);
-  --color-action-primary-pressed: var(--color-blue-dark-200);
-  --color-action-primary-text:    var(--color-base-white);
-  --color-action-primary-subtle:  var(--color-blue-dark-100);
+  /* ── icon ── */
+  --color-icon-blue      : var(--color-blue-dark-300);
+  --color-icon-gray      : var(--color-gray-dark-700);
+  --color-icon-gray-dark : var(--color-gray-dark-800);
+  --color-icon-gray-light: var(--color-gray-dark-400);
+  --color-icon-red       : var(--color-red-dark-350);
+  --color-icon-white     : var(--color-base-white);
 
-  /* ── color-status ── */
-  --color-status-success: var(--color-status-dark-green);
-  --color-status-error:   var(--color-status-dark-red);
-  --color-status-warning: var(--color-status-dark-yellow);
-  --color-status-info:    var(--color-gray-dark-700);
+  /* ── line ── */
+  --color-line-blue        : var(--color-blue-dark-300);
+  --color-line-gray-default: var(--color-gray-dark-300);
+  --color-line-gray-strong : var(--color-gray-dark-400);
+  --color-line-gray-subtle : var(--color-gray-dark-300);
+  --color-line-white       : var(--color-base-white);
 
-  /* ── color-text-state (dark overrides) ── */
-  --color-text-state-correct: var(--color-blue-dark-400);
+  /* ── navigation ── */
+  --color-navigation-background           : var(--color-gray-dark-100);
+  --color-navigation-indicator-default    : var(--color-gray-dark-300);
+  --color-navigation-indicator-default-alt: var(--color-gray-dark-200);
+  --color-navigation-indicator-hover      : var(--color-blue-dark-300);
+  --color-navigation-indicator-selected   : var(--color-blue-dark-300);
+  --color-navigation-label-default        : var(--color-gray-dark-600);
+  --color-navigation-label-default-alt    : var(--color-gray-dark-700);
+  --color-navigation-label-hover          : var(--color-blue-dark-300);
+  --color-navigation-label-selected       : var(--color-blue-dark-300);
 
-  /* ── color-control-border (dark overrides — candidate) ── */
-  --color-control-border-default:     var(--color-gray-dark-500);
-  --color-control-border-hover:       var(--color-blue-dark-300);
-  --color-control-border-selected:    var(--color-blue-dark-300);
-  --color-control-border-disabled:    var(--color-gray-dark-300);
-  --color-control-indicator-selected: var(--color-action-primary-default);
-  --color-control-indicator-disabled: var(--color-gray-dark-300);
-  --color-control-bg-hover:           var(--color-bg-subtle);
+  /* ── overlay ── */
+  --color-overlay: rgba(0,0,0,0.75);
 
-  /* ── color-form-control dark — fill-prominent (2026-05-27) ── */
-  --color-form-control-bg-default:     var(--color-bg-subtle);       /* gray-dark-200 = #24252C — 1단계 밝게 상향 */
-  --color-form-control-bg-hover:       var(--color-bg-muted);        /* gray-dark-300 = #2E2F38 — hover 1단계 밝게 */
-  --color-form-control-bg-disabled:        var(--color-surface-default); /* gray-dark-100 = #1C1D23 — default보다 1단계 어둡게 */
-  --color-form-control-border-default:     var(--color-border-default);  /* gray-dark-300 = #2E2F38 — 1단계 밝게 상향 */
-  --color-form-control-border-hover:       var(--color-border-strong);   /* gray-dark-500 = #3E4049 */
-  --color-form-control-border-disabled:    var(--color-border-default);  /* gray-dark-300 = #2E2F38 — default stroke와 동일 */
-  --color-form-control-text-disabled:      var(--color-text-readonly);   /* gray-dark-500 = #3E4049 — placeholder 한단계 어둡게 */
+  /* ── date-picker ── */
+  --color-date-picker-bg-panel        : var(--color-gray-dark-100);
+  --color-date-picker-bg-hover        : var(--color-gray-dark-200);
+  --color-date-picker-bg-today        : var(--color-gray-dark-100);
+  --color-date-picker-bg-selected     : var(--color-blue-dark-300);
+  --color-date-picker-border-panel    : var(--color-gray-dark-500);
+  --color-date-picker-border-today    : var(--color-blue-dark-300);
+  --color-date-picker-text-primary    : var(--color-gray-dark-900);
+  --color-date-picker-text-secondary  : var(--color-gray-dark-800);
+  --color-date-picker-text-disabled   : var(--color-gray-dark-400);
+  --color-date-picker-text-other-month: var(--color-gray-dark-400);
+  --color-date-picker-text-sunday     : var(--color-red-dark-350);
+  --color-date-picker-text-saturday   : var(--color-blue-dark-300);
+  --color-date-picker-text-today      : var(--color-blue-dark-300);
+  --color-date-picker-text-selected   : var(--color-base-white);
 
-  /* ── color-form-control label dark ── */
-  --color-form-control-label-default:  var(--color-text-secondary);
-  --color-form-control-label-disabled: var(--color-text-disabled);
-  --color-form-control-icon-default:   var(--color-gray-dark-700);  /* Dark: form-control 기본 아이콘 — #8A8C96 */
+  /* ── pagination ── */
+  --color-pagination-control-bg-default     : var(--color-base-white);
+  --color-pagination-control-bg-disabled    : var(--color-gray-dark-200);
+  --color-pagination-control-bg-hover       : var(--color-gray-dark-200);
+  --color-pagination-control-border-default : var(--color-gray-dark-300);
+  --color-pagination-control-border-disabled: var(--color-gray-dark-300);
+  --color-pagination-control-border-hover   : var(--color-gray-dark-300);
 
-  /* ── button secondary dark ── */
-  --button-secondary-default-bg:     var(--color-bg-elevated);    /* gray-dark-400 = #35363F */
-  --button-secondary-hover-bg:       var(--color-bg-muted);       /* gray-dark-300 = #2E2F38 — 1 step darker */
-  --button-secondary-pressed-bg:     var(--color-bg-subtle);      /* gray-dark-200 = #24252C */
-  --button-secondary-default-border: var(--color-border-strong);  /* gray-dark-500 = #3E4049 */
+  /* ── status-card ── */
+  --color-status-card-text-disabled          : var(--color-gray-dark-400);
+  --color-status-card-text-error             : var(--color-red-dark-350);
+  --color-status-card-text-primary--default  : var(--color-gray-dark-900);
+  --color-status-card-text-primary--sub      : var(--color-gray-dark-800);
+  --color-status-card-text-secondary--default: var(--color-gray-dark-700);
+  --color-status-card-text-secondary--sub    : var(--color-gray-dark-700);
+  --color-status-card-text-tertiary--default : var(--color-gray-dark-600);
+  --color-status-card-text-tertiary--sub     : var(--color-gray-dark-400);
 
-  /* ── dropdown dark override ── */
-  --dropdown-list-bg:              var(--color-bg-subtle);    /* gray-dark-200 = #24252C — 1단계 밝게 */
-  --dropdown-option-hover-bg:      var(--color-bg-muted);     /* gray-dark-300 */
-  --dropdown-trigger-selected-text: var(--color-text-secondary); /* gray-dark-800 = #B8BABF — filled 텍스트 */
+  /* ── text ── */
+  --color-text-body-primary     : var(--color-gray-dark-900);
+  --color-text-body-secondary   : var(--color-gray-dark-800);
+  --color-text-body-tertiary    : var(--color-gray-dark-700);
+  --color-text-state-accent     : var(--color-blue-dark-300);
+  --color-text-state-accent-alt : var(--color-base-white);
+  --color-text-state-caption    : var(--color-gray-dark-800);
+  --color-text-state-caution    : var(--color-red-dark-350);
+  --color-text-state-correct    : var(--color-blue-dark-300);
+  --color-text-state-disabled   : var(--color-gray-dark-400);
+  --color-text-state-helper     : var(--color-gray-dark-600);
+  --color-text-state-placeholder: var(--color-gray-dark-700);
+  --color-text-title-primary    : var(--color-gray-dark-900);
+  --color-text-title-secondary  : var(--color-gray-dark-800);
+  --color-text-title-tertiary   : var(--color-gray-dark-700);
 
-  /* ── color-navigation (dark) — candidate: Figma dark 시각 검증 필요 ── */
-  --color-navigation-bg:                 var(--color-surface-default);       /* gray-dark-100 */
-  --color-navigation-label-default:      var(--color-gray-dark-600);         /* 미선택 라벨 — HD-Tab-1 */
-  --color-navigation-label-selected:     var(--color-action-primary-default); /* blue-dark-300 */
-  --color-navigation-indicator-default:  var(--color-gray-dark-300);         /* 탭바 구분선 */
-  --color-navigation-indicator-selected: var(--color-action-primary-default); /* blue-dark-300 */
-  --color-navigation-label-default-alt:  var(--color-gray-dark-800);         /* GNB 메뉴 기본 라벨 — candidate */
-  --color-navigation-icon:               var(--color-gray-dark-700);         /* GNB 유틸 아이콘 — candidate */
-
-  /* ── color-data (dark) ── */
-  --color-data-state-default:  var(--color-gray-dark-100); /* #1C1D23 — 다크 행 기본 (버그수정: white→dark) */
-  --color-data-state-hover:    var(--color-blue-dark-100); /* #112B55 */
-  --color-data-state-selected: var(--color-blue-dark-150); /* #1A3D72 — selected (hover보다 진함) */
-  --color-data-header-bg:      var(--color-gray-dark-300); /* #2E2F38 — 헤더 배경 */
-  --color-data-border-light:   var(--color-gray-dark-300); /* #2E2F38 — 행 구분선 */
-  --color-data-border-strong:  var(--color-gray-dark-400); /* #35363F — 헤더/외곽 강선 */
-
-  /* ── table component dark override ──
-     헤더(bg-default=gray-dark-50) &lt; 행(surface-default=gray-dark-100) 레이어 역전 해소.
-     상하 강선(border-emphasis=gray-dark-700=#8A8C96) 과밝음 해소. */
-  --table-header-bg:     var(--color-bg-subtle);      /* gray-dark-200 = #24252C — 행보다 1단계 밝게 */
-  --table-header-border: var(--color-border-default); /* gray-dark-300 = #2E2F38 — 헤더bg와 구분 */
-  --table-border-strong: var(--color-border-strong);  /* gray-dark-500 = #3E4049 — 상하 강선 적정 명암 */
-
-  /* ── chip-line dark override ──
-     selected-text: action-primary-default(blue-dark-300=#3070D8)는 버튼 배경용 값 →
-       다크bg 위 텍스트에 쓰면 어두워짐. text-link(blue-dark-400=#6FA5F8)으로 분리. */
-  --chip-line-selected-text:       var(--color-text-link);       /* blue-dark-400 = #6FA5F8 */
-  --chip-line-selected-icon:       var(--color-text-link);
-  --chip-line-selected-close-icon: var(--color-text-link);
-
-  /* ── color-overlay ── */
-  --color-overlay: rgba(0, 0, 0, 0.75); /* rgba 허용 예외 */
+  /* ── scroll ── */
+  --color-scroll-bg: var(--color-gray-dark-600);
 }
-
-
-/* ══════════════════════════════════════════════════
-   5. COMPONENT TOKENS
-   (Semantic 참조 — 테마 독립)
-   ══════════════════════════════════════════════════ */
-:root {
-
-  /* ── Button — Primary ── */
-  --button-primary-default-bg:    var(--color-action-primary-default);
-  --button-primary-hover-bg:      var(--color-action-primary-hover);
-  --button-primary-pressed-bg:    var(--color-action-primary-pressed);
-  --button-primary-disabled-bg:     var(--color-bg-subtle);
-  --button-primary-disabled-border: var(--color-border-disabled);
-  --button-primary-default-text:    var(--color-action-primary-text);
-  --button-primary-disabled-text: var(--color-text-disabled);
-  --button-primary-default-icon:  var(--color-action-primary-text);
-
-  /* ── Button — Secondary ── */
-  --button-secondary-default-bg:      var(--color-surface-default);
-  --button-secondary-hover-bg:        var(--color-bg-subtle);
-  --button-secondary-pressed-bg:      var(--color-bg-muted);
-  --button-secondary-disabled-bg:     var(--color-bg-subtle);
-  --button-secondary-default-border:  var(--color-border-default);
-  --button-secondary-disabled-border: var(--color-border-disabled);
-  --button-secondary-default-text:    var(--color-text-secondary);
-  --button-secondary-disabled-text:   var(--color-text-disabled);
-  --button-secondary-default-icon:    var(--color-icon-default);
-  --button-secondary-disabled-icon:   var(--color-icon-muted);
-
-  /* ── Button — Blue-line ── */
-  --button-blue-line-default-bg:      var(--color-surface-default);
-  --button-blue-line-hover-bg:        var(--color-action-primary-subtle);
-  --button-blue-line-pressed-bg:      var(--color-action-primary-subtle);
-  --button-blue-line-disabled-bg:     var(--color-bg-subtle);
-  --button-blue-line-default-border:  var(--color-action-primary-default);
-  --button-blue-line-hover-border:    var(--color-action-primary-default);
-  --button-blue-line-disabled-border: var(--color-border-disabled);
-  --button-blue-line-default-text:    var(--color-action-primary-default);
-  --button-blue-line-disabled-text:   var(--color-text-disabled);
-
-  /* ── Button — Ghost (legacy — do not use in new code) ── */
-  --button-ghost-hover-bg:      var(--color-bg-subtle);
-  --button-ghost-pressed-bg:    var(--color-bg-muted);
-  --button-ghost-default-text:  var(--color-text-secondary);
-  --button-ghost-disabled-text: var(--color-text-disabled);
-  --button-ghost-default-icon:  var(--color-icon-default);
-  --button-ghost-disabled-icon: var(--color-icon-muted);
-
-  /* ── Chip — Line ── */
-  --chip-line-default-bg:          var(--color-surface-default);
-  --chip-line-hover-bg:            var(--color-bg-subtle);
-  --chip-line-selected-bg:         var(--color-surface-default);
-  --chip-line-disabled-bg:         var(--color-bg-subtle);
-  --chip-line-default-border:      var(--color-border-strong);  /* gray-300=#C4C4C4 — default(#D9D9D9)보다 선명 */
-  --chip-line-hover-border:        var(--color-border-strong);
-  --chip-line-selected-border:     var(--color-action-primary-default);
-  --chip-line-disabled-border:     var(--color-border-disabled);
-  --chip-line-default-text:        var(--color-text-caption);
-  --chip-line-selected-text:       var(--color-action-primary-default);
-  --chip-line-disabled-text:       var(--color-text-disabled);
-  --chip-line-default-icon:        var(--color-icon-default);
-  --chip-line-selected-icon:       var(--color-action-primary-default);
-  --chip-line-disabled-icon:       var(--color-icon-muted);
-  --chip-line-default-close-icon:  var(--color-icon-default);
-  --chip-line-hover-close-icon:    var(--color-icon-emphasis);
-  --chip-line-selected-close-icon: var(--color-action-primary-default);
-
-  /* ── Chip — Solid ── */
-  --chip-solid-default-bg:          var(--color-bg-subtle);
-  --chip-solid-hover-bg:            var(--color-bg-muted);
-  --chip-solid-selected-bg:         var(--color-action-primary-default);
-  --chip-solid-disabled-bg:         var(--color-bg-subtle);
-  /* border: transparent → 1px 유지(line chip과 box model 동일) + 시각적 스트록 없음 */
-  --chip-solid-default-border:      transparent;
-  --chip-solid-hover-border:        transparent;
-  --chip-solid-selected-border:     var(--color-action-primary-default);
-  --chip-solid-disabled-border:     transparent;
-  --chip-solid-default-text:        var(--color-text-caption);
-  --chip-solid-selected-text:       var(--color-action-primary-text);
-  --chip-solid-disabled-text:       var(--color-text-disabled);
-  --chip-solid-default-icon:        var(--color-icon-default);
-  --chip-solid-selected-icon:       var(--color-action-primary-text);
-  --chip-solid-disabled-icon:       var(--color-icon-muted);
-  --chip-solid-default-close-icon:  var(--color-icon-default);
-  --chip-solid-hover-close-icon:    var(--color-icon-emphasis);
-  --chip-solid-selected-close-icon: var(--color-action-primary-text);
-
-  /* ── Dropdown ── */
-  --dropdown-trigger-default-bg:      var(--color-form-control-bg-default);
-  --dropdown-trigger-hover-bg:        var(--color-form-control-bg-hover);
-  --dropdown-trigger-open-bg:         var(--color-form-control-bg-hover);
-  --dropdown-trigger-disabled-bg:     var(--color-form-control-bg-disabled);
-  --dropdown-trigger-default-border:  var(--color-form-control-border-default);
-  --dropdown-trigger-hover-border:    var(--color-form-control-border-hover);
-  --dropdown-trigger-open-border:     var(--color-border-focus);
-  --dropdown-trigger-disabled-border: var(--color-form-control-border-disabled);
-  --dropdown-trigger-default-text:    var(--color-text-secondary);
-  --dropdown-trigger-disabled-text:   var(--color-text-disabled);
-  --dropdown-list-bg:            var(--color-surface-default);
-  --dropdown-option-hover-bg:    var(--color-bg-subtle);
-  --dropdown-option-selected-bg: transparent;
-  /* candidate tokens — C0 pilot 발견, canonical-token-draft candidate 상태 */
-  --dropdown-trigger-placeholder-text: var(--color-text-placeholder);
-  --dropdown-trigger-selected-text:    var(--color-text-primary);
-  --dropdown-list-border:              var(--color-border-default);
-  --dropdown-option-selected-text:     var(--color-action-primary-default);
-
-  /* ── Input / Form-control ── */
-  --input-default-bg:       var(--color-form-control-bg-default);
-  --input-hover-bg:         var(--color-form-control-bg-hover);
-  --input-disabled-bg:      var(--color-form-control-bg-disabled);
-  --input-default-border:   var(--color-form-control-border-default);
-  --input-focus-border:     var(--color-form-control-border-selected);
-  --input-error-border:     var(--color-form-control-border-error);
-  --input-correct-border:   var(--color-form-control-border-correct);
-  --input-disabled-border:  var(--color-form-control-border-disabled);
-  --input-readonly-bg:      var(--color-form-control-bg-disabled);
-  --input-readonly-border:  var(--color-form-control-border-disabled);
-  --input-readonly-text:    var(--color-text-readonly);
-  --select-disabled-border: var(--color-border-subtle);
-  --input-placeholder-text: var(--color-form-control-text-placeholder);
-  --input-disabled-text:    var(--color-form-control-text-disabled);
-  --input-helper-text:      var(--color-text-state-helper);
-  --input-correct-text:     var(--color-text-state-correct);
-  --input-error-text:       var(--color-text-state-error);
-
-  /* ── Checkbox ── */
-  --checkbox-default-bg:          var(--color-form-control-bg-default);
-  --checkbox-checked-bg:          var(--color-action-primary-default);
-  --checkbox-disabled-bg:         var(--color-bg-subtle);
-  --checkbox-default-border:      var(--color-control-border-default);
-  --checkbox-hover-border:        var(--color-control-border-hover);
-  --checkbox-checked-border:      var(--color-control-border-selected);
-  --checkbox-disabled-border:     var(--color-control-border-disabled);
-  --checkbox-check-icon:          var(--color-action-primary-text);
-  --checkbox-disabled-check-icon: var(--color-border-strong);
-
-  /* ── Radio ── */
-  --radio-default-bg:      var(--color-form-control-bg-default);
-  --radio-disabled-bg:     var(--color-bg-subtle);
-  --radio-default-border:  var(--color-control-border-default);
-  --radio-hover-border:    var(--color-control-border-hover);
-  --radio-selected-border: var(--color-control-border-selected);
-  --radio-disabled-border: var(--color-control-border-disabled);
-  --radio-selected-dot:    var(--color-action-primary-default);
-  --radio-disabled-dot:    var(--color-border-strong);
-
-  /* ── Toggle ── */
-  --toggle-on-bg:       var(--color-action-primary-default);
-  --toggle-off-bg:      var(--color-text-placeholder);
-  --toggle-disabled-bg: var(--color-bg-muted);
-  --toggle-knob:        var(--color-action-primary-text);
-
-  /* ── Pagination ── */
-  /* Figma node: 540:5281 (pc_pagination) — 2026-05-20 확인 */
-  --pagination-control-bg:              var(--color-surface-default);  /* #FFFFFF — 화살표·번호 공통 배경 */
-  --pagination-control-border:          var(--color-border-default);   /* #D9D9D9 — 화살표 버튼 테두리 (Figma: button/border/secondary--default) */
-  --pagination-control-hover-bg:        var(--color-bg-subtle);        /* #F5F5F5 — hover 배경 (≈ Figma white+5% overlay) */
-  --pagination-arrow-disabled-bg:       var(--color-bg-subtle);        /* #F5F5F5 — disabled 버튼 배경 (Figma: button/bg/disabled) */
-  --pagination-arrow-disabled-color:    var(--color-icon-muted);       /* #C4C4C4 — disabled 아이콘 색상 (Figma: lighter icon) */
-  --pagination-number-text:             var(--color-gray-400);         /* #9D9D9D — 비선택 페이지 번호 */
-  --pagination-number-text-selected:    var(--color-text-secondary);   /* #353535 — 선택된 페이지 번호 */
-
-  /*
-   * ── Navigation ──
-   *
-   * Figma에는 "label/default-alt", "indicator/default-alt" 등 배경 맥락에 따른 변형이 있다.
-   * 별도 alt 토큰을 만들지 않는다.
-   * 네비게이션을 특수 배경(예: 헤더 컬러 바) 위에 배치하는 쪽에서
-   * 아래 토큰 값을 CSS 스코프 안에서 재정의(override)한다.
-   *
-   * 사용 예시:
-   *   .s1-header--colored {
-   *     --nav-item-default-text: var(--color-text-inverse);
-   *     --nav-item-indicator-default: transparent;
-   *   }
-   */
-  --nav-bg:                var(--color-surface-default);
-  --nav-item-hover-bg:     var(--color-bg-subtle);
-  --nav-item-active-bg:    var(--color-action-primary-subtle);
-  --nav-item-default-text: var(--color-text-tertiary);
-  --nav-item-active-text:  var(--color-action-primary-default);
-  --nav-item-default-icon: var(--color-icon-default);
-  --nav-item-active-icon:  var(--color-action-primary-default);
-  --nav-item-indicator:         var(--color-action-primary-default);  /* 선택된 항목 indicator */
-  --nav-item-indicator-default: var(--color-border-subtle);           /* 비선택 항목 indicator */
-  --nav-divider:                var(--color-border-subtle);
-
-  /* ── Line Tab ── */
-  --tab-bg:                   var(--color-navigation-bg);
-  --tab-label-default:        var(--color-navigation-label-default);
-  --tab-label-selected:       var(--color-navigation-label-selected);
-  --tab-indicator-default:    var(--color-navigation-indicator-default);
-  --tab-indicator-selected:   var(--color-navigation-indicator-selected);
-
-  /* ── GNB (Global Navigation Bar) ── */
-  --gnb-bg:                   var(--color-navigation-bg);
-  --gnb-border:               var(--color-border-subtle);
-  --gnb-menu-label-default:   var(--color-navigation-label-default-alt);
-  --gnb-menu-label-active:    var(--color-navigation-label-selected);
-  --gnb-menu-underline-active: var(--color-navigation-indicator-selected);
-  --gnb-logo-text:            var(--color-text-primary);
-  --gnb-icon:                 var(--color-navigation-icon);
-
-  /* ── Table / Data Grid ── */
-  --table-header-bg:        var(--color-bg-default);        /* #FAFAFA — Figma: surface/neutral/bg/base-alt */
-  --table-header-text:      var(--color-text-secondary);    /* #353535 — Figma: color/text/title/secondary */
-  --table-border-light:     var(--color-border-subtle);      /* Figma: color/data/border/light — 행 구분선 */
-  --table-border-strong:    var(--color-border-emphasis);    /* #353535 — Figma: color/data/border/strong — 외곽 상단 2px */
-  --table-header-border:    var(--table-border-light);
-  --table-row-default-bg:   var(--color-surface-default);   /* #FFFFFF */
-  --table-row-hover-bg:     var(--color-bg-subtle);          /* #F5F5F5 — Figma: 행 hover = gray-50 */
-  --table-row-selected-bg:  var(--color-bg-selected);       /* #E2F1FF — blue-50 확정 */
-  --table-cell-border:      var(--table-border-light);
-  --table-cell-text:        var(--color-text-secondary);    /* #353535 — Figma: color/text/body/primary */
-}
+/* &lt;&lt;&lt; GEN:SEMANTIC &lt;&lt;&lt; */
 </pre>
               </div>
             </div>
@@ -1148,6 +1019,7 @@
                 <div class="step-title">프로젝트에 추가</div>
                 <div class="step-desc">다운받은 tokens.css를 프로젝트에 복사한 뒤 아래 한 줄 추가</div>
               </div>
+              <span class="update-stamp" data-update-file="assets/css/tokens.css"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> 업데이트 2026-06-09 15:57</span>
             </div>
             <div class="step-body">
               <div class="env-tabs">
@@ -1225,6 +1097,7 @@
                 <div class="step-title">AI Context Prompt</div>
                 <div class="step-desc">Claude / AI 작업자에게 붙여넣을 기본 디자인시스템 규칙</div>
               </div>
+              <span class="update-stamp" data-update-file="assets/css/tokens.css"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> 업데이트 2026-06-09 15:57</span>
             </div>
             <div class="step-body">
               <p style="font-size:12px;color:#6b7280;margin-bottom:12px;">대화 시작 시 첫 메시지로 붙여넣기. 사용자 검수 항목은 코드블록 안에 포함되어 있지 않습니다.</p>
@@ -1247,9 +1120,9 @@
 
 ### 핵심 규칙
 
-1. **색상은 반드시 Semantic 토큰 경유**
-   - Component Token → Semantic Token → Foundation Foundation
-   - HEX 값 직접 사용 금지 (예외: rgba overlay, dark border)
+1. **색상은 Semantic 토큰(--color-*) 사용**
+   - Semantic → Foundation 구조. Semantic 레이어가 컴포넌트 단위까지 정의됨 (Variables 정본)
+   - HEX 값 직접 사용 금지 (예외: rgba overlay)
 
 2. **크기·간격은 Semantic 또는 Foundation 참조**
    - 여러 컴포넌트가 공유하는 값 → Semantic 경유
@@ -1260,427 +1133,767 @@
    - [data-theme="dark"] = Dark
    - 변수명은 동일, 값만 변경
 
-4. **컴포넌트 토큰은 Semantic 참조**
-   - --button-primary-default-bg: var(--color-action-primary-default)
-   - Foundation Foundation를 Component에서 직접 참조하지 않음
+4. **컴포넌트는 Semantic 토큰을 직접 사용**
+   - 예: --color-button-bg-primary--default · --color-form-control-border-default · --color-data-state-hover
+   - 모든 Semantic 토큰은 Figma Variables 정본과 1:1 일치 (이름 같고 값 다르면 Variables가 정답)
 
 ---
 
 ### 전체 토큰 정의
 
-/* ══ 0. Foundation — Base & Brand ══ */
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   SW Design System V2.4 — tokens.css
+   Foundation → Semantic (Variables 정본 · npm run tokens:gen 자동생성)
+   컴포넌트 토큰은 component-tokens.css 로 분리 보존 (Phase 2 재매칭 예정)
+   Updated: 2026-06-09
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+
+
+/* ══════════════════════════════════════════════════
+   0. FOUNDATION — Base &amp; Brand
+   ══════════════════════════════════════════════════ */
 :root {
-  --color-base-white: #FFFFFF;  --color-base-black: #000000;
-  --color-brand-blue: #0072CE;  --color-brand-red:  #FF312C;
-  --color-brand-gray: #DFDEDE;  --color-brand-ci:   #004097;
+  --color-base-white: #FFFFFF;
+  --color-base-black: #000000;
+
+  --color-brand-blue: #0072CE;
+  --color-brand-red:  #FF312C;
+  --color-brand-gray: #DFDEDE;
+  --color-brand-ci:   #004097; /* CI·로고 전용. UI 직접 사용 금지 */
 }
 
-/* ══ 1. Foundation — Color Foundation ══ */
+
+/* ══════════════════════════════════════════════════
+   1. FOUNDATION — Color Foundation
+   ══════════════════════════════════════════════════ */
 :root {
-  /* Gray · Light */
-  --color-gray-0: #FAFAFA;   --color-gray-50: #F5F5F5;  --color-gray-100: #E9E9E9;
-  --color-gray-200: #D9D9D9; --color-gray-300: #C4C4C4; --color-gray-400: #9D9D9D;
-  --color-gray-500: #757575; --color-gray-600: #555555; --color-gray-700: #434343;
-  --color-gray-800: #353535; --color-gray-900: #202020;
-  /* Gray · Dark  [낮은 스텝=어두운 배경, 높은 스텝=밝은 텍스트] */
-  --color-gray-dark-0: #0D0E12;   --color-gray-dark-50: #131418;  --color-gray-dark-100: #1C1D23;
-  --color-gray-dark-200: #24252C; --color-gray-dark-300: #2E2F38; --color-gray-dark-400: #35363F;
-  --color-gray-dark-500: #3E4049; --color-gray-dark-600: #55575F; --color-gray-dark-700: #8A8C96;
-  --color-gray-dark-800: #B8BABF; --color-gray-dark-900: #ECEDF0;
-  /* Blue · Light */
-  --color-blue-50: #E2F1FF;  --color-blue-100: #C8E4FF; --color-blue-150: #A4D4FF;
-  --color-blue-200: #8BC6FF; --color-blue-250: #5BB2FF; --color-blue-300: #2B9EFF;
-  --color-blue-350: #268CF8; --color-blue-400: #1D6CEB; --color-blue-450: #2158C8;
+
+  /* ── Gray · Light ── */
+  --color-gray-0:   #FAFAFA;
+  --color-gray-50:  #F5F5F5;
+  --color-gray-100: #E9E9E9;
+  --color-gray-200: #D9D9D9;
+  --color-gray-300: #C4C4C4;
+  --color-gray-400: #9D9D9D;
+  --color-gray-500: #757575;
+  --color-gray-600: #555555;
+  --color-gray-700: #434343;
+  --color-gray-800: #353535;
+  --color-gray-900: #202020;
+
+  /* ── Gray · Dark ── */
+  --color-gray-dark-0:   #0D0E12;
+  --color-gray-dark-50:  #131418;
+  --color-gray-dark-100: #1C1D23;
+  --color-gray-dark-200: #24252C;
+  --color-gray-dark-300: #2E2F38;
+  --color-gray-dark-400: #35363F;
+  --color-gray-dark-500: #3E4049;
+  --color-gray-dark-600: #55575F;
+  --color-gray-dark-700: #8A8C96;
+  --color-gray-dark-800: #B8BABF;
+  --color-gray-dark-900: #ECEDF0;
+
+  /* ── Blue · Light ── */
+  --color-blue-50:  #E2F1FF;
+  --color-blue-100: #C8E4FF;
+  --color-blue-150: #A4D4FF;
+  --color-blue-200: #8BC6FF;
+  --color-blue-250: #5BB2FF;
+  --color-blue-300: #2B9EFF;
+  --color-blue-350: #268CF8;
+  --color-blue-400: #1D6CEB;
+  --color-blue-450: #2158C8;
   --color-blue-500: #2747B9;
-  /* Blue · Dark */
-  --color-blue-dark-50: #0C1D38;  --color-blue-dark-100: #112B55; --color-blue-dark-150: #1A3D72;
-  --color-blue-dark-200: #214EA0; --color-blue-dark-250: #2A65C8; --color-blue-dark-300: #3070D8;
-  --color-blue-dark-350: #4285E8; --color-blue-dark-400: #6FA5F8; --color-blue-dark-450: #96BEF9;
+
+  /* ── Blue · Dark ── */
+  --color-blue-dark-50:  #0C1D38;
+  --color-blue-dark-100: #112B55;
+  --color-blue-dark-150: #1A3D72;
+  --color-blue-dark-200: #214EA0;
+  --color-blue-dark-250: #2A65C8;
+  --color-blue-dark-300: #3070D8;
+  --color-blue-dark-350: #4285E8;
+  --color-blue-dark-400: #6FA5F8;
+  --color-blue-dark-450: #96BEF9;
   --color-blue-dark-500: #C0D8FC;
-  /* Red · Light */
-  --color-red-50: #FFEBEF;  --color-red-100: #FFCCD6; --color-red-150: #FBB2BA;
-  --color-red-200: #F8979E; --color-red-250: #FC6E79; --color-red-300: #FF4554;
-  --color-red-350: #F22544; --color-red-400: #E50533; --color-red-450: #D60228;
+
+  /* ── Red · Light ── */
+  --color-red-50:  #FFEBEF;
+  --color-red-100: #FFCCD6;
+  --color-red-150: #FBB2BA;
+  --color-red-200: #F8979E;
+  --color-red-250: #FC6E79;
+  --color-red-300: #FF4554;
+  --color-red-350: #F22544;
+  --color-red-400: #E50533;
+  --color-red-450: #D60228;
   --color-red-500: #C8001E;
-  /* Red · Dark */
-  --color-red-dark-50: #2A0F14;  --color-red-dark-100: #3D1520; --color-red-dark-150: #5C1E2E;
-  --color-red-dark-200: #8A2A3E; --color-red-dark-250: #C03850; --color-red-dark-300: #E04860;
-  --color-red-dark-350: #F06070; --color-red-dark-400: #F48890; --color-red-dark-450: #F8A8B0;
+
+  /* ── Red · Dark ── */
+  --color-red-dark-50:  #2A0F14;
+  --color-red-dark-100: #3D1520;
+  --color-red-dark-150: #5C1E2E;
+  --color-red-dark-200: #8A2A3E;
+  --color-red-dark-250: #C03850;
+  --color-red-dark-300: #E04860;
+  --color-red-dark-350: #F06070;
+  --color-red-dark-400: #F48890;
+  --color-red-dark-450: #F8A8B0;
   --color-red-dark-500: #FCD0D5;
-  /* Orange · Light */
-  --color-orange-50: #FFEDE0; --color-orange-100: #FDDBBF; --color-orange-150: #FEC6A0;
-  --color-orange-200: #FFB482; --color-orange-250: #FF954E; --color-orange-300: #FF761A;
-  --color-orange-350: #EE680D; --color-orange-400: #DA4C00; --color-orange-450: #B63C00; --color-orange-500: #8E2E00;
-  /* Orange · Dark */
-  --color-orange-dark-50:  #2E1505; --color-orange-dark-100: #42200A; --color-orange-dark-150: #6B3512;
-  --color-orange-dark-200: #A05020; --color-orange-dark-250: #D06828; --color-orange-dark-300: #E88038;
-  --color-orange-dark-350: #F09548; --color-orange-dark-400: #F5AA68; --color-orange-dark-450: #F8C090; --color-orange-dark-500: #FCD8B8;
-  /* Yellow · Light */
-  --color-yellow-50: #FFF4CE; --color-yellow-100: #FEE89A; --color-yellow-150: #FEDE6C;
-  --color-yellow-200: #FFD53D; --color-yellow-250: #FFCC1E; --color-yellow-300: #FFC200;
-  --color-yellow-350: #F5B900; --color-yellow-400: #DBA400; --color-yellow-450: #BA8900; --color-yellow-500: #8F6A00;
-  /* Yellow · Dark */
-  --color-yellow-dark-50:  #2A2005; --color-yellow-dark-100: #3D2E08; --color-yellow-dark-150: #605010;
-  --color-yellow-dark-200: #907818; --color-yellow-dark-250: #C09828; --color-yellow-dark-300: #D8B038;
-  --color-yellow-dark-350: #E8C048; --color-yellow-dark-400: #F0D068; --color-yellow-dark-450: #F5DE90; --color-yellow-dark-500: #FAEAB8;
-  /* Green · Light */
-  --color-green-50: #E3F2EA; --color-green-100: #CAECDA; --color-green-150: #9CD8BD;
-  --color-green-200: #6FC4A2; --color-green-250: #47BB8E; --color-green-300: #1FB279;
-  --color-green-350: #10A86C; --color-green-400: #009E5E; --color-green-450: #008650; --color-green-500: #006F42;
-  /* Green · Dark */
-  --color-green-dark-50:  #0A2018; --color-green-dark-100: #102E22; --color-green-dark-150: #184530;
-  --color-green-dark-200: #206840; --color-green-dark-250: #288A55; --color-green-dark-300: #30A868;
-  --color-green-dark-350: #3FBE7E; --color-green-dark-400: #68D098; --color-green-dark-450: #98E0B8; --color-green-dark-500: #C5F0D8;
-  /* Skyblue · Light */
-  --color-skyblue-50: #C4EEF7; --color-skyblue-100: #A5E5F3; --color-skyblue-150: #7BD6EA;
-  --color-skyblue-200: #51C7E1; --color-skyblue-250: #3BC0DD; --color-skyblue-300: #25B9DA;
-  --color-skyblue-350: #1DAACB; --color-skyblue-400: #159BBC; --color-skyblue-450: #1284A0; --color-skyblue-500: #0F6C84;
-  /* Skyblue · Dark */
-  --color-skyblue-dark-50:  #081E28; --color-skyblue-dark-100: #102A38; --color-skyblue-dark-150: #184050;
-  --color-skyblue-dark-200: #205A70; --color-skyblue-dark-250: #287890; --color-skyblue-dark-300: #3090A8;
-  --color-skyblue-dark-350: #40A8C0; --color-skyblue-dark-400: #68C0D8; --color-skyblue-dark-450: #98D8E8; --color-skyblue-dark-500: #C0E8F0;
-  /* Purple · Light */
-  --color-purple-50: #E8E9FC; --color-purple-100: #CFD1F9; --color-purple-150: #C0C0FC;
-  --color-purple-200: #B0B0FF; --color-purple-250: #8B8BEE; --color-purple-300: #6666DD;
-  --color-purple-350: #4E4EC3; --color-purple-400: #3535A8; --color-purple-450: #2D2D8F; --color-purple-500: #252576;
-  /* Purple · Dark */
-  --color-purple-dark-50:  #14142A; --color-purple-dark-100: #1E1E3D; --color-purple-dark-150: #2A2A58;
-  --color-purple-dark-200: #383878; --color-purple-dark-250: #4848A0; --color-purple-dark-300: #5858B8;
-  --color-purple-dark-350: #7070D0; --color-purple-dark-400: #9090E0; --color-purple-dark-450: #B0B0EA; --color-purple-dark-500: #D0D0F5;
-  /* Brown · Light */
-  --color-brown-50: #F6EEE9; --color-brown-100: #E4D5C8; --color-brown-150: #DBC6B3;
-  --color-brown-200: #D1B69F; --color-brown-250: #A68C75; --color-brown-300: #7C614A;
-  --color-brown-350: #685240; --color-brown-400: #554435; --color-brown-450: #483A2D; --color-brown-500: #3B3025;
-  /* Brown · Dark */
-  --color-brown-dark-50:  #1E1610; --color-brown-dark-100: #2A2018; --color-brown-dark-150: #3D3025;
-  --color-brown-dark-200: #584535; --color-brown-dark-250: #786050; --color-brown-dark-300: #907868;
-  --color-brown-dark-350: #A89080; --color-brown-dark-400: #C0A898; --color-brown-dark-450: #D8C0B0; --color-brown-dark-500: #E8D8C8;
-  /* Visual Gray · Light */
-  --color-visual-gray-50: #F3F5F7; --color-visual-gray-100: #E8EBEF; --color-visual-gray-150: #DADEE5;
-  --color-visual-gray-200: #CDD2DE; --color-visual-gray-250: #ABB2BF; --color-visual-gray-300: #808796;
-  --color-visual-gray-350: #646A74; --color-visual-gray-400: #3E4347; --color-visual-gray-450: #2B2F32; --color-visual-gray-500: #1B1D1F;
-  /* Cool Gray · Dark */
-  --color-coolgray-dark-50:  #12141A; --color-coolgray-dark-100: #1A1D25; --color-coolgray-dark-150: #252830;
-  --color-coolgray-dark-200: #353840; --color-coolgray-dark-250: #484C58; --color-coolgray-dark-300: #606470;
-  --color-coolgray-dark-350: #787C88; --color-coolgray-dark-400: #989CA8; --color-coolgray-dark-450: #B8BCC5; --color-coolgray-dark-500: #D8DBE0;
-  /* Status Dark Alias (피드백 상태 전용) */
-  --color-status-dark-red:    #F06070;
-  --color-status-dark-green:  #3FBE7E;
-  --color-status-dark-yellow: #E8C048;
+
+  /* ── Orange · Light ── */
+  --color-orange-50:  #FFEDE0;
+  --color-orange-100: #FDDBBF;
+  --color-orange-150: #FEC6A0;
+  --color-orange-200: #FFB482;
+  --color-orange-250: #FF954E;
+  --color-orange-300: #FF761A;
+  --color-orange-350: #EE680D;
+  --color-orange-400: #DA4C00;
+  --color-orange-450: #B63C00;
+  --color-orange-500: #8E2E00;
+
+  /* ── Orange · Dark ── */
+  --color-orange-dark-50:  #2E1505;
+  --color-orange-dark-100: #42200A;
+  --color-orange-dark-150: #6B3512;
+  --color-orange-dark-200: #A05020;
+  --color-orange-dark-250: #D06828;
+  --color-orange-dark-300: #E88038;
+  --color-orange-dark-350: #F09548;
+  --color-orange-dark-400: #F5AA68;
+  --color-orange-dark-450: #F8C090;
+  --color-orange-dark-500: #FCD8B8;
+
+  /* ── Yellow · Light ── */
+  --color-yellow-50:  #FFF4CE;
+  --color-yellow-100: #FEE89A;
+  --color-yellow-150: #FEDE6C;
+  --color-yellow-200: #FFD53D;
+  --color-yellow-250: #FFCC1E;
+  --color-yellow-300: #FFC200;
+  --color-yellow-350: #F5B900;
+  --color-yellow-400: #DBA400;
+  --color-yellow-450: #BA8900;
+  --color-yellow-500: #8F6A00;
+
+  /* ── Yellow · Dark ── */
+  --color-yellow-dark-50:  #2A2005;
+  --color-yellow-dark-100: #3D2E08;
+  --color-yellow-dark-150: #605010;
+  --color-yellow-dark-200: #907818;
+  --color-yellow-dark-250: #C09828;
+  --color-yellow-dark-300: #D8B038;
+  --color-yellow-dark-350: #E8C048;
+  --color-yellow-dark-400: #F0D068;
+  --color-yellow-dark-450: #F5DE90;
+  --color-yellow-dark-500: #FAEAB8;
+
+  /* ── Green · Light ── */
+  --color-green-50:  #E3F2EA;
+  --color-green-100: #CAECDA;
+  --color-green-150: #9CD8BD;
+  --color-green-200: #6FC4A2;
+  --color-green-250: #47BB8E;
+  --color-green-300: #1FB279;
+  --color-green-350: #10A86C;
+  --color-green-400: #009E5E;
+  --color-green-450: #008650;
+  --color-green-500: #006F42;
+
+  /* ── Green · Dark ── */
+  --color-green-dark-50:  #0A2018;
+  --color-green-dark-100: #102E22;
+  --color-green-dark-150: #184530;
+  --color-green-dark-200: #206840;
+  --color-green-dark-250: #288A55;
+  --color-green-dark-300: #30A868;
+  --color-green-dark-350: #3FBE7E;
+  --color-green-dark-400: #68D098;
+  --color-green-dark-450: #98E0B8;
+  --color-green-dark-500: #C5F0D8;
+
+  /* ── Skyblue · Light ── */
+  --color-skyblue-50:  #C4EEF7;
+  --color-skyblue-100: #A5E5F3;
+  --color-skyblue-150: #7BD6EA;
+  --color-skyblue-200: #51C7E1;
+  --color-skyblue-250: #3BC0DD;
+  --color-skyblue-300: #25B9DA;
+  --color-skyblue-350: #1DAACB;
+  --color-skyblue-400: #159BBC;
+  --color-skyblue-450: #1284A0;
+  --color-skyblue-500: #0F6C84;
+
+  /* ── Skyblue · Dark ── */
+  --color-skyblue-dark-50:  #081E28;
+  --color-skyblue-dark-100: #102A38;
+  --color-skyblue-dark-150: #184050;
+  --color-skyblue-dark-200: #205A70;
+  --color-skyblue-dark-250: #287890;
+  --color-skyblue-dark-300: #3090A8;
+  --color-skyblue-dark-350: #40A8C0;
+  --color-skyblue-dark-400: #68C0D8;
+  --color-skyblue-dark-450: #98D8E8;
+  --color-skyblue-dark-500: #C0E8F0;
+
+  /* ── Purple · Light ── */
+  --color-purple-50:  #E8E9FC;
+  --color-purple-100: #CFD1F9;
+  --color-purple-150: #C0C0FC;
+  --color-purple-200: #B0B0FF;
+  --color-purple-250: #8B8BEE;
+  --color-purple-300: #6666DD;
+  --color-purple-350: #4E4EC3;
+  --color-purple-400: #3535A8;
+  --color-purple-450: #2D2D8F;
+  --color-purple-500: #252576;
+
+  /* ── Purple · Dark ── */
+  --color-purple-dark-50:  #14142A;
+  --color-purple-dark-100: #1E1E3D;
+  --color-purple-dark-150: #2A2A58;
+  --color-purple-dark-200: #383878;
+  --color-purple-dark-250: #4848A0;
+  --color-purple-dark-300: #5858B8;
+  --color-purple-dark-350: #7070D0;
+  --color-purple-dark-400: #9090E0;
+  --color-purple-dark-450: #B0B0EA;
+  --color-purple-dark-500: #D0D0F5;
+
+  /* ── Brown · Light ── */
+  --color-brown-50:  #F6EEE9;
+  --color-brown-100: #E4D5C8;
+  --color-brown-150: #DBC6B3;
+  --color-brown-200: #D1B69F;
+  --color-brown-250: #A68C75;
+  --color-brown-300: #7C614A;
+  --color-brown-350: #685240;
+  --color-brown-400: #554435;
+  --color-brown-450: #483A2D;
+  --color-brown-500: #3B3025;
+
+  /* ── Brown · Dark ── */
+  --color-brown-dark-50:  #1E1610;
+  --color-brown-dark-100: #2A2018;
+  --color-brown-dark-150: #3D3025;
+  --color-brown-dark-200: #584535;
+  --color-brown-dark-250: #786050;
+  --color-brown-dark-300: #907868;
+  --color-brown-dark-350: #A89080;
+  --color-brown-dark-400: #C0A898;
+  --color-brown-dark-450: #D8C0B0;
+  --color-brown-dark-500: #E8D8C8;
+
+  /* ── Visual Gray · Light ── */
+  --color-visual-gray-50:  #F3F5F7;
+  --color-visual-gray-100: #E8EBEF;
+  --color-visual-gray-150: #DADEE5;
+  --color-visual-gray-200: #CDD2DE;
+  --color-visual-gray-250: #ABB2BF;
+  --color-visual-gray-300: #808796;
+  --color-visual-gray-350: #646A74;
+  --color-visual-gray-400: #3E4347;
+  --color-visual-gray-450: #2B2F32;
+  --color-visual-gray-500: #1B1D1F;
+
+  /* ── Cool Gray · Dark ── */
+  --color-visual-gray-dark-50:  #12141A;
+  --color-visual-gray-dark-100: #1A1D25;
+  --color-visual-gray-dark-150: #252830;
+  --color-visual-gray-dark-200: #353840;
+  --color-visual-gray-dark-250: #484C58;
+  --color-visual-gray-dark-300: #606470;
+  --color-visual-gray-dark-350: #787C88;
+  --color-visual-gray-dark-400: #989CA8;
+  --color-visual-gray-dark-450: #B8BCC5;
+  --color-visual-gray-dark-500: #D8DBE0;
+
+  /* ── Status · Dark (피드백 상태 전용 Dark Foundation) ── */
+  --color-status-dark-red:    #F06070; /* = color-red-dark-350 */
+  --color-status-dark-green:  #3FBE7E; /* = color-green-dark-350 */
+  --color-status-dark-yellow: #E8C048; /* = color-yellow-dark-350 */
 }
 
-/* ══ 2. Foundation — Spacing, Radius, Typography ══ */
+
+/* ══════════════════════════════════════════════════
+   2. FOUNDATION — Spacing, Radius, Border Width, Typography
+   ══════════════════════════════════════════════════ */
 :root {
-  /* Spacing */
-  --spacing-2: 2px;   --spacing-4: 4px;   --spacing-6: 6px;   --spacing-8: 8px;
-  --spacing-10: 10px; --spacing-12: 12px; --spacing-14: 14px; --spacing-16: 16px;
-  --spacing-20: 20px; --spacing-24: 24px; --spacing-28: 28px; --spacing-32: 32px;
-  --spacing-36: 36px; --spacing-40: 40px; --spacing-44: 44px; --spacing-48: 48px;
-  --spacing-56: 56px; --spacing-64: 64px; --spacing-80: 80px; --spacing-96: 96px;
+
+  /* ── Spacing ── */
+  --spacing-2:   2px;
+  --spacing-4:   4px;
+  --spacing-6:   6px;
+  --spacing-8:   8px;
+  --spacing-10:  10px;
+  --spacing-12:  12px;
+  --spacing-14:  14px;
+  --spacing-16:  16px;
+  --spacing-20:  20px;
+  --spacing-24:  24px;
+  --spacing-28:  28px;
+  --spacing-32:  32px;
+  --spacing-36:  36px;
+  --spacing-40:  40px;
+  --spacing-44:  44px;
+  --spacing-48:  48px;
+  --spacing-56:  56px;
+  --spacing-64:  64px;
+  --spacing-80:  80px;
+  --spacing-96:  96px;
   --spacing-128: 128px;
-  /* Radius */
-  --radius-0: 0px;  --radius-2: 2px;  --radius-4: 4px;   --radius-6: 6px;
-  --radius-8: 8px;  --radius-10: 10px; --radius-12: 12px; --radius-16: 16px;
-  --radius-20: 20px; --radius-full: 9999px;
-  /* Border Width */
-  --border-width-1: 1px; --border-width-2: 2px;
-  /* Font Size */
-  --font-size-10: 10px; --font-size-12: 12px; --font-size-14: 14px; --font-size-16: 16px;
-  --font-size-18: 18px; --font-size-20: 20px; --font-size-24: 24px; --font-size-32: 32px;
-  /* Font Weight */
-  --font-weight-regular: 400; --font-weight-medium: 500; --font-weight-bold: 700;
-  /* Line Height */
+
+  /* ── Radius ── */
+  --radius-0:    0px;
+  --radius-2:    2px;
+  --radius-4:    4px;
+  --radius-6:    6px;
+  --radius-8:    8px;
+  --radius-10:   10px;
+  --radius-12:   12px;
+  --radius-16:   16px;
+  --radius-20:   20px;
+  --radius-full: 9999px;
+
+  /* ── Border Width ── */
+  --border-width-1: 1px;
+  --border-width-2: 2px;
+
+  /* ── Font Size ── */
+  --font-size-10: 10px;
+  --font-size-12: 12px;
+  --font-size-14: 14px;
+  --font-size-16: 16px;
+  --font-size-18: 18px;
+  --font-size-20: 20px;
+  --font-size-24: 24px;
+  --font-size-32: 32px;
+
+  /* ── Font Weight ── */
+  --font-weight-regular: 400;
+  --font-weight-medium:  500;
+  --font-weight-bold:    700;
+
+  /* ── Line Height ── */
   --line-height-130: 1.3;
 }
 
-/* ══ 3. Semantic Tokens — Light ══ */
+
+/* &gt;&gt;&gt; GEN:SEMANTIC &gt;&gt;&gt; Auto-generated from vars-data.ts (npm run tokens:gen) — Variables 정본. 수동 편집 금지. */
+/* ══════════════════════════════════════════════════
+   SEMANTIC TOKENS — Light (Variables 기준 자동 생성)
+   ══════════════════════════════════════════════════ */
 :root {
-  --color-bg-default:  var(--color-gray-0);
-  --color-bg-subtle:   var(--color-gray-50);
-  --color-bg-muted:    var(--color-gray-100);
-  --color-bg-elevated: var(--color-gray-100);
-  --color-bg-home:     #F5F6FB;
-  --color-bg-selected: var(--color-blue-50);
-  --color-surface-default: var(--color-base-white);
-  --color-surface-raised:  var(--color-base-white);
-  --color-text-primary:     var(--color-gray-900);
-  --color-text-secondary:   var(--color-gray-800);
-  --color-text-tertiary:    var(--color-gray-600);
-  --color-text-caption:     var(--color-gray-500);
-  --color-text-placeholder: var(--color-gray-500);
-  --color-text-helper:      var(--color-gray-400);
-  --color-text-link:        var(--color-blue-400);
-  --color-text-correct:     var(--color-blue-400);
-  --color-text-danger:      var(--color-red-300);
-  --color-text-disabled:    var(--color-gray-300);
-  --color-text-readonly:    var(--color-gray-500);
-  --color-text-inverse:     var(--color-base-white);
-  --color-border-subtle:   var(--color-gray-100);
-  --color-border-default:  var(--color-gray-200);
-  --color-border-disabled: var(--color-gray-200);
-  --color-border-strong:   var(--color-gray-300);
-  --color-border-emphasis: var(--color-gray-800);
-  --color-border-focus:    var(--color-blue-400);
-  --color-border-white:    var(--color-base-white);
-  --color-border-danger:   var(--color-red-300);
-  --color-border-correct:  var(--color-blue-400);
-  --color-icon-default:  var(--color-gray-500);
-  --color-icon-muted:    var(--color-gray-300);
-  --color-icon-emphasis: var(--color-gray-800);
-  --color-icon-accent:   var(--color-blue-400);
-  --color-icon-inverse:  var(--color-base-white);
-  --color-icon-danger:   var(--color-red-300);
-  --color-action-primary-default: var(--color-blue-400);
-  --color-action-primary-hover:   var(--color-blue-450);
-  --color-action-primary-pressed: var(--color-blue-500);
-  --color-action-primary-text:    var(--color-base-white);
-  --color-action-primary-subtle:  var(--color-blue-50);
-  --color-status-success: var(--color-blue-400);
-  --color-status-error:   var(--color-red-400);
-  --color-status-warning: var(--color-yellow-400);
-  --color-status-info:    var(--color-gray-500);
-  --color-control-border-default:  var(--color-gray-200);
-  --color-control-border-hover:    var(--color-blue-400);
-  --color-control-border-selected: var(--color-blue-400);
-  --color-control-border-disabled: var(--color-gray-300);
-  --color-form-control-bg-default:       var(--color-surface-default);
-  --color-form-control-bg-disabled:      var(--color-bg-subtle);
-  --color-form-control-border-default:   var(--color-control-border-default);
-  --color-form-control-border-selected:  var(--color-border-focus);
-  --color-form-control-border-error:     var(--color-status-error);
-  --color-form-control-border-correct:   var(--color-border-focus);
-  --color-form-control-border-disabled:  var(--color-border-subtle);
-  --color-form-control-text-default:     var(--color-text-secondary);
-  --color-form-control-text-placeholder: var(--color-text-placeholder);
-  --color-form-control-text-disabled:    var(--color-text-disabled);
-  --color-text-state-helper:  var(--color-text-secondary);
-  --color-text-state-correct: var(--color-blue-400);
-  --color-text-state-error:   var(--color-status-error);
-  --color-overlay: rgba(0, 0, 0, 0.5);
-  /* Semantic Spacing */
-  --spacing-padding-block-xxs: var(--spacing-8);   --spacing-padding-block-xs: var(--spacing-12);
-  --spacing-padding-block-sm:  var(--spacing-16);  --spacing-padding-block-md: var(--spacing-20);
-  --spacing-padding-block-lg:  var(--spacing-24);
-  --spacing-padding-inline-xxs: var(--spacing-8);  --spacing-padding-inline-xs: var(--spacing-12);
-  --spacing-padding-inline-sm:  var(--spacing-16); --spacing-padding-inline-md: var(--spacing-20);
-  --spacing-padding-inline-lg:  var(--spacing-24);
-  --spacing-section-xs: var(--spacing-16); --spacing-section-sm: var(--spacing-20);
-  --spacing-section-md: var(--spacing-24); --spacing-section-lg: var(--spacing-32);
-  --spacing-section-xl: var(--spacing-40); --spacing-section-xxl: var(--spacing-48);
-  --spacing-stack-xs: var(--spacing-12); --spacing-stack-sm: var(--spacing-16);
-  --spacing-stack-md: var(--spacing-20); --spacing-stack-lg: var(--spacing-24);
-  --spacing-cluster-xxs: var(--spacing-8);  --spacing-cluster-xs: var(--spacing-12);
-  --spacing-cluster-sm:  var(--spacing-16); --spacing-cluster-md: var(--spacing-20);
-  --spacing-label-gap-inline-sm: var(--spacing-8);  --spacing-label-gap-inline-md: var(--spacing-12);
-  --spacing-label-gap-inline-lg: var(--spacing-16); --spacing-label-gap-block-sm: var(--spacing-4);
-  --spacing-label-gap-block-md:  var(--spacing-8);
-  /* Semantic Sizing */
-  --sizing-form-control-height-xxs: var(--spacing-28); --sizing-form-control-height-xs: 34px;
-  --sizing-form-control-height-md:  var(--spacing-44); --sizing-form-control-height-lg: var(--spacing-48);
-  --sizing-form-control-dataview-height-sm: var(--spacing-28); --sizing-form-control-dataview-height-md: 32px;
-  --sizing-button-height-xxs: var(--spacing-28); --sizing-button-height-xs: 34px;
-  --sizing-button-height-sm: var(--spacing-40);  --sizing-button-height-md: var(--spacing-44);
-  --sizing-button-height-lg: var(--spacing-48);  --sizing-button-min-width: 80px;
-  --sizing-chip-height-sm: var(--spacing-28); --sizing-chip-height-md: 30px; --sizing-chip-height-lg: 34px;
-  --sizing-table-row-height-xs: 34px; --sizing-table-row-height-sm: 38px;
-  --sizing-table-row-height-md: var(--spacing-44);
-  --sizing-icon-10: 10px; --sizing-icon-16: var(--spacing-16); --sizing-icon-18: 18px;
-  --sizing-icon-20: var(--spacing-20); --sizing-icon-24: var(--spacing-24);
-  --sizing-icon-28: var(--spacing-28); --sizing-icon-32: var(--spacing-32);
-  /* Semantic Radius / Border Width */
-  --radius-control-xs: var(--radius-2); --radius-control-sm: var(--radius-4);
-  --radius-button-md:  var(--radius-4); --radius-card-md: var(--radius-10);
-  --radius-modal-md:   var(--radius-8);
-  --border-width-default: var(--border-width-1); --border-width-strong: var(--border-width-2);
+  /* ── button ── */
+  --color-button-bg-assist--default       : var(--color-base-white);
+  --color-button-bg-assist--hover         : var(--color-gray-50);
+  --color-button-bg-blue-line--default    : var(--color-base-white);
+  --color-button-bg-blue-line--hover      : var(--color-blue-50);
+  --color-button-bg-disabled              : var(--color-gray-50);
+  --color-button-bg-primary--default      : var(--color-blue-400);
+  --color-button-bg-primary--hover        : var(--color-blue-500);
+  --color-button-bg-secondary--default    : var(--color-base-white);
+  --color-button-bg-secondary--hover      : var(--color-gray-50);
+  --color-button-border-assist--default   : var(--color-gray-200);
+  --color-button-border-assist--hover     : var(--color-gray-200);
+  --color-button-border-blue-line--default: var(--color-blue-400);
+  --color-button-border-blue-line--hover  : var(--color-blue-500);
+  --color-button-border-disabled          : var(--color-gray-200);
+  --color-button-border-primary--default  : var(--color-blue-400);
+  --color-button-border-primary--hover    : var(--color-blue-500);
+  --color-button-border-secondary--default: var(--color-gray-200);
+  --color-button-border-secondary--hover  : var(--color-gray-200);
+  --color-button-label-assist--default    : var(--color-gray-800);
+  --color-button-label-assist--hover      : var(--color-gray-800);
+  --color-button-label-blue-line--default : var(--color-blue-400);
+  --color-button-label-blue-line--hover   : var(--color-blue-500);
+  --color-button-label-disabled           : var(--color-gray-300);
+  --color-button-label-primary--default   : var(--color-base-white);
+  --color-button-label-primary--hover     : var(--color-base-white);
+  --color-button-label-secondary--default : var(--color-gray-800);
+  --color-button-label-secondary--hover   : var(--color-gray-800);
+
+  /* ── chip ── */
+  --color-chip-line-bg-default      : var(--color-base-white);
+  --color-chip-line-bg-disabled     : var(--color-gray-50);
+  --color-chip-line-bg-hover        : var(--color-gray-0);
+  --color-chip-line-bg-selected     : var(--color-base-white);
+  --color-chip-line-border-default  : var(--color-gray-300);
+  --color-chip-line-border-disabled : var(--color-gray-100);
+  --color-chip-line-border-selected : var(--color-blue-400);
+  --color-chip-line-label-default   : var(--color-gray-500);
+  --color-chip-line-label-disabled  : var(--color-gray-300);
+  --color-chip-line-label-selected  : var(--color-blue-400);
+  --color-chip-solid-bg-default     : var(--color-gray-50);
+  --color-chip-solid-bg-disabled    : var(--color-gray-50);
+  --color-chip-solid-bg-hover       : var(--color-gray-100);
+  --color-chip-solid-bg-selected    : var(--color-blue-400);
+  --color-chip-solid-border-default : var(--color-gray-50);
+  --color-chip-solid-border-disabled: var(--color-gray-50);
+  --color-chip-solid-border-selected: var(--color-blue-400);
+  --color-chip-solid-label-default  : var(--color-gray-800);
+  --color-chip-solid-label-disabled : var(--color-gray-300);
+  --color-chip-solid-label-selected : var(--color-base-white);
+
+  /* ── control ── */
+  --color-control-bg-default              : var(--color-base-white);
+  --color-control-bg-default-alt          : var(--color-gray-50);
+  --color-control-bg-disabled             : var(--color-gray-50);
+  --color-control-bg-hover                : var(--color-gray-50);
+  --color-control-bg-selected             : var(--color-blue-400);
+  --color-control-bg-selected-alt         : var(--color-blue-400);
+  --color-control-border-default          : var(--color-gray-200);
+  --color-control-border-default-alt      : var(--color-gray-100);
+  --color-control-border-disabled         : var(--color-gray-300);
+  --color-control-border-disabled-alt1    : var(--color-gray-200);
+  --color-control-border-disabled-alt2    : var(--color-gray-100);
+  --color-control-border-selected         : var(--color-blue-400);
+  --color-control-indicator-disabled      : var(--color-gray-300);
+  --color-control-indicator-selected      : var(--color-base-white);
+  --color-control-indicator-selected-alt  : var(--color-blue-400);
+  --color-control-indicator-unselected    : var(--color-gray-300);
+  --color-control-indicator-unselected-alt: var(--color-gray-200);
+  --color-control-label-default           : var(--color-gray-800);
+  --color-control-label-disabled          : var(--color-gray-300);
+  --color-control-text-disabled           : var(--color-gray-300);
+  --color-control-text-selected           : var(--color-base-white);
+  --color-control-text-unselected         : var(--color-gray-800);
+
+  /* ── data ── */
+  --color-data-border-light  : var(--color-gray-100);
+  --color-data-border-strong : var(--color-gray-300);
+  --color-data-header-bg     : var(--color-gray-50);
+  --color-data-state-default : var(--color-base-white);
+  --color-data-state-hover   : var(--color-blue-50);
+  --color-data-state-selected: var(--color-blue-100);
+
+  /* ── dropdown ── */
+  --color-dropdown-list-bg               : var(--color-base-white);
+  --color-dropdown-list-border           : var(--color-gray-200);
+  --color-dropdown-option-bg-default     : var(--color-base-white);
+  --color-dropdown-option-bg-disabled    : var(--color-gray-50);
+  --color-dropdown-option-bg-hover       : var(--color-gray-50);
+  --color-dropdown-option-bg-selected    : var(--color-blue-50);
+  --color-dropdown-option-border-default : var(--color-gray-100);
+  --color-dropdown-option-border-hover   : var(--color-blue-400);
+  --color-dropdown-option-border-selected: var(--color-blue-400);
+  --color-dropdown-option-label-default  : var(--color-gray-800);
+  --color-dropdown-option-label-disabled : var(--color-gray-300);
+  --color-dropdown-option-label-hover    : var(--color-gray-900);
+  --color-dropdown-option-label-selected : var(--color-blue-400);
+
+  /* ── form-control ── */
+  --color-form-control-bg-default      : var(--color-base-white);
+  --color-form-control-bg-disabled     : var(--color-gray-50);
+  --color-form-control-bg-hover        : var(--color-gray-0);
+  --color-form-control-bg-selected     : var(--color-base-white);
+  --color-form-control-border-correct  : var(--color-blue-400);
+  --color-form-control-border-default  : var(--color-gray-200);
+  --color-form-control-border-disabled : var(--color-gray-100);
+  --color-form-control-border-error    : var(--color-red-400);
+  --color-form-control-border-selected : var(--color-blue-400);
+  --color-form-control-label-default   : var(--color-gray-800);
+  --color-form-control-label-disabled  : var(--color-gray-300);
+  --color-form-control-text-default    : var(--color-gray-800);
+  --color-form-control-text-disabled   : var(--color-gray-300);
+  --color-form-control-text-placeholder: var(--color-gray-500);
+  --color-form-control-text-selected   : var(--color-gray-900);
+  --color-form-control-icon-default    : var(--color-gray-800);
+  --color-form-control-icon-disabled   : var(--color-gray-300);
+  --color-form-control-text-caret      : var(--color-blue-400);
+  --color-form-control-text-read-only  : var(--color-gray-500);
+
+  /* ── icon ── */
+  --color-icon-blue      : var(--color-blue-400);
+  --color-icon-gray      : var(--color-gray-500);
+  --color-icon-gray-dark : var(--color-gray-800);
+  --color-icon-gray-light: var(--color-gray-300);
+  --color-icon-red       : var(--color-red-300);
+  --color-icon-white     : var(--color-base-white);
+
+  /* ── line ── */
+  --color-line-blue        : var(--color-blue-400);
+  --color-line-gray-default: var(--color-gray-200);
+  --color-line-gray-strong : var(--color-gray-300);
+  --color-line-gray-subtle : var(--color-gray-100);
+  --color-line-white       : var(--color-base-white);
+
+  /* ── navigation ── */
+  --color-navigation-background           : var(--color-base-white);
+  --color-navigation-indicator-default    : var(--color-gray-200);
+  --color-navigation-indicator-default-alt: var(--color-gray-100);
+  --color-navigation-indicator-hover      : var(--color-blue-400);
+  --color-navigation-indicator-selected   : var(--color-blue-400);
+  --color-navigation-label-default        : var(--color-gray-600);
+  --color-navigation-label-default-alt    : var(--color-gray-700);
+  --color-navigation-label-hover          : var(--color-blue-400);
+  --color-navigation-label-selected       : var(--color-blue-400);
+
+  /* ── overlay ── */
+  --color-overlay: rgba(0,0,0,0.5);
+
+  /* ── date-picker ── */
+  --color-date-picker-bg-panel        : var(--color-base-white);
+  --color-date-picker-bg-hover        : var(--color-gray-50);
+  --color-date-picker-bg-today        : var(--color-base-white);
+  --color-date-picker-bg-selected     : var(--color-blue-400);
+  --color-date-picker-border-panel    : var(--color-gray-300);
+  --color-date-picker-border-today    : var(--color-blue-400);
+  --color-date-picker-text-primary    : var(--color-gray-900);
+  --color-date-picker-text-secondary  : var(--color-gray-800);
+  --color-date-picker-text-disabled   : var(--color-gray-300);
+  --color-date-picker-text-other-month: var(--color-gray-300);
+  --color-date-picker-text-sunday     : var(--color-red-400);
+  --color-date-picker-text-saturday   : var(--color-blue-400);
+  --color-date-picker-text-today      : var(--color-blue-400);
+  --color-date-picker-text-selected   : var(--color-base-white);
+
+  /* ── pagination ── */
+  --color-pagination-control-bg-default     : var(--color-base-white);
+  --color-pagination-control-bg-disabled    : var(--color-gray-50);
+  --color-pagination-control-bg-hover       : var(--color-gray-50);
+  --color-pagination-control-border-default : var(--color-gray-100);
+  --color-pagination-control-border-disabled: var(--color-gray-100);
+  --color-pagination-control-border-hover   : var(--color-gray-200);
+
+  /* ── status-card ── */
+  --color-status-card-text-disabled          : var(--color-gray-300);
+  --color-status-card-text-error             : var(--color-red-400);
+  --color-status-card-text-primary--default  : var(--color-gray-900);
+  --color-status-card-text-primary--sub      : var(--color-gray-800);
+  --color-status-card-text-secondary--default: var(--color-gray-600);
+  --color-status-card-text-secondary--sub    : var(--color-gray-500);
+  --color-status-card-text-tertiary--default : var(--color-gray-400);
+  --color-status-card-text-tertiary--sub     : var(--color-gray-300);
+
+  /* ── text ── */
+  --color-text-body-primary     : var(--color-gray-900);
+  --color-text-body-secondary   : var(--color-gray-800);
+  --color-text-body-tertiary    : var(--color-gray-500);
+  --color-text-state-accent     : var(--color-blue-400);
+  --color-text-state-accent-alt : var(--color-base-white);
+  --color-text-state-caption    : var(--color-gray-500);
+  --color-text-state-caution    : var(--color-red-300);
+  --color-text-state-correct    : var(--color-blue-400);
+  --color-text-state-disabled   : var(--color-gray-300);
+  --color-text-state-helper     : var(--color-gray-400);
+  --color-text-state-placeholder: var(--color-gray-500);
+  --color-text-title-primary    : var(--color-gray-900);
+  --color-text-title-secondary  : var(--color-gray-800);
+  --color-text-title-tertiary   : var(--color-gray-600);
+
+  /* ── scroll ── */
+  --color-scroll-bg: var(--color-gray-200);
 }
 
-/* ══ 4. Semantic Tokens — Dark ══ */
+/* ══════════════════════════════════════════════════
+   SEMANTIC TOKENS — Dark (Variables 기준 자동 생성)
+   ══════════════════════════════════════════════════ */
 [data-theme="dark"] {
-  --color-bg-default:  var(--color-gray-dark-50);
-  --color-bg-subtle:   var(--color-gray-dark-200);
-  --color-bg-muted:    var(--color-gray-dark-300);
-  --color-bg-elevated: var(--color-gray-dark-400);
-  --color-bg-home:     var(--color-gray-dark-50);
-  --color-bg-selected: var(--color-blue-dark-100);
-  --color-surface-default: var(--color-gray-dark-100);
-  --color-surface-raised:  var(--color-gray-dark-400);
-  --color-text-primary:     var(--color-gray-dark-900);
-  --color-text-secondary:   var(--color-gray-dark-800);
-  --color-text-tertiary:    var(--color-gray-dark-700);
-  --color-text-caption:     var(--color-gray-dark-700);
-  --color-text-placeholder: var(--color-gray-dark-600);
-  --color-text-helper:      var(--color-gray-dark-600);
-  --color-text-link:        var(--color-blue-dark-400);
-  --color-text-correct:     var(--color-blue-dark-400);
-  --color-text-danger:      var(--color-status-dark-red);
-  --color-text-disabled:    var(--color-gray-dark-400);
-  --color-text-readonly:    var(--color-gray-dark-500);
-  --color-text-inverse:     var(--color-base-white);
-  --color-border-subtle:   rgba(255,255,255,0.04);
-  --color-border-default:  rgba(255,255,255,0.07);
-  --color-border-disabled: rgba(255,255,255,0.07);
-  --color-border-strong:   rgba(255,255,255,0.12);
-  --color-border-emphasis: rgba(255,255,255,0.20);
-  --color-border-focus:    var(--color-blue-dark-350);
-  --color-border-white:    var(--color-base-white);
-  --color-border-danger:   var(--color-status-dark-red);
-  --color-border-correct:  var(--color-blue-dark-350);
-  --color-icon-default:  var(--color-gray-dark-700);
-  --color-icon-muted:    var(--color-gray-dark-400);
-  --color-icon-emphasis: var(--color-gray-dark-800);
-  --color-icon-accent:   var(--color-blue-dark-400);
-  --color-icon-inverse:  var(--color-gray-dark-900);
-  --color-icon-danger:   var(--color-status-dark-red);
-  --color-action-primary-default: var(--color-blue-dark-300);
-  --color-action-primary-hover:   var(--color-blue-dark-250);
-  --color-action-primary-pressed: var(--color-blue-dark-200);
-  --color-action-primary-text:    var(--color-base-white);
-  --color-action-primary-subtle:  var(--color-blue-dark-100);
-  --color-status-success: var(--color-status-dark-green);
-  --color-status-error:   var(--color-status-dark-red);
-  --color-status-warning: var(--color-status-dark-yellow);
-  --color-status-info:    var(--color-gray-dark-700);
-  --color-text-state-correct: var(--color-blue-dark-400);
-  --color-control-border-default:  var(--color-gray-dark-500);
-  --color-control-border-hover:    var(--color-blue-dark-300);
-  --color-control-border-selected: var(--color-blue-dark-300);
-  --color-control-border-disabled: var(--color-gray-dark-300);
-  --color-form-control-bg-default:      var(--color-gray-dark-50);
-  --color-form-control-border-disabled: var(--color-control-border-disabled);
-  --dropdown-trigger-hover-bg: var(--color-gray-dark-450);
-  --color-overlay: rgba(0, 0, 0, 0.75);
-}
+  /* ── button ── */
+  --color-button-bg-assist--default       : var(--color-base-white);
+  --color-button-bg-assist--hover         : var(--color-gray-dark-200);
+  --color-button-bg-blue-line--default    : var(--color-gray-dark-100);
+  --color-button-bg-blue-line--hover      : var(--color-gray-dark-200);
+  --color-button-bg-disabled              : var(--color-gray-dark-300);
+  --color-button-bg-primary--default      : var(--color-blue-dark-300);
+  --color-button-bg-primary--hover        : var(--color-blue-dark-250);
+  --color-button-bg-secondary--default    : var(--color-gray-dark-100);
+  --color-button-bg-secondary--hover      : var(--color-gray-dark-200);
+  --color-button-border-assist--default   : var(--color-gray-dark-300);
+  --color-button-border-assist--hover     : var(--color-gray-dark-300);
+  --color-button-border-blue-line--default: var(--color-blue-dark-300);
+  --color-button-border-blue-line--hover  : var(--color-blue-dark-300);
+  --color-button-border-disabled          : var(--color-gray-dark-300);
+  --color-button-border-primary--default  : var(--color-blue-dark-300);
+  --color-button-border-primary--hover    : var(--color-blue-dark-250);
+  --color-button-border-secondary--default: var(--color-gray-dark-500);
+  --color-button-border-secondary--hover  : var(--color-gray-dark-500);
+  --color-button-label-assist--default    : var(--color-gray-dark-800);
+  --color-button-label-assist--hover      : var(--color-gray-dark-800);
+  --color-button-label-blue-line--default : var(--color-blue-dark-300);
+  --color-button-label-blue-line--hover   : var(--color-blue-dark-300);
+  --color-button-label-disabled           : var(--color-gray-dark-600);
+  --color-button-label-primary--default   : var(--color-base-white);
+  --color-button-label-primary--hover     : var(--color-base-white);
+  --color-button-label-secondary--default : var(--color-gray-dark-800);
+  --color-button-label-secondary--hover   : var(--color-gray-dark-800);
 
-/* ══ 5. Component Tokens ══ */
-:root {
-  --button-primary-default-bg:      var(--color-action-primary-default);
-  --button-primary-hover-bg:        var(--color-action-primary-hover);
-  --button-primary-pressed-bg:      var(--color-action-primary-pressed);
-  --button-primary-disabled-bg:     var(--color-bg-subtle);
-  --button-primary-disabled-border: var(--color-border-disabled);
-  --button-primary-default-text:    var(--color-action-primary-text);
-  --button-primary-disabled-text:   var(--color-text-disabled);
-  --button-primary-default-icon:    var(--color-action-primary-text);
-  --button-secondary-default-bg:      var(--color-surface-default);
-  --button-secondary-hover-bg:        var(--color-bg-subtle);
-  --button-secondary-pressed-bg:      var(--color-bg-muted);
-  --button-secondary-disabled-bg:     var(--color-bg-subtle);
-  --button-secondary-default-border:  var(--color-border-default);
-  --button-secondary-disabled-border: var(--color-border-disabled);
-  --button-secondary-default-text:    var(--color-text-secondary);
-  --button-secondary-disabled-text:   var(--color-text-disabled);
-  --button-secondary-default-icon:    var(--color-icon-default);
-  --button-secondary-disabled-icon:   var(--color-icon-muted);
-  --button-blue-line-default-bg:      var(--color-surface-default);
-  --button-blue-line-hover-bg:        var(--color-action-primary-subtle);
-  --button-blue-line-pressed-bg:      var(--color-action-primary-subtle);
-  --button-blue-line-disabled-bg:     var(--color-bg-subtle);
-  --button-blue-line-default-border:  var(--color-action-primary-default);
-  --button-blue-line-hover-border:    var(--color-action-primary-default);
-  --button-blue-line-disabled-border: var(--color-border-disabled);
-  --button-blue-line-default-text:    var(--color-action-primary-default);
-  --button-blue-line-disabled-text:   var(--color-text-disabled);
-  --button-ghost-hover-bg:      var(--color-bg-subtle);
-  --button-ghost-pressed-bg:    var(--color-bg-muted);
-  --button-ghost-default-text:  var(--color-text-secondary);
-  --button-ghost-disabled-text: var(--color-text-disabled);
-  --button-ghost-default-icon:  var(--color-icon-default);
-  --button-ghost-disabled-icon: var(--color-icon-muted);
-  --chip-default-bg:      var(--color-bg-subtle);
-  --chip-hover-bg:        var(--color-bg-muted);
-  --chip-selected-bg:     var(--color-action-primary-subtle);
-  --chip-disabled-bg:     var(--color-bg-subtle);
-  --chip-default-border:  var(--color-border-default);
-  --chip-hover-border:    var(--color-border-strong);
-  --chip-selected-border: var(--color-action-primary-default);
-  --chip-disabled-border: var(--color-border-subtle);
-  --chip-default-text:    var(--color-text-secondary);
-  --chip-selected-text:   var(--color-action-primary-default);
-  --chip-disabled-text:   var(--color-text-disabled);
-  --chip-default-icon:    var(--color-icon-default);
-  --chip-selected-icon:   var(--color-action-primary-default);
-  --chip-disabled-icon:   var(--color-icon-muted);
-  --chip-default-close-icon:  var(--color-icon-default);
-  --chip-hover-close-icon:    var(--color-icon-emphasis);
-  --chip-selected-close-icon: var(--color-action-primary-default);
-  --chip-focus-ring:      var(--color-border-focus);
-  --dropdown-trigger-default-bg:      var(--color-surface-default);
-  --dropdown-trigger-hover-bg:        var(--color-bg-subtle);
-  --dropdown-trigger-open-bg:         var(--color-bg-subtle);
-  --dropdown-trigger-disabled-bg:     var(--color-bg-subtle);
-  --dropdown-trigger-default-border:  var(--color-form-control-border-default);
-  --dropdown-trigger-hover-border:    var(--color-border-strong);
-  --dropdown-trigger-open-border:     var(--color-border-focus);
-  --dropdown-trigger-disabled-border: var(--color-border-subtle);
-  --dropdown-trigger-default-text:    var(--color-text-secondary);
-  --dropdown-trigger-disabled-text:   var(--color-text-disabled);
-  --dropdown-list-bg:            var(--color-surface-raised);
-  --dropdown-option-hover-bg:    var(--color-bg-subtle);
-  --dropdown-option-selected-bg: var(--color-action-primary-subtle);
-  --input-default-bg:       var(--color-form-control-bg-default);
-  --input-disabled-bg:      var(--color-form-control-bg-disabled);
-  --input-default-border:   var(--color-form-control-border-default);
-  --input-focus-border:     var(--color-form-control-border-selected);
-  --input-error-border:     var(--color-form-control-border-error);
-  --input-correct-border:   var(--color-form-control-border-correct);
-  --input-disabled-border:  var(--color-form-control-border-disabled);
-  --input-readonly-bg:      var(--color-form-control-bg-disabled);
-  --input-readonly-border:  var(--color-form-control-border-disabled);
-  --input-readonly-text:    var(--color-text-readonly);
-  --select-disabled-border: var(--color-border-subtle);
-  --input-placeholder-text: var(--color-form-control-text-placeholder);
-  --input-disabled-text:    var(--color-form-control-text-disabled);
-  --input-helper-text:      var(--color-text-state-helper);
-  --input-correct-text:     var(--color-text-state-correct);
-  --input-error-text:       var(--color-text-state-error);
-  --checkbox-default-bg:          var(--color-form-control-bg-default);
-  --checkbox-checked-bg:          var(--color-action-primary-default);
-  --checkbox-indeterminate-bg:    var(--color-action-primary-default);
-  --checkbox-disabled-bg:         var(--color-bg-subtle);
-  --checkbox-default-border:      var(--color-control-border-default);
-  --checkbox-hover-border:        var(--color-control-border-hover);
-  --checkbox-checked-border:      var(--color-control-border-selected);
-  --checkbox-disabled-border:     var(--color-control-border-disabled);
-  --checkbox-check-icon:          var(--color-action-primary-text);
-  --checkbox-disabled-check-icon: var(--color-border-strong);
-  --radio-default-bg:      var(--color-form-control-bg-default);
-  --radio-disabled-bg:     var(--color-bg-subtle);
-  --radio-default-border:  var(--color-control-border-default);
-  --radio-hover-border:    var(--color-control-border-hover);
-  --radio-selected-border: var(--color-control-border-selected);
-  --radio-disabled-border: var(--color-control-border-disabled);
-  --radio-selected-dot:    var(--color-action-primary-default);
-  --radio-disabled-dot:    var(--color-border-strong);
-  --toggle-on-bg:       var(--color-action-primary-default);
-  --toggle-off-bg:      var(--color-text-placeholder);
-  --toggle-disabled-bg: var(--color-bg-muted);
-  --toggle-knob:        var(--color-action-primary-text);
-  --pagination-default-bg:    var(--color-surface-default);
-  --pagination-hover-bg:      var(--color-bg-subtle);
-  --pagination-active-bg:     var(--color-action-primary-default);
-  --pagination-disabled-bg:   var(--color-surface-default);
-  --pagination-default-text:  var(--color-text-secondary);
-  --pagination-active-text:   var(--color-action-primary-text);
-  --pagination-disabled-text: var(--color-text-disabled);
-  --pagination-border:        var(--color-border-default);
-  --nav-bg:                var(--color-surface-default);
-  --nav-item-hover-bg:     var(--color-bg-subtle);
-  --nav-item-active-bg:    var(--color-action-primary-subtle);
-  --nav-item-default-text: var(--color-text-tertiary);
-  --nav-item-active-text:  var(--color-action-primary-default);
-  --nav-item-default-icon: var(--color-icon-default);
-  --nav-item-active-icon:  var(--color-action-primary-default);
-  --nav-item-indicator:    var(--color-action-primary-default);
-  --nav-divider:           var(--color-border-subtle);
-  --table-header-bg:       var(--color-bg-subtle);
-  --table-header-text:     var(--color-text-tertiary);
-  --table-header-border:   var(--color-border-default);
-  --table-row-default-bg:  var(--color-surface-default);
-  --table-row-hover-bg:    var(--color-bg-subtle);
-  --table-row-selected-bg: var(--color-bg-selected);
-  --table-cell-border:     var(--color-border-subtle);
-  --table-cell-text:       var(--color-text-secondary);
+  /* ── chip ── */
+  --color-chip-line-bg-default      : var(--color-gray-dark-100);
+  --color-chip-line-bg-disabled     : var(--color-gray-dark-200);
+  --color-chip-line-bg-hover        : var(--color-gray-dark-200);
+  --color-chip-line-bg-selected     : var(--color-gray-dark-100);
+  --color-chip-line-border-default  : var(--color-gray-dark-500);
+  --color-chip-line-border-disabled : var(--color-gray-dark-200);
+  --color-chip-line-border-selected : var(--color-blue-dark-300);
+  --color-chip-line-label-default   : var(--color-gray-dark-700);
+  --color-chip-line-label-disabled  : var(--color-gray-dark-600);
+  --color-chip-line-label-selected  : var(--color-blue-dark-350);
+  --color-chip-solid-bg-default     : var(--color-gray-dark-300);
+  --color-chip-solid-bg-disabled    : var(--color-gray-dark-200);
+  --color-chip-solid-bg-hover       : var(--color-gray-dark-400);
+  --color-chip-solid-bg-selected    : var(--color-blue-dark-300);
+  --color-chip-solid-border-default : var(--color-gray-dark-200);
+  --color-chip-solid-border-disabled: var(--color-gray-dark-200);
+  --color-chip-solid-border-selected: var(--color-blue-dark-300);
+  --color-chip-solid-label-default  : var(--color-gray-dark-700);
+  --color-chip-solid-label-disabled : var(--color-gray-dark-600);
+  --color-chip-solid-label-selected : var(--color-base-white);
+
+  /* ── control ── */
+  --color-control-bg-default              : var(--color-gray-dark-100);
+  --color-control-bg-default-alt          : var(--color-gray-dark-600);
+  --color-control-bg-disabled             : var(--color-gray-dark-300);
+  --color-control-bg-hover                : var(--color-gray-dark-200);
+  --color-control-bg-selected             : var(--color-blue-dark-300);
+  --color-control-bg-selected-alt         : var(--color-blue-dark-300);
+  --color-control-border-default          : var(--color-gray-dark-500);
+  --color-control-border-default-alt      : var(--color-gray-dark-300);
+  --color-control-border-disabled         : var(--color-gray-dark-300);
+  --color-control-border-disabled-alt1    : var(--color-gray-dark-300);
+  --color-control-border-disabled-alt2    : var(--color-gray-dark-300);
+  --color-control-border-selected         : var(--color-blue-dark-300);
+  --color-control-indicator-disabled      : var(--color-gray-dark-500);
+  --color-control-indicator-selected      : var(--color-base-white);
+  --color-control-indicator-selected-alt  : var(--color-blue-dark-300);
+  --color-control-indicator-unselected    : var(--color-gray-dark-400);
+  --color-control-indicator-unselected-alt: var(--color-gray-dark-300);
+  --color-control-label-default           : var(--color-gray-dark-800);
+  --color-control-label-disabled          : var(--color-gray-dark-600);
+  --color-control-text-disabled           : var(--color-gray-dark-400);
+  --color-control-text-selected           : var(--color-base-white);
+  --color-control-text-unselected         : var(--color-gray-dark-800);
+
+  /* ── data ── */
+  --color-data-border-light  : var(--color-gray-dark-300);
+  --color-data-border-strong : var(--color-gray-dark-400);
+  --color-data-header-bg     : var(--color-gray-dark-200);
+  --color-data-state-default : var(--color-gray-dark-100);
+  --color-data-state-hover   : var(--color-gray-dark-200);
+  --color-data-state-selected: var(--color-blue-dark-100);
+
+  /* ── dropdown ── */
+  --color-dropdown-list-bg               : var(--color-gray-dark-100);
+  --color-dropdown-list-border           : var(--color-gray-dark-500);
+  --color-dropdown-option-bg-default     : var(--color-gray-dark-400);
+  --color-dropdown-option-bg-disabled    : var(--color-gray-dark-200);
+  --color-dropdown-option-bg-hover       : var(--color-gray-dark-200);
+  --color-dropdown-option-bg-selected    : var(--color-blue-dark-100);
+  --color-dropdown-option-border-default : var(--color-gray-dark-300);
+  --color-dropdown-option-border-hover   : var(--color-blue-dark-300);
+  --color-dropdown-option-border-selected: var(--color-blue-dark-300);
+  --color-dropdown-option-label-default  : var(--color-gray-dark-800);
+  --color-dropdown-option-label-disabled : var(--color-gray-dark-400);
+  --color-dropdown-option-label-hover    : var(--color-gray-dark-900);
+  --color-dropdown-option-label-selected : var(--color-blue-dark-350);
+
+  /* ── form-control ── */
+  --color-form-control-bg-default      : var(--color-gray-dark-100);
+  --color-form-control-bg-disabled     : var(--color-gray-dark-200);
+  --color-form-control-bg-hover        : var(--color-gray-dark-200);
+  --color-form-control-bg-selected     : var(--color-gray-dark-200);
+  --color-form-control-border-correct  : var(--color-blue-dark-350);
+  --color-form-control-border-default  : var(--color-gray-dark-500);
+  --color-form-control-border-disabled : var(--color-gray-dark-200);
+  --color-form-control-border-error    : var(--color-red-dark-350);
+  --color-form-control-border-selected : var(--color-blue-dark-350);
+  --color-form-control-label-default   : var(--color-gray-dark-800);
+  --color-form-control-label-disabled  : var(--color-gray-dark-600);
+  --color-form-control-text-default    : var(--color-gray-dark-800);
+  --color-form-control-text-disabled   : var(--color-gray-dark-600);
+  --color-form-control-text-placeholder: var(--color-gray-dark-600);
+  --color-form-control-text-selected   : var(--color-gray-dark-800);
+  --color-form-control-icon-default    : var(--color-gray-dark-700);
+  --color-form-control-icon-disabled   : var(--color-gray-dark-500);
+  --color-form-control-text-caret      : var(--color-blue-dark-350);
+  --color-form-control-text-read-only  : var(--color-gray-dark-700);
+
+  /* ── icon ── */
+  --color-icon-blue      : var(--color-blue-dark-300);
+  --color-icon-gray      : var(--color-gray-dark-700);
+  --color-icon-gray-dark : var(--color-gray-dark-800);
+  --color-icon-gray-light: var(--color-gray-dark-400);
+  --color-icon-red       : var(--color-red-dark-350);
+  --color-icon-white     : var(--color-base-white);
+
+  /* ── line ── */
+  --color-line-blue        : var(--color-blue-dark-300);
+  --color-line-gray-default: var(--color-gray-dark-300);
+  --color-line-gray-strong : var(--color-gray-dark-400);
+  --color-line-gray-subtle : var(--color-gray-dark-300);
+  --color-line-white       : var(--color-base-white);
+
+  /* ── navigation ── */
+  --color-navigation-background           : var(--color-gray-dark-100);
+  --color-navigation-indicator-default    : var(--color-gray-dark-300);
+  --color-navigation-indicator-default-alt: var(--color-gray-dark-200);
+  --color-navigation-indicator-hover      : var(--color-blue-dark-300);
+  --color-navigation-indicator-selected   : var(--color-blue-dark-300);
+  --color-navigation-label-default        : var(--color-gray-dark-600);
+  --color-navigation-label-default-alt    : var(--color-gray-dark-700);
+  --color-navigation-label-hover          : var(--color-blue-dark-300);
+  --color-navigation-label-selected       : var(--color-blue-dark-300);
+
+  /* ── overlay ── */
+  --color-overlay: rgba(0,0,0,0.75);
+
+  /* ── date-picker ── */
+  --color-date-picker-bg-panel        : var(--color-gray-dark-100);
+  --color-date-picker-bg-hover        : var(--color-gray-dark-200);
+  --color-date-picker-bg-today        : var(--color-gray-dark-100);
+  --color-date-picker-bg-selected     : var(--color-blue-dark-300);
+  --color-date-picker-border-panel    : var(--color-gray-dark-500);
+  --color-date-picker-border-today    : var(--color-blue-dark-300);
+  --color-date-picker-text-primary    : var(--color-gray-dark-900);
+  --color-date-picker-text-secondary  : var(--color-gray-dark-800);
+  --color-date-picker-text-disabled   : var(--color-gray-dark-400);
+  --color-date-picker-text-other-month: var(--color-gray-dark-400);
+  --color-date-picker-text-sunday     : var(--color-red-dark-350);
+  --color-date-picker-text-saturday   : var(--color-blue-dark-300);
+  --color-date-picker-text-today      : var(--color-blue-dark-300);
+  --color-date-picker-text-selected   : var(--color-base-white);
+
+  /* ── pagination ── */
+  --color-pagination-control-bg-default     : var(--color-base-white);
+  --color-pagination-control-bg-disabled    : var(--color-gray-dark-200);
+  --color-pagination-control-bg-hover       : var(--color-gray-dark-200);
+  --color-pagination-control-border-default : var(--color-gray-dark-300);
+  --color-pagination-control-border-disabled: var(--color-gray-dark-300);
+  --color-pagination-control-border-hover   : var(--color-gray-dark-300);
+
+  /* ── status-card ── */
+  --color-status-card-text-disabled          : var(--color-gray-dark-400);
+  --color-status-card-text-error             : var(--color-red-dark-350);
+  --color-status-card-text-primary--default  : var(--color-gray-dark-900);
+  --color-status-card-text-primary--sub      : var(--color-gray-dark-800);
+  --color-status-card-text-secondary--default: var(--color-gray-dark-700);
+  --color-status-card-text-secondary--sub    : var(--color-gray-dark-700);
+  --color-status-card-text-tertiary--default : var(--color-gray-dark-600);
+  --color-status-card-text-tertiary--sub     : var(--color-gray-dark-400);
+
+  /* ── text ── */
+  --color-text-body-primary     : var(--color-gray-dark-900);
+  --color-text-body-secondary   : var(--color-gray-dark-800);
+  --color-text-body-tertiary    : var(--color-gray-dark-700);
+  --color-text-state-accent     : var(--color-blue-dark-300);
+  --color-text-state-accent-alt : var(--color-base-white);
+  --color-text-state-caption    : var(--color-gray-dark-800);
+  --color-text-state-caution    : var(--color-red-dark-350);
+  --color-text-state-correct    : var(--color-blue-dark-300);
+  --color-text-state-disabled   : var(--color-gray-dark-400);
+  --color-text-state-helper     : var(--color-gray-dark-600);
+  --color-text-state-placeholder: var(--color-gray-dark-700);
+  --color-text-title-primary    : var(--color-gray-dark-900);
+  --color-text-title-secondary  : var(--color-gray-dark-800);
+  --color-text-title-tertiary   : var(--color-gray-dark-700);
+
+  /* ── scroll ── */
+  --color-scroll-bg: var(--color-gray-dark-600);
 }
+/* &lt;&lt;&lt; GEN:SEMANTIC &lt;&lt;&lt; */
 
 ---
 
@@ -1748,6 +1961,7 @@
                 <div class="step-title">Variables 플러그인 다운로드</div>
                 <div class="step-desc">ZIP 파일 하나를 받아 압축을 해제하면 준비 완료입니다</div>
               </div>
+              <span class="update-stamp" data-update-file="assets/downloads/s1-design-vars-installer.zip"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> 업데이트 2026-06-09 15:57</span>
             </div>
             <div class="step-body">
               <div class="file-card">
@@ -1781,6 +1995,7 @@
                 <div class="step-title">플러그인 등록 후 디자인가이드 파일에 임포트</div>
                 <div class="step-desc">플러그인을 Figma에 등록하고 1단계 파일에서 실행해 Variables를 불러옵니다</div>
               </div>
+              <span class="update-stamp" data-update-file="plugins/figma-vars-installer/src/vars-data.ts"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> 업데이트 2026-06-09 15:39</span>
             </div>
             <div class="step-body">
               <ol style="font-size:13px;color:#374151;line-height:2.4;padding-left:18px;margin:0;">
@@ -1804,7 +2019,7 @@
                   <span style="font-size:15px;">🟢</span>
                   <div>
                     <div style="font-size:12px;font-weight:600;color:#166534;">Semantic</div>
-                    <div style="font-size:11px;color:#6b7280;">~50개 역할 기반 변수 — bg, text, border, action 등 · Light / Dark 2모드</div>
+                    <div style="font-size:11px;color:#6b7280;">~170개 컴포넌트 단위 변수 — button, chip, control, form-control, text 등 · Light / Dark 2모드</div>
                   </div>
                 </div>
               </div>
