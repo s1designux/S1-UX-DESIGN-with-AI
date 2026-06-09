@@ -46,10 +46,11 @@ function loadFigmaPaths(tsPath) {
   const result = {};
   for (const name of sections) {
     result[name] = new Set();
-    const start = ts.indexOf(`const ${name}`);
+    // `const SEMANTIC_NUMBER:` 처럼 colon 표기까지 정확히 매칭 (SEMANTIC_NUMBER_COLLECTION 같은 동명 상수 제외)
+    const start = ts.indexOf(`const ${name}:`);
     if (start < 0) continue;
     // 다음 const/export 까지가 한 섹션
-    const rest = ts.slice(start + name.length);
+    const rest = ts.slice(start + name.length + 1);
     const nextIdx = rest.search(/\n(export\s+const|export\s+interface)\s+/);
     const chunk = nextIdx > 0 ? rest.slice(0, nextIdx) : rest;
     // 키만 추출: "path/..." :

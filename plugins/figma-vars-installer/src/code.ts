@@ -23,7 +23,8 @@
 import {
   FOUNDATION_COLOR, FOUNDATION_NUMBER,
   SEMANTIC_COLOR, SEMANTIC_NUMBER,
-  FOUNDATION_COLLECTION, SEMANTIC_COLLECTION,
+  FOUNDATION_COLLECTION,
+  SEMANTIC_COLOR_COLLECTION, SEMANTIC_NUMBER_COLLECTION,
   LIGHT_MODE, DARK_MODE,
 } from "./vars-data";
 
@@ -38,7 +39,8 @@ figma.ui.onmessage = async (msg: { type: string }) => {
     figma.ui.postMessage({
       type: "collection-names",
       foundation: FOUNDATION_COLLECTION,
-      semantic: SEMANTIC_COLLECTION,
+      semanticColor: SEMANTIC_COLOR_COLLECTION,
+      semanticNumber: SEMANTIC_NUMBER_COLLECTION,
     });
   }
 };
@@ -251,46 +253,47 @@ async function runInstall() {
       }
     }
 
-    post("progress", { step: "semantic collection 준비 중…", pct: 50 });
+    post("progress", { step: "Semantic Color collection 준비 중…", pct: 50 });
 
-    // ── 2. semantic collection (Light + Dark 2-mode) ───────────────────────
-    const sc = await getOrCreateCollection(SEMANTIC_COLLECTION);
-    const { lightId: sLightId, darkId: sDarkId } = setupLightDarkModes(sc);
+    // ── 2. Semantic Color collection (Light + Dark 2-mode) ─────────────────
+    const scc = await getOrCreateCollection(SEMANTIC_COLOR_COLLECTION);
+    const { lightId: sLightId, darkId: sDarkId } = setupLightDarkModes(scc);
 
-    // 2-A. Semantic COLOR
     const scColorKeys = Object.keys(SEMANTIC_COLOR);
 
     for (let i = 0; i < scColorKeys.length; i++) {
       const path  = scColorKeys[i];
       const entry = SEMANTIC_COLOR[path];
-      const v = await getOrCreateVariable(path, sc, "COLOR");
+      const v = await getOrCreateVariable(path, scc, "COLOR");
       v.setValueForMode(sLightId, resolveColorRef(entry.light, foundationColorMap));
       v.setValueForMode(sDarkId,  resolveColorRef(entry.dark,  foundationColorMap));
       v.scopes = colorScopes(path);
 
       if (i % 10 === 0) {
         const pct = 50 + Math.round((i / scColorKeys.length) * 25);
-        post("progress", { step: `semantic Color: ${path}`, pct });
+        post("progress", { step: `Semantic Color: ${path}`, pct });
       }
     }
 
-    post("progress", { step: "semantic Number 준비 중…", pct: 75 });
+    post("progress", { step: "Semantic Number collection 준비 중…", pct: 75 });
 
-    // 2-B. Semantic NUMBER
+    // ── 3. Semantic Number collection (단일 Default 모드) ──────────────────
+    const scn = await getOrCreateCollection(SEMANTIC_NUMBER_COLLECTION);
+    const scnDefaultId = setupSingleMode(scn, "Default");
+
     const scNumberKeys = Object.keys(SEMANTIC_NUMBER);
 
     for (let i = 0; i < scNumberKeys.length; i++) {
       const path = scNumberKeys[i];
       const ref  = SEMANTIC_NUMBER[path];
-      const v = await getOrCreateVariable(path, sc, "FLOAT");
+      const v = await getOrCreateVariable(path, scn, "FLOAT");
       const value = resolveNumberRef(ref, foundationNumberMap);
-      v.setValueForMode(sLightId, value);
-      v.setValueForMode(sDarkId,  value);
+      v.setValueForMode(scnDefaultId, value);
       v.scopes = numberScopes(path);
 
       if (i % 10 === 0) {
         const pct = 75 + Math.round((i / scNumberKeys.length) * 20);
-        post("progress", { step: `semantic Number: ${path}`, pct });
+        post("progress", { step: `Semantic Number: ${path}`, pct });
       }
     }
 
