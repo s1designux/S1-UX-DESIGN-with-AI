@@ -46,15 +46,16 @@
       --dropdown-option-hover-bg:          var(--color-bg-subtle);
       --dropdown-option-selected-text:     var(--color-action-primary-default);
       /* Checkbox */
-      --checkbox-default-bg:       var(--color-form-control-bg-default);
-      --checkbox-checked-bg:       var(--color-action-primary-default);
-      --checkbox-disabled-bg:      var(--color-bg-subtle);
+      /* Checkbox — Figma 1459:16409: control/* 직접 사용 */
+      --checkbox-default-bg:       var(--color-control-bg-default);
+      --checkbox-checked-bg:       var(--color-control-bg-selected);
+      --checkbox-disabled-bg:      var(--color-control-bg-disabled);
       --checkbox-default-border:   var(--color-control-border-default);
-      --checkbox-hover-border:     var(--color-control-border-hover);
+      --checkbox-hover-border:     var(--color-control-border-default);   /* Figma hover: border=default */
       --checkbox-checked-border:   var(--color-control-border-selected);
       --checkbox-disabled-border:  var(--color-control-border-disabled);
-      --checkbox-check-icon:          var(--color-action-primary-text);
-      --checkbox-disabled-check-icon: var(--color-border-strong);
+      --checkbox-check-icon:          var(--color-control-indicator-selected);
+      --checkbox-disabled-check-icon: var(--color-control-indicator-disabled);
       /* Radio */
       --radio-default-bg:      var(--color-form-control-bg-default);
       --radio-disabled-bg:     var(--color-bg-subtle);
@@ -482,8 +483,8 @@
     }
 
     .s1-checkbox.is-disabled { cursor: not-allowed; }
-    .s1-checkbox-label { font-size: 14px; color: var(--color-text-secondary); }
-    .s1-checkbox.is-disabled .s1-checkbox-label { color: var(--color-text-disabled); }
+    .s1-checkbox-label { font-size: 14px; color: var(--color-control-label-default); }
+    .s1-checkbox.is-disabled .s1-checkbox-label { color: var(--color-control-label-disabled); }
     .s1-checkbox-box { color: var(--checkbox-check-icon); }
     .ds-chk-icon { display: none; }
     .s1-checkbox.is-checked .ds-chk-icon { display: block; }

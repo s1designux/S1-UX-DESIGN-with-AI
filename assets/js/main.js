@@ -15,6 +15,7 @@ const SITE_NAV = [
   { type: 'label', text: 'Source' },
   { type: 'item', id: 'layer-policy', href: 'layer-policy.html', rootHref: 'pages/layer-policy.html', icon: '🗂', text: 'Layer Policy', status: 'ready' },
   { type: 'item', id: 'components', href: 'components.html', rootHref: 'pages/components.html', icon: '🧩', text: 'Components', status: 'ready' },
+  { type: 'item', id: 'components-new', href: 'components-new.html', rootHref: 'pages/components-new.html', icon: '🧪', text: 'Components New', status: 'wip' },
   { type: 'item', id: 'icons', href: 'icons.html', rootHref: 'pages/icons.html', icon: '✦', text: 'Icons · 817', status: 'ready' },
   { type: 'item', id: 'patterns', href: 'patterns.html', rootHref: 'pages/patterns.html', icon: '📐', text: 'Patterns', status: 'ready' },
 
@@ -191,6 +192,7 @@ var SEARCH_INDEX = [
   { label: 'Foundation Tokens', sublabel: '색상·타이포·간격', type: 'page', page: 'foundation.html', keywords: 'foundation token color palette typography spacing radius border font' },
   { label: 'Semantic Tokens',   sublabel: '역할 기반 토큰',  type: 'page', page: 'semantic.html',   keywords: 'semantic token bg surface text border action status overlay icon form-control' },
   { label: 'Components',        sublabel: '컴포넌트 가이드', type: 'page', page: 'components.html', keywords: 'component button checkbox radio toggle chip input select dropdown textarea datepicker 컴포넌트' },
+  { label: 'Components New',     sublabel: 'Variables 재구성 (WIP)', type: 'page', page: 'components-new.html', keywords: 'component new variables rebuild 재구성 컴포넌트 신규' },
   { label: 'Icons',             sublabel: '아이콘 817개',    type: 'page', page: 'icons.html',       keywords: 'icon svg 아이콘' },
   { label: 'Legacy Guide',      sublabel: '마이그레이션',    type: 'page', page: 'legacy.html',      keywords: 'legacy migration guide 레거시 마이그레이션' },
   { label: 'Token Mapping',     sublabel: 'Figma ↔ CSS',    type: 'page', page: 'token-mapping.html', keywords: 'token mapping figma css 토큰 매핑' },

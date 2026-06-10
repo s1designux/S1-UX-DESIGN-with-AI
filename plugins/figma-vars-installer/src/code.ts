@@ -1,7 +1,9 @@
 /**
- * SW Variables Installer — code.ts (Hybrid 패턴, 2026-06-08 v3)
+ * 에스원 디자인시스템 설치 — code.ts (선택형 설치, 2026-06-10 v4)
  *
- * 새 Figma 파일에 S1 디자인시스템 Variables를 생성한다.
+ * Foundation · Semantic · Text Styles · Component Set 을 하나 또는 여러 개 선택해 설치한다.
+ * 선택하지 않은 의존 항목(Semantic←Foundation, Component←Foundation·Semantic·TextStyles)은
+ * 파일에 이미 설치된 것을 불러와 연결한다(없으면 안내 후 중단).
  *
  *   Foundation collection (단일 Default 모드)
  *     - COLOR: raw 색상값. light/dark 팔레트는 별도 변수명 (gray/N · gray-dark/N · ...)
@@ -33,21 +35,28 @@ import {
   SEMANTIC_COLOR_COLLECTION, SEMANTIC_NUMBER_COLLECTION,
   LIGHT_MODE, DARK_MODE,
 } from "./vars-data";
+import { installTextStyles } from "./install-textstyles";
+import { buildButtonSet } from "./build-components";
 
-figma.showUI(__html__, { width: 400, height: 480, title: "SW Variables Installer" });
+figma.showUI(__html__, { width: 440, height: 600, title: "에스원 디자인시스템 설치" });
 
-figma.ui.onmessage = async (msg: { type: string }) => {
+interface InstallSelection {
+  foundation: boolean;
+  semantic: boolean;
+  textStyles: boolean;
+  components: boolean;
+}
+
+figma.ui.onmessage = async (msg: { type: string } & Partial<InstallSelection>) => {
   if (msg.type === "install") {
-    await runInstall();
+    await runInstall({
+      foundation: msg.foundation === true,
+      semantic: msg.semantic === true,
+      textStyles: msg.textStyles === true,
+      components: msg.components === true,
+    });
   } else if (msg.type === "cancel") {
     figma.closePlugin();
-  } else if (msg.type === "get-collection-names") {
-    figma.ui.postMessage({
-      type: "collection-names",
-      foundation: FOUNDATION_COLLECTION,
-      semanticColor: SEMANTIC_COLOR_COLLECTION,
-      semanticNumber: SEMANTIC_NUMBER_COLLECTION,
-    });
   }
 };
 
@@ -235,133 +244,240 @@ function setupSingleMode(collection: VariableCollection, modeName: string): stri
   return first.modeId;
 }
 
-async function runInstall() {
+/** 이미 설치된 컬렉션의 변수 맵을 이름 기준으로 불러온다 (선택 안 한 의존 항목 연결용). */
+async function loadExistingVarMap(
+  collectionName: string,
+  resolvedType: VariableResolvedDataType
+): Promise<Record<string, Variable>> {
+  const cols = await figma.variables.getLocalVariableCollectionsAsync();
+  const col = cols.find((c) => c.name === collectionName);
+  const map: Record<string, Variable> = {};
+  if (!col) return map;
+  const vars = await figma.variables.getLocalVariablesAsync(resolvedType);
+  for (const v of vars) {
+    if (v.variableCollectionId === col.id) map[v.name] = v;
+  }
+  return map;
+}
+
+interface FoundationResult {
+  colorMap: Record<string, Variable>;
+  numberMap: Record<string, Variable>;
+  removed: string[];
+  count: number;
+}
+
+/** Foundation 컬렉션(Color + Number) 설치 + prune. */
+async function installFoundation(): Promise<FoundationResult> {
+  post("progress", { step: "Foundation collection 준비 중…", pct: 3 });
+  const fc = await getOrCreateCollection(FOUNDATION_COLLECTION);
+  const fDefaultId = setupSingleMode(fc, "Default");
+
+  const colorMap: Record<string, Variable> = {};
+  const fcColorKeys = Object.keys(FOUNDATION_COLOR);
+  for (let i = 0; i < fcColorKeys.length; i++) {
+    const path = fcColorKeys[i];
+    const v = await getOrCreateVariable(path, fc, "COLOR");
+    v.setValueForMode(fDefaultId, hexToRgb(FOUNDATION_COLOR[path]));
+    v.scopes = colorScopes(path);
+    colorMap[path] = v;
+    if (i % 20 === 0) {
+      post("progress", { step: `Foundation Color: ${path}`, pct: 3 + Math.round((i / fcColorKeys.length) * 22) });
+    }
+  }
+  const removedColor = await pruneCollection(fc, new Set(fcColorKeys), "COLOR");
+
+  post("progress", { step: "Foundation Number 준비 중…", pct: 28 });
+  const numberMap: Record<string, Variable> = {};
+  const fcNumberKeys = Object.keys(FOUNDATION_NUMBER);
+  for (let i = 0; i < fcNumberKeys.length; i++) {
+    const path = fcNumberKeys[i];
+    const v = await getOrCreateVariable(path, fc, "FLOAT");
+    v.setValueForMode(fDefaultId, FOUNDATION_NUMBER[path]);
+    v.scopes = numberScopes(path);
+    numberMap[path] = v;
+    if (i % 10 === 0) {
+      post("progress", { step: `Foundation Number: ${path}`, pct: 28 + Math.round((i / fcNumberKeys.length) * 15) });
+    }
+  }
+  const removedNumber = await pruneCollection(fc, new Set(fcNumberKeys), "FLOAT");
+
+  return {
+    colorMap, numberMap,
+    removed: [...removedColor, ...removedNumber],
+    count: fcColorKeys.length + fcNumberKeys.length,
+  };
+}
+
+interface SemanticResult {
+  semanticColorMap: Record<string, Variable>;
+  scc: VariableCollection;
+  lightModeId: string;
+  darkModeId: string;
+  removed: string[];
+  count: number;
+}
+
+/** Semantic Color(2-mode) + Semantic Number 설치 + prune. Foundation 맵 필요(alias 해석). */
+async function installSemantic(
+  foundationColorMap: Record<string, Variable>,
+  foundationNumberMap: Record<string, Variable>
+): Promise<SemanticResult> {
+  post("progress", { step: "Semantic Color collection 준비 중…", pct: 50 });
+  const scc = await getOrCreateCollection(SEMANTIC_COLOR_COLLECTION);
+  const { lightId: sLightId, darkId: sDarkId } = setupLightDarkModes(scc);
+
+  const scColorKeys = Object.keys(SEMANTIC_COLOR);
+  const semanticColorMap: Record<string, Variable> = {};
+  for (let i = 0; i < scColorKeys.length; i++) {
+    const path = scColorKeys[i];
+    const entry = SEMANTIC_COLOR[path];
+    const v = await getOrCreateVariable(path, scc, "COLOR");
+    v.setValueForMode(sLightId, resolveColorRef(entry.light, foundationColorMap));
+    v.setValueForMode(sDarkId, resolveColorRef(entry.dark, foundationColorMap));
+    v.scopes = colorScopes(path);
+    semanticColorMap[path] = v;
+    if (i % 10 === 0) {
+      post("progress", { step: `Semantic Color: ${path}`, pct: 50 + Math.round((i / scColorKeys.length) * 22) });
+    }
+  }
+  const removedSemanticColor = await pruneCollection(scc, new Set(scColorKeys), "COLOR");
+
+  post("progress", { step: "Semantic Number collection 준비 중…", pct: 73 });
+  const scn = await getOrCreateCollection(SEMANTIC_NUMBER_COLLECTION);
+  const scnDefaultId = setupSingleMode(scn, "Default");
+  const scNumberKeys = Object.keys(SEMANTIC_NUMBER);
+  for (let i = 0; i < scNumberKeys.length; i++) {
+    const path = scNumberKeys[i];
+    const v = await getOrCreateVariable(path, scn, "FLOAT");
+    v.setValueForMode(scnDefaultId, resolveNumberRef(SEMANTIC_NUMBER[path], foundationNumberMap));
+    v.scopes = numberScopes(path);
+    if (i % 10 === 0) {
+      post("progress", { step: `Semantic Number: ${path}`, pct: 73 + Math.round((i / scNumberKeys.length) * 13) });
+    }
+  }
+  const removedSemanticNumber = await pruneCollection(scn, new Set(scNumberKeys), "FLOAT");
+
+  return {
+    semanticColorMap, scc, lightModeId: sLightId, darkModeId: sDarkId,
+    removed: [...removedSemanticColor, ...removedSemanticNumber],
+    count: scColorKeys.length + scNumberKeys.length,
+  };
+}
+
+/** 이미 설치된 Semantic Color 컬렉션 + 변수 맵 + Light 모드를 불러온다 (컴포넌트만 설치 시). */
+async function loadExistingSemantic(): Promise<{
+  semanticColorMap: Record<string, Variable>;
+  scc: VariableCollection;
+  lightModeId: string;
+  darkModeId: string;
+} | null> {
+  const cols = await figma.variables.getLocalVariableCollectionsAsync();
+  const scc = cols.find((c) => c.name === SEMANTIC_COLOR_COLLECTION);
+  if (!scc) return null;
+  const light = scc.modes.find((m) => m.name === LIGHT_MODE);
+  const dark = scc.modes.find((m) => m.name === DARK_MODE);
+  const lightModeId = light ? light.modeId : scc.modes[0].modeId;
+  const darkModeId = dark ? dark.modeId : lightModeId; // Dark 모드 없으면 Light 로 대체
+  const semanticColorMap = await loadExistingVarMap(SEMANTIC_COLOR_COLLECTION, "COLOR");
+  return { semanticColorMap, scc, lightModeId, darkModeId };
+}
+
+async function runInstall(sel: InstallSelection) {
   try {
-    post("progress", { step: "Foundation collection 준비 중…", pct: 3 });
+    if (!sel.foundation && !sel.semantic && !sel.textStyles && !sel.components) {
+      throw new Error("설치할 항목을 하나 이상 선택하세요.");
+    }
+    post("progress", { step: "준비 중…", pct: 2 });
 
-    // ── 1. Foundation collection (단일 Default 모드) ───────────────────────
-    const fc = await getOrCreateCollection(FOUNDATION_COLLECTION);
-    const fDefaultId = setupSingleMode(fc, "Default");
+    const removedAll: string[] = [];
+    let foundationCount = 0;
+    let semanticCount = 0;
+    let textStyleCount = 0;
+    let componentCount = 0;
 
-    // 1-A. Foundation COLOR
-    const foundationColorMap: Record<string, Variable> = {};
-    const fcColorKeys = Object.keys(FOUNDATION_COLOR);
+    // ── Foundation (또는 의존 항목 위해 기존 로드) ──
+    let foundationColorMap: Record<string, Variable> = {};
+    let foundationNumberMap: Record<string, Variable> = {};
+    if (sel.foundation) {
+      const r = await installFoundation();
+      foundationColorMap = r.colorMap;
+      foundationNumberMap = r.numberMap;
+      foundationCount = r.count;
+      removedAll.push(...r.removed);
+    } else if (sel.semantic || sel.components) {
+      foundationColorMap = await loadExistingVarMap(FOUNDATION_COLLECTION, "COLOR");
+      foundationNumberMap = await loadExistingVarMap(FOUNDATION_COLLECTION, "FLOAT");
+    }
 
-    for (let i = 0; i < fcColorKeys.length; i++) {
-      const path = fcColorKeys[i];
-      const hex  = FOUNDATION_COLOR[path];
-      const v = await getOrCreateVariable(path, fc, "COLOR");
-      v.setValueForMode(fDefaultId, hexToRgb(hex));
-      v.scopes = colorScopes(path);
-      foundationColorMap[path] = v;
-
-      if (i % 20 === 0) {
-        const pct = 3 + Math.round((i / fcColorKeys.length) * 25);
-        post("progress", { step: `Foundation Color: ${path}`, pct });
+    // ── Semantic (또는 컴포넌트 위해 기존 로드) ──
+    let semanticColorMap: Record<string, Variable> = {};
+    let scc: VariableCollection | null = null;
+    let lightModeId = "";
+    let darkModeId = "";
+    if (sel.semantic) {
+      if (Object.keys(foundationColorMap).length === 0) {
+        throw new Error("Semantic 설치에는 Foundation 이 필요합니다. Foundation 도 함께 선택하거나 먼저 설치하세요.");
+      }
+      const r = await installSemantic(foundationColorMap, foundationNumberMap);
+      semanticColorMap = r.semanticColorMap;
+      scc = r.scc;
+      lightModeId = r.lightModeId;
+      darkModeId = r.darkModeId;
+      semanticCount = r.count;
+      removedAll.push(...r.removed);
+    } else if (sel.components) {
+      const loaded = await loadExistingSemantic();
+      if (loaded) {
+        semanticColorMap = loaded.semanticColorMap;
+        scc = loaded.scc;
+        lightModeId = loaded.lightModeId;
+        darkModeId = loaded.darkModeId;
       }
     }
 
-    // 1-A 잔재 정리: 현재 FOUNDATION_COLOR 에 없는 옛 Foundation COLOR 제거
-    const removedFoundationColor = await pruneCollection(
-      fc, new Set(fcColorKeys), "COLOR"
-    );
-
-    post("progress", { step: "Foundation Number 준비 중…", pct: 28 });
-
-    // 1-B. Foundation NUMBER
-    const foundationNumberMap: Record<string, Variable> = {};
-    const fcNumberKeys = Object.keys(FOUNDATION_NUMBER);
-
-    for (let i = 0; i < fcNumberKeys.length; i++) {
-      const path  = fcNumberKeys[i];
-      const value = FOUNDATION_NUMBER[path];
-      const v = await getOrCreateVariable(path, fc, "FLOAT");
-      v.setValueForMode(fDefaultId, value);
-      v.scopes = numberScopes(path);
-      foundationNumberMap[path] = v;
-
-      if (i % 10 === 0) {
-        const pct = 28 + Math.round((i / fcNumberKeys.length) * 17);
-        post("progress", { step: `Foundation Number: ${path}`, pct });
-      }
+    // ── Text Styles (또는 컴포넌트 위해 동반 설치) ──
+    let textStyleMap: Record<string, TextStyle> = {};
+    if (sel.textStyles || sel.components) {
+      post("progress", { step: "Text Styles 설치 중…", pct: 88 });
+      textStyleMap = await installTextStyles((step, pct) => post("progress", { step, pct }), 88, 94);
+      textStyleCount = Object.keys(textStyleMap).length;
     }
 
-    // 1-B 잔재 정리: 현재 FOUNDATION_NUMBER 에 없는 옛 Foundation FLOAT 제거
-    const removedFoundationNumber = await pruneCollection(
-      fc, new Set(fcNumberKeys), "FLOAT"
-    );
-
-    post("progress", { step: "Semantic Color collection 준비 중…", pct: 50 });
-
-    // ── 2. Semantic Color collection (Light + Dark 2-mode) ─────────────────
-    const scc = await getOrCreateCollection(SEMANTIC_COLOR_COLLECTION);
-    const { lightId: sLightId, darkId: sDarkId } = setupLightDarkModes(scc);
-
-    const scColorKeys = Object.keys(SEMANTIC_COLOR);
-
-    for (let i = 0; i < scColorKeys.length; i++) {
-      const path  = scColorKeys[i];
-      const entry = SEMANTIC_COLOR[path];
-      const v = await getOrCreateVariable(path, scc, "COLOR");
-      v.setValueForMode(sLightId, resolveColorRef(entry.light, foundationColorMap));
-      v.setValueForMode(sDarkId,  resolveColorRef(entry.dark,  foundationColorMap));
-      v.scopes = colorScopes(path);
-
-      if (i % 10 === 0) {
-        const pct = 50 + Math.round((i / scColorKeys.length) * 25);
-        post("progress", { step: `Semantic Color: ${path}`, pct });
+    // ── Component Set (Button primary 16-variant) ──
+    if (sel.components) {
+      if (!scc || !lightModeId) {
+        throw new Error("컴포넌트 세트 생성에는 Semantic Color V2 가 필요합니다. Semantic 도 함께 선택하거나 먼저 설치하세요.");
       }
-    }
-
-    // 2 잔재 정리: 현재 SEMANTIC_COLOR 에 없는 옛 역할기반 변수 제거
-    //   (옛 plugin 이 남긴 color/bg/*, color/surface/*, color/action/*, color/status/* 등)
-    //   유지 변수는 위 루프에서 getOrCreate 로 재사용되어 바인딩 보존됨.
-    const removedSemanticColor = await pruneCollection(
-      scc, new Set(scColorKeys), "COLOR"
-    );
-
-    post("progress", { step: "Semantic Number collection 준비 중…", pct: 75 });
-
-    // ── 3. Semantic Number collection (단일 Default 모드) ──────────────────
-    const scn = await getOrCreateCollection(SEMANTIC_NUMBER_COLLECTION);
-    const scnDefaultId = setupSingleMode(scn, "Default");
-
-    const scNumberKeys = Object.keys(SEMANTIC_NUMBER);
-
-    for (let i = 0; i < scNumberKeys.length; i++) {
-      const path = scNumberKeys[i];
-      const ref  = SEMANTIC_NUMBER[path];
-      const v = await getOrCreateVariable(path, scn, "FLOAT");
-      const value = resolveNumberRef(ref, foundationNumberMap);
-      v.setValueForMode(scnDefaultId, value);
-      v.scopes = numberScopes(path);
-
-      if (i % 10 === 0) {
-        const pct = 75 + Math.round((i / scNumberKeys.length) * 20);
-        post("progress", { step: `Semantic Number: ${path}`, pct });
+      if (Object.keys(foundationNumberMap).length === 0) {
+        throw new Error("컴포넌트 세트 생성에는 Foundation 이 필요합니다. Foundation 도 함께 선택하거나 먼저 설치하세요.");
       }
+      post("progress", { step: "Button 컴포넌트 생성 중…", pct: 94 });
+      const set = await buildButtonSet(
+        {
+          semanticColor: semanticColorMap,
+          foundationNumber: foundationNumberMap,
+          textStyles: textStyleMap,
+          semanticColorCollectionId: scc.id,
+          semanticLightModeId: lightModeId,
+          semanticDarkModeId: darkModeId,
+        },
+        (step, pct) => post("progress", { step, pct }), 94, 100
+      );
+      componentCount = set.children.length;
+      figma.currentPage.selection = [set];
+      // 뷰포트 줌은 buildButtonPrimarySet 내부에서 [set, spec frame] 기준으로 처리됨
     }
-
-    // 3 잔재 정리: 현재 SEMANTIC_NUMBER 에 없는 옛 Semantic FLOAT 제거
-    const removedSemanticNumber = await pruneCollection(
-      scn, new Set(scNumberKeys), "FLOAT"
-    );
-
-    const removedAll = [
-      ...removedFoundationColor,
-      ...removedFoundationNumber,
-      ...removedSemanticColor,
-      ...removedSemanticNumber,
-    ];
 
     post("progress", { step: "완료", pct: 100 });
     post("done", {
-      foundationCount: fcColorKeys.length + fcNumberKeys.length,
-      semanticCount: scColorKeys.length + scNumberKeys.length,
+      foundationCount,
+      semanticCount,
+      textStyleCount,
+      componentCount,
       removedCount: removedAll.length,
       removedNames: removedAll,
     });
-
   } catch (err: unknown) {
     const msg = err instanceof Error ? err.message : String(err);
     post("error", { message: msg });

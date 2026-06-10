@@ -1,0 +1,3690 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <script>!function(){var z=localStorage.getItem("sw-ds-zoom");if(z)document.documentElement.style.zoom=z+"%"}();</script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Components New (Variables 재구성) · SW UX GUIDE V2.4</title>
+  <link rel="stylesheet" href="../assets/css/style.css">
+  <link rel="stylesheet" href="../assets/css/tokens.css">
+  <style>
+    /* =====================================================
+       COMPONENT TOKENS
+       (semantic tokens loaded via tokens.css link)
+    ===================================================== */
+    :root {
+      /* Button — Figma 1459:16264 기준. Variables(color/button/*)를 CSS에서 직접 사용 (Phase 2, 2026-06-09) */
+      /* Input — form-control 2-layer: --input-* → --color-form-control-* → semantic */
+      /* (--color-form-control-* and --color-text-state-* defined in tokens.css) */
+      --input-default-bg:       var(--color-form-control-bg-default);
+      --input-hover-bg:         var(--color-form-control-bg-hover);
+      --input-disabled-bg:      var(--color-form-control-bg-disabled);
+      --input-default-border:   var(--color-form-control-border-default);
+      --input-focus-border:     var(--color-form-control-border-selected);
+      --input-error-border:     var(--color-form-control-border-error);
+      --input-correct-border:   var(--color-form-control-border-correct);
+      --input-disabled-border:  var(--color-form-control-border-disabled);
+      --input-placeholder-text: var(--color-form-control-text-placeholder);
+      --input-disabled-text:    var(--color-form-control-text-disabled);
+      --input-helper-text:      var(--color-text-state-caption);   /* Figma: 안내 메세지 = text/state/caption */
+      --input-correct-text:     var(--color-text-state-correct);   /* Figma: 확인 메세지 = text/state/correct */
+      --input-error-text:       var(--color-text-state-caution);   /* Figma: 오류 메세지 = text/state/caution */
+      /* Dropdown — form-control 경유 (tokens.css 동기화) */
+      --dropdown-trigger-default-bg:      var(--color-form-control-bg-default);
+      --dropdown-trigger-hover-bg:        var(--color-form-control-bg-hover);
+      --dropdown-trigger-disabled-bg:     var(--color-form-control-bg-disabled);
+      --dropdown-trigger-default-border:  var(--color-form-control-border-default);
+      --dropdown-trigger-hover-border:    var(--color-form-control-border-hover);
+      --dropdown-trigger-open-border:     var(--color-border-focus);
+      --dropdown-trigger-disabled-border: var(--color-form-control-border-disabled);
+      --dropdown-trigger-default-text:      var(--color-text-secondary);
+      --dropdown-trigger-placeholder-text: var(--color-text-placeholder);
+      --dropdown-trigger-selected-text:    var(--color-text-primary);
+      --dropdown-trigger-disabled-text:    var(--color-text-disabled);
+      --dropdown-list-bg:                  var(--color-surface-default);
+      --dropdown-list-border:              var(--color-border-default);
+      --dropdown-option-hover-bg:          var(--color-bg-subtle);
+      --dropdown-option-selected-text:     var(--color-action-primary-default);
+      /* Checkbox — Figma 1459:16409 (control/* Variables 직접 참조)
+         변종 5: default / hover(Variant5) / checked / disabled / dis+checked */
+      --checkbox-default-bg:          var(--color-control-bg-default);
+      --checkbox-hover-bg:            var(--color-control-bg-hover);        /* Figma Variant5: bg=control/bg/hover */
+      --checkbox-checked-bg:          var(--color-control-bg-selected);
+      --checkbox-disabled-bg:         var(--color-control-bg-disabled);
+      --checkbox-default-border:      var(--color-control-border-default);
+      --checkbox-hover-border:        var(--color-control-border-default);  /* Figma hover: border=default 유지 */
+      --checkbox-checked-border:      var(--color-control-border-selected);
+      --checkbox-disabled-border:     var(--color-control-border-disabled);
+      --checkbox-check-icon:          var(--color-control-indicator-selected);
+      --checkbox-disabled-check-icon: var(--color-control-indicator-disabled);
+      /* Radio */
+      --radio-default-bg:      var(--color-form-control-bg-default);
+      --radio-disabled-bg:     var(--color-bg-subtle);
+      --radio-default-border:  var(--color-control-border-default);
+      --radio-hover-border:    var(--color-control-border-hover);
+      --radio-selected-border: var(--color-control-border-selected);
+      --radio-disabled-border: var(--color-control-border-disabled);
+      --radio-selected-dot:    var(--color-action-primary-default);
+      --radio-disabled-dot:    var(--color-border-strong);
+      /* Toggle */
+      --toggle-on-bg:       var(--color-action-primary-default);
+      --toggle-off-bg:      var(--color-text-placeholder);
+      --toggle-disabled-bg: var(--color-bg-muted);
+      --toggle-knob:        var(--color-action-primary-text);
+      /* Chip — Line type */
+      --chip-line-default-bg:        var(--color-surface-default);
+      --chip-line-default-border:    var(--color-border-strong); /* gray-300=#C4C4C4 — default(#D9D9D9)보다 선명 */
+      --chip-line-default-text:      var(--color-text-caption);
+      --chip-line-hover-bg:          var(--color-bg-subtle);
+      --chip-line-selected-bg:       var(--color-surface-default);
+      --chip-line-selected-border:   var(--color-action-primary-default);
+      --chip-line-selected-text:     var(--color-action-primary-default);
+      --chip-line-disabled-bg:       var(--color-bg-subtle);
+      --chip-line-disabled-border:   var(--color-border-disabled);
+      --chip-line-disabled-text:     var(--color-text-disabled);
+      /* Chip — Solid type (border는 selected만 정의, default/hover/disabled는 transparent) */
+      --chip-solid-default-bg:       var(--color-bg-subtle);
+      --chip-solid-default-text:     var(--color-text-caption);
+      --chip-solid-selected-bg:      var(--color-action-primary-default);
+      --chip-solid-selected-border:  var(--color-action-primary-default);
+      --chip-solid-selected-text:    var(--color-action-primary-text);
+      --chip-solid-disabled-bg:      var(--color-bg-subtle);
+      --chip-solid-disabled-text:    var(--color-text-disabled);
+      /* Table */
+      --table-border-light:     var(--color-border-subtle);
+      --table-border-strong:    var(--color-border-emphasis);
+      --table-header-bg:        var(--color-bg-default);
+      --table-header-text:      var(--color-text-secondary);
+      --table-header-border:    var(--table-border-light);
+      --table-row-default-bg:   var(--color-surface-default);
+      --table-row-hover-bg:     var(--color-bg-subtle);        /* #F5F5F5 — gray-50 */
+      --table-row-selected-bg:  var(--color-bg-selected);
+      --table-cell-border:      var(--table-border-light);
+      --table-cell-text:        var(--color-text-secondary);
+      /* form-control label (TimePicker select 라벨) */
+      --color-form-control-label-default:  var(--color-text-secondary);
+      --color-form-control-label-disabled: var(--color-text-disabled);
+      --color-form-control-icon-default:   var(--color-gray-800);
+      /* Pagination */
+      --pagination-control-bg:              var(--color-surface-default);
+      --pagination-control-border:          var(--color-border-default);
+      --pagination-control-hover-bg:        var(--color-bg-subtle);
+      --pagination-arrow-disabled-bg:       var(--color-bg-subtle);
+      --pagination-arrow-disabled-color:    var(--color-icon-muted);
+      --pagination-number-text:             var(--color-gray-400);
+      --pagination-number-text-selected:    var(--color-text-secondary);
+    }
+
+    /* =====================================================
+       PAGE STYLES
+    ===================================================== */
+    .page-content { padding-top: 20px; max-width: none; }
+
+    .controls-sticky {
+      background: #fff;
+      border-top: 1px solid #e5e7eb;
+      padding: 8px 0 10px;
+    }
+
+    .comp-section { display: none; }
+    .comp-section.is-active { display: block; margin-bottom: 56px; }
+    .comp-section-header {
+      display: flex; align-items: center; gap: 10px;
+      margin-bottom: 20px; padding-bottom: 14px;
+      border-bottom: 2px solid #f3f4f6;
+    }
+    .comp-section-title { font-size: 18px; font-weight: 700; color: #111827; letter-spacing: -0.02em; }
+    .comp-badge {
+      font-size: 10px; font-weight: 700; padding: 2px 8px;
+      border-radius: 10px; background: #f3f4f6; color: #6b7280;
+    }
+    .comp-badge-blue { background: #eff6ff; color: #1d4ed8; }
+
+    .variant-block { margin-bottom: 24px; }
+    .variant-label {
+      font-size: 11px; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 0.08em; color: #9ca3af; margin-bottom: 10px;
+    }
+    .variant-group { margin-top: 32px; padding-top: 24px; border-top: 2px solid #e5e7eb; }
+    .variant-group-title { font-size: 15px; font-weight: 700; color: #111827; margin: 0 0 4px; }
+    .variant-group-desc { font-size: 12px; color: #6b7280; margin: 0 0 20px; }
+    .variant-group-desc code { font-family: monospace; background: #f3f4f6; padding: 1px 4px; border-radius: 3px; font-size: 11px; }
+    /* HD 미결 노트 */
+    .hd-note-block { display: flex; flex-direction: column; gap: 8px; }
+    .hd-note-item { display: flex; align-items: baseline; gap: 10px; padding: 10px 14px; background: #fffbeb; border: 1px solid #fcd34d; border-radius: 6px; font-size: 12px; line-height: 1.5; }
+    .hd-note-tag { flex-shrink: 0; font-weight: 700; color: #92400e; font-size: 11px; background: #fde68a; padding: 2px 7px; border-radius: 4px; }
+    .hd-note-text { color: #78350f; }
+    .hd-note-text code { font-family: monospace; background: #fef3c7; padding: 1px 4px; border-radius: 3px; font-size: 11px; }
+    /* Token 미정 badge */
+    .token-badge-pending { display: inline-block; font-size: 10px; font-weight: 700; color: #92400e; background: #fde68a; padding: 1px 5px; border-radius: 3px; margin-left: 6px; vertical-align: middle; cursor: help; }
+    .token-row-candidate td { background: #fffef5; }
+
+    .preview-area {
+      background: var(--color-bg-default);
+      border: 1px solid #e5e7eb;
+      border-radius: 12px;
+      padding: 24px 32px;
+      transition: background 0.3s;
+      overflow-x: auto;
+      /* controls-sticky(z-index:9)·page-header(z-index:10) 아래에 드롭다운이 올라오지 않도록
+         스태킹 컨텍스트를 preview-area 안에 격리한다. 내부 z-index 값은 이 경계 밖으로 경쟁하지 않음 */
+      isolation: isolate;
+    }
+
+    .state-strip { display: flex; gap: 20px; flex-wrap: wrap; align-items: flex-start; }
+    .state-item { display: flex; flex-direction: column; align-items: center; gap: 10px; }
+    .state-label {
+      font-size: 10px; font-weight: 600; letter-spacing: 0.06em;
+      text-transform: uppercase; color: #9ca3af; white-space: nowrap;
+    }
+    .state-label.sl-live::before {
+      content: '●'; color: #10b981; margin-right: 3px;
+      font-size: 7px; vertical-align: middle;
+    }
+
+    .size-strip { display: flex; gap: 16px; flex-wrap: wrap; align-items: flex-end; }
+    .size-item { display: flex; flex-direction: column; align-items: center; gap: 8px; }
+
+    /* Code block */
+    .code-block {
+      margin-top: 14px; border: 1px solid #e5e7eb;
+      border-radius: 10px; overflow: hidden;
+    }
+    .code-tabs {
+      display: flex; background: #f9fafb;
+      border-bottom: 1px solid #e5e7eb; align-items: center;
+    }
+    .code-tab {
+      padding: 8px 16px; font-size: 11px; font-weight: 600;
+      color: #9ca3af; border: none; background: transparent;
+      cursor: pointer; border-bottom: 2px solid transparent; margin-bottom: -1px;
+    }
+    .code-tab.active { color: #1d4ed8; border-bottom-color: #1d4ed8; background: #fff; }
+    .code-copy-btn {
+      margin-left: auto; margin-right: 10px;
+      font-size: 10px; font-weight: 600; padding: 4px 10px;
+      border-radius: 5px; border: 1px solid #e5e7eb;
+      background: #f9fafb; color: #6b7280; cursor: pointer;
+    }
+    .code-copy-btn:hover { background: #fff; color: #374151; }
+    .code-pane { display: none; background: #fff; }
+    .code-pane.active { display: block; }
+    .code-pane pre {
+      margin: 0; padding: 16px;
+      font-family: 'SF Mono','Fira Code','Consolas',monospace;
+      font-size: 11.5px; line-height: 1.7; color: #374151;
+      background: #fff; overflow-x: auto; white-space: pre;
+    }
+    .c-tag { color: #be185d; }
+    .c-attr { color: #0284c7; }
+    .c-str { color: #15803d; }
+    .c-prop { color: #7c3aed; }
+    .c-val { color: #c2410c; }
+    .c-cmt { color: #9ca3af; font-style: italic; }
+    .c-kw  { color: #7c3aed; }
+    .c-fn  { color: #0284c7; }
+    .c-num { color: #c2410c; }
+
+    /* Theme bar */
+    .theme-bar {
+      display: flex; align-items: center; gap: 12px;
+      margin-bottom: 12px; padding: 12px 16px;
+      background: rgba(255,255,255,0.94); border: 1px solid #e5e7eb; border-radius: 12px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+    }
+    .theme-bar-label { font-size: 12px; color: #6b7280; font-weight: 500; }
+    .theme-toggle { display: flex; background: #f3f4f6; border-radius: 8px; padding: 3px; gap: 2px; }
+    .theme-btn {
+      padding: 5px 16px; font-size: 12px; font-weight: 500;
+      border-radius: 6px; border: none; background: transparent; color: #6b7280;
+      transition: all 0.15s; cursor: pointer;
+    }
+    .theme-btn.active { background: #fff; color: #111827; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+    .theme-hint { font-size: 11px; color: #9ca3af; }
+    .theme-bar-divider { width: 1px; height: 20px; background: #e5e7eb; flex-shrink: 0; }
+    .view-pc .platform-section-mobile { display: none; }
+    .view-mobile .platform-section-pc { display: none; }
+
+    /* 제목 영역 — 스크롤 시 사라짐 (sticky 해제) */
+    .page-header { position: static !important; border-bottom: none; padding-bottom: 16px; }
+
+    /* comp-sticky-bar: 컴포넌트 탭 + 테마/플랫폼 툴바 — 스크롤 시 최상단 고정 */
+    .comp-sticky-bar {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      background: #fff;
+      border-top: 1px solid #e5e7eb;
+      border-bottom: 1px solid #e5e7eb;
+      padding: 0 40px;
+    }
+
+    /* Component filter */
+    .component-filter {
+      margin: 0;
+      padding: 0;
+      border-top: none;
+    }
+
+    /* Category nav — tab underline (level 1) */
+    .category-nav {
+      display: flex; gap: 0; flex-wrap: wrap;
+      border-bottom: 1px solid #e5e7eb;
+    }
+    .category-btn {
+      padding: 10px 16px; font-size: 13px; font-weight: 500;
+      border: none; border-bottom: 2px solid transparent;
+      background: transparent; color: #9ca3af; cursor: pointer;
+      transition: color 0.15s, border-color 0.15s; margin-bottom: -1px;
+    }
+    .category-btn:hover { color: #374151; }
+    .category-btn.is-active { color: #111827; border-bottom-color: #1d4ed8; }
+
+    /* Comp nav — pills, level 2 */
+    .comp-nav { display: flex; gap: 6px; flex-wrap: wrap; padding: 10px 0; }
+    .comp-nav-btn {
+      padding: 5px 12px; font-size: 12px; font-weight: 500;
+      border-radius: 6px; border: 1px solid #e5e7eb;
+      background: #fff; color: #6b7280; cursor: pointer; transition: all 0.15s;
+    }
+    .comp-nav-btn:hover { background: #fff; border-color: #d1d5db; color: #374151; }
+    .comp-nav-btn.is-active { background: #1d4ed8; color: #fff; border-color: #1d4ed8; }
+
+    /* =====================================================
+       DESIGN SYSTEM COMPONENTS
+    ===================================================== */
+
+    /* Button */
+    .s1-btn {
+      display: inline-flex; align-items: center; justify-content: center;
+      gap: 2px; height: 34px; padding: 0 8px;
+      font-size: 14px; font-weight: 500; border-radius: 4px;
+      border: 1px solid transparent; cursor: pointer;
+      transition: background 0.15s, border-color 0.15s;
+      outline: none; white-space: nowrap; font-family: inherit; line-height: 1;
+      letter-spacing: -0.28px;
+    }
+    .s1-btn-sm { height: 28px; padding: 0 8px; font-size: 14px; border-radius: 4px; }
+    .s1-btn-lg { height: 44px; padding: 0 16px; font-size: 14px; border-radius: 4px; }
+    .s1-btn-mobile { height: 48px; padding: 0 16px; font-size: 16px; border-radius: 4px; letter-spacing: -0.32px; }
+
+    /* Variant별 bg/border/label = Figma color/button/* 직접 사용. pressed = hover, disabled = 공통 */
+    .s1-btn-primary {
+      background: var(--color-button-bg-primary--default);
+      border-color: var(--color-button-border-primary--default);
+      color: var(--color-button-label-primary--default);
+    }
+    .s1-btn-primary:hover, .s1-btn-primary.is-hover, .s1-btn-primary.is-pressed {
+      background: var(--color-button-bg-primary--hover);
+      border-color: var(--color-button-border-primary--hover);
+      color: var(--color-button-label-primary--hover);
+    }
+    .s1-btn-primary.is-disabled, .s1-btn-primary:disabled {
+      background: var(--color-button-bg-disabled);
+      border-color: var(--color-button-border-disabled);
+      color: var(--color-button-label-disabled);
+      cursor: not-allowed; pointer-events: none;
+    }
+    .s1-btn-secondary {
+      background: var(--color-button-bg-secondary--default);
+      border-color: var(--color-button-border-secondary--default);
+      color: var(--color-button-label-secondary--default);
+    }
+    .s1-btn-secondary:hover, .s1-btn-secondary.is-hover, .s1-btn-secondary.is-pressed {
+      background: var(--color-button-bg-secondary--hover);
+      border-color: var(--color-button-border-secondary--hover);
+      color: var(--color-button-label-secondary--hover);
+    }
+    .s1-btn-secondary.is-disabled, .s1-btn-secondary:disabled {
+      background: var(--color-button-bg-disabled);
+      border-color: var(--color-button-border-disabled);
+      color: var(--color-button-label-disabled);
+      cursor: not-allowed; pointer-events: none;
+    }
+    .s1-btn-blue-line {
+      background: var(--color-button-bg-blue-line--default);
+      border-color: var(--color-button-border-blue-line--default);
+      color: var(--color-button-label-blue-line--default);
+    }
+    .s1-btn-blue-line:hover, .s1-btn-blue-line.is-hover, .s1-btn-blue-line.is-pressed {
+      background: var(--color-button-bg-blue-line--hover);
+      border-color: var(--color-button-border-blue-line--hover);
+      color: var(--color-button-label-blue-line--hover);
+    }
+    .s1-btn-blue-line.is-disabled, .s1-btn-blue-line:disabled {
+      background: var(--color-button-bg-disabled);
+      border-color: var(--color-button-border-disabled);
+      color: var(--color-button-label-disabled);
+      cursor: not-allowed; pointer-events: none;
+    }
+
+    /* Button: PC/Mobile matrix layout */
+    .platform-section + .platform-section { margin-top: 24px; }
+    .platform-header {
+      font-size: 11px; font-weight: 700; color: #6b7280;
+      margin-bottom: 12px; display: flex; align-items: center; gap: 6px;
+      text-transform: uppercase; letter-spacing: 0.06em;
+    }
+    .platform-dot { width: 6px; height: 6px; border-radius: 50%; display: inline-block; flex-shrink: 0; }
+    .platform-dot.pc { background: #3b82f6; }
+    .platform-dot.mobile { background: #8b5cf6; }
+    .state-size-matrix {
+      display: grid;
+      grid-template-columns: 100px 200px repeat(3, minmax(110px, 1fr));
+      column-gap: 10px;
+      row-gap: 14px;
+      align-items: start;
+    }
+    @media (max-width: 1024px) {
+      .state-size-matrix {
+        grid-template-columns: 80px 180px repeat(3, minmax(100px, 1fr));
+        column-gap: 8px;
+      }
+    }
+    .matrix-col-header {
+      font-size: 10px; font-weight: 600; color: #9ca3af;
+      text-transform: uppercase; letter-spacing: 0.05em; text-align: center;
+    }
+    .matrix-col-header-action {
+      font-size: 10px; font-weight: 700; color: #16a34a;
+      text-transform: uppercase; letter-spacing: 0.05em; text-align: center;
+      padding-right: 32px;
+    }
+    .matrix-row-label {
+      font-size: 10px; font-weight: 600; color: #9ca3af;
+      text-align: left; justify-self: start; line-height: 1.4;
+    }
+    .matrix-row-label span { display: block; font-weight: 400; color: #c4c4c4; font-size: 9px; }
+    .matrix-cell { display: flex; justify-content: center; align-items: center; }
+    .state-size-matrix .s1-btn { width: 60px; }
+    .state-size-matrix .s1-btn-lg { width: 90px; }
+    .state-size-matrix .s1-btn-mobile { width: 90px; }
+    .is-preview { pointer-events: none; cursor: default; }
+    /* ACTION cell */
+    .action-cell { flex-direction: column; align-items: center; gap: 0; padding-right: 32px; }
+    .action-test-controls {
+      margin-top: 8px;
+      display: flex; gap: 6px; align-items: center;
+      justify-content: center; flex-wrap: wrap;
+      font-size: 11px; color: #8b95a1;
+    }
+    .action-mini-toggle {
+      height: 22px; padding: 0 8px;
+      border-radius: 5px; border: 1px solid #d9dfe8;
+      background: #fff; font-size: 11px; line-height: 1;
+      cursor: pointer; white-space: nowrap; color: #374151;
+    }
+    .action-mini-toggle:hover { background: #f3f4f6; }
+    .action-mini-toggle.is-on { background: #fee2e2; color: #991b1b; border-color: #fca5a5; }
+    [data-theme="dark"] .action-mini-toggle {
+      background: #2E2F38; border-color: rgba(255,255,255,0.12); color: #B8BABF;
+    }
+    [data-theme="dark"] .action-mini-toggle:hover { background: #35363F; }
+    [data-theme="dark"] .action-mini-toggle.is-on { background: #3D1515; color: #F06070; border-color: #F06070; }
+    .action-click-count { font-size: 11px; color: #9ca3af; font-variant-numeric: tabular-nums; }
+    .token-variant-header { background: #f0f9ff !important; }
+    .token-variant-label {
+      display: inline-block; font-size: 10px; font-weight: 700;
+      padding: 2px 7px; border-radius: 4px; background: #dbeafe; color: #1d4ed8; width: fit-content;
+    }
+
+    /* ─ General component state matrix ─ */
+    .comp-state-matrix {
+      display: grid;
+      column-gap: 10px;
+      row-gap: 14px;
+      align-items: start;
+    }
+    /* 행 레이블이 있는 경우(Chip, Input) */
+    .comp-row-label {
+      font-size: 10px; font-weight: 600; color: #9ca3af;
+      text-align: left; justify-self: start; line-height: 1.4;
+      min-width: 0; overflow-wrap: break-word; white-space: normal;
+    }
+    .comp-state-cell {
+      display: flex; justify-content: center; align-items: flex-start;
+    }
+    /* disabled 상태 셀: pointer-events:none 버튼 위에서도 not-allowed 커서 표시 */
+    .comp-state-cell:has(.is-disabled),
+    .comp-state-cell:has(:disabled) { cursor: not-allowed; }
+    .comp-action-cell {
+      display: flex; flex-direction: column; align-items: center;
+      padding-right: 32px;
+    }
+    @media (max-width: 1024px) {
+      .comp-state-matrix {
+        column-gap: 8px;
+      }
+    }
+
+    /* Checkbox */
+    .s1-checkbox {
+      display: inline-flex; align-items: center; gap: 8px;
+      cursor: pointer; user-select: none;
+    }
+    .s1-checkbox-box {
+      width: 18px; height: 18px; border-radius: 2px;
+      border: 1px solid var(--checkbox-default-border);
+      background: var(--checkbox-default-bg);
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0; transition: all 0.15s;
+    }
+    .s1-checkbox.is-checked .s1-checkbox-box {
+      background: var(--checkbox-checked-bg);
+      border-color: var(--checkbox-checked-border);
+    }
+    .s1-checkbox.is-disabled .s1-checkbox-box {
+      background: var(--checkbox-disabled-bg);
+      border-color: var(--checkbox-disabled-border);
+    }
+    .s1-checkbox.is-checked.is-disabled .s1-checkbox-box {
+      background: var(--checkbox-disabled-bg);
+      border-color: var(--checkbox-disabled-border);
+      color: var(--checkbox-disabled-check-icon);
+    }
+    /* Hover (Figma Variant5): unchecked·enabled에서 bg만 hover로, border는 default 유지 */
+    .s1-checkbox:not(.is-disabled):not(.is-checked):hover .s1-checkbox-box,
+    .s1-checkbox.is-hover:not(.is-disabled):not(.is-checked) .s1-checkbox-box {
+      background: var(--checkbox-hover-bg);
+      border-color: var(--checkbox-hover-border);
+    }
+
+    .s1-checkbox.is-disabled { cursor: not-allowed; }
+    .s1-checkbox-label { font-size: 14px; color: var(--color-control-label-default); }
+    .s1-checkbox.is-disabled .s1-checkbox-label { color: var(--color-control-label-disabled); }
+    .s1-checkbox-box { color: var(--checkbox-check-icon); }
+    .ds-chk-icon { display: none; }
+    .s1-checkbox.is-checked .ds-chk-icon { display: block; }
+    /* Checkbox grid layout */
+    .checkbox-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0;
+      align-items: center;
+    }
+    .checkbox-grid-header {
+      font-size: 11px; color: var(--color-text-caption);
+      text-align: center; padding: 0 0 12px; font-weight: 500;
+    }
+    .checkbox-grid-cell {
+      display: flex; justify-content: center; align-items: center;
+      padding: 12px 0;
+    }
+    .chk-row-hidden { display: none; }
+    .chk-label-toggle {
+      display: flex; background: #f3f4f6; border-radius: 8px; padding: 3px; gap: 2px;
+      width: fit-content; margin-bottom: 12px;
+    }
+    .chk-label-btn {
+      padding: 4px 14px; font-size: 12px; font-weight: 500;
+      border-radius: 6px; border: none; background: transparent; color: #6b7280;
+      transition: all 0.15s; cursor: pointer;
+    }
+    .chk-label-btn.active { background: #fff; color: #111827; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+
+    /* Radio */
+    .s1-radio {
+      display: inline-flex; align-items: center; gap: 8px;
+      cursor: pointer; user-select: none;
+    }
+    .s1-radio-circle {
+      width: 18px; height: 18px; border-radius: 50%;
+      border: 1px solid var(--radio-default-border);
+      background: var(--radio-default-bg);
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+    .s1-radio-dot {
+      width: 10px; height: 10px; border-radius: 50%;
+      background: var(--radio-selected-dot); opacity: 0; transition: opacity 0.15s;
+    }
+
+    .s1-radio.is-selected .s1-radio-circle { border-color: var(--radio-selected-border); }
+    .s1-radio.is-selected .s1-radio-dot { opacity: 1; }
+    .s1-radio.is-disabled .s1-radio-circle {
+      background: var(--radio-disabled-bg);
+      border-color: var(--radio-disabled-border);
+    }
+    .s1-radio.is-disabled.is-selected .s1-radio-dot { background: var(--radio-disabled-dot); }
+    .s1-radio.is-disabled { cursor: not-allowed; }
+    .s1-radio-label { font-size: 14px; color: var(--color-text-secondary); }
+    .s1-radio.is-disabled .s1-radio-label { color: var(--color-text-disabled); }
+
+    /* Toggle */
+    .s1-toggle {
+      display: inline-flex; align-items: center; gap: 8px;
+      cursor: pointer; user-select: none;
+    }
+    .s1-toggle-track {
+      width: 40px; height: 20px; border-radius: 999px;
+      background: var(--toggle-off-bg); position: relative;
+      transition: background 0.2s; flex-shrink: 0;
+    }
+    .s1-toggle-knob {
+      width: 16px; height: 16px; border-radius: 50%;
+      background: var(--toggle-knob); position: absolute;
+      top: 2px; left: 2px; transition: left 0.2s;
+    }
+    .s1-toggle.is-on .s1-toggle-track { background: var(--toggle-on-bg); }
+    .s1-toggle.is-on .s1-toggle-knob { left: 22px; }
+    .s1-toggle.is-disabled { cursor: not-allowed; }
+    .s1-toggle.is-disabled .s1-toggle-track { background: var(--toggle-disabled-bg); }
+    .s1-toggle-label { font-size: 14px; color: var(--color-text-secondary); }
+    .s1-toggle.is-disabled .s1-toggle-label { color: var(--color-text-disabled); }
+
+    /* Chip — Line (default) */
+    .s1-chip {
+      display: inline-flex; align-items: center; gap: 4px;
+      height: var(--sizing-chip-height-lg); padding: 0 16px; border-radius: 999px;
+      border: 1px solid var(--chip-line-default-border);
+      background: var(--chip-line-default-bg); color: var(--chip-line-default-text);
+      font-size: 14px; font-weight: 400; cursor: pointer;
+      transition: all 0.15s; white-space: nowrap; font-family: inherit;
+    }
+    /* Chip — Size modifiers */
+    .s1-chip--sm     { height: var(--sizing-chip-height-sm); padding: 0 16px; font-size: 12px; }
+    .s1-chip--mobile { height: var(--sizing-chip-height-md); padding: 0 12px; font-size: 14px; }
+    .s1-chip.is-selected {
+      background: var(--chip-line-selected-bg);
+      border-color: var(--chip-line-selected-border); color: var(--chip-line-selected-text);
+    }
+    .s1-chip.is-disabled {
+      background: var(--chip-line-disabled-bg);
+      border-color: var(--chip-line-disabled-border); color: var(--chip-line-disabled-text);
+      cursor: not-allowed; pointer-events: none;
+    }
+    /* Chip — hover (not preview, not disabled) */
+    .s1-chip:not(.is-disabled):not(.is-preview):not(.s1-chip--solid):not(.is-selected):hover,
+    .s1-chip.is-hover:not(.s1-chip--solid) {
+      background: var(--chip-line-hover-bg);
+    }
+    /* Chip — Solid modifier */
+    .s1-chip--solid {
+      background: var(--chip-solid-default-bg);
+      border-color: transparent; color: var(--chip-solid-default-text);
+    }
+    .s1-chip--solid:not(.is-disabled):not(.is-preview):not(.is-selected):hover,
+    .s1-chip--solid.is-hover {
+      background: var(--chip-solid-hover-bg);
+      border-color: transparent;
+    }
+    .s1-chip--solid.is-selected {
+      background: var(--chip-solid-selected-bg);
+      border-color: var(--chip-solid-selected-border); color: var(--chip-solid-selected-text);
+    }
+    .s1-chip--solid.is-disabled {
+      background: var(--chip-solid-disabled-bg);
+      border-color: transparent; color: var(--chip-solid-disabled-text);
+    }
+    /* Chip — icon (prefix) */
+    .s1-chip-icon { flex-shrink: 0; color: inherit; }
+    .s1-chip.is-selected .s1-chip-icon { color: var(--chip-line-selected-icon); }
+    .s1-chip.is-disabled .s1-chip-icon { color: var(--chip-line-disabled-icon); }
+    .s1-chip--solid .s1-chip-icon { color: var(--chip-solid-default-icon); }
+    .s1-chip--solid.is-selected .s1-chip-icon { color: var(--chip-solid-selected-icon); }
+    .s1-chip--solid.is-disabled .s1-chip-icon { color: var(--chip-solid-disabled-icon); }
+    /* Chip — close button */
+    .s1-chip-close {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 16px; height: 16px; border-radius: 50%; background: none; border: none;
+      padding: 0; cursor: pointer; color: var(--chip-line-default-close-icon); flex-shrink: 0;
+    }
+    .s1-chip:not(.s1-chip--solid):hover .s1-chip-close { color: var(--chip-line-hover-close-icon); }
+    .s1-chip:not(.s1-chip--solid).is-selected .s1-chip-close { color: var(--chip-line-selected-close-icon); }
+    .s1-chip--solid .s1-chip-close { color: var(--chip-solid-default-close-icon); }
+    .s1-chip--solid:hover .s1-chip-close { color: var(--chip-solid-hover-close-icon); }
+    .s1-chip--solid.is-selected .s1-chip-close { color: var(--chip-solid-selected-close-icon); }
+    .s1-chip.is-disabled .s1-chip-close, .s1-chip--solid.is-disabled .s1-chip-close { pointer-events: none; }
+
+    /* Filter Chip (공통 베이스) */
+    .ds-filter-chip {
+      display: inline-flex; align-items: center; height: var(--sizing-chip-height-lg);
+      padding: 0 8px 0 16px; gap: 4px;
+      border-radius: 999px; border: 1px solid var(--chip-line-default-border);
+      background: var(--chip-line-default-bg); cursor: pointer;
+      transition: all 0.15s; font-family: inherit;
+    }
+    /* Filter Chip — Size modifiers */
+    .ds-filter-chip--sm     { height: var(--sizing-chip-height-sm); padding: 0 6px 0 12px; }
+    .ds-filter-chip--mobile { height: var(--sizing-chip-height-md); padding: 0 8px 0 12px; }
+    .ds-filter-chip-label {
+      font-size: 14px; font-weight: 500; white-space: nowrap;
+      letter-spacing: -0.028em;
+      color: var(--color-text-secondary);
+    }
+    .ds-filter-chip-title {
+      font-size: 14px; font-weight: 500; white-space: nowrap;
+      letter-spacing: -0.028em;
+      color: var(--color-text-secondary);
+    }
+    .ds-filter-chip-wrap {
+      position: relative; display: inline-flex;
+    }
+    .ds-filter-chip-arrow {
+      flex-shrink: 0; color: var(--color-icon-default);
+      transform: rotate(90deg);
+    }
+    .ds-filter-chip-wrap.is-open .ds-filter-chip-arrow { transform: rotate(270deg); }
+    .ds-filter-chip-wrap.is-open .s1-select-list { display: block; }
+    /* Open: 드롭다운 열릴 때 보더 파란색 */
+    .ds-filter-chip-wrap.is-open .ds-filter-chip { border-color: var(--chip-line-selected-border); }
+    /* Selecting: static preview용 — 드롭다운을 in-flow로 전환해 grid row 높이에 반영 */
+    .ds-filter-chip-wrap.is-open.is-preview {
+      flex-direction: column; align-items: flex-start;
+    }
+    .ds-filter-chip-wrap.is-open.is-preview .s1-select-list {
+      position: relative; top: auto; left: auto; right: auto;
+      margin-top: 8px; z-index: auto; min-width: 130px;
+    }
+    /* ── Filter Chip — Line (기본) ───────────────────────────── */
+    /* With Title: label(선택된 값)은 항상 파란색 — title이 있을 때만 적용, disabled 제외 */
+    .ds-filter-chip:not(.ds-filter-chip--solid):not(.is-disabled) .ds-filter-chip-title ~ .ds-filter-chip-label { color: var(--chip-line-selected-text); }
+    /* Line Hover */
+    .ds-filter-chip-wrap:not(.is-open) .ds-filter-chip:not(.ds-filter-chip--solid):not(.is-disabled):not(.is-preview):hover,
+    .ds-filter-chip:not(.ds-filter-chip--solid).is-hover {
+      background: var(--chip-line-hover-bg);
+    }
+    /* Line Disabled */
+    .ds-filter-chip:not(.ds-filter-chip--solid).is-disabled {
+      background: var(--chip-line-disabled-bg); border-color: var(--chip-line-disabled-border);
+      cursor: not-allowed; pointer-events: none;
+    }
+    .ds-filter-chip:not(.ds-filter-chip--solid).is-disabled .ds-filter-chip-label,
+    .ds-filter-chip:not(.ds-filter-chip--solid).is-disabled .ds-filter-chip-title { color: var(--chip-line-disabled-text); }
+    .ds-filter-chip:not(.ds-filter-chip--solid).is-disabled .ds-filter-chip-arrow { color: var(--color-icon-muted); }
+    /* ── Filter Chip — Solid modifier ───────────────────────── */
+    .ds-filter-chip--solid {
+      background: var(--chip-solid-default-bg);
+      border-color: var(--chip-solid-default-border);
+    }
+    .ds-filter-chip--solid .ds-filter-chip-label,
+    .ds-filter-chip--solid .ds-filter-chip-title { color: var(--chip-solid-default-text); }
+    .ds-filter-chip-wrap:not(.is-open) .ds-filter-chip--solid:not(.is-disabled):not(.is-preview):hover,
+    .ds-filter-chip--solid.is-hover {
+      background: var(--chip-solid-hover-bg); border-color: var(--chip-solid-hover-border);
+    }
+    .ds-filter-chip--solid.is-selected {
+      background: var(--chip-solid-selected-bg); border-color: var(--chip-solid-selected-border);
+    }
+    .ds-filter-chip--solid.is-selected .ds-filter-chip-label,
+    .ds-filter-chip--solid.is-selected .ds-filter-chip-title { color: var(--chip-solid-selected-text); }
+    .ds-filter-chip--solid.is-selected .ds-filter-chip-arrow { color: var(--chip-solid-selected-text); }
+    /* Solid open (드롭다운) */
+    .ds-filter-chip-wrap.is-open .ds-filter-chip--solid { background: var(--chip-solid-selected-bg); border-color: var(--chip-solid-selected-border); }
+    .ds-filter-chip-wrap.is-open .ds-filter-chip--solid .ds-filter-chip-label,
+    .ds-filter-chip-wrap.is-open .ds-filter-chip--solid .ds-filter-chip-title { color: var(--chip-solid-selected-text); }
+    .ds-filter-chip-wrap.is-open .ds-filter-chip--solid .ds-filter-chip-arrow { color: var(--chip-solid-selected-text); }
+    /* Solid Disabled */
+    .ds-filter-chip--solid.is-disabled {
+      background: var(--chip-solid-disabled-bg); border-color: var(--chip-solid-disabled-border);
+      cursor: not-allowed; pointer-events: none;
+    }
+    .ds-filter-chip--solid.is-disabled .ds-filter-chip-label,
+    .ds-filter-chip--solid.is-disabled .ds-filter-chip-title { color: var(--chip-solid-disabled-text); }
+    .ds-filter-chip--solid.is-disabled .ds-filter-chip-arrow { color: var(--color-icon-muted); }
+
+    /* Input */
+    .s1-input-wrap { display: flex; flex-direction: column; gap: 6px; width: 180px; }
+    .s1-input-label { font-size: 14px; font-weight: 500; color: var(--color-form-control-label-default); letter-spacing: -0.028em; line-height: 1.3; }
+    .s1-input-field {
+      display: flex; align-items: center; height: 44px; padding: 0 12px 0 16px;
+      border: 1px solid var(--input-default-border);
+      border-radius: 4px; background: var(--input-default-bg);
+      transition: border-color 0.15s, background 0.15s; gap: 6px;
+    }
+    .s1-input-field.input-size-small  { height: 34px; padding: 0 8px 0 12px; }
+    .s1-input-field.input-size-xsmall { height: 28px; padding: 0 8px 0 12px; }
+    .s1-input-field.input-size-mobile { height: 48px; padding: 0 12px 0 16px; }
+    .s1-input-field input {
+      border: none; background: transparent; outline: none;
+      font-size: 14px; font-family: inherit; color: var(--color-form-control-text-default);
+      letter-spacing: -0.028em; line-height: 1.3; width: 100%;
+    }
+    .s1-input-field.input-size-xsmall input { font-size: 12px; letter-spacing: 0; }
+    .s1-input-field input::placeholder { color: var(--input-placeholder-text); }
+
+    .s1-input-wrap.is-focus .s1-input-field { border-color: var(--input-focus-border); }
+    .s1-input-wrap.is-error .s1-input-field { border-color: var(--input-error-border); }
+    .s1-input-wrap.is-correct .s1-input-field { border-color: var(--input-correct-border); }
+    .s1-input-wrap.is-disabled .s1-input-field {
+      background: var(--input-disabled-bg); border-color: var(--input-disabled-border);
+    }
+    .s1-input-wrap.is-disabled input { color: var(--input-disabled-text); cursor: not-allowed; }
+    .s1-input-wrap.is-disabled .s1-input-field input::placeholder { color: var(--input-disabled-text); }
+    .s1-input-wrap.is-readonly .s1-input-field {
+      background: var(--input-readonly-bg); border-color: var(--input-readonly-border);
+    }
+    .s1-input-wrap.is-readonly textarea { color: var(--input-readonly-text); cursor: default; resize: none; }
+    /* Textarea variant */
+    .s1-input-wrap--textarea { height: auto; }
+    .s1-input-wrap--textarea .s1-input-field {
+      height: auto; align-items: flex-start; padding: 10px 12px;
+    }
+    .s1-input-wrap--textarea textarea {
+      width: 100%; min-height: 72px; border: none; background: transparent; outline: none;
+      font-size: 14px; font-family: inherit; color: var(--color-form-control-text-default);
+      letter-spacing: -0.028em; line-height: 1.6; resize: vertical;
+    }
+    .s1-input-wrap--textarea textarea::placeholder { color: var(--input-placeholder-text); }
+    .ds-helper-text { font-size: 12px; color: var(--input-helper-text); line-height: 1.3; }
+    .s1-input-wrap.is-error .ds-helper-text { color: var(--input-error-text); }
+    .s1-input-wrap.is-correct .ds-helper-text { color: var(--input-correct-text); }
+    .s1-input-icon { flex-shrink: 0; color: var(--color-form-control-icon-default); }
+    .s1-input-wrap.is-error .s1-input-icon { color: var(--color-icon-red); }
+    .s1-input-wrap.is-correct .s1-input-icon { color: var(--color-icon-blue); }
+    /* Interactive input (Sizes block) */
+    .input-clear-btn, .s1-input-remove {
+      display: none; align-items: center; justify-content: center;
+      flex-shrink: 0; width: 24px; height: 24px;
+      padding: 0; border: none; background: transparent;
+      cursor: pointer; color: var(--color-form-control-icon-default);
+      border-radius: 4px; transition: background 0.15s;
+    }
+    .input-clear-btn:hover { background: var(--color-form-control-bg-hover); }
+    .s1-input-remove { display: flex; cursor: default; }
+    .input-interactive .input-clear-btn { display: none; }
+    .input-interactive.has-value .input-clear-btn { display: flex; }
+
+    /* Related Composed Fields */
+    .related-composed-header {
+      border-top: 1px solid var(--color-border-subtle);
+      padding-top: 24px; margin-bottom: 16px;
+      display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap;
+    }
+    .related-composed-title {
+      font-size: 13px; font-weight: 700; color: var(--color-text-primary);
+    }
+    .related-composed-subtitle {
+      font-size: 11px; color: var(--color-text-secondary); line-height: 1.5;
+    }
+    .related-composed-grid {
+      display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px;
+    }
+    @media (max-width: 700px) { .related-composed-grid { grid-template-columns: 1fr; } }
+    .related-composed-card {
+      border: 1px solid var(--color-border-subtle);
+      border-radius: 8px; padding: 18px 16px;
+      background: var(--color-bg-default); /* preview-area 동일 — dark: gray-dark-50=#131418, light: gray-0 */
+    }
+    .related-composed-card-name {
+      font-size: 13px; font-weight: 600; color: var(--color-text-primary); margin-bottom: 4px;
+    }
+    .related-composed-card-desc {
+      font-size: 11px; color: var(--color-text-secondary); line-height: 1.5; margin-bottom: 14px;
+    }
+    .related-composed-badge {
+      display: inline-block; font-size: 10px; font-weight: 600;
+      padding: 2px 8px; border-radius: 4px; margin-bottom: 14px;
+      background: #eff6ff; color: #1d4ed8; border: 1px solid #bfdbfe;
+    }
+    [data-theme="dark"] .related-composed-badge {
+      background: rgba(29,108,235,0.12); color: #6FA5F8; border-color: rgba(29,108,235,0.3);
+    }
+    .s1-input-unit {
+      flex-shrink: 0; font-size: 13px; color: var(--color-text-secondary);
+      padding: 0 8px 0 4px; white-space: nowrap;
+    }
+    .s1-input-action-btn {
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0; width: 28px; height: 28px;
+      padding: 0; border: none; background: transparent;
+      cursor: pointer; color: var(--color-form-control-icon-default); border-radius: 4px;
+      transition: color 0.15s, background 0.15s;
+    }
+    .s1-input-action-btn:hover { background: var(--color-bg-subtle); }
+    .s1-input-wrap.is-disabled .s1-input-action-btn,
+    .s1-input-wrap.is-disabled .s1-input-icon { color: var(--color-icon-muted); cursor: not-allowed; pointer-events: none; }
+    /* DatePicker 인풋 오른쪽 패딩 — 아이콘 자체 여백 있으므로 TimePicker(8px) 기준 */
+    .s1-input-field:has([aria-label="달력 열기"]) { padding-right: 8px; }
+    .s1-suffix-action-group {
+      display: flex; align-items: center; gap: 2px; flex-shrink: 0;
+    }
+    .related-composed-meta {
+      font-size: 10px; font-family: monospace; color: var(--color-text-secondary);
+      background: var(--color-bg-subtle); border-radius: 4px;
+      padding: 3px 8px; margin-bottom: 12px; display: inline-block;
+    }
+    .related-composed-preview-label {
+      font-size: 10px; font-weight: 600; color: var(--color-text-secondary);
+      text-transform: uppercase; letter-spacing: 0.05em; margin-top: 8px; margin-bottom: 4px;
+    }
+    .related-composed-states { display: flex; flex-direction: column; }
+    /* Related Composed Fields — interactive 보정 */
+    [data-related-field] .s1-input-wrap { width: 100%; }
+    [data-related-field] .input-clear-btn[hidden] { display: none !important; }
+    [data-related-field] .input-clear-btn { display: flex; }
+
+    /* Date Picker — PC Calendar (Figma 540:4216 확인) */
+    .s1-date-picker { position: relative; display: inline-block; width: 100%; max-width: 280px; }
+    /* PC popover panel — Figma 540:4216: width=356px, py=20px, px=24px, border=1px #d9d9d9, radius=4px, shadow */
+    /* z-index: 8 — sticky page-header(10)·controls-sticky(9) 아래에 위치하여 헤더 위로 올라오지 않음 */
+    .s1-date-picker__panel {
+      position: absolute; top: calc(100% + 8px); left: 0; z-index: 8;
+      width: 356px;
+      background: var(--color-surface-default);
+      border: 1px solid var(--color-border-strong); /* Figma: #d9d9d9 = --color-border-strong */
+      border-radius: var(--radius-4, 4px); /* Figma: 4px */
+      box-shadow: 0 4px 8px rgba(0,0,0,0.15); /* Figma: shadow — rgba 허용 */
+      padding: 20px 24px; /* Figma: py=20px, grid-side=24px */
+      min-height: 392px; /* 6행 달력 고정 높이: padding(40) + header(44) + weekdays(44) + 6rows(264) */
+      box-sizing: border-box;
+      display: flex; flex-direction: column; /* selector-grid가 남은 높이를 채울 수 있도록 */
+      user-select: none;
+    }
+    .s1-date-picker__panel[hidden] { display: none; }
+    .s1-date-picker__weekdays[hidden] { display: none !important; }
+    .s1-date-picker__grid[hidden] { display: none !important; }
+    .s1-date-picker__header {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 12px;
+      height: 32px; /* Figma: header height 32px */
+      flex-shrink: 0;
+    }
+    .s1-date-picker__nav-btn {
+      display: flex; align-items: center; justify-content: center;
+      width: 24px; height: 24px; /* Figma: CalendarArrow 24×24px */
+      border: none; background: transparent;
+      color: var(--color-text-primary); cursor: pointer;
+      border-radius: var(--radius-4, 4px);
+    }
+    .s1-date-picker__nav-btn:hover { background: var(--color-bg-subtle); }
+    .s1-date-picker__month-label {
+      font-size: 24px; font-weight: 700; /* Figma: title/24B = Pretendard Bold 24px */
+      color: var(--color-text-primary); /* Figma: color/text/title/primary ≈ #202020 */
+      cursor: pointer; user-select: none;
+      padding: 2px 8px; border-radius: var(--radius-4, 4px);
+      transition: background 0.1s;
+    }
+    .s1-date-picker__month-label:hover { background: var(--color-bg-subtle); }
+    .s1-date-picker__weekdays {
+      display: grid; grid-template-columns: repeat(7, 44px);
+      flex-shrink: 0; /* flex 패널 안에서 높이 유지 */
+      margin-bottom: 0;
+    }
+    .s1-date-picker__weekday {
+      display: flex; align-items: center; justify-content: center;
+      width: 44px; height: 44px; /* Figma: 44×44px */
+      text-align: center; font-size: 16px; font-weight: 500; /* Figma: 16M */
+      color: var(--color-text-secondary); /* Figma: color/text/body/primary = #353535 */
+    }
+    /* 일/토 weekday 색상: candidate (HD-8) */
+    .s1-date-picker__weekday.is-sunday { color: var(--color-status-error); }
+    .s1-date-picker__weekday.is-saturday { color: var(--color-action-primary-default); }
+    .s1-date-picker__grid {
+      display: grid; grid-template-columns: repeat(7, 44px); gap: 0;
+      flex-shrink: 0; /* flex 패널 안에서 높이 유지 */
+    }
+    /* Day cell — Figma 540:4216: 44×44px outer + 30×30px inner circle (radius-full) */
+    .s1-date-picker__day {
+      display: flex; align-items: center; justify-content: center;
+      width: 44px; height: 44px; padding: 5px;
+      border: none; background: transparent; cursor: pointer;
+      font-size: 16px; font-weight: 500;
+      color: var(--color-text-secondary);
+      box-sizing: border-box;
+    }
+    .s1-date-picker__day > .day-inner {
+      display: flex; align-items: center; justify-content: center;
+      width: 30px; height: 30px;
+      border-radius: 999px; /* Figma: radius-full */
+      border: 1px solid transparent;
+      font-size: inherit; font-weight: inherit; color: inherit;
+      background: transparent; box-sizing: border-box;
+    }
+    .s1-date-picker__day:hover:not([disabled]) > .day-inner {
+      background: var(--color-bg-subtle);
+    }
+    .s1-date-picker__day.is-other-month {
+      color: var(--color-text-disabled);
+    }
+    /* Today: Figma selected-alt — blue border circle + blue text, white bg */
+    .s1-date-picker__day.is-today > .day-inner {
+      border-color: var(--color-action-primary-default);
+      color: var(--color-action-primary-default);
+      background: var(--color-surface-default);
+    }
+    /* Selected: Figma — blue fill circle + white text */
+    .s1-date-picker__day.is-selected > .day-inner {
+      background: var(--color-action-primary-default);
+      border-color: var(--color-action-primary-default);
+      color: var(--color-base-white);
+      font-weight: 700;
+    }
+    .s1-date-picker__day[disabled] { color: var(--color-text-disabled); cursor: not-allowed; }
+    .s1-date-picker__day.is-today.is-selected > .day-inner {
+      background: var(--color-action-primary-default);
+      border-color: var(--color-action-primary-default);
+      color: var(--color-base-white);
+    }
+    /* DatePicker trigger hover — Select hover와 동일 */
+    .s1-date-picker:not(.s1-date-picker--opened):hover .s1-input-field,
+    .s1-date-picker.is-hover .s1-input-field {
+      background: var(--dropdown-trigger-hover-bg);
+      border-color: var(--dropdown-trigger-hover-border);
+    }
+    /* Trigger opened state */
+    .s1-date-picker--opened .s1-input-wrap,
+    .s1-date-picker__trigger-opened .s1-input-wrap { border-color: var(--input-focus-border); }
+    .s1-input-wrap.is-selected-open { border-color: var(--input-focus-border); }
+    .s1-dp-states {
+      display: flex; flex-wrap: wrap; gap: 16px; align-items: flex-start;
+    }
+    .s1-dp-state-label {
+      font-size: 10px; font-weight: 600; color: var(--color-text-secondary);
+      text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 4px;
+    }
+    /* Month/Year selector grid — Figma 540:4216: 3×4 grid */
+    .s1-date-picker__selector-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      grid-auto-rows: 1fr; /* 행 높이 균등 분배 */
+      gap: 4px;
+      flex: 1; /* 패널 남은 높이 전체 채움 */
+    }
+    .s1-date-picker__selector-grid[hidden] { display: none; }
+    .s1-date-picker__selector-btn {
+      display: flex; align-items: center; justify-content: center;
+      height: 100%; min-height: 44px; border: 1px solid transparent;
+      border-radius: var(--radius-4, 4px);
+      background: transparent; cursor: pointer;
+      font-size: 14px; font-weight: 500;
+      color: var(--color-text-secondary);
+      transition: background 0.1s;
+    }
+    .s1-date-picker__selector-btn:hover { background: var(--color-bg-subtle); }
+    .s1-date-picker__selector-btn.is-selected {
+      border-color: var(--color-action-primary-default);
+      color: var(--color-action-primary-default);
+      font-weight: 700;
+    }
+    .s1-date-picker__selector-btn.is-current {
+      border-color: var(--color-action-primary-default);
+      color: var(--color-action-primary-default);
+    }
+
+    /* Select */
+    .s1-select-wrap { position: relative; width: 158px; }
+    .s1-select-trigger {
+      display: flex; align-items: center; justify-content: space-between;
+      height: 44px; padding: 0 8px 0 16px;
+      border: 1px solid var(--dropdown-trigger-default-border);
+      border-radius: 4px; background: var(--dropdown-trigger-default-bg);
+      font-size: 14px;
+      cursor: pointer; transition: all 0.15s; font-family: inherit; white-space: nowrap;
+    }
+    .s1-select-trigger span { color: var(--dropdown-trigger-placeholder-text); }
+    .s1-select-wrap.has-value .s1-select-trigger span { color: var(--dropdown-trigger-selected-text); }
+    .s1-select-chevron {
+      flex-shrink: 0; margin-left: 6px; color: var(--color-form-control-icon-default);
+      transform: rotate(90deg);
+    }
+    .s1-select-wrap:hover .s1-select-trigger,
+    .s1-select-wrap.is-hover .s1-select-trigger {
+      background: var(--dropdown-trigger-hover-bg);
+      border-color: var(--dropdown-trigger-hover-border);
+    }
+    .s1-select-wrap.is-open .s1-select-trigger {
+      background: var(--dropdown-trigger-open-bg);
+      border-color: var(--dropdown-trigger-open-border);
+    }
+    .s1-select-wrap.is-open .s1-select-chevron { transform: rotate(270deg); }
+    .s1-select-wrap.is-disabled .s1-select-trigger {
+      background: var(--dropdown-trigger-disabled-bg);
+      border-color: var(--dropdown-trigger-disabled-border);
+      color: var(--dropdown-trigger-disabled-text); cursor: not-allowed;
+    }
+    .s1-select-list {
+      position: absolute; top: calc(100% + 8px); left: 0; right: 0;
+      background: var(--dropdown-list-bg);
+      border: 1px solid var(--dropdown-list-border);
+      border-radius: 4px; padding: 12px 0;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.10); display: none; z-index: 20; overflow: hidden;
+    }
+    .s1-select-wrap.is-open .s1-select-list { display: block; }
+    .s1-select-wrap.is-preview .s1-select-list {
+      position: relative; top: auto; left: auto; right: auto;
+      margin-top: 8px; box-shadow: none; z-index: auto;
+    }
+    .s1-select-option {
+      height: var(--sizing-dropdown-item-height-md); display: flex; align-items: center;
+      padding: 0 16px; font-size: 14px; color: var(--color-text-secondary); cursor: pointer;
+    }
+    .s1-select-option:hover { background: var(--dropdown-option-hover-bg); }
+    .s1-select-option.is-selected {
+      background: var(--dropdown-option-selected-bg);
+      color: var(--dropdown-option-selected-text); font-weight: 600;
+    }
+    .s1-select-option.is-hover { background: var(--dropdown-option-hover-bg); }
+    /* Size variants */
+    .s1-select-wrap--xsm .s1-select-trigger { height: var(--sizing-form-control-height-xs); font-size: 14px; }
+    .s1-select-wrap--xxsm .s1-select-trigger { height: var(--sizing-form-control-height-xxs); font-size: 12px; padding-left: 12px; }
+    .s1-select-wrap--mobile .s1-select-trigger { height: var(--sizing-form-control-height-lg); font-size: 14px; border-radius: 4px; }
+
+    /* Table */
+    .s1-table-section { width: 100%; padding: 12px; border-radius: 4px; }
+    [data-theme="dark"] .s1-table-section { background: var(--color-gray-dark-100); }
+    .s1-table-wrap {
+      width: 100%; overflow-x: auto;
+      border-top: 2px solid var(--table-border-strong);
+      border-bottom: 1px solid var(--table-border-strong);
+    }
+    .s1-table { border-collapse: collapse; width: 100%; }
+    .s1-table-footer {
+      display: flex; align-items: center; justify-content: center;
+      position: relative;
+      padding: 8px 12px;
+    }
+    .s1-table-perpage-select {
+      position: absolute; right: 12px;
+      height: 28px;
+      padding: 0 4px 0 8px;
+      border: 1px solid var(--color-border-default);
+      border-radius: var(--radius-control-xs);
+      font-size: var(--font-size-12);
+      color: var(--color-text-secondary);
+      background: var(--color-surface-default);
+      cursor: pointer;
+      appearance: auto;
+    }
+    .s1-table-header-row {}
+    .s1-table-th {
+      background: var(--table-header-bg);
+      color: var(--table-header-text);
+      border-bottom: 1px solid var(--table-header-border);
+      height: var(--sizing-table-row-height-md);
+      padding: 0 var(--spacing-padding-inline-xs);
+      font-size: 14px; font-weight: 500;
+      text-align: left; white-space: nowrap;
+      letter-spacing: -0.02em;
+    }
+    .s1-table--sm .s1-table-th { height: var(--sizing-table-row-height-sm); }
+    .s1-table-th-inner {
+      display: flex; align-items: center; gap: 4px; height: 100%;
+    }
+    .s1-table-th--last { padding-right: var(--spacing-padding-inline-sm); }
+    .s1-table-th--first { padding: 0 8px; }
+    .s1-table-sort-icon { color: var(--table-header-text); flex-shrink: 0; }
+    .s1-table-td {
+      background: var(--table-row-default-bg);
+      color: var(--table-cell-text);
+      border-bottom: 1px solid var(--table-cell-border);
+      height: var(--sizing-table-row-height-md);
+      padding: 0 var(--spacing-padding-inline-xs);
+      font-size: 14px; font-weight: 400;
+      white-space: nowrap; letter-spacing: -0.02em;
+      vertical-align: middle; /* CSS 기본값은 baseline — 명시적으로 middle 지정 */
+    }
+    .s1-table--sm .s1-table-td { height: var(--sizing-table-row-height-sm); }
+    .s1-table-td--last { padding-right: var(--spacing-padding-inline-sm); }
+    .s1-table-td--first { padding: 0 8px; }
+    .s1-table-row:hover .s1-table-td,
+    .s1-table-row.is-hover .s1-table-td { background: var(--table-row-hover-bg); }
+    .s1-table-row.is-selected .s1-table-td { background: var(--table-row-selected-bg); }
+    /* Table selection cell — placement only (checkbox style is from core s1-checkbox) */
+    .s1-table-td--selection { padding: 0 8px; text-align: center; width: 48px; }
+    .s1-table-th--selection { width: 48px; }
+    /* Pagination */
+    .s1-pagination {
+      display: flex; align-items: center; gap: 8px;  /* Figma: var(--spacing/cluster/xxs,8px) */
+    }
+    .s1-pagination-group {
+      display: flex; align-items: center; gap: 4px;  /* Figma: var(--spacing/4,4px) — arrow 그룹 */
+    }
+    .s1-pagination-group--numbers {
+      gap: 0;  /* Figma: 숫자 버튼은 gap 없이 인접 배치 */
+    }
+    .s1-pagination-arrow {
+      display: flex; align-items: center; justify-content: center;
+      width: var(--spacing-28); height: var(--spacing-28);
+      border: 1px solid var(--pagination-control-border);
+      border-radius: var(--radius-control-xs);
+      background: var(--pagination-control-bg);
+      color: var(--color-text-secondary);
+      cursor: pointer; font-size: 13px; font-weight: 500;
+      transition: background 0.1s;
+      padding: 0;
+      line-height: 1;
+    }
+    .s1-pagination-arrow:hover:not(:disabled) {
+      background: var(--pagination-control-hover-bg);
+    }
+    .s1-pagination-arrow:disabled {
+      background: var(--pagination-arrow-disabled-bg);
+      color: var(--pagination-arrow-disabled-color);
+      opacity: 0.9;
+      cursor: default;
+    }
+    .s1-pagination-number {
+      display: flex; align-items: center; justify-content: center;
+      width: var(--spacing-28); height: var(--spacing-28);
+      border-radius: var(--radius-control-xs);
+      background: transparent;
+      color: var(--pagination-number-text);
+      cursor: pointer; font-size: 14px; font-weight: 500;
+      border: none; padding: 0;
+      letter-spacing: -0.028em;  /* Figma: body/14M tracking -2 = -0.28px */
+    }
+    .s1-pagination-number.is-selected {
+      color: var(--pagination-number-text-selected);
+      cursor: default;
+    }
+    /* Scenario rows */
+    .pg-scenario-bar { display: flex; align-items: center; gap: 8px; margin-top: 6px; flex-wrap: wrap; }
+    .pg-scenario-label { display: flex; align-items: center; gap: 8px; font-size: 12px; color: var(--color-text-secondary); }
+    .pg-scenario-badge {
+      display: inline-flex; align-items: center; justify-content: center;
+      min-width: 30px; height: 18px; padding: 0 6px;
+      background: var(--color-bg-subtle); border: 1px solid var(--color-border-subtle);
+      border-radius: var(--radius-4); font-size: 11px; font-weight: 600;
+      color: var(--color-text-secondary);
+    }
+    /* Time Picker */
+    .s1-timepicker-wrap {
+      display: inline-flex; align-items: center;
+      min-width: 78px;
+      height: var(--sizing-form-control-height-md);
+      padding: 0 8px 0 16px;
+      border: 1px solid var(--color-form-control-border-default);
+      border-radius: var(--radius-control-sm); /* Figma: radius/control/sm = 4px */
+      background: var(--color-form-control-bg-default);
+      gap: 8px; cursor: pointer;
+      transition: border-color 0.15s;
+      font-size: 14px; font-weight: 400;
+      letter-spacing: -0.02em;
+    }
+    .s1-timepicker-wrap:hover {
+      background: var(--dropdown-trigger-hover-bg);
+      border-color: var(--dropdown-trigger-hover-border);
+    }
+    .s1-timepicker-wrap.is-focus { border-color: var(--color-form-control-border-selected); }
+    .s1-timepicker-wrap.is-filled .s1-timepicker-placeholder { display: none; }
+    .s1-timepicker-wrap.is-disabled {
+      background: var(--color-form-control-bg-disabled);
+      border-color: var(--color-form-control-border-disabled);
+      cursor: default; opacity: 1;
+    }
+    /* TimePicker Input형 — Size modifiers */
+    .s1-timepicker-wrap--xsm {
+      height: var(--sizing-form-control-height-xs); /* 34px */
+      padding: 0 8px 0 12px;
+    }
+    .s1-timepicker-wrap--xxsm {
+      height: var(--sizing-form-control-height-xxs); /* 28px */
+      padding: 0 6px 0 10px;
+      font-size: 12px;
+    }
+    .s1-timepicker-wrap--xxsm .s1-timepicker-placeholder,
+    .s1-timepicker-wrap--xxsm .s1-timepicker-value { font-size: 12px; }
+    .s1-timepicker-wrap--mobile {
+      height: var(--sizing-form-control-height-lg); /* 48px */
+    }
+    .s1-timepicker-placeholder {
+      flex: 1; color: var(--color-form-control-text-placeholder);
+      font-size: 14px; white-space: nowrap;
+    }
+    .s1-timepicker-value {
+      flex: 1; color: var(--color-form-control-text-default);
+      font-size: 14px; white-space: nowrap;
+    }
+    .s1-timepicker-wrap.is-disabled .s1-timepicker-value,
+    .s1-timepicker-wrap.is-disabled .s1-timepicker-icon {
+      color: var(--color-form-control-text-disabled);
+    }
+    .s1-timepicker-icon { flex-shrink: 0; color: var(--color-form-control-icon-default); display:flex;align-items:center; }
+    /* TimePicker Select */
+    /* ── TimePicker Select (timepicker_select 540:3636) — md(h44) / sm(h28) ── */
+    .s1-timepicker-select-group {
+      display: inline-flex; align-items: center;
+      gap: var(--spacing-cluster-sm); /* md 시그룹↔분그룹 16px */
+    }
+    .s1-timepicker-select-unit {
+      display: inline-flex; align-items: center;
+      gap: 8px; /* md 박스↔라벨 8px */
+    }
+    .s1-timepicker-select-field {
+      position: relative; /* 드롭다운 앵커 — unit이 아닌 field 기준 */
+      display: inline-flex; align-items: center;
+      height: var(--sizing-form-control-height-md); /* 44px */
+      min-width: 78px; /* Figma md min-width */
+      padding: var(--spacing-padding-block-xxs) var(--spacing-padding-inline-xxs) var(--spacing-padding-block-xxs) var(--spacing-padding-inline-sm); /* 8 / 8 / 8 / 16 */
+      border: var(--border-width-default) solid var(--color-form-control-border-default);
+      border-radius: var(--radius-control-sm); /* Figma: radius/control/sm = 4px */
+      background: var(--color-form-control-bg-default);
+      gap: 10px; /* 값↔화살표 (Figma raw 10px) */
+      cursor: pointer;
+      transition: background 0.15s, border-color 0.15s;
+      font-size: 14px; font-weight: 400; line-height: 1.3;
+      color: var(--color-form-control-text-default);
+      letter-spacing: 0; /* md 값 텍스트 ls 0 */
+    }
+    .s1-timepicker-select-field:hover {
+      background: var(--dropdown-trigger-hover-bg);
+      border-color: var(--dropdown-trigger-hover-border);
+    }
+    .s1-timepicker-select-field.is-focus { border-color: var(--color-form-control-border-selected); }
+    .s1-timepicker-select-field.is-disabled {
+      background: var(--color-form-control-bg-disabled);
+      border-color: var(--color-form-control-border-disabled);
+      color: var(--color-form-control-text-disabled); cursor: default;
+    }
+    .s1-timepicker-select-arrow {
+      flex-shrink: 0; width: 24px; height: 24px; /* Figma 아이콘 박스 size-[24px] — 내용폭이 min-width를 채워 화살표가 우측에 붙음 */
+      color: var(--color-form-control-icon-default);
+      display:flex; align-items:center; justify-content:center;
+    }
+    /* 원본 ic_화살표,더보기 (563:3158): 우향 chevron → 90° 회전해 아래 방향. 24px 박스 내 중앙 */
+    .s1-timepicker-select-arrow svg { transform: rotate(90deg); transition: transform 0.15s; }
+    .s1-timepicker-select-field.is-focus .s1-timepicker-select-arrow svg,
+    .s1-timepicker-select-field.is-open  .s1-timepicker-select-arrow svg { transform: rotate(-90deg); }
+    .s1-timepicker-select-field.is-disabled .s1-timepicker-select-arrow { color: var(--color-form-control-text-disabled); }
+    .s1-timepicker-select-label {
+      font-size: 16px; line-height: 1.3; /* md 라벨 16px */
+      color: var(--color-form-control-label-default); white-space: nowrap;
+    }
+    .s1-timepicker-select-field.is-disabled + .s1-timepicker-select-label { color: var(--color-form-control-label-disabled); }
+    /* ── sm (h28) ── */
+    .s1-timepicker-select-group--sm { gap: var(--spacing-cluster-xs); } /* 12px */
+    .s1-timepicker-select-group--sm .s1-timepicker-select-unit { gap: var(--spacing-4); } /* 4px */
+    .s1-timepicker-select-group--sm .s1-timepicker-select-field {
+      height: var(--sizing-form-control-height-xxs); /* 28px */
+      min-width: 0;
+      padding: var(--spacing-4) var(--spacing-4) var(--spacing-4) var(--spacing-padding-inline-xs); /* 4 / 4 / 4 / 12 */
+      letter-spacing: -0.28px; /* sm 값 텍스트 ls -0.28px (Figma -2%) */
+    }
+    .s1-timepicker-select-group--sm .s1-timepicker-select-label { font-size: 14px; } /* sm 라벨 14px */
+    /* TimePicker Input형 dropdown — Figma pc_timepicker_input_dropdown (540:3507) */
+    /* 트리거 is-focus = 드롭다운 열림. Figma "selected" = 코드 "is-focus" = 동작 "open" */
+    /* z-index: 8 — controls-sticky(9)·page-header(10) 아래. preview-area isolation: isolate로 헤더 위 노출 방지 */
+    .s1-tp-dropdown {
+      position: absolute; top: calc(100% + 8px); left: 0;
+      z-index: 8; min-width: 190px; width: 190px;
+      background: var(--dropdown-list-bg);
+      border: 1px solid var(--dropdown-list-border);
+      border-radius: var(--radius-4);
+      box-shadow: 0 4px 8px 0 rgba(0,0,0,0.15);
+      flex-direction: column; align-items: center;
+      overflow: hidden;
+      padding-top: 12px;
+      display: none;
+    }
+    .s1-tp-dropdown.is-open { display: flex; }
+    .s1-tp-dropdown-cols {
+      display: flex; gap: 8px; align-items: flex-start;
+      padding: 0 8px; width: 100%; overflow: hidden;
+    }
+    .s1-tp-col {
+      flex: 1; min-width: 0;
+      max-height: 192px; overflow-y: auto; scroll-behavior: smooth;
+    }
+    .s1-tp-col::-webkit-scrollbar { width: 0; }
+    .s1-tp-col-sep { width: 1px; background: var(--color-border-subtle); flex-shrink: 0; align-self: stretch; }
+    .s1-tp-col-item {
+      height: var(--sizing-dropdown-item-height-xs);
+      display: flex; align-items: center; justify-content: center;
+      padding: 0 12px; border-radius: var(--radius-4);
+      border: 1px solid transparent;
+      background: var(--dropdown-list-bg);
+      cursor: pointer;
+      font-size: 14px; text-align: center;
+      color: var(--color-text-secondary);
+      letter-spacing: -0.02em;
+    }
+    .s1-tp-col-item:hover { background: var(--color-bg-subtle); border-color: var(--color-bg-subtle); }
+    .s1-tp-col-item.is-selected {
+      background: var(--dropdown-list-bg);
+      border-color: var(--color-action-primary-default);
+      color: var(--color-action-primary-default); font-weight: 600;
+    }
+    .s1-tp-footer-sep {
+      width: calc(100% - 16px); height: 1px;
+      background: var(--color-border-subtle); margin-top: 4px;
+    }
+    .s1-tp-footer {
+      display: flex; align-items: center; justify-content: flex-end;
+      width: 100%; padding: 12px 16px;
+    }
+    .s1-tp-confirm-btn {
+      font-size: 14px; font-weight: 500;
+      color: var(--color-text-disabled);
+      background: none; border: none; cursor: pointer; padding: 0;
+      letter-spacing: -0.02em;
+    }
+    .s1-tp-confirm-btn.is-active { color: var(--color-action-primary-default); }
+    /* Select형 custom dropdown — z-index: 8 동일 규칙 */
+    .s1-tp-select-dropdown {
+      position: absolute; top: calc(100% + 8px); left: 0; right: 0;
+      z-index: 8;
+      background: var(--dropdown-list-bg);
+      border: 1px solid var(--dropdown-list-border);
+      border-radius: var(--radius-control-xs);
+      max-height: 160px; overflow-y: auto;
+      box-shadow: 0 4px 8px 0 rgba(0,0,0,0.15);
+    }
+    .s1-tp-select-dropdown-item {
+      height: var(--sizing-dropdown-item-height-xs); display: flex; align-items: center;
+      padding: 0 12px; cursor: pointer;
+      font-size: 14px; color: var(--color-text-secondary);
+      letter-spacing: -0.02em;
+    }
+    .s1-tp-select-dropdown-item:hover { background: var(--color-bg-subtle); }
+    .s1-tp-select-dropdown-item.is-selected { color: var(--color-action-primary-default); font-weight: 600; }
+    /* token-detail-table (공통) */
+    .token-detail-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+    .token-detail-table th {
+      background: #f8fafc; padding: 6px 10px; text-align: left;
+      font-weight: 600; color: #6b7280; border-bottom: 1px solid #e5e7eb; white-space: nowrap;
+    }
+    .token-detail-table td { padding: 6px 10px; border-bottom: 1px solid #f3f4f6; vertical-align: middle; background: #fff; }
+    .token-detail-table .token-name { font-family: monospace; color: #4b5563; font-size: 11px; white-space: nowrap; }
+    .token-detail-table .token-value { font-family: monospace; color: #6b21a8; font-size: 11px; }
+    .token-detail-table .token-resolved { font-family: monospace; font-size: 11px; }
+
+    /* Dark mode — code block */
+    [data-theme="dark"] .code-block { border-color: #374151; }
+    [data-theme="dark"] .code-tabs { background: #1f2937; border-bottom-color: #374151; }
+    [data-theme="dark"] .code-tab { color: #6b7280; }
+    [data-theme="dark"] .code-tab.active { color: #60a5fa; border-bottom-color: #60a5fa; background: #111827; }
+    [data-theme="dark"] .code-copy-btn { background: #1f2937; border-color: #374151; color: #9ca3af; }
+    [data-theme="dark"] .code-pane { background: #111827; }
+    [data-theme="dark"] .code-pane pre { background: #111827; color: #d1d5db; }
+    [data-theme="dark"] .c-tag  { color: #f472b6; }
+    [data-theme="dark"] .c-attr { color: #38bdf8; }
+    [data-theme="dark"] .c-str  { color: #4ade80; }
+    [data-theme="dark"] .c-prop { color: #c084fc; }
+    [data-theme="dark"] .c-val  { color: #fb923c; }
+    [data-theme="dark"] .c-cmt  { color: #6b7280; }
+    [data-theme="dark"] .c-kw   { color: #c084fc; }
+    [data-theme="dark"] .c-fn   { color: #38bdf8; }
+    [data-theme="dark"] .c-num  { color: #fb923c; }
+    [data-theme="dark"] .c-sel  { color: #f472b6; }
+
+    /* Dark mode — token-detail-table */
+    [data-theme="dark"] .token-detail-table th { background: #1f2937; color: #9ca3af; border-bottom-color: #374151; }
+    [data-theme="dark"] .token-detail-table td { background: #111827; border-bottom-color: #1f2937; color: #d1d5db; }
+    [data-theme="dark"] .token-detail-table .token-name  { color: #9ca3af; }
+    [data-theme="dark"] .token-detail-table .token-value { color: #c084fc; }
+    [data-theme="dark"] .token-detail-table .token-resolved { color: #9ca3af; }
+    /* Dark 스와치 열 — 테마 무관 항상 어두운 배경 유지 */
+    .token-detail-table .token-dark-col { background: #111827 !important; color: #9ca3af !important; }
+
+    /* ── Line Tab ─────────────────────────────────────── */
+    .s1-tab {
+      display: flex;
+      align-items: flex-end;
+      background: var(--tab-bg);
+      border-bottom: 1px solid var(--tab-indicator-default);
+      gap: 0;
+    }
+    .s1-tab-item {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0 var(--spacing-padding-inline-lg);
+      height: 40px; /* pc-md, pc-sm default */
+      font-size: 16px;
+      font-weight: var(--font-weight-medium);
+      color: var(--tab-label-default);
+      background: none;
+      border: none;
+      border-bottom: 1px solid transparent;
+      margin-bottom: -1px; /* overlap container border */
+      cursor: pointer;
+      white-space: nowrap;
+      letter-spacing: -0.32px;
+      line-height: var(--line-height-130);
+      transition: color 0.12s;
+    }
+    .s1-tab-item:not(.is-disabled):not(.is-preview):hover,
+    .s1-tab-item.is-hover {
+      color: var(--tab-label-selected);
+      font-weight: var(--font-weight-bold); /* Figma: hover = Bold(700), selected와 동일 */
+    }
+    .s1-tab-item.is-selected {
+      color: var(--tab-label-selected);
+      font-weight: var(--font-weight-bold);
+      border-bottom: 2px solid var(--tab-indicator-selected);
+    }
+    .s1-tab-item.is-disabled {
+      color: var(--color-text-disabled);
+      cursor: not-allowed;
+    }
+    /* PC MD — font 20px, indicator 2px (Figma: 4px container, 2px visible) */
+    .s1-tab--pc-md .s1-tab-item {
+      font-size: 20px;
+      letter-spacing: 0;
+    }
+    .s1-tab--pc-md .s1-tab-item.is-selected {
+      border-bottom-width: 2px; /* Figma 540:6032 — 4px container 안 2px 색상선 */
+    }
+    /* Mobile — height 30px, padding-inline sm */
+    .s1-tab--mobile .s1-tab-item {
+      height: 30px;
+      padding: 0 var(--spacing-padding-inline-sm);
+    }
+    /* Sliding indicator */
+    .s1-tab.has-sliding-indicator { position: relative; }
+    .s1-tab.has-sliding-indicator .s1-tab-item.is-selected { border-bottom-color: transparent; }
+    .s1-tab-indicator {
+      position: absolute;
+      bottom: -1px;
+      height: 2px;
+      background: var(--tab-indicator-selected);
+      pointer-events: none;
+    }
+    .s1-tab.is-interactive .s1-tab-indicator {
+      transition: left 0.22s cubic-bezier(0.4, 0, 0.2, 1), width 0.22s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    /* ── GNB (Global Navigation Bar) ─────────────────────── */
+    /* 메뉴 슬롯 (slots_menu) */
+    .s1-gnb-menu {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      box-sizing: border-box;
+      min-width: 116px;
+      height: 56px; /* md */
+      padding: 12px 40px; /* py block-xs 12 / px = 외곽 lg24 + 내부 sm16 = 40 (md) */
+      font-family: 'Pretendard', sans-serif;
+      font-size: 18px;
+      font-weight: var(--font-weight-medium);
+      line-height: var(--line-height-130);
+      letter-spacing: -0.36px;
+      color: var(--gnb-menu-label-default);
+      background: none;
+      border: none;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: color 0.12s;
+    }
+    /* 밑줄 = 슬롯 외곽 px만큼 inset된 내부 콘텐츠 폭 (Figma: underline = 외곽 content-box) */
+    .s1-gnb-menu::after {
+      content: '';
+      position: absolute; left: 24px; right: 24px; bottom: 0; height: 2px;
+      background: transparent; pointer-events: none;
+    }
+    .s1-gnb-menu:not(.is-preview):hover,
+    .s1-gnb-menu.is-hover,
+    .s1-gnb-menu.is-selected {
+      color: var(--gnb-menu-label-active);
+    }
+    .s1-gnb-menu:not(.is-preview):hover::after,
+    .s1-gnb-menu.is-hover::after,
+    .s1-gnb-menu.is-selected::after {
+      background: var(--gnb-menu-underline-active);
+    }
+    /* sm — height 48, px = 외곽 md20 + 내부 xs12 = 32, 밑줄 inset 20 */
+    .s1-gnb-menu--sm { height: 48px; padding: 12px 32px; }
+    .s1-gnb-menu--sm::after { left: 20px; right: 20px; }
+    /* xsm — height 36, px 32, font 14, ls 0, 밑줄 inset 20 */
+    .s1-gnb-menu--xsm { height: 36px; padding: 12px 32px; font-size: 14px; letter-spacing: 0; }
+    .s1-gnb-menu--xsm::after { left: 20px; right: 20px; }
+
+    /* GNB 바 (pc_gnb) */
+    .s1-gnb {
+      display: flex;
+      align-items: center;
+      box-sizing: border-box;
+      width: 100%;
+      height: 56px; /* md */
+      padding-left: 24px;  /* pl lg */
+      padding-right: 20px; /* pr md */
+      background: var(--gnb-bg);
+      border-bottom: var(--border-width-default) solid var(--gnb-border);
+    }
+    .s1-gnb--sm  { height: 48px; }
+    .s1-gnb--xsm { height: 36px; padding-left: 20px; padding-right: 24px; } /* xsm 좌우 반전 — Figma 582:7770 (spacing/20·24) */
+    /* align center-between — 3분할 */
+    .s1-gnb--center-between { justify-content: space-between; }
+    /* align start — 로고+메뉴 좌측 묶음, 유틸 우측 */
+    .s1-gnb--start { justify-content: flex-start; }
+    .s1-gnb--start .s1-gnb-util { margin-left: auto; }
+
+    .s1-gnb-logo {
+      font-family: 'Pretendard', sans-serif;
+      font-size: 20px;
+      font-weight: var(--font-weight-bold);
+      line-height: var(--line-height-130);
+      color: var(--gnb-logo-text);
+      white-space: nowrap;
+    }
+    /* 메뉴 그룹 — 바 내부에서 메뉴 슬롯들을 가로 묶음 */
+    .s1-gnb-menus { display: flex; align-items: stretch; height: 100%; }
+    /* start 정렬: 로고↔메뉴 gap 64, 메뉴 묶음 좌측. 메뉴 슬롯은 인접(gap 0) — 분리는 슬롯 px로만 (참고 기준: 2슬롯 282×48 연속) */
+    .s1-gnb--start .s1-gnb-leading { display: flex; align-items: center; gap: 64px; height: 100%; }
+    /* 유틸리티 영역 */
+    .s1-gnb-util { display: flex; align-items: center; gap: var(--spacing-cluster-xxs); }
+    .s1-gnb-util-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 40px;  /* md/sm */
+      height: 40px;
+      padding: 0;
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: var(--gnb-icon);
+    }
+    .s1-gnb-util-btn svg { width: 24px; height: 24px; display: block; } /* Figma 아이콘 글리프: 32px 프레임 내 inset 12.5% → 실제 24px */
+    /* xsm — 박스 32, 아이콘 24 */
+    .s1-gnb--xsm .s1-gnb-util-btn { width: 32px; height: 32px; }
+    .s1-gnb--xsm .s1-gnb-util-btn svg { width: 18px; height: 18px; } /* xsm: 24px 프레임 내 inset → 실제 18px */
+
+    /* States matrix — static hover preview for pagination */
+    .s1-pagination-arrow.is-hover,
+    .s1-pagination-number.is-hover {
+      background: var(--pagination-control-hover-bg);
+    }
+
+    /* ── Dark mode hover 2단계 밝게 (gray-dark-200 → gray-dark-400 = --color-bg-elevated) ──
+       차단 해소: inline :root 와 tokens.css [data-theme="dark"] 는 명시도 동일(0,1,0).
+       <style> 태그가 tokens.css link 이후라 :root 정의가 dark override를 덮어쓰는 문제.
+       같은 <style> 내에서 [data-theme="dark"] 를 뒤에 두면 소스 순서 우선으로 적용됨. */
+    [data-theme="dark"] {
+      --dropdown-list-bg:               var(--color-bg-subtle);    /* gray-dark-200 = #24252C — 1단계 밝게 */
+      --dropdown-option-hover-bg:       var(--color-bg-muted);     /* gray-dark-300 */
+      --dropdown-trigger-selected-text: var(--color-text-secondary); /* gray-dark-800 = #B8BABF — filled 텍스트 */
+      --color-form-control-icon-default: var(--color-gray-dark-700); /* #8A8C96 */
+      /* button secondary dark override 제거 (2026-06-09): Variables color/button/* 가 다크값 보유 → 자동 전환 */
+      /* ── table dark — cascade 차단 해소 ──
+         문제: 헤더(bg-default=gray-dark-50) < 행(surface-default=gray-dark-100) → 레이어 역전
+               상하 강선(border-emphasis=gray-dark-700=#8A8C96) → 과도하게 밝아 텍스트 수준 */
+      --table-header-bg:     var(--color-bg-subtle);      /* gray-dark-200 = #24252C — 행보다 1단계 밝게 */
+      --table-header-border: var(--color-border-default); /* gray-dark-300 = #2E2F38 — 헤더bg와 구분 */
+      --table-border-strong: var(--color-border-strong);  /* gray-dark-500 = #3E4049 — 상하 강선 적정 명암 */
+    }
+    [data-theme="dark"] .s1-date-picker__day:hover:not([disabled]) > .day-inner {
+      background: var(--color-bg-elevated); /* gray-dark-400 = #35363F — 1단계 밝게 */
+    }
+    [data-theme="dark"] .s1-date-picker__panel { background: var(--color-bg-subtle); } /* gray-dark-200 = dropdown-list-bg와 동일 */
+    [data-theme="dark"] .s1-date-picker__nav-btn:hover { background: var(--color-bg-muted); }
+    [data-theme="dark"] .s1-date-picker__month-label:hover { background: var(--color-bg-muted); }
+    [data-theme="dark"] .s1-date-picker__selector-btn:hover { background: var(--color-bg-muted); }
+    [data-theme="dark"] .s1-tp-col-item:hover {
+      background: var(--color-bg-muted);
+      border-color: var(--color-bg-muted);
+    }
+    [data-theme="dark"] .s1-tp-select-dropdown-item:hover {
+      background: var(--color-bg-muted);
+    }
+
+    /* ─────────────────────────────────────────────────────────
+       Design Mode (Token Inspector)
+       ───────────────────────────────────────────────────────── */
+    /* 활성화 시 preview-area 내 모든 요소에 점선 외곽선 */
+    .dm-active .preview-area { cursor: crosshair; }
+    .dm-active .preview-area *:hover {
+      outline: 1.5px dashed rgba(99, 102, 241, 0.65) !important;
+      outline-offset: 2px;
+    }
+    /* Design mode ON: is-preview pointer-events 복원 → 상태 셀 인스펙션 가능
+       (클릭 방지는 JS capture phase에서 처리) */
+    .dm-active .preview-area .is-preview,
+    .dm-active .preview-area .is-preview * {
+      pointer-events: auto !important;
+    }
+
+    /* 플로팅 인스펙터 툴팁 */
+    #dm-tooltip {
+      position: fixed;
+      z-index: 99999;
+      min-width: 180px;
+      max-width: 250px;
+      padding: 10px 13px;
+      background: #16161e;
+      border: 1px solid #3b4261;
+      border-radius: 8px;
+      box-shadow: 0 10px 32px rgba(0,0,0,0.6);
+      font-family: 'SF Mono', 'JetBrains Mono', 'Consolas', monospace;
+      font-size: 11px;
+      line-height: 1.5;
+      color: #c0caf5;
+      pointer-events: none;
+      display: none;
+    }
+    .dm-el-label {
+      font-size: 9.5px;
+      font-weight: 700;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+      color: #565f89;
+      margin-bottom: 7px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .dm-prop-group { margin-bottom: 7px; }
+    .dm-prop-group:last-child { margin-bottom: 0; }
+    .dm-divider { height: 1px; background: #2a2a3e; margin: 6px 0; }
+    .dm-prop-label { font-size: 9.5px; color: #565f89; margin-bottom: 3px; }
+    .dm-color-row { display: flex; align-items: center; gap: 7px; margin-bottom: 5px; }
+    .dm-swatch {
+      width: 14px; height: 14px;
+      border-radius: 3px;
+      border: 1px solid rgba(255,255,255,0.12);
+      flex-shrink: 0;
+    }
+    .dm-hex { color: #e0af68; font-weight: 700; font-size: 12px; }
+    .dm-token-row { display: flex; align-items: flex-start; gap: 5px; margin-bottom: 2px; }
+    .dm-badge {
+      font-size: 8.5px;
+      font-weight: 800;
+      letter-spacing: 0.05em;
+      padding: 1px 5px;
+      border-radius: 3px;
+      flex-shrink: 0;
+      margin-top: 2px;
+      white-space: nowrap;
+    }
+    .dm-badge-F { background: #162316; color: #9ece6a; border: 1px solid #2d5030; }
+    .dm-badge-S { background: #131c2e; color: #7aa2f7; border: 1px solid #2a4070; }
+    .dm-badge-C { background: #1e1228; color: #bb9af7; border: 1px solid #4a2d6e; }
+    .dm-token-name { color: #cdd6f4; word-break: break-all; font-size: 10.5px; }
+    .dm-typo-row { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+    .dm-typo-item { display: flex; align-items: center; gap: 4px; }
+    .dm-typo-key { font-size: 9.5px; color: #565f89; }
+    .dm-typo-val { color: #9ece6a; font-weight: 700; font-size: 11px; }
+
+    /* Design Mode 툴바 버튼 */
+    #btnDesignMode { display: flex; align-items: center; gap: 5px; }
+    #btnDesignMode.active {
+      background: #4f46e5 !important;
+      color: #fff !important;
+      box-shadow: 0 1px 4px rgba(79, 70, 229, 0.5);
+    }
+    [data-theme="dark"] #btnDesignMode.active {
+      background: #6366f1 !important;
+    }
+
+    /* ── 돋보기 (Magnifier) ── */
+    #dm-magnifier {
+      position: fixed;
+      z-index: 99998;
+      width: 220px;
+      height: 165px;
+      overflow: hidden;
+      border: 2px solid #4f46e5;
+      border-radius: 8px;
+      box-shadow: 0 6px 28px rgba(0,0,0,0.6);
+      pointer-events: none;
+      display: none;
+      background: #fff;
+    }
+    /* 중앙 십자선 */
+    #dm-magnifier::before,
+    #dm-magnifier::after {
+      content: '';
+      position: absolute;
+      top: 50%; left: 50%;
+      background: rgba(99, 102, 241, 0.75);
+      z-index: 3;
+      pointer-events: none;
+    }
+    #dm-magnifier::before { width: 1px;  height: 18px; transform: translate(-50%, -50%); }
+    #dm-magnifier::after  { width: 18px; height: 1px;  transform: translate(-50%, -50%); }
+    /* 클론 컨테이너 */
+    #dm-magnifier-content { position: absolute; transform-origin: 0 0; }
+    /* 배율 레이블 바 */
+    #dm-magnifier-bar {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      background: rgba(22, 22, 30, 0.88);
+      color: #7aa2f7;
+      font: 700 9.5px 'SF Mono','Consolas',monospace;
+      padding: 3px 8px;
+      text-align: center;
+      letter-spacing: 0.06em;
+      z-index: 4;
+      border-top: 1px solid #3b4261;
+    }
+  </style>
+</head>
+<body>
+<div class="app">
+
+  <!-- Sidebar -->
+  <aside class="sidebar" id="sidebar"></aside>
+
+  <button class="hamburger" id="sidebar-toggle" aria-label="메뉴 열기">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/>
+    </svg>
+  </button>
+  <div class="sidebar-overlay" id="sidebar-overlay"></div>
+
+  <main class="main-content">
+    <!-- 제목 영역: 스크롤 시 사라짐 -->
+    <div class="page-header">
+      <div class="page-header-inner">
+        <div>
+          <h1>Components New <span style="font-size:13px;font-weight:600;color:var(--color-action-primary-default);vertical-align:middle;">Variables 재구성</span></h1>
+          <p>Figma 컴포넌트 세트 직접 대조 · Variables 정본(control/* 등) 직접 참조 · 진행 중(WIP)</p>
+        </div>
+        <div class="page-header-actions">
+          <span class="badge badge-blue">✅ Checkbox 재구성 완료</span>
+          <span class="badge badge-gray">나머지 마이그레이션 예정</span>
+        </div>
+      </div>
+    </div><!-- /page-header -->
+
+    <!-- Sticky 바: 컴포넌트 탭 + 테마/플랫폼 툴바 — 스크롤 시 최상단 고정 -->
+    <div class="comp-sticky-bar">
+      <!-- Component filter: category tabs + component pills -->
+      <div class="component-filter">
+        <div class="category-nav" id="categoryNav">
+          <button class="category-btn is-active" onclick="filterByCategory('all', this)">All</button>
+          <button class="category-btn" onclick="filterByCategory('selection', this)">Selection</button>
+        </div>
+        <div class="comp-nav">
+          <button class="comp-nav-btn is-active" data-category="selection" onclick="showSection('checkbox', this)">Checkbox</button>
+        </div><!-- /comp-nav -->
+      </div><!-- /component-filter -->
+
+      <!-- Theme / Platform toggle -->
+      <div class="controls-sticky">
+        <div class="theme-bar">
+          <span class="theme-bar-label">Preview Theme</span>
+          <div class="theme-toggle">
+            <button class="theme-btn active" id="btnLight" onclick="setTheme('light')">Light</button>
+            <button class="theme-btn" id="btnDark" onclick="setTheme('dark')">Dark</button>
+          </div>
+          <div class="theme-bar-divider"></div>
+          <span class="theme-bar-label">Platform</span>
+          <div class="theme-toggle">
+            <button class="theme-btn" id="btnAll" onclick="setPlatform('all')">All</button>
+            <button class="theme-btn active" id="btnPC" onclick="setPlatform('pc')">PC</button>
+            <button class="theme-btn" id="btnMobile" onclick="setPlatform('mobile')">Mobile</button>
+          </div>
+          <div class="theme-bar-divider"></div>
+          <div class="theme-toggle">
+            <button class="theme-btn" id="btnDesignMode" onclick="toggleDesignMode()" title="컴포넌트 위에 마우스를 올리면 Semantic·Foundation 토큰명과 HEX 코드가 표시됩니다">
+              <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true">
+                <circle cx="6" cy="6" r="2" stroke="currentColor" stroke-width="1.3"/>
+                <path d="M6 1v1.5M6 9.5V11M1 6h1.5M9.5 6H11M2.64 2.64l1.06 1.06M8.3 8.3l1.06 1.06M9.36 2.64L8.3 3.7M3.7 8.3l-1.06 1.06" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
+              </svg>
+              Design Mode
+            </button>
+          </div>
+        </div>
+      </div><!-- /controls-sticky -->
+    </div><!-- /comp-sticky-bar -->
+
+    <div class="page-content">
+
+      <!-- ═══ CHECKBOX ═══ -->
+      <section class="comp-section is-active" id="checkbox">
+        <div class="comp-section-header">
+          <h2 class="comp-section-title">Checkbox</h2>
+          <span class="comp-badge comp-badge-blue">Core</span>
+          <span class="comp-badge">5 states</span>
+          <span class="comp-badge comp-badge-blue">Figma 1459:16409</span>
+        </div>
+
+        <div class="variant-block">
+          <div class="variant-label">States · Figma 변종 5 (Default · Hover · Checked · Disabled · Dis+Checked)</div>
+          <div class="preview-area">
+            <div class="comp-state-matrix" style="grid-template-columns: 200px repeat(5, minmax(90px, 1fr));">
+              <!-- Header -->
+              <div class="matrix-col-header-action">Action</div>
+              <div class="matrix-col-header">Default</div>
+              <div class="matrix-col-header">Hover</div>
+              <div class="matrix-col-header">Checked</div>
+              <div class="matrix-col-header">Disabled</div>
+              <div class="matrix-col-header">Dis+Checked</div>
+              <!-- Row -->
+              <div class="comp-action-cell" data-comp-action="checkbox">
+                <label class="s1-checkbox" id="chk-action-target">
+                  <div class="s1-checkbox-box">
+                    <svg class="ds-chk-icon" width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M4 9.41675L7.19502 13.1667L14.125 5.66675" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>
+                  </div>
+                  <span class="s1-checkbox-label chk-action-label" style="display:none;">라벨</span>
+                </label>
+                <div class="action-test-controls">
+                  <button type="button" class="action-mini-toggle" data-chk-disabled>Disabled: off</button>
+                  <button type="button" class="action-mini-toggle" data-chk-label>Label: off</button>
+                </div>
+              </div>
+              <!-- Default -->
+              <div class="comp-state-cell">
+                <label class="s1-checkbox is-preview"><div class="s1-checkbox-box"></div></label>
+              </div>
+              <!-- Hover (Figma Variant5) -->
+              <div class="comp-state-cell">
+                <label class="s1-checkbox is-hover is-preview"><div class="s1-checkbox-box"></div></label>
+              </div>
+              <!-- Checked -->
+              <div class="comp-state-cell">
+                <label class="s1-checkbox is-checked is-preview">
+                  <div class="s1-checkbox-box"><svg class="ds-chk-icon" width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M4 9.41675L7.19502 13.1667L14.125 5.66675" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg></div>
+                </label>
+              </div>
+              <!-- Disabled -->
+              <div class="comp-state-cell">
+                <label class="s1-checkbox is-disabled is-preview"><div class="s1-checkbox-box"></div></label>
+              </div>
+              <!-- Disabled+Checked -->
+              <div class="comp-state-cell">
+                <label class="s1-checkbox is-checked is-disabled is-preview">
+                  <div class="s1-checkbox-box"><svg class="ds-chk-icon" width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M4 9.41675L7.19502 13.1667L14.125 5.66675" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg></div>
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="code-block">
+          <div class="code-tabs">
+            <button class="code-tab active" onclick="switchTab(this,'chk-html')">HTML</button>
+            <button class="code-tab" onclick="switchTab(this,'chk-css')">CSS</button>
+            <button class="code-tab" onclick="switchTab(this,'chk-js')">JavaScript</button>
+            <button class="code-tab" onclick="switchTab(this,'chk-tokens')">Token Details</button>
+            <button class="code-copy-btn" onclick="copyCode(document.getElementById('checkbox').querySelector('.code-pane.active').querySelector('pre').id)">복사</button>
+          </div>
+          <div class="code-pane active" id="chk-html">
+            <pre id="chk-html-pre"><span class="c-cmt">&lt;!-- Default --&gt;</span>
+<span class="c-tag">&lt;label</span> <span class="c-attr">class</span>=<span class="c-str">"s1-checkbox"</span><span class="c-tag">&gt;</span>
+  <span class="c-tag">&lt;div</span> <span class="c-attr">class</span>=<span class="c-str">"s1-checkbox-box"</span><span class="c-tag">&gt;&lt;/div&gt;</span>
+  <span class="c-tag">&lt;span</span> <span class="c-attr">class</span>=<span class="c-str">"s1-checkbox-label"</span><span class="c-tag">&gt;</span>레이블<span class="c-tag">&lt;/span&gt;</span>
+<span class="c-tag">&lt;/label&gt;</span>
+<span class="c-cmt">&lt;!-- Checked --&gt;</span>
+<span class="c-tag">&lt;label</span> <span class="c-attr">class</span>=<span class="c-str">"s1-checkbox is-checked"</span><span class="c-tag">&gt;</span>
+  <span class="c-tag">&lt;div</span> <span class="c-attr">class</span>=<span class="c-str">"s1-checkbox-box"</span><span class="c-tag">&gt;</span>
+    <span class="c-tag">&lt;svg</span> <span class="c-attr">class</span>=<span class="c-str">"ds-chk-icon"</span> <span class="c-attr">width</span>=<span class="c-str">"18"</span> <span class="c-attr">height</span>=<span class="c-str">"18"</span> <span class="c-attr">viewBox</span>=<span class="c-str">"0 0 18 18"</span> <span class="c-attr">fill</span>=<span class="c-str">"none"</span><span class="c-tag">&gt;</span>
+      <span class="c-tag">&lt;path</span> <span class="c-attr">d</span>=<span class="c-str">"M4 9.41675L7.19502 13.1667L14.125 5.66675"</span> <span class="c-attr">stroke</span>=<span class="c-str">"currentColor"</span> <span class="c-attr">stroke-width</span>=<span class="c-str">"1.5"</span> <span class="c-attr">stroke-linejoin</span>=<span class="c-str">"round"</span><span class="c-tag">/&gt;</span>
+    <span class="c-tag">&lt;/svg&gt;</span>
+  <span class="c-tag">&lt;/div&gt;</span>
+  <span class="c-tag">&lt;span</span> <span class="c-attr">class</span>=<span class="c-str">"s1-checkbox-label"</span><span class="c-tag">&gt;</span>레이블<span class="c-tag">&lt;/span&gt;</span>
+<span class="c-tag">&lt;/label&gt;</span>
+<span class="c-cmt">&lt;!-- Disabled --&gt;</span>
+<span class="c-tag">&lt;label</span> <span class="c-attr">class</span>=<span class="c-str">"s1-checkbox is-disabled"</span><span class="c-tag">&gt;</span>
+  <span class="c-tag">&lt;div</span> <span class="c-attr">class</span>=<span class="c-str">"s1-checkbox-box"</span><span class="c-tag">&gt;&lt;/div&gt;</span>
+  <span class="c-tag">&lt;span</span> <span class="c-attr">class</span>=<span class="c-str">"s1-checkbox-label"</span><span class="c-tag">&gt;</span>레이블<span class="c-tag">&lt;/span&gt;</span>
+<span class="c-tag">&lt;/label&gt;</span>
+<span class="c-cmt">&lt;!-- Disabled+Checked --&gt;</span>
+<span class="c-tag">&lt;label</span> <span class="c-attr">class</span>=<span class="c-str">"s1-checkbox is-checked is-disabled"</span><span class="c-tag">&gt;</span>
+  <span class="c-tag">&lt;div</span> <span class="c-attr">class</span>=<span class="c-str">"s1-checkbox-box"</span><span class="c-tag">&gt;</span>
+    <span class="c-tag">&lt;svg</span> <span class="c-attr">class</span>=<span class="c-str">"ds-chk-icon"</span> <span class="c-attr">width</span>=<span class="c-str">"18"</span> <span class="c-attr">height</span>=<span class="c-str">"18"</span> <span class="c-attr">viewBox</span>=<span class="c-str">"0 0 18 18"</span> <span class="c-attr">fill</span>=<span class="c-str">"none"</span><span class="c-tag">&gt;</span>
+      <span class="c-tag">&lt;path</span> <span class="c-attr">d</span>=<span class="c-str">"M4 9.41675L7.19502 13.1667L14.125 5.66675"</span> <span class="c-attr">stroke</span>=<span class="c-str">"currentColor"</span> <span class="c-attr">stroke-width</span>=<span class="c-str">"1.5"</span> <span class="c-attr">stroke-linejoin</span>=<span class="c-str">"round"</span><span class="c-tag">/&gt;</span>
+    <span class="c-tag">&lt;/svg&gt;</span>
+  <span class="c-tag">&lt;/div&gt;</span>
+  <span class="c-tag">&lt;span</span> <span class="c-attr">class</span>=<span class="c-str">"s1-checkbox-label"</span><span class="c-tag">&gt;</span>레이블<span class="c-tag">&lt;/span&gt;</span>
+<span class="c-tag">&lt;/label&gt;</span></pre>
+          </div>
+          <div class="code-pane" id="chk-css">
+            <pre id="chk-css-pre"><span class="c-cmt">/* Checkbox — Figma 1459:16409 · control/* Variables 직접 참조 */</span>
+<span class="c-prop">--checkbox-default-bg</span>:          <span class="c-val">var(--color-control-bg-default)</span>;
+<span class="c-prop">--checkbox-hover-bg</span>:            <span class="c-val">var(--color-control-bg-hover)</span>;
+<span class="c-prop">--checkbox-checked-bg</span>:          <span class="c-val">var(--color-control-bg-selected)</span>;
+<span class="c-prop">--checkbox-disabled-bg</span>:         <span class="c-val">var(--color-control-bg-disabled)</span>;
+<span class="c-prop">--checkbox-default-border</span>:      <span class="c-val">var(--color-control-border-default)</span>;
+<span class="c-prop">--checkbox-hover-border</span>:        <span class="c-val">var(--color-control-border-default)</span>;
+<span class="c-prop">--checkbox-checked-border</span>:      <span class="c-val">var(--color-control-border-selected)</span>;
+<span class="c-prop">--checkbox-disabled-border</span>:     <span class="c-val">var(--color-control-border-disabled)</span>;
+<span class="c-prop">--checkbox-check-icon</span>:          <span class="c-val">var(--color-control-indicator-selected)</span>;
+<span class="c-prop">--checkbox-disabled-check-icon</span>: <span class="c-val">var(--color-control-indicator-disabled)</span>;
+
+<span class="c-cmt">/* Structure */</span>
+<span class="c-prop">.s1-checkbox</span> {
+  display: inline-flex; align-items: center;
+  gap: <span class="c-val">8px</span>; cursor: pointer; user-select: none;
+}
+<span class="c-prop">.s1-checkbox-box</span> {
+  width: <span class="c-val">18px</span>; height: <span class="c-val">18px</span>;
+  border-radius: <span class="c-val">2px</span>;
+  border: <span class="c-val">1px</span> solid <span class="c-val">var(--checkbox-default-border)</span>;
+  background: <span class="c-val">var(--checkbox-default-bg)</span>;
+  display: flex; align-items: center; justify-content: center;
+}
+<span class="c-prop">.s1-checkbox-label</span> {
+  font-size: <span class="c-val">14px</span>; color: <span class="c-val">var(--color-control-label-default)</span>;
+}
+
+<span class="c-cmt">/* States */</span>
+<span class="c-prop">.s1-checkbox:not(.is-disabled):not(.is-checked):hover .s1-checkbox-box</span> {
+  background: <span class="c-val">var(--checkbox-hover-bg)</span>;
+  border-color: <span class="c-val">var(--checkbox-hover-border)</span>;
+}
+<span class="c-prop">.s1-checkbox.is-checked .s1-checkbox-box</span> {
+  background: <span class="c-val">var(--checkbox-checked-bg)</span>;
+  border-color: <span class="c-val">var(--checkbox-checked-border)</span>;
+}
+<span class="c-prop">.s1-checkbox.is-disabled .s1-checkbox-box</span> {
+  background: <span class="c-val">var(--checkbox-disabled-bg)</span>;
+  border-color: <span class="c-val">var(--checkbox-disabled-border)</span>;
+  cursor: not-allowed;
+}
+<span class="c-prop">.s1-checkbox.is-checked.is-disabled .s1-checkbox-box</span> {
+  background: <span class="c-val">var(--checkbox-disabled-bg)</span>;
+  border-color: <span class="c-val">var(--checkbox-disabled-border)</span>;
+  color: <span class="c-val">var(--checkbox-disabled-check-icon)</span>;
+}
+<span class="c-prop">.s1-checkbox.is-disabled .s1-checkbox-label</span> {
+  color: <span class="c-val">var(--color-control-label-disabled)</span>;
+}</pre>
+          </div>
+          <div class="code-pane" id="chk-tokens">
+            <table class="token-detail-table">
+              <thead><tr><th>Token</th><th>Value (Semantic)</th><th>Role</th></tr></thead>
+              <tbody>
+                <tr><td class="token-name">--checkbox-default-bg</td><td class="token-value">var(--color-control-bg-default)</td><td>기본 배경 (Figma control/bg/default)</td></tr>
+                <tr><td class="token-name">--checkbox-hover-bg</td><td class="token-value">var(--color-control-bg-hover)</td><td>호버 배경 (Figma Variant5 = control/bg/hover)</td></tr>
+                <tr><td class="token-name">--checkbox-checked-bg</td><td class="token-value">var(--color-control-bg-selected)</td><td>선택됨 배경 (control/bg/selected)</td></tr>
+                <tr><td class="token-name">--checkbox-disabled-bg</td><td class="token-value">var(--color-control-bg-disabled)</td><td>비활성 배경 (control/bg/disabled)</td></tr>
+                <tr><td class="token-name">--checkbox-default-border</td><td class="token-value">var(--color-control-border-default)</td><td>기본 테두리 (control/border/default)</td></tr>
+                <tr><td class="token-name">--checkbox-hover-border</td><td class="token-value">var(--color-control-border-default)</td><td>호버 테두리 — Figma상 default 유지</td></tr>
+                <tr><td class="token-name">--checkbox-checked-border</td><td class="token-value">var(--color-control-border-selected)</td><td>선택됨 테두리 (control/border/selected)</td></tr>
+                <tr><td class="token-name">--checkbox-disabled-border</td><td class="token-value">var(--color-control-border-disabled)</td><td>비활성 테두리 (control/border/disabled)</td></tr>
+                <tr><td class="token-name">--checkbox-check-icon</td><td class="token-value">var(--color-control-indicator-selected)</td><td>체크 아이콘 (control/indicator/selected)</td></tr>
+                <tr><td class="token-name">--checkbox-disabled-check-icon</td><td class="token-value">var(--color-control-indicator-disabled)</td><td>비활성 체크 아이콘 (control/indicator/disabled)</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="code-pane" id="chk-js"><pre>// ── Checkbox ──
+// label 클릭 → is-checked 토글
+// disabled 상태일 때는 변경 없음
+
+var checkbox = document.querySelector('.s1-checkbox');
+
+checkbox.addEventListener('click', function() {
+  if (checkbox.classList.contains('is-disabled')) return;
+  checkbox.classList.toggle('is-checked');
+});
+
+// Indeterminate (테이블 전체선택 중간값)
+// checkbox.classList.add('is-indeterminate');
+
+// 그룹 내 복수 체크박스
+var checkboxes = document.querySelectorAll('.s1-checkbox');
+checkboxes.forEach(function(chk) {
+  chk.addEventListener('click', function() {
+    if (chk.classList.contains('is-disabled')) return;
+    chk.classList.toggle('is-checked');
+  });
+});</pre></div>
+        </div>
+
+      </section>
+
+    </div>
+  </main>
+</div>
+
+<script>
+  function updateTokenComments() {
+    document.querySelectorAll('.code-pane pre .c-val').forEach(valSpan => {
+      const match = valSpan.textContent.match(/var\((--[\w-]+)\)/);
+      if (!match) return;
+      const resolved = getComputedStyle(document.documentElement)
+        .getPropertyValue(match[1]).trim();
+      if (!resolved) return;
+      let node = valSpan.nextSibling;
+      while (node) {
+        if (node.nodeType === 1 && node.classList.contains('c-cmt')) {
+          node.textContent = '/* ' + resolved + ' */';
+          break;
+        }
+        node = node.nextSibling;
+      }
+    });
+  }
+
+  function filterByCategory(catId, btn) {
+    document.querySelectorAll('.category-btn').forEach(b => b.classList.remove('is-active'));
+    if (btn) btn.classList.add('is-active');
+    document.querySelectorAll('.comp-nav-btn').forEach(b => {
+      b.style.display = (catId === 'all' || b.dataset.category === catId) ? '' : 'none';
+    });
+    const activeBtn = document.querySelector('.comp-nav-btn.is-active');
+    if (activeBtn && activeBtn.style.display === 'none') {
+      const firstVisible = document.querySelector('.comp-nav-btn:not([style*="none"])');
+      if (firstVisible) firstVisible.click();
+    }
+  }
+
+  function showSection(id, btn) {
+    document.querySelectorAll('.comp-section').forEach(s => s.classList.remove('is-active'));
+    document.querySelectorAll('.comp-nav-btn').forEach(b => b.classList.remove('is-active'));
+    const target = document.getElementById(id);
+    if (target) target.classList.add('is-active');
+    if (btn) btn.classList.add('is-active');
+  }
+
+  function setTheme(t) {
+    setGlobalTheme(t);
+    updateTokenComments();
+    // 테마 변경 시 Design Mode 토큰 맵 재빌드 (light/dark 값이 달라짐)
+    if (window.resetDesignModeCache) window.resetDesignModeCache();
+  }
+  function setPlatform(mode) {
+    const root = document.documentElement;
+    root.classList.remove('view-pc', 'view-mobile');
+    if (mode !== 'all') root.classList.add('view-' + mode);
+    document.getElementById('btnAll').classList.toggle('active', mode === 'all');
+    document.getElementById('btnPC').classList.toggle('active', mode === 'pc');
+    document.getElementById('btnMobile').classList.toggle('active', mode === 'mobile');
+  }
+  function scrollToSection(id) {
+    const el = document.getElementById(id);
+    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+  function setCheckboxLabel(mode, btn) {
+    const section = document.getElementById('checkbox');
+    section.querySelectorAll('.chk-label-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    if (mode === 'nolabel') {
+      section.querySelectorAll('.chk-nolabel-row').forEach(el => el.classList.remove('chk-row-hidden'));
+      section.querySelectorAll('.chk-label-row').forEach(el => el.classList.add('chk-row-hidden'));
+    } else {
+      section.querySelectorAll('.chk-label-row').forEach(el => el.classList.remove('chk-row-hidden'));
+      section.querySelectorAll('.chk-nolabel-row').forEach(el => el.classList.add('chk-row-hidden'));
+    }
+  }
+  function switchTab(btn, paneId) {
+    const block = btn.closest('.code-block');
+    block.querySelectorAll('.code-tab').forEach(b => b.classList.remove('active'));
+    block.querySelectorAll('.code-pane').forEach(p => p.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById(paneId).classList.add('active');
+  }
+  function copyCode(id) {
+    const el = document.getElementById(id);
+    if (!el) return;
+    navigator.clipboard.writeText(el.innerText).then(() => {
+      const btn = el.closest('.code-block').querySelector('.code-copy-btn');
+      const orig = btn.textContent;
+      btn.textContent = '복사됨!';
+      setTimeout(() => { btn.textContent = orig; }, 1500);
+    });
+  }
+  // Interactive inputs in Sizes block
+  document.querySelectorAll('.input-interactive').forEach(wrap => {
+    const input = wrap.querySelector('input');
+    const clearBtn = wrap.querySelector('.input-clear-btn');
+    input.addEventListener('focus', () => wrap.classList.add('is-focus'));
+    input.addEventListener('blur', e => {
+      if (e.relatedTarget === clearBtn) return;
+      wrap.classList.remove('is-focus');
+    });
+    input.addEventListener('input', () => {
+      wrap.classList.toggle('has-value', input.value.length > 0);
+    });
+    clearBtn.addEventListener('mousedown', e => e.preventDefault());
+    clearBtn.addEventListener('click', () => {
+      input.value = '';
+      wrap.classList.remove('has-value');
+      input.focus();
+    });
+  });
+
+  updateTokenComments();
+
+  // ── Token Detail Tables: Light / Dark dual-swatch resolver ──
+  (function() {
+    var html = document.documentElement;
+    var origTheme = html.getAttribute('data-theme');
+
+    // Single probe element — we switch html[data-theme] to force light/dark context.
+    // All reads happen synchronously; browser does not repaint mid-function.
+    var probe = document.createElement('span');
+    probe.style.cssText = 'position:fixed;top:-9999px;left:-9999px;width:1px;height:1px;visibility:hidden;pointer-events:none;';
+    document.body.appendChild(probe);
+
+    function measure(tokenName, theme) {
+      if (theme === 'light') html.removeAttribute('data-theme');
+      else html.setAttribute('data-theme', 'dark');
+      probe.style.background = 'var(' + tokenName + ')';
+      var bg = getComputedStyle(probe).backgroundColor;
+      if (!bg || bg === 'rgba(0, 0, 0, 0)' || bg === 'transparent') return null;
+      return bg;
+    }
+
+    function rgbToHex(rgb) {
+      var m = rgb.match(/rgb\(\s*(\d+),\s*(\d+),\s*(\d+)\)/);
+      if (!m) return rgb;
+      return '#' + [m[1], m[2], m[3]]
+        .map(function(n) { return ('0' + parseInt(n).toString(16)).slice(-2).toUpperCase(); })
+        .join('');
+    }
+
+    function makeSwatchHtml(color, isDark) {
+      if (!color) return '<span style="color:#6b7280;font-size:10px;">—</span>';
+      var hex = rgbToHex(color);
+      var border = isDark ? '1px solid rgba(255,255,255,0.15)' : '1px solid #d1d5db';
+      return '<span style="display:inline-flex;align-items:center;gap:4px;">'
+        + '<span style="display:inline-block;width:12px;height:12px;border-radius:2px;border:' + border + ';background:' + color + ';flex-shrink:0;"></span>'
+        + '<span style="font-family:monospace;font-size:10px;">' + hex + '</span>'
+        + '</span>';
+    }
+
+    document.querySelectorAll('.token-detail-table').forEach(function(table) {
+      var thead = table.querySelector('thead tr');
+      if (!thead) return;
+      var ths = Array.from(thead.querySelectorAll('th'));
+      var headers = ths.map(function(th) { return th.textContent.trim(); });
+
+      // Skip if already upgraded
+      if (headers.includes('Light') || headers.includes('Dark')) return;
+
+      // Accept both "Value (Semantic)" and "Value" as the value column
+      var valueIdx = headers.indexOf('Value (Semantic)');
+      if (valueIdx === -1) valueIdx = headers.indexOf('Value');
+      if (valueIdx === -1) return;
+
+      var resolvedIdx = headers.indexOf('Resolved');
+      var isTypeB = resolvedIdx !== -1;
+
+      // ── Update header ──
+      ths[valueIdx].textContent = 'Semantic Alias';
+
+      if (isTypeB) {
+        ths[resolvedIdx].textContent = 'Light';
+        var darkTh = document.createElement('th');
+        darkTh.textContent = 'Dark';
+        darkTh.className = 'token-dark-col';
+        ths[resolvedIdx].insertAdjacentElement('afterend', darkTh);
+      } else {
+        var lightTh = document.createElement('th');
+        lightTh.textContent = 'Light';
+        var darkThA = document.createElement('th');
+        darkThA.textContent = 'Dark';
+        darkThA.className = 'token-dark-col';
+        ths[valueIdx].insertAdjacentElement('afterend', lightTh);
+        lightTh.insertAdjacentElement('afterend', darkThA);
+      }
+
+      // ── Update rows ──
+      table.querySelectorAll('tbody tr').forEach(function(row) {
+        var cells = row.querySelectorAll('td');
+        if (!cells.length) return;
+
+        // Group/section rows (no td content in first cell resembling a token name) — skip
+        var existingResolved = row.querySelector('.token-resolved[data-token]');
+        var tokenName = existingResolved
+          ? existingResolved.getAttribute('data-token')
+          : (cells[0] ? cells[0].textContent.trim() : '');
+        if (!tokenName || !tokenName.startsWith('--')) return;
+
+        var lightColor = measure(tokenName, 'light');
+        var darkColor  = measure(tokenName, 'dark');
+
+        if (isTypeB && existingResolved) {
+          existingResolved.innerHTML = makeSwatchHtml(lightColor, false);
+          var darkTdB = document.createElement('td');
+          darkTdB.className = 'token-resolved token-dark-col';
+          darkTdB.innerHTML = makeSwatchHtml(darkColor, true);
+          existingResolved.insertAdjacentElement('afterend', darkTdB);
+        } else {
+          var valueCell = cells[valueIdx];
+          if (!valueCell) return;
+          var lightTd = document.createElement('td');
+          lightTd.className = 'token-resolved';
+          lightTd.innerHTML = makeSwatchHtml(lightColor, false);
+          var darkTdA = document.createElement('td');
+          darkTdA.className = 'token-resolved token-dark-col';
+          darkTdA.innerHTML = makeSwatchHtml(darkColor, true);
+          valueCell.insertAdjacentElement('afterend', lightTd);
+          lightTd.insertAdjacentElement('afterend', darkTdA);
+        }
+      });
+    });
+
+    // Restore original theme and clean up
+    if (origTheme) html.setAttribute('data-theme', origTheme);
+    else html.removeAttribute('data-theme');
+    probe.remove();
+  })();
+
+  (function initFromHash() {
+    var valid = ['checkbox']; // Components New: 마이그레이션 완료 컴포넌트만
+    var hash  = window.location.hash.replace('#', '');
+    var id    = (hash && valid.includes(hash)) ? hash : 'checkbox';
+    var btn   = document.querySelector('.comp-nav-btn[onclick*="\'' + id + '\'"]') || document.querySelector('.comp-nav-btn');
+    showSection(id, btn);
+  })();
+
+  setPlatform('pc');
+
+  // ── ACTION test setup ──
+  function setupButtonActionTests() {
+    document.querySelectorAll('[data-action-cell]').forEach((wrapper) => {
+      const btn            = wrapper.querySelector('[data-action-test]');
+      const disabledToggle = wrapper.querySelector('[data-toggle-disabled]');
+      const counter        = wrapper.querySelector('[data-click-count]');
+      if (!btn) return;
+      let count = 0;
+
+      btn.addEventListener('click', () => {
+        if (btn.disabled) return;
+        count += 1;
+        if (counter) counter.textContent = String(count);
+      });
+
+      disabledToggle?.addEventListener('click', () => {
+        const isDisabled = btn.toggleAttribute('disabled');
+        disabledToggle.classList.toggle('is-on', isDisabled);
+        disabledToggle.textContent = isDisabled ? 'Disabled: on' : 'Disabled: off';
+      });
+    });
+  }
+  setupButtonActionTests();
+
+  // ── Component ACTION setup ──
+  function setupCompActionTests() {
+    // ── Checkbox: click → toggle checked ──
+    const chkTarget = document.getElementById('chk-action-target');
+    if (chkTarget) {
+      chkTarget.style.cursor = 'pointer';
+      chkTarget.addEventListener('click', () => {
+        if (chkTarget.classList.contains('is-disabled')) return;
+        const checked = chkTarget.classList.toggle('is-checked');
+      });
+      document.querySelector('[data-chk-disabled]')?.addEventListener('click', (e) => {
+        const on = chkTarget.classList.toggle('is-disabled');
+        e.target.classList.toggle('is-on', on);
+        e.target.textContent = on ? 'Disabled: on' : 'Disabled: off';
+      });
+      document.querySelector('[data-chk-label]')?.addEventListener('click', (e) => {
+        const lbl = chkTarget.querySelector('.chk-action-label');
+        const visible = lbl.style.display !== 'none' && lbl.style.display !== '';
+        lbl.style.display = visible ? 'none' : 'inline';
+        e.target.classList.toggle('is-on', !visible);
+        e.target.textContent = visible ? 'Label: off' : 'Label: on';
+      });
+    }
+
+    // ── Radio: click → toggle selected ──
+    const radioTarget = document.getElementById('radio-action-target');
+    if (radioTarget) {
+      radioTarget.style.cursor = 'pointer';
+      radioTarget.addEventListener('click', () => {
+        if (radioTarget.classList.contains('is-disabled')) return;
+        radioTarget.classList.toggle('is-selected');
+      });
+      document.querySelector('[data-radio-disabled]')?.addEventListener('click', (e) => {
+        const on = radioTarget.classList.toggle('is-disabled');
+        e.target.classList.toggle('is-on', on);
+        e.target.textContent = on ? 'Disabled: on' : 'Disabled: off';
+      });
+    }
+
+    // ── Toggle: click → toggle on/off ──
+    const togTarget = document.getElementById('toggle-action-target');
+    if (togTarget) {
+      togTarget.style.cursor = 'pointer';
+      togTarget.addEventListener('click', () => {
+        if (togTarget.classList.contains('is-disabled')) return;
+        const on = togTarget.classList.toggle('is-on');
+        togTarget.querySelector('.s1-toggle-label').textContent = on ? 'ON' : 'OFF';
+      });
+      document.querySelector('[data-toggle-comp-disabled]')?.addEventListener('click', (e) => {
+        const on = togTarget.classList.toggle('is-disabled');
+        e.target.classList.toggle('is-on', on);
+        e.target.textContent = on ? 'Disabled: on' : 'Disabled: off';
+      });
+    }
+
+    // ── Chip Line: click → toggle selected ──
+    const chipLine = document.getElementById('chip-line-action');
+    if (chipLine) {
+      chipLine.addEventListener('click', () => chipLine.classList.toggle('is-selected'));
+      document.querySelector('[data-chip-line-disabled]')?.addEventListener('click', (e) => {
+        const on = chipLine.classList.toggle('is-disabled');
+        chipLine.style.pointerEvents = on ? 'none' : '';
+        e.target.classList.toggle('is-on', on);
+        e.target.textContent = on ? 'Disabled: on' : 'Disabled: off';
+      });
+    }
+
+    // ── Chip Solid: click → toggle selected ──
+    const chipSolid = document.getElementById('chip-solid-action');
+    if (chipSolid) {
+      chipSolid.addEventListener('click', () => chipSolid.classList.toggle('is-selected'));
+      document.querySelector('[data-chip-solid-disabled]')?.addEventListener('click', (e) => {
+        const on = chipSolid.classList.toggle('is-disabled');
+        chipSolid.style.pointerEvents = on ? 'none' : '';
+        e.target.classList.toggle('is-on', on);
+        e.target.textContent = on ? 'Disabled: on' : 'Disabled: off';
+      });
+    }
+
+    // ── Filter Chip: click → toggle selected ──
+    function setupFilterChipDropdown(wrapId, disabledAttr) {
+      const wrap = document.getElementById(wrapId);
+      if (!wrap) return;
+      const chip = wrap.querySelector('.ds-filter-chip');
+      const list = wrap.querySelector('.s1-select-list');
+      chip.addEventListener('click', () => {
+        if (chip.classList.contains('is-disabled')) return;
+        wrap.classList.toggle('is-open');
+      });
+      list.querySelectorAll('.s1-select-option').forEach(opt => {
+        opt.addEventListener('click', () => {
+          list.querySelectorAll('.s1-select-option').forEach(o => o.classList.remove('is-selected'));
+          opt.classList.add('is-selected');
+          wrap.querySelector('.ds-filter-chip-label').textContent = opt.textContent;
+          wrap.classList.remove('is-open');
+        });
+      });
+      document.querySelector('[' + disabledAttr + ']')?.addEventListener('click', (e) => {
+        const on = chip.classList.toggle('is-disabled');
+        if (on) wrap.classList.remove('is-open');
+        e.target.classList.toggle('is-on', on);
+        e.target.textContent = on ? 'Disabled: on' : 'Disabled: off';
+      });
+      document.addEventListener('click', (e) => {
+        if (!wrap.contains(e.target)) wrap.classList.remove('is-open');
+      });
+    }
+    setupFilterChipDropdown('filter-chip-action-wrap', 'data-filter-disabled');
+    setupFilterChipDropdown('filter-chip-solid-action-wrap', 'data-filter-solid-disabled');
+    setupFilterChipDropdown('filter-chip-title-action-wrap', 'data-filter-title-disabled');
+    setupFilterChipDropdown('filter-chip-title-solid-action-wrap', 'data-filter-title-solid-disabled');
+
+    // ── Select: click trigger → toggle open, option click → select ──
+    const selectTarget = document.getElementById('select-action-target');
+    if (selectTarget) {
+      const triggerSpan = selectTarget.querySelector('.s1-select-trigger span');
+      selectTarget.querySelector('.s1-select-trigger')?.addEventListener('click', () => {
+        if (selectTarget.classList.contains('is-disabled')) return;
+        selectTarget.classList.toggle('is-open');
+      });
+      selectTarget.querySelectorAll('.s1-select-option').forEach(opt => {
+        opt.addEventListener('click', () => {
+          selectTarget.querySelectorAll('.s1-select-option').forEach(o => o.classList.remove('is-selected'));
+          opt.classList.add('is-selected');
+          triggerSpan.textContent = opt.textContent;
+          selectTarget.classList.add('has-value');
+          selectTarget.classList.remove('is-open');
+        });
+      });
+      document.querySelector('[data-select-disabled]')?.addEventListener('click', (e) => {
+        const on = selectTarget.classList.toggle('is-disabled');
+        if (on) selectTarget.classList.remove('is-open');
+        e.target.classList.toggle('is-on', on);
+        e.target.textContent = on ? 'Disabled: on' : 'Disabled: off';
+      });
+      document.addEventListener('click', (e) => {
+        if (!selectTarget.contains(e.target)) selectTarget.classList.remove('is-open');
+      });
+    }
+
+    // ── Select Mobile: same logic as PC ──
+    const selectMobileTarget = document.getElementById('select-mobile-action-target');
+    if (selectMobileTarget) {
+      const triggerSpanMobile = selectMobileTarget.querySelector('.s1-select-trigger span');
+      selectMobileTarget.querySelector('.s1-select-trigger')?.addEventListener('click', () => {
+        if (selectMobileTarget.classList.contains('is-disabled')) return;
+        selectMobileTarget.classList.toggle('is-open');
+      });
+      selectMobileTarget.querySelectorAll('.s1-select-option').forEach(opt => {
+        opt.addEventListener('click', () => {
+          selectMobileTarget.querySelectorAll('.s1-select-option').forEach(o => o.classList.remove('is-selected'));
+          opt.classList.add('is-selected');
+          if (triggerSpanMobile) triggerSpanMobile.textContent = opt.textContent;
+          selectMobileTarget.classList.add('has-value');
+          selectMobileTarget.classList.remove('is-open');
+        });
+      });
+      document.querySelector('[data-select-mobile-disabled]')?.addEventListener('click', (e) => {
+        const on = selectMobileTarget.classList.toggle('is-disabled');
+        if (on) selectMobileTarget.classList.remove('is-open');
+        e.target.classList.toggle('is-on', on);
+        e.target.textContent = on ? 'Disabled: on' : 'Disabled: off';
+      });
+      document.addEventListener('click', (e) => {
+        if (!selectMobileTarget.contains(e.target)) selectMobileTarget.classList.remove('is-open');
+      });
+    }
+
+    // ── Textarea: focus/blur/input + readonly toggle ──
+    const textareaWrap = document.getElementById('textarea-action-target');
+    const textareaInput = document.getElementById('textarea-action-input');
+    if (textareaWrap && textareaInput) {
+      textareaInput.addEventListener('focus', () => textareaWrap.classList.add('is-focus'));
+      textareaInput.addEventListener('blur',  () => textareaWrap.classList.remove('is-focus'));
+      document.querySelector('[data-textarea-readonly]')?.addEventListener('click', (e) => {
+        const isReadonly = textareaInput.hasAttribute('readonly');
+        if (isReadonly) {
+          textareaInput.removeAttribute('readonly');
+          textareaWrap.classList.remove('is-readonly');
+          e.target.textContent = 'Readonly: off';
+          e.target.classList.remove('is-on');
+        } else {
+          textareaInput.setAttribute('readonly', '');
+          textareaWrap.classList.add('is-readonly');
+          e.target.textContent = 'Readonly: on';
+          e.target.classList.add('is-on');
+        }
+      });
+    }
+  }
+  setupCompActionTests();
+
+  // ── Related Composed Fields: interactive setup ──
+  function setupRelatedComposedFields(root) {
+    root = root || document;
+    setupSearchInputField(root);
+    setupPasswordFieldInput(root);
+  }
+
+  function setupSearchInputField(root) {
+    root.querySelectorAll('[data-related-field="search-input"]').forEach(function(field) {
+      var input = field.querySelector('[data-search-input]');
+      var clearBtn = field.querySelector('[data-clear-action]');
+      if (!input || !clearBtn) return;
+      function syncClear() {
+        clearBtn.hidden = input.value.length === 0;
+      }
+      input.addEventListener('input', syncClear);
+      input.addEventListener('focus', function() {
+        field.querySelector('.s1-input-wrap').classList.add('is-focus');
+      });
+      input.addEventListener('blur', function() {
+        field.querySelector('.s1-input-wrap').classList.remove('is-focus');
+      });
+      clearBtn.addEventListener('click', function() {
+        input.value = '';
+        syncClear();
+        input.focus();
+      });
+      syncClear();
+    });
+  }
+
+  function setupPasswordFieldInput(root) {
+    root.querySelectorAll('[data-related-field="password-field"]').forEach(function(field) {
+      var input = field.querySelector('[data-password-input]');
+      var toggleBtn = field.querySelector('[data-visibility-toggle]');
+      var clearBtn = field.querySelector('[data-clear-action]');
+      if (!input || !toggleBtn) return;
+      function syncClear() {
+        if (clearBtn) clearBtn.hidden = input.value.length === 0;
+      }
+      function syncToggle() {
+        var isVisible = input.type === 'text';
+        toggleBtn.setAttribute('aria-label', isVisible ? '비밀번호 숨기기' : '비밀번호 보기');
+        toggleBtn.setAttribute('aria-pressed', isVisible ? 'true' : 'false');
+        var iconHidden = toggleBtn.querySelector('[data-icon-hidden]');
+        var iconVisible = toggleBtn.querySelector('[data-icon-visible]');
+        if (iconHidden) iconHidden.style.display = isVisible ? 'none' : '';
+        if (iconVisible) iconVisible.style.display = isVisible ? '' : 'none';
+      }
+      input.addEventListener('input', syncClear);
+      input.addEventListener('focus', function() {
+        field.querySelector('.s1-input-wrap').classList.add('is-focus');
+      });
+      input.addEventListener('blur', function(e) {
+        if (e.relatedTarget === toggleBtn || e.relatedTarget === clearBtn) return;
+        field.querySelector('.s1-input-wrap').classList.remove('is-focus');
+      });
+      toggleBtn.addEventListener('click', function() {
+        input.type = input.type === 'password' ? 'text' : 'password';
+        syncToggle();
+        input.focus();
+      });
+      if (clearBtn) {
+        clearBtn.addEventListener('click', function() {
+          input.value = '';
+          syncClear();
+          input.focus();
+        });
+      }
+      syncClear();
+      syncToggle();
+    });
+  }
+
+  /* ── Password Field error/correct state toggle ── */
+  (function() {
+    var cell = document.querySelector('[data-comp-action="password-field"]');
+    if (!cell) return;
+    var wrap = cell.querySelector('.s1-input-wrap');
+    var btnErr = cell.querySelector('[data-pw-error]');
+    var btnCor = cell.querySelector('[data-pw-correct]');
+    if (!wrap) return;
+
+    function applyPwHelper(state) {
+      var h = wrap.querySelector('.ds-helper-text');
+      if (!h) return;
+      if (state === 'error') {
+        h.hidden = false;
+        h.className = 'ds-helper-text is-error-text';
+        h.textContent = '오류 메시지';
+      } else if (state === 'correct') {
+        h.hidden = false;
+        h.className = 'ds-helper-text is-correct-text';
+        h.textContent = '확인 메시지';
+      } else {
+        h.className = 'ds-helper-text';
+        h.textContent = '안내 메시지';
+        h.hidden = true;
+      }
+    }
+
+    btnErr && btnErr.addEventListener('click', function() {
+      var on = this.classList.toggle('is-on');
+      this.textContent = on ? 'Error: on' : 'Error: off';
+      wrap.classList.toggle('is-error', on);
+      if (on) {
+        wrap.classList.remove('is-correct');
+        if (btnCor) { btnCor.classList.remove('is-on'); btnCor.textContent = 'Correct: off'; }
+      }
+      applyPwHelper(on ? 'error' : null);
+    });
+    btnCor && btnCor.addEventListener('click', function() {
+      var on = this.classList.toggle('is-on');
+      this.textContent = on ? 'Correct: on' : 'Correct: off';
+      wrap.classList.toggle('is-correct', on);
+      if (on) {
+        wrap.classList.remove('is-error');
+        if (btnErr) { btnErr.classList.remove('is-on'); btnErr.textContent = 'Error: off'; }
+      }
+      applyPwHelper(on ? 'correct' : null);
+    });
+  })();
+
+  /* ── Date Picker — PC Calendar (Figma 540:4216 확인) ── */
+  /* Panel: 356px, py=20px, px=24px, radius=4px, border=#d9d9d9, shadow       */
+  /* Day cell: 44×44px rectangular bordered square (no inner circle)           */
+  /* weekStart: 1(월) — HD-9 확정 (Figma mobile 월요일 시작 기준 적용)           */
+  function setupDatePicker(root) {
+    root = root || document;
+    root.querySelectorAll('[data-date-picker]').forEach(function(picker) {
+      var input = picker.querySelector('[data-date-picker-input]');
+      var toggle = picker.querySelector('[data-date-picker-toggle]');
+      var panel = picker.querySelector('[data-date-picker-panel]');
+      var grid = picker.querySelector('[data-date-grid]');
+      var monthLabel = picker.querySelector('[data-current-month]');
+      var weekdaysContainer = picker.querySelector('[data-weekdays]');
+      var prevBtn = picker.querySelector('[data-prev-month]');
+      var nextBtn = picker.querySelector('[data-next-month]');
+      var inputWrap = picker.querySelector('.s1-input-wrap');
+      var selectorGrid = picker.querySelector('[data-selector-grid]');
+      if (!input || !panel || !grid) return;
+
+      var today = new Date();
+      var curYear = today.getFullYear();
+      var curMonth = today.getMonth();
+      var selectedDate = null;
+      var view = 'calendar'; // 'calendar' | 'month' | 'year'
+      var decadeStart = Math.floor(today.getFullYear() / 10) * 10;
+
+      // HD-6: 서비스가 data-disabled-dates="YYYY-MM-DD,..." 로 주입. Core는 인터페이스만 제공.
+      var disabledSet = (function() {
+        var raw = picker.getAttribute('data-disabled-dates') || '';
+        var s = {};
+        raw.split(',').forEach(function(d) { if (d.trim()) s[d.trim()] = true; });
+        return s;
+      })();
+
+      // weekStart=0: 일 (HD-9 확정 — 일요일 시작)
+      var WEEK_START = 0;
+      var WEEKDAY_LABELS = ['일', '월', '화', '수', '목', '금', '토'];
+      var MONTH_LABELS = ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'];
+
+      function pad(n) { return n < 10 ? '0' + n : '' + n; }
+
+      /* Figma 확인: YY.MM.DD (2자리 연도) */
+      function formatDate(d) {
+        var yy = String(d.getFullYear()).slice(-2);
+        return yy + '.' + pad(d.getMonth() + 1) + '.' + pad(d.getDate());
+      }
+
+      function isSame(a, b) {
+        return a && b && a.getFullYear() === b.getFullYear() && a.getMonth() === b.getMonth() && a.getDate() === b.getDate();
+      }
+
+      /* Weekday header 렌더링 */
+      function renderWeekdays() {
+        if (!weekdaysContainer) return;
+        weekdaysContainer.innerHTML = '';
+        for (var wi = 0; wi < 7; wi++) {
+          var idx = (WEEK_START + wi) % 7;
+          var span = document.createElement('span');
+          span.className = 's1-date-picker__weekday';
+          if (idx === 0) span.classList.add('is-sunday');
+          if (idx === 6) span.classList.add('is-saturday');
+          span.textContent = WEEKDAY_LABELS[idx];
+          weekdaysContainer.appendChild(span);
+        }
+      }
+
+      function renderGrid() {
+        if (monthLabel) monthLabel.textContent = curYear + '.' + pad(curMonth + 1);
+        grid.innerHTML = '';
+        var firstDow = new Date(curYear, curMonth, 1).getDay();
+        var leadCells = (firstDow - WEEK_START + 7) % 7;
+        var days = new Date(curYear, curMonth + 1, 0).getDate();
+        for (var i = 0; i < leadCells; i++) {
+          var d = new Date(curYear, curMonth, -(leadCells - 1 - i));
+          grid.appendChild(makeDay(d, true));
+        }
+        for (var d2 = 1; d2 <= days; d2++) {
+          grid.appendChild(makeDay(new Date(curYear, curMonth, d2), false));
+        }
+        var total = leadCells + days;
+        var trailing = total % 7 === 0 ? 0 : 7 - (total % 7);
+        if (trailing < 7) {
+          for (var k = 1; k <= trailing; k++) {
+            grid.appendChild(makeDay(new Date(curYear, curMonth + 1, k), true));
+          }
+        }
+      }
+
+      /* Month selector: 3×4 grid of 12 months */
+      function renderMonthSelector() {
+        if (!selectorGrid) return;
+        selectorGrid.innerHTML = '';
+        if (monthLabel) monthLabel.textContent = curYear + '년';
+        MONTH_LABELS.forEach(function(m, mi) {
+          var btn = document.createElement('button');
+          btn.type = 'button';
+          btn.className = 's1-date-picker__selector-btn';
+          btn.textContent = m;
+          if (mi === curMonth) btn.classList.add('is-selected');
+          else if (curYear === today.getFullYear() && mi === today.getMonth()) btn.classList.add('is-current');
+          btn.addEventListener('click', function() {
+            curMonth = mi;
+            switchView('calendar');
+          });
+          selectorGrid.appendChild(btn);
+        });
+      }
+
+      /* Year selector: 3×4 grid spanning a decade */
+      function renderYearSelector() {
+        if (!selectorGrid) return;
+        selectorGrid.innerHTML = '';
+        if (monthLabel) monthLabel.textContent = decadeStart + ' ~ ' + (decadeStart + 11);
+        for (var y = decadeStart; y < decadeStart + 12; y++) {
+          (function(yr) {
+            var btn = document.createElement('button');
+            btn.type = 'button';
+            btn.className = 's1-date-picker__selector-btn';
+            btn.textContent = yr + '년';
+            if (yr === curYear) btn.classList.add('is-selected');
+            else if (yr === today.getFullYear()) btn.classList.add('is-current');
+            btn.addEventListener('click', function() {
+              curYear = yr;
+              decadeStart = Math.floor(yr / 10) * 10;
+              switchView('month');
+            });
+            selectorGrid.appendChild(btn);
+          })(y);
+        }
+      }
+
+      /* Switch between calendar / month / year views */
+      function switchView(newView) {
+        view = newView;
+        var isCalendar = (newView === 'calendar');
+        if (grid) grid.hidden = !isCalendar;
+        if (weekdaysContainer) weekdaysContainer.hidden = !isCalendar;
+        if (selectorGrid) selectorGrid.hidden = isCalendar;
+        if (newView === 'calendar') renderGrid();
+        else if (newView === 'month') renderMonthSelector();
+        else if (newView === 'year') renderYearSelector();
+      }
+
+      /* Day cell: 44×44px outer + 30×30px inner circle (Figma 540:4216) */
+      function makeDay(date, isOther) {
+        var dateKey = date.getFullYear() + '-' + pad(date.getMonth()+1) + '-' + pad(date.getDate());
+        var isDisabled = !!disabledSet[dateKey];
+        var btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 's1-date-picker__day';
+        var inner = document.createElement('span');
+        inner.className = 'day-inner';
+        inner.textContent = date.getDate();
+        btn.appendChild(inner);
+        if (isOther) btn.classList.add('is-other-month');
+        if (isSame(date, today)) btn.classList.add('is-today');
+        if (isSame(date, selectedDate)) btn.classList.add('is-selected');
+        if (isDisabled) { btn.disabled = true; btn.setAttribute('aria-disabled', 'true'); }
+        btn.setAttribute('aria-label', formatDate(date));
+        btn.setAttribute('data-date', dateKey);
+        if (!isDisabled) {
+          btn.addEventListener('click', function() {
+            // HD-7: 이전달/다음달 날짜도 항상 선택 허용
+            if (isOther) {
+              curYear = date.getFullYear();
+              curMonth = date.getMonth();
+            }
+            selectedDate = date;
+            input.value = formatDate(date);
+            renderGrid(); // 선택 반영 후 재렌더 (is-selected 자동 반영)
+            closePanel();
+          });
+        }
+        return btn;
+      }
+
+      function openPanel() {
+        view = 'calendar';
+        panel.hidden = false;
+        input.setAttribute('aria-expanded', 'true');
+        if (toggle) toggle.setAttribute('aria-expanded', 'true');
+        if (inputWrap) inputWrap.classList.add('is-focus');
+        if (grid) grid.hidden = false;
+        if (weekdaysContainer) weekdaysContainer.hidden = false;
+        if (selectorGrid) selectorGrid.hidden = true;
+        renderWeekdays();
+        renderGrid();
+        var firstActive = grid.querySelector('.s1-date-picker__day:not([disabled])');
+        if (firstActive) firstActive.focus();
+      }
+
+      function closePanel() {
+        panel.hidden = true;
+        input.setAttribute('aria-expanded', 'false');
+        if (toggle) toggle.setAttribute('aria-expanded', 'false');
+        if (inputWrap) inputWrap.classList.remove('is-focus');
+      }
+
+      function togglePanel() {
+        if (panel.hidden) { openPanel(); } else { closePanel(); }
+      }
+
+      /* Month label click — cycle: calendar → month → year → calendar */
+      if (monthLabel) {
+        monthLabel.addEventListener('click', function() {
+          if (view === 'calendar') switchView('month');
+          else if (view === 'month') { decadeStart = Math.floor(curYear / 10) * 10; switchView('year'); }
+          else switchView('calendar');
+        });
+      }
+
+      input.addEventListener('click', function(e) { e.stopPropagation(); togglePanel(); });
+      if (toggle) toggle.addEventListener('click', function(e) { e.stopPropagation(); togglePanel(); });
+
+      if (prevBtn) prevBtn.addEventListener('click', function() {
+        if (view === 'calendar') {
+          curMonth--; if (curMonth < 0) { curMonth = 11; curYear--; } renderGrid();
+        } else if (view === 'month') {
+          curYear--; renderMonthSelector();
+        } else if (view === 'year') {
+          decadeStart -= 12; renderYearSelector();
+        }
+      });
+      if (nextBtn) nextBtn.addEventListener('click', function() {
+        if (view === 'calendar') {
+          curMonth++; if (curMonth > 11) { curMonth = 0; curYear++; } renderGrid();
+        } else if (view === 'month') {
+          curYear++; renderMonthSelector();
+        } else if (view === 'year') {
+          decadeStart += 12; renderYearSelector();
+        }
+      });
+
+      /* 외부 클릭 닫기 */
+      document.addEventListener('click', function(e) {
+        if (!picker.contains(e.target)) closePanel();
+      });
+
+      /* 키보드 네비게이션 (calendar view only) */
+      panel.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') { closePanel(); input.focus(); return; }
+        if (view !== 'calendar') return;
+        var focused = document.activeElement;
+        if (!focused || !focused.classList.contains('s1-date-picker__day')) return;
+        var cells = Array.prototype.slice.call(grid.querySelectorAll('.s1-date-picker__day:not([disabled])'));
+        var idx = cells.indexOf(focused);
+        if (idx === -1) return;
+        var next = idx;
+        if (e.key === 'ArrowRight') next = idx + 1;
+        else if (e.key === 'ArrowLeft') next = idx - 1;
+        else if (e.key === 'ArrowDown') next = idx + 7;
+        else if (e.key === 'ArrowUp') next = idx - 7;
+        else if (e.key === 'Enter' || e.key === ' ') { focused.click(); e.preventDefault(); return; }
+        else return;
+        e.preventDefault();
+        if (next >= 0 && next < cells.length) cells[next].focus();
+      });
+    });
+  }
+
+  setupDatePicker(document);
+
+  setupRelatedComposedFields(document);
+
+  // ── Pagination interactive ──
+  (function setupPagination() {
+    var totalItems = 150;
+    var perPage = 15;
+    var currentPage = 1;
+    var blockSize = 6;
+
+    function totalPages() { return Math.max(1, Math.ceil(totalItems / perPage)); }
+    function isSinglePage() { return totalPages() <= 1; }
+
+    // 고정 블록: currentPage가 속한 블록의 start/end/blockIndex 반환
+    function calcBlock(cp, tp) {
+      var blockIndex = Math.floor((cp - 1) / blockSize);
+      var start = blockIndex * blockSize + 1;
+      var end = Math.min(tp, start + blockSize - 1);
+      return { start: start, end: end, blockIndex: blockIndex };
+    }
+
+    function renderNumbers() {
+      var container = document.getElementById('pg-numbers');
+      if (!container) return;
+      container.innerHTML = '';
+      var tp = totalPages();
+      var block = calcBlock(currentPage, tp);
+      for (var p = block.start; p <= block.end; p++) {
+        (function(page) {
+          var btn = document.createElement('button');
+          btn.className = 's1-pagination-number' + (page === currentPage ? ' is-selected' : '');
+          btn.textContent = page;
+          btn.setAttribute('aria-label', page + '페이지' + (page === currentPage ? ' (현재)' : ''));
+          btn.addEventListener('click', function() { currentPage = page; update(); });
+          container.appendChild(btn);
+        })(p);
+      }
+    }
+
+    function update() {
+      var tp = totalPages();
+      var single = isSinglePage();
+      var block = calcBlock(currentPage, tp);
+      renderNumbers();
+      var demo = document.getElementById('pagination-demo');
+      if (demo) {
+        // |< : 맨 처음 페이지 — 현재 1페이지이면 비활성
+        demo.querySelector('[data-pg-action="first"]').disabled = currentPage === 1 || single;
+        // <  : 이전 블록 — 첫 번째 블록이면 비활성
+        demo.querySelector('[data-pg-action="prev"]').disabled  = block.blockIndex === 0 || single;
+        // >  : 다음 블록 — 마지막 블록이면 비활성
+        demo.querySelector('[data-pg-action="next"]').disabled  = block.end >= tp || single;
+        // >| : 맨 마지막 페이지 — 현재 마지막 페이지이면 비활성
+        demo.querySelector('[data-pg-action="last"]').disabled  = currentPage === tp || single;
+      }
+    }
+
+    var demo = document.getElementById('pagination-demo');
+    if (demo) {
+      // |< 첫 페이지로
+      demo.querySelector('[data-pg-action="first"]').addEventListener('click', function() {
+        currentPage = 1; update();
+      });
+      // < 이전 블록의 첫 페이지로
+      demo.querySelector('[data-pg-action="prev"]').addEventListener('click', function() {
+        var block = calcBlock(currentPage, totalPages());
+        if (block.blockIndex > 0) {
+          currentPage = (block.blockIndex - 1) * blockSize + 1;
+          update();
+        }
+      });
+      // > 다음 블록의 첫 페이지로
+      demo.querySelector('[data-pg-action="next"]').addEventListener('click', function() {
+        var tp = totalPages();
+        var block = calcBlock(currentPage, tp);
+        var nextStart = block.end + 1;
+        if (nextStart <= tp) {
+          currentPage = nextStart;
+          update();
+        }
+      });
+      // >| 마지막 페이지로
+      demo.querySelector('[data-pg-action="last"]').addEventListener('click', function() {
+        currentPage = totalPages(); update();
+      });
+    }
+
+    update();
+  })();
+
+  document.querySelectorAll('.comp-action-cell[data-comp-action="input"]').forEach(function(cell) {
+    var wrap = cell.querySelector('.s1-input-wrap');
+    var input = cell.querySelector('input');
+    var helper = cell.querySelector('.ds-helper-text');
+    cell.querySelector('[data-input-disabled]')?.addEventListener('click', function() {
+      var on = wrap.classList.toggle('is-disabled');
+      if (input) input.disabled = on;
+      this.classList.toggle('is-on', on);
+      this.textContent = on ? 'Disabled: on' : 'Disabled: off';
+    });
+    cell.querySelector('[data-input-helper]')?.addEventListener('click', function() {
+      var isHidden = helper.hidden;
+      helper.hidden = !isHidden;
+      this.classList.toggle('is-on', isHidden);
+      this.textContent = isHidden ? '서브텍스트: on' : '서브텍스트: off';
+    });
+  });
+
+  (function() {
+    var sizesWraps = document.querySelectorAll('[data-input-sizes-cell]');
+    var btnDisabled = document.querySelector('[data-sizes-disabled]');
+    var btnHelper   = document.querySelector('[data-sizes-helper]');
+    var btnError    = document.querySelector('[data-sizes-error]');
+    var btnCorrect  = document.querySelector('[data-sizes-correct]');
+
+    function helperIsOn() { return btnHelper && btnHelper.classList.contains('is-on'); }
+
+    function applyHelper(wrap, h, state) {
+      /* state: 'error' | 'correct' | null */
+      if (state === 'error') {
+        h.hidden = false;
+        h.className = 'ds-helper-text is-error-text';
+        h.textContent = '오류 메시지';
+      } else if (state === 'correct') {
+        h.hidden = false;
+        h.className = 'ds-helper-text is-correct-text';
+        h.textContent = '확인 메시지';
+      } else {
+        h.className = 'ds-helper-text';
+        h.textContent = '안내 메시지';
+        h.hidden = !helperIsOn();
+      }
+    }
+
+    btnDisabled?.addEventListener('click', function() {
+      var on = this.classList.toggle('is-on');
+      this.textContent = on ? 'Disabled: on' : 'Disabled: off';
+      sizesWraps.forEach(function(wrap) {
+        wrap.classList.toggle('is-disabled', on);
+        var inp = wrap.querySelector('input');
+        if (inp) inp.disabled = on;
+      });
+    });
+    btnHelper?.addEventListener('click', function() {
+      var on = this.classList.toggle('is-on');
+      this.textContent = on ? '서브텍스트: on' : '서브텍스트: off';
+      sizesWraps.forEach(function(wrap) {
+        var h = wrap.querySelector('.ds-helper-text');
+        if (!h) return;
+        /* error/correct가 활성화된 경우 서브텍스트 버튼은 영향 없음 */
+        if (wrap.classList.contains('is-error') || wrap.classList.contains('is-correct')) return;
+        h.hidden = !on;
+      });
+    });
+    btnError?.addEventListener('click', function() {
+      var on = this.classList.toggle('is-on');
+      this.textContent = on ? 'Error: on' : 'Error: off';
+      if (on && btnCorrect) { btnCorrect.classList.remove('is-on'); btnCorrect.textContent = 'Correct: off'; }
+      sizesWraps.forEach(function(wrap) {
+        wrap.classList.toggle('is-error', on);
+        if (on) wrap.classList.remove('is-correct');
+        var h = wrap.querySelector('.ds-helper-text');
+        if (h) applyHelper(wrap, h, on ? 'error' : null);
+      });
+    });
+    btnCorrect?.addEventListener('click', function() {
+      var on = this.classList.toggle('is-on');
+      this.textContent = on ? 'Correct: on' : 'Correct: off';
+      if (on && btnError) { btnError.classList.remove('is-on'); btnError.textContent = 'Error: off'; }
+      sizesWraps.forEach(function(wrap) {
+        wrap.classList.toggle('is-correct', on);
+        if (on) wrap.classList.remove('is-error');
+        var h = wrap.querySelector('.ds-helper-text');
+        if (h) applyHelper(wrap, h, on ? 'correct' : null);
+      });
+    });
+  })();
+
+  document.querySelectorAll('[data-action-group]').forEach(function(group) {
+    var btn = group.querySelector('[data-group-disabled]');
+    if (!btn) return;
+    btn.addEventListener('click', function() {
+      var on = this.classList.toggle('is-on');
+      this.textContent = on ? 'Disabled: on' : 'Disabled: off';
+      group.querySelectorAll('[data-action-test]').forEach(function(el) {
+        el.disabled = on;
+        el.classList.toggle('is-disabled', on);
+      });
+      group.querySelectorAll('.comp-action-cell .s1-chip, .comp-action-cell .ds-filter-chip').forEach(function(el) {
+        el.disabled = on;
+        el.classList.toggle('is-disabled', on);
+      });
+      if (on) {
+        group.querySelectorAll('.comp-action-cell .ds-filter-chip-wrap').forEach(function(w) {
+          w.classList.remove('is-open');
+        });
+      }
+    });
+  });
+
+  // ── Table action row ──
+  (function() {
+    var btn = document.querySelector('[data-table-row-selected]');
+    var row = document.getElementById('table-action-row');
+    if (!btn || !row) return;
+    btn.addEventListener('click', function() {
+      var on = row.classList.toggle('is-selected');
+      this.classList.toggle('is-on', on);
+      this.textContent = on ? 'Selected: on' : 'Selected: off';
+    });
+  })();
+
+  // ── DatePicker action cell ──
+  (function() {
+    var fillBtn = document.querySelector('[data-dp-fill]');
+    var disBtn = document.querySelector('[data-dp-disabled]');
+    var input = document.getElementById('dp-action-input');
+    var inputField = input && input.closest('.s1-input-field');
+    if (!fillBtn) return;
+    fillBtn.addEventListener('click', function() {
+      var on = this.classList.toggle('is-on');
+      this.textContent = on ? 'Filled: on' : 'Filled: off';
+      if (input) input.value = on ? '26.05.20' : '';
+    });
+    disBtn && disBtn.addEventListener('click', function() {
+      var on = this.classList.toggle('is-on');
+      this.textContent = on ? 'Disabled: on' : 'Disabled: off';
+      if (inputField) inputField.style.opacity = on ? '0.5' : '';
+      if (input) { input.disabled = on; input.style.pointerEvents = on ? 'none' : ''; }
+      var toggleBtn = input && input.closest('[data-date-picker]') && input.closest('[data-date-picker]').querySelector('[data-date-picker-toggle]');
+      if (toggleBtn) toggleBtn.disabled = on;
+    });
+  })();
+
+  // ── DatePicker Mobile action ──
+  (function() {
+    var dpMobileWrap = document.getElementById('dp-mobile-action-wrap');
+    if (!dpMobileWrap) return;
+    var dpMobileIW = dpMobileWrap.querySelector('.s1-input-wrap');
+    var dpMobileInput = dpMobileWrap.querySelector('input');
+    var dpMobileDisBtn = dpMobileWrap.querySelector('[data-dp-mobile-disabled]');
+    if (dpMobileInput && dpMobileIW) {
+      dpMobileInput.addEventListener('focus', function() { dpMobileIW.classList.add('is-focus'); });
+      dpMobileInput.addEventListener('blur', function() { dpMobileIW.classList.remove('is-focus'); });
+    }
+    dpMobileDisBtn && dpMobileDisBtn.addEventListener('click', function() {
+      var on = this.classList.toggle('is-on');
+      this.textContent = on ? 'Disabled: on' : 'Disabled: off';
+      if (dpMobileInput) dpMobileInput.disabled = on;
+      if (dpMobileIW) dpMobileIW.classList.toggle('is-disabled', on);
+    });
+  })();
+
+  // ── TimePicker ──
+  function setupTimePicker(root) {
+    // Input 형: 아이콘/필드 클릭 → 시/분 드롭다운 패널
+    var trigger = root.querySelector('[data-tp-input-trigger]');
+    var dropdown = root.querySelector('#tp-input-dropdown');
+    if (trigger && dropdown) {
+      var hourCol    = root.querySelector('#tp-hour-col');
+      var minCol     = root.querySelector('#tp-min-col');
+      var confirmBtn = root.querySelector('#tp-confirm-btn');
+      var selHour = -1, selMin = -1;
+
+      for (var h = 1; h <= 24; h++) {
+        var hi = document.createElement('div');
+        hi.className = 's1-tp-col-item';
+        hi.textContent = String(h);
+        hi.dataset.tpHour = h;
+        hourCol.appendChild(hi);
+      }
+      for (var m = 0; m <= 59; m++) {
+        var mi = document.createElement('div');
+        mi.className = 's1-tp-col-item';
+        mi.textContent = String(m).padStart(2, '0');
+        mi.dataset.tpMin = m;
+        minCol.appendChild(mi);
+      }
+
+      function refreshConfirm() {
+        if (!confirmBtn) return;
+        var ready = selHour >= 0 && selMin >= 0;
+        confirmBtn.classList.toggle('is-active', ready);
+      }
+
+      function applyValue() {
+        if (selHour < 0 || selMin < 0) return;
+        var ph  = trigger.querySelector('.s1-timepicker-placeholder');
+        var val = trigger.querySelector('.s1-timepicker-value');
+        var str = String(selHour).padStart(2,'0') + ':' + String(selMin).padStart(2,'0');
+        if (val) { val.textContent = str; val.style.display = ''; }
+        trigger.classList.add('is-filled');
+        if (ph) ph.style.display = 'none';
+      }
+
+      function openPanel() {
+        dropdown.style.width = Math.max(190, trigger.offsetWidth) + 'px';
+        dropdown.classList.add('is-open');
+        trigger.classList.add('is-focus');
+        var sh = hourCol.querySelector('.is-selected');
+        var sm = minCol.querySelector('.is-selected');
+        if (sh) setTimeout(function(){ sh.scrollIntoView({block:'center'}); }, 10);
+        if (sm) setTimeout(function(){ sm.scrollIntoView({block:'center'}); }, 12);
+      }
+      function closePanel() {
+        dropdown.classList.remove('is-open');
+        trigger.classList.remove('is-focus');
+      }
+
+      trigger.addEventListener('click', function() {
+        !dropdown.classList.contains('is-open') ? openPanel() : closePanel();
+      });
+
+      hourCol.addEventListener('click', function(e) {
+        var item = e.target.closest('.s1-tp-col-item');
+        if (!item) return;
+        hourCol.querySelectorAll('.s1-tp-col-item').forEach(function(i){ i.classList.remove('is-selected'); });
+        item.classList.add('is-selected');
+        selHour = parseInt(item.dataset.tpHour, 10);
+        applyValue(); refreshConfirm();
+      });
+      minCol.addEventListener('click', function(e) {
+        var item = e.target.closest('.s1-tp-col-item');
+        if (!item) return;
+        minCol.querySelectorAll('.s1-tp-col-item').forEach(function(i){ i.classList.remove('is-selected'); });
+        item.classList.add('is-selected');
+        selMin = parseInt(item.dataset.tpMin, 10);
+        applyValue(); refreshConfirm();
+      });
+
+      if (confirmBtn) {
+        confirmBtn.addEventListener('click', function(e) {
+          e.stopPropagation();
+          closePanel();
+        });
+      }
+
+      document.addEventListener('click', function(e) {
+        if (!trigger.contains(e.target) && !dropdown.contains(e.target)) closePanel();
+      });
+    }
+
+    // Select 형: 필드 클릭 → 커스텀 드롭다운 목록
+    var selectGroup = root.querySelector('#tp-select-action');
+    if (!selectGroup) return;
+    var hours   = Array.from({length: 24}, function(_, i){ return i; });
+    var minutes = Array.from({length: 60}, function(_, i){ return i; });
+    var curHour = 0, curMin = 0;
+    var activeDD = null;
+
+    function closeActiveDD() {
+      if (!activeDD) return;
+      activeDD.remove(); activeDD = null;
+      selectGroup.querySelectorAll('.s1-timepicker-select-field').forEach(function(f){
+        f.classList.remove('is-focus');
+        var arr = f.querySelector('.s1-timepicker-select-arrow');
+        if (arr) arr.style.transform = '';
+      });
+    }
+
+    function makeDD(values, curVal, onPick) {
+      var dd = document.createElement('div');
+      dd.className = 's1-tp-select-dropdown';
+      values.forEach(function(v) {
+        var item = document.createElement('div');
+        item.className = 's1-tp-select-dropdown-item' + (v === curVal ? ' is-selected' : '');
+        item.textContent = String(v).padStart(2, '0');
+        item.addEventListener('click', function(e) { e.stopPropagation(); onPick(v); closeActiveDD(); });
+        dd.appendChild(item);
+      });
+      return dd;
+    }
+
+    function bindField(field, valSpan, values, getCur, setCur) {
+      if (!field) return;
+      field.addEventListener('click', function(e) {
+        e.stopPropagation();
+        if (activeDD && field.parentElement.contains(activeDD)) { closeActiveDD(); return; }
+        closeActiveDD();
+        var dd = makeDD(values, getCur(), function(v) {
+          setCur(v);
+          if (valSpan) valSpan.textContent = String(v).padStart(2,'0');
+        });
+        field.appendChild(dd);
+        activeDD = dd;
+        field.classList.add('is-focus');
+        var arr = field.querySelector('.s1-timepicker-select-arrow');
+        if (arr) arr.style.transform = 'rotate(180deg)';
+        var sel = dd.querySelector('.is-selected');
+        if (sel) setTimeout(function(){ sel.scrollIntoView({block:'center'}); }, 10);
+      });
+    }
+
+    bindField(
+      root.querySelector('#tp-select-hour-field'),
+      root.querySelector('#tp-select-hour-val'),
+      hours, function(){ return curHour; }, function(v){ curHour = v; }
+    );
+    bindField(
+      root.querySelector('#tp-select-min-field'),
+      root.querySelector('#tp-select-min-val'),
+      minutes, function(){ return curMin; }, function(v){ curMin = v; }
+    );
+
+    document.addEventListener('click', function(e) {
+      if (selectGroup && !selectGroup.contains(e.target)) closeActiveDD();
+    });
+  }
+  setupTimePicker(document);
+
+  // ── TimePicker Mobile Bottom Sheet (HD-Time-4) ──
+  (function() {
+    var trigger = document.getElementById('tp-mobile-trigger');
+    var dim     = document.getElementById('tp-mobile-dim');
+    var sheet   = document.getElementById('tp-mobile-sheet');
+    var confirm = document.getElementById('tp-mobile-confirm');
+    var ph      = document.getElementById('tp-mobile-ph');
+    var val     = document.getElementById('tp-mobile-val');
+    var hourCol = document.getElementById('tp-mobile-hour-col');
+    var minCol  = document.getElementById('tp-mobile-min-col');
+    if (!trigger || !sheet) return;
+
+    var selHour = 9, selMin = 30;
+
+    function pad2(n) { return n < 10 ? '0' + n : '' + n; }
+
+    function buildCol(col, count, selected, labelFn) {
+      col.innerHTML = '';
+      for (var i = 0; i < count; i++) {
+        var el = document.createElement('div');
+        el.className = 's1-tp-col-item' + (i === selected ? ' is-selected' : '');
+        el.textContent = labelFn ? labelFn(i) : pad2(i);
+        (function(idx, isHour) {
+          el.addEventListener('click', function() {
+            col.querySelectorAll('.s1-tp-col-item').forEach(function(x) { x.classList.remove('is-selected'); });
+            el.classList.add('is-selected');
+            if (isHour) selHour = idx; else selMin = idx;
+          });
+        })(i, col === hourCol);
+        col.appendChild(el);
+      }
+    }
+
+    function openSheet() {
+      buildCol(hourCol, 24, selHour, function(i) { return pad2(i); });
+      buildCol(minCol, 60, selMin, function(i) { return pad2(i); });
+      dim.style.display = 'block';
+      sheet.style.display = 'block';
+      // scroll to selected
+      var selH = hourCol.querySelector('.is-selected');
+      var selM = minCol.querySelector('.is-selected');
+      if (selH) hourCol.scrollTop = selH.offsetTop - 64;
+      if (selM) minCol.scrollTop = selM.offsetTop - 64;
+    }
+
+    function closeSheet() {
+      dim.style.display = 'none';
+      sheet.style.display = 'none';
+    }
+
+    function confirmTime() {
+      var t = pad2(selHour) + ':' + pad2(selMin);
+      ph.style.display = 'none';
+      val.textContent = t;
+      val.style.display = '';
+      trigger.classList.add('is-filled');
+      closeSheet();
+    }
+
+    trigger.addEventListener('click', openSheet);
+    trigger.addEventListener('keydown', function(e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openSheet(); } });
+    dim.addEventListener('click', closeSheet);
+    confirm.addEventListener('click', confirmTime);
+  })();
+
+  // ── Table selection (uses s1-checkbox core component) ──
+  function setupTableSelection(root) {
+    root.querySelectorAll('.s1-table-section').forEach(function(section) {
+      var headerChk = section.querySelector('thead .s1-checkbox');
+      var rows = Array.from(section.querySelectorAll('tbody .s1-table-row'));
+      var rowChks = rows.map(function(row) {
+        return row.querySelector('.s1-table-td--selection .s1-checkbox');
+      });
+
+      function updateHeaderState() {
+        if (!headerChk) return;
+        var checkedCount = rowChks.filter(function(c) { return c && c.classList.contains('is-checked'); }).length;
+        headerChk.classList.remove('is-checked');
+        if (checkedCount === rows.length && rows.length > 0) {
+          headerChk.classList.add('is-checked');
+        }
+      }
+
+      rowChks.forEach(function(chk, i) {
+        if (!chk) return;
+        chk.addEventListener('click', function(e) {
+          e.stopPropagation();
+          var checked = chk.classList.toggle('is-checked');
+          rows[i].classList.toggle('is-selected', checked);
+          updateHeaderState();
+        });
+      });
+
+      if (headerChk) {
+        headerChk.addEventListener('click', function(e) {
+          e.stopPropagation();
+          var allChecked = rowChks.every(function(c) { return c && c.classList.contains('is-checked'); });
+          rowChks.forEach(function(chk, i) {
+            if (!chk) return;
+            chk.classList.toggle('is-checked', !allChecked);
+            rows[i].classList.toggle('is-selected', !allChecked);
+          });
+          updateHeaderState();
+        });
+      }
+
+      // Set initial header state based on pre-selected rows
+      updateHeaderState();
+    });
+  }
+  setupTableSelection(document);
+
+  // ── Design Mode (Token Inspector + Magnifier) ─────────────
+  (function setupDesignMode() {
+    var isActive = false;
+    var tokenColorMap = null;
+    var probeEl = null;
+    var lastPreviewArea = null;
+    var ZOOM = 4, MAGN_W = 220, MAGN_H = 165;
+    var magnPos = { x: 4, y: 4 }; // 돋보기 최종 위치 (tooltip 배치 기준)
+
+    /* ── helpers ── */
+    function rgbToHex(rgb) {
+      var m = String(rgb).match(/rgba?\((\d+),\s*(\d+),\s*(\d+)/);
+      if (!m) return null;
+      return '#' + [m[1], m[2], m[3]].map(function(v) {
+        return ('0' + parseInt(v, 10).toString(16)).slice(-2).toUpperCase();
+      }).join('');
+    }
+
+    // 토큰 레이어 분류: F(Foundation) · S(Semantic) · C(Component)
+    function classifyToken(name) {
+      if (/^--color-(gray|blue|red|orange|yellow|green|skyblue|purple|brown|visual|coolgray|base|brand|status-dark)/.test(name)) return 'F';
+      if (/^--color-/.test(name)) return 'S';
+      return 'C';
+    }
+
+    function resolveVarHex(varName) {
+      probeEl.style.backgroundColor = 'var(' + varName + ')';
+      var rgb = getComputedStyle(probeEl).backgroundColor;
+      probeEl.style.backgroundColor = '';
+      if (!rgb || rgb === 'rgba(0, 0, 0, 0)') return null;
+      return rgbToHex(rgb);
+    }
+
+    /* ── 토큰 역매핑 테이블 빌드 ── */
+    function buildTokenMap() {
+      probeEl = document.createElement('div');
+      probeEl.style.cssText = 'position:fixed;visibility:hidden;pointer-events:none;top:-9999px;left:-9999px;width:0;height:0;';
+      document.body.appendChild(probeEl);
+
+      var map = {};
+      var seen = {};
+      var relevant = /^--(color-|button-|input-|chip-|checkbox-|radio-|toggle-|select-|dropdown-|nav-|pagination-|table-|date-picker|time-picker)/;
+      var varRe = /(--[\w-]+)\s*:/g;
+
+      for (var si = 0; si < document.styleSheets.length; si++) {
+        var rules;
+        try { rules = document.styleSheets[si].cssRules; } catch(e) { continue; }
+        for (var ri = 0; ri < rules.length; ri++) {
+          var text = rules[ri].cssText || '';
+          var m;
+          varRe.lastIndex = 0;
+          while ((m = varRe.exec(text)) !== null) {
+            var name = m[1];
+            if (seen[name] || !relevant.test(name)) continue;
+            seen[name] = true;
+            var hex = resolveVarHex(name);
+            if (!hex) continue;
+            if (!map[hex]) map[hex] = [];
+            map[hex].push({ name: name, type: classifyToken(name) });
+          }
+        }
+      }
+
+      var order = { F: 0, S: 1, C: 2 };
+      Object.keys(map).forEach(function(hex) {
+        var dedupe = {};
+        map[hex] = map[hex].filter(function(t) {
+          if (dedupe[t.name]) return false;
+          return (dedupe[t.name] = true);
+        });
+        map[hex].sort(function(a, b) { return order[a.type] - order[b.type]; });
+      });
+
+      document.body.removeChild(probeEl);
+      probeEl = null;
+      return map;
+    }
+
+    /* ── 돋보기 ── */
+    function createMagnifier() {
+      var m = document.createElement('div');
+      m.id = 'dm-magnifier';
+      var mc = document.createElement('div');
+      mc.id = 'dm-magnifier-content';
+      m.appendChild(mc);
+      var bar = document.createElement('div');
+      bar.id = 'dm-magnifier-bar';
+      bar.textContent = '×' + ZOOM + '  Magnifier'; // ZOOM 변수값 자동 반영
+      m.appendChild(bar);
+      document.body.appendChild(m);
+    }
+
+    function updateMagnifier(e) {
+      var magn = document.getElementById('dm-magnifier');
+      var mc   = document.getElementById('dm-magnifier-content');
+      if (!magn || !mc) return;
+
+      var previewArea = e.target.closest && e.target.closest('.preview-area');
+      if (!previewArea) { magn.style.display = 'none'; lastPreviewArea = null; return; }
+
+      // 다른 preview-area로 이동 시 클론 재생성
+      if (previewArea !== lastPreviewArea) {
+        lastPreviewArea = previewArea;
+        mc.innerHTML = '';
+        var clone = previewArea.cloneNode(true);
+        clone.querySelectorAll('script').forEach(function(s) { s.remove(); });
+        clone.style.cssText = 'pointer-events:none;user-select:none;';
+        mc.appendChild(clone);
+      }
+
+      // 커서 위치를 돋보기 중앙에 맞추는 오프셋 계산
+      // 수식: cloneLeft = MAGN_W/2 - cursorX_in_content * ZOOM
+      var prect = previewArea.getBoundingClientRect();
+      var px = (e.clientX - prect.left)  + previewArea.scrollLeft;
+      var py = (e.clientY - prect.top)   + previewArea.scrollTop;
+      mc.style.left      = (MAGN_W / 2 - px * ZOOM) + 'px';
+      mc.style.top       = (MAGN_H / 2 - py * ZOOM) + 'px';
+      mc.style.transform = 'scale(' + ZOOM + ')';
+
+      // 돋보기 위치: 커서 우상단 → 엣지에서 flip
+      var mx = e.clientX + 16;
+      var my = e.clientY - MAGN_H - 14;
+      if (mx + MAGN_W > window.innerWidth  - 8) mx = e.clientX - MAGN_W - 16;
+      if (my < 8)                               my = e.clientY + 14;
+      magnPos.x = Math.max(4, mx);
+      magnPos.y = Math.max(4, my);
+      magn.style.left    = magnPos.x + 'px';
+      magn.style.top     = magnPos.y + 'px';
+      magn.style.display = 'block';
+    }
+
+    /* ── 툴팁 콘텐츠 빌드 ── */
+    var badgeLabel = { F: 'Foundation', S: 'Semantic', C: 'Component' };
+
+    function buildPropSection(propLabel, rgbValue) {
+      if (!rgbValue || rgbValue === 'rgba(0, 0, 0, 0)') return '';
+      var hex = rgbToHex(rgbValue);
+      if (!hex) return '';
+      // Foundation 토큰만 표시 (Semantic·Component 제외)
+      var tokens = tokenColorMap ? (tokenColorMap[hex] || []).filter(function(t) { return t.type === 'F'; }) : [];
+
+      var html = '<div class="dm-prop-group">';
+      html += '<div class="dm-prop-label">' + propLabel + '</div>';
+      html += '<div class="dm-color-row"><span class="dm-swatch" style="background:' + hex + '"></span>';
+      html += '<span class="dm-hex">' + hex + '</span></div>';
+      tokens.forEach(function(t) {
+        html += '<div class="dm-token-row"><span class="dm-badge dm-badge-' + t.type + '">' + badgeLabel[t.type] + '</span>';
+        html += '<span class="dm-token-name">' + t.name + '</span></div>';
+      });
+      html += '</div>';
+      return html;
+    }
+
+    function buildTypoSection(fsVal, fwVal) {
+      var fwLabel = fwVal === '700' || fwVal === 'bold'   ? 'Bold · 700'
+                  : fwVal === '500'                       ? 'Medium · 500'
+                  : fwVal === '400' || fwVal === 'normal' ? 'Regular · 400'
+                  : fwVal;
+      var html = '<div class="dm-prop-group">';
+      html += '<div class="dm-prop-label">typography</div>';
+      html += '<div class="dm-typo-row">';
+      html += '<span class="dm-typo-item"><span class="dm-typo-key">size</span><span class="dm-typo-val">' + fsVal + 'px</span></span>';
+      html += '<span class="dm-typo-item"><span class="dm-typo-key">weight</span><span class="dm-typo-val">' + fwLabel + '</span></span>';
+      html += '</div></div>';
+      return html;
+    }
+
+    /* ── 툴팁 표시/이동 ── */
+    function showTooltip(e) {
+      var tt = document.getElementById('dm-tooltip');
+      if (!tt) return;
+      var el = e.target;
+      if (!el || el.id === 'dm-tooltip' || el.id === 'dm-magnifier') return;
+
+      var cs = getComputedStyle(el);
+      var bgProp = cs.backgroundColor;
+      var fgProp = cs.color;
+
+      // 4방향 테두리 중 가장 두꺼운 쪽의 색상 사용
+      var bdWidths = [
+        parseFloat(cs.borderTopWidth)    || 0,
+        parseFloat(cs.borderRightWidth)  || 0,
+        parseFloat(cs.borderBottomWidth) || 0,
+        parseFloat(cs.borderLeftWidth)   || 0
+      ];
+      var maxBd = Math.max.apply(null, bdWidths);
+      var bdProp = maxBd > 0 ? cs.borderTopColor : null; // 색은 top 기준 (보통 4방향 동일)
+
+      // SVG 요소 판별
+      var isSvg = /^(svg|path|circle|rect|g|polyline|line|use|ellipse)$/i.test(el.tagName);
+      var fgHex    = rgbToHex(fgProp);
+      var fgTokens = (tokenColorMap && fgHex) ? (tokenColorMap[fgHex] || []).filter(function(t) { return t.type === 'F'; }) : [];
+
+      // 리프 요소: 자식 엘리먼트 없음 → 직접 텍스트/아이콘을 담은 요소
+      // 컨테이너(자식 있음)에는 text color 표시하지 않음 → bg+border만 표시
+      var isLeaf = el.children.length === 0;
+
+      // 부모 색상과 비교: 같으면 상속값(의미없는 기본색) → 표시 제외
+      // SVG는 currentColor 특성상 항상 명시적 값이므로 예외 처리
+      var parentFg = el.parentElement ? getComputedStyle(el.parentElement).color : null;
+      var fgExplicit = isSvg || (!parentFg) || (fgProp !== parentFg);
+      // text/icon 색상: SVG이거나 리프 요소(자식 없음)이고 토큰 매핑됨
+      var hasMeaningfulFg = fgExplicit && fgTokens.length > 0 && (isSvg || isLeaf);
+
+      var hasBg = bgProp !== 'rgba(0, 0, 0, 0)';
+
+      // Typography: 리프 요소이거나 직접 텍스트를 담는 요소에서 표시
+      var fsVal = Math.round(parseFloat(cs.fontSize) || 0);
+      var fwVal = cs.fontWeight;
+      var parentFs = el.parentElement ? Math.round(parseFloat(getComputedStyle(el.parentElement).fontSize) || 0) : 0;
+      var parentFw = el.parentElement ? getComputedStyle(el.parentElement).fontWeight : null;
+      var fsExplicit = fsVal !== parentFs;
+      var fwExplicit = fwVal !== parentFw;
+      var showTypo = fsVal >= 8 && (isLeaf || !isSvg) && (fsExplicit || fwExplicit);
+      var typoSection = showTypo ? buildTypoSection(fsVal, fwVal) : '';
+
+      if (!hasBg && !bdProp && !hasMeaningfulFg && !showTypo) {
+        tt.style.display = 'none';
+        return;
+      }
+
+      // 엘리먼트 레이블: s1-* 클래스 우선 → 없으면 부모 s1-* 컨텍스트 표시
+      var s1Classes = Array.from(el.classList).filter(function(c) { return /^s1-/.test(c); });
+      var parentS1  = !s1Classes.length && el.parentElement
+        ? Array.from(el.parentElement.classList).filter(function(c) { return /^s1-/.test(c); })
+        : [];
+      var label = s1Classes.length
+        ? s1Classes[0]
+        : parentS1.length
+          ? parentS1[0] + ' > ' + el.tagName.toLowerCase()
+          : el.tagName.toLowerCase() + (!isSvg && el.className ? '.' + Array.from(el.classList).slice(0, 2).join('.') : '');
+
+      // 색상 프로퍼티 레이블: SVG이면 "icon color", 아니면 "text color"
+      var colorLabel = isSvg ? 'icon color' : 'text color';
+
+      var bgSection = buildPropSection('background-color', bgProp);
+      var bdSection = bdProp ? buildPropSection('border-color', bdProp) : '';
+      // fgSection: hasMeaningfulFg 조건만 사용 (hasBg 연계 제거 → 상속 black 오표시 방지)
+      var fgSection = hasMeaningfulFg ? buildPropSection(colorLabel, fgProp) : '';
+
+      if (!bgSection && !bdSection && !fgSection && !typoSection) { tt.style.display = 'none'; return; }
+
+      var content = '<div class="dm-el-label">' + label + '</div>';
+      content += bgSection;
+      if (bdSection) { if (bgSection) content += '<div class="dm-divider"></div>'; content += bdSection; }
+      if (fgSection) { if (bgSection || bdSection) content += '<div class="dm-divider"></div>'; content += fgSection; }
+      if (typoSection) { if (bgSection || bdSection || fgSection) content += '<div class="dm-divider"></div>'; content += typoSection; }
+
+      tt.innerHTML = content;
+      tt.style.display = 'block';
+
+      // 돋보기 오른쪽에 나란히 배치 (공간 부족 시 왼쪽으로 flip)
+      var TW = 250, GAP = 8;
+      var tx = magnPos.x + MAGN_W + GAP;
+      var ty = magnPos.y;
+      var th = tt.offsetHeight || 150;
+      if (tx + TW > window.innerWidth - 8) tx = magnPos.x - TW - GAP;
+      if (ty + th > window.innerHeight - 8) ty = window.innerHeight - th - 8;
+      tt.style.left = Math.max(4, tx) + 'px';
+      tt.style.top  = Math.max(4, ty) + 'px';
+    }
+
+    /* ── 공개 API ── */
+    window.toggleDesignMode = function() {
+      isActive = !isActive;
+      if (isActive && !tokenColorMap) tokenColorMap = buildTokenMap();
+
+      document.documentElement.classList.toggle('dm-active', isActive);
+      var btn = document.getElementById('btnDesignMode');
+      if (btn) btn.classList.toggle('active', isActive);
+
+      if (!isActive) {
+        var tt   = document.getElementById('dm-tooltip');
+        var magn = document.getElementById('dm-magnifier');
+        if (tt)   tt.style.display   = 'none';
+        if (magn) magn.style.display = 'none';
+        lastPreviewArea = null;
+      }
+    };
+
+    window.resetDesignModeCache = function() {
+      tokenColorMap   = null;
+      lastPreviewArea = null; // 클론도 무효화
+    };
+
+    /* ── 이벤트 위임 ── */
+    document.addEventListener('mousemove', function(e) {
+      if (!isActive) return;
+      var inPreview = e.target.closest && e.target.closest('.preview-area');
+      if (inPreview) {
+        updateMagnifier(e); // 먼저 실행 → magnPos 확정 후 tooltip 배치
+        showTooltip(e);
+      } else {
+        var tt   = document.getElementById('dm-tooltip');
+        var magn = document.getElementById('dm-magnifier');
+        if (tt)   tt.style.display   = 'none';
+        if (magn) magn.style.display = 'none';
+      }
+    });
+
+    // Design mode ON: preview-area 내 클릭 차단 (is-preview pointer-events 복원 후 오동작 방지)
+    document.addEventListener('click', function(e) {
+      if (!isActive) return;
+      if (e.target.closest && e.target.closest('.preview-area')) {
+        e.preventDefault();
+        e.stopImmediatePropagation();
+      }
+    }, true); // capture phase — 다른 핸들러보다 먼저 차단
+
+    /* ── DOM 생성 ── */
+    var tt = document.createElement('div');
+    tt.id = 'dm-tooltip';
+    document.body.appendChild(tt);
+    createMagnifier();
+  })();
+
+</script>
+<script src="../assets/js/main.js"></script>
+</body>
+</html>

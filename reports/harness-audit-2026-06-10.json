@@ -1,0 +1,101 @@
+{
+  "date": "2026-06-10",
+  "summary": {
+    "errors": 0,
+    "warns": 0,
+    "passes": 13
+  },
+  "findings": [
+    {
+      "rule": "SIZE_SPLIT",
+      "severity": "pass",
+      "compId": "button",
+      "message": "[button] 모든 사이즈 분기 존재 (medium (h44) / xsmall (h34) / xxsmall (h28) / mobile (h48))",
+      "autoFix": false
+    },
+    {
+      "rule": "SIZE_SPLIT",
+      "severity": "pass",
+      "compId": "chip",
+      "message": "[chip] 모든 사이즈 분기 존재 (md/default / sm (h28) / mobile)",
+      "autoFix": false
+    },
+    {
+      "rule": "SIZE_SPLIT",
+      "severity": "pass",
+      "compId": "table",
+      "message": "[table] 모든 사이즈 분기 존재 (md (h44) / sm (h38))",
+      "autoFix": false
+    },
+    {
+      "rule": "SIZE_SPLIT",
+      "severity": "pass",
+      "compId": "time-picker (input형)",
+      "message": "[time-picker (input형)] 모든 사이즈 분기 존재 (default (h44) / xsm (h34) / xxsm (h28) / mobile (h48))",
+      "autoFix": false
+    },
+    {
+      "rule": "SIZE_SPLIT",
+      "severity": "pass",
+      "compId": "time-picker (select형)",
+      "message": "[time-picker (select형)] 모든 사이즈 분기 존재 (md (h44) / sm (h28))",
+      "autoFix": false
+    },
+    {
+      "rule": "SIZE_SPLIT",
+      "severity": "pass",
+      "compId": "tab (line tab)",
+      "message": "[tab (line tab)] 모든 사이즈 분기 존재 (pc-md (font 20px · indicator 4px) / pc-sm (font 16px · indicator 2px))",
+      "autoFix": false
+    },
+    {
+      "rule": "SIZE_SPLIT",
+      "severity": "pass",
+      "compId": "tab (line tab · mobile)",
+      "message": "[tab (line tab · mobile)] 모든 사이즈 분기 존재 (mobile (h30 · padding-inline sm))",
+      "autoFix": false
+    },
+    {
+      "rule": "SIZE_SPLIT",
+      "severity": "pass",
+      "compId": "gnb (menu slot)",
+      "message": "[gnb (menu slot)] 모든 사이즈 분기 존재 (md (h56 · 18px) / sm (h48 · 18px) / xsm (h36 · 14px))",
+      "autoFix": false
+    },
+    {
+      "rule": "CSS_SIZE_SPLIT",
+      "severity": "pass",
+      "compId": "table",
+      "message": "[table] CSS 사이즈 modifier 분기 존재",
+      "autoFix": false
+    },
+    {
+      "rule": "CSS_SIZE_SPLIT",
+      "severity": "pass",
+      "compId": "chip",
+      "message": "[chip] CSS 사이즈 modifier 분기 존재",
+      "autoFix": false
+    },
+    {
+      "rule": "DARK_COMPARE",
+      "severity": "pass",
+      "compId": "global",
+      "message": "인라인 forced-dark 패널 없음 — 전역 테마 토글 방식 올바르게 사용 중",
+      "autoFix": false
+    },
+    {
+      "rule": "ICON_COLOR",
+      "severity": "pass",
+      "compId": "form-control-icon-default",
+      "message": "[form-control-icon-default] 아이콘 색상 일관됨 — var(--color-form-control-icon-default)",
+      "autoFix": false
+    },
+    {
+      "rule": "ICON_COLOR",
+      "severity": "pass",
+      "compId": "disabled-icon-color",
+      "message": "[disabled-icon-color] disabled 아이콘 색상 — 허용 토큰 사용 중 (var(--color-icon-muted), var(--color-form-control-text-disabled))",
+      "autoFix": false
+    }
+  ]
+}

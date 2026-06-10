@@ -12,7 +12,7 @@
 
   .header {
     display: flex; align-items: center; gap: 10px;
-    margin-bottom: 18px;
+    margin-bottom: 16px;
   }
   .header-icon {
     width: 36px; height: 36px; border-radius: 10px;
@@ -22,63 +22,45 @@
   .header-title { font-size: 15px; font-weight: 700; color: #111827; }
   .header-sub   { font-size: 11px; color: #9ca3af; margin-top: 2px; }
 
-  .info-box {
-    background: #f9fafb; border: 1px solid #e5e7eb;
-    border-radius: 10px; padding: 14px 16px;
-    margin-bottom: 18px;
-    display: flex; flex-direction: column; gap: 8px;
+  /* ── 선택 리스트 ── */
+  .select-list { display: flex; flex-direction: column; gap: 8px; margin-bottom: 14px; }
+  .select-row {
+    border: 1px solid #e5e7eb; border-radius: 10px;
+    padding: 12px 14px; display: flex; align-items: flex-start; gap: 10px;
+    cursor: pointer; transition: border-color 0.12s, background 0.12s;
   }
-  .info-row {
-    display: flex; align-items: center; gap: 10px;
-    font-size: 12px; color: #374151;
-  }
-  .badge {
-    display: inline-block; padding: 2px 8px; border-radius: 20px;
-    font-size: 11px; font-weight: 600; white-space: nowrap;
-  }
-  .badge-blue   { background: #eff6ff; color: #1d6ceb; }
-  .badge-green  { background: #f0fdf4; color: #166534; }
-  .badge-gray   { background: #f3f4f6; color: #374151; }
+  .select-row:hover { border-color: #c7d2fe; background: #fafbff; }
+  .select-row.checked { border-color: #1d6ceb; background: #f5f9ff; }
+  .select-row input { margin-top: 2px; flex-shrink: 0; width: 15px; height: 15px; cursor: pointer; }
+  .select-body { flex: 1; }
+  .select-name { font-size: 13px; font-weight: 600; color: #111827; }
+  .select-desc { font-size: 11px; color: #6b7280; margin-top: 3px; line-height: 1.5; }
+  .select-date { font-size: 10px; color: #9ca3af; margin-top: 4px; }
+  .select-date strong { color: #6b7280; font-weight: 600; }
 
-  .warn-box {
-    background: #fffbeb; border: 1px solid #fde68a;
-    border-radius: 8px; padding: 10px 14px;
-    font-size: 11px; color: #92400e; margin-bottom: 18px;
-    line-height: 1.6;
+  .dep-note {
+    background: #f9fafb; border: 1px solid #e5e7eb;
+    border-radius: 8px; padding: 10px 12px;
+    font-size: 10.5px; color: #6b7280; margin-bottom: 16px; line-height: 1.6;
   }
 
   /* ── progress ── */
-  #progress-wrap { display: none; margin-bottom: 18px; }
-  #progress-label { font-size: 11px; color: #6b7280; margin-bottom: 6px; }
-  #progress-bar-track {
-    height: 6px; background: #e5e7eb; border-radius: 3px; overflow: hidden;
-  }
-  #progress-bar-fill {
-    height: 100%; background: #1d6ceb; border-radius: 3px;
-    width: 0%; transition: width 0.2s ease;
-  }
+  #progress-wrap { display: none; margin-bottom: 16px; }
+  #progress-label { font-size: 11px; color: #6b7280; margin-bottom: 6px; word-break: break-all; }
+  #progress-bar-track { height: 6px; background: #e5e7eb; border-radius: 3px; overflow: hidden; }
+  #progress-bar-fill { height: 100%; background: #1d6ceb; border-radius: 3px; width: 0%; transition: width 0.2s ease; }
 
   /* ── result ── */
   #result { display: none; }
-  .result-success {
-    background: #f0fdf4; border: 1px solid #bbf7d0;
-    border-radius: 10px; padding: 16px; margin-bottom: 18px;
-  }
+  .result-success { background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 10px; padding: 16px; margin-bottom: 16px; }
   .result-title { font-size: 14px; font-weight: 700; color: #166534; margin-bottom: 6px; }
-  .result-sub { font-size: 12px; color: #374151; line-height: 1.6; }
-  .result-error {
-    background: #fef2f2; border: 1px solid #fecaca;
-    border-radius: 10px; padding: 16px; margin-bottom: 18px;
-  }
+  .result-sub { font-size: 12px; color: #374151; line-height: 1.7; }
+  .result-error { background: #fef2f2; border: 1px solid #fecaca; border-radius: 10px; padding: 16px; margin-bottom: 16px; }
   .result-error-title { font-size: 14px; font-weight: 700; color: #991b1b; margin-bottom: 6px; }
 
   /* ── buttons ── */
   .btn-row { display: flex; gap: 8px; }
-  .btn {
-    flex: 1; padding: 10px; border-radius: 8px; border: none;
-    font-size: 13px; font-weight: 600; cursor: pointer;
-    transition: background 0.15s;
-  }
+  .btn { flex: 1; padding: 10px; border-radius: 8px; border: none; font-size: 13px; font-weight: 600; cursor: pointer; transition: background 0.15s; }
   .btn-primary { background: #111827; color: #fff; }
   .btn-primary:hover { background: #374151; }
   .btn-primary:disabled { background: #d1d5db; color: #9ca3af; cursor: not-allowed; }
@@ -89,43 +71,61 @@
 <body>
 
 <div class="header">
-  <div class="header-icon">📦</div>
+  <div class="header-icon">🎨</div>
   <div>
-    <div class="header-title">S1 Design Variables Installer</div>
-    <div class="header-sub">S1 디자인시스템 Variables를 이 파일에 설치합니다</div>
+    <div class="header-title">에스원 디자인시스템 설치</div>
+    <div class="header-sub">필요한 항목을 선택해 이 파일에 설치합니다</div>
   </div>
 </div>
 
-<div class="info-box">
-  <div class="info-row">
-    <span class="badge badge-blue">Foundation V2</span>
-    <span>색상 팔레트 (light + dark 분리) + spacing · radius · font-size 등 원시값. 단일 Default 모드.</span>
-  </div>
-  <div class="info-row">
-    <span class="badge badge-green">Semantic Color V2</span>
-    <span>색상 역할 alias + 레거시 컴포넌트별 토큰 (button 등). Light / Dark 2모드.</span>
-  </div>
-  <div class="info-row">
-    <span class="badge badge-green">Semantic Number V2</span>
-    <span>spacing · sizing · radius 역할 alias. 단일 Default 모드 (mode-invariant).</span>
-  </div>
-  <div class="info-row">
-    <span class="badge badge-gray">버전 관리</span>
-    <span>컬렉션 이름 고정 → 매 빌드마다 같은 컬렉션 update. 변수 ID·binding 보존.</span>
-  </div>
+<div class="select-list" id="select-list">
+  <label class="select-row checked" data-opt="opt-foundation">
+    <input type="checkbox" id="opt-foundation" checked>
+    <div class="select-body">
+      <div class="select-name">Foundation</div>
+      <div class="select-desc">색상 팔레트(light/dark 분리) + spacing·radius·border-width·font 원시값. 단일 Default 모드.</div>
+      <div class="select-date">최신 업데이트 · <strong>2026-06-08</strong></div>
+    </div>
+  </label>
+
+  <label class="select-row checked" data-opt="opt-semantic">
+    <input type="checkbox" id="opt-semantic" checked>
+    <div class="select-body">
+      <div class="select-name">Semantic</div>
+      <div class="select-desc">색상 역할 alias + 컴포넌트별 토큰(button 등) Light/Dark 2모드 · 숫자 역할 alias. Foundation 참조.</div>
+      <div class="select-date">최신 업데이트 · <strong>2026-06-09</strong></div>
+    </div>
+  </label>
+
+  <label class="select-row checked" data-opt="opt-textstyles">
+    <input type="checkbox" id="opt-textstyles" checked>
+    <div class="select-body">
+      <div class="select-name">Text Styles</div>
+      <div class="select-desc">title·body·caption·helper 19개 (Pretendard). V2.4 출처. get-or-create.</div>
+      <div class="select-date">최신 업데이트 · <strong>2026-06-10</strong></div>
+    </div>
+  </label>
+
+  <label class="select-row checked" data-opt="opt-components">
+    <input type="checkbox" id="opt-components" checked>
+    <div class="select-body">
+      <div class="select-name">Component Set 생성</div>
+      <div class="select-desc">Button primary 16-variant (Size×State×Break) + 라벨 스펙 프레임. Semantic 변수 바인딩 · 모드 연결.</div>
+      <div class="select-date">최신 업데이트 · <strong>2026-06-10</strong></div>
+    </div>
+  </label>
 </div>
 
-<div class="warn-box">
-  ⚠️ <strong>설치 전 확인:</strong> 이 파일에 같은 이름의 Variables Collection이 있으면
-  값이 업데이트됩니다. 기존 컴포넌트 연결은 유지됩니다.
+<div class="dep-note">
+  ⓘ <strong>의존성</strong>: Semantic은 Foundation을, Component Set은 Foundation·Semantic·Text Styles를 참조합니다.
+  선택하지 않은 의존 항목은 <strong>이미 설치된 것을 자동 연결</strong>합니다(없으면 안내 후 중단).
+  같은 이름의 컬렉션이 있으면 값만 업데이트되며 기존 바인딩은 유지됩니다.
 </div>
 
 <!-- progress -->
 <div id="progress-wrap">
   <div id="progress-label">설치 중…</div>
-  <div id="progress-bar-track">
-    <div id="progress-bar-fill"></div>
-  </div>
+  <div id="progress-bar-track"><div id="progress-bar-fill"></div></div>
 </div>
 
 <!-- result -->
@@ -133,15 +133,32 @@
 
 <div class="btn-row" id="btn-row">
   <button class="btn btn-secondary" id="btn-cancel" onclick="cancel()">취소</button>
-  <button class="btn btn-primary"   id="btn-install" onclick="install()">Variables 설치하기</button>
+  <button class="btn btn-primary"   id="btn-install" onclick="install()">선택 항목 설치</button>
 </div>
 
 <script>
+  // 체크 시각 상태 토글
+  document.querySelectorAll('.select-row input').forEach((cb) => {
+    cb.addEventListener('change', () => {
+      cb.closest('.select-row').classList.toggle('checked', cb.checked);
+    });
+  });
+
   function install() {
+    const sel = {
+      foundation:  document.getElementById('opt-foundation').checked,
+      semantic:    document.getElementById('opt-semantic').checked,
+      textStyles:  document.getElementById('opt-textstyles').checked,
+      components:  document.getElementById('opt-components').checked,
+    };
+    if (!sel.foundation && !sel.semantic && !sel.textStyles && !sel.components) {
+      alert('설치할 항목을 하나 이상 선택하세요.');
+      return;
+    }
     document.getElementById('btn-install').disabled = true;
     document.getElementById('btn-cancel').disabled  = true;
     document.getElementById('progress-wrap').style.display = 'block';
-    parent.postMessage({ pluginMessage: { type: 'install' } }, '*');
+    parent.postMessage({ pluginMessage: { type: 'install', ...sel } }, '*');
   }
 
   function cancel() {
@@ -160,22 +177,24 @@
     if (msg.type === 'done') {
       document.getElementById('progress-wrap').style.display = 'none';
       document.getElementById('btn-row').style.display = 'none';
+      const lines = [];
+      if (msg.foundationCount) lines.push(`Foundation: <strong>${msg.foundationCount}개</strong> 변수`);
+      if (msg.semanticCount)   lines.push(`Semantic: <strong>${msg.semanticCount}개</strong> 변수 (Light/Dark)`);
+      if (msg.textStyleCount)  lines.push(`Text Styles: <strong>${msg.textStyleCount}개</strong>`);
+      if (msg.componentCount)  lines.push(`Component Set: <strong>${msg.componentCount}개</strong> variant`);
+      if (msg.removedCount)    lines.push(`옛 잔재 변수 <strong>${msg.removedCount}개</strong> 정리`);
       const r = document.getElementById('result');
       r.style.display = 'block';
       r.innerHTML = `
         <div class="result-success">
           <div class="result-title">✅ 설치 완료</div>
-          <div class="result-sub">
-            Foundation: <strong>${msg.foundationCount}개</strong> 변수 설치됨<br>
-            semantic: <strong>${msg.semanticCount}개</strong> 변수 설치됨 (Light / Dark)<br>
-            ${msg.removedCount ? `옛 잔재 변수 <strong>${msg.removedCount}개</strong> 정리됨<br>` : ''}<br>
-            왼쪽 패널 <strong>Local variables</strong>에서 확인하세요.
+          <div class="result-sub">${lines.join('<br>') || '설치된 항목이 없습니다.'}<br><br>
+            왼쪽 패널 <strong>Local variables</strong> · <strong>Text styles</strong> · <strong>Assets</strong>에서 확인하세요.
           </div>
         </div>
         <div class="btn-row">
           <button class="btn btn-primary" onclick="parent.postMessage({pluginMessage:{type:'cancel'}},'*')">닫기</button>
-        </div>
-      `;
+        </div>`;
     }
 
     if (msg.type === 'error') {
@@ -189,9 +208,9 @@
           <div class="result-sub">${msg.message}</div>
         </div>
         <div class="btn-row">
+          <button class="btn btn-secondary" onclick="location.reload()">다시 시도</button>
           <button class="btn btn-secondary" onclick="parent.postMessage({pluginMessage:{type:'cancel'}},'*')">닫기</button>
-        </div>
-      `;
+        </div>`;
     }
   };
 </script>

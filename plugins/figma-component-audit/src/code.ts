@@ -32,6 +32,7 @@ type Suggestion = {
   confidence: "high" | "medium" | "low";
   matchType: "role+component" | "role" | "exact" | "near";
   matchInfo?: string;  // 'Δ12' 같은 부가 정보 (color distance)
+  category: string;     // 'button' | 'tab' | 'text' | 'foundation' | ...
 };
 
 type Issue = {
@@ -147,26 +148,31 @@ function classifyNode(node: SceneNode): NodeKind {
   return "shape";
 }
 
-// 가장 가까운 Component/ComponentSet/Instance 조상의 이름에서 컨텍스트 segment 추출
-// 예: "Button / Primary / MD" → ["button","primary","md"]
+// 노드 자체가 component/instance면 자기 이름, 아니면 가장 가까운 component/instance 조상의 이름을
+// segment로 분해하여 반환. V2 정의 여부와 무관.
+//   예: 'Tab / Dark+1' → ['tab','dark','1']  /  'Button/Primary' → ['button','primary']
+// 컴포넌트에 속하지 않으면 [] 반환 (일반 토큰 탭으로 분류됨).
 function getComponentContext(node: SceneNode): string[] {
-  let cur: BaseNode | null = node;
   const isComponentLike = (n: BaseNode) =>
     n.type === "COMPONENT" || n.type === "COMPONENT_SET" || n.type === "INSTANCE";
+
+  const splitName = (name: string) =>
+    (name || "")
+      .split(/[/_\s,+]+/)
+      .map((s) => s.trim().toLowerCase())
+      .filter(Boolean);
+
+  if (isComponentLike(node)) {
+    return splitName(node.name);
+  }
+  let cur: BaseNode | null = node.parent;
   while (cur && cur.id !== figma.currentPage.id) {
     if (isComponentLike(cur)) {
-      const segments = (cur.name || "")
-        .split(/[/_\s,]+/)
-        .map((s) => s.trim().toLowerCase())
-        .filter(Boolean);
-      if (segments.length) return segments;
+      return splitName(cur.name);
     }
     cur = cur.parent;
   }
-  return (node.name || "")
-    .split(/[/_\s,]+/)
-    .map((s) => s.trim().toLowerCase())
-    .filter(Boolean);
+  return [];
 }
 
 // 노드 종류와 paint 속성, 외부 변수 이름으로부터 "역할(role)" segment 결정
@@ -219,6 +225,14 @@ function hexDistance(a: string, b: string): number {
   return Math.sqrt((ar - br) ** 2 + (ag - bg) ** 2 + (ab - bb) ** 2);
 }
 
+// V2 토큰 이름에서 카테고리 추출 ('color/button/...' → 'button', 'color/text/...' → 'text')
+function categoryOf(varName: string): string {
+  const segs = varName.toLowerCase().split("/").filter(Boolean);
+  if (segs.length < 2) return "etc";
+  if (segs[0] !== "color") return segs[0];
+  return segs[1];
+}
+
 function pickSuggestions(
   hex: string,
   byHex: { [hex: string]: V2Var[] },
@@ -230,143 +244,106 @@ function pickSuggestions(
 ): Suggestion[] {
   const roles = decideRoles(nodeKind, paintProp, externalVarName);
   const exactList = byHex[hex] || [];
+  const exactIds = new Set(exactList.map((v) => v.id));
 
-  type Scored = { v: V2Var; score: number; matchType: Suggestion["matchType"]; matchInfo?: string };
-  const componentRole: Scored[] = []; // component 컨텍스트 + role 둘 다 매칭
-  const generalRole: Scored[] = [];   // role만 매칭 (component 매칭 없음)
-  const exactOnly: Scored[] = [];     // hex 정확 매칭만 (role 매칭 없음)
+  const result: Suggestion[] = [];
+  const added = new Set<string>();
 
-  // V2 전 토큰 순회
+  // 1) Semantic Color V2 전 토큰 순회 — role 매칭 토큰만 채택 (카테고리 무관, 갯수 제한 없음)
   for (const v of v2All) {
+    if (v.collectionName !== "Semantic Color V2") continue;
     const lower = v.name.toLowerCase();
-    let collectionBonus = 0;
-    if (v.collectionName === "Semantic Color V2") collectionBonus = 10;
-    else if (v.collectionName === "Foundation V2") collectionBonus = 1;
-
     // role 매칭 여부
-    let isRoleMatch = false;
+    let hasRoleMatch = false;
     for (const role of roles) {
       if (lower.indexOf(`/${role}/`) >= 0 || lower.indexOf(`/${role}--`) >= 0) {
-        isRoleMatch = true;
+        hasRoleMatch = true;
         break;
       }
     }
+    if (!hasRoleMatch) continue;
 
-    // component 매칭 여부
-    let isComponentMatch = false;
-    for (const seg of contextSegments) {
-      if (seg.length < 2) continue;
-      if (lower.indexOf(`/${seg}/`) >= 0) {
-        isComponentMatch = true;
-        break;
-      }
-    }
+    const cat = categoryOf(v.name);
+    const isComponentMatch = contextSegments.indexOf(cat) >= 0;
+    const isExact = exactIds.has(v.id);
 
-    const isExact = exactList.indexOf(v) >= 0;
-
-    if (isRoleMatch && isComponentMatch) {
-      let score = 50 + collectionBonus + (isExact ? 15 : 0);
-      componentRole.push({ v, score, matchType: "role+component" });
-    } else if (isRoleMatch) {
-      let score = 30 + collectionBonus + (isExact ? 15 : 0);
-      generalRole.push({ v, score, matchType: "role" });
-    } else if (isExact) {
-      let score = 15 + collectionBonus;
-      exactOnly.push({ v, score, matchType: "exact" });
-    }
-  }
-
-  componentRole.sort((a, b) => b.score - a.score);
-  generalRole.sort((a, b) => b.score - a.score);
-  exactOnly.sort((a, b) => b.score - a.score);
-
-  // 카테고리 다양성 보장: component-role 최대 3 + general-role 최대 3
-  // 한쪽 부족하면 다른 쪽에서 보충, 총 6개
-  const limit = 6;
-  const result: Scored[] = [];
-  const used = new Set<string>();
-  const compMax = 3;
-  const generalMax = 3;
-
-  for (const s of componentRole.slice(0, compMax)) {
-    result.push(s);
-    used.add(s.v.id);
-  }
-  for (const s of generalRole.slice(0, generalMax)) {
-    if (used.has(s.v.id)) continue;
-    result.push(s);
-    used.add(s.v.id);
-  }
-  // 한쪽이 부족하면 다른 쪽 추가분으로 채움
-  if (result.length < limit) {
-    const remaining = [
-      ...componentRole.slice(compMax),
-      ...generalRole.slice(generalMax),
-    ].sort((a, b) => b.score - a.score);
-    for (const s of remaining) {
-      if (used.has(s.v.id)) continue;
-      result.push(s);
-      used.add(s.v.id);
-      if (result.length >= limit) break;
-    }
-  }
-  // exact-only로 보충
-  if (result.length < limit) {
-    for (const s of exactOnly) {
-      if (used.has(s.v.id)) continue;
-      result.push(s);
-      used.add(s.v.id);
-      if (result.length >= limit) break;
-    }
-  }
-
-  // 결과 정렬: component-role 먼저(점수순), 그다음 general-role(점수순), exact
-  result.sort((a, b) => {
-    const orderMap = { "role+component": 0, "role": 1, "exact": 2, "near": 3 };
-    const ao = orderMap[a.matchType];
-    const bo = orderMap[b.matchType];
-    if (ao !== bo) return ao - bo;
-    return b.score - a.score;
-  });
-
-  // role 매칭이 전혀 없으면 색 거리 근접 fallback
-  if (result.length === 0) {
-    const pool = v2All.filter((v) => v.collectionName === "Semantic Color V2");
-    type Near = { v: V2Var; dist: number };
-    const nears: Near[] = [];
-    for (const v of pool) {
-      const modes = Object.keys(v.hexByMode);
-      if (modes.length === 0) continue;
-      const vHex = v.hexByMode[modes[0]];
-      const d = hexDistance(hex, vHex);
-      nears.push({ v, dist: d });
-    }
-    nears.sort((a, b) => a.dist - b.dist);
-    for (const n of nears.slice(0, 2)) {
-      result.push({
-        v: n.v,
-        score: 5,
-        matchType: "near",
-        matchInfo: `Δ${Math.round(n.dist)}`,
-      });
-    }
-  }
-
-  return result.map((s): Suggestion => {
+    let matchType: Suggestion["matchType"];
     let confidence: "high" | "medium" | "low";
-    if (s.matchType === "role+component") confidence = "high";
-    else if (s.matchType === "role") confidence = "medium";
-    else if (s.matchType === "exact") confidence = "medium";
-    else confidence = "low";
-    return {
-      variableId: s.v.id,
-      variableName: s.v.name,
-      collectionName: s.v.collectionName,
+    if (isComponentMatch) {
+      matchType = "role+component";
+      confidence = "high";
+    } else {
+      matchType = "role";
+      confidence = "medium";
+    }
+    if (isExact) confidence = "high";
+
+    result.push({
+      variableId: v.id,
+      variableName: v.name,
+      collectionName: v.collectionName,
       confidence,
-      matchType: s.matchType,
-      matchInfo: s.matchInfo,
-    };
+      matchType,
+      category: cat,
+    });
+    added.add(v.id);
+  }
+
+  // 2) 정확히 일치하는 hex의 Foundation/Semantic 토큰 (role 매칭 없는 것도 포함) — 'foundation' 카테고리
+  for (const v of exactList) {
+    if (added.has(v.id)) continue;
+    result.push({
+      variableId: v.id,
+      variableName: v.name,
+      collectionName: v.collectionName,
+      confidence: "medium",
+      matchType: "exact",
+      category: v.collectionName === "Foundation V2" ? "foundation" : categoryOf(v.name),
+    });
+    added.add(v.id);
+  }
+
+  // 3) Foundation 유사색 top 10 (색 거리)
+  type Near = { v: V2Var; dist: number };
+  const nears: Near[] = [];
+  for (const v of v2All) {
+    if (v.collectionName !== "Foundation V2") continue;
+    if (added.has(v.id)) continue;
+    const modes = Object.keys(v.hexByMode);
+    if (modes.length === 0) continue;
+    const vHex = v.hexByMode[modes[0]];
+    const d = hexDistance(hex, vHex);
+    nears.push({ v, dist: d });
+  }
+  nears.sort((a, b) => a.dist - b.dist);
+  for (const n of nears.slice(0, 10)) {
+    result.push({
+      variableId: n.v.id,
+      variableName: n.v.name,
+      collectionName: n.v.collectionName,
+      confidence: "low",
+      matchType: "near",
+      matchInfo: `Δ${Math.round(n.dist)}`,
+      category: "foundation",
+    });
+    added.add(n.v.id);
+  }
+
+  // 정렬: 컨텍스트 매칭 카테고리 → 점수순 (matchType 우선, exact 우선)
+  const orderMap: Record<string, number> = { "role+component": 0, "role": 1, "exact": 2, "near": 3 };
+  result.sort((a, b) => {
+    const aCtx = contextSegments.indexOf(a.category) >= 0 ? 0 : 1;
+    const bCtx = contextSegments.indexOf(b.category) >= 0 ? 0 : 1;
+    if (aCtx !== bCtx) return aCtx - bCtx;
+    const ao = orderMap[a.matchType] ?? 9;
+    const bo = orderMap[b.matchType] ?? 9;
+    if (ao !== bo) return ao - bo;
+    // category 알파벳순
+    if (a.category !== b.category) return a.category.localeCompare(b.category);
+    return a.variableName.localeCompare(b.variableName);
   });
+
+  return result;
 }
 
 async function audit(): Promise<{ issues: Issue[]; stats: { scanned: number; issuesCount: number; highCount: number } }> {
@@ -408,14 +385,9 @@ async function audit(): Promise<{ issues: Issue[]; stats: { scanned: number; iss
           }
         }
         const suggestions = pickSuggestions(hex, byHex, v2, prop, kind, ctx, externalVarName);
-        const hasComponentMatch = ctx.length > 0 && suggestions.some((s) => {
-          const lower = s.variableName.toLowerCase();
-          for (const seg of ctx) {
-            if (seg.length < 2) continue;
-            if (lower.indexOf(`/${seg}/`) >= 0) return true;
-          }
-          return false;
-        });
+        // 노드가 어떤 컴포넌트/인스턴스에 속하면 컴포넌트 매칭 탭으로 분류
+        // (V2에 해당 컴포넌트 토큰이 정의되어 있는지 여부는 suggestion 점수에만 영향)
+        const hasComponentMatch = ctx.length > 0;
         if (bound) {
           const v = await figma.variables.getVariableByIdAsync(bound.id);
           if (!v) continue;
@@ -486,52 +458,74 @@ async function applyHighConfidence(issues: Issue[]): Promise<number> {
 }
 
 // 멀티 적용 — UI에서 라디오로 선택한 항목들 일괄 처리
-async function applyMulti(picks: { issue: Issue; suggestionIndex: number }[]): Promise<{ ok: number; fail: number; appliedIds: string[] }> {
+async function applyMulti(picks: { issue: Issue; suggestionIndex: number }[]): Promise<{ ok: number; fail: number; applied: { issueId: string; suggestionIndex: number }[] }> {
   let ok = 0;
   let fail = 0;
-  const appliedIds: string[] = [];
+  const applied: { issueId: string; suggestionIndex: number }[] = [];
   for (const p of picks) {
     if (await applyOne(p.issue, p.suggestionIndex)) {
       ok++;
-      appliedIds.push(p.issue.id);
+      applied.push({ issueId: p.issue.id, suggestionIndex: p.suggestionIndex });
     } else {
       fail++;
     }
   }
-  return { ok, fail, appliedIds };
+  return { ok, fail, applied };
 }
 
-// Semantic Color V2 컬렉션을 찾아 mode override를 일괄 설정
-async function setVariablesMode(mode: "light" | "dark" | "clear"): Promise<{ count: number; skipped: number; message?: string }> {
+// Semantic Color V2 컬렉션을 찾아 mode override를 일괄 설정.
+// 초기화(clear)는 모든 컬렉션 + 모든 자손 노드까지 재귀적으로 처리해 레거시 모드까지 깨끗이 제거.
+async function setVariablesMode(mode: "light" | "dark" | "clear"): Promise<{ count: number; skipped: number; cleared?: number; message?: string }> {
   const sel = figma.currentPage.selection;
   if (sel.length === 0) {
     return { count: 0, skipped: 0, message: "선택된 노드 없음" };
   }
+
+  if (mode === "clear") {
+    // 선택 노드와 모든 자손 노드에 있는 모든 컬렉션의 explicit mode 제거
+    let cleared = 0;
+    let skipped = 0;
+    const visit = (n: SceneNode) => {
+      const modes = (n as any).explicitVariableModes as { [collectionId: string]: string } | undefined;
+      if (modes) {
+        const collectionIds = Object.keys(modes);
+        for (const cid of collectionIds) {
+          try {
+            (n as any).clearExplicitVariableModeForCollection(cid);
+            cleared++;
+          } catch (e) {
+            skipped++;
+          }
+        }
+      }
+      if ("children" in n) {
+        for (const c of (n as any).children) visit(c as SceneNode);
+      }
+    };
+    for (const root of sel) visit(root);
+    if (cleared === 0 && skipped === 0) {
+      return { count: 0, skipped: 0, cleared: 0, message: "초기화할 모드 override 없음" };
+    }
+    return { count: sel.length, skipped, cleared };
+  }
+
+  // Light/Dark 설정
   const collections = await figma.variables.getLocalVariableCollectionsAsync();
   const semantic = collections.find((c) => c.name === "Semantic Color V2");
   if (!semantic) {
     return { count: 0, skipped: 0, message: "Semantic Color V2 컬렉션 없음" };
   }
-
-  let targetModeId: string | null = null;
-  if (mode !== "clear") {
-    const targetName = mode === "light" ? "Light" : "Dark";
-    const found = semantic.modes.find((m) => m.name === targetName);
-    if (!found) {
-      return { count: 0, skipped: 0, message: `${targetName} 모드를 찾지 못함` };
-    }
-    targetModeId = found.modeId;
+  const targetName = mode === "light" ? "Light" : "Dark";
+  const found = semantic.modes.find((m) => m.name === targetName);
+  if (!found) {
+    return { count: 0, skipped: 0, message: `${targetName} 모드를 찾지 못함` };
   }
 
   let count = 0;
   let skipped = 0;
   for (const node of sel) {
     try {
-      if (mode === "clear") {
-        (node as any).clearExplicitVariableModeForCollection(semantic.id);
-      } else {
-        (node as any).setExplicitVariableModeForCollection(semantic.id, targetModeId);
-      }
+      (node as any).setExplicitVariableModeForCollection(semantic.id, found.modeId);
       count++;
     } catch (e) {
       skipped++;
@@ -540,7 +534,275 @@ async function setVariablesMode(mode: "light" | "dark" | "clear"): Promise<{ cou
   return { count, skipped };
 }
 
+// ─── 컴포넌트 swap 기능 ──────────────────────────────────────
+
+type ReferenceComponent = {
+  id: string;       // 등록 시점의 파일 내 ID (같은 파일에서만 유효)
+  key: string;      // component key (publish된 경우 다른 파일에서도 유효)
+  name: string;
+  type: "COMPONENT" | "COMPONENT_SET";
+  sourceFileName?: string;  // 출처 파일 이름 (UX 가이드 파일명 표시용)
+};
+
+type SwapCandidate = {
+  id: string;
+  instanceId: string;
+  instanceName: string;
+  currentMainId: string;
+  currentMainName: string;
+  currentMainPath: string;     // 현재 mainComponent의 위치 (페이지/parent set)
+  suggestedId: string;          // 기준 파일에서의 ID (다른 파일에선 무효)
+  suggestedKey: string;         // 라이브러리 component key (publish된 경우 import 가능)
+  suggestedType: "COMPONENT" | "COMPONENT_SET";
+  suggestedName: string;
+  suggestedSource?: string;     // 출처 파일명
+};
+
+// 노드 자손에서 모든 COMPONENT/COMPONENT_SET 수집 (key 포함)
+function collectComponents(root: BaseNode, sourceFileName?: string): ReferenceComponent[] {
+  const acc: ReferenceComponent[] = [];
+  const visit = (n: BaseNode) => {
+    if (n.type === "COMPONENT_SET") {
+      acc.push({ id: n.id, key: (n as ComponentSetNode).key, name: n.name, type: "COMPONENT_SET", sourceFileName });
+      return;
+    }
+    if (n.type === "COMPONENT") {
+      if (n.parent && n.parent.type === "COMPONENT_SET") return;
+      acc.push({ id: n.id, key: (n as ComponentNode).key, name: n.name, type: "COMPONENT", sourceFileName });
+      return;
+    }
+    if ("children" in n) {
+      for (const c of (n as any).children) visit(c);
+    }
+  };
+  visit(root);
+  return acc;
+}
+
+// 노드 자손에서 모든 INSTANCE 수집
+function collectInstances(root: BaseNode): InstanceNode[] {
+  const acc: InstanceNode[] = [];
+  const visit = (n: BaseNode) => {
+    if (n.type === "INSTANCE") {
+      acc.push(n as InstanceNode);
+      // 인스턴스 내부도 다른 인스턴스가 있을 수 있음
+    }
+    if ("children" in n) {
+      for (const c of (n as any).children) visit(c);
+    }
+  };
+  visit(root);
+  return acc;
+}
+
+type SwapDiagnostics = {
+  selectionCount: number;
+  instanceCount: number;
+  referencePoolSize: number;
+  matchedNameCount: number;    // mainComponent 이름이 기준 풀에 있는 인스턴스 수
+  sameIdSkippedCount: number;  // 같은 컴포넌트라서 스킵된 수
+  candidateCount: number;
+  instancesPreview: { name: string; mainName: string; mainTopId: string; matched: boolean; sameAsTarget: boolean }[];
+};
+
+// 이름 정규화 — 공백·하이픈·언더스코어·슬래시 제거 후 소문자
+function normalizeName(s: string): string {
+  return (s || "").toLowerCase().replace(/[\s_\-\/]+/g, "").trim();
+}
+
+// 후보 풀에서 이름 매칭 — 정확 일치 → 정규화 일치 → 부분 일치 순으로 시도
+function findReferenceMatch(name: string, pool: ReferenceComponent[]): ReferenceComponent | null {
+  const lower = name.toLowerCase();
+  // 1. 정확 일치 (소문자만)
+  const exact = pool.find((p) => p.name.toLowerCase() === lower);
+  if (exact) return exact;
+  // 2. 정규화 일치 (공백·하이픈·슬래시 제거)
+  const norm = normalizeName(name);
+  const normMatch = pool.find((p) => normalizeName(p.name) === norm);
+  if (normMatch) return normMatch;
+  // 3. 부분 일치 (양방향 substring, 정규화 후) — 최소 3자 이상일 때만
+  if (norm.length >= 3) {
+    const part = pool.find((p) => {
+      const pn = normalizeName(p.name);
+      return pn.length >= 3 && (pn.indexOf(norm) >= 0 || norm.indexOf(pn) >= 0);
+    });
+    if (part) return part;
+  }
+  return null;
+}
+
+// 기준 풀과 현재 instance를 비교해 swap 후보 산정 + 진단 정보 반환
+async function scanSwapCandidates(pool: ReferenceComponent[]): Promise<{ candidates: SwapCandidate[]; diagnostics: SwapDiagnostics }> {
+  const sel = figma.currentPage.selection;
+  const diag: SwapDiagnostics = {
+    selectionCount: sel.length,
+    instanceCount: 0,
+    referencePoolSize: pool.length,
+    matchedNameCount: 0,
+    sameIdSkippedCount: 0,
+    candidateCount: 0,
+    instancesPreview: [],
+  };
+  if (sel.length === 0) return { candidates: [], diagnostics: diag };
+  const candidates: SwapCandidate[] = [];
+  const seen = new Set<string>();
+  let counter = 0;
+  for (const root of sel) {
+    const insts = collectInstances(root);
+    diag.instanceCount += insts.length;
+    for (const inst of insts) {
+      const main = await inst.getMainComponentAsync();
+      if (!main) {
+        if (diag.instancesPreview.length < 8) diag.instancesPreview.push({ name: inst.name, mainName: "(mainComponent null)", mainTopId: "", matched: false, sameAsTarget: false });
+        continue;
+      }
+      const compareName = main.parent && main.parent.type === "COMPONENT_SET"
+        ? main.parent.name
+        : main.name;
+      const currentTopId = main.parent && main.parent.type === "COMPONENT_SET" ? main.parent.id : main.id;
+      // 유연 매칭: 정확 → 정규화 → 부분 일치
+      let target = findReferenceMatch(compareName, pool);
+      // 인스턴스 노드 이름으로 보조 매칭 (예: instance.name이 "Button"이면 그것도 시도)
+      if (!target && inst.name && inst.name !== compareName) {
+        target = findReferenceMatch(inst.name, pool);
+      }
+      const matched = !!target;
+      const sameAsTarget = !!target && target.id === currentTopId;
+      if (matched) diag.matchedNameCount++;
+      if (sameAsTarget) diag.sameIdSkippedCount++;
+      if (diag.instancesPreview.length < 8) {
+        diag.instancesPreview.push({ name: inst.name, mainName: compareName, mainTopId: currentTopId, matched, sameAsTarget });
+      }
+      if (!matched || sameAsTarget) continue;
+      const key = inst.id + ":" + target!.id;
+      if (seen.has(key)) continue;
+      seen.add(key);
+      const path = await describeComponentLocation(main);
+      candidates.push({
+        id: "s" + (++counter),
+        instanceId: inst.id,
+        instanceName: inst.name,
+        currentMainId: currentTopId,
+        currentMainName: compareName,
+        currentMainPath: path,
+        suggestedId: target!.id,
+        suggestedKey: target!.key,
+        suggestedType: target!.type,
+        suggestedName: target!.name,
+        suggestedSource: target!.sourceFileName,
+      });
+    }
+  }
+  diag.candidateCount = candidates.length;
+  return { candidates, diagnostics: diag };
+}
+
+async function describeComponentLocation(comp: ComponentNode): Promise<string> {
+  let cur: BaseNode | null = comp;
+  let pageName = "";
+  while (cur) {
+    if (cur.type === "PAGE") { pageName = cur.name; break; }
+    cur = cur.parent;
+  }
+  return pageName || "(외부)";
+}
+
+// swap 대상 ComponentNode 가져오기 — 현재 파일이면 직접, 아니면 라이브러리에서 import
+async function resolveSwapTarget(candidate: SwapCandidate): Promise<ComponentNode | null> {
+  // 1) 현재 파일 내 ID로 시도
+  try {
+    const n = await figma.getNodeByIdAsync(candidate.suggestedId);
+    if (n) {
+      if (n.type === "COMPONENT") return n as ComponentNode;
+      if (n.type === "COMPONENT_SET") return (n as ComponentSetNode).defaultVariant;
+    }
+  } catch {}
+  // 2) key가 있으면 라이브러리에서 import
+  if (candidate.suggestedKey) {
+    try {
+      if (candidate.suggestedType === "COMPONENT_SET") {
+        const set = await figma.importComponentSetByKeyAsync(candidate.suggestedKey);
+        return set.defaultVariant;
+      } else {
+        const comp = await figma.importComponentByKeyAsync(candidate.suggestedKey);
+        return comp;
+      }
+    } catch (e) {
+      return null;
+    }
+  }
+  return null;
+}
+
+// 단건 swap 실행
+async function applySwap(candidate: SwapCandidate): Promise<{ ok: boolean; reason?: string }> {
+  const inst = await figma.getNodeByIdAsync(candidate.instanceId);
+  if (!inst || inst.type !== "INSTANCE") return { ok: false, reason: "인스턴스를 찾을 수 없음" };
+  const swapTarget = await resolveSwapTarget(candidate);
+  if (!swapTarget) {
+    return { ok: false, reason: "기준 컴포넌트를 import할 수 없습니다. 기준 파일에서 컴포넌트가 publish되었는지 확인해주세요." };
+  }
+  try {
+    (inst as InstanceNode).swapComponent(swapTarget);
+    return { ok: true };
+  } catch (e: any) {
+    return { ok: false, reason: String(e && e.message || e) };
+  }
+}
+
+// 기준 풀 영속화 — 글로벌 (모든 파일에서 같은 기준 공유)
+const REFERENCE_STORAGE_KEY = "s1-component-audit:reference-pool";
+
+type SavedReference = { pool: ReferenceComponent[]; rootNames: string[]; sourceFileName?: string };
+
+async function loadReference(): Promise<SavedReference | null> {
+  try {
+    const saved = await figma.clientStorage.getAsync(REFERENCE_STORAGE_KEY) as SavedReference | undefined;
+    if (!saved || !saved.pool || saved.pool.length === 0) return null;
+    // key가 있는 컴포넌트는 유효 (다른 파일에서도 import 가능)
+    // key가 없으면 같은 파일에서만 유효 — getNodeByIdAsync로 검증
+    const valid: ReferenceComponent[] = [];
+    for (const c of saved.pool) {
+      if (c.key) {
+        valid.push(c); // key 있으면 unconditional 유효
+        continue;
+      }
+      const n = await figma.getNodeByIdAsync(c.id);
+      if (n && (n.type === "COMPONENT" || n.type === "COMPONENT_SET")) {
+        valid.push(c);
+      }
+    }
+    if (valid.length === 0) return null;
+    return { pool: valid, rootNames: saved.rootNames || [], sourceFileName: saved.sourceFileName };
+  } catch {
+    return null;
+  }
+}
+
+async function saveReference(pool: ReferenceComponent[], rootNames: string[], sourceFileName?: string): Promise<void> {
+  try {
+    await figma.clientStorage.setAsync(REFERENCE_STORAGE_KEY, { pool, rootNames, sourceFileName });
+  } catch {}
+}
+
+async function clearReference(): Promise<void> {
+  try {
+    await figma.clientStorage.deleteAsync(REFERENCE_STORAGE_KEY);
+  } catch {}
+}
+
 figma.showUI(__html__, { width: 640, height: 720, themeColors: true });
+
+// 플러그인 시작 시 저장된 기준 자동 로드
+(async () => {
+  const saved = await loadReference();
+  if (saved) {
+    figma.ui.postMessage({
+      type: "reference-loaded",
+      payload: { pool: saved.pool, rootNames: saved.rootNames, sourceFileName: saved.sourceFileName, restored: true },
+    });
+  }
+})();
 
 figma.ui.onmessage = async (msg: { type: string; payload?: any }) => {
   try {
@@ -555,7 +817,10 @@ figma.ui.onmessage = async (msg: { type: string; payload?: any }) => {
       }
     } else if (msg.type === "apply-one") {
       const ok = await applyOne(msg.payload.issue, msg.payload.suggestionIndex);
-      figma.ui.postMessage({ type: "apply-result", payload: { issueId: msg.payload.issue.id, ok } });
+      figma.ui.postMessage({
+        type: "apply-result",
+        payload: { issueId: msg.payload.issue.id, suggestionIndex: msg.payload.suggestionIndex, ok },
+      });
     } else if (msg.type === "apply-high") {
       const count = await applyHighConfidence(msg.payload.issues);
       figma.notify(`${count}건 자동 적용 완료`);
@@ -566,9 +831,64 @@ figma.ui.onmessage = async (msg: { type: string; payload?: any }) => {
       figma.ui.postMessage({ type: "apply-multi-result", payload: res });
     } else if (msg.type === "set-mode") {
       const res = await setVariablesMode(msg.payload.mode);
-      const verb = msg.payload.mode === "clear" ? "override 제거" : `${msg.payload.mode} 모드 적용`;
-      figma.notify(res.message || `${res.count}개 노드 ${verb}${res.skipped ? ` · ${res.skipped}개 skip` : ""}`);
-      figma.ui.postMessage({ type: "set-mode-result", payload: res });
+      let notify: string;
+      if (res.message) {
+        notify = res.message;
+      } else if (msg.payload.mode === "clear") {
+        notify = `${res.cleared || 0}건 모드 override 제거 (전체 컬렉션 · 자손 포함)`;
+      } else {
+        notify = `${res.count}개 노드 ${msg.payload.mode} 모드 적용${res.skipped ? ` · ${res.skipped}개 skip` : ""}`;
+      }
+      figma.notify(notify);
+      figma.ui.postMessage({ type: "set-mode-result", payload: { ...res, message: notify } });
+    } else if (msg.type === "register-reference") {
+      // 현재 선택된 노드(들)의 자손에서 모든 컴포넌트를 정답 풀로 수집
+      const sel = figma.currentPage.selection;
+      if (sel.length === 0) {
+        figma.ui.postMessage({ type: "register-reference-result", payload: { ok: false, message: "기준으로 등록할 페이지/프레임을 먼저 선택하세요" } });
+      } else {
+        const fileName = figma.root.name || "(unsaved)";
+        const all: ReferenceComponent[] = [];
+        const rootNames: string[] = [];
+        for (const root of sel) {
+          rootNames.push(root.name);
+          const comps = collectComponents(root, fileName);
+          all.push(...comps);
+        }
+        const dedup = new Map<string, ReferenceComponent>();
+        for (const c of all) {
+          const k = c.name.toLowerCase();
+          if (!dedup.has(k)) dedup.set(k, c);
+        }
+        const pool = Array.from(dedup.values());
+        const withoutKey = pool.filter((p) => !p.key).length;
+        await saveReference(pool, rootNames, fileName);
+        figma.ui.postMessage({
+          type: "register-reference-result",
+          payload: { ok: true, pool, rootNames, sourceFileName: fileName, withoutKey },
+        });
+      }
+    } else if (msg.type === "clear-reference") {
+      await clearReference();
+      figma.ui.postMessage({ type: "reference-cleared" });
+    } else if (msg.type === "scan-swap") {
+      const pool: ReferenceComponent[] = msg.payload.pool || [];
+      const res = await scanSwapCandidates(pool);
+      figma.ui.postMessage({ type: "scan-swap-result", payload: res });
+    } else if (msg.type === "apply-swap") {
+      const res = await applySwap(msg.payload.candidate);
+      figma.ui.postMessage({ type: "apply-swap-result", payload: { id: msg.payload.candidate.id, ok: res.ok, reason: res.reason } });
+    } else if (msg.type === "apply-swap-multi") {
+      const list: SwapCandidate[] = msg.payload.candidates;
+      const applied: string[] = [];
+      const failures: { id: string; reason: string }[] = [];
+      for (const c of list) {
+        const r = await applySwap(c);
+        if (r.ok) applied.push(c.id);
+        else failures.push({ id: c.id, reason: r.reason || "unknown" });
+      }
+      figma.notify(`${applied.length}건 교체 완료${failures.length ? ` · ${failures.length}건 실패` : ""}`);
+      figma.ui.postMessage({ type: "apply-swap-multi-result", payload: { applied, fail: failures.length, failures } });
     } else if (msg.type === "resize") {
       const w = Math.max(420, Math.min(1400, Math.round(msg.payload.w)));
       const h = Math.max(480, Math.min(1200, Math.round(msg.payload.h)));
