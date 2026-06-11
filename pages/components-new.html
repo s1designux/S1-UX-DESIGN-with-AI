@@ -58,19 +58,22 @@
       --checkbox-check-icon:          var(--color-control-indicator-selected);
       --checkbox-disabled-check-icon: var(--color-control-indicator-disabled);
       /* Radio */
-      --radio-default-bg:      var(--color-form-control-bg-default);
-      --radio-disabled-bg:     var(--color-bg-subtle);
+      /* Radio — 설치기 정본(buildRadio) · control/* 직접 참조 */
+      --radio-default-bg:      var(--color-control-bg-default);
+      --radio-hover-bg:        var(--color-control-bg-hover);
+      --radio-disabled-bg:     var(--color-control-bg-disabled);
       --radio-default-border:  var(--color-control-border-default);
-      --radio-hover-border:    var(--color-control-border-hover);
+      --radio-hover-border:    var(--color-control-border-default);   /* 정본 hover: border=default */
       --radio-selected-border: var(--color-control-border-selected);
       --radio-disabled-border: var(--color-control-border-disabled);
-      --radio-selected-dot:    var(--color-action-primary-default);
-      --radio-disabled-dot:    var(--color-border-strong);
+      --radio-selected-dot:    var(--color-control-indicator-selected-alt);
+      --radio-disabled-dot:    var(--color-control-indicator-disabled);
       /* Toggle */
-      --toggle-on-bg:       var(--color-action-primary-default);
-      --toggle-off-bg:      var(--color-text-placeholder);
-      --toggle-disabled-bg: var(--color-bg-muted);
-      --toggle-knob:        var(--color-action-primary-text);
+      /* Toggle — 설치기 정본(buildToggle) · control/* 직접 참조 */
+      --toggle-on-bg:       var(--color-control-bg-selected);
+      --toggle-off-bg:      var(--color-control-indicator-unselected);
+      --toggle-disabled-bg: var(--color-control-bg-disabled);
+      --toggle-knob:        var(--color-control-indicator-selected);
       /* Chip — Line type */
       --chip-line-default-bg:        var(--color-surface-default);
       --chip-line-default-border:    var(--color-border-strong); /* gray-300=#C4C4C4 — default(#D9D9D9)보다 선명 */
@@ -539,6 +542,12 @@
       background: var(--radio-selected-dot); opacity: 0; transition: opacity 0.15s;
     }
 
+    /* Hover (정본 buildRadio): unselected·enabled에서 bg만 hover로, border는 default 유지 */
+    .s1-radio:not(.is-disabled):not(.is-selected):hover .s1-radio-circle,
+    .s1-radio.is-hover:not(.is-disabled):not(.is-selected) .s1-radio-circle {
+      background: var(--radio-hover-bg);
+      border-color: var(--radio-hover-border);
+    }
     .s1-radio.is-selected .s1-radio-circle { border-color: var(--radio-selected-border); }
     .s1-radio.is-selected .s1-radio-dot { opacity: 1; }
     .s1-radio.is-disabled .s1-radio-circle {
@@ -547,8 +556,8 @@
     }
     .s1-radio.is-disabled.is-selected .s1-radio-dot { background: var(--radio-disabled-dot); }
     .s1-radio.is-disabled { cursor: not-allowed; }
-    .s1-radio-label { font-size: 14px; color: var(--color-text-secondary); }
-    .s1-radio.is-disabled .s1-radio-label { color: var(--color-text-disabled); }
+    .s1-radio-label { font-size: 14px; color: var(--color-control-label-default); }
+    .s1-radio.is-disabled .s1-radio-label { color: var(--color-control-label-disabled); }
 
     /* Toggle */
     .s1-toggle {
@@ -569,8 +578,8 @@
     .s1-toggle.is-on .s1-toggle-knob { left: 22px; }
     .s1-toggle.is-disabled { cursor: not-allowed; }
     .s1-toggle.is-disabled .s1-toggle-track { background: var(--toggle-disabled-bg); }
-    .s1-toggle-label { font-size: 14px; color: var(--color-text-secondary); }
-    .s1-toggle.is-disabled .s1-toggle-label { color: var(--color-text-disabled); }
+    .s1-toggle-label { font-size: 14px; color: var(--color-control-label-default); }
+    .s1-toggle.is-disabled .s1-toggle-label { color: var(--color-control-label-disabled); }
 
     /* Chip — Line (default) */
     .s1-chip {
@@ -1779,6 +1788,8 @@
         </div>
         <div class="comp-nav">
           <button class="comp-nav-btn is-active" data-category="selection" onclick="showSection('checkbox', this)">Checkbox</button>
+          <button class="comp-nav-btn" data-category="selection" onclick="showSection('radio', this)">Radio</button>
+          <button class="comp-nav-btn" data-category="selection" onclick="showSection('toggle', this)">Toggle</button>
         </div><!-- /comp-nav -->
       </div><!-- /component-filter -->
 
@@ -2003,6 +2014,181 @@ checkboxes.forEach(function(chk) {
     chk.classList.toggle('is-checked');
   });
 });</pre></div>
+        </div>
+
+      </section>
+
+
+      <!-- ═══ RADIO ═══ -->
+      <section class="comp-section" id="radio">
+        <div class="comp-section-header">
+          <h2 class="comp-section-title">Radio</h2>
+          <span class="comp-badge comp-badge-blue">Core</span>
+          <span class="comp-badge">5 states</span>
+          <span class="comp-badge comp-badge-blue">정본 buildRadio · control/*</span>
+        </div>
+
+        <div class="variant-block">
+          <div class="variant-label">States · 정본 5 (Default · Hover · Selected · Disabled · Dis+Selected)</div>
+          <div class="preview-area">
+            <div class="comp-state-matrix" style="grid-template-columns: 200px repeat(5, minmax(96px, 1fr));">
+              <div class="matrix-col-header-action">Action</div>
+              <div class="matrix-col-header">Default</div>
+              <div class="matrix-col-header">Hover</div>
+              <div class="matrix-col-header">Selected</div>
+              <div class="matrix-col-header">Disabled</div>
+              <div class="matrix-col-header">Dis+Selected</div>
+              <!-- Action -->
+              <div class="comp-action-cell" data-comp-action="radio">
+                <label class="s1-radio" id="radio-action-target"><div class="s1-radio-circle"><div class="s1-radio-dot"></div></div><span class="s1-radio-label">옵션</span></label>
+                <div class="action-test-controls">
+                  <button type="button" class="action-mini-toggle" data-radio-disabled>Disabled: off</button>
+                </div>
+              </div>
+              <!-- Default -->
+              <div class="comp-state-cell"><label class="s1-radio is-preview"><div class="s1-radio-circle"><div class="s1-radio-dot"></div></div><span class="s1-radio-label">옵션</span></label></div>
+              <!-- Hover (정본 buildRadio) -->
+              <div class="comp-state-cell"><label class="s1-radio is-hover is-preview"><div class="s1-radio-circle"><div class="s1-radio-dot"></div></div><span class="s1-radio-label">옵션</span></label></div>
+              <!-- Selected -->
+              <div class="comp-state-cell"><label class="s1-radio is-selected is-preview"><div class="s1-radio-circle"><div class="s1-radio-dot"></div></div><span class="s1-radio-label">옵션</span></label></div>
+              <!-- Disabled -->
+              <div class="comp-state-cell"><label class="s1-radio is-disabled is-preview"><div class="s1-radio-circle"><div class="s1-radio-dot"></div></div><span class="s1-radio-label">옵션</span></label></div>
+              <!-- Dis+Selected -->
+              <div class="comp-state-cell"><label class="s1-radio is-selected is-disabled is-preview"><div class="s1-radio-circle"><div class="s1-radio-dot"></div></div><span class="s1-radio-label">옵션</span></label></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="code-block">
+          <div class="code-tabs">
+            <button class="code-tab active" onclick="switchTab(this,'radio-html')">HTML</button>
+            <button class="code-tab" onclick="switchTab(this,'radio-css')">CSS</button>
+            <button class="code-tab" onclick="switchTab(this,'radio-tokens')">Token Details</button>
+            <button class="code-copy-btn" onclick="copyCode('radio-html-pre')">복사</button>
+          </div>
+          <div class="code-pane active" id="radio-html">
+            <pre id="radio-html-pre"><span class="c-cmt">&lt;!-- Default --&gt;</span>
+<span class="c-tag">&lt;label</span> <span class="c-attr">class</span>=<span class="c-str">"s1-radio"</span><span class="c-tag">&gt;</span>
+  <span class="c-tag">&lt;div</span> <span class="c-attr">class</span>=<span class="c-str">"s1-radio-circle"</span><span class="c-tag">&gt;&lt;div</span> <span class="c-attr">class</span>=<span class="c-str">"s1-radio-dot"</span><span class="c-tag">&gt;&lt;/div&gt;&lt;/div&gt;</span>
+  <span class="c-tag">&lt;span</span> <span class="c-attr">class</span>=<span class="c-str">"s1-radio-label"</span><span class="c-tag">&gt;</span>옵션<span class="c-tag">&lt;/span&gt;</span>
+<span class="c-tag">&lt;/label&gt;</span>
+<span class="c-cmt">&lt;!-- Selected: is-selected / Disabled: is-disabled --&gt;</span></pre>
+          </div>
+          <div class="code-pane" id="radio-css">
+            <pre id="radio-css-pre"><span class="c-cmt">/* Radio — 정본 buildRadio · control/* 직접 참조 */</span>
+<span class="c-prop">--radio-default-bg</span>:      <span class="c-val">var(--color-control-bg-default)</span>;
+<span class="c-prop">--radio-hover-bg</span>:        <span class="c-val">var(--color-control-bg-hover)</span>;
+<span class="c-prop">--radio-disabled-bg</span>:     <span class="c-val">var(--color-control-bg-disabled)</span>;
+<span class="c-prop">--radio-default-border</span>:  <span class="c-val">var(--color-control-border-default)</span>;
+<span class="c-prop">--radio-hover-border</span>:    <span class="c-val">var(--color-control-border-default)</span>;
+<span class="c-prop">--radio-selected-border</span>: <span class="c-val">var(--color-control-border-selected)</span>;
+<span class="c-prop">--radio-disabled-border</span>: <span class="c-val">var(--color-control-border-disabled)</span>;
+<span class="c-prop">--radio-selected-dot</span>:    <span class="c-val">var(--color-control-indicator-selected-alt)</span>;
+<span class="c-prop">--radio-disabled-dot</span>:    <span class="c-val">var(--color-control-indicator-disabled)</span>;
+
+<span class="c-cmt">/* Hover: unchecked·enabled — bg만 hover, border=default */</span>
+<span class="c-sel">.s1-radio:not(.is-disabled):not(.is-selected):hover .s1-radio-circle</span> {
+  background: <span class="c-val">var(--radio-hover-bg)</span>; border-color: <span class="c-val">var(--radio-hover-border)</span>;
+}
+<span class="c-sel">.s1-radio.is-selected .s1-radio-circle</span> { border-color: <span class="c-val">var(--radio-selected-border)</span>; }
+<span class="c-sel">.s1-radio.is-selected .s1-radio-dot</span> { opacity: <span class="c-val">1</span>; }</pre>
+          </div>
+          <div class="code-pane" id="radio-tokens">
+            <table class="token-detail-table">
+              <thead><tr><th>Token</th><th>Value (Variables)</th><th>Role</th></tr></thead>
+              <tbody>
+                <tr><td class="token-name">--radio-default-bg</td><td class="token-value">var(--color-control-bg-default)</td><td>기본 배경 (control/bg/default)</td></tr>
+                <tr><td class="token-name">--radio-hover-bg</td><td class="token-value">var(--color-control-bg-hover)</td><td>호버 배경 (control/bg/hover)</td></tr>
+                <tr><td class="token-name">--radio-disabled-bg</td><td class="token-value">var(--color-control-bg-disabled)</td><td>비활성 배경 (control/bg/disabled)</td></tr>
+                <tr><td class="token-name">--radio-default-border</td><td class="token-value">var(--color-control-border-default)</td><td>기본 테두리 (control/border/default)</td></tr>
+                <tr><td class="token-name">--radio-hover-border</td><td class="token-value">var(--color-control-border-default)</td><td>호버 테두리 — 정본상 default 유지</td></tr>
+                <tr><td class="token-name">--radio-selected-border</td><td class="token-value">var(--color-control-border-selected)</td><td>선택 테두리 (control/border/selected)</td></tr>
+                <tr><td class="token-name">--radio-disabled-border</td><td class="token-value">var(--color-control-border-disabled)</td><td>비활성 테두리 (control/border/disabled)</td></tr>
+                <tr><td class="token-name">--radio-selected-dot</td><td class="token-value">var(--color-control-indicator-selected-alt)</td><td>선택 내부 점 (control/indicator/selected-alt)</td></tr>
+                <tr><td class="token-name">--radio-disabled-dot</td><td class="token-value">var(--color-control-indicator-disabled)</td><td>비활성 내부 점 (control/indicator/disabled)</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </section>
+
+
+      <!-- ═══ TOGGLE ═══ -->
+      <section class="comp-section" id="toggle">
+        <div class="comp-section-header">
+          <h2 class="comp-section-title">Toggle</h2>
+          <span class="comp-badge comp-badge-blue">Core</span>
+          <span class="comp-badge">4 states</span>
+          <span class="comp-badge comp-badge-blue">정본 buildToggle · control/*</span>
+        </div>
+
+        <div class="variant-block">
+          <div class="variant-label">States · 정본 2×2 (Pressed Off/On × Default/Disabled)</div>
+          <div class="preview-area">
+            <div class="comp-state-matrix" style="grid-template-columns: 200px repeat(4, minmax(110px, 1fr));">
+              <div class="matrix-col-header-action">Action</div>
+              <div class="matrix-col-header">Off</div>
+              <div class="matrix-col-header">On</div>
+              <div class="matrix-col-header">Disabled Off</div>
+              <div class="matrix-col-header">Disabled On</div>
+              <!-- Action -->
+              <div class="comp-action-cell" data-comp-action="toggle">
+                <label class="s1-toggle" id="toggle-action-target"><div class="s1-toggle-track"><div class="s1-toggle-knob"></div></div><span class="s1-toggle-label">OFF</span></label>
+                <div class="action-test-controls">
+                  <button type="button" class="action-mini-toggle" data-toggle-comp-disabled>Disabled: off</button>
+                </div>
+              </div>
+              <!-- Off -->
+              <div class="comp-state-cell"><label class="s1-toggle is-preview"><div class="s1-toggle-track"><div class="s1-toggle-knob"></div></div></label></div>
+              <!-- On -->
+              <div class="comp-state-cell"><label class="s1-toggle is-on is-preview"><div class="s1-toggle-track"><div class="s1-toggle-knob"></div></div></label></div>
+              <!-- Disabled Off -->
+              <div class="comp-state-cell"><label class="s1-toggle is-disabled is-preview"><div class="s1-toggle-track"><div class="s1-toggle-knob"></div></div></label></div>
+              <!-- Disabled On -->
+              <div class="comp-state-cell"><label class="s1-toggle is-on is-disabled is-preview"><div class="s1-toggle-track"><div class="s1-toggle-knob"></div></div></label></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="code-block">
+          <div class="code-tabs">
+            <button class="code-tab active" onclick="switchTab(this,'toggle-html')">HTML</button>
+            <button class="code-tab" onclick="switchTab(this,'toggle-css')">CSS</button>
+            <button class="code-tab" onclick="switchTab(this,'toggle-tokens')">Token Details</button>
+            <button class="code-copy-btn" onclick="copyCode('toggle-html-pre')">복사</button>
+          </div>
+          <div class="code-pane active" id="toggle-html">
+            <pre id="toggle-html-pre"><span class="c-cmt">&lt;!-- Off (기본) / On: is-on / Disabled: is-disabled --&gt;</span>
+<span class="c-tag">&lt;label</span> <span class="c-attr">class</span>=<span class="c-str">"s1-toggle"</span><span class="c-tag">&gt;</span>
+  <span class="c-tag">&lt;div</span> <span class="c-attr">class</span>=<span class="c-str">"s1-toggle-track"</span><span class="c-tag">&gt;&lt;div</span> <span class="c-attr">class</span>=<span class="c-str">"s1-toggle-knob"</span><span class="c-tag">&gt;&lt;/div&gt;&lt;/div&gt;</span>
+  <span class="c-tag">&lt;span</span> <span class="c-attr">class</span>=<span class="c-str">"s1-toggle-label"</span><span class="c-tag">&gt;</span>OFF<span class="c-tag">&lt;/span&gt;</span>
+<span class="c-tag">&lt;/label&gt;</span></pre>
+          </div>
+          <div class="code-pane" id="toggle-css">
+            <pre id="toggle-css-pre"><span class="c-cmt">/* Toggle — 정본 buildToggle · control/* 직접 참조 */</span>
+<span class="c-prop">--toggle-on-bg</span>:       <span class="c-val">var(--color-control-bg-selected)</span>;
+<span class="c-prop">--toggle-off-bg</span>:      <span class="c-val">var(--color-control-indicator-unselected)</span>;
+<span class="c-prop">--toggle-disabled-bg</span>: <span class="c-val">var(--color-control-bg-disabled)</span>;
+<span class="c-prop">--toggle-knob</span>:        <span class="c-val">var(--color-control-indicator-selected)</span>;
+
+<span class="c-sel">.s1-toggle-track</span> { width: <span class="c-val">40px</span>; height: <span class="c-val">20px</span>; border-radius: <span class="c-val">999px</span>; background: <span class="c-val">var(--toggle-off-bg)</span>; }
+<span class="c-sel">.s1-toggle-knob</span> { width: <span class="c-val">16px</span>; height: <span class="c-val">16px</span>; border-radius: <span class="c-val">50%</span>; background: <span class="c-val">var(--toggle-knob)</span>; top: <span class="c-val">2px</span>; left: <span class="c-val">2px</span>; }
+<span class="c-sel">.s1-toggle.is-on .s1-toggle-track</span> { background: <span class="c-val">var(--toggle-on-bg)</span>; }
+<span class="c-sel">.s1-toggle.is-on .s1-toggle-knob</span> { left: <span class="c-val">22px</span>; }
+<span class="c-sel">.s1-toggle.is-disabled .s1-toggle-track</span> { background: <span class="c-val">var(--toggle-disabled-bg)</span>; }</pre>
+          </div>
+          <div class="code-pane" id="toggle-tokens">
+            <table class="token-detail-table">
+              <thead><tr><th>Token</th><th>Value (Variables)</th><th>Role</th></tr></thead>
+              <tbody>
+                <tr><td class="token-name">--toggle-on-bg</td><td class="token-value">var(--color-control-bg-selected)</td><td>ON 트랙 (control/bg/selected)</td></tr>
+                <tr><td class="token-name">--toggle-off-bg</td><td class="token-value">var(--color-control-indicator-unselected)</td><td>OFF 트랙 (control/indicator/unselected)</td></tr>
+                <tr><td class="token-name">--toggle-disabled-bg</td><td class="token-value">var(--color-control-bg-disabled)</td><td>비활성 트랙 (control/bg/disabled)</td></tr>
+                <tr><td class="token-name">--toggle-knob</td><td class="token-value">var(--color-control-indicator-selected)</td><td>knob (control/indicator/selected · 모든 상태)</td></tr>
+              </tbody>
+            </table>
+          </div>
         </div>
 
       </section>
@@ -2237,7 +2423,7 @@ checkboxes.forEach(function(chk) {
   })();
 
   (function initFromHash() {
-    var valid = ['checkbox']; // Components New: 마이그레이션 완료 컴포넌트만
+    var valid = ['checkbox','radio','toggle']; // Components New: 마이그레이션 완료 컴포넌트만
     var hash  = window.location.hash.replace('#', '');
     var id    = (hash && valid.includes(hash)) ? hash : 'checkbox';
     var btn   = document.querySelector('.comp-nav-btn[onclick*="\'' + id + '\'"]') || document.querySelector('.comp-nav-btn');

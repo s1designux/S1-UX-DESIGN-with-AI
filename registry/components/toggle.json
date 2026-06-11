@@ -18,10 +18,10 @@
   },
   "states": ["on", "off", "disabled"],
   "tokens": [
-    { "cssVar": "--toggle-on-bg",       "value": "var(--color-action-primary-default)", "semanticRef": "color-action-primary-default", "state": "on",       "property": "background" },
-    { "cssVar": "--toggle-off-bg",      "value": "var(--color-text-placeholder)",       "semanticRef": "color-text-placeholder",       "state": "off",      "property": "background" },
-    { "cssVar": "--toggle-disabled-bg", "value": "var(--color-bg-muted)",               "semanticRef": "color-bg-muted",               "state": "disabled", "property": "background" },
-    { "cssVar": "--toggle-knob",        "value": "var(--color-action-primary-text)",    "semanticRef": "color-action-primary-text",    "state": "all",      "property": "knob-color" }
+    { "cssVar": "--toggle-on-bg",       "value": "var(--color-control-bg-selected)",          "semanticRef": "color-control-bg-selected",          "state": "on",       "property": "background" },
+    { "cssVar": "--toggle-off-bg",      "value": "var(--color-control-indicator-unselected)", "semanticRef": "color-control-indicator-unselected", "state": "off",      "property": "background" },
+    { "cssVar": "--toggle-disabled-bg", "value": "var(--color-control-bg-disabled)",          "semanticRef": "color-control-bg-disabled",          "state": "disabled", "property": "background" },
+    { "cssVar": "--toggle-knob",        "value": "var(--color-control-indicator-selected)",   "semanticRef": "color-control-indicator-selected",   "state": "all",      "property": "knob-color" }
   ],
   "figma": {
     "componentSetKey": "",
