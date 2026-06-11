@@ -74,25 +74,26 @@
       --toggle-off-bg:      var(--color-control-indicator-unselected);
       --toggle-disabled-bg: var(--color-control-bg-disabled);
       --toggle-knob:        var(--color-control-indicator-selected);
-      /* Chip — Line type */
-      --chip-line-default-bg:        var(--color-surface-default);
-      --chip-line-default-border:    var(--color-border-strong); /* gray-300=#C4C4C4 — default(#D9D9D9)보다 선명 */
-      --chip-line-default-text:      var(--color-text-caption);
-      --chip-line-hover-bg:          var(--color-bg-subtle);
-      --chip-line-selected-bg:       var(--color-surface-default);
-      --chip-line-selected-border:   var(--color-action-primary-default);
-      --chip-line-selected-text:     var(--color-action-primary-default);
-      --chip-line-disabled-bg:       var(--color-bg-subtle);
-      --chip-line-disabled-border:   var(--color-border-disabled);
-      --chip-line-disabled-text:     var(--color-text-disabled);
-      /* Chip — Solid type (border는 selected만 정의, default/hover/disabled는 transparent) */
-      --chip-solid-default-bg:       var(--color-bg-subtle);
-      --chip-solid-default-text:     var(--color-text-caption);
-      --chip-solid-selected-bg:      var(--color-action-primary-default);
-      --chip-solid-selected-border:  var(--color-action-primary-default);
-      --chip-solid-selected-text:    var(--color-action-primary-text);
-      --chip-solid-disabled-bg:      var(--color-bg-subtle);
-      --chip-solid-disabled-text:    var(--color-text-disabled);
+      /* Chip — Line type · 설치기 정본(buildChip) color/chip/line/* 직접 참조 */
+      --chip-line-default-bg:        var(--color-chip-line-bg-default);
+      --chip-line-default-border:    var(--color-chip-line-border-default);
+      --chip-line-default-text:      var(--color-chip-line-label-default);
+      --chip-line-hover-bg:          var(--color-chip-line-bg-hover);
+      --chip-line-selected-bg:       var(--color-chip-line-bg-selected);
+      --chip-line-selected-border:   var(--color-chip-line-border-selected);
+      --chip-line-selected-text:     var(--color-chip-line-label-selected);
+      --chip-line-disabled-bg:       var(--color-chip-line-bg-disabled);
+      --chip-line-disabled-border:   var(--color-chip-line-border-disabled);
+      --chip-line-disabled-text:     var(--color-chip-line-label-disabled);
+      /* Chip — Solid type · color/chip/solid/* (icon/close-icon은 정본 미정의 → 텍스트색 상속) */
+      --chip-solid-default-bg:       var(--color-chip-solid-bg-default);
+      --chip-solid-default-text:     var(--color-chip-solid-label-default);
+      --chip-solid-hover-bg:         var(--color-chip-solid-bg-hover);
+      --chip-solid-selected-bg:      var(--color-chip-solid-bg-selected);
+      --chip-solid-selected-border:  var(--color-chip-solid-border-selected);
+      --chip-solid-selected-text:    var(--color-chip-solid-label-selected);
+      --chip-solid-disabled-bg:      var(--color-chip-solid-bg-disabled);
+      --chip-solid-disabled-text:    var(--color-chip-solid-label-disabled);
       /* Table */
       --table-border-light:     var(--color-border-subtle);
       --table-border-strong:    var(--color-border-emphasis);
@@ -870,8 +871,8 @@
     .s1-date-picker__panel {
       position: absolute; top: calc(100% + 8px); left: 0; z-index: 8;
       width: 356px;
-      background: var(--color-surface-default);
-      border: 1px solid var(--color-border-strong); /* Figma: #d9d9d9 = --color-border-strong */
+      background: var(--color-date-picker-bg-panel);
+      border: 1px solid var(--color-date-picker-border-panel); /* Variables: control/popup border */
       border-radius: var(--radius-4, 4px); /* Figma: 4px */
       box-shadow: 0 4px 8px rgba(0,0,0,0.15); /* Figma: shadow — rgba 허용 */
       padding: 20px 24px; /* Figma: py=20px, grid-side=24px */
@@ -893,18 +894,18 @@
       display: flex; align-items: center; justify-content: center;
       width: 24px; height: 24px; /* Figma: CalendarArrow 24×24px */
       border: none; background: transparent;
-      color: var(--color-text-primary); cursor: pointer;
+      color: var(--color-date-picker-text-primary); cursor: pointer;
       border-radius: var(--radius-4, 4px);
     }
-    .s1-date-picker__nav-btn:hover { background: var(--color-bg-subtle); }
+    .s1-date-picker__nav-btn:hover { background: var(--color-date-picker-bg-hover); }
     .s1-date-picker__month-label {
       font-size: 24px; font-weight: 700; /* Figma: title/24B = Pretendard Bold 24px */
-      color: var(--color-text-primary); /* Figma: color/text/title/primary ≈ #202020 */
+      color: var(--color-date-picker-text-primary); /* Variables: date-picker/text/primary */
       cursor: pointer; user-select: none;
       padding: 2px 8px; border-radius: var(--radius-4, 4px);
       transition: background 0.1s;
     }
-    .s1-date-picker__month-label:hover { background: var(--color-bg-subtle); }
+    .s1-date-picker__month-label:hover { background: var(--color-date-picker-bg-hover); }
     .s1-date-picker__weekdays {
       display: grid; grid-template-columns: repeat(7, 44px);
       flex-shrink: 0; /* flex 패널 안에서 높이 유지 */
@@ -914,11 +915,11 @@
       display: flex; align-items: center; justify-content: center;
       width: 44px; height: 44px; /* Figma: 44×44px */
       text-align: center; font-size: 16px; font-weight: 500; /* Figma: 16M */
-      color: var(--color-text-secondary); /* Figma: color/text/body/primary = #353535 */
+      color: var(--color-date-picker-text-secondary); /* Variables: date-picker/text/secondary */
     }
-    /* 일/토 weekday 색상: candidate (HD-8) */
-    .s1-date-picker__weekday.is-sunday { color: var(--color-status-error); }
-    .s1-date-picker__weekday.is-saturday { color: var(--color-action-primary-default); }
+    /* 일/토 weekday 색상 — Variables: date-picker/text/sunday·saturday */
+    .s1-date-picker__weekday.is-sunday { color: var(--color-date-picker-text-sunday); }
+    .s1-date-picker__weekday.is-saturday { color: var(--color-date-picker-text-saturday); }
     .s1-date-picker__grid {
       display: grid; grid-template-columns: repeat(7, 44px); gap: 0;
       flex-shrink: 0; /* flex 패널 안에서 높이 유지 */
@@ -929,7 +930,7 @@
       width: 44px; height: 44px; padding: 5px;
       border: none; background: transparent; cursor: pointer;
       font-size: 16px; font-weight: 500;
-      color: var(--color-text-secondary);
+      color: var(--color-date-picker-text-secondary);
       box-sizing: border-box;
     }
     .s1-date-picker__day > .day-inner {
@@ -941,35 +942,36 @@
       background: transparent; box-sizing: border-box;
     }
     .s1-date-picker__day:hover:not([disabled]) > .day-inner {
-      background: var(--color-bg-subtle);
+      background: var(--color-date-picker-bg-hover);
     }
     .s1-date-picker__day.is-other-month {
-      color: var(--color-text-disabled);
+      color: var(--color-date-picker-text-other-month);
     }
-    /* Today: Figma selected-alt — blue border circle + blue text, white bg */
+    /* Today: Variables selected-alt — blue border circle + blue text, panel bg */
     .s1-date-picker__day.is-today > .day-inner {
-      border-color: var(--color-action-primary-default);
-      color: var(--color-action-primary-default);
-      background: var(--color-surface-default);
+      border-color: var(--color-date-picker-border-today);
+      color: var(--color-date-picker-text-today);
+      background: var(--color-date-picker-bg-today);
     }
-    /* Selected: Figma — blue fill circle + white text */
+    /* Selected: Variables — blue fill circle + selected text */
     .s1-date-picker__day.is-selected > .day-inner {
-      background: var(--color-action-primary-default);
-      border-color: var(--color-action-primary-default);
-      color: var(--color-base-white);
+      background: var(--color-date-picker-bg-selected);
+      border-color: var(--color-date-picker-bg-selected);
+      color: var(--color-date-picker-text-selected);
       font-weight: 700;
     }
-    .s1-date-picker__day[disabled] { color: var(--color-text-disabled); cursor: not-allowed; }
+    .s1-date-picker__day[disabled] { color: var(--color-date-picker-text-disabled); cursor: not-allowed; }
     .s1-date-picker__day.is-today.is-selected > .day-inner {
-      background: var(--color-action-primary-default);
-      border-color: var(--color-action-primary-default);
-      color: var(--color-base-white);
+      background: var(--color-date-picker-bg-selected);
+      border-color: var(--color-date-picker-bg-selected);
+      color: var(--color-date-picker-text-selected);
     }
     /* DatePicker trigger hover — Select hover와 동일 */
+    /* Trigger hover — input은 form-control 구조를 따름 */
     .s1-date-picker:not(.s1-date-picker--opened):hover .s1-input-field,
     .s1-date-picker.is-hover .s1-input-field {
-      background: var(--dropdown-trigger-hover-bg);
-      border-color: var(--dropdown-trigger-hover-border);
+      background: var(--color-form-control-bg-hover);
+      border-color: var(--color-form-control-border-default);
     }
     /* Trigger opened state */
     .s1-date-picker--opened .s1-input-wrap,
@@ -996,18 +998,18 @@
       border-radius: var(--radius-4, 4px);
       background: transparent; cursor: pointer;
       font-size: 14px; font-weight: 500;
-      color: var(--color-text-secondary);
+      color: var(--color-date-picker-text-secondary);
       transition: background 0.1s;
     }
-    .s1-date-picker__selector-btn:hover { background: var(--color-bg-subtle); }
+    .s1-date-picker__selector-btn:hover { background: var(--color-date-picker-bg-hover); }
     .s1-date-picker__selector-btn.is-selected {
-      border-color: var(--color-action-primary-default);
-      color: var(--color-action-primary-default);
+      border-color: var(--color-date-picker-border-today);
+      color: var(--color-date-picker-text-today);
       font-weight: 700;
     }
     .s1-date-picker__selector-btn.is-current {
-      border-color: var(--color-action-primary-default);
-      color: var(--color-action-primary-default);
+      border-color: var(--color-date-picker-border-today);
+      color: var(--color-date-picker-text-today);
     }
 
     /* Select */
@@ -1604,13 +1606,7 @@
       --table-header-border: var(--color-border-default); /* gray-dark-300 = #2E2F38 — 헤더bg와 구분 */
       --table-border-strong: var(--color-border-strong);  /* gray-dark-500 = #3E4049 — 상하 강선 적정 명암 */
     }
-    [data-theme="dark"] .s1-date-picker__day:hover:not([disabled]) > .day-inner {
-      background: var(--color-bg-elevated); /* gray-dark-400 = #35363F — 1단계 밝게 */
-    }
-    [data-theme="dark"] .s1-date-picker__panel { background: var(--color-bg-subtle); } /* gray-dark-200 = dropdown-list-bg와 동일 */
-    [data-theme="dark"] .s1-date-picker__nav-btn:hover { background: var(--color-bg-muted); }
-    [data-theme="dark"] .s1-date-picker__month-label:hover { background: var(--color-bg-muted); }
-    [data-theme="dark"] .s1-date-picker__selector-btn:hover { background: var(--color-bg-muted); }
+    /* Date Picker 다크모드는 --color-date-picker-* Variables 레이어가 자동 전환 (수동 override 제거) */
     [data-theme="dark"] .s1-tp-col-item:hover {
       background: var(--color-bg-muted);
       border-color: var(--color-bg-muted);
@@ -1792,6 +1788,7 @@
           <button class="comp-nav-btn" data-category="selection" onclick="showSection('radio', this)">Radio</button>
           <button class="comp-nav-btn" data-category="selection" onclick="showSection('toggle', this)">Toggle</button>
           <button class="comp-nav-btn" data-category="form" onclick="showSection('input', this)">Input</button>
+          <button class="comp-nav-btn" data-category="selection" onclick="showSection('chip', this)">Chip</button>
         </div><!-- /comp-nav -->
       </div><!-- /component-filter -->
 
@@ -2886,6 +2883,94 @@ clearBtn.<span class="c-fn">addEventListener</span>(<span class="c-str">'click'<
 
       </section>
 
+      <!-- ═══ CHIP ═══ -->
+      <section class="comp-section" id="chip">
+        <div class="comp-section-header">
+          <h2 class="comp-section-title">Chip</h2>
+          <span class="comp-badge comp-badge-blue">Core</span>
+          <span class="comp-badge">Line · Solid · 4 states</span>
+          <span class="comp-badge comp-badge-blue">정본 buildChip · chip/line·solid/*</span>
+        </div>
+
+        <div class="variant-block">
+          <div class="variant-label">Line · 정본 4 (Default · Hover · Selected · Disabled)</div>
+          <div class="preview-area">
+            <div class="comp-state-matrix" style="grid-template-columns: 200px repeat(4, minmax(96px, 1fr));">
+              <div class="matrix-col-header-action">Action</div>
+              <div class="matrix-col-header">Default</div>
+              <div class="matrix-col-header">Hover</div>
+              <div class="matrix-col-header">Selected</div>
+              <div class="matrix-col-header">Disabled</div>
+              <div class="comp-action-cell" data-comp-action="chip">
+                <span class="s1-chip" id="chip-line-action">라벨</span>
+                <div class="action-test-controls">
+                  <button type="button" class="action-mini-toggle" data-chip-line-disabled>Disabled: off</button>
+                </div>
+              </div>
+              <div class="comp-state-cell"><span class="s1-chip is-preview">라벨</span></div>
+              <div class="comp-state-cell"><span class="s1-chip is-hover is-preview">라벨</span></div>
+              <div class="comp-state-cell"><span class="s1-chip is-selected is-preview">라벨</span></div>
+              <div class="comp-state-cell"><span class="s1-chip is-disabled is-preview">라벨</span></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="variant-block">
+          <div class="variant-label">Solid · 정본 4 (Default · Hover · Selected · Disabled)</div>
+          <div class="preview-area">
+            <div class="comp-state-matrix" style="grid-template-columns: 200px repeat(4, minmax(96px, 1fr));">
+              <div class="matrix-col-header-action">Action</div>
+              <div class="matrix-col-header">Default</div>
+              <div class="matrix-col-header">Hover</div>
+              <div class="matrix-col-header">Selected</div>
+              <div class="matrix-col-header">Disabled</div>
+              <div class="comp-action-cell" data-comp-action="chip">
+                <span class="s1-chip s1-chip--solid" id="chip-solid-action">라벨</span>
+                <div class="action-test-controls">
+                  <button type="button" class="action-mini-toggle" data-chip-solid-disabled>Disabled: off</button>
+                </div>
+              </div>
+              <div class="comp-state-cell"><span class="s1-chip s1-chip--solid is-preview">라벨</span></div>
+              <div class="comp-state-cell"><span class="s1-chip s1-chip--solid is-hover is-preview">라벨</span></div>
+              <div class="comp-state-cell"><span class="s1-chip s1-chip--solid is-selected is-preview">라벨</span></div>
+              <div class="comp-state-cell"><span class="s1-chip s1-chip--solid is-disabled is-preview">라벨</span></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="code-block">
+          <div class="code-tabs">
+            <button class="code-tab active" onclick="switchTab(this,'chip-html')">HTML</button>
+            <button class="code-tab" onclick="switchTab(this,'chip-tokens')">Token Details</button>
+            <button class="code-copy-btn" onclick="copyCode('chip-html-pre')">복사</button>
+          </div>
+          <div class="code-pane active" id="chip-html">
+            <pre id="chip-html-pre"><span class="c-cmt">&lt;!-- Line: 기본 / Solid: s1-chip--solid · Selected: is-selected · Disabled: is-disabled --&gt;</span>
+<span class="c-tag">&lt;span</span> <span class="c-attr">class</span>=<span class="c-str">"s1-chip"</span><span class="c-tag">&gt;</span>라벨<span class="c-tag">&lt;/span&gt;</span>
+<span class="c-tag">&lt;span</span> <span class="c-attr">class</span>=<span class="c-str">"s1-chip s1-chip--solid is-selected"</span><span class="c-tag">&gt;</span>라벨<span class="c-tag">&lt;/span&gt;</span></pre>
+          </div>
+          <div class="code-pane" id="chip-tokens">
+            <table class="token-detail-table">
+              <thead><tr><th>Token</th><th>Value (Variables)</th><th>Role</th></tr></thead>
+              <tbody>
+                <tr><td class="token-name">--chip-line-default-bg</td><td class="token-value">var(--color-chip-line-bg-default)</td><td>Line 기본 배경</td></tr>
+                <tr><td class="token-name">--chip-line-default-border</td><td class="token-value">var(--color-chip-line-border-default)</td><td>Line 기본 테두리</td></tr>
+                <tr><td class="token-name">--chip-line-default-text</td><td class="token-value">var(--color-chip-line-label-default)</td><td>Line 기본 라벨</td></tr>
+                <tr><td class="token-name">--chip-line-hover-bg</td><td class="token-value">var(--color-chip-line-bg-hover)</td><td>Line 호버 배경</td></tr>
+                <tr><td class="token-name">--chip-line-selected-bg</td><td class="token-value">var(--color-chip-line-bg-selected)</td><td>Line 선택 배경</td></tr>
+                <tr><td class="token-name">--chip-line-selected-border</td><td class="token-value">var(--color-chip-line-border-selected)</td><td>Line 선택 테두리</td></tr>
+                <tr><td class="token-name">--chip-line-selected-text</td><td class="token-value">var(--color-chip-line-label-selected)</td><td>Line 선택 라벨</td></tr>
+                <tr><td class="token-name">--chip-solid-default-bg</td><td class="token-value">var(--color-chip-solid-bg-default)</td><td>Solid 기본 배경</td></tr>
+                <tr><td class="token-name">--chip-solid-selected-bg</td><td class="token-value">var(--color-chip-solid-bg-selected)</td><td>Solid 선택 배경</td></tr>
+                <tr><td class="token-name">--chip-solid-selected-text</td><td class="token-value">var(--color-chip-solid-label-selected)</td><td>Solid 선택 라벨</td></tr>
+                <tr><td class="token-name" colspan="3" style="color:#9ca3af;">icon · close-icon: 정본(buildChip) 미정의 → 텍스트색 상속 (Variables 정의 시 추가 예정)</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </section>
+
     </div>
   </main>
 </div>
@@ -3116,7 +3201,7 @@ clearBtn.<span class="c-fn">addEventListener</span>(<span class="c-str">'click'<
   })();
 
   (function initFromHash() {
-    var valid = ['checkbox','radio','toggle','input']; // Components New: 마이그레이션 완료 컴포넌트만
+    var valid = ['checkbox','radio','toggle','input','chip']; // Components New: 마이그레이션 완료 컴포넌트만
     var hash  = window.location.hash.replace('#', '');
     var id    = (hash && valid.includes(hash)) ? hash : 'checkbox';
     var btn   = document.querySelector('.comp-nav-btn[onclick*="\'' + id + '\'"]') || document.querySelector('.comp-nav-btn');
