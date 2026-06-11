@@ -1780,16 +1780,21 @@
       <div class="component-filter">
         <div class="category-nav" id="categoryNav">
           <button class="category-btn is-active" onclick="filterByCategory('all', this)">All</button>
+          <button class="category-btn" onclick="filterByCategory('actions', this)">Actions</button>
           <button class="category-btn" onclick="filterByCategory('selection', this)">Selection</button>
           <button class="category-btn" onclick="filterByCategory('form', this)">Form</button>
+          <button class="category-btn" onclick="filterByCategory('navigation', this)">Navigation</button>
         </div>
         <div class="comp-nav">
-          <button class="comp-nav-btn is-active" data-category="selection" onclick="showSection('checkbox', this)">Checkbox</button>
+          <button class="comp-nav-btn is-active" data-category="actions" onclick="showSection('button', this)">Button</button>
+          <button class="comp-nav-btn" data-category="selection" onclick="showSection('checkbox', this)">Checkbox</button>
           <button class="comp-nav-btn" data-category="selection" onclick="showSection('radio', this)">Radio</button>
           <button class="comp-nav-btn" data-category="selection" onclick="showSection('toggle', this)">Toggle</button>
-          <button class="comp-nav-btn" data-category="form" onclick="showSection('input', this)">Input</button>
-          <button class="comp-nav-btn" data-category="form" onclick="showSection('date-picker', this)">Date Picker</button>
           <button class="comp-nav-btn" data-category="selection" onclick="showSection('chip', this)">Chip</button>
+          <button class="comp-nav-btn" data-category="form" onclick="showSection('input', this)">Input</button>
+          <button class="comp-nav-btn" data-category="form" onclick="showSection('textarea', this)">Textarea</button>
+          <button class="comp-nav-btn" data-category="navigation" onclick="showSection('tab', this)">Line Tab</button>
+          <button class="comp-nav-btn" data-category="navigation" onclick="showSection('gnb', this)">GNB</button>
         </div><!-- /comp-nav -->
       </div><!-- /component-filter -->
 
@@ -1825,7 +1830,7 @@
     <div class="page-content">
 
       <!-- ═══ CHECKBOX ═══ -->
-      <section class="comp-section is-active" id="checkbox">
+      <section class="comp-section" id="checkbox">
         <div class="comp-section-header">
           <h2 class="comp-section-title">Checkbox</h2>
           <span class="comp-badge comp-badge-blue">Core</span>
@@ -2972,332 +2977,1139 @@ clearBtn.<span class="c-fn">addEventListener</span>(<span class="c-str">'click'<
 
       </section>
 
-
-      <!-- ═══ DATE PICKER ═══ -->
-      <section class="comp-section" id="date-picker">
+      <section class="comp-section is-active" id="button">
         <div class="comp-section-header">
-          <h2 class="comp-section-title">Date Picker</h2>
+          <h2 class="comp-section-title">Button</h2>
           <span class="comp-badge comp-badge-blue">Core</span>
-          <span class="comp-badge comp-badge-green">Variables 재구성</span>
-          <span class="comp-badge">Input = form-control · Calendar = date-picker</span>
+          <span class="comp-badge">3 variants</span>
           <span class="comp-badge">PC 3sizes · Mobile 1size</span>
-          <!-- Figma: 540:3794 (datepicker_input) / 540:4216 (PC calendar) / 540:3836 (mobile bottomsheet) -->
         </div>
 
-        <p style="font-size:12px;color:var(--color-text-secondary);line-height:1.7;margin-bottom:18px;">
-          Date Picker는 두 토큰 그룹을 따른다 — <strong>Trigger(입력 필드)</strong>는
-          <code>--color-form-control-*</code> 구조를, <strong>Calendar(팝업 패널)</strong>는
-          <code>--color-date-picker-*</code> 구조를 사용한다. 다크모드는 Variables 레이어가 자동 전환한다.
-        </p>
-
-        <!-- ── PC ── -->
-        <div class="platform-section platform-section-pc">
-          <div class="platform-header"><span class="platform-dot pc"></span>PC · MD (h44)</div>
-          <div class="variant-block">
-            <div class="variant-label">States</div>
-            <div class="preview-area" style="overflow:visible; padding-bottom:420px;">
-              <div class="comp-state-matrix" style="grid-template-columns: 260px repeat(4, minmax(120px,1fr));">
+        <!-- ─ Primary ─ -->
+        <div class="variant-block">
+          <div class="variant-label">Primary</div>
+          <div class="preview-area">
+            <div class="platform-section platform-section-pc">
+              <div class="platform-header"><span class="platform-dot pc"></span>PC</div>
+              <div data-action-group="primary-pc">
+                <div class="state-size-matrix">
+                  <div></div>
+                  <div class="matrix-col-header-action">Action</div>
+                  <div class="matrix-col-header">Default</div>
+                  <div class="matrix-col-header">Hover</div>
+                  <div class="matrix-col-header">Disabled</div>
+                  <div class="matrix-row-label">medium<span>h44 · px16</span></div>
+                  <div class="matrix-cell action-cell" data-action-cell><button type="button" class="s1-btn s1-btn-primary s1-btn-lg" data-action-test>버튼</button><div class="action-test-controls"><span class="action-click-count">Clicks: <span data-click-count>0</span></span></div></div>
+                  <div class="matrix-cell"><button class="s1-btn s1-btn-primary s1-btn-lg is-preview">버튼</button></div>
+                  <div class="matrix-cell"><button class="s1-btn s1-btn-primary s1-btn-lg is-hover is-preview">버튼</button></div>
+                  <div class="matrix-cell"><button class="s1-btn s1-btn-primary s1-btn-lg is-disabled is-preview">버튼</button></div>
+                  <div class="matrix-row-label">xsmall<span>h34 · px8</span></div>
+                  <div class="matrix-cell action-cell" data-action-cell><button type="button" class="s1-btn s1-btn-primary" data-action-test>버튼</button><div class="action-test-controls"><span class="action-click-count">Clicks: <span data-click-count>0</span></span></div></div>
+                  <div class="matrix-cell"><button class="s1-btn s1-btn-primary is-preview">버튼</button></div>
+                  <div class="matrix-cell"><button class="s1-btn s1-btn-primary is-hover is-preview">버튼</button></div>
+                  <div class="matrix-cell"><button class="s1-btn s1-btn-primary is-disabled is-preview">버튼</button></div>
+                  <div class="matrix-row-label">xxsmall<span>h28 · px8</span></div>
+                  <div class="matrix-cell action-cell" data-action-cell><button type="button" class="s1-btn s1-btn-primary s1-btn-sm" data-action-test>버튼</button><div class="action-test-controls"><span class="action-click-count">Clicks: <span data-click-count>0</span></span></div></div>
+                  <div class="matrix-cell"><button class="s1-btn s1-btn-primary s1-btn-sm is-preview">버튼</button></div>
+                  <div class="matrix-cell"><button class="s1-btn s1-btn-primary s1-btn-sm is-hover is-preview">버튼</button></div>
+                  <div class="matrix-cell"><button class="s1-btn s1-btn-primary s1-btn-sm is-disabled is-preview">버튼</button></div>
+                  <div></div>
+                  <div class="action-test-controls">
+                    <button type="button" class="action-mini-toggle" data-group-disabled>Disabled: off</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="platform-section platform-section-mobile">
+              <div class="platform-header"><span class="platform-dot mobile"></span>Mobile</div>
+              <div class="state-size-matrix">
+                <div></div>
                 <div class="matrix-col-header-action">Action</div>
                 <div class="matrix-col-header">Default</div>
-                <div class="matrix-col-header">Open (Focus)</div>
-                <div class="matrix-col-header">Filled</div>
+                <div class="matrix-col-header">Pressed</div>
                 <div class="matrix-col-header">Disabled</div>
+                <div class="matrix-row-label">mobile<span>h48 · px16</span></div>
+                <div class="matrix-cell action-cell" data-action-cell><button type="button" class="s1-btn s1-btn-primary s1-btn-mobile" data-action-test>버튼</button><div class="action-test-controls"><button type="button" class="action-mini-toggle" data-toggle-disabled>Disabled: off</button><span class="action-click-count">Clicks: <span data-click-count>0</span></span></div></div>
+                <div class="matrix-cell"><button class="s1-btn s1-btn-primary s1-btn-mobile is-preview">버튼</button></div>
+                <div class="matrix-cell"><button class="s1-btn s1-btn-primary s1-btn-mobile is-pressed is-preview">버튼</button></div>
+                <div class="matrix-cell"><button class="s1-btn s1-btn-primary s1-btn-mobile is-disabled is-preview">버튼</button></div>
+              </div>
+            </div>
+          </div>
+          <div class="code-block">
+            <div class="code-tabs">
+              <button class="code-tab active" onclick="switchTab(this,'btn-pri-pc')">PC · HTML</button>
+              <button class="code-tab" onclick="switchTab(this,'btn-pri-mo')">Mobile · HTML</button>
+              <button class="code-tab" onclick="switchTab(this,'btn-pri-css')">CSS Token</button>
+              <button class="code-tab" onclick="switchTab(this,'btn-pri-tokens')">Token Details</button>
+              <button class="code-copy-btn" onclick="copyCode('btn-pri-pc-pre')">복사</button>
+            </div>
+            <div class="code-pane active" id="btn-pri-pc">
+              <pre id="btn-pri-pc-pre"><span class="c-cmt">&lt;!-- medium h44 --&gt;</span>
+<span class="c-tag">&lt;button</span> <span class="c-attr">class</span>=<span class="c-str">"s1-btn s1-btn-primary s1-btn-lg"</span><span class="c-tag">&gt;</span>버튼<span class="c-tag">&lt;/button&gt;</span>
+<span class="c-cmt">&lt;!-- xsmall h34 (기본) --&gt;</span>
+<span class="c-tag">&lt;button</span> <span class="c-attr">class</span>=<span class="c-str">"s1-btn s1-btn-primary"</span><span class="c-tag">&gt;</span>버튼<span class="c-tag">&lt;/button&gt;</span>
+<span class="c-cmt">&lt;!-- xxsmall h28 --&gt;</span>
+<span class="c-tag">&lt;button</span> <span class="c-attr">class</span>=<span class="c-str">"s1-btn s1-btn-primary s1-btn-sm"</span><span class="c-tag">&gt;</span>버튼<span class="c-tag">&lt;/button&gt;</span>
+<span class="c-cmt">&lt;!-- Hover --&gt;</span>
+<span class="c-tag">&lt;button</span> <span class="c-attr">class</span>=<span class="c-str">"s1-btn s1-btn-primary s1-btn-lg is-hover"</span><span class="c-tag">&gt;</span>버튼<span class="c-tag">&lt;/button&gt;</span>
+<span class="c-cmt">&lt;!-- Disabled --&gt;</span>
+<span class="c-tag">&lt;button</span> <span class="c-attr">class</span>=<span class="c-str">"s1-btn s1-btn-primary s1-btn-lg"</span> <span class="c-attr">disabled</span><span class="c-tag">&gt;</span>버튼<span class="c-tag">&lt;/button&gt;</span></pre>
+            </div>
+            <div class="code-pane" id="btn-pri-mo">
+              <pre id="btn-pri-mo-pre"><span class="c-cmt">&lt;!-- mobile h48 --&gt;</span>
+<span class="c-tag">&lt;button</span> <span class="c-attr">class</span>=<span class="c-str">"s1-btn s1-btn-primary s1-btn-mobile"</span><span class="c-tag">&gt;</span>버튼<span class="c-tag">&lt;/button&gt;</span>
+<span class="c-cmt">&lt;!-- Pressed --&gt;</span>
+<span class="c-tag">&lt;button</span> <span class="c-attr">class</span>=<span class="c-str">"s1-btn s1-btn-primary s1-btn-mobile is-pressed"</span><span class="c-tag">&gt;</span>버튼<span class="c-tag">&lt;/button&gt;</span>
+<span class="c-cmt">&lt;!-- Disabled --&gt;</span>
+<span class="c-tag">&lt;button</span> <span class="c-attr">class</span>=<span class="c-str">"s1-btn s1-btn-primary s1-btn-mobile"</span> <span class="c-attr">disabled</span><span class="c-tag">&gt;</span>버튼<span class="c-tag">&lt;/button&gt;</span></pre>
+            </div>
+            <div class="code-pane" id="btn-pri-css">
+              <pre><span class="c-prop">--color-button-bg-primary--default</span>:     <span class="c-val">var(--color-blue-400)</span>;
+<span class="c-prop">--color-button-bg-primary--hover</span>:       <span class="c-val">var(--color-blue-500)</span>;   <span class="c-cmt">/* hover · pressed */</span>
+<span class="c-prop">--color-button-bg-disabled</span>:             <span class="c-val">var(--color-gray-50)</span>;
+<span class="c-prop">--color-button-border-primary--default</span>: <span class="c-val">var(--color-blue-400)</span>;
+<span class="c-prop">--color-button-border-primary--hover</span>:   <span class="c-val">var(--color-blue-500)</span>;
+<span class="c-prop">--color-button-border-disabled</span>:         <span class="c-val">var(--color-gray-200)</span>;
+<span class="c-prop">--color-button-label-primary--default</span>:  <span class="c-val">var(--color-base-white)</span>;
+<span class="c-prop">--color-button-label-primary--hover</span>:    <span class="c-val">var(--color-base-white)</span>;
+<span class="c-prop">--color-button-label-disabled</span>:          <span class="c-val">var(--color-gray-300)</span>;</pre>
+            </div>
+            <div class="code-pane" id="btn-pri-tokens">
+              <table class="token-detail-table">
+                <thead><tr><th>Token</th><th>Value (Semantic)</th><th>Role</th></tr></thead>
+                <tbody>
+                  <tr><td class="token-name">--color-button-bg-primary--default</td><td class="token-value">var(--color-blue-400)</td><td>기본 배경</td></tr>
+                  <tr><td class="token-name">--color-button-bg-primary--hover</td><td class="token-value">var(--color-blue-500)</td><td>hover · pressed 배경</td></tr>
+                  <tr><td class="token-name">--color-button-bg-disabled</td><td class="token-value">var(--color-gray-50)</td><td>비활성 배경 (공통)</td></tr>
+                  <tr><td class="token-name">--color-button-border-primary--default</td><td class="token-value">var(--color-blue-400)</td><td>기본 테두리</td></tr>
+                  <tr><td class="token-name">--color-button-border-primary--hover</td><td class="token-value">var(--color-blue-500)</td><td>hover 테두리</td></tr>
+                  <tr><td class="token-name">--color-button-border-disabled</td><td class="token-value">var(--color-gray-200)</td><td>비활성 테두리 (공통)</td></tr>
+                  <tr><td class="token-name">--color-button-label-primary--default</td><td class="token-value">var(--color-base-white)</td><td>기본 텍스트 · 아이콘</td></tr>
+                  <tr><td class="token-name">--color-button-label-primary--hover</td><td class="token-value">var(--color-base-white)</td><td>hover 텍스트</td></tr>
+                  <tr><td class="token-name">--color-button-label-disabled</td><td class="token-value">var(--color-gray-300)</td><td>비활성 텍스트 (공통)</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
 
-                <!-- Action — 캘린더 아이콘 클릭 시 패널 열림 (setupDatePicker JS 구동) -->
-                <div class="comp-action-cell" data-comp-action="date-picker" style="align-items:flex-start;">
-                  <div class="s1-date-picker" data-date-picker id="dp-action-wrap" style="max-width:200px; width:180px;" data-disabled-dates="2026-05-08,2026-05-12,2026-05-19">
-                    <div class="s1-input-wrap" style="width:180px;">
-                      <div class="s1-input-field">
-                        <input type="text" placeholder="YY.MM.DD" readonly id="dp-action-input" data-date-picker-input style="cursor:pointer;" aria-label="날짜 선택">
-                        <button type="button" class="s1-input-action-btn" data-date-picker-toggle aria-label="달력 열기">
-                          <svg width="16" height="16" viewBox="0 0 16.2581 16.8" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M0 1.08387V16.2581C0 16.5615 0.238452 16.8 0.541936 16.8H15.7161C16.0196 16.8 16.2581 16.5615 16.2581 16.2581V1.08387C16.2581 0.780387 16.0196 0.541935 15.7161 0.541935H13.0065V0H11.9226V0.541935H4.33548V0H3.25161V0.541935H0.541936C0.238452 0.541935 0 0.780387 0 1.08387ZM4.33548 2.16774V1.62581H11.9226V2.16774H13.0065V1.62581H15.1742V3.79355H1.08387V1.62581H3.25161V2.16774H4.33548ZM15.1742 15.7161H1.08387V4.87742H15.1742V15.7161Z" fill="currentColor"/><path d="M5.14859 9.21302H3.52279V10.8388H5.14859V9.21302Z" fill="currentColor"/><path d="M8.94208 9.21302H7.31628V10.8388H8.94208V9.21302Z" fill="currentColor"/><path d="M12.7356 9.21302H11.1098V10.8388H12.7356V9.21302Z" fill="currentColor"/></svg>
-                        </button>
-                      </div>
-                    </div>
-                    <div class="s1-date-picker__panel" data-date-picker-panel role="dialog" aria-label="날짜 선택" hidden>
-                      <div class="s1-date-picker__header">
-                        <button type="button" class="s1-date-picker__nav-btn" data-prev-month aria-label="이전 달">
-                          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M10 12L6 8l4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                        </button>
-                        <strong class="s1-date-picker__month-label" data-current-month></strong>
-                        <button type="button" class="s1-date-picker__nav-btn" data-next-month aria-label="다음 달">
-                          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M6 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                        </button>
-                      </div>
-                      <div class="s1-date-picker__weekdays" data-weekdays></div>
-                      <div class="s1-date-picker__grid" data-date-grid></div>
-                      <div class="s1-date-picker__selector-grid" data-selector-grid hidden></div>
-                    </div>
-                  </div>
-                  <div class="action-test-controls" style="margin-top:6px;">
-                    <button type="button" class="action-mini-toggle" data-dp-fill>Filled: off</button>
-                    <button type="button" class="action-mini-toggle" data-dp-disabled>Disabled: off</button>
+        <!-- ─ Secondary ─ -->
+        <div class="variant-block">
+          <div class="variant-label">Secondary</div>
+          <div class="preview-area">
+            <div class="platform-section platform-section-pc">
+              <div class="platform-header"><span class="platform-dot pc"></span>PC</div>
+              <div data-action-group="secondary-pc">
+                <div class="state-size-matrix">
+                  <div></div>
+                  <div class="matrix-col-header-action">Action</div>
+                  <div class="matrix-col-header">Default</div>
+                  <div class="matrix-col-header">Hover</div>
+                  <div class="matrix-col-header">Disabled</div>
+                  <div class="matrix-row-label">medium<span>h44 · px16</span></div>
+                  <div class="matrix-cell action-cell" data-action-cell><button type="button" class="s1-btn s1-btn-secondary s1-btn-lg" data-action-test>버튼</button><div class="action-test-controls"><span class="action-click-count">Clicks: <span data-click-count>0</span></span></div></div>
+                  <div class="matrix-cell"><button class="s1-btn s1-btn-secondary s1-btn-lg is-preview">버튼</button></div>
+                  <div class="matrix-cell"><button class="s1-btn s1-btn-secondary s1-btn-lg is-hover is-preview">버튼</button></div>
+                  <div class="matrix-cell"><button class="s1-btn s1-btn-secondary s1-btn-lg is-disabled is-preview">버튼</button></div>
+                  <div class="matrix-row-label">xsmall<span>h34 · px8</span></div>
+                  <div class="matrix-cell action-cell" data-action-cell><button type="button" class="s1-btn s1-btn-secondary" data-action-test>버튼</button><div class="action-test-controls"><span class="action-click-count">Clicks: <span data-click-count>0</span></span></div></div>
+                  <div class="matrix-cell"><button class="s1-btn s1-btn-secondary is-preview">버튼</button></div>
+                  <div class="matrix-cell"><button class="s1-btn s1-btn-secondary is-hover is-preview">버튼</button></div>
+                  <div class="matrix-cell"><button class="s1-btn s1-btn-secondary is-disabled is-preview">버튼</button></div>
+                  <div class="matrix-row-label">xxsmall<span>h28 · px8</span></div>
+                  <div class="matrix-cell action-cell" data-action-cell><button type="button" class="s1-btn s1-btn-secondary s1-btn-sm" data-action-test>버튼</button><div class="action-test-controls"><span class="action-click-count">Clicks: <span data-click-count>0</span></span></div></div>
+                  <div class="matrix-cell"><button class="s1-btn s1-btn-secondary s1-btn-sm is-preview">버튼</button></div>
+                  <div class="matrix-cell"><button class="s1-btn s1-btn-secondary s1-btn-sm is-hover is-preview">버튼</button></div>
+                  <div class="matrix-cell"><button class="s1-btn s1-btn-secondary s1-btn-sm is-disabled is-preview">버튼</button></div>
+                  <div></div>
+                  <div class="action-test-controls">
+                    <button type="button" class="action-mini-toggle" data-group-disabled>Disabled: off</button>
                   </div>
                 </div>
+              </div>
+            </div>
+            <div class="platform-section platform-section-mobile">
+              <div class="platform-header"><span class="platform-dot mobile"></span>Mobile</div>
+              <div class="state-size-matrix">
+                <div></div>
+                <div class="matrix-col-header-action">Action</div>
+                <div class="matrix-col-header">Default</div>
+                <div class="matrix-col-header">Pressed</div>
+                <div class="matrix-col-header">Disabled</div>
+                <div class="matrix-row-label">mobile<span>h48 · px16</span></div>
+                <div class="matrix-cell action-cell" data-action-cell><button type="button" class="s1-btn s1-btn-secondary s1-btn-mobile" data-action-test>버튼</button><div class="action-test-controls"><button type="button" class="action-mini-toggle" data-toggle-disabled>Disabled: off</button><span class="action-click-count">Clicks: <span data-click-count>0</span></span></div></div>
+                <div class="matrix-cell"><button class="s1-btn s1-btn-secondary s1-btn-mobile is-preview">버튼</button></div>
+                <div class="matrix-cell"><button class="s1-btn s1-btn-secondary s1-btn-mobile is-pressed is-preview">버튼</button></div>
+                <div class="matrix-cell"><button class="s1-btn s1-btn-secondary s1-btn-mobile is-disabled is-preview">버튼</button></div>
+              </div>
+            </div>
+          </div>
+          <div class="code-block">
+            <div class="code-tabs">
+              <button class="code-tab active" onclick="switchTab(this,'btn-sec-pc')">PC · HTML</button>
+              <button class="code-tab" onclick="switchTab(this,'btn-sec-mo')">Mobile · HTML</button>
+              <button class="code-tab" onclick="switchTab(this,'btn-sec-css')">CSS Token</button>
+              <button class="code-tab" onclick="switchTab(this,'btn-sec-tokens')">Token Details</button>
+              <button class="code-copy-btn" onclick="copyCode('btn-sec-pc-pre')">복사</button>
+            </div>
+            <div class="code-pane active" id="btn-sec-pc">
+              <pre id="btn-sec-pc-pre"><span class="c-cmt">&lt;!-- medium h44 --&gt;</span>
+<span class="c-tag">&lt;button</span> <span class="c-attr">class</span>=<span class="c-str">"s1-btn s1-btn-secondary s1-btn-lg"</span><span class="c-tag">&gt;</span>버튼<span class="c-tag">&lt;/button&gt;</span>
+<span class="c-cmt">&lt;!-- xsmall h34 (기본) --&gt;</span>
+<span class="c-tag">&lt;button</span> <span class="c-attr">class</span>=<span class="c-str">"s1-btn s1-btn-secondary"</span><span class="c-tag">&gt;</span>버튼<span class="c-tag">&lt;/button&gt;</span>
+<span class="c-cmt">&lt;!-- xxsmall h28 --&gt;</span>
+<span class="c-tag">&lt;button</span> <span class="c-attr">class</span>=<span class="c-str">"s1-btn s1-btn-secondary s1-btn-sm"</span><span class="c-tag">&gt;</span>버튼<span class="c-tag">&lt;/button&gt;</span>
+<span class="c-cmt">&lt;!-- Disabled --&gt;</span>
+<span class="c-tag">&lt;button</span> <span class="c-attr">class</span>=<span class="c-str">"s1-btn s1-btn-secondary s1-btn-lg"</span> <span class="c-attr">disabled</span><span class="c-tag">&gt;</span>버튼<span class="c-tag">&lt;/button&gt;</span></pre>
+            </div>
+            <div class="code-pane" id="btn-sec-mo">
+              <pre id="btn-sec-mo-pre"><span class="c-cmt">&lt;!-- mobile h48 --&gt;</span>
+<span class="c-tag">&lt;button</span> <span class="c-attr">class</span>=<span class="c-str">"s1-btn s1-btn-secondary s1-btn-mobile"</span><span class="c-tag">&gt;</span>버튼<span class="c-tag">&lt;/button&gt;</span>
+<span class="c-cmt">&lt;!-- Pressed --&gt;</span>
+<span class="c-tag">&lt;button</span> <span class="c-attr">class</span>=<span class="c-str">"s1-btn s1-btn-secondary s1-btn-mobile is-pressed"</span><span class="c-tag">&gt;</span>버튼<span class="c-tag">&lt;/button&gt;</span>
+<span class="c-cmt">&lt;!-- Disabled --&gt;</span>
+<span class="c-tag">&lt;button</span> <span class="c-attr">class</span>=<span class="c-str">"s1-btn s1-btn-secondary s1-btn-mobile"</span> <span class="c-attr">disabled</span><span class="c-tag">&gt;</span>버튼<span class="c-tag">&lt;/button&gt;</span></pre>
+            </div>
+            <div class="code-pane" id="btn-sec-css">
+              <pre><span class="c-prop">--color-button-bg-secondary--default</span>:     <span class="c-val">var(--color-base-white)</span>;
+<span class="c-prop">--color-button-bg-secondary--hover</span>:       <span class="c-val">var(--color-gray-50)</span>;   <span class="c-cmt">/* hover · pressed */</span>
+<span class="c-prop">--color-button-bg-disabled</span>:               <span class="c-val">var(--color-gray-50)</span>;
+<span class="c-prop">--color-button-border-secondary--default</span>: <span class="c-val">var(--color-gray-200)</span>;
+<span class="c-prop">--color-button-border-secondary--hover</span>:   <span class="c-val">var(--color-gray-200)</span>;
+<span class="c-prop">--color-button-border-disabled</span>:           <span class="c-val">var(--color-gray-200)</span>;
+<span class="c-prop">--color-button-label-secondary--default</span>:  <span class="c-val">var(--color-gray-800)</span>;
+<span class="c-prop">--color-button-label-secondary--hover</span>:    <span class="c-val">var(--color-gray-800)</span>;
+<span class="c-prop">--color-button-label-disabled</span>:            <span class="c-val">var(--color-gray-300)</span>;</pre>
+            </div>
+            <div class="code-pane" id="btn-sec-tokens">
+              <table class="token-detail-table">
+                <thead><tr><th>Token</th><th>Value (Semantic)</th><th>Role</th></tr></thead>
+                <tbody>
+                  <tr><td class="token-name">--color-button-bg-secondary--default</td><td class="token-value">var(--color-base-white)</td><td>기본 배경</td></tr>
+                  <tr><td class="token-name">--color-button-bg-secondary--hover</td><td class="token-value">var(--color-gray-50)</td><td>hover · pressed 배경</td></tr>
+                  <tr><td class="token-name">--color-button-bg-disabled</td><td class="token-value">var(--color-gray-50)</td><td>비활성 배경 (공통)</td></tr>
+                  <tr><td class="token-name">--color-button-border-secondary--default</td><td class="token-value">var(--color-gray-200)</td><td>기본 테두리</td></tr>
+                  <tr><td class="token-name">--color-button-border-secondary--hover</td><td class="token-value">var(--color-gray-200)</td><td>hover 테두리</td></tr>
+                  <tr><td class="token-name">--color-button-border-disabled</td><td class="token-value">var(--color-gray-200)</td><td>비활성 테두리 (공통)</td></tr>
+                  <tr><td class="token-name">--color-button-label-secondary--default</td><td class="token-value">var(--color-gray-800)</td><td>기본 텍스트 · 아이콘</td></tr>
+                  <tr><td class="token-name">--color-button-label-secondary--hover</td><td class="token-value">var(--color-gray-800)</td><td>hover 텍스트</td></tr>
+                  <tr><td class="token-name">--color-button-label-disabled</td><td class="token-value">var(--color-gray-300)</td><td>비활성 텍스트 (공통)</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
 
-                <!-- Default -->
-                <div class="comp-state-cell">
-                  <div class="s1-input-wrap is-preview" style="width:160px;">
-                    <div class="s1-input-field">
-                      <input type="text" placeholder="YY.MM.DD" readonly tabindex="-1">
-                      <button type="button" class="s1-input-action-btn" tabindex="-1" aria-label="달력 열기">
-                        <svg width="16" height="16" viewBox="0 0 16.2581 16.8" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M0 1.08387V16.2581C0 16.5615 0.238452 16.8 0.541936 16.8H15.7161C16.0196 16.8 16.2581 16.5615 16.2581 16.2581V1.08387C16.2581 0.780387 16.0196 0.541935 15.7161 0.541935H13.0065V0H11.9226V0.541935H4.33548V0H3.25161V0.541935H0.541936C0.238452 0.541935 0 0.780387 0 1.08387ZM4.33548 2.16774V1.62581H11.9226V2.16774H13.0065V1.62581H15.1742V3.79355H1.08387V1.62581H3.25161V2.16774H4.33548ZM15.1742 15.7161H1.08387V4.87742H15.1742V15.7161Z" fill="currentColor"/><path d="M5.14859 9.21302H3.52279V10.8388H5.14859V9.21302Z" fill="currentColor"/><path d="M8.94208 9.21302H7.31628V10.8388H8.94208V9.21302Z" fill="currentColor"/><path d="M12.7356 9.21302H11.1098V10.8388H12.7356V9.21302Z" fill="currentColor"/></svg>
-                      </button>
-                    </div>
+        <!-- ─ Blue-line ─ -->
+        <div class="variant-block">
+          <div class="variant-label">Blue-line</div>
+          <div class="preview-area">
+            <div class="platform-section platform-section-pc">
+              <div class="platform-header"><span class="platform-dot pc"></span>PC</div>
+              <div data-action-group="blue-line-pc">
+                <div class="state-size-matrix">
+                  <div></div>
+                  <div class="matrix-col-header-action">Action</div>
+                  <div class="matrix-col-header">Default</div>
+                  <div class="matrix-col-header">Hover</div>
+                  <div class="matrix-col-header">Disabled</div>
+                  <div class="matrix-row-label">medium<span>h44 · px16</span></div>
+                  <div class="matrix-cell action-cell" data-action-cell><button type="button" class="s1-btn s1-btn-blue-line s1-btn-lg" data-action-test>버튼</button><div class="action-test-controls"><span class="action-click-count">Clicks: <span data-click-count>0</span></span></div></div>
+                  <div class="matrix-cell"><button class="s1-btn s1-btn-blue-line s1-btn-lg is-preview">버튼</button></div>
+                  <div class="matrix-cell"><button class="s1-btn s1-btn-blue-line s1-btn-lg is-hover is-preview">버튼</button></div>
+                  <div class="matrix-cell"><button class="s1-btn s1-btn-blue-line s1-btn-lg is-disabled is-preview">버튼</button></div>
+                  <div class="matrix-row-label">xsmall<span>h34 · px8</span></div>
+                  <div class="matrix-cell action-cell" data-action-cell><button type="button" class="s1-btn s1-btn-blue-line" data-action-test>버튼</button><div class="action-test-controls"><span class="action-click-count">Clicks: <span data-click-count>0</span></span></div></div>
+                  <div class="matrix-cell"><button class="s1-btn s1-btn-blue-line is-preview">버튼</button></div>
+                  <div class="matrix-cell"><button class="s1-btn s1-btn-blue-line is-hover is-preview">버튼</button></div>
+                  <div class="matrix-cell"><button class="s1-btn s1-btn-blue-line is-disabled is-preview">버튼</button></div>
+                  <div class="matrix-row-label">xxsmall<span>h28 · px8</span></div>
+                  <div class="matrix-cell action-cell" data-action-cell><button type="button" class="s1-btn s1-btn-blue-line s1-btn-sm" data-action-test>버튼</button><div class="action-test-controls"><span class="action-click-count">Clicks: <span data-click-count>0</span></span></div></div>
+                  <div class="matrix-cell"><button class="s1-btn s1-btn-blue-line s1-btn-sm is-preview">버튼</button></div>
+                  <div class="matrix-cell"><button class="s1-btn s1-btn-blue-line s1-btn-sm is-hover is-preview">버튼</button></div>
+                  <div class="matrix-cell"><button class="s1-btn s1-btn-blue-line s1-btn-sm is-disabled is-preview">버튼</button></div>
+                  <div></div>
+                  <div class="action-test-controls">
+                    <button type="button" class="action-mini-toggle" data-group-disabled>Disabled: off</button>
                   </div>
                 </div>
+              </div>
+            </div>
+            <div class="platform-section platform-section-mobile">
+              <div class="platform-header"><span class="platform-dot mobile"></span>Mobile</div>
+              <div class="state-size-matrix">
+                <div></div>
+                <div class="matrix-col-header-action">Action</div>
+                <div class="matrix-col-header">Default</div>
+                <div class="matrix-col-header">Pressed</div>
+                <div class="matrix-col-header">Disabled</div>
+                <div class="matrix-row-label">mobile<span>h48 · px16</span></div>
+                <div class="matrix-cell action-cell" data-action-cell><button type="button" class="s1-btn s1-btn-blue-line s1-btn-mobile" data-action-test>버튼</button><div class="action-test-controls"><button type="button" class="action-mini-toggle" data-toggle-disabled>Disabled: off</button><span class="action-click-count">Clicks: <span data-click-count>0</span></span></div></div>
+                <div class="matrix-cell"><button class="s1-btn s1-btn-blue-line s1-btn-mobile is-preview">버튼</button></div>
+                <div class="matrix-cell"><button class="s1-btn s1-btn-blue-line s1-btn-mobile is-pressed is-preview">버튼</button></div>
+                <div class="matrix-cell"><button class="s1-btn s1-btn-blue-line s1-btn-mobile is-disabled is-preview">버튼</button></div>
+              </div>
+            </div>
+          </div>
+          <div class="code-block">
+            <div class="code-tabs">
+              <button class="code-tab active" onclick="switchTab(this,'btn-bl-pc')">PC · HTML</button>
+              <button class="code-tab" onclick="switchTab(this,'btn-bl-mo')">Mobile · HTML</button>
+              <button class="code-tab" onclick="switchTab(this,'btn-bl-css')">CSS Token</button>
+              <button class="code-tab" onclick="switchTab(this,'btn-bl-tokens')">Token Details</button>
+              <button class="code-copy-btn" onclick="copyCode('btn-bl-pc-pre')">복사</button>
+            </div>
+            <div class="code-pane active" id="btn-bl-pc">
+              <pre id="btn-bl-pc-pre"><span class="c-cmt">&lt;!-- medium h44 --&gt;</span>
+<span class="c-tag">&lt;button</span> <span class="c-attr">class</span>=<span class="c-str">"s1-btn s1-btn-blue-line s1-btn-lg"</span><span class="c-tag">&gt;</span>버튼<span class="c-tag">&lt;/button&gt;</span>
+<span class="c-cmt">&lt;!-- xsmall h34 (기본) --&gt;</span>
+<span class="c-tag">&lt;button</span> <span class="c-attr">class</span>=<span class="c-str">"s1-btn s1-btn-blue-line"</span><span class="c-tag">&gt;</span>버튼<span class="c-tag">&lt;/button&gt;</span>
+<span class="c-cmt">&lt;!-- xxsmall h28 --&gt;</span>
+<span class="c-tag">&lt;button</span> <span class="c-attr">class</span>=<span class="c-str">"s1-btn s1-btn-blue-line s1-btn-sm"</span><span class="c-tag">&gt;</span>버튼<span class="c-tag">&lt;/button&gt;</span>
+<span class="c-cmt">&lt;!-- Disabled --&gt;</span>
+<span class="c-tag">&lt;button</span> <span class="c-attr">class</span>=<span class="c-str">"s1-btn s1-btn-blue-line s1-btn-lg"</span> <span class="c-attr">disabled</span><span class="c-tag">&gt;</span>버튼<span class="c-tag">&lt;/button&gt;</span></pre>
+            </div>
+            <div class="code-pane" id="btn-bl-mo">
+              <pre id="btn-bl-mo-pre"><span class="c-cmt">&lt;!-- mobile h48 --&gt;</span>
+<span class="c-tag">&lt;button</span> <span class="c-attr">class</span>=<span class="c-str">"s1-btn s1-btn-blue-line s1-btn-mobile"</span><span class="c-tag">&gt;</span>버튼<span class="c-tag">&lt;/button&gt;</span>
+<span class="c-cmt">&lt;!-- Pressed --&gt;</span>
+<span class="c-tag">&lt;button</span> <span class="c-attr">class</span>=<span class="c-str">"s1-btn s1-btn-blue-line s1-btn-mobile is-pressed"</span><span class="c-tag">&gt;</span>버튼<span class="c-tag">&lt;/button&gt;</span>
+<span class="c-cmt">&lt;!-- Disabled --&gt;</span>
+<span class="c-tag">&lt;button</span> <span class="c-attr">class</span>=<span class="c-str">"s1-btn s1-btn-blue-line s1-btn-mobile"</span> <span class="c-attr">disabled</span><span class="c-tag">&gt;</span>버튼<span class="c-tag">&lt;/button&gt;</span></pre>
+            </div>
+            <div class="code-pane" id="btn-bl-css">
+              <pre><span class="c-prop">--color-button-bg-blue-line--default</span>:     <span class="c-val">var(--color-base-white)</span>;
+<span class="c-prop">--color-button-bg-blue-line--hover</span>:       <span class="c-val">var(--color-blue-50)</span>;   <span class="c-cmt">/* hover · pressed */</span>
+<span class="c-prop">--color-button-bg-disabled</span>:               <span class="c-val">var(--color-gray-50)</span>;
+<span class="c-prop">--color-button-border-blue-line--default</span>: <span class="c-val">var(--color-blue-400)</span>;
+<span class="c-prop">--color-button-border-blue-line--hover</span>:   <span class="c-val">var(--color-blue-500)</span>;
+<span class="c-prop">--color-button-border-disabled</span>:           <span class="c-val">var(--color-gray-200)</span>;
+<span class="c-prop">--color-button-label-blue-line--default</span>:  <span class="c-val">var(--color-blue-400)</span>;
+<span class="c-prop">--color-button-label-blue-line--hover</span>:    <span class="c-val">var(--color-blue-500)</span>;
+<span class="c-prop">--color-button-label-disabled</span>:            <span class="c-val">var(--color-gray-300)</span>;</pre>
+            </div>
+            <div class="code-pane" id="btn-bl-tokens">
+              <table class="token-detail-table">
+                <thead><tr><th>Token</th><th>Value (Semantic)</th><th>Role</th></tr></thead>
+                <tbody>
+                  <tr><td class="token-name">--color-button-bg-blue-line--default</td><td class="token-value">var(--color-base-white)</td><td>기본 배경</td></tr>
+                  <tr><td class="token-name">--color-button-bg-blue-line--hover</td><td class="token-value">var(--color-blue-50)</td><td>hover · pressed 배경</td></tr>
+                  <tr><td class="token-name">--color-button-bg-disabled</td><td class="token-value">var(--color-gray-50)</td><td>비활성 배경 (공통)</td></tr>
+                  <tr><td class="token-name">--color-button-border-blue-line--default</td><td class="token-value">var(--color-blue-400)</td><td>기본 테두리</td></tr>
+                  <tr><td class="token-name">--color-button-border-blue-line--hover</td><td class="token-value">var(--color-blue-500)</td><td>hover 테두리</td></tr>
+                  <tr><td class="token-name">--color-button-border-disabled</td><td class="token-value">var(--color-gray-200)</td><td>비활성 테두리 (공통)</td></tr>
+                  <tr><td class="token-name">--color-button-label-blue-line--default</td><td class="token-value">var(--color-blue-400)</td><td>기본 텍스트</td></tr>
+                  <tr><td class="token-name">--color-button-label-blue-line--hover</td><td class="token-value">var(--color-blue-500)</td><td>hover 텍스트</td></tr>
+                  <tr><td class="token-name">--color-button-label-disabled</td><td class="token-value">var(--color-gray-300)</td><td>비활성 텍스트 (공통)</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
 
-                <!-- Open / Focus (static calendar preview) -->
-                <div class="comp-state-cell" style="align-items:flex-start;">
-                  <div style="position:relative; display:inline-block;">
-                    <div class="s1-input-wrap is-focus is-preview" style="width:160px;">
-                      <div class="s1-input-field">
-                        <input type="text" placeholder="YY.MM.DD" readonly tabindex="-1">
-                        <button type="button" class="s1-input-action-btn" tabindex="-1" aria-label="달력 열기">
-                          <svg width="16" height="16" viewBox="0 0 16.2581 16.8" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M0 1.08387V16.2581C0 16.5615 0.238452 16.8 0.541936 16.8H15.7161C16.0196 16.8 16.2581 16.5615 16.2581 16.2581V1.08387C16.2581 0.780387 16.0196 0.541935 15.7161 0.541935H13.0065V0H11.9226V0.541935H4.33548V0H3.25161V0.541935H0.541936C0.238452 0.541935 0 0.780387 0 1.08387ZM4.33548 2.16774V1.62581H11.9226V2.16774H13.0065V1.62581H15.1742V3.79355H1.08387V1.62581H3.25161V2.16774H4.33548ZM15.1742 15.7161H1.08387V4.87742H15.1742V15.7161Z" fill="currentColor"/><path d="M5.14859 9.21302H3.52279V10.8388H5.14859V9.21302Z" fill="currentColor"/><path d="M8.94208 9.21302H7.31628V10.8388H8.94208V9.21302Z" fill="currentColor"/><path d="M12.7356 9.21302H11.1098V10.8388H12.7356V9.21302Z" fill="currentColor"/></svg>
-                        </button>
-                      </div>
-                    </div>
-                    <div class="s1-date-picker__panel" style="position:absolute; top:calc(100% + 8px); left:0; display:block;">
-                      <div class="s1-date-picker__header">
-                        <button type="button" class="s1-date-picker__nav-btn" style="pointer-events:none;" aria-label="이전 달">
-                          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M10 12L6 8l4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                        </button>
-                        <strong class="s1-date-picker__month-label">2026.05</strong>
-                        <button type="button" class="s1-date-picker__nav-btn" style="pointer-events:none;" aria-label="다음 달">
-                          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M6 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                        </button>
-                      </div>
-                      <div class="s1-date-picker__weekdays">
-                        <span class="s1-date-picker__weekday is-sunday">일</span>
-                        <span class="s1-date-picker__weekday">월</span>
-                        <span class="s1-date-picker__weekday">화</span>
-                        <span class="s1-date-picker__weekday">수</span>
-                        <span class="s1-date-picker__weekday">목</span>
-                        <span class="s1-date-picker__weekday">금</span>
-                        <span class="s1-date-picker__weekday is-saturday">토</span>
-                      </div>
-                      <div class="s1-date-picker__grid">
-                        <button class="s1-date-picker__day is-other-month" tabindex="-1"><span class="day-inner">26</span></button>
-                        <button class="s1-date-picker__day is-other-month" tabindex="-1"><span class="day-inner">27</span></button>
-                        <button class="s1-date-picker__day is-other-month" tabindex="-1"><span class="day-inner">28</span></button>
-                        <button class="s1-date-picker__day is-other-month" tabindex="-1"><span class="day-inner">29</span></button>
-                        <button class="s1-date-picker__day is-other-month" tabindex="-1"><span class="day-inner">30</span></button>
-                        <button class="s1-date-picker__day" tabindex="-1"><span class="day-inner">1</span></button>
-                        <button class="s1-date-picker__day" tabindex="-1"><span class="day-inner">2</span></button>
-                        <button class="s1-date-picker__day" tabindex="-1"><span class="day-inner">3</span></button>
-                        <button class="s1-date-picker__day" tabindex="-1"><span class="day-inner">4</span></button>
-                        <button class="s1-date-picker__day" tabindex="-1"><span class="day-inner">5</span></button>
-                        <button class="s1-date-picker__day" tabindex="-1"><span class="day-inner">6</span></button>
-                        <button class="s1-date-picker__day" tabindex="-1"><span class="day-inner">7</span></button>
-                        <button class="s1-date-picker__day" tabindex="-1"><span class="day-inner">8</span></button>
-                        <button class="s1-date-picker__day" tabindex="-1"><span class="day-inner">9</span></button>
-                        <button class="s1-date-picker__day" tabindex="-1"><span class="day-inner">10</span></button>
-                        <button class="s1-date-picker__day" tabindex="-1"><span class="day-inner">11</span></button>
-                        <button class="s1-date-picker__day" tabindex="-1"><span class="day-inner">12</span></button>
-                        <button class="s1-date-picker__day" tabindex="-1"><span class="day-inner">13</span></button>
-                        <button class="s1-date-picker__day" tabindex="-1"><span class="day-inner">14</span></button>
-                        <button class="s1-date-picker__day" tabindex="-1"><span class="day-inner">15</span></button>
-                        <button class="s1-date-picker__day" tabindex="-1"><span class="day-inner">16</span></button>
-                        <button class="s1-date-picker__day" tabindex="-1"><span class="day-inner">17</span></button>
-                        <button class="s1-date-picker__day" tabindex="-1"><span class="day-inner">18</span></button>
-                        <button class="s1-date-picker__day" tabindex="-1"><span class="day-inner">19</span></button>
-                        <button class="s1-date-picker__day is-today" tabindex="-1"><span class="day-inner">20</span></button>
-                        <button class="s1-date-picker__day is-selected" tabindex="-1"><span class="day-inner">21</span></button>
-                        <button class="s1-date-picker__day" tabindex="-1"><span class="day-inner">22</span></button>
-                        <button class="s1-date-picker__day" tabindex="-1"><span class="day-inner">23</span></button>
-                        <button class="s1-date-picker__day" tabindex="-1"><span class="day-inner">24</span></button>
-                        <button class="s1-date-picker__day" tabindex="-1"><span class="day-inner">25</span></button>
-                        <button class="s1-date-picker__day" tabindex="-1"><span class="day-inner">26</span></button>
-                        <button class="s1-date-picker__day" tabindex="-1"><span class="day-inner">27</span></button>
-                        <button class="s1-date-picker__day" tabindex="-1"><span class="day-inner">28</span></button>
-                        <button class="s1-date-picker__day" tabindex="-1"><span class="day-inner">29</span></button>
-                        <button class="s1-date-picker__day" tabindex="-1"><span class="day-inner">30</span></button>
-                        <button class="s1-date-picker__day" tabindex="-1"><span class="day-inner">31</span></button>
-                        <button class="s1-date-picker__day is-other-month" tabindex="-1"><span class="day-inner">1</span></button>
-                        <button class="s1-date-picker__day is-other-month" tabindex="-1"><span class="day-inner">2</span></button>
-                        <button class="s1-date-picker__day is-other-month" tabindex="-1"><span class="day-inner">3</span></button>
-                        <button class="s1-date-picker__day is-other-month" tabindex="-1"><span class="day-inner">4</span></button>
-                        <button class="s1-date-picker__day is-other-month" tabindex="-1"><span class="day-inner">5</span></button>
-                        <button class="s1-date-picker__day is-other-month" tabindex="-1"><span class="day-inner">6</span></button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+      </section>
 
-                <!-- Filled -->
-                <div class="comp-state-cell">
-                  <div class="s1-input-wrap is-preview" style="width:160px;">
-                    <div class="s1-input-field">
-                      <input type="text" value="26.05.21" readonly tabindex="-1">
-                      <button type="button" class="s1-input-action-btn" tabindex="-1" aria-label="달력 열기">
-                        <svg width="16" height="16" viewBox="0 0 16.2581 16.8" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M0 1.08387V16.2581C0 16.5615 0.238452 16.8 0.541936 16.8H15.7161C16.0196 16.8 16.2581 16.5615 16.2581 16.2581V1.08387C16.2581 0.780387 16.0196 0.541935 15.7161 0.541935H13.0065V0H11.9226V0.541935H4.33548V0H3.25161V0.541935H0.541936C0.238452 0.541935 0 0.780387 0 1.08387ZM4.33548 2.16774V1.62581H11.9226V2.16774H13.0065V1.62581H15.1742V3.79355H1.08387V1.62581H3.25161V2.16774H4.33548ZM15.1742 15.7161H1.08387V4.87742H15.1742V15.7161Z" fill="currentColor"/><path d="M5.14859 9.21302H3.52279V10.8388H5.14859V9.21302Z" fill="currentColor"/><path d="M8.94208 9.21302H7.31628V10.8388H8.94208V9.21302Z" fill="currentColor"/><path d="M12.7356 9.21302H11.1098V10.8388H12.7356V9.21302Z" fill="currentColor"/></svg>
-                      </button>
-                    </div>
-                  </div>
-                </div>
 
-                <!-- Disabled -->
-                <div class="comp-state-cell">
-                  <div class="s1-input-wrap is-disabled is-preview" style="width:160px;">
-                    <div class="s1-input-field">
-                      <input type="text" placeholder="YY.MM.DD" disabled readonly tabindex="-1">
-                      <button type="button" class="s1-input-action-btn" disabled tabindex="-1" aria-label="달력 열기">
-                        <svg width="16" height="16" viewBox="0 0 16.2581 16.8" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M0 1.08387V16.2581C0 16.5615 0.238452 16.8 0.541936 16.8H15.7161C16.0196 16.8 16.2581 16.5615 16.2581 16.2581V1.08387C16.2581 0.780387 16.0196 0.541935 15.7161 0.541935H13.0065V0H11.9226V0.541935H4.33548V0H3.25161V0.541935H0.541936C0.238452 0.541935 0 0.780387 0 1.08387ZM4.33548 2.16774V1.62581H11.9226V2.16774H13.0065V1.62581H15.1742V3.79355H1.08387V1.62581H3.25161V2.16774H4.33548ZM15.1742 15.7161H1.08387V4.87742H15.1742V15.7161Z" fill="currentColor"/><path d="M5.14859 9.21302H3.52279V10.8388H5.14859V9.21302Z" fill="currentColor"/><path d="M8.94208 9.21302H7.31628V10.8388H8.94208V9.21302Z" fill="currentColor"/><path d="M12.7356 9.21302H11.1098V10.8388H12.7356V9.21302Z" fill="currentColor"/></svg>
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              </div><!-- /comp-state-matrix PC -->
-            </div><!-- /preview-area -->
-          </div><!-- /variant-block -->
+      <section class="comp-section" id="textarea">
+        <div class="comp-section-header">
+          <h2 class="comp-section-title">Textarea</h2>
+          <span class="comp-badge comp-badge-blue">Core</span>
+          <span class="comp-badge comp-badge-green">Implemented</span>
+          <span class="comp-badge">4 states</span>
+        </div>
 
-          <!-- Size Variants -->
-          <div class="variant-block" style="margin-top:20px;">
-            <div class="variant-label">Size Variants (Figma 확인)</div>
-            <div class="preview-area">
-              <div class="s1-dp-states">
-                <div>
-                  <div class="s1-dp-state-label">PC-MD · h44</div>
-                  <div class="s1-input-wrap is-preview" style="width:190px;">
-                    <div class="s1-input-field" style="height:44px;">
-                      <input type="text" placeholder="날짜를 선택하세요" readonly tabindex="-1">
-                      <button class="s1-input-action-btn" tabindex="-1" aria-label="달력 열기"><svg width="16" height="16" viewBox="0 0 16.2581 16.8" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M0 1.08387V16.2581C0 16.5615 0.238452 16.8 0.541936 16.8H15.7161C16.0196 16.8 16.2581 16.5615 16.2581 16.2581V1.08387C16.2581 0.780387 16.0196 0.541935 15.7161 0.541935H13.0065V0H11.9226V0.541935H4.33548V0H3.25161V0.541935H0.541936C0.238452 0.541935 0 0.780387 0 1.08387ZM4.33548 2.16774V1.62581H11.9226V2.16774H13.0065V1.62581H15.1742V3.79355H1.08387V1.62581H3.25161V2.16774H4.33548ZM15.1742 15.7161H1.08387V4.87742H15.1742V15.7161Z" fill="currentColor"/><path d="M5.14859 9.21302H3.52279V10.8388H5.14859V9.21302Z" fill="currentColor"/><path d="M8.94208 9.21302H7.31628V10.8388H8.94208V9.21302Z" fill="currentColor"/><path d="M12.7356 9.21302H11.1098V10.8388H12.7356V9.21302Z" fill="currentColor"/></svg></button>
-                    </div>
+        <!-- ── States Matrix ── -->
+        <div class="variant-block">
+          <div class="variant-label">States</div>
+          <div class="preview-area" style="overflow: visible;">
+            <div class="comp-state-matrix" style="grid-template-columns: 260px repeat(4, minmax(120px, 1fr)); align-items: start;">
+              <div class="matrix-col-header-action">Action</div>
+              <div class="matrix-col-header">Default</div>
+              <div class="matrix-col-header">Focus</div>
+              <div class="matrix-col-header">Filled</div>
+              <div class="matrix-col-header">Readonly</div>
+
+              <!-- Action -->
+              <div class="comp-action-cell" data-comp-action="textarea" style="align-items: flex-start; padding-top: 12px;">
+                <div class="s1-input-wrap s1-input-wrap--textarea" id="textarea-action-target" style="width:170px;">
+                  <div class="s1-input-field">
+                    <textarea id="textarea-action-input" rows="3" placeholder="내용을 입력하세요"></textarea>
                   </div>
                 </div>
-                <div>
-                  <div class="s1-dp-state-label">PC-XSM · h34</div>
-                  <div class="s1-input-wrap is-preview" style="width:190px;">
-                    <div class="s1-input-field input-size-small">
-                      <input type="text" placeholder="날짜를 선택하세요" readonly tabindex="-1" style="font-size:13px;">
-                      <button class="s1-input-action-btn" tabindex="-1" aria-label="달력 열기"><svg width="16" height="16" viewBox="0 0 16.2581 16.8" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M0 1.08387V16.2581C0 16.5615 0.238452 16.8 0.541936 16.8H15.7161C16.0196 16.8 16.2581 16.5615 16.2581 16.2581V1.08387C16.2581 0.780387 16.0196 0.541935 15.7161 0.541935H13.0065V0H11.9226V0.541935H4.33548V0H3.25161V0.541935H0.541936C0.238452 0.541935 0 0.780387 0 1.08387ZM4.33548 2.16774V1.62581H11.9226V2.16774H13.0065V1.62581H15.1742V3.79355H1.08387V1.62581H3.25161V2.16774H4.33548ZM15.1742 15.7161H1.08387V4.87742H15.1742V15.7161Z" fill="currentColor"/><path d="M5.14859 9.21302H3.52279V10.8388H5.14859V9.21302Z" fill="currentColor"/><path d="M8.94208 9.21302H7.31628V10.8388H8.94208V9.21302Z" fill="currentColor"/><path d="M12.7356 9.21302H11.1098V10.8388H12.7356V9.21302Z" fill="currentColor"/></svg></button>
-                    </div>
+                <div class="action-test-controls" style="margin-top:6px;">
+                  <button type="button" class="action-mini-toggle" data-textarea-readonly>Readonly: off</button>
+                </div>
+              </div>
+
+              <!-- Default -->
+              <div class="comp-state-cell" style="align-items: flex-start; padding-top: 12px;">
+                <div class="s1-input-wrap s1-input-wrap--textarea is-preview" style="width:160px;">
+                  <div class="s1-input-field">
+                    <textarea rows="3" placeholder="내용을 입력하세요" readonly tabindex="-1"></textarea>
                   </div>
                 </div>
-                <div>
-                  <div class="s1-dp-state-label">PC-XXSM · h28</div>
-                  <div class="s1-input-wrap is-preview" style="width:190px;">
-                    <div class="s1-input-field input-size-xsmall">
-                      <input type="text" placeholder="날짜를 선택하세요" readonly tabindex="-1">
-                      <button class="s1-input-action-btn" tabindex="-1" aria-label="달력 열기" style="width:16px;height:16px;"><svg width="14" height="14" viewBox="0 0 16.2581 16.8" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M0 1.08387V16.2581C0 16.5615 0.238452 16.8 0.541936 16.8H15.7161C16.0196 16.8 16.2581 16.5615 16.2581 16.2581V1.08387C16.2581 0.780387 16.0196 0.541935 15.7161 0.541935H13.0065V0H11.9226V0.541935H4.33548V0H3.25161V0.541935H0.541936C0.238452 0.541935 0 0.780387 0 1.08387ZM4.33548 2.16774V1.62581H11.9226V2.16774H13.0065V1.62581H15.1742V3.79355H1.08387V1.62581H3.25161V2.16774H4.33548ZM15.1742 15.7161H1.08387V4.87742H15.1742V15.7161Z" fill="currentColor"/><path d="M5.14859 9.21302H3.52279V10.8388H5.14859V9.21302Z" fill="currentColor"/><path d="M8.94208 9.21302H7.31628V10.8388H8.94208V9.21302Z" fill="currentColor"/><path d="M12.7356 9.21302H11.1098V10.8388H12.7356V9.21302Z" fill="currentColor"/></svg></button>
-                    </div>
+              </div>
+
+              <!-- Focus -->
+              <div class="comp-state-cell" style="align-items: flex-start; padding-top: 12px;">
+                <div class="s1-input-wrap s1-input-wrap--textarea is-focus is-preview" style="width:160px;">
+                  <div class="s1-input-field">
+                    <textarea rows="3" placeholder="내용을 입력하세요" readonly tabindex="-1"></textarea>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Filled -->
+              <div class="comp-state-cell" style="align-items: flex-start; padding-top: 12px;">
+                <div class="s1-input-wrap s1-input-wrap--textarea is-preview" style="width:160px;">
+                  <div class="s1-input-field">
+                    <textarea rows="3" readonly tabindex="-1">입력된 내용입니다.
+줄바꿈도 지원합니다.</textarea>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Readonly -->
+              <div class="comp-state-cell" style="align-items: flex-start; padding-top: 12px;">
+                <div class="s1-input-wrap s1-input-wrap--textarea is-readonly is-preview" style="width:160px;">
+                  <div class="s1-input-field">
+                    <textarea rows="3" readonly tabindex="-1">읽기 전용 내용입니다.
+편집할 수 없습니다.</textarea>
                   </div>
                 </div>
               </div>
             </div>
           </div>
-        </div><!-- /platform-section-pc -->
+        </div>
 
-        <!-- ── Mobile ── -->
-        <div class="platform-section platform-section-mobile">
-          <div class="platform-header"><span class="platform-dot mobile"></span>Mobile (h48)</div>
-          <div class="variant-block">
-            <div class="variant-label">States</div>
-            <div class="preview-area">
-              <div class="comp-state-matrix" style="grid-template-columns: 260px repeat(3, minmax(120px,1fr));">
-                <div class="matrix-col-header-action">Action</div>
-                <div class="matrix-col-header">Default</div>
-                <div class="matrix-col-header">Filled</div>
-                <div class="matrix-col-header">Disabled</div>
-                <!-- Action -->
-                <div class="comp-action-cell" id="dp-mobile-action-wrap" style="align-items:flex-start;">
-                  <div class="s1-input-wrap" style="width:180px;">
-                    <div class="s1-input-field input-size-mobile">
-                      <input type="text" placeholder="YY.MM.DD" readonly aria-label="날짜 선택">
-                      <button type="button" class="s1-input-action-btn" aria-label="달력 열기">
-                        <svg width="16" height="16" viewBox="0 0 16.2581 16.8" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M0 1.08387V16.2581C0 16.5615 0.238452 16.8 0.541936 16.8H15.7161C16.0196 16.8 16.2581 16.5615 16.2581 16.2581V1.08387C16.2581 0.780387 16.0196 0.541935 15.7161 0.541935H13.0065V0H11.9226V0.541935H4.33548V0H3.25161V0.541935H0.541936C0.238452 0.541935 0 0.780387 0 1.08387ZM4.33548 2.16774V1.62581H11.9226V2.16774H13.0065V1.62581H15.1742V3.79355H1.08387V1.62581H3.25161V2.16774H4.33548ZM15.1742 15.7161H1.08387V4.87742H15.1742V15.7161Z" fill="currentColor"/><path d="M5.14859 9.21302H3.52279V10.8388H5.14859V9.21302Z" fill="currentColor"/><path d="M8.94208 9.21302H7.31628V10.8388H8.94208V9.21302Z" fill="currentColor"/><path d="M12.7356 9.21302H11.1098V10.8388H12.7356V9.21302Z" fill="currentColor"/></svg>
-                      </button>
-                    </div>
-                  </div>
-                  <div class="action-test-controls" style="margin-top:6px;">
-                    <button type="button" class="action-mini-toggle" data-dp-mobile-disabled>Disabled: off</button>
-                  </div>
-                </div>
-                <!-- Default -->
-                <div class="comp-state-cell">
-                  <div class="s1-input-wrap is-preview" style="width:160px;">
-                    <div class="s1-input-field input-size-mobile">
-                      <input type="text" placeholder="YY.MM.DD" readonly tabindex="-1">
-                      <button type="button" class="s1-input-action-btn" tabindex="-1" aria-label="달력 열기">
-                        <svg width="16" height="16" viewBox="0 0 16.2581 16.8" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M0 1.08387V16.2581C0 16.5615 0.238452 16.8 0.541936 16.8H15.7161C16.0196 16.8 16.2581 16.5615 16.2581 16.2581V1.08387C16.2581 0.780387 16.0196 0.541935 15.7161 0.541935H13.0065V0H11.9226V0.541935H4.33548V0H3.25161V0.541935H0.541936C0.238452 0.541935 0 0.780387 0 1.08387ZM4.33548 2.16774V1.62581H11.9226V2.16774H13.0065V1.62581H15.1742V3.79355H1.08387V1.62581H3.25161V2.16774H4.33548ZM15.1742 15.7161H1.08387V4.87742H15.1742V15.7161Z" fill="currentColor"/><path d="M5.14859 9.21302H3.52279V10.8388H5.14859V9.21302Z" fill="currentColor"/><path d="M8.94208 9.21302H7.31628V10.8388H8.94208V9.21302Z" fill="currentColor"/><path d="M12.7356 9.21302H11.1098V10.8388H12.7356V9.21302Z" fill="currentColor"/></svg>
-                      </button>
-                    </div>
-                  </div>
-                </div>
-                <!-- Filled -->
-                <div class="comp-state-cell">
-                  <div class="s1-input-wrap is-preview" style="width:160px;">
-                    <div class="s1-input-field input-size-mobile">
-                      <input type="text" value="26.05.21" readonly tabindex="-1">
-                      <button type="button" class="s1-input-action-btn" tabindex="-1" aria-label="달력 열기">
-                        <svg width="16" height="16" viewBox="0 0 16.2581 16.8" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M0 1.08387V16.2581C0 16.5615 0.238452 16.8 0.541936 16.8H15.7161C16.0196 16.8 16.2581 16.5615 16.2581 16.2581V1.08387C16.2581 0.780387 16.0196 0.541935 15.7161 0.541935H13.0065V0H11.9226V0.541935H4.33548V0H3.25161V0.541935H0.541936C0.238452 0.541935 0 0.780387 0 1.08387ZM4.33548 2.16774V1.62581H11.9226V2.16774H13.0065V1.62581H15.1742V3.79355H1.08387V1.62581H3.25161V2.16774H4.33548ZM15.1742 15.7161H1.08387V4.87742H15.1742V15.7161Z" fill="currentColor"/><path d="M5.14859 9.21302H3.52279V10.8388H5.14859V9.21302Z" fill="currentColor"/><path d="M8.94208 9.21302H7.31628V10.8388H8.94208V9.21302Z" fill="currentColor"/><path d="M12.7356 9.21302H11.1098V10.8388H12.7356V9.21302Z" fill="currentColor"/></svg>
-                      </button>
-                    </div>
-                  </div>
-                </div>
-                <!-- Disabled -->
-                <div class="comp-state-cell">
-                  <div class="s1-input-wrap is-disabled is-preview" style="width:160px;">
-                    <div class="s1-input-field input-size-mobile">
-                      <input type="text" placeholder="YY.MM.DD" disabled readonly tabindex="-1">
-                      <button type="button" class="s1-input-action-btn" disabled tabindex="-1" aria-label="달력 열기">
-                        <svg width="16" height="16" viewBox="0 0 16.2581 16.8" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M0 1.08387V16.2581C0 16.5615 0.238452 16.8 0.541936 16.8H15.7161C16.0196 16.8 16.2581 16.5615 16.2581 16.2581V1.08387C16.2581 0.780387 16.0196 0.541935 15.7161 0.541935H13.0065V0H11.9226V0.541935H4.33548V0H3.25161V0.541935H0.541936C0.238452 0.541935 0 0.780387 0 1.08387ZM4.33548 2.16774V1.62581H11.9226V2.16774H13.0065V1.62581H15.1742V3.79355H1.08387V1.62581H3.25161V2.16774H4.33548ZM15.1742 15.7161H1.08387V4.87742H15.1742V15.7161Z" fill="currentColor"/><path d="M5.14859 9.21302H3.52279V10.8388H5.14859V9.21302Z" fill="currentColor"/><path d="M8.94208 9.21302H7.31628V10.8388H8.94208V9.21302Z" fill="currentColor"/><path d="M12.7356 9.21302H11.1098V10.8388H12.7356V9.21302Z" fill="currentColor"/></svg>
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              </div><!-- /comp-state-matrix Mobile -->
-            </div><!-- /preview-area -->
-          </div>
-        </div><!-- /platform-section-mobile -->
-
-        <!-- Code / Token Details -->
-        <div class="code-block" style="margin-top:24px;">
+        <!-- ── Code tabs ── -->
+        <div class="code-block">
           <div class="code-tabs">
-            <button class="code-tab active" onclick="switchTab(this,'dp-trigger-tokens')">Trigger 토큰 (form-control)</button>
-            <button class="code-tab" onclick="switchTab(this,'dp-calendar-tokens')">Calendar 토큰 (date-picker)</button>
+            <button class="code-tab active" onclick="switchTab(this,'ta-html')">HTML</button>
+            <button class="code-tab" onclick="switchTab(this,'ta-css')">CSS Tokens</button>
+            <button class="code-tab" onclick="switchTab(this,'ta-js')">JavaScript</button>
+            <button class="code-tab" onclick="switchTab(this,'ta-tokens')">Token Details</button>
+            <button class="code-copy-btn" onclick="copyCode('ta-html-pre')">복사</button>
           </div>
-          <div class="code-pane active" id="dp-trigger-tokens">
-            <table class="token-detail-table">
-              <thead><tr><th>역할</th><th>Semantic Variable</th><th>설명</th></tr></thead>
-              <tbody>
-                <tr><td>기본 배경</td><td class="token-value">var(--color-form-control-bg-default)</td><td>Trigger 입력 필드 배경</td></tr>
-                <tr><td>호버 배경</td><td class="token-value">var(--color-form-control-bg-hover)</td><td>Trigger hover (form-control/bg/hover)</td></tr>
-                <tr><td>비활성 배경</td><td class="token-value">var(--color-form-control-bg-disabled)</td><td>disabled 필드 배경</td></tr>
-                <tr><td>기본 테두리</td><td class="token-value">var(--color-form-control-border-default)</td><td>Trigger 기본·hover 테두리</td></tr>
-                <tr><td>열림/포커스 테두리</td><td class="token-value">var(--color-form-control-border-selected)</td><td>패널 열림(open) 상태 테두리</td></tr>
-                <tr><td>비활성 테두리</td><td class="token-value">var(--color-form-control-border-disabled)</td><td>disabled 필드 테두리</td></tr>
-                <tr><td>플레이스홀더</td><td class="token-value">var(--color-form-control-text-placeholder)</td><td>YY.MM.DD 안내 텍스트</td></tr>
-                <tr><td>입력값 텍스트</td><td class="token-value">var(--color-form-control-text-default)</td><td>날짜 선택 완료(Filled) 텍스트</td></tr>
-                <tr><td>비활성 텍스트</td><td class="token-value">var(--color-form-control-text-disabled)</td><td>disabled 텍스트</td></tr>
-                <tr><td>아이콘</td><td class="token-value">var(--color-form-control-icon-default)</td><td>달력 아이콘 색상</td></tr>
-              </tbody>
-            </table>
+          <div class="code-pane active" id="ta-html">
+            <pre id="ta-html-pre"><span class="c-cmt">&lt;!-- Default --&gt;</span>
+<span class="c-tag">&lt;div</span> <span class="c-attr">class</span>=<span class="c-str">"s1-input-wrap s1-input-wrap--textarea"</span><span class="c-tag">&gt;</span>
+  <span class="c-tag">&lt;div</span> <span class="c-attr">class</span>=<span class="c-str">"s1-input-field"</span><span class="c-tag">&gt;</span>
+    <span class="c-tag">&lt;textarea</span> <span class="c-attr">placeholder</span>=<span class="c-str">"내용을 입력하세요"</span><span class="c-tag">&gt;&lt;/textarea&gt;</span>
+  <span class="c-tag">&lt;/div&gt;</span>
+<span class="c-tag">&lt;/div&gt;</span>
+
+<span class="c-cmt">&lt;!-- Focus: add is-focus to wrap --&gt;</span>
+<span class="c-tag">&lt;div</span> <span class="c-attr">class</span>=<span class="c-str">"s1-input-wrap s1-input-wrap--textarea is-focus"</span><span class="c-tag">&gt;</span>...<span class="c-tag">&lt;/div&gt;</span>
+
+<span class="c-cmt">&lt;!-- Error / Correct: add is-error / is-correct --&gt;</span>
+<span class="c-tag">&lt;div</span> <span class="c-attr">class</span>=<span class="c-str">"s1-input-wrap s1-input-wrap--textarea is-error"</span><span class="c-tag">&gt;</span>...<span class="c-tag">&lt;/div&gt;</span>
+<span class="c-tag">&lt;div</span> <span class="c-attr">class</span>=<span class="c-str">"s1-input-wrap s1-input-wrap--textarea is-correct"</span><span class="c-tag">&gt;</span>...<span class="c-tag">&lt;/div&gt;</span>
+
+<span class="c-cmt">&lt;!-- Disabled: add is-disabled + disabled attribute --&gt;</span>
+<span class="c-tag">&lt;div</span> <span class="c-attr">class</span>=<span class="c-str">"s1-input-wrap s1-input-wrap--textarea is-disabled"</span><span class="c-tag">&gt;</span>
+  <span class="c-tag">&lt;div</span> <span class="c-attr">class</span>=<span class="c-str">"s1-input-field"</span><span class="c-tag">&gt;</span>
+    <span class="c-tag">&lt;textarea</span> <span class="c-attr">disabled</span><span class="c-tag">&gt;&lt;/textarea&gt;</span>
+  <span class="c-tag">&lt;/div&gt;</span>
+<span class="c-tag">&lt;/div&gt;</span>
+
+<span class="c-cmt">&lt;!-- Readonly: add is-readonly + readonly attribute --&gt;</span>
+<span class="c-tag">&lt;div</span> <span class="c-attr">class</span>=<span class="c-str">"s1-input-wrap s1-input-wrap--textarea is-readonly"</span><span class="c-tag">&gt;</span>
+  <span class="c-tag">&lt;div</span> <span class="c-attr">class</span>=<span class="c-str">"s1-input-field"</span><span class="c-tag">&gt;</span>
+    <span class="c-tag">&lt;textarea</span> <span class="c-attr">readonly</span><span class="c-tag">&gt;</span>읽기 전용 내용<span class="c-tag">&lt;/textarea&gt;</span>
+  <span class="c-tag">&lt;/div&gt;</span>
+<span class="c-tag">&lt;/div&gt;</span></pre>
           </div>
-          <div class="code-pane" id="dp-calendar-tokens">
-            <table class="token-detail-table">
-              <thead><tr><th>역할</th><th>Semantic Variable</th><th>설명</th></tr></thead>
-              <tbody>
-                <tr><td>패널 배경</td><td class="token-value">var(--color-date-picker-bg-panel)</td><td>캘린더 팝업 배경</td></tr>
-                <tr><td>패널 테두리</td><td class="token-value">var(--color-date-picker-border-panel)</td><td>팝업 외곽선</td></tr>
-                <tr><td>헤더/월 텍스트</td><td class="token-value">var(--color-date-picker-text-primary)</td><td>YYYY.MM 라벨 · 이전/다음 nav</td></tr>
-                <tr><td>요일/날짜 텍스트</td><td class="token-value">var(--color-date-picker-text-secondary)</td><td>weekday · 기본 day cell</td></tr>
-                <tr><td>일요일 텍스트</td><td class="token-value">var(--color-date-picker-text-sunday)</td><td>일요일 헤더</td></tr>
-                <tr><td>토요일 텍스트</td><td class="token-value">var(--color-date-picker-text-saturday)</td><td>토요일 헤더</td></tr>
-                <tr><td>이전/다음달 날짜</td><td class="token-value">var(--color-date-picker-text-other-month)</td><td>other-month day cell</td></tr>
-                <tr><td>비활성 날짜</td><td class="token-value">var(--color-date-picker-text-disabled)</td><td>disabled day cell</td></tr>
-                <tr><td>hover 배경</td><td class="token-value">var(--color-date-picker-bg-hover)</td><td>day cell · nav · selector hover</td></tr>
-                <tr><td>오늘 테두리</td><td class="token-value">var(--color-date-picker-border-today)</td><td>today 원형 테두리</td></tr>
-                <tr><td>오늘 텍스트</td><td class="token-value">var(--color-date-picker-text-today)</td><td>today 강조 텍스트</td></tr>
-                <tr><td>오늘 배경</td><td class="token-value">var(--color-date-picker-bg-today)</td><td>today 셀 배경(패널과 동일)</td></tr>
-                <tr><td>선택 배경</td><td class="token-value">var(--color-date-picker-bg-selected)</td><td>selected day 채움 원</td></tr>
-                <tr><td>선택 텍스트</td><td class="token-value">var(--color-date-picker-text-selected)</td><td>selected day 텍스트</td></tr>
-              </tbody>
-            </table>
+          <div class="code-pane" id="ta-css">
+            <pre><span class="c-cmt">/* Textarea는 --input-* 토큰을 공유한다. (2026-05-20 확정) */</span>
+<span class="c-cmt">/* Background */</span>
+<span class="c-prop">--input-default-bg</span>:      <span class="c-val">var(--color-form-control-bg-default)</span>;
+<span class="c-prop">--input-disabled-bg</span>:     <span class="c-val">var(--color-form-control-bg-disabled)</span>;
+<span class="c-prop">--input-readonly-bg</span>:     <span class="c-val">var(--color-form-control-bg-disabled)</span>;
+<span class="c-cmt">/* Border */</span>
+<span class="c-prop">--input-default-border</span>:  <span class="c-val">var(--color-form-control-border-default)</span>;
+<span class="c-prop">--input-focus-border</span>:    <span class="c-val">var(--color-form-control-border-selected)</span>;
+<span class="c-prop">--input-error-border</span>:    <span class="c-val">var(--color-form-control-border-error)</span>;
+<span class="c-prop">--input-correct-border</span>:  <span class="c-val">var(--color-form-control-border-correct)</span>;
+<span class="c-prop">--input-disabled-border</span>: <span class="c-val">var(--color-form-control-border-disabled)</span>;
+<span class="c-prop">--input-readonly-border</span>: <span class="c-val">var(--color-form-control-border-disabled)</span>;
+<span class="c-cmt">/* Text */</span>
+<span class="c-prop">--input-placeholder-text</span>: <span class="c-val">var(--color-form-control-text-placeholder)</span>;
+<span class="c-prop">--input-disabled-text</span>:    <span class="c-val">var(--color-form-control-text-disabled)</span>;
+<span class="c-prop">--input-readonly-text</span>:    <span class="c-val">var(--color-text-readonly)</span>;
+<span class="c-cmt">/* Helper */</span>
+<span class="c-prop">--input-helper-text</span>:  <span class="c-val">var(--color-text-state-helper)</span>;
+<span class="c-prop">--input-error-text</span>:   <span class="c-val">var(--color-text-state-error)</span>;
+<span class="c-prop">--input-correct-text</span>: <span class="c-val">var(--color-text-state-correct)</span>;</pre>
+          </div>
+          <div class="code-pane" id="ta-tokens">
+            <div style="padding:16px;overflow:auto;">
+              <table class="token-detail-table" style="width:100%;border-collapse:collapse;font-size:12px;">
+                <thead>
+                  <tr style="border-bottom:1px solid var(--color-border-default);">
+                    <th style="text-align:left;padding:6px 8px;color:var(--color-text-secondary);font-weight:600;">Token</th>
+                    <th style="text-align:left;padding:6px 8px;color:var(--color-text-secondary);font-weight:600;">Value</th>
+                    <th style="text-align:left;padding:6px 8px;color:var(--color-text-secondary);font-weight:600;">State</th>
+                    <th style="text-align:left;padding:6px 8px;color:var(--color-text-secondary);font-weight:600;">Prop</th>
+                  </tr>
+                </thead>
+                <tbody style="font-family:monospace;">
+                  <tr><td colspan="4" style="padding:6px 8px;font-family:sans-serif;font-size:11px;font-weight:700;color:var(--color-text-caption);background:var(--color-bg-subtle);">Background</td></tr>
+                  <tr><td style="padding:4px 8px;">--input-default-bg</td><td style="padding:4px 8px;color:var(--color-text-secondary);">var(--color-form-control-bg-default)</td><td style="padding:4px 8px;">default</td><td style="padding:4px 8px;">bg</td></tr>
+                  <tr><td style="padding:4px 8px;">--input-disabled-bg</td><td style="padding:4px 8px;color:var(--color-text-secondary);">var(--color-form-control-bg-disabled)</td><td style="padding:4px 8px;">disabled</td><td style="padding:4px 8px;">bg</td></tr>
+                  <tr><td style="padding:4px 8px;">--input-readonly-bg</td><td style="padding:4px 8px;color:var(--color-text-secondary);">var(--color-form-control-bg-disabled)</td><td style="padding:4px 8px;">readonly</td><td style="padding:4px 8px;">bg</td></tr>
+                  <tr><td colspan="4" style="padding:6px 8px;font-family:sans-serif;font-size:11px;font-weight:700;color:var(--color-text-caption);background:var(--color-bg-subtle);">Border</td></tr>
+                  <tr><td style="padding:4px 8px;">--input-default-border</td><td style="padding:4px 8px;color:var(--color-text-secondary);">var(--color-form-control-border-default)</td><td style="padding:4px 8px;">default</td><td style="padding:4px 8px;">border</td></tr>
+                  <tr><td style="padding:4px 8px;">--input-focus-border</td><td style="padding:4px 8px;color:var(--color-text-secondary);">var(--color-form-control-border-selected)</td><td style="padding:4px 8px;">focus</td><td style="padding:4px 8px;">border</td></tr>
+                  <tr><td style="padding:4px 8px;">--input-error-border</td><td style="padding:4px 8px;color:var(--color-text-secondary);">var(--color-form-control-border-error)</td><td style="padding:4px 8px;">error</td><td style="padding:4px 8px;">border</td></tr>
+                  <tr><td style="padding:4px 8px;">--input-correct-border</td><td style="padding:4px 8px;color:var(--color-text-secondary);">var(--color-form-control-border-correct)</td><td style="padding:4px 8px;">correct</td><td style="padding:4px 8px;">border</td></tr>
+                  <tr><td style="padding:4px 8px;">--input-disabled-border</td><td style="padding:4px 8px;color:var(--color-text-secondary);">var(--color-form-control-border-disabled)</td><td style="padding:4px 8px;">disabled</td><td style="padding:4px 8px;">border</td></tr>
+                  <tr><td style="padding:4px 8px;">--input-readonly-border</td><td style="padding:4px 8px;color:var(--color-text-secondary);">var(--color-form-control-border-disabled)</td><td style="padding:4px 8px;">readonly</td><td style="padding:4px 8px;">border</td></tr>
+                  <tr><td colspan="4" style="padding:6px 8px;font-family:sans-serif;font-size:11px;font-weight:700;color:var(--color-text-caption);background:var(--color-bg-subtle);">Text</td></tr>
+                  <tr><td style="padding:4px 8px;">--input-placeholder-text</td><td style="padding:4px 8px;color:var(--color-text-secondary);">var(--color-form-control-text-placeholder)</td><td style="padding:4px 8px;">all</td><td style="padding:4px 8px;">placeholder</td></tr>
+                  <tr><td style="padding:4px 8px;">--input-disabled-text</td><td style="padding:4px 8px;color:var(--color-text-secondary);">var(--color-form-control-text-disabled)</td><td style="padding:4px 8px;">disabled</td><td style="padding:4px 8px;">color</td></tr>
+                  <tr><td style="padding:4px 8px;">--input-readonly-text</td><td style="padding:4px 8px;color:var(--color-text-secondary);">var(--color-text-readonly)</td><td style="padding:4px 8px;">readonly</td><td style="padding:4px 8px;">color</td></tr>
+                  <tr><td colspan="4" style="padding:6px 8px;font-family:sans-serif;font-size:11px;font-weight:700;color:var(--color-text-caption);background:var(--color-bg-subtle);">Helper</td></tr>
+                  <tr><td style="padding:4px 8px;">--input-helper-text</td><td style="padding:4px 8px;color:var(--color-text-secondary);">var(--color-text-state-helper)</td><td style="padding:4px 8px;">default</td><td style="padding:4px 8px;">helper</td></tr>
+                  <tr><td style="padding:4px 8px;">--input-error-text</td><td style="padding:4px 8px;color:var(--color-text-secondary);">var(--color-text-state-error)</td><td style="padding:4px 8px;">error</td><td style="padding:4px 8px;">helper</td></tr>
+                  <tr><td style="padding:4px 8px;">--input-correct-text</td><td style="padding:4px 8px;color:var(--color-text-secondary);">var(--color-text-state-correct)</td><td style="padding:4px 8px;">correct</td><td style="padding:4px 8px;">helper</td></tr>
+                </tbody>
+              </table>
+              <p style="margin:10px 0 0;font-size:11px;color:var(--color-text-secondary);">Textarea는 Input과 동일한 <code>--input-*</code> 토큰을 공유합니다. <code>--textarea-*</code> 별도 정의 없음 (2026-05-20 확정).</p>
+            </div>
+          </div>
+          <div class="code-pane" id="ta-js"><pre>// ── Textarea ──
+// focus / blur → is-focus 토글
+// readonly 전환 패턴
+// Textarea는 .s1-input-wrap--textarea 에 is-focus/is-readonly/is-disabled 클래스 사용
+
+var wrap     = document.querySelector('.s1-input-wrap--textarea');
+var textarea = wrap.querySelector('textarea');
+
+// Focus / Blur
+textarea.addEventListener('focus', function() { wrap.classList.add('is-focus'); });
+textarea.addEventListener('blur',  function() { wrap.classList.remove('is-focus'); });
+
+// Readonly 전환
+function setReadonly(on) {
+  if (on) {
+    textarea.setAttribute('readonly', '');
+    wrap.classList.add('is-readonly');
+  } else {
+    textarea.removeAttribute('readonly');
+    wrap.classList.remove('is-readonly');
+  }
+}
+
+// Disabled 전환
+function setDisabled(on) {
+  textarea.disabled = on;
+  wrap.classList.toggle('is-disabled', on);
+}</pre></div>
+        </div>
+      </section>
+
+
+            <section class="comp-section" id="tab">
+        <div class="comp-section-header">
+          <h2 class="comp-section-title">Line Tab</h2>
+          <span class="comp-badge comp-badge-blue">Core</span>
+          <span class="comp-badge">PC 2sizes · Mobile 1size</span>
+          <span class="comp-badge">interactive</span>
+        </div>
+
+        <!-- ── States variant-block ── -->
+        <div class="variant-block">
+          <div class="variant-label">States</div>
+          <div class="preview-area" style="display:flex;flex-direction:column;gap:0;padding:0;overflow-x:auto;">
+            <div class="platform-section platform-section-pc" style="padding:20px 20px 20px;">
+              <div class="platform-header"><span class="platform-dot pc"></span>PC</div>
+              <div style="overflow-x:auto;">
+                <div class="comp-state-matrix" style="grid-template-columns: 72px minmax(280px,auto) repeat(3, auto);">
+                  <!-- Header -->
+                  <div class="matrix-col-header-action" style="grid-column:1;grid-row:1;">Size</div>
+                  <div class="matrix-col-header-action" style="grid-column:2;grid-row:1;">Action</div>
+                  <div class="matrix-col-header" style="grid-column:3;grid-row:1;">Unselected</div>
+                  <div class="matrix-col-header" style="grid-column:4;grid-row:1;">Selected</div>
+                  <div class="matrix-col-header" style="grid-column:5;grid-row:1;">Hover</div>
+
+                  <!-- PC MD row -->
+                  <div class="comp-state-cell" style="grid-column:1;grid-row:2;font-size:11px;font-weight:600;color:var(--color-text-caption);justify-content:center;">PC MD</div>
+                  <div class="comp-action-cell" data-comp-action="tab-pcmd" style="grid-column:2;grid-row:2;padding:14px 16px;">
+                    <div class="s1-tab s1-tab--pc-md" id="tab-action-pcmd">
+                      <button class="s1-tab-item is-selected" type="button" aria-selected="true">메뉴1</button>
+                      <button class="s1-tab-item" type="button">메뉴2</button>
+                      <button class="s1-tab-item" type="button">메뉴3</button>
+                    </div>
+                  </div>
+                  <div class="comp-state-cell" style="grid-column:3;grid-row:2;">
+                    <button class="s1-tab-item is-preview" style="font-size:20px;height:40px;letter-spacing:0;padding:0 24px;border-bottom:1px solid var(--tab-indicator-default);">메뉴1</button>
+                  </div>
+                  <div class="comp-state-cell" style="grid-column:4;grid-row:2;">
+                    <button class="s1-tab-item is-selected is-preview" style="font-size:20px;height:40px;letter-spacing:0;padding:0 24px;border-bottom-width:2px;">메뉴2</button>
+                  </div>
+                  <div class="comp-state-cell" style="grid-column:5;grid-row:2;">
+                    <button class="s1-tab-item is-hover is-preview" style="font-size:20px;height:40px;letter-spacing:0;padding:0 24px;border-bottom:1px solid var(--tab-indicator-default);">메뉴3</button>
+                  </div>
+
+                  <!-- PC SM row -->
+                  <div class="comp-state-cell" style="grid-column:1;grid-row:3;font-size:11px;font-weight:600;color:var(--color-text-caption);justify-content:center;">PC SM</div>
+                  <div class="comp-action-cell" data-comp-action="tab-pcsm" style="grid-column:2;grid-row:3;padding:14px 16px;">
+                    <div class="s1-tab s1-tab--pc-sm" id="tab-action-pcsm">
+                      <button class="s1-tab-item is-selected" type="button" aria-selected="true">메뉴1</button>
+                      <button class="s1-tab-item" type="button">메뉴2</button>
+                      <button class="s1-tab-item" type="button">메뉴3</button>
+                    </div>
+                  </div>
+                  <div class="comp-state-cell" style="grid-column:3;grid-row:3;">
+                    <button class="s1-tab-item is-preview" style="font-size:16px;height:40px;padding:0 24px;border-bottom:1px solid var(--tab-indicator-default);">메뉴1</button>
+                  </div>
+                  <div class="comp-state-cell" style="grid-column:4;grid-row:3;">
+                    <button class="s1-tab-item is-selected is-preview" style="font-size:16px;height:40px;padding:0 24px;">메뉴2</button>
+                  </div>
+                  <div class="comp-state-cell" style="grid-column:5;grid-row:3;">
+                    <button class="s1-tab-item is-hover is-preview" style="font-size:16px;height:40px;padding:0 24px;border-bottom:1px solid var(--tab-indicator-default);">메뉴3</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="platform-section platform-section-mobile" style="padding:20px 20px 20px;">
+              <div class="platform-header"><span class="platform-dot mobile"></span>Mobile</div>
+              <div style="overflow-x:auto;">
+                <div class="comp-state-matrix" style="grid-template-columns: 72px minmax(240px,auto) repeat(3, auto);">
+                  <div class="matrix-col-header-action" style="grid-column:1;grid-row:1;">Size</div>
+                  <div class="matrix-col-header-action" style="grid-column:2;grid-row:1;">Action</div>
+                  <div class="matrix-col-header" style="grid-column:3;grid-row:1;">Unselected</div>
+                  <div class="matrix-col-header" style="grid-column:4;grid-row:1;">Selected</div>
+                  <div class="matrix-col-header" style="grid-column:5;grid-row:1;">Hover</div>
+
+                  <div class="comp-state-cell" style="grid-column:1;grid-row:2;font-size:11px;font-weight:600;color:var(--color-text-caption);justify-content:center;">Mobile</div>
+                  <div class="comp-action-cell" data-comp-action="tab-mobile" style="grid-column:2;grid-row:2;padding:14px 16px;">
+                    <div class="s1-tab s1-tab--mobile" id="tab-action-mobile">
+                      <button class="s1-tab-item is-selected" type="button" aria-selected="true">메뉴1</button>
+                      <button class="s1-tab-item" type="button">메뉴2</button>
+                      <button class="s1-tab-item" type="button">메뉴3</button>
+                    </div>
+                  </div>
+                  <div class="comp-state-cell" style="grid-column:3;grid-row:2;">
+                    <button class="s1-tab-item is-preview" style="font-size:16px;height:30px;padding:0 16px;border-bottom:1px solid var(--tab-indicator-default);">메뉴1</button>
+                  </div>
+                  <div class="comp-state-cell" style="grid-column:4;grid-row:2;">
+                    <button class="s1-tab-item is-selected is-preview" style="font-size:16px;height:30px;padding:0 16px;">메뉴2</button>
+                  </div>
+                  <div class="comp-state-cell" style="grid-column:5;grid-row:2;">
+                    <button class="s1-tab-item is-hover is-preview" style="font-size:16px;height:30px;padding:0 16px;border-bottom:1px solid var(--tab-indicator-default);">메뉴3</button>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
 
+        <!-- ── Sizes variant-block ── -->
+        <div class="variant-block">
+          <div class="variant-label">Sizes</div>
+          <div class="preview-area" style="display:flex;flex-direction:column;gap:0;padding:0;">
+            <div class="platform-section platform-section-pc" style="padding:20px 20px 20px;">
+              <div class="platform-header"><span class="platform-dot pc"></span>PC</div>
+              <div style="display:flex;flex-direction:column;gap:28px;">
+                <div>
+                  <div style="font-size:11px;font-weight:600;color:var(--color-text-caption);margin-bottom:8px;letter-spacing:0.04em;text-transform:uppercase;">PC MD — height 40px · indicator 2px · font 20px</div>
+                  <div class="s1-tab s1-tab--pc-md" id="tab-size-pcmd">
+                    <button class="s1-tab-item is-selected" type="button" aria-selected="true">메뉴1</button>
+                    <button class="s1-tab-item" type="button">메뉴2</button>
+                    <button class="s1-tab-item" type="button">메뉴3</button>
+                    <button class="s1-tab-item" type="button">메뉴4</button>
+                  </div>
+                </div>
+                <div>
+                  <div style="font-size:11px;font-weight:600;color:var(--color-text-caption);margin-bottom:8px;letter-spacing:0.04em;text-transform:uppercase;">PC SM — height 40px · indicator 2px · font 16px</div>
+                  <div class="s1-tab s1-tab--pc-sm" id="tab-size-pcsm">
+                    <button class="s1-tab-item is-selected" type="button" aria-selected="true">메뉴1</button>
+                    <button class="s1-tab-item" type="button">메뉴2</button>
+                    <button class="s1-tab-item" type="button">메뉴3</button>
+                    <button class="s1-tab-item" type="button">메뉴4</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="platform-section platform-section-mobile" style="padding:20px 20px 20px;">
+              <div class="platform-header"><span class="platform-dot mobile"></span>Mobile</div>
+              <div style="display:flex;flex-direction:column;gap:16px;">
+                <div>
+                  <div style="font-size:11px;font-weight:600;color:var(--color-text-caption);margin-bottom:8px;letter-spacing:0.04em;text-transform:uppercase;">Mobile — height 30px · indicator 2px · font 16px · padding-inline sm</div>
+                  <div class="s1-tab s1-tab--mobile" id="tab-size-mobile">
+                    <button class="s1-tab-item is-selected" type="button" aria-selected="true">메뉴1</button>
+                    <button class="s1-tab-item" type="button">메뉴2</button>
+                    <button class="s1-tab-item" type="button">메뉴3</button>
+                    <button class="s1-tab-item" type="button">메뉴4</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── 단일 code-block: PC · HTML / Mobile · HTML / CSS / Token Details ── -->
+        <div class="code-block">
+          <div class="code-tabs">
+            <button class="code-tab active" onclick="switchTab(this,'tab-pc-html')">PC · HTML</button>
+            <button class="code-tab" onclick="switchTab(this,'tab-mo-html')">Mobile · HTML</button>
+            <button class="code-tab" onclick="switchTab(this,'tab-css')">CSS</button>
+            <button class="code-tab" onclick="switchTab(this,'tab-tokens')">Token Details</button>
+            <button class="code-copy-btn" onclick="copyCode('tab-pc-html-pre')">복사</button>
+          </div>
+          <div class="code-pane active" id="tab-pc-html">
+            <pre id="tab-pc-html-pre"><span class="c-cmt">&lt;!-- ① size: pc-md (font 20px · height 40px · indicator 2px) --&gt;</span>
+<span class="c-tag">&lt;div</span> <span class="c-attr">class</span>=<span class="c-str">"s1-tab s1-tab--pc-md"</span><span class="c-tag">&gt;</span>
+  <span class="c-tag">&lt;button</span> <span class="c-attr">class</span>=<span class="c-str">"s1-tab-item is-selected"</span> <span class="c-attr">type</span>=<span class="c-str">"button"</span> <span class="c-attr">aria-selected</span>=<span class="c-str">"true"</span><span class="c-tag">&gt;</span>메뉴1<span class="c-tag">&lt;/button&gt;</span>
+  <span class="c-tag">&lt;button</span> <span class="c-attr">class</span>=<span class="c-str">"s1-tab-item"</span> <span class="c-attr">type</span>=<span class="c-str">"button"</span><span class="c-tag">&gt;</span>메뉴2<span class="c-tag">&lt;/button&gt;</span>
+  <span class="c-tag">&lt;button</span> <span class="c-attr">class</span>=<span class="c-str">"s1-tab-item"</span> <span class="c-attr">type</span>=<span class="c-str">"button"</span><span class="c-tag">&gt;</span>메뉴3<span class="c-tag">&lt;/button&gt;</span>
+<span class="c-tag">&lt;/div&gt;</span>
+
+<span class="c-cmt">&lt;!-- ② size: pc-sm (font 16px · height 40px · indicator 2px) --&gt;</span>
+<span class="c-tag">&lt;div</span> <span class="c-attr">class</span>=<span class="c-str">"s1-tab s1-tab--pc-sm"</span><span class="c-tag">&gt;</span>
+  <span class="c-tag">&lt;button</span> <span class="c-attr">class</span>=<span class="c-str">"s1-tab-item is-selected"</span> <span class="c-attr">type</span>=<span class="c-str">"button"</span> <span class="c-attr">aria-selected</span>=<span class="c-str">"true"</span><span class="c-tag">&gt;</span>메뉴1<span class="c-tag">&lt;/button&gt;</span>
+  <span class="c-tag">&lt;button</span> <span class="c-attr">class</span>=<span class="c-str">"s1-tab-item"</span> <span class="c-attr">type</span>=<span class="c-str">"button"</span><span class="c-tag">&gt;</span>메뉴2<span class="c-tag">&lt;/button&gt;</span>
+  <span class="c-tag">&lt;button</span> <span class="c-attr">class</span>=<span class="c-str">"s1-tab-item"</span> <span class="c-attr">type</span>=<span class="c-str">"button"</span><span class="c-tag">&gt;</span>메뉴3<span class="c-tag">&lt;/button&gt;</span>
+<span class="c-tag">&lt;/div&gt;</span></pre>
+          </div>
+          <div class="code-pane" id="tab-mo-html">
+            <pre id="tab-mo-html-pre"><span class="c-cmt">&lt;!-- size: mobile (font 16px · height 30px · indicator 2px · padding-inline sm) --&gt;</span>
+<span class="c-tag">&lt;div</span> <span class="c-attr">class</span>=<span class="c-str">"s1-tab s1-tab--mobile"</span><span class="c-tag">&gt;</span>
+  <span class="c-tag">&lt;button</span> <span class="c-attr">class</span>=<span class="c-str">"s1-tab-item is-selected"</span> <span class="c-attr">type</span>=<span class="c-str">"button"</span> <span class="c-attr">aria-selected</span>=<span class="c-str">"true"</span><span class="c-tag">&gt;</span>메뉴1<span class="c-tag">&lt;/button&gt;</span>
+  <span class="c-tag">&lt;button</span> <span class="c-attr">class</span>=<span class="c-str">"s1-tab-item"</span> <span class="c-attr">type</span>=<span class="c-str">"button"</span><span class="c-tag">&gt;</span>메뉴2<span class="c-tag">&lt;/button&gt;</span>
+  <span class="c-tag">&lt;button</span> <span class="c-attr">class</span>=<span class="c-str">"s1-tab-item"</span> <span class="c-attr">type</span>=<span class="c-str">"button"</span><span class="c-tag">&gt;</span>메뉴3<span class="c-tag">&lt;/button&gt;</span>
+<span class="c-tag">&lt;/div&gt;</span></pre>
+          </div>
+          <div class="code-pane" id="tab-css">
+            <pre><span class="c-cmt">/* ── Tab strip ───────────────────────── */</span>
+<span class="c-sel">.s1-tab</span> {
+  <span class="c-prop">display</span>: <span class="c-val">flex</span>;
+  <span class="c-prop">align-items</span>: <span class="c-val">flex-end</span>;
+  <span class="c-prop">background</span>: <span class="c-val">var(--tab-bg)</span>;
+  <span class="c-prop">border-bottom</span>: <span class="c-val">1px solid var(--tab-indicator-default)</span>;
+}
+<span class="c-sel">.s1-tab-item</span> {
+  <span class="c-prop">height</span>: <span class="c-val">40px</span>;
+  <span class="c-prop">padding</span>: <span class="c-val">0 var(--spacing-padding-inline-lg)</span>;
+  <span class="c-prop">font-size</span>: <span class="c-val">16px</span>;
+  <span class="c-prop">font-weight</span>: <span class="c-val">var(--font-weight-medium)</span>;
+  <span class="c-prop">color</span>: <span class="c-val">var(--tab-label-default)</span>;
+  <span class="c-prop">letter-spacing</span>: <span class="c-val">-0.32px</span>;
+  <span class="c-prop">border-bottom</span>: <span class="c-val">1px solid transparent</span>;
+  <span class="c-prop">margin-bottom</span>: <span class="c-val">-1px</span>;
+}
+<span class="c-sel">.s1-tab-item.is-selected</span> {
+  <span class="c-prop">color</span>: <span class="c-val">var(--tab-label-selected)</span>;
+  <span class="c-prop">font-weight</span>: <span class="c-val">var(--font-weight-bold)</span>;
+  <span class="c-prop">border-bottom</span>: <span class="c-val">2px solid var(--tab-indicator-selected)</span>;
+  <span class="c-prop">letter-spacing</span>: <span class="c-val">0</span>;
+}
+<span class="c-sel">.s1-tab--pc-md .s1-tab-item</span>             { <span class="c-prop">font-size</span>: <span class="c-val">20px</span>; <span class="c-prop">letter-spacing</span>: <span class="c-val">0</span>; }
+<span class="c-sel">.s1-tab--pc-md .s1-tab-item.is-selected</span> { <span class="c-prop">border-bottom-width</span>: <span class="c-val">2px</span>; }
+<span class="c-sel">.s1-tab--mobile .s1-tab-item</span> {
+  <span class="c-prop">height</span>: <span class="c-val">30px</span>;
+  <span class="c-prop">padding</span>: <span class="c-val">0 var(--spacing-padding-inline-sm)</span>;
+}</pre>
+          </div>
+          <div class="code-pane" id="tab-tokens">
+            <div style="padding:16px;overflow:auto;">
+              <table class="token-detail-table" style="width:100%;border-collapse:collapse;font-size:12px;">
+                <thead>
+                  <tr style="border-bottom:1px solid var(--color-border-default);">
+                    <th style="text-align:left;padding:6px 8px;color:var(--color-text-secondary);font-weight:600;">Token</th>
+                    <th style="text-align:left;padding:6px 8px;color:var(--color-text-secondary);font-weight:600;">Value</th>
+                    <th style="text-align:left;padding:6px 8px;color:var(--color-text-secondary);font-weight:600;">Resolved (Light)</th>
+                    <th style="text-align:left;padding:6px 8px;color:var(--color-text-secondary);font-weight:600;">State</th>
+                    <th style="text-align:left;padding:6px 8px;color:var(--color-text-secondary);font-weight:600;">Prop</th>
+                  </tr>
+                </thead>
+                <tbody style="font-family:monospace;">
+                  <tr><td colspan="5" style="padding:6px 8px;font-family:sans-serif;font-size:11px;font-weight:700;color:var(--color-text-caption);background:var(--color-bg-subtle);">Component Tokens → Semantic</td></tr>
+                  <tr><td style="padding:4px 8px;">--tab-bg</td><td style="padding:4px 8px;color:var(--color-text-secondary);">var(--color-navigation-bg)</td><td style="padding:4px 8px;">#FFFFFF</td><td style="padding:4px 8px;">—</td><td style="padding:4px 8px;">bg</td></tr>
+                  <tr><td style="padding:4px 8px;">--tab-label-default</td><td style="padding:4px 8px;color:var(--color-text-secondary);">var(--color-navigation-label-default)</td><td style="padding:4px 8px;">#555555</td><td style="padding:4px 8px;">default</td><td style="padding:4px 8px;">color</td></tr>
+                  <tr><td style="padding:4px 8px;">--tab-label-selected</td><td style="padding:4px 8px;color:var(--color-text-secondary);">var(--color-navigation-label-selected)</td><td style="padding:4px 8px;">#1D6CEB</td><td style="padding:4px 8px;">selected</td><td style="padding:4px 8px;">color</td></tr>
+                  <tr><td style="padding:4px 8px;">--tab-indicator-default</td><td style="padding:4px 8px;color:var(--color-text-secondary);">var(--color-navigation-indicator-default)</td><td style="padding:4px 8px;">#D9D9D9</td><td style="padding:4px 8px;">default</td><td style="padding:4px 8px;">border</td></tr>
+                  <tr><td style="padding:4px 8px;">--tab-indicator-selected</td><td style="padding:4px 8px;color:var(--color-text-secondary);">var(--color-navigation-indicator-selected)</td><td style="padding:4px 8px;">#1D6CEB</td><td style="padding:4px 8px;">selected</td><td style="padding:4px 8px;">border</td></tr>
+                  <tr><td colspan="5" style="padding:6px 8px;font-family:sans-serif;font-size:11px;font-weight:700;color:var(--color-text-caption);background:var(--color-bg-subtle);">Semantic Tokens → Foundation</td></tr>
+                  <tr><td style="padding:4px 8px;">--color-navigation-bg</td><td style="padding:4px 8px;color:var(--color-text-secondary);">var(--color-surface-default)</td><td style="padding:4px 8px;">#FFFFFF</td><td style="padding:4px 8px;">—</td><td style="padding:4px 8px;">bg</td></tr>
+                  <tr><td style="padding:4px 8px;">--color-navigation-label-default</td><td style="padding:4px 8px;color:var(--color-text-secondary);">var(--color-gray-600)</td><td style="padding:4px 8px;">#555555</td><td style="padding:4px 8px;">default</td><td style="padding:4px 8px;">color</td></tr>
+                  <tr><td style="padding:4px 8px;">--color-navigation-label-selected</td><td style="padding:4px 8px;color:var(--color-text-secondary);">var(--color-action-primary-default)</td><td style="padding:4px 8px;">#1D6CEB</td><td style="padding:4px 8px;">selected</td><td style="padding:4px 8px;">color</td></tr>
+                  <tr><td style="padding:4px 8px;">--color-navigation-indicator-default</td><td style="padding:4px 8px;color:var(--color-text-secondary);">var(--color-gray-200)</td><td style="padding:4px 8px;">#D9D9D9</td><td style="padding:4px 8px;">default</td><td style="padding:4px 8px;">border</td></tr>
+                  <tr><td style="padding:4px 8px;">--color-navigation-indicator-selected</td><td style="padding:4px 8px;color:var(--color-text-secondary);">var(--color-action-primary-default)</td><td style="padding:4px 8px;">#1D6CEB</td><td style="padding:4px 8px;">selected</td><td style="padding:4px 8px;">border</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <script>
+        ;(function() {
+          // 초기 상태는 CSS border-bottom(.is-selected)으로 표시.
+          // has-sliding-indicator 는 첫 클릭 시 활성화하여
+          // 레이아웃 미완성 시점의 offsetLeft/Width=0 버그를 방지한다.
+          function setupTabStrip(el) {
+            if (!el) return;
+            var indicator = document.createElement('span');
+            indicator.className = 's1-tab-indicator';
+            el.appendChild(indicator);
+            var activated = false;
+            function placeIndicator(btn) {
+              indicator.style.left = btn.offsetLeft + 'px';
+              indicator.style.width = btn.offsetWidth + 'px';
+            }
+            el.querySelectorAll('.s1-tab-item').forEach(function(btn) {
+              btn.addEventListener('click', function() {
+                if (!activated) {
+                  activated = true;
+                  // 현재 선택 항목 위치로 인디케이터 먼저 배치(transition 없이)
+                  var cur = el.querySelector('.s1-tab-item.is-selected');
+                  if (cur) placeIndicator(cur);
+                  el.classList.add('has-sliding-indicator');
+                }
+                el.querySelectorAll('.s1-tab-item').forEach(function(b) {
+                  b.classList.remove('is-selected');
+                  b.removeAttribute('aria-selected');
+                });
+                btn.classList.add('is-selected');
+                btn.setAttribute('aria-selected', 'true');
+                el.classList.add('is-interactive');
+                placeIndicator(btn);
+              });
+            });
+          }
+          ['tab-size-pcmd','tab-size-pcsm','tab-size-mobile',
+           'tab-action-pcmd','tab-action-pcsm','tab-action-mobile'].forEach(function(id) {
+            setupTabStrip(document.getElementById(id));
+          });
+        })();
+        </script>
+      </section>
+
+
+      <section class="comp-section" id="gnb">
+        <div class="comp-section-header">
+          <h2 class="comp-section-title">GNB</h2>
+          <span class="comp-badge comp-badge-blue">Core</span>
+          <span class="comp-badge">Navigation</span>
+          <span class="comp-badge">15 variants</span>
+          <span class="comp-badge">PC only</span>
+        </div>
+
+        <!-- ── variant-group: 메뉴 슬롯 ── -->
+        <div class="variant-group">
+          <h3 class="variant-group-title">메뉴 슬롯 (slots_menu)</h3>
+          <p class="variant-group-desc">GNB 바를 구성하는 원자 단위. 라벨 + 하단 2px 라인. 기본 라벨 <code>--gnb-menu-label-default</code>(#000000), hover·selected 라벨·밑줄 <code>--gnb-menu-label-active</code> / <code>--gnb-menu-underline-active</code>(#1D6CEB). 메뉴 슬롯 자체에는 아이콘 없음.</p>
+          <div class="variant-block">
+            <div class="variant-label">States</div>
+            <div class="preview-area" style="display:flex;flex-direction:column;gap:0;padding:0;overflow-x:auto;">
+              <div class="platform-section platform-section-pc" style="padding:20px 20px 20px;">
+                <div class="platform-header"><span class="platform-dot pc"></span>PC</div>
+                <div style="overflow-x:auto;">
+                  <div class="comp-state-matrix" style="grid-template-columns: 88px minmax(180px,auto) repeat(3, auto);">
+                    <div class="matrix-col-header-action" style="grid-column:1;grid-row:1;">Size</div>
+                    <div class="matrix-col-header-action" style="grid-column:2;grid-row:1;">Action</div>
+                    <div class="matrix-col-header" style="grid-column:3;grid-row:1;">Default</div>
+                    <div class="matrix-col-header" style="grid-column:4;grid-row:1;">Hover</div>
+                    <div class="matrix-col-header" style="grid-column:5;grid-row:1;">Selected</div>
+
+                    <!-- md row -->
+                    <div class="comp-state-cell" style="grid-column:1;grid-row:2;font-size:11px;font-weight:600;color:var(--color-text-caption);justify-content:center;">md<br><span style="font-weight:400;">h56 · 18px</span></div>
+                    <div class="comp-action-cell" data-comp-action="gnb-md" style="grid-column:2;grid-row:2;padding:8px 12px;">
+                      <div style="display:flex;" id="gnb-action-md">
+                        <button class="s1-gnb-menu is-selected" type="button">메뉴1</button>
+                        <button class="s1-gnb-menu" type="button">메뉴2</button>
+                      </div>
+                    </div>
+                    <div class="comp-state-cell" style="grid-column:3;grid-row:2;"><button class="s1-gnb-menu is-preview" type="button">메뉴타이틀</button></div>
+                    <div class="comp-state-cell" style="grid-column:4;grid-row:2;"><button class="s1-gnb-menu is-hover is-preview" type="button">메뉴타이틀</button></div>
+                    <div class="comp-state-cell" style="grid-column:5;grid-row:2;"><button class="s1-gnb-menu is-selected is-preview" type="button">메뉴타이틀</button></div>
+
+                    <!-- sm row -->
+                    <div class="comp-state-cell" style="grid-column:1;grid-row:3;font-size:11px;font-weight:600;color:var(--color-text-caption);justify-content:center;">sm<br><span style="font-weight:400;">h48 · 18px</span></div>
+                    <div class="comp-action-cell" data-comp-action="gnb-sm" style="grid-column:2;grid-row:3;padding:8px 12px;">
+                      <div style="display:flex;" id="gnb-action-sm">
+                        <button class="s1-gnb-menu s1-gnb-menu--sm is-selected" type="button">메뉴1</button>
+                        <button class="s1-gnb-menu s1-gnb-menu--sm" type="button">메뉴2</button>
+                      </div>
+                    </div>
+                    <div class="comp-state-cell" style="grid-column:3;grid-row:3;"><button class="s1-gnb-menu s1-gnb-menu--sm is-preview" type="button">메뉴타이틀</button></div>
+                    <div class="comp-state-cell" style="grid-column:4;grid-row:3;"><button class="s1-gnb-menu s1-gnb-menu--sm is-hover is-preview" type="button">메뉴타이틀</button></div>
+                    <div class="comp-state-cell" style="grid-column:5;grid-row:3;"><button class="s1-gnb-menu s1-gnb-menu--sm is-selected is-preview" type="button">메뉴타이틀</button></div>
+
+                    <!-- xsm row -->
+                    <div class="comp-state-cell" style="grid-column:1;grid-row:4;font-size:11px;font-weight:600;color:var(--color-text-caption);justify-content:center;">xsm<br><span style="font-weight:400;">h36 · 14px</span></div>
+                    <div class="comp-action-cell" data-comp-action="gnb-xsm" style="grid-column:2;grid-row:4;padding:8px 12px;">
+                      <div style="display:flex;" id="gnb-action-xsm">
+                        <button class="s1-gnb-menu s1-gnb-menu--xsm is-selected" type="button">메뉴1</button>
+                        <button class="s1-gnb-menu s1-gnb-menu--xsm" type="button">메뉴2</button>
+                      </div>
+                    </div>
+                    <div class="comp-state-cell" style="grid-column:3;grid-row:4;"><button class="s1-gnb-menu s1-gnb-menu--xsm is-preview" type="button">메뉴타이틀</button></div>
+                    <div class="comp-state-cell" style="grid-column:4;grid-row:4;"><button class="s1-gnb-menu s1-gnb-menu--xsm is-hover is-preview" type="button">메뉴타이틀</button></div>
+                    <div class="comp-state-cell" style="grid-column:5;grid-row:4;"><button class="s1-gnb-menu s1-gnb-menu--xsm is-selected is-preview" type="button">메뉴타이틀</button></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── variant-group: GNB 바 ── -->
+        <div class="variant-group">
+          <h3 class="variant-group-title">GNB 바 (pc_gnb)</h3>
+          <p class="variant-group-desc">로고 + 메뉴 슬롯 + 유틸리티(아이콘 3종) 조립체. 배경 <code>--gnb-bg</code>, 하단 1px <code>--gnb-border</code>. 정렬 <strong>center-between</strong>(로고·메뉴·유틸 3분할) / <strong>start</strong>(로고+메뉴 좌측 묶음, 유틸 우측). viewport(1280/1440/1920)는 full-width 반응형으로 통합(내부 패딩 pl 24 / pr 20).</p>
+          <div class="variant-block">
+            <div class="variant-label">size × align</div>
+            <div class="preview-area" style="display:flex;flex-direction:column;gap:24px;padding:24px;overflow-x:auto;">
+
+              <!-- center-between · md -->
+              <div>
+                <div style="font-size:11px;font-weight:600;color:var(--color-text-caption);margin-bottom:8px;letter-spacing:0.04em;text-transform:uppercase;">center-between · md — h56</div>
+                <div class="s1-gnb s1-gnb--md s1-gnb--center-between">
+                  <span class="s1-gnb-logo">SAMPLE LOGO</span>
+                  <div class="s1-gnb-menus">
+                    <button class="s1-gnb-menu is-selected" type="button">메뉴1</button>
+                    <button class="s1-gnb-menu" type="button">메뉴2</button>
+                    <button class="s1-gnb-menu" type="button">메뉴3</button>
+                  </div>
+                  <div class="s1-gnb-util">
+                    <button class="s1-gnb-util-btn" type="button" aria-label="언어"><svg viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M9 18C13.9659 18 18 13.9659 18 9C18 4.03412 13.9659 0 9 0C4.03412 0 0 4.03412 0 9C0 13.9659 4.03412 18 9 18ZM2.97529 3.84353C3.56824 4.09765 4.18235 4.32 4.81765 4.5C4.42588 5.80235 4.20353 7.13647 4.16118 8.47059H1.09059C1.20706 6.71294 1.89529 5.10353 2.97529 3.84353ZM5.99294 1.65176C5.67529 2.25529 5.4 2.86941 5.16706 3.49412C4.69059 3.35647 4.22471 3.20824 3.78 3.02824C4.43647 2.45647 5.17765 1.99059 5.99294 1.65176ZM8.47059 1.09059V4.01294C7.71882 3.98118 6.95647 3.89647 6.20471 3.73765C6.53294 2.88 6.93529 2.03294 7.43294 1.21765C7.77177 1.15412 8.12118 1.11176 8.47059 1.09059ZM10.5671 1.21765C11.0647 2.03294 11.4671 2.88 11.7953 3.73765C11.0435 3.88588 10.2918 3.98118 9.52941 4.01294V1.09059C9.87882 1.11176 10.2282 1.15412 10.5671 1.21765ZM14.22 3.02824C13.7753 3.20824 13.3094 3.36706 12.8329 3.49412C12.6 2.86941 12.3247 2.25529 12.0071 1.65176C12.8224 1.99059 13.5635 2.45647 14.22 3.02824ZM16.9094 8.47059H13.8388C13.7965 7.13647 13.5741 5.80235 13.1824 4.5C13.8282 4.32 14.4424 4.09765 15.0247 3.84353C16.1047 5.10353 16.7929 6.71294 16.9094 8.47059ZM15.0247 14.1565C14.4424 13.9024 13.8176 13.68 13.1824 13.5C13.5741 12.1976 13.7965 10.8635 13.8388 9.52941H16.9094C16.7929 11.2871 16.1047 12.8965 15.0247 14.1565ZM12.0071 16.3482C12.3247 15.7447 12.6 15.1306 12.8329 14.5059C13.3094 14.6435 13.7753 14.7918 14.22 14.9718C13.5635 15.5435 12.8224 16.0094 12.0071 16.3482ZM9.52941 16.9094V13.9871C10.2812 14.0188 11.0435 14.1035 11.7953 14.2624C11.4671 15.12 11.0647 15.9671 10.5671 16.7824C10.2282 16.8459 9.87882 16.8882 9.52941 16.9094ZM7.43294 16.7824C6.93529 15.9671 6.53294 15.12 6.20471 14.2624C6.95647 14.1141 7.70824 14.0188 8.47059 13.9871V16.9094C8.12118 16.8882 7.77177 16.8459 7.43294 16.7824ZM3.78 14.9718C4.22471 14.7918 4.69059 14.6329 5.16706 14.5059C5.4 15.1306 5.67529 15.7447 5.99294 16.3482C5.17765 16.0094 4.43647 15.5435 3.78 14.9718ZM5.84471 4.74353C6.71294 4.92353 7.59177 5.04 8.47059 5.07176V8.47059H5.22C5.26235 7.22118 5.47412 5.97177 5.85529 4.74353H5.84471ZM12.1553 4.74353C12.5259 5.97177 12.7376 7.22118 12.7906 8.47059H9.54V5.07176C10.4188 5.04 11.2871 4.93412 12.1659 4.74353H12.1553ZM12.1553 13.2565C11.2871 13.0765 10.4082 12.96 9.52941 12.9388V9.54H12.78C12.7376 10.7894 12.5259 12.0388 12.1447 13.2671L12.1553 13.2565ZM8.47059 9.52941V12.9282C7.59177 12.96 6.72353 13.0659 5.84471 13.2459C5.47412 12.0176 5.26235 10.7682 5.20941 9.51882H8.46L8.47059 9.52941ZM4.16118 9.52941C4.20353 10.8635 4.42588 12.1976 4.81765 13.5C4.17177 13.68 3.55765 13.9024 2.97529 14.1565C1.89529 12.8965 1.20706 11.2871 1.09059 9.52941H4.16118Z" fill="currentColor"/></svg></button>
+                    <button class="s1-gnb-util-btn" type="button" aria-label="계정"><svg viewBox="0 0 24 21.5816" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M16.561 13.7324H7.43901C5.67118 13.7324 4.00236 14.3971 2.84266 15.5568C0.494991 17.9186 0.0141426 21.2704 0 21.3977L1.37183 21.5816C1.37183 21.5816 1.81025 18.5409 3.8185 16.5185C4.72363 15.6134 6.03889 15.1042 7.43901 15.1042H16.561C17.9611 15.1042 19.2764 15.6275 20.1815 16.5185C22.1897 18.5409 22.6282 21.5391 22.6282 21.5816L24 21.3977C23.9859 21.2563 23.505 17.9045 21.1573 15.5568C19.9976 14.3971 18.3288 13.7324 16.561 13.7324Z" fill="currentColor"/><path d="M5.9968 6.01061C5.9968 9.31998 8.69803 12.0212 12.0074 12.0212C15.3168 12.0212 18.018 9.31998 18.018 6.01061C18.018 2.70124 15.3168 0 12.0074 0C8.69803 0 5.9968 2.70124 5.9968 6.01061ZM16.6037 6.01061C16.6037 8.54213 14.5389 10.607 12.0074 10.607C9.47588 10.607 7.41106 8.54213 7.41106 6.01061C7.41106 3.47908 9.47588 1.41426 12.0074 1.41426C14.5389 1.41426 16.6037 3.47908 16.6037 6.01061Z" fill="currentColor"/></svg></button>
+                    <button class="s1-gnb-util-btn" type="button" aria-label="메뉴"><svg viewBox="0 0 24 16.9274" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M0 1.41176H24V0.705882V0H0V1.41176Z" fill="currentColor"/><path d="M0 9.17647H24V8.47059V7.76471H0V9.17647Z" fill="currentColor"/><path d="M0 16.9274H24V16.2215V15.5156H0V16.9274Z" fill="currentColor"/></svg></button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- center-between · sm -->
+              <div>
+                <div style="font-size:11px;font-weight:600;color:var(--color-text-caption);margin-bottom:8px;letter-spacing:0.04em;text-transform:uppercase;">center-between · sm — h48</div>
+                <div class="s1-gnb s1-gnb--sm s1-gnb--center-between">
+                  <span class="s1-gnb-logo">SAMPLE LOGO</span>
+                  <div class="s1-gnb-menus">
+                    <button class="s1-gnb-menu s1-gnb-menu--sm is-selected" type="button">메뉴1</button>
+                    <button class="s1-gnb-menu s1-gnb-menu--sm" type="button">메뉴2</button>
+                    <button class="s1-gnb-menu s1-gnb-menu--sm" type="button">메뉴3</button>
+                  </div>
+                  <div class="s1-gnb-util">
+                    <button class="s1-gnb-util-btn" type="button" aria-label="언어"><svg viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M9 18C13.9659 18 18 13.9659 18 9C18 4.03412 13.9659 0 9 0C4.03412 0 0 4.03412 0 9C0 13.9659 4.03412 18 9 18ZM2.97529 3.84353C3.56824 4.09765 4.18235 4.32 4.81765 4.5C4.42588 5.80235 4.20353 7.13647 4.16118 8.47059H1.09059C1.20706 6.71294 1.89529 5.10353 2.97529 3.84353ZM5.99294 1.65176C5.67529 2.25529 5.4 2.86941 5.16706 3.49412C4.69059 3.35647 4.22471 3.20824 3.78 3.02824C4.43647 2.45647 5.17765 1.99059 5.99294 1.65176ZM8.47059 1.09059V4.01294C7.71882 3.98118 6.95647 3.89647 6.20471 3.73765C6.53294 2.88 6.93529 2.03294 7.43294 1.21765C7.77177 1.15412 8.12118 1.11176 8.47059 1.09059ZM10.5671 1.21765C11.0647 2.03294 11.4671 2.88 11.7953 3.73765C11.0435 3.88588 10.2918 3.98118 9.52941 4.01294V1.09059C9.87882 1.11176 10.2282 1.15412 10.5671 1.21765ZM14.22 3.02824C13.7753 3.20824 13.3094 3.36706 12.8329 3.49412C12.6 2.86941 12.3247 2.25529 12.0071 1.65176C12.8224 1.99059 13.5635 2.45647 14.22 3.02824ZM16.9094 8.47059H13.8388C13.7965 7.13647 13.5741 5.80235 13.1824 4.5C13.8282 4.32 14.4424 4.09765 15.0247 3.84353C16.1047 5.10353 16.7929 6.71294 16.9094 8.47059ZM15.0247 14.1565C14.4424 13.9024 13.8176 13.68 13.1824 13.5C13.5741 12.1976 13.7965 10.8635 13.8388 9.52941H16.9094C16.7929 11.2871 16.1047 12.8965 15.0247 14.1565ZM12.0071 16.3482C12.3247 15.7447 12.6 15.1306 12.8329 14.5059C13.3094 14.6435 13.7753 14.7918 14.22 14.9718C13.5635 15.5435 12.8224 16.0094 12.0071 16.3482ZM9.52941 16.9094V13.9871C10.2812 14.0188 11.0435 14.1035 11.7953 14.2624C11.4671 15.12 11.0647 15.9671 10.5671 16.7824C10.2282 16.8459 9.87882 16.8882 9.52941 16.9094ZM7.43294 16.7824C6.93529 15.9671 6.53294 15.12 6.20471 14.2624C6.95647 14.1141 7.70824 14.0188 8.47059 13.9871V16.9094C8.12118 16.8882 7.77177 16.8459 7.43294 16.7824ZM3.78 14.9718C4.22471 14.7918 4.69059 14.6329 5.16706 14.5059C5.4 15.1306 5.67529 15.7447 5.99294 16.3482C5.17765 16.0094 4.43647 15.5435 3.78 14.9718ZM5.84471 4.74353C6.71294 4.92353 7.59177 5.04 8.47059 5.07176V8.47059H5.22C5.26235 7.22118 5.47412 5.97177 5.85529 4.74353H5.84471ZM12.1553 4.74353C12.5259 5.97177 12.7376 7.22118 12.7906 8.47059H9.54V5.07176C10.4188 5.04 11.2871 4.93412 12.1659 4.74353H12.1553ZM12.1553 13.2565C11.2871 13.0765 10.4082 12.96 9.52941 12.9388V9.54H12.78C12.7376 10.7894 12.5259 12.0388 12.1447 13.2671L12.1553 13.2565ZM8.47059 9.52941V12.9282C7.59177 12.96 6.72353 13.0659 5.84471 13.2459C5.47412 12.0176 5.26235 10.7682 5.20941 9.51882H8.46L8.47059 9.52941ZM4.16118 9.52941C4.20353 10.8635 4.42588 12.1976 4.81765 13.5C4.17177 13.68 3.55765 13.9024 2.97529 14.1565C1.89529 12.8965 1.20706 11.2871 1.09059 9.52941H4.16118Z" fill="currentColor"/></svg></button>
+                    <button class="s1-gnb-util-btn" type="button" aria-label="계정"><svg viewBox="0 0 24 21.5816" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M16.561 13.7324H7.43901C5.67118 13.7324 4.00236 14.3971 2.84266 15.5568C0.494991 17.9186 0.0141426 21.2704 0 21.3977L1.37183 21.5816C1.37183 21.5816 1.81025 18.5409 3.8185 16.5185C4.72363 15.6134 6.03889 15.1042 7.43901 15.1042H16.561C17.9611 15.1042 19.2764 15.6275 20.1815 16.5185C22.1897 18.5409 22.6282 21.5391 22.6282 21.5816L24 21.3977C23.9859 21.2563 23.505 17.9045 21.1573 15.5568C19.9976 14.3971 18.3288 13.7324 16.561 13.7324Z" fill="currentColor"/><path d="M5.9968 6.01061C5.9968 9.31998 8.69803 12.0212 12.0074 12.0212C15.3168 12.0212 18.018 9.31998 18.018 6.01061C18.018 2.70124 15.3168 0 12.0074 0C8.69803 0 5.9968 2.70124 5.9968 6.01061ZM16.6037 6.01061C16.6037 8.54213 14.5389 10.607 12.0074 10.607C9.47588 10.607 7.41106 8.54213 7.41106 6.01061C7.41106 3.47908 9.47588 1.41426 12.0074 1.41426C14.5389 1.41426 16.6037 3.47908 16.6037 6.01061Z" fill="currentColor"/></svg></button>
+                    <button class="s1-gnb-util-btn" type="button" aria-label="메뉴"><svg viewBox="0 0 24 16.9274" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M0 1.41176H24V0.705882V0H0V1.41176Z" fill="currentColor"/><path d="M0 9.17647H24V8.47059V7.76471H0V9.17647Z" fill="currentColor"/><path d="M0 16.9274H24V16.2215V15.5156H0V16.9274Z" fill="currentColor"/></svg></button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- center-between · xsm -->
+              <div>
+                <div style="font-size:11px;font-weight:600;color:var(--color-text-caption);margin-bottom:8px;letter-spacing:0.04em;text-transform:uppercase;">center-between · xsm — h36</div>
+                <div class="s1-gnb s1-gnb--xsm s1-gnb--center-between">
+                  <span class="s1-gnb-logo">SAMPLE LOGO</span>
+                  <div class="s1-gnb-menus">
+                    <button class="s1-gnb-menu s1-gnb-menu--xsm is-selected" type="button">메뉴1</button>
+                    <button class="s1-gnb-menu s1-gnb-menu--xsm" type="button">메뉴2</button>
+                    <button class="s1-gnb-menu s1-gnb-menu--xsm" type="button">메뉴3</button>
+                  </div>
+                  <div class="s1-gnb-util">
+                    <button class="s1-gnb-util-btn" type="button" aria-label="언어"><svg viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M9 18C13.9659 18 18 13.9659 18 9C18 4.03412 13.9659 0 9 0C4.03412 0 0 4.03412 0 9C0 13.9659 4.03412 18 9 18ZM2.97529 3.84353C3.56824 4.09765 4.18235 4.32 4.81765 4.5C4.42588 5.80235 4.20353 7.13647 4.16118 8.47059H1.09059C1.20706 6.71294 1.89529 5.10353 2.97529 3.84353ZM5.99294 1.65176C5.67529 2.25529 5.4 2.86941 5.16706 3.49412C4.69059 3.35647 4.22471 3.20824 3.78 3.02824C4.43647 2.45647 5.17765 1.99059 5.99294 1.65176ZM8.47059 1.09059V4.01294C7.71882 3.98118 6.95647 3.89647 6.20471 3.73765C6.53294 2.88 6.93529 2.03294 7.43294 1.21765C7.77177 1.15412 8.12118 1.11176 8.47059 1.09059ZM10.5671 1.21765C11.0647 2.03294 11.4671 2.88 11.7953 3.73765C11.0435 3.88588 10.2918 3.98118 9.52941 4.01294V1.09059C9.87882 1.11176 10.2282 1.15412 10.5671 1.21765ZM14.22 3.02824C13.7753 3.20824 13.3094 3.36706 12.8329 3.49412C12.6 2.86941 12.3247 2.25529 12.0071 1.65176C12.8224 1.99059 13.5635 2.45647 14.22 3.02824ZM16.9094 8.47059H13.8388C13.7965 7.13647 13.5741 5.80235 13.1824 4.5C13.8282 4.32 14.4424 4.09765 15.0247 3.84353C16.1047 5.10353 16.7929 6.71294 16.9094 8.47059ZM15.0247 14.1565C14.4424 13.9024 13.8176 13.68 13.1824 13.5C13.5741 12.1976 13.7965 10.8635 13.8388 9.52941H16.9094C16.7929 11.2871 16.1047 12.8965 15.0247 14.1565ZM12.0071 16.3482C12.3247 15.7447 12.6 15.1306 12.8329 14.5059C13.3094 14.6435 13.7753 14.7918 14.22 14.9718C13.5635 15.5435 12.8224 16.0094 12.0071 16.3482ZM9.52941 16.9094V13.9871C10.2812 14.0188 11.0435 14.1035 11.7953 14.2624C11.4671 15.12 11.0647 15.9671 10.5671 16.7824C10.2282 16.8459 9.87882 16.8882 9.52941 16.9094ZM7.43294 16.7824C6.93529 15.9671 6.53294 15.12 6.20471 14.2624C6.95647 14.1141 7.70824 14.0188 8.47059 13.9871V16.9094C8.12118 16.8882 7.77177 16.8459 7.43294 16.7824ZM3.78 14.9718C4.22471 14.7918 4.69059 14.6329 5.16706 14.5059C5.4 15.1306 5.67529 15.7447 5.99294 16.3482C5.17765 16.0094 4.43647 15.5435 3.78 14.9718ZM5.84471 4.74353C6.71294 4.92353 7.59177 5.04 8.47059 5.07176V8.47059H5.22C5.26235 7.22118 5.47412 5.97177 5.85529 4.74353H5.84471ZM12.1553 4.74353C12.5259 5.97177 12.7376 7.22118 12.7906 8.47059H9.54V5.07176C10.4188 5.04 11.2871 4.93412 12.1659 4.74353H12.1553ZM12.1553 13.2565C11.2871 13.0765 10.4082 12.96 9.52941 12.9388V9.54H12.78C12.7376 10.7894 12.5259 12.0388 12.1447 13.2671L12.1553 13.2565ZM8.47059 9.52941V12.9282C7.59177 12.96 6.72353 13.0659 5.84471 13.2459C5.47412 12.0176 5.26235 10.7682 5.20941 9.51882H8.46L8.47059 9.52941ZM4.16118 9.52941C4.20353 10.8635 4.42588 12.1976 4.81765 13.5C4.17177 13.68 3.55765 13.9024 2.97529 14.1565C1.89529 12.8965 1.20706 11.2871 1.09059 9.52941H4.16118Z" fill="currentColor"/></svg></button>
+                    <button class="s1-gnb-util-btn" type="button" aria-label="계정"><svg viewBox="0 0 24 21.5816" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M16.561 13.7324H7.43901C5.67118 13.7324 4.00236 14.3971 2.84266 15.5568C0.494991 17.9186 0.0141426 21.2704 0 21.3977L1.37183 21.5816C1.37183 21.5816 1.81025 18.5409 3.8185 16.5185C4.72363 15.6134 6.03889 15.1042 7.43901 15.1042H16.561C17.9611 15.1042 19.2764 15.6275 20.1815 16.5185C22.1897 18.5409 22.6282 21.5391 22.6282 21.5816L24 21.3977C23.9859 21.2563 23.505 17.9045 21.1573 15.5568C19.9976 14.3971 18.3288 13.7324 16.561 13.7324Z" fill="currentColor"/><path d="M5.9968 6.01061C5.9968 9.31998 8.69803 12.0212 12.0074 12.0212C15.3168 12.0212 18.018 9.31998 18.018 6.01061C18.018 2.70124 15.3168 0 12.0074 0C8.69803 0 5.9968 2.70124 5.9968 6.01061ZM16.6037 6.01061C16.6037 8.54213 14.5389 10.607 12.0074 10.607C9.47588 10.607 7.41106 8.54213 7.41106 6.01061C7.41106 3.47908 9.47588 1.41426 12.0074 1.41426C14.5389 1.41426 16.6037 3.47908 16.6037 6.01061Z" fill="currentColor"/></svg></button>
+                    <button class="s1-gnb-util-btn" type="button" aria-label="메뉴"><svg viewBox="0 0 24 16.9274" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M0 1.41176H24V0.705882V0H0V1.41176Z" fill="currentColor"/><path d="M0 9.17647H24V8.47059V7.76471H0V9.17647Z" fill="currentColor"/><path d="M0 16.9274H24V16.2215V15.5156H0V16.9274Z" fill="currentColor"/></svg></button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- start · md -->
+              <div>
+                <div style="font-size:11px;font-weight:600;color:var(--color-text-caption);margin-bottom:8px;letter-spacing:0.04em;text-transform:uppercase;">start · md — h56 · 로고↔메뉴 gap64</div>
+                <div class="s1-gnb s1-gnb--md s1-gnb--start">
+                  <div class="s1-gnb-leading">
+                    <span class="s1-gnb-logo">SAMPLE LOGO</span>
+                    <div class="s1-gnb-menus">
+                      <button class="s1-gnb-menu is-selected" type="button">메뉴1</button>
+                      <button class="s1-gnb-menu" type="button">메뉴2</button>
+                      <button class="s1-gnb-menu" type="button">메뉴3</button>
+                    </div>
+                  </div>
+                  <div class="s1-gnb-util">
+                    <button class="s1-gnb-util-btn" type="button" aria-label="언어"><svg viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M9 18C13.9659 18 18 13.9659 18 9C18 4.03412 13.9659 0 9 0C4.03412 0 0 4.03412 0 9C0 13.9659 4.03412 18 9 18ZM2.97529 3.84353C3.56824 4.09765 4.18235 4.32 4.81765 4.5C4.42588 5.80235 4.20353 7.13647 4.16118 8.47059H1.09059C1.20706 6.71294 1.89529 5.10353 2.97529 3.84353ZM5.99294 1.65176C5.67529 2.25529 5.4 2.86941 5.16706 3.49412C4.69059 3.35647 4.22471 3.20824 3.78 3.02824C4.43647 2.45647 5.17765 1.99059 5.99294 1.65176ZM8.47059 1.09059V4.01294C7.71882 3.98118 6.95647 3.89647 6.20471 3.73765C6.53294 2.88 6.93529 2.03294 7.43294 1.21765C7.77177 1.15412 8.12118 1.11176 8.47059 1.09059ZM10.5671 1.21765C11.0647 2.03294 11.4671 2.88 11.7953 3.73765C11.0435 3.88588 10.2918 3.98118 9.52941 4.01294V1.09059C9.87882 1.11176 10.2282 1.15412 10.5671 1.21765ZM14.22 3.02824C13.7753 3.20824 13.3094 3.36706 12.8329 3.49412C12.6 2.86941 12.3247 2.25529 12.0071 1.65176C12.8224 1.99059 13.5635 2.45647 14.22 3.02824ZM16.9094 8.47059H13.8388C13.7965 7.13647 13.5741 5.80235 13.1824 4.5C13.8282 4.32 14.4424 4.09765 15.0247 3.84353C16.1047 5.10353 16.7929 6.71294 16.9094 8.47059ZM15.0247 14.1565C14.4424 13.9024 13.8176 13.68 13.1824 13.5C13.5741 12.1976 13.7965 10.8635 13.8388 9.52941H16.9094C16.7929 11.2871 16.1047 12.8965 15.0247 14.1565ZM12.0071 16.3482C12.3247 15.7447 12.6 15.1306 12.8329 14.5059C13.3094 14.6435 13.7753 14.7918 14.22 14.9718C13.5635 15.5435 12.8224 16.0094 12.0071 16.3482ZM9.52941 16.9094V13.9871C10.2812 14.0188 11.0435 14.1035 11.7953 14.2624C11.4671 15.12 11.0647 15.9671 10.5671 16.7824C10.2282 16.8459 9.87882 16.8882 9.52941 16.9094ZM7.43294 16.7824C6.93529 15.9671 6.53294 15.12 6.20471 14.2624C6.95647 14.1141 7.70824 14.0188 8.47059 13.9871V16.9094C8.12118 16.8882 7.77177 16.8459 7.43294 16.7824ZM3.78 14.9718C4.22471 14.7918 4.69059 14.6329 5.16706 14.5059C5.4 15.1306 5.67529 15.7447 5.99294 16.3482C5.17765 16.0094 4.43647 15.5435 3.78 14.9718ZM5.84471 4.74353C6.71294 4.92353 7.59177 5.04 8.47059 5.07176V8.47059H5.22C5.26235 7.22118 5.47412 5.97177 5.85529 4.74353H5.84471ZM12.1553 4.74353C12.5259 5.97177 12.7376 7.22118 12.7906 8.47059H9.54V5.07176C10.4188 5.04 11.2871 4.93412 12.1659 4.74353H12.1553ZM12.1553 13.2565C11.2871 13.0765 10.4082 12.96 9.52941 12.9388V9.54H12.78C12.7376 10.7894 12.5259 12.0388 12.1447 13.2671L12.1553 13.2565ZM8.47059 9.52941V12.9282C7.59177 12.96 6.72353 13.0659 5.84471 13.2459C5.47412 12.0176 5.26235 10.7682 5.20941 9.51882H8.46L8.47059 9.52941ZM4.16118 9.52941C4.20353 10.8635 4.42588 12.1976 4.81765 13.5C4.17177 13.68 3.55765 13.9024 2.97529 14.1565C1.89529 12.8965 1.20706 11.2871 1.09059 9.52941H4.16118Z" fill="currentColor"/></svg></button>
+                    <button class="s1-gnb-util-btn" type="button" aria-label="계정"><svg viewBox="0 0 24 21.5816" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M16.561 13.7324H7.43901C5.67118 13.7324 4.00236 14.3971 2.84266 15.5568C0.494991 17.9186 0.0141426 21.2704 0 21.3977L1.37183 21.5816C1.37183 21.5816 1.81025 18.5409 3.8185 16.5185C4.72363 15.6134 6.03889 15.1042 7.43901 15.1042H16.561C17.9611 15.1042 19.2764 15.6275 20.1815 16.5185C22.1897 18.5409 22.6282 21.5391 22.6282 21.5816L24 21.3977C23.9859 21.2563 23.505 17.9045 21.1573 15.5568C19.9976 14.3971 18.3288 13.7324 16.561 13.7324Z" fill="currentColor"/><path d="M5.9968 6.01061C5.9968 9.31998 8.69803 12.0212 12.0074 12.0212C15.3168 12.0212 18.018 9.31998 18.018 6.01061C18.018 2.70124 15.3168 0 12.0074 0C8.69803 0 5.9968 2.70124 5.9968 6.01061ZM16.6037 6.01061C16.6037 8.54213 14.5389 10.607 12.0074 10.607C9.47588 10.607 7.41106 8.54213 7.41106 6.01061C7.41106 3.47908 9.47588 1.41426 12.0074 1.41426C14.5389 1.41426 16.6037 3.47908 16.6037 6.01061Z" fill="currentColor"/></svg></button>
+                    <button class="s1-gnb-util-btn" type="button" aria-label="메뉴"><svg viewBox="0 0 24 16.9274" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M0 1.41176H24V0.705882V0H0V1.41176Z" fill="currentColor"/><path d="M0 9.17647H24V8.47059V7.76471H0V9.17647Z" fill="currentColor"/><path d="M0 16.9274H24V16.2215V15.5156H0V16.9274Z" fill="currentColor"/></svg></button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- start · sm -->
+              <div>
+                <div style="font-size:11px;font-weight:600;color:var(--color-text-caption);margin-bottom:8px;letter-spacing:0.04em;text-transform:uppercase;">start · sm — h48 · 로고↔메뉴 gap64</div>
+                <div class="s1-gnb s1-gnb--sm s1-gnb--start">
+                  <div class="s1-gnb-leading">
+                    <span class="s1-gnb-logo">SAMPLE LOGO</span>
+                    <div class="s1-gnb-menus">
+                      <button class="s1-gnb-menu s1-gnb-menu--sm is-selected" type="button">메뉴1</button>
+                      <button class="s1-gnb-menu s1-gnb-menu--sm" type="button">메뉴2</button>
+                      <button class="s1-gnb-menu s1-gnb-menu--sm" type="button">메뉴3</button>
+                    </div>
+                  </div>
+                  <div class="s1-gnb-util">
+                    <button class="s1-gnb-util-btn" type="button" aria-label="언어"><svg viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M9 18C13.9659 18 18 13.9659 18 9C18 4.03412 13.9659 0 9 0C4.03412 0 0 4.03412 0 9C0 13.9659 4.03412 18 9 18ZM2.97529 3.84353C3.56824 4.09765 4.18235 4.32 4.81765 4.5C4.42588 5.80235 4.20353 7.13647 4.16118 8.47059H1.09059C1.20706 6.71294 1.89529 5.10353 2.97529 3.84353ZM5.99294 1.65176C5.67529 2.25529 5.4 2.86941 5.16706 3.49412C4.69059 3.35647 4.22471 3.20824 3.78 3.02824C4.43647 2.45647 5.17765 1.99059 5.99294 1.65176ZM8.47059 1.09059V4.01294C7.71882 3.98118 6.95647 3.89647 6.20471 3.73765C6.53294 2.88 6.93529 2.03294 7.43294 1.21765C7.77177 1.15412 8.12118 1.11176 8.47059 1.09059ZM10.5671 1.21765C11.0647 2.03294 11.4671 2.88 11.7953 3.73765C11.0435 3.88588 10.2918 3.98118 9.52941 4.01294V1.09059C9.87882 1.11176 10.2282 1.15412 10.5671 1.21765ZM14.22 3.02824C13.7753 3.20824 13.3094 3.36706 12.8329 3.49412C12.6 2.86941 12.3247 2.25529 12.0071 1.65176C12.8224 1.99059 13.5635 2.45647 14.22 3.02824ZM16.9094 8.47059H13.8388C13.7965 7.13647 13.5741 5.80235 13.1824 4.5C13.8282 4.32 14.4424 4.09765 15.0247 3.84353C16.1047 5.10353 16.7929 6.71294 16.9094 8.47059ZM15.0247 14.1565C14.4424 13.9024 13.8176 13.68 13.1824 13.5C13.5741 12.1976 13.7965 10.8635 13.8388 9.52941H16.9094C16.7929 11.2871 16.1047 12.8965 15.0247 14.1565ZM12.0071 16.3482C12.3247 15.7447 12.6 15.1306 12.8329 14.5059C13.3094 14.6435 13.7753 14.7918 14.22 14.9718C13.5635 15.5435 12.8224 16.0094 12.0071 16.3482ZM9.52941 16.9094V13.9871C10.2812 14.0188 11.0435 14.1035 11.7953 14.2624C11.4671 15.12 11.0647 15.9671 10.5671 16.7824C10.2282 16.8459 9.87882 16.8882 9.52941 16.9094ZM7.43294 16.7824C6.93529 15.9671 6.53294 15.12 6.20471 14.2624C6.95647 14.1141 7.70824 14.0188 8.47059 13.9871V16.9094C8.12118 16.8882 7.77177 16.8459 7.43294 16.7824ZM3.78 14.9718C4.22471 14.7918 4.69059 14.6329 5.16706 14.5059C5.4 15.1306 5.67529 15.7447 5.99294 16.3482C5.17765 16.0094 4.43647 15.5435 3.78 14.9718ZM5.84471 4.74353C6.71294 4.92353 7.59177 5.04 8.47059 5.07176V8.47059H5.22C5.26235 7.22118 5.47412 5.97177 5.85529 4.74353H5.84471ZM12.1553 4.74353C12.5259 5.97177 12.7376 7.22118 12.7906 8.47059H9.54V5.07176C10.4188 5.04 11.2871 4.93412 12.1659 4.74353H12.1553ZM12.1553 13.2565C11.2871 13.0765 10.4082 12.96 9.52941 12.9388V9.54H12.78C12.7376 10.7894 12.5259 12.0388 12.1447 13.2671L12.1553 13.2565ZM8.47059 9.52941V12.9282C7.59177 12.96 6.72353 13.0659 5.84471 13.2459C5.47412 12.0176 5.26235 10.7682 5.20941 9.51882H8.46L8.47059 9.52941ZM4.16118 9.52941C4.20353 10.8635 4.42588 12.1976 4.81765 13.5C4.17177 13.68 3.55765 13.9024 2.97529 14.1565C1.89529 12.8965 1.20706 11.2871 1.09059 9.52941H4.16118Z" fill="currentColor"/></svg></button>
+                    <button class="s1-gnb-util-btn" type="button" aria-label="계정"><svg viewBox="0 0 24 21.5816" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M16.561 13.7324H7.43901C5.67118 13.7324 4.00236 14.3971 2.84266 15.5568C0.494991 17.9186 0.0141426 21.2704 0 21.3977L1.37183 21.5816C1.37183 21.5816 1.81025 18.5409 3.8185 16.5185C4.72363 15.6134 6.03889 15.1042 7.43901 15.1042H16.561C17.9611 15.1042 19.2764 15.6275 20.1815 16.5185C22.1897 18.5409 22.6282 21.5391 22.6282 21.5816L24 21.3977C23.9859 21.2563 23.505 17.9045 21.1573 15.5568C19.9976 14.3971 18.3288 13.7324 16.561 13.7324Z" fill="currentColor"/><path d="M5.9968 6.01061C5.9968 9.31998 8.69803 12.0212 12.0074 12.0212C15.3168 12.0212 18.018 9.31998 18.018 6.01061C18.018 2.70124 15.3168 0 12.0074 0C8.69803 0 5.9968 2.70124 5.9968 6.01061ZM16.6037 6.01061C16.6037 8.54213 14.5389 10.607 12.0074 10.607C9.47588 10.607 7.41106 8.54213 7.41106 6.01061C7.41106 3.47908 9.47588 1.41426 12.0074 1.41426C14.5389 1.41426 16.6037 3.47908 16.6037 6.01061Z" fill="currentColor"/></svg></button>
+                    <button class="s1-gnb-util-btn" type="button" aria-label="메뉴"><svg viewBox="0 0 24 16.9274" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M0 1.41176H24V0.705882V0H0V1.41176Z" fill="currentColor"/><path d="M0 9.17647H24V8.47059V7.76471H0V9.17647Z" fill="currentColor"/><path d="M0 16.9274H24V16.2215V15.5156H0V16.9274Z" fill="currentColor"/></svg></button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- start · xsm -->
+              <div>
+                <div style="font-size:11px;font-weight:600;color:var(--color-text-caption);margin-bottom:8px;letter-spacing:0.04em;text-transform:uppercase;">start · xsm — h36 · 로고↔메뉴 gap64</div>
+                <div class="s1-gnb s1-gnb--xsm s1-gnb--start">
+                  <div class="s1-gnb-leading">
+                    <span class="s1-gnb-logo">SAMPLE LOGO</span>
+                    <div class="s1-gnb-menus">
+                      <button class="s1-gnb-menu s1-gnb-menu--xsm is-selected" type="button">메뉴1</button>
+                      <button class="s1-gnb-menu s1-gnb-menu--xsm" type="button">메뉴2</button>
+                      <button class="s1-gnb-menu s1-gnb-menu--xsm" type="button">메뉴3</button>
+                    </div>
+                  </div>
+                  <div class="s1-gnb-util">
+                    <button class="s1-gnb-util-btn" type="button" aria-label="언어"><svg viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M9 18C13.9659 18 18 13.9659 18 9C18 4.03412 13.9659 0 9 0C4.03412 0 0 4.03412 0 9C0 13.9659 4.03412 18 9 18ZM2.97529 3.84353C3.56824 4.09765 4.18235 4.32 4.81765 4.5C4.42588 5.80235 4.20353 7.13647 4.16118 8.47059H1.09059C1.20706 6.71294 1.89529 5.10353 2.97529 3.84353ZM5.99294 1.65176C5.67529 2.25529 5.4 2.86941 5.16706 3.49412C4.69059 3.35647 4.22471 3.20824 3.78 3.02824C4.43647 2.45647 5.17765 1.99059 5.99294 1.65176ZM8.47059 1.09059V4.01294C7.71882 3.98118 6.95647 3.89647 6.20471 3.73765C6.53294 2.88 6.93529 2.03294 7.43294 1.21765C7.77177 1.15412 8.12118 1.11176 8.47059 1.09059ZM10.5671 1.21765C11.0647 2.03294 11.4671 2.88 11.7953 3.73765C11.0435 3.88588 10.2918 3.98118 9.52941 4.01294V1.09059C9.87882 1.11176 10.2282 1.15412 10.5671 1.21765ZM14.22 3.02824C13.7753 3.20824 13.3094 3.36706 12.8329 3.49412C12.6 2.86941 12.3247 2.25529 12.0071 1.65176C12.8224 1.99059 13.5635 2.45647 14.22 3.02824ZM16.9094 8.47059H13.8388C13.7965 7.13647 13.5741 5.80235 13.1824 4.5C13.8282 4.32 14.4424 4.09765 15.0247 3.84353C16.1047 5.10353 16.7929 6.71294 16.9094 8.47059ZM15.0247 14.1565C14.4424 13.9024 13.8176 13.68 13.1824 13.5C13.5741 12.1976 13.7965 10.8635 13.8388 9.52941H16.9094C16.7929 11.2871 16.1047 12.8965 15.0247 14.1565ZM12.0071 16.3482C12.3247 15.7447 12.6 15.1306 12.8329 14.5059C13.3094 14.6435 13.7753 14.7918 14.22 14.9718C13.5635 15.5435 12.8224 16.0094 12.0071 16.3482ZM9.52941 16.9094V13.9871C10.2812 14.0188 11.0435 14.1035 11.7953 14.2624C11.4671 15.12 11.0647 15.9671 10.5671 16.7824C10.2282 16.8459 9.87882 16.8882 9.52941 16.9094ZM7.43294 16.7824C6.93529 15.9671 6.53294 15.12 6.20471 14.2624C6.95647 14.1141 7.70824 14.0188 8.47059 13.9871V16.9094C8.12118 16.8882 7.77177 16.8459 7.43294 16.7824ZM3.78 14.9718C4.22471 14.7918 4.69059 14.6329 5.16706 14.5059C5.4 15.1306 5.67529 15.7447 5.99294 16.3482C5.17765 16.0094 4.43647 15.5435 3.78 14.9718ZM5.84471 4.74353C6.71294 4.92353 7.59177 5.04 8.47059 5.07176V8.47059H5.22C5.26235 7.22118 5.47412 5.97177 5.85529 4.74353H5.84471ZM12.1553 4.74353C12.5259 5.97177 12.7376 7.22118 12.7906 8.47059H9.54V5.07176C10.4188 5.04 11.2871 4.93412 12.1659 4.74353H12.1553ZM12.1553 13.2565C11.2871 13.0765 10.4082 12.96 9.52941 12.9388V9.54H12.78C12.7376 10.7894 12.5259 12.0388 12.1447 13.2671L12.1553 13.2565ZM8.47059 9.52941V12.9282C7.59177 12.96 6.72353 13.0659 5.84471 13.2459C5.47412 12.0176 5.26235 10.7682 5.20941 9.51882H8.46L8.47059 9.52941ZM4.16118 9.52941C4.20353 10.8635 4.42588 12.1976 4.81765 13.5C4.17177 13.68 3.55765 13.9024 2.97529 14.1565C1.89529 12.8965 1.20706 11.2871 1.09059 9.52941H4.16118Z" fill="currentColor"/></svg></button>
+                    <button class="s1-gnb-util-btn" type="button" aria-label="계정"><svg viewBox="0 0 24 21.5816" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M16.561 13.7324H7.43901C5.67118 13.7324 4.00236 14.3971 2.84266 15.5568C0.494991 17.9186 0.0141426 21.2704 0 21.3977L1.37183 21.5816C1.37183 21.5816 1.81025 18.5409 3.8185 16.5185C4.72363 15.6134 6.03889 15.1042 7.43901 15.1042H16.561C17.9611 15.1042 19.2764 15.6275 20.1815 16.5185C22.1897 18.5409 22.6282 21.5391 22.6282 21.5816L24 21.3977C23.9859 21.2563 23.505 17.9045 21.1573 15.5568C19.9976 14.3971 18.3288 13.7324 16.561 13.7324Z" fill="currentColor"/><path d="M5.9968 6.01061C5.9968 9.31998 8.69803 12.0212 12.0074 12.0212C15.3168 12.0212 18.018 9.31998 18.018 6.01061C18.018 2.70124 15.3168 0 12.0074 0C8.69803 0 5.9968 2.70124 5.9968 6.01061ZM16.6037 6.01061C16.6037 8.54213 14.5389 10.607 12.0074 10.607C9.47588 10.607 7.41106 8.54213 7.41106 6.01061C7.41106 3.47908 9.47588 1.41426 12.0074 1.41426C14.5389 1.41426 16.6037 3.47908 16.6037 6.01061Z" fill="currentColor"/></svg></button>
+                    <button class="s1-gnb-util-btn" type="button" aria-label="메뉴"><svg viewBox="0 0 24 16.9274" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M0 1.41176H24V0.705882V0H0V1.41176Z" fill="currentColor"/><path d="M0 9.17647H24V8.47059V7.76471H0V9.17647Z" fill="currentColor"/><path d="M0 16.9274H24V16.2215V15.5156H0V16.9274Z" fill="currentColor"/></svg></button>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+        <!-- ── code-block: PC · HTML / CSS / Token Details (Mobile 없음) ── -->
+        <div class="code-block">
+          <div class="code-tabs">
+            <button class="code-tab active" onclick="switchTab(this,'gnb-pc-html')">PC · HTML</button>
+            <button class="code-tab" onclick="switchTab(this,'gnb-css')">CSS</button>
+            <button class="code-tab" onclick="switchTab(this,'gnb-tokens')">Token Details</button>
+            <button class="code-copy-btn" onclick="copyCode('gnb-pc-html-pre')">복사</button>
+          </div>
+          <div class="code-pane active" id="gnb-pc-html">
+            <pre id="gnb-pc-html-pre"><span class="c-cmt">&lt;!-- 메뉴 슬롯: md (h56 · 18px) / sm (h48 · 18px) / xsm (h36 · 14px) --&gt;</span>
+<span class="c-tag">&lt;button</span> <span class="c-attr">class</span>=<span class="c-str">"s1-gnb-menu is-selected"</span><span class="c-tag">&gt;</span>메뉴타이틀<span class="c-tag">&lt;/button&gt;</span>
+<span class="c-tag">&lt;button</span> <span class="c-attr">class</span>=<span class="c-str">"s1-gnb-menu s1-gnb-menu--sm"</span><span class="c-tag">&gt;</span>메뉴타이틀<span class="c-tag">&lt;/button&gt;</span>
+<span class="c-tag">&lt;button</span> <span class="c-attr">class</span>=<span class="c-str">"s1-gnb-menu s1-gnb-menu--xsm"</span><span class="c-tag">&gt;</span>메뉴타이틀<span class="c-tag">&lt;/button&gt;</span>
+
+<span class="c-cmt">&lt;!-- GNB 바: center-between (로고·메뉴·유틸 3분할) --&gt;</span>
+<span class="c-tag">&lt;div</span> <span class="c-attr">class</span>=<span class="c-str">"s1-gnb s1-gnb--md s1-gnb--center-between"</span><span class="c-tag">&gt;</span>
+  <span class="c-tag">&lt;span</span> <span class="c-attr">class</span>=<span class="c-str">"s1-gnb-logo"</span><span class="c-tag">&gt;</span>SAMPLE LOGO<span class="c-tag">&lt;/span&gt;</span>
+  <span class="c-tag">&lt;div</span> <span class="c-attr">class</span>=<span class="c-str">"s1-gnb-menus"</span><span class="c-tag">&gt;</span>
+    <span class="c-tag">&lt;button</span> <span class="c-attr">class</span>=<span class="c-str">"s1-gnb-menu is-selected"</span><span class="c-tag">&gt;</span>메뉴1<span class="c-tag">&lt;/button&gt;</span>
+    <span class="c-tag">&lt;button</span> <span class="c-attr">class</span>=<span class="c-str">"s1-gnb-menu"</span><span class="c-tag">&gt;</span>메뉴2<span class="c-tag">&lt;/button&gt;</span>
+  <span class="c-tag">&lt;/div&gt;</span>
+  <span class="c-tag">&lt;div</span> <span class="c-attr">class</span>=<span class="c-str">"s1-gnb-util"</span><span class="c-tag">&gt;</span>
+    <span class="c-tag">&lt;button</span> <span class="c-attr">class</span>=<span class="c-str">"s1-gnb-util-btn"</span> <span class="c-attr">aria-label</span>=<span class="c-str">"언어"</span><span class="c-tag">&gt;</span><span class="c-cmt">&lt;!-- ic_인터넷 --&gt;</span><span class="c-tag">&lt;/button&gt;</span>
+    <span class="c-tag">&lt;button</span> <span class="c-attr">class</span>=<span class="c-str">"s1-gnb-util-btn"</span> <span class="c-attr">aria-label</span>=<span class="c-str">"계정"</span><span class="c-tag">&gt;</span><span class="c-cmt">&lt;!-- ic_계정/사용자/ID --&gt;</span><span class="c-tag">&lt;/button&gt;</span>
+    <span class="c-tag">&lt;button</span> <span class="c-attr">class</span>=<span class="c-str">"s1-gnb-util-btn"</span> <span class="c-attr">aria-label</span>=<span class="c-str">"메뉴"</span><span class="c-tag">&gt;</span><span class="c-cmt">&lt;!-- ic_메뉴 --&gt;</span><span class="c-tag">&lt;/button&gt;</span>
+  <span class="c-tag">&lt;/div&gt;</span>
+<span class="c-tag">&lt;/div&gt;</span>
+
+<span class="c-cmt">&lt;!-- GNB 바: start (로고+메뉴 좌측 묶음, 유틸 우측) --&gt;</span>
+<span class="c-tag">&lt;div</span> <span class="c-attr">class</span>=<span class="c-str">"s1-gnb s1-gnb--md s1-gnb--start"</span><span class="c-tag">&gt;</span>
+  <span class="c-tag">&lt;div</span> <span class="c-attr">class</span>=<span class="c-str">"s1-gnb-leading"</span><span class="c-tag">&gt;</span>
+    <span class="c-tag">&lt;span</span> <span class="c-attr">class</span>=<span class="c-str">"s1-gnb-logo"</span><span class="c-tag">&gt;</span>SAMPLE LOGO<span class="c-tag">&lt;/span&gt;</span>
+    <span class="c-tag">&lt;div</span> <span class="c-attr">class</span>=<span class="c-str">"s1-gnb-menus"</span><span class="c-tag">&gt;</span> … <span class="c-tag">&lt;/div&gt;</span>
+  <span class="c-tag">&lt;/div&gt;</span>
+  <span class="c-tag">&lt;div</span> <span class="c-attr">class</span>=<span class="c-str">"s1-gnb-util"</span><span class="c-tag">&gt;</span> … <span class="c-tag">&lt;/div&gt;</span>
+<span class="c-tag">&lt;/div&gt;</span></pre>
+          </div>
+          <div class="code-pane" id="gnb-css">
+            <pre><span class="c-cmt">/* ── 메뉴 슬롯 ──────────────────────── */</span>
+<span class="c-sel">.s1-gnb-menu</span> {
+  <span class="c-prop">min-width</span>: <span class="c-val">116px</span>;
+  <span class="c-prop">height</span>: <span class="c-val">56px</span>;
+  <span class="c-prop">padding</span>: <span class="c-val">12px 40px</span>; <span class="c-cmt">/* 외곽 lg24 + 내부 sm16 */</span>
+  <span class="c-prop">font-size</span>: <span class="c-val">18px</span>;
+  <span class="c-prop">color</span>: <span class="c-val">var(--gnb-menu-label-default)</span>;
+}
+<span class="c-cmt">/* 밑줄 = 외곽 px만큼 inset (내부 콘텐츠 폭) */</span>
+<span class="c-sel">.s1-gnb-menu::after</span> {
+  <span class="c-prop">content</span>: <span class="c-val">''</span>; <span class="c-prop">position</span>: <span class="c-val">absolute</span>;
+  <span class="c-prop">left</span>: <span class="c-val">24px</span>; <span class="c-prop">right</span>: <span class="c-val">24px</span>; <span class="c-prop">bottom</span>: <span class="c-val">0</span>; <span class="c-prop">height</span>: <span class="c-val">2px</span>;
+  <span class="c-prop">background</span>: <span class="c-val">transparent</span>;
+}
+<span class="c-sel">.s1-gnb-menu:hover, .s1-gnb-menu.is-selected</span> { <span class="c-prop">color</span>: <span class="c-val">var(--gnb-menu-label-active)</span>; }
+<span class="c-sel">.s1-gnb-menu:hover::after, .s1-gnb-menu.is-selected::after</span> { <span class="c-prop">background</span>: <span class="c-val">var(--gnb-menu-underline-active)</span>; }
+<span class="c-sel">.s1-gnb-menu--sm</span>  { <span class="c-prop">height</span>: <span class="c-val">48px</span>; <span class="c-prop">padding</span>: <span class="c-val">12px 32px</span>; }
+<span class="c-sel">.s1-gnb-menu--sm::after</span> { <span class="c-prop">left</span>: <span class="c-val">20px</span>; <span class="c-prop">right</span>: <span class="c-val">20px</span>; }
+<span class="c-sel">.s1-gnb-menu--xsm</span> { <span class="c-prop">height</span>: <span class="c-val">36px</span>; <span class="c-prop">padding</span>: <span class="c-val">12px 32px</span>; <span class="c-prop">font-size</span>: <span class="c-val">14px</span>; }
+<span class="c-sel">.s1-gnb-menu--xsm::after</span> { <span class="c-prop">left</span>: <span class="c-val">20px</span>; <span class="c-prop">right</span>: <span class="c-val">20px</span>; }
+
+<span class="c-cmt">/* ── GNB 바 ─────────────────────────── */</span>
+<span class="c-sel">.s1-gnb</span> {
+  <span class="c-prop">display</span>: <span class="c-val">flex</span>;
+  <span class="c-prop">align-items</span>: <span class="c-val">center</span>;
+  <span class="c-prop">width</span>: <span class="c-val">100%</span>;
+  <span class="c-prop">height</span>: <span class="c-val">56px</span>;
+  <span class="c-prop">padding</span>: <span class="c-val">0 20px 0 24px</span>;
+  <span class="c-prop">background</span>: <span class="c-val">var(--gnb-bg)</span>;
+  <span class="c-prop">border-bottom</span>: <span class="c-val">1px solid var(--gnb-border)</span>;
+}
+<span class="c-sel">.s1-gnb--sm</span>  { <span class="c-prop">height</span>: <span class="c-val">48px</span>; }
+<span class="c-sel">.s1-gnb--xsm</span> { <span class="c-prop">height</span>: <span class="c-val">36px</span>; <span class="c-prop">padding-left</span>: <span class="c-val">20px</span>; <span class="c-prop">padding-right</span>: <span class="c-val">24px</span>; }
+<span class="c-sel">.s1-gnb--center-between</span> { <span class="c-prop">justify-content</span>: <span class="c-val">space-between</span>; }
+<span class="c-sel">.s1-gnb--start .s1-gnb-util</span> { <span class="c-prop">margin-left</span>: <span class="c-val">auto</span>; }
+<span class="c-sel">.s1-gnb--start .s1-gnb-leading</span> { <span class="c-prop">display</span>: <span class="c-val">flex</span>; <span class="c-prop">gap</span>: <span class="c-val">64px</span>; } <span class="c-cmt">/* 로고↔메뉴 */</span>
+<span class="c-cmt">/* 메뉴 슬롯은 인접(gap 없음) — 분리는 슬롯 px로만 */</span>
+<span class="c-sel">.s1-gnb-logo</span> { <span class="c-prop">font-size</span>: <span class="c-val">20px</span>; <span class="c-prop">font-weight</span>: <span class="c-val">var(--font-weight-bold)</span>; <span class="c-prop">color</span>: <span class="c-val">var(--gnb-logo-text)</span>; }
+<span class="c-sel">.s1-gnb-util</span> { <span class="c-prop">display</span>: <span class="c-val">flex</span>; <span class="c-prop">gap</span>: <span class="c-val">var(--spacing-cluster-xxs)</span>; }
+<span class="c-sel">.s1-gnb-util-btn</span> { <span class="c-prop">width</span>: <span class="c-val">40px</span>; <span class="c-prop">height</span>: <span class="c-val">40px</span>; <span class="c-prop">color</span>: <span class="c-val">var(--gnb-icon)</span>; }
+<span class="c-sel">.s1-gnb-util-btn svg</span> { <span class="c-prop">width</span>: <span class="c-val">24px</span>; <span class="c-prop">height</span>: <span class="c-val">24px</span>; }
+<span class="c-sel">.s1-gnb--xsm .s1-gnb-util-btn</span> { <span class="c-prop">width</span>: <span class="c-val">32px</span>; <span class="c-prop">height</span>: <span class="c-val">32px</span>; }
+<span class="c-sel">.s1-gnb--xsm .s1-gnb-util-btn svg</span> { <span class="c-prop">width</span>: <span class="c-val">24px</span>; <span class="c-prop">height</span>: <span class="c-val">24px</span>; }</pre>
+          </div>
+          <div class="code-pane" id="gnb-tokens">
+            <div style="padding:16px;overflow:auto;">
+              <table class="token-detail-table" style="width:100%;border-collapse:collapse;font-size:12px;">
+                <thead>
+                  <tr style="border-bottom:1px solid var(--color-border-default);">
+                    <th style="text-align:left;padding:6px 8px;color:var(--color-text-secondary);font-weight:600;">Token</th>
+                    <th style="text-align:left;padding:6px 8px;color:var(--color-text-secondary);font-weight:600;">Value</th>
+                    <th style="text-align:left;padding:6px 8px;color:var(--color-text-secondary);font-weight:600;">Resolved (Light)</th>
+                    <th style="text-align:left;padding:6px 8px;color:var(--color-text-secondary);font-weight:600;">Figma Variable</th>
+                  </tr>
+                </thead>
+                <tbody style="font-family:monospace;">
+                  <tr><td colspan="4" style="padding:6px 8px;font-family:sans-serif;font-size:11px;font-weight:700;color:var(--color-text-caption);background:var(--color-bg-subtle);">Component Tokens → Semantic</td></tr>
+                  <tr><td style="padding:4px 8px;">--gnb-bg</td><td style="padding:4px 8px;color:var(--color-text-secondary);">var(--color-navigation-bg)</td><td style="padding:4px 8px;">#FFFFFF</td><td style="padding:4px 8px;">color/navigation/background</td></tr>
+                  <tr><td style="padding:4px 8px;">--gnb-border</td><td style="padding:4px 8px;color:var(--color-text-secondary);">var(--color-border-subtle)</td><td style="padding:4px 8px;">#E9E9E9</td><td style="padding:4px 8px;">color/line/gray/subtle</td></tr>
+                  <tr><td style="padding:4px 8px;">--gnb-menu-label-default</td><td style="padding:4px 8px;color:var(--color-text-secondary);">var(--color-navigation-label-default-alt)</td><td style="padding:4px 8px;">#000000</td><td style="padding:4px 8px;">color/navigation/label/default-alt</td></tr>
+                  <tr><td style="padding:4px 8px;">--gnb-menu-label-active</td><td style="padding:4px 8px;color:var(--color-text-secondary);">var(--color-navigation-label-selected)</td><td style="padding:4px 8px;">#1D6CEB</td><td style="padding:4px 8px;">color/navigation/label/hover</td></tr>
+                  <tr><td style="padding:4px 8px;">--gnb-menu-underline-active</td><td style="padding:4px 8px;color:var(--color-text-secondary);">var(--color-navigation-indicator-selected)</td><td style="padding:4px 8px;">#1D6CEB</td><td style="padding:4px 8px;">color/line/blue</td></tr>
+                  <tr><td style="padding:4px 8px;">--gnb-logo-text</td><td style="padding:4px 8px;color:var(--color-text-secondary);">var(--color-text-primary)</td><td style="padding:4px 8px;">#202020</td><td style="padding:4px 8px;">color/base/black (HD-GNB-1)</td></tr>
+                  <tr><td style="padding:4px 8px;">--gnb-icon</td><td style="padding:4px 8px;color:var(--color-text-secondary);">var(--color-navigation-icon)</td><td style="padding:4px 8px;">#353535</td><td style="padding:4px 8px;">color/icon/gray-dark (HD-GNB-2)</td></tr>
+                  <tr><td colspan="4" style="padding:6px 8px;font-family:sans-serif;font-size:11px;font-weight:700;color:var(--color-text-caption);background:var(--color-bg-subtle);">Semantic Tokens (신규) → Foundation</td></tr>
+                  <tr><td style="padding:4px 8px;">--color-navigation-label-default-alt</td><td style="padding:4px 8px;color:var(--color-text-secondary);">var(--color-base-black)</td><td style="padding:4px 8px;">#000000</td><td style="padding:4px 8px;">color/navigation/label/default-alt</td></tr>
+                  <tr><td style="padding:4px 8px;">--color-navigation-icon</td><td style="padding:4px 8px;color:var(--color-text-secondary);">var(--color-gray-800)</td><td style="padding:4px 8px;">#353535</td><td style="padding:4px 8px;">color/icon/gray-dark</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <script>
+        ;(function() {
+          function setupGnb(el) {
+            if (!el) return;
+            el.querySelectorAll('.s1-gnb-menu').forEach(function(btn) {
+              btn.addEventListener('click', function() {
+                el.querySelectorAll('.s1-gnb-menu').forEach(function(b) { b.classList.remove('is-selected'); });
+                btn.classList.add('is-selected');
+              });
+            });
+          }
+          ['gnb-action-md','gnb-action-sm','gnb-action-xsm'].forEach(function(id) {
+            setupGnb(document.getElementById(id));
+          });
+        })();
+        </script>
       </section>
 
     </div>
@@ -3530,9 +4342,9 @@ clearBtn.<span class="c-fn">addEventListener</span>(<span class="c-str">'click'<
   })();
 
   (function initFromHash() {
-    var valid = ['checkbox','radio','toggle','input','chip']; // Components New: 마이그레이션 완료 컴포넌트만
+    var valid = ['button','checkbox','radio','toggle','chip','input','textarea','tab','gnb']; // Components New: 마이그레이션 완료 컴포넌트만
     var hash  = window.location.hash.replace('#', '');
-    var id    = (hash && valid.includes(hash)) ? hash : 'checkbox';
+    var id    = (hash && valid.includes(hash)) ? hash : 'button';
     var btn   = document.querySelector('.comp-nav-btn[onclick*="\'' + id + '\'"]') || document.querySelector('.comp-nav-btn');
     showSection(id, btn);
   })();
