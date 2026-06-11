@@ -12,7 +12,9 @@
 
 **트리거:** 토큰 검증, 가이드 페이지 업데이트, Figma 동기화, MD 리뷰 등록 작업 요청 시 `design-system` 스킬을 사용하라. **Figma 컴포넌트를 코드로 옮기는 작업**("Figma ~ 구현/변환/만들어줘")은 `figma-to-code` 스킬을 사용하라. 단순 질문과 직접 편집은 스킬 없이 직접 응답 가능.
 
-**에이전트:** `.claude/agents/` — token-validator · guide-builder · figma-inspector · component-verifier
+**에이전트:** `.claude/agents/` — token-validator · guide-builder · figma-inspector · component-verifier · token-sync
+
+**토큰 값 전파:** 사용자가 **토큰 "값"을 바꾸면**(예: "control-bg-disabled를 gray/100으로", "이 토큰 값 일괄 반영해줘") `token-sync` 에이전트가 연관된 모든 표면(tokens.css·vars-data.ts·install-prompt·semantic 문서·설치기 zip)에 누락 없이 전파한다. 표면 위치는 `npm run tokens:locate -- <token>`으로 결정론적으로 확인. 새 토큰 생성·네이밍·구조 변경은 token-sync 범위 밖(token-validator 소관).
 
 **워크플로우 스킬:** `figma-to-code` — Figma 컴포넌트를 코드로 옮기는 5단계 검문소 워크플로우(재고조사 → 수치추출 → 구현 → 자가대조 → 다크모드). 상세: 아래 "🪜 Figma → 코드 5단계 워크플로우" 섹션.
 
@@ -21,7 +23,7 @@
 |------|----------|------|------|
 | 2026-04-29 | 초기 하네스 구성 | 전체 | revfactory/harness 기반 신규 구축 |
 | 2026-04-30 | 토큰 파일 전수 검수 후 CLAUDE.md 동기화 | Foundation·Semantic·Component | tokens.css·MD 파일과 불일치 항목 수정 |
-| 2026-05-11 | MVP3.2 Button variant 정합 | tokens.css·component.tokens.json·button.css·button-harness.html | blue-line 토큰 추가, ghost deprecated, HTML/CSS code view 추가 |
+| 2026-06-11 | control-bg-disabled 값 정정(gray/50→gray/100) + token-sync 에이전트 신설 | assets/css/tokens.css·plugins/figma-vars-installer/src/vars-data.ts·pages/install-prompt.html·assets/downloads/s1-design-vars-installer.zip·.claude/agents/token-sync.md·scripts/token-sync-locate.js·package.json | 사용자 지적: `--color-control-bg-disabled` Light가 gray/50로 잘못 들어감 → gray/100 정정(Dark gray-dark/300 유지). tokens.css·vars-data 동시 수정 후 sync-prompt·installer:build 재생성, components-new는 tokens.css link로 자동 상속. **재발 방지:** 토큰 값 전파 전용 `token-sync` 에이전트 + `tokens:locate`(표면 위치 결정론적 탐색) 신설 — 향후 토큰 값 수정 시 연관 표면 일괄 동기화 자동화. |
 | 2026-05-11 | MVP3.3 Portal IA 재편 | assets/js/main.js·pages/registry-health.html·pages/button-harness.html | System 그룹 분리, Button 탭 구조 추가 |
 | 2026-05-11 | MVP3.3 Button Components 통합 | pages/components.html·registry/components/button.json·assets/js/main.js | Button Harness 메뉴 제거, ACTION 컬럼 추가, registry 사이즈 정합 |
 | 2026-05-12 | MVP3.4 Button Figma MCP 비교 | reports/mvp3-4-button-figma-mcp-comparison.md | 토큰 불일치 7건·이중 CSS 구조 문서화, Figma nodeId 미등록 확인 |

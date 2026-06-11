@@ -84,8 +84,9 @@ const CELL_W = 132;
 const CELL_H = 60;
 
 // 고정 컬럼 X — 세트(라벨 포함)=x0, Light 스펙, Dark 스펙. 전 컴포넌트 공통(세로 정렬).
-const SPEC_LIGHT_X = 800;
-const SPEC_DARK_X = 1620;
+// 가장 넓은 컴포넌트(Input: 7 state 열)를 수용하도록 설정.
+const SPEC_LIGHT_X = 1040;
+const SPEC_DARK_X = 2080;
 
 interface Slots { bg: string; border: string; label: string; }
 
@@ -255,8 +256,7 @@ async function renderGrouped(opts: GroupedSpecOpts, dark: boolean, emit: LayoutE
     y += BAND_H + 4;
     for (const size of plat.sizes) {
       y += SIZE_GAP;
-      await emit.text(size, PAD, y, 200, "LEFT", c.size, 12, "Bold");
-      y += SIZE_TITLE_H;
+      if (size) { await emit.text(size, PAD, y, 200, "LEFT", c.size, 12, "Bold"); y += SIZE_TITLE_H; }
       for (let col = 0; col < opts.colHeaders.length; col++) {
         await emit.text(opts.colHeaders[col], gridLeft + col * opts.cellW, y, opts.cellW, "CENTER", c.label, 12, "Medium");
       }
@@ -709,41 +709,274 @@ async function buildInput(maps: BuildMaps, originY: number): Promise<{ set: Comp
     { size: "MEDIUM", brk: "PC",     h: 44, padL: 16, padR: 12, font: 14, head: "MEDIUM" },
     { size: "MEDIUM", brk: "Mobile", h: 48, padL: 16, padR: 12, font: 14, head: "MEDIUM·M" },
   ];
+  const labels = ["Off", "On"];
+  const messages = ["Off", "On"];
+  const comps: ComponentNode[] = [];
+  const cells: { comp: ComponentNode; size: string; brk: string; state: string; label: string; message: string }[] = [];
+  for (const sc of sizes) {
+    for (const st of states) {
+      for (const lab of labels) {
+        for (const msg of messages) {
+          const dis = st.name === "Disabled";
+          const field = figma.createFrame();
+          field.name = "field";
+          field.layoutMode = "HORIZONTAL"; field.counterAxisAlignItems = "CENTER";
+          field.primaryAxisSizingMode = "FIXED"; field.counterAxisSizingMode = "FIXED";
+          field.paddingLeft = sc.padL; field.paddingRight = sc.padR; field.paddingTop = 0; field.paddingBottom = 0;
+          field.cornerRadius = 4;
+          field.fills = [boundPaint(scv(maps, fc(st.bg)))];
+          field.strokes = [boundPaint(scv(maps, fc(st.border)))];
+          field.strokeWeight = 1; field.strokeAlign = "INSIDE";
+          field.appendChild(await makeBoundText(st.txt, sc.font, "Regular", scv(maps, fc(st.tc))));
+          field.resize(200, sc.h); // Input 예외 — 넓은 필드
+          const comp = figma.createComponent();
+          comp.name = `Size=${sc.size}, State=${st.name}, Label=${lab}, Message=${msg}, Break=${sc.brk}`;
+          comp.layoutMode = "VERTICAL"; comp.primaryAxisSizingMode = "AUTO"; comp.counterAxisSizingMode = "AUTO"; comp.itemSpacing = 6;
+          if (lab === "On") comp.appendChild(await makeBoundText("라벨", 14, "Medium", scv(maps, fc(dis ? "label/disabled" : "label/default"))));
+          comp.appendChild(field);
+          if (msg === "On") {
+            // 안내메시지 색: Error=빨강·Correct=파랑·Disabled=회색·기본 라벨색
+            const msgColor = dis ? "label/disabled" : st.name === "Error" ? "border/error" : st.name === "Correct" ? "border/correct" : "label/default";
+            comp.appendChild(await makeBoundText("안내 메세지", 12, "Regular", scv(maps, fc(msgColor))));
+          }
+          setLightMode(comp, maps);
+          comps.push(comp);
+          cells.push({ comp, size: sc.size, brk: sc.brk, state: st.name, label: lab, message: msg });
+        }
+      }
+    }
+  }
+  const set = figma.combineAsVariants(comps, figma.currentPage);
+  set.name = "Input";
+  set.x = 0; set.y = originY;
+  // 그룹핑 규칙: 모디파이어(라벨×메시지) 조합을 상위 그룹(밴드)으로, 그 안에서 사이즈별로 나열.
+  // (사이즈별로 라벨/메시지가 번갈아 나오지 않게.) Input 은 예외적으로 필드·컬럼 폭을 넓게.
+  const groups = [
+    { name: "라벨 없음",              lab: "Off", msg: "Off" },
+    { name: "라벨 없음 · 안내메시지", lab: "Off", msg: "On" },
+    { name: "라벨 있음",              lab: "On",  msg: "Off" },
+    { name: "라벨 있음 · 안내메시지", lab: "On",  msg: "On" },
+  ];
+  const sizeRows = [
+    { label: "XSMALL",          size: "XSMALL", brk: "PC" },
+    { label: "SMALL",           size: "SMALL",  brk: "PC" },
+    { label: "MEDIUM",          size: "MEDIUM", brk: "PC" },
+    { label: "MEDIUM · Mobile", size: "MEDIUM", brk: "Mobile" },
+  ];
+  const groupMap = new Map<string, { name: string; lab: string; msg: string }>();
+  for (const g of groups) groupMap.set(g.name, g);
+  const opts: GroupedSpecOpts = {
+    title: "Input",
+    platforms: groups.map((g) => ({ name: g.name, sizes: [""] })),
+    rowLabels: sizeRows.map((r) => r.label),
+    colHeaders: states.map((s) => s.name),
+    cellAt: (groupName, _dummy, ri, ci) => {
+      const g = groupMap.get(groupName);
+      if (!g) return null;
+      const r = sizeRows[ri];
+      return cells.find((x) => x.size === r.size && x.brk === r.brk && x.state === states[ci].name && x.label === g.lab && x.message === g.msg)?.comp ?? null;
+    },
+    lightX: 1740, darkX: 3500, originY, cellW: 224, cellH: 100, rowLabelW: 110,
+  };
+  let bottomY = await decorateSetGrouped(set, opts, maps);
+  try { bottomY = Math.max(bottomY, await buildGroupedSpec(opts, maps)); } catch (e) { console.warn(e); }
+  return { set, bottomY };
+}
+
+/** stroke 기반 아이콘(돋보기·chevron 등) — 모든 vector stroke 를 변수에 바인딩. */
+function makeStrokeIcon(svg: string, strokeVar: Variable): FrameNode {
+  const node = figma.createNodeFromSvg(svg);
+  node.name = "icon";
+  (node.findAll((n) => n.type === "VECTOR") as VectorNode[]).forEach((v) => { v.strokes = [boundPaint(strokeVar)]; v.fills = []; });
+  return node;
+}
+
+// ── Search Input (form-control + 돋보기 아이콘) ───────────────────────────────
+async function buildSearch(maps: BuildMaps, originY: number): Promise<{ set: ComponentSetNode; bottomY: number }> {
+  const fc = (k: string) => `color/form-control/${k}`;
+  const MAG = `<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="7" cy="7" r="5" stroke="#000" stroke-width="1.3"/><path d="M10.6 10.6L14 14" stroke="#000" stroke-width="1.3" stroke-linecap="round"/></svg>`;
+  const states = [
+    { name: "Default",  bg: "bg/default",  border: "border/default",  txt: "검색",   tc: "text/placeholder", icon: "icon/default" },
+    { name: "Focus",    bg: "bg/selected", border: "border/selected", txt: "검색어", tc: "text/selected",    icon: "icon/default" },
+    { name: "Filled",   bg: "bg/default",  border: "border/default",  txt: "검색어", tc: "text/default",     icon: "icon/default" },
+    { name: "Disabled", bg: "bg/disabled", border: "border/disabled", txt: "검색",   tc: "text/disabled",    icon: "icon/disabled" },
+  ];
+  const sizes = [
+    { size: "XSMALL", h: 28, font: 12, padL: 12, padR: 8 },
+    { size: "SMALL",  h: 34, font: 14, padL: 12, padR: 8 },
+    { size: "MEDIUM", h: 44, font: 14, padL: 16, padR: 12 },
+  ];
   const comps: ComponentNode[] = [];
   const cells: { comp: ComponentNode; row: number; col: number }[] = [];
-  for (let row = 0; row < states.length; row++) {
-    for (let col = 0; col < sizes.length; col++) {
-      const st = states[row], sc = sizes[col];
+  for (let row = 0; row < sizes.length; row++) {
+    for (let col = 0; col < states.length; col++) {
+      const sc = sizes[row], st = states[col];
       const comp = figma.createComponent();
-      comp.name = `Size=${sc.size}, State=${st.name}, Break=${sc.brk}`;
+      comp.name = `State=${st.name}, Size=${sc.size}`;
       comp.layoutMode = "HORIZONTAL";
+      comp.primaryAxisAlignItems = "SPACE_BETWEEN";
       comp.counterAxisAlignItems = "CENTER";
-      comp.primaryAxisSizingMode = "FIXED";
-      comp.counterAxisSizingMode = "FIXED";
+      comp.primaryAxisSizingMode = "FIXED"; comp.counterAxisSizingMode = "FIXED";
       comp.paddingLeft = sc.padL; comp.paddingRight = sc.padR; comp.paddingTop = 0; comp.paddingBottom = 0;
       comp.cornerRadius = 4;
       comp.fills = [boundPaint(scv(maps, fc(st.bg)))];
       comp.strokes = [boundPaint(scv(maps, fc(st.border)))];
       comp.strokeWeight = 1; comp.strokeAlign = "INSIDE";
       comp.appendChild(await makeBoundText(st.txt, sc.font, "Regular", scv(maps, fc(st.tc))));
-      comp.resize(140, sc.h);
+      comp.appendChild(makeStrokeIcon(MAG, scv(maps, fc(st.icon))));
+      comp.resize(160, sc.h);
       setLightMode(comp, maps);
       comps.push(comp);
       cells.push({ comp, row, col });
     }
   }
   const set = figma.combineAsVariants(comps, figma.currentPage);
-  set.name = "Input";
+  set.name = "Search Input";
   set.x = 0; set.y = originY;
   const opts: SpecOpts = {
-    title: "Input",
-    colHeaders: sizes.map((s) => s.head),
-    rowLabels: states.map((s) => s.name),
+    title: "Search Input",
+    colHeaders: states.map((s) => s.name),
+    rowLabels: sizes.map((s) => s.size),
     cellAt: (r, c) => cells.find((x) => x.row === r && x.col === c)?.comp ?? null,
-    lightX: SPEC_LIGHT_X, darkX: SPEC_DARK_X, originY, cellW: 152, cellH: 64,
+    lightX: SPEC_LIGHT_X, darkX: SPEC_DARK_X, originY, cellW: 176, cellH: 60,
   };
   let bottomY = await decorateSetFlat(set, opts, maps);
   try { bottomY = Math.max(bottomY, await buildSpec(opts, maps)); } catch (e) { console.warn(e); }
+  return { set, bottomY };
+}
+
+// ── Text Area (form-control, 멀티라인 + Helper) ──────────────────────────────
+async function buildTextarea(maps: BuildMaps, originY: number): Promise<{ set: ComponentSetNode; bottomY: number }> {
+  const fc = (k: string) => `color/form-control/${k}`;
+  const states = [
+    { name: "Default",  bg: "bg/default",  border: "border/default",  txt: "입력",   tc: "text/placeholder" },
+    { name: "Focus",    bg: "bg/selected", border: "border/selected", txt: "텍스트", tc: "text/selected" },
+    { name: "Filled",   bg: "bg/default",  border: "border/default",  txt: "텍스트", tc: "text/default" },
+    { name: "Disabled", bg: "bg/disabled", border: "border/disabled", txt: "입력",   tc: "text/disabled" },
+    { name: "Readonly", bg: "bg/disabled", border: "border/default",  txt: "텍스트", tc: "text/read-only" },
+  ];
+  // 원본 Helper=On 은 필드 하단 카운터+아이콘 툴바(별도 스펙). 1차는 필드 상태만 — 잘못된 "도움말 텍스트" 제거.
+  const comps: ComponentNode[] = [];
+  const cells: { comp: ComponentNode; row: number; col: number }[] = [];
+  for (let row = 0; row < states.length; row++) {
+    const st = states[row];
+    const comp = figma.createComponent();
+    comp.name = `State=${st.name}`;
+    comp.layoutMode = "HORIZONTAL"; comp.counterAxisAlignItems = "MIN";
+    comp.primaryAxisSizingMode = "FIXED"; comp.counterAxisSizingMode = "FIXED";
+    comp.resize(240, 80);
+    comp.paddingLeft = 12; comp.paddingRight = 12; comp.paddingTop = 10; comp.paddingBottom = 10;
+    comp.cornerRadius = 4;
+    comp.fills = [boundPaint(scv(maps, fc(st.bg)))];
+    comp.strokes = [boundPaint(scv(maps, fc(st.border)))];
+    comp.strokeWeight = 1; comp.strokeAlign = "INSIDE";
+    comp.appendChild(await makeBoundText(st.txt, 14, "Regular", scv(maps, fc(st.tc))));
+    setLightMode(comp, maps);
+    comps.push(comp);
+    cells.push({ comp, row, col: 0 });
+  }
+  const set = figma.combineAsVariants(comps, figma.currentPage);
+  set.name = "Text Area";
+  set.x = 0; set.y = originY;
+  const opts: SpecOpts = {
+    title: "Text Area",
+    colHeaders: ["Field"],
+    rowLabels: states.map((s) => s.name),
+    cellAt: (r, c) => cells.find((x) => x.row === r && x.col === c)?.comp ?? null,
+    lightX: SPEC_LIGHT_X, darkX: SPEC_DARK_X, originY, cellW: 264, cellH: 96,
+  };
+  let bottomY = await decorateSetFlat(set, opts, maps);
+  try { bottomY = Math.max(bottomY, await buildSpec(opts, maps)); } catch (e) { console.warn(e); }
+  return { set, bottomY };
+}
+
+// ── Select Box (form-control 트리거 + 다운 chevron) — Break 있음 → 그룹형 ──────
+// Open 상태는 1차로 트리거 하이라이트(chevron 위)만, 드롭다운 옵션 패널은 후속.
+async function buildSelect(maps: BuildMaps, originY: number): Promise<{ set: ComponentSetNode; bottomY: number }> {
+  const fc = (k: string) => `color/form-control/${k}`;
+  const chevDown = (c: string) => `<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4 6L8 10L12 6" stroke="${c}" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+  const chevUp = (c: string) => `<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4 10L8 6L12 10" stroke="${c}" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+  const states = [
+    { name: "Default",  bg: "bg/default",  border: "border/default",  tc: "text/placeholder", icon: "icon/default",  up: false },
+    { name: "Hover",    bg: "bg/hover",    border: "border/default",  tc: "text/placeholder", icon: "icon/default",  up: false },
+    { name: "Open",     bg: "bg/selected", border: "border/selected", tc: "text/placeholder", icon: "icon/default",  up: true },
+    { name: "Filled",   bg: "bg/default",  border: "border/default",  tc: "text/selected",    icon: "icon/default",  up: false },
+    { name: "Disabled", bg: "bg/disabled", border: "border/disabled", tc: "text/disabled",    icon: "icon/disabled", up: false },
+  ];
+  const sizes = [
+    { size: "XXSM", brk: "PC",     h: 28, font: 12 },
+    { size: "XSM",  brk: "PC",     h: 34, font: 14 },
+    { size: "MD",   brk: "PC",     h: 44, font: 14 },
+    { size: "MD",   brk: "Mobile", h: 48, font: 14 },
+  ];
+  const panelOpts = [
+    { txt: "Hover",    bg: "color/dropdown/option/bg/hover",    label: "color/dropdown/option/label/hover" },
+    { txt: "Selected", bg: "color/dropdown/option/bg/selected", label: "color/dropdown/option/label/selected" },
+    { txt: "옵션",     bg: "color/dropdown/option/bg/default",  label: "color/dropdown/option/label/default" },
+    { txt: "옵션",     bg: "color/dropdown/option/bg/default",  label: "color/dropdown/option/label/default" },
+  ];
+  const comps: ComponentNode[] = [];
+  const cells: { comp: ComponentNode; size: string; brk: string; state: string }[] = [];
+  for (const sc of sizes) {
+    for (const st of states) {
+      const trigger = figma.createFrame();
+      trigger.name = "trigger";
+      trigger.layoutMode = "HORIZONTAL";
+      trigger.primaryAxisAlignItems = "SPACE_BETWEEN";
+      trigger.counterAxisAlignItems = "CENTER";
+      trigger.primaryAxisSizingMode = "FIXED"; trigger.counterAxisSizingMode = "FIXED";
+      trigger.paddingLeft = 16; trigger.paddingRight = 8; trigger.paddingTop = 0; trigger.paddingBottom = 0;
+      trigger.cornerRadius = 4;
+      trigger.fills = [boundPaint(scv(maps, fc(st.bg)))];
+      trigger.strokes = [boundPaint(scv(maps, fc(st.border)))];
+      trigger.strokeWeight = 1; trigger.strokeAlign = "INSIDE";
+      trigger.appendChild(await makeBoundText("선택", sc.font, "Regular", scv(maps, fc(st.tc))));
+      trigger.appendChild(makeStrokeIcon((st.up ? chevUp : chevDown)("#000"), scv(maps, fc(st.icon))));
+      trigger.resize(140, sc.h);
+
+      const comp = figma.createComponent();
+      comp.name = `Size=${sc.size}, State=${st.name}, Break=${sc.brk}`;
+      comp.layoutMode = "VERTICAL"; comp.primaryAxisSizingMode = "AUTO"; comp.counterAxisSizingMode = "AUTO"; comp.itemSpacing = 8;
+      comp.appendChild(trigger);
+      if (st.name === "Open") {
+        const panel = figma.createFrame();
+        panel.name = "list";
+        panel.layoutMode = "VERTICAL"; panel.primaryAxisSizingMode = "AUTO"; panel.counterAxisSizingMode = "FIXED";
+        panel.resize(140, 10);
+        panel.paddingTop = 4; panel.paddingBottom = 4; panel.itemSpacing = 0; panel.cornerRadius = 4;
+        panel.fills = [boundPaint(scv(maps, "color/dropdown/list/bg"))];
+        panel.strokes = [boundPaint(scv(maps, "color/dropdown/list/border"))]; panel.strokeWeight = 1; panel.strokeAlign = "INSIDE";
+        for (const o of panelOpts) {
+          const row = figma.createFrame();
+          row.name = "option";
+          row.layoutMode = "HORIZONTAL"; row.counterAxisAlignItems = "CENTER";
+          row.primaryAxisSizingMode = "FIXED"; row.counterAxisSizingMode = "FIXED";
+          row.resize(140, 32); row.paddingLeft = 12; row.paddingRight = 12; row.paddingTop = 0; row.paddingBottom = 0;
+          row.fills = [boundPaint(scv(maps, o.bg))];
+          row.appendChild(await makeBoundText(o.txt, 14, "Regular", scv(maps, o.label)));
+          panel.appendChild(row);
+        }
+        comp.appendChild(panel);
+      }
+      setLightMode(comp, maps);
+      comps.push(comp);
+      cells.push({ comp, size: sc.size, brk: sc.brk, state: st.name });
+    }
+  }
+  const set = figma.combineAsVariants(comps, figma.currentPage);
+  set.name = "Select Box";
+  set.x = 0; set.y = originY;
+  const opts: GroupedSpecOpts = {
+    title: "Select Box",
+    platforms: [{ name: "PC", sizes: ["XXSM", "XSM", "MD"] }, { name: "Mobile", sizes: ["MD"] }],
+    rowLabels: [""],
+    colHeaders: states.map((s) => s.name),
+    cellAt: (platName, size, _ri, ci) =>
+      cells.find((x) => x.size === size && x.brk === platName && x.state === states[ci].name)?.comp ?? null,
+    lightX: SPEC_LIGHT_X, darkX: SPEC_DARK_X, originY, cellW: 156, cellH: 220, rowLabelW: 16,
+  };
+  let bottomY = await decorateSetGrouped(set, opts, maps);
+  try { bottomY = Math.max(bottomY, await buildGroupedSpec(opts, maps)); } catch (e) { console.warn(e); }
   return { set, bottomY };
 }
 
@@ -760,9 +993,9 @@ export async function buildAllComponents(
 
   // 컴포넌트를 세로로 스택 (각 빌더가 set+스펙 포함 최하단 Y 반환 → 충돌 방지)
   const builders: ((m: BuildMaps, y: number) => Promise<{ set: ComponentSetNode; bottomY: number }>)[] = [
-    buildCheckbox, buildRadio, buildToggle, buildChip, buildInput,
+    buildCheckbox, buildRadio, buildToggle, buildChip, buildInput, buildSearch, buildTextarea, buildSelect,
   ];
-  const names = ["Checkbox", "Radio", "Toggle", "Chip", "Input"];
+  const names = ["Checkbox", "Radio", "Toggle", "Chip", "Input", "Search Input", "Text Area", "Select Box"];
   let y = btn.bottomY + 140;
   for (let i = 0; i < builders.length; i++) {
     if (onProgress) onProgress(`${names[i]} 생성 중…`, 97 + Math.round(((i + 1) / builders.length) * 3));
