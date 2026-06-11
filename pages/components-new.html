@@ -1785,11 +1785,13 @@
         <div class="category-nav" id="categoryNav">
           <button class="category-btn is-active" onclick="filterByCategory('all', this)">All</button>
           <button class="category-btn" onclick="filterByCategory('selection', this)">Selection</button>
+          <button class="category-btn" onclick="filterByCategory('form', this)">Form</button>
         </div>
         <div class="comp-nav">
           <button class="comp-nav-btn is-active" data-category="selection" onclick="showSection('checkbox', this)">Checkbox</button>
           <button class="comp-nav-btn" data-category="selection" onclick="showSection('radio', this)">Radio</button>
           <button class="comp-nav-btn" data-category="selection" onclick="showSection('toggle', this)">Toggle</button>
+          <button class="comp-nav-btn" data-category="form" onclick="showSection('input', this)">Input</button>
         </div><!-- /comp-nav -->
       </div><!-- /component-filter -->
 
@@ -2193,6 +2195,697 @@ checkboxes.forEach(function(chk) {
 
       </section>
 
+
+      <!-- ═══ INPUT ═══ -->
+      <section class="comp-section" id="input">
+        <div class="comp-section-header">
+          <h2 class="comp-section-title">Input</h2>
+          <span class="comp-badge comp-badge-blue">Core</span>
+          <span class="comp-badge">3 sizes · 6 states</span>
+        </div>
+
+        <!-- ── PC ── -->
+        <div class="platform-section platform-section-pc">
+          <div class="platform-header"><span class="platform-dot pc"></span>PC</div>
+
+          <!-- States · Medium -->
+          <div class="variant-block">
+            <div class="variant-label">States · Medium (44px)</div>
+            <div class="preview-area">
+              <div class="comp-state-matrix" style="grid-template-columns: 260px repeat(4, minmax(110px, 1fr));">
+                <div class="matrix-col-header-action">Action · Default</div>
+                <div class="matrix-col-header">Filled</div>
+                <div class="matrix-col-header">Error</div>
+                <div class="matrix-col-header">Correct</div>
+                <div class="matrix-col-header">Disabled</div>
+                <div class="comp-action-cell" data-comp-action="input">
+                  <div class="s1-input-wrap input-interactive" style="width:180px;">
+                    <span class="s1-input-label">Label</span>
+                    <div class="s1-input-field">
+                      <input type="text" placeholder="placeholder">
+                      <button class="input-clear-btn" type="button" aria-label="지우기" tabindex="-1">
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6" stroke="currentColor" stroke-width="1.3"/><path d="M5.3 5.3l5.4 5.4M10.7 5.3l-5.4 5.4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+                      </button>
+                    </div>
+                    <span class="ds-helper-text" hidden>안내 메시지</span>
+                  </div>
+                  <div class="action-test-controls">
+                    <button type="button" class="action-mini-toggle" data-input-disabled>Disabled: off</button>
+                    <button type="button" class="action-mini-toggle" data-input-helper>서브텍스트: off</button>
+                  </div>
+                </div>
+                <div class="comp-state-cell">
+                  <div class="s1-input-wrap is-preview" style="width:160px;">
+                    <span class="s1-input-label">Label</span>
+                    <div class="s1-input-field"><input type="text" value="내용"></div>
+                    <span class="ds-helper-text">안내 메시지</span>
+                  </div>
+                </div>
+                <div class="comp-state-cell">
+                  <div class="s1-input-wrap is-error is-preview" style="width:160px;">
+                    <span class="s1-input-label">Label</span>
+                    <div class="s1-input-field"><input type="text" value="잘못된 값"></div>
+                    <span class="ds-helper-text is-error-text">오류 메시지</span>
+                  </div>
+                </div>
+                <div class="comp-state-cell">
+                  <div class="s1-input-wrap is-correct is-preview" style="width:160px;">
+                    <span class="s1-input-label">Label</span>
+                    <div class="s1-input-field"><input type="text" value="올바른 값"></div>
+                    <span class="ds-helper-text is-correct-text">확인 메시지</span>
+                  </div>
+                </div>
+                <div class="comp-state-cell">
+                  <div class="s1-input-wrap is-disabled is-preview" style="width:160px;">
+                    <span class="s1-input-label">Label</span>
+                    <div class="s1-input-field"><input type="text" placeholder="비활성" disabled></div>
+                    <span class="ds-helper-text">안내 메시지</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Sizes -->
+          <div class="variant-block">
+            <div class="variant-label">Sizes — Medium (44px) · Small (34px) · XSmall (28px)</div>
+            <div class="preview-area">
+              <div class="comp-state-matrix" style="grid-template-columns: repeat(3, minmax(200px, 1fr));">
+                <div class="matrix-col-header-action">Action · Medium (44px)</div>
+                <div class="matrix-col-header-action">Action · Small (34px)</div>
+                <div class="matrix-col-header-action">Action · XSmall (28px)</div>
+                <div class="comp-action-cell">
+                  <div class="s1-input-wrap input-interactive" data-input-sizes-cell style="width:180px;">
+                    <span class="s1-input-label">Label</span>
+                    <div class="s1-input-field">
+                      <input type="text" placeholder="placeholder">
+                      <button class="input-clear-btn" type="button" aria-label="지우기" tabindex="-1">
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6" stroke="currentColor" stroke-width="1.3"/><path d="M5.3 5.3l5.4 5.4M10.7 5.3l-5.4 5.4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+                      </button>
+                    </div>
+                    <span class="ds-helper-text" hidden>안내 메시지</span>
+                  </div>
+                </div>
+                <div class="comp-action-cell">
+                  <div class="s1-input-wrap input-interactive" data-input-sizes-cell style="width:160px;">
+                    <span class="s1-input-label">Label</span>
+                    <div class="s1-input-field input-size-small">
+                      <input type="text" placeholder="placeholder">
+                      <button class="input-clear-btn" type="button" aria-label="지우기" tabindex="-1">
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6" stroke="currentColor" stroke-width="1.3"/><path d="M5.3 5.3l5.4 5.4M10.7 5.3l-5.4 5.4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+                      </button>
+                    </div>
+                    <span class="ds-helper-text" hidden>안내 메시지</span>
+                  </div>
+                </div>
+                <div class="comp-action-cell">
+                  <div class="s1-input-wrap input-interactive" data-input-sizes-cell style="width:160px;">
+                    <span class="s1-input-label">Label</span>
+                    <div class="s1-input-field input-size-xsmall">
+                      <input type="text" placeholder="placeholder">
+                      <button class="input-clear-btn" type="button" aria-label="지우기" tabindex="-1">
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6" stroke="currentColor" stroke-width="1.3"/><path d="M5.3 5.3l5.4 5.4M10.7 5.3l-5.4 5.4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+                      </button>
+                    </div>
+                    <span class="ds-helper-text" hidden>안내 메시지</span>
+                  </div>
+                </div>
+              </div>
+              <div class="action-test-controls" style="margin-top:12px;">
+                <button type="button" class="action-mini-toggle" data-sizes-disabled>Disabled: off</button>
+                <button type="button" class="action-mini-toggle" data-sizes-helper>서브텍스트: off</button>
+                <button type="button" class="action-mini-toggle" data-sizes-error>Error: off</button>
+                <button type="button" class="action-mini-toggle" data-sizes-correct>Correct: off</button>
+              </div>
+            </div>
+          </div>
+        </div><!-- /platform-section-pc -->
+
+        <!-- ── Mobile ── -->
+        <div class="platform-section platform-section-mobile">
+          <div class="platform-header"><span class="platform-dot mobile"></span>Mobile</div>
+
+          <!-- States · Mobile -->
+          <div class="variant-block">
+            <div class="variant-label">States · Mobile (48px)</div>
+            <div class="preview-area">
+              <div class="comp-state-matrix" style="grid-template-columns: 260px repeat(4, minmax(110px, 1fr));">
+                <div class="matrix-col-header-action">Action · Default</div>
+                <div class="matrix-col-header">Filled</div>
+                <div class="matrix-col-header">Error</div>
+                <div class="matrix-col-header">Correct</div>
+                <div class="matrix-col-header">Disabled</div>
+                <div class="comp-action-cell" data-comp-action="input">
+                  <div class="s1-input-wrap input-interactive" style="width:180px;">
+                    <span class="s1-input-label">Label</span>
+                    <div class="s1-input-field input-size-mobile">
+                      <input type="text" placeholder="placeholder">
+                      <button class="input-clear-btn" type="button" aria-label="지우기" tabindex="-1">
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6" stroke="currentColor" stroke-width="1.3"/><path d="M5.3 5.3l5.4 5.4M10.7 5.3l-5.4 5.4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+                      </button>
+                    </div>
+                    <span class="ds-helper-text" hidden>안내 메시지</span>
+                  </div>
+                  <div class="action-test-controls">
+                    <button type="button" class="action-mini-toggle" data-input-disabled>Disabled: off</button>
+                    <button type="button" class="action-mini-toggle" data-input-helper>서브텍스트: off</button>
+                  </div>
+                </div>
+                <div class="comp-state-cell">
+                  <div class="s1-input-wrap is-preview" style="width:160px;">
+                    <span class="s1-input-label">Label</span>
+                    <div class="s1-input-field input-size-mobile"><input type="text" value="내용"></div>
+                    <span class="ds-helper-text">안내 메시지</span>
+                  </div>
+                </div>
+                <div class="comp-state-cell">
+                  <div class="s1-input-wrap is-error is-preview" style="width:160px;">
+                    <span class="s1-input-label">Label</span>
+                    <div class="s1-input-field input-size-mobile"><input type="text" value="잘못된 값"></div>
+                    <span class="ds-helper-text is-error-text">오류 메시지</span>
+                  </div>
+                </div>
+                <div class="comp-state-cell">
+                  <div class="s1-input-wrap is-correct is-preview" style="width:160px;">
+                    <span class="s1-input-label">Label</span>
+                    <div class="s1-input-field input-size-mobile">
+                      <input type="text" value="올바른 값">
+                      <span class="s1-input-remove">
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6" stroke="currentColor" stroke-width="1.3"/><path d="M5.3 5.3l5.4 5.4M10.7 5.3l-5.4 5.4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+                      </span>
+                    </div>
+                    <span class="ds-helper-text is-correct-text">확인 메시지</span>
+                  </div>
+                </div>
+                <div class="comp-state-cell">
+                  <div class="s1-input-wrap is-disabled is-preview" style="width:160px;">
+                    <span class="s1-input-label">Label</span>
+                    <div class="s1-input-field input-size-mobile"><input type="text" placeholder="비활성" disabled></div>
+                    <span class="ds-helper-text">안내 메시지</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div><!-- /platform-section-mobile -->
+
+        <div class="code-block">
+          <div class="code-tabs">
+            <button class="code-tab active" onclick="switchTab(this,'inp-html')">HTML</button>
+            <button class="code-tab" onclick="switchTab(this,'inp-css')">CSS</button>
+            <button class="code-tab" onclick="switchTab(this,'inp-tokens')">Token Details</button>
+            <button class="code-tab" onclick="switchTab(this,'inp-js')">JavaScript</button>
+            <button class="code-copy-btn" onclick="copyCode('inp-html-pre')">복사</button>
+          </div>
+          <div class="code-pane active" id="inp-html">
+            <pre id="inp-html-pre"><span class="c-cmt">&lt;!-- Medium (44px) — Default --&gt;</span>
+<span class="c-tag">&lt;div</span> <span class="c-attr">class</span>=<span class="c-str">"s1-input-wrap"</span><span class="c-tag">&gt;</span>
+  <span class="c-tag">&lt;span</span> <span class="c-attr">class</span>=<span class="c-str">"s1-input-label"</span><span class="c-tag">&gt;</span>Label<span class="c-tag">&lt;/span&gt;</span>
+  <span class="c-tag">&lt;div</span> <span class="c-attr">class</span>=<span class="c-str">"s1-input-field"</span><span class="c-tag">&gt;</span>
+    <span class="c-tag">&lt;input</span> <span class="c-attr">type</span>=<span class="c-str">"text"</span> <span class="c-attr">placeholder</span>=<span class="c-str">"placeholder"</span><span class="c-tag">&gt;</span>
+  <span class="c-tag">&lt;/div&gt;</span>
+  <span class="c-tag">&lt;span</span> <span class="c-attr">class</span>=<span class="c-str">"ds-helper-text"</span><span class="c-tag">&gt;</span>안내 메시지<span class="c-tag">&lt;/span&gt;</span>
+<span class="c-tag">&lt;/div&gt;</span>
+<span class="c-cmt">&lt;!-- Small (34px): input-size-small 추가 --&gt;</span>
+<span class="c-tag">&lt;div</span> <span class="c-attr">class</span>=<span class="c-str">"s1-input-field input-size-small"</span><span class="c-tag">&gt;</span>...<span class="c-tag">&lt;/div&gt;</span>
+<span class="c-cmt">&lt;!-- XSmall (28px): input-size-xsmall 추가 --&gt;</span>
+<span class="c-tag">&lt;div</span> <span class="c-attr">class</span>=<span class="c-str">"s1-input-field input-size-xsmall"</span><span class="c-tag">&gt;</span>...<span class="c-tag">&lt;/div&gt;</span>
+<span class="c-cmt">&lt;!-- Error: s1-input-wrap에 is-error 추가 --&gt;</span>
+<span class="c-tag">&lt;div</span> <span class="c-attr">class</span>=<span class="c-str">"s1-input-wrap is-error"</span><span class="c-tag">&gt;</span>...<span class="c-tag">&lt;/div&gt;</span>
+<span class="c-cmt">&lt;!-- Success: is-correct / Selected: is-focus / Disabled: is-disabled --&gt;</span></pre>
+          </div>
+          <div class="code-pane" id="inp-css">
+            <pre><span class="c-prop">--input-default-border</span>:   <span class="c-val">var(--color-border-default)</span>;
+<span class="c-prop">--input-hover-border</span>:     <span class="c-val">var(--color-border-strong)</span>;
+<span class="c-prop">--input-focus-border</span>:     <span class="c-val">var(--color-border-focus)</span>;
+<span class="c-prop">--input-error-border</span>:     <span class="c-val">var(--color-border-danger)</span>;
+<span class="c-prop">--input-correct-border</span>:   <span class="c-val">var(--color-border-correct)</span>;
+<span class="c-prop">--input-disabled-bg</span>:      <span class="c-val">var(--color-bg-subtle)</span>;
+<span class="c-prop">--input-disabled-border</span>:  <span class="c-val">var(--color-border-default)</span>;
+<span class="c-prop">--input-placeholder-text</span>: <span class="c-val">var(--color-text-placeholder)</span>;
+<span class="c-prop">--input-error-text</span>:       <span class="c-val">var(--color-text-danger)</span>;
+<span class="c-prop">--input-correct-text</span>:     <span class="c-val">var(--color-text-correct)</span>;
+<span class="c-cmt">/* Readonly (2026-05-18 신설) */</span>
+<span class="c-prop">--input-readonly-bg</span>:      <span class="c-val">var(--color-form-control-bg-disabled)</span>;
+<span class="c-prop">--input-readonly-border</span>:  <span class="c-val">var(--color-form-control-border-disabled)</span>;
+<span class="c-prop">--input-readonly-text</span>:    <span class="c-val">var(--color-text-readonly)</span>;</pre>
+          </div>
+          <div class="code-pane" id="inp-tokens">
+            <table class="token-detail-table">
+              <thead><tr><th>Token</th><th>Value (Semantic)</th><th>Role</th></tr></thead>
+              <tbody>
+                <tr><td class="token-name">--input-default-bg</td><td class="token-value">var(--color-form-control-bg-default)</td><td>기본 배경색</td></tr>
+                <tr><td class="token-name">--input-disabled-bg</td><td class="token-value">var(--color-form-control-bg-disabled)</td><td>비활성 배경색</td></tr>
+                <tr><td class="token-name">--input-readonly-bg</td><td class="token-value">var(--color-form-control-bg-disabled)</td><td>읽기전용 배경색 (disabled와 동일)</td></tr>
+                <tr><td class="token-name">--input-default-border</td><td class="token-value">var(--color-border-default)</td><td>기본 테두리</td></tr>
+                <tr><td class="token-name">--input-focus-border</td><td class="token-value">var(--color-border-focus)</td><td>포커스 테두리</td></tr>
+                <tr><td class="token-name">--input-error-border</td><td class="token-value">var(--color-border-danger)</td><td>에러 테두리</td></tr>
+                <tr><td class="token-name">--input-correct-border</td><td class="token-value">var(--color-border-correct)</td><td>정상(correct) 테두리</td></tr>
+                <tr><td class="token-name">--input-disabled-border</td><td class="token-value">var(--color-border-default)</td><td>비활성 테두리</td></tr>
+                <tr><td class="token-name">--input-readonly-border</td><td class="token-value">var(--color-form-control-border-disabled)</td><td>읽기전용 테두리 (disabled와 동일)</td></tr>
+                <tr><td class="token-name">--input-readonly-text</td><td class="token-value">var(--color-text-readonly)</td><td>읽기전용 텍스트 (text-disabled보다 한 단계 진함)</td></tr>
+                <tr><td class="token-name">--input-placeholder-text</td><td class="token-value">var(--color-text-placeholder)</td><td>placeholder 텍스트</td></tr>
+                <tr><td class="token-name">--input-disabled-text</td><td class="token-value">var(--color-text-disabled)</td><td>비활성 텍스트</td></tr>
+                <tr><td class="token-name">--input-helper-text</td><td class="token-value">var(--color-text-secondary)</td><td>안내 메시지 텍스트</td></tr>
+                <tr><td class="token-name">--input-correct-text</td><td class="token-value">var(--color-text-correct)</td><td>정상(correct) 메시지 텍스트</td></tr>
+                <tr><td class="token-name">--input-error-text</td><td class="token-value">var(--color-text-danger)</td><td>에러 메시지 텍스트</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="code-pane" id="inp-js"><pre>// Search Input — clear 버튼
+const searchField = document.querySelector('[data-related-field="search-input"]');
+const searchInput = searchField.querySelector('[data-search-input]');
+const clearBtn    = searchField.querySelector('[data-clear-action]');
+
+searchInput.addEventListener('input', () => {
+  clearBtn.hidden = searchInput.value.length === 0;
+});
+clearBtn.addEventListener('click', () => {
+  searchInput.value = '';
+  clearBtn.hidden = true;
+  searchInput.focus();
+});
+
+// Password Field — 비밀번호 표시/숨기기
+const pwField   = document.querySelector('[data-related-field="password-field"]');
+const pwInput   = pwField.querySelector('[data-password-input]');
+const toggleBtn = pwField.querySelector('[data-visibility-toggle]');
+const pwClear   = pwField.querySelector('[data-clear-action]');
+
+toggleBtn.addEventListener('click', () => {
+  pwInput.type = pwInput.type === 'password' ? 'text' : 'password';
+  const visible = pwInput.type === 'text';
+  toggleBtn.setAttribute('aria-pressed', String(visible));
+  toggleBtn.setAttribute('aria-label', visible ? '비밀번호 숨기기' : '비밀번호 보기');
+  // 아이콘 전환: [data-icon-hidden] / [data-icon-visible]
+  toggleBtn.querySelector('[data-icon-hidden]').style.display  = visible ? 'none' : '';
+  toggleBtn.querySelector('[data-icon-visible]').style.display = visible ? '' : 'none';
+  pwInput.focus();
+});
+if (pwClear) {
+  pwInput.addEventListener('input', () => { pwClear.hidden = pwInput.value.length === 0; });
+  pwClear.addEventListener('click', () => { pwInput.value = ''; pwClear.hidden = true; pwInput.focus(); });
+}</pre>
+          </div>
+        </div>
+
+        <!-- ── Search Input ── -->
+        <div class="variant-group">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:16px;">
+            <h3 class="variant-group-title">Search Input</h3>
+            <span class="comp-badge comp-badge-blue">Core</span>
+            <span class="comp-badge">3 states</span>
+            <span class="comp-badge">Base Input 조합</span>
+          </div>
+
+          <div class="variant-block">
+            <div class="variant-label">States</div>
+            <div class="preview-area" style="overflow:visible;">
+              <div class="comp-state-matrix" style="grid-template-columns:230px repeat(3, minmax(160px,1fr));">
+                <div class="matrix-col-header-action">Action</div>
+                <div class="matrix-col-header">Default</div>
+                <div class="matrix-col-header">Filled</div>
+                <div class="matrix-col-header">Disabled</div>
+
+                <!-- Action -->
+                <div class="comp-action-cell" data-comp-action="search-input">
+                  <div data-related-field="search-input" style="width:200px;">
+                    <div class="s1-input-wrap">
+                      <div class="s1-input-field">
+                        <input type="text" placeholder="검색어 입력" data-search-input autocomplete="off">
+                        <span class="s1-suffix-action-group">
+                          <button type="button" class="s1-input-action-btn input-clear-btn" data-clear-action aria-label="검색어 지우기" hidden>
+                            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><circle cx="8" cy="8" r="6" stroke="currentColor" stroke-width="1.3"/><path d="M5.3 5.3l5.4 5.4M10.7 5.3l-5.4 5.4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+                          </button>
+                          <button type="button" class="s1-input-action-btn" data-search-action aria-label="검색">
+                            <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true"><path d="M7.58918 15.2371C9.42481 15.2342 11.1973 14.564 12.579 13.3505L17.271 18L18 17.268L13.3387 12.5876C14.4678 11.27 15.1142 9.6044 15.1707 7.86713C15.2272 6.12985 14.6903 4.42542 13.6492 3.0367C12.6082 1.64798 11.1254 0.658482 9.44717 0.23242C7.7689 -0.193641 5.99599 -0.0306429 4.42267 0.694362C2.84936 1.41937 1.57026 2.66278 0.797641 4.21825C0.0250252 5.77372 -0.194642 7.5477 0.175096 9.24579C0.544834 10.9439 1.48174 12.464 2.83033 13.5538C4.17892 14.6435 5.8581 15.2375 7.58918 15.2371ZM7.58918 1.02062C8.88966 1.01858 10.1615 1.40407 11.2437 2.12828C12.3258 2.85249 13.1696 3.88284 13.6682 5.08887C14.1668 6.29491 14.2978 7.62239 14.0446 8.90322C13.7914 10.1841 13.1654 11.3606 12.2458 12.284C11.3262 13.2074 10.1544 13.836 8.87885 14.0902C7.60326 14.3445 6.28122 14.2129 5.08012 13.7123C3.87902 13.2116 2.85289 12.3643 2.13164 11.2777C1.4104 10.1911 1.02649 8.91408 1.02852 7.60825C1.02582 6.74093 1.19345 5.88159 1.52182 5.07938C1.85019 4.27717 2.33285 3.54784 2.9422 2.93312C3.55155 2.31839 4.27562 1.83033 5.073 1.49686C5.87038 1.16339 6.72541 0.991047 7.58918 0.989696V1.02062Z" fill="currentColor"/></svg>
+                          </button>
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Default -->
+                <div class="comp-state-cell">
+                  <div class="s1-input-wrap is-preview" style="width:160px;">
+                    <div class="s1-input-field">
+                      <input type="text" placeholder="검색어 입력" tabindex="-1">
+                      <span class="s1-suffix-action-group">
+                        <button class="s1-input-action-btn" tabindex="-1" style="pointer-events:none;" aria-label="검색">
+                          <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true"><path d="M7.58918 15.2371C9.42481 15.2342 11.1973 14.564 12.579 13.3505L17.271 18L18 17.268L13.3387 12.5876C14.4678 11.27 15.1142 9.6044 15.1707 7.86713C15.2272 6.12985 14.6903 4.42542 13.6492 3.0367C12.6082 1.64798 11.1254 0.658482 9.44717 0.23242C7.7689 -0.193641 5.99599 -0.0306429 4.42267 0.694362C2.84936 1.41937 1.57026 2.66278 0.797641 4.21825C0.0250252 5.77372 -0.194642 7.5477 0.175096 9.24579C0.544834 10.9439 1.48174 12.464 2.83033 13.5538C4.17892 14.6435 5.8581 15.2375 7.58918 15.2371ZM7.58918 1.02062C8.88966 1.01858 10.1615 1.40407 11.2437 2.12828C12.3258 2.85249 13.1696 3.88284 13.6682 5.08887C14.1668 6.29491 14.2978 7.62239 14.0446 8.90322C13.7914 10.1841 13.1654 11.3606 12.2458 12.284C11.3262 13.2074 10.1544 13.836 8.87885 14.0902C7.60326 14.3445 6.28122 14.2129 5.08012 13.7123C3.87902 13.2116 2.85289 12.3643 2.13164 11.2777C1.4104 10.1911 1.02649 8.91408 1.02852 7.60825C1.02582 6.74093 1.19345 5.88159 1.52182 5.07938C1.85019 4.27717 2.33285 3.54784 2.9422 2.93312C3.55155 2.31839 4.27562 1.83033 5.073 1.49686C5.87038 1.16339 6.72541 0.991047 7.58918 0.989696V1.02062Z" fill="currentColor"/></svg>
+                        </button>
+                      </span>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Filled -->
+                <div class="comp-state-cell">
+                  <div class="s1-input-wrap is-preview" style="width:160px;">
+                    <div class="s1-input-field">
+                      <input type="text" value="검색어" tabindex="-1">
+                      <span class="s1-suffix-action-group">
+                        <button class="s1-input-action-btn" tabindex="-1" style="pointer-events:none;" aria-label="지우기">
+                          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><circle cx="8" cy="8" r="6" stroke="currentColor" stroke-width="1.3"/><path d="M5.3 5.3l5.4 5.4M10.7 5.3l-5.4 5.4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+                        </button>
+                        <button class="s1-input-action-btn" tabindex="-1" style="pointer-events:none;" aria-label="검색">
+                          <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true"><path d="M7.58918 15.2371C9.42481 15.2342 11.1973 14.564 12.579 13.3505L17.271 18L18 17.268L13.3387 12.5876C14.4678 11.27 15.1142 9.6044 15.1707 7.86713C15.2272 6.12985 14.6903 4.42542 13.6492 3.0367C12.6082 1.64798 11.1254 0.658482 9.44717 0.23242C7.7689 -0.193641 5.99599 -0.0306429 4.42267 0.694362C2.84936 1.41937 1.57026 2.66278 0.797641 4.21825C0.0250252 5.77372 -0.194642 7.5477 0.175096 9.24579C0.544834 10.9439 1.48174 12.464 2.83033 13.5538C4.17892 14.6435 5.8581 15.2375 7.58918 15.2371ZM7.58918 1.02062C8.88966 1.01858 10.1615 1.40407 11.2437 2.12828C12.3258 2.85249 13.1696 3.88284 13.6682 5.08887C14.1668 6.29491 14.2978 7.62239 14.0446 8.90322C13.7914 10.1841 13.1654 11.3606 12.2458 12.284C11.3262 13.2074 10.1544 13.836 8.87885 14.0902C7.60326 14.3445 6.28122 14.2129 5.08012 13.7123C3.87902 13.2116 2.85289 12.3643 2.13164 11.2777C1.4104 10.1911 1.02649 8.91408 1.02852 7.60825C1.02582 6.74093 1.19345 5.88159 1.52182 5.07938C1.85019 4.27717 2.33285 3.54784 2.9422 2.93312C3.55155 2.31839 4.27562 1.83033 5.073 1.49686C5.87038 1.16339 6.72541 0.991047 7.58918 0.989696V1.02062Z" fill="currentColor"/></svg>
+                        </button>
+                      </span>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Disabled -->
+                <div class="comp-state-cell">
+                  <div class="s1-input-wrap is-disabled is-preview" style="width:160px;">
+                    <div class="s1-input-field">
+                      <input type="text" placeholder="검색어 입력" disabled tabindex="-1">
+                      <span class="s1-suffix-action-group">
+                        <button class="s1-input-action-btn" tabindex="-1" style="pointer-events:none;" aria-label="검색" disabled>
+                          <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true"><path d="M7.58918 15.2371C9.42481 15.2342 11.1973 14.564 12.579 13.3505L17.271 18L18 17.268L13.3387 12.5876C14.4678 11.27 15.1142 9.6044 15.1707 7.86713C15.2272 6.12985 14.6903 4.42542 13.6492 3.0367C12.6082 1.64798 11.1254 0.658482 9.44717 0.23242C7.7689 -0.193641 5.99599 -0.0306429 4.42267 0.694362C2.84936 1.41937 1.57026 2.66278 0.797641 4.21825C0.0250252 5.77372 -0.194642 7.5477 0.175096 9.24579C0.544834 10.9439 1.48174 12.464 2.83033 13.5538C4.17892 14.6435 5.8581 15.2375 7.58918 15.2371ZM7.58918 1.02062C8.88966 1.01858 10.1615 1.40407 11.2437 2.12828C12.3258 2.85249 13.1696 3.88284 13.6682 5.08887C14.1668 6.29491 14.2978 7.62239 14.0446 8.90322C13.7914 10.1841 13.1654 11.3606 12.2458 12.284C11.3262 13.2074 10.1544 13.836 8.87885 14.0902C7.60326 14.3445 6.28122 14.2129 5.08012 13.7123C3.87902 13.2116 2.85289 12.3643 2.13164 11.2777C1.4104 10.1911 1.02649 8.91408 1.02852 7.60825C1.02582 6.74093 1.19345 5.88159 1.52182 5.07938C1.85019 4.27717 2.33285 3.54784 2.9422 2.93312C3.55155 2.31839 4.27562 1.83033 5.073 1.49686C5.87038 1.16339 6.72541 0.991047 7.58918 0.989696V1.02062Z" fill="currentColor"/></svg>
+                        </button>
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="code-block">
+            <div class="code-tabs">
+              <button class="code-tab active" onclick="switchTab(this,'si-html')">HTML</button>
+              <button class="code-tab" onclick="switchTab(this,'si-css')">CSS</button>
+              <button class="code-tab" onclick="switchTab(this,'si-js')">JavaScript</button>
+              <button class="code-tab" onclick="switchTab(this,'si-tokens')">Token Details</button>
+              <button class="code-copy-btn" onclick="copyCode('si-html-pre')">복사</button>
+            </div>
+            <div class="code-pane active" id="si-html">
+              <pre id="si-html-pre"><span class="c-cmt">&lt;!-- Search Input --&gt;</span>
+<span class="c-tag">&lt;div</span> <span class="c-attr">class</span>=<span class="c-str">"s1-input-wrap"</span><span class="c-tag">&gt;</span>
+  <span class="c-tag">&lt;div</span> <span class="c-attr">class</span>=<span class="c-str">"s1-input-field"</span><span class="c-tag">&gt;</span>
+    <span class="c-tag">&lt;input</span> <span class="c-attr">type</span>=<span class="c-str">"text"</span> <span class="c-attr">placeholder</span>=<span class="c-str">"검색어 입력"</span> <span class="c-attr">autocomplete</span>=<span class="c-str">"off"</span><span class="c-tag">&gt;</span>
+    <span class="c-tag">&lt;span</span> <span class="c-attr">class</span>=<span class="c-str">"s1-suffix-action-group"</span><span class="c-tag">&gt;</span>
+      <span class="c-cmt">&lt;!-- clearAction: 값 있을 때만 표시 --&gt;</span>
+      <span class="c-tag">&lt;button</span> <span class="c-attr">type</span>=<span class="c-str">"button"</span> <span class="c-attr">class</span>=<span class="c-str">"s1-input-action-btn"</span>
+              <span class="c-attr">aria-label</span>=<span class="c-str">"검색어 지우기"</span> <span class="c-attr">hidden</span><span class="c-tag">&gt;</span>
+        <span class="c-cmt">&lt;!-- remove icon --&gt;</span>
+      <span class="c-tag">&lt;/button&gt;</span>
+      <span class="c-cmt">&lt;!-- searchAction: 항상 표시 --&gt;</span>
+      <span class="c-tag">&lt;button</span> <span class="c-attr">type</span>=<span class="c-str">"button"</span> <span class="c-attr">class</span>=<span class="c-str">"s1-input-action-btn"</span>
+              <span class="c-attr">aria-label</span>=<span class="c-str">"검색"</span><span class="c-tag">&gt;</span>
+        <span class="c-cmt">&lt;!-- ic_찾기/조회 icon --&gt;</span>
+      <span class="c-tag">&lt;/button&gt;</span>
+    <span class="c-tag">&lt;/span&gt;</span>
+  <span class="c-tag">&lt;/div&gt;</span>
+<span class="c-tag">&lt;/div&gt;</span></pre>
+            </div>
+            <div class="code-pane" id="si-css">
+              <pre><span class="c-cmt">/* suffixActionGroup — Search Input 전용 */</span>
+<span class="c-sel">.s1-suffix-action-group</span> {
+  <span class="c-prop">display</span>: <span class="c-val">flex</span>;
+  <span class="c-prop">align-items</span>: <span class="c-val">center</span>;
+  <span class="c-prop">gap</span>: <span class="c-val">2px</span>;
+  <span class="c-prop">flex-shrink</span>: <span class="c-val">0</span>;
+}
+<span class="c-sel">.s1-input-action-btn</span> {
+  <span class="c-prop">display</span>: <span class="c-val">flex</span>;
+  <span class="c-prop">align-items</span>: <span class="c-val">center</span>;
+  <span class="c-prop">justify-content</span>: <span class="c-val">center</span>;
+  <span class="c-prop">width</span>: <span class="c-val">28px</span>; <span class="c-prop">height</span>: <span class="c-val">28px</span>;
+  <span class="c-prop">border</span>: <span class="c-val">none</span>; <span class="c-prop">background</span>: <span class="c-val">transparent</span>;
+  <span class="c-prop">cursor</span>: <span class="c-val">pointer</span>;
+  <span class="c-prop">color</span>: <span class="c-val">var(--color-form-control-icon-default)</span>;
+  <span class="c-prop">border-radius</span>: <span class="c-val">4px</span>;
+}
+<span class="c-sel">.s1-input-action-btn:hover</span> {
+  <span class="c-prop">background</span>: <span class="c-val">var(--color-bg-subtle)</span>;
+}
+<span class="c-cmt">/* clearAction — 값 있을 때만 표시 (hidden attribute로 제어) */</span>
+<span class="c-sel">[hidden]</span> { <span class="c-prop">display</span>: <span class="c-val">none !important</span>; }</pre>
+            </div>
+            <div class="code-pane" id="si-js">
+              <pre><span class="c-cmt">// Search Input — clear + search 연동</span>
+<span class="c-key">const</span> wrap     = document.<span class="c-fn">querySelector</span>(<span class="c-str">'.s1-input-wrap'</span>);
+<span class="c-key">const</span> input    = wrap.<span class="c-fn">querySelector</span>(<span class="c-str">'input[type="text"]'</span>);
+<span class="c-key">const</span> clearBtn = wrap.<span class="c-fn">querySelector</span>(<span class="c-str">'[aria-label="검색어 지우기"]'</span>);
+<span class="c-key">const</span> searchBtn = wrap.<span class="c-fn">querySelector</span>(<span class="c-str">'[aria-label="검색"]'</span>);
+
+<span class="c-cmt">// 입력값 변경 시 clear 버튼 표시/숨김</span>
+input.<span class="c-fn">addEventListener</span>(<span class="c-str">'input'</span>, () =&gt; {
+  clearBtn.hidden = input.value.length === <span class="c-num">0</span>;
+});
+
+<span class="c-cmt">// clear 버튼 클릭</span>
+clearBtn.<span class="c-fn">addEventListener</span>(<span class="c-str">'click'</span>, () =&gt; {
+  input.value = <span class="c-str">''</span>;
+  clearBtn.hidden = <span class="c-key">true</span>;
+  input.<span class="c-fn">focus</span>();
+});
+
+<span class="c-cmt">// search 버튼 클릭 (검색 로직 연결)</span>
+searchBtn.<span class="c-fn">addEventListener</span>(<span class="c-str">'click'</span>, () =&gt; {
+  <span class="c-cmt">// TODO: 검색 실행 로직</span>
+  console.<span class="c-fn">log</span>(<span class="c-str">'검색:'</span>, input.value);
+});</pre>
+            </div>
+            <div class="code-pane" id="si-tokens">
+              <table class="token-detail-table">
+                <thead><tr><th>Token</th><th>Value (Semantic)</th><th>Resolved</th><th>Role</th></tr></thead>
+                <tbody>
+                  <tr><td class="token-name">--input-default-bg</td><td class="token-value">var(--color-form-control-bg-default)</td><td class="token-resolved" data-token="--input-default-bg"></td><td>기본 배경</td></tr>
+                  <tr><td class="token-name">--input-disabled-bg</td><td class="token-value">var(--color-form-control-bg-disabled)</td><td class="token-resolved" data-token="--input-disabled-bg"></td><td>disabled 배경</td></tr>
+                  <tr><td class="token-name">--input-default-border</td><td class="token-value">var(--color-form-control-border-default)</td><td class="token-resolved" data-token="--input-default-border"></td><td>기본 테두리</td></tr>
+                  <tr><td class="token-name">--input-focus-border</td><td class="token-value">var(--color-form-control-border-selected)</td><td class="token-resolved" data-token="--input-focus-border"></td><td>focus 테두리</td></tr>
+                  <tr><td class="token-name">--input-disabled-border</td><td class="token-value">var(--color-form-control-border-disabled)</td><td class="token-resolved" data-token="--input-disabled-border"></td><td>disabled 테두리</td></tr>
+                  <tr><td class="token-name">--input-placeholder-text</td><td class="token-value">var(--color-form-control-text-placeholder)</td><td class="token-resolved" data-token="--input-placeholder-text"></td><td>placeholder 텍스트</td></tr>
+                  <tr><td class="token-name">--input-disabled-text</td><td class="token-value">var(--color-form-control-text-disabled)</td><td class="token-resolved" data-token="--input-disabled-text"></td><td>disabled 텍스트</td></tr>
+                  <tr style="background:var(--color-bg-subtle);"><td class="token-name">--color-form-control-icon-default</td><td class="token-value">var(--color-gray-800) / dark: var(--color-gray-dark-700)</td><td class="token-resolved" data-token="--color-form-control-icon-default"></td><td>검색·클리어 아이콘 색상</td></tr>
+                </tbody>
+              </table>
+              <p style="margin:8px 10px 4px;font-size:11px;color:var(--color-text-secondary);">Search Input은 Base Input의 <code>--input-*</code> 토큰을 공유합니다. error/correct 상태 없음. 전용 컴포넌트 토큰 없음.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── Password Field ── -->
+        <div class="variant-group">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:16px;">
+            <h3 class="variant-group-title">Password Field</h3>
+            <span class="comp-badge comp-badge-blue">Core</span>
+            <span class="comp-badge">4 states</span>
+            <span class="comp-badge">Base Input 조합</span>
+          </div>
+
+          <div class="variant-block">
+            <div class="variant-label">States</div>
+            <div class="preview-area" style="overflow:visible;">
+              <div class="comp-state-matrix" style="grid-template-columns:230px repeat(4, minmax(150px,1fr));">
+                <div class="matrix-col-header-action">Action</div>
+                <div class="matrix-col-header">Default</div>
+                <div class="matrix-col-header">Filled (hidden)</div>
+                <div class="matrix-col-header">Filled (visible)</div>
+                <div class="matrix-col-header">Disabled</div>
+
+                <!-- Action -->
+                <div class="comp-action-cell" data-comp-action="password-field">
+                  <div data-related-field="password-field" style="width:200px;" data-pw-wrap>
+                    <div class="s1-input-wrap">
+                      <div class="s1-input-field">
+                        <input type="password" placeholder="비밀번호 입력" data-password-input autocomplete="current-password">
+                        <span class="s1-suffix-action-group">
+                          <button type="button" class="s1-input-action-btn" data-visibility-toggle aria-label="비밀번호 보기" aria-pressed="false">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true" data-icon-hidden><path d="M11.9945 6.63965C11.0054 6.63965 10.0362 6.76954 9.12695 7.00933L9.97623 7.85861C10.6357 7.72872 11.3051 7.6388 12.0045 7.6388C15.4616 7.6388 18.5389 9.34734 19.9378 12.0051C19.2983 13.2141 18.2992 14.2232 17.0802 14.9626L17.7996 15.682C19.1584 14.8027 20.2575 13.6337 20.9469 12.2149C21.0168 12.075 21.0168 11.9152 20.9469 11.7853C19.4482 8.65793 15.9312 6.63965 12.0045 6.63965H11.9945Z" fill="currentColor"/><path d="M11.9948 16.3615C8.53779 16.3615 5.46041 14.653 4.0616 11.9952C4.70105 10.7863 5.7002 9.77712 6.91917 9.03775L6.19978 8.31836C4.84093 9.19761 3.73188 10.3666 3.05246 11.7854C2.98251 11.9253 2.98251 12.0852 3.05246 12.215C4.56117 15.3424 8.06819 17.3607 11.9948 17.3607C12.984 17.3607 13.9532 17.2308 14.8624 16.991L14.0131 16.1417C13.3537 16.2716 12.6843 16.3615 11.9849 16.3615H11.9948Z" fill="currentColor"/><path d="M12.9236 15.052L8.93698 11.0654C8.84706 11.3652 8.78711 11.6749 8.78711 11.9946C8.78711 13.7631 10.2259 15.2019 11.9944 15.2019C12.3241 15.2019 12.6338 15.142 12.9236 15.052Z" fill="currentColor"/><path d="M15.2009 11.9944C15.2009 10.2259 13.7622 8.78711 11.9937 8.78711C11.6639 8.78711 11.3542 8.84706 11.0645 8.93698L15.0511 12.9236C15.141 12.6238 15.2009 12.3141 15.2009 11.9944Z" fill="currentColor"/><path d="M16.1506 15.4522L14.5819 13.8735L10.1157 9.41731L8.84682 8.14839L8.06748 7.35906L5.3498 4.65137L4.65039 5.36076L7.08832 7.79869L7.83768 8.54805L9.40634 10.1167L13.8725 14.5829L15.1415 15.8518L15.9208 16.6312L18.6385 19.3489L19.3379 18.6395L16.9 16.1916L16.1506 15.4522Z" fill="currentColor"/></svg>
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true" data-icon-visible style="display:none;"><path d="M12 6.63672C8.07109 6.63672 4.55207 8.65616 3.05249 11.7853C2.9825 11.9252 2.9825 12.0852 3.05249 12.2152C4.55207 15.3443 8.07109 17.3637 12 17.3637C15.9289 17.3637 19.4379 15.3443 20.9475 12.2152C21.0175 12.0752 21.0175 11.9153 20.9475 11.7853C19.4379 8.65616 15.9289 6.63672 12 6.63672ZM12 16.364C8.54096 16.364 5.46182 14.6545 4.0622 11.9952C5.46182 9.34597 8.54096 7.63644 12 7.63644C15.459 7.63644 18.5382 9.34597 19.9378 12.0052C18.5382 14.6645 15.459 16.374 12 16.374V16.364Z" fill="currentColor"/><path d="M12.0001 15.2141C13.7725 15.2141 15.2092 13.7773 15.2092 12.005C15.2092 10.2327 13.7725 8.7959 12.0001 8.7959C10.2278 8.7959 8.79102 10.2327 8.79102 12.005C8.79102 13.7773 10.2278 15.2141 12.0001 15.2141Z" fill="currentColor"/></svg>
+                          </button>
+                          <button type="button" class="s1-input-action-btn input-clear-btn" data-clear-action aria-label="비밀번호 지우기" hidden>
+                            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><circle cx="8" cy="8" r="6" stroke="currentColor" stroke-width="1.3"/><path d="M5.3 5.3l5.4 5.4M10.7 5.3l-5.4 5.4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+                          </button>
+                        </span>
+                      </div>
+                      <span class="ds-helper-text" hidden>안내 메시지</span>
+                    </div>
+                  </div>
+                  <div class="action-test-controls">
+                    <button type="button" class="action-mini-toggle" data-pw-error>Error: off</button>
+                    <button type="button" class="action-mini-toggle" data-pw-correct>Correct: off</button>
+                  </div>
+                </div>
+
+                <!-- Default -->
+                <div class="comp-state-cell">
+                  <div class="s1-input-wrap is-preview" style="width:148px;">
+                    <div class="s1-input-field">
+                      <input type="password" placeholder="비밀번호 입력" tabindex="-1">
+                      <span class="s1-suffix-action-group">
+                        <button class="s1-input-action-btn" tabindex="-1" style="pointer-events:none;" aria-label="비밀번호 보기">
+                          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M11.9945 6.63965C11.0054 6.63965 10.0362 6.76954 9.12695 7.00933L9.97623 7.85861C10.6357 7.72872 11.3051 7.6388 12.0045 7.6388C15.4616 7.6388 18.5389 9.34734 19.9378 12.0051C19.2983 13.2141 18.2992 14.2232 17.0802 14.9626L17.7996 15.682C19.1584 14.8027 20.2575 13.6337 20.9469 12.2149C21.0168 12.075 21.0168 11.9152 20.9469 11.7853C19.4482 8.65793 15.9312 6.63965 12.0045 6.63965H11.9945Z" fill="currentColor"/><path d="M11.9948 16.3615C8.53779 16.3615 5.46041 14.653 4.0616 11.9952C4.70105 10.7863 5.7002 9.77712 6.91917 9.03775L6.19978 8.31836C4.84093 9.19761 3.73188 10.3666 3.05246 11.7854C2.98251 11.9253 2.98251 12.0852 3.05246 12.215C4.56117 15.3424 8.06819 17.3607 11.9948 17.3607C12.984 17.3607 13.9532 17.2308 14.8624 16.991L14.0131 16.1417C13.3537 16.2716 12.6843 16.3615 11.9849 16.3615H11.9948Z" fill="currentColor"/><path d="M12.9236 15.052L8.93698 11.0654C8.84706 11.3652 8.78711 11.6749 8.78711 11.9946C8.78711 13.7631 10.2259 15.2019 11.9944 15.2019C12.3241 15.2019 12.6338 15.142 12.9236 15.052Z" fill="currentColor"/><path d="M15.2009 11.9944C15.2009 10.2259 13.7622 8.78711 11.9937 8.78711C11.6639 8.78711 11.3542 8.84706 11.0645 8.93698L15.0511 12.9236C15.141 12.6238 15.2009 12.3141 15.2009 11.9944Z" fill="currentColor"/><path d="M16.1506 15.4522L14.5819 13.8735L10.1157 9.41731L8.84682 8.14839L8.06748 7.35906L5.3498 4.65137L4.65039 5.36076L7.08832 7.79869L7.83768 8.54805L9.40634 10.1167L13.8725 14.5829L15.1415 15.8518L15.9208 16.6312L18.6385 19.3489L19.3379 18.6395L16.9 16.1916L16.1506 15.4522Z" fill="currentColor"/></svg>
+                        </button>
+                      </span>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Filled (hidden) -->
+                <div class="comp-state-cell">
+                  <div class="s1-input-wrap is-preview" style="width:148px;">
+                    <div class="s1-input-field">
+                      <input type="password" value="password1234" tabindex="-1">
+                      <span class="s1-suffix-action-group">
+                        <button class="s1-input-action-btn" tabindex="-1" style="pointer-events:none;" aria-label="비밀번호 보기">
+                          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M11.9945 6.63965C11.0054 6.63965 10.0362 6.76954 9.12695 7.00933L9.97623 7.85861C10.6357 7.72872 11.3051 7.6388 12.0045 7.6388C15.4616 7.6388 18.5389 9.34734 19.9378 12.0051C19.2983 13.2141 18.2992 14.2232 17.0802 14.9626L17.7996 15.682C19.1584 14.8027 20.2575 13.6337 20.9469 12.2149C21.0168 12.075 21.0168 11.9152 20.9469 11.7853C19.4482 8.65793 15.9312 6.63965 12.0045 6.63965H11.9945Z" fill="currentColor"/><path d="M11.9948 16.3615C8.53779 16.3615 5.46041 14.653 4.0616 11.9952C4.70105 10.7863 5.7002 9.77712 6.91917 9.03775L6.19978 8.31836C4.84093 9.19761 3.73188 10.3666 3.05246 11.7854C2.98251 11.9253 2.98251 12.0852 3.05246 12.215C4.56117 15.3424 8.06819 17.3607 11.9948 17.3607C12.984 17.3607 13.9532 17.2308 14.8624 16.991L14.0131 16.1417C13.3537 16.2716 12.6843 16.3615 11.9849 16.3615H11.9948Z" fill="currentColor"/><path d="M12.9236 15.052L8.93698 11.0654C8.84706 11.3652 8.78711 11.6749 8.78711 11.9946C8.78711 13.7631 10.2259 15.2019 11.9944 15.2019C12.3241 15.2019 12.6338 15.142 12.9236 15.052Z" fill="currentColor"/><path d="M15.2009 11.9944C15.2009 10.2259 13.7622 8.78711 11.9937 8.78711C11.6639 8.78711 11.3542 8.84706 11.0645 8.93698L15.0511 12.9236C15.141 12.6238 15.2009 12.3141 15.2009 11.9944Z" fill="currentColor"/><path d="M16.1506 15.4522L14.5819 13.8735L10.1157 9.41731L8.84682 8.14839L8.06748 7.35906L5.3498 4.65137L4.65039 5.36076L7.08832 7.79869L7.83768 8.54805L9.40634 10.1167L13.8725 14.5829L15.1415 15.8518L15.9208 16.6312L18.6385 19.3489L19.3379 18.6395L16.9 16.1916L16.1506 15.4522Z" fill="currentColor"/></svg>
+                        </button>
+                        <button class="s1-input-action-btn" tabindex="-1" style="pointer-events:none;" aria-label="지우기">
+                          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><circle cx="8" cy="8" r="6" stroke="currentColor" stroke-width="1.3"/><path d="M5.3 5.3l5.4 5.4M10.7 5.3l-5.4 5.4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+                        </button>
+                      </span>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Filled (visible) -->
+                <div class="comp-state-cell">
+                  <div class="s1-input-wrap is-preview" style="width:148px;">
+                    <div class="s1-input-field">
+                      <input type="text" value="password1234" tabindex="-1">
+                      <span class="s1-suffix-action-group">
+                        <button class="s1-input-action-btn" tabindex="-1" style="pointer-events:none;" aria-label="비밀번호 숨기기">
+                          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 6.63672C8.07109 6.63672 4.55207 8.65616 3.05249 11.7853C2.9825 11.9252 2.9825 12.0852 3.05249 12.2152C4.55207 15.3443 8.07109 17.3637 12 17.3637C15.9289 17.3637 19.4379 15.3443 20.9475 12.2152C21.0175 12.0752 21.0175 11.9153 20.9475 11.7853C19.4379 8.65616 15.9289 6.63672 12 6.63672ZM12 16.364C8.54096 16.364 5.46182 14.6545 4.0622 11.9952C5.46182 9.34597 8.54096 7.63644 12 7.63644C15.459 7.63644 18.5382 9.34597 19.9378 12.0052C18.5382 14.6645 15.459 16.374 12 16.374V16.364Z" fill="currentColor"/><path d="M12.0001 15.2141C13.7725 15.2141 15.2092 13.7773 15.2092 12.005C15.2092 10.2327 13.7725 8.7959 12.0001 8.7959C10.2278 8.7959 8.79102 10.2327 8.79102 12.005C8.79102 13.7773 10.2278 15.2141 12.0001 15.2141Z" fill="currentColor"/></svg>
+                        </button>
+                        <button class="s1-input-action-btn" tabindex="-1" style="pointer-events:none;" aria-label="지우기">
+                          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><circle cx="8" cy="8" r="6" stroke="currentColor" stroke-width="1.3"/><path d="M5.3 5.3l5.4 5.4M10.7 5.3l-5.4 5.4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+                        </button>
+                      </span>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Disabled -->
+                <div class="comp-state-cell">
+                  <div class="s1-input-wrap is-disabled is-preview" style="width:148px;">
+                    <div class="s1-input-field">
+                      <input type="password" placeholder="비밀번호 입력" disabled tabindex="-1">
+                      <span class="s1-suffix-action-group">
+                        <button class="s1-input-action-btn" tabindex="-1" style="pointer-events:none;" aria-label="비밀번호 보기" disabled>
+                          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M11.9945 6.63965C11.0054 6.63965 10.0362 6.76954 9.12695 7.00933L9.97623 7.85861C10.6357 7.72872 11.3051 7.6388 12.0045 7.6388C15.4616 7.6388 18.5389 9.34734 19.9378 12.0051C19.2983 13.2141 18.2992 14.2232 17.0802 14.9626L17.7996 15.682C19.1584 14.8027 20.2575 13.6337 20.9469 12.2149C21.0168 12.075 21.0168 11.9152 20.9469 11.7853C19.4482 8.65793 15.9312 6.63965 12.0045 6.63965H11.9945Z" fill="currentColor"/><path d="M11.9948 16.3615C8.53779 16.3615 5.46041 14.653 4.0616 11.9952C4.70105 10.7863 5.7002 9.77712 6.91917 9.03775L6.19978 8.31836C4.84093 9.19761 3.73188 10.3666 3.05246 11.7854C2.98251 11.9253 2.98251 12.0852 3.05246 12.215C4.56117 15.3424 8.06819 17.3607 11.9948 17.3607C12.984 17.3607 13.9532 17.2308 14.8624 16.991L14.0131 16.1417C13.3537 16.2716 12.6843 16.3615 11.9849 16.3615H11.9948Z" fill="currentColor"/><path d="M12.9236 15.052L8.93698 11.0654C8.84706 11.3652 8.78711 11.6749 8.78711 11.9946C8.78711 13.7631 10.2259 15.2019 11.9944 15.2019C12.3241 15.2019 12.6338 15.142 12.9236 15.052Z" fill="currentColor"/><path d="M15.2009 11.9944C15.2009 10.2259 13.7622 8.78711 11.9937 8.78711C11.6639 8.78711 11.3542 8.84706 11.0645 8.93698L15.0511 12.9236C15.141 12.6238 15.2009 12.3141 15.2009 11.9944Z" fill="currentColor"/><path d="M16.1506 15.4522L14.5819 13.8735L10.1157 9.41731L8.84682 8.14839L8.06748 7.35906L5.3498 4.65137L4.65039 5.36076L7.08832 7.79869L7.83768 8.54805L9.40634 10.1167L13.8725 14.5829L15.1415 15.8518L15.9208 16.6312L18.6385 19.3489L19.3379 18.6395L16.9 16.1916L16.1506 15.4522Z" fill="currentColor"/></svg>
+                        </button>
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="code-block">
+            <div class="code-tabs">
+              <button class="code-tab active" onclick="switchTab(this,'pf-html')">HTML</button>
+              <button class="code-tab" onclick="switchTab(this,'pf-css')">CSS</button>
+              <button class="code-tab" onclick="switchTab(this,'pf-js')">JavaScript</button>
+              <button class="code-tab" onclick="switchTab(this,'pf-tokens')">Token Details</button>
+              <button class="code-copy-btn" onclick="copyCode('pf-html-pre')">복사</button>
+            </div>
+            <div class="code-pane active" id="pf-html">
+              <pre id="pf-html-pre"><span class="c-cmt">&lt;!-- Password Field --&gt;</span>
+<span class="c-tag">&lt;div</span> <span class="c-attr">class</span>=<span class="c-str">"s1-input-wrap"</span><span class="c-tag">&gt;</span>
+  <span class="c-tag">&lt;div</span> <span class="c-attr">class</span>=<span class="c-str">"s1-input-field"</span><span class="c-tag">&gt;</span>
+    <span class="c-tag">&lt;input</span> <span class="c-attr">type</span>=<span class="c-str">"password"</span> <span class="c-attr">placeholder</span>=<span class="c-str">"비밀번호 입력"</span> <span class="c-attr">autocomplete</span>=<span class="c-str">"current-password"</span><span class="c-tag">&gt;</span>
+    <span class="c-tag">&lt;span</span> <span class="c-attr">class</span>=<span class="c-str">"s1-suffix-action-group"</span><span class="c-tag">&gt;</span>
+      <span class="c-cmt">&lt;!-- visibilityToggle: 항상 표시 --&gt;</span>
+      <span class="c-tag">&lt;button</span> <span class="c-attr">type</span>=<span class="c-str">"button"</span> <span class="c-attr">class</span>=<span class="c-str">"s1-input-action-btn"</span>
+              <span class="c-attr">aria-label</span>=<span class="c-str">"비밀번호 보기"</span> <span class="c-attr">aria-pressed</span>=<span class="c-str">"false"</span><span class="c-tag">&gt;</span>
+        <span class="c-cmt">&lt;!-- data-icon-hidden: 숨김 상태 아이콘 --&gt;</span>
+        <span class="c-cmt">&lt;!-- data-icon-visible: 표시 상태 아이콘 (style="display:none") --&gt;</span>
+      <span class="c-tag">&lt;/button&gt;</span>
+      <span class="c-cmt">&lt;!-- clearAction: 값 있을 때만 표시 --&gt;</span>
+      <span class="c-tag">&lt;button</span> <span class="c-attr">type</span>=<span class="c-str">"button"</span> <span class="c-attr">class</span>=<span class="c-str">"s1-input-action-btn"</span>
+              <span class="c-attr">aria-label</span>=<span class="c-str">"비밀번호 지우기"</span> <span class="c-attr">hidden</span><span class="c-tag">&gt;</span>
+        <span class="c-cmt">&lt;!-- remove icon --&gt;</span>
+      <span class="c-tag">&lt;/button&gt;</span>
+    <span class="c-tag">&lt;/span&gt;</span>
+  <span class="c-tag">&lt;/div&gt;</span>
+<span class="c-tag">&lt;/div&gt;</span></pre>
+            </div>
+            <div class="code-pane" id="pf-css">
+              <pre><span class="c-cmt">/* Password Field — Base Input + suffix 동일 구조 */</span>
+<span class="c-cmt">/* suffixActionGroup: visibilityToggle(좌) + clearAction(우, 조건부) */</span>
+<span class="c-sel">.s1-suffix-action-group</span> {
+  <span class="c-prop">display</span>: <span class="c-val">flex</span>;
+  <span class="c-prop">align-items</span>: <span class="c-val">center</span>;
+  <span class="c-prop">gap</span>: <span class="c-val">2px</span>;
+  <span class="c-prop">flex-shrink</span>: <span class="c-val">0</span>;
+}
+
+<span class="c-cmt">/* 아이콘 전환 — JS가 display 토글 */</span>
+<span class="c-sel">[data-icon-hidden]</span>, <span class="c-sel">[data-icon-visible]</span> {
+  <span class="c-prop">transition</span>: <span class="c-val">opacity 0.1s</span>;
+}</pre>
+            </div>
+            <div class="code-pane" id="pf-js">
+              <pre><span class="c-cmt">// Password Field — 비밀번호 표시/숨기기</span>
+<span class="c-key">const</span> wrap      = document.<span class="c-fn">querySelector</span>(<span class="c-str">'.s1-input-wrap'</span>);
+<span class="c-key">const</span> input     = wrap.<span class="c-fn">querySelector</span>(<span class="c-str">'input[type="password"], input[type="text"]'</span>);
+<span class="c-key">const</span> toggle    = wrap.<span class="c-fn">querySelector</span>(<span class="c-str">'[aria-label="비밀번호 보기"], [aria-label="비밀번호 숨기기"]'</span>);
+<span class="c-key">const</span> clearBtn  = wrap.<span class="c-fn">querySelector</span>(<span class="c-str">'[aria-label="비밀번호 지우기"]'</span>);
+<span class="c-key">const</span> iconHidden = toggle.<span class="c-fn">querySelector</span>(<span class="c-str">'[data-icon-hidden]'</span>);
+<span class="c-key">const</span> iconVisible = toggle.<span class="c-fn">querySelector</span>(<span class="c-str">'[data-icon-visible]'</span>);
+
+<span class="c-cmt">// 가시성 토글</span>
+toggle.<span class="c-fn">addEventListener</span>(<span class="c-str">'click'</span>, () =&gt; {
+  <span class="c-key">const</span> visible = input.type === <span class="c-str">'password'</span>;
+  input.type = visible ? <span class="c-str">'text'</span> : <span class="c-str">'password'</span>;
+  toggle.<span class="c-fn">setAttribute</span>(<span class="c-str">'aria-pressed'</span>, String(visible));
+  toggle.<span class="c-fn">setAttribute</span>(<span class="c-str">'aria-label'</span>, visible ? <span class="c-str">'비밀번호 숨기기'</span> : <span class="c-str">'비밀번호 보기'</span>);
+  iconHidden.style.display  = visible ? <span class="c-str">'none'</span> : <span class="c-str">''</span>;
+  iconVisible.style.display = visible ? <span class="c-str">''</span>    : <span class="c-str">'none'</span>;
+  input.<span class="c-fn">focus</span>();
+});
+
+<span class="c-cmt">// clear 버튼</span>
+input.<span class="c-fn">addEventListener</span>(<span class="c-str">'input'</span>, () =&gt; {
+  clearBtn.hidden = input.value.length === <span class="c-num">0</span>;
+});
+clearBtn.<span class="c-fn">addEventListener</span>(<span class="c-str">'click'</span>, () =&gt; {
+  input.value = <span class="c-str">''</span>;
+  clearBtn.hidden = <span class="c-key">true</span>;
+  input.<span class="c-fn">focus</span>();
+});
+
+<span class="c-cmt">// error / correct 상태 토글 (외부 제어 예시)</span>
+<span class="c-key">function</span> <span class="c-fn">setPasswordState</span>(state) {
+  wrap.<span class="c-fn">classList</span>.<span class="c-fn">remove</span>(<span class="c-str">'is-error'</span>, <span class="c-str">'is-correct'</span>);
+  <span class="c-key">if</span> (state) wrap.<span class="c-fn">classList</span>.<span class="c-fn">add</span>(state);
+}
+<span class="c-cmt">// 사용: setPasswordState('is-error') / setPasswordState('is-correct') / setPasswordState(null)</span></pre>
+            </div>
+            <div class="code-pane" id="pf-tokens">
+              <table class="token-detail-table">
+                <thead><tr><th>Token</th><th>Value (Semantic)</th><th>Resolved</th><th>Role</th></tr></thead>
+                <tbody>
+                  <tr><td class="token-name">--input-default-bg</td><td class="token-value">var(--color-form-control-bg-default)</td><td class="token-resolved" data-token="--input-default-bg"></td><td>기본 배경</td></tr>
+                  <tr><td class="token-name">--input-disabled-bg</td><td class="token-value">var(--color-form-control-bg-disabled)</td><td class="token-resolved" data-token="--input-disabled-bg"></td><td>disabled 배경</td></tr>
+                  <tr><td class="token-name">--input-default-border</td><td class="token-value">var(--color-form-control-border-default)</td><td class="token-resolved" data-token="--input-default-border"></td><td>기본 테두리</td></tr>
+                  <tr><td class="token-name">--input-focus-border</td><td class="token-value">var(--color-form-control-border-selected)</td><td class="token-resolved" data-token="--input-focus-border"></td><td>focus 테두리</td></tr>
+                  <tr><td class="token-name">--input-error-border</td><td class="token-value">var(--color-form-control-border-error)</td><td class="token-resolved" data-token="--input-error-border"></td><td>error 테두리</td></tr>
+                  <tr><td class="token-name">--input-correct-border</td><td class="token-value">var(--color-form-control-border-correct)</td><td class="token-resolved" data-token="--input-correct-border"></td><td>correct 테두리</td></tr>
+                  <tr><td class="token-name">--input-disabled-border</td><td class="token-value">var(--color-form-control-border-disabled)</td><td class="token-resolved" data-token="--input-disabled-border"></td><td>disabled 테두리</td></tr>
+                  <tr><td class="token-name">--input-placeholder-text</td><td class="token-value">var(--color-form-control-text-placeholder)</td><td class="token-resolved" data-token="--input-placeholder-text"></td><td>placeholder 텍스트</td></tr>
+                  <tr><td class="token-name">--input-disabled-text</td><td class="token-value">var(--color-form-control-text-disabled)</td><td class="token-resolved" data-token="--input-disabled-text"></td><td>disabled 텍스트</td></tr>
+                  <tr><td class="token-name">--input-error-text</td><td class="token-value">var(--color-text-state-error)</td><td class="token-resolved" data-token="--input-error-text"></td><td>error helper 텍스트</td></tr>
+                  <tr><td class="token-name">--input-correct-text</td><td class="token-value">var(--color-text-state-correct)</td><td class="token-resolved" data-token="--input-correct-text"></td><td>correct helper 텍스트</td></tr>
+                  <tr style="background:var(--color-bg-subtle);"><td class="token-name">--color-form-control-icon-default</td><td class="token-value">var(--color-gray-800) / dark: var(--color-gray-dark-700)</td><td class="token-resolved" data-token="--color-form-control-icon-default"></td><td>비밀번호 토글·클리어 아이콘 색상</td></tr>
+                </tbody>
+              </table>
+              <p style="margin:8px 10px 4px;font-size:11px;color:var(--color-text-secondary);">Password Field는 Base Input의 <code>--input-*</code> 토큰을 공유합니다. 전용 컴포넌트 토큰 없음.</p>
+            </div>
+          </div>
+        </div>
+
+
+      </section>
+
     </div>
   </main>
 </div>
@@ -2423,7 +3116,7 @@ checkboxes.forEach(function(chk) {
   })();
 
   (function initFromHash() {
-    var valid = ['checkbox','radio','toggle']; // Components New: 마이그레이션 완료 컴포넌트만
+    var valid = ['checkbox','radio','toggle','input']; // Components New: 마이그레이션 완료 컴포넌트만
     var hash  = window.location.hash.replace('#', '');
     var id    = (hash && valid.includes(hash)) ? hash : 'checkbox';
     var btn   = document.querySelector('.comp-nav-btn[onclick*="\'' + id + '\'"]') || document.querySelector('.comp-nav-btn');
