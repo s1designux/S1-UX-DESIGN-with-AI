@@ -1077,7 +1077,7 @@
       margin-top: 8px; box-shadow: none; z-index: auto;
     }
     .s1-select-option {
-      height: var(--sizing-dropdown-item-height-md); display: flex; align-items: center;
+      height: var(--spacing-40); display: flex; align-items: center;
       padding: 0 16px; font-size: 14px; color: var(--color-text-secondary); cursor: pointer;
     }
     .s1-select-option:hover { background: var(--dropdown-option-hover-bg); }
@@ -1087,9 +1087,9 @@
     }
     .s1-select-option.is-hover { background: var(--dropdown-option-hover-bg); }
     /* Size variants */
-    .s1-select-wrap--xsm .s1-select-trigger { height: var(--sizing-form-control-height-xs); font-size: 14px; }
-    .s1-select-wrap--xxsm .s1-select-trigger { height: var(--sizing-form-control-height-xxs); font-size: 12px; padding-left: 12px; }
-    .s1-select-wrap--mobile .s1-select-trigger { height: var(--sizing-form-control-height-lg); font-size: 14px; border-radius: 4px; }
+    .s1-select-wrap--xsm .s1-select-trigger { height: 34px /* Figma 실측 · Foundation step 없음 */; font-size: 14px; }
+    .s1-select-wrap--xxsm .s1-select-trigger { height: var(--spacing-28); font-size: 12px; padding-left: 12px; }
+    .s1-select-wrap--mobile .s1-select-trigger { height: var(--spacing-48); font-size: 14px; border-radius: 4px; }
 
     /* Table */
     .s1-table-section { width: 100%; padding: 12px; border-radius: 4px; }
@@ -1213,7 +1213,7 @@
     .s1-timepicker-wrap {
       display: inline-flex; align-items: center;
       min-width: 78px;
-      height: var(--sizing-form-control-height-md);
+      height: var(--spacing-44);
       padding: 0 8px 0 16px;
       border: 1px solid var(--color-form-control-border-default);
       border-radius: var(--radius-control-sm); /* Figma: radius/control/sm = 4px */
@@ -1236,18 +1236,18 @@
     }
     /* TimePicker Input형 — Size modifiers */
     .s1-timepicker-wrap--xsm {
-      height: var(--sizing-form-control-height-xs); /* 34px */
+      height: 34px /* Figma 실측 · Foundation step 없음 */; /* 34px */
       padding: 0 8px 0 12px;
     }
     .s1-timepicker-wrap--xxsm {
-      height: var(--sizing-form-control-height-xxs); /* 28px */
+      height: var(--spacing-28); /* 28px */
       padding: 0 6px 0 10px;
       font-size: 12px;
     }
     .s1-timepicker-wrap--xxsm .s1-timepicker-placeholder,
     .s1-timepicker-wrap--xxsm .s1-timepicker-value { font-size: 12px; }
     .s1-timepicker-wrap--mobile {
-      height: var(--sizing-form-control-height-lg); /* 48px */
+      height: var(--spacing-48); /* 48px */
     }
     .s1-timepicker-placeholder {
       flex: 1; color: var(--color-form-control-text-placeholder);
@@ -1275,7 +1275,7 @@
     .s1-timepicker-select-field {
       position: relative; /* 드롭다운 앵커 — unit이 아닌 field 기준 */
       display: inline-flex; align-items: center;
-      height: var(--sizing-form-control-height-md); /* 44px */
+      height: var(--spacing-44); /* 44px */
       min-width: 78px; /* Figma md min-width */
       padding: var(--spacing-padding-block-xxs) var(--spacing-padding-inline-xxs) var(--spacing-padding-block-xxs) var(--spacing-padding-inline-sm); /* 8 / 8 / 8 / 16 */
       border: var(--border-width-default) solid var(--color-form-control-border-default);
@@ -1317,7 +1317,7 @@
     .s1-timepicker-select-group--sm { gap: var(--spacing-cluster-xs); } /* 12px */
     .s1-timepicker-select-group--sm .s1-timepicker-select-unit { gap: var(--spacing-4); } /* 4px */
     .s1-timepicker-select-group--sm .s1-timepicker-select-field {
-      height: var(--sizing-form-control-height-xxs); /* 28px */
+      height: var(--spacing-28); /* 28px */
       min-width: 0;
       padding: var(--spacing-4) var(--spacing-4) var(--spacing-4) var(--spacing-padding-inline-xs); /* 4 / 4 / 4 / 12 */
       letter-spacing: -0.28px; /* sm 값 텍스트 ls -0.28px (Figma -2%) */
@@ -1350,7 +1350,7 @@
     .s1-tp-col::-webkit-scrollbar { width: 0; }
     .s1-tp-col-sep { width: 1px; background: var(--color-border-subtle); flex-shrink: 0; align-self: stretch; }
     .s1-tp-col-item {
-      height: var(--sizing-dropdown-item-height-xs);
+      height: var(--spacing-40);
       display: flex; align-items: center; justify-content: center;
       padding: 0 12px; border-radius: var(--radius-4);
       border: 1px solid transparent;
@@ -1392,7 +1392,7 @@
       box-shadow: 0 4px 8px 0 rgba(0,0,0,0.15);
     }
     .s1-tp-select-dropdown-item {
-      height: var(--sizing-dropdown-item-height-xs); display: flex; align-items: center;
+      height: var(--spacing-40); display: flex; align-items: center;
       padding: 0 12px; cursor: pointer;
       font-size: 14px; color: var(--color-text-secondary);
       letter-spacing: -0.02em;
@@ -4230,19 +4230,19 @@ function setDisabled(on) {
                   <div class="s1-select-wrap is-preview" style="width:150px;">
                     <div class="s1-select-trigger"><span>선택하세요</span><svg class="s1-select-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M9 6L15 12L9 18" stroke="currentColor" stroke-width="2" stroke-linecap="square"/></svg></div>
                   </div>
-                  <div style="font-size:10px;color:var(--color-text-secondary);line-height:1.5;">PC-MD · h44<br><code style="font-size:10px;">--sizing-form-control-height-md</code><br><code style="font-size:10px;">s1-select-wrap</code></div>
+                  <div style="font-size:10px;color:var(--color-text-secondary);line-height:1.5;">PC-MD · h44<br><code style="font-size:10px;">--spacing-44</code><br><code style="font-size:10px;">s1-select-wrap</code></div>
                 </div>
                 <div style="display:flex;flex-direction:column;align-items:flex-start;gap:6px;">
                   <div class="s1-select-wrap s1-select-wrap--xsm is-preview" style="width:150px;">
                     <div class="s1-select-trigger"><span>선택하세요</span><svg class="s1-select-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M9 6L15 12L9 18" stroke="currentColor" stroke-width="2" stroke-linecap="square"/></svg></div>
                   </div>
-                  <div style="font-size:10px;color:var(--color-text-secondary);line-height:1.5;">PC-XSM · h34<br><code style="font-size:10px;">--sizing-form-control-height-xs</code><br><code style="font-size:10px;">s1-select-wrap--xsm</code></div>
+                  <div style="font-size:10px;color:var(--color-text-secondary);line-height:1.5;">PC-XSM · h34<br><code style="font-size:10px;">34px (step 없음)</code><br><code style="font-size:10px;">s1-select-wrap--xsm</code></div>
                 </div>
                 <div style="display:flex;flex-direction:column;align-items:flex-start;gap:6px;">
                   <div class="s1-select-wrap s1-select-wrap--xxsm is-preview" style="width:150px;">
                     <div class="s1-select-trigger"><span>선택하세요</span><svg class="s1-select-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M9 6L15 12L9 18" stroke="currentColor" stroke-width="2" stroke-linecap="square"/></svg></div>
                   </div>
-                  <div style="font-size:10px;color:var(--color-text-secondary);line-height:1.5;">PC-XXSM · h28<br><code style="font-size:10px;">--sizing-form-control-height-xxs</code><br><code style="font-size:10px;">s1-select-wrap--xxsm</code></div>
+                  <div style="font-size:10px;color:var(--color-text-secondary);line-height:1.5;">PC-XXSM · h28<br><code style="font-size:10px;">--spacing-28</code><br><code style="font-size:10px;">s1-select-wrap--xxsm</code></div>
                 </div>
               </div>
             </div>
@@ -4253,7 +4253,7 @@ function setDisabled(on) {
                   <div class="s1-select-wrap s1-select-wrap--mobile is-preview" style="width:150px;">
                     <div class="s1-select-trigger"><span>선택하세요</span><svg class="s1-select-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M9 6L15 12L9 18" stroke="currentColor" stroke-width="2" stroke-linecap="square"/></svg></div>
                   </div>
-                  <div style="font-size:10px;color:var(--color-text-secondary);line-height:1.5;">Mobile · h48<br><code style="font-size:10px;">--sizing-form-control-height-lg</code><br><code style="font-size:10px;">s1-select-wrap--mobile</code></div>
+                  <div style="font-size:10px;color:var(--color-text-secondary);line-height:1.5;">Mobile · h48<br><code style="font-size:10px;">--spacing-48</code><br><code style="font-size:10px;">s1-select-wrap--mobile</code></div>
                 </div>
               </div>
             </div>
