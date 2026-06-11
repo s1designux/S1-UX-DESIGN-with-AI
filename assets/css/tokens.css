@@ -335,6 +335,75 @@
 
   /* ── Line Height ── */
   --line-height-130: 1.3;
+
+  /* ══ semantic number (sizing·spacing·radius·border-width) — 763a70a 자동생성기 누락분 복원 2026-06-11 ══ */
+  /* ── spacing (semantic) ── */
+  --spacing-padding-block-xxs: var(--spacing-8);
+  --spacing-padding-block-xs:  var(--spacing-12);
+  --spacing-padding-block-sm:  var(--spacing-16);
+  --spacing-padding-block-md:  var(--spacing-20);
+  --spacing-padding-block-lg:  var(--spacing-24);
+  --spacing-padding-inline-xxs: var(--spacing-8);
+  --spacing-padding-inline-xs:  var(--spacing-12);
+  --spacing-padding-inline-sm:  var(--spacing-16);
+  --spacing-padding-inline-md:  var(--spacing-20);
+  --spacing-padding-inline-lg:  var(--spacing-24);
+  --spacing-section-xs:  var(--spacing-16);
+  --spacing-section-sm:  var(--spacing-20);
+  --spacing-section-md:  var(--spacing-24);
+  --spacing-section-lg:  var(--spacing-32);
+  --spacing-section-xl:  var(--spacing-40);
+  --spacing-section-xxl: var(--spacing-48);
+  --spacing-stack-xs: var(--spacing-12);
+  --spacing-stack-sm: var(--spacing-16);
+  --spacing-stack-md: var(--spacing-20);
+  --spacing-stack-lg: var(--spacing-24);
+  --spacing-cluster-xxs: var(--spacing-8);
+  --spacing-cluster-xs:  var(--spacing-12);
+  --spacing-cluster-sm:  var(--spacing-16);
+  --spacing-cluster-md:  var(--spacing-20);
+  --spacing-label-gap-inline-sm: var(--spacing-8);
+  --spacing-label-gap-inline-md: var(--spacing-12);
+  --spacing-label-gap-inline-lg: var(--spacing-16);
+  --spacing-label-gap-block-sm:  var(--spacing-4);
+  --spacing-label-gap-block-md:  var(--spacing-8);
+
+  /* ── sizing (semantic) ── */
+  --sizing-form-control-height-xxs:         var(--spacing-28);
+  --sizing-form-control-height-xs:          34px; /* Foundation step 없음 */
+  --sizing-form-control-height-md:          var(--spacing-44);
+  --sizing-form-control-height-lg:          var(--spacing-48);
+  --sizing-form-control-dataview-height-sm: var(--spacing-28);
+  --sizing-form-control-dataview-height-md: 32px; /* Foundation step 없음 */
+  --sizing-button-height-xs:   34px; /* Foundation step 없음 */
+  --sizing-button-height-sm:   var(--spacing-40);
+  --sizing-button-height-md:   var(--spacing-44);
+  --sizing-button-height-lg:   var(--spacing-48);
+  --sizing-button-min-width:   80px; /* Foundation step 없음 */
+  --sizing-chip-height-sm:     var(--spacing-28);
+  --sizing-chip-height-md:     30px; /* Foundation step 없음 */
+  --sizing-chip-height-lg:     34px; /* Foundation step 없음 */
+  --sizing-table-row-height-xs: 34px; /* Foundation step 없음 */
+  --sizing-table-row-height-sm: 38px; /* Foundation step 없음 */
+  --sizing-table-row-height-md: var(--spacing-44);
+  --sizing-icon-10: 10px; /* Foundation step 없음 */
+  --sizing-icon-16: var(--spacing-16);
+  --sizing-icon-18: 18px; /* Foundation step 없음 */
+  --sizing-icon-20: var(--spacing-20);
+  --sizing-icon-24: var(--spacing-24);
+  --sizing-icon-28: var(--spacing-28);
+  --sizing-icon-32: var(--spacing-32);
+
+  /* ── radius (semantic) ── */
+  --radius-control-xs: var(--radius-2);
+  --radius-control-sm: var(--radius-4);
+  --radius-button-md:  var(--radius-4);
+  --radius-card-md:    var(--radius-10);
+  --radius-modal-md:   var(--radius-8);
+
+  /* ── border-width (semantic) ── */
+  --border-width-default: var(--border-width-1);
+  --border-width-strong:  var(--border-width-2);
 }
 
 
