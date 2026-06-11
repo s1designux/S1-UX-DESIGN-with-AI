@@ -165,7 +165,7 @@
 
     .preview-area {
       background: var(--color-bg-default);
-      border: 1px solid #e5e7eb;
+      border: 1px solid var(--color-border-subtle);
       border-radius: 12px;
       padding: 24px 32px;
       transition: background 0.3s;
@@ -1788,6 +1788,7 @@
           <button class="comp-nav-btn" data-category="selection" onclick="showSection('radio', this)">Radio</button>
           <button class="comp-nav-btn" data-category="selection" onclick="showSection('toggle', this)">Toggle</button>
           <button class="comp-nav-btn" data-category="form" onclick="showSection('input', this)">Input</button>
+          <button class="comp-nav-btn" data-category="form" onclick="showSection('date-picker', this)">Date Picker</button>
           <button class="comp-nav-btn" data-category="selection" onclick="showSection('chip', this)">Chip</button>
         </div><!-- /comp-nav -->
       </div><!-- /component-filter -->
@@ -2964,6 +2965,334 @@ clearBtn.<span class="c-fn">addEventListener</span>(<span class="c-str">'click'<
                 <tr><td class="token-name">--chip-solid-selected-bg</td><td class="token-value">var(--color-chip-solid-bg-selected)</td><td>Solid 선택 배경</td></tr>
                 <tr><td class="token-name">--chip-solid-selected-text</td><td class="token-value">var(--color-chip-solid-label-selected)</td><td>Solid 선택 라벨</td></tr>
                 <tr><td class="token-name" colspan="3" style="color:#9ca3af;">icon · close-icon: 정본(buildChip) 미정의 → 텍스트색 상속 (Variables 정의 시 추가 예정)</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </section>
+
+
+      <!-- ═══ DATE PICKER ═══ -->
+      <section class="comp-section" id="date-picker">
+        <div class="comp-section-header">
+          <h2 class="comp-section-title">Date Picker</h2>
+          <span class="comp-badge comp-badge-blue">Core</span>
+          <span class="comp-badge comp-badge-green">Variables 재구성</span>
+          <span class="comp-badge">Input = form-control · Calendar = date-picker</span>
+          <span class="comp-badge">PC 3sizes · Mobile 1size</span>
+          <!-- Figma: 540:3794 (datepicker_input) / 540:4216 (PC calendar) / 540:3836 (mobile bottomsheet) -->
+        </div>
+
+        <p style="font-size:12px;color:var(--color-text-secondary);line-height:1.7;margin-bottom:18px;">
+          Date Picker는 두 토큰 그룹을 따른다 — <strong>Trigger(입력 필드)</strong>는
+          <code>--color-form-control-*</code> 구조를, <strong>Calendar(팝업 패널)</strong>는
+          <code>--color-date-picker-*</code> 구조를 사용한다. 다크모드는 Variables 레이어가 자동 전환한다.
+        </p>
+
+        <!-- ── PC ── -->
+        <div class="platform-section platform-section-pc">
+          <div class="platform-header"><span class="platform-dot pc"></span>PC · MD (h44)</div>
+          <div class="variant-block">
+            <div class="variant-label">States</div>
+            <div class="preview-area" style="overflow:visible; padding-bottom:420px;">
+              <div class="comp-state-matrix" style="grid-template-columns: 260px repeat(4, minmax(120px,1fr));">
+                <div class="matrix-col-header-action">Action</div>
+                <div class="matrix-col-header">Default</div>
+                <div class="matrix-col-header">Open (Focus)</div>
+                <div class="matrix-col-header">Filled</div>
+                <div class="matrix-col-header">Disabled</div>
+
+                <!-- Action — 캘린더 아이콘 클릭 시 패널 열림 (setupDatePicker JS 구동) -->
+                <div class="comp-action-cell" data-comp-action="date-picker" style="align-items:flex-start;">
+                  <div class="s1-date-picker" data-date-picker id="dp-action-wrap" style="max-width:200px; width:180px;" data-disabled-dates="2026-05-08,2026-05-12,2026-05-19">
+                    <div class="s1-input-wrap" style="width:180px;">
+                      <div class="s1-input-field">
+                        <input type="text" placeholder="YY.MM.DD" readonly id="dp-action-input" data-date-picker-input style="cursor:pointer;" aria-label="날짜 선택">
+                        <button type="button" class="s1-input-action-btn" data-date-picker-toggle aria-label="달력 열기">
+                          <svg width="16" height="16" viewBox="0 0 16.2581 16.8" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M0 1.08387V16.2581C0 16.5615 0.238452 16.8 0.541936 16.8H15.7161C16.0196 16.8 16.2581 16.5615 16.2581 16.2581V1.08387C16.2581 0.780387 16.0196 0.541935 15.7161 0.541935H13.0065V0H11.9226V0.541935H4.33548V0H3.25161V0.541935H0.541936C0.238452 0.541935 0 0.780387 0 1.08387ZM4.33548 2.16774V1.62581H11.9226V2.16774H13.0065V1.62581H15.1742V3.79355H1.08387V1.62581H3.25161V2.16774H4.33548ZM15.1742 15.7161H1.08387V4.87742H15.1742V15.7161Z" fill="currentColor"/><path d="M5.14859 9.21302H3.52279V10.8388H5.14859V9.21302Z" fill="currentColor"/><path d="M8.94208 9.21302H7.31628V10.8388H8.94208V9.21302Z" fill="currentColor"/><path d="M12.7356 9.21302H11.1098V10.8388H12.7356V9.21302Z" fill="currentColor"/></svg>
+                        </button>
+                      </div>
+                    </div>
+                    <div class="s1-date-picker__panel" data-date-picker-panel role="dialog" aria-label="날짜 선택" hidden>
+                      <div class="s1-date-picker__header">
+                        <button type="button" class="s1-date-picker__nav-btn" data-prev-month aria-label="이전 달">
+                          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M10 12L6 8l4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                        </button>
+                        <strong class="s1-date-picker__month-label" data-current-month></strong>
+                        <button type="button" class="s1-date-picker__nav-btn" data-next-month aria-label="다음 달">
+                          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M6 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                        </button>
+                      </div>
+                      <div class="s1-date-picker__weekdays" data-weekdays></div>
+                      <div class="s1-date-picker__grid" data-date-grid></div>
+                      <div class="s1-date-picker__selector-grid" data-selector-grid hidden></div>
+                    </div>
+                  </div>
+                  <div class="action-test-controls" style="margin-top:6px;">
+                    <button type="button" class="action-mini-toggle" data-dp-fill>Filled: off</button>
+                    <button type="button" class="action-mini-toggle" data-dp-disabled>Disabled: off</button>
+                  </div>
+                </div>
+
+                <!-- Default -->
+                <div class="comp-state-cell">
+                  <div class="s1-input-wrap is-preview" style="width:160px;">
+                    <div class="s1-input-field">
+                      <input type="text" placeholder="YY.MM.DD" readonly tabindex="-1">
+                      <button type="button" class="s1-input-action-btn" tabindex="-1" aria-label="달력 열기">
+                        <svg width="16" height="16" viewBox="0 0 16.2581 16.8" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M0 1.08387V16.2581C0 16.5615 0.238452 16.8 0.541936 16.8H15.7161C16.0196 16.8 16.2581 16.5615 16.2581 16.2581V1.08387C16.2581 0.780387 16.0196 0.541935 15.7161 0.541935H13.0065V0H11.9226V0.541935H4.33548V0H3.25161V0.541935H0.541936C0.238452 0.541935 0 0.780387 0 1.08387ZM4.33548 2.16774V1.62581H11.9226V2.16774H13.0065V1.62581H15.1742V3.79355H1.08387V1.62581H3.25161V2.16774H4.33548ZM15.1742 15.7161H1.08387V4.87742H15.1742V15.7161Z" fill="currentColor"/><path d="M5.14859 9.21302H3.52279V10.8388H5.14859V9.21302Z" fill="currentColor"/><path d="M8.94208 9.21302H7.31628V10.8388H8.94208V9.21302Z" fill="currentColor"/><path d="M12.7356 9.21302H11.1098V10.8388H12.7356V9.21302Z" fill="currentColor"/></svg>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Open / Focus (static calendar preview) -->
+                <div class="comp-state-cell" style="align-items:flex-start;">
+                  <div style="position:relative; display:inline-block;">
+                    <div class="s1-input-wrap is-focus is-preview" style="width:160px;">
+                      <div class="s1-input-field">
+                        <input type="text" placeholder="YY.MM.DD" readonly tabindex="-1">
+                        <button type="button" class="s1-input-action-btn" tabindex="-1" aria-label="달력 열기">
+                          <svg width="16" height="16" viewBox="0 0 16.2581 16.8" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M0 1.08387V16.2581C0 16.5615 0.238452 16.8 0.541936 16.8H15.7161C16.0196 16.8 16.2581 16.5615 16.2581 16.2581V1.08387C16.2581 0.780387 16.0196 0.541935 15.7161 0.541935H13.0065V0H11.9226V0.541935H4.33548V0H3.25161V0.541935H0.541936C0.238452 0.541935 0 0.780387 0 1.08387ZM4.33548 2.16774V1.62581H11.9226V2.16774H13.0065V1.62581H15.1742V3.79355H1.08387V1.62581H3.25161V2.16774H4.33548ZM15.1742 15.7161H1.08387V4.87742H15.1742V15.7161Z" fill="currentColor"/><path d="M5.14859 9.21302H3.52279V10.8388H5.14859V9.21302Z" fill="currentColor"/><path d="M8.94208 9.21302H7.31628V10.8388H8.94208V9.21302Z" fill="currentColor"/><path d="M12.7356 9.21302H11.1098V10.8388H12.7356V9.21302Z" fill="currentColor"/></svg>
+                        </button>
+                      </div>
+                    </div>
+                    <div class="s1-date-picker__panel" style="position:absolute; top:calc(100% + 8px); left:0; display:block;">
+                      <div class="s1-date-picker__header">
+                        <button type="button" class="s1-date-picker__nav-btn" style="pointer-events:none;" aria-label="이전 달">
+                          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M10 12L6 8l4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                        </button>
+                        <strong class="s1-date-picker__month-label">2026.05</strong>
+                        <button type="button" class="s1-date-picker__nav-btn" style="pointer-events:none;" aria-label="다음 달">
+                          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M6 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                        </button>
+                      </div>
+                      <div class="s1-date-picker__weekdays">
+                        <span class="s1-date-picker__weekday is-sunday">일</span>
+                        <span class="s1-date-picker__weekday">월</span>
+                        <span class="s1-date-picker__weekday">화</span>
+                        <span class="s1-date-picker__weekday">수</span>
+                        <span class="s1-date-picker__weekday">목</span>
+                        <span class="s1-date-picker__weekday">금</span>
+                        <span class="s1-date-picker__weekday is-saturday">토</span>
+                      </div>
+                      <div class="s1-date-picker__grid">
+                        <button class="s1-date-picker__day is-other-month" tabindex="-1"><span class="day-inner">26</span></button>
+                        <button class="s1-date-picker__day is-other-month" tabindex="-1"><span class="day-inner">27</span></button>
+                        <button class="s1-date-picker__day is-other-month" tabindex="-1"><span class="day-inner">28</span></button>
+                        <button class="s1-date-picker__day is-other-month" tabindex="-1"><span class="day-inner">29</span></button>
+                        <button class="s1-date-picker__day is-other-month" tabindex="-1"><span class="day-inner">30</span></button>
+                        <button class="s1-date-picker__day" tabindex="-1"><span class="day-inner">1</span></button>
+                        <button class="s1-date-picker__day" tabindex="-1"><span class="day-inner">2</span></button>
+                        <button class="s1-date-picker__day" tabindex="-1"><span class="day-inner">3</span></button>
+                        <button class="s1-date-picker__day" tabindex="-1"><span class="day-inner">4</span></button>
+                        <button class="s1-date-picker__day" tabindex="-1"><span class="day-inner">5</span></button>
+                        <button class="s1-date-picker__day" tabindex="-1"><span class="day-inner">6</span></button>
+                        <button class="s1-date-picker__day" tabindex="-1"><span class="day-inner">7</span></button>
+                        <button class="s1-date-picker__day" tabindex="-1"><span class="day-inner">8</span></button>
+                        <button class="s1-date-picker__day" tabindex="-1"><span class="day-inner">9</span></button>
+                        <button class="s1-date-picker__day" tabindex="-1"><span class="day-inner">10</span></button>
+                        <button class="s1-date-picker__day" tabindex="-1"><span class="day-inner">11</span></button>
+                        <button class="s1-date-picker__day" tabindex="-1"><span class="day-inner">12</span></button>
+                        <button class="s1-date-picker__day" tabindex="-1"><span class="day-inner">13</span></button>
+                        <button class="s1-date-picker__day" tabindex="-1"><span class="day-inner">14</span></button>
+                        <button class="s1-date-picker__day" tabindex="-1"><span class="day-inner">15</span></button>
+                        <button class="s1-date-picker__day" tabindex="-1"><span class="day-inner">16</span></button>
+                        <button class="s1-date-picker__day" tabindex="-1"><span class="day-inner">17</span></button>
+                        <button class="s1-date-picker__day" tabindex="-1"><span class="day-inner">18</span></button>
+                        <button class="s1-date-picker__day" tabindex="-1"><span class="day-inner">19</span></button>
+                        <button class="s1-date-picker__day is-today" tabindex="-1"><span class="day-inner">20</span></button>
+                        <button class="s1-date-picker__day is-selected" tabindex="-1"><span class="day-inner">21</span></button>
+                        <button class="s1-date-picker__day" tabindex="-1"><span class="day-inner">22</span></button>
+                        <button class="s1-date-picker__day" tabindex="-1"><span class="day-inner">23</span></button>
+                        <button class="s1-date-picker__day" tabindex="-1"><span class="day-inner">24</span></button>
+                        <button class="s1-date-picker__day" tabindex="-1"><span class="day-inner">25</span></button>
+                        <button class="s1-date-picker__day" tabindex="-1"><span class="day-inner">26</span></button>
+                        <button class="s1-date-picker__day" tabindex="-1"><span class="day-inner">27</span></button>
+                        <button class="s1-date-picker__day" tabindex="-1"><span class="day-inner">28</span></button>
+                        <button class="s1-date-picker__day" tabindex="-1"><span class="day-inner">29</span></button>
+                        <button class="s1-date-picker__day" tabindex="-1"><span class="day-inner">30</span></button>
+                        <button class="s1-date-picker__day" tabindex="-1"><span class="day-inner">31</span></button>
+                        <button class="s1-date-picker__day is-other-month" tabindex="-1"><span class="day-inner">1</span></button>
+                        <button class="s1-date-picker__day is-other-month" tabindex="-1"><span class="day-inner">2</span></button>
+                        <button class="s1-date-picker__day is-other-month" tabindex="-1"><span class="day-inner">3</span></button>
+                        <button class="s1-date-picker__day is-other-month" tabindex="-1"><span class="day-inner">4</span></button>
+                        <button class="s1-date-picker__day is-other-month" tabindex="-1"><span class="day-inner">5</span></button>
+                        <button class="s1-date-picker__day is-other-month" tabindex="-1"><span class="day-inner">6</span></button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Filled -->
+                <div class="comp-state-cell">
+                  <div class="s1-input-wrap is-preview" style="width:160px;">
+                    <div class="s1-input-field">
+                      <input type="text" value="26.05.21" readonly tabindex="-1">
+                      <button type="button" class="s1-input-action-btn" tabindex="-1" aria-label="달력 열기">
+                        <svg width="16" height="16" viewBox="0 0 16.2581 16.8" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M0 1.08387V16.2581C0 16.5615 0.238452 16.8 0.541936 16.8H15.7161C16.0196 16.8 16.2581 16.5615 16.2581 16.2581V1.08387C16.2581 0.780387 16.0196 0.541935 15.7161 0.541935H13.0065V0H11.9226V0.541935H4.33548V0H3.25161V0.541935H0.541936C0.238452 0.541935 0 0.780387 0 1.08387ZM4.33548 2.16774V1.62581H11.9226V2.16774H13.0065V1.62581H15.1742V3.79355H1.08387V1.62581H3.25161V2.16774H4.33548ZM15.1742 15.7161H1.08387V4.87742H15.1742V15.7161Z" fill="currentColor"/><path d="M5.14859 9.21302H3.52279V10.8388H5.14859V9.21302Z" fill="currentColor"/><path d="M8.94208 9.21302H7.31628V10.8388H8.94208V9.21302Z" fill="currentColor"/><path d="M12.7356 9.21302H11.1098V10.8388H12.7356V9.21302Z" fill="currentColor"/></svg>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Disabled -->
+                <div class="comp-state-cell">
+                  <div class="s1-input-wrap is-disabled is-preview" style="width:160px;">
+                    <div class="s1-input-field">
+                      <input type="text" placeholder="YY.MM.DD" disabled readonly tabindex="-1">
+                      <button type="button" class="s1-input-action-btn" disabled tabindex="-1" aria-label="달력 열기">
+                        <svg width="16" height="16" viewBox="0 0 16.2581 16.8" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M0 1.08387V16.2581C0 16.5615 0.238452 16.8 0.541936 16.8H15.7161C16.0196 16.8 16.2581 16.5615 16.2581 16.2581V1.08387C16.2581 0.780387 16.0196 0.541935 15.7161 0.541935H13.0065V0H11.9226V0.541935H4.33548V0H3.25161V0.541935H0.541936C0.238452 0.541935 0 0.780387 0 1.08387ZM4.33548 2.16774V1.62581H11.9226V2.16774H13.0065V1.62581H15.1742V3.79355H1.08387V1.62581H3.25161V2.16774H4.33548ZM15.1742 15.7161H1.08387V4.87742H15.1742V15.7161Z" fill="currentColor"/><path d="M5.14859 9.21302H3.52279V10.8388H5.14859V9.21302Z" fill="currentColor"/><path d="M8.94208 9.21302H7.31628V10.8388H8.94208V9.21302Z" fill="currentColor"/><path d="M12.7356 9.21302H11.1098V10.8388H12.7356V9.21302Z" fill="currentColor"/></svg>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div><!-- /comp-state-matrix PC -->
+            </div><!-- /preview-area -->
+          </div><!-- /variant-block -->
+
+          <!-- Size Variants -->
+          <div class="variant-block" style="margin-top:20px;">
+            <div class="variant-label">Size Variants (Figma 확인)</div>
+            <div class="preview-area">
+              <div class="s1-dp-states">
+                <div>
+                  <div class="s1-dp-state-label">PC-MD · h44</div>
+                  <div class="s1-input-wrap is-preview" style="width:190px;">
+                    <div class="s1-input-field" style="height:44px;">
+                      <input type="text" placeholder="날짜를 선택하세요" readonly tabindex="-1">
+                      <button class="s1-input-action-btn" tabindex="-1" aria-label="달력 열기"><svg width="16" height="16" viewBox="0 0 16.2581 16.8" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M0 1.08387V16.2581C0 16.5615 0.238452 16.8 0.541936 16.8H15.7161C16.0196 16.8 16.2581 16.5615 16.2581 16.2581V1.08387C16.2581 0.780387 16.0196 0.541935 15.7161 0.541935H13.0065V0H11.9226V0.541935H4.33548V0H3.25161V0.541935H0.541936C0.238452 0.541935 0 0.780387 0 1.08387ZM4.33548 2.16774V1.62581H11.9226V2.16774H13.0065V1.62581H15.1742V3.79355H1.08387V1.62581H3.25161V2.16774H4.33548ZM15.1742 15.7161H1.08387V4.87742H15.1742V15.7161Z" fill="currentColor"/><path d="M5.14859 9.21302H3.52279V10.8388H5.14859V9.21302Z" fill="currentColor"/><path d="M8.94208 9.21302H7.31628V10.8388H8.94208V9.21302Z" fill="currentColor"/><path d="M12.7356 9.21302H11.1098V10.8388H12.7356V9.21302Z" fill="currentColor"/></svg></button>
+                    </div>
+                  </div>
+                </div>
+                <div>
+                  <div class="s1-dp-state-label">PC-XSM · h34</div>
+                  <div class="s1-input-wrap is-preview" style="width:190px;">
+                    <div class="s1-input-field input-size-small">
+                      <input type="text" placeholder="날짜를 선택하세요" readonly tabindex="-1" style="font-size:13px;">
+                      <button class="s1-input-action-btn" tabindex="-1" aria-label="달력 열기"><svg width="16" height="16" viewBox="0 0 16.2581 16.8" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M0 1.08387V16.2581C0 16.5615 0.238452 16.8 0.541936 16.8H15.7161C16.0196 16.8 16.2581 16.5615 16.2581 16.2581V1.08387C16.2581 0.780387 16.0196 0.541935 15.7161 0.541935H13.0065V0H11.9226V0.541935H4.33548V0H3.25161V0.541935H0.541936C0.238452 0.541935 0 0.780387 0 1.08387ZM4.33548 2.16774V1.62581H11.9226V2.16774H13.0065V1.62581H15.1742V3.79355H1.08387V1.62581H3.25161V2.16774H4.33548ZM15.1742 15.7161H1.08387V4.87742H15.1742V15.7161Z" fill="currentColor"/><path d="M5.14859 9.21302H3.52279V10.8388H5.14859V9.21302Z" fill="currentColor"/><path d="M8.94208 9.21302H7.31628V10.8388H8.94208V9.21302Z" fill="currentColor"/><path d="M12.7356 9.21302H11.1098V10.8388H12.7356V9.21302Z" fill="currentColor"/></svg></button>
+                    </div>
+                  </div>
+                </div>
+                <div>
+                  <div class="s1-dp-state-label">PC-XXSM · h28</div>
+                  <div class="s1-input-wrap is-preview" style="width:190px;">
+                    <div class="s1-input-field input-size-xsmall">
+                      <input type="text" placeholder="날짜를 선택하세요" readonly tabindex="-1">
+                      <button class="s1-input-action-btn" tabindex="-1" aria-label="달력 열기" style="width:16px;height:16px;"><svg width="14" height="14" viewBox="0 0 16.2581 16.8" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M0 1.08387V16.2581C0 16.5615 0.238452 16.8 0.541936 16.8H15.7161C16.0196 16.8 16.2581 16.5615 16.2581 16.2581V1.08387C16.2581 0.780387 16.0196 0.541935 15.7161 0.541935H13.0065V0H11.9226V0.541935H4.33548V0H3.25161V0.541935H0.541936C0.238452 0.541935 0 0.780387 0 1.08387ZM4.33548 2.16774V1.62581H11.9226V2.16774H13.0065V1.62581H15.1742V3.79355H1.08387V1.62581H3.25161V2.16774H4.33548ZM15.1742 15.7161H1.08387V4.87742H15.1742V15.7161Z" fill="currentColor"/><path d="M5.14859 9.21302H3.52279V10.8388H5.14859V9.21302Z" fill="currentColor"/><path d="M8.94208 9.21302H7.31628V10.8388H8.94208V9.21302Z" fill="currentColor"/><path d="M12.7356 9.21302H11.1098V10.8388H12.7356V9.21302Z" fill="currentColor"/></svg></button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div><!-- /platform-section-pc -->
+
+        <!-- ── Mobile ── -->
+        <div class="platform-section platform-section-mobile">
+          <div class="platform-header"><span class="platform-dot mobile"></span>Mobile (h48)</div>
+          <div class="variant-block">
+            <div class="variant-label">States</div>
+            <div class="preview-area">
+              <div class="comp-state-matrix" style="grid-template-columns: 260px repeat(3, minmax(120px,1fr));">
+                <div class="matrix-col-header-action">Action</div>
+                <div class="matrix-col-header">Default</div>
+                <div class="matrix-col-header">Filled</div>
+                <div class="matrix-col-header">Disabled</div>
+                <!-- Action -->
+                <div class="comp-action-cell" id="dp-mobile-action-wrap" style="align-items:flex-start;">
+                  <div class="s1-input-wrap" style="width:180px;">
+                    <div class="s1-input-field input-size-mobile">
+                      <input type="text" placeholder="YY.MM.DD" readonly aria-label="날짜 선택">
+                      <button type="button" class="s1-input-action-btn" aria-label="달력 열기">
+                        <svg width="16" height="16" viewBox="0 0 16.2581 16.8" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M0 1.08387V16.2581C0 16.5615 0.238452 16.8 0.541936 16.8H15.7161C16.0196 16.8 16.2581 16.5615 16.2581 16.2581V1.08387C16.2581 0.780387 16.0196 0.541935 15.7161 0.541935H13.0065V0H11.9226V0.541935H4.33548V0H3.25161V0.541935H0.541936C0.238452 0.541935 0 0.780387 0 1.08387ZM4.33548 2.16774V1.62581H11.9226V2.16774H13.0065V1.62581H15.1742V3.79355H1.08387V1.62581H3.25161V2.16774H4.33548ZM15.1742 15.7161H1.08387V4.87742H15.1742V15.7161Z" fill="currentColor"/><path d="M5.14859 9.21302H3.52279V10.8388H5.14859V9.21302Z" fill="currentColor"/><path d="M8.94208 9.21302H7.31628V10.8388H8.94208V9.21302Z" fill="currentColor"/><path d="M12.7356 9.21302H11.1098V10.8388H12.7356V9.21302Z" fill="currentColor"/></svg>
+                      </button>
+                    </div>
+                  </div>
+                  <div class="action-test-controls" style="margin-top:6px;">
+                    <button type="button" class="action-mini-toggle" data-dp-mobile-disabled>Disabled: off</button>
+                  </div>
+                </div>
+                <!-- Default -->
+                <div class="comp-state-cell">
+                  <div class="s1-input-wrap is-preview" style="width:160px;">
+                    <div class="s1-input-field input-size-mobile">
+                      <input type="text" placeholder="YY.MM.DD" readonly tabindex="-1">
+                      <button type="button" class="s1-input-action-btn" tabindex="-1" aria-label="달력 열기">
+                        <svg width="16" height="16" viewBox="0 0 16.2581 16.8" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M0 1.08387V16.2581C0 16.5615 0.238452 16.8 0.541936 16.8H15.7161C16.0196 16.8 16.2581 16.5615 16.2581 16.2581V1.08387C16.2581 0.780387 16.0196 0.541935 15.7161 0.541935H13.0065V0H11.9226V0.541935H4.33548V0H3.25161V0.541935H0.541936C0.238452 0.541935 0 0.780387 0 1.08387ZM4.33548 2.16774V1.62581H11.9226V2.16774H13.0065V1.62581H15.1742V3.79355H1.08387V1.62581H3.25161V2.16774H4.33548ZM15.1742 15.7161H1.08387V4.87742H15.1742V15.7161Z" fill="currentColor"/><path d="M5.14859 9.21302H3.52279V10.8388H5.14859V9.21302Z" fill="currentColor"/><path d="M8.94208 9.21302H7.31628V10.8388H8.94208V9.21302Z" fill="currentColor"/><path d="M12.7356 9.21302H11.1098V10.8388H12.7356V9.21302Z" fill="currentColor"/></svg>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+                <!-- Filled -->
+                <div class="comp-state-cell">
+                  <div class="s1-input-wrap is-preview" style="width:160px;">
+                    <div class="s1-input-field input-size-mobile">
+                      <input type="text" value="26.05.21" readonly tabindex="-1">
+                      <button type="button" class="s1-input-action-btn" tabindex="-1" aria-label="달력 열기">
+                        <svg width="16" height="16" viewBox="0 0 16.2581 16.8" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M0 1.08387V16.2581C0 16.5615 0.238452 16.8 0.541936 16.8H15.7161C16.0196 16.8 16.2581 16.5615 16.2581 16.2581V1.08387C16.2581 0.780387 16.0196 0.541935 15.7161 0.541935H13.0065V0H11.9226V0.541935H4.33548V0H3.25161V0.541935H0.541936C0.238452 0.541935 0 0.780387 0 1.08387ZM4.33548 2.16774V1.62581H11.9226V2.16774H13.0065V1.62581H15.1742V3.79355H1.08387V1.62581H3.25161V2.16774H4.33548ZM15.1742 15.7161H1.08387V4.87742H15.1742V15.7161Z" fill="currentColor"/><path d="M5.14859 9.21302H3.52279V10.8388H5.14859V9.21302Z" fill="currentColor"/><path d="M8.94208 9.21302H7.31628V10.8388H8.94208V9.21302Z" fill="currentColor"/><path d="M12.7356 9.21302H11.1098V10.8388H12.7356V9.21302Z" fill="currentColor"/></svg>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+                <!-- Disabled -->
+                <div class="comp-state-cell">
+                  <div class="s1-input-wrap is-disabled is-preview" style="width:160px;">
+                    <div class="s1-input-field input-size-mobile">
+                      <input type="text" placeholder="YY.MM.DD" disabled readonly tabindex="-1">
+                      <button type="button" class="s1-input-action-btn" disabled tabindex="-1" aria-label="달력 열기">
+                        <svg width="16" height="16" viewBox="0 0 16.2581 16.8" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M0 1.08387V16.2581C0 16.5615 0.238452 16.8 0.541936 16.8H15.7161C16.0196 16.8 16.2581 16.5615 16.2581 16.2581V1.08387C16.2581 0.780387 16.0196 0.541935 15.7161 0.541935H13.0065V0H11.9226V0.541935H4.33548V0H3.25161V0.541935H0.541936C0.238452 0.541935 0 0.780387 0 1.08387ZM4.33548 2.16774V1.62581H11.9226V2.16774H13.0065V1.62581H15.1742V3.79355H1.08387V1.62581H3.25161V2.16774H4.33548ZM15.1742 15.7161H1.08387V4.87742H15.1742V15.7161Z" fill="currentColor"/><path d="M5.14859 9.21302H3.52279V10.8388H5.14859V9.21302Z" fill="currentColor"/><path d="M8.94208 9.21302H7.31628V10.8388H8.94208V9.21302Z" fill="currentColor"/><path d="M12.7356 9.21302H11.1098V10.8388H12.7356V9.21302Z" fill="currentColor"/></svg>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div><!-- /comp-state-matrix Mobile -->
+            </div><!-- /preview-area -->
+          </div>
+        </div><!-- /platform-section-mobile -->
+
+        <!-- Code / Token Details -->
+        <div class="code-block" style="margin-top:24px;">
+          <div class="code-tabs">
+            <button class="code-tab active" onclick="switchTab(this,'dp-trigger-tokens')">Trigger 토큰 (form-control)</button>
+            <button class="code-tab" onclick="switchTab(this,'dp-calendar-tokens')">Calendar 토큰 (date-picker)</button>
+          </div>
+          <div class="code-pane active" id="dp-trigger-tokens">
+            <table class="token-detail-table">
+              <thead><tr><th>역할</th><th>Semantic Variable</th><th>설명</th></tr></thead>
+              <tbody>
+                <tr><td>기본 배경</td><td class="token-value">var(--color-form-control-bg-default)</td><td>Trigger 입력 필드 배경</td></tr>
+                <tr><td>호버 배경</td><td class="token-value">var(--color-form-control-bg-hover)</td><td>Trigger hover (form-control/bg/hover)</td></tr>
+                <tr><td>비활성 배경</td><td class="token-value">var(--color-form-control-bg-disabled)</td><td>disabled 필드 배경</td></tr>
+                <tr><td>기본 테두리</td><td class="token-value">var(--color-form-control-border-default)</td><td>Trigger 기본·hover 테두리</td></tr>
+                <tr><td>열림/포커스 테두리</td><td class="token-value">var(--color-form-control-border-selected)</td><td>패널 열림(open) 상태 테두리</td></tr>
+                <tr><td>비활성 테두리</td><td class="token-value">var(--color-form-control-border-disabled)</td><td>disabled 필드 테두리</td></tr>
+                <tr><td>플레이스홀더</td><td class="token-value">var(--color-form-control-text-placeholder)</td><td>YY.MM.DD 안내 텍스트</td></tr>
+                <tr><td>입력값 텍스트</td><td class="token-value">var(--color-form-control-text-default)</td><td>날짜 선택 완료(Filled) 텍스트</td></tr>
+                <tr><td>비활성 텍스트</td><td class="token-value">var(--color-form-control-text-disabled)</td><td>disabled 텍스트</td></tr>
+                <tr><td>아이콘</td><td class="token-value">var(--color-form-control-icon-default)</td><td>달력 아이콘 색상</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="code-pane" id="dp-calendar-tokens">
+            <table class="token-detail-table">
+              <thead><tr><th>역할</th><th>Semantic Variable</th><th>설명</th></tr></thead>
+              <tbody>
+                <tr><td>패널 배경</td><td class="token-value">var(--color-date-picker-bg-panel)</td><td>캘린더 팝업 배경</td></tr>
+                <tr><td>패널 테두리</td><td class="token-value">var(--color-date-picker-border-panel)</td><td>팝업 외곽선</td></tr>
+                <tr><td>헤더/월 텍스트</td><td class="token-value">var(--color-date-picker-text-primary)</td><td>YYYY.MM 라벨 · 이전/다음 nav</td></tr>
+                <tr><td>요일/날짜 텍스트</td><td class="token-value">var(--color-date-picker-text-secondary)</td><td>weekday · 기본 day cell</td></tr>
+                <tr><td>일요일 텍스트</td><td class="token-value">var(--color-date-picker-text-sunday)</td><td>일요일 헤더</td></tr>
+                <tr><td>토요일 텍스트</td><td class="token-value">var(--color-date-picker-text-saturday)</td><td>토요일 헤더</td></tr>
+                <tr><td>이전/다음달 날짜</td><td class="token-value">var(--color-date-picker-text-other-month)</td><td>other-month day cell</td></tr>
+                <tr><td>비활성 날짜</td><td class="token-value">var(--color-date-picker-text-disabled)</td><td>disabled day cell</td></tr>
+                <tr><td>hover 배경</td><td class="token-value">var(--color-date-picker-bg-hover)</td><td>day cell · nav · selector hover</td></tr>
+                <tr><td>오늘 테두리</td><td class="token-value">var(--color-date-picker-border-today)</td><td>today 원형 테두리</td></tr>
+                <tr><td>오늘 텍스트</td><td class="token-value">var(--color-date-picker-text-today)</td><td>today 강조 텍스트</td></tr>
+                <tr><td>오늘 배경</td><td class="token-value">var(--color-date-picker-bg-today)</td><td>today 셀 배경(패널과 동일)</td></tr>
+                <tr><td>선택 배경</td><td class="token-value">var(--color-date-picker-bg-selected)</td><td>selected day 채움 원</td></tr>
+                <tr><td>선택 텍스트</td><td class="token-value">var(--color-date-picker-text-selected)</td><td>selected day 텍스트</td></tr>
               </tbody>
             </table>
           </div>
@@ -4376,11 +4705,18 @@ clearBtn.<span class="c-fn">addEventListener</span>(<span class="c-str">'click'<
       var relevant = /^--(color-|button-|input-|chip-|checkbox-|radio-|toggle-|select-|dropdown-|nav-|pagination-|table-|date-picker|time-picker)/;
       var varRe = /(--[\w-]+)\s*:/g;
 
-      for (var si = 0; si < document.styleSheets.length; si++) {
-        var rules;
-        try { rules = document.styleSheets[si].cssRules; } catch(e) { continue; }
+      function scanRules(rules) {
+        if (!rules) return;
         for (var ri = 0; ri < rules.length; ri++) {
-          var text = rules[ri].cssText || '';
+          var rule = rules[ri];
+          // @import 규칙 → 중첩 스타일시트(site-base.css 등) 재귀 스캔
+          if (rule.styleSheet) {
+            var nested;
+            try { nested = rule.styleSheet.cssRules; } catch(e) { nested = null; }
+            scanRules(nested);
+            continue;
+          }
+          var text = rule.cssText || '';
           var m;
           varRe.lastIndex = 0;
           while ((m = varRe.exec(text)) !== null) {
@@ -4393,6 +4729,11 @@ clearBtn.<span class="c-fn">addEventListener</span>(<span class="c-str">'click'<
             map[hex].push({ name: name, type: classifyToken(name) });
           }
         }
+      }
+      for (var si = 0; si < document.styleSheets.length; si++) {
+        var rules;
+        try { rules = document.styleSheets[si].cssRules; } catch(e) { continue; }
+        scanRules(rules);
       }
 
       var order = { F: 0, S: 1, C: 2 };
