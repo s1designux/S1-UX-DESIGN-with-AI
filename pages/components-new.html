@@ -4701,48 +4701,51 @@ clearBtn.<span class="c-fn">addEventListener</span>(<span class="c-str">'click'<
       document.body.appendChild(probeEl);
 
       var map = {};
-      var seen = {};
-      var relevant = /^--(color-|button-|input-|chip-|checkbox-|radio-|toggle-|select-|dropdown-|nav-|pagination-|table-|date-picker|time-picker)/;
-      var varRe = /(--[\w-]+)\s*:/g;
+      function add(name) {
+        var hex = resolveVarHex(name);
+        if (!hex) return;
+        if (!map[hex]) map[hex] = [];
+        if (!map[hex].some(function(t){ return t.name === name; }))
+          map[hex].push({ name: name, type: classifyToken(name) });
+      }
 
-      function scanRules(rules) {
-        if (!rules) return;
-        for (var ri = 0; ri < rules.length; ri++) {
-          var rule = rules[ri];
-          // @import 규칙 → 중첩 스타일시트(site-base.css 등) 재귀 스캔
-          if (rule.styleSheet) {
-            var nested;
-            try { nested = rule.styleSheet.cssRules; } catch(e) { nested = null; }
-            scanRules(nested);
-            continue;
-          }
-          var text = rule.cssText || '';
-          var m;
-          varRe.lastIndex = 0;
-          while ((m = varRe.exec(text)) !== null) {
-            var name = m[1];
-            if (seen[name] || !relevant.test(name)) continue;
-            seen[name] = true;
-            var hex = resolveVarHex(name);
-            if (!hex) continue;
-            if (!map[hex]) map[hex] = [];
-            map[hex].push({ name: name, type: classifyToken(name) });
+      // ── Foundation 팔레트 직접 나열 → getComputedStyle 해석 (cssRules 불필요·CORS 무관) ──
+      var graySteps = [0,50,100,200,300,400,500,600,700,800,900];
+      var palSteps  = [50,100,150,200,250,300,350,400,450,500];
+      var palettes  = ['blue','red','orange','yellow','green','skyblue','purple','brown','visual-gray'];
+      ['gray','gray-dark'].forEach(function(g){ graySteps.forEach(function(st){ add('--color-' + g + '-' + st); }); });
+      palettes.forEach(function(pal){
+        [pal, pal + '-dark'].forEach(function(pp){ palSteps.forEach(function(st){ add('--color-' + pp + '-' + st); }); });
+      });
+      ['base-white','base-black','brand-blue','brand-red','brand-gray','brand-ci',
+       'status-dark-red','status-dark-green','status-dark-yellow'].forEach(add);
+
+      // ── (보조) 스타일시트 접근 가능하면 스캔해 semantic/component 보강 ──
+      try {
+        var seen = {};
+        var relevant = /^--(color-|button-|input-|chip-|checkbox-|radio-|toggle-|select-|dropdown-|nav-|pagination-|table-|date-picker|time-picker)/;
+        var varRe = /(--[\w-]+)\s*:/g;
+        function scanRules(rules) {
+          if (!rules) return;
+          for (var ri = 0; ri < rules.length; ri++) {
+            var rule = rules[ri];
+            if (rule.styleSheet) { var n; try { n = rule.styleSheet.cssRules; } catch(e){ n = null; } scanRules(n); continue; }
+            var text = rule.cssText || ''; var m; varRe.lastIndex = 0;
+            while ((m = varRe.exec(text)) !== null) {
+              var name = m[1];
+              if (seen[name] || !relevant.test(name)) continue;
+              seen[name] = true; add(name);
+            }
           }
         }
-      }
-      for (var si = 0; si < document.styleSheets.length; si++) {
-        var rules;
-        try { rules = document.styleSheets[si].cssRules; } catch(e) { continue; }
-        scanRules(rules);
-      }
+        for (var si = 0; si < document.styleSheets.length; si++) {
+          var rules; try { rules = document.styleSheets[si].cssRules; } catch(e){ continue; }
+          scanRules(rules);
+        }
+      } catch(e) {}
 
       var order = { F: 0, S: 1, C: 2 };
       Object.keys(map).forEach(function(hex) {
-        var dedupe = {};
-        map[hex] = map[hex].filter(function(t) {
-          if (dedupe[t.name]) return false;
-          return (dedupe[t.name] = true);
-        });
         map[hex].sort(function(a, b) { return order[a.type] - order[b.type]; });
       });
 
