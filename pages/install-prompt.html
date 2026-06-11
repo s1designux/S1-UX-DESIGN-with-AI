@@ -1928,7 +1928,7 @@
                 <div class="step-title">에스원 디자인시스템 설치 플러그인</div>
                 <div class="step-desc">ZIP을 받아 Figma Desktop에 등록한 뒤, 설치할 파일에서 실행하면 토큰·텍스트 스타일·컴포넌트 세트를 선택 설치합니다</div>
               </div>
-              <span class="update-stamp" data-update-file="assets/downloads/s1-design-vars-installer.zip"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> 업데이트 2026-06-11 10:03</span>
+              <span class="update-stamp" data-update-file="assets/downloads/s1-design-vars-installer.zip"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> 업데이트 2026-06-11 13:16</span>
             </div>
             <div class="step-body">
               <!-- 다운로드 -->
@@ -1937,7 +1937,7 @@
                   <div class="file-icon" style="background:#eff6ff;font-size:20px;">📦</div>
                   <div>
                     <div class="file-name">s1-design-vars-installer.zip</div>
-                    <div class="file-meta">압축 해제 후 바로 사용 가능 · 17.6 KB</div>
+                    <div class="file-meta">압축 해제 후 바로 사용 가능 · 17.7 KB</div>
                   </div>
                 </div>
                 <a class="download-btn" href="../assets/downloads/s1-design-vars-installer.zip" download>
@@ -1948,17 +1948,19 @@
 
               <!-- 설치 / 임포트 방법 -->
               <ol style="font-size:13px;color:#374151;line-height:2.4;padding-left:18px;margin:16px 0 0;">
-                <li>받은 ZIP을 압축 해제합니다 <span style="font-size:11px;color:#9ca3af;">(안에 manifest.json · code.js · ui.html 3개 파일)</span></li>
+                <li>받은 ZIP을 압축 해제하면 <code style="background:#f3f4f6;padding:2px 6px;border-radius:4px;font-size:12px;">s1-design-system-installer</code> 폴더가 생깁니다 <span style="font-size:11px;color:#9ca3af;">(안에 manifest.json · code.js · ui.html)</span></li>
+                <li>이 폴더를 <strong>영구적인 위치</strong>(예: 문서 폴더)로 옮겨 둡니다 <span style="font-size:11px;color:#9ca3af;">— Figma가 이 경로를 참조합니다</span></li>
                 <li>Figma Desktop App 상단 메뉴 <strong>Plugins → Development → Import plugin from manifest…</strong></li>
-                <li>압축 해제된 폴더의 <code style="background:#f3f4f6;padding:2px 6px;border-radius:4px;font-size:12px;">manifest.json</code>을 선택합니다</li>
+                <li>폴더 안의 <code style="background:#f3f4f6;padding:2px 6px;border-radius:4px;font-size:12px;">manifest.json</code>을 선택합니다</li>
                 <li><strong>설치할 Figma 파일</strong>을 Figma Desktop App에서 엽니다</li>
                 <li><strong>Plugins → Development → 에스원 디자인시스템 설치</strong> 클릭</li>
                 <li>패널에서 필요한 항목(Foundation · Semantic · Text Styles · Component Set)을 체크하고 <strong>[선택 항목 설치]</strong> 클릭</li>
                 <li>완료 후 왼쪽 패널 <strong>Local variables · Text styles · Assets</strong>에서 확인합니다</li>
               </ol>
 
-              <div style="margin-top:14px;padding:12px 16px;background:#fffbeb;border:1px solid #fde68a;border-radius:10px;font-size:12px;color:#92400e;">
-                Figma Desktop App이 필요합니다. 브라우저용 Figma에서는 개발 플러그인을 불러올 수 없습니다.
+              <div style="margin-top:14px;padding:12px 16px;background:#fffbeb;border:1px solid #fde68a;border-radius:10px;font-size:12px;color:#92400e;line-height:1.7;">
+                Figma Desktop App이 필요합니다. 브라우저용 Figma에서는 개발 플러그인을 불러올 수 없습니다.<br>
+                <strong>폴더를 옮기거나 삭제하지 마세요.</strong> Figma는 등록 시점의 폴더 경로를 참조하므로, 폴더가 사라지면 <em>"manifest를 찾을 수 없음"</em> 오류가 납니다. (Downloads 폴더는 자동 정리될 수 있어 권장하지 않습니다.)
               </div>
 
               <!-- 설치 항목 -->
