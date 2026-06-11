@@ -690,6 +690,63 @@ async function buildChip(maps: BuildMaps, originY: number): Promise<{ set: Compo
   return { set, bottomY };
 }
 
+// ── Input (form-control 필드) — color/form-control/* 슬롯 ─────────────────────
+// 핵심 매트릭스: Size × State × Break (label/message/icon off). 상태 7개 → 행=State, 열=Size 평면.
+async function buildInput(maps: BuildMaps, originY: number): Promise<{ set: ComponentSetNode; bottomY: number }> {
+  const fc = (k: string) => `color/form-control/${k}`;
+  const states = [
+    { name: "Default",   bg: "bg/default",  border: "border/default",  txt: "입력",   tc: "text/placeholder" },
+    { name: "Filled",    bg: "bg/default",  border: "border/default",  txt: "텍스트", tc: "text/default" },
+    { name: "Editing",   bg: "bg/selected", border: "border/selected", txt: "텍스트", tc: "text/selected" },
+    { name: "Error",     bg: "bg/default",  border: "border/error",    txt: "텍스트", tc: "text/default" },
+    { name: "Correct",   bg: "bg/default",  border: "border/correct",  txt: "텍스트", tc: "text/default" },
+    { name: "Read-Only", bg: "bg/disabled", border: "border/default",  txt: "텍스트", tc: "text/read-only" },
+    { name: "Disabled",  bg: "bg/disabled", border: "border/disabled", txt: "입력",   tc: "text/disabled" },
+  ];
+  const sizes = [
+    { size: "XSMALL", brk: "PC",     h: 28, padL: 12, padR: 8,  font: 12, head: "XSMALL" },
+    { size: "SMALL",  brk: "PC",     h: 34, padL: 12, padR: 8,  font: 14, head: "SMALL" },
+    { size: "MEDIUM", brk: "PC",     h: 44, padL: 16, padR: 12, font: 14, head: "MEDIUM" },
+    { size: "MEDIUM", brk: "Mobile", h: 48, padL: 16, padR: 12, font: 14, head: "MEDIUM·M" },
+  ];
+  const comps: ComponentNode[] = [];
+  const cells: { comp: ComponentNode; row: number; col: number }[] = [];
+  for (let row = 0; row < states.length; row++) {
+    for (let col = 0; col < sizes.length; col++) {
+      const st = states[row], sc = sizes[col];
+      const comp = figma.createComponent();
+      comp.name = `Size=${sc.size}, State=${st.name}, Break=${sc.brk}`;
+      comp.layoutMode = "HORIZONTAL";
+      comp.counterAxisAlignItems = "CENTER";
+      comp.primaryAxisSizingMode = "FIXED";
+      comp.counterAxisSizingMode = "FIXED";
+      comp.paddingLeft = sc.padL; comp.paddingRight = sc.padR; comp.paddingTop = 0; comp.paddingBottom = 0;
+      comp.cornerRadius = 4;
+      comp.fills = [boundPaint(scv(maps, fc(st.bg)))];
+      comp.strokes = [boundPaint(scv(maps, fc(st.border)))];
+      comp.strokeWeight = 1; comp.strokeAlign = "INSIDE";
+      comp.appendChild(await makeBoundText(st.txt, sc.font, "Regular", scv(maps, fc(st.tc))));
+      comp.resize(140, sc.h);
+      setLightMode(comp, maps);
+      comps.push(comp);
+      cells.push({ comp, row, col });
+    }
+  }
+  const set = figma.combineAsVariants(comps, figma.currentPage);
+  set.name = "Input";
+  set.x = 0; set.y = originY;
+  const opts: SpecOpts = {
+    title: "Input",
+    colHeaders: sizes.map((s) => s.head),
+    rowLabels: states.map((s) => s.name),
+    cellAt: (r, c) => cells.find((x) => x.row === r && x.col === c)?.comp ?? null,
+    lightX: SPEC_LIGHT_X, darkX: SPEC_DARK_X, originY, cellW: 152, cellH: 64,
+  };
+  let bottomY = await decorateSetFlat(set, opts, maps);
+  try { bottomY = Math.max(bottomY, await buildSpec(opts, maps)); } catch (e) { console.warn(e); }
+  return { set, bottomY };
+}
+
 // ── 멀티 컴포넌트 오케스트레이터 ──────────────────────────────────────────────
 // Button(상단) + 나머지 컴포넌트를 세로로 스택 배치. 반환=총 variant 수.
 export async function buildAllComponents(
@@ -703,9 +760,9 @@ export async function buildAllComponents(
 
   // 컴포넌트를 세로로 스택 (각 빌더가 set+스펙 포함 최하단 Y 반환 → 충돌 방지)
   const builders: ((m: BuildMaps, y: number) => Promise<{ set: ComponentSetNode; bottomY: number }>)[] = [
-    buildCheckbox, buildRadio, buildToggle, buildChip,
+    buildCheckbox, buildRadio, buildToggle, buildChip, buildInput,
   ];
-  const names = ["Checkbox", "Radio", "Toggle", "Chip"];
+  const names = ["Checkbox", "Radio", "Toggle", "Chip", "Input"];
   let y = btn.bottomY + 140;
   for (let i = 0; i < builders.length; i++) {
     if (onProgress) onProgress(`${names[i]} 생성 중…`, 97 + Math.round(((i + 1) / builders.length) * 3));
