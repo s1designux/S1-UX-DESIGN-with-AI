@@ -38,7 +38,7 @@ description: "토큰 '값' 1건이 수정될 때, 연관된 모든 표면(tokens
 | `pages/components.html` · `components-new.html` | **REF** | `var(--token)` | 수정 안 함(자동 상속). |
 
 > **핵심 비대칭:** `tokens.css`는 `var(--color-gray-100)`(CSS 참조)로 쓰고, `vars-data.ts`는 `gray/100`(Figma 경로)으로 쓴다. 같은 값이라도 형식이 다르므로 둘을 따로 고친다.
-> **resolved hex 함정:** `semantic.html`·`semantic.md`는 계산된 hex를 하드코딩한다. palette step을 바꾸면 hex도 같이 바꿔야 한다(예: gray/50 `#FAFAFA` → gray/100 `#F2F2F2`). 실제 hex는 `tokens.css`의 Foundation 정의에서 확인한다.
+> **resolved hex 함정:** `semantic.html`·`semantic.md`는 계산된 hex를 하드코딩한다. palette step을 바꾸면 hex도 같이 바꿔야 한다(예: gray/50 `#F5F5F5` → gray/100 `#E9E9E9`). 실제 hex는 `tokens.css`의 Foundation 정의에서 확인한다(추측 금지). **이 정합은 Gate 7(`npm run tokens:consistency`)이 기계 검증한다.**
 
 ## 작업 순서 (고정)
 
@@ -51,8 +51,9 @@ description: "토큰 '값' 1건이 수정될 때, 연관된 모든 표면(tokens
                  (hit 없으면 건너뜀 — 그 토큰은 문서화 안 됨)
 5. AUTO 재생성 → npm run tokens:sync-prompt
                  npm run installer:build      (vars-data.ts를 건드렸을 때만)
-6. 검증        → npm run installer:coverage
-                 npm run gate:check
+6. 검증        → npm run tokens:consistency   # Gate 7: tokens.css↔vars-data↔semantic.html 값 일치 기계검증
+                 npm run installer:coverage
+                 npm run gate:check            # Gate 1/3/4/6/7 일괄 (값 불일치면 FAIL)
                  node scripts/token-sync-locate.js <token>   # 재실행해 전 표면 일치 확인
 7. 보고        → Orchestrator Summary (변경 표면 표 + Gate 결과)
 ```

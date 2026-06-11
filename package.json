@@ -22,6 +22,7 @@
     "installer:coverage": "node scripts/installer-coverage-check.js",
     "tokens:gen": "node scripts/gen-semantic-tokens.js",
     "tokens:locate": "node scripts/token-sync-locate.js",
+    "tokens:consistency": "node scripts/token-value-consistency-check.js",
     "tokens:sync-prompt": "node scripts/sync-install-prompt.js",
     "tokens:sync-prompt:check": "node scripts/sync-install-prompt.js --check",
     "figma:fetch": "node --env-file=.env scripts/figma/fetch-figma-variables.mjs",

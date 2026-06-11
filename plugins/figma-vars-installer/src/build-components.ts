@@ -941,9 +941,11 @@ async function buildSelect(maps: BuildMaps, originY: number): Promise<{ set: Com
       if (st.name === "Open") {
         const panel = figma.createFrame();
         panel.name = "list";
-        panel.layoutMode = "VERTICAL"; panel.primaryAxisSizingMode = "AUTO"; panel.counterAxisSizingMode = "FIXED";
-        panel.resize(140, 10);
+        panel.layoutMode = "VERTICAL"; panel.counterAxisSizingMode = "FIXED"; panel.primaryAxisSizingMode = "FIXED";
         panel.paddingTop = 4; panel.paddingBottom = 4; panel.itemSpacing = 0; panel.cornerRadius = 4;
+        panel.clipsContent = false;
+        // 높이를 옵션 개수에 맞춰 명시 고정 (resize 가 sizing mode 를 FIXED 로 바꾸므로 AUTO 의존 금지)
+        panel.resize(140, panelOpts.length * 32 + 8);
         panel.fills = [boundPaint(scv(maps, "color/dropdown/list/bg"))];
         panel.strokes = [boundPaint(scv(maps, "color/dropdown/list/border"))]; panel.strokeWeight = 1; panel.strokeAlign = "INSIDE";
         for (const o of panelOpts) {
@@ -980,6 +982,149 @@ async function buildSelect(maps: BuildMaps, originY: number): Promise<{ set: Com
   return { set, bottomY };
 }
 
+// ── Dropdown List (옵션 상태) — color/dropdown/option/* ──────────────────────
+// 원본은 리스트 패널(Hover/Selected/Option). 재사용 단위인 옵션 상태 세트로 구성.
+async function buildDropdownList(maps: BuildMaps, originY: number): Promise<{ set: ComponentSetNode; bottomY: number }> {
+  const dd = (k: string) => `color/dropdown/${k}`;
+  const states = [
+    { name: "Default",  bg: "option/bg/default",  label: "option/label/default" },
+    { name: "Hover",    bg: "option/bg/hover",    label: "option/label/hover" },
+    { name: "Selected", bg: "option/bg/selected", label: "option/label/selected" },
+    { name: "Disabled", bg: "option/bg/disabled", label: "option/label/disabled" },
+  ];
+  const comps: ComponentNode[] = [];
+  const cells: { comp: ComponentNode; row: number; col: number }[] = [];
+  for (let col = 0; col < states.length; col++) {
+    const st = states[col];
+    const comp = figma.createComponent();
+    comp.name = `State=${st.name}`;
+    comp.layoutMode = "HORIZONTAL"; comp.counterAxisAlignItems = "CENTER";
+    comp.primaryAxisSizingMode = "FIXED"; comp.counterAxisSizingMode = "FIXED";
+    comp.paddingLeft = 12; comp.paddingRight = 12; comp.paddingTop = 0; comp.paddingBottom = 0;
+    comp.fills = [boundPaint(scv(maps, dd(st.bg)))];
+    comp.appendChild(await makeBoundText("옵션", 14, "Regular", scv(maps, dd(st.label))));
+    comp.resize(140, 36);
+    setLightMode(comp, maps);
+    comps.push(comp);
+    cells.push({ comp, row: 0, col });
+  }
+  const set = figma.combineAsVariants(comps, figma.currentPage);
+  set.name = "Dropdown List";
+  set.x = 0; set.y = originY;
+  const opts: SpecOpts = {
+    title: "Dropdown List",
+    colHeaders: states.map((s) => s.name),
+    rowLabels: [""],
+    cellAt: (r, c) => cells.find((x) => x.row === r && x.col === c)?.comp ?? null,
+    lightX: SPEC_LIGHT_X, darkX: SPEC_DARK_X, originY, cellW: 160, cellH: 52,
+  };
+  let bottomY = await decorateSetFlat(set, opts, maps);
+  try { bottomY = Math.max(bottomY, await buildSpec(opts, maps)); } catch (e) { console.warn(e); }
+  return { set, bottomY };
+}
+
+// ── Line Tab (텍스트 + 밑줄 인디케이터) — color/navigation/* · Break 있음 → 그룹형 ──
+async function buildLineTab(maps: BuildMaps, originY: number): Promise<{ set: ComponentSetNode; bottomY: number }> {
+  const nav = (k: string) => `color/navigation/${k}`;
+  const states = [
+    { name: "Unselected", label: "label/default",  ind: "indicator/default" },
+    { name: "Hover",      label: "label/hover",     ind: "indicator/hover" },
+    { name: "Selected",   label: "label/selected",  ind: "indicator/selected" },
+  ];
+  const sizes = [
+    { size: "SM", brk: "PC",     h: 30, font: 14 },
+    { size: "MD", brk: "PC",     h: 40, font: 16 },
+    { size: "SM", brk: "Mobile", h: 30, font: 14 },
+  ];
+  const W = 76;
+  const comps: ComponentNode[] = [];
+  const cells: { comp: ComponentNode; size: string; brk: string; state: string }[] = [];
+  for (const sc of sizes) {
+    for (const st of states) {
+      const comp = figma.createComponent();
+      comp.name = `Size=${sc.size}, State=${st.name}, Break=${sc.brk}`;
+      comp.resize(W, sc.h);
+      comp.fills = [];
+      const t = await makeBoundText("메뉴", sc.font, "Medium", scv(maps, nav(st.label)));
+      comp.appendChild(t);
+      t.x = (W - t.width) / 2; t.y = (sc.h - 2 - t.height) / 2;
+      const ind = figma.createRectangle();
+      ind.resize(W, 2);
+      ind.fills = [boundPaint(scv(maps, nav(st.ind)))];
+      comp.appendChild(ind);
+      ind.x = 0; ind.y = sc.h - 2;
+      setLightMode(comp, maps);
+      comps.push(comp);
+      cells.push({ comp, size: sc.size, brk: sc.brk, state: st.name });
+    }
+  }
+  const set = figma.combineAsVariants(comps, figma.currentPage);
+  set.name = "Line Tab";
+  set.x = 0; set.y = originY;
+  const opts: GroupedSpecOpts = {
+    title: "Line Tab",
+    platforms: [{ name: "PC", sizes: ["SM", "MD"] }, { name: "Mobile", sizes: ["SM"] }],
+    rowLabels: [""],
+    colHeaders: states.map((s) => s.name),
+    cellAt: (platName, size, _ri, ci) =>
+      cells.find((x) => x.size === size && x.brk === platName && x.state === states[ci].name)?.comp ?? null,
+    lightX: SPEC_LIGHT_X, darkX: SPEC_DARK_X, originY, cellW: 110, cellH: 56, rowLabelW: 16,
+  };
+  let bottomY = await decorateSetGrouped(set, opts, maps);
+  try { bottomY = Math.max(bottomY, await buildGroupedSpec(opts, maps)); } catch (e) { console.warn(e); }
+  return { set, bottomY };
+}
+
+// ── Table Cell — color/data/*(bg·border) + color/text/body/*(텍스트) ─────────
+async function buildTableCell(maps: BuildMaps, originY: number): Promise<{ set: ComponentSetNode; bottomY: number }> {
+  const variants = [
+    { type: "Cell",   state: "Default",  bg: "color/data/state/default",  border: "color/data/border/light",  text: "color/text/body/primary",   head: "Cell · Default" },
+    { type: "Cell",   state: "Hover",    bg: "color/data/state/hover",    border: "color/data/border/light",  text: "color/text/body/primary",   head: "Cell · Hover" },
+    { type: "Cell",   state: "Selected", bg: "color/data/state/selected", border: "color/data/border/light",  text: "color/text/body/primary",   head: "Cell · Selected" },
+    { type: "Header", state: "Default",  bg: "color/data/header/bg",      border: "color/data/border/strong", text: "color/text/body/secondary", head: "Header" },
+  ];
+  const sizes = [
+    { size: "SMALL",  h: 38, font: 13 },
+    { size: "MEDIUM", h: 44, font: 14 },
+  ];
+  const W = 130;
+  const comps: ComponentNode[] = [];
+  const cells: { comp: ComponentNode; row: number; col: number }[] = [];
+  for (let row = 0; row < sizes.length; row++) {
+    for (let col = 0; col < variants.length; col++) {
+      const sc = sizes[row], v = variants[col];
+      const comp = figma.createComponent();
+      comp.name = `Size=${sc.size}, Type=${v.type}, Variant=${v.state}`;
+      comp.resize(W, sc.h);
+      comp.fills = [boundPaint(scv(maps, v.bg))];
+      const t = await makeBoundText("1층 정문", sc.font, "Regular", scv(maps, v.text));
+      comp.appendChild(t);
+      t.x = 16; t.y = (sc.h - 1 - t.height) / 2;
+      const border = figma.createRectangle();
+      border.resize(W, 1);
+      border.fills = [boundPaint(scv(maps, v.border))];
+      comp.appendChild(border);
+      border.x = 0; border.y = sc.h - 1;
+      setLightMode(comp, maps);
+      comps.push(comp);
+      cells.push({ comp, row, col });
+    }
+  }
+  const set = figma.combineAsVariants(comps, figma.currentPage);
+  set.name = "Table Cell";
+  set.x = 0; set.y = originY;
+  const opts: SpecOpts = {
+    title: "Table Cell",
+    colHeaders: variants.map((v) => v.head),
+    rowLabels: sizes.map((s) => s.size),
+    cellAt: (r, c) => cells.find((x) => x.row === r && x.col === c)?.comp ?? null,
+    lightX: SPEC_LIGHT_X, darkX: SPEC_DARK_X, originY, cellW: 152, cellH: 60, rowLabelW: 80,
+  };
+  let bottomY = await decorateSetFlat(set, opts, maps);
+  try { bottomY = Math.max(bottomY, await buildSpec(opts, maps)); } catch (e) { console.warn(e); }
+  return { set, bottomY };
+}
+
 // ── 멀티 컴포넌트 오케스트레이터 ──────────────────────────────────────────────
 // Button(상단) + 나머지 컴포넌트를 세로로 스택 배치. 반환=총 variant 수.
 export async function buildAllComponents(
@@ -993,9 +1138,9 @@ export async function buildAllComponents(
 
   // 컴포넌트를 세로로 스택 (각 빌더가 set+스펙 포함 최하단 Y 반환 → 충돌 방지)
   const builders: ((m: BuildMaps, y: number) => Promise<{ set: ComponentSetNode; bottomY: number }>)[] = [
-    buildCheckbox, buildRadio, buildToggle, buildChip, buildInput, buildSearch, buildTextarea, buildSelect,
+    buildCheckbox, buildRadio, buildToggle, buildChip, buildInput, buildSearch, buildTextarea, buildSelect, buildDropdownList, buildLineTab, buildTableCell,
   ];
-  const names = ["Checkbox", "Radio", "Toggle", "Chip", "Input", "Search Input", "Text Area", "Select Box"];
+  const names = ["Checkbox", "Radio", "Toggle", "Chip", "Input", "Search Input", "Text Area", "Select Box", "Dropdown List", "Line Tab", "Table Cell"];
   let y = btn.bottomY + 140;
   for (let i = 0; i < builders.length; i++) {
     if (onProgress) onProgress(`${names[i]} 생성 중…`, 97 + Math.round(((i + 1) / builders.length) * 3));

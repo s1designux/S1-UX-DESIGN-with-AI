@@ -189,6 +189,31 @@ try {
   fail(`installer-coverage-check 실패: ${e.message}`);
 }
 
+// ── Gate 7: Token Value Consistency Gate ─────────────────────────
+// 토큰 "값"이 표면 간 실제로 일치하는지 기계 판정 (token-sync 누락 방어).
+console.log('\n[Gate 7] Token Value Consistency Gate');
+
+try {
+  const { check: consistencyCheck } = require('./token-value-consistency-check');
+  const { A, B } = consistencyCheck();
+  if (A.mismatches.length === 0) {
+    pass(`tokens.css ↔ vars-data.ts 값 일치 (공통 ${A.compared}건, Light/Dark)`);
+  } else {
+    for (const m of A.mismatches) {
+      fail(`[설치기 drift] ${m.token} [${m.mode}] tokens.css=${m.tokensCss} ≠ vars-data ${m.varsData}`);
+    }
+  }
+  if (B.mismatches.length === 0) {
+    pass(`semantic.html 표 HEX ↔ tokens.css 일치 (${B.compared}건)`);
+  } else {
+    for (const m of B.mismatches) {
+      fail(`[문서 stale] ${m.token} [${m.mode}] tokens.css=${m.tokensCss} ≠ semantic.html=${m.semanticHtml}`);
+    }
+  }
+} catch (e) {
+  fail(`token-value-consistency-check 실패: ${e.message}`);
+}
+
 // ── Summary ───────────────────────────────────────────────────────
 console.log('\n─────────────────────────────────────────────────────');
 if (errors > 0) {
