@@ -1919,51 +1919,21 @@
 
       <!-- ══ 디자이너용 패널 ══ -->
       <div class="top-panel" id="top-designer">
-        <p style="font-size:13px;color:#6b7280;margin-bottom:20px;">S1 디자인가이드 Figma 파일을 받아 <strong>에스원 디자인시스템 설치</strong> 플러그인을 등록한 뒤, Foundation·Semantic 토큰과 텍스트 스타일·컴포넌트 세트를 파일에 바로 설치합니다. 총 3단계로 완료됩니다.</p>
+        <p style="font-size:13px;color:#6b7280;margin-bottom:20px;"><strong>에스원 디자인시스템 설치</strong> 플러그인 하나로 Foundation·Semantic 토큰과 텍스트 스타일·컴포넌트 세트를 Figma 파일에 바로 설치합니다. ZIP을 받아 Figma Desktop에 등록한 뒤, 설치할 파일에서 실행하면 됩니다.</p>
 
         <div class="install-steps">
 
-          <!-- 1. 디자인가이드 Figma 파일 다운로드 -->
+          <!-- 에스원 디자인시스템 설치 플러그인 (다운로드 + 설치/임포트) -->
           <div class="install-step">
             <div class="step-header">
-              <div class="step-number">1</div>
               <div>
-                <div class="step-title">디자인가이드 Figma 파일 받기</div>
-                <div class="step-desc">S1 UX 디자인가이드 기준 파일을 로컬에 저장합니다</div>
+                <div class="step-title">에스원 디자인시스템 설치 플러그인</div>
+                <div class="step-desc">ZIP을 받아 Figma Desktop에 등록한 뒤, 설치할 파일에서 실행하면 토큰·텍스트 스타일·컴포넌트 세트를 선택 설치합니다</div>
               </div>
+              <span class="update-stamp" data-update-file="assets/downloads/s1-design-vars-installer.zip"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> 업데이트 2026-06-11 10:03</span>
             </div>
             <div class="step-body">
-              <div class="file-card">
-                <div class="file-card-left">
-                  <div class="file-icon" style="background:#f0f0ff;font-size:20px;">🎨</div>
-                  <div>
-                    <div class="file-name">S1-UX-Design-Guide-v2.4.fig</div>
-                    <div class="file-meta">S1 UX 디자인가이드 · Variables 포함 · 준비 중</div>
-                  </div>
-                </div>
-                <span class="soon-badge">
-                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-                  준비 중
-                </span>
-              </div>
-              <div style="margin-top:12px;padding:12px 16px;background:#f9fafb;border:1px solid #e5e7eb;border-radius:10px;font-size:12px;color:#6b7280;line-height:1.8;">
-                다운로드한 <code style="background:#e5e7eb;padding:1px 5px;border-radius:4px;">.fig</code> 파일을 Figma Desktop App에서 엽니다.<br>
-                이 파일을 기반으로 3단계에서 Variables를 임포트합니다.
-              </div>
-            </div>
-          </div>
-
-          <!-- 2. 에스원 디자인시스템 설치 플러그인 다운로드 -->
-          <div class="install-step">
-            <div class="step-header">
-              <div class="step-number">2</div>
-              <div>
-                <div class="step-title">에스원 디자인시스템 설치 플러그인 다운로드</div>
-                <div class="step-desc">ZIP 하나를 받아 압축 해제 → Figma 등록 후 토큰·텍스트 스타일·컴포넌트 세트를 선택 설치합니다</div>
-              </div>
-              <span class="update-stamp" data-update-file="assets/downloads/s1-design-vars-installer.zip"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> 업데이트 2026-06-11 09:55</span>
-            </div>
-            <div class="step-body">
+              <!-- 다운로드 -->
               <div class="file-card">
                 <div class="file-card-left">
                   <div class="file-icon" style="background:#eff6ff;font-size:20px;">📦</div>
@@ -1977,36 +1947,23 @@
                   다운로드
                 </a>
               </div>
-              <div style="margin-top:14px;padding:12px 16px;background:#f9fafb;border:1px solid #e5e7eb;border-radius:10px;font-size:12px;color:#6b7280;line-height:1.8;">
-                ZIP 안에 <code style="background:#e5e7eb;padding:1px 5px;border-radius:4px;">manifest.json</code> · <code style="background:#e5e7eb;padding:1px 5px;border-radius:4px;">code.js</code> · <code style="background:#e5e7eb;padding:1px 5px;border-radius:4px;">ui.html</code> 3개 파일이 들어 있습니다.<br>
-                압축을 해제하면 생기는 폴더를 원하는 위치에 두면 됩니다.
-              </div>
-              <div style="margin-top:12px;padding:12px 16px;background:#fffbeb;border:1px solid #fde68a;border-radius:10px;font-size:12px;color:#92400e;">
+
+              <!-- 설치 / 임포트 방법 -->
+              <ol style="font-size:13px;color:#374151;line-height:2.4;padding-left:18px;margin:16px 0 0;">
+                <li>받은 ZIP을 압축 해제합니다 <span style="font-size:11px;color:#9ca3af;">(안에 manifest.json · code.js · ui.html 3개 파일)</span></li>
+                <li>Figma Desktop App 상단 메뉴 <strong>Plugins → Development → Import plugin from manifest…</strong></li>
+                <li>압축 해제된 폴더의 <code style="background:#f3f4f6;padding:2px 6px;border-radius:4px;font-size:12px;">manifest.json</code>을 선택합니다</li>
+                <li><strong>설치할 Figma 파일</strong>을 Figma Desktop App에서 엽니다</li>
+                <li><strong>Plugins → Development → 에스원 디자인시스템 설치</strong> 클릭</li>
+                <li>패널에서 필요한 항목(Foundation · Semantic · Text Styles · Component Set)을 체크하고 <strong>[선택 항목 설치]</strong> 클릭</li>
+                <li>완료 후 왼쪽 패널 <strong>Local variables · Text styles · Assets</strong>에서 확인합니다</li>
+              </ol>
+
+              <div style="margin-top:14px;padding:12px 16px;background:#fffbeb;border:1px solid #fde68a;border-radius:10px;font-size:12px;color:#92400e;">
                 Figma Desktop App이 필요합니다. 브라우저용 Figma에서는 개발 플러그인을 불러올 수 없습니다.
               </div>
-            </div>
-          </div>
 
-          <!-- 3. 플러그인 등록 & Figma 파일에 임포트 -->
-          <div class="install-step">
-            <div class="step-header">
-              <div class="step-number">3</div>
-              <div>
-                <div class="step-title">플러그인 등록 후 디자인가이드 파일에 임포트</div>
-                <div class="step-desc">플러그인을 Figma에 등록하고 1단계 파일에서 실행해 Variables를 불러옵니다</div>
-              </div>
-              <span class="update-stamp" data-update-file="plugins/figma-vars-installer/src/vars-data.ts"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> 업데이트 2026-06-09 16:01</span>
-            </div>
-            <div class="step-body">
-              <ol style="font-size:13px;color:#374151;line-height:2.4;padding-left:18px;margin:0;">
-                <li>2단계에서 받은 ZIP을 압축 해제합니다 <span style="font-size:11px;color:#9ca3af;">(더블클릭하면 됩니다)</span></li>
-                <li>Figma Desktop App 상단 메뉴 <strong>Plugins → Development → Import plugin from manifest…</strong></li>
-                <li>압축 해제된 폴더 안의 <code style="background:#f3f4f6;padding:2px 6px;border-radius:4px;font-size:12px;">manifest.json</code>을 선택합니다</li>
-                <li><strong>1단계에서 받은 디자인가이드 Figma 파일</strong>을 Figma Desktop App에서 엽니다</li>
-                <li><strong>Plugins → Development → S1 Design Variables Installer</strong> 클릭</li>
-                <li>플러그인 패널에서 <strong>[Variables 설치하기]</strong> 버튼을 클릭합니다</li>
-                <li>완료 메시지가 나타나면 왼쪽 패널 <strong>Local variables</strong>에서 확인합니다</li>
-              </ol>
+              <!-- 설치 항목 -->
               <div style="margin-top:14px;display:flex;flex-direction:column;gap:8px;">
                 <div style="display:flex;align-items:center;gap:10px;padding:10px 14px;background:#eff6ff;border-radius:8px;">
                   <span style="font-size:15px;">🔵</span>
@@ -2019,7 +1976,21 @@
                   <span style="font-size:15px;">🟢</span>
                   <div>
                     <div style="font-size:12px;font-weight:600;color:#166534;">Semantic</div>
-                    <div style="font-size:11px;color:#6b7280;">~170개 컴포넌트 단위 변수 — button, chip, control, form-control, text 등 · Light / Dark 2모드</div>
+                    <div style="font-size:11px;color:#6b7280;">~170개 역할/컴포넌트 변수 — button, chip, control, form-control, text 등 · Light / Dark 2모드</div>
+                  </div>
+                </div>
+                <div style="display:flex;align-items:center;gap:10px;padding:10px 14px;background:#faf5ff;border-radius:8px;">
+                  <span style="font-size:15px;">🟣</span>
+                  <div>
+                    <div style="font-size:12px;font-weight:600;color:#6b21a8;">Text Styles</div>
+                    <div style="font-size:11px;color:#6b7280;">title · body · caption · helper 19종 (Pretendard) — V2.4 출처</div>
+                  </div>
+                </div>
+                <div style="display:flex;align-items:center;gap:10px;padding:10px 14px;background:#fff7ed;border-radius:8px;">
+                  <span style="font-size:15px;">🟠</span>
+                  <div>
+                    <div style="font-size:12px;font-weight:600;color:#c2410c;">Component Set <span style="font-weight:500;color:#9ca3af;">(업데이트 중)</span></div>
+                    <div style="font-size:11px;color:#6b7280;">Button · Checkbox · Radio · Toggle · Chip — 세트 + Light/Dark 스펙 · 계속 추가 중</div>
                   </div>
                 </div>
               </div>
