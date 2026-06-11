@@ -34,6 +34,7 @@
   .select-row input { margin-top: 2px; flex-shrink: 0; width: 15px; height: 15px; cursor: pointer; }
   .select-body { flex: 1; }
   .select-name { font-size: 13px; font-weight: 600; color: #111827; }
+  .tag-updating { display: inline-block; margin-left: 6px; padding: 1px 7px; border-radius: 10px; font-size: 10px; font-weight: 600; background: #fff7ed; color: #c2410c; vertical-align: middle; }
   .select-desc { font-size: 11px; color: #6b7280; margin-top: 3px; line-height: 1.5; }
   .select-date { font-size: 10px; color: #9ca3af; margin-top: 4px; }
   .select-date strong { color: #6b7280; font-weight: 600; }
@@ -106,12 +107,16 @@
     </div>
   </label>
 
-  <label class="select-row checked" data-opt="opt-components">
-    <input type="checkbox" id="opt-components" checked>
+  <label class="select-row" data-opt="opt-components">
+    <input type="checkbox" id="opt-components">
     <div class="select-body">
-      <div class="select-name">Component Set 생성</div>
-      <div class="select-desc">Button primary 16-variant (Size×State×Break) + 라벨 스펙 프레임. Semantic 변수 바인딩 · 모드 연결.</div>
-      <div class="select-date">최신 업데이트 · <strong>2026-06-10</strong></div>
+      <div class="select-name">Component Set 생성 <span class="tag-updating">업데이트 중</span></div>
+      <div class="select-desc">
+        현재 컴포넌트: <strong>Button · Checkbox · Radio · Toggle · Chip</strong> (계속 추가 중)<br>
+        각 컴포넌트 = 세트 + Light/Dark 스펙 · Semantic 변수 바인딩 · 모드 연결.<br>
+        토큰만 필요하면 체크 해제하세요.
+      </div>
+      <div class="select-date">최신 업데이트 · <strong>2026-06-11</strong></div>
     </div>
   </label>
 </div>

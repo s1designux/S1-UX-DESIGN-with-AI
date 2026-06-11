@@ -36,7 +36,7 @@ import {
   LIGHT_MODE, DARK_MODE,
 } from "./vars-data";
 import { installTextStyles } from "./install-textstyles";
-import { buildButtonSet } from "./build-components";
+import { buildAllComponents } from "./build-components";
 
 figma.showUI(__html__, { width: 440, height: 600, title: "에스원 디자인시스템 설치" });
 
@@ -452,8 +452,8 @@ async function runInstall(sel: InstallSelection) {
       if (Object.keys(foundationNumberMap).length === 0) {
         throw new Error("컴포넌트 세트 생성에는 Foundation 이 필요합니다. Foundation 도 함께 선택하거나 먼저 설치하세요.");
       }
-      post("progress", { step: "Button 컴포넌트 생성 중…", pct: 94 });
-      const set = await buildButtonSet(
+      post("progress", { step: "컴포넌트 생성 중…", pct: 92 });
+      componentCount = await buildAllComponents(
         {
           semanticColor: semanticColorMap,
           foundationNumber: foundationNumberMap,
@@ -462,11 +462,8 @@ async function runInstall(sel: InstallSelection) {
           semanticLightModeId: lightModeId,
           semanticDarkModeId: darkModeId,
         },
-        (step, pct) => post("progress", { step, pct }), 94, 100
+        (step, pct) => post("progress", { step, pct })
       );
-      componentCount = set.children.length;
-      figma.currentPage.selection = [set];
-      // 뷰포트 줌은 buildButtonPrimarySet 내부에서 [set, spec frame] 기준으로 처리됨
     }
 
     post("progress", { step: "완료", pct: 100 });
