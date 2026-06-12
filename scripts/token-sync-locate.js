@@ -55,7 +55,7 @@ const SURFACES = [
   { file: 'tokens/component-tokens-extracted.md',               kind: 'DOC',    note: 'Component 토큰 사람용 문서. 해당 시에만.' },
   { file: 'registry/tokens/semantic.colors.json',              kind: 'DOC',    note: 'Semantic 레지스트리. 문서화된 토큰만.' },
   { file: 'pages/install-prompt.html',                          kind: 'AUTO',   note: 'npm run tokens:sync-prompt 로 tokens.css에서 재생성.' },
-  { file: 'assets/downloads/s1-design-vars-installer.zip',      kind: 'AUTO',   note: 'npm run installer:build 로 vars-data.ts에서 재빌드.' },
+  { file: 'assets/downloads/s1-design-system-installer.zip',      kind: 'AUTO',   note: 'npm run installer:build 로 vars-data.ts에서 재빌드.' },
   { file: 'pages/components.html',                              kind: 'REF',    note: 'tokens.css link 상속 — JS resolved. 값 하드코딩 아님.' },
   { file: 'pages/components-new.html',                          kind: 'REF',    note: 'tokens.css link 상속 — JS resolved. 값 하드코딩 아님.' },
 ];

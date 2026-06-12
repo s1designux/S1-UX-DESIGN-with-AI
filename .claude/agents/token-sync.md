@@ -25,20 +25,24 @@ description: "토큰 '값' 1건이 수정될 때, 연관된 모든 표면(tokens
 
 ## 표면 지도 (값이 사는 곳)
 
+> **정본(Canonical) 2계층** — 어느 토큰이냐에 따라 출발점이 다르다:
+> - **Foundation + 레거시 컴포넌트 semantic**(color/button·control·text·icon …) → 정본 = `vars-data.ts`. tokens.css Semantic은 `tokens:gen`이 여기서 **생성**(GEN:SEMANTIC 마커 사이 = 손편집 금지, vars-data를 고치고 재생성).
+> - **역할 기반 semantic**(`--color-bg/surface/text/border/action/status`) → 정본 = `assets/css/site-base.css` (페이지가 @import). vars-data엔 없음.
+
 | 표면 | 분류 | 값 형식 | 처리 |
 |------|------|---------|------|
-| `assets/css/tokens.css` | **SOURCE** | `var(--color-gray-100)` | 수동. Light/Dark 블록 각각. **출발점.** |
-| `plugins/figma-vars-installer/src/vars-data.ts` | **SOURCE** | `{ light: "gray/100", dark: "..." }` | 수동. Figma 팔레트 경로 형식(슬래시). |
-| `pages/semantic.html` | **DOC** | resolved hex `light:'#F2F2F2'` | 수동. **해당 토큰이 표에 있을 때만.** 없으면 건너뜀. |
-| `tokens/semantic.md` | **DOC** | `--ref` + hex 주석 | 수동. 문서화된 토큰만. |
-| `tokens/component-tokens-extracted.md` | **DOC** | `var(--ref)` | 수동. 해당 시에만. |
-| `registry/tokens/semantic.colors.json` | **DOC** | `"light":"var(--ref)"` | 수동. 등록된 토큰만. |
+| `plugins/figma-vars-installer/src/vars-data.ts` | **SOURCE** (foundation·legacy) | `{ light: "gray/100", dark: "..." }` | 수동. Figma 팔레트 경로(슬래시). |
+| `assets/css/site-base.css` | **SOURCE** (역할 semantic) | `var(--color-gray-100)` | 수동. Light/Dark 블록 각각. |
+| `assets/css/tokens.css` (Semantic 섹션) | **GEN** | `var(--color-gray-100)` | `npm run tokens:gen` (손편집 금지). Foundation 섹션은 수동. |
+| `pages/semantic.html` | **DOC** | resolved hex `light:'#E9E9E9'` | 수동. **해당 토큰이 표에 있을 때만.** |
+| `registry/tokens/semantic.colors.json` · `sw-v2.4.tokens.css` | **DOC** | `"dark":"var(--ref)"` | 수동. 등록 토큰만. |
+| `tokens/semantic.md` · `component-tokens-extracted.md` | **DOC** | `--ref`/hex | 수동. 문서화된 토큰만. |
 | `pages/install-prompt.html` | **AUTO** | (tokens.css 복제) | `npm run tokens:sync-prompt` |
-| `assets/downloads/s1-design-vars-installer.zip` | **AUTO** | (vars-data 번들) | `npm run installer:build` |
-| `pages/components.html` · `components-new.html` | **REF** | `var(--token)` | 수정 안 함(자동 상속). |
+| `assets/downloads/s1-design-system-installer.zip` | **AUTO** | (vars-data 번들) | `npm run installer:build` |
+| `pages/components*.html` | **REF** | `var(--token)` | 수정 안 함(자동 상속). |
 
-> **핵심 비대칭:** `tokens.css`는 `var(--color-gray-100)`(CSS 참조)로 쓰고, `vars-data.ts`는 `gray/100`(Figma 경로)으로 쓴다. 같은 값이라도 형식이 다르므로 둘을 따로 고친다.
-> **resolved hex 함정:** `semantic.html`·`semantic.md`는 계산된 hex를 하드코딩한다. palette step을 바꾸면 hex도 같이 바꿔야 한다(예: gray/50 `#F5F5F5` → gray/100 `#E9E9E9`). 실제 hex는 `tokens.css`의 Foundation 정의에서 확인한다(추측 금지). **이 정합은 Gate 7(`npm run tokens:consistency`)이 기계 검증한다.**
+> **권장 흐름:** 정본(vars-data 또는 site-base) 수정 → `npm run tokens:reconcile`(tokens:gen·sync-prompt·installer:build 자동) → `npm run tokens:monitor`로 잔여 손유지 표면(semantic.html hex·registry json) 확인 후 수동 정정.
+> **resolved hex 함정:** `semantic.html`·docs는 계산된 hex를 하드코딩한다. palette step을 바꾸면 hex도 같이(예: gray/50 `#F5F5F5` → gray/100 `#E9E9E9`). 실제 hex는 Foundation 정의에서 확인(추측 금지). **이 정합은 Gate 7 Monitor(`npm run tokens:monitor`)가 전 표면 기계 검증한다.**
 
 ## 작업 순서 (고정)
 
@@ -51,8 +55,8 @@ description: "토큰 '값' 1건이 수정될 때, 연관된 모든 표면(tokens
                  (hit 없으면 건너뜀 — 그 토큰은 문서화 안 됨)
 5. AUTO 재생성 → npm run tokens:sync-prompt
                  npm run installer:build      (vars-data.ts를 건드렸을 때만)
-6. 검증        → npm run tokens:consistency   # Gate 7: tokens.css↔vars-data↔semantic.html 값 일치 기계검증
-                 npm run installer:coverage
+6. 검증        → npm run tokens:monitor       # Gate 7: 전 표면(tokens.css·install-prompt·semantic.html·registry·md) 정본 일치 모니터
+                 npm run tokens:reconcile      # (드리프트 시) 결정론적 표면 재생성 + 잔여 손유지 표면 보고
                  npm run gate:check            # Gate 1/3/4/6/7 일괄 (값 불일치면 FAIL)
                  node scripts/token-sync-locate.js <token>   # 재실행해 전 표면 일치 확인
 7. 보고        → Orchestrator Summary (변경 표면 표 + Gate 결과)
