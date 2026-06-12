@@ -142,7 +142,7 @@ function check() {
   return { A, B };
 }
 
-module.exports = { check };
+module.exports = { check, parseTokensCss, makeResolver, parseVarsData, SEMANTIC_HTML };
 
 // ── 단독 실행(CLI) ────────────────────────────────
 if (require.main === module) {

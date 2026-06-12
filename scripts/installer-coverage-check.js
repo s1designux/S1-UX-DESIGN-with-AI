@@ -112,6 +112,7 @@ function categorize(cssName) {
   if (/^--font-size-\d+$/.test(cssName))                              return 'FOUNDATION_NUMBER';
   if (/^--font-weight-(regular|medium|bold)$/.test(cssName))          return 'FOUNDATION_NUMBER';
   if (/^--line-height-\d+$/.test(cssName))                            return 'FOUNDATION_NUMBER';
+  if (/^--sizing-\d+$/.test(cssName))                                 return 'FOUNDATION_NUMBER'; // sizing/N = FOUNDATION_NUMBER(설치기 등재)
 
   // Foundation Color — Hybrid 패턴(2026-06-08): light/dark 팔레트 모두 별도 변수
   // gray/N · gray-dark/N 모두 Figma Foundation 컬렉션에 단일 모드 변수로 등재됨
@@ -239,15 +240,27 @@ function audit() {
   const STRICT_KINDS = ['FOUNDATION_COLOR', 'FOUNDATION_NUMBER', 'SEMANTIC_COLOR', 'SEMANTIC_NUMBER'];
   const missing = Object.fromEntries(STRICT_KINDS.map((k) => [k, []]));
   const stats   = Object.fromEntries(STRICT_KINDS.map((k) => [k, { expected: 0, present: 0 }]));
-  const outOfScopeSemanticColor = []; // 신규 역할 — installer 미반영 (정책 결정 필요)
+  const outOfScopeSemanticColor = []; // 설치기에 실제로 없는 semantic color (진짜 미반영)
   const unresolved = [];               // 매핑 함수가 null 반환
+
+  // 2026-06-12: 설치기 SEMANTIC_COLOR(컴포넌트 폴더 구조)에 실제 등재된 cssVar 집합.
+  //   color/control/bg/default → --color-control-bg-default 로 역변환(monitor·gen-page와 동일 규칙).
+  //   prefix 추정 대신 이 집합과의 멤버십으로 커버리지를 판정한다(노후 제외목록 오탐 제거).
+  const installedSemanticCssVars = new Set(
+    [...figmaSets.SEMANTIC_COLOR].map((k) => '--' + k.replace(/\//g, '-'))
+  );
 
   for (const cssName of cssNames) {
     const kind = categorize(cssName);
     if (!kind) continue;
 
     if (kind === 'SEMANTIC_COLOR_OUT_OF_SCOPE') {
-      outOfScopeSemanticColor.push(cssName);
+      if (installedSemanticCssVars.has(cssName)) {
+        stats.SEMANTIC_COLOR.expected++;
+        stats.SEMANTIC_COLOR.present++;   // 설치기에 존재 → covered (오탐 아님)
+      } else {
+        outOfScopeSemanticColor.push(cssName);   // 설치기에 진짜 없음 → WARN
+      }
       continue;
     }
 
@@ -279,7 +292,7 @@ function main() {
   const sectionTitle = (s) => ({
     FOUNDATION_COLOR:  'Foundation Color (Light palette)',
     FOUNDATION_NUMBER: 'Foundation Number (spacing/radius/border-width/font-*/line-height)',
-    SEMANTIC_COLOR:    'Semantic Color (bg/surface/text/border/icon/action/status/overlay)',
+    SEMANTIC_COLOR:    'Semantic Color (컴포넌트 폴더: button/chip/control/form-control/text/icon/… — 설치기 멤버십 검증)',
     SEMANTIC_NUMBER:   'Semantic Number (padding/section/stack/sizing/radius)',
   }[s]);
 

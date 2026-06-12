@@ -307,7 +307,7 @@
       <div class="sem-section" id="sec-color">
         <div class="section-header">
           <h2 class="section-title">Color Tokens</h2>
-          <p class="section-desc">Foundation Foundation를 역할 기반으로 매핑. 카드를 클릭하면 CSS 변수명이 복사됩니다.</p>
+          <p class="section-desc">Variables(Semantic Color) 정본을 컴포넌트 폴더 구조로 자동 미러링. 행을 클릭하면 CSS 변수명이 복사됩니다. <strong>이 표는 <code>npm run page:gen</code>으로 자동 생성</strong>되며 수동 편집하지 않습니다.</p>
         </div>
 
         <!-- Theme toggle -->
@@ -320,174 +320,8 @@
           <span class="theme-hint">Dark 값 — Dark Mode Foundation 설계안 기준. Figma 반영 전 확인 필요.</span>
         </div>
 
-        <!-- color-bg -->
-        <div class="cat-group" id="grp-bg">
-          <div class="cat-label">
-            <span class="cat-name">color-bg</span>
-            <span class="cat-desc">페이지·레이아웃·섹션 배경</span>
-            <span class="cat-count">8</span>
-          </div>
-          <div class="token-grid" id="grid-bg"></div>
-        </div>
-
-        <!-- color-surface -->
-        <div class="cat-group" id="grp-surface">
-          <div class="cat-label">
-            <span class="cat-name">color-surface</span>
-            <span class="cat-desc">컴포넌트 표면 배경 (카드·패널·모달)</span>
-            <span class="cat-count">2</span>
-            <span class="cat-new">신규 제안</span>
-          </div>
-          <div class="info-box">
-            <span>ℹ️</span>
-            <span><strong>color-bg vs color-surface</strong> — bg는 화면 전체 배경, surface는 그 위에 올라오는 컴포넌트 표면입니다. 라이트에서는 둘 다 흰색이지만 <strong>다크 모드에서 레이어 깊이가 시각적으로 분리</strong>됩니다. (bg-default: #131418 / surface-default: #1C1D23)</span>
-          </div>
-          <div class="token-grid" id="grid-surface"></div>
-        </div>
-
-        <!-- color-text -->
-        <div class="cat-group" id="grp-text">
-          <div class="cat-label">
-            <span class="cat-name">color-text</span>
-            <span class="cat-desc">텍스트 색상</span>
-            <span class="cat-count">11</span>
-          </div>
-          <div class="token-grid" id="grid-text"></div>
-        </div>
-
-        <!-- color-border -->
-        <div class="cat-group" id="grp-border">
-          <div class="cat-label">
-            <span class="cat-name">color-border</span>
-            <span class="cat-desc">테두리·구분선</span>
-            <span class="cat-count">8</span>
-          </div>
-          <div class="info-box">
-            <span>ℹ️</span>
-            <span>Dark 모드 border는 <strong>rgba(255,255,255, α)</strong>를 사용합니다. 배경 명도에 무관하게 일관된 레이어 구조를 표현하기 위함이며, Foundation alias가 불가능한 rgba 값은 직접 사용이 허용됩니다.</span>
-          </div>
-          <div class="token-grid" id="grid-border"></div>
-        </div>
-
-        <!-- color-control-border -->
-        <div class="cat-group" id="grp-control-border">
-          <div class="cat-label">
-            <span class="cat-name">color-control-border</span>
-            <span class="cat-desc">Checkbox·Radio 전용 테두리 — color-border와 독립</span>
-            <span class="cat-count">4</span>
-          </div>
-          <div class="token-grid" id="grid-control-border"></div>
-        </div>
-
-        <!-- color-form-control -->
-        <div class="cat-group" id="grp-form-control">
-          <div class="cat-label">
-            <span class="cat-name">color-form-control</span>
-            <span class="cat-desc">Input·Select·DatePicker 공유 Semantic 레이어 (bg·border·text·label·icon)</span>
-            <span class="cat-count">15</span>
-          </div>
-          <div class="info-box">
-            <span>ℹ️</span>
-            <span>Component Token(<code>--input-*</code>, <code>--dropdown-*</code>)이 이 레이어를 참조합니다. 직접 컴포넌트에 사용하지 않습니다.</span>
-          </div>
-          <div class="token-grid" id="grid-form-control"></div>
-        </div>
-
-        <!-- color-text-state -->
-        <div class="cat-group" id="grp-text-state">
-          <div class="cat-label">
-            <span class="cat-name">color-text-state</span>
-            <span class="cat-desc">폼 헬퍼·Correct·Error 텍스트 상태</span>
-            <span class="cat-count">3</span>
-          </div>
-          <div class="token-grid" id="grid-text-state"></div>
-        </div>
-
-        <!-- color-icon -->
-        <div class="cat-group" id="grp-icon">
-          <div class="cat-label">
-            <span class="cat-name">color-icon</span>
-            <span class="cat-desc">아이콘 색상</span>
-            <span class="cat-count">6</span>
-          </div>
-          <div class="token-grid" id="grid-icon"></div>
-        </div>
-
-        <!-- color-action -->
-        <div class="cat-group" id="grp-action">
-          <div class="cat-label">
-            <span class="cat-name">color-action</span>
-            <span class="cat-desc">인터랙션 액션 · Component Token이 참조</span>
-            <span class="cat-count">5</span>
-          </div>
-          <div class="token-grid" id="grid-action"></div>
-        </div>
-
-        <!-- color-status -->
-        <div class="cat-group" id="grp-status">
-          <div class="cat-label">
-            <span class="cat-name">color-status</span>
-            <span class="cat-desc">UI 피드백 상태 (폼 검증·알림)</span>
-            <span class="cat-count">4</span>
-          </div>
-          <div class="info-box">
-            <span>ℹ️</span>
-            <span><strong>color-status 기준</strong> — success/correct = Primary Blue (#1D6CEB). 현재 서비스 실사용 기준이며 <code>--color-text-correct</code>, <code>--color-border-correct</code>와 동일한 값을 공유합니다.</span>
-          </div>
-          <div class="token-grid" id="grid-status"></div>
-        </div>
-
-        <!-- color-domain-status -->
-        <div class="cat-group" id="grp-domain-status">
-          <div class="cat-label">
-            <span class="cat-name">color-domain-status</span>
-            <span class="cat-desc">관제 시스템 장치 상태 · Domain Token으로 이동 예정</span>
-            <span class="cat-count">7</span>
-          </div>
-          <div class="info-box">
-            <span>ℹ️</span>
-            <span>UI 피드백(성공/에러)이 아닌 <strong>관제 화면 장치 상태(활성·정상·대기·비활성)</strong> 전용입니다. 추후 Domain Token 레이어로 이동 예정이며, Dark 값은 도메인 설계 시 별도 정의합니다.</span>
-          </div>
-          <div class="token-grid" id="grid-domain-status"></div>
-        </div>
-
-        <!-- color-overlay -->
-        <div class="cat-group" id="grp-overlay">
-          <div class="cat-label">
-            <span class="cat-name">color-overlay</span>
-            <span class="cat-desc">딤·스크림</span>
-            <span class="cat-count">1</span>
-          </div>
-          <div class="token-grid" id="grid-overlay"></div>
-        </div>
-
-        <!-- color-data -->
-        <div class="cat-group" id="grp-data">
-          <div class="cat-label">
-            <span class="cat-name">color-data</span>
-            <span class="cat-desc">데이터 그리드/테이블 전용 상태 (Figma: color/data/state/*)</span>
-            <span class="cat-count">1</span>
-          </div>
-          <div class="info-box">
-            <span>ℹ️</span>
-            <span>Table 등 데이터 그리드 행 hover 전용. 2026-05-20 신설. <code>--table-row-hover-bg</code>는 별도로 <code>--color-bg-subtle</code> 사용.</span>
-          </div>
-          <div class="token-grid" id="grid-data"></div>
-        </div>
-
-        <!-- color-navigation -->
-        <div class="cat-group" id="grp-navigation">
-          <div class="cat-label">
-            <span class="cat-name">color-navigation</span>
-            <span class="cat-desc">라인탭(Line Tab) 전용 — bg·label·indicator</span>
-            <span class="cat-count">5</span>
-          </div>
-          <div class="info-box">
-            <span>ℹ️</span>
-            <span>Line Tab 컴포넌트(<code>--tab-*</code>)가 참조. GNB/LNB(<code>--nav-*</code>)와 별개. Dark 값은 candidate.</span>
-          </div>
-          <div class="token-grid" id="grid-navigation"></div>
-        </div>
+        <!-- color groups: SEMANTIC_PAGE 자동 렌더 (npm run page:gen). 수동 편집 금지 -->
+        <div id="color-groups"></div>
       </div>
 
       <!-- ═══════ SPACING ═══════ -->
@@ -659,115 +493,211 @@
 
 <script>
 // ── Token data ──────────────────────────────────────────
-const TOKENS = {
-  bg: [
-    { v: '--color-bg-default',  role: '기본 페이지 배경', light: '#FAFAFA', dark: '#131418', lp: 'color/gray/0',      dp: 'gray-dark/50' },
-    { v: '--color-bg-subtle',   role: '약한 배경', light: '#F5F5F5', dark: '#24252C', lp: 'color/gray/50',     dp: 'gray-dark/200' },
-    { v: '--color-bg-muted',    role: '중간 배경·구분 영역', light: '#E9E9E9', dark: '#2E2F38', lp: 'color/gray/100',    dp: 'gray-dark/300' },
-    { v: '--color-bg-elevated', role: '툴바·높은 배경', light: '#E9E9E9', dark: '#35363F', lp: 'color/gray/100',    dp: 'gray-dark/400' },
-    { v: '--color-bg-active',   role: 'hover·active 배경', light: '#E9E9E9', dark: '#3E4049', lp: 'color/gray/100',    dp: 'gray-dark/500' },
-    { v: '--color-bg-deepest',  role: '최심부 (관제 화면)', light: '#E9E9E9', dark: '#0D0E12', lp: 'color/gray/100',    dp: 'gray-dark/0',  darkOnly: true },
-    { v: '--color-bg-selected', role: '선택 배경', light: '#E2F1FF', dark: '#112B55', lp: 'color/blue/50',     dp: 'blue-dark/100' },
-    { v: '--color-bg-home',     role: '홈 화면 배경', light: '#F5F6FB', dark: '#131418', lp: '⚠️ 하드코딩',        dp: 'gray-dark/50', warn: true },
-  ],
-  surface: [
-    { v: '--color-surface-default', role: '카드·패널·인풋 표면', light: '#FFFFFF', dark: '#1C1D23', lp: 'color/base/white', dp: 'gray-dark/100' },
-    { v: '--color-surface-raised',  role: '모달·드롭다운·플로팅', light: '#FFFFFF', dark: '#35363F', lp: 'color/base/white', dp: 'gray-dark/400' },
-  ],
-  text: [
-    { v: '--color-text-primary',     role: '제목·주요 본문',    light: '#202020', dark: '#ECEDF0', lp: 'color/gray/900 ⚠️', dp: 'gray-dark/900', warn: true },
-    { v: '--color-text-secondary',   role: '서브타이틀·일반 본문', light: '#353535', dark: '#B8BABF', lp: 'color/gray/800',   dp: 'gray-dark/800' },
-    { v: '--color-text-tertiary',    role: '보조 텍스트',        light: '#555555', dark: '#8A8C96', lp: 'color/gray/600',   dp: 'gray-dark/700' },
-    { v: '--color-text-caption',     role: '캡션·힌트',          light: '#757575', dark: '#8A8C96', lp: 'color/gray/500',   dp: 'gray-dark/700' },
-    { v: '--color-text-placeholder', role: '플레이스홀더',        light: '#757575', dark: '#55575F', lp: 'color/gray/500',   dp: 'gray-dark/600' },
-    { v: '--color-text-helper',      role: '도움말 텍스트',       light: '#9D9D9D', dark: '#55575F', lp: 'color/gray/400',   dp: 'gray-dark/600' },
-    { v: '--color-text-link',        role: '링크·액센트',         light: '#1D6CEB', dark: '#6FA5F8', lp: 'color/blue/400',   dp: 'blue-dark/400' },
-    { v: '--color-text-correct',     role: '올바른 입력 피드백',  light: '#1D6CEB', dark: '#6FA5F8', lp: 'color/blue/400',   dp: 'blue-dark/400' },
-    { v: '--color-text-danger',      role: '에러·위험 메시지',    light: '#FF4554', dark: '#F06070', lp: 'color/red/300',    dp: 'status-dark/red' },
-    { v: '--color-text-disabled',    role: '비활성 텍스트',       light: '#C4C4C4', dark: '#35363F', lp: 'color/gray/300',   dp: 'gray-dark/400' },
-    { v: '--color-text-readonly',    role: '읽기전용 텍스트 (D001)', light: '#757575', dark: '#3E4049', lp: 'color/gray/500',   dp: 'gray-dark/500' },
-    { v: '--color-text-inverse',     role: '색상 배경 위 텍스트', light: '#FFFFFF', dark: '#FFFFFF', lp: 'color/base/white', dp: 'color/base/white' },
-  ],
-  border: [
-    { v: '--color-border-subtle',   role: '미세 구분선',      light: '#E9E9E9', dark: 'rgba(255,255,255,0.04)', lp: 'color/gray/100', dp: '— rgba' },
-    { v: '--color-border-default',  role: '기본 테두리',          light: '#D9D9D9', dark: 'rgba(255,255,255,0.07)', lp: 'color/gray/200', dp: '— rgba' },
-    { v: '--color-border-disabled', role: '비활성 컴포넌트 테두리', light: '#D9D9D9', dark: 'rgba(255,255,255,0.07)', lp: 'color/gray/200', dp: '— rgba' },
-    { v: '--color-border-strong',   role: '강조 테두리',      light: '#C4C4C4', dark: 'rgba(255,255,255,0.12)', lp: 'color/gray/300', dp: '— rgba' },
-    { v: '--color-border-emphasis', role: '헤비 구분선',      light: '#353535', dark: 'rgba(255,255,255,0.20)', lp: 'color/gray/800', dp: '— rgba' },
-    { v: '--color-border-focus',    role: '포커스 링 (접근성)', light: '#1D6CEB', dark: '#4285E8', lp: 'color/blue/400', dp: 'blue-dark/350' },
-    { v: '--color-border-white',    role: '흰 배경 위 구분선', light: '#FFFFFF', dark: '#FFFFFF', lp: 'color/base/white', dp: 'color/base/white' },
-    { v: '--color-border-danger',   role: '에러 인풋 테두리',  light: '#FF4554', dark: '#F06070', lp: 'color/red/300',    dp: 'status-dark/red' },
-    { v: '--color-border-correct',  role: '올바른 입력 테두리', light: '#1D6CEB', dark: '#4285E8', lp: 'color/blue/400',  dp: 'blue-dark/350' },
-  ],
-  icon: [
-    { v: '--color-icon-default',  role: '기본 아이콘',      light: '#757575', dark: '#8A8C96', lp: 'color/gray/500', dp: 'gray-dark/700' },
-    { v: '--color-icon-muted',    role: '비강조·보조 아이콘', light: '#C4C4C4', dark: '#35363F', lp: 'color/gray/300', dp: 'gray-dark/400' },
-    { v: '--color-icon-emphasis', role: '강조 아이콘',       light: '#353535', dark: '#B8BABF', lp: 'color/gray/800', dp: 'gray-dark/800' },
-    { v: '--color-icon-accent',   role: '액션·링크 아이콘',  light: '#1D6CEB', dark: '#6FA5F8', lp: 'color/blue/400', dp: 'blue-dark/400' },
-    { v: '--color-icon-inverse',  role: '색상 배경 위 아이콘', light: '#FFFFFF', dark: '#ECEDF0', lp: 'color/base/white', dp: 'gray-dark/900' },
-    { v: '--color-icon-danger',   role: '에러·위험 아이콘',  light: '#FF4554', dark: '#F06070', lp: 'color/red/300',  dp: 'status-dark/red' },
-  ],
-  action: [
-    { v: '--color-action-primary-default', role: 'Primary CTA 기본',   light: '#1D6CEB', dark: '#3070D8', lp: 'color/blue/400',  dp: 'blue-dark/300' },
-    { v: '--color-action-primary-hover',   role: 'Primary hover',       light: '#2158C8', dark: '#2A65C8', lp: 'color/blue/450',  dp: 'blue-dark/250' },
-    { v: '--color-action-primary-pressed', role: 'Primary pressed',     light: '#2747B9', dark: '#214EA0', lp: 'color/blue/500',  dp: 'blue-dark/200' },
-    { v: '--color-action-primary-text',    role: 'Primary 버튼 텍스트', light: '#FFFFFF', dark: '#FFFFFF', lp: 'color/base/white', dp: 'color/base/white' },
-    { v: '--color-action-primary-subtle',  role: '선택·강조 배경',      light: '#E2F1FF', dark: '#112B55', lp: 'color/blue/50',   dp: 'blue-dark/100' },
-  ],
-  status: [
-    { v: '--color-status-success', role: '성공·완료·올바름', light: '#1D6CEB', dark: '#3FBE7E', lp: 'color/blue/400',   dp: 'status-dark/green' },
-    { v: '--color-status-error',   role: '에러·실패·위험',   light: '#E50533', dark: '#F06070', lp: 'color/red/400',    dp: 'status-dark/red' },
-    { v: '--color-status-warning', role: '경고',             light: '#DBA400', dark: '#E8C048', lp: 'color/yellow/400', dp: 'status-dark/yellow' },
-    { v: '--color-status-info',    role: '정보·중립',        light: '#757575', dark: '#8A8C96', lp: 'color/gray/500',   dp: 'gray-dark/700' },
-  ],
-  controlBorder: [
-    { v: '--color-control-border-default',  role: '컨트롤 기본 테두리',     light: '#D9D9D9', dark: '#3E4049', lp: 'color/gray/200',  dp: 'gray-dark/500' },
-    { v: '--color-control-border-hover',    role: '컨트롤 hover 테두리',    light: '#1D6CEB', dark: '#3070D8', lp: 'color/blue/400',  dp: 'blue-dark/300' },
-    { v: '--color-control-border-selected', role: '컨트롤 checked/선택 테두리', light: '#1D6CEB', dark: '#3070D8', lp: 'color/blue/400', dp: 'blue-dark/300' },
-    { v: '--color-control-border-disabled', role: '컨트롤 disabled 테두리', light: '#C4C4C4', dark: '#2E2F38', lp: 'color/gray/300',  dp: 'gray-dark/300' },
-  ],
-  formControl: [
-    { v: '--color-form-control-bg-default',          role: '폼 컨트롤 기본 배경',     light: '#FFFFFF', dark: '#1C1D23', lp: 'color/base/white',   dp: 'gray-dark/100' },
-    { v: '--color-form-control-bg-hover',            role: '폼 컨트롤 hover 배경',    light: '#FAFAFA', dark: '#24252C', lp: 'color/gray/0',       dp: 'gray-dark/200' },
-    { v: '--color-form-control-bg-disabled',         role: '폼 컨트롤 비활성 배경',   light: '#F5F5F5', dark: '#24252C', lp: 'color/gray/50',      dp: 'gray-dark/200' },
-    { v: '--color-form-control-border-default',      role: '폼 컨트롤 기본 테두리',   light: '#D9D9D9', dark: '#3E4049', lp: 'control-border/default', dp: 'gray-dark/500' },
-    { v: '--color-form-control-border-hover',        role: '폼 컨트롤 hover 테두리',  light: '#C4C4C4', dark: '#3E4049', lp: 'color/gray/300',      dp: 'gray-dark/500' },
-    { v: '--color-form-control-border-selected',     role: '폼 컨트롤 포커스 테두리', light: '#1D6CEB', dark: '#4285E8', lp: 'color/border/focus',  dp: 'blue-dark/350' },
-    { v: '--color-form-control-border-error',        role: '폼 컨트롤 에러 테두리',   light: '#E50533', dark: '#F06070', lp: 'color/red/400',       dp: 'status-dark/red' },
-    { v: '--color-form-control-border-correct',      role: '폼 컨트롤 correct 테두리', light: '#1D6CEB', dark: '#4285E8', lp: 'color/border/focus', dp: 'blue-dark/350' },
-    { v: '--color-form-control-border-disabled',     role: '폼 컨트롤 비활성 테두리', light: '#E9E9E9', dark: '#24252C', lp: 'color/gray/100',      dp: 'gray-dark/200' },
-    { v: '--color-form-control-text-default',        role: '폼 컨트롤 입력 텍스트',   light: '#353535', dark: '#B8BABF', lp: 'color/gray/800',      dp: 'gray-dark/800' },
-    { v: '--color-form-control-text-placeholder',    role: '폼 컨트롤 플레이스홀더',  light: '#757575', dark: '#55575F', lp: 'color/gray/500',      dp: 'gray-dark/600' },
-    { v: '--color-form-control-text-disabled',       role: '폼 컨트롤 비활성 텍스트', light: '#C4C4C4', dark: '#55575F', lp: 'color/gray/300',      dp: 'gray-dark/600' },
-    { v: '--color-form-control-label-default',       role: '폼 컨트롤 라벨 (시·분 등)', light: '#353535', dark: '#B8BABF', lp: 'color/gray/800',  dp: 'gray-dark/800' },
-    { v: '--color-form-control-label-disabled',      role: '폼 컨트롤 라벨 비활성',   light: '#C4C4C4', dark: '#55575F', lp: 'color/gray/300',      dp: 'gray-dark/600' },
-    { v: '--color-form-control-icon-default',        role: '폼 컨트롤 기본 아이콘',   light: '#353535', dark: '#8A8C96', lp: 'color/gray/800',      dp: 'gray-dark/700' },
-  ],
-  navigation: [
-    { v: '--color-navigation-bg',                 role: '라인탭 컨테이너 배경',   light: '#FFFFFF', dark: '#1C1D23', lp: 'color/base/white',   dp: 'gray-dark/100' },
-    { v: '--color-navigation-label-default',      role: '미선택 라벨',           light: '#555555', dark: '#55575F', lp: 'color/gray/600',     dp: 'gray-dark/600 (candidate)' },
-    { v: '--color-navigation-label-selected',     role: '선택 라벨',             light: '#1D6CEB', dark: '#3070D8', lp: 'color/blue/400',     dp: 'blue-dark/300 (candidate)' },
-    { v: '--color-navigation-indicator-default',  role: '탭 하단 구분선',         light: '#D9D9D9', dark: '#2E2F38', lp: 'color/gray/200',     dp: 'gray-dark/300 (candidate)' },
-    { v: '--color-navigation-indicator-selected', role: '선택 탭 indicator',     light: '#1D6CEB', dark: '#3070D8', lp: 'color/blue/400',     dp: 'blue-dark/300 (candidate)' },
-  ],
-  data: [
-    { v: '--color-data-state-hover', role: '데이터 행 hover 배경 (Figma color/data/state/hover)', light: '#E2F1FF', dark: '#24252C', lp: 'color/blue/50', dp: 'gray-dark/200' },
-  ],
-  textState: [
-    { v: '--color-text-state-helper',  role: '헬퍼 텍스트 (기본)', light: '#9D9D9D', dark: '#55575F', lp: 'color/gray/400',  dp: 'gray-dark/600' },
-    { v: '--color-text-state-correct', role: 'Correct 상태 텍스트', light: '#1D6CEB', dark: '#3070D8', lp: 'color/blue/400',  dp: 'blue-dark/300' },
-    { v: '--color-text-state-error',   role: 'Error 상태 텍스트',  light: '#E50533', dark: '#F06070', lp: 'color/red/400',   dp: 'status-dark/red' },
-  ],
-  domainStatus: [
-    { v: '--color-domain-status-primary',       role: '주요 상태 (활성·정상)',    light: '#1D6CEB', dark: '—', lp: 'color/blue/400' },
-    { v: '--color-domain-status-primary-sub',   role: '주요 상태 보조',           light: '#2158C8', dark: '—', lp: 'color/blue/450' },
-    { v: '--color-domain-status-secondary',     role: '보조 상태',                light: '#1FB279', dark: '—', lp: 'color/green/300' },
-    { v: '--color-domain-status-secondary-sub', role: '보조 상태 보조',           light: '#009E5E', dark: '—', lp: 'color/green/400' },
-    { v: '--color-domain-status-tertiary',      role: '3차 상태 (대기 등)',       light: '#25B9DA', dark: '—', lp: 'color/skyblue/300' },
-    { v: '--color-domain-status-tertiary-sub',  role: '3차 상태 보조',            light: '#159BBC', dark: '—', lp: 'color/skyblue/400' },
-    { v: '--color-domain-status-disabled',      role: '비활성 상태',              light: '#C4C4C4', dark: '—', lp: 'color/gray/300' },
-  ],
-};
+/* >>> GEN:SEMANTIC-PAGE >>> Variables 정본 자동 생성 (npm run page:gen). 수동 편집 금지. */
+const SEMANTIC_PAGE = [
+  { key: 'button', label: 'color-button', desc: '버튼 — variant × state 별 배경·테두리·라벨', tokens: [
+    { v: '--color-button-bg-assist--default', role: 'bg / assist--default', light: '#FFFFFF', dark: '#FFFFFF', lp: 'base/white', dp: 'base/white' },
+    { v: '--color-button-bg-assist--hover', role: 'bg / assist--hover', light: '#F5F5F5', dark: '#24252C', lp: 'gray/50', dp: 'gray-dark/200' },
+    { v: '--color-button-bg-blue-line--default', role: 'bg / blue-line--default', light: '#FFFFFF', dark: '#1C1D23', lp: 'base/white', dp: 'gray-dark/100' },
+    { v: '--color-button-bg-blue-line--hover', role: 'bg / blue-line--hover', light: '#E2F1FF', dark: '#24252C', lp: 'blue/50', dp: 'gray-dark/200' },
+    { v: '--color-button-bg-disabled', role: 'bg / disabled', light: '#F5F5F5', dark: '#2E2F38', lp: 'gray/50', dp: 'gray-dark/300' },
+    { v: '--color-button-bg-primary--default', role: 'bg / primary--default', light: '#1D6CEB', dark: '#3070D8', lp: 'blue/400', dp: 'blue-dark/300' },
+    { v: '--color-button-bg-primary--hover', role: 'bg / primary--hover', light: '#2747B9', dark: '#2A65C8', lp: 'blue/500', dp: 'blue-dark/250' },
+    { v: '--color-button-bg-secondary--default', role: 'bg / secondary--default', light: '#FFFFFF', dark: '#1C1D23', lp: 'base/white', dp: 'gray-dark/100' },
+    { v: '--color-button-bg-secondary--hover', role: 'bg / secondary--hover', light: '#F5F5F5', dark: '#24252C', lp: 'gray/50', dp: 'gray-dark/200' },
+    { v: '--color-button-border-assist--default', role: 'border / assist--default', light: '#D9D9D9', dark: '#2E2F38', lp: 'gray/200', dp: 'gray-dark/300' },
+    { v: '--color-button-border-assist--hover', role: 'border / assist--hover', light: '#D9D9D9', dark: '#2E2F38', lp: 'gray/200', dp: 'gray-dark/300' },
+    { v: '--color-button-border-blue-line--default', role: 'border / blue-line--default', light: '#1D6CEB', dark: '#3070D8', lp: 'blue/400', dp: 'blue-dark/300' },
+    { v: '--color-button-border-blue-line--hover', role: 'border / blue-line--hover', light: '#2747B9', dark: '#3070D8', lp: 'blue/500', dp: 'blue-dark/300' },
+    { v: '--color-button-border-disabled', role: 'border / disabled', light: '#D9D9D9', dark: '#2E2F38', lp: 'gray/200', dp: 'gray-dark/300' },
+    { v: '--color-button-border-primary--default', role: 'border / primary--default', light: '#1D6CEB', dark: '#3070D8', lp: 'blue/400', dp: 'blue-dark/300' },
+    { v: '--color-button-border-primary--hover', role: 'border / primary--hover', light: '#2747B9', dark: '#2A65C8', lp: 'blue/500', dp: 'blue-dark/250' },
+    { v: '--color-button-border-secondary--default', role: 'border / secondary--default', light: '#D9D9D9', dark: '#3E4049', lp: 'gray/200', dp: 'gray-dark/500' },
+    { v: '--color-button-border-secondary--hover', role: 'border / secondary--hover', light: '#D9D9D9', dark: '#3E4049', lp: 'gray/200', dp: 'gray-dark/500' },
+    { v: '--color-button-label-assist--default', role: 'label / assist--default', light: '#353535', dark: '#B8BABF', lp: 'gray/800', dp: 'gray-dark/800' },
+    { v: '--color-button-label-assist--hover', role: 'label / assist--hover', light: '#353535', dark: '#B8BABF', lp: 'gray/800', dp: 'gray-dark/800' },
+    { v: '--color-button-label-blue-line--default', role: 'label / blue-line--default', light: '#1D6CEB', dark: '#3070D8', lp: 'blue/400', dp: 'blue-dark/300' },
+    { v: '--color-button-label-blue-line--hover', role: 'label / blue-line--hover', light: '#2747B9', dark: '#3070D8', lp: 'blue/500', dp: 'blue-dark/300' },
+    { v: '--color-button-label-disabled', role: 'label / disabled', light: '#C4C4C4', dark: '#55575F', lp: 'gray/300', dp: 'gray-dark/600' },
+    { v: '--color-button-label-primary--default', role: 'label / primary--default', light: '#FFFFFF', dark: '#FFFFFF', lp: 'base/white', dp: 'base/white' },
+    { v: '--color-button-label-primary--hover', role: 'label / primary--hover', light: '#FFFFFF', dark: '#FFFFFF', lp: 'base/white', dp: 'base/white' },
+    { v: '--color-button-label-secondary--default', role: 'label / secondary--default', light: '#353535', dark: '#B8BABF', lp: 'gray/800', dp: 'gray-dark/800' },
+    { v: '--color-button-label-secondary--hover', role: 'label / secondary--hover', light: '#353535', dark: '#B8BABF', lp: 'gray/800', dp: 'gray-dark/800' },
+  ] },
+  { key: 'chip', label: 'color-chip', desc: '칩 — line/solid × state', tokens: [
+    { v: '--color-chip-line-bg-default', role: 'line / bg / default', light: '#FFFFFF', dark: '#1C1D23', lp: 'base/white', dp: 'gray-dark/100' },
+    { v: '--color-chip-line-bg-disabled', role: 'line / bg / disabled', light: '#F5F5F5', dark: '#24252C', lp: 'gray/50', dp: 'gray-dark/200' },
+    { v: '--color-chip-line-bg-hover', role: 'line / bg / hover', light: '#FAFAFA', dark: '#24252C', lp: 'gray/0', dp: 'gray-dark/200' },
+    { v: '--color-chip-line-bg-selected', role: 'line / bg / selected', light: '#FFFFFF', dark: '#1C1D23', lp: 'base/white', dp: 'gray-dark/100' },
+    { v: '--color-chip-line-border-default', role: 'line / border / default', light: '#C4C4C4', dark: '#3E4049', lp: 'gray/300', dp: 'gray-dark/500' },
+    { v: '--color-chip-line-border-disabled', role: 'line / border / disabled', light: '#E9E9E9', dark: '#24252C', lp: 'gray/100', dp: 'gray-dark/200' },
+    { v: '--color-chip-line-border-selected', role: 'line / border / selected', light: '#1D6CEB', dark: '#3070D8', lp: 'blue/400', dp: 'blue-dark/300' },
+    { v: '--color-chip-line-label-default', role: 'line / label / default', light: '#757575', dark: '#8A8C96', lp: 'gray/500', dp: 'gray-dark/700' },
+    { v: '--color-chip-line-label-disabled', role: 'line / label / disabled', light: '#C4C4C4', dark: '#55575F', lp: 'gray/300', dp: 'gray-dark/600' },
+    { v: '--color-chip-line-label-selected', role: 'line / label / selected', light: '#1D6CEB', dark: '#4285E8', lp: 'blue/400', dp: 'blue-dark/350' },
+    { v: '--color-chip-solid-bg-default', role: 'solid / bg / default', light: '#F5F5F5', dark: '#2E2F38', lp: 'gray/50', dp: 'gray-dark/300' },
+    { v: '--color-chip-solid-bg-disabled', role: 'solid / bg / disabled', light: '#F5F5F5', dark: '#24252C', lp: 'gray/50', dp: 'gray-dark/200' },
+    { v: '--color-chip-solid-bg-hover', role: 'solid / bg / hover', light: '#E9E9E9', dark: '#35363F', lp: 'gray/100', dp: 'gray-dark/400' },
+    { v: '--color-chip-solid-bg-selected', role: 'solid / bg / selected', light: '#1D6CEB', dark: '#3070D8', lp: 'blue/400', dp: 'blue-dark/300' },
+    { v: '--color-chip-solid-border-default', role: 'solid / border / default', light: '#F5F5F5', dark: '#24252C', lp: 'gray/50', dp: 'gray-dark/200' },
+    { v: '--color-chip-solid-border-disabled', role: 'solid / border / disabled', light: '#F5F5F5', dark: '#24252C', lp: 'gray/50', dp: 'gray-dark/200' },
+    { v: '--color-chip-solid-border-selected', role: 'solid / border / selected', light: '#1D6CEB', dark: '#3070D8', lp: 'blue/400', dp: 'blue-dark/300' },
+    { v: '--color-chip-solid-label-default', role: 'solid / label / default', light: '#353535', dark: '#8A8C96', lp: 'gray/800', dp: 'gray-dark/700' },
+    { v: '--color-chip-solid-label-disabled', role: 'solid / label / disabled', light: '#C4C4C4', dark: '#55575F', lp: 'gray/300', dp: 'gray-dark/600' },
+    { v: '--color-chip-solid-label-selected', role: 'solid / label / selected', light: '#FFFFFF', dark: '#FFFFFF', lp: 'base/white', dp: 'base/white' },
+  ] },
+  { key: 'control', label: 'color-control', desc: '체크박스·라디오·토글 컨트롤', tokens: [
+    { v: '--color-control-bg-default', role: 'bg / default', light: '#FFFFFF', dark: '#1C1D23', lp: 'base/white', dp: 'gray-dark/100' },
+    { v: '--color-control-bg-default-alt', role: 'bg / default-alt', light: '#F5F5F5', dark: '#55575F', lp: 'gray/50', dp: 'gray-dark/600' },
+    { v: '--color-control-bg-disabled', role: 'bg / disabled', light: '#E9E9E9', dark: '#2E2F38', lp: 'gray/100', dp: 'gray-dark/300' },
+    { v: '--color-control-bg-hover', role: 'bg / hover', light: '#F5F5F5', dark: '#24252C', lp: 'gray/50', dp: 'gray-dark/200' },
+    { v: '--color-control-bg-selected', role: 'bg / selected', light: '#1D6CEB', dark: '#3070D8', lp: 'blue/400', dp: 'blue-dark/300' },
+    { v: '--color-control-bg-selected-alt', role: 'bg / selected-alt', light: '#1D6CEB', dark: '#3070D8', lp: 'blue/400', dp: 'blue-dark/300' },
+    { v: '--color-control-border-default', role: 'border / default', light: '#D9D9D9', dark: '#3E4049', lp: 'gray/200', dp: 'gray-dark/500' },
+    { v: '--color-control-border-default-alt', role: 'border / default-alt', light: '#E9E9E9', dark: '#2E2F38', lp: 'gray/100', dp: 'gray-dark/300' },
+    { v: '--color-control-border-disabled', role: 'border / disabled', light: '#C4C4C4', dark: '#2E2F38', lp: 'gray/300', dp: 'gray-dark/300' },
+    { v: '--color-control-border-disabled-alt1', role: 'border / disabled-alt1', light: '#D9D9D9', dark: '#2E2F38', lp: 'gray/200', dp: 'gray-dark/300' },
+    { v: '--color-control-border-disabled-alt2', role: 'border / disabled-alt2', light: '#E9E9E9', dark: '#2E2F38', lp: 'gray/100', dp: 'gray-dark/300' },
+    { v: '--color-control-border-selected', role: 'border / selected', light: '#1D6CEB', dark: '#3070D8', lp: 'blue/400', dp: 'blue-dark/300' },
+    { v: '--color-control-indicator-disabled', role: 'indicator / disabled', light: '#C4C4C4', dark: '#3E4049', lp: 'gray/300', dp: 'gray-dark/500' },
+    { v: '--color-control-indicator-selected', role: 'indicator / selected', light: '#FFFFFF', dark: '#FFFFFF', lp: 'base/white', dp: 'base/white' },
+    { v: '--color-control-indicator-selected-alt', role: 'indicator / selected-alt', light: '#1D6CEB', dark: '#3070D8', lp: 'blue/400', dp: 'blue-dark/300' },
+    { v: '--color-control-indicator-unselected', role: 'indicator / unselected', light: '#C4C4C4', dark: '#35363F', lp: 'gray/300', dp: 'gray-dark/400' },
+    { v: '--color-control-indicator-unselected-alt', role: 'indicator / unselected-alt', light: '#D9D9D9', dark: '#2E2F38', lp: 'gray/200', dp: 'gray-dark/300' },
+    { v: '--color-control-label-default', role: 'label / default', light: '#353535', dark: '#B8BABF', lp: 'gray/800', dp: 'gray-dark/800' },
+    { v: '--color-control-label-disabled', role: 'label / disabled', light: '#C4C4C4', dark: '#55575F', lp: 'gray/300', dp: 'gray-dark/600' },
+    { v: '--color-control-text-disabled', role: 'text / disabled', light: '#C4C4C4', dark: '#35363F', lp: 'gray/300', dp: 'gray-dark/400' },
+    { v: '--color-control-text-selected', role: 'text / selected', light: '#FFFFFF', dark: '#FFFFFF', lp: 'base/white', dp: 'base/white' },
+    { v: '--color-control-text-unselected', role: 'text / unselected', light: '#353535', dark: '#B8BABF', lp: 'gray/800', dp: 'gray-dark/800' },
+  ] },
+  { key: 'data', label: 'color-data', desc: '데이터 그리드/테이블 상태', tokens: [
+    { v: '--color-data-border-light', role: 'border / light', light: '#E9E9E9', dark: '#2E2F38', lp: 'gray/100', dp: 'gray-dark/300' },
+    { v: '--color-data-border-strong', role: 'border / strong', light: '#C4C4C4', dark: '#35363F', lp: 'gray/300', dp: 'gray-dark/400' },
+    { v: '--color-data-header-bg', role: 'header / bg', light: '#F5F5F5', dark: '#24252C', lp: 'gray/50', dp: 'gray-dark/200' },
+    { v: '--color-data-state-default', role: 'state / default', light: '#FFFFFF', dark: '#1C1D23', lp: 'base/white', dp: 'gray-dark/100' },
+    { v: '--color-data-state-hover', role: 'state / hover', light: '#E2F1FF', dark: '#24252C', lp: 'blue/50', dp: 'gray-dark/200' },
+    { v: '--color-data-state-selected', role: 'state / selected', light: '#C8E4FF', dark: '#112B55', lp: 'blue/100', dp: 'blue-dark/100' },
+  ] },
+  { key: 'dropdown', label: 'color-dropdown', desc: '드롭다운 리스트·옵션', tokens: [
+    { v: '--color-dropdown-list-bg', role: 'list / bg', light: '#FFFFFF', dark: '#1C1D23', lp: 'base/white', dp: 'gray-dark/100' },
+    { v: '--color-dropdown-list-border', role: 'list / border', light: '#D9D9D9', dark: '#3E4049', lp: 'gray/200', dp: 'gray-dark/500' },
+    { v: '--color-dropdown-option-bg-default', role: 'option / bg / default', light: '#FFFFFF', dark: '#35363F', lp: 'base/white', dp: 'gray-dark/400' },
+    { v: '--color-dropdown-option-bg-disabled', role: 'option / bg / disabled', light: '#F5F5F5', dark: '#24252C', lp: 'gray/50', dp: 'gray-dark/200' },
+    { v: '--color-dropdown-option-bg-hover', role: 'option / bg / hover', light: '#F5F5F5', dark: '#24252C', lp: 'gray/50', dp: 'gray-dark/200' },
+    { v: '--color-dropdown-option-bg-selected', role: 'option / bg / selected', light: '#E2F1FF', dark: '#112B55', lp: 'blue/50', dp: 'blue-dark/100' },
+    { v: '--color-dropdown-option-border-default', role: 'option / border / default', light: '#E9E9E9', dark: '#2E2F38', lp: 'gray/100', dp: 'gray-dark/300' },
+    { v: '--color-dropdown-option-border-hover', role: 'option / border / hover', light: '#1D6CEB', dark: '#3070D8', lp: 'blue/400', dp: 'blue-dark/300' },
+    { v: '--color-dropdown-option-border-selected', role: 'option / border / selected', light: '#1D6CEB', dark: '#3070D8', lp: 'blue/400', dp: 'blue-dark/300' },
+    { v: '--color-dropdown-option-label-default', role: 'option / label / default', light: '#353535', dark: '#B8BABF', lp: 'gray/800', dp: 'gray-dark/800' },
+    { v: '--color-dropdown-option-label-disabled', role: 'option / label / disabled', light: '#C4C4C4', dark: '#35363F', lp: 'gray/300', dp: 'gray-dark/400' },
+    { v: '--color-dropdown-option-label-hover', role: 'option / label / hover', light: '#202020', dark: '#ECEDF0', lp: 'gray/900', dp: 'gray-dark/900' },
+    { v: '--color-dropdown-option-label-selected', role: 'option / label / selected', light: '#1D6CEB', dark: '#4285E8', lp: 'blue/400', dp: 'blue-dark/350' },
+  ] },
+  { key: 'form-control', label: 'color-form-control', desc: '인풋·셀렉트 공유 폼 컨트롤 (bg·border·text·label·icon)', tokens: [
+    { v: '--color-form-control-bg-default', role: 'bg / default', light: '#FFFFFF', dark: '#1C1D23', lp: 'base/white', dp: 'gray-dark/100' },
+    { v: '--color-form-control-bg-disabled', role: 'bg / disabled', light: '#F5F5F5', dark: '#24252C', lp: 'gray/50', dp: 'gray-dark/200' },
+    { v: '--color-form-control-bg-hover', role: 'bg / hover', light: '#FAFAFA', dark: '#24252C', lp: 'gray/0', dp: 'gray-dark/200' },
+    { v: '--color-form-control-bg-selected', role: 'bg / selected', light: '#FFFFFF', dark: '#24252C', lp: 'base/white', dp: 'gray-dark/200' },
+    { v: '--color-form-control-border-correct', role: 'border / correct', light: '#1D6CEB', dark: '#4285E8', lp: 'blue/400', dp: 'blue-dark/350' },
+    { v: '--color-form-control-border-default', role: 'border / default', light: '#D9D9D9', dark: '#3E4049', lp: 'gray/200', dp: 'gray-dark/500' },
+    { v: '--color-form-control-border-disabled', role: 'border / disabled', light: '#E9E9E9', dark: '#24252C', lp: 'gray/100', dp: 'gray-dark/200' },
+    { v: '--color-form-control-border-error', role: 'border / error', light: '#E50533', dark: '#F06070', lp: 'red/400', dp: 'red-dark/350' },
+    { v: '--color-form-control-border-selected', role: 'border / selected', light: '#1D6CEB', dark: '#4285E8', lp: 'blue/400', dp: 'blue-dark/350' },
+    { v: '--color-form-control-label-default', role: 'label / default', light: '#353535', dark: '#B8BABF', lp: 'gray/800', dp: 'gray-dark/800' },
+    { v: '--color-form-control-label-disabled', role: 'label / disabled', light: '#C4C4C4', dark: '#55575F', lp: 'gray/300', dp: 'gray-dark/600' },
+    { v: '--color-form-control-text-default', role: 'text / default', light: '#353535', dark: '#B8BABF', lp: 'gray/800', dp: 'gray-dark/800' },
+    { v: '--color-form-control-text-disabled', role: 'text / disabled', light: '#C4C4C4', dark: '#55575F', lp: 'gray/300', dp: 'gray-dark/600' },
+    { v: '--color-form-control-text-placeholder', role: 'text / placeholder', light: '#757575', dark: '#55575F', lp: 'gray/500', dp: 'gray-dark/600' },
+    { v: '--color-form-control-text-selected', role: 'text / selected', light: '#202020', dark: '#B8BABF', lp: 'gray/900', dp: 'gray-dark/800' },
+    { v: '--color-form-control-icon-default', role: 'icon / default', light: '#353535', dark: '#8A8C96', lp: 'gray/800', dp: 'gray-dark/700' },
+    { v: '--color-form-control-icon-disabled', role: 'icon / disabled', light: '#C4C4C4', dark: '#3E4049', lp: 'gray/300', dp: 'gray-dark/500' },
+    { v: '--color-form-control-text-caret', role: 'text-caret', light: '#1D6CEB', dark: '#4285E8', lp: 'blue/400', dp: 'blue-dark/350' },
+    { v: '--color-form-control-text-read-only', role: 'text / read-only', light: '#757575', dark: '#8A8C96', lp: 'gray/500', dp: 'gray-dark/700' },
+  ] },
+  { key: 'icon', label: 'color-icon', desc: '아이콘 색상', tokens: [
+    { v: '--color-icon-blue', role: 'blue', light: '#1D6CEB', dark: '#3070D8', lp: 'blue/400', dp: 'blue-dark/300' },
+    { v: '--color-icon-gray', role: 'gray', light: '#757575', dark: '#8A8C96', lp: 'gray/500', dp: 'gray-dark/700' },
+    { v: '--color-icon-gray-dark', role: 'gray-dark', light: '#353535', dark: '#B8BABF', lp: 'gray/800', dp: 'gray-dark/800' },
+    { v: '--color-icon-gray-light', role: 'gray-light', light: '#C4C4C4', dark: '#35363F', lp: 'gray/300', dp: 'gray-dark/400' },
+    { v: '--color-icon-red', role: 'red', light: '#FF4554', dark: '#F06070', lp: 'red/300', dp: 'red-dark/350' },
+    { v: '--color-icon-white', role: 'white', light: '#FFFFFF', dark: '#FFFFFF', lp: 'base/white', dp: 'base/white' },
+  ] },
+  { key: 'line', label: 'color-line', desc: '구분선·라인', tokens: [
+    { v: '--color-line-blue', role: 'blue', light: '#1D6CEB', dark: '#3070D8', lp: 'blue/400', dp: 'blue-dark/300' },
+    { v: '--color-line-gray-default', role: 'gray / default', light: '#D9D9D9', dark: '#2E2F38', lp: 'gray/200', dp: 'gray-dark/300' },
+    { v: '--color-line-gray-strong', role: 'gray / strong', light: '#C4C4C4', dark: '#35363F', lp: 'gray/300', dp: 'gray-dark/400' },
+    { v: '--color-line-gray-subtle', role: 'gray / subtle', light: '#E9E9E9', dark: '#2E2F38', lp: 'gray/100', dp: 'gray-dark/300' },
+    { v: '--color-line-white', role: 'white', light: '#FFFFFF', dark: '#FFFFFF', lp: 'base/white', dp: 'base/white' },
+  ] },
+  { key: 'navigation', label: 'color-navigation', desc: '네비게이션 (라인탭 등)', tokens: [
+    { v: '--color-navigation-background', role: 'background', light: '#FFFFFF', dark: '#1C1D23', lp: 'base/white', dp: 'gray-dark/100' },
+    { v: '--color-navigation-indicator-default', role: 'indicator / default', light: '#D9D9D9', dark: '#2E2F38', lp: 'gray/200', dp: 'gray-dark/300' },
+    { v: '--color-navigation-indicator-default-alt', role: 'indicator / default-alt', light: '#E9E9E9', dark: '#24252C', lp: 'gray/100', dp: 'gray-dark/200' },
+    { v: '--color-navigation-indicator-hover', role: 'indicator / hover', light: '#1D6CEB', dark: '#3070D8', lp: 'blue/400', dp: 'blue-dark/300' },
+    { v: '--color-navigation-indicator-selected', role: 'indicator / selected', light: '#1D6CEB', dark: '#3070D8', lp: 'blue/400', dp: 'blue-dark/300' },
+    { v: '--color-navigation-label-default', role: 'label / default', light: '#555555', dark: '#55575F', lp: 'gray/600', dp: 'gray-dark/600' },
+    { v: '--color-navigation-label-default-alt', role: 'label / default-alt', light: '#434343', dark: '#8A8C96', lp: 'gray/700', dp: 'gray-dark/700' },
+    { v: '--color-navigation-label-hover', role: 'label / hover', light: '#1D6CEB', dark: '#3070D8', lp: 'blue/400', dp: 'blue-dark/300' },
+    { v: '--color-navigation-label-selected', role: 'label / selected', light: '#1D6CEB', dark: '#3070D8', lp: 'blue/400', dp: 'blue-dark/300' },
+  ] },
+  { key: 'overlay', label: 'color-overlay', desc: '', tokens: [
+    { v: '--color-overlay', role: '', light: 'rgba(0,0,0,0.5)', dark: 'rgba(0,0,0,0.75)', lp: 'rgba(0,0,0,0.5)', dp: 'rgba(0,0,0,0.75)' },
+  ] },
+  { key: 'date-picker', label: 'color-date-picker', desc: '데이트피커 패널·셀', tokens: [
+    { v: '--color-date-picker-bg-panel', role: 'bg / panel', light: '#FFFFFF', dark: '#1C1D23', lp: 'base/white', dp: 'gray-dark/100' },
+    { v: '--color-date-picker-bg-hover', role: 'bg / hover', light: '#F5F5F5', dark: '#24252C', lp: 'gray/50', dp: 'gray-dark/200' },
+    { v: '--color-date-picker-bg-today', role: 'bg / today', light: '#FFFFFF', dark: '#1C1D23', lp: 'base/white', dp: 'gray-dark/100' },
+    { v: '--color-date-picker-bg-selected', role: 'bg / selected', light: '#1D6CEB', dark: '#3070D8', lp: 'blue/400', dp: 'blue-dark/300' },
+    { v: '--color-date-picker-border-panel', role: 'border / panel', light: '#C4C4C4', dark: '#3E4049', lp: 'gray/300', dp: 'gray-dark/500' },
+    { v: '--color-date-picker-border-today', role: 'border / today', light: '#1D6CEB', dark: '#3070D8', lp: 'blue/400', dp: 'blue-dark/300' },
+    { v: '--color-date-picker-text-primary', role: 'text / primary', light: '#202020', dark: '#ECEDF0', lp: 'gray/900', dp: 'gray-dark/900' },
+    { v: '--color-date-picker-text-secondary', role: 'text / secondary', light: '#353535', dark: '#B8BABF', lp: 'gray/800', dp: 'gray-dark/800' },
+    { v: '--color-date-picker-text-disabled', role: 'text / disabled', light: '#C4C4C4', dark: '#35363F', lp: 'gray/300', dp: 'gray-dark/400' },
+    { v: '--color-date-picker-text-other-month', role: 'text / other-month', light: '#C4C4C4', dark: '#35363F', lp: 'gray/300', dp: 'gray-dark/400' },
+    { v: '--color-date-picker-text-sunday', role: 'text / sunday', light: '#E50533', dark: '#F06070', lp: 'red/400', dp: 'red-dark/350' },
+    { v: '--color-date-picker-text-saturday', role: 'text / saturday', light: '#1D6CEB', dark: '#3070D8', lp: 'blue/400', dp: 'blue-dark/300' },
+    { v: '--color-date-picker-text-today', role: 'text / today', light: '#1D6CEB', dark: '#3070D8', lp: 'blue/400', dp: 'blue-dark/300' },
+    { v: '--color-date-picker-text-selected', role: 'text / selected', light: '#FFFFFF', dark: '#FFFFFF', lp: 'base/white', dp: 'base/white' },
+  ] },
+  { key: 'pagination', label: 'color-pagination', desc: '페이지네이션 컨트롤', tokens: [
+    { v: '--color-pagination-control-bg-default', role: 'control / bg / default', light: '#FFFFFF', dark: '#FFFFFF', lp: 'base/white', dp: 'base/white' },
+    { v: '--color-pagination-control-bg-disabled', role: 'control / bg / disabled', light: '#F5F5F5', dark: '#24252C', lp: 'gray/50', dp: 'gray-dark/200' },
+    { v: '--color-pagination-control-bg-hover', role: 'control / bg / hover', light: '#F5F5F5', dark: '#24252C', lp: 'gray/50', dp: 'gray-dark/200' },
+    { v: '--color-pagination-control-border-default', role: 'control / border / default', light: '#E9E9E9', dark: '#2E2F38', lp: 'gray/100', dp: 'gray-dark/300' },
+    { v: '--color-pagination-control-border-disabled', role: 'control / border / disabled', light: '#E9E9E9', dark: '#2E2F38', lp: 'gray/100', dp: 'gray-dark/300' },
+    { v: '--color-pagination-control-border-hover', role: 'control / border / hover', light: '#D9D9D9', dark: '#2E2F38', lp: 'gray/200', dp: 'gray-dark/300' },
+  ] },
+  { key: 'status-card', label: 'color-status-card', desc: '상태 카드 텍스트', tokens: [
+    { v: '--color-status-card-text-disabled', role: 'text / disabled', light: '#C4C4C4', dark: '#35363F', lp: 'gray/300', dp: 'gray-dark/400' },
+    { v: '--color-status-card-text-error', role: 'text / error', light: '#E50533', dark: '#F06070', lp: 'red/400', dp: 'red-dark/350' },
+    { v: '--color-status-card-text-primary--default', role: 'text / primary--default', light: '#202020', dark: '#ECEDF0', lp: 'gray/900', dp: 'gray-dark/900' },
+    { v: '--color-status-card-text-primary--sub', role: 'text / primary--sub', light: '#353535', dark: '#B8BABF', lp: 'gray/800', dp: 'gray-dark/800' },
+    { v: '--color-status-card-text-secondary--default', role: 'text / secondary--default', light: '#555555', dark: '#8A8C96', lp: 'gray/600', dp: 'gray-dark/700' },
+    { v: '--color-status-card-text-secondary--sub', role: 'text / secondary--sub', light: '#757575', dark: '#8A8C96', lp: 'gray/500', dp: 'gray-dark/700' },
+    { v: '--color-status-card-text-tertiary--default', role: 'text / tertiary--default', light: '#9D9D9D', dark: '#55575F', lp: 'gray/400', dp: 'gray-dark/600' },
+    { v: '--color-status-card-text-tertiary--sub', role: 'text / tertiary--sub', light: '#C4C4C4', dark: '#35363F', lp: 'gray/300', dp: 'gray-dark/400' },
+  ] },
+  { key: 'text', label: 'color-text', desc: '텍스트 색상', tokens: [
+    { v: '--color-text-body-primary', role: 'body / primary', light: '#202020', dark: '#ECEDF0', lp: 'gray/900', dp: 'gray-dark/900' },
+    { v: '--color-text-body-secondary', role: 'body / secondary', light: '#353535', dark: '#B8BABF', lp: 'gray/800', dp: 'gray-dark/800' },
+    { v: '--color-text-body-tertiary', role: 'body / tertiary', light: '#757575', dark: '#8A8C96', lp: 'gray/500', dp: 'gray-dark/700' },
+    { v: '--color-text-state-accent', role: 'state / accent', light: '#1D6CEB', dark: '#3070D8', lp: 'blue/400', dp: 'blue-dark/300' },
+    { v: '--color-text-state-accent-alt', role: 'state / accent-alt', light: '#FFFFFF', dark: '#FFFFFF', lp: 'base/white', dp: 'base/white' },
+    { v: '--color-text-state-caption', role: 'state / caption', light: '#757575', dark: '#B8BABF', lp: 'gray/500', dp: 'gray-dark/800' },
+    { v: '--color-text-state-caution', role: 'state / caution', light: '#FF4554', dark: '#F06070', lp: 'red/300', dp: 'red-dark/350' },
+    { v: '--color-text-state-correct', role: 'state / correct', light: '#1D6CEB', dark: '#3070D8', lp: 'blue/400', dp: 'blue-dark/300' },
+    { v: '--color-text-state-disabled', role: 'state / disabled', light: '#C4C4C4', dark: '#35363F', lp: 'gray/300', dp: 'gray-dark/400' },
+    { v: '--color-text-state-helper', role: 'state / helper', light: '#9D9D9D', dark: '#55575F', lp: 'gray/400', dp: 'gray-dark/600' },
+    { v: '--color-text-state-placeholder', role: 'state / placeholder', light: '#757575', dark: '#8A8C96', lp: 'gray/500', dp: 'gray-dark/700' },
+    { v: '--color-text-title-primary', role: 'title / primary', light: '#202020', dark: '#ECEDF0', lp: 'gray/900', dp: 'gray-dark/900' },
+    { v: '--color-text-title-secondary', role: 'title / secondary', light: '#353535', dark: '#B8BABF', lp: 'gray/800', dp: 'gray-dark/800' },
+    { v: '--color-text-title-tertiary', role: 'title / tertiary', light: '#555555', dark: '#8A8C96', lp: 'gray/600', dp: 'gray-dark/700' },
+  ] },
+  { key: 'scroll', label: 'color-scroll', desc: '스크롤바', tokens: [
+    { v: '--color-scroll-bg', role: 'bg', light: '#D9D9D9', dark: '#55575F', lp: 'gray/200', dp: 'gray-dark/600' },
+  ] },
+];
+/* <<< GEN:SEMANTIC-PAGE <<< */
 
 const RADIUS = [
   { v: '--radius-control-xs', val: '2px',  role: '컨트롤 radius 최소' },
@@ -876,25 +806,26 @@ function renderGroup(gridId, tokens) {
   container.appendChild(wrap);
 }
 
+// SEMANTIC_PAGE(Variables 정본 자동 생성) 기반으로 그룹 카드를 동적 렌더한다.
 function renderAll() {
-  renderGroup('grid-bg',            TOKENS.bg);
-  renderGroup('grid-surface',       TOKENS.surface);
-  renderGroup('grid-text',          TOKENS.text);
-  renderGroup('grid-border',         TOKENS.border);
-  renderGroup('grid-control-border', TOKENS.controlBorder);
-  renderGroup('grid-form-control',   TOKENS.formControl);
-  renderGroup('grid-text-state',     TOKENS.textState);
-  renderGroup('grid-icon',           TOKENS.icon);
-  renderGroup('grid-action',        TOKENS.action);
-  renderGroup('grid-status',        TOKENS.status);
-  renderGroup('grid-domain-status', TOKENS.domainStatus);
-  renderGroup('grid-data',          TOKENS.data);
-  renderGroup('grid-navigation',    TOKENS.navigation);
-  renderGroup('grid-overlay', [{
-    v: '--color-overlay', role: '딤·스크림 배경',
-    light: 'rgba(0,0,0,0.5)', dark: 'rgba(0,0,0,0.75)',
-    lp: 'rgba 직접 허용'
-  }]);
+  const root = document.getElementById('color-groups');
+  if (!root) return;
+  root.innerHTML = '';
+  SEMANTIC_PAGE.forEach(group => {
+    const gridId = 'grid-' + group.key;
+    const grp = document.createElement('div');
+    grp.className = 'cat-group';
+    grp.id = 'grp-' + group.key;
+    grp.innerHTML = `
+      <div class="cat-label">
+        <span class="cat-name">${group.label}</span>
+        <span class="cat-desc">${group.desc || ''}</span>
+        <span class="cat-count">${group.tokens.length}</span>
+      </div>
+      <div class="token-grid" id="${gridId}"></div>`;
+    root.appendChild(grp);
+    renderGroup(gridId, group.tokens);
+  });
 }
 
 function setTheme(mode) {

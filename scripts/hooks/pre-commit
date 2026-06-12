@@ -1,0 +1,23 @@
+#!/usr/bin/env bash
+# git pre-commit hook — 토큰/구조 Gate 강제. 실패 시 커밋 차단.
+#
+# 설치: scripts/hooks/install-git-hooks.sh 실행 (또는 이 파일을 .git/hooks/pre-commit 로 복사 + chmod +x)
+# 버전 관리되는 정본은 이 파일이며, .git/hooks/pre-commit 은 사본이다.
+#
+# 차단 기준: npm run gate:check 가 error(exit 1)면 차단. warning만이면 통과.
+# 우회(비권장): git commit --no-verify
+
+ROOT="$(git rev-parse --show-toplevel)"
+cd "$ROOT" || exit 0
+
+echo "▶ pre-commit: npm run gate:check ..."
+if npm run --silent gate:check; then
+  echo "✅ Gate 통과 — 커밋 진행"
+  exit 0
+else
+  echo ""
+  echo "🔴 커밋 차단 — Gate 실패. 위 ❌ 항목을 고친 뒤 다시 커밋하세요."
+  echo "   드리프트면: npm run tokens:sync-prompt && npm run installer:build"
+  echo "   우회(비권장): git commit --no-verify"
+  exit 1
+fi

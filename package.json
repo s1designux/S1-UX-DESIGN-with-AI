@@ -4,6 +4,7 @@
   "private": true,
   "description": "SW Design System Guide — SW UX GUIDE V2.4",
   "scripts": {
+    "prepare": "bash scripts/hooks/install-git-hooks.sh",
     "reports:sync": "node scripts/reports-sync.js",
     "reports:check": "node scripts/reports-check.js",
     "build": "npm run reports:sync && npm run build:bundle",
@@ -21,7 +22,10 @@
     "audit:build": "esbuild plugins/figma-component-audit/src/code.ts --bundle --outfile=plugins/figma-component-audit/dist/code.js --target=es2017 --platform=browser && cp plugins/figma-component-audit/manifest.json plugins/figma-component-audit/dist/manifest.json && cp plugins/figma-component-audit/src/ui.html plugins/figma-component-audit/dist/ui.html && mkdir -p ~/s1-component-audit && cp plugins/figma-component-audit/dist/manifest.json plugins/figma-component-audit/dist/code.js plugins/figma-component-audit/dist/ui.html ~/s1-component-audit/",
     "installer:coverage": "node scripts/installer-coverage-check.js",
     "tokens:gen": "node scripts/gen-semantic-tokens.js",
+    "page:gen": "node scripts/gen-semantic-page.js",
     "tokens:locate": "node scripts/token-sync-locate.js",
+    "tokens:monitor": "node scripts/token-sync-monitor.js",
+    "tokens:reconcile": "node scripts/token-reconcile.js",
     "tokens:consistency": "node scripts/token-value-consistency-check.js",
     "tokens:sync-prompt": "node scripts/sync-install-prompt.js",
     "tokens:sync-prompt:check": "node scripts/sync-install-prompt.js --check",

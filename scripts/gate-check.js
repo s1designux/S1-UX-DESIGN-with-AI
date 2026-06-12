@@ -189,29 +189,36 @@ try {
   fail(`installer-coverage-check 실패: ${e.message}`);
 }
 
-// ── Gate 7: Token Value Consistency Gate ─────────────────────────
-// 토큰 "값"이 표면 간 실제로 일치하는지 기계 판정 (token-sync 누락 방어).
-console.log('\n[Gate 7] Token Value Consistency Gate');
+// ── Gate 7: Token Sync Monitor ───────────────────────────────────
+// 토큰 "값"이 모든 표면에서 정본(vars-data·site-base)과 일치하는지 기계 판정.
+console.log('\n[Gate 7] Token Sync Monitor');
 
 try {
-  const { check: consistencyCheck } = require('./token-value-consistency-check');
-  const { A, B } = consistencyCheck();
-  if (A.mismatches.length === 0) {
-    pass(`tokens.css ↔ vars-data.ts 값 일치 (공통 ${A.compared}건, Light/Dark)`);
-  } else {
-    for (const m of A.mismatches) {
-      fail(`[설치기 drift] ${m.token} [${m.mode}] tokens.css=${m.tokensCss} ≠ vars-data ${m.varsData}`);
+  const { monitor } = require('./token-sync-monitor');
+  const r = monitor();
+  for (const s of r.results) {
+    if (s.error) { fail(`${s.id} 추출 실패: ${s.error}`); continue; }
+    if (s.unmonitored) { warn(`${s.id} 추출 0건 — 모니터 안 됨(셀렉터/네이밍 점검)`); continue; }
+    // 완전성(B): 정본 집합과 페이지 토큰 집합 불일치 → 누락/잉여 (Tier1 fail)
+    if (s.missing && s.missing.length) {
+      fail(`${s.id} 토큰 ${s.missing.length}개 누락(정본엔 있으나 페이지 없음): ${s.missing.slice(0, 5).join(', ')}${s.missing.length > 5 ? ' …' : ''} → npm run page:gen`);
     }
-  }
-  if (B.mismatches.length === 0) {
-    pass(`semantic.html 표 HEX ↔ tokens.css 일치 (${B.compared}건)`);
-  } else {
-    for (const m of B.mismatches) {
-      fail(`[문서 stale] ${m.token} [${m.mode}] tokens.css=${m.tokensCss} ≠ semantic.html=${m.semanticHtml}`);
+    if (s.extra && s.extra.length) {
+      fail(`${s.id} stale 토큰 ${s.extra.length}개(페이지엔 있으나 정본 없음): ${s.extra.slice(0, 5).join(', ')}${s.extra.length > 5 ? ' …' : ''}`);
+    }
+    if (s.mismatches.length === 0 && !(s.missing && s.missing.length) && !(s.extra && s.extra.length)) {
+      pass(`${s.id}: ${s.compared}건 정본 일치${s.complete ? ' · 집합 완전' : ''}`);
+    } else if (s.tier === 1) {
+      for (const m of s.mismatches.slice(0, 6)) {
+        fail(`${s.id} ${m.token} [${m.mode}] 정본=${m.canonical} ≠ ${m.surface}`);
+      }
+      if (s.mismatches.length > 6) fail(`${s.id} … +${s.mismatches.length - 6} more drift`);
+    } else {
+      warn(`${s.id}: ${s.mismatches.length} 불일치(문서, npm run tokens:reconcile)`);
     }
   }
 } catch (e) {
-  fail(`token-value-consistency-check 실패: ${e.message}`);
+  fail(`token-sync-monitor 실패: ${e.message}`);
 }
 
 // ── Summary ───────────────────────────────────────────────────────
