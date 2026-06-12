@@ -344,6 +344,21 @@ export const FOUNDATION_NUMBER: Record<string, number> = {
 
   // ── Line Height (배수) ─────────────────
   "line-height/130": 1.3,
+  "line-height/140": 1.4,
+
+  // ── Sizing (Foundation primitive — 컴포넌트 높이·치수) ──
+  "sizing/10": 10, "sizing/16": 16, "sizing/18": 18, "sizing/20": 20,
+  "sizing/24": 24, "sizing/28": 28, "sizing/30": 30, "sizing/32": 32,
+  "sizing/34": 34, "sizing/38": 38, "sizing/40": 40, "sizing/44": 44,
+  "sizing/48": 48, "sizing/56": 56, "sizing/60": 60, "sizing/64": 64,
+  "sizing/80": 80, "sizing/128": 128,
+
+  // ── Opacity ──
+  "opacity/0": 0, "opacity/25": 0.25, "opacity/50": 0.5, "opacity/75": 0.75, "opacity/100": 1,
+
+  // ── Breakpoint (px) ──
+  "breakpoint/xs": 320, "breakpoint/sm": 600, "breakpoint/md": 768,
+  "breakpoint/lg": 1024, "breakpoint/xl": 1280, "breakpoint/2xl": 1440,
 };
 
 // ── Semantic Color (Light → light 팔레트, Dark → -dark 팔레트) ───────────────

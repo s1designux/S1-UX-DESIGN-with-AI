@@ -355,6 +355,30 @@
 
   /* ── Line Height ── */
   --line-height-130: 1.3;
+  --line-height-140: 1.4;
+
+  /* ── Letter Spacing ── */
+  --letter-spacing-tight:  -0.02em;
+  --letter-spacing-normal: 0em;
+  --letter-spacing-wide:   0.02em;
+
+  /* ── Opacity ── */
+  --opacity-0:   0;
+  --opacity-25:  0.25;
+  --opacity-50:  0.5;
+  --opacity-75:  0.75;
+  --opacity-100: 1;
+
+  /* ── Shadow ── */
+  --shadow-200: 0 4px 8px 0 rgba(0, 0, 0, 0.15);
+
+  /* ── Breakpoint ── */
+  --breakpoint-xs:  320px;
+  --breakpoint-sm:  600px;
+  --breakpoint-md:  768px;
+  --breakpoint-lg:  1024px;
+  --breakpoint-xl:  1280px;
+  --breakpoint-2xl: 1440px;
 
   /* ══ semantic number (sizing·spacing·radius·border-width) — 763a70a 자동생성기 누락분 복원 2026-06-11 ══ */
   /* ── spacing (semantic) ── */
