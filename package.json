@@ -22,6 +22,7 @@
     "audit:build": "esbuild plugins/figma-component-audit/src/code.ts --bundle --outfile=plugins/figma-component-audit/dist/code.js --target=es2017 --platform=browser && cp plugins/figma-component-audit/manifest.json plugins/figma-component-audit/dist/manifest.json && cp plugins/figma-component-audit/src/ui.html plugins/figma-component-audit/dist/ui.html && mkdir -p ~/s1-component-audit && cp plugins/figma-component-audit/dist/manifest.json plugins/figma-component-audit/dist/code.js plugins/figma-component-audit/dist/ui.html ~/s1-component-audit/",
     "installer:coverage": "node scripts/installer-coverage-check.js",
     "tokens:gen": "node scripts/gen-semantic-tokens.js",
+    "typo:gen": "node scripts/typography-gen.js",
     "page:gen": "node scripts/gen-semantic-page.js",
     "tokens:locate": "node scripts/token-sync-locate.js",
     "tokens:monitor": "node scripts/token-sync-monitor.js",

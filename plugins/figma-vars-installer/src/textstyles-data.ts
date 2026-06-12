@@ -27,9 +27,7 @@ export interface TextStyleDef {
 }
 
 export const TEXT_STYLES: TextStyleDef[] = [
-  // ── 최상위 (그룹 없음) ──────────────────────────────
-  { name: "caption", fontStyle: "Regular", fontSize: 12, lineHeightPercent: 130, letterSpacingPercent: 0 },
-  { name: "helper",  fontStyle: "Regular", fontSize: 12, lineHeightPercent: 130, letterSpacingPercent: 0 },
+  // caption·helper 폐기(2026-06-12): body/12R와 값 동일 → body/12R 사용. (D4)
 
   // ── title ───────────────────────────────────────────
   { name: "title/32B", fontStyle: "Bold",    fontSize: 32, lineHeightPercent: 130, letterSpacingPercent: 0 },

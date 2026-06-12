@@ -1,5 +1,7 @@
 /* 사이트(포털) 전용 베이스 semantic — tokens.css(컴포넌트 Variables)와 분리 (2026-06-09) */
 @import url('site-base.css');
+/* 합성 타이포 유틸리티 클래스 (.typo-*) — 자동 생성(npm run typo:gen), 정본 textstyles-data.ts */
+@import url('typography.css');
 
 /* ============================================================
    SW Design System Guide · style.css
