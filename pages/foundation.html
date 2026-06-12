@@ -387,7 +387,7 @@
       <div class="section" id="section-typography">
         <div class="section-header">
           <h2 class="section-title">Typography</h2>
-          <p class="section-desc">SW UX GUIDE V2.4 · Pretendard · 4개 카테고리 26스타일 · 행 클릭 시 토큰명 복사</p>
+          <p class="section-desc">Pretendard · title·body 2 카테고리 · 합성 타이포 토큰 → <code style="font-family:monospace;color:#1d4ed8">.typo-*</code> CSS 클래스 (예: <code style="font-family:monospace;color:#1d4ed8">class="typo-body-14r"</code>). 정본: textstyles-data.ts → <code style="font-family:monospace">typography.css</code> 자동 생성. 행 클릭 시 토큰명 복사</p>
         </div>
         <div id="typo-categoryegories"></div>
       </div>
@@ -478,26 +478,25 @@ const TYPOGRAPHY = {
       { token:'title/32B', size:'32px', weight:700, lh:'1.3', ls:'0em',     sample:'제목 텍스트 Title' },
       { token:'title/24B', size:'24px', weight:700, lh:'1.3', ls:'0em',     sample:'제목 텍스트 Title' },
       { token:'title/20B', size:'20px', weight:700, lh:'1.3', ls:'0em',     sample:'제목 텍스트 Title' },
-      { token:'title/18B', size:'18px', weight:700, lh:'1.3', ls:'0em',     sample:'제목 텍스트 Title' },
+      { token:'title/20R', size:'20px', weight:400, lh:'1.3', ls:'0em',     sample:'제목 텍스트 Title' },
       { token:'title/18M', size:'18px', weight:500, lh:'1.3', ls:'-0.02em', sample:'제목 텍스트 Title' },
       { token:'title/16B', size:'16px', weight:700, lh:'1.3', ls:'0em',     sample:'제목 텍스트 Title' },
       { token:'title/16M', size:'16px', weight:500, lh:'1.3', ls:'-0.02em', sample:'제목 텍스트 Title' },
-      { token:'title/14M', size:'14px', weight:500, lh:'1.3', ls:'0em',     sample:'제목 텍스트 Title' },
+      { token:'title/14B', size:'14px', weight:700, lh:'1.3', ls:'0em',     sample:'제목 텍스트 Title' },
     ]
   },
   body: {
     label: 'Body', desc: '본문·콘텐츠 텍스트',
     styles: [
       { token:'body/18M', size:'18px', weight:500, lh:'1.3', ls:'-0.02em', sample:'본문 텍스트 Body' },
-      { token:'body/18R', size:'18px', weight:400, lh:'1.3', ls:'-0.02em', sample:'본문 텍스트 Body' },
       { token:'body/16M', size:'16px', weight:500, lh:'1.3', ls:'-0.02em', sample:'본문 텍스트 Body' },
       { token:'body/16R', size:'16px', weight:400, lh:'1.3', ls:'-0.02em', sample:'본문 텍스트 Body' },
       { token:'body/14M', size:'14px', weight:500, lh:'1.3', ls:'-0.02em', sample:'본문 텍스트 Body' },
       { token:'body/14R', size:'14px', weight:400, lh:'1.3', ls:'-0.02em', sample:'본문 텍스트 Body' },
       { token:'body/12M', size:'12px', weight:500, lh:'1.3', ls:'0em',     sample:'본문 텍스트 Body' },
       { token:'body/12R', size:'12px', weight:400, lh:'1.3', ls:'0em',     sample:'본문 텍스트 Body' },
-      { token:'body/10M', size:'10px', weight:500, lh:'1.3', ls:'0.02em',  sample:'본문 텍스트 Body' },
-      { token:'body/10R', size:'10px', weight:400, lh:'1.3', ls:'0.02em',  sample:'본문 텍스트 Body' },
+      { token:'body/10M', size:'10px', weight:500, lh:'1.4', ls:'0.02em',  sample:'본문 텍스트 Body' },
+      { token:'body/10R', size:'10px', weight:400, lh:'1.4', ls:'0.02em',  sample:'본문 텍스트 Body' },
     ]
   }
 };
@@ -643,7 +642,7 @@ function renderTypography() {
       const tok = `typography/${s.token}`;
       return `
         <tr onclick="navigator.clipboard&&navigator.clipboard.writeText('${tok}').catch(()=>{});this.style.background='#eff6ff';setTimeout(()=>this.style.background='',500)">
-          <td><code class="typo-token">${s.token}</code></td>
+          <td><code class="typo-token">${s.token}</code><div class="typo-spec" style="margin-top:3px;color:#1d4ed8">.typo-${s.token.replace('/','-').toLowerCase()}</div></td>
           <td class="typo-preview" style="font-size:${s.size};font-weight:${s.weight};line-height:${s.lh};letter-spacing:${s.ls}">${s.sample}</td>
           <td class="typo-spec">${s.size}</td>
           <td>${wBadge(s.weight)}</td>
