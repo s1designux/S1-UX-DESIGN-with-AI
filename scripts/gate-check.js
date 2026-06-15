@@ -8,6 +8,9 @@
  * Gate 3: Quality             — tokens.css raw HEX / Foundation 직접 참조 감지
  * Gate 4: Installer Coverage  — tokens.css 의 Foundation·Semantic 토큰이
  *                                figma-vars-installer 의 Variables 정의에 반영됐는지
+ * Gate 7: Token Sync Monitor  — 토큰 "값"이 전 표면에서 정본과 일치하는지
+ * Gate 8: Component Key Cov.   — build-components.ts 빌더의 동적 scv 키가
+ *                                vars-data 정본에 모두 존재하는지(런타임 누락 사전 차단)
  */
 
 const fs = require('fs');
@@ -189,6 +192,16 @@ try {
   fail(`installer-coverage-check 실패: ${e.message}`);
 }
 
+// ── Gate 6b: Installer Build Freshness ───────────────────────────
+// 커밋된 설치기 zip 이 vars-data 정본 최신 빌드인지(빌드 누락 시 stale 탐지).
+// Gate 6(coverage)는 소스만 봐 빌드 산출물 stale 을 못 잡던 사각지대 보완.
+try {
+  const { check: freshnessCheck } = require('./installer-freshness-check');
+  freshnessCheck({ pass, warn, fail });
+} catch (e) {
+  fail(`installer-freshness-check 실행 실패: ${e.message}`);
+}
+
 // ── Gate 7: Token Sync Monitor ───────────────────────────────────
 // 토큰 "값"이 모든 표면에서 정본(vars-data·site-base)과 일치하는지 기계 판정.
 console.log('\n[Gate 7] Token Sync Monitor');
@@ -219,6 +232,37 @@ try {
   }
 } catch (e) {
   fail(`token-sync-monitor 실패: ${e.message}`);
+}
+
+// ── Gate 8: Component Key Coverage ───────────────────────────────
+// build-components.ts 빌더가 동적 조합하는 scv 키가 vars-data 정본에 다 있는지.
+// audit-bindings(네임스페이스만 검사)의 사각지대 — leaf 키 누락 시 Figma 실행 중 크래시.
+// esbuild 번들 + mock 실행이 필요해 별도 프로세스로 호출(spawnSync).
+console.log('\n[Gate 8] Component Key Coverage');
+try {
+  const { spawnSync } = require('child_process');
+  const r = spawnSync('node', [path.join(ROOT, 'scripts/component-key-coverage-check.js')], { encoding: 'utf-8' });
+  if (r.status === 0) {
+    const m = (r.stdout || '').match(/requested (\d+) \/ supply (\d+)/);
+    pass(`build-components 키 누락 0${m ? ` (color ${m[1]}/${m[2]})` : ''}`);
+  } else {
+    const lines = (r.stdout + r.stderr).split('\n').filter((l) => l.includes('❌'));
+    for (const l of lines) fail(l.replace(/^\s*❌\s*/, ''));
+    if (lines.length === 0) fail(`component-key-coverage-check 실패 (exit ${r.status})`);
+  }
+} catch (e) {
+  fail(`component-key-coverage-check 실행 실패: ${e.message}`);
+}
+
+// ── Gate 9: Number/Sizing Page Consistency ────────────────────────
+// 컴포넌트별 사이징 Semantic 폐지 → Foundation --sizing-N 직접 참조 전환을 영구 강제.
+// (A) foundation.html Sizing 블록 = vars-data 정본 / (B) 폐지 토큰 재유입 0건.
+console.log('\n[Gate 9] Number/Sizing Page Consistency');
+try {
+  const { check: numberPageCheck } = require('./number-page-check');
+  numberPageCheck({ pass, warn, fail });
+} catch (e) {
+  fail(`number-page-check 실행 실패: ${e.message}`);
 }
 
 // ── Summary ───────────────────────────────────────────────────────

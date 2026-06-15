@@ -215,8 +215,10 @@
     }
 
     .s1-modal-footer {
-      display: flex; justify-content: flex-end; align-items: center; gap: 8px;
+      display: flex; justify-content: flex-end; align-items: center; gap: 8px;  /* 버튼 간격 8px */
     }
+    /* 모달 내부 버튼 고정폭 — 모듈이 코어 s1-btn을 배치(width=arrangement, 시각 override 아님) */
+    .s1-modal-footer .s1-btn { width: 60px; flex-shrink: 0; }
     .s1-modal--small .s1-modal-footer { padding: 0 24px; }
     .s1-modal--medium .s1-modal-footer {
       padding: 16px 24px;
@@ -224,7 +226,8 @@
     }
 
     /* =====================================================
-       CORE — Button (components.html과 동일 토큰·클래스 재사용)
+       CORE — Button (components-new.html 정본과 동일 토큰·클래스 재사용)
+       Variant별 bg/border/label = Figma color/button/* Variables 직접 사용. pressed = hover, disabled = 공통
     ===================================================== */
     .s1-btn {
       display: inline-flex; align-items: center; justify-content: center;
@@ -237,27 +240,63 @@
     }
     .s1-btn-sm { height: 28px; padding: 0 8px; font-size: 14px; border-radius: 4px; }
     .s1-btn-lg { height: 44px; padding: 0 16px; font-size: 14px; border-radius: 4px; }
+    .s1-btn-mobile { height: 48px; padding: 0 16px; font-size: 16px; border-radius: 4px; letter-spacing: -0.32px; }
     .s1-btn-primary {
-      background: var(--color-action-primary-default);
-      color: var(--color-action-primary-text);
+      background: var(--color-button-bg-primary--default);
+      border-color: var(--color-button-border-primary--default);
+      color: var(--color-button-label-primary--default);
     }
-    .s1-btn-primary:hover { background: var(--color-action-primary-hover); }
-    .s1-btn-primary:active { background: var(--color-action-primary-pressed); }
+    .s1-btn-primary:hover, .s1-btn-primary.is-hover, .s1-btn-primary.is-pressed {
+      background: var(--color-button-bg-primary--hover);
+      border-color: var(--color-button-border-primary--hover);
+      color: var(--color-button-label-primary--hover);
+    }
+    .s1-btn-primary.is-disabled, .s1-btn-primary:disabled {
+      background: var(--color-button-bg-disabled);
+      border-color: var(--color-button-border-disabled);
+      color: var(--color-button-label-disabled);
+      cursor: not-allowed; pointer-events: none;
+    }
     .s1-btn-secondary {
-      background: var(--color-surface-default);
-      color: var(--color-text-secondary);
-      border-color: var(--color-border-default);
+      background: var(--color-button-bg-secondary--default);
+      border-color: var(--color-button-border-secondary--default);
+      color: var(--color-button-label-secondary--default);
     }
-    .s1-btn-secondary:hover { background: var(--color-bg-subtle); }
-    .s1-btn-secondary:active { background: var(--color-bg-muted); }
+    .s1-btn-secondary:hover, .s1-btn-secondary.is-hover, .s1-btn-secondary.is-pressed {
+      background: var(--color-button-bg-secondary--hover);
+      border-color: var(--color-button-border-secondary--hover);
+      color: var(--color-button-label-secondary--hover);
+    }
+    .s1-btn-secondary.is-disabled, .s1-btn-secondary:disabled {
+      background: var(--color-button-bg-disabled);
+      border-color: var(--color-button-border-disabled);
+      color: var(--color-button-label-disabled);
+      cursor: not-allowed; pointer-events: none;
+    }
+    .s1-btn-blue-line {
+      background: var(--color-button-bg-blue-line--default);
+      border-color: var(--color-button-border-blue-line--default);
+      color: var(--color-button-label-blue-line--default);
+    }
+    .s1-btn-blue-line:hover, .s1-btn-blue-line.is-hover, .s1-btn-blue-line.is-pressed {
+      background: var(--color-button-bg-blue-line--hover);
+      border-color: var(--color-button-border-blue-line--hover);
+      color: var(--color-button-label-blue-line--hover);
+    }
+    .s1-btn-blue-line.is-disabled, .s1-btn-blue-line:disabled {
+      background: var(--color-button-bg-disabled);
+      border-color: var(--color-button-border-disabled);
+      color: var(--color-button-label-disabled);
+      cursor: not-allowed; pointer-events: none;
+    }
 
     /* =====================================================
-       CORE — Table (components.html과 동일 토큰·클래스 재사용)
+       CORE — Table (components-new.html 정본과 동일 토큰·클래스 재사용)
     ===================================================== */
     .s1-table-wrap { width: 100%; }
     .s1-table { border-collapse: collapse; width: 100%; }
     .s1-table-th {
-      height: var(--sizing-table-row-height-md);
+      height: var(--sizing-44);
       background: var(--table-header-bg);
       color: var(--table-header-text);
       border-bottom: 1px solid var(--table-header-border);
@@ -265,7 +304,7 @@
       padding: 0 12px; white-space: nowrap;
     }
     .s1-table-td {
-      height: var(--sizing-table-row-height-md);
+      height: var(--sizing-44);
       background: var(--table-row-default-bg);
       color: var(--table-cell-text);
       border-bottom: 1px solid var(--table-cell-border);
@@ -280,16 +319,16 @@
     /* Checkbox (core 재사용 — Table selection) */
     .s1-checkbox { display: inline-flex; cursor: pointer; }
     .s1-checkbox-box {
-      width: 18px; height: 18px; border-radius: 4px;
+      width: 18px; height: 18px; border-radius: 2px;
       border: 1px solid var(--color-control-border-default);
-      background: var(--color-form-control-bg-default);
+      background: var(--color-control-bg-default);
       display: flex; align-items: center; justify-content: center;
       color: transparent;
     }
     .s1-checkbox.is-checked .s1-checkbox-box {
-      background: var(--color-action-primary-default);
+      background: var(--color-control-bg-selected);
       border-color: var(--color-control-border-selected);
-      color: var(--color-action-primary-text);
+      color: var(--color-control-indicator-selected);
     }
     .ds-chk-icon { display: block; }
 
@@ -419,7 +458,7 @@
                   <tr><td>타이틀 텍스트</td><td class="token-detail-name">--modal-title-text</td><td class="token-detail-ref">var(--color-text-primary)</td></tr>
                   <tr><td>본문 텍스트</td><td class="token-detail-name">--modal-body-text</td><td class="token-detail-ref">var(--color-text-secondary)</td></tr>
                   <tr><td>닫기 아이콘</td><td class="token-detail-name">--modal-close-icon</td><td class="token-detail-ref">var(--color-icon-default)</td></tr>
-                  <tr><td>푸터 버튼</td><td class="token-detail-name">s1-btn-sm (코어 재사용)</td><td class="token-detail-ref">시각 override 없음</td></tr>
+                  <tr><td>푸터 버튼</td><td class="token-detail-name">s1-btn-sm (코어 재사용)</td><td class="token-detail-ref">width 60px 고정 (배치값)</td></tr>
                 </tbody>
               </table>
             </div>
@@ -494,7 +533,7 @@
                   <tr><td>모달 radius</td><td class="token-detail-name">--modal-radius</td><td class="token-detail-ref">var(--radius-8)</td></tr>
                   <tr><td>오버레이</td><td class="token-detail-name">--modal-overlay</td><td class="token-detail-ref">var(--color-overlay) · EX03</td></tr>
                   <tr><td>본문 테이블</td><td class="token-detail-name">s1-table (코어 재사용)</td><td class="token-detail-ref">--table-* 토큰 그대로</td></tr>
-                  <tr><td>푸터 버튼</td><td class="token-detail-name">s1-btn (코어 재사용)</td><td class="token-detail-ref">시각 override 없음</td></tr>
+                  <tr><td>푸터 버튼</td><td class="token-detail-name">s1-btn (코어 재사용)</td><td class="token-detail-ref">width 60px 고정 (배치값)</td></tr>
                 </tbody>
               </table>
             </div>

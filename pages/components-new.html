@@ -88,9 +88,12 @@
       /* Chip — Solid type · color/chip/solid/* (icon/close-icon은 정본 미정의 → 텍스트색 상속) */
       --chip-solid-default-bg:       var(--color-chip-solid-bg-default);
       --chip-solid-default-text:     var(--color-chip-solid-label-default);
+      --chip-solid-default-border:   var(--color-chip-solid-border-default);   /* 정본: solid 보더 = fill(gray-50) 동색 */
       --chip-solid-hover-bg:         var(--color-chip-solid-bg-hover);
+      --chip-solid-hover-border:     var(--color-chip-solid-border-default);   /* 정본: solid hover 보더 미정의 → default 유지 */
       --chip-solid-selected-bg:      var(--color-chip-solid-bg-selected);
       --chip-solid-selected-border:  var(--color-chip-solid-border-selected);
+      --chip-solid-disabled-border:  var(--color-chip-solid-border-disabled);
       --chip-solid-selected-text:    var(--color-chip-solid-label-selected);
       --chip-solid-disabled-bg:      var(--color-chip-solid-bg-disabled);
       --chip-solid-disabled-text:    var(--color-chip-solid-label-disabled);
@@ -606,15 +609,15 @@
     /* Chip — Line (default) */
     .s1-chip {
       display: inline-flex; align-items: center; gap: 4px;
-      height: var(--sizing-chip-height-lg); padding: 0 16px; border-radius: 999px;
+      height: var(--sizing-34); padding: 0 16px; border-radius: 999px;
       border: 1px solid var(--chip-line-default-border);
       background: var(--chip-line-default-bg); color: var(--chip-line-default-text);
       font-size: 14px; font-weight: 400; cursor: pointer;
       transition: all 0.15s; white-space: nowrap; font-family: inherit;
     }
     /* Chip — Size modifiers */
-    .s1-chip--sm     { height: var(--sizing-chip-height-sm); padding: 0 16px; font-size: 12px; }
-    .s1-chip--mobile { height: var(--sizing-chip-height-md); padding: 0 12px; font-size: 14px; }
+    .s1-chip--sm     { height: var(--sizing-28); padding: 0 16px; font-size: 12px; }
+    .s1-chip--mobile { height: var(--sizing-30); padding: 0 12px; font-size: 14px; }
     .s1-chip.is-selected {
       background: var(--chip-line-selected-bg);
       border-color: var(--chip-line-selected-border); color: var(--chip-line-selected-text);
@@ -669,30 +672,30 @@
 
     /* Filter Chip (공통 베이스) */
     .ds-filter-chip {
-      display: inline-flex; align-items: center; height: var(--sizing-chip-height-lg);
+      display: inline-flex; align-items: center; height: var(--sizing-34);
       padding: 0 8px 0 16px; gap: 4px;
       border-radius: 999px; border: 1px solid var(--chip-line-default-border);
       background: var(--chip-line-default-bg); cursor: pointer;
       transition: all 0.15s; font-family: inherit;
     }
     /* Filter Chip — Size modifiers */
-    .ds-filter-chip--sm     { height: var(--sizing-chip-height-sm); padding: 0 6px 0 12px; }
-    .ds-filter-chip--mobile { height: var(--sizing-chip-height-md); padding: 0 8px 0 12px; }
+    .ds-filter-chip--sm     { height: var(--sizing-28); padding: 0 6px 0 12px; }
+    .ds-filter-chip--mobile { height: var(--sizing-30); padding: 0 8px 0 12px; }
     .ds-filter-chip-label {
       font-size: 14px; font-weight: 500; white-space: nowrap;
       letter-spacing: -0.028em;
-      color: var(--color-text-secondary);
+      color: var(--chip-line-default-text);
     }
     .ds-filter-chip-title {
       font-size: 14px; font-weight: 500; white-space: nowrap;
       letter-spacing: -0.028em;
-      color: var(--color-text-secondary);
+      color: var(--chip-line-default-text);
     }
     .ds-filter-chip-wrap {
       position: relative; display: inline-flex;
     }
     .ds-filter-chip-arrow {
-      flex-shrink: 0; color: var(--color-icon-default);
+      flex-shrink: 0; color: var(--chip-line-default-text);
       transform: rotate(90deg);
     }
     .ds-filter-chip-wrap.is-open .ds-filter-chip-arrow { transform: rotate(270deg); }
@@ -722,7 +725,7 @@
     }
     .ds-filter-chip:not(.ds-filter-chip--solid).is-disabled .ds-filter-chip-label,
     .ds-filter-chip:not(.ds-filter-chip--solid).is-disabled .ds-filter-chip-title { color: var(--chip-line-disabled-text); }
-    .ds-filter-chip:not(.ds-filter-chip--solid).is-disabled .ds-filter-chip-arrow { color: var(--color-icon-muted); }
+    .ds-filter-chip:not(.ds-filter-chip--solid).is-disabled .ds-filter-chip-arrow { color: var(--chip-line-disabled-text); }
     /* ── Filter Chip — Solid modifier ───────────────────────── */
     .ds-filter-chip--solid {
       background: var(--chip-solid-default-bg);
@@ -730,6 +733,7 @@
     }
     .ds-filter-chip--solid .ds-filter-chip-label,
     .ds-filter-chip--solid .ds-filter-chip-title { color: var(--chip-solid-default-text); }
+    .ds-filter-chip--solid .ds-filter-chip-arrow { color: var(--chip-solid-default-text); }
     .ds-filter-chip-wrap:not(.is-open) .ds-filter-chip--solid:not(.is-disabled):not(.is-preview):hover,
     .ds-filter-chip--solid.is-hover {
       background: var(--chip-solid-hover-bg); border-color: var(--chip-solid-hover-border);
@@ -752,7 +756,7 @@
     }
     .ds-filter-chip--solid.is-disabled .ds-filter-chip-label,
     .ds-filter-chip--solid.is-disabled .ds-filter-chip-title { color: var(--chip-solid-disabled-text); }
-    .ds-filter-chip--solid.is-disabled .ds-filter-chip-arrow { color: var(--color-icon-muted); }
+    .ds-filter-chip--solid.is-disabled .ds-filter-chip-arrow { color: var(--chip-solid-disabled-text); }
 
     /* Input */
     .s1-input-wrap { display: flex; flex-direction: column; gap: 6px; width: 180px; }
@@ -1086,6 +1090,9 @@
       color: var(--dropdown-option-selected-text); font-weight: 600;
     }
     .s1-select-option.is-hover { background: var(--dropdown-option-hover-bg); }
+    /* 선택된 옵션도 hover 시 배경 변경 — 중립 hover색 재사용 (특이도로 is-selected 우선) */
+    .s1-select-option.is-selected:hover,
+    .s1-select-option.is-selected.is-hover { background: var(--dropdown-option-hover-bg); }
     /* Size variants */
     .s1-select-wrap--xsm .s1-select-trigger { height: var(--sizing-34); font-size: 14px; }
     .s1-select-wrap--xxsm .s1-select-trigger { height: var(--sizing-28); font-size: 12px; padding-left: 12px; }
@@ -1122,13 +1129,13 @@
       background: var(--table-header-bg);
       color: var(--table-header-text);
       border-bottom: 1px solid var(--table-header-border);
-      height: var(--sizing-table-row-height-md);
+      height: var(--sizing-44);
       padding: 0 var(--spacing-padding-inline-xs);
       font-size: 14px; font-weight: 500;
       text-align: left; white-space: nowrap;
       letter-spacing: -0.02em;
     }
-    .s1-table--sm .s1-table-th { height: var(--sizing-table-row-height-sm); }
+    .s1-table--sm .s1-table-th { height: var(--sizing-38); }
     .s1-table-th-inner {
       display: flex; align-items: center; gap: 4px; height: 100%;
     }
@@ -1139,13 +1146,13 @@
       background: var(--table-row-default-bg);
       color: var(--table-cell-text);
       border-bottom: 1px solid var(--table-cell-border);
-      height: var(--sizing-table-row-height-md);
+      height: var(--sizing-44);
       padding: 0 var(--spacing-padding-inline-xs);
       font-size: 14px; font-weight: 400;
       white-space: nowrap; letter-spacing: -0.02em;
       vertical-align: middle; /* CSS 기본값은 baseline — 명시적으로 middle 지정 */
     }
-    .s1-table--sm .s1-table-td { height: var(--sizing-table-row-height-sm); }
+    .s1-table--sm .s1-table-td { height: var(--sizing-38); }
     .s1-table-td--last { padding-right: var(--spacing-padding-inline-sm); }
     .s1-table-td--first { padding: 0 8px; }
     .s1-table-row:hover .s1-table-td,
@@ -1357,14 +1364,14 @@
       background: var(--dropdown-list-bg);
       cursor: pointer;
       font-size: 14px; text-align: center;
-      color: var(--color-text-secondary);
+      color: var(--color-dropdown-option-label-default);  /* 정본: Time Picker Dropdown = Basic Dropdown option 토큰 재사용 (build-components.ts buildTimePickerDropdown) */
       letter-spacing: -0.02em;
     }
-    .s1-tp-col-item:hover { background: var(--color-bg-subtle); border-color: var(--color-bg-subtle); }
+    .s1-tp-col-item:hover { background: var(--dropdown-option-hover-bg); border-color: var(--dropdown-option-hover-bg); }
     .s1-tp-col-item.is-selected {
       background: var(--dropdown-list-bg);
-      border-color: var(--color-action-primary-default);
-      color: var(--color-action-primary-default); font-weight: 600;
+      border-color: var(--color-dropdown-option-border-selected);
+      color: var(--dropdown-option-selected-text); font-weight: 600;  /* dark 정정: blue-dark/350 (정본 option/label/selected) */
     }
     .s1-tp-footer-sep {
       width: calc(100% - 16px); height: 1px;
@@ -1394,11 +1401,11 @@
     .s1-tp-select-dropdown-item {
       height: var(--sizing-40); display: flex; align-items: center;
       padding: 0 12px; cursor: pointer;
-      font-size: 14px; color: var(--color-text-secondary);
+      font-size: 14px; color: var(--color-dropdown-option-label-default);  /* 정본: Basic Dropdown option 토큰 재사용 */
       letter-spacing: -0.02em;
     }
-    .s1-tp-select-dropdown-item:hover { background: var(--color-bg-subtle); }
-    .s1-tp-select-dropdown-item.is-selected { color: var(--color-action-primary-default); font-weight: 600; }
+    .s1-tp-select-dropdown-item:hover { background: var(--dropdown-option-hover-bg); }
+    .s1-tp-select-dropdown-item.is-selected { color: var(--dropdown-option-selected-text); font-weight: 600; }  /* dark 정정: blue-dark/350 */
     /* token-detail-table (공통) */
     .token-detail-table { width: 100%; border-collapse: collapse; font-size: 12px; }
     .token-detail-table th {
@@ -1628,13 +1635,7 @@
       --table-border-strong: var(--color-border-strong);  /* gray-dark-500 = #3E4049 — 상하 강선 적정 명암 */
     }
     /* Date Picker 다크모드는 --color-date-picker-* Variables 레이어가 자동 전환 (수동 override 제거) */
-    [data-theme="dark"] .s1-tp-col-item:hover {
-      background: var(--color-bg-muted);
-      border-color: var(--color-bg-muted);
-    }
-    [data-theme="dark"] .s1-tp-select-dropdown-item:hover {
-      background: var(--color-bg-muted);
-    }
+    /* TimePicker dropdown hover 의 dark 값은 --dropdown-option-hover-bg 별칭이 자동 전환(gray-dark/300) — 수동 override 불필요 */
 
     /* ─────────────────────────────────────────────────────────
        Design Mode (Token Inspector)
@@ -1813,8 +1814,10 @@
           <button class="comp-nav-btn" data-category="selection" onclick="showSection('radio', this)">Radio</button>
           <button class="comp-nav-btn" data-category="selection" onclick="showSection('toggle', this)">Toggle</button>
           <button class="comp-nav-btn" data-category="selection" onclick="showSection('chip', this)">Chip</button>
+          <button class="comp-nav-btn" data-category="selection" onclick="showSection('filter-chip', this)">Filter Chip</button>
           <button class="comp-nav-btn" data-category="form" onclick="showSection('input', this)">Input</button>
           <button class="comp-nav-btn" data-category="form" onclick="showSection('date-picker', this)">Date Picker</button>
+          <button class="comp-nav-btn" data-category="form" onclick="showSection('time-picker', this)">Time Picker</button>
           <button class="comp-nav-btn" data-category="form" onclick="showSection('textarea', this)">Textarea</button>
           <button class="comp-nav-btn" data-category="form" onclick="showSection('select', this)">Select</button>
           <button class="comp-nav-btn" data-category="data" onclick="showSection('table', this)">Table</button>
@@ -2165,7 +2168,7 @@ checkboxes.forEach(function(chk) {
               <div class="matrix-col-header">Disabled On</div>
               <!-- Action -->
               <div class="comp-action-cell" data-comp-action="toggle">
-                <label class="s1-toggle" id="toggle-action-target"><div class="s1-toggle-track"><div class="s1-toggle-knob"></div></div><span class="s1-toggle-label">OFF</span></label>
+                <label class="s1-toggle" id="toggle-action-target"><div class="s1-toggle-track"><div class="s1-toggle-knob"></div></div></label>
                 <div class="action-test-controls">
                   <button type="button" class="action-mini-toggle" data-toggle-comp-disabled>Disabled: off</button>
                 </div>
@@ -2996,6 +2999,204 @@ clearBtn.<span class="c-fn">addEventListener</span>(<span class="c-str">'click'<
                 <tr><td class="token-name">--chip-solid-selected-bg</td><td class="token-value">var(--color-chip-solid-bg-selected)</td><td>Solid 선택 배경</td></tr>
                 <tr><td class="token-name">--chip-solid-selected-text</td><td class="token-value">var(--color-chip-solid-label-selected)</td><td>Solid 선택 라벨</td></tr>
                 <tr><td class="token-name" colspan="3" style="color:#9ca3af;">icon · close-icon: 정본(buildChip) 미정의 → 텍스트색 상속 (Variables 정의 시 추가 예정)</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </section>
+
+      <section class="comp-section" id="filter-chip">
+        <div class="comp-section-header">
+          <h2 class="comp-section-title">Filter Chip</h2>
+          <span class="comp-badge comp-badge-blue">Core</span>
+          <span class="comp-badge">Line · Solid · Label only · With title</span>
+          <span class="comp-badge">5 states</span>
+          <span class="comp-badge comp-badge-blue">정본 buildFilterChip · chip/line·solid/* + dropdown/*</span>
+        </div>
+
+        <!-- ── Line · Label only ── -->
+        <div class="variant-block">
+          <div class="variant-label">Line · Label only · 정본 5 (Default · Hover · Selected · Complete · Disabled)</div>
+          <div class="preview-area" style="overflow:visible;padding-bottom:28px;">
+            <div class="comp-state-matrix" style="grid-template-columns: 200px repeat(5, minmax(96px, 1fr));">
+              <div class="matrix-col-header-action">Action</div>
+              <div class="matrix-col-header">Default</div>
+              <div class="matrix-col-header">Hover</div>
+              <div class="matrix-col-header">Selected</div>
+              <div class="matrix-col-header">Complete</div>
+              <div class="matrix-col-header">Disabled</div>
+              <div class="comp-action-cell" data-comp-action="filter-chip" style="overflow:visible;">
+                <div class="ds-filter-chip-wrap" id="filter-chip-action-wrap">
+                  <button class="ds-filter-chip" id="filter-chip-action">
+                    <span class="ds-filter-chip-label">최신순</span>
+                    <svg class="ds-filter-chip-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M9 6L15 12L9 18" stroke="currentColor" stroke-width="2" stroke-linecap="square"/></svg>
+                  </button>
+                  <div class="s1-select-list">
+                    <div class="s1-select-option is-selected">최신순</div>
+                    <div class="s1-select-option">과거순</div>
+                    <div class="s1-select-option">인기순</div>
+                  </div>
+                </div>
+                <div class="action-test-controls">
+                  <button type="button" class="action-mini-toggle" data-filter-disabled>Disabled: off</button>
+                </div>
+              </div>
+              <div class="comp-state-cell"><button class="ds-filter-chip is-preview"><span class="ds-filter-chip-label">최신순</span><svg class="ds-filter-chip-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M9 6L15 12L9 18" stroke="currentColor" stroke-width="2" stroke-linecap="square"/></svg></button></div>
+              <div class="comp-state-cell"><button class="ds-filter-chip is-hover is-preview"><span class="ds-filter-chip-label">최신순</span><svg class="ds-filter-chip-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M9 6L15 12L9 18" stroke="currentColor" stroke-width="2" stroke-linecap="square"/></svg></button></div>
+              <div class="comp-state-cell"><div class="ds-filter-chip-wrap is-open is-preview"><button class="ds-filter-chip is-preview"><span class="ds-filter-chip-label">최신순</span><svg class="ds-filter-chip-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M9 6L15 12L9 18" stroke="currentColor" stroke-width="2" stroke-linecap="square"/></svg></button><div class="s1-select-list"><div class="s1-select-option is-selected">최신순</div><div class="s1-select-option">과거순</div><div class="s1-select-option">인기순</div></div></div></div>
+              <div class="comp-state-cell"><button class="ds-filter-chip is-preview"><span class="ds-filter-chip-label">과거순</span><svg class="ds-filter-chip-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M9 6L15 12L9 18" stroke="currentColor" stroke-width="2" stroke-linecap="square"/></svg></button></div>
+              <div class="comp-state-cell"><button class="ds-filter-chip is-disabled is-preview"><span class="ds-filter-chip-label">최신순</span><svg class="ds-filter-chip-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M9 6L15 12L9 18" stroke="currentColor" stroke-width="2" stroke-linecap="square"/></svg></button></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── Solid · Label only ── -->
+        <div class="variant-block">
+          <div class="variant-label">Solid · Label only · 정본 5 (Default · Hover · Selected · Complete · Disabled)</div>
+          <div class="preview-area" style="overflow:visible;padding-bottom:28px;">
+            <div class="comp-state-matrix" style="grid-template-columns: 200px repeat(5, minmax(96px, 1fr));">
+              <div class="matrix-col-header-action">Action</div>
+              <div class="matrix-col-header">Default</div>
+              <div class="matrix-col-header">Hover</div>
+              <div class="matrix-col-header">Selected</div>
+              <div class="matrix-col-header">Complete</div>
+              <div class="matrix-col-header">Disabled</div>
+              <div class="comp-action-cell" data-comp-action="filter-chip-solid" style="overflow:visible;">
+                <div class="ds-filter-chip-wrap" id="filter-chip-solid-action-wrap">
+                  <button class="ds-filter-chip ds-filter-chip--solid" id="filter-chip-solid-action">
+                    <span class="ds-filter-chip-label">최신순</span>
+                    <svg class="ds-filter-chip-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M9 6L15 12L9 18" stroke="currentColor" stroke-width="2" stroke-linecap="square"/></svg>
+                  </button>
+                  <div class="s1-select-list">
+                    <div class="s1-select-option is-selected">최신순</div>
+                    <div class="s1-select-option">과거순</div>
+                    <div class="s1-select-option">인기순</div>
+                  </div>
+                </div>
+                <div class="action-test-controls">
+                  <button type="button" class="action-mini-toggle" data-filter-solid-disabled>Disabled: off</button>
+                </div>
+              </div>
+              <div class="comp-state-cell"><button class="ds-filter-chip ds-filter-chip--solid is-preview"><span class="ds-filter-chip-label">최신순</span><svg class="ds-filter-chip-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M9 6L15 12L9 18" stroke="currentColor" stroke-width="2" stroke-linecap="square"/></svg></button></div>
+              <div class="comp-state-cell"><button class="ds-filter-chip ds-filter-chip--solid is-hover is-preview"><span class="ds-filter-chip-label">최신순</span><svg class="ds-filter-chip-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M9 6L15 12L9 18" stroke="currentColor" stroke-width="2" stroke-linecap="square"/></svg></button></div>
+              <div class="comp-state-cell"><div class="ds-filter-chip-wrap is-open is-preview"><button class="ds-filter-chip ds-filter-chip--solid is-preview"><span class="ds-filter-chip-label">최신순</span><svg class="ds-filter-chip-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M9 6L15 12L9 18" stroke="currentColor" stroke-width="2" stroke-linecap="square"/></svg></button><div class="s1-select-list"><div class="s1-select-option is-selected">최신순</div><div class="s1-select-option">과거순</div><div class="s1-select-option">인기순</div></div></div></div>
+              <div class="comp-state-cell"><button class="ds-filter-chip ds-filter-chip--solid is-preview"><span class="ds-filter-chip-label">과거순</span><svg class="ds-filter-chip-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M9 6L15 12L9 18" stroke="currentColor" stroke-width="2" stroke-linecap="square"/></svg></button></div>
+              <div class="comp-state-cell"><button class="ds-filter-chip ds-filter-chip--solid is-disabled is-preview"><span class="ds-filter-chip-label">최신순</span><svg class="ds-filter-chip-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M9 6L15 12L9 18" stroke="currentColor" stroke-width="2" stroke-linecap="square"/></svg></button></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── Line · With title ── -->
+        <div class="variant-block">
+          <div class="variant-label">Line · With title · 값 라벨 = Selected(파랑)</div>
+          <div class="preview-area" style="overflow:visible;padding-bottom:28px;">
+            <div class="comp-state-matrix" style="grid-template-columns: 200px repeat(5, minmax(96px, 1fr));">
+              <div class="matrix-col-header-action">Action</div>
+              <div class="matrix-col-header">Default</div>
+              <div class="matrix-col-header">Hover</div>
+              <div class="matrix-col-header">Selected</div>
+              <div class="matrix-col-header">Complete</div>
+              <div class="matrix-col-header">Disabled</div>
+              <div class="comp-action-cell" data-comp-action="filter-chip-title" style="overflow:visible;">
+                <div class="ds-filter-chip-wrap" id="filter-chip-title-action-wrap">
+                  <button class="ds-filter-chip" id="filter-chip-title-action">
+                    <span class="ds-filter-chip-title">정렬</span>
+                    <span class="ds-filter-chip-label">최신순</span>
+                    <svg class="ds-filter-chip-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M9 6L15 12L9 18" stroke="currentColor" stroke-width="2" stroke-linecap="square"/></svg>
+                  </button>
+                  <div class="s1-select-list">
+                    <div class="s1-select-option is-selected">최신순</div>
+                    <div class="s1-select-option">과거순</div>
+                    <div class="s1-select-option">인기순</div>
+                  </div>
+                </div>
+                <div class="action-test-controls">
+                  <button type="button" class="action-mini-toggle" data-filter-title-disabled>Disabled: off</button>
+                </div>
+              </div>
+              <div class="comp-state-cell"><button class="ds-filter-chip is-preview"><span class="ds-filter-chip-title">정렬</span><span class="ds-filter-chip-label">최신순</span><svg class="ds-filter-chip-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M9 6L15 12L9 18" stroke="currentColor" stroke-width="2" stroke-linecap="square"/></svg></button></div>
+              <div class="comp-state-cell"><button class="ds-filter-chip is-hover is-preview"><span class="ds-filter-chip-title">정렬</span><span class="ds-filter-chip-label">최신순</span><svg class="ds-filter-chip-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M9 6L15 12L9 18" stroke="currentColor" stroke-width="2" stroke-linecap="square"/></svg></button></div>
+              <div class="comp-state-cell"><div class="ds-filter-chip-wrap is-open is-preview"><button class="ds-filter-chip is-preview"><span class="ds-filter-chip-title">정렬</span><span class="ds-filter-chip-label">최신순</span><svg class="ds-filter-chip-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M9 6L15 12L9 18" stroke="currentColor" stroke-width="2" stroke-linecap="square"/></svg></button><div class="s1-select-list"><div class="s1-select-option is-selected">최신순</div><div class="s1-select-option">과거순</div><div class="s1-select-option">인기순</div></div></div></div>
+              <div class="comp-state-cell"><button class="ds-filter-chip is-preview"><span class="ds-filter-chip-title">정렬</span><span class="ds-filter-chip-label">과거순</span><svg class="ds-filter-chip-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M9 6L15 12L9 18" stroke="currentColor" stroke-width="2" stroke-linecap="square"/></svg></button></div>
+              <div class="comp-state-cell"><button class="ds-filter-chip is-disabled is-preview"><span class="ds-filter-chip-title">정렬</span><span class="ds-filter-chip-label">최신순</span><svg class="ds-filter-chip-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M9 6L15 12L9 18" stroke="currentColor" stroke-width="2" stroke-linecap="square"/></svg></button></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── Solid · With title ── -->
+        <div class="variant-block">
+          <div class="variant-label">Solid · With title</div>
+          <div class="preview-area" style="overflow:visible;padding-bottom:28px;">
+            <div class="comp-state-matrix" style="grid-template-columns: 200px repeat(5, minmax(96px, 1fr));">
+              <div class="matrix-col-header-action">Action</div>
+              <div class="matrix-col-header">Default</div>
+              <div class="matrix-col-header">Hover</div>
+              <div class="matrix-col-header">Selected</div>
+              <div class="matrix-col-header">Complete</div>
+              <div class="matrix-col-header">Disabled</div>
+              <div class="comp-action-cell" data-comp-action="filter-chip-title-solid" style="overflow:visible;">
+                <div class="ds-filter-chip-wrap" id="filter-chip-title-solid-action-wrap">
+                  <button class="ds-filter-chip ds-filter-chip--solid" id="filter-chip-title-solid-action">
+                    <span class="ds-filter-chip-title">정렬</span>
+                    <span class="ds-filter-chip-label">최신순</span>
+                    <svg class="ds-filter-chip-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M9 6L15 12L9 18" stroke="currentColor" stroke-width="2" stroke-linecap="square"/></svg>
+                  </button>
+                  <div class="s1-select-list">
+                    <div class="s1-select-option is-selected">최신순</div>
+                    <div class="s1-select-option">과거순</div>
+                    <div class="s1-select-option">인기순</div>
+                  </div>
+                </div>
+                <div class="action-test-controls">
+                  <button type="button" class="action-mini-toggle" data-filter-title-solid-disabled>Disabled: off</button>
+                </div>
+              </div>
+              <div class="comp-state-cell"><button class="ds-filter-chip ds-filter-chip--solid is-preview"><span class="ds-filter-chip-title">정렬</span><span class="ds-filter-chip-label">최신순</span><svg class="ds-filter-chip-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M9 6L15 12L9 18" stroke="currentColor" stroke-width="2" stroke-linecap="square"/></svg></button></div>
+              <div class="comp-state-cell"><button class="ds-filter-chip ds-filter-chip--solid is-hover is-preview"><span class="ds-filter-chip-title">정렬</span><span class="ds-filter-chip-label">최신순</span><svg class="ds-filter-chip-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M9 6L15 12L9 18" stroke="currentColor" stroke-width="2" stroke-linecap="square"/></svg></button></div>
+              <div class="comp-state-cell"><div class="ds-filter-chip-wrap is-open is-preview"><button class="ds-filter-chip ds-filter-chip--solid is-preview"><span class="ds-filter-chip-title">정렬</span><span class="ds-filter-chip-label">최신순</span><svg class="ds-filter-chip-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M9 6L15 12L9 18" stroke="currentColor" stroke-width="2" stroke-linecap="square"/></svg></button><div class="s1-select-list"><div class="s1-select-option is-selected">최신순</div><div class="s1-select-option">과거순</div><div class="s1-select-option">인기순</div></div></div></div>
+              <div class="comp-state-cell"><button class="ds-filter-chip ds-filter-chip--solid is-preview"><span class="ds-filter-chip-title">정렬</span><span class="ds-filter-chip-label">과거순</span><svg class="ds-filter-chip-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M9 6L15 12L9 18" stroke="currentColor" stroke-width="2" stroke-linecap="square"/></svg></button></div>
+              <div class="comp-state-cell"><button class="ds-filter-chip ds-filter-chip--solid is-disabled is-preview"><span class="ds-filter-chip-title">정렬</span><span class="ds-filter-chip-label">최신순</span><svg class="ds-filter-chip-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M9 6L15 12L9 18" stroke="currentColor" stroke-width="2" stroke-linecap="square"/></svg></button></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="code-block">
+          <div class="code-tabs">
+            <button class="code-tab active" onclick="switchTab(this,'filter-chip-html')">HTML</button>
+            <button class="code-tab" onclick="switchTab(this,'filter-chip-tokens')">Token Details</button>
+            <button class="code-copy-btn" onclick="copyCode('filter-chip-html-pre')">복사</button>
+          </div>
+          <div class="code-pane active" id="filter-chip-html">
+            <pre id="filter-chip-html-pre"><span class="c-cmt">&lt;!-- Filter Chip — Label only (Line) --&gt;</span>
+<span class="c-tag">&lt;div</span> <span class="c-attr">class</span>=<span class="c-str">"ds-filter-chip-wrap"</span><span class="c-tag">&gt;</span>
+  <span class="c-tag">&lt;button</span> <span class="c-attr">class</span>=<span class="c-str">"ds-filter-chip"</span><span class="c-tag">&gt;</span>
+    <span class="c-tag">&lt;span</span> <span class="c-attr">class</span>=<span class="c-str">"ds-filter-chip-label"</span><span class="c-tag">&gt;</span>최신순<span class="c-tag">&lt;/span&gt;</span>
+    <span class="c-tag">&lt;svg</span> <span class="c-attr">class</span>=<span class="c-str">"ds-filter-chip-arrow"</span><span class="c-tag">&gt;</span>...<span class="c-tag">&lt;/svg&gt;</span>
+  <span class="c-tag">&lt;/button&gt;</span>
+  <span class="c-tag">&lt;div</span> <span class="c-attr">class</span>=<span class="c-str">"s1-select-list"</span><span class="c-tag">&gt;</span>...<span class="c-tag">&lt;/div&gt;</span>
+<span class="c-tag">&lt;/div&gt;</span>
+
+<span class="c-cmt">&lt;!-- Solid: ds-filter-chip--solid · 펼침(Selected): wrap 에 is-open · Disabled: is-disabled --&gt;</span>
+
+<span class="c-cmt">&lt;!-- Filter Chip — With title --&gt;</span>
+<span class="c-tag">&lt;button</span> <span class="c-attr">class</span>=<span class="c-str">"ds-filter-chip"</span><span class="c-tag">&gt;</span>
+  <span class="c-tag">&lt;span</span> <span class="c-attr">class</span>=<span class="c-str">"ds-filter-chip-title"</span><span class="c-tag">&gt;</span>정렬<span class="c-tag">&lt;/span&gt;</span>
+  <span class="c-tag">&lt;span</span> <span class="c-attr">class</span>=<span class="c-str">"ds-filter-chip-label"</span><span class="c-tag">&gt;</span>최신순<span class="c-tag">&lt;/span&gt;</span>
+<span class="c-tag">&lt;/button&gt;</span></pre>
+          </div>
+          <div class="code-pane" id="filter-chip-tokens">
+            <table class="token-detail-table">
+              <thead><tr><th>Token</th><th>Value (Variables)</th><th>Role</th></tr></thead>
+              <tbody>
+                <tr><td class="token-name">--chip-line-default-bg / border / text</td><td class="token-value">var(--color-chip-line-*-default)</td><td>Line Default · Complete 트리거</td></tr>
+                <tr><td class="token-name">--chip-line-hover-bg</td><td class="token-value">var(--color-chip-line-bg-hover)</td><td>Line Hover 배경</td></tr>
+                <tr><td class="token-name">--chip-line-selected-bg / border</td><td class="token-value">var(--color-chip-line-*-selected)</td><td>Line Selected(펼침) — 보더 파랑</td></tr>
+                <tr><td class="token-name">--chip-solid-default-bg / text</td><td class="token-value">var(--color-chip-solid-*-default)</td><td>Solid Default 트리거</td></tr>
+                <tr><td class="token-name">--chip-solid-selected-bg / text</td><td class="token-value">var(--color-chip-solid-*-selected)</td><td>Solid Selected(펼침)</td></tr>
+                <tr><td class="token-name">--dropdown-list-bg / border</td><td class="token-value">var(--color-dropdown-list-*)</td><td>드롭다운 패널</td></tr>
+                <tr><td class="token-name">--dropdown-option-bg / label</td><td class="token-value">var(--color-dropdown-option-*)</td><td>옵션 행 (default · selected)</td></tr>
+                <tr><td class="token-name" colspan="3" style="color:#9ca3af;">arrow · title · value 라벨색 = 같은 state 의 chip label 색 상속 (정본 buildFilterChip). With title·Line 의 값 라벨은 selected(파랑).</td></tr>
               </tbody>
             </table>
           </div>
@@ -4924,13 +5125,13 @@ document.addEventListener('click', function(e) {
 /* Size: md (기본) — 행 높이 44px */
 .s1-table--md .s1-table-th,
 .s1-table--md .s1-table-td {
-  height: var(--sizing-table-row-height-md); /* 44px */
+  height: var(--sizing-44); /* 44px */
 }
 
 /* Size: sm — 행 높이 38px, 밀도 높은 목록에 사용 */
 .s1-table--sm .s1-table-th,
 .s1-table--sm .s1-table-td {
-  height: var(--sizing-table-row-height-sm); /* 38px */
+  height: var(--sizing-38); /* 38px */
 }
 
 /* 상태 */
@@ -5088,7 +5289,7 @@ updateHeader(); // 초기 헤더 상태 동기화</pre>
             <div>
               <div class="pg-scenario-label">
                 <span class="pg-scenario-badge">2-1</span>
-                맨앞 페이지 — |&lt; &lt; 비활성, &gt; &gt;| 활성
+                맨앞 페이지
               </div>
               <div class="pg-scenario-bar">
                 <nav class="s1-pagination" aria-label="페이지 이동">
@@ -5116,7 +5317,7 @@ updateHeader(); // 초기 헤더 상태 동기화</pre>
             <div>
               <div class="pg-scenario-label">
                 <span class="pg-scenario-badge">2-2</span>
-                맨뒤 페이지 — |&lt; &lt; 활성, &gt; &gt;| 비활성
+                맨뒤 페이지
               </div>
               <div class="pg-scenario-bar">
                 <nav class="s1-pagination" aria-label="페이지 이동">
@@ -5144,7 +5345,7 @@ updateHeader(); // 초기 헤더 상태 동기화</pre>
             <div>
               <div class="pg-scenario-label">
                 <span class="pg-scenario-badge">2-3</span>
-                중간 페이지 — |&lt; &lt; &gt; &gt;| 모두 활성
+                중간 페이지
               </div>
               <div class="pg-scenario-bar">
                 <nav class="s1-pagination" aria-label="페이지 이동">
@@ -5701,6 +5902,637 @@ update(); // 초기화</pre>
 
       </section>
 
+      <section class="comp-section" id="time-picker">
+        <div class="comp-section-header">
+          <h2 class="comp-section-title">Time Picker</h2>
+          <span class="comp-badge comp-badge-blue">Core</span>
+          <span class="comp-badge comp-badge-green">Stable Tokens</span>
+          <span class="comp-badge">Input형 · Select형</span>
+          <span class="comp-badge">Input형 PC 3sizes · Mobile 1size</span>
+          <span class="comp-badge">Figma: 540:3690 ~ 540:3506</span>
+        </div>
+
+        <!-- ════ Input 형 ════ -->
+        <div class="variant-group">
+          <h3 class="variant-group-title">Input 형</h3>
+          <p class="variant-group-desc">단일 입력 필드 + 클릭 시 드롭다운 패널 · <code>s1-timepicker-wrap</code> · Figma: timepicker_input (540:3690)</p>
+
+          <div class="variant-block">
+            <div class="variant-label">States</div>
+            <div class="preview-area" style="overflow:visible;">
+              <div class="comp-state-matrix" style="grid-template-columns: 260px repeat(4, minmax(110px, 1fr)); overflow:visible; align-items:start;">
+                <div class="matrix-col-header-action">Action</div>
+                <div class="matrix-col-header">Default</div>
+                <div class="matrix-col-header">Open</div>
+                <div class="matrix-col-header">Filled</div>
+                <div class="matrix-col-header">Disabled</div>
+                <!-- Action -->
+                <div class="comp-action-cell" style="overflow:visible; align-items:flex-start; position:relative;">
+                  <div style="position:relative; display:inline-block;">
+                    <div class="s1-timepicker-wrap" id="tp-input-action" tabindex="0" data-tp-input-trigger style="width:168px;">
+                      <span class="s1-timepicker-placeholder">시간을 선택하세요</span>
+                      <span class="s1-timepicker-value" style="display:none;"></span>
+                      <span class="s1-timepicker-icon"><svg width="18" height="18" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="7.5" stroke="currentColor" stroke-width="1.2"/><path d="M9 5v4l2.5 2.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg></span>
+                    </div>
+                    <div class="s1-tp-dropdown" id="tp-input-dropdown">
+                      <div class="s1-tp-dropdown-cols">
+                        <div class="s1-tp-col" id="tp-hour-col"></div>
+                        <div class="s1-tp-col-sep"></div>
+                        <div class="s1-tp-col" id="tp-min-col"></div>
+                      </div>
+                      <div class="s1-tp-footer-sep"></div>
+                      <div class="s1-tp-footer">
+                        <button type="button" class="s1-tp-confirm-btn" id="tp-confirm-btn">확인</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <!-- Default -->
+                <div class="comp-state-cell">
+                  <div class="s1-timepicker-wrap is-preview" style="width:138px;">
+                    <span class="s1-timepicker-placeholder">시간 선택</span>
+                    <span class="s1-timepicker-icon"><svg width="18" height="18" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="7.5" stroke="currentColor" stroke-width="1.2"/><path d="M9 5v4l2.5 2.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg></span>
+                  </div>
+                </div>
+                <!-- Open -->
+                <div class="comp-state-cell" style="overflow:visible; position:relative; z-index:1; align-items:flex-start; padding-top:8px; min-height:310px;">
+                  <div style="position:relative; display:inline-block;">
+                    <div class="s1-timepicker-wrap is-focus is-preview" style="width:138px;">
+                      <span class="s1-timepicker-placeholder">시간 선택</span>
+                      <span class="s1-timepicker-icon"><svg width="18" height="18" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="7.5" stroke="currentColor" stroke-width="1.2"/><path d="M9 5v4l2.5 2.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg></span>
+                    </div>
+                    <div class="s1-tp-dropdown is-open is-preview">
+                      <div class="s1-tp-dropdown-cols">
+                        <div class="s1-tp-col" style="max-height:160px; overflow-y:hidden;">
+                          <div class="s1-tp-col-item">7</div>
+                          <div class="s1-tp-col-item">8</div>
+                          <div class="s1-tp-col-item is-selected">9</div>
+                          <div class="s1-tp-col-item">10</div>
+                          <div class="s1-tp-col-item">11</div>
+                        </div>
+                        <div class="s1-tp-col-sep"></div>
+                        <div class="s1-tp-col" style="max-height:160px; overflow-y:hidden;">
+                          <div class="s1-tp-col-item">28</div>
+                          <div class="s1-tp-col-item">29</div>
+                          <div class="s1-tp-col-item is-selected">30</div>
+                          <div class="s1-tp-col-item">31</div>
+                          <div class="s1-tp-col-item">32</div>
+                        </div>
+                      </div>
+                      <div class="s1-tp-footer-sep"></div>
+                      <div class="s1-tp-footer">
+                        <button type="button" class="s1-tp-confirm-btn is-active">확인</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <!-- Filled -->
+                <div class="comp-state-cell">
+                  <div class="s1-timepicker-wrap is-filled is-preview" style="width:138px;">
+                    <span class="s1-timepicker-value">09:30</span>
+                    <span class="s1-timepicker-icon"><svg width="18" height="18" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="7.5" stroke="currentColor" stroke-width="1.2"/><path d="M9 5v4l2.5 2.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg></span>
+                  </div>
+                </div>
+                <!-- Disabled -->
+                <div class="comp-state-cell">
+                  <div class="s1-timepicker-wrap is-disabled is-filled is-preview" style="width:138px;">
+                    <span class="s1-timepicker-value">00:00</span>
+                    <span class="s1-timepicker-icon"><svg width="18" height="18" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="7.5" stroke="currentColor" stroke-width="1.2"/><path d="M9 5v4l2.5 2.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg></span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Sizes -->
+          <div class="variant-block platform-section platform-section-pc">
+            <div class="variant-label">Size Variants — PC</div>
+            <div class="preview-area">
+              <div style="display:flex;gap:20px;align-items:flex-end;flex-wrap:wrap;">
+                <div style="display:flex;flex-direction:column;align-items:flex-start;gap:6px;">
+                  <div class="s1-timepicker-wrap is-preview" style="width:180px;"><span class="s1-timepicker-placeholder">시간을 선택하세요</span><span class="s1-timepicker-icon"><svg width="18" height="18" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="7.5" stroke="currentColor" stroke-width="1.2"/><path d="M9 5v4l2.5 2.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg></span></div>
+                  <div style="font-size:10px;color:var(--color-text-secondary);line-height:1.5;">PC-MD · h44<br><code style="font-size:10px;">--sizing-44</code><br><code style="font-size:10px;">s1-timepicker-wrap</code></div>
+                </div>
+                <div style="display:flex;flex-direction:column;align-items:flex-start;gap:6px;">
+                  <div class="s1-timepicker-wrap s1-timepicker-wrap--xsm is-preview" style="width:180px;"><span class="s1-timepicker-placeholder">시간을 선택하세요</span><span class="s1-timepicker-icon"><svg width="18" height="18" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="7.5" stroke="currentColor" stroke-width="1.2"/><path d="M9 5v4l2.5 2.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg></span></div>
+                  <div style="font-size:10px;color:var(--color-text-secondary);line-height:1.5;">PC-XSM · h34<br><code style="font-size:10px;">--sizing-34</code><br><code style="font-size:10px;">s1-timepicker-wrap--xsm</code></div>
+                </div>
+                <div style="display:flex;flex-direction:column;align-items:flex-start;gap:6px;">
+                  <div class="s1-timepicker-wrap s1-timepicker-wrap--xxsm is-preview" style="width:180px;"><span class="s1-timepicker-placeholder">시간을 선택하세요</span><span class="s1-timepicker-icon"><svg width="16" height="16" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="7.5" stroke="currentColor" stroke-width="1.2"/><path d="M9 5v4l2.5 2.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg></span></div>
+                  <div style="font-size:10px;color:var(--color-text-secondary);line-height:1.5;">PC-XXSM · h28<br><code style="font-size:10px;">--sizing-28</code><br><code style="font-size:10px;">s1-timepicker-wrap--xxsm</code></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Code -->
+          <div class="code-block">
+            <div class="code-tabs">
+              <button class="code-tab active" onclick="switchTab(this,'tp-input-html')">HTML</button>
+              <button class="code-tab" onclick="switchTab(this,'tp-input-css')">CSS</button>
+              <button class="code-tab" onclick="switchTab(this,'tp-input-js')">JavaScript</button>
+            </div>
+            <div class="code-pane active" id="tp-input-html"><pre><span class="c-cmt">&lt;!-- default (MD · h44) --&gt;</span>
+<span class="c-tag">&lt;div</span> <span class="c-attr">class</span>=<span class="c-str">"s1-timepicker-wrap"</span> <span class="c-attr">tabindex</span>=<span class="c-str">"0"</span><span class="c-tag">&gt;</span>
+  <span class="c-tag">&lt;span</span> <span class="c-attr">class</span>=<span class="c-str">"s1-timepicker-placeholder"</span><span class="c-tag">&gt;</span>시간을 선택하세요<span class="c-tag">&lt;/span&gt;</span>
+  <span class="c-tag">&lt;span</span> <span class="c-attr">class</span>=<span class="c-str">"s1-timepicker-icon"</span><span class="c-tag">&gt;</span>…<span class="c-tag">&lt;/span&gt;</span>
+<span class="c-tag">&lt;/div&gt;</span>
+<span class="c-cmt">&lt;!-- filled --&gt;</span>
+<span class="c-tag">&lt;div</span> <span class="c-attr">class</span>=<span class="c-str">"s1-timepicker-wrap is-filled"</span><span class="c-tag">&gt;</span>
+  <span class="c-tag">&lt;span</span> <span class="c-attr">class</span>=<span class="c-str">"s1-timepicker-value"</span><span class="c-tag">&gt;</span>09:30<span class="c-tag">&lt;/span&gt;</span>
+  <span class="c-tag">&lt;span</span> <span class="c-attr">class</span>=<span class="c-str">"s1-timepicker-icon"</span><span class="c-tag">&gt;</span>…<span class="c-tag">&lt;/span&gt;</span>
+<span class="c-tag">&lt;/div&gt;</span>
+<span class="c-cmt">&lt;!-- disabled --&gt;</span>
+<span class="c-tag">&lt;div</span> <span class="c-attr">class</span>=<span class="c-str">"s1-timepicker-wrap is-disabled"</span> <span class="c-attr">tabindex</span>=<span class="c-str">"-1"</span><span class="c-tag">&gt;</span>…<span class="c-tag">&lt;/div&gt;</span>
+
+<span class="c-cmt">&lt;!-- Size variants --&gt;</span>
+<span class="c-tag">&lt;div</span> <span class="c-attr">class</span>=<span class="c-str">"s1-timepicker-wrap"</span><span class="c-tag">&gt;</span>…<span class="c-tag">&lt;/div&gt;</span>                               <span class="c-cmt">&lt;!-- MD   · h44 기본 --&gt;</span>
+<span class="c-tag">&lt;div</span> <span class="c-attr">class</span>=<span class="c-str">"s1-timepicker-wrap s1-timepicker-wrap--xsm"</span><span class="c-tag">&gt;</span>…<span class="c-tag">&lt;/div&gt;</span>   <span class="c-cmt">&lt;!-- XSM  · h34    --&gt;</span>
+<span class="c-tag">&lt;div</span> <span class="c-attr">class</span>=<span class="c-str">"s1-timepicker-wrap s1-timepicker-wrap--xxsm"</span><span class="c-tag">&gt;</span>…<span class="c-tag">&lt;/div&gt;</span>  <span class="c-cmt">&lt;!-- XXSM · h28    --&gt;</span>
+<span class="c-tag">&lt;div</span> <span class="c-attr">class</span>=<span class="c-str">"s1-timepicker-wrap s1-timepicker-wrap--mobile"</span><span class="c-tag">&gt;</span>…<span class="c-tag">&lt;/div&gt;</span> <span class="c-cmt">&lt;!-- Mobile · h48  --&gt;</span></pre></div>
+            <div class="code-pane" id="tp-input-css"><pre>.s1-timepicker-wrap {
+  height: var(--sizing-44); /* 44px — MD 기본 */
+  padding: 0 8px 0 16px;
+  border: 1px solid var(--color-form-control-border-default);
+  border-radius: var(--radius-control-xs);
+  background: var(--color-form-control-bg-default);
+}
+.s1-timepicker-wrap.is-focus   { border-color: var(--color-form-control-border-selected); }
+.s1-timepicker-wrap.is-disabled {
+  background: var(--color-form-control-bg-disabled);
+  color: var(--color-form-control-text-disabled);
+}
+/* Size modifiers */
+.s1-timepicker-wrap--xsm    { height: var(--sizing-34);  padding: 0 8px 0 12px; }   /* 34px */
+.s1-timepicker-wrap--xxsm   { height: var(--sizing-28); padding: 0 6px 0 10px; font-size: 12px; } /* 28px */
+.s1-timepicker-wrap--mobile { height: var(--sizing-48); }                             /* 48px */</pre></div>
+            <div class="code-pane" id="tp-input-js"><pre>// ── TimePicker Input형 ──
+// [data-tp-input-trigger] 클릭 → 시/분 드롭다운 패널 토글
+
+var trigger    = document.querySelector('[data-tp-input-trigger]');
+var dropdown   = document.getElementById('tp-input-dropdown');
+var hourCol    = document.getElementById('tp-hour-col');
+var minCol     = document.getElementById('tp-min-col');
+var confirmBtn = document.getElementById('tp-confirm-btn');
+var selHour = -1, selMin = -1;
+
+// 1~24시 / 00~59분 목록 동적 생성
+for (var h = 1; h &lt;= 24; h++) {
+  var hi = document.createElement('div');
+  hi.className = 's1-tp-col-item';
+  hi.textContent = String(h);
+  hi.dataset.tpHour = h;
+  hourCol.appendChild(hi);
+}
+for (var m = 0; m &lt;= 59; m++) {
+  var mi = document.createElement('div');
+  mi.className = 's1-tp-col-item';
+  mi.textContent = String(m).padStart(2, '0');
+  mi.dataset.tpMin = m;
+  minCol.appendChild(mi);
+}
+
+function applyValue() {
+  if (selHour &lt; 0 || selMin &lt; 0) return;
+  var str = String(selHour).padStart(2,'0') + ':' + String(selMin).padStart(2,'0');
+  var valEl = trigger.querySelector('.s1-timepicker-value');
+  var phEl  = trigger.querySelector('.s1-timepicker-placeholder');
+  if (valEl) { valEl.textContent = str; valEl.style.display = ''; }
+  trigger.classList.add('is-filled');
+  if (phEl) phEl.style.display = 'none';
+}
+
+function openPanel() {
+  dropdown.style.width = Math.max(190, trigger.offsetWidth) + 'px';
+  dropdown.classList.add('is-open');
+  trigger.classList.add('is-focus');
+  var sh = hourCol.querySelector('.is-selected');
+  var sm = minCol.querySelector('.is-selected');
+  if (sh) setTimeout(function(){ sh.scrollIntoView({block:'center'}); }, 10);
+  if (sm) setTimeout(function(){ sm.scrollIntoView({block:'center'}); }, 12);
+}
+function closePanel() {
+  dropdown.classList.remove('is-open');
+  trigger.classList.remove('is-focus');
+}
+
+// 트리거 클릭 → 패널 토글
+trigger.addEventListener('click', function() {
+  dropdown.classList.contains('is-open') ? closePanel() : openPanel();
+});
+
+// 시 선택
+hourCol.addEventListener('click', function(e) {
+  var item = e.target.closest('.s1-tp-col-item');
+  if (!item) return;
+  hourCol.querySelectorAll('.s1-tp-col-item').forEach(function(i){ i.classList.remove('is-selected'); });
+  item.classList.add('is-selected');
+  selHour = parseInt(item.dataset.tpHour, 10);
+  applyValue();
+});
+
+// 분 선택
+minCol.addEventListener('click', function(e) {
+  var item = e.target.closest('.s1-tp-col-item');
+  if (!item) return;
+  minCol.querySelectorAll('.s1-tp-col-item').forEach(function(i){ i.classList.remove('is-selected'); });
+  item.classList.add('is-selected');
+  selMin = parseInt(item.dataset.tpMin, 10);
+  applyValue();
+});
+
+// 확인 버튼 — 선택 완료 시 패널 닫기
+if (confirmBtn) {
+  confirmBtn.addEventListener('click', function(e) {
+    e.stopPropagation();
+    closePanel();
+  });
+}
+
+// 외부 클릭 시 패널 닫기
+document.addEventListener('click', function(e) {
+  if (!trigger.contains(e.target) &amp;&amp; !dropdown.contains(e.target)) closePanel();
+});</pre></div>
+          </div>
+        </div>
+
+        <!-- ════ Select 형 ════ -->
+        <div class="variant-group">
+          <h3 class="variant-group-title">Select 형</h3>
+          <p class="variant-group-desc">시/분 분리 셀렉트 · <code>s1-timepicker-select-group</code> · Figma: timepicker_select (540:3636) · Filled 상태 없음 · State: default / focus / disabled · Size: md(h44) / sm(h28) — PC 전용 · 화살표 = 원본 <code>ic_화살표,더보기</code>(563:3158)</p>
+
+          <div class="variant-block">
+            <div class="variant-label">States</div>
+            <div class="preview-area" style="overflow:visible;">
+              <div class="comp-state-matrix" style="grid-template-columns: 260px repeat(3, minmax(130px, 1fr)); overflow:visible;">
+                <div class="matrix-col-header-action">Action</div>
+                <div class="matrix-col-header">Default</div>
+                <div class="matrix-col-header">Focus (시 열림)</div>
+                <div class="matrix-col-header">Disabled</div>
+                <!-- Action -->
+                <div class="comp-action-cell" style="overflow:visible; align-items:flex-start;">
+                  <div class="s1-timepicker-select-group" id="tp-select-action">
+                    <div class="s1-timepicker-select-unit">
+                      <div class="s1-timepicker-select-field" id="tp-select-hour-field" data-tp-select-field="hour">
+                        <span id="tp-select-hour-val">00</span>
+                        <span class="s1-timepicker-select-arrow"><svg width="6" height="10" viewBox="0 0 5.66421 9.91421" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M0.707107 0.707107L4.95711 4.95711L0.707107 9.20711" stroke="currentColor" stroke-linecap="square"/></svg></span>
+                      </div>
+                      <span class="s1-timepicker-select-label">시</span>
+                    </div>
+                    <div class="s1-timepicker-select-unit">
+                      <div class="s1-timepicker-select-field" id="tp-select-min-field" data-tp-select-field="min">
+                        <span id="tp-select-min-val">00</span>
+                        <span class="s1-timepicker-select-arrow"><svg width="6" height="10" viewBox="0 0 5.66421 9.91421" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M0.707107 0.707107L4.95711 4.95711L0.707107 9.20711" stroke="currentColor" stroke-linecap="square"/></svg></span>
+                      </div>
+                      <span class="s1-timepicker-select-label">분</span>
+                    </div>
+                  </div>
+                </div>
+                <!-- Default -->
+                <div class="comp-state-cell">
+                  <div class="s1-timepicker-select-group">
+                    <div class="s1-timepicker-select-unit">
+                      <div class="s1-timepicker-select-field is-preview"><span>00</span><span class="s1-timepicker-select-arrow"><svg width="6" height="10" viewBox="0 0 5.66421 9.91421" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M0.707107 0.707107L4.95711 4.95711L0.707107 9.20711" stroke="currentColor" stroke-linecap="square"/></svg></span></div>
+                      <span class="s1-timepicker-select-label">시</span>
+                    </div>
+                    <div class="s1-timepicker-select-unit">
+                      <div class="s1-timepicker-select-field is-preview"><span>00</span><span class="s1-timepicker-select-arrow"><svg width="6" height="10" viewBox="0 0 5.66421 9.91421" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M0.707107 0.707107L4.95711 4.95711L0.707107 9.20711" stroke="currentColor" stroke-linecap="square"/></svg></span></div>
+                      <span class="s1-timepicker-select-label">분</span>
+                    </div>
+                  </div>
+                </div>
+                <!-- Focus -->
+                <div class="comp-state-cell">
+                  <div class="s1-timepicker-select-group">
+                    <div class="s1-timepicker-select-unit">
+                      <div class="s1-timepicker-select-field is-focus is-preview"><span>09</span><span class="s1-timepicker-select-arrow"><svg width="6" height="10" viewBox="0 0 5.66421 9.91421" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M0.707107 0.707107L4.95711 4.95711L0.707107 9.20711" stroke="currentColor" stroke-linecap="square"/></svg></span></div>
+                      <span class="s1-timepicker-select-label">시</span>
+                    </div>
+                    <div class="s1-timepicker-select-unit">
+                      <div class="s1-timepicker-select-field is-preview"><span>30</span><span class="s1-timepicker-select-arrow"><svg width="6" height="10" viewBox="0 0 5.66421 9.91421" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M0.707107 0.707107L4.95711 4.95711L0.707107 9.20711" stroke="currentColor" stroke-linecap="square"/></svg></span></div>
+                      <span class="s1-timepicker-select-label">분</span>
+                    </div>
+                  </div>
+                </div>
+                <!-- Disabled -->
+                <div class="comp-state-cell">
+                  <div class="s1-timepicker-select-group">
+                    <div class="s1-timepicker-select-unit">
+                      <div class="s1-timepicker-select-field is-disabled is-preview"><span>00</span><span class="s1-timepicker-select-arrow"><svg width="6" height="10" viewBox="0 0 5.66421 9.91421" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M0.707107 0.707107L4.95711 4.95711L0.707107 9.20711" stroke="currentColor" stroke-linecap="square"/></svg></span></div>
+                      <span class="s1-timepicker-select-label" style="color:var(--color-form-control-label-disabled);">시</span>
+                    </div>
+                    <div class="s1-timepicker-select-unit">
+                      <div class="s1-timepicker-select-field is-disabled is-preview"><span>00</span><span class="s1-timepicker-select-arrow"><svg width="6" height="10" viewBox="0 0 5.66421 9.91421" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M0.707107 0.707107L4.95711 4.95711L0.707107 9.20711" stroke="currentColor" stroke-linecap="square"/></svg></span></div>
+                      <span class="s1-timepicker-select-label" style="color:var(--color-form-control-label-disabled);">분</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Sizes (md / sm) — Figma timepicker_select size variant -->
+          <div class="variant-block">
+            <div class="variant-label">Sizes</div>
+            <div class="preview-area" style="overflow:visible; display:flex; gap:48px; align-items:flex-start; flex-wrap:wrap;">
+              <div style="display:flex; flex-direction:column; gap:8px;">
+                <span style="font-size:12px; color:var(--color-text-secondary);">md · h44 (라벨 16px)</span>
+                <div class="s1-timepicker-select-group">
+                  <div class="s1-timepicker-select-unit">
+                    <div class="s1-timepicker-select-field is-preview"><span>09</span><span class="s1-timepicker-select-arrow"><svg width="6" height="10" viewBox="0 0 5.66421 9.91421" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M0.707107 0.707107L4.95711 4.95711L0.707107 9.20711" stroke="currentColor" stroke-linecap="square"/></svg></span></div>
+                    <span class="s1-timepicker-select-label">시</span>
+                  </div>
+                  <div class="s1-timepicker-select-unit">
+                    <div class="s1-timepicker-select-field is-preview"><span>30</span><span class="s1-timepicker-select-arrow"><svg width="6" height="10" viewBox="0 0 5.66421 9.91421" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M0.707107 0.707107L4.95711 4.95711L0.707107 9.20711" stroke="currentColor" stroke-linecap="square"/></svg></span></div>
+                    <span class="s1-timepicker-select-label">분</span>
+                  </div>
+                </div>
+              </div>
+              <div style="display:flex; flex-direction:column; gap:8px;">
+                <span style="font-size:12px; color:var(--color-text-secondary);">sm · h28 (라벨 14px)</span>
+                <div class="s1-timepicker-select-group s1-timepicker-select-group--sm">
+                  <div class="s1-timepicker-select-unit">
+                    <div class="s1-timepicker-select-field is-preview"><span>09</span><span class="s1-timepicker-select-arrow"><svg width="6" height="10" viewBox="0 0 5.66421 9.91421" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M0.707107 0.707107L4.95711 4.95711L0.707107 9.20711" stroke="currentColor" stroke-linecap="square"/></svg></span></div>
+                    <span class="s1-timepicker-select-label">시</span>
+                  </div>
+                  <div class="s1-timepicker-select-unit">
+                    <div class="s1-timepicker-select-field is-preview"><span>30</span><span class="s1-timepicker-select-arrow"><svg width="6" height="10" viewBox="0 0 5.66421 9.91421" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M0.707107 0.707107L4.95711 4.95711L0.707107 9.20711" stroke="currentColor" stroke-linecap="square"/></svg></span></div>
+                    <span class="s1-timepicker-select-label">분</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Code -->
+          <div class="code-block">
+            <div class="code-tabs">
+              <button class="code-tab active" onclick="switchTab(this,'tp-select-html')">HTML</button>
+              <button class="code-tab" onclick="switchTab(this,'tp-select-css')">CSS</button>
+              <button class="code-tab" onclick="switchTab(this,'tp-select-js')">JavaScript</button>
+            </div>
+            <div class="code-pane active" id="tp-select-html"><pre><span class="c-tag">&lt;div</span> <span class="c-attr">class</span>=<span class="c-str">"s1-timepicker-select-group"</span><span class="c-tag">&gt;</span>
+  <span class="c-tag">&lt;div</span> <span class="c-attr">class</span>=<span class="c-str">"s1-timepicker-select-unit"</span><span class="c-tag">&gt;</span>
+    <span class="c-tag">&lt;div</span> <span class="c-attr">class</span>=<span class="c-str">"s1-timepicker-select-field"</span><span class="c-tag">&gt;</span>
+      <span class="c-tag">&lt;span&gt;</span>09<span class="c-tag">&lt;/span&gt;</span>
+      <span class="c-tag">&lt;span</span> <span class="c-attr">class</span>=<span class="c-str">"s1-timepicker-select-arrow"</span><span class="c-tag">&gt;</span>…<span class="c-tag">&lt;/span&gt;</span>
+    <span class="c-tag">&lt;/div&gt;</span>
+    <span class="c-tag">&lt;span</span> <span class="c-attr">class</span>=<span class="c-str">"s1-timepicker-select-label"</span><span class="c-tag">&gt;</span>시<span class="c-tag">&lt;/span&gt;</span>
+  <span class="c-tag">&lt;/div&gt;</span>
+  <span class="c-tag">&lt;div</span> <span class="c-attr">class</span>=<span class="c-str">"s1-timepicker-select-unit"</span><span class="c-tag">&gt;</span>
+    <span class="c-tag">&lt;div</span> <span class="c-attr">class</span>=<span class="c-str">"s1-timepicker-select-field"</span><span class="c-tag">&gt;</span>
+      <span class="c-tag">&lt;span&gt;</span>30<span class="c-tag">&lt;/span&gt;</span>
+      <span class="c-tag">&lt;span</span> <span class="c-attr">class</span>=<span class="c-str">"s1-timepicker-select-arrow"</span><span class="c-tag">&gt;</span>…<span class="c-tag">&lt;/span&gt;</span>
+    <span class="c-tag">&lt;/div&gt;</span>
+    <span class="c-tag">&lt;span</span> <span class="c-attr">class</span>=<span class="c-str">"s1-timepicker-select-label"</span><span class="c-tag">&gt;</span>분<span class="c-tag">&lt;/span&gt;</span>
+  <span class="c-tag">&lt;/div&gt;</span>
+<span class="c-tag">&lt;/div&gt;</span>
+
+<span class="c-str">&lt;!-- sm (h28): group에 --sm 추가, 내부 구조 동일 --&gt;</span>
+<span class="c-tag">&lt;div</span> <span class="c-attr">class</span>=<span class="c-str">"s1-timepicker-select-group s1-timepicker-select-group--sm"</span><span class="c-tag">&gt;</span>
+  <span class="c-tag">&lt;div</span> <span class="c-attr">class</span>=<span class="c-str">"s1-timepicker-select-unit"</span><span class="c-tag">&gt;</span>
+    <span class="c-tag">&lt;div</span> <span class="c-attr">class</span>=<span class="c-str">"s1-timepicker-select-field"</span><span class="c-tag">&gt;</span><span class="c-tag">&lt;span&gt;</span>09<span class="c-tag">&lt;/span&gt;</span><span class="c-tag">&lt;span</span> <span class="c-attr">class</span>=<span class="c-str">"s1-timepicker-select-arrow"</span><span class="c-tag">&gt;</span>…<span class="c-tag">&lt;/span&gt;&lt;/div&gt;</span>
+    <span class="c-tag">&lt;span</span> <span class="c-attr">class</span>=<span class="c-str">"s1-timepicker-select-label"</span><span class="c-tag">&gt;</span>시<span class="c-tag">&lt;/span&gt;</span>
+  <span class="c-tag">&lt;/div&gt;</span>
+  <span class="c-tag">&lt;div</span> <span class="c-attr">class</span>=<span class="c-str">"s1-timepicker-select-unit"</span><span class="c-tag">&gt;</span>…<span class="c-tag">&lt;/div&gt;</span>
+<span class="c-tag">&lt;/div&gt;</span></pre></div>
+            <div class="code-pane" id="tp-select-css"><pre>/* md (h44) */
+.s1-timepicker-select-group { gap: var(--spacing-cluster-sm); } /* 16px */
+.s1-timepicker-select-unit  { gap: 8px; }
+.s1-timepicker-select-field {
+  height: var(--sizing-44);   /* 44px */
+  min-width: 78px;
+  padding: var(--spacing-padding-block-xxs) var(--spacing-padding-inline-xxs)
+           var(--spacing-padding-block-xxs) var(--spacing-padding-inline-sm); /* 8/8/8/16 */
+  border: var(--border-width-default) solid var(--color-form-control-border-default);
+  border-radius: var(--radius-control-sm);        /* 4px */
+  background: var(--color-form-control-bg-default);
+  color: var(--color-form-control-text-default);
+  gap: 10px; font-size: 14px; letter-spacing: 0;  /* md 값 ls 0 */
+}
+.s1-timepicker-select-field.is-focus    { border-color: var(--color-form-control-border-selected); }
+.s1-timepicker-select-field.is-disabled {
+  background: var(--color-form-control-bg-disabled);
+  border-color: var(--color-form-control-border-disabled);
+  color: var(--color-form-control-text-disabled);
+}
+.s1-timepicker-select-label { font-size: 16px; color: var(--color-form-control-label-default); } /* md 라벨 16px */
+.s1-timepicker-select-field.is-disabled + .s1-timepicker-select-label {
+  color: var(--color-form-control-label-disabled);
+}
+/* 원본 ic_화살표,더보기(563:3158) — 우향 chevron 90° 회전 → 아래, focus 시 위로 */
+.s1-timepicker-select-arrow {            /* Figma 아이콘 박스 24px */
+  width: 24px; height: 24px; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--color-form-control-icon-default);
+}
+.s1-timepicker-select-arrow svg { transform: rotate(90deg); transition: transform .15s; }
+.s1-timepicker-select-field.is-focus .s1-timepicker-select-arrow svg,
+.s1-timepicker-select-field.is-open  .s1-timepicker-select-arrow svg { transform: rotate(-90deg); }
+
+/* sm (h28) */
+.s1-timepicker-select-group--sm { gap: var(--spacing-cluster-xs); } /* 12px */
+.s1-timepicker-select-group--sm .s1-timepicker-select-unit  { gap: var(--spacing-4); } /* 4px */
+.s1-timepicker-select-group--sm .s1-timepicker-select-field {
+  height: var(--sizing-28); /* 28px */
+  min-width: 0;
+  padding: var(--spacing-4) var(--spacing-4) var(--spacing-4) var(--spacing-padding-inline-xs); /* 4/4/4/12 */
+  letter-spacing: -0.28px;  /* sm 값 ls -0.28px */
+}
+.s1-timepicker-select-group--sm .s1-timepicker-select-label { font-size: 14px; } /* sm 라벨 14px */</pre></div>
+            <div class="code-pane" id="tp-select-js"><pre>// ── TimePicker Select형 ──
+// 시 / 분 필드 클릭 → 커스텀 드롭다운 목록 생성
+
+var selectGroup = document.getElementById('tp-select-action');
+var hours   = Array.from({length: 24}, function(_, i){ return i; });
+var minutes = Array.from({length: 60}, function(_, i){ return i; });
+var curHour = 0, curMin = 0;
+var activeDD = null;
+
+// 열려있는 드롭다운 닫기
+function closeActiveDD() {
+  if (!activeDD) return;
+  activeDD.remove(); activeDD = null;
+  selectGroup.querySelectorAll('.s1-timepicker-select-field').forEach(function(f){
+    f.classList.remove('is-focus');
+    var arr = f.querySelector('.s1-timepicker-select-arrow');
+    if (arr) arr.style.transform = '';
+  });
+}
+
+// 드롭다운 요소 생성
+function makeDD(values, curVal, onPick) {
+  var dd = document.createElement('div');
+  dd.className = 's1-tp-select-dropdown';
+  values.forEach(function(v) {
+    var item = document.createElement('div');
+    item.className = 's1-tp-select-dropdown-item' + (v === curVal ? ' is-selected' : '');
+    item.textContent = String(v).padStart(2, '0');
+    item.addEventListener('click', function(e) {
+      e.stopPropagation(); onPick(v); closeActiveDD();
+    });
+    dd.appendChild(item);
+  });
+  return dd;
+}
+
+// 필드 이벤트 바인딩
+function bindField(field, valSpan, values, getCur, setCur) {
+  if (!field) return;
+  field.addEventListener('click', function(e) {
+    e.stopPropagation();
+    if (activeDD &amp;&amp; field.parentElement.contains(activeDD)) { closeActiveDD(); return; }
+    closeActiveDD();
+    var dd = makeDD(values, getCur(), function(v) {
+      setCur(v);
+      if (valSpan) valSpan.textContent = String(v).padStart(2,'0');
+    });
+    field.appendChild(dd);
+    activeDD = dd;
+    field.classList.add('is-focus');
+    var arr = field.querySelector('.s1-timepicker-select-arrow');
+    if (arr) arr.style.transform = 'rotate(180deg)';
+    var sel = dd.querySelector('.is-selected');
+    if (sel) setTimeout(function(){ sel.scrollIntoView({block:'center'}); }, 10);
+  });
+}
+
+// 시 / 분 필드 바인딩
+bindField(
+  document.getElementById('tp-select-hour-field'),
+  document.getElementById('tp-select-hour-val'),
+  hours,
+  function(){ return curHour; },
+  function(v){ curHour = v; }
+);
+bindField(
+  document.getElementById('tp-select-min-field'),
+  document.getElementById('tp-select-min-val'),
+  minutes,
+  function(){ return curMin; },
+  function(v){ curMin = v; }
+);
+
+// 외부 클릭 시 드롭다운 닫기
+document.addEventListener('click', function(e) {
+  if (!selectGroup.contains(e.target)) closeActiveDD();
+});</pre></div>
+          </div>
+        </div>
+
+        <!-- Mobile Bottom Sheet (HD-Time-4) -->
+        <div class="variant-group" style="margin-top:24px;">
+          <h3 class="variant-group-title">Mobile — Bottom Sheet <span class="comp-badge comp-badge-green" style="font-size:10px;margin-left:8px;">HD-Time-4 확정</span></h3>
+          <p class="variant-group-desc">모바일에서는 inline 드롭다운 대신 바텀시트 패널. 트리거 높이 48px (--sizing-48). 반투명 dim 오버레이 + 슬라이드업 패널.</p>
+          <div class="variant-block">
+            <div class="variant-label">States</div>
+            <div class="preview-area" style="display:flex;gap:32px;align-items:flex-start;flex-wrap:wrap;">
+              <!-- Closed -->
+              <div>
+                <div class="s1-dp-state-label">Closed</div>
+                <div style="width:280px;height:360px;background:var(--color-bg-subtle);border-radius:12px;padding:20px;position:relative;overflow:hidden;margin-top:6px;">
+                  <div style="margin-bottom:12px;font-size:12px;color:var(--color-text-placeholder);">앱 콘텐츠 영역</div>
+                  <div class="s1-timepicker-wrap" style="height:48px;width:100%;pointer-events:none;">
+                    <span class="s1-timepicker-placeholder">시간을 선택하세요</span>
+                    <span class="s1-timepicker-icon"><svg width="18" height="18" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="7.5" stroke="currentColor" stroke-width="1.2"/><path d="M9 5v4l2.5 2.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg></span>
+                  </div>
+                </div>
+              </div>
+              <!-- Open (static) -->
+              <div>
+                <div class="s1-dp-state-label">Open (static)</div>
+                <div style="width:280px;height:360px;background:var(--color-bg-subtle);border-radius:12px;padding:20px;position:relative;overflow:hidden;margin-top:6px;">
+                  <div style="margin-bottom:12px;font-size:12px;color:var(--color-text-placeholder);">앱 콘텐츠 영역</div>
+                  <div class="s1-timepicker-wrap" style="height:48px;width:100%;opacity:0.4;pointer-events:none;">
+                    <span class="s1-timepicker-placeholder">시간을 선택하세요</span>
+                    <span class="s1-timepicker-icon"><svg width="18" height="18" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="7.5" stroke="currentColor" stroke-width="1.2"/><path d="M9 5v4l2.5 2.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg></span>
+                  </div>
+                  <!-- Dim overlay -->
+                  <div style="position:absolute;inset:0;background:rgba(0,0,0,0.35);z-index:1;"></div>
+                  <!-- Bottom Sheet -->
+                  <div style="position:absolute;bottom:0;left:0;right:0;background:var(--color-surface-default);border-radius:16px 16px 0 0;box-shadow:0 -4px 16px rgba(0,0,0,0.15);padding:12px 0 20px;z-index:2;">
+                    <div style="display:flex;justify-content:center;padding-bottom:10px;">
+                      <div style="width:40px;height:4px;background:var(--color-border-subtle);border-radius:2px;"></div>
+                    </div>
+                    <div style="padding:0 16px 12px;font-size:15px;font-weight:600;color:var(--color-text-primary);">시간 선택</div>
+                    <div style="display:flex;align-items:stretch;height:136px;padding:0 16px;">
+                      <div style="flex:1;overflow:hidden;display:flex;flex-direction:column;gap:0;">
+                        <div class="s1-tp-col-item" style="width:100%;height:32px;font-size:14px;">8</div>
+                        <div class="s1-tp-col-item is-selected" style="width:100%;height:32px;font-size:14px;">9</div>
+                        <div class="s1-tp-col-item" style="width:100%;height:32px;font-size:14px;">10</div>
+                        <div class="s1-tp-col-item" style="width:100%;height:32px;font-size:14px;">11</div>
+                      </div>
+                      <div style="display:flex;align-items:center;padding:0 10px;color:var(--color-text-secondary);font-size:16px;font-weight:600;">:</div>
+                      <div style="flex:1;overflow:hidden;display:flex;flex-direction:column;gap:0;">
+                        <div class="s1-tp-col-item" style="width:100%;height:32px;font-size:14px;">28</div>
+                        <div class="s1-tp-col-item" style="width:100%;height:32px;font-size:14px;">29</div>
+                        <div class="s1-tp-col-item is-selected" style="width:100%;height:32px;font-size:14px;">30</div>
+                        <div class="s1-tp-col-item" style="width:100%;height:32px;font-size:14px;">31</div>
+                      </div>
+                    </div>
+                    <div style="display:flex;justify-content:flex-end;padding:8px 16px 0;">
+                      <button type="button" class="is-preview" style="height:36px;padding:0 20px;background:var(--color-action-primary-default);color:var(--color-base-white);border:none;border-radius:4px;font-size:14px;font-weight:500;cursor:pointer;">확인</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!-- Interactive -->
+              <div>
+                <div class="s1-dp-state-label">Interactive</div>
+                <div id="tp-mobile-frame" style="width:280px;height:360px;background:var(--color-bg-subtle);border-radius:12px;padding:20px;position:relative;overflow:hidden;margin-top:6px;">
+                  <div style="margin-bottom:12px;font-size:12px;color:var(--color-text-placeholder);">앱 콘텐츠 영역 (트리거 클릭)</div>
+                  <div id="tp-mobile-trigger" class="s1-timepicker-wrap" style="height:48px;width:100%;cursor:pointer;" tabindex="0" role="button" aria-haspopup="dialog">
+                    <span id="tp-mobile-ph" class="s1-timepicker-placeholder">시간을 선택하세요</span>
+                    <span id="tp-mobile-val" class="s1-timepicker-value" style="display:none;"></span>
+                    <span class="s1-timepicker-icon"><svg width="18" height="18" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="7.5" stroke="currentColor" stroke-width="1.2"/><path d="M9 5v4l2.5 2.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg></span>
+                  </div>
+                  <!-- Dim -->
+                  <div id="tp-mobile-dim" style="display:none;position:absolute;inset:0;background:rgba(0,0,0,0.35);z-index:1;" aria-hidden="true"></div>
+                  <!-- Sheet -->
+                  <div id="tp-mobile-sheet" role="dialog" aria-label="시간 선택" style="display:none;position:absolute;bottom:0;left:0;right:0;background:var(--color-surface-default);border-radius:16px 16px 0 0;box-shadow:0 -4px 16px rgba(0,0,0,0.15);padding:12px 0 20px;z-index:2;">
+                    <div style="display:flex;justify-content:center;padding-bottom:10px;">
+                      <div style="width:40px;height:4px;background:var(--color-border-subtle);border-radius:2px;"></div>
+                    </div>
+                    <div style="padding:0 16px 12px;font-size:15px;font-weight:600;color:var(--color-text-primary);">시간 선택</div>
+                    <div style="display:flex;align-items:stretch;height:160px;padding:0 16px;">
+                      <div id="tp-mobile-hour-col" style="flex:1;overflow-y:auto;scroll-behavior:smooth;"></div>
+                      <div style="display:flex;align-items:center;padding:0 10px;color:var(--color-text-secondary);font-size:16px;font-weight:600;">:</div>
+                      <div id="tp-mobile-min-col" style="flex:1;overflow-y:auto;scroll-behavior:smooth;"></div>
+                    </div>
+                    <div style="display:flex;justify-content:flex-end;padding:8px 16px 0;">
+                      <button id="tp-mobile-confirm" type="button" style="height:36px;padding:0 20px;background:var(--color-action-primary-default);color:var(--color-base-white);border:none;border-radius:4px;font-size:14px;font-weight:500;cursor:pointer;">확인</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Token Details (Input · Select 공유) -->
+        <div class="code-block" style="margin-top:32px;">
+          <div class="code-tabs">
+            <button class="code-tab active" onclick="switchTab(this,'timepicker-tokens')">Token Details</button>
+          </div>
+          <div class="code-pane active" id="timepicker-tokens">
+            <table class="token-detail-table">
+              <thead><tr><th>Token</th><th>Value (Semantic)</th><th>Resolved</th><th>Role</th></tr></thead>
+              <tbody>
+                <tr><td class="token-name">--color-form-control-bg-default</td><td class="token-value">var(--color-surface-default)</td><td class="token-resolved" data-token="--color-form-control-bg-default"></td><td>기본 배경 (Input · Select 공유)</td></tr>
+                <tr><td class="token-name">--color-form-control-bg-disabled</td><td class="token-value">var(--color-bg-subtle)</td><td class="token-resolved" data-token="--color-form-control-bg-disabled"></td><td>disabled 배경</td></tr>
+                <tr><td class="token-name">--color-form-control-border-default</td><td class="token-value">var(--color-control-border-default)</td><td class="token-resolved" data-token="--color-form-control-border-default"></td><td>기본 테두리</td></tr>
+                <tr><td class="token-name">--color-form-control-border-selected</td><td class="token-value">var(--color-border-focus)</td><td class="token-resolved" data-token="--color-form-control-border-selected"></td><td>focus 테두리 (Figma: selected)</td></tr>
+                <tr><td class="token-name">--color-form-control-text-placeholder</td><td class="token-value">var(--color-text-placeholder)</td><td class="token-resolved" data-token="--color-form-control-text-placeholder"></td><td>placeholder (Input형 전용)</td></tr>
+                <tr><td class="token-name">--color-form-control-text-default</td><td class="token-value">var(--color-text-secondary)</td><td class="token-resolved" data-token="--color-form-control-text-default"></td><td>입력값 · 선택값 텍스트</td></tr>
+                <tr><td class="token-name">--color-form-control-text-disabled</td><td class="token-value">var(--color-text-disabled)</td><td class="token-resolved" data-token="--color-form-control-text-disabled"></td><td>disabled 텍스트</td></tr>
+                <tr style="background:#f0fdf4;"><td class="token-name">--color-form-control-label-default</td><td class="token-value">var(--color-text-secondary)</td><td class="token-resolved" data-token="--color-form-control-label-default"></td><td>"시"/"분" 라벨 (Select형 전용)</td></tr>
+                <tr style="background:#f0fdf4;"><td class="token-name">--color-form-control-label-disabled</td><td class="token-value">var(--color-text-disabled)</td><td class="token-resolved" data-token="--color-form-control-label-disabled"></td><td>"시"/"분" disabled 라벨 (Select형 전용)</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
     </div>
   </main>
 </div>
@@ -5931,7 +6763,7 @@ update(); // 초기화</pre>
   })();
 
   (function initFromHash() {
-    var valid = ['button','checkbox','radio','toggle','chip','input','textarea','select','table','pagination','tab','gnb']; // Components New: 마이그레이션 완료 컴포넌트만
+    var valid = ['button','checkbox','radio','toggle','chip','input','date-picker','time-picker','textarea','select','table','pagination','tab','gnb']; // Components New: 마이그레이션 완료 컴포넌트만
     var hash  = window.location.hash.replace('#', '');
     var id    = (hash && valid.includes(hash)) ? hash : 'button';
     var btn   = document.querySelector('.comp-nav-btn[onclick*="\'' + id + '\'"]') || document.querySelector('.comp-nav-btn');
@@ -6009,8 +6841,7 @@ update(); // 초기화</pre>
       togTarget.style.cursor = 'pointer';
       togTarget.addEventListener('click', () => {
         if (togTarget.classList.contains('is-disabled')) return;
-        const on = togTarget.classList.toggle('is-on');
-        togTarget.querySelector('.s1-toggle-label').textContent = on ? 'ON' : 'OFF';
+        togTarget.classList.toggle('is-on');
       });
       document.querySelector('[data-toggle-comp-disabled]')?.addEventListener('click', (e) => {
         const on = togTarget.classList.toggle('is-disabled');

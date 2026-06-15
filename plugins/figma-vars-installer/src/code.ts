@@ -184,8 +184,7 @@ function colorScopes(path: string): VariableScope[] {
 
 function numberScopes(path: string): VariableScope[] {
   if (path.startsWith("spacing/"))      return ["GAP"];
-  if (path.startsWith("sizing/icon"))   return ["WIDTH_HEIGHT"];
-  if (path.startsWith("sizing/"))       return ["WIDTH_HEIGHT"];
+  if (path.startsWith("sizing/"))       return ["WIDTH_HEIGHT"]; // Foundation sizing/N (컴포넌트별 사이징 폐지 2026-06-12)
   if (path.startsWith("radius/"))       return ["CORNER_RADIUS"];
   if (path.startsWith("border-width/")) return ["STROKE_FLOAT"];
   if (path.startsWith("font-size/"))    return ["FONT_SIZE"];

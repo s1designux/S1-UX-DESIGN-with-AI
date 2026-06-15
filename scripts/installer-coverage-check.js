@@ -191,8 +191,9 @@ function expectedFigmaPath(cssName, kind) {
 
   if (kind === 'SEMANTIC_NUMBER') {
     // --spacing-padding-block-md → spacing/padding-block/md
-    // --sizing-form-control-height-md → sizing/form-control-height/md
     // --radius-control-sm → radius/control/sm
+    // 2026-06-12: 컴포넌트별 sizing/* semantic 폐지 → Foundation --sizing-N 직접 참조.
+    //   (sizing/N 은 FOUNDATION_NUMBER 에서 처리)
     return cssToFigmaSemantic(stripped, {
       'spacing-padding-block-':    'spacing/padding-block/',
       'spacing-padding-inline-':   'spacing/padding-inline/',
@@ -201,14 +202,6 @@ function expectedFigmaPath(cssName, kind) {
       'spacing-cluster-':          'spacing/cluster/',
       'spacing-label-gap-inline-': 'spacing/label-gap-inline/',
       'spacing-label-gap-block-':  'spacing/label-gap-block/',
-      'sizing-form-control-height-':         'sizing/form-control-height/',
-      'sizing-form-control-dataview-height-':'sizing/form-control-dataview-height/',
-      'sizing-button-height-':     'sizing/button-height/',
-      'sizing-button-min-width':   'sizing/button-min-width',
-      'sizing-chip-height-':       'sizing/chip-height/',
-      'sizing-table-row-height-':  'sizing/table-row-height/',
-      'sizing-dropdown-item-height-': 'sizing/dropdown-item-height/',
-      'sizing-icon-':              'sizing/icon/',
       'radius-control-':           'radius/control/',
       'radius-button-':            'radius/button/',
       'radius-card-':              'radius/card/',

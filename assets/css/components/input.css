@@ -26,7 +26,7 @@
 .s1-input-field {
   display: flex;
   align-items: center;
-  height: var(--sizing-form-control-height-md);   /* Medium: 44px */
+  height: var(--sizing-44);   /* Medium: 44px */
   padding: 0 var(--spacing-12);
   gap: var(--spacing-4);
   border: var(--border-width-default) solid var(--input-default-border);
@@ -54,12 +54,12 @@
 
 /* ── Sizes ── */
 .s1-input-field.input-size-small {
-  height: var(--sizing-form-control-height-xs);   /* Small: 34px */
+  height: var(--sizing-34);   /* Small: 34px */
   padding: 0 var(--spacing-8) 0 var(--spacing-12);
 }
 
 .s1-input-field.input-size-xsmall {
-  height: var(--sizing-form-control-height-xxs);  /* XSmall: 28px */
+  height: var(--sizing-28);  /* XSmall: 28px */
   padding: 0 var(--spacing-8) 0 var(--spacing-12);
 }
 
@@ -69,7 +69,7 @@
 }
 
 .s1-input-field.input-size-mobile {
-  height: var(--sizing-form-control-height-lg);   /* Mobile: 48px */
+  height: var(--sizing-48);   /* Mobile: 48px */
   padding: 0 var(--spacing-12) 0 var(--spacing-16);
   border-radius: 4px; /* Figma 원본 기준 — radius token 미확인 */
 }

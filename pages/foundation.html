@@ -356,8 +356,11 @@
     <nav class="foundation-section-nav" id="foundation-section-nav" aria-label="섹션 이동">
       <button class="foundation-section-chip is-active" data-target="section-color">Color</button>
       <button class="foundation-section-chip" data-target="section-typography">Typography</button>
+      <button class="foundation-section-chip" data-target="section-font-scale">Font Scale</button>
       <button class="foundation-section-chip" data-target="section-spacing">Spacing</button>
+      <button class="foundation-section-chip" data-target="section-sizing">Sizing</button>
       <button class="foundation-section-chip" data-target="section-radius">Radius</button>
+      <button class="foundation-section-chip" data-target="section-opacity-breakpoint">Opacity · Breakpoint</button>
       <button class="foundation-section-chip" data-target="section-shadow">Shadow</button>
     </nav>
 
@@ -392,6 +395,18 @@
         <div id="typo-categoryegories"></div>
       </div>
 
+      <!-- ── FONT SCALE (primitive font-size · line-height) ── -->
+      <div class="section" id="section-font-scale">
+        <div class="section-header">
+          <h2 class="section-title">Font Scale</h2>
+          <p class="section-desc">합성 타이포가 참조하는 Foundation 원시 토큰 — 글자 크기 <code>--font-size-N</code> · 줄간격 <code>--line-height-N</code>. 행 클릭 시 변수명 복사.</p>
+        </div>
+        <div class="palette-label" style="margin-bottom:10px">Font Size</div>
+        <div id="font-size-grid"></div>
+        <div class="palette-label" style="margin:24px 0 10px">Line Height</div>
+        <div id="line-height-grid"></div>
+      </div>
+
       <!-- ── SPACING ── -->
       <div class="section" id="section-spacing">
         <div class="section-header">
@@ -401,6 +416,15 @@
         <div id="spacing-grid"></div>
       </div>
 
+      <!-- ── SIZING ── -->
+      <div class="section" id="section-sizing">
+        <div class="section-header">
+          <h2 class="section-title">Sizing</h2>
+          <p class="section-desc">컴포넌트 높이·아이콘 크기 등 size 기준 Foundation 토큰. 컴포넌트는 이 <code>--sizing-N</code>을 직접 참조합니다(별도 컴포넌트별 사이징 Semantic 없음). 카드 클릭 시 CSS 변수명 복사.</p>
+        </div>
+        <div id="sizing-grid"></div>
+      </div>
+
       <!-- ── BORDER RADIUS ── -->
       <div class="section" id="section-radius">
         <div class="section-header">
@@ -408,6 +432,18 @@
           <p class="section-desc">컴포넌트별 모서리 반경 Foundation 토큰. 카드 클릭 시 CSS 변수명 복사.</p>
         </div>
         <div id="radius-grid"></div>
+      </div>
+
+      <!-- ── OPACITY · BREAKPOINT ── -->
+      <div class="section" id="section-opacity-breakpoint">
+        <div class="section-header">
+          <h2 class="section-title">Opacity · Breakpoint</h2>
+          <p class="section-desc">투명도 <code>--opacity-N</code> · 반응형 화면 기준폭 <code>--breakpoint-*</code>. 행 클릭 시 변수명 복사.</p>
+        </div>
+        <div class="palette-label" style="margin-bottom:10px">Opacity</div>
+        <div id="opacity-grid"></div>
+        <div class="palette-label" style="margin:24px 0 10px">Breakpoint</div>
+        <div id="breakpoint-grid"></div>
       </div>
 
       <!-- ── SHADOW ── -->
@@ -711,6 +747,78 @@ const SPACING = [
 ];
 
 /* ════════════════════════════════
+   Sizing Foundation Data
+   (정본: vars-data.ts FOUNDATION_NUMBER · 생성: npm run sizing:gen)
+   ════════════════════════════════ */
+/* >>> GEN:FOUNDATION-SIZING >>> 자동 생성 (npm run number:gen). 수동 편집 금지. */
+const SIZING = [
+  { v: '--sizing-10', px: 10, usage: '아이콘 최소' },
+  { v: '--sizing-16', px: 16, usage: '아이콘 sm' },
+  { v: '--sizing-18', px: 18, usage: '아이콘' },
+  { v: '--sizing-20', px: 20, usage: '아이콘 md' },
+  { v: '--sizing-24', px: 24, usage: '아이콘 lg' },
+  { v: '--sizing-28', px: 28, usage: '컨트롤/버튼/칩 높이 xxs · 아이콘' },
+  { v: '--sizing-30', px: 30, usage: '칩 높이 md' },
+  { v: '--sizing-32', px: 32, usage: '데이터뷰 인풋 · 아이콘 lg' },
+  { v: '--sizing-34', px: 34, usage: '컨트롤/버튼 높이 xs · 테이블행 · 칩 lg' },
+  { v: '--sizing-38', px: 38, usage: '테이블 행 높이 sm' },
+  { v: '--sizing-40', px: 40, usage: '버튼 높이 sm' },
+  { v: '--sizing-44', px: 44, usage: '폼컨트롤/버튼/테이블행 높이 md (기본)' },
+  { v: '--sizing-48', px: 48, usage: '폼컨트롤/버튼 높이 lg · 모바일' },
+  { v: '--sizing-56', px: 56, usage: '대형 컨트롤 높이' },
+  { v: '--sizing-60', px: 60, usage: '대형 트리거 높이' },
+  { v: '--sizing-64', px: 64, usage: '대형 셀 높이' },
+  { v: '--sizing-80', px: 80, usage: '버튼 최소 너비 · 대형 블록' },
+  { v: '--sizing-128', px: 128, usage: '최대 사이징' },
+];
+/* <<< GEN:FOUNDATION-SIZING <<< */
+
+/* ════════════════════════════════
+   Font Size / Line Height / Opacity / Breakpoint Foundation Data
+   (정본: vars-data.ts FOUNDATION_NUMBER · 생성: npm run number:gen)
+   ════════════════════════════════ */
+/* >>> GEN:FOUNDATION-FONTSIZE >>> 자동 생성 (npm run number:gen). 수동 편집 금지. */
+const FONT_SIZES = [
+  { v: '--font-size-10', px: 10, usage: '캡션·보조 라벨' },
+  { v: '--font-size-12', px: 12, usage: '보조 텍스트·뱃지' },
+  { v: '--font-size-14', px: 14, usage: '본문 기본' },
+  { v: '--font-size-16', px: 16, usage: '본문 강조·인풋' },
+  { v: '--font-size-18', px: 18, usage: '소제목' },
+  { v: '--font-size-20', px: 20, usage: '제목 sm' },
+  { v: '--font-size-24', px: 24, usage: '제목 md' },
+  { v: '--font-size-32', px: 32, usage: '제목 lg·히어로' },
+];
+/* <<< GEN:FOUNDATION-FONTSIZE <<< */
+
+/* >>> GEN:FOUNDATION-LINEHEIGHT >>> 자동 생성 (npm run number:gen). 수동 편집 금지. */
+const LINE_HEIGHTS = [
+  { v: '--line-height-130', val: 1.3, usage: '제목·짧은 라벨' },
+  { v: '--line-height-140', val: 1.4, usage: '본문 단락' },
+];
+/* <<< GEN:FOUNDATION-LINEHEIGHT <<< */
+
+/* >>> GEN:FOUNDATION-OPACITY >>> 자동 생성 (npm run number:gen). 수동 편집 금지. */
+const OPACITIES = [
+  { v: '--opacity-0', val: 0, usage: '완전 투명' },
+  { v: '--opacity-25', val: 0.25, usage: '약한 dim·비활성' },
+  { v: '--opacity-50', val: 0.5, usage: '중간 dim·오버레이' },
+  { v: '--opacity-75', val: 0.75, usage: '강한 dim' },
+  { v: '--opacity-100', val: 1, usage: '완전 불투명' },
+];
+/* <<< GEN:FOUNDATION-OPACITY <<< */
+
+/* >>> GEN:FOUNDATION-BREAKPOINT >>> 자동 생성 (npm run number:gen). 수동 편집 금지. */
+const BREAKPOINTS = [
+  { v: '--breakpoint-xs', px: 320, usage: '모바일 소' },
+  { v: '--breakpoint-sm', px: 600, usage: '모바일 대' },
+  { v: '--breakpoint-md', px: 768, usage: '태블릿' },
+  { v: '--breakpoint-lg', px: 1024, usage: '데스크탑 sm' },
+  { v: '--breakpoint-xl', px: 1280, usage: '데스크탑' },
+  { v: '--breakpoint-2xl', px: 1440, usage: '와이드' },
+];
+/* <<< GEN:FOUNDATION-BREAKPOINT <<< */
+
+/* ════════════════════════════════
    Radius Foundation Data
    ════════════════════════════════ */
 const RADIUS_PRIMS = [
@@ -766,6 +874,57 @@ function flashSpacing(row, varName) {
   setTimeout(() => row.classList.remove('flashing'), 600);
 }
 
+/* ── Render Sizing ── */
+function renderSizing() {
+  const el = document.getElementById('sizing-grid');
+  if (!el) return;
+  const maxPx = 128;
+  el.innerHTML = `
+    <div class="spacing-scale">
+      <div class="spacing-row section-head">
+        <span class="spacing-head-label">Variable</span>
+        <span class="spacing-head-label">Value</span>
+        <span class="spacing-head-label">Scale</span>
+        <span class="spacing-head-label">Usage</span>
+      </div>
+      ${SIZING.map(s => `
+        <div class="spacing-row" onclick="flashSpacing(this,'${s.v}')" title="클릭하여 복사">
+          <span class="spacing-var">${s.v}</span>
+          <span class="spacing-val">${s.px}px</span>
+          <div class="spacing-bar-wrap">
+            <div class="spacing-bar" style="width:${Math.round((s.px / maxPx) * 260)}px"></div>
+          </div>
+          <span class="spacing-usage">${s.usage}</span>
+          <div class="spacing-copy-flash"></div>
+        </div>
+      `).join('')}
+    </div>`;
+}
+
+/* ── Render generic number scale (spacing-scale 재사용) ── */
+function renderNumberScale(elId, data, opt) {
+  const el = document.getElementById(elId);
+  if (!el) return;
+  const prop = opt.prop, unit = opt.unit || '', max = opt.max;
+  const rows = data.map(s => {
+    const raw = s[prop];
+    const display = unit === 'px' ? raw + 'px' : String(raw);
+    const barW = opt.opacityBar ? 260 : Math.round((raw / max) * 260);
+    const barStyle = opt.opacityBar
+      ? `width:260px;opacity:${raw === 0 ? 0.04 : raw}`
+      : `width:${Math.max(2, barW)}px`;
+    return `
+      <div class="spacing-row" onclick="flashSpacing(this,'${s.v}')" title="클릭하여 복사">
+        <span class="spacing-var">${s.v}</span>
+        <span class="spacing-val">${display}</span>
+        <div class="spacing-bar-wrap"><div class="spacing-bar" style="${barStyle}"></div></div>
+        <span class="spacing-usage">${s.usage}</span>
+        <div class="spacing-copy-flash"></div>
+      </div>`;
+  }).join('');
+  el.innerHTML = `<div class="spacing-scale">${rows}</div>`;
+}
+
 /* ── Render Radius ── */
 function renderRadius() {
   const el = document.getElementById('radius-grid');
@@ -814,11 +973,16 @@ document.addEventListener('DOMContentLoaded', () => {
   renderPalettes();
   renderTypography();
   renderSpacing();
+  renderSizing();
   renderRadius();
+  renderNumberScale('font-size-grid',   FONT_SIZES,   { prop: 'px',  unit: 'px', max: 32 });
+  renderNumberScale('line-height-grid', LINE_HEIGHTS, { prop: 'val', max: 1.4 });
+  renderNumberScale('opacity-grid',     OPACITIES,    { prop: 'val', opacityBar: true });
+  renderNumberScale('breakpoint-grid',  BREAKPOINTS,  { prop: 'px',  unit: 'px', max: 1440 });
 
   /* ── Section jump chips ── */
   const chips = document.querySelectorAll('.foundation-section-chip');
-  const sectionIds = ['section-color','section-typography','section-spacing','section-radius','section-shadow'];
+  const sectionIds = ['section-color','section-typography','section-font-scale','section-spacing','section-sizing','section-radius','section-opacity-breakpoint','section-shadow'];
   const sectionNav = document.getElementById('foundation-section-nav');
   const pageHeaderEl = document.querySelector('.page-header');
 

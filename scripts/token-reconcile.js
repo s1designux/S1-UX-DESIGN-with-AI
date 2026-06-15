@@ -32,13 +32,14 @@ function run(label, cmd) {
 
 console.log('\n🔧 Token Reconcile — 정본 → 파생 표면 재생성\n');
 
-run('1/4 tokens:gen      (vars-data → tokens.css Semantic)', 'npm run --silent tokens:gen');
-run('2/4 page:gen        (tokens.css → semantic.html SEMANTIC_PAGE)', 'npm run --silent page:gen');
-run('3/4 tokens:sync-prompt (tokens.css → install-prompt.html)', 'npm run --silent tokens:sync-prompt');
+run('1/5 tokens:gen      (vars-data → tokens.css Semantic)', 'npm run --silent tokens:gen');
+run('2/5 page:gen        (tokens.css → semantic.html SEMANTIC_PAGE)', 'npm run --silent page:gen');
+run('3/5 number:gen      (vars-data → foundation.html number 5종)', 'npm run --silent number:gen');
+run('4/5 tokens:sync-prompt (tokens.css → install-prompt.html)', 'npm run --silent tokens:sync-prompt');
 if (!skipInstaller) {
-  run('4/4 installer:build  (vars-data → 설치기 zip)', 'npm run --silent installer:build');
+  run('5/5 installer:build  (vars-data → 설치기 zip)', 'npm run --silent installer:build');
 } else {
-  console.log('\n▶ 4/4 installer:build — 건너뜀(--no-installer)');
+  console.log('\n▶ 5/5 installer:build — 건너뜀(--no-installer)');
 }
 
 console.log('\n──────────────────────────────────────────────');

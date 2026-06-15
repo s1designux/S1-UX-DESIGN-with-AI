@@ -24,10 +24,10 @@
   "states": ["default", "hover", "open", "filled", "disabled"],
   "optionStates": ["default", "hover", "selected"],
   "sizes": {
-    "pc-md":   { "height": "44px", "token": "--sizing-form-control-height-md",  "cssModifier": null,                      "fontSize": "14px" },
-    "pc-xsm":  { "height": "34px", "token": "--sizing-form-control-height-xs",  "cssModifier": "s1-select-wrap--xsm",     "fontSize": "14px" },
-    "pc-xxsm": { "height": "28px", "token": "--sizing-form-control-height-xxs", "cssModifier": "s1-select-wrap--xxsm",    "fontSize": "12px" },
-    "mobile":  { "height": "48px", "token": "--sizing-form-control-height-lg",  "cssModifier": "s1-select-wrap--mobile",  "fontSize": "14px" }
+    "pc-md":   { "height": "44px", "token": "--sizing-44",  "cssModifier": null,                      "fontSize": "14px" },
+    "pc-xsm":  { "height": "34px", "token": "--sizing-34",  "cssModifier": "s1-select-wrap--xsm",     "fontSize": "14px" },
+    "pc-xxsm": { "height": "28px", "token": "--sizing-28", "cssModifier": "s1-select-wrap--xxsm",    "fontSize": "12px" },
+    "mobile":  { "height": "48px", "token": "--sizing-48",  "cssModifier": "s1-select-wrap--mobile",  "fontSize": "14px" }
   },
   "cssClasses": {
     "wrap":      "s1-select-wrap",

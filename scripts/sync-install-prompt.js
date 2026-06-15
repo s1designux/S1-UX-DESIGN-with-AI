@@ -151,7 +151,10 @@ function main() {
   updated = injectUpdateStamps(updated);
 
   if (CHECK_ONLY) {
-    if (updated !== html) {
+    // 'Last sync: YYYY-MM-DD' 스탬프는 재생성 시점의 오늘 날짜라 매일 달라짐 →
+    // 토큰 내용 검사에서는 제외(정규화)해 날짜만으로 인한 false-positive 차단.
+    const stripSyncDate = (s) => s.replace(/Last sync: \d{4}-\d{2}-\d{2}/g, 'Last sync: <DATE>');
+    if (stripSyncDate(updated) !== stripSyncDate(html)) {
       console.error('❌ install-prompt.html 인라인 CSS 가 tokens.css 와 불일치');
       console.error('   실행: npm run tokens:sync-prompt');
       process.exit(1);

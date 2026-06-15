@@ -140,14 +140,14 @@
   },
   "sizing": {
     "pc": [
-      { "id": "medium",   "label": "medium",   "height": "h44", "cssClass": "s1-btn-lg",     "token": "--sizing-button-height-md" },
-      { "id": "xsmall",   "label": "xsmall",   "height": "h34", "cssClass": "",              "token": "--sizing-button-height-xs", "note": "기본 사이즈 — 크기 수식어 없음" },
-      { "id": "xxsmall",  "label": "xxsmall",  "height": "h28", "cssClass": "s1-btn-sm",     "token": "--sizing-button-height-xxs", "note": "신규 토큰 — 2026-05-11 tokens.css에 추가됨" }
+      { "id": "medium",   "label": "medium",   "height": "h44", "cssClass": "s1-btn-lg",     "token": "--sizing-44" },
+      { "id": "xsmall",   "label": "xsmall",   "height": "h34", "cssClass": "",              "token": "--sizing-34", "note": "기본 사이즈 — 크기 수식어 없음" },
+      { "id": "xxsmall",  "label": "xxsmall",  "height": "h28", "cssClass": "s1-btn-sm",     "token": "--sizing-28", "note": "신규 토큰 — 2026-05-11 tokens.css에 추가됨" }
     ],
     "mobile": [
-      { "id": "mobile",   "label": "mobile",   "height": "h48", "cssClass": "s1-btn-mobile", "token": "--sizing-button-height-lg" }
+      { "id": "mobile",   "label": "mobile",   "height": "h48", "cssClass": "s1-btn-mobile", "token": "--sizing-48" }
     ],
-    "minWidth": "--sizing-button-min-width",
+    "minWidth": "--sizing-80",
     "radius": "--radius-button-md"
   },
   "harness": {

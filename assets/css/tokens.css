@@ -413,26 +413,8 @@
   --spacing-label-gap-block-md:  var(--spacing-8);
 
   /* ── sizing (semantic) ── */
-  --sizing-form-control-dataview-height-sm: var(--spacing-28);
-  --sizing-form-control-dataview-height-md: 32px; /* Foundation step 없음 */
-  --sizing-button-height-xs:   34px; /* Foundation step 없음 */
-  --sizing-button-height-sm:   var(--spacing-40);
-  --sizing-button-height-md:   var(--spacing-44);
-  --sizing-button-height-lg:   var(--spacing-48);
-  --sizing-button-min-width:   80px; /* Foundation step 없음 */
-  --sizing-chip-height-sm:     var(--spacing-28);
-  --sizing-chip-height-md:     30px; /* Foundation step 없음 */
-  --sizing-chip-height-lg:     34px; /* Foundation step 없음 */
-  --sizing-table-row-height-xs: 34px; /* Foundation step 없음 */
-  --sizing-table-row-height-sm: 38px; /* Foundation step 없음 */
-  --sizing-table-row-height-md: var(--spacing-44);
-  --sizing-icon-10: 10px; /* Foundation step 없음 */
-  --sizing-icon-16: var(--spacing-16);
-  --sizing-icon-18: 18px; /* Foundation step 없음 */
-  --sizing-icon-20: var(--spacing-20);
-  --sizing-icon-24: var(--spacing-24);
-  --sizing-icon-28: var(--spacing-28);
-  --sizing-icon-32: var(--spacing-32);
+  /* 2026-06-12 폐지: 컴포넌트별 사이징 토큰 전부 제거 → 컴포넌트가 Foundation --sizing-N 직접 참조.
+     (값 보존: 옛 토큰은 모두 Foundation sizing step과 1:1 매핑) */
 
   /* ── radius (semantic) ── */
   --radius-control-xs: var(--radius-2);

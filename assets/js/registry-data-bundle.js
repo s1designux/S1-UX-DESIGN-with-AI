@@ -1705,7 +1705,7 @@ window.REGISTRY_BUNDLE = {
             {
               "cssVar": "--color-icon-inverse",
               "light": "var(--color-base-white)",
-              "dark": "var(--color-base-white)",
+              "dark": "var(--color-gray-dark-900)",
               "status": "stable"
             },
             {
@@ -2227,150 +2227,170 @@ window.REGISTRY_BUNDLE = {
         "meta": {
           "name": "SW Semantic Sizing",
           "version": "2.4",
-          "status": "stable",
-          "updatedAt": "2026-05-11",
+          "status": "deprecated",
+          "updatedAt": "2026-06-12",
           "source": "registry/tokens/sw-v2.4.tokens.css",
-          "description": "Role-based semantic sizing tokens. Values without a Foundation foundation step use raw px."
+          "description": "DEPRECATED (2026-06-12): 컴포넌트별 사이징 Semantic 토큰을 전부 폐지. 컴포넌트는 Foundation --sizing-N 스케일을 직접 참조한다(별도 사이징 Semantic 레이어 없음). 아래는 옛 토큰 → Foundation 매핑(값 보존). 정본 스케일은 foundation.colors/number 및 pages/foundation.html#section-sizing 참조."
         },
         "tokens": {
           "formControl": [
             {
               "cssVar": "--sizing-form-control-height-xxs",
-              "value": "var(--spacing-28)",
-              "status": "stable"
+              "migratedTo": "--sizing-28",
+              "value": "28px",
+              "status": "deprecated"
             },
             {
               "cssVar": "--sizing-form-control-height-xs",
+              "migratedTo": "--sizing-34",
               "value": "34px",
-              "status": "stable",
-              "note": "No Foundation step for 34px."
+              "status": "deprecated"
             },
             {
               "cssVar": "--sizing-form-control-height-md",
-              "value": "var(--spacing-44)",
-              "status": "stable"
+              "migratedTo": "--sizing-44",
+              "value": "44px",
+              "status": "deprecated"
             },
             {
               "cssVar": "--sizing-form-control-height-lg",
-              "value": "var(--spacing-48)",
-              "status": "stable"
+              "migratedTo": "--sizing-48",
+              "value": "48px",
+              "status": "deprecated"
             },
             {
               "cssVar": "--sizing-form-control-dataview-height-sm",
-              "value": "var(--spacing-28)",
-              "status": "stable"
+              "migratedTo": "--sizing-28",
+              "value": "28px",
+              "status": "deprecated"
             },
             {
               "cssVar": "--sizing-form-control-dataview-height-md",
+              "migratedTo": "--sizing-32",
               "value": "32px",
-              "status": "stable",
-              "note": "No Foundation step for 32px."
+              "status": "deprecated"
             }
           ],
           "button": [
             {
+              "cssVar": "--sizing-button-height-xxs",
+              "migratedTo": "--sizing-28",
+              "value": "28px",
+              "status": "deprecated"
+            },
+            {
               "cssVar": "--sizing-button-height-xs",
+              "migratedTo": "--sizing-34",
               "value": "34px",
-              "status": "stable",
-              "note": "No Foundation step for 34px."
+              "status": "deprecated"
             },
             {
               "cssVar": "--sizing-button-height-sm",
-              "value": "var(--spacing-40)",
-              "status": "stable"
+              "migratedTo": "--sizing-40",
+              "value": "40px",
+              "status": "deprecated"
             },
             {
               "cssVar": "--sizing-button-height-md",
-              "value": "var(--spacing-44)",
-              "status": "stable"
+              "migratedTo": "--sizing-44",
+              "value": "44px",
+              "status": "deprecated"
             },
             {
               "cssVar": "--sizing-button-height-lg",
-              "value": "var(--spacing-48)",
-              "status": "stable"
+              "migratedTo": "--sizing-48",
+              "value": "48px",
+              "status": "deprecated"
             },
             {
               "cssVar": "--sizing-button-min-width",
+              "migratedTo": "--sizing-80",
               "value": "80px",
-              "status": "stable",
-              "note": "No Foundation step for 80px."
+              "status": "deprecated"
             }
           ],
           "chip": [
             {
               "cssVar": "--sizing-chip-height-sm",
-              "value": "var(--spacing-28)",
-              "status": "stable"
+              "migratedTo": "--sizing-28",
+              "value": "28px",
+              "status": "deprecated"
             },
             {
               "cssVar": "--sizing-chip-height-md",
+              "migratedTo": "--sizing-30",
               "value": "30px",
-              "status": "stable",
-              "note": "No Foundation step for 30px."
+              "status": "deprecated"
             },
             {
               "cssVar": "--sizing-chip-height-lg",
+              "migratedTo": "--sizing-34",
               "value": "34px",
-              "status": "stable",
-              "note": "No Foundation step for 34px."
+              "status": "deprecated"
             }
           ],
           "tableRow": [
             {
               "cssVar": "--sizing-table-row-height-xs",
+              "migratedTo": "--sizing-34",
               "value": "34px",
-              "status": "stable",
-              "note": "No Foundation step for 34px."
+              "status": "deprecated"
             },
             {
               "cssVar": "--sizing-table-row-height-sm",
+              "migratedTo": "--sizing-38",
               "value": "38px",
-              "status": "stable",
-              "note": "No Foundation step for 38px."
+              "status": "deprecated"
             },
             {
               "cssVar": "--sizing-table-row-height-md",
-              "value": "var(--spacing-44)",
-              "status": "stable"
+              "migratedTo": "--sizing-44",
+              "value": "44px",
+              "status": "deprecated"
             }
           ],
           "icon": [
             {
               "cssVar": "--sizing-icon-10",
+              "migratedTo": "--sizing-10",
               "value": "10px",
-              "status": "stable",
-              "note": "No Foundation step for 10px."
+              "status": "deprecated"
             },
             {
               "cssVar": "--sizing-icon-16",
-              "value": "var(--spacing-16)",
-              "status": "stable"
+              "migratedTo": "--sizing-16",
+              "value": "16px",
+              "status": "deprecated"
             },
             {
               "cssVar": "--sizing-icon-18",
+              "migratedTo": "--sizing-18",
               "value": "18px",
-              "status": "stable",
-              "note": "No Foundation step for 18px."
+              "status": "deprecated"
             },
             {
               "cssVar": "--sizing-icon-20",
-              "value": "var(--spacing-20)",
-              "status": "stable"
+              "migratedTo": "--sizing-20",
+              "value": "20px",
+              "status": "deprecated"
             },
             {
               "cssVar": "--sizing-icon-24",
-              "value": "var(--spacing-24)",
-              "status": "stable"
+              "migratedTo": "--sizing-24",
+              "value": "24px",
+              "status": "deprecated"
             },
             {
               "cssVar": "--sizing-icon-28",
-              "value": "var(--spacing-28)",
-              "status": "stable"
+              "migratedTo": "--sizing-28",
+              "value": "28px",
+              "status": "deprecated"
             },
             {
               "cssVar": "--sizing-icon-32",
-              "value": "var(--spacing-32)",
-              "status": "stable"
+              "migratedTo": "--sizing-32",
+              "value": "32px",
+              "status": "deprecated"
             }
           ]
         }
@@ -8892,14 +8912,14 @@ window.REGISTRY_BUNDLE = {
             "label": "medium",
             "height": "h44",
             "cssClass": "s1-btn-lg",
-            "token": "--sizing-button-height-md"
+            "token": "--sizing-44"
           },
           {
             "id": "xsmall",
             "label": "xsmall",
             "height": "h34",
             "cssClass": "",
-            "token": "--sizing-button-height-xs",
+            "token": "--sizing-34",
             "note": "기본 사이즈 — 크기 수식어 없음"
           },
           {
@@ -8907,7 +8927,7 @@ window.REGISTRY_BUNDLE = {
             "label": "xxsmall",
             "height": "h28",
             "cssClass": "s1-btn-sm",
-            "token": "--sizing-button-height-xxs",
+            "token": "--sizing-28",
             "note": "신규 토큰 — 2026-05-11 tokens.css에 추가됨"
           }
         ],
@@ -8917,10 +8937,10 @@ window.REGISTRY_BUNDLE = {
             "label": "mobile",
             "height": "h48",
             "cssClass": "s1-btn-mobile",
-            "token": "--sizing-button-height-lg"
+            "token": "--sizing-48"
           }
         ],
-        "minWidth": "--sizing-button-min-width",
+        "minWidth": "--sizing-80",
         "radius": "--radius-button-md"
       },
       "harness": {
@@ -9023,103 +9043,103 @@ window.REGISTRY_BUNDLE = {
           "tokens": [
             {
               "name": "--chip-line-default-bg",
-              "value": "var(--color-surface-default)",
+              "value": "var(--color-chip-line-bg-default)",
               "state": "default",
               "property": "background"
             },
             {
               "name": "--chip-line-hover-bg",
-              "value": "var(--color-bg-subtle)",
+              "value": "var(--color-chip-line-bg-hover)",
               "state": "hover",
               "property": "background"
             },
             {
               "name": "--chip-line-selected-bg",
-              "value": "var(--color-surface-default)",
+              "value": "var(--color-chip-line-bg-selected)",
               "state": "selected",
               "property": "background"
             },
             {
               "name": "--chip-line-disabled-bg",
-              "value": "var(--color-bg-subtle)",
+              "value": "var(--color-chip-line-bg-disabled)",
               "state": "disabled",
               "property": "background"
             },
             {
               "name": "--chip-line-default-border",
-              "value": "var(--color-border-default)",
+              "value": "var(--color-chip-line-border-default)",
               "state": "default",
               "property": "border-color"
             },
             {
               "name": "--chip-line-hover-border",
-              "value": "var(--color-border-strong)",
+              "value": "var(--color-chip-line-border-default)",
               "state": "hover",
               "property": "border-color"
             },
             {
               "name": "--chip-line-selected-border",
-              "value": "var(--color-action-primary-default)",
+              "value": "var(--color-chip-line-border-selected)",
               "state": "selected",
               "property": "border-color"
             },
             {
               "name": "--chip-line-disabled-border",
-              "value": "var(--color-border-default)",
+              "value": "var(--color-chip-line-border-disabled)",
               "state": "disabled",
               "property": "border-color"
             },
             {
               "name": "--chip-line-default-text",
-              "value": "var(--color-text-caption)",
+              "value": "var(--color-chip-line-label-default)",
               "state": "default",
               "property": "color"
             },
             {
               "name": "--chip-line-selected-text",
-              "value": "var(--color-action-primary-default)",
+              "value": "var(--color-chip-line-label-selected)",
               "state": "selected",
               "property": "color"
             },
             {
               "name": "--chip-line-disabled-text",
-              "value": "var(--color-text-disabled)",
+              "value": "var(--color-chip-line-label-disabled)",
               "state": "disabled",
               "property": "color"
             },
             {
               "name": "--chip-line-default-icon",
-              "value": "var(--color-icon-default)",
+              "value": "var(--color-chip-line-label-default)",
               "state": "default",
               "property": "icon-color"
             },
             {
               "name": "--chip-line-selected-icon",
-              "value": "var(--color-action-primary-default)",
+              "value": "var(--color-chip-line-label-selected)",
               "state": "selected",
               "property": "icon-color"
             },
             {
               "name": "--chip-line-disabled-icon",
-              "value": "var(--color-icon-muted)",
+              "value": "var(--color-chip-line-label-disabled)",
               "state": "disabled",
               "property": "icon-color"
             },
             {
               "name": "--chip-line-default-close-icon",
-              "value": "var(--color-icon-default)",
+              "value": "var(--color-chip-line-label-default)",
               "state": "default",
               "property": "close-icon-color"
             },
             {
               "name": "--chip-line-hover-close-icon",
-              "value": "var(--color-icon-emphasis)",
+              "value": "var(--color-chip-line-label-default)",
               "state": "hover",
               "property": "close-icon-color"
             },
             {
               "name": "--chip-line-selected-close-icon",
-              "value": "var(--color-action-primary-default)",
+              "value": "var(--color-chip-line-label-selected)",
               "state": "selected",
               "property": "close-icon-color"
             }
@@ -9134,104 +9154,104 @@ window.REGISTRY_BUNDLE = {
           "tokens": [
             {
               "name": "--chip-solid-default-bg",
-              "value": "var(--color-bg-subtle)",
+              "value": "var(--color-chip-solid-bg-default)",
               "state": "default",
               "property": "background"
             },
             {
               "name": "--chip-solid-hover-bg",
-              "value": "var(--color-bg-muted)",
+              "value": "var(--color-chip-solid-bg-hover)",
               "state": "hover",
               "property": "background"
             },
             {
               "name": "--chip-solid-selected-bg",
-              "value": "var(--color-action-primary-default)",
+              "value": "var(--color-chip-solid-bg-selected)",
               "state": "selected",
               "property": "background"
             },
             {
               "name": "--chip-solid-disabled-bg",
-              "value": "var(--color-bg-subtle)",
+              "value": "var(--color-chip-solid-bg-disabled)",
               "state": "disabled",
               "property": "background"
             },
             {
               "name": "--chip-solid-default-border",
-              "value": "var(--color-bg-subtle)",
+              "value": "var(--color-chip-solid-border-default)",
               "state": "default",
               "property": "border-color",
               "note": "border = background (invisible)"
             },
             {
               "name": "--chip-solid-hover-border",
-              "value": "var(--color-bg-muted)",
+              "value": "var(--color-chip-solid-border-default)",
               "state": "hover",
               "property": "border-color"
             },
             {
               "name": "--chip-solid-selected-border",
-              "value": "var(--color-action-primary-default)",
+              "value": "var(--color-chip-solid-border-selected)",
               "state": "selected",
               "property": "border-color"
             },
             {
               "name": "--chip-solid-disabled-border",
-              "value": "var(--color-bg-subtle)",
+              "value": "var(--color-chip-solid-border-disabled)",
               "state": "disabled",
               "property": "border-color"
             },
             {
               "name": "--chip-solid-default-text",
-              "value": "var(--color-text-caption)",
+              "value": "var(--color-chip-solid-label-default)",
               "state": "default",
               "property": "color"
             },
             {
               "name": "--chip-solid-selected-text",
-              "value": "var(--color-action-primary-text)",
+              "value": "var(--color-chip-solid-label-selected)",
               "state": "selected",
               "property": "color"
             },
             {
               "name": "--chip-solid-disabled-text",
-              "value": "var(--color-text-disabled)",
+              "value": "var(--color-chip-solid-label-disabled)",
               "state": "disabled",
               "property": "color"
             },
             {
               "name": "--chip-solid-default-icon",
-              "value": "var(--color-icon-default)",
+              "value": "var(--color-chip-solid-label-default)",
               "state": "default",
               "property": "icon-color"
             },
             {
               "name": "--chip-solid-selected-icon",
-              "value": "var(--color-action-primary-text)",
+              "value": "var(--color-chip-solid-label-selected)",
               "state": "selected",
               "property": "icon-color"
             },
             {
               "name": "--chip-solid-disabled-icon",
-              "value": "var(--color-icon-muted)",
+              "value": "var(--color-chip-solid-label-disabled)",
               "state": "disabled",
               "property": "icon-color"
             },
             {
               "name": "--chip-solid-default-close-icon",
-              "value": "var(--color-icon-default)",
+              "value": "var(--color-chip-solid-label-default)",
               "state": "default",
               "property": "close-icon-color"
             },
             {
               "name": "--chip-solid-hover-close-icon",
-              "value": "var(--color-icon-emphasis)",
+              "value": "var(--color-chip-solid-label-default)",
               "state": "hover",
               "property": "close-icon-color"
             },
             {
               "name": "--chip-solid-selected-close-icon",
-              "value": "var(--color-action-primary-text)",
+              "value": "var(--color-chip-solid-label-selected)",
               "state": "selected",
               "property": "close-icon-color"
             }
@@ -9280,15 +9300,15 @@ window.REGISTRY_BUNDLE = {
         }
       },
       "sizing": {
-        "--sizing-chip-height-sm": {
+        "--sizing-28": {
           "value": "var(--spacing-28)",
           "note": "28px — xsmall"
         },
-        "--sizing-chip-height-md": {
+        "--sizing-30": {
           "value": "30px",
           "note": "Foundation step 없음 — design spec 직접 반영"
         },
-        "--sizing-chip-height-lg": {
+        "--sizing-34": {
           "value": "34px",
           "note": "Foundation step 없음 — design spec 직접 반영, harness default"
         }
@@ -9799,22 +9819,29 @@ window.REGISTRY_BUNDLE = {
       "tokens": [
         {
           "cssVar": "--checkbox-default-bg",
-          "value": "var(--color-form-control-bg-default)",
-          "semanticRef": "color-form-control-bg-default",
+          "value": "var(--color-control-bg-default)",
+          "semanticRef": "color-control-bg-default",
           "state": "default",
           "property": "background"
         },
         {
+          "cssVar": "--checkbox-hover-bg",
+          "value": "var(--color-control-bg-hover)",
+          "semanticRef": "color-control-bg-hover",
+          "state": "hover",
+          "property": "background"
+        },
+        {
           "cssVar": "--checkbox-checked-bg",
-          "value": "var(--color-action-primary-default)",
-          "semanticRef": "color-action-primary-default",
+          "value": "var(--color-control-bg-selected)",
+          "semanticRef": "color-control-bg-selected",
           "state": "checked",
           "property": "background"
         },
         {
           "cssVar": "--checkbox-disabled-bg",
-          "value": "var(--color-bg-subtle)",
-          "semanticRef": "color-bg-subtle",
+          "value": "var(--color-control-bg-disabled)",
+          "semanticRef": "color-control-bg-disabled",
           "state": "disabled",
           "property": "background"
         },
@@ -9827,8 +9854,8 @@ window.REGISTRY_BUNDLE = {
         },
         {
           "cssVar": "--checkbox-hover-border",
-          "value": "var(--color-control-border-hover)",
-          "semanticRef": "color-control-border-hover",
+          "value": "var(--color-control-border-default)",
+          "semanticRef": "color-control-border-default",
           "state": "hover",
           "property": "border"
         },
@@ -9848,22 +9875,23 @@ window.REGISTRY_BUNDLE = {
         },
         {
           "cssVar": "--checkbox-check-icon",
-          "value": "var(--color-action-primary-text)",
-          "semanticRef": "color-action-primary-text",
+          "value": "var(--color-control-indicator-selected)",
+          "semanticRef": "color-control-indicator-selected",
           "state": "checked",
           "property": "icon"
         },
         {
           "cssVar": "--checkbox-disabled-check-icon",
-          "value": "var(--color-border-strong)",
-          "semanticRef": "color-border-strong",
+          "value": "var(--color-control-indicator-disabled)",
+          "semanticRef": "color-control-indicator-disabled",
           "state": "disabled",
           "property": "icon"
         }
       ],
       "figma": {
         "componentSetKey": "",
-        "figmaNodeId": "",
+        "figmaNodeId": "1459:16409",
+        "fileKey": "Tnihi6lixRR47N4RSAwUbF",
         "propertyMap": {}
       },
       "governance": {
@@ -9896,15 +9924,22 @@ window.REGISTRY_BUNDLE = {
       "tokens": [
         {
           "cssVar": "--radio-default-bg",
-          "value": "var(--color-form-control-bg-default)",
-          "semanticRef": "color-form-control-bg-default",
+          "value": "var(--color-control-bg-default)",
+          "semanticRef": "color-control-bg-default",
           "state": "default",
           "property": "background"
         },
         {
+          "cssVar": "--radio-hover-bg",
+          "value": "var(--color-control-bg-hover)",
+          "semanticRef": "color-control-bg-hover",
+          "state": "hover",
+          "property": "background"
+        },
+        {
           "cssVar": "--radio-disabled-bg",
-          "value": "var(--color-bg-subtle)",
-          "semanticRef": "color-bg-subtle",
+          "value": "var(--color-control-bg-disabled)",
+          "semanticRef": "color-control-bg-disabled",
           "state": "disabled",
           "property": "background"
         },
@@ -9917,8 +9952,8 @@ window.REGISTRY_BUNDLE = {
         },
         {
           "cssVar": "--radio-hover-border",
-          "value": "var(--color-control-border-hover)",
-          "semanticRef": "color-control-border-hover",
+          "value": "var(--color-control-border-default)",
+          "semanticRef": "color-control-border-default",
           "state": "hover",
           "property": "border"
         },
@@ -9938,15 +9973,15 @@ window.REGISTRY_BUNDLE = {
         },
         {
           "cssVar": "--radio-selected-dot",
-          "value": "var(--color-action-primary-default)",
-          "semanticRef": "color-action-primary-default",
+          "value": "var(--color-control-indicator-selected-alt)",
+          "semanticRef": "color-control-indicator-selected-alt",
           "state": "selected",
           "property": "dot-icon"
         },
         {
           "cssVar": "--radio-disabled-dot",
-          "value": "var(--color-border-strong)",
-          "semanticRef": "color-border-strong",
+          "value": "var(--color-control-indicator-disabled)",
+          "semanticRef": "color-control-indicator-disabled",
           "state": "disabled",
           "property": "dot-icon"
         }
@@ -9988,29 +10023,29 @@ window.REGISTRY_BUNDLE = {
       "tokens": [
         {
           "cssVar": "--toggle-on-bg",
-          "value": "var(--color-action-primary-default)",
-          "semanticRef": "color-action-primary-default",
+          "value": "var(--color-control-bg-selected)",
+          "semanticRef": "color-control-bg-selected",
           "state": "on",
           "property": "background"
         },
         {
           "cssVar": "--toggle-off-bg",
-          "value": "var(--color-text-placeholder)",
-          "semanticRef": "color-text-placeholder",
+          "value": "var(--color-control-indicator-unselected)",
+          "semanticRef": "color-control-indicator-unselected",
           "state": "off",
           "property": "background"
         },
         {
           "cssVar": "--toggle-disabled-bg",
-          "value": "var(--color-bg-muted)",
-          "semanticRef": "color-bg-muted",
+          "value": "var(--color-control-bg-disabled)",
+          "semanticRef": "color-control-bg-disabled",
           "state": "disabled",
           "property": "background"
         },
         {
           "cssVar": "--toggle-knob",
-          "value": "var(--color-action-primary-text)",
-          "semanticRef": "color-action-primary-text",
+          "value": "var(--color-control-indicator-selected)",
+          "semanticRef": "color-control-indicator-selected",
           "state": "all",
           "property": "knob-color"
         }
@@ -10341,8 +10376,8 @@ window.REGISTRY_BUNDLE = {
         }
       },
       "sizing": {
-        "rowHeightMd": "var(--sizing-table-row-height-md)",
-        "rowHeightSm": "var(--sizing-table-row-height-sm)",
+        "rowHeightMd": "var(--sizing-44)",
+        "rowHeightSm": "var(--sizing-38)",
         "paddingInlineStart": "var(--spacing-padding-inline-xs)",
         "paddingInlineEnd": "var(--spacing-padding-inline-sm)",
         "selectionCellWidth": "48px",
@@ -10497,25 +10532,25 @@ window.REGISTRY_BUNDLE = {
       "sizes": {
         "pc-md": {
           "height": "44px",
-          "token": "--sizing-form-control-height-md",
+          "token": "--sizing-44",
           "cssModifier": null,
           "fontSize": "14px"
         },
         "pc-xsm": {
           "height": "34px",
-          "token": "--sizing-form-control-height-xs",
+          "token": "--sizing-34",
           "cssModifier": "s1-select-wrap--xsm",
           "fontSize": "14px"
         },
         "pc-xxsm": {
           "height": "28px",
-          "token": "--sizing-form-control-height-xxs",
+          "token": "--sizing-28",
           "cssModifier": "s1-select-wrap--xxsm",
           "fontSize": "12px"
         },
         "mobile": {
           "height": "48px",
-          "token": "--sizing-form-control-height-lg",
+          "token": "--sizing-48",
           "cssModifier": "s1-select-wrap--mobile",
           "fontSize": "14px"
         }
@@ -10964,9 +10999,45 @@ window.REGISTRY_BUNDLE = {
     }
   },
   "reportsIndex": {
-    "generatedAt": "2026-06-08T01:43:54.763Z",
-    "totalCount": 48,
+    "generatedAt": "2026-06-12T02:10:22.184Z",
+    "totalCount": 51,
     "reports": [
+      {
+        "id": "harness-audit-2026-06-11",
+        "filename": "harness-audit-2026-06-11.md",
+        "title": "Harness Audit Report — 2026-06-11",
+        "stage": "Audit",
+        "category": "audit",
+        "status": "archive",
+        "sourcePath": "reports/harness-audit-2026-06-11.md",
+        "updatedAt": "2026-06-11",
+        "summary": "- ✅ [button] 모든 사이즈 분기 존재 (medium (h44) / xsmall (h34) / xxsmall (h28) / mobile (h48))",
+        "fileSizeKB": 1.7
+      },
+      {
+        "id": "harness-audit-2026-06-10",
+        "filename": "harness-audit-2026-06-10.md",
+        "title": "Harness Audit Report — 2026-06-10",
+        "stage": "Audit",
+        "category": "audit",
+        "status": "archive",
+        "sourcePath": "reports/harness-audit-2026-06-10.md",
+        "updatedAt": "2026-06-10",
+        "summary": "- ✅ [button] 모든 사이즈 분기 존재 (medium (h44) / xsmall (h34) / xxsmall (h28) / mobile (h48))",
+        "fileSizeKB": 1.7
+      },
+      {
+        "id": "harness-audit-2026-06-09",
+        "filename": "harness-audit-2026-06-09.md",
+        "title": "Harness Audit Report — 2026-06-09",
+        "stage": "Audit",
+        "category": "audit",
+        "status": "archive",
+        "sourcePath": "reports/harness-audit-2026-06-09.md",
+        "updatedAt": "2026-06-09",
+        "summary": "- ✅ [button] 모든 사이즈 분기 존재 (medium (h44) / xsmall (h34) / xxsmall (h28) / mobile (h48))",
+        "fileSizeKB": 1.7
+      },
       {
         "id": "harness-audit-2026-06-08",
         "filename": "harness-audit-2026-06-08.md",

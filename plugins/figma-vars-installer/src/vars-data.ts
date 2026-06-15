@@ -633,44 +633,11 @@ export const SEMANTIC_NUMBER: Record<string, string | number> = {
   "spacing/label-gap-block/sm":  "spacing/4",
   "spacing/label-gap-block/md":  "spacing/8",
 
-  // ── sizing/form-control-height ────────
-  "sizing/form-control-height/xxs": "spacing/28",
-  "sizing/form-control-height/xs":  34, // Foundation step 없음
-  "sizing/form-control-height/md":  "spacing/44",
-  "sizing/form-control-height/lg":  "spacing/48",
-  "sizing/form-control-dataview-height/sm": "spacing/28",
-  "sizing/form-control-dataview-height/md": 32, // Foundation step 없음
-
-  // ── sizing/button-height ──────────────
-  "sizing/button-height/xxs": "spacing/28",
-  "sizing/button-height/xs":  34, // Foundation step 없음
-  "sizing/button-height/sm":  "spacing/40",
-  "sizing/button-height/md":  "spacing/44",
-  "sizing/button-height/lg":  "spacing/48",
-  "sizing/button-min-width":  80, // Foundation step 없음
-
-  // ── sizing/chip-height ────────────────
-  "sizing/chip-height/sm": "spacing/28",
-  "sizing/chip-height/md": 30, // Foundation step 없음
-  "sizing/chip-height/lg": 34, // Foundation step 없음
-
-  // ── sizing/table-row-height ───────────
-  "sizing/table-row-height/xs": 34, // Foundation step 없음
-  "sizing/table-row-height/sm": 38, // Foundation step 없음
-  "sizing/table-row-height/md": "spacing/44",
-
-  // ── sizing/dropdown-item-height ───────
-  "sizing/dropdown-item-height/md": "spacing/44", // 44 — Select 옵션
-  "sizing/dropdown-item-height/xs": 34,           // 34 — 컴팩트 (TimePicker)
-
-  // ── sizing/icon ───────────────────────
-  "sizing/icon/10": 10, // Foundation step 없음
-  "sizing/icon/16": "spacing/16",
-  "sizing/icon/18": 18, // Foundation step 없음
-  "sizing/icon/20": "spacing/20",
-  "sizing/icon/24": "spacing/24",
-  "sizing/icon/28": "spacing/28",
-  "sizing/icon/32": "spacing/32",
+  // ── sizing (semantic) ─────────────────
+  // 2026-06-12 폐지: 컴포넌트별 사이징(form-control-height·button-height·chip-height·
+  //   table-row-height·dropdown-item-height·icon·button-min-width)을 전부 제거하고
+  //   컴포넌트가 Foundation --sizing-N 을 직접 참조하도록 전환(사용자 결정).
+  //   값 보존: 모든 옛 토큰이 Foundation sizing step과 1:1 매핑됨.
 
   // ── radius semantic ───────────────────
   "radius/control/xs": "radius/2",

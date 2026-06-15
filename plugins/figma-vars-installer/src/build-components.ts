@@ -87,6 +87,8 @@ const CELL_H = 60;
 // 가장 넓은 컴포넌트(Input: 7 state 열)를 수용하도록 설정.
 const SPEC_LIGHT_X = 1040;
 const SPEC_DARK_X = 2080;
+// Input 전용 시트 가로 시작점 — 세로 스택(최대 우측 ~3500)을 비켜 버튼 우측편에 독립 배치.
+const INPUT_SHEET_X = 4200;
 
 interface Slots { bg: string; border: string; label: string; }
 
@@ -217,6 +219,7 @@ interface GroupedSpecOpts {
   cellAt: (platformName: string, size: string, rowIdx: number, colIdx: number) => ComponentNode | null;
   lightX: number; darkX: number; originY: number;
   cellW: number; cellH: number; rowLabelW: number;
+  offsetX?: number; // 세트(원본 variant + 띄운 라벨/밴드)를 가로로 이동. 미지정=0(기존 동작).
 }
 function specPalette(dark: boolean): Record<string, RGB> {
   return {
@@ -284,10 +287,12 @@ function frameEmit(frame: FrameNode, maps: BuildMaps, modeId: string): LayoutEmi
 }
 
 // 컴포넌트 세트 노드는 텍스트/사각형 자식을 못 받으므로, 라벨/밴드를 캔버스에 띄워 세트 위에 정렬(절대 oy 기준).
-function floatingEmit(oy: number): LayoutEmit {
+// ox = 세트 가로 오프셋. 라벨/밴드는 페이지 절대좌표라 ox 를 더하고, cell(=세트 내부 variant)은 세트 기준 상대좌표라 ox 미적용
+// (세트 자체를 set.x=ox 로 옮기므로 시각적으로 정렬됨).
+function floatingEmit(oy: number, ox = 0): LayoutEmit {
   return {
-    text: async (s, x, y, w, al, col, fs, st) => { await makeLabel(s, fs, st, x, oy + y, w, al, col); },
-    band: (x, y, w, h, col) => { const b = figma.createRectangle(); b.resize(w, h); b.cornerRadius = 4; b.fills = [{ type: "SOLID", color: col }]; b.x = x; b.y = oy + y; },
+    text: async (s, x, y, w, al, col, fs, st) => { await makeLabel(s, fs, st, ox + x, oy + y, w, al, col); },
+    band: (x, y, w, h, col) => { const b = figma.createRectangle(); b.resize(w, h); b.cornerRadius = 4; b.fills = [{ type: "SOLID", color: col }]; b.x = ox + x; b.y = oy + y; },
     cell: (comp, x, y) => { comp.x = x; comp.y = y; },
   };
 }
@@ -316,9 +321,10 @@ async function buildGroupedSpec(opts: GroupedSpecOpts, maps: BuildMaps): Promise
 /** 컴포넌트 세트 원본을 Light 스펙처럼 꾸민다(세트=실제 variant, 라벨/밴드는 캔버스에 정렬). 반환=최하단 Y. */
 async function decorateSetGrouped(set: ComponentSetNode, opts: GroupedSpecOpts, maps: BuildMaps): Promise<number> {
   const W = specWidth(opts.rowLabelW, opts.colHeaders.length, opts.cellW);
-  set.x = 0; set.y = opts.originY;
+  const ox = opts.offsetX ?? 0;
+  set.x = ox; set.y = opts.originY;
   try { set.fills = [{ type: "SOLID", color: specPalette(false).bg }]; } catch (e) { /* skip */ }
-  const H = await renderGrouped(opts, false, floatingEmit(opts.originY));
+  const H = await renderGrouped(opts, false, floatingEmit(opts.originY, ox));
   set.resize(W, H);
   setLightMode(set, maps);
   return opts.originY + H;
@@ -748,7 +754,9 @@ async function buildInput(maps: BuildMaps, originY: number): Promise<{ set: Comp
   }
   const set = figma.combineAsVariants(comps, figma.currentPage);
   set.name = "Input";
-  set.x = 0; set.y = originY;
+  // Input 은 규모가 커서(7 상태 × 4 사이즈 × 4 그룹) 세로 스택에서 분리, 버튼 우측편 넓은 시트로 배치.
+  const OX = INPUT_SHEET_X;
+  set.x = OX; set.y = originY;
   // 그룹핑 규칙: 모디파이어(라벨×메시지) 조합을 상위 그룹(밴드)으로, 그 안에서 사이즈별로 나열.
   // (사이즈별로 라벨/메시지가 번갈아 나오지 않게.) Input 은 예외적으로 필드·컬럼 폭을 넓게.
   const groups = [
@@ -776,7 +784,8 @@ async function buildInput(maps: BuildMaps, originY: number): Promise<{ set: Comp
       const r = sizeRows[ri];
       return cells.find((x) => x.size === r.size && x.brk === r.brk && x.state === states[ci].name && x.label === g.lab && x.message === g.msg)?.comp ?? null;
     },
-    lightX: 1740, darkX: 3500, originY, cellW: 224, cellH: 100, rowLabelW: 110,
+    // 세트(원본) → Light → Dark 를 OX 기준 가로로 나란히. specWidth(110,7,224)=1726, 컬럼 간 80 gap.
+    offsetX: OX, lightX: OX + 1726 + 80, darkX: OX + (1726 + 80) * 2, originY, cellW: 224, cellH: 100, rowLabelW: 110,
   };
   let bottomY = await decorateSetGrouped(set, opts, maps);
   try { bottomY = Math.max(bottomY, await buildGroupedSpec(opts, maps)); } catch (e) { console.warn(e); }
@@ -1125,6 +1134,294 @@ async function buildTableCell(maps: BuildMaps, originY: number): Promise<{ set: 
   return { set, bottomY };
 }
 
+// ── Filter Chip (드롭다운 칩) — color/chip/{line,solid}/* + 드롭다운 패널 ────────
+// 출처: components.html Filter Chip (5 states: Default·Hover·Selected·Complete·Disabled).
+//  · 4 그룹 = Variant(Line/Solid) × Title(없음/있음). Selected = 드롭다운 펼침(패널 표출).
+//  · Line: bg/border/label = chip/line/*. Solid: chip/solid/*. arrow = 같은 state 의 label 색에 정합.
+//  · Complete = 값 선택됨(과거순). Title 있는 Line 은 값 라벨이 selected(파랑).
+async function buildFilterChip(maps: BuildMaps, originY: number): Promise<{ set: ComponentSetNode; bottomY: number }> {
+  // 우향 chevron (components.html 원본 path) — Selected(open) 시 270°(아래) 회전 표현은 정적 스펙이라 아래방향 SVG 사용
+  const arrowRight = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M9 6L15 12L9 18" stroke="#000" stroke-width="2" stroke-linecap="square"/></svg>`;
+  const arrowDown = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M6 9L12 15L18 9" stroke="#000" stroke-width="2" stroke-linecap="square"/></svg>`;
+  const variants = ["Line", "Solid"];
+  const titles = [
+    { key: "Off", name: "Label only" },
+    { key: "On",  name: "With title" },
+  ];
+  const states = ["Default", "Hover", "Selected", "Complete", "Disabled"];
+
+  // variant·state → chip 슬롯 suffix (bg/border/label) + open 여부
+  function chipSlot(v: string, st: string): { bg: string; bd: string; lb: string; open: boolean } {
+    if (v === "line") {
+      switch (st) {
+        case "Hover":    return { bg: "hover",    bd: "default",  lb: "default",  open: false };
+        case "Selected": return { bg: "selected", bd: "selected", lb: "default",  open: true };  // 펼침: 보더만 파랑
+        case "Disabled": return { bg: "disabled", bd: "disabled", lb: "disabled", open: false };
+        default:         return { bg: "default",  bd: "default",  lb: "default",  open: false };  // Default·Complete
+      }
+    }
+    // solid — Hover 보더는 default 유지(정본 Chip·line variant 와 일치, chip/solid/border/hover 미정의)
+    switch (st) {
+      case "Hover":    return { bg: "hover",    bd: "default",  lb: "default",  open: false };
+      case "Selected": return { bg: "selected", bd: "selected", lb: "selected", open: true };
+      case "Disabled": return { bg: "disabled", bd: "disabled", lb: "disabled", open: false };
+      default:         return { bg: "default",  bd: "default",  lb: "default",  open: false };
+    }
+  }
+
+  const comps: ComponentNode[] = [];
+  const cells: { comp: ComponentNode; variant: string; title: string; state: string }[] = [];
+  for (const variant of variants) {
+    const v = variant.toLowerCase();
+    for (const t of titles) {
+      for (const st of states) {
+        const ss = chipSlot(v, st);
+        const dis = st === "Disabled";
+        // chip 트리거 (pill)
+        const chip = figma.createFrame();
+        chip.name = "chip";
+        chip.layoutMode = "HORIZONTAL"; chip.counterAxisAlignItems = "CENTER";
+        chip.primaryAxisSizingMode = "AUTO"; chip.counterAxisSizingMode = "FIXED";
+        chip.itemSpacing = 4; chip.paddingLeft = 16; chip.paddingRight = 8; chip.cornerRadius = 999;
+        chip.fills = [boundPaint(scv(maps, `color/chip/${v}/bg/${ss.bg}`))];
+        chip.strokes = [boundPaint(scv(maps, `color/chip/${v}/border/${ss.bd}`))];
+        chip.strokeWeight = 1; chip.strokeAlign = "INSIDE";
+        // Title(있음) → "정렬" 라벨(타이틀색) + 값 라벨
+        if (t.key === "On") {
+          chip.appendChild(await makeBoundText("정렬", 14, "Medium", scv(maps, `color/chip/${v}/label/${ss.lb}`)));
+        }
+        // 값 라벨: Complete = 과거순(선택값), 그 외 = 최신순.
+        // Title 있는 Line 의 값 라벨은 selected(파랑) — disabled 제외. 그 외는 ss.lb.
+        const valLbSlot = (t.key === "On" && v === "line" && !dis) ? "selected" : ss.lb;
+        const valText = st === "Complete" ? "과거순" : "최신순";
+        chip.appendChild(await makeBoundText(valText, 14, "Medium", scv(maps, `color/chip/${v}/label/${valLbSlot}`)));
+        // arrow: 펼침이면 아래방향, 아니면 우향. 색 = 라벨색 정합(default/disabled/selected).
+        const arrowSlot = ss.lb;
+        chip.appendChild(makeStrokeIcon((ss.open ? arrowDown : arrowRight), scv(maps, `color/chip/${v}/label/${arrowSlot}`)));
+        chip.resize(chip.width, 36); // chip-height-lg (PC 기본 36)
+
+        // 컴포넌트(세로): chip + (Selected 면 드롭다운 패널)
+        const comp = figma.createComponent();
+        comp.name = `Variant=${variant}, Title=${t.key}, State=${st}`;
+        comp.layoutMode = "VERTICAL"; comp.primaryAxisSizingMode = "AUTO"; comp.counterAxisSizingMode = "AUTO"; comp.itemSpacing = 8;
+        comp.appendChild(chip);
+        if (ss.open) {
+          const panel = figma.createFrame();
+          panel.name = "list";
+          panel.layoutMode = "VERTICAL"; panel.primaryAxisSizingMode = "FIXED"; panel.counterAxisSizingMode = "FIXED";
+          panel.paddingTop = 4; panel.paddingBottom = 4; panel.itemSpacing = 0; panel.cornerRadius = 4;
+          panel.resize(130, 3 * 32 + 8);
+          panel.fills = [boundPaint(scv(maps, "color/dropdown/list/bg"))];
+          panel.strokes = [boundPaint(scv(maps, "color/dropdown/list/border"))]; panel.strokeWeight = 1; panel.strokeAlign = "INSIDE";
+          const opts = [
+            { txt: "최신순", bg: "selected", lb: "selected" },
+            { txt: "과거순", bg: "default",  lb: "default" },
+            { txt: "인기순", bg: "default",  lb: "default" },
+          ];
+          for (const o of opts) {
+            const row = figma.createFrame();
+            row.name = "option";
+            row.layoutMode = "HORIZONTAL"; row.counterAxisAlignItems = "CENTER";
+            row.primaryAxisSizingMode = "FIXED"; row.counterAxisSizingMode = "FIXED";
+            row.resize(130, 32); row.paddingLeft = 12; row.paddingRight = 12;
+            row.fills = [boundPaint(scv(maps, `color/dropdown/option/bg/${o.bg}`))];
+            row.appendChild(await makeBoundText(o.txt, 14, "Regular", scv(maps, `color/dropdown/option/label/${o.lb}`)));
+            panel.appendChild(row);
+          }
+          comp.appendChild(panel);
+        }
+        setLightMode(comp, maps);
+        comps.push(comp);
+        cells.push({ comp, variant, title: t.key, state: st });
+      }
+    }
+  }
+  const set = figma.combineAsVariants(comps, figma.currentPage);
+  set.name = "Filter Chip";
+  set.x = 0; set.y = originY;
+  // 그룹핑: 모디파이어(Variant×Title) 조합을 밴드로, 그 안에서 사이즈(단일)를 행으로.
+  const groups = [
+    { name: "Line · Label only",  variant: "Line",  title: "Off" },
+    { name: "Line · With title",  variant: "Line",  title: "On" },
+    { name: "Solid · Label only", variant: "Solid", title: "Off" },
+    { name: "Solid · With title", variant: "Solid", title: "On" },
+  ];
+  const groupMap = new Map<string, { variant: string; title: string }>();
+  for (const g of groups) groupMap.set(g.name, g);
+  const opts: GroupedSpecOpts = {
+    title: "Filter Chip",
+    platforms: groups.map((g) => ({ name: g.name, sizes: [""] })),
+    rowLabels: [""],
+    colHeaders: states,
+    cellAt: (groupName, _size, _ri, ci) => {
+      const g = groupMap.get(groupName);
+      if (!g) return null;
+      return cells.find((x) => x.variant === g.variant && x.title === g.title && x.state === states[ci])?.comp ?? null;
+    },
+    lightX: SPEC_LIGHT_X, darkX: SPEC_DARK_X, originY, cellW: 150, cellH: 150, rowLabelW: 16,
+  };
+  let bottomY = await decorateSetGrouped(set, opts, maps);
+  try { bottomY = Math.max(bottomY, await buildGroupedSpec(opts, maps)); } catch (e) { console.warn(e); }
+  return { set, bottomY };
+}
+
+// ── Time Picker (Input형 트리거 + 시계 아이콘) — color/form-control/* · Break 있음 → 그룹형 ──
+// Figma: timepicker_input (540:3690). 드롭다운 base 패널은 Time Picker Dropdown(별도 컴포넌트).
+async function buildTimePicker(maps: BuildMaps, originY: number): Promise<{ set: ComponentSetNode; bottomY: number }> {
+  const fc = (k: string) => `color/form-control/${k}`;
+  const CLOCK = `<svg width="18" height="18" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="7.5" stroke="#000" stroke-width="1.2"/><path d="M9 5v4l2.5 2.5" stroke="#000" stroke-width="1.2" stroke-linecap="round"/></svg>`;
+  const states = [
+    { name: "Default",  bg: "bg/default",  border: "border/default",  txt: "시간 선택", tc: "text/placeholder", icon: "icon/default" },
+    { name: "Hover",    bg: "bg/hover",     border: "border/default",  txt: "시간 선택", tc: "text/placeholder", icon: "icon/default" },
+    { name: "Focus",    bg: "bg/default",   border: "border/selected", txt: "시간 선택", tc: "text/placeholder", icon: "icon/default" },
+    { name: "Filled",   bg: "bg/default",   border: "border/default",  txt: "09:30",     tc: "text/default",     icon: "icon/default" },
+    { name: "Disabled", bg: "bg/disabled",  border: "border/disabled", txt: "00:00",     tc: "text/disabled",    icon: "icon/disabled" },
+  ];
+  const sizes = [
+    { size: "XXSM", brk: "PC",     h: 28, font: 12, padL: 10, padR: 6 },
+    { size: "XSM",  brk: "PC",     h: 34, font: 14, padL: 12, padR: 8 },
+    { size: "MD",   brk: "PC",     h: 44, font: 14, padL: 16, padR: 8 },
+    { size: "MD",   brk: "Mobile", h: 48, font: 14, padL: 16, padR: 8 },
+  ];
+  const comps: ComponentNode[] = [];
+  const cells: { comp: ComponentNode; size: string; brk: string; state: string }[] = [];
+  for (const sc of sizes) {
+    for (const st of states) {
+      const comp = figma.createComponent();
+      comp.name = `Size=${sc.size}, State=${st.name}, Break=${sc.brk}`;
+      comp.layoutMode = "HORIZONTAL";
+      comp.primaryAxisAlignItems = "SPACE_BETWEEN";
+      comp.counterAxisAlignItems = "CENTER";
+      comp.primaryAxisSizingMode = "FIXED"; comp.counterAxisSizingMode = "FIXED";
+      comp.paddingLeft = sc.padL; comp.paddingRight = sc.padR; comp.paddingTop = 0; comp.paddingBottom = 0;
+      comp.itemSpacing = 8; comp.cornerRadius = 4;
+      comp.fills = [boundPaint(scv(maps, fc(st.bg)))];
+      comp.strokes = [boundPaint(scv(maps, fc(st.border)))];
+      comp.strokeWeight = 1; comp.strokeAlign = "INSIDE";
+      comp.appendChild(await makeBoundText(st.txt, sc.font, "Regular", scv(maps, fc(st.tc))));
+      comp.appendChild(makeStrokeIcon(CLOCK, scv(maps, fc(st.icon))));
+      comp.resize(150, sc.h);
+      setLightMode(comp, maps);
+      comps.push(comp);
+      cells.push({ comp, size: sc.size, brk: sc.brk, state: st.name });
+    }
+  }
+  const set = figma.combineAsVariants(comps, figma.currentPage);
+  set.name = "Time Picker";
+  set.x = 0; set.y = originY;
+  const opts: GroupedSpecOpts = {
+    title: "Time Picker",
+    platforms: [{ name: "PC", sizes: ["XXSM", "XSM", "MD"] }, { name: "Mobile", sizes: ["MD"] }],
+    rowLabels: [""],
+    colHeaders: states.map((s) => s.name),
+    cellAt: (platName, size, _ri, ci) =>
+      cells.find((x) => x.size === size && x.brk === platName && x.state === states[ci].name)?.comp ?? null,
+    lightX: SPEC_LIGHT_X, darkX: SPEC_DARK_X, originY, cellW: 168, cellH: 60, rowLabelW: 16,
+  };
+  let bottomY = await decorateSetGrouped(set, opts, maps);
+  try { bottomY = Math.max(bottomY, await buildGroupedSpec(opts, maps)); } catch (e) { console.warn(e); }
+  return { set, bottomY };
+}
+
+// ── Time Picker Dropdown (base 패널) — color/dropdown/* ───────────────────────
+// Figma 정본: GUI 신규 1459:18597(Dropdown List 패널) + 1459:18526(Time Base 아이템).
+//   아이템 Time Base 77×30(행 93×30, 좌우 8px 거터), 구분선 없음, 선택=테두리 박스(Regular).
+//   default=option/label/default · selected=option/border/selected + option/label/selected.
+//   확인 푸터(Option 40px) 우측정렬 accent. 컬럼=list/bg, 패널 radius 4.
+// 변형: Type=24h(시·분 2컬럼=186) / Type=12h(오전오후·시·분 3컬럼=279, V2.4 540:3536 구성 · GUI 컬럼규격 적용).
+async function buildTimePickerDropdown(maps: BuildMaps, originY: number): Promise<{ set: ComponentSetNode; bottomY: number }> {
+  const COL_W = 93, ITEM_W = 77, ROW_H = 30, COLS_H = 190; // GUI 1459 실측
+  // 한 컬럼: 93폭, list/bg, 행 7개(클립 190), 행마다 Time Base 77 가운데 + 선택 테두리
+  async function makeCol(items: string[], selectedIdx: number): Promise<FrameNode> {
+    const col = figma.createFrame();
+    col.name = "col";
+    col.layoutMode = "VERTICAL"; col.primaryAxisSizingMode = "FIXED"; col.counterAxisSizingMode = "FIXED";
+    col.itemSpacing = 0; col.clipsContent = true;
+    col.fills = [boundPaint(scv(maps, "color/dropdown/list/bg"))];
+    col.resize(COL_W, COLS_H);
+    for (let i = 0; i < items.length; i++) {
+      const sel = i === selectedIdx;
+      const row = figma.createFrame();
+      row.name = "row";
+      row.layoutMode = "HORIZONTAL"; row.primaryAxisAlignItems = "CENTER"; row.counterAxisAlignItems = "CENTER";
+      row.primaryAxisSizingMode = "FIXED"; row.counterAxisSizingMode = "FIXED";
+      row.resize(COL_W, ROW_H); row.fills = [];
+      // Time Base 77×30 (가운데, 거터 8px) — default 투명 / selected 파란 테두리
+      const item = figma.createFrame();
+      item.name = "Time Base";
+      item.layoutMode = "HORIZONTAL"; item.primaryAxisAlignItems = "CENTER"; item.counterAxisAlignItems = "CENTER";
+      item.primaryAxisSizingMode = "FIXED"; item.counterAxisSizingMode = "FIXED";
+      item.paddingLeft = 12; item.paddingRight = 12; item.cornerRadius = 4;
+      item.resize(ITEM_W, ROW_H); item.fills = [];
+      if (sel) { item.strokes = [boundPaint(scv(maps, "color/dropdown/option/border/selected"))]; item.strokeWeight = 1; item.strokeAlign = "INSIDE"; }
+      const lbl = sel ? "color/dropdown/option/label/selected" : "color/dropdown/option/label/default";
+      item.appendChild(await makeBoundText(items[i], 14, "Regular", scv(maps, lbl)));
+      row.appendChild(item);
+      col.appendChild(row);
+    }
+    return col;
+  }
+
+  const hours = ["1", "2", "3", "4", "5", "6", "7"];
+  const mins = ["00", "01", "02", "03", "04", "05", "06"];
+  const ampm = ["오전", "오후"];
+  const types = [
+    { type: "24h", cols: [{ items: hours, sel: 0 }, { items: mins, sel: 0 }] },
+    { type: "12h", cols: [{ items: ampm, sel: 0 }, { items: hours, sel: 0 }, { items: mins, sel: 0 }] },
+  ];
+  const comps: ComponentNode[] = [];
+  for (const t of types) {
+    const nCol = t.cols.length;
+    const panelW = nCol * COL_W; // 24h=186, 12h=279
+
+    const panel = figma.createComponent();
+    panel.name = `Type=${t.type}`;
+    panel.layoutMode = "VERTICAL"; panel.counterAxisAlignItems = "CENTER";
+    panel.primaryAxisSizingMode = "AUTO"; panel.counterAxisSizingMode = "FIXED";
+    panel.itemSpacing = 0; panel.paddingTop = 12; panel.paddingBottom = 0; panel.cornerRadius = 4;
+    panel.clipsContent = true;
+    panel.fills = [boundPaint(scv(maps, "color/dropdown/list/bg"))];
+    panel.strokes = [boundPaint(scv(maps, "color/dropdown/list/border"))]; panel.strokeWeight = 1; panel.strokeAlign = "INSIDE";
+    panel.resize(panelW, 10);
+
+    // 컬럼 묶음 — 전폭, 패딩·gap·구분선 없음 (93+93[+93])
+    const colsFrame = figma.createFrame();
+    colsFrame.name = "cols";
+    colsFrame.layoutMode = "HORIZONTAL"; colsFrame.counterAxisAlignItems = "MIN";
+    colsFrame.primaryAxisSizingMode = "FIXED"; colsFrame.counterAxisSizingMode = "FIXED";
+    colsFrame.itemSpacing = 0; colsFrame.fills = []; colsFrame.resize(panelW, COLS_H);
+    for (let c = 0; c < nCol; c++) {
+      colsFrame.appendChild(await makeCol(t.cols[c].items, t.cols[c].sel));
+    }
+    panel.appendChild(colsFrame);
+
+    // footer (Option 40px · 확인 우측정렬 accent)
+    const footer = figma.createFrame();
+    footer.name = "Option";
+    footer.layoutMode = "HORIZONTAL"; footer.primaryAxisAlignItems = "MAX"; footer.counterAxisAlignItems = "CENTER";
+    footer.primaryAxisSizingMode = "FIXED"; footer.counterAxisSizingMode = "FIXED";
+    footer.resize(panelW, 40); footer.paddingLeft = 16; footer.paddingRight = 16; footer.fills = [];
+    footer.appendChild(await makeBoundText("확인", 14, "Medium", scv(maps, "color/text/state/accent")));
+    panel.appendChild(footer);
+
+    setLightMode(panel, maps);
+    comps.push(panel);
+  }
+  const set = figma.combineAsVariants(comps, figma.currentPage);
+  set.name = "Time Picker Dropdown";
+  set.x = 0; set.y = originY;
+  const opts: SpecOpts = {
+    title: "Time Picker Dropdown",
+    colHeaders: types.map((t) => t.type),
+    rowLabels: [""],
+    cellAt: (_r, c) => comps[c],
+    lightX: SPEC_LIGHT_X, darkX: SPEC_DARK_X, originY, cellW: 300, cellH: 270, rowLabelW: 16,
+  };
+  let bottomY = await decorateSetFlat(set, opts, maps);
+  try { bottomY = Math.max(bottomY, await buildSpec(opts, maps)); } catch (e) { console.warn(e); }
+  return { set, bottomY };
+}
+
 // ── 멀티 컴포넌트 오케스트레이터 ──────────────────────────────────────────────
 // Button(상단) + 나머지 컴포넌트를 세로로 스택 배치. 반환=총 variant 수.
 export async function buildAllComponents(
@@ -1136,11 +1433,15 @@ export async function buildAllComponents(
   const btn = await buildButtonSet(maps, onProgress, 92, 97);
   count += btn.set.children.length;
 
-  // 컴포넌트를 세로로 스택 (각 빌더가 set+스펙 포함 최하단 Y 반환 → 충돌 방지)
+  // Input 은 규모가 커서 세로 스택에서 제외, 버튼 우측편(INPUT_SHEET_X) 넓은 시트로 상단 정렬 배치.
+  const input = await buildInput(maps, 0);
+  count += input.set.children.length;
+
+  // 나머지 컴포넌트를 세로로 스택 (각 빌더가 set+스펙 포함 최하단 Y 반환 → 충돌 방지)
   const builders: ((m: BuildMaps, y: number) => Promise<{ set: ComponentSetNode; bottomY: number }>)[] = [
-    buildCheckbox, buildRadio, buildToggle, buildChip, buildInput, buildSearch, buildTextarea, buildSelect, buildDropdownList, buildLineTab, buildTableCell,
+    buildCheckbox, buildRadio, buildToggle, buildChip, buildFilterChip, buildSearch, buildTextarea, buildSelect, buildDropdownList, buildLineTab, buildTableCell, buildTimePicker, buildTimePickerDropdown,
   ];
-  const names = ["Checkbox", "Radio", "Toggle", "Chip", "Input", "Search Input", "Text Area", "Select Box", "Dropdown List", "Line Tab", "Table Cell"];
+  const names = ["Checkbox", "Radio", "Toggle", "Chip", "Filter Chip", "Search Input", "Text Area", "Select Box", "Dropdown List", "Line Tab", "Table Cell", "Time Picker", "Time Picker Dropdown"];
   let y = btn.bottomY + 140;
   for (let i = 0; i < builders.length; i++) {
     if (onProgress) onProgress(`${names[i]} 생성 중…`, 97 + Math.round(((i + 1) / builders.length) * 3));

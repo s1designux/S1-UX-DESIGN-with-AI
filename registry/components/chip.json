@@ -96,9 +96,9 @@
     }
   },
   "sizing": {
-    "--sizing-chip-height-sm": { "value": "var(--spacing-28)", "note": "28px — xsmall" },
-    "--sizing-chip-height-md": { "value": "30px",             "note": "Foundation step 없음 — design spec 직접 반영" },
-    "--sizing-chip-height-lg": { "value": "34px",             "note": "Foundation step 없음 — design spec 직접 반영, harness default" }
+    "--sizing-28": { "value": "var(--spacing-28)", "note": "28px — xsmall" },
+    "--sizing-30": { "value": "30px",             "note": "Foundation step 없음 — design spec 직접 반영" },
+    "--sizing-34": { "value": "34px",             "note": "Foundation step 없음 — design spec 직접 반영, harness default" }
   },
   "states": ["default", "hover", "selected", "complete", "disabled"],
   "stateNotes": {
