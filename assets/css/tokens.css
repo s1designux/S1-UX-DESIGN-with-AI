@@ -434,6 +434,17 @@
    SEMANTIC TOKENS — Light (Variables 기준 자동 생성)
    ══════════════════════════════════════════════════ */
 :root {
+  /* ── bg ── */
+  --color-bg-default : var(--color-gray-0);
+  --color-bg-subtle  : var(--color-gray-50);
+  --color-bg-muted   : var(--color-gray-100);
+  --color-bg-elevated: var(--color-gray-100);
+  --color-bg-selected: var(--color-blue-50);
+
+  /* ── surface ── */
+  --color-surface-default: var(--color-base-white);
+  --color-surface-raised : var(--color-base-white);
+
   /* ── button ── */
   --color-button-bg-assist--default       : var(--color-base-white);
   --color-button-bg-assist--hover         : var(--color-gray-50);
@@ -509,13 +520,13 @@
   --color-control-text-selected           : var(--color-base-white);
   --color-control-text-unselected         : var(--color-gray-800);
 
-  /* ── data ── */
-  --color-data-border-light  : var(--color-gray-100);
-  --color-data-border-strong : var(--color-gray-300);
-  --color-data-header-bg     : var(--color-gray-50);
-  --color-data-state-default : var(--color-base-white);
-  --color-data-state-hover   : var(--color-blue-50);
-  --color-data-state-selected: var(--color-blue-100);
+  /* ── table ── */
+  --color-table-border-light : var(--color-gray-100);
+  --color-table-border-strong: var(--color-gray-300);
+  --color-table-header-bg    : var(--color-gray-50);
+  --color-table-cell-default : var(--color-base-white);
+  --color-table-cell-hover   : var(--color-blue-50);
+  --color-table-cell-selected: var(--color-blue-100);
 
   /* ── dropdown ── */
   --color-dropdown-list-bg               : var(--color-base-white);
@@ -640,6 +651,17 @@
    SEMANTIC TOKENS — Dark (Variables 기준 자동 생성)
    ══════════════════════════════════════════════════ */
 [data-theme="dark"] {
+  /* ── bg ── */
+  --color-bg-default : var(--color-gray-dark-50);
+  --color-bg-subtle  : var(--color-gray-dark-200);
+  --color-bg-muted   : var(--color-gray-dark-300);
+  --color-bg-elevated: var(--color-gray-dark-400);
+  --color-bg-selected: var(--color-blue-dark-100);
+
+  /* ── surface ── */
+  --color-surface-default: var(--color-gray-dark-100);
+  --color-surface-raised : var(--color-gray-dark-400);
+
   /* ── button ── */
   --color-button-bg-assist--default       : var(--color-base-white);
   --color-button-bg-assist--hover         : var(--color-gray-dark-200);
@@ -715,13 +737,13 @@
   --color-control-text-selected           : var(--color-base-white);
   --color-control-text-unselected         : var(--color-gray-dark-800);
 
-  /* ── data ── */
-  --color-data-border-light  : var(--color-gray-dark-300);
-  --color-data-border-strong : var(--color-gray-dark-400);
-  --color-data-header-bg     : var(--color-gray-dark-200);
-  --color-data-state-default : var(--color-gray-dark-100);
-  --color-data-state-hover   : var(--color-gray-dark-200);
-  --color-data-state-selected: var(--color-blue-dark-100);
+  /* ── table ── */
+  --color-table-border-light : var(--color-gray-dark-300);
+  --color-table-border-strong: var(--color-gray-dark-400);
+  --color-table-header-bg    : var(--color-gray-dark-200);
+  --color-table-cell-default : var(--color-gray-dark-100);
+  --color-table-cell-hover   : var(--color-gray-dark-200);
+  --color-table-cell-selected: var(--color-blue-dark-100);
 
   /* ── dropdown ── */
   --color-dropdown-list-bg               : var(--color-gray-dark-100);

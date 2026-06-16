@@ -1974,18 +1974,18 @@ window.REGISTRY_BUNDLE = {
               }
             ]
           },
-          "dataState": {
-            "_description": "데이터 그리드/테이블 전용 상태 색상. Figma: color/data/state/*. 2026-05-20 Table MCP 조회 기반 신설.",
+          "tableCell": {
+            "_description": "테이블 셀 전용 상태 색상. Figma: color/table/cell/*. 2026-05-20 Table MCP 조회 기반 신설. 2026-06-15 그룹명 변경(data/state→table/cell).",
             "tokens": [
               {
-                "cssVar": "--color-data-state-hover",
+                "cssVar": "--color-table-cell-hover",
                 "light": "var(--color-blue-50)",
                 "dark": "var(--color-blue-dark-100)",
                 "resolvedLight": "#E2F1FF",
                 "resolvedDark": "#112B55",
                 "status": "stable",
                 "darkStatus": "candidate",
-                "role": "데이터 행 hover 배경. Figma: color/data/state/hover = blue-50.",
+                "role": "테이블 행 hover 배경. Figma: color/table/cell/hover = blue-50.",
                 "darkNote": "candidate — blue-dark-100(#112B55). Figma dark 미확인. HD-Table-1"
               }
             ]
@@ -8547,8 +8547,8 @@ window.REGISTRY_BUNDLE = {
         "label": "Form"
       },
       {
-        "id": "data",
-        "label": "Data"
+        "id": "table",
+        "label": "Table"
       },
       {
         "id": "navigation",
@@ -8686,7 +8686,7 @@ window.REGISTRY_BUNDLE = {
         "id": "table",
         "name": "Table",
         "label": "Table",
-        "category": "data",
+        "category": "table",
         "path": "registry/components/table.json",
         "status": "in-progress",
         "harnessStatus": "implemented",
@@ -8700,7 +8700,7 @@ window.REGISTRY_BUNDLE = {
         "id": "pagination",
         "name": "Pagination",
         "label": "Pagination",
-        "category": "data",
+        "category": "navigation",
         "path": "registry/components/pagination.json",
         "status": "in-progress",
         "harnessStatus": "implemented",
@@ -10065,7 +10065,7 @@ window.REGISTRY_BUNDLE = {
       "_meta": {
         "id": "pagination",
         "name": "Pagination",
-        "category": "data",
+        "category": "navigation",
         "updatedAt": "2026-05-20",
         "version": "0.2.0",
         "tokenStatus": "stable",
@@ -10287,7 +10287,7 @@ window.REGISTRY_BUNDLE = {
       "_meta": {
         "id": "table",
         "name": "Table",
-        "category": "data",
+        "category": "table",
         "updatedAt": "2026-05-27",
         "version": "0.4.0",
         "tokenStatus": "stable",
@@ -10410,7 +10410,7 @@ window.REGISTRY_BUNDLE = {
           "name": "--table-border-light",
           "value": "var(--color-border-subtle)",
           "resolvedLight": "#E9E9E9",
-          "figmaVariable": "color/data/border/light",
+          "figmaVariable": "color/table/border/light",
           "status": "stable",
           "description": "행 구분선 — 헤더·바디 셀 공통 참조"
         },
@@ -10418,7 +10418,7 @@ window.REGISTRY_BUNDLE = {
           "name": "--table-border-strong",
           "value": "var(--color-border-emphasis)",
           "resolvedLight": "#353535",
-          "figmaVariable": "color/data/border/strong",
+          "figmaVariable": "color/table/border/strong",
           "status": "stable",
           "description": "테이블 외곽 강조 테두리 — wrap 상단 2px + 하단 1px"
         },
@@ -10426,7 +10426,7 @@ window.REGISTRY_BUNDLE = {
           "name": "--table-header-border",
           "value": "var(--table-border-light)",
           "resolvedLight": "#E9E9E9",
-          "figmaVariable": "color/data/border/light",
+          "figmaVariable": "color/table/border/light",
           "status": "stable",
           "description": "헤더 셀 하단 구분선"
         },
@@ -10434,7 +10434,7 @@ window.REGISTRY_BUNDLE = {
           "name": "--table-row-default-bg",
           "value": "var(--color-surface-default)",
           "resolvedLight": "#FFFFFF",
-          "figmaVariable": "color/data/state/default",
+          "figmaVariable": "color/table/cell/default",
           "status": "stable",
           "description": "행 기본 배경"
         },
@@ -10442,9 +10442,9 @@ window.REGISTRY_BUNDLE = {
           "name": "--table-row-hover-bg",
           "value": "var(--color-bg-subtle)",
           "resolvedLight": "#F5F5F5",
-          "figmaVariable": "color/data/state/hover",
+          "figmaVariable": "color/table/cell/hover",
           "status": "stable",
-          "description": "행 hover 배경 — Light: gray-50 (#F5F5F5) / Dark: blue-dark-100 (#112B55, --color-data-state-hover)"
+          "description": "행 hover 배경 — Light: gray-50 (#F5F5F5) / Dark: blue-dark-100 (#112B55, --color-table-cell-hover)"
         },
         {
           "name": "--table-row-selected-bg",
@@ -10458,7 +10458,7 @@ window.REGISTRY_BUNDLE = {
           "name": "--table-cell-border",
           "value": "var(--table-border-light)",
           "resolvedLight": "#E9E9E9",
-          "figmaVariable": "color/data/border/light",
+          "figmaVariable": "color/table/border/light",
           "status": "stable",
           "description": "바디 셀 하단 구분선"
         },
@@ -10999,9 +10999,33 @@ window.REGISTRY_BUNDLE = {
     }
   },
   "reportsIndex": {
-    "generatedAt": "2026-06-12T02:10:22.184Z",
-    "totalCount": 51,
+    "generatedAt": "2026-06-15T05:51:34.025Z",
+    "totalCount": 53,
     "reports": [
+      {
+        "id": "harness-audit-2026-06-15",
+        "filename": "harness-audit-2026-06-15.md",
+        "title": "Harness Audit Report — 2026-06-15",
+        "stage": "Audit",
+        "category": "audit",
+        "status": "archive",
+        "sourcePath": "reports/harness-audit-2026-06-15.md",
+        "updatedAt": "2026-06-15",
+        "summary": "- ✅ [button] 모든 사이즈 분기 존재 (medium (h44) / xsmall (h34) / xxsmall (h28) / mobile (h48))",
+        "fileSizeKB": 1.7
+      },
+      {
+        "id": "harness-audit-2026-06-12",
+        "filename": "harness-audit-2026-06-12.md",
+        "title": "Harness Audit Report — 2026-06-12",
+        "stage": "Audit",
+        "category": "audit",
+        "status": "archive",
+        "sourcePath": "reports/harness-audit-2026-06-12.md",
+        "updatedAt": "2026-06-12",
+        "summary": "- ✅ [button] 모든 사이즈 분기 존재 (medium (h44) / xsmall (h34) / xxsmall (h28) / mobile (h48))",
+        "fileSizeKB": 1.7
+      },
       {
         "id": "harness-audit-2026-06-11",
         "filename": "harness-audit-2026-06-11.md",

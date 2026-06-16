@@ -1805,7 +1805,7 @@
           <button class="category-btn" onclick="filterByCategory('actions', this)">Actions</button>
           <button class="category-btn" onclick="filterByCategory('selection', this)">Selection</button>
           <button class="category-btn" onclick="filterByCategory('form', this)">Form</button>
-          <button class="category-btn" onclick="filterByCategory('data', this)">Data</button>
+          <button class="category-btn" onclick="filterByCategory('table', this)">Table</button>
           <button class="category-btn" onclick="filterByCategory('navigation', this)">Navigation</button>
         </div>
         <div class="comp-nav">
@@ -1820,10 +1820,10 @@
           <button class="comp-nav-btn" data-category="form" onclick="showSection('time-picker', this)">Time Picker</button>
           <button class="comp-nav-btn" data-category="form" onclick="showSection('textarea', this)">Textarea</button>
           <button class="comp-nav-btn" data-category="form" onclick="showSection('select', this)">Select</button>
-          <button class="comp-nav-btn" data-category="data" onclick="showSection('table', this)">Table</button>
-          <button class="comp-nav-btn" data-category="data" onclick="showSection('pagination', this)">Pagination</button>
+          <button class="comp-nav-btn" data-category="table" onclick="showSection('table', this)">Table</button>
           <button class="comp-nav-btn" data-category="navigation" onclick="showSection('tab', this)">Line Tab</button>
           <button class="comp-nav-btn" data-category="navigation" onclick="showSection('gnb', this)">GNB</button>
+          <button class="comp-nav-btn" data-category="navigation" onclick="showSection('pagination', this)">Pagination</button>
         </div><!-- /comp-nav -->
       </div><!-- /component-filter -->
 
@@ -5089,7 +5089,7 @@ document.addEventListener('click', function(e) {
             <table class="token-detail-table">
               <thead><tr><th>Token</th><th>Value (Semantic)</th><th>Resolved</th><th>Role</th></tr></thead>
               <tbody>
-                <tr><td class="token-name">--table-border-light</td><td class="token-value">var(--color-border-subtle)</td><td class="token-resolved" data-token="--table-border-light"></td><td>셀 구분선 (#E9E9E9) — Figma: color/data/border/light</td></tr>
+                <tr><td class="token-name">--table-border-light</td><td class="token-value">var(--color-border-subtle)</td><td class="token-resolved" data-token="--table-border-light"></td><td>셀 구분선 (#E9E9E9) — Figma: color/table/border/light</td></tr>
                 <tr><td class="token-name">--table-border-strong</td><td class="token-value">var(--color-border-emphasis)</td><td class="token-resolved" data-token="--table-border-strong"></td><td>외곽 상단 2px 테두리 (#353535) — Dark override: color-border-strong (gray-dark-500)</td></tr>
                 <tr><td class="token-name">--table-header-bg</td><td class="token-value">var(--color-bg-default)</td><td class="token-resolved" data-token="--table-header-bg"></td><td>헤더 기본 배경 — Dark override: color-bg-subtle (gray-dark-200 = #24252C)</td></tr>
                 <tr><td class="token-name">--table-header-text</td><td class="token-value">var(--color-text-secondary)</td><td class="token-resolved" data-token="--table-header-text"></td><td>헤더 텍스트</td></tr>

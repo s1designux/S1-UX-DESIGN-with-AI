@@ -110,18 +110,18 @@
         { "cssVar": "--color-text-state-error",    "light": "var(--color-status-error)",   "dark": "var(--color-status-error)",   "status": "stable", "role": "오류 상태 도움말 텍스트", "darkNote": "inherits → var(--color-status-dark-red)" }
       ]
     },
-    "dataState": {
-      "_description": "데이터 그리드/테이블 전용 상태 색상. Figma: color/data/state/*. 2026-05-20 Table MCP 조회 기반 신설.",
+    "tableCell": {
+      "_description": "테이블 셀 전용 상태 색상. Figma: color/table/cell/*. 2026-05-20 Table MCP 조회 기반 신설. 2026-06-15 그룹명 변경(data/state→table/cell).",
       "tokens": [
         {
-          "cssVar": "--color-data-state-hover",
+          "cssVar": "--color-table-cell-hover",
           "light": "var(--color-blue-50)",
           "dark": "var(--color-blue-dark-100)",
           "resolvedLight": "#E2F1FF",
           "resolvedDark": "#112B55",
           "status": "stable",
           "darkStatus": "candidate",
-          "role": "데이터 행 hover 배경. Figma: color/data/state/hover = blue-50.",
+          "role": "테이블 행 hover 배경. Figma: color/table/cell/hover = blue-50.",
           "darkNote": "candidate — blue-dark-100(#112B55). Figma dark 미확인. HD-Table-1"
         }
       ]

@@ -1084,13 +1084,13 @@ async function buildLineTab(maps: BuildMaps, originY: number): Promise<{ set: Co
   return { set, bottomY };
 }
 
-// ── Table Cell — color/data/*(bg·border) + color/text/body/*(텍스트) ─────────
+// ── Table Cell — color/table/*(bg·border) + color/text/body/*(텍스트) ─────────
 async function buildTableCell(maps: BuildMaps, originY: number): Promise<{ set: ComponentSetNode; bottomY: number }> {
   const variants = [
-    { type: "Cell",   state: "Default",  bg: "color/data/state/default",  border: "color/data/border/light",  text: "color/text/body/primary",   head: "Cell · Default" },
-    { type: "Cell",   state: "Hover",    bg: "color/data/state/hover",    border: "color/data/border/light",  text: "color/text/body/primary",   head: "Cell · Hover" },
-    { type: "Cell",   state: "Selected", bg: "color/data/state/selected", border: "color/data/border/light",  text: "color/text/body/primary",   head: "Cell · Selected" },
-    { type: "Header", state: "Default",  bg: "color/data/header/bg",      border: "color/data/border/strong", text: "color/text/body/secondary", head: "Header" },
+    { type: "Cell",   state: "Default",  bg: "color/table/cell/default",  border: "color/table/border/light",  text: "color/text/body/primary",   head: "Cell · Default" },
+    { type: "Cell",   state: "Hover",    bg: "color/table/cell/hover",    border: "color/table/border/light",  text: "color/text/body/primary",   head: "Cell · Hover" },
+    { type: "Cell",   state: "Selected", bg: "color/table/cell/selected", border: "color/table/border/light",  text: "color/text/body/primary",   head: "Cell · Selected" },
+    { type: "Header", state: "Default",  bg: "color/table/header/bg",      border: "color/table/border/strong", text: "color/text/body/secondary", head: "Header" },
   ];
   const sizes = [
     { size: "SMALL",  h: 38, font: 13 },

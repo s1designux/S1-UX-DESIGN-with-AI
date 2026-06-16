@@ -38,8 +38,8 @@
       "label": "Form"
     },
     {
-      "id": "data",
-      "label": "Data"
+      "id": "table",
+      "label": "Table"
     },
     {
       "id": "navigation",
@@ -177,7 +177,7 @@
       "id": "table",
       "name": "Table",
       "label": "Table",
-      "category": "data",
+      "category": "table",
       "path": "registry/components/table.json",
       "status": "in-progress",
       "harnessStatus": "implemented",
@@ -191,7 +191,7 @@
       "id": "pagination",
       "name": "Pagination",
       "label": "Pagination",
-      "category": "data",
+      "category": "navigation",
       "path": "registry/components/pagination.json",
       "status": "in-progress",
       "harnessStatus": "implemented",

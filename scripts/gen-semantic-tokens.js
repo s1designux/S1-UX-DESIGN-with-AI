@@ -8,7 +8,7 @@
  *   Figma Variables (vars-data.ts)  ──[gen]──▶  tokens.css Semantic 섹션
  *
  * 변환 규칙:
- *   - figma "color/data/state/default"  → CSS  "--color-data-state-default"
+ *   - figma "color/table/cell/default"  → CSS  "--color-table-cell-default"
  *   - alias "blue/400"                  → CSS  "var(--color-blue-400)"
  *   - alias "base/white"/"gray-dark/100"→ CSS  "var(--color-base-white)" / "var(--color-gray-dark-100)"
  *   - "#HEX" / "rgba(...)"              → 리터럴 그대로

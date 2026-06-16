@@ -212,8 +212,8 @@
   /* ── Table / Data Grid ── */
   --table-header-bg:        var(--color-bg-default);        /* #FAFAFA — Figma: surface/neutral/bg/base-alt */
   --table-header-text:      var(--color-text-secondary);    /* #353535 — Figma: color/text/title/secondary */
-  --table-border-light:     var(--color-border-subtle);      /* Figma: color/data/border/light — 행 구분선 */
-  --table-border-strong:    var(--color-border-emphasis);    /* #353535 — Figma: color/data/border/strong — 외곽 상단 2px */
+  --table-border-light:     var(--color-border-subtle);      /* Figma: color/table/border/light — 행 구분선 */
+  --table-border-strong:    var(--color-border-emphasis);    /* #353535 — Figma: color/table/border/strong — 외곽 상단 2px */
   --table-header-border:    var(--table-border-light);
   --table-row-default-bg:   var(--color-surface-default);   /* #FFFFFF */
   --table-row-hover-bg:     var(--color-bg-subtle);          /* #F5F5F5 — Figma: 행 hover = gray-50 */

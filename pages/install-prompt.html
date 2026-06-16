@@ -223,7 +223,7 @@
                 <div class="step-title">전체 기본 토큰 CSS 받기</div>
                 <div class="step-desc">Semantic (Light/Dark) + Component 토큰 전체 CSS</div>
               </div>
-              <span class="update-stamp" data-update-file="assets/css/tokens.css"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> 업데이트 2026-06-12 15:32</span>
+              <span class="update-stamp" data-update-file="assets/css/tokens.css"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> 업데이트 2026-06-16 11:18</span>
             </div>
             <div class="step-body">
               <div class="file-card">
@@ -231,7 +231,7 @@
                   <div class="file-icon">🎨</div>
                   <div>
                     <div class="file-name">tokens.css</div>
-                    <div class="file-meta">Foundation 259종 + Semantic 223종 + Component 15종 · Light + Dark</div>
+                    <div class="file-meta">Foundation 259종 + Semantic 230종 + Component 15종 · Light + Dark</div>
                   </div>
                 </div>
                 <button class="download-btn" onclick="downloadTokens()">
@@ -250,7 +250,7 @@
    S1 UX DESIGN GUIDE V2.4 — tokens.css
    Foundation → Semantic → Component
    Auto-synced from assets/css/tokens.css (npm run tokens:sync-prompt)
-   Last sync: 2026-06-15
+   Last sync: 2026-06-16
    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
 
 /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -689,6 +689,17 @@
    SEMANTIC TOKENS — Light (Variables 기준 자동 생성)
    ══════════════════════════════════════════════════ */
 :root {
+  /* ── bg ── */
+  --color-bg-default : var(--color-gray-0);
+  --color-bg-subtle  : var(--color-gray-50);
+  --color-bg-muted   : var(--color-gray-100);
+  --color-bg-elevated: var(--color-gray-100);
+  --color-bg-selected: var(--color-blue-50);
+
+  /* ── surface ── */
+  --color-surface-default: var(--color-base-white);
+  --color-surface-raised : var(--color-base-white);
+
   /* ── button ── */
   --color-button-bg-assist--default       : var(--color-base-white);
   --color-button-bg-assist--hover         : var(--color-gray-50);
@@ -764,13 +775,13 @@
   --color-control-text-selected           : var(--color-base-white);
   --color-control-text-unselected         : var(--color-gray-800);
 
-  /* ── data ── */
-  --color-data-border-light  : var(--color-gray-100);
-  --color-data-border-strong : var(--color-gray-300);
-  --color-data-header-bg     : var(--color-gray-50);
-  --color-data-state-default : var(--color-base-white);
-  --color-data-state-hover   : var(--color-blue-50);
-  --color-data-state-selected: var(--color-blue-100);
+  /* ── table ── */
+  --color-table-border-light : var(--color-gray-100);
+  --color-table-border-strong: var(--color-gray-300);
+  --color-table-header-bg    : var(--color-gray-50);
+  --color-table-cell-default : var(--color-base-white);
+  --color-table-cell-hover   : var(--color-blue-50);
+  --color-table-cell-selected: var(--color-blue-100);
 
   /* ── dropdown ── */
   --color-dropdown-list-bg               : var(--color-base-white);
@@ -895,6 +906,17 @@
    SEMANTIC TOKENS — Dark (Variables 기준 자동 생성)
    ══════════════════════════════════════════════════ */
 [data-theme="dark"] {
+  /* ── bg ── */
+  --color-bg-default : var(--color-gray-dark-50);
+  --color-bg-subtle  : var(--color-gray-dark-200);
+  --color-bg-muted   : var(--color-gray-dark-300);
+  --color-bg-elevated: var(--color-gray-dark-400);
+  --color-bg-selected: var(--color-blue-dark-100);
+
+  /* ── surface ── */
+  --color-surface-default: var(--color-gray-dark-100);
+  --color-surface-raised : var(--color-gray-dark-400);
+
   /* ── button ── */
   --color-button-bg-assist--default       : var(--color-base-white);
   --color-button-bg-assist--hover         : var(--color-gray-dark-200);
@@ -970,13 +992,13 @@
   --color-control-text-selected           : var(--color-base-white);
   --color-control-text-unselected         : var(--color-gray-dark-800);
 
-  /* ── data ── */
-  --color-data-border-light  : var(--color-gray-dark-300);
-  --color-data-border-strong : var(--color-gray-dark-400);
-  --color-data-header-bg     : var(--color-gray-dark-200);
-  --color-data-state-default : var(--color-gray-dark-100);
-  --color-data-state-hover   : var(--color-gray-dark-200);
-  --color-data-state-selected: var(--color-blue-dark-100);
+  /* ── table ── */
+  --color-table-border-light : var(--color-gray-dark-300);
+  --color-table-border-strong: var(--color-gray-dark-400);
+  --color-table-header-bg    : var(--color-gray-dark-200);
+  --color-table-cell-default : var(--color-gray-dark-100);
+  --color-table-cell-hover   : var(--color-gray-dark-200);
+  --color-table-cell-selected: var(--color-blue-dark-100);
 
   /* ── dropdown ── */
   --color-dropdown-list-bg               : var(--color-gray-dark-100);
@@ -1110,7 +1132,7 @@
                 <div class="step-title">프로젝트에 추가</div>
                 <div class="step-desc">다운받은 tokens.css를 프로젝트에 복사한 뒤 아래 한 줄 추가</div>
               </div>
-              <span class="update-stamp" data-update-file="assets/css/tokens.css"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> 업데이트 2026-06-12 15:32</span>
+              <span class="update-stamp" data-update-file="assets/css/tokens.css"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> 업데이트 2026-06-16 11:18</span>
             </div>
             <div class="step-body">
               <div class="env-tabs">
@@ -1188,7 +1210,7 @@
                 <div class="step-title">AI Context Prompt</div>
                 <div class="step-desc">Claude / AI 작업자에게 붙여넣을 기본 디자인시스템 규칙</div>
               </div>
-              <span class="update-stamp" data-update-file="assets/css/tokens.css"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> 업데이트 2026-06-12 15:32</span>
+              <span class="update-stamp" data-update-file="assets/css/tokens.css"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> 업데이트 2026-06-16 11:18</span>
             </div>
             <div class="step-body">
               <p style="font-size:12px;color:#6b7280;margin-bottom:12px;">대화 시작 시 첫 메시지로 붙여넣기. 사용자 검수 항목은 코드블록 안에 포함되어 있지 않습니다.</p>
@@ -1225,7 +1247,7 @@
    - 변수명은 동일, 값만 변경
 
 4. **컴포넌트는 Semantic 토큰을 직접 사용**
-   - 예: --color-button-bg-primary--default · --color-form-control-border-default · --color-data-state-hover
+   - 예: --color-button-bg-primary--default · --color-form-control-border-default · --color-table-cell-hover
    - 모든 Semantic 토큰은 Figma Variables 정본과 1:1 일치 (이름 같고 값 다르면 Variables가 정답)
 
 ---
@@ -1668,6 +1690,17 @@
    SEMANTIC TOKENS — Light (Variables 기준 자동 생성)
    ══════════════════════════════════════════════════ */
 :root {
+  /* ── bg ── */
+  --color-bg-default : var(--color-gray-0);
+  --color-bg-subtle  : var(--color-gray-50);
+  --color-bg-muted   : var(--color-gray-100);
+  --color-bg-elevated: var(--color-gray-100);
+  --color-bg-selected: var(--color-blue-50);
+
+  /* ── surface ── */
+  --color-surface-default: var(--color-base-white);
+  --color-surface-raised : var(--color-base-white);
+
   /* ── button ── */
   --color-button-bg-assist--default       : var(--color-base-white);
   --color-button-bg-assist--hover         : var(--color-gray-50);
@@ -1743,13 +1776,13 @@
   --color-control-text-selected           : var(--color-base-white);
   --color-control-text-unselected         : var(--color-gray-800);
 
-  /* ── data ── */
-  --color-data-border-light  : var(--color-gray-100);
-  --color-data-border-strong : var(--color-gray-300);
-  --color-data-header-bg     : var(--color-gray-50);
-  --color-data-state-default : var(--color-base-white);
-  --color-data-state-hover   : var(--color-blue-50);
-  --color-data-state-selected: var(--color-blue-100);
+  /* ── table ── */
+  --color-table-border-light : var(--color-gray-100);
+  --color-table-border-strong: var(--color-gray-300);
+  --color-table-header-bg    : var(--color-gray-50);
+  --color-table-cell-default : var(--color-base-white);
+  --color-table-cell-hover   : var(--color-blue-50);
+  --color-table-cell-selected: var(--color-blue-100);
 
   /* ── dropdown ── */
   --color-dropdown-list-bg               : var(--color-base-white);
@@ -1874,6 +1907,17 @@
    SEMANTIC TOKENS — Dark (Variables 기준 자동 생성)
    ══════════════════════════════════════════════════ */
 [data-theme="dark"] {
+  /* ── bg ── */
+  --color-bg-default : var(--color-gray-dark-50);
+  --color-bg-subtle  : var(--color-gray-dark-200);
+  --color-bg-muted   : var(--color-gray-dark-300);
+  --color-bg-elevated: var(--color-gray-dark-400);
+  --color-bg-selected: var(--color-blue-dark-100);
+
+  /* ── surface ── */
+  --color-surface-default: var(--color-gray-dark-100);
+  --color-surface-raised : var(--color-gray-dark-400);
+
   /* ── button ── */
   --color-button-bg-assist--default       : var(--color-base-white);
   --color-button-bg-assist--hover         : var(--color-gray-dark-200);
@@ -1949,13 +1993,13 @@
   --color-control-text-selected           : var(--color-base-white);
   --color-control-text-unselected         : var(--color-gray-dark-800);
 
-  /* ── data ── */
-  --color-data-border-light  : var(--color-gray-dark-300);
-  --color-data-border-strong : var(--color-gray-dark-400);
-  --color-data-header-bg     : var(--color-gray-dark-200);
-  --color-data-state-default : var(--color-gray-dark-100);
-  --color-data-state-hover   : var(--color-gray-dark-200);
-  --color-data-state-selected: var(--color-blue-dark-100);
+  /* ── table ── */
+  --color-table-border-light : var(--color-gray-dark-300);
+  --color-table-border-strong: var(--color-gray-dark-400);
+  --color-table-header-bg    : var(--color-gray-dark-200);
+  --color-table-cell-default : var(--color-gray-dark-100);
+  --color-table-cell-hover   : var(--color-gray-dark-200);
+  --color-table-cell-selected: var(--color-blue-dark-100);
 
   /* ── dropdown ── */
   --color-dropdown-list-bg               : var(--color-gray-dark-100);
@@ -2110,7 +2154,7 @@
                 <div class="step-title">에스원 디자인시스템 설치 플러그인</div>
                 <div class="step-desc">ZIP을 받아 Figma Desktop에 등록한 뒤, 설치할 파일에서 실행하면 토큰·텍스트 스타일·컴포넌트 세트를 선택 설치합니다</div>
               </div>
-              <span class="update-stamp" data-update-file="assets/downloads/s1-design-system-installer.zip"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> 업데이트 2026-06-12 16:40</span>
+              <span class="update-stamp" data-update-file="assets/downloads/s1-design-system-installer.zip"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> 업데이트 2026-06-16 11:18</span>
             </div>
             <div class="step-body">
               <!-- 다운로드 -->

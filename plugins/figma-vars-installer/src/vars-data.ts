@@ -386,6 +386,18 @@ export interface SemanticColorEntry {
 // ──────────────────────────────────────────────────────────────────────────
 
 export const SEMANTIC_COLOR: Record<string, SemanticColorEntry> = {
+  // ── bg (페이지·레이아웃 배경 — 역할 기반) ────
+  // site-base.css 와 동일 값. 여기 추가로 Figma Variables·설치기·semantic.html 에도 노출.
+  // (--color-bg-home #F5F6FB 는 raw hex·사용처 0 이라 제외)
+  "color/bg/default": { light: "gray/0", dark: "gray-dark/50" },
+  "color/bg/subtle": { light: "gray/50", dark: "gray-dark/200" },
+  "color/bg/muted": { light: "gray/100", dark: "gray-dark/300" },
+  "color/bg/elevated": { light: "gray/100", dark: "gray-dark/400" },
+  "color/bg/selected": { light: "blue/50", dark: "blue-dark/100" },
+  // ── surface (컴포넌트 표면 배경 — 카드·패널·모달) ────
+  "color/surface/default": { light: "base/white", dark: "gray-dark/100" },
+  "color/surface/raised": { light: "base/white", dark: "gray-dark/400" },
+
   // ── button ────────────────────────────────
   "color/button/bg/assist--default": { light: "base/white", dark: "base/white" },
   "color/button/bg/assist--hover": { light: "gray/50", dark: "gray-dark/200" },
@@ -461,13 +473,13 @@ export const SEMANTIC_COLOR: Record<string, SemanticColorEntry> = {
   "color/control/text/selected": { light: "base/white", dark: "base/white" },
   "color/control/text/unselected": { light: "gray/800", dark: "gray-dark/800" },
 
-  // ── data ────────────────────────────────
-  "color/data/border/light": { light: "gray/100", dark: "gray-dark/300" },
-  "color/data/border/strong": { light: "gray/300", dark: "gray-dark/400" },
-  "color/data/header/bg": { light: "gray/50", dark: "gray-dark/200" },
-  "color/data/state/default": { light: "base/white", dark: "gray-dark/100" },
-  "color/data/state/hover": { light: "blue/50", dark: "gray-dark/200" },
-  "color/data/state/selected": { light: "blue/100", dark: "blue-dark/100" },
+  // ── table (구 data — 2026-06-15 그룹명 변경: data→table, state→cell) ──
+  "color/table/border/light": { light: "gray/100", dark: "gray-dark/300" },
+  "color/table/border/strong": { light: "gray/300", dark: "gray-dark/400" },
+  "color/table/header/bg": { light: "gray/50", dark: "gray-dark/200" },
+  "color/table/cell/default": { light: "base/white", dark: "gray-dark/100" },
+  "color/table/cell/hover": { light: "blue/50", dark: "gray-dark/200" },
+  "color/table/cell/selected": { light: "blue/100", dark: "blue-dark/100" },
 
   // ── dropdown ────────────────────────────────
   "color/dropdown/list/bg": { light: "base/white", dark: "gray-dark/100" },

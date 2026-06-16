@@ -453,6 +453,17 @@
 // ── Token data ──────────────────────────────────────────
 /* >>> GEN:SEMANTIC-PAGE >>> Variables 정본 자동 생성 (npm run page:gen). 수동 편집 금지. */
 const SEMANTIC_PAGE = [
+  { key: 'bg', label: 'color-bg', desc: '', tokens: [
+    { v: '--color-bg-default', role: 'default', light: '#FAFAFA', dark: '#131418', lp: 'gray/0', dp: 'gray-dark/50' },
+    { v: '--color-bg-subtle', role: 'subtle', light: '#F5F5F5', dark: '#24252C', lp: 'gray/50', dp: 'gray-dark/200' },
+    { v: '--color-bg-muted', role: 'muted', light: '#E9E9E9', dark: '#2E2F38', lp: 'gray/100', dp: 'gray-dark/300' },
+    { v: '--color-bg-elevated', role: 'elevated', light: '#E9E9E9', dark: '#35363F', lp: 'gray/100', dp: 'gray-dark/400' },
+    { v: '--color-bg-selected', role: 'selected', light: '#E2F1FF', dark: '#112B55', lp: 'blue/50', dp: 'blue-dark/100' },
+  ] },
+  { key: 'surface', label: 'color-surface', desc: '', tokens: [
+    { v: '--color-surface-default', role: 'default', light: '#FFFFFF', dark: '#1C1D23', lp: 'base/white', dp: 'gray-dark/100' },
+    { v: '--color-surface-raised', role: 'raised', light: '#FFFFFF', dark: '#35363F', lp: 'base/white', dp: 'gray-dark/400' },
+  ] },
   { key: 'button', label: 'color-button', desc: '버튼 — variant × state 별 배경·테두리·라벨', tokens: [
     { v: '--color-button-bg-assist--default', role: 'bg / assist--default', light: '#FFFFFF', dark: '#FFFFFF', lp: 'base/white', dp: 'base/white' },
     { v: '--color-button-bg-assist--hover', role: 'bg / assist--hover', light: '#F5F5F5', dark: '#24252C', lp: 'gray/50', dp: 'gray-dark/200' },
@@ -528,13 +539,13 @@ const SEMANTIC_PAGE = [
     { v: '--color-control-text-selected', role: 'text / selected', light: '#FFFFFF', dark: '#FFFFFF', lp: 'base/white', dp: 'base/white' },
     { v: '--color-control-text-unselected', role: 'text / unselected', light: '#353535', dark: '#B8BABF', lp: 'gray/800', dp: 'gray-dark/800' },
   ] },
-  { key: 'data', label: 'color-data', desc: '데이터 그리드/테이블 상태', tokens: [
-    { v: '--color-data-border-light', role: 'border / light', light: '#E9E9E9', dark: '#2E2F38', lp: 'gray/100', dp: 'gray-dark/300' },
-    { v: '--color-data-border-strong', role: 'border / strong', light: '#C4C4C4', dark: '#35363F', lp: 'gray/300', dp: 'gray-dark/400' },
-    { v: '--color-data-header-bg', role: 'header / bg', light: '#F5F5F5', dark: '#24252C', lp: 'gray/50', dp: 'gray-dark/200' },
-    { v: '--color-data-state-default', role: 'state / default', light: '#FFFFFF', dark: '#1C1D23', lp: 'base/white', dp: 'gray-dark/100' },
-    { v: '--color-data-state-hover', role: 'state / hover', light: '#E2F1FF', dark: '#24252C', lp: 'blue/50', dp: 'gray-dark/200' },
-    { v: '--color-data-state-selected', role: 'state / selected', light: '#C8E4FF', dark: '#112B55', lp: 'blue/100', dp: 'blue-dark/100' },
+  { key: 'table', label: 'color-table', desc: '', tokens: [
+    { v: '--color-table-border-light', role: 'border / light', light: '#E9E9E9', dark: '#2E2F38', lp: 'gray/100', dp: 'gray-dark/300' },
+    { v: '--color-table-border-strong', role: 'border / strong', light: '#C4C4C4', dark: '#35363F', lp: 'gray/300', dp: 'gray-dark/400' },
+    { v: '--color-table-header-bg', role: 'header / bg', light: '#F5F5F5', dark: '#24252C', lp: 'gray/50', dp: 'gray-dark/200' },
+    { v: '--color-table-cell-default', role: 'cell / default', light: '#FFFFFF', dark: '#1C1D23', lp: 'base/white', dp: 'gray-dark/100' },
+    { v: '--color-table-cell-hover', role: 'cell / hover', light: '#E2F1FF', dark: '#24252C', lp: 'blue/50', dp: 'gray-dark/200' },
+    { v: '--color-table-cell-selected', role: 'cell / selected', light: '#C8E4FF', dark: '#112B55', lp: 'blue/100', dp: 'blue-dark/100' },
   ] },
   { key: 'dropdown', label: 'color-dropdown', desc: '드롭다운 리스트·옵션', tokens: [
     { v: '--color-dropdown-list-bg', role: 'list / bg', light: '#FFFFFF', dark: '#1C1D23', lp: 'base/white', dp: 'gray-dark/100' },
