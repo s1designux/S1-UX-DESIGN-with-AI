@@ -1377,12 +1377,14 @@ async function buildTimePickerDropdown(maps: BuildMaps, originY: number): Promis
     const panel = figma.createComponent();
     panel.name = `Type=${t.type}`;
     panel.layoutMode = "VERTICAL"; panel.counterAxisAlignItems = "CENTER";
-    panel.primaryAxisSizingMode = "AUTO"; panel.counterAxisSizingMode = "FIXED";
+    // 높이 고정. AUTO(세로 hug)로 두고 resize(_,10) 하면 content 로 안 자라 10px 빈 패널로 렌더됨
+    // (다른 드롭다운 패널 buildSelect·buildFilterChip 도 FIXED+명시 높이 사용). 2026-06-16 수정.
+    panel.primaryAxisSizingMode = "FIXED"; panel.counterAxisSizingMode = "FIXED";
     panel.itemSpacing = 0; panel.paddingTop = 12; panel.paddingBottom = 0; panel.cornerRadius = 4;
     panel.clipsContent = true;
     panel.fills = [boundPaint(scv(maps, "color/dropdown/list/bg"))];
     panel.strokes = [boundPaint(scv(maps, "color/dropdown/list/border"))]; panel.strokeWeight = 1; panel.strokeAlign = "INSIDE";
-    panel.resize(panelW, 10);
+    panel.resize(panelW, 12 + COLS_H + 40); // paddingTop 12 + cols 190 + footer 40 = 242 (재고조사 실측)
 
     // 컬럼 묶음 — 전폭, 패딩·gap·구분선 없음 (93+93[+93])
     const colsFrame = figma.createFrame();

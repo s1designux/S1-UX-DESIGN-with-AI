@@ -14,8 +14,7 @@ const SITE_NAV = [
   /* ── Source ── */
   { type: 'label', text: 'Source' },
   { type: 'item', id: 'layer-policy', href: 'layer-policy.html', rootHref: 'pages/layer-policy.html', icon: '🗂', text: 'Layer Policy', status: 'ready' },
-  { type: 'item', id: 'components', href: 'components.html', rootHref: 'pages/components.html', icon: '🧩', text: 'Components', status: 'ready' },
-  { type: 'item', id: 'components-new', href: 'components-new.html', rootHref: 'pages/components-new.html', icon: '🧪', text: 'Components New', status: 'wip' },
+  { type: 'item', id: 'components-new', href: 'components-new.html', rootHref: 'pages/components-new.html', icon: '🧩', text: 'Components', status: 'ready' },
   { type: 'item', id: 'icons', href: 'icons.html', rootHref: 'pages/icons.html', icon: '✦', text: 'Icons · 817', status: 'ready' },
   { type: 'item', id: 'patterns', href: 'patterns.html', rootHref: 'pages/patterns.html', icon: '📐', text: 'Patterns', status: 'ready' },
 
@@ -191,23 +190,22 @@ var SEARCH_INDEX = [
   // Pages
   { label: 'Foundation Tokens', sublabel: '색상·타이포·간격', type: 'page', page: 'foundation.html', keywords: 'foundation token color palette typography spacing radius border font' },
   { label: 'Semantic Tokens',   sublabel: '역할 기반 토큰',  type: 'page', page: 'semantic.html',   keywords: 'semantic token bg surface text border action status overlay icon form-control' },
-  { label: 'Components',        sublabel: '컴포넌트 가이드', type: 'page', page: 'components.html', keywords: 'component button checkbox radio toggle chip input select dropdown textarea datepicker 컴포넌트' },
-  { label: 'Components New',     sublabel: 'Variables 재구성 (WIP)', type: 'page', page: 'components-new.html', keywords: 'component new variables rebuild 재구성 컴포넌트 신규' },
+  { label: 'Components',        sublabel: '컴포넌트 가이드 (Variables 정본)', type: 'page', page: 'components-new.html', keywords: 'component button checkbox radio toggle chip input select dropdown textarea datepicker variables 컴포넌트' },
   { label: 'Icons',             sublabel: '아이콘 817개',    type: 'page', page: 'icons.html',       keywords: 'icon svg 아이콘' },
   { label: 'Legacy Guide',      sublabel: '마이그레이션',    type: 'page', page: 'legacy.html',      keywords: 'legacy migration guide 레거시 마이그레이션' },
   { label: 'Token Mapping',     sublabel: 'Figma ↔ CSS',    type: 'page', page: 'token-mapping.html', keywords: 'token mapping figma css 토큰 매핑' },
   { label: 'Reports',           sublabel: '리포트 목록',     type: 'page', page: 'reports.html',     keywords: 'report mvp 리포트' },
 
   // Components
-  { label: 'Button',          sublabel: 'Components', type: 'component', page: 'components.html', anchor: 'button',      keywords: 'button primary secondary blue-line s1-btn 버튼' },
-  { label: 'Checkbox',        sublabel: 'Components', type: 'component', page: 'components.html', anchor: 'checkbox',    keywords: 'checkbox s1-checkbox 체크박스' },
-  { label: 'Radio',           sublabel: 'Components', type: 'component', page: 'components.html', anchor: 'radio',       keywords: 'radio s1-radio 라디오' },
-  { label: 'Toggle',          sublabel: 'Components', type: 'component', page: 'components.html', anchor: 'toggle',      keywords: 'toggle switch s1-toggle 토글 스위치' },
-  { label: 'Chip · FilterChip', sublabel: 'Components', type: 'component', page: 'components.html', anchor: 'chip',     keywords: 'chip filter filterchip s1-chip ds-filter-chip 칩 필터칩' },
-  { label: 'Input',           sublabel: 'Components', type: 'component', page: 'components.html', anchor: 'input',       keywords: 'input text field s1-input 인풋 입력' },
-  { label: 'Select',          sublabel: 'Components', type: 'component', page: 'components.html', anchor: 'select',      keywords: 'select s1-select 셀렉트' },
-  { label: 'Textarea',        sublabel: 'Components', type: 'component', page: 'components.html', anchor: 'textarea',    keywords: 'textarea 텍스트에리어' },
-  { label: 'Date Picker',     sublabel: 'Components', type: 'component', page: 'components.html', anchor: 'date-picker', keywords: 'date picker datepicker calendar 날짜 달력 데이트피커' },
+  { label: 'Button',          sublabel: 'Components', type: 'component', page: 'components-new.html', anchor: 'button',      keywords: 'button primary secondary blue-line s1-btn 버튼' },
+  { label: 'Checkbox',        sublabel: 'Components', type: 'component', page: 'components-new.html', anchor: 'checkbox',    keywords: 'checkbox s1-checkbox 체크박스' },
+  { label: 'Radio',           sublabel: 'Components', type: 'component', page: 'components-new.html', anchor: 'radio',       keywords: 'radio s1-radio 라디오' },
+  { label: 'Toggle',          sublabel: 'Components', type: 'component', page: 'components-new.html', anchor: 'toggle',      keywords: 'toggle switch s1-toggle 토글 스위치' },
+  { label: 'Chip · FilterChip', sublabel: 'Components', type: 'component', page: 'components-new.html', anchor: 'chip',     keywords: 'chip filter filterchip s1-chip ds-filter-chip 칩 필터칩' },
+  { label: 'Input',           sublabel: 'Components', type: 'component', page: 'components-new.html', anchor: 'input',       keywords: 'input text field s1-input 인풋 입력' },
+  { label: 'Select',          sublabel: 'Components', type: 'component', page: 'components-new.html', anchor: 'select',      keywords: 'select s1-select 셀렉트' },
+  { label: 'Textarea',        sublabel: 'Components', type: 'component', page: 'components-new.html', anchor: 'textarea',    keywords: 'textarea 텍스트에리어' },
+  { label: 'Date Picker',     sublabel: 'Components', type: 'component', page: 'components-new.html', anchor: 'date-picker', keywords: 'date picker datepicker calendar 날짜 달력 데이트피커' },
 
   // Foundation tokens
   { label: '--color-gray-*',      sublabel: 'Foundation', type: 'token', page: 'foundation.html', keywords: 'color gray grey 그레이 0 50 100 200 300 400 500 600 700 800 900' },
@@ -238,13 +236,13 @@ var SEARCH_INDEX = [
   { label: '--color-form-control-*', sublabel: 'Semantic', type: 'token', page: 'semantic.html', keywords: 'color form control input bg border text label 폼 컨트롤' },
 
   // Component tokens
-  { label: '--button-*',          sublabel: 'Component Token', type: 'token', page: 'components.html', anchor: 'button',      keywords: 'button primary secondary blue-line hover pressed disabled bg border text 버튼 토큰' },
-  { label: '--checkbox-*',        sublabel: 'Component Token', type: 'token', page: 'components.html', anchor: 'checkbox',    keywords: 'checkbox bg border icon selected disabled 체크박스 토큰' },
-  { label: '--radio-*',           sublabel: 'Component Token', type: 'token', page: 'components.html', anchor: 'radio',       keywords: 'radio border dot selected disabled 라디오 토큰' },
-  { label: '--toggle-*',          sublabel: 'Component Token', type: 'token', page: 'components.html', anchor: 'toggle',      keywords: 'toggle on off bg knob disabled 토글 토큰' },
-  { label: '--chip-line-* / --chip-solid-*', sublabel: 'Component Token', type: 'token', page: 'components.html', anchor: 'chip', keywords: 'chip line solid hover selected disabled bg border text 칩 토큰' },
-  { label: '--input-*',           sublabel: 'Component Token', type: 'token', page: 'components.html', anchor: 'input',       keywords: 'input default focus error correct disabled bg border text 인풋 토큰' },
-  { label: '--select-* / --dropdown-*', sublabel: 'Component Token', type: 'token', page: 'components.html', anchor: 'select', keywords: 'select dropdown bg border text 셀렉트 드롭다운 토큰' },
+  { label: '--button-*',          sublabel: 'Component Token', type: 'token', page: 'components-new.html', anchor: 'button',      keywords: 'button primary secondary blue-line hover pressed disabled bg border text 버튼 토큰' },
+  { label: '--checkbox-*',        sublabel: 'Component Token', type: 'token', page: 'components-new.html', anchor: 'checkbox',    keywords: 'checkbox bg border icon selected disabled 체크박스 토큰' },
+  { label: '--radio-*',           sublabel: 'Component Token', type: 'token', page: 'components-new.html', anchor: 'radio',       keywords: 'radio border dot selected disabled 라디오 토큰' },
+  { label: '--toggle-*',          sublabel: 'Component Token', type: 'token', page: 'components-new.html', anchor: 'toggle',      keywords: 'toggle on off bg knob disabled 토글 토큰' },
+  { label: '--chip-line-* / --chip-solid-*', sublabel: 'Component Token', type: 'token', page: 'components-new.html', anchor: 'chip', keywords: 'chip line solid hover selected disabled bg border text 칩 토큰' },
+  { label: '--input-*',           sublabel: 'Component Token', type: 'token', page: 'components-new.html', anchor: 'input',       keywords: 'input default focus error correct disabled bg border text 인풋 토큰' },
+  { label: '--select-* / --dropdown-*', sublabel: 'Component Token', type: 'token', page: 'components-new.html', anchor: 'select', keywords: 'select dropdown bg border text 셀렉트 드롭다운 토큰' },
 ];
 
 /* ── Sidebar Search ── */

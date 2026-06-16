@@ -57,6 +57,8 @@ figma.ui.onmessage = async (msg: { type: string } & Partial<InstallSelection> & 
     });
   } else if (msg.type === "scan-legacy") {
     await scanLegacyComponents();
+  } else if (msg.type === "select-instances") {
+    await selectInstancesByIds((msg as { nodeIds?: string[] }).nodeIds ?? []);
   } else if (msg.type === "swap-components") {
     await swapLegacyComponents(msg.mappings ?? []);
   } else if (msg.type === "cancel") {
@@ -478,6 +480,172 @@ async function runInstall(sel: InstallSelection) {
       removedCount: removedAll.length,
       removedNames: removedAll,
     });
+  } catch (err: unknown) {
+    const msg = err instanceof Error ? err.message : String(err);
+    post("error", { message: msg });
+  }
+}
+
+// ── 이름 유사도 (토큰 교집합 / 최대 크기) ─────────────────────────────────────
+
+function nameSimilarity(a: string, b: string): number {
+  const tok = (s: string) =>
+    s.toLowerCase().replace(/[^a-z0-9가-힣]/g, " ").split(/\s+/).filter(Boolean);
+  const tA = new Set(tok(a));
+  const tB = new Set(tok(b));
+  if (tA.size === 0 || tB.size === 0) return 0;
+  let matches = 0;
+  tA.forEach((t) => { if (tB.has(t)) matches++; });
+  return matches / Math.max(tA.size, tB.size);
+}
+
+// ── 레거시 컴포넌트 스캔 ───────────────────────────────────────────────────────
+
+async function scanLegacyComponents() {
+  try {
+    post("progress", { step: "현재 페이지 인스턴스 스캔 중…", pct: 10 });
+
+    const page = figma.currentPage;
+    const allInstances = page.findAll((n) => n.type === "INSTANCE") as InstanceNode[];
+
+    // 컴포넌트 세트 단위로 그룹핑 (variant 이름 대신 세트 이름 사용)
+    const remoteMap = new Map<string, { setName: string; count: number; nodeIds: string[] }>();
+    let scanned = 0;
+
+    for (const inst of allInstances) {
+      const main = await inst.getMainComponentAsync();
+      scanned++;
+      if (scanned % 20 === 0) {
+        post("progress", {
+          step: `${scanned}/${allInstances.length} 인스턴스 확인 중…`,
+          pct: 10 + Math.floor((scanned / allInstances.length) * 50),
+        });
+      }
+      if (!main || !main.remote) continue;
+
+      // 세트가 있으면 세트 기준, 없으면 컴포넌트 기준
+      const isInSet = main.parent?.type === "COMPONENT_SET";
+      const key = isInSet ? main.parent!.id : main.id;
+      const setName = isInSet ? main.parent!.name : main.name;
+
+      const entry = remoteMap.get(key);
+      if (entry) {
+        entry.count++;
+        entry.nodeIds.push(inst.id);
+      } else {
+        remoteMap.set(key, { setName, count: 1, nodeIds: [inst.id] });
+      }
+    }
+
+    post("progress", { step: "로컬 컴포넌트 세트 수집 중…", pct: 65 });
+
+    const localSets = figma.root
+      .findAll((n) => n.type === "COMPONENT_SET")
+      .map((n) => ({ id: n.id, name: n.name }));
+
+    // 유사도 기반 상위 3개 제안
+    const AUTO_THRESHOLD = 0.6;
+
+    const remoteList = Array.from(remoteMap.entries()).map(([oldId, data]) => {
+      const suggestions = localSets
+        .map((s) => ({ id: s.id, name: s.name, score: nameSimilarity(data.setName, s.name) }))
+        .sort((a, b) => b.score - a.score)
+        .slice(0, 3);
+
+      const autoMatchId = (suggestions[0]?.score ?? 0) >= AUTO_THRESHOLD
+        ? suggestions[0].id
+        : null;
+
+      return {
+        oldId,
+        oldName: data.setName,
+        count: data.count,
+        nodeIds: data.nodeIds,
+        suggestions,
+        autoMatchId,
+      };
+    });
+
+    post("scan-result", {
+      remoteList,
+      localSets,
+      totalScanned: allInstances.length,
+      remoteCount: remoteList.reduce((s, r) => s + r.count, 0),
+    });
+  } catch (err: unknown) {
+    const msg = err instanceof Error ? err.message : String(err);
+    post("error", { message: msg });
+  }
+}
+
+// ── 인스턴스 선택 (Figma 캔버스 하이라이트) ──────────────────────────────────
+
+async function selectInstancesByIds(nodeIds: string[]) {
+  const nodes: SceneNode[] = [];
+  for (const id of nodeIds) {
+    const node = await figma.getNodeByIdAsync(id);
+    if (node) nodes.push(node as SceneNode);
+  }
+  if (nodes.length > 0) {
+    figma.currentPage.selection = nodes;
+    figma.viewport.scrollAndZoomIntoView(nodes);
+  }
+}
+
+// ── 레거시 컴포넌트 교체 ──────────────────────────────────────────────────────
+
+async function swapLegacyComponents(mappings: { oldId: string; newSetId: string }[]) {
+  try {
+    if (mappings.length === 0) {
+      post("swap-done", { swapped: 0, failed: 0, skipped: 0 });
+      return;
+    }
+
+    const mappingMap = new Map(mappings.map((m) => [m.oldId, m.newSetId]));
+    const page = figma.currentPage;
+    const allInstances = page.findAll((n) => n.type === "INSTANCE") as InstanceNode[];
+
+    let swapped = 0, failed = 0, skipped = 0;
+
+    for (let i = 0; i < allInstances.length; i++) {
+      const inst = allInstances[i];
+      const main = await inst.getMainComponentAsync();
+      if (!main || !main.remote) continue;
+
+      const newSetId = mappingMap.get(main.id);
+      if (!newSetId) { skipped++; continue; }
+
+      const newSet = await figma.getNodeByIdAsync(newSetId) as ComponentSetNode;
+      if (!newSet || newSet.type !== "COMPONENT_SET") { failed++; continue; }
+
+      // 같은 variant 프로퍼티 키/값으로 매칭 시도, 없으면 첫 번째 variant
+      const currentProps = inst.componentProperties ?? {};
+      let target: ComponentNode | null = null;
+      for (const child of newSet.children) {
+        if (child.type !== "COMPONENT") continue;
+        if (!target) target = child as ComponentNode; // 기본값
+        // variant name 기반 추가 매칭 (예: "State=Default, Size=MD")
+        const variantMatch = Object.entries(currentProps).every(([k, v]) => {
+          return (child as ComponentNode).name.includes(`${k}=${(v as { value: unknown }).value}`);
+        });
+        if (variantMatch) { target = child as ComponentNode; break; }
+      }
+
+      if (!target) { failed++; continue; }
+
+      try {
+        inst.swapComponent(target);
+        swapped++;
+      } catch {
+        failed++;
+      }
+
+      if (i % 10 === 0) {
+        post("progress", { step: `${swapped}개 교체됨…`, pct: 10 + Math.floor((i / allInstances.length) * 80) });
+      }
+    }
+
+    post("swap-done", { swapped, failed, skipped });
   } catch (err: unknown) {
     const msg = err instanceof Error ? err.message : String(err);
     post("error", { message: msg });

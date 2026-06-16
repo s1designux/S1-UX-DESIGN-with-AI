@@ -59,6 +59,36 @@
   .result-error { background: #fef2f2; border: 1px solid #fecaca; border-radius: 10px; padding: 16px; margin-bottom: 16px; }
   .result-error-title { font-size: 14px; font-weight: 700; color: #991b1b; margin-bottom: 6px; }
 
+  /* ── tabs ── */
+  .tab-bar { display: flex; gap: 2px; margin-bottom: 16px; background: #f3f4f6; border-radius: 10px; padding: 3px; }
+  .tab-btn { flex: 1; padding: 7px 10px; border: none; background: transparent; border-radius: 8px; font-size: 12px; font-weight: 600; color: #6b7280; cursor: pointer; transition: all 0.15s; }
+  .tab-btn.active { background: #fff; color: #111827; box-shadow: 0 1px 3px rgba(0,0,0,0.08); }
+  .tab-panel { display: none; }
+  .tab-panel.active { display: block; }
+
+  /* ── legacy swap ── */
+  .scan-intro { background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 8px; padding: 12px 14px; font-size: 11.5px; color: #6b7280; line-height: 1.6; margin-bottom: 14px; }
+  .scan-intro strong { color: #374151; }
+  .remote-list { display: flex; flex-direction: column; gap: 6px; margin-bottom: 14px; max-height: 260px; overflow-y: auto; }
+  .remote-row { border: 1px solid #e5e7eb; border-radius: 8px; padding: 10px 12px; cursor: pointer; transition: border-color 0.12s, background 0.12s; }
+  .remote-row:hover { border-color: #c7d2fe; background: #fafbff; }
+  .remote-row.active { border-color: #1d6ceb; background: #f0f6ff; }
+  .remote-row-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px; }
+  .remote-name { font-size: 11.5px; font-weight: 600; color: #374151; word-break: break-all; }
+  .remote-count { font-size: 10px; color: #9ca3af; flex-shrink: 0; margin-left: 8px; white-space: nowrap; }
+  .remote-arrow { font-size: 10px; color: #9ca3af; margin: 3px 0 5px; }
+  .suggestion-chips { display: flex; flex-wrap: wrap; gap: 5px; }
+  .chip-suggestion { padding: 4px 10px; border-radius: 20px; border: 1.5px solid #d1d5db; font-size: 11px; color: #374151; background: #fff; cursor: pointer; transition: all 0.12s; white-space: nowrap; }
+  .chip-suggestion:hover { border-color: #1d6ceb; color: #1d6ceb; }
+  .chip-suggestion.selected { border-color: #1d6ceb; background: #1d6ceb; color: #fff; }
+  .chip-suggestion.auto { border-color: #10b981; background: #f0fdf4; color: #065f46; }
+  .chip-suggestion.auto.selected { background: #10b981; color: #fff; border-color: #10b981; }
+  .chip-none { font-size: 10.5px; color: #9ca3af; padding: 4px 0; }
+  .expand-btn { margin-top: 5px; font-size: 10.5px; color: #6b7280; background: none; border: none; cursor: pointer; padding: 2px 0; text-decoration: underline; }
+  .expand-select { display: none; margin-top: 5px; width: 100%; padding: 5px 8px; border: 1px solid #d1d5db; border-radius: 6px; font-size: 11.5px; }
+  .scan-summary { font-size: 11px; color: #6b7280; margin-bottom: 10px; }
+  .scan-summary strong { color: #374151; }
+
   /* ── buttons ── */
   .btn-row { display: flex; gap: 8px; }
   .btn { flex: 1; padding: 10px; border-radius: 8px; border: none; font-size: 13px; font-weight: 600; cursor: pointer; transition: background 0.15s; }
@@ -74,10 +104,18 @@
 <div class="header">
   <div class="header-icon">🎨</div>
   <div>
-    <div class="header-title">에스원 디자인시스템 설치</div>
-    <div class="header-sub">필요한 항목을 선택해 이 파일에 설치합니다</div>
+    <div class="header-title">에스원 디자인시스템</div>
+    <div class="header-sub">Variables 설치 · 레거시 컴포넌트 교체</div>
   </div>
 </div>
+
+<div class="tab-bar">
+  <button class="tab-btn active" onclick="switchTab('install')">설치</button>
+  <button class="tab-btn" onclick="switchTab('legacy')">레거시 교체</button>
+</div>
+
+<!-- ── 설치 탭 ── -->
+<div class="tab-panel active" id="tab-install">
 
 <div class="select-list" id="select-list">
   <label class="select-row checked" data-opt="opt-foundation">
@@ -141,8 +179,46 @@
   <button class="btn btn-primary"   id="btn-install" onclick="install()">선택 항목 설치</button>
 </div>
 
+</div><!-- /tab-install -->
+
+<!-- ── 레거시 교체 탭 ── -->
+<div class="tab-panel" id="tab-legacy">
+
+  <div class="scan-intro">
+    <strong>현재 페이지</strong>에서 외부 라이브러리에 연결된 인스턴스를 찾아<br>
+    이 파일의 새 컴포넌트 세트로 교체합니다.<br>
+    교체할 페이지로 이동한 뒤 스캔을 시작하세요.
+  </div>
+
+  <div id="legacy-scan-area">
+    <div class="btn-row">
+      <button class="btn btn-primary" id="btn-scan" onclick="startScan()">현재 페이지 스캔</button>
+    </div>
+  </div>
+
+  <div id="legacy-progress-wrap" style="display:none; margin-bottom:14px;">
+    <div id="legacy-progress-label" style="font-size:11px;color:#6b7280;margin-bottom:6px;"></div>
+    <div id="progress-bar-track" style="height:6px;background:#e5e7eb;border-radius:3px;overflow:hidden;">
+      <div id="legacy-progress-fill" style="height:100%;background:#1d6ceb;border-radius:3px;width:0%;transition:width 0.2s;"></div>
+    </div>
+  </div>
+
+  <div id="legacy-result" style="display:none;"></div>
+
+</div><!-- /tab-legacy -->
+
 <script>
-  // 체크 시각 상태 토글
+  // ── 탭 전환 ──
+  function switchTab(name) {
+    document.querySelectorAll('.tab-btn').forEach((b, i) => {
+      b.classList.toggle('active', ['install','legacy'][i] === name);
+    });
+    document.querySelectorAll('.tab-panel').forEach((p) => {
+      p.classList.toggle('active', p.id === 'tab-' + name);
+    });
+  }
+
+  // ── 설치 탭 ──
   document.querySelectorAll('.select-row input').forEach((cb) => {
     cb.addEventListener('change', () => {
       cb.closest('.select-row').classList.toggle('checked', cb.checked);
@@ -170,15 +246,163 @@
     parent.postMessage({ pluginMessage: { type: 'cancel' } }, '*');
   }
 
+  // ── 레거시 교체 탭 ──
+  let _localSets = [];
+
+  function startScan() {
+    document.getElementById('btn-scan').disabled = true;
+    document.getElementById('legacy-progress-wrap').style.display = 'block';
+    document.getElementById('legacy-result').style.display = 'none';
+    parent.postMessage({ pluginMessage: { type: 'scan-legacy' } }, '*');
+  }
+
+  // 행 클릭 → Figma 캔버스 선택
+  function selectOnCanvas(nodeIds, rowEl) {
+    document.querySelectorAll('.remote-row').forEach(r => r.classList.remove('active'));
+    rowEl.classList.add('active');
+    parent.postMessage({ pluginMessage: { type: 'select-instances', nodeIds } }, '*');
+  }
+
+  // 칩 선택 토글
+  function selectChip(chipEl, oldId, newSetId) {
+    const row = chipEl.closest('.remote-row');
+    row.querySelectorAll('.chip-suggestion').forEach(c => c.classList.remove('selected'));
+    chipEl.classList.add('selected');
+    row.dataset.selectedId = newSetId;
+    // 직접 선택 드롭다운도 동기화
+    const sel = row.querySelector('.expand-select');
+    if (sel) sel.value = newSetId;
+  }
+
+  // 드롭다운 "직접 선택" 펼치기
+  function toggleExpand(btn) {
+    const row = btn.closest('.remote-row');
+    const sel = row.querySelector('.expand-select');
+    if (sel.style.display === 'block') {
+      sel.style.display = 'none';
+      btn.textContent = '다른 컴포넌트 선택 ▾';
+    } else {
+      sel.style.display = 'block';
+      btn.textContent = '접기 ▴';
+    }
+  }
+
+  // 드롭다운 변경 → 칩 선택 해제 후 드롭다운 값 사용
+  function onExpandSelect(selEl) {
+    const row = selEl.closest('.remote-row');
+    row.querySelectorAll('.chip-suggestion').forEach(c => c.classList.remove('selected'));
+    row.dataset.selectedId = selEl.value;
+  }
+
+  function renderScanResult(msg) {
+    document.getElementById('legacy-progress-wrap').style.display = 'none';
+    _localSets = msg.localSets || [];
+    const r = document.getElementById('legacy-result');
+    r.style.display = 'block';
+
+    if (msg.remoteList.length === 0) {
+      r.innerHTML = `
+        <div class="result-success">
+          <div class="result-title">✅ 레거시 없음</div>
+          <div class="result-sub">현재 페이지(${msg.totalScanned}개 인스턴스)에서 외부 라이브러리 연결 컴포넌트를 찾지 못했습니다.</div>
+        </div>
+        <div class="btn-row" style="margin-top:8px;">
+          <button class="btn btn-secondary" onclick="resetScan()">다시 스캔</button>
+        </div>`;
+      return;
+    }
+
+    const autoCount = msg.remoteList.filter(i => i.autoMatchId).length;
+
+    const rows = msg.remoteList.map((item) => {
+      const nodeIdsJson = JSON.stringify(item.nodeIds || []);
+      // 자동 매칭이 있으면 그것만, 없으면 상위 3개 후보 표시
+      const chipsToShow = item.autoMatchId
+        ? item.suggestions.filter(s => s.id === item.autoMatchId)
+        : item.suggestions.filter(s => s.score > 0);
+      const chips = chipsToShow.map((s) => {
+        const isAuto = s.id === item.autoMatchId;
+        const label = isAuto ? `✓ ${s.name}` : s.name;
+        const cls = `chip-suggestion${isAuto ? ' auto selected' : ''}`;
+        return `<button class="${cls}" title="${s.name}"
+          onclick="selectChip(this,'${item.oldId}','${s.id}')">${label}</button>`;
+      }).join('');
+
+      const localOptions = _localSets.map(s =>
+        `<option value="${s.id}">${s.name}</option>`
+      ).join('');
+
+      return `
+        <div class="remote-row" data-old-id="${item.oldId}"
+             data-selected-id="${item.autoMatchId || ''}"
+             data-node-ids='${nodeIdsJson}'
+             onclick="selectOnCanvas(JSON.parse(this.dataset.nodeIds), this)">
+          <div class="remote-row-header">
+            <span class="remote-name">${item.oldName}</span>
+            <span class="remote-count">${item.count}개 인스턴스</span>
+          </div>
+          <div class="remote-arrow">↓ 교체할 컴포넌트 세트</div>
+          <div class="suggestion-chips" onclick="event.stopPropagation()">
+            ${chips || '<span class="chip-none">유사 항목 없음</span>'}
+          </div>
+          <button class="expand-btn" onclick="event.stopPropagation();toggleExpand(this)">다른 컴포넌트 선택 ▾</button>
+          <select class="expand-select" onchange="onExpandSelect(this)" onclick="event.stopPropagation()">
+            <option value="">— 교체 안 함 —</option>
+            ${localOptions}
+          </select>
+        </div>`;
+    }).join('');
+
+    r.innerHTML = `
+      <div class="scan-summary">
+        외부 라이브러리 <strong>${msg.remoteList.length}종</strong> ·
+        <strong>${msg.remoteCount}개</strong> 인스턴스 발견 ·
+        자동 매칭 <strong>${autoCount}종</strong>.
+        행을 클릭하면 Figma에서 선택됩니다.
+      </div>
+      <div class="remote-list">${rows}</div>
+      <div class="btn-row">
+        <button class="btn btn-secondary" onclick="resetScan()">다시 스캔</button>
+        <button class="btn btn-primary" onclick="runSwap()">교체 실행</button>
+      </div>`;
+  }
+
+  function runSwap() {
+    const mappings = [];
+    document.querySelectorAll('.remote-row').forEach((row) => {
+      const newSetId = row.dataset.selectedId;
+      if (newSetId) mappings.push({ oldId: row.dataset.oldId, newSetId });
+    });
+    if (mappings.length === 0) { alert('교체할 항목을 하나 이상 지정하세요.'); return; }
+
+    document.getElementById('legacy-result').style.display = 'none';
+    document.getElementById('legacy-progress-wrap').style.display = 'block';
+    document.getElementById('legacy-progress-label').textContent = '교체 준비 중…';
+    parent.postMessage({ pluginMessage: { type: 'swap-components', mappings } }, '*');
+  }
+
+  function resetScan() {
+    document.getElementById('btn-scan').disabled = false;
+    document.getElementById('legacy-result').style.display = 'none';
+  }
+
+  // ── 공통 메시지 핸들러 ──
   onmessage = (event) => {
     const msg = event.data.pluginMessage;
     if (!msg) return;
 
+    // 설치 진행
     if (msg.type === 'progress') {
       document.getElementById('progress-label').textContent = msg.step;
       document.getElementById('progress-bar-fill').style.width = msg.pct + '%';
+      // 레거시 탭 진행도도 업데이트
+      const lbl = document.getElementById('legacy-progress-label');
+      const fill = document.getElementById('legacy-progress-fill');
+      if (lbl) lbl.textContent = msg.step;
+      if (fill) fill.style.width = (msg.pct || 0) + '%';
     }
 
+    // 설치 완료
     if (msg.type === 'done') {
       document.getElementById('progress-wrap').style.display = 'none';
       document.getElementById('btn-row').style.display = 'none';
@@ -202,12 +426,39 @@
         </div>`;
     }
 
+    // 스캔 결과
+    if (msg.type === 'scan-result') {
+      renderScanResult(msg);
+    }
+
+    // 교체 완료
+    if (msg.type === 'swap-done') {
+      document.getElementById('legacy-progress-wrap').style.display = 'none';
+      const r = document.getElementById('legacy-result');
+      r.style.display = 'block';
+      r.innerHTML = `
+        <div class="result-success">
+          <div class="result-title">✅ 교체 완료</div>
+          <div class="result-sub">
+            교체됨: <strong>${msg.swapped}개</strong> 인스턴스<br>
+            ${msg.failed ? `실패: <strong>${msg.failed}개</strong><br>` : ''}
+            ${msg.skipped ? `매핑 없음(건너뜀): <strong>${msg.skipped}개</strong>` : ''}
+          </div>
+        </div>
+        <div class="btn-row" style="margin-top:8px;">
+          <button class="btn btn-secondary" onclick="resetScan()">다시 스캔</button>
+          <button class="btn btn-primary" onclick="parent.postMessage({pluginMessage:{type:'cancel'}},'*')">닫기</button>
+        </div>`;
+    }
+
+    // 오류
     if (msg.type === 'error') {
       document.getElementById('progress-wrap').style.display = 'none';
       document.getElementById('btn-row').style.display = 'none';
+      document.getElementById('legacy-progress-wrap').style.display = 'none';
       const r = document.getElementById('result');
-      r.style.display = 'block';
-      r.innerHTML = `
+      const lr = document.getElementById('legacy-result');
+      const errHtml = `
         <div class="result-error">
           <div class="result-error-title">❌ 오류 발생</div>
           <div class="result-sub">${msg.message}</div>
@@ -216,6 +467,13 @@
           <button class="btn btn-secondary" onclick="location.reload()">다시 시도</button>
           <button class="btn btn-secondary" onclick="parent.postMessage({pluginMessage:{type:'cancel'}},'*')">닫기</button>
         </div>`;
+      if (document.getElementById('tab-legacy').classList.contains('active')) {
+        lr.style.display = 'block';
+        lr.innerHTML = errHtml;
+      } else {
+        r.style.display = 'block';
+        r.innerHTML = errHtml;
+      }
     }
   };
 </script>
