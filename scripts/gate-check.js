@@ -265,6 +265,27 @@ try {
   fail(`number-page-check 실행 실패: ${e.message}`);
 }
 
+// ── Gate 10: Doc Token Reference Drift ────────────────────────────
+// 가이드/레퍼런스 HTML 이 rename·삭제된 토큰명을 쥐고 있는지 강제.
+// Check B(rename denylist)=차단 · Check A(미정의 --color-* 참조)=경고(기존 드리프트).
+console.log('\n[Gate 10] Doc Token Reference Drift');
+try {
+  const { spawnSync } = require('child_process');
+  const r = spawnSync('node', [path.join(ROOT, 'scripts/doc-token-ref-check.js')], { encoding: 'utf-8' });
+  const out = (r.stdout || '') + (r.stderr || '');
+  if (r.status === 0) {
+    pass('문서 rename denylist 잔재 0 (활성 페이지 토큰 경로 정본 일치)');
+    const wm = out.match(/미정의 --color-\* 참조 (\d+)건/);
+    if (wm) warn(`미정의 --color-* 참조 ${wm[1]}건 — 기존 드리프트(별도 정리). 상세: npm run docs:tokencheck`);
+  } else {
+    const lines = out.split('\n').filter((l) => l.includes('❌'));
+    for (const l of lines) fail(l.replace(/^\s*❌\s*/, ''));
+    if (lines.length === 0) fail(`doc-token-ref-check 실패 (exit ${r.status})`);
+  }
+} catch (e) {
+  fail(`doc-token-ref-check 실행 실패: ${e.message}`);
+}
+
 // ── Summary ───────────────────────────────────────────────────────
 console.log('\n─────────────────────────────────────────────────────');
 if (errors > 0) {

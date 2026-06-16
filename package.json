@@ -44,7 +44,8 @@
     "figma:usage:dry-run": "node scripts/figma/apply-figma-usage.mjs --dry-run",
     "gate:check": "node scripts/gate-check.js",
     "harness:audit": "node scripts/harness-audit.js",
-    "harness:fix": "node scripts/harness-audit.js --fix"
+    "harness:fix": "node scripts/harness-audit.js --fix",
+    "docs:tokencheck": "node scripts/doc-token-ref-check.js"
   },
   "devDependencies": {
     "@figma/plugin-typings": "^1.97.0",

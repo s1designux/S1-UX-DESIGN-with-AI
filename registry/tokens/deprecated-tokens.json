@@ -117,5 +117,28 @@
   "referenceLinks": {
     "governance": "registry/governance/deprecated.json",
     "note": "Component variant deprecations (button-danger) live in governance/deprecated.json. Token-level deprecations live here."
-  }
+  },
+  "renamedGroups": [
+    {
+      "from": "color/data/",
+      "to": "color/table/",
+      "renamedAt": "2026-06-15",
+      "reason": "Variables 그룹명 정리 data→table (사용자 결정). 활성 페이지/문서에서 옛 경로 사용 금지.",
+      "scope": "active-pages"
+    },
+    {
+      "from": "color/data/state/",
+      "to": "color/table/cell/",
+      "renamedAt": "2026-06-15",
+      "reason": "data/state→table/cell 서브그룹 변경.",
+      "scope": "active-pages"
+    },
+    {
+      "from": "--color-data-",
+      "to": "--color-table-",
+      "renamedAt": "2026-06-15",
+      "reason": "data→table 그룹명 변경에 따른 CSS 변수 prefix 변경.",
+      "scope": "active-pages"
+    }
+  ]
 }

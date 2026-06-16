@@ -1094,22 +1094,26 @@ Foundation(Foundation)를 직접 참조하지 않습니다.
 
 | Figma 원본 | CSS Variable | Semantic 참조 | 설명 |
 |---|---|---|---|
-| color/data/table/header-bg | `--table-header-bg` | `var(--color-bg-subtle)` | 헤더 배경 |
-| color/data/table/row-bg--default | `--table-row-default-bg` | `var(--color-surface-default)` | 행 기본 배경 |
-| color/data/table/row-bg--hover | `--table-row-hover-bg` | `var(--color-bg-subtle)` | 행 hover 배경 |
-| color/data/table/row-bg--selected | `--table-row-selected-bg` | `var(--color-bg-selected)` | 행 선택 배경 |
+| color/table/header/bg | `--table-header-bg` | `var(--color-bg-default)` | 헤더 배경 |
+| color/table/border/light | `--table-border-light` | `var(--color-border-subtle)` | 셀·행 구분선 |
+| color/table/border/strong | `--table-border-strong` | `var(--color-border-emphasis)` | 외곽 상단 2px 테두리 |
+| color/table/cell/default | `--table-row-default-bg` | `var(--color-surface-default)` | 행 기본 배경 |
+| color/table/cell/hover | `--table-row-hover-bg` | `var(--color-bg-subtle)` | 행 hover 배경 |
+| color/table/cell/selected | `--table-row-selected-bg` | `var(--color-bg-selected)` | 행 선택 배경 |
 
 ### CSS 구현
 
 ```css
 /* Table / Data Grid */
---table-header-bg:        var(--color-bg-subtle);
---table-header-text:      var(--color-text-tertiary);
---table-header-border:    var(--color-border-default);
+--table-header-bg:        var(--color-bg-default);
+--table-header-text:      var(--color-text-secondary);
+--table-border-light:     var(--color-border-subtle);
+--table-border-strong:    var(--color-border-emphasis);
+--table-header-border:    var(--table-border-light);
 --table-row-default-bg:   var(--color-surface-default);
 --table-row-hover-bg:     var(--color-bg-subtle);
 --table-row-selected-bg:  var(--color-bg-selected);
---table-cell-border:      var(--color-border-subtle);
+--table-cell-border:      var(--table-border-light);
 --table-cell-text:        var(--color-text-secondary);
 ```
 
