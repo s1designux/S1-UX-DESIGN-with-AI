@@ -47,7 +47,7 @@ interface InstallSelection {
   components: boolean;
 }
 
-figma.ui.onmessage = async (msg: { type: string } & Partial<InstallSelection>) => {
+figma.ui.onmessage = async (msg: { type: string } & Partial<InstallSelection> & { mappings?: { oldId: string; newSetId: string }[] }) => {
   if (msg.type === "install") {
     await runInstall({
       foundation: msg.foundation === true,
@@ -55,6 +55,10 @@ figma.ui.onmessage = async (msg: { type: string } & Partial<InstallSelection>) =
       textStyles: msg.textStyles === true,
       components: msg.components === true,
     });
+  } else if (msg.type === "scan-legacy") {
+    await scanLegacyComponents();
+  } else if (msg.type === "swap-components") {
+    await swapLegacyComponents(msg.mappings ?? []);
   } else if (msg.type === "cancel") {
     figma.closePlugin();
   }
