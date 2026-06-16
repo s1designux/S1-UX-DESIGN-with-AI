@@ -203,7 +203,7 @@ try {
 }
 
 // ── Gate 7: Token Sync Monitor ───────────────────────────────────
-// 토큰 "값"이 모든 표면에서 정본(vars-data·site-base)과 일치하는지 기계 판정.
+// 토큰 "값"이 모든 표면에서 정본(vars-data)과 일치하는지 기계 판정. (site-base 는 사이트 전용·검수 제외)
 console.log('\n[Gate 7] Token Sync Monitor');
 
 try {

@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * Token Reconcile — 정본(vars-data·site-base)에서 파생 표면을 재생성해 싱크를 맞춘다.
+ * Token Reconcile — 정본(vars-data)에서 파생 표면을 재생성해 싱크를 맞춘다. (site-base 는 사이트 전용·Variables 검수 제외)
  *
  * 자동 재생성(결정론적):
  *   1. tokens:gen        vars-data SEMANTIC_COLOR → tokens.css Semantic 섹션

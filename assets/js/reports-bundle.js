@@ -2,7 +2,7 @@
    Run: npm run reports:sync
 */
 window.REPORTS_INDEX = {
-  "generatedAt": "2026-06-16T05:27:29.002Z",
+  "generatedAt": "2026-06-16T07:54:58.161Z",
   "totalCount": 54,
   "reports": [
     {

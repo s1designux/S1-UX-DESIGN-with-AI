@@ -35,7 +35,6 @@ const ROOT = path.resolve(__dirname, '..');
 const P = {
   varsData:       path.join(ROOT, 'plugins/figma-vars-installer/src/vars-data.ts'),
   tokensCss:      path.join(ROOT, 'assets/css/tokens.css'),
-  siteBase:       path.join(ROOT, 'assets/css/site-base.css'),
   swV24:          path.join(ROOT, 'registry/tokens/sw-v2.4.tokens.css'),
   installPrompt:  path.join(ROOT, 'pages/install-prompt.html'),
   semanticHtml:   path.join(ROOT, 'pages/semantic.html'),
@@ -85,22 +84,12 @@ function buildCanonical() {
     if (lh && dh) canonical[figmaPathToCssVar(m[1])] = { light: lh, dark: dh, src: 'vars-data' };
   }
 
-  // [layer 2] 역할 기반 semantic (--color-bg/surface/text/border/action/status …)
-  //   vars-data 에 없는 --color-* 역할 토큰의 정본 = site-base.css (페이지가 @import 하는 라이브 파일).
-  //   role 토큰은 foundation(tokens.css)을 참조하므로 두 파일을 합쳐서 해석한다.
-  //   → registry/semantic.colors·sw-v2.4.tokens.css·semantic.html 파생본을 이 값과 대조.
-  const tc = parseCssText(fs.readFileSync(P.tokensCss, 'utf8'));
-  const sb = parseCssText(fs.readFileSync(P.siteBase, 'utf8'));
-  const merged = { light: { ...tc.light, ...sb.light }, dark: { ...tc.dark, ...sb.dark } };
-  const resolve = makeCssResolver(merged);
-  for (const name of Object.keys(merged.light)) {
-    if (!name.startsWith('--color-')) continue;   // 색상 토큰만
-    if (canonical[name]) continue;                 // vars-data 가 우선(정본)
-    const l = resolve(name, false), d = resolve(name, true);
-    if (HEX_RE.test(l || '') && HEX_RE.test(d || '')) {
-      canonical[name] = { light: up(l), dark: up(d), src: 'site-base.css' };
-    }
-  }
+  // [site-base 제외 — 2026-06-16 사용자 결정]
+  //   site-base.css 의 역할 토큰(--color-bg/surface/text/border/action/status …)은
+  //   "사이트 전용" 표면이며 Variables 정본이 아니다. Variables 검수에서 site-base 내용이
+  //   검출돼 컴포넌트 검수와 섞이는 혼란을 막기 위해 정본 source 에서 제외한다.
+  //   → 이제 Variables 정본 = vars-data 단일(Foundation + SEMANTIC_COLOR).
+  //   (site-base 는 style.css @import 로 사이트에 그대로 적용됨. 문서 참조 유효성은 Gate 10 이 별도 처리.)
   return { canonical, foundationByPath, semanticColorSet };
 }
 
