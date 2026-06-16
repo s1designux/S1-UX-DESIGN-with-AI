@@ -292,7 +292,7 @@
       const statusSet = new Set();
       tokens.forEach(t => {
         if (typeof t.cssVar === 'string') {
-          // --color-gray-50 → --color-gray
+          // 예: "...gray-50" 에서 끝의 step 숫자/계열 접미사 제거 → prefix 그룹화
           const stripped = t.cssVar.replace(/-(\d+|white|black|blue|red|gray|ci)$/, '');
           prefixSet.add(stripped);
         }

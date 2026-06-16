@@ -151,9 +151,14 @@ function main() {
   updated = injectUpdateStamps(updated);
 
   if (CHECK_ONLY) {
-    // 'Last sync: YYYY-MM-DD' 스탬프는 재생성 시점의 오늘 날짜라 매일 달라짐 →
-    // 토큰 내용 검사에서는 제외(정규화)해 날짜만으로 인한 false-positive 차단.
-    const stripSyncDate = (s) => s.replace(/Last sync: \d{4}-\d{2}-\d{2}/g, 'Last sync: <DATE>');
+    // 시각 스탬프는 토큰 내용과 무관하게 매번 달라짐(아래 2종) → 정규화해 false-positive 차단.
+    // --check 는 토큰 "내용" 드리프트만 잡는다(스탬프는 write 시 항상 갱신되므로 검사 불필요).
+    //   ① 'Last sync: YYYY-MM-DD' — 재생성 시점의 오늘 날짜.
+    //   ② '업데이트 YYYY-MM-DD HH:MM' — dirty 파일 mtime 기반(분 단위). 빌드가 파일 mtime 을
+    //      건드리면 내용은 같아도 달라져 비결정적 실패를 유발(2026-06-16 발견).
+    const stripSyncDate = (s) => s
+      .replace(/Last sync: \d{4}-\d{2}-\d{2}/g, 'Last sync: <DATE>')
+      .replace(/(업데이트 )\d{4}-\d{2}-\d{2} \d{2}:\d{2}/g, '$1<STAMP>');
     if (stripSyncDate(updated) !== stripSyncDate(html)) {
       console.error('❌ install-prompt.html 인라인 CSS 가 tokens.css 와 불일치');
       console.error('   실행: npm run tokens:sync-prompt');

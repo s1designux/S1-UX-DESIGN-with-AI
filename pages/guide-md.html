@@ -352,7 +352,6 @@ color-overlay   → 딤·오버레이
 | `--color-bg-elevated` | surface/neutral/bg/support | `#E9E9E9` | color/gray/100 | `#35363F` | gray-dark/400 |
 | `--color-bg-home` | surface/base-background/home | `#F5F6FB` | — (Foundation 미등록) | `#131418` | gray-dark/50 |
 
-&gt; ⚠️ `--color-bg-active`, `--color-bg-deepest`, `--color-bg-selected` 3종은 Figma 원본 미확인 상태로 `tokens/review/pending-review.md` 항목 1에서 검토 중입니다.
 &gt; `--color-bg-home`의 Light Foundation(`#F5F6FB`)는 기존 팔레트 미등록 값으로 `tokens/review/pending-review.md` 항목 2에서 검토 중입니다.
 
 ---
@@ -720,7 +719,7 @@ color/status-card/*   → Status Card (관제 도메인)
 ```
 
 - **component**: button, chip, dropdown, input, checkbox, radio, toggle, pagination, nav, table, status-card
-- **variant**: primary, secondary, ghost, outlined …
+- **variant**: primary, secondary, blue-line …
 - **state**: default, hover, pressed, focus, selected, disabled, error, correct, loading …
 - **property**: bg, text, border, icon, indicator, check …
 
@@ -750,28 +749,22 @@ Foundation(Foundation)를 직접 참조하지 않습니다.
 | color/button/secondary/border--disabled | `--button-secondary-disabled-border` | `var(--color-border-subtle)` | Secondary disabled 테두리 |
 | color/button/secondary/text--default | `--button-secondary-default-text` | `var(--color-text-secondary)` | Secondary 텍스트 |
 | color/button/secondary/text--disabled | `--button-secondary-disabled-text` | `var(--color-text-disabled)` | Secondary disabled 텍스트 |
-| color/button/ghost/bg--hover | `--button-ghost-hover-bg` | `var(--color-bg-subtle)` | Ghost hover 배경 |
-| color/button/ghost/bg--pressed | `--button-ghost-pressed-bg` | `var(--color-bg-muted)` | Ghost pressed 배경 |
-| color/button/ghost/text--default | `--button-ghost-default-text` | `var(--color-text-secondary)` | Ghost 텍스트 |
-| color/button/ghost/text--disabled | `--button-ghost-disabled-text` | `var(--color-text-disabled)` | Ghost disabled 텍스트 |
 | color/button/primary/icon--default | `--button-primary-default-icon` | `var(--color-action-primary-text)` | Primary 아이콘 |
 | color/button/secondary/icon--default | `--button-secondary-default-icon` | `var(--color-icon-default)` | Secondary 아이콘 |
 | color/button/secondary/icon--disabled | `--button-secondary-disabled-icon` | `var(--color-icon-muted)` | Secondary disabled 아이콘 |
-| color/button/ghost/icon--default | `--button-ghost-default-icon` | `var(--color-icon-default)` | Ghost 아이콘 |
-| color/button/ghost/icon--disabled | `--button-ghost-disabled-icon` | `var(--color-icon-muted)` | Ghost disabled 아이콘 |
 | color/button/primary/focus-ring | `--button-primary-focus-ring` | `var(--color-border-focus)` | Primary focus 링 |
 | color/button/secondary/focus-ring | `--button-secondary-focus-ring` | `var(--color-border-focus)` | Secondary focus 링 |
 
 ### 상태 커버리지
 
-| 상태 | primary | secondary | ghost |
-|------|:-------:|:---------:|:-----:|
-| default | ✅ | ✅ | ✅ |
-| hover | ✅ | ✅ | ✅ |
-| pressed | ✅ | ✅ | ✅ |
-| focus | ✅ | ✅ | — |
-| disabled | ✅ | ✅ | ✅ |
-| loading | `--button-primary-default-bg` 재사용 | | |
+| 상태 | primary | secondary |
+|------|:-------:|:---------:|
+| default | ✅ | ✅ |
+| hover | ✅ | ✅ |
+| pressed | ✅ | ✅ |
+| focus | ✅ | ✅ |
+| disabled | ✅ | ✅ |
+| loading | `--button-primary-default-bg` 재사용 | |
 
 ### CSS 구현
 
@@ -799,16 +792,6 @@ Foundation(Foundation)를 직접 참조하지 않습니다.
 --button-secondary-default-icon:    var(--color-icon-default);
 --button-secondary-disabled-icon:   var(--color-icon-muted);
 --button-secondary-focus-ring:      var(--color-border-focus);
-
-/* Button — Ghost */
---button-ghost-hover-bg:     var(--color-bg-subtle);
---button-ghost-pressed-bg:   var(--color-bg-muted);
---button-ghost-default-text: var(--color-text-secondary);
---button-ghost-disabled-text: var(--color-text-disabled);
---button-ghost-default-icon:  var(--color-icon-default);
---button-ghost-disabled-icon: var(--color-icon-muted);
-
-
 ```
 
 ---
@@ -1115,46 +1098,6 @@ Foundation(Foundation)를 직접 참조하지 않습니다.
 --table-row-selected-bg:  var(--color-bg-selected);
 --table-cell-border:      var(--table-border-light);
 --table-cell-text:        var(--color-text-secondary);
-```
-
----
-
-## 9. Status Card *(관제 도메인)*
-
-&gt; 이 그룹은 관제 시스템의 장치 상태 표시용입니다.
-&gt; 표준 UI 피드백(성공/에러)과 다른 개념으로, **Domain Token 레이어로 이동 예정**입니다.
-&gt; Figma 오타 3건 포함: `--defualt` → `--default`.
-
-### 변수 정의
-
-| Figma 원본 (오타 수정 후) | CSS Variable | Semantic / Domain 참조 | 설명 |
-|---|---|---|---|
-| color/status-card/text/primary--default | `--status-card-primary-text` | `var(--color-domain-status-primary)` | 주요 상태 텍스트 |
-| color/status-card/text/secondary--default | `--status-card-secondary-text` | `var(--color-domain-status-secondary)` | 보조 상태 텍스트 |
-| color/status-card/text/tertiary--default | `--status-card-tertiary-text` | `var(--color-domain-status-tertiary)` | 3차 상태 텍스트 |
-| color/status-card/bg/primary | `--status-card-primary-bg` | `var(--color-action-primary-subtle)` | 주요 상태 배경 |
-| color/status-card/bg/secondary | `--status-card-secondary-bg` | `var(--color-bg-subtle)` | 보조 상태 배경 |
-| color/status-card/icon/primary | `--status-card-primary-icon` | `var(--color-domain-status-primary)` | 주요 상태 아이콘 |
-| color/status-card/icon/secondary | `--status-card-secondary-icon` | `var(--color-domain-status-secondary)` | 보조 상태 아이콘 |
-| color/status-card/icon/tertiary | `--status-card-tertiary-icon` | `var(--color-domain-status-tertiary)` | 3차 상태 아이콘 |
-
-&gt; **오타 수정 필요 (Figma)**
-&gt; `color/status-card/text/primary--defualt` → `color/status-card/text/primary--default`
-&gt; `color/status-card/text/secondary--defualt` → `color/status-card/text/secondary--default`
-&gt; `color/status-card/text/tertiary--defualt` → `color/status-card/text/tertiary--default`
-
-### CSS 구현
-
-```css
-/* Status Card (Domain) */
---status-card-primary-text:   var(--color-domain-status-primary);
---status-card-secondary-text: var(--color-domain-status-secondary);
---status-card-tertiary-text:  var(--color-domain-status-tertiary);
---status-card-primary-bg:     var(--color-action-primary-subtle);
---status-card-secondary-bg:   var(--color-bg-subtle);
---status-card-primary-icon:   var(--color-domain-status-primary);
---status-card-secondary-icon: var(--color-domain-status-secondary);
---status-card-tertiary-icon:  var(--color-domain-status-tertiary);
 ```
 
 ---

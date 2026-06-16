@@ -140,5 +140,17 @@
       "reason": "data→table 그룹명 변경에 따른 CSS 변수 prefix 변경.",
       "scope": "active-pages"
     }
+  ],
+  "legacyFiles": [
+    {
+      "path": "assets/css/legacy-tokens.css",
+      "reason": "폐기 CSS 토큰 격리(ghost 등). 미로드·검사 제외.",
+      "since": "2026-06-16"
+    },
+    {
+      "path": "tokens/legacy/deprecated-reference.md",
+      "reason": "폐기 variant 문서 아카이브. 검사 제외.",
+      "since": "2026-06-16"
+    }
   ]
 }

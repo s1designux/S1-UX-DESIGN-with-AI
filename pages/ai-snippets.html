@@ -291,7 +291,6 @@ color-overlay   → 딤·오버레이
 |---|---|---|---|---|---|
 | `--color-surface-default` | 카드·패널·인풋 기본 표면 | `#FFFFFF` | color/base/white | `#1C1D23` | gray-dark/100 |
 | `--color-surface-raised` | 모달·드롭다운·플로팅 표면 | `#FFFFFF` | color/base/white | `#35363F` | gray-dark/400 |
-| `--color-surface-overlay` | 딤·스크림 (→ color-overlay 참조) | — | — | — | — |
 
 > **Figma 매핑**:
 > - `surface/neutral/bg/base` (white) → `--color-surface-default`
@@ -397,25 +396,6 @@ color-overlay   → 딤·오버레이
 | `--color-status-error` | `#E50533` | color/red/400 | `#F06070` | status-dark/red | 에러·실패 |
 | `--color-status-warning` | `#DBA400` | color/yellow/400 | `#E8C048` | status-dark/yellow | 경고 |
 | `--color-status-info` | `#757575` | color/gray/500 | `#8A8C96` | gray-dark/700 | 정보 |
-
-### 7-2. 서비스·도메인 상태 (관제 시스템 장치 상태)
-
-> `surface/status/*` 토큰에 해당. UI 피드백과 다른 개념.
-> 관제 화면에서 장치 상태(활성/정상/대기/비활성 등)를 표시할 때 사용.
-> → 서비스 특화 토큰으로 분류. 추후 **Domain Token** 레이어로 이동 권장.
-
-| CSS Variable | Light Hex | Light Foundation | 용도 |
-|---|---|---|---|
-| `--color-domain-status-primary` | `#1D6CEB` | color/blue/400 | 주요 상태 (활성·정상) |
-| `--color-domain-status-primary-sub` | `#2158C8` | color/blue/450 | 주요 상태 보조 |
-| `--color-domain-status-secondary` | `#1FB279` | color/green/300 | 보조 상태 |
-| `--color-domain-status-secondary-sub` | `#009E5E` | color/green/400 | 보조 상태 보조 |
-| `--color-domain-status-tertiary` | `#25B9DA` | color/skyblue/300 | 3차 상태 (대기 등) |
-| `--color-domain-status-tertiary-sub` | `#159BBC` | color/skyblue/400 | 3차 상태 보조 |
-| `--color-domain-status-disabled` | `#C4C4C4` | color/gray/300 | 비활성 상태 |
-| `--color-domain-status-error-bg` | `#FFCCD6` | color/red/100 | 에러 상태 배경 |
-
-> 다크 값은 도메인 서비스 설계 시 별도 정의 예정.
 
 ---
 
@@ -729,7 +709,7 @@ color/status-card/*   → Status Card (관제 도메인)
 ```
 
 - **component**: button, chip, dropdown, input, checkbox, radio, toggle, pagination, nav, table, status-card
-- **variant**: primary, secondary, ghost, danger, outlined …
+- **variant**: primary, secondary, blue-line …
 - **state**: default, hover, pressed, focus, selected, disabled, error, correct, loading …
 - **property**: bg, text, border, icon, indicator, check …
 
@@ -759,32 +739,22 @@ Foundation(Foundation)를 직접 참조하지 않습니다.
 | color/button/secondary/border--disabled | `--button-secondary-disabled-border` | `var(--color-border-subtle)` | Secondary disabled 테두리 |
 | color/button/secondary/text--default | `--button-secondary-default-text` | `var(--color-text-secondary)` | Secondary 텍스트 |
 | color/button/secondary/text--disabled | `--button-secondary-disabled-text` | `var(--color-text-disabled)` | Secondary disabled 텍스트 |
-| color/button/ghost/bg--hover | `--button-ghost-hover-bg` | `var(--color-bg-subtle)` | Ghost hover 배경 |
-| color/button/ghost/bg--pressed | `--button-ghost-pressed-bg` | `var(--color-bg-muted)` | Ghost pressed 배경 |
-| color/button/ghost/text--default | `--button-ghost-default-text` | `var(--color-text-secondary)` | Ghost 텍스트 |
-| color/button/ghost/text--disabled | `--button-ghost-disabled-text` | `var(--color-text-disabled)` | Ghost disabled 텍스트 |
-| color/button/danger/bg--default | `--button-danger-default-bg` | `var(--color-status-error)` | Danger 기본 배경 |
-| color/button/danger/bg--hover | `--button-danger-hover-bg` | `var(--color-text-danger)` | Danger hover 배경 |
-| color/button/danger/text--default | `--button-danger-default-text` | `var(--color-action-primary-text)` | Danger 텍스트 |
 | color/button/primary/icon--default | `--button-primary-default-icon` | `var(--color-action-primary-text)` | Primary 아이콘 |
 | color/button/secondary/icon--default | `--button-secondary-default-icon` | `var(--color-icon-default)` | Secondary 아이콘 |
 | color/button/secondary/icon--disabled | `--button-secondary-disabled-icon` | `var(--color-icon-muted)` | Secondary disabled 아이콘 |
-| color/button/ghost/icon--default | `--button-ghost-default-icon` | `var(--color-icon-default)` | Ghost 아이콘 |
-| color/button/ghost/icon--disabled | `--button-ghost-disabled-icon` | `var(--color-icon-muted)` | Ghost disabled 아이콘 |
-| color/button/danger/icon--default | `--button-danger-default-icon` | `var(--color-action-primary-text)` | Danger 아이콘 |
 | color/button/primary/focus-ring | `--button-primary-focus-ring` | `var(--color-border-focus)` | Primary focus 링 |
 | color/button/secondary/focus-ring | `--button-secondary-focus-ring` | `var(--color-border-focus)` | Secondary focus 링 |
 
 ### 상태 커버리지
 
-| 상태 | primary | secondary | ghost | danger |
-|------|:-------:|:---------:|:-----:|:------:|
-| default | ✅ | ✅ | ✅ | ✅ |
-| hover | ✅ | ✅ | ✅ | ✅ |
-| pressed | ✅ | ✅ | ✅ | — |
-| focus | ✅ | ✅ | — | — |
-| disabled | ✅ | ✅ | ✅ | — |
-| loading | `--button-primary-default-bg` 재사용 | | | |
+| 상태 | primary | secondary |
+|------|:-------:|:---------:|
+| default | ✅ | ✅ |
+| hover | ✅ | ✅ |
+| pressed | ✅ | ✅ |
+| focus | ✅ | ✅ |
+| disabled | ✅ | ✅ |
+| loading | `--button-primary-default-bg` 재사용 | |
 
 ### CSS 구현
 
@@ -812,20 +782,6 @@ Foundation(Foundation)를 직접 참조하지 않습니다.
 --button-secondary-default-icon:    var(--color-icon-default);
 --button-secondary-disabled-icon:   var(--color-icon-muted);
 --button-secondary-focus-ring:      var(--color-border-focus);
-
-/* Button — Ghost */
---button-ghost-hover-bg:     var(--color-bg-subtle);
---button-ghost-pressed-bg:   var(--color-bg-muted);
---button-ghost-default-text: var(--color-text-secondary);
---button-ghost-disabled-text: var(--color-text-disabled);
---button-ghost-default-icon:  var(--color-icon-default);
---button-ghost-disabled-icon: var(--color-icon-muted);
-
-/* Button — Danger */
---button-danger-default-bg:   var(--color-status-error);
---button-danger-hover-bg:     var(--color-text-danger);
---button-danger-default-text: var(--color-action-primary-text);
---button-danger-default-icon: var(--color-action-primary-text);
 ```
 
 ---
@@ -1132,46 +1088,6 @@ Foundation(Foundation)를 직접 참조하지 않습니다.
 --table-row-selected-bg:  var(--color-bg-selected);
 --table-cell-border:      var(--table-border-light);
 --table-cell-text:        var(--color-text-secondary);
-```
-
----
-
-## 9. Status Card *(관제 도메인)*
-
-> 이 그룹은 관제 시스템의 장치 상태 표시용입니다.
-> 표준 UI 피드백(성공/에러)과 다른 개념으로, **Domain Token 레이어로 이동 예정**입니다.
-> Figma 오타 3건 포함: `--defualt` → `--default`.
-
-### 변수 정의
-
-| Figma 원본 (오타 수정 후) | CSS Variable | Semantic / Domain 참조 | 설명 |
-|---|---|---|---|
-| color/status-card/text/primary--default | `--status-card-primary-text` | `var(--color-domain-status-primary)` | 주요 상태 텍스트 |
-| color/status-card/text/secondary--default | `--status-card-secondary-text` | `var(--color-domain-status-secondary)` | 보조 상태 텍스트 |
-| color/status-card/text/tertiary--default | `--status-card-tertiary-text` | `var(--color-domain-status-tertiary)` | 3차 상태 텍스트 |
-| color/status-card/bg/primary | `--status-card-primary-bg` | `var(--color-action-primary-subtle)` | 주요 상태 배경 |
-| color/status-card/bg/secondary | `--status-card-secondary-bg` | `var(--color-bg-subtle)` | 보조 상태 배경 |
-| color/status-card/icon/primary | `--status-card-primary-icon` | `var(--color-domain-status-primary)` | 주요 상태 아이콘 |
-| color/status-card/icon/secondary | `--status-card-secondary-icon` | `var(--color-domain-status-secondary)` | 보조 상태 아이콘 |
-| color/status-card/icon/tertiary | `--status-card-tertiary-icon` | `var(--color-domain-status-tertiary)` | 3차 상태 아이콘 |
-
-> **오타 수정 필요 (Figma)**
-> `color/status-card/text/primary--defualt` → `color/status-card/text/primary--default`
-> `color/status-card/text/secondary--defualt` → `color/status-card/text/secondary--default`
-> `color/status-card/text/tertiary--defualt` → `color/status-card/text/tertiary--default`
-
-### CSS 구현
-
-```css
-/* Status Card (Domain) */
---status-card-primary-text:   var(--color-domain-status-primary);
---status-card-secondary-text: var(--color-domain-status-secondary);
---status-card-tertiary-text:  var(--color-domain-status-tertiary);
---status-card-primary-bg:     var(--color-action-primary-subtle);
---status-card-secondary-bg:   var(--color-bg-subtle);
---status-card-primary-icon:   var(--color-domain-status-primary);
---status-card-secondary-icon: var(--color-domain-status-secondary);
---status-card-tertiary-icon:  var(--color-domain-status-tertiary);
 ```
 
 ---

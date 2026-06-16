@@ -57,4 +57,19 @@ if (monitorFailed) {
   console.log('   정본에 맞춰 수동/에이전트 수정 후 `npm run tokens:monitor` 재확인.');
   process.exit(1);
 }
+
+// ── install-prompt 권위 검증 (값 모니터의 완전성 사각지대 보완) ─────────────
+//   값 모니터(위)는 install-prompt 를 "있는 토큰의 값"만 보고 "토큰 누락"은 못 잡는다
+//   (semantic.html 만 complete 검사). 그래서 4/5 sync-prompt 가 조용히 헛돌아도
+//   모니터는 "일치"로 통과시킨다(2026-06-16 발견된 사각지대).
+//   sync-install-prompt --check 는 #code-full(다운로드)·#code-ai(AI 컨텍스트 프롬프트)
+//   둘 다 tokens.css 와 완전 일치하는지 검사(exit 1 if diff) → stale 시 reconcile 실패.
+console.log('\n🔎 install-prompt 동기화 권위 검증 (#code-full · #code-ai):');
+try {
+  execSync('node scripts/sync-install-prompt.js --check', { cwd: ROOT, stdio: 'inherit' });
+} catch (e) {
+  console.log('\n🔴 install-prompt 가 정본과 불일치(누락/드리프트) — `npm run tokens:sync-prompt` 후 재확인.');
+  process.exit(1);
+}
+
 console.log('\n✅ Reconcile 완료 — 모든 표면 정본과 일치.');

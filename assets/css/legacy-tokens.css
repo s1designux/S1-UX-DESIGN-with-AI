@@ -1,0 +1,20 @@
+/* =====================================================
+   legacy-tokens.css — 폐기/레거시 토큰 격리 아카이브
+   -----------------------------------------------------
+   ⚠️ 이 파일은 하위호환 보존용 아카이브다.
+     · 활성 페이지는 이 파일을 로드하지 않는다 (style.css @import 대상 아님).
+     · 검사 게이트(Gate 7·10·harness-audit)는 이 파일을 스캔/플래그하지 않는다
+       (registry/tokens/deprecated-tokens.json 의 legacyFiles 에 등록).
+     · 신규 코드에서 아래 토큰 사용 금지. 폐기 근거는 deprecated-tokens.json 참조.
+   정본 활성 토큰: assets/css/tokens.css · assets/css/site-base.css · component-tokens.css
+   ===================================================== */
+:root {
+  /* ── Button — Ghost (deprecated 2026-05-11 · CSS 구현 없음 · 공식 variant 아님) ──
+     component-tokens.css 에서 격리 이동 (2026-06-16). var() 실사용 0건. */
+  --button-ghost-hover-bg:      var(--color-bg-subtle);
+  --button-ghost-pressed-bg:    var(--color-bg-muted);
+  --button-ghost-default-text:  var(--color-text-secondary);
+  --button-ghost-disabled-text: var(--color-text-disabled);
+  --button-ghost-default-icon:  var(--color-icon-default);
+  --button-ghost-disabled-icon: var(--color-icon-muted);
+}

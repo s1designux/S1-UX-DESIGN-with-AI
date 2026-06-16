@@ -21,6 +21,7 @@
  */
 const fs = require('fs');
 const path = require('path');
+const { isDeprecatedToken, isLegacyFile } = require('./lib/legacy-skip');
 
 const ROOT = path.resolve(__dirname, '..');
 const PAGES_DIR = path.join(ROOT, 'pages');
@@ -63,8 +64,9 @@ for (const page of pages) {
   for (const m of txt.matchAll(/--color-[a-z0-9-]+/g)) referenced.add(m[0]);
   for (const ref of referenced) {
     if (ref.endsWith('-')) continue; // 토큰 prefix 조각(예: "--color-data-") 은 Check B 소관
+    if (isDeprecatedToken(ref)) continue; // 폐기 토큰은 격리 대상 — 검사 제외(deprecated-tokens.json)
     if (!valid.has(ref)) {
-      warns.push(`${page}: 미정의 semantic 변수 '${ref}' (제안·도메인·폐기 토큰 가능 — 별도 정리 대상)`);
+      warns.push(`${page}: 미정의 semantic 변수 '${ref}' (제안·도메인 토큰 가능 — 별도 정리 대상)`);
     }
   }
 

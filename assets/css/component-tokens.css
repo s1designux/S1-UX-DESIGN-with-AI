@@ -45,13 +45,7 @@
   --button-blue-line-default-text:    var(--color-action-primary-default);
   --button-blue-line-disabled-text:   var(--color-text-disabled);
 
-  /* ── Button — Ghost (legacy — do not use in new code) ── */
-  --button-ghost-hover-bg:      var(--color-bg-subtle);
-  --button-ghost-pressed-bg:    var(--color-bg-muted);
-  --button-ghost-default-text:  var(--color-text-secondary);
-  --button-ghost-disabled-text: var(--color-text-disabled);
-  --button-ghost-default-icon:  var(--color-icon-default);
-  --button-ghost-disabled-icon: var(--color-icon-muted);
+  /* ── Button — Ghost: 레거시 격리됨 → assets/css/legacy-tokens.css (2026-06-16) ── */
 
   /* ── Chip — Line ── */
   --chip-line-default-bg:          var(--color-surface-default);
