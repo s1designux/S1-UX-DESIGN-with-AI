@@ -22,6 +22,7 @@
 
 | 날짜 | 변경 내용 (한 줄) |
 |------|------------------|
+| 2026-06-17 | TimePicker Dropdown 세트 구조 정정 — Time Picker Cell(State=Default/Hover/Selected) 컴포넌트화 후 인스턴스로 패널 조립 + 12h/24h 별도 States 스펙(시·분 Hover/Selected, 분선택=확인활성) 신설(생성기 build-components.ts+하네스 components-new). 드롭다운 width=121px(Figma 24h 최소) |
 | 2026-06-17 | ds-extract 스킬·엔진 신설 — 엉킨 시안 코퍼스에서 컴포넌트·패턴 데이터 추출·수렴(빈도×서비스breadth 분류·기존DS대조·시각확인·패턴집계). scripts/ds-extract/*·corpus-targets.json(MoDU APP 등록)·`ds:harvest`/`ds:aggregate`. figma-to-code로 핸드오프. MoDU 회원가입 페이지 파일럿 검증(인스턴스462·패턴후보13·크롬4필터). |
 | 2026-06-17 | Figma MCP 읽기 규칙(단계적 탐색: 선택영역/페이지 리스트업) §🔎 신설 + 변경 이력 슬림화·아카이브 분리 |
 | 2026-06-17 | Button loading 상태 완전 삭제 (레거시 보존 없이 제거) |

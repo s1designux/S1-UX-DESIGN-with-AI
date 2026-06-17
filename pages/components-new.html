@@ -1368,7 +1368,8 @@
       color: var(--color-dropdown-option-label-default);  /* 정본: Time Picker Dropdown = Basic Dropdown option 토큰 재사용 (build-components.ts buildTimePickerDropdown) */
       letter-spacing: -0.02em;
     }
-    .s1-tp-col-item:hover { background: var(--dropdown-option-hover-bg); border-color: var(--dropdown-option-hover-bg); }
+    .s1-tp-col-item:hover,
+    .s1-tp-col-item.is-hover { background: var(--dropdown-option-hover-bg); border-color: var(--dropdown-option-hover-bg); }  /* .is-hover = States 문서 정적 표현 */
     .s1-tp-col-item.is-selected {
       background: var(--dropdown-list-bg);
       border-color: var(--color-dropdown-option-border-selected);
@@ -6031,6 +6032,115 @@ update(); // 초기화</pre>
                 <div style="display:flex;flex-direction:column;align-items:flex-start;gap:6px;">
                   <div class="s1-timepicker-wrap s1-timepicker-wrap--xxsm is-preview" style="width:180px;"><span class="s1-timepicker-placeholder">시간을 선택하세요</span><span class="s1-timepicker-icon"><svg width="16" height="16" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="7.5" stroke="currentColor" stroke-width="1.2"/><path d="M9 5v4l2.5 2.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg></span></div>
                   <div style="font-size:10px;color:var(--color-text-secondary);line-height:1.5;">PC-XXSM · h28<br><code style="font-size:10px;">--sizing-28</code><br><code style="font-size:10px;">s1-timepicker-wrap--xxsm</code></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Dropdown States (12h / 24h) — 셀(Time Picker Cell) 재사용 -->
+          <div class="variant-block">
+            <div class="variant-label">Dropdown States — 12h / 24h · 셀 = Time Picker Cell 재사용 (Default / Hover / Selected)</div>
+            <div style="font-size:11px;color:var(--color-text-secondary);line-height:1.6;margin:-4px 0 12px;">
+              패널은 <code style="font-size:10px;">s1-tp-col-item</code>(= Figma <code style="font-size:10px;">timepicker_input_component</code> 540:3469) 셀의 상태(default·hover·selected) 조합으로 구성된다.
+              <strong>분 선택 시 확인 버튼 활성</strong>(<code style="font-size:10px;">is-active</code>).
+            </div>
+            <div class="preview-area" style="overflow-x:auto;">
+              <div style="display:grid;grid-template-columns:132px repeat(2,minmax(0,auto));gap:14px 28px;align-items:start;">
+                <!-- header row -->
+                <div></div>
+                <div style="font-size:11px;font-weight:600;color:var(--color-text-secondary);text-align:center;">Type=24h</div>
+                <div style="font-size:11px;font-weight:600;color:var(--color-text-secondary);text-align:center;">Type=12h</div>
+
+                <!-- 시 Hover -->
+                <div style="font-size:12px;font-weight:600;color:var(--color-text-primary);padding-top:10px;">시 Hover</div>
+                <div class="s1-tp-dropdown is-open is-preview" style="position:static;width:122px;">
+                  <div class="s1-tp-dropdown-cols">
+                    <div class="s1-tp-col" style="max-height:130px;overflow-y:hidden;"><div class="s1-tp-col-item">7</div><div class="s1-tp-col-item is-hover">8</div><div class="s1-tp-col-item">9</div><div class="s1-tp-col-item">10</div></div>
+                    <div class="s1-tp-col-sep"></div>
+                    <div class="s1-tp-col" style="max-height:130px;overflow-y:hidden;"><div class="s1-tp-col-item">00</div><div class="s1-tp-col-item">01</div><div class="s1-tp-col-item">02</div><div class="s1-tp-col-item">03</div></div>
+                  </div>
+                  <div class="s1-tp-footer-sep"></div>
+                  <div class="s1-tp-footer"><button type="button" class="s1-tp-confirm-btn">확인</button></div>
+                </div>
+                <div class="s1-tp-dropdown is-open is-preview" style="position:static;width:183px;">
+                  <div class="s1-tp-dropdown-cols">
+                    <div class="s1-tp-col" style="max-height:130px;overflow-y:hidden;"><div class="s1-tp-col-item">오전</div><div class="s1-tp-col-item">오후</div></div>
+                    <div class="s1-tp-col-sep"></div>
+                    <div class="s1-tp-col" style="max-height:130px;overflow-y:hidden;"><div class="s1-tp-col-item">7</div><div class="s1-tp-col-item is-hover">8</div><div class="s1-tp-col-item">9</div><div class="s1-tp-col-item">10</div></div>
+                    <div class="s1-tp-col-sep"></div>
+                    <div class="s1-tp-col" style="max-height:130px;overflow-y:hidden;"><div class="s1-tp-col-item">00</div><div class="s1-tp-col-item">01</div><div class="s1-tp-col-item">02</div><div class="s1-tp-col-item">03</div></div>
+                  </div>
+                  <div class="s1-tp-footer-sep"></div>
+                  <div class="s1-tp-footer"><button type="button" class="s1-tp-confirm-btn">확인</button></div>
+                </div>
+
+                <!-- 시 Selected -->
+                <div style="font-size:12px;font-weight:600;color:var(--color-text-primary);padding-top:10px;">시 Selected</div>
+                <div class="s1-tp-dropdown is-open is-preview" style="position:static;width:122px;">
+                  <div class="s1-tp-dropdown-cols">
+                    <div class="s1-tp-col" style="max-height:130px;overflow-y:hidden;"><div class="s1-tp-col-item">7</div><div class="s1-tp-col-item">8</div><div class="s1-tp-col-item is-selected">9</div><div class="s1-tp-col-item">10</div></div>
+                    <div class="s1-tp-col-sep"></div>
+                    <div class="s1-tp-col" style="max-height:130px;overflow-y:hidden;"><div class="s1-tp-col-item">00</div><div class="s1-tp-col-item">01</div><div class="s1-tp-col-item">02</div><div class="s1-tp-col-item">03</div></div>
+                  </div>
+                  <div class="s1-tp-footer-sep"></div>
+                  <div class="s1-tp-footer"><button type="button" class="s1-tp-confirm-btn">확인</button></div>
+                </div>
+                <div class="s1-tp-dropdown is-open is-preview" style="position:static;width:183px;">
+                  <div class="s1-tp-dropdown-cols">
+                    <div class="s1-tp-col" style="max-height:130px;overflow-y:hidden;"><div class="s1-tp-col-item is-selected">오전</div><div class="s1-tp-col-item">오후</div></div>
+                    <div class="s1-tp-col-sep"></div>
+                    <div class="s1-tp-col" style="max-height:130px;overflow-y:hidden;"><div class="s1-tp-col-item">7</div><div class="s1-tp-col-item">8</div><div class="s1-tp-col-item is-selected">9</div><div class="s1-tp-col-item">10</div></div>
+                    <div class="s1-tp-col-sep"></div>
+                    <div class="s1-tp-col" style="max-height:130px;overflow-y:hidden;"><div class="s1-tp-col-item">00</div><div class="s1-tp-col-item">01</div><div class="s1-tp-col-item">02</div><div class="s1-tp-col-item">03</div></div>
+                  </div>
+                  <div class="s1-tp-footer-sep"></div>
+                  <div class="s1-tp-footer"><button type="button" class="s1-tp-confirm-btn">확인</button></div>
+                </div>
+
+                <!-- 분 Hover -->
+                <div style="font-size:12px;font-weight:600;color:var(--color-text-primary);padding-top:10px;">분 Hover</div>
+                <div class="s1-tp-dropdown is-open is-preview" style="position:static;width:122px;">
+                  <div class="s1-tp-dropdown-cols">
+                    <div class="s1-tp-col" style="max-height:130px;overflow-y:hidden;"><div class="s1-tp-col-item">7</div><div class="s1-tp-col-item">8</div><div class="s1-tp-col-item is-selected">9</div><div class="s1-tp-col-item">10</div></div>
+                    <div class="s1-tp-col-sep"></div>
+                    <div class="s1-tp-col" style="max-height:130px;overflow-y:hidden;"><div class="s1-tp-col-item">00</div><div class="s1-tp-col-item">01</div><div class="s1-tp-col-item is-hover">02</div><div class="s1-tp-col-item">03</div></div>
+                  </div>
+                  <div class="s1-tp-footer-sep"></div>
+                  <div class="s1-tp-footer"><button type="button" class="s1-tp-confirm-btn">확인</button></div>
+                </div>
+                <div class="s1-tp-dropdown is-open is-preview" style="position:static;width:183px;">
+                  <div class="s1-tp-dropdown-cols">
+                    <div class="s1-tp-col" style="max-height:130px;overflow-y:hidden;"><div class="s1-tp-col-item is-selected">오전</div><div class="s1-tp-col-item">오후</div></div>
+                    <div class="s1-tp-col-sep"></div>
+                    <div class="s1-tp-col" style="max-height:130px;overflow-y:hidden;"><div class="s1-tp-col-item">7</div><div class="s1-tp-col-item">8</div><div class="s1-tp-col-item is-selected">9</div><div class="s1-tp-col-item">10</div></div>
+                    <div class="s1-tp-col-sep"></div>
+                    <div class="s1-tp-col" style="max-height:130px;overflow-y:hidden;"><div class="s1-tp-col-item">00</div><div class="s1-tp-col-item">01</div><div class="s1-tp-col-item is-hover">02</div><div class="s1-tp-col-item">03</div></div>
+                  </div>
+                  <div class="s1-tp-footer-sep"></div>
+                  <div class="s1-tp-footer"><button type="button" class="s1-tp-confirm-btn">확인</button></div>
+                </div>
+
+                <!-- 분 Selected (확인 활성) -->
+                <div style="font-size:12px;font-weight:600;color:var(--color-text-primary);padding-top:10px;">분 Selected<br><span style="font-weight:400;color:var(--color-text-secondary);">(확인 활성)</span></div>
+                <div class="s1-tp-dropdown is-open is-preview" style="position:static;width:122px;">
+                  <div class="s1-tp-dropdown-cols">
+                    <div class="s1-tp-col" style="max-height:130px;overflow-y:hidden;"><div class="s1-tp-col-item">7</div><div class="s1-tp-col-item">8</div><div class="s1-tp-col-item is-selected">9</div><div class="s1-tp-col-item">10</div></div>
+                    <div class="s1-tp-col-sep"></div>
+                    <div class="s1-tp-col" style="max-height:130px;overflow-y:hidden;"><div class="s1-tp-col-item">00</div><div class="s1-tp-col-item">01</div><div class="s1-tp-col-item is-selected">02</div><div class="s1-tp-col-item">03</div></div>
+                  </div>
+                  <div class="s1-tp-footer-sep"></div>
+                  <div class="s1-tp-footer"><button type="button" class="s1-tp-confirm-btn is-active">확인</button></div>
+                </div>
+                <div class="s1-tp-dropdown is-open is-preview" style="position:static;width:183px;">
+                  <div class="s1-tp-dropdown-cols">
+                    <div class="s1-tp-col" style="max-height:130px;overflow-y:hidden;"><div class="s1-tp-col-item is-selected">오전</div><div class="s1-tp-col-item">오후</div></div>
+                    <div class="s1-tp-col-sep"></div>
+                    <div class="s1-tp-col" style="max-height:130px;overflow-y:hidden;"><div class="s1-tp-col-item">7</div><div class="s1-tp-col-item">8</div><div class="s1-tp-col-item is-selected">9</div><div class="s1-tp-col-item">10</div></div>
+                    <div class="s1-tp-col-sep"></div>
+                    <div class="s1-tp-col" style="max-height:130px;overflow-y:hidden;"><div class="s1-tp-col-item">00</div><div class="s1-tp-col-item">01</div><div class="s1-tp-col-item is-selected">02</div><div class="s1-tp-col-item">03</div></div>
+                  </div>
+                  <div class="s1-tp-footer-sep"></div>
+                  <div class="s1-tp-footer"><button type="button" class="s1-tp-confirm-btn is-active">확인</button></div>
                 </div>
               </div>
             </div>

@@ -1323,89 +1323,117 @@ async function buildTimePicker(maps: BuildMaps, originY: number): Promise<{ set:
   return { set, bottomY };
 }
 
-// ── Time Picker Dropdown (base 패널) — color/dropdown/* ───────────────────────
-// Figma 정본: GUI 신규 1459:18597(Dropdown List 패널) + 1459:18526(Time Base 아이템).
-//   아이템 Time Base 77×30(행 93×30, 좌우 8px 거터), 구분선 없음, 선택=테두리 박스(Regular).
-//   default=option/label/default · selected=option/border/selected + option/label/selected.
-//   확인 푸터(Option 40px) 우측정렬 accent. 컬럼=list/bg, 패널 radius 4.
-// 변형: Type=24h(시·분 2컬럼=186) / Type=12h(오전오후·시·분 3컬럼=279, V2.4 540:3536 구성 · GUI 컬럼규격 적용).
+// ── Time Picker Cell (옵션 셀) — color/dropdown/option/* ──────────────────────
+// Figma 정본: timepicker_input_component(540:3469) — State=Default/Hover/Selected.
+//   재사용 단위(셀). Time Picker Dropdown 패널은 이 셀의 **인스턴스**로 조립한다.
+//   (이전엔 셀을 인라인 프레임으로 매번 새로 그려 컴포넌트화가 안 돼 있었음 → 2026-06-17 구조 정정)
+//   default/hover/selected 전부 공유 color/dropdown/option/* 토큰(Basic Dropdown 재사용 정본).
+const TPC_W = 77, TPC_H = 30;
+async function buildTimePickerCell(maps: BuildMaps): Promise<{ set: ComponentSetNode; variants: Record<string, ComponentNode> }> {
+  const opt = (k: string) => `color/dropdown/option/${k}`;
+  const states = [
+    { name: "Default",  bg: "bg/default",  bd: "border/default",  lb: "label/default" },
+    { name: "Hover",    bg: "bg/hover",    bd: "border/hover",    lb: "label/hover" },
+    { name: "Selected", bg: "bg/selected", bd: "border/selected", lb: "label/selected" },
+  ];
+  const comps: ComponentNode[] = [];
+  const variants: Record<string, ComponentNode> = {};
+  for (const st of states) {
+    const comp = figma.createComponent();
+    comp.name = `State=${st.name}`;
+    comp.layoutMode = "HORIZONTAL"; comp.primaryAxisAlignItems = "CENTER"; comp.counterAxisAlignItems = "CENTER";
+    comp.primaryAxisSizingMode = "FIXED"; comp.counterAxisSizingMode = "FIXED";
+    comp.paddingLeft = 12; comp.paddingRight = 12; comp.cornerRadius = 4;
+    comp.resize(TPC_W, TPC_H);
+    comp.fills = [boundPaint(scv(maps, opt(st.bg)))];
+    comp.strokes = [boundPaint(scv(maps, opt(st.bd)))]; comp.strokeWeight = 1; comp.strokeAlign = "INSIDE";
+    comp.appendChild(await makeBoundText("00", 14, "Regular", scv(maps, opt(st.lb))));
+    setLightMode(comp, maps);
+    comps.push(comp); variants[st.name] = comp;
+  }
+  const set = figma.combineAsVariants(comps, figma.currentPage);
+  set.name = "Time Picker Cell";
+  return { set, variants };
+}
+
+// ── Time Picker Dropdown (패널) — Time Picker Cell 인스턴스로 조립 ─────────────
+// Figma 정본: pc_timepicker_input_dropdown(540:3506) — Type=24h(시·분 2컬럼) / Type=12h(오전오후·시·분 3컬럼).
+//   셀=Time Picker Cell 인스턴스(컴포넌트→인스턴스 구조). 컬럼 93폭, 행 7개(클립 190), 셀 77×30 가운데.
+//   확인 푸터(Option 40px) 우측정렬 — 분 선택 전 disabled, 선택 후 accent.
+//   메인 세트는 Type=24h/12h 만(변형 폭증 방지). 상태값은 아래 별도 States 스펙 시트로 정리.
+const TPD_COL_W = 93, TPD_ROW_H = 30, TPD_COLS_H = 190, TPD_FOOTER_H = 40, TPD_PAD_TOP = 12;
+const TPD_PANEL_H = TPD_PAD_TOP + TPD_COLS_H + TPD_FOOTER_H; // 242
+interface TpdColSpec { items: string[]; selIdx: number; hoverIdx: number; }
 async function buildTimePickerDropdown(maps: BuildMaps, originY: number): Promise<{ set: ComponentSetNode; bottomY: number }> {
-  const COL_W = 93, ITEM_W = 77, ROW_H = 30, COLS_H = 190; // GUI 1459 실측
-  // 한 컬럼: 93폭, list/bg, 행 7개(클립 190), 행마다 Time Base 77 가운데 + 선택 테두리
-  async function makeCol(items: string[], selectedIdx: number): Promise<FrameNode> {
+  const cell = await buildTimePickerCell(maps);
+
+  // 한 컬럼: 93폭, list/bg, 행마다 셀 인스턴스(상태별 변형) 가운데. 텍스트만 인스턴스 오버라이드.
+  async function makeCol(items: string[], selIdx: number, hoverIdx: number): Promise<FrameNode> {
     const col = figma.createFrame();
     col.name = "col";
     col.layoutMode = "VERTICAL"; col.primaryAxisSizingMode = "FIXED"; col.counterAxisSizingMode = "FIXED";
     col.itemSpacing = 0; col.clipsContent = true;
     col.fills = [boundPaint(scv(maps, "color/dropdown/list/bg"))];
-    col.resize(COL_W, COLS_H);
+    col.resize(TPD_COL_W, TPD_COLS_H);
     for (let i = 0; i < items.length; i++) {
-      const sel = i === selectedIdx;
       const row = figma.createFrame();
       row.name = "row";
       row.layoutMode = "HORIZONTAL"; row.primaryAxisAlignItems = "CENTER"; row.counterAxisAlignItems = "CENTER";
       row.primaryAxisSizingMode = "FIXED"; row.counterAxisSizingMode = "FIXED";
-      row.resize(COL_W, ROW_H); row.fills = [];
-      // Time Base 77×30 (가운데, 거터 8px) — default 투명 / selected 파란 테두리
-      const item = figma.createFrame();
-      item.name = "Time Base";
-      item.layoutMode = "HORIZONTAL"; item.primaryAxisAlignItems = "CENTER"; item.counterAxisAlignItems = "CENTER";
-      item.primaryAxisSizingMode = "FIXED"; item.counterAxisSizingMode = "FIXED";
-      item.paddingLeft = 12; item.paddingRight = 12; item.cornerRadius = 4;
-      item.resize(ITEM_W, ROW_H); item.fills = [];
-      if (sel) { item.strokes = [boundPaint(scv(maps, "color/dropdown/option/border/selected"))]; item.strokeWeight = 1; item.strokeAlign = "INSIDE"; }
-      const lbl = sel ? "color/dropdown/option/label/selected" : "color/dropdown/option/label/default";
-      item.appendChild(await makeBoundText(items[i], 14, "Regular", scv(maps, lbl)));
-      row.appendChild(item);
+      row.resize(TPD_COL_W, TPD_ROW_H); row.fills = [];
+      const state = i === selIdx ? "Selected" : i === hoverIdx ? "Hover" : "Default";
+      const inst = cell.variants[state].createInstance(); // ← 셀 컴포넌트 인스턴스
+      const txt = inst.findOne((n) => n.type === "TEXT") as TextNode | null;
+      if (txt) { await figma.loadFontAsync(txt.fontName as FontName); txt.characters = items[i]; }
+      row.appendChild(inst);
       col.appendChild(row);
     }
     return col;
   }
 
-  const hours = ["1", "2", "3", "4", "5", "6", "7"];
-  const mins = ["00", "01", "02", "03", "04", "05", "06"];
-  const ampm = ["오전", "오후"];
-  const types = [
-    { type: "24h", cols: [{ items: hours, sel: 0 }, { items: mins, sel: 0 }] },
-    { type: "12h", cols: [{ items: ampm, sel: 0 }, { items: hours, sel: 0 }, { items: mins, sel: 0 }] },
-  ];
-  const comps: ComponentNode[] = [];
-  for (const t of types) {
-    const nCol = t.cols.length;
-    const panelW = nCol * COL_W; // 24h=186, 12h=279
-
-    const panel = figma.createComponent();
-    panel.name = `Type=${t.type}`;
-    panel.layoutMode = "VERTICAL"; panel.counterAxisAlignItems = "CENTER";
-    // 높이 고정. AUTO(세로 hug)로 두고 resize(_,10) 하면 content 로 안 자라 10px 빈 패널로 렌더됨
-    // (다른 드롭다운 패널 buildSelect·buildFilterChip 도 FIXED+명시 높이 사용). 2026-06-16 수정.
-    panel.primaryAxisSizingMode = "FIXED"; panel.counterAxisSizingMode = "FIXED";
-    panel.itemSpacing = 0; panel.paddingTop = 12; panel.paddingBottom = 0; panel.cornerRadius = 4;
-    panel.clipsContent = true;
-    panel.fills = [boundPaint(scv(maps, "color/dropdown/list/bg"))];
-    panel.strokes = [boundPaint(scv(maps, "color/dropdown/list/border"))]; panel.strokeWeight = 1; panel.strokeAlign = "INSIDE";
-    panel.resize(panelW, 12 + COLS_H + 40); // paddingTop 12 + cols 190 + footer 40 = 242 (재고조사 실측)
-
-    // 컬럼 묶음 — 전폭, 패딩·gap·구분선 없음 (93+93[+93])
+  // 패널 노드(컴포넌트 또는 프레임)에 cols + footer 를 채운다.
+  async function fillPanel(node: FrameNode | ComponentNode, cols: TpdColSpec[], confirmActive: boolean): Promise<void> {
+    const panelW = cols.length * TPD_COL_W; // 24h=186, 12h=279
+    node.layoutMode = "VERTICAL"; node.counterAxisAlignItems = "CENTER";
+    node.primaryAxisSizingMode = "FIXED"; node.counterAxisSizingMode = "FIXED";
+    node.itemSpacing = 0; node.paddingTop = TPD_PAD_TOP; node.paddingBottom = 0; node.cornerRadius = 4;
+    node.clipsContent = true;
+    node.fills = [boundPaint(scv(maps, "color/dropdown/list/bg"))];
+    node.strokes = [boundPaint(scv(maps, "color/dropdown/list/border"))]; node.strokeWeight = 1; node.strokeAlign = "INSIDE";
+    node.resize(panelW, TPD_PANEL_H);
     const colsFrame = figma.createFrame();
     colsFrame.name = "cols";
     colsFrame.layoutMode = "HORIZONTAL"; colsFrame.counterAxisAlignItems = "MIN";
     colsFrame.primaryAxisSizingMode = "FIXED"; colsFrame.counterAxisSizingMode = "FIXED";
-    colsFrame.itemSpacing = 0; colsFrame.fills = []; colsFrame.resize(panelW, COLS_H);
-    for (let c = 0; c < nCol; c++) {
-      colsFrame.appendChild(await makeCol(t.cols[c].items, t.cols[c].sel));
-    }
-    panel.appendChild(colsFrame);
-
-    // footer (Option 40px · 확인 우측정렬 accent)
+    colsFrame.itemSpacing = 0; colsFrame.fills = []; colsFrame.resize(panelW, TPD_COLS_H);
+    for (const cs of cols) colsFrame.appendChild(await makeCol(cs.items, cs.selIdx, cs.hoverIdx));
+    node.appendChild(colsFrame);
     const footer = figma.createFrame();
     footer.name = "Option";
     footer.layoutMode = "HORIZONTAL"; footer.primaryAxisAlignItems = "MAX"; footer.counterAxisAlignItems = "CENTER";
     footer.primaryAxisSizingMode = "FIXED"; footer.counterAxisSizingMode = "FIXED";
-    footer.resize(panelW, 40); footer.paddingLeft = 16; footer.paddingRight = 16; footer.fills = [];
-    footer.appendChild(await makeBoundText("확인", 14, "Medium", scv(maps, "color/text/state/accent")));
-    panel.appendChild(footer);
+    footer.resize(panelW, TPD_FOOTER_H); footer.paddingLeft = 16; footer.paddingRight = 16; footer.fills = [];
+    // 확인: 분 선택 전 disabled, 선택 후 accent (활성)
+    footer.appendChild(await makeBoundText("확인", 14, "Medium", scv(maps, confirmActive ? "color/text/state/accent" : "color/text/state/disabled")));
+    node.appendChild(footer);
+  }
 
+  const hours = ["1", "2", "3", "4", "5", "6", "7"];
+  const mins = ["00", "01", "02", "03", "04", "05", "06"];
+  const ampm = ["오전", "오후"];
+  const colsOf = (type: string, cfg: { ampm?: number; hSel?: number; hHov?: number; mSel?: number; mHov?: number }): TpdColSpec[] => {
+    const h: TpdColSpec = { items: hours, selIdx: cfg.hSel ?? -1, hoverIdx: cfg.hHov ?? -1 };
+    const m: TpdColSpec = { items: mins, selIdx: cfg.mSel ?? -1, hoverIdx: cfg.mHov ?? -1 };
+    if (type === "12h") return [{ items: ampm, selIdx: cfg.ampm ?? -1, hoverIdx: -1 }, h, m];
+    return [h, m];
+  };
+
+  // 1) 메인 세트 — Type=24h/12h (기본 표기: 시 선택 + 확인 활성)
+  const comps: ComponentNode[] = [];
+  for (const type of ["24h", "12h"]) {
+    const panel = figma.createComponent();
+    panel.name = `Type=${type}`;
+    await fillPanel(panel, colsOf(type, { ampm: type === "12h" ? 0 : undefined, hSel: 0, mSel: 0 }), true);
     setLightMode(panel, maps);
     comps.push(panel);
   }
@@ -1414,13 +1442,66 @@ async function buildTimePickerDropdown(maps: BuildMaps, originY: number): Promis
   set.x = 0; set.y = originY;
   const opts: SpecOpts = {
     title: "Time Picker Dropdown",
-    colHeaders: types.map((t) => t.type),
+    colHeaders: ["24h", "12h"],
     rowLabels: [""],
     cellAt: (_r, c) => comps[c],
     lightX: SPEC_LIGHT_X, darkX: SPEC_DARK_X, originY, cellW: 300, cellH: 270, rowLabelW: 16,
   };
   let bottomY = await decorateSetFlat(set, opts, maps);
   try { bottomY = Math.max(bottomY, await buildSpec(opts, maps)); } catch (e) { console.warn(e); }
+
+  // 2) 셀 세트 라벨 스펙 (Time Picker Cell — Default/Hover/Selected)
+  const cellTop = bottomY + 80;
+  const cellComps = [cell.variants.Default, cell.variants.Hover, cell.variants.Selected];
+  const cellOpts: SpecOpts = {
+    title: "Time Picker Cell",
+    colHeaders: ["Default", "Hover", "Selected"],
+    rowLabels: [""],
+    cellAt: (_r, c) => cellComps[c],
+    lightX: SPEC_LIGHT_X, darkX: SPEC_DARK_X, originY: cellTop, cellW: 120, cellH: 56,
+  };
+  bottomY = Math.max(bottomY, await decorateSetFlat(cell.set, cellOpts, maps));
+  try { bottomY = Math.max(bottomY, await buildSpec(cellOpts, maps)); } catch (e) { console.warn(e); }
+
+  // 3) 별도 States 스펙 시트 — 12h/24h × (시Hover · 시Selected · 분Hover · 분Selected[확인 활성])
+  const statesStates = [
+    { label: "시 Hover",              cfg: { hHov: 1 },                       confirm: false },
+    { label: "시 Selected",           cfg: { hSel: 2 },                       confirm: false },
+    { label: "분 Hover",              cfg: { hSel: 2, mHov: 3 },              confirm: false },
+    { label: "분 Selected (확인 활성)", cfg: { hSel: 2, mSel: 3 },              confirm: true },
+  ];
+  const sheetTop = bottomY + 80;
+  const COL_24_W = 2 * TPD_COL_W, COL_12_W = 3 * TPD_COL_W; // 186 / 279
+  const LABEL_W = 150, GAP = 40, PAD = 24, TITLE_H = 30, HDR_H = 24, ROW_GAP = 34;
+  const SHEET_W = PAD * 2 + LABEL_W + COL_24_W + GAP + COL_12_W;
+  for (const dark of [false, true]) {
+    const c = specPalette(dark);
+    const frame = figma.createFrame();
+    frame.name = `Time Picker Dropdown States — Spec ${dark ? "Dark" : "Light"}`;
+    frame.fills = [{ type: "SOLID", color: c.bg }];
+    frame.cornerRadius = 8;
+    frame.x = dark ? SPEC_DARK_X : SPEC_LIGHT_X;
+    frame.y = sheetTop;
+    let y = PAD;
+    frame.appendChild(await makeLabel(`Time Picker Dropdown · States · ${dark ? "Dark" : "Light"}`, 14, "Bold", PAD, y, 420, "LEFT", c.title));
+    y += TITLE_H;
+    const x24 = PAD + LABEL_W, x12 = x24 + COL_24_W + GAP;
+    frame.appendChild(await makeLabel("Type=24h", 12, "Medium", x24, y, COL_24_W, "CENTER", c.label));
+    frame.appendChild(await makeLabel("Type=12h", 12, "Medium", x12, y, COL_12_W, "CENTER", c.label));
+    y += HDR_H + 8;
+    for (const st of statesStates) {
+      frame.appendChild(await makeLabel(st.label, 12, "Bold", PAD, y + 12, LABEL_W, "LEFT", c.size));
+      const p24 = figma.createFrame(); frame.appendChild(p24);
+      await fillPanel(p24, colsOf("24h", st.cfg), st.confirm); p24.x = x24; p24.y = y;
+      const p12 = figma.createFrame(); frame.appendChild(p12);
+      await fillPanel(p12, colsOf("12h", st.cfg), st.confirm); p12.x = x12; p12.y = y;
+      y += TPD_PANEL_H + ROW_GAP;
+    }
+    frame.resize(SHEET_W, y - ROW_GAP + PAD);
+    if (dark) setMode(frame, maps, maps.semanticDarkModeId); else setLightMode(frame, maps);
+    bottomY = Math.max(bottomY, frame.y + frame.height);
+  }
+
   return { set, bottomY };
 }
 
