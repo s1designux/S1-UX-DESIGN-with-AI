@@ -1,9 +1,9 @@
 {
-  "date": "2026-06-16",
+  "date": "2026-06-17",
   "summary": {
-    "errors": 2,
+    "errors": 0,
     "warns": 0,
-    "passes": 11
+    "passes": 13
   },
   "findings": [
     {
@@ -15,12 +15,10 @@
     },
     {
       "rule": "SIZE_SPLIT",
-      "severity": "error",
+      "severity": "pass",
       "compId": "chip",
-      "message": "[chip] HTML 코드탭에 누락된 사이즈: sm (h28), mobile",
-      "description": "Chip HTML 코드탭 — sm / mobile / (default md) 분기",
-      "autoFix": false,
-      "detail": "누락: sm (h28), mobile"
+      "message": "[chip] 모든 사이즈 분기 존재 (md/default / sm (h28) / mobile)",
+      "autoFix": false
     },
     {
       "rule": "SIZE_SPLIT",
@@ -73,10 +71,9 @@
     },
     {
       "rule": "CSS_SIZE_SPLIT",
-      "severity": "error",
+      "severity": "pass",
       "compId": "chip",
-      "message": "[chip] CSS 탭에 누락된 사이즈 modifier: s1-chip--sm, s1-chip--mobile",
-      "description": "Chip CSS — --sm / --mobile modifier 규칙",
+      "message": "[chip] CSS 사이즈 modifier 분기 존재",
       "autoFix": false
     },
     {

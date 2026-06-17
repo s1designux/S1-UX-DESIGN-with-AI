@@ -21,6 +21,8 @@ const fs = require('fs');
 const path = require('path');
 const { spawnSync } = require('child_process');
 
+const { isLegacyFile } = require('./lib/legacy-skip');
+
 const ROOT = path.resolve(__dirname, '..');
 const read = (p) => fs.readFileSync(path.join(ROOT, p), 'utf8');
 
@@ -33,7 +35,7 @@ const REUSE_TARGETS = [
   'pages/components.html', 'pages/components-new.html', 'pages/patterns.html',
   'pages/button-harness.html', 'pages/ai-snippets.html', 'pages/guide-md.html', 'pages/legacy.html',
   'plugins/figma-vars-installer/src/vars-data.ts',
-];
+].filter((p) => !isLegacyFile(p));   // 레거시 파일(legacyFiles 정본)은 검사 제외
 const ALLOW_LINE = /(폐지|이관|제거|removed|deprecated)/;
 const registryJsons = () =>
   fs.readdirSync(path.join(ROOT, 'registry/components')).filter((f) => f.endsWith('.json')).map((f) => 'registry/components/' + f);

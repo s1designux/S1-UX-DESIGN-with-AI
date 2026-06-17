@@ -56,8 +56,7 @@ const SURFACES = [
   { file: 'registry/tokens/semantic.colors.json',              kind: 'DOC',    note: 'Semantic 레지스트리. 문서화된 토큰만.' },
   { file: 'pages/install-prompt.html',                          kind: 'AUTO',   note: 'npm run tokens:sync-prompt 로 tokens.css에서 재생성.' },
   { file: 'assets/downloads/s1-design-system-installer.zip',      kind: 'AUTO',   note: 'npm run installer:build 로 vars-data.ts에서 재빌드.' },
-  { file: 'pages/components.html',                              kind: 'REF',    note: 'tokens.css link 상속 — JS resolved. 값 하드코딩 아님.' },
-  { file: 'pages/components-new.html',                          kind: 'REF',    note: 'tokens.css link 상속 — JS resolved. 값 하드코딩 아님.' },
+  { file: 'pages/components-new.html',                          kind: 'REF',    note: 'tokens.css link 상속 — JS resolved. 값 하드코딩 아님. (구 components.html 은 레거시·검수 제외)' },
 ];
 
 function grepFile(file, ...needles) {

@@ -33,7 +33,7 @@ const FILES = {
   componentsMd:    'tokens/component-tokens-extracted.md',
   readme:          'README.md',
   claudeMd:        'CLAUDE.md',
-  componentsHtml:  'pages/components.html',
+  componentsHtml:  'pages/components-new.html',  // 정본 (구 components.html 은 레거시·검수 제외 2026-06-17)
   buttonCss:       'assets/css/components/button.css',
   buttonHarnessJs: 'assets/js/button-harness.js',
 };

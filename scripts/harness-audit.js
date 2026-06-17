@@ -16,7 +16,7 @@ const fs   = require('fs');
 const path = require('path');
 
 const ROOT    = path.resolve(__dirname, '..');
-const HTML    = path.join(ROOT, 'pages/components.html');
+const HTML    = path.join(ROOT, 'pages/components-new.html');  // 정본 컴포넌트 페이지 (구 components.html 은 레거시·검수 제외 2026-06-17)
 const REPORTS = path.join(ROOT, 'reports');
 
 const FIX_MODE = process.argv.includes('--fix');
@@ -421,7 +421,7 @@ function generateReport(allFindings) {
 
   let md = `# Harness Audit Report — ${today}\n\n`;
   md += `> **자동 생성:** \`npm run harness:audit\`  \n`;
-  md += `> **대상:** \`pages/components.html\`  \n\n`;
+  md += `> **대상:** \`pages/components-new.html\`  \n\n`;
 
   md += `## 요약\n\n`;
   md += `| 구분 | 건수 |\n|------|------|\n`;

@@ -2976,13 +2976,23 @@ clearBtn.<span class="c-fn">addEventListener</span>(<span class="c-str">'click'<
         <div class="code-block">
           <div class="code-tabs">
             <button class="code-tab active" onclick="switchTab(this,'chip-html')">HTML</button>
+            <button class="code-tab" onclick="switchTab(this,'chip-css')">CSS</button>
             <button class="code-tab" onclick="switchTab(this,'chip-tokens')">Token Details</button>
             <button class="code-copy-btn" onclick="copyCode('chip-html-pre')">복사</button>
           </div>
           <div class="code-pane active" id="chip-html">
             <pre id="chip-html-pre"><span class="c-cmt">&lt;!-- Line: 기본 / Solid: s1-chip--solid · Selected: is-selected · Disabled: is-disabled --&gt;</span>
 <span class="c-tag">&lt;span</span> <span class="c-attr">class</span>=<span class="c-str">"s1-chip"</span><span class="c-tag">&gt;</span>라벨<span class="c-tag">&lt;/span&gt;</span>
-<span class="c-tag">&lt;span</span> <span class="c-attr">class</span>=<span class="c-str">"s1-chip s1-chip--solid is-selected"</span><span class="c-tag">&gt;</span>라벨<span class="c-tag">&lt;/span&gt;</span></pre>
+<span class="c-tag">&lt;span</span> <span class="c-attr">class</span>=<span class="c-str">"s1-chip s1-chip--solid is-selected"</span><span class="c-tag">&gt;</span>라벨<span class="c-tag">&lt;/span&gt;</span>
+
+<span class="c-cmt">&lt;!-- Size: PC MD(기본 h34) / PC SM(h28) / Mobile(h30) --&gt;</span>
+<span class="c-tag">&lt;span</span> <span class="c-attr">class</span>=<span class="c-str">"s1-chip s1-chip--sm"</span><span class="c-tag">&gt;</span>라벨<span class="c-tag">&lt;/span&gt;</span>
+<span class="c-tag">&lt;span</span> <span class="c-attr">class</span>=<span class="c-str">"s1-chip s1-chip--mobile"</span><span class="c-tag">&gt;</span>라벨<span class="c-tag">&lt;/span&gt;</span></pre>
+          </div>
+          <div class="code-pane" id="chip-css">
+            <pre>.s1-chip         { height: var(--sizing-34); padding: 0 16px; font-size: 14px; }  /* PC MD 기본 */
+.s1-chip--sm     { height: var(--sizing-28); padding: 0 16px; font-size: 12px; }  /* PC SM */
+.s1-chip--mobile { height: var(--sizing-30); padding: 0 12px; font-size: 14px; }  /* Mobile */</pre>
           </div>
           <div class="code-pane" id="chip-tokens">
             <table class="token-detail-table">

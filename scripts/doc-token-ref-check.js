@@ -25,7 +25,8 @@ const { isDeprecatedToken, isLegacyFile } = require('./lib/legacy-skip');
 
 const ROOT = path.resolve(__dirname, '..');
 const PAGES_DIR = path.join(ROOT, 'pages');
-const EXCLUDE_PAGES = new Set(['components.html']); // 폐기 예정
+// 레거시 파일 제외 — deprecated-tokens.json 의 legacyFiles 정본 기반(하드코딩 X).
+//   레거시 페이지를 legacyFiles 에 등록하면 자동으로 검사에서 빠진다.
 
 function read(rel) {
   try { return fs.readFileSync(path.join(ROOT, rel), 'utf8'); } catch { return ''; }
@@ -52,7 +53,7 @@ try {
 const errors = [];   // Check B — 차단(폐기 경로 잔존)
 const warns = [];    // Check A — 경고(미정의 --color-* 참조: 기존 드리프트 가시화)
 const pages = fs.readdirSync(PAGES_DIR)
-  .filter(f => f.endsWith('.html') && !EXCLUDE_PAGES.has(f));
+  .filter(f => f.endsWith('.html') && !isLegacyFile('pages/' + f));
 
 for (const page of pages) {
   const txt = read(path.join('pages', page));

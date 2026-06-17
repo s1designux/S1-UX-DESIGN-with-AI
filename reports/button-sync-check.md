@@ -1,8 +1,8 @@
 # Button Sync Check Report
 
-**Date:** 2026-05-12  
-**Status:** ✅ PASS  
-**Summary:** 37 passed · 2 warnings · 0 issues (total 39 checks)
+**Date:** 2026-06-17  
+**Status:** ❌ 3 issue(s) found  
+**Summary:** 34 passed · 2 warnings · 3 issues (total 39 checks)
 
 ---
 
@@ -15,23 +15,27 @@
 
 ---
 
+## Issues (3)
+
+- [ISSUE] registry/components/button.json: state missing "loading"
+- [ISSUE] registry/components/button.json: harness.columns missing "loading"
+- [ISSUE] README.md: ghost disclaimer present
+
 ## Warnings (2)
 
-- [WARN]  pages/components.html: is-loading CSS not defined — loading state unimplemented in s1-btn
+- [WARN]  pages/components-new.html: is-loading CSS not defined — loading state unimplemented in s1-btn
 - [WARN]  assets/css/components/button.css: raw HEX detected — verify no component-level HEX
 
-## Passed (37)
+## Passed (34)
 
 - [OK]    registry/components/button.json: variant "primary" present
 - [OK]    registry/components/button.json: variant "secondary" present
 - [OK]    registry/components/button.json: variant "blue-line" present
-- [OK]    registry/components/button.json: state includes "loading"
 - [OK]    registry/components/button.json: harness.columns includes "action"
 - [OK]    registry/components/button.json: harness.columns includes "default"
 - [OK]    registry/components/button.json: harness.columns includes "hover"
 - [OK]    registry/components/button.json: harness.columns includes "pressed"
 - [OK]    registry/components/button.json: harness.columns includes "disabled"
-- [OK]    registry/components/button.json: harness.columns includes "loading"
 - [OK]    registry/components/button.json: interactiveColumn = "action"
 - [OK]    registry/figma/figma-map.json: variant "primary" in figma mapping
 - [OK]    registry/figma/figma-map.json: variant "secondary" in figma mapping
@@ -43,15 +47,14 @@
 - [OK]    registry/tokens/component.tokens.json: "blue-line" token array present
 - [OK]    registry/tokens/component.tokens.json: no raw HEX values in button tokens
 - [OK]    registry/tokens/component.tokens.json: ghost tokens all marked deprecated
-- [OK]    pages/components.html: primary variant CSS class present
-- [OK]    pages/components.html: secondary variant CSS class present
-- [OK]    pages/components.html: blue-line variant CSS class present
-- [OK]    pages/components.html: ACTION column cell present
-- [OK]    pages/components.html: static preview class present
-- [OK]    pages/components.html: ghost should not be exposed in components.html button section
+- [OK]    pages/components-new.html: primary variant CSS class present
+- [OK]    pages/components-new.html: secondary variant CSS class present
+- [OK]    pages/components-new.html: blue-line variant CSS class present
+- [OK]    pages/components-new.html: ACTION column cell present
+- [OK]    pages/components-new.html: static preview class present
+- [OK]    pages/components-new.html: ghost should not be exposed in components.html button section
 - [OK]    README.md: Button Current Standard section present
 - [OK]    README.md: "action" column reference present
-- [OK]    README.md: ghost disclaimer present
 - [OK]    CLAUDE.md: Current Button Standard section present
 - [OK]    CLAUDE.md: action ≠ Figma state rule present
 - [OK]    CLAUDE.md: ghost deprecation rule present
@@ -70,7 +73,7 @@
 - `tokens/component-tokens-extracted.md`
 - `README.md`
 - `CLAUDE.md`
-- `pages/components.html`
+- `pages/components-new.html`
 - `assets/css/components/button.css`
 - `assets/js/button-harness.js`
 

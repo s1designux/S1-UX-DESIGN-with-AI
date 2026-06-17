@@ -1,7 +1,31 @@
 {
-  "generatedAt": "2026-06-16T07:54:58.161Z",
-  "totalCount": 54,
+  "generatedAt": "2026-06-17T00:05:11.290Z",
+  "totalCount": 55,
   "reports": [
+    {
+      "id": "button-sync-check",
+      "filename": "button-sync-check.md",
+      "title": "Button Sync Check Report",
+      "stage": "Audit",
+      "category": "audit",
+      "status": "archive",
+      "sourcePath": "reports/button-sync-check.md",
+      "updatedAt": "2026-06-17",
+      "summary": "- **Variants:** primary, secondary, blue-line",
+      "fileSizeKB": 3.6
+    },
+    {
+      "id": "harness-audit-2026-06-17",
+      "filename": "harness-audit-2026-06-17.md",
+      "title": "Harness Audit Report — 2026-06-17",
+      "stage": "Audit",
+      "category": "audit",
+      "status": "archive",
+      "sourcePath": "reports/harness-audit-2026-06-17.md",
+      "updatedAt": "2026-06-17",
+      "summary": "- ✅ [button] 모든 사이즈 분기 존재 (medium (h44) / xsmall (h34) / xxsmall (h28) / mobile (h48))",
+      "fileSizeKB": 1.7
+    },
     {
       "id": "harness-audit-2026-06-16",
       "filename": "harness-audit-2026-06-16.md",
@@ -12,7 +36,7 @@
       "sourcePath": "reports/harness-audit-2026-06-16.md",
       "updatedAt": "2026-06-16",
       "summary": "- ✅ [button] 모든 사이즈 분기 존재 (medium (h44) / xsmall (h34) / xxsmall (h28) / mobile (h48))",
-      "fileSizeKB": 1.7
+      "fileSizeKB": 2.1
     },
     {
       "id": "harness-audit-2026-06-15",
@@ -327,18 +351,6 @@
       "updatedAt": "2026-05-18",
       "summary": "검수 목적: `assets/css/tokens.css` 실제 값 vs `pages/foundation.html` / `pages/semantic.html` 표시 값 일치 여부 확인",
       "fileSizeKB": 5.3
-    },
-    {
-      "id": "button-sync-check",
-      "filename": "button-sync-check.md",
-      "title": "Button Sync Check Report",
-      "stage": "Audit",
-      "category": "audit",
-      "status": "archive",
-      "sourcePath": "reports/button-sync-check.md",
-      "updatedAt": "2026-05-12",
-      "summary": "- **Variants:** primary, secondary, blue-line",
-      "fileSizeKB": 3.6
     },
     {
       "id": "mvp3-4-1-button-sync",

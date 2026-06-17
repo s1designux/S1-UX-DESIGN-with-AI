@@ -1,21 +1,20 @@
-# Harness Audit Report — 2026-06-16
+# Harness Audit Report — 2026-06-17
 
 > **자동 생성:** `npm run harness:audit`  
-> **대상:** `pages/components.html`  
+> **대상:** `pages/components-new.html`  
 
 ## 요약
 
 | 구분 | 건수 |
 |------|------|
-| 🔴 Error | 2 |
+| 🔴 Error | 0 |
 | 🟡 Warn  | 0  |
-| ✅ Pass  | 11 |
+| ✅ Pass  | 13 |
 
 ## RULE-1 — 사이즈 HTML 분기
 
 - ✅ [button] 모든 사이즈 분기 존재 (medium (h44) / xsmall (h34) / xxsmall (h28) / mobile (h48))
-- 🔴 [chip] HTML 코드탭에 누락된 사이즈: sm (h28), mobile
-  - 누락: sm (h28), mobile
+- ✅ [chip] 모든 사이즈 분기 존재 (md/default / sm (h28) / mobile)
 - ✅ [table] 모든 사이즈 분기 존재 (md (h44) / sm (h38))
 - ✅ [time-picker (input형)] 모든 사이즈 분기 존재 (default (h44) / xsm (h34) / xxsm (h28) / mobile (h48))
 - ✅ [time-picker (select형)] 모든 사이즈 분기 존재 (md (h44) / sm (h28))
@@ -35,17 +34,8 @@
 ## RULE-1b — 사이즈 CSS 탭 분기
 
 - ✅ [table] CSS 사이즈 modifier 분기 존재
-- 🔴 [chip] CSS 탭에 누락된 사이즈 modifier: s1-chip--sm, s1-chip--mobile
+- ✅ [chip] CSS 사이즈 modifier 분기 존재
 
 ## 조치 가이드
 
-아래 항목은 수동 수정이 필요합니다. `npm run harness:audit -- --fix` 실행 시 자동 수정 가능 항목은 별도 표시됩니다.
-
-### [SIZE_SPLIT] chip
-[chip] HTML 코드탭에 누락된 사이즈: sm (h28), mobile
-> Chip HTML 코드탭 — sm / mobile / (default md) 분기
-
-### [CSS_SIZE_SPLIT] chip
-[chip] CSS 탭에 누락된 사이즈 modifier: s1-chip--sm, s1-chip--mobile
-> Chip CSS — --sm / --mobile modifier 규칙
-
+모든 검사를 통과했습니다. 추가 조치 불필요.
