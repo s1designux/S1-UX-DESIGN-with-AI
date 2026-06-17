@@ -2,8 +2,8 @@
    Run: npm run reports:sync
 */
 window.REPORTS_INDEX = {
-  "generatedAt": "2026-06-17T00:05:11.290Z",
-  "totalCount": 55,
+  "generatedAt": "2026-06-17T01:02:30.045Z",
+  "totalCount": 56,
   "reports": [
     {
       "id": "button-sync-check",
@@ -15,7 +15,19 @@ window.REPORTS_INDEX = {
       "sourcePath": "reports/button-sync-check.md",
       "updatedAt": "2026-06-17",
       "summary": "- **Variants:** primary, secondary, blue-line",
-      "fileSizeKB": 3.6
+      "fileSizeKB": 3.3
+    },
+    {
+      "id": "changelog-archive",
+      "filename": "changelog-archive.md",
+      "title": "CLAUDE.md 변경 이력 아카이브 (Design System Harness)",
+      "stage": "Audit",
+      "category": "audit",
+      "status": "archive",
+      "sourcePath": "reports/changelog-archive.md",
+      "updatedAt": "2026-06-17",
+      "summary": "이 파일은 CLAUDE.md `변경 이력` 표의 **상세 보존본**이다. 컨텍스트 비용을 줄이기 위해 CLAUDE.md 본문에서 분리했다.",
+      "fileSizeKB": 46
     },
     {
       "id": "harness-audit-2026-06-17",
