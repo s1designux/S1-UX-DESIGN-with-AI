@@ -45,9 +45,7 @@
     "gate:check": "node scripts/gate-check.js",
     "harness:audit": "node scripts/harness-audit.js",
     "harness:fix": "node scripts/harness-audit.js --fix",
-    "docs:tokencheck": "node scripts/doc-token-ref-check.js",
-    "ds:harvest": "node scripts/ds-extract/harvest.js",
-    "ds:aggregate": "node scripts/ds-extract/aggregate.js"
+    "docs:tokencheck": "node scripts/doc-token-ref-check.js"
   },
   "devDependencies": {
     "@figma/plugin-typings": "^1.97.0",
