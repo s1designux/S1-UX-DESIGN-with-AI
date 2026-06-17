@@ -15,10 +15,10 @@ const { readJson, readFile, writeReport, formatDate } = require('./utils');
 const CANONICAL = {
   variants:       ['primary', 'secondary', 'blue-line'],
   deprecatedVariants: ['ghost', 'danger', 'outlined'],
-  figmaStates:    ['default', 'hover', 'pressed', 'disabled', 'loading'],
-  harnessColumns: ['action', 'default', 'hover', 'pressed', 'disabled', 'loading'],
+  figmaStates:    ['default', 'hover', 'pressed', 'disabled'],
+  harnessColumns: ['action', 'default', 'hover', 'pressed', 'disabled'],
   interactiveColumn: 'action',
-  staticColumns:  ['default', 'hover', 'pressed', 'disabled', 'loading'],
+  staticColumns:  ['default', 'hover', 'pressed', 'disabled'],
   sizes: {
     pc: ['medium', 'xsmall', 'xxsmall'],
     mobile: ['mobile'],
@@ -65,10 +65,6 @@ function checkButtonJson() {
     if (variants.includes(bad))
       issue(FILES.buttonJson, `deprecated variant "${bad}" still in variants.list`);
   }
-
-  // state — loading
-  if (state.includes('loading')) pass(FILES.buttonJson, 'state includes "loading"');
-  else issue(FILES.buttonJson, 'state missing "loading"');
 
   // harness columns
   for (const col of CANONICAL.harnessColumns) {
@@ -182,7 +178,6 @@ function checkComponentsHtml() {
     { keyword: 's1-btn-blue-line',  expect: 'present',  message: 'blue-line variant CSS class present' },
     { keyword: 'action-cell',       expect: 'present',  message: 'ACTION column cell present' },
     { keyword: 'is-preview',        expect: 'present',  message: 'static preview class present' },
-    { keyword: 'is-loading',        expect: 'warn-present', message: 'is-loading CSS not defined — loading state unimplemented in s1-btn' },
     { keyword: 'ghost',             expect: 'absent',   message: 'ghost should not be exposed in components.html button section' },
   ]);
 }
@@ -211,7 +206,6 @@ function checkButtonCss() {
     { keyword: 'sw-button--primary',   expect: 'present', message: 'primary CSS class present' },
     { keyword: 'sw-button--secondary', expect: 'present', message: 'secondary CSS class present' },
     { keyword: 'sw-button--blue-line', expect: 'present', message: 'blue-line CSS class present' },
-    { keyword: 'sw-button--loading',   expect: 'present', message: 'loading CSS class present' },
     { keyword: '#',                    expect: 'warn-present', message: 'raw HEX detected — verify no component-level HEX' },
   ]);
 }

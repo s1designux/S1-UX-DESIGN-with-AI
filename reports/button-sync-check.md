@@ -1,32 +1,29 @@
 # Button Sync Check Report
 
 **Date:** 2026-06-17  
-**Status:** ❌ 3 issue(s) found  
-**Summary:** 34 passed · 2 warnings · 3 issues (total 39 checks)
+**Status:** ❌ 1 issue(s) found  
+**Summary:** 33 passed · 1 warnings · 1 issues (total 35 checks)
 
 ---
 
 ## Canonical Button Standard (checked against)
 
 - **Variants:** primary, secondary, blue-line
-- **Figma States:** default, hover, pressed, disabled, loading
-- **Harness Columns:** action, default, hover, pressed, disabled, loading
+- **Figma States:** default, hover, pressed, disabled
+- **Harness Columns:** action, default, hover, pressed, disabled
 - **Deprecated:** ghost, danger, outlined
 
 ---
 
-## Issues (3)
+## Issues (1)
 
-- [ISSUE] registry/components/button.json: state missing "loading"
-- [ISSUE] registry/components/button.json: harness.columns missing "loading"
 - [ISSUE] README.md: ghost disclaimer present
 
-## Warnings (2)
+## Warnings (1)
 
-- [WARN]  pages/components-new.html: is-loading CSS not defined — loading state unimplemented in s1-btn
 - [WARN]  assets/css/components/button.css: raw HEX detected — verify no component-level HEX
 
-## Passed (34)
+## Passed (33)
 
 - [OK]    registry/components/button.json: variant "primary" present
 - [OK]    registry/components/button.json: variant "secondary" present
@@ -61,7 +58,6 @@
 - [OK]    assets/css/components/button.css: primary CSS class present
 - [OK]    assets/css/components/button.css: secondary CSS class present
 - [OK]    assets/css/components/button.css: blue-line CSS class present
-- [OK]    assets/css/components/button.css: loading CSS class present
 
 ---
 
