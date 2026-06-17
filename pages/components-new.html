@@ -1330,12 +1330,13 @@
       letter-spacing: -0.28px; /* sm 값 텍스트 ls -0.28px (Figma -2%) */
     }
     .s1-timepicker-select-group--sm .s1-timepicker-select-label { font-size: 14px; } /* sm 라벨 14px */
-    /* TimePicker Input형 dropdown — Figma pc_timepicker_input_dropdown (540:3507) */
+    /* TimePicker Input형 dropdown — Figma pc_timepicker_input_dropdown (540:3506) */
+    /* width 최소값 기준: 24h 변형(540:3507) min-w/w = 121px. 12h 변형(540:3536)은 194px. 가장 좁은 24h를 floor로 표기 */
     /* 트리거 is-focus = 드롭다운 열림. Figma "selected" = 코드 "is-focus" = 동작 "open" */
     /* z-index: 8 — controls-sticky(9)·page-header(10) 아래. preview-area isolation: isolate로 헤더 위 노출 방지 */
     .s1-tp-dropdown {
       position: absolute; top: calc(100% + 8px); left: 0;
-      z-index: 8; min-width: 190px; width: 190px;
+      z-index: 8; min-width: 121px; width: 121px;
       background: var(--dropdown-list-bg);
       border: 1px solid var(--dropdown-list-border);
       border-radius: var(--radius-4);
