@@ -1,0 +1,305 @@
+{
+  "service": "modu-app",
+  "page": "2449:30232",
+  "pageName": "1~2. 회원가입, 로그인",
+  "fileKey": "aLxh458o9BRXklRFM3YYzk",
+  "harvestedAt": null,
+  "totals": {
+    "instances": 462,
+    "frames": 1043,
+    "components": 30,
+    "patterns": 13
+  },
+  "components": [
+    {
+      "name": "m_button",
+      "count": 63,
+      "reprNodeId": "2449:31026",
+      "chrome": false,
+      "dsMatch": "button"
+    },
+    {
+      "name": "m_StatusBar ",
+      "count": 56,
+      "reprNodeId": "8403:59292",
+      "chrome": true,
+      "dsMatch": null
+    },
+    {
+      "name": "appbar_sub",
+      "count": 52,
+      "reprNodeId": "2449:31015",
+      "chrome": true,
+      "dsMatch": null
+    },
+    {
+      "name": "phone_navi",
+      "count": 46,
+      "reprNodeId": "2449:31167",
+      "chrome": true,
+      "dsMatch": null
+    },
+    {
+      "name": "keyboard",
+      "count": 29,
+      "reprNodeId": "2449:31166",
+      "chrome": true,
+      "dsMatch": null
+    },
+    {
+      "name": "pw off",
+      "count": 29,
+      "reprNodeId": "2449:31237",
+      "chrome": false,
+      "dsMatch": null
+    },
+    {
+      "name": "m_Input box",
+      "count": 25,
+      "reprNodeId": "2449:31162",
+      "chrome": false,
+      "dsMatch": "input"
+    },
+    {
+      "name": "m_bar",
+      "count": 23,
+      "reprNodeId": "2449:31041",
+      "chrome": false,
+      "dsMatch": null
+    },
+    {
+      "name": "menu_arrow_right",
+      "count": 20,
+      "reprNodeId": "21505:5947",
+      "chrome": false,
+      "dsMatch": null
+    },
+    {
+      "name": "close",
+      "count": 17,
+      "reprNodeId": "2449:31191",
+      "chrome": false,
+      "dsMatch": null
+    },
+    {
+      "name": "m_checkbox",
+      "count": 15,
+      "reprNodeId": "2449:31039",
+      "chrome": false,
+      "dsMatch": "checkbox"
+    },
+    {
+      "name": "Remove",
+      "count": 15,
+      "reprNodeId": "8403:59617",
+      "chrome": false,
+      "dsMatch": null
+    },
+    {
+      "name": "S1 logo",
+      "count": 11,
+      "reprNodeId": "8403:60132",
+      "chrome": false,
+      "dsMatch": null
+    },
+    {
+      "name": "m_login_bottom",
+      "count": 10,
+      "reprNodeId": "8403:60142",
+      "chrome": false,
+      "dsMatch": null
+    },
+    {
+      "name": "m_btn_full",
+      "count": 9,
+      "reprNodeId": "2449:31165",
+      "chrome": false,
+      "dsMatch": "button"
+    },
+    {
+      "name": "m_email_input",
+      "count": 8,
+      "reprNodeId": "2449:31428",
+      "chrome": false,
+      "dsMatch": "input"
+    },
+    {
+      "name": "More",
+      "count": 6,
+      "reprNodeId": "2449:31047",
+      "chrome": false,
+      "dsMatch": null
+    },
+    {
+      "name": "ok",
+      "count": 5,
+      "reprNodeId": "2449:31200",
+      "chrome": false,
+      "dsMatch": null
+    },
+    {
+      "name": "title/signup",
+      "count": 3,
+      "reprNodeId": "8403:59321",
+      "chrome": false,
+      "dsMatch": null
+    },
+    {
+      "name": "hide",
+      "count": 3,
+      "reprNodeId": "8403:59386",
+      "chrome": false,
+      "dsMatch": null
+    },
+    {
+      "name": "m_tab_mid",
+      "count": 2,
+      "reprNodeId": "8403:59486",
+      "chrome": false,
+      "dsMatch": "tab"
+    },
+    {
+      "name": "talk",
+      "count": 2,
+      "reprNodeId": "21505:5942",
+      "chrome": false,
+      "dsMatch": null
+    },
+    {
+      "name": "helpdesk",
+      "count": 2,
+      "reprNodeId": "21505:5953",
+      "chrome": false,
+      "dsMatch": null
+    },
+    {
+      "name": "home",
+      "count": 2,
+      "reprNodeId": "21505:5987",
+      "chrome": false,
+      "dsMatch": null
+    },
+    {
+      "name": "under security",
+      "count": 2,
+      "reprNodeId": "21505:5991",
+      "chrome": false,
+      "dsMatch": null
+    },
+    {
+      "name": "dome camera",
+      "count": 2,
+      "reprNodeId": "21505:5995",
+      "chrome": false,
+      "dsMatch": null
+    },
+    {
+      "name": "menu(hamburger)",
+      "count": 2,
+      "reprNodeId": "21505:5999",
+      "chrome": false,
+      "dsMatch": null
+    },
+    {
+      "name": "m_combobox/off/off/off/Default",
+      "count": 1,
+      "reprNodeId": "10587:19808",
+      "chrome": false,
+      "dsMatch": null
+    },
+    {
+      "name": "face check",
+      "count": 1,
+      "reprNodeId": "8403:60459",
+      "chrome": false,
+      "dsMatch": null
+    },
+    {
+      "name": "fingerprint",
+      "count": 1,
+      "reprNodeId": "10587:19691",
+      "chrome": false,
+      "dsMatch": null
+    }
+  ],
+  "patterns": [
+    {
+      "signature": "appbar_sub + m_StatusBar ",
+      "count": 40,
+      "frameName": "Frame 568",
+      "reprNodeId": "8403:59291"
+    },
+    {
+      "signature": "m_button + m_login_bottom",
+      "count": 10,
+      "frameName": "Frame 686",
+      "reprNodeId": "8403:60140"
+    },
+    {
+      "signature": "keyboard + m_btn_full + phone_navi",
+      "count": 8,
+      "frameName": "Frame 464",
+      "reprNodeId": "2449:31164"
+    },
+    {
+      "signature": "Remove + pw off",
+      "count": 7,
+      "frameName": "Group 35",
+      "reprNodeId": "8403:60166"
+    },
+    {
+      "signature": "m_Input box + m_email_input",
+      "count": 4,
+      "frameName": "Frame 613",
+      "reprNodeId": "8403:59506"
+    },
+    {
+      "signature": "m_bar + m_bar + m_bar",
+      "count": 3,
+      "frameName": "Frame 641",
+      "reprNodeId": "2449:31457"
+    },
+    {
+      "signature": "keyboard + phone_navi",
+      "count": 3,
+      "frameName": "Frame 464",
+      "reprNodeId": "8403:59387"
+    },
+    {
+      "signature": "m_Input box + m_Input box",
+      "count": 2,
+      "frameName": "Frame 612",
+      "reprNodeId": "8403:59487"
+    },
+    {
+      "signature": "appbar_sub + m_StatusBar  + title/signup",
+      "count": 2,
+      "frameName": "Frame 466",
+      "reprNodeId": "8403:60359"
+    },
+    {
+      "signature": "keyboard + m_btn_full",
+      "count": 1,
+      "frameName": "Frame 464",
+      "reprNodeId": "8403:59325"
+    },
+    {
+      "signature": "appbar_sub + m_StatusBar  + phone_navi",
+      "count": 1,
+      "frameName": "1.2 회원가입(모앱)_2 약관 상세",
+      "reprNodeId": "10580:19147"
+    },
+    {
+      "signature": "m_Input box + m_combobox/off/off/off/Default",
+      "count": 1,
+      "frameName": "Frame 394",
+      "reprNodeId": "10587:19805"
+    },
+    {
+      "signature": "m_button + m_button",
+      "count": 1,
+      "frameName": "Frame 285",
+      "reprNodeId": "8403:60160"
+    }
+  ]
+}

@@ -1,0 +1,20 @@
+{
+  "meta": {
+    "description": "ds-extract 코퍼스 분석 대상 — 엉킨 레거시 시안 파일들(읽기전용). 여기 fileKey/page 를 등록하면 링크 없이 ds:harvest 가능. 입력은 절대 수정 안 함(읽기 전용).",
+    "since": "2026-06-17",
+    "readUnit": "service=file · flow=page"
+  },
+  "chromePatterns": [
+    "StatusBar", "phone_navi", "keyboard", "appbar", "navi", "indicator", "home indicator", "safe area"
+  ],
+  "services": [
+    {
+      "id": "modu-app",
+      "name": "MoDU APP",
+      "fileKey": "aLxh458o9BRXklRFM3YYzk",
+      "pages": [
+        { "nodeId": "2449:30232", "flow": "signup-login", "name": "1~2. 회원가입, 로그인" }
+      ]
+    }
+  ]
+}
