@@ -164,9 +164,11 @@ reports/screen-rebuild/{service}/{flow}/
 
 **Layer 1 — 기계(결정론):**
 - 텍스트 **정확 일치**(원본 verbatim == 재현, 1글자라도 다르면 ❌)
-- fills가 **Variable에 바인딩**됐나 (raw면 ❌)
+- **fills Variable 바인딩 — raw면 ❌(a) 차단(BLOCKING · 절대 (c)로 흘리지 말 것).** 화면이 직접 저작한 프레임·텍스트의 SOLID fill은 로컬 Variable(Semantic Color V2/Foundation V2/overlay)에 바인딩돼야 함. (인스턴스 *내부* raw는 컴포넌트 소관 → `needs-core-update`로 분리.)
 - 인스턴스 **variant/상태 = 원본 상태**(예: 원본 checked인데 Default면 ❌)
 - 교체 가능한 요소가 **정본 세트의 INSTANCE**인가 (아니면 ❌ — 임의 제작 적발)
+- **인스턴스 출처(provenance) — ❌(a) 차단:** 모든 INSTANCE의 mainComponent가 ①이 파일 로컬 또는 ②V2.2 아이콘 라이브러리(`ic_` 접두·`yE5UCFEbmXJBlYJWB24Lz2`)에서만 와야 함. 그 외 외부/레거시 라이브러리(orphan parent=null·non-`ic_` remote·타 라이브러리 key — 예: `search_design_system`으로 끌어온 F/W 아이콘) = **차단**(절대 (c) 금지).
+- **위 두 검사(raw·provenance)는 육안이 아니라 `use_figma` 결정론 스캔으로 수행**한다: `findAll(INSTANCE)`→`getMainComponentAsync()`의 `remote`/이름 확인, 각 노드 `fills`의 `boundVariables` 확인. (셸 인스턴스·컴포넌트 내부는 제외하고 화면 저작 노드만.)
 - figma-use 잔재 0 (**고정 100px·hug 누락·미성장 spacer 없음**)
 - 원본 요소 **누락 0건**
 
