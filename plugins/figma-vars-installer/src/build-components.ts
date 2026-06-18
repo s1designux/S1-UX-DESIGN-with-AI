@@ -334,7 +334,8 @@ export async function buildButtonSet(
   maps: BuildMaps,
   onProgress?: (step: string, pct: number) => void,
   pctFrom = 85,
-  pctTo = 100
+  pctTo = 100,
+  originY = 0
 ): Promise<{ set: ComponentSetNode; bottomY: number }> {
   // ── 48개 컴포넌트 생성 (행=Variant×Size 12, 열=State 4) ──
   const grid: GridCell[] = [];
@@ -359,7 +360,7 @@ export async function buildButtonSet(
   // ── 컴포넌트 세트로 결합 ──
   const set = figma.combineAsVariants(grid.map((g) => g.comp), figma.currentPage);
   set.name = "Button";
-  set.x = 0; set.y = 0;
+  set.x = 0; set.y = originY;
 
   const opts: GroupedSpecOpts = {
     title: "Button",
@@ -368,7 +369,7 @@ export async function buildButtonSet(
     colHeaders: STATES,
     cellAt: (_p, size, ri, ci) =>
       grid.find((g) => g.variant === VARIANTS[ri] && g.size === size && g.state === STATES[ci])?.comp ?? null,
-    lightX: SPEC_LIGHT_X, darkX: SPEC_DARK_X, originY: 0,
+    lightX: SPEC_LIGHT_X, darkX: SPEC_DARK_X, originY,
     cellW: CELL_W, cellH: CELL_H, rowLabelW: 88,
   };
   // 세트 자체를 Light 스펙처럼 꾸미고, Dark 스펙 프레임을 옆에 생성
@@ -803,6 +804,17 @@ function makeStrokeIcon(svg: string, strokeVar: Variable): FrameNode {
   return node;
 }
 
+/** fill 기반 아이콘(글리프 채움) — 모든 채움 도형의 fill 을 변수에 바인딩. (GNB 유틸·캘린더 등 fill="currentColor") */
+function makeFillIcon(svg: string, fillVar: Variable): FrameNode {
+  const node = figma.createNodeFromSvg(svg);
+  node.name = "icon";
+  const SHAPES = ["VECTOR", "ELLIPSE", "RECTANGLE", "LINE", "POLYGON", "STAR", "BOOLEAN_OPERATION"];
+  (node.findAll((n) => SHAPES.includes(n.type)) as (VectorNode | BooleanOperationNode)[]).forEach((v) => {
+    try { v.fills = [boundPaint(fillVar)]; v.strokes = []; } catch (e) { /* skip */ }
+  });
+  return node;
+}
+
 // ── Search Input (form-control + 돋보기 아이콘) ───────────────────────────────
 async function buildSearch(maps: BuildMaps, originY: number): Promise<{ set: ComponentSetNode; bottomY: number }> {
   const fc = (k: string) => `color/form-control/${k}`;
@@ -959,7 +971,7 @@ async function buildSelect(maps: BuildMaps, originY: number): Promise<{ set: Com
         // 높이를 옵션 개수에 맞춰 명시 고정 (resize 가 sizing mode 를 FIXED 로 바꾸므로 AUTO 의존 금지)
         panel.resize(140, panelOpts.length * 32 + 8);
         panel.fills = [boundPaint(scv(maps, "color/dropdown/list/bg"))];
-        panel.strokes = [boundPaint(scv(maps, "color/dropdown/list/border"))]; panel.strokeWeight = 1; panel.strokeAlign = "INSIDE";
+        panel.strokes = [boundPaint(scv(maps, "color/dropdown/list/border"))]; panel.strokeWeight = 1; panel.strokeAlign = "OUTSIDE"; // 풀폭 옵션이 안쪽 보더 좌우를 덮지 않도록 바깥 정렬(2026-06-18)
         for (const o of panelOpts) {
           const row = figma.createFrame();
           row.name = "option";
@@ -1215,7 +1227,7 @@ async function buildFilterChip(maps: BuildMaps, originY: number): Promise<{ set:
           panel.paddingTop = 4; panel.paddingBottom = 4; panel.itemSpacing = 0; panel.cornerRadius = 4;
           panel.resize(130, 3 * 32 + 8);
           panel.fills = [boundPaint(scv(maps, "color/dropdown/list/bg"))];
-          panel.strokes = [boundPaint(scv(maps, "color/dropdown/list/border"))]; panel.strokeWeight = 1; panel.strokeAlign = "INSIDE";
+          panel.strokes = [boundPaint(scv(maps, "color/dropdown/list/border"))]; panel.strokeWeight = 1; panel.strokeAlign = "OUTSIDE"; // 풀폭 옵션이 안쪽 보더 좌우를 덮지 않도록 바깥 정렬(2026-06-18)
           const opts = [
             { txt: "최신순", bg: "selected", lb: "selected" },
             { txt: "과거순", bg: "default",  lb: "default" },
@@ -1333,7 +1345,8 @@ async function buildTimePicker(maps: BuildMaps, originY: number): Promise<{ set:
 //   default/hover/selected 전부 공유 color/dropdown/option/* 토큰(Basic Dropdown 재사용 정본).
 //   Default 스트록은 bg/default 에 바인딩(=배경과 동일, 투명 테두리). Selected 의 1px 강조 테두리와
 //   셀 크기를 1px 단위까지 동일하게 맞춰 선택 전환 시 reflow/정렬 어긋남을 방지한다(2026-06-17).
-const TPC_W = 77, TPC_H = 30;
+// V2.4 원본 timepicker_input_component(540:3470) 실측: 44×32, px12, radius4. 드롭다운에선 컬럼 폭을 채움(STRETCH).
+const TPC_W = 44, TPC_H = 32;
 async function buildTimePickerCell(maps: BuildMaps): Promise<{ set: ComponentSetNode; variants: Record<string, ComponentNode> }> {
   const opt = (k: string) => `color/dropdown/option/${k}`;
   const states = [
@@ -1366,64 +1379,90 @@ async function buildTimePickerCell(maps: BuildMaps): Promise<{ set: ComponentSet
 
 // ── Time Picker Dropdown (패널) — Time Picker Cell 인스턴스로 조립 ─────────────
 // Figma 정본: pc_timepicker_input_dropdown(540:3506) — Type=24h(시·분 2컬럼) / Type=12h(오전오후·시·분 3컬럼).
-//   셀=Time Picker Cell 인스턴스(컴포넌트→인스턴스 구조). 컬럼 93폭, 행 7개(클립 190), 셀 77×30 가운데.
-//   확인 푸터(Option 40px) 우측정렬 — 분 선택 전 disabled, 선택 후 accent.
+//   셀=Time Picker Cell 인스턴스. 패널 고정폭 24h=121/12h=194, 컬럼=flex 채움, 셀=컬럼폭 채움·h32 (V2.4 실측).
+//   확인 푸터(px16 py12) 우측정렬 — 분 선택 전 disabled, 선택 후 accent.
 //   메인 세트는 Type=24h/12h 만(변형 폭증 방지). 상태값은 아래 별도 States 스펙 시트로 정리.
-const TPD_COL_W = 93, TPD_ROW_H = 30, TPD_COLS_H = 190, TPD_FOOTER_H = 40, TPD_PAD_TOP = 12;
-const TPD_PANEL_H = TPD_PAD_TOP + TPD_COLS_H + TPD_FOOTER_H; // 242
+// V2.4 원본 pc_timepicker_input_dropdown(540:3506) 실측:
+//   패널 폭 24h=121 / 12h=194 (고정). cols: px8·gap8·컬럼 사이 1px 구분선(line/gray/subtle).
+//   컬럼=flex-grow(채움), 셀=컬럼 폭 채움(STRETCH)·h32. 패널 그림자 0 4 8 rgba(0,0,0,.15)(MVP4.3-A 허용).
+const TPD_COLS_H = 192, TPD_PAD_TOP = 12;
+const TPD_PANEL_W = (n: number) => (n >= 3 ? 194 : 121); // 컬럼 수 → 원본 고정 폭
 interface TpdColSpec { items: string[]; selIdx: number; hoverIdx: number; }
 async function buildTimePickerDropdown(maps: BuildMaps, originY: number): Promise<{ set: ComponentSetNode; bottomY: number }> {
   const cell = await buildTimePickerCell(maps);
 
-  // 한 컬럼: 93폭, list/bg, 행마다 셀 인스턴스(상태별 변형) 가운데. 텍스트만 인스턴스 오버라이드.
+  // 한 컬럼: flex-grow(부모 폭 균등 채움). 셀 인스턴스를 직접 쌓고 각 셀은 컬럼 폭 채움(STRETCH).
   async function makeCol(items: string[], selIdx: number, hoverIdx: number): Promise<FrameNode> {
     const col = figma.createFrame();
     col.name = "col";
     col.layoutMode = "VERTICAL"; col.primaryAxisSizingMode = "FIXED"; col.counterAxisSizingMode = "FIXED";
-    col.itemSpacing = 0; col.clipsContent = true;
-    col.fills = [boundPaint(scv(maps, "color/dropdown/list/bg"))];
-    col.resize(TPD_COL_W, TPD_COLS_H);
+    col.itemSpacing = 0; col.clipsContent = true; col.fills = [];
+    col.resize(44, TPD_COLS_H);
     for (let i = 0; i < items.length; i++) {
-      const row = figma.createFrame();
-      row.name = "row";
-      row.layoutMode = "HORIZONTAL"; row.primaryAxisAlignItems = "CENTER"; row.counterAxisAlignItems = "CENTER";
-      row.primaryAxisSizingMode = "FIXED"; row.counterAxisSizingMode = "FIXED";
-      row.resize(TPD_COL_W, TPD_ROW_H); row.fills = [];
       const state = i === selIdx ? "Selected" : i === hoverIdx ? "Hover" : "Default";
-      const inst = cell.variants[state].createInstance(); // ← 셀 컴포넌트 인스턴스
+      const inst = cell.variants[state].createInstance();
       const txt = inst.findOne((n) => n.type === "TEXT") as TextNode | null;
       if (txt) { await figma.loadFontAsync(txt.fontName as FontName); txt.characters = items[i]; }
-      row.appendChild(inst);
-      col.appendChild(row);
+      col.appendChild(inst);
+      inst.layoutAlign = "STRETCH"; // 셀이 컬럼 폭을 채움 (44→48 등 variant 폭 대응)
     }
     return col;
   }
 
-  // 패널 노드(컴포넌트 또는 프레임)에 cols + footer 를 채운다.
+  // 1px 세로 구분선 (컬럼 사이) — 높이 채움.
+  function makeColSep(): RectangleNode {
+    const sep = figma.createRectangle();
+    sep.name = "sep"; sep.resize(1, TPD_COLS_H);
+    sep.fills = [boundPaint(scv(maps, "color/line/gray/subtle"))];
+    return sep;
+  }
+
+  // 패널 노드(컴포넌트 또는 프레임)에 cols + 푸터 구분선 + 확인 푸터를 채운다.
   async function fillPanel(node: FrameNode | ComponentNode, cols: TpdColSpec[], confirmActive: boolean): Promise<void> {
-    const panelW = cols.length * TPD_COL_W; // 24h=186, 12h=279
+    const panelW = TPD_PANEL_W(cols.length); // 24h=121 / 12h=194 (원본 고정)
     node.layoutMode = "VERTICAL"; node.counterAxisAlignItems = "CENTER";
-    node.primaryAxisSizingMode = "FIXED"; node.counterAxisSizingMode = "FIXED";
     node.itemSpacing = 0; node.paddingTop = TPD_PAD_TOP; node.paddingBottom = 0; node.cornerRadius = 4;
     node.clipsContent = true;
     node.fills = [boundPaint(scv(maps, "color/dropdown/list/bg"))];
     node.strokes = [boundPaint(scv(maps, "color/dropdown/list/border"))]; node.strokeWeight = 1; node.strokeAlign = "INSIDE";
-    node.resize(panelW, TPD_PANEL_H);
+    node.effects = [{ type: "DROP_SHADOW", color: { r: 0, g: 0, b: 0, a: 0.15 }, offset: { x: 0, y: 4 }, radius: 8, spread: 0, visible: true, blendMode: "NORMAL" }];
+    node.resize(panelW, 100);              // 폭 고정 (resize 후 sizing 모드 설정)
+    node.primaryAxisSizingMode = "AUTO";   // 높이 hug
+    node.counterAxisSizingMode = "FIXED";  // 폭 = panelW 고정
+
+    // cols 컨테이너 (가로, px8·gap8, 폭 채움, 높이 COLS_H)
     const colsFrame = figma.createFrame();
     colsFrame.name = "cols";
     colsFrame.layoutMode = "HORIZONTAL"; colsFrame.counterAxisAlignItems = "MIN";
     colsFrame.primaryAxisSizingMode = "FIXED"; colsFrame.counterAxisSizingMode = "FIXED";
-    colsFrame.itemSpacing = 0; colsFrame.fills = []; colsFrame.resize(panelW, TPD_COLS_H);
-    for (const cs of cols) colsFrame.appendChild(await makeCol(cs.items, cs.selIdx, cs.hoverIdx));
-    node.appendChild(colsFrame);
+    colsFrame.itemSpacing = 8; colsFrame.paddingLeft = 8; colsFrame.paddingRight = 8; colsFrame.fills = [];
+    colsFrame.resize(panelW, TPD_COLS_H);
+    for (let i = 0; i < cols.length; i++) {
+      if (i > 0) { const sep = makeColSep(); colsFrame.appendChild(sep); sep.layoutAlign = "STRETCH"; }
+      const col = await makeCol(cols[i].items, cols[i].selIdx, cols[i].hoverIdx);
+      colsFrame.appendChild(col); col.layoutGrow = 1; col.layoutAlign = "STRETCH"; // 폭 균등 채움 + 높이 채움
+    }
+    node.appendChild(colsFrame); colsFrame.layoutAlign = "STRETCH"; // 패널 폭 채움
+
+    // 푸터 구분선 (px8 컨테이너 + 가로 1px 라인)
+    const fdivWrap = figma.createFrame();
+    fdivWrap.name = "footer-sep"; fdivWrap.layoutMode = "VERTICAL";
+    fdivWrap.primaryAxisSizingMode = "AUTO"; fdivWrap.counterAxisSizingMode = "FIXED";
+    fdivWrap.paddingLeft = 8; fdivWrap.paddingRight = 8; fdivWrap.fills = [];
+    fdivWrap.resize(panelW, 1);
+    const fdiv = figma.createRectangle(); fdiv.name = "line"; fdiv.resize(panelW - 16, 1);
+    fdiv.fills = [boundPaint(scv(maps, "color/line/gray/subtle"))];
+    fdivWrap.appendChild(fdiv); fdiv.layoutAlign = "STRETCH";
+    node.appendChild(fdivWrap); fdivWrap.layoutAlign = "STRETCH";
+
+    // 확인 푸터 (px16 py12 우측정렬) — 분 선택 전 disabled, 선택 후 accent
     const footer = figma.createFrame();
     footer.name = "Option";
     footer.layoutMode = "HORIZONTAL"; footer.primaryAxisAlignItems = "MAX"; footer.counterAxisAlignItems = "CENTER";
-    footer.primaryAxisSizingMode = "FIXED"; footer.counterAxisSizingMode = "FIXED";
-    footer.resize(panelW, TPD_FOOTER_H); footer.paddingLeft = 16; footer.paddingRight = 16; footer.fills = [];
-    // 확인: 분 선택 전 disabled, 선택 후 accent (활성)
+    footer.primaryAxisSizingMode = "FIXED"; footer.counterAxisSizingMode = "AUTO";
+    footer.paddingLeft = 16; footer.paddingRight = 16; footer.paddingTop = 12; footer.paddingBottom = 12; footer.fills = [];
     footer.appendChild(await makeBoundText("확인", 14, "Medium", scv(maps, confirmActive ? "color/text/state/accent" : "color/text/state/disabled")));
-    node.appendChild(footer);
+    node.appendChild(footer); footer.layoutAlign = "STRETCH";
   }
 
   const hours = ["1", "2", "3", "4", "5", "6", "7"];
@@ -1479,7 +1518,7 @@ async function buildTimePickerDropdown(maps: BuildMaps, originY: number): Promis
     { label: "분 Selected (확인 활성)", cfg: { hSel: 2, mSel: 3 },              confirm: true },
   ];
   const sheetTop = bottomY + 80;
-  const COL_24_W = 2 * TPD_COL_W, COL_12_W = 3 * TPD_COL_W; // 186 / 279
+  const COL_24_W = TPD_PANEL_W(2), COL_12_W = TPD_PANEL_W(3); // 121 / 194 (원본 고정 폭)
   const LABEL_W = 150, GAP = 40, PAD = 24, TITLE_H = 30, HDR_H = 24, ROW_GAP = 34;
   const SHEET_W = PAD * 2 + LABEL_W + COL_24_W + GAP + COL_12_W;
   for (const dark of [false, true]) {
@@ -1503,7 +1542,7 @@ async function buildTimePickerDropdown(maps: BuildMaps, originY: number): Promis
       await fillPanel(p24, colsOf("24h", st.cfg), st.confirm); p24.x = x24; p24.y = y;
       const p12 = figma.createFrame(); frame.appendChild(p12);
       await fillPanel(p12, colsOf("12h", st.cfg), st.confirm); p12.x = x12; p12.y = y;
-      y += TPD_PANEL_H + ROW_GAP;
+      y += Math.max(p24.height, p12.height) + ROW_GAP; // 패널 높이 hug → 실제 높이로 행 전진
     }
     frame.resize(SHEET_W, y - ROW_GAP + PAD);
     if (dark) setMode(frame, maps, maps.semanticDarkModeId); else setLightMode(frame, maps);
@@ -1513,32 +1552,467 @@ async function buildTimePickerDropdown(maps: BuildMaps, originY: number): Promis
   return { set, bottomY };
 }
 
+// ── Pagination — color/pagination/control/*(arrow) + 번호 텍스트(재사용 semantic) ─
+// 정본: pages/components-new.html. Arrow 28×28(border·bg), Number 28×28(텍스트만).
+// Arrow: Default/Hover/Disabled · Number: Default/Hover/Selected (4 states 매트릭스, 무효칸=null).
+// 색 바인딩(값 정본 일치):
+//   arrow bg/border = color/pagination/control/* (신규 토큰 없이 기존 6키 사용)
+//   arrow icon       = color/icon/gray-dark(기본/hover) · color/icon/gray-light(disabled = icon-muted)
+//   number text      = color/text/state/helper(기본/hover = gray/400) · color/text/body/secondary(selected = text-secondary)
+async function buildPagination(maps: BuildMaps, originY: number): Promise<{ set: ComponentSetNode; bottomY: number }> {
+  const pg = (k: string) => `color/pagination/${k}`;
+  const CHEV_PREV = `<svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M9 3.5L5 7l4 3.5" stroke="#000" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+  const SZ = 28;
+  const arrowStates = [
+    { state: "Default",  bg: "control/bg/default",  border: "control/border/default",  icon: "color/icon/gray-dark" },
+    { state: "Hover",    bg: "control/bg/hover",    border: "control/border/default",  icon: "color/icon/gray-dark" },
+    { state: "Disabled", bg: "control/bg/disabled", border: "control/border/disabled", icon: "color/icon/gray-light" },
+  ];
+  const numStates = [
+    { state: "Default",  bg: null as string | null, text: "color/text/state/helper" },
+    { state: "Hover",    bg: "control/bg/hover",     text: "color/text/state/helper" },
+    { state: "Selected", bg: null as string | null,  text: "color/text/body/secondary" },
+  ];
+  const byKey = new Map<string, ComponentNode>();
+  const comps: ComponentNode[] = [];
+  // Arrow variants
+  for (const st of arrowStates) {
+    const comp = figma.createComponent();
+    comp.name = `Element=Arrow, State=${st.state}`;
+    comp.resize(SZ, SZ);
+    comp.cornerRadius = 2; // radius/control/xs = radius/2
+    comp.fills = [boundPaint(scv(maps, pg(st.bg)))];
+    comp.strokes = [boundPaint(scv(maps, pg(st.border)))];
+    comp.strokeWeight = 1; comp.strokeAlign = "INSIDE";
+    const icon = makeStrokeIcon(CHEV_PREV, scv(maps, st.icon));
+    comp.appendChild(icon); icon.x = (SZ - icon.width) / 2; icon.y = (SZ - icon.height) / 2;
+    setLightMode(comp, maps);
+    comps.push(comp); byKey.set(`Arrow/${st.state}`, comp);
+  }
+  // Number variants
+  for (const st of numStates) {
+    const comp = figma.createComponent();
+    comp.name = `Element=Number, State=${st.state}`;
+    comp.resize(SZ, SZ);
+    comp.cornerRadius = 2;
+    comp.fills = st.bg ? [boundPaint(scv(maps, pg(st.bg)))] : [];
+    const t = await makeBoundText("3", 14, "Medium", scv(maps, st.text));
+    comp.appendChild(t); t.x = (SZ - t.width) / 2; t.y = (SZ - t.height) / 2;
+    setLightMode(comp, maps);
+    comps.push(comp); byKey.set(`Number/${st.state}`, comp);
+  }
+  const set = figma.combineAsVariants(comps, figma.currentPage);
+  set.name = "Pagination";
+  set.x = 0; set.y = originY;
+  // 매트릭스: 행=Arrow/Number, 열=Default/Hover/Selected/Disabled (무효칸 null)
+  const cols = ["Default", "Hover", "Selected", "Disabled"];
+  const opts: SpecOpts = {
+    title: "Pagination",
+    colHeaders: cols,
+    rowLabels: ["Arrow", "Number"],
+    cellAt: (r, c) => byKey.get(`${r === 0 ? "Arrow" : "Number"}/${cols[c]}`) ?? null,
+    lightX: SPEC_LIGHT_X, darkX: SPEC_DARK_X, originY, cellW: 72, cellH: 48, rowLabelW: 64,
+  };
+  let bottomY = await decorateSetFlat(set, opts, maps);
+  try { bottomY = Math.max(bottomY, await buildSpec(opts, maps)); } catch (e) { console.warn(e); }
+  return { set, bottomY };
+}
+
+// ── GNB — 메뉴 슬롯(9 variants) + GNB 바(6 variants) ─────────────────────────
+// 정본: pages/components-new.html. PC only. 색은 color/navigation/* + line/gray/subtle + text/title/primary + icon/gray-dark.
+// 메뉴 슬롯: 라벨 + 하단 2px 라인. Default=label/default-alt·밑줄 없음 / Hover·Selected=label/selected·밑줄(indicator/selected).
+const GNB_MENU_SIZE: Record<string, { h: number; font: number; padX: number; inset: number }> = {
+  md:  { h: 56, font: 18, padX: 40, inset: 24 },
+  sm:  { h: 48, font: 18, padX: 32, inset: 20 },
+  xsm: { h: 36, font: 14, padX: 32, inset: 20 },
+};
+const GNB_UTIL_SVGS = {
+  // 원본 글리프(components-new.html). currentColor fill → icon/gray-dark 바인딩. viewBox 비율 보존(max side ≈ 24).
+  lang: `<svg width="24" height="24" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M9 18C13.9659 18 18 13.9659 18 9C18 4.03412 13.9659 0 9 0C4.03412 0 0 4.03412 0 9C0 13.9659 4.03412 18 9 18ZM2.97529 3.84353C3.56824 4.09765 4.18235 4.32 4.81765 4.5C4.42588 5.80235 4.20353 7.13647 4.16118 8.47059H1.09059C1.20706 6.71294 1.89529 5.10353 2.97529 3.84353ZM5.99294 1.65176C5.67529 2.25529 5.4 2.86941 5.16706 3.49412C4.69059 3.35647 4.22471 3.20824 3.78 3.02824C4.43647 2.45647 5.17765 1.99059 5.99294 1.65176ZM8.47059 1.09059V4.01294C7.71882 3.98118 6.95647 3.89647 6.20471 3.73765C6.53294 2.88 6.93529 2.03294 7.43294 1.21765C7.77177 1.15412 8.12118 1.11176 8.47059 1.09059ZM10.5671 1.21765C11.0647 2.03294 11.4671 2.88 11.7953 3.73765C11.0435 3.88588 10.2918 3.98118 9.52941 4.01294V1.09059C9.87882 1.11176 10.2282 1.15412 10.5671 1.21765ZM14.22 3.02824C13.7753 3.20824 13.3094 3.36706 12.8329 3.49412C12.6 2.86941 12.3247 2.25529 12.0071 1.65176C12.8224 1.99059 13.5635 2.45647 14.22 3.02824ZM16.9094 8.47059H13.8388C13.7965 7.13647 13.5741 5.80235 13.1824 4.5C13.8282 4.32 14.4424 4.09765 15.0247 3.84353C16.1047 5.10353 16.7929 6.71294 16.9094 8.47059ZM15.0247 14.1565C14.4424 13.9024 13.8176 13.68 13.1824 13.5C13.5741 12.1976 13.7965 10.8635 13.8388 9.52941H16.9094C16.7929 11.2871 16.1047 12.8965 15.0247 14.1565ZM12.0071 16.3482C12.3247 15.7447 12.6 15.1306 12.8329 14.5059C13.3094 14.6435 13.7753 14.7918 14.22 14.9718C13.5635 15.5435 12.8224 16.0094 12.0071 16.3482ZM9.52941 16.9094V13.9871C10.2812 14.0188 11.0435 14.1035 11.7953 14.2624C11.4671 15.12 11.0647 15.9671 10.5671 16.7824C10.2282 16.8459 9.87882 16.8882 9.52941 16.9094ZM7.43294 16.7824C6.93529 15.9671 6.53294 15.12 6.20471 14.2624C6.95647 14.1141 7.70824 14.0188 8.47059 13.9871V16.9094C8.12118 16.8882 7.77177 16.8459 7.43294 16.7824ZM3.78 14.9718C4.22471 14.7918 4.69059 14.6329 5.16706 14.5059C5.4 15.1306 5.67529 15.7447 5.99294 16.3482C5.17765 16.0094 4.43647 15.5435 3.78 14.9718ZM5.84471 4.74353C6.71294 4.92353 7.59177 5.04 8.47059 5.07176V8.47059H5.22C5.26235 7.22118 5.47412 5.97177 5.85529 4.74353H5.84471ZM12.1553 4.74353C12.5259 5.97177 12.7376 7.22118 12.7906 8.47059H9.54V5.07176C10.4188 5.04 11.2871 4.93412 12.1659 4.74353H12.1553ZM12.1553 13.2565C11.2871 13.0765 10.4082 12.96 9.52941 12.9388V9.54H12.78C12.7376 10.7894 12.5259 12.0388 12.1447 13.2671L12.1553 13.2565ZM8.47059 9.52941V12.9282C7.59177 12.96 6.72353 13.0659 5.84471 13.2459C5.47412 12.0176 5.26235 10.7682 5.20941 9.51882H8.46L8.47059 9.52941ZM4.16118 9.52941C4.20353 10.8635 4.42588 12.1976 4.81765 13.5C4.17177 13.68 3.55765 13.9024 2.97529 14.1565C1.89529 12.8965 1.20706 11.2871 1.09059 9.52941H4.16118Z" fill="currentColor"/></svg>`,
+  account: `<svg width="24" height="21.58" viewBox="0 0 24 21.5816" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M16.561 13.7324H7.43901C5.67118 13.7324 4.00236 14.3971 2.84266 15.5568C0.494991 17.9186 0.0141426 21.2704 0 21.3977L1.37183 21.5816C1.37183 21.5816 1.81025 18.5409 3.8185 16.5185C4.72363 15.6134 6.03889 15.1042 7.43901 15.1042H16.561C17.9611 15.1042 19.2764 15.6275 20.1815 16.5185C22.1897 18.5409 22.6282 21.5391 22.6282 21.5816L24 21.3977C23.9859 21.2563 23.505 17.9045 21.1573 15.5568C19.9976 14.3971 18.3288 13.7324 16.561 13.7324Z" fill="currentColor"/><path d="M5.9968 6.01061C5.9968 9.31998 8.69803 12.0212 12.0074 12.0212C15.3168 12.0212 18.018 9.31998 18.018 6.01061C18.018 2.70124 15.3168 0 12.0074 0C8.69803 0 5.9968 2.70124 5.9968 6.01061ZM16.6037 6.01061C16.6037 8.54213 14.5389 10.607 12.0074 10.607C9.47588 10.607 7.41106 8.54213 7.41106 6.01061C7.41106 3.47908 9.47588 1.41426 12.0074 1.41426C14.5389 1.41426 16.6037 3.47908 16.6037 6.01061Z" fill="currentColor"/></svg>`,
+  menu: `<svg width="24" height="16.93" viewBox="0 0 24 16.9274" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M0 1.41176H24V0.705882V0H0V1.41176Z" fill="currentColor"/><path d="M0 9.17647H24V8.47059V7.76471H0V9.17647Z" fill="currentColor"/><path d="M0 16.9274H24V16.2215V15.5156H0V16.9274Z" fill="currentColor"/></svg>`,
+};
+
+/** GNB 메뉴 슬롯 콘텐츠를 node(컴포넌트/프레임)에 채우고 폭을 반환. */
+async function fillGnbMenu(node: ComponentNode | FrameNode, maps: BuildMaps, sizeKey: string, state: string): Promise<number> {
+  const navc = (k: string) => `color/navigation/${k}`;
+  const S = GNB_MENU_SIZE[sizeKey];
+  const active = state !== "Default";
+  node.fills = [];
+  const t = await makeBoundText("메뉴타이틀", S.font, "Medium", scv(maps, navc(active ? "label/selected" : "label/default-alt")));
+  node.appendChild(t);
+  const W = Math.max(116, Math.ceil(t.width) + S.padX * 2);
+  node.resize(W, S.h);
+  t.x = (W - t.width) / 2; t.y = (S.h - t.height) / 2;
+  const ul = figma.createRectangle();
+  ul.resize(W - S.inset * 2, 2); ul.x = S.inset; ul.y = S.h - 2;
+  ul.fills = active ? [boundPaint(scv(maps, navc("indicator/selected")))] : [];
+  node.appendChild(ul);
+  return W;
+}
+
+/** GNB 유틸 아이콘 버튼(md/sm=40·glyph24 · xsm=32·glyph18). 글리프 가운데. */
+function gnbUtilBtn(maps: BuildMaps, svg: string, box = 40, glyph = 24): FrameNode {
+  const btn = figma.createFrame();
+  btn.name = "util-btn"; btn.resize(box, box); btn.fills = [];
+  const icon = makeFillIcon(svg, scv(maps, "color/icon/gray-dark"));
+  if (glyph !== 24) { try { icon.rescale(glyph / 24); } catch (e) { /* skip */ } } // 원본 글리프 max-side 24 기준 축소
+  btn.appendChild(icon); icon.x = (box - icon.width) / 2; icon.y = (box - icon.height) / 2;
+  return btn;
+}
+
+async function buildGNB(maps: BuildMaps, originY: number): Promise<{ set: ComponentSetNode; bottomY: number }> {
+  const navc = (k: string) => `color/navigation/${k}`;
+  const sizeKeys = ["md", "sm", "xsm"];
+  const menuStates = ["Default", "Hover", "Selected"];
+
+  // 1) 메뉴 슬롯 세트 (9 variants) — Size × State
+  const menuComps: ComponentNode[] = [];
+  const menuCellByKey = new Map<string, ComponentNode>();
+  for (const sk of sizeKeys) {
+    for (const ms of menuStates) {
+      const comp = figma.createComponent();
+      comp.name = `Size=${sk}, State=${ms}`;
+      await fillGnbMenu(comp, maps, sk, ms);
+      setLightMode(comp, maps);
+      menuComps.push(comp); menuCellByKey.set(`${sk}/${ms}`, comp);
+    }
+  }
+  const menuSet = figma.combineAsVariants(menuComps, figma.currentPage);
+  menuSet.name = "GNB Menu";
+  const menuOpts: GroupedSpecOpts = {
+    title: "GNB Menu",
+    platforms: [{ name: "PC", sizes: sizeKeys }],
+    rowLabels: [""],
+    colHeaders: menuStates,
+    cellAt: (_p, size, _ri, ci) => menuCellByKey.get(`${size}/${menuStates[ci]}`) ?? null,
+    lightX: SPEC_LIGHT_X, darkX: SPEC_DARK_X, originY, cellW: 200, cellH: 72, rowLabelW: 16,
+  };
+  let bottomY = await decorateSetGrouped(menuSet, menuOpts, maps);
+  try { bottomY = Math.max(bottomY, await buildGroupedSpec(menuOpts, maps)); } catch (e) { console.warn(e); }
+
+  // 2) GNB 바 세트 (6 variants) — Align × Size. 정본 = "GNB". full-width 대신 고정폭(960)으로 표현.
+  const BAR_W = 960;
+  const barH: Record<string, number> = { md: 56, sm: 48, xsm: 36 };
+  const aligns = [
+    { name: "Center-Between", key: "center-between" },
+    { name: "Start", key: "start" },
+  ];
+  const barComps: ComponentNode[] = [];
+  const barCellByKey = new Map<string, ComponentNode>();
+  for (const al of aligns) {
+    for (const sk of sizeKeys) {
+      const h = barH[sk];
+      const padL = sk === "xsm" ? 20 : 24;
+      const padR = sk === "xsm" ? 24 : 20;
+      const comp = figma.createComponent();
+      comp.name = `Align=${al.name}, Size=${sk}`;
+      comp.resize(BAR_W, h);
+      comp.fills = [boundPaint(scv(maps, navc("background")))];
+      comp.clipsContent = true;
+
+      // 로고
+      const logo = await makeBoundText("SAMPLE LOGO", 20, "Bold", scv(maps, "color/text/title/primary"));
+      comp.appendChild(logo); logo.x = padL; logo.y = (h - logo.height) / 2;
+
+      // 메뉴 묶음 (3 슬롯, 인접)
+      const menus = figma.createFrame(); menus.name = "menus"; menus.fills = [];
+      menus.layoutMode = "HORIZONTAL"; menus.itemSpacing = 0;
+      menus.counterAxisSizingMode = "FIXED"; menus.primaryAxisSizingMode = "AUTO";
+      comp.appendChild(menus); menus.resize(menus.width, h);
+      for (let mi = 0; mi < 3; mi++) {
+        const slot = figma.createFrame(); slot.name = "menu"; menus.appendChild(slot);
+        await fillGnbMenu(slot, maps, sk, mi === 0 ? "Selected" : "Default");
+      }
+
+      // 유틸 (3 아이콘)
+      const util = figma.createFrame(); util.name = "util"; util.fills = [];
+      util.layoutMode = "HORIZONTAL"; util.itemSpacing = 8;
+      util.counterAxisAlignItems = "CENTER"; util.primaryAxisSizingMode = "AUTO"; util.counterAxisSizingMode = "AUTO";
+      comp.appendChild(util);
+      const utilBox = sk === "xsm" ? 32 : 40;
+      const utilGlyph = sk === "xsm" ? 18 : 24;
+      util.appendChild(gnbUtilBtn(maps, GNB_UTIL_SVGS.lang, utilBox, utilGlyph));
+      util.appendChild(gnbUtilBtn(maps, GNB_UTIL_SVGS.account, utilBox, utilGlyph));
+      util.appendChild(gnbUtilBtn(maps, GNB_UTIL_SVGS.menu, utilBox, utilGlyph));
+
+      // 배치
+      util.x = BAR_W - padR - util.width; util.y = (h - util.height) / 2;
+      menus.y = 0;
+      if (al.key === "center-between") {
+        menus.x = (BAR_W - menus.width) / 2;
+      } else {
+        menus.x = padL + logo.width + 64; // start: 로고↔메뉴 gap 64
+      }
+
+      // 하단 1px 보더
+      const border = figma.createRectangle();
+      border.name = "border"; border.resize(BAR_W, 1); border.x = 0; border.y = h - 1;
+      border.fills = [boundPaint(scv(maps, "color/line/gray/subtle"))];
+      comp.appendChild(border);
+
+      setLightMode(comp, maps);
+      barComps.push(comp); barCellByKey.set(`${al.name}/${sk}`, comp);
+    }
+  }
+  const barSet = figma.combineAsVariants(barComps, figma.currentPage);
+  barSet.name = "GNB";
+  const barTop = bottomY + 80;
+  const barOpts: SpecOpts = {
+    title: "GNB",
+    colHeaders: sizeKeys,
+    rowLabels: aligns.map((a) => a.name),
+    cellAt: (r, c) => barCellByKey.get(`${aligns[r].name}/${sizeKeys[c]}`) ?? null,
+    lightX: SPEC_LIGHT_X, darkX: SPEC_DARK_X, originY: barTop, cellW: BAR_W + 40, cellH: 96, rowLabelW: 120,
+  };
+  bottomY = Math.max(bottomY, await decorateSetFlat(barSet, barOpts, maps));
+  try { bottomY = Math.max(bottomY, await buildSpec(barOpts, maps)); } catch (e) { console.warn(e); }
+
+  return { set: barSet, bottomY };
+}
+
+// ── Date Picker — 트리거(form-control 재사용) + 캘린더 패널(color/date-picker/*) ─
+// 정본: pages/components-new.html / Figma 540:3794(input)·540:4216(PC calendar).
+// 미결 HD(needs-decision): componentSetKey 미확정 · 모바일 인터랙션(bottom sheet vs inline) 미정 → 모바일 패널은 생성하지 않음.
+// 트리거는 Select 와 동일 구조(form-control), Open 상태에 PC 캘린더 패널을 부착.
+const DP_WEEKDAYS = [
+  { ch: "일", role: "sunday" }, { ch: "월", role: "p" }, { ch: "화", role: "p" }, { ch: "수", role: "p" },
+  { ch: "목", role: "p" }, { ch: "금", role: "p" }, { ch: "토", role: "saturday" },
+];
+// 샘플 달(6행). day=표시숫자, col=요일(0=일·6=토), kind=상태.
+type DpCell = { day: number; col: number; kind: "normal" | "other" | "today" | "selected" | "disabled" };
+
+/** PC 캘린더 패널 프레임 (356px). 모든 color/date-picker/* 변수를 시연. */
+async function buildCalendarPanel(maps: BuildMaps): Promise<FrameNode> {
+  const dp = (k: string) => `color/date-picker/${k}`;
+  const CHEV_L = `<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M10 12L6 8l4-4" stroke="#000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+  const CHEV_R = `<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M6 4l4 4-4 4" stroke="#000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+  const panel = figma.createFrame();
+  panel.name = "calendar-panel";
+  panel.resize(356, 392);
+  panel.cornerRadius = 4;
+  panel.fills = [boundPaint(scv(maps, dp("bg/panel")))];
+  panel.strokes = [boundPaint(scv(maps, dp("border/panel")))]; panel.strokeWeight = 1; panel.strokeAlign = "INSIDE";
+  panel.clipsContent = true;
+  const PADX = 24, PADY = 20, GW = (356 - PADX * 2) / 7; // grid cell width ≈ 44
+
+  // 헤더 (prev · 라벨 · next)
+  const navPrev = makeStrokeIcon(CHEV_L, scv(maps, dp("text/primary")));
+  panel.appendChild(navPrev); navPrev.x = PADX; navPrev.y = PADY + (32 - navPrev.height) / 2;
+  const monthLabel = await makeBoundText("2026.06", 24, "Bold", scv(maps, dp("text/primary")));
+  panel.appendChild(monthLabel); monthLabel.x = (356 - monthLabel.width) / 2; monthLabel.y = PADY + (32 - monthLabel.height) / 2;
+  const navNext = makeStrokeIcon(CHEV_R, scv(maps, dp("text/primary")));
+  panel.appendChild(navNext); navNext.x = 356 - PADX - navNext.width; navNext.y = PADY + (32 - navNext.height) / 2;
+
+  // 요일 행
+  const wkY = PADY + 32 + 4;
+  for (let i = 0; i < DP_WEEKDAYS.length; i++) {
+    const w = DP_WEEKDAYS[i];
+    const role = w.role === "sunday" ? "text/sunday" : w.role === "saturday" ? "text/saturday" : "text/secondary";
+    const t = await makeBoundText(w.ch, 16, "Medium", scv(maps, dp(role)));
+    panel.appendChild(t); t.x = PADX + i * GW + (GW - t.width) / 2; t.y = wkY + (44 - t.height) / 2;
+  }
+
+  // 6×7 그리드 (샘플: 2026.06 = 1일 월요일 시작). 상태 시연 셀 포함.
+  const grid: DpCell[] = [];
+  // 첫 주 앞칸(일요일) = 전월(other), 5/31
+  grid.push({ day: 31, col: 0, kind: "other" });
+  let d = 1;
+  for (let cell = 1; cell < 42 && d <= 30; cell++) {
+    const col = cell % 7;
+    let kind: DpCell["kind"] = "normal";
+    if (d === 10) kind = "today";
+    else if (d === 17) kind = "selected";
+    else if (d === 25) kind = "disabled";
+    grid.push({ day: d, col, kind });
+    d++;
+  }
+  // 마지막 주 뒤칸 = 익월(other)
+  let nd = 1;
+  for (let cell = grid.length; cell < 42; cell++) {
+    grid.push({ day: nd, col: cell % 7, kind: "other" });
+    nd++;
+  }
+  const gridY = wkY + 44;
+  for (let i = 0; i < grid.length; i++) {
+    const g = grid[i];
+    const row = Math.floor(i / 7), col = i % 7;
+    const cx = PADX + col * GW, cy = gridY + row * 44;
+    // 텍스트 색 — 정본: 그리드 day 는 요일과 무관하게 text/secondary(상태색만 분기). 일/토 색은 요일 헤더 행에만 적용.
+    let txtKey: string;
+    if (g.kind === "other") txtKey = "text/other-month";
+    else if (g.kind === "disabled") txtKey = "text/disabled";
+    else if (g.kind === "selected") txtKey = "text/selected";
+    else if (g.kind === "today") txtKey = "text/today";
+    else txtKey = "text/secondary";
+    // inner 원 (today=blue border / selected=blue fill)
+    if (g.kind === "today" || g.kind === "selected") {
+      const inner = figma.createRectangle();
+      inner.resize(30, 30); inner.cornerRadius = 999;
+      inner.x = cx + (GW - 30) / 2; inner.y = cy + (44 - 30) / 2;
+      if (g.kind === "selected") {
+        inner.fills = [boundPaint(scv(maps, dp("bg/selected")))];
+        inner.strokes = [boundPaint(scv(maps, dp("bg/selected")))];
+      } else {
+        inner.fills = [boundPaint(scv(maps, dp("bg/today")))];
+        inner.strokes = [boundPaint(scv(maps, dp("border/today")))];
+      }
+      inner.strokeWeight = 1; inner.strokeAlign = "INSIDE";
+      panel.appendChild(inner);
+    }
+    const t = await makeBoundText(String(g.day), 16, g.kind === "selected" ? "Bold" : "Medium", scv(maps, dp(txtKey)));
+    panel.appendChild(t); t.x = cx + (GW - t.width) / 2; t.y = cy + (44 - t.height) / 2;
+  }
+  return panel;
+}
+
+async function buildDatePicker(maps: BuildMaps, originY: number): Promise<{ set: ComponentSetNode; bottomY: number }> {
+  const fc = (k: string) => `color/form-control/${k}`;
+  const CAL_ICON = `<svg width="16" height="16" viewBox="0 0 16.2581 16.8" fill="none"><path d="M0 1.08387V16.2581C0 16.5615 0.238452 16.8 0.541936 16.8H15.7161C16.0196 16.8 16.2581 16.5615 16.2581 16.2581V1.08387C16.2581 0.780387 16.0196 0.541935 15.7161 0.541935H13.0065V0H11.9226V0.541935H4.33548V0H3.25161V0.541935H0.541936C0.238452 0.541935 0 0.780387 0 1.08387ZM4.33548 2.16774V1.62581H11.9226V2.16774H13.0065V1.62581H15.1742V3.79355H1.08387V1.62581H3.25161V2.16774H4.33548ZM15.1742 15.7161H1.08387V4.87742H15.1742V15.7161Z" fill="#000"/><path d="M5.14859 9.21302H3.52279V10.8388H5.14859V9.21302Z" fill="#000"/><path d="M8.94208 9.21302H7.31628V10.8388H8.94208V9.21302Z" fill="#000"/><path d="M12.7356 9.21302H11.1098V10.8388H12.7356V9.21302Z" fill="#000"/></svg>`;
+  const states = [
+    { name: "Default",  bg: "bg/default",  border: "border/default",  txt: "YY.MM.DD", tc: "text/placeholder", icon: "icon/default",  open: false },
+    { name: "Filled",   bg: "bg/default",  border: "border/default",  txt: "26.06.17", tc: "text/default",     icon: "icon/default",  open: false },
+    { name: "Open",     bg: "bg/selected", border: "border/selected", txt: "26.06.17", tc: "text/selected",    icon: "icon/default",  open: true },
+    { name: "Disabled", bg: "bg/disabled", border: "border/disabled", txt: "YY.MM.DD", tc: "text/disabled",    icon: "icon/disabled", open: false },
+  ];
+  const sizes = [
+    { size: "XXSM", brk: "PC",     h: 28, font: 12 },
+    { size: "XSM",  brk: "PC",     h: 34, font: 14 },
+    { size: "MD",   brk: "PC",     h: 44, font: 14 },
+    { size: "MD",   brk: "Mobile", h: 48, font: 14 },
+  ];
+  const comps: ComponentNode[] = [];
+  const cells: { comp: ComponentNode; size: string; brk: string; state: string }[] = [];
+  for (const sc of sizes) {
+    for (const st of states) {
+      const trigger = figma.createFrame();
+      trigger.name = "trigger";
+      trigger.layoutMode = "HORIZONTAL"; trigger.primaryAxisAlignItems = "SPACE_BETWEEN"; trigger.counterAxisAlignItems = "CENTER";
+      trigger.primaryAxisSizingMode = "FIXED"; trigger.counterAxisSizingMode = "FIXED";
+      trigger.paddingLeft = 16; trigger.paddingRight = 8; trigger.paddingTop = 0; trigger.paddingBottom = 0;
+      trigger.cornerRadius = 4;
+      trigger.fills = [boundPaint(scv(maps, fc(st.bg)))];
+      trigger.strokes = [boundPaint(scv(maps, fc(st.border)))]; trigger.strokeWeight = 1; trigger.strokeAlign = "INSIDE";
+      trigger.appendChild(await makeBoundText(st.txt, sc.font, "Regular", scv(maps, fc(st.tc))));
+      trigger.appendChild(makeFillIcon(CAL_ICON, scv(maps, fc(st.icon))));
+      trigger.resize(180, sc.h);
+
+      const comp = figma.createComponent();
+      comp.name = `Size=${sc.size}, State=${st.name}, Break=${sc.brk}`;
+      comp.layoutMode = "VERTICAL"; comp.primaryAxisSizingMode = "AUTO"; comp.counterAxisSizingMode = "AUTO"; comp.itemSpacing = 8;
+      comp.appendChild(trigger);
+      if (st.open) comp.appendChild(await buildCalendarPanel(maps));
+      setLightMode(comp, maps);
+      comps.push(comp);
+      cells.push({ comp, size: sc.size, brk: sc.brk, state: st.name });
+    }
+  }
+  const set = figma.combineAsVariants(comps, figma.currentPage);
+  set.name = "Date Picker";
+  set.x = 0; set.y = originY;
+  const opts: GroupedSpecOpts = {
+    title: "Date Picker",
+    platforms: [{ name: "PC", sizes: ["XXSM", "XSM", "MD"] }, { name: "Mobile", sizes: ["MD"] }],
+    rowLabels: [""],
+    colHeaders: states.map((s) => s.name),
+    cellAt: (platName, size, _ri, ci) =>
+      cells.find((x) => x.size === size && x.brk === platName && x.state === states[ci].name)?.comp ?? null,
+    lightX: SPEC_LIGHT_X, darkX: SPEC_DARK_X, originY, cellW: 210, cellH: 440, rowLabelW: 16,
+  };
+  let bottomY = await decorateSetGrouped(set, opts, maps);
+  try { bottomY = Math.max(bottomY, await buildGroupedSpec(opts, maps)); } catch (e) { console.warn(e); }
+  return { set, bottomY };
+}
+
 // ── 멀티 컴포넌트 오케스트레이터 ──────────────────────────────────────────────
-// Button(상단) + 나머지 컴포넌트를 세로로 스택 배치. 반환=총 variant 수.
+// skip-if-exists: 같은 이름의 COMPONENT_SET 이 현재 페이지에 이미 있으면 보존(건너뜀), 없는 것만 추가.
+//   ★ 재생성(없어서 추가)되는 세트는 "원래 레이아웃 슬롯"에 놓는다(맨 아래로 몰지 않음).
+//     기존 컴포넌트의 실제 위치(세트+스펙 풋프린트 최하단)를 읽어 y 를 전진시키므로,
+//     예) Button 삭제→재설치 시 최상단(y=0)으로, Time Picker Dropdown→Time Picker 직후 슬롯으로 복귀.
+//   토큰 "값" 변경은 Variables 재설치로 기존 컴포넌트에 자동 반영되므로 컴포넌트 재생성 불필요.
+//   (mock 환경(렌더러·키체크)은 page.findAll/children 이 배열이 아니므로 가드로 fresh 취급.)
 export async function buildAllComponents(
   maps: BuildMaps,
   onProgress?: (step: string, pct: number) => void
-): Promise<number> {
-  let count = 0;
+): Promise<{ created: number; added: string[]; skipped: string[] }> {
+  const page = figma.currentPage;
 
-  const btn = await buildButtonSet(maps, onProgress, 92, 97);
-  count += btn.set.children.length;
+  let topNodes: SceneNode[] = [];
+  try { if (Array.isArray(page.children)) topNodes = page.children as SceneNode[]; } catch (e) { /* mock */ }
+  let existing = new Set<string>();
+  try {
+    const r = page.findAll((n) => n.type === "COMPONENT_SET");
+    if (Array.isArray(r)) existing = new Set((r as ComponentSetNode[]).map((n) => n.name));
+  } catch (e) { /* mock/no-page → fresh */ }
 
-  // Input 은 규모가 커서 세로 스택에서 제외, 버튼 우측편(INPUT_SHEET_X) 넓은 시트로 상단 정렬 배치.
-  const input = await buildInput(maps, 0);
-  count += input.set.children.length;
+  // 컴포넌트 전체 풋프린트(세트 + 스펙 프레임) 이름 — 기존 항목 건너뛸 때 y 전진/중복정리용
+  const footprint = (p: string): string[] => {
+    const base = [p, `${p} — Spec Light`, `${p} — Spec Dark`];
+    if (p === "Time Picker Dropdown") base.push(
+      "Time Picker Cell", "Time Picker Cell — Spec Light", "Time Picker Cell — Spec Dark",
+      "Time Picker Dropdown States — Spec Light", "Time Picker Dropdown States — Spec Dark");
+    // GNB 는 바(정본=세트 이름 "GNB") + 메뉴 슬롯 세트("GNB Menu")를 함께 생성.
+    if (p === "GNB") base.push(
+      "GNB Menu", "GNB Menu — Spec Light", "GNB Menu — Spec Dark");
+    return base;
+  };
+  const regionBottom = (p: string): number | null => {
+    const names = new Set(footprint(p));
+    const ms = topNodes.filter((n) => names.has(n.name));
+    return ms.length ? Math.max(...ms.map((n) => n.y + n.height)) : null;
+  };
+  const removeByNames = (list: string[]): void => {
+    const names = new Set(list);
+    for (const n of topNodes.filter((x) => names.has(x.name))) { try { n.remove(); } catch (e) { /* ignore */ } }
+  };
 
-  // 나머지 컴포넌트를 세로로 스택 (각 빌더가 set+스펙 포함 최하단 Y 반환 → 충돌 방지)
-  const builders: ((m: BuildMaps, y: number) => Promise<{ set: ComponentSetNode; bottomY: number }>)[] = [
-    buildCheckbox, buildRadio, buildToggle, buildChip, buildFilterChip, buildSearch, buildTextarea, buildSelect, buildDropdownList, buildLineTab, buildTableCell, buildTimePicker, buildTimePickerDropdown,
+  let created = 0;
+  const added: string[] = [];
+  const skipped: string[] = [];
+
+  // Input 은 별도 컬럼(INPUT_SHEET_X, 상단). 세로 스택과 무관하므로 따로 처리.
+  if (existing.has("Input")) skipped.push("Input");
+  else { const r = await buildInput(maps, 0); created += r.set.children.length; added.push("Input"); }
+
+  // 세로 스택 (Button 최상단 → … → Time Picker Dropdown). 기존 항목은 실제 위치만큼 y 전진.
+  const stack: { name: string; run: (oy: number) => Promise<{ set: ComponentSetNode; bottomY: number }> }[] = [
+    { name: "Button",               run: (oy) => buildButtonSet(maps, onProgress, 92, 97, oy) },
+    { name: "Checkbox",             run: (oy) => buildCheckbox(maps, oy) },
+    { name: "Radio",                run: (oy) => buildRadio(maps, oy) },
+    { name: "Toggle",               run: (oy) => buildToggle(maps, oy) },
+    { name: "Chip",                 run: (oy) => buildChip(maps, oy) },
+    { name: "Filter Chip",          run: (oy) => buildFilterChip(maps, oy) },
+    { name: "Search Input",         run: (oy) => buildSearch(maps, oy) },
+    { name: "Text Area",            run: (oy) => buildTextarea(maps, oy) },
+    { name: "Select Box",           run: (oy) => buildSelect(maps, oy) },
+    { name: "Dropdown List",        run: (oy) => buildDropdownList(maps, oy) },
+    { name: "Line Tab",             run: (oy) => buildLineTab(maps, oy) },
+    { name: "Table Cell",           run: (oy) => buildTableCell(maps, oy) },
+    { name: "Time Picker",          run: (oy) => buildTimePicker(maps, oy) },
+    { name: "Time Picker Dropdown", run: (oy) => buildTimePickerDropdown(maps, oy) },
+    { name: "Pagination",           run: (oy) => buildPagination(maps, oy) },
+    { name: "GNB",                  run: (oy) => buildGNB(maps, oy) },
+    { name: "Date Picker",          run: (oy) => buildDatePicker(maps, oy) },
   ];
-  const names = ["Checkbox", "Radio", "Toggle", "Chip", "Filter Chip", "Search Input", "Text Area", "Select Box", "Dropdown List", "Line Tab", "Table Cell", "Time Picker", "Time Picker Dropdown"];
-  let y = btn.bottomY + 140;
-  for (let i = 0; i < builders.length; i++) {
-    if (onProgress) onProgress(`${names[i]} 생성 중…`, 97 + Math.round(((i + 1) / builders.length) * 3));
-    const res = await builders[i](maps, y);
-    count += res.set.children.length;
+
+  let y = 0; // Button 슬롯 = 최상단
+  for (let i = 0; i < stack.length; i++) {
+    const s = stack[i];
+    if (existing.has(s.name)) {
+      const rb = regionBottom(s.name);
+      if (rb != null) y = rb + 140;   // 기존 항목 실제 위치만큼 전진(슬롯 정렬 유지)
+      skipped.push(s.name);
+      continue;
+    }
+    if (onProgress) onProgress(`${s.name} 생성 중…`, 92 + Math.round(((i + 1) / stack.length) * 8));
+    // 재생성 전 해당 컴포넌트의 고아 잔재(세트만 지우고 남은 스펙 프레임, TPD 의 Cell·States 등) 정리 → 중복 방지
+    removeByNames(footprint(s.name));
+    const res = await s.run(y);
+    created += res.set.children.length;
+    added.push(s.name);
     y = res.bottomY + 140;
   }
-  return count;
+
+  if (onProgress) onProgress(`완료 — 추가 ${added.length}개 · 기존 보존 ${skipped.length}개`, 100);
+  return { created, added, skipped };
 }

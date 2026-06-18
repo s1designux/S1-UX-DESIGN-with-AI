@@ -400,6 +400,8 @@ async function runInstall(sel: InstallSelection) {
     let semanticCount = 0;
     let textStyleCount = 0;
     let componentCount = 0;
+    let componentAdded: string[] = [];
+    let componentSkipped: string[] = [];
 
     // ── Foundation (또는 의존 항목 위해 기존 로드) ──
     let foundationColorMap: Record<string, Variable> = {};
@@ -458,7 +460,7 @@ async function runInstall(sel: InstallSelection) {
         throw new Error("컴포넌트 세트 생성에는 Foundation 이 필요합니다. Foundation 도 함께 선택하거나 먼저 설치하세요.");
       }
       post("progress", { step: "컴포넌트 생성 중…", pct: 92 });
-      componentCount = await buildAllComponents(
+      const compResult = await buildAllComponents(
         {
           semanticColor: semanticColorMap,
           foundationNumber: foundationNumberMap,
@@ -469,6 +471,9 @@ async function runInstall(sel: InstallSelection) {
         },
         (step, pct) => post("progress", { step, pct })
       );
+      componentCount = compResult.created;       // 새로 추가된 variant 수 (기존 보존분 제외)
+      componentAdded = compResult.added;          // 새로 추가한 세트 이름
+      componentSkipped = compResult.skipped;      // 이미 존재해 보존한 세트 이름
     }
 
     post("progress", { step: "완료", pct: 100 });
@@ -477,6 +482,8 @@ async function runInstall(sel: InstallSelection) {
       semanticCount,
       textStyleCount,
       componentCount,
+      componentAdded,
+      componentSkipped,
       removedCount: removedAll.length,
       removedNames: removedAll,
     });

@@ -41,8 +41,8 @@
       --dropdown-trigger-placeholder-text: var(--color-form-control-text-placeholder);
       --dropdown-trigger-selected-text:    var(--color-form-control-text-default);
       --dropdown-trigger-disabled-text:    var(--color-form-control-text-disabled);
-      --dropdown-list-bg:                  var(--color-surface-default);
-      --dropdown-list-border:              var(--color-border-default);
+      --dropdown-list-bg:                  var(--color-dropdown-list-bg);     /* = option/bg/default 값. 패널=옵션 배경 통일(시멘틱 정렬) */
+      --dropdown-list-border:              var(--color-dropdown-list-border); /* 컴포넌트 토큰으로 정렬(역할토큰 대신) */
       --dropdown-option-hover-bg:          var(--color-dropdown-option-bg-hover);
       --dropdown-option-selected-text:     var(--color-dropdown-option-label-selected);
       /* Checkbox — Figma 1459:16409 (control/* Variables 직접 참조)
@@ -1358,7 +1358,7 @@
     .s1-tp-col::-webkit-scrollbar { width: 0; }
     .s1-tp-col-sep { width: 1px; background: var(--color-border-subtle); flex-shrink: 0; align-self: stretch; }
     .s1-tp-col-item {
-      height: var(--sizing-40);
+      height: var(--sizing-32);  /* V2.4 원본 timepicker_input_component(540:3470) = 32 (builds-components.ts TPC_H 일치) */
       display: flex; align-items: center; justify-content: center;
       padding: 0 12px; border-radius: var(--radius-4);
       border: 1px solid transparent;
@@ -1625,7 +1625,7 @@
        <style> 태그가 tokens.css link 이후라 :root 정의가 dark override를 덮어쓰는 문제.
        같은 <style> 내에서 [data-theme="dark"] 를 뒤에 두면 소스 순서 우선으로 적용됨. */
     [data-theme="dark"] {
-      --dropdown-list-bg:               var(--color-bg-subtle);    /* gray-dark-200 = #24252C — 1단계 밝게 */
+      /* --dropdown-list-bg 다크 오버라이드 제거: 컴포넌트 토큰 --color-dropdown-list-bg(=option/bg/default, dark=gray-dark-100)이 패널=옵션 배경 통일 처리 (2026-06-18) */
       --dropdown-option-hover-bg:       var(--color-bg-muted);     /* gray-dark-300 */
       --dropdown-trigger-selected-text: var(--color-text-secondary); /* gray-dark-800 = #B8BABF — filled 텍스트 */
       --color-form-control-icon-default: var(--color-gray-dark-700); /* #8A8C96 */

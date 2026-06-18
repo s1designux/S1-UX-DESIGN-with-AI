@@ -10,18 +10,20 @@
 
 **목표:** 토큰 검증·HTML 가이드 생성·Figma 동기화·리뷰 관리를 자동화한다.
 
-**트리거:** 토큰 검증, 가이드 페이지 업데이트, Figma 동기화, MD 리뷰 등록 작업 요청 시 `design-system` 스킬을 사용하라. **Figma 컴포넌트를 코드로 옮기는 작업**("Figma ~ 구현/변환/만들어줘")은 `figma-to-code` 스킬을 사용하라. 단순 질문과 직접 편집은 스킬 없이 직접 응답 가능.
+**트리거:** 토큰 검증, 가이드 페이지 업데이트, Figma 동기화, MD 리뷰 등록 작업 요청 시 `design-system` 스킬을 사용하라. **Figma 컴포넌트를 코드로 옮기는 작업**("Figma ~ 구현/변환/만들어줘")은 `figma-to-code` 스킬을 사용하라. **레거시 시안의 화면/플로우를 최신 정본 컴포넌트로 Figma에 그대로 재현하는 작업**("이 레거시 화면/플로우 그대로 만들어줘/재현/옮겨줘")은 `screen-rebuild` 스킬을 사용하라. 단순 질문과 직접 편집은 스킬 없이 직접 응답 가능.
 
-**에이전트:** `.claude/agents/` — token-validator · guide-builder · figma-inspector · component-verifier · token-sync
+**에이전트:** `.claude/agents/` — token-validator · guide-builder · figma-inspector · component-verifier · token-sync · screen-rebuilder(🪞 레거시 화면 빌드 전용, screen-rebuild 스킬 3단계)
 
 **토큰 값 전파:** 사용자가 **토큰 "값"을 바꾸면**(예: "control-bg-disabled를 gray/100으로", "이 토큰 값 일괄 반영해줘") `token-sync` 에이전트가 연관된 모든 표면(tokens.css·vars-data.ts·install-prompt·semantic 문서·설치기 zip)에 누락 없이 전파한다. 표면 위치는 `npm run tokens:locate -- <token>`으로 결정론적으로 확인. 새 토큰 생성·네이밍·구조 변경은 token-sync 범위 밖(token-validator 소관).
 
-**워크플로우 스킬:** `figma-to-code` — Figma 컴포넌트를 코드로 옮기는 5단계 검문소 워크플로우(재고조사 → 수치추출 → 구현 → 자가대조 → 다크모드). 상세: 아래 "🪜 Figma → 코드 5단계 워크플로우" 섹션.
+**워크플로우 스킬:** `figma-to-code` — Figma 컴포넌트를 코드로 옮기는 5단계 검문소 워크플로우(재고조사 → 수치추출 → 구현 → 자가대조 → 다크모드). 상세: 아래 "🪜 Figma → 코드 5단계 워크플로우" 섹션. · `screen-rebuild` — 레거시 시안 화면/플로우를 최신 정본 컴포넌트로 Figma에 동일 재현하는 4단계 검문소 워크플로우(원본 재고조사 → 매핑·허용편차 → 빌드 → 3층 검증). figma-to-code의 역방향(레거시 화면→V3.0 Figma). 상세: `.claude/skills/screen-rebuild/SKILL.md`.
 
 **변경 이력 (작성 규칙):** 본 표에는 **최근 건만 한 줄**(날짜·무엇을·한 줄 사유)로 남긴다. 상세 경위는 **git commit 메시지**와 **`reports/changelog-archive.md`**(전체 보존본, 세션 미로드)에 둔다. 새 항목은 한 줄로 추가하고, 표가 길어지면 오래된 행을 아카이브로 옮긴다. (이력으로 컨텍스트가 무거워지지 않게 — 2026-06-17 정책 확정)
 
 | 날짜 | 변경 내용 (한 줄) |
 |------|------------------|
+| 2026-06-18 | 설치기 컴포넌트 3종 신설 — **Pagination**(Arrow 3+Number 3)·**GNB**(메뉴슬롯 9+바 6, PC only)·**Date Picker**(트리거 form-control 4×4 + Open=PC 캘린더 패널). components-new 정본 대비 누락분. 신규 vars-data 키 0(기존 semantic 재사용)·build-components.ts 빌더+stack+footprint·ui.html 목록 갱신·zip 재빌드. 🤖 component-verifier 적대적 대조로 ❌5건(DatePicker day색 날조·평일 text/secondary·GNB util xsm 32/18·placeholder YY.MM.DD) 적발·수정, 전 게이트(1·3·4·6·7·8·9·10)+keycheck 통과. 미결: DatePicker HD(componentSetKey·모바일 인터랙션)·(b)Pagination number 다크 Foundation직참 개선=Figma개선목록 |
+| 2026-06-18 | `screen-rebuild` 스킬 신설 — 레거시 시안 화면/플로우를 V3.0 정본 컴포넌트로 Figma에 동일 재현하는 4단계 검문소 워크플로우(원본 재고조사🔍 → 매핑·허용편차선언 → 빌드(figma-use 프리플라이트) → 3층 검증🕵️: 기계(텍스트정확일치·fills Variable바인딩·variant=원본상태·인스턴스여부·고정100/spacer잔재0·누락0)+이미지대조+적대적). 만드는자≠검증자 강제·색은항상토큰·컴포넌트만교체·원본아이콘강제·이미지폴백. 배치규약: 서비스충실재현=서비스페이지, 공통화패턴만 Patterns. (회원가입·만14세 약관동의 파일럿 계기 — 원본 안읽고 지어냄+자가인증 실패를 구조로 차단) |
 | 2026-06-17 | 🎭 Actor 출처 표식(이모지·이름) 확정 — ⭐총괄/🤖작업에이전트/🔎검사기/🚧커밋검문소·🔄토큰편집동기화기. 이모지=카테고리·이름=대상+역할(예: 토큰값일치 검사기). CLAUDE.md 범례+규칙+**운영원칙 보정**(크기 아닌 "게이트 사각지대" 기준: UI/CSS 변경=렌더 확인 의무·구조변경=🕵️ 실제 spawn). gate-check·harness-audit에 🛡️, 훅에 ⚙️, agent.md 자기 이모지. **렌더 확인서 12h 오전/오후 세로쪼개짐 버그 적발·수정**(white-space:nowrap·12h폭 200px) — 게이트 ✅였으나 시각 깨짐. **+ Main Orchestrator 작동모델 개정: "계획 1회 확인 후 자율 실행"** — 사용자는 목표만, 메커니즘(px·토큰·실측값)은 내가 결정·검증, 검수는 렌더결과로, 진짜 결정만 escalate |
 | 2026-06-17 | TimePicker Dropdown 세트 구조 정정 — Time Picker Cell(State=Default/Hover/Selected) 컴포넌트화 후 인스턴스로 패널 조립 + 12h/24h 별도 States 스펙(시·분 Hover/Selected, 분선택=확인활성) 신설(생성기 build-components.ts+하네스 components-new). 드롭다운 width=121px(Figma 24h 최소) |
 | 2026-06-17 | ds-extract 제거(중복·배치오류) — 시안 코퍼스 추출은 **별도 생태계(s1-service-intelligence 허브 + s1-moduapp-workspace 등 서비스별 워크스페이스)에 이미 존재**(ui-reader·pattern-finder·ds-mapper·pattern-librarian 에이전트+공유 카탈로그+스크린 분석). DS가이드는 빌드/출력측이라 코퍼스 분석을 둘 곳이 아님 → scripts/ds-extract·corpus-targets·skill·reports·ds:* 스크립트 제거. 시안 분석은 s1-moduapp-workspace에서 진행. (contact-sheet 시각검토 아이디어는 워크스페이스로 이관 후보) |

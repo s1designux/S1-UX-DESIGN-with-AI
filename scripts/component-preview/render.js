@@ -222,6 +222,9 @@ function styleFor(node, mode) {
     s.push("align-items:" + (ALIGN[node.counterAxisAlignItems] || "flex-start"));
     if (node.itemSpacing) s.push("gap:" + node.itemSpacing + "px");
   }
+  // flex-fill 반영 (빌더의 layoutGrow / layoutAlign=STRETCH) — footer 확인 우측정렬·컬럼/셀 폭 채움 재현
+  if (node.layoutGrow) s.push("flex-grow:1");
+  if (node.layoutAlign === "STRETCH") s.push("align-self:stretch");
   const pt = geom(node, "paddingTop") || 0, pr = geom(node, "paddingRight") || 0,
         pb = geom(node, "paddingBottom") || 0, pl = geom(node, "paddingLeft") || 0;
   if (pt || pr || pb || pl) s.push(`padding:${pt}px ${pr}px ${pb}px ${pl}px`);

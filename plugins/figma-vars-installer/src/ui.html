@@ -153,7 +153,7 @@
     <div class="select-body">
       <div class="select-name">Component Set 생성 <span class="tag-updating">업데이트 중</span></div>
       <div class="select-desc">
-        현재 컴포넌트: <strong>Button · Checkbox · Radio · Toggle · Chip · Input · Search · Text Area · Select · Dropdown List · Line Tab · Table Cell</strong> (계속 추가 중)<br>
+        현재 컴포넌트: <strong>Button · Checkbox · Radio · Toggle · Chip · Filter Chip · Input · Search · Text Area · Select · Dropdown List · Line Tab · Table Cell · Time Picker · Time Picker Dropdown · Pagination · GNB · Date Picker</strong> (계속 추가 중)<br>
         각 컴포넌트 = 세트 + Light/Dark 스펙 · Semantic 변수 바인딩 · 모드 연결.<br>
         토큰만 필요하면 체크 해제하세요.
       </div>
@@ -413,7 +413,12 @@
       if (msg.foundationCount) lines.push(`Foundation: <strong>${msg.foundationCount}개</strong> 변수`);
       if (msg.semanticCount)   lines.push(`Semantic: <strong>${msg.semanticCount}개</strong> 변수 (Light/Dark)`);
       if (msg.textStyleCount)  lines.push(`Text Styles: <strong>${msg.textStyleCount}개</strong>`);
-      if (msg.componentCount)  lines.push(`Component Set: <strong>${msg.componentCount}개</strong> variant`);
+      // Component Set — skip-if-exists: 추가 / 기존 보존 구분 표기
+      const added = msg.componentAdded || [];
+      const skipped = msg.componentSkipped || [];
+      if (added.length) lines.push(`Component Set 추가: <strong>${added.length}개</strong> 세트 (variant ${msg.componentCount}개)<br><span style="color:#9ca3af;font-size:11px;">${added.join(' · ')}</span>`);
+      if (skipped.length) lines.push(`기존 세트 보존: <strong>${skipped.length}개</strong> <span style="color:#9ca3af;font-size:11px;">(이미 존재 — 값 변경은 Variables로 자동 반영)</span>`);
+      if (!added.length && !skipped.length && msg.componentCount) lines.push(`Component Set: <strong>${msg.componentCount}개</strong> variant`);
       if (msg.removedCount)    lines.push(`옛 잔재 변수 <strong>${msg.removedCount}개</strong> 정리`);
       const r = document.getElementById('result');
       r.style.display = 'block';
