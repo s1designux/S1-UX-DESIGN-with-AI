@@ -796,7 +796,10 @@ async function buildInput(maps: BuildMaps, originY: number): Promise<{ set: Comp
 function makeStrokeIcon(svg: string, strokeVar: Variable): FrameNode {
   const node = figma.createNodeFromSvg(svg);
   node.name = "icon";
-  (node.findAll((n) => n.type === "VECTOR") as VectorNode[]).forEach((v) => { v.strokes = [boundPaint(strokeVar)]; v.fills = []; });
+  // createNodeFromSvg 는 <circle>→ELLIPSE, <rect>→RECTANGLE 등으로 변환 → VECTOR 만 재바인딩하면
+  // 시계 테두리(원) 같은 비-VECTOR 도형이 SVG 원본 stroke(#000)로 남는다. 모든 stroke 도형을 재바인딩.
+  const SHAPES = ["VECTOR", "ELLIPSE", "RECTANGLE", "LINE", "POLYGON", "STAR"];
+  (node.findAll((n) => SHAPES.includes(n.type)) as VectorNode[]).forEach((v) => { v.strokes = [boundPaint(strokeVar)]; v.fills = []; });
   return node;
 }
 
@@ -1328,12 +1331,14 @@ async function buildTimePicker(maps: BuildMaps, originY: number): Promise<{ set:
 //   재사용 단위(셀). Time Picker Dropdown 패널은 이 셀의 **인스턴스**로 조립한다.
 //   (이전엔 셀을 인라인 프레임으로 매번 새로 그려 컴포넌트화가 안 돼 있었음 → 2026-06-17 구조 정정)
 //   default/hover/selected 전부 공유 color/dropdown/option/* 토큰(Basic Dropdown 재사용 정본).
+//   Default 스트록은 bg/default 에 바인딩(=배경과 동일, 투명 테두리). Selected 의 1px 강조 테두리와
+//   셀 크기를 1px 단위까지 동일하게 맞춰 선택 전환 시 reflow/정렬 어긋남을 방지한다(2026-06-17).
 const TPC_W = 77, TPC_H = 30;
 async function buildTimePickerCell(maps: BuildMaps): Promise<{ set: ComponentSetNode; variants: Record<string, ComponentNode> }> {
   const opt = (k: string) => `color/dropdown/option/${k}`;
   const states = [
-    { name: "Default",  bg: "bg/default",  bd: "border/default",  lb: "label/default" },
-    { name: "Hover",    bg: "bg/hover",    bd: "border/hover",    lb: "label/hover" },
+    { name: "Default",  bg: "bg/default",  bd: "bg/default",      lb: "label/default" },
+    { name: "Hover",    bg: "bg/hover",    bd: "bg/hover",        lb: "label/hover" },
     { name: "Selected", bg: "bg/selected", bd: "border/selected", lb: "label/selected" },
   ];
   const comps: ComponentNode[] = [];
@@ -1348,7 +1353,10 @@ async function buildTimePickerCell(maps: BuildMaps): Promise<{ set: ComponentSet
     comp.fills = [boundPaint(scv(maps, opt(st.bg)))];
     comp.strokes = [boundPaint(scv(maps, opt(st.bd)))]; comp.strokeWeight = 1; comp.strokeAlign = "INSIDE";
     comp.appendChild(await makeBoundText("00", 14, "Regular", scv(maps, opt(st.lb))));
-    setLightMode(comp, maps);
+    // ⚠️ 셀 마스터에 모드를 핀하지 않는다(setLightMode 금지). 드롭다운 패널에 인스턴스로 중첩될 때,
+    //    셀이 라이트로 고착되면 다크 스펙 프레임의 setMode(dark)가 셀까지 전파되지 못한다(2026-06-17 버그).
+    //    핀을 비우면 셀은 부모(패널/스펙 프레임) 모드를 상속 → Light/Dark 모두 정상. 셀 SET 자체의 라이트
+    //    표시는 combineAsVariants 후 decorateSetFlat 의 setLightMode(set) 가 담당(아래).
     comps.push(comp); variants[st.name] = comp;
   }
   const set = figma.combineAsVariants(comps, figma.currentPage);

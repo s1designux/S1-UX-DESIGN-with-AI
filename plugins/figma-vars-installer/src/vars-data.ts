@@ -484,7 +484,7 @@ export const SEMANTIC_COLOR: Record<string, SemanticColorEntry> = {
   // ── dropdown ────────────────────────────────
   "color/dropdown/list/bg": { light: "base/white", dark: "gray-dark/100" },
   "color/dropdown/list/border": { light: "gray/200", dark: "gray-dark/500" },
-  "color/dropdown/option/bg/default": { light: "base/white", dark: "gray-dark/400" },
+  "color/dropdown/option/bg/default": { light: "base/white", dark: "gray-dark/100" },
   "color/dropdown/option/bg/disabled": { light: "gray/50", dark: "gray-dark/200" },
   "color/dropdown/option/bg/hover": { light: "gray/50", dark: "gray-dark/200" },
   "color/dropdown/option/bg/selected": { light: "blue/50", dark: "blue-dark/100" },
