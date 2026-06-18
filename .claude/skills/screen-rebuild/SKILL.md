@@ -119,7 +119,7 @@ reports/screen-rebuild/{service}/{flow}/
 - **플레이스홀더** — 순수 기기 크롬(상태바·OS 내비 등 우리 DS 아님).
 
 **필수 산출물 2가지:**
-- **허용편차 선언서** — 의도된 차이(예: Pretendard→Noto Sans KR 폰트 대체, raw색→토큰값 스냅, 기기 크롬=플레이스홀더). 검증기는 이 목록을 **빼고** 대조한다(두갈래 (b)).
+- **허용편차 선언서** — 의도된 차이(예: raw색→토큰값 스냅, 기기 크롬=플레이스홀더, **비표준 글자크기→가장 가까운 토큰 크기(12/14 등) 수렴**). 검증기는 이 목록을 **빼고** 대조한다(두갈래 (b)). (**폰트는 더 이상 편차가 아니다** — Pretendard 텍스트 스타일 바인딩이 정본. 아래 3단계 텍스트 규칙 참조.)
 - **결정 필요(HD) 목록** — ① 색 역매핑이 **모호**(여러 토큰이 한 색 공유)하면 자동 단정 금지·에스컬레이트(needs-review) ② 정본에 **없는 컴포넌트/상태**(needs-core-update) ③ 라이브러리에 **없는 아이콘**.
 
 - 색 역매핑은 `foundation/semantic` Variable 값과 대조해 의미 기반으로 한다. confidence: exact 1개 = `high`, 공유 다수 = `needs-review`(HD).
@@ -144,7 +144,7 @@ reports/screen-rebuild/{service}/{flow}/
 - [ ] **spacer는 `layoutGrow=1`을 마지막에** — 뒤에 `resize()`로 덮으면 grow가 취소된다.
 - [ ] `node.query()` **셀렉터에 한글 금지**(파서 깨짐) → JS `find`/`findAll` 사용.
 - [ ] `primaryAxisAlignItems`는 `MIN|MAX|CENTER|SPACE_BETWEEN`만(SPACE_AROUND 없음). `counterAxisSizingMode`는 `FIXED|AUTO`만(FILL 아님).
-- [ ] 텍스트 변경 전 **폰트 로드**. 현재 폰트가 unloaded(예: Pretendard 미설치)면 **로드된 폰트로 override** 후 set.
+- [ ] **텍스트는 V2.4 Figma 텍스트 스타일(Pretendard)을 바인딩한다. 노토로 끝내지 말 것.** 글자(`characters`)는 로드 가능한 **Noto Sans KR**로 먼저 입력 → `await node.setTextStyleIdAsync(스타일id)`로 알맞은 스타일(`title/*`·`body/*`)을 입힌다. MCP가 Pretendard를 렌더용으로 못 불러와도 **바인딩은 성공**하며(`hasMissingFont:true`지만 Pretendard 설치된 데스크톱에선 정상 렌더), 파일엔 올바른 DS 스타일이 박힌다. 스타일id는 `figma.getLocalTextStylesAsync()`로 이름→id 맵을 만들어 찾는다. 매핑: 굵기 Bold→`title/*B`·Medium→`body/*M`·Regular→`body/*R`, 크기는 가장 가까운 토큰 크기. **주의:** 텍스트 스타일은 크기를 그 스타일 값으로 강제하고, 바인딩 후 `fontSize` 재지정은 미설치(Pretendard) 폰트라 불가하므로 비표준 크기(예: 13)는 가장 가까운 토큰 크기(12/14)로 수렴된다(허용편차로 선언). 인스턴스 내부 텍스트에도 `setTextStyleIdAsync`는 적용 가능(검증됨).
 - [ ] 색 fills는 **Variable 바인딩**(`setBoundVariableForPaint` — 새 paint 반환값 재대입). raw hex 금지.
 - [ ] 반복 셸은 **컴포넌트 세트로 만든 뒤 인스턴스**. 화면마다 복제 금지.
 - [ ] **모든 생성/변경 node id를 return.**
