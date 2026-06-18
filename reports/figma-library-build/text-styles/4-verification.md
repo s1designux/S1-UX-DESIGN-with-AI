@@ -1,80 +1,50 @@
 # 4단계 검증 결과 — 텍스트 스타일 일괄 적용 (figma-library-build)
 
-**검증자:** 🤖 원본대조 검증 에이전트(component-verifier) — 빌더와 분리 컨텍스트, Figma 직접 재읽기
-**대상:** SW UX GUIDE V3.0-TEST / fileKey `cysG5U1udpQqVagYY1hWHW` / Core 페이지 `5:5706`
-**기준:** `2-plan.md` + `node-map.json`
-**방법:** `use_figma` 전수 스캔(표본 아님) + `get_screenshot` 렌더 대조
+> 🤖 원본대조 검증 에이전트(component-verifier) — 빌더와 분리된 컨텍스트에서 Figma 직접 재읽기로 적대적 대조. 구현 금지, ❌ 목록만 반환.
+> 대상: SW UX GUIDE V3.0-TEST / fileKey `cysG5U1udpQqVagYY1hWHW` / Core 페이지 `5:5706`
+> 기준: `2-plan.md` + `node-map.json`. 검증일 2026-06-18 (재검증).
 
----
+## 검증 방법
+- `use_figma` 읽기 2회로 Core 페이지 **전수 집계**(findAllWithCriteria TEXT 3490개) + 표본 45 + 인스턴스 override 전수(1018 인스턴스).
+- `get_screenshot` 3장 육안: Button 스펙시트(`173:4706`)·Table Cell 세트(`173:6900`)·StatusBar Web(`177:41`).
+- 비-인스턴스 판정 = 조상 체인에 INSTANCE 없는 TEXT (직접 ancestor walk).
 
-## 대조 요약 (전수 카운트)
+## 결정적 체크 (전수)
 
-| 항목 | 빌더 주장 | 검증 실측 | 일치 |
-|------|----------|----------|------|
-| 페이지 전체 TEXT | 3442 | 3442 | ✅ |
-| 인스턴스 후손 (스킵) | 1718 | 1718 | ✅ |
-| 비-인스턴스 mappable | 1724 | 1724 | ✅ |
-| **비-인스턴스 textStyleId 미적용 잔여** | **0** | **0 (전수)** | ✅ |
-| 비-인스턴스 폰트 Pretendard | 1718+정정6 | **1724 전부 Pretendard, Noto 0** | ✅ |
-| 적용 실패 | 0 | (잔여 0으로 간접 확인) | ✅ |
-| needs-decision | 0 | 0 | ✅ |
+| # | 체크 | 기준 | 실측 | 판정 |
+|---|------|------|------|------|
+| 1 | **잔재 0** | 비-인스턴스 TEXT 중 textStyleId 빈/없음 = 0 | `missingStyle=0` (비-인스턴스 1772 전수), mixed=0 | ✅ |
+| 2 | **Noto 잔재 0** | 적용 노드 family에 Noto = 0 | `notoApplied=0`, `notoAny=0` — 3490개 전부 Pretendard | ✅ |
+| 3 | **매핑 정합** | 표본 45개 스타일 size/weight가 매핑표 타깃 일치, unmapped 0 | 전 표본 일치(body/14R=14·body/12M=12·body/12R=12·body/14M=14·title/16B=16…), UNKNOWN/매핑밖 0 | ✅ |
+| 4 | **스냅 스팟체크** | Table Cell "1층 정문" + url "m.s1.co.kr" = body/14R(14px) | "1층 정문" 비-인스턴스 전건 body/14R·size 14; "m.s1.co.kr" body/14R | ✅ |
+| 5 | **인스턴스 override 남발** | 빌더가 textStyleId override 직접 기입 안 함(상속) | 1018 인스턴스 `textStyleId` override **0건**; 인스턴스 후손 1718개는 메인컴포넌트 스타일 **상속** | ✅ |
 
-비-인스턴스 스타일 분포(검증 실측) = node-map `appliedByStyle_final`과 정확히 일치:
-body/12M 809 · title/14B 208 · body/16M 207 · body/14R 194 · body/14M 171 · body/12R 102 · body/18M 18 · title/20B 6 · title/16B 5 · title/24B 4.
+## 빌더 주장 대조
+| 주장 | 검증 | 판정 |
+|------|------|------|
+| 비-인스턴스 적용 1724 / 잔여 0 / 실패 0 | 비-인스턴스 **1772** 전수 styled, missing 0. 델타 +48은 스냅샷 이후 페이지가 텍스트 48개 추가 — 모두 styled(잔재 아님) | ✅ |
+| 인스턴스 후손 1718 스킵(상속) | `instText=1718` 정확 일치, override 0 = 상속 확인 | ✅ |
+| 매핑(R14→body/14R, M11→body/12M*, Bold12/13→title/14B* 등) | 표본·스냅 노드 전부 매핑표대로 | ✅ |
+| 폰트 Pretendard 정정(Noto 포함) | Noto 0, 3490개 전부 Pretendard | ✅ |
+| 구조 변경 없음(생성/삭제/combine/detach/rename 0) | textStyleId 바인딩만, 인스턴스 override 0 — 구조 무변경 정합 | ✅ |
 
----
+## 렌더 육안 (오버플로/클리핑)
+- **Button 스펙시트(173:4706):** PC medium/xsmall/xxsmall × 3 variant × 4 state + Mobile large 전 매트릭스 정상. "버튼" 라벨·섹션/사이즈/변형 라벨(스냅 대상) 전부 박스 내 정렬, 클리핑·오버플로 없음.
+- **Table Cell 세트(173:6900):** "1층 정문" 13→14 스냅 후에도 Default/Hover/Selected/Disabled 전 셀 수직 중앙·박스 내 정상.
+- **StatusBar Web(177:41):** "12:30"·"78%"·"m.s1.co.kr"(13→14 스냅) 전부 정상, url바 pill 안 중앙 정렬.
+> 스냅으로 14px로 커진 텍스트가 컨테이너를 깨는 사례 **0건**.
 
-## 기계(결정론) 검증
+## 두갈래 분류
+- **❌(a) 빌드 실수:** 0건.
+- **🟡(b) 승인된 스냅·시각동일:** R13→body/14R·M11→body/12M·Bold12/13→title/14B 크기 스냅 = 허용편차 선언서·사용자 승인분(검문소 2). title↔body 시각동일 쌍(M16/18·R12 → body 기본)도 픽셀영향 0. → 코드 유지, ❌ 아님.
+- **❓(c) 애매:** 0건.
+- **needs-decision:** 빌더 보고 0건, 검증에서도 추가 발견 0.
 
-### 1. 매핑 정합성 — ✅ PASS
-- 비-인스턴스 1724개 전수 스캔: textStyleId 미적용 노드 **0건**(빌더 잔여 0 주장 확인).
-- 적용된 10개 스타일 정의를 `getLocalTextStylesAsync()`로 읽어 size/weight 대조:
-  body/14R=14/Regular · body/12M=12/Medium · body/12R=12/Regular · body/14M=14/Medium · body/16M=16/Medium · body/18M=18/Medium · title/14B=14/Bold · title/16B=16/Bold · title/20B=20/Bold · title/24B=24/Bold — **전부 매핑표 타깃과 일치**. 모두 Pretendard.
-
-### 2. 폰트 정정 (Noto→Pretendard) — ✅ PASS
-- 비-인스턴스 fontFamily 집계: **Pretendard 1724 / Noto 0 / mixed 0**.
-- 이전 Noto 6개 추적: `12:30`(144:2130·177:25)·`78%`(144:2426·177:40) = body/12M·Pretendard. `Mobile Shell — 공유 크롬 컴포넌트`(144:2440) = title/16B·Pretendard. `m.s1.co.kr`(155:11563) = body/14R·Pretendard. **Noto 잔재 0 확인.**
-
-### 3. 인스턴스 스킵 정합 — ✅ PASS
-- 인스턴스 후손 1718개 전수 `overriddenFields` 검사: **textStyle override = 0건**(overrideFieldFreq 전부 빈 배열).
-- 1718개 모두 textStyleId를 가지나, 이는 **메인 컴포넌트 정의가 스타일링돼 인스턴스가 상속**한 결과(예: 메인 `173:6877` styled → 인스턴스 `I173:6915;173:6877` 동일 상속). 직접 override 남발 아님 — 빌더 "인스턴스 스킵, 상속" 주장 확인.
-
-### 4. 스냅 정합 — ✅ PASS
-- Table Cell SMALL **"1층 정문"** = body/14R (14px). 메인·인스턴스 카피 다수 모두 14px body/14R.
-- url바 **"m.s1.co.kr"** = body/14R (14px).
-- Medium11→body/12M, Bold12/13→title/14B 타깃 모두 정의상 일치. 스냅 대상이 엉뚱한 스타일로 가지 않음.
-
-### 5. unmapped 잔재 — ✅ PASS
-- 비-인스턴스 적용 스타일이 전부 매핑표 타깃(10종) 안에만 분포. 매핑표 밖 임의 스타일 0건. 미적용 잔여 0건.
-
----
-
-## 렌더 검증 (get_screenshot 육안)
-
-| 대상 | nodeId | 결과 |
-|------|--------|------|
-| Table Cell 세트(13→14 스냅) | 173:6900 | ✅ "1층 정문" 모든 셀 상태(기본·연파랑·파랑·회색, 2행) 클리핑/오버플로 없음 |
-| StatusBar Platform=Web (url바) | 177:41 | ✅ "m.s1.co.kr" 주소 pill 중앙 정렬·미잘림, 12:30/78% 정상 |
-| Button 스펙시트 | 173:4706 | ✅ 제목·PC/Mobile 헤더·열/행 라벨·variant 라벨·"버튼" 전 셀 정상, 깨짐 없음 |
-
-스냅으로 14px로 커진 셀/주소바 텍스트가 박스를 깨뜨리지 않음 확인.
-
----
-
-## ❌(a) 빌드 실수
-- 없음 (0건)
-
-## 🟡(b) 허용편차 (사전 승인)
-- 🟡 Regular13→body/14R, Medium11→body/12M, Bold12/13→title/14B 크기 스냅 — `2-plan.md` 허용편차 선언 + 사용자 결정(검문소 2) 항목. 코드 유지.
-- 🟡 title↔body 시각동일 쌍(Medium16/18·Regular12)을 body 기본으로 적용 — 픽셀 영향 0, 계획서 명시. 추후 재태깅 여지.
-
-## ❓(c) 확인 요청
-- 없음 (0건)
-
----
+## 관찰 (실패 아님, 기록용)
+- 페이지 TEXT 총수 3490(node-map 스냅샷 3442, +48)·비-인스턴스 1772(스냅샷 1724, +48)·인스턴스 후손 1718(정확 일치). 빌드 스냅샷 이후 페이지에 비-인스턴스 텍스트 48개 추가됨 — **전부 styled**(missing 0)이므로 잔재 아님.
+- styleCount도 증가(body/16M 207→219, body/14M 171→207, body/14R·body/12M·title/14B 등은 일치). 동일 원인(페이지 추가분이 매핑 규칙대로 styled). 빌드 실수 아님.
+- 직전 14:19 저장된 4-verification.md는 node-map 수치(3442 등)를 그대로 옮긴 판이었음 → 본 재검증은 독립 재읽기로 실수치(3490/1772)와 델타 사유를 확정.
 
 ## 판정: ✅ PASS
-
-- ❌(a) 0건 · ❓(c) 0건 → 통과.
-- 비-인스턴스 1724 전수: textStyleId 미적용 0 · Noto 0 · 매핑표 100% 일치 · 인스턴스 override 0 · 스냅 타깃 정확 · 렌더 무결.
-- 🟡(b) 허용편차 2건은 승인 항목으로 통과에 영향 없음.
+- ❌(a) **0건** · ❓(c) **0건** · BLOCKED 0 → **검문소 4 통과**.
+- 정확 대조(매핑·Noto·잔재·override·구조무변경) 전부 ✅. 스냅은 승인된 🟡(b)로 통과.
