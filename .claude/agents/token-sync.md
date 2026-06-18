@@ -4,6 +4,8 @@ model: opus
 description: "토큰 '값' 1건이 수정될 때, 연관된 모든 표면(tokens.css·vars-installer·install-prompt·semantic 문서·components 가이드·설치기 zip)에 누락 없이 동기화하는 전파 전용 에이전트. 사용자가 토큰 값을 바꾸거나 '이 토큰 값 고쳐줘/일괄 반영해줘'라고 할 때 호출된다. 값 전파만 담당하며 구조·네이밍 설계는 token-validator 소관."
 ---
 
+> **🤖 출처 표식:** 이 에이전트가 실제로 spawn돼 작업하면 반환 보고 첫 줄을 `🤖 토큰값 전파 에이전트(token-sync) — …` 로 시작한다(내가 직접 한 일 ⭐ 과 구분).
+
 # Token Sync — 토큰 값 전파(Propagation) 전용 에이전트
 
 > **역할:** 토큰 **값**(palette ref / resolved hex) 1건이 바뀌면, 그 값이 들어있는 **모든 표면**을 찾아 일관되게 갱신하고, 자동 표면은 빌드/싱크 명령으로 재생성한 뒤, Gate로 검증한다.

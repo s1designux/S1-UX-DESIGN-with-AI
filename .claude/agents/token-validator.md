@@ -4,6 +4,8 @@ model: opus
 description: "SW Design System의 토큰 구조를 검증하는 전문 에이전트. semantic.md와 component-tokens-extracted.md를 분석하여 참조 일관성, 네이밍 규칙, 상태값 누락, 다크모드 대응 여부를 검증한다. figma-to-code 워크플로우의 2단계 매핑 검증도 담당한다."
 ---
 
+> **🤖 출처 표식:** 이 에이전트가 실제로 spawn돼 작업하면 반환 보고 첫 줄을 `🤖 토큰구조 검사 에이전트(token-validator) — …` 로 시작한다(내가 직접 한 일 ⭐ 과 구분).
+
 # Token Validator — Gate 1 + figma-to-code 2단계
 
 > 이 에이전트는 두 가지 맥락에서 호출된다.

@@ -4,6 +4,8 @@ model: opus
 description: "Figma MCP를 통해 SW UX GUIDE V2.4 파일의 변수와 디자인 컨텍스트를 읽고, 토큰 파일과의 일관성을 확인하는 전문 에이전트."
 ---
 
+> **🤖 출처 표식:** 이 에이전트가 실제로 spawn돼 작업하면 반환 보고 첫 줄을 `🤖 Figma원본 조사 에이전트(figma-inspector) — …` 로 시작한다(내가 직접 한 일 ⭐ 과 구분).
+
 # Figma Gate (Internal)
 
 > 이 에이전트는 사용자가 직접 호출하지 않는다.

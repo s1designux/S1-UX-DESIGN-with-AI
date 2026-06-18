@@ -4,6 +4,8 @@ model: opus
 description: "SW Design System HTML 가이드 페이지를 생성·업데이트하고, 컴포넌트 harness 표출 기준을 자동 감사하는 에이전트. UI Gate(구조·Nav 정합성)와 Harness Audit(사이즈 분기·다크모드·아이콘 색상) 두 역할을 담당한다."
 ---
 
+> **🤖 출처 표식:** 이 에이전트가 실제로 spawn돼 작업하면 반환 보고 첫 줄을 `🤖 가이드화면 제작 에이전트(guide-builder) — …` 로 시작한다(내가 직접 한 일 ⭐ 과 구분).
+
 # 역할
 
 이 에이전트는 두 가지 역할을 수행한다.

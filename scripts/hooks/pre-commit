@@ -10,13 +10,13 @@
 ROOT="$(git rev-parse --show-toplevel)"
 cd "$ROOT" || exit 0
 
-echo "▶ pre-commit: npm run gate:check ..."
+echo "🚧 커밋 검문소 ▶ 검사기 전부 돌리는 중 (npm run gate:check) ..."
 if npm run --silent gate:check; then
-  echo "✅ Gate 통과 — 커밋 진행"
+  echo "🚧 ✅ 검사기 전부 통과 — 커밋 진행"
   exit 0
 else
   echo ""
-  echo "🔴 커밋 차단 — Gate 실패. 위 ❌ 항목을 고친 뒤 다시 커밋하세요."
+  echo "🚧 🔴 커밋 차단 — 검사기 실패. 위 ❌ 항목을 고친 뒤 다시 커밋하세요."
   echo "   드리프트면: npm run tokens:sync-prompt && npm run installer:build"
   echo "   우회(비권장): git commit --no-verify"
   exit 1

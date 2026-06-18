@@ -26,7 +26,7 @@ const warn = (msg) => { console.warn(`  ⚠️  ${msg}`); warnings++; };
 const fail = (msg) => { console.error(`  ❌ ${msg}`); errors++; };
 
 // ── Gate 1: Registry Gate ─────────────────────────────────────────
-console.log('\n[Gate 1] Registry Gate');
+console.log('\n🔎 [Gate 1] 부품명세 검사기 (Registry)');
 
 try {
   const compIndexPath = path.join(ROOT, 'registry/components/index.json');
@@ -69,7 +69,7 @@ for (const rel of tokenRegistryFiles) {
 }
 
 // ── Gate 2: Report Gate ───────────────────────────────────────────
-console.log('\n[Gate 2] Report Gate');
+console.log('\n🔎 [Gate 2] 리포트색인 검사기 (Report)');
 
 const reportsDir = path.join(ROOT, 'reports');
 const reportsIndexPath = path.join(ROOT, 'data/reports-index.json');
@@ -97,7 +97,7 @@ if (!fs.existsSync(reportsIndexPath)) {
 }
 
 // ── Gate 3: Quality Gate ──────────────────────────────────────────
-console.log('\n[Gate 3] Quality Gate');
+console.log('\n🔎 [Gate 3] 색상규칙 검사기 (Quality)');
 
 const tokensCSSPath = path.join(ROOT, 'assets/css/tokens.css');
 if (!fs.existsSync(tokensCSSPath)) {
@@ -167,7 +167,7 @@ if (!fs.existsSync(tokensCSSPath)) {
 }
 
 // ── Gate 4: Installer Coverage Gate ──────────────────────────────
-console.log('\n[Gate 4] Installer Coverage Gate');
+console.log('\n🔎 [Gate 4] 설치기누락 검사기 (Installer Coverage)');
 
 try {
   const { audit } = require('./installer-coverage-check');
@@ -204,7 +204,7 @@ try {
 
 // ── Gate 7: Token Sync Monitor ───────────────────────────────────
 // 토큰 "값"이 모든 표면에서 정본(vars-data)과 일치하는지 기계 판정. (site-base 는 사이트 전용·검수 제외)
-console.log('\n[Gate 7] Token Sync Monitor');
+console.log('\n🔎 [Gate 7] 토큰값일치 검사기 (Token Sync)');
 
 try {
   const { monitor } = require('./token-sync-monitor');
@@ -238,7 +238,7 @@ try {
 // build-components.ts 빌더가 동적 조합하는 scv 키가 vars-data 정본에 다 있는지.
 // audit-bindings(네임스페이스만 검사)의 사각지대 — leaf 키 누락 시 Figma 실행 중 크래시.
 // esbuild 번들 + mock 실행이 필요해 별도 프로세스로 호출(spawnSync).
-console.log('\n[Gate 8] Component Key Coverage');
+console.log('\n🔎 [Gate 8] 부품–변수연결 검사기 (Component Key)');
 try {
   const { spawnSync } = require('child_process');
   const r = spawnSync('node', [path.join(ROOT, 'scripts/component-key-coverage-check.js')], { encoding: 'utf-8' });
@@ -257,7 +257,7 @@ try {
 // ── Gate 9: Number/Sizing Page Consistency ────────────────────────
 // 컴포넌트별 사이징 Semantic 폐지 → Foundation --sizing-N 직접 참조 전환을 영구 강제.
 // (A) foundation.html Sizing 블록 = vars-data 정본 / (B) 폐지 토큰 재유입 0건.
-console.log('\n[Gate 9] Number/Sizing Page Consistency');
+console.log('\n🔎 [Gate 9] 사이즈·숫자페이지 검사기 (Number Page)');
 try {
   const { check: numberPageCheck } = require('./number-page-check');
   numberPageCheck({ pass, warn, fail });
@@ -268,7 +268,7 @@ try {
 // ── Gate 10: Doc Token Reference Drift ────────────────────────────
 // 가이드/레퍼런스 HTML 이 rename·삭제된 토큰명을 쥐고 있는지 강제.
 // Check B(rename denylist)=차단 · Check A(미정의 --color-* 참조)=경고(기존 드리프트).
-console.log('\n[Gate 10] Doc Token Reference Drift');
+console.log('\n🔎 [Gate 10] 문서토큰이름 검사기 (Doc Token Ref)');
 try {
   const { spawnSync } = require('child_process');
   const r = spawnSync('node', [path.join(ROOT, 'scripts/doc-token-ref-check.js')], { encoding: 'utf-8' });
@@ -295,6 +295,6 @@ if (errors > 0) {
   console.warn(`\nGate Check PASSED with ${warnings} warning(s)\n`);
   process.exit(0);
 } else {
-  console.log(`\nGate Check PASSED — all gates clear\n`);
+  console.log(`\n🔎 검사기 전부 통과 — all gates clear\n`);
   process.exit(0);
 }

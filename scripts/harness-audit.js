@@ -489,7 +489,7 @@ function main() {
   const warns  = findings.filter(f => f.severity === 'warn');
   const passes = findings.filter(f => f.severity === 'pass');
 
-  console.log(`결과: 🔴 ${errors.length} errors  🟡 ${warns.length} warns  ✅ ${passes.length} pass\n`);
+  console.log(`🔎 [Gate 5] 컴포넌트표출 검사기 (Harness) — 결과: 🔴 ${errors.length} errors  🟡 ${warns.length} warns  ✅ ${passes.length} pass\n`);
 
   findings.forEach(f => {
     const icon = f.severity === 'pass' ? '✅' : f.severity === 'warn' ? '🟡' : '🔴';

@@ -1367,6 +1367,7 @@
       font-size: 14px; text-align: center;
       color: var(--color-dropdown-option-label-default);  /* 정본: Time Picker Dropdown = Basic Dropdown option 토큰 재사용 (build-components.ts buildTimePickerDropdown) */
       letter-spacing: -0.02em;
+      white-space: nowrap;  /* 12h 오전/오후 세로 글자쪼개짐 방지 */
     }
     .s1-tp-col-item:hover,
     .s1-tp-col-item.is-hover { background: var(--dropdown-option-hover-bg); border-color: var(--dropdown-option-hover-bg); }  /* .is-hover = States 문서 정적 표현 */
@@ -6062,7 +6063,7 @@ update(); // 초기화</pre>
                   <div class="s1-tp-footer-sep"></div>
                   <div class="s1-tp-footer"><button type="button" class="s1-tp-confirm-btn">확인</button></div>
                 </div>
-                <div class="s1-tp-dropdown is-open is-preview" style="position:static;width:183px;">
+                <div class="s1-tp-dropdown is-open is-preview" style="position:static;width:200px;">
                   <div class="s1-tp-dropdown-cols">
                     <div class="s1-tp-col" style="max-height:130px;overflow-y:hidden;"><div class="s1-tp-col-item">오전</div><div class="s1-tp-col-item">오후</div></div>
                     <div class="s1-tp-col-sep"></div>
@@ -6085,7 +6086,7 @@ update(); // 초기화</pre>
                   <div class="s1-tp-footer-sep"></div>
                   <div class="s1-tp-footer"><button type="button" class="s1-tp-confirm-btn">확인</button></div>
                 </div>
-                <div class="s1-tp-dropdown is-open is-preview" style="position:static;width:183px;">
+                <div class="s1-tp-dropdown is-open is-preview" style="position:static;width:200px;">
                   <div class="s1-tp-dropdown-cols">
                     <div class="s1-tp-col" style="max-height:130px;overflow-y:hidden;"><div class="s1-tp-col-item is-selected">오전</div><div class="s1-tp-col-item">오후</div></div>
                     <div class="s1-tp-col-sep"></div>
@@ -6108,7 +6109,7 @@ update(); // 초기화</pre>
                   <div class="s1-tp-footer-sep"></div>
                   <div class="s1-tp-footer"><button type="button" class="s1-tp-confirm-btn">확인</button></div>
                 </div>
-                <div class="s1-tp-dropdown is-open is-preview" style="position:static;width:183px;">
+                <div class="s1-tp-dropdown is-open is-preview" style="position:static;width:200px;">
                   <div class="s1-tp-dropdown-cols">
                     <div class="s1-tp-col" style="max-height:130px;overflow-y:hidden;"><div class="s1-tp-col-item is-selected">오전</div><div class="s1-tp-col-item">오후</div></div>
                     <div class="s1-tp-col-sep"></div>
@@ -6131,7 +6132,7 @@ update(); // 초기화</pre>
                   <div class="s1-tp-footer-sep"></div>
                   <div class="s1-tp-footer"><button type="button" class="s1-tp-confirm-btn is-active">확인</button></div>
                 </div>
-                <div class="s1-tp-dropdown is-open is-preview" style="position:static;width:183px;">
+                <div class="s1-tp-dropdown is-open is-preview" style="position:static;width:200px;">
                   <div class="s1-tp-dropdown-cols">
                     <div class="s1-tp-col" style="max-height:130px;overflow-y:hidden;"><div class="s1-tp-col-item is-selected">오전</div><div class="s1-tp-col-item">오후</div></div>
                     <div class="s1-tp-col-sep"></div>
