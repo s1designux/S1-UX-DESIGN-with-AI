@@ -1,0 +1,78 @@
+{
+  "task": "텍스트 스타일 일괄 적용 (Pretendard 타입램프 바인딩)",
+  "fileKey": "cysG5U1udpQqVagYY1hWHW",
+  "page": "Core 5:5706",
+  "method": "node.setTextStyleIdAsync(styleId) — loadFontAsync 미사용 (Pretendard unloadable)",
+  "completedAt": "2026-06-18",
+  "styleSource": "getLocalTextStylesAsync() — 19개 텍스트 스타일",
+  "mapping": {
+    "Regular|10": "body/10R",
+    "Regular|12": "body/12R",
+    "Regular|13": "body/14R (snap*)",
+    "Regular|14": "body/14R",
+    "Regular|16": "body/16R",
+    "Regular|20": "title/20R",
+    "Medium|10": "body/10M",
+    "Medium|11": "body/12M (snap*)",
+    "Medium|12": "body/12M",
+    "Medium|14": "body/14M",
+    "Medium|16": "body/16M",
+    "Medium|18": "body/18M",
+    "Bold|12": "title/14B (snap*)",
+    "Bold|13": "title/14B (snap*)",
+    "Bold|14": "title/14B",
+    "Bold|16": "title/16B",
+    "Bold|20": "title/20B",
+    "Bold|24": "title/24B",
+    "Bold|32": "title/32B"
+  },
+  "scope": {
+    "totalTextNodesOnPage": 3442,
+    "instanceDescendantSkipped": 1718,
+    "mixedFontSkipped": 0,
+    "nonInstanceMappable": 1724,
+    "fontFamilies": { "Pretendard": 1718, "Noto Sans KR": 6 }
+  },
+  "applied": {
+    "newlyApplied": 1673,
+    "alreadyCorrectPreexisting": 51,
+    "finalCorrectlyStyled": 1724,
+    "remainingUnstyledMappable": 0,
+    "failures": 0
+  },
+  "appliedByStyle_final": {
+    "body/12M": 809,
+    "title/14B": 208,
+    "body/16M": 207,
+    "body/14R": 194,
+    "body/14M": 171,
+    "body/12R": 102,
+    "body/18M": 18,
+    "title/20B": 6,
+    "title/16B": 5,
+    "title/24B": 4
+  },
+  "batches": [
+    { "batch": 1, "processed": 450, "failures": 0 },
+    { "batch": 2, "processed": 450, "failures": 0 },
+    { "batch": 3, "processed": 450, "failures": 0 },
+    { "batch": 4, "processed": 323, "failures": 0 }
+  ],
+  "offRampSnaps": {
+    "note": "사용자 승인된 크기 스냅 — 일부 스펙시트 주석 라벨/url바 텍스트가 약간 커짐",
+    "Medium11->body/12M": "스펙시트 주석 라벨 다수 (예: 24h/12h/Default 등)",
+    "Bold12->title/14B": "스펙시트 변형 라벨",
+    "Bold13->title/14B": "스펙시트 변형 라벨",
+    "Regular13->body/14R": "Table Cell SMALL '1층 정문' + StatusBar Web url바 'm.s1.co.kr'"
+  },
+  "structuralChanges": "없음 — 노드 생성/삭제/combine/detach/rename 전무. 텍스트 스타일 바인딩만 적용.",
+  "needsDecision": [],
+  "screenshots": {
+    "buttonSpecLight_173:4706": "/tmp/textstyle-shots/button-spec.png",
+    "tableCellSet_173:6900": "/tmp/textstyle-shots/table-cell.png",
+    "statusBarWeb_177:41": "/tmp/textstyle-shots/statusbar-web.png",
+    "statusBarSet_177:42": "/tmp/textstyle-shots/statusbar.png"
+  },
+  "probeNodes": ["125:8669", "125:8670", "125:8886"],
+  "probeNote": "프로브 시 body/14R 잠정 적용 후, 본 적용 패스에서 매핑(Medium11->body/12M)으로 정정됨 — 최종 일관."
+}

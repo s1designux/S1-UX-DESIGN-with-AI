@@ -10,18 +10,19 @@
 
 **목표:** 토큰 검증·HTML 가이드 생성·Figma 동기화·리뷰 관리를 자동화한다.
 
-**트리거:** 토큰 검증, 가이드 페이지 업데이트, Figma 동기화, MD 리뷰 등록 작업 요청 시 `design-system` 스킬을 사용하라. **Figma 컴포넌트를 코드로 옮기는 작업**("Figma ~ 구현/변환/만들어줘")은 `figma-to-code` 스킬을 사용하라. **레거시 시안의 화면/플로우를 최신 정본 컴포넌트로 Figma에 그대로 재현하는 작업**("이 레거시 화면/플로우 그대로 만들어줘/재현/옮겨줘")은 `screen-rebuild` 스킬을 사용하라. 단순 질문과 직접 편집은 스킬 없이 직접 응답 가능.
+**트리거:** 토큰 검증, 가이드 페이지 업데이트, Figma 동기화, MD 리뷰 등록 작업 요청 시 `design-system` 스킬을 사용하라. **Figma 컴포넌트를 코드로 옮기는 작업**("Figma ~ 구현/변환/만들어줘")은 `figma-to-code` 스킬을 사용하라. **레거시 시안의 화면/플로우를 최신 정본 컴포넌트로 Figma에 그대로 재현하는 작업**("이 레거시 화면/플로우 그대로 만들어줘/재현/옮겨줘")은 `screen-rebuild` 스킬을 사용하라. **Figma 디자인 시스템 라이브러리의 컴포넌트/변형세트 "정의" 자체를 빌드·편집하는 작업**("Figma에 ~ 컴포넌트 만들어/추가해줘", "~를 변형세트(variant set)로 묶어/세트화해줘", "variant 추가", "Shell/아이콘 컴포넌트 빌드/수정")은 `figma-library-build` 스킬을 사용하라 — 빌드는 figma-library-builder(🏗️), 검증은 component-verifier(🤖)가 **분리** 수행하고 총괄(⭐)은 흐름만 관리한다(⭐ 단독 빌드+검증 금지·§⚖️ 운영 원칙). 단순 질문과 **단일 노드 좌표/이름 1건 같은 순수 기계적 미세 편집**은 스킬 없이 직접 응답 가능(구조 변경은 위임).
 
-**에이전트:** `.claude/agents/` — token-validator · guide-builder · figma-inspector · component-verifier · token-sync · screen-rebuilder(🪞 레거시 화면 빌드 전용, screen-rebuild 스킬 3단계)
+**에이전트:** `.claude/agents/` — token-validator · guide-builder · figma-inspector · component-verifier · token-sync · screen-rebuilder(🪞 레거시 화면 빌드 전용, screen-rebuild 스킬 3단계) · figma-library-builder(🏗️ 라이브러리 컴포넌트/변형세트 빌드 전용, figma-library-build 스킬 3단계)
 
 **토큰 값 전파:** 사용자가 **토큰 "값"을 바꾸면**(예: "control-bg-disabled를 gray/100으로", "이 토큰 값 일괄 반영해줘") `token-sync` 에이전트가 연관된 모든 표면(tokens.css·vars-data.ts·install-prompt·semantic 문서·설치기 zip)에 누락 없이 전파한다. 표면 위치는 `npm run tokens:locate -- <token>`으로 결정론적으로 확인. 새 토큰 생성·네이밍·구조 변경은 token-sync 범위 밖(token-validator 소관).
 
-**워크플로우 스킬:** `figma-to-code` — Figma 컴포넌트를 코드로 옮기는 5단계 검문소 워크플로우(재고조사 → 수치추출 → 구현 → 자가대조 → 다크모드). 상세: 아래 "🪜 Figma → 코드 5단계 워크플로우" 섹션. · `screen-rebuild` — 레거시 시안 화면/플로우를 최신 정본 컴포넌트로 Figma에 동일 재현하는 4단계 검문소 워크플로우(원본 재고조사 → 매핑·허용편차 → 빌드 → 3층 검증). figma-to-code의 역방향(레거시 화면→V3.0 Figma). 상세: `.claude/skills/screen-rebuild/SKILL.md`.
+**워크플로우 스킬:** `figma-to-code` — Figma 컴포넌트를 코드로 옮기는 5단계 검문소 워크플로우(재고조사 → 수치추출 → 구현 → 자가대조 → 다크모드). 상세: 아래 "🪜 Figma → 코드 5단계 워크플로우" 섹션. · `screen-rebuild` — 레거시 시안 화면/플로우를 최신 정본 컴포넌트로 Figma에 동일 재현하는 4단계 검문소 워크플로우(원본 재고조사 → 매핑·허용편차 → 빌드 → 3층 검증). figma-to-code의 역방향(레거시 화면→V3.0 Figma). 상세: `.claude/skills/screen-rebuild/SKILL.md`. · `figma-library-build` — 코드/디자인 의도를 Figma **라이브러리 컴포넌트/변형세트 "정의" 자체**로 빌드·편집하는 4단계 검문소 워크플로우(원본/의도+라이브러리 현황 재고조사🔍 → 매핑·빌드계획🎩 → **빌드 위임**🏗️ figma-library-builder → **검증 분리**🤖 component-verifier: variant 전수·**패킹 붕괴**·토큰 바인딩·순환참조·렌더). ⭐ 단독 빌드+검증 금지. screen-rebuild(화면 인스턴스 조립)와 구분. 상세: `.claude/skills/figma-library-build/SKILL.md`.
 
 **변경 이력 (작성 규칙):** 본 표에는 **최근 건만 한 줄**(날짜·무엇을·한 줄 사유)로 남긴다. 상세 경위는 **git commit 메시지**와 **`reports/changelog-archive.md`**(전체 보존본, 세션 미로드)에 둔다. 새 항목은 한 줄로 추가하고, 표가 길어지면 오래된 행을 아카이브로 옮긴다. (이력으로 컨텍스트가 무거워지지 않게 — 2026-06-17 정책 확정)
 
 | 날짜 | 변경 내용 (한 줄) |
 |------|------------------|
+| 2026-06-18 | `figma-library-build` 스킬 + 🏗️ `figma-library-builder` 에이전트 신설 — Figma **라이브러리 컴포넌트/변형세트 "정의" 자체** 빌드·편집을 ⭐ 단독 인라인에서 **위임 강제 4단계 검문소**로 전환(재고조사🔍→계획🎩→빌드🏗️→검증🤖). component-verifier에 §(C) 라이브러리 빌드 검증(variant 전수·**패킹 붕괴**·토큰 바인딩·순환참조·렌더) 추가. §⚖️ 운영원칙에 **하드룰**: 구조 변경 = ⭐ 단독 빌드+검증 금지(빌드자≠검증자). (Shell 변형세트화에서 ⭐ 혼자 빌드+자가검증→패킹 10100px 붕괴·정렬·세트화 누락이 사용자에게 새어나간 반복 실패를 구조로 차단) |
 | 2026-06-18 | 설치기 컴포넌트 3종 신설 — **Pagination**(Arrow 3+Number 3)·**GNB**(메뉴슬롯 9+바 6, PC only)·**Date Picker**(트리거 form-control 4×4 + Open=PC 캘린더 패널). components-new 정본 대비 누락분. 신규 vars-data 키 0(기존 semantic 재사용)·build-components.ts 빌더+stack+footprint·ui.html 목록 갱신·zip 재빌드. 🤖 component-verifier 적대적 대조로 ❌5건(DatePicker day색 날조·평일 text/secondary·GNB util xsm 32/18·placeholder YY.MM.DD) 적발·수정, 전 게이트(1·3·4·6·7·8·9·10)+keycheck 통과. 미결: DatePicker HD(componentSetKey·모바일 인터랙션)·(b)Pagination number 다크 Foundation직참 개선=Figma개선목록 |
 | 2026-06-18 | `screen-rebuild` 스킬 신설 — 레거시 시안 화면/플로우를 V3.0 정본 컴포넌트로 Figma에 동일 재현하는 4단계 검문소 워크플로우(원본 재고조사🔍 → 매핑·허용편차선언 → 빌드(figma-use 프리플라이트) → 3층 검증🕵️: 기계(텍스트정확일치·fills Variable바인딩·variant=원본상태·인스턴스여부·고정100/spacer잔재0·누락0)+이미지대조+적대적). 만드는자≠검증자 강제·색은항상토큰·컴포넌트만교체·원본아이콘강제·이미지폴백. 배치규약: 서비스충실재현=서비스페이지, 공통화패턴만 Patterns. (회원가입·만14세 약관동의 파일럿 계기 — 원본 안읽고 지어냄+자가인증 실패를 구조로 차단) |
 | 2026-06-17 | 🎭 Actor 출처 표식(이모지·이름) 확정 — ⭐총괄/🤖작업에이전트/🔎검사기/🚧커밋검문소·🔄토큰편집동기화기. 이모지=카테고리·이름=대상+역할(예: 토큰값일치 검사기). CLAUDE.md 범례+규칙+**운영원칙 보정**(크기 아닌 "게이트 사각지대" 기준: UI/CSS 변경=렌더 확인 의무·구조변경=🕵️ 실제 spawn). gate-check·harness-audit에 🛡️, 훅에 ⚙️, agent.md 자기 이모지. **렌더 확인서 12h 오전/오후 세로쪼개짐 버그 적발·수정**(white-space:nowrap·12h폭 200px) — 게이트 ✅였으나 시각 깨짐. **+ Main Orchestrator 작동모델 개정: "계획 1회 확인 후 자율 실행"** — 사용자는 목표만, 메커니즘(px·토큰·실측값)은 내가 결정·검증, 검수는 렌더결과로, 진짜 결정만 escalate |
@@ -1385,6 +1386,8 @@ Claude는 **Main Orchestrator**다. 사용자는 **목표 수준 의도**만 준
 | 🤖 원본대조 검증 에이전트 | component-verifier |
 | 🤖 토큰값 전파 에이전트 | token-sync |
 | 🤖 토큰구조 검사 에이전트 | token-validator |
+| 🪞 레거시화면 빌드 에이전트 | screen-rebuilder |
+| 🏗️ 라이브러리 빌드 에이전트 | figma-library-builder |
 
 ### 검사기 (🔎 — 대상이 이름에 박힘)
 
@@ -1425,6 +1428,7 @@ Claude는 **Main Orchestrator**다. 사용자는 **목표 수준 의도**만 준
 규칙:
 - **UI/HTML/CSS를 건드렸으면 크기 불문 렌더 1회 확인.** "검사기·div개수 통과"로 시각 검증을 대체하지 않는다. (`"/Applications/Google Chrome.app/Contents/MacOS/Google Chrome" --headless=new --screenshot=… "file://…#섹션"` → 스크린샷 Read 로 육안 대조)
 - **구조 변경·Figma→코드·역방향 생성기 수정**은 self-certify하지 않고 검증 분리(🤖).
+- 🚫 **하드룰 — Figma 라이브러리 컴포넌트/변형세트 빌드·편집은 ⭐ 단독 빌드+검증 금지.** 신규 컴포넌트 생성·combineAsVariants 변형세트화·토큰 바인딩·variant 패킹 등 **구조 변경**은 ⭐가 직접 use_figma로 빌드하지 않고 **`figma-library-build` 스킬**로 진입한다: 빌드=🏗️ `figma-library-builder`(실제 spawn), 검증=🤖 `component-verifier`(실제 spawn, 빌더와 분리). ⭐는 흐름(계획·검문소·종합)만 관리한다. **예외:** 단일 노드 좌표/이름 1건 같은 순수 기계적 미세 편집은 ⭐ 직접+렌더 1회로 갈음 가능. (근거: ⭐ 단독 인라인 빌드+자가검증이 패킹 붕괴·정렬·세트화 누락을 사용자에게 새게 한 반복 실패. 빌드자≠검증자 + 위임 강제로 구조 차단.)
 - **순수 기계적 수정**(토큰 값 1건·오타·문서 카피)은 검사기로 충분 — 렌더/에이전트 생략 가능.
 - **검증 안 한 부분은 보고에 ⭐ 자가인증으로 명시**한다(사용자가 어디를 의심할지 보이게).
 - 이렇게 하면 이모지가 **"독립 검증이 실제로 돌았는지"를 사용자가 한눈에 확인하는 대시보드**가 된다. 전부 ⭐면 = 혼자 self-certify, 🤖/렌더샷이 보이면 = 사각지대까지 검증됨.

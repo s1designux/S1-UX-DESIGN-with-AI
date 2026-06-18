@@ -1298,24 +1298,64 @@ async function buildTimePicker(maps: BuildMaps, originY: number): Promise<{ set:
     { size: "MD",   brk: "PC",     h: 44, font: 14, padL: 16, padR: 8 },
     { size: "MD",   brk: "Mobile", h: 48, font: 14, padL: 16, padR: 8 },
   ];
+  // Focus(열림) 상태에 부착할 드롭다운 패널 — 24h(시·분 2컬럼). 셀은 color/dropdown/option/* (Time Picker Cell 토큰과 동일).
+  const tpDropdown = async (): Promise<FrameNode> => {
+    const opt = (k: string) => `color/dropdown/option/${k}`;
+    const panel = figma.createFrame(); panel.name = "dropdown";
+    panel.layoutMode = "VERTICAL"; panel.counterAxisAlignItems = "CENTER"; panel.itemSpacing = 0;
+    panel.paddingTop = 12; panel.paddingBottom = 0; panel.cornerRadius = 4; panel.clipsContent = true;
+    panel.fills = [boundPaint(scv(maps, "color/dropdown/list/bg"))];
+    panel.strokes = [boundPaint(scv(maps, "color/dropdown/list/border"))]; panel.strokeWeight = 1; panel.strokeAlign = "INSIDE";
+    panel.resize(121, 100); panel.primaryAxisSizingMode = "AUTO"; panel.counterAxisSizingMode = "FIXED";
+    const colsFrame = figma.createFrame(); colsFrame.name = "cols"; colsFrame.fills = [];
+    colsFrame.layoutMode = "HORIZONTAL"; colsFrame.itemSpacing = 8; colsFrame.paddingLeft = 8; colsFrame.paddingRight = 8;
+    colsFrame.primaryAxisSizingMode = "FIXED"; colsFrame.counterAxisSizingMode = "FIXED"; colsFrame.resize(121, 160);
+    panel.appendChild(colsFrame); colsFrame.layoutAlign = "STRETCH";
+    const data: { items: string[]; sel: number }[] = [{ items: ["08", "09", "10", "11"], sel: 1 }, { items: ["00", "15", "30", "45"], sel: 2 }];
+    for (let c = 0; c < data.length; c++) {
+      if (c > 0) { const sep = figma.createRectangle(); sep.name = "sep"; sep.resize(1, 160); sep.fills = [boundPaint(scv(maps, "color/line/gray/subtle"))]; colsFrame.appendChild(sep); sep.layoutAlign = "STRETCH"; }
+      const col = figma.createFrame(); col.name = "col"; col.fills = []; col.layoutMode = "VERTICAL"; col.itemSpacing = 0;
+      col.primaryAxisSizingMode = "FIXED"; col.counterAxisSizingMode = "FIXED"; col.resize(44, 160); col.clipsContent = true;
+      colsFrame.appendChild(col); col.layoutGrow = 1; col.layoutAlign = "STRETCH";
+      for (let i = 0; i < data[c].items.length; i++) {
+        const sel = i === data[c].sel;
+        const cell = figma.createFrame(); cell.name = "cell";
+        cell.layoutMode = "HORIZONTAL"; cell.primaryAxisAlignItems = "CENTER"; cell.counterAxisAlignItems = "CENTER";
+        cell.primaryAxisSizingMode = "FIXED"; cell.counterAxisSizingMode = "FIXED"; cell.resize(44, 32); cell.cornerRadius = 4;
+        cell.fills = [boundPaint(scv(maps, opt(sel ? "bg/selected" : "bg/default")))];
+        cell.strokes = [boundPaint(scv(maps, opt(sel ? "border/selected" : "bg/default")))]; cell.strokeWeight = 1; cell.strokeAlign = "INSIDE";
+        cell.appendChild(await makeBoundText(data[c].items[i], 14, "Regular", scv(maps, opt(sel ? "label/selected" : "label/default"))));
+        col.appendChild(cell); cell.layoutAlign = "STRETCH";
+      }
+    }
+    return panel;
+  };
+
   const comps: ComponentNode[] = [];
   const cells: { comp: ComponentNode; size: string; brk: string; state: string }[] = [];
   for (const sc of sizes) {
     for (const st of states) {
+      // 트리거(별도 프레임) — Focus 시 그 아래 드롭다운을 붙이기 위해 컴포넌트를 VERTICAL 로 둔다(Select 방식).
+      const trigger = figma.createFrame();
+      trigger.name = "trigger";
+      trigger.layoutMode = "HORIZONTAL";
+      trigger.primaryAxisAlignItems = "SPACE_BETWEEN";
+      trigger.counterAxisAlignItems = "CENTER";
+      trigger.primaryAxisSizingMode = "FIXED"; trigger.counterAxisSizingMode = "FIXED";
+      trigger.paddingLeft = sc.padL; trigger.paddingRight = sc.padR; trigger.paddingTop = 0; trigger.paddingBottom = 0;
+      trigger.itemSpacing = 8; trigger.cornerRadius = 4;
+      trigger.fills = [boundPaint(scv(maps, fc(st.bg)))];
+      trigger.strokes = [boundPaint(scv(maps, fc(st.border)))];
+      trigger.strokeWeight = 1; trigger.strokeAlign = "INSIDE";
+      trigger.appendChild(await makeBoundText(st.txt, sc.font, "Regular", scv(maps, fc(st.tc))));
+      trigger.appendChild(makeStrokeIcon(CLOCK, scv(maps, fc(st.icon))));
+      trigger.resize(150, sc.h);
+
       const comp = figma.createComponent();
       comp.name = `Size=${sc.size}, State=${st.name}, Break=${sc.brk}`;
-      comp.layoutMode = "HORIZONTAL";
-      comp.primaryAxisAlignItems = "SPACE_BETWEEN";
-      comp.counterAxisAlignItems = "CENTER";
-      comp.primaryAxisSizingMode = "FIXED"; comp.counterAxisSizingMode = "FIXED";
-      comp.paddingLeft = sc.padL; comp.paddingRight = sc.padR; comp.paddingTop = 0; comp.paddingBottom = 0;
-      comp.itemSpacing = 8; comp.cornerRadius = 4;
-      comp.fills = [boundPaint(scv(maps, fc(st.bg)))];
-      comp.strokes = [boundPaint(scv(maps, fc(st.border)))];
-      comp.strokeWeight = 1; comp.strokeAlign = "INSIDE";
-      comp.appendChild(await makeBoundText(st.txt, sc.font, "Regular", scv(maps, fc(st.tc))));
-      comp.appendChild(makeStrokeIcon(CLOCK, scv(maps, fc(st.icon))));
-      comp.resize(150, sc.h);
+      comp.layoutMode = "VERTICAL"; comp.primaryAxisSizingMode = "AUTO"; comp.counterAxisSizingMode = "AUTO"; comp.itemSpacing = 4;
+      comp.appendChild(trigger);
+      if (st.name === "Focus") comp.appendChild(await tpDropdown());
       setLightMode(comp, maps);
       comps.push(comp);
       cells.push({ comp, size: sc.size, brk: sc.brk, state: st.name });
@@ -1331,7 +1371,7 @@ async function buildTimePicker(maps: BuildMaps, originY: number): Promise<{ set:
     colHeaders: states.map((s) => s.name),
     cellAt: (platName, size, _ri, ci) =>
       cells.find((x) => x.size === size && x.brk === platName && x.state === states[ci].name)?.comp ?? null,
-    lightX: SPEC_LIGHT_X, darkX: SPEC_DARK_X, originY, cellW: 168, cellH: 60, rowLabelW: 16,
+    lightX: SPEC_LIGHT_X, darkX: SPEC_DARK_X, originY, cellW: 168, cellH: 250, rowLabelW: 16,
   };
   let bottomY = await decorateSetGrouped(set, opts, maps);
   try { bottomY = Math.max(bottomY, await buildGroupedSpec(opts, maps)); } catch (e) { console.warn(e); }
@@ -1707,19 +1747,23 @@ async function buildGNB(maps: BuildMaps, originY: number): Promise<{ set: Compon
       const padR = sk === "xsm" ? 24 : 20;
       const comp = figma.createComponent();
       comp.name = `Align=${al.name}, Size=${sk}`;
-      comp.resize(BAR_W, h);
+      comp.layoutMode = "HORIZONTAL";
+      comp.primaryAxisSizingMode = "FIXED"; comp.counterAxisSizingMode = "FIXED";
+      comp.primaryAxisAlignItems = "SPACE_BETWEEN"; // center-between=로고|메뉴|유틸 · start=(로고+메뉴)|유틸
+      comp.counterAxisAlignItems = "CENTER";
+      comp.paddingLeft = padL; comp.paddingRight = padR; comp.paddingTop = 0; comp.paddingBottom = 0;
+      comp.itemSpacing = 0;
       comp.fills = [boundPaint(scv(maps, navc("background")))];
       comp.clipsContent = true;
+      comp.resize(BAR_W, h);
 
       // 로고
       const logo = await makeBoundText("SAMPLE LOGO", 20, "Bold", scv(maps, "color/text/title/primary"));
-      comp.appendChild(logo); logo.x = padL; logo.y = (h - logo.height) / 2;
 
-      // 메뉴 묶음 (3 슬롯, 인접)
+      // 메뉴 묶음 (3 슬롯, 인접 gap0)
       const menus = figma.createFrame(); menus.name = "menus"; menus.fills = [];
       menus.layoutMode = "HORIZONTAL"; menus.itemSpacing = 0;
-      menus.counterAxisSizingMode = "FIXED"; menus.primaryAxisSizingMode = "AUTO";
-      comp.appendChild(menus); menus.resize(menus.width, h);
+      menus.counterAxisAlignItems = "CENTER"; menus.primaryAxisSizingMode = "AUTO"; menus.counterAxisSizingMode = "AUTO";
       for (let mi = 0; mi < 3; mi++) {
         const slot = figma.createFrame(); slot.name = "menu"; menus.appendChild(slot);
         await fillGnbMenu(slot, maps, sk, mi === 0 ? "Selected" : "Default");
@@ -1729,27 +1773,30 @@ async function buildGNB(maps: BuildMaps, originY: number): Promise<{ set: Compon
       const util = figma.createFrame(); util.name = "util"; util.fills = [];
       util.layoutMode = "HORIZONTAL"; util.itemSpacing = 8;
       util.counterAxisAlignItems = "CENTER"; util.primaryAxisSizingMode = "AUTO"; util.counterAxisSizingMode = "AUTO";
-      comp.appendChild(util);
       const utilBox = sk === "xsm" ? 32 : 40;
       const utilGlyph = sk === "xsm" ? 18 : 24;
       util.appendChild(gnbUtilBtn(maps, GNB_UTIL_SVGS.lang, utilBox, utilGlyph));
       util.appendChild(gnbUtilBtn(maps, GNB_UTIL_SVGS.account, utilBox, utilGlyph));
       util.appendChild(gnbUtilBtn(maps, GNB_UTIL_SVGS.menu, utilBox, utilGlyph));
 
-      // 배치
-      util.x = BAR_W - padR - util.width; util.y = (h - util.height) / 2;
-      menus.y = 0;
+      // 조립: center-between = [로고 | 메뉴 | 유틸] · start = [(로고+메뉴 gap64) | 유틸]
       if (al.key === "center-between") {
-        menus.x = (BAR_W - menus.width) / 2;
+        comp.appendChild(logo); comp.appendChild(menus); comp.appendChild(util);
       } else {
-        menus.x = padL + logo.width + 64; // start: 로고↔메뉴 gap 64
+        const leading = figma.createFrame(); leading.name = "leading"; leading.fills = [];
+        leading.layoutMode = "HORIZONTAL"; leading.itemSpacing = 64;
+        leading.counterAxisAlignItems = "CENTER"; leading.primaryAxisSizingMode = "AUTO"; leading.counterAxisSizingMode = "AUTO";
+        leading.appendChild(logo); leading.appendChild(menus);
+        comp.appendChild(leading); comp.appendChild(util);
       }
 
-      // 하단 1px 보더
+      // 하단 1px 보더 (auto-layout 흐름에서 제외 = 절대 배치)
       const border = figma.createRectangle();
-      border.name = "border"; border.resize(BAR_W, 1); border.x = 0; border.y = h - 1;
+      border.name = "border"; border.resize(BAR_W, 1);
       border.fills = [boundPaint(scv(maps, "color/line/gray/subtle"))];
       comp.appendChild(border);
+      try { (border as unknown as { layoutPositioning: string }).layoutPositioning = "ABSOLUTE"; } catch (e) { /* skip */ }
+      border.x = 0; border.y = h - 1;
 
       setLightMode(comp, maps);
       barComps.push(comp); barCellByKey.set(`${al.name}/${sk}`, comp);
@@ -1782,86 +1829,90 @@ const DP_WEEKDAYS = [
 // 샘플 달(6행). day=표시숫자, col=요일(0=일·6=토), kind=상태.
 type DpCell = { day: number; col: number; kind: "normal" | "other" | "today" | "selected" | "disabled" };
 
-/** PC 캘린더 패널 프레임 (356px). 모든 color/date-picker/* 변수를 시연. */
+/** PC 캘린더 패널 프레임 (356px, auto-layout). 모든 color/date-picker/* 변수를 시연. */
 async function buildCalendarPanel(maps: BuildMaps): Promise<FrameNode> {
   const dp = (k: string) => `color/date-picker/${k}`;
   const CHEV_L = `<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M10 12L6 8l4-4" stroke="#000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
   const CHEV_R = `<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M6 4l4 4-4 4" stroke="#000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+  const CW = 308 / 7; // 콘텐츠폭(356 − 좌우24) ÷ 7 = 44
+
   const panel = figma.createFrame();
   panel.name = "calendar-panel";
-  panel.resize(356, 392);
+  panel.layoutMode = "VERTICAL"; panel.primaryAxisSizingMode = "FIXED"; panel.counterAxisSizingMode = "FIXED";
+  panel.paddingLeft = 24; panel.paddingRight = 24; panel.paddingTop = 20; panel.paddingBottom = 20; panel.itemSpacing = 0;
   panel.cornerRadius = 4;
   panel.fills = [boundPaint(scv(maps, dp("bg/panel")))];
   panel.strokes = [boundPaint(scv(maps, dp("border/panel")))]; panel.strokeWeight = 1; panel.strokeAlign = "INSIDE";
   panel.clipsContent = true;
-  const PADX = 24, PADY = 20, GW = (356 - PADX * 2) / 7; // grid cell width ≈ 44
+  panel.resize(356, 392);
 
-  // 헤더 (prev · 라벨 · next)
-  const navPrev = makeStrokeIcon(CHEV_L, scv(maps, dp("text/primary")));
-  panel.appendChild(navPrev); navPrev.x = PADX; navPrev.y = PADY + (32 - navPrev.height) / 2;
-  const monthLabel = await makeBoundText("2026.06", 24, "Bold", scv(maps, dp("text/primary")));
-  panel.appendChild(monthLabel); monthLabel.x = (356 - monthLabel.width) / 2; monthLabel.y = PADY + (32 - monthLabel.height) / 2;
-  const navNext = makeStrokeIcon(CHEV_R, scv(maps, dp("text/primary")));
-  panel.appendChild(navNext); navNext.x = 356 - PADX - navNext.width; navNext.y = PADY + (32 - navNext.height) / 2;
+  // 헤더 (prev · 월라벨 · next) — SPACE_BETWEEN
+  const header = figma.createFrame(); header.name = "header"; header.fills = [];
+  header.layoutMode = "HORIZONTAL"; header.primaryAxisSizingMode = "FIXED"; header.counterAxisSizingMode = "FIXED";
+  header.primaryAxisAlignItems = "SPACE_BETWEEN"; header.counterAxisAlignItems = "CENTER";
+  panel.appendChild(header); header.layoutAlign = "STRETCH"; header.resize(308, 32);
+  header.appendChild(makeStrokeIcon(CHEV_L, scv(maps, dp("text/primary"))));
+  header.appendChild(await makeBoundText("2026.06", 24, "Bold", scv(maps, dp("text/primary"))));
+  header.appendChild(makeStrokeIcon(CHEV_R, scv(maps, dp("text/primary"))));
 
-  // 요일 행
-  const wkY = PADY + 32 + 4;
-  for (let i = 0; i < DP_WEEKDAYS.length; i++) {
-    const w = DP_WEEKDAYS[i];
+  // 요일 행 — 7 셀 (일=sunday·토=saturday·평일=secondary)
+  const wkRow = figma.createFrame(); wkRow.name = "weekdays"; wkRow.fills = [];
+  wkRow.layoutMode = "HORIZONTAL"; wkRow.itemSpacing = 0; wkRow.primaryAxisSizingMode = "AUTO"; wkRow.counterAxisSizingMode = "AUTO";
+  panel.appendChild(wkRow);
+  for (const w of DP_WEEKDAYS) {
     const role = w.role === "sunday" ? "text/sunday" : w.role === "saturday" ? "text/saturday" : "text/secondary";
-    const t = await makeBoundText(w.ch, 16, "Medium", scv(maps, dp(role)));
-    panel.appendChild(t); t.x = PADX + i * GW + (GW - t.width) / 2; t.y = wkY + (44 - t.height) / 2;
+    const cell = figma.createFrame(); cell.name = "weekday"; cell.fills = [];
+    cell.layoutMode = "HORIZONTAL"; cell.primaryAxisAlignItems = "CENTER"; cell.counterAxisAlignItems = "CENTER";
+    cell.primaryAxisSizingMode = "FIXED"; cell.counterAxisSizingMode = "FIXED"; cell.resize(CW, 44);
+    cell.appendChild(await makeBoundText(w.ch, 16, "Medium", scv(maps, dp(role))));
+    wkRow.appendChild(cell);
   }
 
-  // 6×7 그리드 (샘플: 2026.06 = 1일 월요일 시작). 상태 시연 셀 포함.
+  // 6×7 그리드 (샘플 2026.06 = 1일 월요일 시작) — 상태 시연 셀 포함
   const grid: DpCell[] = [];
-  // 첫 주 앞칸(일요일) = 전월(other), 5/31
-  grid.push({ day: 31, col: 0, kind: "other" });
+  grid.push({ day: 31, col: 0, kind: "other" }); // 첫 주 앞칸 = 전월(other)
   let d = 1;
   for (let cell = 1; cell < 42 && d <= 30; cell++) {
-    const col = cell % 7;
     let kind: DpCell["kind"] = "normal";
-    if (d === 10) kind = "today";
-    else if (d === 17) kind = "selected";
-    else if (d === 25) kind = "disabled";
-    grid.push({ day: d, col, kind });
-    d++;
+    if (d === 10) kind = "today"; else if (d === 17) kind = "selected"; else if (d === 25) kind = "disabled";
+    grid.push({ day: d, col: cell % 7, kind }); d++;
   }
-  // 마지막 주 뒤칸 = 익월(other)
   let nd = 1;
-  for (let cell = grid.length; cell < 42; cell++) {
-    grid.push({ day: nd, col: cell % 7, kind: "other" });
-    nd++;
-  }
-  const gridY = wkY + 44;
-  for (let i = 0; i < grid.length; i++) {
-    const g = grid[i];
-    const row = Math.floor(i / 7), col = i % 7;
-    const cx = PADX + col * GW, cy = gridY + row * 44;
-    // 텍스트 색 — 정본: 그리드 day 는 요일과 무관하게 text/secondary(상태색만 분기). 일/토 색은 요일 헤더 행에만 적용.
-    let txtKey: string;
-    if (g.kind === "other") txtKey = "text/other-month";
-    else if (g.kind === "disabled") txtKey = "text/disabled";
-    else if (g.kind === "selected") txtKey = "text/selected";
-    else if (g.kind === "today") txtKey = "text/today";
-    else txtKey = "text/secondary";
-    // inner 원 (today=blue border / selected=blue fill)
-    if (g.kind === "today" || g.kind === "selected") {
-      const inner = figma.createRectangle();
-      inner.resize(30, 30); inner.cornerRadius = 999;
-      inner.x = cx + (GW - 30) / 2; inner.y = cy + (44 - 30) / 2;
+  for (let cell = grid.length; cell < 42; cell++) { grid.push({ day: nd, col: cell % 7, kind: "other" }); nd++; }
+
+  for (let r = 0; r < 6; r++) {
+    const dayRow = figma.createFrame(); dayRow.name = "week"; dayRow.fills = [];
+    dayRow.layoutMode = "HORIZONTAL"; dayRow.itemSpacing = 0; dayRow.primaryAxisSizingMode = "AUTO"; dayRow.counterAxisSizingMode = "AUTO";
+    panel.appendChild(dayRow);
+    for (let c = 0; c < 7; c++) {
+      const g = grid[r * 7 + c];
+      // 텍스트 색 — 정본: day 는 요일 무관 text/secondary(상태색만 분기). 일/토 색은 요일 헤더만.
+      let txtKey: string;
+      if (g.kind === "other") txtKey = "text/other-month";
+      else if (g.kind === "disabled") txtKey = "text/disabled";
+      else if (g.kind === "selected") txtKey = "text/selected";
+      else if (g.kind === "today") txtKey = "text/today";
+      else txtKey = "text/secondary";
+      // day 셀(44×44 center) > inner(30×30 원) > 숫자
+      const dayCell = figma.createFrame(); dayCell.name = "day"; dayCell.fills = [];
+      dayCell.layoutMode = "HORIZONTAL"; dayCell.primaryAxisAlignItems = "CENTER"; dayCell.counterAxisAlignItems = "CENTER";
+      dayCell.primaryAxisSizingMode = "FIXED"; dayCell.counterAxisSizingMode = "FIXED"; dayCell.resize(CW, 44);
+      const inner = figma.createFrame(); inner.name = "inner"; inner.cornerRadius = 999;
+      inner.layoutMode = "HORIZONTAL"; inner.primaryAxisAlignItems = "CENTER"; inner.counterAxisAlignItems = "CENTER";
+      inner.primaryAxisSizingMode = "FIXED"; inner.counterAxisSizingMode = "FIXED"; inner.resize(30, 30);
       if (g.kind === "selected") {
         inner.fills = [boundPaint(scv(maps, dp("bg/selected")))];
-        inner.strokes = [boundPaint(scv(maps, dp("bg/selected")))];
-      } else {
+        inner.strokes = [boundPaint(scv(maps, dp("bg/selected")))]; inner.strokeWeight = 1; inner.strokeAlign = "INSIDE";
+      } else if (g.kind === "today") {
         inner.fills = [boundPaint(scv(maps, dp("bg/today")))];
-        inner.strokes = [boundPaint(scv(maps, dp("border/today")))];
+        inner.strokes = [boundPaint(scv(maps, dp("border/today")))]; inner.strokeWeight = 1; inner.strokeAlign = "INSIDE";
+      } else {
+        inner.fills = [];
       }
-      inner.strokeWeight = 1; inner.strokeAlign = "INSIDE";
-      panel.appendChild(inner);
+      inner.appendChild(await makeBoundText(String(g.day), 16, g.kind === "selected" ? "Bold" : "Medium", scv(maps, dp(txtKey))));
+      dayCell.appendChild(inner);
+      dayRow.appendChild(dayCell);
     }
-    const t = await makeBoundText(String(g.day), 16, g.kind === "selected" ? "Bold" : "Medium", scv(maps, dp(txtKey)));
-    panel.appendChild(t); t.x = cx + (GW - t.width) / 2; t.y = cy + (44 - t.height) / 2;
   }
   return panel;
 }
@@ -1901,7 +1952,8 @@ async function buildDatePicker(maps: BuildMaps, originY: number): Promise<{ set:
       comp.name = `Size=${sc.size}, State=${st.name}, Break=${sc.brk}`;
       comp.layoutMode = "VERTICAL"; comp.primaryAxisSizingMode = "AUTO"; comp.counterAxisSizingMode = "AUTO"; comp.itemSpacing = 8;
       comp.appendChild(trigger);
-      if (st.open) comp.appendChild(await buildCalendarPanel(maps));
+      // 캘린더 패널은 사이즈 불변(356px 단일) — MD·PC Open 1곳에만 부착(사이즈마다 중복 방지). 모바일 bottom-sheet 는 HD 미결.
+      if (st.open && sc.size === "MD" && sc.brk === "PC") comp.appendChild(await buildCalendarPanel(maps));
       setLightMode(comp, maps);
       comps.push(comp);
       cells.push({ comp, size: sc.size, brk: sc.brk, state: st.name });

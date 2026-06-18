@@ -63,7 +63,7 @@ function resolveNumber(tokenKey) {
 // ── 가짜 figma scene-graph 레코더 ────────────────────────────────────────
 let NODE_SEQ = 0;
 function makeNode(type) {
-  return {
+  const node = {
     __id: ++NODE_SEQ, type, name: "",
     children: [], fills: [], strokes: [],
     _bound: {},            // setBoundVariable 로 묶인 토큰 키 (geometry)
@@ -90,6 +90,27 @@ function makeNode(type) {
     createInstance() { const c = cloneNode(this); c.__instanceOf = this.name; return c; },
     remove() { /* noop */ },
   };
+  // 텍스트 노드는 실제 Figma 처럼 폭/높이를 측정해야 수동 중앙정렬·폭계산(GNB 슬롯 등)이 깨지지 않는다.
+  // mock 은 측정기가 없으므로 글자수×폰트크기로 근사(한글/전각 ≈1.0em, ASCII ≈0.56em). resize 시 명시값 우선.
+  if (type === "TEXT") {
+    let ew = null, eh = null;
+    Object.defineProperty(node, "width", {
+      configurable: true, enumerable: true,
+      get() {
+        if (ew != null) return ew;
+        const fs = this.fontSize || 14; let u = 0;
+        for (const ch of String(this.characters || "")) u += /[\x00-\xff]/.test(ch) ? 0.56 : 1.0;
+        return Math.round(u * fs);
+      },
+      set(v) { ew = v; },
+    });
+    Object.defineProperty(node, "height", {
+      configurable: true, enumerable: true,
+      get() { return eh != null ? eh : Math.round((this.fontSize || 14) * 1.3); },
+      set(v) { eh = v; },
+    });
+  }
+  return node;
 }
 function cloneNode(src) {
   const n = makeNode(src.type);
@@ -229,10 +250,15 @@ function styleFor(node, mode) {
         pb = geom(node, "paddingBottom") || 0, pl = geom(node, "paddingLeft") || 0;
   if (pt || pr || pb || pl) s.push(`padding:${pt}px ${pr}px ${pb}px ${pl}px`);
   const { wFixed, hFixed } = axisFixed(node);
-  if (wFixed && node.width != null) s.push("width:" + node.width + "px");
-  else if (node.minWidth) s.push("min-width:" + node.minWidth + "px");
-  if (hFixed && node.height != null) s.push("height:" + node.height + "px");
-  const r = radiusOf(node); if (r) s.push("border-radius:" + r + "px");
+  // 텍스트는 폭/높이를 박지 않는다 — 추정 metric(빌더 레이아웃 계산용)을 span 크기로 강제하면
+  // 실제 글리프보다 좁아 좌측·상단으로 치우쳐 보인다. 브라우저가 실제 글자 크기로 그리게 둔다.
+  if (!isText) {
+    if (wFixed && node.width != null) s.push("width:" + node.width + "px");
+    else if (node.minWidth) s.push("min-width:" + node.minWidth + "px");
+    if (hFixed && node.height != null) s.push("height:" + node.height + "px");
+  }
+  if (node.type === "ELLIPSE") s.push("border-radius:50%"); // ELLIPSE = 원형 (라디오 점 등)
+  else { const r = radiusOf(node); if (r) s.push("border-radius:" + r + "px"); }
   const sw = strokeWeightOf(node), sk = paintHex(node.strokes, mode);
   if (sw && sk) s.push(`border:${sw}px solid ${sk}`);
   if (node.clipsContent) s.push("overflow:hidden");
@@ -246,9 +272,11 @@ function styleFor(node, mode) {
   }
   return s.join(";");
 }
-function serialize(node, mode) {
+// abs=true → 부모가 비-auto-layout 이라 이 노드를 절대좌표(x/y)로 배치. (라디오 점·체크·아이콘 등 수동 배치 충실 재현)
+function serialize(node, mode, abs) {
+  const absStyle = abs ? `position:absolute;left:${node.x || 0}px;top:${node.y || 0}px;` : "";
   if (node.type === "TEXT") {
-    return `<span style="${styleFor(node, mode)}">${esc(node.characters || "")}</span>`;
+    return `<span style="${absStyle}${styleFor(node, mode)}">${esc(node.characters || "")}</span>`;
   }
   if (node.__svg) {
     // 아이콘: makeStrokeIcon 이 자식 도형 stroke 를 토큰에 바인딩 → 그 토큰색으로 SVG 재색.
@@ -262,10 +290,13 @@ function serialize(node, mode) {
       stack.push(...(n.children || []));
     }
     if (iconHex) svg = svg.replace(/stroke="#[0-9a-fA-F]{3,8}"/g, `stroke="${iconHex}"`).replace(/fill="#[0-9a-fA-F]{3,8}"/g, (m) => /fill="none"/i.test(m) ? m : `fill="${iconHex}"`);
-    return `<div style="${styleFor(node, mode)};display:flex;align-items:center;justify-content:center">${svg}</div>`;
+    return `<div style="${absStyle}${styleFor(node, mode)};display:flex;align-items:center;justify-content:center">${svg}</div>`;
   }
-  const inner = node.children.map((c) => serialize(c, mode)).join("");
-  return `<div style="${styleFor(node, mode)}">${inner}</div>`;
+  // 자식 배치: 이 노드가 auto-layout 이면 flex 흐름, 아니면 자식을 절대좌표(x/y)로 — Figma 와 동일.
+  const childAbs = !node.layoutMode;
+  const relStyle = childAbs ? "position:relative;" : "";
+  const inner = (node.children || []).map((c) => serialize(c, mode, childAbs)).join("");
+  return `<div style="${absStyle}${relStyle}${styleFor(node, mode)}">${inner}</div>`;
 }
 function esc(s) { return String(s).replace(/[&<>]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;" }[c])); }
 
@@ -313,7 +344,7 @@ async function main() {
     for (const c of colVals) h += `<div class="mx-col">${esc(c || "")}</div>`;
     for (const r of rowVals) {
       if (rowKey) h += `<div class="mx-row">${esc(r || "")}</div>`;
-      for (const c of colVals) { const it = find(r, c); h += `<div class="mx-cell">${it ? `<div class="stage">${serialize(it.comp, mode)}</div>` : ""}</div>`; }
+      for (const c of colVals) { const it = find(r, c); h += `<div class="mx-cell">${it ? `<div class="stage">${serialize(it.comp, mode)}</div>` : `<span class="mx-na">—</span>`}</div>`; }
     }
     return h + `</div>`;
   }
@@ -370,6 +401,7 @@ async function main() {
   .mx-col { font-size: 11px; font-weight: 600; letter-spacing: .04em; text-transform: uppercase; color: #9aa0a6; }
   .mx-row { font-size: 11px; font-weight: 700; color: #4b5563; justify-self: start; white-space: nowrap; }
   .mx-cell { display: flex; align-items: center; justify-content: center; }
+  .mx-na { color: #cbd1d9; font-size: 14px; user-select: none; } /* 해당 상태 없음(N/A) — 정본 매트릭스의 "—" 와 동일 */
   .preview-area.dark .mx-col { color: #7c828c; } .preview-area.dark .mx-row { color: #aab0bb; }
   /* 스테이지: 흰색·투명 컴포넌트도 보이게 옅은 체커 */
   .stage { display: inline-flex; align-items: center; justify-content: center; padding: 8px; border-radius: 6px; }
