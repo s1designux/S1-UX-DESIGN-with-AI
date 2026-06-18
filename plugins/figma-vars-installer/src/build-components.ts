@@ -1602,6 +1602,8 @@ async function buildTimePickerDropdown(maps: BuildMaps, originY: number): Promis
 async function buildPagination(maps: BuildMaps, originY: number): Promise<{ set: ComponentSetNode; bottomY: number }> {
   const pg = (k: string) => `color/pagination/${k}`;
   const CHEV_PREV = `<svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M9 3.5L5 7l4 3.5" stroke="#000" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+  // Edge(처음/마지막) — 좌향 chevron + 세로바(|<). last 는 사용처에서 180° 회전(>|). Arrow 가 prev 1종을 회전해 next 로 쓰는 것과 동일 철학.
+  const CHEV_EDGE = `<svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M10 3.5L6.5 7l3.5 3.5M3.5 3.5v7" stroke="#000" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
   const SZ = 28;
   const arrowStates = [
     { state: "Default",  bg: "control/bg/default",  border: "control/border/default",  icon: "color/icon/gray-dark" },
@@ -1629,6 +1631,20 @@ async function buildPagination(maps: BuildMaps, originY: number): Promise<{ set:
     setLightMode(comp, maps);
     comps.push(comp); byKey.set(`Arrow/${st.state}`, comp);
   }
+  // Edge variants (처음/마지막 — |< 아이콘. Arrow 와 같은 상태·토큰)
+  for (const st of arrowStates) {
+    const comp = figma.createComponent();
+    comp.name = `Element=Edge, State=${st.state}`;
+    comp.resize(SZ, SZ);
+    comp.cornerRadius = 2;
+    comp.fills = [boundPaint(scv(maps, pg(st.bg)))];
+    comp.strokes = [boundPaint(scv(maps, pg(st.border)))];
+    comp.strokeWeight = 1; comp.strokeAlign = "INSIDE";
+    const icon = makeStrokeIcon(CHEV_EDGE, scv(maps, st.icon));
+    comp.appendChild(icon); icon.x = (SZ - icon.width) / 2; icon.y = (SZ - icon.height) / 2;
+    setLightMode(comp, maps);
+    comps.push(comp); byKey.set(`Edge/${st.state}`, comp);
+  }
   // Number variants
   for (const st of numStates) {
     const comp = figma.createComponent();
@@ -1649,8 +1665,8 @@ async function buildPagination(maps: BuildMaps, originY: number): Promise<{ set:
   const opts: SpecOpts = {
     title: "Pagination",
     colHeaders: cols,
-    rowLabels: ["Arrow", "Number"],
-    cellAt: (r, c) => byKey.get(`${r === 0 ? "Arrow" : "Number"}/${cols[c]}`) ?? null,
+    rowLabels: ["Arrow", "Number", "Edge"],
+    cellAt: (r, c) => byKey.get(`${["Arrow", "Number", "Edge"][r]}/${cols[c]}`) ?? null,
     lightX: SPEC_LIGHT_X, darkX: SPEC_DARK_X, originY, cellW: 72, cellH: 48, rowLabelW: 64,
   };
   let bottomY = await decorateSetFlat(set, opts, maps);
