@@ -1,0 +1,9 @@
+{
+  "sourceFile": "plugins/figma-vars-installer/src/build-components.ts",
+  "sourceHash": "sha256:0aec51d1450202422082695de1fe2335664cb50f462cb6f10e80682bf444b588",
+  "verifiedBy": "orchestrator",
+  "verdict": "pass",
+  "changeType": "mechanical",
+  "verifiedAt": "2026-06-19T08:37:25.552Z",
+  "notes": "Button SizeId 리네임(medium→MD·xsmall→XSM·xxsmall→XXSM·large→LG) — Input 검증 패턴과 동일 기계적 정렬. XXSM textStyle body/12M 수정. darkOffset optional 파라미터 신설(GNB 전용·미사용)"
+}

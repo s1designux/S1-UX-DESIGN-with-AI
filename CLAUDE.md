@@ -1121,6 +1121,7 @@ Claude는 **Main Orchestrator**다. 사용자는 **목표 수준 의도**만 준
 - **UI/HTML/CSS를 건드렸으면 크기 불문 렌더 1회 확인.** "검사기·div개수 통과"로 시각 검증을 대체하지 않는다. (`"/Applications/Google Chrome.app/Contents/MacOS/Google Chrome" --headless=new --screenshot=… "file://…#섹션"` → 스크린샷 Read 로 육안 대조)
 - **구조 변경·Figma→코드·역방향 생성기 수정**은 self-certify하지 않고 검증 분리(🤖).
 - 🚫 **하드룰 — Figma 라이브러리 컴포넌트/변형세트 빌드·편집은 ⭐ 단독 빌드+검증 금지.** 신규 컴포넌트 생성·combineAsVariants 변형세트화·토큰 바인딩·variant 패킹 등 **구조 변경**은 ⭐가 직접 use_figma로 빌드하지 않고 **`figma-library-build` 스킬**로 진입한다: 빌드=🏗️ `figma-library-builder`(실제 spawn), 검증=🤖 `component-verifier`(실제 spawn, 빌더와 분리). ⭐는 흐름(계획·검문소·종합)만 관리한다. **예외:** 단일 노드 좌표/이름 1건 같은 순수 기계적 미세 편집은 ⭐ 직접+렌더 1회로 갈음 가능. (근거: ⭐ 단독 인라인 빌드+자가검증이 패킹 붕괴·정렬·세트화 누락을 사용자에게 새게 한 반복 실패. 빌드자≠검증자 + 위임 강제로 구조 차단.)
+- 🚫 **하드룰 — 설치기 생성기 코드(`build-components.ts`) 구조 변경은 ⭐ 단독 자가검증 금지(2026-06-19 신설).** 새 build 함수·`combineAsVariants`·variant 스펙·셀↔스펙시트 키 같은 **구조 변경**은 build-components.ts 가 곧 Figma 라이브러리 컴포넌트 빌드라 위 하드룰과 동급이다. **빌드는 ⭐(강결합 잔손질) 또는 코드 에이전트가 해도, 검증은 반드시 🤖 `component-verifier`(D) 실제 spawn**으로 분리한다. 검증 후 `node scripts/installer-build-verify-check.js --record --by component-verifier …` 로 기록 → **Gate 13 이 해시로 집행**(검증 기록 없는/stale 한 build-components.ts 는 커밋 차단). **예외:** 순수 기계적 수정(토큰 값 1건·오타)은 `--by orchestrator --change mechanical` 자가인증 가능(git 가시·감사). (근거: 설치기 9개 이슈가 9줄 전부 ⭐ → 독립 검증 부재로 Input 스펙 빈칸 버그가 토큰 게이트 전부 ✅인 채 유출 직전. 검증 분리를 기계 강제로 전환.)
 - **순수 기계적 수정**(토큰 값 1건·오타·문서 카피)은 검사기로 충분 — 렌더/에이전트 생략 가능.
 - **검증 안 한 부분은 보고에 ⭐ 자가인증으로 명시**한다(사용자가 어디를 의심할지 보이게).
 - 이렇게 하면 이모지가 **"독립 검증이 실제로 돌았는지"를 사용자가 한눈에 확인하는 대시보드**가 된다. 전부 ⭐면 = 혼자 self-certify, 🤖/렌더샷이 보이면 = 사각지대까지 검증됨.
@@ -1238,6 +1239,14 @@ Claude는 **Main Orchestrator**다. 사용자는 **목표 수준 의도**만 준
 **방법:** 정적 스캔 — 벡터 패턴 줄에서 주석·함수정의 줄을 제외하고, allow 마커 없는 것을 위반 처리. 새 아이콘은 `ICON_KEYS` 에 키 추가 + `makeIconInstance` 사용(벡터 패턴 미매칭) → 위반 0.
 **도입 사유:** 2026-06-19 사용자가 설치 결과에서 "아이콘이 컴포넌트가 아니라 벡터로 들어가 있다"고 반복 지적. 토큰만 보던 게이트들은 "아이콘이 라이브러리 인스턴스인지"를 강제하지 않았음 → 새 벡터 아이콘 유입을 커밋 단계에서 차단. (라이브러리 인스턴스化 완료: remove·search·clock·calendar·menu·account·check(확인)·chevron(방향=회전)·globe(GNB 언어). 벡터 예외: 페이지네이션 Edge(V2.2 미존재)·휴대폰 셸 크롬(DS 아이콘 아님).)
 
+### Gate 13: Installer Build Verification (2026-06-19 신설 — 빌드자≠검증자 집행)
+**파일:** `scripts/installer-build-verify-check.js` (`npm run components:buildverify`)
+**트리거:** `build-components.ts` 변경 / 항상(gate:check 포함)
+**역할:** build-components.ts(설치기 생성기 코드)의 **구조 변경**은 곧 Figma 라이브러리 컴포넌트 빌드다. 그런데 ⭐ 총괄이 **혼자 만들고 혼자 검사(self-certify)** 해도 토큰 게이트(3·6·7·8·11·12)는 전부 ✅ 라, 구조·시각 미스가 사용자에게 샜다(예: 설치기 9개 이슈 변경 표가 9줄 전부 ⭐ → ⭐ 단독 자가검증). 이 게이트는 **"build-components.ts 의 현재 내용이 독립 검증(component-verifier (D))을 거쳤는지"를 해시로 묶어 강제**한다.
+**방법:** 현재 build-components.ts 의 sha256 을 계산해 검증 기록 `reports/installer-build/build-verification.json` 의 `sourceHash` 와 대조 — ①일치 + `verifiedBy=component-verifier` → ✅ ②일치 + `verifiedBy=orchestrator`(자가인증) → ✅ 통과하되 **⚠️ 경고로 가시화**(구조 변경이면 안 됨) ③불일치/없음 → **❌ 커밋 차단**(파일이 바뀌었는데 그 내용의 검증 기록이 stale/없음). 파일을 한 글자라도 바꾸면 해시가 달라져 기록이 stale → 재검증(또는 순수 기계적 수정이면 `--by orchestrator --change mechanical` 자가인증, git 에 남아 가시·감사) 강제. 안 바꾸면 해시 그대로라 매 커밋 재검증 불필요(자가 치유). 기록은 검증자가 `--record` 로만 작성(해시 위조 불가).
+**책임 분리 최종형:** 빌드 = ⭐(강결합 잔손질) 또는 🏗️/코드 에이전트(독립 대형) · **검증 = 🤖 component-verifier (D)** · **집행 = Gate 13 + pre-commit 훅**. 빌드는 누가 하든, **검증만큼은 절대 빌드자 혼자가 아니게** 기계 강제. (빌드까지 무조건 위임이 아니라 — 강결합 잔손질은 ⭐ 직접이 더 빠르고 정확. 비양도 핵심은 **검증 분리**다.)
+**도입 사유:** 2026-06-19 사용자가 "설치기 9개 이슈 변경이 전부 ⭐ 혼자 — 왜 여전히 혼자 다 하나, 빌드 에이전트(🏗️)는 뭐하나"라고 지적. 진단: figma-library-builder(🏗️)는 Figma **캔버스** 빌드(use_figma)만 담당해 **설치기 생성기 코드는 담당 빌더가 비어 ⭐ 기본값**이었고, 위임은 양심 의존(강제 부재)이라 조용히 self-certify 됨. 도입 즉시 독립 검증자가 **Input 스펙 시트 빈칸 버그**(`opts.platforms` 사이즈 라벨이 cells 키와 불일치 — Issue 8 리네임 잔재 XSMALL/SMALL/MEDIUM, `cellAt` 직매칭 실패로 PC·Mobile 통째 빈칸)를 적발 — 토큰 게이트 전부 ✅였던 시각 사각지대. self-certify였으면 유출됐을 클래스를 커밋 단계에서 차단.
+
 ## Gate 실행 순서
 
 ```
@@ -1255,9 +1264,10 @@ Claude는 **Main Orchestrator**다. 사용자는 **목표 수준 의도**만 준
   10. Gate 10 (Doc Token Reference Drift) — 가이드/레퍼런스 HTML(ai-snippets·guide-md 등) 토큰 참조 / 항상. Check B(rename denylist 잔재)=차단 · Check A(미정의 --color-* 참조)=경고
   11. Gate 11 (Component Anatomy) — build-components.ts 변경 시 / 항상. 상태별 필수 하위 요소(caret·remove 등) 생성 여부 강제(구조 사각지대)
   12. Gate 12 (Icon Instance Policy) — build-components.ts 변경 시 / 항상. 아이콘=라이브러리 인스턴스 강제, 벡터 직삽입은 allow 마커 필수
+  13. Gate 13 (Installer Build Verification) — build-components.ts 변경 시 / 항상. 내용이 독립 검증(component-verifier) 거쳤는지 해시로 강제. ⭐ 단독 빌드+자가검증 차단
 ```
 
-스크립트 일괄 실행: `npm run gate:check` (Gate 1 + 3 + 4 + 6 + 7 + 8 + 9 + 10 + 11 + 12 자동)
+스크립트 일괄 실행: `npm run gate:check` (Gate 1 + 3 + 4 + 6 + 7 + 8 + 9 + 10 + 11 + 12 + 13 자동)
 
 > **Gate 10 (doc-token-ref-check):** 토큰을 rename/remove 하면 옛 이름을 쥔 가이드 문서가 자동 적발된다. **정본 rename 시 `registry/tokens/deprecated-tokens.json` 의 `renamedGroups` 에 `{from,to}` 한 줄 추가**하면 이후 게이트가 전 활성 페이지에서 잔재를 차단(Check B). `--color-*` 참조 존재성은 Check A(경고)로 가시화. 단독 실행 `npm run docs:tokencheck`. `components.html`(폐기 예정)은 검사 제외.
 

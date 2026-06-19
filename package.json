@@ -25,6 +25,7 @@
     "components:keycheck": "node scripts/component-key-coverage-check.js",
     "components:anatomy": "node scripts/component-anatomy-check.js",
     "components:iconpolicy": "node scripts/icon-instance-policy-check.js",
+    "components:buildverify": "node scripts/installer-build-verify-check.js",
     "components:preview": "node scripts/component-preview/render.js",
     "tokens:gen": "node scripts/gen-semantic-tokens.js",
     "typo:gen": "node scripts/typography-gen.js",

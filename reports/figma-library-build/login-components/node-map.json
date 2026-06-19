@@ -1,0 +1,116 @@
+{
+  "fileKey": "cysG5U1udpQqVagYY1hWHW",
+  "fileName": "SW UX GUIDE V3.0 TEST",
+  "placementPage": { "id": "5:5706", "name": "Core" },
+  "builtBy": "figma-library-builder",
+  "buildDate": "2026-06-19",
+  "placementBaseX": 7608,
+  "note": "All 4 components are local (remote=false). No external library instances except V2.2 icon library instances (globe in GNB, eye icons in Login Input) which is the allowed remote exception per CLAUDE.md memory feedback_no-external-library-components.",
+  "components": {
+    "C/IMG/Logo/Samsung_30": {
+      "id": "333:165",
+      "type": "COMPONENT",
+      "remote": false,
+      "x": 7608, "y": 0, "w": 134.348, "h": 30,
+      "source": "280:330 (read-only spec)",
+      "build": "Image fill (scaleMode FIT) using uploaded PNG imageHash 2433893b70764c5113ee21b6ec038baa5884cb98 (exported from 280:330). No pre-existing local Samsung logo component was found (findAll returned 0), so this was newly created.",
+      "tokenBindings": "none (raster logo image, per plan allowed-deviation #3)"
+    },
+    "Shell/LoginGNB": {
+      "id": "334:1326",
+      "type": "COMPONENT",
+      "remote": false,
+      "x": 7608, "y": 80, "w": 1920, "h": 56,
+      "source": "268:5647 (read-only spec)",
+      "structure": {
+        "frame": "HORIZONTAL auto-layout, SPACE_BETWEEN, center, padding L/R 320 (fixed — spacing/320 token does not exist), T/B 12 (spacing/12 fixed val)",
+        "left (C/IMG/Logo/Samung+bus, 334:5051)": "Samsung_30 logo instance (334:5052, h24 preserving aspect) + service name text '[서비스명]' (334:5053). gap 11.",
+        "right (slot_utility, 334:5054)": "globe icon (V2.2 instance in 32x32 center wrap 334:5055/334:5056) + '한국어' text (334:5059). gap 8."
+      },
+      "tokenBindings": {
+        "fills": "color/navigation/background (8:1078)",
+        "strokeBottom": "color/line/gray/subtle (8:1076), weight bound to border-width/1 (8:949)",
+        "service name text fill": "color/text/title/primary (8:1127), textStyle title/16B",
+        "globe icon fill": "color/icon/gray-dark (8:1069) [rebound from remote V2.2 var to local]",
+        "한국어 text fill": "color/icon/gray-dark (8:1069), textStyle body/14M"
+      },
+      "remoteInstances": [
+        { "node": "334:5056", "name": "ic_인터넷 (globe)", "mainKey": "dee16df7e4ccddbd5dd7aa1d2fbf93f841f5dee2", "allowed": "V2.2 icon library — allowed remote exception" }
+      ]
+    },
+    "Shell/WebTabBar": {
+      "id": "335:3099",
+      "type": "COMPONENT",
+      "remote": false,
+      "x": 7608, "y": 180, "w": 1920, "h": 101,
+      "source": "268:5646 (read-only spec)",
+      "structure": {
+        "outer": "Component itself is VERTICAL auto-layout, bg #dcdcdc (chrome strip). Children: tab_row (335:3100), address_row (335:3101), bottom line tabel_bar (335:3102, #ebebeb h1).",
+        "tab_row (h38)": "left=elements_tab1 (336:3098, 224x38): Mask Copy tab shape SVG (336:3099, #fff) + favicon_16 (336:3102: white bg + symbol SVG 336:3103) + label '[서비스명]' Noto 12R (336:3113) + close SVG (336:3114, #B6B6B6). right=window_controls SVG (337:3098, 69x10, #353535).",
+        "address_row (bg #fff, h62, px11 py8)": "previous SVG (337:3103) + forward SVG rotated 180 (337:3106) + refresh SVG rotated 180 (337:3109) + address_pill (337:3113, #ebebeb radius20 h27 FILL)."
+      },
+      "tokenBindings": "Browser-chrome grays (#dcdcdc, #ebebeb, #b6b6b6, #262626, #353535, favicon #0072CE/#FF312C) kept as concrete colors — these are browser chrome, NOT DS semantic colors, and have no DS Variable equivalent. Per plan allowed-deviation #2 (shell chrome icons raster/vector-allow). SEE needs-decision.",
+      "assets": "All chrome icons embedded as local SVG via createNodeFromSvg (downloaded from source node MCP asset URLs — they were SVG, not raster). No external library instances. Favicon symbol/window controls/back/forward/refresh/close/tab-shape all local vectors."
+    },
+    "Login Input": {
+      "id": "339:6072",
+      "type": "COMPONENT_SET",
+      "remote": false,
+      "x": 7608, "y": 320, "w": 1508, "h": 296,
+      "source": "269:4559 (Id input), 269:4560 (Password input) — read-only spec",
+      "axes": "Field={Id,Password}, State={Default,Editing,Filled,Error}, Reveal={Hide,Show}",
+      "variantCount": 12,
+      "packing": "combineAsVariants left variants at original canvas coords; immediately repacked into 3-col x 4-row grid (pad 24, gapX 40, gapY 24, cell 460x44) and set resized to hug 1508x296. No width blowup.",
+      "variants": [
+        { "id": "339:3097", "name": "Field=Id, State=Default, Reveal=Hide" },
+        { "id": "339:3100", "name": "Field=Id, State=Editing, Reveal=Hide", "caret": true },
+        { "id": "339:3104", "name": "Field=Id, State=Filled, Reveal=Hide" },
+        { "id": "339:3107", "name": "Field=Id, State=Error, Reveal=Hide" },
+        { "id": "339:3110", "name": "Field=Password, State=Default, Reveal=Hide", "eye": "hide" },
+        { "id": "339:3121", "name": "Field=Password, State=Editing, Reveal=Hide", "caret": true, "eye": "hide" },
+        { "id": "339:3133", "name": "Field=Password, State=Filled, Reveal=Hide", "eye": "hide", "value": "•••••••• (masked)" },
+        { "id": "339:3144", "name": "Field=Password, State=Error, Reveal=Hide", "eye": "hide" },
+        { "id": "339:3155", "name": "Field=Password, State=Default, Reveal=Show", "eye": "show" },
+        { "id": "339:3163", "name": "Field=Password, State=Editing, Reveal=Show", "caret": true, "eye": "show" },
+        { "id": "339:3172", "name": "Field=Password, State=Filled, Reveal=Show", "eye": "show", "value": "password123 (plain)" },
+        { "id": "339:3180", "name": "Field=Password, State=Error, Reveal=Show", "eye": "show" }
+      ],
+      "tokenBindings": {
+        "bg": "color/form-control/bg/default (8:1052)",
+        "border (Default/Editing/Filled)": "color/form-control/border/default (8:1057)",
+        "border (Error)": "color/form-control/border/error (8:1059)",
+        "border weight": "border-width/1 (8:949)",
+        "radius": "radius/control/sm (8:1193)",
+        "height": "sizing/44 (52:1929)",
+        "padding L": "spacing/padding-inline/sm (8:1143)",
+        "padding R": "spacing/padding-inline/xs (8:1142)",
+        "padding T/B": "spacing/padding-block/xxs (8:1136)",
+        "placeholder text": "color/form-control/text/placeholder (8:1065), textStyle body/14R",
+        "filled value text": "color/form-control/text/default (8:1063)",
+        "caret": "color/form-control/text-caret (8:1133) [aliases blue/400] — 1.5x16 rect",
+        "eye icon fill": "color/form-control/icon/default (8:1130) [rebound from remote V2.2 var to local]"
+      },
+      "remoteInstances": [
+        { "name": "ic_비밀번호미표시 (eye hide) Line", "leafKey": "d4e9eb5b7e193ee291aa2a7e04396c8de2d2dae7", "setKey": "8edfaab1a0948b9b94313715df867d5ffa7a85c9", "allowed": "V2.2 icon library" },
+        { "name": "ic_비밀번호표시 (eye show) Line", "leafKey": "b130623bad9bf035e273501b404bf7a245af1460", "setKey": "a731c93510d9200b940c62bee5eceba47e822923", "allowed": "V2.2 icon library" }
+      ]
+    }
+  },
+  "iconLeafKeys_for_ICON_KEYS_and_allowed_remote": {
+    "ic_비밀번호미표시_Line": "d4e9eb5b7e193ee291aa2a7e04396c8de2d2dae7",
+    "ic_비밀번호표시_Line": "b130623bad9bf035e273501b404bf7a245af1460",
+    "globe_ic_인터넷_Line": "dee16df7e4ccddbd5dd7aa1d2fbf93f841f5dee2"
+  },
+  "structureChanges": {
+    "combineAsVariants": "12 Login Input components combined into set 339:6072, then repacked (no remap of pre-existing instances — these are brand-new components, nothing to remap).",
+    "detach": "none (no variant contains a sibling-variant instance — no circular references)",
+    "rename": "none of existing assets renamed",
+    "remap": "none (all new)",
+    "emptiedContainers": "none"
+  },
+  "selfCorrections": [
+    "WebTabBar skeleton: first attempt failed (FILL on non-auto-layout component parent). Re-built with the outer component itself as VERTICAL auto-layout so children can FILL. (atomic failure, no partial nodes)",
+    "Login Input Id Filled value text was initially bound to placeholder color; corrected to color/form-control/text/default (8:1063).",
+    "Login Input caret initially bound to color/form-control/border/selected; switched to the dedicated color/form-control/text-caret (8:1133) which aliases blue/400 — more semantically correct."
+  ]
+}

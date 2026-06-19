@@ -322,6 +322,17 @@ try {
   fail(`icon-instance-policy-check 실행 실패: ${e.message}`);
 }
 
+// ── Gate 13: Installer Build Verification ─────────────────────────
+// build-components.ts(설치기 생성기 코드) 내용이 독립 검증(component-verifier)을 거쳤는지
+// 해시로 묶어 강제. 빌드자 ≠ 검증자 — ⭐ 단독 빌드+자가검증(self-certify)을 커밋 단계 차단.
+console.log('\n🔎 [Gate 13] 설치기빌드검증 검사기 (Installer Build Verify)');
+try {
+  const { check: buildVerifyCheck } = require('./installer-build-verify-check');
+  buildVerifyCheck({ pass, warn, fail });
+} catch (e) {
+  fail(`installer-build-verify-check 실행 실패: ${e.message}`);
+}
+
 // ── Summary ───────────────────────────────────────────────────────
 console.log('\n─────────────────────────────────────────────────────');
 if (errors > 0) {
