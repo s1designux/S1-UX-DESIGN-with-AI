@@ -406,14 +406,10 @@ async function makeBoundText(chars: string, fontSize: number, style: string, col
   return t;
 }
 
-/** 체크 아이콘(코드 정본 SVG path) — stroke 를 변수에 바인딩. */
-function makeCheckIcon(strokeVar: Variable): FrameNode {
+/** 체크 아이콘 — V2.2 ic_확인(line, ✓) 라이브러리 인스턴스(16px). ic_체크는 박스형이라 ic_확인 사용(사용자 지정 97:167). */
+async function makeCheckIcon(strokeVar: Variable): Promise<SceneNode> {
   const svg = `<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2.9375 8L6.13252 11.375L13.0625 4.625" stroke="#FFFFFF" stroke-width="1.5" stroke-linejoin="round"/></svg>`;
-  const node = figma.createNodeFromSvg(svg);
-  node.name = "check";
-  const vec = node.findOne((n) => n.type === "VECTOR") as VectorNode | null;
-  if (vec) vec.strokes = [boundPaint(strokeVar)];
-  return node;
+  return makeIconInstance("check", strokeVar, 16, svg);
 }
 
 /**
@@ -509,7 +505,7 @@ async function buildCheckbox(maps: BuildMaps, originY: number): Promise<{ set: C
     comp.strokeWeight = 1;
     comp.strokeAlign = "INSIDE";
     if (s.check) {
-      const icon = makeCheckIcon(scv(maps, s.check));
+      const icon = await makeCheckIcon(scv(maps, s.check));
       comp.appendChild(icon);
       icon.x = 1; icon.y = 1;
     }
@@ -701,7 +697,7 @@ async function buildChip(maps: BuildMaps, originY: number): Promise<{ set: Compo
 
 // ── Input (form-control 필드) — color/form-control/* 슬롯 ─────────────────────
 // 핵심 매트릭스: Size × State × Break (label/message/icon off). 상태 7개 → 행=State, 열=Size 평면.
-async function buildInput(maps: BuildMaps, originY: number): Promise<{ set: ComponentSetNode; bottomY: number }> {
+async function buildInput(maps: BuildMaps, originY: number, originX: number = INPUT_SHEET_X): Promise<{ set: ComponentSetNode; bottomY: number }> {
   const fc = (k: string) => `color/form-control/${k}`;
   const states = [
     { name: "Default",   bg: "bg/default",  border: "border/default",  txt: "입력",   tc: "text/placeholder" },
@@ -736,7 +732,22 @@ async function buildInput(maps: BuildMaps, originY: number): Promise<{ set: Comp
           field.fills = [boundPaint(scv(maps, fc(st.bg)))];
           field.strokes = [boundPaint(scv(maps, fc(st.border)))];
           field.strokeWeight = 1; field.strokeAlign = "INSIDE";
-          field.appendChild(await makeBoundText(st.txt, sc.font, "Regular", scv(maps, fc(st.tc))));
+          const textNode = await makeBoundText(st.txt, sc.font, "Regular", scv(maps, fc(st.tc)));
+          if (st.name === "Editing") {
+            // Editing(=selected): [텍스트 + 커서] 좌측, 삭제(close) 아이콘 우측. Figma 정본 564:3757 icon=on.
+            field.primaryAxisAlignItems = "SPACE_BETWEEN";
+            const lead = figma.createFrame();
+            lead.name = "lead"; lead.fills = [];
+            lead.layoutMode = "HORIZONTAL"; lead.counterAxisAlignItems = "CENTER";
+            lead.primaryAxisSizingMode = "AUTO"; lead.counterAxisSizingMode = "AUTO";
+            lead.itemSpacing = 4; // spacing/4 — 텍스트와 커서 간격
+            lead.appendChild(textNode);
+            lead.appendChild(makeCaret(sc.font, scv(maps, fc("border/selected"))));
+            field.appendChild(lead);
+            field.appendChild(await makeClearIcon(scv(maps, fc("icon/default"))));
+          } else {
+            field.appendChild(textNode);
+          }
           field.resize(200, sc.h); // Input 예외 — 넓은 필드
           const comp = figma.createComponent();
           comp.name = `Size=${sc.size}, State=${st.name}, Label=${lab}, Message=${msg}, Break=${sc.brk}`;
@@ -757,8 +768,8 @@ async function buildInput(maps: BuildMaps, originY: number): Promise<{ set: Comp
   }
   const set = figma.combineAsVariants(comps, figma.currentPage);
   set.name = "Input";
-  // Input 은 규모가 커서(7 상태 × 4 사이즈 × 4 그룹) 세로 스택에서 분리, 버튼 우측편 넓은 시트로 배치.
-  const OX = INPUT_SHEET_X;
+  // Input 은 규모가 커서(7 상태 × 4 사이즈 × 4 그룹) 넓은 시트로 배치. originX 로 좌측정렬(섹션 컬럼 내) 가능.
+  const OX = originX;
   set.x = OX; set.y = originY;
   // 그룹핑 규칙: 모디파이어(라벨×메시지) 조합을 상위 그룹(밴드)으로, 그 안에서 사이즈별로 나열.
   // (사이즈별로 라벨/메시지가 번갈아 나오지 않게.) Input 은 예외적으로 필드·컬럼 폭을 넓게.
@@ -797,7 +808,7 @@ async function buildInput(maps: BuildMaps, originY: number): Promise<{ set: Comp
 
 /** stroke 기반 아이콘(돋보기·chevron 등) — 모든 vector stroke 를 변수에 바인딩. */
 function makeStrokeIcon(svg: string, strokeVar: Variable): FrameNode {
-  const node = figma.createNodeFromSvg(svg);
+  const node = figma.createNodeFromSvg(svg); // icon-vector-allow: 벡터 헬퍼 내부 구현(개별 호출처가 allow 마커 보유)
   node.name = "icon";
   // createNodeFromSvg 는 <circle>→ELLIPSE, <rect>→RECTANGLE 등으로 변환 → VECTOR 만 재바인딩하면
   // 시계 테두리(원) 같은 비-VECTOR 도형이 SVG 원본 stroke(#000)로 남는다. 모든 stroke 도형을 재바인딩.
@@ -808,13 +819,85 @@ function makeStrokeIcon(svg: string, strokeVar: Variable): FrameNode {
 
 /** fill 기반 아이콘(글리프 채움) — 모든 채움 도형의 fill 을 변수에 바인딩. (GNB 유틸·캘린더 등 fill="currentColor") */
 function makeFillIcon(svg: string, fillVar: Variable): FrameNode {
-  const node = figma.createNodeFromSvg(svg);
+  const node = figma.createNodeFromSvg(svg); // icon-vector-allow: 벡터 헬퍼 내부 구현(개별 호출처가 allow 마커 보유)
   node.name = "icon";
   const SHAPES = ["VECTOR", "ELLIPSE", "RECTANGLE", "LINE", "POLYGON", "STAR", "BOOLEAN_OPERATION"];
   (node.findAll((n) => SHAPES.includes(n.type)) as (VectorNode | BooleanOperationNode)[]).forEach((v) => {
     try { v.fills = [boundPaint(fillVar)]; v.strokes = []; } catch (e) { /* skip */ }
   });
   return node;
+}
+
+// 입력 커서(캐럿) — Editing/Focus 상태에서 텍스트 뒤 깜빡이는 세로선. Figma 564:3757(blue/400=border/selected).
+// 높이 = 글자크기×1.5 (font14 → 21px, Figma 실측 일치). 이름 "caret" 은 Anatomy Gate(11) 가 검증한다.
+function makeCaret(fontSize: number, colorVar: Variable): RectangleNode {
+  const caret = figma.createRectangle();
+  caret.name = "caret";
+  caret.resize(1, Math.round(fontSize * 1.5));
+  caret.fills = [boundPaint(colorVar)];
+  caret.strokes = [];
+  return caret;
+}
+
+// ── 아이콘 = V2.2 아이콘 라이브러리 컴포넌트 인스턴스 (벡터 직삽입 금지 — 사용자 결정 2026-06-19) ──
+// role → "Property 1=Line" 변형 컴포넌트 키. importComponentByKeyAsync 로 인스턴스 삽입 후 색 재바인딩·사이즈.
+// 라이브러리 출처: 아이콘 라이브러리 V2.2(파일 YcBbW9e0MTR9T3W5Sz0Ukx · 14.UI 섹션). 전부 게시 확인됨.
+// 새 아이콘은 여기 키만 추가하고 makeIconInstance 로 삽입 — createNodeFromSvg 직삽입은 Gate 12 가 차단한다.
+const ICON_KEYS: Record<string, string> = {
+  remove:   "24b2df622d341e0af21cd4b23b4a7d23b97a5ea7", // 삭제(원+X) 439:84
+  check:    "5ab251e0d90adb555ee2fa316f84e86041f19916", // 확인(체크마크 ✓) 97:167 — 체크박스 내부용(ic_체크는 박스형이라 ic_확인 사용)
+  search:   "6b764af642b8883e892754281950da0e971224d7", // 찾기/조회(돋보기) 97:127
+  clock:    "ca1d043ac09be07f827e939be3d8c3c7af8a8dd9", // 시간,시계 97:271
+  calendar: "ea0ffc118c38048f2cdfb5620be31c120426bb7a", // 날짜,달력 70:664
+  menu:     "5157e9edc76358e2e6bc1a5ebc1539ccf5f2e787", // 메뉴(햄버거) 97:227
+  account:  "a423e2e05cfff2f93062d6a83d6f3bdf79ca9647", // 계정/사용자 86:58
+  chevron:  "e1ac97aa82f4e52f257ac1c0ea77fd09d0e5f581", // 화살표,더보기(쉐브론 › 우향 기준) 419:69 — 방향은 rotation 으로(우0·하90·좌180·상270)
+  globe:    "dee16df7e4ccddbd5dd7aa1d2fbf93f841f5dee2", // 인터넷(지구본) 35:3317 — GNB 언어(사용자 지정)
+};
+// 색 재바인딩 — 보이는(visible) 채움/선만 교체. 숨김 채움(hit-area 배경 등)은 보존(쉐브론 Fill1 처럼).
+function rebindIconColor(node: SceneNode, colorVar: Variable): void {
+  const SHAPES = ["VECTOR", "ELLIPSE", "RECTANGLE", "LINE", "POLYGON", "STAR", "BOOLEAN_OPERATION"];
+  ((node as FrameNode).findAll((n) => SHAPES.includes(n.type)) as VectorNode[]).forEach((v) => {
+    try {
+      if (v.isMask) return; // 마스크 도형 보존
+      if (Array.isArray(v.strokes) && v.strokes.some((p) => p.visible !== false)) v.strokes = [boundPaint(colorVar)];
+      if (Array.isArray(v.fills) && v.fills.some((p) => p.visible !== false)) v.fills = [boundPaint(colorVar)];
+    } catch (e) { /* skip */ }
+  });
+}
+// 아이콘 인스턴스 1개 생성. role=ICON_KEYS 키, size=목표 정사각 px, fallbackSvg=라이브러리 미접근 폴백, rotation=회전(쉐브론 방향).
+async function makeIconInstance(role: string, colorVar: Variable, size: number, fallbackSvg: string, rotation = 0): Promise<SceneNode> {
+  try {
+    const comp = await figma.importComponentByKeyAsync(ICON_KEYS[role]);
+    const inst = comp.createInstance();
+    inst.name = role;
+    if (size && size !== inst.width) inst.resize(size, size);
+    rebindIconColor(inst, colorVar);
+    if (rotation) {
+      // Figma 회전은 반시계: 우0·상90·좌180·하270. 회전 노드는 x/y 중앙정렬이 안 되므로
+      // center 정렬 오토레이아웃 프레임으로 감싼다(셀렉트=오토레이아웃·페이지네이션=절대배치 모두 정상).
+      inst.rotation = rotation;
+      const wrap = figma.createFrame();
+      wrap.name = role; wrap.fills = []; wrap.clipsContent = false;
+      wrap.layoutMode = "HORIZONTAL"; wrap.primaryAxisAlignItems = "CENTER"; wrap.counterAxisAlignItems = "CENTER";
+      wrap.primaryAxisSizingMode = "FIXED"; wrap.counterAxisSizingMode = "FIXED";
+      wrap.resize(size || inst.width, size || inst.height);
+      wrap.appendChild(inst);
+      return wrap;
+    }
+    return inst;
+  } catch (e) {
+    console.warn(`icon ${role} import 실패 → 벡터 폴백:`, e);
+    const node = figma.createNodeFromSvg(fallbackSvg); // icon-vector-allow: 라이브러리 import 실패 폴백
+    node.name = role;
+    rebindIconColor(node, colorVar);
+    return node;
+  }
+}
+// 입력값 삭제(close) 아이콘 — remove(원+X) 인스턴스. 24px 네이티브(글리프 16) 유지. 이름 "remove" 은 Anatomy Gate(11) 검증.
+const REMOVE_ICON_SVG = `<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M16 8C16 3.58588 12.4141 0 8 0C3.58588 0 0 3.58588 0 8C0 12.4141 3.58588 16 8 16C12.4141 16 16 12.4141 16 8ZM8 15.0588C4.10353 15.0588 0.941176 11.8965 0.941176 8C0.941176 4.10353 4.10353 0.941176 8 0.941176C11.8965 0.941176 15.0588 4.10353 15.0588 8C15.0588 11.8965 11.8965 15.0588 8 15.0588Z" fill="#353535"/><path d="M5.5 5.5L10.8333 10.8333" stroke="#353535" stroke-width="1.5" stroke-linejoin="round"/><path d="M10.8333 5.5L5.5 10.8333" stroke="#353535" stroke-width="1.5" stroke-linejoin="round"/></svg>`;
+async function makeClearIcon(colorVar: Variable): Promise<SceneNode> {
+  return makeIconInstance("remove", colorVar, 0, REMOVE_ICON_SVG); // size 0 = 리사이즈 안 함(네이티브 24)
 }
 
 // ── Search Input (form-control + 돋보기 아이콘) ───────────────────────────────
@@ -848,8 +931,29 @@ async function buildSearch(maps: BuildMaps, originY: number): Promise<{ set: Com
       comp.fills = [boundPaint(scv(maps, fc(st.bg)))];
       comp.strokes = [boundPaint(scv(maps, fc(st.border)))];
       comp.strokeWeight = 1; comp.strokeAlign = "INSIDE";
-      comp.appendChild(await makeBoundText(st.txt, sc.font, "Regular", scv(maps, fc(st.tc))));
-      comp.appendChild(makeStrokeIcon(MAG, scv(maps, fc(st.icon))));
+      const textNode = await makeBoundText(st.txt, sc.font, "Regular", scv(maps, fc(st.tc)));
+      if (st.name === "Focus") {
+        // Focus(=selected): [검색어 + 커서] 좌측 / [삭제(close) + 돋보기] 우측. 삭제는 돋보기 왼쪽(MVP4.2 순서).
+        const lead = figma.createFrame();
+        lead.name = "lead"; lead.fills = [];
+        lead.layoutMode = "HORIZONTAL"; lead.counterAxisAlignItems = "CENTER";
+        lead.primaryAxisSizingMode = "AUTO"; lead.counterAxisSizingMode = "AUTO";
+        lead.itemSpacing = 4;
+        lead.appendChild(textNode);
+        lead.appendChild(makeCaret(sc.font, scv(maps, fc("border/selected"))));
+        comp.appendChild(lead);
+        const trail = figma.createFrame();
+        trail.name = "trail"; trail.fills = [];
+        trail.layoutMode = "HORIZONTAL"; trail.counterAxisAlignItems = "CENTER";
+        trail.primaryAxisSizingMode = "AUTO"; trail.counterAxisSizingMode = "AUTO";
+        trail.itemSpacing = 4;
+        trail.appendChild(await makeClearIcon(scv(maps, fc("icon/default"))));
+        trail.appendChild(await makeIconInstance("search", scv(maps, fc(st.icon)), 16, MAG));
+        comp.appendChild(trail);
+      } else {
+        comp.appendChild(textNode);
+        comp.appendChild(await makeIconInstance("search", scv(maps, fc(st.icon)), 16, MAG));
+      }
       comp.resize(160, sc.h);
       setLightMode(comp, maps);
       comps.push(comp);
@@ -897,6 +1001,11 @@ async function buildTextarea(maps: BuildMaps, originY: number): Promise<{ set: C
     comp.strokes = [boundPaint(scv(maps, fc(st.border)))];
     comp.strokeWeight = 1; comp.strokeAlign = "INSIDE";
     comp.appendChild(await makeBoundText(st.txt, 14, "Regular", scv(maps, fc(st.tc))));
+    if (st.name === "Focus") {
+      // Focus(=selected): 텍스트 뒤 입력 커서. 텍스트에리어는 삭제(close) 아이콘 미포함(사용자 결정).
+      comp.itemSpacing = 4;
+      comp.appendChild(makeCaret(14, scv(maps, fc("border/selected"))));
+    }
     setLightMode(comp, maps);
     comps.push(comp);
     cells.push({ comp, row, col: 0 });
@@ -957,7 +1066,7 @@ async function buildSelect(maps: BuildMaps, originY: number): Promise<{ set: Com
       trigger.strokes = [boundPaint(scv(maps, fc(st.border)))];
       trigger.strokeWeight = 1; trigger.strokeAlign = "INSIDE";
       trigger.appendChild(await makeBoundText("선택", sc.font, "Regular", scv(maps, fc(st.tc))));
-      trigger.appendChild(makeStrokeIcon((st.up ? chevUp : chevDown)("#000"), scv(maps, fc(st.icon))));
+      trigger.appendChild(await makeIconInstance("chevron", scv(maps, fc(st.icon)), 16, (st.up ? chevUp : chevDown)("#000"), st.up ? 90 : 270));
       trigger.resize(140, sc.h);
 
       const comp = figma.createComponent();
@@ -1214,7 +1323,7 @@ async function buildFilterChip(maps: BuildMaps, originY: number): Promise<{ set:
         chip.appendChild(await makeBoundText(valText, 14, "Medium", scv(maps, `color/chip/${v}/label/${valLbSlot}`)));
         // arrow: 펼침이면 아래방향, 아니면 우향. 색 = 라벨색 정합(default/disabled/selected).
         const arrowSlot = ss.lb;
-        chip.appendChild(makeStrokeIcon((ss.open ? arrowDown : arrowRight), scv(maps, `color/chip/${v}/label/${arrowSlot}`)));
+        chip.appendChild(await makeIconInstance("chevron", scv(maps, `color/chip/${v}/label/${arrowSlot}`), 16, (ss.open ? arrowDown : arrowRight), ss.open ? 270 : 0));
         chip.resize(chip.width, 36); // chip-height-lg (PC 기본 36)
 
         // 컴포넌트(세로): chip + (Selected 면 드롭다운 패널)
@@ -1350,7 +1459,7 @@ async function buildTimePicker(maps: BuildMaps, originY: number): Promise<{ set:
       trigger.strokes = [boundPaint(scv(maps, fc(st.border)))];
       trigger.strokeWeight = 1; trigger.strokeAlign = "INSIDE";
       trigger.appendChild(await makeBoundText(st.txt, sc.font, "Regular", scv(maps, fc(st.tc))));
-      trigger.appendChild(makeStrokeIcon(CLOCK, scv(maps, fc(st.icon))));
+      trigger.appendChild(await makeIconInstance("clock", scv(maps, fc(st.icon)), 18, CLOCK));
       trigger.resize(150, sc.h);
 
       const comp = figma.createComponent();
@@ -1628,7 +1737,7 @@ async function buildPagination(maps: BuildMaps, originY: number): Promise<{ set:
     comp.fills = [boundPaint(scv(maps, pg(st.bg)))];
     comp.strokes = [boundPaint(scv(maps, pg(st.border)))];
     comp.strokeWeight = 1; comp.strokeAlign = "INSIDE";
-    const icon = makeStrokeIcon(CHEV_PREV, scv(maps, st.icon));
+    const icon = await makeIconInstance("chevron", scv(maps, st.icon), 14, CHEV_PREV, 180);
     comp.appendChild(icon); icon.x = (SZ - icon.width) / 2; icon.y = (SZ - icon.height) / 2;
     setLightMode(comp, maps);
     comps.push(comp); byKey.set(`Arrow/${st.state}`, comp);
@@ -1642,7 +1751,7 @@ async function buildPagination(maps: BuildMaps, originY: number): Promise<{ set:
     comp.fills = [boundPaint(scv(maps, pg(st.bg)))];
     comp.strokes = [boundPaint(scv(maps, pg(st.border)))];
     comp.strokeWeight = 1; comp.strokeAlign = "INSIDE";
-    const icon = makeStrokeIcon(CHEV_EDGE, scv(maps, st.icon));
+    const icon = makeStrokeIcon(CHEV_EDGE, scv(maps, st.icon)); // icon-vector-allow: 페이지네이션 Edge(처음/마지막=쉐브론+바) — V2.2 라이브러리에 해당 아이콘 없음
     comp.appendChild(icon); icon.x = (SZ - icon.width) / 2; icon.y = (SZ - icon.height) / 2;
     setLightMode(comp, maps);
     comps.push(comp); byKey.set(`Edge/${st.state}`, comp);
@@ -1709,13 +1818,18 @@ async function fillGnbMenu(node: ComponentNode | FrameNode, maps: BuildMaps, siz
   return W;
 }
 
-/** GNB 유틸 아이콘 버튼(md/sm=40·glyph24 · xsm=32·glyph18). 글리프 가운데. */
-function gnbUtilBtn(maps: BuildMaps, svg: string, box = 40, glyph = 24): FrameNode {
+/** GNB 유틸 아이콘 버튼(md/sm=40·glyph24 · xsm=32·glyph18). 글리프 가운데. role 있으면 라이브러리 인스턴스, 없으면(globe 등) 벡터. */
+async function gnbUtilBtn(maps: BuildMaps, role: string | null, svg: string, box = 40, glyph = 24): Promise<FrameNode> {
   const btn = figma.createFrame();
   btn.name = "util-btn"; btn.resize(box, box); btn.fills = [];
-  const icon = makeFillIcon(svg, scv(maps, "color/icon/gray-dark"));
-  if (glyph !== 24) { try { icon.rescale(glyph / 24); } catch (e) { /* skip */ } } // 원본 글리프 max-side 24 기준 축소
-  btn.appendChild(icon); icon.x = (box - icon.width) / 2; icon.y = (box - icon.height) / 2;
+  let icon: SceneNode;
+  if (role) {
+    icon = await makeIconInstance(role, scv(maps, "color/icon/gray-dark"), glyph, svg);
+  } else {
+    icon = makeFillIcon(svg, scv(maps, "color/icon/gray-dark")); // icon-vector-allow: GNB 언어(지구본) — V2.2 라이브러리에 globe 아이콘 없음
+    if (glyph !== 24) { try { (icon as FrameNode).rescale(glyph / 24); } catch (e) { /* skip */ } }
+  }
+  btn.appendChild(icon); icon.x = (box - (icon as FrameNode).width) / 2; icon.y = (box - (icon as FrameNode).height) / 2;
   return btn;
 }
 
@@ -1793,9 +1907,9 @@ async function buildGNB(maps: BuildMaps, originY: number): Promise<{ set: Compon
       util.counterAxisAlignItems = "CENTER"; util.primaryAxisSizingMode = "AUTO"; util.counterAxisSizingMode = "AUTO";
       const utilBox = sk === "xsm" ? 32 : 40;
       const utilGlyph = sk === "xsm" ? 18 : 24;
-      util.appendChild(gnbUtilBtn(maps, GNB_UTIL_SVGS.lang, utilBox, utilGlyph));
-      util.appendChild(gnbUtilBtn(maps, GNB_UTIL_SVGS.account, utilBox, utilGlyph));
-      util.appendChild(gnbUtilBtn(maps, GNB_UTIL_SVGS.menu, utilBox, utilGlyph));
+      util.appendChild(await gnbUtilBtn(maps, "globe", GNB_UTIL_SVGS.lang, utilBox, utilGlyph)); // lang=지구본: ic_인터넷(35:3317) 인스턴스
+      util.appendChild(await gnbUtilBtn(maps, "account", GNB_UTIL_SVGS.account, utilBox, utilGlyph));
+      util.appendChild(await gnbUtilBtn(maps, "menu", GNB_UTIL_SVGS.menu, utilBox, utilGlyph));
 
       // 조립: center-between = [로고 | 메뉴 | 유틸] · start = [(로고+메뉴 gap64) | 유틸]
       if (al.key === "center-between") {
@@ -1869,9 +1983,9 @@ async function buildCalendarPanel(maps: BuildMaps): Promise<FrameNode> {
   header.layoutMode = "HORIZONTAL"; header.primaryAxisSizingMode = "FIXED"; header.counterAxisSizingMode = "FIXED";
   header.primaryAxisAlignItems = "SPACE_BETWEEN"; header.counterAxisAlignItems = "CENTER";
   panel.appendChild(header); header.layoutAlign = "STRETCH"; header.resize(308, 32);
-  header.appendChild(makeStrokeIcon(CHEV_L, scv(maps, dp("text/primary"))));
+  header.appendChild(await makeIconInstance("chevron", scv(maps, dp("text/primary")), 16, CHEV_L, 180));
   header.appendChild(await makeBoundText("2026.06", 24, "Bold", scv(maps, dp("text/primary"))));
-  header.appendChild(makeStrokeIcon(CHEV_R, scv(maps, dp("text/primary"))));
+  header.appendChild(await makeIconInstance("chevron", scv(maps, dp("text/primary")), 16, CHEV_R, 0));
 
   // 요일 행 — 7 셀 (일=sunday·토=saturday·평일=secondary)
   const wkRow = figma.createFrame(); wkRow.name = "weekdays"; wkRow.fills = [];
@@ -1963,7 +2077,7 @@ async function buildDatePicker(maps: BuildMaps, originY: number): Promise<{ set:
       trigger.fills = [boundPaint(scv(maps, fc(st.bg)))];
       trigger.strokes = [boundPaint(scv(maps, fc(st.border)))]; trigger.strokeWeight = 1; trigger.strokeAlign = "INSIDE";
       trigger.appendChild(await makeBoundText(st.txt, sc.font, "Regular", scv(maps, fc(st.tc))));
-      trigger.appendChild(makeFillIcon(CAL_ICON, scv(maps, fc(st.icon))));
+      trigger.appendChild(await makeIconInstance("calendar", scv(maps, fc(st.icon)), 16, CAL_ICON));
       trigger.resize(180, sc.h);
 
       const comp = figma.createComponent();
@@ -1992,6 +2106,211 @@ async function buildDatePicker(maps: BuildMaps, originY: number): Promise<{ set:
   let bottomY = await decorateSetGrouped(set, opts, maps);
   try { bottomY = Math.max(bottomY, await buildGroupedSpec(opts, maps)); } catch (e) { console.warn(e); }
   return { set, bottomY };
+}
+
+// ── Shell/StatusBar (모바일 셸 — 상태바) ────────────────────────────────────
+// 기기/브라우저 크롬. Platform=App=상태바(시계·신호·wifi·배터리·%), Platform=Web=상태바+브라우저 주소창.
+// 아이콘은 Figma 원본 export SVG(잠김·새로고침=라이브러리 아이콘 #757575=icon/gray, wifi=상태바 글리프 #353535=icon/gray-dark).
+// 신호바·배터리는 토큰 바인딩 사각형으로 정확 재현.
+const SHELL_WIFI_SVG = `<svg width="16" height="12" viewBox="0 0 16 12" fill="none" xmlns="http://www.w3.org/2000/svg"><mask id="sw1" fill="white"><path d="M2.34315 4.34315C3.84344 2.84286 5.87827 2 8 2C10.1217 2 12.1566 2.84285 13.6569 4.34314L8 10L2.34315 4.34315Z"/></mask><path d="M2.34315 4.34315C3.84344 2.84286 5.87827 2 8 2C10.1217 2 12.1566 2.84285 13.6569 4.34314L8 10L2.34315 4.34315Z" stroke="#353535" stroke-width="3.2" mask="url(#sw1)"/><mask id="sw2" fill="white"><path d="M4.46447 6.46447C5.40215 5.52678 6.67392 5 8 5C9.32608 5 10.5979 5.52678 11.5355 6.46447L8 10L4.46447 6.46447Z"/></mask><path d="M4.46447 6.46447C5.40215 5.52678 6.67392 5 8 5C9.32608 5 10.5979 5.52678 11.5355 6.46447L8 10L4.46447 6.46447Z" stroke="#353535" stroke-width="3.2" mask="url(#sw2)"/><circle cx="7.9998" cy="10.2" r="1.2" fill="#353535"/></svg>`;
+const SHELL_LOCK_SVG = `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12.0002 3C9.16131 3 6.85731 5.39657 6.85731 8.33829V11.2286H5.31445V21H18.6859V11.2286H17.143V8.33829C17.143 5.39657 14.839 3 12.0002 3ZM14.4173 17.8114L13.687 18.5417L11.9899 16.8446L10.2927 18.5417L9.56245 17.8114L11.2596 16.1143L9.56245 14.4171L10.2927 13.6869L11.9899 15.384L13.687 13.6869L14.4173 14.4171L12.7202 16.1143L14.4173 17.8114ZM7.88588 11.2286V8.33829C7.88588 5.96229 9.72702 4.02857 12.0002 4.02857C14.2733 4.02857 16.1145 5.96229 16.1145 8.33829V11.2286H7.88588Z" fill="#757575"/></svg>`;
+const SHELL_REFRESH_SVG = `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12.0002 19.9411C9.74488 19.9411 7.61666 18.9776 6.12374 17.3364H9.0143V16.2776H5.02257C4.7261 16.2776 4.49316 16.5106 4.49316 16.807V20.7882H5.55198V18.2576C7.23549 19.9941 9.54371 20.9999 12.0002 20.9999C16.966 20.9999 21.0001 16.9659 21.0001 12C21.0001 11.2271 20.9048 10.4647 20.7142 9.72357L19.6871 9.98828C19.8566 10.6342 19.9413 11.3118 19.9413 12C19.9413 16.3835 16.3836 19.9411 12.0002 19.9411Z" fill="#757575"/><path d="M18.4481 5.74282C16.7646 4.00636 14.4564 3.00049 11.9999 3.00049C7.03408 3.00049 3 7.03457 3 12.0004C3 12.7733 3.09529 13.5357 3.29647 14.2769L4.32352 14.0122C4.15411 13.3663 4.0694 12.6886 4.0694 12.0004C4.05881 7.61692 7.61643 4.0593 11.9999 4.0593C14.2552 4.0593 16.3834 5.02282 17.8763 6.66398H14.9858V7.7228H18.9669C19.2634 7.7228 19.4963 7.48986 19.4963 7.19339V3.21225H18.4375V5.74282H18.4481Z" fill="#757575"/></svg>`;
+
+// SVG 아이콘 — 도형이 fill 이면 fill 을, stroke 면 stroke 를 변수에 바인딩(마스크 도형은 보존). wifi 처럼 fill+stroke 혼재 대응.
+function makeBoundIcon(svg: string, colorVar: Variable): FrameNode {
+  const node = figma.createNodeFromSvg(svg); // icon-vector-allow: 벡터 헬퍼 내부 구현(개별 호출처가 allow 마커 보유)
+  node.name = "icon";
+  const SHAPES = ["VECTOR", "ELLIPSE", "RECTANGLE", "LINE", "POLYGON", "STAR", "BOOLEAN_OPERATION"];
+  (node.findAll((n) => SHAPES.includes(n.type)) as VectorNode[]).forEach((v) => {
+    try {
+      if (v.isMask) return;
+      if (Array.isArray(v.strokes) && v.strokes.length) v.strokes = [boundPaint(colorVar)];
+      if (Array.isArray(v.fills) && (v.fills as Paint[]).length) v.fills = [boundPaint(colorVar)];
+    } catch (e) { /* skip */ }
+  });
+  return node;
+}
+
+// 상태바 내부 사각형(신호바·배터리) — 토큰 바인딩 fill 또는 stroke.
+function shellRect(maps: BuildMaps, x: number, y: number, w: number, h: number, r: number, colorKey: string, asStroke: boolean): RectangleNode {
+  const rc = figma.createRectangle();
+  rc.x = x; rc.y = y; rc.resize(w, h); rc.cornerRadius = r;
+  if (asStroke) { rc.strokes = [boundPaint(scv(maps, colorKey))]; rc.strokeWeight = 1; rc.fills = []; }
+  else { rc.fills = [boundPaint(scv(maps, colorKey))]; rc.strokes = []; }
+  return rc;
+}
+
+// 상태바 한 줄(시계·신호·wifi·배터리·%) 을 target(컴포넌트 또는 프레임)에 채운다. App·Web 공용.
+async function populateStatusRow(target: FrameNode | ComponentNode, maps: BuildMaps): Promise<void> {
+  target.layoutMode = "HORIZONTAL";
+  target.primaryAxisSizingMode = "FIXED"; target.counterAxisSizingMode = "FIXED";
+  target.resize(360, 27);
+  target.primaryAxisAlignItems = "SPACE_BETWEEN"; target.counterAxisAlignItems = "CENTER";
+  target.paddingLeft = 20; target.paddingRight = 16; target.paddingTop = 0; target.paddingBottom = 0;
+  target.fills = [boundPaint(scv(maps, "color/surface/default"))];
+  target.appendChild(await makeBoundText("12:30", 12, "Medium", scv(maps, "color/text/body/secondary")));
+  const right = figma.createFrame();
+  right.name = "status-right";
+  right.layoutMode = "HORIZONTAL"; right.primaryAxisSizingMode = "AUTO"; right.counterAxisSizingMode = "AUTO";
+  right.counterAxisAlignItems = "CENTER"; right.itemSpacing = 6; right.fills = [];
+  const signal = figma.createFrame();
+  signal.name = "signal"; signal.fills = []; signal.clipsContent = false; signal.resize(17, 12);
+  signal.appendChild(shellRect(maps, 0, 8, 3, 4, 0.5, "color/icon/gray-dark", false));
+  signal.appendChild(shellRect(maps, 4.5, 6, 3, 6, 0.5, "color/icon/gray-dark", false));
+  signal.appendChild(shellRect(maps, 9, 4, 3, 8, 0.5, "color/icon/gray-dark", false));
+  signal.appendChild(shellRect(maps, 13.5, 1, 3, 11, 0.5, "color/icon/gray-dark", false));
+  right.appendChild(signal);
+  const wifi = makeBoundIcon(SHELL_WIFI_SVG, scv(maps, "color/icon/gray-dark")); // icon-vector-allow: 휴대폰 셸 상태바 크롬 — DS UI 아이콘 아님
+  wifi.name = "wifi"; right.appendChild(wifi); try { wifi.resize(16, 12); } catch (e) { /* */ }
+  const battery = figma.createFrame();
+  battery.name = "battery"; battery.fills = []; battery.clipsContent = false; battery.resize(24, 12);
+  battery.appendChild(shellRect(maps, 0, 0.5, 20, 11, 2.5, "color/icon/gray-dark", true));
+  battery.appendChild(shellRect(maps, 20.4, 4, 1.6, 4, 1, "color/icon/gray-dark", false));
+  battery.appendChild(shellRect(maps, 2, 2.5, 14.5, 7, 1, "color/icon/gray-dark", false));
+  right.appendChild(battery);
+  right.appendChild(await makeBoundText("78%", 12, "Medium", scv(maps, "color/text/body/secondary")));
+  target.appendChild(right);
+}
+
+// 브라우저 주소창(자물쇠 + URL pill + 새로고침) — Web 변형 전용.
+async function buildShellUrlBar(maps: BuildMaps): Promise<FrameNode> {
+  const bar = figma.createFrame();
+  bar.name = "browser-url-bar";
+  bar.layoutMode = "HORIZONTAL"; bar.primaryAxisSizingMode = "FIXED"; bar.counterAxisSizingMode = "FIXED";
+  bar.resize(360, 50);
+  bar.primaryAxisAlignItems = "CENTER"; bar.counterAxisAlignItems = "CENTER";
+  bar.itemSpacing = 6; bar.paddingLeft = 16; bar.paddingRight = 16; bar.paddingTop = 12; bar.paddingBottom = 12;
+  bar.fills = [boundPaint(scv(maps, "color/surface/default"))];
+  const lock = makeBoundIcon(SHELL_LOCK_SVG, scv(maps, "color/icon/gray")); // icon-vector-allow: 휴대폰 셸 상태바 크롬 — DS UI 아이콘 아님
+  lock.name = "ic_잠김"; bar.appendChild(lock); try { lock.resize(24, 24); } catch (e) { /* */ }
+  const pill = figma.createFrame();
+  pill.name = "url"; pill.layoutMode = "HORIZONTAL";
+  pill.primaryAxisAlignItems = "CENTER"; pill.counterAxisAlignItems = "CENTER";
+  pill.primaryAxisSizingMode = "FIXED"; pill.counterAxisSizingMode = "FIXED";
+  pill.cornerRadius = 100; pill.fills = [boundPaint(scv(maps, "color/bg/subtle"))];
+  pill.layoutGrow = 1; pill.layoutAlign = "STRETCH"; // flex-1 + h-full
+  pill.appendChild(await makeBoundText("m.s1.co.kr", 14, "Regular", scv(maps, "color/text/body/tertiary")));
+  bar.appendChild(pill);
+  const refresh = makeBoundIcon(SHELL_REFRESH_SVG, scv(maps, "color/icon/gray")); // icon-vector-allow: 휴대폰 셸 브라우저 툴바 크롬 — DS UI 아이콘 아님
+  refresh.name = "ic_새로고침"; bar.appendChild(refresh); try { refresh.resize(24, 24); } catch (e) { /* */ }
+  return bar;
+}
+
+async function buildStatusBar(maps: BuildMaps, originY: number): Promise<{ set: ComponentSetNode; bottomY: number }> {
+  const app = figma.createComponent();
+  app.name = "Platform=App";
+  await populateStatusRow(app, maps);
+  setLightMode(app, maps);
+
+  const web = figma.createComponent();
+  web.name = "Platform=Web";
+  web.layoutMode = "VERTICAL"; web.primaryAxisSizingMode = "AUTO"; web.counterAxisSizingMode = "FIXED";
+  web.resize(360, 77); web.itemSpacing = 0; web.fills = [];
+  const row = figma.createFrame(); row.name = "Shell/StatusBar";
+  await populateStatusRow(row, maps);
+  row.layoutAlign = "STRETCH";
+  web.appendChild(row);
+  const urlbar = await buildShellUrlBar(maps);
+  urlbar.layoutAlign = "STRETCH";
+  web.appendChild(urlbar);
+  setLightMode(web, maps);
+
+  const set = figma.combineAsVariants([app, web], figma.currentPage);
+  set.name = "Shell/StatusBar";
+  set.x = 0; set.y = originY;
+  const sh = (typeof set.height === "number" && set.height > 0) ? set.height : 200;
+  return { set, bottomY: originY + sh };
+}
+
+// ── Shell/NavBar (모바일 셸 — 내비게이션) ───────────────────────────────────
+// 원본은 카카오톡 사진 스크린샷(벡터·토큰 0) → DS 토큰 벡터로 신규 제작(사용자 결정).
+// 표준 크롬 글리프(line 24×24, stroke=icon/gray)로 그린다. App=안드로이드 내비, Web=브라우저 툴바+안드로이드 내비.
+const NAV_SVG = (() => {
+  const s = (d: string) => `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">${d}</svg>`;
+  const P = (path: string) => `<path d="${path}" stroke="#757575" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>`;
+  return {
+    chevronLeft:  s(P("M15 6L9 12L15 18")),
+    chevronRight: s(P("M9 6L15 12L9 18")),
+    home:         s(P("M3.5 11L12 4L20.5 11") + P("M6 9.5V20H18V9.5")),
+    star:         s(P("M12 3.5L14.58 8.74L20.36 9.58L16.18 13.65L17.17 19.41L12 16.69L6.83 19.41L7.82 13.65L3.64 9.58L9.42 8.74L12 3.5Z")),
+    menu:         s(P("M4 7H20") + P("M4 12H20") + P("M4 17H20")),
+    recents:      s(P("M8 6V18") + P("M12 6V18") + P("M16 6V18")),
+    androidHome:  s(`<rect x="6" y="6" width="12" height="12" rx="3" stroke="#757575" stroke-width="2"/>`),
+  };
+})();
+
+function navIcon(svg: string, maps: BuildMaps): FrameNode {
+  const i = makeBoundIcon(svg, scv(maps, "color/icon/gray")); // icon-vector-allow: 휴대폰 셸 네비바 크롬 아이콘 — DS UI 아이콘 아님
+  i.name = "icon"; try { i.resize(24, 24); } catch (e) { /* */ }
+  return i;
+}
+
+// 탭 개수 글리프(둥근 사각 + 숫자 "29") — 고정 24×24 프레임.
+async function navTabsIcon(maps: BuildMaps): Promise<FrameNode> {
+  const f = figma.createFrame();
+  f.name = "tabs"; f.fills = []; f.clipsContent = false; f.resize(24, 24);
+  const r = figma.createRectangle();
+  r.x = 4; r.y = 5; r.resize(16, 14); r.cornerRadius = 2;
+  r.fills = []; r.strokes = [boundPaint(scv(maps, "color/icon/gray"))]; r.strokeWeight = 2;
+  f.appendChild(r);
+  const t = await makeBoundText("29", 9, "Medium", scv(maps, "color/icon/gray"));
+  try { t.textAutoResize = "NONE"; t.resize(24, 14); t.textAlignHorizontal = "CENTER"; t.textAlignVertical = "CENTER"; t.x = 0; t.y = 5; } catch (e) { /* */ }
+  f.appendChild(t);
+  return f;
+}
+
+// 안드로이드 시스템 내비(최근·홈·뒤로) 를 target 에 채운다. App 컴포넌트·Web 하단행 공용.
+function populateAndroidNav(target: FrameNode | ComponentNode, maps: BuildMaps): void {
+  target.layoutMode = "HORIZONTAL"; target.primaryAxisSizingMode = "FIXED"; target.counterAxisSizingMode = "FIXED";
+  target.resize(360, 45);
+  target.primaryAxisAlignItems = "SPACE_BETWEEN"; target.counterAxisAlignItems = "CENTER";
+  target.paddingLeft = 48; target.paddingRight = 48; target.paddingTop = 0; target.paddingBottom = 0;
+  target.fills = [boundPaint(scv(maps, "color/surface/default"))];
+  target.appendChild(navIcon(NAV_SVG.recents, maps));
+  target.appendChild(navIcon(NAV_SVG.androidHome, maps));
+  target.appendChild(navIcon(NAV_SVG.chevronLeft, maps));
+}
+
+// 브라우저 툴바(뒤로·앞으로·홈·북마크·탭·메뉴) — Web 변형 상단행.
+async function buildBrowserToolbarRow(maps: BuildMaps): Promise<FrameNode> {
+  const row = figma.createFrame();
+  row.name = "browser-toolbar";
+  row.layoutMode = "HORIZONTAL"; row.primaryAxisSizingMode = "FIXED"; row.counterAxisSizingMode = "FIXED";
+  row.resize(360, 50);
+  row.primaryAxisAlignItems = "SPACE_BETWEEN"; row.counterAxisAlignItems = "CENTER";
+  row.paddingLeft = 16; row.paddingRight = 16; row.paddingTop = 0; row.paddingBottom = 0;
+  row.fills = [boundPaint(scv(maps, "color/surface/default"))];
+  row.appendChild(navIcon(NAV_SVG.chevronLeft, maps));
+  row.appendChild(navIcon(NAV_SVG.chevronRight, maps));
+  row.appendChild(navIcon(NAV_SVG.home, maps));
+  row.appendChild(navIcon(NAV_SVG.star, maps));
+  row.appendChild(await navTabsIcon(maps));
+  row.appendChild(navIcon(NAV_SVG.menu, maps));
+  return row;
+}
+
+async function buildNavBar(maps: BuildMaps, originY: number): Promise<{ set: ComponentSetNode; bottomY: number }> {
+  const app = figma.createComponent();
+  app.name = "Platform=App";
+  populateAndroidNav(app, maps);
+  setLightMode(app, maps);
+
+  const web = figma.createComponent();
+  web.name = "Platform=Web";
+  web.layoutMode = "VERTICAL"; web.primaryAxisSizingMode = "AUTO"; web.counterAxisSizingMode = "FIXED";
+  web.resize(360, 95); web.itemSpacing = 0; web.fills = [];
+  const toolbar = await buildBrowserToolbarRow(maps);
+  toolbar.layoutAlign = "STRETCH"; web.appendChild(toolbar);
+  const nav = figma.createFrame(); nav.name = "android-nav";
+  populateAndroidNav(nav, maps);
+  nav.layoutAlign = "STRETCH"; web.appendChild(nav);
+  setLightMode(web, maps);
+
+  const set = figma.combineAsVariants([app, web], figma.currentPage);
+  set.name = "Shell/NavBar";
+  set.x = 0; set.y = originY;
+  const sh = (typeof set.height === "number" && set.height > 0) ? set.height : 200;
+  return { set, bottomY: originY + sh };
 }
 
 // ── 멀티 컴포넌트 오케스트레이터 ──────────────────────────────────────────────
@@ -2040,49 +2359,182 @@ export async function buildAllComponents(
   const added: string[] = [];
   const skipped: string[] = [];
 
-  // Input 은 별도 컬럼(INPUT_SHEET_X, 상단). 세로 스택과 무관하므로 따로 처리.
-  if (existing.has("Input")) skipped.push("Input");
-  else { const r = await buildInput(maps, 0); created += r.set.children.length; added.push("Input"); }
+  // 컴포넌트 빌더 — 이름 → (originY) => {set, bottomY}. Input 은 originX=0(섹션 컬럼 좌측정렬).
+  const runners: { [name: string]: (oy: number) => Promise<{ set: ComponentSetNode; bottomY: number }> } = {
+    "Button":               (oy) => buildButtonSet(maps, onProgress, 92, 97, oy),
+    "Checkbox":             (oy) => buildCheckbox(maps, oy),
+    "Radio":                (oy) => buildRadio(maps, oy),
+    "Toggle":               (oy) => buildToggle(maps, oy),
+    "Chip":                 (oy) => buildChip(maps, oy),
+    "Filter Chip":          (oy) => buildFilterChip(maps, oy),
+    "Input":                (oy) => buildInput(maps, oy, 0),
+    "Search Input":         (oy) => buildSearch(maps, oy),
+    "Text Area":            (oy) => buildTextarea(maps, oy),
+    "Select Box":           (oy) => buildSelect(maps, oy),
+    "Dropdown List":        (oy) => buildDropdownList(maps, oy),
+    "Date Picker":          (oy) => buildDatePicker(maps, oy),
+    "Time Picker":          (oy) => buildTimePicker(maps, oy),
+    "Time Picker Dropdown": (oy) => buildTimePickerDropdown(maps, oy),
+    "Table Cell":           (oy) => buildTableCell(maps, oy),
+    "Line Tab":             (oy) => buildLineTab(maps, oy),
+    "GNB":                  (oy) => buildGNB(maps, oy),
+    "Pagination":           (oy) => buildPagination(maps, oy),
+    "Shell/StatusBar":      (oy) => buildStatusBar(maps, oy),
+    "Shell/NavBar":         (oy) => buildNavBar(maps, oy),
+  };
 
-  // 세로 스택 (Button 최상단 → … → Time Picker Dropdown). 기존 항목은 실제 위치만큼 y 전진.
-  const stack: { name: string; run: (oy: number) => Promise<{ set: ComponentSetNode; bottomY: number }> }[] = [
-    { name: "Button",               run: (oy) => buildButtonSet(maps, onProgress, 92, 97, oy) },
-    { name: "Checkbox",             run: (oy) => buildCheckbox(maps, oy) },
-    { name: "Radio",                run: (oy) => buildRadio(maps, oy) },
-    { name: "Toggle",               run: (oy) => buildToggle(maps, oy) },
-    { name: "Chip",                 run: (oy) => buildChip(maps, oy) },
-    { name: "Filter Chip",          run: (oy) => buildFilterChip(maps, oy) },
-    { name: "Search Input",         run: (oy) => buildSearch(maps, oy) },
-    { name: "Text Area",            run: (oy) => buildTextarea(maps, oy) },
-    { name: "Select Box",           run: (oy) => buildSelect(maps, oy) },
-    { name: "Dropdown List",        run: (oy) => buildDropdownList(maps, oy) },
-    { name: "Line Tab",             run: (oy) => buildLineTab(maps, oy) },
-    { name: "Table Cell",           run: (oy) => buildTableCell(maps, oy) },
-    { name: "Time Picker",          run: (oy) => buildTimePicker(maps, oy) },
-    { name: "Time Picker Dropdown", run: (oy) => buildTimePickerDropdown(maps, oy) },
-    { name: "Pagination",           run: (oy) => buildPagination(maps, oy) },
-    { name: "GNB",                  run: (oy) => buildGNB(maps, oy) },
-    { name: "Date Picker",          run: (oy) => buildDatePicker(maps, oy) },
+  // 대메뉴(섹션) 분류 — components.html(components-new) 의 5개 대메뉴와 동일. 각 카테고리 = 1 Figma Section.
+  // 카테고리별로 연속 세로 밴드를 차지하므로 섹션끼리 겹치지 않는다.
+  const CATEGORIES: { name: string; members: string[] }[] = [
+    { name: "Actions",    members: ["Button"] },
+    { name: "Selection",  members: ["Checkbox", "Radio", "Toggle", "Chip", "Filter Chip"] },
+    { name: "Table",      members: ["Table Cell"] },
+    { name: "Navigation", members: ["Line Tab", "GNB", "Pagination"] },
+    { name: "Shell",      members: ["Shell/StatusBar", "Shell/NavBar"] },
+    // Form 은 폭이 커서 맨 마지막에 빌드(좌측 스택 중간 빈칸 방지) 후 우측 별도 컬럼으로 이동.
+    { name: "Form",       members: ["Input", "Search Input", "Text Area", "Select Box", "Dropdown List", "Date Picker", "Time Picker", "Time Picker Dropdown"] },
   ];
+  const TOTAL = CATEGORIES.reduce((s, c) => s + c.members.length, 0);
+  const SECTION_TITLE_SPACE = 140; // 섹션 제목 + 상단 여백(컴포넌트 시작 전)
+  const SECTION_GAP = 220;         // 섹션 사이 세로 간격(컴포넌트 간 140 보다 커서 타이틀 겹침 방지)
+  const SECTION_PAD = 64;          // 섹션 내부 좌우/하단 여백
 
-  let y = 0; // Button 슬롯 = 최상단
-  for (let i = 0; i < stack.length; i++) {
-    const s = stack[i];
-    if (existing.has(s.name)) {
-      const rb = regionBottom(s.name);
-      if (rb != null) y = rb + 140;   // 기존 항목 실제 위치만큼 전진(슬롯 정렬 유지)
-      skipped.push(s.name);
-      continue;
+  let y = 0;
+  let done = 0;
+  for (const cat of CATEGORIES) {
+    y += SECTION_TITLE_SPACE; // 섹션 제목 공간 확보 후 컴포넌트 시작
+    for (const name of cat.members) {
+      const run = runners[name];
+      if (!run) continue;
+      done++;
+      if (existing.has(name)) {
+        const rb = regionBottom(name);
+        if (rb != null) y = rb + 140;   // 기존 항목 실제 위치만큼 전진(슬롯 정렬 유지)
+        skipped.push(name);
+        continue;
+      }
+      if (onProgress) onProgress(`${name} 생성 중…`, 92 + Math.round((done / TOTAL) * 8));
+      // 재생성 전 해당 컴포넌트의 고아 잔재(세트만 지우고 남은 스펙 프레임, TPD 의 Cell·States 등) 정리 → 중복 방지
+      removeByNames(footprint(name));
+      const res = await run(y);
+      created += res.set.children.length;
+      added.push(name);
+      y = res.bottomY + 140;
     }
-    if (onProgress) onProgress(`${s.name} 생성 중…`, 92 + Math.round(((i + 1) / stack.length) * 8));
-    // 재생성 전 해당 컴포넌트의 고아 잔재(세트만 지우고 남은 스펙 프레임, TPD 의 Cell·States 등) 정리 → 중복 방지
-    removeByNames(footprint(s.name));
-    const res = await s.run(y);
-    created += res.set.children.length;
-    added.push(s.name);
-    y = res.bottomY + 140;
+    // 카테고리의 모든 풋프린트 노드를 1개 Figma Section 으로 묶는다(절대 위치 보존). mock 환경은 no-op.
+    await wrapCategoryInSection(cat.name, cat.members, footprint, SECTION_TITLE_SPACE, SECTION_PAD);
+    y += SECTION_GAP;
   }
+
+  // Form 섹션(폭 큼)을 좌측 세로 스택에서 빼내 우측 별도 컬럼(상단 정렬)으로 통째로 이동.
+  try {
+    const secs = figma.currentPage.findAll((n) => n.type === "SECTION" && n.name === "Form");
+    if (Array.isArray(secs) && secs.length) relocateSection(secs[0] as SectionNode, FORM_COLUMN_X, 0);
+  } catch (e) { /* mock/no-page */ }
 
   if (onProgress) onProgress(`완료 — 추가 ${added.length}개 · 기존 보존 ${skipped.length}개`, 100);
   return { created, added, skipped };
+}
+
+// ── 섹션 래핑 (대메뉴 묶기) ───────────────────────────────────────────────────
+// 한 카테고리의 풋프린트 노드(세트+스펙 프레임)를 1개 Figma Section 으로 묶는다.
+// 절대 위치를 보존하므로(섹션 좌표 규약 무관) 레이아웃이 깨지지 않는다. 같은 이름 섹션이 있으면 재사용(멱등).
+// mock(키체크) 환경에서는 createSection 미지원 + page.children 비배열 → no-op.
+function absBBox(nodes: SceneNode[]): { minX: number; minY: number; maxX: number; maxY: number } | null {
+  let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity, ok = false;
+  for (const n of nodes) {
+    const b = n.absoluteBoundingBox;
+    if (!b || typeof b.x !== "number" || typeof b.width !== "number") continue;
+    ok = true;
+    minX = Math.min(minX, b.x); minY = Math.min(minY, b.y);
+    maxX = Math.max(maxX, b.x + b.width); maxY = Math.max(maxY, b.y + b.height);
+  }
+  return ok ? { minX, minY, maxX, maxY } : null;
+}
+
+// Form 우측 컬럼 X 좌표(좌측 스택 최대폭보다 넉넉히 우측). 좌측 컬럼 최대 ~2.7k 가정.
+const FORM_COLUMN_X = 3000;
+
+// 섹션을 자식과 함께 (targetX, targetY) 로 통째 이동. 섹션 자식 좌표 규약과 무관하게
+// 각 자식의 목표 절대위치를 먼저 잡고, 섹션 이동 후 절대위치를 보정한다. mock 은 no-op.
+function relocateSection(section: SectionNode, targetX: number, targetY: number): void {
+  let kids: SceneNode[] = [];
+  try { const c = section.children; if (Array.isArray(c)) kids = c as SceneNode[]; } catch (e) { return; }
+  const sx = typeof section.x === "number" ? section.x : 0;
+  const sy = typeof section.y === "number" ? section.y : 0;
+  const dx = targetX - sx, dy = targetY - sy;
+  const desired: { k: SceneNode; x: number; y: number }[] = [];
+  for (const k of kids) {
+    const b = k.absoluteBoundingBox;
+    if (b && typeof b.x === "number" && typeof b.y === "number") desired.push({ k, x: b.x + dx, y: b.y + dy });
+  }
+  try { section.x = targetX; section.y = targetY; } catch (e) { /* */ }
+  for (const d of desired) {
+    const b = d.k.absoluteBoundingBox;
+    if (b && typeof b.x === "number" && typeof d.k.x === "number") { d.k.x += d.x - b.x; d.k.y += d.y - b.y; }
+  }
+}
+
+async function wrapCategoryInSection(
+  title: string,
+  members: string[],
+  footprintFn: (p: string) => string[],
+  titleSpace: number,
+  pad: number,
+): Promise<void> {
+  if (typeof figma.createSection !== "function") return; // mock/구버전 → 건너뜀
+  let kids: SceneNode[] = [];
+  try {
+    const c = figma.currentPage.children;
+    if (Array.isArray(c)) kids = (c as SceneNode[]).filter((n) => n.type !== "SECTION");
+  } catch (e) { return; }
+  if (!kids.length) return;
+  // 1) footprint 이름(세트+스펙)으로 이 카테고리의 대표 노드 → y밴드 산출
+  const names = new Set<string>();
+  for (const m of members) for (const n of footprintFn(m)) names.add(n);
+  const seedBox = absBBox(kids.filter((n) => names.has(n.name)));
+  if (!seedBox) return;
+  const bandTop = seedBox.minY - titleSpace;
+  const bandBot = seedBox.maxY + pad;
+  // 2) y밴드에 들어오는 모든 페이지 노드 수집 — 세트 데코레이션(decorateSet*→floatingEmit)이
+  //    만든 "떠있는" 그룹라벨·밴드(footprint 이름 아님)까지 포함해야 섹션 배경에 가려지지 않음.
+  //    카테고리는 disjoint 한 세로 밴드라 이웃 카테고리 노드는 잡히지 않는다.
+  const nodes = kids.filter((n) => {
+    const b = n.absoluteBoundingBox;
+    if (!b || typeof b.y !== "number" || typeof b.height !== "number") return false;
+    const cy = b.y + b.height / 2;
+    return cy >= bandTop && cy <= bandBot;
+  });
+  if (!nodes.length) return;
+  const box = absBBox(nodes);
+  if (!box) return;
+
+  // 같은 이름 섹션 재사용(멱등) 또는 신규 생성
+  let section: SectionNode | null = null;
+  try {
+    const secs = figma.currentPage.findAll((n) => n.type === "SECTION" && n.name === title);
+    if (Array.isArray(secs) && secs.length) section = secs[0] as SectionNode;
+  } catch (e) { /* mock → 신규 */ }
+  if (!section) section = figma.createSection();
+  section.name = title;
+  // 섹션을 먼저 bbox 기준으로 배치/크기지정(자식 추가 전) → 이후 자식 절대위치 보정
+  try { section.x = box.minX - pad; section.y = box.minY - titleSpace; } catch (e) { /* */ }
+  try {
+    section.resizeWithoutConstraints(
+      Math.max(0.01, (box.maxX - box.minX) + pad * 2),
+      Math.max(0.01, (box.maxY - box.minY) + titleSpace + pad),
+    );
+  } catch (e) { /* */ }
+  // 노드를 섹션으로 이동하되 절대 위치 보존(섹션 자식 좌표 규약과 무관하게 보정)
+  for (const n of nodes) {
+    const before = n.absoluteBoundingBox;
+    const bx = before && typeof before.x === "number" ? before.x : null;
+    const by = before && typeof before.y === "number" ? before.y : null;
+    try { section.appendChild(n); } catch (e) { continue; }
+    const after = n.absoluteBoundingBox;
+    if (bx != null && by != null && after && typeof after.x === "number" && typeof n.x === "number") {
+      n.x += bx - after.x;
+      n.y += by - after.y;
+    }
+  }
 }

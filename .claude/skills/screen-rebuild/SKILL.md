@@ -66,7 +66,12 @@ reports/screen-rebuild/{service}/{flow}/
 1. **추측 금지 + 이미지 폴백** — 데이터로 못 읽은 값은 지어내지 말고 **`get_screenshot`(원본 이미지)로 다시 읽어** 끝까지 원본과 동일하게 재현한다. 그래도 불명확하면 표에 `미확인`으로 표기하고 보고한다.
 2. **색은 항상 토큰** — 시각만 베끼고 색을 raw로 두지 않는다. fills를 **연결된 Variable(아이콘 라이브러리 V2.2 foundation/semantic)에 바인딩**한다. raw hex 잔류 = 검증 ❌.
 3. **컴포넌트만 교체 — 임의 생성 금지** — 정본에 있는 것은 **절대 새로 만들지 않고** 인스턴스로만 올린다. 정본에 없는 컴포넌트/상태가 필요하면 `needs-core-update`로 기록·에스컬레이트한다(임의 제작 금지 — Core 재사용 규칙).
-4. **원본 아이콘 강제** — 아이콘은 손으로 그리지 않는다. 연결된 라이브러리에서 `importComponentByKeyAsync`로 가져온다. 라이브러리에 없으면 보고·에스컬레이트(가짜 도형 금지).
+3-1. 🚫 **외부 라이브러리 절대 금지 + 레거시 인스턴스 clone 금지 (HARD RULE, 2026-06-19 실패로 신설).** 인스턴스는 **오직 이 파일 로컬 정본 COMPONENT_SET(`mainComponent.remote === false`)** 또는 **V2.2 아이콘 라이브러리(key `yE5UCFEbmXJBlYJWB24Lz2`·`ic_`)** 에서만 만든다. 그 외 모든 외부 라이브러리(`remote === true` & 아이콘 key 아님)는 **금지**.
+   - **레거시 원본 화면(1단계 조사 대상)은 "스펙 읽기 전용"이다.** 원본의 인스턴스를 `clone()` 하거나 `getMainComponentAsync()`로 그 mainComponent를 재사용해 새 인스턴스를 만드는 것을 **금지한다** — 레거시 화면은 외부/타 라이브러리(예: UVIS시스템·관계사용)로 만들어졌을 수 있어 외부 참조가 그대로 전파된다. (← 2026-06-19 PC 로그인에서 19개 인스턴스 전부 외부 UVIS 라이브러리가 새어든 실패의 근본 원인.)
+   - 빌드 시작 전 **로컬 정본 세트를 먼저 찾아라**: `figma.root.findAll(n => n.type==="COMPONENT_SET" && !n.remote)` (또는 components-new 페이지). 필요한 컴포넌트의 로컬 세트 id·variant를 확정한 뒤, **그 로컬 세트에서 `.defaultVariant`/해당 variant로 인스턴스 생성**.
+   - 로컬 정본 세트가 **없는** 컴포넌트(예: base Input 미설치)는 임의로 외부 것을 끌어오지 말고 **`needs-core-update`로 에스컬레이트**(figma-library-build로 먼저 로컬 설치).
+   - 인스턴스 생성 직후 `await inst.getMainComponentAsync()` 의 `remote`가 `false`(아이콘은 허용 key)인지 **반드시 확인**. `remote===true`(비-아이콘)면 즉시 중단·보고.
+4. **원본 아이콘 강제** — 아이콘은 손으로 그리지 않는다. **V2.2 아이콘 라이브러리(key `yE5UCFEbmXJBlYJWB24Lz2`)에서** `importComponentByKeyAsync`로 가져온다. 레거시 원본의 아이콘 인스턴스를 clone 금지(외부 라이브러리일 수 있음 — `ic_` 이름이어도 key가 V2.2가 아니면 금지). 라이브러리에 없으면 보고·에스컬레이트(가짜 도형 금지).
 5. **자가인증 금지** — 빌드와 검증을 분리한다(🎩 빌드 / 🕵️ component-verifier 검증). 빌더가 직접 통과 판정하지 않는다.
 6. **막히면 보고** — 값·에셋·아이콘을 못 얻으면 임의로 채우지 말고 어떤 항목인지 사용자에게 알린다.
 
@@ -147,6 +152,8 @@ reports/screen-rebuild/{service}/{flow}/
 - [ ] **텍스트는 V2.4 Figma 텍스트 스타일(Pretendard)을 바인딩한다. 노토로 끝내지 말 것.** 글자(`characters`)는 로드 가능한 **Noto Sans KR**로 먼저 입력 → `await node.setTextStyleIdAsync(스타일id)`로 알맞은 스타일(`title/*`·`body/*`)을 입힌다. MCP가 Pretendard를 렌더용으로 못 불러와도 **바인딩은 성공**하며(`hasMissingFont:true`지만 Pretendard 설치된 데스크톱에선 정상 렌더), 파일엔 올바른 DS 스타일이 박힌다. 스타일id는 `figma.getLocalTextStylesAsync()`로 이름→id 맵을 만들어 찾는다. 매핑: 굵기 Bold→`title/*B`·Medium→`body/*M`·Regular→`body/*R`, 크기는 가장 가까운 토큰 크기. **주의:** 텍스트 스타일은 크기를 그 스타일 값으로 강제하고, 바인딩 후 `fontSize` 재지정은 미설치(Pretendard) 폰트라 불가하므로 비표준 크기(예: 13)는 가장 가까운 토큰 크기(12/14)로 수렴된다(허용편차로 선언). 인스턴스 내부 텍스트에도 `setTextStyleIdAsync`는 적용 가능(검증됨).
 - [ ] 색 fills는 **Variable 바인딩**(`setBoundVariableForPaint` — 새 paint 반환값 재대입). raw hex 금지.
 - [ ] 반복 셸은 **컴포넌트 세트로 만든 뒤 인스턴스**. 화면마다 복제 금지.
+- [ ] 🚫 **인스턴스는 로컬 정본 세트(remote=false)에서만 생성.** 레거시 원본 화면의 인스턴스를 `clone()`/mainComponent 재사용으로 끌어오지 말 것(외부 라이브러리 전파 — 절대규칙 3-1). 아이콘은 V2.2(key `yE5UCFEbmXJBlYJWB24Lz2`)에서 `importComponentByKeyAsync`.
+- [ ] **빌드 종료 전 자가 프로비넌스 스캔(필수):** `루트.findAll(n=>n.type==="INSTANCE")` 전부에 대해 `await getMainComponentAsync()` → `remote===false`(로컬) 또는 V2.2 아이콘 key인지 확인. 하나라도 그 외 외부 `remote===true`면 **완료 보고 금지** — 어떤 노드가 어느 외부 라이브러리인지 보고하고 로컬로 교체하거나 needs-core-update.
 - [ ] **모든 생성/변경 node id를 return.**
 - [ ] 증분 빌드(≤10 ops/call), 단계별 스크린샷 검증. **재시도 시 깨진 부분은 지우고 새로**(누적 금지).
 
@@ -167,8 +174,11 @@ reports/screen-rebuild/{service}/{flow}/
 - **fills Variable 바인딩 — raw면 ❌(a) 차단(BLOCKING · 절대 (c)로 흘리지 말 것).** 화면이 직접 저작한 프레임·텍스트의 SOLID fill은 로컬 Variable(Semantic Color V2/Foundation V2/overlay)에 바인딩돼야 함. (인스턴스 *내부* raw는 컴포넌트 소관 → `needs-core-update`로 분리.)
 - 인스턴스 **variant/상태 = 원본 상태**(예: 원본 checked인데 Default면 ❌)
 - 교체 가능한 요소가 **정본 세트의 INSTANCE**인가 (아니면 ❌ — 임의 제작 적발)
-- **인스턴스 출처(provenance) — ❌(a) 차단:** 모든 INSTANCE의 mainComponent가 ①이 파일 로컬 또는 ②V2.2 아이콘 라이브러리(`ic_` 접두·`yE5UCFEbmXJBlYJWB24Lz2`)에서만 와야 함. 그 외 외부/레거시 라이브러리(orphan parent=null·non-`ic_` remote·타 라이브러리 key — 예: `search_design_system`으로 끌어온 F/W 아이콘) = **차단**(절대 (c) 금지).
-- **위 두 검사(raw·provenance)는 육안이 아니라 `use_figma` 결정론 스캔으로 수행**한다: `findAll(INSTANCE)`→`getMainComponentAsync()`의 `remote`/이름 확인, 각 노드 `fills`의 `boundVariables` 확인. (셸 인스턴스·컴포넌트 내부는 제외하고 화면 저작 노드만.)
+- **인스턴스 출처(provenance) — ❌(a) 차단 · 가장 흔한 누수:** 정본 V3.0 컴포넌트는 **이 파일 로컬(`mainComponent.remote === false`)** 이다. 모든 INSTANCE의 mainComponent가 **①로컬(remote===false)** 또는 **②V2.2 아이콘 라이브러리(key `yE5UCFEbmXJBlYJWB24Lz2`·`ic_`)** 에서만 와야 한다. **그 외 모든 `remote === true` = 외부 라이브러리 = ❌(a) 차단**(절대 (c) 금지).
+  - ⚠️ **`remote === true`를 "이 파일이 참조하는 정본"으로 해석 금지.** (2026-06-19 실패: PC 로그인의 input·button·checkbox·GNB·아이콘 등 **인스턴스 19개 전부가 외부 UVIS시스템(관계사용) 라이브러리 remote:true** 였는데, 검증기가 "remote:true=참조된 V3.0 정본"으로 오판해 통과시킴. 로컬 정본은 `remote:false`로 따로 존재했다.)
+  - ⚠️ **이름이 정본스럽다고(`input`·`button`·`checkbox`·`ic_*`) 로컬로 가정 금지.** 외부 라이브러리도 같은 이름을 쓴다. 아이콘도 `ic_` 이름이지만 key가 V2.2가 아니면 ❌.
+  - **각 인스턴스의 `mainComponent.remote`·`key`·소속(로컬/외부 라이브러리명)을 실제로 출력해 표로 제시**한다. 하나라도 비-아이콘 remote:true면 그 화면은 **FAIL**.
+- **위 두 검사(raw·provenance)는 육안이 아니라 `use_figma` 결정론 스캔으로 수행**한다: `findAll(INSTANCE)`→각 노드 `await getMainComponentAsync()`의 **`remote`(boolean)·`key`·`name`** 을 모두 기록, 각 노드 `fills`의 `boundVariables` 확인. (셸 인스턴스·컴포넌트 내부는 제외하고 화면 저작 노드만.)
 - figma-use 잔재 0 (**고정 100px·hug 누락·미성장 spacer 없음**)
 - 원본 요소 **누락 0건**
 

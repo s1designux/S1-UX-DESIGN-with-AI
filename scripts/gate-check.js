@@ -286,6 +286,42 @@ try {
   fail(`doc-token-ref-check 실행 실패: ${e.message}`);
 }
 
+// ── Gate 11: Component Anatomy ────────────────────────────────────
+// 상태별 필수 하위 요소(Editing 의 caret·selected 의 clear 아이콘 등)를 빌더가 실제로
+// 생성하는지 강제. 토큰만 보던 게이트들의 "구조 사각지대" — caret·close 누락 2회 유출 차단.
+// esbuild 번들 + recording mock 실행이 필요해 별도 프로세스로 호출(spawnSync).
+console.log('\n🔎 [Gate 11] 부품해부 검사기 (Component Anatomy)');
+try {
+  const { spawnSync } = require('child_process');
+  const r = spawnSync('node', [path.join(ROOT, 'scripts/component-anatomy-check.js')], { encoding: 'utf-8' });
+  const out = (r.stdout || '') + (r.stderr || '');
+  if (r.status === 0) {
+    const m = out.match(/(\d+)개 규칙 전부 충족/);
+    pass(`상태별 필수 하위 요소 누락 0${m ? ` (${m[1]}개 규칙)` : ''}`);
+  } else {
+    const lines = out.split('\n').filter((l) => l.includes('❌'));
+    for (const l of lines) fail(l.replace(/^\s*❌\s*/, ''));
+    if (lines.length === 0) fail(`component-anatomy-check 실패 (exit ${r.status})`);
+  }
+} catch (e) {
+  fail(`component-anatomy-check 실행 실패: ${e.message}`);
+}
+
+// ── Gate 12: Icon Instance Policy ─────────────────────────────────
+// 아이콘은 V2.2 라이브러리 컴포넌트 인스턴스(makeIconInstance)로만. 벡터 직삽입은 allow 마커 필수.
+console.log('\n🔎 [Gate 12] 아이콘인스턴스 검사기 (Icon Instance Policy)');
+try {
+  const { check: iconCheck } = require('./icon-instance-policy-check');
+  const r = iconCheck();
+  if (r.violations.length === 0) {
+    pass(`아이콘 벡터 직삽입 0 (라이브러리 인스턴스 강제 · 벡터 예외 ${r.allowed.length}건 마커 명시)`);
+  } else {
+    for (const v of r.violations) fail(`아이콘 벡터 직삽입 L${v.line}: ${v.text} — makeIconInstance 사용 또는 allow 마커 필요`);
+  }
+} catch (e) {
+  fail(`icon-instance-policy-check 실행 실패: ${e.message}`);
+}
+
 // ── Summary ───────────────────────────────────────────────────────
 console.log('\n─────────────────────────────────────────────────────');
 if (errors > 0) {

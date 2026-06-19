@@ -21,12 +21,14 @@ const stamp = new Intl.DateTimeFormat("sv-SE", {
   year: "numeric", month: "2-digit", day: "2-digit", hour: "2-digit", minute: "2-digit",
 }).format(new Date());
 const label = `${stamp} KST`;
+const dateStamp = stamp.split(" ")[0]; // "YYYY-MM-DD" — 날짜만(빌드일)
 
 let html = fs.readFileSync(SRC, "utf8");
 if (!html.includes("{{BUILD_TIME}}")) {
   console.warn("[installer] ⚠️  ui.html 에 {{BUILD_TIME}} 플레이스홀더가 없습니다 — 스탬프 생략");
 }
 html = html.replace(/\{\{BUILD_TIME\}\}/g, label);
+html = html.replace(/\{\{BUILD_DATE\}\}/g, dateStamp); // 빌드일(자동) — "계속 추가 중" 행이 스테일되지 않게
 
 fs.mkdirSync(path.dirname(OUT), { recursive: true });
 fs.writeFileSync(OUT, html);

@@ -22,6 +22,9 @@
 
 | 날짜 | 변경 내용 (한 줄) |
 |------|------------------|
+| 2026-06-19 | 설치기 출력 **대메뉴 섹션화**(Actions·Selection·Table·Navigation·Shell 좌측 세로 + **Form 우측 별도 컬럼**, components.html 5분류 기준) + **Shell 신설**: Shell/StatusBar(App·Web, 원본 벡터/토큰 충실 재현)·Shell/NavBar(App·Web, 원본=카톡사진 → DS 아이콘 벡터로 신규 제작). 섹션은 y밴드로 떠있는 그룹라벨까지 흡수(배경 가림 수정), Form 섹션은 통째 우측 이동(절대위치 보정). ui.html 컴포넌트 목록 갱신·전 항목 기본 언체크·"계속 추가 중" 행 날짜 {{BUILD_DATE}} 자동스탬프. tsc·keycheck·전 게이트 통과. ⭐자가인증(렌더는 사용자 플러그인 실행 확인) |
+| 2026-06-19 | 설치기 아이콘을 **V2.2 라이브러리 컴포넌트 인스턴스**로 전환(importComponentByKeyAsync) — remove·search·clock·calendar·menu·account·**check(ic_확인 ✓ 97:167)·chevron(419:69, 방향=회전: 우0·상90·좌180·하270)** = 셀렉트·페이지네이션·캘린더·칩·체크박스 포함. 공용 `makeIconInstance`/`ICON_KEYS`(회전 시 center 오토레이아웃 래핑·rebindIconColor는 숨김채움 보존). **Gate 12 아이콘인스턴스 검사기** 신설(벡터 직삽입 차단·allow 마커 필수). GNB 언어=지구본(ic_인터넷 35:3317). 전 아이콘 렌더 육안 검증. 벡터 유지(마커): 페이지네이션 Edge(처음/마지막=쉐브론+바, V2.2 미존재)·휴대폰 셸 크롬(DS 아이콘 아님) |
+| 2026-06-19 | 설치기 Input·Search Input·**Text Area** **입력 커서(caret)** + Input·Search **selected 삭제(close) 아이콘** 누락 수정(텍스트에리어는 커서만·삭제 아이콘 제외) + **Gate 11 부품해부 검사기** 신설 — 토큰만 보던 게이트들의 **구조 사각지대**(하위 요소 드롭)를 recording mock figma 로 상태별 필수(require)/금지(forbid) 하위 요소 manifest 대조해 커밋 차단. 회귀 시뮬레이션 적발 검증(16건 ❌→원복 ✅). caret=blue/400(border/selected) 세로선·close=**V2.2 remove(line) 라이브러리 컴포넌트 인스턴스**(importComponentByKeyAsync, key 24b2df…·게시 확인·벡터 직삽입 아님, 색은 form-control/icon/default 재바인딩) 우측 |
 | 2026-06-19 | control-border-disabled = gray/200 으로 변경(다크 gray-dark/300 유지)·미사용 disabled-alt1/alt2 삭제 + Toggle 빌더 disabled knob 색 정정(indicator/selected→/disabled — 다크모드 흰색 knob 버그). vars-data 정본 1곳 + semantic.colors.json 수정 후 tokens:gen·page:gen·sync-prompt·installer:build 재생성, 전 게이트(1·3·4·7·8·9·10)+keycheck 통과 |
 | 2026-06-18 | `figma-library-build` 스킬 + 🏗️ `figma-library-builder` 에이전트 신설 — Figma **라이브러리 컴포넌트/변형세트 "정의" 자체** 빌드·편집을 ⭐ 단독 인라인에서 **위임 강제 4단계 검문소**로 전환(재고조사🔍→계획🎩→빌드🏗️→검증🤖). component-verifier에 §(C) 라이브러리 빌드 검증(variant 전수·**패킹 붕괴**·토큰 바인딩·순환참조·렌더) 추가. §⚖️ 운영원칙에 **하드룰**: 구조 변경 = ⭐ 단독 빌드+검증 금지(빌드자≠검증자). (Shell 변형세트화에서 ⭐ 혼자 빌드+자가검증→패킹 10100px 붕괴·정렬·세트화 누락이 사용자에게 새어나간 반복 실패를 구조로 차단) |
 | 2026-06-18 | 설치기 컴포넌트 3종 신설 — **Pagination**(Arrow 3+Number 3)·**GNB**(메뉴슬롯 9+바 6, PC only)·**Date Picker**(트리거 form-control 4×4 + Open=PC 캘린더 패널). components-new 정본 대비 누락분. 신규 vars-data 키 0(기존 semantic 재사용)·build-components.ts 빌더+stack+footprint·ui.html 목록 갱신·zip 재빌드. 🤖 component-verifier 적대적 대조로 ❌5건(DatePicker day색 날조·평일 text/secondary·GNB util xsm 32/18·placeholder YY.MM.DD) 적발·수정, 전 게이트(1·3·4·6·7·8·9·10)+keycheck 통과. 미결: DatePicker HD(componentSetKey·모바일 인터랙션)·(b)Pagination number 다크 Foundation직참 개선=Figma개선목록 |
@@ -1531,6 +1534,22 @@ Claude는 **Main Orchestrator**다. 사용자는 **목표 수준 의도**만 준
 **범위:** color/number 키(vars-data 공급분)만. 텍스트 스타일은 code.ts 소관(별도).
 **도입 사유:** 2026-06-12 `buildFilterChip` solid Hover 가 `color/chip/solid/border/hover`(미정의)를 요청 → Figma 플러그인 실행 중 `requireVar` 가 "변수 누락"으로 **전체 빌드 중단**. `audit-bindings`(네임스페이스 `color/chip/` 만 검사)의 사각지대였음. leaf 키 누락을 **커밋 단계에서 기계 차단**해 동일 크래시 클래스 재발 방지. 정본 Chip·line variant 와 일치하도록 solid Hover 보더를 default 로 정정(토큰 신설 없이 내부 일관성 복원).
 
+### Gate 11: Component Anatomy (2026-06-19 신설)
+**파일:** `scripts/component-anatomy-check.js` (`npm run components:anatomy`)
+**트리거:** `plugins/figma-vars-installer/src/build-components.ts` 변경 / 항상(gate:check 포함)
+**자동 스크립트:** `npm run components:anatomy` · `npm run gate:check` (Gate 11 섹션)
+**역할:** 빌더가 각 상태(variant)에서 **반드시 포함해야 하는 하위 요소**(예: Input·Search Input·Text Area 의 Editing·Focus 입력 커서 `caret`, Input·Search 의 selected 삭제 아이콘 `clear`)를 실제로 생성하는지, 또 **있으면 안 되는 요소**(예: Text Area 는 `clear` 미포함)를 기계 판정. **기존 게이트는 전부 토큰만 검사** — 컴포넌트 **구조(하위 요소 유무)** 를 보는 게이트가 없어 작거나 보조 변형축(icon=on)에 있는 요소가 누락돼도 전 게이트 ✅ 였다.
+**방법:** Gate 8 과 동일 전략 — esbuild CJS 번들 후, **노드 트리를 기록하는 recording mock figma**로 `buildAllComponents` 를 실제 실행, combineAsVariants 세트별로 manifest(세트명·variant 정규식·`require`/`forbid` 이름들) 대조. 매칭 variant 0개면 selector 부패로 ❌(Gate 7 "추출 0건=안됨" 사상).
+**확장:** 새 필수/금지 하위 요소는 `component-anatomy-check.js` 의 `ANATOMY` 배열에 한 줄 추가(`require`/`forbid`).
+**도입 사유:** 2026-06-19 설치기 Input·Search Input 의 **입력 커서(caret) 와 selected 삭제(close) 아이콘이 빌더에서 누락**됐는데 토큰 게이트(3·6·7·8)가 전부 ✅ 라 사용자에게 2회 유출. 구조 사각지대를 **커밋 단계에서 기계 차단**해 동일 클래스(하위 요소 드롭) 재발 방지.
+
+### Gate 12: Icon Instance Policy (2026-06-19 신설)
+**파일:** `scripts/icon-instance-policy-check.js` (`npm run components:iconpolicy`)
+**트리거:** `build-components.ts` 변경 / 항상(gate:check 포함)
+**역할:** 설치기 컴포넌트의 아이콘은 **V2.2 아이콘 라이브러리 컴포넌트 인스턴스**(`makeIconInstance` → `importComponentByKeyAsync`)로만 삽입하도록 강제. raw 벡터 직삽입(`createNodeFromSvg`/`makeStrokeIcon`/`makeFillIcon`/`makeBoundIcon`)은 줄 끝 `// icon-vector-allow: <사유>` 마커가 있을 때만 허용, 없으면 ❌.
+**방법:** 정적 스캔 — 벡터 패턴 줄에서 주석·함수정의 줄을 제외하고, allow 마커 없는 것을 위반 처리. 새 아이콘은 `ICON_KEYS` 에 키 추가 + `makeIconInstance` 사용(벡터 패턴 미매칭) → 위반 0.
+**도입 사유:** 2026-06-19 사용자가 설치 결과에서 "아이콘이 컴포넌트가 아니라 벡터로 들어가 있다"고 반복 지적. 토큰만 보던 게이트들은 "아이콘이 라이브러리 인스턴스인지"를 강제하지 않았음 → 새 벡터 아이콘 유입을 커밋 단계에서 차단. (라이브러리 인스턴스化 완료: remove·search·clock·calendar·menu·account·check(확인)·chevron(방향=회전)·globe(GNB 언어). 벡터 예외: 페이지네이션 Edge(V2.2 미존재)·휴대폰 셸 크롬(DS 아이콘 아님).)
+
 ## Gate 실행 순서
 
 ```
@@ -1546,9 +1565,11 @@ Claude는 **Main Orchestrator**다. 사용자는 **목표 수준 의도**만 준
   8. Gate 8 (Component Key Coverage) — build-components.ts 또는 vars-data.ts 변경 시 / 항상
   9. Gate 9 (Number/Sizing Page Consistency) — number 토큰(sizing·spacing·radius·border-width·font·opacity·breakpoint)·foundation/semantic 페이지 변경 시 / 항상
   10. Gate 10 (Doc Token Reference Drift) — 가이드/레퍼런스 HTML(ai-snippets·guide-md 등) 토큰 참조 / 항상. Check B(rename denylist 잔재)=차단 · Check A(미정의 --color-* 참조)=경고
+  11. Gate 11 (Component Anatomy) — build-components.ts 변경 시 / 항상. 상태별 필수 하위 요소(caret·remove 등) 생성 여부 강제(구조 사각지대)
+  12. Gate 12 (Icon Instance Policy) — build-components.ts 변경 시 / 항상. 아이콘=라이브러리 인스턴스 강제, 벡터 직삽입은 allow 마커 필수
 ```
 
-스크립트 일괄 실행: `npm run gate:check` (Gate 1 + 3 + 4 + 6 + 7 + 8 + 9 + 10 자동)
+스크립트 일괄 실행: `npm run gate:check` (Gate 1 + 3 + 4 + 6 + 7 + 8 + 9 + 10 + 11 + 12 자동)
 
 > **Gate 10 (doc-token-ref-check):** 토큰을 rename/remove 하면 옛 이름을 쥔 가이드 문서가 자동 적발된다. **정본 rename 시 `registry/tokens/deprecated-tokens.json` 의 `renamedGroups` 에 `{from,to}` 한 줄 추가**하면 이후 게이트가 전 활성 페이지에서 잔재를 차단(Check B). `--color-*` 참조 존재성은 Check A(경고)로 가시화. 단독 실행 `npm run docs:tokencheck`. `components.html`(폐기 예정)은 검사 제외.
 
