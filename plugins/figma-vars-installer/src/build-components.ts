@@ -805,24 +805,19 @@ async function buildInput(maps: BuildMaps, originY: number, originX: number = IN
     { name: "라벨 있음",              lab: "On",  msg: "Off" },
     { name: "라벨 있음 · 안내메시지", lab: "On",  msg: "On" },
   ];
-  const sizeRows = [
-    { label: "XSMALL",          size: "XSMALL", brk: "PC" },
-    { label: "SMALL",           size: "SMALL",  brk: "PC" },
-    { label: "MEDIUM",          size: "MEDIUM", brk: "PC" },
-    { label: "MEDIUM · Mobile", size: "MEDIUM", brk: "Mobile" },
-  ];
-  const groupMap = new Map<string, { name: string; lab: string; msg: string }>();
-  for (const g of groups) groupMap.set(g.name, g);
   const opts: GroupedSpecOpts = {
     title: "Input",
-    platforms: groups.map((g) => ({ name: g.name, sizes: [""] })),
-    rowLabels: sizeRows.map((r) => r.label),
+    // 플랫폼(PC/Mobile) → 사이즈 → 라벨/메시지 그룹(rowLabels)으로 구분 (Button·SelectBox 패턴과 동일)
+    platforms: [
+      { name: "PC",     sizes: ["XSMALL", "SMALL", "MEDIUM"] },
+      { name: "Mobile", sizes: ["MEDIUM"] },
+    ],
+    rowLabels: groups.map((g) => g.name),
     colHeaders: states.map((s) => s.name),
-    cellAt: (groupName, _dummy, ri, ci) => {
-      const g = groupMap.get(groupName);
+    cellAt: (platName, sizeName, ri, ci) => {
+      const g = groups[ri];
       if (!g) return null;
-      const r = sizeRows[ri];
-      return cells.find((x) => x.size === r.size && x.brk === r.brk && x.state === states[ci].name && x.label === g.lab && x.message === g.msg)?.comp ?? null;
+      return cells.find((x) => x.size === sizeName && x.brk === platName && x.state === states[ci].name && x.label === g.lab && x.message === g.msg)?.comp ?? null;
     },
     // 세트(원본) → Light → Dark 를 OX 기준 가로로 나란히. specWidth(110,7,224)=1726, 컬럼 간 80 gap.
     offsetX: OX, lightX: OX + 1726 + 80, darkX: OX + (1726 + 80) * 2, originY, cellW: 224, cellH: 100, rowLabelW: 110,
@@ -976,11 +971,11 @@ async function buildSearch(maps: BuildMaps, originY: number): Promise<{ set: Com
         trail.primaryAxisSizingMode = "AUTO"; trail.counterAxisSizingMode = "AUTO";
         trail.itemSpacing = 4;
         trail.appendChild(await makeClearIcon(scv(maps, fc("icon/default")), fcIconPx(sc.h, 0)));
-        trail.appendChild(await makeIconInstance("search", scv(maps, fc(st.icon)), fcIconPx(sc.h, 16), MAG));
+        trail.appendChild(await makeIconInstance("search", scv(maps, fc(st.icon)), fcIconPx(sc.h, 0), MAG));
         comp.appendChild(trail);
       } else {
         comp.appendChild(textNode);
-        comp.appendChild(await makeIconInstance("search", scv(maps, fc(st.icon)), fcIconPx(sc.h, 16), MAG));
+        comp.appendChild(await makeIconInstance("search", scv(maps, fc(st.icon)), fcIconPx(sc.h, 0), MAG));
       }
       comp.resize(160, sc.h);
       setLightMode(comp, maps);
@@ -1097,7 +1092,7 @@ async function buildSelect(maps: BuildMaps, originY: number): Promise<{ set: Com
       trigger.strokes = [boundPaint(scv(maps, fc(st.border)))];
       trigger.strokeWeight = 1; trigger.strokeAlign = "INSIDE";
       trigger.appendChild(await makeBoundText("선택", sc.font, "Regular", scv(maps, fc(st.tc))));
-      trigger.appendChild(await makeIconInstance("chevron", scv(maps, fc(st.icon)), fcIconPx(sc.h, 16), (st.up ? chevUp : chevDown)("#000"), st.up ? 90 : 270));
+      trigger.appendChild(await makeIconInstance("chevron", scv(maps, fc(st.icon)), fcIconPx(sc.h, 0), (st.up ? chevUp : chevDown)("#000"), st.up ? 90 : 270));
       trigger.resize(140, sc.h);
 
       const comp = figma.createComponent();
@@ -1162,13 +1157,13 @@ async function buildDropdownList(maps: BuildMaps, originY: number): Promise<{ se
     comp.fills = [boundPaint(scv(maps, dd(st.bg)))];
     comp.appendChild(await makeBoundText("옵션", 14, "Regular", scv(maps, dd(st.label))));
     comp.resize(140, 36);
-    setLightMode(comp, maps);
     comps.push(comp);
     cells.push({ comp, row: 0, col });
   }
   const set = figma.combineAsVariants(comps, figma.currentPage);
   set.name = "Dropdown List";
   set.x = 0; set.y = originY;
+  setLightMode(set, maps); // ← 세트에만 (컴포넌트 단위 설정 시 인스턴스가 다크모드 상속 불가)
   BUILT_SETS["Dropdown List"] = set;
   comps.forEach((c, i) => { BUILT_COMPS[`DropdownList:${states[i].name}`] = c; });
   const opts: SpecOpts = {
@@ -1221,11 +1216,10 @@ async function buildDropdown(maps: BuildMaps, originY: number): Promise<{ set: C
       comp.appendChild(row);
     }
   }
-  setLightMode(comp, maps);
-
   const set = figma.combineAsVariants([comp], figma.currentPage);
   set.name = "Dropdown";
   set.x = 0; set.y = originY;
+  setLightMode(set, maps); // ← 세트에만 (컴포넌트 단위 설정 시 인스턴스가 다크모드 상속 불가)
   BUILT_SETS["Dropdown"] = set;
   BUILT_COMPS["Dropdown:Default"] = comp;
 
@@ -1406,7 +1400,7 @@ async function buildFilterChip(maps: BuildMaps, originY: number): Promise<{ set:
         chip.appendChild(await makeBoundText(valText, 14, "Medium", scv(maps, `color/chip/${v}/label/${valLbSlot}`)));
         // arrow: 펼침이면 아래방향, 아니면 우향. 색 = 라벨색 정합(default/disabled/selected).
         const arrowSlot = ss.lb;
-        chip.appendChild(await makeIconInstance("chevron", scv(maps, `color/chip/${v}/label/${arrowSlot}`), 16, (ss.open ? arrowDown : arrowRight), ss.open ? 270 : 0));
+        chip.appendChild(await makeIconInstance("chevron", scv(maps, `color/chip/${v}/label/${arrowSlot}`), 0, (ss.open ? arrowDown : arrowRight), ss.open ? 270 : 0));
         chip.resize(chip.width, 36); // chip-height-lg (PC 기본 36)
 
         // 컴포넌트(세로): chip + (Selected 면 드롭다운 패널)
@@ -1509,7 +1503,7 @@ async function buildTimePicker(maps: BuildMaps, originY: number): Promise<{ set:
       trigger.strokes = [boundPaint(scv(maps, fc(st.border)))];
       trigger.strokeWeight = 1; trigger.strokeAlign = "INSIDE";
       trigger.appendChild(await makeBoundText(st.txt, sc.font, "Regular", scv(maps, fc(st.tc))));
-      trigger.appendChild(await makeIconInstance("clock", scv(maps, fc(st.icon)), fcIconPx(sc.h, 18), CLOCK));
+      trigger.appendChild(await makeIconInstance("clock", scv(maps, fc(st.icon)), fcIconPx(sc.h, 0), CLOCK));
       trigger.resize(150, sc.h);
 
       const comp = figma.createComponent();
@@ -2020,9 +2014,9 @@ async function buildCalendarPanel(maps: BuildMaps): Promise<FrameNode> {
   header.layoutMode = "HORIZONTAL"; header.primaryAxisSizingMode = "FIXED"; header.counterAxisSizingMode = "FIXED";
   header.primaryAxisAlignItems = "SPACE_BETWEEN"; header.counterAxisAlignItems = "CENTER";
   panel.appendChild(header); header.layoutAlign = "STRETCH"; header.resize(308, 32);
-  header.appendChild(await makeIconInstance("chevron", scv(maps, dp("text/primary")), 16, CHEV_L, 180));
+  header.appendChild(await makeIconInstance("chevron", scv(maps, dp("text/primary")), 0, CHEV_L, 180));
   header.appendChild(await makeBoundText("2026.06", 24, "Bold", scv(maps, dp("text/primary"))));
-  header.appendChild(await makeIconInstance("chevron", scv(maps, dp("text/primary")), 16, CHEV_R, 0));
+  header.appendChild(await makeIconInstance("chevron", scv(maps, dp("text/primary")), 0, CHEV_R, 0));
 
   // 요일 행 — 7 셀 (일=sunday·토=saturday·평일=secondary)
   const wkRow = figma.createFrame(); wkRow.name = "weekdays"; wkRow.fills = [];
@@ -2114,7 +2108,7 @@ async function buildDatePicker(maps: BuildMaps, originY: number): Promise<{ set:
       trigger.fills = [boundPaint(scv(maps, fc(st.bg)))];
       trigger.strokes = [boundPaint(scv(maps, fc(st.border)))]; trigger.strokeWeight = 1; trigger.strokeAlign = "INSIDE";
       trigger.appendChild(await makeBoundText(st.txt, sc.font, "Regular", scv(maps, fc(st.tc))));
-      trigger.appendChild(await makeIconInstance("calendar", scv(maps, fc(st.icon)), fcIconPx(sc.h, 16), CAL_ICON));
+      trigger.appendChild(await makeIconInstance("calendar", scv(maps, fc(st.icon)), fcIconPx(sc.h, 0), CAL_ICON));
       trigger.resize(180, sc.h);
 
       const comp = figma.createComponent();
