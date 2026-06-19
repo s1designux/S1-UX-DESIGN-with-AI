@@ -768,7 +768,7 @@ async function buildInput(maps: BuildMaps, originY: number, originX: number = IN
             lead.primaryAxisSizingMode = "AUTO"; lead.counterAxisSizingMode = "AUTO";
             lead.itemSpacing = 4; // spacing/4 — 텍스트와 커서 간격
             lead.appendChild(textNode);
-            lead.appendChild(makeCaret(sc.font, scv(maps, fc("border/selected"))));
+            lead.appendChild(makeCaret(scv(maps, fc("border/selected"))));
             field.appendChild(lead);
             field.appendChild(await makeClearIcon(scv(maps, fc("icon/default")), fcIconPx(sc.h, 0)));
           } else {
@@ -855,11 +855,11 @@ function makeFillIcon(svg: string, fillVar: Variable): FrameNode {
 }
 
 // 입력 커서(캐럿) — Editing/Focus 상태에서 텍스트 뒤 깜빡이는 세로선. Figma 564:3757(blue/400=border/selected).
-// 높이 = 글자크기×1.5 (font14 → 21px, Figma 실측 일치). 이름 "caret" 은 Anatomy Gate(11) 가 검증한다.
-function makeCaret(fontSize: number, colorVar: Variable): RectangleNode {
+// 높이 = 16px(토큰 사이즈 기준, 사용자 결정 2026-06-19). 이름 "caret" 은 Anatomy Gate(11) 가 검증한다.
+function makeCaret(colorVar: Variable): RectangleNode {
   const caret = figma.createRectangle();
   caret.name = "caret";
-  caret.resize(1, Math.round(fontSize * 1.5));
+  caret.resize(1, 16);
   caret.fills = [boundPaint(colorVar)];
   caret.strokes = [];
   return caret;
@@ -968,7 +968,7 @@ async function buildSearch(maps: BuildMaps, originY: number): Promise<{ set: Com
         lead.primaryAxisSizingMode = "AUTO"; lead.counterAxisSizingMode = "AUTO";
         lead.itemSpacing = 4;
         lead.appendChild(textNode);
-        lead.appendChild(makeCaret(sc.font, scv(maps, fc("border/selected"))));
+        lead.appendChild(makeCaret(scv(maps, fc("border/selected"))));
         comp.appendChild(lead);
         const trail = figma.createFrame();
         trail.name = "trail"; trail.fills = [];
@@ -1028,11 +1028,20 @@ async function buildTextarea(maps: BuildMaps, originY: number): Promise<{ set: C
     comp.fills = [boundPaint(scv(maps, fc(st.bg)))];
     comp.strokes = [boundPaint(scv(maps, fc(st.border)))];
     comp.strokeWeight = 1; comp.strokeAlign = "INSIDE";
-    comp.appendChild(await makeBoundText(st.txt, 14, "Regular", scv(maps, fc(st.tc))));
+    const textNode = await makeBoundText(st.txt, 14, "Regular", scv(maps, fc(st.tc)));
     if (st.name === "Focus") {
-      // Focus(=selected): 텍스트 뒤 입력 커서. 텍스트에리어는 삭제(close) 아이콘 미포함(사용자 결정).
-      comp.itemSpacing = 4;
-      comp.appendChild(makeCaret(14, scv(maps, fc("border/selected"))));
+      // Focus(=selected): [텍스트 + 커서] 인풋처럼 lead 프레임(HORIZONTAL CENTER)으로 묶어 세로 중앙정렬.
+      // 텍스트에리어는 삭제(close) 아이콘 미포함(사용자 결정).
+      const lead = figma.createFrame();
+      lead.name = "lead"; lead.fills = [];
+      lead.layoutMode = "HORIZONTAL"; lead.counterAxisAlignItems = "CENTER";
+      lead.primaryAxisSizingMode = "AUTO"; lead.counterAxisSizingMode = "AUTO";
+      lead.itemSpacing = 4;
+      lead.appendChild(textNode);
+      lead.appendChild(makeCaret(scv(maps, fc("border/selected"))));
+      comp.appendChild(lead);
+    } else {
+      comp.appendChild(textNode);
     }
     setLightMode(comp, maps);
     comps.push(comp);
@@ -2224,6 +2233,101 @@ async function buildShellUrlBar(maps: BuildMaps): Promise<FrameNode> {
   return bar;
 }
 
+// ── Footer (PC + Mobile 플랫폼 세트) ─────────────────────────────────────────
+// PC: 1920×116, HORIZONTAL, bg=color/navigation/background, 상단 테두리 1px=color/line/gray/subtle
+//     padding L/R=320px(raw·Foundation에 spacing/320 없음), T/B=spacing/28 바인딩
+//     content: [좌] links(10px)+bizinfo+copyright / [우] 로고 플레이스홀더
+// Mobile: 360×(hug), VERTICAL centered, no bg/border, itemSpacing=spacing/4 바인딩
+//     content: links 가로 행 + copyright
+async function buildFooter(maps: BuildMaps, originY: number): Promise<{ set: ComponentSetNode; bottomY: number }> {
+  const LINK_NAMES = ["이용약관", "개인정보처리방침", "고객지원"];
+
+  // ── PC variant ─────────────────────────────────────────
+  const pc = figma.createComponent();
+  pc.name = "Platform=PC";
+  pc.layoutMode = "HORIZONTAL";
+  pc.primaryAxisSizingMode = "FIXED";
+  pc.counterAxisSizingMode = "FIXED";
+  pc.resize(1920, 116);
+  pc.primaryAxisAlignItems = "SPACE_BETWEEN";
+  pc.counterAxisAlignItems = "CENTER";
+  pc.paddingLeft = 320;
+  pc.paddingRight = 320;
+  const sp28 = requireVar(maps.foundationNumber, "spacing/28", "Foundation Number");
+  pc.setBoundVariable("paddingTop", sp28);
+  pc.setBoundVariable("paddingBottom", sp28);
+  pc.fills = [boundPaint(scv(maps, "color/navigation/background"))];
+  pc.strokes = [boundPaint(scv(maps, "color/line/gray/subtle"))];
+  pc.strokeAlign = "INSIDE";
+  pc.strokeTopWeight = 1; pc.strokeBottomWeight = 0; pc.strokeLeftWeight = 0; pc.strokeRightWeight = 0;
+
+  // 좌측 콘텐츠 블록: 링크행 + 비즈 정보 + 저작권
+  const leftBlock = figma.createFrame();
+  leftBlock.name = "content-left";
+  leftBlock.layoutMode = "VERTICAL"; leftBlock.primaryAxisSizingMode = "AUTO"; leftBlock.counterAxisSizingMode = "AUTO";
+  leftBlock.fills = []; leftBlock.itemSpacing = 4;
+
+  // 링크 행
+  const linksRow = figma.createFrame();
+  linksRow.name = "links"; linksRow.layoutMode = "HORIZONTAL"; linksRow.primaryAxisSizingMode = "AUTO"; linksRow.counterAxisSizingMode = "AUTO";
+  linksRow.fills = []; linksRow.itemSpacing = 12;
+  for (let i = 0; i < LINK_NAMES.length; i++) {
+    linksRow.appendChild(await makeBoundText(LINK_NAMES[i], 10, "Regular", scv(maps, "color/text/body/tertiary")));
+    if (i < LINK_NAMES.length - 1) {
+      const sep = figma.createRectangle(); sep.name = "sep";
+      sep.resize(1, 8); sep.fills = [boundPaint(scv(maps, "color/icon/gray-light"))];
+      linksRow.appendChild(sep);
+    }
+  }
+  leftBlock.appendChild(linksRow);
+  leftBlock.appendChild(await makeBoundText("주식회사 에스원  대표이사 김일환  서울특별시 중구 삼일대로 343", 10, "Regular", scv(maps, "color/text/body/tertiary")));
+  leftBlock.appendChild(await makeBoundText("Copyright © S1 Corp. All rights reserved.", 10, "Regular", scv(maps, "color/text/body/tertiary")));
+  pc.appendChild(leftBlock);
+
+  // 우측 로고 영역 (텍스트 플레이스홀더)
+  const logoText = await makeBoundText("S1", 14, "Bold", scv(maps, "color/text/body/primary"));
+  logoText.name = "logo";
+  pc.appendChild(logoText);
+
+  setLightMode(pc, maps);
+
+  // ── Mobile variant ──────────────────────────────────────
+  const mobile = figma.createComponent();
+  mobile.name = "Platform=Mobile";
+  mobile.layoutMode = "VERTICAL"; mobile.primaryAxisSizingMode = "AUTO"; mobile.counterAxisSizingMode = "FIXED";
+  mobile.resize(360, 10); // 높이는 hug 후 자동조정
+  mobile.primaryAxisAlignItems = "CENTER"; mobile.counterAxisAlignItems = "CENTER";
+  mobile.fills = [];
+  const sp4 = requireVar(maps.foundationNumber, "spacing/4", "Foundation Number");
+  mobile.setBoundVariable("itemSpacing", sp4);
+  mobile.paddingLeft = 16; mobile.paddingRight = 16; mobile.paddingTop = 8; mobile.paddingBottom = 8;
+
+  // 모바일 링크 행
+  const mLinks = figma.createFrame();
+  mLinks.name = "links"; mLinks.layoutMode = "HORIZONTAL"; mLinks.primaryAxisSizingMode = "AUTO"; mLinks.counterAxisSizingMode = "AUTO";
+  mLinks.fills = []; mLinks.itemSpacing = 8;
+  mLinks.primaryAxisAlignItems = "CENTER"; mLinks.counterAxisAlignItems = "CENTER";
+  for (let i = 0; i < LINK_NAMES.length; i++) {
+    mLinks.appendChild(await makeBoundText(LINK_NAMES[i], 12, "Regular", scv(maps, "color/text/body/tertiary")));
+    if (i < LINK_NAMES.length - 1) {
+      const sep = figma.createRectangle(); sep.name = "sep";
+      sep.resize(1, 10); sep.fills = [boundPaint(scv(maps, "color/line/gray/subtle"))];
+      mLinks.appendChild(sep);
+    }
+  }
+  mobile.appendChild(mLinks);
+  mobile.appendChild(await makeBoundText("Copyright © S1 Corp. All rights reserved.", 12, "Regular", scv(maps, "color/text/body/tertiary")));
+
+  setLightMode(mobile, maps);
+
+  // ── 변형세트 생성 ──────────────────────────────────────
+  const set = figma.combineAsVariants([pc, mobile], figma.currentPage);
+  set.name = "Footer";
+  set.x = 0; set.y = originY;
+  const sh = (typeof set.height === "number" && set.height > 0) ? set.height : 250;
+  return { set, bottomY: originY + sh };
+}
+
 async function buildStatusBar(maps: BuildMaps, originY: number): Promise<{ set: ComponentSetNode; bottomY: number }> {
   const app = figma.createComponent();
   app.name = "Platform=App";
@@ -2409,6 +2513,7 @@ export async function buildAllComponents(
     "Pagination":           (oy) => buildPagination(maps, oy),
     "Shell/StatusBar":      (oy) => buildStatusBar(maps, oy),
     "Shell/NavBar":         (oy) => buildNavBar(maps, oy),
+    "Footer":               (oy) => buildFooter(maps, oy),
   };
 
   // 대메뉴(섹션) 분류 — components.html(components-new) 의 5개 대메뉴와 동일. 각 카테고리 = 1 Figma Section.
@@ -2418,7 +2523,7 @@ export async function buildAllComponents(
     { name: "Selection",  members: ["Checkbox", "Radio", "Toggle", "Chip", "Filter Chip"] },
     { name: "Table",      members: ["Table Cell"] },
     { name: "Navigation", members: ["Line Tab", "GNB", "Pagination"] },
-    { name: "Shell",      members: ["Shell/StatusBar", "Shell/NavBar"] },
+    { name: "Shell",      members: ["Shell/StatusBar", "Shell/NavBar", "Footer"] },
     // Form 은 폭이 커서 맨 마지막에 빌드(좌측 스택 중간 빈칸 방지) 후 우측 별도 컬럼으로 이동.
     // 의존관계 순서: Dropdown List → Dropdown → Select Box / Time Picker Dropdown → Time Picker
     { name: "Form",       members: ["Input", "Search Input", "Text Area", "Dropdown List", "Dropdown", "Select Box", "Date Picker", "Time Picker Dropdown", "Time Picker"] },
