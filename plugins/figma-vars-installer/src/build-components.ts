@@ -26,6 +26,28 @@ export interface BuildMaps {
   semanticDarkModeId: string;                 // Dark 모드 id (다크 스펙 프레임용)
 }
 
+// ── 크로스빌더 공유 참조 ──────────────────────────────────────────────────────
+// 한 빌더가 만든 세트/컴포넌트를 다른 빌더가 인스턴스로 재사용할 수 있게 등록·조회한다.
+//   예: Dropdown(패널)이 Dropdown List(옵션 세트)를, Select Open 이 Dropdown(패널)을,
+//       Time Picker(Focus)가 Time Picker Dropdown(세트)을 인스턴스로 부착.
+//   CATEGORIES Form 순서가 "패널 → 소비자" 로 정렬돼 있어 소비자 빌드 시점엔 이미 등록돼 있다.
+//   재설치(같은 페이지)에서는 등록 캐시가 비어도 currentPage 에서 이름으로 찾아 폴백한다.
+const BUILT_SETS: Record<string, ComponentSetNode> = {};
+const BUILT_COMPS: Record<string, ComponentNode> = {};
+
+async function getBuiltSet(name: string): Promise<ComponentSetNode | null> {
+  if (BUILT_SETS[name]) return BUILT_SETS[name];
+  try { const f = figma.currentPage.findOne((n) => n.type === "COMPONENT_SET" && n.name === name); return (f as ComponentSetNode) || null; } catch (e) { return null; }
+}
+
+async function getBuiltComp(name: string): Promise<ComponentNode | null> {
+  if (BUILT_COMPS[name]) return BUILT_COMPS[name];
+  try {
+    const f = figma.currentPage.findOne((n) => n.type === "COMPONENT" && n.name === name && (!n.parent || n.parent.type !== "COMPONENT_SET"));
+    return (f as ComponentNode) || null;
+  } catch (e) { return null; }
+}
+
 /** 노드 Appearance 에 Semantic Color V2 컬렉션의 특정 모드를 명시적으로 연결한다. */
 function setMode(node: SceneNode, maps: BuildMaps, modeId: string): void {
   try {
@@ -1050,12 +1072,6 @@ async function buildSelect(maps: BuildMaps, originY: number): Promise<{ set: Com
     { size: "MD",   brk: "PC",     h: 44, font: 14 },
     { size: "MD",   brk: "Mobile", h: 48, font: 14 },
   ];
-  const panelOpts = [
-    { txt: "Hover",    bg: "color/dropdown/option/bg/hover",    label: "color/dropdown/option/label/hover" },
-    { txt: "Selected", bg: "color/dropdown/option/bg/selected", label: "color/dropdown/option/label/selected" },
-    { txt: "옵션",     bg: "color/dropdown/option/bg/default",  label: "color/dropdown/option/label/default" },
-    { txt: "옵션",     bg: "color/dropdown/option/bg/default",  label: "color/dropdown/option/label/default" },
-  ];
   const comps: ComponentNode[] = [];
   const cells: { comp: ComponentNode; size: string; brk: string; state: string }[] = [];
   for (const sc of sizes) {
@@ -1080,26 +1096,18 @@ async function buildSelect(maps: BuildMaps, originY: number): Promise<{ set: Com
       comp.layoutMode = "VERTICAL"; comp.primaryAxisSizingMode = "AUTO"; comp.counterAxisSizingMode = "AUTO"; comp.itemSpacing = 8;
       comp.appendChild(trigger);
       if (st.name === "Open") {
-        const panel = figma.createFrame();
-        panel.name = "list";
-        panel.layoutMode = "VERTICAL"; panel.counterAxisSizingMode = "FIXED"; panel.primaryAxisSizingMode = "FIXED";
-        panel.paddingTop = 4; panel.paddingBottom = 4; panel.itemSpacing = 0; panel.cornerRadius = 4;
-        panel.clipsContent = false;
-        // 높이를 옵션 개수에 맞춰 명시 고정 (resize 가 sizing mode 를 FIXED 로 바꾸므로 AUTO 의존 금지)
-        panel.resize(140, panelOpts.length * 32 + 8);
-        panel.fills = [boundPaint(scv(maps, "color/dropdown/list/bg"))];
-        panel.strokes = [boundPaint(scv(maps, "color/dropdown/list/border"))]; panel.strokeWeight = 1; panel.strokeAlign = "OUTSIDE"; // 풀폭 옵션이 안쪽 보더 좌우를 덮지 않도록 바깥 정렬(2026-06-18)
-        for (const o of panelOpts) {
-          const row = figma.createFrame();
-          row.name = "option";
-          row.layoutMode = "HORIZONTAL"; row.counterAxisAlignItems = "CENTER";
-          row.primaryAxisSizingMode = "FIXED"; row.counterAxisSizingMode = "FIXED";
-          row.resize(140, 32); row.paddingLeft = 12; row.paddingRight = 12; row.paddingTop = 0; row.paddingBottom = 0;
-          row.fills = [boundPaint(scv(maps, o.bg))];
-          row.appendChild(await makeBoundText(o.txt, 14, "Regular", scv(maps, o.label)));
-          panel.appendChild(row);
+        // Dropdown 컴포넌트 인스턴스 재사용 (anatomy gate: "list" raw 프레임 금지)
+        let ddComp: ComponentNode | undefined = BUILT_COMPS["Dropdown:Default"];
+        if (!ddComp) {
+          // 재설치 중 Dropdown이 skip된 경우 — 페이지에서 탐색
+          const ddSet = await getBuiltSet("Dropdown");
+          if (ddSet) ddComp = (ddSet.children as ComponentNode[]).find(c => c.type === "COMPONENT");
         }
-        comp.appendChild(panel);
+        if (ddComp) {
+          const ddInst = ddComp.createInstance();
+          ddInst.name = "dropdown";
+          comp.appendChild(ddInst);
+        }
       }
       setLightMode(comp, maps);
       comps.push(comp);
@@ -1152,12 +1160,72 @@ async function buildDropdownList(maps: BuildMaps, originY: number): Promise<{ se
   const set = figma.combineAsVariants(comps, figma.currentPage);
   set.name = "Dropdown List";
   set.x = 0; set.y = originY;
+  BUILT_SETS["Dropdown List"] = set;
+  comps.forEach((c, i) => { BUILT_COMPS[`DropdownList:${states[i].name}`] = c; });
   const opts: SpecOpts = {
     title: "Dropdown List",
     colHeaders: states.map((s) => s.name),
     rowLabels: [""],
     cellAt: (r, c) => cells.find((x) => x.row === r && x.col === c)?.comp ?? null,
     lightX: SPEC_LIGHT_X, darkX: SPEC_DARK_X, originY, cellW: 160, cellH: 52,
+  };
+  let bottomY = await decorateSetFlat(set, opts, maps);
+  try { bottomY = Math.max(bottomY, await buildSpec(opts, maps)); } catch (e) { console.warn(e); }
+  return { set, bottomY };
+}
+
+// ── Dropdown (드롭다운 패널 컴포넌트 세트 — Dropdown List 인스턴스 4행 조합) ─────────
+// Select Box Open 상태와 Time Picker Focus 상태에서 인스턴스로 참조한다.
+async function buildDropdown(maps: BuildMaps, originY: number): Promise<{ set: ComponentSetNode; bottomY: number }> {
+  const comp = figma.createComponent();
+  comp.name = "State=Default";
+  comp.layoutMode = "VERTICAL";
+  comp.primaryAxisSizingMode = "AUTO";
+  comp.counterAxisSizingMode = "FIXED";
+  comp.paddingTop = 4; comp.paddingBottom = 4; comp.itemSpacing = 0; comp.cornerRadius = 4;
+  comp.clipsContent = false;
+  comp.fills = [boundPaint(scv(maps, "color/dropdown/list/bg"))];
+  comp.strokes = [boundPaint(scv(maps, "color/dropdown/list/border"))];
+  comp.strokeWeight = 1; comp.strokeAlign = "OUTSIDE";
+  comp.resize(140, 4 * 36 + 8);
+
+  // 4행: Hover·Selected·Default·Default — Dropdown List 인스턴스 재사용
+  for (const stateName of ["Hover", "Selected", "Default", "Default"] as const) {
+    const ddComp = BUILT_COMPS[`DropdownList:${stateName}`];
+    if (ddComp) {
+      const inst = ddComp.createInstance();
+      inst.name = "ddl-row";
+      comp.appendChild(inst);
+      (inst as any).layoutAlign = "STRETCH";
+    } else {
+      // Fallback (재설치 중 Dropdown List가 skip된 경우)
+      const dd = (k: string) => `color/dropdown/${k}`;
+      const sn = stateName.toLowerCase();
+      const row = figma.createFrame();
+      row.name = "ddl-row";
+      row.layoutMode = "HORIZONTAL"; row.counterAxisAlignItems = "CENTER";
+      row.primaryAxisSizingMode = "FIXED"; row.counterAxisSizingMode = "FIXED";
+      row.resize(140, 36); row.paddingLeft = 12; row.paddingRight = 12;
+      row.paddingTop = 0; row.paddingBottom = 0;
+      row.fills = [boundPaint(scv(maps, dd(`option/bg/${sn}`)))];
+      row.appendChild(await makeBoundText("옵션", 14, "Regular", scv(maps, dd(`option/label/${sn}`))));
+      comp.appendChild(row);
+    }
+  }
+  setLightMode(comp, maps);
+
+  const set = figma.combineAsVariants([comp], figma.currentPage);
+  set.name = "Dropdown";
+  set.x = 0; set.y = originY;
+  BUILT_SETS["Dropdown"] = set;
+  BUILT_COMPS["Dropdown:Default"] = comp;
+
+  const opts: SpecOpts = {
+    title: "Dropdown",
+    colHeaders: ["Default"],
+    rowLabels: [""],
+    cellAt: () => comp,
+    lightX: SPEC_LIGHT_X, darkX: SPEC_DARK_X, originY, cellW: 200, cellH: 200,
   };
   let bottomY = await decorateSetFlat(set, opts, maps);
   try { bottomY = Math.max(bottomY, await buildSpec(opts, maps)); } catch (e) { console.warn(e); }
@@ -1415,39 +1483,6 @@ async function buildTimePicker(maps: BuildMaps, originY: number): Promise<{ set:
     { size: "MD",   brk: "PC",     h: 44, font: 14, padL: 16, padR: 8 },
     { size: "MD",   brk: "Mobile", h: 48, font: 14, padL: 16, padR: 8 },
   ];
-  // Focus(열림) 상태에 부착할 드롭다운 패널 — 24h(시·분 2컬럼). 셀은 color/dropdown/option/* (Time Picker Cell 토큰과 동일).
-  const tpDropdown = async (): Promise<FrameNode> => {
-    const opt = (k: string) => `color/dropdown/option/${k}`;
-    const panel = figma.createFrame(); panel.name = "dropdown";
-    panel.layoutMode = "VERTICAL"; panel.counterAxisAlignItems = "CENTER"; panel.itemSpacing = 0;
-    panel.paddingTop = 12; panel.paddingBottom = 0; panel.cornerRadius = 4; panel.clipsContent = true;
-    panel.fills = [boundPaint(scv(maps, "color/dropdown/list/bg"))];
-    panel.strokes = [boundPaint(scv(maps, "color/dropdown/list/border"))]; panel.strokeWeight = 1; panel.strokeAlign = "INSIDE";
-    panel.resize(121, 100); panel.primaryAxisSizingMode = "AUTO"; panel.counterAxisSizingMode = "FIXED";
-    const colsFrame = figma.createFrame(); colsFrame.name = "cols"; colsFrame.fills = [];
-    colsFrame.layoutMode = "HORIZONTAL"; colsFrame.itemSpacing = 8; colsFrame.paddingLeft = 8; colsFrame.paddingRight = 8;
-    colsFrame.primaryAxisSizingMode = "FIXED"; colsFrame.counterAxisSizingMode = "FIXED"; colsFrame.resize(121, 160);
-    panel.appendChild(colsFrame); colsFrame.layoutAlign = "STRETCH";
-    const data: { items: string[]; sel: number }[] = [{ items: ["08", "09", "10", "11"], sel: 1 }, { items: ["00", "15", "30", "45"], sel: 2 }];
-    for (let c = 0; c < data.length; c++) {
-      if (c > 0) { const sep = figma.createRectangle(); sep.name = "sep"; sep.resize(1, 160); sep.fills = [boundPaint(scv(maps, "color/line/gray/subtle"))]; colsFrame.appendChild(sep); sep.layoutAlign = "STRETCH"; }
-      const col = figma.createFrame(); col.name = "col"; col.fills = []; col.layoutMode = "VERTICAL"; col.itemSpacing = 0;
-      col.primaryAxisSizingMode = "FIXED"; col.counterAxisSizingMode = "FIXED"; col.resize(44, 160); col.clipsContent = true;
-      colsFrame.appendChild(col); col.layoutGrow = 1; col.layoutAlign = "STRETCH";
-      for (let i = 0; i < data[c].items.length; i++) {
-        const sel = i === data[c].sel;
-        const cell = figma.createFrame(); cell.name = "cell";
-        cell.layoutMode = "HORIZONTAL"; cell.primaryAxisAlignItems = "CENTER"; cell.counterAxisAlignItems = "CENTER";
-        cell.primaryAxisSizingMode = "FIXED"; cell.counterAxisSizingMode = "FIXED"; cell.resize(44, 32); cell.cornerRadius = 4;
-        cell.fills = [boundPaint(scv(maps, opt(sel ? "bg/selected" : "bg/default")))];
-        cell.strokes = [boundPaint(scv(maps, opt(sel ? "border/selected" : "bg/default")))]; cell.strokeWeight = 1; cell.strokeAlign = "INSIDE";
-        cell.appendChild(await makeBoundText(data[c].items[i], 14, "Regular", scv(maps, opt(sel ? "label/selected" : "label/default"))));
-        col.appendChild(cell); cell.layoutAlign = "STRETCH";
-      }
-    }
-    return panel;
-  };
-
   const comps: ComponentNode[] = [];
   const cells: { comp: ComponentNode; size: string; brk: string; state: string }[] = [];
   for (const sc of sizes) {
@@ -1472,7 +1507,15 @@ async function buildTimePicker(maps: BuildMaps, originY: number): Promise<{ set:
       comp.name = `Size=${sc.size}, State=${st.name}, Break=${sc.brk}`;
       comp.layoutMode = "VERTICAL"; comp.primaryAxisSizingMode = "AUTO"; comp.counterAxisSizingMode = "AUTO"; comp.itemSpacing = 4;
       comp.appendChild(trigger);
-      if (st.name === "Focus") comp.appendChild(await tpDropdown());
+      if (st.name === "Focus") {
+        // Time Picker Dropdown 인스턴스 재사용 (anatomy gate: "dropdown" raw 프레임 금지)
+        const tpdComp = BUILT_COMPS["TPD:focus-default"];
+        if (tpdComp) {
+          const tpdInst = tpdComp.createInstance();
+          tpdInst.name = "tpd";
+          comp.appendChild(tpdInst);
+        }
+      }
       setLightMode(comp, maps);
       comps.push(comp);
       cells.push({ comp, size: sc.size, brk: sc.brk, state: st.name });
@@ -1632,24 +1675,39 @@ async function buildTimePickerDropdown(maps: BuildMaps, originY: number): Promis
     return [h, m];
   };
 
-  // 1) 메인 세트 — Type=24h/12h (기본 표기: 시 선택 + 확인 활성)
+  // 1) 메인 세트 — Type=24h/12h × State=시Hover/시Selected/분Hover/분Selected = 8 변형
+  const tpdStates = [
+    { state: "시 Hover",    cfg: { hHov: 1 },              confirm: false },
+    { state: "시 Selected", cfg: { hSel: 2 },              confirm: false },
+    { state: "분 Hover",    cfg: { hSel: 2, mHov: 3 },    confirm: false },
+    { state: "분 Selected", cfg: { hSel: 2, mSel: 3 },    confirm: true },
+  ];
   const comps: ComponentNode[] = [];
+  const byKey = new Map<string, ComponentNode>();
   for (const type of ["24h", "12h"]) {
-    const panel = figma.createComponent();
-    panel.name = `Type=${type}`;
-    await fillPanel(panel, colsOf(type, { ampm: type === "12h" ? 0 : undefined, hSel: 0, mSel: 0 }), true);
-    setLightMode(panel, maps);
-    comps.push(panel);
+    for (const ts of tpdStates) {
+      const panel = figma.createComponent();
+      panel.name = `Type=${type}, State=${ts.state}`;
+      await fillPanel(panel, colsOf(type, { ...ts.cfg, ampm: type === "12h" ? 0 : undefined }), ts.confirm);
+      setLightMode(panel, maps);
+      comps.push(panel);
+      byKey.set(`${type}/${ts.state}`, panel);
+    }
   }
   const set = figma.combineAsVariants(comps, figma.currentPage);
   set.name = "Time Picker Dropdown";
   set.x = 0; set.y = originY;
+  BUILT_SETS["Time Picker Dropdown"] = set;
+  for (const [k, c] of byKey) BUILT_COMPS[`TPD:${k}`] = c;
+  // Time Picker Focus 상태에 사용할 기본 변형 등록 (24h 시 Selected = 드롭다운 열려서 시 선택 완료 상태)
+  BUILT_COMPS["TPD:focus-default"] = byKey.get("24h/시 Selected") ?? comps[0];
+
   const opts: SpecOpts = {
     title: "Time Picker Dropdown",
-    colHeaders: ["24h", "12h"],
-    rowLabels: [""],
-    cellAt: (_r, c) => comps[c],
-    lightX: SPEC_LIGHT_X, darkX: SPEC_DARK_X, originY, cellW: 300, cellH: 270, rowLabelW: 16,
+    colHeaders: tpdStates.map((ts) => ts.state),
+    rowLabels: ["24h", "12h"],
+    cellAt: (r, c) => byKey.get(`${["24h", "12h"][r]}/${tpdStates[c].state}`) ?? null,
+    lightX: SPEC_LIGHT_X, darkX: SPEC_DARK_X, originY, cellW: 220, cellH: 300, rowLabelW: 40,
   };
   let bottomY = await decorateSetFlat(set, opts, maps);
   try { bottomY = Math.max(bottomY, await buildSpec(opts, maps)); } catch (e) { console.warn(e); }
@@ -1666,45 +1724,6 @@ async function buildTimePickerDropdown(maps: BuildMaps, originY: number): Promis
   };
   bottomY = Math.max(bottomY, await decorateSetFlat(cell.set, cellOpts, maps));
   try { bottomY = Math.max(bottomY, await buildSpec(cellOpts, maps)); } catch (e) { console.warn(e); }
-
-  // 3) 별도 States 스펙 시트 — 12h/24h × (시Hover · 시Selected · 분Hover · 분Selected[확인 활성])
-  const statesStates = [
-    { label: "시 Hover",              cfg: { hHov: 1 },                       confirm: false },
-    { label: "시 Selected",           cfg: { hSel: 2 },                       confirm: false },
-    { label: "분 Hover",              cfg: { hSel: 2, mHov: 3 },              confirm: false },
-    { label: "분 Selected (확인 활성)", cfg: { hSel: 2, mSel: 3 },              confirm: true },
-  ];
-  const sheetTop = bottomY + 80;
-  const COL_24_W = TPD_PANEL_W(2), COL_12_W = TPD_PANEL_W(3); // 121 / 194 (원본 고정 폭)
-  const LABEL_W = 150, GAP = 40, PAD = 24, TITLE_H = 30, HDR_H = 24, ROW_GAP = 34;
-  const SHEET_W = PAD * 2 + LABEL_W + COL_24_W + GAP + COL_12_W;
-  for (const dark of [true]) { // Dark 만 생성(라이트 스펙 미생성 — 2026-06-19 사용자 결정)
-    const c = specPalette(dark);
-    const frame = figma.createFrame();
-    frame.name = `Time Picker Dropdown States — Spec ${dark ? "Dark" : "Light"}`;
-    frame.fills = [{ type: "SOLID", color: c.bg }];
-    frame.cornerRadius = 8;
-    frame.x = SPEC_LIGHT_X;
-    frame.y = sheetTop;
-    let y = PAD;
-    frame.appendChild(await makeLabel(`Time Picker Dropdown · States · ${dark ? "Dark" : "Light"}`, 14, "Bold", PAD, y, 420, "LEFT", c.title));
-    y += TITLE_H;
-    const x24 = PAD + LABEL_W, x12 = x24 + COL_24_W + GAP;
-    frame.appendChild(await makeLabel("Type=24h", 12, "Medium", x24, y, COL_24_W, "CENTER", c.label));
-    frame.appendChild(await makeLabel("Type=12h", 12, "Medium", x12, y, COL_12_W, "CENTER", c.label));
-    y += HDR_H + 8;
-    for (const st of statesStates) {
-      frame.appendChild(await makeLabel(st.label, 12, "Bold", PAD, y + 12, LABEL_W, "LEFT", c.size));
-      const p24 = figma.createFrame(); frame.appendChild(p24);
-      await fillPanel(p24, colsOf("24h", st.cfg), st.confirm); p24.x = x24; p24.y = y;
-      const p12 = figma.createFrame(); frame.appendChild(p12);
-      await fillPanel(p12, colsOf("12h", st.cfg), st.confirm); p12.x = x12; p12.y = y;
-      y += Math.max(p24.height, p12.height) + ROW_GAP; // 패널 높이 hug → 실제 높이로 행 전진
-    }
-    frame.resize(SHEET_W, y - ROW_GAP + PAD);
-    if (dark) setMode(frame, maps, maps.semanticDarkModeId); else setLightMode(frame, maps);
-    bottomY = Math.max(bottomY, frame.y + frame.height);
-  }
 
   return { set, bottomY };
 }
@@ -2347,8 +2366,7 @@ export async function buildAllComponents(
   const footprint = (p: string): string[] => {
     const base = [p, `${p} — Spec Light`, `${p} — Spec Dark`];
     if (p === "Time Picker Dropdown") base.push(
-      "Time Picker Cell", "Time Picker Cell — Spec Light", "Time Picker Cell — Spec Dark",
-      "Time Picker Dropdown States — Spec Light", "Time Picker Dropdown States — Spec Dark");
+      "Time Picker Cell", "Time Picker Cell — Spec Light", "Time Picker Cell — Spec Dark");
     // GNB 는 바(정본=세트 이름 "GNB") + 메뉴 슬롯 세트("GNB Menu")를 함께 생성.
     if (p === "GNB") base.push(
       "GNB Menu", "GNB Menu — Spec Light", "GNB Menu — Spec Dark");
@@ -2381,6 +2399,7 @@ export async function buildAllComponents(
     "Text Area":            (oy) => buildTextarea(maps, oy),
     "Select Box":           (oy) => buildSelect(maps, oy),
     "Dropdown List":        (oy) => buildDropdownList(maps, oy),
+    "Dropdown":             (oy) => buildDropdown(maps, oy),
     "Date Picker":          (oy) => buildDatePicker(maps, oy),
     "Time Picker":          (oy) => buildTimePicker(maps, oy),
     "Time Picker Dropdown": (oy) => buildTimePickerDropdown(maps, oy),
@@ -2401,7 +2420,8 @@ export async function buildAllComponents(
     { name: "Navigation", members: ["Line Tab", "GNB", "Pagination"] },
     { name: "Shell",      members: ["Shell/StatusBar", "Shell/NavBar"] },
     // Form 은 폭이 커서 맨 마지막에 빌드(좌측 스택 중간 빈칸 방지) 후 우측 별도 컬럼으로 이동.
-    { name: "Form",       members: ["Input", "Search Input", "Text Area", "Select Box", "Dropdown List", "Date Picker", "Time Picker", "Time Picker Dropdown"] },
+    // 의존관계 순서: Dropdown List → Dropdown → Select Box / Time Picker Dropdown → Time Picker
+    { name: "Form",       members: ["Input", "Search Input", "Text Area", "Dropdown List", "Dropdown", "Select Box", "Date Picker", "Time Picker Dropdown", "Time Picker"] },
   ];
   const TOTAL = CATEGORIES.reduce((s, c) => s + c.members.length, 0);
   const SECTION_TITLE_SPACE = 140; // 섹션 제목 + 상단 여백(컴포넌트 시작 전)

@@ -40,6 +40,10 @@ const ANATOMY = [
   { set: "Search Input", variant: /(^|,\s*)State=Focus(,|$)/,   require: ["caret", "remove", "search"], label: "Search Input / State=Focus" },
   // 텍스트에리어 Focus 는 커서만 — 삭제(remove) 아이콘 미포함(사용자 결정 2026-06-19).
   { set: "Text Area",    variant: /(^|,\s*)State=Focus(,|$)/,   require: ["caret"],          forbid: ["remove"], label: "Text Area / State=Focus" },
+  // Select Box Open 은 Dropdown 컴포넌트 인스턴스 사용 — raw "list" 프레임 금지(2026-06-19).
+  { set: "Select Box",   variant: /(^|,\s*)State=Open(,|$)/,    require: [],                 forbid: ["list"],   label: "Select Box / State=Open" },
+  // Time Picker Focus 는 TPD 인스턴스 사용 — raw "dropdown" 프레임 금지(2026-06-19).
+  { set: "Time Picker",  variant: /(^|,\s*)State=Focus(,|$)/,   require: [],                 forbid: ["dropdown"], label: "Time Picker / State=Focus" },
 ];
 
 // ── 만능 auto-stub (콜러블 + 모든 prop) — 미목 API 호출이 throw 하지 않게 ─────
