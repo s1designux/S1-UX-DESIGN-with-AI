@@ -1,0 +1,57 @@
+{
+  "fileKey": "cysG5U1udpQqVagYY1hWHW",
+  "page": { "id": "80:16697", "name": "Patterns PC" },
+  "section": { "id": "268:368", "name": "로그인 (PC Web)", "x": 2642, "y": 146 },
+  "root": { "id": "268:369", "name": "웹_로그인 화면", "size": "1920x1080", "layout": "VERTICAL auto-layout, bg=color/navigation/background" },
+  "header": {
+    "id": "268:5645",
+    "name": "Frame 2087336350 (header)",
+    "layout": "VERTICAL, FILL width",
+    "children": {
+      "webTabBar": { "id": "268:5646", "note": "browser chrome mockup, raw colors kept, FILL width" },
+      "loginGNB": {
+        "id": "268:5647",
+        "note": "정본 login_GNB instance, FILL width",
+        "serviceNameText": { "id": "I268:5647;8177:208697", "value": "[서비스명]", "textStyle": "title/16B" },
+        "samsungLogo": { "id": "I268:5647;8177:208696", "state": "visible=false (hidden — placeholder insert blocked, see needs-decision)" }
+      }
+    }
+  },
+  "body": {
+    "id": "269:4553",
+    "name": "본문 (로고+카드)",
+    "layout": "VERTICAL, FILL width, layoutGrow=1 (vertical grow), CENTER/CENTER, itemSpacing=50",
+    "centerLogo": { "id": "280:330", "name": "C/IMG/Logo/Samsung_30 (중앙 로고)", "value": "원본 공통 로고 인스턴스 (261:13154 clone), mainComponent C/IMG/Logo/Samsung_30 (261:12121)", "size": "134.35x30", "note": "공통 로고 — 제네릭화 대상 아님. [서비스 로고] 플레이스홀더(269:4554)를 제거하고 원본 로고로 복원함 (body 첫 자식, 카드 위)" },
+    "card": {
+      "id": "269:4555",
+      "name": "로그인 카드",
+      "size": "460 fixed width, HUG height",
+      "innerColumn": { "id": "269:4556", "FILL": true },
+      "fieldsColumn": { "id": "269:4557", "FILL": true },
+      "input_id": { "id": "269:4559", "placeholder": "아이디를 입력해 주세요.", "state": "default", "FILL": true },
+      "input_pw": { "id": "269:4560", "placeholder": "비밀번호를 입력해 주세요.", "state": "default", "eyeOffIcon": "I269:4560;1980:48706 (ic_비밀번호미표시, 원본 아이콘)", "FILL": true },
+      "checkbox": { "id": "269:4561", "label": "아이디 저장", "state": "unchecked" },
+      "button": { "id": "269:4562", "label": "로그인", "variant": "primary/medium/disabled/icon=off", "FILL": true },
+      "bottomLinks": {
+        "frame": "269:4563",
+        "group": "269:4564",
+        "findId": { "id": "269:4565", "value": "아이디 찾기" },
+        "divider": { "id": "269:4566", "value": "1x12 divider" },
+        "findPw": { "id": "269:4567", "value": "비밀번호 찾기" }
+      }
+    }
+  },
+  "footer": {
+    "id": "269:5722",
+    "name": "login_Footer",
+    "layout": "HORIZONTAL, FILL width, HUG height (cloned from detached source 262:14385)",
+    "note": "약관3 + 사업자정보 + 카피라이트 + S1 로고, 원본 토큰 바인딩 유지"
+  },
+  "removed": {
+    "strayHiddenText": "269:4558 (총 3개의 서비스... hidden stray, removed per mapping 제외)"
+  },
+  "responsiveVerified": "1440x1000: header/footer FILL, card 460 center, button FILL — OK",
+  "needsDecision": [
+    "GNB 로고 placeholder: Samsung 로고가 login_GNB 인스턴스 내부 nested라 [서비스 로고] 텍스트 삽입 불가(insertChild blocked: parent is instance). 현재 로고를 visible=false로 숨김(브랜딩 제거는 충족, auto-layout이 gap 수거). 텍스트 placeholder를 넣으려면 (a)login_GNB 인스턴스 detach 또는 (b)정본 GNB 컴포넌트에 로고 슬롯(INSTANCE_SWAP/placeholder variant) 추가 필요 — 오케스트레이터 결정."
+  ]
+}
