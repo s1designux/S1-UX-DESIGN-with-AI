@@ -614,7 +614,9 @@ async function buildToggle(maps: BuildMaps, originY: number): Promise<{ set: Com
       comp.fills = [boundPaint(scv(maps, trackKey))];
       const knob = figma.createEllipse();
       knob.resize(16, 16);
-      knob.fills = [boundPaint(scv(maps, "color/control/indicator/selected"))];
+      // disabled 상태는 indicator도 disabled 색으로 (다크모드에서 흰색 knob 방지)
+      const knobKey = dis ? "color/control/indicator/disabled" : "color/control/indicator/selected";
+      knob.fills = [boundPaint(scv(maps, knobKey))];
       comp.appendChild(knob);
       knob.y = 2; knob.x = on ? 22 : 2;
       setLightMode(comp, maps);
