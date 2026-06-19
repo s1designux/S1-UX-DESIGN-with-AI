@@ -242,6 +242,8 @@ interface GroupedSpecOpts {
   lightX: number; darkX: number; originY: number;
   cellW: number; cellH: number; rowLabelW: number;
   offsetX?: number; // 세트(원본 variant + 띄운 라벨/밴드)를 가로로 이동. 미지정=0(기존 동작).
+  /** 다크 스펙을 원본 아래에 배치할 때 사용 (GNB 전용). x/y 를 각각 지정. 미지정=기존 동작(원본 우측 W+80). */
+  darkOffset?: { x?: number; y?: number };
 }
 function specPalette(dark: boolean): Record<string, RGB> {
   return {
@@ -334,8 +336,8 @@ async function buildGroupedSpec(opts: GroupedSpecOpts, maps: BuildMaps): Promise
   frame.fills = [{ type: "SOLID", color: specPalette(true).bg }];
   frame.cornerRadius = 8;
   frame.resize(W, 2400);
-  frame.x = (opts.offsetX ?? 0) + W + 80; // 원본(Light) 우측에 밀착 — 빈 라이트 컬럼 제거
-  frame.y = opts.originY;
+  frame.x = opts.darkOffset?.x ?? ((opts.offsetX ?? 0) + W + 80); // 기본=원본 우측 밀착; darkOffset 지정 시 GNB처럼 아래 배치
+  frame.y = opts.darkOffset?.y ?? opts.originY;
   const H = await renderGrouped(opts, true, frameEmit(frame, maps, modeId));
   frame.resize(W, H);
   setMode(frame, maps, modeId);
@@ -451,6 +453,8 @@ interface SpecOpts {
   cellW: number;
   cellH: number;
   rowLabelW?: number;
+  /** 다크 스펙을 원본 아래에 배치할 때 사용 (GNB 전용). x/y 를 각각 지정. 미지정=기존 동작(원본 우측 W+80). */
+  darkOffset?: { x?: number; y?: number };
 }
 /** 평면(컬럼×행) 레이아웃을 emit으로 렌더. 반환=총 높이. */
 async function renderFlat(opts: SpecOpts, dark: boolean, emit: LayoutEmit): Promise<number> {
@@ -492,8 +496,8 @@ async function buildSpec(opts: SpecOpts, maps: BuildMaps): Promise<number> {
   frame.fills = [{ type: "SOLID", color: specPalette(true).bg }];
   frame.cornerRadius = 8;
   frame.resize(W, 1600);
-  frame.x = W + 80; // 원본(Light, x=0) 우측에 밀착 — 빈 라이트 컬럼 제거
-  frame.y = opts.originY;
+  frame.x = opts.darkOffset?.x ?? (W + 80); // 기본=원본 우측 밀착; darkOffset 지정 시 GNB처럼 아래 배치
+  frame.y = opts.darkOffset?.y ?? opts.originY;
   const H = await renderFlat(opts, true, frameEmit(frame, maps, modeId));
   frame.resize(W, H);
   setMode(frame, maps, modeId);
@@ -2099,8 +2103,13 @@ async function buildGNB(maps: BuildMaps, originY: number): Promise<{ set: Compon
     colHeaders: menuStates,
     cellAt: (_p, size, _ri, ci) => menuCellByKey.get(`${size}/${menuStates[ci]}`) ?? null,
     lightX: SPEC_LIGHT_X, darkX: SPEC_DARK_X, originY, cellW: 200, cellH: 72, rowLabelW: 16,
+    // GNB는 가로가 너무 길어 다크 스펙을 원본 아래에 배치 (사용자 결정)
+    // decorateSetGrouped 후 실제 bottomY를 알 수 없으므로 먼저 decorateSetGrouped 실행, 이후 darkOffset 계산
+    darkOffset: { x: 0 }, // y는 아래에서 decorateSetGrouped 결과로 계산
   };
   let bottomY = await decorateSetGrouped(menuSet, menuOpts, maps);
+  // 다크 스펙을 메뉴 세트 아래에 배치 — x=0, y=bottomY+80
+  menuOpts.darkOffset = { x: 0, y: bottomY + 80 };
   try { bottomY = Math.max(bottomY, await buildGroupedSpec(menuOpts, maps)); } catch (e) { console.warn(e); }
 
   // 2) GNB 바 세트 (6 variants) — Align × Size. 정본 = "GNB". 실제 화면폭 1920 으로 표현(사용자 결정).
@@ -2199,7 +2208,10 @@ async function buildGNB(maps: BuildMaps, originY: number): Promise<{ set: Compon
     cellAt: (r, _c) => barOrder[r].comp,
     lightX: SPEC_LIGHT_X, darkX: SPEC_DARK_X, originY: barTop, cellW: BAR_W + 40, cellH: 96, rowLabelW: 160,
   };
-  bottomY = Math.max(bottomY, await decorateSetFlat(barSet, barOpts, maps));
+  const barLightBottomY = await decorateSetFlat(barSet, barOpts, maps);
+  bottomY = Math.max(bottomY, barLightBottomY);
+  // GNB 바도 다크 스펙을 아래 배치 — 1920px 폭이라 우측 배치 불가
+  barOpts.darkOffset = { x: 0, y: barLightBottomY + 80 };
   try { bottomY = Math.max(bottomY, await buildSpec(barOpts, maps)); } catch (e) { console.warn(e); }
 
   return { set: barSet, bottomY };

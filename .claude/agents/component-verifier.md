@@ -151,6 +151,29 @@ npm run harness:audit          # scripts/harness-audit.js — 사이즈 분기·
 
 **두갈래 적용:** variant 구성·아이콘/이미지 원본·토큰 바인딩 구조·순환참조 = **정확 대조(항상 ❌)**. 색값·치수·타이포 = 두갈래((a)/(b)/(c)). 허용편차 선언서 항목은 (b)로 제외.
 
+> ### 🚫 raw hex (b) 우회 2단계 잠금 (2026-06-19 신설 — WebTabBar 사후 차단)
+> raw hex 잔류를 (b) 허용편차로 통과시키려면 **아래 두 조건을 순서대로 통과**해야 한다. 하나라도 실패하면 (b) 금지 — ❌(a) 또는 ❓(c)로 처리한다.
+>
+> **조건 1 — 허용편차 범위 명시 확인 (스코프 잠금)**
+> 계획서(`2-plan.md`)의 허용편차 선언서에 해당 노드명 + 속성 유형(fills / strokes / text fills)이 **명시적으로 포함**돼 있어야 한다.
+> - "아이콘 raster 허용"은 아이콘 노드의 fill/stroke만 커버한다. **배경(frame/component fill)·텍스트는 별도 항목으로 명시돼야만 포함**된다.
+> - 컴포넌트 이름 수준의 카테고리 허용("브라우저 크롬이므로")은 (b) 근거가 되지 않는다.
+>
+> **조건 2 — DS 토큰 조회 결과 제시 ("등가물 없음" 확인)**
+> `plugins/figma-vars-installer/src/vars-data.ts`(FOUNDATION_COLOR·SEMANTIC_COLOR)에서 해당 hex 값의 등가물을 **실제 조회**해 결과를 표에 기록해야 한다.
+> - 등가물이 있으면 → **무조건 ❌(a)**. (b)로 처리 금지.
+> - 등가물이 없어야만 (b) 후보. 단, 근사 토큰이 있으면(예: `#ebebeb` ≈ `gray/100`=#E9E9E9) **❓(c)로 올려 사용자가 판단**한다.
+>
+> **보고 형식 (raw hex 잔류가 있을 때마다 값별로 한 줄씩):**
+> ```
+> | hex 값 | 노드·속성 | 허용편차 명시 여부 | DS 조회 결과 | 판정 |
+> |--------|-----------|-------------------|-------------|------|
+> | #ffffff | address_row fill | 미명시 | color/surface/default=✅ | ❌(a) |
+> | #353535 | nav icons stroke | 미명시 | color/icon/gray-dark=✅ | ❌(a) |
+> | #dcdcdc | tab_row fill | 미명시 | 없음(gray/200=#D9D9D9 근사) | ❓(c) |
+> ```
+> (이 표가 없으면 raw hex 섹션은 검문소 4 HOLD — 통과 불가.)
+
 산출물: `reports/figma-library-build/{target}/4-verification.md` (구조는 §산출물 형식 준용 + 위 항목).
 
 ## 금지 행동
