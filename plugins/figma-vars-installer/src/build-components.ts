@@ -265,12 +265,17 @@ async function renderGrouped(opts: GroupedSpecOpts, dark: boolean, emit: LayoutE
       }
       y += HEADER_H;
       for (let ri = 0; ri < opts.rowLabels.length; ri++) {
-        await emit.text(opts.rowLabels[ri], PAD, y + opts.cellH / 2 - 8, opts.rowLabelW, "LEFT", c.label, 12, "Medium");
+        // 행 높이 = 행 내 최대 컴포넌트 높이(+패딩). 고정 cellH 대신 → 라벨-컴포넌트 밀착·빈공간 제거.
+        let rowH = 0;
+        for (let ci = 0; ci < opts.colHeaders.length; ci++) { const cp = opts.cellAt(plat.name, size, ri, ci); if (cp && cp.height > rowH) rowH = cp.height; }
+        rowH = (rowH || opts.cellH) + 16;
+        const top = y + 4; // 헤더 바로 아래(상단 정렬)
+        if (opts.rowLabels[ri]) await emit.text(opts.rowLabels[ri], PAD, top, opts.rowLabelW, "LEFT", c.label, 12, "Medium");
         for (let ci = 0; ci < opts.colHeaders.length; ci++) {
           const comp = opts.cellAt(plat.name, size, ri, ci);
-          if (comp) emit.cell(comp, gridLeft + ci * opts.cellW + (opts.cellW - comp.width) / 2, y + (opts.cellH - comp.height) / 2);
+          if (comp) emit.cell(comp, gridLeft + ci * opts.cellW + (opts.cellW - comp.width) / 2, top);
         }
-        y += opts.cellH;
+        y += rowH;
       }
     }
   }
@@ -297,25 +302,22 @@ function floatingEmit(oy: number, ox = 0): LayoutEmit {
   };
 }
 
-/** 그룹형 Light + Dark 스펙 프레임 (lightX / darkX). 반환=최하단 Y. */
+/** 그룹형 Dark 스펙 프레임만 생성(원본 세트=Light 기준). 위치=원본 우측 밀착. 반환=최하단 Y.
+ *  (2026-06-19 사용자 결정: 라이트 스펙은 원본과 중복이라 미생성 — 공간 절약) */
 async function buildGroupedSpec(opts: GroupedSpecOpts, maps: BuildMaps): Promise<number> {
   const W = specWidth(opts.rowLabelW, opts.colHeaders.length, opts.cellW);
-  let bottom = opts.originY;
-  for (const dark of [false, true]) {
-    const modeId = dark ? maps.semanticDarkModeId : maps.semanticLightModeId;
-    const frame = figma.createFrame();
-    frame.name = `${opts.title} — Spec ${dark ? "Dark" : "Light"}`;
-    frame.fills = [{ type: "SOLID", color: specPalette(dark).bg }];
-    frame.cornerRadius = 8;
-    frame.resize(W, 2400);
-    frame.x = dark ? opts.darkX : opts.lightX;
-    frame.y = opts.originY;
-    const H = await renderGrouped(opts, dark, frameEmit(frame, maps, modeId));
-    frame.resize(W, H);
-    setMode(frame, maps, modeId);
-    bottom = Math.max(bottom, frame.y + H);
-  }
-  return bottom;
+  const modeId = maps.semanticDarkModeId;
+  const frame = figma.createFrame();
+  frame.name = `${opts.title} — Spec Dark`;
+  frame.fills = [{ type: "SOLID", color: specPalette(true).bg }];
+  frame.cornerRadius = 8;
+  frame.resize(W, 2400);
+  frame.x = (opts.offsetX ?? 0) + W + 80; // 원본(Light) 우측에 밀착 — 빈 라이트 컬럼 제거
+  frame.y = opts.originY;
+  const H = await renderGrouped(opts, true, frameEmit(frame, maps, modeId));
+  frame.resize(W, H);
+  setMode(frame, maps, modeId);
+  return Math.max(opts.originY, frame.y + H);
 }
 
 /** 컴포넌트 세트 원본을 Light 스펙처럼 꾸민다(세트=실제 variant, 라벨/밴드는 캔버스에 정렬). 반환=최하단 Y. */
@@ -442,36 +444,38 @@ async function renderFlat(opts: SpecOpts, dark: boolean, emit: LayoutEmit): Prom
   }
   y += HEADER_H;
   for (let r = 0; r < opts.rowLabels.length; r++) {
-    if (opts.rowLabels[r]) await emit.text(opts.rowLabels[r], PAD, y + opts.cellH / 2 - 7, rowLabelW, "LEFT", c.label, 11, "Medium");
+    // 행 높이 = 행 내 최대 컴포넌트 높이(+패딩). 고정 cellH 대신 → 라벨-컴포넌트 밀착·빈공간 제거.
+    let rowH = 0;
+    for (let cc = 0; cc < opts.colHeaders.length; cc++) { const cp = opts.cellAt(r, cc); if (cp && cp.height > rowH) rowH = cp.height; }
+    rowH = (rowH || opts.cellH) + 16;
+    const top = y + 4;
+    if (opts.rowLabels[r]) await emit.text(opts.rowLabels[r], PAD, top, rowLabelW, "LEFT", c.label, 11, "Medium");
     for (let cc = 0; cc < opts.colHeaders.length; cc++) {
       const comp = opts.cellAt(r, cc);
-      if (comp) emit.cell(comp, gridLeft + cc * opts.cellW + (opts.cellW - comp.width) / 2, y + (opts.cellH - comp.height) / 2);
+      if (comp) emit.cell(comp, gridLeft + cc * opts.cellW + (opts.cellW - comp.width) / 2, top);
     }
-    y += opts.cellH;
+    y += rowH;
   }
   return y + PAD;
 }
 
-/** 평면 Light + Dark 스펙 프레임 (lightX / darkX). 반환=최하단 Y. */
+/** 평면 Dark 스펙 프레임만 생성(원본 세트=Light 기준). 위치=원본(x=0) 우측 밀착. 반환=최하단 Y.
+ *  (2026-06-19 사용자 결정: 라이트 스펙은 원본과 중복이라 미생성 — 공간 절약) */
 async function buildSpec(opts: SpecOpts, maps: BuildMaps): Promise<number> {
   const rowLabelW = opts.rowLabelW ?? 96;
   const W = specWidth(rowLabelW, opts.colHeaders.length, opts.cellW);
-  let bottom = opts.originY;
-  for (const dark of [false, true]) {
-    const modeId = dark ? maps.semanticDarkModeId : maps.semanticLightModeId;
-    const frame = figma.createFrame();
-    frame.name = `${opts.title} — Spec ${dark ? "Dark" : "Light"}`;
-    frame.fills = [{ type: "SOLID", color: specPalette(dark).bg }];
-    frame.cornerRadius = 8;
-    frame.resize(W, 1600);
-    frame.x = dark ? opts.darkX : opts.lightX;
-    frame.y = opts.originY;
-    const H = await renderFlat(opts, dark, frameEmit(frame, maps, modeId));
-    frame.resize(W, H);
-    setMode(frame, maps, modeId);
-    bottom = Math.max(bottom, frame.y + H);
-  }
-  return bottom;
+  const modeId = maps.semanticDarkModeId;
+  const frame = figma.createFrame();
+  frame.name = `${opts.title} — Spec Dark`;
+  frame.fills = [{ type: "SOLID", color: specPalette(true).bg }];
+  frame.cornerRadius = 8;
+  frame.resize(W, 1600);
+  frame.x = W + 80; // 원본(Light, x=0) 우측에 밀착 — 빈 라이트 컬럼 제거
+  frame.y = opts.originY;
+  const H = await renderFlat(opts, true, frameEmit(frame, maps, modeId));
+  frame.resize(W, H);
+  setMode(frame, maps, modeId);
+  return Math.max(opts.originY, frame.y + H);
 }
 
 /** 컴포넌트 세트 원본을 Light 평면 스펙처럼 꾸민다(라벨은 캔버스 정렬). 반환=최하단 Y. */
@@ -1672,13 +1676,13 @@ async function buildTimePickerDropdown(maps: BuildMaps, originY: number): Promis
   const COL_24_W = TPD_PANEL_W(2), COL_12_W = TPD_PANEL_W(3); // 121 / 194 (원본 고정 폭)
   const LABEL_W = 150, GAP = 40, PAD = 24, TITLE_H = 30, HDR_H = 24, ROW_GAP = 34;
   const SHEET_W = PAD * 2 + LABEL_W + COL_24_W + GAP + COL_12_W;
-  for (const dark of [false, true]) {
+  for (const dark of [true]) { // Dark 만 생성(라이트 스펙 미생성 — 2026-06-19 사용자 결정)
     const c = specPalette(dark);
     const frame = figma.createFrame();
     frame.name = `Time Picker Dropdown States — Spec ${dark ? "Dark" : "Light"}`;
     frame.fills = [{ type: "SOLID", color: c.bg }];
     frame.cornerRadius = 8;
-    frame.x = dark ? SPEC_DARK_X : SPEC_LIGHT_X;
+    frame.x = SPEC_LIGHT_X;
     frame.y = sheetTop;
     let y = PAD;
     frame.appendChild(await makeLabel(`Time Picker Dropdown · States · ${dark ? "Dark" : "Light"}`, 14, "Bold", PAD, y, 420, "LEFT", c.title));
@@ -1863,8 +1867,8 @@ async function buildGNB(maps: BuildMaps, originY: number): Promise<{ set: Compon
   let bottomY = await decorateSetGrouped(menuSet, menuOpts, maps);
   try { bottomY = Math.max(bottomY, await buildGroupedSpec(menuOpts, maps)); } catch (e) { console.warn(e); }
 
-  // 2) GNB 바 세트 (6 variants) — Align × Size. 정본 = "GNB". full-width 대신 고정폭(960)으로 표현.
-  const BAR_W = 960;
+  // 2) GNB 바 세트 (6 variants) — Align × Size. 정본 = "GNB". 실제 화면폭 1920 으로 표현(사용자 결정).
+  const BAR_W = 1920;
   const barH: Record<string, number> = { md: 56, sm: 48, xsm: 36 };
   const aligns = [
     { name: "Center-Between", key: "center-between" },
@@ -1937,12 +1941,15 @@ async function buildGNB(maps: BuildMaps, originY: number): Promise<{ set: Compon
   const barSet = figma.combineAsVariants(barComps, figma.currentPage);
   barSet.name = "GNB";
   const barTop = bottomY + 80;
+  // GNB 바는 폭이 커서(1920) 가로 그리드 대신 세로로 1열 나열(사용자 결정). 각 행 = Align·Size 1개.
+  const barOrder: { comp: ComponentNode | null; label: string }[] = [];
+  for (const a of aligns) for (const sk of sizeKeys) barOrder.push({ comp: barCellByKey.get(`${a.name}/${sk}`) ?? null, label: `${a.name} · ${sk}` });
   const barOpts: SpecOpts = {
     title: "GNB",
-    colHeaders: sizeKeys,
-    rowLabels: aligns.map((a) => a.name),
-    cellAt: (r, c) => barCellByKey.get(`${aligns[r].name}/${sizeKeys[c]}`) ?? null,
-    lightX: SPEC_LIGHT_X, darkX: SPEC_DARK_X, originY: barTop, cellW: BAR_W + 40, cellH: 96, rowLabelW: 120,
+    colHeaders: [""],
+    rowLabels: barOrder.map((b) => b.label),
+    cellAt: (r, _c) => barOrder[r].comp,
+    lightX: SPEC_LIGHT_X, darkX: SPEC_DARK_X, originY: barTop, cellW: BAR_W + 40, cellH: 96, rowLabelW: 160,
   };
   bottomY = Math.max(bottomY, await decorateSetFlat(barSet, barOpts, maps));
   try { bottomY = Math.max(bottomY, await buildSpec(barOpts, maps)); } catch (e) { console.warn(e); }
@@ -2101,7 +2108,7 @@ async function buildDatePicker(maps: BuildMaps, originY: number): Promise<{ set:
     colHeaders: states.map((s) => s.name),
     cellAt: (platName, size, _ri, ci) =>
       cells.find((x) => x.size === size && x.brk === platName && x.state === states[ci].name)?.comp ?? null,
-    lightX: SPEC_LIGHT_X, darkX: SPEC_DARK_X, originY, cellW: 210, cellH: 440, rowLabelW: 16,
+    lightX: SPEC_LIGHT_X, darkX: SPEC_DARK_X, originY, cellW: 380, cellH: 440, rowLabelW: 16, // cellW≥캘린더356 → Open 패널이 Disabled 열 침범 방지
   };
   let bottomY = await decorateSetGrouped(set, opts, maps);
   try { bottomY = Math.max(bottomY, await buildGroupedSpec(opts, maps)); } catch (e) { console.warn(e); }
