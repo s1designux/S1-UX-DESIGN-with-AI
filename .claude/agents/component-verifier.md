@@ -115,6 +115,7 @@ npm run harness:audit          # scripts/harness-audit.js — 사이즈 분기·
 
 ### 🔒 BLOCKED
 - 🔒 {variant} {속성}: 2단계 표에 `MCP 미제공` — 값 확보 필요
+- 🔒 토큰 바인딩 스캔: **Figma MCP 끊김/타임아웃** — `whoami` probe + 재시도 ≤2회 후에도 실패. **SKIP-통과 금지**, BLOCKED 기록 + 사용자에게 "재연결 후 바인딩 재검증" 재요청(token-binding-scan §MCP 끊김 처리). 재연결 후 스캔만 재실행해 해소.
 
 ### 판정
 - ❌(a) {n}건 → 3단계 재작업 필요 (구현자에게 반환)
@@ -128,7 +129,7 @@ npm run harness:audit          # scripts/harness-audit.js — 사이즈 분기·
 |------|------|------|
 | PASS | ❌(a) 0건 · ❓(c) 0건 · BLOCKED 0건 | 검문소 4 통과 → 5단계(또는 완료). 🟡(b) 개선목록은 남겨도 통과 |
 | HOLD | ❓(c) 1건 이상 | 사용자 확인 대기 (임의 (b) 처리 금지) |
-| BLOCKED | `MCP 미제공` 항목 존재 | 2단계로 되돌려 값 확보 (규칙 4) |
+| BLOCKED | `MCP 미제공` 항목 존재 **또는 바인딩 스캔 MCP 끊김(재시도 2회 실패)** | 2단계로 되돌려 값 확보 / 바인딩 스캔은 MCP 재연결 후 사용자 재요청 시 재실행 (규칙 4·token-binding-scan §MCP 끊김) |
 | FAIL | ❌(a) 1건 이상 | 3단계로 반환, 구현자 재작업 후 재검증 |
 
 ## (C) Figma 라이브러리 빌드 검증 (figma-library-build 4단계)
@@ -139,7 +140,12 @@ npm run harness:audit          # scripts/harness-audit.js — 사이즈 분기·
 - **variant 전수** — 계획서의 모든 variant가 세트에 존재(누락 1개라도 ❌).
 - **variant 속성** — 속성 축·값이 계획대로(예: `Platform={App,Web}`). 이름이 `Prop=Value`로 정규화됐나.
 - **variant 패킹** — 세트 bounds가 정상인가. **세트 폭/높이가 variant 합보다 비정상적으로 크면 ❌**(예: combineAsVariants 후 재배치 누락 → 수천 px 붕괴). 각 variant가 세트 안에서 겹치지 않고 정렬됐나.
-- **토큰 바인딩** — 새로 칠한 fills가 Variable에 바인딩됐나(raw hex 잔류 = ❌). 기존 인스턴스/토큰 컴포넌트 바인딩이 보존됐나.
+- **토큰 바인딩 (필수 — 기계 스캔으로 사실 추출, 눈대중·카테고리 판단 금지)** — `.claude/skills/figma-library-build/references/token-binding-scan.md` 의 **2단계 스캔을 실제 실행**한다:
+  1. **use_figma 바인딩 스캔** — 대상 노드의 SOLID fill·stroke 중 `boundVariables` 없는 raw hex 를 **사실 추출**(LLM 판단 0). 추출 0건이면 "스캔 안 됨" 의심(노드 id·페이지 확인).
+  2. **역매핑 기계 판정** — 미바인딩 hex 를 `node scripts/figma-binding-lookup.js --stdin` 에 넘겨 vars-data 정본에 등가물이 있는지 결정론 판정. **EXACT(정확 일치 토큰 존재) 1건이라도 = 검증 통과 불가(exit 2).**
+  3. **결과 표를 4-verification.md 에 필수 기록**(token-binding-scan §3). 표 없으면 HOLD.
+  - 판정: **EXACT + 허용편차 미명시 → ❌(a) 토큰 바인딩 필수.** EXACT + 허용편차에 [노드명+속성유형] 명시 → 🟡(b). APPROX → ❓(c). (아래 §raw hex (b) 우회 2단계 잠금과 동일.)
+  - 기존 인스턴스/토큰 컴포넌트 바인딩이 보존됐나도 함께 확인.
 - **순환 참조 0** — 어떤 variant도 같은 세트의 형제 variant 인스턴스를 품지 않는가(품었으면 ❌ — detach 누락).
 - **네이밍** — 슬래시 폴더·PascalCase·기존 컨벤션과 충돌 없나. 계획 외 이름 생성 없나.
 - **기존 인스턴스 무결성** — 변형세트화/리네임 후 기존 화면의 인스턴스가 깨지지 않고 올바른 variant로 remap됐나(node-map의 remap 기록 + 대표 인스턴스 1~2개 실측).

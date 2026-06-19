@@ -139,7 +139,8 @@ reports/figma-library-build/{target}/
 **담당:** 🤖 `component-verifier` (실제 spawn, 빌더와 분리)
 
 `2-plan.md`·원본 스크린샷·`node-map.json`을 기준으로 빌드 결과(Figma 노드)를 대조한다(에이전트 정의 §(C) Figma 라이브러리 빌드 검증):
-- **기계:** variant 전수·속성, **패킹 정상(붕괴 ❌)**, 토큰 바인딩, 순환참조 0, 네이밍, 기존 인스턴스 무결성, 원본 아이콘/이미지.
+- **기계:** variant 전수·속성, **패킹 정상(붕괴 ❌)**, **토큰 바인딩(필수 스캔)**, 순환참조 0, 네이밍, 기존 인스턴스 무결성, 원본 아이콘/이미지.
+  - **토큰 바인딩은 눈대중 금지** — `references/token-binding-scan.md` 의 **use_figma 바인딩 스캔(미바인딩 raw hex 사실 추출) + `node scripts/figma-binding-lookup.js`(역매핑 결정론 판정)** 를 실제 실행하고 결과 표를 4-verification.md 에 기록한다. **EXACT 1건이라도 있으면 검문소 4 통과 불가.** (2026-06-19 WebTabBar: 카테고리 판단으로 #ffffff·#353535 가 (b) 로 샌 실패 차단.)
 - **렌더:** 각 variant `get_screenshot` 시각 대조.
 - **두갈래 분류로 반환:** ❌(a) 코드/빌드 실수 → 수정 / 🟡(b) 허용편차 → 유지 / ❓(c) 애매 → 사용자 확인.
 

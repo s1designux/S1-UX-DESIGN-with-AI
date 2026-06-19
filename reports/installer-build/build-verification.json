@@ -1,9 +1,9 @@
 {
   "sourceFile": "plugins/figma-vars-installer/src/build-components.ts",
-  "sourceHash": "sha256:0aec51d1450202422082695de1fe2335664cb50f462cb6f10e80682bf444b588",
+  "sourceHash": "sha256:169e5de2ac21c3bcd09aba2589c5b4e07d3a69c317b98feb0f5d3495ad41fd2a",
   "verifiedBy": "component-verifier",
   "verdict": "pass",
   "changeType": "structural",
-  "verifiedAt": "2026-06-19T08:42:00.317Z",
-  "notes": "Button SizeId 리네임(medium->MD/xsmall->XSM/xxsmall->XXSM/large->LG) 전 사용처 일관·스펙시트 빈칸 0 독립 대조 + XXSM textStyle·darkOffset 무부작용 확인 + 게이트 4종"
+  "verifiedAt": "2026-06-19T08:59:33.834Z",
+  "notes": "Dropdown/DropdownList 사이즈별 스펙 재구조화 + Table 인스턴스 재사용(Checkbox/Pagination/SelectBox) + GNB Language Icon — 셀↔스펙시트 키 정합·BUILT_COMPS 등록 순서·keycheck/anatomy/iconpolicy 통과"
 }

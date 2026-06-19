@@ -1,7 +1,10 @@
 {
   "fileKey": "cysG5U1udpQqVagYY1hWHW",
   "fileName": "SW UX GUIDE V3.0 TEST",
-  "placementPage": { "id": "5:5706", "name": "Core" },
+  "placementPage": {
+    "id": "5:5706",
+    "name": "Core"
+  },
   "builtBy": "figma-library-builder",
   "buildDate": "2026-06-19",
   "placementBaseX": 7608,
@@ -11,7 +14,10 @@
       "id": "333:165",
       "type": "COMPONENT",
       "remote": false,
-      "x": 7608, "y": 0, "w": 134.348, "h": 30,
+      "x": 7608,
+      "y": 0,
+      "w": 134.348,
+      "h": 30,
       "source": "280:330 (read-only spec)",
       "build": "Image fill (scaleMode FIT) using uploaded PNG imageHash 2433893b70764c5113ee21b6ec038baa5884cb98 (exported from 280:330). No pre-existing local Samsung logo component was found (findAll returned 0), so this was newly created.",
       "tokenBindings": "none (raster logo image, per plan allowed-deviation #3)"
@@ -20,7 +26,10 @@
       "id": "334:1326",
       "type": "COMPONENT",
       "remote": false,
-      "x": 7608, "y": 80, "w": 1920, "h": 56,
+      "x": 7608,
+      "y": 80,
+      "w": 1920,
+      "h": 56,
       "source": "268:5647 (read-only spec)",
       "structure": {
         "frame": "HORIZONTAL auto-layout, SPACE_BETWEEN, center, padding L/R 320 (fixed — spacing/320 token does not exist), T/B 12 (spacing/12 fixed val)",
@@ -35,14 +44,22 @@
         "한국어 text fill": "color/icon/gray-dark (8:1069), textStyle body/14M"
       },
       "remoteInstances": [
-        { "node": "334:5056", "name": "ic_인터넷 (globe)", "mainKey": "dee16df7e4ccddbd5dd7aa1d2fbf93f841f5dee2", "allowed": "V2.2 icon library — allowed remote exception" }
+        {
+          "node": "334:5056",
+          "name": "ic_인터넷 (globe)",
+          "mainKey": "dee16df7e4ccddbd5dd7aa1d2fbf93f841f5dee2",
+          "allowed": "V2.2 icon library — allowed remote exception"
+        }
       ]
     },
     "Shell/WebTabBar": {
       "id": "335:3099",
       "type": "COMPONENT",
       "remote": false,
-      "x": 7608, "y": 180, "w": 1920, "h": 101,
+      "x": 7608,
+      "y": 180,
+      "w": 1920,
+      "h": 101,
       "source": "268:5646 (read-only spec)",
       "structure": {
         "outer": "Component itself is VERTICAL auto-layout, bg #dcdcdc (chrome strip). Children: tab_row (335:3100), address_row (335:3101), bottom line tabel_bar (335:3102, #ebebeb h1).",
@@ -56,24 +73,76 @@
       "id": "339:6072",
       "type": "COMPONENT_SET",
       "remote": false,
-      "x": 7608, "y": 320, "w": 1508, "h": 296,
+      "x": 7608,
+      "y": 320,
+      "w": 1508,
+      "h": 296,
       "source": "269:4559 (Id input), 269:4560 (Password input) — read-only spec",
       "axes": "Field={Id,Password}, State={Default,Editing,Filled,Error}, Reveal={Hide,Show}",
       "variantCount": 12,
       "packing": "combineAsVariants left variants at original canvas coords; immediately repacked into 3-col x 4-row grid (pad 24, gapX 40, gapY 24, cell 460x44) and set resized to hug 1508x296. No width blowup.",
       "variants": [
-        { "id": "339:3097", "name": "Field=Id, State=Default, Reveal=Hide" },
-        { "id": "339:3100", "name": "Field=Id, State=Editing, Reveal=Hide", "caret": true },
-        { "id": "339:3104", "name": "Field=Id, State=Filled, Reveal=Hide" },
-        { "id": "339:3107", "name": "Field=Id, State=Error, Reveal=Hide" },
-        { "id": "339:3110", "name": "Field=Password, State=Default, Reveal=Hide", "eye": "hide" },
-        { "id": "339:3121", "name": "Field=Password, State=Editing, Reveal=Hide", "caret": true, "eye": "hide" },
-        { "id": "339:3133", "name": "Field=Password, State=Filled, Reveal=Hide", "eye": "hide", "value": "•••••••• (masked)" },
-        { "id": "339:3144", "name": "Field=Password, State=Error, Reveal=Hide", "eye": "hide" },
-        { "id": "339:3155", "name": "Field=Password, State=Default, Reveal=Show", "eye": "show" },
-        { "id": "339:3163", "name": "Field=Password, State=Editing, Reveal=Show", "caret": true, "eye": "show" },
-        { "id": "339:3172", "name": "Field=Password, State=Filled, Reveal=Show", "eye": "show", "value": "password123 (plain)" },
-        { "id": "339:3180", "name": "Field=Password, State=Error, Reveal=Show", "eye": "show" }
+        {
+          "id": "339:3097",
+          "name": "Field=Id, State=Default, Reveal=Hide"
+        },
+        {
+          "id": "339:3100",
+          "name": "Field=Id, State=Editing, Reveal=Hide",
+          "caret": true
+        },
+        {
+          "id": "339:3104",
+          "name": "Field=Id, State=Filled, Reveal=Hide"
+        },
+        {
+          "id": "339:3107",
+          "name": "Field=Id, State=Error, Reveal=Hide"
+        },
+        {
+          "id": "339:3110",
+          "name": "Field=Password, State=Default, Reveal=Hide",
+          "eye": "hide"
+        },
+        {
+          "id": "339:3121",
+          "name": "Field=Password, State=Editing, Reveal=Hide",
+          "caret": true,
+          "eye": "hide"
+        },
+        {
+          "id": "339:3133",
+          "name": "Field=Password, State=Filled, Reveal=Hide",
+          "eye": "hide",
+          "value": "•••••••• (masked)"
+        },
+        {
+          "id": "339:3144",
+          "name": "Field=Password, State=Error, Reveal=Hide",
+          "eye": "hide"
+        },
+        {
+          "id": "339:3155",
+          "name": "Field=Password, State=Default, Reveal=Show",
+          "eye": "show"
+        },
+        {
+          "id": "339:3163",
+          "name": "Field=Password, State=Editing, Reveal=Show",
+          "caret": true,
+          "eye": "show"
+        },
+        {
+          "id": "339:3172",
+          "name": "Field=Password, State=Filled, Reveal=Show",
+          "eye": "show",
+          "value": "password123 (plain)"
+        },
+        {
+          "id": "339:3180",
+          "name": "Field=Password, State=Error, Reveal=Show",
+          "eye": "show"
+        }
       ],
       "tokenBindings": {
         "bg": "color/form-control/bg/default (8:1052)",
@@ -91,8 +160,18 @@
         "eye icon fill": "color/form-control/icon/default (8:1130) [rebound from remote V2.2 var to local]"
       },
       "remoteInstances": [
-        { "name": "ic_비밀번호미표시 (eye hide) Line", "leafKey": "d4e9eb5b7e193ee291aa2a7e04396c8de2d2dae7", "setKey": "8edfaab1a0948b9b94313715df867d5ffa7a85c9", "allowed": "V2.2 icon library" },
-        { "name": "ic_비밀번호표시 (eye show) Line", "leafKey": "b130623bad9bf035e273501b404bf7a245af1460", "setKey": "a731c93510d9200b940c62bee5eceba47e822923", "allowed": "V2.2 icon library" }
+        {
+          "name": "ic_비밀번호미표시 (eye hide) Line",
+          "leafKey": "d4e9eb5b7e193ee291aa2a7e04396c8de2d2dae7",
+          "setKey": "8edfaab1a0948b9b94313715df867d5ffa7a85c9",
+          "allowed": "V2.2 icon library"
+        },
+        {
+          "name": "ic_비밀번호표시 (eye show) Line",
+          "leafKey": "b130623bad9bf035e273501b404bf7a245af1460",
+          "setKey": "a731c93510d9200b940c62bee5eceba47e822923",
+          "allowed": "V2.2 icon library"
+        }
       ]
     }
   },
@@ -113,7 +192,6 @@
     "Login Input Id Filled value text was initially bound to placeholder color; corrected to color/form-control/text/default (8:1063).",
     "Login Input caret initially bound to color/form-control/border/selected; switched to the dedicated color/form-control/text-caret (8:1133) which aliases blue/400 — more semantically correct."
   ],
-
   "followupSectioningPass": {
     "date": "2026-06-19",
     "builtBy": "figma-library-builder",
@@ -127,27 +205,110 @@
     },
     "loginInput_task1": {
       "set": "339:6072",
-      "movedInto": { "section": "330:27094", "name": "Form" },
-      "setSectionRel": { "x": 64, "y": 9784, "w": 2168, "h": 300 },
+      "movedInto": {
+        "section": "330:27094",
+        "name": "Form"
+      },
+      "setSectionRel": {
+        "x": 64,
+        "y": 9784,
+        "w": 2168,
+        "h": 300
+      },
       "repack": "12 variant -> 4열(Default/Editing/Filled/Error) x 3행(아이디/비밀번호숨김/비밀번호표시). 세트 내부 자식 x/y만 재배치 후 hug resize. 폭 붕괴 없음. combineAsVariants 미실행(기존 세트). 좌측 160px gutter 추가(행 라벨 공간).",
-      "internalGrid": { "pad": 24, "gutter": 160, "colGap": 40, "rowGap": 60, "cell": "460x44", "colX": [184,684,1184,1684], "rowY": [24,128,232] },
+      "internalGrid": {
+        "pad": 24,
+        "gutter": 160,
+        "colGap": 40,
+        "rowGap": 60,
+        "cell": "460x44",
+        "colX": [
+          184,
+          684,
+          1184,
+          1684
+        ],
+        "rowY": [
+          24,
+          128,
+          232
+        ]
+      },
       "variantGridMap": {
-        "아이디": { "Default": "339:3097", "Editing": "339:3100", "Filled": "339:3104", "Error": "339:3107" },
-        "비밀번호 · 숨김": { "Default": "339:3110", "Editing": "339:3121", "Filled": "339:3133", "Error": "339:3144" },
-        "비밀번호 · 표시": { "Default": "339:3155", "Editing": "339:3163", "Filled": "339:3172", "Error": "339:3180" }
+        "아이디": {
+          "Default": "339:3097",
+          "Editing": "339:3100",
+          "Filled": "339:3104",
+          "Error": "339:3107"
+        },
+        "비밀번호 · 숨김": {
+          "Default": "339:3110",
+          "Editing": "339:3121",
+          "Filled": "339:3133",
+          "Error": "339:3144"
+        },
+        "비밀번호 · 표시": {
+          "Default": "339:3155",
+          "Editing": "339:3163",
+          "Filled": "339:3172",
+          "Error": "339:3180"
+        }
       },
       "labelsCreated": {
-        "title": { "id": "356:3139", "chars": "Login Input · Light", "font": "Noto Sans KR Bold 14", "sectionRel": { "x": 88, "y": 9744 } },
+        "title": {
+          "id": "356:3139",
+          "chars": "Login Input · Light",
+          "font": "Noto Sans KR Bold 14",
+          "sectionRel": {
+            "x": 88,
+            "y": 9744
+          }
+        },
         "columnHeaders": [
-          { "id": "356:3140", "chars": "Default", "x": 248, "y": 9776 },
-          { "id": "356:3141", "chars": "Editing", "x": 748, "y": 9776 },
-          { "id": "356:3142", "chars": "Filled", "x": 1248, "y": 9776 },
-          { "id": "356:3143", "chars": "Error", "x": 1748, "y": 9776 }
+          {
+            "id": "356:3140",
+            "chars": "Default",
+            "x": 248,
+            "y": 9776
+          },
+          {
+            "id": "356:3141",
+            "chars": "Editing",
+            "x": 748,
+            "y": 9776
+          },
+          {
+            "id": "356:3142",
+            "chars": "Filled",
+            "x": 1248,
+            "y": 9776
+          },
+          {
+            "id": "356:3143",
+            "chars": "Error",
+            "x": 1748,
+            "y": 9776
+          }
         ],
         "rowLabels": [
-          { "id": "356:3144", "chars": "아이디", "x": 88, "y": 9823 },
-          { "id": "356:3145", "chars": "비밀번호 · 숨김", "x": 88, "y": 9927 },
-          { "id": "356:3146", "chars": "비밀번호 · 표시", "x": 88, "y": 10031 }
+          {
+            "id": "356:3144",
+            "chars": "아이디",
+            "x": 88,
+            "y": 9823
+          },
+          {
+            "id": "356:3145",
+            "chars": "비밀번호 · 숨김",
+            "x": 88,
+            "y": 9927
+          },
+          {
+            "id": "356:3146",
+            "chars": "비밀번호 · 표시",
+            "x": 88,
+            "y": 10031
+          }
         ]
       },
       "formSectionFinalHeight": 10084,
@@ -155,11 +316,41 @@
     },
     "shell_task2": {
       "section": "330:23695",
-      "sectionFinalSize": { "w": 2128, "h": 1431 },
+      "sectionFinalSize": {
+        "w": 2128,
+        "h": 1431
+      },
       "movedIn": [
-        { "id": "334:1326", "name": "Shell/LoginGNB", "sectionRel": { "x": 64, "y": 988, "w": 1920 }, "nameLabel": "356:3148" },
-        { "id": "335:3099", "name": "Shell/WebTabBar", "sectionRel": { "x": 64, "y": 1132, "w": 1920 }, "nameLabel": "356:3149" },
-        { "id": "333:165", "name": "C/IMG/Logo/Samsung_30", "sectionRel": { "x": 64, "y": 1321, "w": 134 }, "nameLabel": "356:3150" }
+        {
+          "id": "334:1326",
+          "name": "Shell/LoginGNB",
+          "sectionRel": {
+            "x": 64,
+            "y": 988,
+            "w": 1920
+          },
+          "nameLabel": "356:3148"
+        },
+        {
+          "id": "335:3099",
+          "name": "Shell/WebTabBar",
+          "sectionRel": {
+            "x": 64,
+            "y": 1132,
+            "w": 1920
+          },
+          "nameLabel": "356:3149"
+        },
+        {
+          "id": "333:165",
+          "name": "C/IMG/Logo/Samsung_30",
+          "sectionRel": {
+            "x": 64,
+            "y": 1321,
+            "w": 134
+          },
+          "nameLabel": "356:3150"
+        }
       ],
       "nameLabels": "기존 Shell 세트엔 라벨 없었으나 식별성 위해 신규 3종 위에 Noto Sans KR Bold 14 dark 이름 라벨 추가.",
       "placedBelow": "기존 Footer(330:23694) 아래, 겹침 없음(screenshot 확인)"
@@ -179,5 +370,216 @@
     "needsDecision": [
       "Login Input — Spec Dark 프레임 미생성: 다른 Form 세트는 우측에 '— Spec Dark'(라이트 복제 + Variable 컬렉션 모드 Dark) 프레임을 가짐. 어느 컬렉션의 어느 모드를 Dark로 적용할지 불확실 + 라이트 스펙이 필수라 라이트만 완성. 다크 프레임은 모드 매핑 확인 후 후속 생성 권장."
     ]
+  },
+  "loginInputSpecDark": {
+    "date": "2026-06-19",
+    "builtBy": "figma-library-builder",
+    "task": "Login Input — Spec Dark 프레임 생성 (라이트 Login Input 스펙 블록의 다크 복제, 자립 프레임). 빌드만 — 합격 판정 없음.",
+    "referenceFollowed": "Input — Spec Dark (330:24326): FRAME layoutMode NONE, fill #131418(rgb 0.075/0.078/0.094), explicitVariableModes {VariableCollectionId:8:963: 8:2}(Semantic Color V2 -> Dark). 라벨 raw fill(변수 미바인딩).",
+    "frame": {
+      "id": "361:2",
+      "name": "Login Input — Spec Dark",
+      "type": "FRAME",
+      "parent": "330:27094 (Form section)",
+      "sectionRel": {
+        "x": 2312,
+        "y": 9720,
+        "w": 2168,
+        "h": 364
+      },
+      "placement": "라이트 Login Input 세트(339:6072, sectionRel 64,9784 / 2168w) 오른쪽: 64+2168+80=2312. 제목 라이트(9744)와 정렬되게 frame top 9720 + 내부 title y24 = section 9744.",
+      "fill": "#131418 raw (rgb 0.075/0.078/0.094)",
+      "explicitVariableModes": {
+        "VariableCollectionId:8:963": "8:2"
+      },
+      "layoutMode": "NONE",
+      "fontFallback": "Pretendard 미설치 확인 -> Noto Sans KR (Bold/Medium). 라이트 라벨도 Noto 폴백이라 일관."
+    },
+    "internalLayout": {
+      "note": "라이트 내부 좌표 그대로 모방. frame-internal y = section_target_y - 9720.",
+      "title": {
+        "id": "361:3",
+        "chars": "Login Input · Dark",
+        "font": "Noto Sans KR Bold 14",
+        "fill": "rgb(0.95,0.95,0.96) raw (330:24326 제목색 모방)",
+        "internal": {
+          "x": 24,
+          "y": 24
+        }
+      },
+      "columnHeaders": [
+        {
+          "id": "361:4",
+          "chars": "Default",
+          "x": 248,
+          "y": 56
+        },
+        {
+          "id": "361:5",
+          "chars": "Editing",
+          "x": 748,
+          "y": 56
+        },
+        {
+          "id": "361:6",
+          "chars": "Filled",
+          "x": 1248,
+          "y": 56
+        },
+        {
+          "id": "361:7",
+          "chars": "Error",
+          "x": 1748,
+          "y": 56
+        }
+      ],
+      "columnHeaderStyle": "Noto Sans KR Medium 12, fill rgb(0.60,0.62,0.67) raw (330:24326 헤더색 모방)",
+      "rowLabels": [
+        {
+          "id": "361:8",
+          "chars": "아이디",
+          "x": 24,
+          "y": 103
+        },
+        {
+          "id": "361:9",
+          "chars": "비밀번호 · 숨김",
+          "x": 24,
+          "y": 207
+        },
+        {
+          "id": "361:10",
+          "chars": "비밀번호 · 표시",
+          "x": 24,
+          "y": 311
+        }
+      ],
+      "rowLabelStyle": "Noto Sans KR Medium 12, fill rgb(0.60,0.62,0.67) raw",
+      "grid": {
+        "colX": [
+          184,
+          684,
+          1184,
+          1684
+        ],
+        "rowY": [
+          88,
+          192,
+          296
+        ],
+        "cell": "460x44"
+      }
+    },
+    "instances": [
+      {
+        "id": "361:11",
+        "from": "339:3097",
+        "cell": "아이디/Default",
+        "x": 184,
+        "y": 88
+      },
+      {
+        "id": "361:14",
+        "from": "339:3100",
+        "cell": "아이디/Editing",
+        "x": 684,
+        "y": 88
+      },
+      {
+        "id": "361:18",
+        "from": "339:3104",
+        "cell": "아이디/Filled",
+        "x": 1184,
+        "y": 88
+      },
+      {
+        "id": "361:21",
+        "from": "339:3107",
+        "cell": "아이디/Error",
+        "x": 1684,
+        "y": 88
+      },
+      {
+        "id": "361:24",
+        "from": "339:3110",
+        "cell": "비번숨김/Default",
+        "x": 184,
+        "y": 192
+      },
+      {
+        "id": "361:42",
+        "from": "339:3121",
+        "cell": "비번숨김/Editing",
+        "x": 684,
+        "y": 192
+      },
+      {
+        "id": "361:61",
+        "from": "339:3133",
+        "cell": "비번숨김/Filled",
+        "x": 1184,
+        "y": 192
+      },
+      {
+        "id": "361:79",
+        "from": "339:3144",
+        "cell": "비번숨김/Error",
+        "x": 1684,
+        "y": 192
+      },
+      {
+        "id": "361:97",
+        "from": "339:3155",
+        "cell": "비번표시/Default",
+        "x": 184,
+        "y": 296
+      },
+      {
+        "id": "361:109",
+        "from": "339:3163",
+        "cell": "비번표시/Editing",
+        "x": 684,
+        "y": 296
+      },
+      {
+        "id": "361:122",
+        "from": "339:3172",
+        "cell": "비번표시/Filled",
+        "x": 1184,
+        "y": 296
+      },
+      {
+        "id": "361:134",
+        "from": "339:3180",
+        "cell": "비번표시/Error",
+        "x": 1684,
+        "y": 296
+      }
+    ],
+    "instancesNote": "12개 INSTANCE(createInstance). 프레임 explicitVariableModes 상속 -> 자동 Dark 렌더. 인스턴스에 별도 색 변경/오버라이드 없음. 각 460x44.",
+    "formSectionFinalHeight": 10084,
+    "formSectionHeightNote": "라이트 블록 바닥(10084)이 다크 프레임 바닥(9720+364=10084)과 동일 -> 섹션 height 증가 불필요. 다크 프레임이 기존 섹션 height 안에 들어감(우측으로만 확장, x=2312..4480 < 섹션 폭 3660? 주의: 섹션폭 3660인데 다크 프레임 right=4480 -> 폭 초과. needsDecision 참조).",
+    "selfCheck": {
+      "screenshot": "361:2 다크 프레임 1장 캡처(/tmp/login-dark.png). 입력칸 bg/보더 어둡게 렌더 확인됨(흰색 아님) -> explicitVariableModes 적용 정상. Editing=blue caret, Error=red border, Filled=값, eye 아이콘 정상. 합격 판정은 component-verifier 소관.",
+      "render": "PASS(붕괴 없음·다크 적용됨) — 단 판정 아님"
+    },
+    "structureChanges": {
+      "combineAsVariants": "없음 (라이트 세트 인스턴스만 사용, 신규 세트화 아님)",
+      "detach": "없음",
+      "createComponentFromNode": "없음 (다크 프레임은 FRAME, 컴포넌트 아님 — 라이트 Input — Spec Dark와 동일 패턴)",
+      "rename": "없음",
+      "remap": "없음",
+      "cycleRisk": "없음",
+      "emptiedContainers": "없음"
+    },
+    "formSectionWidthChange": {
+      "old": 3660,
+      "new": 4544,
+      "reason": "다크 프레임 right=4480이 섹션폭 3660 초과(820px overflow) -> 섹션을 4544로 확장(우측 여백 64, 좌측과 동일). height는 10084 그대로(라이트 바닥과 다크 바닥 동일)."
+    },
+    "formSectionFinalSize": {
+      "w": 4544,
+      "h": 10084
+    }
   }
 }
