@@ -748,7 +748,7 @@ async function buildInput(maps: BuildMaps, originY: number, originX: number = IN
             lead.appendChild(textNode);
             lead.appendChild(makeCaret(sc.font, scv(maps, fc("border/selected"))));
             field.appendChild(lead);
-            field.appendChild(await makeClearIcon(scv(maps, fc("icon/default"))));
+            field.appendChild(await makeClearIcon(scv(maps, fc("icon/default")), fcIconPx(sc.h, 0)));
           } else {
             field.appendChild(textNode);
           }
@@ -900,9 +900,11 @@ async function makeIconInstance(role: string, colorVar: Variable, size: number, 
 }
 // 입력값 삭제(close) 아이콘 — remove(원+X) 인스턴스. 24px 네이티브(글리프 16) 유지. 이름 "remove" 은 Anatomy Gate(11) 검증.
 const REMOVE_ICON_SVG = `<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M16 8C16 3.58588 12.4141 0 8 0C3.58588 0 0 3.58588 0 8C0 12.4141 3.58588 16 8 16C12.4141 16 16 12.4141 16 8ZM8 15.0588C4.10353 15.0588 0.941176 11.8965 0.941176 8C0.941176 4.10353 4.10353 0.941176 8 0.941176C11.8965 0.941176 15.0588 4.10353 15.0588 8C15.0588 11.8965 11.8965 15.0588 8 15.0588Z" fill="#353535"/><path d="M5.5 5.5L10.8333 10.8333" stroke="#353535" stroke-width="1.5" stroke-linejoin="round"/><path d="M10.8333 5.5L5.5 10.8333" stroke="#353535" stroke-width="1.5" stroke-linejoin="round"/></svg>`;
-async function makeClearIcon(colorVar: Variable): Promise<SceneNode> {
-  return makeIconInstance("remove", colorVar, 0, REMOVE_ICON_SVG); // size 0 = 리사이즈 안 함(네이티브 24)
+async function makeClearIcon(colorVar: Variable, size = 0): Promise<SceneNode> {
+  return makeIconInstance("remove", colorVar, size, REMOVE_ICON_SVG); // size 0 = 리사이즈 안 함(네이티브 24)
 }
+// form-control 아이콘 크기 규칙: xsmall(h34)=20px, 그 외 사이즈는 기본값 유지(2026-06-19 사용자 결정).
+const fcIconPx = (h: number, base: number): number => (h === 34 ? 20 : base);
 
 // ── Search Input (form-control + 돋보기 아이콘) ───────────────────────────────
 async function buildSearch(maps: BuildMaps, originY: number): Promise<{ set: ComponentSetNode; bottomY: number }> {
@@ -951,12 +953,12 @@ async function buildSearch(maps: BuildMaps, originY: number): Promise<{ set: Com
         trail.layoutMode = "HORIZONTAL"; trail.counterAxisAlignItems = "CENTER";
         trail.primaryAxisSizingMode = "AUTO"; trail.counterAxisSizingMode = "AUTO";
         trail.itemSpacing = 4;
-        trail.appendChild(await makeClearIcon(scv(maps, fc("icon/default"))));
-        trail.appendChild(await makeIconInstance("search", scv(maps, fc(st.icon)), 16, MAG));
+        trail.appendChild(await makeClearIcon(scv(maps, fc("icon/default")), fcIconPx(sc.h, 0)));
+        trail.appendChild(await makeIconInstance("search", scv(maps, fc(st.icon)), fcIconPx(sc.h, 16), MAG));
         comp.appendChild(trail);
       } else {
         comp.appendChild(textNode);
-        comp.appendChild(await makeIconInstance("search", scv(maps, fc(st.icon)), 16, MAG));
+        comp.appendChild(await makeIconInstance("search", scv(maps, fc(st.icon)), fcIconPx(sc.h, 16), MAG));
       }
       comp.resize(160, sc.h);
       setLightMode(comp, maps);
@@ -1070,7 +1072,7 @@ async function buildSelect(maps: BuildMaps, originY: number): Promise<{ set: Com
       trigger.strokes = [boundPaint(scv(maps, fc(st.border)))];
       trigger.strokeWeight = 1; trigger.strokeAlign = "INSIDE";
       trigger.appendChild(await makeBoundText("선택", sc.font, "Regular", scv(maps, fc(st.tc))));
-      trigger.appendChild(await makeIconInstance("chevron", scv(maps, fc(st.icon)), 16, (st.up ? chevUp : chevDown)("#000"), st.up ? 90 : 270));
+      trigger.appendChild(await makeIconInstance("chevron", scv(maps, fc(st.icon)), fcIconPx(sc.h, 16), (st.up ? chevUp : chevDown)("#000"), st.up ? 90 : 270));
       trigger.resize(140, sc.h);
 
       const comp = figma.createComponent();
@@ -1463,7 +1465,7 @@ async function buildTimePicker(maps: BuildMaps, originY: number): Promise<{ set:
       trigger.strokes = [boundPaint(scv(maps, fc(st.border)))];
       trigger.strokeWeight = 1; trigger.strokeAlign = "INSIDE";
       trigger.appendChild(await makeBoundText(st.txt, sc.font, "Regular", scv(maps, fc(st.tc))));
-      trigger.appendChild(await makeIconInstance("clock", scv(maps, fc(st.icon)), 18, CLOCK));
+      trigger.appendChild(await makeIconInstance("clock", scv(maps, fc(st.icon)), fcIconPx(sc.h, 18), CLOCK));
       trigger.resize(150, sc.h);
 
       const comp = figma.createComponent();
@@ -2084,7 +2086,7 @@ async function buildDatePicker(maps: BuildMaps, originY: number): Promise<{ set:
       trigger.fills = [boundPaint(scv(maps, fc(st.bg)))];
       trigger.strokes = [boundPaint(scv(maps, fc(st.border)))]; trigger.strokeWeight = 1; trigger.strokeAlign = "INSIDE";
       trigger.appendChild(await makeBoundText(st.txt, sc.font, "Regular", scv(maps, fc(st.tc))));
-      trigger.appendChild(await makeIconInstance("calendar", scv(maps, fc(st.icon)), 16, CAL_ICON));
+      trigger.appendChild(await makeIconInstance("calendar", scv(maps, fc(st.icon)), fcIconPx(sc.h, 16), CAL_ICON));
       trigger.resize(180, sc.h);
 
       const comp = figma.createComponent();
