@@ -561,8 +561,8 @@ export const SEMANTIC_COLOR: Record<string, SemanticColorEntry> = {
   "color/date-picker/text/selected":    { light: "base/white", dark: "base/white" },
 
   // ── pagination ────────────────────────────────
-  "color/pagination/control/bg/default": { light: "base/white", dark: "base/white" },
-  "color/pagination/control/bg/disabled": { light: "gray/50", dark: "gray-dark/200" },
+  "color/pagination/control/bg/default": { light: "base/white", dark: "gray-dark/100" },
+  "color/pagination/control/bg/disabled": { light: "gray/50", dark: "gray-dark/300" },
   "color/pagination/control/bg/hover": { light: "gray/50", dark: "gray-dark/200" },
   "color/pagination/control/border/default": { light: "gray/100", dark: "gray-dark/300" },
   "color/pagination/control/border/disabled": { light: "gray/100", dark: "gray-dark/300" },
