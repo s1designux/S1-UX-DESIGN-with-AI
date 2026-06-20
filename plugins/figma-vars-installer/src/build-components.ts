@@ -790,7 +790,7 @@ async function buildInput(maps: BuildMaps, originY: number, originX: number = IN
           // 비밀번호 눈(미표시) — 모든 variant field 우측. 기본 visible=false(꺼짐, 공간 미점유).
           // Password Icon BOOLEAN 속성에 바인딩(아래 set 생성 후). 표시 눈은 인스턴스 스왑으로 교체.
           // 트레일링 순서 = [눈][×] → 눈을 먼저 append, 삭제(×)를 그 뒤에 append.
-          const eye = await makeIconInstance("eye", scv(maps, fc("icon/default")), 24, EYE_OFF_SVG);
+          const eye = await makeIconInstance("eye", scv(maps, fc("icon/default")), sc.size === "XXSM" ? 20 : 24, EYE_OFF_SVG);
           eye.name = "eye";
           eye.visible = false;
           field.appendChild(eye);
