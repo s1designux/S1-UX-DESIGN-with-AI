@@ -766,9 +766,12 @@ async function buildInput(maps: BuildMaps, originY: number, originX: number = IN
           field.strokes = [boundPaint(scv(maps, fc(st.border)))];
           field.strokeWeight = 1; field.strokeAlign = "INSIDE";
           const textNode = await makeBoundText(st.txt, sc.font, "Regular", scv(maps, fc(st.tc)));
+          // 모든 variant: field 정렬 MIN(좌측). 텍스트/lead 가 좌측을 grow 로 채우고,
+          // 트레일링 아이콘(눈·삭제)은 우측에 [눈][×] 순으로 인접 클러스터. (검증기 적발 정렬 수정 2026-06-19)
+          field.primaryAxisAlignItems = "MIN";
+          let clearIcon: SceneNode | null = null;
           if (st.name === "Editing") {
-            // Editing(=selected): [텍스트 + 커서] 좌측, 삭제(close) 아이콘 우측. Figma 정본 564:3757 icon=on.
-            field.primaryAxisAlignItems = "SPACE_BETWEEN";
+            // Editing(=selected): [텍스트 + 커서] 좌측(grow), 트레일링 = [눈][삭제]. Figma 정본 564:3757 icon=on.
             const lead = figma.createFrame();
             lead.name = "lead"; lead.fills = [];
             lead.layoutMode = "HORIZONTAL"; lead.counterAxisAlignItems = "CENTER";
@@ -777,7 +780,8 @@ async function buildInput(maps: BuildMaps, originY: number, originX: number = IN
             lead.appendChild(textNode);
             lead.appendChild(makeCaret(scv(maps, fc("border/selected"))));
             field.appendChild(lead);
-            field.appendChild(await makeClearIcon(scv(maps, fc("icon/default")), fcIconPx(sc.h, 0)));
+            lead.layoutGrow = 1; lead.layoutSizingHorizontal = "FILL"; // 좌측 채움 → 트레일링 우측 고정
+            clearIcon = await makeClearIcon(scv(maps, fc("icon/default")), fcIconPx(sc.h, 0)); // 눈 뒤에 append
           } else {
             // 비-Editing 상태: 텍스트가 좌측을 채우고(layoutGrow=1) 눈 아이콘이 우측 HUG.
             textNode.layoutGrow = 1;
@@ -785,10 +789,12 @@ async function buildInput(maps: BuildMaps, originY: number, originX: number = IN
           }
           // 비밀번호 눈(미표시) — 모든 variant field 우측. 기본 visible=false(꺼짐, 공간 미점유).
           // Password Icon BOOLEAN 속성에 바인딩(아래 set 생성 후). 표시 눈은 인스턴스 스왑으로 교체.
+          // 트레일링 순서 = [눈][×] → 눈을 먼저 append, 삭제(×)를 그 뒤에 append.
           const eye = await makeIconInstance("eye", scv(maps, fc("icon/default")), 24, EYE_OFF_SVG);
           eye.name = "eye";
           eye.visible = false;
           field.appendChild(eye);
+          if (clearIcon) field.appendChild(clearIcon); // Editing: × 를 눈 우측에 인접
           field.resize(200, sc.h); // Input 예외 — 넓은 필드
           const comp = figma.createComponent();
           comp.name = `Size=${sc.size}, State=${st.name}, Label=${lab}, Message=${msg}, Break=${sc.brk}`;
