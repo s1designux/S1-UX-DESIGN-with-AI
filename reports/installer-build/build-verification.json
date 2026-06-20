@@ -1,9 +1,9 @@
 {
   "sourceFile": "plugins/figma-vars-installer/src/build-components.ts",
-  "sourceHash": "sha256:169e5de2ac21c3bcd09aba2589c5b4e07d3a69c317b98feb0f5d3495ad41fd2a",
+  "sourceHash": "sha256:d983be2b73c1a8d00faf87d05c77d310994e9cf830f39c996f93f7ebfdf5db4b",
   "verifiedBy": "component-verifier",
   "verdict": "pass",
   "changeType": "structural",
-  "verifiedAt": "2026-06-19T08:59:33.834Z",
-  "notes": "Dropdown/DropdownList 사이즈별 스펙 재구조화 + Table 인스턴스 재사용(Checkbox/Pagination/SelectBox) + GNB Language Icon — 셀↔스펙시트 키 정합·BUILT_COMPS 등록 순서·keycheck/anatomy/iconpolicy 통과"
+  "verifiedAt": "2026-06-20T00:36:14.913Z",
+  "notes": "신규 빌더 3종(LoginGNB·WebTabBar·SamsungLogo) 독립 대조: runners/CATEGORIES 등록·color 9키 vars-data 존재·globe/remove allowed-remote-keys 등록·darkOffset 1920패턴·cellW1960·벡터 마커·로고 폴백체인 확인, 전 결정론 게이트 통과"
 }

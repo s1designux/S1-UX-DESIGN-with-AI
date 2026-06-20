@@ -110,3 +110,45 @@ raw hex 잔류 0건.
 - 🔒 BLOCKED 0건
 
 **결과: HOLD** — (a)코드실수·패킹붕괴·provenance위반·순환참조·variant누락은 0이라 구조는 통과 수준이나, GNB 좌측 로고 1건이 사용자 확인 대기. 확인 후 (b)로 닫히면 4단계 통과.
+
+---
+
+## WebTabBar(335:3099) 토큰 바인딩 재검증 (2026-06-19 — 5-webtabbar-binding-plan.md 빌드 후)
+
+> 검증: 🤖 원본대조 검증 에이전트(component-verifier). 빌더와 분리. use_figma 정본 스캔(`visible:false` paint 제외) + figma-binding-lookup 역매핑 + 변수 ID→이름 해석으로 맵 대조.
+
+### 토큰 바인딩 스캔 (use_figma 사실 추출 + figma-binding-lookup 역매핑)
+- 스캔 노드: 335:3099 · 총 노드 41 · **미바인딩(visible) 1건** · 바인딩 26건 · 고유 미바인딩 hex 1종
+- 정본 스캔에서 invisible #FFFFFF 7건은 잡히지 않음(`visible===false` 제외 확인) → 비위반.
+
+| hex | 노드·속성 | 역매핑 | 허용편차 명시? | 판정 |
+|-----|-----------|--------|---------------|------|
+| #BE1E2C | 336:3112 (favicon Vector fills) | APPROX red/500(#C8001E, Δ34.6) — EXACT 없음(exit 0) | 명시됨(허용편차: 336:3112 파비콘 로고 서브색 [노드+fill]) | 🟡(b) raw 유지 |
+
+- 나머지 9색(#FFFFFF·#353535·#262626·#000000·#DCDCDC·#EBEBEB·#B6B6B6·#0072CE·#FF312C) 미바인딩 = **0건**. PASS 조건 충족.
+
+### 바인딩 변수 맵 대조 (boundVariables 변수 이름 → 계획서 맵)
+26개 바인딩 paint를 변수 ID→이름으로 해석해 5-webtabbar-binding-plan.md 맵과 전수 대조 — **전부 일치**:
+
+| 노드 | 바인딩 변수 | Light/Dark | 계획서 일치 |
+|------|-----------|-----------|------------|
+| elements_tab1(336:3098)·comp def(335:3099) | color/scroll/bg | #D9D9D9 / #55575F | ✅ |
+| 탭마스크(336:3100)·favicon bg(336:3102)·address_row(335:3101) | color/surface/default | #FFFFFF / #1C1D23 | ✅ |
+| nav 아이콘 stroke(337:3099–3102) + fill(337:3105,3108,3111,3112) | color/icon/gray-dark | #353535 / #B8BABF | ✅ (#262626도 단색 통일로 합침) |
+| 탭 라벨(336:3113) | color/text/body/primary | #202020 / #ECEDF0 | ✅ (#000000→DS #202020) |
+| address_pill(337:3113) | color/bg/muted | #E9E9E9 / #2E2F38 | ✅ (#EBEBEB 근사) |
+| 하단 헤어라인 tabel_bar(335:3102) | color/line/gray/subtle | #E9E9E9 / #2E2F38 | ✅ (#EBEBEB 근사) |
+| 탭 close(336:3115,3116) | color/icon/gray-light | #C4C4C4 / #35363F | ✅ (#B6B6B6 근사) |
+| favicon 파랑(336:3104,3105,3108,3109,3111) | brand/blue | #0072CE | ✅ |
+| favicon 빨강(336:3106,3107,3110) | brand/red | #FF312C | ✅ |
+
+- 단순 unbound=0이 아니라 **노드별로 "맞는 토큰"에 바인딩됨**을 변수 이름으로 확인. 오연결 0건.
+
+### 렌더 대조 (get_screenshot 335:3099)
+- 탭 스트립·favicon+라벨 탭·close(×)·window controls(− □ ×)·뒤/앞/새로고침·주소 알약 전부 정상 렌더. 바인딩 후 외형 깨짐·색 이상 **0건**.
+
+### WebTabBar 바인딩 판정
+- ❌(a) 0건 · ❓(c) 0건 · 🟡(b) 1건(#BE1E2C 허용편차 명시) · 🔒 BLOCKED 0건
+- **WebTabBar 토큰 바인딩 = 검문소 4 PASS.** (4-verification 초판이 카테고리 판단으로 (b) 통과시킨 9색을 전부 토큰 바인딩으로 정정 완료 확인.)
+
+> ⚠️ 본 재검증은 **WebTabBar 토큰 바인딩 범위만** 다룬다. 상단 GNB 좌측 로고 ❓(c) 1건(워드마크 의도/크기)은 별개로 여전히 사용자 확인 대기(login-components 세트 전체 판정은 HOLD 유지).

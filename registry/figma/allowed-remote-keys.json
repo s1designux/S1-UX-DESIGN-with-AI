@@ -15,7 +15,8 @@
     "chevron":    "e1ac97aa82f4e52f257ac1c0ea77fd09d0e5f581",
     "globe":      "dee16df7e4ccddbd5dd7aa1d2fbf93f841f5dee2",
     "eye_hide":   "d4e9eb5b7e193ee291aa2a7e04396c8de2d2dae7",
-    "eye_show":   "b130623bad9bf035e273501b404bf7a245af1460"
+    "eye_show":   "b130623bad9bf035e273501b404bf7a245af1460",
+    "edge_set":   "606d0de897175059f133427bf62bb3635d18a860"
   },
-  "note": "허용목록에 없는 ic_* 인스턴스(예: ic_닫기·ic_잠김 등)는 정식 V2.2 아이콘일 수 있으나 우리 설치기에 미등록 상태다. 자동으로 '위반' 단정하지 말고 (c)애매로 분류해 사용자 확인 후, 정식 아이콘이면 build-components.ts ICON_KEYS + 이 파일에 키를 추가한다."
+  "note": "허용목록에 없는 ic_* 인스턴스(예: ic_닫기·ic_잠김 등)는 정식 V2.2 아이콘일 수 있으나 우리 설치기에 미등록 상태다. 자동으로 '위반' 단정하지 말고 (c)애매로 분류해 사용자 확인 후, 정식 아이콘이면 build-components.ts ICON_KEYS + 이 파일에 키를 추가한다. edge_set 은 componentSet 키(importComponentSetByKeyAsync) — 개별 variant 키가 아님에 주의."
 }

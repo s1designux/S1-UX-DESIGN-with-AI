@@ -779,8 +779,16 @@ async function buildInput(maps: BuildMaps, originY: number, originX: number = IN
             field.appendChild(lead);
             field.appendChild(await makeClearIcon(scv(maps, fc("icon/default")), fcIconPx(sc.h, 0)));
           } else {
+            // 비-Editing 상태: 텍스트가 좌측을 채우고(layoutGrow=1) 눈 아이콘이 우측 HUG.
+            textNode.layoutGrow = 1;
             field.appendChild(textNode);
           }
+          // 비밀번호 눈(미표시) — 모든 variant field 우측. 기본 visible=false(꺼짐, 공간 미점유).
+          // Password Icon BOOLEAN 속성에 바인딩(아래 set 생성 후). 표시 눈은 인스턴스 스왑으로 교체.
+          const eye = await makeIconInstance("eye", scv(maps, fc("icon/default")), 24, EYE_OFF_SVG);
+          eye.name = "eye";
+          eye.visible = false;
+          field.appendChild(eye);
           field.resize(200, sc.h); // Input 예외 — 넓은 필드
           const comp = figma.createComponent();
           comp.name = `Size=${sc.size}, State=${st.name}, Label=${lab}, Message=${msg}, Break=${sc.brk}`;
@@ -801,6 +809,14 @@ async function buildInput(maps: BuildMaps, originY: number, originX: number = IN
   }
   const set = figma.combineAsVariants(comps, figma.currentPage);
   set.name = "Input";
+  // Password Icon BOOLEAN — 비밀번호 인풋일 때만 눈 아이콘 표시. 기본 false(꺼짐).
+  // 모든 variant 의 field>eye 레이어 visible 을 이 속성에 바인딩(레이어명 eye 통일 필수).
+  const pwIconPropId = set.addComponentProperty("Password Icon", "BOOLEAN", false);
+  for (const c of comps) {
+    const f = c.findChild((n: SceneNode) => n.name === "field") as FrameNode | null;
+    const eyeLayer = f ? f.findChild((n: SceneNode) => n.name === "eye") : null;
+    if (eyeLayer) eyeLayer.componentPropertyReferences = { visible: pwIconPropId };
+  }
   // Input 은 규모가 커서(7 상태 × 4 사이즈 × 4 그룹) 넓은 시트로 배치. originX 로 좌측정렬(섹션 컬럼 내) 가능.
   const OX = originX;
   set.x = OX; set.y = originY;
@@ -883,7 +899,37 @@ const ICON_KEYS: Record<string, string> = {
   account:  "a423e2e05cfff2f93062d6a83d6f3bdf79ca9647", // 계정/사용자 86:58
   chevron:  "e1ac97aa82f4e52f257ac1c0ea77fd09d0e5f581", // 화살표,더보기(쉐브론 › 우향 기준) 419:69 — 방향은 rotation 으로(우0·하90·좌180·상270)
   globe:    "dee16df7e4ccddbd5dd7aa1d2fbf93f841f5dee2", // 인터넷(지구본) 35:3317 — GNB 언어(사용자 지정)
+  eye:      "d4e9eb5b7e193ee291aa2a7e04396c8de2d2dae7", // 비밀번호 미표시(눈+슬래시 ic_비밀번호미표시 Line) — Input Password Icon boolean 기본값. 표시 눈은 인스턴스 스왑으로 교체
 };
+// 삼성 로고 컴포넌트 — V3.0 파일 로컬 노드 333:165 (134×30 벡터). 파일 동일 시 getNodeByIdAsync 직접 접근.
+const SAMSUNG_LOGO_KEY = "9b32bb9ada9e84cdd18550f641389874858fa6ee";
+// 삼성 로고 인스턴스 생성(targetH 높이로 비율 축소). 로컬→키→플레이스홀더 폴백.
+async function getSamsungLogoInstance(targetH: number): Promise<SceneNode> {
+  try {
+    const n = await figma.getNodeByIdAsync("333:165") as ComponentNode | null;
+    if (n && n.type === "COMPONENT") {
+      const inst = n.createInstance();
+      const scale = targetH / n.height;
+      inst.resize(Math.round(n.width * scale), targetH);
+      return inst;
+    }
+  } catch {}
+  try {
+    const comp = await figma.importComponentByKeyAsync(SAMSUNG_LOGO_KEY);
+    const inst = comp.createInstance();
+    const scale = targetH / comp.height;
+    inst.resize(Math.round(comp.width * scale), targetH);
+    return inst;
+  } catch {}
+  const r = figma.createRectangle();
+  r.name = "samsung-logo-placeholder";
+  r.resize(Math.round(107 * targetH / 24), targetH);
+  r.cornerRadius = 2;
+  r.fills = [{ type: "SOLID", color: { r: 0.09, g: 0.19, b: 0.55 } }];
+  return r;
+}
+// 비밀번호 눈(미표시) 폴백 SVG — 라이브러리 import 실패 시만 사용.
+const EYE_OFF_SVG = `<svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M2 12s3.5-6 10-6 10 6 10 6-3.5 6-10 6-10-6-10-6Z" stroke="#353535" stroke-width="1.5"/><circle cx="12" cy="12" r="2.5" stroke="#353535" stroke-width="1.5"/><path d="M4 4l16 16" stroke="#353535" stroke-width="1.5"/></svg>`;
 // 색 재바인딩 — 보이는(visible) 채움/선만 교체. 숨김 채움(hit-area 배경 등)은 보존(쉐브론 Fill1 처럼).
 function rebindIconColor(node: SceneNode, colorVar: Variable): void {
   const SHAPES = ["VECTOR", "ELLIPSE", "RECTANGLE", "LINE", "POLYGON", "STAR", "BOOLEAN_OPERATION"];
@@ -1972,7 +2018,15 @@ async function buildPagination(maps: BuildMaps, originY: number): Promise<{ set:
     setLightMode(comp, maps); // Button 패턴 — 명시적 light 부여 시 instance setMode(dark) 가 override 가능
     comps.push(comp); byKey.set(`Arrow/${st.state}`, comp);
   }
-  // Edge variants (처음/마지막 — |< 아이콘. Arrow 와 같은 상태·토큰)
+  // Edge variants (처음/마지막 — |< 아이콘. V2.2 ic_마지막장 1407:51 라이브러리 컴포넌트 세트 사용)
+  const EDGE_SET_KEY = "606d0de897175059f133427bf62bb3635d18a860"; // ic_마지막장 V2.2 1407:51 (쉐브론+바, line variant)
+  let edgeLineComp: ComponentNode | undefined;
+  try {
+    const edgeSet = await (figma as any).importComponentSetByKeyAsync(EDGE_SET_KEY) as ComponentSetNode;
+    edgeLineComp = (edgeSet.children as ComponentNode[]).find(
+      (c) => c.type === "COMPONENT" && c.name.toLowerCase().includes("line")
+    ) as ComponentNode | undefined ?? (edgeSet as any).defaultVariant as ComponentNode | undefined;
+  } catch (_) { /* 라이브러리 접근 실패 → SVG 폴백 */ }
   for (const st of arrowStates) {
     const comp = figma.createComponent();
     comp.name = `Element=Edge, State=${st.state}`;
@@ -1981,7 +2035,14 @@ async function buildPagination(maps: BuildMaps, originY: number): Promise<{ set:
     comp.fills = [boundPaint(scv(maps, pg(st.bg)))];
     comp.strokes = [boundPaint(scv(maps, pg(st.border)))];
     comp.strokeWeight = 1; comp.strokeAlign = "INSIDE";
-    const icon = makeStrokeIcon(CHEV_EDGE, scv(maps, st.icon)); // icon-vector-allow: 페이지네이션 Edge(처음/마지막=쉐브론+바) — V2.2 라이브러리에 해당 아이콘 없음
+    let icon: SceneNode;
+    if (edgeLineComp) {
+      const inst = edgeLineComp.createInstance();
+      rebindIconColor(inst, scv(maps, st.icon));
+      icon = inst;
+    } else {
+      icon = makeStrokeIcon(CHEV_EDGE, scv(maps, st.icon)); // icon-vector-allow: ic_마지막장 세트 로드 실패 폴백
+    }
     comp.appendChild(icon); icon.x = (SZ - icon.width) / 2; icon.y = (SZ - icon.height) / 2;
     setLightMode(comp, maps);
     comps.push(comp); byKey.set(`Edge/${st.state}`, comp);
@@ -2393,6 +2454,180 @@ async function buildCalendarPanel(maps: BuildMaps): Promise<FrameNode> {
   return panel;
 }
 
+// ── Calendar (독립 컴포넌트 세트 — State=Date/Year/Month) ────────────────────
+// Figma 540:4216 기준. 크기: 356×352. Date=달력 그리드, Year=연도 타일(4×3), Month=월 타일(4×3).
+// DatePicker Open 패널(buildCalendarPanel)과 별도 — 상태 전환 스펙 전용 독립 세트.
+async function buildCalendar(maps: BuildMaps, originY: number): Promise<{ set: ComponentSetNode; bottomY: number }> {
+  const dp  = (k: string) => `color/date-picker/${k}`;
+  const ctl = (k: string) => `color/control/${k}`;
+  const CHEV_L = `<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M10 12L6 8l4-4" stroke="#000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+  const CHEV_R = `<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M6 4l4 4-4 4" stroke="#000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+  const PANEL_W = 356, PANEL_H = 352;
+  const CW = 308 / 7; // 콘텐츠폭(356-24*2)÷7 = 44
+
+  // 패널 컴포넌트 초기화 + 내부 content-frame(gap 있음) 반환
+  function initComp(compName: string, vGap: number): [ComponentNode, FrameNode] {
+    const comp = figma.createComponent();
+    comp.name = compName;
+    comp.layoutMode = "VERTICAL";
+    comp.primaryAxisSizingMode = "FIXED"; comp.counterAxisSizingMode = "FIXED";
+    comp.primaryAxisAlignItems = "CENTER"; comp.counterAxisAlignItems = "CENTER";
+    comp.resize(PANEL_W, PANEL_H);
+    comp.paddingLeft = 24; comp.paddingRight = 24;
+    comp.paddingTop = 20; comp.paddingBottom = 20; comp.itemSpacing = 0;
+    comp.cornerRadius = 4;
+    comp.fills = [boundPaint(scv(maps, dp("bg/panel")))];
+    comp.strokes = [boundPaint(scv(maps, dp("border/panel")))];
+    comp.strokeWeight = 1; comp.strokeAlign = "INSIDE";
+    comp.clipsContent = true;
+    try {
+      (comp as any).effects = [{ type: "DROP_SHADOW", color: { r: 0, g: 0, b: 0, a: 0.15 }, offset: { x: 0, y: 4 }, radius: 8, spread: 0, visible: true, blendMode: "NORMAL" }];
+    } catch (_) { /* 환경 미지원 */ }
+    const inner = figma.createFrame();
+    inner.name = "content"; inner.fills = [];
+    inner.layoutMode = "VERTICAL"; inner.primaryAxisSizingMode = "AUTO"; inner.counterAxisSizingMode = "AUTO";
+    inner.counterAxisAlignItems = "CENTER"; inner.itemSpacing = vGap;
+    comp.appendChild(inner); inner.layoutAlign = "STRETCH";
+    return [comp, inner];
+  }
+
+  // 공용 헤더 (이전·라벨·다음)
+  async function makeCalHdr(label: string): Promise<FrameNode> {
+    const hdr = figma.createFrame(); hdr.name = "header"; hdr.fills = [];
+    hdr.layoutMode = "HORIZONTAL"; hdr.primaryAxisSizingMode = "FIXED"; hdr.counterAxisSizingMode = "FIXED";
+    hdr.primaryAxisAlignItems = "SPACE_BETWEEN"; hdr.counterAxisAlignItems = "CENTER";
+    hdr.resize(308, 32); // 308 = PANEL_W - paddingLeft(24) - paddingRight(24)
+    hdr.appendChild(await makeIconInstance("chevron", scv(maps, dp("text/primary")), 0, CHEV_L, 180));
+    hdr.appendChild(await makeBoundText(label, 24, "Bold", scv(maps, dp("text/primary"))));
+    hdr.appendChild(await makeIconInstance("chevron", scv(maps, dp("text/primary")), 0, CHEV_R, 0));
+    return hdr;
+  }
+
+  // 연도/월 타일 (88×56, 라이트·디스에이블드 2종)
+  async function makeYMTile(label: string, disabled: boolean): Promise<FrameNode> {
+    const tile = figma.createFrame(); tile.name = "tile";
+    tile.resize(88, 56); tile.cornerRadius = 4;
+    tile.layoutMode = "HORIZONTAL"; tile.primaryAxisAlignItems = "CENTER"; tile.counterAxisAlignItems = "CENTER";
+    tile.fills = [boundPaint(scv(maps, disabled ? ctl("bg/disabled") : ctl("bg/default")))];
+    tile.strokes = [boundPaint(scv(maps, ctl("border/default")))];
+    tile.strokeWeight = 1; tile.strokeAlign = "INSIDE";
+    tile.appendChild(await makeBoundText(label, 16, "Medium",
+      scv(maps, disabled ? "color/text/state/disabled" : "color/text/body/primary")));
+    return tile;
+  }
+
+  // 타일 행 3개 (가로 gap=12)
+  async function makeYMRow(labels: string[], dis: boolean[]): Promise<FrameNode> {
+    const row = figma.createFrame(); row.name = "tile-row"; row.fills = [];
+    row.layoutMode = "HORIZONTAL"; row.primaryAxisSizingMode = "AUTO"; row.counterAxisSizingMode = "AUTO";
+    row.counterAxisAlignItems = "CENTER"; row.itemSpacing = 12;
+    for (let i = 0; i < labels.length; i++) row.appendChild(await makeYMTile(labels[i], dis[i] ?? false));
+    return row;
+  }
+
+  // ── State=Date (달력 그리드 — 2025.01 샘플) ────────────────────────────────
+  const [dateComp, dateInner] = initComp("State=Date", 16);
+  dateInner.appendChild(await makeCalHdr("2025.01"));
+
+  const calBody = figma.createFrame(); calBody.name = "cal-body"; calBody.fills = [];
+  calBody.layoutMode = "VERTICAL"; calBody.primaryAxisSizingMode = "AUTO"; calBody.counterAxisSizingMode = "AUTO";
+  calBody.counterAxisAlignItems = "MIN"; calBody.itemSpacing = 0;
+  dateInner.appendChild(calBody);
+
+  // 요일 헤더 (월~일)
+  const wkRow = figma.createFrame(); wkRow.name = "weekdays"; wkRow.fills = [];
+  wkRow.layoutMode = "HORIZONTAL"; wkRow.itemSpacing = 0;
+  wkRow.primaryAxisSizingMode = "AUTO"; wkRow.counterAxisSizingMode = "AUTO";
+  calBody.appendChild(wkRow);
+  for (const ch of ["월", "화", "수", "목", "금", "토", "일"]) {
+    const cell = figma.createFrame(); cell.name = "wk"; cell.fills = [];
+    cell.layoutMode = "HORIZONTAL"; cell.primaryAxisAlignItems = "CENTER"; cell.counterAxisAlignItems = "CENTER";
+    cell.primaryAxisSizingMode = "FIXED"; cell.counterAxisSizingMode = "FIXED"; cell.resize(CW, 44);
+    cell.appendChild(await makeBoundText(ch, 16, "Medium", scv(maps, dp("text/primary"))));
+    wkRow.appendChild(cell);
+  }
+
+  // 5주×7일 그리드 (2025.01 기준: 1일=수요일, 월요일 시작)
+  type CalCell = { day: number; kind: "normal" | "other" | "today" | "selected" | "disabled" };
+  const calGrid: CalCell[] = [{ day: 30, kind: "other" }, { day: 31, kind: "other" }];
+  for (let d = 1; d <= 31; d++) {
+    calGrid.push({ day: d, kind: d === 10 ? "today" : d === 17 ? "selected" : d === 25 ? "disabled" : "normal" });
+  }
+  let nm = 1; while (calGrid.length < 35) calGrid.push({ day: nm++, kind: "other" });
+
+  for (let r = 0; r < 5; r++) {
+    const weekRow = figma.createFrame(); weekRow.name = "week"; weekRow.fills = [];
+    weekRow.layoutMode = "HORIZONTAL"; weekRow.itemSpacing = 0;
+    weekRow.primaryAxisSizingMode = "AUTO"; weekRow.counterAxisSizingMode = "AUTO";
+    calBody.appendChild(weekRow);
+    for (let c = 0; c < 7; c++) {
+      const g = calGrid[r * 7 + c];
+      const txtKey = g.kind === "other" ? "text/other-month" : g.kind === "disabled" ? "text/disabled"
+        : g.kind === "selected" ? "text/selected" : g.kind === "today" ? "text/today" : "text/secondary";
+      const dayCell = figma.createFrame(); dayCell.name = "day"; dayCell.fills = [];
+      dayCell.layoutMode = "HORIZONTAL"; dayCell.primaryAxisAlignItems = "CENTER"; dayCell.counterAxisAlignItems = "CENTER";
+      dayCell.primaryAxisSizingMode = "FIXED"; dayCell.counterAxisSizingMode = "FIXED"; dayCell.resize(CW, 44);
+      const inner = figma.createFrame(); inner.name = "inner"; inner.cornerRadius = 999;
+      inner.layoutMode = "HORIZONTAL"; inner.primaryAxisAlignItems = "CENTER"; inner.counterAxisAlignItems = "CENTER";
+      inner.primaryAxisSizingMode = "FIXED"; inner.counterAxisSizingMode = "FIXED"; inner.resize(30, 30);
+      if (g.kind === "selected") {
+        inner.fills = [boundPaint(scv(maps, dp("bg/selected")))];
+        inner.strokes = [boundPaint(scv(maps, dp("bg/selected")))]; inner.strokeWeight = 1; inner.strokeAlign = "INSIDE";
+      } else if (g.kind === "today") {
+        inner.fills = [boundPaint(scv(maps, dp("bg/today")))];
+        inner.strokes = [boundPaint(scv(maps, dp("border/today")))]; inner.strokeWeight = 1; inner.strokeAlign = "INSIDE";
+      } else { inner.fills = []; }
+      inner.appendChild(await makeBoundText(String(g.day), 16, g.kind === "selected" ? "Bold" : "Medium", scv(maps, dp(txtKey))));
+      dayCell.appendChild(inner); weekRow.appendChild(dayCell);
+    }
+  }
+  setLightMode(dateComp, maps);
+
+  // ── State=Year (연도 선택 — 4×3 타일, 2021~2032 샘플) ─────────────────────
+  const [yearComp, yearInner] = initComp("State=Year", 20);
+  yearInner.appendChild(await makeCalHdr("2025"));
+  const yearGrid = figma.createFrame(); yearGrid.name = "year-grid"; yearGrid.fills = [];
+  yearGrid.layoutMode = "VERTICAL"; yearGrid.primaryAxisSizingMode = "AUTO"; yearGrid.counterAxisSizingMode = "AUTO";
+  yearGrid.counterAxisAlignItems = "CENTER"; yearGrid.itemSpacing = 12;
+  for (const [ls, ds] of [
+    [["2021", "2022", "2023"], [true,  false, false]],
+    [["2024", "2025", "2026"], [false, false, false]],
+    [["2027", "2028", "2029"], [false, false, false]],
+    [["2030", "2031", "2032"], [true,  true,  true ]],
+  ] as [string[], boolean[]][]) yearGrid.appendChild(await makeYMRow(ls, ds));
+  yearInner.appendChild(yearGrid);
+  setLightMode(yearComp, maps);
+
+  // ── State=Month (월 선택 — 4×3 타일, 1월~12월) ────────────────────────────
+  const [monthComp, monthInner] = initComp("State=Month", 20);
+  monthInner.appendChild(await makeCalHdr("2025"));
+  const monthGrid = figma.createFrame(); monthGrid.name = "month-grid"; monthGrid.fills = [];
+  monthGrid.layoutMode = "VERTICAL"; monthGrid.primaryAxisSizingMode = "AUTO"; monthGrid.counterAxisSizingMode = "AUTO";
+  monthGrid.counterAxisAlignItems = "CENTER"; monthGrid.itemSpacing = 12;
+  for (const ls of [["1월","2월","3월"],["4월","5월","6월"],["7월","8월","9월"],["10월","11월","12월"]]) {
+    monthGrid.appendChild(await makeYMRow(ls, [false, false, false]));
+  }
+  monthInner.appendChild(monthGrid);
+  setLightMode(monthComp, maps);
+
+  // ── combineAsVariants + 스펙 ──────────────────────────────────────────────
+  const set = figma.combineAsVariants([dateComp, yearComp, monthComp], figma.currentPage);
+  set.name = "Calendar";
+  set.x = 0; set.y = originY;
+  BUILT_SETS["Calendar"] = set;
+
+  const opts: SpecOpts = {
+    title: "Calendar",
+    colHeaders: ["Date", "Year", "Month"],
+    rowLabels: [""],
+    cellAt: (_r, c) => [dateComp, yearComp, monthComp][c] ?? null,
+    lightX: SPEC_LIGHT_X, darkX: SPEC_DARK_X, originY, cellW: 380, cellH: 380,
+  };
+  let bottomY = await decorateSetFlat(set, opts, maps);
+  try { bottomY = Math.max(bottomY, await buildSpec(opts, maps)); } catch (e) { console.warn(e); }
+  return { set, bottomY };
+}
+
 async function buildDatePicker(maps: BuildMaps, originY: number): Promise<{ set: ComponentSetNode; bottomY: number }> {
   const fc = (k: string) => `color/form-control/${k}`;
   const CAL_ICON = `<svg width="16" height="16" viewBox="0 0 16.2581 16.8" fill="none"><path d="M0 1.08387V16.2581C0 16.5615 0.238452 16.8 0.541936 16.8H15.7161C16.0196 16.8 16.2581 16.5615 16.2581 16.2581V1.08387C16.2581 0.780387 16.0196 0.541935 15.7161 0.541935H13.0065V0H11.9226V0.541935H4.33548V0H3.25161V0.541935H0.541936C0.238452 0.541935 0 0.780387 0 1.08387ZM4.33548 2.16774V1.62581H11.9226V2.16774H13.0065V1.62581H15.1742V3.79355H1.08387V1.62581H3.25161V2.16774H4.33548ZM15.1742 15.7161H1.08387V4.87742H15.1742V15.7161Z" fill="#000"/><path d="M5.14859 9.21302H3.52279V10.8388H5.14859V9.21302Z" fill="#000"/><path d="M8.94208 9.21302H7.31628V10.8388H8.94208V9.21302Z" fill="#000"/><path d="M12.7356 9.21302H11.1098V10.8388H12.7356V9.21302Z" fill="#000"/></svg>`;
@@ -2452,7 +2687,7 @@ async function buildDatePicker(maps: BuildMaps, originY: number): Promise<{ set:
   return { set, bottomY };
 }
 
-// ── Shell/StatusBar (모바일 셸 — 상태바) ────────────────────────────────────
+// ── Platform/StatusBar (모바일 플랫폼 — 상태바) ──────────────────────────────
 // 기기/브라우저 크롬. Platform=App=상태바(시계·신호·wifi·배터리·%), Platform=Web=상태바+브라우저 주소창.
 // 아이콘은 Figma 원본 export SVG(잠김·새로고침=라이브러리 아이콘 #757575=icon/gray, wifi=상태바 글리프 #353535=icon/gray-dark).
 // 신호바·배터리는 토큰 바인딩 사각형으로 정확 재현.
@@ -2648,7 +2883,7 @@ async function buildStatusBar(maps: BuildMaps, originY: number): Promise<{ set: 
   web.name = "Platform=Web";
   web.layoutMode = "VERTICAL"; web.primaryAxisSizingMode = "AUTO"; web.counterAxisSizingMode = "FIXED";
   web.resize(360, 77); web.itemSpacing = 0; web.fills = [];
-  const row = figma.createFrame(); row.name = "Shell/StatusBar";
+  const row = figma.createFrame(); row.name = "Platform/StatusBar";
   await populateStatusRow(row, maps);
   row.layoutAlign = "STRETCH";
   web.appendChild(row);
@@ -2658,13 +2893,13 @@ async function buildStatusBar(maps: BuildMaps, originY: number): Promise<{ set: 
   setLightMode(web, maps);
 
   const set = figma.combineAsVariants([app, web], figma.currentPage);
-  set.name = "Shell/StatusBar";
+  set.name = "Platform/StatusBar";
   set.x = 0; set.y = originY;
   const sh = (typeof set.height === "number" && set.height > 0) ? set.height : 200;
   return { set, bottomY: originY + sh };
 }
 
-// ── Shell/NavBar (모바일 셸 — 내비게이션) ───────────────────────────────────
+// ── Platform/NavBar (모바일 플랫폼 — 내비게이션) ─────────────────────────────
 // 원본은 카카오톡 사진 스크린샷(벡터·토큰 0) → DS 토큰 벡터로 신규 제작(사용자 결정).
 // 표준 크롬 글리프(line 24×24, stroke=icon/gray)로 그린다. App=안드로이드 내비, Web=브라우저 툴바+안드로이드 내비.
 const NAV_SVG = (() => {
@@ -2749,9 +2984,182 @@ async function buildNavBar(maps: BuildMaps, originY: number): Promise<{ set: Com
   setLightMode(web, maps);
 
   const set = figma.combineAsVariants([app, web], figma.currentPage);
-  set.name = "Shell/NavBar";
+  set.name = "Platform/NavBar";
   set.x = 0; set.y = originY;
   const sh = (typeof set.height === "number" && set.height > 0) ? set.height : 200;
+  return { set, bottomY: originY + sh };
+}
+
+// ── Platform/LoginGNB (PC 전용 1920×56, 단일 variant) ──────────────────────────
+// 정본: V3.0 Core 페이지 334:1326. 좌=삼성로고+[서비스명], 우=지구본+한국어, 하단 1px 선.
+async function buildLoginGNB(maps: BuildMaps, originY: number): Promise<{ set: ComponentSetNode; bottomY: number }> {
+  const W = 1920, H = 56;
+  const comp = figma.createComponent();
+  comp.name = "Platform/LoginGNB";
+  comp.layoutMode = "HORIZONTAL"; comp.primaryAxisSizingMode = "FIXED"; comp.counterAxisSizingMode = "FIXED";
+  comp.resize(W, H); comp.primaryAxisAlignItems = "SPACE_BETWEEN"; comp.counterAxisAlignItems = "CENTER";
+  comp.paddingLeft = 320; comp.paddingRight = 320; comp.paddingTop = 12; comp.paddingBottom = 12;
+  comp.fills = [boundPaint(scv(maps, "color/navigation/background"))];
+  comp.strokes = [boundPaint(scv(maps, "color/line/gray/subtle"))];
+  comp.strokeAlign = "INSIDE";
+  comp.strokeTopWeight = 0; comp.strokeRightWeight = 0; comp.strokeLeftWeight = 0; comp.strokeBottomWeight = 1;
+
+  // 좌측: 삼성 로고(24px) + [서비스명]
+  const left = figma.createFrame();
+  left.name = "logo-group"; left.layoutMode = "HORIZONTAL";
+  left.primaryAxisSizingMode = "AUTO"; left.counterAxisSizingMode = "AUTO";
+  left.counterAxisAlignItems = "CENTER"; left.itemSpacing = 11; left.fills = [];
+  comp.appendChild(left);
+  left.layoutSizingHorizontal = "HUG"; left.layoutSizingVertical = "HUG";
+  const logo = await getSamsungLogoInstance(24);
+  logo.name = "samsung-logo";
+  left.appendChild(logo);
+  const svcText = await makeBoundText("[서비스명]", 16, "Bold", scv(maps, "color/text/title/primary"));
+  svcText.name = "service-name"; left.appendChild(svcText);
+
+  // 우측: 지구본 + 한국어
+  const right = figma.createFrame();
+  right.name = "language-group"; right.layoutMode = "HORIZONTAL";
+  right.primaryAxisSizingMode = "AUTO"; right.counterAxisSizingMode = "AUTO";
+  right.counterAxisAlignItems = "CENTER"; right.itemSpacing = 8; right.fills = [];
+  comp.appendChild(right);
+  right.layoutSizingHorizontal = "HUG"; right.layoutSizingVertical = "HUG";
+  const globeIcon = await makeIconInstance("globe", scv(maps, "color/icon/gray-dark"), 24, GNB_UTIL_SVGS.lang);
+  globeIcon.name = "globe-icon"; right.appendChild(globeIcon);
+  const langText = await makeBoundText("한국어", 14, "Medium", scv(maps, "color/icon/gray-dark"));
+  langText.name = "language-label"; right.appendChild(langText);
+
+  setLightMode(comp, maps);
+  const set = figma.combineAsVariants([comp], figma.currentPage);
+  set.name = "Platform/LoginGNB"; set.x = 0; set.y = originY;
+
+  const opts: SpecOpts = {
+    title: "Platform/LoginGNB", colHeaders: [""], rowLabels: [""], cellAt: () => comp,
+    lightX: SPEC_LIGHT_X, darkX: SPEC_DARK_X, originY, cellW: W + 40, cellH: H + 24, rowLabelW: 0,
+  };
+  const lightBottomY = await decorateSetFlat(set, opts, maps);
+  opts.darkOffset = { x: 0, y: lightBottomY + 80 };
+  let bottomY = lightBottomY;
+  try { bottomY = Math.max(bottomY, await buildSpec(opts, maps)); } catch (e) { console.warn(e); }
+  return { set, bottomY };
+}
+
+// ── Platform/WebTabBar (PC 전용 1920×101, 단일 variant) ──────────────────────
+// 정본: V3.0 Core 페이지 335:3099. 탭행(38)+주소행(62)+하단 1px 선.
+async function buildWebTabBar(maps: BuildMaps, originY: number): Promise<{ set: ComponentSetNode; bottomY: number }> {
+  const W = 1920, H = 101;
+  const comp = figma.createComponent();
+  comp.name = "Platform/WebTabBar";
+  comp.layoutMode = "VERTICAL"; comp.primaryAxisSizingMode = "FIXED"; comp.counterAxisSizingMode = "FIXED";
+  comp.resize(W, H); comp.itemSpacing = 0; comp.paddingTop = 0; comp.paddingBottom = 0; comp.paddingLeft = 0; comp.paddingRight = 0;
+  comp.fills = [boundPaint(scv(maps, "color/scroll/bg"))];
+  comp.strokes = [boundPaint(scv(maps, "color/line/gray/subtle"))];
+  comp.strokeAlign = "INSIDE";
+  comp.strokeTopWeight = 0; comp.strokeRightWeight = 0; comp.strokeLeftWeight = 0; comp.strokeBottomWeight = 1;
+
+  // ── 탭 행 (38px): 활성탭 + 우측 윈도우 컨트롤
+  const tabRow = figma.createFrame();
+  tabRow.name = "tab-row"; tabRow.layoutMode = "HORIZONTAL";
+  tabRow.primaryAxisSizingMode = "FIXED"; tabRow.counterAxisSizingMode = "FIXED";
+  tabRow.resize(W, 38); tabRow.primaryAxisAlignItems = "MIN"; tabRow.counterAxisAlignItems = "MAX";
+  tabRow.paddingLeft = 8; tabRow.paddingRight = 8; tabRow.itemSpacing = 2; tabRow.fills = [];
+  comp.appendChild(tabRow);
+  tabRow.layoutSizingHorizontal = "FILL"; tabRow.layoutSizingVertical = "FIXED";
+
+  // 활성 탭 (상단 둥근 모서리, bg=surface/default)
+  const activeTab = figma.createFrame();
+  activeTab.name = "tab-active"; activeTab.layoutMode = "HORIZONTAL";
+  activeTab.primaryAxisSizingMode = "FIXED"; activeTab.counterAxisSizingMode = "FIXED";
+  activeTab.resize(200, 32); activeTab.primaryAxisAlignItems = "MIN"; activeTab.counterAxisAlignItems = "CENTER";
+  activeTab.paddingLeft = 10; activeTab.paddingRight = 6; activeTab.itemSpacing = 6;
+  activeTab.fills = [boundPaint(scv(maps, "color/surface/default"))];
+  try { (activeTab as FrameNode & { topLeftRadius: number; topRightRadius: number; bottomLeftRadius: number; bottomRightRadius: number }).topLeftRadius = 6; (activeTab as any).topRightRadius = 6; (activeTab as any).bottomLeftRadius = 0; (activeTab as any).bottomRightRadius = 0; } catch {}
+  tabRow.appendChild(activeTab);
+
+  const favicon = figma.createRectangle();
+  favicon.name = "favicon"; favicon.resize(16, 16); favicon.cornerRadius = 3;
+  favicon.fills = [{ type: "SOLID", color: { r: 0.4, g: 0.6, b: 1.0 } }];
+  activeTab.appendChild(favicon);
+  const tabTitle = await makeBoundText("[서비스명]", 13, "Regular", scv(maps, "color/text/body/secondary"));
+  tabTitle.name = "tab-title"; activeTab.appendChild(tabTitle);
+  const tabClose = await makeIconInstance("remove", scv(maps, "color/icon/gray"), 16, REMOVE_ICON_SVG);
+  tabClose.name = "tab-close"; activeTab.appendChild(tabClose);
+
+  // 스페이서 + 윈도우 컨트롤
+  const spacer = figma.createFrame();
+  spacer.name = "spacer"; spacer.fills = []; spacer.resize(1, 32);
+  tabRow.appendChild(spacer);
+  spacer.layoutSizingHorizontal = "FILL"; spacer.layoutSizingVertical = "FIXED";
+
+  const winCtrl = figma.createFrame();
+  winCtrl.name = "window-controls"; winCtrl.layoutMode = "HORIZONTAL";
+  winCtrl.primaryAxisSizingMode = "AUTO"; winCtrl.counterAxisSizingMode = "FIXED";
+  winCtrl.resize(70, 38); winCtrl.itemSpacing = 8; winCtrl.counterAxisAlignItems = "CENTER";
+  winCtrl.paddingLeft = 8; winCtrl.paddingRight = 8; winCtrl.fills = [];
+  tabRow.appendChild(winCtrl);
+  winCtrl.layoutSizingHorizontal = "HUG"; winCtrl.layoutSizingVertical = "FILL";
+  for (const col of [{ r: 1.0, g: 0.35, b: 0.29 }, { r: 1.0, g: 0.76, b: 0.18 }, { r: 0.20, g: 0.78, b: 0.35 }]) {
+    const dot = figma.createEllipse(); dot.resize(12, 12); dot.fills = [{ type: "SOLID", color: col }];
+    winCtrl.appendChild(dot);
+  }
+
+  // ── 주소 행 (63px): ←→↺ + 주소 pill
+  const addrRow = figma.createFrame();
+  addrRow.name = "address-row"; addrRow.layoutMode = "HORIZONTAL";
+  addrRow.primaryAxisSizingMode = "FIXED"; addrRow.counterAxisSizingMode = "FIXED";
+  addrRow.resize(W, 63); addrRow.primaryAxisAlignItems = "MIN"; addrRow.counterAxisAlignItems = "CENTER";
+  addrRow.paddingLeft = 16; addrRow.paddingRight = 16; addrRow.itemSpacing = 8;
+  addrRow.fills = [boundPaint(scv(maps, "color/surface/default"))];
+  comp.appendChild(addrRow);
+  addrRow.layoutSizingHorizontal = "FILL"; addrRow.layoutSizingVertical = "FIXED";
+
+  addrRow.appendChild(navIcon(NAV_SVG.chevronLeft, maps));
+  addrRow.appendChild(navIcon(NAV_SVG.chevronRight, maps));
+  const refreshNode = makeBoundIcon(SHELL_REFRESH_SVG, scv(maps, "color/icon/gray")); // icon-vector-allow: 웹 탭바 새로고침 크롬 — DS UI 아이콘 아님
+  refreshNode.name = "nav-refresh"; try { refreshNode.resize(24, 24); } catch {}
+  addrRow.appendChild(refreshNode);
+
+  const pill = figma.createFrame();
+  pill.name = "address-pill"; pill.layoutMode = "HORIZONTAL";
+  pill.primaryAxisSizingMode = "FIXED"; pill.counterAxisSizingMode = "FIXED";
+  pill.resize(400, 27); pill.cornerRadius = 20;
+  pill.paddingLeft = 16; pill.paddingRight = 16; pill.primaryAxisAlignItems = "MIN"; pill.counterAxisAlignItems = "CENTER";
+  pill.fills = [boundPaint(scv(maps, "color/bg/muted"))];
+  addrRow.appendChild(pill);
+  pill.layoutSizingHorizontal = "FILL"; pill.layoutSizingVertical = "FIXED";
+  const urlText = await makeBoundText("https://", 13, "Regular", scv(maps, "color/text/body/secondary"));
+  urlText.name = "url-text"; pill.appendChild(urlText);
+
+  setLightMode(comp, maps);
+  const set = figma.combineAsVariants([comp], figma.currentPage);
+  set.name = "Platform/WebTabBar"; set.x = 0; set.y = originY;
+
+  const opts: SpecOpts = {
+    title: "Platform/WebTabBar", colHeaders: [""], rowLabels: [""], cellAt: () => comp,
+    lightX: SPEC_LIGHT_X, darkX: SPEC_DARK_X, originY, cellW: W + 40, cellH: H + 24, rowLabelW: 0,
+  };
+  const lightBottomY = await decorateSetFlat(set, opts, maps);
+  opts.darkOffset = { x: 0, y: lightBottomY + 80 };
+  let bottomY = lightBottomY;
+  try { bottomY = Math.max(bottomY, await buildSpec(opts, maps)); } catch (e) { console.warn(e); }
+  return { set, bottomY };
+}
+
+// ── C/IMG/Logo/Samsung_30 (134×30 삼성 로고 래퍼) ────────────────────────────
+// 정본: V3.0 Core 페이지 333:165. key=9b32bb9ada9e84cdd18550f641389874858fa6ee.
+async function buildSamsungLogoComponent(maps: BuildMaps, originY: number): Promise<{ set: ComponentSetNode; bottomY: number }> {
+  const W = 134, H = 30;
+  const comp = figma.createComponent();
+  comp.name = "C/IMG/Logo/Samsung_30";
+  comp.resize(W, H); comp.fills = [];
+  const logoInst = await getSamsungLogoInstance(H);
+  logoInst.x = 0; logoInst.y = 0;
+  comp.appendChild(logoInst);
+
+  setLightMode(comp, maps);
+  const set = figma.combineAsVariants([comp], figma.currentPage);
+  set.name = "C/IMG/Logo/Samsung_30"; set.x = 0; set.y = originY;
+  const sh = (typeof set.height === "number" && set.height > 0) ? set.height : H;
   return { set, bottomY: originY + sh };
 }
 
@@ -2784,6 +3192,9 @@ export async function buildAllComponents(
     // GNB 는 바(정본=세트 이름 "GNB") + 메뉴 슬롯 세트("GNB Menu")를 함께 생성.
     if (p === "GNB") base.push(
       "GNB Menu", "GNB Menu — Spec Light", "GNB Menu — Spec Dark");
+    // 리네임 backward-compat: Shell/ → Platform/ (재설치 시 캔버스의 옛 이름 세트 자동 정리)
+    if (p === "Platform/StatusBar") base.push("Shell/StatusBar");
+    if (p === "Platform/NavBar") base.push("Shell/NavBar");
     return base;
   };
   const regionBottom = (p: string): number | null => {
@@ -2814,6 +3225,7 @@ export async function buildAllComponents(
     "Select Box":           (oy) => buildSelect(maps, oy),
     "Dropdown List":        (oy) => buildDropdownList(maps, oy),
     "Dropdown":             (oy) => buildDropdown(maps, oy),
+    "Calendar":             (oy) => buildCalendar(maps, oy),
     "Date Picker":          (oy) => buildDatePicker(maps, oy),
     "Time Picker":          (oy) => buildTimePicker(maps, oy),
     "Time Picker Dropdown": (oy) => buildTimePickerDropdown(maps, oy),
@@ -2824,8 +3236,11 @@ export async function buildAllComponents(
     "Language Icon":        (oy) => buildLanguageIcon(maps, oy),
     "GNB":                  (oy) => buildGNB(maps, oy),
     "Pagination":           (oy) => buildPagination(maps, oy),
-    "Shell/StatusBar":      (oy) => buildStatusBar(maps, oy),
-    "Shell/NavBar":         (oy) => buildNavBar(maps, oy),
+    "Platform/StatusBar":   (oy) => buildStatusBar(maps, oy),
+    "Platform/NavBar":      (oy) => buildNavBar(maps, oy),
+    "Platform/LoginGNB":    (oy) => buildLoginGNB(maps, oy),
+    "Platform/WebTabBar":   (oy) => buildWebTabBar(maps, oy),
+    "C/IMG/Logo/Samsung_30": (oy) => buildSamsungLogoComponent(maps, oy),
     "Footer":               (oy) => buildFooter(maps, oy),
   };
 
@@ -2835,10 +3250,10 @@ export async function buildAllComponents(
     { name: "Actions",    members: ["Button"] },
     { name: "Selection",  members: ["Checkbox", "Radio", "Toggle", "Chip", "Filter Chip"] },
     { name: "Navigation", members: ["Line Tab", "GNB Utility Icon", "Language Icon", "GNB", "Pagination"] },
-    { name: "Shell",      members: ["Shell/StatusBar", "Shell/NavBar", "Footer"] },
+    { name: "Platform",   members: ["Platform/StatusBar", "Platform/NavBar", "Platform/LoginGNB", "Platform/WebTabBar", "C/IMG/Logo/Samsung_30", "Footer"] },
     // Form 은 폭이 커서 맨 마지막에 빌드(좌측 스택 중간 빈칸 방지) 후 우측 별도 컬럼으로 이동.
     // 의존관계 순서: Dropdown List → Dropdown → Select Box / Time Picker Dropdown → Time Picker
-    { name: "Form",       members: ["Input", "Search Input", "Text Area", "Dropdown List", "Dropdown", "Select Box", "Date Picker", "Time Picker Dropdown", "Time Picker"] },
+    { name: "Form",       members: ["Input", "Search Input", "Text Area", "Dropdown List", "Dropdown", "Select Box", "Calendar", "Date Picker", "Time Picker Dropdown", "Time Picker"] },
     // Table 은 Checkbox(Selection)·Pagination(Navigation)·SelectBox(Form) 인스턴스를 재사용하므로
     // 이 세 카테고리가 모두 빌드된 후 마지막에 배치 (BUILT_COMPS 확보 보장).
     { name: "Table",      members: ["Table Cell", "Table"] },

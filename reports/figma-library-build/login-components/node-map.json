@@ -581,5 +581,84 @@
       "w": 4544,
       "h": 10084
     }
+  },
+  "webtabbarBinding": {
+    "date": "2026-06-19",
+    "builtBy": "figma-library-builder",
+    "task": "Shell/WebTabBar(335:3099) 미바인딩 raw hex fill/stroke를 토큰 Variable 바인딩으로 교체. 계획서 5-webtabbar-binding-plan.md 바인딩 맵 그대로. 빌드만 — 합격 판정 없음(검증은 component-verifier).",
+    "page": { "id": "5:5706", "name": "Core" },
+    "method": "setBoundVariableForPaint(반환 paint 캡처 후 fills/strokes 배열 clone→재대입). Variable은 이름+컬렉션으로 조회. TEXT(336:3113)는 현재 폰트 로드 후 fill 바인딩.",
+    "variableIds": {
+      "color/surface/default": "VariableID:80:17425 (Semantic Color V2)",
+      "color/icon/gray-dark": "VariableID:8:1069 (Semantic Color V2)",
+      "color/text/body/primary": "VariableID:8:1116 (Semantic Color V2)",
+      "color/scroll/bg": "VariableID:8:1132 (Semantic Color V2)",
+      "color/bg/muted": "VariableID:80:17422 (Semantic Color V2)",
+      "color/line/gray/subtle": "VariableID:8:1076 (Semantic Color V2)",
+      "color/icon/gray-light": "VariableID:8:1070 (Semantic Color V2)",
+      "brand/blue": "VariableID:8:712 (Foundation V2)",
+      "brand/red": "VariableID:8:713 (Foundation V2)"
+    },
+    "boundNodes": [
+      { "id": "336:3100", "was": "#FFFFFF", "prop": "fills", "token": "color/surface/default" },
+      { "id": "336:3102", "was": "#FFFFFF", "prop": "fills", "token": "color/surface/default" },
+      { "id": "335:3101", "was": "#FFFFFF", "prop": "fills", "token": "color/surface/default" },
+      { "id": "337:3099", "was": "#353535", "prop": "strokes", "token": "color/icon/gray-dark" },
+      { "id": "337:3100", "was": "#353535", "prop": "strokes", "token": "color/icon/gray-dark" },
+      { "id": "337:3101", "was": "#353535", "prop": "strokes", "token": "color/icon/gray-dark" },
+      { "id": "337:3102", "was": "#353535", "prop": "strokes", "token": "color/icon/gray-dark" },
+      { "id": "337:3105", "was": "#262626", "prop": "fills", "token": "color/icon/gray-dark" },
+      { "id": "337:3108", "was": "#262626", "prop": "fills", "token": "color/icon/gray-dark" },
+      { "id": "337:3111", "was": "#262626", "prop": "fills", "token": "color/icon/gray-dark" },
+      { "id": "337:3112", "was": "#262626", "prop": "fills", "token": "color/icon/gray-dark" },
+      { "id": "336:3113", "was": "#000000", "prop": "fills", "token": "color/text/body/primary", "note": "TEXT node — fonts loaded before mutate" },
+      { "id": "336:3098", "was": "#DCDCDC", "prop": "fills", "token": "color/scroll/bg" },
+      { "id": "335:3099", "was": "#DCDCDC", "prop": "fills", "token": "color/scroll/bg", "note": "component-self fill" },
+      { "id": "337:3113", "was": "#EBEBEB", "prop": "fills", "token": "color/bg/muted" },
+      { "id": "335:3102", "was": "#EBEBEB", "prop": "fills", "token": "color/line/gray/subtle" },
+      { "id": "336:3115", "was": "#B6B6B6", "prop": "strokes", "token": "color/icon/gray-light" },
+      { "id": "336:3116", "was": "#B6B6B6", "prop": "strokes", "token": "color/icon/gray-light" },
+      { "id": "336:3104", "was": "#0072CE", "prop": "fills", "token": "brand/blue" },
+      { "id": "336:3105", "was": "#0072CE", "prop": "fills", "token": "brand/blue" },
+      { "id": "336:3108", "was": "#0072CE", "prop": "fills", "token": "brand/blue" },
+      { "id": "336:3109", "was": "#0072CE", "prop": "fills", "token": "brand/blue" },
+      { "id": "336:3111", "was": "#0072CE", "prop": "fills", "token": "brand/blue" },
+      { "id": "336:3106", "was": "#FF312C", "prop": "fills", "token": "brand/red" },
+      { "id": "336:3107", "was": "#FF312C", "prop": "fills", "token": "brand/red" },
+      { "id": "336:3110", "was": "#FF312C", "prop": "fills", "token": "brand/red" }
+    ],
+    "boundCount": 26,
+    "keptRaw_allowedDeviation": {
+      "id": "336:3112",
+      "hex": "#BE1E2C",
+      "prop": "fills",
+      "reason": "파비콘 로고 서브색 — DS 등가물 없음(red/500 Δ34.6). 계획서 허용편차 #2. 절대 건드리지 않음."
+    },
+    "rescanAfterBuild": {
+      "totalSolidPaints": 34,
+      "boundPaints": 26,
+      "unboundPaints": 8,
+      "unboundHexSet": ["#FFFFFF", "#BE1E2C"],
+      "verdict": "빌드 완료 확인용 재스캔(합격 판정 아님). 바인딩 맵 27건 중 26건 바인딩 완료 + #BE1E2C 1건 의도적 raw 유지. 추가로 발견된 unbound #FFFFFF 7건은 바인딩 맵에 없던 항목 → needsDecision 참조(처리 안 함)."
+    },
+    "needsDecision": [
+      {
+        "issue": "바인딩 맵 밖 unbound #FFFFFF 7건",
+        "nodes": ["336:3099 (Mask Copy)", "336:3103 (symbol)", "336:3114 (icon/tab/close)", "337:3098 (Frame 227/window_controls)", "337:3104 (previous Frame)", "337:3107 (forward Frame)", "337:3110 (refresh Frame)"],
+        "fact": "모두 fillVisible=false (보이지 않는/꺼진 흰 fill). 렌더에 나타나지 않음. 아이콘 래퍼 프레임의 비활성 fill.",
+        "why_not_bound": "계획서 바인딩 맵에 없음(맵의 #FFFFFF는 336:3100/336:3102/335:3101 3건만). 계획의 미바인딩 27건·10색 스캔은 보이는 paint만 집계 — 이 7건은 그 범위 밖. 절대규칙 1(계획대로만)·규칙 5(임의 처리 금지)에 따라 raw 유지하고 보고만 함.",
+        "recommendation": "보이지 않는 fill이라 시각 영향 0 → 그대로 둘지(권장), 토큰 위생을 위해 surface/default로 마저 바인딩할지 ⭐ 결정 필요. 임의 처리 안 함."
+      }
+    ],
+    "selfScreenshot": "335:3099 1장 캡처(/tmp/webtabbar.png). 탭바 외형 원본과 동일 — 파비콘(파랑/빨강 로고)·[서비스명] 라벨·닫기·윈도우컨트롤·nav 아이콘(짙은회색)·주소 알약 모두 정상, 붕괴/누락 0. 색 바인딩 후 시각 변화 없음. 합격 판정은 component-verifier 소관.",
+    "structureChanges": {
+      "combineAsVariants": "없음",
+      "detach": "없음",
+      "createComponentFromNode": "없음 (기존 컴포넌트 paint만 변경)",
+      "rename": "없음",
+      "remap": "없음 (paint 바인딩만, 노드 구조 무변경 → 인스턴스 영향 없음)",
+      "cycleRisk": "없음",
+      "emptiedContainers": "없음"
+    }
   }
 }

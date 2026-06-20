@@ -1,0 +1,44 @@
+{
+  "task": "Input set — Password Icon (eye) boolean property",
+  "fileKey": "cysG5U1udpQqVagYY1hWHW",
+  "page": { "id": "5:5706", "name": "Core" },
+  "inputSet": { "id": "330:24272", "name": "Input", "variantCount": 112 },
+  "addedProperty": {
+    "name": "Password Icon",
+    "id": "Password Icon#371:0",
+    "type": "BOOLEAN",
+    "default": false,
+    "boundVariantCount": 112,
+    "boundLayerName": "eye",
+    "binding": "field>eye.componentPropertyReferences.visible"
+  },
+  "eyeIcon": {
+    "source": "importComponentByKeyAsync",
+    "key": "d4e9eb5b7e193ee291aa2a7e04396c8de2d2dae7",
+    "label": "ic_비밀번호미표시 (Property 1=Line)",
+    "size": "24x24",
+    "colorVariable": "VariableID:8:1130 (color/form-control/icon/default)",
+    "filsReboundPerInstance": 5,
+    "defaultVisible": false,
+    "layoutInField": "appended last; 입력 TEXT layoutGrow=1 (fills), eye HUG 24px right"
+  },
+  "reuseKey": {
+    "representativeVariant": {
+      "id": "330:23986",
+      "name": "Size=MD, State=Default, Label=Off, Message=Off, Break=PC",
+      "fieldId": "330:23984",
+      "textId": "330:23985"
+    },
+    "howToTurnOn": "instance.setProperties({ 'Password Icon#371:0': true }) — eye becomes visible, 입력 text shrinks, eye shows at right. swap eye instance to ic_비밀번호표시 for the 'shown' state."
+  },
+  "generatorSync": {
+    "file": "plugins/figma-vars-installer/src/build-components.ts",
+    "function": "buildInput",
+    "changes": [
+      "ICON_KEYS.eye added (same key) + EYE_OFF_SVG fallback",
+      "field loop: textNode.layoutGrow=1 (non-Editing), eye via makeIconInstance('eye'...) visible=false appended",
+      "after combineAsVariants: set.addComponentProperty('Password Icon','BOOLEAN',false) + bind every field>eye visible"
+    ],
+    "gatesPassed": ["tsc", "components:keycheck", "components:anatomy", "components:iconpolicy", "installer:build/audit-bindings"]
+  }
+}
