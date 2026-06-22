@@ -559,6 +559,12 @@ export const SEMANTIC_COLOR: Record<string, SemanticColorEntry> = {
   "color/date-picker/text/saturday":    { light: "blue/400",   dark: "blue-dark/300" },
   "color/date-picker/text/today":       { light: "blue/400",   dark: "blue-dark/300" },
   "color/date-picker/text/selected":    { light: "base/white", dark: "base/white" },
+  "color/date-picker/bg/range":             { light: "blue/50",    dark: "blue-dark/100" },
+  "color/date-picker/tile/bg/default":      { light: "base/white", dark: "gray-dark/100" },
+  "color/date-picker/tile/bg/selected":     { light: "base/white", dark: "gray-dark/100" },
+  "color/date-picker/tile/bg/disabled":     { light: "gray/100",   dark: "gray-dark/200" },
+  "color/date-picker/tile/border/default":  { light: "gray/200",   dark: "gray-dark/500" },
+  "color/date-picker/tile/border/disabled": { light: "gray/100",   dark: "gray-dark/300" },
 
   // ── pagination ────────────────────────────────
   "color/pagination/control/bg/default": { light: "base/white", dark: "gray-dark/100" },

@@ -1,0 +1,10 @@
+{
+  "$comment": "에스원 풋터의 '검증된' 법인 정보·링크·카피라이트 단일 출처. 회사 법정 정보(상호·사업자번호·대표이사·주소)·링크·카피라이트는 절대 임의 작성하지 말 것. 출처는 Figma 원본 login_Footer 이며, 변경 시 반드시 원본 재확인 후 이 파일 + build-components.ts(buildFooter)를 함께 갱신한다. scripts/footer-content-check.js(Gate 14)가 생성기 문구와 이 정본의 드리프트를 커밋 단계에서 차단한다.",
+  "source": "Figma login_Footer 269:5722 (파일 cysG5U1udpQqVagYY1hWHW · SW UX GUIDE V3.0 TEST)",
+  "lastVerified": "2026-06-22",
+  "links": ["이용약관", "개인정보 처리방침", "위치기반 서비스 이용약관"],
+  "companyInfo": "(주)에스원   사업자등록번호 208-81-13302    대표이사 정해린    04511 서울특별시 중구 세종대로 7길 25 에스원 빌딩",
+  "copyright": "© S-1 Corp. All Rights Reserved.",
+  "forbiddenFragments": ["김일환", "삼일대로 343", "고객지원", "Copyright © S1 Corp. All rights reserved."],
+  "forbiddenReason": "2026-06-22 적발: build-components.ts 풋터에 검증 안 된 임의 법인정보(대표이사 김일환·삼일대로 343)·링크(고객지원)·카피라이트가 들어가 있었음(65540db 도입). 재유입 차단용 denylist."
+}

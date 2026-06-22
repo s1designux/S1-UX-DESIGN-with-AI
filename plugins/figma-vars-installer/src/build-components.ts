@@ -2784,11 +2784,15 @@ async function buildShellUrlBar(maps: BuildMaps): Promise<FrameNode> {
 // ── Footer (PC + Mobile 플랫폼 세트) ─────────────────────────────────────────
 // PC: 1920×116, HORIZONTAL, bg=color/navigation/background, 상단 테두리 1px=color/line/gray/subtle
 //     padding L/R=320px(raw·Foundation에 spacing/320 없음), T/B=spacing/28 바인딩
-//     content: [좌] links(10px)+bizinfo+copyright / [우] 로고 플레이스홀더
+//     content: [좌] links(10px)+bizinfo+copyright / [우] S1 로고(C/IMG/Logo/S1_g 벡터)
 // Mobile: 360×(hug), VERTICAL centered, no bg/border, itemSpacing=spacing/4 바인딩
 //     content: links 가로 행 + copyright
+// S1 브랜드 로고(에스원 워드마크) — 원본 C/IMG/Logo/S1_g(391:17346)에서 추출한 단일 path. 색은 rebindIconColor 로 토큰 바인딩.
+const S1_LOGO_SVG = `<svg width="42" height="16" viewBox="0 0 42 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M32.6826 14.3262H41.5254V16H30.6992V10.2461H32.6826V14.3262ZM10.1426 15.9902H8.32129V7.07812H7.39258C7.30419 11.1554 5.68825 13.0125 3.70117 13.0127C1.65723 13.0127 0 11.0554 0 6.73047C0 2.41216 1.65721 0.448242 3.70117 0.448242C5.52602 0.448409 7.03869 2.01912 7.34277 5.42676H8.32129V0.172852H10.1426V15.9902ZM12.9111 15.9902H11.084V0.173828H12.9111V15.9902ZM28.084 15.2305H15.084V13.5811H28.084V15.2305ZM41.2891 0.182617V13.0557H39.46V11.2832H36.459V9.64453H39.46V0.182617H41.2891ZM38.8672 8.87891H35.3379V12.1885H33.3799V8.87891H29.7305V7.3291H38.8672V8.87891ZM22.6143 2.46875C22.6143 4.89881 24.005 8.20501 27.7148 9.30078V11.0654C27.6961 11.063 23.8792 10.5615 21.583 6.69531C19.2775 10.5711 15.4512 11.0654 15.4512 11.0654V9.30078C19.1607 8.21325 20.5518 4.89883 20.5518 2.46875V0.551758H22.6143V2.46875ZM3.70215 2.41211C2.66837 2.41211 1.83011 3.41277 1.83008 6.7334C1.83008 10.0732 2.66835 11.0557 3.70215 11.0557C4.73624 11.0556 5.57422 10.0731 5.57422 6.7334C5.57418 3.41295 4.73622 2.41222 3.70215 2.41211ZM34.3525 0C36.6151 0 38.4492 1.17983 38.4492 3.41797C38.449 5.69092 36.615 6.83496 34.3525 6.83496C32.0903 6.83485 30.2561 5.69081 30.2559 3.41797C30.2559 1.17994 32.0901 0 34.3525 0ZM34.3486 1.57227C33.1672 1.57227 32.2091 2.36269 32.209 3.44043C32.209 4.51861 33.1671 5.30859 34.3486 5.30859C35.5303 5.3084 36.4883 4.51026 36.4883 3.44043C36.4882 2.35834 35.5302 1.57246 34.3486 1.57227Z" fill="#757575"/></svg>`;
+
 async function buildFooter(maps: BuildMaps, originY: number): Promise<{ set: ComponentSetNode; bottomY: number }> {
-  const LINK_NAMES = ["이용약관", "개인정보처리방침", "고객지원"];
+  // 링크·회사정보·카피라이트: 검증된 원본(login_Footer 269:5722)에서 가져옴. 임의 작성 금지 — registry/content/footer.json 정본, footer-content-check 가드.
+  const LINK_NAMES = ["이용약관", "개인정보 처리방침", "위치기반 서비스 이용약관"];
 
   // ── PC variant ─────────────────────────────────────────
   const pc = figma.createComponent();
@@ -2828,14 +2832,15 @@ async function buildFooter(maps: BuildMaps, originY: number): Promise<{ set: Com
     }
   }
   leftBlock.appendChild(linksRow);
-  leftBlock.appendChild(await makeBoundText("주식회사 에스원  대표이사 김일환  서울특별시 중구 삼일대로 343", 10, "Regular", scv(maps, "color/text/body/tertiary")));
-  leftBlock.appendChild(await makeBoundText("Copyright © S1 Corp. All rights reserved.", 10, "Regular", scv(maps, "color/text/body/tertiary")));
+  leftBlock.appendChild(await makeBoundText("(주)에스원   사업자등록번호 208-81-13302    대표이사 정해린    04511 서울특별시 중구 세종대로 7길 25 에스원 빌딩", 10, "Regular", scv(maps, "color/text/body/tertiary")));
+  leftBlock.appendChild(await makeBoundText("© S-1 Corp. All Rights Reserved.", 10, "Regular", scv(maps, "color/text/body/tertiary")));
   pc.appendChild(leftBlock);
 
-  // 우측 로고 영역 (텍스트 플레이스홀더)
-  const logoText = await makeBoundText("S1", 14, "Bold", scv(maps, "color/text/body/primary"));
-  logoText.name = "logo";
-  pc.appendChild(logoText);
+  // 우측 로고 영역 (S1 브랜드 로고 벡터 — C/IMG/Logo/S1_g)
+  const logo = figma.createNodeFromSvg(S1_LOGO_SVG); // icon-vector-allow: footer S1 브랜드 워드마크(벡터 자산, DS 아이콘 아님)
+  logo.name = "C/IMG/Logo/S1_g";
+  rebindIconColor(logo, scv(maps, "color/icon/gray")); // #757575 = gray/500 (다크 자동)
+  pc.appendChild(logo);
 
   setLightMode(pc, maps);
 
@@ -2864,7 +2869,7 @@ async function buildFooter(maps: BuildMaps, originY: number): Promise<{ set: Com
     }
   }
   mobile.appendChild(mLinks);
-  mobile.appendChild(await makeBoundText("Copyright © S1 Corp. All rights reserved.", 12, "Regular", scv(maps, "color/text/body/tertiary")));
+  mobile.appendChild(await makeBoundText("© S-1 Corp. All Rights Reserved.", 12, "Regular", scv(maps, "color/text/body/tertiary")));
 
   setLightMode(mobile, maps);
 

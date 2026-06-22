@@ -1,0 +1,86 @@
+{
+  "builtBy": "figma-library-builder",
+  "fileKey": "yE5UCFEbmXJBlYJWB24Lz2",
+  "fileName": "SW UX GUIDE V2.4",
+  "date": "2026-06-22",
+  "followUpEdits": [
+    {
+      "date": "2026-06-22",
+      "by": "figma-library-builder",
+      "summary": "DatePicker/Calendar Cell standard/default(540:4183) & standard/disabled(540:4190) circle frames: fill control/bg/default(VariableID:2:439) -> date-picker/bg/today(VariableID:6918:3); stroke base/white(VariableID:1:3) -> date-picker/bg/today(VariableID:6918:3).",
+      "reason": "base/white was always pure white -> showed as a white ring against dark-mode panel (gray-dark/100). date-picker/bg/today resolves light=base/white, dark=gray-dark/100, so the today-circle becomes transparent against the panel in dark mode.",
+      "mutatedNodeIds": ["540:4183", "540:4190"],
+      "verifiedLightRender": "Cell set 540:4167 screenshot: default & disabled circles invisible (white-on-white) as expected; no collapse/breakage."
+    }
+  ],
+  "structuralNotes": {
+    "alreadyComponentSets": "Both source nodes (540:4167 calendar_cell_state, 540:4209 calendar_tile) were ALREADY COMPONENT_SETs, not plain frames with loose components. So combineAsVariants was NOT needed — only rename + property rename + token rebind. Plan premise ('8/3 separate components → combine') did not match the file state.",
+    "packing": "Both sets were already compactly packed (cell 264x143, tile 320x96). No 10000px collapse to fix; no repacking/hug-resize needed.",
+    "cyclicReferences": "None — cell/tile variants do not contain instances of sibling variants. No detach needed.",
+    "remapNote": "Existing instances of these sets remap automatically; node ids of the sets/variants are unchanged (rename does not change ids; property rename keeps variant component ids).",
+    "collectionChoice": "New date-picker variables created in LOCAL 'Semantic V2 260608' (VariableCollectionId:6736:9221), aliasing LOCAL 'Foundation V2 260608' (6736:8967). NOTE: the pre-existing variant bindings pointed at the OLD library collections ('semantic' 2:370 / 'Foundation' 1:2). Rebinding to the local V2 collections migrates these components onto the canonical local token set."
+  },
+  "variablesCreated": {
+    "collection": "Semantic V2 260608 (VariableCollectionId:6736:9221)",
+    "modes": { "Light": "6736:2", "Dark": "6736:3" },
+    "tokens": {
+      "color/date-picker/bg/range": { "id": "VariableID:6918:2", "light": "blue/50", "dark": "blue-dark/100" },
+      "color/date-picker/bg/today": { "id": "VariableID:6918:3", "light": "base/white", "dark": "gray-dark/100" },
+      "color/date-picker/bg/selected": { "id": "VariableID:6918:4", "light": "blue/400", "dark": "blue-dark/300" },
+      "color/date-picker/border/today": { "id": "VariableID:6918:5", "light": "blue/400", "dark": "blue-dark/300" },
+      "color/date-picker/tile/bg/default": { "id": "VariableID:6918:6", "light": "base/white", "dark": "gray-dark/100" },
+      "color/date-picker/tile/bg/selected": { "id": "VariableID:6918:7", "light": "base/white", "dark": "gray-dark/100" },
+      "color/date-picker/tile/bg/disabled": { "id": "VariableID:6918:8", "light": "gray/100", "dark": "gray-dark/200" },
+      "color/date-picker/tile/border/default": { "id": "VariableID:6918:9", "light": "gray/200", "dark": "gray-dark/500" },
+      "color/date-picker/text/secondary": { "id": "VariableID:6918:6345", "light": "gray/800", "dark": "gray-dark/800" },
+      "color/date-picker/text/today": { "id": "VariableID:6918:6346", "light": "blue/400", "dark": "blue-dark/300" },
+      "color/date-picker/text/selected": { "id": "VariableID:6918:6347", "light": "base/white", "dark": "base/white" },
+      "color/date-picker/text/disabled": { "id": "VariableID:6918:6348", "light": "gray/300", "dark": "gray-dark/400" },
+      "color/date-picker/text/primary": { "id": "VariableID:6918:6349", "light": "gray/900", "dark": "gray-dark/900" },
+      "color/date-picker/tile/border/disabled": { "id": "VariableID:6918:6350", "light": "gray/100", "dark": "gray-dark/300" }
+    },
+    "tokensNote": "Plan listed only 6 NEW tokens, but the swap mapping referenced 8 more date-picker tokens (bg/today, bg/selected, border/today, text/secondary, text/today, text/selected, text/disabled, text/primary) that the plan ASSUMED already existed in Figma. They did NOT exist (no date-picker vars existed in the file). All 14 were therefore created from vars-data.ts values (lines 548-567)."
+  },
+  "DatePicker/Calendar Cell": {
+    "setId": "540:4167",
+    "name": "DatePicker/Calendar Cell",
+    "renamedFrom": "calendar_cell_state",
+    "size": "264x143",
+    "variantAxes": { "type": ["standard", "range"], "state": ["default", "today", "selected", "disabled", "start", "end"] },
+    "variants": {
+      "type=standard, state=selected": { "id": "540:4168", "frame": "540:4169", "text": "540:4170",
+        "binds": { "frame.fill": "bg/selected", "frame.stroke": "border/today", "text.fill": "text/selected" } },
+      "type=standard, state=today": { "id": "540:4175", "frame": "540:4176", "text": "540:4177",
+        "binds": { "frame.fill": "bg/today", "frame.stroke": "border/today", "text.fill": "text/today" } },
+      "type=standard, state=default": { "id": "540:4182", "frame": "540:4183", "text": "540:4184",
+        "binds": { "text.fill": "text/secondary", "frame.fill": "bg/today (VariableID:6918:3)", "frame.stroke": "bg/today (VariableID:6918:3)" } },
+      "type=standard, state=disabled": { "id": "540:4189", "frame": "540:4190", "text": "540:4191",
+        "binds": { "text.fill": "text/disabled", "frame.fill": "bg/today (VariableID:6918:3)", "frame.stroke": "bg/today (VariableID:6918:3)" } },
+      "type=range, state=default": { "id": "540:4185", "band": "540:4186", "circle": "540:4187", "text": "540:4188",
+        "binds": { "band.fill": "bg/range", "circle.fill": "bg/range", "circle.stroke": "bg/range", "text.fill": "text/secondary" } },
+      "type=range, state=start": { "id": "540:4178", "band": "540:4179", "circle": "540:4180", "text": "540:4181",
+        "binds": { "band.fill": "bg/range", "circle.fill": "bg/today", "circle.stroke": "border/today", "text.fill": "text/today" } },
+      "type=range, state=end": { "id": "540:4171", "band": "540:4172", "circle": "540:4173", "text": "540:4174",
+        "binds": { "band.fill": "bg/range", "circle.fill": "bg/selected", "circle.stroke": "border/today", "text.fill": "text/selected" } },
+      "type=range, state=disabled": { "id": "540:4192", "band": "540:4193", "circle": "540:4194", "text": "540:4195",
+        "binds": { "band.fill": "bg/range", "circle.fill": "bg/range", "circle.stroke": "bg/range", "text.fill": "text/disabled" } }
+    },
+    "rangeEndpointMapping": "range/start mirrors standard 'today' (white circle bg/today, border/today, text/today); range/end mirrors standard 'selected' (filled bg/selected, border/today, white text/selected). This implements plan's 'range/* text 동일 패턴' instruction by reusing the same date-picker semantics as standard."
+  },
+  "DatePicker/Calendar Tile": {
+    "setId": "540:4209",
+    "name": "DatePicker/Calendar Tile",
+    "renamedFrom": "calendar_tile",
+    "size": "320x96",
+    "propertyRename": "Property 1 -> state",
+    "variantAxes": { "state": ["default", "selected", "disabled"] },
+    "variants": {
+      "state=default": { "id": "540:4212", "text": "540:4213",
+        "binds": { "fill": "tile/bg/default", "stroke": "tile/border/default", "text.fill": "text/primary" } },
+      "state=selected": { "id": "540:4210", "text": "540:4211",
+        "binds": { "fill": "tile/bg/selected", "stroke": "border/today", "text.fill": "text/today" } },
+      "state=disabled": { "id": "540:4214", "text": "540:4215",
+        "binds": { "fill": "tile/bg/disabled", "stroke": "tile/border/disabled", "text.fill": "text/disabled" } }
+    }
+  }
+}
