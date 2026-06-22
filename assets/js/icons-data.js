@@ -21098,7 +21098,7 @@ window.ICONS_DATA = {
       }
     },
     {
-      "name": "ic_ic_레일을잡고이동(2)",
+      "name": "ic_레일을잡고이동(2)",
       "id": "ic_레일을잡고이동2",
       "description": "레일을잡고이동(2)",
       "keywords": [
@@ -21656,7 +21656,7 @@ window.ICONS_DATA = {
       }
     },
     {
-      "name": "ic_ic_크리스마스(3)",
+      "name": "ic_크리스마스(3)",
       "id": "ic_크리스마스3",
       "description": "크리스마스(3)",
       "keywords": [
@@ -24969,7 +24969,7 @@ window.ICONS_DATA = {
       }
     },
     {
-      "name": "ic_ic_비+눈2",
+      "name": "ic_비+눈2",
       "id": "ic_비눈2",
       "description": "비+눈2",
       "keywords": [
@@ -27015,7 +27015,7 @@ window.ICONS_DATA = {
       }
     },
     {
-      "name": "ic_ic_체크포인트(4)",
+      "name": "ic_체크포인트(4)",
       "id": "ic_체크포인트4",
       "description": "체크포인트(4)",
       "keywords": [
