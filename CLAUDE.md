@@ -1121,6 +1121,7 @@ Claude는 **Main Orchestrator**다. 사용자는 **목표 수준 의도**만 준
 - **UI/HTML/CSS를 건드렸으면 크기 불문 렌더 1회 확인.** "검사기·div개수 통과"로 시각 검증을 대체하지 않는다. (`"/Applications/Google Chrome.app/Contents/MacOS/Google Chrome" --headless=new --screenshot=… "file://…#섹션"` → 스크린샷 Read 로 육안 대조)
 - **구조 변경·Figma→코드·역방향 생성기 수정**은 self-certify하지 않고 검증 분리(🤖).
 - 🚫 **하드룰 — Figma 라이브러리 컴포넌트/변형세트 빌드·편집은 ⭐ 단독 빌드+검증 금지.** 신규 컴포넌트 생성·combineAsVariants 변형세트화·토큰 바인딩·variant 패킹 등 **구조 변경**은 ⭐가 직접 use_figma로 빌드하지 않고 **`figma-library-build` 스킬**로 진입한다: 빌드=🏗️ `figma-library-builder`(실제 spawn), 검증=🤖 `component-verifier`(실제 spawn, 빌더와 분리). ⭐는 흐름(계획·검문소·종합)만 관리한다. **예외:** 단일 노드 좌표/이름 1건 같은 순수 기계적 미세 편집은 ⭐ 직접+렌더 1회로 갈음 가능. (근거: ⭐ 단독 인라인 빌드+자가검증이 패킹 붕괴·정렬·세트화 누락을 사용자에게 새게 한 반복 실패. 빌드자≠검증자 + 위임 강제로 구조 차단.)
+- 🚫 **하드룰 — `use_figma`로 Figma에 그리는 모든 노드의 색은 Variable 바인딩 필수, 하드코딩 hex 금지(2026-06-22 신설).** fill·stroke·텍스트 색은 `figma.variables.getVariableById(ID)` + `setBoundVariableForPaint`로 바인딩한다. **용도(라이브러리 컴포넌트/검토 프레임/스펙 프레임/레이아웃 프레임) 불문 동일 적용** — 검토용 프레임도 결국 라이브러리화되므로 처음부터 바인딩한다(사용자 결정 2026-06-22). 정본에 해당 토큰이 없으면 임의 hex로 채우지 말고 **신규 Variable을 먼저 생성(Foundation alias)** 후 바인딩하거나, 없으면 needs-decision으로 보고한다. **예외:** 검토 프레임의 회색 배경·열 라벨 같은 **순수 장식 크롬(컴포넌트 부품이 아닌 것)만** 줄 끝 `// figma-hex-allow: <사유>` 마커로 허용. 컴포넌트 부품(셀·타일·아이콘·버튼 등)의 색은 마커로 우회 금지. **집행:** PreToolUse 훅(`scripts/figma-code-hex-check.js`)이 use_figma 코드를 실행 직전 스캔해 hex면 exit 2로 차단. (근거: Gate 3·12·pre-commit이 전부 "파일"만 검사해 use_figma의 직접 쓰기는 사각지대였고, "검토 프레임이니 라이브러리 빌드 아님" 자기분류로 스킬/에이전트 경로마저 건너뛰어 Calendar Cell/Tile 검토 프레임이 hex로 2회 유출. 도구 호출 자체를 가로채 기계 차단.)
 - 🚫 **하드룰 — 설치기 생성기 코드(`build-components.ts`) 구조 변경은 ⭐ 단독 자가검증 금지(2026-06-19 신설).** 새 build 함수·`combineAsVariants`·variant 스펙·셀↔스펙시트 키 같은 **구조 변경**은 build-components.ts 가 곧 Figma 라이브러리 컴포넌트 빌드라 위 하드룰과 동급이다. **빌드는 ⭐(강결합 잔손질) 또는 코드 에이전트가 해도, 검증은 반드시 🤖 `component-verifier`(D) 실제 spawn**으로 분리한다. 검증 후 `node scripts/installer-build-verify-check.js --record --by component-verifier …` 로 기록 → **Gate 13 이 해시로 집행**(검증 기록 없는/stale 한 build-components.ts 는 커밋 차단). **예외:** 순수 기계적 수정(토큰 값 1건·오타)은 `--by orchestrator --change mechanical` 자가인증 가능(git 가시·감사). (근거: 설치기 9개 이슈가 9줄 전부 ⭐ → 독립 검증 부재로 Input 스펙 빈칸 버그가 토큰 게이트 전부 ✅인 채 유출 직전. 검증 분리를 기계 강제로 전환.)
 - **순수 기계적 수정**(토큰 값 1건·오타·문서 카피)은 검사기로 충분 — 렌더/에이전트 생략 가능.
 - **검증 안 한 부분은 보고에 ⭐ 자가인증으로 명시**한다(사용자가 어디를 의심할지 보이게).
@@ -1281,6 +1282,7 @@ Claude는 **Main Orchestrator**다. 사용자는 **목표 수준 의도**만 준
 
 | 훅 | 위치 | 발동 | 동작 | 강제력 |
 |----|------|------|------|--------|
+| **PreToolUse** (차단) | `.claude/settings.json` → `scripts/figma-code-hex-check.js` | `use_figma` 호출 직전 | code 안 하드코딩 hex(`#RRGGBB`/`#RGB`) 탐지. 있으면 exit 2로 **도구 실행 차단**(Figma 노드 색=Variable 바인딩 강제). 순수 장식 크롬만 `// figma-hex-allow: 사유` 예외 | 물리 차단 |
 | **PostToolUse** (알림) | `.claude/settings.json` → `.claude/hooks/on-token-edit.sh` | `tokens.css`·`vars-data.ts` 편집 즉시 | install-prompt 자동 재동기화 + Gate 7 값 검증. 불일치면 exit 2로 모델에 피드백 | 알림(차단 안 함) |
 | **pre-commit** (차단) | `.git/hooks/pre-commit` (정본: `scripts/hooks/pre-commit`) | `git commit` 시 | `npm run gate:check` 실행, error면 **커밋 차단**(exit 1) | 물리 차단 |
 
