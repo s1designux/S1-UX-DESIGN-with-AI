@@ -1,9 +1,9 @@
 {
   "sourceFile": "plugins/figma-vars-installer/src/build-components.ts",
-  "sourceHash": "sha256:b2229831ca9379f20f68a522ab8fafcfcf145c2d10476500230d21d5d0d43b98",
+  "sourceHash": "sha256:8abb87ec97f08426478c308fe679304be8593ae5bbe00819287328752f295973",
   "verifiedBy": "orchestrator",
   "verdict": "pass",
   "changeType": "mechanical",
-  "verifiedAt": "2026-06-22T03:55:05.222Z",
-  "notes": "Footer 텍스트를 검증된 원본(login_Footer)으로 교체 — 링크·회사정보(대표이사 정해린·사업자번호·주소)·카피라이트. 내용 정합은 Gate 14(footer-content)가 강제"
+  "verifiedAt": "2026-06-22T05:52:17.241Z",
+  "notes": "Date Picker 캘린더 요일 헤더 일/토 색을 평일과 동일(text/secondary)로 통일 — 주말 red/blue 구분 제거. 렌더 검증 완료"
 }

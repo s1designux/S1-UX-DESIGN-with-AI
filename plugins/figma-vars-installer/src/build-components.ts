@@ -2398,12 +2398,12 @@ async function buildCalendarPanel(maps: BuildMaps): Promise<FrameNode> {
   header.appendChild(await makeBoundText("2026.06", 24, "Bold", scv(maps, dp("text/primary"))));
   header.appendChild(await makeIconInstance("chevron", scv(maps, dp("text/primary")), 0, CHEV_R, 0));
 
-  // 요일 행 — 7 셀 (일=sunday·토=saturday·평일=secondary)
+  // 요일 행 — 7 셀 (일·토도 평일과 동일 색 text/secondary — 사용자 요청 2026-06-22, 주말 색 구분 제거)
   const wkRow = figma.createFrame(); wkRow.name = "weekdays"; wkRow.fills = [];
   wkRow.layoutMode = "HORIZONTAL"; wkRow.itemSpacing = 0; wkRow.primaryAxisSizingMode = "AUTO"; wkRow.counterAxisSizingMode = "AUTO";
   panel.appendChild(wkRow);
   for (const w of DP_WEEKDAYS) {
-    const role = w.role === "sunday" ? "text/sunday" : w.role === "saturday" ? "text/saturday" : "text/secondary";
+    const role = "text/secondary"; // 전 요일 동일 색(주말 red/blue 구분 안 함)
     const cell = figma.createFrame(); cell.name = "weekday"; cell.fills = [];
     cell.layoutMode = "HORIZONTAL"; cell.primaryAxisAlignItems = "CENTER"; cell.counterAxisAlignItems = "CENTER";
     cell.primaryAxisSizingMode = "FIXED"; cell.counterAxisSizingMode = "FIXED"; cell.resize(CW, 44);
