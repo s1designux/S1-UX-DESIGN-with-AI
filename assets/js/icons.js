@@ -12,6 +12,7 @@
 
   const FIGMA_FILE_KEY = 'YcBbW9e0MTR9T3W5Sz0Ukx';
   const FIGMA_FILE_NAME = '%EC%95%84%EC%9D%B4%EC%BD%98-%EB%9D%BC%EC%9D%B4%EB%B8%8C%EB%9F%AC%EB%A6%AC-V2.2';
+  const ICONS_CDN_BASE = 'https://s1designux.github.io/S1-UX-DESIGN-with-AI/assets/icons';
 
   const PLACEHOLDER_SVG = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="3" stroke-dasharray="4 2"/><line x1="9" y1="12" x2="15" y2="12"/><line x1="12" y1="9" x2="12" y2="15"/></svg>`;
 
@@ -148,10 +149,13 @@
   /* ── Card HTML ── */
   function renderCard(icon) {
     const variant = cardVariants[icon.id] || 'line';
-    const svg = icon.variants[variant] && icon.variants[variant].svg || '';
+    const variantData = icon.variants[variant] || {};
+    const png    = variantData.png  || '';
+    const svg    = variantData.svg  || '';
+    const hasPng = png.trim().length > 0;
     const hasSvg = svg.trim().length > 0;
     const svgShow = svgVisible[icon.id];
-    const figmaNodeId = (icon.variants[variant] && icon.variants[variant].figmaNodeId) || icon.figmaNodeId;
+    const figmaNodeId = variantData.figmaNodeId || icon.figmaNodeId;
     const figmaUrl = 'https://www.figma.com/design/' + FIGMA_FILE_KEY + '/' + FIGMA_FILE_NAME + '?node-id=' + figmaNodeId.replace(':', '-');
 
     const variantTabs = ['line', 'solid', 'color']
@@ -159,13 +163,30 @@
       .map(v => '<button class="icon-variant-tab' + (v === variant ? ' is-active' : '') + '" data-variant="' + v + '" data-id="' + escHtml(icon.id) + '">' + v + '</button>')
       .join('');
 
-    const previewHtml = hasSvg
-      ? '<div class="icon-preview has-svg">' + svg + '</div>'
-      : '<div class="icon-preview"><div class="icon-preview-placeholder">' + PLACEHOLDER_SVG + '<span>SVG 필요</span></div></div>';
+    // 미리보기: PNG 우선, 없으면 SVG 인라인, 없으면 플레이스홀더
+    let previewHtml;
+    if (hasPng) {
+      previewHtml = '<div class="icon-preview has-png">' +
+        '<img src="' + escHtml(png) + '" width="28" height="28" alt="' + escHtml(icon.name + ' ' + variant) + '" loading="lazy">' +
+        '</div>';
+    } else if (hasSvg) {
+      previewHtml = '<div class="icon-preview has-svg">' + svg + '</div>';
+    } else {
+      previewHtml = '<div class="icon-preview"><div class="icon-preview-placeholder">' + PLACEHOLDER_SVG + '<span>PNG 필요</span></div></div>';
+    }
 
-    const svgAreaHtml = hasSvg
-      ? '<div class="icon-svg-code">' + escHtml(svg) + '</div>'
-      : '<div class="icon-svg-empty">Figma에서 <strong>Copy as SVG</strong> 후<br>icons-data.js에 붙여넣기 필요<br><br><code>' + escHtml(figmaNodeId) + '</code></div>';
+    // 하단 토글 영역: PNG 공개 URL 또는 SVG 코드
+    const pngFilename = hasPng ? png.split('/').pop() : '';
+    const publicUrl   = hasPng ? (ICONS_CDN_BASE + '/' + pngFilename) : '';
+    const toggleLabel = hasPng ? '▼ URL' : (hasSvg ? '▼ SVG' : '▼');
+    let detailAreaHtml;
+    if (hasPng) {
+      detailAreaHtml = '<div class="icon-png-path">' + escHtml(publicUrl) + '</div>';
+    } else if (hasSvg) {
+      detailAreaHtml = '<div class="icon-svg-code">' + escHtml(svg) + '</div>';
+    } else {
+      detailAreaHtml = '<div class="icon-svg-empty">export-icons-png.js 를 실행해<br>PNG를 생성하세요<br><br><code>' + escHtml(figmaNodeId) + '</code></div>';
+    }
 
     const keywordText = icon.keywords.slice(0, 8).join(', ');
 
@@ -175,17 +196,20 @@
       '  <div class="icon-name" title="' + escHtml(icon.name) + '">' + escHtml(icon.name) + '</div>\n' +
       '  <div class="icon-keywords">' + (escHtml(keywordText) || '—') + '</div>\n' +
       '  <div class="icon-meta-row">\n' +
-      '    <button class="icon-svg-toggle-btn" data-id="' + escHtml(icon.id) + '">' + (svgShow ? '▲ 숨기기' : '▼ SVG') + '</button>\n' +
+      '    <button class="icon-svg-toggle-btn" data-id="' + escHtml(icon.id) + '">' + (svgShow ? '▲ 숨기기' : toggleLabel) + '</button>\n' +
       '    <a class="icon-figma-link" href="' + figmaUrl + '" target="_blank" title="Figma에서 열기">\n' +
       '      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M15.332 8.668a3.333 3.333 0 0 0 0-6.663H8.668a3.333 3.333 0 0 0 0 6.663 3.333 3.333 0 0 0 0 6.665 3.333 3.333 0 1 0 3.332 3.332V8.668h3.332z"/><circle cx="15.332" cy="5.336" r="3.332"/></svg>\n' +
       '      Figma\n' +
       '    </a>\n' +
       '  </div>\n' +
       '  <div class="icon-svg-area' + (svgShow ? ' is-visible' : '') + '" id="svg-area-' + escHtml(icon.id) + '">\n' +
-      '    ' + svgAreaHtml + '\n' +
+      '    ' + detailAreaHtml + '\n' +
       '  </div>\n' +
       '  <div class="icon-actions">\n' +
-      '    <button class="icon-action-btn" data-action="copy-svg" data-id="' + escHtml(icon.id) + '" ' + (hasSvg ? '' : 'disabled') + '>SVG 복사</button>\n' +
+      (hasPng
+        ? '    <button class="icon-action-btn" data-action="copy-png-path" data-id="' + escHtml(icon.id) + '">URL 복사</button>\n'
+        : '    <button class="icon-action-btn" data-action="copy-svg" data-id="' + escHtml(icon.id) + '" ' + (hasSvg ? '' : 'disabled') + '>SVG 복사</button>\n'
+      ) +
       '    <button class="icon-action-btn" data-action="copy-name" data-id="' + escHtml(icon.id) + '">이름 복사</button>\n' +
       '  </div>\n' +
       '</div>';
@@ -216,7 +240,14 @@
         const icon = allIcons.find(ic => ic.id === id);
         if (!icon) return;
 
-        if (action === 'copy-svg') {
+        if (action === 'copy-png-path') {
+          const variant = cardVariants[id] || 'line';
+          const localPng = icon.variants[variant] && icon.variants[variant].png || '';
+          if (!localPng) return;
+          const filename = localPng.split('/').pop();
+          const publicUrl = ICONS_CDN_BASE + '/' + filename;
+          copyToClipboard(publicUrl, btn);
+        } else if (action === 'copy-svg') {
           const variant = cardVariants[id] || 'line';
           const svg = icon.variants[variant] && icon.variants[variant].svg || '';
           if (!svg) return;

@@ -5,6 +5,9 @@
   "description": "SW Design System Guide — SW UX GUIDE V2.4",
   "scripts": {
     "prepare": "bash scripts/hooks/install-git-hooks.sh",
+    "icons:export": "node scripts/export-icons-png.js",
+    "icons:export-section": "node scripts/export-icons-png.js --section",
+    "icons:update-data": "node scripts/update-icons-data-to-png.js",
     "reports:sync": "node scripts/reports-sync.js",
     "reports:check": "node scripts/reports-check.js",
     "build": "npm run reports:sync && npm run build:bundle",
@@ -27,6 +30,7 @@
     "components:iconpolicy": "node scripts/icon-instance-policy-check.js",
     "components:buildverify": "node scripts/installer-build-verify-check.js",
     "components:bindinglookup": "node scripts/figma-binding-lookup.js",
+    "footer:contentcheck": "node scripts/footer-content-check.js",
     "components:preview": "node scripts/component-preview/render.js",
     "tokens:gen": "node scripts/gen-semantic-tokens.js",
     "typo:gen": "node scripts/typography-gen.js",
