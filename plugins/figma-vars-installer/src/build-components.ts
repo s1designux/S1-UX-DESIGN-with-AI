@@ -549,11 +549,11 @@ async function buildCheckbox(maps: BuildMaps, originY: number): Promise<{ set: C
     comps.push(comp);
   }
   const set = figma.combineAsVariants(comps, figma.currentPage);
-  set.name = "Checkbox";
+  set.name = "Selection/Checkbox";
   set.x = 0; set.y = originY;
   // Table 행에서 인스턴스 재사용 — BUILT_COMPS 등록 (상태명 그대로)
   states.forEach((s, i) => { BUILT_COMPS[`Checkbox:${s.name}`] = comps[i]; });
-  BUILT_SETS["Checkbox"] = set;
+  BUILT_SETS["Selection/Checkbox"] = set;
   const opts: SpecOpts = {
     title: "Checkbox",
     colHeaders: states.map((s) => s.name),
@@ -614,7 +614,7 @@ async function buildRadio(maps: BuildMaps, originY: number): Promise<{ set: Comp
     }
   }
   const set = figma.combineAsVariants(comps, figma.currentPage);
-  set.name = "Radio";
+  set.name = "Selection/Radio";
   set.x = 0; set.y = originY;
   const opts: SpecOpts = {
     title: "Radio",
@@ -660,7 +660,7 @@ async function buildToggle(maps: BuildMaps, originY: number): Promise<{ set: Com
     }
   }
   const set = figma.combineAsVariants(comps, figma.currentPage);
-  set.name = "Toggle";
+  set.name = "Selection/Toggle";
   set.x = 0; set.y = originY;
   const opts: SpecOpts = {
     title: "Toggle",
@@ -820,7 +820,7 @@ async function buildInput(maps: BuildMaps, originY: number, originX: number = IN
     }
   }
   const set = figma.combineAsVariants(comps, figma.currentPage);
-  set.name = "Input";
+  set.name = "Form Control/Input";
   // Password Icon BOOLEAN — 비밀번호 인풋일 때만 눈 아이콘 표시. 기본 false(꺼짐).
   // 모든 variant 의 field>eye 레이어 visible 을 이 속성에 바인딩(레이어명 eye 통일 필수).
   const pwIconPropId = set.addComponentProperty("Password Icon", "BOOLEAN", false);
@@ -1051,7 +1051,7 @@ async function buildSearch(maps: BuildMaps, originY: number): Promise<{ set: Com
     }
   }
   const set = figma.combineAsVariants(comps, figma.currentPage);
-  set.name = "Search Input";
+  set.name = "Form Control/Search Input";
   set.x = 0; set.y = originY;
   const opts: SpecOpts = {
     title: "Search Input",
@@ -1110,7 +1110,7 @@ async function buildTextarea(maps: BuildMaps, originY: number): Promise<{ set: C
     cells.push({ comp, row, col: 0 });
   }
   const set = figma.combineAsVariants(comps, figma.currentPage);
-  set.name = "Text Area";
+  set.name = "Form Control/Text Area";
   set.x = 0; set.y = originY;
   const opts: SpecOpts = {
     title: "Text Area",
@@ -1191,11 +1191,11 @@ async function buildSelect(maps: BuildMaps, originY: number): Promise<{ set: Com
     }
   }
   const set = figma.combineAsVariants(comps, figma.currentPage);
-  set.name = "Select Box";
+  set.name = "Form Control/Select Box";
   set.x = 0; set.y = originY;
   // Table 푸터에서 인스턴스 재사용 — BUILT_COMPS 등록 (size:brk:state)
   cells.forEach(({ comp, size, brk, state }) => { BUILT_COMPS[`SelectBox:${size}:${brk}:${state}`] = comp; });
-  BUILT_SETS["Select Box"] = set;
+  BUILT_SETS["Form Control/Select Box"] = set;
   const opts: GroupedSpecOpts = {
     title: "Select Box",
     platforms: [{ name: "PC", sizes: ["XXSM", "XSM", "MD"] }, { name: "Mobile", sizes: ["MD"] }],
@@ -1246,10 +1246,10 @@ async function buildDropdownList(maps: BuildMaps, originY: number): Promise<{ se
     }
   }
   const set = figma.combineAsVariants(comps, figma.currentPage);
-  set.name = "Dropdown List";
+  set.name = "Form Control/Dropdown List";
   set.x = 0; set.y = originY;
   setLightMode(set, maps); // ← 세트에만 (컴포넌트 단위 설정 시 인스턴스가 다크모드 상속 불가)
-  BUILT_SETS["Dropdown List"] = set;
+  BUILT_SETS["Form Control/Dropdown List"] = set;
   const opts: GroupedSpecOpts = {
     title: "Dropdown List",
     platforms: [{ name: "PC", sizes: sizes.map((s) => s.size) }],
@@ -1319,10 +1319,10 @@ async function buildDropdown(maps: BuildMaps, originY: number): Promise<{ set: C
   BUILT_COMPS["Dropdown:Default"] = BUILT_COMPS["Dropdown:MD:Default"];
 
   const set = figma.combineAsVariants(comps, figma.currentPage);
-  set.name = "Dropdown";
+  set.name = "Form Control/Dropdown";
   set.x = 0; set.y = originY;
   setLightMode(set, maps); // ← 세트에만 (컴포넌트 단위 설정 시 인스턴스가 다크모드 상속 불가)
-  BUILT_SETS["Dropdown"] = set;
+  BUILT_SETS["Form Control/Dropdown"] = set;
 
   const opts: SpecOpts = {
     title: "Dropdown",
