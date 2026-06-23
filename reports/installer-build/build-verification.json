@@ -1,9 +1,9 @@
 {
   "sourceFile": "plugins/figma-vars-installer/src/build-components.ts",
-  "sourceHash": "sha256:8abb87ec97f08426478c308fe679304be8593ae5bbe00819287328752f295973",
-  "verifiedBy": "orchestrator",
+  "sourceHash": "sha256:bcb324f06eb0a5c7ce95d7a75a837a41633aed5570a5b7aa02bd594ce2a6bcd6",
+  "verifiedBy": "component-verifier",
   "verdict": "pass",
-  "changeType": "mechanical",
-  "verifiedAt": "2026-06-22T05:52:17.241Z",
-  "notes": "Date Picker 캘린더 요일 헤더 일/토 색을 평일과 동일(text/secondary)로 통일 — 주말 red/blue 구분 제거. 렌더 검증 완료"
+  "changeType": "structural",
+  "verifiedAt": "2026-06-23T02:17:00.772Z",
+  "notes": "Calendar Cell/Tile 컴포넌트화 + Calendar/DatePicker 인스턴스 사용 + Date Picker 뒤 배치 + 재설치 시 기존 세트 재사용(detach 방지)"
 }

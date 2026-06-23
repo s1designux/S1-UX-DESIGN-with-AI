@@ -1,0 +1,102 @@
+{
+  "task": "Calendar Cell/Tile 설치기 컴포넌트화 + Date Picker 통합 (생성기 build-components.ts 코드 작업)",
+  "kind": "generator-typescript",
+  "note": "Figma 캔버스 노드는 사용자가 설치기 재실행 시 생성됨. 아래는 생성기가 만들 컴포넌트 세트/변형/등록 키의 코드 정의.",
+  "file": "plugins/figma-vars-installer/src/build-components.ts",
+  "v24Source": {
+    "fileKey": "yE5UCFEbmXJBlYJWB24Lz2",
+    "calendarCell": "540:4167",
+    "calendarTile": "540:4209"
+  },
+  "newBuilders": {
+    "buildCalendarCell": {
+      "set": "Calendar Cell",
+      "size": "44x44",
+      "axes": "Type={Standard,Range} × State",
+      "textLayer": "num",
+      "variants": [
+        "Type=Standard, State=Default",
+        "Type=Standard, State=Today",
+        "Type=Standard, State=Selected",
+        "Type=Standard, State=Disabled",
+        "Type=Range, State=Default",
+        "Type=Range, State=Start",
+        "Type=Range, State=End",
+        "Type=Range, State=Disabled"
+      ],
+      "structure": "outer 44x44(auto-layout center) > [Range: band Rectangle(absolute, h30 top7)] + inner 30x30 circle(radius999) > num text(16 Medium)"
+    },
+    "buildCalendarTile": {
+      "set": "Calendar Tile",
+      "size": "88x56",
+      "cornerRadius": 4,
+      "axis": "State={Default,Selected,Disabled}",
+      "textLayer": "label",
+      "variants": ["State=Default", "State=Selected", "State=Disabled"],
+      "structure": "comp 88x56(auto-layout center, radius4, fill+stroke on root) > label text(16 Medium)"
+    },
+    "getOrBuildCalendarCell": "lazy-build 캐시(_calCell), removeStaleSet 후 1회 빌드, BUILT_SETS/BUILT_COMPS 등록",
+    "getOrBuildCalendarTile": "lazy-build 캐시(_calTile), removeStaleSet 후 1회 빌드, BUILT_SETS/BUILT_COMPS 등록",
+    "buildCalendarCellLayout": "registry runner — 캐시 세트 originY 재배치 + decorateSetFlat/buildSpec(2행 Standard/Range × 4상태)",
+    "buildCalendarTileLayout": "registry runner — 캐시 세트 originY 재배치 + decorateSetFlat/buildSpec(3상태)",
+    "removeStaleSet": "재설치 시 캔버스 동일 이름 세트 제거(중복 방지)",
+    "calCellInstance": "Type/State variant 인스턴스 생성 + num override",
+    "calTileInstance": "State variant 인스턴스 생성 + label override",
+    "dayKindToCellKey": "day kind → Standard variant key (today/selected/disabled, other-month=Standard:Disabled)"
+  },
+  "builtComps": [
+    "CalendarCell:Standard:Default",
+    "CalendarCell:Standard:Today",
+    "CalendarCell:Standard:Selected",
+    "CalendarCell:Standard:Disabled",
+    "CalendarCell:Range:Default",
+    "CalendarCell:Range:Start",
+    "CalendarCell:Range:End",
+    "CalendarCell:Range:Disabled",
+    "CalendarTile:Default",
+    "CalendarTile:Selected",
+    "CalendarTile:Disabled"
+  ],
+  "builtSets": ["Calendar Cell", "Calendar Tile"],
+  "refactored": {
+    "buildCalendar": "State=Date day 그리드 raw dayCell 제거 → calCellInstance(Standard). State=Year/Month makeYMTile 내부를 calTileInstance 로 교체(raw 타일·ctl 토큰 제거)",
+    "buildCalendarPanel": "Date Picker Open day 그리드 raw dayCell 제거 → calCellInstance(Standard)",
+    "removed": ["raw dayCell 빌드(buildCalendar·buildCalendarPanel)", "makeYMTile raw 프레임 구현(ctl(bg/border)·color/text/body·state/disabled 토큰 사용분)"]
+  },
+  "tokenMapping": {
+    "on-selected-white-text": "color/date-picker/text/selected (light+dark = base/white) — 별도 text/on-selected 토큰 없음, text/selected 가 그 역할",
+    "cell-standard": {
+      "Default":  "inner fill bg/today, stroke bg/today, num text/secondary",
+      "Today":    "inner fill bg/today, stroke border/today, num text/today",
+      "Selected": "inner fill bg/selected, stroke border/today, num text/selected(white)",
+      "Disabled": "inner fill bg/today, stroke bg/today, num text/disabled"
+    },
+    "cell-range": {
+      "Default":  "band 44x30@left0 bg/range; inner fill bg/range stroke bg/range; num text/secondary",
+      "Start":    "band 22x30@left22 bg/range; inner fill bg/today stroke border/today; num text/today",
+      "End":      "band 22x30@left0 bg/range; inner fill bg/selected stroke border/today; num text/selected(white)",
+      "Disabled": "band 44x30@left0 bg/range; inner fill bg/range stroke bg/range; num text/disabled"
+    },
+    "tile": {
+      "Default":  "bg tile/bg/default, border tile/border/default, label text/primary",
+      "Selected": "bg tile/bg/selected, border color/date-picker/border/today, label text/today",
+      "Disabled": "bg tile/bg/disabled, border tile/border/disabled, label text/disabled"
+    },
+    "tile-selected-border-resolved": "V2.4 실측 540:4209 selected = color/date-picker/border/today (#1d6ceb) — plan 의 'V2.4 확인' 미결 해소",
+    "tile-default-text-resolved": "V2.4 실측 default = color/date-picker/text/primary (#202020) — plan 표의 text/body/primary 추정 대신 V2.4 원본 토큰 사용",
+    "rawHex": 0
+  },
+  "categories": {
+    "Form": "...Calendar, Date Picker, Calendar Cell, Calendar Tile, Time Picker Dropdown, Time Picker"
+  },
+  "lazyBuildHandling": "Calendar(먼저 호출)→getOrBuildCalendarCell/Tile 가 세트 빌드. Calendar Cell/Tile registry runner 는 캐시 세트 재배치+스펙. 재설치 시 두 dep 세트는 항상 layout runner 실행(skip 제외)+getOrBuild removeStaleSet 로 중복 방지.",
+  "gates": {
+    "installer:check (tsc)": "PASS",
+    "components:keycheck": "PASS (color req 133/supply 183, number 6/103, 누락 0)",
+    "components:anatomy": "PASS (5 규칙 충족)",
+    "components:iconpolicy": "PASS (위반 0)"
+  },
+  "needsDecision": [
+    "other-month(타월 셀): V2.4 calendar_cell 에 other-month variant 없음 → Standard:Disabled 로 매핑함(텍스트는 disabled 색). 별도 'Other' state 가 필요하면 셀 세트에 variant 추가 결정 필요(보고용, 임의 추가 안 함)."
+  ]
+}

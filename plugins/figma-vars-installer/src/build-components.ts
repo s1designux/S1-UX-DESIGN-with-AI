@@ -2372,9 +2372,201 @@ const DP_WEEKDAYS = [
 // 샘플 달(6행). day=표시숫자, col=요일(0=일·6=토), kind=상태.
 type DpCell = { day: number; col: number; kind: "normal" | "other" | "today" | "selected" | "disabled" };
 
+// ── Calendar Cell / Calendar Tile (lazy-build 컴포넌트 세트) ───────────────────
+// V2.4 정본: calendar_cell(540:4167) · calendar_tile(540:4209), fileKey yE5UCFEbmXJBlYJWB24Lz2.
+// Calendar·Date Picker(Open) 가 이 세트의 variant 를 인스턴스로 사용(숫자/라벨 override).
+// lazy-build: 소비자가 먼저 호출해도 1회만 빌드(BUILT_SETS 캐시). CATEGORIES 는 위치만 결정.
+const DP = (k: string) => `color/date-picker/${k}`;
+
+// Calendar Cell — 44×44 outer, axes Type={Standard,Range} × State(4). 숫자 텍스트 layer 이름 = "num".
+// V2.4 구조: 44×44(center, p5) > [Range: 밴드 Rectangle(absolute)] + inner 30×30 원(센터) > 숫자.
+async function buildCalendarCell(maps: BuildMaps): Promise<{ set: ComponentSetNode; variants: Record<string, ComponentNode> }> {
+  // [innerFill, innerStroke, textKey] (V2.4 실측 — selected stroke = border/today)
+  const STD: Record<string, [string, string, string]> = {
+    Default:  ["bg/today",    "bg/today",     "text/secondary"],
+    Today:    ["bg/today",    "border/today", "text/today"],
+    Selected: ["bg/selected", "border/today", "text/selected"],
+    Disabled: ["bg/today",    "bg/today",     "text/disabled"],
+  };
+  // Range: [bandX, bandW, innerFill, innerStroke, textKey] (밴드는 absolute, h30 top7)
+  const RNG: Record<string, [number, number, string, string, string]> = {
+    Default:  [0,  44, "bg/range",    "bg/range",     "text/secondary"],
+    Start:    [22, 22, "bg/today",    "border/today", "text/today"],
+    End:      [0,  22, "bg/selected", "border/today", "text/selected"],
+    Disabled: [0,  44, "bg/range",    "bg/range",     "text/disabled"],
+  };
+
+  // inner 30×30 원 + 숫자("num") 생성
+  async function makeInner(fillKey: string, strokeKey: string, textKey: string, bold: boolean): Promise<FrameNode> {
+    const inner = figma.createFrame(); inner.name = "inner"; inner.cornerRadius = 999;
+    inner.layoutMode = "HORIZONTAL"; inner.primaryAxisAlignItems = "CENTER"; inner.counterAxisAlignItems = "CENTER";
+    inner.primaryAxisSizingMode = "FIXED"; inner.counterAxisSizingMode = "FIXED"; inner.resize(30, 30);
+    inner.fills = [boundPaint(scv(maps, DP(fillKey)))];
+    inner.strokes = [boundPaint(scv(maps, DP(strokeKey)))]; inner.strokeWeight = 1; inner.strokeAlign = "INSIDE";
+    const t = await makeBoundText("1", 16, bold ? "Medium" : "Medium", scv(maps, DP(textKey)));
+    t.name = "num";
+    inner.appendChild(t);
+    return inner;
+  }
+
+  const comps: ComponentNode[] = [];
+  const variants: Record<string, ComponentNode> = {};
+
+  // outer 컴포넌트 — auto-layout(center) 44×44. Range 밴드는 absolute 자식.
+  function makeOuter(name: string): ComponentNode {
+    const comp = figma.createComponent();
+    comp.name = name;
+    comp.layoutMode = "HORIZONTAL"; comp.primaryAxisAlignItems = "CENTER"; comp.counterAxisAlignItems = "CENTER";
+    comp.primaryAxisSizingMode = "FIXED"; comp.counterAxisSizingMode = "FIXED"; comp.resize(44, 44);
+    comp.fills = []; comp.clipsContent = true;
+    return comp;
+  }
+
+  // Type=Standard
+  for (const state of ["Default", "Today", "Selected", "Disabled"]) {
+    const [f, s, txt] = STD[state];
+    const comp = makeOuter(`Type=Standard, State=${state}`);
+    comp.appendChild(await makeInner(f, s, txt, state === "Selected"));
+    comps.push(comp); variants[`Standard:${state}`] = comp;
+  }
+  // Type=Range — 밴드(absolute) + inner 원
+  for (const state of ["Default", "Start", "End", "Disabled"]) {
+    const [bx, bw, f, s, txt] = RNG[state];
+    const comp = makeOuter(`Type=Range, State=${state}`);
+    // 밴드 Rectangle — absolute(z-below inner). h30, top7(=(44-30)/2), 좌표 V2.4 실측.
+    const band = figma.createRectangle();
+    band.name = "band"; band.resize(bw, 30);
+    band.fills = [boundPaint(scv(maps, DP("bg/range")))]; band.strokes = [];
+    comp.appendChild(band);
+    // 밴드는 absolute(원 아래 z) — 좌표 V2.4 실측(top7=(44-30)/2). mock/구버전 대비 try.
+    try { (band as unknown as { layoutPositioning: string }).layoutPositioning = "ABSOLUTE"; } catch (e) { /* skip */ }
+    try { band.x = bx; band.y = 7; } catch (e) { /* skip */ }
+    comp.appendChild(await makeInner(f, s, txt, state === "End"));
+    comps.push(comp); variants[`Range:${state}`] = comp;
+  }
+
+  const set = figma.combineAsVariants(comps, figma.currentPage);
+  set.name = "Calendar Cell";
+  // ⚠️ 셀 마스터에 모드를 핀하지 않는다(setLightMode 금지) — 인스턴스가 부모(패널/스펙) 모드 상속.
+  return { set, variants };
+}
+
+// Calendar Tile — 88×56 cornerRadius4, axis State={Default,Selected,Disabled}. 라벨 layer 이름 = "label".
+// V2.4 실측(540:4209): root frame 의 fill+stroke(둘 다), selected border = color/date-picker/border/today.
+async function buildCalendarTile(maps: BuildMaps): Promise<{ set: ComponentSetNode; variants: Record<string, ComponentNode> }> {
+  // [bgKey, borderKey, textKey, sampleLabel]
+  const TILE: Record<string, [string, string, string, string]> = {
+    Default:  ["tile/bg/default",  "tile/border/default",  "text/primary",  "2022"],
+    Selected: ["tile/bg/selected", "border/today",         "text/today",    "2025"],
+    Disabled: ["tile/bg/disabled", "tile/border/disabled", "text/disabled", "2021"],
+  };
+  const comps: ComponentNode[] = [];
+  const variants: Record<string, ComponentNode> = {};
+  for (const state of ["Default", "Selected", "Disabled"]) {
+    const [bg, bd, txt, label] = TILE[state];
+    const comp = figma.createComponent();
+    comp.name = `State=${state}`;
+    comp.layoutMode = "HORIZONTAL"; comp.primaryAxisAlignItems = "CENTER"; comp.counterAxisAlignItems = "CENTER";
+    comp.primaryAxisSizingMode = "FIXED"; comp.counterAxisSizingMode = "FIXED"; comp.resize(88, 56);
+    comp.cornerRadius = 4; comp.clipsContent = true;
+    comp.fills = [boundPaint(scv(maps, DP(bg)))];
+    comp.strokes = [boundPaint(scv(maps, DP(bd)))]; comp.strokeWeight = 1; comp.strokeAlign = "INSIDE";
+    const t = await makeBoundText(label, 16, "Medium", scv(maps, DP(txt)));
+    t.name = "label";
+    comp.appendChild(t);
+    comps.push(comp); variants[state] = comp;
+  }
+  const set = figma.combineAsVariants(comps, figma.currentPage);
+  set.name = "Calendar Tile";
+  return { set, variants };
+}
+
+// lazy-build 캐시 — 소비자(Calendar/Date Picker)·레이아웃 등록기 모두 동일 인스턴스를 공유.
+let _calCell: { set: ComponentSetNode; variants: Record<string, ComponentNode> } | null = null;
+let _calTile: { set: ComponentSetNode; variants: Record<string, ComponentNode> } | null = null;
+// variant 컴포넌트 이름("Type=Standard, State=Default")에서 prop 값을 뽑는다.
+function variantProp(comp: ComponentNode, prop: string): string | null {
+  const m = comp.name.match(new RegExp(`(?:^|, )${prop}=([^,]+)`));
+  return m ? m[1].trim() : null;
+}
+// 캔버스에 이미 있는 Calendar Cell 세트를 재사용하기 위해 자식에서 variants 맵을 복원.
+//   key 형식 = `${Type}:${State}` (buildCalendarCell 과 동일).
+function reconstructCalCellVariants(set: ComponentSetNode): Record<string, ComponentNode> {
+  const variants: Record<string, ComponentNode> = {};
+  for (const ch of set.children) {
+    if (ch.type !== "COMPONENT") continue;
+    const t = variantProp(ch, "Type"), s = variantProp(ch, "State");
+    if (t && s) variants[`${t}:${s}`] = ch;
+  }
+  return variants;
+}
+// Calendar Tile 세트(축 State 만) variants 복원. key = State 값.
+function reconstructCalTileVariants(set: ComponentSetNode): Record<string, ComponentNode> {
+  const variants: Record<string, ComponentNode> = {};
+  for (const ch of set.children) {
+    if (ch.type !== "COMPONENT") continue;
+    const s = variantProp(ch, "State");
+    if (s) variants[s] = ch;
+  }
+  return variants;
+}
+async function getOrBuildCalendarCell(maps: BuildMaps): Promise<{ set: ComponentSetNode; variants: Record<string, ComponentNode> }> {
+  if (_calCell && !_calCell.set.removed) return _calCell;
+  // 재설치 보존: 캔버스에 기존 세트가 있으면 제거/재빌드하지 않고 그대로 재사용한다.
+  //   (재빌드+제거하면 skip 된 Calendar/Date Picker 인스턴스가 가리키던 옛 세트가 사라져 detach/깨짐 — Figma 자동 remap 없음.)
+  const existing = await getBuiltSet("Calendar Cell");
+  if (existing && !existing.removed && existing.children.some((c) => c.type === "COMPONENT")) {
+    _calCell = { set: existing, variants: reconstructCalCellVariants(existing) };
+  } else {
+    _calCell = await buildCalendarCell(maps);
+  }
+  BUILT_SETS["Calendar Cell"] = _calCell.set;
+  for (const [k, c] of Object.entries(_calCell.variants)) BUILT_COMPS[`CalendarCell:${k}`] = c;
+  return _calCell;
+}
+async function getOrBuildCalendarTile(maps: BuildMaps): Promise<{ set: ComponentSetNode; variants: Record<string, ComponentNode> }> {
+  if (_calTile && !_calTile.set.removed) return _calTile;
+  const existing = await getBuiltSet("Calendar Tile");
+  if (existing && !existing.removed && existing.children.some((c) => c.type === "COMPONENT")) {
+    _calTile = { set: existing, variants: reconstructCalTileVariants(existing) };
+  } else {
+    _calTile = await buildCalendarTile(maps);
+  }
+  BUILT_SETS["Calendar Tile"] = _calTile.set;
+  for (const [k, c] of Object.entries(_calTile.variants)) BUILT_COMPS[`CalendarTile:${k}`] = c;
+  return _calTile;
+}
+
+// Calendar Cell 인스턴스 — Type/State 선택 후 숫자("num") override.
+async function calCellInstance(cell: { variants: Record<string, ComponentNode> }, key: string, day: number): Promise<InstanceNode> {
+  const master = cell.variants[key] ?? cell.variants["Standard:Default"];
+  const inst = master.createInstance();
+  const t = (inst.findOne((n) => n.name === "num" && n.type === "TEXT") ?? inst.findOne((n) => n.type === "TEXT")) as TextNode | null;
+  if (t) { await figma.loadFontAsync(t.fontName as FontName); t.characters = String(day); }
+  return inst;
+}
+
+// Calendar Tile 인스턴스 — State 선택 후 라벨("label") override.
+async function calTileInstance(tile: { variants: Record<string, ComponentNode> }, state: string, label: string): Promise<InstanceNode> {
+  const master = tile.variants[state] ?? tile.variants["Default"];
+  const inst = master.createInstance();
+  const t = (inst.findOne((n) => n.name === "label" && n.type === "TEXT") ?? inst.findOne((n) => n.type === "TEXT")) as TextNode | null;
+  if (t) { await figma.loadFontAsync(t.fontName as FontName); t.characters = label; }
+  return inst;
+}
+
+// day kind → Calendar Cell variant key (Standard). other-month = V2.4 미존재 → Standard:Disabled 매핑(보고).
+function dayKindToCellKey(kind: "normal" | "other" | "today" | "selected" | "disabled"): string {
+  if (kind === "today") return "Standard:Today";
+  if (kind === "selected") return "Standard:Selected";
+  if (kind === "disabled" || kind === "other") return "Standard:Disabled";
+  return "Standard:Default";
+}
+
 /** PC 캘린더 패널 프레임 (356px, auto-layout). 모든 color/date-picker/* 변수를 시연. */
 async function buildCalendarPanel(maps: BuildMaps): Promise<FrameNode> {
   const dp = (k: string) => `color/date-picker/${k}`;
+  const calCell = await getOrBuildCalendarCell(maps); // day 그리드 = Calendar Cell 인스턴스
   const CHEV_L = `<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M10 12L6 8l4-4" stroke="#000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
   const CHEV_R = `<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M6 4l4 4-4 4" stroke="#000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
   const CW = 308 / 7; // 콘텐츠폭(356 − 좌우24) ÷ 7 = 44
@@ -2429,32 +2621,9 @@ async function buildCalendarPanel(maps: BuildMaps): Promise<FrameNode> {
     panel.appendChild(dayRow);
     for (let c = 0; c < 7; c++) {
       const g = grid[r * 7 + c];
-      // 텍스트 색 — 정본: day 는 요일 무관 text/secondary(상태색만 분기). 일/토 색은 요일 헤더만.
-      let txtKey: string;
-      if (g.kind === "other") txtKey = "text/other-month";
-      else if (g.kind === "disabled") txtKey = "text/disabled";
-      else if (g.kind === "selected") txtKey = "text/selected";
-      else if (g.kind === "today") txtKey = "text/today";
-      else txtKey = "text/secondary";
-      // day 셀(44×44 center) > inner(30×30 원) > 숫자
-      const dayCell = figma.createFrame(); dayCell.name = "day"; dayCell.fills = [];
-      dayCell.layoutMode = "HORIZONTAL"; dayCell.primaryAxisAlignItems = "CENTER"; dayCell.counterAxisAlignItems = "CENTER";
-      dayCell.primaryAxisSizingMode = "FIXED"; dayCell.counterAxisSizingMode = "FIXED"; dayCell.resize(CW, 44);
-      const inner = figma.createFrame(); inner.name = "inner"; inner.cornerRadius = 999;
-      inner.layoutMode = "HORIZONTAL"; inner.primaryAxisAlignItems = "CENTER"; inner.counterAxisAlignItems = "CENTER";
-      inner.primaryAxisSizingMode = "FIXED"; inner.counterAxisSizingMode = "FIXED"; inner.resize(30, 30);
-      if (g.kind === "selected") {
-        inner.fills = [boundPaint(scv(maps, dp("bg/selected")))];
-        inner.strokes = [boundPaint(scv(maps, dp("bg/selected")))]; inner.strokeWeight = 1; inner.strokeAlign = "INSIDE";
-      } else if (g.kind === "today") {
-        inner.fills = [boundPaint(scv(maps, dp("bg/today")))];
-        inner.strokes = [boundPaint(scv(maps, dp("border/today")))]; inner.strokeWeight = 1; inner.strokeAlign = "INSIDE";
-      } else {
-        inner.fills = [];
-      }
-      inner.appendChild(await makeBoundText(String(g.day), 16, g.kind === "selected" ? "Bold" : "Medium", scv(maps, dp(txtKey))));
-      dayCell.appendChild(inner);
-      dayRow.appendChild(dayCell);
+      // day = Calendar Cell 인스턴스(Standard). other-month = Standard:Disabled 매핑(V2.4 미존재 — 보고).
+      const inst = await calCellInstance(calCell, dayKindToCellKey(g.kind), g.day);
+      dayRow.appendChild(inst);
     }
   }
   return panel;
@@ -2465,7 +2634,9 @@ async function buildCalendarPanel(maps: BuildMaps): Promise<FrameNode> {
 // DatePicker Open 패널(buildCalendarPanel)과 별도 — 상태 전환 스펙 전용 독립 세트.
 async function buildCalendar(maps: BuildMaps, originY: number): Promise<{ set: ComponentSetNode; bottomY: number }> {
   const dp  = (k: string) => `color/date-picker/${k}`;
-  const ctl = (k: string) => `color/control/${k}`;
+  // Calendar Cell / Tile 선행 빌드(lazy) — day 그리드·연월 타일을 인스턴스로 사용.
+  const calCell = await getOrBuildCalendarCell(maps);
+  const calTile = await getOrBuildCalendarTile(maps);
   const CHEV_L = `<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M10 12L6 8l4-4" stroke="#000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
   const CHEV_R = `<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M6 4l4 4-4 4" stroke="#000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
   const PANEL_W = 356, PANEL_H = 352;
@@ -2509,17 +2680,9 @@ async function buildCalendar(maps: BuildMaps, originY: number): Promise<{ set: C
     return hdr;
   }
 
-  // 연도/월 타일 (88×56, 라이트·디스에이블드 2종)
-  async function makeYMTile(label: string, disabled: boolean): Promise<FrameNode> {
-    const tile = figma.createFrame(); tile.name = "tile";
-    tile.resize(88, 56); tile.cornerRadius = 4;
-    tile.layoutMode = "HORIZONTAL"; tile.primaryAxisAlignItems = "CENTER"; tile.counterAxisAlignItems = "CENTER";
-    tile.fills = [boundPaint(scv(maps, disabled ? ctl("bg/disabled") : ctl("bg/default")))];
-    tile.strokes = [boundPaint(scv(maps, ctl("border/default")))];
-    tile.strokeWeight = 1; tile.strokeAlign = "INSIDE";
-    tile.appendChild(await makeBoundText(label, 16, "Medium",
-      scv(maps, disabled ? "color/text/state/disabled" : "color/text/body/primary")));
-    return tile;
+  // 연도/월 타일 — Calendar Tile 인스턴스(라벨 override). disabled=Disabled, 그 외=Default.
+  async function makeYMTile(label: string, disabled: boolean): Promise<SceneNode> {
+    return calTileInstance(calTile, disabled ? "Disabled" : "Default", label);
   }
 
   // 타일 행 3개 (가로 gap=12)
@@ -2568,23 +2731,9 @@ async function buildCalendar(maps: BuildMaps, originY: number): Promise<{ set: C
     calBody.appendChild(weekRow);
     for (let c = 0; c < 7; c++) {
       const g = calGrid[r * 7 + c];
-      const txtKey = g.kind === "other" ? "text/other-month" : g.kind === "disabled" ? "text/disabled"
-        : g.kind === "selected" ? "text/selected" : g.kind === "today" ? "text/today" : "text/secondary";
-      const dayCell = figma.createFrame(); dayCell.name = "day"; dayCell.fills = [];
-      dayCell.layoutMode = "HORIZONTAL"; dayCell.primaryAxisAlignItems = "CENTER"; dayCell.counterAxisAlignItems = "CENTER";
-      dayCell.primaryAxisSizingMode = "FIXED"; dayCell.counterAxisSizingMode = "FIXED"; dayCell.resize(CW, 44);
-      const inner = figma.createFrame(); inner.name = "inner"; inner.cornerRadius = 999;
-      inner.layoutMode = "HORIZONTAL"; inner.primaryAxisAlignItems = "CENTER"; inner.counterAxisAlignItems = "CENTER";
-      inner.primaryAxisSizingMode = "FIXED"; inner.counterAxisSizingMode = "FIXED"; inner.resize(30, 30);
-      if (g.kind === "selected") {
-        inner.fills = [boundPaint(scv(maps, dp("bg/selected")))];
-        inner.strokes = [boundPaint(scv(maps, dp("bg/selected")))]; inner.strokeWeight = 1; inner.strokeAlign = "INSIDE";
-      } else if (g.kind === "today") {
-        inner.fills = [boundPaint(scv(maps, dp("bg/today")))];
-        inner.strokes = [boundPaint(scv(maps, dp("border/today")))]; inner.strokeWeight = 1; inner.strokeAlign = "INSIDE";
-      } else { inner.fills = []; }
-      inner.appendChild(await makeBoundText(String(g.day), 16, g.kind === "selected" ? "Bold" : "Medium", scv(maps, dp(txtKey))));
-      dayCell.appendChild(inner); weekRow.appendChild(dayCell);
+      // day = Calendar Cell 인스턴스(Standard). other-month = Standard:Disabled 매핑(V2.4 미존재 — 보고).
+      const inst = await calCellInstance(calCell, dayKindToCellKey(g.kind), g.day);
+      weekRow.appendChild(inst);
     }
   }
   setLightMode(dateComp, maps);
@@ -2690,6 +2839,43 @@ async function buildDatePicker(maps: BuildMaps, originY: number): Promise<{ set:
   };
   let bottomY = await decorateSetGrouped(set, opts, maps);
   try { bottomY = Math.max(bottomY, await buildGroupedSpec(opts, maps)); } catch (e) { console.warn(e); }
+  return { set, bottomY };
+}
+
+// ── Calendar Cell / Calendar Tile — 레이아웃 등록기 ───────────────────────────
+// 빌드는 lazy(Calendar/Date Picker 가 선행 호출) → 이미 만들어진 세트를 originY 로 재배치 + 스펙 데코레이트.
+// CATEGORIES Form 에서 Date Picker 뒤 위치만 결정.
+async function buildCalendarCellLayout(maps: BuildMaps, originY: number): Promise<{ set: ComponentSetNode; bottomY: number }> {
+  const { set, variants } = await getOrBuildCalendarCell(maps);
+  set.x = 0; set.y = originY;
+  // 2행(Standard·Range) × 4열(상태). Standard 상태 표기와 Range 상태 표기가 다르므로 행별 cellAt 분기.
+  const stdStates = ["Default", "Today", "Selected", "Disabled"];
+  const rngStates = ["Default", "Start", "End", "Disabled"];
+  const opts: SpecOpts = {
+    title: "Calendar Cell",
+    colHeaders: ["1", "2", "3", "4"], // 컬럼 헤더는 행별 상태가 달라 무의미 → 자리표시. 실제 상태는 variant 명에.
+    rowLabels: ["Standard", "Range"],
+    cellAt: (r, c) => r === 0 ? (variants[`Standard:${stdStates[c]}`] ?? null) : (variants[`Range:${rngStates[c]}`] ?? null),
+    lightX: SPEC_LIGHT_X, darkX: SPEC_DARK_X, originY, cellW: 80, cellH: 60, rowLabelW: 80,
+  };
+  let bottomY = await decorateSetFlat(set, opts, maps);
+  try { bottomY = Math.max(bottomY, await buildSpec(opts, maps)); } catch (e) { console.warn(e); }
+  return { set, bottomY };
+}
+
+async function buildCalendarTileLayout(maps: BuildMaps, originY: number): Promise<{ set: ComponentSetNode; bottomY: number }> {
+  const { set, variants } = await getOrBuildCalendarTile(maps);
+  set.x = 0; set.y = originY;
+  const states = ["Default", "Selected", "Disabled"];
+  const opts: SpecOpts = {
+    title: "Calendar Tile",
+    colHeaders: states,
+    rowLabels: [""],
+    cellAt: (_r, c) => variants[states[c]] ?? null,
+    lightX: SPEC_LIGHT_X, darkX: SPEC_DARK_X, originY, cellW: 120, cellH: 72,
+  };
+  let bottomY = await decorateSetFlat(set, opts, maps);
+  try { bottomY = Math.max(bottomY, await buildSpec(opts, maps)); } catch (e) { console.warn(e); }
   return { set, bottomY };
 }
 
@@ -3238,6 +3424,8 @@ export async function buildAllComponents(
     "Dropdown":             (oy) => buildDropdown(maps, oy),
     "Calendar":             (oy) => buildCalendar(maps, oy),
     "Date Picker":          (oy) => buildDatePicker(maps, oy),
+    "Calendar Cell":        (oy) => buildCalendarCellLayout(maps, oy),
+    "Calendar Tile":        (oy) => buildCalendarTileLayout(maps, oy),
     "Time Picker":          (oy) => buildTimePicker(maps, oy),
     "Time Picker Dropdown": (oy) => buildTimePickerDropdown(maps, oy),
     "Table Cell":           (oy) => buildTableCell(maps, oy),
@@ -3264,7 +3452,7 @@ export async function buildAllComponents(
     { name: "Platform",   members: ["Platform/StatusBar", "Platform/NavBar", "Platform/LoginGNB", "Platform/WebTabBar", "C/IMG/Logo/Samsung_30", "Footer"] },
     // Form 은 폭이 커서 맨 마지막에 빌드(좌측 스택 중간 빈칸 방지) 후 우측 별도 컬럼으로 이동.
     // 의존관계 순서: Dropdown List → Dropdown → Select Box / Time Picker Dropdown → Time Picker
-    { name: "Form",       members: ["Input", "Search Input", "Text Area", "Dropdown List", "Dropdown", "Select Box", "Calendar", "Date Picker", "Time Picker Dropdown", "Time Picker"] },
+    { name: "Form",       members: ["Input", "Search Input", "Text Area", "Dropdown List", "Dropdown", "Select Box", "Calendar", "Date Picker", "Calendar Cell", "Calendar Tile", "Time Picker Dropdown", "Time Picker"] },
     // Table 은 Checkbox(Selection)·Pagination(Navigation)·SelectBox(Form) 인스턴스를 재사용하므로
     // 이 세 카테고리가 모두 빌드된 후 마지막에 배치 (BUILT_COMPS 확보 보장).
     { name: "Table",      members: ["Table Cell", "Table"] },
@@ -3282,7 +3470,10 @@ export async function buildAllComponents(
       const run = runners[name];
       if (!run) continue;
       done++;
-      if (existing.has(name)) {
+      // Calendar Cell/Tile 은 Calendar·Date Picker 가 매 실행마다 lazy 로 새로 빌드하는 의존 세트라
+      // 건너뛰면 옛 위치에 떠버린다 → 항상 layout 등록기를 돌려 캐시 세트를 재배치·데코레이트.
+      const isDepSet = name === "Calendar Cell" || name === "Calendar Tile";
+      if (existing.has(name) && !isDepSet) {
         const rb = regionBottom(name);
         if (rb != null) y = rb + 140;   // 기존 항목 실제 위치만큼 전진(슬롯 정렬 유지)
         skipped.push(name);
