@@ -3387,7 +3387,7 @@ async function buildSamsungLogoComponent(maps: BuildMaps, originY: number): Prom
 async function buildCI(maps: BuildMaps, originY: number): Promise<{ set: ComponentSetNode; bottomY: number }> {
   const S1_COLORS: { color: string; varKey: string }[] = [
     { color: "White", varKey: "color/icon/white" },
-    { color: "Blue",  varKey: "brand/ci"         },
+    { color: "Blue",  varKey: "color/icon/brand-ci" },
     { color: "Dark",  varKey: "color/icon/gray"  },
   ];
   const SAM_HASHES: { color: string; hash: string }[] = [

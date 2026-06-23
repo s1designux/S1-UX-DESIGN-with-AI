@@ -1,9 +1,9 @@
 {
   "sourceFile": "plugins/figma-vars-installer/src/build-components.ts",
-  "sourceHash": "sha256:e852b88dd99849387773e7ac6d41519c20571ecbd93ef06f9de19134cfd421c7",
+  "sourceHash": "sha256:546c377247a8829053908a6f9773e77f5944181d2d5a2e18f40ded9df83d49e0",
   "verifiedBy": "orchestrator",
   "verdict": "pass",
   "changeType": "mechanical",
-  "verifiedAt": "2026-06-23T07:30:56.677Z",
-  "notes": "다크 스펙 frameEmit: 셀의 중첩 인스턴스에도 Dark 모드 강제(컴포넌트단위 Light 고착으로 Table/GNB 다크스펙 라이트잔류 → 해소). 렌더 검증(Table 스샷·전 다크스펙 light→0). 구조·키·토큰 불변"
+  "verifiedAt": "2026-06-23T07:47:31.169Z",
+  "notes": "CI 설치 오류 수정: brand/ci(Foundation)를 scv(Semantic)로 조회해 '변수 누락' 크래시 → Semantic 별칭 color/icon/brand-ci(=brand/ci) 신설 + CI Blue varKey 교체. keycheck/tsc 통과"
 }

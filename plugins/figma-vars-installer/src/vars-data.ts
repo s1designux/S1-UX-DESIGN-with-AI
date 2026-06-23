@@ -515,6 +515,7 @@ export const SEMANTIC_COLOR: Record<string, SemanticColorEntry> = {
 
   // ── icon ────────────────────────────────
   "color/icon/blue": { light: "blue/400", dark: "blue-dark/300" },
+  "color/icon/brand-ci": { light: "brand/ci", dark: "brand/ci" },
   "color/icon/gray": { light: "gray/500", dark: "gray-dark/700" },
   "color/icon/gray-dark": { light: "gray/800", dark: "gray-dark/800" },
   "color/icon/gray-light": { light: "gray/300", dark: "gray-dark/400" },
