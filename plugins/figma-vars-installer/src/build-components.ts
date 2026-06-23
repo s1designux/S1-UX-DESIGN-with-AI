@@ -311,7 +311,12 @@ function frameEmit(frame: FrameNode, maps: BuildMaps, modeId: string): LayoutEmi
   return {
     text: async (s, x, y, w, al, col, fs, st) => { frame.appendChild(await makeLabel(s, fs, st, x, y, w, al, col)); },
     band: (x, y, w, h, col) => { const b = figma.createRectangle(); b.x = x; b.y = y; b.resize(w, h); b.cornerRadius = 4; b.fills = [{ type: "SOLID", color: col }]; frame.appendChild(b); },
-    cell: (comp, x, y) => { const inst = comp.createInstance(); frame.appendChild(inst); inst.x = x; inst.y = y; setMode(inst, maps, modeId); },
+    cell: (comp, x, y) => {
+      const inst = comp.createInstance(); frame.appendChild(inst); inst.x = x; inst.y = y; setMode(inst, maps, modeId);
+      // 중첩 인스턴스(예: Table 푸터의 Checkbox/Pagination/SelectBox)가 컴포넌트 단위 Light 고착으로
+      // 부모 다크를 무시하고 라이트로 남는 것 방지 — 다크 스펙에서는 모든 하위 인스턴스에도 동일 모드 강제.
+      try { (inst.findAll((n) => n.type === "INSTANCE") as SceneNode[]).forEach((d) => setMode(d, maps, modeId)); } catch (e) { /* */ }
+    },
   };
 }
 
