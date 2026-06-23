@@ -210,7 +210,7 @@
         ? '    <button class="icon-action-btn" data-action="copy-png-path" data-id="' + escHtml(icon.id) + '">URL 복사</button>\n'
         : '    <button class="icon-action-btn" data-action="copy-svg" data-id="' + escHtml(icon.id) + '" ' + (hasSvg ? '' : 'disabled') + '>SVG 복사</button>\n'
       ) +
-      '    <button class="icon-action-btn" data-action="copy-name" data-id="' + escHtml(icon.id) + '">이름 복사</button>\n' +
+      '    <button class="icon-action-btn" data-action="copy-filename" data-id="' + escHtml(icon.id) + '" title="프로젝트 폴더용 파일명 (URL 끝부분과 동일)">파일명 복사</button>\n' +
       '  </div>\n' +
       '</div>';
   }
@@ -252,8 +252,14 @@
           const svg = icon.variants[variant] && icon.variants[variant].svg || '';
           if (!svg) return;
           copyToClipboard(svg, btn);
-        } else if (action === 'copy-name') {
-          copyToClipboard(icon.name, btn);
+        } else if (action === 'copy-filename') {
+          // 실제 파일명(현재 variant) 복사 — URL 끝부분·ZIP 안 파일과 동일
+          const variant = cardVariants[id] || 'line';
+          const localPng = icon.variants[variant] && icon.variants[variant].png || '';
+          const fileName = localPng
+            ? localPng.split('/').pop()
+            : (icon.id + '_' + variant + '.png');
+          copyToClipboard(fileName, btn);
         }
       });
     });
