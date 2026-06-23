@@ -2853,7 +2853,8 @@ async function buildCalendarCellLayout(maps: BuildMaps, originY: number): Promis
   const rngStates = ["Default", "Start", "End", "Disabled"];
   const opts: SpecOpts = {
     title: "Calendar Cell",
-    colHeaders: ["1", "2", "3", "4"], // 컬럼 헤더는 행별 상태가 달라 무의미 → 자리표시. 실제 상태는 variant 명에.
+    // 열 헤더 = 상태 설명. Standard/Range 행이 col별로 다른 상태라 둘 다 표기(rowLabels로 행 구분).
+    colHeaders: ["Default", "Today / Start", "Selected / End", "Disabled"],
     rowLabels: ["Standard", "Range"],
     cellAt: (r, c) => r === 0 ? (variants[`Standard:${stdStates[c]}`] ?? null) : (variants[`Range:${rngStates[c]}`] ?? null),
     lightX: SPEC_LIGHT_X, darkX: SPEC_DARK_X, originY, cellW: 80, cellH: 60, rowLabelW: 80,
@@ -3208,7 +3209,21 @@ async function buildLoginGNB(maps: BuildMaps, originY: number): Promise<{ set: C
   left.counterAxisAlignItems = "CENTER"; left.itemSpacing = 11; left.fills = [];
   comp.appendChild(left);
   left.layoutSizingHorizontal = "HUG"; left.layoutSizingVertical = "HUG";
-  const logo = await getSamsungLogoInstance(24);
+  // CI 컴포넌트 인스턴스 (Brand=삼성, Color=Dark) — 없으면 레거시 폴백
+  let logo: SceneNode;
+  const ciSet = figma.currentPage.findOne(
+    (n) => n.type === "COMPONENT_SET" && n.name === "CI"
+  ) as ComponentSetNode | null;
+  const samDark = ciSet?.children.find(
+    (c): c is ComponentNode => c.type === "COMPONENT" && c.name.includes("Brand=삼성") && c.name.includes("Color=Dark")
+  );
+  if (samDark) {
+    const inst = samDark.createInstance();
+    inst.resize(Math.round(samDark.width * (24 / samDark.height)), 24);
+    logo = inst;
+  } else {
+    logo = await getSamsungLogoInstance(24);
+  }
   logo.name = "samsung-logo";
   left.appendChild(logo);
   const svcText = await makeBoundText("[서비스명]", 16, "Bold", scv(maps, "color/text/title/primary"));
@@ -3360,6 +3375,56 @@ async function buildSamsungLogoComponent(maps: BuildMaps, originY: number): Prom
   return { set, bottomY: originY + sh };
 }
 
+// ── CI (Brand×Color 로고 변형세트) ────────────────────────────────────────────
+// 에스원 3종: S1_LOGO_SVG 벡터 + Variable 색 바인딩(White/Blue/Dark)
+// 삼성 3종: 이미지 fill(imageHash — V3.0 TEST 파일 내장, 타 파일 미지원)
+// 크기: 에스원=42×16, 삼성=134×36 (Brand별 각자 크기 — 사용자 결정 2026-06-23)
+async function buildCI(maps: BuildMaps, originY: number): Promise<{ set: ComponentSetNode; bottomY: number }> {
+  const S1_COLORS: { color: string; varKey: string }[] = [
+    { color: "White", varKey: "color/icon/white" },
+    { color: "Blue",  varKey: "brand/ci"         },
+    { color: "Dark",  varKey: "color/icon/gray"  },
+  ];
+  const SAM_HASHES: { color: string; hash: string }[] = [
+    { color: "White", hash: "5ef070ce43a101a072964c656c0e666fe81e4f78" },
+    { color: "Blue",  hash: "8de26dc1976bd0a64ea5b7207b6bf6d9e0396053" },
+    { color: "Dark",  hash: "100a4d3fdd0a5a9304c8251792f2d96089ac458a" },
+  ];
+
+  const s1Comps: ComponentNode[] = [];
+  for (const { color, varKey } of S1_COLORS) {
+    const comp = figma.createComponent();
+    comp.name = `Brand=에스원, Color=${color}`;
+    comp.resize(42, 16); comp.fills = [];
+    const logo = figma.createNodeFromSvg(S1_LOGO_SVG); // icon-vector-allow: CI 브랜드 워드마크 벡터 자산
+    logo.name = "logo";
+    rebindIconColor(logo, scv(maps, varKey));
+    comp.appendChild(logo);
+    setLightMode(comp, maps);
+    s1Comps.push(comp);
+  }
+
+  const samComps: ComponentNode[] = [];
+  for (const { color, hash } of SAM_HASHES) {
+    const comp = figma.createComponent();
+    comp.name = `Brand=삼성, Color=${color}`;
+    comp.resize(134, 36); comp.fills = [];
+    const rect = figma.createRectangle();
+    rect.name = `Samsung_Orig_Wordmark_${color.toUpperCase()}_RGB`;
+    rect.resize(134, 36);
+    rect.fills = [{ type: "IMAGE", scaleMode: "FILL", imageHash: hash }]; // icon-vector-allow: 삼성 워드마크 이미지 에셋
+    comp.appendChild(rect);
+    setLightMode(comp, maps);
+    samComps.push(comp);
+  }
+
+  const set = figma.combineAsVariants([...s1Comps, ...samComps], figma.currentPage);
+  set.name = "CI";
+  set.x = 0; set.y = originY;
+  const sh = (typeof set.height === "number" && set.height > 0) ? set.height : 84;
+  return { set, bottomY: originY + sh };
+}
+
 // ── 멀티 컴포넌트 오케스트레이터 ──────────────────────────────────────────────
 // skip-if-exists: 같은 이름의 COMPONENT_SET 이 현재 페이지에 이미 있으면 보존(건너뜀), 없는 것만 추가.
 //   ★ 재생성(없어서 추가)되는 세트는 "원래 레이아웃 슬롯"에 놓는다(맨 아래로 몰지 않음).
@@ -3392,6 +3457,8 @@ export async function buildAllComponents(
     // 리네임 backward-compat: Shell/ → Platform/ (재설치 시 캔버스의 옛 이름 세트 자동 정리)
     if (p === "Platform/StatusBar") base.push("Shell/StatusBar");
     if (p === "Platform/NavBar") base.push("Shell/NavBar");
+    // CI backward-compat: 구 Samsung_30 세트 자동 정리
+    if (p === "CI") base.push("C/IMG/Logo/Samsung_30");
     return base;
   };
   const regionBottom = (p: string): number | null => {
@@ -3439,7 +3506,7 @@ export async function buildAllComponents(
     "Platform/NavBar":      (oy) => buildNavBar(maps, oy),
     "Platform/LoginGNB":    (oy) => buildLoginGNB(maps, oy),
     "Platform/WebTabBar":   (oy) => buildWebTabBar(maps, oy),
-    "C/IMG/Logo/Samsung_30": (oy) => buildSamsungLogoComponent(maps, oy),
+    "CI":                    (oy) => buildCI(maps, oy),
     "Footer":               (oy) => buildFooter(maps, oy),
   };
 
@@ -3449,10 +3516,16 @@ export async function buildAllComponents(
     { name: "Actions",    members: ["Button"] },
     { name: "Selection",  members: ["Checkbox", "Radio", "Toggle", "Chip", "Filter Chip"] },
     { name: "Navigation", members: ["Line Tab", "GNB Utility Icon", "Language Icon", "GNB", "Pagination"] },
-    { name: "Platform",   members: ["Platform/StatusBar", "Platform/NavBar", "Platform/LoginGNB", "Platform/WebTabBar", "C/IMG/Logo/Samsung_30", "Footer"] },
-    // Form 은 폭이 커서 맨 마지막에 빌드(좌측 스택 중간 빈칸 방지) 후 우측 별도 컬럼으로 이동.
-    // 의존관계 순서: Dropdown List → Dropdown → Select Box / Time Picker Dropdown → Time Picker
-    { name: "Form",       members: ["Input", "Search Input", "Text Area", "Dropdown List", "Dropdown", "Select Box", "Calendar", "Date Picker", "Calendar Cell", "Calendar Tile", "Time Picker Dropdown", "Time Picker"] },
+    { name: "Platform",   members: ["Platform/StatusBar", "Platform/NavBar", "CI", "Platform/LoginGNB", "Platform/WebTabBar", "Footer"] },
+    // Form 계열은 폭이 커서 좌측 스택 뒤에 빌드(좌측 스택 중간 빈칸 방지) 후 우측 별도 컬럼으로 이동.
+    // Phase A: 옛 단일 "Form" 을 3개 섹션으로 영구 분할(리네임 없음 — 컴포넌트명·set.name·토큰 불변).
+    //   배치 순서 = Core(원자) 먼저 → Pattern(조립) 나중. lazy-build 가 의존 세트를 보장하므로 멤버 순서도 Core 먼저.
+    //   Form          : 순수 입력 컨트롤 (의존: Dropdown List → Dropdown → Select Box)
+    //   Date Picker   : 날짜 계열 (Calendar Cell/Tile = Core → Calendar/Date Picker = Pattern)
+    //   Time Picker   : 시간 계열 (Time Picker Cell/Dropdown = Core → Time Picker = Pattern)
+    { name: "Form",        members: ["Input", "Search Input", "Text Area", "Dropdown List", "Dropdown", "Select Box"] },
+    { name: "Date Picker", members: ["Calendar Cell", "Calendar Tile", "Calendar", "Date Picker"] },
+    { name: "Time Picker", members: ["Time Picker Cell", "Time Picker Dropdown", "Time Picker"] },
     // Table 은 Checkbox(Selection)·Pagination(Navigation)·SelectBox(Form) 인스턴스를 재사용하므로
     // 이 세 카테고리가 모두 빌드된 후 마지막에 배치 (BUILT_COMPS 확보 보장).
     { name: "Table",      members: ["Table Cell", "Table"] },
@@ -3492,10 +3565,58 @@ export async function buildAllComponents(
     y += SECTION_GAP;
   }
 
-  // Form 섹션(폭 큼)을 좌측 세로 스택에서 빼내 우측 별도 컬럼(상단 정렬)으로 통째로 이동.
+  // Form 계열 3섹션(폭 큼)을 좌측 세로 스택에서 빼내 우측 별도 컬럼(상단 정렬)에 세로로 쌓는다.
+  // 순서: Form(y=0) → Date Picker → Time Picker. 각 섹션의 실제 높이를 읽어 다음 섹션 y 를 누적(+간격).
+  // mock(키체크) 환경은 createSection/relocate no-op → 가드로 통과.
   try {
-    const secs = figma.currentPage.findAll((n) => n.type === "SECTION" && n.name === "Form");
-    if (Array.isArray(secs) && secs.length) relocateSection(secs[0] as SectionNode, FORM_COLUMN_X, 0);
+    const FORM_STACK = ["Form", "Date Picker", "Time Picker"];
+    const FORM_SECTION_GAP = 200; // 우측 컬럼 섹션 사이 세로 간격
+    let stackY = 0;
+    for (const secName of FORM_STACK) {
+      const secs = figma.currentPage.findAll((n) => n.type === "SECTION" && n.name === secName);
+      if (!Array.isArray(secs) || !secs.length) continue;
+      const sec = secs[0] as SectionNode;
+      relocateSection(sec, FORM_COLUMN_X, stackY);
+      // 이동 후 실제 높이를 읽어 다음 섹션 시작 y 누적(높이 못 읽으면 0 으로 간주해 겹침만 방지).
+      let h = 0;
+      try {
+        const b = sec.absoluteBoundingBox;
+        if (b && typeof b.height === "number") h = b.height;
+        else if (typeof sec.height === "number") h = sec.height;
+      } catch (e) { /* */ }
+      stackY += h + FORM_SECTION_GAP;
+    }
+  } catch (e) { /* mock/no-page */ }
+
+  // 좌측 레이아웃 보정 (mock 은 no-op):
+  //  - Platform(StatusBar·NavBar 등 기본 틀)은 "맨 앞" → Actions 왼편 별도 컬럼(상단)으로.
+  //  - Table 은 의존(SelectBox/Pagination/Checkbox) 때문에 거대한 Form 계열 뒤에 빌드돼 좌측에 고립 →
+  //    Platform 이 빠진 중앙 컬럼 말단(Navigation 바로 아래)으로 끌어올림. (의존 빌드순서는 유지, 배치만 보정.)
+  try {
+    const findSec = (nm: string): SectionNode | null => {
+      const a = figma.currentPage.findAll((n) => n.type === "SECTION" && n.name === nm);
+      return Array.isArray(a) && a.length ? (a[0] as SectionNode) : null;
+    };
+    const bottomOf = (s: SectionNode): number => {
+      try { const b = s.absoluteBoundingBox; if (b && typeof b.y === "number" && typeof b.height === "number") return b.y + b.height; } catch (e) { /* */ }
+      return (typeof s.y === "number" ? s.y : 0) + (typeof s.height === "number" ? s.height : 0);
+    };
+    const widthOf = (s: SectionNode): number => {
+      try { const b = s.absoluteBoundingBox; if (b && typeof b.width === "number") return b.width; } catch (e) { /* */ }
+      return typeof s.width === "number" ? s.width : 0;
+    };
+    const act = findSec("Actions"), plat = findSec("Platform"), nav = findSec("Navigation"), table = findSec("Table");
+    // Platform → 맨 앞: Actions 왼편 별도 컬럼, 상단 정렬
+    if (plat && act) {
+      const ax = typeof act.x === "number" ? act.x : 0;
+      const ay = typeof act.y === "number" ? act.y : 0;
+      relocateSection(plat, ax - SECTION_GAP - widthOf(plat), ay);
+    }
+    // Table → Navigation 바로 아래(중앙 컬럼 말단)
+    if (nav && table) {
+      const tx = typeof table.x === "number" ? table.x : 0;
+      relocateSection(table, tx, bottomOf(nav) + SECTION_GAP);
+    }
   } catch (e) { /* mock/no-page */ }
 
   if (onProgress) onProgress(`완료 — 추가 ${added.length}개 · 기존 보존 ${skipped.length}개`, 100);

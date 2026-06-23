@@ -1,9 +1,9 @@
 {
   "sourceFile": "plugins/figma-vars-installer/src/build-components.ts",
-  "sourceHash": "sha256:bcb324f06eb0a5c7ce95d7a75a837a41633aed5570a5b7aa02bd594ce2a6bcd6",
+  "sourceHash": "sha256:e34332b7ddd8d3d354eef05cef12110efe3152adf63146decbcddef8e8bba6a8",
   "verifiedBy": "component-verifier",
   "verdict": "pass",
-  "changeType": "structural",
-  "verifiedAt": "2026-06-23T02:17:00.772Z",
-  "notes": "Calendar Cell/Tile 컴포넌트화 + Calendar/DatePicker 인스턴스 사용 + Date Picker 뒤 배치 + 재설치 시 기존 세트 재사용(detach 방지)"
+  "changeType": "buildLoginGNB CI 인스턴스 교체 + CATEGORIES 순서 조정(CI를 LoginGNB 앞으로) + buildCI 6변형세트 신설 + Form 섹션 3분할 + 좌측 레이아웃 보정",
+  "verifiedAt": "2026-06-23T05:18:08.762Z",
+  "notes": ""
 }

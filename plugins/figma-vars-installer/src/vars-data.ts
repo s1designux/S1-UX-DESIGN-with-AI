@@ -553,7 +553,7 @@ export const SEMANTIC_COLOR: Record<string, SemanticColorEntry> = {
   "color/date-picker/border/today":     { light: "blue/400",   dark: "blue-dark/300" },
   "color/date-picker/text/primary":     { light: "gray/900",   dark: "gray-dark/900" },
   "color/date-picker/text/secondary":   { light: "gray/800",   dark: "gray-dark/800" },
-  "color/date-picker/text/disabled":    { light: "gray/300",   dark: "gray-dark/400" },
+  "color/date-picker/text/disabled":    { light: "gray/300",   dark: "gray-dark/500" },
   "color/date-picker/text/other-month": { light: "gray/300",   dark: "gray-dark/400" },
   "color/date-picker/text/sunday":      { light: "red/400",    dark: "red-dark/350" },
   "color/date-picker/text/saturday":    { light: "blue/400",   dark: "blue-dark/300" },
