@@ -4,8 +4,9 @@
 > 원본: Figma `semantic` Variable Collection
 > 업데이트: 2026-06-23 — Variables(vars-data.ts) 기준 정합:
 > - **그룹 A 23종 제거** (Variables 미존재 generic): color-action·color-status·generic color-border·bg-home·control/form-control-border-hover.
-> - **그룹 B 26종 개명** (이름만 바뀐 것): text→title/body/state · icon 역할명→색상명(+brand-ci) · color-data→color-table · navigation-bg→navigation-background. text-readonly 폐지(form-control 전용), text-danger·text-state-error→text-state-caution 통합(결정 #2·#3).
+> - **그룹 B 개명** (이름만 바뀐 것): text→title/body/state · icon 역할명→색상명 · color-data→color-table. text-readonly 폐지(form-control 전용), text-danger·text-state-error→text-state-caution 통합(결정 #2·#3).
 > - 끊긴 참조는 전부 실제 Variables Foundation 값으로 재연결. §10 하드코딩 CSS 덤프는 정본(tokens.css) 포인터로 교체(드리프트원 제거).
+> - **네이밍 기준 교정(2026-06-23):** 레거시 수입 잔재를 기준에 맞춤 — `navigation/background`→`navigation/bg`(45개 -bg 관례 통일) · `table/border/light`→`table/border/default` · `table/border/emphasis` 제거(고아·미사용) · `icon/brand-ci` 별칭 제거 예정(빌더 Foundation 직참조로 전환).
 
 > **📋 참고 문서** — 이 파일은 인간 가독 참고 문서입니다.  
 > 기준 데이터는 `registry/tokens/` JSON 파일입니다. 충돌 시 **registry가 우선**합니다.  
@@ -202,8 +203,8 @@ color-overlay   → 딤·오버레이
 | `--color-icon-blue` | `#1D6CEB` | color/blue/400 | `#3070D8` | blue-dark/300 | 액션·링크 아이콘 (구 `-accent`) |
 | `--color-icon-white` | `#FFFFFF` | color/base/white | `#FFFFFF` | color/base/white | 색상 배경 위 아이콘 (구 `-inverse`) |
 | `--color-icon-red` | `#FF4554` | color/red/300 | `#F06070` | red-dark/350 | 에러·위험 아이콘 (구 `-danger`) |
-| `--color-icon-brand-ci` | `#004097` | color/brand-ci | `#004097` | color/brand-ci | CI 로고 아이콘 (신설) |
 
+> ~~`--color-icon-brand-ci`~~ 제거(2026-06-23) — CI 로고색은 Foundation `brand/ci`를 빌더가 **직접 바인딩**한다(빌더 우회용 Semantic 별칭 폐지).
 > 🤔 **참고:** 색상명 방식(icon-blue)은 역할 기반 명명 원칙과는 거리가 있다. 현 Variables 기준으로 문서를 맞췄으며, 역할명 복원은 별도 결정 사항.
 
 ---
@@ -254,12 +255,11 @@ color-overlay   → 딤·오버레이
 | `--color-table-cell-hover` | `#E2F1FF` | color/blue/50 | `#24252C` | gray-dark/200 | data-state-hover |
 | `--color-table-cell-selected` | `#C8E4FF` | color/blue/100 | `#112B55` | blue-dark/100 | data-state-selected |
 | `--color-table-header-bg` | `#F5F5F5` | color/gray/50 | `#24252C` | gray-dark/200 | data-header-bg |
-| `--color-table-border-light` | `#E9E9E9` | color/gray/100 | `#2E2F38` | gray-dark/300 | data-border-light |
+| `--color-table-border-default` | `#E9E9E9` | color/gray/100 | `#2E2F38` | gray-dark/300 | data-border-light → **default** (2026-06-23) |
 | `--color-table-border-strong` | `#C4C4C4` | color/gray/300 | `#35363F` | gray-dark/400 | data-border-strong |
-| `--color-table-border-emphasis` | `#353535` | color/gray/800 | `#8A8C96` | gray-dark/700 | (신설 — 외곽 강선) |
 
 > HD-Table-2(2026-06-09): selected ≠ hover. Light hover=blue-50 / selected=blue-100. Dark hover=gray-dark-200(회색) / selected=blue-dark-100(파랑)으로 구분.
-> 외곽선=`border-emphasis`(gray-800) · 헤더 언더라인=`border-strong`(gray-300) · 셀선=`border-light`(gray-100) 3종 구분.
+> 🧹 **보더 2단계로 정리(2026-06-23):** 셀선=`border-default`(gray-100) · 헤더 언더라인=`border-strong`(gray-300). 레거시가 셀선을 `light`로 수입한 것을 기준명 `default`로 교정. ~~`border-emphasis`~~(gray-800)는 **어떤 컴포넌트도 안 쓰던 고아 토큰**이라 제거(애초 기준=default/strong 2단계).
 
 ---
 
@@ -271,7 +271,7 @@ color-overlay   → 딤·오버레이
 
 | CSS Variable | Light 참조 | Light Hex | Dark 참조 | Dark Hex | 용도 |
 |---|---|---|---|---|---|
-| `--color-navigation-background` | `--color-surface-default` | `#FFFFFF` | `--color-surface-default` (상속) | `#1C1D23` | 라인탭 컨테이너 배경 (구 `-bg`) |
+| `--color-navigation-bg` | `--color-surface-default` | `#FFFFFF` | `--color-surface-default` (상속) | `#1C1D23` | 라인탭 컨테이너 배경 (레거시 `background`→기준 `bg` 교정 2026-06-23) |
 | `--color-navigation-label-default` | `--color-gray-600` | `#555555` | `--color-gray-dark-600` | `#55575F` (candidate) | 미선택 라벨 텍스트 |
 | `--color-navigation-label-selected` | `--color-blue-400` | `#1D6CEB` | `--color-blue-dark-300` | `#3070D8` (candidate) | 선택 라벨 텍스트 |
 | `--color-navigation-indicator-default` | `--color-gray-200` | `#D9D9D9` | `--color-gray-dark-300` | `#2E2F38` (candidate) | 탭 하단 구분선 |

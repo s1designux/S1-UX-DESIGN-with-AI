@@ -463,6 +463,7 @@ async function runInstall(sel: InstallSelection) {
       const compResult = await buildAllComponents(
         {
           semanticColor: semanticColorMap,
+          foundationColor: foundationColorMap,
           foundationNumber: foundationNumberMap,
           textStyles: textStyleMap,
           semanticColorCollectionId: scc.id,

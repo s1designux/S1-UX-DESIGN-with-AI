@@ -19,6 +19,7 @@
 
 export interface BuildMaps {
   semanticColor: Record<string, Variable>;   // "color/button/bg/primary--default" 등
+  foundationColor: Record<string, Variable>;  // "brand/ci","brand/blue" 등 — Foundation 색 직접 바인딩용(CI 로고)
   foundationNumber: Record<string, Variable>; // "spacing/16","spacing/8","radius/4","border-width/1"
   textStyles: Record<string, TextStyle>;      // "body/14M","body/16M" 등
   semanticColorCollectionId: string;          // Semantic Color V2 컬렉션 id (Appearance 모드 연결)
@@ -1392,9 +1393,9 @@ async function buildLineTab(maps: BuildMaps, originY: number): Promise<{ set: Co
 // ── Table Cell — color/table/*(bg·border) + color/text/body/*(텍스트) ─────────
 async function buildTableCell(maps: BuildMaps, originY: number): Promise<{ set: ComponentSetNode; bottomY: number }> {
   const variants = [
-    { type: "Cell",   state: "Default",  bg: "color/table/cell/default",  border: "color/table/border/light",  text: "color/text/body/primary",   head: "Cell · Default" },
-    { type: "Cell",   state: "Hover",    bg: "color/table/cell/hover",    border: "color/table/border/light",  text: "color/text/body/primary",   head: "Cell · Hover" },
-    { type: "Cell",   state: "Selected", bg: "color/table/cell/selected", border: "color/table/border/light",  text: "color/text/body/primary",   head: "Cell · Selected" },
+    { type: "Cell",   state: "Default",  bg: "color/table/cell/default",  border: "color/table/border/default",  text: "color/text/body/primary",   head: "Cell · Default" },
+    { type: "Cell",   state: "Hover",    bg: "color/table/cell/hover",    border: "color/table/border/default",  text: "color/text/body/primary",   head: "Cell · Hover" },
+    { type: "Cell",   state: "Selected", bg: "color/table/cell/selected", border: "color/table/border/default",  text: "color/text/body/primary",   head: "Cell · Selected" },
     { type: "Header", state: "Default",  bg: "color/table/header/bg",      border: "color/table/border/strong", text: "color/text/body/secondary", head: "Header" },
   ];
   const sizes = [
@@ -1479,7 +1480,7 @@ async function buildTable(maps: BuildMaps, originY: number): Promise<{ set: Comp
     }
     // 하단 보더
     const bdr = figma.createRectangle(); bdr.resize(W, 1);
-    bdr.fills = [boundPaint(scv(maps, isHeader ? "color/table/border/strong" : "color/table/border/light"))];
+    bdr.fills = [boundPaint(scv(maps, isHeader ? "color/table/border/strong" : "color/table/border/default"))];
     row.appendChild(bdr); bdr.x = 0; bdr.y = h - 1;
     return row;
   }
@@ -1490,7 +1491,7 @@ async function buildTable(maps: BuildMaps, originY: number): Promise<{ set: Comp
     footer.fills = [boundPaint(scv(maps, "color/table/cell/default"))];
     // 상단 구분선
     const topLine = figma.createRectangle(); topLine.resize(W, 1);
-    topLine.fills = [boundPaint(scv(maps, "color/table/border/light"))];
+    topLine.fills = [boundPaint(scv(maps, "color/table/border/default"))];
     footer.appendChild(topLine); topLine.x = 0; topLine.y = 0;
 
     // ── 페이지네이션: Pagination 컴포넌트 인스턴스 재사용 ──
@@ -2272,7 +2273,7 @@ async function buildGNB(maps: BuildMaps, originY: number): Promise<{ set: Compon
       comp.counterAxisAlignItems = "CENTER";
       comp.paddingLeft = padL; comp.paddingRight = padR; comp.paddingTop = 0; comp.paddingBottom = 0;
       comp.itemSpacing = 0;
-      comp.fills = [boundPaint(scv(maps, navc("background")))];
+      comp.fills = [boundPaint(scv(maps, navc("bg")))];
       comp.clipsContent = true;
       comp.resize(BAR_W, h);
 
@@ -2917,7 +2918,7 @@ async function buildShellUrlBar(maps: BuildMaps): Promise<FrameNode> {
 }
 
 // ── Footer (PC + Mobile 플랫폼 세트) ─────────────────────────────────────────
-// PC: 1920×116, HORIZONTAL, bg=color/navigation/background, 상단 테두리 1px=color/line/gray/subtle
+// PC: 1920×116, HORIZONTAL, bg=color/navigation/bg, 상단 테두리 1px=color/line/gray/subtle
 //     padding L/R=320px(raw·Foundation에 spacing/320 없음), T/B=spacing/28 바인딩
 //     content: [좌] links(10px)+bizinfo+copyright / [우] S1 로고(C/IMG/Logo/S1_g 벡터)
 // Mobile: 360×(hug), VERTICAL centered, no bg/border, itemSpacing=spacing/4 바인딩
@@ -2943,7 +2944,7 @@ async function buildFooter(maps: BuildMaps, originY: number): Promise<{ set: Com
   const sp28 = requireVar(maps.foundationNumber, "spacing/28", "Foundation Number");
   pc.setBoundVariable("paddingTop", sp28);
   pc.setBoundVariable("paddingBottom", sp28);
-  pc.fills = [boundPaint(scv(maps, "color/navigation/background"))];
+  pc.fills = [boundPaint(scv(maps, "color/navigation/bg"))];
   pc.strokes = [boundPaint(scv(maps, "color/line/gray/subtle"))];
   pc.strokeAlign = "INSIDE";
   pc.strokeTopWeight = 1; pc.strokeBottomWeight = 0; pc.strokeLeftWeight = 0; pc.strokeRightWeight = 0;
@@ -3145,7 +3146,7 @@ async function buildLoginGNB(maps: BuildMaps, originY: number): Promise<{ set: C
   comp.layoutMode = "HORIZONTAL"; comp.primaryAxisSizingMode = "FIXED"; comp.counterAxisSizingMode = "FIXED";
   comp.resize(W, H); comp.primaryAxisAlignItems = "SPACE_BETWEEN"; comp.counterAxisAlignItems = "CENTER";
   comp.paddingLeft = 320; comp.paddingRight = 320; comp.paddingTop = 12; comp.paddingBottom = 12;
-  comp.fills = [boundPaint(scv(maps, "color/navigation/background"))];
+  comp.fills = [boundPaint(scv(maps, "color/navigation/bg"))];
   comp.strokes = [boundPaint(scv(maps, "color/line/gray/subtle"))];
   comp.strokeAlign = "INSIDE";
   comp.strokeTopWeight = 0; comp.strokeRightWeight = 0; comp.strokeLeftWeight = 0; comp.strokeBottomWeight = 1;
@@ -3328,10 +3329,11 @@ async function buildSamsungLogoComponent(maps: BuildMaps, originY: number): Prom
 // 삼성 3종: 이미지 fill(imageHash — V3.0 TEST 파일 내장, 타 파일 미지원)
 // 크기: 에스원=42×16, 삼성=134×36 (Brand별 각자 크기 — 사용자 결정 2026-06-23)
 async function buildCI(maps: BuildMaps, originY: number): Promise<{ set: ComponentSetNode; bottomY: number }> {
-  const S1_COLORS: { color: string; varKey: string }[] = [
-    { color: "White", varKey: "color/icon/white" },
-    { color: "Blue",  varKey: "color/icon/brand-ci" },
-    { color: "Dark",  varKey: "color/icon/gray"  },
+  // Blue=CI 브랜드색은 Foundation brand/ci 를 직접 바인딩(Semantic 별칭 color/icon/brand-ci 제거, 2026-06-23).
+  const S1_COLORS: { color: string; v: Variable }[] = [
+    { color: "White", v: scv(maps, "color/icon/white") },
+    { color: "Blue",  v: requireVar(maps.foundationColor, "brand/ci", "Foundation Color") },
+    { color: "Dark",  v: scv(maps, "color/icon/gray") },
   ];
   const SAM_HASHES: { color: string; hash: string }[] = [
     { color: "White", hash: "5ef070ce43a101a072964c656c0e666fe81e4f78" },
@@ -3340,13 +3342,13 @@ async function buildCI(maps: BuildMaps, originY: number): Promise<{ set: Compone
   ];
 
   const s1Comps: ComponentNode[] = [];
-  for (const { color, varKey } of S1_COLORS) {
+  for (const { color, v } of S1_COLORS) {
     const comp = figma.createComponent();
     comp.name = `Brand=에스원, Color=${color}`;
     comp.resize(42, 16); comp.fills = [];
     const logo = figma.createNodeFromSvg(S1_LOGO_SVG); // icon-vector-allow: CI 브랜드 워드마크 벡터 자산
     logo.name = "logo";
-    rebindIconColor(logo, scv(maps, varKey));
+    rebindIconColor(logo, v);
     comp.appendChild(logo);
     setLightMode(comp, maps);
     s1Comps.push(comp);

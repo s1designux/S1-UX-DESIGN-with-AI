@@ -364,7 +364,40 @@ async function main() {
     return groups;
   }
 
-  const sectionsFor = (mode) => sets.map((set) => `
+  function renderSubsection(set, mode) {
+    const parts = (set.name || "").split("/");
+    const displayName = parts[parts.length - 1];
+    return `
+    <section class="comp-subsection">
+      <div class="comp-subsection-header">
+        <span class="comp-subsection-title">${esc(displayName)}</span>
+        <span class="comp-badge">${set.children.length} variants</span>
+        <span class="comp-meta">build-components.ts 자동 생성 · 손편집 금지</span>
+      </div>
+      ${renderSet(set, mode)}
+    </section>`;
+  }
+
+  const sectionsFor = (mode) => {
+    const groupMap = new Map();
+    for (const set of sets) {
+      const parts = (set.name || "").split("/");
+      const groupName = parts.length > 1 ? parts[0] : null;
+      if (!groupMap.has(groupName)) groupMap.set(groupName, []);
+      groupMap.get(groupName).push(set);
+    }
+
+    let html = "";
+    for (const [groupName, groupSets] of groupMap) {
+      if (groupName) {
+        html += `\n    <section class="comp-group">\n      <div class="comp-group-header">\n        <span class="comp-group-title">${esc(groupName)}</span>\n      </div>\n`;
+        for (const set of groupSets) {
+          html += renderSubsection(set, mode) + "\n";
+        }
+        html += `    </section>\n`;
+      } else {
+        for (const set of groupSets) {
+          html += `
     <section class="comp-section">
       <div class="comp-section-header">
         <span class="comp-section-title">${esc(set.name)}</span>
@@ -372,7 +405,12 @@ async function main() {
         <span class="comp-meta">build-components.ts 자동 생성 · 손편집 금지</span>
       </div>
       ${renderSet(set, mode)}
-    </section>`).join("\n");
+    </section>`;
+        }
+      }
+    }
+    return html;
+  };
 
   const html = `<!doctype html><html lang="ko"><head><meta charset="utf-8">
 <title>Builder Preview${filter ? " · " + esc(filter) : ""}</title>
@@ -387,9 +425,15 @@ async function main() {
   .theme-toggle button { border: 0; background: transparent; font: inherit; font-size: 13px; padding: 6px 16px; border-radius: 6px; cursor: pointer; color: #6b7280; }
   .theme-toggle button.on { background: #fff; color: #111827; font-weight: 600; box-shadow: 0 1px 2px rgba(0,0,0,.08); }
   .page { max-width: 1500px; padding: 28px 40px; }
+  .comp-group { margin-bottom: 48px; }
+  .comp-group-header { border-bottom: 2px solid #D1D5DB; padding-bottom: 12px; margin-bottom: 24px; }
+  .comp-group-title { font-size: 20px; font-weight: 700; color: #111827; letter-spacing: -.02em; }
   .comp-section { margin-bottom: 48px; }
+  .comp-subsection { margin-bottom: 24px; margin-left: 0; }
   .comp-section-header { border-bottom: 1px solid #ECECEC; padding-bottom: 14px; margin-bottom: 18px; display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap; }
+  .comp-subsection-header { border-bottom: 1px solid #F3F4F6; padding-bottom: 12px; margin-bottom: 14px; display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap; }
   .comp-section-title { font-size: 18px; font-weight: 700; color: #111827; letter-spacing: -.02em; }
+  .comp-subsection-title { font-size: 15px; font-weight: 600; color: #374151; letter-spacing: -.01em; }
   .comp-badge { font-size: 11px; font-weight: 600; color: #1D6CEB; background: #EAF2FD; padding: 2px 9px; border-radius: 10px; }
   .comp-meta { font-size: 12px; color: #9aa0a6; }
   .variant-group { margin-bottom: 18px; }

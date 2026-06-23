@@ -20,7 +20,7 @@
   },
   "states": ["default", "hover", "active", "disabled"],
   "tokens": [
-    { "name": "--nav-bg",                    "value": "var(--color-surface-default)",         "state": "all",     "property": "bg",        "figmaVariable": "color/navigation/background" },
+    { "name": "--nav-bg",                    "value": "var(--color-surface-default)",         "state": "all",     "property": "bg",        "figmaVariable": "color/navigation/bg" },
     { "name": "--nav-item-hover-bg",         "value": "var(--color-bg-subtle)",               "state": "hover",   "property": "bg" },
     { "name": "--nav-item-active-bg",        "value": "var(--color-action-primary-subtle)",   "state": "active",  "property": "bg" },
     { "name": "--nav-item-default-text",     "value": "var(--color-text-tertiary)",           "state": "default", "property": "color",     "figmaVariable": "color/navigation/label/default" },

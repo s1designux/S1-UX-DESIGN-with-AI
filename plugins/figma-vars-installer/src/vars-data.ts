@@ -472,10 +472,9 @@ export const SEMANTIC_COLOR: Record<string, SemanticColorEntry> = {
   "color/control/text/unselected": { light: "gray/800", dark: "gray-dark/800" },
 
   // ── table (구 data — 2026-06-15 그룹명 변경: data→table, state→cell) ──
-  "color/table/border/light": { light: "gray/100", dark: "gray-dark/300" },
+  "color/table/border/default": { light: "gray/100", dark: "gray-dark/300" },
   "color/table/border/strong": { light: "gray/300", dark: "gray-dark/400" },
   // 테이블 세트 외곽 프레임선(상단 2px·하단 1px) — border-emphasis(#353535). 헤더 언더라인(strong)·셀선(light)과 구분.
-  "color/table/border/emphasis": { light: "gray/800", dark: "gray-dark/700" },
   "color/table/header/bg": { light: "gray/50", dark: "gray-dark/200" },
   "color/table/cell/default": { light: "base/white", dark: "gray-dark/100" },
   "color/table/cell/hover": { light: "blue/50", dark: "gray-dark/200" },
@@ -515,7 +514,6 @@ export const SEMANTIC_COLOR: Record<string, SemanticColorEntry> = {
 
   // ── icon ────────────────────────────────
   "color/icon/blue": { light: "blue/400", dark: "blue-dark/300" },
-  "color/icon/brand-ci": { light: "brand/ci", dark: "brand/ci" },
   "color/icon/gray": { light: "gray/500", dark: "gray-dark/700" },
   "color/icon/gray-dark": { light: "gray/800", dark: "gray-dark/800" },
   "color/icon/gray-light": { light: "gray/300", dark: "gray-dark/400" },
@@ -530,7 +528,7 @@ export const SEMANTIC_COLOR: Record<string, SemanticColorEntry> = {
   "color/line/white": { light: "base/white", dark: "base/white" },
 
   // ── navigation ────────────────────────────────
-  "color/navigation/background": { light: "base/white", dark: "gray-dark/100" },
+  "color/navigation/bg": { light: "base/white", dark: "gray-dark/100" },
   "color/navigation/indicator/default": { light: "gray/200", dark: "gray-dark/300" },
   "color/navigation/indicator/default-alt": { light: "gray/100", dark: "gray-dark/200" },
   "color/navigation/indicator/hover": { light: "blue/400", dark: "blue-dark/300" },

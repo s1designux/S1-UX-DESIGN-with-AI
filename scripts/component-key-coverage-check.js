@@ -34,7 +34,9 @@ function loadSupply() {
   const vd = fs.readFileSync(VD, "utf8");
   const color = new Set([...vd.matchAll(/"(color\/[^"]+)"/g)].map((m) => m[1]));
   const number = new Set([...vd.matchAll(new RegExp(`"((?:${NUM_NS})\\/[^"]+)"`, "g"))].map((m) => m[1]));
-  return { color, number };
+  // FOUNDATION_COLOR: 헥스값으로 정의된 Foundation 팔레트 키(예: "brand/ci": "#004097")
+  const foundation = new Set([...vd.matchAll(/"([a-z][\w-]*\/[\w-]+)"\s*:\s*"#/g)].map((m) => m[1]));
+  return { color, number, foundation };
 }
 
 // ── 만능 auto-stub (콜러블 + 모든 prop) ─────────────────────────────────
@@ -77,12 +79,13 @@ function loadBuildComponents() {
  */
 async function audit() {
   const supply = loadSupply();
-  const colorReq = new Set(), numReq = new Set();
+  const colorReq = new Set(), numReq = new Set(), fcReq = new Set();
   const rec = (sink) => new Proxy({}, { get(_t, prop) { if (typeof prop === "string") sink.add(prop); return makeStub(); } });
 
   global.figma = makeStub();
   const maps = {
     semanticColor: rec(colorReq),
+    foundationColor: rec(fcReq),
     foundationNumber: rec(numReq),
     textStyles: rec(new Set()),
     semanticColorCollectionId: "cid",
@@ -100,11 +103,13 @@ async function audit() {
 
   const missingColor = [...colorReq].filter((k) => k.startsWith("color/") && !supply.color.has(k)).sort();
   const missingNumber = [...numReq].filter((k) => new RegExp(`^(${NUM_NS})\\/`).test(k) && !supply.number.has(k)).sort();
+  // foundationColor 로 요청된 Foundation 팔레트 키(brand/ci 등) → FOUNDATION_COLOR 공급분과 대조
+  const missingFoundation = [...fcReq].filter((k) => /^[a-z][\w-]*\/[\w-]+$/.test(k) && !supply.foundation.has(k)).sort();
 
   return {
-    missing: { color: missingColor, number: missingNumber },
+    missing: { color: missingColor.concat(missingFoundation), number: missingNumber },
     stats: {
-      requestedColor: [...colorReq].filter((k) => k.startsWith("color/")).length,
+      requestedColor: [...colorReq].filter((k) => k.startsWith("color/")).length + [...fcReq].length,
       supplyColor: supply.color.size,
       requestedNumber: [...numReq].filter((k) => new RegExp(`^(${NUM_NS})\\/`).test(k)).length,
       supplyNumber: supply.number.size,

@@ -83,7 +83,7 @@
       "name": "--table-border-light",
       "value": "var(--color-border-subtle)",
       "resolvedLight": "#E9E9E9",
-      "figmaVariable": "color/table/border/light",
+      "figmaVariable": "color/table/border/default",
       "status": "stable",
       "description": "행 구분선 — 헤더·바디 셀 공통 참조"
     },
@@ -99,7 +99,7 @@
       "name": "--table-header-border",
       "value": "var(--table-border-light)",
       "resolvedLight": "#E9E9E9",
-      "figmaVariable": "color/table/border/light",
+      "figmaVariable": "color/table/border/default",
       "status": "stable",
       "description": "헤더 셀 하단 구분선"
     },
@@ -131,7 +131,7 @@
       "name": "--table-cell-border",
       "value": "var(--table-border-light)",
       "resolvedLight": "#E9E9E9",
-      "figmaVariable": "color/table/border/light",
+      "figmaVariable": "color/table/border/default",
       "status": "stable",
       "description": "바디 셀 하단 구분선"
     },

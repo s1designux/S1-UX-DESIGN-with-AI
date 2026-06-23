@@ -146,6 +146,7 @@ async function audit() {
 
   const maps = {
     semanticColor: new Proxy({}, { get: () => makeStub() }),
+    foundationColor: new Proxy({}, { get: () => makeStub() }),
     foundationNumber: new Proxy({}, { get: () => makeStub() }),
     textStyles: new Proxy({}, { get: () => makeStub() }),
     semanticColorCollectionId: "cid",
