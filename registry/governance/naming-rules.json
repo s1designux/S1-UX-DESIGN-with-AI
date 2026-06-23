@@ -1,0 +1,29 @@
+{
+  "description": "토큰(Figma 변수 경로) 네이밍 규칙의 기계 정본. scripts/token-naming-check.js(Gate 15)가 vars-data.ts 의 SEMANTIC_COLOR·SEMANTIC_NUMBER 키를 이 규칙으로 강제한다. CLAUDE.md 산문 규칙을 기계가 읽는 형태로 옮긴 것 — 충돌 시 이 파일이 검사 기준.",
+  "updated": "2026-06-23",
+  "rationale": "레거시 일괄수입(navigation/background)·빌더 우회 별칭(icon/brand-ci)이 네이밍 검사 부재로 정본에 유입된 사례 → 이름을 기계로 강제.",
+  "rules": [
+    {
+      "id": "no-background-segment",
+      "severity": "error",
+      "type": "forbidden-segment",
+      "segment": "background",
+      "use": "bg",
+      "desc": "배경 토큰의 세그먼트는 'background' 가 아니라 'bg' 로 통일한다 (45개 -bg 관례). 레거시 원본 이름을 그대로 수입 금지."
+    },
+    {
+      "id": "no-brand-in-semantic",
+      "severity": "error",
+      "type": "forbidden-key-regex",
+      "pattern": "^color/[^/]+/brand[-/]",
+      "hint": "브랜드색은 Foundation(brand/ci·brand/blue)에 둔다. Semantic(color/*)에 brand 별칭을 만들지 말고 Foundation 을 직접 바인딩하라.",
+      "desc": "Semantic 레이어(color/*)에 브랜드 별칭(예: color/icon/brand-ci) 금지 — 빌더 우회용 별칭 재유입 차단."
+    },
+    {
+      "id": "kebab-case-segment",
+      "severity": "error",
+      "type": "segment-kebab",
+      "desc": "각 경로 세그먼트는 소문자·숫자·하이픈(kebab-case)만. 대문자·언더스코어·camelCase 금지. (상태 구분자 '--' 는 허용)"
+    }
+  ]
+}

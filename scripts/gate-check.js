@@ -353,6 +353,23 @@ try {
   fail(`footer-content-check 실행 실패: ${e.message}`);
 }
 
+// ── Gate 15: Token Naming Convention ──────────────────────────────
+// vars-data 토큰 이름(Figma 변수 경로)이 naming-rules.json 규칙을 지키는지 강제.
+// 기존 게이트는 값·구조·존재만 봤음 — 이름 사각지대로 레거시 원본명(navigation/background)·
+// 빌더 우회 별칭(icon/brand-ci)이 정본에 유입됨. 새 토큰/리네임의 이름을 커밋 단계 차단. (2026-06-23 신설)
+console.log('\n🔎 [Gate 15] 토큰네이밍 검사기 (Token Naming Convention)');
+try {
+  const { audit: namingAudit } = require('./token-naming-check');
+  const r = namingAudit();
+  if (r.violations.length === 0) {
+    pass(`네이밍 위반 0 (키 ${r.checked}개 · 규칙 ${r.rules}개 — bg/brand-in-semantic/kebab)`);
+  } else {
+    for (const v of r.violations) fail(`[${v.rule}] ${v.key} — ${v.detail}`);
+  }
+} catch (e) {
+  fail(`token-naming-check 실행 실패: ${e.message}`);
+}
+
 // ── Summary ───────────────────────────────────────────────────────
 console.log('\n─────────────────────────────────────────────────────');
 if (errors > 0) {

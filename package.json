@@ -30,6 +30,7 @@
     "components:anatomy": "node scripts/component-anatomy-check.js",
     "components:iconpolicy": "node scripts/icon-instance-policy-check.js",
     "components:buildverify": "node scripts/installer-build-verify-check.js",
+    "tokens:namingcheck": "node scripts/token-naming-check.js",
     "components:bindinglookup": "node scripts/figma-binding-lookup.js",
     "footer:contentcheck": "node scripts/footer-content-check.js",
     "components:preview": "node scripts/component-preview/render.js",

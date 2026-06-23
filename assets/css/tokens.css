@@ -519,13 +519,12 @@
   --color-control-text-unselected         : var(--color-gray-800);
 
   /* ── table ── */
-  --color-table-border-light   : var(--color-gray-100);
-  --color-table-border-strong  : var(--color-gray-300);
-  --color-table-border-emphasis: var(--color-gray-800);
-  --color-table-header-bg      : var(--color-gray-50);
-  --color-table-cell-default   : var(--color-base-white);
-  --color-table-cell-hover     : var(--color-blue-50);
-  --color-table-cell-selected  : var(--color-blue-100);
+  --color-table-border-default: var(--color-gray-100);
+  --color-table-border-strong : var(--color-gray-300);
+  --color-table-header-bg     : var(--color-gray-50);
+  --color-table-cell-default  : var(--color-base-white);
+  --color-table-cell-hover    : var(--color-blue-50);
+  --color-table-cell-selected : var(--color-blue-100);
 
   /* ── dropdown ── */
   --color-dropdown-list-bg               : var(--color-base-white);
@@ -565,7 +564,6 @@
 
   /* ── icon ── */
   --color-icon-blue      : var(--color-blue-400);
-  --color-icon-brand-ci  : var(--color-brand-ci);
   --color-icon-gray      : var(--color-gray-500);
   --color-icon-gray-dark : var(--color-gray-800);
   --color-icon-gray-light: var(--color-gray-300);
@@ -580,7 +578,7 @@
   --color-line-white       : var(--color-base-white);
 
   /* ── navigation ── */
-  --color-navigation-background           : var(--color-base-white);
+  --color-navigation-bg                   : var(--color-base-white);
   --color-navigation-indicator-default    : var(--color-gray-200);
   --color-navigation-indicator-default-alt: var(--color-gray-100);
   --color-navigation-indicator-hover      : var(--color-blue-400);
@@ -742,13 +740,12 @@
   --color-control-text-unselected         : var(--color-gray-dark-800);
 
   /* ── table ── */
-  --color-table-border-light   : var(--color-gray-dark-300);
-  --color-table-border-strong  : var(--color-gray-dark-400);
-  --color-table-border-emphasis: var(--color-gray-dark-700);
-  --color-table-header-bg      : var(--color-gray-dark-200);
-  --color-table-cell-default   : var(--color-gray-dark-100);
-  --color-table-cell-hover     : var(--color-gray-dark-200);
-  --color-table-cell-selected  : var(--color-blue-dark-100);
+  --color-table-border-default: var(--color-gray-dark-300);
+  --color-table-border-strong : var(--color-gray-dark-400);
+  --color-table-header-bg     : var(--color-gray-dark-200);
+  --color-table-cell-default  : var(--color-gray-dark-100);
+  --color-table-cell-hover    : var(--color-gray-dark-200);
+  --color-table-cell-selected : var(--color-blue-dark-100);
 
   /* ── dropdown ── */
   --color-dropdown-list-bg               : var(--color-gray-dark-100);
@@ -788,7 +785,6 @@
 
   /* ── icon ── */
   --color-icon-blue      : var(--color-blue-dark-300);
-  --color-icon-brand-ci  : var(--color-brand-ci);
   --color-icon-gray      : var(--color-gray-dark-700);
   --color-icon-gray-dark : var(--color-gray-dark-800);
   --color-icon-gray-light: var(--color-gray-dark-400);
@@ -803,7 +799,7 @@
   --color-line-white       : var(--color-base-white);
 
   /* ── navigation ── */
-  --color-navigation-background           : var(--color-gray-dark-100);
+  --color-navigation-bg                   : var(--color-gray-dark-100);
   --color-navigation-indicator-default    : var(--color-gray-dark-300);
   --color-navigation-indicator-default-alt: var(--color-gray-dark-200);
   --color-navigation-indicator-hover      : var(--color-blue-dark-300);
