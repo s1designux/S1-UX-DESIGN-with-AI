@@ -1,9 +1,9 @@
 {
   "sourceFile": "plugins/figma-vars-installer/src/build-components.ts",
-  "sourceHash": "sha256:546c377247a8829053908a6f9773e77f5944181d2d5a2e18f40ded9df83d49e0",
-  "verifiedBy": "orchestrator",
+  "sourceHash": "sha256:067f4d117a48d7882f9e5ab499ccdb3453ff480f3bfb7d5bc11ddd04e545d03b",
+  "verifiedBy": "component-verifier",
   "verdict": "pass",
-  "changeType": "mechanical",
-  "verifiedAt": "2026-06-23T07:47:31.169Z",
-  "notes": "CI 설치 오류 수정: brand/ci(Foundation)를 scv(Semantic)로 조회해 '변수 누락' 크래시 → Semantic 별칭 color/icon/brand-ci(=brand/ci) 신설 + CI Blue varKey 교체. keycheck/tsc 통과"
+  "changeType": "structural",
+  "verifiedAt": "2026-06-23T12:49:47.749Z",
+  "notes": "Filter Chip Selected: raw 'list' frame -> Dropdown(XXSM/XSM):Default instance(name=dropdown); Date Picker Open: buildCalendarPanel raw frame -> Calendar:Date instance(name=calendar); dead code removed(buildCalendarPanel/DP_WEEKDAYS/DpCell, refs 0); CATEGORIES Filter Chip Selection->Form(after Dropdown). Verified A variant counts unchanged(FilterChip 60, DatePicker 16) B combineAsVariants comps[] untouched C tokens covered by Dropdown/Calendar instances D cellAt/cells unchanged E build order Dropdown precedes FilterChip + fallback getBuiltSet F Calendar:Date registered before DatePicker + fallback G/H dead-code refs 0 I anatomy forbid list/calendar-panel + no residual raw frames. tsc+Gate1-12+keycheck+anatomy+iconpolicy all PASS."
 }

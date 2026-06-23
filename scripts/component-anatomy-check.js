@@ -43,7 +43,11 @@ const ANATOMY = [
   // Select Box Open 은 Dropdown 컴포넌트 인스턴스 사용 — raw "list" 프레임 금지(2026-06-19).
   { set: "Select Box",   variant: /(^|,\s*)State=Open(,|$)/,    require: [],                 forbid: ["list"],   label: "Select Box / State=Open" },
   // Time Picker Focus 는 TPD 인스턴스 사용 — raw "dropdown" 프레임 금지(2026-06-19).
-  { set: "Time Picker",  variant: /(^|,\s*)State=Focus(,|$)/,   require: [],                 forbid: ["dropdown"], label: "Time Picker / State=Focus" },
+  { set: "Time Picker",  variant: /(^|,\s*)State=Focus(,|$)/,   require: [],                 forbid: ["dropdown"],       label: "Time Picker / State=Focus" },
+  // Filter Chip Selected 는 Dropdown 인스턴스 사용 — raw "list" 프레임 금지(2026-06-23).
+  { set: "Filter Chip",  variant: /(^|,\s*)State=Selected(,|$)/, require: [],                forbid: ["list"],           label: "Filter Chip / State=Selected" },
+  // Date Picker Open 은 Calendar 인스턴스 사용 — raw "calendar-panel" 프레임 금지(2026-06-23).
+  { set: "Date Picker",  variant: /(^|,\s*)State=Open(,|$)/,     require: [],                forbid: ["calendar-panel"], label: "Date Picker / State=Open" },
 ];
 
 // ── 만능 auto-stub (콜러블 + 모든 prop) — 미목 API 호출이 throw 하지 않게 ─────

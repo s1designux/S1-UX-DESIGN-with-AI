@@ -2,7 +2,10 @@
 
 > 기준: CLAUDE.md · SW UX GUIDE V2.4
 > 원본: Figma `semantic` Variable Collection
-> 업데이트: 2026-04-29
+> 업데이트: 2026-06-23 — Variables(vars-data.ts) 기준 정합:
+> - **그룹 A 23종 제거** (Variables 미존재 generic): color-action·color-status·generic color-border·bg-home·control/form-control-border-hover.
+> - **그룹 B 26종 개명** (이름만 바뀐 것): text→title/body/state · icon 역할명→색상명(+brand-ci) · color-data→color-table · navigation-bg→navigation-background. text-readonly 폐지(form-control 전용), text-danger·text-state-error→text-state-caution 통합(결정 #2·#3).
+> - 끊긴 참조는 전부 실제 Variables Foundation 값으로 재연결. §10 하드코딩 CSS 덤프는 정본(tokens.css) 포인터로 교체(드리프트원 제거).
 
 > **📋 참고 문서** — 이 파일은 인간 가독 참고 문서입니다.  
 > 기준 데이터는 `registry/tokens/` JSON 파일입니다. 충돌 시 **registry가 우선**합니다.  
@@ -15,14 +18,16 @@
 ```
 color-bg        → 페이지·레이아웃 배경
 color-surface   → 컴포넌트 표면 배경 (카드, 모달, 패널)
-color-text      → 텍스트 색상
-color-border    → 테두리·구분선
-color-icon      → 아이콘
-color-action    → 인터랙션 액션 (버튼 등 컴포넌트가 참조)
-color-status    → UI 피드백 상태 (성공·에러·경고·정보)
-color-data      → 데이터 그리드/테이블 전용 상태 (행 hover 등)
+color-text      → 텍스트 색상 (title·body·state 3트랙)
+color-icon      → 아이콘 (색상명)
+color-table     → 테이블·데이터 그리드 전용 (구 color-data)
 color-overlay   → 딤·오버레이
 ```
+
+> **🧹 2026-06-23 정리** — 아래 generic 그룹은 현재 Variables(vars-data.ts)에 존재하지 않아 제거했다(그룹 A 23종):
+> - `color-action-*`(버튼은 `color-button-*`로 직접 정의) · `color-status-*`(피드백은 `color-text-state-*`·`color-status-card-*`로 분산)
+> - generic `color-border-*`(테두리는 `color-line-*` 및 컴포넌트별 `*-border-*`로 분산) · `bg-home`·`control-border-hover`·`form-control-border-hover`
+> 이 토큰들을 참조하던 살아있는 행은 실제 Variables가 쓰는 Foundation 값으로 재연결했다.
 
 > **`color-surface` 안내**
 > `color-bg`가 페이지/화면 전체 배경이라면, `color-surface`는 그 위에 올라오는 컴포넌트(카드·패널·모달)의 표면 배경입니다.
@@ -81,12 +86,10 @@ color-overlay   → 딤·오버레이
 | `--color-bg-subtle` | surface/neutral/bg/subtle | `#F5F5F5` | color/gray/50 | `#24252C` | gray-dark/200 |
 | `--color-bg-muted` | surface/neutral/bg/strong | `#E9E9E9` | color/gray/100 | `#2E2F38` | gray-dark/300 |
 | `--color-bg-elevated` | surface/neutral/bg/support | `#E9E9E9` | color/gray/100 | `#35363F` | gray-dark/400 |
-| `--color-bg-home` | surface/base-background/home | `#F5F6FB` | — (Foundation 미등록) | `#131418` | gray-dark/50 |
 | `--color-bg-selected` | — (Figma 원본 미확인) | `#E2F1FF` | color/blue/50 | `#112B55` | blue-dark/100 |
 
-> ⚠️ `--color-bg-active`, `--color-bg-deepest` 2종은 Figma 원본 미확인 상태로 `tokens/review/pending-review.md` 항목 1에서 검토 중입니다.
 > `--color-bg-selected` — HD-Table-2 확정(2026-05-20): 선택 행 = blue-50(L) / blue-dark-100(D), hover(gray-50)와 시각 구분 확정.
-> `--color-bg-home`의 Light Foundation(`#F5F6FB`)는 기존 팔레트 미등록 값으로 `tokens/review/pending-review.md` 항목 2에서 검토 중입니다.
+> ~~`--color-bg-active`·`--color-bg-deepest`·`--color-bg-home`~~ — Variables 미존재로 제거(2026-06-23, 그룹 A).
 
 ---
 
@@ -104,38 +107,37 @@ color-overlay   → 딤·오버레이
 
 ## 3. color-text — 텍스트
 
-| CSS Variable | Figma 원본 | Light Hex | Light Foundation | Dark Hex | Dark Foundation | 용도 |
-|---|---|---|---|---|---|---|
-| `--color-text-primary` | color/text/title/primary | `#202020` | color/gray/900 | `#ECEDF0` | gray-dark/900 | 제목·주요 본문 |
-| `--color-text-secondary` | color/text/title/secondary, body/primary | `#353535` | color/gray/800 | `#B8BABF` | gray-dark/800 | 서브타이틀·일반 본문 |
-| `--color-text-tertiary` | color/text/title/tertiary, body/secondary | `#555555` | color/gray/600 | `#8A8C96` | gray-dark/700 | 보조 텍스트 |
-| `--color-text-caption` | color/text/body/tertiary | `#757575` | color/gray/500 | `#8A8C96` | gray-dark/700 | 캡션·힌트 |
-| `--color-text-placeholder` | color/text/state/placeholder | `#757575` | color/gray/500 | `#55575F` | gray-dark/600 | 플레이스홀더 공통 색상 |
-| `--color-text-helper` | color/text/state/helper | `#9D9D9D` | color/gray/400 | `#55575F` | gray-dark/600 | 도움말 텍스트 |
-| `--color-text-link` | color/text/state/accent | `#1D6CEB` | color/blue/400 | `#6FA5F8` | blue-dark/400 | 링크·액센트 |
-| `--color-text-correct` | color/text/state/correct | `#1D6CEB` | color/blue/400 | `#6FA5F8` | blue-dark/400 | 올바른 입력 피드백 |
-| `--color-text-danger` | color/text/state/caution | `#FF4554` | color/red/300 | `#F06070` | status-dark/red | 에러·위험 메시지 |
-| `--color-text-disabled` | color/text/state/disabled | `#C4C4C4` | color/gray/300 | `#35363F` | gray-dark/400 | 비활성 텍스트 |
-| `--color-text-readonly` | color/text/state/readonly | `#757575` | color/gray/500 | `#3E4049` | gray-dark/500 | 읽기전용 텍스트 (D001 신설, 2026-05-19). form-control-text-disabled 한 단계 강조 |
-| `--color-text-inverse` | color/text/state/accent-alt | `#FFFFFF` | color/base/white | `#FFFFFF` | color/base/white | 색상 배경 위 텍스트 |
+> Variables는 텍스트를 **제목(title)·본문(body)·상태(state)** 3개 트랙으로 나눈다.
+> title·body는 primary·secondary 값이 같고 **tertiary에서만 갈린다**(title=gray/600, body=gray/500).
+
+| CSS Variable | Light Hex | Light Foundation | Dark Hex | Dark Foundation | 용도 |
+|---|---|---|---|---|---|
+| `--color-text-title-primary` | `#202020` | color/gray/900 | `#ECEDF0` | gray-dark/900 | 제목 주요 |
+| `--color-text-title-secondary` | `#353535` | color/gray/800 | `#B8BABF` | gray-dark/800 | 제목 보조 |
+| `--color-text-title-tertiary` | `#555555` | color/gray/600 | `#8A8C96` | gray-dark/700 | 제목 3차 |
+| `--color-text-body-primary` | `#202020` | color/gray/900 | `#ECEDF0` | gray-dark/900 | 본문 주요 |
+| `--color-text-body-secondary` | `#353535` | color/gray/800 | `#B8BABF` | gray-dark/800 | 본문 보조 |
+| `--color-text-body-tertiary` | `#757575` | color/gray/500 | `#8A8C96` | gray-dark/700 | 본문 3차·캡션 |
+| `--color-text-state-accent` | `#1D6CEB` | color/blue/400 | `#3070D8` | blue-dark/300 | 링크·액센트 |
+| `--color-text-state-accent-alt` | `#FFFFFF` | color/base/white | `#FFFFFF` | color/base/white | 색상 배경 위 텍스트 |
+| `--color-text-state-caption` | `#757575` | color/gray/500 | `#B8BABF` | gray-dark/800 | 캡션 |
+| `--color-text-state-caution` | `#FF4554` | color/red/300 | `#F06070` | red-dark/350 | 에러·주의 (구 `text-danger`·`text-state-error` 통합) |
+| `--color-text-state-correct` | `#1D6CEB` | color/blue/400 | `#3070D8` | blue-dark/300 | 올바른 입력 |
+| `--color-text-state-disabled` | `#C4C4C4` | color/gray/300 | `#35363F` | gray-dark/400 | 비활성 |
+| `--color-text-state-helper` | `#9D9D9D` | color/gray/400 | `#55575F` | gray-dark/600 | 도움말 |
+| `--color-text-state-placeholder` | `#757575` | color/gray/500 | `#8A8C96` | gray-dark/700 | 플레이스홀더 |
+
+> 🧹 **구 단순명 → 새 이름 매핑(2026-06-23, 그룹 B):** `text-primary`→`title-primary`(/`body-primary`) · `text-secondary`→`title/body-secondary` · `text-tertiary`→`title-tertiary` · `text-caption`→`body-tertiary` · `text-placeholder`→`state-placeholder` · `text-helper`→`state-helper` · `text-link`→`state-accent` · `text-correct`→`state-correct` · `text-disabled`→`state-disabled` · `text-inverse`→`state-accent-alt` · `text-danger`·`text-state-error`→**`state-caution` 통합** · ~~`text-readonly`~~ 폐지 → `--color-form-control-text-read-only` 전용(§4-A).
 
 ---
 
-## 4. color-border — 테두리·구분선
+## 4. color-border — (제거됨, 2026-06-23)
 
-> 다크모드 border는 고정 hex 대신 rgba를 사용합니다. 배경 명도에 무관하게 일정한 레이어 깊이를 표현할 수 있습니다.
-
-| CSS Variable | Figma 원본 | Light Hex | Light Foundation | Dark Hex | Dark Foundation | 용도 |
-|---|---|---|---|---|---|---|
-| `--color-border-subtle` | color/line/gray/subtle | `#E9E9E9` | color/gray/100 | `rgba(255,255,255,0.04)` | — (rgba) | 미세 구분선 |
-| `--color-border-default` | color/line/gray/default | `#D9D9D9` | color/gray/200 | `rgba(255,255,255,0.07)` | — (rgba) | 기본 테두리 |
-| `--color-border-disabled` | color/button/border/disabled | `#D9D9D9` | color/gray/200 | `rgba(255,255,255,0.07)` | — (rgba) | 비활성(disabled) 컴포넌트 테두리 |
-| `--color-border-strong` | — (Figma 확인 필요) | `#C4C4C4` | color/gray/300 | `rgba(255,255,255,0.12)` | — (rgba) | 강조 테두리 |
-| `--color-border-emphasis` | color/line/gray/strong | `#353535` | color/gray/800 | `rgba(255,255,255,0.20)` | — (rgba) | 헤비 구분선·선택 강조선 |
-| `--color-border-focus` | color/line/blue | `#1D6CEB` | color/blue/400 | `#4285E8` | blue-dark/350 | 포커스 링 (접근성 필수) |
-| `--color-border-white` | color/line/white | `#FFFFFF` | color/base/white | `#FFFFFF` | color/base/white | 흰 배경 위 구분선 |
-| `--color-border-danger` | color/form-control/border/error | `#FF4554` | color/red/300 | `#F06070` | status-dark/red | 에러 인풋 테두리 |
-| `--color-border-correct` | color/form-control/border/correct | `#1D6CEB` | color/blue/400 | `#4285E8` | blue-dark/350 | 올바른 입력 피드백 테두리 |
+> ~~generic `--color-border-*` 9종(subtle·default·disabled·strong·emphasis·focus·white·danger·correct)~~ 은 현재 Variables에 존재하지 않아 제거했다(그룹 A).
+> 테두리·구분선 역할은 다음으로 분산되어 있다:
+> - **구분선/라인** → `--color-line-*` (gray-default·gray-strong·gray-subtle·blue·white)
+> - **컴포넌트 테두리** → `--color-button-border-*` · `--color-control-border-*` · `--color-form-control-border-*` · `--color-table-border-*` · `--color-date-picker-border-*`
+> - **포커스/선택** → `--color-form-control-border-selected`(= blue-400)
 
 ---
 
@@ -150,43 +152,38 @@ color-overlay   → 딤·오버레이
 | `--color-form-control-bg-default` | `--color-surface-default` | `#FFFFFF` | `--color-gray-dark-50` (override) | `#131418` | 입력 필드 기본 배경 |
 | `--color-form-control-bg-hover` | `--color-surface-default` | `#FFFFFF` | `--color-bg-muted` (override) | `#2E2F38` | hover 시 배경 (light에선 default와 동일) |
 | `--color-form-control-bg-disabled` | `--color-bg-subtle` | `#F5F5F5` | `--color-surface-default` (override) | `#1C1D23` | 비활성 배경 |
-| `--color-form-control-border-default` | `--color-control-border-default` | `#D9D9D9` | `--color-border-default` (override) | `#2E2F38` | 기본 테두리 |
-| `--color-form-control-border-hover` | `--color-border-strong` | `#C4C4C4` | `--color-border-strong` (상속) | `#3E4049` | hover 강조 테두리 |
-| `--color-form-control-border-selected` | `--color-border-focus` | `#1D6CEB` | `--color-border-focus` (상속) | `#4285E8` | 포커스·선택 상태 테두리 |
-| `--color-form-control-border-error` | `--color-status-error` | `#E50533` | `--color-status-error` (상속) | `#F06070` | 오류 상태 테두리 |
-| `--color-form-control-border-correct` | `--color-border-focus` | `#1D6CEB` | `--color-border-focus` (상속) | `#4285E8` | correct 상태 테두리 (HD-4: focus와 동일) |
-| `--color-form-control-border-disabled` | `--color-border-subtle` | `#E9E9E9` | `--color-border-default` (override) | `#2E2F38` | 비활성 테두리 |
-| `--color-form-control-text-default` | `--color-text-secondary` | `#353535` | `--color-text-secondary` (상속) | `#B8BABF` | 입력된 텍스트 (gray/800 MVP-T1) |
-| `--color-form-control-text-placeholder` | `--color-text-placeholder` | `#757575` | `--color-text-placeholder` (상속) | `#55575F` | 플레이스홀더 |
-| `--color-form-control-text-disabled` | `--color-text-disabled` | `#C4C4C4` | `--color-text-readonly` (override) | `#3E4049` | 비활성 텍스트 (placeholder 한 단계 어둡게) |
-| `--color-form-control-label-default` | `--color-text-secondary` | `#353535` | `--color-text-secondary` (재선언) | `#B8BABF` | TimePicker "시/분" 등 form-control 라벨 |
-| `--color-form-control-label-disabled` | `--color-text-disabled` | `#C4C4C4` | `--color-text-disabled` (재선언) | `#35363F` | 비활성 라벨 |
+| `--color-form-control-border-default` | `--color-control-border-default` | `#D9D9D9` | `--color-gray-dark-500` | `#3E4049` | 기본 테두리 |
+| `--color-form-control-border-selected` | `--color-blue-400` | `#1D6CEB` | `--color-blue-dark-350` | `#4285E8` | 포커스·선택 상태 테두리 |
+| `--color-form-control-border-error` | `--color-red-400` | `#E50533` | `--color-red-dark-350` | `#F06070` | 오류 상태 테두리 |
+| `--color-form-control-border-correct` | `--color-blue-400` | `#1D6CEB` | `--color-blue-dark-350` | `#4285E8` | correct 상태 테두리 (HD-4: focus와 동일) |
+| `--color-form-control-border-disabled` | `--color-gray-100` | `#E9E9E9` | `--color-gray-dark-200` | `#24252C` | 비활성 테두리 |
+| `--color-form-control-text-default` | `--color-gray-800` | `#353535` | `--color-gray-dark-800` | `#B8BABF` | 입력된 텍스트 (gray/800) |
+| `--color-form-control-text-placeholder` | `--color-gray-500` | `#757575` | `--color-gray-dark-600` | `#55575F` | 플레이스홀더 |
+| `--color-form-control-text-disabled` | `--color-gray-300` | `#C4C4C4` | `--color-gray-dark-600` | `#55575F` | 비활성 텍스트 |
+| `--color-form-control-label-default` | `--color-gray-800` | `#353535` | `--color-gray-dark-800` | `#B8BABF` | TimePicker "시/분" 등 form-control 라벨 |
+| `--color-form-control-label-disabled` | `--color-gray-300` | `#C4C4C4` | `--color-gray-dark-600` | `#55575F` | 비활성 라벨 |
 | `--color-form-control-icon-default` | `--color-gray-800` | `#353535` | `--color-gray-dark-700` (override) | `#8A8C96` | form-control 기본 아이콘 |
 
 ---
 
-## 4-A-1. color-text-state — 폼 필드 도움말 텍스트 상태
+## 4-A-1. 폼 필드 도움말 텍스트 — color-text-state 사용
 
-> 입력 필드 하단 helper/correct/error 메시지 텍스트 전용. Input·Search·Password 필드 helper text가 참조.
-
-| CSS Variable | Light 참조 | Light Hex | Dark 참조 | Dark Hex | 용도 |
-|---|---|---|---|---|---|
-| `--color-text-state-helper` | `--color-text-secondary` | `#353535` | `--color-text-secondary` (상속) | `#B8BABF` | 중립 도움말 텍스트 (기본) |
-| `--color-text-state-correct` | `--color-blue-400` | `#1D6CEB` | `--color-blue-dark-400` (override) | `#3D9BF2` | correct 상태 도움말 (HD-4) |
-| `--color-text-state-error` | `--color-status-error` | `#E50533` | `--color-status-error` (상속) | `#F06070` | 오류 상태 도움말 |
+> 입력 필드 하단 도움말 텍스트는 §3의 **state 트랙**을 그대로 사용한다(별도 토큰 없음):
+> - 중립 도움말 → `--color-text-state-helper` (gray/400)
+> - 올바름 → `--color-text-state-correct` (blue/400)
+> - **오류·주의 → `--color-text-state-caution`** (red/300) — 구 `--color-text-state-error`를 caution으로 **통합**(2026-06-23, 결정 #3).
 
 ---
 
 ## 4-B. color-control-border — 컨트롤 컴포넌트 전용 테두리
 
-> `color-border-*`(디바이더·구분선)와 완전 독립 그룹. Checkbox, Radio 등 인터랙티브 컨트롤의 박스/원 테두리에만 사용.
+> `color-line-*`(디바이더·구분선)와 완전 독립 그룹. Checkbox, Radio 등 인터랙티브 컨트롤의 박스/원 테두리에만 사용.
 > Foundation Foundation를 직접 참조하므로 다크 값을 별도로 튜닝할 수 있다.
 > Dark 값은 **candidate** 상태 — 화면 검증 후 확정 예정.
 
 | CSS Variable | Light Foundation | Light Hex | Dark Foundation | Dark Hex | 용도 |
 |---|---|---|---|---|---|
 | `--color-control-border-default` | color/gray/200 | `#D9D9D9` | color/gray-dark/500 | `#3E4049` (candidate) | 기본 상태 테두리 |
-| `--color-control-border-hover` | color/blue/400 | `#1D6CEB` | color/blue-dark/300 | `#3B82F6` (candidate) | hover 강조 테두리 |
 | `--color-control-border-selected` | color/blue/400 | `#1D6CEB` | color/blue-dark/300 | `#3B82F6` (candidate) | checked/selected 테두리 |
 | `--color-control-border-disabled` | color/gray/300 | `#C4C4C4` | color/gray-dark/300 | `#2E2F38` (candidate) | disabled 상태 테두리 |
 | `--color-control-bg-hover` | --color-bg-subtle | `#F5F5F5` | --color-bg-subtle (dark) | `#26272F` (candidate) | hover 시 control 배경 — Figma: color/control/bg/hover |
@@ -195,43 +192,40 @@ color-overlay   → 딤·오버레이
 
 ## 5. color-icon — 아이콘
 
-| CSS Variable | Figma 원본 | Light Hex | Light Foundation | Dark Hex | Dark Foundation | 용도 |
-|---|---|---|---|---|---|---|
-| `--color-icon-default` | color/icon/gray | `#757575` | color/gray/500 | `#8A8C96` | gray-dark/700 | 기본 아이콘 |
-| `--color-icon-muted` | color/icon/gray-light | `#C4C4C4` | color/gray/300 | `#35363F` | gray-dark/400 | 비강조·보조 아이콘 |
-| `--color-icon-emphasis` | color/icon/gray-dark | `#353535` | color/gray/800 | `#B8BABF` | gray-dark/800 | 강조 아이콘 |
-| `--color-icon-accent` | color/icon/blue | `#1D6CEB` | color/blue/400 | `#6FA5F8` | blue-dark/400 | 액션·링크 아이콘 |
-| `--color-icon-inverse` | color/icon/white | `#FFFFFF` | color/base/white | `#FFFFFF` | color/base/white | 색상 배경 위 아이콘 |
-| `--color-icon-danger` | color/icon/red | `#FF4554` | color/red/300 | `#F06070` | status-dark/red | 에러·위험 아이콘 |
+> Variables는 아이콘을 **색상명**으로 정의한다(역할명 아님). 옛 역할명은 괄호로 병기.
+
+| CSS Variable | Light Hex | Light Foundation | Dark Hex | Dark Foundation | 용도 (구 역할명) |
+|---|---|---|---|---|---|
+| `--color-icon-gray` | `#757575` | color/gray/500 | `#8A8C96` | gray-dark/700 | 기본 아이콘 (구 `-default`) |
+| `--color-icon-gray-light` | `#C4C4C4` | color/gray/300 | `#35363F` | gray-dark/400 | 보조 아이콘 (구 `-muted`) |
+| `--color-icon-gray-dark` | `#353535` | color/gray/800 | `#B8BABF` | gray-dark/800 | 강조 아이콘 (구 `-emphasis`) |
+| `--color-icon-blue` | `#1D6CEB` | color/blue/400 | `#3070D8` | blue-dark/300 | 액션·링크 아이콘 (구 `-accent`) |
+| `--color-icon-white` | `#FFFFFF` | color/base/white | `#FFFFFF` | color/base/white | 색상 배경 위 아이콘 (구 `-inverse`) |
+| `--color-icon-red` | `#FF4554` | color/red/300 | `#F06070` | red-dark/350 | 에러·위험 아이콘 (구 `-danger`) |
+| `--color-icon-brand-ci` | `#004097` | color/brand-ci | `#004097` | color/brand-ci | CI 로고 아이콘 (신설) |
+
+> 🤔 **참고:** 색상명 방식(icon-blue)은 역할 기반 명명 원칙과는 거리가 있다. 현 Variables 기준으로 문서를 맞췄으며, 역할명 복원은 별도 결정 사항.
 
 ---
 
-## 6. color-action — 인터랙션 액션
+## 6. color-action — (제거됨, 2026-06-23)
 
-> 컴포넌트 Token이 이 레이어를 `var()`로 참조합니다. 직접 스타일에 사용하지 않습니다.
-
-| CSS Variable | Light Hex | Light Foundation | Dark Hex | Dark Foundation | 용도 |
-|---|---|---|---|---|---|
-| `--color-action-primary-default` | `#1D6CEB` | color/blue/400 | `#3070D8` | blue-dark/300 | Primary CTA 기본 |
-| `--color-action-primary-hover` | `#2158C8` | color/blue/450 | `#2A65C8` | blue-dark/250 | Primary hover |
-| `--color-action-primary-pressed` | `#2747B9` | color/blue/500 | `#214EA0` | blue-dark/200 | Primary pressed |
-| `--color-action-primary-text` | `#FFFFFF` | color/base/white | `#FFFFFF` | color/base/white | Primary 버튼 라벨 |
-| `--color-action-primary-subtle` | `#E2F1FF` | color/blue/50 | `#112B55` | blue-dark/100 | 선택·강조 배경 |
+> ~~`--color-action-primary-default`·`-hover`·`-pressed`·`-text`·`-subtle`~~ generic action 레이어는 현재 Variables에 존재하지 않아 제거했다(그룹 A).
+> Primary CTA 색은 버튼 컴포넌트 토큰이 **직접** 정의한다 → `--color-button-bg-primary--default`(= blue-400 #1D6CEB) · `--color-button-bg-primary--hover`(= blue-500). 라벨은 `--color-button-label-primary--default`(= base/white).
+> 선택·강조 배경(구 `action-primary-subtle`)은 `--color-bg-selected`(= blue-50).
 
 ---
 
 ## 7. color-status — 상태 색상
 
-### 7-1. UI 피드백 상태 (폼 검증·알림)
+### 7-1. UI 피드백 상태 — (제거됨, 2026-06-23)
 
-> 서비스 확정값 기준. success는 현재 서비스에서 blue 계열을 사용 중이며 이를 기준으로 정의.
-
-| CSS Variable | Light Hex | Light Foundation | Dark Hex | Dark Foundation | 용도 |
-|---|---|---|---|---|---|
-| `--color-status-success` | `#1D6CEB` | color/blue/400 | `#4285E8` | blue-dark/350 | 성공·완료·올바름 |
-| `--color-status-error` | `#E50533` | color/red/400 | `#F06070` | status-dark/red | 에러·실패 |
-| `--color-status-warning` | `#DBA400` | color/yellow/400 | `#E8C048` | status-dark/yellow | 경고 |
-| `--color-status-info` | `#757575` | color/gray/500 | `#8A8C96` | gray-dark/700 | 정보 |
+> ~~`--color-status-success`·`-error`·`-warning`·`-info`~~ generic status 레이어는 현재 Variables에 존재하지 않아 제거했다(그룹 A). 피드백 색은 다음으로 분산되어 있다:
+> - 오류 텍스트/테두리 → `--color-text-state-caution`(= red-300) · `--color-form-control-border-error`(= red-400)
+> - 올바름 → `--color-text-state-correct`(= blue-400) · `--color-form-control-border-correct`(= blue-400)
+> - 상태 카드 텍스트 → `--color-status-card-text-*`
+>
+> 참고: 라이트 성공색은 과거 blue(#1D6CEB) 기준이었다(현 서비스 관행). 별도 success 토큰이 필요해지면 신설 검토.
 
 ### 7-2. 서비스·도메인 상태 (관제 시스템 장치 상태)
 
@@ -250,23 +244,22 @@ color-overlay   → 딤·오버레이
 
 ---
 
-## 8-2. color-data — 데이터 그리드 전용 상태
+## 8-2. color-table — 테이블·데이터 그리드 전용
 
-**역할**: 테이블·데이터 그리드의 행/헤더 상태 배경·구분선. Figma `color/data/*` 경로.
+**역할**: 테이블/데이터 그리드의 셀 상태 배경·헤더·구분선. **구 `color-data-*` → `color-table-*` 개명**(2026-06-23, 그룹 B).
 
-| CSS Variable | Figma 원본 | Light Hex | Light Foundation | Dark Hex | Dark Foundation |
+| CSS Variable | Light Hex | Light Foundation | Dark Hex | Dark Foundation | 구 이름 |
 |---|---|---|---|---|---|
-| `--color-data-state-default` | color/data/state/default | `#FFFFFF` | base/white | `#1C1D23` | gray-dark/100 |
-| `--color-data-state-hover` | color/data/state/hover | `#E2F1FF` | color/blue/50 | `#24252C` | gray-dark/200 |
-| `--color-data-state-selected` | color/data/state/selected | `#C8E4FF` | color/blue/100 | `#112B55` | blue-dark/100 |
-| `--color-data-header-bg` | color/data/header/bg | `#F5F5F5` | color/gray/50 | `#24252C` | gray-dark/200 |
-| `--color-data-border-light` | color/data/border/light | `#E9E9E9` | color/gray/100 | `#2E2F38` | gray-dark/300 |
-| `--color-data-border-strong` | color/data/border/strong | `#C4C4C4` | color/gray/300 | `#35363F` | gray-dark/400 |
+| `--color-table-cell-default` | `#FFFFFF` | color/base/white | `#1C1D23` | gray-dark/100 | data-state-default |
+| `--color-table-cell-hover` | `#E2F1FF` | color/blue/50 | `#24252C` | gray-dark/200 | data-state-hover |
+| `--color-table-cell-selected` | `#C8E4FF` | color/blue/100 | `#112B55` | blue-dark/100 | data-state-selected |
+| `--color-table-header-bg` | `#F5F5F5` | color/gray/50 | `#24252C` | gray-dark/200 | data-header-bg |
+| `--color-table-border-light` | `#E9E9E9` | color/gray/100 | `#2E2F38` | gray-dark/300 | data-border-light |
+| `--color-table-border-strong` | `#C4C4C4` | color/gray/300 | `#35363F` | gray-dark/400 | data-border-strong |
+| `--color-table-border-emphasis` | `#353535` | color/gray/800 | `#8A8C96` | gray-dark/700 | (신설 — 외곽 강선) |
 
-> HD-Table-2 해소(2026-06-09): selected ≠ hover. Light는 hover=blue-50 / selected=blue-100. Dark는 vars-data 기준으로 hover=gray-dark-200(#24252C) / selected=blue-dark-100(#112B55) — 다크에서 hover=회색, selected=파랑으로 구분.
-> `--color-data-state-default` Dark 버그수정(2026-06-09): white → gray-dark-100 (#1C1D23). `--color-data-header-bg` 신설(헤더 회색, dark=gray-dark-200).
-> Dark 값은 vars-data.ts(=Figma Semantic Color V2)를 정본으로 정합(2026-06-09).
-> **참고**: 가이드의 `--table-*` 컴포넌트 토큰은 아직 구(舊) 매핑(hover=gray, selected=blue-50)을 사용. Cell(Figma) 마이그레이션은 `--color-data-*` 신(新) 구조 기준. Table 가이드 컴포넌트 갱신은 후속 과제.
+> HD-Table-2(2026-06-09): selected ≠ hover. Light hover=blue-50 / selected=blue-100. Dark hover=gray-dark-200(회색) / selected=blue-dark-100(파랑)으로 구분.
+> 외곽선=`border-emphasis`(gray-800) · 헤더 언더라인=`border-strong`(gray-300) · 셀선=`border-light`(gray-100) 3종 구분.
 
 ---
 
@@ -278,11 +271,11 @@ color-overlay   → 딤·오버레이
 
 | CSS Variable | Light 참조 | Light Hex | Dark 참조 | Dark Hex | 용도 |
 |---|---|---|---|---|---|
-| `--color-navigation-bg` | `--color-surface-default` | `#FFFFFF` | `--color-surface-default` (상속) | `#1C1D23` | 라인탭 컨테이너 배경 |
+| `--color-navigation-background` | `--color-surface-default` | `#FFFFFF` | `--color-surface-default` (상속) | `#1C1D23` | 라인탭 컨테이너 배경 (구 `-bg`) |
 | `--color-navigation-label-default` | `--color-gray-600` | `#555555` | `--color-gray-dark-600` | `#55575F` (candidate) | 미선택 라벨 텍스트 |
-| `--color-navigation-label-selected` | `--color-action-primary-default` | `#1D6CEB` | `--color-action-primary-default` (상속) | `#3070D8` (candidate) | 선택 라벨 텍스트 |
+| `--color-navigation-label-selected` | `--color-blue-400` | `#1D6CEB` | `--color-blue-dark-300` | `#3070D8` (candidate) | 선택 라벨 텍스트 |
 | `--color-navigation-indicator-default` | `--color-gray-200` | `#D9D9D9` | `--color-gray-dark-300` | `#2E2F38` (candidate) | 탭 하단 구분선 |
-| `--color-navigation-indicator-selected` | `--color-action-primary-default` | `#1D6CEB` | `--color-action-primary-default` (상속) | `#3070D8` (candidate) | 선택 탭 하단 indicator |
+| `--color-navigation-indicator-selected` | `--color-blue-400` | `#1D6CEB` | `--color-blue-dark-300` | `#3070D8` (candidate) | 선택 탭 하단 indicator |
 
 ---
 
@@ -370,180 +363,10 @@ color-overlay   → 딤·오버레이
 
 ## 10. CSS 구현 참조
 
-```css
-/* ── Light (기본) ── */
-:root {
-  /* color-bg */
-  --color-bg-default:    #FAFAFA;
-  --color-bg-subtle:     #F5F5F5;
-  --color-bg-muted:      #E9E9E9;
-  --color-bg-elevated:   #E9E9E9;
-  --color-bg-home:       #F5F6FB;
-
-  /* color-surface */
-  --color-surface-default: #FFFFFF;
-  --color-surface-raised:  #FFFFFF;
-
-  /* color-text */
-  --color-text-primary:     #202020;
-  --color-text-secondary:   #353535;
-  --color-text-tertiary:    #555555;
-  --color-text-caption:     #757575;
-  --color-text-placeholder: #757575;
-  --color-text-helper:      #9D9D9D;
-  --color-text-link:        #1D6CEB;
-  --color-text-correct:     #1D6CEB;
-  --color-text-danger:      #FF4554;
-  --color-text-disabled:    #C4C4C4;
-  --color-text-readonly:    #757575;
-  --color-text-inverse:     #FFFFFF;
-
-  /* color-border */
-  --color-border-subtle:    #E9E9E9;
-  --color-border-default:   #D9D9D9;
-  --color-border-disabled:  #D9D9D9;
-  --color-border-strong:    #C4C4C4;
-  --color-border-emphasis:  #353535;
-  --color-border-focus:     #1D6CEB;
-  --color-border-white:     #FFFFFF;
-  --color-border-danger:    #FF4554;
-  --color-border-correct:   #1D6CEB;
-
-  /* color-icon */
-  --color-icon-default:  #757575;
-  --color-icon-muted:    #C4C4C4;
-  --color-icon-emphasis: #353535;
-  --color-icon-accent:   #1D6CEB;
-  --color-icon-inverse:  #FFFFFF;
-  --color-icon-danger:   #FF4554;
-
-  /* color-action */
-  --color-action-primary-default: #1D6CEB;
-  --color-action-primary-hover:   #2158C8;
-  --color-action-primary-pressed: #2747B9;
-  --color-action-primary-text:    #FFFFFF;
-  --color-action-primary-subtle:  #E2F1FF;
-
-  /* color-status */
-  --color-status-success: #1D6CEB;
-  --color-status-error:   #E50533;
-  --color-status-warning: #DBA400;
-  --color-status-info:    #757575;
-
-  /* color-form-control */
-  --color-form-control-bg-default:          var(--color-surface-default);  /* #FFFFFF */
-  --color-form-control-bg-disabled:         var(--color-bg-subtle);        /* #F5F5F5 */
-  --color-form-control-border-default:      var(--color-control-border-default);   /* #D9D9D9 — checkbox·radio와 동일 foundation */
-  --color-form-control-border-selected:     var(--color-border-focus);     /* #1D6CEB */
-  --color-form-control-border-error:        var(--color-status-error);     /* #E50533 */
-  --color-form-control-border-correct:      var(--color-border-focus);     /* #1D6CEB */
-  --color-form-control-border-disabled:     var(--color-border-subtle);    /* #F0F0F0 */
-  --color-form-control-text-default:        var(--color-text-secondary);   /* #353535 */
-  --color-form-control-text-placeholder:    var(--color-text-placeholder);  /* #757575 */
-  --color-form-control-text-disabled:       var(--color-text-disabled);    /* #BDBDBD */
-  --color-form-control-label-default:       var(--color-text-secondary);   /* #353535 — TimePicker select "시"/"분" 라벨 */
-  --color-form-control-label-disabled:      var(--color-text-disabled);    /* #BDBDBD */
-
-  /* color-text-state */
-  --color-text-state-helper:  var(--color-text-secondary);  /* #353535 */
-  --color-text-state-correct: #1D6CEB;  /* Figma confirmed: --color/text/state/correct = blue-400 */
-  --color-text-state-error:   var(--color-status-error);    /* #E50533 */
-
-  /* color-control-border (컨트롤 컴포넌트 전용 — Foundation 직접 참조) */
-  --color-control-border-default:  var(--color-gray-200);  /* #D9D9D9 */
-  --color-control-border-hover:    var(--color-blue-400);  /* #1D6CEB */
-  --color-control-border-selected: var(--color-blue-400);  /* #1D6CEB */
-  --color-control-border-disabled: var(--color-gray-300);  /* #C4C4C4 */
-
-  /* color-data (데이터 그리드/테이블 전용 — Figma: color/data/*) */
-  --color-data-state-default:  var(--color-base-white);    /* #FFFFFF — 행 기본 배경 */
-  --color-data-state-hover:    var(--color-blue-50);       /* #E2F1FF — 행 hover 배경 */
-  --color-data-state-selected: var(--color-blue-100);      /* #C8E4FF — 행 selected 배경 (hover보다 진함) */
-  --color-data-header-bg:      var(--color-gray-50);       /* #F5F5F5 — 헤더 배경 */
-  --color-data-border-light:   var(--color-gray-100);      /* #E9E9E9 — 행 구분선 */
-  --color-data-border-strong:  var(--color-gray-300);      /* #C4C4C4 — 헤더/외곽 강선 */
-
-  /* color-overlay */
-  --color-overlay: rgba(0, 0, 0, 0.5);
-}
-
-/* ── Dark ── */
-[data-theme="dark"] {
-  /* color-bg */
-  --color-bg-default:  #131418;
-  --color-bg-subtle:   #24252C;
-  --color-bg-muted:    #2E2F38;
-  --color-bg-elevated: #35363F;
-  --color-bg-home:     #131418;
-
-  /* color-surface */
-  --color-surface-default: #1C1D23;
-  --color-surface-raised:  #35363F;
-
-  /* color-text */
-  --color-text-primary:     #ECEDF0;
-  --color-text-secondary:   #B8BABF;
-  --color-text-tertiary:    #8A8C96;
-  --color-text-caption:     #8A8C96;
-  --color-text-placeholder: #55575F;
-  --color-text-helper:      #55575F;
-  --color-text-link:        #6FA5F8;
-  --color-text-correct:     #6FA5F8;
-  --color-text-danger:      #F06070;
-  --color-text-disabled:    #35363F;
-  --color-text-readonly:    #3E4049;
-  --color-text-inverse:     #FFFFFF;
-
-  /* color-border */
-  --color-border-subtle:   rgba(255, 255, 255, 0.04);
-  --color-border-default:  rgba(255, 255, 255, 0.07);
-  --color-border-disabled: rgba(255, 255, 255, 0.07);
-  --color-border-strong:   rgba(255, 255, 255, 0.12);
-  --color-border-emphasis: rgba(255, 255, 255, 0.20);
-  --color-border-focus:    #4285E8;
-  --color-border-white:    #FFFFFF;
-  --color-border-danger:   #F06070;
-  --color-border-correct:  #4285E8;
-
-  /* color-icon */
-  --color-icon-default:  #8A8C96;
-  --color-icon-muted:    #35363F;
-  --color-icon-emphasis: #B8BABF;
-  --color-icon-accent:   #6FA5F8;
-  --color-icon-inverse:  #FFFFFF;
-  --color-icon-danger:   #F06070;
-
-  /* color-action */
-  --color-action-primary-default: #3070D8;
-  --color-action-primary-hover:   #2A65C8;
-  --color-action-primary-pressed: #214EA0;
-  --color-action-primary-text:    #FFFFFF;
-  --color-action-primary-subtle:  #112B55;
-
-  /* color-status */
-  --color-status-success: #3FBE7E;
-  --color-status-error:   #F06070;
-  --color-status-warning: #E8C048;
-  --color-status-info:    #8A8C96;
-
-  /* color-text-state (dark) */
-  --color-text-state-correct: #3D9BF2;  /* blue-dark-400 — Figma dark correct text */
-
-  /* color-control-border (dark — candidate) */
-  --color-control-border-default:  var(--color-gray-dark-500);  /* #3E4049 — candidate */
-  --color-control-border-hover:    var(--color-blue-dark-300);  /* #3B82F6 — candidate */
-  --color-control-border-selected: var(--color-blue-dark-300);  /* #3B82F6 — candidate */
-  --color-control-border-disabled: var(--color-gray-dark-300);  /* #2E2F38 — candidate */
-
-  /* color-data (dark) */
-  --color-data-state-default:  var(--color-gray-dark-100); /* #1C1D23 — 다크 행 기본 (버그수정: white→dark) */
-  --color-data-state-hover:    var(--color-gray-dark-200); /* #24252C — vars-data 기준(다크 hover=회색) */
-  --color-data-state-selected: var(--color-blue-dark-100); /* #112B55 — vars-data 기준 */
-  --color-data-header-bg:      var(--color-gray-dark-200); /* #24252C — vars-data 기준 */
-  --color-data-border-light:   var(--color-gray-dark-300); /* #2E2F38 — 행 구분선 */
-  --color-data-border-strong:  var(--color-gray-dark-400); /* #35363F — 헤더/외곽 강선 */
-
-  /* color-overlay */
-  --color-overlay: rgba(0, 0, 0, 0.75);
-}
-```
+> ⚠️ **하드코딩 CSS 덤프 제거(2026-06-23).** 손으로 유지하던 3번째 사본이라 값이 정본과 반복적으로 어긋났다(드리프트 원인).
+>
+> **실제 구현 CSS의 단일 정본은 자동 생성물이다:**
+> - `assets/css/tokens.css` — `npm run tokens:gen` 으로 `vars-data.ts` 에서 생성 (Light/Dark 전체, Variables 정본)
+> - `pages/install-prompt.html` — 다운로드용 인라인 CSS (tokens.css 와 동기화)
+>
+> 위 §1~§8-3 표는 **역할·매핑 설명용**이며, 색상 값의 단일 정본은 `vars-data.ts → tokens.css` 다. (Gate 7 토큰값일치 검사기가 두 표면 일치를 강제)

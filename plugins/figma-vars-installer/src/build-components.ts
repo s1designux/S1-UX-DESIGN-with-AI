@@ -1663,29 +1663,24 @@ async function buildFilterChip(maps: BuildMaps, originY: number): Promise<{ set:
           comp.layoutMode = "VERTICAL"; comp.primaryAxisSizingMode = "AUTO"; comp.counterAxisSizingMode = "AUTO"; comp.itemSpacing = 8;
           comp.appendChild(chip);
           if (ss.open) {
-            const panel = figma.createFrame();
-            panel.name = "list";
-            panel.layoutMode = "VERTICAL"; panel.primaryAxisSizingMode = "FIXED"; panel.counterAxisSizingMode = "FIXED";
-            panel.paddingTop = 4; panel.paddingBottom = 4; panel.itemSpacing = 0; panel.cornerRadius = 4;
-            panel.resize(130, 3 * 32 + 8);
-            panel.fills = [boundPaint(scv(maps, "color/dropdown/list/bg"))];
-            panel.strokes = [boundPaint(scv(maps, "color/dropdown/list/border"))]; panel.strokeWeight = 1; panel.strokeAlign = "OUTSIDE";
-            const dropOpts = [
-              { txt: "최신순", bg: "selected", lb: "selected" },
-              { txt: "과거순", bg: "default",  lb: "default" },
-              { txt: "인기순", bg: "default",  lb: "default" },
-            ];
-            for (const o of dropOpts) {
-              const row = figma.createFrame();
-              row.name = "option";
-              row.layoutMode = "HORIZONTAL"; row.counterAxisAlignItems = "CENTER";
-              row.primaryAxisSizingMode = "FIXED"; row.counterAxisSizingMode = "FIXED";
-              row.resize(130, 32); row.paddingLeft = 12; row.paddingRight = 12;
-              row.fills = [boundPaint(scv(maps, `color/dropdown/option/bg/${o.bg}`))];
-              row.appendChild(await makeBoundText(o.txt, 14, "Regular", scv(maps, `color/dropdown/option/label/${o.lb}`)));
-              panel.appendChild(row);
+            // Dropdown 컴포넌트 인스턴스 재사용 (Select Box 패턴 동일, anatomy gate: "list" raw 프레임 금지)
+            // Filter Chip 사이즈 → Dropdown 사이즈 매핑: SM→XXSM(h28), MD→XSM(h34)
+            const chipToDd: Record<string, string> = { SM: "XXSM", MD: "XSM" };
+            const ddSize = chipToDd[sc.size] ?? "MD";
+            const ddKey = `Dropdown:${ddSize}:Default`;
+            let ddComp: ComponentNode | undefined = BUILT_COMPS[ddKey] ?? BUILT_COMPS["Dropdown:MD:Default"] ?? BUILT_COMPS["Dropdown:Default"];
+            if (!ddComp) {
+              const ddSet = await getBuiltSet("Dropdown");
+              if (ddSet) {
+                ddComp = (ddSet.children as ComponentNode[]).find(c => c.type === "COMPONENT" && c.name.includes(`Size=${ddSize}`))
+                  ?? (ddSet.children as ComponentNode[]).find(c => c.type === "COMPONENT");
+              }
             }
-            comp.appendChild(panel);
+            if (ddComp) {
+              const ddInst = ddComp.createInstance();
+              ddInst.name = "dropdown";
+              comp.appendChild(ddInst);
+            }
           }
           setLightMode(comp, maps);
           comps.push(comp);
@@ -2370,12 +2365,6 @@ async function buildGNB(maps: BuildMaps, originY: number): Promise<{ set: Compon
 // 정본: pages/components-new.html / Figma 540:3794(input)·540:4216(PC calendar).
 // 미결 HD(needs-decision): componentSetKey 미확정 · 모바일 인터랙션(bottom sheet vs inline) 미정 → 모바일 패널은 생성하지 않음.
 // 트리거는 Select 와 동일 구조(form-control), Open 상태에 PC 캘린더 패널을 부착.
-const DP_WEEKDAYS = [
-  { ch: "일", role: "sunday" }, { ch: "월", role: "p" }, { ch: "화", role: "p" }, { ch: "수", role: "p" },
-  { ch: "목", role: "p" }, { ch: "금", role: "p" }, { ch: "토", role: "saturday" },
-];
-// 샘플 달(6행). day=표시숫자, col=요일(0=일·6=토), kind=상태.
-type DpCell = { day: number; col: number; kind: "normal" | "other" | "today" | "selected" | "disabled" };
 
 // ── Calendar Cell / Calendar Tile (lazy-build 컴포넌트 세트) ───────────────────
 // V2.4 정본: calendar_cell(540:4167) · calendar_tile(540:4209), fileKey yE5UCFEbmXJBlYJWB24Lz2.
@@ -2569,74 +2558,9 @@ function dayKindToCellKey(kind: "normal" | "other" | "today" | "selected" | "dis
 }
 
 /** PC 캘린더 패널 프레임 (356px, auto-layout). 모든 color/date-picker/* 변수를 시연. */
-async function buildCalendarPanel(maps: BuildMaps): Promise<FrameNode> {
-  const dp = (k: string) => `color/date-picker/${k}`;
-  const calCell = await getOrBuildCalendarCell(maps); // day 그리드 = Calendar Cell 인스턴스
-  const CHEV_L = `<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M10 12L6 8l4-4" stroke="#000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
-  const CHEV_R = `<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M6 4l4 4-4 4" stroke="#000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
-  const CW = 308 / 7; // 콘텐츠폭(356 − 좌우24) ÷ 7 = 44
-
-  const panel = figma.createFrame();
-  panel.name = "calendar-panel";
-  panel.layoutMode = "VERTICAL"; panel.primaryAxisSizingMode = "FIXED"; panel.counterAxisSizingMode = "FIXED";
-  panel.paddingLeft = 24; panel.paddingRight = 24; panel.paddingTop = 20; panel.paddingBottom = 20; panel.itemSpacing = 0;
-  panel.cornerRadius = 4;
-  panel.fills = [boundPaint(scv(maps, dp("bg/panel")))];
-  panel.strokes = [boundPaint(scv(maps, dp("border/panel")))]; panel.strokeWeight = 1; panel.strokeAlign = "INSIDE";
-  panel.clipsContent = true;
-  panel.resize(356, 392);
-
-  // 헤더 (prev · 월라벨 · next) — SPACE_BETWEEN
-  const header = figma.createFrame(); header.name = "header"; header.fills = [];
-  header.layoutMode = "HORIZONTAL"; header.primaryAxisSizingMode = "FIXED"; header.counterAxisSizingMode = "FIXED";
-  header.primaryAxisAlignItems = "SPACE_BETWEEN"; header.counterAxisAlignItems = "CENTER";
-  panel.appendChild(header); header.layoutAlign = "STRETCH"; header.resize(308, 32);
-  header.appendChild(await makeIconInstance("chevron", scv(maps, dp("text/primary")), 0, CHEV_L, 180));
-  header.appendChild(await makeBoundText("2026.06", 24, "Bold", scv(maps, dp("text/primary"))));
-  header.appendChild(await makeIconInstance("chevron", scv(maps, dp("text/primary")), 0, CHEV_R, 0));
-
-  // 요일 행 — 7 셀 (일·토도 평일과 동일 색 text/secondary — 사용자 요청 2026-06-22, 주말 색 구분 제거)
-  const wkRow = figma.createFrame(); wkRow.name = "weekdays"; wkRow.fills = [];
-  wkRow.layoutMode = "HORIZONTAL"; wkRow.itemSpacing = 0; wkRow.primaryAxisSizingMode = "AUTO"; wkRow.counterAxisSizingMode = "AUTO";
-  panel.appendChild(wkRow);
-  for (const w of DP_WEEKDAYS) {
-    const role = "text/secondary"; // 전 요일 동일 색(주말 red/blue 구분 안 함)
-    const cell = figma.createFrame(); cell.name = "weekday"; cell.fills = [];
-    cell.layoutMode = "HORIZONTAL"; cell.primaryAxisAlignItems = "CENTER"; cell.counterAxisAlignItems = "CENTER";
-    cell.primaryAxisSizingMode = "FIXED"; cell.counterAxisSizingMode = "FIXED"; cell.resize(CW, 44);
-    cell.appendChild(await makeBoundText(w.ch, 16, "Medium", scv(maps, dp(role))));
-    wkRow.appendChild(cell);
-  }
-
-  // 6×7 그리드 (샘플 2026.06 = 1일 월요일 시작) — 상태 시연 셀 포함
-  const grid: DpCell[] = [];
-  grid.push({ day: 31, col: 0, kind: "other" }); // 첫 주 앞칸 = 전월(other)
-  let d = 1;
-  for (let cell = 1; cell < 42 && d <= 30; cell++) {
-    let kind: DpCell["kind"] = "normal";
-    if (d === 10) kind = "today"; else if (d === 17) kind = "selected"; else if (d === 25) kind = "disabled";
-    grid.push({ day: d, col: cell % 7, kind }); d++;
-  }
-  let nd = 1;
-  for (let cell = grid.length; cell < 42; cell++) { grid.push({ day: nd, col: cell % 7, kind: "other" }); nd++; }
-
-  for (let r = 0; r < 6; r++) {
-    const dayRow = figma.createFrame(); dayRow.name = "week"; dayRow.fills = [];
-    dayRow.layoutMode = "HORIZONTAL"; dayRow.itemSpacing = 0; dayRow.primaryAxisSizingMode = "AUTO"; dayRow.counterAxisSizingMode = "AUTO";
-    panel.appendChild(dayRow);
-    for (let c = 0; c < 7; c++) {
-      const g = grid[r * 7 + c];
-      // day = Calendar Cell 인스턴스(Standard). other-month = Standard:Disabled 매핑(V2.4 미존재 — 보고).
-      const inst = await calCellInstance(calCell, dayKindToCellKey(g.kind), g.day);
-      dayRow.appendChild(inst);
-    }
-  }
-  return panel;
-}
-
 // ── Calendar (독립 컴포넌트 세트 — State=Date/Year/Month) ────────────────────
 // Figma 540:4216 기준. 크기: 356×352. Date=달력 그리드, Year=연도 타일(4×3), Month=월 타일(4×3).
-// DatePicker Open 패널(buildCalendarPanel)과 별도 — 상태 전환 스펙 전용 독립 세트.
+// Date Picker Open 상태가 이 세트의 State=Date 인스턴스를 부착(anatomy gate: "calendar-panel" raw 프레임 금지).
 async function buildCalendar(maps: BuildMaps, originY: number): Promise<{ set: ComponentSetNode; bottomY: number }> {
   const dp  = (k: string) => `color/date-picker/${k}`;
   // Calendar Cell / Tile 선행 빌드(lazy) — day 그리드·연월 타일을 인스턴스로 사용.
@@ -2774,6 +2698,10 @@ async function buildCalendar(maps: BuildMaps, originY: number): Promise<{ set: C
   const set = figma.combineAsVariants([dateComp, yearComp, monthComp], figma.currentPage);
   set.name = "Calendar";
   set.x = 0; set.y = originY;
+  // Date Picker Open 상태가 인스턴스로 참조 — anatomy gate: "calendar-panel" raw 프레임 금지
+  BUILT_COMPS["Calendar:Date"]  = dateComp;
+  BUILT_COMPS["Calendar:Year"]  = yearComp;
+  BUILT_COMPS["Calendar:Month"] = monthComp;
   BUILT_SETS["Calendar"] = set;
 
   const opts: SpecOpts = {
@@ -2824,7 +2752,22 @@ async function buildDatePicker(maps: BuildMaps, originY: number): Promise<{ set:
       comp.layoutMode = "VERTICAL"; comp.primaryAxisSizingMode = "AUTO"; comp.counterAxisSizingMode = "AUTO"; comp.itemSpacing = 8;
       comp.appendChild(trigger);
       // 캘린더 패널은 사이즈 불변(356px 단일) — MD·PC Open 1곳에만 부착(사이즈마다 중복 방지). 모바일 bottom-sheet 는 HD 미결.
-      if (st.open && sc.size === "MD" && sc.brk === "PC") comp.appendChild(await buildCalendarPanel(maps));
+      // Calendar 컴포넌트 인스턴스 재사용 (anatomy gate: "calendar-panel" raw 프레임 금지)
+      if (st.open && sc.size === "MD" && sc.brk === "PC") {
+        let calComp: ComponentNode | undefined = BUILT_COMPS["Calendar:Date"];
+        if (!calComp) {
+          const calSet = await getBuiltSet("Calendar");
+          if (calSet) {
+            calComp = (calSet.children as ComponentNode[]).find(c => c.type === "COMPONENT" && c.name.includes("State=Date"))
+              ?? (calSet.children as ComponentNode[]).find(c => c.type === "COMPONENT");
+          }
+        }
+        if (calComp) {
+          const calInst = calComp.createInstance();
+          calInst.name = "calendar";
+          comp.appendChild(calInst);
+        }
+      }
       setLightMode(comp, maps);
       comps.push(comp);
       cells.push({ comp, size: sc.size, brk: sc.brk, state: st.name });
@@ -3519,7 +3462,7 @@ export async function buildAllComponents(
   // 카테고리별로 연속 세로 밴드를 차지하므로 섹션끼리 겹치지 않는다.
   const CATEGORIES: { name: string; members: string[] }[] = [
     { name: "Actions",    members: ["Button"] },
-    { name: "Selection",  members: ["Checkbox", "Radio", "Toggle", "Chip", "Filter Chip"] },
+    { name: "Selection",  members: ["Checkbox", "Radio", "Toggle", "Chip"] },
     { name: "Navigation", members: ["Line Tab", "GNB Utility Icon", "Language Icon", "GNB", "Pagination"] },
     { name: "Platform",   members: ["Platform/StatusBar", "Platform/NavBar", "CI", "Platform/LoginGNB", "Platform/WebTabBar", "Footer"] },
     // Form 계열은 폭이 커서 좌측 스택 뒤에 빌드(좌측 스택 중간 빈칸 방지) 후 우측 별도 컬럼으로 이동.
@@ -3528,7 +3471,7 @@ export async function buildAllComponents(
     //   Form          : 순수 입력 컨트롤 (의존: Dropdown List → Dropdown → Select Box)
     //   Date Picker   : 날짜 계열 (Calendar Cell/Tile = Core → Calendar/Date Picker = Pattern)
     //   Time Picker   : 시간 계열 (Time Picker Cell/Dropdown = Core → Time Picker = Pattern)
-    { name: "Form",        members: ["Input", "Search Input", "Text Area", "Dropdown List", "Dropdown", "Select Box"] },
+    { name: "Form",        members: ["Input", "Search Input", "Text Area", "Dropdown List", "Dropdown", "Filter Chip", "Select Box"] },
     { name: "Date Picker", members: ["Calendar Cell", "Calendar Tile", "Calendar", "Date Picker"] },
     { name: "Time Picker", members: ["Time Picker Cell", "Time Picker Dropdown", "Time Picker"] },
     // Table 은 Checkbox(Selection)·Pagination(Navigation)·SelectBox(Form) 인스턴스를 재사용하므로
