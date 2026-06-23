@@ -1428,6 +1428,13 @@ async function buildTableCell(maps: BuildMaps, originY: number): Promise<{ set: 
   const set = figma.combineAsVariants(comps, figma.currentPage);
   set.name = "Table Cell";
   set.x = 0; set.y = originY;
+  // Table 에서 인스턴스 재사용 — BUILT_COMPS 등록 (Table.makeTableRow 가 이 키로 조회)
+  for (const { comp, row, col } of cells) {
+    const size = sizes[row].size;        // "SMALL" | "MEDIUM"
+    const v    = variants[col];           // { type, state, … }
+    BUILT_COMPS[`TableCell:${size}:${v.type}:${v.state}`] = comp;
+  }
+  BUILT_SETS["Table Cell"] = set;
   const opts: SpecOpts = {
     title: "Table Cell",
     colHeaders: variants.map((v) => v.head),
@@ -1448,40 +1455,75 @@ async function buildTable(maps: BuildMaps, originY: number): Promise<{ set: Comp
   const W = 828;
   const FOOTER_H = 44;
 
-  async function makeTableRow(h: number, font: number, isHeader: boolean, state: string, ri: number): Promise<FrameNode> {
+  // sizeKey: "MEDIUM"(MD) | "SMALL"(SM) — BUILT_COMPS["TableCell:SIZE:TYPE:STATE"] 조회키
+  async function makeTableRow(h: number, sizeKey: string, isHeader: boolean, state: string, ri: number): Promise<FrameNode> {
     const row = figma.createFrame();
     row.name = isHeader ? "header" : `row-${ri + 1}`;
     row.resize(W, h);
-    const bgKey = isHeader ? "color/table/header/bg"
-      : state === "Hover" ? "color/table/cell/hover"
+    row.fills = [];  // 배경은 각 셀 인스턴스가 담당
+
+    const colTexts = isHeader
+      ? ["항목명", "항목명 (정렬)", "수량", "관리"]
+      : state === "Hover"     ? ["Hover 행",    "카테고리 A", "56", "검토중"]
+      : state === "Selected"  ? ["Selected 행", "카테고리 B", "33", "완료"]
+      : [`항목 ${ri + 1}`, "카테고리 C", `${(ri + 1) * 10}`, "활성"];
+    const cellType  = isHeader ? "Header" : "Cell";
+    const cellState = isHeader ? "Default" : state;  // Header 는 항상 Default 변형
+
+    // ── COL[0] 체크박스 컬럼 (48px) — Table Cell 미사용(텍스트 없는 전용 컬럼) ──
+    const chkBg = isHeader ? "color/table/header/bg"
+      : state === "Hover"    ? "color/table/cell/hover"
       : state === "Selected" ? "color/table/cell/selected"
       : "color/table/cell/default";
-    row.fills = [boundPaint(scv(maps, bgKey))];
-    // 체크박스 — Checkbox 컴포넌트 인스턴스 재사용 (Core Component Reuse Rule)
+    const chkFrame = figma.createFrame();
+    chkFrame.name = "col-check"; chkFrame.resize(COL[0], h);
+    chkFrame.fills = [boundPaint(scv(maps, chkBg))];
     const chkState = isHeader ? "Default" : state === "Selected" ? "Checked" : state === "Hover" ? "Hover" : "Default";
     const chkComp = BUILT_COMPS[`Checkbox:${chkState}`];
     if (chkComp) {
-      const chkInst = chkComp.createInstance();
-      row.appendChild(chkInst);
-      chkInst.x = (COL[0] - chkInst.width) / 2; chkInst.y = (h - chkInst.height) / 2;
+      const ci = chkComp.createInstance();
+      chkFrame.appendChild(ci);
+      ci.x = (COL[0] - ci.width) / 2; ci.y = (h - ci.height) / 2;
     }
-    // 텍스트 컬럼들
-    const colTexts = isHeader
-      ? ["항목명", "항목명 (정렬)", "수량", "관리"]
-      : state === "Hover" ? ["Hover 행", "카테고리 A", "56", "검토중"]
-      : state === "Selected" ? ["Selected 행", "카테고리 B", "33", "완료"]
-      : [`항목 ${ri + 1}`, "카테고리 C", `${(ri + 1) * 10}`, "활성"];
-    const textKey = isHeader ? "color/text/body/secondary" : "color/text/body/primary";
+    const chkBdr = figma.createRectangle(); chkBdr.resize(COL[0], 1);
+    chkBdr.fills = [boundPaint(scv(maps, isHeader ? "color/table/border/strong" : "color/table/border/default"))];
+    chkFrame.appendChild(chkBdr); chkBdr.x = 0; chkBdr.y = h - 1;
+    row.appendChild(chkFrame); chkFrame.x = 0; chkFrame.y = 0;
+
+    // ── COL[1..4] 텍스트 컬럼 — Table Cell 인스턴스 재사용 ──────────────────
+    const font = sizeKey === "MEDIUM" ? 14 : 13;  // fallback 전용
     let xOff = COL[0];
-    for (let k = 0; k < colTexts.length; k++) {
-      const t = await makeBoundText(colTexts[k], font, isHeader ? "Medium" : "Regular", scv(maps, textKey));
-      row.appendChild(t); t.x = xOff + 12; t.y = Math.max(0, (h - t.height) / 2);
-      xOff += COL[k + 1];
+    for (let k = 0; k < 4; k++) {
+      const colW   = COL[k + 1];
+      const cellComp = BUILT_COMPS[`TableCell:${sizeKey}:${cellType}:${cellState}`];
+      if (cellComp) {
+        const cellInst = cellComp.createInstance();
+        cellInst.resize(colW, h);
+        // 텍스트 오버라이드 — 기본 "1층 정문" → 컬럼별 실제 레이블
+        try {
+          const tn = cellInst.findOne((n: SceneNode) => n.type === "TEXT") as TextNode | null;
+          if (tn) { await figma.loadFontAsync(tn.fontName as FontName); tn.characters = colTexts[k]; }
+        } catch (_) { /* mock 환경 no-op */ }
+        row.appendChild(cellInst);
+        (cellInst as any).x = xOff; (cellInst as any).y = 0;
+      } else {
+        // Fallback: Table Cell 미등록 시 plain frame(Table Cell 단독 선택 실행 등)
+        const cf = figma.createFrame(); cf.name = `col-${k + 1}`; cf.resize(colW, h);
+        const bgKey = isHeader ? "color/table/header/bg"
+          : state === "Hover"    ? "color/table/cell/hover"
+          : state === "Selected" ? "color/table/cell/selected"
+          : "color/table/cell/default";
+        cf.fills = [boundPaint(scv(maps, bgKey))];
+        const textKey = isHeader ? "color/text/body/secondary" : "color/text/body/primary";
+        const t = await makeBoundText(colTexts[k], font, isHeader ? "Medium" : "Regular", scv(maps, textKey));
+        cf.appendChild(t); t.x = 16; t.y = Math.max(0, (h - t.height) / 2);
+        const bdr = figma.createRectangle(); bdr.resize(colW, 1);
+        bdr.fills = [boundPaint(scv(maps, isHeader ? "color/table/border/strong" : "color/table/border/default"))];
+        cf.appendChild(bdr); bdr.x = 0; bdr.y = h - 1;
+        row.appendChild(cf); (cf as any).x = xOff; (cf as any).y = 0;
+      }
+      xOff += colW;
     }
-    // 하단 보더
-    const bdr = figma.createRectangle(); bdr.resize(W, 1);
-    bdr.fills = [boundPaint(scv(maps, isHeader ? "color/table/border/strong" : "color/table/border/default"))];
-    row.appendChild(bdr); bdr.x = 0; bdr.y = h - 1;
     return row;
   }
 
@@ -1543,8 +1585,8 @@ async function buildTable(maps: BuildMaps, originY: number): Promise<{ set: Comp
   }
 
   const sizes = [
-    { size: "MD", h: 44, font: 14 },
-    { size: "SM", h: 38, font: 13 },
+    { size: "MD", sizeKey: "MEDIUM", h: 44 },
+    { size: "SM", sizeKey: "SMALL",  h: 38 },
   ];
   // 8개 바디 행: Default·Hover·Selected·Default×5
   const ROW_STATES = ["Default", "Hover", "Selected", "Default", "Default", "Default", "Default", "Default"];
@@ -1555,11 +1597,11 @@ async function buildTable(maps: BuildMaps, originY: number): Promise<{ set: Comp
     comp.name = `Size=${sc.size}`; comp.resize(W, 10); comp.fills = [];
     let y = 0;
     // 헤더 행
-    const header = await makeTableRow(sc.h, sc.font, true, "Header", 0);
+    const header = await makeTableRow(sc.h, sc.sizeKey, true, "Header", 0);
     comp.appendChild(header); header.x = 0; header.y = y; y += sc.h;
     // 8개 바디 행
     for (let ri = 0; ri < 8; ri++) {
-      const row = await makeTableRow(sc.h, sc.font, false, ROW_STATES[ri], ri);
+      const row = await makeTableRow(sc.h, sc.sizeKey, false, ROW_STATES[ri], ri);
       comp.appendChild(row); row.x = 0; row.y = y; y += sc.h;
     }
     // 푸터 (페이지네이션 + 셀렉박스)
