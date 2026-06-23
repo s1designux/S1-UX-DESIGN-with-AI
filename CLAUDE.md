@@ -22,6 +22,7 @@
 
 | 날짜 | 변경 내용 (한 줄) |
 |------|------------------|
+| 2026-06-23 | **Gate 15 토큰네이밍 검사기 신설**(+ Gate 14 Footer 문서화) — 기준이 산문으로만 있고 토큰 **이름**을 검사하는 게이트 부재로 레거시명·우회 별칭이 정본 유입(navigation/background·icon/brand-ci·고아 table/border/emphasis). 산문→기계 정본 `registry/governance/naming-rules.json`(bg·brand-in-semantic 금지·kebab) + `token-naming-check.js`로 커밋 차단. 동시에 기준 정합: navigation/background→**bg**·table/border/light→**default**·emphasis 삭제·icon/brand-ci 별칭 제거+빌더 Foundation `brand/ci` 직바인딩(BuildMaps.foundationColor 신설). semantic.md 그룹A 23종 제거·그룹B 개명. 🤖 component-verifier 구조검증 통과·전 게이트(1~15) 통과 |
 | 2026-06-19 | **CLAUDE.md 다이어트**(토큰 절감) — 완료된 휴면 MVP 상세 규칙(Portal/Harness·Source Guard·Input·Token Mapping/Sync/Legacy) 4개를 `.claude/docs/*-rules.md`로 분리하고 본문엔 "작업 트리거→참조 문서" 포인터 표만 유지. 미결목록은 완료 스텁 제거·활성 9건만. 112k→86k자(~6.5천 토큰↓/매 세션). 규칙 손실 0(활성 전부 유지·포인터로 즉시 로드). 전 게이트 통과 |
 | 2026-06-19 | 설치기 **라이트 스펙 프레임 미생성**(buildSpec·buildGroupedSpec·TPD States) — 원본 세트가 곧 Light 기준이라 중복 → 컴포넌트당 [원본(Light) + Spec Dark]만. Dark는 원본 우측(offsetX+W+80)으로 밀착해 빈 라이트 컬럼 제거(공간 절약, 사용자 결정). footprint에 "Spec Light" 유지→재설치 시 옛 라이트 자동 정리. Core 페이지 기존 라이트 스펙 21개 수동 삭제 완료. tsc·전 게이트 통과 |
 | 2026-06-19 | 설치기 스펙 레이아웃 정리 — 스펙 행을 **상단정렬+적응높이**(라벨↔컴포넌트 밀착·빈공간 제거, renderFlat/renderGrouped)·DatePicker 열폭 380(Open 캘린더 356 침범 방지)·**GNB 바 세로 1열 나열+폭 1920**. 상위 배치(Shell 좌측·열 간격·1920 프레이밍)는 사용자가 Figma 수동 배치→위치 읽어 생성기에 저장 예정(saved-layout). 빌드·키체크·전 게이트 통과(렌더는 사용자 재실행 확인) |
@@ -1248,6 +1249,20 @@ Claude는 **Main Orchestrator**다. 사용자는 **목표 수준 의도**만 준
 **책임 분리 최종형:** 빌드 = ⭐(강결합 잔손질) 또는 🏗️/코드 에이전트(독립 대형) · **검증 = 🤖 component-verifier (D)** · **집행 = Gate 13 + pre-commit 훅**. 빌드는 누가 하든, **검증만큼은 절대 빌드자 혼자가 아니게** 기계 강제. (빌드까지 무조건 위임이 아니라 — 강결합 잔손질은 ⭐ 직접이 더 빠르고 정확. 비양도 핵심은 **검증 분리**다.)
 **도입 사유:** 2026-06-19 사용자가 "설치기 9개 이슈 변경이 전부 ⭐ 혼자 — 왜 여전히 혼자 다 하나, 빌드 에이전트(🏗️)는 뭐하나"라고 지적. 진단: figma-library-builder(🏗️)는 Figma **캔버스** 빌드(use_figma)만 담당해 **설치기 생성기 코드는 담당 빌더가 비어 ⭐ 기본값**이었고, 위임은 양심 의존(강제 부재)이라 조용히 self-certify 됨. 도입 즉시 독립 검증자가 **Input 스펙 시트 빈칸 버그**(`opts.platforms` 사이즈 라벨이 cells 키와 불일치 — Issue 8 리네임 잔재 XSMALL/SMALL/MEDIUM, `cellAt` 직매칭 실패로 PC·Mobile 통째 빈칸)를 적발 — 토큰 게이트 전부 ✅였던 시각 사각지대. self-certify였으면 유출됐을 클래스를 커밋 단계에서 차단.
 
+### Gate 14: Footer Content (2026-06-22 신설)
+**파일:** `scripts/footer-content-check.js` (`npm run footer:check`)
+**트리거:** 풋터 콘텐츠(법인정보·링크·카피라이트) 관련 파일 / 항상(gate:check 포함)
+**역할:** 풋터의 법인정보·약관링크·카피라이트가 **검증된 정본 `registry/content/footer.json`** 과 verbatim 일치하는지 강제. 대표이사·주소·사업자번호 등 **임의 작성/날조 텍스트** 재유입을 커밋 단계 차단.
+**도입 사유:** 법인·법적·브랜드 텍스트는 검증된 원본만 써야 하는데(임의 작성 금지), 이를 강제하는 장치가 없었음 → 정본 대조 게이트로 날조 차단.
+
+### Gate 15: Token Naming Convention (2026-06-23 신설)
+**파일:** `scripts/token-naming-check.js` (`npm run tokens:namingcheck`)
+**트리거:** `vars-data.ts` 변경 / 항상(gate:check 포함)
+**자동 스크립트:** `npm run tokens:namingcheck` · `npm run gate:check` (Gate 15 섹션)
+**역할:** vars-data.ts 의 토큰 **이름**(Figma 변수 경로)이 **`registry/governance/naming-rules.json`** 의 네이밍 규칙을 지키는지 기계 판정. 기존 14개 게이트는 토큰의 **값·구조·존재**만 검사하고 **이름**은 사각지대였음.
+**방법:** vars-data 의 `color/…`(Semantic Color)·숫자 Semantic 키를 추출해 규칙 적용 — ①`no-background-segment`(배경은 `background`아닌 `bg`) ②`no-brand-in-semantic`(`color/*`에 brand 별칭 금지, 브랜드는 Foundation 직바인딩) ③`kebab-case-segment`(세그먼트 kebab, 상태구분자 `--` 허용). 위반 시 커밋 차단. 새 규칙은 `naming-rules.json` 의 `rules` 에 한 줄 추가.
+**도입 사유:** 2026-06-23 사용자가 "기준 세워놨는데 왜 안 지켜지나, 토큰을 마음대로 만들지 마라"고 지적. 진단: 네이밍 기준이 CLAUDE.md **산문**으로만 있고 이름을 검사하는 게이트 부재 → 레거시 일괄수입(`navigation/background` — 45개 `-bg` 관례 위반)·빌더 우회 별칭(`color/icon/brand-ci` — 브랜드는 Foundation 소관)·고아 토큰(`table/border/emphasis` 미사용)이 정본에 무사통과. 산문 기준을 **기계 정본(naming-rules.json)** 으로 옮기고 커밋 단계 강제. 도입 즉시 navigation/background→bg·table/border/light→default·icon/brand-ci 제거로 위반 0 달성, 적발력 검증(위반 주입→차단) 완료.
+
 ## Gate 실행 순서
 
 ```
@@ -1266,9 +1281,11 @@ Claude는 **Main Orchestrator**다. 사용자는 **목표 수준 의도**만 준
   11. Gate 11 (Component Anatomy) — build-components.ts 변경 시 / 항상. 상태별 필수 하위 요소(caret·remove 등) 생성 여부 강제(구조 사각지대)
   12. Gate 12 (Icon Instance Policy) — build-components.ts 변경 시 / 항상. 아이콘=라이브러리 인스턴스 강제, 벡터 직삽입은 allow 마커 필수
   13. Gate 13 (Installer Build Verification) — build-components.ts 변경 시 / 항상. 내용이 독립 검증(component-verifier) 거쳤는지 해시로 강제. ⭐ 단독 빌드+자가검증 차단
+  14. Gate 14 (Footer Content) — 풋터 콘텐츠 / 항상. 법인정보·링크·카피라이트가 정본(footer.json)과 verbatim 일치, 날조 텍스트 차단
+  15. Gate 15 (Token Naming Convention) — vars-data.ts 변경 시 / 항상. 토큰 이름이 naming-rules.json 규칙(bg·brand-in-semantic 금지·kebab) 준수하는지 강제. 레거시명·우회 별칭 유입 차단
 ```
 
-스크립트 일괄 실행: `npm run gate:check` (Gate 1 + 3 + 4 + 6 + 7 + 8 + 9 + 10 + 11 + 12 + 13 자동)
+스크립트 일괄 실행: `npm run gate:check` (Gate 1 + 3 + 4 + 6 + 7 + 8 + 9 + 10 + 11 + 12 + 13 + 14 + 15 자동)
 
 > **Gate 10 (doc-token-ref-check):** 토큰을 rename/remove 하면 옛 이름을 쥔 가이드 문서가 자동 적발된다. **정본 rename 시 `registry/tokens/deprecated-tokens.json` 의 `renamedGroups` 에 `{from,to}` 한 줄 추가**하면 이후 게이트가 전 활성 페이지에서 잔재를 차단(Check B). `--color-*` 참조 존재성은 Check A(경고)로 가시화. 단독 실행 `npm run docs:tokencheck`. `components.html`(폐기 예정)은 검사 제외.
 
