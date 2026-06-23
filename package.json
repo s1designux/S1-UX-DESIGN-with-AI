@@ -8,6 +8,7 @@
     "icons:export": "node scripts/export-icons-png.js",
     "icons:export-section": "node scripts/export-icons-png.js --section",
     "icons:update-data": "node scripts/update-icons-data-to-png.js",
+    "icons:zip": "node scripts/build-icons-zip.js",
     "reports:sync": "node scripts/reports-sync.js",
     "reports:check": "node scripts/reports-check.js",
     "build": "npm run reports:sync && npm run build:bundle",
