@@ -146,6 +146,12 @@ npm run harness:audit          # scripts/harness-audit.js — 사이즈 분기·
   3. **결과 표를 4-verification.md 에 필수 기록**(token-binding-scan §3). 표 없으면 HOLD.
   - 판정: **EXACT + 허용편차 미명시 → ❌(a) 토큰 바인딩 필수.** EXACT + 허용편차에 [노드명+속성유형] 명시 → 🟡(b). APPROX → ❓(c). (아래 §raw hex (b) 우회 2단계 잠금과 동일.)
   - 기존 인스턴스/토큰 컴포넌트 바인딩이 보존됐나도 함께 확인.
+- **폰트 일관성 (필수 — 데이터 스캔, 렌더 판정 금지)** — `.claude/skills/figma-library-build/references/figma-font-scan.md` 의 스캔을 **실제 실행**한다. 세트 내 **전 TEXT 노드**의 `getStyledTextSegments(['fontName'])` 를 읽어 비-canonical(≠Pretendard) family 0건인지 판정(정본 `registry/governance/figma-font-policy.json`).
+  1. **비-Pretendard 폰트 1건이라도 = ❌(a).** author/override 라벨을 Noto 등으로 덮어쓰고 텍스트 스타일 재바인딩을 빠뜨린 클래스(2026-06-24 datepicker 유출)를 차단. 허용편차(b)로 빼지 말 것.
+  2. **렌더로 판정 금지** — MCP 렌더는 Pretendard 미설치라 Noto/Pretendard 를 둘 다 대체폰트로 그려 구분 불가. 노드 데이터(fontName/textStyleId)만 신뢰.
+  3. **추출 0건(textCount=0) = ⚠️ NOT_VERIFIED**(✅ 아님 — selector 부패). 세트 id 재확인 후 재스캔.
+  4. **결과(textCount·offenderCount·offenders)를 4-verification.md 에 필수 기록.** 표 없으면 HOLD.
+  - author/override 라벨은 `boundStyle ≠ (none)`(텍스트 스타일 바인딩) 권장 — raw 폰트는 재편집 시 재파손 위험.
 - **순환 참조 0** — 어떤 variant도 같은 세트의 형제 variant 인스턴스를 품지 않는가(품었으면 ❌ — detach 누락).
 - **네이밍** — 슬래시 폴더·PascalCase·기존 컨벤션과 충돌 없나. 계획 외 이름 생성 없나.
 - **기존 인스턴스 무결성** — 변형세트화/리네임 후 기존 화면의 인스턴스가 깨지지 않고 올바른 variant로 remap됐나(node-map의 remap 기록 + 대표 인스턴스 1~2개 실측).
@@ -155,7 +161,9 @@ npm run harness:audit          # scripts/harness-audit.js — 사이즈 분기·
 - **각 variant를 `get_screenshot`** 으로 떠서 원본/의도와 시각 대조(글리프·정렬·치수 — §시각 매칭 2대 원리 그대로). 패킹 후에도 variant 내부 레이아웃이 안 깨졌나.
 - 빌더가 보고한 `needs-decision`·비운 컨테이너(빈 Section 등)를 ❓/보고로 올린다(임의 PASS 금지).
 
-**두갈래 적용:** variant 구성·아이콘/이미지 원본·토큰 바인딩 구조·순환참조 = **정확 대조(항상 ❌)**. 색값·치수·타이포 = 두갈래((a)/(b)/(c)). 허용편차 선언서 항목은 (b)로 제외.
+**두갈래 적용:** variant 구성·아이콘/이미지 원본·토큰 바인딩 구조·순환참조·**폰트 정체성** = **정확 대조(항상 ❌)**. 색값·치수·타이포 = 두갈래((a)/(b)/(c)). 허용편차 선언서 항목은 (b)로 제외.
+
+> **폰트 일관성 스캔은 (B) screen-rebuild 검증에도 동일 적용된다.** use_figma 로 캔버스에 author/override 한 텍스트가 있는 모든 빌드 결과는 위 폰트 일관성(데이터 스캔, figma-font-scan.md) 검증을 거친다 — 정본 `registry/governance/figma-font-policy.json`. (B)의 텍스트 정확일치(characters) 검증과 별개로 **폰트 family**를 데이터로 확인한다.
 
 > ### 🚫 raw hex (b) 우회 2단계 잠금 (2026-06-19 신설 — WebTabBar 사후 차단)
 > raw hex 잔류를 (b) 허용편차로 통과시키려면 **아래 두 조건을 순서대로 통과**해야 한다. 하나라도 실패하면 (b) 금지 — ❌(a) 또는 ❓(c)로 처리한다.

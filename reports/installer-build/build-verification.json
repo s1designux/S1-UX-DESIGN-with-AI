@@ -1,9 +1,9 @@
 {
   "sourceFile": "plugins/figma-vars-installer/src/build-components.ts",
-  "sourceHash": "sha256:0ab2ffc3acae7cb83089ba9a6dfb0b9bd52020e4f46447613d9385828690be18",
-  "verifiedBy": "orchestrator",
+  "sourceHash": "sha256:e981bbbd714b6dde00ccd93cb6cdb3af64ead4babb215c252d8c3ea9c1faa2bc",
+  "verifiedBy": "component-verifier",
   "verdict": "pass",
-  "changeType": "mechanical",
-  "verifiedAt": "2026-06-24T04:57:21.433Z",
-  "notes": ""
+  "changeType": "structural",
+  "verifiedAt": "2026-06-24T06:54:15.812Z",
+  "notes": "Orchestrator loop decoupling: display order (members) != build order (BUILD_DEPENDENCIES topo via buildOrderFor). Adversarial verify PASS. (1) buildOrderFor(Form Control)=Input>Search>TextArea>DropdownList>Dropdown>SelectBox (element-first, stable, set/len preserved); deps-free cats (Selection/Table/DatePicker) keep member order; Time Picker=TPD>TimePicker>Cell. No cycle/loss. (2) Producer-before-consumer satisfied: SelectBox(Open)<-Dropdown<-DropdownList chain fixed; Filter Chip(cat11)/Table(cat10) consume Dropdown/SelectBox built in Form Control(cat7) via flat category order; TPD self-builds its cells (buildTimePickerCell internal); Table>TableCell order unchanged from HEAD (pre-existing, not introduced). (3) layout pass: footprint()+absBBox() shift each footprint(set+Spec L/D) by dy together (relative pos preserved); Array.isArray(page.children) mock guard = no-op under keycheck/anatomy/render (verified no crash). (4) Display order via render.js: Form Control=Input,Search,Text Area,Select Box,Dropdown,Dropdown List confirmed; all other categories unchanged. (5) Select Box=32 options, Filter Chip=96 options. KEY: this change FIXES a real HEAD bug — at HEAD Select Box rendered 0 dropdown options (built before its Dropdown dep); now 32. (6) 33 sets build clean, 0 warn/err. Gates: keycheck/anatomy/iconpolicy/installer-coverage all PASS. tsc 3 errors pre-existing at HEAD (flat lib-target + 2 implicit-any), 0 new; esbuild prod build unaffected. NOT verified by me: actual Figma canvas render (layout pass dy packing) — code-level only, no visual."
 }

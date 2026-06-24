@@ -42,6 +42,7 @@ const SEMANTIC_COLOR = vars.SEMANTIC_COLOR;
 const FOUNDATION_NUMBER = vars.FOUNDATION_NUMBER;
 
 const bc = bundleRequire(BC, "bc");
+const COMPONENT_CATEGORIES_GRID = bc.COMPONENT_CATEGORIES_GRID;
 const COMPONENT_CATEGORIES = bc.COMPONENT_CATEGORIES;
 
 // ── 토큰 → hex (Light/Dark). semantic → foundation 1~2 hop 재귀 해석 ───────
@@ -385,31 +386,42 @@ async function main() {
   }
 
   const sectionsFor = (mode) => {
-    // COMPONENT_CATEGORIES를 기준으로 그룹 헤더 생성
+    // COMPONENT_CATEGORIES_GRID를 기준으로 행별 배치
     let html = "";
-    for (const category of COMPONENT_CATEGORIES) {
-      // 이 카테고리에 속한 세트들 찾기
-      const categorySetNames = new Set(category.members);
-      const categorySets = sets.filter(s => categorySetNames.has(s.name));
+    for (const row of COMPONENT_CATEGORIES_GRID) {
+      html += `\n    <div class="comp-row">\n`;
+      for (const category of row) {
+        // 이 카테고리에 속한 세트들 찾기 — members(표시) 순서로 정렬.
+        //   빌드(생성)는 의존성 순서(요소 먼저)라 sets 기록 순서 ≠ 표시 순서.
+        //   표시는 항상 "메인 컴포넌트 → 요소 컴포넌트"(members 배열) 순서로 나열한다.
+        const categorySetNames = new Set(category.members);
+        const categorySets = sets
+          .filter(s => categorySetNames.has(s.name))
+          .sort((a, b) => category.members.indexOf(a.name) - category.members.indexOf(b.name));
 
-      if (categorySets.length === 0) continue; // 세트가 없으면 스킵
+        if (categorySets.length === 0) {
+          html += `      <div class="comp-row-item comp-row-item-empty"></div>\n`;
+          continue; // 세트가 없으면 빈 자리 표시
+        }
 
-      // 카테고리 헤더 (PC/Mobile처럼 상단 타이틀 바)
-      html += `\n    <section class="comp-group">\n      <div class="comp-group-header">\n        <span class="comp-group-title">${esc(category.name)}</span>\n      </div>\n`;
+        // 카테고리 헤더 (PC/Mobile처럼 상단 타이틀 바)
+        html += `\n      <div class="comp-row-item">\n        <section class="comp-group">\n          <div class="comp-group-header">\n            <span class="comp-group-title">${esc(category.name)}</span>\n          </div>\n`;
 
-      // 카테고리 내 각 세트
-      for (const set of categorySets) {
-        html += `
-      <section class="comp-subsection">
-        <div class="comp-subsection-header">
-          <span class="comp-subsection-title">${esc(set.name)}</span>
-          <span class="comp-badge">${set.children.length} variants</span>
-          <span class="comp-meta">build-components.ts 자동 생성 · 손편집 금지</span>
-        </div>
-        ${renderSet(set, mode)}
-      </section>`;
+        // 카테고리 내 각 세트
+        for (const set of categorySets) {
+          html += `
+          <section class="comp-subsection">
+            <div class="comp-subsection-header">
+              <span class="comp-subsection-title">${esc(set.name)}</span>
+              <span class="comp-badge">${set.children.length} variants</span>
+              <span class="comp-meta">build-components.ts 자동 생성 · 손편집 금지</span>
+            </div>
+            ${renderSet(set, mode)}
+          </section>`;
+        }
+        html += `        </section>\n      </div>\n`;
       }
-      html += `    </section>\n`;
+      html += `    </div>\n`;
     }
     return html;
   };
@@ -426,8 +438,11 @@ async function main() {
   .theme-toggle { display: inline-flex; background: #F1F2F4; border-radius: 8px; padding: 3px; gap: 2px; }
   .theme-toggle button { border: 0; background: transparent; font: inherit; font-size: 13px; padding: 6px 16px; border-radius: 6px; cursor: pointer; color: #6b7280; }
   .theme-toggle button.on { background: #fff; color: #111827; font-weight: 600; box-shadow: 0 1px 2px rgba(0,0,0,.08); }
-  .page { max-width: 1500px; padding: 28px 40px; }
-  .comp-group { margin-bottom: 48px; }
+  .page { max-width: none; padding: 28px 40px; display: flex; flex-direction: column; gap: 60px; }
+  .comp-row { display: flex; flex-direction: row; gap: 40px; align-items: flex-start; flex-wrap: nowrap; overflow-x: auto; padding-bottom: 20px; }
+  .comp-row-item { flex: 0 0 auto; min-width: 0; }
+  .comp-row-item-empty { flex: 0 0 200px; }
+  .comp-group { margin-bottom: 0; }
   .comp-group-header { border-bottom: 2px solid #D1D5DB; padding-bottom: 12px; margin-bottom: 24px; }
   .comp-group-title { font-size: 20px; font-weight: 700; color: #111827; letter-spacing: -.02em; }
   .comp-section { margin-bottom: 48px; }

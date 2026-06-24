@@ -59,7 +59,7 @@ reports/figma-library-build/{target}/
 ## 절대 규칙 (모든 단계 공통)
 1. **위임 강제** — 빌드=🏗️ figma-library-builder, 검증=🤖 component-verifier. ⭐ 단독 빌드+검증 금지(구조 변경은 반드시 위임).
 2. **추측 금지** — 못 읽은 값은 지어내지 말고 `get_screenshot`로 다시 읽거나 `미확인`으로 보고.
-3. **색은 항상 토큰** — 새 fills는 Variable 바인딩. raw hex 잔류 = 검증 ❌.
+3. **색은 항상 토큰** — 새 fills는 Variable 바인딩. raw hex 잔류 = 검증 ❌. **폰트는 항상 Pretendard** — 인스턴스 라벨을 override 할 때 Pretendard 가 MCP 로드 불가면 Noto 일시 입력 후 **반드시 `setTextStyleIdAsync`로 텍스트 스타일 재바인딩**(최종 Pretendard). Noto 잔존 = 검증 ❌. 빌드 직후 `references/figma-font-scan.md`로 self-check(1차 자기수정), 합격 판정은 검증자가. 정본 `registry/governance/figma-font-policy.json`.
 4. **정본 우선·임의 생성 금지** — 계획에 없는 컴포넌트·variant·속성 추가 금지. 필요하면 needs-decision.
 5. **원본 아이콘 강제 / 이미지 폴백** — 아이콘은 라이브러리 import. 계획이 '래스터 그대로'로 지정한 것만 이미지 보존.
 6. **기존 자산 보존** — 변형세트화·리네임이 기존 인스턴스를 깨지 않게. 비운 컨테이너는 임의 삭제 말고 보고.
@@ -139,8 +139,9 @@ reports/figma-library-build/{target}/
 **담당:** 🤖 `component-verifier` (실제 spawn, 빌더와 분리)
 
 `2-plan.md`·원본 스크린샷·`node-map.json`을 기준으로 빌드 결과(Figma 노드)를 대조한다(에이전트 정의 §(C) Figma 라이브러리 빌드 검증):
-- **기계:** variant 전수·속성, **패킹 정상(붕괴 ❌)**, **토큰 바인딩(필수 스캔)**, 순환참조 0, 네이밍, 기존 인스턴스 무결성, 원본 아이콘/이미지.
+- **기계:** variant 전수·속성, **패킹 정상(붕괴 ❌)**, **토큰 바인딩(필수 스캔)**, **폰트 일관성(필수 스캔)**, 순환참조 0, 네이밍, 기존 인스턴스 무결성, 원본 아이콘/이미지.
   - **토큰 바인딩은 눈대중 금지** — `references/token-binding-scan.md` 의 **use_figma 바인딩 스캔(미바인딩 raw hex 사실 추출) + `node scripts/figma-binding-lookup.js`(역매핑 결정론 판정)** 를 실제 실행하고 결과 표를 4-verification.md 에 기록한다. **EXACT 1건이라도 있으면 검문소 4 통과 불가.** (2026-06-19 WebTabBar: 카테고리 판단으로 #ffffff·#353535 가 (b) 로 샌 실패 차단.)
+  - **폰트도 눈대중·렌더 판정 금지** — `references/figma-font-scan.md` 의 데이터 스캔(전 TEXT 노드 `fontName`)을 실제 실행해 비-Pretendard 0건을 4-verification.md 에 기록한다. **비-Pretendard 1건이라도 있으면 검문소 4 통과 불가.** MCP 렌더는 Pretendard 미설치라 폰트 구분 불가 — 데이터만 신뢰. (2026-06-24 datepicker: 라벨 override 후 텍스트 스타일 재바인딩 누락으로 Noto 가 샌 실패 차단.)
 - **렌더:** 각 variant `get_screenshot` 시각 대조.
 - **두갈래 분류로 반환:** ❌(a) 코드/빌드 실수 → 수정 / 🟡(b) 허용편차 → 유지 / ❓(c) 애매 → 사용자 확인.
 

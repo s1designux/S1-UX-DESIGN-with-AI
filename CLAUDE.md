@@ -22,6 +22,7 @@
 
 | 날짜 | 변경 내용 (한 줄) |
 |------|------------------|
+| 2026-06-24 | **Select Box Open 드롭다운 누락 수정 + "표시 순서 ≠ 빌드 순서" 영구 규칙화** — Select Box Open 에 드롭다운 패널이 안 붙던 원인=빌드 순서(Select Box 가 Dropdown 보다 먼저 빌드돼 BUILT_COMPS 비어 부착 실패). 1차로 members 재배열했으나 그러면 나열 순서가 깨짐 → 사용자 지적("나열은 메인→요소, 빌드만 요소 먼저"). `BUILD_DEPENDENCIES`+`buildOrderFor` 위상정렬로 빌드는 요소 먼저, members 는 표시(메인→요소) 순서 고정, `buildAllComponents` layout 패스가 카테고리 내부를 members 순서로 재배치, `render.js` 는 members 정렬. Form Control 표시=Input·Search·Text Area·Select Box·Dropdown·Dropdown List, Select Box 옵션 0→32. 🤖 component-verifier 구조검증 PASS(❌0)·전 게이트(1~15)+zip 재빌드 통과 |
 | 2026-06-23 | **Gate 15 토큰네이밍 검사기 신설**(+ Gate 14 Footer 문서화) — 기준이 산문으로만 있고 토큰 **이름**을 검사하는 게이트 부재로 레거시명·우회 별칭이 정본 유입(navigation/background·icon/brand-ci·고아 table/border/emphasis). 산문→기계 정본 `registry/governance/naming-rules.json`(bg·brand-in-semantic 금지·kebab) + `token-naming-check.js`로 커밋 차단. 동시에 기준 정합: navigation/background→**bg**·table/border/light→**default**·emphasis 삭제·icon/brand-ci 별칭 제거+빌더 Foundation `brand/ci` 직바인딩(BuildMaps.foundationColor 신설). semantic.md 그룹A 23종 제거·그룹B 개명. 🤖 component-verifier 구조검증 통과·전 게이트(1~15) 통과 |
 | 2026-06-19 | **CLAUDE.md 다이어트**(토큰 절감) — 완료된 휴면 MVP 상세 규칙(Portal/Harness·Source Guard·Input·Token Mapping/Sync/Legacy) 4개를 `.claude/docs/*-rules.md`로 분리하고 본문엔 "작업 트리거→참조 문서" 포인터 표만 유지. 미결목록은 완료 스텁 제거·활성 9건만. 112k→86k자(~6.5천 토큰↓/매 세션). 규칙 손실 0(활성 전부 유지·포인터로 즉시 로드). 전 게이트 통과 |
 | 2026-06-19 | 설치기 **라이트 스펙 프레임 미생성**(buildSpec·buildGroupedSpec·TPD States) — 원본 세트가 곧 Light 기준이라 중복 → 컴포넌트당 [원본(Light) + Spec Dark]만. Dark는 원본 우측(offsetX+W+80)으로 밀착해 빈 라이트 컬럼 제거(공간 절약, 사용자 결정). footprint에 "Spec Light" 유지→재설치 시 옛 라이트 자동 정리. Core 페이지 기존 라이트 스펙 21개 수동 삭제 완료. tsc·전 게이트 통과 |
@@ -407,6 +408,21 @@ Foundation을 직접 참조하면 테마 전환 시 올바른 값을 얻을 수 
 * Domain은 허용
 * Pattern으로 재사용
 * Legacy는 분리 관리
+
+---
+
+## 📐 표시(나열) 순서 ≠ 빌드(생성) 순서 규칙 (2026-06-24 확정 · 영구)
+
+설치기/Figma 생성기(`build-components.ts`)와 프리뷰(`render.js`)에서 컴포넌트를 다룰 때 **두 순서를 분리**한다.
+
+| 구분 | 순서 기준 | 원칙 |
+|------|----------|------|
+| **표시(나열) 순서** | `COMPONENT_CATEGORIES_GRID` 의 `members` 배열 | **메인 컴포넌트 → 그 안을 구성하는 요소 컴포넌트** 순 (예: Select Box → Dropdown → Dropdown List) |
+| **빌드(생성) 순서** | `BUILD_DEPENDENCIES` 위상정렬(`buildOrderFor`) | **요소 컴포넌트 먼저** — 부모가 자식을 인스턴스로 부착하므로(예: Select Box Open 이 Dropdown 을 `BUILT_COMPS` 에서 가져다 붙임) 자식이 먼저 빌드돼야 함 |
+
+- `members` 는 **항상 표시 순서**로만 유지한다. 빌드 의존성 때문에 members 를 재배열하지 않는다(그렇게 하면 나열 순서가 깨진다 — 이번 회귀의 원인).
+- 부모↔자식 부착 관계가 새로 생기면 `BUILD_DEPENDENCIES[부모] = [자식…]` 에 한 줄 추가한다. 빌드는 `buildOrderFor` 가 요소를 먼저 생성하고, `buildAllComponents` 의 layout 패스가 카테고리 내부를 members(표시) 순서로 세로 재배치한다. 프리뷰는 `render.js` 가 categorySets 를 members 순서로 정렬한다.
+- 이 규칙 변경(루프·BUILD_DEPENDENCIES)은 `build-components.ts` 구조 변경 → ⭐ 단독 자가검증 금지, 🤖 component-verifier 검증(Gate 13) 필수.
 
 ---
 
@@ -1117,12 +1133,14 @@ Claude는 **Main Orchestrator**다. 사용자는 **목표 수준 의도**만 준
 | 토큰 누락·HEX·정합성·키 | ✅ 잡음 | 검사기로 충분 |
 | **시각 깨짐** (렌더·레이아웃·줄바꿈) | ❌ 못 잡음 | **HTML/CSS 변경 시 실제 렌더 확인 의무** (headless Chrome 스크린샷 / Figma get_screenshot 대조) |
 | **구조·의미 오류** (원본 충실성·"이렇게 만드는 게 맞나") | ❌ 못 잡음 | 무거우면 **🤖 원본대조 검증 에이전트(`component-verifier`) 실제 spawn** 적대적 대조. Figma 읽기 핵심이면 **🤖 Figma원본 조사 에이전트(`figma-inspector`)** 분리 |
+| **폰트 정체성** (use_figma 캔버스 텍스트 — Noto 잔존 등) | ❌ 못 잡음(캔버스는 파일 아님) | **데이터 스캔 필수·렌더 판정 금지**(MCP 렌더는 Pretendard 미설치라 Noto/Pretendard 구분 불가). `figma-font-scan.md`로 전 TEXT 노드 fontName 스캔→비-Pretendard 0건 확인. 예방=PreToolUse 폰트 훅, 집행=component-verifier. 정본 `registry/governance/figma-font-policy.json` |
 
 규칙:
 - **UI/HTML/CSS를 건드렸으면 크기 불문 렌더 1회 확인.** "검사기·div개수 통과"로 시각 검증을 대체하지 않는다. (`"/Applications/Google Chrome.app/Contents/MacOS/Google Chrome" --headless=new --screenshot=… "file://…#섹션"` → 스크린샷 Read 로 육안 대조)
 - **구조 변경·Figma→코드·역방향 생성기 수정**은 self-certify하지 않고 검증 분리(🤖).
 - 🚫 **하드룰 — Figma 라이브러리 컴포넌트/변형세트 빌드·편집은 ⭐ 단독 빌드+검증 금지.** 신규 컴포넌트 생성·combineAsVariants 변형세트화·토큰 바인딩·variant 패킹 등 **구조 변경**은 ⭐가 직접 use_figma로 빌드하지 않고 **`figma-library-build` 스킬**로 진입한다: 빌드=🏗️ `figma-library-builder`(실제 spawn), 검증=🤖 `component-verifier`(실제 spawn, 빌더와 분리). ⭐는 흐름(계획·검문소·종합)만 관리한다. **예외:** 단일 노드 좌표/이름 1건 같은 순수 기계적 미세 편집은 ⭐ 직접+렌더 1회로 갈음 가능. (근거: ⭐ 단독 인라인 빌드+자가검증이 패킹 붕괴·정렬·세트화 누락을 사용자에게 새게 한 반복 실패. 빌드자≠검증자 + 위임 강제로 구조 차단.)
 - 🚫 **하드룰 — `use_figma`로 Figma에 그리는 모든 노드의 색은 Variable 바인딩 필수, 하드코딩 hex 금지(2026-06-22 신설).** fill·stroke·텍스트 색은 `figma.variables.getVariableById(ID)` + `setBoundVariableForPaint`로 바인딩한다. **용도(라이브러리 컴포넌트/검토 프레임/스펙 프레임/레이아웃 프레임) 불문 동일 적용** — 검토용 프레임도 결국 라이브러리화되므로 처음부터 바인딩한다(사용자 결정 2026-06-22). 정본에 해당 토큰이 없으면 임의 hex로 채우지 말고 **신규 Variable을 먼저 생성(Foundation alias)** 후 바인딩하거나, 없으면 needs-decision으로 보고한다. **예외:** 검토 프레임의 회색 배경·열 라벨 같은 **순수 장식 크롬(컴포넌트 부품이 아닌 것)만** 줄 끝 `// figma-hex-allow: <사유>` 마커로 허용. 컴포넌트 부품(셀·타일·아이콘·버튼 등)의 색은 마커로 우회 금지. **집행:** PreToolUse 훅(`scripts/figma-code-hex-check.js`)이 use_figma 코드를 실행 직전 스캔해 hex면 exit 2로 차단. (근거: Gate 3·12·pre-commit이 전부 "파일"만 검사해 use_figma의 직접 쓰기는 사각지대였고, "검토 프레임이니 라이브러리 빌드 아님" 자기분류로 스킬/에이전트 경로마저 건너뛰어 Calendar Cell/Tile 검토 프레임이 hex로 2회 유출. 도구 호출 자체를 가로채 기계 차단.)
+- 🚫 **하드룰 — `use_figma`로 author/override 하는 캔버스 텍스트의 폰트는 정본(Pretendard) 필수, Noto 잔존 금지(2026-06-24 신설).** Pretendard 가 MCP 에서 로드 불가라 글자 입력 시 Noto 를 일시로 써야 하면, **입력 후 반드시 `setTextStyleIdAsync`로 정본 텍스트 스타일을 재바인딩**해 최종 폰트를 Pretendard 로 되돌린다(폰트 로드 불필요·검증됨). 원본 컴포넌트 라벨이 raw 폰트면 동일 metric 텍스트 스타일을 `weightStyleMap`(예: Medium14→body/14M)으로 바인딩, 없으면 needs-decision. **검증은 렌더 금지·데이터 스캔 필수**(MCP 렌더는 Pretendard 미설치라 Noto/Pretendard 구분 불가 — 노드 `fontName`/`textStyleId`만 신뢰). **집행 3층:** L1 예방=PreToolUse 폰트 훅(`scripts/figma-code-font-check.js`, 비-Pretendard family 는 줄 끝 `// figma-font-temp:` 마커 필수), L2 탐지=`figma-font-scan.md`(전 TEXT 노드 스캔, 비-Pretendard 0건), L3 집행=`component-verifier`(§(C)/(B) 필수 항목, 비-Pretendard 1건=❌(a)). 정본 `registry/governance/figma-font-policy.json`. (근거: datepicker 재구성 시 탭·버튼 라벨을 Noto 로 덮어쓰고 텍스트 스타일 재바인딩을 빠뜨려 3개 라벨이 Noto 로 박힘 — 폰트는 캔버스 노드라 파일 게이트 전부 사각지대, 사용자가 Desktop 에서 발견. hex 와 동일 계열을 3층으로 차단.)
 - 🚫 **하드룰 — 설치기 생성기 코드(`build-components.ts`) 구조 변경은 ⭐ 단독 자가검증 금지(2026-06-19 신설).** 새 build 함수·`combineAsVariants`·variant 스펙·셀↔스펙시트 키 같은 **구조 변경**은 build-components.ts 가 곧 Figma 라이브러리 컴포넌트 빌드라 위 하드룰과 동급이다. **빌드는 ⭐(강결합 잔손질) 또는 코드 에이전트가 해도, 검증은 반드시 🤖 `component-verifier`(D) 실제 spawn**으로 분리한다. 검증 후 `node scripts/installer-build-verify-check.js --record --by component-verifier …` 로 기록 → **Gate 13 이 해시로 집행**(검증 기록 없는/stale 한 build-components.ts 는 커밋 차단). **예외:** 순수 기계적 수정(토큰 값 1건·오타)은 `--by orchestrator --change mechanical` 자가인증 가능(git 가시·감사). (근거: 설치기 9개 이슈가 9줄 전부 ⭐ → 독립 검증 부재로 Input 스펙 빈칸 버그가 토큰 게이트 전부 ✅인 채 유출 직전. 검증 분리를 기계 강제로 전환.)
 - **순수 기계적 수정**(토큰 값 1건·오타·문서 카피)은 검사기로 충분 — 렌더/에이전트 생략 가능.
 - **검증 안 한 부분은 보고에 ⭐ 자가인증으로 명시**한다(사용자가 어디를 의심할지 보이게).
@@ -1300,6 +1318,7 @@ Claude는 **Main Orchestrator**다. 사용자는 **목표 수준 의도**만 준
 | 훅 | 위치 | 발동 | 동작 | 강제력 |
 |----|------|------|------|--------|
 | **PreToolUse** (차단) | `.claude/settings.json` → `scripts/figma-code-hex-check.js` | `use_figma` 호출 직전 | code 안 하드코딩 hex(`#RRGGBB`/`#RGB`) 탐지. 있으면 exit 2로 **도구 실행 차단**(Figma 노드 색=Variable 바인딩 강제). 순수 장식 크롬만 `// figma-hex-allow: 사유` 예외 | 물리 차단 |
+| **PreToolUse** (차단) | `.claude/settings.json` → `scripts/figma-code-font-check.js` | `use_figma` 호출 직전 | code 안 비-Pretendard 폰트(`fontName`/`loadFontAsync` family) 탐지. 있으면 exit 2로 **차단**(캔버스 텍스트=Pretendard 정본 강제). 일시 Noto 는 줄 끝 `// figma-font-temp: <재바인딩 계획>` 마커 필수(인지 강제, 최종 검증은 L2 figma-font-scan). 정본 `registry/governance/figma-font-policy.json` | 물리 차단 |
 | **PostToolUse** (알림) | `.claude/settings.json` → `.claude/hooks/on-token-edit.sh` | `tokens.css`·`vars-data.ts` 편집 즉시 | install-prompt 자동 재동기화 + Gate 7 값 검증. 불일치면 exit 2로 모델에 피드백 | 알림(차단 안 함) |
 | **pre-commit** (차단) | `.git/hooks/pre-commit` (정본: `scripts/hooks/pre-commit`) | `git commit` 시 | `npm run gate:check` 실행, error면 **커밋 차단**(exit 1) | 물리 차단 |
 

@@ -3432,6 +3432,9 @@ export const COMPONENT_CATEGORIES_GRID: { name: string; members: string[] }[][] 
     { name: "Actions",      members: ["Button"] },
     { name: "Selection",    members: ["Checkbox", "Radio", "Toggle"] },
     { name: "Chip",         members: ["Chip"] },
+    // members = 표시(나열) 순서: 메인 컴포넌트 → 그 안을 구성하는 요소 컴포넌트 순.
+    //   (Select Box → Dropdown → Dropdown List). 빌드(생성) 순서는 BUILD_DEPENDENCIES 로
+    //   의존성(요소 먼저)이 자동 적용된다 — 표시순서 ≠ 빌드순서 규칙(§ 아래 주석).
     { name: "Form Control", members: ["Input", "Search Input", "Text Area", "Select Box", "Dropdown", "Dropdown List"] },
     { name: "Date Picker",  members: ["Date Picker", "Calendar", "Calendar Cell", "Calendar Tile"] },
     { name: "Time Picker",  members: ["Time Picker", "Time Picker Dropdown", "Time Picker Cell"] },
@@ -3445,6 +3448,44 @@ export const COMPONENT_CATEGORIES_GRID: { name: string; members: string[] }[][] 
 
 // render.js용 1차원 배열 (호환성)
 export const COMPONENT_CATEGORIES = COMPONENT_CATEGORIES_GRID.flat();
+
+// ── 표시 순서 ≠ 빌드 순서 규칙 (영구) ─────────────────────────────────────────
+//   ▸ 표시(나열) 순서 = COMPONENT_CATEGORIES_GRID 의 members 배열 순서.
+//       원칙: "메인이 되는 컴포넌트 → 그 안을 구성하는 요소 컴포넌트" 순.
+//       예) Select Box → Dropdown → Dropdown List (셀렉박스가 먼저, 그 부품이 뒤).
+//   ▸ 빌드(생성) 순서 = 의존성 순서 = "요소 컴포넌트 먼저".
+//       부모는 자식을 인스턴스로 부착하므로(예: Select Box Open 이 Dropdown 인스턴스를
+//       BUILT_COMPS 에서 가져다 붙임), 자식이 먼저 빌드돼 BUILT_COMPS 에 있어야 한다.
+//   이 둘은 분리한다: members 는 항상 표시 순서로 유지하고, 빌드는 BUILD_DEPENDENCIES 로
+//   요소를 먼저 생성한 뒤, 카테고리 내부를 members(표시) 순서대로 세로 재배치한다.
+//   (Figma 캔버스 = buildAllComponents 의 layout 패스, 프리뷰 = render.js 의 members 정렬)
+//
+// BUILD_DEPENDENCIES[부모] = [부모가 인스턴스로 부착하는 자식 요소 컴포넌트…]
+//   같은 카테고리 안의 의존만 빌드 순서에 영향(다른 카테고리는 카테고리 순서가 보장).
+export const BUILD_DEPENDENCIES: Record<string, string[]> = {
+  "Select Box":  ["Dropdown"],        // Open 상태가 Dropdown 패널 인스턴스 부착
+  "Dropdown":    ["Dropdown List"],   // Dropdown 패널이 Dropdown List 옵션 인스턴스 4행 부착
+  "Filter Chip": ["Dropdown"],        // Selected 상태가 Dropdown 패널 인스턴스 부착(타 카테고리=순서 보장)
+  "Time Picker": ["Time Picker Dropdown"], // Focus 상태가 Time Picker Dropdown 인스턴스 부착
+};
+
+// 카테고리 members(표시 순서)를 "요소 먼저" 빌드 순서로 위상정렬.
+//   카테고리 내부 의존만 반영(intra-category). 안정 정렬(의존 없으면 원순서 유지).
+export function buildOrderFor(members: string[]): string[] {
+  const inCat = new Set(members);
+  const visited = new Set<string>();
+  const out: string[] = [];
+  const visit = (m: string): void => {
+    if (visited.has(m)) return;
+    visited.add(m);
+    for (const dep of (BUILD_DEPENDENCIES[m] || [])) {
+      if (inCat.has(dep)) visit(dep); // 같은 카테고리 의존만 먼저
+    }
+    out.push(m);
+  };
+  for (const m of members) visit(m);
+  return out;
+}
 
 export async function buildAllComponents(
   maps: BuildMaps,
@@ -3538,8 +3579,11 @@ export async function buildAllComponents(
   //   → 세로로 쌓아 각 카테고리가 disjoint 한 Y밴드를 갖게 한 뒤(wrapCategoryInSection 의 y밴드
   //     수집이 정확히 동작 = 내용이 실제로 섹션에 들어감), 2단계에서 섹션을 통째로 가로 이동한다.
   for (const cat of COMPONENT_CATEGORIES) {
-    let catY = y + SECTION_TITLE_SPACE; // 섹션 이름 라벨이 차지할 상단 여백 확보
-    for (const name of cat.members) {
+    const catTopY = y + SECTION_TITLE_SPACE; // 섹션 이름 라벨이 차지할 상단 여백 확보
+    let catY = catTopY;
+    // ── 빌드 패스: 의존성(요소 먼저) 순서로 생성 — 표시순서 ≠ 빌드순서 규칙(BUILD_DEPENDENCIES) ──
+    //   빌드 시점 Y(catY)는 임시(겹치지 않게 세로로 쌓음). 최종 세로 위치는 아래 layout 패스가 정한다.
+    for (const name of buildOrderFor(cat.members)) {
       const run = runners[name];
       if (!run) continue;
       done++;
@@ -3557,6 +3601,26 @@ export async function buildAllComponents(
       added.push(name);
       catY = res.bottomY + 140;
     }
+    // ── layout 패스: 카테고리 내부를 members(표시) 순서대로 세로 재배치 ──
+    //   메인 컴포넌트 → 요소 컴포넌트 순으로 보이도록, 각 풋프린트(세트+스펙)를 통째 Y 이동.
+    //   (mock=키체크/render 환경은 page.children 비배열 → no-op, render.js 가 members 정렬로 처리.)
+    try {
+      const pageKids = figma.currentPage.children;
+      if (Array.isArray(pageKids)) {
+        let layoutY = catTopY;
+        for (const name of cat.members) {
+          const names = new Set(footprint(name));
+          const nodes = (pageKids as SceneNode[]).filter((n) => names.has(n.name));
+          if (!nodes.length) continue;
+          const bb = absBBox(nodes);
+          if (!bb) continue;
+          const dy = layoutY - bb.minY;
+          if (dy !== 0) for (const n of nodes) { try { (n as any).y += dy; } catch (e) { /* */ } }
+          layoutY += (bb.maxY - bb.minY) + 140;
+        }
+        catY = layoutY;
+      }
+    } catch (e) { /* mock/no-page */ }
     // 카테고리를 1개 섹션으로 래핑(세로 밴드 기준 — 내용이 실제로 섹션 자식이 됨)
     await wrapCategoryInSection(cat.name, cat.members, footprint, SECTION_TITLE_SPACE, SECTION_PAD);
     y = catY + SECTION_GAP;
