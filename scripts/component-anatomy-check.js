@@ -36,12 +36,12 @@ const BC = path.join(ROOT, "plugins/figma-vars-installer/src/build-components.ts
 // require: 그 variant 서브트리에 반드시 존재해야 하는 노드 이름들
 // 아이콘 노드는 role 이름으로 기록됨(makeIconInstance): 삭제 아이콘 = "remove", 돋보기 = "search" 등.
 const ANATOMY = [
-  { set: "Form Control/Input",        variant: /(^|,\s*)State=Editing(,|$)/, require: ["caret", "remove"], label: "Input / State=Editing" },
-  { set: "Form Control/Search Input", variant: /(^|,\s*)State=Focus(,|$)/,   require: ["caret", "remove", "search"], label: "Search Input / State=Focus" },
+  { set: "Input",        variant: /(^|,\s*)State=Editing(,|$)/, require: ["caret", "remove"], label: "Input / State=Editing" },
+  { set: "Search Input", variant: /(^|,\s*)State=Focus(,|$)/,   require: ["caret", "remove", "search"], label: "Search Input / State=Focus" },
   // 텍스트에리어 Focus 는 커서만 — 삭제(remove) 아이콘 미포함(사용자 결정 2026-06-19).
-  { set: "Form Control/Text Area",    variant: /(^|,\s*)State=Focus(,|$)/,   require: ["caret"],          forbid: ["remove"], label: "Text Area / State=Focus" },
+  { set: "Text Area",    variant: /(^|,\s*)State=Focus(,|$)/,   require: ["caret"],          forbid: ["remove"], label: "Text Area / State=Focus" },
   // Select Box Open 은 Dropdown 컴포넌트 인스턴스 사용 — raw "list" 프레임 금지(2026-06-19).
-  { set: "Form Control/Select Box",   variant: /(^|,\s*)State=Open(,|$)/,    require: [],                 forbid: ["list"],   label: "Select Box / State=Open" },
+  { set: "Select Box",   variant: /(^|,\s*)State=Open(,|$)/,    require: [],                 forbid: ["list"],   label: "Select Box / State=Open" },
   // Time Picker Focus 는 TPD 인스턴스 사용 — raw "dropdown" 프레임 금지(2026-06-19).
   { set: "Time Picker",  variant: /(^|,\s*)State=Focus(,|$)/,   require: [],                 forbid: ["dropdown"],       label: "Time Picker / State=Focus" },
   // Filter Chip Selected 는 Dropdown 인스턴스 사용 — raw "list" 프레임 금지(2026-06-23).
