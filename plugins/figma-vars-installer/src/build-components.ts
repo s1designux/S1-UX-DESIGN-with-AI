@@ -3455,19 +3455,24 @@ async function buildCI(maps: BuildMaps, originY: number): Promise<{ set: Compone
 //   토큰 "값" 변경은 Variables 재설치로 기존 컴포넌트에 자동 반영되므로 컴포넌트 재생성 불필요.
 //   (mock 환경(렌더러·키체크)은 page.findAll/children 이 배열이 아니므로 가드로 fresh 취급.)
 
-// 대메뉴(섹션) 분류 — 2차원 배열 (행별 배치)
-// 각 행: 가로로 나란히 표시할 섹션들
-// render.js에서는 1차원으로 flatten해서 사용
+// 대메뉴(섹션) 분류 — 모든 섹션을 한 행에 가로로 배치
+// Filter Chip은 특별히 처리 (Chip 아래)
 export const COMPONENT_CATEGORIES_GRID: { name: string; members: string[] }[][] = [
-  [{ name: "Actions",      members: ["Button"] }],
-  [{ name: "Selection",    members: ["Checkbox", "Radio", "Toggle"] }],
-  [{ name: "Chip",         members: ["Chip"] }, { name: "Filter Chip",  members: ["Filter Chip"] }],
-  [{ name: "Navigation",   members: ["Line Tab", "GNB Utility Icon", "Language Icon", "GNB", "Pagination"] }],
-  [{ name: "Platform",     members: ["Platform/StatusBar", "Platform/NavBar", "CI", "Platform/LoginGNB", "Platform/WebTabBar", "Footer"] }],
-  [{ name: "Form Control", members: ["Input", "Search Input", "Text Area", "Dropdown List", "Dropdown", "Select Box"] }],
-  [{ name: "Date Picker",  members: ["Calendar Cell", "Calendar Tile", "Calendar", "Date Picker"] }],
-  [{ name: "Time Picker",  members: ["Time Picker Cell", "Time Picker Dropdown", "Time Picker"] }],
-  [{ name: "Table",        members: ["Table Cell", "Table"] }],
+  [
+    { name: "Platform",     members: ["Platform/StatusBar", "Platform/NavBar", "CI", "Platform/LoginGNB", "Platform/WebTabBar", "Footer"] },
+    { name: "Navigation",   members: ["Line Tab", "GNB Utility Icon", "Language Icon", "GNB", "Pagination"] },
+    { name: "Actions",      members: ["Button"] },
+    { name: "Selection",    members: ["Checkbox", "Radio", "Toggle"] },
+    { name: "Chip",         members: ["Chip"] },
+    { name: "Form Control", members: ["Input", "Search Input", "Text Area", "Dropdown List", "Dropdown", "Select Box"] },
+    { name: "Date Picker",  members: ["Calendar Cell", "Calendar Tile", "Calendar", "Date Picker"] },
+    { name: "Time Picker",  members: ["Time Picker Cell", "Time Picker Dropdown", "Time Picker"] },
+    { name: "Table",        members: ["Table Cell", "Table"] },
+  ],
+  // Filter Chip은 별도로 (Chip 아래에 배치될 예정)
+  [
+    { name: "Filter Chip",  members: ["Filter Chip"] },
+  ],
 ];
 
 // render.js용 1차원 배열 (호환성)
