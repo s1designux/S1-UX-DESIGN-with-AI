@@ -3597,8 +3597,8 @@ export async function buildAllComponents(
         added.push(name);
         catY = res.bottomY + 140;
       }
-      // 카테고리 섹션화
-      await wrapCategoryInSection(cat.name, cat.members, footprint, SECTION_TITLE_SPACE, SECTION_PAD);
+      // 카테고리 섹션화 (x 좌표 전달)
+      await wrapCategoryInSection(cat.name, cat.members, footprint, SECTION_TITLE_SPACE, SECTION_PAD, sectionX);
       rowMaxBottomY = Math.max(rowMaxBottomY, catY);
     }
     y = rowMaxBottomY + SECTION_GAP;
@@ -3707,6 +3707,7 @@ async function wrapCategoryInSection(
   footprintFn: (p: string) => string[],
   titleSpace: number,
   pad: number,
+  targetX: number = 0,
 ): Promise<void> {
   if (typeof figma.createSection !== "function") return; // mock/구버전 → 건너뜀
   let kids: SceneNode[] = [];
@@ -3744,7 +3745,9 @@ async function wrapCategoryInSection(
   if (!section) section = figma.createSection();
   section.name = title;
   // 섹션을 먼저 bbox 기준으로 배치/크기지정(자식 추가 전) → 이후 자식 절대위치 보정
-  try { section.x = box.minX - pad; section.y = box.minY - titleSpace; } catch (e) { /* */ }
+  // targetX가 지정되면 x 좌표를 targetX로 설정 (가로 배치용)
+  const sectionX = targetX > 0 ? targetX : box.minX - pad;
+  try { section.x = sectionX; section.y = box.minY - titleSpace; } catch (e) { /* */ }
   try {
     section.resizeWithoutConstraints(
       Math.max(0.01, (box.maxX - box.minX) + pad * 2),
