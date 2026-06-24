@@ -3193,30 +3193,13 @@ async function buildLoginGNB(maps: BuildMaps, originY: number): Promise<{ set: C
   comp.strokeAlign = "INSIDE";
   comp.strokeTopWeight = 0; comp.strokeRightWeight = 0; comp.strokeLeftWeight = 0; comp.strokeBottomWeight = 1;
 
-  // 좌측: 삼성 로고(24px) + [서비스명]
+  // 좌측: [서비스명]만 (삼성 로고 제거 2026-06-24 — LoginGNB 에선 서비스명만 노출, 사용자 결정)
   const left = figma.createFrame();
-  left.name = "logo-group"; left.layoutMode = "HORIZONTAL";
+  left.name = "service-group"; left.layoutMode = "HORIZONTAL";
   left.primaryAxisSizingMode = "AUTO"; left.counterAxisSizingMode = "AUTO";
   left.counterAxisAlignItems = "CENTER"; left.itemSpacing = 11; left.fills = [];
   comp.appendChild(left);
   left.layoutSizingHorizontal = "HUG"; left.layoutSizingVertical = "HUG";
-  // CI 컴포넌트 인스턴스 (Brand=삼성, Color=Dark) — 없으면 레거시 폴백
-  let logo: SceneNode;
-  const ciSet = figma.currentPage.findOne(
-    (n) => n.type === "COMPONENT_SET" && n.name === "CI"
-  ) as ComponentSetNode | null;
-  const samDark = ciSet?.children.find(
-    (c): c is ComponentNode => c.type === "COMPONENT" && c.name.includes("Brand=삼성") && c.name.includes("Color=Dark")
-  );
-  if (samDark) {
-    const inst = samDark.createInstance();
-    inst.resize(Math.round(samDark.width * (24 / samDark.height)), 24);
-    logo = inst;
-  } else {
-    logo = await getSamsungLogoInstance(24);
-  }
-  logo.name = "samsung-logo";
-  left.appendChild(logo);
   const svcText = await makeBoundText("[서비스명]", 16, "Bold", scv(maps, "color/text/title/primary"));
   svcText.name = "service-name"; left.appendChild(svcText);
 
@@ -3383,24 +3366,30 @@ async function buildCI(maps: BuildMaps, originY: number): Promise<{ set: Compone
     { color: "Dark",  hash: "100a4d3fdd0a5a9304c8251792f2d96089ac458a" },
   ];
 
+  // 변종 그리드 배치 — combineAsVariants 가 위치를 보존하므로, 위치 미지정 시 전 variant 가
+  // (0,0)에 겹친다(CI 는 스펙 프레임이 없어 겹침이 그대로 노출됨). 2행(Brand)×3열(Color)로 분리.
+  // (2026-06-24 수정: CI 로고 두 개 겹침 신고)
+  const CI_COL = 158, CI_ROW = 60;
   const s1Comps: ComponentNode[] = [];
-  for (const { color, v } of S1_COLORS) {
+  S1_COLORS.forEach(({ color, v }, i) => {
     const comp = figma.createComponent();
     comp.name = `Brand=에스원, Color=${color}`;
     comp.resize(42, 16); comp.fills = [];
+    comp.x = i * CI_COL; comp.y = 0;
     const logo = figma.createNodeFromSvg(S1_LOGO_SVG); // icon-vector-allow: CI 브랜드 워드마크 벡터 자산
     logo.name = "logo";
     rebindIconColor(logo, v);
     comp.appendChild(logo);
     setLightMode(comp, maps);
     s1Comps.push(comp);
-  }
+  });
 
   const samComps: ComponentNode[] = [];
-  for (const { color, hash } of SAM_HASHES) {
+  SAM_HASHES.forEach(({ color, hash }, i) => {
     const comp = figma.createComponent();
     comp.name = `Brand=삼성, Color=${color}`;
     comp.resize(134, 36); comp.fills = [];
+    comp.x = i * CI_COL; comp.y = CI_ROW;
     const rect = figma.createRectangle();
     rect.name = `Samsung_Orig_Wordmark_${color.toUpperCase()}_RGB`;
     rect.resize(134, 36);
@@ -3408,7 +3397,7 @@ async function buildCI(maps: BuildMaps, originY: number): Promise<{ set: Compone
     comp.appendChild(rect);
     setLightMode(comp, maps);
     samComps.push(comp);
-  }
+  });
 
   const set = figma.combineAsVariants([...s1Comps, ...samComps], figma.currentPage);
   set.name = "CI";
