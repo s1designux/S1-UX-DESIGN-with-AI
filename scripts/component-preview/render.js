@@ -41,6 +41,9 @@ const FOUNDATION_COLOR = vars.FOUNDATION_COLOR;
 const SEMANTIC_COLOR = vars.SEMANTIC_COLOR;
 const FOUNDATION_NUMBER = vars.FOUNDATION_NUMBER;
 
+const bc = bundleRequire(BC, "bc");
+const COMPONENT_CATEGORIES = bc.COMPONENT_CATEGORIES;
+
 // ── 토큰 → hex (Light/Dark). semantic → foundation 1~2 hop 재귀 해석 ───────
 function resolveColor(tokenKey, mode) {
   let seen = 0;
@@ -382,35 +385,31 @@ async function main() {
   }
 
   const sectionsFor = (mode) => {
-    const groupMap = new Map();
-    for (const set of sets) {
-      const parts = (set.name || "").split("/");
-      const groupName = parts.length > 1 ? parts[0] : null;
-      if (!groupMap.has(groupName)) groupMap.set(groupName, []);
-      groupMap.get(groupName).push(set);
-    }
-
+    // COMPONENT_CATEGORIES를 기준으로 그룹 헤더 생성
     let html = "";
-    for (const [groupName, groupSets] of groupMap) {
-      if (groupName) {
-        html += `\n    <section class="comp-group">\n      <div class="comp-group-header">\n        <span class="comp-group-title">${esc(groupName)}</span>\n      </div>\n`;
-        for (const set of groupSets) {
-          html += renderSubsection(set, mode) + "\n";
-        }
-        html += `    </section>\n`;
-      } else {
-        for (const set of groupSets) {
-          html += `
-    <section class="comp-section">
-      <div class="comp-section-header">
-        <span class="comp-section-title">${esc(set.name)}</span>
-        <span class="comp-badge">${set.children.length} variants</span>
-        <span class="comp-meta">build-components.ts 자동 생성 · 손편집 금지</span>
-      </div>
-      ${renderSet(set, mode)}
-    </section>`;
-        }
+    for (const category of COMPONENT_CATEGORIES) {
+      // 이 카테고리에 속한 세트들 찾기
+      const categorySetNames = new Set(category.members);
+      const categorySets = sets.filter(s => categorySetNames.has(s.name));
+
+      if (categorySets.length === 0) continue; // 세트가 없으면 스킵
+
+      // 카테고리 헤더 (PC/Mobile처럼 상단 타이틀 바)
+      html += `\n    <section class="comp-group">\n      <div class="comp-group-header">\n        <span class="comp-group-title">${esc(category.name)}</span>\n      </div>\n`;
+
+      // 카테고리 내 각 세트
+      for (const set of categorySets) {
+        html += `
+      <section class="comp-subsection">
+        <div class="comp-subsection-header">
+          <span class="comp-subsection-title">${esc(set.name)}</span>
+          <span class="comp-badge">${set.children.length} variants</span>
+          <span class="comp-meta">build-components.ts 자동 생성 · 손편집 금지</span>
+        </div>
+        ${renderSet(set, mode)}
+      </section>`;
       }
+      html += `    </section>\n`;
     }
     return html;
   };

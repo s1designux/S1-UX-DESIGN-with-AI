@@ -1,0 +1,58 @@
+{
+  "task": "Mobile Date Picker/Bottom Sheet — component-verifier ❌(a) 재작업 + 사용자 확정 보완",
+  "file": "Figma V3.0 (cysG5U1udpQqVagYY1hWHW) · Core 페이지",
+  "componentSet": "485:7896",
+  "setName": "Mobile Date Picker/Bottom Sheet",
+  "variants": {
+    "Type=Default": "484:4727",
+    "Type=Date_time": "484:7742"
+  },
+  "rework": {
+    "by": "figma-library-builder",
+    "date": "2026-06-24",
+    "basedOn": "4-verification.md (❌(a) 8건 / ❓(c) 3건)",
+    "items": [
+      {
+        "id": "❌1 raw white fills",
+        "result": "success",
+        "detail": "두 variant 내부 하위 프레임 7개의 raw #ffffff fill 제거(fills=[]) → 컨테이너 surface 바인딩 상속. 컨테이너 자체 fill(color/date-picker/bg/panel 바인딩)은 미변경.",
+        "mutated": ["484:4728", "484:7601", "484:7739", "484:7743", "484:7889", "484:7746", "484:7748"],
+        "names": ["Header(v1)", "Calendar Area(v1)", "Button Area(v1)", "Header(v2)", "Tab Bar(v2)", "Calendar Area(v2)", "Button Area(v2)"]
+      },
+      {
+        "id": "❌2 calendar clipping",
+        "result": "success",
+        "detail": "Calendar Area paddingLeft/Right=24→0 (내용폭 312→360). Calendar 인스턴스 layoutSizingHorizontal=FILL (312→360). 렌더 확인: 7열(월~일)·‹ › 월 내비게이터·전 날짜 클리핑 없이 완전 표시.",
+        "mutated": ["484:7601", "484:7602", "484:7746", "484:7747"]
+      },
+      {
+        "id": "🔧3 button label 버튼→적용",
+        "result": "success",
+        "detail": "Button 인스턴스 내부 TEXT 오버라이드. Pretendard 로드 불가(빌드 제약) → Noto Sans KR Medium 로 일시 폰트 교체해 characters='적용' 설정 후 원본 text style(S:886ca7…) 재바인딩으로 Pretendard Medium 렌더 복원. detach 없음.",
+        "mutated": ["I484:7740;480:12260", "I484:7749;480:12260"]
+      },
+      {
+        "id": "🔧4 title textStyle 바인딩",
+        "result": "success",
+        "detail": "'날짜 선택' TEXT 두 노드에 title/20B(S:46f6df226b7078240376de6530ae592e02a48416) setTextStyleIdAsync 적용. 폰트 Noto Sans KR fallback→Pretendard Bold 20 로 해소.",
+        "mutated": ["484:4729", "484:7744"]
+      },
+      {
+        "id": "🔧5 닫기 아이콘",
+        "result": "no-op (사용자 '허용·그대로 유지' 확정)",
+        "detail": "ic_닫기 V2.2 라이브러리 인스턴스(484:4730, 484:7745) 유지. 수정 없음."
+      }
+    ]
+  },
+  "mutatedNodeIds": [
+    "484:4728", "484:7601", "484:7739", "484:7743", "484:7889", "484:7746", "484:7748",
+    "484:7602", "484:7747",
+    "484:4729", "484:7744",
+    "I484:7740;480:12260", "I484:7749;480:12260"
+  ],
+  "structureChanges": "detach 0 · rename 0 · combineAsVariants 0 · remap 0. 기존 인스턴스(Calendar·Tab·Button·ic_닫기) 보존, 인스턴스 텍스트/폰트 오버라이드만 적용.",
+  "fontFallback": "Pretendard 로드 불가 → 편집 시 Noto Sans KR 일시 오버레이 후 text style 재바인딩으로 Pretendard 렌더 복원(타이틀·버튼 모두 Pretendard 로 resolved).",
+  "needsDecision": [],
+  "selfCorrect": "Calendar FILL 적용 직후 렌더 스크린샷으로 클리핑 해소 1차 확인(붕괴 없음).",
+  "nextStep": "component-verifier 재검증 요청"
+}

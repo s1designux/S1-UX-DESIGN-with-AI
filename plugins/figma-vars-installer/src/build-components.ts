@@ -3417,6 +3417,21 @@ async function buildCI(maps: BuildMaps, originY: number): Promise<{ set: Compone
 //     예) Button 삭제→재설치 시 최상단(y=0)으로, Time Picker Dropdown→Time Picker 직후 슬롯으로 복귀.
 //   토큰 "값" 변경은 Variables 재설치로 기존 컴포넌트에 자동 반영되므로 컴포넌트 재생성 불필요.
 //   (mock 환경(렌더러·키체크)은 page.findAll/children 이 배열이 아니므로 가드로 fresh 취급.)
+
+// 대메뉴(섹션) 분류 — 렌더·배치·검증에서 참고. export: render.js가 그룹 헤더로 사용.
+export const COMPONENT_CATEGORIES: { name: string; members: string[] }[] = [
+  { name: "Actions",      members: ["Button"] },
+  { name: "Selection",    members: ["Checkbox", "Radio", "Toggle"] },
+  { name: "Chip",         members: ["Chip"] },
+  { name: "Navigation",   members: ["Line Tab", "GNB Utility Icon", "Language Icon", "GNB", "Pagination"] },
+  { name: "Platform",     members: ["Platform/StatusBar", "Platform/NavBar", "CI", "Platform/LoginGNB", "Platform/WebTabBar", "Footer"] },
+  { name: "Form Control", members: ["Input", "Search Input", "Text Area", "Dropdown List", "Dropdown", "Select Box"] },
+  { name: "Filter Chip",  members: ["Filter Chip"] },
+  { name: "Date Picker",  members: ["Calendar Cell", "Calendar Tile", "Calendar", "Date Picker"] },
+  { name: "Time Picker",  members: ["Time Picker Cell", "Time Picker Dropdown", "Time Picker"] },
+  { name: "Table",        members: ["Table Cell", "Table"] },
+];
+
 export async function buildAllComponents(
   maps: BuildMaps,
   onProgress?: (step: string, pct: number) => void
@@ -3463,17 +3478,17 @@ export async function buildAllComponents(
   // 컴포넌트 빌더 — 이름 → (originY) => {set, bottomY}. Input 은 originX=0(섹션 컬럼 좌측정렬).
   const runners: { [name: string]: (oy: number) => Promise<{ set: ComponentSetNode; bottomY: number }> } = {
     "Button":               (oy) => buildButtonSet(maps, onProgress, 92, 97, oy),
-    "Selection/Checkbox":   (oy) => buildCheckbox(maps, oy),
-    "Selection/Radio":      (oy) => buildRadio(maps, oy),
-    "Selection/Toggle":     (oy) => buildToggle(maps, oy),
+    "Checkbox":             (oy) => buildCheckbox(maps, oy),
+    "Radio":                (oy) => buildRadio(maps, oy),
+    "Toggle":               (oy) => buildToggle(maps, oy),
     "Chip":                 (oy) => buildChip(maps, oy),
     "Filter Chip":          (oy) => buildFilterChip(maps, oy),
-    "Form Control/Input":   (oy) => buildInput(maps, oy, 0),
-    "Form Control/Search Input": (oy) => buildSearch(maps, oy),
-    "Form Control/Text Area":    (oy) => buildTextarea(maps, oy),
-    "Form Control/Select Box":   (oy) => buildSelect(maps, oy),
-    "Form Control/Dropdown List": (oy) => buildDropdownList(maps, oy),
-    "Form Control/Dropdown":     (oy) => buildDropdown(maps, oy),
+    "Input":                (oy) => buildInput(maps, oy, 0),
+    "Search Input":         (oy) => buildSearch(maps, oy),
+    "Text Area":            (oy) => buildTextarea(maps, oy),
+    "Select Box":           (oy) => buildSelect(maps, oy),
+    "Dropdown List":        (oy) => buildDropdownList(maps, oy),
+    "Dropdown":             (oy) => buildDropdown(maps, oy),
     "Calendar":             (oy) => buildCalendar(maps, oy),
     "Date Picker":          (oy) => buildDatePicker(maps, oy),
     "Calendar Cell":        (oy) => buildCalendarCellLayout(maps, oy),
@@ -3491,40 +3506,19 @@ export async function buildAllComponents(
     "Platform/NavBar":      (oy) => buildNavBar(maps, oy),
     "Platform/LoginGNB":    (oy) => buildLoginGNB(maps, oy),
     "Platform/WebTabBar":   (oy) => buildWebTabBar(maps, oy),
-    "CI":                    (oy) => buildCI(maps, oy),
+    "CI":                   (oy) => buildCI(maps, oy),
     "Footer":               (oy) => buildFooter(maps, oy),
   };
 
-  // 대메뉴(섹션) 분류 — components.html(components-new) 의 5개 대메뉴와 동일. 각 카테고리 = 1 Figma Section.
-  // 카테고리별로 연속 세로 밴드를 차지하므로 섹션끼리 겹치지 않는다.
-  const CATEGORIES: { name: string; members: string[] }[] = [
-    { name: "Actions",      members: ["Button"] },
-    { name: "Selection",    members: ["Selection/Checkbox", "Selection/Radio", "Selection/Toggle"] },
-    { name: "Chip",         members: ["Chip"] },
-    { name: "Navigation",   members: ["Line Tab", "GNB Utility Icon", "Language Icon", "GNB", "Pagination"] },
-    { name: "Platform",     members: ["Platform/StatusBar", "Platform/NavBar", "CI", "Platform/LoginGNB", "Platform/WebTabBar", "Footer"] },
-    // Form 계열은 폭이 커서 좌측 스택 뒤에 빌드(좌측 스택 중간 빈칸 방지) 후 우측 별도 컬럼으로 이동.
-    // Phase A: 옛 단일 "Form" 을 3개 섹션으로 영구 분할(리네임 없음 — 컴포넌트명·set.name·토큰 불변).
-    //   배치 순서 = Core(원자) 먼저 → Pattern(조립) 나중. lazy-build 가 의존 세트를 보장하므로 멤버 순서도 Core 먼저.
-    //   Form Control  : 순수 입력 컨트롤 (의존: Dropdown List → Dropdown → Select Box)
-    //   Date Picker   : 날짜 계열 (Calendar Cell/Tile = Core → Calendar/Date Picker = Pattern)
-    //   Time Picker   : 시간 계열 (Time Picker Cell/Dropdown = Core → Time Picker = Pattern)
-    { name: "Form Control", members: ["Form Control/Input", "Form Control/Search Input", "Form Control/Text Area", "Form Control/Dropdown List", "Form Control/Dropdown", "Form Control/Select Box"] },
-    { name: "Filter Chip",  members: ["Filter Chip"] },
-    { name: "Date Picker",  members: ["Calendar Cell", "Calendar Tile", "Calendar", "Date Picker"] },
-    { name: "Time Picker",  members: ["Time Picker Cell", "Time Picker Dropdown", "Time Picker"] },
-    // Table 은 Checkbox(Selection)·Pagination(Navigation)·SelectBox(Form Control) 인스턴스를 재사용하므로
-    // 이 세 카테고리가 모두 빌드된 후 마지막에 배치 (BUILT_COMPS 확보 보장).
-    { name: "Table",        members: ["Table Cell", "Table"] },
-  ];
-  const TOTAL = CATEGORIES.reduce((s, c) => s + c.members.length, 0);
+  // 대메뉴(섹션) 분류 — COMPONENT_CATEGORIES(외부 export)를 참조
+  const TOTAL = COMPONENT_CATEGORIES.reduce((s, c) => s + c.members.length, 0);
   const SECTION_TITLE_SPACE = 140; // 섹션 제목 + 상단 여백(컴포넌트 시작 전)
   const SECTION_GAP = 220;         // 섹션 사이 세로 간격(컴포넌트 간 140 보다 커서 타이틀 겹침 방지)
   const SECTION_PAD = 64;          // 섹션 내부 좌우/하단 여백
 
   let y = 0;
   let done = 0;
-  for (const cat of CATEGORIES) {
+  for (const cat of COMPONENT_CATEGORIES) {
     y += SECTION_TITLE_SPACE; // 섹션 제목 공간 확보 후 컴포넌트 시작
     for (const name of cat.members) {
       const run = runners[name];
