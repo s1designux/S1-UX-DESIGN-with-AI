@@ -1,9 +1,9 @@
 {
   "sourceFile": "plugins/figma-vars-installer/src/build-components.ts",
-  "sourceHash": "sha256:bd7afdea4121d897b8e1bc407011a22aeefce20bf1711c74e992dd8ed9502cc8",
+  "sourceHash": "sha256:02f15fdaf0831db16155fb6f2e5f58f3e366acb825ee68e5e88d1ba41e8a108d",
   "verifiedBy": "component-verifier",
   "verdict": "pass",
   "changeType": "structural",
-  "verifiedAt": "2026-06-24T01:00:20.700Z",
-  "notes": ""
+  "verifiedAt": "2026-06-24T00:54:16.420Z",
+  "notes": "외곽 투명 래퍼 4곳(buildInput L808·buildSelect L1169·buildFilterChip L1709·buildDatePicker L2799)에 comp.fills=[] 추가로 createComponent 기본 흰색 fill 제거. 4곳 모두 VERTICAL 래퍼이고 자식(field/trigger/chip)이 bound bg 보유 확인. Search·Textarea 본체(comp 자체가 boundPaint bg)는 미변경 확인. diff=정확히 4줄. tsc·anatomy·keycheck·iconpolicy·namingcheck·installer:build 전부 통과. 실제 렌더(흰 fill 소거)는 플러그인 실행 필요로 미검증."
 }

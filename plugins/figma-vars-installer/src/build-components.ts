@@ -1175,7 +1175,7 @@ async function buildSelect(maps: BuildMaps, originY: number): Promise<{ set: Com
         let ddComp: ComponentNode | undefined = BUILT_COMPS[ddKey] ?? BUILT_COMPS["Dropdown:MD:Default"] ?? BUILT_COMPS["Dropdown:Default"];
         if (!ddComp) {
           // 재설치 중 Dropdown이 skip된 경우 — 페이지에서 탐색
-          const ddSet = await getBuiltSet("Form Control/Dropdown");
+          const ddSet = await getBuiltSet("Dropdown");
           if (ddSet) {
             ddComp = (ddSet.children as ComponentNode[]).find(c => c.type === "COMPONENT" && c.name.includes(`Size=${sc.size}`))
               ?? (ddSet.children as ComponentNode[]).find(c => c.type === "COMPONENT");
@@ -1716,7 +1716,7 @@ async function buildFilterChip(maps: BuildMaps, originY: number): Promise<{ set:
             const ddKey = `Dropdown:${ddSize}:Default`;
             let ddComp: ComponentNode | undefined = BUILT_COMPS[ddKey] ?? BUILT_COMPS["Dropdown:MD:Default"] ?? BUILT_COMPS["Dropdown:Default"];
             if (!ddComp) {
-              const ddSet = await getBuiltSet("Form Control/Dropdown");
+              const ddSet = await getBuiltSet("Dropdown");
               if (ddSet) {
                 ddComp = (ddSet.children as ComponentNode[]).find(c => c.type === "COMPONENT" && c.name.includes(`Size=${ddSize}`))
                   ?? (ddSet.children as ComponentNode[]).find(c => c.type === "COMPONENT");
@@ -3444,16 +3444,6 @@ export async function buildAllComponents(
     if (p === "Platform/NavBar") base.push("Shell/NavBar");
     // CI backward-compat: 구 Samsung_30 세트 자동 정리
     if (p === "CI") base.push("C/IMG/Logo/Samsung_30");
-    // Selection/Form Control 리네임 backward-compat (2026-06-24 구조 재편성)
-    if (p === "Selection/Checkbox") base.push("Checkbox");
-    if (p === "Selection/Radio") base.push("Radio");
-    if (p === "Selection/Toggle") base.push("Toggle");
-    if (p === "Form Control/Input") base.push("Input");
-    if (p === "Form Control/Search Input") base.push("Search Input");
-    if (p === "Form Control/Text Area") base.push("Text Area");
-    if (p === "Form Control/Select Box") base.push("Select Box");
-    if (p === "Form Control/Dropdown List") base.push("Dropdown List");
-    if (p === "Form Control/Dropdown") base.push("Dropdown");
     return base;
   };
   const regionBottom = (p: string): number | null => {
