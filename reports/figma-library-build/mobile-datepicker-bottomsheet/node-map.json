@@ -1,0 +1,82 @@
+{
+  "build": "Mobile Date Picker/Bottom Sheet",
+  "builtBy": "figma-library-builder",
+  "date": "2026-06-24",
+  "file": { "fileKey": "cysG5U1udpQqVagYY1hWHW", "name": "SW UX GUIDE V3.0 TEST" },
+  "page": { "id": "5:5706", "name": "Core" },
+  "section": {
+    "id": "480:20101",
+    "name": "Date Picker",
+    "resized": { "from": 2502, "to": 3252, "reason": "extend to fit new set + 80px bottom margin" }
+  },
+  "componentSet": {
+    "id": "485:7896",
+    "name": "Mobile Date Picker/Bottom Sheet",
+    "boundsSectionRelative": { "x": 64, "y": 2580, "w": 780, "h": 592 },
+    "property": { "Type": { "type": "VARIANT", "default": "Default", "options": ["Default", "Date_time"] } }
+  },
+  "variants": [
+    {
+      "name": "Type=Default",
+      "id": "484:4727",
+      "internalXY": { "x": 0, "y": 0 },
+      "size": { "w": 360, "h": 530 },
+      "children": {
+        "header": "484:4728",
+        "title": "484:4729",
+        "closeIcon": "484:4730",
+        "calendarArea": "484:7601",
+        "calendarInstance": "484:7602",
+        "buttonArea": "484:7739",
+        "buttonInstance": "484:7740"
+      }
+    },
+    {
+      "name": "Type=Date_time",
+      "id": "484:7742",
+      "internalXY": { "x": 420, "y": 0 },
+      "size": { "w": 360, "h": 592 },
+      "children": {
+        "header": "484:7743",
+        "tabBar": "484:7889",
+        "tabDate": "484:7890",
+        "tabTime": "484:7893",
+        "calendarArea": "484:7746",
+        "buttonArea": "484:7748"
+      }
+    }
+  ],
+  "reusedComponents": {
+    "calendar": { "id": "480:18986", "name": "Calendar State=Date" },
+    "tabSelected": { "id": "480:12819", "name": "Line Tab SM/Selected/Mobile" },
+    "tabUnselected": { "id": "480:12813", "name": "Line Tab SM/Unselected/Mobile" },
+    "button": { "id": "480:12259", "name": "Button LG/Default/Primary/Mobile" },
+    "closeIcon": {
+      "libraryKey": "lk-f76b6fabda8c6e89174660aa272e248762ab2efba6ab3d8a25211cc1fd4158ee18eebdbc9e5df0a44f86722dc63ac94ec63da45656f80ffe990a126c7e5fc165",
+      "set": "ic_닫기",
+      "variantImported": "Property 1=Line",
+      "componentKey": "2a1abbd3597b536e34fd9523fb61eade3afe9934",
+      "note": "imported from 아이콘 라이브러리 V2.2 as instance; color rebound to color/text/title/primary"
+    }
+  },
+  "variableBindings": {
+    "containerFill": {
+      "boundVariableId": "VariableID:8:1088",
+      "boundVariableName": "color/date-picker/bg/panel",
+      "plannedName": "color/surface/neutral/bg/base",
+      "substitutionReason": "planned name does not exist; date-picker/bg/panel matches the embedded Calendar component's panel fill and resolves to identical Foundation values as color/surface/default (Light 8:710 / Dark 8:729)"
+    },
+    "titleTextColor": { "boundVariableId": "VariableID:8:1127", "name": "color/text/title/primary" },
+    "closeIconColor": { "boundVariableId": "VariableID:8:1127", "name": "color/text/title/primary" },
+    "topLeftRadius": { "boundVariableId": "VariableID:8:1196", "name": "radius/modal/md" },
+    "topRightRadius": { "boundVariableId": "VariableID:8:1196", "name": "radius/modal/md" },
+    "bottomRadius": { "value": 0, "note": "bottomLeft/bottomRight = 0 (bottom sheet sits flush to screen bottom)" }
+  },
+  "structureNotes": {
+    "combineAsVariants": "v1(484:4727)+v2(484:7742) combined into set 485:7896; packing healthy (780x592, no blowout)",
+    "detach": "none — no variant contains a sibling-variant instance, no circular reference",
+    "rename": "v1->Type=Default, v2->Type=Date_time; set->Mobile Date Picker/Bottom Sheet",
+    "remap": "n/a — new components, no pre-existing instances to remap",
+    "fontFallback": "Pretendard unavailable in MCP; title used Noto Sans KR Bold, tab labels Noto Sans KR Medium (overlay per Figma build constraints)"
+  }
+}
