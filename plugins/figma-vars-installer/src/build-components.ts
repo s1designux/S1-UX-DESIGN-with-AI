@@ -363,42 +363,6 @@ async function decorateSetGrouped(set: ComponentSetNode, opts: GroupedSpecOpts, 
 }
 
 // ── 카테고리 헤더 바 생성 (Selection, Form Control 등) ────────────────────
-async function buildCategoryHeader(
-  categoryName: string,
-  originX: number,
-  originY: number,
-  width: number
-): Promise<{ frame: FrameNode; height: number }> {
-  // 프레임 생성 (배경)
-  const frame = figma.createFrame();
-  frame.x = originX;
-  frame.y = originY;
-  frame.width = width;
-  frame.height = 44;
-  frame.name = `${categoryName} — Header`;
-
-  // 배경색 설정
-  const bgFill = { type: "SOLID", color: { r: 0.93, g: 0.93, b: 0.93 } };
-  frame.fills = [bgFill];
-
-  // 텍스트 노드 생성
-  const text = figma.createText();
-  text.characters = categoryName;
-  text.fontSize = 14;
-
-  // Pretendard SemiBold 로드 및 설정
-  await figma.loadFontAsync({ family: "Pretendard", style: "SemiBold" });
-  text.fontName = { family: "Pretendard", style: "SemiBold" };
-
-  // 텍스트색 설정 (rgb 0~1 범위)
-  const textFill = { type: "SOLID", color: { r: 0.2, g: 0.2, b: 0.2 } };
-  text.fills = [textFill];
-
-  frame.appendChild(text);
-
-  return { frame, height: 44 };
-}
-
 export async function buildButtonSet(
   maps: BuildMaps,
   onProgress?: (step: string, pct: number) => void,
@@ -832,12 +796,18 @@ async function buildInput(maps: BuildMaps, originY: number, originX: number = IN
           }
           // 비밀번호 눈(미표시) — 모든 variant field 우측. 기본 visible=false(꺼짐, 공간 미점유).
           // Password Icon BOOLEAN 속성에 바인딩(아래 set 생성 후). 표시 눈은 인스턴스 스왑으로 교체.
-          // 트레일링 순서 = [눈][×] → 눈을 먼저 append, 삭제(×)를 그 뒤에 append.
           const eye = await makeIconInstance("eye", scv(maps, fc("icon/default")), sc.size === "XXSM" ? 20 : 24, EYE_OFF_SVG);
           eye.name = "eye";
           eye.visible = false;
-          field.appendChild(eye);
-          if (clearIcon) field.appendChild(clearIcon); // Editing: × 를 눈 우측에 인접
+          // 트레일링 클러스터 [눈][×] — 눈↔삭제(×) 간격 = spacing/2(2px). lead↔클러스터는 0(밀착, field 기본 itemSpacing).
+          const trail = figma.createFrame();
+          trail.name = "trail"; trail.fills = [];
+          trail.layoutMode = "HORIZONTAL"; trail.counterAxisAlignItems = "CENTER";
+          trail.primaryAxisSizingMode = "AUTO"; trail.counterAxisSizingMode = "AUTO";
+          trail.itemSpacing = 2; // spacing/2 — 비밀번호 눈 아이콘과 삭제(×) 아이콘 간격
+          trail.appendChild(eye);
+          if (clearIcon) trail.appendChild(clearIcon); // Editing: × 를 눈 우측에 인접(2px)
+          field.appendChild(trail);
           field.resize(200, sc.h); // Input 예외 — 넓은 필드
           const comp = figma.createComponent();
           comp.name = `Size=${sc.size}, State=${st.name}, Label=${lab}, Message=${msg}, Break=${sc.brk}`;
@@ -860,11 +830,12 @@ async function buildInput(maps: BuildMaps, originY: number, originX: number = IN
   const set = figma.combineAsVariants(comps, figma.currentPage);
   set.name = "Input";
   // Password Icon BOOLEAN — 비밀번호 인풋일 때만 눈 아이콘 표시. 기본 false(꺼짐).
-  // 모든 variant 의 field>eye 레이어 visible 을 이 속성에 바인딩(레이어명 eye 통일 필수).
+  // 모든 variant 의 field>trail>eye 레이어 visible 을 이 속성에 바인딩(레이어명 eye 통일 필수).
+  // eye 가 trail 클러스터 하위로 들어가 직계 자식이 아니므로 findOne(재귀)로 탐색.
   const pwIconPropId = set.addComponentProperty("Password Icon", "BOOLEAN", false);
   for (const c of comps) {
     const f = c.findChild((n: SceneNode) => n.name === "field") as FrameNode | null;
-    const eyeLayer = f ? f.findChild((n: SceneNode) => n.name === "eye") : null;
+    const eyeLayer = f ? f.findOne((n: SceneNode) => n.name === "eye") : null;
     if (eyeLayer) eyeLayer.componentPropertyReferences = { visible: pwIconPropId };
   }
   // Input 은 규모가 커서(7 상태 × 4 사이즈 × 4 그룹) 넓은 시트로 배치. originX 로 좌측정렬(섹션 컬럼 내) 가능.
@@ -2324,13 +2295,8 @@ async function buildGNB(maps: BuildMaps, originY: number): Promise<{ set: Compon
     colHeaders: menuStates,
     cellAt: (_p, size, _ri, ci) => menuCellByKey.get(`${size}/${menuStates[ci]}`) ?? null,
     lightX: SPEC_LIGHT_X, darkX: SPEC_DARK_X, originY, cellW: 200, cellH: 72, rowLabelW: 16,
-    // GNB는 가로가 너무 길어 다크 스펙을 원본 아래에 배치 (사용자 결정)
-    // decorateSetGrouped 후 실제 bottomY를 알 수 없으므로 먼저 decorateSetGrouped 실행, 이후 darkOffset 계산
-    darkOffset: { x: 0 }, // y는 아래에서 decorateSetGrouped 결과로 계산
   };
   let bottomY = await decorateSetGrouped(menuSet, menuOpts, maps);
-  // 다크 스펙을 메뉴 세트 아래에 배치 — x=0, y=bottomY+80
-  menuOpts.darkOffset = { x: 0, y: bottomY + 80 };
   try { bottomY = Math.max(bottomY, await buildGroupedSpec(menuOpts, maps)); } catch (e) { console.warn(e); }
 
   // 2) GNB 바 세트 (6 variants) — Align × Size. 정본 = "GNB". 실제 화면폭 1920 으로 표현(사용자 결정).
@@ -3460,14 +3426,16 @@ async function buildCI(maps: BuildMaps, originY: number): Promise<{ set: Compone
 export const COMPONENT_CATEGORIES_GRID: { name: string; members: string[] }[][] = [
   [
     { name: "Platform",     members: ["Platform/StatusBar", "Platform/NavBar", "CI", "Platform/LoginGNB", "Platform/WebTabBar", "Footer"] },
-    { name: "Navigation",   members: ["Line Tab", "GNB Utility Icon", "Language Icon", "GNB", "Pagination"] },
+    { name: "Navigation",   members: ["GNB", "GNB Utility Icon", "Language Icon"] },
+    { name: "Line Tab",     members: ["Line Tab"] },
+    { name: "Pagination",   members: ["Pagination"] },
     { name: "Actions",      members: ["Button"] },
     { name: "Selection",    members: ["Checkbox", "Radio", "Toggle"] },
     { name: "Chip",         members: ["Chip"] },
-    { name: "Form Control", members: ["Input", "Search Input", "Text Area", "Dropdown List", "Dropdown", "Select Box"] },
-    { name: "Date Picker",  members: ["Calendar Cell", "Calendar Tile", "Calendar", "Date Picker"] },
-    { name: "Time Picker",  members: ["Time Picker Cell", "Time Picker Dropdown", "Time Picker"] },
-    { name: "Table",        members: ["Table Cell", "Table"] },
+    { name: "Form Control", members: ["Input", "Search Input", "Text Area", "Select Box", "Dropdown", "Dropdown List"] },
+    { name: "Date Picker",  members: ["Date Picker", "Calendar", "Calendar Cell", "Calendar Tile"] },
+    { name: "Time Picker",  members: ["Time Picker", "Time Picker Dropdown", "Time Picker Cell"] },
+    { name: "Table",        members: ["Table", "Table Cell"] },
   ],
   // Filter Chip은 별도로 (Chip 아래에 배치될 예정)
   [
@@ -3564,102 +3532,78 @@ export async function buildAllComponents(
 
   let y = 0;
   let done = 0;
-  const SECTION_WIDTH = 960;  // 각 섹션 폭 (가로 배치용)
-  const SECTION_H_GAP = 60;   // 섹션 사이 가로 간격
 
-  for (const row of COMPONENT_CATEGORIES_GRID) {
-    let rowMaxBottomY = y;
-
-    for (let catIdx = 0; catIdx < row.length; catIdx++) {
-      const cat = row[catIdx];
-      let sectionY = y + SECTION_TITLE_SPACE;
-      let sectionX = catIdx * (SECTION_WIDTH + SECTION_H_GAP);
-
-      // 카테고리 헤더 바 생성 (에러 발생 시 무시하고 계속)
-      try {
-        const header = await buildCategoryHeader(cat.name, sectionX, sectionY, SECTION_WIDTH);
-        sectionY += header.height + 20;
-      } catch (e) {
-        // 헤더 생성 실패는 무시
+  // ── 1단계: 모든 카테고리를 "세로 단일 컬럼"으로 빌드(겹치지 않는 Y밴드) → 각 섹션에 래핑 ──
+  //   빌더 함수는 originY 만 받고 X 는 내부 고정(x≈0)이라, 가로배치를 빌드 단계에서 할 수 없다.
+  //   → 세로로 쌓아 각 카테고리가 disjoint 한 Y밴드를 갖게 한 뒤(wrapCategoryInSection 의 y밴드
+  //     수집이 정확히 동작 = 내용이 실제로 섹션에 들어감), 2단계에서 섹션을 통째로 가로 이동한다.
+  for (const cat of COMPONENT_CATEGORIES) {
+    let catY = y + SECTION_TITLE_SPACE; // 섹션 이름 라벨이 차지할 상단 여백 확보
+    for (const name of cat.members) {
+      const run = runners[name];
+      if (!run) continue;
+      done++;
+      const isDepSet = name === "Calendar Cell" || name === "Calendar Tile";
+      if (existing.has(name) && !isDepSet) {
+        const rb = regionBottom(name);
+        if (rb != null) catY = rb + 140;
+        skipped.push(name);
+        continue;
       }
-
-      let catY = sectionY;
-      for (const name of cat.members) {
-        const run = runners[name];
-        if (!run) continue;
-        done++;
-        const isDepSet = name === "Calendar Cell" || name === "Calendar Tile";
-        if (existing.has(name) && !isDepSet) {
-          const rb = regionBottom(name);
-          if (rb != null) catY = rb + 140;
-          skipped.push(name);
-          continue;
-        }
-        if (onProgress) onProgress(`${name} 생성 중…`, 92 + Math.round((done / TOTAL) * 8));
-        removeByNames(footprint(name));
-        const res = await run(catY);
-        created += res.set.children.length;
-        added.push(name);
-        catY = res.bottomY + 140;
-      }
-      // 카테고리 섹션화 (x 좌표 전달)
-      await wrapCategoryInSection(cat.name, cat.members, footprint, SECTION_TITLE_SPACE, SECTION_PAD, sectionX);
-      rowMaxBottomY = Math.max(rowMaxBottomY, catY);
+      if (onProgress) onProgress(`${name} 생성 중…`, 92 + Math.round((done / TOTAL) * 8));
+      removeByNames(footprint(name));
+      const res = await run(catY);
+      created += res.set.children.length;
+      added.push(name);
+      catY = res.bottomY + 140;
     }
-    y = rowMaxBottomY + SECTION_GAP;
+    // 카테고리를 1개 섹션으로 래핑(세로 밴드 기준 — 내용이 실제로 섹션 자식이 됨)
+    await wrapCategoryInSection(cat.name, cat.members, footprint, SECTION_TITLE_SPACE, SECTION_PAD);
+    y = catY + SECTION_GAP;
   }
 
-  // Form 계열 3섹션(폭 큼)을 좌측 세로 스택에서 빼내 우측 별도 컬럼(상단 정렬)에 세로로 쌓는다.
-  // 순서: Form(y=0) → Date Picker → Time Picker. 각 섹션의 실제 높이를 읽어 다음 섹션 y 를 누적(+간격).
-  // mock(키체크) 환경은 createSection/relocate no-op → 가드로 통과.
-  try {
-    const FORM_STACK = ["Form", "Date Picker", "Time Picker"];
-    const FORM_SECTION_GAP = 200; // 우측 컬럼 섹션 사이 세로 간격
-    let stackY = 0;
-    for (const secName of FORM_STACK) {
-      const secs = figma.currentPage.findAll((n) => n.type === "SECTION" && n.name === secName);
-      if (!Array.isArray(secs) || !secs.length) continue;
-      const sec = secs[0] as SectionNode;
-      relocateSection(sec, FORM_COLUMN_X, stackY);
-      // 이동 후 실제 높이를 읽어 다음 섹션 시작 y 누적(높이 못 읽으면 0 으로 간주해 겹침만 방지).
-      let h = 0;
-      try {
-        const b = sec.absoluteBoundingBox;
-        if (b && typeof b.height === "number") h = b.height;
-        else if (typeof sec.height === "number") h = sec.height;
-      } catch (e) { /* */ }
-      stackY += h + FORM_SECTION_GAP;
-    }
-  } catch (e) { /* mock/no-page */ }
-
-  // 좌측 레이아웃 보정 (mock 은 no-op):
-  //  - Platform(StatusBar·NavBar 등 기본 틀)은 "맨 앞" → Actions 왼편 별도 컬럼(상단)으로.
-  //  - Table 은 의존(SelectBox/Pagination/Checkbox) 때문에 거대한 Form 계열 뒤에 빌드돼 좌측에 고립 →
-  //    Platform 이 빠진 중앙 컬럼 말단(Navigation 바로 아래)으로 끌어올림. (의존 빌드순서는 유지, 배치만 보정.)
+  // ── 2단계: 모든 섹션을 "실제 측정 폭" 기준으로 가로 정렬(섹션끼리 겹치지 않게) ──
+  //   relocateSection 이 섹션 프레임 + 자식을 함께 이동하므로 내용도 같이 따라간다.
+  //   메인 행(가로) = 사용자 지정 순서. Filter Chip 만 Chip 바로 아래(2행)에 둔다.
+  //   mock(키체크) 환경은 createSection/relocate no-op → 가드로 통과.
   try {
     const findSec = (nm: string): SectionNode | null => {
       const a = figma.currentPage.findAll((n) => n.type === "SECTION" && n.name === nm);
       return Array.isArray(a) && a.length ? (a[0] as SectionNode) : null;
     };
-    const bottomOf = (s: SectionNode): number => {
-      try { const b = s.absoluteBoundingBox; if (b && typeof b.y === "number" && typeof b.height === "number") return b.y + b.height; } catch (e) { /* */ }
-      return (typeof s.y === "number" ? s.y : 0) + (typeof s.height === "number" ? s.height : 0);
-    };
     const widthOf = (s: SectionNode): number => {
       try { const b = s.absoluteBoundingBox; if (b && typeof b.width === "number") return b.width; } catch (e) { /* */ }
       return typeof s.width === "number" ? s.width : 0;
     };
-    const act = findSec("Actions"), plat = findSec("Platform"), nav = findSec("Navigation"), table = findSec("Table");
-    // Platform → 맨 앞: Actions 왼편 별도 컬럼, 상단 정렬
-    if (plat && act) {
-      const ax = typeof act.x === "number" ? act.x : 0;
-      const ay = typeof act.y === "number" ? act.y : 0;
-      relocateSection(plat, ax - SECTION_GAP - widthOf(plat), ay);
+    const heightOf = (s: SectionNode): number => {
+      try { const b = s.absoluteBoundingBox; if (b && typeof b.height === "number") return b.height; } catch (e) { /* */ }
+      return typeof s.height === "number" ? s.height : 0;
+    };
+    const H_GAP = 120;  // 섹션 사이 가로 간격
+    const TOP_Y = 0;    // 모든 섹션 상단 정렬 기준 y
+    const ROW = ["Platform", "Navigation", "Line Tab", "Pagination", "Actions", "Selection", "Chip",
+      "Form Control", "Date Picker", "Time Picker", "Table"];
+    const fchip = findSec("Filter Chip");
+    let fchipPlaced = false;
+    let curX = 0;
+    for (const nm of ROW) {
+      const sec = findSec(nm);
+      if (!sec) continue;
+      relocateSection(sec, curX, TOP_Y);        // 실제 측정폭으로 다음 X 누적 → 겹침 0
+      let colWidth = widthOf(sec);
+      // Chip 컬럼은 그 아래에 Filter Chip(더 넓을 수 있음)을 함께 쌓는다.
+      // 다음 섹션이 Filter Chip 과 겹치지 않도록 컬럼 폭 = max(Chip, Filter Chip).
+      if (nm === "Chip" && fchip) {
+        relocateSection(fchip, curX, TOP_Y + heightOf(sec) + H_GAP); // Chip 바로 아래(같은 X)
+        colWidth = Math.max(colWidth, widthOf(fchip));
+        fchipPlaced = true;
+      }
+      curX += colWidth + H_GAP;
     }
-    // Table → Navigation 바로 아래(중앙 컬럼 말단)
-    if (nav && table) {
-      const tx = typeof table.x === "number" ? table.x : 0;
-      relocateSection(table, tx, bottomOf(nav) + SECTION_GAP);
+    // Chip 미설치인데 Filter Chip 만 있는 경우(부분 설치) — 행 말단에 단독 컬럼으로 배치(세로 잔류 방지).
+    if (fchip && !fchipPlaced) {
+      relocateSection(fchip, curX, TOP_Y);
+      curX += widthOf(fchip) + H_GAP;
     }
   } catch (e) { /* mock/no-page */ }
 
@@ -3682,9 +3626,6 @@ function absBBox(nodes: SceneNode[]): { minX: number; minY: number; maxX: number
   }
   return ok ? { minX, minY, maxX, maxY } : null;
 }
-
-// Form 우측 컬럼 X 좌표(좌측 스택 최대폭보다 넉넉히 우측). 좌측 컬럼 최대 ~2.7k 가정.
-const FORM_COLUMN_X = 3000;
 
 // 섹션을 자식과 함께 (targetX, targetY) 로 통째 이동. 섹션 자식 좌표 규약과 무관하게
 // 각 자식의 목표 절대위치를 먼저 잡고, 섹션 이동 후 절대위치를 보정한다. mock 은 no-op.
@@ -3712,7 +3653,6 @@ async function wrapCategoryInSection(
   footprintFn: (p: string) => string[],
   titleSpace: number,
   pad: number,
-  targetX: number = 0,
 ): Promise<void> {
   if (typeof figma.createSection !== "function") return; // mock/구버전 → 건너뜀
   let kids: SceneNode[] = [];
@@ -3750,9 +3690,8 @@ async function wrapCategoryInSection(
   if (!section) section = figma.createSection();
   section.name = title;
   // 섹션을 먼저 bbox 기준으로 배치/크기지정(자식 추가 전) → 이후 자식 절대위치 보정
-  // targetX가 지정되면 x 좌표를 targetX로 설정 (가로 배치용)
-  const sectionX = targetX > 0 ? targetX : box.minX - pad;
-  try { section.x = sectionX; section.y = box.minY - titleSpace; } catch (e) { /* */ }
+  // 가로 배치는 빌드 후 2단계 relocateSection 가 담당. 여기선 내용에 딱 맞게만 래핑한다.
+  try { section.x = box.minX - pad; section.y = box.minY - titleSpace; } catch (e) { /* */ }
   try {
     section.resizeWithoutConstraints(
       Math.max(0.01, (box.maxX - box.minX) + pad * 2),
