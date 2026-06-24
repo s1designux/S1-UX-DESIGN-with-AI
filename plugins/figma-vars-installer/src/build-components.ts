@@ -376,25 +376,30 @@ async function buildCategoryHeader(
   frame.width = width;
   frame.height = 44;
   frame.fills = [{ type: "SOLID", color: { r: 0.93, g: 0.93, b: 0.93 } }];
+  frame.layoutMode = "VERTICAL";
+  frame.paddingLeft = 16;
+  frame.paddingTop = 10;
+  frame.itemSpacing = 0;
 
   const text = figma.createText();
   text.characters = categoryName;
   text.fontSize = 14;
-  text.fontWeight = 600;
   text.fills = [{ type: "SOLID", color: { r: 0.2, g: 0.2, b: 0.2 } }];
 
-  // 텍스트 폰트 로드 및 배치
-  const fontNames = text.getStyledTextSegments(["fontName"]);
-  if (fontNames.length > 0 && fontNames[0].fontName) {
+  // 텍스트 폰트 로드
+  try {
+    await figma.loadFontAsync({ family: "Pretendard", style: "SemiBold" });
+    text.fontName = { family: "Pretendard", style: "SemiBold" };
+  } catch (e) {
+    // 폰트 로드 실패 시 기본값 사용
     try {
-      await figma.loadFontAsync(fontNames[0].fontName);
-    } catch (e) {
-      // 폰트 로드 실패해도 계속 진행
+      await figma.loadFontAsync({ family: "Inter", style: "Medium" });
+      text.fontName = { family: "Inter", style: "Medium" };
+    } catch (e2) {
+      // 계속 진행
     }
   }
 
-  text.x = 16;
-  text.y = 12;
   frame.appendChild(text);
 
   return { frame, height: 44 };
