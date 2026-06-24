@@ -3459,17 +3459,17 @@ export async function buildAllComponents(
   // 컴포넌트 빌더 — 이름 → (originY) => {set, bottomY}. Input 은 originX=0(섹션 컬럼 좌측정렬).
   const runners: { [name: string]: (oy: number) => Promise<{ set: ComponentSetNode; bottomY: number }> } = {
     "Button":               (oy) => buildButtonSet(maps, onProgress, 92, 97, oy),
-    "Checkbox":             (oy) => buildCheckbox(maps, oy),
-    "Radio":                (oy) => buildRadio(maps, oy),
-    "Toggle":               (oy) => buildToggle(maps, oy),
+    "Selection/Checkbox":   (oy) => buildCheckbox(maps, oy),
+    "Selection/Radio":      (oy) => buildRadio(maps, oy),
+    "Selection/Toggle":     (oy) => buildToggle(maps, oy),
     "Chip":                 (oy) => buildChip(maps, oy),
     "Filter Chip":          (oy) => buildFilterChip(maps, oy),
-    "Input":                (oy) => buildInput(maps, oy, 0),
-    "Search Input":         (oy) => buildSearch(maps, oy),
-    "Text Area":            (oy) => buildTextarea(maps, oy),
-    "Select Box":           (oy) => buildSelect(maps, oy),
-    "Dropdown List":        (oy) => buildDropdownList(maps, oy),
-    "Dropdown":             (oy) => buildDropdown(maps, oy),
+    "Form Control/Input":   (oy) => buildInput(maps, oy, 0),
+    "Form Control/Search Input": (oy) => buildSearch(maps, oy),
+    "Form Control/Text Area":    (oy) => buildTextarea(maps, oy),
+    "Form Control/Select Box":   (oy) => buildSelect(maps, oy),
+    "Form Control/Dropdown List": (oy) => buildDropdownList(maps, oy),
+    "Form Control/Dropdown":     (oy) => buildDropdown(maps, oy),
     "Calendar":             (oy) => buildCalendar(maps, oy),
     "Date Picker":          (oy) => buildDatePicker(maps, oy),
     "Calendar Cell":        (oy) => buildCalendarCellLayout(maps, oy),
@@ -3494,22 +3494,24 @@ export async function buildAllComponents(
   // 대메뉴(섹션) 분류 — components.html(components-new) 의 5개 대메뉴와 동일. 각 카테고리 = 1 Figma Section.
   // 카테고리별로 연속 세로 밴드를 차지하므로 섹션끼리 겹치지 않는다.
   const CATEGORIES: { name: string; members: string[] }[] = [
-    { name: "Actions",    members: ["Button"] },
-    { name: "Selection",  members: ["Checkbox", "Radio", "Toggle", "Chip"] },
-    { name: "Navigation", members: ["Line Tab", "GNB Utility Icon", "Language Icon", "GNB", "Pagination"] },
-    { name: "Platform",   members: ["Platform/StatusBar", "Platform/NavBar", "CI", "Platform/LoginGNB", "Platform/WebTabBar", "Footer"] },
+    { name: "Actions",      members: ["Button"] },
+    { name: "Selection",    members: ["Selection/Checkbox", "Selection/Radio", "Selection/Toggle"] },
+    { name: "Chip",         members: ["Chip"] },
+    { name: "Navigation",   members: ["Line Tab", "GNB Utility Icon", "Language Icon", "GNB", "Pagination"] },
+    { name: "Platform",     members: ["Platform/StatusBar", "Platform/NavBar", "CI", "Platform/LoginGNB", "Platform/WebTabBar", "Footer"] },
     // Form 계열은 폭이 커서 좌측 스택 뒤에 빌드(좌측 스택 중간 빈칸 방지) 후 우측 별도 컬럼으로 이동.
     // Phase A: 옛 단일 "Form" 을 3개 섹션으로 영구 분할(리네임 없음 — 컴포넌트명·set.name·토큰 불변).
     //   배치 순서 = Core(원자) 먼저 → Pattern(조립) 나중. lazy-build 가 의존 세트를 보장하므로 멤버 순서도 Core 먼저.
-    //   Form          : 순수 입력 컨트롤 (의존: Dropdown List → Dropdown → Select Box)
+    //   Form Control  : 순수 입력 컨트롤 (의존: Dropdown List → Dropdown → Select Box)
     //   Date Picker   : 날짜 계열 (Calendar Cell/Tile = Core → Calendar/Date Picker = Pattern)
     //   Time Picker   : 시간 계열 (Time Picker Cell/Dropdown = Core → Time Picker = Pattern)
-    { name: "Form",        members: ["Input", "Search Input", "Text Area", "Dropdown List", "Dropdown", "Filter Chip", "Select Box"] },
-    { name: "Date Picker", members: ["Calendar Cell", "Calendar Tile", "Calendar", "Date Picker"] },
-    { name: "Time Picker", members: ["Time Picker Cell", "Time Picker Dropdown", "Time Picker"] },
-    // Table 은 Checkbox(Selection)·Pagination(Navigation)·SelectBox(Form) 인스턴스를 재사용하므로
+    { name: "Form Control", members: ["Form Control/Input", "Form Control/Search Input", "Form Control/Text Area", "Form Control/Dropdown List", "Form Control/Dropdown", "Form Control/Select Box"] },
+    { name: "Filter Chip",  members: ["Filter Chip"] },
+    { name: "Date Picker",  members: ["Calendar Cell", "Calendar Tile", "Calendar", "Date Picker"] },
+    { name: "Time Picker",  members: ["Time Picker Cell", "Time Picker Dropdown", "Time Picker"] },
+    // Table 은 Checkbox(Selection)·Pagination(Navigation)·SelectBox(Form Control) 인스턴스를 재사용하므로
     // 이 세 카테고리가 모두 빌드된 후 마지막에 배치 (BUILT_COMPS 확보 보장).
-    { name: "Table",      members: ["Table Cell", "Table"] },
+    { name: "Table",        members: ["Table Cell", "Table"] },
   ];
   const TOTAL = CATEGORIES.reduce((s, c) => s + c.members.length, 0);
   const SECTION_TITLE_SPACE = 140; // 섹션 제목 + 상단 여백(컴포넌트 시작 전)
