@@ -3455,19 +3455,23 @@ async function buildCI(maps: BuildMaps, originY: number): Promise<{ set: Compone
 //   토큰 "값" 변경은 Variables 재설치로 기존 컴포넌트에 자동 반영되므로 컴포넌트 재생성 불필요.
 //   (mock 환경(렌더러·키체크)은 page.findAll/children 이 배열이 아니므로 가드로 fresh 취급.)
 
-// 대메뉴(섹션) 분류 — 렌더·배치·검증에서 참고. export: render.js가 그룹 헤더로 사용.
-export const COMPONENT_CATEGORIES: { name: string; members: string[] }[] = [
-  { name: "Actions",      members: ["Button"] },
-  { name: "Selection",    members: ["Checkbox", "Radio", "Toggle"] },
-  { name: "Chip",         members: ["Chip"] },
-  { name: "Navigation",   members: ["Line Tab", "GNB Utility Icon", "Language Icon", "GNB", "Pagination"] },
-  { name: "Platform",     members: ["Platform/StatusBar", "Platform/NavBar", "CI", "Platform/LoginGNB", "Platform/WebTabBar", "Footer"] },
-  { name: "Form Control", members: ["Input", "Search Input", "Text Area", "Dropdown List", "Dropdown", "Select Box"] },
-  { name: "Filter Chip",  members: ["Filter Chip"] },
-  { name: "Date Picker",  members: ["Calendar Cell", "Calendar Tile", "Calendar", "Date Picker"] },
-  { name: "Time Picker",  members: ["Time Picker Cell", "Time Picker Dropdown", "Time Picker"] },
-  { name: "Table",        members: ["Table Cell", "Table"] },
+// 대메뉴(섹션) 분류 — 2차원 배열 (행별 배치)
+// 각 행: 가로로 나란히 표시할 섹션들
+// render.js에서는 1차원으로 flatten해서 사용
+export const COMPONENT_CATEGORIES_GRID: { name: string; members: string[] }[][] = [
+  [{ name: "Actions",      members: ["Button"] }],
+  [{ name: "Selection",    members: ["Checkbox", "Radio", "Toggle"] }],
+  [{ name: "Chip",         members: ["Chip"] }, { name: "Filter Chip",  members: ["Filter Chip"] }],
+  [{ name: "Navigation",   members: ["Line Tab", "GNB Utility Icon", "Language Icon", "GNB", "Pagination"] }],
+  [{ name: "Platform",     members: ["Platform/StatusBar", "Platform/NavBar", "CI", "Platform/LoginGNB", "Platform/WebTabBar", "Footer"] }],
+  [{ name: "Form Control", members: ["Input", "Search Input", "Text Area", "Dropdown List", "Dropdown", "Select Box"] }],
+  [{ name: "Date Picker",  members: ["Calendar Cell", "Calendar Tile", "Calendar", "Date Picker"] }],
+  [{ name: "Time Picker",  members: ["Time Picker Cell", "Time Picker Dropdown", "Time Picker"] }],
+  [{ name: "Table",        members: ["Table Cell", "Table"] }],
 ];
+
+// render.js용 1차원 배열 (호환성)
+export const COMPONENT_CATEGORIES = COMPONENT_CATEGORIES_GRID.flat();
 
 export async function buildAllComponents(
   maps: BuildMaps,
@@ -3555,41 +3559,49 @@ export async function buildAllComponents(
 
   let y = 0;
   let done = 0;
-  for (const cat of COMPONENT_CATEGORIES) {
-    y += SECTION_TITLE_SPACE; // 섹션 제목 공간 확보 후 컴포넌트 시작
+  const SECTION_WIDTH = 960;  // 각 섹션 폭 (가로 배치용)
+  const SECTION_H_GAP = 60;   // 섹션 사이 가로 간격
 
-    // 카테고리 헤더 바 생성 (에러 발생 시 무시하고 계속)
-    try {
-      const header = await buildCategoryHeader(cat.name, 0, y, 1920);
-      y += header.height + 20; // 헤더 높이 + 간격
-    } catch (e) {
-      // 헤더 생성 실패는 무시 (세트 생성은 계속)
-    }
+  for (const row of COMPONENT_CATEGORIES_GRID) {
+    let rowMaxBottomY = y;
 
-    for (const name of cat.members) {
-      const run = runners[name];
-      if (!run) continue;
-      done++;
-      // Calendar Cell/Tile 은 Calendar·Date Picker 가 매 실행마다 lazy 로 새로 빌드하는 의존 세트라
-      // 건너뛰면 옛 위치에 떠버린다 → 항상 layout 등록기를 돌려 캐시 세트를 재배치·데코레이트.
-      const isDepSet = name === "Calendar Cell" || name === "Calendar Tile";
-      if (existing.has(name) && !isDepSet) {
-        const rb = regionBottom(name);
-        if (rb != null) y = rb + 140;   // 기존 항목 실제 위치만큼 전진(슬롯 정렬 유지)
-        skipped.push(name);
-        continue;
+    for (let catIdx = 0; catIdx < row.length; catIdx++) {
+      const cat = row[catIdx];
+      let sectionY = y + SECTION_TITLE_SPACE;
+      let sectionX = catIdx * (SECTION_WIDTH + SECTION_H_GAP);
+
+      // 카테고리 헤더 바 생성 (에러 발생 시 무시하고 계속)
+      try {
+        const header = await buildCategoryHeader(cat.name, sectionX, sectionY, SECTION_WIDTH);
+        sectionY += header.height + 20;
+      } catch (e) {
+        // 헤더 생성 실패는 무시
       }
-      if (onProgress) onProgress(`${name} 생성 중…`, 92 + Math.round((done / TOTAL) * 8));
-      // 재생성 전 해당 컴포넌트의 고아 잔재(세트만 지우고 남은 스펙 프레임, TPD 의 Cell·States 등) 정리 → 중복 방지
-      removeByNames(footprint(name));
-      const res = await run(y);
-      created += res.set.children.length;
-      added.push(name);
-      y = res.bottomY + 140;
+
+      let catY = sectionY;
+      for (const name of cat.members) {
+        const run = runners[name];
+        if (!run) continue;
+        done++;
+        const isDepSet = name === "Calendar Cell" || name === "Calendar Tile";
+        if (existing.has(name) && !isDepSet) {
+          const rb = regionBottom(name);
+          if (rb != null) catY = rb + 140;
+          skipped.push(name);
+          continue;
+        }
+        if (onProgress) onProgress(`${name} 생성 중…`, 92 + Math.round((done / TOTAL) * 8));
+        removeByNames(footprint(name));
+        const res = await run(catY);
+        created += res.set.children.length;
+        added.push(name);
+        catY = res.bottomY + 140;
+      }
+      // 카테고리 섹션화
+      await wrapCategoryInSection(cat.name, cat.members, footprint, SECTION_TITLE_SPACE, SECTION_PAD);
+      rowMaxBottomY = Math.max(rowMaxBottomY, catY);
     }
-    // 카테고리의 모든 풋프린트 노드를 1개 Figma Section 으로 묶는다(절대 위치 보존). mock 환경은 no-op.
-    await wrapCategoryInSection(cat.name, cat.members, footprint, SECTION_TITLE_SPACE, SECTION_PAD);
-    y += SECTION_GAP;
+    y = rowMaxBottomY + SECTION_GAP;
   }
 
   // Form 계열 3섹션(폭 큼)을 좌측 세로 스택에서 빼내 우측 별도 컬럼(상단 정렬)에 세로로 쌓는다.
