@@ -362,6 +362,44 @@ async function decorateSetGrouped(set: ComponentSetNode, opts: GroupedSpecOpts, 
   return opts.originY + H;
 }
 
+// ── 카테고리 헤더 바 생성 (Selection, Form Control 등) ────────────────────
+async function buildCategoryHeader(
+  categoryName: string,
+  originX: number,
+  originY: number,
+  width: number
+): Promise<{ frame: FrameNode; height: number }> {
+  const frame = figma.createFrame();
+  frame.name = `${categoryName} — Header`;
+  frame.x = originX;
+  frame.y = originY;
+  frame.width = width;
+  frame.height = 44;
+  frame.fills = [{ type: "SOLID", color: { r: 0.93, g: 0.93, b: 0.93 } }];
+
+  const text = figma.createText();
+  text.characters = categoryName;
+  text.fontSize = 14;
+  text.fontWeight = 600;
+  text.fills = [{ type: "SOLID", color: { r: 0.2, g: 0.2, b: 0.2 } }];
+
+  // 텍스트 폰트 로드 및 배치
+  const fontNames = text.getStyledTextSegments(["fontName"]);
+  if (fontNames.length > 0 && fontNames[0].fontName) {
+    try {
+      await figma.loadFontAsync(fontNames[0].fontName);
+    } catch (e) {
+      // 폰트 로드 실패해도 계속 진행
+    }
+  }
+
+  text.x = 16;
+  text.y = 12;
+  frame.appendChild(text);
+
+  return { frame, height: 44 };
+}
+
 export async function buildButtonSet(
   maps: BuildMaps,
   onProgress?: (step: string, pct: number) => void,
@@ -3520,6 +3558,11 @@ export async function buildAllComponents(
   let done = 0;
   for (const cat of COMPONENT_CATEGORIES) {
     y += SECTION_TITLE_SPACE; // 섹션 제목 공간 확보 후 컴포넌트 시작
+
+    // 카테고리 헤더 바 생성
+    const header = await buildCategoryHeader(cat.name, 0, y, 1920);
+    y += header.height + 20; // 헤더 높이 + 간격
+
     for (const name of cat.members) {
       const run = runners[name];
       if (!run) continue;
