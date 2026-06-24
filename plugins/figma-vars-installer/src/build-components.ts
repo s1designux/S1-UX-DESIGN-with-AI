@@ -3558,9 +3558,13 @@ export async function buildAllComponents(
   for (const cat of COMPONENT_CATEGORIES) {
     y += SECTION_TITLE_SPACE; // 섹션 제목 공간 확보 후 컴포넌트 시작
 
-    // 카테고리 헤더 바 생성
-    const header = await buildCategoryHeader(cat.name, 0, y, 1920);
-    y += header.height + 20; // 헤더 높이 + 간격
+    // 카테고리 헤더 바 생성 (에러 발생 시 무시하고 계속)
+    try {
+      const header = await buildCategoryHeader(cat.name, 0, y, 1920);
+      y += header.height + 20; // 헤더 높이 + 간격
+    } catch (e) {
+      // 헤더 생성 실패는 무시 (세트 생성은 계속)
+    }
 
     for (const name of cat.members) {
       const run = runners[name];
