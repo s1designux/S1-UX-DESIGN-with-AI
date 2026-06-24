@@ -252,7 +252,7 @@ color-overlay   → 딤·오버레이
 | CSS Variable | Light Hex | Light Foundation | Dark Hex | Dark Foundation | 구 이름 |
 |---|---|---|---|---|---|
 | `--color-table-cell-default` | `#FFFFFF` | color/base/white | `#1C1D23` | gray-dark/100 | data-state-default |
-| `--color-table-cell-hover` | `#E2F1FF` | color/blue/50 | `#24252C` | gray-dark/200 | data-state-hover |
+| `--color-table-cell-hover` | `#F5F5F5` | color/gray/50 | `#24252C` | gray-dark/200 | data-state-hover |
 | `--color-table-cell-selected` | `#C8E4FF` | color/blue/100 | `#112B55` | blue-dark/100 | data-state-selected |
 | `--color-table-header-bg` | `#F5F5F5` | color/gray/50 | `#24252C` | gray-dark/200 | data-header-bg |
 | `--color-table-border-default` | `#E9E9E9` | color/gray/100 | `#2E2F38` | gray-dark/300 | data-border-light → **default** (2026-06-23) |

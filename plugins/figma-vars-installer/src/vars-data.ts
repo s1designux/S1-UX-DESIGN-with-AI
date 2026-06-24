@@ -477,7 +477,7 @@ export const SEMANTIC_COLOR: Record<string, SemanticColorEntry> = {
   // 테이블 세트 외곽 프레임선(상단 2px·하단 1px) — border-emphasis(#353535). 헤더 언더라인(strong)·셀선(light)과 구분.
   "color/table/header/bg": { light: "gray/50", dark: "gray-dark/200" },
   "color/table/cell/default": { light: "base/white", dark: "gray-dark/100" },
-  "color/table/cell/hover": { light: "blue/50", dark: "gray-dark/200" },
+  "color/table/cell/hover": { light: "gray/50", dark: "gray-dark/200" },
   "color/table/cell/selected": { light: "blue/100", dark: "blue-dark/100" },
 
   // ── dropdown ────────────────────────────────

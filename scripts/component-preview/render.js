@@ -89,6 +89,8 @@ function makeNode(type) {
     clone() { return cloneNode(this); },
     createInstance() { const c = cloneNode(this); c.__instanceOf = this.name; return c; },
     remove() { /* noop */ },
+    addComponentProperty(name, type, default_value) { return "prop-" + Math.random().toString(36).slice(2); },
+    findChild(pred) { return this.findOne(pred); },
   };
   // 텍스트 노드는 실제 Figma 처럼 폭/높이를 측정해야 수동 중앙정렬·폭계산(GNB 슬롯 등)이 깨지지 않는다.
   // mock 은 측정기가 없으므로 글자수×폰트크기로 근사(한글/전각 ≈1.0em, ASCII ≈0.56em). resize 시 명시값 우선.
@@ -181,6 +183,7 @@ function tokenProxy() {
 }
 const maps = {
   semanticColor: tokenProxy(),
+  foundationColor: tokenProxy(),
   foundationNumber: tokenProxy(),
   textStyles: tokenProxy(),
   semanticColorCollectionId: "cid",

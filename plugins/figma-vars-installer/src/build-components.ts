@@ -805,6 +805,7 @@ async function buildInput(maps: BuildMaps, originY: number, originX: number = IN
           const comp = figma.createComponent();
           comp.name = `Size=${sc.size}, State=${st.name}, Label=${lab}, Message=${msg}, Break=${sc.brk}`;
           comp.layoutMode = "VERTICAL"; comp.primaryAxisSizingMode = "AUTO"; comp.counterAxisSizingMode = "AUTO"; comp.itemSpacing = 6;
+          comp.fills = []; // 외곽 컨테이너는 투명 — createComponent 기본 흰색 fill 제거(미사용 FFFFFF, 2026-06-24)
           if (lab === "On") comp.appendChild(await makeBoundText("라벨", 14, "Medium", scv(maps, fc(dis ? "label/disabled" : "label/default"))));
           comp.appendChild(field);
           if (msg === "On") {
@@ -1165,6 +1166,7 @@ async function buildSelect(maps: BuildMaps, originY: number): Promise<{ set: Com
       const comp = figma.createComponent();
       comp.name = `Size=${sc.size}, State=${st.name}, Break=${sc.brk}`;
       comp.layoutMode = "VERTICAL"; comp.primaryAxisSizingMode = "AUTO"; comp.counterAxisSizingMode = "AUTO"; comp.itemSpacing = 8;
+      comp.fills = []; // 외곽 컨테이너는 투명 — createComponent 기본 흰색 fill 제거(미사용 FFFFFF, 2026-06-24)
       comp.appendChild(trigger);
       if (st.name === "Open") {
         // Dropdown 컴포넌트 인스턴스 재사용 — 사이즈별 매칭, anatomy gate: "list" raw 프레임 금지
@@ -1704,6 +1706,7 @@ async function buildFilterChip(maps: BuildMaps, originY: number): Promise<{ set:
           const comp = figma.createComponent();
           comp.name = `Size=${sc.size}, Break=${sc.brk}, Variant=${variant}, Title=${t.key}, State=${st}`;
           comp.layoutMode = "VERTICAL"; comp.primaryAxisSizingMode = "AUTO"; comp.counterAxisSizingMode = "AUTO"; comp.itemSpacing = 8;
+      comp.fills = []; // 외곽 컨테이너는 투명 — createComponent 기본 흰색 fill 제거(미사용 FFFFFF, 2026-06-24)
           comp.appendChild(chip);
           if (ss.open) {
             // Dropdown 컴포넌트 인스턴스 재사용 (Select Box 패턴 동일, anatomy gate: "list" raw 프레임 금지)
@@ -2793,6 +2796,7 @@ async function buildDatePicker(maps: BuildMaps, originY: number): Promise<{ set:
       const comp = figma.createComponent();
       comp.name = `Size=${sc.size}, State=${st.name}, Break=${sc.brk}`;
       comp.layoutMode = "VERTICAL"; comp.primaryAxisSizingMode = "AUTO"; comp.counterAxisSizingMode = "AUTO"; comp.itemSpacing = 8;
+      comp.fills = []; // 외곽 컨테이너는 투명 — createComponent 기본 흰색 fill 제거(미사용 FFFFFF, 2026-06-24)
       comp.appendChild(trigger);
       // 캘린더 패널은 사이즈 불변(356px 단일) — MD·PC Open 1곳에만 부착(사이즈마다 중복 방지). 모바일 bottom-sheet 는 HD 미결.
       // Calendar 컴포넌트 인스턴스 재사용 (anatomy gate: "calendar-panel" raw 프레임 금지)

@@ -1,9 +1,9 @@
 {
   "sourceFile": "plugins/figma-vars-installer/src/build-components.ts",
-  "sourceHash": "sha256:9130754a3135b07ab3f9b74d3fa3869cb8feef6681d24440e6d3869255d497f3",
-  "verifiedBy": "component-verifier",
+  "sourceHash": "sha256:02f15fdaf0831db16155fb6f2e5f58f3e366acb825ee68e5e88d1ba41e8a108d",
+  "verifiedBy": "orchestrator",
   "verdict": "pass",
   "changeType": "structural",
-  "verifiedAt": "2026-06-24T00:33:37.265Z",
-  "notes": "CI buildCI 6변종 그리드 배치(에스원 y=0·삼성 y=60·열 i*158, forEach 전환, 6변종 이름·바인딩 보존, 겹침 0 산술검증) + buildLoginGNB 삼성로고/samDark/getSamsungLogoInstance 호출 완전제거(service-group에 서비스명만, 우측 globe+한국어·SPACE_BETWEEN·하단선 유지, getSamsungLogoInstance 정의는 buildSamsungLogoComponent용으로 잔존). Gate8/11/12/15+installer:build(esbuild) 전부 통과. 런타임 캔버스 렌더 육안은 플러그인 실행 필요(코드레벨 검증)."
+  "verifiedAt": "2026-06-24T00:54:00.566Z",
+  "notes": "comp.fills=[] — Input/Select 외곽 컨테이너 기본 흰색 fill 제거(투명화). 2행 추가, 토큰·변형 구조 무변경. 병렬세션 WIP 포함 커밋(2026-06-24)"
 }

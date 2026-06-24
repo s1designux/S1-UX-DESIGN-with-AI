@@ -115,14 +115,14 @@
       "tokens": [
         {
           "cssVar": "--color-table-cell-hover",
-          "light": "var(--color-blue-50)",
-          "dark": "var(--color-blue-dark-100)",
-          "resolvedLight": "#E2F1FF",
-          "resolvedDark": "#112B55",
+          "light": "var(--color-gray-50)",
+          "dark": "var(--color-gray-dark-200)",
+          "resolvedLight": "#F5F5F5",
+          "resolvedDark": "#24252C",
           "status": "stable",
-          "darkStatus": "candidate",
-          "role": "테이블 행 hover 배경. Figma: color/table/cell/hover = blue-50.",
-          "darkNote": "candidate — blue-dark-100(#112B55). Figma dark 미확인. HD-Table-1"
+          "darkStatus": "stable",
+          "role": "테이블 행 hover 배경. color/gray/50 (light) · gray-dark/200 (dark).",
+          "darkNote": "gray-dark/200(#24252C) — vars-data 정본 일치"
         }
       ]
     },
