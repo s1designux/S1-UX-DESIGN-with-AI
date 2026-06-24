@@ -369,36 +369,30 @@ async function buildCategoryHeader(
   originY: number,
   width: number
 ): Promise<{ frame: FrameNode; height: number }> {
+  // 프레임 생성 (배경)
   const frame = figma.createFrame();
-  frame.name = `${categoryName} — Header`;
   frame.x = originX;
   frame.y = originY;
   frame.width = width;
   frame.height = 44;
-  frame.fills = [{ type: "SOLID", color: { r: 0.93, g: 0.93, b: 0.93 } }];
-  frame.layoutMode = "VERTICAL";
-  frame.paddingLeft = 16;
-  frame.paddingTop = 10;
-  frame.itemSpacing = 0;
+  frame.name = `${categoryName} — Header`;
 
+  // 배경색 설정
+  const bgFill = { type: "SOLID", color: { r: 0.93, g: 0.93, b: 0.93 } };
+  frame.fills = [bgFill];
+
+  // 텍스트 노드 생성
   const text = figma.createText();
   text.characters = categoryName;
   text.fontSize = 14;
-  text.fills = [{ type: "SOLID", color: { r: 0.2, g: 0.2, b: 0.2 } }];
 
-  // 텍스트 폰트 로드
-  try {
-    await figma.loadFontAsync({ family: "Pretendard", style: "SemiBold" });
-    text.fontName = { family: "Pretendard", style: "SemiBold" };
-  } catch (e) {
-    // 폰트 로드 실패 시 기본값 사용
-    try {
-      await figma.loadFontAsync({ family: "Inter", style: "Medium" });
-      text.fontName = { family: "Inter", style: "Medium" };
-    } catch (e2) {
-      // 계속 진행
-    }
-  }
+  // Pretendard SemiBold 로드 및 설정
+  await figma.loadFontAsync({ family: "Pretendard", style: "SemiBold" });
+  text.fontName = { family: "Pretendard", style: "SemiBold" };
+
+  // 텍스트색 설정 (rgb 0~1 범위)
+  const textFill = { type: "SOLID", color: { r: 0.2, g: 0.2, b: 0.2 } };
+  text.fills = [textFill];
 
   frame.appendChild(text);
 
