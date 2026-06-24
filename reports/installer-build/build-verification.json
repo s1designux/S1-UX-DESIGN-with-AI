@@ -1,9 +1,9 @@
 {
   "sourceFile": "plugins/figma-vars-installer/src/build-components.ts",
   "sourceHash": "sha256:7cba42a4a49cd7a43d454827f645d8d2e621c16fcb71cefabd71d642a3900e5b",
-  "verifiedBy": "orchestrator",
+  "verifiedBy": "component-verifier",
   "verdict": "pass",
-  "changeType": "mechanical",
-  "verifiedAt": "2026-06-24T01:50:28.082Z",
-  "notes": ""
+  "changeType": "structural",
+  "verifiedAt": "2026-06-24T01:56:40.053Z",
+  "notes": "CI그리드(CI_COL158/에스원y0·삼성y60·바인딩보존)·LoginGNB service-group=[서비스명]만(삼성로고없음)·form-control 외곽래퍼 fills=[] 4곳(Input/Select/FilterChip/DatePicker, 자식 bound bg 유지·Search/Textarea 본체 미변경) + runners↔CATEGORIES bare 정합(빌드누락0·고아0)·COMPONENT_CATEGORIES export·섹션헤더. 실mock빌드 35세트 생성(TPCell 포함)·전 게이트(tsc/anatomy/keycheck/iconpolicy/namingcheck/installer:build/gate:check) 통과. Figma 실렌더는 플러그인 필요라 코드/구조 레벨까지 검증."
 }
