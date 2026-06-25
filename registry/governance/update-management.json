@@ -1,0 +1,44 @@
+{
+  "meta": {
+    "name": "업데이트 관리 (Update Management) 정본",
+    "version": "0.1.0",
+    "updatedAt": "2026-06-25",
+    "description": "컴포넌트·패턴별 진행 상태와 각 표면(Figma 설치기·tokens.css·HTML 가이드) 반영일을 한곳에서 관리한다. origin(분류)이 재발방지 게이트의 입력 — 'B(원본틀 필요)'인데 원본 대조 안 했으면 차단, 'A(정리완료)'는 면제. 날짜는 수동 도장(해당 표면을 실제로 갱신할 때 손으로 기록).",
+    "legend": {
+      "origin": {
+        "A": "이미 정리 완료 — 원본 대조 불필요, 건드리지 않음",
+        "B": "원본 틀 필요 — 원본에서 틀 가져와 최신으로 갈이(탭처럼 검증절차)",
+        "tbd": "분류 미정 — river 결정 필요"
+      },
+      "verify": {
+        "new": "새 방식(원본 재측정 cross-file 대조)으로 검증됨",
+        "legacy": "옛 방식(계획/메모 대조)으로만 검증 — 원본 재측정 아님, 재확인 권장",
+        "none": "검증 안 됨",
+        "na": "불필요(origin=A)"
+      },
+      "dates": "YYYY-MM-DD 수동 도장. 빈 값은 '미기록(도장 필요)'."
+    }
+  },
+  "components": [
+    { "id": "tab",         "origin": "B",   "sourceNode": "V2.4 540:6032", "verify": "new", "verifyDate": "2026-06-24", "dates": { "installer": "", "tokens": "2026-05-28", "html": "2026-05-28" }, "note": "라인탭. 새 방식(원본 재측정)으로 재빌드·검증 완료." },
+    { "id": "nav",         "origin": "B",   "sourceNode": "", "verify": "none", "verifyDate": "", "dates": { "installer": "", "tokens": "", "html": "" }, "note": "골격만(harness=skeleton). 원본 틀 세팅 필요. 원본 노드 미지정." },
+    { "id": "pagination",  "origin": "B",   "sourceNode": "", "verify": "none", "verifyDate": "", "dates": { "installer": "", "tokens": "", "html": "" }, "note": "골격만. 원본 틀 세팅 필요." },
+    { "id": "table",       "origin": "tbd", "sourceNode": "", "verify": "none", "verifyDate": "", "dates": { "installer": "", "tokens": "", "html": "" }, "note": "코드 미착수(codeStatus=not-started)인데 harness=implemented — 분류 확인 필요." },
+    { "id": "button",      "origin": "tbd", "sourceNode": "", "verify": "none", "verifyDate": "", "dates": { "installer": "", "tokens": "", "html": "" }, "note": "진행 중(in-progress) — 분류 확인 필요." },
+    { "id": "gnb",         "origin": "tbd", "sourceNode": "", "verify": "legacy", "verifyDate": "2026-06-06", "dates": { "installer": "", "tokens": "", "html": "" }, "note": "진행 중. 옛 방식 검증만 — 원본 재측정 재확인 권장. 분류 확인 필요." },
+    { "id": "time-picker", "origin": "tbd", "sourceNode": "", "verify": "legacy", "verifyDate": "", "dates": { "installer": "", "tokens": "", "html": "" }, "note": "preview 단계. 옛 방식 검증만. 분류 확인 필요." },
+    { "id": "checkbox",    "origin": "A",   "sourceNode": "", "verify": "na", "verifyDate": "", "dates": { "installer": "", "tokens": "", "html": "" }, "note": "정리 완료." },
+    { "id": "radio",       "origin": "A",   "sourceNode": "", "verify": "na", "verifyDate": "", "dates": { "installer": "", "tokens": "", "html": "" }, "note": "정리 완료." },
+    { "id": "toggle",      "origin": "A",   "sourceNode": "", "verify": "na", "verifyDate": "", "dates": { "installer": "", "tokens": "", "html": "" }, "note": "정리 완료." },
+    { "id": "date-picker", "origin": "A",   "sourceNode": "", "verify": "na", "verifyDate": "", "dates": { "installer": "", "tokens": "", "html": "" }, "note": "정리 완료. (HD 잔여: 모바일 인터랙션 등은 별도)" },
+    { "id": "chip",        "origin": "A",   "sourceNode": "", "verify": "na", "verifyDate": "", "dates": { "installer": "", "tokens": "", "html": "" }, "note": "정리 완료. (다크 pending)" },
+    { "id": "dropdown",    "origin": "A",   "sourceNode": "", "verify": "na", "verifyDate": "", "dates": { "installer": "", "tokens": "", "html": "" }, "note": "정리 완료. (다크 pending)" },
+    { "id": "input",       "origin": "A",   "sourceNode": "", "verify": "na", "verifyDate": "", "dates": { "installer": "", "tokens": "", "html": "" }, "note": "정리 완료. (다크 pending)" },
+    { "id": "select",      "origin": "A",   "sourceNode": "", "verify": "na", "verifyDate": "", "dates": { "installer": "", "tokens": "", "html": "" }, "note": "정리 완료. (다크 pending)" },
+    { "id": "textarea",    "origin": "A",   "sourceNode": "", "verify": "na", "verifyDate": "", "dates": { "installer": "", "tokens": "", "html": "" }, "note": "정리 완료. (다크 pending)" }
+  ],
+  "patterns": [
+    { "id": "modal", "label": "Modal", "registryPath": "registry/patterns/modal.json", "origin": "tbd", "sourceNode": "", "verify": "legacy", "verifyDate": "2026-06-08", "dates": { "installer": "", "tokens": "", "html": "" }, "note": "코어 조합 패턴(button·table·input). 옛 방식 검증. 분류 확인 필요." },
+    { "id": "login", "label": "Login (PC Web)", "registryPath": "", "origin": "tbd", "sourceNode": "", "verify": "legacy", "verifyDate": "", "dates": { "installer": "", "tokens": "", "html": "" }, "note": "screen-rebuild로 제작(reports/screen-rebuild/login). registry/patterns 미등록 — 등록 여부 결정 필요." }
+  ]
+}

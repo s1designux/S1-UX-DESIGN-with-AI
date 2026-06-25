@@ -88,9 +88,31 @@
       ]
     },
     {
-      "group": "Harness Admin",
+      "group": "System",
+      "items": [
+        {
+          "id": "dashboard",
+          "title": "Dashboard",
+          "icon": "🛡",
+          "href": "pages/dashboard.html",
+          "status": "ready",
+          "description": "누가·무엇이 컴포넌트를 지키는지 — 검사기·도우미·자동장치 한눈에"
+        },
+        {
+          "id": "update-management",
+          "title": "업데이트 관리",
+          "icon": "🗂",
+          "href": "pages/update-management.html",
+          "status": "ready",
+          "description": "컴포넌트·패턴 진행 상태 + 표면별(설치기·tokens.css·HTML) 반영일 + 분류(Ⓐ/Ⓑ) 관리"
+        }
+      ]
+    },
+    {
+      "group": "Harness Admin (숨김 — 2026-06-24 메뉴 비노출, 파일 보존)",
       "collapsible": true,
       "defaultCollapsed": true,
+      "hidden": true,
       "items": [
         {
           "id": "harness-overview",
@@ -140,10 +162,7 @@
   "_archive": {
     "_note": "Archive 파일은 nav에서 제거됨. 직접 URL 접근 가능. 삭제 금지.",
     "items": [
-      { "id": "legacy",      "href": "pages/legacy.html" },
-      { "id": "ai-snippets", "href": "pages/ai-snippets.html" },
-      { "id": "guide-md",    "href": "pages/guide-md.html" },
-      { "id": "md-review",   "href": "pages/md-review.html" }
+      { "id": "legacy",      "href": "pages/legacy.html" }
     ]
   },
   "statusLegend": {

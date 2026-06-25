@@ -32,8 +32,7 @@ const DEAD = /--sizing-(?:button-height|chip-height|table-row-height|form-contro
 const REUSE_TARGETS = [
   'assets/css/tokens.css', 'assets/css/components/input.css', 'assets/css/components/button.css',
   'pages/install-prompt.html', 'pages/semantic.html', 'pages/foundation.html',
-  'pages/components.html', 'pages/components-new.html', 'pages/patterns.html',
-  'pages/button-harness.html', 'pages/ai-snippets.html', 'pages/guide-md.html', 'pages/legacy.html',
+  'pages/components-new.html', 'pages/patterns.html', 'pages/legacy.html',
   'plugins/figma-vars-installer/src/vars-data.ts',
 ].filter((p) => !isLegacyFile(p));   // 레거시 파일(legacyFiles 정본)은 검사 제외
 const ALLOW_LINE = /(폐지|이관|제거|removed|deprecated)/;

@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <script>!function(){var z=localStorage.getItem("sw-ds-zoom");if(z)document.documentElement.style.zoom=z+"%"}();</script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard — S1 UX DESIGN GUIDE</title>
+  <link rel="stylesheet" href="../assets/css/style.css">
+  <link rel="stylesheet" href="../assets/css/tokens.css">
+  <!-- 이 페이지는 scripts/gen-dashboard.js 가 registry/governance/guardians.json 으로 자동 생성. 손편집 금지. -->
+  <style>
+    .dash-banner { display:flex; align-items:center; gap:14px; padding:18px 22px; border-radius:14px; margin-bottom:32px; background:#f3f4f6; border:1px solid #e5e7eb; }
+    .dash-banner.ok { background:#ecfdf5; border-color:#a7f3d0; }
+    .dash-banner.bad { background:#fffbeb; border-color:#fcd34d; }
+    .dash-banner-icon { font-size:28px; line-height:1; }
+    .dash-banner-title { font-size:16px; font-weight:700; color:#111827; }
+    .dash-banner-sub { font-size:13px; color:#6b7280; margin-top:3px; }
+
+    .dash-section { margin-bottom:40px; }
+    .dash-section-head { margin-bottom:6px; }
+    .dash-section-head h2 { font-size:18px; font-weight:700; color:#111827; margin:0; }
+    .dash-section-head p { font-size:13px; color:#6b7280; margin:4px 0 18px; }
+
+    .dash-grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(250px, 1fr)); gap:12px; }
+    .dash-card { background:#fff; border:1px solid #e5e7eb; border-radius:12px; padding:16px 18px; }
+    .dash-card.gate { border-left:4px solid #1d6ceb; }
+    .dash-card.agent { border-left:4px solid #7c3aed; }
+    .dash-card.agent.star { border-left-color:#f59e0b; background:#fffdf7; grid-column:1 / -1; }
+    .dash-card.hook { border-left:4px solid #059669; }
+    .dash-card-top { display:flex; align-items:center; justify-content:space-between; margin-bottom:8px; }
+    .dash-gate-num { width:24px; height:24px; border-radius:7px; background:#eff6ff; color:#1d6ceb; font-size:12px; font-weight:700; display:flex; align-items:center; justify-content:center; }
+    .dash-card-name { font-size:14px; font-weight:700; color:#111827; margin-bottom:5px; }
+    .dash-card-desc { font-size:13px; color:#4b5563; line-height:1.5; }
+    .dash-card-when { font-size:11px; color:#9ca3af; margin-top:8px; }
+    .dash-badge { font-size:11px; font-weight:600; padding:2px 9px; border-radius:20px; white-space:nowrap; }
+    .dash-badge.auto { background:#d1fae5; color:#065f46; }
+    .dash-badge.manual { background:#f3f4f6; color:#6b7280; }
+    .dash-tag { font-size:11px; font-weight:600; color:#b45309; background:#fef3c7; padding:1px 8px; border-radius:20px; margin-left:6px; }
+    .dash-foot { font-size:12px; color:#9ca3af; margin-top:8px; padding-top:20px; border-top:1px solid #f3f4f6; line-height:1.6; }
+  </style>
+</head>
+<body>
+<div class="layout">
+  <aside class="sidebar"><div id="sidebar-inner"></div></aside>
+  <div class="sidebar-overlay" id="sidebar-overlay"></div>
+  <main class="main-content">
+    <div class="mobile-header">
+      <button class="hamburger" id="sidebar-toggle" aria-label="메뉴">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/>
+        </svg>
+      </button>
+      <span class="mobile-logo">S1 UX DESIGN GUIDE</span>
+    </div>
+
+    <div class="page-header">
+      <h1 class="page-title">🛡 디자인 시스템 지킴이</h1>
+      <p class="page-desc">누가·무엇이 우리 컴포넌트를 지키고 있는지 한눈에 봅니다.</p>
+    </div>
+
+    <div class="page-content">
+      <div class="dash-banner ok"><span class="dash-banner-icon">✅</span><div><div class="dash-banner-title">지금 모두 정상입니다</div><div class="dash-banner-sub">자동 검사 13개가 마지막 점검에서 전부 통과했어요. · 2026-06-24 17:05 기준</div></div></div>
+
+      <div class="dash-section">
+        <div class="dash-section-head">
+          <h2>🔎 검사기 — 실수를 자동으로 막아주는 장치</h2>
+          <p>각각이 무엇을 지키는지, 그리고 저장할 때 자동으로 막아주는지(자동 감시) 보여줍니다.</p>
+        </div>
+        <div class="dash-grid">
+        <div class="dash-card gate">
+          <div class="dash-card-top">
+            <span class="dash-gate-num">1</span>
+            <span class="dash-badge auto">자동 감시</span>
+          </div>
+          <div class="dash-card-name">🔎 부품명세 검사기</div>
+          <div class="dash-card-desc">컴포넌트 설명이 빠짐없이 적혀 있나</div>
+        </div>
+        <div class="dash-card gate">
+          <div class="dash-card-top">
+            <span class="dash-gate-num">2</span>
+            <span class="dash-badge manual">필요 시 점검</span>
+          </div>
+          <div class="dash-card-name">🔎 Figma연결 검사기</div>
+          <div class="dash-card-desc">피그마 연결(노드)이 살아있나</div>
+        </div>
+        <div class="dash-card gate">
+          <div class="dash-card-top">
+            <span class="dash-gate-num">3</span>
+            <span class="dash-badge auto">자동 감시</span>
+          </div>
+          <div class="dash-card-name">🔎 색상규칙 검사기</div>
+          <div class="dash-card-desc">색을 규칙대로 썼나 (색코드 직접 입력 금지)</div>
+        </div>
+        <div class="dash-card gate">
+          <div class="dash-card-top">
+            <span class="dash-gate-num">4</span>
+            <span class="dash-badge auto">자동 감시</span>
+          </div>
+          <div class="dash-card-name">🔎 리포트색인 검사기</div>
+          <div class="dash-card-desc">작업 기록이 목록에 빠짐없이 들어갔나</div>
+        </div>
+        <div class="dash-card gate">
+          <div class="dash-card-top">
+            <span class="dash-gate-num">5</span>
+            <span class="dash-badge manual">필요 시 점검</span>
+          </div>
+          <div class="dash-card-name">🔎 컴포넌트표출 검사기</div>
+          <div class="dash-card-desc">컴포넌트가 크기별·다크모드별로 제대로 보이나</div>
+        </div>
+        <div class="dash-card gate">
+          <div class="dash-card-top">
+            <span class="dash-gate-num">6</span>
+            <span class="dash-badge auto">자동 감시</span>
+          </div>
+          <div class="dash-card-name">🔎 설치기누락 검사기</div>
+          <div class="dash-card-desc">설치 파일에 토큰이 하나도 안 빠졌나</div>
+        </div>
+        <div class="dash-card gate">
+          <div class="dash-card-top">
+            <span class="dash-gate-num">7</span>
+            <span class="dash-badge auto">자동 감시</span>
+          </div>
+          <div class="dash-card-name">🔎 토큰값일치 검사기</div>
+          <div class="dash-card-desc">코드·사이트·설치기가 똑같은 값을 쓰나</div>
+        </div>
+        <div class="dash-card gate">
+          <div class="dash-card-top">
+            <span class="dash-gate-num">8</span>
+            <span class="dash-badge auto">자동 감시</span>
+          </div>
+          <div class="dash-card-name">🔎 부품–변수연결 검사기</div>
+          <div class="dash-card-desc">컴포넌트가 쓰는 변수가 다 준비됐나</div>
+        </div>
+        <div class="dash-card gate">
+          <div class="dash-card-top">
+            <span class="dash-gate-num">9</span>
+            <span class="dash-badge auto">자동 감시</span>
+          </div>
+          <div class="dash-card-name">🔎 사이즈·숫자페이지 검사기</div>
+          <div class="dash-card-desc">크기·숫자 값이 페이지에 맞게 나오나</div>
+        </div>
+        <div class="dash-card gate">
+          <div class="dash-card-top">
+            <span class="dash-gate-num">10</span>
+            <span class="dash-badge auto">자동 감시</span>
+          </div>
+          <div class="dash-card-name">🔎 문서토큰이름 검사기</div>
+          <div class="dash-card-desc">문서에 옛날 토큰 이름이 남아있나</div>
+        </div>
+        <div class="dash-card gate">
+          <div class="dash-card-top">
+            <span class="dash-gate-num">11</span>
+            <span class="dash-badge auto">자동 감시</span>
+          </div>
+          <div class="dash-card-name">🔎 부품해부 검사기</div>
+          <div class="dash-card-desc">컴포넌트에 꼭 필요한 부품(입력 커서·삭제 아이콘 등)이 들어갔나</div>
+        </div>
+        <div class="dash-card gate">
+          <div class="dash-card-top">
+            <span class="dash-gate-num">12</span>
+            <span class="dash-badge auto">자동 감시</span>
+          </div>
+          <div class="dash-card-name">🔎 아이콘인스턴스 검사기</div>
+          <div class="dash-card-desc">아이콘을 라이브러리 부품으로 제대로 넣었나</div>
+        </div>
+        <div class="dash-card gate">
+          <div class="dash-card-top">
+            <span class="dash-gate-num">13</span>
+            <span class="dash-badge auto">자동 감시</span>
+          </div>
+          <div class="dash-card-name">🔎 설치기빌드검증 검사기</div>
+          <div class="dash-card-desc">설치기 코드를 만든 사람 말고 다른 검증을 거쳤나</div>
+        </div>
+        <div class="dash-card gate">
+          <div class="dash-card-top">
+            <span class="dash-gate-num">14</span>
+            <span class="dash-badge auto">자동 감시</span>
+          </div>
+          <div class="dash-card-name">🔎 풋터콘텐츠 검사기</div>
+          <div class="dash-card-desc">회사 정보·저작권이 진짜 원본과 같나 (지어내기 금지)</div>
+        </div>
+        <div class="dash-card gate">
+          <div class="dash-card-top">
+            <span class="dash-gate-num">15</span>
+            <span class="dash-badge auto">자동 감시</span>
+          </div>
+          <div class="dash-card-name">🔎 토큰네이밍 검사기</div>
+          <div class="dash-card-desc">토큰 이름을 정한 규칙대로 지었나</div>
+        </div>
+        </div>
+      </div>
+
+      <div class="dash-section">
+        <div class="dash-section-head">
+          <h2>🤝 작업 도우미 — 필요할 때 불려나오는 일꾼</h2>
+          <p>총괄이 일을 나눠서 맡기는 도우미들입니다. 만드는 일과 검증하는 일이 서로 나뉘어 있어요.</p>
+        </div>
+        <div class="dash-grid"><div class="dash-card agent star">
+     <div class="dash-card-name">⭐ 총괄 <span class="dash-tag">총괄</span></div>
+     <div class="dash-card-desc">river님의 목표를 받아 계획을 세우고, 아래 도우미들을 부르고, 검사기를 돌려 결과를 책임집니다.</div>
+   </div>
+        <div class="dash-card agent">
+          <div class="dash-card-name">🤖 Figma원본 조사</div>
+          <div class="dash-card-desc">피그마에 있는 진짜 디자인을 읽어옵니다.</div>
+          <div class="dash-card-when">피그마 원본을 봐야 할 때</div>
+        </div>
+        <div class="dash-card agent">
+          <div class="dash-card-name">🤖 가이드화면 제작</div>
+          <div class="dash-card-desc">홈페이지의 가이드 화면을 만들고 고칩니다.</div>
+          <div class="dash-card-when">가이드 페이지를 만들거나 고칠 때</div>
+        </div>
+        <div class="dash-card agent">
+          <div class="dash-card-name">🤖 원본대조 검증</div>
+          <div class="dash-card-desc">만든 결과가 원본과 같은지, 만든 사람과 따로 떨어져 검사합니다.</div>
+          <div class="dash-card-when">중요한 변경을 검증할 때</div>
+        </div>
+        <div class="dash-card agent">
+          <div class="dash-card-name">🤖 토큰값 전파</div>
+          <div class="dash-card-desc">색·크기 값 하나를 바꾸면 코드·사이트·설치기 전부에 빠짐없이 반영합니다.</div>
+          <div class="dash-card-when">토큰 값을 바꿀 때</div>
+        </div>
+        <div class="dash-card agent">
+          <div class="dash-card-name">🤖 토큰구조 검사</div>
+          <div class="dash-card-desc">토큰의 짜임새와 이름이 규칙에 맞는지 봅니다.</div>
+          <div class="dash-card-when">토큰 구조를 만들거나 고칠 때</div>
+        </div>
+        <div class="dash-card agent">
+          <div class="dash-card-name">🪞 레거시화면 빌드</div>
+          <div class="dash-card-desc">옛날 화면을 지금 부품으로 똑같이 다시 그립니다.</div>
+          <div class="dash-card-when">옛 화면을 그대로 재현할 때</div>
+        </div>
+        <div class="dash-card agent">
+          <div class="dash-card-name">🏗️ 라이브러리 빌드</div>
+          <div class="dash-card-desc">피그마 컴포넌트(부품) 자체를 만들고 고칩니다.</div>
+          <div class="dash-card-when">피그마 부품을 빌드할 때</div>
+        </div>
+        </div>
+      </div>
+
+      <div class="dash-section">
+        <div class="dash-section-head">
+          <h2>⚙️ 자동 장치 — 늘 켜져 있는 안전장치</h2>
+          <p>따로 부르지 않아도 항상 작동하면서 실수를 막습니다.</p>
+        </div>
+        <div class="dash-grid">
+        <div class="dash-card hook">
+          <div class="dash-card-name">🚧 커밋 검문소 <span class="dash-badge auto">늘 켜짐</span></div>
+          <div class="dash-card-desc">저장하기 직전에 전체를 한 번 검사해서, 틀린 게 있으면 저장을 막습니다.</div>
+        </div>
+        <div class="dash-card hook">
+          <div class="dash-card-name">🔄 토큰편집 동기화기 <span class="dash-badge auto">늘 켜짐</span></div>
+          <div class="dash-card-desc">토큰을 고치면 자동으로 다른 곳에도 맞춰줍니다.</div>
+        </div>
+        <div class="dash-card hook">
+          <div class="dash-card-name">⚙️ 피그마 색 차단 <span class="dash-badge auto">늘 켜짐</span></div>
+          <div class="dash-card-desc">피그마에 색을 코드로 직접 쓰려 하면 막습니다 (반드시 변수로).</div>
+        </div>
+        </div>
+      </div>
+
+      <div class="dash-foot">
+        이 화면은 손으로 쓴 게 아니라 <b>자동으로 만들어집니다.</b> 검사기·도우미가 늘거나 바뀌면 목록 파일만 고치고 다시 생성하면 갱신돼요 — 그래서 이 화면 자체는 실제와 어긋나지 않습니다.<br>
+        마지막 생성: 2026-06-24 17:05
+      </div>
+    </div>
+  </main>
+</div>
+<script src="../assets/js/main.js"></script>
+</body>
+</html>

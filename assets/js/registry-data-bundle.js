@@ -1809,7 +1809,7 @@ window.REGISTRY_BUNDLE = {
               },
               {
                 "cssVar": "--color-control-border-disabled",
-                "light": "var(--color-gray-300)",
+                "light": "var(--color-gray-200)",
                 "dark": "var(--color-gray-dark-300)",
                 "status": "stable",
                 "role": "비활성 상태 테두리"
@@ -1979,14 +1979,14 @@ window.REGISTRY_BUNDLE = {
             "tokens": [
               {
                 "cssVar": "--color-table-cell-hover",
-                "light": "var(--color-blue-50)",
-                "dark": "var(--color-blue-dark-100)",
-                "resolvedLight": "#E2F1FF",
-                "resolvedDark": "#112B55",
+                "light": "var(--color-gray-50)",
+                "dark": "var(--color-gray-dark-200)",
+                "resolvedLight": "#F5F5F5",
+                "resolvedDark": "#24252C",
                 "status": "stable",
-                "darkStatus": "candidate",
-                "role": "테이블 행 hover 배경. Figma: color/table/cell/hover = blue-50.",
-                "darkNote": "candidate — blue-dark-100(#112B55). Figma dark 미확인. HD-Table-1"
+                "darkStatus": "stable",
+                "role": "테이블 행 hover 배경. color/gray/50 (light) · gray-dark/200 (dark).",
+                "darkNote": "gray-dark/200(#24252C) — vars-data 정본 일치"
               }
             ]
           },
@@ -5015,7 +5015,42 @@ window.REGISTRY_BUNDLE = {
       "referenceLinks": {
         "governance": "registry/governance/deprecated.json",
         "note": "Component variant deprecations (button-danger) live in governance/deprecated.json. Token-level deprecations live here."
-      }
+      },
+      "renamedGroups": [
+        {
+          "from": "color/data/",
+          "to": "color/table/",
+          "renamedAt": "2026-06-15",
+          "reason": "Variables 그룹명 정리 data→table (사용자 결정). 활성 페이지/문서에서 옛 경로 사용 금지.",
+          "scope": "active-pages"
+        },
+        {
+          "from": "color/data/state/",
+          "to": "color/table/cell/",
+          "renamedAt": "2026-06-15",
+          "reason": "data/state→table/cell 서브그룹 변경.",
+          "scope": "active-pages"
+        },
+        {
+          "from": "--color-data-",
+          "to": "--color-table-",
+          "renamedAt": "2026-06-15",
+          "reason": "data→table 그룹명 변경에 따른 CSS 변수 prefix 변경.",
+          "scope": "active-pages"
+        }
+      ],
+      "legacyFiles": [
+        {
+          "path": "assets/css/legacy-tokens.css",
+          "reason": "폐기 CSS 토큰 격리(ghost 등). 미로드·검사 제외.",
+          "since": "2026-06-16"
+        },
+        {
+          "path": "tokens/legacy/deprecated-reference.md",
+          "reason": "폐기 variant 문서 아카이브. 검사 제외.",
+          "since": "2026-06-16"
+        }
+      ]
     },
     "canonicalDraft": {
       "meta": {
@@ -10209,7 +10244,7 @@ window.REGISTRY_BUNDLE = {
           "value": "var(--color-surface-default)",
           "state": "all",
           "property": "bg",
-          "figmaVariable": "color/navigation/background"
+          "figmaVariable": "color/navigation/bg"
         },
         {
           "name": "--nav-item-hover-bg",
@@ -10410,7 +10445,7 @@ window.REGISTRY_BUNDLE = {
           "name": "--table-border-light",
           "value": "var(--color-border-subtle)",
           "resolvedLight": "#E9E9E9",
-          "figmaVariable": "color/table/border/light",
+          "figmaVariable": "color/table/border/default",
           "status": "stable",
           "description": "행 구분선 — 헤더·바디 셀 공통 참조"
         },
@@ -10426,7 +10461,7 @@ window.REGISTRY_BUNDLE = {
           "name": "--table-header-border",
           "value": "var(--table-border-light)",
           "resolvedLight": "#E9E9E9",
-          "figmaVariable": "color/table/border/light",
+          "figmaVariable": "color/table/border/default",
           "status": "stable",
           "description": "헤더 셀 하단 구분선"
         },
@@ -10458,7 +10493,7 @@ window.REGISTRY_BUNDLE = {
           "name": "--table-cell-border",
           "value": "var(--table-border-light)",
           "resolvedLight": "#E9E9E9",
-          "figmaVariable": "color/table/border/light",
+          "figmaVariable": "color/table/border/default",
           "status": "stable",
           "description": "바디 셀 하단 구분선"
         },
@@ -10999,9 +11034,57 @@ window.REGISTRY_BUNDLE = {
     }
   },
   "reportsIndex": {
-    "generatedAt": "2026-06-15T05:51:34.025Z",
-    "totalCount": 53,
+    "generatedAt": "2026-06-24T06:45:23.687Z",
+    "totalCount": 56,
     "reports": [
+      {
+        "id": "button-sync-check",
+        "filename": "button-sync-check.md",
+        "title": "Button Sync Check Report",
+        "stage": "Audit",
+        "category": "audit",
+        "status": "archive",
+        "sourcePath": "reports/button-sync-check.md",
+        "updatedAt": "2026-06-17",
+        "summary": "- **Variants:** primary, secondary, blue-line",
+        "fileSizeKB": 3.3
+      },
+      {
+        "id": "changelog-archive",
+        "filename": "changelog-archive.md",
+        "title": "CLAUDE.md 변경 이력 아카이브 (Design System Harness)",
+        "stage": "Audit",
+        "category": "audit",
+        "status": "archive",
+        "sourcePath": "reports/changelog-archive.md",
+        "updatedAt": "2026-06-17",
+        "summary": "이 파일은 CLAUDE.md `변경 이력` 표의 **상세 보존본**이다. 컨텍스트 비용을 줄이기 위해 CLAUDE.md 본문에서 분리했다.",
+        "fileSizeKB": 46
+      },
+      {
+        "id": "harness-audit-2026-06-17",
+        "filename": "harness-audit-2026-06-17.md",
+        "title": "Harness Audit Report — 2026-06-17",
+        "stage": "Audit",
+        "category": "audit",
+        "status": "archive",
+        "sourcePath": "reports/harness-audit-2026-06-17.md",
+        "updatedAt": "2026-06-17",
+        "summary": "- ✅ [button] 모든 사이즈 분기 존재 (medium (h44) / xsmall (h34) / xxsmall (h28) / mobile (h48))",
+        "fileSizeKB": 1.7
+      },
+      {
+        "id": "harness-audit-2026-06-16",
+        "filename": "harness-audit-2026-06-16.md",
+        "title": "Harness Audit Report — 2026-06-16",
+        "stage": "Audit",
+        "category": "audit",
+        "status": "archive",
+        "sourcePath": "reports/harness-audit-2026-06-16.md",
+        "updatedAt": "2026-06-16",
+        "summary": "- ✅ [button] 모든 사이즈 분기 존재 (medium (h44) / xsmall (h34) / xxsmall (h28) / mobile (h48))",
+        "fileSizeKB": 2.1
+      },
       {
         "id": "harness-audit-2026-06-15",
         "filename": "harness-audit-2026-06-15.md",
@@ -11315,18 +11398,6 @@ window.REGISTRY_BUNDLE = {
         "updatedAt": "2026-05-18",
         "summary": "검수 목적: `assets/css/tokens.css` 실제 값 vs `pages/foundation.html` / `pages/semantic.html` 표시 값 일치 여부 확인",
         "fileSizeKB": 5.3
-      },
-      {
-        "id": "button-sync-check",
-        "filename": "button-sync-check.md",
-        "title": "Button Sync Check Report",
-        "stage": "Audit",
-        "category": "audit",
-        "status": "archive",
-        "sourcePath": "reports/button-sync-check.md",
-        "updatedAt": "2026-05-12",
-        "summary": "- **Variants:** primary, secondary, blue-line",
-        "fileSizeKB": 3.6
       },
       {
         "id": "mvp3-4-1-button-sync",

@@ -18,20 +18,16 @@ const SITE_NAV = [
   { type: 'item', id: 'icons', href: 'icons.html', rootHref: 'pages/icons.html', icon: '✦', text: 'Icons', status: 'ready' },
   { type: 'item', id: 'patterns', href: 'patterns.html', rootHref: 'pages/patterns.html', icon: '📐', text: 'Patterns', status: 'ready' },
 
-  /* ── Harness Admin ── */
-  { type: 'label', text: 'Harness Admin', collapsible: true, defaultCollapsed: false, groupId: 'admin' },
-  { type: 'item', id: 'harness-overview', href: 'harness-overview.html', rootHref: 'pages/harness-overview.html', icon: '🧭', text: 'Harness Overview', group: 'admin' },
-  { type: 'item', id: 'registry-explorer', href: 'registry-explorer.html', rootHref: 'pages/registry-explorer.html', icon: '🗄', text: 'Registry Explorer', group: 'admin' },
-  { type: 'item', id: 'token-mapping', href: 'token-mapping.html', rootHref: 'pages/token-mapping.html', icon: '🔗', text: 'Token Mapping', group: 'admin' },
-  { type: 'item', id: 'migration-board', href: 'migration-board.html', rootHref: 'pages/migration-board.html', icon: '📊', text: 'Migration Board', group: 'admin' },
-  { type: 'item', id: 'registry-health', href: 'registry-health.html', rootHref: 'pages/registry-health.html', icon: '💚', text: 'System Status', group: 'admin' },
-  { type: 'item', id: 'reports', href: 'reports.html', rootHref: 'pages/reports.html', icon: '📁', text: 'Reports', group: 'admin' },
-  { type: 'item', id: 'legacy', href: 'legacy.html', rootHref: 'pages/legacy.html', icon: '📦', text: 'Legacy Guide', group: 'admin' },
+  /* ── System ── */
+  { type: 'label', text: 'System' },
+  { type: 'item', id: 'dashboard', href: 'dashboard.html', rootHref: 'pages/dashboard.html', icon: '🛡', text: 'Dashboard', status: 'ready' },
+  { type: 'item', id: 'update-management', href: 'update-management.html', rootHref: 'pages/update-management.html', icon: '🗂', text: '업데이트 관리', status: 'ready' },
 
-  /* ── Archive (hidden — nav에서 제거, 파일/route 보존) ──────────────
-     ai-snippets.html / guide-md.html / md-review.html
-     직접 URL 접근 가능. 사용자-facing nav에는 노출하지 않음.
-  ──────────────────────────────────────────────────────────────── */
+  /* ── Harness Admin (2026-06-24 메뉴에서 숨김 — 파일/route 는 보존, 직접 URL 접근만 가능.
+     river: 결과물 위주로만 봐서 관리 메뉴 7개 거의 안 봄 → 메뉴 비노출. 차후 정말 불필요한지 확인 후 삭제 결정.)
+       harness-overview · registry-explorer · token-mapping · migration-board
+       registry-health(System Status) · reports · legacy(Legacy Guide)
+     ── Archive 페이지(ai-snippets·guide-md·md-review)는 2026-06-24 삭제됨 ── */
 ];
 
 /* ── Sidebar Render ── */

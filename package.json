@@ -37,6 +37,8 @@
     "tokens:gen": "node scripts/gen-semantic-tokens.js",
     "typo:gen": "node scripts/typography-gen.js",
     "page:gen": "node scripts/gen-semantic-page.js",
+    "dashboard:gen": "node scripts/gen-dashboard.js",
+    "update:gen": "node scripts/gen-update-management.js",
     "number:gen": "node scripts/gen-foundation-number.js",
     "sizing:gen": "node scripts/gen-foundation-number.js",
     "number:check": "node scripts/number-page-check.js",

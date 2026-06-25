@@ -963,17 +963,21 @@ function rebindIconColor(node: SceneNode, colorVar: Variable): void {
   });
 }
 // 아이콘 인스턴스 1개 생성. role=ICON_KEYS 키, size=목표 정사각 px, fallbackSvg=라이브러리 미접근 폴백, rotation=회전(쉐브론 방향).
-async function makeIconInstance(role: string, colorVar: Variable, size: number, fallbackSvg: string, rotation = 0): Promise<SceneNode> {
+// opts.wrap=false → 회전해도 래퍼 프레임 없이 인스턴스 직접 반환(정사각 180°는 바운딩박스 불변이라 호출처 x/y 중앙정렬이 정상 동작). 기본 true=기존 동작 보존.
+// opts.keepName=true → inst.name 을 덮어쓰지 않고 컴포넌트 기본명(아이콘 이름) 유지. 기본 false=role 이름 부여(기존 동작 보존).
+async function makeIconInstance(role: string, colorVar: Variable, size: number, fallbackSvg: string, rotation = 0, opts: { wrap?: boolean; keepName?: boolean } = {}): Promise<SceneNode> {
+  const useWrap = opts.wrap !== false;
   try {
     const comp = await figma.importComponentByKeyAsync(ICON_KEYS[role]);
     const inst = comp.createInstance();
-    inst.name = role;
+    if (!opts.keepName) inst.name = role;
     if (size && size !== inst.width) inst.resize(size, size);
     rebindIconColor(inst, colorVar);
     if (rotation) {
-      // Figma 회전은 반시계: 우0·상90·좌180·하270. 회전 노드는 x/y 중앙정렬이 안 되므로
-      // center 정렬 오토레이아웃 프레임으로 감싼다(셀렉트=오토레이아웃·페이지네이션=절대배치 모두 정상).
+      // Figma 회전은 반시계: 우0·상90·좌180·하270.
       inst.rotation = rotation;
+      if (!useWrap) return inst; // 래퍼 없이 회전 인스턴스 직접 반환(페이지네이션 화살표 = 정사각 180° → x/y 중앙정렬 정상)
+      // 회전 노드는 x/y 중앙정렬이 까다로워 center 정렬 오토레이아웃 프레임으로 감싼다(셀렉트=오토레이아웃 등 비정사각/직각 회전용).
       const wrap = figma.createFrame();
       wrap.name = role; wrap.fills = []; wrap.clipsContent = false;
       wrap.layoutMode = "HORIZONTAL"; wrap.primaryAxisAlignItems = "CENTER"; wrap.counterAxisAlignItems = "CENTER";
@@ -990,6 +994,15 @@ async function makeIconInstance(role: string, colorVar: Variable, size: number, 
     rebindIconColor(node, colorVar);
     return node;
   }
+}
+// 회전 등으로 로컬 원점이 시각 바운딩박스 코너와 어긋난 노드를 부모(box, sz×sz) 정중앙에 안전 배치.
+// 실제 absoluteBoundingBox 를 측정해 보정하므로 Figma 의 회전 피벗/.x 해석에 의존하지 않는다(어느 해석이든 정중앙).
+function centerIconInBox(node: SceneNode, box: SceneNode, sz: number): void {
+  const bb = (node as any).absoluteBoundingBox as { x: number; y: number; width: number; height: number } | null;
+  const pb = (box as any).absoluteBoundingBox as { x: number; y: number; width: number; height: number } | null;
+  if (!bb || !pb) { node.x = (sz - node.width) / 2; node.y = (sz - node.height) / 2; return; }
+  node.x += (pb.x + (sz - bb.width) / 2) - bb.x;
+  node.y += (pb.y + (sz - bb.height) / 2) - bb.y;
 }
 // 입력값 삭제(close) 아이콘 — remove(원+X) 인스턴스. 24px 네이티브(글리프 16) 유지. 이름 "remove" 은 Anatomy Gate(11) 검증.
 const REMOVE_ICON_SVG = `<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M16 8C16 3.58588 12.4141 0 8 0C3.58588 0 0 3.58588 0 8C0 12.4141 3.58588 16 8 16C12.4141 16 16 12.4141 16 8ZM8 15.0588C4.10353 15.0588 0.941176 11.8965 0.941176 8C0.941176 4.10353 4.10353 0.941176 8 0.941176C11.8965 0.941176 15.0588 4.10353 15.0588 8C15.0588 11.8965 11.8965 15.0588 8 15.0588Z" fill="#353535"/><path d="M5.5 5.5L10.8333 10.8333" stroke="#353535" stroke-width="1.5" stroke-linejoin="round"/><path d="M10.8333 5.5L5.5 10.8333" stroke="#353535" stroke-width="1.5" stroke-linejoin="round"/></svg>`;
@@ -2064,21 +2077,8 @@ async function buildPagination(maps: BuildMaps, originY: number): Promise<{ set:
   ];
   const byKey = new Map<string, ComponentNode>();
   const comps: ComponentNode[] = [];
-  // Arrow variants
-  for (const st of arrowStates) {
-    const comp = figma.createComponent();
-    comp.name = `Element=Arrow, State=${st.state}`;
-    comp.resize(SZ, SZ);
-    comp.cornerRadius = 2; // radius/control/xs = radius/2
-    comp.fills = [boundPaint(scv(maps, pg(st.bg)))];
-    comp.strokes = [boundPaint(scv(maps, pg(st.border)))];
-    comp.strokeWeight = 1; comp.strokeAlign = "INSIDE";
-    const icon = await makeIconInstance("chevron", scv(maps, st.icon), 14, CHEV_PREV, 180);
-    comp.appendChild(icon); icon.x = (SZ - icon.width) / 2; icon.y = (SZ - icon.height) / 2;
-    setLightMode(comp, maps); // Button 패턴 — 명시적 light 부여 시 instance setMode(dark) 가 override 가능
-    comps.push(comp); byKey.set(`Arrow/${st.state}`, comp);
-  }
-  // Edge variants (처음/마지막 — |< 아이콘. V2.2 ic_마지막장 1407:51 라이브러리 컴포넌트 세트 사용)
+  // Edge 컴포넌트(ic_마지막장)를 먼저 로드한다 — 그 네이티브 크기를 Arrow chevron 에도 그대로 써서
+  // 화살표(‹)와 끝버튼(‹ㅣ) 아이콘 크기를 일치시킨다(사용자: ‹ 를 ‹ㅣ 크기에 맞춤).
   const EDGE_SET_KEY = "606d0de897175059f133427bf62bb3635d18a860"; // ic_마지막장 V2.2 1407:51 (쉐브론+바, line variant)
   let edgeLineComp: ComponentNode | undefined;
   try {
@@ -2087,6 +2087,24 @@ async function buildPagination(maps: BuildMaps, originY: number): Promise<{ set:
       (c) => c.type === "COMPONENT" && c.name.toLowerCase().includes("line")
     ) as ComponentNode | undefined ?? (edgeSet as any).defaultVariant as ComponentNode | undefined;
   } catch (_) { /* 라이브러리 접근 실패 → SVG 폴백 */ }
+  const ICON_PX = edgeLineComp ? Math.round(edgeLineComp.height) : 24; // Edge 네이티브 = 공통 아이콘 크기
+  // Arrow variants — 419:69 chevron(line) 인스턴스를 180° 회전(이전장 ‹). 래퍼 프레임 없이(wrap:false)
+  // 인스턴스 직접 배치 + 이름은 아이콘 기본명 유지(keepName) → Edge 와 동일 구조·동일 크기.
+  for (const st of arrowStates) {
+    const comp = figma.createComponent();
+    comp.name = `Element=Arrow, State=${st.state}`;
+    comp.resize(SZ, SZ);
+    comp.cornerRadius = 2; // radius/control/xs = radius/2
+    comp.fills = [boundPaint(scv(maps, pg(st.bg)))];
+    comp.strokes = [boundPaint(scv(maps, pg(st.border)))];
+    comp.strokeWeight = 1; comp.strokeAlign = "INSIDE";
+    const icon = await makeIconInstance("chevron", scv(maps, st.icon), ICON_PX, CHEV_PREV, 180, { wrap: false, keepName: true });
+    comp.appendChild(icon);
+    centerIconInBox(icon, comp, SZ); // 180° 회전 인스턴스 — 실측 바운딩박스로 정중앙 보정(피벗 의존 없음)
+    setLightMode(comp, maps); // Button 패턴 — 명시적 light 부여 시 instance setMode(dark) 가 override 가능
+    comps.push(comp); byKey.set(`Arrow/${st.state}`, comp);
+  }
+  // Edge variants (처음/마지막 — |< 아이콘. V2.2 ic_마지막장 1407:51 라이브러리 컴포넌트 세트 사용)
   for (const st of arrowStates) {
     const comp = figma.createComponent();
     comp.name = `Element=Edge, State=${st.state}`;
@@ -2098,6 +2116,7 @@ async function buildPagination(maps: BuildMaps, originY: number): Promise<{ set:
     let icon: SceneNode;
     if (edgeLineComp) {
       const inst = edgeLineComp.createInstance();
+      if (ICON_PX && ICON_PX !== inst.width) inst.resize(ICON_PX, ICON_PX); // 네이티브 = ICON_PX(노옵) — Arrow 와 크기 동기화 보장
       rebindIconColor(inst, scv(maps, st.icon));
       icon = inst;
     } else {
@@ -2296,8 +2315,8 @@ async function buildGNB(maps: BuildMaps, originY: number): Promise<{ set: Compon
     cellAt: (_p, size, _ri, ci) => menuCellByKey.get(`${size}/${menuStates[ci]}`) ?? null,
     lightX: SPEC_LIGHT_X, darkX: SPEC_DARK_X, originY, cellW: 200, cellH: 72, rowLabelW: 16,
   };
-  let bottomY = await decorateSetGrouped(menuSet, menuOpts, maps);
-  try { bottomY = Math.max(bottomY, await buildGroupedSpec(menuOpts, maps)); } catch (e) { console.warn(e); }
+  // 메뉴 데코레이션(배치)은 바 아래로 미룬다 — 표시 순서: GNB 바(위) → GNB Menu(아래). (사용자 결정 2026-06-24)
+  let bottomY = originY;
 
   // 2) GNB 바 세트 (6 variants) — Align × Size. 정본 = "GNB". 실제 화면폭 1920 으로 표현(사용자 결정).
   const BAR_W = 1920;
@@ -2390,7 +2409,7 @@ async function buildGNB(maps: BuildMaps, originY: number): Promise<{ set: Compon
   }
   const barSet = figma.combineAsVariants(barComps, figma.currentPage);
   barSet.name = "GNB";
-  const barTop = bottomY + 80;
+  const barTop = originY; // GNB 바를 최상단에 배치(메뉴보다 먼저) — 표시 순서 GNB → GNB Menu
   // GNB 바는 폭이 커서(1920) 가로 그리드 대신 세로로 1열 나열(사용자 결정). 각 행 = Align·Size 1개.
   const barOrder: { comp: ComponentNode | null; label: string }[] = [];
   for (const a of aligns) for (const sk of sizeKeys) barOrder.push({ comp: barCellByKey.get(`${a.name}/${sk}`) ?? null, label: `${a.name} · ${sk}` });
@@ -2406,6 +2425,11 @@ async function buildGNB(maps: BuildMaps, originY: number): Promise<{ set: Compon
   // GNB 바도 다크 스펙을 아래 배치 — 1920px 폭이라 우측 배치 불가
   barOpts.darkOffset = { x: 0, y: barLightBottomY + 80 };
   try { bottomY = Math.max(bottomY, await buildSpec(barOpts, maps)); } catch (e) { console.warn(e); }
+
+  // 3) GNB Menu 데코레이션(배치) — 바 아래로(표시 순서 GNB → GNB Menu). 다크 스펙은 우측 밀착.
+  menuOpts.originY = bottomY + 80;
+  bottomY = Math.max(bottomY, await decorateSetGrouped(menuSet, menuOpts, maps));
+  try { bottomY = Math.max(bottomY, await buildGroupedSpec(menuOpts, maps)); } catch (e) { console.warn(e); }
 
   return { set: barSet, bottomY };
 }
@@ -3602,23 +3626,57 @@ export async function buildAllComponents(
       catY = res.bottomY + 140;
     }
     // ── layout 패스: 카테고리 내부를 members(표시) 순서대로 세로 재배치 ──
-    //   메인 컴포넌트 → 요소 컴포넌트 순으로 보이도록, 각 풋프린트(세트+스펙)를 통째 Y 이동.
+    //   메인 컴포넌트 → 요소 컴포넌트 순으로 보이도록, 각 컴포넌트의 풋프린트를 통째 Y 이동.
+    //   ★ 풋프린트 = 세트 + 스펙 프레임 + decorateSet*(floatingEmit)가 만든 "떠있는" 그룹라벨/밴드
+    //     (footprint 이름이 아님!). 그래서 이름 매칭만으로는 라벨이 뒤에 남아 깨진다 →
+    //     wrapCategoryInSection 과 동일하게 "Y밴드(중심Y)로 모든 노드 수집" 방식으로 옮긴다.
+    //   순서: ①멤버별 seed(footprint 이름) Y 측정 → ②현재 Y(빌드 순서)로 정렬해 gap 중점으로
+    //     밴드 경계 분할(모든 노드가 정확히 한 멤버에 귀속) → ③이동 전 스냅샷 → ④members 순서로 재배치.
     //   (mock=키체크/render 환경은 page.children 비배열 → no-op, render.js 가 members 정렬로 처리.)
     try {
       const pageKids = figma.currentPage.children;
       if (Array.isArray(pageKids)) {
-        let layoutY = catTopY;
+        const kids = (pageKids as SceneNode[]).filter((n) => n.type !== "SECTION");
+        const cy = (n: SceneNode): number | null => {
+          const b = n.absoluteBoundingBox;
+          return b && typeof b.y === "number" && typeof b.height === "number" ? b.y + b.height / 2 : null;
+        };
+        // ① 멤버별 seed(footprint 이름) 박스
+        const seeds: { name: string; top: number; bot: number }[] = [];
         for (const name of cat.members) {
           const names = new Set(footprint(name));
-          const nodes = (pageKids as SceneNode[]).filter((n) => names.has(n.name));
-          if (!nodes.length) continue;
-          const bb = absBBox(nodes);
-          if (!bb) continue;
-          const dy = layoutY - bb.minY;
-          if (dy !== 0) for (const n of nodes) { try { (n as any).y += dy; } catch (e) { /* */ } }
-          layoutY += (bb.maxY - bb.minY) + 140;
+          const sb = absBBox(kids.filter((n) => names.has(n.name)));
+          if (sb) seeds.push({ name, top: sb.minY, bot: sb.maxY });
         }
-        catY = layoutY;
+        if (seeds.length) {
+          // ② 현재 Y(=빌드 순서) 정렬 후 gap 중점으로 밴드 경계 분할
+          const byY = [...seeds].sort((a, b) => a.top - b.top);
+          const bounds = byY.map((s, i) => ({
+            name: s.name,
+            lo: i === 0 ? -Infinity : (byY[i - 1].bot + s.top) / 2,
+            hi: i === byY.length - 1 ? Infinity : (s.bot + byY[i + 1].top) / 2,
+          }));
+          // ③ 이동 전 멤버별 노드 스냅샷(Y밴드 중심 기준 — 떠있는 라벨 포함)
+          const nodesByName: { [k: string]: SceneNode[] } = {};
+          for (const bnd of bounds) {
+            nodesByName[bnd.name] = kids.filter((n) => {
+              const c = cy(n);
+              return c !== null && c > bnd.lo && c <= bnd.hi;
+            });
+          }
+          // ④ members(표시) 순서로 세로 재배치 — 각 멤버 풋프린트를 통째 dy 이동
+          let layoutY = catTopY;
+          for (const name of cat.members) {
+            const ns = nodesByName[name];
+            if (!ns || !ns.length) continue;
+            const bb = absBBox(ns);
+            if (!bb) continue;
+            const dy = layoutY - bb.minY;
+            if (dy !== 0) for (const n of ns) { try { (n as any).y += dy; } catch (e) { /* */ } }
+            layoutY += (bb.maxY - bb.minY) + 140;
+          }
+          catY = layoutY;
+        }
       }
     } catch (e) { /* mock/no-page */ }
     // 카테고리를 1개 섹션으로 래핑(세로 밴드 기준 — 내용이 실제로 섹션 자식이 됨)

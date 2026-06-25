@@ -1,0 +1,92 @@
+{
+  "component": "Line Tab",
+  "builtBy": "figma-library-builder",
+  "buildDate": "2026-06-24",
+  "fileKey": "cysG5U1udpQqVagYY1hWHW",
+  "source": {
+    "originalSet": "529:16870",
+    "originalSetName": "tab",
+    "note": "Original (answer key) read-only. Its variant axis is variant={mobile,pc-sm,pc-md} x state={unselected,selected,pressed,hover} (9 variants). Rebuilt target keeps its OWN axis (Size/State/Break) for datepicker instance preservation; only interiors copied from original."
+  },
+  "target": {
+    "set": "508:6863",
+    "setName": "Line Tab",
+    "rebuildMethod": "in-place interior rebuild of existing 9 variant components (IDs preserved) to keep datepicker instances bound",
+    "variantAxis": ["Size=SM|MD", "State=Unselected|Hover|Selected|Pressed", "Break=PC|Mobile"],
+    "homePageBefore": "ORPHANED (no parent page; getNodeByIdAsync resolved but REST get_screenshot/get_metadata failed; child .remove() was blocked while off-canvas)",
+    "homePageAfter": "Core (5:5706) — appended to page to unblock editing and make verifiable; placed at x=4736, y=140",
+    "setDimensions": { "w": 394, "h": 522, "layoutMode": "NONE", "grid": "3x3, x=57/167/277, rows y=178(SM/PC)/284(MD/PC)/456(Mobile)", "collapsed": false }
+  },
+  "variants": [
+    { "id": "508:6836", "name": "Size=SM, State=Unselected, Break=PC", "maps": "pc-sm unselected", "height": 42, "textStyle": "title/16M", "textColorVar": "color/text/title/secondary", "indicator": "white1(base/white-equiv via spacer) + gray1 (color/navigation/indicator/default), zone 2px", "padX": "spacing/padding/inline/lg", "textContainerHeight": "sizing/40", "minWidth": "sizing/80" },
+    { "id": "508:6839", "name": "Size=SM, State=Hover, Break=PC", "maps": "pc-sm hover", "height": 42, "textStyle": "title/16B", "textColorVar": "color/navigation/label/selected", "indicator": "white1 + gray1 (indicator/default), zone 2px", "padX": "spacing/padding/inline/lg", "textContainerHeight": "sizing/40", "minWidth": "sizing/80" },
+    { "id": "508:6842", "name": "Size=SM, State=Selected, Break=PC", "maps": "pc-sm selected", "height": 42, "textStyle": "title/16B", "textColorVar": "color/navigation/label/selected", "indicator": "BLUE 2px = two 1px color/navigation/indicator/selected", "padX": "spacing/padding/inline/lg", "textContainerHeight": "sizing/40", "minWidth": "sizing/80" },
+    { "id": "508:6845", "name": "Size=MD, State=Unselected, Break=PC", "maps": "pc-md unselected", "height": 44, "textStyle": "title/20R", "textColorVar": "color/text/title/secondary", "indicator": "white1 + gray1 (indicator/default), zone 4px", "padX": "spacing/padding/inline/lg", "textContainerHeight": "sizing/40", "minWidth": "sizing/80" },
+    { "id": "508:6848", "name": "Size=MD, State=Hover, Break=PC", "maps": "pc-md hover", "height": 44, "textStyle": "title/20B", "textColorVar": "color/navigation/label/selected", "indicator": "white1 + gray1 (indicator/default), zone 4px", "padX": "spacing/padding/inline/lg", "textContainerHeight": "sizing/40", "minWidth": "sizing/80" },
+    { "id": "508:6851", "name": "Size=MD, State=Selected, Break=PC", "maps": "pc-md selected", "height": 44, "textStyle": "title/20B", "textColorVar": "color/navigation/label/selected", "indicator": "BLUE 2px = two 1px color/navigation/indicator/selected, zone 4px", "padX": "spacing/padding/inline/lg", "textContainerHeight": "sizing/40", "minWidth": "sizing/80" },
+    { "id": "508:6854", "name": "Size=SM, State=Unselected, Break=Mobile", "maps": "mobile unselected", "height": 32, "textStyle": "title/16M", "textColorVar": "color/navigation/label/default", "indicator": "white1 + gray1 (indicator/default), zone 2px", "padX": "spacing/padding/inline/sm", "textContainerHeight": "sizing/30", "minWidth": "sizing/80", "datepickerReferenced": true },
+    { "id": "508:6857", "name": "Size=SM, State=Pressed, Break=Mobile", "maps": "mobile pressed", "renamedFrom": "Size=SM, State=Hover, Break=Mobile", "height": 32, "textStyle": "title/16B", "textColorVar": "color/navigation/label/selected", "indicator": "white1 + gray1 (indicator/default) — GRAY not blue (pressed = gray underline), zone 2px", "padX": "spacing/padding/inline/sm", "textContainerHeight": "sizing/30", "minWidth": "sizing/80" },
+    { "id": "508:6860", "name": "Size=SM, State=Selected, Break=Mobile", "maps": "mobile selected", "height": 32, "textStyle": "title/16B", "textColorVar": "color/navigation/label/selected", "indicator": "BLUE 2px = two 1px color/navigation/indicator/selected", "padX": "spacing/padding/inline/sm", "textContainerHeight": "sizing/30", "minWidth": "sizing/80", "datepickerReferenced": true }
+  ],
+  "structureChanges": {
+    "combineAsVariants": "NOT used — set already existed; rebuilt interiors in place to preserve component IDs (and thus datepicker instance bindings)",
+    "detach": "none",
+    "rename": "508:6857 State property changed Hover -> Pressed (mobile 3rd state corrected to match original). Set State axis now Unselected|Hover|Selected|Pressed.",
+    "rootFill": "all 9 root COMPONENTs filled with color/navigation/background (was set per original)",
+    "pagePlacement": "Orphaned set 508:6863 appended to Core page (5:5706) to unblock editing — was off-canvas/no-parent which blocked child .remove(). This is a placement change (set is now visible on Core at x=4736).",
+    "emptyContainers": "none removed"
+  },
+  "colorBindings": {
+    "color/navigation/background": "VariableID:7e8578c58b0f9623a1ad059b0ea720888c5660c0/6735:1958 (remote)",
+    "color/base/white": "VariableID:da199788d4e56f565149c25c7ae65c69ec2fcd04/1069:227 (remote) — white spacer rect",
+    "color/navigation/indicator/default": "VariableID:8:1079",
+    "color/navigation/indicator/selected": "VariableID:8:1082",
+    "color/navigation/label/selected": "VariableID:8:1086",
+    "color/navigation/label/default": "VariableID:8:1083",
+    "color/text/title/secondary": "VariableID:8:1128",
+    "rawHexResidual": 0
+  },
+  "numberBindings": {
+    "minWidth": "sizing/80 (VariableID:52:1934) on all roots",
+    "textContainerHeight": "sizing/40 PC (VariableID:52:1928) / sizing/30 Mobile (VariableID:52:1924)",
+    "paddingTopBottom": "spacing/4 (VariableID:8:919)",
+    "paddingLeftRight": "spacing/padding/inline/lg PC (remote d33391d5.../6735:1859) / spacing/padding/inline/sm Mobile (remote 40f9edb3.../6735:1857)"
+  },
+  "textStyleBindings": {
+    "title/16M": "S:a954d866e6408703f3fa91bd9df47d0c502bd0a4,153:3",
+    "title/16B": "S:b3cea5b8fa75d10b59c0604c2dd5bcbde6cf480d,12:227",
+    "title/20R": "S:2f855038fdc61d192ef47921c239a6fa7f242f59,582:15",
+    "title/20B": "S:239f2e910a7a23f9d6e6732b36c148acc153581e,12:233",
+    "note": "Text typed in Noto Sans KR (Pretendard unloadable in use_figma per project constraint), then setTextStyleIdAsync bound the Pretendard V2.4 style. Renders Pretendard for users with the font."
+  },
+  "datepickerPreservation": {
+    "set": "mobile_datepicker_bottomsheet (instances live on Core page 5:5706)",
+    "instances": [
+      { "instId": "522:4545", "mainComp": "508:6860", "mainName": "Size=SM, State=Selected, Break=Mobile", "renderHeight": 32, "renderWidth": 180, "status": "intact, re-rendered correctly (blue bold text + blue 2px underline, stretched to fill)" },
+      { "instId": "522:4548", "mainComp": "508:6854", "mainName": "Size=SM, State=Unselected, Break=Mobile", "renderHeight": 32, "renderWidth": 180, "status": "intact, re-rendered correctly (gray text + gray underline)" },
+      { "instId": "523:4688", "mainComp": "508:6860", "status": "intact (Selected/Mobile)" },
+      { "instId": "523:4691", "mainComp": "508:6854", "status": "intact (Unselected/Mobile)" },
+      { "instId": "523:4746", "mainComp": "508:6860", "status": "intact (Selected/Mobile)" },
+      { "instId": "523:4749", "mainComp": "508:6854", "status": "intact (Unselected/Mobile)" }
+    ],
+    "broken": false,
+    "note": "All 6 datepicker instances stayed bound to the same component IDs (no remap needed since component IDs preserved). Heights updated 30->32 (correct mobile height)."
+  },
+  "selfCorrection": "Original target set 508:6863 was orphaned (no page) which blocked child removal; appended to Core page to make editable. No packing/dimension collapse occurred — set stayed 394x522.",
+  "needsDecision": [
+    {
+      "id": "DUPLICATE-SET",
+      "what": "A second on-canvas 'Line Tab' set 536:6291 exists on Core (inside Section 'Line Tab' 536:6354) with the SAME old/wrong structure (w76, h30/40, no Pressed state). It was NOT rebuilt — only 508:6863 (the datepicker-referenced canonical set per plan) was fixed.",
+      "why": "Plan named 508:6863 as the rebuild target. 536:6291 is a separate duplicate (likely the documentation/spec copy). It is now out of sync with the corrected canonical set.",
+      "options": "(A) Rebuild 536:6291 too to match / (B) Delete 536:6291 and replace with an instance/reference to 508:6863 / (C) Leave as-is (documentation copy)",
+      "default": "Left untouched (only 508:6863 fixed per plan)."
+    },
+    {
+      "id": "SET-PLACEMENT",
+      "what": "508:6863 was orphaned (off-canvas). I appended it to Core page (5:5706) at x=4736 to unblock editing/verification.",
+      "why": "Editing the off-canvas set was impossible (child .remove() blocked). Placing it on a page also lets component-verifier screenshot it.",
+      "options": "(A) Keep on Core / (B) Move into the existing 'Line Tab' Section 536:6354 alongside the documentation / (C) Move to a different page",
+      "default": "Currently sitting on Core page at x=4736, y=140 (right of the existing Line Tab section)."
+    }
+  ]
+}
