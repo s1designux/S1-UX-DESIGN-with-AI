@@ -514,7 +514,7 @@ export const SEMANTIC_COLOR: Record<string, SemanticColorEntry> = {
 
   // ── icon ────────────────────────────────
   "color/icon/blue": { light: "blue/400", dark: "blue-dark/300" },
-  "color/icon/gray": { light: "gray/500", dark: "gray-dark/700" },
+  "color/icon/gray": { light: "gray-dark/600", dark: "gray-dark/700" },
   "color/icon/gray-dark": { light: "gray/800", dark: "gray-dark/800" },
   "color/icon/gray-light": { light: "gray/300", dark: "gray-dark/400" },
   "color/icon/red": { light: "red/300", dark: "red-dark/350" },
@@ -560,6 +560,8 @@ export const SEMANTIC_COLOR: Record<string, SemanticColorEntry> = {
   "color/date-picker/text/selected":    { light: "base/white", dark: "base/white" },
   "color/date-picker/bg/range":             { light: "blue/50",    dark: "blue-dark/100" },
   "color/date-picker/tile/bg/default":      { light: "base/white", dark: "gray-dark/100" },
+  // tile hover = Secondary 버튼 hover foundation 동일(gray/50·gray-dark/200) — Calendar Tile Hover variant, 사용자 결정 2026-06-25
+  "color/date-picker/tile/bg/hover":        { light: "gray/50",    dark: "gray-dark/200" },
   "color/date-picker/tile/bg/selected":     { light: "base/white", dark: "gray-dark/100" },
   "color/date-picker/tile/bg/disabled":     { light: "gray/100",   dark: "gray-dark/200" },
   "color/date-picker/tile/border/default":  { light: "gray/200",   dark: "gray-dark/500" },
@@ -569,9 +571,10 @@ export const SEMANTIC_COLOR: Record<string, SemanticColorEntry> = {
   "color/pagination/control/bg/default": { light: "base/white", dark: "gray-dark/100" },
   "color/pagination/control/bg/disabled": { light: "gray/50", dark: "gray-dark/300" },
   "color/pagination/control/bg/hover": { light: "gray/50", dark: "gray-dark/200" },
-  "color/pagination/control/border/default": { light: "gray/100", dark: "gray-dark/300" },
+  // control(화살표/edge 버튼 박스) = Secondary 버튼과 동일 foundation (bg=base/white·hover=gray/50·border=gray/200) — 사용자 결정 2026-06-25
+  "color/pagination/control/border/default": { light: "gray/200", dark: "gray-dark/500" },
   "color/pagination/control/border/disabled": { light: "gray/100", dark: "gray-dark/300" },
-  "color/pagination/control/border/hover": { light: "gray/200", dark: "gray-dark/300" },
+  "color/pagination/control/border/hover": { light: "gray/200", dark: "gray-dark/500" },
 
   // ── status-card ────────────────────────────────
   "color/status-card/text/disabled": { light: "gray/300", dark: "gray-dark/400" },

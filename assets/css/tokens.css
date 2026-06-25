@@ -564,7 +564,7 @@
 
   /* ── icon ── */
   --color-icon-blue      : var(--color-blue-400);
-  --color-icon-gray      : var(--color-gray-500);
+  --color-icon-gray      : var(--color-gray-dark-600);
   --color-icon-gray-dark : var(--color-gray-800);
   --color-icon-gray-light: var(--color-gray-300);
   --color-icon-red       : var(--color-red-300);
@@ -608,6 +608,7 @@
   --color-date-picker-text-selected       : var(--color-base-white);
   --color-date-picker-bg-range            : var(--color-blue-50);
   --color-date-picker-tile-bg-default     : var(--color-base-white);
+  --color-date-picker-tile-bg-hover       : var(--color-gray-50);
   --color-date-picker-tile-bg-selected    : var(--color-base-white);
   --color-date-picker-tile-bg-disabled    : var(--color-gray-100);
   --color-date-picker-tile-border-default : var(--color-gray-200);
@@ -617,7 +618,7 @@
   --color-pagination-control-bg-default     : var(--color-base-white);
   --color-pagination-control-bg-disabled    : var(--color-gray-50);
   --color-pagination-control-bg-hover       : var(--color-gray-50);
-  --color-pagination-control-border-default : var(--color-gray-100);
+  --color-pagination-control-border-default : var(--color-gray-200);
   --color-pagination-control-border-disabled: var(--color-gray-100);
   --color-pagination-control-border-hover   : var(--color-gray-200);
 
@@ -829,6 +830,7 @@
   --color-date-picker-text-selected       : var(--color-base-white);
   --color-date-picker-bg-range            : var(--color-blue-dark-100);
   --color-date-picker-tile-bg-default     : var(--color-gray-dark-100);
+  --color-date-picker-tile-bg-hover       : var(--color-gray-dark-200);
   --color-date-picker-tile-bg-selected    : var(--color-gray-dark-100);
   --color-date-picker-tile-bg-disabled    : var(--color-gray-dark-200);
   --color-date-picker-tile-border-default : var(--color-gray-dark-500);
@@ -838,9 +840,9 @@
   --color-pagination-control-bg-default     : var(--color-gray-dark-100);
   --color-pagination-control-bg-disabled    : var(--color-gray-dark-300);
   --color-pagination-control-bg-hover       : var(--color-gray-dark-200);
-  --color-pagination-control-border-default : var(--color-gray-dark-300);
+  --color-pagination-control-border-default : var(--color-gray-dark-500);
   --color-pagination-control-border-disabled: var(--color-gray-dark-300);
-  --color-pagination-control-border-hover   : var(--color-gray-dark-300);
+  --color-pagination-control-border-hover   : var(--color-gray-dark-500);
 
   /* ── status-card ── */
   --color-status-card-text-disabled          : var(--color-gray-dark-400);

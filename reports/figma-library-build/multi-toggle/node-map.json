@@ -1,0 +1,162 @@
+{
+  "meta": {
+    "buildDate": "2026-06-25",
+    "builder": "figma-library-builder",
+    "fileKey": "cysG5U1udpQqVagYY1hWHW",
+    "pageId": "302:19291",
+    "pageName": "test",
+    "status": "built-pending-verification"
+  },
+  "componentSet": {
+    "id": "587:8029",
+    "name": "Multi Toggle",
+    "width": 596,
+    "height": 240,
+    "x": 200,
+    "y": 200,
+    "variantCount": 32,
+    "variantAxes": {
+      "position": ["first", "middle-left", "middle-right", "last"],
+      "state": ["default", "hover", "selected", "disabled"],
+      "size": ["md", "sm"]
+    }
+  },
+  "variants": {
+    "position=first, state=default, size=md":       "586:2",
+    "position=first, state=hover, size=md":         "586:4",
+    "position=first, state=selected, size=md":      "586:6",
+    "position=first, state=disabled, size=md":      "586:8",
+    "position=first, state=default, size=sm":       "586:10",
+    "position=first, state=hover, size=sm":         "586:12",
+    "position=first, state=selected, size=sm":      "586:14",
+    "position=first, state=disabled, size=sm":      "586:16",
+    "position=middle-left, state=default, size=md": "587:2",
+    "position=middle-left, state=hover, size=md":   "587:4",
+    "position=middle-left, state=selected, size=md":"587:6",
+    "position=middle-left, state=disabled, size=md":"587:8",
+    "position=middle-left, state=default, size=sm": "587:10",
+    "position=middle-left, state=hover, size=sm":   "587:12",
+    "position=middle-left, state=selected, size=sm":"587:14",
+    "position=middle-left, state=disabled, size=sm":"587:16",
+    "position=middle-right, state=default, size=md":"587:18",
+    "position=middle-right, state=hover, size=md":  "587:20",
+    "position=middle-right, state=selected, size=md":"587:22",
+    "position=middle-right, state=disabled, size=md":"587:24",
+    "position=middle-right, state=default, size=sm":"587:26",
+    "position=middle-right, state=hover, size=sm":  "587:28",
+    "position=middle-right, state=selected, size=sm":"587:30",
+    "position=middle-right, state=disabled, size=sm":"587:32",
+    "position=last, state=default, size=md":        "587:34",
+    "position=last, state=hover, size=md":          "587:36",
+    "position=last, state=selected, size=md":       "587:38",
+    "position=last, state=disabled, size=md":       "587:40",
+    "position=last, state=default, size=sm":        "587:42",
+    "position=last, state=hover, size=sm":          "587:44",
+    "position=last, state=selected, size=sm":       "587:46",
+    "position=last, state=disabled, size=sm":       "587:48"
+  },
+  "assemblyExamples": {
+    "_deleted": ["588:2","588:9","588:16","588:23"],
+    "_deleteReason": "2026-06-25 정정: 선택 셀 기준 상대위치 원칙으로 재구성 (선택 셀 인접면 회색선 제거 검증용)",
+    "md_left-selected": {
+      "id": "596:6397",
+      "name": "Example / md / left-selected",
+      "description": "3칸: first-selected + middle-right-default + last-default (md) — 선택=왼쪽, middle-right 좌측보더없음",
+      "x": 190, "y": 420, "width": 192, "height": 44
+    },
+    "md_center-selected": {
+      "id": "596:6404",
+      "name": "Example / md / center-selected",
+      "description": "3칸: first-default + middle-left-selected + last-default (md) — 선택=가운데, middle-left 우측보더없음",
+      "x": 414, "y": 420, "width": 192, "height": 44
+    },
+    "md_right-selected": {
+      "id": "596:6411",
+      "name": "Example / md / right-selected",
+      "description": "3칸: first-default + middle-left-default + last-selected (md) — 선택=오른쪽, middle-left 우측보더없음",
+      "x": 638, "y": 420, "width": 192, "height": 44
+    },
+    "sm_left-selected": {
+      "id": "596:8900",
+      "name": "Example / sm / left-selected",
+      "description": "3칸: first-selected + middle-right-default + last-default (sm) — 선택=왼쪽, middle-right 좌측보더없음",
+      "x": 190, "y": 488, "width": 168, "height": 34
+    },
+    "sm_center-selected": {
+      "id": "596:8907",
+      "name": "Example / sm / center-selected",
+      "description": "3칸: first-default + middle-left-selected + last-default (sm) — 선택=가운데, middle-left 우측보더없음",
+      "x": 390, "y": 488, "width": 168, "height": 34
+    },
+    "sm_right-selected": {
+      "id": "596:8914",
+      "name": "Example / sm / right-selected",
+      "description": "3칸: first-default + middle-left-default + last-selected (sm) — 선택=오른쪽, middle-left 우측보더없음",
+      "x": 590, "y": 488, "width": 168, "height": 34
+    }
+  },
+  "tokenBindings": {
+    "colorVariables": {
+      "bg/secondary--default":  "VariableID:8:971",
+      "bg/secondary--hover":    "VariableID:8:972",
+      "bg/primary--default":    "VariableID:8:969",
+      "bg/disabled":            "VariableID:8:968",
+      "border/secondary--default": "VariableID:8:980",
+      "border/secondary--hover":   "VariableID:8:981",
+      "border/primary--default":   "VariableID:8:978",
+      "border/disabled":           "VariableID:8:977",
+      "label/secondary--default":  "VariableID:8:989",
+      "label/secondary--hover":    "VariableID:8:990",
+      "label/primary--default":    "VariableID:8:987",
+      "label/disabled":            "VariableID:8:986"
+    },
+    "numberVariables": {
+      "sizing/44":              "VariableID:52:1929",
+      "sizing/34":              "VariableID:52:1926",
+      "spacing/padding-block/xs":   "VariableID:8:1137",
+      "spacing/padding-inline/xs":  "VariableID:8:1142",
+      "spacing/padding-block/xxs":  "VariableID:8:1136",
+      "spacing/padding-inline/xxs": "VariableID:8:1141",
+      "radius/control/sm":      "VariableID:8:1193",
+      "border-width/1":         "VariableID:8:949"
+    },
+    "textStyle": {
+      "name": "body/14M",
+      "id": "S:0b8aad8ca7e2cfac03033ed19607a4d2fb76aa2a,",
+      "note": "Pretendard Medium 14 — setTextStyleIdAsync로 바인딩"
+    }
+  },
+  "fixLog": [
+    {
+      "date": "2026-06-25",
+      "by": "figma-library-builder",
+      "issue": "분절 사이 경계선 누락 — middle-left 우측·middle-right 좌측 strokeWeight=0",
+      "fix": "middle-left 8개 strokeRightWeight 0→1 / middle-right 8개 strokeLeftWeight 0→1",
+      "mutatedIds": [
+        "587:2","587:4","587:6","587:8","587:10","587:12","587:14","587:16",
+        "587:18","587:20","587:22","587:24","587:26","587:28","587:30","587:32"
+      ]
+    },
+    {
+      "date": "2026-06-25",
+      "by": "figma-library-builder",
+      "issue": "직전 수정(0→1)이 오류였음: 선택 셀 인접면엔 회색 보더 불필요(파란 셀이 경계 책임, 이중선 방지). 조립예시도 검증 불충분(선택 셀 중심 경우 미포함)",
+      "fix": "middle-left 8개 strokeRightWeight 1→0 / middle-right 8개 strokeLeftWeight 1→0 원복. 기존 조립예시 4개(588:2·9·16·23) 삭제 후 선택 셀 중심 6종 재생성",
+      "mutatedIds": [
+        "587:2","587:4","587:6","587:8","587:10","587:12","587:14","587:16",
+        "587:18","587:20","587:22","587:24","587:26","587:28","587:30","587:32"
+      ],
+      "deletedAssemblyIds": ["588:2","588:9","588:16","588:23"],
+      "createdAssemblyIds": ["596:6397","596:6404","596:6411","596:8900","596:8907","596:8914"]
+    }
+  ],
+  "structureNotes": {
+    "combineAsVariants": "32개 컴포넌트를 combineAsVariants(components, testPage)로 결합",
+    "packing": "격자 재배치: row=position(4), col-group=size(md/sm), inner-col=state(4). GAP=8, 세트 hug resize(596×240)",
+    "circularRef": "없음 — 각 variant는 자립형 컴포넌트(조립예시만 인스턴스)",
+    "detach": "없음",
+    "borderPerSide": "strokeTopWeight/RightWeight/BottomWeight/LeftWeight로 위치별 보더 변 개별 제어",
+    "cornerRadius": "topLeftRadius/topRightRadius/bottomRightRadius/bottomLeftRadius로 위치별 4코너 개별 설정",
+    "font": "Noto Sans KR Medium으로 입력 후 setTextStyleIdAsync(body/14M)로 Pretendard 스타일 바인딩"
+  }
+}

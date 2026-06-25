@@ -394,6 +394,9 @@ export async function buildButtonSet(
   const set = figma.combineAsVariants(grid.map((g) => g.comp), figma.currentPage);
   set.name = "Button";
   set.x = 0; set.y = originY;
+  // 다른 컴포넌트(예: Date Picker Mobile Bottom Sheet 의 "적용" 버튼)에서 버튼 인스턴스 재사용.
+  BUILT_SETS["Button"] = set;
+  grid.forEach((g) => { BUILT_COMPS[`Button:${g.variant}:${g.size}:${g.state}`] = g.comp; });
 
   const opts: GroupedSpecOpts = {
     title: "Button",
@@ -462,6 +465,9 @@ interface SpecOpts {
   rowLabelW?: number;
   /** 다크 스펙을 원본 아래에 배치할 때 사용 (GNB 전용). x/y 를 각각 지정. 미지정=기존 동작(원본 우측 W+80). */
   darkOffset?: { x?: number; y?: number };
+  /** 셀을 셀폭 중앙배치 대신 좌측(gridLeft)에 정렬. 폭이 크게 다른 variant(Footer PC1920 vs Mobile360)가
+   *  좌측 기준으로 일관 정렬되게 한다(라이트·다크 스펙 양쪽 동일 적용). 미지정=기존 중앙배치. */
+  leftAlignCells?: boolean;
 }
 /** 평면(컬럼×행) 레이아웃을 emit으로 렌더. 반환=총 높이. */
 async function renderFlat(opts: SpecOpts, dark: boolean, emit: LayoutEmit): Promise<number> {
@@ -485,7 +491,10 @@ async function renderFlat(opts: SpecOpts, dark: boolean, emit: LayoutEmit): Prom
     if (opts.rowLabels[r]) await emit.text(opts.rowLabels[r], PAD, top, rowLabelW, "LEFT", c.label, 11, "Medium");
     for (let cc = 0; cc < opts.colHeaders.length; cc++) {
       const comp = opts.cellAt(r, cc);
-      if (comp) emit.cell(comp, gridLeft + cc * opts.cellW + (opts.cellW - comp.width) / 2, top);
+      if (comp) {
+        const cellX = opts.leftAlignCells ? (gridLeft + cc * opts.cellW) : (gridLeft + cc * opts.cellW + (opts.cellW - comp.width) / 2);
+        emit.cell(comp, cellX, top);
+      }
     }
     y += rowH;
   }
@@ -912,6 +921,7 @@ function makeCaret(colorVar: Variable): RectangleNode {
 // 새 아이콘은 여기 키만 추가하고 makeIconInstance 로 삽입 — createNodeFromSvg 직삽입은 Gate 12 가 차단한다.
 const ICON_KEYS: Record<string, string> = {
   remove:   "24b2df622d341e0af21cd4b23b4a7d23b97a5ea7", // 삭제(원+X) 439:84
+  close:    "2a1abbd3597b536e34fd9523fb61eade3afe9934", // 닫기(plain-X, 원 없음) ic_닫기 89:4927 — 바텀시트/모달 닫기. remove(원+X)와 구분
   check:    "5ab251e0d90adb555ee2fa316f84e86041f19916", // 확인(체크마크 ✓) 97:167 — 체크박스 내부용(ic_체크는 박스형이라 ic_확인 사용)
   search:   "6b764af642b8883e892754281950da0e971224d7", // 찾기/조회(돋보기) 97:127
   clock:    "ca1d043ac09be07f827e939be3d8c3c7af8a8dd9", // 시간,시계 97:271
@@ -1006,6 +1016,8 @@ function centerIconInBox(node: SceneNode, box: SceneNode, sz: number): void {
 }
 // 입력값 삭제(close) 아이콘 — remove(원+X) 인스턴스. 24px 네이티브(글리프 16) 유지. 이름 "remove" 은 Anatomy Gate(11) 검증.
 const REMOVE_ICON_SVG = `<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M16 8C16 3.58588 12.4141 0 8 0C3.58588 0 0 3.58588 0 8C0 12.4141 3.58588 16 8 16C12.4141 16 16 12.4141 16 8ZM8 15.0588C4.10353 15.0588 0.941176 11.8965 0.941176 8C0.941176 4.10353 4.10353 0.941176 8 0.941176C11.8965 0.941176 15.0588 4.10353 15.0588 8C15.0588 11.8965 11.8965 15.0588 8 15.0588Z" fill="#353535"/><path d="M5.5 5.5L10.8333 10.8333" stroke="#353535" stroke-width="1.5" stroke-linejoin="round"/><path d="M10.8333 5.5L5.5 10.8333" stroke="#353535" stroke-width="1.5" stroke-linejoin="round"/></svg>`;
+// plain-X 닫기 폴백 SVG(원 없음, ✕ 2선) — 라이브러리 close(ic_닫기 89:4927) import 실패 시만. 색은 rebindIconColor 가 변수 바인딩.
+const CLOSE_ICON_SVG = `<svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M6 6L18 18" stroke="#353535" stroke-width="1.5" stroke-linecap="round"/><path d="M18 6L6 18" stroke="#353535" stroke-width="1.5" stroke-linecap="round"/></svg>`;
 async function makeClearIcon(colorVar: Variable, size = 0): Promise<SceneNode> {
   return makeIconInstance("remove", colorVar, size, REMOVE_ICON_SVG); // size 0 = 리사이즈 안 함(네이티브 24)
 }
@@ -1367,30 +1379,48 @@ async function buildLineTab(maps: BuildMaps, originY: number): Promise<{ set: Co
     { name: "Hover",      label: "label/hover",     ind: "indicator/hover" },
     { name: "Selected",   label: "label/selected",  ind: "indicator/selected" },
   ];
+  // V2.4 원본 실측(540:6032): pc-md 44h/font20 · pc-sm 42h/font16 · mobile 32h/font16. (높이=인디케이터 포함 총 심볼 높이)
   const sizes = [
-    { size: "SM", brk: "PC",     h: 30, font: 14 },
-    { size: "MD", brk: "PC",     h: 40, font: 16 },
-    { size: "SM", brk: "Mobile", h: 30, font: 14 },
+    { size: "SM", brk: "PC",     h: 42, font: 16 },
+    { size: "MD", brk: "PC",     h: 44, font: 20 },
+    { size: "SM", brk: "Mobile", h: 32, font: 16 },
   ];
-  const W = 76;
+  const MIN_W = 76; // 최소 폭(짧은 라벨도 보기 좋게). 긴 라벨은 텍스트 폭만큼 hug.
+  const PAD_X = 16; // 좌우 패딩(라벨이 셀 가장자리에 붙지 않게)
   const comps: ComponentNode[] = [];
   const cells: { comp: ComponentNode; size: string; brk: string; state: string }[] = [];
   for (const sc of sizes) {
     for (const st of states) {
+      // 셀 = 세로 오토레이아웃(라벨 + 밑줄 인디케이터). 폭은 텍스트를 hug(최소 MIN_W) → 긴 라벨도 안 잘림(#3).
       const comp = figma.createComponent();
       comp.name = `Size=${sc.size}, State=${st.name}, Break=${sc.brk}`;
-      comp.resize(W, sc.h);
+      comp.layoutMode = "VERTICAL";
+      comp.primaryAxisSizingMode = "FIXED"; comp.counterAxisSizingMode = "AUTO"; // 높이 FIXED(sc.h), 폭 HUG
+      comp.primaryAxisAlignItems = "SPACE_BETWEEN"; comp.counterAxisAlignItems = "CENTER";
+      comp.itemSpacing = 0; comp.paddingLeft = PAD_X; comp.paddingRight = PAD_X;
+      comp.paddingTop = 0; comp.paddingBottom = 0;
       comp.fills = [];
+      comp.clipsContent = false;
+      comp.minWidth = MIN_W;
       // 인디케이터 두께: Hover·Selected = 2px(강조), Unselected = 1px(기본선). (사용자 결정 2026-06-25, 원본 540:6032 참고)
       const indH = st.name === "Unselected" ? 1 : 2;
+      // 라벨 — 텍스트 폭만큼 hug(autoResize WIDTH_AND_HEIGHT 기본), 세로 가운데(레이아웃 grow 로 인디케이터 위 공간 차지)
       const t = await makeBoundText("메뉴", sc.font, "Medium", scv(maps, nav(st.label)));
-      comp.appendChild(t);
-      t.x = (W - t.width) / 2; t.y = (sc.h - indH - t.height) / 2;
+      try { (t as TextNode).textAutoResize = "WIDTH_AND_HEIGHT"; } catch (e) { /* */ }
+      const labelWrap = figma.createFrame();
+      labelWrap.name = "label"; labelWrap.fills = [];
+      labelWrap.layoutMode = "HORIZONTAL"; labelWrap.primaryAxisSizingMode = "AUTO"; labelWrap.counterAxisSizingMode = "AUTO";
+      labelWrap.primaryAxisAlignItems = "CENTER"; labelWrap.counterAxisAlignItems = "CENTER";
+      labelWrap.appendChild(t);
+      comp.appendChild(labelWrap);
+      try { (labelWrap as FrameNode).layoutGrow = 1; (labelWrap as FrameNode).layoutAlign = "STRETCH"; } catch (e) { /* */ }
+      // 밑줄 인디케이터 — 셀 폭 전체로 stretch
       const ind = figma.createRectangle();
-      ind.resize(W, indH);
+      ind.resize(MIN_W, indH);
       ind.fills = [boundPaint(scv(maps, nav(st.ind)))];
       comp.appendChild(ind);
-      ind.x = 0; ind.y = sc.h - indH;
+      try { (ind as RectangleNode).layoutAlign = "STRETCH"; } catch (e) { /* */ }
+      try { comp.resize(MIN_W, sc.h); } catch (e) { /* */ }
       comps.push(comp);
       cells.push({ comp, size: sc.size, brk: sc.brk, state: st.name });
     }
@@ -1408,6 +1438,83 @@ async function buildLineTab(maps: BuildMaps, originY: number): Promise<{ set: Co
     cellAt: (platName, size, _ri, ci) =>
       cells.find((x) => x.size === size && x.brk === platName && x.state === states[ci].name)?.comp ?? null,
     lightX: SPEC_LIGHT_X, darkX: SPEC_DARK_X, originY, cellW: 110, cellH: 56, rowLabelW: 16,
+  };
+  let bottomY = await decorateSetGrouped(set, opts, maps);
+  try { bottomY = Math.max(bottomY, await buildGroupedSpec(opts, maps)); } catch (e) { console.warn(e); }
+  return { set, bottomY };
+}
+
+// ── Line Tab Set — Line Tab 셀 3개를 가로로 묶은 사용 예시(첫 탭 Selected) ──────────
+// 정본: 라인탭이 실제로 쓰이는 모습(탭 3개 나란히, 하나 활성). 셀은 buildLineTab 의 Line Tab 셀 인스턴스 재활용.
+//   Size 변형 = PC(md)·PC(sm)·Mobile. 각 변형에서 첫 탭 Selected, 나머지 Unselected. 라벨은 인스턴스 텍스트 override.
+async function buildLineTabSet(maps: BuildMaps, originY: number): Promise<{ set: ComponentSetNode; bottomY: number }> {
+  const TAB_LABELS = ["탭 메뉴 1", "탭 메뉴 2", "탭 메뉴 3"];
+  // Size 변형 → 사용할 Line Tab 셀 키(brk-size) 매핑. Break(PC/Mobile)별로 그룹형 스펙에 나눠 배치한다.
+  const sizeDefs = [
+    { name: "MD", brk: "PC",     size: "MD" },
+    { name: "SM", brk: "PC",     size: "SM" },
+    { name: "SM", brk: "Mobile", size: "SM" },
+  ];
+  // Line Tab 셀(먼저 빌드됨) — 없으면 세트에서 탐색(부분 재설치 폴백).
+  const pickCell = async (brk: string, size: string, state: string): Promise<ComponentNode | undefined> => {
+    let c: ComponentNode | undefined = BUILT_COMPS[`LineTab:${brk}-${size}-${state}`];
+    if (!c) {
+      const s = await getBuiltSet("Line Tab");
+      if (s) c = ((s.children as ComponentNode[]) || []).find((x) => x.type === "COMPONENT"
+        && x.name.includes(`Size=${size}`) && x.name.includes(`Break=${brk}`) && x.name.includes(`State=${state}`));
+    }
+    return c;
+  };
+
+  const comps: ComponentNode[] = [];
+  const cellByKey = new Map<string, ComponentNode>();
+  for (const sd of sizeDefs) {
+    const comp = figma.createComponent();
+    comp.name = `Size=${sd.size}, Break=${sd.brk}`;
+    comp.layoutMode = "HORIZONTAL"; comp.primaryAxisSizingMode = "AUTO"; comp.counterAxisSizingMode = "AUTO";
+    comp.counterAxisAlignItems = "MIN"; comp.itemSpacing = 0; comp.fills = [];
+    comp.clipsContent = false;
+    // 원본 V2.4 6947:4621: 탭들이 간격0으로 딱 붙어 하단 회색선이 연속, 선택 탭만 파란 2px.
+    //   모든 탭 동일 폭 = 가장 긴 라벨 기준 → 먼저 hug 로 만들어 자연폭을 측정해 max 를 구한 뒤,
+    //   각 인스턴스를 그 폭으로 FIXED. 셀 내부 label/indicator 가 STRETCH 라 라벨은 가운데·밑줄은 셀 폭 전체.
+    const tabInsts: InstanceNode[] = [];
+    for (let i = 0; i < TAB_LABELS.length; i++) {
+      const state = i === 0 ? "Selected" : "Unselected"; // 첫 탭만 활성(State Scenarios 관례 = 첫 항목)
+      const cell = await pickCell(sd.brk, sd.size, state);
+      if (cell) {
+        const inst = cell.createInstance();
+        inst.name = `tab-${i + 1}`;
+        // 인스턴스 라벨 override (셀 내부 TEXT). 색·스타일은 셀(Variable 바인딩) 그대로 유지.
+        const txt = inst.findOne((n) => n.type === "TEXT") as TextNode | null;
+        if (txt) { try { txt.characters = TAB_LABELS[i]; } catch (e) { /* */ } }
+        comp.appendChild(inst);
+        tabInsts.push(inst);
+      }
+    }
+    // 동일 폭 적용 — 각 인스턴스의 hug 자연폭 중 최댓값으로 전부 FIXED (가장 긴 라벨 기준).
+    if (tabInsts.length) {
+      const maxW = Math.max(...tabInsts.map((n) => { try { return n.width; } catch (e) { return 0; } }));
+      for (const inst of tabInsts) {
+        try { inst.layoutSizingHorizontal = "FIXED"; } catch (e) { /* */ }
+        try { inst.resize(maxW, inst.height); } catch (e) { /* */ }
+      }
+    }
+    setLightMode(comp, maps);
+    comps.push(comp);
+    cellByKey.set(`${sd.brk}/${sd.size}`, comp);
+  }
+  const set = figma.combineAsVariants(comps, figma.currentPage);
+  set.name = "Line Tab Set";
+  set.x = 0; set.y = originY;
+  BUILT_SETS["Line Tab Set"] = set;
+  // Break(PC/Mobile)별 그룹형 스펙(buildLineTab 셀 세트와 동일 형식) — 평면 스펙은 PC/Mobile 혼재로 audit 위반.
+  const opts: GroupedSpecOpts = {
+    title: "Line Tab Set",
+    platforms: [{ name: "PC", sizes: ["MD", "SM"] }, { name: "Mobile", sizes: ["SM"] }],
+    rowLabels: [""],
+    colHeaders: [""],
+    cellAt: (platName, size, _ri, _ci) => cellByKey.get(`${platName}/${size}`) ?? null,
+    lightX: SPEC_LIGHT_X, darkX: SPEC_DARK_X, originY, cellW: 360, cellH: 56, rowLabelW: 16,
   };
   let bottomY = await decorateSetGrouped(set, opts, maps);
   try { bottomY = Math.max(bottomY, await buildGroupedSpec(opts, maps)); } catch (e) { console.warn(e); }
@@ -1561,42 +1668,23 @@ async function buildTable(maps: BuildMaps, originY: number): Promise<{ set: Comp
     topLine.fills = [boundPaint(scv(maps, "color/table/border/default"))];
     footer.appendChild(topLine); topLine.x = 0; topLine.y = 0;
 
-    // ── 페이지네이션: Pagination 컴포넌트 인스턴스 재사용 ──
-    // 순서: |< < 1 2 3(selected) 4 5 > >|   총 9 개, 각 28px
-    const SZ = 28;
-    const arrowComp  = BUILT_COMPS["Pagination:Arrow/Default"];
-    const edgeComp   = BUILT_COMPS["Pagination:Edge/Default"];
-    const numDefault = BUILT_COMPS["Pagination:Number/Default"];
-    const numSelected = BUILT_COMPS["Pagination:Number/Selected"];
-
-    const pgNodes: SceneNode[] = [];
-    // |< Edge(first)
-    if (edgeComp)   { const i = edgeComp.createInstance(); i.name = "pg-first"; pgNodes.push(i); }
-    // < Arrow prev
-    if (arrowComp)  { const i = arrowComp.createInstance(); i.name = "pg-prev"; pgNodes.push(i); }
-    // 1 2 3(sel) 4 5
-    for (let n = 0; n < 5; n++) {
-      const base = n === 2 ? numSelected : numDefault;
-      if (base) { const i = base.createInstance(); i.name = `pg-num-${n + 1}`; pgNodes.push(i); }
+    // ── 페이지네이션: 완성 Pagination 바(세트) 인스턴스 재사용 ──
+    //   직접 셀 조립 대신 buildPaginationBar 산출 "Pagination:Bar/Middle"(중간 상태 = 전체 활성) 인스턴스 1개.
+    //   (BUILD_DEPENDENCIES 가 없어도 Pagination 카테고리가 Table 카테고리보다 먼저라 선빌드 보장.)
+    let barComp: ComponentNode | undefined = BUILT_COMPS["Pagination:Bar/Middle"];
+    if (!barComp) {
+      const barSet = await getBuiltSet("Pagination");
+      if (barSet) barComp = (barSet.children as ComponentNode[]).find(c => c.type === "COMPONENT" && c.name.includes("State=Middle"))
+        ?? (barSet.children as ComponentNode[]).find(c => c.type === "COMPONENT");
     }
-    // > Arrow next — 같은 컴포넌트를 scaleX=-1 로 반전해 방향 역전
-    if (arrowComp)  {
-      const i = arrowComp.createInstance(); i.name = "pg-next";
-      try { (i as any).rotation = 180; } catch (e) { /* skip if unsupported */ }
-      pgNodes.push(i);
+    if (barComp) {
+      const barInst = barComp.createInstance();
+      barInst.name = "pagination";
+      footer.appendChild(barInst);
+      // 푸터 중앙 배치(기존 시각 위치 유지) — 우측 SelectBox 와 겹치지 않게 중앙 정렬.
+      (barInst as any).x = Math.round((W - barInst.width) / 2);
+      (barInst as any).y = Math.round((FOOTER_H - barInst.height) / 2);
     }
-    // >| Edge(last) — 동일 컴포넌트 반전
-    if (edgeComp)   {
-      const i = edgeComp.createInstance(); i.name = "pg-last";
-      try { (i as any).rotation = 180; } catch (e) { /* skip */ }
-      pgNodes.push(i);
-    }
-    const totalPgW = pgNodes.length * SZ;
-    const pgX = Math.round((W - totalPgW) / 2);
-    pgNodes.forEach((nd, idx) => {
-      footer.appendChild(nd);
-      (nd as any).x = pgX + idx * SZ; (nd as any).y = (FOOTER_H - SZ) / 2;
-    });
 
     // ── 우측 SelectBox — SelectBox:XXSM:PC:Default 인스턴스 재사용 ──
     const selComp = BUILT_COMPS["SelectBox:XXSM:PC:Default"];
@@ -2117,15 +2205,21 @@ async function buildPaginationCell(maps: BuildMaps, originY: number): Promise<{ 
     comp.strokes = [boundPaint(scv(maps, pg(st.border)))];
     comp.strokeWeight = 1; comp.strokeAlign = "INSIDE";
     let icon: SceneNode;
+    let edgeRotated = false;
     if (edgeLineComp) {
       const inst = edgeLineComp.createInstance();
       if (ICON_PX && ICON_PX !== inst.width) inst.resize(ICON_PX, ICON_PX); // 네이티브 = ICON_PX(노옵) — Arrow 와 크기 동기화 보장
       rebindIconColor(inst, scv(maps, st.icon));
+      // ic_마지막장(>ㅣ, 우향)을 180° 회전해 base Edge 셀을 "처음(ㅣ<, 좌향)" 방향으로 정규화한다(폴백 CHEV_EDGE 와 일치).
+      //   바 조립에서 pg-first=회전없음(ㅣ<)·pg-last=180°(>ㅣ) 로 쓰므로 base 는 처음 방향이어야 한다.
+      try { (inst as any).rotation = 180; edgeRotated = true; } catch (e) { /* */ }
       icon = inst;
     } else {
-      icon = makeStrokeIcon(CHEV_EDGE, scv(maps, st.icon)); // icon-vector-allow: ic_마지막장 세트 로드 실패 폴백
+      icon = makeStrokeIcon(CHEV_EDGE, scv(maps, st.icon)); // icon-vector-allow: ic_마지막장 세트 로드 실패 폴백(ㅣ< 처음 방향)
     }
-    comp.appendChild(icon); icon.x = (SZ - icon.width) / 2; icon.y = (SZ - icon.height) / 2;
+    comp.appendChild(icon);
+    if (edgeRotated) centerIconInBox(icon, comp, SZ); // 회전 인스턴스 — 실측 바운딩박스로 정중앙 보정
+    else { icon.x = (SZ - icon.width) / 2; icon.y = (SZ - icon.height) / 2; }
     setLightMode(comp, maps);
     comps.push(comp); byKey.set(`Edge/${st.state}`, comp);
   }
@@ -2163,9 +2257,12 @@ async function buildPaginationCell(maps: BuildMaps, originY: number): Promise<{ 
   return { set, bottomY };
 }
 
-// ── Pagination — 하위 요소 셀(Pagination Cell)을 조합한 완성 바 ──────────────────
-// 정본: 홈페이지 ACTION 항목 / Table 푸터. 구성: [|< <](disabled·gap4) · [1 2 3 4 5 6](gap0·1=selected) · [> >|](gap4), 그룹 간 gap8.
-//   next(>)=Arrow 180° 회전, last(>|)=Edge 180° 회전(Cell 재사용·Table 푸터와 동일 철학). 숫자=인스턴스 텍스트 override.
+// ── Pagination — 하위 요소 셀(Pagination Cell)을 조합한 완성 바 (State 변형세트) ──────
+// 정본: pages/components-new.html State Scenarios / registry/components/pagination.json.
+//   구성(좌→우): ㅣ<(맨앞) · <(이전) · 1 2 3 4 5 6 · >(다음) · >ㅣ(맨뒤). 그룹 내 gap4, 숫자그룹↔화살표 gap8.
+//   방향: 이전=Arrow(base ‹ 좌향, 회전없음) · 다음=Arrow 180°(›) · 맨앞=Edge(base ㅣ< 좌향, 회전없음) · 맨뒤=Edge 180°(>ㅣ).
+//   상태(State 변형): 원페이지/맨앞/맨뒤/중간 — 이동버튼 활성·비활성, selected 숫자가 케이스마다 다름.
+//   숫자=인스턴스 텍스트 override, 비활성=Disabled 셀·selected=Selected 셀(Variable 바인딩 색은 Cell 이 보유).
 async function buildPaginationBar(maps: BuildMaps, originY: number): Promise<{ set: ComponentSetNode; bottomY: number }> {
   const SZ = 28, GAP_GROUP = 4, GAP_SECTION = 8;
   // Pagination Cell 셀(먼저 빌드됨) — 없으면 세트에서 탐색(부분 재설치 폴백)
@@ -2181,40 +2278,72 @@ async function buildPaginationBar(maps: BuildMaps, originY: number): Promise<{ s
   const numDef   = await pick("Number/Default",  "Element=Number, State=Default");
   const numSel   = await pick("Number/Selected", "Element=Number, State=Selected");
 
-  const comp = figma.createComponent();
-  comp.name = "Pagination";
-  comp.fills = [];
-  // 절대 배치(회전 인스턴스 + 그룹 gap) — 오토레이아웃은 180° 회전 자식과 충돌 가능해 수동 배치(Table 푸터 패턴).
-  let x = 0;
-  const add = (cell: ComponentNode | undefined, name: string, rotate: boolean, num?: number): void => {
-    if (cell) {
-      const inst = cell.createInstance();
-      inst.name = name;
-      if (rotate) { try { (inst as any).rotation = 180; } catch (e) { /* */ } }
-      if (num != null) { const txt = inst.findOne((n) => n.type === "TEXT") as TextNode | null; if (txt) { try { txt.characters = String(num); } catch (e) { /* */ } } }
-      comp.appendChild(inst);
-      (inst as any).x = x; (inst as any).y = 0;
-    }
-    x += SZ;
-  };
-  add(edgeDis,  "pg-first", false); x += GAP_GROUP;   // |< (disabled)
-  add(arrowDis, "pg-prev",  false); x += GAP_SECTION; // <  (disabled)
-  for (let n = 1; n <= 6; n++) add(n === 1 ? numSel : numDef, `pg-num-${n}`, false, n); // 1..6 (gap0)
-  x += GAP_SECTION;
-  add(arrowDef, "pg-next",  true);  x += GAP_GROUP;   // > (Arrow 180°)
-  add(edgeDef,  "pg-last",  true);                    // >| (Edge 180°)
-  try { comp.resize(x, SZ); } catch (e) { /* */ }
-  setLightMode(comp, maps);
+  // 상황별 케이스(정본 State Scenarios). pageNums=표시할 숫자, selected=선택 숫자, nav 4종 활성 여부.
+  interface PgCase {
+    state: string; pages: number[]; selected: number;
+    first: boolean; prev: boolean; next: boolean; last: boolean; // true=활성, false=비활성(Disabled)
+  }
+  const cases: PgCase[] = [
+    // 1) 원페이지(리스트 15개까지) — 이동버튼 전체 비활성, "1"만 selected.
+    { state: "Single",   pages: [1],                 selected: 1, first: false, prev: false, next: false, last: false },
+    // 2) 맨앞 페이지 — 맨앞·이전 비활성, 1 selected, 다음·맨뒤 활성.
+    { state: "First",    pages: [1, 2, 3, 4, 5, 6],  selected: 1, first: false, prev: false, next: true,  last: true  },
+    // 3) 맨뒤 페이지 — 맨앞·이전 활성, 마지막(6) selected, 다음·맨뒤 비활성.
+    { state: "Last",     pages: [1, 2, 3, 4, 5, 6],  selected: 6, first: true,  prev: true,  next: false, last: false },
+    // 4) 중간 페이지 — 전부 활성, 가운데(4) selected.
+    { state: "Middle",   pages: [1, 2, 3, 4, 5, 6],  selected: 4, first: true,  prev: true,  next: true,  last: true  },
+  ];
 
-  const set = figma.combineAsVariants([comp], figma.currentPage);
+  const comps: ComponentNode[] = [];
+  let maxW = 0;
+  for (const cs of cases) {
+    const comp = figma.createComponent();
+    comp.name = `State=${cs.state}`;
+    comp.fills = [];
+    // 절대 배치(회전 인스턴스 + 그룹 gap) — 오토레이아웃은 180° 회전 자식과 충돌 가능해 수동 배치(Table 푸터 패턴).
+    let x = 0;
+    const add = (cell: ComponentNode | undefined, name: string, rotate: boolean, num?: number): void => {
+      if (cell) {
+        const inst = cell.createInstance();
+        inst.name = name;
+        if (num != null) { const txt = inst.findOne((n) => n.type === "TEXT") as TextNode | null; if (txt) { try { txt.characters = String(num); } catch (e) { /* */ } } }
+        comp.appendChild(inst);
+        if (rotate) {
+          // 180° 회전은 노드 원점(top-left) 기준으로 회전 → 보이는 박스가 좌상으로 SZ 만큼 밀려 숫자 행 위로 떠버린다(#4 버그).
+          //   회전을 먼저 적용한 뒤, 박스 시각 위치가 슬롯 (x,0) 에 오도록 x+SZ / y+SZ 로 보정한다(셀=SZ×SZ 정사각).
+          try { (inst as any).rotation = 180; } catch (e) { /* */ }
+          try { (inst as any).x = x + SZ; (inst as any).y = SZ; } catch (e) { (inst as any).x = x; (inst as any).y = 0; }
+        } else {
+          (inst as any).x = x; (inst as any).y = 0;
+        }
+      }
+      x += SZ;
+    };
+    add(cs.first ? edgeDef : edgeDis, "pg-first", false); x += GAP_GROUP;   // ㅣ< (맨앞)
+    add(cs.prev  ? arrowDef : arrowDis, "pg-prev", false); x += GAP_SECTION; // <  (이전)
+    for (const n of cs.pages) add(n === cs.selected ? numSel : numDef, `pg-num-${n}`, false, n); // 1..N (gap0)
+    x += GAP_SECTION;
+    add(cs.next ? arrowDef : arrowDis, "pg-next", true);  x += GAP_GROUP;   // > (Arrow 180°)
+    add(cs.last ? edgeDef : edgeDis,   "pg-last", true);                    // >ㅣ (Edge 180°)
+    try { comp.resize(x, SZ); } catch (e) { /* */ }
+    if (x > maxW) maxW = x;
+    setLightMode(comp, maps);
+    comps.push(comp);
+  }
+
+  const set = figma.combineAsVariants(comps, figma.currentPage);
   set.name = "Pagination"; set.x = 0; set.y = originY;
   BUILT_SETS["Pagination"] = set;
+  BUILT_COMPS["Pagination:Bar/Middle"] = comps[3]; // Table 푸터 등에서 완성 바(중간 상태) 재사용
   const opts: SpecOpts = {
-    title: "Pagination", colHeaders: [""], rowLabels: [""], cellAt: () => comp,
-    lightX: SPEC_LIGHT_X, darkX: SPEC_DARK_X, originY, cellW: x + 40, cellH: SZ + 24, rowLabelW: 0,
+    title: "Pagination",
+    colHeaders: [""],
+    rowLabels: cases.map((c) => c.state),
+    cellAt: (r, _c) => comps[r] ?? null,
+    lightX: SPEC_LIGHT_X, darkX: SPEC_DARK_X, originY, cellW: maxW + 40, cellH: SZ + 24, rowLabelW: 80,
   };
   const lightBottomY = await decorateSetFlat(set, opts, maps);
-  opts.darkOffset = { x: 0, y: lightBottomY + 80 };
+  // 다크 = 라이트 우측(buildSpec 기본 W+80). Pagination 은 좁은 컴포넌트라 우측 배치(StatusBar 규칙, #5 사용자 지적 2026-06-25).
   let bottomY = lightBottomY;
   try { bottomY = Math.max(bottomY, await buildSpec(opts, maps)); } catch (e) { console.warn(e); }
   return { set, bottomY };
@@ -2423,33 +2552,33 @@ async function buildGNB(maps: BuildMaps, originY: number): Promise<{ set: Compon
       }
 
       // 유틸 영역 = GNB Utility Icon 세트 all-on 변형(언어·계정·메뉴) 인스턴스 1개. (#3 사용자 결정)
-      const util = figma.createFrame(); util.name = "util"; util.fills = [];
-      util.layoutMode = "HORIZONTAL"; util.counterAxisAlignItems = "CENTER";
-      util.primaryAxisSizingMode = "AUTO"; util.counterAxisSizingMode = "AUTO";
+      //   불필요한 "util" 래퍼 프레임 제거 — GNB Utility Icon 인스턴스를 바 레이아웃에 직접 붙인다(#2 사용자 지적 2026-06-25).
       let utilComp: ComponentNode | undefined = BUILT_COMPS["GNBUtil:full"];
       if (!utilComp) {
         const us = await getBuiltSet("GNB Utility Icon");
         if (us) utilComp = ((us.children as ComponentNode[]) || []).find((c) => c.type === "COMPONENT" && c.name.includes("language=on, full menu=on, user=on"))
           ?? ((us.children as ComponentNode[]) || []).find((c) => c.type === "COMPONENT");
       }
-      if (utilComp) util.appendChild(utilComp.createInstance());
+      const util = utilComp ? utilComp.createInstance() : null;
 
       // 조립: center-between = [로고 | 메뉴 | 유틸] · start = [(로고+메뉴 gap64) | 유틸]
       if (al.key === "center-between") {
-        comp.appendChild(logo); comp.appendChild(menus); comp.appendChild(util);
+        comp.appendChild(logo); comp.appendChild(menus); if (util) comp.appendChild(util);
       } else {
         const leading = figma.createFrame(); leading.name = "leading"; leading.fills = [];
         leading.layoutMode = "HORIZONTAL"; leading.itemSpacing = 64;
         leading.counterAxisAlignItems = "CENTER"; leading.primaryAxisSizingMode = "AUTO"; leading.counterAxisSizingMode = "AUTO";
         leading.appendChild(logo); leading.appendChild(menus);
-        comp.appendChild(leading); comp.appendChild(util);
+        comp.appendChild(leading); if (util) comp.appendChild(util);
       }
 
       // 하단 1px 보더 (auto-layout 흐름에서 제외 = 절대 배치)
+      // ★ z-order: 메뉴 슬롯의 하단 2px 강조선보다 "뒤"에 그려야 2px 가 1px 회색선에 가리지 않는다.
+      //   appendChild(맨 위) 대신 insertChild(0, …)(맨 아래)로 보내 메뉴 인스턴스가 위에 오게 한다. (사용자 결정 2026-06-25)
       const border = figma.createRectangle();
       border.name = "border"; border.resize(BAR_W, 1);
       border.fills = [boundPaint(scv(maps, "color/line/gray/subtle"))];
-      comp.appendChild(border);
+      try { comp.insertChild(0, border); } catch (e) { comp.appendChild(border); }
       try { (border as unknown as { layoutPositioning: string }).layoutPositioning = "ABSOLUTE"; } catch (e) { /* skip */ }
       border.x = 0; border.y = h - 1;
 
@@ -2574,12 +2703,14 @@ async function buildCalendarTile(maps: BuildMaps): Promise<{ set: ComponentSetNo
   // [bgKey, borderKey, textKey, sampleLabel]
   const TILE: Record<string, [string, string, string, string]> = {
     Default:  ["tile/bg/default",  "tile/border/default",  "text/primary",  "2022"],
+    // Hover bg = Secondary 버튼 hover foundation 동일(gray/50·gray-dark/200) → tile/bg/hover 신규(사용자 결정 2026-06-25).
+    Hover:    ["tile/bg/hover",    "tile/border/default",  "text/primary",  "2023"],
     Selected: ["tile/bg/selected", "border/today",         "text/today",    "2025"],
     Disabled: ["tile/bg/disabled", "tile/border/disabled", "text/disabled", "2021"],
   };
   const comps: ComponentNode[] = [];
   const variants: Record<string, ComponentNode> = {};
-  for (const state of ["Default", "Selected", "Disabled"]) {
+  for (const state of ["Default", "Hover", "Selected", "Disabled"]) {
     const [bg, bd, txt, label] = TILE[state];
     const comp = figma.createComponent();
     comp.name = `State=${state}`;
@@ -2726,7 +2857,9 @@ async function buildCalendar(maps: BuildMaps, originY: number): Promise<{ set: C
     hdr.layoutMode = "HORIZONTAL"; hdr.primaryAxisSizingMode = "FIXED"; hdr.counterAxisSizingMode = "FIXED";
     hdr.primaryAxisAlignItems = "SPACE_BETWEEN"; hdr.counterAxisAlignItems = "CENTER";
     hdr.resize(308, 32); // 308 = PANEL_W - paddingLeft(24) - paddingRight(24)
-    hdr.appendChild(await makeIconInstance("chevron", scv(maps, dp("text/primary")), 0, CHEV_L, 180));
+    // 좌측 화살표: 불필요한 래퍼 프레임 해제(wrap:false) — 우측(rotation 0, 래퍼 없음)과 동일 구조.
+    //   정사각 chevron + 180° 회전은 x/y 중앙정렬이 정상이라 래퍼 불필요(makeIconInstance L986 동일 근거).
+    hdr.appendChild(await makeIconInstance("chevron", scv(maps, dp("text/primary")), 0, CHEV_L, 180, { wrap: false }));
     hdr.appendChild(await makeBoundText(label, 24, "Bold", scv(maps, dp("text/primary"))));
     hdr.appendChild(await makeIconInstance("chevron", scv(maps, dp("text/primary")), 0, CHEV_R, 0));
     return hdr;
@@ -2875,9 +3008,10 @@ async function buildDatePicker(maps: BuildMaps, originY: number): Promise<{ set:
       comp.layoutMode = "VERTICAL"; comp.primaryAxisSizingMode = "AUTO"; comp.counterAxisSizingMode = "AUTO"; comp.itemSpacing = 8;
       comp.fills = []; // 외곽 컨테이너는 투명 — createComponent 기본 흰색 fill 제거(미사용 FFFFFF, 2026-06-24)
       comp.appendChild(trigger);
-      // 캘린더 패널은 사이즈 불변(356px 단일) — MD·PC Open 1곳에만 부착(사이즈마다 중복 방지). 모바일 bottom-sheet 는 HD 미결.
+      // 캘린더 패널은 사이즈 불변(356px 단일) — PC 의 모든 사이즈(XXSM·XSM·MD) Open variant 에 부착(#6 사용자 지적 2026-06-25).
+      //   모바일은 #7 별도 바텀시트 컴포넌트로 처리(여기서는 제외).
       // Calendar 컴포넌트 인스턴스 재사용 (anatomy gate: "calendar-panel" raw 프레임 금지)
-      if (st.open && sc.size === "MD" && sc.brk === "PC") {
+      if (st.open && sc.brk === "PC") {
         let calComp: ComponentNode | undefined = BUILT_COMPS["Calendar:Date"];
         if (!calComp) {
           const calSet = await getBuiltSet("Calendar");
@@ -2914,6 +3048,106 @@ async function buildDatePicker(maps: BuildMaps, originY: number): Promise<{ set:
   return { set, bottomY };
 }
 
+// ── Date Picker Mobile Bottom Sheet — 모바일 바텀시트 (정본: V2.4 mobile bottomsheet 540:3836) ──────
+// 구조(원본 확인): 360 폭 시트 = 헤더(제목 "날짜 선택" 좌 · 닫기 X 우) + Calendar:Date 인스턴스 + 하단 풀폭 "적용" 버튼.
+//   색은 전부 Variable 바인딩. 캘린더 본문은 BUILT_COMPS["Calendar:Date"] 인스턴스 재활용(anatomy: raw 캘린더 금지).
+//   닫기 아이콘 = V2.2 close(ic_닫기 89:4927, plain-X·원 없음) 라이브러리 인스턴스. 원본 540:3836 닫기와 동일 글리프(원+X remove 아님).
+//   여백(원본 540:3836 실측): 시트 세로패딩 20·헤더 좌우 20·캘린더 래퍼 좌우 24·섹션 간 gap 32, 상단 라운드 8.
+async function buildDatePickerBottomSheet(maps: BuildMaps, originY: number): Promise<{ set: ComponentSetNode; bottomY: number }> {
+  const SHEET_W = 360;
+  const comp = figma.createComponent();
+  comp.name = "Platform=Mobile";
+  comp.layoutMode = "VERTICAL"; comp.primaryAxisSizingMode = "AUTO"; comp.counterAxisSizingMode = "FIXED";
+  comp.resize(SHEET_W, 100);
+  comp.itemSpacing = 32; // 섹션 간 간격(헤더↔캘린더↔버튼) — spacing/section/lg
+  comp.paddingTop = 20; comp.paddingBottom = 20; // 시트 세로패딩 — spacing/section/sm
+  comp.paddingLeft = 0; comp.paddingRight = 0; // 좌우 패딩은 자식(헤더 20·캘린더 24)이 개별 적용
+  comp.counterAxisAlignItems = "CENTER";
+  comp.fills = [boundPaint(scv(maps, "color/surface/default"))]; // surface/neutral/bg/base = #ffffff
+  // 시트 상단 모서리 라운드(원본 540:3836 = rounded-tl/tr-8) — radius/8
+  try { comp.topLeftRadius = 8; comp.topRightRadius = 8; comp.bottomLeftRadius = 0; comp.bottomRightRadius = 0; } catch (e) { /* */ }
+  comp.clipsContent = false;
+
+  // ── 헤더: 제목 ↔ 닫기 X (좌우 패딩 20) ────────────────────────────
+  const header = figma.createFrame();
+  header.name = "header"; header.fills = [];
+  header.layoutMode = "HORIZONTAL"; header.primaryAxisSizingMode = "FIXED"; header.counterAxisSizingMode = "AUTO";
+  header.primaryAxisAlignItems = "SPACE_BETWEEN"; header.counterAxisAlignItems = "CENTER";
+  header.paddingLeft = 20; header.paddingRight = 20; // 헤더 좌우 패딩 — spacing/padding-inline/md
+  comp.appendChild(header);
+  try { header.layoutAlign = "STRETCH"; } catch (e) { /* */ }
+  const title = await makeBoundText("날짜 선택", 20, "Bold", scv(maps, "color/text/title/primary"));
+  title.name = "title"; header.appendChild(title);
+  const closeIcon = await makeIconInstance("close", scv(maps, "color/icon/gray-dark"), 24, CLOSE_ICON_SVG);
+  closeIcon.name = "close"; header.appendChild(closeIcon);
+
+  // ── 캘린더 본문 = Calendar:Date 인스턴스 재활용 (좌우 패딩 24) ────────
+  const calWrap = figma.createFrame();
+  calWrap.name = "calendar-wrap"; calWrap.fills = [];
+  calWrap.layoutMode = "VERTICAL"; calWrap.primaryAxisSizingMode = "AUTO"; calWrap.counterAxisSizingMode = "FIXED";
+  calWrap.primaryAxisAlignItems = "CENTER"; calWrap.counterAxisAlignItems = "CENTER";
+  calWrap.paddingLeft = 24; calWrap.paddingRight = 24; // 캘린더 좌우 패딩 — spacing/padding-inline/lg
+  comp.appendChild(calWrap);
+  try { calWrap.layoutAlign = "STRETCH"; } catch (e) { /* */ }
+  let calComp: ComponentNode | undefined = BUILT_COMPS["Calendar:Date"];
+  if (!calComp) {
+    const calSet = await getBuiltSet("Calendar");
+    if (calSet) {
+      calComp = (calSet.children as ComponentNode[]).find(c => c.type === "COMPONENT" && c.name.includes("State=Date"))
+        ?? (calSet.children as ComponentNode[]).find(c => c.type === "COMPONENT");
+    }
+  }
+  if (calComp) {
+    const calInst = calComp.createInstance();
+    calInst.name = "calendar";
+    // 캘린더 영역 외곽 라인(패널 보더) 제거 — 시트 안에선 캘린더 패널 stroke 가 불필요(사용자 결정 2026-06-25).
+    try { calInst.strokes = []; } catch (e) { /* */ }
+    calWrap.appendChild(calInst);
+  }
+
+  // ── 하단 "적용" 풀폭 primary 버튼 (좌우 패딩 20) ─────────────────────
+  //   직접 그린 프레임이 아니라 Button primary 컴포넌트 인스턴스를 사용(BUILD_DEPENDENCIES 로 Button 선빌드).
+  const actionWrap = figma.createFrame();
+  actionWrap.name = "action"; actionWrap.fills = [];
+  actionWrap.layoutMode = "HORIZONTAL"; actionWrap.primaryAxisSizingMode = "FIXED"; actionWrap.counterAxisSizingMode = "AUTO";
+  actionWrap.primaryAxisAlignItems = "CENTER"; actionWrap.counterAxisAlignItems = "CENTER";
+  actionWrap.paddingLeft = 20; actionWrap.paddingRight = 20; // 액션 영역 좌우 패딩 — spacing/padding-inline/md
+  comp.appendChild(actionWrap);
+  try { actionWrap.layoutAlign = "STRETCH"; } catch (e) { /* */ }
+  // Button primary, 모바일(LG) 사이즈, Default 상태 인스턴스. 라벨 "적용". 풀폭 STRETCH.
+  let btnComp: ComponentNode | undefined = BUILT_COMPS["Button:primary:LG:Default"];
+  if (!btnComp) {
+    const btnSet = await getBuiltSet("Button");
+    if (btnSet) {
+      btnComp = (btnSet.children as ComponentNode[]).find(c => c.type === "COMPONENT"
+        && c.name.includes("Variant=Primary") && c.name.includes("Size=LG") && c.name.includes("State=Default"))
+        ?? (btnSet.children as ComponentNode[]).find(c => c.type === "COMPONENT" && c.name.includes("Variant=Primary"));
+    }
+  }
+  if (btnComp) {
+    const applyBtn = btnComp.createInstance();
+    applyBtn.name = "apply";
+    const txt = applyBtn.findOne((n) => n.type === "TEXT") as TextNode | null;
+    if (txt) { try { txt.characters = "적용"; } catch (e) { /* */ } }
+    actionWrap.appendChild(applyBtn);
+    try { applyBtn.layoutAlign = "STRETCH"; applyBtn.layoutSizingHorizontal = "FILL"; } catch (e) { /* */ }
+  }
+
+  setLightMode(comp, maps);
+  const set = figma.combineAsVariants([comp], figma.currentPage);
+  set.name = "Date Picker Mobile Bottom Sheet"; set.x = 0; set.y = originY;
+  BUILT_SETS["Date Picker Mobile Bottom Sheet"] = set;
+
+  const opts: SpecOpts = {
+    title: "Date Picker Mobile Bottom Sheet", colHeaders: [""], rowLabels: [""], cellAt: () => comp,
+    lightX: SPEC_LIGHT_X, darkX: SPEC_DARK_X, originY, cellW: SHEET_W + 40, cellH: 500, rowLabelW: 16,
+  };
+  let bottomY = await decorateSetFlat(set, opts, maps);
+  // 다크 = 라이트 우측(buildSpec 기본 W+80). 시트 폭 360 = 좁은 컴포넌트라 우측 배치.
+  try { bottomY = Math.max(bottomY, await buildSpec(opts, maps)); } catch (e) { console.warn(e); }
+  return { set, bottomY };
+}
+
 // ── Calendar Cell / Calendar Tile — 레이아웃 등록기 ───────────────────────────
 // 빌드는 lazy(Calendar/Date Picker 가 선행 호출) → 이미 만들어진 세트를 originY 로 재배치 + 스펙 데코레이트.
 // CATEGORIES Form 에서 Date Picker 뒤 위치만 결정.
@@ -2939,7 +3173,7 @@ async function buildCalendarCellLayout(maps: BuildMaps, originY: number): Promis
 async function buildCalendarTileLayout(maps: BuildMaps, originY: number): Promise<{ set: ComponentSetNode; bottomY: number }> {
   const { set, variants } = await getOrBuildCalendarTile(maps);
   set.x = 0; set.y = originY;
-  const states = ["Default", "Selected", "Disabled"];
+  const states = ["Default", "Hover", "Selected", "Disabled"];
   const opts: SpecOpts = {
     title: "Calendar Tile",
     colHeaders: states,
@@ -3106,9 +3340,10 @@ async function buildFooter(maps: BuildMaps, originY: number): Promise<{ set: Com
   // ── Mobile variant ──────────────────────────────────────
   const mobile = figma.createComponent();
   mobile.name = "Platform=Mobile";
-  mobile.layoutMode = "VERTICAL"; mobile.primaryAxisSizingMode = "AUTO"; mobile.counterAxisSizingMode = "FIXED";
-  mobile.resize(360, 10); // 높이는 hug 후 자동조정
-  mobile.primaryAxisAlignItems = "CENTER"; mobile.counterAxisAlignItems = "CENTER";
+  // 컨텐츠 hug — 두 축 모두 AUTO 로 둬 컨텐츠가 프레임보다 커서 잘리는 문제 해소(사용자 결정 2026-06-25).
+  //   좌측정렬: 컨텐츠를 좌측 시작점(MIN)에 맞춤(PC 와 동일하게 좌측 기준). 스펙 배치에서 x 도 PC 에 맞춘다.
+  mobile.layoutMode = "VERTICAL"; mobile.primaryAxisSizingMode = "AUTO"; mobile.counterAxisSizingMode = "AUTO";
+  mobile.primaryAxisAlignItems = "MIN"; mobile.counterAxisAlignItems = "MIN";
   mobile.fills = [];
   const sp4 = requireVar(maps.foundationNumber, "spacing/4", "Foundation Number");
   mobile.setBoundVariable("itemSpacing", sp4);
@@ -3128,7 +3363,10 @@ async function buildFooter(maps: BuildMaps, originY: number): Promise<{ set: Com
     }
   }
   mobile.appendChild(mLinks);
-  mobile.appendChild(await makeBoundText("© S-1 Corp. All Rights Reserved.", 12, "Regular", scv(maps, "color/text/body/tertiary")));
+  // 카피라이트 중앙정렬 (사용자 결정 2026-06-25): 컨테이너 폭(=링크행 폭)에 STRETCH 후 텍스트 CENTER.
+  const mCopyright = await makeBoundText("© S-1 Corp. All Rights Reserved.", 12, "Regular", scv(maps, "color/text/body/tertiary"));
+  mobile.appendChild(mCopyright);
+  try { mCopyright.layoutAlign = "STRETCH"; mCopyright.textAlignHorizontal = "CENTER"; } catch (e) { /* */ }
 
   setLightMode(mobile, maps);
 
@@ -3138,10 +3376,13 @@ async function buildFooter(maps: BuildMaps, originY: number): Promise<{ set: Com
   set.x = 0; set.y = originY;
   try { (set as any).clipsContent = false; } catch (_) {}
   // PC(1920)·Mobile(360) 두 variant 를 라벨과 함께 세로 나열(겹침 방지 — 둘 다 (0,0)에 겹치던 문제 해소).
+  // 좌측정렬: leftAlignCells 로 renderFlat 이 PC(1920)·Mobile(360) variant 를 모두 셀 좌측(gridLeft)에 정렬.
+  //   라이트 스펙(floatingEmit)·다크 스펙(frameEmit) 양쪽 동일 적용 → 다크 Mobile 도 좌측정렬됨(사용자 지적 #1 2026-06-25).
   const opts: SpecOpts = {
     title: "Footer", colHeaders: [""], rowLabels: ["PC", "Mobile"],
     cellAt: (r, _c) => (r === 0 ? pc : mobile),
     lightX: SPEC_LIGHT_X, darkX: SPEC_DARK_X, originY, cellW: 1960, cellH: 120, rowLabelW: 64,
+    leftAlignCells: true,
   };
   const lightBottomY = await decorateSetFlat(set, opts, maps);
   opts.darkOffset = { x: 0, y: lightBottomY + 80 };
@@ -3536,7 +3777,7 @@ export const COMPONENT_CATEGORIES_GRID: { name: string; members: string[] }[][] 
   [
     { name: "Platform",     members: ["StatusBar", "NavBar", "CI", "LoginGNB", "WebTabBar", "Footer"] },
     { name: "Navigation",   members: ["GNB", "GNB Utility Icon", "Language Icon"] },
-    { name: "Line Tab",     members: ["Line Tab"] },
+    { name: "Line Tab",     members: ["Line Tab Set", "Line Tab"] },
     { name: "Pagination",   members: ["Pagination", "Pagination Cell"] },
     { name: "Actions",      members: ["Button"] },
     { name: "Selection",    members: ["Checkbox", "Radio", "Toggle"] },
@@ -3545,7 +3786,7 @@ export const COMPONENT_CATEGORIES_GRID: { name: string; members: string[] }[][] 
     //   (Select Box → Dropdown → Dropdown List). 빌드(생성) 순서는 BUILD_DEPENDENCIES 로
     //   의존성(요소 먼저)이 자동 적용된다 — 표시순서 ≠ 빌드순서 규칙(§ 아래 주석).
     { name: "Form Control", members: ["Input", "Search Input", "Text Area", "Select Box", "Dropdown", "Dropdown List"] },
-    { name: "Date Picker",  members: ["Date Picker", "Calendar", "Calendar Cell", "Calendar Tile"] },
+    { name: "Date Picker",  members: ["Date Picker", "Calendar", "Calendar Cell", "Calendar Tile", "Date Picker Mobile Bottom Sheet"] },
     { name: "Time Picker",  members: ["Time Picker", "Time Picker Dropdown", "Time Picker Cell"] },
     { name: "Table",        members: ["Table", "Table Cell"] },
   ],
@@ -3579,6 +3820,13 @@ export const BUILD_DEPENDENCIES: Record<string, string[]> = {
   "GNB": ["GNB Utility Icon"],        // GNB 바 유틸 영역이 GNB Utility Icon all-on 인스턴스 부착
   "GNB Utility Icon": ["Language Icon"], // language=on 변형이 Language Icon 인스턴스 부착
   "Pagination": ["Pagination Cell"],  // 완성 바가 Pagination Cell(Arrow·Edge·Number) 인스턴스 조합
+  "Date Picker": ["Calendar"],        // Open 상태가 Calendar 패널 인스턴스 부착(BUILT_COMPS["Calendar:Date"])
+  // 모바일 바텀시트: Calendar:Date 인스턴스(본문) + Button primary(하단 "적용") 부착 → 둘 다 선빌드 필요.
+  "Date Picker Mobile Bottom Sheet": ["Calendar", "Button"],
+  "Line Tab Set": ["Line Tab"],       // 탭 3개 묶음 세트가 Line Tab 셀 인스턴스 조합
+  // Table 푸터가 완성 Pagination 바(BUILT_COMPS["Pagination:Bar/Middle"]) 인스턴스 부착.
+  //   (타 카테고리 의존 = 카테고리 순서로 보장: Pagination 카테고리가 Table 보다 먼저라 선빌드됨.)
+  "Table": ["Pagination"],
 };
 
 // 카테고리 members(표시 순서)를 "요소 먼저" 빌드 순서로 위상정렬.
@@ -3628,6 +3876,9 @@ export async function buildAllComponents(
     if (p === "WebTabBar") base.push("Platform/WebTabBar");
     // CI backward-compat: 구 Samsung_30 세트 자동 정리
     if (p === "CI") base.push("C/IMG/Logo/Samsung_30");
+    // Date Picker Mobile Bottom Sheet backward-compat: 구 "Date Picker Mobile" 세트 자동 정리(재설치 시)
+    if (p === "Date Picker Mobile Bottom Sheet") base.push(
+      "Date Picker Mobile", "Date Picker Mobile — Spec Light", "Date Picker Mobile — Spec Dark");
     return base;
   };
   const regionBottom = (p: string): number | null => {
@@ -3660,6 +3911,7 @@ export async function buildAllComponents(
     "Dropdown":             (oy) => buildDropdown(maps, oy),
     "Calendar":             (oy) => buildCalendar(maps, oy),
     "Date Picker":          (oy) => buildDatePicker(maps, oy),
+    "Date Picker Mobile Bottom Sheet": (oy) => buildDatePickerBottomSheet(maps, oy),
     "Calendar Cell":        (oy) => buildCalendarCellLayout(maps, oy),
     "Calendar Tile":        (oy) => buildCalendarTileLayout(maps, oy),
     "Time Picker":          (oy) => buildTimePicker(maps, oy),
@@ -3667,6 +3919,7 @@ export async function buildAllComponents(
     "Table Cell":           (oy) => buildTableCell(maps, oy),
     "Table":                (oy) => buildTable(maps, oy),
     "Line Tab":             (oy) => buildLineTab(maps, oy),
+    "Line Tab Set":         (oy) => buildLineTabSet(maps, oy),
     "GNB Utility Icon":     (oy) => buildGNBUtilIcon(maps, oy),
     "Language Icon":        (oy) => buildLanguageIcon(maps, oy),
     "GNB":                  (oy) => buildGNB(maps, oy),
