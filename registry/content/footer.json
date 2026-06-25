@@ -1,7 +1,8 @@
 {
-  "$comment": "에스원 풋터의 '검증된' 법인 정보·링크·카피라이트 단일 출처. 회사 법정 정보(상호·사업자번호·대표이사·주소)·링크·카피라이트는 절대 임의 작성하지 말 것. 출처는 Figma 원본 login_Footer 이며, 변경 시 반드시 원본 재확인 후 이 파일 + build-components.ts(buildFooter)를 함께 갱신한다. scripts/footer-content-check.js(Gate 14)가 생성기 문구와 이 정본의 드리프트를 커밋 단계에서 차단한다.",
+  "$comment": "에스원 풋터의 '검증된' 법인 정보·링크·카피라이트 단일 출처. 회사 법정 정보(상호·사업자번호·대표이사·주소)·링크·카피라이트는 절대 임의 작성하지 말 것. 출처는 Figma 원본 login_Footer 이며, 변경 시 반드시 원본 재확인 후 이 파일 + build-components.ts(buildFooter)를 함께 갱신한다. scripts/content-verbatim-check.js(Gate 14 원본대조 문구 검사기)가 appearsIn 파일의 문구와 이 정본의 드리프트를 커밋 단계에서 차단한다. (이 파일은 registry/content/ 의 '검증된 콘텐츠 블록' 중 하나 — 새 고정 문구는 검사기 추가 없이 여기에 json 만 더한다.)",
   "source": "Figma login_Footer 269:5722 (파일 cysG5U1udpQqVagYY1hWHW · SW UX GUIDE V3.0 TEST)",
   "lastVerified": "2026-06-22",
+  "appearsIn": ["plugins/figma-vars-installer/src/build-components.ts"],
   "links": ["이용약관", "개인정보 처리방침", "위치기반 서비스 이용약관"],
   "companyInfo": "(주)에스원   사업자등록번호 208-81-13302    대표이사 정해린    04511 서울특별시 중구 세종대로 7길 25 에스원 빌딩",
   "copyright": "© S-1 Corp. All Rights Reserved.",

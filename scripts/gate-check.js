@@ -333,24 +333,25 @@ try {
   fail(`installer-build-verify-check 실행 실패: ${e.message}`);
 }
 
-// ── Gate 14: Footer Content ───────────────────────────────────────
-// 풋터 법인정보·링크·카피라이트가 검증된 정본(registry/content/footer.json)과 일치하는지.
-// 임의 작성/날조 텍스트(대표이사·주소 등) 재유입을 커밋 단계 차단. (2026-06-22 신설)
-console.log('\n🔎 [Gate 14] 풋터콘텐츠 검사기 (Footer Content)');
+// ── Gate 14: Verified Content (원본대조 문구) ──────────────────────
+// 검증된 고정 문구(풋터 법인정보·링크·카피라이트 등)가 정본(registry/content/*.json)과
+// 일치하는지. 풋터에 국한하지 않고 모든 '검증된 콘텐츠 블록'을 검사 — 임의 작성/날조
+// 텍스트 재유입을 커밋 단계 차단. (2026-06-22 신설 footer · 2026-06-25 일반화)
+console.log('\n🔎 [Gate 14] 원본대조 문구 검사기 (Verified Content)');
 try {
   const { spawnSync } = require('child_process');
-  const r = spawnSync('node', [path.join(ROOT, 'scripts/footer-content-check.js')], { encoding: 'utf-8' });
+  const r = spawnSync('node', [path.join(ROOT, 'scripts/content-verbatim-check.js')], { encoding: 'utf-8' });
   const out = (r.stdout || '') + (r.stderr || '');
   if (r.status === 0) {
-    const m = out.match(/정본 (\d+)건 verbatim/);
-    pass(`풋터 법인정보·링크·카피라이트 정본 일치${m ? ` (${m[1]}건)` : ''}`);
+    const m = out.match(/(\d+)블록 정본 일치/);
+    pass(`검증된 고정 문구 정본 일치${m ? ` (${m[1]}블록)` : ''}`);
   } else {
     const lines = out.split('\n').filter((l) => l.includes('❌'));
     for (const l of lines) fail(l.replace(/^\s*❌\s*/, ''));
-    if (lines.length === 0) fail(`footer-content-check 실패 (exit ${r.status})`);
+    if (lines.length === 0) fail(`content-verbatim-check 실패 (exit ${r.status})`);
   }
 } catch (e) {
-  fail(`footer-content-check 실행 실패: ${e.message}`);
+  fail(`content-verbatim-check 실행 실패: ${e.message}`);
 }
 
 // ── Gate 15: Token Naming Convention ──────────────────────────────
@@ -368,6 +369,21 @@ try {
   }
 } catch (e) {
   fail(`token-naming-check 실행 실패: ${e.message}`);
+}
+
+// ── Gate 16: Component Origin Verification ────────────────────────
+// update-management.json 의 origin(분류)을 기준으로 "Ⓑ(원본틀 필요)인데 완료 표시인데
+// 원본 대조 0(verify=none)"을 차단 — 탭 사태 재발 방지. registry 신규 컴포넌트 미분류도 차단.
+// 마비 방지 계단식: 미완성 Ⓑ 백로그(skeleton/not-started)는 통과, 완료 표시·미검증만 차단. (2026-06-25 신설)
+console.log('\n🔎 [Gate 16] 컴포넌트 분류·검증 게이트 (Component Origin Verification)');
+try {
+  const { audit: originAudit } = require('./component-origin-gate-check');
+  const r = originAudit();
+  r.oks.forEach((m) => pass(m));
+  r.warns.forEach((m) => warn(m));
+  r.fails.forEach((m) => fail(m));
+} catch (e) {
+  fail(`component-origin-gate-check 실행 실패: ${e.message}`);
 }
 
 // ── Summary ───────────────────────────────────────────────────────

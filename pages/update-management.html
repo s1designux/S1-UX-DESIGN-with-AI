@@ -7,8 +7,11 @@
   <title>업데이트 관리 — S1 UX DESIGN GUIDE</title>
   <link rel="stylesheet" href="../assets/css/style.css">
   <link rel="stylesheet" href="../assets/css/tokens.css">
-  <!-- 이 페이지는 scripts/gen-update-management.js 가 registry/governance/update-management.json 으로 자동 생성. 손편집 금지. -->
+  <!-- 이 페이지는 scripts/gen-update-management.js 가 설치기(build-components.ts) + update-management.json 으로 자동 생성. 손편집 금지. -->
   <style>
+    /* 이 페이지는 표가 넓어 콘텐츠 폭 제한(공통 1100px)을 풀어 옆 영역까지 사용 */
+    .page-content { max-width: none; }
+    .page-header-inner { max-width: none; }
     .um-legend { display:flex; flex-wrap:wrap; gap:10px 18px; padding:14px 18px; background:#f9fafb; border:1px solid #e5e7eb; border-radius:12px; margin-bottom:24px; font-size:12px; color:#4b5563; }
     .um-legend b { color:#111827; }
     .um-section { margin-bottom:40px; }
@@ -16,11 +19,18 @@
     .um-section-head p { font-size:13px; color:#6b7280; margin:0 0 14px; }
     .um-table-wrap { overflow-x:auto; border:1px solid #e5e7eb; border-radius:12px; }
     table.um { border-collapse:collapse; width:100%; font-size:13px; min-width:980px; background:#fff; }
-    table.um th { text-align:left; font-size:12px; font-weight:700; color:#6b7280; background:#f9fafb; padding:11px 12px; border-bottom:1px solid #e5e7eb; white-space:nowrap; }
-    table.um td { padding:11px 12px; border-bottom:1px solid #f3f4f6; vertical-align:top; }
-    table.um tr:last-child td { border-bottom:none; }
+    table.um th { text-align:left; font-size:12px; font-weight:700; color:#6b7280; background:#f9fafb; padding:11px 12px; border-bottom:1px solid #e5e7eb; white-space:nowrap; position:sticky; top:0; z-index:1; }
+    table.um td { padding:10px 12px; border-bottom:1px solid #f3f4f6; vertical-align:top; }
+    /* 섹션 대메뉴 행 */
+    tr.cat-row td { background:#eef2f7; padding:8px 14px; border-bottom:1px solid #dbe2ea; }
+    tr.cat-row .cat-name { font-size:12px; font-weight:800; color:#1e3a5f; letter-spacing:.04em; text-transform:uppercase; }
+    tr.cat-row .cat-count { font-size:11px; font-weight:600; color:#7b8aa0; margin-left:8px; }
     .c-name { font-weight:700; color:#111827; white-space:nowrap; }
     .c-id { display:block; font-weight:400; font-size:11px; color:#9ca3af; margin-top:2px; }
+    .c-sub-arrow { color:#9aa7bd; margin-right:6px; font-weight:400; }
+    tr.is-sub .c-name { font-weight:500; color:#374151; }
+    tr.is-placeholder { background:#fffdf5; }
+    tr.is-placeholder .c-name { color:#926a00; }
     .c-note { color:#4b5563; line-height:1.5; min-width:200px; }
     .pill { display:inline-block; font-size:11px; font-weight:600; padding:2px 9px; border-radius:20px; white-space:nowrap; }
     .or-a { background:#dbeafe; color:#1e40af; }
@@ -29,6 +39,7 @@
     .st-early { background:#fee2e2; color:#991b1b; }
     .st-mid { background:#fef9c3; color:#854d0e; }
     .st-ok { background:#d1fae5; color:#065f46; }
+    .st-na { background:#f3f4f6; color:#9ca3af; }
     .vf-new { background:#d1fae5; color:#065f46; }
     .vf-legacy { background:#fef9c3; color:#854d0e; }
     .vf-none { background:#fee2e2; color:#991b1b; }
@@ -58,34 +69,155 @@
 
     <div class="page-header">
       <h1 class="page-title">🗂 업데이트 관리</h1>
-      <p class="page-desc">컴포넌트·패턴이 어디까지 됐고, 어느 표면에 언제 반영됐는지 한눈에 봅니다. 분류(Ⓐ/Ⓑ)가 재발방지 게이트의 기준이 됩니다.</p>
+      <p class="page-desc">컴포넌트·패턴이 어디까지 됐고, 어느 표면에 언제 반영됐는지 한눈에 봅니다. 목록·순서는 <b>설치기와 자동 연동</b>됩니다(손으로 안 적음).</p>
     </div>
 
     <div class="page-content">
       <div class="um-legend">
-        <span><b>Ⓐ 정리완료</b> 원본 대조 불필요 (9)</span>
-        <span><b>Ⓑ 원본틀 필요</b> 원본에서 틀 가져와 최신으로 갈이 (3)</span>
-        <span><b>⏳ 미정</b> 분류 결정 필요 (4)</span>
-        <span>· 원본 대조: <b>✅ 새방식</b>(원본 재측정) / <b>🟡 옛방식</b>(메모 대조·재확인 권장) / <b>🔴 미검증</b></span>
-        <span>· 날짜 = 그 표면을 실제로 갱신한 <b>수동 도장</b>(빈 칸 = 도장 필요)</span>
+        <span><b>Ⓐ 정리완료</b> 원본 대조 불필요 (10)</span>
+        <span><b>Ⓑ 원본틀 필요</b> 원본에서 틀 가져와 최신으로 갈이 (6)</span>
+        <span><b>⏳ 미정</b> 분류 결정 필요 (0)</span>
+        <span>· 들여쓴 <b>↳ 행</b> = 메인 컴포넌트의 내부 요소</span>
+        <span>· 노란 <b>미등록</b> 행 = 설치기엔 있는데 관리표에 아직 안 들어온 것</span>
       </div>
 
       <div class="um-section">
         <div class="um-section-head">
-          <h2>🧩 컴포넌트 (16)</h2>
-          <p>코어 컴포넌트. Ⓑ·미정 중 '미검증'이 탭처럼 원본과 어긋나 있을 수 있는 항목입니다.</p>
+          <h2>🧩 컴포넌트 — 설치기 순서 (32)</h2>
+          <p>설치기가 까는 순서·묶음 그대로. 섹션(대메뉴)별로 묶여 있고, 내부 요소는 메인 아래로 들여썼습니다. 설치기가 바뀌면 자동으로 따라갑니다.</p>
         </div>
         <div class="um-table-wrap">
           <table class="um">
         <thead><tr>
-          <th>컴포넌트</th><th>분류</th><th>진행</th><th>원본 대조</th><th>원본 노드</th>
+          <th>컴포넌트</th><th>분류</th><th>진행</th><th>모바일</th><th>원본 대조</th><th>원본 노드</th>
           <th>설치기</th><th>tokens.css</th><th>HTML</th><th>다크</th><th>비고</th>
         </tr></thead>
             <tbody>
-        <tr>
-          <td class="c-name">Line Tab<span class="c-id">tab</span></td>
+        <tr class="cat-row"><td colspan="11"><span class="cat-name">Platform</span><span class="cat-count">6</span></td></tr>
+        <tr class="comp-row is-placeholder">
+          <td class="c-name" style="padding-left:12px">StatusBar</td>
+          <td><span class="pill or-tbd">⏳ 미정</span></td>
+          <td><span class="pill st-early">미등록</span></td>
+          <td><span class="dt-empty">–</span></td>
+          <td><span class="pill vf-none">🔴 미검증</span></td>
+          <td><span class="dt-empty">미지정</span></td>
+          <td><span class="dt-empty">– 도장 필요</span></td>
+          <td><span class="dt-empty">– 도장 필요</span></td>
+          <td><span class="dt-empty">– 도장 필요</span></td>
+          <td><span class="pill dk-early">–</span></td>
+          <td class="c-note">설치기에 있으나 관리표 미등록 — 확인 필요</td>
+        </tr>
+        <tr class="comp-row is-placeholder">
+          <td class="c-name" style="padding-left:12px">NavBar</td>
+          <td><span class="pill or-tbd">⏳ 미정</span></td>
+          <td><span class="pill st-early">미등록</span></td>
+          <td><span class="dt-empty">–</span></td>
+          <td><span class="pill vf-none">🔴 미검증</span></td>
+          <td><span class="dt-empty">미지정</span></td>
+          <td><span class="dt-empty">– 도장 필요</span></td>
+          <td><span class="dt-empty">– 도장 필요</span></td>
+          <td><span class="dt-empty">– 도장 필요</span></td>
+          <td><span class="pill dk-early">–</span></td>
+          <td class="c-note">설치기에 있으나 관리표 미등록 — 확인 필요</td>
+        </tr>
+        <tr class="comp-row is-placeholder">
+          <td class="c-name" style="padding-left:12px">CI</td>
+          <td><span class="pill or-tbd">⏳ 미정</span></td>
+          <td><span class="pill st-early">미등록</span></td>
+          <td><span class="dt-empty">–</span></td>
+          <td><span class="pill vf-none">🔴 미검증</span></td>
+          <td><span class="dt-empty">미지정</span></td>
+          <td><span class="dt-empty">– 도장 필요</span></td>
+          <td><span class="dt-empty">– 도장 필요</span></td>
+          <td><span class="dt-empty">– 도장 필요</span></td>
+          <td><span class="pill dk-early">–</span></td>
+          <td class="c-note">설치기에 있으나 관리표 미등록 — 확인 필요</td>
+        </tr>
+        <tr class="comp-row is-placeholder">
+          <td class="c-name" style="padding-left:12px">LoginGNB</td>
+          <td><span class="pill or-tbd">⏳ 미정</span></td>
+          <td><span class="pill st-early">미등록</span></td>
+          <td><span class="dt-empty">–</span></td>
+          <td><span class="pill vf-none">🔴 미검증</span></td>
+          <td><span class="dt-empty">미지정</span></td>
+          <td><span class="dt-empty">– 도장 필요</span></td>
+          <td><span class="dt-empty">– 도장 필요</span></td>
+          <td><span class="dt-empty">– 도장 필요</span></td>
+          <td><span class="pill dk-early">–</span></td>
+          <td class="c-note">설치기에 있으나 관리표 미등록 — 확인 필요</td>
+        </tr>
+        <tr class="comp-row is-placeholder">
+          <td class="c-name" style="padding-left:12px">WebTabBar</td>
+          <td><span class="pill or-tbd">⏳ 미정</span></td>
+          <td><span class="pill st-early">미등록</span></td>
+          <td><span class="dt-empty">–</span></td>
+          <td><span class="pill vf-none">🔴 미검증</span></td>
+          <td><span class="dt-empty">미지정</span></td>
+          <td><span class="dt-empty">– 도장 필요</span></td>
+          <td><span class="dt-empty">– 도장 필요</span></td>
+          <td><span class="dt-empty">– 도장 필요</span></td>
+          <td><span class="pill dk-early">–</span></td>
+          <td class="c-note">설치기에 있으나 관리표 미등록 — 확인 필요</td>
+        </tr>
+        <tr class="comp-row is-placeholder">
+          <td class="c-name" style="padding-left:12px">Footer</td>
+          <td><span class="pill or-tbd">⏳ 미정</span></td>
+          <td><span class="pill st-early">미등록</span></td>
+          <td><span class="dt-empty">–</span></td>
+          <td><span class="pill vf-none">🔴 미검증</span></td>
+          <td><span class="dt-empty">미지정</span></td>
+          <td><span class="dt-empty">– 도장 필요</span></td>
+          <td><span class="dt-empty">– 도장 필요</span></td>
+          <td><span class="dt-empty">– 도장 필요</span></td>
+          <td><span class="pill dk-early">–</span></td>
+          <td class="c-note">설치기에 있으나 관리표 미등록 — 확인 필요</td>
+        </tr>
+        <tr class="cat-row"><td colspan="11"><span class="cat-name">Navigation</span><span class="cat-count">3</span></td></tr>
+        <tr class="comp-row">
+          <td class="c-name" style="padding-left:12px">GNB<span class="c-id">gnb</span></td>
           <td><span class="pill or-b">Ⓑ 원본틀 필요</span></td>
           <td><span class="pill st-mid">진행중</span></td>
+          <td><span class="dt-empty">–</span></td>
+          <td><span class="pill vf-legacy">🟡 옛방식 2026-06-06</span></td>
+          <td><span class="dt-empty">미지정</span></td>
+          <td><span class="dt-empty">– 도장 필요</span></td>
+          <td><span class="dt-empty">– 도장 필요</span></td>
+          <td><span class="dt-empty">– 도장 필요</span></td>
+          <td><span class="pill dk-mid">candidate</span></td>
+          <td class="c-note">원본 틀 필요. 옛 방식 검증만 — 원본 재측정 재확인. (PC 전용)</td>
+        </tr>
+        <tr class="comp-row is-placeholder is-sub">
+          <td class="c-name" style="padding-left:32px"><span class="c-sub-arrow">↳</span>GNB Utility Icon</td>
+          <td><span class="pill or-tbd">⏳ 미정</span></td>
+          <td><span class="pill st-early">미등록</span></td>
+          <td><span class="dt-empty">–</span></td>
+          <td><span class="pill vf-none">🔴 미검증</span></td>
+          <td><span class="dt-empty">미지정</span></td>
+          <td><span class="dt-empty">– 도장 필요</span></td>
+          <td><span class="dt-empty">– 도장 필요</span></td>
+          <td><span class="dt-empty">– 도장 필요</span></td>
+          <td><span class="pill dk-early">–</span></td>
+          <td class="c-note">설치기에 있으나 관리표 미등록 — 확인 필요</td>
+        </tr>
+        <tr class="comp-row is-placeholder is-sub">
+          <td class="c-name" style="padding-left:52px"><span class="c-sub-arrow">↳</span>Language Icon</td>
+          <td><span class="pill or-tbd">⏳ 미정</span></td>
+          <td><span class="pill st-early">미등록</span></td>
+          <td><span class="dt-empty">–</span></td>
+          <td><span class="pill vf-none">🔴 미검증</span></td>
+          <td><span class="dt-empty">미지정</span></td>
+          <td><span class="dt-empty">– 도장 필요</span></td>
+          <td><span class="dt-empty">– 도장 필요</span></td>
+          <td><span class="dt-empty">– 도장 필요</span></td>
+          <td><span class="pill dk-early">–</span></td>
+          <td class="c-note">설치기에 있으나 관리표 미등록 — 확인 필요</td>
+        </tr>
+        <tr class="cat-row"><td colspan="11"><span class="cat-name">Line Tab</span><span class="cat-count">1</span></td></tr>
+        <tr class="comp-row">
+          <td class="c-name" style="padding-left:12px">Line Tab<span class="c-id">tab</span></td>
+          <td><span class="pill or-b">Ⓑ 원본틀 필요</span></td>
+          <td><span class="pill st-mid">진행중</span></td>
+          <td><span class="pill st-ok">완료</span></td>
           <td><span class="pill vf-new">✅ 새방식 2026-06-24</span></td>
           <td><span class="src">V2.4 540:6032</span></td>
           <td><span class="dt-empty">– 도장 필요</span></td>
@@ -94,22 +226,12 @@
           <td><span class="pill dk-mid">candidate</span></td>
           <td class="c-note">라인탭. 새 방식(원본 재측정)으로 재빌드·검증 완료.</td>
         </tr>
-        <tr>
-          <td class="c-name">Navigation<span class="c-id">nav</span></td>
+        <tr class="cat-row"><td colspan="11"><span class="cat-name">Pagination</span><span class="cat-count">1</span></td></tr>
+        <tr class="comp-row">
+          <td class="c-name" style="padding-left:12px">Pagination<span class="c-id">pagination</span></td>
           <td><span class="pill or-b">Ⓑ 원본틀 필요</span></td>
           <td><span class="pill st-early">골격</span></td>
-          <td><span class="pill vf-none">🔴 미검증</span></td>
-          <td><span class="dt-empty">미지정</span></td>
-          <td><span class="dt-empty">– 도장 필요</span></td>
-          <td><span class="dt-empty">– 도장 필요</span></td>
-          <td><span class="dt-empty">– 도장 필요</span></td>
-          <td><span class="pill dk-early">pending</span></td>
-          <td class="c-note">골격만(harness=skeleton). 원본 틀 세팅 필요. 원본 노드 미지정.</td>
-        </tr>
-        <tr>
-          <td class="c-name">Pagination<span class="c-id">pagination</span></td>
-          <td><span class="pill or-b">Ⓑ 원본틀 필요</span></td>
-          <td><span class="pill st-early">골격</span></td>
+          <td><span class="dt-empty">–</span></td>
           <td><span class="pill vf-none">🔴 미검증</span></td>
           <td><span class="dt-empty">미지정</span></td>
           <td><span class="dt-empty">– 도장 필요</span></td>
@@ -118,161 +240,300 @@
           <td><span class="pill dk-early">pending</span></td>
           <td class="c-note">골격만. 원본 틀 세팅 필요.</td>
         </tr>
-        <tr>
-          <td class="c-name">Table<span class="c-id">table</span></td>
-          <td><span class="pill or-tbd">⏳ 미정</span></td>
-          <td><span class="pill st-early">미착수</span></td>
-          <td><span class="pill vf-none">🔴 미검증</span></td>
+        <tr class="cat-row"><td colspan="11"><span class="cat-name">Actions</span><span class="cat-count">1</span></td></tr>
+        <tr class="comp-row">
+          <td class="c-name" style="padding-left:12px">Button<span class="c-id">button</span></td>
+          <td><span class="pill or-a">Ⓐ 정리완료</span></td>
+          <td><span class="pill st-mid">진행중</span></td>
+          <td><span class="pill st-ok">완료</span></td>
+          <td><span class="pill vf-na">– 불필요</span></td>
           <td><span class="dt-empty">미지정</span></td>
           <td><span class="dt-empty">– 도장 필요</span></td>
           <td><span class="dt-empty">– 도장 필요</span></td>
           <td><span class="dt-empty">– 도장 필요</span></td>
           <td><span class="pill dk-ok">stable</span></td>
-          <td class="c-note">코드 미착수(codeStatus=not-started)인데 harness=implemented — 분류 확인 필요.</td>
+          <td class="c-note">정리 완료. (PC + 모바일 사이즈 h48)</td>
         </tr>
-        <tr>
-          <td class="c-name">Button<span class="c-id">button</span></td>
-          <td><span class="pill or-tbd">⏳ 미정</span></td>
-          <td><span class="pill st-mid">진행중</span></td>
-          <td><span class="pill vf-none">🔴 미검증</span></td>
+        <tr class="cat-row"><td colspan="11"><span class="cat-name">Selection</span><span class="cat-count">3</span></td></tr>
+        <tr class="comp-row">
+          <td class="c-name" style="padding-left:12px">Checkbox<span class="c-id">checkbox</span></td>
+          <td><span class="pill or-a">Ⓐ 정리완료</span></td>
+          <td><span class="pill st-ok">구현</span></td>
+          <td><span class="dt-empty">–</span></td>
+          <td><span class="pill vf-na">– 불필요</span></td>
           <td><span class="dt-empty">미지정</span></td>
           <td><span class="dt-empty">– 도장 필요</span></td>
           <td><span class="dt-empty">– 도장 필요</span></td>
           <td><span class="dt-empty">– 도장 필요</span></td>
           <td><span class="pill dk-ok">stable</span></td>
-          <td class="c-note">진행 중(in-progress) — 분류 확인 필요.</td>
+          <td class="c-note">정리 완료.</td>
         </tr>
-        <tr>
-          <td class="c-name">GNB<span class="c-id">gnb</span></td>
-          <td><span class="pill or-tbd">⏳ 미정</span></td>
-          <td><span class="pill st-mid">진행중</span></td>
-          <td><span class="pill vf-legacy">🟡 옛방식 2026-06-06</span></td>
+        <tr class="comp-row">
+          <td class="c-name" style="padding-left:12px">Radio<span class="c-id">radio</span></td>
+          <td><span class="pill or-a">Ⓐ 정리완료</span></td>
+          <td><span class="pill st-ok">구현</span></td>
+          <td><span class="dt-empty">–</span></td>
+          <td><span class="pill vf-na">– 불필요</span></td>
           <td><span class="dt-empty">미지정</span></td>
           <td><span class="dt-empty">– 도장 필요</span></td>
           <td><span class="dt-empty">– 도장 필요</span></td>
           <td><span class="dt-empty">– 도장 필요</span></td>
-          <td><span class="pill dk-mid">candidate</span></td>
-          <td class="c-note">진행 중. 옛 방식 검증만 — 원본 재측정 재확인 권장. 분류 확인 필요.</td>
+          <td><span class="pill dk-ok">stable</span></td>
+          <td class="c-note">정리 완료.</td>
         </tr>
-        <tr>
-          <td class="c-name">TimePicker<span class="c-id">time-picker</span></td>
+        <tr class="comp-row">
+          <td class="c-name" style="padding-left:12px">Toggle<span class="c-id">toggle</span></td>
+          <td><span class="pill or-a">Ⓐ 정리완료</span></td>
+          <td><span class="pill st-ok">구현</span></td>
+          <td><span class="dt-empty">–</span></td>
+          <td><span class="pill vf-na">– 불필요</span></td>
+          <td><span class="dt-empty">미지정</span></td>
+          <td><span class="dt-empty">– 도장 필요</span></td>
+          <td><span class="dt-empty">– 도장 필요</span></td>
+          <td><span class="dt-empty">– 도장 필요</span></td>
+          <td><span class="pill dk-ok">stable</span></td>
+          <td class="c-note">정리 완료.</td>
+        </tr>
+        <tr class="cat-row"><td colspan="11"><span class="cat-name">Chip</span><span class="cat-count">1</span></td></tr>
+        <tr class="comp-row">
+          <td class="c-name" style="padding-left:12px">Chip<span class="c-id">chip</span></td>
+          <td><span class="pill or-a">Ⓐ 정리완료</span></td>
+          <td><span class="pill st-ok">구현</span></td>
+          <td><span class="dt-empty">–</span></td>
+          <td><span class="pill vf-na">– 불필요</span></td>
+          <td><span class="dt-empty">미지정</span></td>
+          <td><span class="dt-empty">– 도장 필요</span></td>
+          <td><span class="dt-empty">– 도장 필요</span></td>
+          <td><span class="dt-empty">– 도장 필요</span></td>
+          <td><span class="pill dk-early">pending</span></td>
+          <td class="c-note">정리 완료. (다크 pending)</td>
+        </tr>
+        <tr class="cat-row"><td colspan="11"><span class="cat-name">Form Control</span><span class="cat-count">6</span></td></tr>
+        <tr class="comp-row">
+          <td class="c-name" style="padding-left:12px">Input<span class="c-id">input</span></td>
+          <td><span class="pill or-a">Ⓐ 정리완료</span></td>
+          <td><span class="pill st-ok">구현</span></td>
+          <td><span class="dt-empty">–</span></td>
+          <td><span class="pill vf-na">– 불필요</span></td>
+          <td><span class="dt-empty">미지정</span></td>
+          <td><span class="dt-empty">– 도장 필요</span></td>
+          <td><span class="dt-empty">– 도장 필요</span></td>
+          <td><span class="dt-empty">– 도장 필요</span></td>
+          <td><span class="pill dk-early">pending</span></td>
+          <td class="c-note">정리 완료. (다크 pending)</td>
+        </tr>
+        <tr class="comp-row is-placeholder">
+          <td class="c-name" style="padding-left:12px">Search Input</td>
           <td><span class="pill or-tbd">⏳ 미정</span></td>
+          <td><span class="pill st-early">미등록</span></td>
+          <td><span class="dt-empty">–</span></td>
+          <td><span class="pill vf-none">🔴 미검증</span></td>
+          <td><span class="dt-empty">미지정</span></td>
+          <td><span class="dt-empty">– 도장 필요</span></td>
+          <td><span class="dt-empty">– 도장 필요</span></td>
+          <td><span class="dt-empty">– 도장 필요</span></td>
+          <td><span class="pill dk-early">–</span></td>
+          <td class="c-note">설치기에 있으나 관리표 미등록 — 확인 필요</td>
+        </tr>
+        <tr class="comp-row">
+          <td class="c-name" style="padding-left:12px">Text Area<span class="c-id">textarea</span></td>
+          <td><span class="pill or-a">Ⓐ 정리완료</span></td>
+          <td><span class="pill st-ok">구현</span></td>
+          <td><span class="dt-empty">–</span></td>
+          <td><span class="pill vf-na">– 불필요</span></td>
+          <td><span class="dt-empty">미지정</span></td>
+          <td><span class="dt-empty">– 도장 필요</span></td>
+          <td><span class="dt-empty">– 도장 필요</span></td>
+          <td><span class="dt-empty">– 도장 필요</span></td>
+          <td><span class="pill dk-early">pending</span></td>
+          <td class="c-note">정리 완료. (다크 pending)</td>
+        </tr>
+        <tr class="comp-row">
+          <td class="c-name" style="padding-left:12px">Select Box<span class="c-id">select</span></td>
+          <td><span class="pill or-a">Ⓐ 정리완료</span></td>
+          <td><span class="pill st-ok">구현</span></td>
+          <td><span class="dt-empty">–</span></td>
+          <td><span class="pill vf-na">– 불필요</span></td>
+          <td><span class="dt-empty">미지정</span></td>
+          <td><span class="dt-empty">– 도장 필요</span></td>
+          <td><span class="dt-empty">– 도장 필요</span></td>
+          <td><span class="dt-empty">– 도장 필요</span></td>
+          <td><span class="pill dk-early">pending</span></td>
+          <td class="c-note">정리 완료. (다크 pending)</td>
+        </tr>
+        <tr class="comp-row is-sub">
+          <td class="c-name" style="padding-left:32px"><span class="c-sub-arrow">↳</span>Dropdown<span class="c-id">dropdown</span></td>
+          <td><span class="pill or-a">Ⓐ 정리완료</span></td>
+          <td><span class="pill st-ok">구현</span></td>
+          <td><span class="dt-empty">–</span></td>
+          <td><span class="pill vf-na">– 불필요</span></td>
+          <td><span class="dt-empty">미지정</span></td>
+          <td><span class="dt-empty">– 도장 필요</span></td>
+          <td><span class="dt-empty">– 도장 필요</span></td>
+          <td><span class="dt-empty">– 도장 필요</span></td>
+          <td><span class="pill dk-early">pending</span></td>
+          <td class="c-note">정리 완료. (다크 pending)</td>
+        </tr>
+        <tr class="comp-row is-placeholder is-sub">
+          <td class="c-name" style="padding-left:52px"><span class="c-sub-arrow">↳</span>Dropdown List</td>
+          <td><span class="pill or-tbd">⏳ 미정</span></td>
+          <td><span class="pill st-early">미등록</span></td>
+          <td><span class="dt-empty">–</span></td>
+          <td><span class="pill vf-none">🔴 미검증</span></td>
+          <td><span class="dt-empty">미지정</span></td>
+          <td><span class="dt-empty">– 도장 필요</span></td>
+          <td><span class="dt-empty">– 도장 필요</span></td>
+          <td><span class="dt-empty">– 도장 필요</span></td>
+          <td><span class="pill dk-early">–</span></td>
+          <td class="c-note">설치기에 있으나 관리표 미등록 — 확인 필요</td>
+        </tr>
+        <tr class="cat-row"><td colspan="11"><span class="cat-name">Date Picker</span><span class="cat-count">4</span></td></tr>
+        <tr class="comp-row">
+          <td class="c-name" style="padding-left:12px">Date Picker<span class="c-id">date-picker</span></td>
+          <td><span class="pill or-a">Ⓐ 정리완료</span></td>
+          <td><span class="pill st-ok">구현</span></td>
+          <td><span class="pill st-ok">완료</span></td>
+          <td><span class="pill vf-na">– 불필요</span></td>
+          <td><span class="dt-empty">미지정</span></td>
+          <td><span class="dt-empty">– 도장 필요</span></td>
+          <td><span class="dt-empty">– 도장 필요</span></td>
+          <td><span class="dt-empty">– 도장 필요</span></td>
+          <td><span class="pill dk-ok">stable</span></td>
+          <td class="c-note">정리 완료. 모바일 바텀시트 빌드·검증 완료.</td>
+        </tr>
+        <tr class="comp-row is-placeholder is-sub">
+          <td class="c-name" style="padding-left:32px"><span class="c-sub-arrow">↳</span>Calendar</td>
+          <td><span class="pill or-tbd">⏳ 미정</span></td>
+          <td><span class="pill st-early">미등록</span></td>
+          <td><span class="dt-empty">–</span></td>
+          <td><span class="pill vf-none">🔴 미검증</span></td>
+          <td><span class="dt-empty">미지정</span></td>
+          <td><span class="dt-empty">– 도장 필요</span></td>
+          <td><span class="dt-empty">– 도장 필요</span></td>
+          <td><span class="dt-empty">– 도장 필요</span></td>
+          <td><span class="pill dk-early">–</span></td>
+          <td class="c-note">설치기에 있으나 관리표 미등록 — 확인 필요</td>
+        </tr>
+        <tr class="comp-row is-placeholder is-sub">
+          <td class="c-name" style="padding-left:52px"><span class="c-sub-arrow">↳</span>Calendar Cell</td>
+          <td><span class="pill or-tbd">⏳ 미정</span></td>
+          <td><span class="pill st-early">미등록</span></td>
+          <td><span class="dt-empty">–</span></td>
+          <td><span class="pill vf-none">🔴 미검증</span></td>
+          <td><span class="dt-empty">미지정</span></td>
+          <td><span class="dt-empty">– 도장 필요</span></td>
+          <td><span class="dt-empty">– 도장 필요</span></td>
+          <td><span class="dt-empty">– 도장 필요</span></td>
+          <td><span class="pill dk-early">–</span></td>
+          <td class="c-note">설치기에 있으나 관리표 미등록 — 확인 필요</td>
+        </tr>
+        <tr class="comp-row is-placeholder is-sub">
+          <td class="c-name" style="padding-left:52px"><span class="c-sub-arrow">↳</span>Calendar Tile</td>
+          <td><span class="pill or-tbd">⏳ 미정</span></td>
+          <td><span class="pill st-early">미등록</span></td>
+          <td><span class="dt-empty">–</span></td>
+          <td><span class="pill vf-none">🔴 미검증</span></td>
+          <td><span class="dt-empty">미지정</span></td>
+          <td><span class="dt-empty">– 도장 필요</span></td>
+          <td><span class="dt-empty">– 도장 필요</span></td>
+          <td><span class="dt-empty">– 도장 필요</span></td>
+          <td><span class="pill dk-early">–</span></td>
+          <td class="c-note">설치기에 있으나 관리표 미등록 — 확인 필요</td>
+        </tr>
+        <tr class="cat-row"><td colspan="11"><span class="cat-name">Time Picker</span><span class="cat-count">3</span></td></tr>
+        <tr class="comp-row">
+          <td class="c-name" style="padding-left:12px">Time Picker<span class="c-id">time-picker</span></td>
+          <td><span class="pill or-b">Ⓑ 원본틀 필요</span></td>
           <td><span class="pill st-mid">미리보기</span></td>
+          <td><span class="pill st-mid">진행 필요</span></td>
           <td><span class="pill vf-legacy">🟡 옛방식</span></td>
           <td><span class="dt-empty">미지정</span></td>
           <td><span class="dt-empty">– 도장 필요</span></td>
           <td><span class="dt-empty">– 도장 필요</span></td>
           <td><span class="dt-empty">– 도장 필요</span></td>
           <td><span class="pill dk-ok">stable</span></td>
-          <td class="c-note">preview 단계. 옛 방식 검증만. 분류 확인 필요.</td>
+          <td class="c-note">PC 완료. 모바일 바텀시트 진행 필요. 옛 방식 검증만.</td>
         </tr>
-        <tr>
-          <td class="c-name">Checkbox<span class="c-id">checkbox</span></td>
-          <td><span class="pill or-a">Ⓐ 정리완료</span></td>
-          <td><span class="pill st-ok">구현</span></td>
-          <td><span class="pill vf-na">– 불필요</span></td>
+        <tr class="comp-row is-placeholder is-sub">
+          <td class="c-name" style="padding-left:32px"><span class="c-sub-arrow">↳</span>Time Picker Dropdown</td>
+          <td><span class="pill or-tbd">⏳ 미정</span></td>
+          <td><span class="pill st-early">미등록</span></td>
+          <td><span class="dt-empty">–</span></td>
+          <td><span class="pill vf-none">🔴 미검증</span></td>
+          <td><span class="dt-empty">미지정</span></td>
+          <td><span class="dt-empty">– 도장 필요</span></td>
+          <td><span class="dt-empty">– 도장 필요</span></td>
+          <td><span class="dt-empty">– 도장 필요</span></td>
+          <td><span class="pill dk-early">–</span></td>
+          <td class="c-note">설치기에 있으나 관리표 미등록 — 확인 필요</td>
+        </tr>
+        <tr class="comp-row is-placeholder is-sub">
+          <td class="c-name" style="padding-left:52px"><span class="c-sub-arrow">↳</span>Time Picker Cell</td>
+          <td><span class="pill or-tbd">⏳ 미정</span></td>
+          <td><span class="pill st-early">미등록</span></td>
+          <td><span class="dt-empty">–</span></td>
+          <td><span class="pill vf-none">🔴 미검증</span></td>
+          <td><span class="dt-empty">미지정</span></td>
+          <td><span class="dt-empty">– 도장 필요</span></td>
+          <td><span class="dt-empty">– 도장 필요</span></td>
+          <td><span class="dt-empty">– 도장 필요</span></td>
+          <td><span class="pill dk-early">–</span></td>
+          <td class="c-note">설치기에 있으나 관리표 미등록 — 확인 필요</td>
+        </tr>
+        <tr class="cat-row"><td colspan="11"><span class="cat-name">Table</span><span class="cat-count">2</span></td></tr>
+        <tr class="comp-row">
+          <td class="c-name" style="padding-left:12px">Table<span class="c-id">table</span></td>
+          <td><span class="pill or-b">Ⓑ 원본틀 필요</span></td>
+          <td><span class="pill st-early">미착수</span></td>
+          <td><span class="dt-empty">–</span></td>
+          <td><span class="pill vf-none">🔴 미검증</span></td>
           <td><span class="dt-empty">미지정</span></td>
           <td><span class="dt-empty">– 도장 필요</span></td>
           <td><span class="dt-empty">– 도장 필요</span></td>
           <td><span class="dt-empty">– 도장 필요</span></td>
           <td><span class="pill dk-ok">stable</span></td>
-          <td class="c-note">정리 완료.</td>
+          <td class="c-note">원본 틀 필요. (코드 미착수·harness만 구현)</td>
         </tr>
-        <tr>
-          <td class="c-name">Radio<span class="c-id">radio</span></td>
-          <td><span class="pill or-a">Ⓐ 정리완료</span></td>
-          <td><span class="pill st-ok">구현</span></td>
-          <td><span class="pill vf-na">– 불필요</span></td>
+        <tr class="comp-row is-placeholder is-sub">
+          <td class="c-name" style="padding-left:32px"><span class="c-sub-arrow">↳</span>Table Cell</td>
+          <td><span class="pill or-tbd">⏳ 미정</span></td>
+          <td><span class="pill st-early">미등록</span></td>
+          <td><span class="dt-empty">–</span></td>
+          <td><span class="pill vf-none">🔴 미검증</span></td>
           <td><span class="dt-empty">미지정</span></td>
           <td><span class="dt-empty">– 도장 필요</span></td>
           <td><span class="dt-empty">– 도장 필요</span></td>
           <td><span class="dt-empty">– 도장 필요</span></td>
-          <td><span class="pill dk-ok">stable</span></td>
-          <td class="c-note">정리 완료.</td>
+          <td><span class="pill dk-early">–</span></td>
+          <td class="c-note">설치기에 있으나 관리표 미등록 — 확인 필요</td>
         </tr>
-        <tr>
-          <td class="c-name">Toggle<span class="c-id">toggle</span></td>
-          <td><span class="pill or-a">Ⓐ 정리완료</span></td>
-          <td><span class="pill st-ok">구현</span></td>
-          <td><span class="pill vf-na">– 불필요</span></td>
+        <tr class="cat-row"><td colspan="11"><span class="cat-name">Filter Chip</span><span class="cat-count">1</span></td></tr>
+        <tr class="comp-row is-placeholder">
+          <td class="c-name" style="padding-left:12px">Filter Chip</td>
+          <td><span class="pill or-tbd">⏳ 미정</span></td>
+          <td><span class="pill st-early">미등록</span></td>
+          <td><span class="dt-empty">–</span></td>
+          <td><span class="pill vf-none">🔴 미검증</span></td>
           <td><span class="dt-empty">미지정</span></td>
           <td><span class="dt-empty">– 도장 필요</span></td>
           <td><span class="dt-empty">– 도장 필요</span></td>
           <td><span class="dt-empty">– 도장 필요</span></td>
-          <td><span class="pill dk-ok">stable</span></td>
-          <td class="c-note">정리 완료.</td>
+          <td><span class="pill dk-early">–</span></td>
+          <td class="c-note">설치기에 있으나 관리표 미등록 — 확인 필요</td>
         </tr>
-        <tr>
-          <td class="c-name">DatePicker<span class="c-id">date-picker</span></td>
-          <td><span class="pill or-a">Ⓐ 정리완료</span></td>
-          <td><span class="pill st-ok">구현</span></td>
-          <td><span class="pill vf-na">– 불필요</span></td>
-          <td><span class="dt-empty">미지정</span></td>
-          <td><span class="dt-empty">– 도장 필요</span></td>
-          <td><span class="dt-empty">– 도장 필요</span></td>
-          <td><span class="dt-empty">– 도장 필요</span></td>
-          <td><span class="pill dk-ok">stable</span></td>
-          <td class="c-note">정리 완료. (HD 잔여: 모바일 인터랙션 등은 별도)</td>
-        </tr>
-        <tr>
-          <td class="c-name">Chip<span class="c-id">chip</span></td>
-          <td><span class="pill or-a">Ⓐ 정리완료</span></td>
-          <td><span class="pill st-ok">구현</span></td>
-          <td><span class="pill vf-na">– 불필요</span></td>
+        <tr class="cat-row"><td colspan="11"><span class="cat-name">설치기 외 (추가 관리 컴포넌트)</span><span class="cat-count">1</span></td></tr>
+        <tr class="comp-row">
+          <td class="c-name" style="padding-left:12px">nav<span class="c-id">nav</span></td>
+          <td><span class="pill or-b">Ⓑ 원본틀 필요</span></td>
+          <td><span class="pill st-early">골격</span></td>
+          <td><span class="dt-empty">–</span></td>
+          <td><span class="pill vf-none">🔴 미검증</span></td>
           <td><span class="dt-empty">미지정</span></td>
           <td><span class="dt-empty">– 도장 필요</span></td>
           <td><span class="dt-empty">– 도장 필요</span></td>
           <td><span class="dt-empty">– 도장 필요</span></td>
           <td><span class="pill dk-early">pending</span></td>
-          <td class="c-note">정리 완료. (다크 pending)</td>
-        </tr>
-        <tr>
-          <td class="c-name">Dropdown<span class="c-id">dropdown</span></td>
-          <td><span class="pill or-a">Ⓐ 정리완료</span></td>
-          <td><span class="pill st-ok">구현</span></td>
-          <td><span class="pill vf-na">– 불필요</span></td>
-          <td><span class="dt-empty">미지정</span></td>
-          <td><span class="dt-empty">– 도장 필요</span></td>
-          <td><span class="dt-empty">– 도장 필요</span></td>
-          <td><span class="dt-empty">– 도장 필요</span></td>
-          <td><span class="pill dk-early">pending</span></td>
-          <td class="c-note">정리 완료. (다크 pending)</td>
-        </tr>
-        <tr>
-          <td class="c-name">Input<span class="c-id">input</span></td>
-          <td><span class="pill or-a">Ⓐ 정리완료</span></td>
-          <td><span class="pill st-ok">구현</span></td>
-          <td><span class="pill vf-na">– 불필요</span></td>
-          <td><span class="dt-empty">미지정</span></td>
-          <td><span class="dt-empty">– 도장 필요</span></td>
-          <td><span class="dt-empty">– 도장 필요</span></td>
-          <td><span class="dt-empty">– 도장 필요</span></td>
-          <td><span class="pill dk-early">pending</span></td>
-          <td class="c-note">정리 완료. (다크 pending)</td>
-        </tr>
-        <tr>
-          <td class="c-name">Select<span class="c-id">select</span></td>
-          <td><span class="pill or-a">Ⓐ 정리완료</span></td>
-          <td><span class="pill st-ok">구현</span></td>
-          <td><span class="pill vf-na">– 불필요</span></td>
-          <td><span class="dt-empty">미지정</span></td>
-          <td><span class="dt-empty">– 도장 필요</span></td>
-          <td><span class="dt-empty">– 도장 필요</span></td>
-          <td><span class="dt-empty">– 도장 필요</span></td>
-          <td><span class="pill dk-early">pending</span></td>
-          <td class="c-note">정리 완료. (다크 pending)</td>
-        </tr>
-        <tr>
-          <td class="c-name">Textarea<span class="c-id">textarea</span></td>
-          <td><span class="pill or-a">Ⓐ 정리완료</span></td>
-          <td><span class="pill st-ok">구현</span></td>
-          <td><span class="pill vf-na">– 불필요</span></td>
-          <td><span class="dt-empty">미지정</span></td>
-          <td><span class="dt-empty">– 도장 필요</span></td>
-          <td><span class="dt-empty">– 도장 필요</span></td>
-          <td><span class="dt-empty">– 도장 필요</span></td>
-          <td><span class="pill dk-early">pending</span></td>
-          <td class="c-note">정리 완료. (다크 pending)</td>
+          <td class="c-note">골격만(harness=skeleton). 원본 틀 세팅 필요. 원본 노드 미지정. (설치기 미빌드 — navigation 묶음에 표시)</td>
         </tr>
             </tbody>
           </table>
@@ -287,33 +548,33 @@
         <div class="um-table-wrap">
           <table class="um">
         <thead><tr>
-          <th>컴포넌트</th><th>분류</th><th>진행</th><th>원본 대조</th><th>원본 노드</th>
+          <th>패턴</th><th>분류</th><th>진행</th><th>원본 대조</th><th>원본 노드</th>
           <th>설치기</th><th>tokens.css</th><th>HTML</th><th>다크</th><th>비고</th>
         </tr></thead>
             <tbody>
         <tr>
           <td class="c-name">Modal<span class="c-id">modal</span></td>
-          <td><span class="pill or-tbd">⏳ 미정</span></td>
-          <td><span class="pill st-mid">–</span></td>
+          <td><span class="pill or-b">Ⓑ 원본틀 필요</span></td>
+          <td><span class="pill st-na">–</span></td>
           <td><span class="pill vf-legacy">🟡 옛방식 2026-06-08</span></td>
           <td><span class="dt-empty">미지정</span></td>
           <td><span class="dt-empty">– 도장 필요</span></td>
           <td><span class="dt-empty">– 도장 필요</span></td>
           <td><span class="dt-empty">– 도장 필요</span></td>
           <td><span class="pill dk-mid">candidate</span></td>
-          <td class="c-note">코어 조합 패턴(button·table·input). 옛 방식 검증. 분류 확인 필요.</td>
+          <td class="c-note">원본 틀 필요. 코어 조합 패턴(button·table·input). 옛 방식 검증.</td>
         </tr>
         <tr>
           <td class="c-name">Login (PC Web)<span class="c-id">login</span></td>
-          <td><span class="pill or-tbd">⏳ 미정</span></td>
-          <td><span class="pill st-mid">–</span></td>
+          <td><span class="pill or-b">Ⓑ 원본틀 필요</span></td>
+          <td><span class="pill st-na">–</span></td>
           <td><span class="pill vf-legacy">🟡 옛방식</span></td>
           <td><span class="dt-empty">미지정</span></td>
           <td><span class="dt-empty">– 도장 필요</span></td>
           <td><span class="dt-empty">– 도장 필요</span></td>
           <td><span class="dt-empty">– 도장 필요</span></td>
           <td><span class="pill dk-early">–</span></td>
-          <td class="c-note">screen-rebuild로 제작(reports/screen-rebuild/login). registry/patterns 미등록 — 등록 여부 결정 필요.</td>
+          <td class="c-note">원본 틀 필요. screen-rebuild로 제작(reports/screen-rebuild/login). registry/patterns 미등록 — 등록 필요.</td>
         </tr>
             </tbody>
           </table>
@@ -321,8 +582,8 @@
       </div>
 
       <div class="um-foot">
-        이 화면은 손으로 쓴 게 아니라 <b>자동으로 만들어집니다.</b> 분류·날짜·비고는 <code>registry/governance/update-management.json</code> 만 고치고 <code>npm run update:gen</code> 하면 갱신됩니다. 진행 단계·다크는 각 컴포넌트 registry 에서 자동으로 읽어옵니다.<br>
-        마지막 생성: 2026-06-25 08:56
+        이 화면은 손으로 쓴 게 아니라 <b>자동으로 만들어집니다.</b> 컴포넌트 목록·순서·부모자식은 <b>설치기(build-components.ts)</b>에서 자동으로 읽고, 분류·날짜·비고는 <code>registry/governance/update-management.json</code> 을 고친 뒤 <code>npm run update:gen</code> 하면 갱신됩니다.<br>
+        설치기 부품 32개 · 미등록(확인 필요) 17개 · 패턴 2개 · 마지막 생성: 2026-06-25 10:22
       </div>
     </div>
   </main>

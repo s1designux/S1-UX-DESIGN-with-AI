@@ -14,26 +14,41 @@
     { "emoji": "🪞", "name": "레거시화면 빌드", "role": "옛날 화면을 지금 부품으로 똑같이 다시 그립니다.", "when": "옛 화면을 그대로 재현할 때" },
     { "emoji": "🏗️", "name": "라이브러리 빌드", "role": "피그마 컴포넌트(부품) 자체를 만들고 고칩니다.", "when": "피그마 부품을 빌드할 때" }
   ],
+  "gateGroups": [
+    { "key": "build",    "title": "원본대로 만들어졌나",  "desc": "컴포넌트를 만들 때 빠진 부품·잘못된 방식이 없는지" },
+    { "key": "same",     "title": "값이 어디서나 같나",    "desc": "정해둔 값이 코드·사이트·설치기에 똑같이 나오는지" },
+    { "key": "complete", "title": "빠진 것 없나",          "desc": "필요한 토큰·변수·설치 파일이 빠짐없이 준비됐는지" },
+    { "key": "rules",    "title": "규칙·이름 지켰나",      "desc": "정해둔 표기·이름 규칙을 어긴 게 없는지" },
+    { "key": "content",  "title": "원본 문구 그대로인가",  "desc": "법인정보·약관 등 검증된 고정 문구가 원본과 같은지" },
+    { "key": "link",     "title": "연결·표시 점검",        "desc": "피그마 연결·화면 표시·기록 색인이 제대로 됐는지" }
+  ],
   "gates": [
-    { "num": 1,  "name": "부품명세 검사기",      "guards": "컴포넌트 설명이 빠짐없이 적혀 있나", "auto": true },
-    { "num": 2,  "name": "Figma연결 검사기",     "guards": "피그마 연결(노드)이 살아있나", "auto": false },
-    { "num": 3,  "name": "색상규칙 검사기",      "guards": "색을 규칙대로 썼나 (색코드 직접 입력 금지)", "auto": true },
-    { "num": 4,  "name": "리포트색인 검사기",    "guards": "작업 기록이 목록에 빠짐없이 들어갔나", "auto": true },
-    { "num": 5,  "name": "컴포넌트표출 검사기",  "guards": "컴포넌트가 크기별·다크모드별로 제대로 보이나", "auto": false },
-    { "num": 6,  "name": "설치기누락 검사기",    "guards": "설치 파일에 토큰이 하나도 안 빠졌나", "auto": true },
-    { "num": 7,  "name": "토큰값일치 검사기",    "guards": "코드·사이트·설치기가 똑같은 값을 쓰나", "auto": true },
-    { "num": 8,  "name": "부품–변수연결 검사기", "guards": "컴포넌트가 쓰는 변수가 다 준비됐나", "auto": true },
-    { "num": 9,  "name": "사이즈·숫자페이지 검사기", "guards": "크기·숫자 값이 페이지에 맞게 나오나", "auto": true },
-    { "num": 10, "name": "문서토큰이름 검사기",  "guards": "문서에 옛날 토큰 이름이 남아있나", "auto": true },
-    { "num": 11, "name": "부품해부 검사기",      "guards": "컴포넌트에 꼭 필요한 부품(입력 커서·삭제 아이콘 등)이 들어갔나", "auto": true },
-    { "num": 12, "name": "아이콘인스턴스 검사기", "guards": "아이콘을 라이브러리 부품으로 제대로 넣었나", "auto": true },
-    { "num": 13, "name": "설치기빌드검증 검사기", "guards": "설치기 코드를 만든 사람 말고 다른 검증을 거쳤나", "auto": true },
-    { "num": 14, "name": "풋터콘텐츠 검사기",    "guards": "회사 정보·저작권이 진짜 원본과 같나 (지어내기 금지)", "auto": true },
-    { "num": 15, "name": "토큰네이밍 검사기",    "guards": "토큰 이름을 정한 규칙대로 지었나", "auto": true }
+    { "num": 1,  "group": "build",    "name": "부품명세 검사기",      "guards": "컴포넌트 설명이 빠짐없이 적혀 있나", "auto": true },
+    { "num": 11, "group": "build",    "name": "부품해부 검사기",      "guards": "컴포넌트에 꼭 필요한 부품(입력 커서·삭제 아이콘 등)이 들어갔나", "auto": true },
+    { "num": 12, "group": "build",    "name": "아이콘인스턴스 검사기", "guards": "아이콘을 라이브러리 부품으로 제대로 넣었나", "auto": true },
+    { "num": 13, "group": "build",    "name": "설치기빌드검증 검사기", "guards": "설치기 코드를 만든 사람 말고 다른 검증을 거쳤나", "auto": true },
+
+    { "num": 7,  "group": "same",     "name": "토큰값일치 검사기",    "guards": "코드·사이트·설치기가 똑같은 값을 쓰나", "auto": true },
+    { "num": 9,  "group": "same",     "name": "사이즈·숫자페이지 검사기", "guards": "크기·숫자 값이 페이지에 맞게 나오나", "auto": true },
+
+    { "num": 6,  "group": "complete", "name": "설치기누락 검사기",    "guards": "설치 파일에 토큰이 하나도 안 빠졌나", "auto": true },
+    { "num": "6b","group": "complete","name": "설치기최신 검사기",    "guards": "설치 파일이 옛날 버전인 채 남아있지 않나", "auto": true },
+    { "num": 8,  "group": "complete", "name": "부품–변수연결 검사기", "guards": "컴포넌트가 쓰는 변수가 다 준비됐나", "auto": true },
+
+    { "num": 3,  "group": "rules",    "name": "색상규칙 검사기",      "guards": "색을 규칙대로 썼나 (색코드 직접 입력 금지)", "auto": true },
+    { "num": 15, "group": "rules",    "name": "토큰네이밍 검사기",    "guards": "토큰 이름을 정한 규칙대로 지었나", "auto": true },
+    { "num": 10, "group": "rules",    "name": "문서토큰이름 검사기",  "guards": "문서에 옛날 토큰 이름이 남아있나", "auto": true },
+
+    { "num": 14, "group": "content",  "name": "원본대조 문구 검사기", "guards": "법인정보·약관·브랜드 등 검증된 고정 문구가 원본과 같나 (지어내기 금지)", "auto": true },
+
+    { "num": 2,  "group": "link",     "name": "Figma연결 검사기",     "guards": "피그마 연결(노드)이 살아있나", "auto": false },
+    { "num": 5,  "group": "link",     "name": "컴포넌트표출 검사기",  "guards": "컴포넌트가 크기별·다크모드별로 제대로 보이나", "auto": false },
+    { "num": 4,  "group": "link",     "name": "리포트색인 검사기",    "guards": "작업 기록이 목록에 빠짐없이 들어갔나", "auto": true }
   ],
   "hooks": [
     { "emoji": "🚧", "name": "커밋 검문소",      "role": "저장하기 직전에 전체를 한 번 검사해서, 틀린 게 있으면 저장을 막습니다." },
     { "emoji": "🔄", "name": "토큰편집 동기화기", "role": "토큰을 고치면 자동으로 다른 곳에도 맞춰줍니다." },
-    { "emoji": "⚙️", "name": "피그마 색 차단",   "role": "피그마에 색을 코드로 직접 쓰려 하면 막습니다 (반드시 변수로)." }
+    { "emoji": "⚙️", "name": "피그마 색 차단",   "role": "피그마에 색을 코드로 직접 쓰려 하면 막습니다 (반드시 변수로)." },
+    { "emoji": "🔤", "name": "피그마 폰트 차단", "role": "피그마에 글자를 넣을 때 정해진 폰트가 아니면 막습니다 (반드시 정본 폰트로)." }
   ]
 }

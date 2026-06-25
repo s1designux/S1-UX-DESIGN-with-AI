@@ -1381,14 +1381,16 @@ async function buildLineTab(maps: BuildMaps, originY: number): Promise<{ set: Co
       comp.name = `Size=${sc.size}, State=${st.name}, Break=${sc.brk}`;
       comp.resize(W, sc.h);
       comp.fills = [];
+      // 인디케이터 두께: Hover·Selected = 2px(강조), Unselected = 1px(기본선). (사용자 결정 2026-06-25, 원본 540:6032 참고)
+      const indH = st.name === "Unselected" ? 1 : 2;
       const t = await makeBoundText("메뉴", sc.font, "Medium", scv(maps, nav(st.label)));
       comp.appendChild(t);
-      t.x = (W - t.width) / 2; t.y = (sc.h - 1 - t.height) / 2;
+      t.x = (W - t.width) / 2; t.y = (sc.h - indH - t.height) / 2;
       const ind = figma.createRectangle();
-      ind.resize(W, 1);
+      ind.resize(W, indH);
       ind.fills = [boundPaint(scv(maps, nav(st.ind)))];
       comp.appendChild(ind);
-      ind.x = 0; ind.y = sc.h - 1;
+      ind.x = 0; ind.y = sc.h - indH;
       comps.push(comp);
       cells.push({ comp, size: sc.size, brk: sc.brk, state: st.name });
     }
@@ -2052,14 +2054,15 @@ async function buildTimePickerDropdown(maps: BuildMaps, originY: number): Promis
   return { set, bottomY };
 }
 
-// ── Pagination — color/pagination/control/*(arrow) + 번호 텍스트(재사용 semantic) ─
+// ── Pagination Cell — 페이지네이션 하위 요소 셀(Arrow·Edge·Number) ─
 // 정본: pages/components-new.html. Arrow 28×28(border·bg), Number 28×28(텍스트만).
 // Arrow: Default/Hover/Disabled · Number: Default/Hover/Selected (4 states 매트릭스, 무효칸=null).
+// 이 셀들을 조합한 "Pagination"(완성 바) 세트는 buildPaginationBar 가 만든다(Table 푸터·홈페이지 ACTION 동일).
 // 색 바인딩(값 정본 일치):
 //   arrow bg/border = color/pagination/control/* (신규 토큰 없이 기존 6키 사용)
 //   arrow icon       = color/icon/gray-dark(기본/hover) · color/icon/gray-light(disabled = icon-muted)
 //   number text      = color/text/state/helper(기본/hover = gray/400) · color/text/body/secondary(selected = text-secondary)
-async function buildPagination(maps: BuildMaps, originY: number): Promise<{ set: ComponentSetNode; bottomY: number }> {
+async function buildPaginationCell(maps: BuildMaps, originY: number): Promise<{ set: ComponentSetNode; bottomY: number }> {
   const pg = (k: string) => `color/pagination/${k}`;
   const CHEV_PREV = `<svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M9 3.5L5 7l4 3.5" stroke="#000" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
   // Edge(처음/마지막) — 좌향 chevron + 세로바(|<). last 는 사용처에서 180° 회전(>|). Arrow 가 prev 1종을 회전해 next 로 쓰는 것과 동일 철학.
@@ -2126,34 +2129,93 @@ async function buildPagination(maps: BuildMaps, originY: number): Promise<{ set:
     setLightMode(comp, maps);
     comps.push(comp); byKey.set(`Edge/${st.state}`, comp);
   }
-  // Number variants
+  // Number variants — 오토레이아웃 가운데 정렬(인스턴스 텍스트 override 시 자동 재정렬: 바 조립에서 1~6 표시)
   for (const st of numStates) {
     const comp = figma.createComponent();
     comp.name = `Element=Number, State=${st.state}`;
+    comp.layoutMode = "HORIZONTAL"; comp.primaryAxisAlignItems = "CENTER"; comp.counterAxisAlignItems = "CENTER";
+    comp.primaryAxisSizingMode = "FIXED"; comp.counterAxisSizingMode = "FIXED";
     comp.resize(SZ, SZ);
     comp.cornerRadius = 2;
     comp.fills = st.bg ? [boundPaint(scv(maps, pg(st.bg)))] : [];
     const t = await makeBoundText("3", 14, "Medium", scv(maps, st.text));
-    comp.appendChild(t); t.x = (SZ - t.width) / 2; t.y = (SZ - t.height) / 2;
+    comp.appendChild(t);
     setLightMode(comp, maps);
     comps.push(comp); byKey.set(`Number/${st.state}`, comp);
   }
   const set = figma.combineAsVariants(comps, figma.currentPage);
-  set.name = "Pagination";
+  set.name = "Pagination Cell";
   set.x = 0; set.y = originY;
-  // Table 푸터에서 인스턴스 재사용 — byKey 전체 BUILT_COMPS 등록
+  // Table 푸터·Pagination 바에서 인스턴스 재사용 — byKey 전체 BUILT_COMPS 등록(키 접두사 "Pagination:" 유지)
   for (const [k, v] of byKey) BUILT_COMPS[`Pagination:${k}`] = v;
-  BUILT_SETS["Pagination"] = set;
+  BUILT_SETS["Pagination Cell"] = set;
   // 매트릭스: 행=Arrow/Number, 열=Default/Hover/Selected/Disabled (무효칸 null)
   const cols = ["Default", "Hover", "Selected", "Disabled"];
   const opts: SpecOpts = {
-    title: "Pagination",
+    title: "Pagination Cell",
     colHeaders: cols,
     rowLabels: ["Arrow", "Number", "Edge"],
     cellAt: (r, c) => byKey.get(`${["Arrow", "Number", "Edge"][r]}/${cols[c]}`) ?? null,
     lightX: SPEC_LIGHT_X, darkX: SPEC_DARK_X, originY, cellW: 72, cellH: 48, rowLabelW: 64,
   };
   let bottomY = await decorateSetFlat(set, opts, maps);
+  try { bottomY = Math.max(bottomY, await buildSpec(opts, maps)); } catch (e) { console.warn(e); }
+  return { set, bottomY };
+}
+
+// ── Pagination — 하위 요소 셀(Pagination Cell)을 조합한 완성 바 ──────────────────
+// 정본: 홈페이지 ACTION 항목 / Table 푸터. 구성: [|< <](disabled·gap4) · [1 2 3 4 5 6](gap0·1=selected) · [> >|](gap4), 그룹 간 gap8.
+//   next(>)=Arrow 180° 회전, last(>|)=Edge 180° 회전(Cell 재사용·Table 푸터와 동일 철학). 숫자=인스턴스 텍스트 override.
+async function buildPaginationBar(maps: BuildMaps, originY: number): Promise<{ set: ComponentSetNode; bottomY: number }> {
+  const SZ = 28, GAP_GROUP = 4, GAP_SECTION = 8;
+  // Pagination Cell 셀(먼저 빌드됨) — 없으면 세트에서 탐색(부분 재설치 폴백)
+  const pick = async (key: string, variantName: string): Promise<ComponentNode | undefined> => {
+    let c: ComponentNode | undefined = BUILT_COMPS[`Pagination:${key}`];
+    if (!c) { const s = await getBuiltSet("Pagination Cell"); if (s) c = ((s.children as ComponentNode[]) || []).find((x) => x.type === "COMPONENT" && x.name.includes(variantName)); }
+    return c;
+  };
+  const arrowDef = await pick("Arrow/Default",   "Element=Arrow, State=Default");
+  const arrowDis = await pick("Arrow/Disabled",  "Element=Arrow, State=Disabled");
+  const edgeDef  = await pick("Edge/Default",    "Element=Edge, State=Default");
+  const edgeDis  = await pick("Edge/Disabled",   "Element=Edge, State=Disabled");
+  const numDef   = await pick("Number/Default",  "Element=Number, State=Default");
+  const numSel   = await pick("Number/Selected", "Element=Number, State=Selected");
+
+  const comp = figma.createComponent();
+  comp.name = "Pagination";
+  comp.fills = [];
+  // 절대 배치(회전 인스턴스 + 그룹 gap) — 오토레이아웃은 180° 회전 자식과 충돌 가능해 수동 배치(Table 푸터 패턴).
+  let x = 0;
+  const add = (cell: ComponentNode | undefined, name: string, rotate: boolean, num?: number): void => {
+    if (cell) {
+      const inst = cell.createInstance();
+      inst.name = name;
+      if (rotate) { try { (inst as any).rotation = 180; } catch (e) { /* */ } }
+      if (num != null) { const txt = inst.findOne((n) => n.type === "TEXT") as TextNode | null; if (txt) { try { txt.characters = String(num); } catch (e) { /* */ } } }
+      comp.appendChild(inst);
+      (inst as any).x = x; (inst as any).y = 0;
+    }
+    x += SZ;
+  };
+  add(edgeDis,  "pg-first", false); x += GAP_GROUP;   // |< (disabled)
+  add(arrowDis, "pg-prev",  false); x += GAP_SECTION; // <  (disabled)
+  for (let n = 1; n <= 6; n++) add(n === 1 ? numSel : numDef, `pg-num-${n}`, false, n); // 1..6 (gap0)
+  x += GAP_SECTION;
+  add(arrowDef, "pg-next",  true);  x += GAP_GROUP;   // > (Arrow 180°)
+  add(edgeDef,  "pg-last",  true);                    // >| (Edge 180°)
+  try { comp.resize(x, SZ); } catch (e) { /* */ }
+  setLightMode(comp, maps);
+
+  const set = figma.combineAsVariants([comp], figma.currentPage);
+  set.name = "Pagination"; set.x = 0; set.y = originY;
+  BUILT_SETS["Pagination"] = set;
+  const opts: SpecOpts = {
+    title: "Pagination", colHeaders: [""], rowLabels: [""], cellAt: () => comp,
+    lightX: SPEC_LIGHT_X, darkX: SPEC_DARK_X, originY, cellW: x + 40, cellH: SZ + 24, rowLabelW: 0,
+  };
+  const lightBottomY = await decorateSetFlat(set, opts, maps);
+  opts.darkOffset = { x: 0, y: lightBottomY + 80 };
+  let bottomY = lightBottomY;
   try { bottomY = Math.max(bottomY, await buildSpec(opts, maps)); } catch (e) { console.warn(e); }
   return { set, bottomY };
 }
@@ -2191,41 +2253,56 @@ async function fillGnbMenu(node: ComponentNode | FrameNode, maps: BuildMaps, siz
   return W;
 }
 
-// ── GNB Utility Icon — 아이콘 버튼 컴포넌트 세트 (3종 × 2사이즈 = 6 variants) ──────────
-// GNB 바에서 인스턴스로 참조. BUILT_COMPS["GNBUtil:Globe/MD"] 등으로 등록.
+// ── GNB Utility Icon — 레거시 slot_utility(P8YvnCdG… 1980:53435) 동일 변형세트 ──────
+// 3 토글 프로퍼티(language·full menu·user)의 5개 조합. 시각 순서: language → user → full menu, gap 8.
+//   language=on → Language Icon(지구본+한국어) 컴포넌트 인스턴스(레거시 globe 아이콘 교체).
+//   user/full menu → V2.2 라이브러리 아이콘(account·menu) 32px 박스·24 glyph.
+// GNB 바는 이 세트의 all-on 변형(BUILT_COMPS["GNBUtil:full"]) 인스턴스를 유틸 영역에 넣는다.
 async function buildGNBUtilIcon(maps: BuildMaps, originY: number): Promise<{ set: ComponentSetNode; bottomY: number }> {
-  const icons = [
-    { name: "Globe",   role: "globe",   svg: GNB_UTIL_SVGS.lang },
-    { name: "Account", role: "account", svg: GNB_UTIL_SVGS.account },
-    { name: "Menu",    role: "menu",    svg: GNB_UTIL_SVGS.menu },
-  ];
-  const sizes = [
-    { size: "MD",  box: 40, glyph: 24 },
-    { size: "XSM", box: 32, glyph: 18 },
+  // 계정·메뉴 아이콘 = 32px 박스(가운데 정렬, 24 glyph). 라이브러리 인스턴스.
+  const iconBox = async (role: string, svg: string): Promise<FrameNode> => {
+    const box = figma.createFrame();
+    box.name = role; box.resize(32, 32); box.fills = [];
+    box.layoutMode = "HORIZONTAL"; box.primaryAxisSizingMode = "FIXED"; box.counterAxisSizingMode = "FIXED";
+    box.primaryAxisAlignItems = "CENTER"; box.counterAxisAlignItems = "CENTER";
+    box.appendChild(await makeIconInstance(role, scv(maps, "color/icon/gray-dark"), 24, svg));
+    return box;
+  };
+  // 레거시 1980:53435 의 5개 변형 (language·full menu·user on/off). 순서·구성 동일.
+  const defs = [
+    { language: "on",  menu: "on",  user: "on",  label: "언어·계정·메뉴" },
+    { language: "on",  menu: "off", user: "on",  label: "언어·계정" },
+    { language: "on",  menu: "off", user: "off", label: "언어" },
+    { language: "off", menu: "on",  user: "on",  label: "계정·메뉴" },
+    { language: "off", menu: "off", user: "on",  label: "계정" },
   ];
   const comps: ComponentNode[] = [];
-  const cells: { comp: ComponentNode; icon: string; size: string }[] = [];
-  for (const ic of icons) {
-    for (const sc of sizes) {
-      const comp = figma.createComponent();
-      comp.name = `Icon=${ic.name}, Size=${sc.size}`;
-      comp.resize(sc.box, sc.box); comp.fills = [];
-      const icon = await makeIconInstance(ic.role, scv(maps, "color/icon/gray-dark"), sc.glyph, ic.svg);
-      comp.appendChild(icon); icon.x = (sc.box - icon.width) / 2; icon.y = (sc.box - icon.height) / 2;
-      setLightMode(comp, maps);
-      comps.push(comp); cells.push({ comp, icon: ic.name, size: sc.size });
-      BUILT_COMPS[`GNBUtil:${ic.name}/${sc.size}`] = comp;
+  for (const d of defs) {
+    const comp = figma.createComponent();
+    comp.name = `language=${d.language}, full menu=${d.menu}, user=${d.user}`;
+    comp.layoutMode = "HORIZONTAL"; comp.counterAxisAlignItems = "CENTER";
+    comp.primaryAxisSizingMode = "AUTO"; comp.counterAxisSizingMode = "AUTO";
+    comp.itemSpacing = 8; comp.fills = [];
+    // 시각 순서: language → user(계정) → full menu (레거시 코드 순서)
+    if (d.language === "on") {
+      const langComp = BUILT_COMPS["LanguageIcon:Korean"] ?? BUILT_COMPS["LanguageIcon:English"];
+      if (langComp) comp.appendChild(langComp.createInstance());
     }
+    if (d.user === "on") comp.appendChild(await iconBox("account", GNB_UTIL_SVGS.account));
+    if (d.menu === "on") comp.appendChild(await iconBox("menu", GNB_UTIL_SVGS.menu));
+    setLightMode(comp, maps);
+    comps.push(comp);
   }
   const set = figma.combineAsVariants(comps, figma.currentPage);
   set.name = "GNB Utility Icon"; set.x = 0; set.y = originY;
   BUILT_SETS["GNB Utility Icon"] = set;
+  BUILT_COMPS["GNBUtil:full"] = comps[0]; // all-on = GNB 바 유틸 영역에 인스턴스로 사용
   const opts: SpecOpts = {
     title: "GNB Utility Icon",
-    colHeaders: sizes.map((s) => s.size),
-    rowLabels: icons.map((i) => i.name),
-    cellAt: (r, c) => cells.find((x) => x.icon === icons[r].name && x.size === sizes[c].size)?.comp ?? null,
-    lightX: SPEC_LIGHT_X, darkX: SPEC_DARK_X, originY, cellW: 72, cellH: 56, rowLabelW: 80,
+    colHeaders: [""],
+    rowLabels: defs.map((d) => d.label),
+    cellAt: (r, _c) => comps[r] ?? null,
+    lightX: SPEC_LIGHT_X, darkX: SPEC_DARK_X, originY, cellW: 220, cellH: 40, rowLabelW: 120,
   };
   let bottomY = await decorateSetFlat(set, opts, maps);
   try { bottomY = Math.max(bottomY, await buildSpec(opts, maps)); } catch (e) { console.warn(e); }
@@ -2271,21 +2348,6 @@ async function buildLanguageIcon(maps: BuildMaps, originY: number): Promise<{ se
   let bottomY = await decorateSetFlat(set, opts, maps);
   try { bottomY = Math.max(bottomY, await buildSpec(opts, maps)); } catch (e) { console.warn(e); }
   return { set, bottomY };
-}
-
-/** GNB 유틸 아이콘 버튼(md/sm=40·glyph24 · xsm=32·glyph18). 글리프 가운데. role 있으면 라이브러리 인스턴스, 없으면(globe 등) 벡터. */
-async function gnbUtilBtn(maps: BuildMaps, role: string | null, svg: string, box = 40, glyph = 24): Promise<FrameNode> {
-  const btn = figma.createFrame();
-  btn.name = "util-btn"; btn.resize(box, box); btn.fills = [];
-  let icon: SceneNode;
-  if (role) {
-    icon = await makeIconInstance(role, scv(maps, "color/icon/gray-dark"), glyph, svg);
-  } else {
-    icon = makeFillIcon(svg, scv(maps, "color/icon/gray-dark")); // icon-vector-allow: GNB 언어(지구본) — V2.2 라이브러리에 globe 아이콘 없음
-    if (glyph !== 24) { try { (icon as FrameNode).rescale(glyph / 24); } catch (e) { /* skip */ } }
-  }
-  btn.appendChild(icon); icon.x = (box - (icon as FrameNode).width) / 2; icon.y = (box - (icon as FrameNode).height) / 2;
-  return btn;
 }
 
 async function buildGNB(maps: BuildMaps, originY: number): Promise<{ set: ComponentSetNode; bottomY: number }> {
@@ -2351,38 +2413,26 @@ async function buildGNB(maps: BuildMaps, originY: number): Promise<{ set: Compon
       const menus = figma.createFrame(); menus.name = "menus"; menus.fills = [];
       menus.layoutMode = "HORIZONTAL"; menus.itemSpacing = 0;
       menus.counterAxisAlignItems = "CENTER"; menus.primaryAxisSizingMode = "AUTO"; menus.counterAxisSizingMode = "AUTO";
+      // GNB Menu 컴포넌트 인스턴스 사용 — GNB 바 사이즈(sk)와 같은 GNB Menu 사이즈 매칭.
+      //   첫 슬롯=Selected(밑줄), 나머지=Default. (#4 사용자 결정: raw menu 프레임 대신 GNB Menu 인스턴스)
       for (let mi = 0; mi < 3; mi++) {
-        const slot = figma.createFrame(); slot.name = "menu"; menus.appendChild(slot);
-        await fillGnbMenu(slot, maps, sk, mi === 0 ? "Selected" : "Default");
+        const state = mi === 0 ? "Selected" : "Default";
+        const menuComp = menuCellByKey.get(`${sk}/${state}`);
+        if (menuComp) { menus.appendChild(menuComp.createInstance()); }
+        else { const slot = figma.createFrame(); slot.name = "menu"; menus.appendChild(slot); await fillGnbMenu(slot, maps, sk, state); }
       }
 
-      // 유틸 (3 아이콘)
+      // 유틸 영역 = GNB Utility Icon 세트 all-on 변형(언어·계정·메뉴) 인스턴스 1개. (#3 사용자 결정)
       const util = figma.createFrame(); util.name = "util"; util.fills = [];
-      util.layoutMode = "HORIZONTAL"; util.itemSpacing = 8;
-      util.counterAxisAlignItems = "CENTER"; util.primaryAxisSizingMode = "AUTO"; util.counterAxisSizingMode = "AUTO";
-      const utilSize = sk === "xsm" ? "XSM" : "MD";
-      const utilBox = sk === "xsm" ? 32 : 40;
-      const utilGlyph = sk === "xsm" ? 18 : 24;
-      // GNBUtil 컴포넌트 인스턴스 참조 (buildGNBUtilIcon에서 먼저 등록됨, 없으면 폴백)
-      // Globe 슬롯은 Language Icon(지구본+텍스트) 우선 사용 — #5 사용자 결정
-      const utilIconDefs = [
-        { name: "Globe",   role: "globe",   svg: GNB_UTIL_SVGS.lang },
-        { name: "Account", role: "account", svg: GNB_UTIL_SVGS.account },
-        { name: "Menu",    role: "menu",    svg: GNB_UTIL_SVGS.menu },
-      ];
-      for (const ic of utilIconDefs) {
-        if (ic.name === "Globe") {
-          // Language Icon(지구본+English 텍스트) 컴포넌트 인스턴스 우선
-          const langComp = BUILT_COMPS["LanguageIcon:English"];
-          if (langComp) { util.appendChild(langComp.createInstance()); continue; }
-        }
-        const builtComp = BUILT_COMPS[`GNBUtil:${ic.name}/${utilSize}`];
-        if (builtComp) {
-          util.appendChild(builtComp.createInstance());
-        } else {
-          util.appendChild(await gnbUtilBtn(maps, ic.role, ic.svg, utilBox, utilGlyph));
-        }
+      util.layoutMode = "HORIZONTAL"; util.counterAxisAlignItems = "CENTER";
+      util.primaryAxisSizingMode = "AUTO"; util.counterAxisSizingMode = "AUTO";
+      let utilComp: ComponentNode | undefined = BUILT_COMPS["GNBUtil:full"];
+      if (!utilComp) {
+        const us = await getBuiltSet("GNB Utility Icon");
+        if (us) utilComp = ((us.children as ComponentNode[]) || []).find((c) => c.type === "COMPONENT" && c.name.includes("language=on, full menu=on, user=on"))
+          ?? ((us.children as ComponentNode[]) || []).find((c) => c.type === "COMPONENT");
       }
+      if (utilComp) util.appendChild(utilComp.createInstance());
 
       // 조립: center-between = [로고 | 메뉴 | 유틸] · start = [(로고+메뉴 gap64) | 유틸]
       if (al.key === "center-between") {
@@ -3000,7 +3050,7 @@ async function buildShellUrlBar(maps: BuildMaps): Promise<FrameNode> {
 const S1_LOGO_SVG = `<svg width="42" height="16" viewBox="0 0 42 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M32.6826 14.3262H41.5254V16H30.6992V10.2461H32.6826V14.3262ZM10.1426 15.9902H8.32129V7.07812H7.39258C7.30419 11.1554 5.68825 13.0125 3.70117 13.0127C1.65723 13.0127 0 11.0554 0 6.73047C0 2.41216 1.65721 0.448242 3.70117 0.448242C5.52602 0.448409 7.03869 2.01912 7.34277 5.42676H8.32129V0.172852H10.1426V15.9902ZM12.9111 15.9902H11.084V0.173828H12.9111V15.9902ZM28.084 15.2305H15.084V13.5811H28.084V15.2305ZM41.2891 0.182617V13.0557H39.46V11.2832H36.459V9.64453H39.46V0.182617H41.2891ZM38.8672 8.87891H35.3379V12.1885H33.3799V8.87891H29.7305V7.3291H38.8672V8.87891ZM22.6143 2.46875C22.6143 4.89881 24.005 8.20501 27.7148 9.30078V11.0654C27.6961 11.063 23.8792 10.5615 21.583 6.69531C19.2775 10.5711 15.4512 11.0654 15.4512 11.0654V9.30078C19.1607 8.21325 20.5518 4.89883 20.5518 2.46875V0.551758H22.6143V2.46875ZM3.70215 2.41211C2.66837 2.41211 1.83011 3.41277 1.83008 6.7334C1.83008 10.0732 2.66835 11.0557 3.70215 11.0557C4.73624 11.0556 5.57422 10.0731 5.57422 6.7334C5.57418 3.41295 4.73622 2.41222 3.70215 2.41211ZM34.3525 0C36.6151 0 38.4492 1.17983 38.4492 3.41797C38.449 5.69092 36.615 6.83496 34.3525 6.83496C32.0903 6.83485 30.2561 5.69081 30.2559 3.41797C30.2559 1.17994 32.0901 0 34.3525 0ZM34.3486 1.57227C33.1672 1.57227 32.2091 2.36269 32.209 3.44043C32.209 4.51861 33.1671 5.30859 34.3486 5.30859C35.5303 5.3084 36.4883 4.51026 36.4883 3.44043C36.4882 2.35834 35.5302 1.57246 34.3486 1.57227Z" fill="#757575"/></svg>`;
 
 async function buildFooter(maps: BuildMaps, originY: number): Promise<{ set: ComponentSetNode; bottomY: number }> {
-  // 링크·회사정보·카피라이트: 검증된 원본(login_Footer 269:5722)에서 가져옴. 임의 작성 금지 — registry/content/footer.json 정본, footer-content-check 가드.
+  // 링크·회사정보·카피라이트: 검증된 원본(login_Footer 269:5722)에서 가져옴. 임의 작성 금지 — registry/content/footer.json 정본, content-verbatim-check(Gate 14 원본대조 문구) 가드.
   const LINK_NAMES = ["이용약관", "개인정보 처리방침", "위치기반 서비스 이용약관"];
 
   // ── PC variant ─────────────────────────────────────────
@@ -3086,11 +3136,18 @@ async function buildFooter(maps: BuildMaps, originY: number): Promise<{ set: Com
   const set = figma.combineAsVariants([pc, mobile], figma.currentPage);
   set.name = "Footer";
   set.x = 0; set.y = originY;
-  // PC 컴포넌트(1920px)가 잘리지 않도록: clipsContent 해제 + 세트 폭 강제 확보
   try { (set as any).clipsContent = false; } catch (_) {}
-  try { set.resize(2000, Math.max(typeof set.height === "number" && set.height > 10 ? set.height : 300, 300)); } catch (_) {}
-  const sh = (typeof set.height === "number" && set.height > 0) ? set.height : 300;
-  return { set, bottomY: originY + sh };
+  // PC(1920)·Mobile(360) 두 variant 를 라벨과 함께 세로 나열(겹침 방지 — 둘 다 (0,0)에 겹치던 문제 해소).
+  const opts: SpecOpts = {
+    title: "Footer", colHeaders: [""], rowLabels: ["PC", "Mobile"],
+    cellAt: (r, _c) => (r === 0 ? pc : mobile),
+    lightX: SPEC_LIGHT_X, darkX: SPEC_DARK_X, originY, cellW: 1960, cellH: 120, rowLabelW: 64,
+  };
+  const lightBottomY = await decorateSetFlat(set, opts, maps);
+  opts.darkOffset = { x: 0, y: lightBottomY + 80 };
+  let bottomY = lightBottomY;
+  try { bottomY = Math.max(bottomY, await buildSpec(opts, maps)); } catch (e) { console.warn(e); }
+  return { set, bottomY };
 }
 
 async function buildStatusBar(maps: BuildMaps, originY: number): Promise<{ set: ComponentSetNode; bottomY: number }> {
@@ -3103,7 +3160,7 @@ async function buildStatusBar(maps: BuildMaps, originY: number): Promise<{ set: 
   web.name = "Platform=Web";
   web.layoutMode = "VERTICAL"; web.primaryAxisSizingMode = "AUTO"; web.counterAxisSizingMode = "FIXED";
   web.resize(360, 77); web.itemSpacing = 0; web.fills = [];
-  const row = figma.createFrame(); row.name = "Platform/StatusBar";
+  const row = figma.createFrame(); row.name = "status-row";
   await populateStatusRow(row, maps);
   row.layoutAlign = "STRETCH";
   web.appendChild(row);
@@ -3113,10 +3170,19 @@ async function buildStatusBar(maps: BuildMaps, originY: number): Promise<{ set: 
   setLightMode(web, maps);
 
   const set = figma.combineAsVariants([app, web], figma.currentPage);
-  set.name = "Platform/StatusBar";
+  set.name = "StatusBar";
   set.x = 0; set.y = originY;
-  const sh = (typeof set.height === "number" && set.height > 0) ? set.height : 200;
-  return { set, bottomY: originY + sh };
+  // App(상태바)·Web(상태바+브라우저 주소창) 두 variant 를 라벨과 함께 세로 나열(겹침 방지).
+  const opts: SpecOpts = {
+    title: "StatusBar", colHeaders: [""], rowLabels: ["App", "Web"],
+    cellAt: (r, _c) => (r === 0 ? app : web),
+    lightX: SPEC_LIGHT_X, darkX: SPEC_DARK_X, originY, cellW: 400, cellH: 80, rowLabelW: 56,
+  };
+  const lightBottomY = await decorateSetFlat(set, opts, maps);
+  // 다크 = 라이트 우측(buildSpec 기본 W+80). 좁은 Platform 컴포넌트(StatusBar·NavBar·CI)는 우측, 넓은 것(LoginGNB·WebTabBar·Footer)은 아래 — river 결정 2026-06-25
+  let bottomY = lightBottomY;
+  try { bottomY = Math.max(bottomY, await buildSpec(opts, maps)); } catch (e) { console.warn(e); }
+  return { set, bottomY };
 }
 
 // ── Platform/NavBar (모바일 플랫폼 — 내비게이션) ─────────────────────────────
@@ -3204,10 +3270,19 @@ async function buildNavBar(maps: BuildMaps, originY: number): Promise<{ set: Com
   setLightMode(web, maps);
 
   const set = figma.combineAsVariants([app, web], figma.currentPage);
-  set.name = "Platform/NavBar";
+  set.name = "NavBar";
   set.x = 0; set.y = originY;
-  const sh = (typeof set.height === "number" && set.height > 0) ? set.height : 200;
-  return { set, bottomY: originY + sh };
+  // App(안드로이드 내비)·Web(브라우저 툴바+내비) 두 variant 를 라벨과 함께 세로 나열(겹침 방지).
+  const opts: SpecOpts = {
+    title: "NavBar", colHeaders: [""], rowLabels: ["App", "Web"],
+    cellAt: (r, _c) => (r === 0 ? app : web),
+    lightX: SPEC_LIGHT_X, darkX: SPEC_DARK_X, originY, cellW: 400, cellH: 100, rowLabelW: 56,
+  };
+  const lightBottomY = await decorateSetFlat(set, opts, maps);
+  // 다크 = 라이트 우측(buildSpec 기본 W+80). 좁은 Platform 컴포넌트(StatusBar·NavBar·CI)는 우측, 넓은 것은 아래 — river 결정 2026-06-25
+  let bottomY = lightBottomY;
+  try { bottomY = Math.max(bottomY, await buildSpec(opts, maps)); } catch (e) { console.warn(e); }
+  return { set, bottomY };
 }
 
 // ── Platform/LoginGNB (PC 전용 1920×56, 단일 variant) ──────────────────────────
@@ -3215,7 +3290,7 @@ async function buildNavBar(maps: BuildMaps, originY: number): Promise<{ set: Com
 async function buildLoginGNB(maps: BuildMaps, originY: number): Promise<{ set: ComponentSetNode; bottomY: number }> {
   const W = 1920, H = 56;
   const comp = figma.createComponent();
-  comp.name = "Platform/LoginGNB";
+  comp.name = "LoginGNB";
   comp.layoutMode = "HORIZONTAL"; comp.primaryAxisSizingMode = "FIXED"; comp.counterAxisSizingMode = "FIXED";
   comp.resize(W, H); comp.primaryAxisAlignItems = "SPACE_BETWEEN"; comp.counterAxisAlignItems = "CENTER";
   comp.paddingLeft = 320; comp.paddingRight = 320; comp.paddingTop = 12; comp.paddingBottom = 12;
@@ -3248,10 +3323,10 @@ async function buildLoginGNB(maps: BuildMaps, originY: number): Promise<{ set: C
 
   setLightMode(comp, maps);
   const set = figma.combineAsVariants([comp], figma.currentPage);
-  set.name = "Platform/LoginGNB"; set.x = 0; set.y = originY;
+  set.name = "LoginGNB"; set.x = 0; set.y = originY;
 
   const opts: SpecOpts = {
-    title: "Platform/LoginGNB", colHeaders: [""], rowLabels: [""], cellAt: () => comp,
+    title: "LoginGNB", colHeaders: [""], rowLabels: [""], cellAt: () => comp,
     lightX: SPEC_LIGHT_X, darkX: SPEC_DARK_X, originY, cellW: W + 40, cellH: H + 24, rowLabelW: 0,
   };
   const lightBottomY = await decorateSetFlat(set, opts, maps);
@@ -3266,7 +3341,7 @@ async function buildLoginGNB(maps: BuildMaps, originY: number): Promise<{ set: C
 async function buildWebTabBar(maps: BuildMaps, originY: number): Promise<{ set: ComponentSetNode; bottomY: number }> {
   const W = 1920, H = 101;
   const comp = figma.createComponent();
-  comp.name = "Platform/WebTabBar";
+  comp.name = "WebTabBar";
   comp.layoutMode = "VERTICAL"; comp.primaryAxisSizingMode = "FIXED"; comp.counterAxisSizingMode = "FIXED";
   comp.resize(W, H); comp.itemSpacing = 0; comp.paddingTop = 0; comp.paddingBottom = 0; comp.paddingLeft = 0; comp.paddingRight = 0;
   comp.fills = [boundPaint(scv(maps, "color/scroll/bg"))];
@@ -3311,13 +3386,20 @@ async function buildWebTabBar(maps: BuildMaps, originY: number): Promise<{ set: 
   const winCtrl = figma.createFrame();
   winCtrl.name = "window-controls"; winCtrl.layoutMode = "HORIZONTAL";
   winCtrl.primaryAxisSizingMode = "AUTO"; winCtrl.counterAxisSizingMode = "FIXED";
-  winCtrl.resize(70, 38); winCtrl.itemSpacing = 8; winCtrl.counterAxisAlignItems = "CENTER";
+  winCtrl.resize(96, 38); winCtrl.itemSpacing = 20; winCtrl.counterAxisAlignItems = "CENTER";
   winCtrl.paddingLeft = 8; winCtrl.paddingRight = 8; winCtrl.fills = [];
   tabRow.appendChild(winCtrl);
   winCtrl.layoutSizingHorizontal = "HUG"; winCtrl.layoutSizingVertical = "FILL";
-  for (const col of [{ r: 1.0, g: 0.35, b: 0.29 }, { r: 1.0, g: 0.76, b: 0.18 }, { r: 0.20, g: 0.78, b: 0.35 }]) {
-    const dot = figma.createEllipse(); dot.resize(12, 12); dot.fills = [{ type: "SOLID", color: col }];
-    winCtrl.appendChild(dot);
+  // 윈도우 스타일 창 컨트롤: 최소화(─) · 최대화(□) · 닫기(✕). (iOS 신호등 점 → Windows 글리프, 사용자 결정 2026-06-25)
+  const winGlyphs: { name: string; svg: string }[] = [
+    { name: "minimize", svg: `<svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2 6.5H10" stroke="#757575" stroke-width="1.2" stroke-linecap="round"/></svg>` },
+    { name: "maximize", svg: `<svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="2.6" y="2.6" width="6.8" height="6.8" rx="0.6" stroke="#757575" stroke-width="1.2"/></svg>` },
+    { name: "close",    svg: `<svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M3 3L9 9M9 3L3 9" stroke="#757575" stroke-width="1.2" stroke-linecap="round"/></svg>` },
+  ];
+  for (const g of winGlyphs) {
+    const ic = makeBoundIcon(g.svg, scv(maps, "color/icon/gray")); // icon-vector-allow: 웹 탭바 윈도우 컨트롤 크롬 — DS UI 아이콘 아님
+    ic.name = g.name; try { ic.resize(12, 12); } catch (e) { /* */ }
+    winCtrl.appendChild(ic);
   }
 
   // ── 주소 행 (63px): ←→↺ + 주소 pill
@@ -3349,10 +3431,10 @@ async function buildWebTabBar(maps: BuildMaps, originY: number): Promise<{ set: 
 
   setLightMode(comp, maps);
   const set = figma.combineAsVariants([comp], figma.currentPage);
-  set.name = "Platform/WebTabBar"; set.x = 0; set.y = originY;
+  set.name = "WebTabBar"; set.x = 0; set.y = originY;
 
   const opts: SpecOpts = {
-    title: "Platform/WebTabBar", colHeaders: [""], rowLabels: [""], cellAt: () => comp,
+    title: "WebTabBar", colHeaders: [""], rowLabels: [""], cellAt: () => comp,
     lightX: SPEC_LIGHT_X, darkX: SPEC_DARK_X, originY, cellW: W + 40, cellH: H + 24, rowLabelW: 0,
   };
   const lightBottomY = await decorateSetFlat(set, opts, maps);
@@ -3433,6 +3515,9 @@ async function buildCI(maps: BuildMaps, originY: number): Promise<{ set: Compone
   const set = figma.combineAsVariants([...s1Comps, ...samComps], figma.currentPage);
   set.name = "CI";
   set.x = 0; set.y = originY;
+  // CI 섹션 배경 = gray/50 — White 로고가 흰 배경에 묻히지 않게(사용자 결정 2026-06-25). Foundation 직바인딩.
+  try { set.fills = [boundPaint(requireVar(maps.foundationColor, "gray/50", "Foundation Color"))]; } catch (e) { /* */ }
+  setLightMode(set, maps);
   const sh = (typeof set.height === "number" && set.height > 0) ? set.height : 84;
   return { set, bottomY: originY + sh };
 }
@@ -3449,10 +3534,10 @@ async function buildCI(maps: BuildMaps, originY: number): Promise<{ set: Compone
 // Filter Chip은 특별히 처리 (Chip 아래)
 export const COMPONENT_CATEGORIES_GRID: { name: string; members: string[] }[][] = [
   [
-    { name: "Platform",     members: ["Platform/StatusBar", "Platform/NavBar", "CI", "Platform/LoginGNB", "Platform/WebTabBar", "Footer"] },
+    { name: "Platform",     members: ["StatusBar", "NavBar", "CI", "LoginGNB", "WebTabBar", "Footer"] },
     { name: "Navigation",   members: ["GNB", "GNB Utility Icon", "Language Icon"] },
     { name: "Line Tab",     members: ["Line Tab"] },
-    { name: "Pagination",   members: ["Pagination"] },
+    { name: "Pagination",   members: ["Pagination", "Pagination Cell"] },
     { name: "Actions",      members: ["Button"] },
     { name: "Selection",    members: ["Checkbox", "Radio", "Toggle"] },
     { name: "Chip",         members: ["Chip"] },
@@ -3491,6 +3576,9 @@ export const BUILD_DEPENDENCIES: Record<string, string[]> = {
   "Dropdown":    ["Dropdown List"],   // Dropdown 패널이 Dropdown List 옵션 인스턴스 4행 부착
   "Filter Chip": ["Dropdown"],        // Selected 상태가 Dropdown 패널 인스턴스 부착(타 카테고리=순서 보장)
   "Time Picker": ["Time Picker Dropdown"], // Focus 상태가 Time Picker Dropdown 인스턴스 부착
+  "GNB": ["GNB Utility Icon"],        // GNB 바 유틸 영역이 GNB Utility Icon all-on 인스턴스 부착
+  "GNB Utility Icon": ["Language Icon"], // language=on 변형이 Language Icon 인스턴스 부착
+  "Pagination": ["Pagination Cell"],  // 완성 바가 Pagination Cell(Arrow·Edge·Number) 인스턴스 조합
 };
 
 // 카테고리 members(표시 순서)를 "요소 먼저" 빌드 순서로 위상정렬.
@@ -3533,9 +3621,11 @@ export async function buildAllComponents(
     // GNB 는 바(정본=세트 이름 "GNB") + 메뉴 슬롯 세트("GNB Menu")를 함께 생성.
     if (p === "GNB") base.push(
       "GNB Menu", "GNB Menu — Spec Light", "GNB Menu — Spec Dark");
-    // 리네임 backward-compat: Shell/ → Platform/ (재설치 시 캔버스의 옛 이름 세트 자동 정리)
-    if (p === "Platform/StatusBar") base.push("Shell/StatusBar");
-    if (p === "Platform/NavBar") base.push("Shell/NavBar");
+    // 리네임 backward-compat: Platform/·Shell/ 옛 이름 (재설치 시 캔버스의 옛 이름 세트 자동 정리)
+    if (p === "StatusBar") base.push("Platform/StatusBar", "Shell/StatusBar");
+    if (p === "NavBar") base.push("Platform/NavBar", "Shell/NavBar");
+    if (p === "LoginGNB") base.push("Platform/LoginGNB");
+    if (p === "WebTabBar") base.push("Platform/WebTabBar");
     // CI backward-compat: 구 Samsung_30 세트 자동 정리
     if (p === "CI") base.push("C/IMG/Logo/Samsung_30");
     return base;
@@ -3580,11 +3670,12 @@ export async function buildAllComponents(
     "GNB Utility Icon":     (oy) => buildGNBUtilIcon(maps, oy),
     "Language Icon":        (oy) => buildLanguageIcon(maps, oy),
     "GNB":                  (oy) => buildGNB(maps, oy),
-    "Pagination":           (oy) => buildPagination(maps, oy),
-    "Platform/StatusBar":   (oy) => buildStatusBar(maps, oy),
-    "Platform/NavBar":      (oy) => buildNavBar(maps, oy),
-    "Platform/LoginGNB":    (oy) => buildLoginGNB(maps, oy),
-    "Platform/WebTabBar":   (oy) => buildWebTabBar(maps, oy),
+    "Pagination":           (oy) => buildPaginationBar(maps, oy),
+    "Pagination Cell":      (oy) => buildPaginationCell(maps, oy),
+    "StatusBar":            (oy) => buildStatusBar(maps, oy),
+    "NavBar":               (oy) => buildNavBar(maps, oy),
+    "LoginGNB":             (oy) => buildLoginGNB(maps, oy),
+    "WebTabBar":            (oy) => buildWebTabBar(maps, oy),
     "CI":                   (oy) => buildCI(maps, oy),
     "Footer":               (oy) => buildFooter(maps, oy),
   };

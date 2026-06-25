@@ -25,9 +25,10 @@ const data = JSON.parse(fs.readFileSync(DATA, "utf8"));
 let gatePass = null; // true / false / null(못 돌림)
 let gateSummary = "";
 try {
-  const out = execSync("node scripts/gate-check.js", { cwd: ROOT, encoding: "utf8", stdio: ["ignore", "pipe", "pipe"] });
-  gatePass = /all gates clear|전부 통과/.test(out);
-  const m = out.match(/(전부 통과[^\n]*|FAILED[^\n]*)/);
+  // 2>&1 로 stderr(통과 요약·경고가 여기로 나감)까지 합쳐 읽는다. exit 0 = 통과(경고 있어도 PASSED).
+  const out = execSync("node scripts/gate-check.js 2>&1", { cwd: ROOT, encoding: "utf8" });
+  gatePass = true;
+  const m = out.match(/(전부 통과[^\n]*|PASSED[^\n]*)/);
   gateSummary = m ? m[1].trim() : "";
 } catch (e) {
   // gate-check 가 exit 1(실패)이면 execSync 가 throw → 출력은 e.stdout 에 있음
@@ -53,16 +54,37 @@ const banner = gatePass === true
   ? `<div class="dash-banner bad"><span class="dash-banner-icon">⚠️</span><div><div class="dash-banner-title">확인이 필요한 게 있어요</div><div class="dash-banner-sub">${esc(gateSummary || "일부 검사가 걸렸습니다")} · ${esc(stamp)} 기준</div></div></div>`
   : `<div class="dash-banner"><span class="dash-banner-icon">ℹ️</span><div><div class="dash-banner-title">상태 확인 못 함</div><div class="dash-banner-sub">검사를 실행하지 못했습니다.</div></div></div>`;
 
-// ── 검사기 카드 ──────────────────────────────────────────────────────────
-const gateCards = data.gates.map((g) => `
-        <div class="dash-card gate">
-          <div class="dash-card-top">
-            <span class="dash-gate-num">${g.num}</span>
-            <span class="dash-badge ${g.auto ? "auto" : "manual"}">${g.auto ? "자동 감시" : "필요 시 점검"}</span>
-          </div>
-          <div class="dash-card-name">🔎 ${esc(g.name)}</div>
-          <div class="dash-card-desc">${esc(g.guards)}</div>
-        </div>`).join("");
+// ── 검사기 카드 (묶음별) ──────────────────────────────────────────────────
+const gateCardHtml = (g) => `
+          <div class="dash-card gate">
+            <div class="dash-card-top">
+              <span class="dash-gate-num">Gate ${esc(g.num)}</span>
+              <span class="dash-badge ${g.auto ? "auto" : "manual"}">${g.auto ? "자동 감시" : "필요 시 점검"}</span>
+            </div>
+            <div class="dash-card-name">🔎 ${esc(g.name)}</div>
+            <div class="dash-card-desc">${esc(g.guards)}</div>
+          </div>`;
+
+const groups = data.gateGroups && data.gateGroups.length
+  ? data.gateGroups
+  : [{ key: null, title: "검사기", desc: "" }];
+
+const gateGroupsHtml = groups.map((grp) => {
+  const inGroup = data.gates.filter((g) => (grp.key == null) || g.group === grp.key);
+  if (!inGroup.length) return "";
+  return `
+      <div class="dash-gategroup">
+        <div class="dash-gategroup-head">
+          <span class="dash-gategroup-title">${esc(grp.title)}</span>
+          <span class="dash-gategroup-count">검사기 ${inGroup.length}</span>
+        </div>
+        ${grp.desc ? `<div class="dash-gategroup-desc">${esc(grp.desc)}</div>` : ""}
+        <div class="dash-grid">${inGroup.map(gateCardHtml).join("")}
+        </div>
+      </div>`;
+}).join("");
+// 묶음에 안 들어간 검사기가 있으면(데이터 누락) 표시
+const ungrouped = data.gates.filter((g) => g.group && !groups.some((gr) => gr.key === g.group));
 
 // ── 도우미 카드 ──────────────────────────────────────────────────────────
 const orch = data.orchestrator;
@@ -110,13 +132,18 @@ const html = `<!DOCTYPE html>
     .dash-section-head p { font-size:13px; color:#6b7280; margin:4px 0 18px; }
 
     .dash-grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(250px, 1fr)); gap:12px; }
+    .dash-gategroup { margin-bottom:24px; padding:16px 18px 18px; background:#f9fafb; border:1px solid #eef0f2; border-radius:14px; }
+    .dash-gategroup-head { display:flex; align-items:center; gap:10px; }
+    .dash-gategroup-title { font-size:15px; font-weight:700; color:#111827; }
+    .dash-gategroup-count { font-size:11px; font-weight:600; color:#6b7280; background:#eef0f2; padding:2px 9px; border-radius:20px; }
+    .dash-gategroup-desc { font-size:12px; color:#9ca3af; margin:3px 0 14px; }
     .dash-card { background:#fff; border:1px solid #e5e7eb; border-radius:12px; padding:16px 18px; }
     .dash-card.gate { border-left:4px solid #1d6ceb; }
     .dash-card.agent { border-left:4px solid #7c3aed; }
     .dash-card.agent.star { border-left-color:#f59e0b; background:#fffdf7; grid-column:1 / -1; }
     .dash-card.hook { border-left:4px solid #059669; }
     .dash-card-top { display:flex; align-items:center; justify-content:space-between; margin-bottom:8px; }
-    .dash-gate-num { width:24px; height:24px; border-radius:7px; background:#eff6ff; color:#1d6ceb; font-size:12px; font-weight:700; display:flex; align-items:center; justify-content:center; }
+    .dash-gate-num { font-size:10px; font-weight:600; color:#b6bcc6; letter-spacing:0.02em; }
     .dash-card-name { font-size:14px; font-weight:700; color:#111827; margin-bottom:5px; }
     .dash-card-desc { font-size:13px; color:#4b5563; line-height:1.5; }
     .dash-card-when { font-size:11px; color:#9ca3af; margin-top:8px; }
@@ -152,10 +179,9 @@ const html = `<!DOCTYPE html>
       <div class="dash-section">
         <div class="dash-section-head">
           <h2>🔎 검사기 — 실수를 자동으로 막아주는 장치</h2>
-          <p>각각이 무엇을 지키는지, 그리고 저장할 때 자동으로 막아주는지(자동 감시) 보여줍니다.</p>
+          <p>비슷한 일을 하는 검사기끼리 ${groups.length}개 묶음으로 정리했습니다. ("안 걸린다 = 잘 막고 있다"는 뜻이에요.)</p>
         </div>
-        <div class="dash-grid">${gateCards}
-        </div>
+        ${gateGroupsHtml}
       </div>
 
       <div class="dash-section">

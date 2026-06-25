@@ -1267,11 +1267,12 @@ Claude는 **Main Orchestrator**다. 사용자는 **목표 수준 의도**만 준
 **책임 분리 최종형:** 빌드 = ⭐(강결합 잔손질) 또는 🏗️/코드 에이전트(독립 대형) · **검증 = 🤖 component-verifier (D)** · **집행 = Gate 13 + pre-commit 훅**. 빌드는 누가 하든, **검증만큼은 절대 빌드자 혼자가 아니게** 기계 강제. (빌드까지 무조건 위임이 아니라 — 강결합 잔손질은 ⭐ 직접이 더 빠르고 정확. 비양도 핵심은 **검증 분리**다.)
 **도입 사유:** 2026-06-19 사용자가 "설치기 9개 이슈 변경이 전부 ⭐ 혼자 — 왜 여전히 혼자 다 하나, 빌드 에이전트(🏗️)는 뭐하나"라고 지적. 진단: figma-library-builder(🏗️)는 Figma **캔버스** 빌드(use_figma)만 담당해 **설치기 생성기 코드는 담당 빌더가 비어 ⭐ 기본값**이었고, 위임은 양심 의존(강제 부재)이라 조용히 self-certify 됨. 도입 즉시 독립 검증자가 **Input 스펙 시트 빈칸 버그**(`opts.platforms` 사이즈 라벨이 cells 키와 불일치 — Issue 8 리네임 잔재 XSMALL/SMALL/MEDIUM, `cellAt` 직매칭 실패로 PC·Mobile 통째 빈칸)를 적발 — 토큰 게이트 전부 ✅였던 시각 사각지대. self-certify였으면 유출됐을 클래스를 커밋 단계에서 차단.
 
-### Gate 14: Footer Content (2026-06-22 신설)
-**파일:** `scripts/footer-content-check.js` (`npm run footer:check`)
-**트리거:** 풋터 콘텐츠(법인정보·링크·카피라이트) 관련 파일 / 항상(gate:check 포함)
-**역할:** 풋터의 법인정보·약관링크·카피라이트가 **검증된 정본 `registry/content/footer.json`** 과 verbatim 일치하는지 강제. 대표이사·주소·사업자번호 등 **임의 작성/날조 텍스트** 재유입을 커밋 단계 차단.
-**도입 사유:** 법인·법적·브랜드 텍스트는 검증된 원본만 써야 하는데(임의 작성 금지), 이를 강제하는 장치가 없었음 → 정본 대조 게이트로 날조 차단.
+### Gate 14: Verified Content / 원본대조 문구 (2026-06-22 신설 footer · 2026-06-25 일반화)
+**파일:** `scripts/content-verbatim-check.js` (`npm run content:check`)
+**트리거:** 검증된 고정 문구(법인정보·약관·브랜드 등) 관련 파일 / 항상(gate:check 포함)
+**역할:** **풋터에 국한하지 않고** 모든 '검증된 고정 문구'가 정해진 위치(`appearsIn`)에 원본 그대로 들어갔는지 강제. 정본 = `registry/content/*.json`(각 파일이 하나의 '검증된 콘텐츠 블록' — `appearsIn`·`verbatim`(또는 풋터 호환 `links`/`companyInfo`/`copyright`)·`forbiddenFragments`). 임의 작성/날조 텍스트(대표이사·주소 등) 재유입을 커밋 단계 차단.
+**확장:** 새 검증 문구는 **검사기 추가 없이** `registry/content/` 에 json 한 개만 더하면 자동 검사. (풋터 전용에서 일반화한 이유 = 컴포넌트/표면마다 검사기가 늘어나는 것을 막기 위함 — 2026-06-25 사용자 결정.)
+**도입 사유:** 법인·법적·브랜드 텍스트는 검증된 원본만 써야 하는데(임의 작성 금지), 이를 강제하는 장치가 없었음 → 정본 대조 게이트로 날조 차단. 풋터 전용으로 신설했으나 원리(원본 대조)가 모든 고정 문구에 적용돼야 해 일반화.
 
 ### Gate 15: Token Naming Convention (2026-06-23 신설)
 **파일:** `scripts/token-naming-check.js` (`npm run tokens:namingcheck`)
@@ -1280,6 +1281,14 @@ Claude는 **Main Orchestrator**다. 사용자는 **목표 수준 의도**만 준
 **역할:** vars-data.ts 의 토큰 **이름**(Figma 변수 경로)이 **`registry/governance/naming-rules.json`** 의 네이밍 규칙을 지키는지 기계 판정. 기존 14개 게이트는 토큰의 **값·구조·존재**만 검사하고 **이름**은 사각지대였음.
 **방법:** vars-data 의 `color/…`(Semantic Color)·숫자 Semantic 키를 추출해 규칙 적용 — ①`no-background-segment`(배경은 `background`아닌 `bg`) ②`no-brand-in-semantic`(`color/*`에 brand 별칭 금지, 브랜드는 Foundation 직바인딩) ③`kebab-case-segment`(세그먼트 kebab, 상태구분자 `--` 허용). 위반 시 커밋 차단. 새 규칙은 `naming-rules.json` 의 `rules` 에 한 줄 추가.
 **도입 사유:** 2026-06-23 사용자가 "기준 세워놨는데 왜 안 지켜지나, 토큰을 마음대로 만들지 마라"고 지적. 진단: 네이밍 기준이 CLAUDE.md **산문**으로만 있고 이름을 검사하는 게이트 부재 → 레거시 일괄수입(`navigation/background` — 45개 `-bg` 관례 위반)·빌더 우회 별칭(`color/icon/brand-ci` — 브랜드는 Foundation 소관)·고아 토큰(`table/border/emphasis` 미사용)이 정본에 무사통과. 산문 기준을 **기계 정본(naming-rules.json)** 으로 옮기고 커밋 단계 강제. 도입 즉시 navigation/background→bg·table/border/light→default·icon/brand-ci 제거로 위반 0 달성, 적발력 검증(위반 주입→차단) 완료.
+
+### Gate 16: Component Origin Verification (2026-06-25 신설 — 탭 사태 재발 방지)
+**파일:** `scripts/component-origin-gate-check.js` (`npm run origin:check`)
+**트리거:** `registry/governance/update-management.json`·`registry/components|patterns/*.json` 변경 / 항상(gate:check 포함)
+**역할:** 「업데이트 관리」의 **origin 분류**(Ⓐ 정리완료 / Ⓑ 원본틀 필요 / tbd)를 기준으로, **Ⓑ인데 "완료 표시(codeStatus=implemented/done)"이면서 원본 대조 안 됨(verify=none)** 인 컴포넌트를 커밋 단계 차단. registry 신규 컴포넌트가 분류표에 **미등록(미분류 escape)** 이어도 차단. 정본 = `registry/governance/update-management.json`(생성기 `gen-update-management.js` → `pages/update-management.html` System 메뉴와 동일 데이터).
+**설계(마비 방지 계단식):** ❌차단 = 미분류 escape · 잘못된 origin/verify · **Ⓑ+완료표시+verify=none**(탭 클래스). ⚠️경고(차단 안 함) = Ⓑ+verify=legacy(옛 방식, 새 방식 재검증 권장)·Ⓑ+harness구현+verify=none·tbd 미정. → **미완성 Ⓑ 백로그(skeleton/not-started)는 통과**해 병렬 작업 마비 방지, **새로 만들거나 '완료'로 바꾸는 순간** 원본 대조 강제.
+**한계(v1):** verify=new 가 이후 빌드 변경으로 stale 되는 것은 아직 해시로 잡지 않음(Gate 13 식 잠금은 후속). Ⓑ 컴포넌트를 다시 손대면 verify 수동 갱신.
+**도입 사유:** 2026-06-24~25 사용자가 준 원본(`tab` 540:6032)과 빌드가 선두께·높이·글자가 다른데 전 게이트 ✅로 통과(검증 절차 신설 6/18 이전 제작·원본 대조 부재). 진단: ①빌드/검증을 분리해도 **검증자가 원본이 아니라 빌더 계획/메모와 대조**했고 ②그 절차를 **건너뛸 수 있었으며** ③**Figma 실물↔정본 대조 게이트가 0개**였음. origin 분류를 기계 입력으로 삼아 "Ⓑ인데 미검증 출고"를 커밋 차단. 적대적 테스트(Ⓑ+완료+none 주입→차단) 통과.
 
 ## Gate 실행 순서
 
@@ -1299,11 +1308,12 @@ Claude는 **Main Orchestrator**다. 사용자는 **목표 수준 의도**만 준
   11. Gate 11 (Component Anatomy) — build-components.ts 변경 시 / 항상. 상태별 필수 하위 요소(caret·remove 등) 생성 여부 강제(구조 사각지대)
   12. Gate 12 (Icon Instance Policy) — build-components.ts 변경 시 / 항상. 아이콘=라이브러리 인스턴스 강제, 벡터 직삽입은 allow 마커 필수
   13. Gate 13 (Installer Build Verification) — build-components.ts 변경 시 / 항상. 내용이 독립 검증(component-verifier) 거쳤는지 해시로 강제. ⭐ 단독 빌드+자가검증 차단
-  14. Gate 14 (Footer Content) — 풋터 콘텐츠 / 항상. 법인정보·링크·카피라이트가 정본(footer.json)과 verbatim 일치, 날조 텍스트 차단
+  14. Gate 14 (Verified Content / 원본대조 문구) — 검증된 고정 문구 / 항상. 법인정보·약관·브랜드 등이 정본(registry/content/*.json)과 verbatim 일치, 날조 텍스트 차단 (풋터 포함 일반화)
   15. Gate 15 (Token Naming Convention) — vars-data.ts 변경 시 / 항상. 토큰 이름이 naming-rules.json 규칙(bg·brand-in-semantic 금지·kebab) 준수하는지 강제. 레거시명·우회 별칭 유입 차단
+  16. Gate 16 (Component Origin Verification) — update-management.json·registry/components|patterns 변경 시 / 항상. Ⓑ(원본틀 필요)인데 완료표시+원본대조 0(verify=none)이면 차단·미분류 escape 차단. 미완성 Ⓑ 백로그는 통과(마비 방지). 탭 사태 재발 방지
 ```
 
-스크립트 일괄 실행: `npm run gate:check` (Gate 1 + 3 + 4 + 6 + 7 + 8 + 9 + 10 + 11 + 12 + 13 + 14 + 15 자동)
+스크립트 일괄 실행: `npm run gate:check` (Gate 1 + 3 + 4 + 6 + 7 + 8 + 9 + 10 + 11 + 12 + 13 + 14 + 15 + 16 자동)
 
 > **Gate 10 (doc-token-ref-check):** 토큰을 rename/remove 하면 옛 이름을 쥔 가이드 문서가 자동 적발된다. **정본 rename 시 `registry/tokens/deprecated-tokens.json` 의 `renamedGroups` 에 `{from,to}` 한 줄 추가**하면 이후 게이트가 전 활성 페이지에서 잔재를 차단(Check B). `--color-*` 참조 존재성은 Check A(경고)로 가시화. 단독 실행 `npm run docs:tokencheck`. `components.html`(폐기 예정)은 검사 제외.
 
