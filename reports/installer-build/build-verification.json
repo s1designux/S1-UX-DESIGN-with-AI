@@ -1,9 +1,9 @@
 {
   "sourceFile": "plugins/figma-vars-installer/src/build-components.ts",
-  "sourceHash": "sha256:c6b88ad81561de4044dc1103a64a5c071782723bbe9c0c48d472e4eb5a6b6430",
+  "sourceHash": "sha256:319ec16e8c806be26e96333fa37f2f82b4553fce239fefd8146b8223a35d6e66",
   "verifiedBy": "component-verifier",
   "verdict": "pass",
   "changeType": "structural",
-  "verifiedAt": "2026-06-26T00:08:36.823Z",
-  "notes": "Multi Toggle Element(32 variant: position×state×size) + Multi Toggle(6 variant: Size×Selected) 신규 추가. keycheck(137키 누락0)/anatomy(7규칙 통과)/iconpolicy(위반0) 통과. tsc 에러 3건 모두 기존 에러(행 번호 이동만). hex 하드코딩 0. cellSpec 조립 로직·strokeSides 보더 변·cornerConfig·BUILT_COMPS 키 정합 시뮬레이션 전부 일치. BUILD_DEPENDENCIES 요소 우선 빌드·members 표시 순서·runners 2개 키 정확 등록 확인."
+  "verifiedAt": "2026-06-26T00:46:43.086Z",
+  "notes": "Line Tab 셀 패딩 셀→라벨 이동: 인디케이터 셀폭 전체 span→Set 탭 붙였을 때 하단선 연속(셀패딩이 인디케이터 inset해 끊기던 버그 수정). 라벨 여백 PAD_X 유지·hug폭/단독 LineTab 회귀0·Set 동일폭/폰트 불변. ⭐ Figma A/B 렌더검증 완료, 코드레벨 대조."
 }

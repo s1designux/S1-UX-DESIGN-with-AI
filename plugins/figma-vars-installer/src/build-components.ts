@@ -1397,7 +1397,10 @@ async function buildLineTab(maps: BuildMaps, originY: number): Promise<{ set: Co
       comp.layoutMode = "VERTICAL";
       comp.primaryAxisSizingMode = "FIXED"; comp.counterAxisSizingMode = "AUTO"; // 높이 FIXED(sc.h), 폭 HUG
       comp.primaryAxisAlignItems = "SPACE_BETWEEN"; comp.counterAxisAlignItems = "CENTER";
-      comp.itemSpacing = 0; comp.paddingLeft = PAD_X; comp.paddingRight = PAD_X;
+      // 좌우 패딩=0 (셀 자체엔 패딩 없음) — 밑줄 인디케이터가 셀 폭 전체를 채워야 Set에서 탭을 붙였을 때 하단선이 연속됨.
+      //   (패딩을 셀에 주면 STRETCH 인디케이터가 패딩만큼 안쪽으로 밀려 탭마다 끊김. Figma A/B 렌더 검증 2026-06-26.)
+      //   라벨 여백은 labelWrap 에 줘서 텍스트만 안쪽으로 들어가게 한다.
+      comp.itemSpacing = 0; comp.paddingLeft = 0; comp.paddingRight = 0;
       comp.paddingTop = 0; comp.paddingBottom = 0;
       comp.fills = [];
       comp.clipsContent = false;
@@ -1411,6 +1414,7 @@ async function buildLineTab(maps: BuildMaps, originY: number): Promise<{ set: Co
       labelWrap.name = "label"; labelWrap.fills = [];
       labelWrap.layoutMode = "HORIZONTAL"; labelWrap.primaryAxisSizingMode = "AUTO"; labelWrap.counterAxisSizingMode = "AUTO";
       labelWrap.primaryAxisAlignItems = "CENTER"; labelWrap.counterAxisAlignItems = "CENTER";
+      labelWrap.paddingLeft = PAD_X; labelWrap.paddingRight = PAD_X; // 라벨 여백(셀 아닌 라벨에) — 인디케이터는 셀 폭 전체 유지
       labelWrap.appendChild(t);
       comp.appendChild(labelWrap);
       try { (labelWrap as FrameNode).layoutGrow = 1; (labelWrap as FrameNode).layoutAlign = "STRETCH"; } catch (e) { /* */ }
