@@ -544,12 +544,18 @@ export const SEMANTIC_COLOR: Record<string, SemanticColorEntry> = {
   // ── date-picker ────────────────────────────────
   // 신설: components.html 의 .s1-date-picker__* CSS 토큰 사용 기반
   // 레거시 semantic 컬렉션에 없던 그룹 — 우리 코드의 datepicker 디자인 정합
-  "color/date-picker/bg/panel":         { light: "base/white", dark: "gray-dark/100" },
-  "color/date-picker/bg/hover":         { light: "gray/50",    dark: "gray-dark/200" },
-  "color/date-picker/bg/today":         { light: "base/white", dark: "gray-dark/100" },
-  "color/date-picker/bg/selected":      { light: "blue/400",   dark: "blue-dark/300" },
-  "color/date-picker/border/panel":     { light: "gray/300",   dark: "gray-dark/500" },
-  "color/date-picker/border/today":     { light: "blue/400",   dark: "blue-dark/300" },
+  // panel(패널 배경·테두리) / cell(날짜칸 배경·테두리) 분리 + icon(헤더 < >) 신설 — 사용자 결정 2026-06-26 (값 보존, 이름만 이동)
+  "color/date-picker/panel/bg":         { light: "base/white", dark: "gray-dark/100" },
+  "color/date-picker/panel/border":     { light: "gray/300",   dark: "gray-dark/500" },
+  "color/date-picker/cell/bg/hover":    { light: "gray/50",    dark: "gray-dark/200" },
+  "color/date-picker/cell/bg/today":    { light: "base/white", dark: "gray-dark/100" },
+  "color/date-picker/cell/bg/selected": { light: "blue/400",   dark: "blue-dark/300" },
+  "color/date-picker/cell/bg/range":    { light: "blue/50",    dark: "blue-dark/100" },
+  "color/date-picker/cell/border/today":{ light: "blue/400",   dark: "blue-dark/300" },
+  // icon(헤더 이전/다음 < > — 현재 적용색 gray/900 보존, hover/disabled 신규)
+  "color/date-picker/icon/default":     { light: "gray/900",   dark: "gray-dark/900" },
+  "color/date-picker/icon/hover":       { light: "gray/800",   dark: "gray-dark/800" },
+  "color/date-picker/icon/disabled":    { light: "gray/300",   dark: "gray-dark/500" },
   "color/date-picker/text/primary":     { light: "gray/900",   dark: "gray-dark/900" },
   "color/date-picker/text/secondary":   { light: "gray/800",   dark: "gray-dark/800" },
   "color/date-picker/text/disabled":    { light: "gray/300",   dark: "gray-dark/500" },
@@ -558,7 +564,6 @@ export const SEMANTIC_COLOR: Record<string, SemanticColorEntry> = {
   "color/date-picker/text/saturday":    { light: "blue/400",   dark: "blue-dark/300" },
   "color/date-picker/text/today":       { light: "blue/400",   dark: "blue-dark/300" },
   "color/date-picker/text/selected":    { light: "base/white", dark: "base/white" },
-  "color/date-picker/bg/range":             { light: "blue/50",    dark: "blue-dark/100" },
   "color/date-picker/tile/bg/default":      { light: "base/white", dark: "gray-dark/100" },
   // tile hover = Secondary 버튼 hover foundation 동일(gray/50·gray-dark/200) — Calendar Tile Hover variant, 사용자 결정 2026-06-25
   "color/date-picker/tile/bg/hover":        { light: "gray/50",    dark: "gray-dark/200" },

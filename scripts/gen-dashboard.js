@@ -69,20 +69,28 @@ const groups = data.gateGroups && data.gateGroups.length
   ? data.gateGroups
   : [{ key: null, title: "검사기", desc: "" }];
 
-const gateGroupsHtml = groups.map((grp) => {
-  const inGroup = data.gates.filter((g) => (grp.key == null) || g.group === grp.key);
-  if (!inGroup.length) return "";
-  return `
-      <div class="dash-gategroup">
-        <div class="dash-gategroup-head">
-          <span class="dash-gategroup-title">${esc(grp.title)}</span>
-          <span class="dash-gategroup-count">검사기 ${inGroup.length}</span>
-        </div>
-        ${grp.desc ? `<div class="dash-gategroup-desc">${esc(grp.desc)}</div>` : ""}
-        <div class="dash-grid">${inGroup.map(gateCardHtml).join("")}
-        </div>
-      </div>`;
+// 탭 묶음: 위 줄 = 탭 버튼, 아래 = 묶음별 패널(한 화면에서 탭으로 전환 — 스크롤 대신)
+const activeGroups = groups.filter((grp) => data.gates.some((g) => (grp.key == null) || g.group === grp.key));
+
+const gateTabsBtns = activeGroups.map((grp, i) => {
+  const cnt = data.gates.filter((g) => (grp.key == null) || g.group === grp.key).length;
+  return `<button class="dash-tab${i === 0 ? " is-active" : ""}" data-tab="${esc(grp.key || "all")}">${esc(grp.title)} <span class="cnt">${cnt}</span></button>`;
 }).join("");
+
+const gateTabsPanels = activeGroups.map((grp, i) => {
+  const inGroup = data.gates.filter((g) => (grp.key == null) || g.group === grp.key);
+  return `
+        <div class="dash-tabpanel${i === 0 ? " is-active" : ""}" data-panel="${esc(grp.key || "all")}">
+          ${grp.desc ? `<p class="dash-tabpanel-desc">${esc(grp.desc)}</p>` : ""}
+          <div class="dash-grid">${inGroup.map(gateCardHtml).join("")}
+          </div>
+        </div>`;
+}).join("");
+
+const gateGroupsHtml = `
+      <div class="dash-tabs">${gateTabsBtns}</div>
+      <div class="dash-tabpanels">${gateTabsPanels}
+      </div>`;
 // 묶음에 안 들어간 검사기가 있으면(데이터 누락) 표시
 const ungrouped = data.gates.filter((g) => g.group && !groups.some((gr) => gr.key === g.group));
 
@@ -132,11 +140,15 @@ const html = `<!DOCTYPE html>
     .dash-section-head p { font-size:13px; color:#6b7280; margin:4px 0 18px; }
 
     .dash-grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(250px, 1fr)); gap:12px; }
-    .dash-gategroup { margin-bottom:24px; padding:16px 18px 18px; background:#f9fafb; border:1px solid #eef0f2; border-radius:14px; }
-    .dash-gategroup-head { display:flex; align-items:center; gap:10px; }
-    .dash-gategroup-title { font-size:15px; font-weight:700; color:#111827; }
-    .dash-gategroup-count { font-size:11px; font-weight:600; color:#6b7280; background:#eef0f2; padding:2px 9px; border-radius:20px; }
-    .dash-gategroup-desc { font-size:12px; color:#9ca3af; margin:3px 0 14px; }
+    .dash-tabs { display:flex; flex-wrap:wrap; gap:8px; margin-bottom:18px; }
+    .dash-tab { font-size:13px; font-weight:600; color:#6b7280; background:#f3f4f6; border:1px solid #e5e7eb; border-radius:20px; padding:7px 16px; cursor:pointer; display:inline-flex; align-items:center; gap:7px; transition:background .12s; }
+    .dash-tab:hover { background:#eef0f2; }
+    .dash-tab.is-active { background:#1d6ceb; border-color:#1d6ceb; color:#fff; }
+    .dash-tab .cnt { font-size:11px; font-weight:700; background:rgba(0,0,0,0.08); padding:1px 7px; border-radius:20px; }
+    .dash-tab.is-active .cnt { background:rgba(255,255,255,0.25); }
+    .dash-tabpanel { display:none; }
+    .dash-tabpanel.is-active { display:block; }
+    .dash-tabpanel-desc { font-size:13px; color:#6b7280; margin:0 0 14px; }
     .dash-card { background:#fff; border:1px solid #e5e7eb; border-radius:12px; padding:16px 18px; }
     .dash-card.gate { border-left:4px solid #1d6ceb; }
     .dash-card.agent { border-left:4px solid #7c3aed; }
@@ -178,19 +190,19 @@ const html = `<!DOCTYPE html>
 
       <div class="dash-section">
         <div class="dash-section-head">
-          <h2>🔎 검사기 — 실수를 자동으로 막아주는 장치</h2>
-          <p>비슷한 일을 하는 검사기끼리 ${groups.length}개 묶음으로 정리했습니다. ("안 걸린다 = 잘 막고 있다"는 뜻이에요.)</p>
+          <h2>👥 에이전트 팀 구성</h2>
+          <p>검사기(🔎)가 <b>'정해둔 규칙대로인가'를 기계적으로 자동 점검</b>한다면, 여기 팀원들은 <b>읽고·만들고·판단하는</b> 일을 합니다 — 규칙으로 딱 떨어지지 않아 사람 같은 판단이 필요한 일이라 검사기가 아니라 에이전트입니다. 필요할 때만 총괄이 불러서 그 일만 맡기고, 끝나면 결과를 보고합니다. 특히 <b>만드는 일과 검증하는 일은 일부러 다른 팀원</b>이 맡습니다(자기 일을 자기가 검사하면 관대해지니까).</p>
         </div>
-        ${gateGroupsHtml}
+        <div class="dash-grid">${agentCards}
+        </div>
       </div>
 
       <div class="dash-section">
         <div class="dash-section-head">
-          <h2>🤝 작업 도우미 — 필요할 때 불려나오는 일꾼</h2>
-          <p>총괄이 일을 나눠서 맡기는 도우미들입니다. 만드는 일과 검증하는 일이 서로 나뉘어 있어요.</p>
+          <h2>🔎 검사기 — 실수를 자동으로 막아주는 장치</h2>
+          <p>비슷한 일을 하는 검사기끼리 ${activeGroups.length}개 묶음으로 정리했습니다. 탭을 눌러 묶음별로 보세요. ("안 걸린다 = 잘 막고 있다"는 뜻이에요.)</p>
         </div>
-        <div class="dash-grid">${agentCards}
-        </div>
+        ${gateGroupsHtml}
       </div>
 
       <div class="dash-section">
@@ -210,6 +222,19 @@ const html = `<!DOCTYPE html>
   </main>
 </div>
 <script src="../assets/js/main.js"></script>
+<script>
+(function(){
+  var tabs = document.querySelectorAll(".dash-tab");
+  var panels = document.querySelectorAll(".dash-tabpanel");
+  tabs.forEach(function(t){
+    t.addEventListener("click", function(){
+      var k = t.getAttribute("data-tab");
+      tabs.forEach(function(x){ x.classList.toggle("is-active", x === t); });
+      panels.forEach(function(p){ p.classList.toggle("is-active", p.getAttribute("data-panel") === k); });
+    });
+  });
+})();
+</script>
 </body>
 </html>
 `;

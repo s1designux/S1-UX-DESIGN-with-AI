@@ -10,6 +10,9 @@
   <style>
     .page-header { position: static !important; border-bottom: none; }
 
+    /* ── Content body (다른 페이지 .page-content 와 동일한 패딩) ── */
+    .content-body { padding: 32px 40px; }
+
     /* ── Theme bar ── */
     .theme-bar {
       position: sticky; top: 0; z-index: 9;
@@ -384,9 +387,8 @@
   </style>
 </head>
 <body>
-<div class="app">
 
-  <aside class="sidebar" id="sidebar"></aside>
+<div class="mobile-header">
   <button class="hamburger" id="sidebar-toggle" aria-label="메뉴 열기">
     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
       <line x1="3" y1="6" x2="21" y2="6"/>
@@ -394,7 +396,13 @@
       <line x1="3" y1="18" x2="21" y2="18"/>
     </svg>
   </button>
-  <div class="sidebar-overlay" id="sidebar-overlay"></div>
+  <span class="mobile-logo">Layer Policy</span>
+</div>
+<div class="sidebar-overlay" id="sidebar-overlay"></div>
+
+<div class="app">
+
+  <aside class="sidebar" id="sidebar"></aside>
 
   <main class="main-content">
     <div class="page-header">

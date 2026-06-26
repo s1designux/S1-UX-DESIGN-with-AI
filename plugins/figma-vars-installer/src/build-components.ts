@@ -286,7 +286,7 @@ async function renderGrouped(opts: GroupedSpecOpts, dark: boolean, emit: LayoutE
       y += SIZE_GAP;
       if (size) { await emit.text(size, PAD, y, 200, "LEFT", c.size, 12, "Bold"); y += SIZE_TITLE_H; }
       for (let col = 0; col < opts.colHeaders.length; col++) {
-        await emit.text(opts.colHeaders[col], gridLeft + col * opts.cellW, y, opts.cellW, "CENTER", c.label, 12, "Medium");
+        if (opts.colHeaders[col]) await emit.text(opts.colHeaders[col], gridLeft + col * opts.cellW, y, opts.cellW, "CENTER", c.label, 12, "Medium"); // 빈 헤더는 빈 텍스트 노드 안 만든다
       }
       y += HEADER_H;
       for (let ri = 0; ri < opts.rowLabels.length; ri++) {
@@ -479,7 +479,7 @@ async function renderFlat(opts: SpecOpts, dark: boolean, emit: LayoutEmit): Prom
   await emit.text(`${opts.title} · ${dark ? "Dark" : "Light"}`, PAD, y, 320, "LEFT", c.title, 14, "Bold");
   y += TITLE_H;
   for (let col = 0; col < opts.colHeaders.length; col++) {
-    await emit.text(opts.colHeaders[col], gridLeft + col * opts.cellW, y, opts.cellW, "CENTER", c.label, 11, "Medium");
+    if (opts.colHeaders[col]) await emit.text(opts.colHeaders[col], gridLeft + col * opts.cellW, y, opts.cellW, "CENTER", c.label, 11, "Medium"); // 빈 헤더는 빈 텍스트 노드 안 만든다
   }
   y += HEADER_H;
   for (let r = 0; r < opts.rowLabels.length; r++) {
@@ -2635,17 +2635,17 @@ const DP = (k: string) => `color/date-picker/${k}`;
 async function buildCalendarCell(maps: BuildMaps): Promise<{ set: ComponentSetNode; variants: Record<string, ComponentNode> }> {
   // [innerFill, innerStroke, textKey] (V2.4 실측 — selected stroke = border/today)
   const STD: Record<string, [string, string, string]> = {
-    Default:  ["bg/today",    "bg/today",     "text/secondary"],
-    Today:    ["bg/today",    "border/today", "text/today"],
-    Selected: ["bg/selected", "border/today", "text/selected"],
-    Disabled: ["bg/today",    "bg/today",     "text/disabled"],
+    Default:  ["cell/bg/today",    "cell/bg/today",     "text/secondary"],
+    Today:    ["cell/bg/today",    "cell/border/today", "text/today"],
+    Selected: ["cell/bg/selected", "cell/border/today", "text/selected"],
+    Disabled: ["cell/bg/today",    "cell/bg/today",     "text/disabled"],
   };
   // Range: [bandX, bandW, innerFill, innerStroke, textKey] (밴드는 absolute, h30 top7)
   const RNG: Record<string, [number, number, string, string, string]> = {
-    Default:  [0,  44, "bg/range",    "bg/range",     "text/secondary"],
-    Start:    [22, 22, "bg/today",    "border/today", "text/today"],
-    End:      [0,  22, "bg/selected", "border/today", "text/selected"],
-    Disabled: [0,  44, "bg/range",    "bg/range",     "text/disabled"],
+    Default:  [0,  44, "cell/bg/range",    "cell/bg/range",     "text/secondary"],
+    Start:    [22, 22, "cell/bg/today",    "cell/border/today", "text/today"],
+    End:      [0,  22, "cell/bg/selected", "cell/border/today", "text/selected"],
+    Disabled: [0,  44, "cell/bg/range",    "cell/bg/range",     "text/disabled"],
   };
 
   // inner 30×30 원 + 숫자("num") 생성
@@ -2688,7 +2688,7 @@ async function buildCalendarCell(maps: BuildMaps): Promise<{ set: ComponentSetNo
     // 밴드 Rectangle — absolute(z-below inner). h30, top7(=(44-30)/2), 좌표 V2.4 실측.
     const band = figma.createRectangle();
     band.name = "band"; band.resize(bw, 30);
-    band.fills = [boundPaint(scv(maps, DP("bg/range")))]; band.strokes = [];
+    band.fills = [boundPaint(scv(maps, DP("cell/bg/range")))]; band.strokes = [];
     comp.appendChild(band);
     // 밴드는 absolute(원 아래 z) — 좌표 V2.4 실측(top7=(44-30)/2). mock/구버전 대비 try.
     try { (band as unknown as { layoutPositioning: string }).layoutPositioning = "ABSOLUTE"; } catch (e) { /* skip */ }
@@ -2704,14 +2704,14 @@ async function buildCalendarCell(maps: BuildMaps): Promise<{ set: ComponentSetNo
 }
 
 // Calendar Tile — 88×56 cornerRadius4, axis State={Default,Selected,Disabled}. 라벨 layer 이름 = "label".
-// V2.4 실측(540:4209): root frame 의 fill+stroke(둘 다), selected border = color/date-picker/border/today.
+// V2.4 실측(540:4209): root frame 의 fill+stroke(둘 다), selected border = color/date-picker/cell/border/today.
 async function buildCalendarTile(maps: BuildMaps): Promise<{ set: ComponentSetNode; variants: Record<string, ComponentNode> }> {
   // [bgKey, borderKey, textKey, sampleLabel]
   const TILE: Record<string, [string, string, string, string]> = {
     Default:  ["tile/bg/default",  "tile/border/default",  "text/primary",  "2022"],
     // Hover bg = Secondary 버튼 hover foundation 동일(gray/50·gray-dark/200) → tile/bg/hover 신규(사용자 결정 2026-06-25).
     Hover:    ["tile/bg/hover",    "tile/border/default",  "text/primary",  "2023"],
-    Selected: ["tile/bg/selected", "border/today",         "text/today",    "2025"],
+    Selected: ["tile/bg/selected", "cell/border/today",    "text/today",    "2025"],
     Disabled: ["tile/bg/disabled", "tile/border/disabled", "text/disabled", "2021"],
   };
   const comps: ComponentNode[] = [];
@@ -2842,8 +2842,8 @@ async function buildCalendar(maps: BuildMaps, originY: number): Promise<{ set: C
     comp.paddingLeft = 24; comp.paddingRight = 24;
     comp.paddingTop = 20; comp.paddingBottom = 20; comp.itemSpacing = 0;
     comp.cornerRadius = 4;
-    comp.fills = [boundPaint(scv(maps, dp("bg/panel")))];
-    comp.strokes = [boundPaint(scv(maps, dp("border/panel")))];
+    comp.fills = [boundPaint(scv(maps, dp("panel/bg")))];
+    comp.strokes = [boundPaint(scv(maps, dp("panel/border")))];
     comp.strokeWeight = 1; comp.strokeAlign = "INSIDE";
     comp.clipsContent = true;
     try {
@@ -2865,9 +2865,10 @@ async function buildCalendar(maps: BuildMaps, originY: number): Promise<{ set: C
     hdr.resize(308, 32); // 308 = PANEL_W - paddingLeft(24) - paddingRight(24)
     // 좌측 화살표: 불필요한 래퍼 프레임 해제(wrap:false) — 우측(rotation 0, 래퍼 없음)과 동일 구조.
     //   정사각 chevron + 180° 회전은 x/y 중앙정렬이 정상이라 래퍼 불필요(makeIconInstance L986 동일 근거).
-    hdr.appendChild(await makeIconInstance("chevron", scv(maps, dp("text/primary")), 0, CHEV_L, 180, { wrap: false }));
+    // 헤더 이전/다음 < > = 전용 date-picker/icon/* (default). 라벨 텍스트는 text/primary 유지.
+    hdr.appendChild(await makeIconInstance("chevron", scv(maps, dp("icon/default")), 0, CHEV_L, 180, { wrap: false }));
     hdr.appendChild(await makeBoundText(label, 24, "Bold", scv(maps, dp("text/primary"))));
-    hdr.appendChild(await makeIconInstance("chevron", scv(maps, dp("text/primary")), 0, CHEV_R, 0));
+    hdr.appendChild(await makeIconInstance("chevron", scv(maps, dp("icon/default")), 0, CHEV_R, 0));
     return hdr;
   }
 
@@ -3069,7 +3070,9 @@ async function buildDatePickerBottomSheet(maps: BuildMaps, originY: number): Pro
   comp.paddingTop = 20; comp.paddingBottom = 20; // 시트 세로패딩 — spacing/section/sm
   comp.paddingLeft = 0; comp.paddingRight = 0; // 좌우 패딩은 자식(헤더 20·캘린더 24)이 개별 적용
   comp.counterAxisAlignItems = "CENTER";
-  comp.fills = [boundPaint(scv(maps, "color/surface/default"))]; // surface/neutral/bg/base = #ffffff
+  // 시트 배경 = bg/subtle (Light gray/50 #F5F5F5 · Dark gray-dark/200) — 흰 캘린더 카드가 떠 보이도록
+  //   레이어 배경을 깐다(사용자 결정 2026-06-26: 라이트도 다크처럼 배경색, gray50). surface/default(흰색)면 카드가 안 떠 보임.
+  comp.fills = [boundPaint(scv(maps, "color/bg/subtle"))];
   // 시트 상단 모서리 라운드(원본 540:3836 = rounded-tl/tr-8) — radius/8
   try { comp.topLeftRadius = 8; comp.topRightRadius = 8; comp.bottomLeftRadius = 0; comp.bottomRightRadius = 0; } catch (e) { /* */ }
   comp.clipsContent = false;
@@ -3106,8 +3109,9 @@ async function buildDatePickerBottomSheet(maps: BuildMaps, originY: number): Pro
   if (calComp) {
     const calInst = calComp.createInstance();
     calInst.name = "calendar";
-    // 캘린더 영역 외곽 라인(패널 보더) 제거 — 시트 안에선 캘린더 패널 stroke 가 불필요(사용자 결정 2026-06-25).
-    try { calInst.strokes = []; } catch (e) { /* */ }
+    // 캘린더 좌우 보더 제거 — 패널 stroke + 드롭섀도(둘 다 시트 안에서 가장자리=보더처럼 보임) 제거.
+    //   시트 gray50 배경이 흰 카드와 대비를 주므로 보더/섀도 없이도 캘린더가 떠 보임(사용자 결정 2026-06-26).
+    try { calInst.strokes = []; calInst.effects = []; } catch (e) { /* */ }
     calWrap.appendChild(calInst);
   }
 
@@ -3136,7 +3140,9 @@ async function buildDatePickerBottomSheet(maps: BuildMaps, originY: number): Pro
     const txt = applyBtn.findOne((n) => n.type === "TEXT") as TextNode | null;
     if (txt) { try { txt.characters = "적용"; } catch (e) { /* */ } }
     actionWrap.appendChild(applyBtn);
-    try { applyBtn.layoutAlign = "STRETCH"; applyBtn.layoutSizingHorizontal = "FILL"; } catch (e) { /* */ }
+    // 가로만 FILL(풀폭). layoutAlign=STRETCH(세로축 stretch)는 actionWrap AUTO 높이에서 버튼을
+    //   텍스트 높이로 찌그러뜨리므로 쓰지 않는다 → 버튼은 본래 모바일(LG) 높이 48 유지(사용자 결정 2026-06-26).
+    try { applyBtn.layoutSizingHorizontal = "FILL"; } catch (e) { /* */ }
   }
 
   setLightMode(comp, maps);
@@ -3780,8 +3786,8 @@ async function buildMultiToggleElement(maps: BuildMaps, originY: number): Promis
   const states  = ["default", "hover", "selected", "disabled"] as const;
   type St  = typeof states[number];
   const sizes   = [
-    { id: "md", h: 44, padX: 12, font: 14 },
-    { id: "sm", h: 34, padX:  8, font: 14 },
+    { id: "md", h: 44, padX: 12, font: 14, minW: 64 }, // 최소 width = sizing/64 (사용자 결정 2026-06-26)
+    { id: "sm", h: 34, padX:  8, font: 14, minW: 56 }, // 최소 width = sizing/56
   ] as const;
 
   // 상태별 색 슬롯 — 버튼 토큰 직접 사용
@@ -3861,8 +3867,11 @@ async function buildMultiToggleElement(maps: BuildMaps, originY: number): Promis
 
         // 텍스트
         const txt = await makeBoundText("항목", sz.font, "Medium", scv(maps, slot.text));
+        txt.textAlignHorizontal = "CENTER"; // 글자 중앙정렬(min-width 로 넓어진 셀에서 좌측 쏠림 방지)
         comp.appendChild(txt);
+        try { (txt as any).layoutGrow = 1; } catch (e) { /* */ } // 셀 너비를 채워 중앙정렬 보장
         comp.resize(comp.width, sz.h);
+        try { comp.minWidth = sz.minW; } catch (e) { /* mock 미지원 무시 */ } // 셀 최소 너비(md 64 · sm 56)
 
         setLightMode(comp, maps);
         comps.push(comp);
@@ -3986,7 +3995,7 @@ async function buildMultiToggle(maps: BuildMaps, originY: number): Promise<{ set
     rowLabels: SEL_LABELS,
     cellAt: (r, c) => specCells.find((x) => x.selIdx === r && x.szIdx === c)?.comp ?? null,
     lightX: SPEC_LIGHT_X, darkX: SPEC_DARK_X, originY,
-    cellW: 160, cellH: 56, rowLabelW: 80,
+    cellW: 220, cellH: 56, rowLabelW: 80, // 셀 min-width(md 64×3) 로 넓어진 토글이 옆 컬럼과 겹치지 않게 220
   };
   let bottomY = await decorateSetFlat(set, opts, maps);
   try { bottomY = Math.max(bottomY, await buildSpec(opts, maps)); } catch (e) { console.warn(e); }
@@ -4011,11 +4020,13 @@ export const COMPONENT_CATEGORIES_GRID: { name: string; members: string[] }[][] 
     { name: "Pagination",   members: ["Pagination", "Pagination Cell"] },
     { name: "Actions",      members: ["Button"] },
     { name: "Selection",    members: ["Checkbox", "Radio", "Toggle", "Multi Toggle", "Multi Toggle Element"] },
+    // Dropdown 섹션 = Form Control 에서 분리(사용자 결정 2026-06-26). Selection 아래에 세로 스택 배치(stage 2 STACKED).
+    //   Form Control 보다 GRID 앞에 둬서 Select Box(Form Control)의 Dropdown 의존(BUILD_DEPENDENCIES)이 빌드순서로 충족됨.
+    { name: "Dropdown",     members: ["Dropdown", "Dropdown List"] },
     { name: "Chip",         members: ["Chip"] },
-    // members = 표시(나열) 순서: 메인 컴포넌트 → 그 안을 구성하는 요소 컴포넌트 순.
-    //   (Select Box → Dropdown → Dropdown List). 빌드(생성) 순서는 BUILD_DEPENDENCIES 로
-    //   의존성(요소 먼저)이 자동 적용된다 — 표시순서 ≠ 빌드순서 규칙(§ 아래 주석).
-    { name: "Form Control", members: ["Input", "Search Input", "Text Area", "Select Box", "Dropdown", "Dropdown List"] },
+    // members = 표시(나열) 순서: 메인 컴포넌트 → 그 안을 구성하는 요소 컴포넌트 순. 빌드(생성) 순서는
+    //   BUILD_DEPENDENCIES 로 의존성(요소 먼저)이 자동 적용된다 — 표시순서 ≠ 빌드순서 규칙(§ 아래 주석).
+    { name: "Form Control", members: ["Input", "Search Input", "Text Area", "Select Box"] },
     { name: "Date Picker",  members: ["Date Picker", "Calendar", "Calendar Cell", "Calendar Tile", "Date Picker Mobile Bottom Sheet"] },
     { name: "Time Picker",  members: ["Time Picker", "Time Picker Dropdown", "Time Picker Cell"] },
     { name: "Table",        members: ["Table", "Table Cell"] },
@@ -4027,7 +4038,9 @@ export const COMPONENT_CATEGORIES_GRID: { name: string; members: string[] }[][] 
 ];
 
 // render.js용 1차원 배열 (호환성)
-export const COMPONENT_CATEGORIES = COMPONENT_CATEGORIES_GRID.flat();
+// ES2017 lib 호환: Array.flat() 대신 reduce+concat (tsc lib=ES2017 — 사전 tsc 오류 해소 2026-06-26)
+export const COMPONENT_CATEGORIES: { name: string; members: string[] }[] =
+  COMPONENT_CATEGORIES_GRID.reduce((a, r) => a.concat(r), [] as { name: string; members: string[] }[]);
 
 // ── 표시 순서 ≠ 빌드 순서 규칙 (영구) ─────────────────────────────────────────
 //   ▸ 표시(나열) 순서 = COMPONENT_CATEGORIES_GRID 의 members 배열 순서.
@@ -4282,27 +4295,36 @@ export async function buildAllComponents(
     const TOP_Y = 0;    // 모든 섹션 상단 정렬 기준 y
     const ROW = ["Platform", "Navigation", "Line Tab", "Pagination", "Actions", "Selection", "Chip",
       "Form Control", "Date Picker", "Time Picker", "Table"];
-    const fchip = findSec("Filter Chip");
-    let fchipPlaced = false;
+    // 세로 스택 섹션: ROW 의 가로 컬럼 아래에 쌓는다(같은 X). Filter Chip→Chip 아래 · Dropdown→Selection 아래.
+    const STACKED = [
+      { name: "Filter Chip", below: "Chip",      placed: false },
+      { name: "Dropdown",    below: "Selection", placed: false },
+    ];
     let curX = 0;
     for (const nm of ROW) {
       const sec = findSec(nm);
       if (!sec) continue;
       relocateSection(sec, curX, TOP_Y);        // 실제 측정폭으로 다음 X 누적 → 겹침 0
       let colWidth = widthOf(sec);
-      // Chip 컬럼은 그 아래에 Filter Chip(더 넓을 수 있음)을 함께 쌓는다.
-      // 다음 섹션이 Filter Chip 과 겹치지 않도록 컬럼 폭 = max(Chip, Filter Chip).
-      if (nm === "Chip" && fchip) {
-        relocateSection(fchip, curX, TOP_Y + heightOf(sec) + H_GAP); // Chip 바로 아래(같은 X)
-        colWidth = Math.max(colWidth, widthOf(fchip));
-        fchipPlaced = true;
+      let stackY = TOP_Y + heightOf(sec) + H_GAP;
+      for (const st of STACKED) {               // 이 컬럼 아래에 쌓을 섹션(다중 지원)
+        if (st.below !== nm) continue;
+        const ssec = findSec(st.name);
+        if (!ssec) continue;
+        relocateSection(ssec, curX, stackY);
+        colWidth = Math.max(colWidth, widthOf(ssec));
+        stackY += heightOf(ssec) + H_GAP;
+        st.placed = true;
       }
       curX += colWidth + H_GAP;
     }
-    // Chip 미설치인데 Filter Chip 만 있는 경우(부분 설치) — 행 말단에 단독 컬럼으로 배치(세로 잔류 방지).
-    if (fchip && !fchipPlaced) {
-      relocateSection(fchip, curX, TOP_Y);
-      curX += widthOf(fchip) + H_GAP;
+    // below 컬럼 미설치라 못 쌓인 스택 섹션 — 행 말단 단독 컬럼 배치(세로 잔류 방지).
+    for (const st of STACKED) {
+      if (st.placed) continue;
+      const ssec = findSec(st.name);
+      if (!ssec) continue;
+      relocateSection(ssec, curX, TOP_Y);
+      curX += widthOf(ssec) + H_GAP;
     }
   } catch (e) { /* mock/no-page */ }
 

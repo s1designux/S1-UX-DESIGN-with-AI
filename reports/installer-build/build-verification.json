@@ -1,9 +1,9 @@
 {
   "sourceFile": "plugins/figma-vars-installer/src/build-components.ts",
-  "sourceHash": "sha256:dbbc68fe6d62330fd5b3ec247666697b3383c184c9c25df94a1b2012d89c0429",
+  "sourceHash": "sha256:37d50907811b33fc31145f1a422bd1907bd4386059fadfe2d3f6b9992af5031e",
   "verifiedBy": "component-verifier",
   "verdict": "pass",
   "changeType": "structural",
-  "verifiedAt": "2026-06-26T00:59:46.731Z",
-  "notes": "Pagination 전용 semantic 토큰 7종 신설(control/icon 4 + number 3) + buildPaginationCell arrowStates(icon)·numStates(text) 재배선 검증. 토큰값: control/icon active=secondary 라벨 동일(gray800·gd800)·disabled=button label disabled 동일(gray300·gd600), number=구 적용색 보존(def/hov gray400·gd600·sel gray800·gd800). control/icon disabled 다크 gd400→gd600 의도적 변경(사용자 지시). 배선: bg/border short키 pg()래핑·icon/text 풀패스 직접 scv, Edge가 arrowStates 공유, selected 토큰 supply-only. Gate7 397일치·Gate8 키누락0·Gate15 네이밍0·Gate11/12 pass·38세트 빌드 무에러. 타 컴포넌트 무관."
+  "verifiedAt": "2026-06-26T04:17:59.223Z",
+  "notes": "empty-header guard + ES2017 flat() fix: tsc clean, COMPONENT_CATEGORIES reduce==flat equivalent, render 38 OK"
 }

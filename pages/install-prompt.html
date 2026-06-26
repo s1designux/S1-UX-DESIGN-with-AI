@@ -223,7 +223,7 @@
                 <div class="step-title">전체 기본 토큰 CSS 받기</div>
                 <div class="step-desc">Semantic (Light/Dark) + Component 토큰 전체 CSS</div>
               </div>
-              <span class="update-stamp" data-update-file="assets/css/tokens.css"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> 업데이트 2026-06-26 09:56</span>
+              <span class="update-stamp" data-update-file="assets/css/tokens.css"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> 업데이트 2026-06-26 11:16</span>
             </div>
             <div class="step-body">
               <div class="file-card">
@@ -231,7 +231,7 @@
                   <div class="file-icon">🎨</div>
                   <div>
                     <div class="file-name">tokens.css</div>
-                    <div class="file-meta">Foundation 259종 + Semantic 242종 + Component 15종 · Light + Dark</div>
+                    <div class="file-meta">Foundation 259종 + Semantic 245종 + Component 15종 · Light + Dark</div>
                   </div>
                 </div>
                 <button class="download-btn" onclick="downloadTokens()">
@@ -847,12 +847,16 @@
   --color-overlay: rgba(0,0,0,0.5);
 
   /* ── date-picker ── */
-  --color-date-picker-bg-panel            : var(--color-base-white);
-  --color-date-picker-bg-hover            : var(--color-gray-50);
-  --color-date-picker-bg-today            : var(--color-base-white);
-  --color-date-picker-bg-selected         : var(--color-blue-400);
-  --color-date-picker-border-panel        : var(--color-gray-300);
-  --color-date-picker-border-today        : var(--color-blue-400);
+  --color-date-picker-panel-bg            : var(--color-base-white);
+  --color-date-picker-panel-border        : var(--color-gray-300);
+  --color-date-picker-cell-bg-hover       : var(--color-gray-50);
+  --color-date-picker-cell-bg-today       : var(--color-base-white);
+  --color-date-picker-cell-bg-selected    : var(--color-blue-400);
+  --color-date-picker-cell-bg-range       : var(--color-blue-50);
+  --color-date-picker-cell-border-today   : var(--color-blue-400);
+  --color-date-picker-icon-default        : var(--color-gray-900);
+  --color-date-picker-icon-hover          : var(--color-gray-800);
+  --color-date-picker-icon-disabled       : var(--color-gray-300);
   --color-date-picker-text-primary        : var(--color-gray-900);
   --color-date-picker-text-secondary      : var(--color-gray-800);
   --color-date-picker-text-disabled       : var(--color-gray-300);
@@ -861,7 +865,6 @@
   --color-date-picker-text-saturday       : var(--color-blue-400);
   --color-date-picker-text-today          : var(--color-blue-400);
   --color-date-picker-text-selected       : var(--color-base-white);
-  --color-date-picker-bg-range            : var(--color-blue-50);
   --color-date-picker-tile-bg-default     : var(--color-base-white);
   --color-date-picker-tile-bg-hover       : var(--color-gray-50);
   --color-date-picker-tile-bg-selected    : var(--color-base-white);
@@ -1076,12 +1079,16 @@
   --color-overlay: rgba(0,0,0,0.75);
 
   /* ── date-picker ── */
-  --color-date-picker-bg-panel            : var(--color-gray-dark-100);
-  --color-date-picker-bg-hover            : var(--color-gray-dark-200);
-  --color-date-picker-bg-today            : var(--color-gray-dark-100);
-  --color-date-picker-bg-selected         : var(--color-blue-dark-300);
-  --color-date-picker-border-panel        : var(--color-gray-dark-500);
-  --color-date-picker-border-today        : var(--color-blue-dark-300);
+  --color-date-picker-panel-bg            : var(--color-gray-dark-100);
+  --color-date-picker-panel-border        : var(--color-gray-dark-500);
+  --color-date-picker-cell-bg-hover       : var(--color-gray-dark-200);
+  --color-date-picker-cell-bg-today       : var(--color-gray-dark-100);
+  --color-date-picker-cell-bg-selected    : var(--color-blue-dark-300);
+  --color-date-picker-cell-bg-range       : var(--color-blue-dark-100);
+  --color-date-picker-cell-border-today   : var(--color-blue-dark-300);
+  --color-date-picker-icon-default        : var(--color-gray-dark-900);
+  --color-date-picker-icon-hover          : var(--color-gray-dark-800);
+  --color-date-picker-icon-disabled       : var(--color-gray-dark-500);
   --color-date-picker-text-primary        : var(--color-gray-dark-900);
   --color-date-picker-text-secondary      : var(--color-gray-dark-800);
   --color-date-picker-text-disabled       : var(--color-gray-dark-500);
@@ -1090,7 +1097,6 @@
   --color-date-picker-text-saturday       : var(--color-blue-dark-300);
   --color-date-picker-text-today          : var(--color-blue-dark-300);
   --color-date-picker-text-selected       : var(--color-base-white);
-  --color-date-picker-bg-range            : var(--color-blue-dark-100);
   --color-date-picker-tile-bg-default     : var(--color-gray-dark-100);
   --color-date-picker-tile-bg-hover       : var(--color-gray-dark-200);
   --color-date-picker-tile-bg-selected    : var(--color-gray-dark-100);
@@ -1156,7 +1162,7 @@
                 <div class="step-title">프로젝트에 추가</div>
                 <div class="step-desc">다운받은 tokens.css를 프로젝트에 복사한 뒤 아래 한 줄 추가</div>
               </div>
-              <span class="update-stamp" data-update-file="assets/css/tokens.css"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> 업데이트 2026-06-26 09:56</span>
+              <span class="update-stamp" data-update-file="assets/css/tokens.css"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> 업데이트 2026-06-26 11:16</span>
             </div>
             <div class="step-body">
               <div class="env-tabs">
@@ -1234,7 +1240,7 @@
                 <div class="step-title">AI Context Prompt</div>
                 <div class="step-desc">Claude / AI 작업자에게 붙여넣을 기본 디자인시스템 규칙</div>
               </div>
-              <span class="update-stamp" data-update-file="assets/css/tokens.css"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> 업데이트 2026-06-26 09:56</span>
+              <span class="update-stamp" data-update-file="assets/css/tokens.css"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> 업데이트 2026-06-26 11:16</span>
             </div>
             <div class="step-body">
               <p style="font-size:12px;color:#6b7280;margin-bottom:12px;">대화 시작 시 첫 메시지로 붙여넣기. 사용자 검수 항목은 코드블록 안에 포함되어 있지 않습니다.</p>
@@ -1872,12 +1878,16 @@
   --color-overlay: rgba(0,0,0,0.5);
 
   /* ── date-picker ── */
-  --color-date-picker-bg-panel            : var(--color-base-white);
-  --color-date-picker-bg-hover            : var(--color-gray-50);
-  --color-date-picker-bg-today            : var(--color-base-white);
-  --color-date-picker-bg-selected         : var(--color-blue-400);
-  --color-date-picker-border-panel        : var(--color-gray-300);
-  --color-date-picker-border-today        : var(--color-blue-400);
+  --color-date-picker-panel-bg            : var(--color-base-white);
+  --color-date-picker-panel-border        : var(--color-gray-300);
+  --color-date-picker-cell-bg-hover       : var(--color-gray-50);
+  --color-date-picker-cell-bg-today       : var(--color-base-white);
+  --color-date-picker-cell-bg-selected    : var(--color-blue-400);
+  --color-date-picker-cell-bg-range       : var(--color-blue-50);
+  --color-date-picker-cell-border-today   : var(--color-blue-400);
+  --color-date-picker-icon-default        : var(--color-gray-900);
+  --color-date-picker-icon-hover          : var(--color-gray-800);
+  --color-date-picker-icon-disabled       : var(--color-gray-300);
   --color-date-picker-text-primary        : var(--color-gray-900);
   --color-date-picker-text-secondary      : var(--color-gray-800);
   --color-date-picker-text-disabled       : var(--color-gray-300);
@@ -1886,7 +1896,6 @@
   --color-date-picker-text-saturday       : var(--color-blue-400);
   --color-date-picker-text-today          : var(--color-blue-400);
   --color-date-picker-text-selected       : var(--color-base-white);
-  --color-date-picker-bg-range            : var(--color-blue-50);
   --color-date-picker-tile-bg-default     : var(--color-base-white);
   --color-date-picker-tile-bg-hover       : var(--color-gray-50);
   --color-date-picker-tile-bg-selected    : var(--color-base-white);
@@ -2101,12 +2110,16 @@
   --color-overlay: rgba(0,0,0,0.75);
 
   /* ── date-picker ── */
-  --color-date-picker-bg-panel            : var(--color-gray-dark-100);
-  --color-date-picker-bg-hover            : var(--color-gray-dark-200);
-  --color-date-picker-bg-today            : var(--color-gray-dark-100);
-  --color-date-picker-bg-selected         : var(--color-blue-dark-300);
-  --color-date-picker-border-panel        : var(--color-gray-dark-500);
-  --color-date-picker-border-today        : var(--color-blue-dark-300);
+  --color-date-picker-panel-bg            : var(--color-gray-dark-100);
+  --color-date-picker-panel-border        : var(--color-gray-dark-500);
+  --color-date-picker-cell-bg-hover       : var(--color-gray-dark-200);
+  --color-date-picker-cell-bg-today       : var(--color-gray-dark-100);
+  --color-date-picker-cell-bg-selected    : var(--color-blue-dark-300);
+  --color-date-picker-cell-bg-range       : var(--color-blue-dark-100);
+  --color-date-picker-cell-border-today   : var(--color-blue-dark-300);
+  --color-date-picker-icon-default        : var(--color-gray-dark-900);
+  --color-date-picker-icon-hover          : var(--color-gray-dark-800);
+  --color-date-picker-icon-disabled       : var(--color-gray-dark-500);
   --color-date-picker-text-primary        : var(--color-gray-dark-900);
   --color-date-picker-text-secondary      : var(--color-gray-dark-800);
   --color-date-picker-text-disabled       : var(--color-gray-dark-500);
@@ -2115,7 +2128,6 @@
   --color-date-picker-text-saturday       : var(--color-blue-dark-300);
   --color-date-picker-text-today          : var(--color-blue-dark-300);
   --color-date-picker-text-selected       : var(--color-base-white);
-  --color-date-picker-bg-range            : var(--color-blue-dark-100);
   --color-date-picker-tile-bg-default     : var(--color-gray-dark-100);
   --color-date-picker-tile-bg-hover       : var(--color-gray-dark-200);
   --color-date-picker-tile-bg-selected    : var(--color-gray-dark-100);
@@ -2202,7 +2214,7 @@
                 <div class="step-title">에스원 디자인시스템 설치 플러그인</div>
                 <div class="step-desc">ZIP을 받아 Figma Desktop에 등록한 뒤, 설치할 파일에서 실행하면 토큰·텍스트 스타일·컴포넌트 세트를 선택 설치합니다</div>
               </div>
-              <span class="update-stamp" data-update-file="assets/downloads/s1-design-system-installer.zip"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> 업데이트 2026-06-26 09:55</span>
+              <span class="update-stamp" data-update-file="assets/downloads/s1-design-system-installer.zip"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> 업데이트 2026-06-26 11:12</span>
             </div>
             <div class="step-body">
               <!-- 다운로드 -->

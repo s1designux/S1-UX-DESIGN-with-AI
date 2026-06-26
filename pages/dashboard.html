@@ -22,11 +22,15 @@
     .dash-section-head p { font-size:13px; color:#6b7280; margin:4px 0 18px; }
 
     .dash-grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(250px, 1fr)); gap:12px; }
-    .dash-gategroup { margin-bottom:24px; padding:16px 18px 18px; background:#f9fafb; border:1px solid #eef0f2; border-radius:14px; }
-    .dash-gategroup-head { display:flex; align-items:center; gap:10px; }
-    .dash-gategroup-title { font-size:15px; font-weight:700; color:#111827; }
-    .dash-gategroup-count { font-size:11px; font-weight:600; color:#6b7280; background:#eef0f2; padding:2px 9px; border-radius:20px; }
-    .dash-gategroup-desc { font-size:12px; color:#9ca3af; margin:3px 0 14px; }
+    .dash-tabs { display:flex; flex-wrap:wrap; gap:8px; margin-bottom:18px; }
+    .dash-tab { font-size:13px; font-weight:600; color:#6b7280; background:#f3f4f6; border:1px solid #e5e7eb; border-radius:20px; padding:7px 16px; cursor:pointer; display:inline-flex; align-items:center; gap:7px; transition:background .12s; }
+    .dash-tab:hover { background:#eef0f2; }
+    .dash-tab.is-active { background:#1d6ceb; border-color:#1d6ceb; color:#fff; }
+    .dash-tab .cnt { font-size:11px; font-weight:700; background:rgba(0,0,0,0.08); padding:1px 7px; border-radius:20px; }
+    .dash-tab.is-active .cnt { background:rgba(255,255,255,0.25); }
+    .dash-tabpanel { display:none; }
+    .dash-tabpanel.is-active { display:block; }
+    .dash-tabpanel-desc { font-size:13px; color:#6b7280; margin:0 0 14px; }
     .dash-card { background:#fff; border:1px solid #e5e7eb; border-radius:12px; padding:16px 18px; }
     .dash-card.gate { border-left:4px solid #1d6ceb; }
     .dash-card.agent { border-left:4px solid #7c3aed; }
@@ -64,202 +68,12 @@
     </div>
 
     <div class="page-content">
-      <div class="dash-banner bad"><span class="dash-banner-icon">⚠️</span><div><div class="dash-banner-title">확인이 필요한 게 있어요</div><div class="dash-banner-sub">FAILED — 1 error(s), 5 warning(s) · 2026-06-25 10:06 기준</div></div></div>
+      <div class="dash-banner bad"><span class="dash-banner-icon">⚠️</span><div><div class="dash-banner-title">확인이 필요한 게 있어요</div><div class="dash-banner-sub">FAILED — 2 error(s), 5 warning(s) · 2026-06-26 11:16 기준</div></div></div>
 
       <div class="dash-section">
         <div class="dash-section-head">
-          <h2>🔎 검사기 — 실수를 자동으로 막아주는 장치</h2>
-          <p>비슷한 일을 하는 검사기끼리 6개 묶음으로 정리했습니다. ("안 걸린다 = 잘 막고 있다"는 뜻이에요.)</p>
-        </div>
-        
-      <div class="dash-gategroup">
-        <div class="dash-gategroup-head">
-          <span class="dash-gategroup-title">원본대로 만들어졌나</span>
-          <span class="dash-gategroup-count">검사기 4</span>
-        </div>
-        <div class="dash-gategroup-desc">컴포넌트를 만들 때 빠진 부품·잘못된 방식이 없는지</div>
-        <div class="dash-grid">
-          <div class="dash-card gate">
-            <div class="dash-card-top">
-              <span class="dash-gate-num">Gate 1</span>
-              <span class="dash-badge auto">자동 감시</span>
-            </div>
-            <div class="dash-card-name">🔎 부품명세 검사기</div>
-            <div class="dash-card-desc">컴포넌트 설명이 빠짐없이 적혀 있나</div>
-          </div>
-          <div class="dash-card gate">
-            <div class="dash-card-top">
-              <span class="dash-gate-num">Gate 11</span>
-              <span class="dash-badge auto">자동 감시</span>
-            </div>
-            <div class="dash-card-name">🔎 부품해부 검사기</div>
-            <div class="dash-card-desc">컴포넌트에 꼭 필요한 부품(입력 커서·삭제 아이콘 등)이 들어갔나</div>
-          </div>
-          <div class="dash-card gate">
-            <div class="dash-card-top">
-              <span class="dash-gate-num">Gate 12</span>
-              <span class="dash-badge auto">자동 감시</span>
-            </div>
-            <div class="dash-card-name">🔎 아이콘인스턴스 검사기</div>
-            <div class="dash-card-desc">아이콘을 라이브러리 부품으로 제대로 넣었나</div>
-          </div>
-          <div class="dash-card gate">
-            <div class="dash-card-top">
-              <span class="dash-gate-num">Gate 13</span>
-              <span class="dash-badge auto">자동 감시</span>
-            </div>
-            <div class="dash-card-name">🔎 설치기빌드검증 검사기</div>
-            <div class="dash-card-desc">설치기 코드를 만든 사람 말고 다른 검증을 거쳤나</div>
-          </div>
-        </div>
-      </div>
-      <div class="dash-gategroup">
-        <div class="dash-gategroup-head">
-          <span class="dash-gategroup-title">값이 어디서나 같나</span>
-          <span class="dash-gategroup-count">검사기 2</span>
-        </div>
-        <div class="dash-gategroup-desc">정해둔 값이 코드·사이트·설치기에 똑같이 나오는지</div>
-        <div class="dash-grid">
-          <div class="dash-card gate">
-            <div class="dash-card-top">
-              <span class="dash-gate-num">Gate 7</span>
-              <span class="dash-badge auto">자동 감시</span>
-            </div>
-            <div class="dash-card-name">🔎 토큰값일치 검사기</div>
-            <div class="dash-card-desc">코드·사이트·설치기가 똑같은 값을 쓰나</div>
-          </div>
-          <div class="dash-card gate">
-            <div class="dash-card-top">
-              <span class="dash-gate-num">Gate 9</span>
-              <span class="dash-badge auto">자동 감시</span>
-            </div>
-            <div class="dash-card-name">🔎 사이즈·숫자페이지 검사기</div>
-            <div class="dash-card-desc">크기·숫자 값이 페이지에 맞게 나오나</div>
-          </div>
-        </div>
-      </div>
-      <div class="dash-gategroup">
-        <div class="dash-gategroup-head">
-          <span class="dash-gategroup-title">빠진 것 없나</span>
-          <span class="dash-gategroup-count">검사기 3</span>
-        </div>
-        <div class="dash-gategroup-desc">필요한 토큰·변수·설치 파일이 빠짐없이 준비됐는지</div>
-        <div class="dash-grid">
-          <div class="dash-card gate">
-            <div class="dash-card-top">
-              <span class="dash-gate-num">Gate 6</span>
-              <span class="dash-badge auto">자동 감시</span>
-            </div>
-            <div class="dash-card-name">🔎 설치기누락 검사기</div>
-            <div class="dash-card-desc">설치 파일에 토큰이 하나도 안 빠졌나</div>
-          </div>
-          <div class="dash-card gate">
-            <div class="dash-card-top">
-              <span class="dash-gate-num">Gate 6b</span>
-              <span class="dash-badge auto">자동 감시</span>
-            </div>
-            <div class="dash-card-name">🔎 설치기최신 검사기</div>
-            <div class="dash-card-desc">설치 파일이 옛날 버전인 채 남아있지 않나</div>
-          </div>
-          <div class="dash-card gate">
-            <div class="dash-card-top">
-              <span class="dash-gate-num">Gate 8</span>
-              <span class="dash-badge auto">자동 감시</span>
-            </div>
-            <div class="dash-card-name">🔎 부품–변수연결 검사기</div>
-            <div class="dash-card-desc">컴포넌트가 쓰는 변수가 다 준비됐나</div>
-          </div>
-        </div>
-      </div>
-      <div class="dash-gategroup">
-        <div class="dash-gategroup-head">
-          <span class="dash-gategroup-title">규칙·이름 지켰나</span>
-          <span class="dash-gategroup-count">검사기 3</span>
-        </div>
-        <div class="dash-gategroup-desc">정해둔 표기·이름 규칙을 어긴 게 없는지</div>
-        <div class="dash-grid">
-          <div class="dash-card gate">
-            <div class="dash-card-top">
-              <span class="dash-gate-num">Gate 3</span>
-              <span class="dash-badge auto">자동 감시</span>
-            </div>
-            <div class="dash-card-name">🔎 색상규칙 검사기</div>
-            <div class="dash-card-desc">색을 규칙대로 썼나 (색코드 직접 입력 금지)</div>
-          </div>
-          <div class="dash-card gate">
-            <div class="dash-card-top">
-              <span class="dash-gate-num">Gate 15</span>
-              <span class="dash-badge auto">자동 감시</span>
-            </div>
-            <div class="dash-card-name">🔎 토큰네이밍 검사기</div>
-            <div class="dash-card-desc">토큰 이름을 정한 규칙대로 지었나</div>
-          </div>
-          <div class="dash-card gate">
-            <div class="dash-card-top">
-              <span class="dash-gate-num">Gate 10</span>
-              <span class="dash-badge auto">자동 감시</span>
-            </div>
-            <div class="dash-card-name">🔎 문서토큰이름 검사기</div>
-            <div class="dash-card-desc">문서에 옛날 토큰 이름이 남아있나</div>
-          </div>
-        </div>
-      </div>
-      <div class="dash-gategroup">
-        <div class="dash-gategroup-head">
-          <span class="dash-gategroup-title">원본 문구 그대로인가</span>
-          <span class="dash-gategroup-count">검사기 1</span>
-        </div>
-        <div class="dash-gategroup-desc">법인정보·약관 등 검증된 고정 문구가 원본과 같은지</div>
-        <div class="dash-grid">
-          <div class="dash-card gate">
-            <div class="dash-card-top">
-              <span class="dash-gate-num">Gate 14</span>
-              <span class="dash-badge auto">자동 감시</span>
-            </div>
-            <div class="dash-card-name">🔎 원본대조 문구 검사기</div>
-            <div class="dash-card-desc">법인정보·약관·브랜드 등 검증된 고정 문구가 원본과 같나 (지어내기 금지)</div>
-          </div>
-        </div>
-      </div>
-      <div class="dash-gategroup">
-        <div class="dash-gategroup-head">
-          <span class="dash-gategroup-title">연결·표시 점검</span>
-          <span class="dash-gategroup-count">검사기 3</span>
-        </div>
-        <div class="dash-gategroup-desc">피그마 연결·화면 표시·기록 색인이 제대로 됐는지</div>
-        <div class="dash-grid">
-          <div class="dash-card gate">
-            <div class="dash-card-top">
-              <span class="dash-gate-num">Gate 2</span>
-              <span class="dash-badge manual">필요 시 점검</span>
-            </div>
-            <div class="dash-card-name">🔎 Figma연결 검사기</div>
-            <div class="dash-card-desc">피그마 연결(노드)이 살아있나</div>
-          </div>
-          <div class="dash-card gate">
-            <div class="dash-card-top">
-              <span class="dash-gate-num">Gate 5</span>
-              <span class="dash-badge manual">필요 시 점검</span>
-            </div>
-            <div class="dash-card-name">🔎 컴포넌트표출 검사기</div>
-            <div class="dash-card-desc">컴포넌트가 크기별·다크모드별로 제대로 보이나</div>
-          </div>
-          <div class="dash-card gate">
-            <div class="dash-card-top">
-              <span class="dash-gate-num">Gate 4</span>
-              <span class="dash-badge auto">자동 감시</span>
-            </div>
-            <div class="dash-card-name">🔎 리포트색인 검사기</div>
-            <div class="dash-card-desc">작업 기록이 목록에 빠짐없이 들어갔나</div>
-          </div>
-        </div>
-      </div>
-      </div>
-
-      <div class="dash-section">
-        <div class="dash-section-head">
-          <h2>🤝 작업 도우미 — 필요할 때 불려나오는 일꾼</h2>
-          <p>총괄이 일을 나눠서 맡기는 도우미들입니다. 만드는 일과 검증하는 일이 서로 나뉘어 있어요.</p>
+          <h2>👥 에이전트 팀 구성</h2>
+          <p>검사기(🔎)가 <b>'정해둔 규칙대로인가'를 기계적으로 자동 점검</b>한다면, 여기 팀원들은 <b>읽고·만들고·판단하는</b> 일을 합니다 — 규칙으로 딱 떨어지지 않아 사람 같은 판단이 필요한 일이라 검사기가 아니라 에이전트입니다. 필요할 때만 총괄이 불러서 그 일만 맡기고, 끝나면 결과를 보고합니다. 특히 <b>만드는 일과 검증하는 일은 일부러 다른 팀원</b>이 맡습니다(자기 일을 자기가 검사하면 관대해지니까).</p>
         </div>
         <div class="dash-grid"><div class="dash-card agent star">
      <div class="dash-card-name">⭐ 총괄 <span class="dash-tag">총괄</span></div>
@@ -267,40 +81,209 @@
    </div>
         <div class="dash-card agent">
           <div class="dash-card-name">🤖 Figma원본 조사</div>
-          <div class="dash-card-desc">피그마에 있는 진짜 디자인을 읽어옵니다.</div>
-          <div class="dash-card-when">피그마 원본을 봐야 할 때</div>
+          <div class="dash-card-desc">피그마 원본의 크기·색·구조를 직접 읽어옵니다. 무엇이 진짜 의도인지 판단하며 읽는 일이라 검사기로는 못 합니다.</div>
+          <div class="dash-card-when">1단계 · 원본 읽기</div>
         </div>
         <div class="dash-card agent">
           <div class="dash-card-name">🤖 가이드화면 제작</div>
-          <div class="dash-card-desc">홈페이지의 가이드 화면을 만들고 고칩니다.</div>
-          <div class="dash-card-when">가이드 페이지를 만들거나 고칠 때</div>
+          <div class="dash-card-desc">읽어온 원본으로 홈페이지 가이드 화면(HTML)을 새로 짓거나 고칩니다. 없던 화면을 '창작'하는 일입니다.</div>
+          <div class="dash-card-when">3단계 · 만들기</div>
         </div>
         <div class="dash-card agent">
           <div class="dash-card-name">🤖 원본대조 검증</div>
-          <div class="dash-card-desc">만든 결과가 원본과 같은지, 만든 사람과 따로 떨어져 검사합니다.</div>
-          <div class="dash-card-when">중요한 변경을 검증할 때</div>
+          <div class="dash-card-desc">만든 결과를 원본과 한 항목씩 맞대어 틀린 곳을 찾습니다. 만든 팀원이 아닌 다른 팀원이 맡습니다(자기 검사는 관대해지니까).</div>
+          <div class="dash-card-when">4단계 · 검증</div>
         </div>
         <div class="dash-card agent">
           <div class="dash-card-name">🤖 토큰값 전파</div>
-          <div class="dash-card-desc">색·크기 값 하나를 바꾸면 코드·사이트·설치기 전부에 빠짐없이 반영합니다.</div>
+          <div class="dash-card-desc">값 하나를 바꾸면 코드·사이트·설치기·문서에 빠짐없이 같이 고칩니다. 흩어진 곳을 찾아 직접 손대는 작업입니다.</div>
           <div class="dash-card-when">토큰 값을 바꿀 때</div>
         </div>
         <div class="dash-card agent">
-          <div class="dash-card-name">🤖 토큰구조 검사</div>
-          <div class="dash-card-desc">토큰의 짜임새와 이름이 규칙에 맞는지 봅니다.</div>
-          <div class="dash-card-when">토큰 구조를 만들거나 고칠 때</div>
+          <div class="dash-card-name">🤖 토큰구조 설계검토</div>
+          <div class="dash-card-desc">토큰을 새로 만들 때 짜임새·이름·다크모드가 의도에 맞는지 따져 고칠 점을 제안합니다.</div>
+          <div class="dash-card-when">토큰을 새로 설계할 때</div>
         </div>
         <div class="dash-card agent">
-          <div class="dash-card-name">🪞 레거시화면 빌드</div>
-          <div class="dash-card-desc">옛날 화면을 지금 부품으로 똑같이 다시 그립니다.</div>
-          <div class="dash-card-when">옛 화면을 그대로 재현할 때</div>
+          <div class="dash-card-name">🤖 레거시화면 빌드</div>
+          <div class="dash-card-desc">옛 시안 화면을 지금 정본 부품으로 똑같이 다시 그립니다(피그마에 직접).</div>
+          <div class="dash-card-when">옛 화면을 재현할 때</div>
         </div>
         <div class="dash-card agent">
-          <div class="dash-card-name">🏗️ 라이브러리 빌드</div>
-          <div class="dash-card-desc">피그마 컴포넌트(부품) 자체를 만들고 고칩니다.</div>
+          <div class="dash-card-name">🤖 라이브러리 빌드</div>
+          <div class="dash-card-desc">피그마 컴포넌트(부품) 정의 자체를 새로 만들거나 변형세트로 묶습니다. 결과는 다른 팀원이 검사합니다.</div>
           <div class="dash-card-when">피그마 부품을 빌드할 때</div>
         </div>
         </div>
+      </div>
+
+      <div class="dash-section">
+        <div class="dash-section-head">
+          <h2>🔎 검사기 — 실수를 자동으로 막아주는 장치</h2>
+          <p>비슷한 일을 하는 검사기끼리 6개 묶음으로 정리했습니다. 탭을 눌러 묶음별로 보세요. ("안 걸린다 = 잘 막고 있다"는 뜻이에요.)</p>
+        </div>
+        
+      <div class="dash-tabs"><button class="dash-tab is-active" data-tab="build">빌드 정확성 <span class="cnt">4</span></button><button class="dash-tab" data-tab="same">값 일치 <span class="cnt">2</span></button><button class="dash-tab" data-tab="complete">누락 점검 <span class="cnt">3</span></button><button class="dash-tab" data-tab="rules">규칙·이름 <span class="cnt">3</span></button><button class="dash-tab" data-tab="content">고정 문구 <span class="cnt">1</span></button><button class="dash-tab" data-tab="link">연결·표시 <span class="cnt">3</span></button></div>
+      <div class="dash-tabpanels">
+        <div class="dash-tabpanel is-active" data-panel="build">
+          <p class="dash-tabpanel-desc">컴포넌트를 만들 때 빠진 부품·잘못된 방식이 없는지</p>
+          <div class="dash-grid">
+          <div class="dash-card gate">
+            <div class="dash-card-top">
+              <span class="dash-gate-num">Gate 1</span>
+              <span class="dash-badge auto">자동 감시</span>
+            </div>
+            <div class="dash-card-name">🔎 부품명세</div>
+            <div class="dash-card-desc">컴포넌트 설명이 빠짐없이 적혀 있나</div>
+          </div>
+          <div class="dash-card gate">
+            <div class="dash-card-top">
+              <span class="dash-gate-num">Gate 11</span>
+              <span class="dash-badge auto">자동 감시</span>
+            </div>
+            <div class="dash-card-name">🔎 부품해부</div>
+            <div class="dash-card-desc">컴포넌트에 꼭 필요한 부품(입력 커서·삭제 아이콘 등)이 들어갔나</div>
+          </div>
+          <div class="dash-card gate">
+            <div class="dash-card-top">
+              <span class="dash-gate-num">Gate 12</span>
+              <span class="dash-badge auto">자동 감시</span>
+            </div>
+            <div class="dash-card-name">🔎 아이콘 인스턴스</div>
+            <div class="dash-card-desc">아이콘을 라이브러리 부품으로 제대로 넣었나</div>
+          </div>
+          <div class="dash-card gate">
+            <div class="dash-card-top">
+              <span class="dash-gate-num">Gate 13</span>
+              <span class="dash-badge auto">자동 감시</span>
+            </div>
+            <div class="dash-card-name">🔎 설치기 빌드검증</div>
+            <div class="dash-card-desc">설치기 코드를 만든 사람 말고 다른 검증을 거쳤나</div>
+          </div>
+          </div>
+        </div>
+        <div class="dash-tabpanel" data-panel="same">
+          <p class="dash-tabpanel-desc">정해둔 값이 코드·사이트·설치기에 똑같이 나오는지</p>
+          <div class="dash-grid">
+          <div class="dash-card gate">
+            <div class="dash-card-top">
+              <span class="dash-gate-num">Gate 7</span>
+              <span class="dash-badge auto">자동 감시</span>
+            </div>
+            <div class="dash-card-name">🔎 토큰값 일치</div>
+            <div class="dash-card-desc">코드·사이트·설치기가 똑같은 값을 쓰나</div>
+          </div>
+          <div class="dash-card gate">
+            <div class="dash-card-top">
+              <span class="dash-gate-num">Gate 9</span>
+              <span class="dash-badge auto">자동 감시</span>
+            </div>
+            <div class="dash-card-name">🔎 사이즈·숫자 페이지</div>
+            <div class="dash-card-desc">크기·숫자 값이 페이지에 맞게 나오나</div>
+          </div>
+          </div>
+        </div>
+        <div class="dash-tabpanel" data-panel="complete">
+          <p class="dash-tabpanel-desc">필요한 토큰·변수·설치 파일이 빠짐없이 준비됐는지</p>
+          <div class="dash-grid">
+          <div class="dash-card gate">
+            <div class="dash-card-top">
+              <span class="dash-gate-num">Gate 6</span>
+              <span class="dash-badge auto">자동 감시</span>
+            </div>
+            <div class="dash-card-name">🔎 설치기 누락</div>
+            <div class="dash-card-desc">설치 파일에 토큰이 하나도 안 빠졌나</div>
+          </div>
+          <div class="dash-card gate">
+            <div class="dash-card-top">
+              <span class="dash-gate-num">Gate 6b</span>
+              <span class="dash-badge auto">자동 감시</span>
+            </div>
+            <div class="dash-card-name">🔎 설치기 최신</div>
+            <div class="dash-card-desc">설치 파일이 옛날 버전인 채 남아있지 않나</div>
+          </div>
+          <div class="dash-card gate">
+            <div class="dash-card-top">
+              <span class="dash-gate-num">Gate 8</span>
+              <span class="dash-badge auto">자동 감시</span>
+            </div>
+            <div class="dash-card-name">🔎 부품–변수 연결</div>
+            <div class="dash-card-desc">컴포넌트가 쓰는 변수가 다 준비됐나</div>
+          </div>
+          </div>
+        </div>
+        <div class="dash-tabpanel" data-panel="rules">
+          <p class="dash-tabpanel-desc">정해둔 표기·이름 규칙을 어긴 게 없는지</p>
+          <div class="dash-grid">
+          <div class="dash-card gate">
+            <div class="dash-card-top">
+              <span class="dash-gate-num">Gate 3</span>
+              <span class="dash-badge auto">자동 감시</span>
+            </div>
+            <div class="dash-card-name">🔎 색상 규칙</div>
+            <div class="dash-card-desc">색을 규칙대로 썼나 (색코드 직접 입력 금지)</div>
+          </div>
+          <div class="dash-card gate">
+            <div class="dash-card-top">
+              <span class="dash-gate-num">Gate 15</span>
+              <span class="dash-badge auto">자동 감시</span>
+            </div>
+            <div class="dash-card-name">🔎 토큰 네이밍</div>
+            <div class="dash-card-desc">토큰 이름을 정한 규칙대로 지었나</div>
+          </div>
+          <div class="dash-card gate">
+            <div class="dash-card-top">
+              <span class="dash-gate-num">Gate 10</span>
+              <span class="dash-badge auto">자동 감시</span>
+            </div>
+            <div class="dash-card-name">🔎 문서 토큰이름</div>
+            <div class="dash-card-desc">문서에 옛날 토큰 이름이 남아있나</div>
+          </div>
+          </div>
+        </div>
+        <div class="dash-tabpanel" data-panel="content">
+          <p class="dash-tabpanel-desc">법인정보·약관 등 검증된 고정 문구가 원본과 같은지</p>
+          <div class="dash-grid">
+          <div class="dash-card gate">
+            <div class="dash-card-top">
+              <span class="dash-gate-num">Gate 14</span>
+              <span class="dash-badge auto">자동 감시</span>
+            </div>
+            <div class="dash-card-name">🔎 원본대조 문구</div>
+            <div class="dash-card-desc">법인정보·약관·브랜드 등 검증된 고정 문구가 원본과 같나 (지어내기 금지)</div>
+          </div>
+          </div>
+        </div>
+        <div class="dash-tabpanel" data-panel="link">
+          <p class="dash-tabpanel-desc">피그마 연결·화면 표시·기록 색인이 제대로 됐는지</p>
+          <div class="dash-grid">
+          <div class="dash-card gate">
+            <div class="dash-card-top">
+              <span class="dash-gate-num">Gate 2</span>
+              <span class="dash-badge manual">필요 시 점검</span>
+            </div>
+            <div class="dash-card-name">🔎 Figma 연결</div>
+            <div class="dash-card-desc">피그마 연결(노드)이 살아있나</div>
+          </div>
+          <div class="dash-card gate">
+            <div class="dash-card-top">
+              <span class="dash-gate-num">Gate 5</span>
+              <span class="dash-badge manual">필요 시 점검</span>
+            </div>
+            <div class="dash-card-name">🔎 컴포넌트 표출</div>
+            <div class="dash-card-desc">컴포넌트가 크기별·다크모드별로 제대로 보이나</div>
+          </div>
+          <div class="dash-card gate">
+            <div class="dash-card-top">
+              <span class="dash-gate-num">Gate 4</span>
+              <span class="dash-badge auto">자동 감시</span>
+            </div>
+            <div class="dash-card-name">🔎 리포트 색인</div>
+            <div class="dash-card-desc">작업 기록이 목록에 빠짐없이 들어갔나</div>
+          </div>
+          </div>
+        </div>
+      </div>
       </div>
 
       <div class="dash-section">
@@ -330,11 +313,24 @@
 
       <div class="dash-foot">
         이 화면은 손으로 쓴 게 아니라 <b>자동으로 만들어집니다.</b> 검사기·도우미가 늘거나 바뀌면 목록 파일만 고치고 다시 생성하면 갱신돼요 — 그래서 이 화면 자체는 실제와 어긋나지 않습니다.<br>
-        마지막 생성: 2026-06-25 10:06
+        마지막 생성: 2026-06-26 11:16
       </div>
     </div>
   </main>
 </div>
 <script src="../assets/js/main.js"></script>
+<script>
+(function(){
+  var tabs = document.querySelectorAll(".dash-tab");
+  var panels = document.querySelectorAll(".dash-tabpanel");
+  tabs.forEach(function(t){
+    t.addEventListener("click", function(){
+      var k = t.getAttribute("data-tab");
+      tabs.forEach(function(x){ x.classList.toggle("is-active", x === t); });
+      panels.forEach(function(p){ p.classList.toggle("is-active", p.getAttribute("data-panel") === k); });
+    });
+  });
+})();
+</script>
 </body>
 </html>

@@ -896,8 +896,8 @@
     .s1-date-picker__panel {
       position: absolute; top: calc(100% + 8px); left: 0; z-index: 8;
       width: 356px;
-      background: var(--color-date-picker-bg-panel);
-      border: 1px solid var(--color-date-picker-border-panel); /* Variables: control/popup border */
+      background: var(--color-date-picker-panel-bg);
+      border: 1px solid var(--color-date-picker-panel-border); /* Variables: control/popup border */
       border-radius: var(--radius-4, 4px); /* Figma: 4px */
       box-shadow: 0 4px 8px rgba(0,0,0,0.15); /* Figma: shadow — rgba 허용 */
       padding: 20px 24px; /* Figma: py=20px, grid-side=24px */
@@ -922,7 +922,7 @@
       color: var(--color-date-picker-text-primary); cursor: pointer;
       border-radius: var(--radius-4, 4px);
     }
-    .s1-date-picker__nav-btn:hover { background: var(--color-date-picker-bg-hover); }
+    .s1-date-picker__nav-btn:hover { background: var(--color-date-picker-cell-bg-hover); }
     .s1-date-picker__month-label {
       font-size: 24px; font-weight: 700; /* Figma: title/24B = Pretendard Bold 24px */
       color: var(--color-date-picker-text-primary); /* Variables: date-picker/text/primary */
@@ -930,7 +930,7 @@
       padding: 2px 8px; border-radius: var(--radius-4, 4px);
       transition: background 0.1s;
     }
-    .s1-date-picker__month-label:hover { background: var(--color-date-picker-bg-hover); }
+    .s1-date-picker__month-label:hover { background: var(--color-date-picker-cell-bg-hover); }
     .s1-date-picker__weekdays {
       display: grid; grid-template-columns: repeat(7, 44px);
       flex-shrink: 0; /* flex 패널 안에서 높이 유지 */
@@ -967,28 +967,28 @@
       background: transparent; box-sizing: border-box;
     }
     .s1-date-picker__day:hover:not([disabled]) > .day-inner {
-      background: var(--color-date-picker-bg-hover);
+      background: var(--color-date-picker-cell-bg-hover);
     }
     .s1-date-picker__day.is-other-month {
       color: var(--color-date-picker-text-other-month);
     }
     /* Today: Variables selected-alt — blue border circle + blue text, panel bg */
     .s1-date-picker__day.is-today > .day-inner {
-      border-color: var(--color-date-picker-border-today);
+      border-color: var(--color-date-picker-cell-border-today);
       color: var(--color-date-picker-text-today);
-      background: var(--color-date-picker-bg-today);
+      background: var(--color-date-picker-cell-bg-today);
     }
     /* Selected: Variables — blue fill circle + selected text */
     .s1-date-picker__day.is-selected > .day-inner {
-      background: var(--color-date-picker-bg-selected);
-      border-color: var(--color-date-picker-bg-selected);
+      background: var(--color-date-picker-cell-bg-selected);
+      border-color: var(--color-date-picker-cell-bg-selected);
       color: var(--color-date-picker-text-selected);
       font-weight: 700;
     }
     .s1-date-picker__day[disabled] { color: var(--color-date-picker-text-disabled); cursor: not-allowed; }
     .s1-date-picker__day.is-today.is-selected > .day-inner {
-      background: var(--color-date-picker-bg-selected);
-      border-color: var(--color-date-picker-bg-selected);
+      background: var(--color-date-picker-cell-bg-selected);
+      border-color: var(--color-date-picker-cell-bg-selected);
       color: var(--color-date-picker-text-selected);
     }
     /* DatePicker trigger hover — Select hover와 동일 */
@@ -1026,14 +1026,14 @@
       color: var(--color-date-picker-text-secondary);
       transition: background 0.1s;
     }
-    .s1-date-picker__selector-btn:hover { background: var(--color-date-picker-bg-hover); }
+    .s1-date-picker__selector-btn:hover { background: var(--color-date-picker-cell-bg-hover); }
     .s1-date-picker__selector-btn.is-selected {
-      border-color: var(--color-date-picker-border-today);
+      border-color: var(--color-date-picker-cell-border-today);
       color: var(--color-date-picker-text-today);
       font-weight: 700;
     }
     .s1-date-picker__selector-btn.is-current {
-      border-color: var(--color-date-picker-border-today);
+      border-color: var(--color-date-picker-cell-border-today);
       color: var(--color-date-picker-text-today);
     }
 
@@ -1772,17 +1772,21 @@
   </style>
 </head>
 <body>
-<div class="app">
 
-  <!-- Sidebar -->
-  <aside class="sidebar" id="sidebar"></aside>
-
+<div class="mobile-header">
   <button class="hamburger" id="sidebar-toggle" aria-label="메뉴 열기">
     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
       <line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/>
     </svg>
   </button>
-  <div class="sidebar-overlay" id="sidebar-overlay"></div>
+  <span class="mobile-logo">Components</span>
+</div>
+<div class="sidebar-overlay" id="sidebar-overlay"></div>
+
+<div class="app">
+
+  <!-- Sidebar -->
+  <aside class="sidebar" id="sidebar"></aside>
 
   <main class="main-content">
     <!-- 제목 영역: 스크롤 시 사라짐 -->
@@ -5894,19 +5898,19 @@ update(); // 초기화</pre>
             <table class="token-detail-table">
               <thead><tr><th>역할</th><th>Semantic Variable</th><th>설명</th></tr></thead>
               <tbody>
-                <tr><td>패널 배경</td><td class="token-value">var(--color-date-picker-bg-panel)</td><td>캘린더 팝업 배경</td></tr>
-                <tr><td>패널 테두리</td><td class="token-value">var(--color-date-picker-border-panel)</td><td>팝업 외곽선</td></tr>
+                <tr><td>패널 배경</td><td class="token-value">var(--color-date-picker-panel-bg)</td><td>캘린더 팝업 배경</td></tr>
+                <tr><td>패널 테두리</td><td class="token-value">var(--color-date-picker-panel-border)</td><td>팝업 외곽선</td></tr>
                 <tr><td>헤더/월 텍스트</td><td class="token-value">var(--color-date-picker-text-primary)</td><td>YYYY.MM 라벨 · 이전/다음 nav</td></tr>
                 <tr><td>요일/날짜 텍스트</td><td class="token-value">var(--color-date-picker-text-secondary)</td><td>weekday · 기본 day cell</td></tr>
                 <tr><td>일요일 텍스트</td><td class="token-value">var(--color-date-picker-text-sunday)</td><td>일요일 헤더</td></tr>
                 <tr><td>토요일 텍스트</td><td class="token-value">var(--color-date-picker-text-saturday)</td><td>토요일 헤더</td></tr>
                 <tr><td>이전/다음달 날짜</td><td class="token-value">var(--color-date-picker-text-other-month)</td><td>other-month day cell</td></tr>
                 <tr><td>비활성 날짜</td><td class="token-value">var(--color-date-picker-text-disabled)</td><td>disabled day cell</td></tr>
-                <tr><td>hover 배경</td><td class="token-value">var(--color-date-picker-bg-hover)</td><td>day cell · nav · selector hover</td></tr>
-                <tr><td>오늘 테두리</td><td class="token-value">var(--color-date-picker-border-today)</td><td>today 원형 테두리</td></tr>
+                <tr><td>hover 배경</td><td class="token-value">var(--color-date-picker-cell-bg-hover)</td><td>day cell · nav · selector hover</td></tr>
+                <tr><td>오늘 테두리</td><td class="token-value">var(--color-date-picker-cell-border-today)</td><td>today 원형 테두리</td></tr>
                 <tr><td>오늘 텍스트</td><td class="token-value">var(--color-date-picker-text-today)</td><td>today 강조 텍스트</td></tr>
-                <tr><td>오늘 배경</td><td class="token-value">var(--color-date-picker-bg-today)</td><td>today 셀 배경(패널과 동일)</td></tr>
-                <tr><td>선택 배경</td><td class="token-value">var(--color-date-picker-bg-selected)</td><td>selected day 채움 원</td></tr>
+                <tr><td>오늘 배경</td><td class="token-value">var(--color-date-picker-cell-bg-today)</td><td>today 셀 배경(패널과 동일)</td></tr>
+                <tr><td>선택 배경</td><td class="token-value">var(--color-date-picker-cell-bg-selected)</td><td>selected day 채움 원</td></tr>
                 <tr><td>선택 텍스트</td><td class="token-value">var(--color-date-picker-text-selected)</td><td>selected day 텍스트</td></tr>
               </tbody>
             </table>
