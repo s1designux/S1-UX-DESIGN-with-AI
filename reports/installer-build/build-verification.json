@@ -1,9 +1,9 @@
 {
   "sourceFile": "plugins/figma-vars-installer/src/build-components.ts",
-  "sourceHash": "sha256:319ec16e8c806be26e96333fa37f2f82b4553fce239fefd8146b8223a35d6e66",
+  "sourceHash": "sha256:dbbc68fe6d62330fd5b3ec247666697b3383c184c9c25df94a1b2012d89c0429",
   "verifiedBy": "component-verifier",
   "verdict": "pass",
   "changeType": "structural",
-  "verifiedAt": "2026-06-26T00:46:43.086Z",
-  "notes": "Line Tab 셀 패딩 셀→라벨 이동: 인디케이터 셀폭 전체 span→Set 탭 붙였을 때 하단선 연속(셀패딩이 인디케이터 inset해 끊기던 버그 수정). 라벨 여백 PAD_X 유지·hug폭/단독 LineTab 회귀0·Set 동일폭/폰트 불변. ⭐ Figma A/B 렌더검증 완료, 코드레벨 대조."
+  "verifiedAt": "2026-06-26T00:59:46.731Z",
+  "notes": "Pagination 전용 semantic 토큰 7종 신설(control/icon 4 + number 3) + buildPaginationCell arrowStates(icon)·numStates(text) 재배선 검증. 토큰값: control/icon active=secondary 라벨 동일(gray800·gd800)·disabled=button label disabled 동일(gray300·gd600), number=구 적용색 보존(def/hov gray400·gd600·sel gray800·gd800). control/icon disabled 다크 gd400→gd600 의도적 변경(사용자 지시). 배선: bg/border short키 pg()래핑·icon/text 풀패스 직접 scv, Edge가 arrowStates 공유, selected 토큰 supply-only. Gate7 397일치·Gate8 키누락0·Gate15 네이밍0·Gate11/12 pass·38세트 빌드 무에러. 타 컴포넌트 무관."
 }

@@ -2152,23 +2152,25 @@ async function buildTimePickerDropdown(maps: BuildMaps, originY: number): Promis
 // 이 셀들을 조합한 "Pagination"(완성 바) 세트는 buildPaginationBar 가 만든다(Table 푸터·홈페이지 ACTION 동일).
 // 색 바인딩(값 정본 일치):
 //   arrow bg/border = color/pagination/control/* (신규 토큰 없이 기존 6키 사용)
-//   arrow icon       = color/icon/gray-dark(기본/hover) · color/icon/gray-light(disabled = icon-muted)
-//   number text      = color/text/state/helper(기본/hover = gray/400) · color/text/body/secondary(selected = text-secondary)
+//   arrow icon       = color/pagination/control/icon/*(전용 — Secondary 버튼 라벨과 동일 foundation: active=gray/800·disabled=gray/300)
+//   number text      = color/pagination/number/*(전용 — 기존 적용색 보존: default·hover=gray/400·selected=gray/800)
 async function buildPaginationCell(maps: BuildMaps, originY: number): Promise<{ set: ComponentSetNode; bottomY: number }> {
   const pg = (k: string) => `color/pagination/${k}`;
   const CHEV_PREV = `<svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M9 3.5L5 7l4 3.5" stroke="#000" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
   // Edge(처음/마지막) — 좌향 chevron + 세로바(|<). last 는 사용처에서 180° 회전(>|). Arrow 가 prev 1종을 회전해 next 로 쓰는 것과 동일 철학.
   const CHEV_EDGE = `<svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M10 3.5L6.5 7l3.5 3.5M3.5 3.5v7" stroke="#000" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
   const SZ = 28;
+  // 아이콘 색 = 전용 semantic color/pagination/control/icon/*(범용 icon/* 직참 탈피). selected 토큰도 신설(현재 셀은 미사용·향후 대비).
   const arrowStates = [
-    { state: "Default",  bg: "control/bg/default",  border: "control/border/default",  icon: "color/icon/gray-dark" },
-    { state: "Hover",    bg: "control/bg/hover",    border: "control/border/default",  icon: "color/icon/gray-dark" },
-    { state: "Disabled", bg: "control/bg/disabled", border: "control/border/disabled", icon: "color/icon/gray-light" },
+    { state: "Default",  bg: "control/bg/default",  border: "control/border/default",  icon: "color/pagination/control/icon/default" },
+    { state: "Hover",    bg: "control/bg/hover",    border: "control/border/default",  icon: "color/pagination/control/icon/hover" },
+    { state: "Disabled", bg: "control/bg/disabled", border: "control/border/disabled", icon: "color/pagination/control/icon/disabled" },
   ];
+  // 번호 텍스트 색 = 전용 semantic color/pagination/number/*(범용 text/* 직참 탈피).
   const numStates = [
-    { state: "Default",  bg: null as string | null, text: "color/text/state/helper" },
-    { state: "Hover",    bg: "control/bg/hover",     text: "color/text/state/helper" },
-    { state: "Selected", bg: null as string | null,  text: "color/text/body/secondary" },
+    { state: "Default",  bg: null as string | null, text: "color/pagination/number/default" },
+    { state: "Hover",    bg: "control/bg/hover",     text: "color/pagination/number/hover" },
+    { state: "Selected", bg: null as string | null,  text: "color/pagination/number/selected" },
   ];
   const byKey = new Map<string, ComponentNode>();
   const comps: ComponentNode[] = [];

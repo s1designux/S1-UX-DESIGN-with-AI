@@ -575,6 +575,15 @@ export const SEMANTIC_COLOR: Record<string, SemanticColorEntry> = {
   "color/pagination/control/border/default": { light: "gray/200", dark: "gray-dark/500" },
   "color/pagination/control/border/disabled": { light: "gray/100", dark: "gray-dark/300" },
   "color/pagination/control/border/hover": { light: "gray/200", dark: "gray-dark/500" },
+  // control/icon(화살표·edge 글리프) = Secondary 버튼 라벨과 동일 foundation (active=gray/800·disabled=gray/300) — 사용자 결정 2026-06-26
+  "color/pagination/control/icon/default": { light: "gray/800", dark: "gray-dark/800" },
+  "color/pagination/control/icon/hover": { light: "gray/800", dark: "gray-dark/800" },
+  "color/pagination/control/icon/selected": { light: "gray/800", dark: "gray-dark/800" },
+  "color/pagination/control/icon/disabled": { light: "gray/300", dark: "gray-dark/600" },
+  // number(페이지 번호) = 기존 적용 색 보존: default·hover=text/state/helper(gray/400)·selected=text/body/secondary(gray/800) — 사용자 결정 2026-06-26
+  "color/pagination/number/default": { light: "gray/400", dark: "gray-dark/600" },
+  "color/pagination/number/hover": { light: "gray/400", dark: "gray-dark/600" },
+  "color/pagination/number/selected": { light: "gray/800", dark: "gray-dark/800" },
 
   // ── status-card ────────────────────────────────
   "color/status-card/text/disabled": { light: "gray/300", dark: "gray-dark/400" },

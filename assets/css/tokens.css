@@ -621,6 +621,13 @@
   --color-pagination-control-border-default : var(--color-gray-200);
   --color-pagination-control-border-disabled: var(--color-gray-100);
   --color-pagination-control-border-hover   : var(--color-gray-200);
+  --color-pagination-control-icon-default   : var(--color-gray-800);
+  --color-pagination-control-icon-hover     : var(--color-gray-800);
+  --color-pagination-control-icon-selected  : var(--color-gray-800);
+  --color-pagination-control-icon-disabled  : var(--color-gray-300);
+  --color-pagination-number-default         : var(--color-gray-400);
+  --color-pagination-number-hover           : var(--color-gray-400);
+  --color-pagination-number-selected        : var(--color-gray-800);
 
   /* ── status-card ── */
   --color-status-card-text-disabled          : var(--color-gray-300);
@@ -843,6 +850,13 @@
   --color-pagination-control-border-default : var(--color-gray-dark-500);
   --color-pagination-control-border-disabled: var(--color-gray-dark-300);
   --color-pagination-control-border-hover   : var(--color-gray-dark-500);
+  --color-pagination-control-icon-default   : var(--color-gray-dark-800);
+  --color-pagination-control-icon-hover     : var(--color-gray-dark-800);
+  --color-pagination-control-icon-selected  : var(--color-gray-dark-800);
+  --color-pagination-control-icon-disabled  : var(--color-gray-dark-600);
+  --color-pagination-number-default         : var(--color-gray-dark-600);
+  --color-pagination-number-hover           : var(--color-gray-dark-600);
+  --color-pagination-number-selected        : var(--color-gray-dark-800);
 
   /* ── status-card ── */
   --color-status-card-text-disabled          : var(--color-gray-dark-400);
