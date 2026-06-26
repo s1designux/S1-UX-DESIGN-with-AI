@@ -1,9 +1,9 @@
 {
   "sourceFile": "plugins/figma-vars-installer/src/build-components.ts",
-  "sourceHash": "sha256:ef6ae399122ae33eee6b44a5113fbd9ab41cbb5670cfa0d1fe0f668542461ecc",
+  "sourceHash": "sha256:c6b88ad81561de4044dc1103a64a5c071782723bbe9c0c48d472e4eb5a6b6430",
   "verifiedBy": "component-verifier",
   "verdict": "pass",
   "changeType": "structural",
-  "verifiedAt": "2026-06-25T06:38:59.664Z",
-  "notes": "9건+LineTab폰트 원본정정 검증: LineTab 셀 원본540:6032 실측(md20/h44·sm16/h42·mobile16/h32) 일치→Set 원본6947:4621 폰트정합·Footer Mobile카피중앙·캘린더헤더 화살표래퍼해제·DatePicker Mobile Bottom Sheet(리네임/외곽선제거/적용=primary인스턴스)·테이블 Pagination세트교체·icon/gray light=gray-dark600·Pagination control border=secondary·CalendarTile Hover(신규token). 토큰전파 monitor/naming/coverage 통과. 코드+원본MCP대조, 렌더는 사용자재설치확인."
+  "verifiedAt": "2026-06-26T00:08:36.823Z",
+  "notes": "Multi Toggle Element(32 variant: position×state×size) + Multi Toggle(6 variant: Size×Selected) 신규 추가. keycheck(137키 누락0)/anatomy(7규칙 통과)/iconpolicy(위반0) 통과. tsc 에러 3건 모두 기존 에러(행 번호 이동만). hex 하드코딩 0. cellSpec 조립 로직·strokeSides 보더 변·cornerConfig·BUILT_COMPS 키 정합 시뮬레이션 전부 일치. BUILD_DEPENDENCIES 요소 우선 빌드·members 표시 순서·runners 2개 키 정확 등록 확인."
 }

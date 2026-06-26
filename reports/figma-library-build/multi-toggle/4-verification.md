@@ -248,3 +248,195 @@
 |----------|------|------|------|
 | 1차 | 2026-06-25 | FAIL (❌1) | middle-left strokeRight=0 + last strokeLeft=0 → 3칸 조립 경계선 누락 (기준 잘못 판정) |
 | 2차 (재검증) | 2026-06-25 | **PASS** | 올바른 기준 적용: middle-left.R=0 + middle-right.L=0이 정상. 보더 원복 16개 실측 + 조립예시 6개 렌더 대조 통과 |
+
+---
+
+# 4단계 검증 결과 — Multi Toggle v2 (효율 구조)
+
+**검증자:** 🤖 component-verifier (figma-library-build §(C))
+**검증일:** 2026-06-25
+**대상 세트:** `603:20` (Multi Toggle v2, 파일 `cysG5U1udpQqVagYY1hWHW` / 페이지 `302:19291`)
+**계획서:** `reports/figma-library-build/multi-toggle/2-plan-v2.md`
+
+---
+
+## 검증 요약
+
+| 항목 | 결과 | 비고 |
+|------|------|------|
+| variant 개수 (8개) | ✅ | state(4) × size(2) = 8, 누락/중복 없음 |
+| variant 이름 형식 | ✅ | `state=X, size=Y` 정규 형식 |
+| position 축 없음 | ✅ | 8개 전부 state/size 축만 |
+| 패킹 bounds | ✅ | w=320, h=126 — 붕괴 없음 |
+| 토큰 바인딩 raw hex | ✅ | 0건 — 전 fill/stroke/text 색 Variable 바인딩 완료 |
+| 토큰 경로 정확성 | ✅ | 12종 경로 계획서 매핑과 1:1 일치 |
+| 폰트 일관성 | ✅ | 전 8 TEXT 노드: Pretendard, 비-Pretendard 0건 |
+| 보더 구조 — selected 4변 | ✅ | strokeTop/Right/Bottom/Left 전부 1px |
+| 보더 구조 — 미선택 왼쪽만 여부 | ❓(c) | 4변 모두 1px — 계획서 "왼쪽만" 규격과 다름(단 조립 덮기 렌더는 시각 정상) |
+| 조립예시 틀 속성 (clipsContent, cornerRadius) | ✅ | clipsContent=true, cornerRadius=4, 틀 stroke 바인딩 ✅ |
+| 조립 렌더 — 선택 셀 덮기 효과 | ✅ | selected 인접면 회색선 없음, 6개 예시 전수 확인 |
+| 조립 렌더 — 나머지 경계 1px | ✅ | 6개 예시 모두 경계선 명확 |
+| v1 세트 587:8029 무결성 | ✅ | 변형 32개 보존, 대표 2종 바인딩 raw hex 0건 |
+
+---
+
+## ❌ (a) 코드 실수 — 수정 대상
+
+없음.
+
+---
+
+## 🟡 (b) 의도적 개선
+
+없음.
+
+---
+
+## ❓ (c) 확인 요청 — 사용자 판단 필요
+
+- ❓ **미선택 칸(default·hover·disabled) 보더 방향 — 계획서 "왼쪽만" vs 구현 "4변 모두 1px"**
+
+  계획서(2-plan-v2.md)는 미선택 칸의 보더를 "왼쪽 보더 1px만(strokeLeft=1, top/right/bottom=0)"으로 명시했습니다. 실제 구현은 strokeTopWeight=strokeRightWeight=strokeBottomWeight=strokeLeftWeight=1 (4변 모두 1px)입니다.
+
+  조립 예시 렌더에서는 틀(clipsContent=true)이 상/하/좌우 바깥 테두리를 담당하고, 선택 칸이 -1px 절대위치로 양옆 회색선을 덮으므로 시각 결과는 계획서 의도와 동일하게 보입니다.
+
+  그러나 칸 컴포넌트 단독으로 봤을 때(틀 없이) 4변이 모두 보이는 점이 계획서 규격과 다릅니다. v1은 position별로 각각 3변 보더 구조였습니다.
+
+  **선택지:**
+  - (A) 계획서대로 수정: 미선택 = strokeLeft=1, strokeTop/Right/Bottom=0. 칸이 단독으로도 "왼쪽만" 구분선 역할을 명확히 함.
+  - (B) 현재 유지: 4변 1px. 조립 시 틀이 바깥을 잘라줘 시각 결과 동일. 변형세트 단순(position 축 없음).
+
+  안 정하면 현재(B) 상태 유지.
+
+---
+
+## 🔒 BLOCKED
+
+없음.
+
+---
+
+## 토큰 바인딩 스캔 결과 (use_figma 사실 추출 + figma-binding-lookup 역매핑)
+
+- 스캔 노드: `603:20` (v2 세트) + 조립예시 6개 · 총 노드 17(세트)+7×6(조립) · 미바인딩 **0건** · 고유 hex **0종**
+
+| hex 값 | 노드·속성 | 역매핑 | 허용편차 명시? | 판정 |
+|--------|-----------|--------|--------------|------|
+| (없음) | — | — | — | ✅ 미바인딩 raw hex 없음 |
+
+**결론: raw hex 잔류 0건. figma-binding-lookup.js 대상 hex 없음(역매핑 대상 없음). 토큰 바인딩 완전.**
+
+---
+
+## 변수 바인딩 경로 검증 (계획서 대조)
+
+| 변형 ID | 변형 이름 | fill Variable | stroke Variable | text Variable | 판정 |
+|---------|----------|--------------|----------------|---------------|------|
+| 602:20 | state=default, size=md | `color/button/bg/secondary--default` | `color/button/border/secondary--default` | `color/button/label/secondary--default` | ✅ |
+| 602:22 | state=hover, size=md | `color/button/bg/secondary--hover` | `color/button/border/secondary--hover` | `color/button/label/secondary--hover` | ✅ |
+| 602:24 | state=selected, size=md | `color/button/bg/primary--default` | `color/button/border/primary--default` | `color/button/label/primary--default` | ✅ |
+| 602:26 | state=disabled, size=md | `color/button/bg/disabled` | `color/button/border/disabled` | `color/button/label/disabled` | ✅ |
+| 602:28 | state=default, size=sm | `color/button/bg/secondary--default` | `color/button/border/secondary--default` | `color/button/label/secondary--default` | ✅ |
+| 602:30 | state=hover, size=sm | `color/button/bg/secondary--hover` | `color/button/border/secondary--hover` | `color/button/label/secondary--hover` | ✅ |
+| 602:32 | state=selected, size=sm | `color/button/bg/primary--default` | `color/button/border/primary--default` | `color/button/label/primary--default` | ✅ |
+| 602:34 | state=disabled, size=sm | `color/button/bg/disabled` | `color/button/border/disabled` | `color/button/label/disabled` | ✅ |
+
+**8/8 변형 전부 계획서 매핑과 일치.**
+
+---
+
+## 폰트 일관성 스캔 결과 (figma-font-scan.md 절차)
+
+| 항목 | 결과 |
+|------|------|
+| 스캔 세트 | `603:20` (Multi Toggle v2) |
+| 스캔 TEXT 노드 수 | 8개 (variant당 1개 "항목" 텍스트) |
+| 비-Pretendard family 건수 | **0건** |
+| 판정 | ✅ PASS(전 텍스트 Pretendard) |
+
+---
+
+## 보더 구조 상세 (8 variant 전수)
+
+| 변형 ID | 변형 이름 | top | right | bottom | left | align | 계획서 기대 | 판정 |
+|---------|----------|-----|-------|--------|------|-------|------------|------|
+| 602:20 | default, md | 1 | 1 | 1 | 1 | INSIDE | 미선택=left만 | ❓(c) |
+| 602:22 | hover, md | 1 | 1 | 1 | 1 | INSIDE | 미선택=left만 | ❓(c) |
+| 602:24 | selected, md | 1 | 1 | 1 | 1 | INSIDE | 4변 1px ✅ | ✅ |
+| 602:26 | disabled, md | 1 | 1 | 1 | 1 | INSIDE | 미선택=left만 | ❓(c) |
+| 602:28 | default, sm | 1 | 1 | 1 | 1 | INSIDE | 미선택=left만 | ❓(c) |
+| 602:30 | hover, sm | 1 | 1 | 1 | 1 | INSIDE | 미선택=left만 | ❓(c) |
+| 602:32 | selected, sm | 1 | 1 | 1 | 1 | INSIDE | 4변 1px ✅ | ✅ |
+| 602:34 | disabled, sm | 1 | 1 | 1 | 1 | INSIDE | 미선택=left만 | ❓(c) |
+
+비고: selected 2개는 계획서와 일치(4변 모두 1). 미선택 6개는 계획서("왼쪽만")와 다르나 조립 렌더 시각은 의도와 동일.
+
+---
+
+## 조립예시 렌더 (get_screenshot 6개 전수)
+
+### 틀(컨테이너 프레임) 속성
+
+| 속성 | 실측값 | 계획서 기대 | 판정 |
+|------|--------|-----------|------|
+| clipsContent | true | true | ✅ |
+| cornerRadius | 4 | radius/control/sm(4) | ✅ |
+| 틀 stroke 바인딩 | `color/button/border/secondary--default` | 계획서 일치 | ✅ |
+| 틀 stroke 방향 | 4변 1px INSIDE | 바깥 테두리 1px | ✅ |
+
+### 선택 칸 절대위치 (덮기 구현)
+
+| 조립예시 | 선택 칸 x | y | w | h | 덮기(-1px) |
+|---------|---------|---|---|---|------------|
+| md left-selected (604:20) | -1 | -1 | 66 | 46 | ✅ (66=64+2, 46=44+2) |
+| md center-selected (604:27) | 63 | -1 | 66 | 46 | ✅ |
+| md right-selected (604:34) | 127 | -1 | 66 | 46 | ✅ |
+| sm left-selected (604:41) | -1 | -1 | 58 | 36 | ✅ (58=56+2, 36=34+2) |
+| sm center-selected (604:48) | 55 | -1 | 58 | 36 | ✅ |
+| sm right-selected (604:55) | 111 | -1 | 58 | 36 | ✅ |
+
+### 시각 렌더 결과
+
+| 조립예시 | 선택 위치 | 선택 인접면 회색선 | 나머지 경계 | 판정 |
+|---------|----------|-----------------|-----------|------|
+| md / left-selected | 첫 번째 | 없음 ✅ | 1px 명확 ✅ | ✅ |
+| md / center-selected | 가운데 | 좌우 모두 없음 ✅ | 1px 명확 ✅ | ✅ |
+| md / right-selected | 마지막 | 없음 ✅ | 1px 명확 ✅ | ✅ |
+| sm / left-selected | 첫 번째 | 없음 ✅ | 1px 명확 ✅ | ✅ |
+| sm / center-selected | 가운데 | 좌우 모두 없음 ✅ | 1px 명확 ✅ | ✅ |
+| sm / right-selected | 마지막 | 없음 ✅ | 1px 명확 ✅ | ✅ |
+
+**6/6 정상 렌더 확인.**
+
+---
+
+## v1 세트 무결성 확인
+
+| 항목 | 결과 |
+|------|------|
+| v1 세트 ID | `587:8029` (Multi Toggle) |
+| 변형 수 | **32개** (4 position × 4 state × 2 size) — 보존 ✅ |
+| 대표 표본 바인딩 (586:2 first/default/md) | raw hex 0건 ✅ |
+| 대표 표본 바인딩 (587:46 last/selected/sm) | raw hex 0건 ✅ |
+| v2 빌드로 인한 변경 여부 | 없음 ✅ |
+
+---
+
+## 최종 판정
+
+| 종류 | 건수 | 내용 |
+|------|------|------|
+| ❌(a) 코드 실수 | **0건** | — |
+| 🟡(b) 의도적 개선 | 0건 | — |
+| ❓(c) 확인 요청 | **1건** | 미선택 칸 보더 방향(계획서 "왼쪽만" vs 구현 "4변 1px") |
+| 🔒 BLOCKED | 0건 | — |
+
+**→ ❌(a) 0건 · ❓(c) 1건 — HOLD. 사용자 확인 대기.**
+
+---
+
+## v2 검증 이력
+
+| 검증 회차 | 일시 | 결과 | 비고 |
+|----------|------|------|------|
+| 1차 | 2026-06-25 | HOLD (❓1건) | 미선택 칸 보더 "4변 모두 1px" vs 계획서 "왼쪽만" — 조립 덮기 렌더는 시각 정상, 컴포넌트 단독 구조 불일치 |

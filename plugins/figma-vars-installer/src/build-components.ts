@@ -3763,6 +3763,230 @@ async function buildCI(maps: BuildMaps, originY: number): Promise<{ set: Compone
   return { set, bottomY: originY + sh };
 }
 
+// ── Multi Toggle Element — 개별 셀 변형세트 ────────────────────────────────────
+// 정본: V2.4 pc_multi-toggle. 버튼 토큰(secondary/primary/disabled)을 직접 사용.
+// 32 variants = position(4) × state(4) × size(2). variant명: "position=first, state=default, size=md"
+// 위치별 코너 + 보더 변: first=좌상·좌하 / middle-left·middle-right=없음 / last=우상·우하
+// 보더 변(strokeTopWeight 등): first/middle-left=상·하·좌(우=0), middle-right/last=상·하·우(좌=0)
+async function buildMultiToggleElement(maps: BuildMaps, originY: number): Promise<{ set: ComponentSetNode; bottomY: number }> {
+  const positions = ["first", "middle-left", "middle-right", "last"] as const;
+  type Pos = typeof positions[number];
+  const states  = ["default", "hover", "selected", "disabled"] as const;
+  type St  = typeof states[number];
+  const sizes   = [
+    { id: "md", h: 44, padX: 12, font: 14 },
+    { id: "sm", h: 34, padX:  8, font: 14 },
+  ] as const;
+
+  // 상태별 색 슬롯 — 버튼 토큰 직접 사용
+  const colorSlot = (st: St): { bg: string; border: string; text: string } => {
+    switch (st) {
+      case "default":  return { bg: "color/button/bg/secondary--default", border: "color/button/border/secondary--default", text: "color/button/label/secondary--default" };
+      case "hover":    return { bg: "color/button/bg/secondary--hover",   border: "color/button/border/secondary--hover",   text: "color/button/label/secondary--hover"   };
+      case "selected": return { bg: "color/button/bg/primary--default",   border: "color/button/border/primary--default",   text: "color/button/label/primary--default"   };
+      case "disabled": return { bg: "color/button/bg/disabled",           border: "color/button/border/disabled",           text: "color/button/label/disabled"           };
+    }
+  };
+
+  // 위치별 코너 반경 (개별 코너, 리터럴 4)
+  const cornerConfig = (pos: Pos): { tl: number; tr: number; bl: number; br: number } => {
+    switch (pos) {
+      case "first":        return { tl: 4, tr: 0, bl: 4, br: 0 };
+      case "last":         return { tl: 0, tr: 4, bl: 0, br: 4 };
+      case "middle-left":  return { tl: 0, tr: 0, bl: 0, br: 0 };
+      case "middle-right": return { tl: 0, tr: 0, bl: 0, br: 0 };
+    }
+  };
+
+  // 위치별 보더 변 두께 (state 무관, position으로만 결정)
+  // first/middle-left: 상·하·좌 (우=0) / middle-right/last: 상·하·우 (좌=0)
+  const strokeSides = (pos: Pos): { t: number; r: number; b: number; l: number } => {
+    switch (pos) {
+      case "first":        return { t: 1, r: 0, b: 1, l: 1 };
+      case "middle-left":  return { t: 1, r: 0, b: 1, l: 1 };
+      case "middle-right": return { t: 1, r: 1, b: 1, l: 0 };
+      case "last":         return { t: 1, r: 1, b: 1, l: 0 };
+    }
+  };
+
+  const comps: ComponentNode[] = [];
+  const cells: { comp: ComponentNode; posIdx: number; stIdx: number; szIdx: number }[] = [];
+
+  for (let szIdx = 0; szIdx < sizes.length; szIdx++) {
+    const sz = sizes[szIdx];
+    for (let posIdx = 0; posIdx < positions.length; posIdx++) {
+      const pos = positions[posIdx];
+      const cor = cornerConfig(pos);
+      const sides = strokeSides(pos);
+      for (let stIdx = 0; stIdx < states.length; stIdx++) {
+        const st = states[stIdx];
+        const slot = colorSlot(st);
+
+        const comp = figma.createComponent();
+        comp.name = `position=${pos}, state=${st}, size=${sz.id}`;
+
+        // 오토레이아웃: 가로, 가운데 정렬, 높이 고정
+        comp.layoutMode = "HORIZONTAL";
+        comp.primaryAxisAlignItems = "CENTER";
+        comp.counterAxisAlignItems = "CENTER";
+        comp.primaryAxisSizingMode = "AUTO";
+        comp.counterAxisSizingMode = "FIXED";
+        comp.paddingLeft  = sz.padX;
+        comp.paddingRight = sz.padX;
+
+        // 배경·보더
+        comp.fills   = [boundPaint(scv(maps, slot.bg))];
+        comp.strokes = [boundPaint(scv(maps, slot.border))];
+        comp.strokeAlign = "INSIDE";
+        // 개별 변 두께 — strokeWeight=0(플레이스홀더), 개별 변으로 덮음
+        comp.strokeWeight = 1; // 타입 맞춤 (실제 렌더는 개별 변)
+        try {
+          (comp as any).strokeTopWeight    = sides.t;
+          (comp as any).strokeRightWeight  = sides.r;
+          (comp as any).strokeBottomWeight = sides.b;
+          (comp as any).strokeLeftWeight   = sides.l;
+        } catch (e) { /* API 미지원 환경(mock) 무시 */ }
+
+        // 개별 코너 반경
+        comp.topLeftRadius     = cor.tl;
+        comp.topRightRadius    = cor.tr;
+        comp.bottomLeftRadius  = cor.bl;
+        comp.bottomRightRadius = cor.br;
+
+        // 텍스트
+        const txt = await makeBoundText("항목", sz.font, "Medium", scv(maps, slot.text));
+        comp.appendChild(txt);
+        comp.resize(comp.width, sz.h);
+
+        setLightMode(comp, maps);
+        comps.push(comp);
+        cells.push({ comp, posIdx, stIdx, szIdx });
+        // BUILT_COMPS 등록 — 조합형태(buildMultiToggle)가 pick() 패턴으로 가져감
+        BUILT_COMPS[`MultiToggle:${pos}/${st}/${sz.id}`] = comp;
+      }
+    }
+  }
+
+  const set = figma.combineAsVariants(comps, figma.currentPage);
+  set.name = "Multi Toggle Element";
+  set.x = 0; set.y = originY;
+  BUILT_SETS["Multi Toggle Element"] = set;
+
+  // 스펙 시트: 행 = position×size(8행), 열 = state(4열)
+  const ROW_DEFS: { pos: Pos; szId: string; szIdx: number; posIdx: number }[] = [];
+  for (let szIdx = 0; szIdx < sizes.length; szIdx++) {
+    for (let posIdx = 0; posIdx < positions.length; posIdx++) {
+      ROW_DEFS.push({ pos: positions[posIdx], szId: sizes[szIdx].id, szIdx, posIdx });
+    }
+  }
+  const STATE_LABELS = ["Default", "Hover", "Selected", "Disabled"];
+  const opts: SpecOpts = {
+    title: "Multi Toggle Element",
+    colHeaders: STATE_LABELS,
+    rowLabels: ROW_DEFS.map((r) => `${r.pos} / ${r.szId}`),
+    cellAt: (r, c) => {
+      const rd = ROW_DEFS[r];
+      return cells.find((x) => x.posIdx === rd.posIdx && x.szIdx === rd.szIdx && x.stIdx === c)?.comp ?? null;
+    },
+    lightX: SPEC_LIGHT_X, darkX: SPEC_DARK_X, originY,
+    cellW: 120, cellH: 52, rowLabelW: 160,
+  };
+  let bottomY = await decorateSetFlat(set, opts, maps);
+  try { bottomY = Math.max(bottomY, await buildSpec(opts, maps)); } catch (e) { console.warn(e); }
+  return { set, bottomY };
+}
+
+// ── Multi Toggle — 요소 셀(Multi Toggle Element)을 조합한 완성형 ─────────────────
+// 6 variants = Size(md·sm) × Selected(Left·Center·Right). variant명: "Size=md, Selected=Left"
+// 구성: Multi Toggle Element 셀 인스턴스 3개를 gap 0 가로 오토레이아웃으로 조립.
+// Left(선택=0): [first/selected][middle-right/default][last/default]
+// Center(선택=1): [first/default][middle-left/selected][last/default]
+// Right(선택=2): [first/default][middle-left/default][last/selected]
+async function buildMultiToggle(maps: BuildMaps, originY: number): Promise<{ set: ComponentSetNode; bottomY: number }> {
+  const sizes      = ["md", "sm"] as const;
+  const selections = ["Left", "Center", "Right"] as const;
+
+  // 각 칸(j=0·1·2)의 position·state 결정 규칙
+  const cellSpec = (j: number, selectedIdx: number): { pos: string; st: string } => {
+    if (j < selectedIdx) {
+      // 선택 왼쪽
+      return { pos: j === 0 ? "first" : "middle-left", st: "default" };
+    } else if (j === selectedIdx) {
+      // 선택된 칸
+      const pos = j === 0 ? "first" : j === 2 ? "last" : "middle-left";
+      return { pos, st: "selected" };
+    } else {
+      // 선택 오른쪽
+      return { pos: j === 2 ? "last" : "middle-right", st: "default" };
+    }
+  };
+
+  // BUILT_COMPS 에서 셀 가져오기 (buildMultiToggleElement 가 먼저 빌드됨)
+  const pickCell = async (pos: string, st: string, sz: string): Promise<ComponentNode | undefined> => {
+    const key = `MultiToggle:${pos}/${st}/${sz}`;
+    let c: ComponentNode | undefined = BUILT_COMPS[key];
+    if (!c) {
+      // 부분 재설치 폴백: 세트에서 이름으로 탐색
+      const s = await getBuiltSet("Multi Toggle Element");
+      if (s) c = ((s.children as ComponentNode[]) || []).find((x) => x.type === "COMPONENT" && x.name === `position=${pos}, state=${st}, size=${sz}`);
+    }
+    return c;
+  };
+
+  const comps: ComponentNode[] = [];
+  const specCells: { comp: ComponentNode; selIdx: number; szIdx: number }[] = [];
+
+  for (let szIdx = 0; szIdx < sizes.length; szIdx++) {
+    const sz = sizes[szIdx];
+    for (let selIdx = 0; selIdx < selections.length; selIdx++) {
+      const selLabel = selections[selIdx];
+
+      const comp = figma.createComponent();
+      comp.name = `Size=${sz}, Selected=${selLabel}`;
+      comp.layoutMode = "HORIZONTAL";
+      comp.primaryAxisAlignItems = "CENTER";
+      comp.counterAxisAlignItems = "CENTER";
+      comp.primaryAxisSizingMode = "AUTO";
+      comp.counterAxisSizingMode = "AUTO";
+      comp.itemSpacing = 0;
+      comp.fills = [];
+
+      for (let j = 0; j < 3; j++) {
+        const { pos, st } = cellSpec(j, selIdx);
+        const cellComp = await pickCell(pos, st, sz);
+        if (cellComp) {
+          const inst = cellComp.createInstance();
+          comp.appendChild(inst);
+        }
+      }
+
+      setLightMode(comp, maps);
+      comps.push(comp);
+      specCells.push({ comp, selIdx, szIdx });
+    }
+  }
+
+  const set = figma.combineAsVariants(comps, figma.currentPage);
+  set.name = "Multi Toggle";
+  set.x = 0; set.y = originY;
+  BUILT_SETS["Multi Toggle"] = set;
+
+  // 스펙 시트: 행 = Selected(3), 열 = Size(2)
+  const SIZE_LABELS  = ["md", "sm"];
+  const SEL_LABELS   = ["Left", "Center", "Right"];
+  const opts: SpecOpts = {
+    title: "Multi Toggle",
+    colHeaders: SIZE_LABELS,
+    rowLabels: SEL_LABELS,
+    cellAt: (r, c) => specCells.find((x) => x.selIdx === r && x.szIdx === c)?.comp ?? null,
+    lightX: SPEC_LIGHT_X, darkX: SPEC_DARK_X, originY,
+    cellW: 160, cellH: 56, rowLabelW: 80,
+  };
+  let bottomY = await decorateSetFlat(set, opts, maps);
+  try { bottomY = Math.max(bottomY, await buildSpec(opts, maps)); } catch (e) { console.warn(e); }
+  return { set, bottomY };
+}
+
 // ── 멀티 컴포넌트 오케스트레이터 ──────────────────────────────────────────────
 // skip-if-exists: 같은 이름의 COMPONENT_SET 이 현재 페이지에 이미 있으면 보존(건너뜀), 없는 것만 추가.
 //   ★ 재생성(없어서 추가)되는 세트는 "원래 레이아웃 슬롯"에 놓는다(맨 아래로 몰지 않음).
@@ -3780,7 +4004,7 @@ export const COMPONENT_CATEGORIES_GRID: { name: string; members: string[] }[][] 
     { name: "Line Tab",     members: ["Line Tab Set", "Line Tab"] },
     { name: "Pagination",   members: ["Pagination", "Pagination Cell"] },
     { name: "Actions",      members: ["Button"] },
-    { name: "Selection",    members: ["Checkbox", "Radio", "Toggle"] },
+    { name: "Selection",    members: ["Checkbox", "Radio", "Toggle", "Multi Toggle", "Multi Toggle Element"] },
     { name: "Chip",         members: ["Chip"] },
     // members = 표시(나열) 순서: 메인 컴포넌트 → 그 안을 구성하는 요소 컴포넌트 순.
     //   (Select Box → Dropdown → Dropdown List). 빌드(생성) 순서는 BUILD_DEPENDENCIES 로
@@ -3820,6 +4044,7 @@ export const BUILD_DEPENDENCIES: Record<string, string[]> = {
   "GNB": ["GNB Utility Icon"],        // GNB 바 유틸 영역이 GNB Utility Icon all-on 인스턴스 부착
   "GNB Utility Icon": ["Language Icon"], // language=on 변형이 Language Icon 인스턴스 부착
   "Pagination": ["Pagination Cell"],  // 완성 바가 Pagination Cell(Arrow·Edge·Number) 인스턴스 조합
+  "Multi Toggle": ["Multi Toggle Element"], // 조합형태가 Multi Toggle Element 셀 인스턴스 사용 → 요소 먼저 빌드
   "Date Picker": ["Calendar"],        // Open 상태가 Calendar 패널 인스턴스 부착(BUILT_COMPS["Calendar:Date"])
   // 모바일 바텀시트: Calendar:Date 인스턴스(본문) + Button primary(하단 "적용") 부착 → 둘 다 선빌드 필요.
   "Date Picker Mobile Bottom Sheet": ["Calendar", "Button"],
@@ -3901,6 +4126,8 @@ export async function buildAllComponents(
     "Checkbox":             (oy) => buildCheckbox(maps, oy),
     "Radio":                (oy) => buildRadio(maps, oy),
     "Toggle":               (oy) => buildToggle(maps, oy),
+    "Multi Toggle Element": (oy) => buildMultiToggleElement(maps, oy),
+    "Multi Toggle":         (oy) => buildMultiToggle(maps, oy),
     "Chip":                 (oy) => buildChip(maps, oy),
     "Filter Chip":          (oy) => buildFilterChip(maps, oy),
     "Input":                (oy) => buildInput(maps, oy, 0),

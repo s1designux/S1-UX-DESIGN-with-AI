@@ -150,6 +150,78 @@
       "createdAssemblyIds": ["596:6397","596:6404","596:6411","596:8900","596:8907","596:8914"]
     }
   ],
+  "v2": {
+    "meta": {
+      "buildDate": "2026-06-25",
+      "builder": "figma-library-builder",
+      "purpose": "효율 구조 v2 — 틀이 바깥 담당 + 칸은 state×size만 + 선택 칸이 양옆 덮기. v1(587:8029) 옆에 비교용으로 배치, v1 보존."
+    },
+    "componentSet": {
+      "id": "603:20",
+      "name": "Multi Toggle v2",
+      "x": 900, "y": 134,
+      "width": 320, "height": 126,
+      "variantCount": 8,
+      "variantAxes": {
+        "state": ["default", "hover", "selected", "disabled"],
+        "size": ["md", "sm"]
+      },
+      "note": "position 축 없음. 미선택=왼쪽 보더 1px만, 선택=4변 파란 보더+파란 배경."
+    },
+    "variants": {
+      "state=default, size=md":  "602:20",
+      "state=hover, size=md":    "602:22",
+      "state=selected, size=md": "602:24",
+      "state=disabled, size=md": "602:26",
+      "state=default, size=sm":  "602:28",
+      "state=hover, size=sm":    "602:30",
+      "state=selected, size=sm": "602:32",
+      "state=disabled, size=sm": "602:34"
+    },
+    "assemblyExamples": {
+      "md_left-selected": {
+        "id": "604:20",
+        "name": "v2 Example / md / left-selected",
+        "description": "틀(clipsContent+radius/control/sm+border) + v2 셀 3개. 선택 칸 x=-1px,y=-1px,w+2px,h+2px → 양옆 회색선 덮음.",
+        "x": 900, "y": 300, "width": 192, "height": 44
+      },
+      "md_center-selected": {
+        "id": "604:27",
+        "name": "v2 Example / md / center-selected",
+        "x": 1132, "y": 300, "width": 192, "height": 44
+      },
+      "md_right-selected": {
+        "id": "604:34",
+        "name": "v2 Example / md / right-selected",
+        "x": 1364, "y": 300, "width": 192, "height": 44
+      },
+      "sm_left-selected": {
+        "id": "604:41",
+        "name": "v2 Example / sm / left-selected",
+        "x": 900, "y": 364, "width": 168, "height": 34
+      },
+      "sm_center-selected": {
+        "id": "604:48",
+        "name": "v2 Example / sm / center-selected",
+        "x": 1108, "y": 364, "width": 168, "height": 34
+      },
+      "sm_right-selected": {
+        "id": "604:55",
+        "name": "v2 Example / sm / right-selected",
+        "x": 1316, "y": 364, "width": 168, "height": 34
+      }
+    },
+    "structureNotes": {
+      "combineAsVariants": "8개 컴포넌트를 combineAsVariants(components, testPage)로 결합. packing 즉시 수행(붕괴 방지).",
+      "packing": "md 행(y=20, gap=8) + sm 행(y=72, gap=8). 세트 resize(320×126).",
+      "circularRef": "없음 — v2 variant들은 자립형, 조립예시만 인스턴스.",
+      "detach": "없음",
+      "borderStrategy": "미선택: strokeLeftWeight=1, Top/Right/Bottom=0, strokeAlign=INSIDE. 선택: 4변 1px, strokeAlign=INSIDE.",
+      "overlapStrategy": "선택 칸 인스턴스 x=-1,y=-1,w+2,h+2 → appendChild로 맨 앞. 틀 clipsContent=true로 바깥 잘림.",
+      "font": "Noto Sans KR Medium 로드 후 characters='항목' 입력, setTextStyleIdAsync(body/14M)으로 Pretendard Medium 14 바인딩.",
+      "v1Preserved": "기존 v1 세트(587:8029) 및 조립예시(596:6397~596:8914) 일절 건드리지 않음."
+    }
+  },
   "structureNotes": {
     "combineAsVariants": "32개 컴포넌트를 combineAsVariants(components, testPage)로 결합",
     "packing": "격자 재배치: row=position(4), col-group=size(md/sm), inner-col=state(4). GAP=8, 세트 hug resize(596×240)",
