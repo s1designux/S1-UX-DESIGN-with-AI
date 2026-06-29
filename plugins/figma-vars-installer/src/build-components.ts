@@ -1667,10 +1667,7 @@ async function buildTable(maps: BuildMaps, originY: number): Promise<{ set: Comp
     const footer = figma.createFrame();
     footer.name = "table-footer"; footer.resize(W, FOOTER_H);
     footer.fills = [boundPaint(scv(maps, "color/table/cell/default"))];
-    // 상단 구분선
-    const topLine = figma.createRectangle(); topLine.resize(W, 1);
-    topLine.fills = [boundPaint(scv(maps, "color/table/border/default"))];
-    footer.appendChild(topLine); topLine.x = 0; topLine.y = 0;
+    // 상단 구분선은 테이블 레벨 edge-bottom(emphasis 1px)이 이 경계(마지막 행 하단=페이지네이션 위)에 그려지므로 footer 내부엔 두지 않는다.
 
     // ── 페이지네이션: 완성 Pagination 바(세트) 인스턴스 재사용 ──
     //   직접 셀 조립 대신 buildPaginationBar 산출 "Pagination:Bar/Middle"(중간 상태 = 전체 활성) 인스턴스 1개.
@@ -1723,8 +1720,18 @@ async function buildTable(maps: BuildMaps, originY: number): Promise<{ set: Comp
     }
     // 푸터 (페이지네이션 + 셀렉박스)
     const footer = await makeTableFooter();
-    comp.appendChild(footer); footer.x = 0; footer.y = y; y += FOOTER_H;
+    const footerY = y;  // 마지막 데이터 행 하단 = 푸터 상단 경계 (edge-bottom 위치)
+    comp.appendChild(footer); footer.x = 0; footer.y = footerY; y += FOOTER_H;
     comp.resize(W, y);
+    // ── 테이블 상하단 emphasis 라인 (method 2: 셀과 분리·테이블 레벨) ──────────────
+    //   상단 2px = 헤더 위(테이블 최상단). 하단 1px = 마지막 데이터 행 하단(= 페이지네이션 바로 위), 푸터/페이지네이션 아래 아님.
+    //   색 = color/table/border/emphasis(#353535). 셀(light)·헤더밑줄(strong)과 별개. z-order 최상단(맨 뒤 append).
+    const edgeTop = figma.createRectangle(); edgeTop.name = "edge-top";
+    edgeTop.resize(W, 2); edgeTop.fills = [boundPaint(scv(maps, "color/table/border/emphasis"))];
+    comp.appendChild(edgeTop); edgeTop.x = 0; edgeTop.y = 0;
+    const edgeBottom = figma.createRectangle(); edgeBottom.name = "edge-bottom";
+    edgeBottom.resize(W, 1); edgeBottom.fills = [boundPaint(scv(maps, "color/table/border/emphasis"))];
+    comp.appendChild(edgeBottom); edgeBottom.x = 0; edgeBottom.y = footerY - 1;
     setLightMode(comp, maps);
     comps.push(comp); cells.push({ comp, size: sc.size });
   }
@@ -3150,8 +3157,6 @@ async function buildDatePickerBottomSheet(maps: BuildMaps, originY: number): Pro
   setLightMode(comp, maps);
   const set = figma.combineAsVariants([comp], figma.currentPage);
   set.name = "Date Picker Mobile Bottom Sheet"; set.x = 0; set.y = originY;
-  // 세트 외부(변형 컨테이너) 배경 = bg/muted (Light gray/100 #E9E9E9 · Dark 대응) — 시트면=캘린더 통일색이라 흰 시트가 떠 보이게 바깥에 중립 회색을 깐다(사용자 결정 2026-06-26).
-  set.fills = [boundPaint(scv(maps, "color/bg/muted"))];
   BUILT_SETS["Date Picker Mobile Bottom Sheet"] = set;
 
   const opts: SpecOpts = {
@@ -3161,6 +3166,9 @@ async function buildDatePickerBottomSheet(maps: BuildMaps, originY: number): Pro
   let bottomY = await decorateSetFlat(set, opts, maps);
   // 다크 = 라이트 우측(buildSpec 기본 W+80). 시트 폭 360 = 좁은 컴포넌트라 우측 배치.
   try { bottomY = Math.max(bottomY, await buildSpec(opts, maps)); } catch (e) { console.warn(e); }
+  // 세트 외부(변형 컨테이너) 배경 = bg/muted (Light gray/100 #E9E9E9) — 시트면=캘린더가 흰색(surface)이라 흰 섹션 배경에 묻힘.
+  //   ★ 반드시 decorateSetFlat(set.fills 를 specPalette 흰색으로 덮어씀) 이후에 적용해야 살아남는다(사용자 결정 2026-06-26·재현 2026-06-29).
+  set.fills = [boundPaint(scv(maps, "color/bg/muted"))];
   return { set, bottomY };
 }
 

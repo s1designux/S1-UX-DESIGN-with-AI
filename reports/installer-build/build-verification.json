@@ -1,9 +1,9 @@
 {
   "sourceFile": "plugins/figma-vars-installer/src/build-components.ts",
-  "sourceHash": "sha256:5bf9654e99ba833b4469bc037e704d3bb2217db904ab4d72e15634b1bae50606",
+  "sourceHash": "sha256:4675572ab1c1e9c0ff889b8a31a08981378b5221031c5514cf90c68804983a7e",
   "verifiedBy": "component-verifier",
   "verdict": "pass",
   "changeType": "structural",
-  "verifiedAt": "2026-06-29T08:47:51.932Z",
-  "notes": "DatePicker bottom sheet bg: sheet=surface/default(=calendar panel), set container=bg/muted neutral backdrop"
+  "verifiedAt": "2026-06-29T11:57:18.468Z",
+  "notes": "Table edge-bottom 위치 수정: footerY-1(마지막 행 하단=페이지네이션 위)로 이동. makeTableFooter topLine(table/border/default) 제거. edge-top(2px,y=0)·emphasis 바인딩 불변. mock-figma buildAllComponents 실증: MD edge-bottom.y=395=footerY(396)-1, SM=341=342-1, footer 자식=pagination+select-box만(default 라인 0), edge-top/bottom fillKey=color/table/border/emphasis. 양 variant 적용. 헤더밑줄(strong)·셀선(default) 회귀 없음. ❌0"
 }
