@@ -477,10 +477,10 @@ export const SEMANTIC_COLOR: Record<string, SemanticColorEntry> = {
   // 테이블 세트 외곽 프레임선(상단 2px·하단 1px) — border-emphasis(#353535). 헤더 언더라인(strong)·셀선(light)과 구분.
   //   2026-06-29 복구: 과거 '미사용 고아'로 삭제됐으나 Table 상하단 라인이 실사용 → 삭제 전 값(light gray/800·dark gray-dark/700) 그대로 복원.
   "color/table/border/emphasis": { light: "gray/800", dark: "gray-dark/700" },
-  "color/table/header/bg": { light: "gray/50", dark: "gray-dark/200" },
+  "color/table/header/bg": { light: "gray/0", dark: "gray-dark/50" },
   "color/table/cell/default": { light: "base/white", dark: "gray-dark/100" },
   "color/table/cell/hover": { light: "gray/50", dark: "gray-dark/200" },
-  "color/table/cell/selected": { light: "blue/100", dark: "blue-dark/100" },
+  "color/table/cell/selected": { light: "blue/50", dark: "blue-dark/100" },
 
   // ── dropdown ────────────────────────────────
   "color/dropdown/list/bg": { light: "base/white", dark: "gray-dark/100" },

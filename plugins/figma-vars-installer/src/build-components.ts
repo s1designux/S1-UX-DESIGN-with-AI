@@ -1532,7 +1532,7 @@ async function buildTableCell(maps: BuildMaps, originY: number): Promise<{ set: 
     { type: "Cell",   state: "Default",  bg: "color/table/cell/default",  border: "color/table/border/default",  text: "color/text/body/primary",   head: "Cell · Default" },
     { type: "Cell",   state: "Hover",    bg: "color/table/cell/hover",    border: "color/table/border/default",  text: "color/text/body/primary",   head: "Cell · Hover" },
     { type: "Cell",   state: "Selected", bg: "color/table/cell/selected", border: "color/table/border/default",  text: "color/text/body/primary",   head: "Cell · Selected" },
-    { type: "Header", state: "Default",  bg: "color/table/header/bg",      border: "color/table/border/strong", text: "color/text/body/secondary", head: "Header" },
+    { type: "Header", state: "Default",  bg: "color/table/header/bg",      border: "color/table/border/default", text: "color/text/body/secondary", head: "Header" },
   ];
   const sizes = [
     { size: "SMALL",  h: 38, font: 13 },
@@ -1622,7 +1622,7 @@ async function buildTable(maps: BuildMaps, originY: number): Promise<{ set: Comp
       ci.x = (COL[0] - ci.width) / 2; ci.y = (h - ci.height) / 2;
     }
     const chkBdr = figma.createRectangle(); chkBdr.resize(COL[0], 1);
-    chkBdr.fills = [boundPaint(scv(maps, isHeader ? "color/table/border/strong" : "color/table/border/default"))];
+    chkBdr.fills = [boundPaint(scv(maps, "color/table/border/default"))];  // 헤더 언더라인=셀선과 동일 light(레거시 일치, 2026-06-30)
     chkFrame.appendChild(chkBdr); chkBdr.x = 0; chkBdr.y = h - 1;
     row.appendChild(chkFrame); chkFrame.x = 0; chkFrame.y = 0;
 
@@ -1654,7 +1654,7 @@ async function buildTable(maps: BuildMaps, originY: number): Promise<{ set: Comp
         const t = await makeBoundText(colTexts[k], font, isHeader ? "Medium" : "Regular", scv(maps, textKey));
         cf.appendChild(t); t.x = 16; t.y = Math.max(0, (h - t.height) / 2);
         const bdr = figma.createRectangle(); bdr.resize(colW, 1);
-        bdr.fills = [boundPaint(scv(maps, isHeader ? "color/table/border/strong" : "color/table/border/default"))];
+        bdr.fills = [boundPaint(scv(maps, "color/table/border/default"))];  // 헤더 언더라인=셀선과 동일 light(레거시 일치, 2026-06-30)
         cf.appendChild(bdr); bdr.x = 0; bdr.y = h - 1;
         row.appendChild(cf); (cf as any).x = xOff; (cf as any).y = 0;
       }

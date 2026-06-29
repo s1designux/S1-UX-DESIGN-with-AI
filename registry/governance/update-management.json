@@ -36,7 +36,7 @@
     { "id": "select",      "origin": "A",   "sourceNode": "", "verify": "na", "verifyDate": "", "mobile": "na", "dates": { "installer": "", "tokens": "", "html": "" }, "note": "정리 완료. (다크 pending)" },
     { "id": "date-picker", "origin": "A",   "sourceNode": "", "verify": "na", "verifyDate": "", "mobile": "완료", "dates": { "installer": "", "tokens": "", "html": "" }, "note": "정리 완료. 모바일 바텀시트 빌드·검증 완료." },
     { "id": "time-picker", "origin": "B",   "sourceNode": "", "verify": "legacy", "verifyDate": "", "mobile": "진행 필요", "dates": { "installer": "", "tokens": "", "html": "" }, "note": "PC 완료. 모바일 바텀시트 진행 필요. 옛 방식 검증만." },
-    { "id": "table",       "origin": "B",   "sourceNode": "", "verify": "none", "verifyDate": "", "mobile": "na", "dates": { "installer": "", "tokens": "", "html": "" }, "note": "원본 틀 필요. (코드 미착수·harness만 구현)" }
+    { "id": "table",       "origin": "B",   "sourceNode": "V2.4 540:4822", "verify": "new", "verifyDate": "2026-06-30", "mobile": "na", "dates": { "installer": "2026-06-30", "tokens": "2026-06-30", "html": "2026-06-30" }, "note": "새 방식(원본 V2.4 540:4822 cross-file 대조)으로 검증. 헤더밑줄·헤더배경·선택행을 레거시 값(light·#FAFAFA·#E2F1FF)으로 정정. 상하단 emphasis 라인(2px/1px)은 원본엔 없는 개선. 설치기·웹사이트 동기화 확인." }
   ],
   "patterns": [
     { "id": "modal", "label": "Modal", "registryPath": "registry/patterns/modal.json", "origin": "B", "sourceNode": "", "verify": "legacy", "verifyDate": "2026-06-08", "dates": { "installer": "", "tokens": "", "html": "" }, "note": "원본 틀 필요. 코어 조합 패턴(button·table·input). 옛 방식 검증." },
