@@ -1,9 +1,9 @@
 {
   "sourceFile": "plugins/figma-vars-installer/src/build-components.ts",
-  "sourceHash": "sha256:37d50907811b33fc31145f1a422bd1907bd4386059fadfe2d3f6b9992af5031e",
+  "sourceHash": "sha256:5bf9654e99ba833b4469bc037e704d3bb2217db904ab4d72e15634b1bae50606",
   "verifiedBy": "component-verifier",
   "verdict": "pass",
   "changeType": "structural",
-  "verifiedAt": "2026-06-26T04:17:59.223Z",
-  "notes": "empty-header guard + ES2017 flat() fix: tsc clean, COMPONENT_CATEGORIES reduce==flat equivalent, render 38 OK"
+  "verifiedAt": "2026-06-29T08:47:51.932Z",
+  "notes": "DatePicker bottom sheet bg: sheet=surface/default(=calendar panel), set container=bg/muted neutral backdrop"
 }

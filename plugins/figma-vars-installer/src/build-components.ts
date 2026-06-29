@@ -3070,9 +3070,11 @@ async function buildDatePickerBottomSheet(maps: BuildMaps, originY: number): Pro
   comp.paddingTop = 20; comp.paddingBottom = 20; // 시트 세로패딩 — spacing/section/sm
   comp.paddingLeft = 0; comp.paddingRight = 0; // 좌우 패딩은 자식(헤더 20·캘린더 24)이 개별 적용
   comp.counterAxisAlignItems = "CENTER";
-  // 시트 배경 = bg/subtle (Light gray/50 #F5F5F5 · Dark gray-dark/200) — 흰 캘린더 카드가 떠 보이도록
-  //   레이어 배경을 깐다(사용자 결정 2026-06-26: 라이트도 다크처럼 배경색, gray50). surface/default(흰색)면 카드가 안 떠 보임.
-  comp.fills = [boundPaint(scv(maps, "color/bg/subtle"))];
+  // 시트 배경 = surface/default (Light base/white · Dark gray-dark/100) — 캘린더 패널(color/date-picker/panel/bg)과 동일색.
+  //   사용자 결정 2026-06-26: 시트면 bg = 캘린더 영역 bg 로 통일(라이트·다크 모두). 캘린더만 다른색이면 안 됨.
+  //   ※ 이전 '시트=gray/50' 주석은 오해였음. 원 요청은 "라이트 시트(흰색)가 흰 섹션 배경에 묻혀 안 보이니 시트 '뒤'에 배경을 깔아달라" —
+  //     시트면은 흰색(surface) 유지, 시트가 떠 보이는 효과는 세트 외부 배경(아래 bg/muted)이 담당한다.
+  comp.fills = [boundPaint(scv(maps, "color/surface/default"))];
   // 시트 상단 모서리 라운드(원본 540:3836 = rounded-tl/tr-8) — radius/8
   try { comp.topLeftRadius = 8; comp.topRightRadius = 8; comp.bottomLeftRadius = 0; comp.bottomRightRadius = 0; } catch (e) { /* */ }
   comp.clipsContent = false;
@@ -3148,6 +3150,8 @@ async function buildDatePickerBottomSheet(maps: BuildMaps, originY: number): Pro
   setLightMode(comp, maps);
   const set = figma.combineAsVariants([comp], figma.currentPage);
   set.name = "Date Picker Mobile Bottom Sheet"; set.x = 0; set.y = originY;
+  // 세트 외부(변형 컨테이너) 배경 = bg/muted (Light gray/100 #E9E9E9 · Dark 대응) — 시트면=캘린더 통일색이라 흰 시트가 떠 보이게 바깥에 중립 회색을 깐다(사용자 결정 2026-06-26).
+  set.fills = [boundPaint(scv(maps, "color/bg/muted"))];
   BUILT_SETS["Date Picker Mobile Bottom Sheet"] = set;
 
   const opts: SpecOpts = {

@@ -107,7 +107,7 @@ function injectUpdateStamps(html) {
 
 function buildInlineBlock(css, counts) {
   const header = `/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-   S1 UX DESIGN GUIDE V2.4 — tokens.css
+   S1 UX DESIGN GUIDE — tokens.css
    Foundation → Semantic → Component
    Auto-synced from assets/css/tokens.css (npm run tokens:sync-prompt)
    Last sync: ${new Date().toISOString().slice(0, 10)}

@@ -223,7 +223,7 @@
                 <div class="step-title">전체 기본 토큰 CSS 받기</div>
                 <div class="step-desc">Semantic (Light/Dark) + Component 토큰 전체 CSS</div>
               </div>
-              <span class="update-stamp" data-update-file="assets/css/tokens.css"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> 업데이트 2026-06-26 11:16</span>
+              <span class="update-stamp" data-update-file="assets/css/tokens.css"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> 업데이트 2026-06-29 17:37</span>
             </div>
             <div class="step-body">
               <div class="file-card">
@@ -247,17 +247,16 @@
               </button>
               <div class="expand-body" id="expand-body">
                 <pre class="expand-pre" id="code-full">/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-   S1 UX DESIGN GUIDE V2.4 — tokens.css
+   S1 UX DESIGN GUIDE — tokens.css
    Foundation → Semantic → Component
    Auto-synced from assets/css/tokens.css (npm run tokens:sync-prompt)
-   Last sync: 2026-06-26
+   Last sync: 2026-06-29
    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
 
 /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-   SW Design System V2.4 — tokens.css
-   Foundation → Semantic (Variables 정본 · npm run tokens:gen 자동생성)
-   컴포넌트 토큰은 component-tokens.css 로 분리 보존 (Phase 2 재매칭 예정)
-   Updated: 2026-06-09
+   SW Design System — tokens.css
+   Foundation → Semantic (Figma Variables 정본 · npm run tokens:gen 자동생성)
+   Semantic 레이어가 컴포넌트 단위까지 정의됨 — 이름 같고 값 다르면 Variables가 정답.
    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
 
 
@@ -1162,7 +1161,7 @@
                 <div class="step-title">프로젝트에 추가</div>
                 <div class="step-desc">다운받은 tokens.css를 프로젝트에 복사한 뒤 아래 한 줄 추가</div>
               </div>
-              <span class="update-stamp" data-update-file="assets/css/tokens.css"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> 업데이트 2026-06-26 11:16</span>
+              <span class="update-stamp" data-update-file="assets/css/tokens.css"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> 업데이트 2026-06-29 17:37</span>
             </div>
             <div class="step-body">
               <div class="env-tabs">
@@ -1240,7 +1239,7 @@
                 <div class="step-title">AI Context Prompt</div>
                 <div class="step-desc">Claude / AI 작업자에게 붙여넣을 기본 디자인시스템 규칙</div>
               </div>
-              <span class="update-stamp" data-update-file="assets/css/tokens.css"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> 업데이트 2026-06-26 11:16</span>
+              <span class="update-stamp" data-update-file="assets/css/tokens.css"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> 업데이트 2026-06-29 17:37</span>
             </div>
             <div class="step-body">
               <p style="font-size:12px;color:#6b7280;margin-bottom:12px;">대화 시작 시 첫 메시지로 붙여넣기. 사용자 검수 항목은 코드블록 안에 포함되어 있지 않습니다.</p>
@@ -1254,9 +1253,9 @@
                   전체 복사
                 </button>
               </div>
-              <pre class="ai-pre" id="code-ai">## SW 디자인 시스템 V2.4 — 토큰 컨텍스트
+              <pre class="ai-pre" id="code-ai">## SW 디자인 시스템 — 토큰 컨텍스트
 
-아래 CSS 토큰은 SW 디자인 시스템 V2.4의 공식 정의입니다.
+아래 CSS 토큰은 SW 디자인 시스템의 공식 정의(Figma Variables 정본)입니다.
 이 토큰만 사용하여 UI를 구현해주세요.
 
 ---
@@ -1285,10 +1284,9 @@
 ### 전체 토큰 정의
 
 /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-   SW Design System V2.4 — tokens.css
-   Foundation → Semantic (Variables 정본 · npm run tokens:gen 자동생성)
-   컴포넌트 토큰은 component-tokens.css 로 분리 보존 (Phase 2 재매칭 예정)
-   Updated: 2026-06-09
+   SW Design System — tokens.css
+   Foundation → Semantic (Figma Variables 정본 · npm run tokens:gen 자동생성)
+   Semantic 레이어가 컴포넌트 단위까지 정의됨 — 이름 같고 값 다르면 Variables가 정답.
    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
 
 
@@ -2186,7 +2184,7 @@
 위 토큰을 기반으로 UI 컴포넌트를 구현할 때:
 - 임의 HEX 색상값 사용 금지
 - 정의되지 않은 토큰명 생성 금지
-- Figma 원본 SW UX GUIDE V2.4 기준을 따름</pre>
+- Figma Variables 정본 기준을 따름 (이름 같고 값 다르면 Variables가 정답)</pre>
             </div>
           </div>
 
@@ -2214,7 +2212,7 @@
                 <div class="step-title">에스원 디자인시스템 설치 플러그인</div>
                 <div class="step-desc">ZIP을 받아 Figma Desktop에 등록한 뒤, 설치할 파일에서 실행하면 토큰·텍스트 스타일·컴포넌트 세트를 선택 설치합니다</div>
               </div>
-              <span class="update-stamp" data-update-file="assets/downloads/s1-design-system-installer.zip"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> 업데이트 2026-06-26 11:12</span>
+              <span class="update-stamp" data-update-file="assets/downloads/s1-design-system-installer.zip"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> 업데이트 2026-06-29 17:37</span>
             </div>
             <div class="step-body">
               <!-- 다운로드 -->

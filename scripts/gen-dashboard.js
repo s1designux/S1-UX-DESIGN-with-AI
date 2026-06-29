@@ -94,20 +94,87 @@ const gateGroupsHtml = `
 // 묶음에 안 들어간 검사기가 있으면(데이터 누락) 표시
 const ungrouped = data.gates.filter((g) => g.group && !groups.some((gr) => gr.key === g.group));
 
-// ── 도우미 카드 ──────────────────────────────────────────────────────────
+// ── 도우미 카드 — 총괄(위) → 단계 흐름(1→2→3→4) → 상시 레인 ────────────────
 const orch = data.orchestrator;
-const agentCards = [
-  `<div class="dash-card agent star">
-     <div class="dash-card-name">${orch.emoji} ${esc(orch.name)} <span class="dash-tag">총괄</span></div>
-     <div class="dash-card-desc">${esc(orch.role)}</div>
-   </div>`,
-  ...data.agents.map((a) => `
-        <div class="dash-card agent">
-          <div class="dash-card-name">${a.emoji} ${esc(a.name)}</div>
-          <div class="dash-card-desc">${esc(a.role)}</div>
-          <div class="dash-card-when">${esc(a.when)}</div>
-        </div>`),
-].join("");
+const agentCard = (a) => `
+            <div class="dash-card agent">
+              <div class="dash-card-name">${a.emoji} ${esc(a.name)}</div>
+              <div class="dash-card-desc">${esc(a.role)}</div>
+              ${a.when ? `<div class="dash-card-when">${esc(a.when)}</div>` : ""}
+            </div>`;
+
+const orchCard = `
+        <div class="dash-card agent star">
+          <div class="dash-card-name">${orch.emoji} ${esc(orch.name)} <span class="dash-tag">총괄</span></div>
+          <div class="dash-card-desc">${esc(orch.role)}</div>
+          <div class="dash-card-when">아래 단계를 지휘합니다 — 계획 세우기 → 단계별 도우미 호출 → 검사기로 검증·책임</div>
+        </div>`;
+
+const stages = data.agentStages || [];
+const lanes = data.agentLanes || [];
+const stagesWithAgents = stages.filter((s) => data.agents.some((a) => a.stage === s.key));
+
+// 단계 흐름: 1 읽기 → 2 설계 → 3 만들기 → 4 검증 (각 단계 컬럼 + 사이 화살표)
+const stageFlowHtml = stagesWithAgents.map((s, i) => {
+  const cards = data.agents.filter((a) => a.stage === s.key).map(agentCard).join("");
+  const arrow = i < stagesWithAgents.length - 1 ? `\n        <div class="dash-stage-arrow">→</div>` : "";
+  return `
+        <div class="dash-stage">
+          <div class="dash-stage-head"><span class="dash-stage-num">${esc(s.num)}</span><span class="dash-stage-title">${esc(s.title)}</span></div>
+          <div class="dash-stage-desc">${esc(s.desc)}</div>
+          <div class="dash-stage-cards">${cards}
+          </div>
+        </div>${arrow}`;
+}).join("");
+
+// 상시 레인: 단계와 무관한 전파(토큰값 전파 등)
+const lanesHtml = lanes.filter((l) => data.agents.some((a) => a.stage === l.key)).map((l) => {
+  const cards = data.agents.filter((a) => a.stage === l.key).map(agentCard).join("");
+  return `
+        <div class="dash-lane">
+          <div class="dash-lane-head"><span class="dash-lane-tag">${esc(l.title)}</span><span class="dash-lane-desc">${esc(l.desc)}</span></div>
+          <div class="dash-grid">${cards}
+          </div>
+        </div>`;
+}).join("");
+
+// 단계·레인 어디에도 안 든 에이전트(데이터 누락 폴백) — 그냥 그리드로
+const stagedKeys = new Set([...stages.map((s) => s.key), ...lanes.map((l) => l.key)]);
+const orphanAgents = data.agents.filter((a) => !stagedKeys.has(a.stage));
+const orphanHtml = orphanAgents.length
+  ? `<div class="dash-lane"><div class="dash-lane-head"><span class="dash-lane-tag">기타</span></div><div class="dash-grid">${orphanAgents.map(agentCard).join("")}</div></div>`
+  : "";
+
+const agentsHtml = `
+        <div class="dash-orch-wrap">${orchCard}</div>
+        <div class="dash-stageflow">${stageFlowHtml}
+        </div>${lanesHtml}${orphanHtml}`;
+
+// ── 워크플로우 — 큰 작업의 단계별 검문소 흐름 ─────────────────────────────
+const workflows = data.workflows || [];
+const wfStep = (s, last) => `
+            <div class="wf-step${/검증|대조/.test(s.title + s.who) ? " verify" : ""}">
+              <div class="wf-step-num">${esc(s.num)}</div>
+              <div class="wf-step-body">
+                <div class="wf-step-title">${esc(s.title)}</div>
+                <div class="wf-step-who">${esc(s.who)}</div>
+                ${s.gate ? `<div class="wf-step-gate">🚦 ${esc(s.gate)}</div>` : ""}
+              </div>
+            </div>${last ? "" : `<div class="wf-arrow">→</div>`}`;
+const workflowsHtml = workflows.map((w) => `
+        <div class="wf-card">
+          <div class="wf-head"><span class="wf-name">${esc(w.name)}</span><span class="wf-when">${esc(w.when)}</span></div>
+          <div class="wf-steps">${w.steps.map((s, i) => wfStep(s, i === w.steps.length - 1)).join("")}
+          </div>
+        </div>`).join("");
+const workflowsSection = workflows.length ? `
+      <div class="dash-section">
+        <div class="dash-section-head">
+          <h2>🪜 워크플로우 — 큰 작업의 단계별 진행</h2>
+          <p>"피그마를 코드로 옮기기" 같은 큰 작업은 정해진 단계(검문소)를 따라 갑니다. 각 단계는 🚦 통과 조건을 만족해야 다음으로 넘어가고, <b>만드는 단계와 검증(초록) 단계는 일부러 다른 팀원</b>이 맡습니다.</p>
+        </div>
+        ${workflowsHtml}
+      </div>` : "";
 
 // ── 자동 장치(훅) 카드 ───────────────────────────────────────────────────
 const hookCards = data.hooks.map((h) => `
@@ -159,6 +226,37 @@ const html = `<!DOCTYPE html>
     .dash-card-name { font-size:14px; font-weight:700; color:#111827; margin-bottom:5px; }
     .dash-card-desc { font-size:13px; color:#4b5563; line-height:1.5; }
     .dash-card-when { font-size:11px; color:#9ca3af; margin-top:8px; }
+    /* 에이전트 단계 흐름 */
+    .dash-orch-wrap { margin-bottom:18px; }
+    .dash-orch-wrap .dash-card.star { border-left-color:#f59e0b; background:#fffdf7; }
+    .dash-stageflow { display:flex; align-items:flex-start; gap:8px; overflow-x:auto; padding-bottom:6px; }
+    .dash-stage { flex:1 1 0; min-width:208px; display:flex; flex-direction:column; }
+    .dash-stage-head { display:flex; align-items:center; gap:8px; height:24px; }
+    .dash-stage-num { width:24px; height:24px; flex:0 0 24px; border-radius:50%; background:#7c3aed; color:#fff; font-size:13px; font-weight:700; display:inline-flex; align-items:center; justify-content:center; }
+    .dash-stage-title { font-size:14px; font-weight:700; color:#111827; }
+    .dash-stage-desc { font-size:11.5px; color:#9ca3af; line-height:1.45; margin:6px 0 12px 32px; }
+    .dash-stage-cards { display:flex; flex-direction:column; gap:10px; }
+    .dash-stage-arrow { flex:0 0 auto; height:24px; display:flex; align-items:center; color:#c4b5fd; font-size:22px; font-weight:700; }
+    .dash-lane { margin-top:22px; border-top:1px dashed #e5e7eb; padding-top:18px; }
+    .dash-lane-head { display:flex; align-items:baseline; gap:10px; margin-bottom:12px; flex-wrap:wrap; }
+    .dash-lane-tag { font-size:12px; font-weight:700; color:#6d28d9; background:#f5f3ff; border:1px solid #ddd6fe; padding:3px 12px; border-radius:20px; white-space:nowrap; }
+    .dash-lane-desc { font-size:12.5px; color:#6b7280; }
+    /* 워크플로우 단계 흐름 */
+    .wf-card { background:#fff; border:1px solid #e5e7eb; border-radius:12px; padding:16px 18px; margin-bottom:14px; }
+    .wf-head { display:flex; align-items:baseline; gap:12px; margin-bottom:14px; flex-wrap:wrap; }
+    .wf-name { font-size:15px; font-weight:700; color:#111827; }
+    .wf-when { font-size:12.5px; color:#9ca3af; }
+    .wf-steps { display:flex; align-items:stretch; gap:6px; overflow-x:auto; padding-bottom:4px; }
+    .wf-step { flex:1 1 0; min-width:152px; display:flex; gap:9px; background:#faf9ff; border:1px solid #ece9fb; border-radius:10px; padding:10px 12px; }
+    .wf-step.verify { background:#f0fdf6; border-color:#bbf7d0; }
+    .wf-step-num { width:20px; height:20px; flex:0 0 20px; border-radius:50%; background:#7c3aed; color:#fff; font-size:11px; font-weight:700; display:inline-flex; align-items:center; justify-content:center; }
+    .wf-step.verify .wf-step-num { background:#059669; }
+    .wf-step-body { min-width:0; }
+    .wf-step-title { font-size:13px; font-weight:700; color:#111827; }
+    .wf-step-who { font-size:11px; color:#6d28d9; margin-top:3px; line-height:1.4; }
+    .wf-step.verify .wf-step-who { color:#047857; }
+    .wf-step-gate { font-size:10.5px; color:#9ca3af; margin-top:5px; line-height:1.4; }
+    .wf-arrow { flex:0 0 auto; align-self:center; color:#c4b5fd; font-size:18px; font-weight:700; }
     .dash-badge { font-size:11px; font-weight:600; padding:2px 9px; border-radius:20px; white-space:nowrap; }
     .dash-badge.auto { background:#d1fae5; color:#065f46; }
     .dash-badge.manual { background:#f3f4f6; color:#6b7280; }
@@ -191,12 +289,11 @@ const html = `<!DOCTYPE html>
       <div class="dash-section">
         <div class="dash-section-head">
           <h2>👥 에이전트 팀 구성</h2>
-          <p>검사기(🔎)가 <b>'정해둔 규칙대로인가'를 기계적으로 자동 점검</b>한다면, 여기 팀원들은 <b>읽고·만들고·판단하는</b> 일을 합니다 — 규칙으로 딱 떨어지지 않아 사람 같은 판단이 필요한 일이라 검사기가 아니라 에이전트입니다. 필요할 때만 총괄이 불러서 그 일만 맡기고, 끝나면 결과를 보고합니다. 특히 <b>만드는 일과 검증하는 일은 일부러 다른 팀원</b>이 맡습니다(자기 일을 자기가 검사하면 관대해지니까).</p>
+          <p>검사기(🔎)가 <b>'정해둔 규칙대로인가'를 기계적으로 자동 점검</b>한다면, 여기 팀원들은 <b>읽고·만들고·판단하는</b> 일을 합니다 — 규칙으로 딱 떨어지지 않아 사람 같은 판단이 필요한 일이라 검사기가 아니라 에이전트입니다. <b>총괄(⭐)이 위에서 지휘</b>하고, 아래 도우미들은 <b>① 읽기 → ② 설계 → ③ 만들기 → ④ 검증</b> 순서로 일합니다. 특히 <b>만드는 일(③)과 검증하는 일(④)은 일부러 다른 팀원</b>이 맡습니다(자기 일을 자기가 검사하면 관대해지니까).</p>
         </div>
-        <div class="dash-grid">${agentCards}
-        </div>
+        ${agentsHtml}
       </div>
-
+${workflowsSection}
       <div class="dash-section">
         <div class="dash-section-head">
           <h2>🔎 검사기 — 실수를 자동으로 막아주는 장치</h2>
