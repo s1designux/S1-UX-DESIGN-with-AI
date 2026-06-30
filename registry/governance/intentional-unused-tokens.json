@@ -1,0 +1,21 @@
+{
+  "_note": "의도적으로 보존하는 '전 표면 미사용' semantic color 토큰 목록. Gate 17(orphan-token-check)이 여기 등록된 건 경고에서 제외한다. 새 토큰이 미사용이면 → ①컴포넌트에 연결하거나 ②여기 등록(사유 포함)하거나 ③vars-data에서 삭제. allowlist 에 있는데 더 이상 orphan 이 아니면(연결/삭제됨) Gate 17 이 '정리 가능'으로 알린다.",
+  "_updated": "2026-06-30",
+  "tokens": [
+    { "token": "color/status-card/text/disabled", "reason": "status-card 컴포넌트 미구현(향후 빌드 예정) — 빌드 시 연결" },
+    { "token": "color/status-card/text/error", "reason": "status-card 미구현 — 빌드 시 연결" },
+    { "token": "color/status-card/text/primary--default", "reason": "status-card 미구현 — 빌드 시 연결" },
+    { "token": "color/status-card/text/primary--sub", "reason": "status-card 미구현 — 빌드 시 연결" },
+    { "token": "color/status-card/text/secondary--default", "reason": "status-card 미구현 — 빌드 시 연결" },
+    { "token": "color/status-card/text/secondary--sub", "reason": "status-card 미구현 — 빌드 시 연결" },
+    { "token": "color/status-card/text/tertiary--default", "reason": "status-card 미구현 — 빌드 시 연결" },
+    { "token": "color/status-card/text/tertiary--sub", "reason": "status-card 미구현 — 빌드 시 연결" },
+    { "token": "color/dropdown/option/border/default", "reason": "드롭다운 옵션 기본 테두리 — 현재 Time Picker Cell stroke 가 bg/default 바인딩(배경=투명 테두리, build-components.ts:1978). 전용 토큰 연결 보류" },
+    { "token": "color/dropdown/option/border/hover", "reason": "옵션 hover 테두리 — 현재 stroke 가 bg/hover 바인딩(build-components.ts:1979). 연결 보류" },
+    { "token": "color/pagination/control/border/hover", "reason": "페이지 버튼 hover 테두리 — 현재 control/border/default 우회(build-components.ts:2173). 연결 보류" },
+    { "token": "color/pagination/control/icon/selected", "reason": "선택된 페이지 화살표 아이콘 — 빌더 주석에 '향후 대비' 명시(build-components.ts:2170). 연결 보류" },
+    { "token": "color/date-picker/icon/hover", "reason": "캘린더 ‹›화살표 hover — 현재 date-picker/icon/default(기본색만, build-components.ts:2875). 연결 보류" },
+    { "token": "color/date-picker/icon/disabled", "reason": "캘린더 ‹›화살표 비활성 — 현재 date-picker/icon/default. 연결 보류" },
+    { "token": "color/form-control/text-cursor", "reason": "입력 커서 색 — 현재 caret 이 form-control/border/selected 우회(build-components.ts:797). 전용 토큰 연결 보류(이름은 caret→text-cursor 정리 완료 2026-06-30)" }
+  ]
+}

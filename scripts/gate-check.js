@@ -386,6 +386,30 @@ try {
   fail(`component-origin-gate-check 실행 실패: ${e.message}`);
 }
 
+// ── Gate 17: Orphan Token (미사용 Semantic Color) ─────────────────
+// 빌더(mock)+웹CSS+registry spec 전 표면에서 안 쓰이는 토큰을 결정론 검사 → 레거시 누적 가시화.
+// 의도보존분(intentional-unused-tokens.json)은 면제. 예상밖 orphan = 경고(비차단). esbuild 필요 → spawnSync.
+console.log('\n🔎 [Gate 17] 미사용토큰 검사기 (Orphan Token)');
+try {
+  const { spawnSync } = require('child_process');
+  const r = spawnSync('node', [path.join(ROOT, 'scripts/orphan-token-check.js')], { encoding: 'utf-8' });
+  const out = (r.stdout || '') + (r.stderr || '');
+  const m = out.match(/ORPHAN_SUMMARY total=(\d+) allow=(\d+) unexpected=(\d+) stale=(\d+)/);
+  if (m) {
+    const [, total, allow, unexpected, stale] = m;
+    if (Number(unexpected) === 0 && Number(stale) === 0) {
+      pass(`미사용 토큰 ${total}개 전부 의도보존(allow) — 예상밖 0`);
+    } else {
+      if (Number(unexpected) > 0) warn(`예상치 못한 미사용 semantic color ${unexpected}개 — 연결 또는 allowlist 등록 필요. 상세: npm run tokens:orphans`);
+      if (Number(stale) > 0) warn(`allowlist 에 있으나 더 이상 미사용 아닌 토큰 ${stale}개(정리 가능). 상세: npm run tokens:orphans`);
+    }
+  } else {
+    warn(`orphan-token-check 출력 파싱 실패 (exit ${r.status})`);
+  }
+} catch (e) {
+  warn(`orphan-token-check 실행 실패: ${e.message}`);
+}
+
 // ── Summary ───────────────────────────────────────────────────────
 console.log('\n─────────────────────────────────────────────────────');
 if (errors > 0) {

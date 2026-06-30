@@ -1311,9 +1311,10 @@ Claude는 **Main Orchestrator**다. 사용자는 **목표 수준 의도**만 준
   14. Gate 14 (Verified Content / 원본대조 문구) — 검증된 고정 문구 / 항상. 법인정보·약관·브랜드 등이 정본(registry/content/*.json)과 verbatim 일치, 날조 텍스트 차단 (풋터 포함 일반화)
   15. Gate 15 (Token Naming Convention) — vars-data.ts 변경 시 / 항상. 토큰 이름이 naming-rules.json 규칙(bg·brand-in-semantic 금지·kebab) 준수하는지 강제. 레거시명·우회 별칭 유입 차단
   16. Gate 16 (Component Origin Verification) — update-management.json·registry/components|patterns 변경 시 / 항상. Ⓑ(원본틀 필요)인데 완료표시+원본대조 0(verify=none)이면 차단·미분류 escape 차단. 미완성 Ⓑ 백로그는 통과(마비 방지). 탭 사태 재발 방지
+  17. Gate 17 (Orphan Token) — vars-data·build-components·registry/components|patterns·웹CSS 변경 시 / 항상. 빌더(mock)+웹CSS+registry spec 전 표면에서 안 쓰이는 semantic color 토큰(orphan)을 결정론 검사해 레거시 누적 가시화. 의도보존분=`registry/governance/intentional-unused-tokens.json` 면제, 예상밖 orphan·stale allow=경고(비차단). "이 토큰 어디서 쓰나"를 손 grep 아닌 기계가 답(거짓 단정 차단). 단독 `npm run tokens:orphans`
 ```
 
-스크립트 일괄 실행: `npm run gate:check` (Gate 1 + 3 + 4 + 6 + 7 + 8 + 9 + 10 + 11 + 12 + 13 + 14 + 15 + 16 자동)
+스크립트 일괄 실행: `npm run gate:check` (Gate 1 + 3 + 4 + 6 + 7 + 8 + 9 + 10 + 11 + 12 + 13 + 14 + 15 + 16 + 17 자동)
 
 > **Gate 10 (doc-token-ref-check):** 토큰을 rename/remove 하면 옛 이름을 쥔 가이드 문서가 자동 적발된다. **정본 rename 시 `registry/tokens/deprecated-tokens.json` 의 `renamedGroups` 에 `{from,to}` 한 줄 추가**하면 이후 게이트가 전 활성 페이지에서 잔재를 차단(Check B). `--color-*` 참조 존재성은 Check A(경고)로 가시화. 단독 실행 `npm run docs:tokencheck`. `components.html`(폐기 예정)은 검사 제외.
 
