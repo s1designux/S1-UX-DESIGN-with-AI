@@ -204,9 +204,9 @@
   --gnb-icon:                 var(--color-navigation-icon);
 
   /* ── Table / Data Grid ── */
-  --table-header-bg:        var(--color-bg-default);        /* #FAFAFA — Figma: surface/neutral/bg/base-alt */
+  --table-header-bg:        var(--color-table-header-bg);    /* light #FAFAFA · dark #24252c(gray-dark-200) — 다크 레퍼런스 일치 */
   --table-header-text:      var(--color-text-secondary);    /* #353535 — Figma: color/text/title/secondary */
-  --table-border-light:     var(--color-border-subtle);      /* Figma: color/table/border/light — 행 구분선 */
+  --table-border-light:     var(--color-table-border-default); /* light #E9E9E9 · dark #2e2f38(gray-dark-300) — 다크 레퍼런스 일치(구분선·헤더밑줄) */
   --table-border-strong:    var(--color-border-emphasis);    /* #353535 — Figma: color/table/border/strong — 외곽 상단 2px */
   --table-header-border:    var(--table-border-light);
   --table-row-default-bg:   var(--color-surface-default);   /* #FFFFFF */
