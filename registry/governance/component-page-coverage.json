@@ -1,0 +1,50 @@
+{
+  "_note": "Gate 18(component-page-coverage) 정본. 설치기(build-components.ts COMPONENT_CATEGORIES_GRID)의 모든 컴포넌트를 ①sectionFor(HTML 섹션이 있어야 함) 또는 ②noSectionNeeded(섹션 불요·사유) 로 분류한다. 설치기에 새 컴포넌트가 생겼는데 둘 다 없으면(미분류) Gate 18 이 커밋 차단 → 'HTML 페이지에 반영' 또는 '제외 분류'를 강제. 정본=설치기. 단독 npm run components:pagecheck.",
+  "_updated": "2026-06-30",
+  "htmlPage": "pages/components-new.html",
+  "sectionFor": {
+    "Button": "button",
+    "Checkbox": "checkbox",
+    "Radio": "radio",
+    "Toggle": "toggle",
+    "Multi Toggle": "multi-toggle",
+    "Chip": "chip",
+    "Filter Chip": "filter-chip",
+    "Input": "input",
+    "Search Input": "input",
+    "Text Area": "textarea",
+    "Select Box": "select",
+    "Dropdown": "dropdown",
+    "Date Picker": "date-picker",
+    "Time Picker": "time-picker",
+    "Table": "table",
+    "Line Tab Set": "tab",
+    "Pagination": "pagination",
+    "GNB": "gnb"
+  },
+  "_sectionForNote": {
+    "Search Input": "input 섹션 안에 변형(variant-group)으로 임베드 — 독립 섹션 불요, input 섹션 존재로 충족",
+    "Line Tab Set": "HTML 섹션 id=tab (Line Tab)"
+  },
+  "noSectionNeeded": [
+    { "name": "StatusBar", "reason": "Platform/Shell — 레이아웃·템플릿 성격. components 페이지 제외(사용자 결정 2026-06-30 A)" },
+    { "name": "NavBar", "reason": "Platform/Shell — 제외(사용자 결정 2026-06-30 A)" },
+    { "name": "CI", "reason": "Platform/Shell — 제외(사용자 결정 2026-06-30 A)" },
+    { "name": "LoginGNB", "reason": "Platform/Shell — 제외(사용자 결정 2026-06-30 A)" },
+    { "name": "WebTabBar", "reason": "Platform/Shell — 제외(사용자 결정 2026-06-30 A)" },
+    { "name": "Footer", "reason": "Platform/Shell — 제외(사용자 결정 2026-06-30 A)" },
+    { "name": "GNB Utility Icon", "reason": "요소(element) — GNB 안 인스턴스 부품" },
+    { "name": "Language Icon", "reason": "요소 — GNB 안 인스턴스 부품" },
+    { "name": "Line Tab", "reason": "요소 — Line Tab Set(tab 섹션) 안 셀" },
+    { "name": "Pagination Cell", "reason": "요소 — Pagination 안 셀" },
+    { "name": "Multi Toggle Element", "reason": "요소 — Multi Toggle 안 셀(multi-toggle 섹션 Element States 로 표출)" },
+    { "name": "Dropdown List", "reason": "요소 — Dropdown(dropdown 섹션) 안 옵션 리스트로 표출" },
+    { "name": "Calendar", "reason": "요소 — Date Picker 안 캘린더 패널" },
+    { "name": "Calendar Cell", "reason": "요소 — Date Picker 안 날짜 셀" },
+    { "name": "Calendar Tile", "reason": "요소 — Date Picker 안 타일" },
+    { "name": "Date Picker Mobile Bottom Sheet", "reason": "요소/변형 — Date Picker(date-picker 섹션) 모바일 폼" },
+    { "name": "Time Picker Dropdown", "reason": "요소 — Time Picker 안 드롭다운 패널" },
+    { "name": "Time Picker Cell", "reason": "요소 — Time Picker 안 셀" },
+    { "name": "Table Cell", "reason": "요소 — Table 안 셀" }
+  ]
+}

@@ -200,6 +200,20 @@
    "name": "리포트 색인",
    "guards": "작업 기록이 목록에 빠짐없이 들어갔나",
    "auto": true
+  },
+  {
+   "num": 18,
+   "group": "link",
+   "name": "컴포넌트페이지 커버리지",
+   "guards": "설치기에 있는 컴포넌트가 HTML 페이지에도 다 있나 (설치기=기준)",
+   "auto": true
+  },
+  {
+   "num": 17,
+   "group": "rules",
+   "name": "미사용 토큰",
+   "guards": "아무 데서도 안 쓰는 토큰(레거시)이 쌓이나",
+   "auto": true
   }
  ],
  "hooks": [

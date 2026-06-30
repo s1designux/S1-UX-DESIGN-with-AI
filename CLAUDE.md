@@ -22,6 +22,7 @@
 
 | 날짜 | 변경 내용 (한 줄) |
 |------|------------------|
+| 2026-06-30 | **설치기↔HTML 페이지 연동 + Gate 18 신설** — 설치기 기준으로 components-new.html 누락분 보완(Multi Toggle 섹션 신설·Dropdown 독립 섹션 분리, 🤖 guide-builder 빌드+설치기 매트릭스 1:1 대조+렌더검증). Platform shell 6종은 제외(사용자 결정). **Gate 18(컴포넌트페이지 커버리지)** 신설: 설치기 COMPONENT_CATEGORIES_GRID(정본)↔HTML 섹션 기계 대조, 미분류·섹션누락 차단(설치기=기준 강제)·정본 component-page-coverage.json(sectionFor/noSectionNeeded). Multi Toggle·Dropdown 드리프트가 손으로 발견된 사각지대를 게이트화(적대적 테스트 통과). Gate 17(미사용토큰)도 대시보드 누락분 등재. 토큰 정합(Gate 6·7·8·10) 위에 "컴포넌트 커버리지" 축 추가 |
 | 2026-06-24 | **Select Box Open 드롭다운 누락 수정 + "표시 순서 ≠ 빌드 순서" 영구 규칙화** — Select Box Open 에 드롭다운 패널이 안 붙던 원인=빌드 순서(Select Box 가 Dropdown 보다 먼저 빌드돼 BUILT_COMPS 비어 부착 실패). 1차로 members 재배열했으나 그러면 나열 순서가 깨짐 → 사용자 지적("나열은 메인→요소, 빌드만 요소 먼저"). `BUILD_DEPENDENCIES`+`buildOrderFor` 위상정렬로 빌드는 요소 먼저, members 는 표시(메인→요소) 순서 고정, `buildAllComponents` layout 패스가 카테고리 내부를 members 순서로 재배치, `render.js` 는 members 정렬. Form Control 표시=Input·Search·Text Area·Select Box·Dropdown·Dropdown List, Select Box 옵션 0→32. 🤖 component-verifier 구조검증 PASS(❌0)·전 게이트(1~15)+zip 재빌드 통과 |
 | 2026-06-23 | **Gate 15 토큰네이밍 검사기 신설**(+ Gate 14 Footer 문서화) — 기준이 산문으로만 있고 토큰 **이름**을 검사하는 게이트 부재로 레거시명·우회 별칭이 정본 유입(navigation/background·icon/brand-ci·고아 table/border/emphasis). 산문→기계 정본 `registry/governance/naming-rules.json`(bg·brand-in-semantic 금지·kebab) + `token-naming-check.js`로 커밋 차단. 동시에 기준 정합: navigation/background→**bg**·table/border/light→**default**·emphasis 삭제·icon/brand-ci 별칭 제거+빌더 Foundation `brand/ci` 직바인딩(BuildMaps.foundationColor 신설). semantic.md 그룹A 23종 제거·그룹B 개명. 🤖 component-verifier 구조검증 통과·전 게이트(1~15) 통과 |
 | 2026-06-19 | **CLAUDE.md 다이어트**(토큰 절감) — 완료된 휴면 MVP 상세 규칙(Portal/Harness·Source Guard·Input·Token Mapping/Sync/Legacy) 4개를 `.claude/docs/*-rules.md`로 분리하고 본문엔 "작업 트리거→참조 문서" 포인터 표만 유지. 미결목록은 완료 스텁 제거·활성 9건만. 112k→86k자(~6.5천 토큰↓/매 세션). 규칙 손실 0(활성 전부 유지·포인터로 즉시 로드). 전 게이트 통과 |
@@ -1290,6 +1291,19 @@ Claude는 **Main Orchestrator**다. 사용자는 **목표 수준 의도**만 준
 **한계(v1):** verify=new 가 이후 빌드 변경으로 stale 되는 것은 아직 해시로 잡지 않음(Gate 13 식 잠금은 후속). Ⓑ 컴포넌트를 다시 손대면 verify 수동 갱신.
 **도입 사유:** 2026-06-24~25 사용자가 준 원본(`tab` 540:6032)과 빌드가 선두께·높이·글자가 다른데 전 게이트 ✅로 통과(검증 절차 신설 6/18 이전 제작·원본 대조 부재). 진단: ①빌드/검증을 분리해도 **검증자가 원본이 아니라 빌더 계획/메모와 대조**했고 ②그 절차를 **건너뛸 수 있었으며** ③**Figma 실물↔정본 대조 게이트가 0개**였음. origin 분류를 기계 입력으로 삼아 "Ⓑ인데 미검증 출고"를 커밋 차단. 적대적 테스트(Ⓑ+완료+none 주입→차단) 통과.
 
+### Gate 17: Orphan Token (2026-06-30 신설)
+**파일:** `scripts/orphan-token-check.js` (`npm run tokens:orphans`)
+**트리거:** vars-data·build-components·registry/components|patterns·웹CSS 변경 / 항상(gate:check 포함)
+**역할:** "이 semantic color 토큰이 실제로 어디서든 쓰이나?"를 **전 표면 결정론 검사**(빌더 mock + 웹CSS + registry spec). orphan = 셋 다 안 씀. 의도보존분(`registry/governance/intentional-unused-tokens.json`, 사유 포함)은 면제. 예상밖 orphan·stale allow = 경고(비차단).
+**도입 사유:** "이 토큰 어디서 쓰나"를 손 grep으로 단정하다 사각지대로 오판(거짓 단정)이 반복돼, 기계가 답하도록 게이트화(사용자 지적). 레거시 토큰 누적도 가시화.
+
+### Gate 18: Component Page Coverage (2026-06-30 신설 — 설치기↔HTML 연동)
+**파일:** `scripts/component-page-coverage-check.js` (`npm run components:pagecheck`)
+**트리거:** `build-components.ts`·`pages/components-new.html`·`registry/governance/component-page-coverage.json` 변경 / 항상(gate:check 포함)
+**역할:** **설치기 = 기준.** 설치기 `COMPONENT_CATEGORIES_GRID`(정본)의 모든 컴포넌트를 esbuild+require로 추출해, components-new.html의 섹션/comp-nav와 대조. 각 컴포넌트는 `component-page-coverage.json`의 `sectionFor`(HTML 섹션 있어야) 또는 `noSectionNeeded`(Platform shell·요소 컴포넌트 등, 사유)로 분류돼야 함.
+**판정:** ❌차단 = 미분류(설치기 신규 컴포넌트가 둘 다 없음)·섹션누락(sectionFor가 가리키는 id·nav 부재). ⚠️경고 = 고아 섹션·stale config. → 설치기에 컴포넌트 추가 시 HTML 반영을 강제, "HTML에 빠진 컴포넌트"를 손으로 안 찾게.
+**도입 사유:** 토큰 값 정합(Gate 6·7·8·10)은 촘촘했으나 **"설치기 컴포넌트 ↔ HTML 페이지 커버리지" 대조 장치가 0개**라 Multi Toggle·Dropdown 누락이 손으로 발견됨. 손작업을 기계로 승격(사용자 요청). 적대적 테스트(매핑 제거→미분류 차단) 통과.
+
 ## Gate 실행 순서
 
 ```
@@ -1312,9 +1326,10 @@ Claude는 **Main Orchestrator**다. 사용자는 **목표 수준 의도**만 준
   15. Gate 15 (Token Naming Convention) — vars-data.ts 변경 시 / 항상. 토큰 이름이 naming-rules.json 규칙(bg·brand-in-semantic 금지·kebab) 준수하는지 강제. 레거시명·우회 별칭 유입 차단
   16. Gate 16 (Component Origin Verification) — update-management.json·registry/components|patterns 변경 시 / 항상. Ⓑ(원본틀 필요)인데 완료표시+원본대조 0(verify=none)이면 차단·미분류 escape 차단. 미완성 Ⓑ 백로그는 통과(마비 방지). 탭 사태 재발 방지
   17. Gate 17 (Orphan Token) — vars-data·build-components·registry/components|patterns·웹CSS 변경 시 / 항상. 빌더(mock)+웹CSS+registry spec 전 표면에서 안 쓰이는 semantic color 토큰(orphan)을 결정론 검사해 레거시 누적 가시화. 의도보존분=`registry/governance/intentional-unused-tokens.json` 면제, 예상밖 orphan·stale allow=경고(비차단). "이 토큰 어디서 쓰나"를 손 grep 아닌 기계가 답(거짓 단정 차단). 단독 `npm run tokens:orphans`
+  18. Gate 18 (Component Page Coverage) — build-components.ts·components-new.html·component-page-coverage.json 변경 시 / 항상. **설치기(COMPONENT_CATEGORIES_GRID 정본)에 있는 컴포넌트가 HTML components 페이지에도 다 있나**를 기계 대조. 미분류(새 컴포넌트가 sectionFor/noSectionNeeded 둘 다 없음)·섹션누락=차단(설치기=기준 강제), 고아섹션·stale config=경고. 정본=`registry/governance/component-page-coverage.json`. "HTML에 빠진 컴포넌트"를 손으로 안 찾고 기계가 답(Multi Toggle·Dropdown 드리프트 재발 차단). 단독 `npm run components:pagecheck`
 ```
 
-스크립트 일괄 실행: `npm run gate:check` (Gate 1 + 3 + 4 + 6 + 7 + 8 + 9 + 10 + 11 + 12 + 13 + 14 + 15 + 16 + 17 자동)
+스크립트 일괄 실행: `npm run gate:check` (Gate 1 + 3 + 4 + 6 + 7 + 8 + 9 + 10 + 11 + 12 + 13 + 14 + 15 + 16 + 17 + 18 자동)
 
 > **Gate 10 (doc-token-ref-check):** 토큰을 rename/remove 하면 옛 이름을 쥔 가이드 문서가 자동 적발된다. **정본 rename 시 `registry/tokens/deprecated-tokens.json` 의 `renamedGroups` 에 `{from,to}` 한 줄 추가**하면 이후 게이트가 전 활성 페이지에서 잔재를 차단(Check B). `--color-*` 참조 존재성은 Check A(경고)로 가시화. 단독 실행 `npm run docs:tokencheck`. `components.html`(폐기 예정)은 검사 제외.
 

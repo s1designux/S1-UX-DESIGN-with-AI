@@ -410,6 +410,28 @@ try {
   warn(`orphan-token-check 실행 실패: ${e.message}`);
 }
 
+// ── Gate 18: Component Page Coverage (설치기 ↔ HTML 섹션) ──────────
+// "설치기에 있는 컴포넌트가 components-new.html 에도 다 있나"를 정본(COMPONENT_CATEGORIES_GRID) 기준 대조.
+// 미분류·섹션누락 = 차단(설치기=기준 강제), 고아섹션·stale config = 경고. esbuild 필요 → spawnSync.
+console.log('\n🔎 [Gate 18] 컴포넌트페이지 커버리지 검사기 (Component Page Coverage)');
+try {
+  const { spawnSync } = require('child_process');
+  const r = spawnSync('node', [path.join(ROOT, 'scripts/component-page-coverage-check.js')], { encoding: 'utf-8' });
+  const out = (r.stdout || '') + (r.stderr || '');
+  const m = out.match(/PAGECOV_SUMMARY installer=(\d+) mains=(\d+) excluded=(\d+) unclassified=(\d+) missingSection=(\d+) orphanSection=(\d+) stale=(\d+)/);
+  if (r.status === 0 && m) {
+    pass(`설치기 ${m[1]} 컴포넌트 전부 HTML 섹션 연결/제외분류 (main ${m[2]}·제외 ${m[3]})`);
+    if (Number(m[6]) > 0) warn(`HTML 고아 섹션 ${m[6]}개(설치기 매핑 없음). 상세: npm run components:pagecheck`);
+    if (Number(m[7]) > 0) warn(`page-coverage config stale ${m[7]}개. 상세: npm run components:pagecheck`);
+  } else {
+    const lines = out.split('\n').filter((l) => l.includes('❌'));
+    for (const l of lines) fail(l.replace(/^\s*❌\s*/, '').trim());
+    if (lines.length === 0) fail(`component-page-coverage-check 실패 (exit ${r.status})`);
+  }
+} catch (e) {
+  fail(`component-page-coverage-check 실행 실패: ${e.message}`);
+}
+
 // ── Summary ───────────────────────────────────────────────────────
 console.log('\n─────────────────────────────────────────────────────');
 if (errors > 0) {

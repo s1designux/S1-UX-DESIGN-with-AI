@@ -29,6 +29,7 @@
     "components:keycheck": "node scripts/component-key-coverage-check.js",
     "components:anatomy": "node scripts/component-anatomy-check.js",
     "components:iconpolicy": "node scripts/icon-instance-policy-check.js",
+    "components:pagecheck": "node scripts/component-page-coverage-check.js",
     "components:buildverify": "node scripts/installer-build-verify-check.js",
     "tokens:namingcheck": "node scripts/token-naming-check.js",
     "tokens:orphans": "node scripts/orphan-token-check.js",
