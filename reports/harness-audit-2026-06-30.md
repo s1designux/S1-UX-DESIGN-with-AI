@@ -8,8 +8,8 @@
 | 구분 | 건수 |
 |------|------|
 | 🔴 Error | 0 |
-| 🟡 Warn  | 1  |
-| ✅ Pass  | 16 |
+| 🟡 Warn  | 0  |
+| ✅ Pass  | 17 |
 
 ## RULE-1 — 사이즈 HTML 분기
 
@@ -31,9 +31,7 @@
 ## RULE-3 — 아이콘 색상 일관성
 
 - ✅ [form-control-icon-default] 아이콘 색상 일관됨 — var(--color-form-control-icon-default)
-- 🟡 [disabled-icon-color] 허용되지 않은 disabled 아이콘 토큰: var(--color-form-control-icon-disabled)
-  - .is-disabled .s1-input-action-btn: var(--color-form-control-icon-disabled)
-  - .is-disabled .s1-timepicker-icon: var(--color-form-control-text-disabled)
+- ✅ [disabled-icon-color] disabled 아이콘 색상 — 허용 토큰 사용 중 (var(--color-form-control-icon-disabled), var(--color-form-control-text-disabled))
 
 ## RULE-1b — 사이즈 CSS 탭 분기
 
@@ -44,9 +42,4 @@
 
 ## 조치 가이드
 
-아래 항목은 수동 수정이 필요합니다. `npm run harness:audit -- --fix` 실행 시 자동 수정 가능 항목은 별도 표시됩니다.
-
-### [ICON_COLOR] disabled-icon-color
-[disabled-icon-color] 허용되지 않은 disabled 아이콘 토큰: var(--color-form-control-icon-disabled)
-> Disabled 상태 아이콘/아이콘버튼 색상 — --color-icon-muted 또는 --color-form-control-text-disabled 사용
-
+모든 검사를 통과했습니다. 추가 조치 불필요.

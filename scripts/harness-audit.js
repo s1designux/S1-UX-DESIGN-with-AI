@@ -161,9 +161,9 @@ const ICON_COLOR_RULES = [
   },
   {
     id: 'disabled-icon-color',
-    description: 'Disabled 상태 아이콘/아이콘버튼 색상 — --color-icon-muted 또는 --color-form-control-text-disabled 사용',
-    expectedToken: null, // 두 토큰 모두 허용
-    allowedTokens: ['--color-icon-muted', '--color-form-control-text-disabled'],
+    description: 'Disabled 상태 아이콘/아이콘버튼 색상 — 설치기 정본 form-control/icon/disabled(--color-form-control-icon-disabled) 또는 --color-form-control-text-disabled · --color-icon-muted 사용',
+    expectedToken: null, // 허용 토큰 중 하나
+    allowedTokens: ['--color-form-control-icon-disabled', '--color-icon-muted', '--color-form-control-text-disabled'],
     patterns: [
       {
         selector: '.is-disabled .s1-input-action-btn',

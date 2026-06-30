@@ -111,8 +111,15 @@ function main() {
     console.error(`❌ foundation.html number 블록 ${changed}개 정본 불일치. \`npm run number:gen\` 실행 필요.`);
     process.exit(1);
   }
+  // 헤더 '최종 갱신' 날짜 자동 스탬프 — number 블록이 실제 바뀔 때만(여기는 changed>0 경로).
+  // 정적 텍스트가 토큰 변경 후 stale 되던 사각지대를 자동화로 제거. (semantic.html 과 동일 패턴)
+  const today = new Date().toISOString().slice(0, 10);
+  const re = /(<span data-gen-date>)[^<]*(<\/span>)/;
+  const stamped = re.test(html);
+  if (stamped) html = html.replace(re, `$1${today}$2`);
   fs.writeFileSync(FOUNDATION_HTML, html, 'utf8');
-  process.stderr.write(`[number:gen] foundation.html number 블록 ${changed}개 갱신 ✅\n`);
+  process.stderr.write(`[number:gen] foundation.html number 블록 ${changed}개 갱신 ✅` +
+    (stamped ? ' · 📅 최종 갱신 날짜 스탬프됨' : ' · ⚠️ data-gen-date 마커 없음') + '\n');
 }
 
 main();

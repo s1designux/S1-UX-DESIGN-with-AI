@@ -704,15 +704,16 @@ async function buildToggle(maps: BuildMaps, originY: number): Promise<{ set: Com
 // ── Chip (Line/Solid pill) — color/chip/* 슬롯 ────────────────────────────────
 async function buildChip(maps: BuildMaps, originY: number): Promise<{ set: ComponentSetNode; bottomY: number }> {
   const sizes = [
-    { size: "SM", brk: "PC", h: 28, font: 12 },
-    { size: "SM", brk: "Mobile", h: 30, font: 12 },
-    { size: "MD", brk: "PC", h: 34, font: 14 },
+    { size: "SM", brk: "PC", h: 28, font: 12, pad: 16 },
+    { size: "SM", brk: "Mobile", h: 30, font: 14, pad: 12 },
+    { size: "MD", brk: "PC", h: 34, font: 14, pad: 16 },
   ];
   const states = ["Default", "Hover", "Selected", "Disabled"];
   const variants = ["Line", "Solid"];
-  const slot = (st: string) =>
+  // Hover: 보더색 = fill색(bg/hover) — bdGroup:"bg" 로 stroke 를 fill 과 같은 변수에 바인딩(사용자 결정 2026-06-30)
+  const slot = (st: string): { bg: string; bd: string; lb: string; bdGroup?: string } =>
     st === "Default" ? { bg: "default", bd: "default", lb: "default" }
-    : st === "Hover" ? { bg: "hover", bd: "default", lb: "default" }
+    : st === "Hover" ? { bg: "hover", bd: "hover", bdGroup: "bg", lb: "default" }
     : st === "Selected" ? { bg: "selected", bd: "selected", lb: "selected" }
     : { bg: "disabled", bd: "disabled", lb: "disabled" };
   const comps: ComponentNode[] = [];
@@ -730,10 +731,10 @@ async function buildChip(maps: BuildMaps, originY: number): Promise<{ set: Compo
         comp.counterAxisAlignItems = "CENTER";
         comp.primaryAxisSizingMode = "AUTO";
         comp.counterAxisSizingMode = "FIXED";
-        comp.paddingLeft = 16; comp.paddingRight = 16;
+        comp.paddingLeft = sc.pad; comp.paddingRight = sc.pad;
         comp.cornerRadius = 999;
         comp.fills = [boundPaint(scv(maps, `color/chip/${v}/bg/${ss.bg}`))];
-        comp.strokes = [boundPaint(scv(maps, `color/chip/${v}/border/${ss.bd}`))];
+        comp.strokes = [boundPaint(scv(maps, `color/chip/${v}/${ss.bdGroup ?? "border"}/${ss.bd}`))];
         comp.strokeWeight = 1; comp.strokeAlign = "INSIDE";
         comp.appendChild(await makeBoundText("라벨", sc.font, "Medium", scv(maps, `color/chip/${v}/label/${ss.lb}`)));
         comp.resize(comp.width, sc.h);
@@ -1791,18 +1792,18 @@ async function buildFilterChip(maps: BuildMaps, originY: number): Promise<{ set:
   ];
 
   // variant·state → chip 슬롯 suffix (bg/border/label) + open 여부
-  function chipSlot(v: string, st: string): { bg: string; bd: string; lb: string; open: boolean } {
+  // Hover: 보더색 = fill색(bg/hover) — bdGroup:"bg" 로 stroke 를 fill 과 같은 변수에 바인딩(사용자 결정 2026-06-30)
+  function chipSlot(v: string, st: string): { bg: string; bd: string; lb: string; open: boolean; bdGroup?: string } {
     if (v === "line") {
       switch (st) {
-        case "Hover":    return { bg: "hover",    bd: "default",  lb: "default",  open: false };
+        case "Hover":    return { bg: "hover",    bd: "hover",    bdGroup: "bg", lb: "default",  open: false };  // 보더=fill
         case "Selected": return { bg: "selected", bd: "selected", lb: "default",  open: true };  // 펼침: 보더만 파랑
         case "Disabled": return { bg: "disabled", bd: "disabled", lb: "disabled", open: false };
         default:         return { bg: "default",  bd: "default",  lb: "default",  open: false };  // Default·Complete
       }
     }
-    // solid — Hover 보더는 default 유지(chip/solid/border/hover 미정의)
     switch (st) {
-      case "Hover":    return { bg: "hover",    bd: "default",  lb: "default",  open: false };
+      case "Hover":    return { bg: "hover",    bd: "hover",    bdGroup: "bg", lb: "default",  open: false };  // 보더=fill
       case "Selected": return { bg: "selected", bd: "selected", lb: "selected", open: true };
       case "Disabled": return { bg: "disabled", bd: "disabled", lb: "disabled", open: false };
       default:         return { bg: "default",  bd: "default",  lb: "default",  open: false };
@@ -1825,7 +1826,7 @@ async function buildFilterChip(maps: BuildMaps, originY: number): Promise<{ set:
           chip.primaryAxisSizingMode = "AUTO"; chip.counterAxisSizingMode = "FIXED";
           chip.itemSpacing = 4; chip.paddingLeft = sc.padL; chip.paddingRight = sc.padR; chip.cornerRadius = 999;
           chip.fills = [boundPaint(scv(maps, `color/chip/${v}/bg/${ss.bg}`))];
-          chip.strokes = [boundPaint(scv(maps, `color/chip/${v}/border/${ss.bd}`))];
+          chip.strokes = [boundPaint(scv(maps, `color/chip/${v}/${ss.bdGroup ?? "border"}/${ss.bd}`))];
           chip.strokeWeight = 1; chip.strokeAlign = "INSIDE";
           // Title(있음) → "정렬" 라벨(타이틀색) + 값 라벨
           if (t.key === "On") {

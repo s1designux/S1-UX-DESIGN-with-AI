@@ -1,9 +1,9 @@
 {
   "sourceFile": "plugins/figma-vars-installer/src/build-components.ts",
-  "sourceHash": "sha256:7c1819e45db53d246b85a4ffc581cad80359d54960d540f43c73ba684f310d39",
+  "sourceHash": "sha256:107d6c2e6e38eb3846182f1cdb8cf108c6e344a1386bce4cc77e1ccc61b9e197",
   "verifiedBy": "component-verifier",
   "verdict": "pass",
   "changeType": "structural",
-  "verifiedAt": "2026-06-30T06:15:42.771Z",
-  "notes": "makeBoundText V2.4 text style binding via setTextStyleIdAsync + textStyleKey mapping. All (size,style) combos resolve to existing textstyles-data keys (13->14, 9->10, 20M->18M). boundPaint color preserved, TEXT_STYLES set at buildAllComponents entry. Button styled path/makeLabel unchanged. tsc+Gate8/11/15 pass."
+  "verifiedAt": "2026-06-30T06:55:26.360Z",
+  "notes": "Chip/FilterChip hover 보더=fill(bdGroup:bg→bg/hover) · Chip SM/Mobile pad 16→12 · SM/Mobile font 12→14. Default/Selected/Disabled 슬롯 회귀 0(border/* 유지). bg/hover 토큰 line·solid 존재(Gate8 누락0). tsc/anatomy/iconpolicy/keycheck PASS. 코드 레벨 검증, Figma 캔버스 렌더 육안 미검증."
 }

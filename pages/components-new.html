@@ -110,7 +110,6 @@
       --table-cell-text:        var(--color-text-body-primary);
       /* form-control label (TimePicker select 라벨) */
       --color-form-control-label-default:  var(--color-text-secondary);
-      --color-form-control-label-disabled: var(--color-text-disabled);
       --color-form-control-icon-default:   var(--color-gray-800);
       /* Pagination */
       --pagination-control-bg:              var(--color-pagination-control-bg-default);
@@ -621,7 +620,7 @@
     }
     /* Chip — Size modifiers */
     .s1-chip--sm     { height: var(--sizing-28); padding: 0 16px; font-size: 12px; }
-    .s1-chip--mobile { height: var(--sizing-30); padding: 0 16px; font-size: 14px; }
+    .s1-chip--mobile { height: var(--sizing-30); padding: 0 12px; font-size: 14px; }
     .s1-chip.is-selected {
       background: var(--chip-line-selected-bg);
       border-color: var(--chip-line-selected-border); color: var(--chip-line-selected-text);
@@ -635,6 +634,7 @@
     .s1-chip:not(.is-disabled):not(.is-preview):not(.s1-chip--solid):not(.is-selected):hover,
     .s1-chip.is-hover:not(.s1-chip--solid) {
       background: var(--chip-line-hover-bg);
+      border-color: var(--chip-line-hover-bg);  /* hover 보더 = fill 색 */
     }
     /* Chip — Solid modifier */
     .s1-chip--solid {
@@ -644,7 +644,7 @@
     .s1-chip--solid:not(.is-disabled):not(.is-preview):not(.is-selected):hover,
     .s1-chip--solid.is-hover {
       background: var(--chip-solid-hover-bg);
-      border-color: var(--chip-solid-hover-border);
+      border-color: var(--chip-solid-hover-bg);  /* hover 보더 = fill 색 */
     }
     .s1-chip--solid.is-selected {
       background: var(--chip-solid-selected-bg);
@@ -721,6 +721,7 @@
     .ds-filter-chip-wrap:not(.is-open) .ds-filter-chip:not(.ds-filter-chip--solid):not(.is-disabled):not(.is-preview):hover,
     .ds-filter-chip:not(.ds-filter-chip--solid).is-hover {
       background: var(--chip-line-hover-bg);
+      border-color: var(--chip-line-hover-bg);  /* hover 보더 = fill 색 */
     }
     /* Line Disabled */
     .ds-filter-chip:not(.ds-filter-chip--solid).is-disabled {
@@ -740,7 +741,7 @@
     .ds-filter-chip--solid .ds-filter-chip-arrow { color: var(--chip-solid-default-text); }
     .ds-filter-chip-wrap:not(.is-open) .ds-filter-chip--solid:not(.is-disabled):not(.is-preview):hover,
     .ds-filter-chip--solid.is-hover {
-      background: var(--chip-solid-hover-bg); border-color: var(--chip-solid-hover-border);
+      background: var(--chip-solid-hover-bg); border-color: var(--chip-solid-hover-bg);  /* hover 보더 = fill 색 */
     }
     .ds-filter-chip--solid.is-selected {
       background: var(--chip-solid-selected-bg); border-color: var(--chip-solid-selected-border);
@@ -791,6 +792,7 @@
     }
     .s1-input-wrap.is-disabled input { color: var(--input-disabled-text); cursor: not-allowed; }
     .s1-input-wrap.is-disabled .s1-input-field input::placeholder { color: var(--input-disabled-text); }
+    .s1-input-wrap.is-disabled .s1-input-label { color: var(--color-form-control-label-disabled); }
     .s1-input-wrap.is-readonly .s1-input-field {
       background: var(--input-readonly-bg); border-color: var(--input-readonly-border);
     }
@@ -829,6 +831,7 @@
     .ds-helper-text { font-size: 12px; color: var(--input-helper-text); line-height: 1.3; }
     .s1-input-wrap.is-error .ds-helper-text { color: var(--input-error-text); }
     .s1-input-wrap.is-correct .ds-helper-text { color: var(--input-correct-text); }
+    .s1-input-wrap.is-disabled .ds-helper-text { color: var(--color-form-control-label-disabled); }
     .s1-input-icon { flex-shrink: 0; color: var(--color-form-control-icon-default); }
     .s1-input-wrap.is-error .s1-input-icon { color: var(--color-icon-red); }
     .s1-input-wrap.is-correct .s1-input-icon { color: var(--color-icon-blue); }
@@ -1280,7 +1283,7 @@
       border: 1px solid var(--pagination-control-border);
       border-radius: var(--radius-control-xs);
       background: var(--pagination-control-bg);
-      color: var(--color-text-secondary);
+      color: var(--color-pagination-control-icon-default);
       cursor: pointer; font-size: 13px; font-weight: 500;
       transition: background 0.1s;
       padding: 0;
@@ -5738,7 +5741,7 @@ document.addEventListener('click', function(e) {
 /* Dark mode override — tokens.css [data-theme="dark"] 블록에서 처리 */
 /* --table-header-bg:     var(--color-bg-subtle);      → gray-dark-200 (#24252C) */
 /* --table-header-border: var(--color-border-default); → gray-dark-300 (#2E2F38) */
-/* --table-border-strong: var(--color-border-strong);  → gray-dark-500 (#3E4049) */</pre>
+/* 외곽선 strong: tokens.css 정본 --color-table-border-strong (다크 gray-dark-700) — 인라인 override 제거(설치기 정본 일치) */</pre>
           </div>
           <div class="code-pane" id="table-js"><pre>// Table 행 선택 — 헤더 Checkbox indeterminate 포함
 const section   = document.querySelector('.s1-table-section');
@@ -6263,13 +6266,13 @@ update(); // 초기화</pre>
                         </button>
                       </div>
                       <div class="s1-date-picker__weekdays">
-                        <span class="s1-date-picker__weekday is-sunday">일</span>
+                        <span class="s1-date-picker__weekday">일</span>
                         <span class="s1-date-picker__weekday">월</span>
                         <span class="s1-date-picker__weekday">화</span>
                         <span class="s1-date-picker__weekday">수</span>
                         <span class="s1-date-picker__weekday">목</span>
                         <span class="s1-date-picker__weekday">금</span>
-                        <span class="s1-date-picker__weekday is-saturday">토</span>
+                        <span class="s1-date-picker__weekday">토</span>
                       </div>
                       <div class="s1-date-picker__grid">
                         <button class="s1-date-picker__day is-other-month" tabindex="-1"><span class="day-inner">26</span></button>
@@ -6476,10 +6479,9 @@ update(); // 초기화</pre>
                 <tr><td>패널 배경</td><td class="token-value">var(--color-date-picker-panel-bg)</td><td>캘린더 팝업 배경</td></tr>
                 <tr><td>패널 테두리</td><td class="token-value">var(--color-date-picker-panel-border)</td><td>팝업 외곽선</td></tr>
                 <tr><td>헤더/월 텍스트</td><td class="token-value">var(--color-date-picker-text-primary)</td><td>YYYY.MM 라벨 · 이전/다음 nav</td></tr>
-                <tr><td>요일/날짜 텍스트</td><td class="token-value">var(--color-date-picker-text-secondary)</td><td>weekday · 기본 day cell</td></tr>
-                <tr><td>일요일 텍스트</td><td class="token-value">var(--color-date-picker-text-sunday)</td><td>일요일 헤더</td></tr>
-                <tr><td>토요일 텍스트</td><td class="token-value">var(--color-date-picker-text-saturday)</td><td>토요일 헤더</td></tr>
-                <tr><td>이전/다음달 날짜</td><td class="token-value">var(--color-date-picker-text-other-month)</td><td>other-month day cell</td></tr>
+                <tr><td>요일 헤더 텍스트</td><td class="token-value">var(--color-text-body-primary)</td><td>설치기 정본: 전 요일 = date-picker/text/primary (gray/900). 주말 특별색 미적용(경비업)</td></tr>
+                <tr><td>기본 날짜 텍스트</td><td class="token-value">var(--color-date-picker-text-secondary)</td><td>기본 day cell</td></tr>
+                <tr><td>이전/다음달 날짜</td><td class="token-value">var(--color-date-picker-text-disabled)</td><td>설치기 정본: other-month → Standard:Disabled = text/disabled</td></tr>
                 <tr><td>비활성 날짜</td><td class="token-value">var(--color-date-picker-text-disabled)</td><td>disabled day cell</td></tr>
                 <tr><td>hover 배경</td><td class="token-value">var(--color-date-picker-cell-bg-hover)</td><td>day cell · nav · selector hover</td></tr>
                 <tr><td>오늘 테두리</td><td class="token-value">var(--color-date-picker-cell-border-today)</td><td>today 원형 테두리</td></tr>
@@ -7892,8 +7894,6 @@ document.addEventListener('click', function(e) {
           var idx = (WEEK_START + wi) % 7;
           var span = document.createElement('span');
           span.className = 's1-date-picker__weekday';
-          if (idx === 0) span.classList.add('is-sunday');
-          if (idx === 6) span.classList.add('is-saturday');
           span.textContent = WEEKDAY_LABELS[idx];
           weekdaysContainer.appendChild(span);
         }
