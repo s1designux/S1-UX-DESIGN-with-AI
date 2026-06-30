@@ -437,7 +437,6 @@
   --color-bg-default : var(--color-gray-0);
   --color-bg-subtle  : var(--color-gray-50);
   --color-bg-muted   : var(--color-gray-100);
-  --color-bg-elevated: var(--color-gray-100);
   --color-bg-selected: var(--color-blue-50);
 
   /* ── surface ── */
@@ -445,8 +444,6 @@
   --color-surface-raised : var(--color-base-white);
 
   /* ── button ── */
-  --color-button-bg-assist--default       : var(--color-base-white);
-  --color-button-bg-assist--hover         : var(--color-gray-50);
   --color-button-bg-blue-line--default    : var(--color-base-white);
   --color-button-bg-blue-line--hover      : var(--color-blue-50);
   --color-button-bg-disabled              : var(--color-gray-50);
@@ -454,8 +451,6 @@
   --color-button-bg-primary--hover        : var(--color-blue-500);
   --color-button-bg-secondary--default    : var(--color-base-white);
   --color-button-bg-secondary--hover      : var(--color-gray-50);
-  --color-button-border-assist--default   : var(--color-gray-200);
-  --color-button-border-assist--hover     : var(--color-gray-200);
   --color-button-border-blue-line--default: var(--color-blue-400);
   --color-button-border-blue-line--hover  : var(--color-blue-400);
   --color-button-border-disabled          : var(--color-gray-200);
@@ -463,8 +458,6 @@
   --color-button-border-primary--hover    : var(--color-blue-500);
   --color-button-border-secondary--default: var(--color-gray-200);
   --color-button-border-secondary--hover  : var(--color-gray-200);
-  --color-button-label-assist--default    : var(--color-gray-800);
-  --color-button-label-assist--hover      : var(--color-gray-800);
   --color-button-label-blue-line--default : var(--color-blue-400);
   --color-button-label-blue-line--hover   : var(--color-blue-500);
   --color-button-label-disabled           : var(--color-gray-300);
@@ -496,26 +489,20 @@
   --color-chip-solid-label-selected : var(--color-base-white);
 
   /* ── control ── */
-  --color-control-bg-default              : var(--color-base-white);
-  --color-control-bg-default-alt          : var(--color-gray-50);
-  --color-control-bg-disabled             : var(--color-gray-100);
-  --color-control-bg-hover                : var(--color-gray-50);
-  --color-control-bg-selected             : var(--color-blue-400);
-  --color-control-bg-selected-alt         : var(--color-blue-400);
-  --color-control-border-default          : var(--color-gray-200);
-  --color-control-border-default-alt      : var(--color-gray-100);
-  --color-control-border-disabled         : var(--color-gray-200);
-  --color-control-border-selected         : var(--color-blue-400);
-  --color-control-indicator-disabled      : var(--color-gray-300);
-  --color-control-indicator-selected      : var(--color-base-white);
-  --color-control-indicator-selected-alt  : var(--color-blue-400);
-  --color-control-indicator-unselected    : var(--color-gray-300);
-  --color-control-indicator-unselected-alt: var(--color-gray-200);
-  --color-control-label-default           : var(--color-gray-800);
-  --color-control-label-disabled          : var(--color-gray-300);
-  --color-control-text-disabled           : var(--color-gray-300);
-  --color-control-text-selected           : var(--color-base-white);
-  --color-control-text-unselected         : var(--color-gray-800);
+  --color-control-bg-default            : var(--color-base-white);
+  --color-control-bg-disabled           : var(--color-gray-100);
+  --color-control-bg-hover              : var(--color-gray-50);
+  --color-control-bg-selected           : var(--color-blue-400);
+  --color-control-bg-selected-alt       : var(--color-blue-400);
+  --color-control-border-default        : var(--color-gray-200);
+  --color-control-border-disabled       : var(--color-gray-200);
+  --color-control-border-selected       : var(--color-blue-400);
+  --color-control-indicator-disabled    : var(--color-gray-300);
+  --color-control-indicator-selected    : var(--color-base-white);
+  --color-control-indicator-selected-alt: var(--color-blue-400);
+  --color-control-indicator-unselected  : var(--color-gray-300);
+  --color-control-label-default         : var(--color-gray-800);
+  --color-control-label-disabled        : var(--color-gray-300);
 
   /* ── table ── */
   --color-table-border-default: var(--color-gray-100);
@@ -570,22 +557,18 @@
   --color-icon-white     : var(--color-base-white);
 
   /* ── line ── */
-  --color-line-blue        : var(--color-blue-400);
-  --color-line-gray-default: var(--color-gray-200);
-  --color-line-gray-strong : var(--color-gray-300);
-  --color-line-gray-subtle : var(--color-gray-100);
-  --color-line-white       : var(--color-base-white);
+  --color-line-blue       : var(--color-blue-400);
+  --color-line-gray-subtle: var(--color-gray-100);
 
   /* ── navigation ── */
-  --color-navigation-bg                   : var(--color-base-white);
-  --color-navigation-indicator-default    : var(--color-gray-200);
-  --color-navigation-indicator-default-alt: var(--color-gray-100);
-  --color-navigation-indicator-hover      : var(--color-blue-400);
-  --color-navigation-indicator-selected   : var(--color-blue-400);
-  --color-navigation-label-default        : var(--color-gray-600);
-  --color-navigation-label-default-alt    : var(--color-gray-700);
-  --color-navigation-label-hover          : var(--color-blue-400);
-  --color-navigation-label-selected       : var(--color-blue-400);
+  --color-navigation-bg                : var(--color-base-white);
+  --color-navigation-indicator-default : var(--color-gray-200);
+  --color-navigation-indicator-hover   : var(--color-blue-400);
+  --color-navigation-indicator-selected: var(--color-blue-400);
+  --color-navigation-label-default     : var(--color-gray-600);
+  --color-navigation-label-default-alt : var(--color-gray-700);
+  --color-navigation-label-hover       : var(--color-blue-400);
+  --color-navigation-label-selected    : var(--color-blue-400);
 
   /* ── overlay ── */
   --color-overlay: rgba(0,0,0,0.5);
@@ -642,20 +625,18 @@
   --color-status-card-text-tertiary--sub     : var(--color-gray-300);
 
   /* ── text ── */
-  --color-text-body-primary     : var(--color-gray-900);
-  --color-text-body-secondary   : var(--color-gray-800);
-  --color-text-body-tertiary    : var(--color-gray-500);
-  --color-text-state-accent     : var(--color-blue-400);
-  --color-text-state-accent-alt : var(--color-base-white);
-  --color-text-state-caption    : var(--color-gray-500);
-  --color-text-state-caution    : var(--color-red-300);
-  --color-text-state-correct    : var(--color-blue-400);
-  --color-text-state-disabled   : var(--color-gray-300);
-  --color-text-state-helper     : var(--color-gray-400);
-  --color-text-state-placeholder: var(--color-gray-500);
-  --color-text-title-primary    : var(--color-gray-900);
-  --color-text-title-secondary  : var(--color-gray-800);
-  --color-text-title-tertiary   : var(--color-gray-600);
+  --color-text-body-primary    : var(--color-gray-900);
+  --color-text-body-secondary  : var(--color-gray-800);
+  --color-text-body-tertiary   : var(--color-gray-500);
+  --color-text-state-accent    : var(--color-blue-400);
+  --color-text-state-accent-alt: var(--color-base-white);
+  --color-text-state-caption   : var(--color-gray-500);
+  --color-text-state-caution   : var(--color-red-300);
+  --color-text-state-correct   : var(--color-blue-400);
+  --color-text-state-disabled  : var(--color-gray-300);
+  --color-text-state-helper    : var(--color-gray-400);
+  --color-text-title-primary   : var(--color-gray-900);
+  --color-text-title-secondary : var(--color-gray-800);
 
   /* ── scroll ── */
   --color-scroll-bg: var(--color-gray-200);
@@ -669,7 +650,6 @@
   --color-bg-default : var(--color-gray-dark-50);
   --color-bg-subtle  : var(--color-gray-dark-200);
   --color-bg-muted   : var(--color-gray-dark-300);
-  --color-bg-elevated: var(--color-gray-dark-400);
   --color-bg-selected: var(--color-blue-dark-100);
 
   /* ── surface ── */
@@ -677,8 +657,6 @@
   --color-surface-raised : var(--color-gray-dark-400);
 
   /* ── button ── */
-  --color-button-bg-assist--default       : var(--color-base-white);
-  --color-button-bg-assist--hover         : var(--color-gray-dark-200);
   --color-button-bg-blue-line--default    : var(--color-gray-dark-100);
   --color-button-bg-blue-line--hover      : var(--color-gray-dark-200);
   --color-button-bg-disabled              : var(--color-gray-dark-300);
@@ -686,8 +664,6 @@
   --color-button-bg-primary--hover        : var(--color-blue-dark-250);
   --color-button-bg-secondary--default    : var(--color-gray-dark-100);
   --color-button-bg-secondary--hover      : var(--color-gray-dark-200);
-  --color-button-border-assist--default   : var(--color-gray-dark-300);
-  --color-button-border-assist--hover     : var(--color-gray-dark-300);
   --color-button-border-blue-line--default: var(--color-blue-dark-300);
   --color-button-border-blue-line--hover  : var(--color-blue-dark-300);
   --color-button-border-disabled          : var(--color-gray-dark-300);
@@ -695,8 +671,6 @@
   --color-button-border-primary--hover    : var(--color-blue-dark-250);
   --color-button-border-secondary--default: var(--color-gray-dark-500);
   --color-button-border-secondary--hover  : var(--color-gray-dark-500);
-  --color-button-label-assist--default    : var(--color-gray-dark-800);
-  --color-button-label-assist--hover      : var(--color-gray-dark-800);
   --color-button-label-blue-line--default : var(--color-blue-dark-300);
   --color-button-label-blue-line--hover   : var(--color-blue-dark-300);
   --color-button-label-disabled           : var(--color-gray-dark-600);
@@ -728,26 +702,20 @@
   --color-chip-solid-label-selected : var(--color-base-white);
 
   /* ── control ── */
-  --color-control-bg-default              : var(--color-gray-dark-100);
-  --color-control-bg-default-alt          : var(--color-gray-dark-600);
-  --color-control-bg-disabled             : var(--color-gray-dark-300);
-  --color-control-bg-hover                : var(--color-gray-dark-200);
-  --color-control-bg-selected             : var(--color-blue-dark-300);
-  --color-control-bg-selected-alt         : var(--color-blue-dark-300);
-  --color-control-border-default          : var(--color-gray-dark-500);
-  --color-control-border-default-alt      : var(--color-gray-dark-300);
-  --color-control-border-disabled         : var(--color-gray-dark-300);
-  --color-control-border-selected         : var(--color-blue-dark-300);
-  --color-control-indicator-disabled      : var(--color-gray-dark-500);
-  --color-control-indicator-selected      : var(--color-base-white);
-  --color-control-indicator-selected-alt  : var(--color-blue-dark-300);
-  --color-control-indicator-unselected    : var(--color-gray-dark-400);
-  --color-control-indicator-unselected-alt: var(--color-gray-dark-300);
-  --color-control-label-default           : var(--color-gray-dark-800);
-  --color-control-label-disabled          : var(--color-gray-dark-600);
-  --color-control-text-disabled           : var(--color-gray-dark-400);
-  --color-control-text-selected           : var(--color-base-white);
-  --color-control-text-unselected         : var(--color-gray-dark-800);
+  --color-control-bg-default            : var(--color-gray-dark-100);
+  --color-control-bg-disabled           : var(--color-gray-dark-300);
+  --color-control-bg-hover              : var(--color-gray-dark-200);
+  --color-control-bg-selected           : var(--color-blue-dark-300);
+  --color-control-bg-selected-alt       : var(--color-blue-dark-300);
+  --color-control-border-default        : var(--color-gray-dark-500);
+  --color-control-border-disabled       : var(--color-gray-dark-300);
+  --color-control-border-selected       : var(--color-blue-dark-300);
+  --color-control-indicator-disabled    : var(--color-gray-dark-500);
+  --color-control-indicator-selected    : var(--color-base-white);
+  --color-control-indicator-selected-alt: var(--color-blue-dark-300);
+  --color-control-indicator-unselected  : var(--color-gray-dark-400);
+  --color-control-label-default         : var(--color-gray-dark-800);
+  --color-control-label-disabled        : var(--color-gray-dark-600);
 
   /* ── table ── */
   --color-table-border-default: var(--color-gray-dark-300);
@@ -802,22 +770,18 @@
   --color-icon-white     : var(--color-base-white);
 
   /* ── line ── */
-  --color-line-blue        : var(--color-blue-dark-300);
-  --color-line-gray-default: var(--color-gray-dark-300);
-  --color-line-gray-strong : var(--color-gray-dark-400);
-  --color-line-gray-subtle : var(--color-gray-dark-300);
-  --color-line-white       : var(--color-base-white);
+  --color-line-blue       : var(--color-blue-dark-300);
+  --color-line-gray-subtle: var(--color-gray-dark-300);
 
   /* ── navigation ── */
-  --color-navigation-bg                   : var(--color-gray-dark-100);
-  --color-navigation-indicator-default    : var(--color-gray-dark-300);
-  --color-navigation-indicator-default-alt: var(--color-gray-dark-200);
-  --color-navigation-indicator-hover      : var(--color-blue-dark-300);
-  --color-navigation-indicator-selected   : var(--color-blue-dark-300);
-  --color-navigation-label-default        : var(--color-gray-dark-600);
-  --color-navigation-label-default-alt    : var(--color-gray-dark-700);
-  --color-navigation-label-hover          : var(--color-blue-dark-300);
-  --color-navigation-label-selected       : var(--color-blue-dark-300);
+  --color-navigation-bg                : var(--color-gray-dark-100);
+  --color-navigation-indicator-default : var(--color-gray-dark-300);
+  --color-navigation-indicator-hover   : var(--color-blue-dark-300);
+  --color-navigation-indicator-selected: var(--color-blue-dark-300);
+  --color-navigation-label-default     : var(--color-gray-dark-600);
+  --color-navigation-label-default-alt : var(--color-gray-dark-700);
+  --color-navigation-label-hover       : var(--color-blue-dark-300);
+  --color-navigation-label-selected    : var(--color-blue-dark-300);
 
   /* ── overlay ── */
   --color-overlay: rgba(0,0,0,0.75);
@@ -874,20 +838,18 @@
   --color-status-card-text-tertiary--sub     : var(--color-gray-dark-400);
 
   /* ── text ── */
-  --color-text-body-primary     : var(--color-gray-dark-900);
-  --color-text-body-secondary   : var(--color-gray-dark-800);
-  --color-text-body-tertiary    : var(--color-gray-dark-700);
-  --color-text-state-accent     : var(--color-blue-dark-300);
-  --color-text-state-accent-alt : var(--color-base-white);
-  --color-text-state-caption    : var(--color-gray-dark-800);
-  --color-text-state-caution    : var(--color-red-dark-350);
-  --color-text-state-correct    : var(--color-blue-dark-300);
-  --color-text-state-disabled   : var(--color-gray-dark-400);
-  --color-text-state-helper     : var(--color-gray-dark-600);
-  --color-text-state-placeholder: var(--color-gray-dark-700);
-  --color-text-title-primary    : var(--color-gray-dark-900);
-  --color-text-title-secondary  : var(--color-gray-dark-800);
-  --color-text-title-tertiary   : var(--color-gray-dark-700);
+  --color-text-body-primary    : var(--color-gray-dark-900);
+  --color-text-body-secondary  : var(--color-gray-dark-800);
+  --color-text-body-tertiary   : var(--color-gray-dark-700);
+  --color-text-state-accent    : var(--color-blue-dark-300);
+  --color-text-state-accent-alt: var(--color-base-white);
+  --color-text-state-caption   : var(--color-gray-dark-800);
+  --color-text-state-caution   : var(--color-red-dark-350);
+  --color-text-state-correct   : var(--color-blue-dark-300);
+  --color-text-state-disabled  : var(--color-gray-dark-400);
+  --color-text-state-helper    : var(--color-gray-dark-600);
+  --color-text-title-primary   : var(--color-gray-dark-900);
+  --color-text-title-secondary : var(--color-gray-dark-800);
 
   /* ── scroll ── */
   --color-scroll-bg: var(--color-gray-dark-600);

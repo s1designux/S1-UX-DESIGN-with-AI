@@ -392,15 +392,12 @@ export const SEMANTIC_COLOR: Record<string, SemanticColorEntry> = {
   "color/bg/default": { light: "gray/0", dark: "gray-dark/50" },
   "color/bg/subtle": { light: "gray/50", dark: "gray-dark/200" },
   "color/bg/muted": { light: "gray/100", dark: "gray-dark/300" },
-  "color/bg/elevated": { light: "gray/100", dark: "gray-dark/400" },
   "color/bg/selected": { light: "blue/50", dark: "blue-dark/100" },
   // ── surface (컴포넌트 표면 배경 — 카드·패널·모달) ────
   "color/surface/default": { light: "base/white", dark: "gray-dark/100" },
   "color/surface/raised": { light: "base/white", dark: "gray-dark/400" },
 
   // ── button ────────────────────────────────
-  "color/button/bg/assist--default": { light: "base/white", dark: "base/white" },
-  "color/button/bg/assist--hover": { light: "gray/50", dark: "gray-dark/200" },
   "color/button/bg/blue-line--default": { light: "base/white", dark: "gray-dark/100" },
   "color/button/bg/blue-line--hover": { light: "blue/50", dark: "gray-dark/200" },
   "color/button/bg/disabled": { light: "gray/50", dark: "gray-dark/300" },
@@ -408,8 +405,6 @@ export const SEMANTIC_COLOR: Record<string, SemanticColorEntry> = {
   "color/button/bg/primary--hover": { light: "blue/500", dark: "blue-dark/250" },
   "color/button/bg/secondary--default": { light: "base/white", dark: "gray-dark/100" },
   "color/button/bg/secondary--hover": { light: "gray/50", dark: "gray-dark/200" },
-  "color/button/border/assist--default": { light: "gray/200", dark: "gray-dark/300" },
-  "color/button/border/assist--hover": { light: "gray/200", dark: "gray-dark/300" },
   "color/button/border/blue-line--default": { light: "blue/400", dark: "blue-dark/300" },
   "color/button/border/blue-line--hover": { light: "blue/400", dark: "blue-dark/300" },
   "color/button/border/disabled": { light: "gray/200", dark: "gray-dark/300" },
@@ -417,8 +412,6 @@ export const SEMANTIC_COLOR: Record<string, SemanticColorEntry> = {
   "color/button/border/primary--hover": { light: "blue/500", dark: "blue-dark/250" },
   "color/button/border/secondary--default": { light: "gray/200", dark: "gray-dark/500" },
   "color/button/border/secondary--hover": { light: "gray/200", dark: "gray-dark/500" },
-  "color/button/label/assist--default": { light: "gray/800", dark: "gray-dark/800" },
-  "color/button/label/assist--hover": { light: "gray/800", dark: "gray-dark/800" },
   "color/button/label/blue-line--default": { light: "blue/400", dark: "blue-dark/300" },
   "color/button/label/blue-line--hover": { light: "blue/500", dark: "blue-dark/300" },
   "color/button/label/disabled": { light: "gray/300", dark: "gray-dark/600" },
@@ -451,25 +444,19 @@ export const SEMANTIC_COLOR: Record<string, SemanticColorEntry> = {
 
   // ── control ────────────────────────────────
   "color/control/bg/default": { light: "base/white", dark: "gray-dark/100" },
-  "color/control/bg/default-alt": { light: "gray/50", dark: "gray-dark/600" },
   "color/control/bg/disabled": { light: "gray/100", dark: "gray-dark/300" },
   "color/control/bg/hover": { light: "gray/50", dark: "gray-dark/200" },
   "color/control/bg/selected": { light: "blue/400", dark: "blue-dark/300" },
   "color/control/bg/selected-alt": { light: "blue/400", dark: "blue-dark/300" },
   "color/control/border/default": { light: "gray/200", dark: "gray-dark/500" },
-  "color/control/border/default-alt": { light: "gray/100", dark: "gray-dark/300" },
   "color/control/border/disabled": { light: "gray/200", dark: "gray-dark/300" },
   "color/control/border/selected": { light: "blue/400", dark: "blue-dark/300" },
   "color/control/indicator/disabled": { light: "gray/300", dark: "gray-dark/500" },
   "color/control/indicator/selected": { light: "base/white", dark: "base/white" },
   "color/control/indicator/selected-alt": { light: "blue/400", dark: "blue-dark/300" },
   "color/control/indicator/unselected": { light: "gray/300", dark: "gray-dark/400" },
-  "color/control/indicator/unselected-alt": { light: "gray/200", dark: "gray-dark/300" },
   "color/control/label/default": { light: "gray/800", dark: "gray-dark/800" },
   "color/control/label/disabled": { light: "gray/300", dark: "gray-dark/600" },
-  "color/control/text/disabled": { light: "gray/300", dark: "gray-dark/400" },
-  "color/control/text/selected": { light: "base/white", dark: "base/white" },
-  "color/control/text/unselected": { light: "gray/800", dark: "gray-dark/800" },
 
   // ── table (구 data — 2026-06-15 그룹명 변경: data→table, state→cell) ──
   "color/table/border/default": { light: "gray/100", dark: "gray-dark/300" },
@@ -523,15 +510,11 @@ export const SEMANTIC_COLOR: Record<string, SemanticColorEntry> = {
 
   // ── line ────────────────────────────────
   "color/line/blue": { light: "blue/400", dark: "blue-dark/300" },
-  "color/line/gray/default": { light: "gray/200", dark: "gray-dark/300" },
-  "color/line/gray/strong": { light: "gray/300", dark: "gray-dark/400" },
   "color/line/gray/subtle": { light: "gray/100", dark: "gray-dark/300" },
-  "color/line/white": { light: "base/white", dark: "base/white" },
 
   // ── navigation ────────────────────────────────
   "color/navigation/bg": { light: "base/white", dark: "gray-dark/100" },
   "color/navigation/indicator/default": { light: "gray/200", dark: "gray-dark/300" },
-  "color/navigation/indicator/default-alt": { light: "gray/100", dark: "gray-dark/200" },
   "color/navigation/indicator/hover": { light: "blue/400", dark: "blue-dark/300" },
   "color/navigation/indicator/selected": { light: "blue/400", dark: "blue-dark/300" },
   "color/navigation/label/default": { light: "gray/600", dark: "gray-dark/600" },
@@ -612,10 +595,8 @@ export const SEMANTIC_COLOR: Record<string, SemanticColorEntry> = {
   "color/text/state/correct": { light: "blue/400", dark: "blue-dark/300" },
   "color/text/state/disabled": { light: "gray/300", dark: "gray-dark/400" },
   "color/text/state/helper": { light: "gray/400", dark: "gray-dark/600" },
-  "color/text/state/placeholder": { light: "gray/500", dark: "gray-dark/700" },
   "color/text/title/primary": { light: "gray/900", dark: "gray-dark/900" },
   "color/text/title/secondary": { light: "gray/800", dark: "gray-dark/800" },
-  "color/text/title/tertiary": { light: "gray/600", dark: "gray-dark/700" },
   "color/form-control/icon/default":   { light: "gray/800", dark: "gray-dark/700" },
   "color/form-control/icon/disabled":  { light: "gray/300", dark: "gray-dark/500" },
   "color/scroll/bg":                   { light: "gray/200", dark: "gray-dark/600" },
