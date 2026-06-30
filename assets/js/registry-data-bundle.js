@@ -5018,6 +5018,13 @@ window.REGISTRY_BUNDLE = {
       },
       "renamedGroups": [
         {
+          "from": "color/form-control/text-caret",
+          "to": "color/form-control/text-cursor",
+          "renamedAt": "2026-06-30",
+          "reason": "caret(교정부호 ^ 어원, 비직관) → text-cursor(입력 커서, 비전문가 친화). 사용자 결정.",
+          "scope": "active-pages"
+        },
+        {
           "from": "color/data/",
           "to": "color/table/",
           "renamedAt": "2026-06-15",
@@ -5036,6 +5043,55 @@ window.REGISTRY_BUNDLE = {
           "to": "--color-table-",
           "renamedAt": "2026-06-15",
           "reason": "data→table 그룹명 변경에 따른 CSS 변수 prefix 변경.",
+          "scope": "active-pages"
+        },
+        {
+          "from": "--color-date-picker-bg-panel",
+          "to": "--color-date-picker-panel-bg",
+          "renamedAt": "2026-06-26",
+          "reason": "date-picker panel/cell 분리(사용자 결정). 활성 페이지 옛 이름 금지.",
+          "scope": "active-pages"
+        },
+        {
+          "from": "--color-date-picker-border-panel",
+          "to": "--color-date-picker-panel-border",
+          "renamedAt": "2026-06-26",
+          "reason": "date-picker panel/cell 분리.",
+          "scope": "active-pages"
+        },
+        {
+          "from": "--color-date-picker-bg-hover",
+          "to": "--color-date-picker-cell-bg-hover",
+          "renamedAt": "2026-06-26",
+          "reason": "date-picker panel/cell 분리.",
+          "scope": "active-pages"
+        },
+        {
+          "from": "--color-date-picker-bg-today",
+          "to": "--color-date-picker-cell-bg-today",
+          "renamedAt": "2026-06-26",
+          "reason": "date-picker panel/cell 분리.",
+          "scope": "active-pages"
+        },
+        {
+          "from": "--color-date-picker-bg-selected",
+          "to": "--color-date-picker-cell-bg-selected",
+          "renamedAt": "2026-06-26",
+          "reason": "date-picker panel/cell 분리.",
+          "scope": "active-pages"
+        },
+        {
+          "from": "--color-date-picker-bg-range",
+          "to": "--color-date-picker-cell-bg-range",
+          "renamedAt": "2026-06-26",
+          "reason": "date-picker panel/cell 분리.",
+          "scope": "active-pages"
+        },
+        {
+          "from": "--color-date-picker-border-today",
+          "to": "--color-date-picker-cell-border-today",
+          "renamedAt": "2026-06-26",
+          "reason": "date-picker panel/cell 분리.",
           "scope": "active-pages"
         }
       ],
