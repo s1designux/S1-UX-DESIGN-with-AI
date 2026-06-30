@@ -624,18 +624,18 @@
   --color-status-card-text-tertiary--sub     : var(--color-gray-300);
 
   /* ── text ── */
-  --color-text-body-primary    : var(--color-gray-900);
-  --color-text-body-secondary  : var(--color-gray-800);
-  --color-text-body-tertiary   : var(--color-gray-500);
-  --color-text-state-accent    : var(--color-blue-400);
-  --color-text-state-accent-alt: var(--color-base-white);
-  --color-text-state-caption   : var(--color-gray-500);
-  --color-text-state-caution   : var(--color-red-300);
-  --color-text-state-correct   : var(--color-blue-400);
-  --color-text-state-disabled  : var(--color-gray-300);
-  --color-text-state-helper    : var(--color-gray-400);
-  --color-text-title-primary   : var(--color-gray-900);
-  --color-text-title-secondary : var(--color-gray-800);
+  --color-text-body-primary        : var(--color-gray-900);
+  --color-text-body-secondary      : var(--color-gray-800);
+  --color-text-body-tertiary       : var(--color-gray-500);
+  --color-text-state-accent        : var(--color-blue-400);
+  --color-text-state-accent-inverse: var(--color-base-white);
+  --color-text-state-caption       : var(--color-gray-500);
+  --color-text-state-caution       : var(--color-red-300);
+  --color-text-state-correct       : var(--color-blue-400);
+  --color-text-state-disabled      : var(--color-gray-300);
+  --color-text-state-helper        : var(--color-gray-400);
+  --color-text-title-primary       : var(--color-gray-900);
+  --color-text-title-secondary     : var(--color-gray-800);
 
   /* ── scroll ── */
   --color-scroll-bg: var(--color-gray-200);
@@ -836,18 +836,18 @@
   --color-status-card-text-tertiary--sub     : var(--color-gray-dark-400);
 
   /* ── text ── */
-  --color-text-body-primary    : var(--color-gray-dark-900);
-  --color-text-body-secondary  : var(--color-gray-dark-800);
-  --color-text-body-tertiary   : var(--color-gray-dark-700);
-  --color-text-state-accent    : var(--color-blue-dark-300);
-  --color-text-state-accent-alt: var(--color-base-white);
-  --color-text-state-caption   : var(--color-gray-dark-800);
-  --color-text-state-caution   : var(--color-red-dark-350);
-  --color-text-state-correct   : var(--color-blue-dark-300);
-  --color-text-state-disabled  : var(--color-gray-dark-400);
-  --color-text-state-helper    : var(--color-gray-dark-600);
-  --color-text-title-primary   : var(--color-gray-dark-900);
-  --color-text-title-secondary : var(--color-gray-dark-800);
+  --color-text-body-primary        : var(--color-gray-dark-900);
+  --color-text-body-secondary      : var(--color-gray-dark-800);
+  --color-text-body-tertiary       : var(--color-gray-dark-700);
+  --color-text-state-accent        : var(--color-blue-dark-300);
+  --color-text-state-accent-inverse: var(--color-base-white);
+  --color-text-state-caption       : var(--color-gray-dark-800);
+  --color-text-state-caution       : var(--color-red-dark-350);
+  --color-text-state-correct       : var(--color-blue-dark-300);
+  --color-text-state-disabled      : var(--color-gray-dark-400);
+  --color-text-state-helper        : var(--color-gray-dark-600);
+  --color-text-title-primary       : var(--color-gray-dark-900);
+  --color-text-title-secondary     : var(--color-gray-dark-800);
 
   /* ── scroll ── */
   --color-scroll-bg: var(--color-gray-dark-600);

@@ -5018,6 +5018,13 @@ window.REGISTRY_BUNDLE = {
       },
       "renamedGroups": [
         {
+          "from": "color/text/state/accent-alt",
+          "to": "color/text/state/accent-inverse",
+          "renamedAt": "2026-06-30",
+          "reason": "의미 명확화: accent-alt(흰색) = 파랑/다크그레이 배경 위에서 accent를 흰색으로 반전한 텍스트 → accent-inverse. 사용자 결정.",
+          "scope": "active-pages"
+        },
+        {
           "from": "color/form-control/text-caret",
           "to": "color/form-control/text-cursor",
           "renamedAt": "2026-06-30",

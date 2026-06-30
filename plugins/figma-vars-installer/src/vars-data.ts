@@ -588,7 +588,7 @@ export const SEMANTIC_COLOR: Record<string, SemanticColorEntry> = {
   "color/text/body/secondary": { light: "gray/800", dark: "gray-dark/800" },
   "color/text/body/tertiary": { light: "gray/500", dark: "gray-dark/700" },
   "color/text/state/accent": { light: "blue/400", dark: "blue-dark/300" },
-  "color/text/state/accent-alt": { light: "base/white", dark: "base/white" },
+  "color/text/state/accent-inverse": { light: "base/white", dark: "base/white" },
   "color/text/state/caption": { light: "gray/500", dark: "gray-dark/800" },
   "color/text/state/caution": { light: "red/300", dark: "red-dark/350" },
   "color/text/state/correct": { light: "blue/400", dark: "blue-dark/300" },
