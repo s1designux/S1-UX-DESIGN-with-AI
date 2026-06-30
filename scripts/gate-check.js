@@ -453,6 +453,29 @@ try {
   fail(`variant-coverage-check 실행 실패: ${e.message}`);
 }
 
+// ── Gate 20: Registry Token Drift (비정본 registry stale 추적) ─────
+// registry 설명 데이터(component.tokens·components/*.json)의 토큰 정보가 정본(vars-data/tokens.css)과
+// 어긋나는 stale 를 baseline ratchet 으로 추적. 알려진 backlog=경고(개수), 새 stale 추가=차단.
+// 정본=vars-data(값)·build-components(사용). registry 설명 데이터는 비정본 — grep 오도 방지. (2026-06-30 신설)
+console.log('\n🔎 [Gate 20] 토큰 drift 검사기 (Registry Token Drift)');
+try {
+  const { spawnSync } = require('child_process');
+  const r = spawnSync('node', [path.join(ROOT, 'scripts/token-drift-check.js')], { encoding: 'utf-8' });
+  const out = (r.stdout || '') + (r.stderr || '');
+  const m = out.match(/알려진 (\d+)건 · 새로 생김 (\d+)건 · 해소됨 (\d+)건/);
+  if (r.status === 0) {
+    pass(`비정본 registry 새 stale 0 (정본=vars-data/build-components)${m ? ` · 알려진 backlog ${m[1]}건` : ''}`);
+    if (m && Number(m[1]) > 0) warn(`비정본 registry 알려진 stale ${m[1]}건 (옛 토큰 정보 — 믿지 말 것, 정본 참조). 상세: node scripts/token-drift-check.js`);
+    if (m && Number(m[3]) > 0) warn(`drift ${m[3]}건 해소됨 — baseline 갱신 권장: node scripts/token-drift-check.js --update-baseline`);
+  } else {
+    const lines = out.split('\n').filter((l) => l.includes('•'));
+    for (const l of lines) fail(l.replace(/^\s*•\s*/, '').trim());
+    if (lines.length === 0) fail(`token-drift-check 실패 (exit ${r.status})`);
+  }
+} catch (e) {
+  fail(`token-drift-check 실행 실패: ${e.message}`);
+}
+
 // ── Summary ───────────────────────────────────────────────────────
 console.log('\n─────────────────────────────────────────────────────');
 if (errors > 0) {

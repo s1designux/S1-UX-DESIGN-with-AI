@@ -162,6 +162,7 @@
     { "from": "--color-date-picker-bg-range",     "to": "--color-date-picker-cell-bg-range", "renamedAt": "2026-06-26", "reason": "date-picker panel/cell 분리.", "scope": "active-pages" },
     { "from": "--color-date-picker-border-today", "to": "--color-date-picker-cell-border-today", "renamedAt": "2026-06-26", "reason": "date-picker panel/cell 분리.", "scope": "active-pages" }
   ],
+  "_bgDepthScaleNote": "2026-06-30 배경 토큰을 깊이 스케일(--color-bg-level-0~3)로 재구성: DS 쪽(vars-data SEMANTIC_COLOR + tokens.css 생성물 + build-components)만 변경. 옛 --color-bg-default(→level-1)·subtle(→level-2)·muted(→level-3)·surface/* 는 포털 site-base.css 가 자체 정의(Variables 검수 제외)하므로 포털 페이지에 그대로 잔존해도 안 깨짐. renamedGroups(Check B 차단)에는 넣지 않는다 — site-base 가 여전히 정의하는 살아있는 포털 토큰이라 차단하면 건드리면 안 되는 포털 페이지 수정을 강제하게 됨.",
   "legacyFiles": [
     {
       "path": "assets/css/legacy-tokens.css",

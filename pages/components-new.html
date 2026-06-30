@@ -26,20 +26,20 @@
       --input-disabled-border:  var(--color-form-control-border-disabled);
       --input-placeholder-text: var(--color-form-control-text-placeholder);
       --input-disabled-text:    var(--color-form-control-text-disabled);
-      --input-helper-text:      var(--color-text-state-caption);   /* Figma: 안내 메세지 = text/state/caption */
-      --input-correct-text:     var(--color-text-state-correct);   /* Figma: 확인 메세지 = text/state/correct */
-      --input-error-text:       var(--color-text-state-caution);   /* Figma: 오류 메세지 = text/state/caution */
+      --input-helper-text:      var(--color-form-control-label-default);   /* 설치기 정본: 안내 메세지 = form-control/label/default */
+      --input-correct-text:     var(--color-form-control-border-correct);  /* 설치기 정본: 확인 메세지 = form-control/border/correct */
+      --input-error-text:       var(--color-form-control-border-error);    /* 설치기 정본: 오류 메세지 = form-control/border/error */
       /* Dropdown — form-control 경유 (tokens.css 동기화) */
       --dropdown-trigger-default-bg:      var(--color-form-control-bg-default);
       --dropdown-trigger-hover-bg:        var(--color-form-control-bg-hover);
       --dropdown-trigger-disabled-bg:     var(--color-form-control-bg-disabled);
       --dropdown-trigger-default-border:  var(--color-form-control-border-default);
-      --dropdown-trigger-hover-border:    var(--color-form-control-border-hover);
+      --dropdown-trigger-hover-border:    var(--color-form-control-border-default);
       --dropdown-trigger-open-border:     var(--color-form-control-border-selected);
       --dropdown-trigger-disabled-border: var(--color-form-control-border-disabled);
       --dropdown-trigger-default-text:      var(--color-form-control-text-default);
       --dropdown-trigger-placeholder-text: var(--color-form-control-text-placeholder);
-      --dropdown-trigger-selected-text:    var(--color-form-control-text-default);
+      --dropdown-trigger-selected-text:    var(--color-form-control-text-selected);
       --dropdown-trigger-disabled-text:    var(--color-form-control-text-disabled);
       --dropdown-list-bg:                  var(--color-dropdown-list-bg);     /* = option/bg/default 값. 패널=옵션 배경 통일(시멘틱 정렬) */
       --dropdown-list-border:              var(--color-dropdown-list-border); /* 컴포넌트 토큰으로 정렬(역할토큰 대신) */
@@ -117,9 +117,11 @@
       --pagination-control-border:          var(--color-pagination-control-border-default);
       --pagination-control-hover-bg:        var(--color-pagination-control-bg-hover);
       --pagination-arrow-disabled-bg:       var(--color-pagination-control-bg-disabled);
-      --pagination-arrow-disabled-color:    var(--color-icon-muted);
-      --pagination-number-text:             var(--color-gray-400);
-      --pagination-number-text-selected:    var(--color-text-secondary);
+      --pagination-arrow-disabled-border:   var(--color-pagination-control-border-disabled);
+      --pagination-arrow-disabled-color:    var(--color-pagination-control-icon-disabled);
+      --pagination-number-text:             var(--color-pagination-number-default);
+      --pagination-number-text-hover:       var(--color-pagination-number-hover);
+      --pagination-number-text-selected:    var(--color-pagination-number-selected);
       /* Tab — navigation/* (component-tokens.css 정본 누락분 복원) */
       --tab-bg:                   var(--color-navigation-bg);
       --tab-label-default:        var(--color-navigation-label-default);
@@ -136,11 +138,11 @@
       --gnb-icon:                 var(--color-navigation-icon);
       /* Input readonly — form-control */
       --input-readonly-bg:      var(--color-form-control-bg-disabled);
-      --input-readonly-border:  var(--color-form-control-border-disabled);
-      --input-readonly-text:    var(--color-text-readonly);
+      --input-readonly-border:  var(--color-form-control-border-default);
+      --input-readonly-text:    var(--color-form-control-text-read-only);
       /* Dropdown 누락분 */
-      --dropdown-trigger-open-bg:    var(--color-form-control-bg-hover);
-      --dropdown-option-selected-bg: transparent;
+      --dropdown-trigger-open-bg:    var(--color-form-control-bg-selected);
+      --dropdown-option-selected-bg: var(--color-dropdown-option-bg-selected);
     }
 
     /* =====================================================
@@ -603,6 +605,7 @@
     .s1-toggle.is-on .s1-toggle-knob { left: 22px; }
     .s1-toggle.is-disabled { cursor: not-allowed; }
     .s1-toggle.is-disabled .s1-toggle-track { background: var(--toggle-disabled-bg); }
+    .s1-toggle.is-disabled .s1-toggle-knob { background: var(--color-control-indicator-disabled); }
     .s1-toggle-label { font-size: 14px; color: var(--color-control-label-default); }
     .s1-toggle.is-disabled .s1-toggle-label { color: var(--color-control-label-disabled); }
 
@@ -612,12 +615,12 @@
       height: var(--sizing-34); padding: 0 16px; border-radius: 999px;
       border: 1px solid var(--chip-line-default-border);
       background: var(--chip-line-default-bg); color: var(--chip-line-default-text);
-      font-size: 14px; font-weight: 400; cursor: pointer;
+      font-size: 14px; font-weight: 500; cursor: pointer;
       transition: all 0.15s; white-space: nowrap; font-family: inherit;
     }
     /* Chip — Size modifiers */
     .s1-chip--sm     { height: var(--sizing-28); padding: 0 16px; font-size: 12px; }
-    .s1-chip--mobile { height: var(--sizing-30); padding: 0 12px; font-size: 14px; }
+    .s1-chip--mobile { height: var(--sizing-30); padding: 0 16px; font-size: 14px; }
     .s1-chip.is-selected {
       background: var(--chip-line-selected-bg);
       border-color: var(--chip-line-selected-border); color: var(--chip-line-selected-text);
@@ -635,12 +638,12 @@
     /* Chip — Solid modifier */
     .s1-chip--solid {
       background: var(--chip-solid-default-bg);
-      border-color: transparent; color: var(--chip-solid-default-text);
+      border-color: var(--chip-solid-default-border); color: var(--chip-solid-default-text);
     }
     .s1-chip--solid:not(.is-disabled):not(.is-preview):not(.is-selected):hover,
     .s1-chip--solid.is-hover {
       background: var(--chip-solid-hover-bg);
-      border-color: transparent;
+      border-color: var(--chip-solid-hover-border);
     }
     .s1-chip--solid.is-selected {
       background: var(--chip-solid-selected-bg);
@@ -648,7 +651,7 @@
     }
     .s1-chip--solid.is-disabled {
       background: var(--chip-solid-disabled-bg);
-      border-color: transparent; color: var(--chip-solid-disabled-text);
+      border-color: var(--chip-solid-disabled-border); color: var(--chip-solid-disabled-text);
     }
     /* Chip — icon (prefix) */
     .s1-chip-icon { flex-shrink: 0; color: inherit; }
@@ -680,7 +683,7 @@
     }
     /* Filter Chip — Size modifiers */
     .ds-filter-chip--sm     { height: var(--sizing-28); padding: 0 6px 0 12px; }
-    .ds-filter-chip--mobile { height: var(--sizing-30); padding: 0 8px 0 12px; }
+    .ds-filter-chip--mobile { height: var(--sizing-30); padding: 0 6px 0 12px; }
     .ds-filter-chip-label {
       font-size: 14px; font-weight: 500; white-space: nowrap;
       letter-spacing: -0.028em;
@@ -695,7 +698,7 @@
       position: relative; display: inline-flex;
     }
     .ds-filter-chip-arrow {
-      flex-shrink: 0; color: var(--chip-line-default-text);
+      flex-shrink: 0; width: 20px; height: 20px; color: var(--chip-line-default-text);
       transform: rotate(90deg);
     }
     .ds-filter-chip-wrap.is-open .ds-filter-chip-arrow { transform: rotate(270deg); }
@@ -778,7 +781,8 @@
     .s1-input-field.input-size-xsmall input { font-size: 12px; letter-spacing: 0; }
     .s1-input-field input::placeholder { color: var(--input-placeholder-text); }
 
-    .s1-input-wrap.is-focus .s1-input-field { border-color: var(--input-focus-border); }
+    .s1-input-wrap.is-focus .s1-input-field { border-color: var(--input-focus-border); background: var(--color-form-control-bg-selected); }
+    .s1-input-wrap.is-focus .s1-input-field input { color: var(--color-form-control-text-selected); }
     .s1-input-wrap.is-error .s1-input-field { border-color: var(--input-error-border); }
     .s1-input-wrap.is-correct .s1-input-field { border-color: var(--input-correct-border); }
     .s1-input-wrap.is-disabled .s1-input-field {
@@ -808,6 +812,10 @@
       letter-spacing: -0.028em; line-height: 1.6; resize: vertical;
     }
     .s1-input-wrap--textarea textarea::placeholder { color: var(--input-placeholder-text); }
+    /* Textarea Focus — 입력 커서(caret) 정적 데모. textarea 를 hug 시키고 caret 을 텍스트 우측에 배치 */
+    .s1-input-wrap--textarea.is-focus .s1-input-field { align-items: center; }
+    .s1-input-wrap--textarea.is-focus textarea { width: auto; min-height: 16px; resize: none; line-height: 1.3; }
+    .s1-input-field .textarea-caret { align-self: center; }
     /* Textarea — Disabled (form-control disabled 토큰, input is-disabled 와 동일 계열) */
     .s1-input-wrap--textarea.is-disabled .s1-input-field {
       background: var(--color-form-control-bg-disabled);
@@ -884,7 +892,7 @@
     }
     .s1-input-action-btn:hover { background: var(--color-bg-subtle); }
     .s1-input-wrap.is-disabled .s1-input-action-btn,
-    .s1-input-wrap.is-disabled .s1-input-icon { color: var(--color-icon-muted); cursor: not-allowed; pointer-events: none; }
+    .s1-input-wrap.is-disabled .s1-input-icon { color: var(--color-form-control-icon-disabled); cursor: not-allowed; pointer-events: none; }
     /* DatePicker 인풋 오른쪽 패딩 — 아이콘 자체 여백 있으므로 TimePicker(8px) 기준 */
     .s1-input-field:has([aria-label="달력 열기"]) { padding-right: 8px; }
     .s1-suffix-action-group {
@@ -956,11 +964,8 @@
       display: flex; align-items: center; justify-content: center;
       width: 44px; height: 44px; /* Figma: 44×44px */
       text-align: center; font-size: 16px; font-weight: 500; /* Figma: 16M */
-      color: var(--color-date-picker-text-secondary); /* Variables: date-picker/text/secondary */
+      color: var(--color-text-body-primary); /* 설치기 정본: 전 요일 = date-picker/text/primary (gray/900). 주말 특별색 없음(사용자 결정 D — 경비업) */
     }
-    /* 일/토 weekday 색상 — Variables: date-picker/text/sunday·saturday */
-    .s1-date-picker__weekday.is-sunday { color: var(--color-date-picker-text-sunday); }
-    .s1-date-picker__weekday.is-saturday { color: var(--color-date-picker-text-saturday); }
     .s1-date-picker__grid {
       display: grid; grid-template-columns: repeat(7, 44px); gap: 0;
       flex-shrink: 0; /* flex 패널 안에서 높이 유지 */
@@ -986,7 +991,7 @@
       background: var(--color-date-picker-cell-bg-hover);
     }
     .s1-date-picker__day.is-other-month {
-      color: var(--color-date-picker-text-other-month);
+      color: var(--color-date-picker-text-disabled); /* 설치기 정본: other-month → Standard:Disabled 매핑 = text/disabled (다크 gray-dark/500) */
     }
     /* Today: Variables selected-alt — blue border circle + blue text, panel bg */
     .s1-date-picker__day.is-today > .day-inner {
@@ -1014,10 +1019,16 @@
       background: var(--color-form-control-bg-hover);
       border-color: var(--color-form-control-border-default);
     }
-    /* Trigger opened state */
+    /* Trigger opened state — 설치기 정본: Open = bg/selected(다크 gray-dark/200) + border/selected + 값 텍스트 text/selected(gray/900) */
     .s1-date-picker--opened .s1-input-wrap,
     .s1-date-picker__trigger-opened .s1-input-wrap { border-color: var(--input-focus-border); }
     .s1-input-wrap.is-selected-open { border-color: var(--input-focus-border); }
+    .s1-date-picker--opened .s1-input-field,
+    .s1-date-picker__trigger-opened .s1-input-field,
+    .s1-input-wrap.is-selected-open .s1-input-field { background: var(--color-form-control-bg-selected); }
+    .s1-date-picker--opened .s1-input-field input,
+    .s1-date-picker__trigger-opened .s1-input-field input,
+    .s1-input-wrap.is-selected-open .s1-input-field input { color: var(--color-form-control-text-selected); }
     .s1-dp-states {
       display: flex; flex-wrap: wrap; gap: 16px; align-items: flex-start;
     }
@@ -1084,6 +1095,7 @@
       border-color: var(--dropdown-trigger-disabled-border);
       color: var(--dropdown-trigger-disabled-text); cursor: not-allowed;
     }
+    .s1-select-wrap.is-disabled .s1-select-chevron { color: var(--color-form-control-icon-disabled); }
     .s1-select-list {
       position: absolute; top: calc(100% + 8px); left: 0; right: 0;
       background: var(--dropdown-list-bg);
@@ -1103,7 +1115,7 @@
     .s1-select-option:hover { background: var(--dropdown-option-hover-bg); }
     .s1-select-option.is-selected {
       background: var(--dropdown-option-selected-bg);
-      color: var(--dropdown-option-selected-text); font-weight: 600;
+      color: var(--dropdown-option-selected-text); font-weight: 500;
     }
     .s1-select-option.is-hover { background: var(--dropdown-option-hover-bg); }
     /* 선택된 옵션도 hover 시 배경 변경 — 중립 hover색 재사용 (특이도로 is-selected 우선) */
@@ -1278,6 +1290,7 @@
     }
     .s1-pagination-arrow:disabled {
       background: var(--pagination-arrow-disabled-bg);
+      border-color: var(--pagination-arrow-disabled-border);
       color: var(--pagination-arrow-disabled-color);
       opacity: 0.9;
       cursor: default;
@@ -1448,7 +1461,7 @@
       max-height: 192px; overflow-y: auto; scroll-behavior: smooth;
     }
     .s1-tp-col::-webkit-scrollbar { width: 0; }
-    .s1-tp-col-sep { width: 1px; background: var(--color-border-subtle); flex-shrink: 0; align-self: stretch; }
+    .s1-tp-col-sep { width: 1px; background: var(--color-line-gray-subtle); flex-shrink: 0; align-self: stretch; }
     .s1-tp-col-item {
       height: var(--sizing-32);  /* V2.4 원본 timepicker_input_component(540:3470) = 32 (builds-components.ts TPC_H 일치) */
       display: flex; align-items: center; justify-content: center;
@@ -1462,15 +1475,21 @@
       white-space: nowrap;  /* 12h 오전/오후 세로 글자쪼개짐 방지 */
     }
     .s1-tp-col-item:hover,
-    .s1-tp-col-item.is-hover { background: var(--dropdown-option-hover-bg); border-color: var(--dropdown-option-hover-bg); }  /* .is-hover = States 문서 정적 표현 */
+    .s1-tp-col-item.is-hover {
+      /* 설치기 정본: Time Picker Cell Hover = dropdown/option/bg/hover + label/hover (별칭 --dropdown-option-hover-bg 의 다크 override 회피, 직접 토큰 사용) */
+      background: var(--color-dropdown-option-bg-hover);
+      border-color: var(--color-dropdown-option-bg-hover);
+      color: var(--color-dropdown-option-label-hover);
+    }  /* .is-hover = States 문서 정적 표현 */
     .s1-tp-col-item.is-selected {
-      background: var(--dropdown-list-bg);
-      border-color: var(--color-dropdown-option-border-selected);
-      color: var(--dropdown-option-selected-text); font-weight: 600;  /* dark 정정: blue-dark/350 (정본 option/label/selected) */
+      /* 정본: Time Picker Cell Selected = Basic Dropdown option 재사용 (blue-50 bg + blue-400 label, 테두리 없음).
+         셀 테두리(stroke)는 build-components.ts 7781bfe 에서 제거됨 — dropdown/option/border 3종 삭제. */
+      background: var(--color-dropdown-option-bg-selected);
+      color: var(--color-dropdown-option-label-selected); font-weight: 500;
     }
     .s1-tp-footer-sep {
       width: calc(100% - 16px); height: 1px;
-      background: var(--color-border-subtle); margin-top: 4px;
+      background: var(--color-line-gray-subtle); margin-top: 4px;
     }
     .s1-tp-footer {
       display: flex; align-items: center; justify-content: flex-end;
@@ -1710,6 +1729,9 @@
     .s1-pagination-arrow.is-hover,
     .s1-pagination-number.is-hover {
       background: var(--pagination-control-hover-bg);
+    }
+    .s1-pagination-number.is-hover {
+      color: var(--pagination-number-text-hover);
     }
 
     /* ── Dark mode hover 2단계 밝게 (gray-dark-200 → gray-dark-400 = --color-bg-elevated) ──
@@ -2830,16 +2852,17 @@ if (pwClear) {
           <div style="display:flex;align-items:center;gap:8px;margin-bottom:16px;">
             <h3 class="variant-group-title">Search Input</h3>
             <span class="comp-badge comp-badge-blue">Core</span>
-            <span class="comp-badge">3 states</span>
+            <span class="comp-badge">3 sizes · 4 states</span>
             <span class="comp-badge">Base Input 조합</span>
           </div>
 
           <div class="variant-block">
             <div class="variant-label">States</div>
             <div class="preview-area" style="overflow:visible;">
-              <div class="comp-state-matrix" style="grid-template-columns:230px repeat(3, minmax(160px,1fr));">
+              <div class="comp-state-matrix" style="grid-template-columns:230px repeat(4, minmax(160px,1fr));">
                 <div class="matrix-col-header-action">Action</div>
                 <div class="matrix-col-header">Default</div>
+                <div class="matrix-col-header">Focus</div>
                 <div class="matrix-col-header">Filled</div>
                 <div class="matrix-col-header">Disabled</div>
 
@@ -2876,6 +2899,23 @@ if (pwClear) {
                   </div>
                 </div>
 
+                <!-- Focus -->
+                <div class="comp-state-cell">
+                  <div class="s1-input-wrap is-focus is-preview" style="width:160px;">
+                    <div class="s1-input-field">
+                      <input type="text" value="검색어" tabindex="-1"><span class="input-caret" aria-hidden="true"></span>
+                      <span class="s1-suffix-action-group">
+                        <button class="s1-input-action-btn" tabindex="-1" style="pointer-events:none;" aria-label="지우기">
+                          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><circle cx="8" cy="8" r="6" stroke="currentColor" stroke-width="1.3"/><path d="M5.3 5.3l5.4 5.4M10.7 5.3l-5.4 5.4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+                        </button>
+                        <button class="s1-input-action-btn" tabindex="-1" style="pointer-events:none;" aria-label="검색">
+                          <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true"><path d="M7.58918 15.2371C9.42481 15.2342 11.1973 14.564 12.579 13.3505L17.271 18L18 17.268L13.3387 12.5876C14.4678 11.27 15.1142 9.6044 15.1707 7.86713C15.2272 6.12985 14.6903 4.42542 13.6492 3.0367C12.6082 1.64798 11.1254 0.658482 9.44717 0.23242C7.7689 -0.193641 5.99599 -0.0306429 4.42267 0.694362C2.84936 1.41937 1.57026 2.66278 0.797641 4.21825C0.0250252 5.77372 -0.194642 7.5477 0.175096 9.24579C0.544834 10.9439 1.48174 12.464 2.83033 13.5538C4.17892 14.6435 5.8581 15.2375 7.58918 15.2371ZM7.58918 1.02062C8.88966 1.01858 10.1615 1.40407 11.2437 2.12828C12.3258 2.85249 13.1696 3.88284 13.6682 5.08887C14.1668 6.29491 14.2978 7.62239 14.0446 8.90322C13.7914 10.1841 13.1654 11.3606 12.2458 12.284C11.3262 13.2074 10.1544 13.836 8.87885 14.0902C7.60326 14.3445 6.28122 14.2129 5.08012 13.7123C3.87902 13.2116 2.85289 12.3643 2.13164 11.2777C1.4104 10.1911 1.02649 8.91408 1.02852 7.60825C1.02582 6.74093 1.19345 5.88159 1.52182 5.07938C1.85019 4.27717 2.33285 3.54784 2.9422 2.93312C3.55155 2.31839 4.27562 1.83033 5.073 1.49686C5.87038 1.16339 6.72541 0.991047 7.58918 0.989696V1.02062Z" fill="currentColor"/></svg>
+                        </button>
+                      </span>
+                    </div>
+                  </div>
+                </div>
+
                 <!-- Filled -->
                 <div class="comp-state-cell">
                   <div class="s1-input-wrap is-preview" style="width:160px;">
@@ -2904,6 +2944,52 @@ if (pwClear) {
                         </button>
                       </span>
                     </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Sizes (설치기 정본: XXSM h28 · XSM h34 · MD h44) -->
+          <div class="variant-block">
+            <div class="variant-label">Sizes — XXSM (28) · XSM (34) · MD (44)</div>
+            <div class="preview-area" style="display:flex; gap:20px; align-items:flex-end; flex-wrap:wrap;">
+              <div style="display:flex;flex-direction:column;gap:6px;">
+                <span style="font-size:11px;font-weight:600;color:var(--color-text-caption);">XXSM · 28</span>
+                <div class="s1-input-wrap is-preview" style="width:160px;">
+                  <div class="s1-input-field input-size-xsmall">
+                    <input type="text" value="검색어" tabindex="-1">
+                    <span class="s1-suffix-action-group">
+                      <button class="s1-input-action-btn" tabindex="-1" style="pointer-events:none;" aria-label="검색">
+                        <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true"><path d="M7.58918 15.2371C9.42481 15.2342 11.1973 14.564 12.579 13.3505L17.271 18L18 17.268L13.3387 12.5876C14.4678 11.27 15.1142 9.6044 15.1707 7.86713C15.2272 6.12985 14.6903 4.42542 13.6492 3.0367C12.6082 1.64798 11.1254 0.658482 9.44717 0.23242C7.7689 -0.193641 5.99599 -0.0306429 4.42267 0.694362C2.84936 1.41937 1.57026 2.66278 0.797641 4.21825C0.0250252 5.77372 -0.194642 7.5477 0.175096 9.24579C0.544834 10.9439 1.48174 12.464 2.83033 13.5538C4.17892 14.6435 5.8581 15.2375 7.58918 15.2371ZM7.58918 1.02062C8.88966 1.01858 10.1615 1.40407 11.2437 2.12828C12.3258 2.85249 13.1696 3.88284 13.6682 5.08887C14.1668 6.29491 14.2978 7.62239 14.0446 8.90322C13.7914 10.1841 13.1654 11.3606 12.2458 12.284C11.3262 13.2074 10.1544 13.836 8.87885 14.0902C7.60326 14.3445 6.28122 14.2129 5.08012 13.7123C3.87902 13.2116 2.85289 12.3643 2.13164 11.2777C1.4104 10.1911 1.02649 8.91408 1.02852 7.60825C1.02582 6.74093 1.19345 5.88159 1.52182 5.07938C1.85019 4.27717 2.33285 3.54784 2.9422 2.93312C3.55155 2.31839 4.27562 1.83033 5.073 1.49686C5.87038 1.16339 6.72541 0.991047 7.58918 0.989696V1.02062Z" fill="currentColor"/></svg>
+                      </button>
+                    </span>
+                  </div>
+                </div>
+              </div>
+              <div style="display:flex;flex-direction:column;gap:6px;">
+                <span style="font-size:11px;font-weight:600;color:var(--color-text-caption);">XSM · 34</span>
+                <div class="s1-input-wrap is-preview" style="width:160px;">
+                  <div class="s1-input-field input-size-small">
+                    <input type="text" value="검색어" tabindex="-1">
+                    <span class="s1-suffix-action-group">
+                      <button class="s1-input-action-btn" tabindex="-1" style="pointer-events:none;" aria-label="검색">
+                        <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true"><path d="M7.58918 15.2371C9.42481 15.2342 11.1973 14.564 12.579 13.3505L17.271 18L18 17.268L13.3387 12.5876C14.4678 11.27 15.1142 9.6044 15.1707 7.86713C15.2272 6.12985 14.6903 4.42542 13.6492 3.0367C12.6082 1.64798 11.1254 0.658482 9.44717 0.23242C7.7689 -0.193641 5.99599 -0.0306429 4.42267 0.694362C2.84936 1.41937 1.57026 2.66278 0.797641 4.21825C0.0250252 5.77372 -0.194642 7.5477 0.175096 9.24579C0.544834 10.9439 1.48174 12.464 2.83033 13.5538C4.17892 14.6435 5.8581 15.2375 7.58918 15.2371ZM7.58918 1.02062C8.88966 1.01858 10.1615 1.40407 11.2437 2.12828C12.3258 2.85249 13.1696 3.88284 13.6682 5.08887C14.1668 6.29491 14.2978 7.62239 14.0446 8.90322C13.7914 10.1841 13.1654 11.3606 12.2458 12.284C11.3262 13.2074 10.1544 13.836 8.87885 14.0902C7.60326 14.3445 6.28122 14.2129 5.08012 13.7123C3.87902 13.2116 2.85289 12.3643 2.13164 11.2777C1.4104 10.1911 1.02649 8.91408 1.02852 7.60825C1.02582 6.74093 1.19345 5.88159 1.52182 5.07938C1.85019 4.27717 2.33285 3.54784 2.9422 2.93312C3.55155 2.31839 4.27562 1.83033 5.073 1.49686C5.87038 1.16339 6.72541 0.991047 7.58918 0.989696V1.02062Z" fill="currentColor"/></svg>
+                      </button>
+                    </span>
+                  </div>
+                </div>
+              </div>
+              <div style="display:flex;flex-direction:column;gap:6px;">
+                <span style="font-size:11px;font-weight:600;color:var(--color-text-caption);">MD · 44</span>
+                <div class="s1-input-wrap is-preview" style="width:160px;">
+                  <div class="s1-input-field">
+                    <input type="text" value="검색어" tabindex="-1">
+                    <span class="s1-suffix-action-group">
+                      <button class="s1-input-action-btn" tabindex="-1" style="pointer-events:none;" aria-label="검색">
+                        <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true"><path d="M7.58918 15.2371C9.42481 15.2342 11.1973 14.564 12.579 13.3505L17.271 18L18 17.268L13.3387 12.5876C14.4678 11.27 15.1142 9.6044 15.1707 7.86713C15.2272 6.12985 14.6903 4.42542 13.6492 3.0367C12.6082 1.64798 11.1254 0.658482 9.44717 0.23242C7.7689 -0.193641 5.99599 -0.0306429 4.42267 0.694362C2.84936 1.41937 1.57026 2.66278 0.797641 4.21825C0.0250252 5.77372 -0.194642 7.5477 0.175096 9.24579C0.544834 10.9439 1.48174 12.464 2.83033 13.5538C4.17892 14.6435 5.8581 15.2375 7.58918 15.2371ZM7.58918 1.02062C8.88966 1.01858 10.1615 1.40407 11.2437 2.12828C12.3258 2.85249 13.1696 3.88284 13.6682 5.08887C14.1668 6.29491 14.2978 7.62239 14.0446 8.90322C13.7914 10.1841 13.1654 11.3606 12.2458 12.284C11.3262 13.2074 10.1544 13.836 8.87885 14.0902C7.60326 14.3445 6.28122 14.2129 5.08012 13.7123C3.87902 13.2116 2.85289 12.3643 2.13164 11.2777C1.4104 10.1911 1.02649 8.91408 1.02852 7.60825C1.02582 6.74093 1.19345 5.88159 1.52182 5.07938C1.85019 4.27717 2.33285 3.54784 2.9422 2.93312C3.55155 2.31839 4.27562 1.83033 5.073 1.49686C5.87038 1.16339 6.72541 0.991047 7.58918 0.989696V1.02062Z" fill="currentColor"/></svg>
+                      </button>
+                    </span>
                   </div>
                 </div>
               </div>
@@ -3932,7 +4018,7 @@ clearBtn.<span class="c-fn">addEventListener</span>(<span class="c-str">'click'<
               <div class="comp-state-cell" style="align-items: flex-start; padding-top: 12px;">
                 <div class="s1-input-wrap s1-input-wrap--textarea is-focus is-preview" style="width:160px;">
                   <div class="s1-input-field">
-                    <textarea rows="3" placeholder="내용을 입력하세요" readonly tabindex="-1"></textarea>
+                    <textarea rows="3" readonly tabindex="-1">입력 중</textarea><span class="input-caret textarea-caret" aria-hidden="true"></span>
                   </div>
                 </div>
               </div>

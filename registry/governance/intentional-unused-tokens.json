@@ -14,6 +14,7 @@
     { "token": "color/pagination/control/icon/selected", "reason": "선택된 페이지 화살표 아이콘 — 빌더 주석에 '향후 대비' 명시(build-components.ts:2170). 연결 보류" },
     { "token": "color/date-picker/icon/hover", "reason": "캘린더 ‹›화살표 hover — 현재 date-picker/icon/default(기본색만, build-components.ts:2875). 연결 보류" },
     { "token": "color/date-picker/icon/disabled", "reason": "캘린더 ‹›화살표 비활성 — 현재 date-picker/icon/default. 연결 보류" },
-    { "token": "color/form-control/text-cursor", "reason": "입력 커서 색 — 현재 caret 이 form-control/border/selected 우회(build-components.ts:797). 전용 토큰 연결 보류(이름은 caret→text-cursor 정리 완료 2026-06-30)" }
+    { "token": "color/form-control/text-cursor", "reason": "입력 커서 색 — 현재 caret 이 form-control/border/selected 우회(build-components.ts:797). 전용 토큰 연결 보류(이름은 caret→text-cursor 정리 완료 2026-06-30)" },
+    { "token": "color/bg/level-1", "reason": "배경 깊이 스케일의 페이지 캔버스 레벨(라이트 gray/0·다크 gd50) — 설치기 컴포넌트는 level-0(표면)·level-2·level-3(url pill·pill)만 직접 칠하고, level-1 은 컴포넌트가 올라가는 '페이지 배경'이라 컴포넌트 빌더가 직접 set 하지 않음. 깊이 스케일 완전성을 위해 정본 유지(2026-06-30 bg 깊이 스케일 재구성)" }
   ]
 }

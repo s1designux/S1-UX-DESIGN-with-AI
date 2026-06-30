@@ -434,14 +434,10 @@
    ══════════════════════════════════════════════════ */
 :root {
   /* ── bg ── */
-  --color-bg-default : var(--color-gray-0);
-  --color-bg-subtle  : var(--color-gray-50);
-  --color-bg-muted   : var(--color-gray-100);
-  --color-bg-selected: var(--color-blue-50);
-
-  /* ── surface ── */
-  --color-surface-default: var(--color-base-white);
-  --color-surface-raised : var(--color-base-white);
+  --color-bg-level-0: var(--color-base-white);
+  --color-bg-level-1: var(--color-gray-0);
+  --color-bg-level-2: var(--color-gray-50);
+  --color-bg-level-3: var(--color-gray-100);
 
   /* ── button ── */
   --color-button-bg-blue-line--default    : var(--color-base-white);
@@ -643,14 +639,10 @@
    ══════════════════════════════════════════════════ */
 [data-theme="dark"] {
   /* ── bg ── */
-  --color-bg-default : var(--color-gray-dark-50);
-  --color-bg-subtle  : var(--color-gray-dark-200);
-  --color-bg-muted   : var(--color-gray-dark-300);
-  --color-bg-selected: var(--color-blue-dark-100);
-
-  /* ── surface ── */
-  --color-surface-default: var(--color-gray-dark-100);
-  --color-surface-raised : var(--color-gray-dark-400);
+  --color-bg-level-0: var(--color-gray-dark-0);
+  --color-bg-level-1: var(--color-gray-dark-50);
+  --color-bg-level-2: var(--color-gray-dark-100);
+  --color-bg-level-3: var(--color-gray-dark-200);
 
   /* ── button ── */
   --color-button-bg-blue-line--default    : var(--color-gray-dark-100);

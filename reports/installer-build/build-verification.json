@@ -1,9 +1,9 @@
 {
   "sourceFile": "plugins/figma-vars-installer/src/build-components.ts",
-  "sourceHash": "sha256:3b241b5096cd0d9eac7762dfadffa8a2a271f9809e44d36ff6591def4cc600bd",
+  "sourceHash": "sha256:7c1819e45db53d246b85a4ffc581cad80359d54960d540f43c73ba684f310d39",
   "verifiedBy": "component-verifier",
   "verdict": "pass",
   "changeType": "structural",
-  "verifiedAt": "2026-06-30T02:28:07.978Z",
-  "notes": "타임피커 셀 테두리 전부 제거(사용자 결정): buildTimePickerCell states 에서 bd 필드 삭제·comp.strokes/strokeWeight/strokeAlign 줄 삭제(stroke 잔재 0, fills+label 만). vars-data color/dropdown/option/border/{default,hover,selected} 3종 삭제. allowlist border default·hover 제거(selected 는 원래 미등록). 회귀검증: dropdown/option/{bg,label}/* 유지·Dropdown List/Time Picker Cell 양쪽 사용 정상, checkbox control/border·input form-control/border 는 다른 네임스페이스라 영향 0. Gate8 keycheck 누락0(mock buildAllComponents throw0)·Gate11 anatomy 누락0(셀에 stroke require 없음)·Gate12·Gate15·tsc·Gate17 orphan 예상밖0 통과. 한계: Figma 캔버스 실제 렌더(셀 테두리 시각 제거) 육안 미검증 — 코드 레벨만."
+  "verifiedAt": "2026-06-30T06:12:58.250Z",
+  "notes": "배경 깊이스케일 재구성(bg/level-0~3·surface드롭·10곳 재바인딩) + 텍스트스타일 바인딩(makeBoundText setTextStyleIdAsync, V2.4 Pretendard 정책·Button패턴 동일·폴백 raw유지). keycheck/anatomy/iconpolicy 통과·tsc신규0. 코드+grep, 렌더는 재설치 확인."
 }

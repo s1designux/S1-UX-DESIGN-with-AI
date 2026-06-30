@@ -386,16 +386,13 @@ export interface SemanticColorEntry {
 // ──────────────────────────────────────────────────────────────────────────
 
 export const SEMANTIC_COLOR: Record<string, SemanticColorEntry> = {
-  // ── bg (페이지·레이아웃 배경 — 역할 기반) ────
-  // site-base.css 와 동일 값. 여기 추가로 Figma Variables·설치기·semantic.html 에도 노출.
-  // (--color-bg-home #F5F6FB 는 raw hex·사용처 0 이라 제외)
-  "color/bg/default": { light: "gray/0", dark: "gray-dark/50" },
-  "color/bg/subtle": { light: "gray/50", dark: "gray-dark/200" },
-  "color/bg/muted": { light: "gray/100", dark: "gray-dark/300" },
-  "color/bg/selected": { light: "blue/50", dark: "blue-dark/100" },
-  // ── surface (컴포넌트 표면 배경 — 카드·패널·모달) ────
-  "color/surface/default": { light: "base/white", dark: "gray-dark/100" },
-  "color/surface/raised": { light: "base/white", dark: "gray-dark/400" },
+  // ── bg (페이지·레이아웃 배경 — 깊이 스케일) ────
+  // level-0(가장 위, 흰/카드) → level-3(가장 깊은 배경). 라이트는 기존 값 보존, 다크는 깊이 위계로 재정렬.
+  // (옛 default/subtle/muted/selected, surface/* 는 깊이 스케일로 통합·드롭. bg/selected→테이블 자체 토큰, surface→드롭)
+  "color/bg/level-0": { light: "base/white", dark: "gray-dark/0" },
+  "color/bg/level-1": { light: "gray/0", dark: "gray-dark/50" },
+  "color/bg/level-2": { light: "gray/50", dark: "gray-dark/100" },
+  "color/bg/level-3": { light: "gray/100", dark: "gray-dark/200" },
 
   // ── button ────────────────────────────────
   "color/button/bg/blue-line--default": { light: "base/white", dark: "gray-dark/100" },

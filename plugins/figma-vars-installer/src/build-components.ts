@@ -36,6 +36,19 @@ export interface BuildMaps {
 const BUILT_SETS: Record<string, ComponentSetNode> = {};
 const BUILT_COMPS: Record<string, ComponentNode> = {};
 
+// 텍스트 스타일 맵(buildAllComponents 진입 시 maps.textStyles 로 채움) — makeBoundText 가 setTextStyleIdAsync 로 바인딩.
+let TEXT_STYLES: Record<string, TextStyle> = {};
+// (fontSize, weight) → V2.4 텍스트 스타일 키. Bold=title/* · Medium·Regular=body/*.
+//   비표준 사이즈는 인접 표준으로 매핑(사용자 결정 2026-06-30): 13→14, 9→10. (Shell 13px GNB·9px 배지)
+function textStyleKey(fontSize: number, style: string): string {
+  const letter = style === "Bold" ? "B" : style === "Medium" ? "M" : "R";
+  let size = fontSize;
+  if (size === 13) size = 14;                 // GNB 셸 서비스명·URL (Regular)
+  if (size === 9) size = 10;                  // StatusBar 배지 (Medium)
+  if (size === 20 && letter === "M") size = 18; // Line Tab 탭 라벨 20M → 18M (굵기 유지, 가장 가까운 Medium 크기)
+  return `${letter === "B" ? "title" : "body"}/${size}${letter}`;
+}
+
 async function getBuiltSet(name: string): Promise<ComponentSetNode | null> {
   if (BUILT_SETS[name]) return BUILT_SETS[name];
   try { const f = figma.currentPage.findOne((n) => n.type === "COMPONENT_SET" && n.name === name); return (f as ComponentSetNode) || null; } catch (e) { return null; }
@@ -438,6 +451,10 @@ async function makeBoundText(chars: string, fontSize: number, style: string, col
   t.fontName = { family: "Pretendard", style };
   t.fontSize = fontSize;
   t.characters = chars;
+  // V2.4 텍스트 스타일 바인딩 — 타이포(크기·행간·자간·폰트)를 정본 스타일에 연결(Button 과 동일 방식).
+  //   스타일이 없으면(예: 설치 누락) raw fontSize 로 폴백해 빌드는 계속한다.
+  const ts = TEXT_STYLES[textStyleKey(fontSize, style)];
+  if (ts) { try { await t.setTextStyleIdAsync(ts.id); } catch (e) { /* 폴백: raw 유지 */ } }
   t.fills = [boundPaint(colorVar)];
   return t;
 }
@@ -3080,7 +3097,7 @@ async function buildDatePickerBottomSheet(maps: BuildMaps, originY: number): Pro
   //   사용자 결정 2026-06-26: 시트면 bg = 캘린더 영역 bg 로 통일(라이트·다크 모두). 캘린더만 다른색이면 안 됨.
   //   ※ 이전 '시트=gray/50' 주석은 오해였음. 원 요청은 "라이트 시트(흰색)가 흰 섹션 배경에 묻혀 안 보이니 시트 '뒤'에 배경을 깔아달라" —
   //     시트면은 흰색(surface) 유지, 시트가 떠 보이는 효과는 세트 외부 배경(아래 bg/muted)이 담당한다.
-  comp.fills = [boundPaint(scv(maps, "color/surface/default"))];
+  comp.fills = [boundPaint(scv(maps, "color/bg/level-0"))];
   // 시트 상단 모서리 라운드(원본 540:3836 = rounded-tl/tr-8) — radius/8
   try { comp.topLeftRadius = 8; comp.topRightRadius = 8; comp.bottomLeftRadius = 0; comp.bottomRightRadius = 0; } catch (e) { /* */ }
   comp.clipsContent = false;
@@ -3167,7 +3184,7 @@ async function buildDatePickerBottomSheet(maps: BuildMaps, originY: number): Pro
   try { bottomY = Math.max(bottomY, await buildSpec(opts, maps)); } catch (e) { console.warn(e); }
   // 세트 외부(변형 컨테이너) 배경 = bg/muted (Light gray/100 #E9E9E9) — 시트면=캘린더가 흰색(surface)이라 흰 섹션 배경에 묻힘.
   //   ★ 반드시 decorateSetFlat(set.fills 를 specPalette 흰색으로 덮어씀) 이후에 적용해야 살아남는다(사용자 결정 2026-06-26·재현 2026-06-29).
-  set.fills = [boundPaint(scv(maps, "color/bg/muted"))];
+  set.fills = [boundPaint(scv(maps, "color/bg/level-3"))];
   return { set, bottomY };
 }
 
@@ -3248,7 +3265,7 @@ async function populateStatusRow(target: FrameNode | ComponentNode, maps: BuildM
   target.resize(360, 27);
   target.primaryAxisAlignItems = "SPACE_BETWEEN"; target.counterAxisAlignItems = "CENTER";
   target.paddingLeft = 20; target.paddingRight = 16; target.paddingTop = 0; target.paddingBottom = 0;
-  target.fills = [boundPaint(scv(maps, "color/surface/default"))];
+  target.fills = [boundPaint(scv(maps, "color/bg/level-0"))];
   target.appendChild(await makeBoundText("12:30", 12, "Medium", scv(maps, "color/text/body/secondary")));
   const right = figma.createFrame();
   right.name = "status-right";
@@ -3281,14 +3298,14 @@ async function buildShellUrlBar(maps: BuildMaps): Promise<FrameNode> {
   bar.resize(360, 50);
   bar.primaryAxisAlignItems = "CENTER"; bar.counterAxisAlignItems = "CENTER";
   bar.itemSpacing = 6; bar.paddingLeft = 16; bar.paddingRight = 16; bar.paddingTop = 12; bar.paddingBottom = 12;
-  bar.fills = [boundPaint(scv(maps, "color/surface/default"))];
+  bar.fills = [boundPaint(scv(maps, "color/bg/level-0"))];
   const lock = makeBoundIcon(SHELL_LOCK_SVG, scv(maps, "color/icon/gray")); // icon-vector-allow: 휴대폰 셸 상태바 크롬 — DS UI 아이콘 아님
   lock.name = "ic_잠김"; bar.appendChild(lock); try { lock.resize(24, 24); } catch (e) { /* */ }
   const pill = figma.createFrame();
   pill.name = "url"; pill.layoutMode = "HORIZONTAL";
   pill.primaryAxisAlignItems = "CENTER"; pill.counterAxisAlignItems = "CENTER";
   pill.primaryAxisSizingMode = "FIXED"; pill.counterAxisSizingMode = "FIXED";
-  pill.cornerRadius = 100; pill.fills = [boundPaint(scv(maps, "color/bg/subtle"))];
+  pill.cornerRadius = 100; pill.fills = [boundPaint(scv(maps, "color/bg/level-2"))];
   pill.layoutGrow = 1; pill.layoutAlign = "STRETCH"; // flex-1 + h-full
   pill.appendChild(await makeBoundText("m.s1.co.kr", 14, "Regular", scv(maps, "color/text/body/tertiary")));
   bar.appendChild(pill);
@@ -3492,7 +3509,7 @@ function populateAndroidNav(target: FrameNode | ComponentNode, maps: BuildMaps):
   target.resize(360, 45);
   target.primaryAxisAlignItems = "SPACE_BETWEEN"; target.counterAxisAlignItems = "CENTER";
   target.paddingLeft = 48; target.paddingRight = 48; target.paddingTop = 0; target.paddingBottom = 0;
-  target.fills = [boundPaint(scv(maps, "color/surface/default"))];
+  target.fills = [boundPaint(scv(maps, "color/bg/level-0"))];
   target.appendChild(navIcon(NAV_SVG.recents, maps));
   target.appendChild(navIcon(NAV_SVG.androidHome, maps));
   target.appendChild(navIcon(NAV_SVG.chevronLeft, maps));
@@ -3506,7 +3523,7 @@ async function buildBrowserToolbarRow(maps: BuildMaps): Promise<FrameNode> {
   row.resize(360, 50);
   row.primaryAxisAlignItems = "SPACE_BETWEEN"; row.counterAxisAlignItems = "CENTER";
   row.paddingLeft = 16; row.paddingRight = 16; row.paddingTop = 0; row.paddingBottom = 0;
-  row.fills = [boundPaint(scv(maps, "color/surface/default"))];
+  row.fills = [boundPaint(scv(maps, "color/bg/level-0"))];
   row.appendChild(navIcon(NAV_SVG.chevronLeft, maps));
   row.appendChild(navIcon(NAV_SVG.chevronRight, maps));
   row.appendChild(navIcon(NAV_SVG.home, maps));
@@ -3628,7 +3645,7 @@ async function buildWebTabBar(maps: BuildMaps, originY: number): Promise<{ set: 
   activeTab.primaryAxisSizingMode = "FIXED"; activeTab.counterAxisSizingMode = "FIXED";
   activeTab.resize(200, 32); activeTab.primaryAxisAlignItems = "MIN"; activeTab.counterAxisAlignItems = "CENTER";
   activeTab.paddingLeft = 10; activeTab.paddingRight = 6; activeTab.itemSpacing = 6;
-  activeTab.fills = [boundPaint(scv(maps, "color/surface/default"))];
+  activeTab.fills = [boundPaint(scv(maps, "color/bg/level-0"))];
   try { (activeTab as FrameNode & { topLeftRadius: number; topRightRadius: number; bottomLeftRadius: number; bottomRightRadius: number }).topLeftRadius = 6; (activeTab as any).topRightRadius = 6; (activeTab as any).bottomLeftRadius = 0; (activeTab as any).bottomRightRadius = 0; } catch {}
   tabRow.appendChild(activeTab);
 
@@ -3672,7 +3689,7 @@ async function buildWebTabBar(maps: BuildMaps, originY: number): Promise<{ set: 
   addrRow.primaryAxisSizingMode = "FIXED"; addrRow.counterAxisSizingMode = "FIXED";
   addrRow.resize(W, 63); addrRow.primaryAxisAlignItems = "MIN"; addrRow.counterAxisAlignItems = "CENTER";
   addrRow.paddingLeft = 16; addrRow.paddingRight = 16; addrRow.itemSpacing = 8;
-  addrRow.fills = [boundPaint(scv(maps, "color/surface/default"))];
+  addrRow.fills = [boundPaint(scv(maps, "color/bg/level-0"))];
   comp.appendChild(addrRow);
   addrRow.layoutSizingHorizontal = "FILL"; addrRow.layoutSizingVertical = "FIXED";
 
@@ -3687,7 +3704,7 @@ async function buildWebTabBar(maps: BuildMaps, originY: number): Promise<{ set: 
   pill.primaryAxisSizingMode = "FIXED"; pill.counterAxisSizingMode = "FIXED";
   pill.resize(400, 27); pill.cornerRadius = 20;
   pill.paddingLeft = 16; pill.paddingRight = 16; pill.primaryAxisAlignItems = "MIN"; pill.counterAxisAlignItems = "CENTER";
-  pill.fills = [boundPaint(scv(maps, "color/bg/muted"))];
+  pill.fills = [boundPaint(scv(maps, "color/bg/level-3"))];
   addrRow.appendChild(pill);
   pill.layoutSizingHorizontal = "FILL"; pill.layoutSizingVertical = "FIXED";
   const urlText = await makeBoundText("https://", 13, "Regular", scv(maps, "color/text/body/secondary"));
@@ -4106,6 +4123,7 @@ export async function buildAllComponents(
   maps: BuildMaps,
   onProgress?: (step: string, pct: number) => void
 ): Promise<{ created: number; added: string[]; skipped: string[] }> {
+  TEXT_STYLES = maps.textStyles || {};  // makeBoundText 가 텍스트 스타일 바인딩에 사용
   const page = figma.currentPage;
 
   let topNodes: SceneNode[] = [];
