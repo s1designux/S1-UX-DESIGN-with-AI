@@ -2155,7 +2155,7 @@ checkboxes.forEach(function(chk) {
 
 
       <!-- ═══ RADIO ═══ -->
-      <section class="comp-section" id="radio" data-cov-states="default,hover,selected,disabled,dis+selected">
+      <section class="comp-section" id="radio" data-cov-states="default,hover,selected,disabled,dis+selected" data-cov-labels="off,on">
         <div class="comp-section-header">
           <h2 class="comp-section-title">Radio</h2>
           <span class="comp-badge comp-badge-blue">Core</span>
@@ -2190,6 +2190,26 @@ checkboxes.forEach(function(chk) {
               <div class="comp-state-cell"><label class="s1-radio is-disabled is-preview"><div class="s1-radio-circle"><div class="s1-radio-dot"></div></div><span class="s1-radio-label">옵션</span></label></div>
               <!-- Dis+Selected -->
               <div class="comp-state-cell"><label class="s1-radio is-selected is-disabled is-preview"><div class="s1-radio-circle"><div class="s1-radio-dot"></div></div><span class="s1-radio-label">옵션</span></label></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="variant-block">
+          <div class="variant-label">Label=Off · 라벨 텍스트 없는 라디오 (정본 buildRadio Label=Off)</div>
+          <div class="preview-area">
+            <div class="comp-state-matrix" style="grid-template-columns: 200px repeat(5, minmax(96px, 1fr));">
+              <div class="matrix-col-header-action">Label=Off</div>
+              <div class="matrix-col-header">Default</div>
+              <div class="matrix-col-header">Hover</div>
+              <div class="matrix-col-header">Selected</div>
+              <div class="matrix-col-header">Disabled</div>
+              <div class="matrix-col-header">Dis+Selected</div>
+              <div class="comp-action-cell"><label class="s1-radio is-preview"><div class="s1-radio-circle"><div class="s1-radio-dot"></div></div></label></div>
+              <div class="comp-state-cell"><label class="s1-radio is-preview"><div class="s1-radio-circle"><div class="s1-radio-dot"></div></div></label></div>
+              <div class="comp-state-cell"><label class="s1-radio is-hover is-preview"><div class="s1-radio-circle"><div class="s1-radio-dot"></div></div></label></div>
+              <div class="comp-state-cell"><label class="s1-radio is-selected is-preview"><div class="s1-radio-circle"><div class="s1-radio-dot"></div></div></label></div>
+              <div class="comp-state-cell"><label class="s1-radio is-disabled is-preview"><div class="s1-radio-circle"><div class="s1-radio-dot"></div></div></label></div>
+              <div class="comp-state-cell"><label class="s1-radio is-selected is-disabled is-preview"><div class="s1-radio-circle"><div class="s1-radio-dot"></div></div></label></div>
             </div>
           </div>
         </div>
@@ -2250,7 +2270,7 @@ checkboxes.forEach(function(chk) {
 
 
       <!-- ═══ TOGGLE ═══ -->
-      <section class="comp-section" id="toggle" data-cov-states="default,disabled">
+      <section class="comp-section" id="toggle" data-cov-states="default,disabled" data-cov-pressed="off,on">
         <div class="comp-section-header">
           <h2 class="comp-section-title">Toggle</h2>
           <span class="comp-badge comp-badge-blue">Core</span>
@@ -2330,7 +2350,7 @@ checkboxes.forEach(function(chk) {
 
 
       <!-- ═══ MULTI TOGGLE ═══ -->
-      <section class="comp-section" id="multi-toggle" data-cov-states="default,hover,selected,disabled">
+      <section class="comp-section" id="multi-toggle" data-cov-states="default,hover,selected,disabled" data-cov-sizes="md,sm" data-cov-selected="left,center,right">
         <div class="comp-section-header">
           <h2 class="comp-section-title">Multi Toggle</h2>
           <span class="comp-badge comp-badge-blue">Core</span>
@@ -2481,7 +2501,7 @@ checkboxes.forEach(function(chk) {
 
 
       <!-- ═══ INPUT ═══ -->
-      <section class="comp-section" id="input" data-cov-states="default,filled,editing,error,correct,read-only,disabled">
+      <section class="comp-section" id="input" data-cov-states="default,filled,editing,error,correct,read-only,disabled" data-cov-sizes="xxsm,xsm,md" data-cov-labels="off,on" data-cov-messages="off,on">
         <div class="comp-section-header">
           <h2 class="comp-section-title">Input</h2>
           <span class="comp-badge comp-badge-blue">Core</span>
@@ -3203,7 +3223,7 @@ clearBtn.<span class="c-fn">addEventListener</span>(<span class="c-str">'click'<
       </section>
 
       <!-- ═══ CHIP ═══ -->
-      <section class="comp-section" id="chip" data-cov-states="default,hover,selected,disabled">
+      <section class="comp-section" id="chip" data-cov-states="default,hover,selected,disabled" data-cov-sizes="sm,md" data-cov-variants="line,solid">
         <div class="comp-section-header">
           <h2 class="comp-section-title">Chip</h2>
           <span class="comp-badge comp-badge-blue">Core</span>
@@ -3257,6 +3277,23 @@ clearBtn.<span class="c-fn">addEventListener</span>(<span class="c-str">'click'<
           </div>
         </div>
 
+        <div class="variant-block">
+          <div class="variant-label">Size · 정본 SM(h28) · MD(h34) — Line·Solid 공통</div>
+          <div class="preview-area">
+            <div class="comp-state-matrix" style="grid-template-columns: 200px repeat(2, minmax(96px, 1fr));">
+              <div class="matrix-col-header-action">Variant</div>
+              <div class="matrix-col-header">MD (h34)</div>
+              <div class="matrix-col-header">SM (h28)</div>
+              <div class="comp-action-cell" style="font-size:12px;color:var(--color-text-secondary);">Line</div>
+              <div class="comp-state-cell"><span class="s1-chip is-preview">라벨</span></div>
+              <div class="comp-state-cell"><span class="s1-chip s1-chip--sm is-preview">라벨</span></div>
+              <div class="comp-action-cell" style="font-size:12px;color:var(--color-text-secondary);">Solid</div>
+              <div class="comp-state-cell"><span class="s1-chip s1-chip--solid is-preview">라벨</span></div>
+              <div class="comp-state-cell"><span class="s1-chip s1-chip--solid s1-chip--sm is-preview">라벨</span></div>
+            </div>
+          </div>
+        </div>
+
         <div class="code-block">
           <div class="code-tabs">
             <button class="code-tab active" onclick="switchTab(this,'chip-html')">HTML</button>
@@ -3300,7 +3337,7 @@ clearBtn.<span class="c-fn">addEventListener</span>(<span class="c-str">'click'<
 
       </section>
 
-      <section class="comp-section" id="filter-chip" data-cov-states="default,hover,selected,complete,disabled">
+      <section class="comp-section" id="filter-chip" data-cov-states="default,hover,selected,complete,disabled" data-cov-sizes="sm,md" data-cov-variants="line,solid" data-cov-titles="off,on">
         <div class="comp-section-header">
           <h2 class="comp-section-title">Filter Chip</h2>
           <span class="comp-badge comp-badge-blue">Core</span>
@@ -3455,6 +3492,24 @@ clearBtn.<span class="c-fn">addEventListener</span>(<span class="c-str">'click'<
           </div>
         </div>
 
+        <!-- ── Size · SM/MD ── -->
+        <div class="variant-block">
+          <div class="variant-label">Size · 정본 SM(h28) · MD(h34) — Line·Solid 공통</div>
+          <div class="preview-area" style="overflow:visible;">
+            <div class="comp-state-matrix" style="grid-template-columns: 200px repeat(2, minmax(96px, 1fr));">
+              <div class="matrix-col-header-action">Variant</div>
+              <div class="matrix-col-header">MD (h34)</div>
+              <div class="matrix-col-header">SM (h28)</div>
+              <div class="comp-action-cell" style="font-size:12px;color:var(--color-text-secondary);">Line</div>
+              <div class="comp-state-cell"><button class="ds-filter-chip is-preview"><span class="ds-filter-chip-label">최신순</span><svg class="ds-filter-chip-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M9 6L15 12L9 18" stroke="currentColor" stroke-width="2" stroke-linecap="square"/></svg></button></div>
+              <div class="comp-state-cell"><button class="ds-filter-chip ds-filter-chip--sm is-preview"><span class="ds-filter-chip-label">최신순</span><svg class="ds-filter-chip-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M9 6L15 12L9 18" stroke="currentColor" stroke-width="2" stroke-linecap="square"/></svg></button></div>
+              <div class="comp-action-cell" style="font-size:12px;color:var(--color-text-secondary);">Solid</div>
+              <div class="comp-state-cell"><button class="ds-filter-chip ds-filter-chip--solid is-preview"><span class="ds-filter-chip-label">최신순</span><svg class="ds-filter-chip-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M9 6L15 12L9 18" stroke="currentColor" stroke-width="2" stroke-linecap="square"/></svg></button></div>
+              <div class="comp-state-cell"><button class="ds-filter-chip ds-filter-chip--solid ds-filter-chip--sm is-preview"><span class="ds-filter-chip-label">최신순</span><svg class="ds-filter-chip-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M9 6L15 12L9 18" stroke="currentColor" stroke-width="2" stroke-linecap="square"/></svg></button></div>
+            </div>
+          </div>
+        </div>
+
         <div class="code-block">
           <div class="code-tabs">
             <button class="code-tab active" onclick="switchTab(this,'filter-chip-html')">HTML</button>
@@ -3498,7 +3553,7 @@ clearBtn.<span class="c-fn">addEventListener</span>(<span class="c-str">'click'<
 
       </section>
 
-      <section class="comp-section is-active" id="button" data-cov-states="default,hover,pressed,disabled">
+      <section class="comp-section is-active" id="button" data-cov-states="default,hover,pressed,disabled" data-cov-sizes="md,xsm,xxsm,lg" data-cov-variants="primary,secondary,blue-line">
         <div class="comp-section-header">
           <h2 class="comp-section-title">Button</h2>
           <span class="comp-badge comp-badge-blue">Core</span>
@@ -4042,7 +4097,7 @@ function setDisabled(on) {
       </section>
 
 
-            <section class="comp-section" id="tab">
+            <section class="comp-section" id="tab" data-cov-sizes="md,sm">
         <div class="comp-section-header">
           <h2 class="comp-section-title">Line Tab</h2>
           <span class="comp-badge comp-badge-blue">Core</span>
@@ -4320,7 +4375,7 @@ function setDisabled(on) {
       </section>
 
 
-      <section class="comp-section" id="gnb">
+      <section class="comp-section" id="gnb" data-cov-align="center-between,start" data-cov-sizes="md,sm,xsm">
         <div class="comp-section-header">
           <h2 class="comp-section-title">GNB</h2>
           <span class="comp-badge comp-badge-blue">Core</span>
@@ -4644,7 +4699,7 @@ function setDisabled(on) {
       </section>
 
 
-      <section class="comp-section" id="select" data-cov-states="default,hover,open,filled,disabled">
+      <section class="comp-section" id="select" data-cov-states="default,hover,open,filled,disabled" data-cov-sizes="xxsm,xsm,md">
         <div class="comp-section-header">
           <h2 class="comp-section-title">Select · Dropdown</h2>
           <span class="comp-badge comp-badge-blue">Core</span>
@@ -4912,7 +4967,7 @@ document.addEventListener('click', function(e) {
 
 
       <!-- ═══ DROPDOWN ═══ -->
-      <section class="comp-section" id="dropdown" data-cov-states="default,hover,selected,disabled">
+      <section class="comp-section" id="dropdown" data-cov-states="default,hover,selected,disabled" data-cov-sizes="xxsm,xsm,md">
         <div class="comp-section-header">
           <h2 class="comp-section-title">Dropdown</h2>
           <span class="comp-badge comp-badge-blue">Core</span>
@@ -5056,7 +5111,7 @@ document.addEventListener('click', function(e) {
       </section>
 
 
-      <section class="comp-section" id="table">
+      <section class="comp-section" id="table" data-cov-sizes="md,sm">
         <div class="comp-section-header">
           <h2 class="comp-section-title">Table</h2>
           <span class="comp-badge comp-badge-blue">Core</span>
@@ -6025,7 +6080,7 @@ update(); // 초기화</pre>
 
 
       <!-- ═══ DATE PICKER ═══ -->
-      <section class="comp-section" id="date-picker" data-cov-states="default,filled,open,disabled">
+      <section class="comp-section" id="date-picker" data-cov-states="default,filled,open,disabled" data-cov-sizes="xxsm,xsm,md">
         <div class="comp-section-header">
           <h2 class="comp-section-title">Date Picker</h2>
           <span class="comp-badge comp-badge-blue">Core</span>
@@ -6351,7 +6406,7 @@ update(); // 초기화</pre>
 
       </section>
 
-      <section class="comp-section" id="time-picker" data-cov-states="default,hover,focus,filled,disabled">
+      <section class="comp-section" id="time-picker" data-cov-states="default,hover,focus,filled,disabled" data-cov-sizes="xxsm,xsm,md">
         <div class="comp-section-header">
           <h2 class="comp-section-title">Time Picker</h2>
           <span class="comp-badge comp-badge-blue">Core</span>
