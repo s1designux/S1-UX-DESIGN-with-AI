@@ -22,6 +22,7 @@
 
 | 날짜 | 변경 내용 (한 줄) |
 |------|------------------|
+| 2026-06-30 | **Gate 19(변형/상태 커버리지, Level 2) + 겉핥기 예방 원리** — Gate 18(섹션 존재)의 다음 층: 각 HTML 섹션이 설치기 변형의 State(상태)를 다 보여주나를 mock 실측 ↔ data-cov-states 옵트인 선언 대조(누락=차단). **핵심 예방 원리**: 검사기가 "몇 섹션 검증·몇 섹션 미계측"을 **스스로 선언** → 나도 기계도 '다 됐다'는 거짓 완전성을 구조적으로 못 만듦(Gate 17 '추출 0건=안됨' 확장). Multi Toggle·Dropdown 2섹션 계측(verified), 나머지 12 미계측 정직 보고. stateSource(요소 상태원 매핑). 적대적 테스트(상태 제거→차단) 통과. [[feedback_verify-primary-source-with-citation]] |
 | 2026-06-30 | **설치기↔HTML 페이지 연동 + Gate 18 신설** — 설치기 기준으로 components-new.html 누락분 보완(Multi Toggle 섹션 신설·Dropdown 독립 섹션 분리, 🤖 guide-builder 빌드+설치기 매트릭스 1:1 대조+렌더검증). Platform shell 6종은 제외(사용자 결정). **Gate 18(컴포넌트페이지 커버리지)** 신설: 설치기 COMPONENT_CATEGORIES_GRID(정본)↔HTML 섹션 기계 대조, 미분류·섹션누락 차단(설치기=기준 강제)·정본 component-page-coverage.json(sectionFor/noSectionNeeded). Multi Toggle·Dropdown 드리프트가 손으로 발견된 사각지대를 게이트화(적대적 테스트 통과). Gate 17(미사용토큰)도 대시보드 누락분 등재. 토큰 정합(Gate 6·7·8·10) 위에 "컴포넌트 커버리지" 축 추가 |
 | 2026-06-24 | **Select Box Open 드롭다운 누락 수정 + "표시 순서 ≠ 빌드 순서" 영구 규칙화** — Select Box Open 에 드롭다운 패널이 안 붙던 원인=빌드 순서(Select Box 가 Dropdown 보다 먼저 빌드돼 BUILT_COMPS 비어 부착 실패). 1차로 members 재배열했으나 그러면 나열 순서가 깨짐 → 사용자 지적("나열은 메인→요소, 빌드만 요소 먼저"). `BUILD_DEPENDENCIES`+`buildOrderFor` 위상정렬로 빌드는 요소 먼저, members 는 표시(메인→요소) 순서 고정, `buildAllComponents` layout 패스가 카테고리 내부를 members 순서로 재배치, `render.js` 는 members 정렬. Form Control 표시=Input·Search·Text Area·Select Box·Dropdown·Dropdown List, Select Box 옵션 0→32. 🤖 component-verifier 구조검증 PASS(❌0)·전 게이트(1~15)+zip 재빌드 통과 |
 | 2026-06-23 | **Gate 15 토큰네이밍 검사기 신설**(+ Gate 14 Footer 문서화) — 기준이 산문으로만 있고 토큰 **이름**을 검사하는 게이트 부재로 레거시명·우회 별칭이 정본 유입(navigation/background·icon/brand-ci·고아 table/border/emphasis). 산문→기계 정본 `registry/governance/naming-rules.json`(bg·brand-in-semantic 금지·kebab) + `token-naming-check.js`로 커밋 차단. 동시에 기준 정합: navigation/background→**bg**·table/border/light→**default**·emphasis 삭제·icon/brand-ci 별칭 제거+빌더 Foundation `brand/ci` 직바인딩(BuildMaps.foundationColor 신설). semantic.md 그룹A 23종 제거·그룹B 개명. 🤖 component-verifier 구조검증 통과·전 게이트(1~15) 통과 |
@@ -1304,6 +1305,13 @@ Claude는 **Main Orchestrator**다. 사용자는 **목표 수준 의도**만 준
 **판정:** ❌차단 = 미분류(설치기 신규 컴포넌트가 둘 다 없음)·섹션누락(sectionFor가 가리키는 id·nav 부재). ⚠️경고 = 고아 섹션·stale config. → 설치기에 컴포넌트 추가 시 HTML 반영을 강제, "HTML에 빠진 컴포넌트"를 손으로 안 찾게.
 **도입 사유:** 토큰 값 정합(Gate 6·7·8·10)은 촘촘했으나 **"설치기 컴포넌트 ↔ HTML 페이지 커버리지" 대조 장치가 0개**라 Multi Toggle·Dropdown 누락이 손으로 발견됨. 손작업을 기계로 승격(사용자 요청). 적대적 테스트(매핑 제거→미분류 차단) 통과.
 
+### Gate 19: Variant/State Coverage (2026-06-30 신설 — Level 2)
+**파일:** `scripts/variant-coverage-check.js` (`npm run components:variantcov`)
+**트리거:** `build-components.ts`·`pages/components-new.html`·`component-page-coverage.json` 변경 / 항상(gate:check 포함)
+**역할:** Gate 18(섹션 존재)의 다음 층 — **각 HTML 섹션이 설치기 변형의 상태(State 축)를 다 보여주나**. 정본 = 설치기 변형(esbuild+recording mock 으로 실측)의 `State=` 값. 섹션이 `data-cov-states="default,hover,…"` 로 **자기 커버리지를 선언(opt-in)** 하면 설치기 State ⊆ 선언 인지 대조. 상태 정본이 요소 컴포넌트에 있는 예외(Multi Toggle→Multi Toggle Element, Dropdown→Dropdown List)는 `stateSource` 매핑.
+**판정:** ❌차단 = 선언 섹션인데 설치기 State 누락. ℹ️경고 = **미계측 섹션(data-cov-states 미선언)** — 차단 아님, **갯수 명시**.
+**★ 예방 원리(겉핥기·거짓 단정 차단):** 검사기가 **"몇 섹션 검증·몇 섹션 미계측"을 스스로 선언**한다. 옵트인 안 한 섹션은 '미계측'으로 정직 보고돼, 나도 기계도 "다 됐다"는 **거짓 완전성을 구조적으로 못 만든다**(Gate 17 '추출 0건=안됨' 사상의 확장). 계측은 섹션마다 점진 확대.
+
 ## Gate 실행 순서
 
 ```
@@ -1327,9 +1335,10 @@ Claude는 **Main Orchestrator**다. 사용자는 **목표 수준 의도**만 준
   16. Gate 16 (Component Origin Verification) — update-management.json·registry/components|patterns 변경 시 / 항상. Ⓑ(원본틀 필요)인데 완료표시+원본대조 0(verify=none)이면 차단·미분류 escape 차단. 미완성 Ⓑ 백로그는 통과(마비 방지). 탭 사태 재발 방지
   17. Gate 17 (Orphan Token) — vars-data·build-components·registry/components|patterns·웹CSS 변경 시 / 항상. 빌더(mock)+웹CSS+registry spec 전 표면에서 안 쓰이는 semantic color 토큰(orphan)을 결정론 검사해 레거시 누적 가시화. 의도보존분=`registry/governance/intentional-unused-tokens.json` 면제, 예상밖 orphan·stale allow=경고(비차단). "이 토큰 어디서 쓰나"를 손 grep 아닌 기계가 답(거짓 단정 차단). 단독 `npm run tokens:orphans`
   18. Gate 18 (Component Page Coverage) — build-components.ts·components-new.html·component-page-coverage.json 변경 시 / 항상. **설치기(COMPONENT_CATEGORIES_GRID 정본)에 있는 컴포넌트가 HTML components 페이지에도 다 있나**를 기계 대조. 미분류(새 컴포넌트가 sectionFor/noSectionNeeded 둘 다 없음)·섹션누락=차단(설치기=기준 강제), 고아섹션·stale config=경고. 정본=`registry/governance/component-page-coverage.json`. "HTML에 빠진 컴포넌트"를 손으로 안 찾고 기계가 답(Multi Toggle·Dropdown 드리프트 재발 차단). 단독 `npm run components:pagecheck`
+  19. Gate 19 (Variant/State Coverage) — build-components.ts·components-new.html·component-page-coverage.json 변경 시 / 항상. Gate 18 다음 층: **각 HTML 섹션이 설치기 변형의 상태(State)를 다 보여주나**. 섹션이 `data-cov-states` 로 옵트인하면 설치기 State 축(mock 실측) ⊆ 선언 대조(누락=차단), 미선언은 **미계측으로 정직 보고(거짓 완전성 차단)**. stateSource 로 요소 컴포넌트 상태원(Multi Toggle Element·Dropdown List) 매핑. 단독 `npm run components:variantcov`
 ```
 
-스크립트 일괄 실행: `npm run gate:check` (Gate 1 + 3 + 4 + 6 + 7 + 8 + 9 + 10 + 11 + 12 + 13 + 14 + 15 + 16 + 17 + 18 자동)
+스크립트 일괄 실행: `npm run gate:check` (Gate 1 + 3 + 4 + 6 + 7 + 8 + 9 + 10 + 11 + 12 + 13 + 14 + 15 + 16 + 17 + 18 + 19 자동)
 
 > **Gate 10 (doc-token-ref-check):** 토큰을 rename/remove 하면 옛 이름을 쥔 가이드 문서가 자동 적발된다. **정본 rename 시 `registry/tokens/deprecated-tokens.json` 의 `renamedGroups` 에 `{from,to}` 한 줄 추가**하면 이후 게이트가 전 활성 페이지에서 잔재를 차단(Check B). `--color-*` 참조 존재성은 Check A(경고)로 가시화. 단독 실행 `npm run docs:tokencheck`. `components.html`(폐기 예정)은 검사 제외.
 

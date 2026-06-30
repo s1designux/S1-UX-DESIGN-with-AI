@@ -432,6 +432,27 @@ try {
   fail(`component-page-coverage-check 실행 실패: ${e.message}`);
 }
 
+// ── Gate 19: Variant/State Coverage (설치기 State 축 ↔ HTML) ───────
+// HTML 섹션이 설치기 변형의 State(상태)를 다 보여주나. 섹션이 data-cov-states 로 옵트인하면 검증,
+// 안 하면 '미계측'으로 정직 보고(거짓 완전성 차단). 선언 섹션의 상태누락=차단, 미계측=경고. esbuild → spawnSync.
+console.log('\n🔎 [Gate 19] 변형상태 커버리지 검사기 (Variant/State Coverage)');
+try {
+  const { spawnSync } = require('child_process');
+  const r = spawnSync('node', [path.join(ROOT, 'scripts/variant-coverage-check.js')], { encoding: 'utf-8' });
+  const out = (r.stdout || '') + (r.stderr || '');
+  const m = out.match(/VARCOV_SUMMARY mains=(\d+) verified=(\d+) uninstrumented=(\d+) missing=(\d+)/);
+  if (r.status === 0 && m) {
+    pass(`상태 검증 ${m[2]}/${m[1]} 섹션 (설치기 State 축 ⊆ HTML data-cov-states)`);
+    if (Number(m[3]) > 0) warn(`변형상태 미계측 ${m[3]}개 섹션(data-cov-states 미선언 — 상태검증 안 됨). 상세: npm run components:variantcov`);
+  } else {
+    const lines = out.split('\n').filter((l) => l.includes('설치기 State'));
+    for (const l of lines) fail(l.replace(/^\s*-\s*/, '').trim());
+    if (lines.length === 0) fail(`variant-coverage-check 실패 (exit ${r.status})`);
+  }
+} catch (e) {
+  fail(`variant-coverage-check 실행 실패: ${e.message}`);
+}
+
 // ── Summary ───────────────────────────────────────────────────────
 console.log('\n─────────────────────────────────────────────────────');
 if (errors > 0) {

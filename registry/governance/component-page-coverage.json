@@ -26,6 +26,11 @@
     "Search Input": "input 섹션 안에 변형(variant-group)으로 임베드 — 독립 섹션 불요, input 섹션 존재로 충족",
     "Line Tab Set": "HTML 섹션 id=tab (Line Tab)"
   },
+  "_variantCoverageNote": "Gate 19(variant-coverage) 용. 각 HTML 섹션이 보여줘야 할 '상태(State)'의 정본 = 설치기 변형의 State 축. stateSource 는 상태가 메인이 아니라 요소 컴포넌트에 있는 예외만 명시(기본=섹션의 main 컴포넌트). HTML 섹션은 data-cov-states 속성으로 자기 커버리지를 선언하고, Gate 19 가 설치기 State ⊆ 선언 인지 대조한다. 미선언 섹션은 '미계측'으로 정직 보고(거짓 완전성 차단).",
+  "stateSource": {
+    "multi-toggle": "Multi Toggle Element",
+    "dropdown": "Dropdown List"
+  },
   "noSectionNeeded": [
     { "name": "StatusBar", "reason": "Platform/Shell — 레이아웃·템플릿 성격. components 페이지 제외(사용자 결정 2026-06-30 A)" },
     { "name": "NavBar", "reason": "Platform/Shell — 제외(사용자 결정 2026-06-30 A)" },
