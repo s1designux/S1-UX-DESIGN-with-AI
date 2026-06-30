@@ -120,6 +120,13 @@
   },
   "renamedGroups": [
     {
+      "from": "color/form-control/text-caret",
+      "to": "color/form-control/text-cursor",
+      "renamedAt": "2026-06-30",
+      "reason": "caret(교정부호 ^ 어원, 비직관) → text-cursor(입력 커서, 비전문가 친화). 사용자 결정.",
+      "scope": "active-pages"
+    },
+    {
       "from": "color/data/",
       "to": "color/table/",
       "renamedAt": "2026-06-15",

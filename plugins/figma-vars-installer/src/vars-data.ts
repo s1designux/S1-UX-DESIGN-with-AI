@@ -600,7 +600,7 @@ export const SEMANTIC_COLOR: Record<string, SemanticColorEntry> = {
   "color/form-control/icon/default":   { light: "gray/800", dark: "gray-dark/700" },
   "color/form-control/icon/disabled":  { light: "gray/300", dark: "gray-dark/500" },
   "color/scroll/bg":                   { light: "gray/200", dark: "gray-dark/600" },
-  "color/form-control/text-caret":     { light: "blue/400", dark: "blue-dark/350" },
+  "color/form-control/text-cursor":    { light: "blue/400", dark: "blue-dark/350" },
   "color/form-control/text/read-only": { light: "gray/500", dark: "gray-dark/700" },
 };
 
