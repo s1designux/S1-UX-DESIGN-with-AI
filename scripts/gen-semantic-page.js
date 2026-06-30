@@ -125,12 +125,26 @@ function main() {
     console.error('❌ semantic.html 에 GEN:SEMANTIC-PAGE 마커가 없습니다. 먼저 마커를 주입하세요.');
     process.exit(1);
   }
-  const before = html.slice(0, s + START.length);
-  const after  = html.slice(e);
-  html = before + ' Variables 정본 자동 생성 (npm run page:gen). 수동 편집 금지. */\n' +
-         body + '\n' + after;
+  const oldRegion = html.slice(s, e + END.length);
+  const before = html.slice(0, s);
+  const after  = html.slice(e + END.length);
+  const newRegion = START + ' Variables 정본 자동 생성 (npm run page:gen). 수동 편집 금지. */\n' +
+         body + '\n' + END;
+  const bodyChanged = oldRegion !== newRegion;
+  html = before + newRegion + after;
+
+  // 헤더 '최종 갱신' 날짜 자동 스탬프 — 토큰 표가 실제로 바뀔 때만 오늘 날짜로 찍는다.
+  // (정적 텍스트라 손으로 안 고치면 stale 되던 사각지대를 자동화로 제거. 2026-06-30)
+  let stamped = false;
+  if (bodyChanged) {
+    const today = new Date().toISOString().slice(0, 10);
+    const re = /(<span data-gen-date>)[^<]*(<\/span>)/;
+    if (re.test(html)) { html = html.replace(re, `$1${today}$2`); stamped = true; }
+  }
+
   fs.writeFileSync(SEMANTIC_HTML, html);
   console.log(`✅ semantic.html SEMANTIC_PAGE 생성 — 그룹 ${groups.length} · 토큰 ${total}건` +
+    (bodyChanged ? (stamped ? ' · 📅 최종 갱신 날짜 스탬프됨' : ' · ⚠️ data-gen-date 마커 없음(날짜 미스탬프)') : ' · 변경 없음(날짜 유지)') +
     (unresolved.length ? `\n   ⚠️ 미해석 ${unresolved.length}건: ${unresolved.slice(0, 8).join(', ')}` : ''));
 }
 
