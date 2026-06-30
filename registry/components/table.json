@@ -105,25 +105,25 @@
     },
     {
       "name": "--table-row-default-bg",
-      "value": "var(--color-surface-default)",
+      "value": "var(--color-table-cell-default)",
       "resolvedLight": "#FFFFFF",
       "figmaVariable": "color/table/cell/default",
       "status": "stable",
-      "description": "행 기본 배경"
+      "description": "행 기본 배경 — Light: base/white (#FFFFFF) / Dark: gray-dark-100 (#1C1D23)"
     },
     {
       "name": "--table-row-hover-bg",
-      "value": "var(--color-bg-subtle)",
+      "value": "var(--color-table-cell-hover)",
       "resolvedLight": "#F5F5F5",
       "figmaVariable": "color/table/cell/hover",
       "status": "stable",
-      "description": "행 hover 배경 — Light: gray-50 (#F5F5F5) / Dark: blue-dark-100 (#112B55, --color-table-cell-hover)"
+      "description": "행 hover 배경 — Light: gray-50 (#F5F5F5) / Dark: gray-dark-200 (#24252C)"
     },
     {
       "name": "--table-row-selected-bg",
-      "value": "var(--color-bg-selected)",
+      "value": "var(--color-table-cell-selected)",
       "resolvedLight": "#E2F1FF",
-      "figmaVariable": "",
+      "figmaVariable": "color/table/cell/selected",
       "status": "stable",
       "description": "행 선택 배경 — Light: blue-50 (#E2F1FF) / Dark: blue-dark-100 (#112B55). hover(gray-50)와 시각 구분 확정(HD-Table-2)"
     },

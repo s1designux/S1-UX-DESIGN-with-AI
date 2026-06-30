@@ -440,10 +440,10 @@ try {
   const { spawnSync } = require('child_process');
   const r = spawnSync('node', [path.join(ROOT, 'scripts/variant-coverage-check.js')], { encoding: 'utf-8' });
   const out = (r.stdout || '') + (r.stderr || '');
-  const m = out.match(/VARCOV_SUMMARY mains=(\d+) verified=(\d+) uninstrumented=(\d+) missing=(\d+)/);
+  const m = out.match(/VARCOV_SUMMARY pairs=(\d+) verified=(\d+) uninstrumented=(\d+) missing=(\d+)/);
   if (r.status === 0 && m) {
-    pass(`상태 검증 ${m[2]}/${m[1]} 섹션 (설치기 State 축 ⊆ HTML data-cov-states)`);
-    if (Number(m[3]) > 0) warn(`변형상태 미계측 ${m[3]}개 섹션(data-cov-states 미선언 — 상태검증 안 됨). 상세: npm run components:variantcov`);
+    pass(`변형축 검증 ${m[2]}/${m[1]} (섹션×축, 설치기 변형 ⊆ HTML data-cov-*)`);
+    if (Number(m[3]) > 0) warn(`변형축 미계측 ${m[3]}개 (섹션×축, data-cov-* 미선언 — 검증 안 됨). 상세: npm run components:variantcov`);
   } else {
     const lines = out.split('\n').filter((l) => l.includes('설치기 State'));
     for (const l of lines) fail(l.replace(/^\s*-\s*/, '').trim());

@@ -157,9 +157,9 @@
       { "cssVar": "--table-header-bg",       "value": "var(--color-bg-subtle)",      "status": "stable", "usedBy": ["Table"] },
       { "cssVar": "--table-header-text",     "value": "var(--color-text-tertiary)",  "status": "stable", "usedBy": ["Table"] },
       { "cssVar": "--table-header-border",   "value": "var(--color-border-default)", "status": "stable", "usedBy": ["Table"] },
-      { "cssVar": "--table-row-default-bg",  "value": "var(--color-surface-default)","status": "stable", "usedBy": ["Table"] },
-      { "cssVar": "--table-row-hover-bg",    "value": "var(--color-bg-subtle)",      "status": "stable", "usedBy": ["Table"] },
-      { "cssVar": "--table-row-selected-bg", "value": "var(--color-bg-selected)",    "status": "stable", "usedBy": ["Table"] },
+      { "cssVar": "--table-row-default-bg",  "value": "var(--color-table-cell-default)", "status": "stable", "usedBy": ["Table"] },
+      { "cssVar": "--table-row-hover-bg",    "value": "var(--color-table-cell-hover)",   "status": "stable", "usedBy": ["Table"] },
+      { "cssVar": "--table-row-selected-bg", "value": "var(--color-table-cell-selected)","status": "stable", "usedBy": ["Table"] },
       { "cssVar": "--table-cell-border",     "value": "var(--color-border-subtle)",  "status": "stable", "usedBy": ["Table"] },
       { "cssVar": "--table-cell-text",       "value": "var(--color-text-secondary)", "status": "stable", "usedBy": ["Table"] }
     ]
