@@ -4,6 +4,6 @@
   "verifiedBy": "component-verifier",
   "verdict": "pass",
   "changeType": "structural",
-  "verifiedAt": "2026-06-30T06:12:58.250Z",
-  "notes": "배경 깊이스케일 재구성(bg/level-0~3·surface드롭·10곳 재바인딩) + 텍스트스타일 바인딩(makeBoundText setTextStyleIdAsync, V2.4 Pretendard 정책·Button패턴 동일·폴백 raw유지). keycheck/anatomy/iconpolicy 통과·tsc신규0. 코드+grep, 렌더는 재설치 확인."
+  "verifiedAt": "2026-06-30T06:15:42.771Z",
+  "notes": "makeBoundText V2.4 text style binding via setTextStyleIdAsync + textStyleKey mapping. All (size,style) combos resolve to existing textstyles-data keys (13->14, 9->10, 20M->18M). boundPaint color preserved, TEXT_STYLES set at buildAllComponents entry. Button styled path/makeLabel unchanged. tsc+Gate8/11/15 pass."
 }

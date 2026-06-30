@@ -107,7 +107,7 @@
       --table-row-hover-bg:     var(--color-table-cell-hover);
       --table-row-selected-bg:  var(--color-table-cell-selected);
       --table-cell-border:      var(--table-border-light);
-      --table-cell-text:        var(--color-text-secondary);
+      --table-cell-text:        var(--color-text-body-primary);
       /* form-control label (TimePicker select 라벨) */
       --color-form-control-label-default:  var(--color-text-secondary);
       --color-form-control-label-disabled: var(--color-text-disabled);
@@ -127,15 +127,16 @@
       --tab-label-default:        var(--color-navigation-label-default);
       --tab-label-selected:       var(--color-navigation-label-selected);
       --tab-indicator-default:    var(--color-navigation-indicator-default);
+      --tab-indicator-hover:      var(--color-navigation-indicator-hover);
       --tab-indicator-selected:   var(--color-navigation-indicator-selected);
       /* GNB — navigation/* */
       --gnb-bg:                   var(--color-navigation-bg);
-      --gnb-border:               var(--color-border-subtle);
+      --gnb-border:               var(--color-line-gray-subtle);  /* 설치기 정본: 바 하단 보더 = line/gray/subtle (다크 gray-dark/300) */
       --gnb-menu-label-default:   var(--color-navigation-label-default-alt);
       --gnb-menu-label-active:    var(--color-navigation-label-selected);
       --gnb-menu-underline-active: var(--color-navigation-indicator-selected);
       --gnb-logo-text:            var(--color-text-primary);
-      --gnb-icon:                 var(--color-navigation-icon);
+      --gnb-icon:                 var(--color-icon-gray-dark);  /* 설치기 정본: 유틸 아이콘 = icon/gray-dark (다크 gray-dark/800) */
       /* Input readonly — form-control */
       --input-readonly-bg:      var(--color-form-control-bg-disabled);
       --input-readonly-border:  var(--color-form-control-border-default);
@@ -1591,6 +1592,7 @@
     .s1-tab-item.is-hover {
       color: var(--tab-label-selected);
       font-weight: var(--font-weight-bold); /* Figma: hover = Bold(700), selected와 동일 */
+      border-bottom: 2px solid var(--tab-indicator-hover); /* 설치기 정본: hover = navigation/indicator/hover 파란 2px 밑줄 */
     }
     .s1-tab-item.is-selected {
       color: var(--tab-label-selected);
@@ -1749,7 +1751,7 @@
                상하 강선(border-emphasis=gray-dark-700=#8A8C96) → 과도하게 밝아 텍스트 수준 */
       --table-header-bg:     var(--color-bg-subtle);      /* gray-dark-200 = #24252C — 행보다 1단계 밝게 */
       --table-header-border: var(--color-border-default); /* gray-dark-300 = #2E2F38 — 헤더bg와 구분 */
-      --table-border-strong: var(--color-border-strong);  /* gray-dark-500 = #3E4049 — 상하 강선 적정 명암 */
+      /* 외곽선 strong 다크 override 제거 — tokens.css 정본(--color-table-border-strong = gray-dark/700)이 적용되게 (설치기 정본 일치, 2026-06-30) */
     }
     /* Date Picker 다크모드는 --color-date-picker-* Variables 레이어가 자동 전환 (수동 override 제거) */
     /* TimePicker dropdown hover 의 dark 값은 --dropdown-option-hover-bg 별칭이 자동 전환(gray-dark/300) — 수동 override 불필요 */
@@ -4222,7 +4224,7 @@ function setDisabled(on) {
                     <button class="s1-tab-item is-selected is-preview" style="font-size:20px;height:40px;letter-spacing:0;padding:0 24px;border-bottom-width:2px;">메뉴2</button>
                   </div>
                   <div class="comp-state-cell" style="grid-column:5;grid-row:2;">
-                    <button class="s1-tab-item is-hover is-preview" style="font-size:20px;height:40px;letter-spacing:0;padding:0 24px;border-bottom:1px solid var(--tab-indicator-default);">메뉴3</button>
+                    <button class="s1-tab-item is-hover is-preview" style="font-size:20px;height:40px;letter-spacing:0;padding:0 24px;border-bottom:2px solid var(--tab-indicator-hover);">메뉴3</button>
                   </div>
 
                   <!-- PC SM row -->
@@ -4241,7 +4243,7 @@ function setDisabled(on) {
                     <button class="s1-tab-item is-selected is-preview" style="font-size:16px;height:40px;padding:0 24px;">메뉴2</button>
                   </div>
                   <div class="comp-state-cell" style="grid-column:5;grid-row:3;">
-                    <button class="s1-tab-item is-hover is-preview" style="font-size:16px;height:40px;padding:0 24px;border-bottom:1px solid var(--tab-indicator-default);">메뉴3</button>
+                    <button class="s1-tab-item is-hover is-preview" style="font-size:16px;height:40px;padding:0 24px;border-bottom:2px solid var(--tab-indicator-hover);">메뉴3</button>
                   </div>
                 </div>
               </div>
@@ -4271,7 +4273,7 @@ function setDisabled(on) {
                     <button class="s1-tab-item is-selected is-preview" style="font-size:16px;height:30px;padding:0 16px;">메뉴2</button>
                   </div>
                   <div class="comp-state-cell" style="grid-column:5;grid-row:2;">
-                    <button class="s1-tab-item is-hover is-preview" style="font-size:16px;height:30px;padding:0 16px;border-bottom:1px solid var(--tab-indicator-default);">메뉴3</button>
+                    <button class="s1-tab-item is-hover is-preview" style="font-size:16px;height:30px;padding:0 16px;border-bottom:2px solid var(--tab-indicator-hover);">메뉴3</button>
                   </div>
                 </div>
               </div>
