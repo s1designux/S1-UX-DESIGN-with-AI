@@ -1968,16 +1968,16 @@ async function buildTimePicker(maps: BuildMaps, originY: number): Promise<{ set:
 //   재사용 단위(셀). Time Picker Dropdown 패널은 이 셀의 **인스턴스**로 조립한다.
 //   (이전엔 셀을 인라인 프레임으로 매번 새로 그려 컴포넌트화가 안 돼 있었음 → 2026-06-17 구조 정정)
 //   default/hover/selected 전부 공유 color/dropdown/option/* 토큰(Basic Dropdown 재사용 정본).
-//   Default 스트록은 bg/default 에 바인딩(=배경과 동일, 투명 테두리). Selected 의 1px 강조 테두리와
-//   셀 크기를 1px 단위까지 동일하게 맞춰 선택 전환 시 reflow/정렬 어긋남을 방지한다(2026-06-17).
+//   2026-06-30: 셀 stroke(테두리) 제거 — 기본 Dropdown 셀과 동일하게 bg+label 만(사용자 결정). 선택 강조는
+//   bg/selected(blue-50)로 충분. 이에 따라 color/dropdown/option/border/{default,hover,selected} 3종 삭제.
 // V2.4 원본 timepicker_input_component(540:3470) 실측: 44×32, px12, radius4. 드롭다운에선 컬럼 폭을 채움(STRETCH).
 const TPC_W = 44, TPC_H = 32;
 async function buildTimePickerCell(maps: BuildMaps): Promise<{ set: ComponentSetNode; variants: Record<string, ComponentNode> }> {
   const opt = (k: string) => `color/dropdown/option/${k}`;
   const states = [
-    { name: "Default",  bg: "bg/default",  bd: "bg/default",      lb: "label/default" },
-    { name: "Hover",    bg: "bg/hover",    bd: "bg/hover",        lb: "label/hover" },
-    { name: "Selected", bg: "bg/selected", bd: "border/selected", lb: "label/selected" },
+    { name: "Default",  bg: "bg/default",  lb: "label/default" },
+    { name: "Hover",    bg: "bg/hover",    lb: "label/hover" },
+    { name: "Selected", bg: "bg/selected", lb: "label/selected" },
   ];
   const comps: ComponentNode[] = [];
   const variants: Record<string, ComponentNode> = {};
@@ -1989,7 +1989,6 @@ async function buildTimePickerCell(maps: BuildMaps): Promise<{ set: ComponentSet
     comp.paddingLeft = 12; comp.paddingRight = 12; comp.cornerRadius = 4;
     comp.resize(TPC_W, TPC_H);
     comp.fills = [boundPaint(scv(maps, opt(st.bg)))];
-    comp.strokes = [boundPaint(scv(maps, opt(st.bd)))]; comp.strokeWeight = 1; comp.strokeAlign = "INSIDE";
     comp.appendChild(await makeBoundText("00", 14, "Regular", scv(maps, opt(st.lb))));
     // ⚠️ 셀 마스터에 모드를 핀하지 않는다(setLightMode 금지). 드롭다운 패널에 인스턴스로 중첩될 때,
     //    셀이 라이트로 고착되면 다크 스펙 프레임의 setMode(dark)가 셀까지 전파되지 못한다(2026-06-17 버그).
