@@ -283,7 +283,7 @@
       <div class="page-header-inner">
         <div>
           <h1>Semantic Token</h1>
-          <p>역할 기반 색상 토큰 · Light &amp; Dark · Figma semantic 컬렉션 기준 · 2026-04-28</p>
+          <p>역할 기반 색상 토큰 · Light &amp; Dark · Figma semantic 컬렉션 기준 · 2026-06-30</p>
         </div>
         <div class="page-header-actions">
           <span class="badge badge-blue">45 color tokens</span>
@@ -431,16 +431,16 @@
           <p class="section-desc">Figma semantic 컬렉션 대비 수정·추가 사항.</p>
         </div>
         <div class="change-list">
+          <div class="change-item"><span class="change-type new">구조변경 (2026-06-30)</span><span class="change-text">배경 토큰을 <strong>깊이 스케일</strong>로 재구성 — <code>--color-bg-level-0</code>~<code>-3</code> (얕음→깊음). <code>--color-bg-default/subtle/muted/selected</code> 및 <code>--color-surface-default/raised</code> 폐지(드롭). 카드·셸·모달은 자기 컴포넌트 배경 토큰을 쓰고, 떠 있음은 보더·그림자로 표현. 테이블 선택 배경은 <code>--color-table-cell-selected</code> 사용.</span></div>
           <div class="change-item"><span class="change-type fix">오타수정</span><span class="change-text"><code>color/text/state/placehoder</code> → <code>placeholder</code> (Figma 수정 필요)</span></div>
           <div class="change-item"><span class="change-type fix">오타수정</span><span class="change-text"><code>color/status-card/text/primary--defualt</code> 외 3건 → <code>--default</code> (Figma 수정 필요)</span></div>
           <div class="change-item"><span class="change-type fix">통합</span><span class="change-text"><code>title/secondary</code> + <code>body/primary</code> → <code>--color-text-secondary</code> 단일 토큰으로 통합 (값 동일: #353535)</span></div>
           <div class="change-item"><span class="change-type fix">통합</span><span class="change-text"><code>title/tertiary</code> + <code>body/secondary</code> → <code>--color-text-tertiary</code> 단일 토큰으로 통합 (값 동일: #555555)</span></div>
-          <div class="change-item"><span class="change-type new">신규</span><span class="change-text"><code>color-surface</code> 카테고리 추가 — <code>--color-surface-default</code>, <code>--color-surface-raised</code> (다크모드 레이어 깊이 분리용)</span></div>
-          <div class="change-item"><span class="change-type new">신규</span><span class="change-text"><code>--color-bg-selected</code> 추가 — Dark Mode 설계안 기준 신규 토큰</span></div>
+          <div class="change-item"><span class="change-type warn">폐지 (2026-06-30)</span><span class="change-text"><code>color-surface</code> 카테고리(<code>--color-surface-default/raised</code>) 드롭 — 위 배경 깊이 스케일(<code>bg-level-*</code>)로 통합.</span></div>
+          <div class="change-item"><span class="change-type warn">폐지 (2026-06-30)</span><span class="change-text"><code>--color-bg-selected</code> 드롭 — 테이블 선택 배경은 <code>--color-table-cell-selected</code> 사용.</span></div>
           <div class="change-item"><span class="change-type move">분리</span><span class="change-text"><code>surface/status/*</code> 토큰 → <code>color-domain-status-*</code>로 분리. UI 피드백과 다른 관제 도메인 상태 토큰.</span></div>
           <div class="change-item"><span class="change-type move">분리</span><span class="change-text">Figma semantic 컬렉션 내 Component 수준 토큰 9그룹 → <code>component-tokens-extracted.md</code>로 이동</span></div>
           <div class="change-item"><span class="change-type warn">확인필요</span><span class="change-text"><code>--color-text-primary</code> Light 값 — Figma=#000000(순수검정) / 제안=#202020(gray/900). 디자이너 확정 전 미반영.</span></div>
-          <div class="change-item"><span class="change-type warn">확인필요</span><span class="change-text"><code>--color-bg-home</code> (#F5F6FB) — <code>--color-bg-subtle</code>로 통합 결정 필요. (구 <code>blue-gray</code> 레거시 옵션 폐기 — visual-gray 계열만 유지)</span></div>
           <div class="change-item"><span class="change-type warn">확인필요</span><span class="change-text"><code>--color-status-success</code> — 현재 서비스: blue / 설계안: green. 디자인팀 확정 후 반영.</span></div>
         </div>
       </div>
