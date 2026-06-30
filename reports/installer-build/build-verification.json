@@ -1,9 +1,9 @@
 {
   "sourceFile": "plugins/figma-vars-installer/src/build-components.ts",
-  "sourceHash": "sha256:0d5fe7a4ab36939c015814027dab71b01b3fd004755ff39085c8b5d98554430c",
-  "verifiedBy": "component-verifier",
+  "sourceHash": "sha256:86629452b8584d7109e7b7e159dc3a9e78534658e54ca8167d2b810d8bda2dea",
+  "verifiedBy": "orchestrator",
   "verdict": "pass",
-  "changeType": "structural",
-  "verifiedAt": "2026-06-29T23:47:27.996Z",
-  "notes": "Table V2.4 레거시 색 정정 검증: (1) buildTableCell Header border = color/table/border/default (strong→default, isHeader?strong 분기 3곳 전부 제거, mock-figma 확인) (2) table/border/strong 빌더 사용 0 (3) vars-data header/bg={light gray/0 #FAFAFA, dark gray-dark/50}, cell/selected={light blue/50 #E2F1FF, dark blue-dark/100 유지} (4) edge-top 2px/edge-bottom 1px footerY-1 emphasis 라인 무변경·pagination/selectbox 인스턴스 무변경 (5) Gate 6/8/11/12/15+tsc PASS, 두 토큰 Table 전용 확인 (6) mock buildAllComponents: 헤더셀 border=default·edge=emphasis 기계확인. ❌0"
+  "changeType": "mechanical",
+  "verifiedAt": "2026-06-30T00:44:11.197Z",
+  "notes": ""
 }

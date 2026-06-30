@@ -1725,12 +1725,12 @@ async function buildTable(maps: BuildMaps, originY: number): Promise<{ set: Comp
     comp.resize(W, y);
     // ── 테이블 상하단 emphasis 라인 (method 2: 셀과 분리·테이블 레벨) ──────────────
     //   상단 2px = 헤더 위(테이블 최상단). 하단 1px = 마지막 데이터 행 하단(= 페이지네이션 바로 위), 푸터/페이지네이션 아래 아님.
-    //   색 = color/table/border/emphasis(#353535). 셀(light)·헤더밑줄(strong)과 별개. z-order 최상단(맨 뒤 append).
+    //   색 = color/table/border/strong(#353535, 외곽선 일원화). 셀선(default)과 별개. z-order 최상단(맨 뒤 append).
     const edgeTop = figma.createRectangle(); edgeTop.name = "edge-top";
-    edgeTop.resize(W, 2); edgeTop.fills = [boundPaint(scv(maps, "color/table/border/emphasis"))];
+    edgeTop.resize(W, 2); edgeTop.fills = [boundPaint(scv(maps, "color/table/border/strong"))];
     comp.appendChild(edgeTop); edgeTop.x = 0; edgeTop.y = 0;
     const edgeBottom = figma.createRectangle(); edgeBottom.name = "edge-bottom";
-    edgeBottom.resize(W, 1); edgeBottom.fills = [boundPaint(scv(maps, "color/table/border/emphasis"))];
+    edgeBottom.resize(W, 1); edgeBottom.fills = [boundPaint(scv(maps, "color/table/border/strong"))];
     comp.appendChild(edgeBottom); edgeBottom.x = 0; edgeBottom.y = footerY - 1;
     setLightMode(comp, maps);
     comps.push(comp); cells.push({ comp, size: sc.size });
