@@ -108,6 +108,25 @@ const SIZE_RULES = [
       { label: 'xsm (h36 · 14px)', mustContain: 's1-gnb-menu--xsm'        },
     ],
   },
+  {
+    compId: 'multi-toggle',
+    htmlPaneId: 'mtog-html',
+    description: 'Multi Toggle HTML 코드탭 — md(h44) / sm(h34) 사이즈 분기',
+    sizes: [
+      { label: 'md (h44)', mustContain: 's1-multi-toggle"'     }, // 무수식어 래퍼
+      { label: 'sm (h34)', mustContain: 's1-multi-toggle--sm' },
+    ],
+  },
+  {
+    compId: 'dropdown',
+    htmlPaneId: 'ddl-html',
+    description: 'Dropdown HTML 코드탭 — MD(h44) / XSM(h34) / XXSM(h28) 사이즈 분기',
+    sizes: [
+      { label: 'md (h44)',   mustContain: 's1-dropdown-list--md'   },
+      { label: 'xsm (h34)',  mustContain: 's1-dropdown-list--xsm'  },
+      { label: 'xxsm (h28)', mustContain: 's1-dropdown-list--xxsm' },
+    ],
+  },
 ];
 
 /**
@@ -371,6 +390,18 @@ const CSS_SIZE_RULES = [
     cssPaneId: 'chip-html', // chip은 같은 pane에 CSS도 포함
     mustContain: ['s1-chip--sm', 's1-chip--mobile'],
     description: 'Chip CSS — --sm / --mobile modifier 규칙',
+  },
+  {
+    compId: 'multi-toggle',
+    cssPaneId: 'mtog-css',
+    mustContain: ['.s1-multi-toggle--sm'],
+    description: 'Multi Toggle CSS — --sm modifier 규칙 (md=무수식어 base)',
+  },
+  {
+    compId: 'dropdown',
+    cssPaneId: 'ddl-css',
+    mustContain: ['.s1-dropdown-list--md', '.s1-dropdown-list--xsm', '.s1-dropdown-list--xxsm'],
+    description: 'Dropdown CSS — --md / --xsm / --xxsm modifier 규칙',
   },
 ];
 

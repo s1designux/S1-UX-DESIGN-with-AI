@@ -1098,6 +1098,80 @@
     .s1-select-wrap--xxsm .s1-select-trigger { height: var(--sizing-28); font-size: 12px; padding-left: 12px; }
     .s1-select-wrap--mobile .s1-select-trigger { height: var(--sizing-48); font-size: 14px; border-radius: 4px; }
 
+    /* ── Multi Toggle (segmented control) — 정본 buildMultiToggle · 버튼 토큰 직접 사용 ── */
+    .s1-multi-toggle { display: inline-flex; align-items: stretch; }
+    .s1-multi-toggle-cell {
+      display: inline-flex; align-items: center; justify-content: center;
+      box-sizing: border-box; height: var(--sizing-44); min-width: 64px; padding: 0 12px;
+      font-size: 14px; font-weight: 500; cursor: pointer; user-select: none; white-space: nowrap;
+      /* default = secondary 버튼 토큰 */
+      background: var(--color-button-bg-secondary--default);
+      color: var(--color-button-label-secondary--default);
+      border-style: solid; border-color: var(--color-button-border-secondary--default);
+      /* 위치별 보더 변 — first/middle-left: 좌·상·하(우=0) / middle-right/last: 우·상·하(좌=0) */
+      border-width: 1px 0 1px 1px;
+    }
+    /* 위치별 코너 반경 + 보더 변 */
+    .s1-multi-toggle-cell--first  { border-radius: 4px 0 0 4px; border-width: 1px 0 1px 1px; }
+    .s1-multi-toggle-cell--middle { border-radius: 0; border-width: 1px 0 1px 1px; }
+    .s1-multi-toggle-cell--last   { border-radius: 0 4px 4px 0; border-width: 1px 1px 1px 1px; }
+    /* hover = secondary 버튼 hover 토큰 */
+    .s1-multi-toggle-cell:hover:not(.is-selected):not(.is-disabled),
+    .s1-multi-toggle-cell.is-hover {
+      background: var(--color-button-bg-secondary--hover);
+      color: var(--color-button-label-secondary--hover);
+      border-color: var(--color-button-border-secondary--hover);
+    }
+    /* selected = primary 버튼 default 토큰 */
+    .s1-multi-toggle-cell.is-selected {
+      background: var(--color-button-bg-primary--default);
+      color: var(--color-button-label-primary--default);
+      border-color: var(--color-button-border-primary--default);
+    }
+    /* disabled = 공통 disabled 버튼 토큰 */
+    .s1-multi-toggle-cell.is-disabled {
+      background: var(--color-button-bg-disabled);
+      color: var(--color-button-label-disabled);
+      border-color: var(--color-button-border-disabled);
+      cursor: not-allowed; pointer-events: none;
+    }
+    /* sm 사이즈: h34 · padX8 · minW56 (font 동일 14) */
+    .s1-multi-toggle--sm .s1-multi-toggle-cell { height: var(--sizing-34); min-width: 56px; padding: 0 8px; }
+
+    /* ── Dropdown (옵션 리스트) — 정본 buildDropdownList · color/dropdown/* ── */
+    .s1-dropdown-list {
+      display: inline-block; box-sizing: border-box;
+      background: var(--color-dropdown-list-bg);
+      border: 1px solid var(--color-dropdown-list-border);
+      border-radius: 4px; padding: 4px 0; min-width: 160px;
+    }
+    .s1-dropdown-option {
+      display: flex; align-items: center; box-sizing: border-box;
+      height: var(--sizing-44); padding: 0 12px; font-size: 14px; font-weight: 400; cursor: pointer;
+      /* 옵션 = bg + label (테두리 없음, 2026-06-30 stroke 제거) */
+      background: var(--color-dropdown-option-bg-default);
+      color: var(--color-dropdown-option-label-default);
+    }
+    .s1-dropdown-option.is-hover,
+    .s1-dropdown-option:hover:not(.is-selected):not(.is-disabled) {
+      background: var(--color-dropdown-option-bg-hover);
+      color: var(--color-dropdown-option-label-hover);
+    }
+    .s1-dropdown-option.is-selected {
+      background: var(--color-dropdown-option-bg-selected);
+      color: var(--color-dropdown-option-label-selected);
+      font-weight: 500;
+    }
+    .s1-dropdown-option.is-disabled {
+      background: var(--color-dropdown-option-bg-disabled);
+      color: var(--color-dropdown-option-label-disabled);
+      cursor: not-allowed; pointer-events: none;
+    }
+    /* 사이즈 — XXSM(h28·font12) / XSM(h34·font14) / MD(h44·font14, 기본) */
+    .s1-dropdown-list--xxsm .s1-dropdown-option { height: var(--sizing-28); font-size: 12px; }
+    .s1-dropdown-list--xsm  .s1-dropdown-option { height: var(--sizing-34); font-size: 14px; }
+    .s1-dropdown-list--md   .s1-dropdown-option { height: var(--sizing-44); font-size: 14px; }
+
     /* Table */
     .s1-table-section { width: 100%; padding: 12px; border-radius: 4px; }
     [data-theme="dark"] .s1-table-section { background: var(--color-gray-dark-100); }
@@ -1820,6 +1894,7 @@
           <button class="comp-nav-btn" data-category="selection" onclick="showSection('checkbox', this)">Checkbox</button>
           <button class="comp-nav-btn" data-category="selection" onclick="showSection('radio', this)">Radio</button>
           <button class="comp-nav-btn" data-category="selection" onclick="showSection('toggle', this)">Toggle</button>
+          <button class="comp-nav-btn" data-category="selection" onclick="showSection('multi-toggle', this)">Multi Toggle</button>
           <button class="comp-nav-btn" data-category="selection" onclick="showSection('chip', this)">Chip</button>
           <button class="comp-nav-btn" data-category="selection" onclick="showSection('filter-chip', this)">Filter Chip</button>
           <button class="comp-nav-btn" data-category="form" onclick="showSection('input', this)">Input</button>
@@ -1827,6 +1902,7 @@
           <button class="comp-nav-btn" data-category="form" onclick="showSection('time-picker', this)">Time Picker</button>
           <button class="comp-nav-btn" data-category="form" onclick="showSection('textarea', this)">Textarea</button>
           <button class="comp-nav-btn" data-category="form" onclick="showSection('select', this)">Select</button>
+          <button class="comp-nav-btn" data-category="form" onclick="showSection('dropdown', this)">Dropdown</button>
           <button class="comp-nav-btn" data-category="table" onclick="showSection('table', this)">Table</button>
           <button class="comp-nav-btn" data-category="navigation" onclick="showSection('tab', this)">Line Tab</button>
           <button class="comp-nav-btn" data-category="navigation" onclick="showSection('gnb', this)">GNB</button>
@@ -2227,6 +2303,157 @@ checkboxes.forEach(function(chk) {
                 <tr><td class="token-name">--toggle-off-bg</td><td class="token-value">var(--color-control-indicator-unselected)</td><td>OFF 트랙 (control/indicator/unselected)</td></tr>
                 <tr><td class="token-name">--toggle-disabled-bg</td><td class="token-value">var(--color-control-bg-disabled)</td><td>비활성 트랙 (control/bg/disabled)</td></tr>
                 <tr><td class="token-name">--toggle-knob</td><td class="token-value">var(--color-control-indicator-selected)</td><td>knob (control/indicator/selected · 모든 상태)</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </section>
+
+
+      <!-- ═══ MULTI TOGGLE ═══ -->
+      <section class="comp-section" id="multi-toggle">
+        <div class="comp-section-header">
+          <h2 class="comp-section-title">Multi Toggle</h2>
+          <span class="comp-badge comp-badge-blue">Core</span>
+          <span class="comp-badge">4 states</span>
+          <span class="comp-badge">PC 2sizes (md · sm)</span>
+          <span class="comp-badge comp-badge-blue">정본 buildMultiToggle · button/*</span>
+        </div>
+
+        <!-- ── Composed (조합형) — Size × Selected ── -->
+        <div class="variant-block">
+          <div class="variant-label">Composed · Size(md·sm) × Selected(Left·Center·Right) — 셀 3개 조합, 하나만 selected</div>
+          <div class="preview-area">
+            <div class="platform-section platform-section-pc">
+              <div class="platform-header"><span class="platform-dot pc"></span>PC · MD (h44)</div>
+              <div style="display:flex;gap:24px;flex-wrap:wrap;">
+                <div class="s1-multi-toggle">
+                  <div class="s1-multi-toggle-cell s1-multi-toggle-cell--first is-selected">항목</div>
+                  <div class="s1-multi-toggle-cell s1-multi-toggle-cell--middle">항목</div>
+                  <div class="s1-multi-toggle-cell s1-multi-toggle-cell--last">항목</div>
+                </div>
+                <div class="s1-multi-toggle">
+                  <div class="s1-multi-toggle-cell s1-multi-toggle-cell--first">항목</div>
+                  <div class="s1-multi-toggle-cell s1-multi-toggle-cell--middle is-selected">항목</div>
+                  <div class="s1-multi-toggle-cell s1-multi-toggle-cell--last">항목</div>
+                </div>
+                <div class="s1-multi-toggle">
+                  <div class="s1-multi-toggle-cell s1-multi-toggle-cell--first">항목</div>
+                  <div class="s1-multi-toggle-cell s1-multi-toggle-cell--middle">항목</div>
+                  <div class="s1-multi-toggle-cell s1-multi-toggle-cell--last is-selected">항목</div>
+                </div>
+              </div>
+            </div>
+            <div class="platform-section platform-section-pc" style="margin-top:16px;">
+              <div class="platform-header"><span class="platform-dot pc"></span>PC · SM (h34)</div>
+              <div style="display:flex;gap:24px;flex-wrap:wrap;">
+                <div class="s1-multi-toggle s1-multi-toggle--sm">
+                  <div class="s1-multi-toggle-cell s1-multi-toggle-cell--first is-selected">항목</div>
+                  <div class="s1-multi-toggle-cell s1-multi-toggle-cell--middle">항목</div>
+                  <div class="s1-multi-toggle-cell s1-multi-toggle-cell--last">항목</div>
+                </div>
+                <div class="s1-multi-toggle s1-multi-toggle--sm">
+                  <div class="s1-multi-toggle-cell s1-multi-toggle-cell--first">항목</div>
+                  <div class="s1-multi-toggle-cell s1-multi-toggle-cell--middle is-selected">항목</div>
+                  <div class="s1-multi-toggle-cell s1-multi-toggle-cell--last">항목</div>
+                </div>
+                <div class="s1-multi-toggle s1-multi-toggle--sm">
+                  <div class="s1-multi-toggle-cell s1-multi-toggle-cell--first">항목</div>
+                  <div class="s1-multi-toggle-cell s1-multi-toggle-cell--middle">항목</div>
+                  <div class="s1-multi-toggle-cell s1-multi-toggle-cell--last is-selected">항목</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── Element States — 셀 단위 4상태 ── -->
+        <div class="variant-block">
+          <div class="variant-label">Element States · 셀 단위 (default · hover · selected · disabled)</div>
+          <div class="preview-area">
+            <div class="comp-state-matrix" style="grid-template-columns: 120px repeat(4, minmax(110px, 1fr));">
+              <div class="matrix-col-header-action">Size</div>
+              <div class="matrix-col-header">Default</div>
+              <div class="matrix-col-header">Hover</div>
+              <div class="matrix-col-header">Selected</div>
+              <div class="matrix-col-header">Disabled</div>
+              <!-- md row -->
+              <div class="comp-action-cell" style="font-size:12px;color:var(--color-text-secondary);">md (h44)</div>
+              <div class="comp-state-cell"><div class="s1-multi-toggle"><div class="s1-multi-toggle-cell s1-multi-toggle-cell--first">항목</div></div></div>
+              <div class="comp-state-cell"><div class="s1-multi-toggle"><div class="s1-multi-toggle-cell s1-multi-toggle-cell--first is-hover">항목</div></div></div>
+              <div class="comp-state-cell"><div class="s1-multi-toggle"><div class="s1-multi-toggle-cell s1-multi-toggle-cell--first is-selected">항목</div></div></div>
+              <div class="comp-state-cell"><div class="s1-multi-toggle"><div class="s1-multi-toggle-cell s1-multi-toggle-cell--first is-disabled">항목</div></div></div>
+              <!-- sm row -->
+              <div class="comp-action-cell" style="font-size:12px;color:var(--color-text-secondary);">sm (h34)</div>
+              <div class="comp-state-cell"><div class="s1-multi-toggle s1-multi-toggle--sm"><div class="s1-multi-toggle-cell s1-multi-toggle-cell--first">항목</div></div></div>
+              <div class="comp-state-cell"><div class="s1-multi-toggle s1-multi-toggle--sm"><div class="s1-multi-toggle-cell s1-multi-toggle-cell--first is-hover">항목</div></div></div>
+              <div class="comp-state-cell"><div class="s1-multi-toggle s1-multi-toggle--sm"><div class="s1-multi-toggle-cell s1-multi-toggle-cell--first is-selected">항목</div></div></div>
+              <div class="comp-state-cell"><div class="s1-multi-toggle s1-multi-toggle--sm"><div class="s1-multi-toggle-cell s1-multi-toggle-cell--first is-disabled">항목</div></div></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── Code tabs ── -->
+        <div class="code-block">
+          <div class="code-tabs">
+            <button class="code-tab active" onclick="switchTab(this,'mtog-html')">HTML</button>
+            <button class="code-tab" onclick="switchTab(this,'mtog-css')">CSS</button>
+            <button class="code-tab" onclick="switchTab(this,'mtog-tokens')">Token Details</button>
+            <button class="code-copy-btn" onclick="copyCode('mtog-html-pre')">복사</button>
+          </div>
+          <div class="code-pane active" id="mtog-html">
+            <pre id="mtog-html-pre"><span class="c-cmt">&lt;!-- md (기본 h44) — 셀 3개, 하나만 is-selected --&gt;</span>
+<span class="c-tag">&lt;div</span> <span class="c-attr">class</span>=<span class="c-str">"s1-multi-toggle"</span><span class="c-tag">&gt;</span>
+  <span class="c-tag">&lt;div</span> <span class="c-attr">class</span>=<span class="c-str">"s1-multi-toggle-cell s1-multi-toggle-cell--first is-selected"</span><span class="c-tag">&gt;</span>항목<span class="c-tag">&lt;/div&gt;</span>
+  <span class="c-tag">&lt;div</span> <span class="c-attr">class</span>=<span class="c-str">"s1-multi-toggle-cell s1-multi-toggle-cell--middle"</span><span class="c-tag">&gt;</span>항목<span class="c-tag">&lt;/div&gt;</span>
+  <span class="c-tag">&lt;div</span> <span class="c-attr">class</span>=<span class="c-str">"s1-multi-toggle-cell s1-multi-toggle-cell--last"</span><span class="c-tag">&gt;</span>항목<span class="c-tag">&lt;/div&gt;</span>
+<span class="c-tag">&lt;/div&gt;</span>
+
+<span class="c-cmt">&lt;!-- sm (h34) — 래퍼에 --sm 추가 --&gt;</span>
+<span class="c-tag">&lt;div</span> <span class="c-attr">class</span>=<span class="c-str">"s1-multi-toggle s1-multi-toggle--sm"</span><span class="c-tag">&gt;</span>
+  <span class="c-tag">&lt;div</span> <span class="c-attr">class</span>=<span class="c-str">"s1-multi-toggle-cell s1-multi-toggle-cell--first is-selected"</span><span class="c-tag">&gt;</span>항목<span class="c-tag">&lt;/div&gt;</span>
+  <span class="c-tag">&lt;div</span> <span class="c-attr">class</span>=<span class="c-str">"s1-multi-toggle-cell s1-multi-toggle-cell--middle"</span><span class="c-tag">&gt;</span>항목<span class="c-tag">&lt;/div&gt;</span>
+  <span class="c-tag">&lt;div</span> <span class="c-attr">class</span>=<span class="c-str">"s1-multi-toggle-cell s1-multi-toggle-cell--last"</span><span class="c-tag">&gt;</span>항목<span class="c-tag">&lt;/div&gt;</span>
+<span class="c-tag">&lt;/div&gt;</span>
+
+<span class="c-cmt">&lt;!-- 셀 상태: is-hover / is-selected / is-disabled --&gt;</span></pre>
+          </div>
+          <div class="code-pane" id="mtog-css">
+            <pre id="mtog-css-pre"><span class="c-cmt">/* Multi Toggle — 정본 buildMultiToggle · 버튼 토큰 직접 사용 */</span>
+<span class="c-sel">.s1-multi-toggle</span> { display: <span class="c-val">inline-flex</span>; align-items: <span class="c-val">stretch</span>; }
+<span class="c-sel">.s1-multi-toggle-cell</span> {
+  height: <span class="c-val">var(--sizing-44)</span>; min-width: <span class="c-val">64px</span>; padding: <span class="c-val">0 12px</span>;
+  font-size: <span class="c-val">14px</span>; font-weight: <span class="c-val">500</span>;
+  background: <span class="c-val">var(--color-button-bg-secondary--default)</span>;
+  color: <span class="c-val">var(--color-button-label-secondary--default)</span>;
+  border: <span class="c-val">1px solid var(--color-button-border-secondary--default)</span>;
+}
+<span class="c-cmt">/* 위치별 코너 + 보더 변 (가운데는 좌측선만, 마지막만 우측선) */</span>
+<span class="c-sel">.s1-multi-toggle-cell--first</span>  { border-radius: <span class="c-val">4px 0 0 4px</span>; border-width: <span class="c-val">1px 0 1px 1px</span>; }
+<span class="c-sel">.s1-multi-toggle-cell--middle</span> { border-radius: <span class="c-val">0</span>; border-width: <span class="c-val">1px 0 1px 1px</span>; }
+<span class="c-sel">.s1-multi-toggle-cell--last</span>   { border-radius: <span class="c-val">0 4px 4px 0</span>; border-width: <span class="c-val">1px 1px 1px 1px</span>; }
+<span class="c-cmt">/* hover = secondary hover */</span>
+<span class="c-sel">.s1-multi-toggle-cell.is-hover</span> { background: <span class="c-val">var(--color-button-bg-secondary--hover)</span>; color: <span class="c-val">var(--color-button-label-secondary--hover)</span>; }
+<span class="c-cmt">/* selected = primary default */</span>
+<span class="c-sel">.s1-multi-toggle-cell.is-selected</span> { background: <span class="c-val">var(--color-button-bg-primary--default)</span>; color: <span class="c-val">var(--color-button-label-primary--default)</span>; }
+<span class="c-cmt">/* disabled = 공통 disabled */</span>
+<span class="c-sel">.s1-multi-toggle-cell.is-disabled</span> { background: <span class="c-val">var(--color-button-bg-disabled)</span>; color: <span class="c-val">var(--color-button-label-disabled)</span>; }
+<span class="c-cmt">/* sm 사이즈 (h34 · padX8 · minW56) */</span>
+<span class="c-sel">.s1-multi-toggle--sm .s1-multi-toggle-cell</span> { height: <span class="c-val">var(--sizing-34)</span>; min-width: <span class="c-val">56px</span>; padding: <span class="c-val">0 8px</span>; }</pre>
+          </div>
+          <div class="code-pane" id="mtog-tokens">
+            <table class="token-detail-table">
+              <thead><tr><th>Token</th><th>Value (Variables)</th><th>State</th></tr></thead>
+              <tbody>
+                <tr><td class="token-name">--color-button-bg-secondary--default</td><td class="token-value">secondary 버튼 배경</td><td>default · hover(셀)</td></tr>
+                <tr><td class="token-name">--color-button-border-secondary--default</td><td class="token-value">secondary 버튼 보더</td><td>default</td></tr>
+                <tr><td class="token-name">--color-button-label-secondary--default</td><td class="token-value">secondary 버튼 라벨</td><td>default</td></tr>
+                <tr><td class="token-name">--color-button-bg-secondary--hover</td><td class="token-value">secondary hover 배경</td><td>hover</td></tr>
+                <tr><td class="token-name">--color-button-bg-primary--default</td><td class="token-value">primary 버튼 배경</td><td>selected</td></tr>
+                <tr><td class="token-name">--color-button-label-primary--default</td><td class="token-value">primary 버튼 라벨</td><td>selected</td></tr>
+                <tr><td class="token-name">--color-button-bg-disabled</td><td class="token-value">공통 disabled 배경</td><td>disabled</td></tr>
+                <tr><td class="token-name">--color-button-label-disabled</td><td class="token-value">공통 disabled 라벨</td><td>disabled</td></tr>
               </tbody>
             </table>
           </div>
@@ -4624,6 +4851,151 @@ document.addEventListener('click', function(e) {
       </section>
 
 
+      <!-- ═══ DROPDOWN ═══ -->
+      <section class="comp-section" id="dropdown">
+        <div class="comp-section-header">
+          <h2 class="comp-section-title">Dropdown</h2>
+          <span class="comp-badge comp-badge-blue">Core</span>
+          <span class="comp-badge">4 states</span>
+          <span class="comp-badge">PC 3sizes (XXSM · XSM · MD)</span>
+          <span class="comp-badge comp-badge-blue">정본 buildDropdownList · color/dropdown/*</span>
+        </div>
+        <p style="font-size:12px;color:var(--color-text-secondary);margin:-8px 0 16px;line-height:1.6;">
+          Select·TimePicker·DatePicker 의 열린 옵션 패널을 구성하는 재사용 단위. 옵션 = 배경 + 라벨(테두리 없음). 패널 외곽선은 <code>--color-dropdown-list-border</code>.
+        </p>
+
+        <!-- ── Option States × Size (4상태 × 3사이즈) ── -->
+        <div class="variant-block">
+          <div class="variant-label">Option States · Default · Hover · Selected · Disabled (사이즈별)</div>
+          <div class="preview-area">
+            <div class="comp-state-matrix" style="grid-template-columns: 120px repeat(4, minmax(120px, 1fr));">
+              <div class="matrix-col-header-action">Size</div>
+              <div class="matrix-col-header">Default</div>
+              <div class="matrix-col-header">Hover</div>
+              <div class="matrix-col-header">Selected</div>
+              <div class="matrix-col-header">Disabled</div>
+              <!-- MD -->
+              <div class="comp-action-cell" style="font-size:12px;color:var(--color-text-secondary);">MD (h44)</div>
+              <div class="comp-state-cell"><div class="s1-dropdown-list s1-dropdown-list--md"><div class="s1-dropdown-option">옵션</div></div></div>
+              <div class="comp-state-cell"><div class="s1-dropdown-list s1-dropdown-list--md"><div class="s1-dropdown-option is-hover">옵션</div></div></div>
+              <div class="comp-state-cell"><div class="s1-dropdown-list s1-dropdown-list--md"><div class="s1-dropdown-option is-selected">옵션</div></div></div>
+              <div class="comp-state-cell"><div class="s1-dropdown-list s1-dropdown-list--md"><div class="s1-dropdown-option is-disabled">옵션</div></div></div>
+              <!-- XSM -->
+              <div class="comp-action-cell" style="font-size:12px;color:var(--color-text-secondary);">XSM (h34)</div>
+              <div class="comp-state-cell"><div class="s1-dropdown-list s1-dropdown-list--xsm"><div class="s1-dropdown-option">옵션</div></div></div>
+              <div class="comp-state-cell"><div class="s1-dropdown-list s1-dropdown-list--xsm"><div class="s1-dropdown-option is-hover">옵션</div></div></div>
+              <div class="comp-state-cell"><div class="s1-dropdown-list s1-dropdown-list--xsm"><div class="s1-dropdown-option is-selected">옵션</div></div></div>
+              <div class="comp-state-cell"><div class="s1-dropdown-list s1-dropdown-list--xsm"><div class="s1-dropdown-option is-disabled">옵션</div></div></div>
+              <!-- XXSM -->
+              <div class="comp-action-cell" style="font-size:12px;color:var(--color-text-secondary);">XXSM (h28)</div>
+              <div class="comp-state-cell"><div class="s1-dropdown-list s1-dropdown-list--xxsm"><div class="s1-dropdown-option">옵션</div></div></div>
+              <div class="comp-state-cell"><div class="s1-dropdown-list s1-dropdown-list--xxsm"><div class="s1-dropdown-option is-hover">옵션</div></div></div>
+              <div class="comp-state-cell"><div class="s1-dropdown-list s1-dropdown-list--xxsm"><div class="s1-dropdown-option is-selected">옵션</div></div></div>
+              <div class="comp-state-cell"><div class="s1-dropdown-list s1-dropdown-list--xxsm"><div class="s1-dropdown-option is-disabled">옵션</div></div></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── Full panel (4행 조합) ── -->
+        <div class="variant-block">
+          <div class="variant-label">Panel · Dropdown List 4행 조합 (Default · Hover · Selected · Default)</div>
+          <div class="preview-area">
+            <div style="display:flex;gap:32px;flex-wrap:wrap;align-items:flex-start;">
+              <div>
+                <div style="font-size:11px;color:var(--color-text-secondary);font-weight:500;margin-bottom:6px;">MD (h44)</div>
+                <div class="s1-dropdown-list s1-dropdown-list--md" style="min-width:200px;">
+                  <div class="s1-dropdown-option">옵션</div>
+                  <div class="s1-dropdown-option is-hover">옵션</div>
+                  <div class="s1-dropdown-option is-selected">옵션</div>
+                  <div class="s1-dropdown-option">옵션</div>
+                </div>
+              </div>
+              <div>
+                <div style="font-size:11px;color:var(--color-text-secondary);font-weight:500;margin-bottom:6px;">XSM (h34)</div>
+                <div class="s1-dropdown-list s1-dropdown-list--xsm" style="min-width:180px;">
+                  <div class="s1-dropdown-option">옵션</div>
+                  <div class="s1-dropdown-option is-hover">옵션</div>
+                  <div class="s1-dropdown-option is-selected">옵션</div>
+                  <div class="s1-dropdown-option">옵션</div>
+                </div>
+              </div>
+              <div>
+                <div style="font-size:11px;color:var(--color-text-secondary);font-weight:500;margin-bottom:6px;">XXSM (h28)</div>
+                <div class="s1-dropdown-list s1-dropdown-list--xxsm" style="min-width:160px;">
+                  <div class="s1-dropdown-option">옵션</div>
+                  <div class="s1-dropdown-option is-hover">옵션</div>
+                  <div class="s1-dropdown-option is-selected">옵션</div>
+                  <div class="s1-dropdown-option">옵션</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── Code tabs ── -->
+        <div class="code-block">
+          <div class="code-tabs">
+            <button class="code-tab active" onclick="switchTab(this,'ddl-html')">HTML</button>
+            <button class="code-tab" onclick="switchTab(this,'ddl-css')">CSS</button>
+            <button class="code-tab" onclick="switchTab(this,'ddl-tokens')">Token Details</button>
+            <button class="code-copy-btn" onclick="copyCode('ddl-html-pre')">복사</button>
+          </div>
+          <div class="code-pane active" id="ddl-html">
+            <pre id="ddl-html-pre"><span class="c-cmt">&lt;!-- MD (기본 h44) — 패널 + 옵션 4행 --&gt;</span>
+<span class="c-tag">&lt;div</span> <span class="c-attr">class</span>=<span class="c-str">"s1-dropdown-list s1-dropdown-list--md"</span><span class="c-tag">&gt;</span>
+  <span class="c-tag">&lt;div</span> <span class="c-attr">class</span>=<span class="c-str">"s1-dropdown-option"</span><span class="c-tag">&gt;</span>옵션<span class="c-tag">&lt;/div&gt;</span>
+  <span class="c-tag">&lt;div</span> <span class="c-attr">class</span>=<span class="c-str">"s1-dropdown-option is-hover"</span><span class="c-tag">&gt;</span>옵션<span class="c-tag">&lt;/div&gt;</span>
+  <span class="c-tag">&lt;div</span> <span class="c-attr">class</span>=<span class="c-str">"s1-dropdown-option is-selected"</span><span class="c-tag">&gt;</span>옵션<span class="c-tag">&lt;/div&gt;</span>
+  <span class="c-tag">&lt;div</span> <span class="c-attr">class</span>=<span class="c-str">"s1-dropdown-option is-disabled"</span><span class="c-tag">&gt;</span>옵션<span class="c-tag">&lt;/div&gt;</span>
+<span class="c-tag">&lt;/div&gt;</span>
+
+<span class="c-cmt">&lt;!-- XSM (h34) / XXSM (h28) — 패널에 사이즈 클래스 --&gt;</span>
+<span class="c-tag">&lt;div</span> <span class="c-attr">class</span>=<span class="c-str">"s1-dropdown-list s1-dropdown-list--xsm"</span><span class="c-tag">&gt;</span>...<span class="c-tag">&lt;/div&gt;</span>
+<span class="c-tag">&lt;div</span> <span class="c-attr">class</span>=<span class="c-str">"s1-dropdown-list s1-dropdown-list--xxsm"</span><span class="c-tag">&gt;</span>...<span class="c-tag">&lt;/div&gt;</span></pre>
+          </div>
+          <div class="code-pane" id="ddl-css">
+            <pre id="ddl-css-pre"><span class="c-cmt">/* Dropdown — 정본 buildDropdownList · color/dropdown/* */</span>
+<span class="c-sel">.s1-dropdown-list</span> {
+  background: <span class="c-val">var(--color-dropdown-list-bg)</span>;
+  border: <span class="c-val">1px solid var(--color-dropdown-list-border)</span>;
+  border-radius: <span class="c-val">4px</span>; padding: <span class="c-val">4px 0</span>;
+}
+<span class="c-sel">.s1-dropdown-option</span> {
+  height: <span class="c-val">var(--sizing-44)</span>; padding: <span class="c-val">0 12px</span>; font-size: <span class="c-val">14px</span>;
+  <span class="c-cmt">/* 옵션 = bg + label (테두리 없음) */</span>
+  background: <span class="c-val">var(--color-dropdown-option-bg-default)</span>;
+  color: <span class="c-val">var(--color-dropdown-option-label-default)</span>;
+}
+<span class="c-sel">.s1-dropdown-option.is-hover</span> { background: <span class="c-val">var(--color-dropdown-option-bg-hover)</span>; color: <span class="c-val">var(--color-dropdown-option-label-hover)</span>; }
+<span class="c-sel">.s1-dropdown-option.is-selected</span> { background: <span class="c-val">var(--color-dropdown-option-bg-selected)</span>; color: <span class="c-val">var(--color-dropdown-option-label-selected)</span>; }
+<span class="c-sel">.s1-dropdown-option.is-disabled</span> { background: <span class="c-val">var(--color-dropdown-option-bg-disabled)</span>; color: <span class="c-val">var(--color-dropdown-option-label-disabled)</span>; }
+<span class="c-cmt">/* 사이즈 — XXSM(h28·font12) / XSM(h34·font14) / MD(h44·font14) */</span>
+<span class="c-sel">.s1-dropdown-list--xxsm .s1-dropdown-option</span> { height: <span class="c-val">var(--sizing-28)</span>; font-size: <span class="c-val">12px</span>; }
+<span class="c-sel">.s1-dropdown-list--xsm .s1-dropdown-option</span> { height: <span class="c-val">var(--sizing-34)</span>; font-size: <span class="c-val">14px</span>; }
+<span class="c-sel">.s1-dropdown-list--md .s1-dropdown-option</span> { height: <span class="c-val">var(--sizing-44)</span>; font-size: <span class="c-val">14px</span>; }</pre>
+          </div>
+          <div class="code-pane" id="ddl-tokens">
+            <table class="token-detail-table">
+              <thead><tr><th>Token</th><th>Value (Variables)</th><th>Part</th><th>State</th></tr></thead>
+              <tbody>
+                <tr><td class="token-name">--color-dropdown-list-bg</td><td class="token-value">패널 배경</td><td>list</td><td>—</td></tr>
+                <tr><td class="token-name">--color-dropdown-list-border</td><td class="token-value">패널 외곽선</td><td>list</td><td>—</td></tr>
+                <tr><td class="token-name">--color-dropdown-option-bg-default</td><td class="token-value">옵션 배경</td><td>option</td><td>default</td></tr>
+                <tr><td class="token-name">--color-dropdown-option-label-default</td><td class="token-value">옵션 라벨</td><td>option</td><td>default</td></tr>
+                <tr><td class="token-name">--color-dropdown-option-bg-hover</td><td class="token-value">옵션 hover 배경</td><td>option</td><td>hover</td></tr>
+                <tr><td class="token-name">--color-dropdown-option-label-hover</td><td class="token-value">옵션 hover 라벨</td><td>option</td><td>hover</td></tr>
+                <tr><td class="token-name">--color-dropdown-option-bg-selected</td><td class="token-value">옵션 selected 배경</td><td>option</td><td>selected</td></tr>
+                <tr><td class="token-name">--color-dropdown-option-label-selected</td><td class="token-value">옵션 selected 라벨</td><td>option</td><td>selected</td></tr>
+                <tr><td class="token-name">--color-dropdown-option-bg-disabled</td><td class="token-value">옵션 disabled 배경</td><td>option</td><td>disabled</td></tr>
+                <tr><td class="token-name">--color-dropdown-option-label-disabled</td><td class="token-value">옵션 disabled 라벨</td><td>option</td><td>disabled</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </section>
+
+
       <section class="comp-section" id="table">
         <div class="comp-section-header">
           <h2 class="comp-section-title">Table</h2>
@@ -6889,7 +7261,7 @@ document.addEventListener('click', function(e) {
   })();
 
   (function initFromHash() {
-    var valid = ['button','checkbox','radio','toggle','chip','input','date-picker','time-picker','textarea','select','table','pagination','tab','gnb']; // Components New: 마이그레이션 완료 컴포넌트만
+    var valid = ['button','checkbox','radio','toggle','multi-toggle','chip','input','date-picker','time-picker','textarea','select','dropdown','table','pagination','tab','gnb']; // Components New: 마이그레이션 완료 컴포넌트만
     var hash  = window.location.hash.replace('#', '');
     var id    = (hash && valid.includes(hash)) ? hash : 'button';
     var btn   = document.querySelector('.comp-nav-btn[onclick*="\'' + id + '\'"]') || document.querySelector('.comp-nav-btn');
