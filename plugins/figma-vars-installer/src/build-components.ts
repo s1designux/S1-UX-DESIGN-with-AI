@@ -949,6 +949,7 @@ const ICON_KEYS: Record<string, string> = {
   chevron:  "e1ac97aa82f4e52f257ac1c0ea77fd09d0e5f581", // 화살표,더보기(쉐브론 › 우향 기준) 419:69 — 방향은 rotation 으로(우0·하90·좌180·상270)
   globe:    "dee16df7e4ccddbd5dd7aa1d2fbf93f841f5dee2", // 인터넷(지구본) 35:3317 — GNB 언어(사용자 지정)
   eye:      "d4e9eb5b7e193ee291aa2a7e04396c8de2d2dae7", // 비밀번호 미표시(눈+슬래시 ic_비밀번호미표시 Line) — Input Password Icon boolean 기본값. 표시 눈은 인스턴스 스왑으로 교체
+  home:     "6bf422c937034ce15f6814e5c430d8f85953ed4e", // 홈(ic_홈 Solid) 97:292 — V2.2 아이콘 라이브러리. Mobile Bottom Nav
 };
 // 삼성 로고 컴포넌트 — V3.0 파일 로컬 노드 333:165 (134×30 벡터). 파일 동일 시 getNodeByIdAsync 직접 접근.
 const SAMSUNG_LOGO_KEY = "9b32bb9ada9e84cdd18550f641389874858fa6ee";
@@ -979,6 +980,8 @@ async function getSamsungLogoInstance(targetH: number): Promise<SceneNode> {
 }
 // 비밀번호 눈(미표시) 폴백 SVG — 라이브러리 import 실패 시만 사용.
 const EYE_OFF_SVG = `<svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M2 12s3.5-6 10-6 10 6 10 6-3.5 6-10 6-10-6-10-6Z" stroke="#353535" stroke-width="1.5"/><circle cx="12" cy="12" r="2.5" stroke="#353535" stroke-width="1.5"/><path d="M4 4l16 16" stroke="#353535" stroke-width="1.5"/></svg>`;
+// 홈(Solid) 폴백 SVG — makeIconInstance 4번째 인자. 라이브러리(ic_홈 97:292) import 실패 시만 사용.
+const HOME_SVG = `<svg width="32" height="32" viewBox="0 0 32 32" fill="none"><path d="M16 5 28 15v11a1 1 0 0 1-1 1h-6v-8h-10v8H5a1 1 0 0 1-1-1V15L16 5Z" fill="#757575"/></svg>`;
 // 색 재바인딩 — 보이는(visible) 채움/선만 교체. 숨김 채움(hit-area 배경 등)은 보존(쉐브론 Fill1 처럼).
 function rebindIconColor(node: SceneNode, colorVar: Variable): void {
   const SHAPES = ["VECTOR", "ELLIPSE", "RECTANGLE", "LINE", "POLYGON", "STAR", "BOOLEAN_OPERATION"];
@@ -2503,6 +2506,48 @@ async function buildLanguageIcon(maps: BuildMaps, originY: number): Promise<{ se
     rowLabels: [""],
     cellAt: (_r, c) => comps[c] ?? null,
     lightX: SPEC_LIGHT_X, darkX: SPEC_DARK_X, originY, cellW: 200, cellH: 56, rowLabelW: 16,
+  };
+  let bottomY = await decorateSetFlat(set, opts, maps);
+  try { bottomY = Math.max(bottomY, await buildSpec(opts, maps)); } catch (e) { console.warn(e); }
+  return { set, bottomY };
+}
+
+// ── Mobile Bottom Nav (Tab Item 세트) — 홈 아이콘 + 라벨, 60×60 세로 오토레이아웃 ─────────
+// Figma V3.0 TEST 540:6025 기준. state=unselected/selected(원본 소문자 네이밍 그대로).
+// home=ICON_KEYS["home"](V2.2 라이브러리). 4탭 "바"는 설치기에서 만들지 않음 — Tab Item 세트만.
+async function buildMobileBottomNav(maps: BuildMaps, originY: number): Promise<{ set: ComponentSetNode; bottomY: number }> {
+  const variants = [
+    { state: "unselected", icon: "color/icon/gray",  label: "color/navigation/label/default" },
+    { state: "selected",   icon: "color/icon/blue",  label: "color/navigation/label/selected" },
+  ];
+  const comps: ComponentNode[] = [];
+  for (const v of variants) {
+    const comp = figma.createComponent();
+    comp.name = `state=${v.state}`;
+    comp.layoutMode = "VERTICAL";
+    comp.primaryAxisAlignItems = "CENTER"; comp.counterAxisAlignItems = "CENTER";
+    comp.primaryAxisSizingMode = "FIXED"; comp.counterAxisSizingMode = "FIXED";
+    comp.itemSpacing = 4; comp.fills = [];
+    comp.resize(60, 60);
+    // 홈 아이콘 32×32 (V2.2 라이브러리 인스턴스, 색 재바인딩)
+    const icon = await makeIconInstance("home", scv(maps, v.icon), 32, HOME_SVG);
+    comp.appendChild(icon);
+    // 라벨 12/Medium → body/12M 텍스트스타일 자동 바인딩
+    const label = await makeBoundText("라벨", 12, "Medium", scv(maps, v.label));
+    comp.appendChild(label);
+    setLightMode(comp, maps);
+    comps.push(comp);
+    BUILT_COMPS[`MobileBottomNav:${v.state}`] = comp;
+  }
+  const set = figma.combineAsVariants(comps, figma.currentPage);
+  set.name = "Mobile Bottom Nav"; set.x = 0; set.y = originY;
+  BUILT_SETS["Mobile Bottom Nav"] = set;
+  const opts: SpecOpts = {
+    title: "Mobile Bottom Nav",
+    colHeaders: ["Unselected", "Selected"],
+    rowLabels: [""],
+    cellAt: (_r, c) => comps[c] ?? null,
+    lightX: SPEC_LIGHT_X, darkX: SPEC_DARK_X, originY, cellW: 120, cellH: 60, rowLabelW: 16,
   };
   let bottomY = await decorateSetFlat(set, opts, maps);
   try { bottomY = Math.max(bottomY, await buildSpec(opts, maps)); } catch (e) { console.warn(e); }
@@ -4044,7 +4089,7 @@ async function buildMultiToggle(maps: BuildMaps, originY: number): Promise<{ set
 export const COMPONENT_CATEGORIES_GRID: { name: string; members: string[] }[][] = [
   [
     { name: "Platform",     members: ["StatusBar", "NavBar", "CI", "LoginGNB", "WebTabBar", "Footer"] },
-    { name: "Navigation",   members: ["GNB", "GNB Utility Icon", "Language Icon"] },
+    { name: "Navigation",   members: ["GNB", "GNB Utility Icon", "Language Icon", "Mobile Bottom Nav"] },
     { name: "Line Tab",     members: ["Line Tab Set", "Line Tab"] },
     { name: "Pagination",   members: ["Pagination", "Pagination Cell"] },
     { name: "Actions",      members: ["Button"] },
@@ -4198,6 +4243,7 @@ export async function buildAllComponents(
     "Line Tab Set":         (oy) => buildLineTabSet(maps, oy),
     "GNB Utility Icon":     (oy) => buildGNBUtilIcon(maps, oy),
     "Language Icon":        (oy) => buildLanguageIcon(maps, oy),
+    "Mobile Bottom Nav":    (oy) => buildMobileBottomNav(maps, oy),
     "GNB":                  (oy) => buildGNB(maps, oy),
     "Pagination":           (oy) => buildPaginationBar(maps, oy),
     "Pagination Cell":      (oy) => buildPaginationCell(maps, oy),

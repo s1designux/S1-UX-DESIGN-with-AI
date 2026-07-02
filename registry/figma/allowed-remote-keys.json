@@ -1,6 +1,6 @@
 {
   "$comment": "외부 라이브러리(remote:true) 중 '허용되는' 컴포넌트 키의 단일 출처. Figma 화면/라이브러리 빌드 시 인스턴스의 mainComponent.remote===true 인 것은 이 목록의 key 일 때만 허용하고, 그 외는 전부 외부 라이브러리 위반(❌)으로 본다. 이름(ic_ 접두사 등)으로 판단하지 말 것 — 외부 라이브러리도 같은 이름을 쓴다(2026-06-19 오탐/누수의 근본 원인). 키 기준만 신뢰한다.",
-  "lastSynced": "2026-06-24",
+  "lastSynced": "2026-07-02",
   "source": "installer 아이콘 9키 = plugins/figma-vars-installer/src/build-components.ts ICON_KEYS. V3.0-only 추가분(password-eye)은 ICON_KEYS 밖이며 V3.0 Login Input 에서 직접 사용 — 이 파일이 provenance 허용목록의 정본.",
   "iconLibraryFileKey": "YcBbW9e0MTR9T3W5Sz0Ukx",
   "iconLibraryName": "아이콘 라이브러리 V2.2 (14.UI 섹션)",
@@ -14,6 +14,8 @@
     "account":    "a423e2e05cfff2f93062d6a83d6f3bdf79ca9647",
     "chevron":    "e1ac97aa82f4e52f257ac1c0ea77fd09d0e5f581",
     "globe":      "dee16df7e4ccddbd5dd7aa1d2fbf93f841f5dee2",
+    "home":       "6bf422c937034ce15f6814e5c430d8f85953ed4e",
+    "home_set":   "c99f913689cd068deb2a5499154fed423ec9579f",
     "close":      "2a1abbd3597b536e34fd9523fb61eade3afe9934",
     "eye_hide":   "d4e9eb5b7e193ee291aa2a7e04396c8de2d2dae7",
     "eye_show":   "b130623bad9bf035e273501b404bf7a245af1460",

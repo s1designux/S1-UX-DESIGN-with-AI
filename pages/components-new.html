@@ -1323,6 +1323,37 @@
       border-radius: var(--radius-4); font-size: 11px; font-weight: 600;
       color: var(--color-text-secondary);
     }
+    /* Mobile Bottom Nav — Tab Item */
+    .s1-bottom-nav {
+      display: flex;
+      background: var(--color-navigation-bg);
+    }
+    .s1-bottom-nav .s1-bottom-nav-item { flex: 1; }
+    .s1-bottom-nav-item {
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      gap: var(--spacing-4);
+      width: 60px; height: 60px;
+      text-decoration: none;
+    }
+    .s1-bottom-nav-icon {
+      display: flex; align-items: center; justify-content: center;
+      width: 32px; height: 32px;
+      color: var(--color-icon-gray);  /* SVG fill=currentColor */
+    }
+    .s1-bottom-nav-label {
+      font-size: var(--font-size-12);
+      font-weight: var(--font-weight-medium);  /* body/12M */
+      line-height: var(--line-height-130);
+      color: var(--color-navigation-label-default);
+      white-space: nowrap;
+    }
+    .s1-bottom-nav-item.is-selected .s1-bottom-nav-icon {
+      color: var(--color-icon-blue);
+    }
+    .s1-bottom-nav-item.is-selected .s1-bottom-nav-label {
+      color: var(--color-navigation-label-selected);
+    }
     /* Time Picker */
     .s1-timepicker-wrap {
       display: inline-flex; align-items: center;
@@ -1952,6 +1983,7 @@
           <button class="comp-nav-btn" data-category="navigation" onclick="showSection('tab', this)">Line Tab</button>
           <button class="comp-nav-btn" data-category="navigation" onclick="showSection('gnb', this)">GNB</button>
           <button class="comp-nav-btn" data-category="navigation" onclick="showSection('pagination', this)">Pagination</button>
+          <button class="comp-nav-btn" data-category="navigation" onclick="showSection('mobile-bottom-nav', this)">Mobile Bottom Nav</button>
         </div><!-- /comp-nav -->
       </div><!-- /component-filter -->
 
@@ -6156,6 +6188,154 @@ document.addEventListener('click', e => {
 });
 
 update(); // 초기화</pre>
+          </div>
+        </div>
+      </section>
+
+
+      <!-- ═══ MOBILE BOTTOM NAV ═══ -->
+      <section class="comp-section" id="mobile-bottom-nav" data-cov-states="unselected,selected">
+        <div class="comp-section-header">
+          <h2 class="comp-section-title">Mobile Bottom Nav</h2>
+          <span class="comp-badge comp-badge-blue">Core</span>
+          <span class="comp-badge">Navigation</span>
+          <span class="comp-badge">2 states</span>
+          <span class="comp-badge">Mobile only</span>
+          <!-- Figma V3.0 TEST: Tab Item 세트 (state=unselected/selected) · ic_홈 Solid 인스턴스 -->
+        </div>
+
+        <p style="font-size:12px;color:var(--color-text-secondary);line-height:1.7;margin-bottom:18px;">
+          모바일 하단 내비게이션 바를 구성하는 <strong>탭 아이템(Tab Item)</strong>. 세로 배치 60×60 =
+          [홈 아이콘 32×32] + gap 4 + [라벨 "라벨"], 중앙정렬. 바 배경은 <code>--color-navigation-bg</code>.
+          unselected는 회색(<code>--color-icon-gray</code> / <code>--color-navigation-label-default</code>),
+          selected는 파랑(<code>--color-icon-blue</code> / <code>--color-navigation-label-selected</code>).
+          라벨 타이포는 body/12M (Pretendard Medium 12). 다크모드는 Variables 레이어가 자동 전환한다.
+        </p>
+
+        <!-- ── Tab Item 두 상태 ── -->
+        <div class="variant-block">
+          <div class="variant-label">Tab Item States</div>
+          <div class="preview-area">
+            <div class="comp-state-matrix" style="grid-template-columns: repeat(2, minmax(120px,1fr));">
+              <div class="matrix-col-header">Unselected</div>
+              <div class="matrix-col-header">Selected</div>
+
+              <div class="comp-state-cell">
+                <div class="s1-bottom-nav-item">
+                  <span class="s1-bottom-nav-icon" aria-hidden="true">
+                    <svg width="32" height="32" viewBox="0 0 32 32" fill="none"><path d="M16 5.5 5 14.5V26a1.5 1.5 0 0 0 1.5 1.5H12v-7h8v7h5.5A1.5 1.5 0 0 0 27 26V14.5L16 5.5Z" fill="currentColor"/></svg>
+                  </span>
+                  <span class="s1-bottom-nav-label">라벨</span>
+                </div>
+              </div>
+              <div class="comp-state-cell">
+                <div class="s1-bottom-nav-item is-selected">
+                  <span class="s1-bottom-nav-icon" aria-hidden="true">
+                    <svg width="32" height="32" viewBox="0 0 32 32" fill="none"><path d="M16 5.5 5 14.5V26a1.5 1.5 0 0 0 1.5 1.5H12v-7h8v7h5.5A1.5 1.5 0 0 0 27 26V14.5L16 5.5Z" fill="currentColor"/></svg>
+                  </span>
+                  <span class="s1-bottom-nav-label">라벨</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── 사용 예시: 4탭 바 (첫 탭 selected) ── -->
+        <div class="variant-block">
+          <div class="variant-label">Usage — 4-tab bar</div>
+          <div class="preview-area" style="display:flex;justify-content:center;">
+            <nav class="s1-bottom-nav" aria-label="하단 내비게이션">
+              <a class="s1-bottom-nav-item is-selected" aria-current="page">
+                <span class="s1-bottom-nav-icon" aria-hidden="true"><svg width="32" height="32" viewBox="0 0 32 32" fill="none"><path d="M16 5.5 5 14.5V26a1.5 1.5 0 0 0 1.5 1.5H12v-7h8v7h5.5A1.5 1.5 0 0 0 27 26V14.5L16 5.5Z" fill="currentColor"/></svg></span>
+                <span class="s1-bottom-nav-label">홈</span>
+              </a>
+              <a class="s1-bottom-nav-item">
+                <span class="s1-bottom-nav-icon" aria-hidden="true"><svg width="32" height="32" viewBox="0 0 32 32" fill="none"><path d="M16 5.5 5 14.5V26a1.5 1.5 0 0 0 1.5 1.5H12v-7h8v7h5.5A1.5 1.5 0 0 0 27 26V14.5L16 5.5Z" fill="currentColor"/></svg></span>
+                <span class="s1-bottom-nav-label">라벨</span>
+              </a>
+              <a class="s1-bottom-nav-item">
+                <span class="s1-bottom-nav-icon" aria-hidden="true"><svg width="32" height="32" viewBox="0 0 32 32" fill="none"><path d="M16 5.5 5 14.5V26a1.5 1.5 0 0 0 1.5 1.5H12v-7h8v7h5.5A1.5 1.5 0 0 0 27 26V14.5L16 5.5Z" fill="currentColor"/></svg></span>
+                <span class="s1-bottom-nav-label">라벨</span>
+              </a>
+              <a class="s1-bottom-nav-item">
+                <span class="s1-bottom-nav-icon" aria-hidden="true"><svg width="32" height="32" viewBox="0 0 32 32" fill="none"><path d="M16 5.5 5 14.5V26a1.5 1.5 0 0 0 1.5 1.5H12v-7h8v7h5.5A1.5 1.5 0 0 0 27 26V14.5L16 5.5Z" fill="currentColor"/></svg></span>
+                <span class="s1-bottom-nav-label">라벨</span>
+              </a>
+            </nav>
+          </div>
+        </div>
+
+        <!-- Code / Token Details -->
+        <div class="code-block">
+          <div class="code-tabs">
+            <button class="code-tab active" onclick="switchTab(this,'bottom-nav-html')">HTML</button>
+            <button class="code-tab" onclick="switchTab(this,'bottom-nav-css')">CSS</button>
+            <button class="code-tab" onclick="switchTab(this,'bottom-nav-tokens')">Token Details</button>
+          </div>
+          <div class="code-pane active" id="bottom-nav-html">
+            <pre><span class="c-tag">&lt;nav</span> <span class="c-attr">class</span>=<span class="c-str">"s1-bottom-nav"</span> <span class="c-attr">aria-label</span>=<span class="c-str">"하단 내비게이션"</span><span class="c-tag">&gt;</span>
+  <span class="c-cmt">&lt;!-- selected 탭 --&gt;</span>
+  <span class="c-tag">&lt;a</span> <span class="c-attr">class</span>=<span class="c-str">"s1-bottom-nav-item is-selected"</span> <span class="c-attr">aria-current</span>=<span class="c-str">"page"</span><span class="c-tag">&gt;</span>
+    <span class="c-tag">&lt;span</span> <span class="c-attr">class</span>=<span class="c-str">"s1-bottom-nav-icon"</span><span class="c-tag">&gt;</span><span class="c-tag">&lt;svg</span> …<span class="c-tag">&gt;</span>…<span class="c-tag">&lt;/svg&gt;</span><span class="c-tag">&lt;/span&gt;</span>
+    <span class="c-tag">&lt;span</span> <span class="c-attr">class</span>=<span class="c-str">"s1-bottom-nav-label"</span><span class="c-tag">&gt;</span>홈<span class="c-tag">&lt;/span&gt;</span>
+  <span class="c-tag">&lt;/a&gt;</span>
+  <span class="c-cmt">&lt;!-- unselected 탭 --&gt;</span>
+  <span class="c-tag">&lt;a</span> <span class="c-attr">class</span>=<span class="c-str">"s1-bottom-nav-item"</span><span class="c-tag">&gt;</span>
+    <span class="c-tag">&lt;span</span> <span class="c-attr">class</span>=<span class="c-str">"s1-bottom-nav-icon"</span><span class="c-tag">&gt;</span><span class="c-tag">&lt;svg</span> …<span class="c-tag">&gt;</span>…<span class="c-tag">&lt;/svg&gt;</span><span class="c-tag">&lt;/span&gt;</span>
+    <span class="c-tag">&lt;span</span> <span class="c-attr">class</span>=<span class="c-str">"s1-bottom-nav-label"</span><span class="c-tag">&gt;</span>라벨<span class="c-tag">&lt;/span&gt;</span>
+  <span class="c-tag">&lt;/a&gt;</span>
+<span class="c-tag">&lt;/nav&gt;</span></pre>
+          </div>
+          <div class="code-pane" id="bottom-nav-tokens">
+            <table class="token-detail-table">
+              <thead>
+                <tr><th>Token</th><th>Value (Semantic)</th><th>Resolved</th><th>Role</th></tr>
+              </thead>
+              <tbody>
+                <tr><td class="token-name">--color-navigation-bg</td><td class="token-value">var(--color-base-white)</td><td class="token-resolved" data-token="--color-navigation-bg"></td><td>바 배경</td></tr>
+                <tr><td class="token-name">--color-icon-gray</td><td class="token-value">var(--color-gray-dark-600)</td><td class="token-resolved" data-token="--color-icon-gray"></td><td>unselected 아이콘</td></tr>
+                <tr><td class="token-name">--color-navigation-label-default</td><td class="token-value">var(--color-gray-600)</td><td class="token-resolved" data-token="--color-navigation-label-default"></td><td>unselected 라벨</td></tr>
+                <tr><td class="token-name">--color-icon-blue</td><td class="token-value">var(--color-blue-400)</td><td class="token-resolved" data-token="--color-icon-blue"></td><td>selected 아이콘</td></tr>
+                <tr><td class="token-name">--color-navigation-label-selected</td><td class="token-value">var(--color-blue-400)</td><td class="token-resolved" data-token="--color-navigation-label-selected"></td><td>selected 라벨</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="code-pane" id="bottom-nav-css">
+            <pre>.s1-bottom-nav {
+  display: flex;
+  background: var(--color-navigation-bg);
+}
+.s1-bottom-nav .s1-bottom-nav-item { flex: 1; }
+
+.s1-bottom-nav-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-4);
+  width: 60px;
+  height: 60px;
+  text-decoration: none;
+}
+.s1-bottom-nav-icon {
+  width: 32px;
+  height: 32px;
+  color: var(--color-icon-gray);   /* SVG fill=currentColor */
+}
+.s1-bottom-nav-label {
+  font-size: var(--font-size-12);
+  font-weight: var(--font-weight-medium);   /* body/12M */
+  line-height: var(--line-height-130);
+  color: var(--color-navigation-label-default);
+}
+
+/* selected */
+.s1-bottom-nav-item.is-selected .s1-bottom-nav-icon {
+  color: var(--color-icon-blue);
+}
+.s1-bottom-nav-item.is-selected .s1-bottom-nav-label {
+  color: var(--color-navigation-label-selected);
+}</pre>
           </div>
         </div>
       </section>
