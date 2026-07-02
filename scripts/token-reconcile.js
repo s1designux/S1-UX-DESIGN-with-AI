@@ -5,7 +5,7 @@
  * 자동 재생성(결정론적):
  *   1. tokens:gen        vars-data SEMANTIC_COLOR → tokens.css Semantic 섹션
  *   2. tokens:sync-prompt tokens.css → install-prompt.html (다운로드 인라인)
- *   3. installer:build   vars-data → 설치기 zip (+ ~/s1-design-system-installer)
+ *   3. installer:build   vars-data → 설치기 zip (+ ~/s1-ux-design-guide-installer)
  *
  * 그 후 모니터 실행 → 자동 재생성으로 못 고치는 **손유지 표면**(semantic.html hex·
  * registry/semantic.colors.json·sw-v2.4.tokens.css 등)의 잔여 드리프트를 보고한다.
