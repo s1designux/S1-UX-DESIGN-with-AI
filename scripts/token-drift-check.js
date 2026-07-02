@@ -21,6 +21,7 @@ const ROOT = path.resolve(__dirname, '..');
 const BC = path.join(ROOT, 'plugins/figma-vars-installer/src/build-components.ts');
 const BASELINE = path.join(ROOT, 'registry/governance/registry-drift-baseline.json');
 const ALLOW = path.join(ROOT, 'registry/governance/intentional-unused-tokens.json');
+const { isLegacyFile } = require('./lib/legacy-skip'); // 레거시 격리 규약: 격리 파일은 검사 제외(공용 필터)
 const UPDATE = process.argv.includes('--update-baseline');
 
 // tokens.css 정의 집합 (삭제됨 vs 미사용 구분용)
@@ -80,9 +81,11 @@ function entriesOf(obj, out) {
   const authorityPaths = new Set([...usedPaths, ...allow]);          // color/x 형태
   const authorityCss = new Set([...authorityPaths].map(toCss));      // --color-x 형태
 
-  const files = ['registry/tokens/component.tokens.json'];
+  let files = ['registry/tokens/component.tokens.json'];
   const compDir = path.join(ROOT, 'registry/components');
   if (fs.existsSync(compDir)) for (const f of fs.readdirSync(compDir)) if (f.endsWith('.json')) files.push('registry/components/' + f);
+  // 레거시 격리 규약: deprecated-tokens.json legacyFiles 에 등록된 파일은 스캔 제외(다른 게이트와 동일).
+  files = files.filter((rel) => !isLegacyFile(rel));
 
   const drift = new Map();
   for (const rel of files) {

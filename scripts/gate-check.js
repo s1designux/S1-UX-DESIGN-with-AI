@@ -476,6 +476,27 @@ try {
   fail(`token-drift-check 실행 실패: ${e.message}`);
 }
 
+// ── Gate 21: Registry Active/Legacy Consistency (좀비 등록 재발 방지) ─────
+// index.json 에 active 등록된 파일이 레거시 격리(legacyFiles)와 모순되면 차단. 은퇴 파일이
+// active 포인터로 남아 사람·AI 를 오도(component.tokens.json 사태)하는 것을 예방. (2026-07-02 신설)
+console.log('\n🔎 [Gate 21] 레지스트리 active/legacy 일관성 검사기 (Registry Active/Legacy Consistency)');
+try {
+  const { spawnSync } = require('child_process');
+  const r = spawnSync('node', [path.join(ROOT, 'scripts/registry-active-legacy-check.js')], { encoding: 'utf-8' });
+  const out = (r.stdout || '') + (r.stderr || '');
+  const errLines = out.split('\n').filter((l) => l.includes('❌'));
+  const warnLines = out.split('\n').filter((l) => l.includes('⚠️'));
+  if (r.status === 0) {
+    pass('index.json active 포인터 ∩ 레거시 격리 모순 0 (좀비 등록 없음)');
+    for (const l of warnLines) warn(l.replace(/^\s*⚠️\s*/, '').trim());
+  } else {
+    for (const l of errLines) fail(l.replace(/^\s*❌\s*/, '').trim());
+    if (errLines.length === 0) fail(`registry-active-legacy-check 실패 (exit ${r.status})`);
+  }
+} catch (e) {
+  fail(`registry-active-legacy-check 실행 실패: ${e.message}`);
+}
+
 // ── Summary ───────────────────────────────────────────────────────
 console.log('\n─────────────────────────────────────────────────────');
 if (errors > 0) {

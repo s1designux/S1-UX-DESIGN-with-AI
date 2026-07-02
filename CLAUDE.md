@@ -22,6 +22,7 @@
 
 | 날짜 | 변경 내용 (한 줄) |
 |------|------------------|
+| 2026-07-02 | **Mobile Bottom Nav 설치기·웹 편입 + 레거시 신호 정리(Gate 20 교정·Gate 21 신설)** — 하단내비바(Tab Item 세트)를 figma-library-build(🏗️빌드/🤖검증 분리)로 V3.0 빌드→육안검수→`buildMobileBottomNav` 설치기 편입(ICON_KEYS home=V2.2·allowed-remote-keys 등록·Light/Dark 스펙 자동)+`components-new.html` 섹션+커버리지, 🤖component-verifier(D) Gate13 기록, zip 재빌드. **레거시 오판 재발 방지:** `component.tokens.json`(은퇴한 컴포넌트-별칭층)을 deprecated-tokens.json legacyFiles 등록 + **Gate 20 이 legacy-skip 을 존중하도록 교정**(규약 위반이었음)·baseline 209→86 축소, index.json `_componentRetired` 강등, CLAUDE.md 은퇴 명시, **Gate 21(active/legacy 일관성) 신설**(은퇴 파일이 index active 로 남는 좀비 등록 차단, 적대적 테스트 통과). 정본=vars-data/build-components. gate:check PASSED |
 | 2026-06-30 | **Gate 19(변형/상태 커버리지, Level 2) + 겉핥기 예방 원리** — Gate 18(섹션 존재)의 다음 층: 각 HTML 섹션이 설치기 변형의 State(상태)를 다 보여주나를 mock 실측 ↔ data-cov-states 옵트인 선언 대조(누락=차단). **핵심 예방 원리**: 검사기가 "몇 섹션 검증·몇 섹션 미계측"을 **스스로 선언** → 나도 기계도 '다 됐다'는 거짓 완전성을 구조적으로 못 만듦(Gate 17 '추출 0건=안됨' 확장). Multi Toggle·Dropdown 2섹션 계측(verified), 나머지 12 미계측 정직 보고. stateSource(요소 상태원 매핑). 적대적 테스트(상태 제거→차단) 통과. [[feedback_verify-primary-source-with-citation]] |
 | 2026-06-30 | **설치기↔HTML 페이지 연동 + Gate 18 신설** — 설치기 기준으로 components-new.html 누락분 보완(Multi Toggle 섹션 신설·Dropdown 독립 섹션 분리, 🤖 guide-builder 빌드+설치기 매트릭스 1:1 대조+렌더검증). Platform shell 6종은 제외(사용자 결정). **Gate 18(컴포넌트페이지 커버리지)** 신설: 설치기 COMPONENT_CATEGORIES_GRID(정본)↔HTML 섹션 기계 대조, 미분류·섹션누락 차단(설치기=기준 강제)·정본 component-page-coverage.json(sectionFor/noSectionNeeded). Multi Toggle·Dropdown 드리프트가 손으로 발견된 사각지대를 게이트화(적대적 테스트 통과). Gate 17(미사용토큰)도 대시보드 누락분 등재. 토큰 정합(Gate 6·7·8·10) 위에 "컴포넌트 커버리지" 축 추가 |
 | 2026-06-24 | **Select Box Open 드롭다운 누락 수정 + "표시 순서 ≠ 빌드 순서" 영구 규칙화** — Select Box Open 에 드롭다운 패널이 안 붙던 원인=빌드 순서(Select Box 가 Dropdown 보다 먼저 빌드돼 BUILT_COMPS 비어 부착 실패). 1차로 members 재배열했으나 그러면 나열 순서가 깨짐 → 사용자 지적("나열은 메인→요소, 빌드만 요소 먼저"). `BUILD_DEPENDENCIES`+`buildOrderFor` 위상정렬로 빌드는 요소 먼저, members 는 표시(메인→요소) 순서 고정, `buildAllComponents` layout 패스가 카테고리 내부를 members 순서로 재배치, `render.js` 는 members 정렬. Form Control 표시=Input·Search·Text Area·Select Box·Dropdown·Dropdown List, Select Box 옵션 0→32. 🤖 component-verifier 구조검증 PASS(❌0)·전 게이트(1~15)+zip 재빌드 통과 |
@@ -312,6 +313,8 @@ color-overlay   → 딤·오버레이
 ---
 
 # 🧱 Component Token 설계 기준
+
+> **⚠️ 은퇴 알림(2026-07-02):** `registry/tokens/component.tokens.json`(컴포넌트→별칭→semantic **별칭 CSS 변수층** 서술 파일)은 **은퇴**됐다. 현행 정본은 **설치기가 각 컴포넌트를 semantic 토큰에 직접 바인딩**(`plugins/figma-vars-installer/src/build-components.ts` 의 `scv()` + `vars-data.ts`)하는 방식이다. 이 파일은 `deprecated-tokens.json` legacyFiles 로 격리(Gate 20 검사 제외)됐고 index.json 에서 `_componentRetired` 로 강등됐다. **"컴포넌트가 어떤 토큰을 쓰나"는 이 문서가 아니라 vars-data/build-components(정본)에서 확인**한다. 아래 설계 원칙(색은 Semantic 경유·네이밍 등)은 개념 기준으로 유효하나, 별칭 CSS 변수 레지스트리 자체는 더 이상 정본이 아니다. (레거시 판단은 항상 `deprecated-tokens.json` 단일정본부터 — Gate 21 이 좀비 active 등록을 차단.)
 
 Component Token의 참조 기준은 속성 유형에 따라 다르다.
 
@@ -1336,9 +1339,11 @@ Claude는 **Main Orchestrator**다. 사용자는 **목표 수준 의도**만 준
   17. Gate 17 (Orphan Token) — vars-data·build-components·registry/components|patterns·웹CSS 변경 시 / 항상. 빌더(mock)+웹CSS+registry spec 전 표면에서 안 쓰이는 semantic color 토큰(orphan)을 결정론 검사해 레거시 누적 가시화. 의도보존분=`registry/governance/intentional-unused-tokens.json` 면제, 예상밖 orphan·stale allow=경고(비차단). "이 토큰 어디서 쓰나"를 손 grep 아닌 기계가 답(거짓 단정 차단). 단독 `npm run tokens:orphans`
   18. Gate 18 (Component Page Coverage) — build-components.ts·components-new.html·component-page-coverage.json 변경 시 / 항상. **설치기(COMPONENT_CATEGORIES_GRID 정본)에 있는 컴포넌트가 HTML components 페이지에도 다 있나**를 기계 대조. 미분류(새 컴포넌트가 sectionFor/noSectionNeeded 둘 다 없음)·섹션누락=차단(설치기=기준 강제), 고아섹션·stale config=경고. 정본=`registry/governance/component-page-coverage.json`. "HTML에 빠진 컴포넌트"를 손으로 안 찾고 기계가 답(Multi Toggle·Dropdown 드리프트 재발 차단). 단독 `npm run components:pagecheck`
   19. Gate 19 (Variant/State Coverage) — build-components.ts·components-new.html·component-page-coverage.json 변경 시 / 항상. Gate 18 다음 층: **각 HTML 섹션이 설치기 변형의 상태(State)를 다 보여주나**. 섹션이 `data-cov-states` 로 옵트인하면 설치기 State 축(mock 실측) ⊆ 선언 대조(누락=차단), 미선언은 **미계측으로 정직 보고(거짓 완전성 차단)**. stateSource 로 요소 컴포넌트 상태원(Multi Toggle Element·Dropdown List) 매핑. 단독 `npm run components:variantcov`
+  20. Gate 20 (Registry Token Drift) — registry 비정본(component.tokens·components/*.json)이 최신 컴포넌트(build-components) 밖 토큰을 언급하면 baseline ratchet 으로 추적(새 stale=차단·알려진=경고). **레거시 격리 파일은 `legacy-skip` 로 스킵**(2026-07-02 교정). 단독 `npm run token-drift-check`
+  21. Gate 21 (Registry Active/Legacy Consistency) — build-components.ts 변경과 무관·항상. **index.json 에 active 포인터로 등록된 파일이 레거시 격리(deprecated-tokens.json legacyFiles)와 모순되면 차단**(은퇴 파일이 active 로 남아 사람·AI 오도 방지 — component.tokens.json 좀비 등록 사태 재발 차단). dangling active 포인터=경고. 은퇴 처리=`_`접두 표식+legacyFiles. 단독 `node scripts/registry-active-legacy-check.js`
 ```
 
-스크립트 일괄 실행: `npm run gate:check` (Gate 1 + 3 + 4 + 6 + 7 + 8 + 9 + 10 + 11 + 12 + 13 + 14 + 15 + 16 + 17 + 18 + 19 자동)
+스크립트 일괄 실행: `npm run gate:check` (Gate 1 + 3 + 4 + 6 + 7 + 8 + 9 + 10 + 11 + 12 + 13 + 14 + 15 + 16 + 17 + 18 + 19 + 20 + 21 자동)
 
 > **Gate 10 (doc-token-ref-check):** 토큰을 rename/remove 하면 옛 이름을 쥔 가이드 문서가 자동 적발된다. **정본 rename 시 `registry/tokens/deprecated-tokens.json` 의 `renamedGroups` 에 `{from,to}` 한 줄 추가**하면 이후 게이트가 전 활성 페이지에서 잔재를 차단(Check B). `--color-*` 참조 존재성은 Check A(경고)로 가시화. 단독 실행 `npm run docs:tokencheck`. `components.html`(폐기 예정)은 검사 제외.
 

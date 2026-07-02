@@ -178,6 +178,11 @@
       "path": "pages/legacy.html",
       "reason": "레거시→정본 토큰 마이그레이션 가이드 페이지. '옛 토큰명'을 매핑 표에 의도적으로 나열하므로 doc-token-ref denylist(Gate 10) 검사에서 제외(옛 이름 보유가 목적). 리네임마다 충돌하던 구조 해소.",
       "since": "2026-06-30"
+    },
+    {
+      "path": "registry/tokens/component.tokens.json",
+      "reason": "은퇴된 '컴포넌트-별칭 토큰층'(component→alias→semantic) 서술 데이터. 현행 정본은 build-components.ts 가 semantic 토큰에 직접 바인딩(scv) — 이 별칭층은 옛 아키텍처 잔재로 옛 semantic 토큰명을 참조. 유일 소비자=메뉴 숨김된 Registry Explorer 뷰어(2026-06-24 비노출). Gate 20(token-drift) 검사 제외. 활성 정본=vars-data.ts.",
+      "since": "2026-07-02"
     }
   ]
 }
