@@ -1,0 +1,125 @@
+{
+  "fileKey": "cysG5U1udpQqVagYY1hWHW",
+  "fileName": "SW-UX-GUIDE-V3.0-TEST",
+  "page": { "id": "80:16696", "name": "---공통---" },
+  "pageNote": "Owning PAGE of these nodes is 80:16696 (---공통---). Canvas/get_metadata surfaced 5:5706 named 'Core'; the Navigation section 687:18905 resides on page 80:16696.",
+  "builtBy": "figma-library-builder",
+  "builtAt": "2026-07-02",
+  "placement": {
+    "navigationSection": { "id": "687:18905", "name": "Navigation", "absX": 2320, "absY": 0, "width": 2296, "heightBefore": 2598, "heightAfter": 3084 },
+    "parentSection": "687:18905",
+    "parentChain": ["687:18905:SECTION(Navigation)", "5:5706:PAGE(Core)", "80:16696 owning-page(---공통---)", "0:0:DOCUMENT"],
+    "note": "FIXED (2026-07-02) in two passes: (1) the new nodes were initially appended to the PAGE (80:16696) so they were NOT section members — reparented into section 687:18905 via section.appendChild, abs positions preserved. (2) Title overlap fix per reference Language Icon rhythm: set 723:6 given 82px top margin (variants moved y=16->82, 60x60 geometry untouched; set resized 176x92 -> 176x158) so set title 724:22 sits at abs x=2408 y=2704 (=set top +24, indent x=88) in the empty top band clear of the purple name badge. Bar+title wrapped in Spec container frame 731:6479 (section child, no fill) following ref frame 687:18249: title 724:23 at (24,24), bar 723:8 at (24,82) so title clears the first instance's name badge. Section grown 2912 -> 3084. All parentChains route through section 687:18905. Colors/fonts/token bindings/variant geometry/icon instances untouched."
+  },
+  "layoutRhythm": {
+    "reference": "Language Icon set 687:18245 (82px top margin, title 687:18246 at abs x=88 y=set_top+24) + Spec frame 687:18249 (title 24,24; instances y=82)",
+    "setTitleIndentX": 88,
+    "setTopMargin": 82,
+    "barSpecTitleAt": [24, 24],
+    "barSpecBarAt": [24, 82]
+  },
+  "variantSet": {
+    "id": "723:6",
+    "name": "Mobile Bottom Nav",
+    "abs": { "x": 2384, "y": 2680, "width": 176, "height": 158 },
+    "topMargin": 82,
+    "variants": [
+      { "id": "722:12", "name": "state=unselected", "relX": 16, "relY": 82, "width": 60, "height": 60 },
+      { "id": "722:17", "name": "state=selected", "relX": 100, "relY": 82, "width": 60, "height": 60 }
+    ]
+  },
+  "tabItemAnatomy": {
+    "layout": "VERTICAL auto-layout, 60x60, CENTER/CENTER, itemSpacing 4, paddingLeft/Right 8",
+    "children": [
+      { "role": "icon", "type": "INSTANCE", "componentName": "ic_홈 (Property 1=Solid)", "importKey": "6bf422c937034ce15f6814e5c430d8f85953ed4e", "size": "32x32" },
+      { "role": "label", "type": "TEXT", "characters": "라벨", "textStyle": "body/12M", "textStyleId": "S:3d9482ca20d89ee38849e1a9903a16527afe55bd," }
+    ]
+  },
+  "barSpecContainer": {
+    "id": "731:6479",
+    "name": "Mobile Bottom Nav — Bar Spec (사용예시)",
+    "type": "FRAME (no fill, container chrome)",
+    "abs": { "x": 2384, "y": 2878, "width": 408, "height": 166 },
+    "parentSection": "687:18905",
+    "children": ["724:23 (title @24,24)", "723:8 (bar @24,82)"]
+  },
+  "usageBar": {
+    "id": "723:8",
+    "name": "Mobile Bottom Nav / Bar (사용예시)",
+    "type": "FRAME",
+    "parent": "731:6479 (Bar Spec container)",
+    "abs": { "x": 2408, "y": 2960, "width": 360, "height": 60 },
+    "layout": "HORIZONTAL auto-layout, SPACE_BETWEEN, CENTER, paddingLeft/Right 8, bg bound to navigation/bg",
+    "instances": [
+      { "id": "723:9", "mainComponent": "state=selected", "layoutSizingHorizontal": "FILL" },
+      { "id": "723:14", "mainComponent": "state=unselected", "layoutSizingHorizontal": "FILL" },
+      { "id": "723:19", "mainComponent": "state=unselected", "layoutSizingHorizontal": "FILL" },
+      { "id": "723:24", "mainComponent": "state=unselected", "layoutSizingHorizontal": "FILL" }
+    ]
+  },
+  "annotationTitles": [
+    { "id": "724:22", "characters": "Mobile Bottom Nav · Tab Item (state)", "parent": "687:18905 (section)", "abs": { "x": 2408, "y": 2704 }, "note": "in set 723:6 top-margin band, indent x=88, +24 below set top; clears purple badge", "textStyle": "title/14B", "fillVar": "color/text/title/primary" },
+    { "id": "724:23", "characters": "사용예시 — Bar (첫 탭 selected)", "parent": "731:6479 (Bar Spec)", "abs": { "x": 2408, "y": 2902 }, "note": "at (24,24) inside Bar Spec frame, bar 58px below; clears first instance name badge", "textStyle": "title/14B", "fillVar": "color/text/title/primary" }
+  ],
+  "tokenBindings": {
+    "color/navigation/bg": { "varId": "VariableID:477:4415", "existedInFile": true, "usedOn": "bar background", "count": 1 },
+    "color/icon/gray": { "varId": "VariableID:8:1068", "existedInFile": true, "usedOn": "unselected icons", "count": 4 },
+    "color/icon/blue": { "varId": "VariableID:8:1067", "existedInFile": true, "usedOn": "selected icons (corrected from original control/indicator/selected misref)", "count": 2 },
+    "color/navigation/label/default": { "varId": "VariableID:8:1083", "existedInFile": true, "usedOn": "unselected labels", "count": 4 },
+    "color/navigation/label/selected": { "varId": "VariableID:8:1086", "existedInFile": true, "usedOn": "selected labels", "count": 2 },
+    "color/text/title/primary": { "varId": "VariableID:8:1127", "existedInFile": true, "usedOn": "annotation titles", "count": 2 },
+    "body/12M": { "textStyleId": "S:3d9482ca20d89ee38849e1a9903a16527afe55bd,", "existedInFile": true, "usedOn": "tab labels" }
+  },
+  "darkSpec": {
+    "frame": {
+      "id": "735:3",
+      "name": "Mobile Bottom Nav — Spec Dark",
+      "type": "FRAME",
+      "parentSection": "687:18905",
+      "abs": { "x": 2872, "y": 2680, "width": 408, "height": 306 },
+      "relToSection": { "x": 552, "y": 2680 },
+      "cornerRadius": 8,
+      "clipsContent": true,
+      "bgVar": "color/bg/level-1 (VariableID:687:17885) — dark resolves to #131418, matching reference frame color",
+      "darkModeMechanism": "setExplicitVariableModeForCollection('VariableCollectionId:8:963' = Semantic Color V2, mode '8:2' = Dark). All bound tokens inside resolve to their Dark values."
+    },
+    "placementRule": "Light content right edge rel x=472 (bar spec) + 80 = rel x=552, aligned to Light set top y=2680. No overlap.",
+    "children": {
+      "titleSet": { "id": "735:4", "characters": "Mobile Bottom Nav · Dark", "rel": [24, 24], "textStyle": "title/14B (Pretendard Bold)", "fillVar": "color/text/title/primary" },
+      "setInstances": [
+        { "id": "735:5", "mainComponent": "state=unselected", "rel": [40, 82] },
+        { "id": "735:12", "mainComponent": "state=selected", "rel": [124, 82] }
+      ],
+      "titleBar": { "id": "735:8973", "characters": "사용예시 — Bar (첫 탭 selected)", "rel": [24, 182], "textStyle": "title/14B (Pretendard Bold)", "fillVar": "color/text/title/primary" },
+      "darkBar": {
+        "id": "735:8974",
+        "name": "Mobile Bottom Nav / Bar (사용예시) — Dark",
+        "rel": [24, 222],
+        "size": [360, 60],
+        "bgVar": "color/navigation/bg (VariableID:477:4415) — dark resolves to gray-dark/100 #1c1d23",
+        "instances": [
+          { "id": "735:8975", "mainComponent": "state=selected", "layoutSizingHorizontal": "FILL" },
+          { "id": "735:8980", "mainComponent": "state=unselected", "layoutSizingHorizontal": "FILL" },
+          { "id": "735:8985", "mainComponent": "state=unselected", "layoutSizingHorizontal": "FILL" },
+          { "id": "735:8990", "mainComponent": "state=unselected", "layoutSizingHorizontal": "FILL" }
+        ]
+      }
+    },
+    "contentSource": "All content = INSTANCES of the light set 723:6 (state=unselected 722:12 / state=selected 722:17). No new components/variants created.",
+    "fontNote": "Titles created with Inter temp font (Pretendard not loadable in MCP env), then rebound to title/14B via setTextStyleIdAsync -> final font Pretendard Bold (verified fontName). Tab labels come from instances (already body/12M Pretendard).",
+    "selfScan": { "unboundFills": 0, "nonPretendardText": 0 }
+  },
+  "structureNotes": {
+    "combineAsVariants": "unselected(722:12)+selected(722:17) -> Mobile Bottom Nav (723:6). Originally packed 176x92; later given 82px top margin for title band -> 176x158 (variants 60x60 untouched). No collapse.",
+    "detach": "none needed (no cyclic sibling instances)",
+    "rename": "none of existing assets",
+    "remap": "none (net-new components, no existing instances affected)",
+    "emptyContainers": "none removed"
+  },
+  "selfScan": {
+    "unboundFills": 0,
+    "nonPretendardText": 0,
+    "iconImport": "success (ic_홈 Solid, V2.2 6bf422c9...)"
+  },
+  "needsDecision": []
+}

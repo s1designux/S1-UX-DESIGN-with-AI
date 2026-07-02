@@ -288,30 +288,6 @@ color-overlay   → 딤·오버레이
 
 | CSS Variable | 역할 | 값 | Foundation 참조 |
 |---|---|---|---|
-| `--spacing-padding-block-xxs` | 블록 패딩 최소 | 8px | spacing/8 |
-| `--spacing-padding-block-xs` | 블록 패딩 소 | 12px | spacing/12 |
-| `--spacing-padding-block-sm` | 블록 패딩 중소 | 16px | spacing/16 |
-| `--spacing-padding-block-md` | 블록 패딩 중 | 20px | spacing/20 |
-| `--spacing-padding-block-lg` | 블록 패딩 대 | 24px | spacing/24 |
-| `--spacing-padding-inline-xxs` | 인라인 패딩 최소 | 8px | spacing/8 |
-| `--spacing-padding-inline-xs` | 인라인 패딩 소 | 12px | spacing/12 |
-| `--spacing-padding-inline-sm` | 인라인 패딩 중소 | 16px | spacing/16 |
-| `--spacing-padding-inline-md` | 인라인 패딩 중 | 20px | spacing/20 |
-| `--spacing-padding-inline-lg` | 인라인 패딩 대 | 24px | spacing/24 |
-| `--spacing-section-xs` | 섹션 간격 최소 | 16px | spacing/16 |
-| `--spacing-section-sm` | 섹션 간격 소 | 20px | spacing/20 |
-| `--spacing-section-md` | 섹션 간격 중 | 24px | spacing/24 |
-| `--spacing-section-lg` | 섹션 간격 대 | 32px | spacing/32 |
-| `--spacing-section-xl` | 섹션 간격 특대 | 40px | spacing/40 |
-| `--spacing-section-xxl` | 섹션 간격 최대 | 48px | spacing/48 |
-| `--spacing-stack-xs` | 수직 스택 소 | 12px | spacing/12 |
-| `--spacing-stack-sm` | 수직 스택 중소 | 16px | spacing/16 |
-| `--spacing-stack-md` | 수직 스택 중 | 20px | spacing/20 |
-| `--spacing-stack-lg` | 수직 스택 대 | 24px | spacing/24 |
-| `--spacing-cluster-xxs` | 인라인 그룹 최소 | 8px | spacing/8 |
-| `--spacing-cluster-xs` | 인라인 그룹 소 | 12px | spacing/12 |
-| `--spacing-cluster-sm` | 인라인 그룹 중소 | 16px | spacing/16 |
-| `--spacing-cluster-md` | 인라인 그룹 중 | 20px | spacing/20 |
 | `--spacing-label-gap-inline-sm` | 레이블 인라인 간격 소 | 8px | spacing/8 |
 | `--spacing-label-gap-inline-md` | 레이블 인라인 간격 중 | 12px | spacing/12 |
 | `--spacing-label-gap-inline-lg` | 레이블 인라인 간격 대 | 16px | spacing/16 |

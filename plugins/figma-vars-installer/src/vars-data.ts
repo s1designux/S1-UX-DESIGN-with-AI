@@ -601,40 +601,6 @@ export const SEMANTIC_COLOR: Record<string, SemanticColorEntry> = {
 // 값: string = Foundation alias path / number = 직접값
 
 export const SEMANTIC_NUMBER: Record<string, string | number> = {
-  // ── spacing/padding-block ─────────────
-  "spacing/padding-block/xxs": "spacing/8",
-  "spacing/padding-block/xs":  "spacing/12",
-  "spacing/padding-block/sm":  "spacing/16",
-  "spacing/padding-block/md":  "spacing/20",
-  "spacing/padding-block/lg":  "spacing/24",
-
-  // ── spacing/padding-inline ────────────
-  "spacing/padding-inline/xxs": "spacing/8",
-  "spacing/padding-inline/xs":  "spacing/12",
-  "spacing/padding-inline/sm":  "spacing/16",
-  "spacing/padding-inline/md":  "spacing/20",
-  "spacing/padding-inline/lg":  "spacing/24",
-
-  // ── spacing/section ───────────────────
-  "spacing/section/xs":  "spacing/16",
-  "spacing/section/sm":  "spacing/20",
-  "spacing/section/md":  "spacing/24",
-  "spacing/section/lg":  "spacing/32",
-  "spacing/section/xl":  "spacing/40",
-  "spacing/section/xxl": "spacing/48",
-
-  // ── spacing/stack ─────────────────────
-  "spacing/stack/xs": "spacing/12",
-  "spacing/stack/sm": "spacing/16",
-  "spacing/stack/md": "spacing/20",
-  "spacing/stack/lg": "spacing/24",
-
-  // ── spacing/cluster ───────────────────
-  "spacing/cluster/xxs": "spacing/8",
-  "spacing/cluster/xs":  "spacing/12",
-  "spacing/cluster/sm":  "spacing/16",
-  "spacing/cluster/md":  "spacing/20",
-
   // ── spacing/label-gap ─────────────────
   "spacing/label-gap-inline/sm": "spacing/8",
   "spacing/label-gap-inline/md": "spacing/12",

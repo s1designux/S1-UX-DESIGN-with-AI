@@ -1,0 +1,102 @@
+{
+  "component": "Mobile Bottom Nav",
+  "builtBy": "figma-library-builder",
+  "builtAt": "2026-07-02",
+  "fileKey": "yE5UCFEbmXJBlYJWB24Lz2",
+  "page": "540:3090 (S1 Design Component)",
+  "source": {
+    "originalNode": "540:6025",
+    "originalName": "mobile_bottom-nav",
+    "originalVariants": {
+      "unselected": "540:6026",
+      "selected": "540:6029"
+    }
+  },
+  "placement": { "x": 762, "y": 5700, "note": "below original nav section (orig bottom y=5619)" },
+  "created": {
+    "componentSet": {
+      "id": "6986:6",
+      "name": "Mobile Bottom Nav",
+      "bounds": { "x": 762, "y": 5700, "w": 184, "h": 100 },
+      "packing": "compact — HORIZONTAL auto-layout, gap 24, pad 20, hug. No collapse.",
+      "variants": [
+        {
+          "id": "6984:2",
+          "state": "unselected",
+          "iconInstanceId": "6984:3",
+          "labelId": "6984:6",
+          "size": "60x60"
+        },
+        {
+          "id": "6985:4",
+          "state": "selected",
+          "iconInstanceId": "6985:5",
+          "labelId": "6985:8",
+          "size": "60x60"
+        }
+      ]
+    },
+    "usageExampleBar": {
+      "id": "6986:7",
+      "name": "Mobile Bottom Nav / Bar (예시)",
+      "bounds": { "x": 762, "y": 5850, "w": 360, "h": 60 },
+      "layout": "HORIZONTAL SPACE_BETWEEN, 4 tab instances, first selected",
+      "instances": [
+        { "id": "6986:8", "variant": "selected" },
+        { "id": "6986:13", "variant": "unselected" },
+        { "id": "6986:18", "variant": "unselected" },
+        { "id": "6986:23", "variant": "unselected" }
+      ]
+    }
+  },
+  "iconSource": {
+    "resolved": true,
+    "componentSet": "135:6737 (ic_홈)",
+    "mainComponent": "135:6740 (Property 1=Solid)",
+    "mainKey": "6bf422c937034ce15f6814e5c430d8f85953ed4e",
+    "setKey": "c99f913689cd068deb2a5499154fed423ec9579f",
+    "method": "local component in-file -> createInstance() (not importByKey, since local). NOT a raw vector.",
+    "note": "1 vector fill per icon instance, recolored via setBoundVariableForPaint."
+  },
+  "tokenBindings": {
+    "barBackground": {
+      "boundTo": "color/navigation/background",
+      "variableId": "VariableID:157:3823",
+      "planExpected": "color/navigation/bg",
+      "note": "PLAN vs FIGMA name mismatch — see needs-decision. Bound to the maintained Figma name 'background' (semantically the bar background). NOT hardcoded hex."
+    },
+    "iconUnselected": {
+      "boundTo": "color/icon/gray",
+      "variableId": "VariableID:12:11"
+    },
+    "iconSelected": {
+      "boundTo": "color/icon/blue",
+      "variableId": "VariableID:eca2830c4f0d8217a618cab37333e2148e3ec7f0/26:384",
+      "importedByKey": "eca2830c4f0d8217a618cab37333e2148e3ec7f0",
+      "correction": "(a) FIXED — original used color/control/indicator/selected (9:33) which resolves to base/white in our DS (white icon bug). Rebound to color/icon/blue per plan."
+    },
+    "labelUnselected": {
+      "boundTo": "color/navigation/label/default",
+      "variableId": "VariableID:157:3810"
+    },
+    "labelSelected": {
+      "boundTo": "color/navigation/label/selected",
+      "variableId": "VariableID:157:3818"
+    },
+    "labelTypography": {
+      "boundTo": "body/12M text style",
+      "textStyleId": "S:4f6dcb04f82f9984b7b9e51cb3ad5164819c96d5,",
+      "font": "Pretendard Medium 12 (loaded directly, no Noto fallback used)"
+    }
+  },
+  "structureNotes": {
+    "combineAsVariants": "6984:2 + 6985:4 -> set 6986:6 'Mobile Bottom Nav'",
+    "detach": "none (no circular reference — variants are self-contained, no sibling instance nesting)",
+    "rename": "none",
+    "remap": "none (new components, no pre-existing instances affected)",
+    "emptiedContainers": "none"
+  },
+  "selfCorrection": "none — set bounds 184x100 compact on first build (no packing collapse to fix).",
+  "hardcodedHex": "0 (all fills/text colors Variable-bound)",
+  "fontScan": "all created TEXT nodes = Pretendard Medium via body/12M text style (no Noto)"
+}
