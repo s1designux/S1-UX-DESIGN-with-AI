@@ -75,12 +75,9 @@ Foundation(Foundation)를 직접 참조하지 않습니다.
 | color/button/blue-line/border--disabled | `--button-blue-line-disabled-border` | `var(--color-border-disabled)` | Blue-line disabled 테두리 |
 | color/button/blue-line/text--default | `--button-blue-line-default-text` | `var(--color-action-primary-default)` | Blue-line 텍스트 |
 | color/button/blue-line/text--disabled | `--button-blue-line-disabled-text` | `var(--color-text-disabled)` | Blue-line disabled 텍스트 |
-| color/button/blue-line/focus-ring | `--button-blue-line-focus-ring` | `var(--color-border-focus)` | Blue-line focus 링 |
 | color/button/primary/icon--default | `--button-primary-default-icon` | `var(--color-action-primary-text)` | Primary 아이콘 |
 | color/button/secondary/icon--default | `--button-secondary-default-icon` | `var(--color-icon-default)` | Secondary 아이콘 |
 | color/button/secondary/icon--disabled | `--button-secondary-disabled-icon` | `var(--color-icon-muted)` | Secondary disabled 아이콘 |
-| color/button/primary/focus-ring | `--button-primary-focus-ring` | `var(--color-border-focus)` | Primary focus 링 |
-| color/button/secondary/focus-ring | `--button-secondary-focus-ring` | `var(--color-border-focus)` | Secondary focus 링 |
 
 > **Ghost variant — Deprecated (2026-04-29):** ghost는 공식 V2.4 variant가 아닙니다. blue-line으로 대체됩니다. 토큰은 backwards compatibility를 위해 tokens.css에 보존되나 신규 사용 금지입니다.
 
@@ -91,7 +88,6 @@ Foundation(Foundation)를 직접 참조하지 않습니다.
 | default | ✅ | ✅ | ✅ |
 | hover | ✅ | ✅ | ✅ |
 | pressed | ✅ | ✅ | ✅ |
-| focus | ✅ | ✅ | ✅ |
 | disabled | ✅ | ✅ | ✅ |
 
 ### CSS 구현
@@ -106,7 +102,6 @@ Foundation(Foundation)를 직접 참조하지 않습니다.
 --button-primary-default-text:    var(--color-action-primary-text);
 --button-primary-disabled-text:   var(--color-text-disabled);
 --button-primary-default-icon:    var(--color-action-primary-text);
---button-primary-focus-ring:      var(--color-border-focus);
 
 /* Button — Secondary */
 --button-secondary-default-bg:      var(--color-surface-default);
@@ -120,7 +115,6 @@ Foundation(Foundation)를 직접 참조하지 않습니다.
 --button-secondary-disabled-text:   var(--color-text-disabled);
 --button-secondary-default-icon:    var(--color-icon-default);
 --button-secondary-disabled-icon:   var(--color-icon-muted);
---button-secondary-focus-ring:      var(--color-border-focus);
 
 /* Button — Blue-line (Figma MCP 확인 완료 2026-05-12) */
 --button-blue-line-default-bg:      var(--color-surface-default);
@@ -132,7 +126,6 @@ Foundation(Foundation)를 직접 참조하지 않습니다.
 --button-blue-line-disabled-border: var(--color-border-disabled);
 --button-blue-line-default-text:    var(--color-action-primary-default);
 --button-blue-line-disabled-text:   var(--color-text-disabled);
---button-blue-line-focus-ring:      var(--color-border-focus);
 
 /* Button — Ghost (DEPRECATED 2026-04-29 — 신규 사용 금지, blue-line 사용) */
 /* --button-ghost-*: tokens.css에 legacy 보존, 구현 금지 */

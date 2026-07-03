@@ -56,8 +56,7 @@
         "--button-primary-disabled-border",
         "--button-primary-default-text",
         "--button-primary-disabled-text",
-        "--button-primary-default-icon",
-        "--button-primary-focus-ring"
+        "--button-primary-default-icon"
       ]
     },
     "secondary": {
@@ -74,8 +73,7 @@
         "--button-secondary-default-text",
         "--button-secondary-disabled-text",
         "--button-secondary-default-icon",
-        "--button-secondary-disabled-icon",
-        "--button-secondary-focus-ring"
+        "--button-secondary-disabled-icon"
       ]
     },
     "blue-line": {
@@ -91,8 +89,7 @@
         "--button-blue-line-hover-border",
         "--button-blue-line-disabled-border",
         "--button-blue-line-default-text",
-        "--button-blue-line-disabled-text",
-        "--button-blue-line-focus-ring"
+        "--button-blue-line-disabled-text"
       ]
     }
   },
@@ -131,11 +128,6 @@
       "--button-primary-default-icon",
       "--button-secondary-default-icon",
       "--button-secondary-disabled-icon"
-    ],
-    "focus": [
-      "--button-primary-focus-ring",
-      "--button-secondary-focus-ring",
-      "--button-blue-line-focus-ring"
     ]
   },
   "sizing": {

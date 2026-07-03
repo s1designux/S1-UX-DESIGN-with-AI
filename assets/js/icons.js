@@ -49,8 +49,21 @@
       svgVisible[ic.id] = false;
     });
 
+    updateHeaderStats();
     buildGroupNav();
     render();
+  }
+
+  /* ── Header 통계 (데이터 자동 연동) ── */
+  function updateHeaderStats() {
+    // 'all'(전체) 탭은 실제 섹션이 아니므로 제외하고 센다
+    const sectionCount = sections.filter(s => s.id !== 'all').length;
+    const iconCount    = allIcons.length;
+    const set = (id, val) => { const el = document.getElementById(id); if (el) el.textContent = val; };
+    set('iconHeaderCount', iconCount);
+    set('iconHeaderSections', sectionCount);
+    set('iconBadgeCount', iconCount);
+    set('iconBadgeSections', sectionCount);
   }
 
   /* ── Group Nav ── */

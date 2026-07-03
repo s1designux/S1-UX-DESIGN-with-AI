@@ -267,7 +267,8 @@ try {
 
 // ── Gate 10: Doc Token Reference Drift ────────────────────────────
 // 가이드/레퍼런스 HTML 이 rename·삭제된 토큰명을 쥐고 있는지 강제.
-// Check B(rename denylist)=차단 · Check A(미정의 --color-* 참조)=경고(기존 드리프트).
+// Check B(rename denylist)=차단 · Check A(미정의 --color-* 참조)=경고(기존 드리프트)
+// · Check C(폐기 토큰 재유입 + Token Details '(none)/미정의' 유령행)=차단.
 console.log('\n🔎 [Gate 10] 문서토큰이름 검사기 (Doc Token Ref)');
 try {
   const { spawnSync } = require('child_process');

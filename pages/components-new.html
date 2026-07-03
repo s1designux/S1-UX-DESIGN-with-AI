@@ -17,7 +17,6 @@
       /* Input — form-control 2-layer: --input-* → --color-form-control-* → semantic */
       /* (--color-form-control-* and --color-text-state-* defined in tokens.css) */
       --input-default-bg:       var(--color-form-control-bg-default);
-      --input-hover-bg:         var(--color-form-control-bg-hover);
       --input-disabled-bg:      var(--color-form-control-bg-disabled);
       --input-default-border:   var(--color-form-control-border-default);
       --input-focus-border:     var(--color-form-control-border-selected);
@@ -2842,7 +2841,6 @@ checkboxes.forEach(function(chk) {
           </div>
           <div class="code-pane" id="inp-css">
             <pre><span class="c-prop">--input-default-border</span>:   <span class="c-val">var(--color-border-default)</span>;
-<span class="c-prop">--input-hover-border</span>:     <span class="c-val">var(--color-border-strong)</span>;
 <span class="c-prop">--input-focus-border</span>:     <span class="c-val">var(--color-border-focus)</span>;
 <span class="c-prop">--input-error-border</span>:     <span class="c-val">var(--color-border-danger)</span>;
 <span class="c-prop">--input-correct-border</span>:   <span class="c-val">var(--color-border-correct)</span>;
@@ -3854,9 +3852,7 @@ clearBtn.<span class="c-fn">addEventListener</span>(<span class="c-str">'click'<
                 <tr><td class="token-name">--button-primary-default-text</td><td class="token-value">var(--color-action-primary-text)</td><td class="token-resolved" data-token="--button-primary-default-text"></td><td>text · default</td></tr>
                 <tr><td class="token-name">--button-primary-default-icon</td><td class="token-value">var(--color-action-primary-text)</td><td class="token-resolved" data-token="--button-primary-default-icon"></td><td>icon · default</td></tr>
                 <tr><td class="token-name">--button-primary-hover-bg</td><td class="token-value">var(--color-action-primary-hover)</td><td class="token-resolved" data-token="--button-primary-hover-bg"></td><td>background · hover</td></tr>
-                <tr><td class="token-name">--button-primary-pressed-bg</td><td class="token-value">var(--color-action-primary-pressed)</td><td class="token-resolved" data-token="--button-primary-pressed-bg"></td><td>background · pressed</td></tr>
-                <tr><td class="token-name">--button-primary-focus-ring</td><td class="token-value">(none — 미정의)</td><td class="token-resolved" data-token="--button-primary-focus-ring"></td><td>ring · focus</td></tr>
-                <tr><td class="token-name">--button-primary-disabled-bg</td><td class="token-value">var(--color-bg-subtle)</td><td class="token-resolved" data-token="--button-primary-disabled-bg"></td><td>background · disabled</td></tr>
+                <tr><td class="token-name">--button-primary-pressed-bg</td><td class="token-value">var(--color-action-primary-pressed)</td><td class="token-resolved" data-token="--button-primary-pressed-bg"></td><td>background · pressed</td></tr>                <tr><td class="token-name">--button-primary-disabled-bg</td><td class="token-value">var(--color-bg-subtle)</td><td class="token-resolved" data-token="--button-primary-disabled-bg"></td><td>background · disabled</td></tr>
                 <tr><td class="token-name">--button-primary-disabled-border</td><td class="token-value">var(--color-border-disabled)</td><td class="token-resolved" data-token="--button-primary-disabled-border"></td><td>border · disabled</td></tr>
                 <tr><td class="token-name">--button-primary-disabled-text</td><td class="token-value">var(--color-text-disabled)</td><td class="token-resolved" data-token="--button-primary-disabled-text"></td><td>text · disabled</td></tr>
               </tbody>
@@ -3964,9 +3960,7 @@ clearBtn.<span class="c-fn">addEventListener</span>(<span class="c-str">'click'<
                 <tr><td class="token-name">--button-secondary-default-text</td><td class="token-value">var(--color-text-secondary)</td><td class="token-resolved" data-token="--button-secondary-default-text"></td><td>text · default</td></tr>
                 <tr><td class="token-name">--button-secondary-default-icon</td><td class="token-value">var(--color-icon-default)</td><td class="token-resolved" data-token="--button-secondary-default-icon"></td><td>icon · default</td></tr>
                 <tr><td class="token-name">--button-secondary-hover-bg</td><td class="token-value">var(--color-bg-subtle)</td><td class="token-resolved" data-token="--button-secondary-hover-bg"></td><td>background · hover</td></tr>
-                <tr><td class="token-name">--button-secondary-pressed-bg</td><td class="token-value">var(--color-bg-muted)</td><td class="token-resolved" data-token="--button-secondary-pressed-bg"></td><td>background · pressed</td></tr>
-                <tr><td class="token-name">--button-secondary-focus-ring</td><td class="token-value">(none — 미정의)</td><td class="token-resolved" data-token="--button-secondary-focus-ring"></td><td>ring · focus</td></tr>
-                <tr><td class="token-name">--button-secondary-disabled-bg</td><td class="token-value">var(--color-bg-subtle)</td><td class="token-resolved" data-token="--button-secondary-disabled-bg"></td><td>background · disabled</td></tr>
+                <tr><td class="token-name">--button-secondary-pressed-bg</td><td class="token-value">var(--color-bg-muted)</td><td class="token-resolved" data-token="--button-secondary-pressed-bg"></td><td>background · pressed</td></tr>                <tr><td class="token-name">--button-secondary-disabled-bg</td><td class="token-value">var(--color-bg-subtle)</td><td class="token-resolved" data-token="--button-secondary-disabled-bg"></td><td>background · disabled</td></tr>
                 <tr><td class="token-name">--button-secondary-disabled-border</td><td class="token-value">var(--color-border-disabled)</td><td class="token-resolved" data-token="--button-secondary-disabled-border"></td><td>border · disabled</td></tr>
                 <tr><td class="token-name">--button-secondary-disabled-text</td><td class="token-value">var(--color-text-disabled)</td><td class="token-resolved" data-token="--button-secondary-disabled-text"></td><td>text · disabled</td></tr>
                 <tr><td class="token-name">--button-secondary-disabled-icon</td><td class="token-value">var(--color-icon-muted)</td><td class="token-resolved" data-token="--button-secondary-disabled-icon"></td><td>icon · disabled</td></tr>
@@ -4075,9 +4069,7 @@ clearBtn.<span class="c-fn">addEventListener</span>(<span class="c-str">'click'<
                 <tr><td class="token-name">--button-blue-line-default-text</td><td class="token-value">var(--color-action-primary-default)</td><td class="token-resolved" data-token="--button-blue-line-default-text"></td><td>text · default</td></tr>
                 <tr><td class="token-name">--button-blue-line-hover-bg</td><td class="token-value">var(--color-action-primary-subtle)</td><td class="token-resolved" data-token="--button-blue-line-hover-bg"></td><td>background · hover</td></tr>
                 <tr><td class="token-name">--button-blue-line-hover-border</td><td class="token-value">var(--color-action-primary-default)</td><td class="token-resolved" data-token="--button-blue-line-hover-border"></td><td>border · hover</td></tr>
-                <tr><td class="token-name">--button-blue-line-pressed-bg</td><td class="token-value">var(--color-action-primary-subtle)</td><td class="token-resolved" data-token="--button-blue-line-pressed-bg"></td><td>background · pressed</td></tr>
-                <tr><td class="token-name">--button-blue-line-focus-ring</td><td class="token-value">(none — 미정의)</td><td class="token-resolved" data-token="--button-blue-line-focus-ring"></td><td>ring · focus</td></tr>
-                <tr><td class="token-name">--button-blue-line-disabled-bg</td><td class="token-value">var(--color-bg-subtle)</td><td class="token-resolved" data-token="--button-blue-line-disabled-bg"></td><td>background · disabled</td></tr>
+                <tr><td class="token-name">--button-blue-line-pressed-bg</td><td class="token-value">var(--color-action-primary-subtle)</td><td class="token-resolved" data-token="--button-blue-line-pressed-bg"></td><td>background · pressed</td></tr>                <tr><td class="token-name">--button-blue-line-disabled-bg</td><td class="token-value">var(--color-bg-subtle)</td><td class="token-resolved" data-token="--button-blue-line-disabled-bg"></td><td>background · disabled</td></tr>
                 <tr><td class="token-name">--button-blue-line-disabled-border</td><td class="token-value">var(--color-border-disabled)</td><td class="token-resolved" data-token="--button-blue-line-disabled-border"></td><td>border · disabled</td></tr>
                 <tr><td class="token-name">--button-blue-line-disabled-text</td><td class="token-value">var(--color-text-disabled)</td><td class="token-resolved" data-token="--button-blue-line-disabled-text"></td><td>text · disabled</td></tr>
               </tbody>
@@ -6339,9 +6331,10 @@ update(); // 초기화</pre>
             <button class="code-tab active" onclick="switchTab(this,'bottom-nav-html')">HTML</button>
             <button class="code-tab" onclick="switchTab(this,'bottom-nav-css')">CSS</button>
             <button class="code-tab" onclick="switchTab(this,'bottom-nav-tokens')">Token Details</button>
+            <button class="code-copy-btn" onclick="copyCode(document.getElementById('mobile-bottom-nav').querySelector('.code-pane.active').querySelector('pre').id)">복사</button>
           </div>
           <div class="code-pane active" id="bottom-nav-html">
-            <pre><span class="c-tag">&lt;nav</span> <span class="c-attr">class</span>=<span class="c-str">"s1-bottom-nav"</span> <span class="c-attr">aria-label</span>=<span class="c-str">"하단 내비게이션"</span><span class="c-tag">&gt;</span>
+            <pre id="bottom-nav-html-pre"><span class="c-tag">&lt;nav</span> <span class="c-attr">class</span>=<span class="c-str">"s1-bottom-nav"</span> <span class="c-attr">aria-label</span>=<span class="c-str">"하단 내비게이션"</span><span class="c-tag">&gt;</span>
   <span class="c-cmt">&lt;!-- selected 탭 --&gt;</span>
   <span class="c-tag">&lt;a</span> <span class="c-attr">class</span>=<span class="c-str">"s1-bottom-nav-item is-selected"</span> <span class="c-attr">aria-current</span>=<span class="c-str">"page"</span><span class="c-tag">&gt;</span>
     <span class="c-tag">&lt;span</span> <span class="c-attr">class</span>=<span class="c-str">"s1-bottom-nav-icon"</span><span class="c-tag">&gt;</span><span class="c-tag">&lt;svg</span> …<span class="c-tag">&gt;</span>…<span class="c-tag">&lt;/svg&gt;</span><span class="c-tag">&lt;/span&gt;</span>
@@ -6354,22 +6347,8 @@ update(); // 초기화</pre>
   <span class="c-tag">&lt;/a&gt;</span>
 <span class="c-tag">&lt;/nav&gt;</span></pre>
           </div>
-          <div class="code-pane" id="bottom-nav-tokens">
-            <table class="token-detail-table">
-              <thead>
-                <tr><th>Token</th><th>Value (Semantic)</th><th>Resolved</th><th>Role</th></tr>
-              </thead>
-              <tbody>
-                <tr><td class="token-name">--color-navigation-bg</td><td class="token-value">var(--color-base-white)</td><td class="token-resolved" data-token="--color-navigation-bg"></td><td>바 배경</td></tr>
-                <tr><td class="token-name">--color-icon-gray</td><td class="token-value">var(--color-gray-dark-600)</td><td class="token-resolved" data-token="--color-icon-gray"></td><td>unselected 아이콘</td></tr>
-                <tr><td class="token-name">--color-navigation-label-default</td><td class="token-value">var(--color-gray-600)</td><td class="token-resolved" data-token="--color-navigation-label-default"></td><td>unselected 라벨</td></tr>
-                <tr><td class="token-name">--color-icon-blue</td><td class="token-value">var(--color-blue-400)</td><td class="token-resolved" data-token="--color-icon-blue"></td><td>selected 아이콘</td></tr>
-                <tr><td class="token-name">--color-navigation-label-selected</td><td class="token-value">var(--color-blue-400)</td><td class="token-resolved" data-token="--color-navigation-label-selected"></td><td>selected 라벨</td></tr>
-              </tbody>
-            </table>
-          </div>
           <div class="code-pane" id="bottom-nav-css">
-            <pre>.s1-bottom-nav {
+            <pre id="bottom-nav-css-pre">.s1-bottom-nav {
   display: flex;
   background: var(--color-navigation-bg);
 }
@@ -6404,6 +6383,20 @@ update(); // 초기화</pre>
 .s1-bottom-nav-item.is-selected .s1-bottom-nav-label {
   color: var(--color-navigation-label-selected);
 }</pre>
+          </div>
+          <div class="code-pane" id="bottom-nav-tokens">
+            <table class="token-detail-table">
+              <thead>
+                <tr><th>Token</th><th>Value (Semantic)</th><th>Resolved</th><th>Role</th></tr>
+              </thead>
+              <tbody>
+                <tr><td class="token-name">--color-navigation-bg</td><td class="token-value">var(--color-base-white)</td><td class="token-resolved" data-token="--color-navigation-bg"></td><td>바 배경</td></tr>
+                <tr><td class="token-name">--color-icon-gray</td><td class="token-value">var(--color-gray-dark-600)</td><td class="token-resolved" data-token="--color-icon-gray"></td><td>unselected 아이콘</td></tr>
+                <tr><td class="token-name">--color-navigation-label-default</td><td class="token-value">var(--color-gray-600)</td><td class="token-resolved" data-token="--color-navigation-label-default"></td><td>unselected 라벨</td></tr>
+                <tr><td class="token-name">--color-icon-blue</td><td class="token-value">var(--color-blue-400)</td><td class="token-resolved" data-token="--color-icon-blue"></td><td>selected 아이콘</td></tr>
+                <tr><td class="token-name">--color-navigation-label-selected</td><td class="token-value">var(--color-blue-400)</td><td class="token-resolved" data-token="--color-navigation-label-selected"></td><td>selected 라벨</td></tr>
+              </tbody>
+            </table>
           </div>
         </div>
 
@@ -8123,9 +8116,9 @@ document.addEventListener('click', function(e) {
     probe.style.cssText = 'position:fixed;top:-9999px;left:-9999px;width:1px;height:1px;visibility:hidden;pointer-events:none;';
     document.body.appendChild(probe);
 
-    function measure(tokenName, theme) {
-      if (theme === 'light') html.removeAttribute('data-theme');
-      else html.setAttribute('data-theme', 'dark');
+    // 테마 전환 없이 현재 테마에서 probe 색만 읽는다.
+    // (테마 전환은 아래 2-패스에서 라이트/다크 각각 딱 1회만 수행)
+    function readProbe(tokenName) {
       probe.style.background = 'var(' + tokenName + ')';
       var bg = getComputedStyle(probe).backgroundColor;
       if (!bg || bg === 'rgba(0, 0, 0, 0)' || bg === 'transparent') return null;
@@ -8150,6 +8143,10 @@ document.addEventListener('click', function(e) {
         + '</span>';
     }
 
+    // ── Pass 1: 컬럼(빈 셀) 생성 + 측정 대상 수집 (테마 전환 없음) ──
+    // 셀을 먼저 다 만들고 색은 나중에 채운다. 색 측정은 probe(별도 요소)로만 하므로
+    // 셀을 미리 만들어도 측정에 영향 없음.
+    var records = []; // { tokenName, lightCell, darkCell, light, dark }
     document.querySelectorAll('.token-detail-table').forEach(function(table) {
       var thead = table.querySelector('thead tr');
       if (!thead) return;
@@ -8186,7 +8183,7 @@ document.addEventListener('click', function(e) {
         lightTh.insertAdjacentElement('afterend', darkThA);
       }
 
-      // ── Update rows ──
+      // ── Build empty cells + collect ──
       table.querySelectorAll('tbody tr').forEach(function(row) {
         var cells = row.querySelectorAll('td');
         if (!cells.length) return;
@@ -8198,28 +8195,38 @@ document.addEventListener('click', function(e) {
           : (cells[0] ? cells[0].textContent.trim() : '');
         if (!tokenName || !tokenName.startsWith('--')) return;
 
-        var lightColor = measure(tokenName, 'light');
-        var darkColor  = measure(tokenName, 'dark');
-
+        var lightCell, darkCell;
         if (isTypeB && existingResolved) {
-          existingResolved.innerHTML = makeSwatchHtml(lightColor, false);
-          var darkTdB = document.createElement('td');
-          darkTdB.className = 'token-resolved token-dark-col';
-          darkTdB.innerHTML = makeSwatchHtml(darkColor, true);
-          existingResolved.insertAdjacentElement('afterend', darkTdB);
+          lightCell = existingResolved;
+          darkCell = document.createElement('td');
+          darkCell.className = 'token-resolved token-dark-col';
+          existingResolved.insertAdjacentElement('afterend', darkCell);
         } else {
           var valueCell = cells[valueIdx];
           if (!valueCell) return;
-          var lightTd = document.createElement('td');
-          lightTd.className = 'token-resolved';
-          lightTd.innerHTML = makeSwatchHtml(lightColor, false);
-          var darkTdA = document.createElement('td');
-          darkTdA.className = 'token-resolved token-dark-col';
-          darkTdA.innerHTML = makeSwatchHtml(darkColor, true);
-          valueCell.insertAdjacentElement('afterend', lightTd);
-          lightTd.insertAdjacentElement('afterend', darkTdA);
+          lightCell = document.createElement('td');
+          lightCell.className = 'token-resolved';
+          darkCell = document.createElement('td');
+          darkCell.className = 'token-resolved token-dark-col';
+          valueCell.insertAdjacentElement('afterend', lightCell);
+          lightCell.insertAdjacentElement('afterend', darkCell);
         }
+        records.push({ tokenName: tokenName, lightCell: lightCell, darkCell: darkCell, light: null, dark: null });
       });
+    });
+
+    // ── Pass 2: 라이트에서 전체 측정 (테마 전환 1회) ──
+    html.removeAttribute('data-theme');
+    records.forEach(function(rec) { rec.light = readProbe(rec.tokenName); });
+
+    // ── Pass 3: 다크에서 전체 측정 (테마 전환 1회) ──
+    html.setAttribute('data-theme', 'dark');
+    records.forEach(function(rec) { rec.dark = readProbe(rec.tokenName); });
+
+    // ── Pass 4: 스와치 채우기 (측정 끝난 뒤 DOM 반영) ──
+    records.forEach(function(rec) {
+      rec.lightCell.innerHTML = makeSwatchHtml(rec.light, false);
+      rec.darkCell.innerHTML = makeSwatchHtml(rec.dark, true);
     });
 
     // Restore original theme and clean up

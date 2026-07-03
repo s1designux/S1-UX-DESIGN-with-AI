@@ -2,9 +2,21 @@
    Run: npm run reports:sync
 */
 window.REPORTS_INDEX = {
-  "generatedAt": "2026-07-02T01:08:05.834Z",
-  "totalCount": 61,
+  "generatedAt": "2026-07-02T23:38:24.828Z",
+  "totalCount": 62,
   "reports": [
+    {
+      "id": "modal-component-spec",
+      "filename": "modal-component-spec.md",
+      "title": "Modal (공통 팝업) 규격 문서 — 초안",
+      "stage": "Audit",
+      "category": "audit",
+      "status": "archive",
+      "sourcePath": "reports/modal-component-spec.md",
+      "updatedAt": "2026-07-03",
+      "summary": "작성 2026-07-03 · 상태: **초안(검토 대기)** · 근거: 레거시 원본 3세트 분석(파일 `P8YvnCdGkQLDNVQhW74ZZW`) + 실측 토큰(get_variable_defs)",
+      "fileSizeKB": 10.3
+    },
     {
       "id": "build-components-token-extraction",
       "filename": "build-components-token-extraction.md",

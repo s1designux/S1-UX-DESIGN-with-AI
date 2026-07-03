@@ -77,6 +77,38 @@
       "reason": "HD-5: --select-disabled-border was incorrectly placed in input token group. Moved to Select component registry.",
       "removedAt": "2026-05-12",
       "status": "relocated"
+    },
+    {
+      "id": "button.primary.focus-ring",
+      "cssVariable": "--button-primary-focus-ring",
+      "replacedBy": null,
+      "reason": "focus-ring 미정의 — 디자인시스템 기준 없음(CLAUDE.md Button #9, is-focus outline 없음). 문서·레지스트리 사본에서 활성 화면으로 되살아나던 잔재. 정본 등재로 Gate 10 Check C 가 재유입을 차단.",
+      "removedAt": "2026-07-03",
+      "status": "removed"
+    },
+    {
+      "id": "button.secondary.focus-ring",
+      "cssVariable": "--button-secondary-focus-ring",
+      "replacedBy": null,
+      "reason": "focus-ring 미정의(CLAUDE.md Button #9). focus-ring resurrection 정리 2026-07-03.",
+      "removedAt": "2026-07-03",
+      "status": "removed"
+    },
+    {
+      "id": "button.blue-line.focus-ring",
+      "cssVariable": "--button-blue-line-focus-ring",
+      "replacedBy": null,
+      "reason": "focus-ring 미정의(CLAUDE.md Button #9). focus-ring resurrection 정리 2026-07-03.",
+      "removedAt": "2026-07-03",
+      "status": "removed"
+    },
+    {
+      "id": "chip.focus-ring",
+      "cssVariable": "--chip-focus-ring",
+      "replacedBy": null,
+      "reason": "chip focus-ring 제거(2026-05-18, button focus-ring 정책과 정합). 정본 등재로 재유입 차단.",
+      "removedAt": "2026-05-18",
+      "status": "removed"
     }
   ],
   "figmaVariableAliases": [

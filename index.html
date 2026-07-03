@@ -127,9 +127,9 @@
           <a href="pages/icons.html" class="overview-card">
             <div class="overview-card-icon">✦</div>
             <div class="overview-card-title">Icons</div>
-            <div class="overview-card-desc">아이콘 라이브러리 V2.2 — 817종 · 16개 섹션. Line · Solid · Color 3개 variant.</div>
+            <div class="overview-card-desc">아이콘 라이브러리 V2.2 — <span data-icon-stat="icons">818</span>종 · <span data-icon-stat="sections">15</span>개 섹션. Line · Solid · Color 3개 variant.</div>
             <div class="overview-card-status status-ready">
-              <span class="status-dot"></span> 완료 — 817종 · 16개 탭
+              <span class="status-dot"></span> 완료 — <span data-icon-stat="icons">818</span>종 · <span data-icon-stat="sections">15</span>개 탭
             </div>
           </a>
           <a href="pages/patterns.html" class="overview-card disabled">
@@ -197,5 +197,17 @@
 </div>
 
 <script src="assets/js/main.js"></script>
+<!-- 아이콘 개수 통계(자동 생성) — icons-data.js 갱신 시 함께 재생성되어 카드에 자동 연동 -->
+<script src="assets/js/icons-stats.js"></script>
+<script>
+  (function () {
+    var s = window.ICONS_STATS;
+    if (!s) return;
+    document.querySelectorAll('[data-icon-stat]').forEach(function (el) {
+      var key = el.getAttribute('data-icon-stat');
+      if (s[key] != null) el.textContent = s[key];
+    });
+  })();
+</script>
 </body>
 </html>

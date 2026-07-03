@@ -32,7 +32,12 @@ window.REGISTRY_BUNDLE = {
         "radius": "registry/tokens/semantic.radius.json",
         "border": "registry/tokens/semantic.border.json"
       },
-      "component": "registry/tokens/component.tokens.json",
+      "_componentRetired": {
+        "path": "registry/tokens/component.tokens.json",
+        "status": "retired",
+        "since": "2026-07-02",
+        "note": "은퇴된 컴포넌트-별칭 토큰층(component→alias→semantic) 서술 파일. deprecated-tokens.json legacyFiles 격리·Gate 20 검사 제외. 현행 정본=vars-data.ts + build-components.ts(semantic 직접 바인딩)."
+      },
       "figmaCssTokenMap": "registry/tokens/figma-css-token-map.json",
       "tokenAliases": "registry/tokens/token-aliases.json",
       "deprecatedTokens": "registry/tokens/deprecated-tokens.json",
@@ -2057,141 +2062,11 @@ window.REGISTRY_BUNDLE = {
           "name": "SW Semantic Spacing",
           "version": "2.4",
           "status": "stable",
-          "updatedAt": "2026-05-11",
+          "updatedAt": "2026-07-01",
           "source": "registry/tokens/sw-v2.4.tokens.css",
-          "description": "Role-based semantic spacing tokens referencing Foundation foundation."
+          "description": "Role-based semantic spacing tokens referencing Foundation foundation. (2026-07-01: 미사용 padding-block·padding-inline·section·stack·cluster 24종 정리 — 컴포넌트는 Foundation --spacing-N 직접 참조. label-gap만 유지.)"
         },
         "tokens": {
-          "paddingBlock": [
-            {
-              "cssVar": "--spacing-padding-block-xxs",
-              "value": "var(--spacing-8)",
-              "status": "stable"
-            },
-            {
-              "cssVar": "--spacing-padding-block-xs",
-              "value": "var(--spacing-12)",
-              "status": "stable"
-            },
-            {
-              "cssVar": "--spacing-padding-block-sm",
-              "value": "var(--spacing-16)",
-              "status": "stable"
-            },
-            {
-              "cssVar": "--spacing-padding-block-md",
-              "value": "var(--spacing-20)",
-              "status": "stable"
-            },
-            {
-              "cssVar": "--spacing-padding-block-lg",
-              "value": "var(--spacing-24)",
-              "status": "stable"
-            }
-          ],
-          "paddingInline": [
-            {
-              "cssVar": "--spacing-padding-inline-xxs",
-              "value": "var(--spacing-8)",
-              "status": "stable"
-            },
-            {
-              "cssVar": "--spacing-padding-inline-xs",
-              "value": "var(--spacing-12)",
-              "status": "stable"
-            },
-            {
-              "cssVar": "--spacing-padding-inline-sm",
-              "value": "var(--spacing-16)",
-              "status": "stable"
-            },
-            {
-              "cssVar": "--spacing-padding-inline-md",
-              "value": "var(--spacing-20)",
-              "status": "stable"
-            },
-            {
-              "cssVar": "--spacing-padding-inline-lg",
-              "value": "var(--spacing-24)",
-              "status": "stable"
-            }
-          ],
-          "section": [
-            {
-              "cssVar": "--spacing-section-xs",
-              "value": "var(--spacing-16)",
-              "status": "stable"
-            },
-            {
-              "cssVar": "--spacing-section-sm",
-              "value": "var(--spacing-20)",
-              "status": "stable"
-            },
-            {
-              "cssVar": "--spacing-section-md",
-              "value": "var(--spacing-24)",
-              "status": "stable"
-            },
-            {
-              "cssVar": "--spacing-section-lg",
-              "value": "var(--spacing-32)",
-              "status": "stable"
-            },
-            {
-              "cssVar": "--spacing-section-xl",
-              "value": "var(--spacing-40)",
-              "status": "stable"
-            },
-            {
-              "cssVar": "--spacing-section-xxl",
-              "value": "var(--spacing-48)",
-              "status": "stable"
-            }
-          ],
-          "stack": [
-            {
-              "cssVar": "--spacing-stack-xs",
-              "value": "var(--spacing-12)",
-              "status": "stable"
-            },
-            {
-              "cssVar": "--spacing-stack-sm",
-              "value": "var(--spacing-16)",
-              "status": "stable"
-            },
-            {
-              "cssVar": "--spacing-stack-md",
-              "value": "var(--spacing-20)",
-              "status": "stable"
-            },
-            {
-              "cssVar": "--spacing-stack-lg",
-              "value": "var(--spacing-24)",
-              "status": "stable"
-            }
-          ],
-          "cluster": [
-            {
-              "cssVar": "--spacing-cluster-xxs",
-              "value": "var(--spacing-8)",
-              "status": "stable"
-            },
-            {
-              "cssVar": "--spacing-cluster-xs",
-              "value": "var(--spacing-12)",
-              "status": "stable"
-            },
-            {
-              "cssVar": "--spacing-cluster-sm",
-              "value": "var(--spacing-16)",
-              "status": "stable"
-            },
-            {
-              "cssVar": "--spacing-cluster-md",
-              "value": "var(--spacing-20)",
-              "status": "stable"
-            }
-          ],
           "labelGapInline": [
             {
               "cssVar": "--spacing-label-gap-inline-sm",
@@ -2462,1048 +2337,1883 @@ window.REGISTRY_BUNDLE = {
         ]
       }
     },
-    "component": {
-      "meta": {
-        "name": "SW Component Tokens",
-        "version": "2.4",
-        "status": "stable",
-        "updatedAt": "2026-05-11",
-        "source": "registry/tokens/sw-v2.4.tokens.css",
-        "description": "All component tokens. Colors reference Semantic layer only (no direct Foundation color refs).",
-        "rule": "All color values must reference Semantic tokens via var(). Sizing/spacing may reference Foundation directly."
-      },
-      "tokens": {
-        "button": {
-          "primary": [
+    "_componentRetired": {
+      "path": {
+        "meta": {
+          "name": "SW Component Tokens Registry (build-components.ts 정본)",
+          "version": "3.0",
+          "status": "stable",
+          "updatedAt": "2026-07-02",
+          "source": "plugins/figma-vars-installer/src/build-components.ts",
+          "description": "All 40 component token keys extracted from build-components.ts. All colors reference Semantic layer only. Sizing/spacing/radius reference Foundation directly.",
+          "rule": "All color values must reference Semantic tokens via var(). Sizing/spacing may reference Foundation directly.",
+          "components": 40,
+          "totalKeys": 236
+        },
+        "tokens": {
+          "button": {
+            "primary": [
+              {
+                "cssVar": "--button-primary-default-bg",
+                "value": "var(--color-button-bg-primary-default)",
+                "status": "stable",
+                "usedBy": [
+                  "Button"
+                ]
+              },
+              {
+                "cssVar": "--button-primary-default-border",
+                "value": "var(--color-button-border-primary-default)",
+                "status": "stable",
+                "usedBy": [
+                  "Button"
+                ]
+              },
+              {
+                "cssVar": "--button-primary-default-text",
+                "value": "var(--color-button-label-primary-default)",
+                "status": "stable",
+                "usedBy": [
+                  "Button"
+                ]
+              },
+              {
+                "cssVar": "--button-primary-hover-bg",
+                "value": "var(--color-button-bg-primary-hover)",
+                "status": "stable",
+                "usedBy": [
+                  "Button"
+                ]
+              },
+              {
+                "cssVar": "--button-primary-hover-border",
+                "value": "var(--color-button-border-primary-hover)",
+                "status": "stable",
+                "usedBy": [
+                  "Button"
+                ]
+              },
+              {
+                "cssVar": "--button-primary-hover-text",
+                "value": "var(--color-button-label-primary-hover)",
+                "status": "stable",
+                "usedBy": [
+                  "Button"
+                ]
+              }
+            ],
+            "secondary": [
+              {
+                "cssVar": "--button-secondary-default-bg",
+                "value": "var(--color-button-bg-secondary-default)",
+                "status": "stable",
+                "usedBy": [
+                  "Button"
+                ]
+              },
+              {
+                "cssVar": "--button-secondary-default-border",
+                "value": "var(--color-button-border-secondary-default)",
+                "status": "stable",
+                "usedBy": [
+                  "Button"
+                ]
+              },
+              {
+                "cssVar": "--button-secondary-default-text",
+                "value": "var(--color-button-label-secondary-default)",
+                "status": "stable",
+                "usedBy": [
+                  "Button"
+                ]
+              },
+              {
+                "cssVar": "--button-secondary-hover-bg",
+                "value": "var(--color-button-bg-secondary-hover)",
+                "status": "stable",
+                "usedBy": [
+                  "Button"
+                ]
+              },
+              {
+                "cssVar": "--button-secondary-hover-border",
+                "value": "var(--color-button-border-secondary-hover)",
+                "status": "stable",
+                "usedBy": [
+                  "Button"
+                ]
+              },
+              {
+                "cssVar": "--button-secondary-hover-text",
+                "value": "var(--color-button-label-secondary-hover)",
+                "status": "stable",
+                "usedBy": [
+                  "Button"
+                ]
+              }
+            ],
+            "blue-line": [
+              {
+                "cssVar": "--button-blue-line-default-bg",
+                "value": "var(--color-button-bg-blue-line-default)",
+                "status": "stable",
+                "usedBy": [
+                  "Button"
+                ]
+              },
+              {
+                "cssVar": "--button-blue-line-default-border",
+                "value": "var(--color-button-border-blue-line-default)",
+                "status": "stable",
+                "usedBy": [
+                  "Button"
+                ]
+              },
+              {
+                "cssVar": "--button-blue-line-default-text",
+                "value": "var(--color-button-label-blue-line-default)",
+                "status": "stable",
+                "usedBy": [
+                  "Button"
+                ]
+              },
+              {
+                "cssVar": "--button-blue-line-hover-bg",
+                "value": "var(--color-button-bg-blue-line-hover)",
+                "status": "stable",
+                "usedBy": [
+                  "Button"
+                ]
+              },
+              {
+                "cssVar": "--button-blue-line-hover-border",
+                "value": "var(--color-button-border-blue-line-hover)",
+                "status": "stable",
+                "usedBy": [
+                  "Button"
+                ]
+              },
+              {
+                "cssVar": "--button-blue-line-hover-text",
+                "value": "var(--color-button-label-blue-line-hover)",
+                "status": "stable",
+                "usedBy": [
+                  "Button"
+                ]
+              }
+            ],
+            "disabled": [
+              {
+                "cssVar": "--button-disabled-bg",
+                "value": "var(--color-button-bg-disabled)",
+                "status": "stable",
+                "usedBy": [
+                  "Button all variants"
+                ]
+              },
+              {
+                "cssVar": "--button-disabled-border",
+                "value": "var(--color-button-border-disabled)",
+                "status": "stable",
+                "usedBy": [
+                  "Button all variants"
+                ]
+              },
+              {
+                "cssVar": "--button-disabled-text",
+                "value": "var(--color-button-label-disabled)",
+                "status": "stable",
+                "usedBy": [
+                  "Button all variants"
+                ]
+              }
+            ],
+            "sizing": [
+              {
+                "cssVar": "--button-padding-md",
+                "value": "var(--spacing-16)",
+                "status": "stable",
+                "usedBy": [
+                  "Button MD, LG padding"
+                ]
+              },
+              {
+                "cssVar": "--button-padding-xsm",
+                "value": "var(--spacing-8)",
+                "status": "stable",
+                "usedBy": [
+                  "Button XSM, XXSM padding"
+                ]
+              },
+              {
+                "cssVar": "--button-border-width",
+                "value": "var(--border-width-1)",
+                "status": "stable",
+                "usedBy": [
+                  "Button stroke"
+                ]
+              },
+              {
+                "cssVar": "--button-radius",
+                "value": "var(--radius-4)",
+                "status": "stable",
+                "usedBy": [
+                  "Button corner"
+                ]
+              }
+            ]
+          },
+          "checkbox": [
             {
-              "cssVar": "--button-primary-default-bg",
-              "value": "var(--color-action-primary-default)",
+              "cssVar": "--checkbox-bg-default",
+              "value": "var(--color-control-bg-default)",
               "status": "stable",
               "usedBy": [
-                "Button"
+                "Checkbox"
               ]
             },
             {
-              "cssVar": "--button-primary-hover-bg",
-              "value": "var(--color-action-primary-hover)",
+              "cssVar": "--checkbox-bg-hover",
+              "value": "var(--color-control-bg-hover)",
               "status": "stable",
               "usedBy": [
-                "Button"
+                "Checkbox"
               ]
             },
             {
-              "cssVar": "--button-primary-pressed-bg",
-              "value": "var(--color-action-primary-pressed)",
+              "cssVar": "--checkbox-bg-checked",
+              "value": "var(--color-control-bg-selected)",
               "status": "stable",
               "usedBy": [
-                "Button"
+                "Checkbox"
               ]
             },
             {
-              "cssVar": "--button-primary-disabled-bg",
-              "value": "var(--color-bg-subtle)",
+              "cssVar": "--checkbox-bg-disabled",
+              "value": "var(--color-control-bg-disabled)",
               "status": "stable",
               "usedBy": [
-                "Button"
+                "Checkbox"
               ]
             },
             {
-              "cssVar": "--button-primary-disabled-border",
-              "value": "var(--color-border-disabled)",
+              "cssVar": "--checkbox-border-default",
+              "value": "var(--color-control-border-default)",
               "status": "stable",
               "usedBy": [
-                "Button"
+                "Checkbox"
               ]
             },
             {
-              "cssVar": "--button-primary-default-text",
-              "value": "var(--color-action-primary-text)",
+              "cssVar": "--checkbox-border-checked",
+              "value": "var(--color-control-border-selected)",
               "status": "stable",
               "usedBy": [
-                "Button"
+                "Checkbox"
               ]
             },
             {
-              "cssVar": "--button-primary-disabled-text",
-              "value": "var(--color-text-disabled)",
+              "cssVar": "--checkbox-border-disabled",
+              "value": "var(--color-control-border-disabled)",
               "status": "stable",
               "usedBy": [
-                "Button"
+                "Checkbox"
               ]
             },
             {
-              "cssVar": "--button-primary-default-icon",
-              "value": "var(--color-action-primary-text)",
+              "cssVar": "--checkbox-icon-checked",
+              "value": "var(--color-control-indicator-selected)",
               "status": "stable",
               "usedBy": [
-                "Button"
+                "Checkbox check mark"
               ]
             }
           ],
-          "secondary": [
+          "radio": [
             {
-              "cssVar": "--button-secondary-default-bg",
+              "cssVar": "--radio-bg-default",
+              "value": "var(--color-control-bg-default)",
+              "status": "stable",
+              "usedBy": [
+                "Radio"
+              ]
+            },
+            {
+              "cssVar": "--radio-bg-hover",
+              "value": "var(--color-control-bg-hover)",
+              "status": "stable",
+              "usedBy": [
+                "Radio"
+              ]
+            },
+            {
+              "cssVar": "--radio-bg-disabled",
+              "value": "var(--color-control-bg-disabled)",
+              "status": "stable",
+              "usedBy": [
+                "Radio"
+              ]
+            },
+            {
+              "cssVar": "--radio-border-default",
+              "value": "var(--color-control-border-default)",
+              "status": "stable",
+              "usedBy": [
+                "Radio"
+              ]
+            },
+            {
+              "cssVar": "--radio-border-selected",
+              "value": "var(--color-control-border-selected)",
+              "status": "stable",
+              "usedBy": [
+                "Radio"
+              ]
+            },
+            {
+              "cssVar": "--radio-border-disabled",
+              "value": "var(--color-control-border-disabled)",
+              "status": "stable",
+              "usedBy": [
+                "Radio"
+              ]
+            },
+            {
+              "cssVar": "--radio-dot-selected",
+              "value": "var(--color-control-indicator-selected)",
+              "status": "stable",
+              "usedBy": [
+                "Radio dot"
+              ]
+            }
+          ],
+          "toggle": [
+            {
+              "cssVar": "--toggle-bg-on",
+              "value": "var(--color-control-bg-selected)",
+              "status": "stable",
+              "usedBy": [
+                "Toggle track on"
+              ]
+            },
+            {
+              "cssVar": "--toggle-bg-off",
+              "value": "var(--color-control-indicator-unselected)",
+              "status": "stable",
+              "usedBy": [
+                "Toggle track off"
+              ]
+            },
+            {
+              "cssVar": "--toggle-bg-disabled",
+              "value": "var(--color-control-bg-disabled)",
+              "status": "stable",
+              "usedBy": [
+                "Toggle disabled"
+              ]
+            },
+            {
+              "cssVar": "--toggle-knob",
+              "value": "var(--color-control-indicator-selected)",
+              "status": "stable",
+              "usedBy": [
+                "Toggle knob"
+              ]
+            }
+          ],
+          "multi-toggle": [
+            {
+              "cssVar": "--multi-toggle-bg-selected",
+              "value": "var(--color-control-bg-selected)",
+              "status": "stable",
+              "usedBy": [
+                "Multi Toggle"
+              ]
+            },
+            {
+              "cssVar": "--multi-toggle-indicator-selected",
+              "value": "var(--color-control-indicator-selected)",
+              "status": "stable",
+              "usedBy": [
+                "Multi Toggle"
+              ]
+            },
+            {
+              "cssVar": "--multi-toggle-bg-disabled",
+              "value": "var(--color-control-bg-disabled)",
+              "status": "stable",
+              "usedBy": [
+                "Multi Toggle"
+              ]
+            }
+          ],
+          "input": [
+            {
+              "cssVar": "--input-bg-default",
+              "value": "var(--color-form-control-bg-default)",
+              "status": "stable",
+              "usedBy": [
+                "Input"
+              ]
+            },
+            {
+              "cssVar": "--input-bg-focus",
+              "value": "var(--color-form-control-bg-selected)",
+              "status": "stable",
+              "usedBy": [
+                "Input focus"
+              ]
+            },
+            {
+              "cssVar": "--input-bg-disabled",
+              "value": "var(--color-form-control-bg-disabled)",
+              "status": "stable",
+              "usedBy": [
+                "Input disabled"
+              ]
+            },
+            {
+              "cssVar": "--input-border-default",
+              "value": "var(--color-form-control-border-default)",
+              "status": "stable",
+              "usedBy": [
+                "Input border"
+              ]
+            },
+            {
+              "cssVar": "--input-border-focus",
+              "value": "var(--color-form-control-border-selected)",
+              "status": "stable",
+              "usedBy": [
+                "Input border focus"
+              ]
+            },
+            {
+              "cssVar": "--input-border-disabled",
+              "value": "var(--color-form-control-border-disabled)",
+              "status": "stable",
+              "usedBy": [
+                "Input border disabled"
+              ]
+            },
+            {
+              "cssVar": "--input-border-error",
+              "value": "var(--color-form-control-border-error)",
+              "status": "stable",
+              "usedBy": [
+                "Input error border"
+              ]
+            },
+            {
+              "cssVar": "--input-border-correct",
+              "value": "var(--color-form-control-border-correct)",
+              "status": "stable",
+              "usedBy": [
+                "Input correct border"
+              ]
+            },
+            {
+              "cssVar": "--input-text-placeholder",
+              "value": "var(--color-form-control-text-placeholder)",
+              "status": "stable",
+              "usedBy": [
+                "Input placeholder"
+              ]
+            },
+            {
+              "cssVar": "--input-text-default",
+              "value": "var(--color-form-control-text-default)",
+              "status": "stable",
+              "usedBy": [
+                "Input text"
+              ]
+            },
+            {
+              "cssVar": "--input-text-focus",
+              "value": "var(--color-form-control-text-selected)",
+              "status": "stable",
+              "usedBy": [
+                "Input text focus"
+              ]
+            },
+            {
+              "cssVar": "--input-text-disabled",
+              "value": "var(--color-form-control-text-disabled)",
+              "status": "stable",
+              "usedBy": [
+                "Input text disabled"
+              ]
+            },
+            {
+              "cssVar": "--input-icon-default",
+              "value": "var(--color-form-control-icon-default)",
+              "status": "stable",
+              "usedBy": [
+                "Input eye icon"
+              ]
+            }
+          ],
+          "search-input": [
+            {
+              "cssVar": "--search-bg-default",
+              "value": "var(--color-form-control-bg-default)",
+              "status": "stable",
+              "usedBy": [
+                "Search Input"
+              ]
+            },
+            {
+              "cssVar": "--search-bg-focus",
+              "value": "var(--color-form-control-bg-selected)",
+              "status": "stable",
+              "usedBy": [
+                "Search Input focus"
+              ]
+            },
+            {
+              "cssVar": "--search-bg-disabled",
+              "value": "var(--color-form-control-bg-disabled)",
+              "status": "stable",
+              "usedBy": [
+                "Search Input disabled"
+              ]
+            },
+            {
+              "cssVar": "--search-border-default",
+              "value": "var(--color-form-control-border-default)",
+              "status": "stable",
+              "usedBy": [
+                "Search Input border"
+              ]
+            },
+            {
+              "cssVar": "--search-border-focus",
+              "value": "var(--color-form-control-border-selected)",
+              "status": "stable",
+              "usedBy": [
+                "Search Input border focus"
+              ]
+            },
+            {
+              "cssVar": "--search-border-disabled",
+              "value": "var(--color-form-control-border-disabled)",
+              "status": "stable",
+              "usedBy": [
+                "Search Input border disabled"
+              ]
+            },
+            {
+              "cssVar": "--search-text-placeholder",
+              "value": "var(--color-form-control-text-placeholder)",
+              "status": "stable",
+              "usedBy": [
+                "Search placeholder"
+              ]
+            },
+            {
+              "cssVar": "--search-text-default",
+              "value": "var(--color-form-control-text-default)",
+              "status": "stable",
+              "usedBy": [
+                "Search text"
+              ]
+            },
+            {
+              "cssVar": "--search-icon-default",
+              "value": "var(--color-form-control-icon-default)",
+              "status": "stable",
+              "usedBy": [
+                "Search magnifier icon"
+              ]
+            }
+          ],
+          "text-area": [
+            {
+              "cssVar": "--textarea-bg-default",
+              "value": "var(--color-form-control-bg-default)",
+              "status": "stable",
+              "usedBy": [
+                "Text Area"
+              ]
+            },
+            {
+              "cssVar": "--textarea-bg-focus",
+              "value": "var(--color-form-control-bg-selected)",
+              "status": "stable",
+              "usedBy": [
+                "Text Area focus"
+              ]
+            },
+            {
+              "cssVar": "--textarea-bg-disabled",
+              "value": "var(--color-form-control-bg-disabled)",
+              "status": "stable",
+              "usedBy": [
+                "Text Area disabled"
+              ]
+            },
+            {
+              "cssVar": "--textarea-border-default",
+              "value": "var(--color-form-control-border-default)",
+              "status": "stable",
+              "usedBy": [
+                "Text Area border"
+              ]
+            },
+            {
+              "cssVar": "--textarea-border-focus",
+              "value": "var(--color-form-control-border-selected)",
+              "status": "stable",
+              "usedBy": [
+                "Text Area border focus"
+              ]
+            },
+            {
+              "cssVar": "--textarea-border-disabled",
+              "value": "var(--color-form-control-border-disabled)",
+              "status": "stable",
+              "usedBy": [
+                "Text Area border disabled"
+              ]
+            },
+            {
+              "cssVar": "--textarea-text-placeholder",
+              "value": "var(--color-form-control-text-placeholder)",
+              "status": "stable",
+              "usedBy": [
+                "Text Area placeholder"
+              ]
+            },
+            {
+              "cssVar": "--textarea-text-default",
+              "value": "var(--color-form-control-text-default)",
+              "status": "stable",
+              "usedBy": [
+                "Text Area text"
+              ]
+            },
+            {
+              "cssVar": "--textarea-text-focus",
+              "value": "var(--color-form-control-text-selected)",
+              "status": "stable",
+              "usedBy": [
+                "Text Area text focus"
+              ]
+            },
+            {
+              "cssVar": "--textarea-text-disabled",
+              "value": "var(--color-form-control-text-disabled)",
+              "status": "stable",
+              "usedBy": [
+                "Text Area text disabled"
+              ]
+            }
+          ],
+          "select-box": [
+            {
+              "cssVar": "--select-bg-default",
+              "value": "var(--color-form-control-bg-default)",
+              "status": "stable",
+              "usedBy": [
+                "Select Box"
+              ]
+            },
+            {
+              "cssVar": "--select-bg-hover",
+              "value": "var(--color-form-control-bg-hover)",
+              "status": "stable",
+              "usedBy": [
+                "Select Box hover"
+              ]
+            },
+            {
+              "cssVar": "--select-bg-open",
+              "value": "var(--color-form-control-bg-selected)",
+              "status": "stable",
+              "usedBy": [
+                "Select Box open"
+              ]
+            },
+            {
+              "cssVar": "--select-bg-disabled",
+              "value": "var(--color-form-control-bg-disabled)",
+              "status": "stable",
+              "usedBy": [
+                "Select Box disabled"
+              ]
+            },
+            {
+              "cssVar": "--select-border-default",
+              "value": "var(--color-form-control-border-default)",
+              "status": "stable",
+              "usedBy": [
+                "Select Box border"
+              ]
+            },
+            {
+              "cssVar": "--select-border-open",
+              "value": "var(--color-form-control-border-selected)",
+              "status": "stable",
+              "usedBy": [
+                "Select Box border open"
+              ]
+            },
+            {
+              "cssVar": "--select-border-disabled",
+              "value": "var(--color-form-control-border-disabled)",
+              "status": "stable",
+              "usedBy": [
+                "Select Box border disabled"
+              ]
+            },
+            {
+              "cssVar": "--select-text-default",
+              "value": "var(--color-form-control-text-default)",
+              "status": "stable",
+              "usedBy": [
+                "Select Box text"
+              ]
+            },
+            {
+              "cssVar": "--select-text-disabled",
+              "value": "var(--color-form-control-text-disabled)",
+              "status": "stable",
+              "usedBy": [
+                "Select Box text disabled"
+              ]
+            },
+            {
+              "cssVar": "--select-icon-default",
+              "value": "var(--color-form-control-icon-default)",
+              "status": "stable",
+              "usedBy": [
+                "Select Box chevron"
+              ]
+            }
+          ],
+          "dropdown-list": [
+            {
+              "cssVar": "--dropdown-option-bg-default",
+              "value": "var(--color-dropdown-option-bg-default)",
+              "status": "stable",
+              "usedBy": [
+                "Dropdown List"
+              ]
+            },
+            {
+              "cssVar": "--dropdown-option-bg-hover",
+              "value": "var(--color-dropdown-option-bg-hover)",
+              "status": "stable",
+              "usedBy": [
+                "Dropdown List hover"
+              ]
+            },
+            {
+              "cssVar": "--dropdown-option-bg-selected",
+              "value": "var(--color-dropdown-option-bg-selected)",
+              "status": "stable",
+              "usedBy": [
+                "Dropdown List selected"
+              ]
+            },
+            {
+              "cssVar": "--dropdown-option-text-default",
+              "value": "var(--color-dropdown-option-label-default)",
+              "status": "stable",
+              "usedBy": [
+                "Dropdown List text"
+              ]
+            },
+            {
+              "cssVar": "--dropdown-option-text-hover",
+              "value": "var(--color-dropdown-option-label-hover)",
+              "status": "stable",
+              "usedBy": [
+                "Dropdown List text hover"
+              ]
+            },
+            {
+              "cssVar": "--dropdown-option-text-selected",
+              "value": "var(--color-dropdown-option-label-selected)",
+              "status": "stable",
+              "usedBy": [
+                "Dropdown List text selected"
+              ]
+            }
+          ],
+          "dropdown": [
+            {
+              "cssVar": "--dropdown-bg",
+              "value": "var(--color-dropdown-list-bg)",
+              "status": "stable",
+              "usedBy": [
+                "Dropdown panel"
+              ]
+            },
+            {
+              "cssVar": "--dropdown-border",
+              "value": "var(--color-dropdown-list-border)",
+              "status": "stable",
+              "usedBy": [
+                "Dropdown panel border"
+              ]
+            }
+          ],
+          "chip": [
+            {
+              "cssVar": "--chip-line-bg-default",
+              "value": "var(--color-chip-line-bg-default)",
+              "status": "stable",
+              "usedBy": [
+                "Chip line"
+              ]
+            },
+            {
+              "cssVar": "--chip-line-bg-hover",
+              "value": "var(--color-chip-line-bg-hover)",
+              "status": "stable",
+              "usedBy": [
+                "Chip line hover"
+              ]
+            },
+            {
+              "cssVar": "--chip-line-bg-selected",
+              "value": "var(--color-chip-line-bg-selected)",
+              "status": "stable",
+              "usedBy": [
+                "Chip line selected"
+              ]
+            },
+            {
+              "cssVar": "--chip-line-bg-disabled",
+              "value": "var(--color-chip-line-bg-disabled)",
+              "status": "stable",
+              "usedBy": [
+                "Chip line disabled"
+              ]
+            },
+            {
+              "cssVar": "--chip-line-border-default",
+              "value": "var(--color-chip-line-border-default)",
+              "status": "stable",
+              "usedBy": [
+                "Chip line border"
+              ]
+            },
+            {
+              "cssVar": "--chip-line-border-hover",
+              "value": "var(--color-chip-line-border-hover)",
+              "status": "stable",
+              "usedBy": [
+                "Chip line border hover"
+              ]
+            },
+            {
+              "cssVar": "--chip-line-border-selected",
+              "value": "var(--color-chip-line-border-selected)",
+              "status": "stable",
+              "usedBy": [
+                "Chip line border selected"
+              ]
+            },
+            {
+              "cssVar": "--chip-line-border-disabled",
+              "value": "var(--color-chip-line-border-disabled)",
+              "status": "stable",
+              "usedBy": [
+                "Chip line border disabled"
+              ]
+            },
+            {
+              "cssVar": "--chip-line-text-default",
+              "value": "var(--color-chip-line-label-default)",
+              "status": "stable",
+              "usedBy": [
+                "Chip line text"
+              ]
+            },
+            {
+              "cssVar": "--chip-line-text-selected",
+              "value": "var(--color-chip-line-label-selected)",
+              "status": "stable",
+              "usedBy": [
+                "Chip line text selected"
+              ]
+            },
+            {
+              "cssVar": "--chip-line-text-disabled",
+              "value": "var(--color-chip-line-label-disabled)",
+              "status": "stable",
+              "usedBy": [
+                "Chip line text disabled"
+              ]
+            },
+            {
+              "cssVar": "--chip-solid-bg-default",
+              "value": "var(--color-chip-solid-bg-default)",
+              "status": "stable",
+              "usedBy": [
+                "Chip solid"
+              ]
+            },
+            {
+              "cssVar": "--chip-solid-bg-hover",
+              "value": "var(--color-chip-solid-bg-hover)",
+              "status": "stable",
+              "usedBy": [
+                "Chip solid hover"
+              ]
+            },
+            {
+              "cssVar": "--chip-solid-bg-selected",
+              "value": "var(--color-chip-solid-bg-selected)",
+              "status": "stable",
+              "usedBy": [
+                "Chip solid selected"
+              ]
+            },
+            {
+              "cssVar": "--chip-solid-bg-disabled",
+              "value": "var(--color-chip-solid-bg-disabled)",
+              "status": "stable",
+              "usedBy": [
+                "Chip solid disabled"
+              ]
+            },
+            {
+              "cssVar": "--chip-solid-border-default",
+              "value": "var(--color-chip-solid-border-default)",
+              "status": "stable",
+              "usedBy": [
+                "Chip solid border"
+              ]
+            },
+            {
+              "cssVar": "--chip-solid-border-selected",
+              "value": "var(--color-chip-solid-border-selected)",
+              "status": "stable",
+              "usedBy": [
+                "Chip solid border selected"
+              ]
+            },
+            {
+              "cssVar": "--chip-solid-text-default",
+              "value": "var(--color-chip-solid-label-default)",
+              "status": "stable",
+              "usedBy": [
+                "Chip solid text"
+              ]
+            },
+            {
+              "cssVar": "--chip-solid-text-selected",
+              "value": "var(--color-chip-solid-label-selected)",
+              "status": "stable",
+              "usedBy": [
+                "Chip solid text selected"
+              ]
+            }
+          ],
+          "filter-chip": [
+            {
+              "cssVar": "--filter-chip-bg-default",
+              "value": "var(--color-chip-line-bg-default)",
+              "status": "stable",
+              "usedBy": [
+                "Filter Chip"
+              ]
+            },
+            {
+              "cssVar": "--filter-chip-bg-hover",
+              "value": "var(--color-chip-line-bg-hover)",
+              "status": "stable",
+              "usedBy": [
+                "Filter Chip hover"
+              ]
+            },
+            {
+              "cssVar": "--filter-chip-bg-selected",
+              "value": "var(--color-chip-line-bg-selected)",
+              "status": "stable",
+              "usedBy": [
+                "Filter Chip selected"
+              ]
+            },
+            {
+              "cssVar": "--filter-chip-bg-disabled",
+              "value": "var(--color-chip-line-bg-disabled)",
+              "status": "stable",
+              "usedBy": [
+                "Filter Chip disabled"
+              ]
+            },
+            {
+              "cssVar": "--filter-chip-border-default",
+              "value": "var(--color-chip-line-border-default)",
+              "status": "stable",
+              "usedBy": [
+                "Filter Chip border"
+              ]
+            },
+            {
+              "cssVar": "--filter-chip-border-selected",
+              "value": "var(--color-chip-line-border-selected)",
+              "status": "stable",
+              "usedBy": [
+                "Filter Chip border selected"
+              ]
+            },
+            {
+              "cssVar": "--filter-chip-text-default",
+              "value": "var(--color-chip-line-label-default)",
+              "status": "stable",
+              "usedBy": [
+                "Filter Chip text"
+              ]
+            },
+            {
+              "cssVar": "--filter-chip-text-selected",
+              "value": "var(--color-chip-line-label-selected)",
+              "status": "stable",
+              "usedBy": [
+                "Filter Chip text selected"
+              ]
+            }
+          ],
+          "line-tab": [
+            {
+              "cssVar": "--tab-text-default",
+              "value": "var(--color-navigation-label-default)",
+              "status": "stable",
+              "usedBy": [
+                "Line Tab"
+              ]
+            },
+            {
+              "cssVar": "--tab-text-hover",
+              "value": "var(--color-navigation-label-hover)",
+              "status": "stable",
+              "usedBy": [
+                "Line Tab hover"
+              ]
+            },
+            {
+              "cssVar": "--tab-text-selected",
+              "value": "var(--color-navigation-label-selected)",
+              "status": "stable",
+              "usedBy": [
+                "Line Tab selected"
+              ]
+            },
+            {
+              "cssVar": "--tab-indicator-default",
+              "value": "var(--color-navigation-indicator-default)",
+              "status": "stable",
+              "usedBy": [
+                "Line Tab underline"
+              ]
+            },
+            {
+              "cssVar": "--tab-indicator-selected",
+              "value": "var(--color-navigation-indicator-selected)",
+              "status": "stable",
+              "usedBy": [
+                "Line Tab underline selected"
+              ]
+            }
+          ],
+          "table": [
+            {
+              "cssVar": "--table-header-bg",
+              "value": "var(--color-table-header-bg)",
+              "status": "stable",
+              "usedBy": [
+                "Table"
+              ]
+            },
+            {
+              "cssVar": "--table-border-default",
+              "value": "var(--color-table-border-default)",
+              "status": "stable",
+              "usedBy": [
+                "Table"
+              ]
+            },
+            {
+              "cssVar": "--table-border-strong",
+              "value": "var(--color-table-border-strong)",
+              "status": "stable",
+              "usedBy": [
+                "Table"
+              ]
+            },
+            {
+              "cssVar": "--table-cell-default",
+              "value": "var(--color-table-cell-default)",
+              "status": "stable",
+              "usedBy": [
+                "Table"
+              ]
+            },
+            {
+              "cssVar": "--table-cell-hover",
+              "value": "var(--color-table-cell-hover)",
+              "status": "stable",
+              "usedBy": [
+                "Table hover"
+              ]
+            },
+            {
+              "cssVar": "--table-cell-selected",
+              "value": "var(--color-table-cell-selected)",
+              "status": "stable",
+              "usedBy": [
+                "Table selected"
+              ]
+            },
+            {
+              "cssVar": "--table-text-default",
+              "value": "var(--color-text-body-primary)",
+              "status": "stable",
+              "usedBy": [
+                "Table text"
+              ]
+            },
+            {
+              "cssVar": "--table-text-header",
+              "value": "var(--color-text-body-tertiary)",
+              "status": "stable",
+              "usedBy": [
+                "Table header text"
+              ]
+            }
+          ],
+          "pagination": [
+            {
+              "cssVar": "--pagination-number-default",
+              "value": "var(--color-pagination-number-default)",
+              "status": "stable",
+              "usedBy": [
+                "Pagination"
+              ]
+            },
+            {
+              "cssVar": "--pagination-number-hover",
+              "value": "var(--color-pagination-number-hover)",
+              "status": "stable",
+              "usedBy": [
+                "Pagination hover"
+              ]
+            },
+            {
+              "cssVar": "--pagination-number-selected",
+              "value": "var(--color-pagination-number-selected)",
+              "status": "stable",
+              "usedBy": [
+                "Pagination selected"
+              ]
+            },
+            {
+              "cssVar": "--pagination-arrow-default",
+              "value": "var(--color-pagination-control-icon-default)",
+              "status": "stable",
+              "usedBy": [
+                "Pagination arrow"
+              ]
+            },
+            {
+              "cssVar": "--pagination-arrow-hover",
+              "value": "var(--color-pagination-control-icon-hover)",
+              "status": "stable",
+              "usedBy": [
+                "Pagination arrow hover"
+              ]
+            },
+            {
+              "cssVar": "--pagination-arrow-disabled",
+              "value": "var(--color-pagination-control-icon-disabled)",
+              "status": "stable",
+              "usedBy": [
+                "Pagination arrow disabled"
+              ]
+            }
+          ],
+          "date-picker": [
+            {
+              "cssVar": "--date-picker-bg-default",
+              "value": "var(--color-form-control-bg-default)",
+              "status": "stable",
+              "usedBy": [
+                "Date Picker trigger"
+              ]
+            },
+            {
+              "cssVar": "--date-picker-bg-focus",
+              "value": "var(--color-form-control-bg-selected)",
+              "status": "stable",
+              "usedBy": [
+                "Date Picker focus"
+              ]
+            },
+            {
+              "cssVar": "--date-picker-bg-disabled",
+              "value": "var(--color-form-control-bg-disabled)",
+              "status": "stable",
+              "usedBy": [
+                "Date Picker disabled"
+              ]
+            },
+            {
+              "cssVar": "--date-picker-border-default",
+              "value": "var(--color-form-control-border-default)",
+              "status": "stable",
+              "usedBy": [
+                "Date Picker border"
+              ]
+            },
+            {
+              "cssVar": "--date-picker-border-focus",
+              "value": "var(--color-form-control-border-selected)",
+              "status": "stable",
+              "usedBy": [
+                "Date Picker border focus"
+              ]
+            },
+            {
+              "cssVar": "--date-picker-border-disabled",
+              "value": "var(--color-form-control-border-disabled)",
+              "status": "stable",
+              "usedBy": [
+                "Date Picker border disabled"
+              ]
+            },
+            {
+              "cssVar": "--date-picker-text-placeholder",
+              "value": "var(--color-form-control-text-placeholder)",
+              "status": "stable",
+              "usedBy": [
+                "Date Picker placeholder"
+              ]
+            },
+            {
+              "cssVar": "--date-picker-text-default",
+              "value": "var(--color-form-control-text-default)",
+              "status": "stable",
+              "usedBy": [
+                "Date Picker text"
+              ]
+            },
+            {
+              "cssVar": "--date-picker-icon-default",
+              "value": "var(--color-form-control-icon-default)",
+              "status": "stable",
+              "usedBy": [
+                "Date Picker calendar icon"
+              ]
+            }
+          ],
+          "time-picker": [
+            {
+              "cssVar": "--time-picker-bg-default",
+              "value": "var(--color-form-control-bg-default)",
+              "status": "stable",
+              "usedBy": [
+                "Time Picker"
+              ]
+            },
+            {
+              "cssVar": "--time-picker-bg-focus",
+              "value": "var(--color-form-control-bg-selected)",
+              "status": "stable",
+              "usedBy": [
+                "Time Picker focus"
+              ]
+            },
+            {
+              "cssVar": "--time-picker-bg-disabled",
+              "value": "var(--color-form-control-bg-disabled)",
+              "status": "stable",
+              "usedBy": [
+                "Time Picker disabled"
+              ]
+            },
+            {
+              "cssVar": "--time-picker-border-default",
+              "value": "var(--color-form-control-border-default)",
+              "status": "stable",
+              "usedBy": [
+                "Time Picker border"
+              ]
+            },
+            {
+              "cssVar": "--time-picker-border-focus",
+              "value": "var(--color-form-control-border-selected)",
+              "status": "stable",
+              "usedBy": [
+                "Time Picker border focus"
+              ]
+            },
+            {
+              "cssVar": "--time-picker-border-disabled",
+              "value": "var(--color-form-control-border-disabled)",
+              "status": "stable",
+              "usedBy": [
+                "Time Picker border disabled"
+              ]
+            },
+            {
+              "cssVar": "--time-picker-text-default",
+              "value": "var(--color-form-control-text-default)",
+              "status": "stable",
+              "usedBy": [
+                "Time Picker text"
+              ]
+            },
+            {
+              "cssVar": "--time-picker-text-focus",
+              "value": "var(--color-form-control-text-selected)",
+              "status": "stable",
+              "usedBy": [
+                "Time Picker text focus"
+              ]
+            },
+            {
+              "cssVar": "--time-picker-text-disabled",
+              "value": "var(--color-form-control-text-disabled)",
+              "status": "stable",
+              "usedBy": [
+                "Time Picker text disabled"
+              ]
+            },
+            {
+              "cssVar": "--time-picker-icon-default",
+              "value": "var(--color-form-control-icon-default)",
+              "status": "stable",
+              "usedBy": [
+                "Time Picker clock icon"
+              ]
+            }
+          ],
+          "gnb": [
+            {
+              "cssVar": "--gnb-bg",
+              "value": "var(--color-navigation-bg)",
+              "status": "stable",
+              "usedBy": [
+                "GNB bar"
+              ]
+            },
+            {
+              "cssVar": "--gnb-service-text",
+              "value": "var(--color-text-title-primary)",
+              "status": "stable",
+              "usedBy": [
+                "GNB service name"
+              ]
+            },
+            {
+              "cssVar": "--gnb-url-text",
+              "value": "var(--color-text-body-primary)",
+              "status": "stable",
+              "usedBy": [
+                "GNB URL"
+              ]
+            },
+            {
+              "cssVar": "--gnb-icon-default",
+              "value": "var(--color-icon-gray)",
+              "status": "stable",
+              "usedBy": [
+                "GNB icons"
+              ]
+            }
+          ],
+          "status-bar": [
+            {
+              "cssVar": "--status-bar-bg",
+              "value": "var(--color-bg-default)",
+              "status": "stable",
+              "usedBy": [
+                "Status Bar"
+              ]
+            },
+            {
+              "cssVar": "--status-bar-text",
+              "value": "var(--color-text-body-primary)",
+              "status": "stable",
+              "usedBy": [
+                "Status Bar text"
+              ]
+            },
+            {
+              "cssVar": "--status-bar-icon",
+              "value": "var(--color-icon-gray)",
+              "status": "stable",
+              "usedBy": [
+                "Status Bar icons"
+              ]
+            }
+          ],
+          "nav-bar": [
+            {
+              "cssVar": "--nav-bar-bg",
+              "value": "var(--color-navigation-bg)",
+              "status": "stable",
+              "usedBy": [
+                "Nav Bar"
+              ]
+            },
+            {
+              "cssVar": "--nav-bar-text-default",
+              "value": "var(--color-navigation-label-default)",
+              "status": "stable",
+              "usedBy": [
+                "Nav Bar text"
+              ]
+            },
+            {
+              "cssVar": "--nav-bar-text-selected",
+              "value": "var(--color-navigation-label-selected)",
+              "status": "stable",
+              "usedBy": [
+                "Nav Bar text selected"
+              ]
+            },
+            {
+              "cssVar": "--nav-bar-icon-default",
+              "value": "var(--color-icon-gray)",
+              "status": "stable",
+              "usedBy": [
+                "Nav Bar icons"
+              ]
+            }
+          ],
+          "login-gnb": [
+            {
+              "cssVar": "--login-gnb-bg",
+              "value": "var(--color-navigation-bg)",
+              "status": "stable",
+              "usedBy": [
+                "Login GNB"
+              ]
+            },
+            {
+              "cssVar": "--login-gnb-text",
+              "value": "var(--color-text-title-primary)",
+              "status": "stable",
+              "usedBy": [
+                "Login GNB text"
+              ]
+            },
+            {
+              "cssVar": "--login-gnb-icon",
+              "value": "var(--color-icon-gray)",
+              "status": "stable",
+              "usedBy": [
+                "Login GNB icons"
+              ]
+            }
+          ],
+          "web-tab-bar": [
+            {
+              "cssVar": "--web-tab-text-default",
+              "value": "var(--color-navigation-label-default)",
+              "status": "stable",
+              "usedBy": [
+                "Web Tab Bar"
+              ]
+            },
+            {
+              "cssVar": "--web-tab-text-selected",
+              "value": "var(--color-navigation-label-selected)",
+              "status": "stable",
+              "usedBy": [
+                "Web Tab Bar selected"
+              ]
+            },
+            {
+              "cssVar": "--web-tab-indicator-default",
+              "value": "var(--color-navigation-indicator-default)",
+              "status": "stable",
+              "usedBy": [
+                "Web Tab Bar indicator"
+              ]
+            },
+            {
+              "cssVar": "--web-tab-indicator-selected",
+              "value": "var(--color-navigation-indicator-selected)",
+              "status": "stable",
+              "usedBy": [
+                "Web Tab Bar indicator selected"
+              ]
+            }
+          ],
+          "ci": [
+            {
+              "cssVar": "--ci-brand-primary",
+              "value": "var(--color-brand-blue)",
+              "status": "stable",
+              "usedBy": [
+                "CI Brand"
+              ]
+            },
+            {
+              "cssVar": "--ci-brand-secondary",
+              "value": "var(--color-brand-gray)",
+              "status": "stable",
+              "usedBy": [
+                "CI Brand secondary"
+              ]
+            }
+          ],
+          "multi-toggle-element": [
+            {
+              "cssVar": "--multi-toggle-element-bg-default",
+              "value": "var(--color-control-bg-default)",
+              "status": "stable",
+              "usedBy": [
+                "Multi Toggle Element"
+              ]
+            },
+            {
+              "cssVar": "--multi-toggle-element-bg-selected",
+              "value": "var(--color-control-bg-selected)",
+              "status": "stable",
+              "usedBy": [
+                "Multi Toggle Element selected"
+              ]
+            },
+            {
+              "cssVar": "--multi-toggle-element-text-default",
+              "value": "var(--color-control-label-default)",
+              "status": "stable",
+              "usedBy": [
+                "Multi Toggle Element text"
+              ]
+            },
+            {
+              "cssVar": "--multi-toggle-element-text-selected",
+              "value": "var(--color-control-label-selected)",
+              "status": "stable",
+              "usedBy": [
+                "Multi Toggle Element text selected"
+              ]
+            }
+          ],
+          "footer": [
+            {
+              "cssVar": "--footer-bg",
+              "value": "var(--color-bg-default)",
+              "status": "stable",
+              "usedBy": [
+                "Footer"
+              ]
+            },
+            {
+              "cssVar": "--footer-text-primary",
+              "value": "var(--color-text-body-primary)",
+              "status": "stable",
+              "usedBy": [
+                "Footer primary text"
+              ]
+            },
+            {
+              "cssVar": "--footer-text-secondary",
+              "value": "var(--color-text-body-secondary)",
+              "status": "stable",
+              "usedBy": [
+                "Footer secondary text"
+              ]
+            },
+            {
+              "cssVar": "--footer-link",
+              "value": "var(--color-action-primary-default)",
+              "status": "stable",
+              "usedBy": [
+                "Footer link"
+              ]
+            }
+          ],
+          "gnb-util-icon": [
+            {
+              "cssVar": "--gnb-util-icon-default",
+              "value": "var(--color-icon-gray)",
+              "status": "stable",
+              "usedBy": [
+                "GNB Util Icon"
+              ]
+            },
+            {
+              "cssVar": "--gnb-util-icon-hover",
+              "value": "var(--color-icon-gray-hover)",
+              "status": "stable",
+              "usedBy": [
+                "GNB Util Icon hover"
+              ]
+            }
+          ],
+          "language-icon": [
+            {
+              "cssVar": "--language-icon-default",
+              "value": "var(--color-icon-gray)",
+              "status": "stable",
+              "usedBy": [
+                "Language Icon"
+              ]
+            }
+          ],
+          "pagination-cell": [
+            {
+              "cssVar": "--pagination-cell-bg-default",
+              "value": "var(--color-pagination-number-default)",
+              "status": "stable",
+              "usedBy": [
+                "Pagination Cell"
+              ]
+            },
+            {
+              "cssVar": "--pagination-cell-bg-hover",
+              "value": "var(--color-pagination-number-hover)",
+              "status": "stable",
+              "usedBy": [
+                "Pagination Cell hover"
+              ]
+            },
+            {
+              "cssVar": "--pagination-cell-bg-selected",
+              "value": "var(--color-pagination-number-selected)",
+              "status": "stable",
+              "usedBy": [
+                "Pagination Cell selected"
+              ]
+            },
+            {
+              "cssVar": "--pagination-cell-text-default",
+              "value": "var(--color-text-body-primary)",
+              "status": "stable",
+              "usedBy": [
+                "Pagination Cell text"
+              ]
+            }
+          ],
+          "calendar": [
+            {
+              "cssVar": "--calendar-bg",
+              "value": "var(--color-bg-default)",
+              "status": "stable",
+              "usedBy": [
+                "Calendar"
+              ]
+            },
+            {
+              "cssVar": "--calendar-header-bg",
               "value": "var(--color-surface-default)",
               "status": "stable",
               "usedBy": [
-                "Button"
+                "Calendar header"
               ]
             },
             {
-              "cssVar": "--button-secondary-hover-bg",
-              "value": "var(--color-bg-subtle)",
-              "status": "stable",
-              "usedBy": [
-                "Button"
-              ]
-            },
-            {
-              "cssVar": "--button-secondary-pressed-bg",
-              "value": "var(--color-bg-muted)",
-              "status": "stable",
-              "usedBy": [
-                "Button"
-              ]
-            },
-            {
-              "cssVar": "--button-secondary-disabled-bg",
-              "value": "var(--color-bg-subtle)",
-              "status": "stable",
-              "usedBy": [
-                "Button"
-              ]
-            },
-            {
-              "cssVar": "--button-secondary-default-border",
+              "cssVar": "--calendar-border",
               "value": "var(--color-border-default)",
               "status": "stable",
               "usedBy": [
-                "Button"
-              ]
-            },
-            {
-              "cssVar": "--button-secondary-disabled-border",
-              "value": "var(--color-border-disabled)",
-              "status": "stable",
-              "usedBy": [
-                "Button"
-              ]
-            },
-            {
-              "cssVar": "--button-secondary-default-text",
-              "value": "var(--color-text-secondary)",
-              "status": "stable",
-              "usedBy": [
-                "Button"
-              ]
-            },
-            {
-              "cssVar": "--button-secondary-disabled-text",
-              "value": "var(--color-text-disabled)",
-              "status": "stable",
-              "usedBy": [
-                "Button"
-              ]
-            },
-            {
-              "cssVar": "--button-secondary-default-icon",
-              "value": "var(--color-icon-default)",
-              "status": "stable",
-              "usedBy": [
-                "Button"
-              ]
-            },
-            {
-              "cssVar": "--button-secondary-disabled-icon",
-              "value": "var(--color-icon-muted)",
-              "status": "stable",
-              "usedBy": [
-                "Button"
+                "Calendar border"
               ]
             }
           ],
-          "blue-line": [
+          "calendar-cell": [
             {
-              "cssVar": "--button-blue-line-default-bg",
+              "cssVar": "--calendar-cell-bg-default",
+              "value": "transparent",
+              "status": "stable",
+              "usedBy": [
+                "Calendar Cell"
+              ]
+            },
+            {
+              "cssVar": "--calendar-cell-bg-hover",
+              "value": "var(--color-bg-subtle)",
+              "status": "stable",
+              "usedBy": [
+                "Calendar Cell hover"
+              ]
+            },
+            {
+              "cssVar": "--calendar-cell-bg-selected",
+              "value": "var(--color-action-primary-default)",
+              "status": "stable",
+              "usedBy": [
+                "Calendar Cell selected"
+              ]
+            },
+            {
+              "cssVar": "--calendar-cell-text-default",
+              "value": "var(--color-text-body-primary)",
+              "status": "stable",
+              "usedBy": [
+                "Calendar Cell text"
+              ]
+            },
+            {
+              "cssVar": "--calendar-cell-text-selected",
+              "value": "var(--color-text-body-inverse)",
+              "status": "stable",
+              "usedBy": [
+                "Calendar Cell text selected"
+              ]
+            }
+          ],
+          "calendar-tile": [
+            {
+              "cssVar": "--calendar-tile-bg-default",
+              "value": "transparent",
+              "status": "stable",
+              "usedBy": [
+                "Calendar Tile"
+              ]
+            },
+            {
+              "cssVar": "--calendar-tile-bg-hover",
+              "value": "var(--color-bg-subtle)",
+              "status": "stable",
+              "usedBy": [
+                "Calendar Tile hover"
+              ]
+            },
+            {
+              "cssVar": "--calendar-tile-text-default",
+              "value": "var(--color-text-body-primary)",
+              "status": "stable",
+              "usedBy": [
+                "Calendar Tile text"
+              ]
+            }
+          ],
+          "date-picker-bottom-sheet": [
+            {
+              "cssVar": "--date-picker-bs-bg",
               "value": "var(--color-surface-default)",
               "status": "stable",
               "usedBy": [
-                "Button"
+                "Date Picker Bottom Sheet"
               ]
             },
             {
-              "cssVar": "--button-blue-line-hover-bg",
-              "value": "var(--color-action-primary-subtle)",
+              "cssVar": "--date-picker-bs-border",
+              "value": "var(--color-border-default)",
               "status": "stable",
               "usedBy": [
-                "Button"
+                "Date Picker Bottom Sheet border"
               ]
             },
             {
-              "cssVar": "--button-blue-line-pressed-bg",
-              "value": "var(--color-action-primary-subtle)",
+              "cssVar": "--date-picker-bs-header-bg",
+              "value": "var(--color-bg-default)",
               "status": "stable",
               "usedBy": [
-                "Button"
-              ]
-            },
-            {
-              "cssVar": "--button-blue-line-disabled-bg",
-              "value": "var(--color-bg-subtle)",
-              "status": "stable",
-              "usedBy": [
-                "Button"
-              ]
-            },
-            {
-              "cssVar": "--button-blue-line-default-border",
-              "value": "var(--color-action-primary-default)",
-              "status": "stable",
-              "usedBy": [
-                "Button"
-              ]
-            },
-            {
-              "cssVar": "--button-blue-line-hover-border",
-              "value": "var(--color-action-primary-default)",
-              "status": "stable",
-              "usedBy": [
-                "Button"
-              ]
-            },
-            {
-              "cssVar": "--button-blue-line-disabled-border",
-              "value": "var(--color-border-disabled)",
-              "status": "stable",
-              "usedBy": [
-                "Button"
-              ]
-            },
-            {
-              "cssVar": "--button-blue-line-default-text",
-              "value": "var(--color-action-primary-default)",
-              "status": "stable",
-              "usedBy": [
-                "Button"
-              ]
-            },
-            {
-              "cssVar": "--button-blue-line-disabled-text",
-              "value": "var(--color-text-disabled)",
-              "status": "stable",
-              "usedBy": [
-                "Button"
+                "Date Picker Bottom Sheet header"
               ]
             }
           ],
-          "ghost": [
+          "time-picker-dropdown": [
             {
-              "cssVar": "--button-ghost-hover-bg",
+              "cssVar": "--time-picker-dropdown-bg",
+              "value": "var(--color-dropdown-list-bg)",
+              "status": "stable",
+              "usedBy": [
+                "Time Picker Dropdown"
+              ]
+            },
+            {
+              "cssVar": "--time-picker-dropdown-border",
+              "value": "var(--color-dropdown-list-border)",
+              "status": "stable",
+              "usedBy": [
+                "Time Picker Dropdown border"
+              ]
+            }
+          ],
+          "time-picker-cell": [
+            {
+              "cssVar": "--time-picker-cell-bg-default",
+              "value": "transparent",
+              "status": "stable",
+              "usedBy": [
+                "Time Picker Cell"
+              ]
+            },
+            {
+              "cssVar": "--time-picker-cell-bg-hover",
               "value": "var(--color-bg-subtle)",
-              "status": "deprecated",
-              "note": "legacy — use blue-line instead",
-              "usedBy": []
+              "status": "stable",
+              "usedBy": [
+                "Time Picker Cell hover"
+              ]
             },
             {
-              "cssVar": "--button-ghost-pressed-bg",
-              "value": "var(--color-bg-muted)",
-              "status": "deprecated",
-              "note": "legacy — use blue-line instead",
-              "usedBy": []
+              "cssVar": "--time-picker-cell-bg-selected",
+              "value": "var(--color-action-primary-default)",
+              "status": "stable",
+              "usedBy": [
+                "Time Picker Cell selected"
+              ]
             },
             {
-              "cssVar": "--button-ghost-default-text",
-              "value": "var(--color-text-secondary)",
-              "status": "deprecated",
-              "note": "legacy — use blue-line instead",
-              "usedBy": []
+              "cssVar": "--time-picker-cell-text-default",
+              "value": "var(--color-text-body-primary)",
+              "status": "stable",
+              "usedBy": [
+                "Time Picker Cell text"
+              ]
             },
             {
-              "cssVar": "--button-ghost-disabled-text",
-              "value": "var(--color-text-disabled)",
-              "status": "deprecated",
-              "note": "legacy — use blue-line instead",
-              "usedBy": []
+              "cssVar": "--time-picker-cell-text-selected",
+              "value": "var(--color-text-body-inverse)",
+              "status": "stable",
+              "usedBy": [
+                "Time Picker Cell text selected"
+              ]
+            }
+          ],
+          "table-cell": [
+            {
+              "cssVar": "--table-cell-bg-default",
+              "value": "var(--color-table-cell-default)",
+              "status": "stable",
+              "usedBy": [
+                "Table Cell"
+              ]
             },
             {
-              "cssVar": "--button-ghost-default-icon",
-              "value": "var(--color-icon-default)",
-              "status": "deprecated",
-              "note": "legacy — use blue-line instead",
-              "usedBy": []
+              "cssVar": "--table-cell-bg-hover",
+              "value": "var(--color-table-cell-hover)",
+              "status": "stable",
+              "usedBy": [
+                "Table Cell hover"
+              ]
             },
             {
-              "cssVar": "--button-ghost-disabled-icon",
-              "value": "var(--color-icon-muted)",
-              "status": "deprecated",
-              "note": "legacy — use blue-line instead",
-              "usedBy": []
+              "cssVar": "--table-cell-bg-selected",
+              "value": "var(--color-table-cell-selected)",
+              "status": "stable",
+              "usedBy": [
+                "Table Cell selected"
+              ]
+            },
+            {
+              "cssVar": "--table-cell-text-default",
+              "value": "var(--color-text-body-primary)",
+              "status": "stable",
+              "usedBy": [
+                "Table Cell text"
+              ]
             }
           ]
-        },
-        "chip": [
-          {
-            "cssVar": "--chip-default-bg",
-            "value": "var(--color-bg-subtle)",
-            "status": "stable",
-            "usedBy": [
-              "Chip"
-            ]
-          },
-          {
-            "cssVar": "--chip-hover-bg",
-            "value": "var(--color-bg-muted)",
-            "status": "stable",
-            "usedBy": [
-              "Chip"
-            ]
-          },
-          {
-            "cssVar": "--chip-selected-bg",
-            "value": "var(--color-action-primary-subtle)",
-            "status": "stable",
-            "usedBy": [
-              "Chip"
-            ]
-          },
-          {
-            "cssVar": "--chip-disabled-bg",
-            "value": "var(--color-bg-subtle)",
-            "status": "stable",
-            "usedBy": [
-              "Chip"
-            ]
-          },
-          {
-            "cssVar": "--chip-default-border",
-            "value": "var(--color-border-default)",
-            "status": "stable",
-            "usedBy": [
-              "Chip"
-            ]
-          },
-          {
-            "cssVar": "--chip-hover-border",
-            "value": "var(--color-border-strong)",
-            "status": "stable",
-            "usedBy": [
-              "Chip"
-            ]
-          },
-          {
-            "cssVar": "--chip-selected-border",
-            "value": "var(--color-action-primary-default)",
-            "status": "stable",
-            "usedBy": [
-              "Chip"
-            ]
-          },
-          {
-            "cssVar": "--chip-disabled-border",
-            "value": "var(--color-border-subtle)",
-            "status": "stable",
-            "usedBy": [
-              "Chip"
-            ]
-          },
-          {
-            "cssVar": "--chip-default-text",
-            "value": "var(--color-text-secondary)",
-            "status": "stable",
-            "usedBy": [
-              "Chip"
-            ]
-          },
-          {
-            "cssVar": "--chip-selected-text",
-            "value": "var(--color-action-primary-default)",
-            "status": "stable",
-            "usedBy": [
-              "Chip"
-            ]
-          },
-          {
-            "cssVar": "--chip-disabled-text",
-            "value": "var(--color-text-disabled)",
-            "status": "stable",
-            "usedBy": [
-              "Chip"
-            ]
-          },
-          {
-            "cssVar": "--chip-default-icon",
-            "value": "var(--color-icon-default)",
-            "status": "stable",
-            "usedBy": [
-              "Chip"
-            ]
-          },
-          {
-            "cssVar": "--chip-selected-icon",
-            "value": "var(--color-action-primary-default)",
-            "status": "stable",
-            "usedBy": [
-              "Chip"
-            ]
-          },
-          {
-            "cssVar": "--chip-disabled-icon",
-            "value": "var(--color-icon-muted)",
-            "status": "stable",
-            "usedBy": [
-              "Chip"
-            ]
-          },
-          {
-            "cssVar": "--chip-default-close-icon",
-            "value": "var(--color-icon-default)",
-            "status": "stable",
-            "usedBy": [
-              "Chip"
-            ]
-          },
-          {
-            "cssVar": "--chip-hover-close-icon",
-            "value": "var(--color-icon-emphasis)",
-            "status": "stable",
-            "usedBy": [
-              "Chip"
-            ]
-          },
-          {
-            "cssVar": "--chip-selected-close-icon",
-            "value": "var(--color-action-primary-default)",
-            "status": "stable",
-            "usedBy": [
-              "Chip"
-            ]
-          },
-          {
-            "cssVar": "--chip-focus-ring",
-            "value": "var(--color-border-focus)",
-            "status": "stable",
-            "usedBy": [
-              "Chip"
-            ]
-          }
-        ],
-        "dropdown": [
-          {
-            "cssVar": "--dropdown-trigger-default-bg",
-            "value": "var(--color-surface-default)",
-            "status": "stable",
-            "usedBy": [
-              "Dropdown"
-            ]
-          },
-          {
-            "cssVar": "--dropdown-trigger-hover-bg",
-            "value": "var(--color-bg-subtle)",
-            "status": "stable",
-            "usedBy": [
-              "Dropdown"
-            ]
-          },
-          {
-            "cssVar": "--dropdown-trigger-open-bg",
-            "value": "var(--color-bg-subtle)",
-            "status": "stable",
-            "usedBy": [
-              "Dropdown"
-            ]
-          },
-          {
-            "cssVar": "--dropdown-trigger-disabled-bg",
-            "value": "var(--color-bg-subtle)",
-            "status": "stable",
-            "usedBy": [
-              "Dropdown"
-            ]
-          },
-          {
-            "cssVar": "--dropdown-trigger-default-border",
-            "value": "var(--color-border-default)",
-            "status": "stable",
-            "usedBy": [
-              "Dropdown"
-            ]
-          },
-          {
-            "cssVar": "--dropdown-trigger-hover-border",
-            "value": "var(--color-border-strong)",
-            "status": "stable",
-            "usedBy": [
-              "Dropdown"
-            ]
-          },
-          {
-            "cssVar": "--dropdown-trigger-open-border",
-            "value": "var(--color-border-focus)",
-            "status": "stable",
-            "usedBy": [
-              "Dropdown"
-            ]
-          },
-          {
-            "cssVar": "--dropdown-trigger-disabled-border",
-            "value": "var(--color-border-subtle)",
-            "status": "stable",
-            "usedBy": [
-              "Dropdown"
-            ]
-          },
-          {
-            "cssVar": "--dropdown-trigger-default-text",
-            "value": "var(--color-text-secondary)",
-            "status": "stable",
-            "usedBy": [
-              "Dropdown"
-            ]
-          },
-          {
-            "cssVar": "--dropdown-trigger-disabled-text",
-            "value": "var(--color-text-disabled)",
-            "status": "stable",
-            "usedBy": [
-              "Dropdown"
-            ]
-          },
-          {
-            "cssVar": "--dropdown-list-bg",
-            "value": "var(--color-surface-raised)",
-            "status": "stable",
-            "usedBy": [
-              "Dropdown"
-            ]
-          },
-          {
-            "cssVar": "--dropdown-option-hover-bg",
-            "value": "var(--color-bg-subtle)",
-            "status": "stable",
-            "usedBy": [
-              "Dropdown"
-            ]
-          },
-          {
-            "cssVar": "--dropdown-option-selected-bg",
-            "value": "var(--color-action-primary-subtle)",
-            "status": "stable",
-            "usedBy": [
-              "Dropdown"
-            ]
-          }
-        ],
-        "input": [
-          {
-            "cssVar": "--input-default-bg",
-            "value": "var(--color-surface-default)",
-            "status": "stable",
-            "usedBy": [
-              "Input"
-            ]
-          },
-          {
-            "cssVar": "--input-hover-bg",
-            "value": "var(--color-surface-default)",
-            "status": "stable",
-            "usedBy": [
-              "Input"
-            ]
-          },
-          {
-            "cssVar": "--input-focus-bg",
-            "value": "var(--color-surface-default)",
-            "status": "stable",
-            "usedBy": [
-              "Input"
-            ]
-          },
-          {
-            "cssVar": "--input-disabled-bg",
-            "value": "var(--color-bg-subtle)",
-            "status": "stable",
-            "usedBy": [
-              "Input"
-            ]
-          },
-          {
-            "cssVar": "--input-error-bg",
-            "value": "var(--color-surface-default)",
-            "status": "stable",
-            "usedBy": [
-              "Input"
-            ]
-          },
-          {
-            "cssVar": "--input-default-border",
-            "value": "var(--color-border-default)",
-            "status": "stable",
-            "usedBy": [
-              "Input"
-            ]
-          },
-          {
-            "cssVar": "--input-hover-border",
-            "value": "var(--color-border-strong)",
-            "status": "stable",
-            "usedBy": [
-              "Input"
-            ]
-          },
-          {
-            "cssVar": "--input-focus-border",
-            "value": "var(--color-border-focus)",
-            "status": "stable",
-            "usedBy": [
-              "Input"
-            ]
-          },
-          {
-            "cssVar": "--input-error-border",
-            "value": "var(--color-border-danger)",
-            "status": "stable",
-            "usedBy": [
-              "Input"
-            ]
-          },
-          {
-            "cssVar": "--input-correct-border",
-            "value": "var(--color-border-correct)",
-            "status": "stable",
-            "usedBy": [
-              "Input"
-            ]
-          },
-          {
-            "cssVar": "--input-disabled-border",
-            "value": "var(--color-border-default)",
-            "status": "stable",
-            "usedBy": [
-              "Input"
-            ]
-          },
-          {
-            "cssVar": "--select-disabled-border",
-            "value": "var(--color-border-subtle)",
-            "status": "stable",
-            "usedBy": [
-              "Select"
-            ]
-          },
-          {
-            "cssVar": "--input-placeholder-text",
-            "value": "var(--color-text-placeholder)",
-            "status": "stable",
-            "usedBy": [
-              "Input"
-            ]
-          },
-          {
-            "cssVar": "--input-helper-text",
-            "value": "var(--color-text-helper)",
-            "status": "stable",
-            "usedBy": [
-              "Input"
-            ]
-          },
-          {
-            "cssVar": "--input-error-text",
-            "value": "var(--color-text-danger)",
-            "status": "stable",
-            "usedBy": [
-              "Input"
-            ]
-          },
-          {
-            "cssVar": "--input-correct-text",
-            "value": "var(--color-text-correct)",
-            "status": "stable",
-            "usedBy": [
-              "Input"
-            ]
-          },
-          {
-            "cssVar": "--input-disabled-text",
-            "value": "var(--color-text-disabled)",
-            "status": "stable",
-            "usedBy": [
-              "Input"
-            ]
-          }
-        ],
-        "checkbox": [
-          {
-            "cssVar": "--checkbox-default-bg",
-            "value": "var(--color-surface-default)",
-            "status": "stable",
-            "usedBy": [
-              "Checkbox"
-            ]
-          },
-          {
-            "cssVar": "--checkbox-checked-bg",
-            "value": "var(--color-action-primary-default)",
-            "status": "stable",
-            "usedBy": [
-              "Checkbox"
-            ]
-          },
-          {
-            "cssVar": "--checkbox-indeterminate-bg",
-            "value": "var(--color-action-primary-default)",
-            "status": "stable",
-            "usedBy": [
-              "Checkbox"
-            ]
-          },
-          {
-            "cssVar": "--checkbox-disabled-bg",
-            "value": "var(--color-bg-subtle)",
-            "status": "stable",
-            "usedBy": [
-              "Checkbox"
-            ]
-          },
-          {
-            "cssVar": "--checkbox-default-border",
-            "value": "var(--color-border-default)",
-            "status": "stable",
-            "usedBy": [
-              "Checkbox"
-            ]
-          },
-          {
-            "cssVar": "--checkbox-hover-border",
-            "value": "var(--color-border-focus)",
-            "status": "stable",
-            "usedBy": [
-              "Checkbox"
-            ]
-          },
-          {
-            "cssVar": "--checkbox-checked-border",
-            "value": "var(--color-action-primary-default)",
-            "status": "stable",
-            "usedBy": [
-              "Checkbox"
-            ]
-          },
-          {
-            "cssVar": "--checkbox-disabled-border",
-            "value": "var(--color-border-subtle)",
-            "status": "stable",
-            "usedBy": [
-              "Checkbox"
-            ]
-          },
-          {
-            "cssVar": "--checkbox-check-icon",
-            "value": "var(--color-action-primary-text)",
-            "status": "stable",
-            "usedBy": [
-              "Checkbox"
-            ]
-          }
-        ],
-        "radio": [
-          {
-            "cssVar": "--radio-default-bg",
-            "value": "var(--color-surface-default)",
-            "status": "stable",
-            "usedBy": [
-              "Radio"
-            ]
-          },
-          {
-            "cssVar": "--radio-disabled-bg",
-            "value": "var(--color-bg-subtle)",
-            "status": "stable",
-            "usedBy": [
-              "Radio"
-            ]
-          },
-          {
-            "cssVar": "--radio-default-border",
-            "value": "var(--color-border-default)",
-            "status": "stable",
-            "usedBy": [
-              "Radio"
-            ]
-          },
-          {
-            "cssVar": "--radio-hover-border",
-            "value": "var(--color-border-focus)",
-            "status": "stable",
-            "usedBy": [
-              "Radio"
-            ]
-          },
-          {
-            "cssVar": "--radio-selected-border",
-            "value": "var(--color-action-primary-default)",
-            "status": "stable",
-            "usedBy": [
-              "Radio"
-            ]
-          },
-          {
-            "cssVar": "--radio-disabled-border",
-            "value": "var(--color-border-subtle)",
-            "status": "stable",
-            "usedBy": [
-              "Radio"
-            ]
-          },
-          {
-            "cssVar": "--radio-selected-dot",
-            "value": "var(--color-action-primary-default)",
-            "status": "stable",
-            "usedBy": [
-              "Radio"
-            ]
-          }
-        ],
-        "toggle": [
-          {
-            "cssVar": "--toggle-on-bg",
-            "value": "var(--color-action-primary-default)",
-            "status": "stable",
-            "usedBy": [
-              "Toggle"
-            ]
-          },
-          {
-            "cssVar": "--toggle-off-bg",
-            "value": "var(--color-border-default)",
-            "status": "stable",
-            "usedBy": [
-              "Toggle"
-            ]
-          },
-          {
-            "cssVar": "--toggle-disabled-bg",
-            "value": "var(--color-border-subtle)",
-            "status": "stable",
-            "usedBy": [
-              "Toggle"
-            ]
-          },
-          {
-            "cssVar": "--toggle-knob",
-            "value": "var(--color-action-primary-text)",
-            "status": "stable",
-            "usedBy": [
-              "Toggle"
-            ]
-          }
-        ],
-        "pagination": [
-          {
-            "cssVar": "--pagination-default-bg",
-            "value": "var(--color-surface-default)",
-            "status": "stable",
-            "usedBy": [
-              "Pagination"
-            ]
-          },
-          {
-            "cssVar": "--pagination-hover-bg",
-            "value": "var(--color-bg-subtle)",
-            "status": "stable",
-            "usedBy": [
-              "Pagination"
-            ]
-          },
-          {
-            "cssVar": "--pagination-active-bg",
-            "value": "var(--color-action-primary-default)",
-            "status": "stable",
-            "usedBy": [
-              "Pagination"
-            ]
-          },
-          {
-            "cssVar": "--pagination-disabled-bg",
-            "value": "var(--color-surface-default)",
-            "status": "stable",
-            "usedBy": [
-              "Pagination"
-            ]
-          },
-          {
-            "cssVar": "--pagination-default-text",
-            "value": "var(--color-text-secondary)",
-            "status": "stable",
-            "usedBy": [
-              "Pagination"
-            ]
-          },
-          {
-            "cssVar": "--pagination-active-text",
-            "value": "var(--color-action-primary-text)",
-            "status": "stable",
-            "usedBy": [
-              "Pagination"
-            ]
-          },
-          {
-            "cssVar": "--pagination-disabled-text",
-            "value": "var(--color-text-disabled)",
-            "status": "stable",
-            "usedBy": [
-              "Pagination"
-            ]
-          },
-          {
-            "cssVar": "--pagination-border",
-            "value": "var(--color-border-default)",
-            "status": "stable",
-            "usedBy": [
-              "Pagination"
-            ]
-          }
-        ],
-        "nav": [
-          {
-            "cssVar": "--nav-bg",
-            "value": "var(--color-surface-default)",
-            "status": "stable",
-            "usedBy": [
-              "Nav"
-            ]
-          },
-          {
-            "cssVar": "--nav-item-hover-bg",
-            "value": "var(--color-bg-subtle)",
-            "status": "stable",
-            "usedBy": [
-              "Nav"
-            ]
-          },
-          {
-            "cssVar": "--nav-item-active-bg",
-            "value": "var(--color-action-primary-subtle)",
-            "status": "stable",
-            "usedBy": [
-              "Nav"
-            ]
-          },
-          {
-            "cssVar": "--nav-item-default-text",
-            "value": "var(--color-text-tertiary)",
-            "status": "stable",
-            "usedBy": [
-              "Nav"
-            ]
-          },
-          {
-            "cssVar": "--nav-item-active-text",
-            "value": "var(--color-action-primary-default)",
-            "status": "stable",
-            "usedBy": [
-              "Nav"
-            ]
-          },
-          {
-            "cssVar": "--nav-item-default-icon",
-            "value": "var(--color-icon-default)",
-            "status": "stable",
-            "usedBy": [
-              "Nav"
-            ]
-          },
-          {
-            "cssVar": "--nav-item-active-icon",
-            "value": "var(--color-action-primary-default)",
-            "status": "stable",
-            "usedBy": [
-              "Nav"
-            ]
-          },
-          {
-            "cssVar": "--nav-item-indicator",
-            "value": "var(--color-action-primary-default)",
-            "status": "stable",
-            "usedBy": [
-              "Nav"
-            ]
-          },
-          {
-            "cssVar": "--nav-divider",
-            "value": "var(--color-border-subtle)",
-            "status": "stable",
-            "usedBy": [
-              "Nav"
-            ]
-          }
-        ],
-        "table": [
-          {
-            "cssVar": "--table-header-bg",
-            "value": "var(--color-bg-subtle)",
-            "status": "stable",
-            "usedBy": [
-              "Table"
-            ]
-          },
-          {
-            "cssVar": "--table-header-text",
-            "value": "var(--color-text-tertiary)",
-            "status": "stable",
-            "usedBy": [
-              "Table"
-            ]
-          },
-          {
-            "cssVar": "--table-header-border",
-            "value": "var(--color-border-default)",
-            "status": "stable",
-            "usedBy": [
-              "Table"
-            ]
-          },
-          {
-            "cssVar": "--table-row-default-bg",
-            "value": "var(--color-surface-default)",
-            "status": "stable",
-            "usedBy": [
-              "Table"
-            ]
-          },
-          {
-            "cssVar": "--table-row-hover-bg",
-            "value": "var(--color-bg-subtle)",
-            "status": "stable",
-            "usedBy": [
-              "Table"
-            ]
-          },
-          {
-            "cssVar": "--table-row-selected-bg",
-            "value": "var(--color-bg-selected)",
-            "status": "stable",
-            "usedBy": [
-              "Table"
-            ]
-          },
-          {
-            "cssVar": "--table-cell-border",
-            "value": "var(--color-border-subtle)",
-            "status": "stable",
-            "usedBy": [
-              "Table"
-            ]
-          },
-          {
-            "cssVar": "--table-cell-text",
-            "value": "var(--color-text-secondary)",
-            "status": "stable",
-            "usedBy": [
-              "Table"
-            ]
-          }
-        ]
-      }
+        }
+      },
+      "status": null,
+      "since": null,
+      "note": null
     },
     "figmaCssTokenMap": {
       "meta": {
@@ -5102,6 +5812,7 @@ window.REGISTRY_BUNDLE = {
           "scope": "active-pages"
         }
       ],
+      "_bgDepthScaleNote": "2026-06-30 배경 토큰을 깊이 스케일(--color-bg-level-0~3)로 재구성: DS 쪽(vars-data SEMANTIC_COLOR + tokens.css 생성물 + build-components)만 변경. 옛 --color-bg-default(→level-1)·subtle(→level-2)·muted(→level-3)·surface/* 는 포털 site-base.css 가 자체 정의(Variables 검수 제외)하므로 포털 페이지에 그대로 잔존해도 안 깨짐. renamedGroups(Check B 차단)에는 넣지 않는다 — site-base 가 여전히 정의하는 살아있는 포털 토큰이라 차단하면 건드리면 안 되는 포털 페이지 수정을 강제하게 됨.",
       "legacyFiles": [
         {
           "path": "assets/css/legacy-tokens.css",
@@ -5112,6 +5823,16 @@ window.REGISTRY_BUNDLE = {
           "path": "tokens/legacy/deprecated-reference.md",
           "reason": "폐기 variant 문서 아카이브. 검사 제외.",
           "since": "2026-06-16"
+        },
+        {
+          "path": "pages/legacy.html",
+          "reason": "레거시→정본 토큰 마이그레이션 가이드 페이지. '옛 토큰명'을 매핑 표에 의도적으로 나열하므로 doc-token-ref denylist(Gate 10) 검사에서 제외(옛 이름 보유가 목적). 리네임마다 충돌하던 구조 해소.",
+          "since": "2026-06-30"
+        },
+        {
+          "path": "registry/tokens/component.tokens.json",
+          "reason": "은퇴된 '컴포넌트-별칭 토큰층'(component→alias→semantic) 서술 데이터. 현행 정본은 build-components.ts 가 semantic 토큰에 직접 바인딩(scv) — 이 별칭층은 옛 아키텍처 잔재로 옛 semantic 토큰명을 참조. 유일 소비자=메뉴 숨김된 Registry Explorer 뷰어(2026-06-24 비노출). Gate 20(token-drift) 검사 제외. 활성 정본=vars-data.ts.",
+          "since": "2026-07-02"
         }
       ]
     },
@@ -8921,8 +9642,7 @@ window.REGISTRY_BUNDLE = {
             "--button-primary-disabled-border",
             "--button-primary-default-text",
             "--button-primary-disabled-text",
-            "--button-primary-default-icon",
-            "--button-primary-focus-ring"
+            "--button-primary-default-icon"
           ]
         },
         "secondary": {
@@ -8939,8 +9659,7 @@ window.REGISTRY_BUNDLE = {
             "--button-secondary-default-text",
             "--button-secondary-disabled-text",
             "--button-secondary-default-icon",
-            "--button-secondary-disabled-icon",
-            "--button-secondary-focus-ring"
+            "--button-secondary-disabled-icon"
           ]
         },
         "blue-line": {
@@ -8956,8 +9675,7 @@ window.REGISTRY_BUNDLE = {
             "--button-blue-line-hover-border",
             "--button-blue-line-disabled-border",
             "--button-blue-line-default-text",
-            "--button-blue-line-disabled-text",
-            "--button-blue-line-focus-ring"
+            "--button-blue-line-disabled-text"
           ]
         }
       },
@@ -8996,11 +9714,6 @@ window.REGISTRY_BUNDLE = {
           "--button-primary-default-icon",
           "--button-secondary-default-icon",
           "--button-secondary-disabled-icon"
-        ],
-        "focus": [
-          "--button-primary-focus-ring",
-          "--button-secondary-focus-ring",
-          "--button-blue-line-focus-ring"
         ]
       },
       "sizing": {
@@ -10530,25 +11243,25 @@ window.REGISTRY_BUNDLE = {
         },
         {
           "name": "--table-row-default-bg",
-          "value": "var(--color-surface-default)",
+          "value": "var(--color-table-cell-default)",
           "resolvedLight": "#FFFFFF",
           "figmaVariable": "color/table/cell/default",
           "status": "stable",
-          "description": "행 기본 배경"
+          "description": "행 기본 배경 — Light: base/white (#FFFFFF) / Dark: gray-dark-100 (#1C1D23)"
         },
         {
           "name": "--table-row-hover-bg",
-          "value": "var(--color-bg-subtle)",
+          "value": "var(--color-table-cell-hover)",
           "resolvedLight": "#F5F5F5",
           "figmaVariable": "color/table/cell/hover",
           "status": "stable",
-          "description": "행 hover 배경 — Light: gray-50 (#F5F5F5) / Dark: blue-dark-100 (#112B55, --color-table-cell-hover)"
+          "description": "행 hover 배경 — Light: gray-50 (#F5F5F5) / Dark: gray-dark-200 (#24252C)"
         },
         {
           "name": "--table-row-selected-bg",
-          "value": "var(--color-bg-selected)",
+          "value": "var(--color-table-cell-selected)",
           "resolvedLight": "#E2F1FF",
-          "figmaVariable": "",
+          "figmaVariable": "color/table/cell/selected",
           "status": "stable",
           "description": "행 선택 배경 — Light: blue-50 (#E2F1FF) / Dark: blue-dark-100 (#112B55). hover(gray-50)와 시각 구분 확정(HD-Table-2)"
         },
@@ -11097,9 +11810,93 @@ window.REGISTRY_BUNDLE = {
     }
   },
   "reportsIndex": {
-    "generatedAt": "2026-06-24T06:45:23.687Z",
-    "totalCount": 56,
+    "generatedAt": "2026-07-02T23:38:24.828Z",
+    "totalCount": 62,
     "reports": [
+      {
+        "id": "modal-component-spec",
+        "filename": "modal-component-spec.md",
+        "title": "Modal (공통 팝업) 규격 문서 — 초안",
+        "stage": "Audit",
+        "category": "audit",
+        "status": "archive",
+        "sourcePath": "reports/modal-component-spec.md",
+        "updatedAt": "2026-07-03",
+        "summary": "작성 2026-07-03 · 상태: **초안(검토 대기)** · 근거: 레거시 원본 3세트 분석(파일 `P8YvnCdGkQLDNVQhW74ZZW`) + 실측 토큰(get_variable_defs)",
+        "fileSizeKB": 10.3
+      },
+      {
+        "id": "build-components-token-extraction",
+        "filename": "build-components-token-extraction.md",
+        "title": "build-components.ts Token Extraction Report",
+        "stage": "Audit",
+        "category": "audit",
+        "status": "archive",
+        "sourcePath": "reports/build-components-token-extraction.md",
+        "updatedAt": "2026-07-02",
+        "summary": "Analyzed all **18 target builder functions** for direct token variable calls.",
+        "fileSizeKB": 7.6
+      },
+      {
+        "id": "harness-audit-2026-07-02",
+        "filename": "harness-audit-2026-07-02.md",
+        "title": "Harness Audit Report — 2026-07-02",
+        "stage": "Audit",
+        "category": "audit",
+        "status": "archive",
+        "sourcePath": "reports/harness-audit-2026-07-02.md",
+        "updatedAt": "2026-07-02",
+        "summary": "- ✅ [button] 모든 사이즈 분기 존재 (medium (h44) / xsmall (h34) / xxsmall (h28) / mobile (h48))",
+        "fileSizeKB": 2
+      },
+      {
+        "id": "phase-1c-completion-summary",
+        "filename": "phase-1c-completion-summary.md",
+        "title": "Phase 1C: HTML Token Details Generation - Completion Summary",
+        "stage": "Audit",
+        "category": "audit",
+        "status": "complete",
+        "sourcePath": "reports/phase-1c-completion-summary.md",
+        "updatedAt": "2026-07-02",
+        "summary": "✅ **18 HTML Token Details sections successfully generated** from `registry/tokens/component.tokens.json`",
+        "fileSizeKB": 3.9
+      },
+      {
+        "id": "token-details-18-components",
+        "filename": "token-details-18-components.md",
+        "title": "Token Details HTML Generation — 18 New Components",
+        "stage": "Audit",
+        "category": "audit",
+        "status": "complete",
+        "sourcePath": "reports/token-details-18-components.md",
+        "updatedAt": "2026-07-02",
+        "summary": "18 components missing Token Details sections have been generated with complete HTML ready for insertion.",
+        "fileSizeKB": 20.9
+      },
+      {
+        "id": "harness-audit-2026-06-30",
+        "filename": "harness-audit-2026-06-30.md",
+        "title": "Harness Audit Report — 2026-06-30",
+        "stage": "Audit",
+        "category": "audit",
+        "status": "archive",
+        "sourcePath": "reports/harness-audit-2026-06-30.md",
+        "updatedAt": "2026-06-30",
+        "summary": "- ✅ [button] 모든 사이즈 분기 존재 (medium (h44) / xsmall (h34) / xxsmall (h28) / mobile (h48))",
+        "fileSizeKB": 2
+      },
+      {
+        "id": "mvp-t2-token-sync",
+        "filename": "mvp-t2-token-sync.md",
+        "title": "MVP-T2 Token Sync Plugin Report",
+        "stage": "T2",
+        "category": "token",
+        "status": "archive",
+        "sourcePath": "reports/mvp-t2-token-sync.md",
+        "updatedAt": "2026-06-30",
+        "summary": "MVP-T1에서 구축한 CSS Token ↔ Registry Token ↔ Figma Variable mapping registry를 기반으로,",
+        "fileSizeKB": 5.2
+      },
       {
         "id": "button-sync-check",
         "filename": "button-sync-check.md",
@@ -11110,7 +11907,7 @@ window.REGISTRY_BUNDLE = {
         "sourcePath": "reports/button-sync-check.md",
         "updatedAt": "2026-06-17",
         "summary": "- **Variants:** primary, secondary, blue-line",
-        "fileSizeKB": 3.3
+        "fileSizeKB": 3.4
       },
       {
         "id": "changelog-archive",
@@ -11146,7 +11943,7 @@ window.REGISTRY_BUNDLE = {
         "sourcePath": "reports/harness-audit-2026-06-16.md",
         "updatedAt": "2026-06-16",
         "summary": "- ✅ [button] 모든 사이즈 분기 존재 (medium (h44) / xsmall (h34) / xxsmall (h28) / mobile (h48))",
-        "fileSizeKB": 2.1
+        "fileSizeKB": 2.2
       },
       {
         "id": "harness-audit-2026-06-15",
@@ -11278,7 +12075,7 @@ window.REGISTRY_BUNDLE = {
         "sourcePath": "reports/mvp-f1-apply-result.md",
         "updatedAt": "2026-05-20",
         "summary": "총 53개 unique variable 확인. legacy-token-usage-map.json 미등록 항목: **22개**.",
-        "fileSizeKB": 95
+        "fileSizeKB": 96.9
       },
       {
         "id": "mvp-l1-legacy-token-audit",
@@ -11290,7 +12087,7 @@ window.REGISTRY_BUNDLE = {
         "sourcePath": "reports/mvp-l1-legacy-token-audit.md",
         "updatedAt": "2026-05-20",
         "summary": "S1 UX 디자인가이드 2.4의 현재 Figma Variables를 legacy source snapshot으로 수집하고,",
-        "fileSizeKB": 26.4
+        "fileSizeKB": 26.6
       },
       {
         "id": "mvp-l2-foundation-reclassification",
@@ -11302,7 +12099,7 @@ window.REGISTRY_BUNDLE = {
         "sourcePath": "reports/mvp-l2-foundation-reclassification.md",
         "updatedAt": "2026-05-20",
         "summary": "Foundation Token → Semantic Token → Component Token",
-        "fileSizeKB": 4.4
+        "fileSizeKB": 4.5
       },
       {
         "id": "mvp-l2-legacy-token-classification",
@@ -11314,7 +12111,7 @@ window.REGISTRY_BUNDLE = {
         "sourcePath": "reports/mvp-l2-legacy-token-classification.md",
         "updatedAt": "2026-05-20",
         "summary": "`surface/status/main/primary`, `/sub/primary`, `/main/secondary`, `/sub/secondary`, `/main/tertiary`, `/sub/tertiary`",
-        "fileSizeKB": 13.1
+        "fileSizeKB": 13.3
       },
       {
         "id": "mvp-c0-component-token-coverage-pilot",
@@ -11326,7 +12123,7 @@ window.REGISTRY_BUNDLE = {
         "sourcePath": "reports/mvp-c0-component-token-coverage-pilot.md",
         "updatedAt": "2026-05-19",
         "summary": "기준 파일: assets/css/tokens.css · registry/tokens/canonical-token-draft.json · canonical-token-promotion-plan.json · token-aliases.json · tokens/component-tokens-extracted.md · pages/components.html",
-        "fileSizeKB": 9.3
+        "fileSizeKB": 9.4
       },
       {
         "id": "mvp-f0-figma-variable-usage-audit",
@@ -11338,7 +12135,7 @@ window.REGISTRY_BUNDLE = {
         "sourcePath": "reports/mvp-f0-figma-variable-usage-audit.md",
         "updatedAt": "2026-05-19",
         "summary": "Method: Figma MCP (`get_metadata`, `get_variable_defs`, `get_design_context`, `search_design_system`)",
-        "fileSizeKB": 12.9
+        "fileSizeKB": 13.1
       },
       {
         "id": "mvp-l4-5-token-coverage-review",
@@ -11350,7 +12147,7 @@ window.REGISTRY_BUNDLE = {
         "sourcePath": "reports/mvp-l4-5-token-coverage-review.md",
         "updatedAt": "2026-05-19",
         "summary": "단계: L5 Canonical Token Promotion 전 보정/분류/검토",
-        "fileSizeKB": 12.9
+        "fileSizeKB": 13.2
       },
       {
         "id": "mvp-l5-canonical-token-promotion-plan",
@@ -11362,7 +12159,7 @@ window.REGISTRY_BUNDLE = {
         "sourcePath": "reports/mvp-l5-canonical-token-promotion-plan.md",
         "updatedAt": "2026-05-19",
         "summary": "Promotion plan for canonical token v0.1 candidates based on legacy audit (MVP-L1 ~ L4.5), component coverage (C0), and Figma variable usage audit (F0). Incorporates HD-L4.5-A, HD-L4.5-B, HD-L4.5-C decisions.",
-        "fileSizeKB": 28.4,
+        "fileSizeKB": 28.9,
         "version": "0.1.0",
         "enrichedFrom": "registry/tokens/canonical-token-promotion-plan.json"
       },
@@ -11376,7 +12173,7 @@ window.REGISTRY_BUNDLE = {
         "sourcePath": "reports/mvp-l3-canonical-token-architecture-draft.md",
         "updatedAt": "2026-05-18",
         "summary": "⚠️ 이 단계에서 금지된 작업: Figma Variable rename/write/delete · 레거시 토큰 삭제 · 정식 확정 · Figma 파일 직접 수정",
-        "fileSizeKB": 18.3
+        "fileSizeKB": 18.7
       },
       {
         "id": "mvp-l4-canonical-token-review",
@@ -11388,7 +12185,7 @@ window.REGISTRY_BUNDLE = {
         "sourcePath": "reports/mvp-l4-canonical-token-review.md",
         "updatedAt": "2026-05-18",
         "summary": "Figma Variable write/rename/delete · UX Guide 2.4 운영 파일 수정 · Legacy token 삭제 · promote-candidate를 최종 canonical로 자동 확정",
-        "fileSizeKB": 14
+        "fileSizeKB": 14.3
       },
       {
         "id": "mvp-t1-token-mapping",
@@ -11400,7 +12197,7 @@ window.REGISTRY_BUNDLE = {
         "sourcePath": "reports/mvp-t1-token-mapping.md",
         "updatedAt": "2026-05-18",
         "summary": "CSS 토큰과 Figma Variables가 서로 다른 이름을 사용하더라도 같은 의미로 연결될 수 있는 매핑 기준을 구축한다.",
-        "fileSizeKB": 11.6
+        "fileSizeKB": 11.8
       },
       {
         "id": "mvp-t2-figma-variable-metadata",
@@ -11412,7 +12209,7 @@ window.REGISTRY_BUNDLE = {
         "sourcePath": "reports/mvp-t2-figma-variable-metadata.md",
         "updatedAt": "2026-05-18",
         "summary": "Figma Variables metadata를 수집하고,",
-        "fileSizeKB": 7.7
+        "fileSizeKB": 7.8
       },
       {
         "id": "mvp-t2-not-found-variable-name-review",
@@ -11424,19 +12221,7 @@ window.REGISTRY_BUNDLE = {
         "sourcePath": "reports/mvp-t2-not-found-variable-name-review.md",
         "updatedAt": "2026-05-18",
         "summary": "registry의 `figmaVariable` 경로는 MVP-T1 단계에서 Figma Variables 이름을 직접 조회하지 않고 **의미 기반 추정**으로 작성된 경로다.",
-        "fileSizeKB": 11.6
-      },
-      {
-        "id": "mvp-t2-token-sync",
-        "filename": "mvp-t2-token-sync.md",
-        "title": "MVP-T2 Token Sync Plugin Report",
-        "stage": "T2",
-        "category": "token",
-        "status": "archive",
-        "sourcePath": "reports/mvp-t2-token-sync.md",
-        "updatedAt": "2026-05-18",
-        "summary": "MVP-T1에서 구축한 CSS Token ↔ Registry Token ↔ Figma Variable mapping registry를 기반으로,",
-        "fileSizeKB": 5
+        "fileSizeKB": 11.8
       },
       {
         "id": "source-guard-bad-service",
@@ -11448,7 +12233,7 @@ window.REGISTRY_BUNDLE = {
         "sourcePath": "reports/source-guard-bad-service.md",
         "updatedAt": "2026-05-18",
         "summary": "- **Path:** `/Users/designgroup_02/S1_AI_DESIGN_GUIDE/scripts/guard/__fixtures__/bad-service`",
-        "fileSizeKB": 4.9
+        "fileSizeKB": 5
       },
       {
         "id": "token-page-audit-2026-05-18",
@@ -11460,7 +12245,7 @@ window.REGISTRY_BUNDLE = {
         "sourcePath": "reports/token-page-audit-2026-05-18.md",
         "updatedAt": "2026-05-18",
         "summary": "검수 목적: `assets/css/tokens.css` 실제 값 vs `pages/foundation.html` / `pages/semantic.html` 표시 값 일치 여부 확인",
-        "fileSizeKB": 5.3
+        "fileSizeKB": 5.4
       },
       {
         "id": "mvp3-4-1-button-sync",
@@ -11472,7 +12257,7 @@ window.REGISTRY_BUNDLE = {
         "sourcePath": "reports/mvp3-4-1-button-sync.md",
         "updatedAt": "2026-05-12",
         "summary": "Button 관련 파일 전체 정합성 점검 + Figma MCP 비교 결과 반영 + 자동화 동기화 스크립트 구축.",
-        "fileSizeKB": 5.2
+        "fileSizeKB": 5.3
       },
       {
         "id": "mvp3-4-button-figma-mcp-comparison",
@@ -11484,7 +12269,7 @@ window.REGISTRY_BUNDLE = {
         "sourcePath": "reports/mvp3-4-button-figma-mcp-comparison.md",
         "updatedAt": "2026-05-12",
         "summary": "- **파일:** SW-UX-GUIDE V2.4 (`yE5UCFEbmXJBlYJWB24Lz2`)",
-        "fileSizeKB": 11.1
+        "fileSizeKB": 11.3
       },
       {
         "id": "mvp3-5-source-guard",
@@ -11496,7 +12281,7 @@ window.REGISTRY_BUNDLE = {
         "sourcePath": "reports/mvp3-5-source-guard.md",
         "updatedAt": "2026-05-12",
         "summary": "External service target scanning based on SW Design System registry.",
-        "fileSizeKB": 4.2
+        "fileSizeKB": 4.4
       },
       {
         "id": "mvp3-6-source-guard-fix-suggestions",
@@ -11508,7 +12293,7 @@ window.REGISTRY_BUNDLE = {
         "sourcePath": "reports/mvp3-6-source-guard-fix-suggestions.md",
         "updatedAt": "2026-05-12",
         "summary": "Generate fix suggestions for external service target violations detected by Source Guard.",
-        "fileSizeKB": 5.7
+        "fileSizeKB": 5.8
       },
       {
         "id": "mvp3-7-source-guard-apply-mode",
@@ -11520,7 +12305,7 @@ window.REGISTRY_BUNDLE = {
         "sourcePath": "reports/mvp3-7-source-guard-apply-mode.md",
         "updatedAt": "2026-05-12",
         "summary": "Apply high-confidence Source Guard fix suggestions to external service targets with explicit approval.",
-        "fileSizeKB": 4.8
+        "fileSizeKB": 4.9
       },
       {
         "id": "mvp3-8-source-guard-ci-dry-run",
@@ -11532,7 +12317,7 @@ window.REGISTRY_BUNDLE = {
         "sourcePath": "reports/mvp3-8-source-guard-ci-dry-run.md",
         "updatedAt": "2026-05-12",
         "summary": "Run Source Guard checks and dry-run reports through GitHub Actions.",
-        "fileSizeKB": 4.1
+        "fileSizeKB": 4.2
       },
       {
         "id": "mvp4-1-input-patterns",
@@ -11544,7 +12329,7 @@ window.REGISTRY_BUNDLE = {
         "sourcePath": "reports/mvp4-1-input-patterns.md",
         "updatedAt": "2026-05-12",
         "summary": "Search Input, Password Field, and Input with Unit are **not** treated as full Patterns.",
-        "fileSizeKB": 3.6
+        "fileSizeKB": 3.7
       },
       {
         "id": "mvp4-2-input-composed-fields",
@@ -11556,7 +12341,7 @@ window.REGISTRY_BUNDLE = {
         "sourcePath": "reports/mvp4-2-input-composed-fields.md",
         "updatedAt": "2026-05-12",
         "summary": "MVP4.1에서 Related Composed Fields를 등록했으나, Search Input의 slot 구조가 Figma 기준과 다르게 구현되었습니다.",
-        "fileSizeKB": 6.9
+        "fileSizeKB": 7.1
       },
       {
         "id": "mvp4-3-a-date-picker",
@@ -11568,7 +12353,7 @@ window.REGISTRY_BUNDLE = {
         "sourcePath": "reports/mvp4-3-a-date-picker.md",
         "updatedAt": "2026-05-12",
         "summary": "DatePicker를 Input의 state/variant로 포함하지 않고 별도 컴포넌트 후보로 정리한다.",
-        "fileSizeKB": 15.1
+        "fileSizeKB": 15.4
       },
       {
         "id": "pre-mvp4-input-classification",
@@ -11580,7 +12365,7 @@ window.REGISTRY_BUNDLE = {
         "sourcePath": "reports/pre-mvp4-input-classification.md",
         "updatedAt": "2026-05-12",
         "summary": "Section 2 (6443:5451) 하위 7개 Frame을 분석한 결과:",
-        "fileSizeKB": 23
+        "fileSizeKB": 23.6
       },
       {
         "id": "source-guard-apply-log-bad-service",
@@ -11604,7 +12389,7 @@ window.REGISTRY_BUNDLE = {
         "sourcePath": "reports/source-guard-apply-log-bad-service-apply-test.md",
         "updatedAt": "2026-05-12",
         "summary": "- **Path:** `/tmp/bad-service-apply-test`",
-        "fileSizeKB": 5
+        "fileSizeKB": 5.1
       },
       {
         "id": "source-guard-fix-suggestions-bad-service",
@@ -11616,7 +12401,7 @@ window.REGISTRY_BUNDLE = {
         "sourcePath": "reports/source-guard-fix-suggestions-bad-service.md",
         "updatedAt": "2026-05-12",
         "summary": "- **Path:** `/Users/designgroup_02/S1_AI_DESIGN_GUIDE/scripts/guard/__fixtures__/bad-service`",
-        "fileSizeKB": 10.8
+        "fileSizeKB": 11.2
       },
       {
         "id": "component-review",
@@ -11624,11 +12409,11 @@ window.REGISTRY_BUNDLE = {
         "title": "Component Review",
         "stage": "Audit",
         "category": "audit",
-        "status": "complete",
+        "status": "stable",
         "sourcePath": "reports/component-review.md",
         "updatedAt": "2026-05-11",
         "summary": "생성: 2026-05-11 / Phase: MVP0",
-        "fileSizeKB": 0.9
+        "fileSizeKB": 1
       },
       {
         "id": "darkmode-review",
@@ -11640,7 +12425,7 @@ window.REGISTRY_BUNDLE = {
         "sourcePath": "reports/darkmode-review.md",
         "updatedAt": "2026-05-11",
         "summary": "생성: 2026-05-11 / Phase: MVP0",
-        "fileSizeKB": 1.1
+        "fileSizeKB": 1.2
       },
       {
         "id": "figma-map-review",
@@ -11676,7 +12461,7 @@ window.REGISTRY_BUNDLE = {
         "sourcePath": "reports/mvp1-token-registry-review.md",
         "updatedAt": "2026-05-11",
         "summary": "- [x] `registry/tokens/foundation.colors.json` — 전면 업데이트 (22개 색상 그룹, V2.4 원본 HEX 직접 반영)",
-        "fileSizeKB": 6
+        "fileSizeKB": 6.1
       },
       {
         "id": "mvp2-portal-registry-review",
@@ -11700,7 +12485,7 @@ window.REGISTRY_BUNDLE = {
         "sourcePath": "reports/mvp3-2-button-audit-fix.md",
         "updatedAt": "2026-05-11",
         "summary": "Complete (blue-line token 추가, ghost 제거, HTML/CSS code view 추가)",
-        "fileSizeKB": 4.8
+        "fileSizeKB": 4.9
       },
       {
         "id": "mvp3-3-button-components-integration",
@@ -11712,7 +12497,7 @@ window.REGISTRY_BUNDLE = {
         "sourcePath": "reports/mvp3-3-button-components-integration.md",
         "updatedAt": "2026-05-11",
         "summary": "Components > Button integration, existing document alignment, duplicate registry menu cleanup, and ACTION test column addition.",
-        "fileSizeKB": 6.1
+        "fileSizeKB": 6.2
       },
       {
         "id": "mvp3-3-portal-ia-review",
@@ -11736,7 +12521,7 @@ window.REGISTRY_BUNDLE = {
         "sourcePath": "reports/mvp3-button-review.md",
         "updatedAt": "2026-05-11",
         "summary": "Draft (harness 구현 완료, Figma 시각 비교 검수 미완료)",
-        "fileSizeKB": 6.4
+        "fileSizeKB": 6.5
       },
       {
         "id": "mvp3-core-harness-review",
@@ -11760,7 +12545,7 @@ window.REGISTRY_BUNDLE = {
         "sourcePath": "reports/token-guide-update-dark-border.md",
         "updatedAt": "2026-05-11",
         "summary": "Complete (policy 반영, token candidate 전환)",
-        "fileSizeKB": 3.9
+        "fileSizeKB": 4
       },
       {
         "id": "token-review",
@@ -11772,7 +12557,7 @@ window.REGISTRY_BUNDLE = {
         "sourcePath": "reports/token-review.md",
         "updatedAt": "2026-05-11",
         "summary": "생성: 2026-05-11 / Phase: MVP0",
-        "fileSizeKB": 1
+        "fileSizeKB": 1.1
       }
     ]
   }

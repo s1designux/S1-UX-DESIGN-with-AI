@@ -1329,7 +1329,7 @@ Claude는 **Main Orchestrator**다. 사용자는 **목표 수준 의도**만 준
   7. Gate 7 (Token Sync Monitor) — 토큰 값(tokens.css·vars-data·semantic.html·registry) 변경 시 / 항상 (site-base.css = 사이트 전용·검수 제외)
   8. Gate 8 (Component Key Coverage) — build-components.ts 또는 vars-data.ts 변경 시 / 항상
   9. Gate 9 (Number/Sizing Page Consistency) — number 토큰(sizing·spacing·radius·border-width·font·opacity·breakpoint)·foundation/semantic 페이지 변경 시 / 항상
-  10. Gate 10 (Doc Token Reference Drift) — 가이드/레퍼런스 HTML(ai-snippets·guide-md 등) 토큰 참조 / 항상. Check B(rename denylist 잔재)=차단 · Check A(미정의 --color-* 참조)=경고
+  10. Gate 10 (Doc Token Reference Drift) — 가이드/레퍼런스 HTML(ai-snippets·guide-md 등) 토큰 참조 / 항상. Check B(rename denylist 잔재)=차단 · Check A(미정의 --color-* 참조)=경고 · Check C(폐기·삭제 토큰이 활성 페이지 재유입 + Token Details 값칸 '(none)/미정의' 유령행)=차단 — 삭제한 사양(예: --button-*-focus-ring)이 문서 사본에서 되살아나는 것 방지
   11. Gate 11 (Component Anatomy) — build-components.ts 변경 시 / 항상. 상태별 필수 하위 요소(caret·remove 등) 생성 여부 강제(구조 사각지대)
   12. Gate 12 (Icon Instance Policy) — build-components.ts 변경 시 / 항상. 아이콘=라이브러리 인스턴스 강제, 벡터 직삽입은 allow 마커 필수
   13. Gate 13 (Installer Build Verification) — build-components.ts 변경 시 / 항상. 내용이 독립 검증(component-verifier) 거쳤는지 해시로 강제. ⭐ 단독 빌드+자가검증 차단
@@ -1345,7 +1345,7 @@ Claude는 **Main Orchestrator**다. 사용자는 **목표 수준 의도**만 준
 
 스크립트 일괄 실행: `npm run gate:check` (Gate 1 + 3 + 4 + 6 + 7 + 8 + 9 + 10 + 11 + 12 + 13 + 14 + 15 + 16 + 17 + 18 + 19 + 20 + 21 자동)
 
-> **Gate 10 (doc-token-ref-check):** 토큰을 rename/remove 하면 옛 이름을 쥔 가이드 문서가 자동 적발된다. **정본 rename 시 `registry/tokens/deprecated-tokens.json` 의 `renamedGroups` 에 `{from,to}` 한 줄 추가**하면 이후 게이트가 전 활성 페이지에서 잔재를 차단(Check B). `--color-*` 참조 존재성은 Check A(경고)로 가시화. 단독 실행 `npm run docs:tokencheck`. `components.html`(폐기 예정)은 검사 제외.
+> **Gate 10 (doc-token-ref-check):** 토큰을 rename/remove 하면 옛 이름을 쥔 가이드 문서가 자동 적발된다. **정본 rename 시 `registry/tokens/deprecated-tokens.json` 의 `renamedGroups` 에 `{from,to}` 한 줄 추가**하면 이후 게이트가 전 활성 페이지에서 잔재를 차단(Check B). `--color-*` 참조 존재성은 Check A(경고)로 가시화. **정본 삭제 시 `deprecated-tokens.json` 의 `deprecatedTokens` 에 `{cssVariable}` 한 줄 추가**하면 Check C 가 그 폐기 토큰(컴포넌트 토큰 `--button-*`·`--input-*` 포함, 와일드카드)이 활성 페이지에 **재유입되는 것을 차단**한다(예: 삭제한 `--button-*-focus-ring` 이 Token Details 에 되살아남 방지). 또 Token Details 값 칸이 `(none)`·`미정의` 로 **존재하지 않는 토큰을 문서화하면 차단**(없는 토큰은 행 삭제 — 이 유령행이 레거시 재유입 통로였음, 2026-07-03 신설). 단독 실행 `npm run docs:tokencheck`. `components.html`(폐기 예정)은 검사 제외.
 
 > **🗂️ 레거시 격리 규약 (2026-06-16):** 활성 정본과 레거시를 **파일 단위로 분리**해 검사 제외한다. 폐기 토큰 CSS = `assets/css/legacy-tokens.css`(미로드), 폐기 문서 = `tokens/legacy/deprecated-reference.md`(아카이브). **단일 정본 = `registry/tokens/deprecated-tokens.json`**(`deprecatedTokens[].cssVariable`·`renamedGroups`·`legacyFiles`). 공용 필터 `scripts/lib/legacy-skip.js`(`isDeprecatedToken`·`isLegacyFile`)를 게이트가 공유 → **새 폐기 건은 deprecated-tokens.json 에 등록만 하면 전 검사에서 자동 제외**. 와일드카드 `--button-ghost-*` 형태 지원. 신규 게이트도 이 헬퍼를 import 해 레거시를 건너뛴다.
 
