@@ -1974,7 +1974,7 @@
     <div class="page-header">
       <div class="page-header-inner">
         <div>
-          <h1>Components</h1>
+          <h1 id="page-title">Components</h1>
           <p>Figma 컴포넌트 세트 직접 대조 · Variables 정본(control/* 등) 직접 참조</p>
         </div>
       </div>
@@ -1993,24 +1993,24 @@
           <button class="category-btn" onclick="filterByCategory('navigation', this)">Navigation</button>
         </div>
         <div class="comp-nav">
-          <button class="comp-nav-btn is-active" data-category="actions" onclick="showSection('button', this)">Button</button>
-          <button class="comp-nav-btn" data-category="selection" onclick="showSection('checkbox', this)">Checkbox</button>
-          <button class="comp-nav-btn" data-category="selection" onclick="showSection('radio', this)">Radio</button>
-          <button class="comp-nav-btn" data-category="selection" onclick="showSection('toggle', this)">Toggle</button>
-          <button class="comp-nav-btn" data-category="selection" onclick="showSection('multi-toggle', this)">Multi Toggle</button>
-          <button class="comp-nav-btn" data-category="selection" onclick="showSection('chip', this)">Chip</button>
-          <button class="comp-nav-btn" data-category="selection" onclick="showSection('filter-chip', this)">Filter Chip</button>
-          <button class="comp-nav-btn" data-category="form" onclick="showSection('input', this)">Input</button>
-          <button class="comp-nav-btn" data-category="form" onclick="showSection('date-picker', this)">Date Picker</button>
-          <button class="comp-nav-btn" data-category="form" onclick="showSection('time-picker', this)">Time Picker</button>
-          <button class="comp-nav-btn" data-category="form" onclick="showSection('textarea', this)">Textarea</button>
-          <button class="comp-nav-btn" data-category="form" onclick="showSection('select', this)">Select</button>
-          <button class="comp-nav-btn" data-category="form" onclick="showSection('dropdown', this)">Dropdown</button>
-          <button class="comp-nav-btn" data-category="table" onclick="showSection('table', this)">Table</button>
-          <button class="comp-nav-btn" data-category="navigation" onclick="showSection('tab', this)">Line Tab</button>
-          <button class="comp-nav-btn" data-category="navigation" onclick="showSection('gnb', this)">GNB</button>
-          <button class="comp-nav-btn" data-category="navigation" onclick="showSection('pagination', this)">Pagination</button>
-          <button class="comp-nav-btn" data-category="navigation" onclick="showSection('mobile-bottom-nav', this)">Mobile Bottom Nav</button>
+          <button class="comp-nav-btn is-active" data-category="actions" data-platforms="pc mobile" onclick="showSection('button', this)">Button</button>
+          <button class="comp-nav-btn" data-category="selection" data-platforms="pc mobile" onclick="showSection('checkbox', this)">Checkbox</button>
+          <button class="comp-nav-btn" data-category="selection" data-platforms="pc mobile" onclick="showSection('radio', this)">Radio</button>
+          <button class="comp-nav-btn" data-category="selection" data-platforms="pc mobile" onclick="showSection('toggle', this)">Toggle</button>
+          <button class="comp-nav-btn" data-category="selection" data-platforms="pc" onclick="showSection('multi-toggle', this)">Multi Toggle</button>
+          <button class="comp-nav-btn" data-category="selection" data-platforms="pc mobile" onclick="showSection('chip', this)">Chip</button>
+          <button class="comp-nav-btn" data-category="selection" data-platforms="pc mobile" onclick="showSection('filter-chip', this)">Filter Chip</button>
+          <button class="comp-nav-btn" data-category="form" data-platforms="pc mobile" onclick="showSection('input', this)">Input</button>
+          <button class="comp-nav-btn" data-category="form" data-platforms="pc mobile" onclick="showSection('date-picker', this)">Date Picker</button>
+          <button class="comp-nav-btn" data-category="form" data-platforms="pc mobile" onclick="showSection('time-picker', this)">Time Picker</button>
+          <button class="comp-nav-btn" data-category="form" data-platforms="pc mobile" onclick="showSection('textarea', this)">Textarea</button>
+          <button class="comp-nav-btn" data-category="form" data-platforms="pc mobile" onclick="showSection('select', this)">Select</button>
+          <button class="comp-nav-btn" data-category="form" data-platforms="pc" onclick="showSection('dropdown', this)">Dropdown</button>
+          <button class="comp-nav-btn" data-category="table" data-platforms="pc" onclick="showSection('table', this)">Table</button>
+          <button class="comp-nav-btn" data-category="navigation" data-platforms="pc mobile" onclick="showSection('tab', this)">Line Tab</button>
+          <button class="comp-nav-btn" data-category="navigation" data-platforms="pc" onclick="showSection('gnb', this)">GNB</button>
+          <button class="comp-nav-btn" data-category="navigation" data-platforms="pc" onclick="showSection('pagination', this)">Pagination</button>
+          <button class="comp-nav-btn" data-category="navigation" data-platforms="mobile" onclick="showSection('mobile-bottom-nav', this)">Mobile Bottom Nav</button>
         </div><!-- /comp-nav -->
       </div><!-- /component-filter -->
 
@@ -2021,13 +2021,6 @@
           <div class="theme-toggle">
             <button class="theme-btn active" id="btnLight" onclick="setTheme('light')">Light</button>
             <button class="theme-btn" id="btnDark" onclick="setTheme('dark')">Dark</button>
-          </div>
-          <div class="theme-bar-divider"></div>
-          <span class="theme-bar-label">Platform</span>
-          <div class="theme-toggle">
-            <button class="theme-btn" id="btnAll" onclick="setPlatform('all')">All</button>
-            <button class="theme-btn active" id="btnPC" onclick="setPlatform('pc')">PC</button>
-            <button class="theme-btn" id="btnMobile" onclick="setPlatform('mobile')">Mobile</button>
           </div>
           <div class="theme-bar-divider"></div>
           <div class="theme-toggle">
@@ -8019,7 +8012,9 @@ document.addEventListener('click', function(e) {
     document.querySelectorAll('.category-btn').forEach(b => b.classList.remove('is-active'));
     if (btn) btn.classList.add('is-active');
     document.querySelectorAll('.comp-nav-btn').forEach(b => {
-      b.style.display = (catId === 'all' || b.dataset.category === catId) ? '' : 'none';
+      const catOk = (catId === 'all' || b.dataset.category === catId);
+      const platOk = b.dataset.platformHidden !== '1';
+      b.style.display = (catOk && platOk) ? '' : 'none';
     });
     const activeBtn = document.querySelector('.comp-nav-btn.is-active');
     if (activeBtn && activeBtn.style.display === 'none') {
@@ -8046,9 +8041,47 @@ document.addEventListener('click', function(e) {
     const root = document.documentElement;
     root.classList.remove('view-pc', 'view-mobile');
     if (mode !== 'all') root.classList.add('view-' + mode);
-    document.getElementById('btnAll').classList.toggle('active', mode === 'all');
-    document.getElementById('btnPC').classList.toggle('active', mode === 'pc');
-    document.getElementById('btnMobile').classList.toggle('active', mode === 'mobile');
+    // 플랫폼 멀티버튼은 메뉴 분리(PC/Mobile Components)로 제거됨 — 남아있을 때만 토글
+    const bAll = document.getElementById('btnAll');
+    const bPC = document.getElementById('btnPC');
+    const bMobile = document.getElementById('btnMobile');
+    if (bAll) bAll.classList.toggle('active', mode === 'all');
+    if (bPC) bPC.classList.toggle('active', mode === 'pc');
+    if (bMobile) bMobile.classList.toggle('active', mode === 'mobile');
+  }
+
+  // ── 메뉴(?platform=pc|mobile)로 플랫폼 고정 + 목록 필터 ──
+  function applyPlatformMenu() {
+    const params = new URLSearchParams(window.location.search);
+    let mode = params.get('platform');
+    if (mode !== 'pc' && mode !== 'mobile') mode = 'pc'; // 기본 PC
+    window.__platformMode = mode;
+    setPlatform(mode);
+
+    // 컴포넌트 목록(comp-nav): 해당 플랫폼을 지원하는 것만 노출
+    document.querySelectorAll('.comp-nav-btn').forEach(b => {
+      const plats = (b.dataset.platforms || 'pc mobile').split(' ');
+      const hidden = plats.indexOf(mode) === -1;
+      b.dataset.platformHidden = hidden ? '1' : '';
+      b.style.display = hidden ? 'none' : '';
+    });
+
+    // 카테고리 버튼: 현재 플랫폼에 노출 컴포넌트가 하나도 없으면 숨김
+    document.querySelectorAll('.category-btn').forEach(cb => {
+      const m = (cb.getAttribute('onclick') || '').match(/filterByCategory\('([^']+)'/);
+      if (!m || m[1] === 'all') return;
+      const cat = m[1];
+      const has = Array.prototype.some.call(
+        document.querySelectorAll('.comp-nav-btn[data-category="' + cat + '"]'),
+        b => (b.dataset.platforms || 'pc mobile').split(' ').indexOf(mode) !== -1
+      );
+      cb.style.display = has ? '' : 'none';
+    });
+
+    // 제목/탭 타이틀
+    const t = document.getElementById('page-title');
+    if (t) t.textContent = mode === 'mobile' ? 'Mobile Components' : 'PC Components';
+    document.title = (mode === 'mobile' ? 'Mobile' : 'PC') + ' Components · S1 UX';
   }
   function scrollToSection(id) {
     const el = document.getElementById(id);
@@ -8235,15 +8268,23 @@ document.addEventListener('click', function(e) {
     probe.remove();
   })();
 
+  // 플랫폼(?platform=pc|mobile)을 먼저 고정하고 목록을 필터한다.
+  applyPlatformMenu();
+
   (function initFromHash() {
     var valid = ['button','checkbox','radio','toggle','multi-toggle','chip','input','date-picker','time-picker','textarea','select','dropdown','table','pagination','tab','gnb','mobile-bottom-nav']; // Components New: 마이그레이션 완료 컴포넌트만
     var hash  = window.location.hash.replace('#', '');
-    var id    = (hash && valid.includes(hash)) ? hash : 'button';
-    var btn   = document.querySelector('.comp-nav-btn[onclick*="\'' + id + '\'"]') || document.querySelector('.comp-nav-btn');
-    showSection(id, btn);
+    var id    = (hash && valid.includes(hash)) ? hash : null;
+    var btn   = id ? document.querySelector('.comp-nav-btn[onclick*="\'' + id + '\'"]') : null;
+    // 지정된 컴포넌트가 없거나 현재 플랫폼에서 숨겨졌으면 → 현재 플랫폼의 첫 노출 컴포넌트로
+    if (!btn || btn.dataset.platformHidden === '1') {
+      btn = document.querySelector('.comp-nav-btn:not([data-platform-hidden="1"])');
+    }
+    if (btn) {
+      var m = (btn.getAttribute('onclick') || '').match(/showSection\('([^']+)'/);
+      showSection(m ? m[1] : 'button', btn);
+    }
   })();
-
-  setPlatform('pc');
 
   // ── ACTION test setup ──
   function setupButtonActionTests() {

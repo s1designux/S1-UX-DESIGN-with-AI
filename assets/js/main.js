@@ -14,7 +14,8 @@ const SITE_NAV = [
   /* ── Source ── */
   { type: 'label', text: 'Source' },
   { type: 'item', id: 'layer-policy', href: 'layer-policy.html', rootHref: 'pages/layer-policy.html', icon: '🗂', text: 'Layer Policy', status: 'ready' },
-  { type: 'item', id: 'components-new', href: 'components-new.html', rootHref: 'pages/components-new.html', icon: '🧩', text: 'Components', status: 'ready' },
+  { type: 'item', id: 'components-pc', href: 'components-new.html?platform=pc', rootHref: 'pages/components-new.html?platform=pc', icon: '🖥', text: 'PC Components', status: 'ready' },
+  { type: 'item', id: 'components-mobile', href: 'components-new.html?platform=mobile', rootHref: 'pages/components-new.html?platform=mobile', icon: '📱', text: 'Mobile Components', status: 'ready' },
   { type: 'item', id: 'icons', href: 'icons.html', rootHref: 'pages/icons.html', icon: '✦', text: 'Icons', status: 'ready' },
   { type: 'item', id: 'patterns', href: 'patterns.html', rootHref: 'pages/patterns.html', icon: '📐', text: 'Patterns', status: 'ready' },
 
@@ -31,6 +32,31 @@ const SITE_NAV = [
 ];
 
 /* ── Sidebar Render ── */
+// href 는 쿼리(?platform=pc)를 포함할 수 있다. 경로(파일명)가 맞고,
+// href 에 쿼리가 있으면 현재 URL 의 쿼리 값까지 일치해야 활성으로 본다.
+// (같은 components-new.html 을 PC/Mobile 두 메뉴가 공유하므로 필요)
+function navItemMatches(item) {
+  const path = window.location.pathname;
+  const [fileHref] = (item.href || '').split('?');
+  const [fileRoot] = (item.rootHref || '').split('?');
+  const fileOk = (fileHref && path.endsWith(fileHref)) || (fileRoot && path.endsWith(fileRoot));
+  if (!fileOk) return false;
+  const q = (item.href || '').split('?')[1];
+  if (!q) return true; // 쿼리 없는 일반 메뉴
+  const want = new URLSearchParams(q);
+  const cur = new URLSearchParams(window.location.search);
+  for (const [k, v] of want) {
+    const curVal = cur.get(k);
+    if (curVal === null) {
+      // URL 에 파라미터가 없으면(직접 방문 등) platform=pc 를 기본 활성으로
+      if (!(k === 'platform' && v === 'pc')) return false;
+    } else if (curVal !== v) {
+      return false;
+    }
+  }
+  return true;
+}
+
 function renderSidebar() {
   const isRoot = !window.location.pathname.includes('/pages/');
 
@@ -38,8 +64,7 @@ function renderSidebar() {
   const activeGroupIds = new Set();
   SITE_NAV.forEach(item => {
     if (item.type === 'item' && item.group) {
-      const href = isRoot ? item.rootHref : item.href;
-      if (window.location.pathname.endsWith(href) || window.location.pathname.endsWith(item.href)) {
+      if (navItemMatches(item)) {
         activeGroupIds.add(item.group);
       }
     }
@@ -58,9 +83,7 @@ function renderSidebar() {
     }
 
     const href = isRoot ? item.rootHref : item.href;
-    const active = window.location.pathname.endsWith(item.rootHref) ||
-                   window.location.pathname.endsWith(item.href)
-      ? 'active' : '';
+    const active = navItemMatches(item) ? 'active' : '';
     const badge = item.status === 'soon'
       ? `<span class="nav-badge">Soon</span>`
       : item.status === 'new'
