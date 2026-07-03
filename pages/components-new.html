@@ -273,6 +273,9 @@
     .theme-bar-divider { width: 1px; height: 20px; background: #e5e7eb; flex-shrink: 0; }
     .view-pc .platform-section-mobile { display: none; }
     .view-mobile .platform-section-pc { display: none; }
+    /* 배지·코드탭 등 공유 요소에서 현재 플랫폼 것만 노출 (메뉴가 이미 플랫폼을 고정) */
+    .view-pc .platform-only-mobile { display: none; }
+    .view-mobile .platform-only-pc { display: none; }
 
     /* 제목 영역 — 스크롤 시 사라짐 (sticky 해제) */
     .page-header { position: static !important; border-bottom: none; padding-bottom: 16px; }
@@ -2440,7 +2443,7 @@ checkboxes.forEach(function(chk) {
           <h2 class="comp-section-title">Multi Toggle</h2>
           <span class="comp-badge comp-badge-blue">Core</span>
           <span class="comp-badge">4 states</span>
-          <span class="comp-badge">PC 2sizes (md · sm)</span>
+          <span class="comp-badge">2 sizes (md · sm)</span>
           <span class="comp-badge comp-badge-blue">정본 buildMultiToggle · button/*</span>
         </div>
 
@@ -2449,7 +2452,7 @@ checkboxes.forEach(function(chk) {
           <div class="variant-label">Composed · Size(md·sm) × Selected(Left·Center·Right) — 셀 3개 조합, 하나만 selected</div>
           <div class="preview-area">
             <div class="platform-section platform-section-pc">
-              <div class="platform-header"><span class="platform-dot pc"></span>PC · MD (h44)</div>
+              <div class="platform-header">MD (h44)</div>
               <div style="display:flex;gap:24px;flex-wrap:wrap;">
                 <div class="s1-multi-toggle">
                   <div class="s1-multi-toggle-cell s1-multi-toggle-cell--first is-selected">항목</div>
@@ -2469,7 +2472,7 @@ checkboxes.forEach(function(chk) {
               </div>
             </div>
             <div class="platform-section platform-section-pc" style="margin-top:16px;">
-              <div class="platform-header"><span class="platform-dot pc"></span>PC · SM (h34)</div>
+              <div class="platform-header">SM (h34)</div>
               <div style="display:flex;gap:24px;flex-wrap:wrap;">
                 <div class="s1-multi-toggle s1-multi-toggle--sm">
                   <div class="s1-multi-toggle-cell s1-multi-toggle-cell--first is-selected">항목</div>
@@ -2592,7 +2595,6 @@ checkboxes.forEach(function(chk) {
 
         <!-- ── PC ── -->
         <div class="platform-section platform-section-pc">
-          <div class="platform-header"><span class="platform-dot pc"></span>PC</div>
 
           <!-- States · Medium -->
           <div class="variant-block">
@@ -2725,11 +2727,10 @@ checkboxes.forEach(function(chk) {
 
         <!-- ── Mobile ── -->
         <div class="platform-section platform-section-mobile">
-          <div class="platform-header"><span class="platform-dot mobile"></span>Mobile</div>
 
           <!-- States · Mobile -->
           <div class="variant-block">
-            <div class="variant-label">States · Mobile · lg (48px)</div>
+            <div class="variant-label">States · lg (48px)</div>
             <div class="preview-area">
               <div class="comp-state-matrix" style="grid-template-columns: 260px repeat(6, minmax(110px, 1fr));">
                 <div class="matrix-col-header-action">Action · Default</div>
@@ -3742,7 +3743,7 @@ clearBtn.<span class="c-fn">addEventListener</span>(<span class="c-str">'click'<
           <h2 class="comp-section-title">Button</h2>
           <span class="comp-badge comp-badge-blue">Core</span>
           <span class="comp-badge">3 variants</span>
-          <span class="comp-badge">PC 3sizes · Mobile 1size</span>
+          <span class="comp-badge"><span class="platform-only-pc">3 sizes</span><span class="platform-only-mobile">1 size</span></span>
         </div>
 
         <!-- ─ Primary ─ -->
@@ -3750,7 +3751,6 @@ clearBtn.<span class="c-fn">addEventListener</span>(<span class="c-str">'click'<
           <div class="variant-label">Primary</div>
           <div class="preview-area">
             <div class="platform-section platform-section-pc">
-              <div class="platform-header"><span class="platform-dot pc"></span>PC</div>
               <div data-action-group="primary-pc">
                 <div class="state-size-matrix">
                   <div></div>
@@ -3781,7 +3781,6 @@ clearBtn.<span class="c-fn">addEventListener</span>(<span class="c-str">'click'<
               </div>
             </div>
             <div class="platform-section platform-section-mobile">
-              <div class="platform-header"><span class="platform-dot mobile"></span>Mobile</div>
               <div class="state-size-matrix">
                 <div></div>
                 <div class="matrix-col-header-action">Action</div>
@@ -3798,8 +3797,8 @@ clearBtn.<span class="c-fn">addEventListener</span>(<span class="c-str">'click'<
           </div>
           <div class="code-block">
             <div class="code-tabs">
-              <button class="code-tab active" onclick="switchTab(this,'btn-pri-pc')">PC · HTML</button>
-              <button class="code-tab" onclick="switchTab(this,'btn-pri-mo')">Mobile · HTML</button>
+              <button class="code-tab active" data-platform="pc" onclick="switchTab(this,'btn-pri-pc')">HTML</button>
+              <button class="code-tab" data-platform="mobile" onclick="switchTab(this,'btn-pri-mo')">HTML</button>
               <button class="code-tab" onclick="switchTab(this,'btn-pri-css')">CSS Token</button>
               <button class="code-tab" onclick="switchTab(this,'btn-pri-tokens')">Token Details</button>
               <button class="code-copy-btn" onclick="copyCode('btn-pri-pc-pre')">복사</button>
@@ -3859,7 +3858,6 @@ clearBtn.<span class="c-fn">addEventListener</span>(<span class="c-str">'click'<
           <div class="variant-label">Secondary</div>
           <div class="preview-area">
             <div class="platform-section platform-section-pc">
-              <div class="platform-header"><span class="platform-dot pc"></span>PC</div>
               <div data-action-group="secondary-pc">
                 <div class="state-size-matrix">
                   <div></div>
@@ -3890,7 +3888,6 @@ clearBtn.<span class="c-fn">addEventListener</span>(<span class="c-str">'click'<
               </div>
             </div>
             <div class="platform-section platform-section-mobile">
-              <div class="platform-header"><span class="platform-dot mobile"></span>Mobile</div>
               <div class="state-size-matrix">
                 <div></div>
                 <div class="matrix-col-header-action">Action</div>
@@ -3907,8 +3904,8 @@ clearBtn.<span class="c-fn">addEventListener</span>(<span class="c-str">'click'<
           </div>
           <div class="code-block">
             <div class="code-tabs">
-              <button class="code-tab active" onclick="switchTab(this,'btn-sec-pc')">PC · HTML</button>
-              <button class="code-tab" onclick="switchTab(this,'btn-sec-mo')">Mobile · HTML</button>
+              <button class="code-tab active" data-platform="pc" onclick="switchTab(this,'btn-sec-pc')">HTML</button>
+              <button class="code-tab" data-platform="mobile" onclick="switchTab(this,'btn-sec-mo')">HTML</button>
               <button class="code-tab" onclick="switchTab(this,'btn-sec-css')">CSS Token</button>
               <button class="code-tab" onclick="switchTab(this,'btn-sec-tokens')">Token Details</button>
               <button class="code-copy-btn" onclick="copyCode('btn-sec-pc-pre')">복사</button>
@@ -3968,7 +3965,6 @@ clearBtn.<span class="c-fn">addEventListener</span>(<span class="c-str">'click'<
           <div class="variant-label">Blue-line</div>
           <div class="preview-area">
             <div class="platform-section platform-section-pc">
-              <div class="platform-header"><span class="platform-dot pc"></span>PC</div>
               <div data-action-group="blue-line-pc">
                 <div class="state-size-matrix">
                   <div></div>
@@ -3999,7 +3995,6 @@ clearBtn.<span class="c-fn">addEventListener</span>(<span class="c-str">'click'<
               </div>
             </div>
             <div class="platform-section platform-section-mobile">
-              <div class="platform-header"><span class="platform-dot mobile"></span>Mobile</div>
               <div class="state-size-matrix">
                 <div></div>
                 <div class="matrix-col-header-action">Action</div>
@@ -4016,8 +4011,8 @@ clearBtn.<span class="c-fn">addEventListener</span>(<span class="c-str">'click'<
           </div>
           <div class="code-block">
             <div class="code-tabs">
-              <button class="code-tab active" onclick="switchTab(this,'btn-bl-pc')">PC · HTML</button>
-              <button class="code-tab" onclick="switchTab(this,'btn-bl-mo')">Mobile · HTML</button>
+              <button class="code-tab active" data-platform="pc" onclick="switchTab(this,'btn-bl-pc')">HTML</button>
+              <button class="code-tab" data-platform="mobile" onclick="switchTab(this,'btn-bl-mo')">HTML</button>
               <button class="code-tab" onclick="switchTab(this,'btn-bl-css')">CSS Token</button>
               <button class="code-tab" onclick="switchTab(this,'btn-bl-tokens')">Token Details</button>
               <button class="code-copy-btn" onclick="copyCode('btn-bl-pc-pre')">복사</button>
@@ -4275,7 +4270,7 @@ function setDisabled(on) {
         <div class="comp-section-header">
           <h2 class="comp-section-title">Line Tab</h2>
           <span class="comp-badge comp-badge-blue">Core</span>
-          <span class="comp-badge">PC 2sizes · Mobile 1size</span>
+          <span class="comp-badge"><span class="platform-only-pc">2 sizes</span><span class="platform-only-mobile">1 size</span></span>
           <span class="comp-badge">interactive</span>
         </div>
 
@@ -4284,7 +4279,6 @@ function setDisabled(on) {
           <div class="variant-label">States</div>
           <div class="preview-area" style="display:flex;flex-direction:column;gap:0;padding:0;overflow-x:auto;">
             <div class="platform-section platform-section-pc" style="padding:20px 20px 20px;">
-              <div class="platform-header"><span class="platform-dot pc"></span>PC</div>
               <div style="overflow-x:auto;">
                 <div class="comp-state-matrix" style="grid-template-columns: 72px minmax(280px,auto) repeat(3, auto);">
                   <!-- Header -->
@@ -4335,7 +4329,6 @@ function setDisabled(on) {
               </div>
             </div>
             <div class="platform-section platform-section-mobile" style="padding:20px 20px 20px;">
-              <div class="platform-header"><span class="platform-dot mobile"></span>Mobile</div>
               <div style="overflow-x:auto;">
                 <div class="comp-state-matrix" style="grid-template-columns: 72px minmax(240px,auto) repeat(3, auto);">
                   <div class="matrix-col-header-action" style="grid-column:1;grid-row:1;">Size</div>
@@ -4344,7 +4337,7 @@ function setDisabled(on) {
                   <div class="matrix-col-header" style="grid-column:4;grid-row:1;">Selected</div>
                   <div class="matrix-col-header" style="grid-column:5;grid-row:1;">Hover</div>
 
-                  <div class="comp-state-cell" style="grid-column:1;grid-row:2;font-size:11px;font-weight:600;color:var(--color-text-caption);justify-content:center;">Mobile</div>
+                  <div class="comp-state-cell" style="grid-column:1;grid-row:2;font-size:11px;font-weight:600;color:var(--color-text-caption);justify-content:center;">lg (h30)</div>
                   <div class="comp-action-cell" data-comp-action="tab-mobile" style="grid-column:2;grid-row:2;padding:14px 16px;">
                     <div class="s1-tab s1-tab--mobile" id="tab-action-mobile">
                       <button class="s1-tab-item is-selected" type="button" aria-selected="true">메뉴1</button>
@@ -4372,7 +4365,6 @@ function setDisabled(on) {
           <div class="variant-label">Sizes</div>
           <div class="preview-area" style="display:flex;flex-direction:column;gap:0;padding:0;">
             <div class="platform-section platform-section-pc" style="padding:20px 20px 20px;">
-              <div class="platform-header"><span class="platform-dot pc"></span>PC</div>
               <div style="display:flex;flex-direction:column;gap:28px;">
                 <div>
                   <div style="font-size:11px;font-weight:600;color:var(--color-text-caption);margin-bottom:8px;letter-spacing:0.04em;text-transform:uppercase;">PC MD — height 40px · indicator 2px · font 20px</div>
@@ -4395,7 +4387,6 @@ function setDisabled(on) {
               </div>
             </div>
             <div class="platform-section platform-section-mobile" style="padding:20px 20px 20px;">
-              <div class="platform-header"><span class="platform-dot mobile"></span>Mobile</div>
               <div style="display:flex;flex-direction:column;gap:16px;">
                 <div>
                   <div style="font-size:11px;font-weight:600;color:var(--color-text-caption);margin-bottom:8px;letter-spacing:0.04em;text-transform:uppercase;">Mobile — height 30px · indicator 2px · font 16px · padding-inline sm</div>
@@ -4414,8 +4405,8 @@ function setDisabled(on) {
         <!-- ── 단일 code-block: PC · HTML / Mobile · HTML / CSS / Token Details ── -->
         <div class="code-block">
           <div class="code-tabs">
-            <button class="code-tab active" onclick="switchTab(this,'tab-pc-html')">PC · HTML</button>
-            <button class="code-tab" onclick="switchTab(this,'tab-mo-html')">Mobile · HTML</button>
+            <button class="code-tab active" data-platform="pc" onclick="switchTab(this,'tab-pc-html')">HTML</button>
+            <button class="code-tab" data-platform="mobile" onclick="switchTab(this,'tab-mo-html')">HTML</button>
             <button class="code-tab" onclick="switchTab(this,'tab-css')">CSS</button>
             <button class="code-tab" onclick="switchTab(this,'tab-tokens')">Token Details</button>
             <button class="code-copy-btn" onclick="copyCode('tab-pc-html-pre')">복사</button>
@@ -4540,7 +4531,6 @@ function setDisabled(on) {
           <span class="comp-badge comp-badge-blue">Core</span>
           <span class="comp-badge">Navigation</span>
           <span class="comp-badge">15 variants</span>
-          <span class="comp-badge">PC only</span>
         </div>
 
         <!-- ── variant-group: 메뉴 슬롯 ── -->
@@ -4551,7 +4541,6 @@ function setDisabled(on) {
             <div class="variant-label">States</div>
             <div class="preview-area" style="display:flex;flex-direction:column;gap:0;padding:0;overflow-x:auto;">
               <div class="platform-section platform-section-pc" style="padding:20px 20px 20px;">
-                <div class="platform-header"><span class="platform-dot pc"></span>PC</div>
                 <div style="overflow-x:auto;">
                   <div class="comp-state-matrix" style="grid-template-columns: 88px minmax(180px,auto) repeat(3, auto);">
                     <div class="matrix-col-header-action" style="grid-column:1;grid-row:1;">Size</div>
@@ -4731,7 +4720,7 @@ function setDisabled(on) {
         <!-- ── code-block: PC · HTML / CSS / Token Details (Mobile 없음) ── -->
         <div class="code-block">
           <div class="code-tabs">
-            <button class="code-tab active" onclick="switchTab(this,'gnb-pc-html')">PC · HTML</button>
+            <button class="code-tab active" data-platform="pc" onclick="switchTab(this,'gnb-pc-html')">HTML</button>
             <button class="code-tab" onclick="switchTab(this,'gnb-css')">CSS</button>
             <button class="code-tab" onclick="switchTab(this,'gnb-tokens')">Token Details</button>
             <button class="code-copy-btn" onclick="copyCode('gnb-pc-html-pre')">복사</button>
@@ -4852,7 +4841,7 @@ function setDisabled(on) {
           <h2 class="comp-section-title">Select · Dropdown</h2>
           <span class="comp-badge comp-badge-blue">Core</span>
           <span class="comp-badge">5 states</span>
-          <span class="comp-badge">PC 3sizes · Mobile 1size</span>
+          <span class="comp-badge"><span class="platform-only-pc">3 sizes</span><span class="platform-only-mobile">1 size</span></span>
           <span class="comp-badge">17 tokens</span>
         </div>
 
@@ -4863,7 +4852,7 @@ function setDisabled(on) {
 
             <!-- PC -->
             <div class="platform-section platform-section-pc">
-              <div class="platform-header"><span class="platform-dot pc"></span>PC · MD (h44)</div>
+              <div class="platform-header">MD (h44)</div>
               <div class="comp-state-matrix" style="grid-template-columns: 200px repeat(5, minmax(100px, 1fr));">
                 <div class="matrix-col-header-action">Action</div>
                 <div class="matrix-col-header">Default</div>
@@ -4894,7 +4883,7 @@ function setDisabled(on) {
 
             <!-- Mobile -->
             <div class="platform-section platform-section-mobile">
-              <div class="platform-header"><span class="platform-dot mobile"></span>Mobile (h48)</div>
+              <div class="platform-header">h48</div>
               <div class="comp-state-matrix" style="grid-template-columns: 200px repeat(5, minmax(100px, 1fr));">
                 <div class="matrix-col-header-action">Action</div>
                 <div class="matrix-col-header">Default</div>
@@ -4931,7 +4920,6 @@ function setDisabled(on) {
           <div class="variant-label">Size Variants</div>
           <div class="preview-area">
             <div class="platform-section platform-section-pc">
-              <div class="platform-header"><span class="platform-dot pc"></span>PC</div>
               <div style="display:flex;gap:20px;align-items:flex-end;flex-wrap:wrap;">
                 <div style="display:flex;flex-direction:column;align-items:flex-start;gap:6px;">
                   <div class="s1-select-wrap is-preview" style="width:150px;">
@@ -4954,7 +4942,6 @@ function setDisabled(on) {
               </div>
             </div>
             <div class="platform-section platform-section-mobile">
-              <div class="platform-header"><span class="platform-dot mobile"></span>Mobile</div>
               <div style="display:flex;gap:20px;align-items:flex-end;flex-wrap:wrap;">
                 <div style="display:flex;flex-direction:column;align-items:flex-start;gap:6px;">
                   <div class="s1-select-wrap s1-select-wrap--mobile is-preview" style="width:150px;">
@@ -5121,7 +5108,7 @@ document.addEventListener('click', function(e) {
           <h2 class="comp-section-title">Dropdown</h2>
           <span class="comp-badge comp-badge-blue">Core</span>
           <span class="comp-badge">4 states</span>
-          <span class="comp-badge">PC 3sizes (XXSM · XSM · MD)</span>
+          <span class="comp-badge">3 sizes (XXSM · XSM · MD)</span>
           <span class="comp-badge comp-badge-blue">정본 buildDropdownList · color/dropdown/*</span>
         </div>
         <p style="font-size:12px;color:var(--color-text-secondary);margin:-8px 0 16px;line-height:1.6;">
@@ -6211,7 +6198,6 @@ update(); // 초기화</pre>
           <span class="comp-badge comp-badge-blue">Core</span>
           <span class="comp-badge">Navigation</span>
           <span class="comp-badge">2 states</span>
-          <span class="comp-badge">Mobile only</span>
           <!-- Figma V3.0 TEST: Tab Item 세트 (state=unselected/selected) · ic_홈 Solid 인스턴스 -->
         </div>
 
@@ -6420,7 +6406,7 @@ update(); // 초기화</pre>
           <h2 class="comp-section-title">Date Picker</h2>
           <span class="comp-badge comp-badge-blue">Core</span>
           <span class="comp-badge">Input = form-control · Calendar = date-picker</span>
-          <span class="comp-badge">PC 3sizes · Mobile 1size</span>
+          <span class="comp-badge"><span class="platform-only-pc">3 sizes</span><span class="platform-only-mobile">1 size</span></span>
           <!-- Figma: 540:3794 (datepicker_input) / 540:4216 (PC calendar) / 540:3836 (mobile bottomsheet) -->
         </div>
 
@@ -6432,7 +6418,7 @@ update(); // 초기화</pre>
 
         <!-- ── PC ── -->
         <div class="platform-section platform-section-pc">
-          <div class="platform-header"><span class="platform-dot pc"></span>PC · md (h44)</div>
+          <div class="platform-header">md (h44)</div>
           <div class="variant-block">
             <div class="variant-label">States</div>
             <div class="preview-area" style="overflow:visible; padding-bottom:420px;">
@@ -6631,7 +6617,7 @@ update(); // 초기화</pre>
 
         <!-- ── Mobile ── -->
         <div class="platform-section platform-section-mobile">
-          <div class="platform-header"><span class="platform-dot mobile"></span>Mobile · lg (h48)</div>
+          <div class="platform-header">lg (h48)</div>
           <div class="variant-block">
             <div class="variant-label">States</div>
             <div class="preview-area">
@@ -6751,7 +6737,7 @@ update(); // 초기화</pre>
           <h2 class="comp-section-title">Time Picker</h2>
           <span class="comp-badge comp-badge-blue">Core</span>
           <span class="comp-badge">Input형 · Select형</span>
-          <span class="comp-badge">Input형 PC 3sizes · Mobile 1size</span>
+          <span class="comp-badge">Input형 <span class="platform-only-pc">3 sizes</span><span class="platform-only-mobile">1 size</span></span>
           <span class="comp-badge">Figma: 540:3690 ~ 540:3506</span>
         </div>
 
@@ -6857,7 +6843,7 @@ update(); // 초기화</pre>
 
           <!-- Sizes -->
           <div class="variant-block platform-section platform-section-pc">
-            <div class="variant-label">Size Variants — PC</div>
+            <div class="variant-label">Size Variants</div>
             <div class="preview-area">
               <div style="display:flex;gap:20px;align-items:flex-end;flex-wrap:wrap;">
                 <div style="display:flex;flex-direction:column;align-items:flex-start;gap:6px;">
@@ -8076,6 +8062,15 @@ document.addEventListener('click', function(e) {
         b => (b.dataset.platforms || 'pc mobile').split(' ').indexOf(mode) !== -1
       );
       cb.style.display = has ? '' : 'none';
+    });
+
+    // 코드 스니펫: 현재 플랫폼 탭만 노출하고 그 탭을 활성화 (반대 플랫폼 코드탭 숨김)
+    document.querySelectorAll('.code-block').forEach(block => {
+      const platTabs = block.querySelectorAll('.code-tab[data-platform]');
+      if (!platTabs.length) return;
+      platTabs.forEach(tab => { tab.style.display = (tab.dataset.platform === mode) ? '' : 'none'; });
+      const want = block.querySelector('.code-tab[data-platform="' + mode + '"]');
+      if (want) want.click(); // switchTab 호출 → 해당 코드 pane 활성화
     });
 
     // 제목/탭 타이틀
