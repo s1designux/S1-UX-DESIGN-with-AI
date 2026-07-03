@@ -189,7 +189,7 @@ const html = `<!DOCTYPE html>
   <meta charset="UTF-8">
   <script>!function(){var z=localStorage.getItem("sw-ds-zoom");if(z)document.documentElement.style.zoom=z+"%"}();</script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Dashboard — S1 UX DESIGN GUIDE</title>
+  <title>Agent Team — S1 UX DESIGN GUIDE</title>
   <link rel="stylesheet" href="../assets/css/style.css">
   <link rel="stylesheet" href="../assets/css/tokens.css">
   <!-- 이 페이지는 scripts/gen-dashboard.js 가 registry/governance/guardians.json 으로 자동 생성. 손편집 금지. -->
@@ -279,7 +279,7 @@ const html = `<!DOCTYPE html>
     </div>
 
     <div class="page-header">
-      <h1 class="page-title">🛡 디자인 시스템 지킴이</h1>
+      <h1 class="page-title">🛡 Agent Team</h1>
       <p class="page-desc">누가·무엇이 우리 컴포넌트를 지키고 있는지 한눈에 봅니다.</p>
     </div>
 
