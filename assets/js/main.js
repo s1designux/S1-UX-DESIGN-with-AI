@@ -209,7 +209,8 @@ var SEARCH_INDEX = [
   // Pages
   { label: 'Foundation Tokens', sublabel: '색상·타이포·간격', type: 'page', page: 'foundation.html', keywords: 'foundation token color palette typography spacing radius border font' },
   { label: 'Semantic Tokens',   sublabel: '역할 기반 토큰',  type: 'page', page: 'semantic.html',   keywords: 'semantic token bg surface text border action status overlay icon form-control' },
-  { label: 'Components',        sublabel: '컴포넌트 가이드 (Variables 정본)', type: 'page', page: 'components-new.html', keywords: 'component button checkbox radio toggle chip input select dropdown textarea datepicker variables 컴포넌트' },
+  { label: 'PC Components',     sublabel: 'PC 컴포넌트 가이드 (Variables 정본)', type: 'page', page: 'components-new.html?platform=pc', keywords: 'component pc button checkbox radio toggle chip input select dropdown textarea datepicker table gnb pagination variables 컴포넌트 피씨' },
+  { label: 'Mobile Components', sublabel: '모바일 컴포넌트 가이드 (Variables 정본)', type: 'page', page: 'components-new.html?platform=mobile', keywords: 'component mobile button checkbox radio toggle chip input select textarea datepicker timepicker bottom nav 모바일 컴포넌트 하단내비' },
   { label: 'Icons',             sublabel: '아이콘 818개',    type: 'page', page: 'icons.html',       keywords: 'icon svg 아이콘' },
   { label: 'Legacy Guide',      sublabel: '마이그레이션',    type: 'page', page: 'legacy.html',      keywords: 'legacy migration guide 레거시 마이그레이션' },
   { label: 'Token Mapping',     sublabel: 'Figma ↔ CSS',    type: 'page', page: 'token-mapping.html', keywords: 'token mapping figma css 토큰 매핑' },
