@@ -498,6 +498,27 @@ try {
   fail(`registry-active-legacy-check 실행 실패: ${e.message}`);
 }
 
+// ── Gate 22: Page Layout Policy (헤더 LNB 미부착·폭 드리프트 차단) ─────
+// 페이지가 공통 레이아웃 틀(헤더가 사이드바에 붙음)과 폭 정책(wide/readable)을 지키는지
+// 정본(page-layout-policy.json)과 기계 대조. self-certify 로 놓치던 시각/구조 사각지대. (2026-07-03 신설)
+console.log('\n🔎 [Gate 22] 페이지 레이아웃 검수기 (Page Layout Policy)');
+try {
+  const { spawnSync } = require('child_process');
+  const r = spawnSync('node', [path.join(ROOT, 'scripts/page-layout-check.js')], { encoding: 'utf-8' });
+  const out = (r.stdout || '') + (r.stderr || '');
+  const errLines = out.split('\n').filter((l) => l.includes('❌'));
+  const warnLines = out.split('\n').filter((l) => l.includes('⚠️'));
+  if (r.status === 0) {
+    pass('페이지 공통 틀·폭 정책 위반 0 (헤더 LNB 부착·wide/readable 정합)');
+    for (const l of warnLines) warn(l.replace(/^\s*⚠️\s*/, '').trim());
+  } else {
+    for (const l of errLines) fail(l.replace(/^\s*❌\s*/, '').trim());
+    if (errLines.length === 0) fail(`page-layout-check 실패 (exit ${r.status})`);
+  }
+} catch (e) {
+  fail(`page-layout-check 실행 실패: ${e.message}`);
+}
+
 // ── Summary ───────────────────────────────────────────────────────
 console.log('\n─────────────────────────────────────────────────────');
 if (errors > 0) {

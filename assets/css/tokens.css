@@ -415,6 +415,9 @@
   --color-bg-level-2: var(--color-gray-50);
   --color-bg-level-3: var(--color-gray-100);
 
+  /* ── surface ── */
+  --color-surface-raised: var(--color-base-white);
+
   /* ── button ── */
   --color-button-bg-blue-line--default    : var(--color-base-white);
   --color-button-bg-blue-line--hover      : var(--color-blue-50);
@@ -619,6 +622,9 @@
   --color-bg-level-1: var(--color-gray-dark-50);
   --color-bg-level-2: var(--color-gray-dark-100);
   --color-bg-level-3: var(--color-gray-dark-200);
+
+  /* ── surface ── */
+  --color-surface-raised: var(--color-gray-dark-400);
 
   /* ── button ── */
   --color-button-bg-blue-line--default    : var(--color-gray-dark-100);

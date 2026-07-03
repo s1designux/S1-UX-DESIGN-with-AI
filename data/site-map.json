@@ -50,7 +50,8 @@
           "title": "Layer Policy",
           "icon": "🗂",
           "href": "pages/layer-policy.html",
-          "status": "ready",
+          "status": "hidden",
+          "hiddenReason": "2026-07-03 layer policy 미정리 — 메뉴에서 숨김. 파일 보존, 재활성화 시 main.js SITE_NAV 주석 해제 + status=ready 복원",
           "description": "UI 레이어 색상 위계 — 배경·패널·카드·팝업·딤 Light/Dark 토큰 기준"
         },
         {

@@ -1,7 +1,8 @@
 {
   "_note": "의도적으로 보존하는 '전 표면 미사용' semantic color 토큰 목록. Gate 17(orphan-token-check)이 여기 등록된 건 경고에서 제외한다. 새 토큰이 미사용이면 → ①컴포넌트에 연결하거나 ②여기 등록(사유 포함)하거나 ③vars-data에서 삭제. allowlist 에 있는데 더 이상 orphan 이 아니면(연결/삭제됨) Gate 17 이 '정리 가능'으로 알린다.",
-  "_updated": "2026-06-30",
+  "_updated": "2026-07-03",
   "tokens": [
+    { "token": "color/surface/raised", "reason": "딤 위 떠있는 패널 공용 표면(라이트 흰색·다크 gray-dark/400). Figma 라이브러리 Bottom Sheet·모달 패널 + dropdown.json 스펙(D002 --dropdown-list-bg)이 사용. 설치기 build-components mock·웹CSS 는 직접 칠하지 않아(컴포넌트가 각자 표면 토큰 사용) orphan 으로 검출되나 Figma 표면 정본이라 유지(2026-07-03 모달·바텀시트 표면 통일)" },
     { "token": "color/status-card/text/disabled", "reason": "status-card 컴포넌트 미구현(향후 빌드 예정) — 빌드 시 연결" },
     { "token": "color/status-card/text/error", "reason": "status-card 미구현 — 빌드 시 연결" },
     { "token": "color/status-card/text/primary--default", "reason": "status-card 미구현 — 빌드 시 연결" },

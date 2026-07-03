@@ -1,0 +1,166 @@
+{
+  "_meta": {
+    "id": "modal",
+    "name": "Modal",
+    "label": "Modal (공통 팝업)",
+    "category": "overlay",
+    "status": "in-progress",
+    "tokenStatus": "stable",
+    "codeStatus": "not-started",
+    "darkModeStatus": "planned",
+    "a11yStatus": "planned",
+    "harnessStatus": "not-started",
+    "figmaNodeId": "",
+    "origin": "B",
+    "verify": "none",
+    "figmaNote": "신규 컴포넌트. 규격 확정(reports/modal-component-spec.md, HD-1~4 전건 결정 2026-07-03). Figma Core Component 페이지에 빌드 예정(figma-library-build). 레거시 출처: 파일 P8YvnCdGkQLDNVQhW74ZZW — 6361:84296(작은 모달 세트)·7612:42720(로그인 팝업 세트)·6495:217531(큰 모달 '지정 노선 추가').",
+    "description": "딤(overlay) 위에 뜨는 공통 팝업. 헤더(제목+닫기)+본문(콘텐츠)+푸터(버튼 1~2개)의 3층 껍데기. 껍데기는 고정, 본문만 콘텐츠에 따라 교체한다."
+  },
+
+  "anatomy": {
+    "layers": ["overlay(dim)", "header", "body", "footer"],
+    "header": "제목(왼쪽, Title/16B) + 닫기 아이콘 ✕(오른쪽). 높이 고정, 제목 1줄 기준.",
+    "body": "콘텐츠 슬롯. 내용에 맞춰 늘되 최대 높이(85vh) 초과 시 본문만 세로 스크롤. 줄 간격 8px.",
+    "footer": "버튼 1~2개, 오른쪽 정렬. 높이 고정. 버튼 사이 간격 8px.",
+    "spacing": {
+      "note": "레거시 6443:141123 실측. 초판 gap 16·min-h 140 오류를 32·184로 교정(2026-07-03).",
+      "paddingBlock": "20 (spacing/20)",
+      "paddingInline": "24 (spacing/24)",
+      "sectionGap": "32 (spacing/section/lg — 헤더↔본문↔푸터)",
+      "bodyLineGap": "8 (spacing/8)",
+      "footerGap": "8 (spacing/8)",
+      "heightModel": "hug(내용) — 텍스트 길이로 결정, body 공간 미점유. 자연 최소 ≈174(참고 6706:4219)"
+    }
+  },
+
+  "sizes": {
+    "axis": "width×height",
+    "note": "사용자 재정의 2026-07-03: 각 크기 = 폭×권장(최소)높이 고정. 임의 폭 금지. M 폭 440→520 정정.",
+    "variants": {
+      "S": { "width": 360, "minHeight": 174, "use": "짧은 안내·확인·오류 (최소, 6706:4219)" },
+      "M": { "width": 520, "minHeight": 336, "use": "선택지·간단한 폼 (540:5826)" },
+      "L": { "width": 1000, "minHeight": 587, "use": "복잡한 정보·업무 화면 (540:5837)" },
+      "XL": { "width": 1200, "minHeight": 587, "use": "넓은 표·다중 컬럼 (최대, 540:5849)" }
+    }
+  },
+
+  "height": {
+    "rule": "크기별 권장(최소)높이 유지 + 내용 많으면 그 이상 hug + 최대 85vh 초과 시 본문 스크롤(헤더·푸터 고정).",
+    "minHeightBySize": { "S": 174, "M": 336, "L": 587, "XL": 587 },
+    "maxHeight": "85vh (화면 세로 85%, 딤이 GNB 포함 전체 덮음, 1080 환산 ≈918px)",
+    "sizing": "각 variant: primaryAxisSizingMode=AUTO(hug) + minHeight(위) + primaryAxisAlignItems=SPACE_BETWEEN(푸터 바닥). 구조=[헤더+본문 그룹(gap32), 푸터]. Body layoutGrow=0/HUG(스냅, 공간 미점유). py 20·px 24.",
+    "note": "경위: R1 flat184 → R3 크기별587+body fill(body가 공간차지=오류) → R4 순수hug(넓은모달 과소) → 크기별 권장높이 minHeight + space-between 푸터바닥·본문스냅(2026-07-03 사용자 재정의 360×174/520×336/1000×587/1200×587). R3와 달리 body stretch 안 함.",
+    "hd": "크기 재정의 2026-07-03 (폭×높이 고정, 높이=권장최소)"
+  },
+
+  "footer": {
+    "buttonSize": "xsmall(h34)",
+    "buttonSizeNote": "전 크기 단계 h34로 통일 (HD-2 확정 2026-07-03. 레거시 작은 모달 h28→h34).",
+    "align": "right",
+    "gap": "8px (--spacing-8)",
+    "variants": {
+      "single": {
+        "buttons": 1,
+        "purpose": "안내형 — 알림·완료·오류를 알리고 닫기",
+        "button": "확인 (Primary)",
+        "example": "인증이 완료되었어요 / 확인"
+      },
+      "dual": {
+        "buttons": 2,
+        "order": "[보조(취소/아니오)] [주(네/저장/확인)] — 주 버튼이 오른쪽",
+        "purpose": "확인형 — 되돌리기 어려운 결정·작업 실행",
+        "secondary": "취소/아니오 (Button secondary)",
+        "primary": "네/저장/확인 (Button primary)",
+        "example": "정말 삭제? / 아니오·네"
+      }
+    }
+  },
+
+  "contentTypes": {
+    "note": "본문은 껍데기가 스타일을 새로 정하지 않고 아래 조각을 조합. 각 조각은 코어 컴포넌트 재사용 원칙.",
+    "types": [
+      { "type": "text-single", "desc": "한 줄 텍스트", "example": "필수 항목을 입력해주세요." },
+      { "type": "text-multi", "desc": "여러 줄 텍스트", "example": "변경 내용이 저장되지 않습니다. 중단할까요?" },
+      { "type": "bullet-list", "desc": "불릿 리스트(규칙·조건)", "example": "비밀번호 조건" },
+      { "type": "emphasis-text", "desc": "숫자·링크 강조", "example": "총 000개 항목, 25.12.30 최종등록" },
+      { "type": "form", "desc": "입력·선택 컨트롤", "reuses": ["Input", "Select", "Radio", "DatePicker", "TimePicker"] },
+      { "type": "data-table", "desc": "조회 결과 표", "reuses": ["Table"] },
+      { "type": "media", "desc": "지도·이미지" },
+      { "type": "composite", "desc": "위를 조합 (예: 지도+폼+표)" }
+    ]
+  },
+
+  "closeBehavior": {
+    "allowed": ["header-close-icon(✕)", "footer-button(취소/아니오)"],
+    "disallowed": ["dim-click", "ESC"],
+    "note": "✕·버튼으로만 닫힘. 딤 클릭·ESC 불가(실수 방지). HD-4 확정 2026-07-03."
+  },
+
+  "states": {
+    "open": "딤이 GNB·상단탭 포함 화면 전체를 덮고 모달을 중앙 표시. 뒤 요소 조작 차단.",
+    "scroll": "본문 초과분만 세로 스크롤. 헤더·푸터 고정.",
+    "focus": "열리면 모달 안으로 포커스 이동, 뒤 배경 비활성(a11y)."
+  },
+
+  "tokens": {
+    "note": "색은 예외 없이 Semantic 경유. 정본 CSS 변수(웹/설치기) ↔ Figma Variable 경로(V3.0 빌드) 병기.",
+    "shell": {
+      "overlay": { "css": "--color-overlay", "figmaVar": "color/overlay", "value": "rgba(0,0,0,0.5) light / 0.75 dark" },
+      "panel-bg": { "css": "--color-modal-bg", "figmaVar": "color/modal/bg", "value": "신설: light=base/white #fff · dark=gray-dark/100 #1c1d23 (chip/button 패턴). 코드 전파는 전달 단계 token-sync.", "status": "new" },
+      "shadow-dark": { "value": "드롭섀도우 2겹 0/20/12 + 0/8/4 (참고 781:32832 effects 복사). shadow rgba 예외" },
+      "border-dark": { "figmaVar": "color/line/gray (subtle)", "value": "어두운 배경 패널 경계" },
+      "radius": { "css": "--radius-modal-md", "figmaVar": "radius/8", "value": "8" },
+      "padding-inline": { "css": "--spacing-24", "figmaVar": "spacing/24", "value": "24" },
+      "padding-block": { "css": "--spacing-20", "figmaVar": "spacing/20", "value": "20" },
+      "section-gap": { "figmaVar": "spacing/32 (section/lg)", "value": "32 — 헤더↔본문↔푸터" }
+    },
+    "header": {
+      "title": { "css": "--color-text-title-primary", "figmaVar": "color/text/title/primary", "typo": "Title/16B (대문자 정본 스타일, 라이브러리 1415:4 — 로컬 소문자 title/16B 금지)" },
+      "close-icon": { "css": "--color-icon-gray-dark", "figmaVar": "color/icon/gray-dark", "size": "24×24", "legacy": "#353535" }
+    },
+    "body": {
+      "text": { "css": "--color-text-body-primary", "figmaVar": "color/text/body/primary", "value": "gray/900", "typo": "body 14R", "legacy": "#353535" },
+      "emphasis": { "css": "--color-action-primary-default (accent/link)", "figmaVar": "color/text/state/accent", "legacy": "#1d6ceb" }
+    },
+    "footer": {
+      "gap": { "css": "--spacing-8", "figmaVar": "spacing/8" },
+      "buttons": "Button 컴포넌트 토큰 재사용 (primary / secondary), size xsmall(h34)"
+    }
+  },
+
+  "reuses": {
+    "coreComponents": ["Button", "Input", "Select", "Radio", "DatePicker", "TimePicker", "Table"],
+    "rule": "모달은 껍데기만 정의. 본문 콘텐츠는 코어 컴포넌트 인스턴스를 조합(시각 스타일 override 금지). Core Component Reuse Rule 준수."
+  },
+
+  "figma": {
+    "componentSetKey": "",
+    "figmaNodeId": "",
+    "targetFile": "V3.0-TEST (cysG5U1udpQqVagYY1hWHW) — Core Component 페이지",
+    "buildPlan": "figma-library-build 워크플로우: 재고조사🔍 → 계획🎩 → 빌드🏗️(figma-library-builder) → 검증🤖(component-verifier). ⭐ 단독 빌드+검증 금지.",
+    "propertyMap": {
+      "size": ["S", "M", "L", "XL"],
+      "footer": ["single", "dual"]
+    },
+    "reviewFirst": "빌드 후 사용자 육안 검수 → OK 시에만 설치기·components-new.html 연동."
+  },
+
+  "legacySource": {
+    "file": "P8YvnCdGkQLDNVQhW74ZZW",
+    "examples": [
+      { "node": "6361:84296", "name": "pc_modal_공통팝업", "note": "작은 모달 360px 5종(안내/확인)" },
+      { "node": "7612:42720", "name": "pc_modal_로그인 공통팝업", "note": "360px 다수 + 다운로드 440px 3종(미사용-기획확인용)" },
+      { "node": "6495:217531", "name": "지정 노선 추가", "note": "큰 모달 991px(지도+폼+표)" }
+    ]
+  },
+
+  "humanDecisions": {
+    "HD-1": "확정 2026-07-03 — 세로: 고정높이 없음+최대 85vh, 초과 시 본문만 스크롤. 딤이 GNB 포함 전체 덮음. 픽셀 캡 없음.",
+    "HD-2": "확정 2026-07-03 — 푸터 버튼 h34(xsmall) 전 단계 통일.",
+    "HD-3": "확정 2026-07-03 — 제목색 정본 토큰 --color-text-title-primary(gray/900).",
+    "HD-4": "확정 2026-07-03 — ✕·버튼으로만 닫힘. 딤 클릭·ESC 불가."
+  },
+
+  "spec": "reports/modal-component-spec.md",
+  "updatedAt": "2026-07-03"
+}

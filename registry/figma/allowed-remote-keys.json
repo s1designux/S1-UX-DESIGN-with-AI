@@ -1,6 +1,6 @@
 {
   "$comment": "외부 라이브러리(remote:true) 중 '허용되는' 컴포넌트 키의 단일 출처. Figma 화면/라이브러리 빌드 시 인스턴스의 mainComponent.remote===true 인 것은 이 목록의 key 일 때만 허용하고, 그 외는 전부 외부 라이브러리 위반(❌)으로 본다. 이름(ic_ 접두사 등)으로 판단하지 말 것 — 외부 라이브러리도 같은 이름을 쓴다(2026-06-19 오탐/누수의 근본 원인). 키 기준만 신뢰한다.",
-  "lastSynced": "2026-07-02",
+  "lastSynced": "2026-07-03",
   "source": "installer 아이콘 9키 = plugins/figma-vars-installer/src/build-components.ts ICON_KEYS. V3.0-only 추가분(password-eye)은 ICON_KEYS 밖이며 V3.0 Login Input 에서 직접 사용 — 이 파일이 provenance 허용목록의 정본.",
   "iconLibraryFileKey": "YcBbW9e0MTR9T3W5Sz0Ukx",
   "iconLibraryName": "아이콘 라이브러리 V2.2 (14.UI 섹션)",
@@ -19,7 +19,9 @@
     "close":      "2a1abbd3597b536e34fd9523fb61eade3afe9934",
     "eye_hide":   "d4e9eb5b7e193ee291aa2a7e04396c8de2d2dae7",
     "eye_show":   "b130623bad9bf035e273501b404bf7a245af1460",
-    "edge_set":   "606d0de897175059f133427bf62bb3635d18a860"
+    "edge_set":   "606d0de897175059f133427bf62bb3635d18a860",
+    "lock":       "28aa6b1615f3afb29ff22cf2767f0c771c941fdc",
+    "lock_set":   "b3ccc4b275de6aac8e3940df2ae97fbb00168624"
   },
   "note": "허용목록에 없는 ic_* 인스턴스(예: ic_닫기·ic_잠김 등)는 정식 V2.2 아이콘일 수 있으나 우리 설치기에 미등록 상태다. 자동으로 '위반' 단정하지 말고 (c)애매로 분류해 사용자 확인 후, 정식 아이콘이면 build-components.ts ICON_KEYS + 이 파일에 키를 추가한다. edge_set 은 componentSet 키(importComponentSetByKeyAsync) — 개별 variant 키가 아님에 주의."
 }

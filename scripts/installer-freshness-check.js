@@ -20,8 +20,10 @@ const { execSync } = require('child_process');
 
 const ROOT = path.resolve(__dirname, '..');
 const VARS_DATA = path.join(ROOT, 'plugins/figma-vars-installer/src/vars-data.ts');
-const ZIP = path.join(ROOT, 'assets/downloads/s1-design-system-installer.zip');
-const ZIP_ENTRY = 's1-design-system-installer/code.js';
+// 설치기 이름 변경(f1807dc: s1-design-system-installer → s1-ux-design-guide-installer)에 맞춰 교정.
+// installer:build 가 실제 생성하는 zip 을 검사한다(옛 이름은 vestigial).
+const ZIP = path.join(ROOT, 'assets/downloads/s1-ux-design-guide-installer.zip');
+const ZIP_ENTRY = 's1-ux-design-guide-installer/code.js';
 
 function block(text, ident) {
   const i = text.indexOf(ident);

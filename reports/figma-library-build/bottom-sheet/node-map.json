@@ -1,0 +1,87 @@
+{
+  "builtBy": "figma-library-builder",
+  "buildDate": "2026-07-03",
+  "targetFile": "cysG5U1udpQqVagYY1hWHW",
+  "targetFileName": "SW-UX-GUIDE-V3.0-TEST",
+  "page": { "id": "5:5706", "name": "Core" },
+  "placement": "empty band right of all Core sections (x=25000)",
+  "sets": {
+    "Bottom Sheet Option": {
+      "id": "786:6306",
+      "x": 25000, "y": 0, "w": 848, "h": 360,
+      "rowHeights": "selection rows (Text/Checkbox/Radio) = 48 fixed (py8); List rows (Default/Disabled) = 64 hug (py12, avatar40 + title16M/sub14R gap2)",
+      "variantAxes": { "Type": ["Text", "Checkbox", "Radio", "List"], "State": ["Default", "Selected", "Disabled"] },
+      "packing": "auto-layout WRAP, 2 cols, gap 48/24, pad 40 (no coord blowup)",
+      "variants": [
+        { "name": "Type=Text, State=Default", "id": "786:6255", "content": "label body/16M text/body/primary" },
+        { "name": "Type=Text, State=Selected", "id": "786:6257", "content": "label text/state/accent + check icon(24) icon/blue" },
+        { "name": "Type=Checkbox, State=Default", "id": "786:6262", "content": "Checkbox off instance(687:19705) + label" },
+        { "name": "Type=Checkbox, State=Selected", "id": "786:6265", "content": "Checkbox checked instance(687:19707) + label" },
+        { "name": "Type=Radio, State=Default", "id": "786:6271", "content": "Radio off instance(687:19741) + label" },
+        { "name": "Type=Radio, State=Selected", "id": "786:6275", "content": "Radio selected instance(687:19745) + label" },
+        { "name": "Type=List, State=Default", "id": "786:6280", "content": "avatar(40, icon/gray-light + account icon icon/white) + title/sub + chevron(24) icon/gray-dark" },
+        { "name": "Type=List, State=Disabled", "id": "786:6294", "content": "avatar + title/sub + ic_잠김 Line instance(797:68, 24px, color/icon/gray) right-aligned" }
+      ]
+    },
+    "Bottom Sheet": {
+      "id": "789:6337",
+      "x": 25000, "y": 500,
+      "variantAxes": { "Footer": ["None", "Single", "Dual"] },
+      "commonStructure": "sheet bg/level-0, top radius bound to radius/modal/md var, clip; header(title 헤더 타이틀 title/20B text/title/primary + close icon 24 icon/gray-dark, px20, space-between); list = 4x Bottom Sheet Option(Text) instances (item2 = Selected variant); footer px20",
+      "variants": [
+        { "name": "Footer=None", "id": "789:6273", "w": 360, "h": 300, "footer": "none, pb40" },
+        { "name": "Footer=Single", "id": "789:6291", "w": 360, "h": 376, "footer": "Button primary LG/Mobile(687:19460) full-width, py20" },
+        { "name": "Footer=Dual", "id": "789:6313", "w": 360, "h": 376, "footer": "Button secondary(687:19492) + primary(687:19460), gap8, each fill" }
+      ]
+    }
+  },
+  "reusedComponents": {
+    "Checkbox": { "set": "687:19716", "off": "687:19705", "on": "687:19707" },
+    "Radio": { "set": "687:19770", "off": "687:19741", "on": "687:19745" },
+    "Button": { "set": "687:19532", "primary_LG_Mobile": "687:19460", "secondary_LG_Mobile": "687:19492" },
+    "BottomSheetOptionText": { "default": "786:6255", "selected": "786:6257" }
+  },
+  "iconsUsedByKey": {
+    "close": "2a1abbd3597b536e34fd9523fb61eade3afe9934",
+    "check": "5ab251e0d90adb555ee2fa316f84e86041f19916",
+    "chevron": "e1ac97aa82f4e52f257ac1c0ea77fd09d0e5f581",
+    "account": "a423e2e05cfff2f93062d6a83d6f3bdf79ca9647",
+    "lock_ic잠김_set": "b3ccc4b275de6aac8e3940df2ae97fbb00168624",
+    "lock_ic잠김_Line_variant": "28aa6b1615f3afb29ff22cf2767f0c771c941fdc",
+    "lock_instance_in_List_Disabled": "797:68"
+  },
+  "colorVariables": {
+    "color/bg/level-0": "VariableID:687:17884",
+    "color/text/body/primary": "VariableID:8:1116",
+    "color/text/body/secondary": "VariableID:8:1117",
+    "color/text/title/primary": "VariableID:8:1127",
+    "color/text/state/accent": "VariableID:8:1119",
+    "color/icon/blue": "VariableID:8:1067",
+    "color/icon/gray": "VariableID:8:1068",
+    "color/icon/gray-dark": "VariableID:8:1069",
+    "color/icon/gray-light": "VariableID:8:1070",
+    "color/icon/white": "VariableID:8:1072"
+  },
+  "textStyles": {
+    "body/16M": "S:886ca7d230530051af94c90c7b7931f98b8b23ae,",
+    "body/14R": "S:35d6b9f34501f327f4672b8393023695d2f36c5d,",
+    "title/20B": "S:46f6df226b7078240376de6530ae592e02a48416,"
+  },
+  "structuralNotes": {
+    "combineAsVariants": "both sets combined; packed via auto-layout to avoid coordinate blowup",
+    "detach": "none — no cyclic reference (Bottom Sheet contains Bottom Sheet Option instances, a different set; not self-containing)",
+    "rename": "none of existing components renamed",
+    "remap": "none — new sets only; no existing instances affected",
+    "emptyContainers": "none removed",
+    "textFontTemp": "labels authored with temp Inter then rebound to Pretendard text styles via setTextStyleIdAsync (Pretendard not MCP-loadable)"
+  },
+  "selfChecks": {
+    "fontScan": "PASS — 13 TEXT nodes, 0 non-Pretendard",
+    "tokenBindingScan": "PASS — 0 unbound raw hex across both sets",
+    "firstPassSelfFix": "rebuilt Bottom Sheet container once: resize() had forced FIXED sizing, clipping list to 1 of 4 items; fixed by setting AUTO hug-sizing after resize"
+  },
+  "needsDecision": [],
+  "resolvedDecisions": [
+    "lock icon (2026-07-03): ic_잠김 confirmed published in canonical '아이콘 라이브러리 V2.2' (set key b3ccc4b2…). Empty placeholder replaced with ic_잠김 Line variant instance (797:68) in List/Disabled, 24px, bound color/icon/gray. Font + token-binding self-check re-run PASS."
+  ]
+}

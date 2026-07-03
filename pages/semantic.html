@@ -7,6 +7,10 @@
   <title>Semantic Token · S1 UX DESIGN GUIDE</title>
   <link rel="stylesheet" href="../assets/css/style.css">
   <style>
+    /* 전폭 사용 — 화면 폭에 맞춰 컨텐츠 영역 확장 (2026-07-03) */
+    .page-content { max-width: none; }
+    .page-header-inner { max-width: none; }
+
     /* ── Semantic page ── */
     .sem-section { margin-bottom: 48px; }
 
@@ -283,7 +287,7 @@
       <div class="page-header-inner">
         <div>
           <h1>Semantic Tokens</h1>
-          <p>역할 기반 색상 토큰 · Light &amp; Dark · Figma semantic 컬렉션 기준 · 최종 갱신 <span data-gen-date>2026-06-30</span></p>
+          <p>역할 기반 색상 토큰 · Light &amp; Dark · Figma semantic 컬렉션 기준 · 최종 갱신 <span data-gen-date>2026-07-03</span></p>
         </div>
         <div class="page-header-actions">
           <span class="badge badge-blue">45 color tokens</span>
@@ -417,6 +421,9 @@ const SEMANTIC_PAGE = [
     { v: '--color-bg-level-1', role: 'level-1', light: '#FAFAFA', dark: '#131418', lp: 'gray/0', dp: 'gray-dark/50' },
     { v: '--color-bg-level-2', role: 'level-2', light: '#F5F5F5', dark: '#1C1D23', lp: 'gray/50', dp: 'gray-dark/100' },
     { v: '--color-bg-level-3', role: 'level-3', light: '#E9E9E9', dark: '#24252C', lp: 'gray/100', dp: 'gray-dark/200' },
+  ] },
+  { key: 'surface', label: 'color-surface', desc: '', tokens: [
+    { v: '--color-surface-raised', role: 'raised', light: '#FFFFFF', dark: '#35363F', lp: 'base/white', dp: 'gray-dark/400' },
   ] },
   { key: 'button', label: 'color-button', desc: '버튼 — variant × state 별 배경·테두리·라벨', tokens: [
     { v: '--color-button-bg-blue-line--default', role: 'bg / blue-line--default', light: '#FFFFFF', dark: '#1C1D23', lp: 'base/white', dp: 'gray-dark/100' },

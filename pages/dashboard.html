@@ -9,6 +9,10 @@
   <link rel="stylesheet" href="../assets/css/tokens.css">
   <!-- 이 페이지는 scripts/gen-dashboard.js 가 registry/governance/guardians.json 으로 자동 생성. 손편집 금지. -->
   <style>
+    /* 전폭 사용 — 화면 폭에 맞춰 컨텐츠 영역 확장 (2026-07-03) */
+    .page-content { max-width: none; }
+    .page-header-inner { max-width: none; }
+
     .dash-banner { display:flex; align-items:center; gap:14px; padding:18px 22px; border-radius:14px; margin-bottom:32px; background:#f3f4f6; border:1px solid #e5e7eb; }
     .dash-banner.ok { background:#ecfdf5; border-color:#a7f3d0; }
     .dash-banner.bad { background:#fffbeb; border-color:#fcd34d; }

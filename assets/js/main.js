@@ -13,7 +13,10 @@ const SITE_NAV = [
 
   /* ── Source ── */
   { type: 'label', text: 'Source' },
-  { type: 'item', id: 'layer-policy', href: 'layer-policy.html', rootHref: 'pages/layer-policy.html', icon: '🗂', text: 'Layer Policy', status: 'ready' },
+  /* Layer Policy (2026-07-03 메뉴에서 숨김 — layer policy 가 아직 제대로 정리되지 않아 비노출.
+     파일/route(pages/layer-policy.html)는 그대로 보존 → 직접 URL 접근 가능.
+     다시 켜려면 아래 한 줄의 주석을 해제하면 됩니다.)
+  { type: 'item', id: 'layer-policy', href: 'layer-policy.html', rootHref: 'pages/layer-policy.html', icon: '🗂', text: 'Layer Policy', status: 'ready' }, */
   { type: 'item', id: 'components-pc', href: 'components-new.html?platform=pc', rootHref: 'pages/components-new.html?platform=pc', icon: '🖥', text: 'PC Components', status: 'ready' },
   { type: 'item', id: 'components-mobile', href: 'components-new.html?platform=mobile', rootHref: 'pages/components-new.html?platform=mobile', icon: '📱', text: 'Mobile Components', status: 'ready' },
   { type: 'item', id: 'icons', href: 'icons.html', rootHref: 'pages/icons.html', icon: '✦', text: 'Icons', status: 'ready' },
@@ -212,7 +215,6 @@ var SEARCH_INDEX = [
   { label: 'PC Components',     sublabel: 'PC 컴포넌트 가이드 (Variables 정본)', type: 'page', page: 'components-new.html?platform=pc', keywords: 'component pc button checkbox radio toggle chip input select dropdown textarea datepicker table gnb pagination variables 컴포넌트 피씨' },
   { label: 'Mobile Components', sublabel: '모바일 컴포넌트 가이드 (Variables 정본)', type: 'page', page: 'components-new.html?platform=mobile', keywords: 'component mobile button checkbox radio toggle chip input select textarea datepicker timepicker bottom nav 모바일 컴포넌트 하단내비' },
   { label: 'Icons',             sublabel: '아이콘 818개',    type: 'page', page: 'icons.html',       keywords: 'icon svg 아이콘' },
-  { label: 'Legacy Guide',      sublabel: '마이그레이션',    type: 'page', page: 'legacy.html',      keywords: 'legacy migration guide 레거시 마이그레이션' },
   { label: 'Token Mapping',     sublabel: 'Figma ↔ CSS',    type: 'page', page: 'token-mapping.html', keywords: 'token mapping figma css 토큰 매핑' },
   { label: 'Reports',           sublabel: '리포트 목록',     type: 'page', page: 'reports.html',     keywords: 'report mvp 리포트' },
 

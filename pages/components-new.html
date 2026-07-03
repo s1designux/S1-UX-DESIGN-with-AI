@@ -8,7 +8,10 @@
   <link rel="stylesheet" href="../assets/css/style.css">
   <link rel="stylesheet" href="../assets/css/tokens.css">
   <style>
-    /* =====================================================
+        /* [layout-gate] 전폭 — 화면 폭에 맞춰 컨텐츠 확장 (자동관리: npm run layout:check -- --fix) */
+    .page-content { max-width: none; }
+    .page-header-inner { max-width: none; }
+/* =====================================================
        COMPONENT TOKENS
        (semantic tokens loaded via tokens.css link)
     ===================================================== */
@@ -198,6 +201,16 @@
       /* controls-sticky(z-index:9)·page-header(z-index:10) 아래에 드롭다운이 올라오지 않도록
          스태킹 컨텍스트를 preview-area 안에 격리한다. 내부 z-index 값은 이 경계 밖으로 경쟁하지 않음 */
       isolation: isolate;
+      /* 컴포넌트 데모 글자(버튼·칩·라벨 텍스트)가 본문처럼 드래그 선택되며
+         I-빔 텍스트 커서가 뜨는 것을 방지 — 컴포넌트는 UI 부품처럼 동작해야 함 */
+      -webkit-user-select: none;
+      user-select: none;
+    }
+    /* 단, 실제 입력 가능한 폼 컨트롤은 텍스트 선택 정상 동작 유지 */
+    .preview-area input,
+    .preview-area textarea {
+      -webkit-user-select: text;
+      user-select: text;
     }
 
     .state-strip { display: flex; gap: 20px; flex-wrap: wrap; align-items: flex-start; }
@@ -483,6 +496,15 @@
       display: flex; flex-direction: column; align-items: center;
       padding-right: 32px;
     }
+    /* Action lifted to its own block above the state matrix (JS reflow) */
+    .comp-action-top {
+      display: flex; flex-direction: column; align-items: flex-start;
+      gap: 8px; margin-bottom: 18px; padding-bottom: 16px;
+      border-bottom: 1px solid var(--color-border-subtle, #e5e7eb);
+      overflow: visible;
+    }
+    .comp-action-top > .matrix-col-header-action { padding-right: 0; text-align: left; }
+    .comp-action-top > .comp-action-cell { align-items: flex-start; padding-right: 0; }
     @media (max-width: 1024px) {
       .comp-state-matrix {
         column-gap: 8px;
@@ -2013,7 +2035,7 @@
           <button class="comp-nav-btn" data-category="navigation" data-platforms="pc mobile" onclick="showSection('tab', this)">Line Tab</button>
           <button class="comp-nav-btn" data-category="navigation" data-platforms="pc" onclick="showSection('gnb', this)">GNB</button>
           <button class="comp-nav-btn" data-category="navigation" data-platforms="pc" onclick="showSection('pagination', this)">Pagination</button>
-          <button class="comp-nav-btn" data-category="navigation" data-platforms="mobile" onclick="showSection('mobile-bottom-nav', this)">Mobile Bottom Nav</button>
+          <button class="comp-nav-btn" data-category="navigation" data-platforms="mobile" onclick="showSection('mobile-bottom-nav', this)">Bottom Nav</button>
         </div><!-- /comp-nav -->
       </div><!-- /component-filter -->
 
@@ -6194,7 +6216,7 @@ update(); // 초기화</pre>
       <!-- ═══ MOBILE BOTTOM NAV ═══ -->
       <section class="comp-section" id="mobile-bottom-nav" data-cov-states="unselected,selected">
         <div class="comp-section-header">
-          <h2 class="comp-section-title">Mobile Bottom Nav</h2>
+          <h2 class="comp-section-title">Bottom Nav</h2>
           <span class="comp-badge comp-badge-blue">Core</span>
           <span class="comp-badge">Navigation</span>
           <span class="comp-badge">2 states</span>
@@ -7976,6 +7998,53 @@ document.addEventListener('click', function(e) {
 </div>
 
 <script>
+  /* ── 컴포넌트 상태 매트릭스 재배치 ──
+     ① Action 칸을 매트릭스 맨 위 별도 블록(.comp-action-top)으로 올린다(인터랙티브 Action 헤더가 있는 블록만).
+     ② 모든 상태 그리드를 좌측 정렬한다(1fr 늘림 제거 → 내용 폭, 남는 공간은 오른쪽에).
+     노드를 '이동'만 하므로(재생성 아님) id·이벤트 리스너는 그대로 유지된다. */
+  (function reflowComponentMatrices() {
+    function splitTopLevel(s) {
+      var out = [], depth = 0, cur = '';
+      for (var i = 0; i < s.length; i++) {
+        var c = s[i];
+        if (c === '(') depth++;
+        else if (c === ')') depth--;
+        if (/\s/.test(c) && depth === 0) { if (cur) { out.push(cur); cur = ''; } }
+        else cur += c;
+      }
+      if (cur) out.push(cur);
+      return out;
+    }
+    document.querySelectorAll('.comp-state-matrix').forEach(function (m) {
+      // ② 좌측 정렬: 트랙을 내용 폭으로(1fr → max-content), 트랙을 왼쪽으로 모음
+      var tpl = (m.style.gridTemplateColumns || '').replace(/1fr/g, 'max-content');
+      m.style.justifyContent = 'start';
+
+      // ① Action 칸 승격 대상 판별: 헤더가 딱 하나이고 텍스트가 'Action'으로 시작 + 명시적 grid 배치 자식 없음
+      var actionHeaders = m.querySelectorAll(':scope > .matrix-col-header-action');
+      var hasExplicitPlacement = Array.prototype.some.call(m.children, function (ch) {
+        return ch.style && (ch.style.gridColumn || ch.style.gridRow);
+      });
+      var liftable = actionHeaders.length === 1
+        && /^action\b/i.test((actionHeaders[0].textContent || '').trim())
+        && !hasExplicitPlacement;
+
+      if (liftable) {
+        var tokens = splitTopLevel(tpl);
+        if (tokens.length >= 2) {
+          tpl = tokens.slice(1).join(' ');            // 첫 트랙(Action 칸) 제거
+          var actionCell = m.querySelector(':scope > .comp-action-cell');
+          var top = document.createElement('div');
+          top.className = 'comp-action-top';
+          top.appendChild(actionHeaders[0]);          // 노드 이동(리스너/​id 유지)
+          if (actionCell) top.appendChild(actionCell);
+          m.parentNode.insertBefore(top, m);
+        }
+      }
+      m.style.gridTemplateColumns = tpl;
+    });
+  })();
+
   function updateTokenComments() {
     document.querySelectorAll('.code-pane pre .c-val').forEach(valSpan => {
       const match = valSpan.textContent.match(/var\((--[\w-]+)\)/);
@@ -8263,14 +8332,26 @@ document.addEventListener('click', function(e) {
     probe.remove();
   })();
 
+  // 컴포넌트 목록을 이름(ABC/가나다)순으로 자동 정렬한다.
+  // → HTML 어디에 버튼을 추가하든(순서 무관) 로드 시 알파벳 위치로 자동 정리됨.
+  (function sortCompNavAlphabetically() {
+    var nav = document.querySelector('.comp-nav');
+    if (!nav) return;
+    var btns = Array.prototype.slice.call(nav.querySelectorAll('.comp-nav-btn'));
+    btns.sort(function (a, b) {
+      return a.textContent.trim().localeCompare(b.textContent.trim(), undefined, { sensitivity: 'base' });
+    });
+    btns.forEach(function (b) { nav.appendChild(b); }); // 재배치(정렬 순서대로)
+  })();
+
   // 플랫폼(?platform=pc|mobile)을 먼저 고정하고 목록을 필터한다.
   applyPlatformMenu();
 
   (function initFromHash() {
     var valid = ['button','checkbox','radio','toggle','multi-toggle','chip','input','date-picker','time-picker','textarea','select','dropdown','table','pagination','tab','gnb','mobile-bottom-nav']; // Components New: 마이그레이션 완료 컴포넌트만
     var hash  = window.location.hash.replace('#', '');
-    var id    = (hash && valid.includes(hash)) ? hash : null;
-    var btn   = id ? document.querySelector('.comp-nav-btn[onclick*="\'' + id + '\'"]') : null;
+    var id    = (hash && valid.includes(hash)) ? hash : 'button'; // 기본은 Button(양 플랫폼 공통)
+    var btn   = document.querySelector('.comp-nav-btn[onclick*="\'' + id + '\'"]');
     // 지정된 컴포넌트가 없거나 현재 플랫폼에서 숨겨졌으면 → 현재 플랫폼의 첫 노출 컴포넌트로
     if (!btn || btn.dataset.platformHidden === '1') {
       btn = document.querySelector('.comp-nav-btn:not([data-platform-hidden="1"])');

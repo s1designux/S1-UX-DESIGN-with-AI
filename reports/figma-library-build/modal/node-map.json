@@ -1,0 +1,120 @@
+{
+  "_meta": {
+    "component": "Modal",
+    "fileKey": "cysG5U1udpQqVagYY1hWHW",
+    "page": { "name": "Core", "id": "5:5706" },
+    "builtBy": "figma-library-builder",
+    "startedAt": "2026-07-03",
+    "placement": { "x": 0, "y": 4652, "basis": "Platform section x=0; max section bottom = Form Control 4452 + 200 margin" }
+  },
+  "variables": {
+    "color/modal/bg": "VariableID:809:2 (NEW semantic in Semantic Color V2 8:963; Light=base/white 8:710, Dark=gray-dark/100 8:729; scopes FRAME_FILL/SHAPE_FILL; same alias pattern as color/chip/line/bg/default)",
+    "color/bg/level-0": "VariableID:687:17884 (superseded as modal panel fill by color/modal/bg)",
+    "color/bg/level-1": "VariableID:687:17885",
+    "color/bg/level-2": "VariableID:687:17886",
+    "color/overlay": "VariableID:8:1087",
+    "color/text/title/primary": "VariableID:8:1127",
+    "color/text/body/primary": "VariableID:8:1116",
+    "color/icon/gray-dark": "VariableID:8:1069",
+    "color/text/state/accent": "VariableID:8:1119",
+    "color/line/gray/subtle": "VariableID:8:1076",
+    "radius/8": "VariableID:8:943",
+    "spacing/24": "VariableID:8:927",
+    "spacing/20": "VariableID:8:926",
+    "spacing/16": "VariableID:8:925",
+    "spacing/8": "VariableID:8:921",
+    "color/button/bg/primary--default": "VariableID:8:969",
+    "color/button/label/primary--default": "VariableID:8:987",
+    "color/button/bg/secondary--default": "VariableID:8:971",
+    "color/button/border/secondary--default": "VariableID:8:980",
+    "color/button/label/secondary--default": "VariableID:8:989"
+  },
+  "reusedComponents": {
+    "buttonSet": "687:19532",
+    "buttonPrimaryXSM": "Size=XSM, State=Default, Variant=Primary, Break=PC",
+    "buttonSecondaryXSM": "Size=XSM, State=Default, Variant=Secondary, Break=PC",
+    "closeIcon": "placed instance mainComponent key = 2a1abbd3597b536e34fd9523fb61eade3afe9934 (close, variant 'Property 1=Line', V2.2 allowed-list). Parent set = ic_닫기 (593:33518, set key fecb5506e06428f1801dbe092321a65520e856a9, imported via importComponentSetByKeyAsync)."
+  },
+  "textStyles": {
+    "title/16B": "Pretendard Bold 16",
+    "body/14R": "Pretendard Regular 14"
+  },
+  "nodes": {
+    "usageFrame": {
+      "id": "765:6149",
+      "name": "Modal — Usage (사용예시)",
+      "status": "DELETED by external file change (installer re-run rebuilt Core page). Frame 765:6149 and detached Ex3 766:6190 / Ex4 767:6199 no longer exist (getNodeByIdAsync=null). NEEDS REBUILD — see needsDecision. Info below is historical.",
+      "position": "was x=0, y=5896 (before deletion)",
+      "examples": {
+        "Ex1 S/Single 안내": { "block": "765:6150", "instance": "765:6153", "note": "real Modal instance of S/Single; title='안내' (title/16B), body='필수 항목을 입력해주세요.' (1 line, line2 hidden); on color/overlay dim card. Pretendard rebound." },
+        "Ex2 S/Dual 확인": { "block": "765:9027", "instance": "765:9030", "note": "real Modal instance of S/Dual; title='삭제' (title/16B), body 2 lines '선택하신 항목이 삭제됩니다.' / '정말 삭제 하시겠어요.' (body/14R); footer labels 아니오/네 via nested-text override; overlay dim. Pretendard rebound." },
+        "Ex3 M/Dual 폼": { "block": "766:6173", "detachedFrame": "766:6190", "radios": ["766:6204", "766:6208"], "emphasis": "766:6211", "note": "DETACHED (instances can't accept new body children); body = 2 core Radio instances (687:19770 Label=On) + accent text 총 000개 항목 (color/text/state/accent). Footer buttons became detached copies." },
+        "Ex4 L/Dual 복합": { "block": "767:6182", "detachedFrame": "767:6199", "map": "767:6213", "rightCol": "767:9077", "divider": "767:9083", "note": "DETACHED; left = map IMAGE PLACEHOLDER (color/bg/level-2 + label, allowed 편차); right = form row (label + input 대표 목업) + table header text + divider (color/line/gray/subtle) + empty state. Table/map are representative mockups per plan §D." }
+      }
+    },
+    "specDarkFrame": {
+      "id": "768:6186",
+      "name": "Modal — Spec Dark",
+      "status": "DELETED by external file change (installer re-run rebuilt Core page). Frame 768:6186 no longer exists. NEEDS REBUILD — see needsDecision. Info below is historical.",
+      "position": "was x=0, y=7953 (before deletion)",
+      "size": "1120x827",
+      "instances": ["768:6189 (S/Dual)", "768:6203 (M/Dual)", "768:6217 (L/Dual)"],
+      "note": "frame fill color/bg/level-1; setExplicitVariableModeForCollection(Semantic Color V2 8:963 -> Dark 8:2). R1 item4 (REVISED per user): each modal instance PANEL fill now = color/modal/bg (semantic 809:2; resolves Dark #1C1D23) — foundation-direct gray-dark/100 override REMOVED, unified with main component. stroke=color/line/gray/subtle (8:1076) w1, effects=2 drop shadows from ref 781:32832 (r8/y8/spread-4, r24/y20/spread-4). Light modal untouched (flat, no shadow/border).",
+      "item5Fix": "Button instances pinned their own explicitVariableMode to Light (8:1), overriding frame Dark. Fixed by setExplicitVariableModeForCollection(8:963, 8:2) on all 6 button instances in Spec Dark. Secondary bg now resolves gray-dark/100 (#1c1d23), label gray-dark/800. Verified by resolve read."
+    },
+    "modalSet": {
+      "id": "763:9085",
+      "name": "Modal",
+      "size": "2540x1944 (after R5: per-size W×H; repacked). RE-ATTACHED to Core page at x=0,y=12210 after being ORPHANED by external file change (installer re-run). Parent=Core confirmed.",
+      "sizesFinal_R5": { "S": "360×174", "M": "520×336 (width 440→520)", "L": "1000×587", "XL": "1200×587" },
+      "variants": {
+        "Size=S, Footer=Dual": "762:6121",
+        "Size=M, Footer=Dual": "763:6125",
+        "Size=L, Footer=Dual": "763:6135",
+        "Size=XL, Footer=Dual": "763:6145",
+        "Size=S, Footer=Single": "763:9029",
+        "Size=M, Footer=Single": "763:9043",
+        "Size=L, Footer=Single": "763:9057",
+        "Size=XL, Footer=Single": "763:9071"
+      },
+      "template": "762:6121 (S/Dual authored, others cloned)",
+      "bindings": {
+        "fill": "color/modal/bg (NEW semantic 809:2; Light #FFFFFF / Dark #1C1D23 — replaced color/bg/level-0)",
+        "cornerRadius": "radius/8",
+        "paddingInline": "spacing/24",
+        "paddingBlock": "spacing/20",
+        "structure_R5": "Each variant = [Content (VERTICAL autolayout: Header + Body, gap spacing/32)] + [Footer], with frame primaryAxisAlignItems=SPACE_BETWEEN. So when content < minHeight: Content group top, Footer bottom, slack between (body NOT stretched — snaps to content). When content > minHeight: frame hugs, gap = spacing/32. Verified footer gapToBottom=20 (=paddingBottom) all sizes; Body height=34 (2 lines, snapped).",
+        "itemSpacing": "spacing/32 (SPACE_BETWEEN min gap Content<->Footer; Content internal Header<->Body gap also spacing/32)",
+        "minHeight": "R5 per-size: S=174, M=336, L=587, XL=587. primaryAxisSizingMode=AUTO (hug above floor). counterAxisSizingMode=FIXED (per-size width).",
+        "bodyLayoutGrow": "Body layoutGrow=0 + layoutSizingVertical=HUG (body hugs content, does NOT pre-occupy space — footer-at-bottom achieved via SPACE_BETWEEN + Content group, not body fill).",
+        "footerGap": "spacing/8",
+        "title": "text style LOCAL title/16B (Pretendard Bold 16) + fill color/text/title/primary. R1 canonical remote Title/16B rebind BLOCKED (see needsDecision).",
+        "body": "text style LOCAL body/14R (Pretendard Regular 14) + fill color/text/body/primary. R1 canonical remote Body/14R rebind BLOCKED (see needsDecision).",
+        "closeIcon": "ic_닫기 Line instance, fill color/icon/gray-dark",
+        "footerButtons": "local Button instances Size=XSM State=Default Variant=Primary/Secondary"
+      }
+    }
+  },
+  "structureNotes": [
+    "combineAsVariants of 8 components (Size 4 x Footer 2). Set packed into 4x2 grid (rows S/M/L/XL, cols Dual/Single), set resized to 2540x916 (no coordinate-spread collapse).",
+    "Footer buttons are instances of local Button set 687:19532 (Size=XSM=h34). Labels overridden via nested-text override (취소/확인). Button layer names remain '버튼' (harmless; only characters+fontName matter).",
+    "Close icon = imported ic_닫기 component SET (593:33518), Line variant instance, visible solid paints rebound to color/icon/gray-dark.",
+    "No sibling-variant nesting -> no circular reference. Usage/Spec instances reference Modal set variants (parent contains child instances) — not circular.",
+    "Placement (after R4 reflow): all 3 outputs stacked at x=0 (Platform column), below existing sections (max bottom 4452). Set y=4652 (h1044), Usage y=5896 (h1853), Spec Dark y=7949 (h833). 200px gaps, no overlap.",
+    "R1 changes: (2) header<->body<->footer itemSpacing 16->32 (spacing/32, 8:929) on all 8 variants; (3) minHeight 184 on all 8 variants (+detached Ex3/Ex4); (4) Spec Dark panels -> subtle border + 2 ref shadows (light flat, untouched); (5) button instances forced Dark mode (were pinned Light). (1) canonical remote Title/Body style rebind BLOCKED by runtime Pretendard unavailability (see needsDecision).",
+    "R2 changes (user decision): created NEW semantic color/modal/bg (809:2, Light base/white / Dark gray-dark/100, alias-only). Rebound ALL modal panels (8 main variant component defs + 2 detached Ex3/Ex4 + 3 Spec Dark instances) fill to color/modal/bg, replacing color/bg/level-0 (main) and removing foundation-direct gray-dark/100 override (Spec Dark). Resolved: Light #FFFFFF, Dark #1C1D23. stroke/effects unchanged. Zero raw hex (all foundation/variable alias).",
+    "R3 changes (per-size minHeight + body layoutGrow fill) were REVERTED in R4 — kept here only for history.",
+    "R4 changes (user correction, ref 6706:4219 pure hug): removed ALL minHeight (null) and set Body layoutGrow=0 + layoutSizingVertical=HUG on 8 variants + 2 detached. Height now = pure content hug (title+body+footer). Result: 8 main variants all 196 (width-only differs; L/XL NOT forced to 587), detached Ex3=237, Ex4=422 (map placeholder drives it). Footer in hug stack directly below body (no bottom-pin). Repacked set -> 2540x1044; Usage y=5896 (h1853), Spec Dark y=7949 (h833), 200px gaps no overlap. Zero raw hex (panels bound color/modal/bg 809:2). NOTE: fixing layoutGrow alone left Body height stuck (FILL) -> also required Body layoutSizingVertical=HUG to collapse.",
+    "Ex3/Ex4 usage examples DETACHED from Modal instance because Figma instances cannot accept new nested children (needed to inject radios/map/table). Footer buttons in those 2 examples are detached copies, not Button instances. Main Modal set + Ex1/Ex2 keep real Button instances.",
+    "All 19 required variables existed locally by name — zero raw-hex fallback. All fills/strokes bound to Variables; all text bound to Pretendard text styles (data-scan verified: title/16B, body/14R, body/14M, all Pretendard).",
+    "R5 changes (user FINAL sizes): per-size W×H = S 360×174 / M 520×336 (width 440→520) / L 1000×587 / XL 1200×587. NEW STRUCTURE (per coordinator, NOT R3 body-fill): each variant reorganized into [Content group (Header+Body, VERTICAL gap spacing/32)] + [Footer] with frame primaryAxisAlignItems=SPACE_BETWEEN + per-size minHeight. Footer pinned to bottom; Body snapped (layoutGrow=0, HUG) — verified gapToBottom=20, bodyH=34 all sizes. Set repacked -> 2540×1944.",
+    "R5 EXTERNAL FILE CHANGE (critical): between task turns the file was modified externally (installer/plugin re-run rebuilt Core page 5:5706 — page now full of installer '— Spec Dark' frames StatusBar/NavBar/Button/etc at y140+, page content extends to y~12010). This DELETED the Modal Usage frame (765:6149), Spec Dark frame (768:6186), and both detached examples (Ex3 766:6190, Ex4 767:6199), and ORPHANED the Modal set (763:9085 had no parent, floated to x28113). Recovery: 8 variant components survived intact inside the set; restructure/resize applied to them; set RE-ATTACHED to Core page at x=0,y=12210 (below current content). Usage + Spec Dark + detached examples must be REBUILT (see needsDecision)."
+  ],
+  "needsDecision": [
+    "R1 item1 BLOCKED (environment): canonical CAPITAL 'Title/16B' (S:023fa21970a45e112b93260bcea80e2f30923e61,1415:4) & 'Body/14R' (S:a104b2f07030a8cf4961b54707c97ef6f06d150d,1415:27) are REMOTE library text styles. Binding them (setTextStyleIdAsync AND sync textStyleId setter both) requires loading the target Pretendard font, which is NOT installed in the MCP/plugin runtime (loadFontAsync 'Pretendard' fails: family does not exist; importStyleByKeyAsync also fails: key not found). Local lowercase title/16B (Pretendard Bold 16) / body/14R (Pretendard Regular 14) are VISUALLY IDENTICAL and remain bound. Options: (a) user rebinds in Figma Desktop where Pretendard is installed — select modal title/body texts, apply canonical style (1-click); (b) localize/publish the canonical styles into this file; (c) accept local equivalents. Cannot be done from this runtime.",
+    "RESOLVED (R2, user decision): dedicated semantic token created = color/modal/bg (809:2, Light base/white / Dark gray-dark/100). All modal panels (8 main variants + 2 detached + 3 Spec Dark instances) rebound to it; foundation-direct gray-dark/100 override removed. No longer a decision item.",
+    "Ex3/Ex4 usage examples were DETACHED to compose complex bodies (radios/map/table) — Figma instance limitation. Confirm acceptable for review demo, or build as separate composed frames. (Main component set unaffected — real instances.)",
+    "Ex4 data table + map are REPRESENTATIVE MOCKUPS (plan §D: map = image placeholder; table = header text + divider + empty state) not real core Table instances. Confirm sufficient or swap later.",
+    "CRITICAL (R5) — Usage + Spec Dark + detached examples DELETED by external file change (installer re-run on Core page). Modal main SET (763:9085) survived (orphaned; re-attached to Core at x0 y12210) with all R5 resize/restructure applied. DECISION NEEDED: (a) rebuild Modal Usage (사용예시 4종) and Spec Dark frames from scratch on the current Core page, and where to place them (page was externally rebuilt, my prior y-coords are gone); (b) confirm the re-attach location x0/y12210 is acceptable or specify a target section; (c) note the installer likely runs periodically — Modal is NOT yet in the installer (build-components.ts), so manually-placed Modal canvas frames are at risk of being wiped again on next installer run. Consider adding Modal to the installer or placing it on a page the installer doesn't rebuild."
+  ]
+}
