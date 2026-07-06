@@ -133,6 +133,15 @@
     "rule": "모달은 껍데기만 정의. 본문 콘텐츠는 코어 컴포넌트 인스턴스를 조합(시각 스타일 override 금지). Core Component Reuse Rule 준수."
   },
 
+  "componentizationModel": {
+    "decision": "2026-07-03 확정 — 본문 유형화 안 함(종류 무한·비정형). 껍데기만 컴포넌트, 본문은 자유.",
+    "componentized": "shell(크기4·푸터1/2·헤더·닫기·다크·overlay). 유형화 대상=크기·푸터 둘뿐.",
+    "textProperties": "제목·본문·버튼 라벨 = 텍스트 속성(component property)으로 노출 → 글자만 수정, 안 깸.",
+    "textBodyModals": "텍스트형(안내·확인·삭제·불릿·강조)=대다수. 컴포넌트 그대로 글자 수정, 안 깸.",
+    "complexBodyModals": "폼·표·지도 등 복잡 조합=소수·1회성. 깨서 조립(예시 참고). 컴포넌트화 안 함.",
+    "rationale": "Figma 인스턴스는 텍스트 수정=안 깸 / 새 요소 추가=깸. 텍스트형은 안 깨고, 복잡형만 깸(유일무이해 자연스러움). 다양성=본문 자유로 흡수, 시스템=껍데기만 고정."
+  },
+
   "figma": {
     "componentSetKey": "",
     "figmaNodeId": "",

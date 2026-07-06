@@ -396,10 +396,10 @@ export const SEMANTIC_COLOR: Record<string, SemanticColorEntry> = {
 
   // ── surface (딤 위에 떠있는 패널 표면 — 모달·바텀시트·팝오버 공용) ────
   // bg/level 은 라이트/다크가 고정 쌍이라 "라이트=흰색 + 다크=올라온 회색" 조합을 표현 못 한다.
-  // raised = 딤 위 떠있는 패널(surface-default 보다 한 단계 위): 라이트 흰색 / 다크 gray-dark/400.
-  // registry semantic.colors 의 기존 color-surface-raised 정의와 일치. 모달·바텀시트가 이 토큰 공유
-  // (컴포넌트별 전용 토큰 대신 공용 표면). 값은 공용이라 필요 시 한 곳에서 조정. (사용자 결정 2026-07-03)
-  "color/surface/raised": { light: "base/white", dark: "gray-dark/400" },
+  // raised = 딤 위 떠있는 패널(모달·바텀시트·팝오버 공용): 라이트 흰색 / 다크 gray-dark/100.
+  // 모달 스펙(chip·button 과 동일 raised 패턴)과 일치. 컴포넌트별 전용 토큰 대신 공용 표면.
+  // (사용자 결정: 2026-07-03 신설 → 2026-07-06 다크값 gray-dark/400 → gray-dark/100 정정)
+  "color/surface/raised": { light: "base/white", dark: "gray-dark/100" },
 
   // ── button ────────────────────────────────
   "color/button/bg/blue-line--default": { light: "base/white", dark: "gray-dark/100" },

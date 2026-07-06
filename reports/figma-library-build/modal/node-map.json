@@ -2,10 +2,10 @@
   "_meta": {
     "component": "Modal",
     "fileKey": "cysG5U1udpQqVagYY1hWHW",
-    "page": { "name": "Core", "id": "5:5706" },
+    "page": { "name": "test", "id": "302:19291", "note": "R6: MOVED from Core (5:5706) to 'test' page — Core is rebuilt by installer periodically (deleted Modal Usage/Spec once). test page is not touched by installer." },
     "builtBy": "figma-library-builder",
     "startedAt": "2026-07-03",
-    "placement": { "x": 0, "y": 4652, "basis": "Platform section x=0; max section bottom = Form Control 4452 + 200 margin" }
+    "placement": { "note": "R6 on test page (302:19291): set x=0 y=0 (h1944); Usage x=0 y=2144 (h~2083); Spec Dark x=0 y=4427 (h1336). 200px gaps, no overlap." }
   },
   "variables": {
     "color/modal/bg": "VariableID:809:2 (NEW semantic in Semantic Color V2 8:963; Light=base/white 8:710, Dark=gray-dark/100 8:729; scopes FRAME_FILL/SHAPE_FILL; same alias pattern as color/chip/line/bg/default)",
@@ -41,32 +41,36 @@
   },
   "nodes": {
     "usageFrame": {
-      "id": "765:6149",
+      "id": "829:30",
       "name": "Modal — Usage (사용예시)",
-      "status": "DELETED by external file change (installer re-run rebuilt Core page). Frame 765:6149 and detached Ex3 766:6190 / Ex4 767:6199 no longer exist (getNodeByIdAsync=null). NEEDS REBUILD — see needsDecision. Info below is historical.",
-      "position": "was x=0, y=5896 (before deletion)",
+      "status": "REBUILT (R6) on test page (302:19291). x=0, y=2144, h~2083.",
       "examples": {
-        "Ex1 S/Single 안내": { "block": "765:6150", "instance": "765:6153", "note": "real Modal instance of S/Single; title='안내' (title/16B), body='필수 항목을 입력해주세요.' (1 line, line2 hidden); on color/overlay dim card. Pretendard rebound." },
-        "Ex2 S/Dual 확인": { "block": "765:9027", "instance": "765:9030", "note": "real Modal instance of S/Dual; title='삭제' (title/16B), body 2 lines '선택하신 항목이 삭제됩니다.' / '정말 삭제 하시겠어요.' (body/14R); footer labels 아니오/네 via nested-text override; overlay dim. Pretendard rebound." },
-        "Ex3 M/Dual 폼": { "block": "766:6173", "detachedFrame": "766:6190", "radios": ["766:6204", "766:6208"], "emphasis": "766:6211", "note": "DETACHED (instances can't accept new body children); body = 2 core Radio instances (687:19770 Label=On) + accent text 총 000개 항목 (color/text/state/accent). Footer buttons became detached copies." },
-        "Ex4 L/Dual 복합": { "block": "767:6182", "detachedFrame": "767:6199", "map": "767:6213", "rightCol": "767:9077", "divider": "767:9083", "note": "DETACHED; left = map IMAGE PLACEHOLDER (color/bg/level-2 + label, allowed 편차); right = form row (label + input 대표 목업) + table header text + divider (color/line/gray/subtle) + empty state. Table/map are representative mockups per plan §D." }
-      }
+        "Ex1 S/Single 안내": { "instance": "829:34", "note": "real Modal instance of S/Single; title='안내', body='필수 항목을 입력해주세요.' (line2 hidden); color/overlay dim card. Footer bottom via SPACE_BETWEEN (S minHeight 174)." },
+        "Ex2 S/Dual 확인": { "instance": "829:50", "note": "real Modal instance of S/Dual; title='삭제', body 2 lines; footer 아니오/네 via nested override." },
+        "Ex3 M/Dual 폼": { "block": "837:9043", "detachedFrame": "837:79", "note": "DETACHED M/Dual (520×336); body = 2 core Radio instances (NEW Radio set 821:14340; variants 821:14329 Selected/On, 821:14323 Default/On) 전체/선택 기간 다운로드 + accent 총 000개 항목 (color/text/state/accent). Title 다운로드, footer 취소/다운로드." },
+        "Ex4 L/Dual 복합": { "block": "838:9054", "detachedFrame": "838:90", "note": "DETACHED L/Dual (1000×587); horizontal body = left map IMAGE PLACEHOLDER (color/bg/level-2 + label, allowed 편차) + right col: form row (label + input 대표목업 bg/level-0 + line/gray/subtle border) + table header + divider (line/gray/subtle) + empty state. Title 지정 노선 추가, footer 취소/저장. Mockups per plan §D." }
+      },
+      "buildNote": "R6 detach gotcha: awaits AFTER detachInstance() invalidate detached-frame child refs (re-IDed next microtask). Fix: pre-build body content BEFORE detach, assemble with NO awaits after detach, then title/footer overrides in a separate settled call. Chained .createInstance().detachInstance() returned a stale frame — split into 2 statements. Radio set id changed (installer rebuild): old 687:19770 deleted -> new 821:14340."
     },
     "specDarkFrame": {
-      "id": "768:6186",
+      "id": "840:69",
       "name": "Modal — Spec Dark",
-      "status": "DELETED by external file change (installer re-run rebuilt Core page). Frame 768:6186 no longer exists. NEEDS REBUILD — see needsDecision. Info below is historical.",
-      "position": "was x=0, y=7953 (before deletion)",
-      "size": "1120x827",
-      "instances": ["768:6189 (S/Dual)", "768:6203 (M/Dual)", "768:6217 (L/Dual)"],
-      "note": "frame fill color/bg/level-1; setExplicitVariableModeForCollection(Semantic Color V2 8:963 -> Dark 8:2). R1 item4 (REVISED per user): each modal instance PANEL fill now = color/modal/bg (semantic 809:2; resolves Dark #1C1D23) — foundation-direct gray-dark/100 override REMOVED, unified with main component. stroke=color/line/gray/subtle (8:1076) w1, effects=2 drop shadows from ref 781:32832 (r8/y8/spread-4, r24/y20/spread-4). Light modal untouched (flat, no shadow/border).",
-      "item5Fix": "Button instances pinned their own explicitVariableMode to Light (8:1), overriding frame Dark. Fixed by setExplicitVariableModeForCollection(8:963, 8:2) on all 6 button instances in Spec Dark. Secondary bg now resolves gray-dark/100 (#1c1d23), label gray-dark/800. Verified by resolve read."
+      "status": "REBUILT (R6) on test page (302:19291). x=0, y=4427, h1336.",
+      "instances": ["840:72 (S/Dual)", "840:87 (M/Dual)", "840:102 (L/Dual)"],
+      "note": "frame fill color/bg/level-1; setExplicitVariableModeForCollection(Semantic Color V2 8:963 -> Dark 8:2). Panel fill = color/modal/bg (809:2) resolves Dark #1C1D23 automatically (no override needed). stroke=color/line/gray/subtle (8:1076) w1, effects=2 drop shadows (r8/y8/spread-4, r24/y20/spread-4). Light modal untouched (flat).",
+      "item5Fix": "Button instances pin their own explicitVariableMode to Light; fixed by setExplicitVariableModeForCollection(8:963,8:2) on all 6 button instances. Secondary bg resolves gray-dark/100 (#1c1d23) — verified R6."
     },
     "modalSet": {
       "id": "763:9085",
       "name": "Modal",
-      "size": "2540x1944 (after R5: per-size W×H; repacked). RE-ATTACHED to Core page at x=0,y=12210 after being ORPHANED by external file change (installer re-run). Parent=Core confirmed.",
+      "size": "2540x1944 (per-size W×H; repacked). R6: MOVED to test page (302:19291) at x=0,y=0 (out of installer's reach).",
       "sizesFinal_R5": { "S": "360×174", "M": "520×336 (width 440→520)", "L": "1000×587", "XL": "1200×587" },
+      "componentProperties_R7": {
+        "Title": { "id": "Title#847:0", "type": "TEXT", "default": "제목이 여기에 표시됩니다", "boundIn": "all 8 variants (title text layer, componentPropertyReferences.characters)" },
+        "Body": { "id": "Body#847:9", "type": "TEXT", "default": "내용이 여기에 표시됩니다.", "boundIn": "all 8 variants (body text layer). Body consolidated from 2 text nodes to 1 (multi-line via \\n)." },
+        "footerButtonLabels": "NOT exposed as Modal property — local Button (687:19532) has no label TEXT property and its label is inside a nested INSTANCE (Figma disallows binding a component property across instance boundaries). Users can still edit labels by double-clicking into the button (deep edit). See needsDecision.",
+        "note": "R7: shell 'edit text only' model. Users edit Title/Body in the Instance properties panel without breaking structure. Runtime setProperties(TEXT) is font-blocked (Pretendard not installed in MCP), but works in Figma Desktop where Pretendard is installed."
+      },
       "variants": {
         "Size=S, Footer=Dual": "762:6121",
         "Size=M, Footer=Dual": "763:6125",
@@ -108,13 +112,18 @@
     "Ex3/Ex4 usage examples DETACHED from Modal instance because Figma instances cannot accept new nested children (needed to inject radios/map/table). Footer buttons in those 2 examples are detached copies, not Button instances. Main Modal set + Ex1/Ex2 keep real Button instances.",
     "All 19 required variables existed locally by name — zero raw-hex fallback. All fills/strokes bound to Variables; all text bound to Pretendard text styles (data-scan verified: title/16B, body/14R, body/14M, all Pretendard).",
     "R5 changes (user FINAL sizes): per-size W×H = S 360×174 / M 520×336 (width 440→520) / L 1000×587 / XL 1200×587. NEW STRUCTURE (per coordinator, NOT R3 body-fill): each variant reorganized into [Content group (Header+Body, VERTICAL gap spacing/32)] + [Footer] with frame primaryAxisAlignItems=SPACE_BETWEEN + per-size minHeight. Footer pinned to bottom; Body snapped (layoutGrow=0, HUG) — verified gapToBottom=20, bodyH=34 all sizes. Set repacked -> 2540×1944.",
-    "R5 EXTERNAL FILE CHANGE (critical): between task turns the file was modified externally (installer/plugin re-run rebuilt Core page 5:5706 — page now full of installer '— Spec Dark' frames StatusBar/NavBar/Button/etc at y140+, page content extends to y~12010). This DELETED the Modal Usage frame (765:6149), Spec Dark frame (768:6186), and both detached examples (Ex3 766:6190, Ex4 767:6199), and ORPHANED the Modal set (763:9085 had no parent, floated to x28113). Recovery: 8 variant components survived intact inside the set; restructure/resize applied to them; set RE-ATTACHED to Core page at x=0,y=12210 (below current content). Usage + Spec Dark + detached examples must be REBUILT (see needsDecision)."
+    "R5 EXTERNAL FILE CHANGE (critical): between task turns the file was modified externally (installer/plugin re-run rebuilt Core page 5:5706). This DELETED the Modal Usage frame, Spec Dark frame, both detached examples, and ORPHANED the Modal set. 8 variant components survived.",
+    "R6 changes (user decision — move off installer's path): MOVED Modal set (763:9085) to 'test' page (302:19291) at x0 y0. REBUILT Usage (829:30, x0 y2144, 4 examples with new structure — footer bottom via SPACE_BETWEEN) and Spec Dark (840:69, x0 y4427). Radio set id refreshed (old 687:19770 deleted by rebuild -> new 821:14340). Final verify: 0 raw hex (fills+strokes across all 3), 79 texts all Pretendard (0 non-Pretendard), secondary button dark resolves #1C1D23. 200px gaps, no overlap. NOTE build gotcha: awaits after detachInstance() invalidate child refs -> pre-build content before detach + split createInstance/detachInstance.",
+    "R7 changes (shell 'edit text only' model): (1) added TEXT component properties Title (Title#847:0) + Body (Body#847:9) on set 763:9085, bound to title/body text layers in all 8 variants (boundTitle=8, boundBody=8). Body consolidated from 2 text nodes -> 1 (multi-line via \\n). Users edit Title/Body in Instance properties panel without breaking structure. (2) Usage frame: added 2 section group labels — '텍스트형 — 컴포넌트 그대로 글자만 수정 (안 깸)' above ①②, '복잡형 — 깨서 조립 (예시 참고)' above ③④ (title/16B, color/text/title/primary). Ex2 body restored to 2 lines. Final verify: 0 raw hex, 0 non-Pretendard (55 texts). Footer button labels NOT exposable as property (Button has no label prop + nested-instance boundary) — see needsDecision. Runtime setProperties(TEXT) font-blocked (Pretendard) but works for users in Desktop.",
+    "R8 fix (alignment regression): 3 variants (763:9029, 763:6135, 763:9057) had regressed to primaryAxisAlignItems=MIN (content+footer pulled up, empty space below footer = user's '푸터가 올라감'). Reset ALL 8 variants to SPACE_BETWEEN (primaryAxisSizingMode=AUTO + per-size minHeight kept). Verified footer gapToBottom=20 all sizes incl L/XL 587. INSTANCE TEST: createInstance(L/Dual 763:6135) -> instance footer gapToBottom=20, align SPACE_BETWEEN (user's 'clicked component=instance, footer up' reproduced-then-resolved); test instance deleted. 0 raw hex, 0 non-Pretendard."
   ],
   "needsDecision": [
     "R1 item1 BLOCKED (environment): canonical CAPITAL 'Title/16B' (S:023fa21970a45e112b93260bcea80e2f30923e61,1415:4) & 'Body/14R' (S:a104b2f07030a8cf4961b54707c97ef6f06d150d,1415:27) are REMOTE library text styles. Binding them (setTextStyleIdAsync AND sync textStyleId setter both) requires loading the target Pretendard font, which is NOT installed in the MCP/plugin runtime (loadFontAsync 'Pretendard' fails: family does not exist; importStyleByKeyAsync also fails: key not found). Local lowercase title/16B (Pretendard Bold 16) / body/14R (Pretendard Regular 14) are VISUALLY IDENTICAL and remain bound. Options: (a) user rebinds in Figma Desktop where Pretendard is installed — select modal title/body texts, apply canonical style (1-click); (b) localize/publish the canonical styles into this file; (c) accept local equivalents. Cannot be done from this runtime.",
     "RESOLVED (R2, user decision): dedicated semantic token created = color/modal/bg (809:2, Light base/white / Dark gray-dark/100). All modal panels (8 main variants + 2 detached + 3 Spec Dark instances) rebound to it; foundation-direct gray-dark/100 override removed. No longer a decision item.",
     "Ex3/Ex4 usage examples were DETACHED to compose complex bodies (radios/map/table) — Figma instance limitation. Confirm acceptable for review demo, or build as separate composed frames. (Main component set unaffected — real instances.)",
     "Ex4 data table + map are REPRESENTATIVE MOCKUPS (plan §D: map = image placeholder; table = header text + divider + empty state) not real core Table instances. Confirm sufficient or swap later.",
-    "CRITICAL (R5) — Usage + Spec Dark + detached examples DELETED by external file change (installer re-run on Core page). Modal main SET (763:9085) survived (orphaned; re-attached to Core at x0 y12210) with all R5 resize/restructure applied. DECISION NEEDED: (a) rebuild Modal Usage (사용예시 4종) and Spec Dark frames from scratch on the current Core page, and where to place them (page was externally rebuilt, my prior y-coords are gone); (b) confirm the re-attach location x0/y12210 is acceptable or specify a target section; (c) note the installer likely runs periodically — Modal is NOT yet in the installer (build-components.ts), so manually-placed Modal canvas frames are at risk of being wiped again on next installer run. Consider adding Modal to the installer or placing it on a page the installer doesn't rebuild."
+    "RESOLVED (R6) — installer-wipe risk addressed by user decision: Modal moved to 'test' page (302:19291), which the installer does not rebuild. Usage + Spec Dark rebuilt there. Set/Usage/Spec now safe from installer runs. (Modal still not in installer build-components.ts — that remains a separate future task if Modal should be installer-managed.)",
+    "R7 — FOOTER BUTTON LABEL editing: cannot be exposed as a Modal component property. The local Button component (687:19532) has no label TEXT property, and its label text lives inside a nested INSTANCE — Figma does not allow binding a parent component's property across an instance boundary. Options: (a) accept current behavior — users edit a button label by double-clicking into the button on the instance (deep edit, standard Figma); (b) add a label TEXT property to the core Button component itself (out of Modal scope; affects all Button usages) then optionally re-expose on Modal. Recommend (a) unless the team wants Button to have a first-class label property.",
+    "R7 — Title/Body property editing from THIS runtime is font-blocked (setProperties TEXT requires Pretendard, not installed in MCP). This does NOT affect users in Figma Desktop (Pretendard installed) — the properties are correctly created & bound and are fully editable there. Same Pretendard-runtime limitation as item1."
   ]
 }

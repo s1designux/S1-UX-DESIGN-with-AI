@@ -1,45 +1,55 @@
 {
   "builtBy": "figma-library-builder",
   "buildDate": "2026-07-03",
+  "rebuild": {
+    "date": "2026-07-03",
+    "reason": "Original build (Bottom Sheet Option 786:6306 / Bottom Sheet 789:6337) was lost during user file reorg — nodes no longer exist. Rebuilt identically from 2-plan.md/1-inventory.md.",
+    "changesVsOriginal": [
+      "Sheet/option-row surface bound to color/surface/raised (820:190) instead of color/bg/level-0 — per rebuild instruction (surface/raised confirmed to exist in file, so binding succeeded; no fallback needed).",
+      "Reused component set node ids changed after reorg (Checkbox/Radio/Button now in 821:xxx range); re-located by name.",
+      "New set/variant node ids (865/868 range)."
+    ]
+  },
   "targetFile": "cysG5U1udpQqVagYY1hWHW",
   "targetFileName": "SW-UX-GUIDE-V3.0-TEST",
   "page": { "id": "5:5706", "name": "Core" },
-  "placement": "empty band right of all Core sections (x=25000)",
+  "placement": "empty band right of Table section (rightmost occupied edge = 25600); placed at x=25800 (old x=25000 band now occupied by relocated Table section 23432-25600)",
   "sets": {
     "Bottom Sheet Option": {
-      "id": "786:6306",
-      "x": 25000, "y": 0, "w": 848, "h": 360,
-      "rowHeights": "selection rows (Text/Checkbox/Radio) = 48 fixed (py8); List rows (Default/Disabled) = 64 hug (py12, avatar40 + title16M/sub14R gap2)",
+      "id": "865:17",
+      "x": 25800, "y": 0, "w": 848, "h": 360,
+      "packing": "auto-layout HORIZONTAL WRAP, 2 cols, itemSpacing 48, counterAxisSpacing 24, pad 40, width fixed 848 (no coord blowup)",
+      "rowHeights": "selection rows (Text/Checkbox/Radio) = 48 fixed (py8); List rows = hug ~64 (py12, avatar40 + title body/16M + sub body/14R gap2)",
       "variantAxes": { "Type": ["Text", "Checkbox", "Radio", "List"], "State": ["Default", "Selected", "Disabled"] },
-      "packing": "auto-layout WRAP, 2 cols, gap 48/24, pad 40 (no coord blowup)",
       "variants": [
-        { "name": "Type=Text, State=Default", "id": "786:6255", "content": "label body/16M text/body/primary" },
-        { "name": "Type=Text, State=Selected", "id": "786:6257", "content": "label text/state/accent + check icon(24) icon/blue" },
-        { "name": "Type=Checkbox, State=Default", "id": "786:6262", "content": "Checkbox off instance(687:19705) + label" },
-        { "name": "Type=Checkbox, State=Selected", "id": "786:6265", "content": "Checkbox checked instance(687:19707) + label" },
-        { "name": "Type=Radio, State=Default", "id": "786:6271", "content": "Radio off instance(687:19741) + label" },
-        { "name": "Type=Radio, State=Selected", "id": "786:6275", "content": "Radio selected instance(687:19745) + label" },
-        { "name": "Type=List, State=Default", "id": "786:6280", "content": "avatar(40, icon/gray-light + account icon icon/white) + title/sub + chevron(24) icon/gray-dark" },
-        { "name": "Type=List, State=Disabled", "id": "786:6294", "content": "avatar + title/sub + ic_잠김 Line instance(797:68, 24px, color/icon/gray) right-aligned" }
+        { "name": "Type=Text, State=Default", "id": "863:6104", "content": "label 항목 body/16M color/text/body/primary" },
+        { "name": "Type=Text, State=Selected", "id": "863:6107", "content": "label color/text/state/accent + check icon(24) color/icon/blue, space-between" },
+        { "name": "Type=Checkbox, State=Default", "id": "863:6110", "content": "Checkbox off instance(821:14275) + label, gap8" },
+        { "name": "Type=Checkbox, State=Selected", "id": "863:6113", "content": "Checkbox Checked instance(821:14277) + label, gap8" },
+        { "name": "Type=Radio, State=Default", "id": "863:6116", "content": "Radio off instance(821:14311, Label=Off) + label, gap8" },
+        { "name": "Type=Radio, State=Selected", "id": "863:6119", "content": "Radio Selected instance(821:14315, Label=Off) + label, gap8" },
+        { "name": "Type=List, State=Default", "id": "864:36", "content": "avatar(40, color/icon/gray-light circle + account icon color/icon/white) + title/sub + chevron instance(867:4, 24px, color/icon/gray-dark, stroke-recolored) space-between" },
+        { "name": "Type=List, State=Disabled", "id": "864:48", "content": "avatar + title/sub + ic_잠김 Line instance(24px, color/icon/gray) right-aligned" }
       ]
     },
     "Bottom Sheet": {
-      "id": "789:6337",
-      "x": 25000, "y": 500,
+      "id": "868:9184",
+      "x": 25800, "y": 560, "w": 1256, "h": 456,
+      "packing": "auto-layout HORIZONTAL, itemSpacing 48, pad 40, hug; counterAxisAlignItems MIN",
       "variantAxes": { "Footer": ["None", "Single", "Dual"] },
-      "commonStructure": "sheet bg/level-0, top radius bound to radius/modal/md var, clip; header(title 헤더 타이틀 title/20B text/title/primary + close icon 24 icon/gray-dark, px20, space-between); list = 4x Bottom Sheet Option(Text) instances (item2 = Selected variant); footer px20",
+      "commonStructure": "sheet fill color/surface/raised, top corners bound to radius/modal/md (var 8:1196), clipsContent; content(VERTICAL gap24)=[header(px20 space-between: title 헤더 타이틀 title/20B color/text/title/primary + close icon 24 color/icon/gray-dark) , list(4x Bottom Sheet Option Text instances, item2 = Selected variant 863:6107, others 863:6104, FILL width)]; sheet itemSpacing 48 (content<->footer); footer px20",
       "variants": [
-        { "name": "Footer=None", "id": "789:6273", "w": 360, "h": 300, "footer": "none, pb40" },
-        { "name": "Footer=Single", "id": "789:6291", "w": 360, "h": 376, "footer": "Button primary LG/Mobile(687:19460) full-width, py20" },
-        { "name": "Footer=Dual", "id": "789:6313", "w": 360, "h": 376, "footer": "Button secondary(687:19492) + primary(687:19460), gap8, each fill" }
+        { "name": "Footer=None", "id": "868:6130", "w": 360, "h": 300, "footer": "none, pb40" },
+        { "name": "Footer=Single", "id": "868:6153", "w": 360, "h": 376, "footer": "Button primary LG/Mobile(821:14030) full-width FILL, py20" },
+        { "name": "Footer=Dual", "id": "868:6178", "w": 360, "h": 376, "footer": "Button secondary LG/Mobile(821:14062) + primary(821:14030), gap8, each FILL" }
       ]
     }
   },
   "reusedComponents": {
-    "Checkbox": { "set": "687:19716", "off": "687:19705", "on": "687:19707" },
-    "Radio": { "set": "687:19770", "off": "687:19741", "on": "687:19745" },
-    "Button": { "set": "687:19532", "primary_LG_Mobile": "687:19460", "secondary_LG_Mobile": "687:19492" },
-    "BottomSheetOptionText": { "default": "786:6255", "selected": "786:6257" }
+    "Checkbox": { "set": "821:14286", "off_State=Default": "821:14275", "on_State=Checked": "821:14277" },
+    "Radio": { "set": "821:14340", "off_State=Default,Label=Off": "821:14311", "on_State=Selected,Label=Off": "821:14315" },
+    "Button": { "set": "821:14102", "primary_LG_Mobile_Default": "821:14030", "secondary_LG_Mobile_Default": "821:14062" },
+    "BottomSheetOptionText": { "default": "863:6104", "selected": "863:6107" }
   },
   "iconsUsedByKey": {
     "close": "2a1abbd3597b536e34fd9523fb61eade3afe9934",
@@ -47,10 +57,11 @@
     "chevron": "e1ac97aa82f4e52f257ac1c0ea77fd09d0e5f581",
     "account": "a423e2e05cfff2f93062d6a83d6f3bdf79ca9647",
     "lock_ic잠김_set": "b3ccc4b275de6aac8e3940df2ae97fbb00168624",
-    "lock_ic잠김_Line_variant": "28aa6b1615f3afb29ff22cf2767f0c771c941fdc",
-    "lock_instance_in_List_Disabled": "797:68"
+    "lock_ic잠김_Line_variant": "28aa6b1615f3afb29ff22cf2767f0c771c941fdc"
   },
+  "variableValueEdit_2026-07-06": "color/surface/raised (VariableID:820:190, Semantic Color V2 8:963) Dark mode (8:2) alias changed gray-dark/400 (8:732) -> gray-dark/100 (8:729) to match corrected vars-data canonical. Light mode (8:1) left as base/white (8:710) — untouched. Foundation alias (no raw hex). Verified: dark sheet surface now darker (gray-dark/100 ~ #1C1D23); light container set 868:9184 still white (no regression).",
   "colorVariables": {
+    "color/surface/raised": "VariableID:820:190",
     "color/bg/level-0": "VariableID:687:17884",
     "color/text/body/primary": "VariableID:8:1116",
     "color/text/body/secondary": "VariableID:8:1117",
@@ -60,7 +71,8 @@
     "color/icon/gray": "VariableID:8:1068",
     "color/icon/gray-dark": "VariableID:8:1069",
     "color/icon/gray-light": "VariableID:8:1070",
-    "color/icon/white": "VariableID:8:1072"
+    "color/icon/white": "VariableID:8:1072",
+    "radius/modal/md": "VariableID:8:1196"
   },
   "textStyles": {
     "body/16M": "S:886ca7d230530051af94c90c7b7931f98b8b23ae,",
@@ -68,20 +80,56 @@
     "title/20B": "S:46f6df226b7078240376de6530ae592e02a48416,"
   },
   "structuralNotes": {
-    "combineAsVariants": "both sets combined; packed via auto-layout to avoid coordinate blowup",
-    "detach": "none — no cyclic reference (Bottom Sheet contains Bottom Sheet Option instances, a different set; not self-containing)",
+    "combineAsVariants": "both sets combined; packed via auto-layout (option = WRAP 2col, container = HORIZONTAL hug) to avoid coordinate blowup",
+    "detach": "none — no cyclic reference (Bottom Sheet contains Bottom Sheet Option Text instances, a different set; not self-containing)",
     "rename": "none of existing components renamed",
-    "remap": "none — new sets only; no existing instances affected",
+    "remap": "none — brand-new sets; no existing instances affected",
     "emptyContainers": "none removed",
-    "textFontTemp": "labels authored with temp Inter then rebound to Pretendard text styles via setTextStyleIdAsync (Pretendard not MCP-loadable)"
+    "textFontTemp": "labels authored with temp Inter (figma-font-temp marker) then rebound to Pretendard text styles via setTextStyleIdAsync",
+    "iconRecolorFix": "chevron glyph is drawn with STROKES (its fills are invisible); a blanket fills-recolor made an invisible fill opaque (black square). Fixed with a recolor that recolors only visible solid fills AND strokes, preserving fill visibility. check/lock/account use visible fills (fine)."
   },
   "selfChecks": {
-    "fontScan": "PASS — 13 TEXT nodes, 0 non-Pretendard",
-    "tokenBindingScan": "PASS — 0 unbound raw hex across both sets",
-    "firstPassSelfFix": "rebuilt Bottom Sheet container once: resize() had forced FIXED sizing, clipping list to 1 of 4 items; fixed by setting AUTO hug-sizing after resize"
+    "fontScan": "PASS — 0 non-Pretendard TEXT nodes across both sets",
+    "tokenBindingScan": "PASS — 0 unbound visible-solid fills on authored frames/text/components across both sets",
+    "firstPassSelfFix": "List/Default chevron rendered as black square (invisible fill turned opaque by blanket recolor). Self-fixed: replaced with fresh chevron recolored via strokes. Container height left to hug (avoids prior FIXED-resize clipping)."
+  },
+  "placementCheck": "no overlap: option set y0-360, container set y560-1016 at x25800; Table section (nearest) ends at x=25600 < 25800",
+  "edits_2026-07-06": {
+    "by": "figma-library-builder",
+    "summary": "Footer button labels updated + Dark spec frame added.",
+    "labelOverrides": [
+      { "variant": "Footer=Single (868:6153)", "button": "primary (blue)", "textNodeId": "I868:6151;821:14031", "from": "버튼", "to": "적용" },
+      { "variant": "Footer=Dual (868:6178)", "button": "secondary (white)", "textNodeId": "I868:6174;821:14063", "from": "버튼", "to": "취소" },
+      { "variant": "Footer=Dual (868:6178)", "button": "primary (blue)", "textNodeId": "I868:6176;821:14031", "from": "버튼", "to": "적용" }
+    ],
+    "labelFontMethod": "Pretendard unloadable in MCP plugin on this PC. Authored via temp 'Noto Sans KR' Medium (Korean-capable) then rebound body/16M text style (S:886ca7...) via setTextStyleIdAsync. Final fontName=Pretendard Medium, textStyleId=body/16M on all 3. (First attempt used Inter — no Korean glyphs — corrected to Noto.)",
+    "darkSpec": {
+      "frameId": "881:2",
+      "name": "Bottom Sheet — Spec Dark",
+      "page": { "id": "5:5706", "name": "Core" },
+      "x": 25800, "y": 1100, "w": 1256, "h": 456,
+      "placementHistory": "2026-07-06: (a) built at x25800,y1100 but on WRONG page (공통 80:16696 — currentPage at creation); (b) moved to x27176,y560; (c) moved back to x25800,y1100; (d) re-parented from 공통 (80:16696) to Core page (5:5706) via core.appendChild(881:2) — verified parent=5:5706, 공통 page no longer contains it (stillInOldPage=0). Now same x=25800 column as Option set (865:17 @y0) and light container (868:9184 @y560), all three on Core. Column y0/y560/y1100, no overlap (light ends y1016 < 1100).",
+      "layout": "auto-layout HORIZONTAL, itemSpacing 48, pad 40, hug",
+      "fill": "bound to color/bg/level-0 (VariableID:687:17884) — resolves dark under Dark mode",
+      "explicitVariableModes": { "VariableCollectionId:8:963 (Semantic Color V2)": "8:2 (Dark)" },
+      "instances": [
+        { "srcVariant": "868:6130 (Footer=None)", "instanceId": "881:3" },
+        { "srcVariant": "868:6153 (Footer=Single)", "instanceId": "881:33" },
+        { "srcVariant": "868:6178 (Footer=Dual)", "instanceId": "881:65" }
+      ],
+      "note": "Instances of the light container variants (labels already updated). Dark shown via explicit Dark variable mode on the frame — no detach/duplicate. Placed directly below the light container set in the same x=25800 column (Option y0, light y560, dark y1100).",
+      "darkModeBugFix_2026-07-06": "Symptom: secondary '취소' button rendered white in dark frame. Cause: the 3 footer Button INSTANCES (I881:33;868:6151, I881:65;868:6174, I881:65;868:6176) carried their own explicitVariableModes {Semantic Color V2 8:963 -> 8:1 Light}, overriding the frame's Dark. All button colors (color/button/bg|border|label/*) live in Semantic Color V2 (8:963) — no separate button collection. Fix: cleared the explicit Light mode on those 3 instances via clearExplicitVariableModeForCollection(8:963) so they inherit the frame's Dark (8:2). Verified render: '취소' now dark bg (gray-dark/100) + light label, '적용' stays blue; surfaces/list/text still dark (no regression). Frame keeps 8:963->8:2. raw hex 0."
+    },
+    "renderLimitation": "Pretendard is not installed on this PC (hasMissingFont=true; documented env constraint), so freshly-edited labels initially rendered blank in the MCP preview (cloud render lag / baking). After relocating the dark frame (2026-07-06) the cloud re-rendered and the button labels '적용'/'취소' now display correctly in both light and dark. Data scan is authoritative regardless: chars/fontName(Pretendard)/textStyleId(body/16M) all correct.",
+    "selfChecks_2026-07-06": {
+      "fontScan": "PASS — 0 non-Pretendard across container set (868:9184) + dark frame (881:2), 18 TEXT nodes each",
+      "tokenBindingScan": "PASS — 0 unbound visible-solid fills; dark frame fill bound to bg/level-0",
+      "darkMode": "PASS — explicit Semantic Color Dark mode (8:2) applied; render confirms dark surface/text/icons"
+    }
   },
   "needsDecision": [],
   "resolvedDecisions": [
-    "lock icon (2026-07-03): ic_잠김 confirmed published in canonical '아이콘 라이브러리 V2.2' (set key b3ccc4b2…). Empty placeholder replaced with ic_잠김 Line variant instance (797:68) in List/Disabled, 24px, bound color/icon/gray. Font + token-binding self-check re-run PASS."
+    "surface/raised binding (2026-07-03 rebuild): color/surface/raised (820:190) confirmed present in target file — sheet + option-row surfaces bound to it as instructed. No fallback to bg/level-0 needed.",
+    "lock icon: ic_잠김 Line variant instance in List/Disabled, 24px, color/icon/gray."
   ]
 }
