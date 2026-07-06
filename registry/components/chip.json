@@ -55,7 +55,7 @@
         { "name": "--chip-solid-selected-bg",         "value": "var(--color-chip-solid-bg-selected)", "state": "selected", "property": "background" },
         { "name": "--chip-solid-disabled-bg",         "value": "var(--color-chip-solid-bg-disabled)",              "state": "disabled", "property": "background" },
         { "name": "--chip-solid-default-border",      "value": "var(--color-chip-solid-border-default)",              "state": "default",  "property": "border-color", "note": "border = background (invisible)" },
-        { "name": "--chip-solid-hover-border",        "value": "var(--color-chip-solid-border-default)",               "state": "hover",    "property": "border-color" },
+        { "name": "--chip-solid-hover-border",        "value": "var(--color-chip-solid-bg-hover)",               "state": "hover",    "property": "border-color", "note": "border = background (invisible) — 스트록 유지, fill과 동색" },
         { "name": "--chip-solid-selected-border",     "value": "var(--color-chip-solid-border-selected)", "state": "selected", "property": "border-color" },
         { "name": "--chip-solid-disabled-border",     "value": "var(--color-chip-solid-border-disabled)",              "state": "disabled", "property": "border-color" },
         { "name": "--chip-solid-default-text",        "value": "var(--color-chip-solid-label-default)",           "state": "default",  "property": "color" },

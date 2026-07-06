@@ -92,7 +92,7 @@
       --chip-solid-default-text:     var(--color-chip-solid-label-default);
       --chip-solid-default-border:   var(--color-chip-solid-border-default);   /* 정본: solid 보더 = fill(gray-50) 동색 */
       --chip-solid-hover-bg:         var(--color-chip-solid-bg-hover);
-      --chip-solid-hover-border:     var(--color-chip-solid-border-default);   /* 정본: solid hover 보더 미정의 → default 유지 */
+      --chip-solid-hover-border:     var(--color-chip-solid-bg-hover);   /* 정본: solid 스트록 = fill 동색(무테). hover 도 자기 fill(bg-hover) */
       --chip-solid-selected-bg:      var(--color-chip-solid-bg-selected);
       --chip-solid-selected-border:  var(--color-chip-solid-border-selected);
       --chip-solid-disabled-border:  var(--color-chip-solid-border-disabled);
@@ -505,6 +505,11 @@
     }
     .comp-action-top > .matrix-col-header-action { padding-right: 0; text-align: left; }
     .comp-action-top > .comp-action-cell { align-items: flex-start; padding-right: 0; }
+    /* Button(2D 크기×상태): Action 컬럼을 상단 가로 스트립으로 */
+    .comp-action-top .btn-action-row { display: flex; align-items: flex-end; gap: 28px; flex-wrap: wrap; }
+    .comp-action-top .btn-action-item { display: flex; flex-direction: column; align-items: flex-start; gap: 6px; }
+    .comp-action-top .btn-action-item .matrix-row-label { justify-self: start; }
+    .comp-action-top .action-cell { align-items: flex-start; padding-right: 0; }
     @media (max-width: 1024px) {
       .comp-state-matrix {
         column-gap: 8px;
@@ -658,7 +663,7 @@
     .s1-chip:not(.is-disabled):not(.is-preview):not(.s1-chip--solid):not(.is-selected):hover,
     .s1-chip.is-hover:not(.s1-chip--solid) {
       background: var(--chip-line-hover-bg);
-      border-color: var(--chip-line-hover-bg);  /* hover 보더 = fill 색 */
+      border-color: var(--chip-line-default-border);  /* Line hover: 테두리 유지(기본 테두리색). Solid만 스트록 삭제(정본 chip.json) */
     }
     /* Chip — Solid modifier */
     .s1-chip--solid {
@@ -668,7 +673,7 @@
     .s1-chip--solid:not(.is-disabled):not(.is-preview):not(.is-selected):hover,
     .s1-chip--solid.is-hover {
       background: var(--chip-solid-hover-bg);
-      border-color: var(--chip-solid-hover-bg);  /* hover 보더 = fill 색 */
+      border-color: var(--chip-solid-hover-border);  /* solid 스트록 유지 = fill 동색(무테) */
     }
     .s1-chip--solid.is-selected {
       background: var(--chip-solid-selected-bg);
@@ -745,7 +750,7 @@
     .ds-filter-chip-wrap:not(.is-open) .ds-filter-chip:not(.ds-filter-chip--solid):not(.is-disabled):not(.is-preview):hover,
     .ds-filter-chip:not(.ds-filter-chip--solid).is-hover {
       background: var(--chip-line-hover-bg);
-      border-color: var(--chip-line-hover-bg);  /* hover 보더 = fill 색 */
+      border-color: var(--chip-line-default-border);  /* Line hover: 테두리 유지(기본 테두리색). Solid만 스트록 삭제 */
     }
     /* Line Disabled */
     .ds-filter-chip:not(.ds-filter-chip--solid).is-disabled {
@@ -765,7 +770,7 @@
     .ds-filter-chip--solid .ds-filter-chip-arrow { color: var(--chip-solid-default-text); }
     .ds-filter-chip-wrap:not(.is-open) .ds-filter-chip--solid:not(.is-disabled):not(.is-preview):hover,
     .ds-filter-chip--solid.is-hover {
-      background: var(--chip-solid-hover-bg); border-color: var(--chip-solid-hover-bg);  /* hover 보더 = fill 색 */
+      background: var(--chip-solid-hover-bg); border-color: var(--chip-solid-hover-border);  /* solid 스트록 유지 = fill 동색(무테) */
     }
     .ds-filter-chip--solid.is-selected {
       background: var(--chip-solid-selected-bg); border-color: var(--chip-solid-selected-border);
@@ -786,6 +791,33 @@
     .ds-filter-chip--solid.is-disabled .ds-filter-chip-label,
     .ds-filter-chip--solid.is-disabled .ds-filter-chip-title { color: var(--chip-solid-disabled-text); }
     .ds-filter-chip--solid.is-disabled .ds-filter-chip-arrow { color: var(--chip-solid-disabled-text); }
+
+    /* Filter Chip — Mobile Bottom Sheet */
+    .ds-fc-sheet {
+      background: var(--color-surface-raised);
+      border-radius: 16px 16px 0 0;
+      box-shadow: 0 -4px 16px var(--color-overlay);
+      padding: 4px 0 12px;
+    }
+    .ds-fc-sheet-header {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 14px 16px 10px;
+    }
+    .ds-fc-sheet-title { font-size: 15px; font-weight: 600; color: var(--color-text-primary); letter-spacing: -0.028em; }
+    .ds-fc-sheet-close {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 28px; height: 28px; padding: 0; border: none; background: none;
+      color: var(--color-text-secondary); cursor: pointer;
+    }
+    .ds-fc-sheet-list { display: flex; flex-direction: column; }
+    .ds-fc-sheet-option {
+      display: flex; align-items: center; justify-content: space-between;
+      height: 48px; padding: 0 16px; cursor: pointer;
+      font-size: 15px; color: var(--color-text-primary); letter-spacing: -0.028em;
+    }
+    .ds-fc-sheet-option .ds-fc-sheet-check { display: none; color: var(--color-text-state-accent); }
+    .ds-fc-sheet-option.is-selected { color: var(--color-text-state-accent); font-weight: 600; }
+    .ds-fc-sheet-option.is-selected .ds-fc-sheet-check { display: block; }
 
     /* Input */
     .s1-input-wrap { display: flex; flex-direction: column; gap: 6px; width: 180px; }
@@ -3516,7 +3548,7 @@ clearBtn.<span class="c-fn">addEventListener</span>(<span class="c-str">'click'<
                 <tr><td class="token-name">--chip-solid-default-icon</td><td class="token-value">var(--color-chip-solid-label-default)</td><td class="token-resolved" data-token="--chip-solid-default-icon"></td><td>icon-color · default</td></tr>
                 <tr><td class="token-name">--chip-solid-default-close-icon</td><td class="token-value">var(--color-chip-solid-label-default)</td><td class="token-resolved" data-token="--chip-solid-default-close-icon"></td><td>close-icon-color · default</td></tr>
                 <tr><td class="token-name">--chip-solid-hover-bg</td><td class="token-value">var(--color-chip-solid-bg-hover)</td><td class="token-resolved" data-token="--chip-solid-hover-bg"></td><td>background · hover</td></tr>
-                <tr><td class="token-name">--chip-solid-hover-border</td><td class="token-value">var(--color-chip-solid-border-default)</td><td class="token-resolved" data-token="--chip-solid-hover-border"></td><td>border-color · hover</td></tr>
+                <tr><td class="token-name">--chip-solid-hover-border</td><td class="token-value">var(--color-chip-solid-bg-hover)</td><td class="token-resolved" data-token="--chip-solid-hover-border"></td><td>border-color · hover (= fill 동색, 무테)</td></tr>
                 <tr><td class="token-name">--chip-solid-hover-close-icon</td><td class="token-value">var(--color-chip-solid-label-default)</td><td class="token-resolved" data-token="--chip-solid-hover-close-icon"></td><td>close-icon-color · hover</td></tr>
                 <tr><td class="token-name">--chip-solid-selected-bg</td><td class="token-value">var(--color-chip-solid-bg-selected)</td><td class="token-resolved" data-token="--chip-solid-selected-bg"></td><td>background · selected</td></tr>
                 <tr><td class="token-name">--chip-solid-selected-border</td><td class="token-value">var(--color-chip-solid-border-selected)</td><td class="token-resolved" data-token="--chip-solid-selected-border"></td><td>border-color · selected</td></tr>
@@ -3542,6 +3574,9 @@ clearBtn.<span class="c-fn">addEventListener</span>(<span class="c-str">'click'<
           <span class="comp-badge">5 states</span>
           <span class="comp-badge comp-badge-blue">정본 buildFilterChip · chip/line·solid/* + dropdown/*</span>
         </div>
+
+        <!-- ═══ PC — 칩 + 드롭다운 ═══ -->
+        <div class="platform-section platform-section-pc">
 
         <!-- ── Line · Label only ── -->
         <div class="variant-block">
@@ -3757,6 +3792,85 @@ clearBtn.<span class="c-fn">addEventListener</span>(<span class="c-str">'click'<
             </table>
           </div>
         </div>
+
+        </div><!-- /platform-section-pc -->
+
+        <!-- ═══ Mobile — 칩 + 바텀시트 ═══ -->
+        <div class="platform-section platform-section-mobile">
+          <div class="variant-block">
+            <div class="variant-label">Mobile — Bottom Sheet · 모바일은 드롭다운 대신 아래에서 올라오는 바텀시트로 정렬 옵션 선택 (탭 = 즉시 적용)</div>
+            <div class="preview-area" style="display:flex;gap:32px;align-items:flex-start;flex-wrap:wrap;">
+
+              <!-- Closed -->
+              <div>
+                <div class="s1-dp-state-label">Closed</div>
+                <div style="width:280px;height:360px;background:var(--color-bg-subtle);border-radius:12px;padding:20px;position:relative;overflow:hidden;margin-top:6px;">
+                  <div style="margin-bottom:12px;font-size:12px;color:var(--color-text-placeholder);">앱 콘텐츠 영역</div>
+                  <button class="ds-filter-chip ds-filter-chip--mobile is-preview">
+                    <span class="ds-filter-chip-title">정렬</span>
+                    <span class="ds-filter-chip-label">최신순</span>
+                    <svg class="ds-filter-chip-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M9 6L15 12L9 18" stroke="currentColor" stroke-width="2" stroke-linecap="square"/></svg>
+                  </button>
+                </div>
+              </div>
+
+              <!-- Open (static) -->
+              <div>
+                <div class="s1-dp-state-label">Open (static · 최신순 selected)</div>
+                <div style="width:280px;height:360px;background:var(--color-bg-subtle);border-radius:12px;padding:20px;position:relative;overflow:hidden;margin-top:6px;">
+                  <div style="margin-bottom:12px;font-size:12px;color:var(--color-text-placeholder);">앱 콘텐츠 영역</div>
+                  <button class="ds-filter-chip ds-filter-chip--mobile is-preview" style="opacity:0.4;">
+                    <span class="ds-filter-chip-title">정렬</span>
+                    <span class="ds-filter-chip-label">최신순</span>
+                    <svg class="ds-filter-chip-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M9 6L15 12L9 18" stroke="currentColor" stroke-width="2" stroke-linecap="square"/></svg>
+                  </button>
+                  <!-- Dim overlay -->
+                  <div style="position:absolute;inset:0;background:var(--color-overlay);z-index:1;"></div>
+                  <!-- Bottom Sheet -->
+                  <div class="ds-fc-sheet" style="position:absolute;bottom:0;left:0;right:0;z-index:2;">
+                    <div class="ds-fc-sheet-header">
+                      <span class="ds-fc-sheet-title">정렬</span>
+                      <span class="ds-fc-sheet-close" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M6 6L18 18M18 6L6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span>
+                    </div>
+                    <div class="ds-fc-sheet-list">
+                      <div class="ds-fc-sheet-option is-selected"><span>최신순</span><svg class="ds-fc-sheet-check" width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M5 12.5L10 17.5L19 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+                      <div class="ds-fc-sheet-option"><span>과거순</span></div>
+                      <div class="ds-fc-sheet-option"><span>인기순</span></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Interactive -->
+              <div>
+                <div class="s1-dp-state-label">Interactive</div>
+                <div style="width:280px;height:360px;background:var(--color-bg-subtle);border-radius:12px;padding:20px;position:relative;overflow:hidden;margin-top:6px;">
+                  <div style="margin-bottom:12px;font-size:12px;color:var(--color-text-placeholder);">앱 콘텐츠 영역 (칩 클릭)</div>
+                  <button id="fc-mobile-trigger" class="ds-filter-chip ds-filter-chip--mobile" aria-haspopup="dialog">
+                    <span class="ds-filter-chip-title">정렬</span>
+                    <span id="fc-mobile-label" class="ds-filter-chip-label">최신순</span>
+                    <svg class="ds-filter-chip-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M9 6L15 12L9 18" stroke="currentColor" stroke-width="2" stroke-linecap="square"/></svg>
+                  </button>
+                  <!-- Dim -->
+                  <div id="fc-mobile-dim" style="display:none;position:absolute;inset:0;background:var(--color-overlay);z-index:1;" aria-hidden="true"></div>
+                  <!-- Sheet -->
+                  <div id="fc-mobile-sheet" class="ds-fc-sheet" role="dialog" aria-label="정렬" style="display:none;position:absolute;bottom:0;left:0;right:0;z-index:2;">
+                    <div class="ds-fc-sheet-header">
+                      <span class="ds-fc-sheet-title">정렬</span>
+                      <button id="fc-mobile-close" type="button" class="ds-fc-sheet-close" aria-label="닫기"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M6 6L18 18M18 6L6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button>
+                    </div>
+                    <div class="ds-fc-sheet-list" id="fc-mobile-list">
+                      <div class="ds-fc-sheet-option is-selected" data-value="최신순"><span>최신순</span><svg class="ds-fc-sheet-check" width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M5 12.5L10 17.5L19 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+                      <div class="ds-fc-sheet-option" data-value="과거순"><span>과거순</span><svg class="ds-fc-sheet-check" width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M5 12.5L10 17.5L19 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+                      <div class="ds-fc-sheet-option" data-value="인기순"><span>인기순</span><svg class="ds-fc-sheet-check" width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M5 12.5L10 17.5L19 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div><!-- /platform-section-mobile -->
 
       </section>
 
@@ -8043,6 +8157,45 @@ document.addEventListener('click', function(e) {
       }
       m.style.gridTemplateColumns = tpl;
     });
+
+    // ── Button 등 크기×상태 2D 매트릭스(.state-size-matrix) ──
+    //   Action 컬럼(크기별 액션 버튼 + Disabled 토글)을 상단 스트립으로 올리고,
+    //   아래 크기×상태 표는 Action 열을 뺀 뒤 좌측 정렬한다.
+    document.querySelectorAll('.state-size-matrix').forEach(function (m) {
+      var actionHeader = m.querySelector(':scope > .matrix-col-header-action');
+      if (!actionHeader) return;
+      var kids = Array.prototype.slice.call(m.children);
+      var actionCells = kids.filter(function (ch) {
+        return ch.classList.contains('matrix-cell') && ch.classList.contains('action-cell');
+      });
+      if (!actionCells.length) return;
+      var rowLabels = kids.filter(function (ch) { return ch.classList.contains('matrix-row-label'); });
+      var groupCtrls = kids.filter(function (ch) { return ch.classList.contains('action-test-controls'); });
+
+      var top = document.createElement('div');
+      top.className = 'comp-action-top';
+      top.appendChild(actionHeader);                        // 초록 'Action' 라벨 이동
+      var row = document.createElement('div');
+      row.className = 'btn-action-row';
+      actionCells.forEach(function (ac, i) {
+        var item = document.createElement('div');
+        item.className = 'btn-action-item';
+        if (rowLabels[i]) item.appendChild(rowLabels[i].cloneNode(true)); // 크기 캡션(복제)
+        item.appendChild(ac);                               // 액션 셀 이동(리스너 유지)
+        row.appendChild(item);
+      });
+      top.appendChild(row);
+      groupCtrls.forEach(function (gc) {                    // 그룹 Disabled 토글 이동
+        var prev = gc.previousElementSibling;               // 앞의 빈 스페이서 칸 제거
+        if (prev && prev.children.length === 0 && !prev.className) prev.remove();
+        top.appendChild(gc);
+      });
+      m.parentNode.insertBefore(top, m);
+
+      // 남은 표: Action 열 제거 → [크기라벨 + 상태 3열], 좌측 정렬
+      m.style.gridTemplateColumns = '100px repeat(3, minmax(110px, max-content))';
+      m.style.justifyContent = 'start';
+    });
   })();
 
   function updateTokenComments() {
@@ -8348,7 +8501,7 @@ document.addEventListener('click', function(e) {
   applyPlatformMenu();
 
   (function initFromHash() {
-    var valid = ['button','checkbox','radio','toggle','multi-toggle','chip','input','date-picker','time-picker','textarea','select','dropdown','table','pagination','tab','gnb','mobile-bottom-nav']; // Components New: 마이그레이션 완료 컴포넌트만
+    var valid = ['button','checkbox','radio','toggle','multi-toggle','chip','filter-chip','input','date-picker','time-picker','textarea','select','dropdown','table','pagination','tab','gnb','mobile-bottom-nav']; // Components New: 마이그레이션 완료 컴포넌트만
     var hash  = window.location.hash.replace('#', '');
     var id    = (hash && valid.includes(hash)) ? hash : 'button'; // 기본은 Button(양 플랫폼 공통)
     var btn   = document.querySelector('.comp-nav-btn[onclick*="\'' + id + '\'"]');
@@ -9432,6 +9585,33 @@ document.addEventListener('click', function(e) {
     trigger.addEventListener('keydown', function(e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openSheet(); } });
     dim.addEventListener('click', closeSheet);
     confirm.addEventListener('click', confirmTime);
+  })();
+
+  // ── Filter Chip Mobile Bottom Sheet (정렬, 즉시 적용) ──
+  (function() {
+    var trigger = document.getElementById('fc-mobile-trigger');
+    var dim     = document.getElementById('fc-mobile-dim');
+    var sheet   = document.getElementById('fc-mobile-sheet');
+    var closeBt = document.getElementById('fc-mobile-close');
+    var label   = document.getElementById('fc-mobile-label');
+    var list    = document.getElementById('fc-mobile-list');
+    if (!trigger || !sheet) return;
+
+    function openSheet()  { dim.style.display = 'block'; sheet.style.display = 'block'; }
+    function closeSheet() { dim.style.display = 'none';  sheet.style.display = 'none'; }
+
+    trigger.addEventListener('click', openSheet);
+    dim.addEventListener('click', closeSheet);
+    closeBt.addEventListener('click', closeSheet);
+
+    list.querySelectorAll('.ds-fc-sheet-option').forEach(function(opt) {
+      opt.addEventListener('click', function() {
+        list.querySelectorAll('.ds-fc-sheet-option').forEach(function(x) { x.classList.remove('is-selected'); });
+        opt.classList.add('is-selected');
+        label.textContent = opt.getAttribute('data-value');
+        closeSheet(); // 항목 탭 = 즉시 적용 + 닫힘
+      });
+    });
   })();
 
   // ── Table selection (uses s1-checkbox core component) ──

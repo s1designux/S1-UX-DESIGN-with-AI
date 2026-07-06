@@ -710,10 +710,15 @@ async function buildChip(maps: BuildMaps, originY: number): Promise<{ set: Compo
   ];
   const states = ["Default", "Hover", "Selected", "Disabled"];
   const variants = ["Line", "Solid"];
-  // Hover: 보더색 = fill색(bg/hover) — bdGroup:"bg" 로 stroke 를 fill 과 같은 변수에 바인딩(사용자 결정 2026-06-30)
-  const slot = (st: string): { bg: string; bd: string; lb: string; bdGroup?: string } =>
+  // Hover 보더: Line=기본 테두리 유지(border/default) · Solid=스트록 삭제(fill 색 bg/hover)
+  //   2026-07-06 Line 스트록 복구 — 2026-06-30 "Solid 스트록 삭제" 요청이 Line 까지 지운 회귀 수정. 정본 chip.json 일치.
+  const slot = (st: string, v: string): { bg: string; bd: string; lb: string; bdGroup?: string } =>
     st === "Default" ? { bg: "default", bd: "default", lb: "default" }
-    : st === "Hover" ? { bg: "hover", bd: "hover", bdGroup: "bg", lb: "default" }
+    : st === "Hover" ? (
+        v === "line"
+          ? { bg: "hover", bd: "default", lb: "default" }                // Line: 테두리 유지 = border/default (gray/300)
+          : { bg: "hover", bd: "hover", bdGroup: "bg", lb: "default" }   // Solid: 스트록 삭제 = fill 색(bg/hover)
+      )
     : st === "Selected" ? { bg: "selected", bd: "selected", lb: "selected" }
     : { bg: "disabled", bd: "disabled", lb: "disabled" };
   const comps: ComponentNode[] = [];
@@ -723,7 +728,7 @@ async function buildChip(maps: BuildMaps, originY: number): Promise<{ set: Compo
     const v = variant.toLowerCase();
     for (const sc of sizes) {
       for (let col = 0; col < states.length; col++) {
-        const ss = slot(states[col]);
+        const ss = slot(states[col], v);
         const comp = figma.createComponent();
         comp.name = `Size=${sc.size}, State=${states[col]}, Variant=${variant}, Break=${sc.brk}`;
         comp.layoutMode = "HORIZONTAL";
@@ -1795,11 +1800,11 @@ async function buildFilterChip(maps: BuildMaps, originY: number): Promise<{ set:
   ];
 
   // variant·state → chip 슬롯 suffix (bg/border/label) + open 여부
-  // Hover: 보더색 = fill색(bg/hover) — bdGroup:"bg" 로 stroke 를 fill 과 같은 변수에 바인딩(사용자 결정 2026-06-30)
+  // Hover 보더: Line=기본 테두리 유지(border/default) · Solid=스트록 삭제(fill 색 bg/hover) — 2026-07-06 Line 스트록 복구
   function chipSlot(v: string, st: string): { bg: string; bd: string; lb: string; open: boolean; bdGroup?: string } {
     if (v === "line") {
       switch (st) {
-        case "Hover":    return { bg: "hover",    bd: "hover",    bdGroup: "bg", lb: "default",  open: false };  // 보더=fill
+        case "Hover":    return { bg: "hover",    bd: "default",  lb: "default",  open: false };  // Line: 테두리 유지 = border/default
         case "Selected": return { bg: "selected", bd: "selected", lb: "default",  open: true };  // 펼침: 보더만 파랑
         case "Disabled": return { bg: "disabled", bd: "disabled", lb: "disabled", open: false };
         default:         return { bg: "default",  bd: "default",  lb: "default",  open: false };  // Default·Complete
