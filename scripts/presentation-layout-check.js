@@ -42,22 +42,30 @@ function findChrome() {
   return null;
 }
 
-// 재배치 완료된 DOM 을 헤드리스로 덤프
-function renderDom() {
-  const chrome = findChrome();
-  if (!chrome) return { skip: '크롬/엣지 실행파일을 못 찾음 (CHROME_PATH 로 지정 가능)' };
-  const fileUrl = 'file:///' + HTML.replace(/\\/g, '/');
+// 재배치 완료된 DOM 을 헤드리스로 덤프 (일시적 Chrome 크래시에 재시도)
+function dumpOnce(chrome, fileUrl) {
   // 전용 임시 프로필 — 사용자/다른 Chrome 세션의 기본 프로필 잠금과 충돌해 크래시하는 것을 방지
   const profileDir = fs.mkdtempSync(path.join(os.tmpdir(), 'preso-chrome-'));
   const r = spawnSync(chrome, ['--headless=new', '--dump-dom', '--virtual-time-budget=5000',
     '--no-sandbox', '--disable-gpu', `--user-data-dir=${profileDir}`, fileUrl],
     { encoding: 'utf-8', maxBuffer: 64 * 1024 * 1024, timeout: 60000 });
   try { fs.rmSync(profileDir, { recursive: true, force: true }); } catch (_) {}
-  if (r.status !== 0 && !r.stdout) return { skip: `렌더 실패 (${r.error ? r.error.message : 'exit ' + r.status})` };
   const dom = r.stdout || '';
   // 재배치가 실제로 돌았는지 확인(comp-action-top 은 재배치 후에만 생김)
-  if (!/comp-action-top/.test(dom)) return { skip: '재배치 후 DOM 마커(comp-action-top) 부재 — 렌더 미완/스크립트 차단 의심' };
-  return { dom };
+  if (dom && /comp-action-top/.test(dom)) return { dom };
+  return { err: r.status !== 0 || !dom ? `렌더 실패 (${r.error ? r.error.message : 'exit ' + r.status})` : '재배치 후 DOM 마커(comp-action-top) 부재' };
+}
+function renderDom() {
+  const chrome = findChrome();
+  if (!chrome) return { skip: '크롬/엣지 실행파일을 못 찾음 (CHROME_PATH 로 지정 가능)' };
+  const fileUrl = 'file:///' + HTML.replace(/\\/g, '/');
+  let last = '';
+  for (let i = 0; i < 3; i++) { // 일시적 크래시(x86 Chrome) 대비 최대 3회 재시도
+    const r = dumpOnce(chrome, fileUrl);
+    if (r.dom) return { dom: r.dom };
+    last = r.err;
+  }
+  return { skip: `${last} (3회 재시도 실패)` };
 }
 
 // 재배치된 DOM 에서 섹션별 슬라이스 추출 (섹션은 중첩 없음)

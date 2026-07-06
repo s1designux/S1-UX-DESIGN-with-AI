@@ -519,6 +519,27 @@ try {
   fail(`page-layout-check 실행 실패: ${e.message}`);
 }
 
+// ── Gate 23: Component Presentation Policy (표출 레이아웃 구조 차단) ─────
+// 컴포넌트 섹션이 표출 규칙(component-presentation-policy.json)을 실제 렌더 DOM 기준으로 지키는지 대조.
+// Action 유무·별도 사이즈/라벨 블록 금지 등 '구조'를 검증. 크롬 없으면 SKIP(exit 0). (2026-07-06 신설)
+console.log('\n🔎 [Gate 23] 컴포넌트 표출 레이아웃 검수기 (Component Presentation Policy)');
+try {
+  const { spawnSync } = require('child_process');
+  const r = spawnSync('node', [path.join(ROOT, 'scripts/presentation-layout-check.js')], { encoding: 'utf-8' });
+  const out = (r.stdout || '') + (r.stderr || '');
+  const errLines = out.split('\n').filter((l) => l.includes('❌'));
+  const skipLine = out.split('\n').find((l) => l.includes('⚠️ SKIP'));
+  if (r.status === 0) {
+    if (skipLine) warn(skipLine.replace(/^\s*⚠️\s*/, '').trim());
+    else pass('컴포넌트 표출 구조 위반 0 (Action 유무·별도 사이즈/라벨 블록 정합, 실제 렌더 기준)');
+  } else {
+    for (const l of errLines) fail(l.replace(/^\s*❌\s*/, '').trim());
+    if (errLines.length === 0) fail(`presentation-layout-check 실패 (exit ${r.status})`);
+  }
+} catch (e) {
+  fail(`presentation-layout-check 실행 실패: ${e.message}`);
+}
+
 // ── Summary ───────────────────────────────────────────────────────
 console.log('\n─────────────────────────────────────────────────────');
 if (errors > 0) {

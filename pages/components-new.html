@@ -427,7 +427,7 @@
       }
     }
     .matrix-col-header {
-      font-size: 10px; font-weight: 600; color: #9ca3af;
+      font-size: 12px; font-weight: 600; color: #4b5563;
       text-transform: uppercase; letter-spacing: 0.05em; text-align: center;
     }
     .matrix-col-header-action {
@@ -436,10 +436,10 @@
       padding-right: 32px;
     }
     .matrix-row-label {
-      font-size: 10px; font-weight: 600; color: #9ca3af;
+      font-size: 12px; font-weight: 600; color: #4b5563;
       text-align: left; justify-self: start; line-height: 1.4;
     }
-    .matrix-row-label span { display: block; font-weight: 400; color: #c4c4c4; font-size: 9px; }
+    .matrix-row-label span { display: block; font-weight: 400; color: #6b7280; font-size: 11px; }
     .matrix-cell { display: flex; justify-content: center; align-items: center; }
     .state-size-matrix .s1-btn { width: 60px; }
     .state-size-matrix .s1-btn-lg { width: 90px; }
@@ -482,7 +482,7 @@
     }
     /* 행 레이블이 있는 경우(Chip, Input) */
     .comp-row-label {
-      font-size: 10px; font-weight: 600; color: #9ca3af;
+      font-size: 12px; font-weight: 600; color: #4b5563;
       text-align: left; justify-self: start; line-height: 1.4;
       min-width: 0; overflow-wrap: break-word; white-space: normal;
     }
@@ -510,6 +510,20 @@
     .comp-action-top .btn-action-item { display: flex; flex-direction: column; align-items: flex-start; gap: 6px; }
     .comp-action-top .btn-action-item .matrix-row-label { justify-self: start; }
     .comp-action-top .action-cell { align-items: flex-start; padding-right: 0; }
+    /* Action 스트립 버튼 = 사이즈별 최소폭 기준 준수(정본 build-components: md/mobile 80 · xsm/xxsm 64).
+       폭 미지정 시 글자폭으로 줄어 최소보다 작아지던 문제 교정 */
+    .comp-action-top .btn-action-item .s1-btn { min-width: 64px; }
+    .comp-action-top .btn-action-item .s1-btn-lg,
+    .comp-action-top .btn-action-item .s1-btn-mobile { min-width: 80px; }
+    /* 다크모드: 사이즈·크기 라벨을 어두운 배경에서 잘 보이게 밝은 회색으로(대비 확보) */
+    [data-theme="dark"] .matrix-col-header,
+    [data-theme="dark"] .matrix-row-label,
+    [data-theme="dark"] .comp-row-label { color: #c4c9d4; }
+    [data-theme="dark"] .matrix-row-label span { color: #a0a6b2; }
+    /* 사이즈 상세(치수 span)는 Action 스트립에만 — 상태 매트릭스 행 라벨은 사이즈 이름만 (사용자 요청 2026-07-06) */
+    .state-size-matrix .matrix-row-label span,
+    .comp-state-matrix .matrix-row-label span,
+    .comp-state-matrix .comp-row-label span { display: none; }
     @media (max-width: 1024px) {
       .comp-state-matrix {
         column-gap: 8px;
@@ -1093,7 +1107,7 @@
       display: flex; flex-wrap: wrap; gap: 16px; align-items: flex-start;
     }
     .s1-dp-state-label {
-      font-size: 10px; font-weight: 600; color: var(--color-text-secondary);
+      font-size: 12px; font-weight: 600; color: var(--color-text-secondary);
       text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 4px;
     }
     /* Month/Year selector grid — Figma 540:4216: 3×4 grid */
@@ -2119,7 +2133,7 @@
               <div class="comp-action-cell" data-comp-action="checkbox">
                 <label class="s1-checkbox" id="chk-action-target">
                   <div class="s1-checkbox-box">
-                    <svg class="ds-chk-icon" width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M4 9.41675L7.19502 13.1667L14.125 5.66675" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>
+                    <svg class="ds-chk-icon" width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2.9375 8L6.13252 11.375L13.0625 4.625" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>
                   </div>
                   <span class="s1-checkbox-label chk-action-label" style="display:none;">라벨</span>
                 </label>
@@ -2139,7 +2153,7 @@
               <!-- Checked -->
               <div class="comp-state-cell">
                 <label class="s1-checkbox is-checked is-preview">
-                  <div class="s1-checkbox-box"><svg class="ds-chk-icon" width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M4 9.41675L7.19502 13.1667L14.125 5.66675" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg></div>
+                  <div class="s1-checkbox-box"><svg class="ds-chk-icon" width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2.9375 8L6.13252 11.375L13.0625 4.625" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg></div>
                 </label>
               </div>
               <!-- Disabled -->
@@ -2149,7 +2163,7 @@
               <!-- Disabled+Checked -->
               <div class="comp-state-cell">
                 <label class="s1-checkbox is-checked is-disabled is-preview">
-                  <div class="s1-checkbox-box"><svg class="ds-chk-icon" width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M4 9.41675L7.19502 13.1667L14.125 5.66675" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg></div>
+                  <div class="s1-checkbox-box"><svg class="ds-chk-icon" width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2.9375 8L6.13252 11.375L13.0625 4.625" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg></div>
                 </label>
               </div>
             </div>
@@ -2173,8 +2187,8 @@
 <span class="c-cmt">&lt;!-- Checked --&gt;</span>
 <span class="c-tag">&lt;label</span> <span class="c-attr">class</span>=<span class="c-str">"s1-checkbox is-checked"</span><span class="c-tag">&gt;</span>
   <span class="c-tag">&lt;div</span> <span class="c-attr">class</span>=<span class="c-str">"s1-checkbox-box"</span><span class="c-tag">&gt;</span>
-    <span class="c-tag">&lt;svg</span> <span class="c-attr">class</span>=<span class="c-str">"ds-chk-icon"</span> <span class="c-attr">width</span>=<span class="c-str">"18"</span> <span class="c-attr">height</span>=<span class="c-str">"18"</span> <span class="c-attr">viewBox</span>=<span class="c-str">"0 0 18 18"</span> <span class="c-attr">fill</span>=<span class="c-str">"none"</span><span class="c-tag">&gt;</span>
-      <span class="c-tag">&lt;path</span> <span class="c-attr">d</span>=<span class="c-str">"M4 9.41675L7.19502 13.1667L14.125 5.66675"</span> <span class="c-attr">stroke</span>=<span class="c-str">"currentColor"</span> <span class="c-attr">stroke-width</span>=<span class="c-str">"1.5"</span> <span class="c-attr">stroke-linejoin</span>=<span class="c-str">"round"</span><span class="c-tag">/&gt;</span>
+    <span class="c-tag">&lt;svg</span> <span class="c-attr">class</span>=<span class="c-str">"ds-chk-icon"</span> <span class="c-attr">width</span>=<span class="c-str">"16"</span> <span class="c-attr">height</span>=<span class="c-str">"16"</span> <span class="c-attr">viewBox</span>=<span class="c-str">"0 0 16 16"</span> <span class="c-attr">fill</span>=<span class="c-str">"none"</span><span class="c-tag">&gt;</span>
+      <span class="c-tag">&lt;path</span> <span class="c-attr">d</span>=<span class="c-str">"M2.9375 8L6.13252 11.375L13.0625 4.625"</span> <span class="c-attr">stroke</span>=<span class="c-str">"currentColor"</span> <span class="c-attr">stroke-width</span>=<span class="c-str">"1.5"</span> <span class="c-attr">stroke-linejoin</span>=<span class="c-str">"round"</span><span class="c-tag">/&gt;</span>
     <span class="c-tag">&lt;/svg&gt;</span>
   <span class="c-tag">&lt;/div&gt;</span>
   <span class="c-tag">&lt;span</span> <span class="c-attr">class</span>=<span class="c-str">"s1-checkbox-label"</span><span class="c-tag">&gt;</span>레이블<span class="c-tag">&lt;/span&gt;</span>
@@ -2187,8 +2201,8 @@
 <span class="c-cmt">&lt;!-- Disabled+Checked --&gt;</span>
 <span class="c-tag">&lt;label</span> <span class="c-attr">class</span>=<span class="c-str">"s1-checkbox is-checked is-disabled"</span><span class="c-tag">&gt;</span>
   <span class="c-tag">&lt;div</span> <span class="c-attr">class</span>=<span class="c-str">"s1-checkbox-box"</span><span class="c-tag">&gt;</span>
-    <span class="c-tag">&lt;svg</span> <span class="c-attr">class</span>=<span class="c-str">"ds-chk-icon"</span> <span class="c-attr">width</span>=<span class="c-str">"18"</span> <span class="c-attr">height</span>=<span class="c-str">"18"</span> <span class="c-attr">viewBox</span>=<span class="c-str">"0 0 18 18"</span> <span class="c-attr">fill</span>=<span class="c-str">"none"</span><span class="c-tag">&gt;</span>
-      <span class="c-tag">&lt;path</span> <span class="c-attr">d</span>=<span class="c-str">"M4 9.41675L7.19502 13.1667L14.125 5.66675"</span> <span class="c-attr">stroke</span>=<span class="c-str">"currentColor"</span> <span class="c-attr">stroke-width</span>=<span class="c-str">"1.5"</span> <span class="c-attr">stroke-linejoin</span>=<span class="c-str">"round"</span><span class="c-tag">/&gt;</span>
+    <span class="c-tag">&lt;svg</span> <span class="c-attr">class</span>=<span class="c-str">"ds-chk-icon"</span> <span class="c-attr">width</span>=<span class="c-str">"16"</span> <span class="c-attr">height</span>=<span class="c-str">"16"</span> <span class="c-attr">viewBox</span>=<span class="c-str">"0 0 16 16"</span> <span class="c-attr">fill</span>=<span class="c-str">"none"</span><span class="c-tag">&gt;</span>
+      <span class="c-tag">&lt;path</span> <span class="c-attr">d</span>=<span class="c-str">"M2.9375 8L6.13252 11.375L13.0625 4.625"</span> <span class="c-attr">stroke</span>=<span class="c-str">"currentColor"</span> <span class="c-attr">stroke-width</span>=<span class="c-str">"1.5"</span> <span class="c-attr">stroke-linejoin</span>=<span class="c-str">"round"</span><span class="c-tag">/&gt;</span>
     <span class="c-tag">&lt;/svg&gt;</span>
   <span class="c-tag">&lt;/div&gt;</span>
   <span class="c-tag">&lt;span</span> <span class="c-attr">class</span>=<span class="c-str">"s1-checkbox-label"</span><span class="c-tag">&gt;</span>레이블<span class="c-tag">&lt;/span&gt;</span>
@@ -2497,6 +2511,32 @@ checkboxes.forEach(function(chk) {
           <span class="comp-badge">4 states</span>
           <span class="comp-badge">2 sizes (md · sm)</span>
           <span class="comp-badge comp-badge-blue">정본 buildMultiToggle · button/*</span>
+        </div>
+
+        <!-- ── Action (인터랙티브) — 세트 조합에 액션만 추가 ── -->
+        <div class="variant-block">
+          <div class="matrix-col-header-action" style="text-align:left;padding-right:0;margin-bottom:10px;">Action · 세그먼트를 클릭하면 선택이 이동합니다 (사이즈별)</div>
+          <div class="preview-area">
+            <div class="platform-section platform-section-pc">
+              <div class="platform-header">MD (h44)</div>
+              <div class="s1-multi-toggle" id="mtog-action-md" data-comp-action="multi-toggle">
+                <div class="s1-multi-toggle-cell s1-multi-toggle-cell--first is-selected">항목1</div>
+                <div class="s1-multi-toggle-cell s1-multi-toggle-cell--middle">항목2</div>
+                <div class="s1-multi-toggle-cell s1-multi-toggle-cell--last">항목3</div>
+              </div>
+            </div>
+            <div class="platform-section platform-section-pc" style="margin-top:16px;">
+              <div class="platform-header">SM (h34)</div>
+              <div class="s1-multi-toggle s1-multi-toggle--sm" id="mtog-action-sm" data-comp-action="multi-toggle">
+                <div class="s1-multi-toggle-cell s1-multi-toggle-cell--first is-selected">항목1</div>
+                <div class="s1-multi-toggle-cell s1-multi-toggle-cell--middle">항목2</div>
+                <div class="s1-multi-toggle-cell s1-multi-toggle-cell--last">항목3</div>
+              </div>
+            </div>
+            <div class="action-test-controls">
+              <button class="action-mini-toggle" data-mtog-disabled type="button">Disabled: off</button>
+            </div>
+          </div>
         </div>
 
         <!-- ── Composed (조합형) — Size × Selected ── -->
@@ -3880,17 +3920,17 @@ clearBtn.<span class="c-fn">addEventListener</span>(<span class="c-str">'click'<
                   <div class="matrix-col-header">Default</div>
                   <div class="matrix-col-header">Hover</div>
                   <div class="matrix-col-header">Disabled</div>
-                  <div class="matrix-row-label">medium<span>h44 · px16</span></div>
+                  <div class="matrix-row-label">medium<span>높이 44 · 좌우여백 16</span></div>
                   <div class="matrix-cell action-cell" data-action-cell><button type="button" class="s1-btn s1-btn-primary s1-btn-lg" data-action-test>버튼</button><div class="action-test-controls"><span class="action-click-count">Clicks: <span data-click-count>0</span></span></div></div>
                   <div class="matrix-cell"><button class="s1-btn s1-btn-primary s1-btn-lg is-preview">버튼</button></div>
                   <div class="matrix-cell"><button class="s1-btn s1-btn-primary s1-btn-lg is-hover is-preview">버튼</button></div>
                   <div class="matrix-cell"><button class="s1-btn s1-btn-primary s1-btn-lg is-disabled is-preview">버튼</button></div>
-                  <div class="matrix-row-label">xsmall<span>h34 · px8</span></div>
+                  <div class="matrix-row-label">xsmall<span>높이 34 · 좌우여백 8</span></div>
                   <div class="matrix-cell action-cell" data-action-cell><button type="button" class="s1-btn s1-btn-primary" data-action-test>버튼</button><div class="action-test-controls"><span class="action-click-count">Clicks: <span data-click-count>0</span></span></div></div>
                   <div class="matrix-cell"><button class="s1-btn s1-btn-primary is-preview">버튼</button></div>
                   <div class="matrix-cell"><button class="s1-btn s1-btn-primary is-hover is-preview">버튼</button></div>
                   <div class="matrix-cell"><button class="s1-btn s1-btn-primary is-disabled is-preview">버튼</button></div>
-                  <div class="matrix-row-label">xxsmall<span>h28 · px8</span></div>
+                  <div class="matrix-row-label">xxsmall<span>높이 28 · 좌우여백 8</span></div>
                   <div class="matrix-cell action-cell" data-action-cell><button type="button" class="s1-btn s1-btn-primary s1-btn-sm" data-action-test>버튼</button><div class="action-test-controls"><span class="action-click-count">Clicks: <span data-click-count>0</span></span></div></div>
                   <div class="matrix-cell"><button class="s1-btn s1-btn-primary s1-btn-sm is-preview">버튼</button></div>
                   <div class="matrix-cell"><button class="s1-btn s1-btn-primary s1-btn-sm is-hover is-preview">버튼</button></div>
@@ -3909,7 +3949,7 @@ clearBtn.<span class="c-fn">addEventListener</span>(<span class="c-str">'click'<
                 <div class="matrix-col-header">Default</div>
                 <div class="matrix-col-header">Pressed</div>
                 <div class="matrix-col-header">Disabled</div>
-                <div class="matrix-row-label">mobile<span>h48 · px16</span></div>
+                <div class="matrix-row-label">mobile<span>높이 48 · 좌우여백 16</span></div>
                 <div class="matrix-cell action-cell" data-action-cell><button type="button" class="s1-btn s1-btn-primary s1-btn-mobile" data-action-test>버튼</button><div class="action-test-controls"><button type="button" class="action-mini-toggle" data-toggle-disabled>Disabled: off</button><span class="action-click-count">Clicks: <span data-click-count>0</span></span></div></div>
                 <div class="matrix-cell"><button class="s1-btn s1-btn-primary s1-btn-mobile is-preview">버튼</button></div>
                 <div class="matrix-cell"><button class="s1-btn s1-btn-primary s1-btn-mobile is-pressed is-preview">버튼</button></div>
@@ -3987,17 +4027,17 @@ clearBtn.<span class="c-fn">addEventListener</span>(<span class="c-str">'click'<
                   <div class="matrix-col-header">Default</div>
                   <div class="matrix-col-header">Hover</div>
                   <div class="matrix-col-header">Disabled</div>
-                  <div class="matrix-row-label">medium<span>h44 · px16</span></div>
+                  <div class="matrix-row-label">medium<span>높이 44 · 좌우여백 16</span></div>
                   <div class="matrix-cell action-cell" data-action-cell><button type="button" class="s1-btn s1-btn-secondary s1-btn-lg" data-action-test>버튼</button><div class="action-test-controls"><span class="action-click-count">Clicks: <span data-click-count>0</span></span></div></div>
                   <div class="matrix-cell"><button class="s1-btn s1-btn-secondary s1-btn-lg is-preview">버튼</button></div>
                   <div class="matrix-cell"><button class="s1-btn s1-btn-secondary s1-btn-lg is-hover is-preview">버튼</button></div>
                   <div class="matrix-cell"><button class="s1-btn s1-btn-secondary s1-btn-lg is-disabled is-preview">버튼</button></div>
-                  <div class="matrix-row-label">xsmall<span>h34 · px8</span></div>
+                  <div class="matrix-row-label">xsmall<span>높이 34 · 좌우여백 8</span></div>
                   <div class="matrix-cell action-cell" data-action-cell><button type="button" class="s1-btn s1-btn-secondary" data-action-test>버튼</button><div class="action-test-controls"><span class="action-click-count">Clicks: <span data-click-count>0</span></span></div></div>
                   <div class="matrix-cell"><button class="s1-btn s1-btn-secondary is-preview">버튼</button></div>
                   <div class="matrix-cell"><button class="s1-btn s1-btn-secondary is-hover is-preview">버튼</button></div>
                   <div class="matrix-cell"><button class="s1-btn s1-btn-secondary is-disabled is-preview">버튼</button></div>
-                  <div class="matrix-row-label">xxsmall<span>h28 · px8</span></div>
+                  <div class="matrix-row-label">xxsmall<span>높이 28 · 좌우여백 8</span></div>
                   <div class="matrix-cell action-cell" data-action-cell><button type="button" class="s1-btn s1-btn-secondary s1-btn-sm" data-action-test>버튼</button><div class="action-test-controls"><span class="action-click-count">Clicks: <span data-click-count>0</span></span></div></div>
                   <div class="matrix-cell"><button class="s1-btn s1-btn-secondary s1-btn-sm is-preview">버튼</button></div>
                   <div class="matrix-cell"><button class="s1-btn s1-btn-secondary s1-btn-sm is-hover is-preview">버튼</button></div>
@@ -4016,7 +4056,7 @@ clearBtn.<span class="c-fn">addEventListener</span>(<span class="c-str">'click'<
                 <div class="matrix-col-header">Default</div>
                 <div class="matrix-col-header">Pressed</div>
                 <div class="matrix-col-header">Disabled</div>
-                <div class="matrix-row-label">mobile<span>h48 · px16</span></div>
+                <div class="matrix-row-label">mobile<span>높이 48 · 좌우여백 16</span></div>
                 <div class="matrix-cell action-cell" data-action-cell><button type="button" class="s1-btn s1-btn-secondary s1-btn-mobile" data-action-test>버튼</button><div class="action-test-controls"><button type="button" class="action-mini-toggle" data-toggle-disabled>Disabled: off</button><span class="action-click-count">Clicks: <span data-click-count>0</span></span></div></div>
                 <div class="matrix-cell"><button class="s1-btn s1-btn-secondary s1-btn-mobile is-preview">버튼</button></div>
                 <div class="matrix-cell"><button class="s1-btn s1-btn-secondary s1-btn-mobile is-pressed is-preview">버튼</button></div>
@@ -4094,17 +4134,17 @@ clearBtn.<span class="c-fn">addEventListener</span>(<span class="c-str">'click'<
                   <div class="matrix-col-header">Default</div>
                   <div class="matrix-col-header">Hover</div>
                   <div class="matrix-col-header">Disabled</div>
-                  <div class="matrix-row-label">medium<span>h44 · px16</span></div>
+                  <div class="matrix-row-label">medium<span>높이 44 · 좌우여백 16</span></div>
                   <div class="matrix-cell action-cell" data-action-cell><button type="button" class="s1-btn s1-btn-blue-line s1-btn-lg" data-action-test>버튼</button><div class="action-test-controls"><span class="action-click-count">Clicks: <span data-click-count>0</span></span></div></div>
                   <div class="matrix-cell"><button class="s1-btn s1-btn-blue-line s1-btn-lg is-preview">버튼</button></div>
                   <div class="matrix-cell"><button class="s1-btn s1-btn-blue-line s1-btn-lg is-hover is-preview">버튼</button></div>
                   <div class="matrix-cell"><button class="s1-btn s1-btn-blue-line s1-btn-lg is-disabled is-preview">버튼</button></div>
-                  <div class="matrix-row-label">xsmall<span>h34 · px8</span></div>
+                  <div class="matrix-row-label">xsmall<span>높이 34 · 좌우여백 8</span></div>
                   <div class="matrix-cell action-cell" data-action-cell><button type="button" class="s1-btn s1-btn-blue-line" data-action-test>버튼</button><div class="action-test-controls"><span class="action-click-count">Clicks: <span data-click-count>0</span></span></div></div>
                   <div class="matrix-cell"><button class="s1-btn s1-btn-blue-line is-preview">버튼</button></div>
                   <div class="matrix-cell"><button class="s1-btn s1-btn-blue-line is-hover is-preview">버튼</button></div>
                   <div class="matrix-cell"><button class="s1-btn s1-btn-blue-line is-disabled is-preview">버튼</button></div>
-                  <div class="matrix-row-label">xxsmall<span>h28 · px8</span></div>
+                  <div class="matrix-row-label">xxsmall<span>높이 28 · 좌우여백 8</span></div>
                   <div class="matrix-cell action-cell" data-action-cell><button type="button" class="s1-btn s1-btn-blue-line s1-btn-sm" data-action-test>버튼</button><div class="action-test-controls"><span class="action-click-count">Clicks: <span data-click-count>0</span></span></div></div>
                   <div class="matrix-cell"><button class="s1-btn s1-btn-blue-line s1-btn-sm is-preview">버튼</button></div>
                   <div class="matrix-cell"><button class="s1-btn s1-btn-blue-line s1-btn-sm is-hover is-preview">버튼</button></div>
@@ -4123,7 +4163,7 @@ clearBtn.<span class="c-fn">addEventListener</span>(<span class="c-str">'click'<
                 <div class="matrix-col-header">Default</div>
                 <div class="matrix-col-header">Pressed</div>
                 <div class="matrix-col-header">Disabled</div>
-                <div class="matrix-row-label">mobile<span>h48 · px16</span></div>
+                <div class="matrix-row-label">mobile<span>높이 48 · 좌우여백 16</span></div>
                 <div class="matrix-cell action-cell" data-action-cell><button type="button" class="s1-btn s1-btn-blue-line s1-btn-mobile" data-action-test>버튼</button><div class="action-test-controls"><button type="button" class="action-mini-toggle" data-toggle-disabled>Disabled: off</button><span class="action-click-count">Clicks: <span data-click-count>0</span></span></div></div>
                 <div class="matrix-cell"><button class="s1-btn s1-btn-blue-line s1-btn-mobile is-preview">버튼</button></div>
                 <div class="matrix-cell"><button class="s1-btn s1-btn-blue-line s1-btn-mobile is-pressed is-preview">버튼</button></div>
@@ -4612,6 +4652,42 @@ function setDisabled(on) {
           <span class="comp-badge">15 variants</span>
         </div>
 
+        <!-- ── 구성 요소 (하위 항목) 정보 ── -->
+        <div class="variant-group">
+          <h3 class="variant-group-title">구성 요소 (하위 항목)</h3>
+          <p class="variant-group-desc">GNB 바(<code>s1-gnb</code>)는 아래 하위 항목이 조립된 세트다.</p>
+          <ul style="font-size:12px;color:var(--color-text-secondary);line-height:1.9;margin:0;padding-left:18px;">
+            <li><strong>로고</strong> (<code>s1-gnb-logo</code>) — 서비스 로고 텍스트. 20px · bold, 색상 <code>--gnb-logo-text</code>.</li>
+            <li><strong>메뉴 탭 · 슬롯</strong> (<code>s1-gnb-menu</code>) — 라벨 + 하단 2px 밑줄. 상태 default · hover · selected(밑줄 활성). 사이즈 md(h56 · 18px) / sm(h48 · 18px) / xsm(h36 · 14px). 슬롯끼리 gap 없이 인접, 분리는 슬롯 좌우 패딩으로만.</li>
+            <li><strong>유틸리티 아이콘 3종</strong> (<code>s1-gnb-util-btn</code>, 40×40 · xsm 32×32, 아이콘 24×24, 색상 <code>--gnb-icon</code>) — 언어(globe · <code>ic_인터넷</code>) / 계정(account · <code>ic_계정·사용자·ID</code>) / 메뉴(hamburger · <code>ic_메뉴</code>).</li>
+            <li><strong>정렬 2종</strong> — center-between(로고 · 메뉴 · 유틸 3분할) / start(로고+메뉴 좌측 묶음, 유틸 우측). start 는 로고↔메뉴 gap 64px(<code>s1-gnb-leading</code>).</li>
+          </ul>
+        </div>
+
+        <!-- ── Action (인터랙티브) — 세트(GNB 바)에 액션 추가 ── -->
+        <div class="variant-group">
+          <h3 class="variant-group-title">Action (인터랙티브 GNB 바)</h3>
+          <p class="variant-group-desc">메뉴 탭에 마우스를 올리면 hover, 클릭하면 선택(밑줄)이 이동한다. 유틸리티 아이콘도 hover 된다.</p>
+          <div class="variant-block">
+            <div class="matrix-col-header-action" style="text-align:left;padding-right:0;margin-bottom:10px;">Action · center-between · md (h56)</div>
+            <div class="preview-area" style="padding:24px;overflow-x:auto;">
+              <div class="s1-gnb s1-gnb--md s1-gnb--center-between" data-comp-action="gnb">
+                <span class="s1-gnb-logo">SAMPLE LOGO</span>
+                <div class="s1-gnb-menus" id="gnb-action-bar">
+                  <button class="s1-gnb-menu is-selected" type="button">메뉴1</button>
+                  <button class="s1-gnb-menu" type="button">메뉴2</button>
+                  <button class="s1-gnb-menu" type="button">메뉴3</button>
+                </div>
+                <div class="s1-gnb-util">
+                  <button class="s1-gnb-util-btn" type="button" aria-label="언어"><svg viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M9 18C13.9659 18 18 13.9659 18 9C18 4.03412 13.9659 0 9 0C4.03412 0 0 4.03412 0 9C0 13.9659 4.03412 18 9 18ZM2.97529 3.84353C3.56824 4.09765 4.18235 4.32 4.81765 4.5C4.42588 5.80235 4.20353 7.13647 4.16118 8.47059H1.09059C1.20706 6.71294 1.89529 5.10353 2.97529 3.84353ZM5.99294 1.65176C5.67529 2.25529 5.4 2.86941 5.16706 3.49412C4.69059 3.35647 4.22471 3.20824 3.78 3.02824C4.43647 2.45647 5.17765 1.99059 5.99294 1.65176ZM8.47059 1.09059V4.01294C7.71882 3.98118 6.95647 3.89647 6.20471 3.73765C6.53294 2.88 6.93529 2.03294 7.43294 1.21765C7.77177 1.15412 8.12118 1.11176 8.47059 1.09059ZM10.5671 1.21765C11.0647 2.03294 11.4671 2.88 11.7953 3.73765C11.0435 3.88588 10.2918 3.98118 9.52941 4.01294V1.09059C9.87882 1.11176 10.2282 1.15412 10.5671 1.21765ZM14.22 3.02824C13.7753 3.20824 13.3094 3.36706 12.8329 3.49412C12.6 2.86941 12.3247 2.25529 12.0071 1.65176C12.8224 1.99059 13.5635 2.45647 14.22 3.02824ZM16.9094 8.47059H13.8388C13.7965 7.13647 13.5741 5.80235 13.1824 4.5C13.8282 4.32 14.4424 4.09765 15.0247 3.84353C16.1047 5.10353 16.7929 6.71294 16.9094 8.47059ZM15.0247 14.1565C14.4424 13.9024 13.8176 13.68 13.1824 13.5C13.5741 12.1976 13.7965 10.8635 13.8388 9.52941H16.9094C16.7929 11.2871 16.1047 12.8965 15.0247 14.1565ZM12.0071 16.3482C12.3247 15.7447 12.6 15.1306 12.8329 14.5059C13.3094 14.6435 13.7753 14.7918 14.22 14.9718C13.5635 15.5435 12.8224 16.0094 12.0071 16.3482ZM9.52941 16.9094V13.9871C10.2812 14.0188 11.0435 14.1035 11.7953 14.2624C11.4671 15.12 11.0647 15.9671 10.5671 16.7824C10.2282 16.8459 9.87882 16.8882 9.52941 16.9094ZM7.43294 16.7824C6.93529 15.9671 6.53294 15.12 6.20471 14.2624C6.95647 14.1141 7.70824 14.0188 8.47059 13.9871V16.9094C8.12118 16.8882 7.77177 16.8459 7.43294 16.7824ZM3.78 14.9718C4.22471 14.7918 4.69059 14.6329 5.16706 14.5059C5.4 15.1306 5.67529 15.7447 5.99294 16.3482C5.17765 16.0094 4.43647 15.5435 3.78 14.9718ZM5.84471 4.74353C6.71294 4.92353 7.59177 5.04 8.47059 5.07176V8.47059H5.22C5.26235 7.22118 5.47412 5.97177 5.85529 4.74353H5.84471ZM12.1553 4.74353C12.5259 5.97177 12.7376 7.22118 12.7906 8.47059H9.54V5.07176C10.4188 5.04 11.2871 4.93412 12.1659 4.74353H12.1553ZM12.1553 13.2565C11.2871 13.0765 10.4082 12.96 9.52941 12.9388V9.54H12.78C12.7376 10.7894 12.5259 12.0388 12.1447 13.2671L12.1553 13.2565ZM8.47059 9.52941V12.9282C7.59177 12.96 6.72353 13.0659 5.84471 13.2459C5.47412 12.0176 5.26235 10.7682 5.20941 9.51882H8.46L8.47059 9.52941ZM4.16118 9.52941C4.20353 10.8635 4.42588 12.1976 4.81765 13.5C4.17177 13.68 3.55765 13.9024 2.97529 14.1565C1.89529 12.8965 1.20706 11.2871 1.09059 9.52941H4.16118Z" fill="currentColor"/></svg></button>
+                  <button class="s1-gnb-util-btn" type="button" aria-label="계정"><svg viewBox="0 0 24 21.5816" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M16.561 13.7324H7.43901C5.67118 13.7324 4.00236 14.3971 2.84266 15.5568C0.494991 17.9186 0.0141426 21.2704 0 21.3977L1.37183 21.5816C1.37183 21.5816 1.81025 18.5409 3.8185 16.5185C4.72363 15.6134 6.03889 15.1042 7.43901 15.1042H16.561C17.9611 15.1042 19.2764 15.6275 20.1815 16.5185C22.1897 18.5409 22.6282 21.5391 22.6282 21.5816L24 21.3977C23.9859 21.2563 23.505 17.9045 21.1573 15.5568C19.9976 14.3971 18.3288 13.7324 16.561 13.7324Z" fill="currentColor"/><path d="M5.9968 6.01061C5.9968 9.31998 8.69803 12.0212 12.0074 12.0212C15.3168 12.0212 18.018 9.31998 18.018 6.01061C18.018 2.70124 15.3168 0 12.0074 0C8.69803 0 5.9968 2.70124 5.9968 6.01061ZM16.6037 6.01061C16.6037 8.54213 14.5389 10.607 12.0074 10.607C9.47588 10.607 7.41106 8.54213 7.41106 6.01061C7.41106 3.47908 9.47588 1.41426 12.0074 1.41426C14.5389 1.41426 16.6037 3.47908 16.6037 6.01061Z" fill="currentColor"/></svg></button>
+                  <button class="s1-gnb-util-btn" type="button" aria-label="메뉴"><svg viewBox="0 0 24 16.9274" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M0 1.41176H24V0.705882V0H0V1.41176Z" fill="currentColor"/><path d="M0 9.17647H24V8.47059V7.76471H0V9.17647Z" fill="currentColor"/><path d="M0 16.9274H24V16.2215V15.5156H0V16.9274Z" fill="currentColor"/></svg></button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
         <!-- ── variant-group: 메뉴 슬롯 ── -->
         <div class="variant-group">
           <h3 class="variant-group-title">메뉴 슬롯 (slots_menu)</h3>
@@ -4907,7 +4983,7 @@ function setDisabled(on) {
               });
             });
           }
-          ['gnb-action-md','gnb-action-sm','gnb-action-xsm'].forEach(function(id) {
+          ['gnb-action-md','gnb-action-sm','gnb-action-xsm','gnb-action-bar'].forEach(function(id) {
             setupGnb(document.getElementById(id));
           });
         })();
@@ -5182,6 +5258,45 @@ document.addEventListener('click', function(e) {
           Select·TimePicker·DatePicker 의 열린 옵션 패널을 구성하는 재사용 단위. 옵션 = 배경 + 라벨(테두리 없음). 패널 외곽선은 <code>--color-dropdown-list-border</code>.
         </p>
 
+        <!-- ── Action (인터랙티브) — 세트(패널)별로 사이즈대로 표출 + 액션 ── -->
+        <div class="variant-block">
+          <div class="matrix-col-header-action" style="text-align:left;padding-right:0;margin-bottom:10px;">Action · 옵션에 마우스를 올리면 hover, 클릭하면 선택됩니다 (세트별 · 사이즈대로)</div>
+          <div class="preview-area">
+            <div style="display:flex;gap:32px;flex-wrap:wrap;align-items:flex-start;">
+              <div>
+                <div style="font-size:11px;color:var(--color-text-secondary);font-weight:500;margin-bottom:6px;">MD (h44)</div>
+                <div class="s1-dropdown-list s1-dropdown-list--md" id="ddl-action-md" data-comp-action="dropdown" style="min-width:200px;">
+                  <div class="s1-dropdown-option is-selected">옵션1</div>
+                  <div class="s1-dropdown-option">옵션2</div>
+                  <div class="s1-dropdown-option">옵션3</div>
+                  <div class="s1-dropdown-option">옵션4</div>
+                </div>
+              </div>
+              <div>
+                <div style="font-size:11px;color:var(--color-text-secondary);font-weight:500;margin-bottom:6px;">XSM (h34)</div>
+                <div class="s1-dropdown-list s1-dropdown-list--xsm" id="ddl-action-xsm" data-comp-action="dropdown" style="min-width:180px;">
+                  <div class="s1-dropdown-option is-selected">옵션1</div>
+                  <div class="s1-dropdown-option">옵션2</div>
+                  <div class="s1-dropdown-option">옵션3</div>
+                  <div class="s1-dropdown-option">옵션4</div>
+                </div>
+              </div>
+              <div>
+                <div style="font-size:11px;color:var(--color-text-secondary);font-weight:500;margin-bottom:6px;">XXSM (h28)</div>
+                <div class="s1-dropdown-list s1-dropdown-list--xxsm" id="ddl-action-xxsm" data-comp-action="dropdown" style="min-width:160px;">
+                  <div class="s1-dropdown-option is-selected">옵션1</div>
+                  <div class="s1-dropdown-option">옵션2</div>
+                  <div class="s1-dropdown-option">옵션3</div>
+                  <div class="s1-dropdown-option">옵션4</div>
+                </div>
+              </div>
+            </div>
+            <div class="action-test-controls">
+              <button class="action-mini-toggle" data-ddl-disabled type="button">Disabled: off</button>
+            </div>
+          </div>
+        </div>
+
         <!-- ── Option States × Size (4상태 × 3사이즈) ── -->
         <div class="variant-block">
           <div class="variant-label">Option States · Default · Hover · Selected · Disabled (사이즈별)</div>
@@ -5343,10 +5458,110 @@ document.addEventListener('click', function(e) {
           </div>
         </div>
 
-        <!-- Header + Body row states + Footer -->
+        <!-- Action — 인터랙티브 (행 hover + 체크박스 선택 실동작, md) -->
         <div class="variant-block">
-          <div class="variant-label">Row States + Footer <span style="font-weight:400;font-size:11px;color:#9ca3af;text-transform:none;letter-spacing:0;">— md · h44px</span></div>
+          <div class="variant-label">Action <span style="font-weight:400;font-size:11px;color:#9ca3af;text-transform:none;letter-spacing:0;">— 행에 마우스를 올리거나 체크박스로 선택해보세요 (md · h44)</span></div>
           <div class="preview-area" style="padding:20px; overflow-x:auto;">
+            <div class="matrix-col-header-action" style="text-align:left;padding-right:0;margin-bottom:10px;">ACTION</div>
+            <div class="comp-action-cell" data-comp-action="table" style="align-items:stretch;padding-right:0;width:100%;">
+              <div class="s1-table-section">
+                <div class="s1-table-wrap">
+                  <table class="s1-table s1-table--md" style="width:100%; min-width:640px; border-collapse:collapse;">
+                    <thead>
+                      <tr class="s1-table-header-row">
+                        <th class="s1-table-th s1-table-th--selection">
+                          <div class="s1-table-th-inner" style="justify-content:center;">
+                            <label class="s1-checkbox" aria-label="전체 선택" id="tbl-action-header-chk">
+                              <div class="s1-checkbox-box">
+                                <svg class="ds-chk-icon" width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2.9375 8L6.13252 11.375L13.0625 4.625" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>
+                              </div>
+                            </label>
+                          </div>
+                        </th>
+                        <th class="s1-table-th"><div class="s1-table-th-inner">항목명</div></th>
+                        <th class="s1-table-th">
+                          <div class="s1-table-th-inner">항목명 (정렬)
+                            <svg class="s1-table-sort-icon" width="10" height="14" viewBox="0 0 10 14" fill="none"><path d="M5 1v12M1 5l4-4 4 4M1 9l4 4 4-4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                          </div>
+                        </th>
+                        <th class="s1-table-th"><div class="s1-table-th-inner" style="justify-content:center;">수량</div></th>
+                        <th class="s1-table-th s1-table-th--last"><div class="s1-table-th-inner" style="justify-content:center;">관리</div></th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr class="s1-table-row">
+                        <td class="s1-table-td s1-table-td--selection">
+                          <label class="s1-checkbox" aria-label="행 선택"><div class="s1-checkbox-box"><svg class="ds-chk-icon" width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2.9375 8L6.13252 11.375L13.0625 4.625" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg></div></label>
+                        </td>
+                        <td class="s1-table-td">선택 가능한 행 — 체크박스를 눌러보세요</td>
+                        <td class="s1-table-td">값 텍스트</td>
+                        <td class="s1-table-td" style="text-align:center;">128</td>
+                        <td class="s1-table-td s1-table-td--last" style="text-align:center;"><span style="font-size:13px;color:var(--color-text-secondary);">활성</span></td>
+                      </tr>
+                      <tr class="s1-table-row">
+                        <td class="s1-table-td s1-table-td--selection">
+                          <label class="s1-checkbox" aria-label="행 선택"><div class="s1-checkbox-box"><svg class="ds-chk-icon" width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2.9375 8L6.13252 11.375L13.0625 4.625" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg></div></label>
+                        </td>
+                        <td class="s1-table-td">마우스를 올려보세요 (hover)</td>
+                        <td class="s1-table-td">값 텍스트</td>
+                        <td class="s1-table-td" style="text-align:center;">56</td>
+                        <td class="s1-table-td s1-table-td--last" style="text-align:center;"><span style="font-size:13px;color:var(--color-text-secondary);">검토중</span></td>
+                      </tr>
+                      <tr class="s1-table-row is-selected">
+                        <td class="s1-table-td s1-table-td--selection">
+                          <label class="s1-checkbox is-checked" aria-label="행 선택"><div class="s1-checkbox-box"><svg class="ds-chk-icon" width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2.9375 8L6.13252 11.375L13.0625 4.625" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg></div></label>
+                        </td>
+                        <td class="s1-table-td">미리 선택된 행 (selected)</td>
+                        <td class="s1-table-td">값 텍스트</td>
+                        <td class="s1-table-td" style="text-align:center;">33</td>
+                        <td class="s1-table-td s1-table-td--last" style="text-align:center;"><span style="font-size:13px;color:var(--color-text-secondary);">완료</span></td>
+                      </tr>
+                      <tr class="s1-table-row">
+                        <td class="s1-table-td s1-table-td--selection">
+                          <label class="s1-checkbox" aria-label="행 선택"><div class="s1-checkbox-box"><svg class="ds-chk-icon" width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2.9375 8L6.13252 11.375L13.0625 4.625" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg></div></label>
+                        </td>
+                        <td class="s1-table-td">데이터 항목 A</td>
+                        <td class="s1-table-td">카테고리 1</td>
+                        <td class="s1-table-td" style="text-align:center;">42</td>
+                        <td class="s1-table-td s1-table-td--last" style="text-align:center;"><span style="font-size:13px;color:var(--color-text-secondary);">활성</span></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+                <div class="s1-table-footer">
+                  <nav class="s1-pagination" aria-label="페이지 이동">
+                    <div class="s1-pagination-group">
+                      <button class="s1-pagination-arrow" disabled aria-label="처음 페이지"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M10 3.5L6.5 7l3.5 3.5M3.5 3.5v7" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+                      <button class="s1-pagination-arrow" disabled aria-label="이전 페이지"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M9 3.5L5 7l4 3.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+                    </div>
+                    <div class="s1-pagination-group s1-pagination-group--numbers">
+                      <button class="s1-pagination-number is-selected" aria-current="page">1</button>
+                      <button class="s1-pagination-number">2</button>
+                      <button class="s1-pagination-number">3</button>
+                    </div>
+                    <div class="s1-pagination-group">
+                      <button class="s1-pagination-arrow" aria-label="다음 페이지"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M5 3.5l4 3.5-4 3.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+                      <button class="s1-pagination-arrow" aria-label="마지막 페이지"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M4 3.5l3.5 3.5-3.5 3.5M10.5 3.5v7" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+                    </div>
+                  </nav>
+                  <select class="s1-table-perpage-select" aria-label="페이지당 행 수">
+                    <option>10개씩 보기</option>
+                    <option selected>15개씩 보기</option>
+                    <option>20개씩 보기</option>
+                    <option>50개씩 보기</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Row States + Sizes (md · sm 한 섹션에 함께) -->
+        <div class="variant-block">
+          <div class="variant-label">Row States + Sizes <span style="font-weight:400;font-size:11px;color:#9ca3af;text-transform:none;letter-spacing:0;">— md · sm 함께</span></div>
+          <div class="preview-area" style="padding:20px; overflow-x:auto; display:flex; flex-direction:column; gap:28px;">
+            <div>
+              <div style="font-size:11px;font-weight:700;color:#16a34a;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:10px;">Medium · h44</div>
             <div class="s1-table-section">
               <div class="s1-table-wrap">
                 <table class="s1-table s1-table--md" style="width:100%; min-width:640px; border-collapse:collapse;">
@@ -5505,13 +5720,9 @@ document.addEventListener('click', function(e) {
                 </select>
               </div>
             </div>
-          </div>
-        </div>
-
-        <!-- sm size -->
-        <div class="variant-block">
-          <div class="variant-label">Row States + Footer <span style="font-weight:400;font-size:11px;color:#9ca3af;text-transform:none;letter-spacing:0;">— sm · h38px</span></div>
-          <div class="preview-area" style="padding:20px; overflow-x:auto;">
+            </div>
+            <div>
+              <div style="font-size:11px;font-weight:700;color:#16a34a;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:10px;">Small · h38</div>
             <div class="s1-table-section">
               <div class="s1-table-wrap">
                 <table class="s1-table s1-table--sm" style="width:100%; min-width:640px; border-collapse:collapse;">
@@ -5669,77 +5880,6 @@ document.addEventListener('click', function(e) {
                 </select>
               </div>
             </div>
-          </div>
-        </div>
-
-        <!-- Sizes 비교 -->
-        <div class="variant-block">
-          <div class="variant-label">Sizes</div>
-          <div class="preview-area" style="padding:20px; overflow-x:auto;">
-            <div style="display:grid; grid-template-columns:1fr 1fr; gap:20px; min-width:560px;">
-
-              <!-- md h44 -->
-              <div>
-                <div style="font-size:11px;font-weight:700;color:#16a34a;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:10px;">Medium · h44</div>
-                <table class="s1-table s1-table--md" style="width:100%;border-collapse:collapse;">
-                  <thead>
-                    <tr class="s1-table-header-row">
-                      <th class="s1-table-th">항목명</th>
-                      <th class="s1-table-th">값</th>
-                      <th class="s1-table-th s1-table-th--last" style="text-align:center;">상태</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr class="s1-table-row">
-                      <td class="s1-table-td">기본 행</td>
-                      <td class="s1-table-td">값 텍스트</td>
-                      <td class="s1-table-td s1-table-td--last" style="text-align:center;"><span style="font-size:13px;color:var(--color-text-secondary);">활성</span></td>
-                    </tr>
-                    <tr class="s1-table-row is-hover">
-                      <td class="s1-table-td">Hover 행</td>
-                      <td class="s1-table-td">값 텍스트</td>
-                      <td class="s1-table-td s1-table-td--last" style="text-align:center;"><span style="font-size:13px;color:var(--color-text-secondary);">대기</span></td>
-                    </tr>
-                    <tr class="s1-table-row is-selected">
-                      <td class="s1-table-td">Selected 행</td>
-                      <td class="s1-table-td">값 텍스트</td>
-                      <td class="s1-table-td s1-table-td--last" style="text-align:center;"><span style="font-size:13px;color:var(--color-text-secondary);">완료</span></td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-
-              <!-- sm h38 -->
-              <div>
-                <div style="font-size:11px;font-weight:700;color:#16a34a;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:10px;">Small · h38</div>
-                <table class="s1-table s1-table--sm" style="width:100%;border-collapse:collapse;">
-                  <thead>
-                    <tr class="s1-table-header-row">
-                      <th class="s1-table-th">항목명</th>
-                      <th class="s1-table-th">값</th>
-                      <th class="s1-table-th s1-table-th--last" style="text-align:center;">상태</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr class="s1-table-row">
-                      <td class="s1-table-td">기본 행</td>
-                      <td class="s1-table-td">값 텍스트</td>
-                      <td class="s1-table-td s1-table-td--last" style="text-align:center;"><span style="font-size:13px;color:var(--color-text-secondary);">활성</span></td>
-                    </tr>
-                    <tr class="s1-table-row is-hover">
-                      <td class="s1-table-td">Hover 행</td>
-                      <td class="s1-table-td">값 텍스트</td>
-                      <td class="s1-table-td s1-table-td--last" style="text-align:center;"><span style="font-size:13px;color:var(--color-text-secondary);">대기</span></td>
-                    </tr>
-                    <tr class="s1-table-row is-selected">
-                      <td class="s1-table-td">Selected 행</td>
-                      <td class="s1-table-td">값 텍스트</td>
-                      <td class="s1-table-td s1-table-td--last" style="text-align:center;"><span style="font-size:13px;color:var(--color-text-secondary);">완료</span></td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-
             </div>
           </div>
         </div>
@@ -5753,7 +5893,9 @@ document.addEventListener('click', function(e) {
             <button class="code-tab" onclick="switchTab(this,'table-js')">JavaScript</button>
           </div>
           <div class="code-pane active" id="table-html">
-            <pre id="table-html-pre"><span class="c-cmt">&lt;!-- ① size: md (행 높이 44px) — 기본값 --&gt;</span>
+            <pre id="table-html-pre"><span class="c-cmt">&lt;!-- 테이블 감싸개(s1-table-wrap): 최상단 2px + 최하단 1px 라인을 그려 표를 위·아래로 닫는다 --&gt;</span>
+<span class="c-cmt">&lt;!-- &lt;div class="s1-table-wrap"&gt; &lt;table …&gt;…&lt;/table&gt; &lt;/div&gt; --&gt;</span>
+<span class="c-cmt">&lt;!-- ① size: md (행 높이 44px) — 기본값 --&gt;</span>
 <span class="c-tag">&lt;table</span> <span class="c-attr">class</span>=<span class="c-str">"s1-table s1-table--md"</span><span class="c-tag">&gt;</span>
   <span class="c-tag">&lt;thead&gt;</span>
     <span class="c-tag">&lt;tr</span> <span class="c-attr">class</span>=<span class="c-str">"s1-table-header-row"</span><span class="c-tag">&gt;</span>
@@ -5810,7 +5952,7 @@ document.addEventListener('click', function(e) {
                 <tr><td class="token-name">--table-header-bg</td><td class="token-value">var(--color-bg-default)</td><td class="token-resolved" data-token="--table-header-bg"></td><td>헤더 셀 기본 배경</td></tr>
                 <tr><td class="token-name">--table-header-text</td><td class="token-value">var(--color-text-secondary)</td><td class="token-resolved" data-token="--table-header-text"></td><td>헤더 셀 텍스트 색상</td></tr>
                 <tr><td class="token-name">--table-border-light</td><td class="token-value">var(--color-border-subtle)</td><td class="token-resolved" data-token="--table-border-light"></td><td>행 구분선 — 헤더·바디 셀 공통 참조</td></tr>
-                <tr><td class="token-name">--table-border-strong</td><td class="token-value">var(--color-border-emphasis)</td><td class="token-resolved" data-token="--table-border-strong"></td><td>테이블 외곽 강조 테두리 — wrap 상단 2px + 하단 1px</td></tr>
+                <tr><td class="token-name">--table-border-strong</td><td class="token-value">var(--color-table-border-strong)</td><td class="token-resolved" data-token="--table-border-strong"></td><td>테이블을 감싸는 상·하단 라인 — <code>.s1-table-wrap</code> 최상단 2px + 최하단 1px (표의 시작·끝 구분선)</td></tr>
                 <tr><td class="token-name">--table-header-border</td><td class="token-value">var(--table-border-light)</td><td class="token-resolved" data-token="--table-header-border"></td><td>헤더 셀 하단 구분선</td></tr>
                 <tr><td class="token-name">--table-row-default-bg</td><td class="token-value">var(--color-table-cell-default)</td><td class="token-resolved" data-token="--table-row-default-bg"></td><td>행 기본 배경 — Light: base/white (#FFFFFF) / Dark: gray-dark-100 (#1C1D23)</td></tr>
                 <tr><td class="token-name">--table-row-hover-bg</td><td class="token-value">var(--color-table-cell-hover)</td><td class="token-resolved" data-token="--table-row-hover-bg"></td><td>행 hover 배경 — Light: gray-50 (#F5F5F5) / Dark: gray-dark-200 (#24252C)</td></tr>
@@ -5823,6 +5965,12 @@ document.addEventListener('click', function(e) {
           <div class="code-pane" id="table-css">
             <pre>/* Table — 공통 */
 .s1-table { border-collapse: collapse; width: 100%; }
+
+/* 테이블 감싸개 — 표를 위·아래로 닫는 상·하단 라인 */
+.s1-table-wrap {
+  border-top: 2px solid var(--table-border-strong);    /* 최상단 라인 */
+  border-bottom: 1px solid var(--table-border-strong); /* 최하단 라인 */
+}
 
 .s1-table-th {
   background: var(--table-header-bg);
@@ -5912,65 +6060,56 @@ updateHeader(); // 초기 헤더 상태 동기화</pre>
           <span class="comp-badge">interactive</span>
         </div>
 
-        <!-- States Matrix — ACTION 셀이 Arrow+Number 행에 걸쳐 interactive 전체 표시 -->
+        <!-- Action — 인터랙티브 (페이지 이동 실동작) -->
         <div class="variant-block">
-          <div class="variant-label">States</div>
+          <div class="variant-label">Action <span style="font-weight:400;font-size:11px;color:#9ca3af;text-transform:none;letter-spacing:0;">— 화살표·번호를 눌러 페이지를 이동해보세요</span></div>
           <div class="preview-area" style="overflow-x:auto;">
-            <div class="comp-state-matrix" style="
-              grid-template-columns: 80px minmax(360px,auto) repeat(4, minmax(90px,1fr));
-              grid-template-rows: auto auto auto;
-            ">
-              <!-- ── 헤더 행 ── -->
-              <div class="matrix-col-header-action" style="grid-column:1;grid-row:1;">Element</div>
-              <div class="matrix-col-header-action" style="grid-column:2;grid-row:1;">Action</div>
-              <div class="matrix-col-header" style="grid-column:3;grid-row:1;">Default</div>
-              <div class="matrix-col-header" style="grid-column:4;grid-row:1;">Hover</div>
-              <div class="matrix-col-header" style="grid-column:5;grid-row:1;">Selected</div>
-              <div class="matrix-col-header" style="grid-column:6;grid-row:1;">Disabled</div>
-
-              <!-- ── ACTION 셀: rows 2–3 span (Arrow + Number 공유) ── -->
-              <div class="comp-action-cell" data-comp-action="pagination-arrow"
-                   style="grid-column:2; grid-row:2/4; padding:16px 20px; flex-direction:column; align-items:flex-start; gap:10px;">
-                <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
-                  <div class="s1-pagination" id="pagination-demo">
-                    <div class="s1-pagination-group">
-                      <button class="s1-pagination-arrow" data-pg-action="first" aria-label="첫 페이지"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M10 3.5L6.5 7l3.5 3.5M3.5 3.5v7" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
-                      <button class="s1-pagination-arrow" data-pg-action="prev" aria-label="이전 페이지"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M9 3.5L5 7l4 3.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
-                    </div>
-                    <div class="s1-pagination-group s1-pagination-group--numbers" id="pg-numbers"></div>
-                    <div class="s1-pagination-group">
-                      <button class="s1-pagination-arrow" data-pg-action="next" aria-label="다음 페이지"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M5 3.5l4 3.5-4 3.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
-                      <button class="s1-pagination-arrow" data-pg-action="last" aria-label="마지막 페이지"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M4 3.5l3.5 3.5-3.5 3.5M10.5 3.5v7" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
-                    </div>
-                  </div>
+            <div class="matrix-col-header-action" style="text-align:left;padding-right:0;margin-bottom:10px;">ACTION</div>
+            <div class="comp-action-cell" data-comp-action="pagination-arrow" style="align-items:flex-start;padding-right:0;">
+              <div class="s1-pagination" id="pagination-demo">
+                <div class="s1-pagination-group">
+                  <button class="s1-pagination-arrow" data-pg-action="first" aria-label="첫 페이지"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M10 3.5L6.5 7l3.5 3.5M3.5 3.5v7" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+                  <button class="s1-pagination-arrow" data-pg-action="prev" aria-label="이전 페이지"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M9 3.5L5 7l4 3.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+                </div>
+                <div class="s1-pagination-group s1-pagination-group--numbers" id="pg-numbers"></div>
+                <div class="s1-pagination-group">
+                  <button class="s1-pagination-arrow" data-pg-action="next" aria-label="다음 페이지"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M5 3.5l4 3.5-4 3.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+                  <button class="s1-pagination-arrow" data-pg-action="last" aria-label="마지막 페이지"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M4 3.5l3.5 3.5-3.5 3.5M10.5 3.5v7" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
                 </div>
               </div>
+            </div>
+          </div>
+        </div>
 
-              <!-- ── Arrow 행 ── -->
-              <div class="comp-state-cell" style="grid-column:1;grid-row:2;font-size:11px;font-weight:600;color:#9ca3af;justify-content:center;">Arrow</div>
-              <div class="comp-state-cell" style="grid-column:3;grid-row:2;">
-                <button class="s1-pagination-arrow is-preview" aria-label="이전"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M9 3.5L5 7l4 3.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
-              </div>
-              <div class="comp-state-cell" style="grid-column:4;grid-row:2;">
-                <button class="s1-pagination-arrow is-hover is-preview" aria-label="이전"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M9 3.5L5 7l4 3.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
-              </div>
-              <div class="comp-state-cell" style="grid-column:5;grid-row:2;color:#d1d5db;font-size:12px;justify-content:center;">—</div>
-              <div class="comp-state-cell" style="grid-column:6;grid-row:2;">
-                <button class="s1-pagination-arrow is-preview" disabled aria-label="이전"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M9 3.5L5 7l4 3.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
-              </div>
+        <!-- States — 상태값을 세로(아래로)로 나열 (Arrow · Number 열) -->
+        <div class="variant-block">
+          <div class="variant-label">States <span style="font-weight:400;font-size:11px;color:#9ca3af;text-transform:none;letter-spacing:0;">— 상태를 세로로 나열 (Arrow · Number)</span></div>
+          <div class="preview-area" style="overflow-x:auto;">
+            <div class="comp-state-matrix" style="grid-template-columns: 110px repeat(2, minmax(90px,auto)); row-gap: 12px;">
+              <!-- 헤더 행 -->
+              <div class="matrix-col-header" style="text-align:left;">State</div>
+              <div class="matrix-col-header">Arrow</div>
+              <div class="matrix-col-header">Number</div>
 
-              <!-- ── Number 행 ── -->
-              <div class="comp-state-cell" style="grid-column:1;grid-row:3;font-size:11px;font-weight:600;color:#9ca3af;justify-content:center;">Number</div>
-              <div class="comp-state-cell" style="grid-column:3;grid-row:3;">
-                <button class="s1-pagination-number is-preview">3</button>
-              </div>
-              <div class="comp-state-cell" style="grid-column:4;grid-row:3;">
-                <button class="s1-pagination-number is-hover is-preview">3</button>
-              </div>
-              <div class="comp-state-cell" style="grid-column:5;grid-row:3;">
-                <button class="s1-pagination-number is-selected is-preview">3</button>
-              </div>
-              <div class="comp-state-cell" style="grid-column:6;grid-row:3;color:#d1d5db;font-size:12px;justify-content:center;">—</div>
+              <!-- Default -->
+              <div class="comp-row-label" style="align-self:center;">Default</div>
+              <div class="comp-state-cell"><button class="s1-pagination-arrow is-preview" aria-label="이전"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M9 3.5L5 7l4 3.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></button></div>
+              <div class="comp-state-cell"><button class="s1-pagination-number is-preview">3</button></div>
+
+              <!-- Hover -->
+              <div class="comp-row-label" style="align-self:center;">Hover</div>
+              <div class="comp-state-cell"><button class="s1-pagination-arrow is-hover is-preview" aria-label="이전"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M9 3.5L5 7l4 3.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></button></div>
+              <div class="comp-state-cell"><button class="s1-pagination-number is-hover is-preview">3</button></div>
+
+              <!-- Selected (번호에만 존재) -->
+              <div class="comp-row-label" style="align-self:center;">Selected</div>
+              <div class="comp-state-cell" style="color:#d1d5db;font-size:12px;">—</div>
+              <div class="comp-state-cell"><button class="s1-pagination-number is-selected is-preview">3</button></div>
+
+              <!-- Disabled (화살표에만 존재) -->
+              <div class="comp-row-label" style="align-self:center;">Disabled</div>
+              <div class="comp-state-cell"><button class="s1-pagination-arrow is-preview" disabled aria-label="이전"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M9 3.5L5 7l4 3.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></button></div>
+              <div class="comp-state-cell" style="color:#d1d5db;font-size:12px;">—</div>
             </div>
           </div>
         </div>
@@ -6824,6 +6963,9 @@ update(); // 초기화</pre>
           <span class="comp-badge">Figma: 540:3690 ~ 540:3506</span>
         </div>
 
+        <!-- ═══ PC — 트리거 + 드롭다운 (Input형 · Select형) ═══ -->
+        <div class="platform-section platform-section-pc">
+
         <!-- ════ Input 형 ════ -->
         <div class="variant-group">
           <h3 class="variant-group-title">Input 형</h3>
@@ -7474,6 +7616,10 @@ document.addEventListener('click', function(e) {
           </div>
         </div>
 
+        </div><!-- /platform-section-pc -->
+
+        <!-- ═══ Mobile — 바텀시트만 ═══ -->
+        <div class="platform-section platform-section-mobile">
         <!-- Mobile Bottom Sheet (HD-Time-4) -->
         <div class="variant-group" style="margin-top:24px;">
           <h3 class="variant-group-title">Mobile — Bottom Sheet <span class="comp-badge comp-badge-green" style="font-size:10px;margin-left:8px;">HD-Time-4 확정</span></h3>
@@ -7563,7 +7709,9 @@ document.addEventListener('click', function(e) {
           </div>
         </div>
 
-        <!-- Token Details (Input · Select 공유) -->
+        </div><!-- /platform-section-mobile -->
+
+        <!-- Token Details (Input · Select 공유 · 플랫폼 공통) -->
         <div class="code-block" style="margin-top:32px;">
           <div class="code-tabs">
             <button class="code-tab active" onclick="switchTab(this,'timepicker-tokens')">Token Details</button>
@@ -8692,6 +8840,57 @@ document.addEventListener('click', function(e) {
           e.target.textContent = 'Readonly: on';
           e.target.classList.add('is-on');
         }
+      });
+    }
+
+    // ── Multi Toggle: 세그먼트 클릭 → 선택 이동, Disabled → 전체 사이즈 ──
+    function wireMultiToggle(el) {
+      if (!el) return;
+      el.querySelectorAll('.s1-multi-toggle-cell').forEach(function(cell) {
+        cell.style.cursor = 'pointer';
+        cell.addEventListener('click', function() {
+          if (el.classList.contains('is-disabled')) return;
+          el.querySelectorAll('.s1-multi-toggle-cell').forEach(function(c) { c.classList.remove('is-selected'); });
+          cell.classList.add('is-selected');
+        });
+      });
+    }
+    var mtogTargets = ['mtog-action-md','mtog-action-sm'].map(function(id){ return document.getElementById(id); }).filter(Boolean);
+    mtogTargets.forEach(wireMultiToggle);
+    if (mtogTargets.length) {
+      document.querySelector('[data-mtog-disabled]')?.addEventListener('click', function(e) {
+        var on = !mtogTargets[0].classList.contains('is-disabled');
+        mtogTargets.forEach(function(el) {
+          el.classList.toggle('is-disabled', on);
+          el.querySelectorAll('.s1-multi-toggle-cell').forEach(function(c) { c.classList.toggle('is-disabled', on); });
+        });
+        e.target.classList.toggle('is-on', on);
+        e.target.textContent = on ? 'Disabled: on' : 'Disabled: off';
+      });
+    }
+
+    // ── Dropdown 패널: 옵션 클릭 → 선택 이동, Disabled → 전체 사이즈 ──
+    function wireDropdownPanel(el) {
+      if (!el) return;
+      el.querySelectorAll('.s1-dropdown-option').forEach(function(opt) {
+        opt.addEventListener('click', function() {
+          if (el.classList.contains('is-disabled') || opt.classList.contains('is-disabled')) return;
+          el.querySelectorAll('.s1-dropdown-option').forEach(function(o) { o.classList.remove('is-selected'); });
+          opt.classList.add('is-selected');
+        });
+      });
+    }
+    var ddlTargets = ['ddl-action-md','ddl-action-xsm','ddl-action-xxsm'].map(function(id){ return document.getElementById(id); }).filter(Boolean);
+    ddlTargets.forEach(wireDropdownPanel);
+    if (ddlTargets.length) {
+      document.querySelector('[data-ddl-disabled]')?.addEventListener('click', function(e) {
+        var on = !ddlTargets[0].classList.contains('is-disabled');
+        ddlTargets.forEach(function(el) {
+          el.classList.toggle('is-disabled', on);
+          el.querySelectorAll('.s1-dropdown-option').forEach(function(o) { o.classList.toggle('is-disabled', on); });
+        });
+        e.target.classList.toggle('is-on', on);
+        e.target.textContent = on ? 'Disabled: on' : 'Disabled: off';
       });
     }
   }
