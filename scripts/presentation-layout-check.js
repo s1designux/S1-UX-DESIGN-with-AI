@@ -47,8 +47,12 @@ function renderDom() {
   const chrome = findChrome();
   if (!chrome) return { skip: '크롬/엣지 실행파일을 못 찾음 (CHROME_PATH 로 지정 가능)' };
   const fileUrl = 'file:///' + HTML.replace(/\\/g, '/');
+  // 전용 임시 프로필 — 사용자/다른 Chrome 세션의 기본 프로필 잠금과 충돌해 크래시하는 것을 방지
+  const profileDir = fs.mkdtempSync(path.join(os.tmpdir(), 'preso-chrome-'));
   const r = spawnSync(chrome, ['--headless=new', '--dump-dom', '--virtual-time-budget=5000',
-    '--no-sandbox', '--disable-gpu', fileUrl], { encoding: 'utf-8', maxBuffer: 64 * 1024 * 1024, timeout: 60000 });
+    '--no-sandbox', '--disable-gpu', `--user-data-dir=${profileDir}`, fileUrl],
+    { encoding: 'utf-8', maxBuffer: 64 * 1024 * 1024, timeout: 60000 });
+  try { fs.rmSync(profileDir, { recursive: true, force: true }); } catch (_) {}
   if (r.status !== 0 && !r.stdout) return { skip: `렌더 실패 (${r.error ? r.error.message : 'exit ' + r.status})` };
   const dom = r.stdout || '';
   // 재배치가 실제로 돌았는지 확인(comp-action-top 은 재배치 후에만 생김)

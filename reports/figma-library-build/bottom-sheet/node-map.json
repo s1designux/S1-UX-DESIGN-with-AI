@@ -14,6 +14,24 @@
   "targetFileName": "SW-UX-GUIDE-V3.0-TEST",
   "page": { "id": "5:5706", "name": "Core" },
   "placement": "empty band right of Table section (rightmost occupied edge = 25600); placed at x=25800 (old x=25000 band now occupied by relocated Table section 23432-25600)",
+  "section_2026-07-06": {
+    "sectionId": "904:2",
+    "name": "Bottom Sheet",
+    "type": "SECTION",
+    "page": { "id": "5:5706", "name": "Core" },
+    "x": 25720, "y": 0, "w": 2704, "h": 1084,
+    "purpose": "Wrap the 3 loose Bottom Sheet frames into a proper component section like other Core components (Table/Date Picker convention). Section name renders as the big title. Placed right of Table (ends x=25600), gap 120, no overlap.",
+    "backgroundFill": "token-bound color/bg/level-0 (VariableID:687:17884) = white (cleaner than the raw-white of existing sections; visually identical)",
+    "children": [
+      { "id": "865:17", "name": "Bottom Sheet Option", "type": "COMPONENT_SET", "x": 25784, "y": 140 },
+      { "id": "868:9184", "name": "Bottom Sheet (light container)", "type": "COMPONENT_SET", "x": 25784, "y": 564 },
+      { "id": "881:2", "name": "Bottom Sheet — Spec Dark", "type": "FRAME", "x": 27104, "y": 564 }
+    ],
+    "layout": "Option row set on top (y140); light container (y564) and Spec Dark (y564, right, x27104) side by side below — matches Light/Spec-Dark convention.",
+    "verify": "section parent = Core page (5:5706); all 3 frames parent = section 904:2; 공통 page (80:16696) contains none of these nodes; no overlap with other Core sections.",
+    "labelsOmitted": "Per-frame '· Light'/'· Dark' text labels (used by other sections) omitted: those labels are raw Pretendard with no text style, and Pretendard cannot be loaded on this PC, so new labels would be stuck non-Pretendard (font-policy violation). Frame names ('Bottom Sheet Option', 'Bottom Sheet', 'Bottom Sheet — Spec Dark') + section title serve as identification. (nice-to-have, deferred.)",
+    "sectionScreenshotQuirk": "get_screenshot on the SECTION renders an unusable ultra-wide strip (bounds computed from canvas origin ~x0 to 28360). Content verified via metadata + per-frame screenshots instead."
+  },
   "sets": {
     "Bottom Sheet Option": {
       "id": "865:17",

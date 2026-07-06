@@ -3239,6 +3239,297 @@ async function buildDatePickerBottomSheet(maps: BuildMaps, originY: number): Pro
   return { set, bottomY };
 }
 
+// ── Bottom Sheet Option + Bottom Sheet — 바텀시트 세트 (정본: reports/figma-library-build/bottom-sheet/2-plan.md) ──
+// buildDatePickerBottomSheet 패턴을 따른다: 색은 전부 scv() Variable 바인딩, 폰트=텍스트 스타일 바인딩,
+//   Checkbox/Radio/Button 은 기존 라이브러리 컴포넌트 인스턴스 재사용(raw 재현 금지), 아이콘=라이브러리 인스턴스.
+//   기하(패딩·간격·라운드)는 buildDatePickerBottomSheet 와 동일하게 raw 숫자(설치기 맵은 semantic number 미노출).
+
+// ic_잠김(Line) — V2.2 아이콘 라이브러리 "세트" 키(단일 variant 키가 아님)라 EDGE_SET 패턴처럼
+//   importComponentSetByKeyAsync 로 세트를 불러와 Line variant 를 인스턴스화한다. 색은 rebindIconColor 로 토큰 바인딩.
+//   (registry/figma/allowed-remote-keys.json 에 lock/lock_set 등록됨.)
+const LOCK_SET_KEY = "b3ccc4b275de6aac8e3940df2ae97fbb00168624"; // ic_잠김 V2.2 세트(Line variant 보유)
+const LOCK_FALLBACK_SVG = `<svg width="24" height="24" viewBox="0 0 24 24" fill="none"><rect x="5" y="10.5" width="14" height="9.5" rx="2" stroke="#757575" stroke-width="1.5"/><path d="M8 10.5V7.5a4 4 0 0 1 8 0v3" stroke="#757575" stroke-width="1.5"/></svg>`;
+const CHECK_24_SVG = `<svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M5 12.5L10 17.5L19 6.5" stroke="#1D6CEB" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+const CHEVRON_RIGHT_SVG = `<svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M9 6L15 12L9 18" stroke="#353535" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+const ACCOUNT_SVG = `<svg width="24" height="24" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="3.5" fill="#FFFFFF"/><path d="M5 20c0-3.5 3.13-6 7-6s7 2.5 7 6" fill="#FFFFFF"/></svg>`;
+
+async function makeLockIcon(colorVar: Variable, size: number): Promise<SceneNode> {
+  try {
+    const set = await (figma as any).importComponentSetByKeyAsync(LOCK_SET_KEY) as ComponentSetNode;
+    const line = (set.children as ComponentNode[]).find((c) => c.type === "COMPONENT" && c.name.toLowerCase().includes("line"))
+      ?? (set as any).defaultVariant as ComponentNode | undefined
+      ?? (set.children as ComponentNode[])[0];
+    if (line) {
+      const inst = line.createInstance();
+      inst.name = "lock";
+      if (size && size !== inst.width) inst.resize(size, size);
+      rebindIconColor(inst, colorVar);
+      return inst;
+    }
+  } catch (e) { console.warn("lock 세트 import 실패 → 벡터 폴백:", e); }
+  const node = figma.createNodeFromSvg(LOCK_FALLBACK_SVG); // icon-vector-allow: ic_잠김 세트 로드 실패 폴백(라이브러리 인스턴스 우선)
+  node.name = "lock";
+  rebindIconColor(node, colorVar);
+  return node;
+}
+
+// 기존 라이브러리 컴포넌트 1개를 BUILT_COMPS/BUILT_SETS(이름) 에서 찾아 반환(인스턴스 재사용용).
+async function getReuseComp(builtKey: string, setName: string, includes: string[]): Promise<ComponentNode | undefined> {
+  let c: ComponentNode | undefined = BUILT_COMPS[builtKey];
+  if (!c) {
+    const s = await getBuiltSet(setName);
+    if (s) c = (s.children as ComponentNode[]).find((x) => x.type === "COMPONENT" && includes.every((n) => x.name.includes(n)));
+  }
+  return c;
+}
+
+// 버튼/옵션 인스턴스의 텍스트 라벨 교체(폰트 로드 후 characters 설정).
+async function setInstanceLabel(inst: SceneNode, label: string): Promise<void> {
+  const txt = (inst as InstanceNode).findOne((n) => n.type === "TEXT") as TextNode | null;
+  if (!txt) return;
+  try { await figma.loadFontAsync(txt.fontName as FontName); } catch (e) { /* */ }
+  try { txt.characters = label; } catch (e) { /* */ }
+}
+
+async function buildBottomSheetOption(maps: BuildMaps, originY: number): Promise<{ set: ComponentSetNode; bottomY: number }> {
+  const ROW_W = 360;
+  const byKey: Record<string, ComponentNode> = {};
+
+  // 라벨 텍스트 헬퍼(선택행)
+  const rowLabel = async (color: string) => makeBoundText("항목", 16, "Medium", scv(maps, color));
+
+  // 선택행(Text/Checkbox/Radio) — h48, 패딩 20/8, width360.
+  const makeSelectRow = (name: string): ComponentNode => {
+    const comp = figma.createComponent();
+    comp.name = name;
+    comp.layoutMode = "HORIZONTAL";
+    comp.primaryAxisSizingMode = "FIXED"; comp.counterAxisSizingMode = "FIXED";
+    comp.counterAxisAlignItems = "CENTER";
+    comp.paddingLeft = 20; comp.paddingRight = 20; comp.paddingTop = 8; comp.paddingBottom = 8;
+    comp.itemSpacing = 8;
+    comp.fills = [boundPaint(scv(maps, "color/surface/raised"))];
+    comp.resize(ROW_W, 48);
+    return comp;
+  };
+
+  // ── Text/Default — 라벨만 ────────────────────────────────
+  {
+    const comp = makeSelectRow("Type=Text, State=Default");
+    comp.primaryAxisAlignItems = "MIN";
+    comp.appendChild(await rowLabel("color/text/body/primary"));
+    setLightMode(comp, maps);
+    byKey["Text:Default"] = comp;
+  }
+  // ── Text/Selected — accent 라벨 + 우측 ✓ ──────────────────
+  {
+    const comp = makeSelectRow("Type=Text, State=Selected");
+    comp.primaryAxisAlignItems = "SPACE_BETWEEN";
+    comp.appendChild(await rowLabel("color/text/state/accent"));
+    comp.appendChild(await makeIconInstance("check", scv(maps, "color/icon/blue"), 24, CHECK_24_SVG));
+    setLightMode(comp, maps);
+    byKey["Text:Selected"] = comp;
+  }
+  // ── Checkbox 행 (기존 Checkbox 컴포넌트 인스턴스 재사용) ─────
+  const cbOff = await getReuseComp("Checkbox:Default", "Checkbox", ["State=Default"]);
+  const cbOn = await getReuseComp("Checkbox:Checked", "Checkbox", ["State=Checked"]);
+  for (const st of [{ name: "Default", comp: cbOff }, { name: "Selected", comp: cbOn }]) {
+    const comp = makeSelectRow(`Type=Checkbox, State=${st.name}`);
+    comp.primaryAxisAlignItems = "MIN";
+    if (st.comp) { const inst = st.comp.createInstance(); inst.name = "checkbox"; comp.appendChild(inst); }
+    comp.appendChild(await rowLabel("color/text/body/primary"));
+    setLightMode(comp, maps);
+    byKey[`Checkbox:${st.name}`] = comp;
+  }
+  // ── Radio 행 (기존 Radio 컴포넌트 인스턴스 재사용) ──────────
+  const rdOff = await getReuseComp("Radio:Default:Off", "Radio", ["State=Default", "Label=Off"]);
+  const rdOn = await getReuseComp("Radio:Selected:Off", "Radio", ["State=Selected", "Label=Off"]);
+  for (const st of [{ name: "Default", comp: rdOff }, { name: "Selected", comp: rdOn }]) {
+    const comp = makeSelectRow(`Type=Radio, State=${st.name}`);
+    comp.primaryAxisAlignItems = "MIN";
+    if (st.comp) { const inst = st.comp.createInstance(); inst.name = "radio"; comp.appendChild(inst); }
+    comp.appendChild(await rowLabel("color/text/body/primary"));
+    setLightMode(comp, maps);
+    byKey[`Radio:${st.name}`] = comp;
+  }
+  // ── List 행 — 아바타 + 제목/서브 ↔ 우측 아이콘 (h64 hug, 패딩 20/12) ──
+  const makeAvatar = async (): Promise<FrameNode> => {
+    const av = figma.createFrame();
+    av.name = "avatar";
+    av.layoutMode = "HORIZONTAL"; av.primaryAxisAlignItems = "CENTER"; av.counterAxisAlignItems = "CENTER";
+    av.primaryAxisSizingMode = "FIXED"; av.counterAxisSizingMode = "FIXED";
+    av.resize(40, 40); av.cornerRadius = 20;
+    av.fills = [boundPaint(scv(maps, "color/icon/gray-light"))]; // 아바타 원 = 전경 요소 → icon 계열(bg 아님)
+    av.appendChild(await makeIconInstance("account", scv(maps, "color/icon/white"), 24, ACCOUNT_SVG));
+    return av;
+  };
+  const makeListLeft = async (): Promise<FrameNode> => {
+    const left = figma.createFrame();
+    left.name = "list-left"; left.fills = [];
+    left.layoutMode = "HORIZONTAL"; left.primaryAxisSizingMode = "AUTO"; left.counterAxisSizingMode = "AUTO";
+    left.counterAxisAlignItems = "CENTER"; left.itemSpacing = 12;
+    left.appendChild(await makeAvatar());
+    const col = figma.createFrame();
+    col.name = "list-text"; col.fills = [];
+    col.layoutMode = "VERTICAL"; col.primaryAxisSizingMode = "AUTO"; col.counterAxisSizingMode = "AUTO"; col.itemSpacing = 2;
+    const title = await makeBoundText("제목", 16, "Medium", scv(maps, "color/text/body/primary")); title.name = "title";
+    const sub = await makeBoundText("서브 텍스트", 14, "Regular", scv(maps, "color/text/body/secondary")); sub.name = "sub";
+    col.appendChild(title); col.appendChild(sub);
+    left.appendChild(col);
+    return left;
+  };
+  const makeListRow = async (name: string, rightIcon: SceneNode): Promise<ComponentNode> => {
+    const comp = figma.createComponent();
+    comp.name = name;
+    comp.layoutMode = "HORIZONTAL";
+    comp.primaryAxisAlignItems = "SPACE_BETWEEN"; comp.counterAxisAlignItems = "CENTER";
+    comp.primaryAxisSizingMode = "FIXED"; comp.counterAxisSizingMode = "AUTO";
+    comp.paddingLeft = 20; comp.paddingRight = 20; comp.paddingTop = 12; comp.paddingBottom = 12;
+    comp.fills = [boundPaint(scv(maps, "color/surface/raised"))];
+    comp.appendChild(await makeListLeft());
+    comp.appendChild(rightIcon);
+    try { comp.resize(ROW_W, comp.height); } catch (e) { /* mock */ }
+    setLightMode(comp, maps);
+    return comp;
+  };
+  byKey["List:Default"] = await makeListRow("Type=List, State=Default",
+    await makeIconInstance("chevron", scv(maps, "color/icon/gray-dark"), 24, CHEVRON_RIGHT_SVG));
+  byKey["List:Disabled"] = await makeListRow("Type=List, State=Disabled",
+    await makeLockIcon(scv(maps, "color/icon/gray"), 24));
+
+  // 표시 순서(메인→요소 규칙과 무관, 매트릭스 나열): Text → Checkbox → Radio → List
+  const order = ["Text:Default", "Text:Selected", "Checkbox:Default", "Checkbox:Selected",
+    "Radio:Default", "Radio:Selected", "List:Default", "List:Disabled"];
+  const comps = order.map((k) => byKey[k]);
+  const set = figma.combineAsVariants(comps, figma.currentPage);
+  set.name = "Bottom Sheet Option";
+  set.x = 0; set.y = originY;
+  BUILT_SETS["Bottom Sheet Option"] = set;
+  // Bottom Sheet 컨테이너가 리스트에 재사용하는 Text 옵션 등록
+  BUILT_COMPS["BottomSheetOption:Text:Default"] = byKey["Text:Default"];
+  BUILT_COMPS["BottomSheetOption:Text:Selected"] = byKey["Text:Selected"];
+
+  const types = ["Text", "Checkbox", "Radio", "List"];
+  const states = ["Default", "Selected", "Disabled"];
+  const opts: SpecOpts = {
+    title: "Bottom Sheet Option",
+    colHeaders: states,
+    rowLabels: types,
+    cellAt: (r, c) => byKey[`${types[r]}:${states[c]}`] ?? null,
+    lightX: SPEC_LIGHT_X, darkX: SPEC_DARK_X, originY, cellW: 380, cellH: 80, rowLabelW: 80,
+  };
+  let bottomY = await decorateSetFlat(set, opts, maps);
+  try { bottomY = Math.max(bottomY, await buildSpec(opts, maps)); } catch (e) { console.warn(e); }
+  return { set, bottomY };
+}
+
+async function buildBottomSheet(maps: BuildMaps, originY: number): Promise<{ set: ComponentSetNode; bottomY: number }> {
+  const SHEET_W = 360;
+  // 헤더+리스트 콘텐츠 블록 조립(변형 공통).
+  const buildContent = async (): Promise<FrameNode> => {
+    const content = figma.createFrame();
+    content.name = "content"; content.fills = [];
+    content.layoutMode = "VERTICAL"; content.primaryAxisSizingMode = "AUTO"; content.counterAxisSizingMode = "FIXED";
+    content.itemSpacing = 24; // 헤더 ↔ 리스트 (spacing/section/md)
+    // 헤더: 제목 ↔ 닫기 X (좌우 패딩 20)
+    const header = figma.createFrame();
+    header.name = "header"; header.fills = [];
+    header.layoutMode = "HORIZONTAL"; header.primaryAxisSizingMode = "FIXED"; header.counterAxisSizingMode = "AUTO";
+    header.primaryAxisAlignItems = "SPACE_BETWEEN"; header.counterAxisAlignItems = "CENTER";
+    header.paddingLeft = 20; header.paddingRight = 20;
+    const title = await makeBoundText("헤더 타이틀", 20, "Bold", scv(maps, "color/text/title/primary")); title.name = "title";
+    header.appendChild(title);
+    const closeIcon = await makeIconInstance("close", scv(maps, "color/icon/gray-dark"), 24, CLOSE_ICON_SVG);
+    closeIcon.name = "close"; header.appendChild(closeIcon);
+    content.appendChild(header);
+    try { header.layoutAlign = "STRETCH"; } catch (e) { /* */ }
+    // 리스트: Bottom Sheet Option(Text) 인스턴스 4개(2번째=Selected)
+    const list = figma.createFrame();
+    list.name = "list"; list.fills = [];
+    list.layoutMode = "VERTICAL"; list.primaryAxisSizingMode = "AUTO"; list.counterAxisSizingMode = "FIXED"; list.itemSpacing = 0;
+    const optDefault = BUILT_COMPS["BottomSheetOption:Text:Default"];
+    const optSelected = BUILT_COMPS["BottomSheetOption:Text:Selected"];
+    for (let i = 0; i < 4; i++) {
+      const src = (i === 1 ? optSelected : optDefault) ?? optDefault;
+      if (!src) continue;
+      const inst = src.createInstance();
+      inst.name = "option";
+      list.appendChild(inst);
+      try { inst.layoutSizingHorizontal = "FILL"; } catch (e) { /* */ }
+    }
+    content.appendChild(list);
+    try { list.layoutAlign = "STRETCH"; } catch (e) { /* */ }
+    return content;
+  };
+
+  // 버튼 인스턴스(Button 컴포넌트 재사용, 모바일 LG h48). 라벨 교체 + 풀와이드 FILL.
+  const makeFooterButton = async (variant: "primary" | "secondary", label: string): Promise<SceneNode | null> => {
+    const vLabel = variant === "primary" ? "Primary" : "Secondary";
+    const comp = await getReuseComp(`Button:${variant}:LG:Default`, "Button",
+      [`Variant=${vLabel}`, "Size=LG", "State=Default"]);
+    if (!comp) return null;
+    const inst = comp.createInstance();
+    inst.name = variant;
+    await setInstanceLabel(inst, label);
+    return inst;
+  };
+
+  const variants: { footer: "None" | "Single" | "Dual" }[] = [{ footer: "None" }, { footer: "Single" }, { footer: "Dual" }];
+  const byFooter: Record<string, ComponentNode> = {};
+  for (const v of variants) {
+    const comp = figma.createComponent();
+    comp.name = `Footer=${v.footer}`;
+    comp.layoutMode = "VERTICAL"; comp.primaryAxisSizingMode = "AUTO"; comp.counterAxisSizingMode = "FIXED";
+    comp.resize(SHEET_W, 100);
+    comp.itemSpacing = 48; // 콘텐츠 ↔ 푸터 (spacing/section/xxl)
+    comp.paddingTop = 20; comp.paddingLeft = 0; comp.paddingRight = 0;
+    comp.paddingBottom = v.footer === "None" ? 40 : 20;
+    comp.counterAxisAlignItems = "CENTER";
+    comp.fills = [boundPaint(scv(maps, "color/surface/raised"))];
+    try { comp.topLeftRadius = 8; comp.topRightRadius = 8; comp.bottomLeftRadius = 0; comp.bottomRightRadius = 0; } catch (e) { /* */ }
+    comp.clipsContent = true;
+
+    const content = await buildContent();
+    comp.appendChild(content);
+    try { content.layoutAlign = "STRETCH"; } catch (e) { /* */ }
+
+    if (v.footer !== "None") {
+      const footer = figma.createFrame();
+      footer.name = "footer"; footer.fills = [];
+      footer.layoutMode = "HORIZONTAL"; footer.primaryAxisSizingMode = "FIXED"; footer.counterAxisSizingMode = "AUTO";
+      footer.primaryAxisAlignItems = "CENTER"; footer.counterAxisAlignItems = "CENTER";
+      footer.paddingLeft = 20; footer.paddingRight = 20; footer.itemSpacing = 8;
+      comp.appendChild(footer);
+      try { footer.layoutAlign = "STRETCH"; } catch (e) { /* */ }
+      if (v.footer === "Dual") {
+        const cancel = await makeFooterButton("secondary", "취소");
+        if (cancel) { footer.appendChild(cancel); try { (cancel as InstanceNode).layoutSizingHorizontal = "FILL"; } catch (e) { /* */ } }
+      }
+      const apply = await makeFooterButton("primary", "적용");
+      if (apply) { footer.appendChild(apply); try { (apply as InstanceNode).layoutSizingHorizontal = "FILL"; } catch (e) { /* */ } }
+    }
+
+    setLightMode(comp, maps);
+    byFooter[v.footer] = comp;
+  }
+
+  const set = figma.combineAsVariants([byFooter["None"], byFooter["Single"], byFooter["Dual"]], figma.currentPage);
+  set.name = "Bottom Sheet";
+  set.x = 0; set.y = originY;
+  BUILT_SETS["Bottom Sheet"] = set;
+
+  const cols = ["None", "Single", "Dual"];
+  const opts: SpecOpts = {
+    title: "Bottom Sheet",
+    colHeaders: cols,
+    rowLabels: [""],
+    cellAt: (_r, c) => byFooter[cols[c]] ?? null,
+    lightX: SPEC_LIGHT_X, darkX: SPEC_DARK_X, originY, cellW: 400, cellH: 420, rowLabelW: 16,
+  };
+  let bottomY = await decorateSetFlat(set, opts, maps);
+  try { bottomY = Math.max(bottomY, await buildSpec(opts, maps)); } catch (e) { console.warn(e); }
+  return { set, bottomY };
+}
+
 // ── Calendar Cell / Calendar Tile — 레이아웃 등록기 ───────────────────────────
 // 빌드는 lazy(Calendar/Date Picker 가 선행 호출) → 이미 만들어진 세트를 originY 로 재배치 + 스펙 데코레이트.
 // CATEGORIES Form 에서 Date Picker 뒤 위치만 결정.
@@ -4109,6 +4400,9 @@ export const COMPONENT_CATEGORIES_GRID: { name: string; members: string[] }[][] 
     { name: "Date Picker",  members: ["Date Picker", "Calendar", "Calendar Cell", "Calendar Tile", "Date Picker Mobile Bottom Sheet"] },
     { name: "Time Picker",  members: ["Time Picker", "Time Picker Dropdown", "Time Picker Cell"] },
     { name: "Table",        members: ["Table", "Table Cell"] },
+    // Bottom Sheet: 메인 컨테이너(Bottom Sheet) → 요소(Bottom Sheet Option) 표시순서.
+    //   빌드는 BUILD_DEPENDENCIES 로 요소(Option)·Checkbox·Radio·Button 이 먼저(카테고리를 Selection·Actions 뒤에 둠).
+    { name: "Bottom Sheet", members: ["Bottom Sheet", "Bottom Sheet Option"] },
   ],
   // Filter Chip은 별도로 (Chip 아래에 배치될 예정)
   [
@@ -4150,6 +4444,11 @@ export const BUILD_DEPENDENCIES: Record<string, string[]> = {
   // Table 푸터가 완성 Pagination 바(BUILT_COMPS["Pagination:Bar/Middle"]) 인스턴스 부착.
   //   (타 카테고리 의존 = 카테고리 순서로 보장: Pagination 카테고리가 Table 보다 먼저라 선빌드됨.)
   "Table": ["Pagination"],
+  // Bottom Sheet 컨테이너 = Bottom Sheet Option(Text) 리스트 + Button 인스턴스 부착 → 둘 다 선빌드.
+  //   Option 은 같은 카테고리(요소 먼저), Button 은 Actions 카테고리(그리드 순서로 선빌드).
+  "Bottom Sheet": ["Bottom Sheet Option", "Button"],
+  // Bottom Sheet Option 의 Checkbox/Radio 행 = Checkbox·Radio 컴포넌트 인스턴스 부착(Selection 카테고리 선빌드).
+  "Bottom Sheet Option": ["Checkbox", "Radio"],
 };
 
 // 카테고리 members(표시 순서)를 "요소 먼저" 빌드 순서로 위상정렬.
@@ -4238,6 +4537,8 @@ export async function buildAllComponents(
     "Calendar":             (oy) => buildCalendar(maps, oy),
     "Date Picker":          (oy) => buildDatePicker(maps, oy),
     "Date Picker Mobile Bottom Sheet": (oy) => buildDatePickerBottomSheet(maps, oy),
+    "Bottom Sheet":         (oy) => buildBottomSheet(maps, oy),
+    "Bottom Sheet Option":  (oy) => buildBottomSheetOption(maps, oy),
     "Calendar Cell":        (oy) => buildCalendarCellLayout(maps, oy),
     "Calendar Tile":        (oy) => buildCalendarTileLayout(maps, oy),
     "Time Picker":          (oy) => buildTimePicker(maps, oy),
@@ -4375,7 +4676,7 @@ export async function buildAllComponents(
     const H_GAP = 120;  // 섹션 사이 가로 간격
     const TOP_Y = 0;    // 모든 섹션 상단 정렬 기준 y
     const ROW = ["Platform", "Navigation", "Line Tab", "Pagination", "Actions", "Selection", "Chip",
-      "Form Control", "Date Picker", "Time Picker", "Table"];
+      "Form Control", "Date Picker", "Time Picker", "Table", "Bottom Sheet"];
     // 세로 스택 섹션: ROW 의 가로 컬럼 아래에 쌓는다(같은 X). Filter Chip→Chip 아래 · Dropdown→Selection 아래.
     const STACKED = [
       { name: "Filter Chip", below: "Chip",      placed: false },

@@ -273,3 +273,60 @@
 ### 최종 판정(편집 검증): **PASS** (❌(a) 0 · ❓(c) 0)
 - ❌(a) **0건**. 🟡(b)·❓(c) 없음.
 - 참고(비차단·결함 아님): 편집한 Pretendard 라벨이 MCP 렌더 프리뷰에 빈칸으로 보이는 것은 이 PC Pretendard 미설치 환경 제약(hasMissingFont). 데이터(characters·fontName·textStyleId)가 정확하므로 PASS.
+
+---
+
+# 설치기 편입 검증 (D) — build-components.ts (2026-07-06)
+
+> 🤖 원본대조 검증 에이전트(component-verifier) §(D) — 설치기 생성기 코드 구조 변경 검증. 빌더와 분리·직접 수정 안 함, ❌ 목록만 반환.
+> 대상: `plugins/figma-vars-installer/src/build-components.ts` — Bottom Sheet 신규 편입(`buildBottomSheetOption` + `buildBottomSheet` + GRID/deps/runner/layout 배선).
+> 기준: `2-plan.md`(variant·치수·색토큰·재사용) + `node-map.json`. 패턴: `buildDatePickerBottomSheet`.
+> 한계: 코드 레벨 검증 — Figma 캔버스 실제 렌더(패킹 붕괴 육안)는 범위 밖(코드상 위험만 지적, 육안 미검증).
+
+## 1. 결정론 게이트 (실제 실행) ✅
+| 게이트 | 결과 |
+|--------|------|
+| `installer:check` (tsc) | ✅ 오류 0 |
+| `components:keycheck` | ✅ 누락 0 (color 144/169 · number 6/79) — 빌더 동적 키 전부 vars-data 정본 존재 |
+| `components:anatomy` | ✅ 7개 규칙 충족 |
+| `components:iconpolicy` | ✅ 위반 0 (벡터 예외 14건 allow 마커) |
+
+## 2. variant 전수 ✅
+- `buildBottomSheetOption`: `order` 8개 → combineAsVariants. Text:Default·Text:Selected·Checkbox:Default·Checkbox:Selected·Radio:Default·Radio:Selected·List:Default·List:Disabled = 계획 8조합 1:1. 속성축 `Type×State`.
+- `buildBottomSheet`: `[None,Single,Dual]` 3변형 → combineAsVariants. 속성축 `Footer`.
+- 패킹: 두 세트 모두 combineAsVariants 후 `decorateSetFlat`+`buildSpec` 로 레이아웃(설치기 전체 공통 패턴). 코드상 좌표 붕괴 위험 없음(캔버스 육안 미검증).
+- **스펙시트 키 정합(Gate 13 핵심):** Option `cellAt(r,c)=byKey["${types[r]}:${states[c]}"]`, byKey 키가 동일 `Type:State` 복합키 → 채워질 8칸 정확 매칭, 나머지 4칸만 정상 null(Input Issue 8 형 빈칸 버그 없음). Bottom Sheet `cellAt=byFooter[cols[c]]` 매칭 ✅.
+
+## 3. 토큰 바인딩 (scv() 만, raw hex 색 0) ✅
+- 시트/옵션행/List행 표면 = `color/surface/raised`(3310·3387·3487) — 계획·node-map 재바인딩 지시 준수.
+- 라벨=`text/body/primary`, selected=`text/state/accent`+✓`icon/blue`, 아바타 원=`icon/gray-light`(전경, bg 아님)·글리프=`icon/white`, chevron/close=`icon/gray-dark`, lock=`icon/gray`, 서브=`text/body/secondary`, 헤더제목=`text/title/primary`. 전부 scv() Variable 바인딩.
+- 노드 fill/stroke 색 raw hex 리터럴 0건. (SVG 상수 내 hex는 라이브러리 import 실패 시 폴백 전용이며 rebindIconColor 로 토큰 재바인딩 — 기존 아이콘 폴백과 동일 패턴, iconpolicy PASS.)
+- 🟡(b) radius = raw `8`(3488) vs 캔버스 build 의 `radius/modal/md` 바인딩: **설치기 생성기 전역 관례**(기하=raw 숫자, 설치기 맵은 semantic number 미노출 — 주석 3245, `buildDatePickerBottomSheet` 동일). Bottom Sheet 고유 실수 아님. 색 아닌 기하값이라 hex 규칙 무관. 유지.
+
+## 4. 재사용 무결성 ✅
+- Checkbox off/on = `getReuseComp("Checkbox:Default"/"Checkbox:Checked")` → createInstance. Checkbox 세트 변형명 `State=Default`·`State=Checked` 와 일치.
+- Radio off/on = `getReuseComp(...,["State=Default","Label=Off"]/["State=Selected","Label=Off"])`. Radio 변형명 `State=Default, Label=Off`·`State=Selected, Label=Off` 와 일치.
+- 푸터 Button = `makeFooterButton` → `getReuseComp("Button:{v}:LG:Default","Button",["Variant=Primary|Secondary","Size=LG","State=Default"])` → createInstance + 라벨 Single "적용" / Dual "취소"·"적용". `buildDatePickerBottomSheet`(3204~3210)의 검증된 동일 조회 경로 — Button 세트 변형명과 일치.
+- lock = `importComponentSetByKeyAsync(LOCK_SET_KEY b3ccc4b2…)` → Line variant 인스턴스(ic_잠김 세트키 방식). key 는 `allowed-remote-keys.json` 에 `lock`/`lock_set` 등록됨.
+- 체크박스/라디오/버튼 = raw 재현 아닌 로컬 컴포넌트 인스턴스. 순환참조 없음(다른 세트 인스턴스만 품음).
+
+## 5. 배선 ✅
+- `COMPONENT_CATEGORIES_GRID`: `{ name:"Bottom Sheet", members:["Bottom Sheet","Bottom Sheet Option"] }` — 표시순서 메인→요소.
+- `BUILD_DEPENDENCIES`: `"Bottom Sheet":["Bottom Sheet Option","Button"]`, `"Bottom Sheet Option":["Checkbox","Radio"]` — 요소 먼저. Bottom Sheet 카테고리는 GRID 마지막(Actions·Selection 뒤) → Button·Checkbox·Radio 타 카테고리 의존이 카테고리 순서로 선빌드 보장. 표시순서≠빌드순서 규칙 준수.
+- `runners`: buildBottomSheet·buildBottomSheetOption 등록. `ROW` 레이아웃 배열에 "Bottom Sheet" 등록.
+
+## 6. 회귀 ✅
+- tsc·keycheck·anatomy·iconpolicy 가 mock 으로 `buildAllComponents` 전체 실행 후 PASS → 기존 컴포넌트/키/빌드 무손상.
+
+## 판정 요약 (D)
+| 항목 | 결과 |
+|------|------|
+| 결정론 게이트 4종 | ✅ PASS |
+| variant 전수(8/3) + 스펙시트 키 정합 | ✅ PASS |
+| 토큰 바인딩(raw hex 색 0) | ✅ PASS |
+| 재사용 무결성(인스턴스·라벨·lock) | ✅ PASS |
+| 배선(GRID·deps·runner·layout) | ✅ PASS |
+| 회귀 | ✅ PASS |
+
+- ❌(a) **0건**. 🟡(b) 1건(radius raw = 설치기 전역 관례, 유지). ❓(c) 0건.
+- **최종 판정(D): PASS** (❌(a) 0). 코드 레벨 검증 완료 — 캔버스 실제 렌더 육안은 범위 밖(figma-library-builder 캔버스 빌드는 위 재빌드/편집 검증에서 별도 렌더 대조 완료).
