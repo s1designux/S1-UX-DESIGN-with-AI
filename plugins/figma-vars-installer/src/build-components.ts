@@ -3144,11 +3144,13 @@ async function buildDatePickerBottomSheet(maps: BuildMaps, originY: number): Pro
   comp.paddingTop = 20; comp.paddingBottom = 20; // 시트 세로패딩 — spacing/section/sm
   comp.paddingLeft = 0; comp.paddingRight = 0; // 좌우 패딩은 자식(헤더 20·캘린더 24)이 개별 적용
   comp.counterAxisAlignItems = "CENTER";
-  // 시트 배경 = surface/default (Light base/white · Dark gray-dark/100) — 캘린더 패널(color/date-picker/panel/bg)과 동일색.
+  // 시트 배경 = surface/raised (Light base/white · Dark gray-dark/100) — 캘린더 패널(color/date-picker/panel/bg)과 동일색.
   //   사용자 결정 2026-06-26: 시트면 bg = 캘린더 영역 bg 로 통일(라이트·다크 모두). 캘린더만 다른색이면 안 됨.
   //   ※ 이전 '시트=gray/50' 주석은 오해였음. 원 요청은 "라이트 시트(흰색)가 흰 섹션 배경에 묻혀 안 보이니 시트 '뒤'에 배경을 깔아달라" —
   //     시트면은 흰색(surface) 유지, 시트가 떠 보이는 효과는 세트 외부 배경(아래 bg/muted)이 담당한다.
-  comp.fills = [boundPaint(scv(maps, "color/bg/level-0"))];
+  //   2026-07-06 수정: 다크에서 color/bg/level-0(gray-dark/0, 페이지 배경급 암전)을 잘못 참조해 캘린더보다 훨씬 어두웠음
+  //   → color/surface/raised(다크 gray-dark/100, 캘린더 패널과 동일)로 정정.
+  comp.fills = [boundPaint(scv(maps, "color/surface/raised"))];
   // 시트 상단 모서리 라운드(원본 540:3836 = rounded-tl/tr-8) — radius/8
   try { comp.topLeftRadius = 8; comp.topRightRadius = 8; comp.bottomLeftRadius = 0; comp.bottomRightRadius = 0; } catch (e) { /* */ }
   comp.clipsContent = false;
@@ -3419,6 +3421,9 @@ async function buildBottomSheetOption(maps: BuildMaps, originY: number): Promise
   };
   let bottomY = await decorateSetFlat(set, opts, maps);
   try { bottomY = Math.max(bottomY, await buildSpec(opts, maps)); } catch (e) { console.warn(e); }
+  // 세트 외부(변형 컨테이너) 배경 = bg/level-3 — 옵션 줄(color/surface/raised)이 흰색이라 흰 섹션 배경에 묻힘.
+  //   Bottom Sheet 본체와 동일 패턴. Checkbox·Radio 단독 컴포넌트 세트는 자체 스트록으로 이미 구분되므로 미적용(사용자 결정 2026-07-06).
+  set.fills = [boundPaint(scv(maps, "color/bg/level-3"))];
   return { set, bottomY };
 }
 
@@ -3527,6 +3532,10 @@ async function buildBottomSheet(maps: BuildMaps, originY: number): Promise<{ set
   };
   let bottomY = await decorateSetFlat(set, opts, maps);
   try { bottomY = Math.max(bottomY, await buildSpec(opts, maps)); } catch (e) { console.warn(e); }
+  // 세트 외부(변형 컨테이너) 배경 = bg/level-3 — 시트면(color/surface/raised)이 흰색이라 흰 섹션 배경에 묻힘.
+  //   Date Picker Mobile Bottom Sheet 와 동일 패턴(2026-06-26 사용자 결정). decorateSetFlat 이 set.fills 를
+  //   흰색으로 덮어쓰므로 반드시 그 이후에 적용해야 살아남는다.
+  set.fills = [boundPaint(scv(maps, "color/bg/level-3"))];
   return { set, bottomY };
 }
 
@@ -4676,11 +4685,15 @@ export async function buildAllComponents(
     const H_GAP = 120;  // 섹션 사이 가로 간격
     const TOP_Y = 0;    // 모든 섹션 상단 정렬 기준 y
     const ROW = ["Platform", "Navigation", "Line Tab", "Pagination", "Actions", "Selection", "Chip",
-      "Form Control", "Date Picker", "Time Picker", "Table", "Bottom Sheet"];
-    // 세로 스택 섹션: ROW 의 가로 컬럼 아래에 쌓는다(같은 X). Filter Chip→Chip 아래 · Dropdown→Selection 아래.
+      "Form Control", "Date Picker", "Time Picker", "Table"];
+    // 세로 스택 섹션: ROW 의 가로 컬럼 아래에 쌓는다(같은 X). below 는 ROW 컬럼명만 받는다(체인 불가) —
+    //   같은 below 값을 가진 항목은 STACKED 배열 순서대로 차례로 쌓인다(다중 지원, 아래 루프 참고).
+    //   Filter Chip→Chip 아래 · Dropdown→Selection 아래 · Bottom Sheet→"Selection" 아래(Dropdown 바로 다음
+    //   순서라 실제로는 Dropdown 아래에 쌓임, 사용자 결정 2026-07-06 — 독립 세로줄에서 이동).
     const STACKED = [
-      { name: "Filter Chip", below: "Chip",      placed: false },
-      { name: "Dropdown",    below: "Selection", placed: false },
+      { name: "Filter Chip",  below: "Chip",      placed: false },
+      { name: "Dropdown",     below: "Selection", placed: false },
+      { name: "Bottom Sheet", below: "Selection", placed: false },
     ];
     let curX = 0;
     for (const nm of ROW) {

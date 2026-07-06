@@ -1,0 +1,131 @@
+{
+  "buildDate": "2026-07-06",
+  "builder": "figma-library-builder (🏗️)",
+  "file": "cysG5U1udpQqVagYY1hWHW (SW-UX-GUIDE-V3.0-TEST)",
+  "page": "5:5706 (Core)",
+  "set": {
+    "id": "920:9267",
+    "name": "Time Picker Mobile Bottom Sheet",
+    "variantAxis": "Content",
+    "layout": "HORIZONTAL auto-layout, padding 40, itemSpacing 80, counterAxisAlignItems MIN (packed, no coordinate collapse)",
+    "size": { "width": 880, "height": 608 },
+    "fill": "color/bg/level-3 (VariableID:687:17887) — 흰 시트가 회색 위에서 보이게",
+    "placement": "Time Picker 섹션(912:39987) 내부, rel(64,2858) / abs(21308,2858)"
+  },
+  "variants": [
+    {
+      "id": "918:6250",
+      "name": "Content=TimeOnly",
+      "properties": { "Content": "TimeOnly" },
+      "title": "시간 선택",
+      "size": { "width": 360, "height": 462 },
+      "children": {
+        "header": "918:6251",
+        "title": "918:6252",
+        "closeIcon": "918:6253",
+        "wheelWrap": "918:9261",
+        "ampmCol": "918:9262",
+        "hourCol": "918:9263",
+        "colonCol": "918:9264",
+        "minuteCol": "918:9265",
+        "fadeTop": "919:6253",
+        "fadeBottom": "919:6256",
+        "actionWrap": "918:9277",
+        "applyButton": "918:9278"
+      }
+    },
+    {
+      "id": "919:9264",
+      "name": "Content=DateTime",
+      "properties": { "Content": "DateTime" },
+      "title": "시작 일시",
+      "size": { "width": 360, "height": 528 },
+      "notes": "TimeOnly clone + tabRow 삽입(index 1). 나머지 하위(header/wheel/overlays/button)는 clone된 새 id (미개별기록, tabRow만 별도 조작)",
+      "children": {
+        "tabRow": "919:9295",
+        "dateTab": "919:9296 (Line Tab Unselected 인스턴스, 라벨 '날짜')",
+        "timeTab": "919:9300 (Line Tab Selected 인스턴스, 라벨 '시간')"
+      }
+    }
+  ],
+  "specDarkFrame": {
+    "id": "922:6262",
+    "name": "Time Picker Mobile Bottom Sheet — Spec Dark",
+    "placement": "섹션 내부, rel(1024,2858) / abs(22268,2858)",
+    "size": { "width": 880, "height": 608 },
+    "modeOverride": "Semantic Color V2 → Dark (setExplicitVariableModeForCollection, modeId 8:2)",
+    "contents": "TimeOnly + DateTime variant 인스턴스 (라이브러리 컨벤션: 선례 Date Picker Mobile Bottom Sheet Spec Dark 동일)"
+  },
+  "newVariables": [
+    {
+      "name": "color/overlay/wheel-fade",
+      "id": "VariableID:916:2",
+      "collection": "Semantic Color V2 (VariableCollectionId:8:963)",
+      "resolvedType": "COLOR",
+      "scopes": ["FRAME_FILL", "SHAPE_FILL"],
+      "values": {
+        "Light (mode 8:1)": "ALIAS → base/white (VariableID:8:710)",
+        "Dark (mode 8:2)": "ALIAS → gray-dark/100 (VariableID:8:729)"
+      },
+      "note": "휠 흐림 마스크의 표면색 베이스. rgba/alpha 그라데이션은 별도 마스크로 구현(아래 fadeImplementation). 프롬프트는 'Variable 2개'로 언급했으나 2-plan.md 3-1절이 정본(토큰 1개·Light/Dark 2모드) — 1개 생성."
+    }
+  ],
+  "fadeImplementation": {
+    "problem": "Figma 플러그인 API는 gradient stop에 Variable 바인딩 미지원. 하드코딩 색 금지 + 다크모드 반응 필요.",
+    "solution": "각 fade 오버레이 = 절대배치 프레임(wheelWrap 자식) 안에 [alpha 그라데이션 마스크 RECT(isMask) + 표면색 SOLID RECT]. SOLID RECT fill 은 color/overlay/wheel-fade 로 Variable 바인딩(모드 반응) → 다크모드에서 시트 표면색(gray-dark/100)으로 자연스럽게 fade. 마스크의 흰색 그라데이션은 '표시색'이 아니라 alpha 마스크(구조적 요소)라 하드코딩 색 규칙 대상 아님(hex 아닌 0-1 float, 순수 alpha 셰이핑).",
+    "verified": "Spec Dark 프레임 렌더로 다크 fade 자연스러움 확인(흰 그라데이션 뜸 현상 없음).",
+    "maskGradient": "top: alpha 0.9(가장자리)→0(중앙) / bottom: 0(중앙)→0.9(가장자리). 90° vertical transform.",
+    "fadeHeight": 110
+  },
+  "reusedComponents": {
+    "applyButton": "911:31769 (Button, Size=LG State=Default Variant=Primary Break=Mobile, h48, FILL 폭). 라벨 '적용' override(Noto 임시→body/16M 스타일 재바인딩으로 Pretendard Medium 복원).",
+    "lineTabUnselected": "911:31239 (Line Tab, Size=SM State=Unselected Break=Mobile) — dateTab '날짜'",
+    "lineTabSelected": "911:31247 (Line Tab, Size=SM State=Selected Break=Mobile) — timeTab '시간'",
+    "closeIcon": "importComponentByKeyAsync('2a1abbd3597b536e34fd9523fb61eade3afe9934') = ic_닫기 V2.2 remote. 인스턴스 24×24, fill→color/icon/gray-dark 바인딩.",
+    "cycleCheck": "순환참조 없음 — 재사용은 전부 다른 세트(Button/Line Tab)의 인스턴스 또는 remote 라이브러리. detach 불필요."
+  },
+  "variableBindings": {
+    "sheetFill": "color/surface/raised (VariableID:820:190)",
+    "topLeftRadius": "radius/modal/md (VariableID:8:1196)",
+    "topRightRadius": "radius/modal/md (VariableID:8:1196)",
+    "bottomRadius": "0 (고정, Variable 없음)",
+    "titleColor": "color/text/title/primary (VariableID:8:1127)",
+    "iconColor": "color/icon/gray-dark (VariableID:8:1069)",
+    "wheelTextColor": "color/text/state/accent (VariableID:8:1119) — 전 11셀 동일",
+    "fadeFill": "color/overlay/wheel-fade (VariableID:916:2)",
+    "setBg / specDarkBg": "color/bg/level-3 (VariableID:687:17887)",
+    "applyButton / lineTab": "재사용 인스턴스 내부 바인딩 보존(별도 바인딩 안 함)"
+  },
+  "font": {
+    "policy": "Pretendard 정본. 이 PC에 Pretendard 미설치(listAvailableFontsAsync 결과 0) → Noto Sans KR 로 임시 입력 후 텍스트 스타일 재바인딩으로 Pretendard 복원.",
+    "headerTitle": "title/20B 텍스트 스타일 바인딩 → Pretendard Bold 20 (compliant)",
+    "applyButtonLabel": "body/16M 재바인딩 → Pretendard Medium (compliant)",
+    "tabLabels": "body/16M 재바인딩 → Pretendard Medium (compliant, 허용편차 #1: 원본 Selected Bold였으나 재사용 Line Tab Medium 유지)",
+    "wheelText": "raw 32px Regular, 대응 텍스트 스타일 없음(title/32B는 Bold라 부적합) → Noto Sans KR Regular 유지 + `// figma-font-temp:` 마커. 변형당 11셀. Pretendard 설치 환경에서 재검증 필요(component-verifier가 데이터 스캔으로 확인).",
+    "fontScanResult": {
+      "TimeOnly": { "Pretendard Bold": 1, "Pretendard Medium": 1, "Noto Sans KR Regular": 11 },
+      "DateTime": { "Pretendard Bold": 1, "Pretendard Medium": 3, "Noto Sans KR Regular": 11 }
+    },
+    "renderNote": "MCP 스크린샷은 Pretendard 미설치라 일부 인스턴스 라벨이 stale glyph('메뉴')로 표시될 수 있음 — 데이터(fontName/characters)는 정확. 정책상 폰트 검증은 렌더 금지·데이터 스캔."
+  },
+  "tokenBindScan": {
+    "unboundAuthoredSolidPaints": 0,
+    "note": "빌더가 저작한 모든 SOLID fill/stroke는 Variable 바인딩됨. fade 마스크는 gradient(alpha, 구조적)라 solid 스캔 비대상이며, 표시되는 fade-fill 은 wheel-fade 바인딩."
+  },
+  "structureChanges": {
+    "combineAsVariants": true,
+    "detach": "없음",
+    "rename": "없음",
+    "remap": "해당 없음 (신규 세트)",
+    "sectionExpanded": "Time Picker 섹션 912:39987 높이 2858→3620 (신규 프레임 하단 수용). 기존 콘텐츠(bottom≈2794)와 겹침 없음(신규 시작 y=2858)."
+  },
+  "allowedDeviations": [
+    "#1 탭 Selected 라벨 굵기: 원본 Bold, 재사용 Line Tab Medium 유지(override 금지) — 2-plan 6절",
+    "#2 탭 높이: 원본 30px, Line Tab Mobile/SM 표준 32px 사용(리사이즈 금지) — 2-plan 6절",
+    "#3 wheelWrap gap: 2-plan 3절 계획대로 4컬럼 직속·gap36 평탄 구조 채택(원본 실측은 ampm↔group 36 / group 내부 32의 중첩구조였으나 계획이 정본). 4px 차이."
+  ],
+  "followUp": [
+    "신규 토큰 color/overlay/wheel-fade 를 vars-data.ts / semantic.colors.json 에 반영(2-plan 8절, 검증 후 별도 처리 — 빌더 범위 밖)",
+    "Pretendard 설치 환경에서 wheel 32px 텍스트 최종 렌더 재확인"
+  ]
+}

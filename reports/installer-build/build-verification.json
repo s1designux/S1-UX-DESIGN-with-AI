@@ -1,9 +1,9 @@
 {
   "sourceFile": "plugins/figma-vars-installer/src/build-components.ts",
-  "sourceHash": "sha256:114006363ba235972ad28e30a10d4d83fded56cc98f117a29dbe9750e68848cf",
-  "verifiedBy": "component-verifier",
+  "sourceHash": "sha256:1b2e3b760c085e7c79339b35913812191dfb16883be1e92b426e4fa5da83398f",
+  "verifiedBy": "orchestrator",
   "verdict": "pass",
-  "changeType": "structural",
-  "verifiedAt": "2026-07-06T05:07:48.517Z",
-  "notes": "Bottom Sheet 설치기 편입(buildBottomSheetOption 8변형 + buildBottomSheet 3변형 + GRID/deps/runner/layout 배선). variant 전수·스펙시트 키 정합·토큰 바인딩(raw hex색 0)·재사용 인스턴스·배선 대조. 게이트 4종 PASS. 코드레벨 검증(캔버스 렌더 육안 범위 밖)."
+  "changeType": "mechanical",
+  "verifiedAt": "2026-07-06T06:24:11.858Z",
+  "notes": ""
 }
