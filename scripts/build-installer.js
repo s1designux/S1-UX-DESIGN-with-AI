@@ -18,7 +18,10 @@ const ROOT = path.resolve(__dirname, "..");
 const SRC_DIR = path.join(ROOT, "plugins/figma-vars-installer/src");
 const DIST_ROOT = path.join(ROOT, "plugins/figma-vars-installer/dist");
 const PKG_NAME = "s1-ux-design-guide-installer";
-const OUT_DIR = path.join(DIST_ROOT, PKG_NAME);
+// dist 아래 PKG_NAME 서브폴더를 한 겹 없애 Figma import 경로를 얕게 유지.
+// (dist 자체가 결과물 폴더 = plugins/figma-vars-installer/dist/manifest.json 로 import)
+// zip 은 writeZip 이 topFolderName=PKG_NAME 으로 별도 부여하므로 zip 내부 구조·freshness 검사는 불변.
+const OUT_DIR = DIST_ROOT;
 const ZIP_PATH = path.join(ROOT, "assets/downloads", `${PKG_NAME}.zip`);
 
 function run() {
