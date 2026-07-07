@@ -118,35 +118,10 @@ Component Token    (컴포넌트 별칭 — --input-* / --button-* 등)
 
 ---
 
-## 전체 색상 계열 (tokens.css 기준)
+## 전체 색상 계열 · Dark 스텝 방향
 
-| 계열 | Light 변수 접두사 | Dark 변수 접두사 | 스텝 범위 |
-|---|---|---|---|
-| Gray | `--color-gray-{step}` | `--color-gray-dark-{step}` | 0 ~ 900 |
-| Blue | `--color-blue-{step}` | `--color-blue-dark-{step}` | 50 ~ 500 |
-| Red | `--color-red-{step}` | `--color-red-dark-{step}` | 50 ~ 500 |
-| Orange | `--color-orange-{step}` | `--color-orange-dark-{step}` | 50 ~ 500 |
-| Yellow | `--color-yellow-{step}` | `--color-yellow-dark-{step}` | 50 ~ 500 |
-| Green | `--color-green-{step}` | `--color-green-dark-{step}` | 50 ~ 500 |
-| Skyblue | `--color-skyblue-{step}` | `--color-skyblue-dark-{step}` | 50 ~ 500 |
-| Purple | `--color-purple-{step}` | `--color-purple-dark-{step}` | 50 ~ 500 |
-| Brown | `--color-brown-{step}` | `--color-brown-dark-{step}` | 50 ~ 500 |
-| Visual Gray | `--color-visual-gray-{step}` | `--color-visual-gray-dark-{step}` | 50 ~ 500 |
-| Base | `--color-base-white` / `--color-base-black` | — | — |
-| Brand | `--color-brand-blue` / `-red` / `-gray` / `-ci` | — | — |
-| Status Dark | `--color-status-dark-red` / `-green` / `-yellow` | — | alias |
-
-> **스텝 간격**: 모든 계열 50 단위 (50·100·150·200·250·300·350·400·450·500). Gray만 예외: 0·50·100·200·300·400·500·600·700·800·900.
-
----
-
-## Dark Primitive 스텝 방향 (핵심 규칙)
-
-| 그룹 | 스텝 방향 | 역할 요약 |
-|---|---|---|
-| `gray-dark` | 0(어두움) → 900(밝음) | 배경(0~400) · 텍스트(700~900) |
-| `blue-dark` | 50(어두움) → 500(밝음) | 선택배경(50~100) · 버튼(300) · 링크(400) |
-| `status-dark` | red / green / yellow | 피드백 상태 전용 (각 계열 350 step alias) |
+> **전 색상 계열(Gray·Blue·Red·Orange·Yellow·Green·Skyblue·Purple·Brown·Visual Gray + Base·Brand)의 Light/Dark 접두사·스텝 범위·실제 HEX 값과 Dark Primitive 스텝 방향 규칙(gray-dark 0→900·blue-dark 50→500 등) 정본은 `tokens/foundation.md`** (CLAUDE.md 본문보다 풍부·전 계열 HEX 수록). 스텝 간격: 모든 계열 50 단위(Gray만 0·50·100·200~900 예외).
+> **Status Dark**(`--color-status-dark-red`/`-green`/`-yellow`, 각 계열 350 step alias, 피드백 상태 전용)는 foundation.md 프로즈엔 없고 `assets/css/tokens.css`·`tokens/semantic.md`·`registry/tokens/foundation.colors.json`에 정의됨.
 
 ---
 
