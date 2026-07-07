@@ -542,7 +542,8 @@
   --color-navigation-label-selected    : var(--color-blue-400);
 
   /* ── overlay ── */
-  --color-overlay: rgba(0,0,0,0.5);
+  --color-overlay           : rgba(0,0,0,0.5);
+  --color-overlay-wheel-fade: var(--color-base-white);
 
   /* ── date-picker ── */
   --color-date-picker-panel-bg            : var(--color-base-white);
@@ -750,7 +751,8 @@
   --color-navigation-label-selected    : var(--color-blue-dark-300);
 
   /* ── overlay ── */
-  --color-overlay: rgba(0,0,0,0.75);
+  --color-overlay           : rgba(0,0,0,0.75);
+  --color-overlay-wheel-fade: var(--color-gray-dark-100);
 
   /* ── date-picker ── */
   --color-date-picker-panel-bg            : var(--color-gray-dark-100);

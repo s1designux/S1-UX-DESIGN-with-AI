@@ -1,9 +1,9 @@
 {
   "sourceFile": "plugins/figma-vars-installer/src/build-components.ts",
-  "sourceHash": "sha256:9461963af3d8bfd615f604554d304dc73f18fcbbbd1cce58ff8a682c685504e7",
+  "sourceHash": "sha256:9da62fe9eb9f1824835eff2f2dbc7e2afde5074665549de5dcb1f3e115374563",
   "verifiedBy": "component-verifier",
   "verdict": "pass",
   "changeType": "structural",
-  "verifiedAt": "2026-07-06T23:45:03.443Z",
-  "notes": "Filter Chip Selected 드롭다운 3행(Selected,파란bg)을 인스턴스 로컬 swapComponent로 Default 모양 교체 — 공용 Dropdown/DropdownList 마스터는 무변경. 인덱스·ddSize매핑·빌드순서·null-safety 전부 코드추적 확인, tsc/anatomy/keycheck 재실행 통과, 부작용 0건"
+  "verifiedAt": "2026-07-07T07:34:37.747Z",
+  "notes": "Time Picker Mobile Bottom Sheet(휠) 편입 독립 검증 완료 — reports/figma-library-build/time-picker-mobile/4-verification.md 재검증 #2 pass(오전/오후 정렬·흐림 대비 반전매핑 EXACT·raw hex 0·selfRef 0·패킹 무붕괴). 커밋 eb7adf6 이후 소스 무변경, 끊긴 해시 기록 완료."
 }
