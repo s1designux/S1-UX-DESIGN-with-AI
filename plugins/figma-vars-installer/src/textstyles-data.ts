@@ -31,6 +31,11 @@ export const TEXT_STYLES: TextStyleDef[] = [
 
   // ── title ───────────────────────────────────────────
   { name: "title/32B", fontStyle: "Bold",    fontSize: 32, lineHeightPercent: 130, letterSpacingPercent: 0 },
+  // title/32R: V2.4 패널엔 없던 신규 추가(2026-07-07). Time Picker Mobile Bottom Sheet 휠(32px accent 숫자)이
+  //   Pretendard Regular 32 를 named 텍스트 스타일로 바인딩(setTextStyleIdAsync)할 수 있게 하기 위함.
+  //   MCP(use_figma)는 폰트 직접 로드 불가 → named 스타일이 있어야 폰트 로드 없이 Pretendard 유지 가능.
+  //   geometry 는 title/32B(32·130·0) 와 동일, weight 만 Regular. (title/20R 선례와 동일 계열.)
+  { name: "title/32R", fontStyle: "Regular", fontSize: 32, lineHeightPercent: 130, letterSpacingPercent: 0 },
   { name: "title/24B", fontStyle: "Bold",    fontSize: 24, lineHeightPercent: 130, letterSpacingPercent: 0 },
   { name: "title/20B", fontStyle: "Bold",    fontSize: 20, lineHeightPercent: 130, letterSpacingPercent: 0 },
   { name: "title/20R", fontStyle: "Regular", fontSize: 20, lineHeightPercent: 130, letterSpacingPercent: 0 },

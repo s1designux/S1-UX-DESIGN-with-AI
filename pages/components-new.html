@@ -3450,12 +3450,14 @@ clearBtn.<span class="c-fn">addEventListener</span>(<span class="c-str">'click'<
           <h2 class="comp-section-title">Chip</h2>
           <span class="comp-badge comp-badge-blue">Core</span>
           <span class="comp-badge">Line · Solid · 4 states</span>
+          <span class="comp-badge"><span class="platform-only-pc">PC 2 sizes · MD h34 · SM h28</span><span class="platform-only-mobile">Mobile 1 size · h30</span></span>
           <span class="comp-badge comp-badge-blue">정본 buildChip · chip/line·solid/*</span>
         </div>
 
         <div class="variant-block">
           <div class="variant-label">Line · 정본 4 (Default · Hover · Selected · Disabled)</div>
           <div class="preview-area">
+            <div class="platform-section platform-section-pc">
             <div class="comp-state-matrix" style="grid-template-columns: 200px repeat(4, minmax(96px, 1fr));">
               <div class="matrix-col-header-action">Action</div>
               <div class="matrix-col-header">Default</div>
@@ -3482,12 +3484,38 @@ clearBtn.<span class="c-fn">addEventListener</span>(<span class="c-str">'click'<
               <div class="comp-state-cell"><span class="s1-chip is-selected is-preview">라벨</span></div>
               <div class="comp-state-cell"><span class="s1-chip is-disabled is-preview">라벨</span></div>
             </div>
+            </div><!-- /platform-section-pc -->
+            <div class="platform-section platform-section-mobile">
+            <div class="comp-state-matrix" style="grid-template-columns: 200px repeat(4, minmax(96px, 1fr));">
+              <div class="matrix-col-header-action">Action</div>
+              <div class="matrix-col-header">Default</div>
+              <div class="matrix-col-header">Hover</div>
+              <div class="matrix-col-header">Selected</div>
+              <div class="matrix-col-header">Disabled</div>
+              <div class="comp-action-cell" data-comp-action="chip">
+                <div class="btn-action-row">
+                  <div class="btn-action-item">
+                    <div class="matrix-row-label">Mobile<span>h30 · 여백 12</span></div>
+                    <span class="s1-chip s1-chip--mobile">라벨</span>
+                  </div>
+                </div>
+                <div class="action-test-controls">
+                  <button type="button" class="action-mini-toggle" data-chip-line-mobile-disabled>Disabled: off</button>
+                </div>
+              </div>
+              <div class="comp-state-cell"><span class="s1-chip s1-chip--mobile is-preview">라벨</span></div>
+              <div class="comp-state-cell"><span class="s1-chip s1-chip--mobile is-hover is-preview">라벨</span></div>
+              <div class="comp-state-cell"><span class="s1-chip s1-chip--mobile is-selected is-preview">라벨</span></div>
+              <div class="comp-state-cell"><span class="s1-chip s1-chip--mobile is-disabled is-preview">라벨</span></div>
+            </div>
+            </div><!-- /platform-section-mobile -->
           </div>
         </div>
 
         <div class="variant-block">
           <div class="variant-label">Solid · 정본 4 (Default · Hover · Selected · Disabled)</div>
           <div class="preview-area">
+            <div class="platform-section platform-section-pc">
             <div class="comp-state-matrix" style="grid-template-columns: 200px repeat(4, minmax(96px, 1fr));">
               <div class="matrix-col-header-action">Action</div>
               <div class="matrix-col-header">Default</div>
@@ -3514,6 +3542,31 @@ clearBtn.<span class="c-fn">addEventListener</span>(<span class="c-str">'click'<
               <div class="comp-state-cell"><span class="s1-chip s1-chip--solid is-selected is-preview">라벨</span></div>
               <div class="comp-state-cell"><span class="s1-chip s1-chip--solid is-disabled is-preview">라벨</span></div>
             </div>
+            </div><!-- /platform-section-pc -->
+            <div class="platform-section platform-section-mobile">
+            <div class="comp-state-matrix" style="grid-template-columns: 200px repeat(4, minmax(96px, 1fr));">
+              <div class="matrix-col-header-action">Action</div>
+              <div class="matrix-col-header">Default</div>
+              <div class="matrix-col-header">Hover</div>
+              <div class="matrix-col-header">Selected</div>
+              <div class="matrix-col-header">Disabled</div>
+              <div class="comp-action-cell" data-comp-action="chip">
+                <div class="btn-action-row">
+                  <div class="btn-action-item">
+                    <div class="matrix-row-label">Mobile<span>h30 · 여백 12</span></div>
+                    <span class="s1-chip s1-chip--solid s1-chip--mobile">라벨</span>
+                  </div>
+                </div>
+                <div class="action-test-controls">
+                  <button type="button" class="action-mini-toggle" data-chip-solid-mobile-disabled>Disabled: off</button>
+                </div>
+              </div>
+              <div class="comp-state-cell"><span class="s1-chip s1-chip--solid s1-chip--mobile is-preview">라벨</span></div>
+              <div class="comp-state-cell"><span class="s1-chip s1-chip--solid s1-chip--mobile is-hover is-preview">라벨</span></div>
+              <div class="comp-state-cell"><span class="s1-chip s1-chip--solid s1-chip--mobile is-selected is-preview">라벨</span></div>
+              <div class="comp-state-cell"><span class="s1-chip s1-chip--solid s1-chip--mobile is-disabled is-preview">라벨</span></div>
+            </div>
+            </div><!-- /platform-section-mobile -->
           </div>
         </div>
 
@@ -8730,6 +8783,8 @@ document.addEventListener('click', function(e) {
     }
     setupChipActionGroup('data-chip-line-disabled');
     setupChipActionGroup('data-chip-solid-disabled');
+    setupChipActionGroup('data-chip-line-mobile-disabled');
+    setupChipActionGroup('data-chip-solid-mobile-disabled');
 
     // ── Filter Chip: click → toggle selected ──
     function setupFilterChipDropdown(wrapId, disabledAttr) {

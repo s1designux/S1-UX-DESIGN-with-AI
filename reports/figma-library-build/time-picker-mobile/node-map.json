@@ -3,6 +3,24 @@
   "builder": "figma-library-builder (🏗️)",
   "file": "cysG5U1udpQqVagYY1hWHW (SW-UX-GUIDE-V3.0-TEST)",
   "page": "5:5706 (Core)",
+  "revisions": [
+    {
+      "date": "2026-07-06 (원본 대조 수정, figma-inspector 재조사 F-1 후속)",
+      "fix1_ampmAlign": "오전/오후 세로 정렬 교정 — ampmCol 을 2행 중앙정렬 블록에서 시/분 컬럼과 동일한 3행 슬롯 구조로 변경. 슬롯1='오전'(시 컬럼 1행=7 높이), 슬롯2='오후'(시 컬럼 2행=8 선택강조 높이), 슬롯3=투명 빈 프레임(42px, 폰트 없음, 시 컬럼 3행=9 자리만 차지). ampmCol 높이 116→190 = hourCol 190 동일 → 자동 줄맞춤. 신규 빈 슬롯 id: TimeOnly 937:6331 / DateTime 937:6332. 폰트 미사용(빈 프레임)이라 F-1 휠 22칸 Noto 상태 불변.",
+      "fix2_fadeContrast": "위/아래 흐림 대비 강화 — fade 마스크 4장(TimeOnly 919:6255/919:6258, DateTime 919:9285/919:9288) 그라데이션을 훨씬 가파르게. top stops=[{0:0.92},{0.7:0.9},{1:0}], bottom stops=[{0:0},{0.3:0.9},{1:0.92}]. 가운데 줄 겹침부는 알파 0(또렷), 바로 바깥 줄부터 알파 0.9+로 급상승(거의 안 보임). color/overlay/wheel-fade 바인딩 유지, raw hex 없음(마스크는 alpha 셰이핑).",
+      "renderCheck": "Light 세트(920:9267)·Dark 스펙(922:6262) 둘 다 렌더 확인: 오전↔7·오후↔8(선택강조) 정렬 정확, 가운데만 또렷·외곽 줄 강하게 흐림. 다크는 gray-dark/100 베이스로 자연 blend. (자기검증 아님 — component-verifier 재확인 예정)"
+    },
+    {
+      "date": "2026-07-06 (fade 강도 재교정 — figma-inspector 원본 오버레이 실측 근거)",
+      "reason": "직전 임의값 [{0:0.92},{0.7:0.9},{1:0}](flat 0.9)이 원본보다 과하게 강했음(사용자 '너무 세다'). figma-inspector가 원본 오버레이 노드 540:3785/3786/3758/3759 실측: 3-stop 곡선 position 0→alpha0 / 0.35→0.7 / 0.75→0.9, 이후 0.9 유지. 방향=중앙쪽 끝 alpha0(투명)·바깥쪽 끝 alpha0.9(최대 90%).",
+      "appliedStops": {
+        "top(919:6255,919:9285)": "[{0:0.9},{0.25:0.9},{0.65:0.7},{1:0.0}] — top 마스크는 position0=바깥(위)/position1=중앙. 원본 곡선을 거리기준 반전 매핑(원본 0.75→내 0.25, 0.35→0.65, 0→1).",
+        "bottom(919:6258,919:9288)": "[{0:0.0},{0.35:0.7},{0.75:0.9},{1:0.9}] — position0=중앙(위)/position1=바깥(아래), 원본 곡선 그대로."
+      },
+      "sizeCheck": "fade 프레임 110×360 유지. 원본 오버레이 60px(≈한 줄)이나 내 프레임은 wheelWrap py40 패딩 포함 → 실제 활성 fade 구간 ~70px(=110-40)≈한 줄. 곡선이 중앙행 직전(y~110, 중앙행 시작 y~122)에서 alpha0 도달 → 중앙 crisp. 비율 일치로 리사이즈 안 함.",
+      "renderCheck": "Light·Dark 둘 다 렌더 확인: 외곽 줄(7:59/9:01) 은은히 흐려 여전히 읽히는 정도(연파랑), 가운데(8:00) 또렷 — 이전 과한 버전보다 부드럽고 원본과 유사. (자기검증 아님 — component-verifier 재확인 예정)"
+    }
+  ],
   "set": {
     "id": "920:9267",
     "name": "Time Picker Mobile Bottom Sheet",
@@ -106,7 +124,9 @@
       "TimeOnly": { "Pretendard Bold": 1, "Pretendard Medium": 1, "Noto Sans KR Regular": 11 },
       "DateTime": { "Pretendard Bold": 1, "Pretendard Medium": 3, "Noto Sans KR Regular": 11 }
     },
-    "renderNote": "MCP 스크린샷은 Pretendard 미설치라 일부 인스턴스 라벨이 stale glyph('메뉴')로 표시될 수 있음 — 데이터(fontName/characters)는 정확. 정책상 폰트 검증은 렌더 금지·데이터 스캔."
+    "renderNote": "MCP 스크린샷은 Pretendard 미설치라 일부 인스턴스 라벨이 stale glyph('메뉴')로 표시될 수 있음 — 데이터(fontName/characters)는 정확. 정책상 폰트 검증은 렌더 금지·데이터 스캔.",
+    "pretendardRetryLog": "2026-07-06 재시도(총괄 지시): figma.loadFontAsync({family:'Pretendard',style:'Regular'}) 여전히 FAIL. 에러='The font \"Pretendard Regular\" could not be loaded. The font family \"Pretendard\" does not exist. Fonts from text styles: Pretendard (Regular, Bold, Medium)'. use_figma(MCP 플러그인 컨텍스트)에서 Pretendard 직접 로드 불가(텍스트 스타일 경유로만 존재). Regular 32 텍스트 스타일 신설은 fontName 설정에 로드가 필요해 불가 → 지시 #3대로 임의진행/Noto 재입력 안 함. 휠 22칸은 Noto Sans KR Regular + figma-font-temp 마커 상태 그대로 유지(미변경). 총괄 재판단 대기.",
+    "wheelTextStyleCreated": "없음 — Pretendard 로드 실패로 Regular 32 텍스트 스타일 신설 불가"
   },
   "tokenBindScan": {
     "unboundAuthoredSolidPaints": 0,

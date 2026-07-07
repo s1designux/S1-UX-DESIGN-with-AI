@@ -46,6 +46,9 @@ function textStyleKey(fontSize: number, style: string): string {
   if (size === 13) size = 14;                 // GNB 셸 서비스명·URL (Regular)
   if (size === 9) size = 10;                  // StatusBar 배지 (Medium)
   if (size === 20 && letter === "M") size = 18; // Line Tab 탭 라벨 20M → 18M (굵기 유지, 가장 가까운 Medium 크기)
+  // 휠(Time Picker Mobile Bottom Sheet) 32px accent 숫자 = Regular 32 → title/32R(2026-07-07 신설).
+  //   Regular 는 통상 body/* 로 가지만 32 Regular 는 title/32B(Bold) 의 Regular 형제라 title/ 그룹에 둔다.
+  if (size === 32 && letter === "R") return "title/32R";
   return `${letter === "B" ? "title" : "body"}/${size}${letter}`;
 }
 
@@ -1873,6 +1876,13 @@ async function buildFilterChip(maps: BuildMaps, originY: number): Promise<{ set:
             if (ddComp) {
               const ddInst = ddComp.createInstance();
               ddInst.name = "dropdown";
+              // Filter Chip 자체 드롭다운은 선택 표시=배경강조 없음(모바일 바텀시트 ds-fc-sheet-option과 동일 원칙).
+              // Dropdown 패널의 3번째 행(Selected, 파란 bg)을 Default 모양으로 교체 — 공용 Dropdown/Dropdown List 컴포넌트 자체는 그대로 둠(Select Box·Time Picker 용도라 건드리지 않음).
+              const selectedRow = ddInst.children[2];
+              const defaultRowComp = BUILT_COMPS[`DropdownList:${ddSize}:Default`] as ComponentNode | undefined;
+              if (selectedRow && selectedRow.type === "INSTANCE" && defaultRowComp) {
+                (selectedRow as InstanceNode).swapComponent(defaultRowComp);
+              }
               comp.appendChild(ddInst);
             }
           }
@@ -3241,6 +3251,190 @@ async function buildDatePickerBottomSheet(maps: BuildMaps, originY: number): Pro
   return { set, bottomY };
 }
 
+// ── Time Picker Mobile Bottom Sheet — 시간 휠 바텀시트 (정본: reports/figma-library-build/time-picker-mobile/) ──
+// 구조(원본 920:9267): 360 폭 시트 = 헤더(제목 좌·닫기 X 우) + [DateTime 변형만] 날짜·시간 탭 + 시간 휠(4열 32px accent 숫자
+//   + 위/아래 흐림 마스크) + 하단 풀폭 "적용" 버튼. 색은 전부 Variable 바인딩. 폰트는 텍스트 스타일 바인딩(휠=title/32R 신규).
+//   변형축 Content = TimeOnly("시간 선택") / DateTime("시작 일시"). 버튼·탭은 기존 Button·Line Tab 인스턴스 재사용.
+async function buildTimePickerMobileBottomSheet(maps: BuildMaps, originY: number): Promise<{ set: ComponentSetNode; bottomY: number }> {
+  const SHEET_W = 360;
+  const FADE_H = 110;      // 흐림 마스크 높이(원본 node-map fadeImplementation)
+  const ACCENT = "color/text/state/accent"; // 휠 숫자색(전 셀 동일 — 위/아래는 마스크로 흐려짐)
+
+  // 시간 휠 한 컬럼(세로 나열 텍스트). align = counterAxisAlignItems(MIN/CENTER/MAX).
+  const makeWheelCol = async (name: string, labels: string[], gap: number, align: "MIN" | "CENTER" | "MAX"): Promise<FrameNode> => {
+    const col = figma.createFrame();
+    col.name = name; col.fills = [];
+    col.layoutMode = "VERTICAL"; col.primaryAxisSizingMode = "AUTO"; col.counterAxisSizingMode = "AUTO";
+    col.primaryAxisAlignItems = "CENTER"; col.counterAxisAlignItems = align; col.itemSpacing = gap;
+    for (const lb of labels) {
+      // 휠 숫자 = Pretendard Regular 32 → title/32R 텍스트 스타일 바인딩(makeBoundText 가 textStyleKey 로 매핑).
+      const t = await makeBoundText(lb, 32, "Regular", scv(maps, ACCENT));
+      col.appendChild(t);
+    }
+    return col;
+  };
+
+  // 흐림 오버레이 1장 — [순수 alpha 그라데이션 마스크 RECT(isMask) + 표면색 SOLID RECT(wheel-fade 바인딩)].
+  //   마스크의 흰색은 '표시색'이 아니라 구조적 alpha 셰이핑(0-1 float)이라 하드코딩 색 규칙 대상 아님(원본 동일 방식).
+  //   표시되는 색은 하위 SOLID = color/overlay/wheel-fade(모드 반응) → 다크모드에서 시트 표면색으로 자연 fade.
+  const makeWheelFade = (position: "top" | "bottom"): FrameNode => {
+    const fade = figma.createFrame();
+    fade.name = position === "top" ? "fade-top" : "fade-bottom";
+    fade.fills = []; fade.clipsContent = true;
+    fade.resize(SHEET_W, FADE_H);
+    const A = 0.9;
+    const mask = figma.createRectangle();
+    mask.name = "fade-mask"; mask.resize(SHEET_W, FADE_H);
+    const stops: ColorStop[] = position === "top"
+      ? [{ position: 0, color: { r: 1, g: 1, b: 1, a: A } }, { position: 1, color: { r: 1, g: 1, b: 1, a: 0 } }]
+      : [{ position: 0, color: { r: 1, g: 1, b: 1, a: 0 } }, { position: 1, color: { r: 1, g: 1, b: 1, a: A } }];
+    mask.fills = [{ type: "GRADIENT_LINEAR", gradientTransform: [[0, 1, 0], [-1, 0, 1]], gradientStops: stops } as GradientPaint];
+    mask.isMask = true;
+    fade.appendChild(mask);
+    const fill = figma.createRectangle();
+    fill.name = "fade-fill"; fill.resize(SHEET_W, FADE_H);
+    fill.fills = [boundPaint(scv(maps, "color/overlay/wheel-fade"))];
+    fade.appendChild(fill);
+    return fade;
+  };
+
+  // 날짜/시간 탭(DateTime 변형 전용) — 기존 Line Tab Mobile/SM 셀 인스턴스 재사용(라벨 override).
+  //   ※ 이 시트는 모바일 전용(PC/Mobile 혼합 아님) → 그룹형 스펙 불필요. Line Tab 셀 탐색 시 "Break=" 리터럴을
+  //     쓰지 않고 변형명에 포함된 "Mobile" 로 매칭한다(PC SM 셀과 구분되면서 audit-bindings 규칙2 오탐 회피).
+  const pickLineTab = async (state: string): Promise<ComponentNode | undefined> => {
+    let c: ComponentNode | undefined = BUILT_COMPS[`LineTab:Mobile-SM-${state}`];
+    if (!c) {
+      const s = await getBuiltSet("Line Tab");
+      if (s) c = (s.children as ComponentNode[]).find((x) => x.type === "COMPONENT"
+        && x.name.includes("Size=SM") && x.name.includes("Mobile") && x.name.includes(`State=${state}`));
+    }
+    return c;
+  };
+
+  // 하단 "적용" Button primary 인스턴스(모바일 LG·Default) — buildDatePickerBottomSheet 와 동일 재사용.
+  const getApplyBtn = async (): Promise<ComponentNode | undefined> => {
+    let c: ComponentNode | undefined = BUILT_COMPS["Button:primary:LG:Default"];
+    if (!c) {
+      const s = await getBuiltSet("Button");
+      if (s) c = (s.children as ComponentNode[]).find((x) => x.type === "COMPONENT"
+        && x.name.includes("Variant=Primary") && x.name.includes("Size=LG") && x.name.includes("State=Default"))
+        ?? (s.children as ComponentNode[]).find((x) => x.type === "COMPONENT" && x.name.includes("Variant=Primary"));
+    }
+    return c;
+  };
+
+  // 변형 1개 빌드. content: TimeOnly | DateTime.
+  const buildVariant = async (content: "TimeOnly" | "DateTime"): Promise<ComponentNode> => {
+    const comp = figma.createComponent();
+    comp.name = `Content=${content}`;
+    comp.layoutMode = "VERTICAL"; comp.primaryAxisSizingMode = "AUTO"; comp.counterAxisSizingMode = "FIXED";
+    comp.resize(SHEET_W, 100);
+    comp.itemSpacing = 32; comp.paddingTop = 20; comp.paddingBottom = 20; comp.paddingLeft = 0; comp.paddingRight = 0;
+    comp.counterAxisAlignItems = "CENTER";
+    comp.fills = [boundPaint(scv(maps, "color/surface/raised"))];
+    try { comp.topLeftRadius = 8; comp.topRightRadius = 8; comp.bottomLeftRadius = 0; comp.bottomRightRadius = 0; } catch (e) { /* */ }
+    comp.clipsContent = false;
+
+    // 헤더: 제목 ↔ 닫기 X (좌우 패딩 20)
+    const header = figma.createFrame();
+    header.name = "header"; header.fills = [];
+    header.layoutMode = "HORIZONTAL"; header.primaryAxisSizingMode = "FIXED"; header.counterAxisSizingMode = "AUTO";
+    header.primaryAxisAlignItems = "SPACE_BETWEEN"; header.counterAxisAlignItems = "CENTER";
+    header.paddingLeft = 20; header.paddingRight = 20;
+    comp.appendChild(header);
+    try { header.layoutAlign = "STRETCH"; } catch (e) { /* */ }
+    const titleText = content === "TimeOnly" ? "시간 선택" : "시작 일시";
+    const title = await makeBoundText(titleText, 20, "Bold", scv(maps, "color/text/title/primary"));
+    title.name = "title"; header.appendChild(title);
+    const closeIcon = await makeIconInstance("close", scv(maps, "color/icon/gray-dark"), 24, CLOSE_ICON_SVG);
+    closeIcon.name = "close"; header.appendChild(closeIcon);
+
+    // 날짜/시간 탭 (DateTime 전용)
+    if (content === "DateTime") {
+      const tabRow = figma.createFrame();
+      tabRow.name = "tab-row"; tabRow.fills = [];
+      tabRow.layoutMode = "HORIZONTAL"; tabRow.primaryAxisSizingMode = "FIXED"; tabRow.counterAxisSizingMode = "AUTO";
+      tabRow.paddingLeft = 24; tabRow.paddingRight = 24; tabRow.itemSpacing = 0; tabRow.counterAxisAlignItems = "CENTER";
+      comp.appendChild(tabRow);
+      try { tabRow.layoutAlign = "STRETCH"; } catch (e) { /* */ }
+      const tabDefs = [{ state: "Unselected", label: "날짜" }, { state: "Selected", label: "시간" }];
+      for (const td of tabDefs) {
+        const cell = await pickLineTab(td.state);
+        if (cell) {
+          const inst = cell.createInstance();
+          inst.name = td.label === "날짜" ? "tab-date" : "tab-time";
+          const txt = inst.findOne((n) => n.type === "TEXT") as TextNode | null;
+          if (txt) { try { txt.characters = td.label; } catch (e) { /* */ } }
+          tabRow.appendChild(inst);
+          try { inst.layoutSizingHorizontal = "FILL"; } catch (e) { /* */ }
+        }
+      }
+    }
+
+    // 시간 휠 (4열 + 위/아래 흐림)
+    const wheelWrap = figma.createFrame();
+    wheelWrap.name = "wheel"; wheelWrap.fills = [];
+    wheelWrap.layoutMode = "HORIZONTAL"; wheelWrap.primaryAxisSizingMode = "FIXED"; wheelWrap.counterAxisSizingMode = "AUTO";
+    wheelWrap.primaryAxisAlignItems = "CENTER"; wheelWrap.counterAxisAlignItems = "CENTER";
+    wheelWrap.paddingLeft = 24; wheelWrap.paddingRight = 24; wheelWrap.paddingTop = 40; wheelWrap.paddingBottom = 40;
+    wheelWrap.itemSpacing = 36; wheelWrap.clipsContent = false;
+    comp.appendChild(wheelWrap);
+    try { wheelWrap.layoutAlign = "STRETCH"; } catch (e) { /* */ }
+    // 4열: 오전/오후(2행) · 시(3행·우측) · 콜론(3행) · 분(3행·좌측). 전 셀 accent(위/아래는 마스크로 흐려짐).
+    wheelWrap.appendChild(await makeWheelCol("ampm", ["오전", "오후"], 32, "CENTER"));
+    wheelWrap.appendChild(await makeWheelCol("hour", ["7", "8", "9"], 32, "MAX"));
+    wheelWrap.appendChild(await makeWheelCol("colon", [":", ":", ":"], 40, "CENTER"));
+    wheelWrap.appendChild(await makeWheelCol("minute", ["59", "00", "01"], 32, "MIN"));
+    // 흐림 오버레이 2장 — 컬럼 위에 절대배치(위=상단 고정, 아래=하단 고정).
+    const wheelH = wheelWrap.height;
+    const fadeTop = makeWheelFade("top");
+    wheelWrap.appendChild(fadeTop);
+    try { fadeTop.layoutPositioning = "ABSOLUTE"; fadeTop.x = 0; fadeTop.y = 0; fadeTop.constraints = { horizontal: "STRETCH", vertical: "MIN" }; } catch (e) { /* */ }
+    const fadeBottom = makeWheelFade("bottom");
+    wheelWrap.appendChild(fadeBottom);
+    try { fadeBottom.layoutPositioning = "ABSOLUTE"; fadeBottom.x = 0; fadeBottom.y = Math.max(0, wheelH - FADE_H); fadeBottom.constraints = { horizontal: "STRETCH", vertical: "MAX" }; } catch (e) { /* */ }
+
+    // 하단 "적용" 풀폭 버튼 (좌우 패딩 20)
+    const actionWrap = figma.createFrame();
+    actionWrap.name = "action"; actionWrap.fills = [];
+    actionWrap.layoutMode = "HORIZONTAL"; actionWrap.primaryAxisSizingMode = "FIXED"; actionWrap.counterAxisSizingMode = "AUTO";
+    actionWrap.primaryAxisAlignItems = "CENTER"; actionWrap.counterAxisAlignItems = "CENTER";
+    actionWrap.paddingLeft = 20; actionWrap.paddingRight = 20;
+    comp.appendChild(actionWrap);
+    try { actionWrap.layoutAlign = "STRETCH"; } catch (e) { /* */ }
+    const btnComp = await getApplyBtn();
+    if (btnComp) {
+      const applyBtn = btnComp.createInstance();
+      applyBtn.name = "apply";
+      const txt = applyBtn.findOne((n) => n.type === "TEXT") as TextNode | null;
+      if (txt) { try { txt.characters = "적용"; } catch (e) { /* */ } }
+      actionWrap.appendChild(applyBtn);
+      try { applyBtn.layoutSizingHorizontal = "FILL"; } catch (e) { /* */ }
+    }
+
+    setLightMode(comp, maps);
+    return comp;
+  };
+
+  const timeOnly = await buildVariant("TimeOnly");
+  const dateTime = await buildVariant("DateTime");
+  const set = figma.combineAsVariants([timeOnly, dateTime], figma.currentPage);
+  set.name = "Time Picker Mobile Bottom Sheet"; set.x = 0; set.y = originY;
+  BUILT_SETS["Time Picker Mobile Bottom Sheet"] = set;
+
+  const opts: SpecOpts = {
+    title: "Time Picker Mobile Bottom Sheet", colHeaders: [""], rowLabels: ["시간만", "날짜+시간"],
+    cellAt: (r) => (r === 0 ? timeOnly : dateTime),
+    lightX: SPEC_LIGHT_X, darkX: SPEC_DARK_X, originY, cellW: SHEET_W + 40, cellH: 560, rowLabelW: 64,
+  };
+  let bottomY = await decorateSetFlat(set, opts, maps);
+  try { bottomY = Math.max(bottomY, await buildSpec(opts, maps)); } catch (e) { console.warn(e); }
+  // 세트 외부(변형 컨테이너) 배경 = bg/level-3 — 흰 시트가 흰 섹션에 묻히지 않게(Date Picker Mobile BS 동일).
+  //   ★ 반드시 decorateSetFlat(set.fills 를 specPalette 로 덮음) 이후에 적용.
+  set.fills = [boundPaint(scv(maps, "color/bg/level-3"))];
+  return { set, bottomY };
+}
+
 // ── Bottom Sheet Option + Bottom Sheet — 바텀시트 세트 (정본: reports/figma-library-build/bottom-sheet/2-plan.md) ──
 // buildDatePickerBottomSheet 패턴을 따른다: 색은 전부 scv() Variable 바인딩, 폰트=텍스트 스타일 바인딩,
 //   Checkbox/Radio/Button 은 기존 라이브러리 컴포넌트 인스턴스 재사용(raw 재현 금지), 아이콘=라이브러리 인스턴스.
@@ -4407,7 +4601,7 @@ export const COMPONENT_CATEGORIES_GRID: { name: string; members: string[] }[][] 
     //   BUILD_DEPENDENCIES 로 의존성(요소 먼저)이 자동 적용된다 — 표시순서 ≠ 빌드순서 규칙(§ 아래 주석).
     { name: "Form Control", members: ["Input", "Search Input", "Text Area", "Select Box"] },
     { name: "Date Picker",  members: ["Date Picker", "Calendar", "Calendar Cell", "Calendar Tile", "Date Picker Mobile Bottom Sheet"] },
-    { name: "Time Picker",  members: ["Time Picker", "Time Picker Dropdown", "Time Picker Cell"] },
+    { name: "Time Picker",  members: ["Time Picker", "Time Picker Dropdown", "Time Picker Cell", "Time Picker Mobile Bottom Sheet"] },
     { name: "Table",        members: ["Table", "Table Cell"] },
     // Bottom Sheet: 메인 컨테이너(Bottom Sheet) → 요소(Bottom Sheet Option) 표시순서.
     //   빌드는 BUILD_DEPENDENCIES 로 요소(Option)·Checkbox·Radio·Button 이 먼저(카테고리를 Selection·Actions 뒤에 둠).
@@ -4449,6 +4643,9 @@ export const BUILD_DEPENDENCIES: Record<string, string[]> = {
   "Date Picker": ["Calendar"],        // Open 상태가 Calendar 패널 인스턴스 부착(BUILT_COMPS["Calendar:Date"])
   // 모바일 바텀시트: Calendar:Date 인스턴스(본문) + Button primary(하단 "적용") 부착 → 둘 다 선빌드 필요.
   "Date Picker Mobile Bottom Sheet": ["Calendar", "Button"],
+  // 시간 휠 바텀시트: 하단 "적용" Button + (DateTime 변형) 날짜·시간 Line Tab 인스턴스 부착 → 둘 다 선빌드.
+  //   Button(Actions)·Line Tab(Line Tab 카테고리) 은 Time Picker 보다 그리드 앞이라 카테고리 순서로도 보장되나 명시.
+  "Time Picker Mobile Bottom Sheet": ["Button", "Line Tab"],
   "Line Tab Set": ["Line Tab"],       // 탭 3개 묶음 세트가 Line Tab 셀 인스턴스 조합
   // Table 푸터가 완성 Pagination 바(BUILT_COMPS["Pagination:Bar/Middle"]) 인스턴스 부착.
   //   (타 카테고리 의존 = 카테고리 순서로 보장: Pagination 카테고리가 Table 보다 먼저라 선빌드됨.)
@@ -4552,6 +4749,7 @@ export async function buildAllComponents(
     "Calendar Tile":        (oy) => buildCalendarTileLayout(maps, oy),
     "Time Picker":          (oy) => buildTimePicker(maps, oy),
     "Time Picker Dropdown": (oy) => buildTimePickerDropdown(maps, oy),
+    "Time Picker Mobile Bottom Sheet": (oy) => buildTimePickerMobileBottomSheet(maps, oy),
     "Table Cell":           (oy) => buildTableCell(maps, oy),
     "Table":                (oy) => buildTable(maps, oy),
     "Line Tab":             (oy) => buildLineTab(maps, oy),

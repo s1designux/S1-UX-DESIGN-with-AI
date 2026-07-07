@@ -1,9 +1,9 @@
 {
   "sourceFile": "plugins/figma-vars-installer/src/build-components.ts",
-  "sourceHash": "sha256:1b2e3b760c085e7c79339b35913812191dfb16883be1e92b426e4fa5da83398f",
-  "verifiedBy": "orchestrator",
+  "sourceHash": "sha256:9461963af3d8bfd615f604554d304dc73f18fcbbbd1cce58ff8a682c685504e7",
+  "verifiedBy": "component-verifier",
   "verdict": "pass",
-  "changeType": "mechanical",
-  "verifiedAt": "2026-07-06T06:24:11.858Z",
-  "notes": ""
+  "changeType": "structural",
+  "verifiedAt": "2026-07-06T23:45:03.443Z",
+  "notes": "Filter Chip Selected 드롭다운 3행(Selected,파란bg)을 인스턴스 로컬 swapComponent로 Default 모양 교체 — 공용 Dropdown/DropdownList 마스터는 무변경. 인덱스·ddSize매핑·빌드순서·null-safety 전부 코드추적 확인, tsc/anatomy/keycheck 재실행 통과, 부작용 0건"
 }

@@ -25,7 +25,8 @@
     "Pretendard Medium 18": { "style": "body/18M", "id": "S:7b5562a74cbd7f9ba38f03d4800cbcfa3b7e1207," },
     "Pretendard Medium 12": { "style": "body/12M", "id": "S:3d9482ca20d89ee38849e1a9903a16527afe55bd," },
     "Pretendard Medium 10": { "style": "body/10M", "id": "S:f07625115203afb65c8cb45b5f380b231060a37d," },
-    "Pretendard Bold 20":   { "style": "title/20B", "id": "S:46f6df226b7078240376de6530ae592e02a48416," }
+    "Pretendard Bold 20":   { "style": "title/20B", "id": "S:46f6df226b7078240376de6530ae592e02a48416," },
+    "Pretendard Regular 32": { "style": "title/32R", "id": "", "$idNote": "신규 스타일(2026-07-07 추가, textstyles-data.ts). Figma 파일에 설치기가 생성해야 고유 id 가 생김 → 설치 후 getLocalTextStylesAsync 로 name='title/32R' 조회해 바인딩(id 하드코딩 대신 이름 조회 권장). Time Picker Mobile Bottom Sheet 휠 32px accent 숫자용." }
   },
 
   "scanReference": ".claude/skills/figma-library-build/references/figma-font-scan.md",

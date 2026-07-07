@@ -524,6 +524,10 @@ export const SEMANTIC_COLOR: Record<string, SemanticColorEntry> = {
 
   // ── overlay ────────────────────────────────
   "color/overlay": { light: "rgba(0,0,0,0.5)", dark: "rgba(0,0,0,0.75)" },
+  // wheel-fade: Time Picker Mobile Bottom Sheet 휠 위/아래 흐림 마스크의 '표면색 베이스'.
+  //   alpha 그라데이션은 별도 마스크(구조적 alpha)로 구현하고, 이 토큰은 solid 표면색만 담당한다.
+  //   → 다크모드에서 시트 표면색(gray-dark/100)으로 자연스럽게 fade(흰색 누출 방지). Figma 정본 VariableID:916:2.
+  "color/overlay/wheel-fade": { light: "base/white", dark: "gray-dark/100" },
 
   // ── date-picker ────────────────────────────────
   // 신설: components.html 의 .s1-date-picker__* CSS 토큰 사용 기반
