@@ -1,10 +1,11 @@
 .DS_Store
 **/.DS_Store
 
-# Claude harness — 워크플로우 정의(agents/skills)만 공유, 나머지는 로컬 전용
+# Claude harness — 워크플로우 정의(agents/skills/docs)만 공유, 나머지는 로컬 전용
 .claude/*
 !.claude/agents/
 !.claude/skills/
+!.claude/docs/
 
 # 환경변수 — 절대 커밋하지 않음
 .env
