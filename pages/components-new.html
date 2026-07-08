@@ -1101,6 +1101,10 @@
       background: var(--color-form-control-bg-hover);
       border-color: var(--color-form-control-border-default);
     }
+    /* 실제로 연 달력(JS가 --opened 부착)만 스태킹 컨텍스트를 20으로 올려, DOM상 뒤에 오는
+       이웃 정적 프리뷰 달력(Open(Focus) 컬럼 등)에 가려지지 않게 한다.
+       preview-area의 isolation:isolate 안에 갇혀 헤더(10)·controls-sticky(9) 위로는 못 올라온다. */
+    .s1-date-picker--opened { z-index: 20; }
     /* Trigger opened state — 설치기 정본: Open = bg/selected(다크 gray-dark/200) + border/selected + 값 텍스트 text/selected(gray/900) */
     .s1-date-picker--opened .s1-input-wrap,
     .s1-date-picker__trigger-opened .s1-input-wrap { border-color: var(--input-focus-border); }
@@ -1272,6 +1276,11 @@
       background: var(--color-dropdown-option-bg-default);
       color: var(--color-dropdown-option-label-selected);
       font-weight: 500;
+    }
+    /* 2026-07-08: 선택 + 호버 — Select(.s1-select-option.is-selected.is-hover)와 정합. 새 토큰 없이 호버 배경만 깔고 선택 글자색·굵기는 유지 */
+    .s1-dropdown-option.is-selected.is-hover,
+    .s1-dropdown-option.is-selected:hover:not(.is-disabled) {
+      background: var(--color-dropdown-option-bg-hover);
     }
     .s1-dropdown-option.is-disabled {
       background: var(--color-dropdown-option-bg-disabled);
@@ -2035,7 +2044,7 @@
 <body>
 
 <svg style="display:none" aria-hidden="true">
-  <symbol id="ds-icon-checkbox-check" viewBox="0 0 16 16"><path d="M2.9375 8L6.13252 11.375L13.0625 4.625" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></symbol>
+  <symbol id="ds-icon-checkbox-check" viewBox="0 0 16 16"><path d="M2.9375 8L6.13252 11.375L13.0625 4.625" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></symbol>
 </svg>
 
 <div class="mobile-header">
@@ -5357,9 +5366,6 @@ document.addEventListener('click', function(e) {
                 </div>
               </div>
             </div>
-            <div class="action-test-controls">
-              <button class="action-mini-toggle" data-ddl-disabled type="button">Disabled: off</button>
-            </div>
           </div>
         </div>
 
@@ -5391,42 +5397,6 @@ document.addEventListener('click', function(e) {
               <div class="comp-state-cell"><div class="s1-dropdown-list s1-dropdown-list--xxsm"><div class="s1-dropdown-option is-hover">옵션</div></div></div>
               <div class="comp-state-cell"><div class="s1-dropdown-list s1-dropdown-list--xxsm"><div class="s1-dropdown-option is-selected">옵션</div></div></div>
               <div class="comp-state-cell"><div class="s1-dropdown-list s1-dropdown-list--xxsm"><div class="s1-dropdown-option is-disabled">옵션</div></div></div>
-            </div>
-          </div>
-        </div>
-
-        <!-- ── Full panel (4행 조합) ── -->
-        <div class="variant-block">
-          <div class="variant-label">Panel · Dropdown List 4행 조합 (Default · Hover · Selected · Default)</div>
-          <div class="preview-area">
-            <div style="display:flex;gap:32px;flex-wrap:wrap;align-items:flex-start;">
-              <div>
-                <div style="font-size:11px;color:var(--color-text-secondary);font-weight:500;margin-bottom:6px;">MD (h44)</div>
-                <div class="s1-dropdown-list s1-dropdown-list--md" style="min-width:200px;">
-                  <div class="s1-dropdown-option">옵션</div>
-                  <div class="s1-dropdown-option is-hover">옵션</div>
-                  <div class="s1-dropdown-option is-selected">옵션</div>
-                  <div class="s1-dropdown-option">옵션</div>
-                </div>
-              </div>
-              <div>
-                <div style="font-size:11px;color:var(--color-text-secondary);font-weight:500;margin-bottom:6px;">XSM (h34)</div>
-                <div class="s1-dropdown-list s1-dropdown-list--xsm" style="min-width:180px;">
-                  <div class="s1-dropdown-option">옵션</div>
-                  <div class="s1-dropdown-option is-hover">옵션</div>
-                  <div class="s1-dropdown-option is-selected">옵션</div>
-                  <div class="s1-dropdown-option">옵션</div>
-                </div>
-              </div>
-              <div>
-                <div style="font-size:11px;color:var(--color-text-secondary);font-weight:500;margin-bottom:6px;">XXSM (h28)</div>
-                <div class="s1-dropdown-list s1-dropdown-list--xxsm" style="min-width:160px;">
-                  <div class="s1-dropdown-option">옵션</div>
-                  <div class="s1-dropdown-option is-hover">옵션</div>
-                  <div class="s1-dropdown-option is-selected">옵션</div>
-                  <div class="s1-dropdown-option">옵션</div>
-                </div>
-              </div>
             </div>
           </div>
         </div>
@@ -5467,6 +5437,8 @@ document.addEventListener('click', function(e) {
 }
 <span class="c-sel">.s1-dropdown-option.is-hover</span> { background: <span class="c-val">var(--color-dropdown-option-bg-hover)</span>; color: <span class="c-val">var(--color-dropdown-option-label-hover)</span>; }
 <span class="c-sel">.s1-dropdown-option.is-selected</span> { background: <span class="c-val">var(--color-dropdown-option-bg-default)</span>; color: <span class="c-val">var(--color-dropdown-option-label-selected)</span>; }
+<span class="c-cmt">/* 선택 + 호버 — 호버 배경만 깔고 선택 글자색·굵기 유지 */</span>
+<span class="c-sel">.s1-dropdown-option.is-selected.is-hover</span> { background: <span class="c-val">var(--color-dropdown-option-bg-hover)</span>; }
 <span class="c-sel">.s1-dropdown-option.is-disabled</span> { background: <span class="c-val">var(--color-dropdown-option-bg-disabled)</span>; color: <span class="c-val">var(--color-dropdown-option-label-disabled)</span>; }
 <span class="c-cmt">/* 사이즈 — XXSM(h28·font12) / XSM(h34·font14) / MD(h44·font14) */</span>
 <span class="c-sel">.s1-dropdown-list--xxsm .s1-dropdown-option</span> { height: <span class="c-val">var(--sizing-28)</span>; font-size: <span class="c-val">12px</span>; }
@@ -8950,17 +8922,6 @@ document.addEventListener('click', function(e) {
     }
     var ddlTargets = ['ddl-action-md','ddl-action-xsm','ddl-action-xxsm'].map(function(id){ return document.getElementById(id); }).filter(Boolean);
     ddlTargets.forEach(wireDropdownPanel);
-    if (ddlTargets.length) {
-      document.querySelector('[data-ddl-disabled]')?.addEventListener('click', function(e) {
-        var on = !ddlTargets[0].classList.contains('is-disabled');
-        ddlTargets.forEach(function(el) {
-          el.classList.toggle('is-disabled', on);
-          el.querySelectorAll('.s1-dropdown-option').forEach(function(o) { o.classList.toggle('is-disabled', on); });
-        });
-        e.target.classList.toggle('is-on', on);
-        e.target.textContent = on ? 'Disabled: on' : 'Disabled: off';
-      });
-    }
   }
   setupCompActionTests();
 
