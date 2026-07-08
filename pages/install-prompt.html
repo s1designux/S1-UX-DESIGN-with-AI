@@ -223,7 +223,7 @@
                 <div class="step-title">전체 기본 토큰 CSS 받기</div>
                 <div class="step-desc">Semantic (Light/Dark) + Component 토큰 전체 CSS</div>
               </div>
-              <span class="update-stamp" data-update-file="assets/css/tokens.css"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> 업데이트 2026-07-07 16:33</span>
+              <span class="update-stamp" data-update-file="assets/css/tokens.css"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> 업데이트 2026-07-08 20:20</span>
             </div>
             <div class="step-body">
               <div class="file-card">
@@ -231,7 +231,7 @@
                   <div class="file-icon">🎨</div>
                   <div>
                     <div class="file-name">tokens.css</div>
-                    <div class="file-meta">Foundation 259종 + Semantic 198종 + Component 15종 · Light + Dark</div>
+                    <div class="file-meta">Foundation 259종 + Semantic 199종 + Component 14종 · Light + Dark</div>
                   </div>
                 </div>
                 <button class="download-btn" onclick="downloadTokens()">
@@ -250,27 +250,20 @@
    S1 UX DESIGN GUIDE — tokens.css
    Foundation → Semantic → Component
    Auto-synced from assets/css/tokens.css (npm run tokens:sync-prompt)
-   Last sync: 2026-07-07
+   Last sync: 2026-07-08
    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
 
-/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-   SW Design System — tokens.css
-   Foundation → Semantic (Figma Variables 정본 · npm run tokens:gen 자동생성)
-   Semantic 레이어가 컴포넌트 단위까지 정의됨 — 이름 같고 값 다르면 Variables가 정답.
-   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
-
-
+/* &gt;&gt;&gt; GEN:FOUNDATION &gt;&gt;&gt; Auto-generated from vars-data.ts (npm run tokens:gen:foundation) — Variables 정본. 수동 편집 금지. */
 /* ══════════════════════════════════════════════════
    0. FOUNDATION — Base &amp; Brand
    ══════════════════════════════════════════════════ */
 :root {
   --color-base-white: #FFFFFF;
   --color-base-black: #000000;
-
   --color-brand-blue: #0072CE;
-  --color-brand-red:  #FF312C;
+  --color-brand-red : #FF312C;
   --color-brand-gray: #DFDEDE;
-  --color-brand-ci:   #004097; /* CI·로고 전용. UI 직접 사용 금지 */
+  --color-brand-ci  : #004097; /* CI·로고 전용. UI 직접 사용 금지 */
 }
 
 
@@ -280,8 +273,8 @@
 :root {
 
   /* ── Gray · Light ── */
-  --color-gray-0:   #FAFAFA;
-  --color-gray-50:  #F5F5F5;
+  --color-gray-0  : #FAFAFA;
+  --color-gray-50 : #F5F5F5;
   --color-gray-100: #E9E9E9;
   --color-gray-200: #D9D9D9;
   --color-gray-300: #C4C4C4;
@@ -293,8 +286,8 @@
   --color-gray-900: #202020;
 
   /* ── Gray · Dark ── */
-  --color-gray-dark-0:   #0D0E12;
-  --color-gray-dark-50:  #131418;
+  --color-gray-dark-0  : #0D0E12;
+  --color-gray-dark-50 : #131418;
   --color-gray-dark-100: #1C1D23;
   --color-gray-dark-200: #24252C;
   --color-gray-dark-300: #2E2F38;
@@ -306,7 +299,7 @@
   --color-gray-dark-900: #ECEDF0;
 
   /* ── Blue · Light ── */
-  --color-blue-50:  #E2F1FF;
+  --color-blue-50 : #E2F1FF;
   --color-blue-100: #C8E4FF;
   --color-blue-150: #A4D4FF;
   --color-blue-200: #8BC6FF;
@@ -318,7 +311,7 @@
   --color-blue-500: #2747B9;
 
   /* ── Blue · Dark ── */
-  --color-blue-dark-50:  #0C1D38;
+  --color-blue-dark-50 : #0C1D38;
   --color-blue-dark-100: #112B55;
   --color-blue-dark-150: #1A3D72;
   --color-blue-dark-200: #214EA0;
@@ -330,7 +323,7 @@
   --color-blue-dark-500: #C0D8FC;
 
   /* ── Red · Light ── */
-  --color-red-50:  #FFEBEF;
+  --color-red-50 : #FFEBEF;
   --color-red-100: #FFCCD6;
   --color-red-150: #FBB2BA;
   --color-red-200: #F8979E;
@@ -342,7 +335,7 @@
   --color-red-500: #C8001E;
 
   /* ── Red · Dark ── */
-  --color-red-dark-50:  #2A0F14;
+  --color-red-dark-50 : #2A0F14;
   --color-red-dark-100: #3D1520;
   --color-red-dark-150: #5C1E2E;
   --color-red-dark-200: #8A2A3E;
@@ -354,7 +347,7 @@
   --color-red-dark-500: #FCD0D5;
 
   /* ── Orange · Light ── */
-  --color-orange-50:  #FFEDE0;
+  --color-orange-50 : #FFEDE0;
   --color-orange-100: #FDDBBF;
   --color-orange-150: #FEC6A0;
   --color-orange-200: #FFB482;
@@ -366,7 +359,7 @@
   --color-orange-500: #8E2E00;
 
   /* ── Orange · Dark ── */
-  --color-orange-dark-50:  #2E1505;
+  --color-orange-dark-50 : #2E1505;
   --color-orange-dark-100: #42200A;
   --color-orange-dark-150: #6B3512;
   --color-orange-dark-200: #A05020;
@@ -378,7 +371,7 @@
   --color-orange-dark-500: #FCD8B8;
 
   /* ── Yellow · Light ── */
-  --color-yellow-50:  #FFF4CE;
+  --color-yellow-50 : #FFF4CE;
   --color-yellow-100: #FEE89A;
   --color-yellow-150: #FEDE6C;
   --color-yellow-200: #FFD53D;
@@ -390,7 +383,7 @@
   --color-yellow-500: #8F6A00;
 
   /* ── Yellow · Dark ── */
-  --color-yellow-dark-50:  #2A2005;
+  --color-yellow-dark-50 : #2A2005;
   --color-yellow-dark-100: #3D2E08;
   --color-yellow-dark-150: #605010;
   --color-yellow-dark-200: #907818;
@@ -402,7 +395,7 @@
   --color-yellow-dark-500: #FAEAB8;
 
   /* ── Green · Light ── */
-  --color-green-50:  #E3F2EA;
+  --color-green-50 : #E3F2EA;
   --color-green-100: #CAECDA;
   --color-green-150: #9CD8BD;
   --color-green-200: #6FC4A2;
@@ -414,7 +407,7 @@
   --color-green-500: #006F42;
 
   /* ── Green · Dark ── */
-  --color-green-dark-50:  #0A2018;
+  --color-green-dark-50 : #0A2018;
   --color-green-dark-100: #102E22;
   --color-green-dark-150: #184530;
   --color-green-dark-200: #206840;
@@ -426,7 +419,7 @@
   --color-green-dark-500: #C5F0D8;
 
   /* ── Skyblue · Light ── */
-  --color-skyblue-50:  #C4EEF7;
+  --color-skyblue-50 : #C4EEF7;
   --color-skyblue-100: #A5E5F3;
   --color-skyblue-150: #7BD6EA;
   --color-skyblue-200: #51C7E1;
@@ -438,7 +431,7 @@
   --color-skyblue-500: #0F6C84;
 
   /* ── Skyblue · Dark ── */
-  --color-skyblue-dark-50:  #081E28;
+  --color-skyblue-dark-50 : #081E28;
   --color-skyblue-dark-100: #102A38;
   --color-skyblue-dark-150: #184050;
   --color-skyblue-dark-200: #205A70;
@@ -450,7 +443,7 @@
   --color-skyblue-dark-500: #C0E8F0;
 
   /* ── Purple · Light ── */
-  --color-purple-50:  #E8E9FC;
+  --color-purple-50 : #E8E9FC;
   --color-purple-100: #CFD1F9;
   --color-purple-150: #C0C0FC;
   --color-purple-200: #B0B0FF;
@@ -462,7 +455,7 @@
   --color-purple-500: #252576;
 
   /* ── Purple · Dark ── */
-  --color-purple-dark-50:  #14142A;
+  --color-purple-dark-50 : #14142A;
   --color-purple-dark-100: #1E1E3D;
   --color-purple-dark-150: #2A2A58;
   --color-purple-dark-200: #383878;
@@ -474,7 +467,7 @@
   --color-purple-dark-500: #D0D0F5;
 
   /* ── Brown · Light ── */
-  --color-brown-50:  #F6EEE9;
+  --color-brown-50 : #F6EEE9;
   --color-brown-100: #E4D5C8;
   --color-brown-150: #DBC6B3;
   --color-brown-200: #D1B69F;
@@ -486,7 +479,7 @@
   --color-brown-500: #3B3025;
 
   /* ── Brown · Dark ── */
-  --color-brown-dark-50:  #1E1610;
+  --color-brown-dark-50 : #1E1610;
   --color-brown-dark-100: #2A2018;
   --color-brown-dark-150: #3D3025;
   --color-brown-dark-200: #584535;
@@ -498,7 +491,7 @@
   --color-brown-dark-500: #E8D8C8;
 
   /* ── Visual Gray · Light ── */
-  --color-visual-gray-50:  #F3F5F7;
+  --color-visual-gray-50 : #F3F5F7;
   --color-visual-gray-100: #E8EBEF;
   --color-visual-gray-150: #DADEE5;
   --color-visual-gray-200: #CDD2DE;
@@ -509,8 +502,8 @@
   --color-visual-gray-450: #2B2F32;
   --color-visual-gray-500: #1B1D1F;
 
-  /* ── Cool Gray · Dark ── */
-  --color-visual-gray-dark-50:  #12141A;
+  /* ── Visual Gray · Dark ── */
+  --color-visual-gray-dark-50 : #12141A;
   --color-visual-gray-dark-100: #1A1D25;
   --color-visual-gray-dark-150: #252830;
   --color-visual-gray-dark-200: #353840;
@@ -520,11 +513,6 @@
   --color-visual-gray-dark-400: #989CA8;
   --color-visual-gray-dark-450: #B8BCC5;
   --color-visual-gray-dark-500: #D8DBE0;
-
-  /* ── Status · Dark (피드백 상태 전용 Dark Foundation) ── */
-  --color-status-dark-red:    #F06070; /* = color-red-dark-350 */
-  --color-status-dark-green:  #3FBE7E; /* = color-green-dark-350 */
-  --color-status-dark-yellow: #E8C048; /* = color-yellow-dark-350 */
 }
 
 
@@ -534,58 +522,58 @@
 :root {
 
   /* ── Spacing ── */
-  --spacing-2:   2px;
-  --spacing-4:   4px;
-  --spacing-6:   6px;
-  --spacing-8:   8px;
-  --spacing-10:  10px;
-  --spacing-12:  12px;
-  --spacing-14:  14px;
-  --spacing-16:  16px;
-  --spacing-20:  20px;
-  --spacing-24:  24px;
-  --spacing-28:  28px;
-  --spacing-32:  32px;
-  --spacing-36:  36px;
-  --spacing-40:  40px;
-  --spacing-44:  44px;
-  --spacing-48:  48px;
-  --spacing-56:  56px;
-  --spacing-64:  64px;
-  --spacing-80:  80px;
-  --spacing-96:  96px;
+  --spacing-2  : 2px;
+  --spacing-4  : 4px;
+  --spacing-6  : 6px;
+  --spacing-8  : 8px;
+  --spacing-10 : 10px;
+  --spacing-12 : 12px;
+  --spacing-14 : 14px;
+  --spacing-16 : 16px;
+  --spacing-20 : 20px;
+  --spacing-24 : 24px;
+  --spacing-28 : 28px;
+  --spacing-32 : 32px;
+  --spacing-36 : 36px;
+  --spacing-40 : 40px;
+  --spacing-44 : 44px;
+  --spacing-48 : 48px;
+  --spacing-56 : 56px;
+  --spacing-64 : 64px;
+  --spacing-80 : 80px;
+  --spacing-96 : 96px;
   --spacing-128: 128px;
 
-  /* ── Sizing (Foundation primitive — 컴포넌트 높이·치수, 초기 Foundation 정본 기준) ── */
-  --sizing-10:  10px;
-  --sizing-16:  16px;
-  --sizing-18:  18px;
-  --sizing-20:  20px;
-  --sizing-24:  24px;
-  --sizing-28:  28px;
-  --sizing-30:  30px;
-  --sizing-32:  32px;
-  --sizing-34:  34px;
-  --sizing-38:  38px;
-  --sizing-40:  40px;
-  --sizing-44:  44px;
-  --sizing-48:  48px;
-  --sizing-56:  56px;
-  --sizing-60:  60px;
-  --sizing-64:  64px;
-  --sizing-80:  80px;
+  /* ── Sizing ── */
+  --sizing-10 : 10px;
+  --sizing-16 : 16px;
+  --sizing-18 : 18px;
+  --sizing-20 : 20px;
+  --sizing-24 : 24px;
+  --sizing-28 : 28px;
+  --sizing-30 : 30px;
+  --sizing-32 : 32px;
+  --sizing-34 : 34px;
+  --sizing-38 : 38px;
+  --sizing-40 : 40px;
+  --sizing-44 : 44px;
+  --sizing-48 : 48px;
+  --sizing-56 : 56px;
+  --sizing-60 : 60px;
+  --sizing-64 : 64px;
+  --sizing-80 : 80px;
   --sizing-128: 128px;
 
   /* ── Radius ── */
-  --radius-0:    0px;
-  --radius-2:    2px;
-  --radius-4:    4px;
-  --radius-6:    6px;
-  --radius-8:    8px;
-  --radius-10:   10px;
-  --radius-12:   12px;
-  --radius-16:   16px;
-  --radius-20:   20px;
+  --radius-0   : 0px;
+  --radius-2   : 2px;
+  --radius-4   : 4px;
+  --radius-6   : 6px;
+  --radius-8   : 8px;
+  --radius-10  : 10px;
+  --radius-12  : 12px;
+  --radius-16  : 16px;
+  --radius-20  : 20px;
   --radius-full: 9999px;
 
   /* ── Border Width ── */
@@ -604,36 +592,54 @@
 
   /* ── Font Weight ── */
   --font-weight-regular: 400;
-  --font-weight-medium:  500;
-  --font-weight-bold:    700;
+  --font-weight-medium : 500;
+  --font-weight-bold   : 700;
 
   /* ── Line Height ── */
   --line-height-130: 1.3;
   --line-height-140: 1.4;
 
+  /* ── Opacity ── */
+  --opacity-0  : 0;
+  --opacity-25 : 0.25;
+  --opacity-50 : 0.5;
+  --opacity-75 : 0.75;
+  --opacity-100: 1;
+
+  /* ── Breakpoint ── */
+  --breakpoint-xs : 320px;
+  --breakpoint-sm : 600px;
+  --breakpoint-md : 768px;
+  --breakpoint-lg : 1024px;
+  --breakpoint-xl : 1280px;
+  --breakpoint-2xl: 1440px;
+}
+/* &lt;&lt;&lt; GEN:FOUNDATION &lt;&lt;&lt; */
+
+
+/* ══════════════════════════════════════════════════
+   0b. Status Dark Alias (수동 — vars-data 밖 관리, 350 step alias. registry statusDarkAlias 참조)
+   ══════════════════════════════════════════════════ */
+:root {
+  /* ── Status · Dark (피드백 상태 전용 Dark Foundation) ── */
+  --color-status-dark-red:    #F06070; /* = color-red-dark-350 */
+  --color-status-dark-green:  #3FBE7E; /* = color-green-dark-350 */
+  --color-status-dark-yellow: #E8C048; /* = color-yellow-dark-350 */
+}
+
+
+/* ══════════════════════════════════════════════════
+   2b. Letter Spacing (수동 — 타이포 파이프라인 소속. textstyles-data.ts/typography-gen.js 참조)
+   ══════════════════════════════════════════════════ */
+:root {
   /* ── Letter Spacing ── */
   --letter-spacing-tight:  -0.02em;
   --letter-spacing-normal: 0em;
   --letter-spacing-wide:   0.02em;
+}
 
-  /* ── Opacity ── */
-  --opacity-0:   0;
-  --opacity-25:  0.25;
-  --opacity-50:  0.5;
-  --opacity-75:  0.75;
-  --opacity-100: 1;
 
-  /* ── Shadow ── */
-  --shadow-200: 0 4px 8px 0 rgba(0, 0, 0, 0.15);
-
-  /* ── Breakpoint ── */
-  --breakpoint-xs:  320px;
-  --breakpoint-sm:  600px;
-  --breakpoint-md:  768px;
-  --breakpoint-lg:  1024px;
-  --breakpoint-xl:  1280px;
-  --breakpoint-2xl: 1440px;
-
+:root {
   /* ══ semantic number (sizing·spacing·radius·border-width) — 763a70a 자동생성기 누락분 복원 2026-06-11 ══ */
   /* ── spacing (semantic) ── */
   --spacing-label-gap-inline-sm: var(--spacing-8);
@@ -1091,7 +1097,7 @@
                 <div class="step-title">프로젝트에 추가</div>
                 <div class="step-desc">다운받은 tokens.css를 프로젝트에 복사한 뒤 아래 한 줄 추가</div>
               </div>
-              <span class="update-stamp" data-update-file="assets/css/tokens.css"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> 업데이트 2026-07-07 16:33</span>
+              <span class="update-stamp" data-update-file="assets/css/tokens.css"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> 업데이트 2026-07-08 20:20</span>
             </div>
             <div class="step-body">
               <div class="env-tabs">
@@ -1169,7 +1175,7 @@
                 <div class="step-title">AI Context Prompt</div>
                 <div class="step-desc">Claude / AI 작업자에게 붙여넣을 기본 디자인시스템 규칙</div>
               </div>
-              <span class="update-stamp" data-update-file="assets/css/tokens.css"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> 업데이트 2026-07-07 16:33</span>
+              <span class="update-stamp" data-update-file="assets/css/tokens.css"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> 업데이트 2026-07-08 20:20</span>
             </div>
             <div class="step-body">
               <p style="font-size:12px;color:#6b7280;margin-bottom:12px;">대화 시작 시 첫 메시지로 붙여넣기. 사용자 검수 항목은 코드블록 안에 포함되어 있지 않습니다.</p>
@@ -1213,24 +1219,17 @@
 
 ### 전체 토큰 정의
 
-/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-   SW Design System — tokens.css
-   Foundation → Semantic (Figma Variables 정본 · npm run tokens:gen 자동생성)
-   Semantic 레이어가 컴포넌트 단위까지 정의됨 — 이름 같고 값 다르면 Variables가 정답.
-   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
-
-
+/* &gt;&gt;&gt; GEN:FOUNDATION &gt;&gt;&gt; Auto-generated from vars-data.ts (npm run tokens:gen:foundation) — Variables 정본. 수동 편집 금지. */
 /* ══════════════════════════════════════════════════
    0. FOUNDATION — Base &amp; Brand
    ══════════════════════════════════════════════════ */
 :root {
   --color-base-white: #FFFFFF;
   --color-base-black: #000000;
-
   --color-brand-blue: #0072CE;
-  --color-brand-red:  #FF312C;
+  --color-brand-red : #FF312C;
   --color-brand-gray: #DFDEDE;
-  --color-brand-ci:   #004097; /* CI·로고 전용. UI 직접 사용 금지 */
+  --color-brand-ci  : #004097; /* CI·로고 전용. UI 직접 사용 금지 */
 }
 
 
@@ -1240,8 +1239,8 @@
 :root {
 
   /* ── Gray · Light ── */
-  --color-gray-0:   #FAFAFA;
-  --color-gray-50:  #F5F5F5;
+  --color-gray-0  : #FAFAFA;
+  --color-gray-50 : #F5F5F5;
   --color-gray-100: #E9E9E9;
   --color-gray-200: #D9D9D9;
   --color-gray-300: #C4C4C4;
@@ -1253,8 +1252,8 @@
   --color-gray-900: #202020;
 
   /* ── Gray · Dark ── */
-  --color-gray-dark-0:   #0D0E12;
-  --color-gray-dark-50:  #131418;
+  --color-gray-dark-0  : #0D0E12;
+  --color-gray-dark-50 : #131418;
   --color-gray-dark-100: #1C1D23;
   --color-gray-dark-200: #24252C;
   --color-gray-dark-300: #2E2F38;
@@ -1266,7 +1265,7 @@
   --color-gray-dark-900: #ECEDF0;
 
   /* ── Blue · Light ── */
-  --color-blue-50:  #E2F1FF;
+  --color-blue-50 : #E2F1FF;
   --color-blue-100: #C8E4FF;
   --color-blue-150: #A4D4FF;
   --color-blue-200: #8BC6FF;
@@ -1278,7 +1277,7 @@
   --color-blue-500: #2747B9;
 
   /* ── Blue · Dark ── */
-  --color-blue-dark-50:  #0C1D38;
+  --color-blue-dark-50 : #0C1D38;
   --color-blue-dark-100: #112B55;
   --color-blue-dark-150: #1A3D72;
   --color-blue-dark-200: #214EA0;
@@ -1290,7 +1289,7 @@
   --color-blue-dark-500: #C0D8FC;
 
   /* ── Red · Light ── */
-  --color-red-50:  #FFEBEF;
+  --color-red-50 : #FFEBEF;
   --color-red-100: #FFCCD6;
   --color-red-150: #FBB2BA;
   --color-red-200: #F8979E;
@@ -1302,7 +1301,7 @@
   --color-red-500: #C8001E;
 
   /* ── Red · Dark ── */
-  --color-red-dark-50:  #2A0F14;
+  --color-red-dark-50 : #2A0F14;
   --color-red-dark-100: #3D1520;
   --color-red-dark-150: #5C1E2E;
   --color-red-dark-200: #8A2A3E;
@@ -1314,7 +1313,7 @@
   --color-red-dark-500: #FCD0D5;
 
   /* ── Orange · Light ── */
-  --color-orange-50:  #FFEDE0;
+  --color-orange-50 : #FFEDE0;
   --color-orange-100: #FDDBBF;
   --color-orange-150: #FEC6A0;
   --color-orange-200: #FFB482;
@@ -1326,7 +1325,7 @@
   --color-orange-500: #8E2E00;
 
   /* ── Orange · Dark ── */
-  --color-orange-dark-50:  #2E1505;
+  --color-orange-dark-50 : #2E1505;
   --color-orange-dark-100: #42200A;
   --color-orange-dark-150: #6B3512;
   --color-orange-dark-200: #A05020;
@@ -1338,7 +1337,7 @@
   --color-orange-dark-500: #FCD8B8;
 
   /* ── Yellow · Light ── */
-  --color-yellow-50:  #FFF4CE;
+  --color-yellow-50 : #FFF4CE;
   --color-yellow-100: #FEE89A;
   --color-yellow-150: #FEDE6C;
   --color-yellow-200: #FFD53D;
@@ -1350,7 +1349,7 @@
   --color-yellow-500: #8F6A00;
 
   /* ── Yellow · Dark ── */
-  --color-yellow-dark-50:  #2A2005;
+  --color-yellow-dark-50 : #2A2005;
   --color-yellow-dark-100: #3D2E08;
   --color-yellow-dark-150: #605010;
   --color-yellow-dark-200: #907818;
@@ -1362,7 +1361,7 @@
   --color-yellow-dark-500: #FAEAB8;
 
   /* ── Green · Light ── */
-  --color-green-50:  #E3F2EA;
+  --color-green-50 : #E3F2EA;
   --color-green-100: #CAECDA;
   --color-green-150: #9CD8BD;
   --color-green-200: #6FC4A2;
@@ -1374,7 +1373,7 @@
   --color-green-500: #006F42;
 
   /* ── Green · Dark ── */
-  --color-green-dark-50:  #0A2018;
+  --color-green-dark-50 : #0A2018;
   --color-green-dark-100: #102E22;
   --color-green-dark-150: #184530;
   --color-green-dark-200: #206840;
@@ -1386,7 +1385,7 @@
   --color-green-dark-500: #C5F0D8;
 
   /* ── Skyblue · Light ── */
-  --color-skyblue-50:  #C4EEF7;
+  --color-skyblue-50 : #C4EEF7;
   --color-skyblue-100: #A5E5F3;
   --color-skyblue-150: #7BD6EA;
   --color-skyblue-200: #51C7E1;
@@ -1398,7 +1397,7 @@
   --color-skyblue-500: #0F6C84;
 
   /* ── Skyblue · Dark ── */
-  --color-skyblue-dark-50:  #081E28;
+  --color-skyblue-dark-50 : #081E28;
   --color-skyblue-dark-100: #102A38;
   --color-skyblue-dark-150: #184050;
   --color-skyblue-dark-200: #205A70;
@@ -1410,7 +1409,7 @@
   --color-skyblue-dark-500: #C0E8F0;
 
   /* ── Purple · Light ── */
-  --color-purple-50:  #E8E9FC;
+  --color-purple-50 : #E8E9FC;
   --color-purple-100: #CFD1F9;
   --color-purple-150: #C0C0FC;
   --color-purple-200: #B0B0FF;
@@ -1422,7 +1421,7 @@
   --color-purple-500: #252576;
 
   /* ── Purple · Dark ── */
-  --color-purple-dark-50:  #14142A;
+  --color-purple-dark-50 : #14142A;
   --color-purple-dark-100: #1E1E3D;
   --color-purple-dark-150: #2A2A58;
   --color-purple-dark-200: #383878;
@@ -1434,7 +1433,7 @@
   --color-purple-dark-500: #D0D0F5;
 
   /* ── Brown · Light ── */
-  --color-brown-50:  #F6EEE9;
+  --color-brown-50 : #F6EEE9;
   --color-brown-100: #E4D5C8;
   --color-brown-150: #DBC6B3;
   --color-brown-200: #D1B69F;
@@ -1446,7 +1445,7 @@
   --color-brown-500: #3B3025;
 
   /* ── Brown · Dark ── */
-  --color-brown-dark-50:  #1E1610;
+  --color-brown-dark-50 : #1E1610;
   --color-brown-dark-100: #2A2018;
   --color-brown-dark-150: #3D3025;
   --color-brown-dark-200: #584535;
@@ -1458,7 +1457,7 @@
   --color-brown-dark-500: #E8D8C8;
 
   /* ── Visual Gray · Light ── */
-  --color-visual-gray-50:  #F3F5F7;
+  --color-visual-gray-50 : #F3F5F7;
   --color-visual-gray-100: #E8EBEF;
   --color-visual-gray-150: #DADEE5;
   --color-visual-gray-200: #CDD2DE;
@@ -1469,8 +1468,8 @@
   --color-visual-gray-450: #2B2F32;
   --color-visual-gray-500: #1B1D1F;
 
-  /* ── Cool Gray · Dark ── */
-  --color-visual-gray-dark-50:  #12141A;
+  /* ── Visual Gray · Dark ── */
+  --color-visual-gray-dark-50 : #12141A;
   --color-visual-gray-dark-100: #1A1D25;
   --color-visual-gray-dark-150: #252830;
   --color-visual-gray-dark-200: #353840;
@@ -1480,11 +1479,6 @@
   --color-visual-gray-dark-400: #989CA8;
   --color-visual-gray-dark-450: #B8BCC5;
   --color-visual-gray-dark-500: #D8DBE0;
-
-  /* ── Status · Dark (피드백 상태 전용 Dark Foundation) ── */
-  --color-status-dark-red:    #F06070; /* = color-red-dark-350 */
-  --color-status-dark-green:  #3FBE7E; /* = color-green-dark-350 */
-  --color-status-dark-yellow: #E8C048; /* = color-yellow-dark-350 */
 }
 
 
@@ -1494,58 +1488,58 @@
 :root {
 
   /* ── Spacing ── */
-  --spacing-2:   2px;
-  --spacing-4:   4px;
-  --spacing-6:   6px;
-  --spacing-8:   8px;
-  --spacing-10:  10px;
-  --spacing-12:  12px;
-  --spacing-14:  14px;
-  --spacing-16:  16px;
-  --spacing-20:  20px;
-  --spacing-24:  24px;
-  --spacing-28:  28px;
-  --spacing-32:  32px;
-  --spacing-36:  36px;
-  --spacing-40:  40px;
-  --spacing-44:  44px;
-  --spacing-48:  48px;
-  --spacing-56:  56px;
-  --spacing-64:  64px;
-  --spacing-80:  80px;
-  --spacing-96:  96px;
+  --spacing-2  : 2px;
+  --spacing-4  : 4px;
+  --spacing-6  : 6px;
+  --spacing-8  : 8px;
+  --spacing-10 : 10px;
+  --spacing-12 : 12px;
+  --spacing-14 : 14px;
+  --spacing-16 : 16px;
+  --spacing-20 : 20px;
+  --spacing-24 : 24px;
+  --spacing-28 : 28px;
+  --spacing-32 : 32px;
+  --spacing-36 : 36px;
+  --spacing-40 : 40px;
+  --spacing-44 : 44px;
+  --spacing-48 : 48px;
+  --spacing-56 : 56px;
+  --spacing-64 : 64px;
+  --spacing-80 : 80px;
+  --spacing-96 : 96px;
   --spacing-128: 128px;
 
-  /* ── Sizing (Foundation primitive — 컴포넌트 높이·치수, 초기 Foundation 정본 기준) ── */
-  --sizing-10:  10px;
-  --sizing-16:  16px;
-  --sizing-18:  18px;
-  --sizing-20:  20px;
-  --sizing-24:  24px;
-  --sizing-28:  28px;
-  --sizing-30:  30px;
-  --sizing-32:  32px;
-  --sizing-34:  34px;
-  --sizing-38:  38px;
-  --sizing-40:  40px;
-  --sizing-44:  44px;
-  --sizing-48:  48px;
-  --sizing-56:  56px;
-  --sizing-60:  60px;
-  --sizing-64:  64px;
-  --sizing-80:  80px;
+  /* ── Sizing ── */
+  --sizing-10 : 10px;
+  --sizing-16 : 16px;
+  --sizing-18 : 18px;
+  --sizing-20 : 20px;
+  --sizing-24 : 24px;
+  --sizing-28 : 28px;
+  --sizing-30 : 30px;
+  --sizing-32 : 32px;
+  --sizing-34 : 34px;
+  --sizing-38 : 38px;
+  --sizing-40 : 40px;
+  --sizing-44 : 44px;
+  --sizing-48 : 48px;
+  --sizing-56 : 56px;
+  --sizing-60 : 60px;
+  --sizing-64 : 64px;
+  --sizing-80 : 80px;
   --sizing-128: 128px;
 
   /* ── Radius ── */
-  --radius-0:    0px;
-  --radius-2:    2px;
-  --radius-4:    4px;
-  --radius-6:    6px;
-  --radius-8:    8px;
-  --radius-10:   10px;
-  --radius-12:   12px;
-  --radius-16:   16px;
-  --radius-20:   20px;
+  --radius-0   : 0px;
+  --radius-2   : 2px;
+  --radius-4   : 4px;
+  --radius-6   : 6px;
+  --radius-8   : 8px;
+  --radius-10  : 10px;
+  --radius-12  : 12px;
+  --radius-16  : 16px;
+  --radius-20  : 20px;
   --radius-full: 9999px;
 
   /* ── Border Width ── */
@@ -1564,36 +1558,54 @@
 
   /* ── Font Weight ── */
   --font-weight-regular: 400;
-  --font-weight-medium:  500;
-  --font-weight-bold:    700;
+  --font-weight-medium : 500;
+  --font-weight-bold   : 700;
 
   /* ── Line Height ── */
   --line-height-130: 1.3;
   --line-height-140: 1.4;
 
+  /* ── Opacity ── */
+  --opacity-0  : 0;
+  --opacity-25 : 0.25;
+  --opacity-50 : 0.5;
+  --opacity-75 : 0.75;
+  --opacity-100: 1;
+
+  /* ── Breakpoint ── */
+  --breakpoint-xs : 320px;
+  --breakpoint-sm : 600px;
+  --breakpoint-md : 768px;
+  --breakpoint-lg : 1024px;
+  --breakpoint-xl : 1280px;
+  --breakpoint-2xl: 1440px;
+}
+/* &lt;&lt;&lt; GEN:FOUNDATION &lt;&lt;&lt; */
+
+
+/* ══════════════════════════════════════════════════
+   0b. Status Dark Alias (수동 — vars-data 밖 관리, 350 step alias. registry statusDarkAlias 참조)
+   ══════════════════════════════════════════════════ */
+:root {
+  /* ── Status · Dark (피드백 상태 전용 Dark Foundation) ── */
+  --color-status-dark-red:    #F06070; /* = color-red-dark-350 */
+  --color-status-dark-green:  #3FBE7E; /* = color-green-dark-350 */
+  --color-status-dark-yellow: #E8C048; /* = color-yellow-dark-350 */
+}
+
+
+/* ══════════════════════════════════════════════════
+   2b. Letter Spacing (수동 — 타이포 파이프라인 소속. textstyles-data.ts/typography-gen.js 참조)
+   ══════════════════════════════════════════════════ */
+:root {
   /* ── Letter Spacing ── */
   --letter-spacing-tight:  -0.02em;
   --letter-spacing-normal: 0em;
   --letter-spacing-wide:   0.02em;
+}
 
-  /* ── Opacity ── */
-  --opacity-0:   0;
-  --opacity-25:  0.25;
-  --opacity-50:  0.5;
-  --opacity-75:  0.75;
-  --opacity-100: 1;
 
-  /* ── Shadow ── */
-  --shadow-200: 0 4px 8px 0 rgba(0, 0, 0, 0.15);
-
-  /* ── Breakpoint ── */
-  --breakpoint-xs:  320px;
-  --breakpoint-sm:  600px;
-  --breakpoint-md:  768px;
-  --breakpoint-lg:  1024px;
-  --breakpoint-xl:  1280px;
-  --breakpoint-2xl: 1440px;
-
+:root {
   /* ══ semantic number (sizing·spacing·radius·border-width) — 763a70a 자동생성기 누락분 복원 2026-06-11 ══ */
   /* ── spacing (semantic) ── */
   --spacing-label-gap-inline-sm: var(--spacing-8);
