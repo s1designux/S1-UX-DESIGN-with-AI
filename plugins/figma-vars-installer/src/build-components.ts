@@ -1282,7 +1282,9 @@ async function buildDropdownList(maps: BuildMaps, originY: number): Promise<{ se
   const states = [
     { name: "Default",  bg: "option/bg/default",  label: "option/label/default" },
     { name: "Hover",    bg: "option/bg/hover",    label: "option/label/hover" },
-    { name: "Selected", bg: "option/bg/selected", label: "option/label/selected" },
+    // 2026-07-08 사용자 결정: 선택 배경=default와 동일 토큰(강조는 텍스트색만). option/bg/selected(하늘색)는
+    // 더 이상 여기서 안 쓰지만 Time Picker Cell(별도 컴포넌트, buildTimePickerCell)은 계속 사용 — 그대로 둠.
+    { name: "Selected", bg: "option/bg/default",  label: "option/label/selected" },
     { name: "Disabled", bg: "option/bg/disabled", label: "option/label/disabled" },
   ];
   const sizes = [
@@ -1877,7 +1879,8 @@ async function buildFilterChip(maps: BuildMaps, originY: number): Promise<{ set:
               const ddInst = ddComp.createInstance();
               ddInst.name = "dropdown";
               // Filter Chip 자체 드롭다운은 선택 표시=배경강조 없음(모바일 바텀시트 ds-fc-sheet-option과 동일 원칙).
-              // Dropdown 패널의 3번째 행(Selected, 파란 bg)을 Default 모양으로 교체 — 공용 Dropdown/Dropdown List 컴포넌트 자체는 그대로 둠(Select Box·Time Picker 용도라 건드리지 않음).
+              // 2026-07-08: 공용 Dropdown List의 Selected 자체가 이제 Default와 동일해져 이 스왑은 사실상 no-op이지만,
+              // 스코프 명시 목적으로 유지(Time Picker Cell은 별도 컴포넌트라 영향 없음).
               const selectedRow = ddInst.children[2];
               const defaultRowComp = BUILT_COMPS[`DropdownList:${ddSize}:Default`] as ComponentNode | undefined;
               if (selectedRow && selectedRow.type === "INSTANCE" && defaultRowComp) {

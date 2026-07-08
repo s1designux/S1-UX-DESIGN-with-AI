@@ -38,7 +38,7 @@ import {
 import { installTextStyles } from "./install-textstyles";
 import { buildAllComponents } from "./build-components";
 
-figma.showUI(__html__, { width: 440, height: 600, title: "에스원 디자인시스템 설치" });
+figma.showUI(__html__, { width: 440, height: 720, title: "에스원 디자인시스템 설치" });
 
 interface InstallSelection {
   foundation: boolean;

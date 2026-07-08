@@ -93,6 +93,8 @@
 
   /* ── buttons ── */
   .btn-row { display: flex; gap: 8px; }
+  /* 설치 탭 하단 버튼: 내용이 창보다 길어져도 항상 화면 아래에 붙어 보이게 고정 */
+  #btn-row { position: sticky; bottom: 0; background: #fff; padding-top: 10px; margin-top: 2px; border-top: 1px solid #f3f4f6; }
   .btn { flex: 1; padding: 10px; border-radius: 8px; border: none; font-size: 13px; font-weight: 600; cursor: pointer; transition: background 0.15s; }
   .btn-primary { background: #111827; color: #fff; }
   .btn-primary:hover { background: #374151; }

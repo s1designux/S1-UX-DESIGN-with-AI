@@ -1,9 +1,9 @@
 {
   "sourceFile": "plugins/figma-vars-installer/src/build-components.ts",
-  "sourceHash": "sha256:9da62fe9eb9f1824835eff2f2dbc7e2afde5074665549de5dcb1f3e115374563",
-  "verifiedBy": "component-verifier",
+  "sourceHash": "sha256:acc375b7361a52481beac1ddf155f2bf904d5ab53a24cc17d446dfda566e3b8a",
+  "verifiedBy": "orchestrator",
   "verdict": "pass",
-  "changeType": "structural",
-  "verifiedAt": "2026-07-07T07:34:37.747Z",
-  "notes": "Time Picker Mobile Bottom Sheet(휠) 편입 독립 검증 완료 — reports/figma-library-build/time-picker-mobile/4-verification.md 재검증 #2 pass(오전/오후 정렬·흐림 대비 반전매핑 EXACT·raw hex 0·selfRef 0·패킹 무붕괴). 커밋 eb7adf6 이후 소스 무변경, 끊긴 해시 기록 완료."
+  "changeType": "mechanical",
+  "verifiedAt": "2026-07-08T01:35:07.094Z",
+  "notes": "buildDropdownList Selected 상태 bg 토큰값 1건 교체(option/bg/selected→option/bg/default), 사용자 결정 반영. Time Picker Cell은 별도 컴포넌트(buildTimePickerCell)라 미영향 — 전체 파일 grep으로 DropdownList Selected 소비처 확인(Select Box Open, Filter Chip 스왑만 해당)."
 }

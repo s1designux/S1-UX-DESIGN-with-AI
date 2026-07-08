@@ -144,7 +144,7 @@
       --input-readonly-text:    var(--color-form-control-text-read-only);
       /* Dropdown 누락분 */
       --dropdown-trigger-open-bg:    var(--color-form-control-bg-selected);
-      --dropdown-option-selected-bg: var(--color-dropdown-option-bg-selected);
+      --dropdown-option-selected-bg: transparent;  /* 2026-07-08: Select 선택 옵션 배경=default와 동일(강조는 텍스트/굵기만). --color-dropdown-option-bg-selected(하늘색)는 Time Picker 셀 선택에만 계속 사용 */
     }
 
     /* =====================================================
@@ -807,7 +807,8 @@
     .ds-filter-chip--solid.is-disabled .ds-filter-chip-label,
     .ds-filter-chip--solid.is-disabled .ds-filter-chip-title { color: var(--chip-solid-disabled-text); }
     .ds-filter-chip--solid.is-disabled .ds-filter-chip-arrow { color: var(--chip-solid-disabled-text); }
-    /* Filter Chip 드롭다운(.s1-select-list 재사용) — 선택 옵션 배경은 강조 없이 default 유지(모바일 시트 .ds-fc-sheet-option과 동일 원칙: 강조=텍스트색/굵기만). 기본 Select 컴포넌트의 파란 selected 배경(Figma color/dropdown/option/bg/selected)은 그대로 둠 — 이 스코프 안에서만 override */
+    /* Filter Chip 드롭다운(.s1-select-list 재사용) — 선택 옵션 배경은 강조 없이 default 유지(모바일 시트 .ds-fc-sheet-option과 동일 원칙: 강조=텍스트색/굵기만).
+       2026-07-08: 기본 Select도 동일 규칙으로 통일돼 이 override는 더 이상 필요 없으나(값 동일), 스코프 명시용으로 유지 */
     .ds-filter-chip-wrap .s1-select-option.is-selected:not(:hover):not(.is-hover) {
       background: var(--color-dropdown-option-bg-default);
     }
@@ -1267,7 +1268,8 @@
       color: var(--color-dropdown-option-label-hover);
     }
     .s1-dropdown-option.is-selected {
-      background: var(--color-dropdown-option-bg-selected);
+      /* 2026-07-08: 선택 배경=default와 동일 foundation 토큰(강조는 텍스트색/굵기만). Time Picker 셀 선택은 --color-dropdown-option-bg-selected(하늘색) 그대로 유지 */
+      background: var(--color-dropdown-option-bg-default);
       color: var(--color-dropdown-option-label-selected);
       font-weight: 500;
     }
@@ -5464,7 +5466,7 @@ document.addEventListener('click', function(e) {
   color: <span class="c-val">var(--color-dropdown-option-label-default)</span>;
 }
 <span class="c-sel">.s1-dropdown-option.is-hover</span> { background: <span class="c-val">var(--color-dropdown-option-bg-hover)</span>; color: <span class="c-val">var(--color-dropdown-option-label-hover)</span>; }
-<span class="c-sel">.s1-dropdown-option.is-selected</span> { background: <span class="c-val">var(--color-dropdown-option-bg-selected)</span>; color: <span class="c-val">var(--color-dropdown-option-label-selected)</span>; }
+<span class="c-sel">.s1-dropdown-option.is-selected</span> { background: <span class="c-val">var(--color-dropdown-option-bg-default)</span>; color: <span class="c-val">var(--color-dropdown-option-label-selected)</span>; }
 <span class="c-sel">.s1-dropdown-option.is-disabled</span> { background: <span class="c-val">var(--color-dropdown-option-bg-disabled)</span>; color: <span class="c-val">var(--color-dropdown-option-label-disabled)</span>; }
 <span class="c-cmt">/* 사이즈 — XXSM(h28·font12) / XSM(h34·font14) / MD(h44·font14) */</span>
 <span class="c-sel">.s1-dropdown-list--xxsm .s1-dropdown-option</span> { height: <span class="c-val">var(--sizing-28)</span>; font-size: <span class="c-val">12px</span>; }
