@@ -434,9 +434,9 @@ Foundation(Foundation)를 직접 참조하지 않습니다.
 
 ## 6. Pagination
 
-> **Figma 확인 (2026-05-20):** 선택 페이지 = bg 변화 없음, 텍스트 색만 변경 (#9D9D9D → #353535).
-> disabled 화살표 = opacity:0.9만 적용 (bg/border 변화 없음).
-> `--pagination-control-hover-bg` — Figma 미정의, assumed (gray-50). candidate 상태.
+> **Figma 확인 (V3.0, 2026-07-08 · node 956:19066):** 선택 페이지 = bg 변화 없음, 텍스트 색만 변경 (#9D9D9D → #353535).
+> hover 배경(`color/pagination/control/bg/hover`)·disabled 전용 bg/border/icon 토큰이 V3.0 원본에 정의됨 → 기존 assumed/candidate 해소.
+> disabled 화살표 = 전용 토큰(bg #F5F5F5 / border #E9E9E9 / icon #C4C4C4) 기반. 기존 opacity:0.9 처리의 실제 CSS 제거는 3단계 구현 소관.
 
 ### 컨트롤 구조
 
@@ -445,28 +445,74 @@ Foundation(Foundation)를 직접 참조하지 않습니다.
 
 ### 변수 정의
 
-| Figma 원본 | CSS Variable | Semantic 참조 | 설명 | 상태 |
-|---|---|---|---|---|
-| color/pagination/control/bg/default | `--pagination-control-bg` | `var(--color-surface-default)` | 화살표·번호 공통 배경 | stable |
-| color/pagination/control/border/default | `--pagination-control-border` | `var(--color-border-subtle)` | 화살표 버튼 테두리 (번호 없음) | stable |
-| — (Figma 미정의) | `--pagination-control-hover-bg` | `var(--color-bg-subtle)` | hover 배경 — assumed | candidate |
-| color/gray/400 | `--pagination-number-text` | `var(--color-gray-400)` | 비선택 번호 텍스트 (#9D9D9D) | stable |
-| color/text/body/primary | `--pagination-number-text-selected` | `var(--color-text-secondary)` | 선택 번호 텍스트 (#353535) | stable |
+> **정본 참조:** 값은 `plugins/figma-vars-installer/src/vars-data.ts`(팔레트 매핑) + `assets/css/tokens.css`(라이트/다크 `--color-pagination-*`)가 정본. 컴포넌트는 `--pagination-*` 별칭(아래 "컴포넌트 소비 별칭")으로 소비한다. 아래 표는 그 정본을 미러링한다.
+
+| Figma 원본 | CSS Variable (`--color-pagination-*`) | Light | Dark | 설명 | 상태 |
+|---|---|---|---|---|---|
+| color/pagination/control/bg/default | `--color-pagination-control-bg-default` | `base/white` #FFFFFF | `gray-dark/100` #1C1D23 | 화살표·번호 기본 배경 | stable |
+| color/pagination/control/bg/hover | `--color-pagination-control-bg-hover` | `gray/50` #F5F5F5 | `gray-dark/200` #24252C | hover 배경 | stable |
+| color/pagination/control/bg/disabled | `--color-pagination-control-bg-disabled` | `gray/50` #F5F5F5 | `gray-dark/300` #2E2F38 | disabled 화살표 배경 | stable |
+| color/pagination/control/border/default | `--color-pagination-control-border-default` | `gray/200` #D9D9D9 | `gray-dark/500` #3E4049 | 화살표 버튼 테두리 (V3.0: #E9E9E9→#D9D9D9 교정) | stable |
+| color/pagination/control/border/hover | `--color-pagination-control-border-hover` | `gray/200` #D9D9D9 | `gray-dark/500` #3E4049 | hover 테두리 | stable |
+| color/pagination/control/border/disabled | `--color-pagination-control-border-disabled` | `gray/100` #E9E9E9 | `gray-dark/300` #2E2F38 | disabled 테두리 | stable |
+| color/pagination/control/icon/default | `--color-pagination-control-icon-default` | `gray/800` #353535 | `gray-dark/800` #B8BABF | 화살표 아이콘 | stable |
+| color/pagination/control/icon/hover | `--color-pagination-control-icon-hover` | `gray/800` #353535 | `gray-dark/800` #B8BABF | hover 아이콘 | stable |
+| color/pagination/control/icon/selected | `--color-pagination-control-icon-selected` | `gray/800` #353535 | `gray-dark/800` #B8BABF | selected 아이콘 | stable |
+| color/pagination/control/icon/disabled | `--color-pagination-control-icon-disabled` | `gray/300` #C4C4C4 | `gray-dark/600` #55575F | disabled 아이콘 | stable |
+| color/pagination/number/default | `--color-pagination-number-default` | `gray/400` #9D9D9D | `gray-dark/600` #55575F | 비선택 번호 텍스트 (전용변수 매핑, 구 color/gray/400 직참조 정합) | stable |
+| color/pagination/number/hover | `--color-pagination-number-hover` | `gray/400` #9D9D9D | `gray-dark/600` #55575F | hover 번호 텍스트 | stable |
+| color/pagination/number/selected | `--color-pagination-number-selected` | `gray/800` #353535 | `gray-dark/800` #B8BABF | 선택 번호 텍스트 | stable |
 
 > **삭제된 토큰 (2026-05-20):**
 > `--pagination-active-bg` (action-primary-default) — Figma에 없음, 선택 페이지에 bg 변화 없음
 > `--pagination-active-text` (action-primary-text) — Figma에 없음, 선택 페이지는 텍스트 색만 변경
-> `--pagination-disabled-bg / disabled-text / border` — opacity:0.9로 처리, 별도 토큰 없음
+>
+> **V3.0 갱신 (2026-07-08):** disabled 화살표는 더 이상 "opacity만 · 별도 토큰 없음"이 아니다 —
+> `color/pagination/control/bg|border|icon/disabled` 전용 토큰으로 대체됨(위 표). opacity 실제 제거는 3단계 구현 소관.
 
 ### CSS 구현
 
 ```css
-/* Pagination */
---pagination-control-bg:           var(--color-surface-default);  /* #FFFFFF */
---pagination-control-border:       var(--color-border-subtle);     /* #E9E9E9 */
---pagination-control-hover-bg:     var(--color-bg-subtle);         /* #F5F5F5 — candidate */
---pagination-number-text:          var(--color-gray-400);          /* #9D9D9D */
---pagination-number-text-selected: var(--color-text-secondary);    /* #353535 */
+/* Pagination — :root (light) */
+--color-pagination-control-bg-default     : var(--color-base-white);  /* #FFFFFF */
+--color-pagination-control-bg-hover       : var(--color-gray-50);      /* #F5F5F5 */
+--color-pagination-control-bg-disabled    : var(--color-gray-50);      /* #F5F5F5 */
+--color-pagination-control-border-default : var(--color-gray-200);     /* #D9D9D9 */
+--color-pagination-control-border-hover   : var(--color-gray-200);     /* #D9D9D9 */
+--color-pagination-control-border-disabled: var(--color-gray-100);     /* #E9E9E9 */
+--color-pagination-control-icon-default   : var(--color-gray-800);     /* #353535 */
+--color-pagination-control-icon-hover     : var(--color-gray-800);     /* #353535 */
+--color-pagination-control-icon-selected  : var(--color-gray-800);     /* #353535 */
+--color-pagination-control-icon-disabled  : var(--color-gray-300);     /* #C4C4C4 */
+--color-pagination-number-default         : var(--color-gray-400);     /* #9D9D9D */
+--color-pagination-number-hover           : var(--color-gray-400);     /* #9D9D9D */
+--color-pagination-number-selected        : var(--color-gray-800);     /* #353535 */
+
+/* [data-theme="dark"] */
+--color-pagination-control-bg-default     : var(--color-gray-dark-100);  /* #1C1D23 */
+--color-pagination-control-bg-hover       : var(--color-gray-dark-200);  /* #24252C */
+--color-pagination-control-bg-disabled    : var(--color-gray-dark-300);  /* #2E2F38 */
+--color-pagination-control-border-default : var(--color-gray-dark-500);  /* #3E4049 */
+--color-pagination-control-border-hover   : var(--color-gray-dark-500);  /* #3E4049 */
+--color-pagination-control-border-disabled: var(--color-gray-dark-300);  /* #2E2F38 */
+--color-pagination-control-icon-default   : var(--color-gray-dark-800);  /* #B8BABF */
+--color-pagination-control-icon-hover     : var(--color-gray-dark-800);  /* #B8BABF */
+--color-pagination-control-icon-selected  : var(--color-gray-dark-800);  /* #B8BABF */
+--color-pagination-control-icon-disabled  : var(--color-gray-dark-600);  /* #55575F */
+--color-pagination-number-default         : var(--color-gray-dark-600);  /* #55575F */
+--color-pagination-number-hover           : var(--color-gray-dark-600);  /* #55575F */
+--color-pagination-number-selected        : var(--color-gray-dark-800);  /* #B8BABF */
+
+/* 컴포넌트 소비 별칭 (components-new.html) */
+--pagination-control-bg:            var(--color-pagination-control-bg-default);
+--pagination-control-border:        var(--color-pagination-control-border-default);
+--pagination-control-hover-bg:      var(--color-pagination-control-bg-hover);
+--pagination-arrow-disabled-bg:     var(--color-pagination-control-bg-disabled);
+--pagination-arrow-disabled-border: var(--color-pagination-control-border-disabled);
+--pagination-arrow-disabled-color:  var(--color-pagination-control-icon-disabled);
+--pagination-number-text:           var(--color-pagination-number-default);
+--pagination-number-text-hover:     var(--color-pagination-number-hover);
+--pagination-number-text-selected:  var(--color-pagination-number-selected);
 ```
 
 ---

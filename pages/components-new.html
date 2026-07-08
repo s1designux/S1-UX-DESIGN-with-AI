@@ -94,6 +94,7 @@
       --chip-solid-hover-bg:         var(--color-chip-solid-bg-hover);
       --chip-solid-hover-border:     var(--color-chip-solid-bg-hover);   /* 정본: solid 스트록 = fill 동색(무테). hover 도 자기 fill(bg-hover) */
       --chip-solid-selected-bg:      var(--color-chip-solid-bg-selected);
+      --chip-solid-selected-hover-bg: var(--color-chip-solid-bg-selected-hover);
       --chip-solid-selected-border:  var(--color-chip-solid-border-selected);
       --chip-solid-disabled-border:  var(--color-chip-solid-border-disabled);
       --chip-solid-selected-text:    var(--color-chip-solid-label-selected);
@@ -522,6 +523,9 @@
     [data-theme="dark"] .matrix-row-label,
     [data-theme="dark"] .comp-row-label { color: #c4c9d4; }
     [data-theme="dark"] .matrix-row-label span { color: #a0a6b2; }
+    /* Action/States 구분 패널(Line Tab · GNB 메뉴 슬롯) */
+    .matrix-action-divider { background: #f0f2f5; border-right: 2px solid #c7ccd4; }
+    [data-theme="dark"] .matrix-action-divider { background: var(--color-gray-dark-100); border-right-color: var(--color-gray-dark-300); }
     /* 사이즈 상세(치수 span)는 Action 스트립에만 — 상태 매트릭스 행 라벨은 사이즈 이름만 (사용자 요청 2026-07-06) */
     .state-size-matrix .matrix-row-label span,
     .comp-state-matrix .matrix-row-label span,
@@ -681,6 +685,11 @@
       background: var(--chip-line-hover-bg);
       border-color: var(--chip-line-default-border);  /* Line hover: 테두리 유지(기본 테두리색). Solid만 스트록 삭제(정본 chip.json) */
     }
+    /* Chip — Line selected + hover (2026-07-08: Dropdown Option 과 동일 패턴 — 새 토큰 없이 기존 호버 배경 재사용, 선택 테두리·글자색은 유지) */
+    .s1-chip.is-selected:not(.is-disabled):not(.is-preview):hover,
+    .s1-chip.is-selected.is-hover {
+      background: var(--chip-line-hover-bg);
+    }
     /* Chip — Solid modifier */
     .s1-chip--solid {
       background: var(--chip-solid-default-bg);
@@ -694,6 +703,12 @@
     .s1-chip--solid.is-selected {
       background: var(--chip-solid-selected-bg);
       border-color: var(--chip-solid-selected-border); color: var(--chip-solid-selected-text);
+    }
+    /* Chip — Solid selected + hover (2026-07-08: 선택 배경 자체가 선택 신호라 회색 호버로 덮지 않고, Button Primary 호버와 같은 진한 파랑으로 유지) */
+    .s1-chip--solid.is-selected:not(.is-disabled):not(.is-preview):hover,
+    .s1-chip--solid.is-selected.is-hover {
+      background: var(--chip-solid-selected-hover-bg);
+      border-color: var(--chip-solid-selected-hover-bg);  /* solid 스트록 유지 = fill 동색(무테) */
     }
     .s1-chip--solid.is-disabled {
       background: var(--chip-solid-disabled-bg);
@@ -1385,7 +1400,6 @@
       background: var(--pagination-arrow-disabled-bg);
       border-color: var(--pagination-arrow-disabled-border);
       color: var(--pagination-arrow-disabled-color);
-      opacity: 0.9;
       cursor: default;
     }
     .s1-pagination-number {
@@ -3635,6 +3649,7 @@ clearBtn.<span class="c-fn">addEventListener</span>(<span class="c-str">'click'<
                 <tr><td class="token-name">--chip-solid-hover-border</td><td class="token-value">var(--color-chip-solid-bg-hover)</td><td class="token-resolved" data-token="--chip-solid-hover-border"></td><td>border-color · hover (= fill 동색, 무테)</td></tr>
                 <tr><td class="token-name">--chip-solid-hover-close-icon</td><td class="token-value">var(--color-chip-solid-label-default)</td><td class="token-resolved" data-token="--chip-solid-hover-close-icon"></td><td>close-icon-color · hover</td></tr>
                 <tr><td class="token-name">--chip-solid-selected-bg</td><td class="token-value">var(--color-chip-solid-bg-selected)</td><td class="token-resolved" data-token="--chip-solid-selected-bg"></td><td>background · selected</td></tr>
+                <tr><td class="token-name">--chip-solid-selected-hover-bg</td><td class="token-value">var(--color-chip-solid-bg-selected-hover)</td><td class="token-resolved" data-token="--chip-solid-selected-hover-bg"></td><td>background · selected+hover (버튼 Primary 호버와 같은 진한 파랑 재사용)</td></tr>
                 <tr><td class="token-name">--chip-solid-selected-border</td><td class="token-value">var(--color-chip-solid-border-selected)</td><td class="token-resolved" data-token="--chip-solid-selected-border"></td><td>border-color · selected</td></tr>
                 <tr><td class="token-name">--chip-solid-selected-text</td><td class="token-value">var(--color-chip-solid-label-selected)</td><td class="token-resolved" data-token="--chip-solid-selected-text"></td><td>color · selected</td></tr>
                 <tr><td class="token-name">--chip-solid-selected-icon</td><td class="token-value">var(--color-chip-solid-label-selected)</td><td class="token-resolved" data-token="--chip-solid-selected-icon"></td><td>icon-color · selected</td></tr>
@@ -3691,7 +3706,17 @@ clearBtn.<span class="c-fn">addEventListener</span>(<span class="c-str">'click'<
                   </div>
                   <div class="btn-action-item">
                     <div class="matrix-row-label">SM<span>h28</span></div>
-                    <button class="ds-filter-chip ds-filter-chip--sm"><span class="ds-filter-chip-label">최신순</span><svg class="ds-filter-chip-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M9 6L15 12L9 18" stroke="currentColor" stroke-width="2" stroke-linecap="square"/></svg></button>
+                    <div class="ds-filter-chip-wrap" id="filter-chip-action-sm-wrap">
+                      <button class="ds-filter-chip ds-filter-chip--sm" id="filter-chip-action-sm">
+                        <span class="ds-filter-chip-label">최신순</span>
+                        <svg class="ds-filter-chip-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M9 6L15 12L9 18" stroke="currentColor" stroke-width="2" stroke-linecap="square"/></svg>
+                      </button>
+                      <div class="s1-select-list">
+                        <div class="s1-select-option is-selected">최신순</div>
+                        <div class="s1-select-option">과거순</div>
+                        <div class="s1-select-option">인기순</div>
+                      </div>
+                    </div>
                   </div>
                 </div>
                 <div class="action-test-controls">
@@ -3736,7 +3761,17 @@ clearBtn.<span class="c-fn">addEventListener</span>(<span class="c-str">'click'<
                   </div>
                   <div class="btn-action-item">
                     <div class="matrix-row-label">SM<span>h28</span></div>
-                    <button class="ds-filter-chip ds-filter-chip--solid ds-filter-chip--sm"><span class="ds-filter-chip-label">최신순</span><svg class="ds-filter-chip-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M9 6L15 12L9 18" stroke="currentColor" stroke-width="2" stroke-linecap="square"/></svg></button>
+                    <div class="ds-filter-chip-wrap" id="filter-chip-solid-action-sm-wrap">
+                      <button class="ds-filter-chip ds-filter-chip--solid ds-filter-chip--sm" id="filter-chip-solid-action-sm">
+                        <span class="ds-filter-chip-label">최신순</span>
+                        <svg class="ds-filter-chip-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M9 6L15 12L9 18" stroke="currentColor" stroke-width="2" stroke-linecap="square"/></svg>
+                      </button>
+                      <div class="s1-select-list">
+                        <div class="s1-select-option is-selected">최신순</div>
+                        <div class="s1-select-option">과거순</div>
+                        <div class="s1-select-option">인기순</div>
+                      </div>
+                    </div>
                   </div>
                 </div>
                 <div class="action-test-controls">
@@ -3782,7 +3817,18 @@ clearBtn.<span class="c-fn">addEventListener</span>(<span class="c-str">'click'<
                   </div>
                   <div class="btn-action-item">
                     <div class="matrix-row-label">SM<span>h28</span></div>
-                    <button class="ds-filter-chip ds-filter-chip--sm"><span class="ds-filter-chip-title">정렬</span><span class="ds-filter-chip-label">최신순</span><svg class="ds-filter-chip-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M9 6L15 12L9 18" stroke="currentColor" stroke-width="2" stroke-linecap="square"/></svg></button>
+                    <div class="ds-filter-chip-wrap" id="filter-chip-title-action-sm-wrap">
+                      <button class="ds-filter-chip ds-filter-chip--sm" id="filter-chip-title-action-sm">
+                        <span class="ds-filter-chip-title">정렬</span>
+                        <span class="ds-filter-chip-label">최신순</span>
+                        <svg class="ds-filter-chip-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M9 6L15 12L9 18" stroke="currentColor" stroke-width="2" stroke-linecap="square"/></svg>
+                      </button>
+                      <div class="s1-select-list">
+                        <div class="s1-select-option is-selected">최신순</div>
+                        <div class="s1-select-option">과거순</div>
+                        <div class="s1-select-option">인기순</div>
+                      </div>
+                    </div>
                   </div>
                 </div>
                 <div class="action-test-controls">
@@ -3828,7 +3874,18 @@ clearBtn.<span class="c-fn">addEventListener</span>(<span class="c-str">'click'<
                   </div>
                   <div class="btn-action-item">
                     <div class="matrix-row-label">SM<span>h28</span></div>
-                    <button class="ds-filter-chip ds-filter-chip--solid ds-filter-chip--sm"><span class="ds-filter-chip-title">정렬</span><span class="ds-filter-chip-label">최신순</span><svg class="ds-filter-chip-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M9 6L15 12L9 18" stroke="currentColor" stroke-width="2" stroke-linecap="square"/></svg></button>
+                    <div class="ds-filter-chip-wrap" id="filter-chip-title-solid-action-sm-wrap">
+                      <button class="ds-filter-chip ds-filter-chip--solid ds-filter-chip--sm" id="filter-chip-title-solid-action-sm">
+                        <span class="ds-filter-chip-title">정렬</span>
+                        <span class="ds-filter-chip-label">최신순</span>
+                        <svg class="ds-filter-chip-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M9 6L15 12L9 18" stroke="currentColor" stroke-width="2" stroke-linecap="square"/></svg>
+                      </button>
+                      <div class="s1-select-list">
+                        <div class="s1-select-option is-selected">최신순</div>
+                        <div class="s1-select-option">과거순</div>
+                        <div class="s1-select-option">인기순</div>
+                      </div>
+                    </div>
                   </div>
                 </div>
                 <div class="action-test-controls">
@@ -4512,84 +4569,79 @@ function setDisabled(on) {
           <span class="comp-badge">interactive</span>
         </div>
 
-        <!-- ── States variant-block ── -->
+        <!-- ── States variant-block ──
+             Input식 표준(2026-07-08): 사이즈(MD·SM)는 Action 스트립에만 인터랙티브로,
+             상태(Unselected/Selected/Hover)는 사이즈와 분리된 하나의 가로 스트립(대표 사이즈 md).
+             셀에 명시적 grid 좌표를 두지 않아 reflowComponentMatrices() 의 liftable 조건
+             (Action 헤더 1개 + 'Action'으로 시작 + 좌표 없음)을 만족 → Action 상단 승격. -->
         <div class="variant-block">
           <div class="variant-label">States</div>
           <div class="preview-area" style="display:flex;flex-direction:column;gap:0;padding:0;overflow-x:auto;">
             <div class="platform-section platform-section-pc" style="padding:20px 20px 20px;">
               <div style="overflow-x:auto;">
-                <div class="comp-state-matrix" style="grid-template-columns: 72px minmax(280px,auto) repeat(3, auto);">
-                  <!-- Header -->
-                  <div class="matrix-col-header-action" style="grid-column:1;grid-row:1;">Size</div>
-                  <div class="matrix-col-header-action" style="grid-column:2;grid-row:1;">Action</div>
-                  <div class="matrix-col-header" style="grid-column:3;grid-row:1;">Unselected</div>
-                  <div class="matrix-col-header" style="grid-column:4;grid-row:1;">Selected</div>
-                  <div class="matrix-col-header" style="grid-column:5;grid-row:1;">Hover</div>
-
-                  <!-- PC MD row -->
-                  <div class="comp-state-cell" style="grid-column:1;grid-row:2;font-size:11px;font-weight:600;color:var(--color-text-caption);justify-content:center;">PC MD</div>
-                  <div class="comp-action-cell" data-comp-action="tab-pcmd" style="grid-column:2;grid-row:2;padding:14px 16px;">
-                    <div class="s1-tab s1-tab--pc-md" id="tab-action-pcmd">
-                      <button class="s1-tab-item is-selected" type="button" aria-selected="true">메뉴1</button>
-                      <button class="s1-tab-item" type="button">메뉴2</button>
-                      <button class="s1-tab-item" type="button">메뉴3</button>
+                <div class="comp-state-matrix" style="grid-template-columns: 260px repeat(3, minmax(140px, 1fr));">
+                  <div class="matrix-col-header-action">Action · Default</div>
+                  <div class="matrix-col-header">Unselected</div>
+                  <div class="matrix-col-header">Selected</div>
+                  <div class="matrix-col-header">Hover</div>
+                  <div class="comp-action-cell" data-comp-action="tab">
+                    <div class="btn-action-row">
+                      <div class="btn-action-item">
+                        <div class="matrix-row-label">MD<span>font 20</span></div>
+                        <div class="s1-tab s1-tab--pc-md" id="tab-action-pcmd">
+                          <button class="s1-tab-item is-selected" type="button" aria-selected="true">메뉴1</button>
+                          <button class="s1-tab-item" type="button">메뉴2</button>
+                          <button class="s1-tab-item" type="button">메뉴3</button>
+                        </div>
+                      </div>
+                      <div class="btn-action-item">
+                        <div class="matrix-row-label">SM<span>font 16</span></div>
+                        <div class="s1-tab s1-tab--pc-sm" id="tab-action-pcsm">
+                          <button class="s1-tab-item is-selected" type="button" aria-selected="true">메뉴1</button>
+                          <button class="s1-tab-item" type="button">메뉴2</button>
+                          <button class="s1-tab-item" type="button">메뉴3</button>
+                        </div>
+                      </div>
                     </div>
                   </div>
-                  <div class="comp-state-cell" style="grid-column:3;grid-row:2;">
+                  <div class="comp-state-cell">
                     <button class="s1-tab-item is-preview" style="font-size:20px;height:40px;letter-spacing:0;padding:0 24px;border-bottom:1px solid var(--tab-indicator-default);">메뉴1</button>
                   </div>
-                  <div class="comp-state-cell" style="grid-column:4;grid-row:2;">
+                  <div class="comp-state-cell">
                     <button class="s1-tab-item is-selected is-preview" style="font-size:20px;height:40px;letter-spacing:0;padding:0 24px;border-bottom-width:2px;">메뉴2</button>
                   </div>
-                  <div class="comp-state-cell" style="grid-column:5;grid-row:2;">
+                  <div class="comp-state-cell">
                     <button class="s1-tab-item is-hover is-preview" style="font-size:20px;height:40px;letter-spacing:0;padding:0 24px;border-bottom:2px solid var(--tab-indicator-hover);">메뉴3</button>
-                  </div>
-
-                  <!-- PC SM row -->
-                  <div class="comp-state-cell" style="grid-column:1;grid-row:3;font-size:11px;font-weight:600;color:var(--color-text-caption);justify-content:center;">PC SM</div>
-                  <div class="comp-action-cell" data-comp-action="tab-pcsm" style="grid-column:2;grid-row:3;padding:14px 16px;">
-                    <div class="s1-tab s1-tab--pc-sm" id="tab-action-pcsm">
-                      <button class="s1-tab-item is-selected" type="button" aria-selected="true">메뉴1</button>
-                      <button class="s1-tab-item" type="button">메뉴2</button>
-                      <button class="s1-tab-item" type="button">메뉴3</button>
-                    </div>
-                  </div>
-                  <div class="comp-state-cell" style="grid-column:3;grid-row:3;">
-                    <button class="s1-tab-item is-preview" style="font-size:16px;height:40px;padding:0 24px;border-bottom:1px solid var(--tab-indicator-default);">메뉴1</button>
-                  </div>
-                  <div class="comp-state-cell" style="grid-column:4;grid-row:3;">
-                    <button class="s1-tab-item is-selected is-preview" style="font-size:16px;height:40px;padding:0 24px;">메뉴2</button>
-                  </div>
-                  <div class="comp-state-cell" style="grid-column:5;grid-row:3;">
-                    <button class="s1-tab-item is-hover is-preview" style="font-size:16px;height:40px;padding:0 24px;border-bottom:2px solid var(--tab-indicator-hover);">메뉴3</button>
                   </div>
                 </div>
               </div>
             </div>
             <div class="platform-section platform-section-mobile" style="padding:20px 20px 20px;">
               <div style="overflow-x:auto;">
-                <div class="comp-state-matrix" style="grid-template-columns: 72px minmax(240px,auto) repeat(3, auto);">
-                  <div class="matrix-col-header-action" style="grid-column:1;grid-row:1;">Size</div>
-                  <div class="matrix-col-header-action" style="grid-column:2;grid-row:1;">Action</div>
-                  <div class="matrix-col-header" style="grid-column:3;grid-row:1;">Unselected</div>
-                  <div class="matrix-col-header" style="grid-column:4;grid-row:1;">Selected</div>
-                  <div class="matrix-col-header" style="grid-column:5;grid-row:1;">Hover</div>
-
-                  <div class="comp-state-cell" style="grid-column:1;grid-row:2;font-size:11px;font-weight:600;color:var(--color-text-caption);justify-content:center;">lg (h30)</div>
-                  <div class="comp-action-cell" data-comp-action="tab-mobile" style="grid-column:2;grid-row:2;padding:14px 16px;">
-                    <div class="s1-tab s1-tab--mobile" id="tab-action-mobile">
-                      <button class="s1-tab-item is-selected" type="button" aria-selected="true">메뉴1</button>
-                      <button class="s1-tab-item" type="button">메뉴2</button>
-                      <button class="s1-tab-item" type="button">메뉴3</button>
+                <div class="comp-state-matrix" style="grid-template-columns: 260px repeat(3, minmax(140px, 1fr));">
+                  <div class="matrix-col-header-action">Action · Default</div>
+                  <div class="matrix-col-header">Unselected</div>
+                  <div class="matrix-col-header">Selected</div>
+                  <div class="matrix-col-header">Hover</div>
+                  <div class="comp-action-cell" data-comp-action="tab-mobile">
+                    <div class="btn-action-row">
+                      <div class="btn-action-item">
+                        <div class="matrix-row-label">LG<span>h30</span></div>
+                        <div class="s1-tab s1-tab--mobile" id="tab-action-mobile">
+                          <button class="s1-tab-item is-selected" type="button" aria-selected="true">메뉴1</button>
+                          <button class="s1-tab-item" type="button">메뉴2</button>
+                          <button class="s1-tab-item" type="button">메뉴3</button>
+                        </div>
+                      </div>
                     </div>
                   </div>
-                  <div class="comp-state-cell" style="grid-column:3;grid-row:2;">
+                  <div class="comp-state-cell">
                     <button class="s1-tab-item is-preview" style="font-size:16px;height:30px;padding:0 16px;border-bottom:1px solid var(--tab-indicator-default);">메뉴1</button>
                   </div>
-                  <div class="comp-state-cell" style="grid-column:4;grid-row:2;">
+                  <div class="comp-state-cell">
                     <button class="s1-tab-item is-selected is-preview" style="font-size:16px;height:30px;padding:0 16px;">메뉴2</button>
                   </div>
-                  <div class="comp-state-cell" style="grid-column:5;grid-row:2;">
+                  <div class="comp-state-cell">
                     <button class="s1-tab-item is-hover is-preview" style="font-size:16px;height:30px;padding:0 16px;border-bottom:2px solid var(--tab-indicator-hover);">메뉴3</button>
                   </div>
                 </div>
@@ -4728,114 +4780,20 @@ function setDisabled(on) {
           <span class="comp-badge">15 variants</span>
         </div>
 
-        <!-- ── 구성 요소 (하위 항목) 정보 ── -->
-        <div class="variant-group">
-          <h3 class="variant-group-title">구성 요소 (하위 항목)</h3>
-          <p class="variant-group-desc">GNB 바(<code>s1-gnb</code>)는 아래 하위 항목이 조립된 세트다.</p>
-          <ul style="font-size:12px;color:var(--color-text-secondary);line-height:1.9;margin:0;padding-left:18px;">
-            <li><strong>로고</strong> (<code>s1-gnb-logo</code>) — 서비스 로고 텍스트. 20px · bold, 색상 <code>--gnb-logo-text</code>.</li>
-            <li><strong>메뉴 탭 · 슬롯</strong> (<code>s1-gnb-menu</code>) — 라벨 + 하단 2px 밑줄. 상태 default · hover · selected(밑줄 활성). 사이즈 md(h56 · 18px) / sm(h48 · 18px) / xsm(h36 · 14px). 슬롯끼리 gap 없이 인접, 분리는 슬롯 좌우 패딩으로만.</li>
-            <li><strong>유틸리티 아이콘 3종</strong> (<code>s1-gnb-util-btn</code>, 40×40 · xsm 32×32, 아이콘 24×24, 색상 <code>--gnb-icon</code>) — 언어(globe · <code>ic_인터넷</code>) / 계정(account · <code>ic_계정·사용자·ID</code>) / 메뉴(hamburger · <code>ic_메뉴</code>).</li>
-            <li><strong>정렬 2종</strong> — center-between(로고 · 메뉴 · 유틸 3분할) / start(로고+메뉴 좌측 묶음, 유틸 우측). start 는 로고↔메뉴 gap 64px(<code>s1-gnb-leading</code>).</li>
-          </ul>
-        </div>
-
-        <!-- ── Action (인터랙티브) — 세트(GNB 바)에 액션 추가 ── -->
+        <!-- ── Action (인터랙티브) — 정렬 × 사이즈 6개 조합 ── -->
         <div class="variant-group">
           <h3 class="variant-group-title">Action (인터랙티브 GNB 바)</h3>
-          <p class="variant-group-desc">메뉴 탭에 마우스를 올리면 hover, 클릭하면 선택(밑줄)이 이동한다. 유틸리티 아이콘도 hover 된다.</p>
+          <p class="variant-group-desc">로고 + 메뉴 슬롯 + 유틸리티(아이콘 3종) 조립체. 정렬 <strong>center-between</strong>(로고·메뉴·유틸 3분할) / <strong>start</strong>(로고+메뉴 좌측 묶음, 유틸 우측) × 사이즈 md·sm·xsm 6개 조합. <strong>메뉴 탭을 클릭하면 선택(밑줄)이 이동</strong>하고, 마우스를 올리면 hover 된다. 배경 <code>--gnb-bg</code>, 하단 1px <code>--gnb-border</code>. viewport(1280/1440/1920)는 full-width 반응형으로 통합(내부 패딩 pl 24 / pr 20).</p>
           <div class="variant-block">
-            <div class="matrix-col-header-action" style="text-align:left;padding-right:0;margin-bottom:10px;">Action · center-between · md (h56)</div>
-            <div class="preview-area" style="padding:24px;overflow-x:auto;">
-              <div class="s1-gnb s1-gnb--md s1-gnb--center-between" data-comp-action="gnb">
-                <span class="s1-gnb-logo">SAMPLE LOGO</span>
-                <div class="s1-gnb-menus" id="gnb-action-bar">
-                  <button class="s1-gnb-menu is-selected" type="button">메뉴1</button>
-                  <button class="s1-gnb-menu" type="button">메뉴2</button>
-                  <button class="s1-gnb-menu" type="button">메뉴3</button>
-                </div>
-                <div class="s1-gnb-util">
-                  <button class="s1-gnb-util-btn" type="button" aria-label="언어"><svg viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M9 18C13.9659 18 18 13.9659 18 9C18 4.03412 13.9659 0 9 0C4.03412 0 0 4.03412 0 9C0 13.9659 4.03412 18 9 18ZM2.97529 3.84353C3.56824 4.09765 4.18235 4.32 4.81765 4.5C4.42588 5.80235 4.20353 7.13647 4.16118 8.47059H1.09059C1.20706 6.71294 1.89529 5.10353 2.97529 3.84353ZM5.99294 1.65176C5.67529 2.25529 5.4 2.86941 5.16706 3.49412C4.69059 3.35647 4.22471 3.20824 3.78 3.02824C4.43647 2.45647 5.17765 1.99059 5.99294 1.65176ZM8.47059 1.09059V4.01294C7.71882 3.98118 6.95647 3.89647 6.20471 3.73765C6.53294 2.88 6.93529 2.03294 7.43294 1.21765C7.77177 1.15412 8.12118 1.11176 8.47059 1.09059ZM10.5671 1.21765C11.0647 2.03294 11.4671 2.88 11.7953 3.73765C11.0435 3.88588 10.2918 3.98118 9.52941 4.01294V1.09059C9.87882 1.11176 10.2282 1.15412 10.5671 1.21765ZM14.22 3.02824C13.7753 3.20824 13.3094 3.36706 12.8329 3.49412C12.6 2.86941 12.3247 2.25529 12.0071 1.65176C12.8224 1.99059 13.5635 2.45647 14.22 3.02824ZM16.9094 8.47059H13.8388C13.7965 7.13647 13.5741 5.80235 13.1824 4.5C13.8282 4.32 14.4424 4.09765 15.0247 3.84353C16.1047 5.10353 16.7929 6.71294 16.9094 8.47059ZM15.0247 14.1565C14.4424 13.9024 13.8176 13.68 13.1824 13.5C13.5741 12.1976 13.7965 10.8635 13.8388 9.52941H16.9094C16.7929 11.2871 16.1047 12.8965 15.0247 14.1565ZM12.0071 16.3482C12.3247 15.7447 12.6 15.1306 12.8329 14.5059C13.3094 14.6435 13.7753 14.7918 14.22 14.9718C13.5635 15.5435 12.8224 16.0094 12.0071 16.3482ZM9.52941 16.9094V13.9871C10.2812 14.0188 11.0435 14.1035 11.7953 14.2624C11.4671 15.12 11.0647 15.9671 10.5671 16.7824C10.2282 16.8459 9.87882 16.8882 9.52941 16.9094ZM7.43294 16.7824C6.93529 15.9671 6.53294 15.12 6.20471 14.2624C6.95647 14.1141 7.70824 14.0188 8.47059 13.9871V16.9094C8.12118 16.8882 7.77177 16.8459 7.43294 16.7824ZM3.78 14.9718C4.22471 14.7918 4.69059 14.6329 5.16706 14.5059C5.4 15.1306 5.67529 15.7447 5.99294 16.3482C5.17765 16.0094 4.43647 15.5435 3.78 14.9718ZM5.84471 4.74353C6.71294 4.92353 7.59177 5.04 8.47059 5.07176V8.47059H5.22C5.26235 7.22118 5.47412 5.97177 5.85529 4.74353H5.84471ZM12.1553 4.74353C12.5259 5.97177 12.7376 7.22118 12.7906 8.47059H9.54V5.07176C10.4188 5.04 11.2871 4.93412 12.1659 4.74353H12.1553ZM12.1553 13.2565C11.2871 13.0765 10.4082 12.96 9.52941 12.9388V9.54H12.78C12.7376 10.7894 12.5259 12.0388 12.1447 13.2671L12.1553 13.2565ZM8.47059 9.52941V12.9282C7.59177 12.96 6.72353 13.0659 5.84471 13.2459C5.47412 12.0176 5.26235 10.7682 5.20941 9.51882H8.46L8.47059 9.52941ZM4.16118 9.52941C4.20353 10.8635 4.42588 12.1976 4.81765 13.5C4.17177 13.68 3.55765 13.9024 2.97529 14.1565C1.89529 12.8965 1.20706 11.2871 1.09059 9.52941H4.16118Z" fill="currentColor"/></svg></button>
-                  <button class="s1-gnb-util-btn" type="button" aria-label="계정"><svg viewBox="0 0 24 21.5816" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M16.561 13.7324H7.43901C5.67118 13.7324 4.00236 14.3971 2.84266 15.5568C0.494991 17.9186 0.0141426 21.2704 0 21.3977L1.37183 21.5816C1.37183 21.5816 1.81025 18.5409 3.8185 16.5185C4.72363 15.6134 6.03889 15.1042 7.43901 15.1042H16.561C17.9611 15.1042 19.2764 15.6275 20.1815 16.5185C22.1897 18.5409 22.6282 21.5391 22.6282 21.5816L24 21.3977C23.9859 21.2563 23.505 17.9045 21.1573 15.5568C19.9976 14.3971 18.3288 13.7324 16.561 13.7324Z" fill="currentColor"/><path d="M5.9968 6.01061C5.9968 9.31998 8.69803 12.0212 12.0074 12.0212C15.3168 12.0212 18.018 9.31998 18.018 6.01061C18.018 2.70124 15.3168 0 12.0074 0C8.69803 0 5.9968 2.70124 5.9968 6.01061ZM16.6037 6.01061C16.6037 8.54213 14.5389 10.607 12.0074 10.607C9.47588 10.607 7.41106 8.54213 7.41106 6.01061C7.41106 3.47908 9.47588 1.41426 12.0074 1.41426C14.5389 1.41426 16.6037 3.47908 16.6037 6.01061Z" fill="currentColor"/></svg></button>
-                  <button class="s1-gnb-util-btn" type="button" aria-label="메뉴"><svg viewBox="0 0 24 16.9274" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M0 1.41176H24V0.705882V0H0V1.41176Z" fill="currentColor"/><path d="M0 9.17647H24V8.47059V7.76471H0V9.17647Z" fill="currentColor"/><path d="M0 16.9274H24V16.2215V15.5156H0V16.9274Z" fill="currentColor"/></svg></button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- ── variant-group: 메뉴 슬롯 ── -->
-        <div class="variant-group">
-          <h3 class="variant-group-title">메뉴 슬롯 (slots_menu)</h3>
-          <p class="variant-group-desc">GNB 바를 구성하는 원자 단위. 라벨 + 하단 2px 라인. 기본 라벨 <code>--gnb-menu-label-default</code>(#000000), hover·selected 라벨·밑줄 <code>--gnb-menu-label-active</code> / <code>--gnb-menu-underline-active</code>(#1D6CEB). 메뉴 슬롯 자체에는 아이콘 없음.</p>
-          <div class="variant-block">
-            <div class="variant-label">States</div>
-            <div class="preview-area" style="display:flex;flex-direction:column;gap:0;padding:0;overflow-x:auto;">
-              <div class="platform-section platform-section-pc" style="padding:20px 20px 20px;">
-                <div style="overflow-x:auto;">
-                  <div class="comp-state-matrix" style="grid-template-columns: 88px minmax(180px,auto) repeat(3, auto);">
-                    <div class="matrix-col-header-action" style="grid-column:1;grid-row:1;">Size</div>
-                    <div class="matrix-col-header-action" style="grid-column:2;grid-row:1;">Action</div>
-                    <div class="matrix-col-header" style="grid-column:3;grid-row:1;">Default</div>
-                    <div class="matrix-col-header" style="grid-column:4;grid-row:1;">Hover</div>
-                    <div class="matrix-col-header" style="grid-column:5;grid-row:1;">Selected</div>
-
-                    <!-- md row -->
-                    <div class="comp-state-cell" style="grid-column:1;grid-row:2;font-size:11px;font-weight:600;color:var(--color-text-caption);justify-content:center;">md<br><span style="font-weight:400;">h56 · 18px</span></div>
-                    <div class="comp-action-cell" data-comp-action="gnb-md" style="grid-column:2;grid-row:2;padding:8px 12px;">
-                      <div style="display:flex;" id="gnb-action-md">
-                        <button class="s1-gnb-menu is-selected" type="button">메뉴1</button>
-                        <button class="s1-gnb-menu" type="button">메뉴2</button>
-                      </div>
-                    </div>
-                    <div class="comp-state-cell" style="grid-column:3;grid-row:2;"><button class="s1-gnb-menu is-preview" type="button">메뉴타이틀</button></div>
-                    <div class="comp-state-cell" style="grid-column:4;grid-row:2;"><button class="s1-gnb-menu is-hover is-preview" type="button">메뉴타이틀</button></div>
-                    <div class="comp-state-cell" style="grid-column:5;grid-row:2;"><button class="s1-gnb-menu is-selected is-preview" type="button">메뉴타이틀</button></div>
-
-                    <!-- sm row -->
-                    <div class="comp-state-cell" style="grid-column:1;grid-row:3;font-size:11px;font-weight:600;color:var(--color-text-caption);justify-content:center;">sm<br><span style="font-weight:400;">h48 · 18px</span></div>
-                    <div class="comp-action-cell" data-comp-action="gnb-sm" style="grid-column:2;grid-row:3;padding:8px 12px;">
-                      <div style="display:flex;" id="gnb-action-sm">
-                        <button class="s1-gnb-menu s1-gnb-menu--sm is-selected" type="button">메뉴1</button>
-                        <button class="s1-gnb-menu s1-gnb-menu--sm" type="button">메뉴2</button>
-                      </div>
-                    </div>
-                    <div class="comp-state-cell" style="grid-column:3;grid-row:3;"><button class="s1-gnb-menu s1-gnb-menu--sm is-preview" type="button">메뉴타이틀</button></div>
-                    <div class="comp-state-cell" style="grid-column:4;grid-row:3;"><button class="s1-gnb-menu s1-gnb-menu--sm is-hover is-preview" type="button">메뉴타이틀</button></div>
-                    <div class="comp-state-cell" style="grid-column:5;grid-row:3;"><button class="s1-gnb-menu s1-gnb-menu--sm is-selected is-preview" type="button">메뉴타이틀</button></div>
-
-                    <!-- xsm row -->
-                    <div class="comp-state-cell" style="grid-column:1;grid-row:4;font-size:11px;font-weight:600;color:var(--color-text-caption);justify-content:center;">xsm<br><span style="font-weight:400;">h36 · 14px</span></div>
-                    <div class="comp-action-cell" data-comp-action="gnb-xsm" style="grid-column:2;grid-row:4;padding:8px 12px;">
-                      <div style="display:flex;" id="gnb-action-xsm">
-                        <button class="s1-gnb-menu s1-gnb-menu--xsm is-selected" type="button">메뉴1</button>
-                        <button class="s1-gnb-menu s1-gnb-menu--xsm" type="button">메뉴2</button>
-                      </div>
-                    </div>
-                    <div class="comp-state-cell" style="grid-column:3;grid-row:4;"><button class="s1-gnb-menu s1-gnb-menu--xsm is-preview" type="button">메뉴타이틀</button></div>
-                    <div class="comp-state-cell" style="grid-column:4;grid-row:4;"><button class="s1-gnb-menu s1-gnb-menu--xsm is-hover is-preview" type="button">메뉴타이틀</button></div>
-                    <div class="comp-state-cell" style="grid-column:5;grid-row:4;"><button class="s1-gnb-menu s1-gnb-menu--xsm is-selected is-preview" type="button">메뉴타이틀</button></div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- ── variant-group: GNB 바 ── -->
-        <div class="variant-group">
-          <h3 class="variant-group-title">GNB 바 (pc_gnb)</h3>
-          <p class="variant-group-desc">로고 + 메뉴 슬롯 + 유틸리티(아이콘 3종) 조립체. 배경 <code>--gnb-bg</code>, 하단 1px <code>--gnb-border</code>. 정렬 <strong>center-between</strong>(로고·메뉴·유틸 3분할) / <strong>start</strong>(로고+메뉴 좌측 묶음, 유틸 우측). viewport(1280/1440/1920)는 full-width 반응형으로 통합(내부 패딩 pl 24 / pr 20).</p>
-          <div class="variant-block">
-            <div class="variant-label">size × align</div>
+            <div class="variant-label">정렬 × 사이즈</div>
             <div class="preview-area" style="display:flex;flex-direction:column;gap:24px;padding:24px;overflow-x:auto;">
 
               <!-- center-between · md -->
               <div>
                 <div style="font-size:11px;font-weight:600;color:var(--color-text-caption);margin-bottom:8px;letter-spacing:0.04em;text-transform:uppercase;">center-between · md — h56</div>
-                <div class="s1-gnb s1-gnb--md s1-gnb--center-between">
+                <div class="s1-gnb s1-gnb--md s1-gnb--center-between" data-comp-action="gnb">
                   <span class="s1-gnb-logo">SAMPLE LOGO</span>
-                  <div class="s1-gnb-menus">
+                  <div class="s1-gnb-menus" id="gnb-action-cb-md">
                     <button class="s1-gnb-menu is-selected" type="button">메뉴1</button>
                     <button class="s1-gnb-menu" type="button">메뉴2</button>
                     <button class="s1-gnb-menu" type="button">메뉴3</button>
@@ -4851,9 +4809,9 @@ function setDisabled(on) {
               <!-- center-between · sm -->
               <div>
                 <div style="font-size:11px;font-weight:600;color:var(--color-text-caption);margin-bottom:8px;letter-spacing:0.04em;text-transform:uppercase;">center-between · sm — h48</div>
-                <div class="s1-gnb s1-gnb--sm s1-gnb--center-between">
+                <div class="s1-gnb s1-gnb--sm s1-gnb--center-between" data-comp-action="gnb">
                   <span class="s1-gnb-logo">SAMPLE LOGO</span>
-                  <div class="s1-gnb-menus">
+                  <div class="s1-gnb-menus" id="gnb-action-cb-sm">
                     <button class="s1-gnb-menu s1-gnb-menu--sm is-selected" type="button">메뉴1</button>
                     <button class="s1-gnb-menu s1-gnb-menu--sm" type="button">메뉴2</button>
                     <button class="s1-gnb-menu s1-gnb-menu--sm" type="button">메뉴3</button>
@@ -4869,9 +4827,9 @@ function setDisabled(on) {
               <!-- center-between · xsm -->
               <div>
                 <div style="font-size:11px;font-weight:600;color:var(--color-text-caption);margin-bottom:8px;letter-spacing:0.04em;text-transform:uppercase;">center-between · xsm — h36</div>
-                <div class="s1-gnb s1-gnb--xsm s1-gnb--center-between">
+                <div class="s1-gnb s1-gnb--xsm s1-gnb--center-between" data-comp-action="gnb">
                   <span class="s1-gnb-logo">SAMPLE LOGO</span>
-                  <div class="s1-gnb-menus">
+                  <div class="s1-gnb-menus" id="gnb-action-cb-xsm">
                     <button class="s1-gnb-menu s1-gnb-menu--xsm is-selected" type="button">메뉴1</button>
                     <button class="s1-gnb-menu s1-gnb-menu--xsm" type="button">메뉴2</button>
                     <button class="s1-gnb-menu s1-gnb-menu--xsm" type="button">메뉴3</button>
@@ -4887,10 +4845,10 @@ function setDisabled(on) {
               <!-- start · md -->
               <div>
                 <div style="font-size:11px;font-weight:600;color:var(--color-text-caption);margin-bottom:8px;letter-spacing:0.04em;text-transform:uppercase;">start · md — h56 · 로고↔메뉴 gap64</div>
-                <div class="s1-gnb s1-gnb--md s1-gnb--start">
+                <div class="s1-gnb s1-gnb--md s1-gnb--start" data-comp-action="gnb">
                   <div class="s1-gnb-leading">
                     <span class="s1-gnb-logo">SAMPLE LOGO</span>
-                    <div class="s1-gnb-menus">
+                    <div class="s1-gnb-menus" id="gnb-action-start-md">
                       <button class="s1-gnb-menu is-selected" type="button">메뉴1</button>
                       <button class="s1-gnb-menu" type="button">메뉴2</button>
                       <button class="s1-gnb-menu" type="button">메뉴3</button>
@@ -4907,10 +4865,10 @@ function setDisabled(on) {
               <!-- start · sm -->
               <div>
                 <div style="font-size:11px;font-weight:600;color:var(--color-text-caption);margin-bottom:8px;letter-spacing:0.04em;text-transform:uppercase;">start · sm — h48 · 로고↔메뉴 gap64</div>
-                <div class="s1-gnb s1-gnb--sm s1-gnb--start">
+                <div class="s1-gnb s1-gnb--sm s1-gnb--start" data-comp-action="gnb">
                   <div class="s1-gnb-leading">
                     <span class="s1-gnb-logo">SAMPLE LOGO</span>
-                    <div class="s1-gnb-menus">
+                    <div class="s1-gnb-menus" id="gnb-action-start-sm">
                       <button class="s1-gnb-menu s1-gnb-menu--sm is-selected" type="button">메뉴1</button>
                       <button class="s1-gnb-menu s1-gnb-menu--sm" type="button">메뉴2</button>
                       <button class="s1-gnb-menu s1-gnb-menu--sm" type="button">메뉴3</button>
@@ -4927,10 +4885,10 @@ function setDisabled(on) {
               <!-- start · xsm -->
               <div>
                 <div style="font-size:11px;font-weight:600;color:var(--color-text-caption);margin-bottom:8px;letter-spacing:0.04em;text-transform:uppercase;">start · xsm — h36 · 로고↔메뉴 gap64</div>
-                <div class="s1-gnb s1-gnb--xsm s1-gnb--start">
+                <div class="s1-gnb s1-gnb--xsm s1-gnb--start" data-comp-action="gnb">
                   <div class="s1-gnb-leading">
                     <span class="s1-gnb-logo">SAMPLE LOGO</span>
-                    <div class="s1-gnb-menus">
+                    <div class="s1-gnb-menus" id="gnb-action-start-xsm">
                       <button class="s1-gnb-menu s1-gnb-menu--xsm is-selected" type="button">메뉴1</button>
                       <button class="s1-gnb-menu s1-gnb-menu--xsm" type="button">메뉴2</button>
                       <button class="s1-gnb-menu s1-gnb-menu--xsm" type="button">메뉴3</button>
@@ -4944,6 +4902,57 @@ function setDisabled(on) {
                 </div>
               </div>
 
+            </div>
+          </div>
+        </div>
+
+        <!-- ── 구성 요소 (하위 항목) 정보 ── -->
+        <div class="variant-group">
+          <h3 class="variant-group-title">구성 요소 (하위 항목)</h3>
+          <p class="variant-group-desc">GNB 바(<code>s1-gnb</code>)는 아래 하위 항목이 조립된 세트다.</p>
+          <ul style="font-size:12px;color:var(--color-text-secondary);line-height:1.9;margin:0;padding-left:18px;">
+            <li><strong>로고</strong> (<code>s1-gnb-logo</code>) — 서비스 로고 텍스트. 20px · bold, 색상 <code>--gnb-logo-text</code>.</li>
+            <li><strong>메뉴 탭 · 슬롯</strong> (<code>s1-gnb-menu</code>) — 라벨 + 하단 2px 밑줄. 상태 default · hover · selected(밑줄 활성). 사이즈 md(h56 · 18px) / sm(h48 · 18px) / xsm(h36 · 14px). 슬롯끼리 gap 없이 인접, 분리는 슬롯 좌우 패딩으로만.</li>
+            <li><strong>유틸리티 아이콘 3종</strong> (<code>s1-gnb-util-btn</code>, 40×40 · xsm 32×32, 아이콘 24×24, 색상 <code>--gnb-icon</code>) — 언어(globe · <code>ic_인터넷</code>) / 계정(account · <code>ic_계정·사용자·ID</code>) / 메뉴(hamburger · <code>ic_메뉴</code>).</li>
+            <li><strong>정렬 2종</strong> — center-between(로고 · 메뉴 · 유틸 3분할) / start(로고+메뉴 좌측 묶음, 유틸 우측). start 는 로고↔메뉴 gap 64px(<code>s1-gnb-leading</code>).</li>
+          </ul>
+        </div>
+
+        <!-- ── variant-group: 메뉴 슬롯 ── -->
+        <div class="variant-group">
+          <h3 class="variant-group-title">메뉴 슬롯 (slots_menu)</h3>
+          <p class="variant-group-desc">GNB 바를 구성하는 원자 단위. 라벨 + 하단 2px 라인. 기본 라벨 <code>--gnb-menu-label-default</code>(#000000), hover·selected 라벨·밑줄 <code>--gnb-menu-label-active</code> / <code>--gnb-menu-underline-active</code>(#1D6CEB). 메뉴 슬롯 자체에는 아이콘 없음.</p>
+          <div class="variant-block">
+            <div class="variant-label">States</div>
+            <div class="preview-area" style="display:flex;flex-direction:column;gap:0;padding:0;overflow-x:auto;">
+              <div class="platform-section platform-section-pc" style="padding:20px 20px 20px;">
+                <div style="overflow-x:auto;">
+                  <div class="comp-state-matrix" style="grid-template-columns: 88px repeat(3, auto);">
+                    <div class="matrix-col-header" style="grid-column:1;grid-row:1;">Size</div>
+                    <div class="matrix-col-header" style="grid-column:2;grid-row:1;">Default</div>
+                    <div class="matrix-col-header" style="grid-column:3;grid-row:1;">Hover</div>
+                    <div class="matrix-col-header" style="grid-column:4;grid-row:1;">Selected</div>
+
+                    <!-- md row -->
+                    <div class="comp-state-cell" style="grid-column:1;grid-row:2;font-size:11px;font-weight:600;color:var(--color-text-caption);justify-content:center;">md<br><span style="font-weight:400;">h56 · 18px</span></div>
+                    <div class="comp-state-cell" style="grid-column:2;grid-row:2;"><button class="s1-gnb-menu is-preview" type="button">메뉴타이틀</button></div>
+                    <div class="comp-state-cell" style="grid-column:3;grid-row:2;"><button class="s1-gnb-menu is-hover is-preview" type="button">메뉴타이틀</button></div>
+                    <div class="comp-state-cell" style="grid-column:4;grid-row:2;"><button class="s1-gnb-menu is-selected is-preview" type="button">메뉴타이틀</button></div>
+
+                    <!-- sm row -->
+                    <div class="comp-state-cell" style="grid-column:1;grid-row:3;font-size:11px;font-weight:600;color:var(--color-text-caption);justify-content:center;">sm<br><span style="font-weight:400;">h48 · 18px</span></div>
+                    <div class="comp-state-cell" style="grid-column:2;grid-row:3;"><button class="s1-gnb-menu s1-gnb-menu--sm is-preview" type="button">메뉴타이틀</button></div>
+                    <div class="comp-state-cell" style="grid-column:3;grid-row:3;"><button class="s1-gnb-menu s1-gnb-menu--sm is-hover is-preview" type="button">메뉴타이틀</button></div>
+                    <div class="comp-state-cell" style="grid-column:4;grid-row:3;"><button class="s1-gnb-menu s1-gnb-menu--sm is-selected is-preview" type="button">메뉴타이틀</button></div>
+
+                    <!-- xsm row -->
+                    <div class="comp-state-cell" style="grid-column:1;grid-row:4;font-size:11px;font-weight:600;color:var(--color-text-caption);justify-content:center;">xsm<br><span style="font-weight:400;">h36 · 14px</span></div>
+                    <div class="comp-state-cell" style="grid-column:2;grid-row:4;"><button class="s1-gnb-menu s1-gnb-menu--xsm is-preview" type="button">메뉴타이틀</button></div>
+                    <div class="comp-state-cell" style="grid-column:3;grid-row:4;"><button class="s1-gnb-menu s1-gnb-menu--xsm is-hover is-preview" type="button">메뉴타이틀</button></div>
+                    <div class="comp-state-cell" style="grid-column:4;grid-row:4;"><button class="s1-gnb-menu s1-gnb-menu--xsm is-selected is-preview" type="button">메뉴타이틀</button></div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -5059,7 +5068,7 @@ function setDisabled(on) {
               });
             });
           }
-          ['gnb-action-md','gnb-action-sm','gnb-action-xsm','gnb-action-bar'].forEach(function(id) {
+          ['gnb-action-cb-md','gnb-action-cb-sm','gnb-action-cb-xsm','gnb-action-start-md','gnb-action-start-sm','gnb-action-start-xsm'].forEach(function(id) {
             setupGnb(document.getElementById(id));
           });
         })();
@@ -6326,7 +6335,6 @@ updateHeader(); // 초기 헤더 상태 동기화</pre>
 .s1-pagination-arrow:disabled {
   background: var(--pagination-arrow-disabled-bg);
   color: var(--pagination-arrow-disabled-color);
-  opacity: 0.9;
 }
 
 .s1-pagination-number {
@@ -8306,6 +8314,7 @@ document.addEventListener('click', function(e) {
     const target = document.getElementById(id);
     if (target) target.classList.add('is-active');
     if (btn) btn.classList.add('is-active');
+    window.scrollTo(0, 0);
   }
 
   function setTheme(t) {
@@ -8685,38 +8694,45 @@ document.addEventListener('click', function(e) {
     setupChipActionGroup('data-chip-line-mobile-disabled');
     setupChipActionGroup('data-chip-solid-mobile-disabled');
 
-    // ── Filter Chip: click → toggle selected ──
-    function setupFilterChipDropdown(wrapId, disabledAttr) {
-      const wrap = document.getElementById(wrapId);
-      if (!wrap) return;
-      const chip = wrap.querySelector('.ds-filter-chip');
-      const list = wrap.querySelector('.s1-select-list');
-      chip.addEventListener('click', () => {
-        if (chip.classList.contains('is-disabled')) return;
-        wrap.classList.toggle('is-open');
-      });
-      list.querySelectorAll('.s1-select-option').forEach(opt => {
-        opt.addEventListener('click', () => {
-          list.querySelectorAll('.s1-select-option').forEach(o => o.classList.remove('is-selected'));
-          opt.classList.add('is-selected');
-          wrap.querySelector('.ds-filter-chip-label').textContent = opt.textContent;
-          wrap.classList.remove('is-open');
+    // ── Filter Chip: 사이즈별(MD·SM) 각각 click → toggle open/selected · Disabled → 전체 사이즈 ──
+    function setupFilterChipGroup(disabledAttr) {
+      const toggle = document.querySelector('[' + disabledAttr + ']');
+      const cell = toggle && toggle.closest('.comp-action-cell');
+      if (!cell) return;
+      const wraps = cell.querySelectorAll('.ds-filter-chip-wrap');
+      wraps.forEach((wrap) => {
+        const chip = wrap.querySelector('.ds-filter-chip');
+        const list = wrap.querySelector('.s1-select-list');
+        chip.addEventListener('click', () => {
+          if (chip.classList.contains('is-disabled')) return;
+          wrap.classList.toggle('is-open');
+        });
+        list.querySelectorAll('.s1-select-option').forEach(opt => {
+          opt.addEventListener('click', () => {
+            list.querySelectorAll('.s1-select-option').forEach(o => o.classList.remove('is-selected'));
+            opt.classList.add('is-selected');
+            wrap.querySelector('.ds-filter-chip-label').textContent = opt.textContent;
+            wrap.classList.remove('is-open');
+          });
+        });
+        document.addEventListener('click', (e) => {
+          if (!wrap.contains(e.target)) wrap.classList.remove('is-open');
         });
       });
-      document.querySelector('[' + disabledAttr + ']')?.addEventListener('click', (e) => {
-        const on = chip.classList.toggle('is-disabled');
-        if (on) wrap.classList.remove('is-open');
-        e.target.classList.toggle('is-on', on);
+      toggle.addEventListener('click', (e) => {
+        const on = e.target.classList.toggle('is-on');
+        wraps.forEach((wrap) => {
+          const chip = wrap.querySelector('.ds-filter-chip');
+          chip.classList.toggle('is-disabled', on);
+          if (on) wrap.classList.remove('is-open');
+        });
         e.target.textContent = on ? 'Disabled: on' : 'Disabled: off';
       });
-      document.addEventListener('click', (e) => {
-        if (!wrap.contains(e.target)) wrap.classList.remove('is-open');
-      });
     }
-    setupFilterChipDropdown('filter-chip-action-wrap', 'data-filter-disabled');
-    setupFilterChipDropdown('filter-chip-solid-action-wrap', 'data-filter-solid-disabled');
-    setupFilterChipDropdown('filter-chip-title-action-wrap', 'data-filter-title-disabled');
-    setupFilterChipDropdown('filter-chip-title-solid-action-wrap', 'data-filter-title-solid-disabled');
+    setupFilterChipGroup('data-filter-disabled');
+    setupFilterChipGroup('data-filter-solid-disabled');
+    setupFilterChipGroup('data-filter-title-disabled');
+    setupFilterChipGroup('data-filter-title-solid-disabled');
 
     // ── Select: click trigger → toggle open, option click → select ──
     // 모든 사이즈(MD·XSM·XXSM) 동일 배선 — 인스턴스별 함수 재사용
