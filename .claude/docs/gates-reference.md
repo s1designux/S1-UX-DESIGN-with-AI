@@ -6,7 +6,7 @@
 
 ---
 
-## 5개 Gate 정의
+## Gate 정의 (Gate 1~23)
 
 ### Gate 1: Registry Gate
 **파일:** `.claude/agents/token-validator.md`
@@ -38,7 +38,7 @@
 **자동 스크립트:** `npm run gate:check`
 
 ### Gate 4: Report Gate
-**파일:** `scripts/gate-check.js` (Gate 2 섹션)
+**파일:** `scripts/gate-check.js` (Gate 4 섹션)
 **트리거:** `reports/*.md` 추가/수정, 작업 완료 전
 **체크 항목:**
 - `reports/reports-index.json` vs 실제 `.md` 파일 커버리지
@@ -62,7 +62,7 @@
 ### Gate 6: Installer Coverage Gate (2026-06-02 신설)
 **파일:** `scripts/installer-coverage-check.js`
 **트리거:** `assets/css/tokens.css` 변경, `plugins/figma-vars-installer/src/vars-data.ts` 변경
-**자동 스크립트:** `npm run installer:coverage` 또는 `npm run gate:check` (Gate 4 섹션)
+**자동 스크립트:** `npm run installer:coverage` 또는 `npm run gate:check` (Gate 6 섹션)
 **체크 항목:**
 - Foundation Color (Light palette): tokens.css의 모든 `--color-{palette}-{step}`이 vars-data.ts FOUNDATION_COLOR에 존재하는가
 - Foundation Number: `--spacing-N`·`--radius-N`·`--border-width-N`·`--font-size-N`·`--font-weight-*`·`--line-height-N`이 FOUNDATION_NUMBER에 존재하는가

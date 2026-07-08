@@ -3,10 +3,13 @@
  * Gate Check — Registry + Report + Quality + Installer Coverage gates
  * Usage: node scripts/gate-check.js
  *
+ * 2026-07-08: 아래 번호를 CLAUDE.md/gates-reference.md 문서 번호(Report=4,
+ * Installer Coverage=6)에 맞춰 정정. 라벨·주석만 변경, 검사 로직은 무변경.
+ *
  * Gate 1: Registry            — component registry path/JSON 유효성
- * Gate 2: Report              — reports-index.json vs 실제 파일 정합성
+ * Gate 4: Report              — reports-index.json vs 실제 파일 정합성
  * Gate 3: Quality             — tokens.css raw HEX / Foundation 직접 참조 감지
- * Gate 4: Installer Coverage  — tokens.css 의 Foundation·Semantic 토큰이
+ * Gate 6: Installer Coverage  — tokens.css 의 Foundation·Semantic 토큰이
  *                                figma-vars-installer 의 Variables 정의에 반영됐는지
  * Gate 7: Token Sync Monitor  — 토큰 "값"이 전 표면에서 정본과 일치하는지
  * Gate 8: Component Key Cov.   — build-components.ts 빌더의 동적 scv 키가
@@ -68,8 +71,8 @@ for (const rel of tokenRegistryFiles) {
   }
 }
 
-// ── Gate 2: Report Gate ───────────────────────────────────────────
-console.log('\n🔎 [Gate 2] 리포트색인 검사기 (Report)');
+// ── Gate 4: Report Gate ───────────────────────────────────────────
+console.log('\n🔎 [Gate 4] 리포트색인 검사기 (Report)');
 
 const reportsDir = path.join(ROOT, 'reports');
 const reportsIndexPath = path.join(ROOT, 'data/reports-index.json');
@@ -166,8 +169,8 @@ if (!fs.existsSync(tokensCSSPath)) {
   }
 }
 
-// ── Gate 4: Installer Coverage Gate ──────────────────────────────
-console.log('\n🔎 [Gate 4] 설치기누락 검사기 (Installer Coverage)');
+// ── Gate 6: Installer Coverage Gate ──────────────────────────────
+console.log('\n🔎 [Gate 6] 설치기누락 검사기 (Installer Coverage)');
 
 try {
   const { audit } = require('./installer-coverage-check');
