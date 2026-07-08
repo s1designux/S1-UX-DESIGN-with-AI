@@ -6,11 +6,11 @@
     "updatedAt": "2026-05-20",
     "version": "0.2.0",
     "tokenStatus": "stable",
-    "codeStatus": "not-started",
+    "codeStatus": "implemented",
     "darkModeStatus": "pending",
     "a11yStatus": "pending",
     "figmaStatus": "confirmed",
-    "harnessStatus": "skeleton",
+    "harnessStatus": "implemented",
     "description": "페이지네이션 컨트롤. 화살표(first/prev/next/last) + 페이지 번호. 선택 페이지는 텍스트 색으로만 구분.",
     "notes": [
       "Figma 확인: 선택 페이지 = bg 변화 없음, 텍스트 색만 변경 (#9D9D9D → #353535).",
@@ -79,11 +79,11 @@
   ],
   "figma": {
     "componentSetKey": "",
-    "figmaNodeId": "540:5281",
+    "figmaNodeId": "956:19066",
     "nodes": {
-      "pcPagination": "540:5281",
+      "pcPagination": "956:19066",
       "paginationArrow": "57:6244",
-      "paginationNumber": "57:6235"
+      "paginationNumber": "956:18769"
     },
     "propertyMap": {
       "direction": "direction",
