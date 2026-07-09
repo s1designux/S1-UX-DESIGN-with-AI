@@ -192,6 +192,7 @@ async function renderRegistryHealth(container) {
 function healthStatusDot(status) {
   const map = {
     'stable': '✅',
+    'implemented': '✅',
     'in-progress': '🔄',
     'not-started': '⬜',
     'planned': '📅',

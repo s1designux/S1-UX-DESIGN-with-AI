@@ -5,6 +5,7 @@
 
 const CODE_STATUS_LABEL = {
   'stable':       '✅ Stable',
+  'implemented':  '✅ Implemented',
   'in-progress':  '🔄 In progress',
   'not-started':  '⬜ Not started',
   'planned':      '📅 Planned',
@@ -29,6 +30,7 @@ function renderComponentStatusBadge(status, map) {
   const label = (map || CODE_STATUS_LABEL)[status] || status;
   const cls = {
     'stable': 'badge-stable',
+    'implemented': 'badge-stable',
     'in-progress': 'badge-wip',
     'not-started': 'badge-notstarted',
     'planned': 'badge-planned',

@@ -58,6 +58,7 @@ function renderButtonRegistryStatus(container, button) {
 
   const statusMap = {
     'stable': '✅ Stable',
+    'implemented': '✅ Implemented',
     'in-progress': '🔄 In progress',
     'not-started': '⬜ Not started',
     'planned': '📅 Planned',
