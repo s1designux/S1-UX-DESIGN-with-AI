@@ -440,6 +440,7 @@ export const SEMANTIC_COLOR: Record<string, SemanticColorEntry> = {
   "color/chip/solid/bg/disabled": { light: "gray/50", dark: "gray-dark/200" },
   "color/chip/solid/bg/hover": { light: "gray/100", dark: "gray-dark/400" },
   "color/chip/solid/bg/selected": { light: "blue/400", dark: "blue-dark/300" },
+  "color/chip/solid/bg/selected-hover": { light: "blue/500", dark: "blue-dark/250" },
   "color/chip/solid/border/default": { light: "gray/50", dark: "gray-dark/200" },
   "color/chip/solid/border/disabled": { light: "gray/50", dark: "gray-dark/200" },
   "color/chip/solid/border/selected": { light: "blue/400", dark: "blue-dark/300" },

@@ -448,26 +448,27 @@
   --color-button-label-secondary--hover   : var(--color-gray-800);
 
   /* ── chip ── */
-  --color-chip-line-bg-default      : var(--color-base-white);
-  --color-chip-line-bg-disabled     : var(--color-gray-50);
-  --color-chip-line-bg-hover        : var(--color-gray-0);
-  --color-chip-line-bg-selected     : var(--color-base-white);
-  --color-chip-line-border-default  : var(--color-gray-300);
-  --color-chip-line-border-disabled : var(--color-gray-100);
-  --color-chip-line-border-selected : var(--color-blue-400);
-  --color-chip-line-label-default   : var(--color-gray-500);
-  --color-chip-line-label-disabled  : var(--color-gray-300);
-  --color-chip-line-label-selected  : var(--color-blue-400);
-  --color-chip-solid-bg-default     : var(--color-gray-50);
-  --color-chip-solid-bg-disabled    : var(--color-gray-50);
-  --color-chip-solid-bg-hover       : var(--color-gray-100);
-  --color-chip-solid-bg-selected    : var(--color-blue-400);
-  --color-chip-solid-border-default : var(--color-gray-50);
-  --color-chip-solid-border-disabled: var(--color-gray-50);
-  --color-chip-solid-border-selected: var(--color-blue-400);
-  --color-chip-solid-label-default  : var(--color-gray-800);
-  --color-chip-solid-label-disabled : var(--color-gray-300);
-  --color-chip-solid-label-selected : var(--color-base-white);
+  --color-chip-line-bg-default        : var(--color-base-white);
+  --color-chip-line-bg-disabled       : var(--color-gray-50);
+  --color-chip-line-bg-hover          : var(--color-gray-0);
+  --color-chip-line-bg-selected       : var(--color-base-white);
+  --color-chip-line-border-default    : var(--color-gray-300);
+  --color-chip-line-border-disabled   : var(--color-gray-100);
+  --color-chip-line-border-selected   : var(--color-blue-400);
+  --color-chip-line-label-default     : var(--color-gray-500);
+  --color-chip-line-label-disabled    : var(--color-gray-300);
+  --color-chip-line-label-selected    : var(--color-blue-400);
+  --color-chip-solid-bg-default       : var(--color-gray-50);
+  --color-chip-solid-bg-disabled      : var(--color-gray-50);
+  --color-chip-solid-bg-hover         : var(--color-gray-100);
+  --color-chip-solid-bg-selected      : var(--color-blue-400);
+  --color-chip-solid-bg-selected-hover: var(--color-blue-500);
+  --color-chip-solid-border-default   : var(--color-gray-50);
+  --color-chip-solid-border-disabled  : var(--color-gray-50);
+  --color-chip-solid-border-selected  : var(--color-blue-400);
+  --color-chip-solid-label-default    : var(--color-gray-800);
+  --color-chip-solid-label-disabled   : var(--color-gray-300);
+  --color-chip-solid-label-selected   : var(--color-base-white);
 
   /* ── control ── */
   --color-control-bg-default            : var(--color-base-white);
@@ -657,26 +658,27 @@
   --color-button-label-secondary--hover   : var(--color-gray-dark-800);
 
   /* ── chip ── */
-  --color-chip-line-bg-default      : var(--color-gray-dark-100);
-  --color-chip-line-bg-disabled     : var(--color-gray-dark-200);
-  --color-chip-line-bg-hover        : var(--color-gray-dark-200);
-  --color-chip-line-bg-selected     : var(--color-gray-dark-100);
-  --color-chip-line-border-default  : var(--color-gray-dark-500);
-  --color-chip-line-border-disabled : var(--color-gray-dark-200);
-  --color-chip-line-border-selected : var(--color-blue-dark-300);
-  --color-chip-line-label-default   : var(--color-gray-dark-700);
-  --color-chip-line-label-disabled  : var(--color-gray-dark-600);
-  --color-chip-line-label-selected  : var(--color-blue-dark-350);
-  --color-chip-solid-bg-default     : var(--color-gray-dark-300);
-  --color-chip-solid-bg-disabled    : var(--color-gray-dark-200);
-  --color-chip-solid-bg-hover       : var(--color-gray-dark-400);
-  --color-chip-solid-bg-selected    : var(--color-blue-dark-300);
-  --color-chip-solid-border-default : var(--color-gray-dark-200);
-  --color-chip-solid-border-disabled: var(--color-gray-dark-200);
-  --color-chip-solid-border-selected: var(--color-blue-dark-300);
-  --color-chip-solid-label-default  : var(--color-gray-dark-700);
-  --color-chip-solid-label-disabled : var(--color-gray-dark-600);
-  --color-chip-solid-label-selected : var(--color-base-white);
+  --color-chip-line-bg-default        : var(--color-gray-dark-100);
+  --color-chip-line-bg-disabled       : var(--color-gray-dark-200);
+  --color-chip-line-bg-hover          : var(--color-gray-dark-200);
+  --color-chip-line-bg-selected       : var(--color-gray-dark-100);
+  --color-chip-line-border-default    : var(--color-gray-dark-500);
+  --color-chip-line-border-disabled   : var(--color-gray-dark-200);
+  --color-chip-line-border-selected   : var(--color-blue-dark-300);
+  --color-chip-line-label-default     : var(--color-gray-dark-700);
+  --color-chip-line-label-disabled    : var(--color-gray-dark-600);
+  --color-chip-line-label-selected    : var(--color-blue-dark-350);
+  --color-chip-solid-bg-default       : var(--color-gray-dark-300);
+  --color-chip-solid-bg-disabled      : var(--color-gray-dark-200);
+  --color-chip-solid-bg-hover         : var(--color-gray-dark-400);
+  --color-chip-solid-bg-selected      : var(--color-blue-dark-300);
+  --color-chip-solid-bg-selected-hover: var(--color-blue-dark-250);
+  --color-chip-solid-border-default   : var(--color-gray-dark-200);
+  --color-chip-solid-border-disabled  : var(--color-gray-dark-200);
+  --color-chip-solid-border-selected  : var(--color-blue-dark-300);
+  --color-chip-solid-label-default    : var(--color-gray-dark-700);
+  --color-chip-solid-label-disabled   : var(--color-gray-dark-600);
+  --color-chip-solid-label-selected   : var(--color-base-white);
 
   /* ── control ── */
   --color-control-bg-default            : var(--color-gray-dark-100);
