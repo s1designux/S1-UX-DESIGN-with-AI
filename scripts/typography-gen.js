@@ -19,6 +19,7 @@ const path = require('path');
 const ROOT = path.resolve(__dirname, '..');
 const SRC = path.join(ROOT, 'plugins/figma-vars-installer/src/textstyles-data.ts');
 const OUT = path.join(ROOT, 'assets/css/typography.css');
+const CHECK = process.argv.includes('--check');
 
 const WEIGHT = { Regular: 'regular', Medium: 'medium', Bold: 'bold' };
 const LS = { '-2': 'tight', '0': 'normal', '2': 'wide' };
@@ -69,6 +70,12 @@ function main() {
   for (const g of Object.keys(groups)) {
     css += `\n/* ── ${g} ── */\n`;
     css += groups[g].map(rule).join('\n') + '\n';
+  }
+  if (CHECK) {
+    const existing = fs.existsSync(OUT) ? fs.readFileSync(OUT, 'utf8') : null;
+    if (existing === css) { console.error('[typo:check] typography.css 정본 일치'); return; }
+    console.error('❌ typography.css가 정본(textstyles-data.ts)과 불일치. `npm run typo:gen` 실행 필요.');
+    process.exit(1);
   }
   fs.writeFileSync(OUT, css);
   console.log(`✅ typography.css 생성 — ${styles.length}개 클래스 (${Object.keys(groups).join(', ')})`);

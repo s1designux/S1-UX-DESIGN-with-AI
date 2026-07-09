@@ -49,6 +49,7 @@
     "sizing:gen": "node scripts/gen-foundation-number.js",
     "color:gen": "node scripts/gen-foundation-color.js",
     "color:check": "node scripts/gen-foundation-color.js --check",
+    "typo:check": "node scripts/typography-gen.js --check",
     "number:check": "node scripts/number-page-check.js",
     "sizing:check": "node scripts/number-page-check.js",
     "tokens:locate": "node scripts/token-sync-locate.js",
