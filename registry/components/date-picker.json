@@ -113,6 +113,7 @@
     "figmaNodeId": "540:3794",
     "figmaSectionNodeId": "6456:4033",
     "figmaMobileBottomsheetNodeId": "540:3836",
+    "figmaCalendarNodeId": "540:4216",
     "figmaFileKey": "yE5UCFEbmXJBlYJWB24Lz2",
     "propertyMap": {
       "platform": ["mobile", "pc-md", "pc-xsm", "pc-xxsm"],
@@ -145,7 +146,7 @@
       }
     },
     "status": "partial",
-    "note": "Section 2 (6456:4033) 성공. datepicker_input frame (540:3794), mobile bottomsheet (540:3836) 확인. PC calendar popup panel 별도 노드 조회 미완료 (figma-unconfirmed). 2026-05-12."
+    "note": "Section 2 (6456:4033) 성공. datepicker_input frame (540:3794), mobile bottomsheet (540:3836) 확인. PC calendar popup panel 별도 노드 조회 미완료 (figma-unconfirmed). 2026-05-12. → RESOLVED 2026-07-09: PC calendar = 540:4216 pc_datepicker_calendar (V2.4 파일 positive resolve 확인, 5 states: default_button/default/year select/month select/year range select). time-picker registry에서 이관 — Figma 원본 이름이 datepicker(오염 정리). V3.0 promotion pending (date-picker 전체 V2.4→V3.0 이행 시 함께)."
   },
   "cssClass": {
     "wrapper": "s1-date-picker",
