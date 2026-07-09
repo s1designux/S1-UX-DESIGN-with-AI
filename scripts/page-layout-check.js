@@ -146,6 +146,16 @@ for (const name of files) {
     continue;
   }
 
+  // standalone: 자체완결 단독 페이지 — 틀·폭 검사 제외. 단, 우회 방지 가드로 실제 .sidebar 가 있으면 오분류 차단.
+  if (cfg.shell === 'standalone') {
+    if (idxOf(html, /class="sidebar[ "]/) >= 0) {
+      errors.push(`${rel}: standalone 로 등록됐으나 .sidebar 존재 — 공통 틀 페이지면 wide/readable 로 재분류(우회 방지).`);
+    } else {
+      infos.push(`${name}: shell=standalone — 자체완결 페이지, 틀·폭 검사 제외 ✅`);
+    }
+    continue;
+  }
+
   const custom = cfg.shell === 'custom';
 
   // (b) 공통 틀 — 헤더가 LNB 에 붙는가

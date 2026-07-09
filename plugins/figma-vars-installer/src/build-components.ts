@@ -1,3 +1,4 @@
+// @role: Figma 컴포넌트 빌드 로직
 /**
  * build-components.ts
  * 코드/registry 정본 → Figma 컴포넌트 세트 생성 (Button 48-variant: 3 variant × 4 size × 4 state).

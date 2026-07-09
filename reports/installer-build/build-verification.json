@@ -1,9 +1,9 @@
 {
   "sourceFile": "plugins/figma-vars-installer/src/build-components.ts",
-  "sourceHash": "sha256:acc375b7361a52481beac1ddf155f2bf904d5ab53a24cc17d446dfda566e3b8a",
+  "sourceHash": "sha256:b389f0cd6660740c4294824ec28a06014ce6c1afb1cc2eb5c11051b9faad8fab",
   "verifiedBy": "orchestrator",
   "verdict": "pass",
   "changeType": "mechanical",
-  "verifiedAt": "2026-07-08T01:35:07.094Z",
-  "notes": "buildDropdownList Selected 상태 bg 토큰값 1건 교체(option/bg/selected→option/bg/default), 사용자 결정 반영. Time Picker Cell은 별도 컴포넌트(buildTimePickerCell)라 미영향 — 전체 파일 grep으로 DropdownList Selected 소비처 확인(Select Box Open, Filter Chip 스왑만 해당)."
+  "verifiedAt": "2026-07-09T08:00:47.878Z",
+  "notes": "add @role comment line for pipeline dashboard; no logic change"
 }

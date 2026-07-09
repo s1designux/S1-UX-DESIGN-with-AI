@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+// @reads: vars-data.ts
 /**
  * gen-semantic-page.js
  *

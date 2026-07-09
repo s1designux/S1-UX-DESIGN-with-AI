@@ -1101,3 +1101,10 @@ Claude는 **Main Orchestrator**다. 사용자는 **목표 수준 의도**만 준
 ## ACCESS-01: Figma Plugin 재등록 절차
 
 > `npm run figma:usage:check` stale nodeId 경고 3건 지속 시의 **플러그인 재등록 복구 절차**(단계별 매뉴얼 + 해소된 노드 목록) 전문은 **`.claude/docs/ops-procedures.md`** 참조. 해당 경고가 실제 발생할 때만 연다.
+
+## 대시보드 업데이트
+내가 "대시보드 업데이트" (또는 "대시보드 갱신")라고 말하면 다음을 실행한다:
+1. 프로젝트 루트에서 `node pipeline-status.js --check --skip gate:check,components:presentation --out pages/pipeline-status.html` 를 실행한다.
+2. 끝나면 pages/pipeline-status.html 을 연다.
+3. 콘솔 출력에서 "사각지대", "드리프트", "표면 무관 검사 실패" 줄을 요약해 알려준다.
+주의: 이 명령은 pipeline-status.html 하나만 새로 쓰고, 다른 파일은 수정하지 않는다. pipeline-status.js 가 루트에 없으면 먼저 위치를 찾아 실행한다.

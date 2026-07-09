@@ -1,3 +1,4 @@
+// @role: 타이포그래피 스타일 정의
 /**
  * textstyles-data.ts
  * S1 디자인시스템 Text Styles 정의 — 출처: SW UX GUIDE V2.4 (fileKey yE5UCFEbmXJBlYJWB24Lz2)

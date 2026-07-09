@@ -25,6 +25,7 @@ const SITE_NAV = [
   /* ── System ── */
   { type: 'label', text: 'System' },
   { type: 'item', id: 'dashboard', href: 'dashboard.html', rootHref: 'pages/dashboard.html', icon: '🛡', text: 'Agent Team', status: 'ready' },
+  { type: 'item', id: 'pipeline-status', href: 'pipeline-status.html', rootHref: 'pages/pipeline-status.html', icon: '🔗', text: '파이프라인 상태', status: 'new' },
   { type: 'item', id: 'update-management', href: 'update-management.html', rootHref: 'pages/update-management.html', icon: '🗂', text: '업데이트 관리', status: 'ready' },
 
   /* ── Harness Admin (2026-06-24 메뉴에서 숨김 — 파일/route 는 보존, 직접 URL 접근만 가능.

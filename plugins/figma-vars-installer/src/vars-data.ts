@@ -1,3 +1,4 @@
+// @role: 색·숫자 토큰 값의 정본
 /**
  * vars-data.ts
  * S1 디자인시스템 Variables 정의 — Hybrid 패턴 (2026-06-08 v4 — Semantic Color/Number 컬렉션 분리)
