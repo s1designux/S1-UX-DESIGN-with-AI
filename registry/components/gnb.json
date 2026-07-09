@@ -6,7 +6,7 @@
     "updatedAt": "2026-06-06",
     "version": "0.1.0",
     "tokenStatus": "stable",
-    "codeStatus": "in-progress",
+    "codeStatus": "implemented",
     "darkModeStatus": "candidate",
     "a11yStatus": "pending",
     "figmaStatus": "confirmed",
@@ -54,7 +54,7 @@
   "typography": {
     "menuLabelMd": "Pretendard Medium 18px / line-height 1.3 / letter-spacing -0.36px",
     "menuLabelSm": "Pretendard Medium 18px / line-height 1.3 / letter-spacing -0.36px",
-    "menuLabelXsm": "Pretendard Medium 14px / line-height 1.3 / letter-spacing 0",
+    "menuLabelXsm": "Pretendard Medium 14px / line-height 1.3 / letter-spacing -0.28px",
     "logo": "Pretendard Bold 20px / line-height 1.3 / letter-spacing 0"
   },
   "tokens": [
@@ -77,10 +77,10 @@
     {
       "name": "--gnb-menu-label-default",
       "value": "var(--color-navigation-label-default-alt)",
-      "resolvedLight": "#000000",
+      "resolvedLight": "#434343",
       "figmaVariable": "color/navigation/label/default-alt",
       "status": "stable",
-      "description": "메뉴 슬롯 기본 라벨(black)"
+      "description": "메뉴 슬롯 기본 라벨 (V3.0: gray-700 #434343)"
     },
     {
       "name": "--gnb-menu-label-active",
@@ -102,25 +102,25 @@
       "name": "--gnb-logo-text",
       "value": "var(--color-text-primary)",
       "resolvedLight": "#202020",
-      "figmaVariable": "color/base/black",
-      "status": "candidate",
-      "description": "로고 텍스트 색상 — HD-GNB-1: Figma=#000000, code text-primary=#202020 차이 확인 대기"
+      "figmaVariable": "color/text/title/primary",
+      "status": "stable",
+      "description": "로고 텍스트 색상 — HD-GNB-1 resolved: V3.0 로고 = color/text/title/primary #202020 = 코드값 일치"
     },
     {
       "name": "--gnb-icon",
       "value": "var(--color-navigation-icon)",
       "resolvedLight": "#353535",
       "figmaVariable": "color/icon/gray-dark",
-      "status": "candidate",
-      "description": "유틸리티 아이콘 색상 — HD-GNB-2: 신규 navigation-icon(#353535) 사용. 사용자 확인 대기"
+      "status": "stable",
+      "description": "유틸리티 아이콘 색상 — HD-GNB-2 resolved: V3.0 유틸 아이콘 = color/icon/gray-dark #353535 = 코드값 일치"
     }
   ],
   "newSemanticTokens": [
     {
       "name": "--color-navigation-label-default-alt",
-      "value": "var(--color-base-black)",
-      "resolvedLight": "#000000",
-      "resolvedDark": "var(--color-gray-dark-800)",
+      "value": "var(--color-gray-700)",
+      "resolvedLight": "#434343",
+      "resolvedDark": "var(--color-gray-dark-700)",
       "figmaVariable": "color/navigation/label/default-alt",
       "status": "stable"
     },
@@ -140,23 +140,23 @@
   ],
   "figma": {
     "componentSetKey": "",
-    "figmaNodeId": "540:5942",
+    "figmaNodeId": "956:18233",
     "nodes": {
-      "barMdCenterBetween": "540:5943",
-      "barMdStart": "540:6003",
-      "barSmCenterBetween": "540:5953",
-      "barSmStart": "540:6014",
-      "barXsmCenterBetween": "582:7770",
-      "barXsmStart": "582:7773",
-      "menuSlotMdDefault": "540:6086",
-      "menuSlotMdHover": "540:6070",
-      "menuSlotMdSelected": "540:6074",
-      "menuSlotSmDefault": "540:6092",
-      "menuSlotSmHover": "540:6078",
-      "menuSlotSmSelected": "540:6082",
-      "menuSlotXsmDefault": "582:7888",
-      "menuSlotXsmHover": "582:7889",
-      "menuSlotXsmSelected": "582:7890"
+      "barMdCenterBetween": "956:18032",
+      "barMdStart": "956:18131",
+      "barSmCenterBetween": "956:18065",
+      "barSmStart": "956:18165",
+      "barXsmCenterBetween": "956:18098",
+      "barXsmStart": "956:18199",
+      "menuSlotMdDefault": "956:18004",
+      "menuSlotMdHover": "956:18007",
+      "menuSlotMdSelected": "956:18010",
+      "menuSlotSmDefault": "956:18013",
+      "menuSlotSmHover": "956:18016",
+      "menuSlotSmSelected": "956:18019",
+      "menuSlotXsmDefault": "956:18022",
+      "menuSlotXsmHover": "956:18025",
+      "menuSlotXsmSelected": "956:18028"
     },
     "propertyMap": {
       "size": "variant",
@@ -168,14 +168,14 @@
     {
       "id": "HD-GNB-1",
       "topic": "로고 색상",
-      "detail": "Figma 로고 = color/base/black #000000. code --color-text-primary = #202020(off-black). 색상값(레거시 개선 여지) → 두갈래 분류 대상. 현재 text-primary로 연결(코드 기준). 사용자 확인 대기.",
-      "status": "open"
+      "detail": "Figma 로고 = color/base/black #000000. code --color-text-primary = #202020(off-black). 색상값(레거시 개선 여지) → 두갈래 분류 대상. 현재 text-primary로 연결(코드 기준). 사용자 확인 대기. → RESOLVED(2026-07-09): V3.0 원본(956:18031) 대조 결과 로고 = color/text/title/primary #202020 = 코드값 일치. 사용자 결정: V3.0 확정값 유지.",
+      "status": "resolved"
     },
     {
       "id": "HD-GNB-2",
       "topic": "유틸 아이콘 색상",
-      "detail": "Figma = color/icon/gray-dark #353535. 기존 --color-icon-default=#757575(불일치). 신규 --color-navigation-icon(=gray-800 #353535) 사용. 사용자 확인 대기.",
-      "status": "open"
+      "detail": "Figma = color/icon/gray-dark #353535. 기존 --color-icon-default=#757575(불일치). 신규 --color-navigation-icon(=gray-800 #353535) 사용. 사용자 확인 대기. → RESOLVED(2026-07-09): V3.0 원본 대조 결과 유틸 아이콘 = color/icon/gray-dark #353535 = 코드값 일치.",
+      "status": "resolved"
     }
   ],
   "governance": {

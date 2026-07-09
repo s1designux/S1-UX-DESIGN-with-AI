@@ -20,13 +20,11 @@
     "registry/components/gnb.json::--color-navigation-icon::figmismatch",
     "registry/components/gnb.json::--color-navigation-icon::unused::--color-gray-800",
     "registry/components/gnb.json::--color-navigation-label-default-alt::figmismatch",
-    "registry/components/gnb.json::--color-navigation-label-default-alt::unused::--color-base-black",
     "registry/components/gnb.json::--gnb-border::figmismatch",
     "registry/components/gnb.json::--gnb-border::removed::--color-border-subtle",
     "registry/components/gnb.json::--gnb-icon::figmismatch",
     "registry/components/gnb.json::--gnb-icon::removed::--color-navigation-icon",
     "registry/components/gnb.json::--gnb-logo-text::figmismatch",
-    "registry/components/gnb.json::--gnb-logo-text::figunused::color/base/black",
     "registry/components/gnb.json::--gnb-logo-text::removed::--color-text-primary",
     "registry/components/gnb.json::--gnb-menu-label-active::figmismatch",
     "registry/components/gnb.json::--gnb-menu-underline-active::figmismatch",
@@ -87,6 +85,7 @@
     "registry/components/time-picker.json::--color-form-control-text-disabled::figmismatch",
     "registry/components/time-picker.json::--color-form-control-text-disabled::removed::--color-text-disabled",
     "registry/components/time-picker.json::--color-form-control-text-placeholder::figmismatch",
-    "registry/components/time-picker.json::--color-form-control-text-placeholder::removed::--color-text-placeholder"
+    "registry/components/time-picker.json::--color-form-control-text-placeholder::removed::--color-text-placeholder",
+    "registry/components/gnb.json::--color-navigation-label-default-alt::unused::--color-gray-700"
   ]
 }
