@@ -543,6 +543,25 @@ try {
   fail(`presentation-layout-check 실행 실패: ${e.message}`);
 }
 
+// ── Gate 24: DESIGN.md Drift (소비 산출물 최신성) ─────
+// DESIGN.md(AI 소비용 단일 컨텍스트)가 정본(tokens.css + registry)보다 낡으면 차단(재생성 강제).
+// 정본=tokens.css+registry, 산출물=design/DESIGN.*.md. gen-design-md dry-run 에 "변경감지"면 fail. (2026-07-10 신설)
+console.log('\n🔎 [Gate 24] DESIGN.md 드리프트 검사기 (Design MD Drift)');
+try {
+  const { spawnSync } = require('child_process');
+  const r = spawnSync('node', [path.join(ROOT, 'scripts/design-md-drift-check.js')], { encoding: 'utf-8' });
+  const out = (r.stdout || '') + (r.stderr || '');
+  if (r.status === 0) {
+    pass('DESIGN.md 최신 — 정본(tokens.css+registry)과 일치');
+  } else {
+    const lines = out.split('\n').filter((l) => l.includes('•') || l.includes('낡음'));
+    for (const l of lines) fail(l.replace(/^\s*[•❌]\s*/, '').trim());
+    if (lines.length === 0) fail('DESIGN.md 드리프트 — npm run design:md:write 후 커밋 (상세: npm run design:md:check)');
+  }
+} catch (e) {
+  fail(`design-md-drift-check 실행 실패: ${e.message}`);
+}
+
 // ── Summary ───────────────────────────────────────────────────────
 console.log('\n─────────────────────────────────────────────────────');
 if (errors > 0) {

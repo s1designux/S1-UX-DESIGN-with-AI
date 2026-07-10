@@ -1,0 +1,36 @@
+{
+  "_role": "AI 에이전트 진입점 라우터 — 디자인시스템을 어떤 파일부터·어떤 순서로 읽고 덮을지 안내한다.",
+  "_note": "이 매니페스트와 DESIGN.*.md 는 소비용 산출물이다. 정본은 assets/css/tokens.css + registry/components/*.json 이며, DESIGN.*.md 는 scripts/gen-design-md.js 가 생성한다. 손편집 금지(design:md:check 드리프트 게이트가 차단).",
+  "version": "1.0.0",
+  "core": "DESIGN.core.md",
+  "services": {
+    "vms": "services/DESIGN.vms.md"
+  },
+  "servicesPlanned": ["mobility", "building"],
+  "profiles": {
+    "role": [
+      { "id": "admin", "density": "compact", "desc": "관리자 — 고밀도(정보 우선)" },
+      { "id": "user", "density": "comfortable", "desc": "일반 사용자 — 여유 밀도(가독성 우선)" }
+    ],
+    "platform": [
+      { "id": "web", "container": "1200px", "columns": 12 },
+      { "id": "app", "container": "1024px", "columns": 8 },
+      { "id": "mobile", "container": "375px", "columns": 4 }
+    ],
+    "theme": ["light", "dark"]
+  },
+  "defaults": {
+    "service": "core",
+    "role": "user",
+    "platform": "web",
+    "theme": "light"
+  },
+  "resolutionOrder": [
+    "core",
+    "service (extends core)",
+    "role",
+    "platform",
+    "theme"
+  ],
+  "_resolutionNote": "뒤가 앞을 덮는다(override). core 를 서비스가 상속·덮고, 그 위에 role → platform → theme 순으로 좁혀 적용한다."
+}

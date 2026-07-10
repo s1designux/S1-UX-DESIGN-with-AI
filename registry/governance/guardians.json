@@ -222,6 +222,13 @@
    "name": "미사용 토큰",
    "guards": "아무 데서도 안 쓰는 토큰(레거시)이 쌓이나",
    "auto": true
+  },
+  {
+   "num": 24,
+   "group": "same",
+   "name": "DESIGN.md 드리프트",
+   "guards": "AI 소비용 DESIGN.md 가 정본(tokens.css+registry)과 같은지 (낡으면 재생성 강제)",
+   "auto": true
   }
  ],
  "hooks": [
