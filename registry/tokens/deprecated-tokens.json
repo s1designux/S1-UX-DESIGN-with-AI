@@ -215,6 +215,11 @@
       "path": "registry/tokens/component.tokens.json",
       "reason": "은퇴된 '컴포넌트-별칭 토큰층'(component→alias→semantic) 서술 데이터. 현행 정본은 build-components.ts 가 semantic 토큰에 직접 바인딩(scv) — 이 별칭층은 옛 아키텍처 잔재로 옛 semantic 토큰명을 참조. 유일 소비자=메뉴 숨김된 Registry Explorer 뷰어(2026-06-24 비노출). Gate 20(token-drift) 검사 제외. 활성 정본=vars-data.ts.",
       "since": "2026-07-02"
+    },
+    {
+      "path": "assets/css/component-tokens.css",
+      "reason": "은퇴된 '컴포넌트-별칭 토큰층'(--{component}-{part}-{state}-{property})의 CSS 사본. 2026-06-09(763a70a) 자동 리팩터가 tokens.css 에서 분리·'보존'한 파일로, 어떤 HTML 도 link 하지 않아 렌더되지 않는 죽은 스타일시트. 정본=build-components.ts(각 컴포넌트를 color/form-control/* 등 semantic 에 직접 바인딩). 이 파일의 --dropdown-trigger-* 값은 registry/dropdown.json 과 드리프트했었고(같은 이름 다른 값), 유일 활성 소비처였던 components-new.html 는 2026-07-10 정본 토큰으로 이관됨. doc-token-ref-check/orphan-token-check 의 정의·소비 풀에서 제외(하드코딩 참조 제거).",
+      "since": "2026-07-10"
     }
   ]
 }

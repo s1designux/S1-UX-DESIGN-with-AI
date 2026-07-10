@@ -237,6 +237,27 @@ try {
   fail(`token-sync-monitor 실패: ${e.message}`);
 }
 
+// ── Gate 7b: Token Value Consistency (표면 간 해석값 대조) ────────
+// 존재하나 gate:check 에 미연결이던 검사기를 배선(2026-07-10). token-sync-monitor 가
+// 정본↔각 표면을 보는 반면, 이건 tokens.css↔vars-data↔semantic.html 의 "해석된 HEX"가
+// Light/Dark 모두 일치하는지 교차 대조한다.
+console.log('\n🔎 [Gate 7b] 토큰값 표면일치 검사기 (Value Consistency)');
+try {
+  const { check: consistencyCheck } = require('./token-value-consistency-check');
+  const { A, B } = consistencyCheck();
+  for (const m of A.mismatches) {
+    fail(`tokens.css↔vars-data ${m.token} [${m.mode}] tokens.css=${m.tokensCss} ≠ vars-data ${m.varsData}`);
+  }
+  for (const m of B.mismatches) {
+    fail(`semantic.html↔tokens.css ${m.token} [${m.mode}] tokens.css=${m.tokensCss} ≠ semantic.html=${m.semanticHtml}`);
+  }
+  if (A.mismatches.length === 0 && B.mismatches.length === 0) {
+    pass(`값 표면일치: A ${A.compared}건 + B ${B.compared}건 모두 일치`);
+  }
+} catch (e) {
+  fail(`token-value-consistency-check 실패: ${e.message}`);
+}
+
 // ── Gate 8: Component Key Coverage ───────────────────────────────
 // build-components.ts 빌더가 동적 조합하는 scv 키가 vars-data 정본에 다 있는지.
 // audit-bindings(네임스페이스만 검사)의 사각지대 — leaf 키 누락 시 Figma 실행 중 크래시.
@@ -560,6 +581,27 @@ try {
   }
 } catch (e) {
   fail(`design-md-drift-check 실행 실패: ${e.message}`);
+}
+
+// ── Gate 25: Component Alias Canonical (은퇴 별칭층 재유입 차단) ─────
+// 활성 페이지의 컴포넌트-별칭 토큰(--{comp}-*)이 정본 토큰으로 실제 해석되는지 검사.
+// 모든 토큰 게이트가 vars-data/tokens.css 만 기준으로 봐서 그 바깥의 별칭층은 사각지대였다
+// (--dropdown-trigger-* 유출 계기, 2026-07-10 신설). 유령참조·표면드리프트 = 차단. 정본=tokens.css.
+console.log('\n🔎 [Gate 25] 컴포넌트 별칭-정본 해석 검사기 (Component Alias Canonical)');
+try {
+  const { check: aliasCheck } = require('./component-alias-canonical-check');
+  const r = aliasCheck();
+  for (const g of r.ghosts) {
+    fail(`별칭 유령참조 ${g.page}: ${g.name} — var() 체인이 정본에 없는 토큰에 닿음(정본 밖 별칭 재유입)`);
+  }
+  for (const d of r.drifts) {
+    fail(`별칭 표면드리프트 ${d.name}: ${d.a} ≠ ${d.b}(같은 이름 다른 값)`);
+  }
+  if (r.ghosts.length === 0 && r.drifts.length === 0) {
+    pass(`컴포넌트 별칭 ${r.aliasNames}종 모두 정본 해석 · 표면 드리프트 0 (활성 ${r.scanned}페이지)`);
+  }
+} catch (e) {
+  fail(`component-alias-canonical-check 실행 실패: ${e.message}`);
 }
 
 // ── Summary ───────────────────────────────────────────────────────

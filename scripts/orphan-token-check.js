@@ -33,7 +33,8 @@ const supply = new Set([...vd.matchAll(/"(color\/[^"]+)"\s*:/g)].map((m) => m[1]
 
 // ── 2. 웹 소비: var(--color-…) ────────────────────────────────────────────
 const WEB = [
-  'assets/css/component-tokens.css', 'assets/css/site-base.css', 'assets/css/style.css',
+  // component-tokens.css 제외 — 은퇴 별칭층(legacyFiles), 렌더 안 되는 죽은 파일이라 소비 집계 왜곡 (2026-07-10)
+  'assets/css/site-base.css', 'assets/css/style.css',
   'pages/components-new.html', 'pages/foundation.html', 'pages/dashboard.html',
   'pages/icons.html', 'pages/layer-policy.html', 'pages/update-management.html',
 ].map((f) => path.join(ROOT, f)).filter((f) => fs.existsSync(f));

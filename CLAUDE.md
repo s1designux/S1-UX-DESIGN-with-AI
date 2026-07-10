@@ -22,6 +22,7 @@
 
 | 날짜 | 변경 내용 (한 줄) |
 |------|------------------|
+| 2026-07-10 | **은퇴 `--dropdown-trigger-*` 별칭층 정리 + 검수 사각지대 봉합(Gate 7b 배선·Gate 25 신설)** — 사용자가 웹 드롭다운에서 만든 적 없는 `--dropdown-trigger-*` 토큰 발견(조사: 은퇴 컴포넌트-별칭층 잔재·정본 vars-data엔 없음·`dropdown.json`↔`component-tokens.css` 값 드리프트·모든 토큰 게이트가 정본만 봐 별칭층은 사각지대). components-new.html 드롭다운 트리거를 정본 `--color-form-control-*` 직접 참조로 이관(렌더 pixel-identical 검증)·Code/Token Details 탭의 stale 값 교정, 죽은 `component-tokens.css` 를 deprecated-tokens legacyFiles 격리(+doc-token-ref·orphan-check 정의풀 제외), 존재하나 미연결이던 `token-value-consistency-check` 를 gate:check 에 배선(Gate 7b), 활성 페이지 별칭이 정본으로 해석되는지 검사하는 Gate 25(component-alias-canonical) 신설(적대적 테스트 통과·주석 오탐 방지). **이어서 나머지 라이브 페이지 별칭층 전체 이관**: 실 CSS 100% 정본화(입력·칩·테이블·페이지네이션·탭·GNB·칩아이콘 등 값보존 치환, 렌더 pixel-identical) + 문서 탭(Code/Token Details) 30개 컴포넌트 표 정본화(307/315칸=97.5%, 나머지=dropdown 다크분기 2 KEEP·transparent/shadow literal 4). Gate 25 별칭 정의 97→2. backlog: registry/components/*.json + registry-data-bundle 백스테이지. gate:check PASSED. |
 | 2026-07-06 | **📖 source-reader(정본 판독 에이전트) 신설 + '읽기 위임' 하드룰** — ⭐가 정본 소스를 대충 훑고 짐작하는 반복 문제(components-new Button 표출을 JS 재배치·CSS·렌더 미확인·소스 순서만 보고 "Action이 상태 옆 열"이라 단정→실제는 별도 상단 스트립)를 계기로, "만드는 자≠검증하는 자" 원칙을 **'읽는 자'에게도 적용**. 판단에 필요한 정본 사실(레이아웃/구조/값)은 ⭐가 자기 훑기로 단정 금지, 읽기 전용 `source-reader`에 위임(소스순서→렌더 추측 금지·배치주장은 실제렌더 or CSS+JS 전체추적으로 확인+방법명시·file:line 인용·모르면 미확인). §⚖️ 하드룰+§🎭 액터표(📖)+에이전트 목록 등재. 사용자 결정(영구 표준·새 전담 에이전트). |
 | 2026-07-06 | **Gate 23(컴포넌트 표출 레이아웃 검수기) 신설 + PC 17개 표출 규칙 정본화·전면 교정** — river 요구(공통 표출 틀 + 컴포넌트별 개별 규칙)로 PC 메인 17개의 표출 규칙을 정본화(`registry/governance/component-presentation-policy.json`, 컴포넌트별 개별 배정)하고, **실제 렌더 DOM**(헤드리스 크롬 --dump-dom, JS 재배치 후) 기준으로 대조하는 `scripts/presentation-layout-check.js` 신설(gate:check 편입, 크롬없음 SKIP+3회 재시도). 📖 source-reader 렌더 판독으로 재고조사→규칙 확정→Chip 파일럿(승인)→🤖 guide-builder 가 17개 교정(사이즈→Action 통합·별도 사이즈/라벨 블록 제거·Radio 라벨 통합·전 사이즈 인터랙티브화(per-instance JS)·Table Action+사이즈병합+상하단라인정보·Pagination 상태 세로·Dropdown/Multi Toggle/GNB 세트 Action+GNB 하위항목 정보). disabled 금지커서(not-allowed) 페이지 전역 제거(사용자 요청). Gate 23 위반 10→0, 적대적 테스트(사이즈블록 재주입→차단) 통과, gate:check PASSED. 빌드=guide-builder·검증=렌더+게이트 분리. |
 | 2026-07-03 | **Gate 22(페이지 레이아웃 검수기) 신설 + 페이지 전폭 정리 + 레거시 검색노출 폐기** — 그리드·표 페이지 5종(icons·foundation·semantic·dashboard(Agent Team)·legacy 중 legacy 제외 4)을 전폭 전환 요청 계기로, "페이지 공통 틀(헤더가 사이드바 LNB 부착)·폭 정책(wide/readable)"을 정본(`registry/governance/page-layout-policy.json`)과 기계 대조하는 `scripts/page-layout-check.js` 신설(gate:check·커밋훅 편입, `--fix` 자동교정). 즉시 실제 위반 3건 적발: components-new·patterns 헤더 폭 미확장(헤더가 컨텐츠/LNB 에 덜 붙음, ⭐가 눈으로 놓치던 클래스)→--fix 교정, legacy 검색인덱스 잔존→제거. 적대적 테스트(헤더 분리·미분류 escape 주입→차단) 통과. 레거시는 이미 deprecated-tokens legacyFiles+site-map _archive 로 제자리 격리 상태라 물리 이동 대신 검색노출 제거+retired 분류(부활 차단). self-certify 사각지대(시각/구조)를 기계 게이트로 승격. |
@@ -986,8 +987,11 @@ Claude는 **Main Orchestrator**다. 사용자는 **목표 수준 의도**만 준
 | 21 | Registry Active/Legacy | 은퇴 파일이 index active 로 남는 좀비 등록 차단 |
 | 22 | Page Layout Policy | 페이지 공통 틀·폭 정책(wide/readable) 준수 |
 | 23 | Component Presentation | PC 컴포넌트 표출 규칙(실제 렌더 DOM 대조) |
+| 24 | DESIGN.md Drift | DESIGN.md(AI 소비용) 가 정본(tokens.css+registry)보다 낡으면 차단 |
+| 7b | Token Value Consistency | tokens.css↔vars-data↔semantic.html 해석 HEX 표면 일치(Gate 7 옆 배선) |
+| 25 | Component Alias Canonical | 활성 페이지 컴포넌트-별칭(--{comp}-*)이 정본 토큰으로 해석되나·표면드리프트 차단(정본 밖 별칭 재유입 방지) |
 
-스크립트 일괄 실행: `npm run gate:check` (Gate 1~23 자동). 개별 게이트 트리거·판정 로직·도입 사유·`npm run` 단독 실행 명령은 참조 문서에 전문 수록.
+스크립트 일괄 실행: `npm run gate:check` (Gate 1~25 자동). 개별 게이트 트리거·판정 로직·도입 사유·`npm run` 단독 실행 명령은 참조 문서에 전문 수록.
 
 ## ⚙️ 강제 계층 — Hooks (2026-06-11 신설)
 

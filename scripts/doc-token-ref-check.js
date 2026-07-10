@@ -9,7 +9,7 @@
  * 검사 3종:
  *   A. semantic 변수 존재: 페이지가 var(--color-*) / 바로 --color-* 로 참조하는
  *      모든 --color-* 가 canonical 정의(tokens.css ∪ site-base.css ∪
- *      component-tokens.css ∪ 해당 페이지 inline 정의)에 존재하는가.
+ *      해당 페이지 inline 정의)에 존재하는가. (component-tokens.css 는 은퇴 별칭층·2026-07-10 제외)
  *      → 없는 참조 = rename/오타/삭제 잔재 (예: --color-data-state-hover). (경고)
  *   B. 폐기 경로 denylist: registry/tokens/deprecated-tokens.json 의
  *      renamedGroups[].from 문자열이 활성 페이지에 잔존하는가.
@@ -46,7 +46,7 @@ function extractColorDefs(text) {
 const globalDefs = new Set([
   ...extractColorDefs(read('assets/css/tokens.css')),
   ...extractColorDefs(read('assets/css/site-base.css')),
-  ...extractColorDefs(read('assets/css/component-tokens.css')),
+  // component-tokens.css 는 은퇴 별칭층(legacyFiles) — 정의 풀에서 제외 (2026-07-10)
 ]);
 
 // --- 폐기 경로 denylist ---
