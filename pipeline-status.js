@@ -121,12 +121,13 @@ function mentions(src, names) {
 const files = walk(ROOT, [], 0);
 const THIS_FILE = base(process.argv[1] || 'pipeline-status.js');
 
-// 목적지 = 결과물(.html/.css)만. 스크립트(.js/.ts)는 목적지가 아님.
+// 목적지 = 결과물(.html/.css/.md 소비 산출물)만. 스크립트(.js/.ts)는 목적지가 아님.
+// design.core.md/design.vms.md = AI 소비용 DESIGN.md (tokens/registry → gen-design-md → md 흐름 표시용).
 const DEST_HINT = ['tokens.css', 'foundation.html', 'semantic.html', 'typography.css',
-  'dashboard.html', 'update-management.html'];
+  'dashboard.html', 'update-management.html', 'design.core.md', 'design.vms.md'];
 const destinations = files.filter(p => {
   const b = base(p).toLowerCase();
-  if (!/\.(html?|css)$/i.test(b)) return false;
+  if (!/\.(html?|css|md)$/i.test(b)) return false;
   return DEST_HINT.includes(b) || b.includes('install-prompt');
 });
 const destBasenames0 = destinations.map(base);
@@ -417,13 +418,13 @@ function buildHTML(data) {
   return `<!doctype html><html lang="ko"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>토큰 파이프라인 상태</title>
+<link rel="stylesheet" href="../assets/css/style.css">
 <style>
 :root{--bg:#f6f7f9;--card:#fff;--ink:#1a1d21;--sub:#6b7280;--line:#e3e6ea;
 --pass:#1a9e5f;--fail:#d64545;--warn:#c9820a;--gray:#9aa1a9;--acc:#2b6cb0;
 --src:#7c5cff;--gen:#2b6cb0;--dst:#0e8a6e;}
 *{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--ink);
-font:14px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Apple SD Gothic Neo","Malgun Gothic",sans-serif}
+body{margin:0;background:var(--bg);color:var(--ink)}
 .wrap{max-width:1180px;margin:0 auto;padding:20px}
 .snap{background:#fff8e6;border:1px solid #f0d98a;border-radius:10px;padding:12px 16px;margin-bottom:16px;font-size:13px}
 .snap b{color:#8a6400}
@@ -470,9 +471,31 @@ td.f{font-weight:600;word-break:break-all}
 .blindbox h2{color:#fff;margin:0 0 8px;font-size:14px}
 .blindbox .item{font-size:12.5px;padding:3px 0;border-bottom:1px solid #333}
 .empty{color:var(--sub);font-size:12.5px;padding:6px 0}
-</style></head><body><div class="wrap">
-<h1>토큰 파이프라인 상태</h1>
-<div class="muted" id="sub"></div>
+</style></head><body>
+<div class="mobile-header">
+  <button class="hamburger" id="sidebar-toggle" aria-label="메뉴">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/>
+    </svg>
+  </button>
+  <span class="mobile-logo">파이프라인 상태</span>
+</div>
+<div class="sidebar-overlay" id="sidebar-overlay"></div>
+<div class="app">
+  <aside class="sidebar" id="sidebar"></aside>
+  <main class="main-content">
+    <div class="page-header">
+      <div class="page-header-inner">
+        <div class="page-header-text">
+          <h1>🔗 토큰 파이프라인 상태</h1>
+          <p id="sub"></p>
+        </div>
+        <div class="page-header-actions">
+          <span class="badge badge-green">자동 생성</span>
+        </div>
+      </div>
+    </div>
+<div class="wrap">
 <div class="snap" id="snap"></div>
 <div class="about">
   <b>이 화면은?</b> 디자인 토큰의 정본(vars-data 등)에 넣은 값이 실제 결과 파일(tokens.css·typography.css 등)까지 제대로 전달되는지 자동으로 대조한 결과임. 왼쪽 정본 → 가운데 생성기 → 오른쪽 결과 파일 순으로 흐릅니다.
@@ -499,6 +522,9 @@ td.f{font-weight:600;word-break:break-all}
 </div>
 <div class="card" style="margin-top:16px"><h2>생성기 (read → write)</h2><div id="gentbl"></div></div>
 </div>
+  </main>
+</div>
+<script src="../assets/js/main.js"></script>
 <script>
 const D = JSON.parse(${JSON.stringify(json)});
 const esc = s => String(s==null?'':s).replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));

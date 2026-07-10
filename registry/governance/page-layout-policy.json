@@ -30,6 +30,6 @@
     "policy.html": { "width": "readable", "note": "정책 설명 글 위주 — 가독성 위해 폭 제한 유지" },
     "install-prompt.html": { "width": "readable", "note": "설치 안내·코드 읽기용 — 폭 제한 유지" },
     "legacy.html": { "retired": true, "note": "레거시 마이그레이션 가이드 — 폐기. deprecated-tokens.json legacyFiles 격리 + site-map _archive. nav/검색 활성 등록 금지." },
-    "pipeline-status.html": { "shell": "standalone", "note": "pipeline-status.js 생성 자체완결 진단 대시보드 — 외부 의존성 0, 공통 틀 미사용. nav 링크 노출." }
+    "pipeline-status.html": { "shell": "custom", "note": "pipeline-status.js 생성 진단 대시보드 — 공통 틀(사이드바/헤더/main.js) 부착, 본문은 자체 .wrap 지도 레이아웃(폭 검사 제외). nav 링크 노출." }
   }
 }
