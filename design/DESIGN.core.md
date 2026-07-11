@@ -107,40 +107,40 @@ typography:
 
 | variant | default | hover | checked | disabled |
 | --- | --- | --- | --- | --- |
-| default | — | — | — | — |
+| default | --checkbox-default-bg → color-control-bg-default<br>--checkbox-default-border → color-control-border-default | --checkbox-hover-bg → color-control-bg-hover<br>--checkbox-hover-border → color-control-border-default | --checkbox-checked-bg → color-control-bg-selected<br>--checkbox-checked-border → color-control-border-selected<br>--checkbox-check-icon → color-control-indicator-selected | --checkbox-disabled-bg → color-control-bg-disabled<br>--checkbox-disabled-border → color-control-border-disabled<br>--checkbox-disabled-check-icon → color-control-indicator-disabled |
 
 ### Chip
 
 | variant | default | hover | selected | complete | disabled |
 | --- | --- | --- | --- | --- | --- |
-| line | — | — | — | — | — |
-| solid | — | — | — | — | — |
+| line | --chip-line-default-bg → color-chip-line-bg-default<br>--chip-line-default-border → color-chip-line-border-default<br>--chip-line-default-text → color-chip-line-label-default<br>--chip-line-default-icon → color-chip-line-label-default<br>--chip-line-default-close-icon → color-chip-line-label-default | --chip-line-hover-bg → color-chip-line-bg-hover<br>--chip-line-hover-border → color-chip-line-border-default<br>--chip-line-hover-close-icon → color-chip-line-label-default | --chip-line-selected-bg → color-chip-line-bg-selected<br>--chip-line-selected-border → color-chip-line-border-selected<br>--chip-line-selected-text → color-chip-line-label-selected<br>--chip-line-selected-icon → color-chip-line-label-selected<br>--chip-line-selected-close-icon → color-chip-line-label-selected | — | --chip-line-disabled-bg → color-chip-line-bg-disabled<br>--chip-line-disabled-border → color-chip-line-border-disabled<br>--chip-line-disabled-text → color-chip-line-label-disabled<br>--chip-line-disabled-icon → color-chip-line-label-disabled |
+| solid | --chip-solid-default-bg → color-chip-solid-bg-default<br>--chip-solid-default-border → color-chip-solid-border-default<br>--chip-solid-default-text → color-chip-solid-label-default<br>--chip-solid-default-icon → color-chip-solid-label-default<br>--chip-solid-default-close-icon → color-chip-solid-label-default | --chip-solid-hover-bg → color-chip-solid-bg-hover<br>--chip-solid-hover-border → color-chip-solid-bg-hover<br>--chip-solid-hover-close-icon → color-chip-solid-label-default | --chip-solid-selected-bg → color-chip-solid-bg-selected<br>--chip-solid-selected-border → color-chip-solid-border-selected<br>--chip-solid-selected-text → color-chip-solid-label-selected<br>--chip-solid-selected-icon → color-chip-solid-label-selected<br>--chip-solid-selected-close-icon → color-chip-solid-label-selected | — | --chip-solid-disabled-bg → color-chip-solid-bg-disabled<br>--chip-solid-disabled-border → color-chip-solid-border-disabled<br>--chip-solid-disabled-text → color-chip-solid-label-disabled<br>--chip-solid-disabled-icon → color-chip-solid-label-disabled |
 | filter | — | — | — | — | — |
 
 ### DatePicker
 
 | variant | default | hover | pressed | disabled |
 | --- | --- | --- | --- | --- |
-| default | — | — | — | — |
+| default | --input-default-bg<br>--input-default-border | --date-picker-cell-hover-bg → color-bg-subtle<br>--date-picker-nav-hover-bg → color-bg-subtle | — | --input-disabled-bg<br>--input-disabled-border<br>--input-disabled-text<br>--date-picker-cell-disabled-text → color-text-disabled |
 
 ### Dropdown
 
 | variant | default | hover | pressed | disabled |
 | --- | --- | --- | --- | --- |
-| default | — | — | — | — |
+| default | --dropdown-trigger-default-bg → color-surface-default<br>--dropdown-trigger-default-border → color-form-control-border-default<br>--dropdown-trigger-default-text → color-text-secondary<br>--dropdown-list-bg → color-surface-raised<br>--dropdown-list-border → color-border-default | --dropdown-trigger-hover-bg → color-bg-subtle<br>--dropdown-trigger-hover-border → color-border-strong<br>--dropdown-list-bg → color-surface-raised<br>--dropdown-list-border → color-border-default<br>--dropdown-option-hover-bg → color-bg-subtle | --dropdown-list-bg → color-surface-raised<br>--dropdown-list-border → color-border-default | --dropdown-trigger-disabled-bg → color-bg-subtle<br>--dropdown-trigger-disabled-border → color-border-subtle<br>--dropdown-trigger-disabled-text → color-text-disabled<br>--dropdown-list-bg → color-surface-raised<br>--dropdown-list-border → color-border-default |
 
 ### GNB
 
 | variant | default | hover | pressed | disabled |
 | --- | --- | --- | --- | --- |
-| menuSlot | — | — | — | — |
-| bar | — | — | — | — |
+| menuSlot | --gnb-menu-label-default → color-navigation-label-default-alt | — | — | — |
+| bar | --gnb-menu-label-default → color-navigation-label-default-alt | — | — | — |
 
 ### Input
 
 | variant | default | focus | filled | error | correct | disabled |
 | --- | --- | --- | --- | --- | --- | --- |
-| default | — | — | — | — | — | — |
+| default | --color-form-control-bg-default → color-surface-default<br>--color-form-control-border-default → color-border-default<br>--color-form-control-text-default → color-text-secondary | — | — | --color-form-control-border-error → color-status-error<br>--color-text-state-error → color-status-error | --color-form-control-border-correct → color-border-focus<br>--color-text-state-correct | --color-form-control-bg-disabled → color-bg-subtle<br>--color-form-control-border-disabled → color-border-subtle<br>--color-form-control-text-disabled → color-text-disabled |
 
 ### Modal
 
@@ -152,58 +152,58 @@ typography:
 
 | variant | default | hover | active | disabled |
 | --- | --- | --- | --- | --- |
-| default | — | — | — | — |
+| default | --nav-bg → color-surface-default<br>--nav-item-default-text → color-text-tertiary<br>--nav-item-default-icon → color-icon-default<br>--nav-item-indicator-default → color-border-subtle<br>--nav-divider → color-border-subtle | --nav-bg → color-surface-default<br>--nav-item-hover-bg → color-bg-subtle<br>--nav-divider → color-border-subtle | --nav-bg → color-surface-default<br>--nav-item-active-bg → color-action-primary-subtle<br>--nav-item-active-text → color-action-primary-default<br>--nav-item-active-icon → color-action-primary-default<br>--nav-item-indicator → color-action-primary-default<br>--nav-divider → color-border-subtle | --nav-bg → color-surface-default<br>--nav-divider → color-border-subtle |
 
 ### Pagination
 
 | variant | default | hover | selected | disabled |
 | --- | --- | --- | --- | --- |
-| arrow | — | — | — | — |
-| number | — | — | — | — |
+| arrow | — | --pagination-control-hover-bg → color-bg-subtle | — | — |
+| number | — | --pagination-control-hover-bg → color-bg-subtle | --pagination-number-text-selected → color-text-secondary | — |
 
 ### Radio
 
 | variant | default | hover | selected | disabled |
 | --- | --- | --- | --- | --- |
-| default | — | — | — | — |
+| default | --radio-default-bg → color-control-bg-default<br>--radio-default-border → color-control-border-default | --radio-hover-bg → color-control-bg-hover<br>--radio-hover-border → color-control-border-default | --radio-selected-border → color-control-border-selected<br>--radio-selected-dot → color-control-indicator-selected-alt | --radio-disabled-bg → color-control-bg-disabled<br>--radio-disabled-border → color-control-border-disabled<br>--radio-disabled-dot → color-control-indicator-disabled |
 
 ### Select
 
 | variant | default | hover | open | filled | disabled |
 | --- | --- | --- | --- | --- | --- |
-| default | — | — | — | — | — |
+| default | --dropdown-trigger-default-bg → color-surface-default<br>--dropdown-trigger-default-border → color-form-control-border-default<br>--dropdown-trigger-default-text → color-text-secondary<br>--dropdown-list-bg → color-surface-raised<br>--dropdown-list-border → color-border-default | --dropdown-trigger-hover-bg → color-bg-subtle<br>--dropdown-trigger-hover-border → color-border-strong<br>--dropdown-list-bg → color-surface-raised<br>--dropdown-list-border → color-border-default<br>--dropdown-option-hover-bg → color-bg-subtle | --dropdown-trigger-open-bg → color-bg-subtle<br>--dropdown-trigger-open-border → color-border-focus<br>--dropdown-list-bg → color-surface-raised<br>--dropdown-list-border → color-border-default | --dropdown-trigger-selected-text → color-text-primary<br>--dropdown-list-bg → color-surface-raised<br>--dropdown-list-border → color-border-default | --dropdown-trigger-disabled-bg → color-bg-subtle<br>--dropdown-trigger-disabled-border → color-border-subtle<br>--dropdown-trigger-disabled-text → color-text-disabled<br>--dropdown-list-bg → color-surface-raised<br>--dropdown-list-border → color-border-default |
 
 ### Line Tab
 
 | variant | unselected | selected | hover | pressed |
 | --- | --- | --- | --- | --- |
-| size | — | — | — | — |
+| size | — | --tab-label-selected → color-navigation-label-selected<br>--tab-indicator-selected → color-navigation-indicator-selected | — | — |
 
 ### Table
 
 | variant | default | hover | selected |
 | --- | --- | --- | --- |
-| header | — | — | — |
-| body | — | — | — |
+| header | --table-row-default-bg → color-table-cell-default | --table-row-hover-bg → color-table-cell-hover | --table-row-selected-bg → color-table-cell-selected |
+| body | --table-row-default-bg → color-table-cell-default | --table-row-hover-bg → color-table-cell-hover | --table-row-selected-bg → color-table-cell-selected |
 
 ### Textarea
 
 | variant | default | focus | error | correct | disabled | readonly |
 | --- | --- | --- | --- | --- | --- | --- |
-| default | — | — | — | — | — | — |
+| default | --input-default-bg → color-form-control-bg-default<br>--input-default-border → color-form-control-border-default<br>--input-placeholder-text → color-form-control-text-placeholder<br>--input-helper-text → color-text-state-helper | --input-focus-border → color-form-control-border-selected<br>--input-placeholder-text → color-form-control-text-placeholder | --input-error-border → color-form-control-border-error<br>--input-placeholder-text → color-form-control-text-placeholder<br>--input-error-text → color-text-state-error | --input-correct-border → color-form-control-border-correct<br>--input-placeholder-text → color-form-control-text-placeholder<br>--input-correct-text → color-text-state-correct | --input-disabled-bg → color-form-control-bg-disabled<br>--input-disabled-border → color-form-control-border-disabled<br>--input-placeholder-text → color-form-control-text-placeholder<br>--input-disabled-text → color-form-control-text-disabled | --input-readonly-bg → color-form-control-bg-disabled<br>--input-readonly-border → color-form-control-border-disabled<br>--input-placeholder-text → color-form-control-text-placeholder<br>--input-readonly-text → color-text-readonly |
 
 ### TimePicker
 
 | variant | default | focus | filled | disabled |
 | --- | --- | --- | --- | --- |
-| input | — | — | — | — |
-| select | — | — | — | — |
-| dropdown_panel | — | — | — | — |
+| input | --color-form-control-bg-default → color-surface-default<br>--color-form-control-border-default → color-control-border-default<br>--color-form-control-text-default → color-text-secondary<br>--color-form-control-label-default → color-text-secondary | — | — | --color-form-control-bg-disabled → color-bg-subtle<br>--color-form-control-border-disabled → color-border-subtle<br>--color-form-control-text-disabled → color-text-disabled<br>--color-form-control-label-disabled → color-text-disabled |
+| select | --color-form-control-bg-default → color-surface-default<br>--color-form-control-border-default → color-control-border-default<br>--color-form-control-text-default → color-text-secondary<br>--color-form-control-label-default → color-text-secondary | — | — | --color-form-control-bg-disabled → color-bg-subtle<br>--color-form-control-border-disabled → color-border-subtle<br>--color-form-control-text-disabled → color-text-disabled<br>--color-form-control-label-disabled → color-text-disabled |
+| dropdown_panel | --color-form-control-bg-default → color-surface-default<br>--color-form-control-border-default → color-control-border-default<br>--color-form-control-text-default → color-text-secondary<br>--color-form-control-label-default → color-text-secondary | — | — | --color-form-control-bg-disabled → color-bg-subtle<br>--color-form-control-border-disabled → color-border-subtle<br>--color-form-control-text-disabled → color-text-disabled<br>--color-form-control-label-disabled → color-text-disabled |
 
 ### Toggle
 
 | variant | on | off | disabled |
 | --- | --- | --- | --- |
-| default | — | — | — |
+| default | --toggle-on-bg → color-control-bg-selected<br>--toggle-knob → color-control-indicator-selected | --toggle-off-bg → color-control-indicator-unselected<br>--toggle-knob → color-control-indicator-selected | --toggle-disabled-bg → color-control-bg-disabled<br>--toggle-knob → color-control-indicator-selected |
 
-<!-- generated-stamp: 44f9e2399186 · 손편집 금지 -->
+<!-- generated-stamp: ca9468f2a971 · 손편집 금지 -->

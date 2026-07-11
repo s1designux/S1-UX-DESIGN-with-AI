@@ -118,29 +118,135 @@ function stateNames(comp) {
   if (Array.isArray(s) && s.every((x) => typeof x === 'string')) return s;
   return DEFAULT_STATES;
 }
-// 해당 variant 의 토큰 후보: variants[variant].tokens 우선, 없으면 컴포넌트 레벨 tokens 평탄화
-function tokensForVariant(comp, variant) {
-  const v = comp.json.variants || {};
-  if (v[variant] && Array.isArray(v[variant].tokens)) {
-    return v[variant].tokens.filter((x) => typeof x === 'string'); // 토큰 배열에 객체가 섞인 경우 방어
-  }
-  const t = comp.json.tokens;
-  if (t && typeof t === 'object' && !Array.isArray(t)) {
-    return Object.values(t).flat().filter((x) => typeof x === 'string');
-  }
-  if (Array.isArray(t)) return t.filter((x) => typeof x === 'string');
-  return [];
+// ── 토큰 엔트리 정규화 (registry 의 이질적 shape 를 {name, state, semantic} 으로 통일) ──
+// registry/components/*.json 은 컴포넌트마다 토큰 형태가 다르다:
+//   문자열 배열(button) / 객체 배열 {cssVar|name, state, property, semanticRef|value}(checkbox·chip·gnb…)
+//   / 그룹 객체(date-picker·modal) / semanticTokens 객체(input) / tokenRef 참조(select→dropdown)
+// 아래 함수들이 이 전부를 판독한다(정본=tokens.css+registry, registry 는 무수정).
+const ALL_STATE_ALIASES = new Set(['all', 'base', 'common', 'shared', 'any']);
+
+function semanticFromValue(v) {
+  if (typeof v !== 'string') return null;
+  const m = v.match(/var\(\s*(--[\w-]+)\s*\)/); // "var(--color-x)" → color-x
+  return m ? m[1].replace(/^--/, '') : null;
 }
+
+function normalizeEntry(e) {
+  if (typeof e === 'string') return { name: e, state: null, semantic: null };
+  if (e && typeof e === 'object') {
+    const name = (typeof e.cssVar === 'string' && e.cssVar) || (typeof e.name === 'string' && e.name) || null;
+    if (!name) return null;
+    const state = typeof e.state === 'string' ? e.state : null;
+    const semantic = (typeof e.semanticRef === 'string' && e.semanticRef) || semanticFromValue(e.value) || null;
+    return { name, state, semantic };
+  }
+  return null;
+}
+
+// 배열/그룹객체/semanticTokens 형태의 tokens 필드를 엔트리 목록으로 평탄화
+function entriesFromField(t) {
+  const out = [];
+  const push = (e) => { const n = normalizeEntry(e); if (n) out.push(n); };
+  if (Array.isArray(t)) {
+    t.forEach(push);
+  } else if (t && typeof t === 'object') {
+    for (const v of Object.values(t)) {
+      if (Array.isArray(v)) { v.forEach(push); continue; }
+      if (v && typeof v === 'object') {
+        if (Array.isArray(v.reuses)) v.reuses.forEach(push); // date-picker: {reuses:[...], note}
+        for (const [k, val] of Object.entries(v)) {           // input: {"--css": "var(--sem)"}
+          if (k.startsWith('--') && typeof val === 'string') push({ name: k, value: val });
+        }
+      }
+    }
+  }
+  return out;
+}
+
+// 컴포넌트의 토큰을 { byVariant: {v:[entries]} | null, all: [entries] | null } 로 수집
+function collectEntries(comp, depth = 0) {
+  const j = comp.json || {};
+  // 7. tokenRef → 참조 컴포넌트로 위임(1단계)
+  if (typeof j.tokenRef === 'string' && depth < 2) {
+    try {
+      const refJson = JSON.parse(fs.readFileSync(path.join(ROOT, j.tokenRef), 'utf8'));
+      return collectEntries({ json: refJson }, depth + 1);
+    } catch (_) { /* 참조 실패 시 자체 필드로 폴백 */ }
+  }
+  const v = j.variants;
+  // 1·2. variants.<v>.tokens (per-variant)
+  if (v && typeof v === 'object' && !Array.isArray(v)) {
+    const byVariant = {};
+    let has = false;
+    for (const [vk, vv] of Object.entries(v)) {
+      if (vv && typeof vv === 'object' && Array.isArray(vv.tokens)) {
+        const es = vv.tokens.map(normalizeEntry).filter(Boolean);
+        if (es.length) { byVariant[vk] = es; has = true; }
+      }
+    }
+    if (has) return { byVariant, all: null };
+  }
+  // 3·4·5. 컴포넌트 레벨 tokens
+  if (j.tokens) {
+    const all = entriesFromField(j.tokens);
+    if (all.length) return { byVariant: null, all };
+  }
+  // 6. variants.default.semanticTokens
+  if (v && v.default && v.default.semanticTokens) {
+    const all = entriesFromField(v.default.semanticTokens);
+    if (all.length) return { byVariant: null, all };
+  }
+  return { byVariant: null, all: [] };
+}
+
+// 엔트리가 특정 state 열에 속하는가 (명시 state 우선, 없으면 이름 세그먼트 추론)
+function entryInState(e, st) {
+  if (e.state) {
+    const es = e.state.toLowerCase();
+    if (ALL_STATE_ALIASES.has(es)) return true; // all/base/common → 전 상태 공통
+    return es === st.toLowerCase();
+  }
+  const n = e.name.toLowerCase();
+  const s = st.toLowerCase();
+  return n.includes(`-${s}-`) || n.endsWith(`-${s}`);
+}
+
+// 셀 표기: 이름 + 의미(semantic) 병기. 의미 없으면 이름만.
+function renderEntry(e) {
+  return e.semantic ? `${e.name} → ${e.semantic}` : e.name;
+}
+
 function componentTable(comp) {
   const variants = variantNames(comp.json.variants);
   const states = stateNames(comp);
+  const collected = collectEntries(comp);
+  // 이름에 변형 세그먼트가 하나라도 나타나는지(다변형 귀속 판단용)
+  const segOf = (vn) => `-${vn.toLowerCase()}`;
+  const nameHasSeg = (name, vn) => {
+    const n = name.toLowerCase(); const s = segOf(vn);
+    return n.includes(`${s}-`) || n.endsWith(s);
+  };
+  const componentHasVariantSeg = collected.all
+    ? collected.all.some((e) => variants.some((vn) => nameHasSeg(e.name, vn)))
+    : false;
+
   const header = ['variant', ...states];
   const sep = header.map(() => '---');
   const rows = variants.map((variant) => {
-    const toks = tokensForVariant(comp, variant);
+    let entries;
+    if (collected.byVariant) {
+      entries = collected.byVariant[variant] || [];
+    } else {
+      entries = collected.all || [];
+      // 다변형 + 이름에 변형 세그먼트가 있으면 변형행에 귀속(해당 변형 + 공용 토큰)
+      if (variants.length > 1 && componentHasVariantSeg) {
+        const matched = entries.filter((e) => nameHasSeg(e.name, variant));
+        const shared = entries.filter((e) => !variants.some((vn) => nameHasSeg(e.name, vn)));
+        entries = [...matched, ...shared];
+      }
+    }
     const cells = states.map((st) => {
-      // 셀 = 이 variant 토큰 중 `-state-` 를 포함하는 것들. 없으면 "—"(정직 표기).
-      const hit = toks.filter((tk) => tk.includes(`-${st}-`));
+      const hit = [...new Set(entries.filter((e) => entryInState(e, st)).map(renderEntry))];
       return hit.length ? hit.join('<br>') : '—';
     });
     return [variant, ...cells];
