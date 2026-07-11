@@ -1,8 +1,8 @@
 # Button Sync Check Report
 
-**Date:** 2026-06-17  
+**Date:** 2026-07-10  
 **Status:** ❌ 1 issue(s) found  
-**Summary:** 33 passed · 1 warnings · 1 issues (total 35 checks)
+**Summary:** 32 passed · 1 warnings · 1 issues (total 34 checks)
 
 ---
 
@@ -23,7 +23,7 @@
 
 - [WARN]  assets/css/components/button.css: raw HEX detected — verify no component-level HEX
 
-## Passed (33)
+## Passed (32)
 
 - [OK]    registry/components/button.json: variant "primary" present
 - [OK]    registry/components/button.json: variant "secondary" present
@@ -43,7 +43,6 @@
 - [OK]    registry/tokens/component.tokens.json: "secondary" token array present
 - [OK]    registry/tokens/component.tokens.json: "blue-line" token array present
 - [OK]    registry/tokens/component.tokens.json: no raw HEX values in button tokens
-- [OK]    registry/tokens/component.tokens.json: ghost tokens all marked deprecated
 - [OK]    pages/components-new.html: primary variant CSS class present
 - [OK]    pages/components-new.html: secondary variant CSS class present
 - [OK]    pages/components-new.html: blue-line variant CSS class present

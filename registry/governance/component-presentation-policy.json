@@ -14,14 +14,14 @@
       "radio-like": "라디오류 — 단일크기. [Action + 상태], 그리고 라벨 유무(off/on)를 Action과 각 상태 칸 안에 함께 표출(별도 블록 금지).",
       "button-full": "버튼형(풀) — Action=사이즈별 인터랙티브 스트립(가로) + 아래 사이즈(행)×상태(열) 2D 매트릭스. variant 있으면 variant별 블록.",
       "button-action-size": "버튼형(액션-사이즈) — Action=사이즈별 인터랙티브 스트립 + 아래 상태 매트릭스(단일 대표 사이즈 1행). 사이즈는 Action에만 표출(별도 SIZES 블록 금지). variant 있으면 variant별 동일 레이아웃 블록.",
-      "line-tab": "라인탭형 — 현재 사이즈×상태 매트릭스 유지하되 사이즈값을 Action/상태 영역에 표출(별도 SIZES 블록 통합).",
+      "line-tab": "라인탭형 — Input식 표준(사이즈=Action 스트립에만 인터랙티브 표출, 상태=사이즈와 분리된 하나의 가로 스트립). 2026-07-08 사이즈×상태 매트릭스에서 전환.",
       "set-based": "세트형 — 세트(패널/리스트)가 기준. 세트별로 Action에 사이즈대로 표출.",
       "current-plus-action": "현재유지+액션 — 현재 표출 구조는 잘 되어 있어 유지하고, 빠진 Action(인터랙티브)만 추가.",
       "table-preview": "테이블형 — 완성형 프리뷰 유지 + Action 추가 + 사이즈를 섹션 분리하지 않고 한 섹션에 함께 + 셀 정보에 테이블 감싸는 상하단 라인 정보 보완.",
       "pagination": "페이지네이션형 — 상태값을 (가로 열이 아니라) 아래로(세로) 배치 + Action."
     },
     "rules": {
-      "sizePlacement": "none=사이즈 없음 / action-only=Action 스트립에만 / action-strip+matrix-rows=Action 스트립 + 매트릭스 행 / in-action-state-area=Action·상태 영역 안 / per-set=세트별 / merged-section=한 섹션 통합",
+      "sizePlacement": "none=사이즈 없음 / action-only=Action 스트립에만 / action-strip+matrix-rows=Action 스트립 + 매트릭스 행 / in-action-state-area=Action·상태 영역 안 / per-set=세트별 / merged-section=한 섹션 통합 / in-action-align-size=Action에 정렬×사이즈 전 조합(gnb)",
       "labelPlacement": "in-action-and-state=라벨 유무를 Action과 각 상태 칸에 함께(radio-like 전용)",
       "statesLayout": "columns=상태를 가로 열 / vertical=상태를 세로(아래로) / matrix=행×열 / row=단일 행"
     }
@@ -38,10 +38,10 @@
     "date-picker":  { "platform": "pc", "archetype": "button-action-size", "actionRequired": true, "sizePlacement": "action-only", "sizes": ["xxsm","xsm","md"], "states": ["default","filled","open","disabled"], "keepInState": {"open": "calendar"}, "statesLayout": "row", "changeFromCurrent": "사이즈 별도 블록 → Action에만.", "note": "hover/open 상태에 캘린더 팝업 유지." },
     "time-picker":  { "platform": "pc", "archetype": "button-action-size", "actionRequired": true, "sizePlacement": "action-only", "sizes": ["xxsm","xsm","md"], "states": ["default","hover","focus","filled","disabled"], "keepInState": {"focus": "dropdown"}, "subComponents": ["input","select"], "statesLayout": "row", "changeFromCurrent": "사이즈 별도 블록 → Action에만.", "note": "hover/focus 상태에 드롭다운 유지." },
     "select":       { "platform": "pc", "archetype": "button-action-size", "actionRequired": true, "sizePlacement": "action-only", "sizes": ["xxsm","xsm","md"], "states": ["default","hover","open","filled","disabled"], "keepInState": {"open": "optionList"}, "statesLayout": "row", "changeFromCurrent": "사이즈 별도 블록 → Action에만.", "note": "옵션리스트 표출 유지. 사이즈는 Action에만(2026-07-06 확정)." },
-    "tab":          { "platform": "pc", "archetype": "line-tab",           "actionRequired": true, "sizePlacement": "in-action-state-area", "sizes": ["md","sm"], "states": ["unselected","selected","hover"], "statesLayout": "matrix", "changeFromCurrent": "별도 SIZES 블록 → 사이즈값을 Action/상태 영역에.", "note": "Line Tab. 현재 매트릭스 유지." },
+    "tab":          { "platform": "pc", "archetype": "line-tab",           "actionRequired": true, "sizePlacement": "action-only", "sizes": ["md","sm"], "states": ["unselected","selected","hover"], "statesLayout": "row", "changeFromCurrent": "사이즈×상태 매트릭스 → Input식 표준(사이즈=Action에만, 상태=분리 스트립).", "note": "Input식 표준(사이즈=액션 통합, 상태=분리 스트립)으로 통일. 2026-07-08." },
     "dropdown":     { "platform": "pc", "archetype": "set-based",          "actionRequired": true, "sizePlacement": "per-set", "sizes": ["xxsm","xsm","md"], "states": ["default","hover","selected","disabled"], "statesLayout": "matrix", "changeFromCurrent": "세트별로 Action에 사이즈대로 (Action 추가).", "note": "세트(패널)가 기준." },
     "multi-toggle": { "platform": "pc", "archetype": "current-plus-action","actionRequired": true, "sizePlacement": "matrix-rows", "sizes": ["md","sm"], "states": ["default","hover","selected","disabled"], "extraAxes": {"selected": ["left","center","right"]}, "statesLayout": "matrix", "changeFromCurrent": "세트조합에 Action만 추가.", "note": "현재 표출 잘 되어있음." },
-    "gnb":          { "platform": "pc", "archetype": "current-plus-action","actionRequired": true, "sizePlacement": "matrix-rows", "sizes": ["md","sm","xsm"], "extraAxes": {"align": ["center-between","start"]}, "statesLayout": "matrix", "changeFromCurrent": "세트에 Action 추가.", "contentAdditions": ["하위 항목(메뉴 탭·유틸리티 등) 정보"], "note": "현재 표출 잘 되어있음." },
+    "gnb":          { "platform": "pc", "archetype": "current-plus-action","actionRequired": true, "sizePlacement": "in-action-align-size", "sizes": ["md","sm","xsm"], "extraAxes": {"align": ["center-between","start"]}, "statesLayout": "row", "changeFromCurrent": "Action에 정렬×사이즈 전 조합(6개) 통합 + 구성요소를 Action 아래로 이동 + 메뉴슬롯 Action열 제거(상태만).", "contentAdditions": ["하위 항목(메뉴 탭·유틸리티 등) 정보"], "note": "Action에 정렬×사이즈 전 조합 통합 + 구성요소를 Action 아래로 이동 + 메뉴슬롯 Action열 제거. 2026-07-08." },
     "table":        { "platform": "pc", "archetype": "table-preview",      "actionRequired": true, "sizePlacement": "merged-section", "sizes": ["md","sm"], "statesLayout": "matrix", "changeFromCurrent": "Action 추가 + 사이즈 섹션 분리 말고 한 섹션에 함께.", "contentAdditions": ["셀에 테이블 감싸는 상하단 라인 정보"], "note": "완성형 프리뷰 유지." },
     "pagination":   { "platform": "pc", "archetype": "pagination",         "actionRequired": true, "sizePlacement": "none", "states": ["single","first","last","middle"], "extraAxes": {"element": ["arrow","number"]}, "statesLayout": "vertical", "changeFromCurrent": "상태값을 가로 열 → 아래로(세로) 배치.", "note": "" }
   }
