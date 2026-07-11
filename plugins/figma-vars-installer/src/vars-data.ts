@@ -531,12 +531,6 @@ export const SEMANTIC_COLOR: Record<string, SemanticColorEntry> = {
   //   → 다크모드에서 시트 표면색(gray-dark/100)으로 자연스럽게 fade(흰색 누출 방지). Figma 정본 VariableID:916:2.
   "color/overlay/wheel-fade": { light: "base/white", dark: "gray-dark/100" },
 
-  // ── frame ────────────────────────────────
-  "color/frame/border":  { light: "gray/100",   dark: "gray-dark/300" },
-  "color/frame/surface": { light: "base/white",  dark: "gray-dark/100" },
-  "color/frame/bg":      { light: "gray/50",     dark: "gray-dark/100" },
-  "color/frame/text":    { light: "gray/800",    dark: "gray-dark/800" },
-
   // ── date-picker ────────────────────────────────
   // 신설: components.html 의 .s1-date-picker__* CSS 토큰 사용 기반
   // 레거시 semantic 컬렉션에 없던 그룹 — 우리 코드의 datepicker 디자인 정합

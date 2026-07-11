@@ -552,12 +552,6 @@
   --color-overlay           : rgba(0,0,0,0.5);
   --color-overlay-wheel-fade: var(--color-base-white);
 
-  /* ── frame ── */
-  --color-frame-border : var(--color-gray-100);
-  --color-frame-surface: var(--color-base-white);
-  --color-frame-bg     : var(--color-gray-50);
-  --color-frame-text   : var(--color-gray-800);
-
   /* ── date-picker ── */
   --color-date-picker-panel-bg            : var(--color-base-white);
   --color-date-picker-panel-border        : var(--color-gray-300);
@@ -767,12 +761,6 @@
   /* ── overlay ── */
   --color-overlay           : rgba(0,0,0,0.75);
   --color-overlay-wheel-fade: var(--color-gray-dark-100);
-
-  /* ── frame ── */
-  --color-frame-border : var(--color-gray-dark-300);
-  --color-frame-surface: var(--color-gray-dark-100);
-  --color-frame-bg     : var(--color-gray-dark-100);
-  --color-frame-text   : var(--color-gray-dark-800);
 
   /* ── date-picker ── */
   --color-date-picker-panel-bg            : var(--color-gray-dark-100);
