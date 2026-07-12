@@ -1,0 +1,103 @@
+{
+  "meta": {
+    "builder": "figma-library-builder",
+    "fileKey": "cysG5U1udpQqVagYY1hWHW",
+    "page": { "id": "16:1170", "name": "Video (준비중)" },
+    "builtAt": "2026-07-10",
+    "plan": "reports/figma-library-build/video-widgets/2-plan.md",
+    "notes": "Pretendard fonts loaded directly in this environment (no Noto workaround needed); all text bound to canonical text styles via setTextStyleIdAsync. All fills/strokes bound to Variables (0 raw hex after clearing default auto-layout white fills). Section fills bound to gray-dark/50."
+  },
+  "section": { "id": "1020:2", "name": "Video Widgets", "x": 0, "y": 0, "w": 2150, "h": 1466 },
+  "componentSets": [
+    {
+      "name": "Video/Widget Header",
+      "setId": "1021:9182",
+      "x": 64, "y": 140, "w": 328, "h": 136,
+      "variantAxis": ["Action"],
+      "variants": [
+        { "name": "Action=On", "id": "1021:2", "iconInstance": { "id": "1021:7", "name": "ic_새로고침", "mainComponent": "155:11313", "source": "library instance (Line variant)" } },
+        { "name": "Action=Off", "id": "1021:13" }
+      ]
+    },
+    {
+      "name": "Video/Widget Shell",
+      "setId": "1022:9175",
+      "x": 512, "y": 140, "w": 678, "h": 1246,
+      "variantAxis": ["Size"],
+      "variants": [
+        { "name": "Size=1x1", "id": "1022:6", "dims": "311x185" },
+        { "name": "Size=1x2", "id": "1022:7", "dims": "630x185" },
+        { "name": "Size=2x1", "id": "1022:8", "dims": "311x378" },
+        { "name": "Size=2x2", "id": "1022:9", "dims": "630x378" }
+      ]
+    },
+    {
+      "name": "Video/List Card Row",
+      "setId": "1023:31",
+      "x": 1310, "y": 140, "w": 327, "h": 339,
+      "variantAxis": ["Type"],
+      "variants": [
+        { "name": "Type=Thumbnail", "id": "1023:6" },
+        { "name": "Type=Avatar", "id": "1023:15" },
+        { "name": "Type=Meta", "id": "1023:22" }
+      ]
+    },
+    {
+      "name": "Video/Segment Gauge",
+      "setId": "1023:9221",
+      "x": 1720, "y": 140, "w": 116, "h": 176,
+      "variantAxis": ["Tone", "Fill"],
+      "provisional": "Level colors PROVISIONAL (HD-4): Congestion=blue-dark/350, Score=green-dark/350 only. No extended level palette. Set description carries this note.",
+      "variants": [
+        { "name": "Tone=Congestion, Fill=1", "id": "1023:32" },
+        { "name": "Tone=Congestion, Fill=2", "id": "1023:36" },
+        { "name": "Tone=Congestion, Fill=3", "id": "1023:40" },
+        { "name": "Tone=Score, Fill=1", "id": "1023:44" },
+        { "name": "Tone=Score, Fill=2", "id": "1023:48" },
+        { "name": "Tone=Score, Fill=3", "id": "1023:52" }
+      ]
+    },
+    {
+      "name": "Video/Summary Metric Block",
+      "setId": "1023:9236",
+      "x": 1900, "y": 140, "w": 170, "h": 242,
+      "variantAxis": ["Trend"],
+      "variants": [
+        { "name": "Trend=None", "id": "1023:9222" },
+        { "name": "Trend=Up", "id": "1023:9226" },
+        { "name": "Trend=Down", "id": "1023:9231" }
+      ]
+    }
+  ],
+  "boundVariables": [
+    { "name": "color/bg/level-1", "id": "VariableID:687:17885", "usage": "section bg (rework 2026-07-10: was gray-dark/50). Light #fafafa / Dark #131418" },
+    { "name": "color/surface/raised", "id": "VariableID:820:190", "usage": "Widget Shell bg, 4 Size variants (rework 2026-07-10: was gray-dark/100). Light #ffffff / Dark #1c1d23" },
+    { "name": "color/bg/level-3", "id": "VariableID:687:17887", "usage": "placeholders, gauge empty segment (track), metric value placeholder (rework 2026-07-10: was gray-dark/300). Light #e9e9e9 / Dark #24252c" },
+    { "name": "color/status-card/text/error", "id": "VariableID:8:1109", "usage": "Summary Metric Down trend (rework 2026-07-10: was red-dark/350). Light #e50533 / Dark #f06070" },
+    { "name": "color/line/gray/subtle", "id": "VariableID:8:1076", "usage": "dividers, shell border (allowed-deviation #1: default/strong not in DS)" },
+    { "name": "color/text/title/primary", "id": "VariableID:8:1127", "usage": "titles" },
+    { "name": "color/text/body/primary", "id": "VariableID:8:1116", "usage": "avatar name, Up trend" },
+    { "name": "color/text/body/secondary", "id": "VariableID:8:1117", "usage": "meta desc, metric label" },
+    { "name": "color/text/body/tertiary", "id": "VariableID:8:1118", "usage": "timestamp, avatar sub, meta line" },
+    { "name": "color/icon/gray", "id": "VariableID:8:1068", "usage": "refresh icon" },
+    { "name": "blue-dark/350", "id": "VariableID:8:754", "usage": "gauge Congestion FILLED segments only (provisional foundation, KEPT per river). 6 paints preserved." },
+    { "name": "green-dark/350", "id": "VariableID:8:834", "usage": "gauge Score FILLED segments only (provisional foundation, KEPT per river). 6 paints preserved." },
+    { "name": "radius/8", "id": "VariableID:8:943", "usage": "Widget Shell 4 corner radii (bound)" }
+  ],
+  "structureNotes": {
+    "combineAsVariants": "All 5 sets combined via combineAsVariants; each set set to VERTICAL auto-layout with padding+itemSpacing so variants pack compactly (no width blowup — widest set 678px).",
+    "detach": "None needed — no cyclic self-containment (no variant embeds a sibling variant instance).",
+    "rename": "Variant components renamed to Prop=Value before combine; sets named Video/{Name} slash-folder.",
+    "remap": "N/A — all sets newly created (no pre-existing instances to remap).",
+    "layoutWrapperFills": "12 auto-layout wrapper frames had default white fills auto-added by createAutoLayout; cleared to transparent (fills=[]) to remove raw color.",
+    "textStyles": "All text bound to canonical Pretendard text styles (title/16B, title/14B, body/14M, body/12M, body/12R, body/10M) via setTextStyleIdAsync."
+  },
+  "selfCheck": {
+    "rawHexUnboundPaints": 0,
+    "nonPretendardFonts": 0,
+    "packingCollapse": "none (widest set 678px)",
+    "overlap": "none (verified child bounds)",
+    "rework_semantic_2026-07-10": "COLOR REBIND ONLY (no structure/variant/font change). Foundation-dark background/placeholder fills were theme-locked (dark bg vs light-flipping text/border broke light-mode render). Rebound 22 fills across section 1020:2 subtree to Semantic (theme-flipping): gray-dark/50->color/bg/level-1 (1: section 1020:2), gray-dark/100->color/surface/raised (4: shell variants 1022:6/7/8/9), gray-dark/300->color/bg/level-3 (16: placeholders + gauge empty tracks + metric value placeholders 1023:9/11/12/13/17/25/26/34/35/39/46/47/51 + 1023:9225/9229/9234/9235), red-dark/350->color/status-card/text/error (1: Down-trend TEXT 1023:9235's sibling '▼ 8%'). Verified: 0 leftover foundation-source bindings; gauge FILLED segments preserved (blue-dark/350 x6 + green-dark/350 x6, unchanged per river provisional decision); text/*, line/gray/subtle, icon/gray, radius/8 untouched; full-subtree rescan of visible unbound SOLID paints (fills+strokes) = 0. Light-mode render confirmed correct (previously dark-locked bg now flips). Flip values: bg/level-1 L#fafafa/D#131418, surface/raised L#ffffff/D#1c1d23, bg/level-3 L#e9e9e9/D#24252c, status-card/text/error L#e50533/D#f06070.",
+    "rework_2026-07-10": "section stroke removed, rawHex 0 re-scanned. Section 1020:2 had a raw #000000 unbound stroke (missed in original scan because prior scan didn't flag stroke paints); stroke removed (strokes=[]) as decorative section-boundary chrome, gray-dark/50 fill preserved+still bound. Full-page re-scan of VISIBLE unbound SOLID paints (fills+strokes) = 0 violations. Note: 14 white COMPONENT frame fills are visible:false (Figma default hidden background, not rendered) so correctly not violations. No other node changed."
+  }
+}
