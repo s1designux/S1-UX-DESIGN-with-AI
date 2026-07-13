@@ -6,6 +6,13 @@
  *
  * ⚠ 자동 생성 · 직접수정 금지 · 재생성: npm run icons:figma:snapshot
  *
+ * ⚠ 이 스크립트는 단독 실행되지 않는다.
+ *   선행 조건: Figma MCP get_metadata(파일키 YcBbW9e0MTR9T3W5Sz0Ukx, 페이지 0:1) 덤프를
+ *   캐시 경로(data/.figma-raw-metadata.json)에 저장해야 한다. 덤프 캐시는 .gitignore 대상이라
+ *   저장소에 없다. (.env 의 FIGMA_TOKEN 이 비어 있어 REST 자동 취득 불가.)
+ *   갱신 절차: Claude Code 세션에서 MCP 로 0:1 읽기 → 캐시 저장 → npm run icons:figma:snapshot
+ *   자기검증 기준값(2026-07-13): 섹션 15 · 아이콘 819 · 변형 2457
+ *
  * 원천(raw): Figma MCP `get_metadata(fileKey, "0:1")` 의 XML 덤프.
  *   - Figma REST 는 .env FIGMA_TOKEN 이 비어 있어 못 쓰고, node 는 MCP 를 직접 못 부르므로,
  *     읽기(=MCP)는 사람/어시스턴트가 수행해 덤프를 캐시에 저장하고, 이 스크립트가 결정론적으로 파싱한다.
@@ -34,8 +41,12 @@ const DUMP_PATH = DUMP_FLAG !== -1
 function loadXml() {
   if (!fs.existsSync(DUMP_PATH)) {
     console.error(`❌ 원천 덤프 없음: ${DUMP_PATH}`);
-    console.error('   Figma MCP get_metadata(fileKey, "0:1") 결과를 이 경로에 저장 후 다시 실행하세요.');
-    console.error('   (또는 --dump <경로> 로 지정)');
+    console.error('   이 스크립트는 단독 실행되지 않는다. 선행 조건:');
+    console.error('   1) Claude Code 세션에서 Figma MCP get_metadata(YcBbW9e0MTR9T3W5Sz0Ukx, "0:1") 실행');
+    console.error('   2) 그 결과(JSON [{type,text}] 또는 XML)를 위 캐시 경로에 저장 (또는 --dump <경로>)');
+    console.error('   3) npm run icons:figma:snapshot');
+    console.error('   ※ 캐시는 .gitignore 대상(저장소에 없음). .env FIGMA_TOKEN 이 비어 REST 자동취득 불가.');
+    console.error('   자기검증 기준값(2026-07-13): 섹션 15 · 아이콘 819 · 변형 2457');
     process.exit(1);
   }
   const raw = fs.readFileSync(DUMP_PATH, 'utf8');

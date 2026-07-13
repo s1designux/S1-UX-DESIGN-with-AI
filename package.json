@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "description": "SW Design System Guide — SW UX GUIDE V2.4",
+  "//icons:figma:snapshot": "단독 실행 안 됨. 선행: Figma MCP get_metadata(YcBbW9e0MTR9T3W5Sz0Ukx, 0:1) 덤프를 data/.figma-raw-metadata.json 에 저장(.gitignore 대상=저장소에 없음; .env FIGMA_TOKEN 비어 REST 자동취득 불가). 갱신: Claude Code 세션에서 MCP로 0:1 읽기→캐시 저장→npm run icons:figma:snapshot. 기준값 2026-07-13: 섹션15·아이콘819·변형2457",
   "scripts": {
     "prepare": "bash scripts/hooks/install-git-hooks.sh",
     "icons:export": "node scripts/export-icons-png.js",

@@ -4258,8 +4258,8 @@ window.ICONS_DATA = {
       }
     },
     {
-      "name": "얼굴리더",
-      "id": "얼굴리더",
+      "name": "ic_얼굴리더",
+      "id": "ic_얼굴리더",
       "description": "얼굴인식, 안면인식, 생체인증, 사용자인증, 얼굴검출, face reader, facial recognition, face detection, biometric authentication",
       "keywords": [
         "얼굴리더",
@@ -4282,15 +4282,15 @@ window.ICONS_DATA = {
       "variants": {
         "line": {
           "figmaNodeId": "27:9",
-          "png": "../assets/icons/얼굴리더_line.png"
+          "png": "../assets/icons/ic_얼굴리더_line.png"
         },
         "solid": {
           "figmaNodeId": "27:8",
-          "png": "../assets/icons/얼굴리더_solid.png"
+          "png": "../assets/icons/ic_얼굴리더_solid.png"
         },
         "color": {
           "figmaNodeId": "27:7",
-          "png": "../assets/icons/얼굴리더_color.png"
+          "png": "../assets/icons/ic_얼굴리더_color.png"
         }
       }
     },
@@ -6435,8 +6435,8 @@ window.ICONS_DATA = {
       }
     },
     {
-      "name": "ic_원격제어",
-      "id": "ic_원격제어",
+      "name": "ic_PC원격제어",
+      "id": "ic_PC원격제어",
       "description": "원격제어, 원격, 제어, remote, control, access",
       "keywords": [
         "원격제어",
@@ -6458,21 +6458,21 @@ window.ICONS_DATA = {
       "variants": {
         "line": {
           "figmaNodeId": "35:1746",
-          "png": "../assets/icons/ic_원격제어_line.png"
+          "png": "../assets/icons/ic_PC원격제어_line.png"
         },
         "solid": {
           "figmaNodeId": "35:1745",
-          "png": "../assets/icons/ic_원격제어_solid.png"
+          "png": "../assets/icons/ic_PC원격제어_solid.png"
         },
         "color": {
           "figmaNodeId": "35:1747",
-          "png": "../assets/icons/ic_원격제어_color.png"
+          "png": "../assets/icons/ic_PC원격제어_color.png"
         }
       }
     },
     {
-      "name": "ic_원격제어차단",
-      "id": "ic_원격제어차단",
+      "name": "ic_PC원격제어차단",
+      "id": "ic_PC원격제어차단",
       "description": "원격제어차단, 차단, 금지, block, remote, control, deny",
       "keywords": [
         "원격제어차단",
@@ -6495,15 +6495,15 @@ window.ICONS_DATA = {
       "variants": {
         "line": {
           "figmaNodeId": "35:1750",
-          "png": "../assets/icons/ic_원격제어차단_line.png"
+          "png": "../assets/icons/ic_PC원격제어차단_line.png"
         },
         "solid": {
           "figmaNodeId": "35:1749",
-          "png": "../assets/icons/ic_원격제어차단_solid.png"
+          "png": "../assets/icons/ic_PC원격제어차단_solid.png"
         },
         "color": {
           "figmaNodeId": "35:1751",
-          "png": "../assets/icons/ic_원격제어차단_color.png"
+          "png": "../assets/icons/ic_PC원격제어차단_color.png"
         }
       }
     },
@@ -14485,8 +14485,8 @@ window.ICONS_DATA = {
       }
     },
     {
-      "name": "ic_원격제어",
-      "id": "ic_원격제어",
+      "name": "ic_차량원격제어",
+      "id": "ic_차량원격제어",
       "description": "원격제어",
       "keywords": [
         "원격제어"
@@ -14503,15 +14503,15 @@ window.ICONS_DATA = {
       "variants": {
         "line": {
           "figmaNodeId": "70:18",
-          "png": "../assets/icons/ic_원격제어_line.png"
+          "png": "../assets/icons/ic_차량원격제어_line.png"
         },
         "solid": {
           "figmaNodeId": "70:17",
-          "png": "../assets/icons/ic_원격제어_solid.png"
+          "png": "../assets/icons/ic_차량원격제어_solid.png"
         },
         "color": {
           "figmaNodeId": "70:19",
-          "png": "../assets/icons/ic_원격제어_color.png"
+          "png": "../assets/icons/ic_차량원격제어_color.png"
         }
       }
     },
@@ -20013,8 +20013,8 @@ window.ICONS_DATA = {
       }
     },
     {
-      "name": "ic_화물운반가능동선(좌)",
-      "id": "ic_화물운반가능동선좌",
+      "name": "ic_화물운반가능동선우",
+      "id": "ic_화물운반가능동선우",
       "description": "화물운반가능동선(좌)",
       "keywords": [
         "화물운반가능동선(좌)"
@@ -20031,15 +20031,15 @@ window.ICONS_DATA = {
       "variants": {
         "line": {
           "figmaNodeId": "86:214",
-          "png": "../assets/icons/ic_화물운반가능동선좌_line.png"
+          "png": "../assets/icons/ic_화물운반가능동선우_line.png"
         },
         "solid": {
           "figmaNodeId": "86:212",
-          "png": "../assets/icons/ic_화물운반가능동선좌_solid.png"
+          "png": "../assets/icons/ic_화물운반가능동선우_solid.png"
         },
         "color": {
           "figmaNodeId": "86:213",
-          "png": "../assets/icons/ic_화물운반가능동선좌_color.png"
+          "png": "../assets/icons/ic_화물운반가능동선우_color.png"
         }
       }
     },
@@ -27325,8 +27325,8 @@ window.ICONS_DATA = {
       }
     },
     {
-      "name": "ic_바로가기",
-      "id": "ic_바로가기",
+      "name": "ic_공유",
+      "id": "ic_공유",
       "description": "바로가기",
       "keywords": [
         "바로가기"
@@ -27343,15 +27343,15 @@ window.ICONS_DATA = {
       "variants": {
         "line": {
           "figmaNodeId": "434:44",
-          "png": "../assets/icons/ic_바로가기_line.png"
+          "png": "../assets/icons/ic_공유_line.png"
         },
         "solid": {
           "figmaNodeId": "434:45",
-          "png": "../assets/icons/ic_바로가기_solid.png"
+          "png": "../assets/icons/ic_공유_solid.png"
         },
         "color": {
           "figmaNodeId": "434:43",
-          "png": "../assets/icons/ic_바로가기_color.png"
+          "png": "../assets/icons/ic_공유_color.png"
         }
       }
     },
