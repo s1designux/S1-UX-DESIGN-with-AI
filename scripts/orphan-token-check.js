@@ -49,7 +49,8 @@ for (const d of regDirs) {
   if (!fs.existsSync(d)) continue;
   for (const f of fs.readdirSync(d).filter((x) => x.endsWith('.json'))) regText += fs.readFileSync(path.join(d, f), 'utf8') + '\n';
 }
-const inRegistry = (tok) => regText.includes(tok);
+// path 형태(color/x/y)와 cssVar 형태(--color-x-y) 둘 다 인식 — input.json 등은 cssVar 로 참조(2026-07-13 오탐 수정)
+const inRegistry = (tok) => regText.includes(tok) || regText.includes(toCss(tok));
 
 // ── 4. 빌더 요청 키 (esbuild + mock) ──────────────────────────────────────
 function makeStub() {
@@ -83,9 +84,11 @@ async function builderKeys() {
 
   console.log(`[Gate 17] 미사용 Semantic Color 검사 — 공급 ${supply.size} · 빌더사용 ${[...req].filter((k) => k.startsWith('color/')).length} · 웹소비 ${consumed.size} · registry참조 다수`);
   console.log(`  orphan(전 표면 미사용) ${orphans.length} · 의도보존(allow) ${orphans.length - unexpected.length} · 예상밖 ${unexpected.length}`);
+  // vars-data 주석 내 언급은 '사용'으로 치지 않되(주석≠코드) 리포트에 표시 (2026-07-13)
+  const commentMention = (tok) => vd.split('\n').some((l) => { const c = l.indexOf('//'); return c >= 0 && (l.slice(c).includes(tok) || l.slice(c).includes(toCss(tok))); });
   if (unexpected.length) {
     console.log('  ⚠️ 예상치 못한 미사용 토큰(연결 또는 allowlist 등록 필요):');
-    for (const k of unexpected) console.log('     -', k);
+    for (const k of unexpected) console.log('     -', k, commentMention(k) ? '(vars-data 주석 언급 있음 — 코드 아님)' : '');
   }
   if (staleAllow.length) {
     console.log('  ℹ️ allowlist 에 있으나 더 이상 orphan 아님(정리 가능):');

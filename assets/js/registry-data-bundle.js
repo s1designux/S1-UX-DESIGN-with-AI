@@ -1978,11 +1978,11 @@ window.REGISTRY_BUNDLE = {
               },
               {
                 "cssVar": "--color-text-state-error",
-                "light": "var(--color-status-error)",
-                "dark": "var(--color-status-error)",
+                "light": "var(--color-red-300)",
+                "dark": "var(--color-red-dark-350)",
                 "status": "stable",
                 "role": "오류 상태 도움말 텍스트",
-                "darkNote": "inherits → var(--color-status-dark-red)"
+                "darkNote": "vars-data 오류색 정본과 일치: light red/300 · dark red-dark/350 (2026-07-13, 죽은 --color-status-error 참조 제거)"
               }
             ]
           },
