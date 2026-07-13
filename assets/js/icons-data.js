@@ -23877,6 +23877,10 @@ window.ICONS_DATA = {
           "figmaNodeId": "96:948",
           "png": "../assets/icons/ic_유리창청소_line.png"
         },
+        "solid": {
+          "figmaNodeId": "96:947",
+          "png": "../assets/icons/ic_유리창청소_solid.png"
+        },
         "color": {
           "figmaNodeId": "96:946",
           "png": "../assets/icons/ic_유리창청소_color.png"
@@ -27414,6 +27418,37 @@ window.ICONS_DATA = {
         "color": {
           "figmaNodeId": "458:67",
           "png": "../assets/icons/ic_tooltip_color.png"
+        }
+      }
+    },
+    {
+      "name": "ic_마지막장",
+      "id": "ic_마지막장",
+      "description": "마지막장",
+      "keywords": [
+        "마지막장"
+      ],
+      "figmaNodeId": "1407:51",
+      "section": "ui",
+      "properties": {
+        "type": [
+          "line",
+          "solid",
+          "color"
+        ]
+      },
+      "variants": {
+        "line": {
+          "figmaNodeId": "1407:62",
+          "png": "../assets/icons/ic_마지막장_line.png"
+        },
+        "solid": {
+          "figmaNodeId": "1407:52",
+          "png": "../assets/icons/ic_마지막장_solid.png"
+        },
+        "color": {
+          "figmaNodeId": "1407:66",
+          "png": "../assets/icons/ic_마지막장_color.png"
         }
       }
     }
