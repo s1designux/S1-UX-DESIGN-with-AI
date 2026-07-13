@@ -22,3 +22,6 @@ plugins/*/dist/
 
 # Builder preview — 생성 산출물(컨택트시트), 소스(render.js)만 커밋
 reports/component-preview/
+
+# Figma MCP raw metadata dump (스냅샷 재생성용 원천 캐시, 비커밋)
+data/.figma-raw-metadata.json
