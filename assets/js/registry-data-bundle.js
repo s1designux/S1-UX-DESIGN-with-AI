@@ -1529,7 +1529,7 @@ window.REGISTRY_BUNDLE = {
             {
               "cssVar": "--color-surface-raised",
               "light": "var(--color-base-white)",
-              "dark": "var(--color-gray-dark-400)",
+              "dark": "var(--color-gray-dark-100)",
               "status": "stable"
             }
           ],
@@ -1786,6 +1786,13 @@ window.REGISTRY_BUNDLE = {
               "dark": "rgba(0,0,0,0.75)",
               "status": "stable",
               "rgbaException": "overlay"
+            },
+            {
+              "cssVar": "--color-overlay-wheel-fade",
+              "light": "var(--color-base-white)",
+              "dark": "var(--color-gray-dark-100)",
+              "status": "stable",
+              "role": "Time Picker Mobile Bottom Sheet 휠 흐림 마스크 표면색(alpha 그라데이션은 별도 마스크)"
             }
           ],
           "controlBorder": {
@@ -1881,11 +1888,11 @@ window.REGISTRY_BUNDLE = {
               },
               {
                 "cssVar": "--color-form-control-border-error",
-                "light": "var(--color-status-error)",
-                "dark": "var(--color-status-error)",
+                "light": "var(--color-red-300)",
+                "dark": "var(--color-red-dark-350)",
                 "status": "stable",
                 "role": "오류 상태 테두리",
-                "darkNote": "inherits → var(--color-status-dark-red)"
+                "darkNote": "vars-data 정본: light red/300 · dark red-dark/350 (2026-07-13 오류색 정정)"
               },
               {
                 "cssVar": "--color-form-control-border-correct",
@@ -5685,6 +5692,38 @@ window.REGISTRY_BUNDLE = {
           "reason": "HD-5: --select-disabled-border was incorrectly placed in input token group. Moved to Select component registry.",
           "removedAt": "2026-05-12",
           "status": "relocated"
+        },
+        {
+          "id": "button.primary.focus-ring",
+          "cssVariable": "--button-primary-focus-ring",
+          "replacedBy": null,
+          "reason": "focus-ring 미정의 — 디자인시스템 기준 없음(CLAUDE.md Button #9, is-focus outline 없음). 문서·레지스트리 사본에서 활성 화면으로 되살아나던 잔재. 정본 등재로 Gate 10 Check C 가 재유입을 차단.",
+          "removedAt": "2026-07-03",
+          "status": "removed"
+        },
+        {
+          "id": "button.secondary.focus-ring",
+          "cssVariable": "--button-secondary-focus-ring",
+          "replacedBy": null,
+          "reason": "focus-ring 미정의(CLAUDE.md Button #9). focus-ring resurrection 정리 2026-07-03.",
+          "removedAt": "2026-07-03",
+          "status": "removed"
+        },
+        {
+          "id": "button.blue-line.focus-ring",
+          "cssVariable": "--button-blue-line-focus-ring",
+          "replacedBy": null,
+          "reason": "focus-ring 미정의(CLAUDE.md Button #9). focus-ring resurrection 정리 2026-07-03.",
+          "removedAt": "2026-07-03",
+          "status": "removed"
+        },
+        {
+          "id": "chip.focus-ring",
+          "cssVariable": "--chip-focus-ring",
+          "replacedBy": null,
+          "reason": "chip focus-ring 제거(2026-05-18, button focus-ring 정책과 정합). 정본 등재로 재유입 차단.",
+          "removedAt": "2026-05-18",
+          "status": "removed"
         }
       ],
       "figmaVariableAliases": [
@@ -5833,6 +5872,11 @@ window.REGISTRY_BUNDLE = {
           "path": "registry/tokens/component.tokens.json",
           "reason": "은퇴된 '컴포넌트-별칭 토큰층'(component→alias→semantic) 서술 데이터. 현행 정본은 build-components.ts 가 semantic 토큰에 직접 바인딩(scv) — 이 별칭층은 옛 아키텍처 잔재로 옛 semantic 토큰명을 참조. 유일 소비자=메뉴 숨김된 Registry Explorer 뷰어(2026-06-24 비노출). Gate 20(token-drift) 검사 제외. 활성 정본=vars-data.ts.",
           "since": "2026-07-02"
+        },
+        {
+          "path": "assets/css/component-tokens.css",
+          "reason": "은퇴된 '컴포넌트-별칭 토큰층'(--{component}-{part}-{state}-{property})의 CSS 사본. 2026-06-09(763a70a) 자동 리팩터가 tokens.css 에서 분리·'보존'한 파일로, 어떤 HTML 도 link 하지 않아 렌더되지 않는 죽은 스타일시트. 정본=build-components.ts(각 컴포넌트를 color/form-control/* 등 semantic 에 직접 바인딩). 이 파일의 --dropdown-trigger-* 값은 registry/dropdown.json 과 드리프트했었고(같은 이름 다른 값), 유일 활성 소비처였던 components-new.html 는 2026-07-10 정본 토큰으로 이관됨. doc-token-ref-check/orphan-token-check 의 정의·소비 풀에서 제외(하드코딩 참조 제거).",
+          "since": "2026-07-10"
         }
       ]
     },
@@ -9577,7 +9621,7 @@ window.REGISTRY_BUNDLE = {
         "updatedAt": "2026-05-27",
         "version": "0.4.1",
         "tokenStatus": "stable",
-        "codeStatus": "in-progress",
+        "codeStatus": "implemented",
         "darkModeStatus": "stable",
         "a11yStatus": "pending",
         "figmaStatus": "existing",
@@ -9996,9 +10040,10 @@ window.REGISTRY_BUNDLE = {
             },
             {
               "name": "--chip-solid-hover-border",
-              "value": "var(--color-chip-solid-border-default)",
+              "value": "var(--color-chip-solid-bg-hover)",
               "state": "hover",
-              "property": "border-color"
+              "property": "border-color",
+              "note": "border = background (invisible) — 스트록 유지, fill과 동색"
             },
             {
               "name": "--chip-solid-selected-border",
@@ -10402,7 +10447,6 @@ window.REGISTRY_BUNDLE = {
       "variants": {
         "default": {
           "tokenStatus": "stable",
-          "codeStatus": "not-started",
           "darkModeStatus": "pending",
           "semanticTokens": {
             "background": {
@@ -10880,11 +10924,11 @@ window.REGISTRY_BUNDLE = {
         "updatedAt": "2026-05-20",
         "version": "0.2.0",
         "tokenStatus": "stable",
-        "codeStatus": "not-started",
+        "codeStatus": "implemented",
         "darkModeStatus": "pending",
         "a11yStatus": "pending",
         "figmaStatus": "confirmed",
-        "harnessStatus": "skeleton",
+        "harnessStatus": "implemented",
         "description": "페이지네이션 컨트롤. 화살표(first/prev/next/last) + 페이지 번호. 선택 페이지는 텍스트 색으로만 구분.",
         "notes": [
           "Figma 확인: 선택 페이지 = bg 변화 없음, 텍스트 색만 변경 (#9D9D9D → #353535).",
@@ -10936,8 +10980,8 @@ window.REGISTRY_BUNDLE = {
         },
         {
           "name": "--pagination-control-border",
-          "value": "var(--color-border-subtle)",
-          "resolvedLight": "#E9E9E9",
+          "value": "var(--color-pagination-control-border-default)",
+          "resolvedLight": "#D9D9D9",
           "figmaVariable": "color/pagination/control/border/default",
           "status": "stable",
           "description": "화살표 버튼 테두리 (페이지 번호에는 테두리 없음)"
@@ -10969,11 +11013,11 @@ window.REGISTRY_BUNDLE = {
       ],
       "figma": {
         "componentSetKey": "",
-        "figmaNodeId": "540:5281",
+        "figmaNodeId": "956:19066",
         "nodes": {
-          "pcPagination": "540:5281",
+          "pcPagination": "956:19066",
           "paginationArrow": "57:6244",
-          "paginationNumber": "57:6235"
+          "paginationNumber": "956:18769"
         },
         "propertyMap": {
           "direction": "direction",
@@ -11102,7 +11146,7 @@ window.REGISTRY_BUNDLE = {
         "updatedAt": "2026-05-27",
         "version": "0.4.0",
         "tokenStatus": "stable",
-        "codeStatus": "not-started",
+        "codeStatus": "implemented",
         "darkModeStatus": "stable",
         "a11yStatus": "pending",
         "figmaStatus": "confirmed",
@@ -11275,8 +11319,8 @@ window.REGISTRY_BUNDLE = {
         },
         {
           "name": "--table-cell-text",
-          "value": "var(--color-text-secondary)",
-          "resolvedLight": "#353535",
+          "value": "var(--color-text-body-primary)",
+          "resolvedLight": "#202020",
           "figmaVariable": "color/text/body/primary",
           "status": "stable",
           "description": "바디 셀 본문 텍스트 색상"
@@ -11810,20 +11854,20 @@ window.REGISTRY_BUNDLE = {
     }
   },
   "reportsIndex": {
-    "generatedAt": "2026-07-02T23:38:24.828Z",
+    "generatedAt": "2026-07-03T00:32:31.681Z",
     "totalCount": 62,
     "reports": [
       {
         "id": "modal-component-spec",
         "filename": "modal-component-spec.md",
-        "title": "Modal (공통 팝업) 규격 문서 — 초안",
+        "title": "Modal (공통 팝업) 규격 문서",
         "stage": "Audit",
         "category": "audit",
         "status": "archive",
         "sourcePath": "reports/modal-component-spec.md",
         "updatedAt": "2026-07-03",
-        "summary": "작성 2026-07-03 · 상태: **초안(검토 대기)** · 근거: 레거시 원본 3세트 분석(파일 `P8YvnCdGkQLDNVQhW74ZZW`) + 실측 토큰(get_variable_defs)",
-        "fileSizeKB": 10.3
+        "summary": "작성 2026-07-03 · 상태: **확정(HD-1~4 전건 결정)** · 근거: 레거시 원본 3세트 분석(파일 `P8YvnCdGkQLDNVQhW74ZZW`) + 실측 토큰(get_variable_defs)",
+        "fileSizeKB": 10.4
       },
       {
         "id": "build-components-token-extraction",

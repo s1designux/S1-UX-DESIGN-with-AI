@@ -493,7 +493,7 @@ export const SEMANTIC_COLOR: Record<string, SemanticColorEntry> = {
   "color/form-control/border/correct": { light: "blue/400", dark: "blue-dark/350" },
   "color/form-control/border/default": { light: "gray/200", dark: "gray-dark/500" },
   "color/form-control/border/disabled": { light: "gray/100", dark: "gray-dark/200" },
-  "color/form-control/border/error": { light: "red/400", dark: "red-dark/350" },
+  "color/form-control/border/error": { light: "red/300", dark: "red-dark/350" },
   "color/form-control/border/selected": { light: "blue/400", dark: "blue-dark/350" },
   "color/form-control/label/default": { light: "gray/800", dark: "gray-dark/800" },
   "color/form-control/label/disabled": { light: "gray/300", dark: "gray-dark/600" },
@@ -550,7 +550,7 @@ export const SEMANTIC_COLOR: Record<string, SemanticColorEntry> = {
   "color/date-picker/text/secondary":   { light: "gray/800",   dark: "gray-dark/800" },
   "color/date-picker/text/disabled":    { light: "gray/300",   dark: "gray-dark/500" },
   "color/date-picker/text/other-month": { light: "gray/300",   dark: "gray-dark/400" },
-  "color/date-picker/text/sunday":      { light: "red/400",    dark: "red-dark/350" },
+  "color/date-picker/text/sunday":      { light: "red/300",    dark: "red-dark/350" },
   "color/date-picker/text/saturday":    { light: "blue/400",   dark: "blue-dark/300" },
   "color/date-picker/text/today":       { light: "blue/400",   dark: "blue-dark/300" },
   "color/date-picker/text/selected":    { light: "base/white", dark: "base/white" },
@@ -582,7 +582,7 @@ export const SEMANTIC_COLOR: Record<string, SemanticColorEntry> = {
 
   // ── status-card ────────────────────────────────
   "color/status-card/text/disabled": { light: "gray/300", dark: "gray-dark/400" },
-  "color/status-card/text/error": { light: "red/400", dark: "red-dark/350" },
+  "color/status-card/text/error": { light: "red/300", dark: "red-dark/350" },
   "color/status-card/text/primary--default": { light: "gray/900", dark: "gray-dark/900" },
   "color/status-card/text/primary--sub": { light: "gray/800", dark: "gray-dark/800" },
   "color/status-card/text/secondary--default": { light: "gray/600", dark: "gray-dark/700" },
