@@ -990,8 +990,9 @@ Claude는 **Main Orchestrator**다. 사용자는 **목표 수준 의도**만 준
 | 24 | DESIGN.md Drift | DESIGN.md(AI 소비용) 가 정본(tokens.css+registry)보다 낡으면 차단 |
 | 7b | Token Value Consistency | tokens.css↔vars-data↔semantic.html 해석 HEX 표면 일치(Gate 7 옆 배선) |
 | 25 | Component Alias Canonical | 활성 페이지 컴포넌트-별칭(--{comp}-*)이 정본 토큰으로 해석되나·표면드리프트 차단(정본 밖 별칭 재유입 방지) |
+| 26 | Icons Stats Consistency | 표출용 아이콘 개수(icons-stats.js)가 정본(icons-data.js)과 일치하나(손편집 후 재생성 누락 차단·재생성 `npm run icons:stats`) |
 
-스크립트 일괄 실행: `npm run gate:check` (Gate 1~25 자동). 개별 게이트 트리거·판정 로직·도입 사유·`npm run` 단독 실행 명령은 참조 문서에 전문 수록.
+스크립트 일괄 실행: `npm run gate:check` (Gate 1~26 자동). 개별 게이트 트리거·판정 로직·도입 사유·`npm run` 단독 실행 명령은 참조 문서에 전문 수록.
 
 ## ⚙️ 강제 계층 — Hooks (2026-06-11 신설)
 
