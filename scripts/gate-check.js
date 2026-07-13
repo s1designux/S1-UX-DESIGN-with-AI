@@ -604,6 +604,24 @@ try {
   fail(`component-alias-canonical-check 실행 실패: ${e.message}`);
 }
 
+// ── Gate 26: Icons Stats Consistency (icons-data ↔ icons-stats 개수 정합) ─────
+// index.html 이 표출하는 아이콘 개수(icons-stats.js)가 정본(icons-data.js)과 일치하는지 검사.
+// 사람이 아이콘을 추가/개명하고 stats 재생성을 잊으면 표출 숫자가 stale → 커밋 차단.
+// [Figma↔icons-data] 는 검사 안 함(사내망 Figma 불가). Figma 대조는 npm run icons:figma:check.
+console.log('\n🔎 [Gate 26] 아이콘 개수 정합 검사기 (Icons Stats Consistency)');
+try {
+  const { check: iconsStatsCheck } = require('./icons-stats-check');
+  const r = iconsStatsCheck();
+  if (!r.ok) {
+    const a = r.actual ? r.actual.icons : '없음';
+    fail(`icons-stats.js 개수 불일치 (표기 ${a} ≠ 정본 ${r.expected.icons})\n     * icons = icons-data.js 아이콘 항목 수 (변형 아님)\n     * sections = 'all' 탭 제외 섹션 수\n     → npm run icons:stats`);
+  } else {
+    pass(`icons-stats.js 정합 — 아이콘 ${r.expected.icons}개 · 섹션 ${r.expected.sections}개`);
+  }
+} catch (e) {
+  fail(`icons-stats-check 실행 실패: ${e.message}`);
+}
+
 // ── Summary ───────────────────────────────────────────────────────
 console.log('\n─────────────────────────────────────────────────────');
 if (errors > 0) {

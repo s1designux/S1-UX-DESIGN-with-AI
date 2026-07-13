@@ -79,9 +79,5 @@ console.log(`✅ icons-data.js 업데이트 완료`);
 console.log(`   변경: ${updated}개 / PNG 없음(스킵): ${missing}개 / 이미 완료: ${skipped}개`);
 if (missing > 0) console.log(`   ⚠ PNG 없는 항목은 export-icons-png.js 를 먼저 실행하세요.`);
 
-// 아이콘 콘텐츠가 바뀌었으니 개수 통계(icons-stats.js)도 자동 재생성 → index.html 등에 자동 연동
-try {
-  require('./gen-icons-stats.js').main();
-} catch (e) {
-  console.log(`   ⚠ icons-stats.js 재생성 실패: ${e.message} (수동: npm run icons:stats)`);
-}
+// 아이콘 개수 통계(icons-stats.js)는 icons-stats-check.js(정합성 게이트/재생성)로 관리한다.
+// 아이콘 항목 추가·개명 후에는 `npm run icons:stats` 로 재생성(잊으면 Gate 26 이 커밋 차단).
