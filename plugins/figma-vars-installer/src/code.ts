@@ -37,8 +37,15 @@ import {
 } from "./vars-data";
 import { installTextStyles } from "./install-textstyles";
 import { buildAllComponents } from "./build-components";
+import {
+  audit, applyOne, applyHighConfidence, applyMulti, setVariablesMode,
+  collectComponents, saveReference, loadReference, clearReference,
+  scanSwapCandidates, applySwap,
+} from "./audit-engine";
+import type { ReferenceComponent, SwapCandidate } from "./audit-engine";
+import { buildAuditReport } from "./audit-report";
 
-figma.showUI(__html__, { width: 440, height: 720, title: "에스원 디자인시스템 설치" });
+figma.showUI(__html__, { width: 440, height: 720, title: "에스원 디자인시스템 설치 · 검수" });
 
 interface InstallSelection {
   foundation: boolean;
@@ -47,7 +54,7 @@ interface InstallSelection {
   components: boolean;
 }
 
-figma.ui.onmessage = async (msg: { type: string } & Partial<InstallSelection> & { mappings?: { oldId: string; newSetId: string }[] }) => {
+figma.ui.onmessage = async (msg: { type: string; payload?: any } & Partial<InstallSelection> & { mappings?: { oldId: string; newSetId: string }[] }) => {
   if (msg.type === "install") {
     await runInstall({
       foundation: msg.foundation === true,
@@ -61,10 +68,110 @@ figma.ui.onmessage = async (msg: { type: string } & Partial<InstallSelection> & 
     await selectInstancesByIds((msg as { nodeIds?: string[] }).nodeIds ?? []);
   } else if (msg.type === "swap-components") {
     await swapLegacyComponents(msg.mappings ?? []);
+  } else if (msg.type.indexOf("audit:") === 0) {
+    await handleAuditMessage(msg.type.slice(6), msg.payload);
   } else if (msg.type === "cancel") {
     figma.closePlugin();
   }
 };
+
+// ── 검수 라우터 (audit-engine.ts · figma-component-audit 이식) ────────────────
+// 설치 계열(평면 {type,...})과 격리하기 위해 검수 계열은 모두 `audit:` 접두사 + {type,payload} 래핑.
+async function handleAuditMessage(type: string, payload: any): Promise<void> {
+  try {
+    if (type === "scan") {
+      const res = await audit();
+      figma.ui.postMessage({ type: "audit:scan-result", payload: res });
+    } else if (type === "select-node") {
+      const n = await figma.getNodeByIdAsync(payload.nodeId);
+      if (n && "type" in n) {
+        figma.currentPage.selection = [n as SceneNode];
+        figma.viewport.scrollAndZoomIntoView([n as SceneNode]);
+      }
+    } else if (type === "apply-one") {
+      const ok = await applyOne(payload.issue, payload.suggestionIndex);
+      figma.ui.postMessage({ type: "audit:apply-result", payload: { issueId: payload.issue.id, suggestionIndex: payload.suggestionIndex, ok } });
+    } else if (type === "apply-high") {
+      const count = await applyHighConfidence(payload.issues);
+      figma.notify(`${count}건 자동 적용 완료`);
+      figma.ui.postMessage({ type: "audit:apply-high-result", payload: { count } });
+    } else if (type === "apply-multi") {
+      const res = await applyMulti(payload.picks);
+      figma.notify(`${res.ok}건 적용${res.fail ? ` · ${res.fail}건 실패` : ""}`);
+      figma.ui.postMessage({ type: "audit:apply-multi-result", payload: res });
+    } else if (type === "set-mode") {
+      const res = await setVariablesMode(payload.mode);
+      let notify: string;
+      if (res.message) notify = res.message;
+      else if (payload.mode === "clear") notify = `${res.cleared || 0}건 모드 override 제거 (전체 컬렉션 · 자손 포함)`;
+      else notify = `${res.count}개 노드 ${payload.mode} 모드 적용${res.skipped ? ` · ${res.skipped}개 skip` : ""}`;
+      figma.notify(notify);
+      figma.ui.postMessage({ type: "audit:set-mode-result", payload: { ...res, message: notify } });
+    } else if (type === "register-reference") {
+      const sel = figma.currentPage.selection;
+      if (sel.length === 0) {
+        figma.ui.postMessage({ type: "audit:register-reference-result", payload: { ok: false, message: "기준으로 등록할 페이지/프레임을 먼저 선택하세요" } });
+      } else {
+        const fileName = figma.root.name || "(unsaved)";
+        const all: ReferenceComponent[] = [];
+        const rootNames: string[] = [];
+        for (const root of sel) {
+          rootNames.push(root.name);
+          all.push(...collectComponents(root, fileName));
+        }
+        const dedup = new Map<string, ReferenceComponent>();
+        for (const c of all) { const k = c.name.toLowerCase(); if (!dedup.has(k)) dedup.set(k, c); }
+        const pool = Array.from(dedup.values());
+        const withoutKey = pool.filter((p) => !p.key).length;
+        await saveReference(pool, rootNames, fileName);
+        figma.ui.postMessage({ type: "audit:register-reference-result", payload: { ok: true, pool, rootNames, sourceFileName: fileName, withoutKey } });
+      }
+    } else if (type === "clear-reference") {
+      await clearReference();
+      figma.ui.postMessage({ type: "audit:reference-cleared" });
+    } else if (type === "scan-swap") {
+      const res = await scanSwapCandidates(payload.pool || []);
+      figma.ui.postMessage({ type: "audit:scan-swap-result", payload: res });
+    } else if (type === "apply-swap") {
+      const res = await applySwap(payload.candidate);
+      figma.ui.postMessage({ type: "audit:apply-swap-result", payload: { id: payload.candidate.id, ok: res.ok, reason: res.reason } });
+    } else if (type === "apply-swap-multi") {
+      const list: SwapCandidate[] = payload.candidates;
+      const applied: string[] = [];
+      const failures: { id: string; reason: string }[] = [];
+      for (const c of list) {
+        const r = await applySwap(c);
+        if (r.ok) applied.push(c.id); else failures.push({ id: c.id, reason: r.reason || "unknown" });
+      }
+      figma.notify(`${applied.length}건 교체 완료${failures.length ? ` · ${failures.length}건 실패` : ""}`);
+      figma.ui.postMessage({ type: "audit:apply-swap-multi-result", payload: { applied, fail: failures.length, failures } });
+    } else if (type === "build-report") {
+      const auditRes = await audit();
+      const saved = await loadReference();
+      let swapCands: SwapCandidate[] = [];
+      if (saved) { const r = await scanSwapCandidates(saved.pool); swapCands = r.candidates; }
+      const rep = await buildAuditReport({ issues: auditRes.issues, swapCandidates: swapCands, stats: auditRes.stats, when: payload && payload.when, fileName: figma.root.name });
+      const node = await figma.getNodeByIdAsync(rep.frameId);
+      if (node) { figma.currentPage.selection = [node as SceneNode]; figma.viewport.scrollAndZoomIntoView([node as SceneNode]); }
+      figma.notify(`검수 리포트 생성 — HEX ${rep.counts.hex} · 외부변수 ${rep.counts.extVar} · 가이드외 ${rep.counts.offGuide} · 레거시 ${rep.counts.legacy}`);
+      figma.ui.postMessage({ type: "audit:report-done", payload: { frameId: rep.frameId, counts: rep.counts } });
+    } else if (type === "resize") {
+      const w = Math.max(420, Math.min(1400, Math.round(payload.w)));
+      const h = Math.max(480, Math.min(1200, Math.round(payload.h)));
+      figma.ui.resize(w, h);
+    }
+  } catch (e: any) {
+    figma.ui.postMessage({ type: "audit:error", payload: { message: String(e && e.message || e) } });
+  }
+}
+
+// 플러그인 시작 시 저장된 검수 기준 자동 로드 (검수 탭 첫 진입 시 UI가 반영)
+(async () => {
+  const saved = await loadReference();
+  if (saved) {
+    figma.ui.postMessage({ type: "audit:reference-loaded", payload: { pool: saved.pool, rootNames: saved.rootNames, sourceFileName: saved.sourceFileName, restored: true } });
+  }
+})();
 
 // ── 유틸 ──────────────────────────────────────────────────────────────────────
 

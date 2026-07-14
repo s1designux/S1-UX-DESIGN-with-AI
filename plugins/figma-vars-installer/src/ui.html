@@ -101,6 +101,111 @@
   .btn-primary:disabled { background: #d1d5db; color: #9ca3af; cursor: not-allowed; }
   .btn-secondary { background: #f3f4f6; color: #374151; }
   .btn-secondary:hover { background: #e5e7eb; }
+
+  /* ══════════ 검수(audit) UI — 모든 규칙 #audit-root 스코프(설치 탭 불침범) ══════════ */
+  #audit-root {
+    --bg: #fff; --fg: #1c1d23; --muted: #767880; --line: #e6e7ea;
+    --high: #1d6ceb; --med: #ff7a18; --low: #767880;
+    --btn-bg: #1d6ceb; --btn-fg: #fff;
+    --code-bg: #f5f5f5;
+    font:13px/1.45 -apple-system, "SF Pro Text", Pretendard, sans-serif;
+    color:var(--fg); background:var(--bg);
+  }
+  @media (prefers-color-scheme: dark) {
+    #audit-root { --bg:#2c2c2c; --fg:#fff; --muted:#a0a0a0; --line:#3a3a3a; --code-bg:#1c1d23; }
+  }
+  #audit-root * { box-sizing: border-box; }
+  #audit-root header { padding:12px 16px; border-bottom:1px solid var(--line); display:flex; align-items:center; gap:12px; }
+  #audit-root header h1 { margin:0; font-size:13px; font-weight:600; }
+  #audit-root header .stats { margin-left:auto; color:var(--muted); font-size:11px; }
+  #audit-root .toolbar { padding:8px 16px; border-bottom:1px solid var(--line); display:flex; gap:8px; align-items:center; }
+  #audit-root .toolbar.mode-bar { background:var(--code-bg); }
+  #audit-root .mode-label { font-size:11px; color:var(--muted); margin-right:4px; }
+  #audit-root .tabs { display:flex; padding:0 16px; border-bottom:1px solid var(--line); gap:0; }
+  #audit-root .tabs button { background:transparent; border:none; border-bottom:2px solid transparent; padding:8px 12px; border-radius:0; color:var(--muted); font-size:12px; }
+  #audit-root .tabs button.active { color:var(--fg); border-bottom-color:var(--btn-bg); font-weight:600; }
+  #audit-root .tabs .count { display:inline-block; padding:1px 6px; margin-left:4px; background:var(--code-bg); border-radius:8px; font-size:10px; }
+  #audit-root .tabs button.active .count { background:var(--btn-bg); color:var(--btn-fg); }
+  #audit-root button { font:inherit; cursor:pointer; padding:6px 12px; border-radius:6px; border:1px solid var(--line); background:transparent; color:var(--fg); }
+  #audit-root button.primary { background:var(--btn-bg); color:var(--btn-fg); border-color:var(--btn-bg); }
+  #audit-root button.primary:disabled { opacity:0.4; cursor:not-allowed; }
+  #audit-root button:hover:not(:disabled) { filter: brightness(0.95); }
+  #audit-root .list { padding:8px 0; max-height:calc(100vh - 200px); overflow-y:auto; }
+  #audit-root .empty { padding:48px 16px; text-align:center; color:var(--muted); }
+  #audit-root .issue { padding:10px 16px; border-bottom:1px solid var(--line); cursor:pointer; }
+  #audit-root .issue:hover { background:var(--code-bg); }
+  #audit-root .issue-head { display:flex; align-items:center; gap:8px; }
+  #audit-root .issue-head .swatch { width:14px; height:14px; border-radius:3px; border:1px solid var(--line); }
+  #audit-root .issue-head .name { font-weight:500; flex:1; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  #audit-root .issue-head .kind { font-size:11px; padding:2px 6px; border-radius:4px; background:var(--code-bg); color:var(--muted); }
+  #audit-root .issue-head .node-kind { font-size:10px; padding:1px 5px; border-radius:3px; font-weight:600; letter-spacing:0.4px; }
+  #audit-root .issue-head .node-kind.text { background:#E2F1FF; color:#1D6CEB; }
+  #audit-root .issue-head .node-kind.icon { background:#FFF4CE; color:#8F6A00; }
+  #audit-root .issue-head .node-kind.shape { background:var(--code-bg); color:var(--muted); }
+  @media (prefers-color-scheme: dark) {
+    #audit-root .issue-head .node-kind.text { background:#112B55; color:#6FA5F8; }
+    #audit-root .issue-head .node-kind.icon { background:#3D2E08; color:#F0D068; }
+  }
+  #audit-root .issue-meta { margin-top:4px; font-size:11px; color:var(--muted); font-family:ui-monospace, "SF Mono", monospace; }
+  #audit-root .issue-meta .hex { padding:1px 5px; background:var(--code-bg); border-radius:3px; }
+  #audit-root .cat-chips { margin-top:8px; display:flex; flex-wrap:wrap; gap:4px; }
+  #audit-root .cat-chip { font-size:11px; padding:3px 8px; border-radius:12px; border:1px solid var(--line); background:transparent; color:var(--fg); cursor:pointer; }
+  #audit-root .cat-chip:hover { border-color:var(--btn-bg); }
+  #audit-root .cat-chip.active { background:var(--btn-bg); color:var(--btn-fg); border-color:var(--btn-bg); }
+  #audit-root .cat-chip .ct { font-size:10px; opacity:0.7; margin-left:3px; }
+  #audit-root .sugs { margin-top:6px; display:flex; flex-direction:column; gap:4px; max-height:280px; overflow-y:auto; }
+  #audit-root .sug { display:flex; align-items:center; gap:8px; padding:6px 8px; background:var(--code-bg); border-radius:4px; font-size:11px; cursor:pointer; border:1px solid transparent; }
+  #audit-root .sug:hover { border-color:var(--line); }
+  #audit-root .sug.picked { border-color:var(--btn-bg); background:rgba(29,108,235,0.08); }
+  #audit-root .sug input[type=radio] { margin:0; cursor:pointer; flex-shrink:0; }
+  #audit-root .sug .name { flex:1; min-width:0; font-family:ui-monospace, "SF Mono", monospace; word-break:break-all; line-height:1.4; }
+  #audit-root .sug .col { color:var(--muted); font-size:10px; flex-shrink:0; }
+  #audit-root .sug .conf-high { color: var(--high); font-weight:600; font-size:10px; }
+  #audit-root .sug .conf-medium { color: var(--med); font-size:10px; }
+  #audit-root .sug .conf-low { color: var(--low); font-size:10px; }
+  #audit-root .sug .mt { font-size:9px; padding:1px 4px; border-radius:3px; background:var(--bg); color:var(--muted); flex-shrink:0; }
+  #audit-root .sug .mt.role { background:#E2F1FF; color:#1D6CEB; }
+  #audit-root .sug .mt.exact { background:#E3F2EA; color:#006F42; }
+  #audit-root .sug .mt.near { background:#FFEDE0; color:#DA4C00; }
+  #audit-root .sug button { padding:3px 8px; font-size:11px; flex-shrink:0; }
+  #audit-root .sug button.applied { background:var(--high); color:#fff; border-color:var(--high); cursor:default; }
+  #audit-root .sug button.applied:hover { filter:none; }
+  @media (prefers-color-scheme: dark) {
+    #audit-root .sug .mt.role { background:#112B55; color:#6FA5F8; }
+    #audit-root .sug .mt.exact { background:#102E22; color:#3FBE7E; }
+    #audit-root .sug .mt.near { background:#42200A; color:#F5AA68; }
+  }
+  #audit-root .footer { position:sticky; bottom:0; padding:10px 16px; border-top:1px solid var(--line); background:var(--bg); display:flex; align-items:center; gap:8px; }
+  #audit-root .footer .selected-info { flex:1; font-size:11px; color:var(--muted); }
+  #audit-root .footer .selected-info b { color:var(--fg); font-weight:600; }
+  #audit-root .mode-tabs { display:flex; padding:6px 12px; border-bottom:1px solid var(--line); gap:4px; background:var(--code-bg); }
+  #audit-root .mode-tabs button { font:inherit; background:transparent; border:1px solid transparent; border-radius:6px; padding:5px 12px; font-size:12px; color:var(--muted); cursor:pointer; }
+  #audit-root .mode-tabs button.active { background:var(--bg); color:var(--fg); border-color:var(--line); font-weight:600; }
+  #audit-root .view { display:none; }
+  #audit-root .view.active { display:block; }
+  #audit-root .ref-info { padding:8px 16px; background:var(--code-bg); border-bottom:1px solid var(--line); font-size:11px; color:var(--muted); }
+  #audit-root .ref-info b { color:var(--fg); font-weight:600; }
+  #audit-root .swap-card { padding:10px 16px; border-bottom:1px solid var(--line); cursor:pointer; }
+  #audit-root .swap-card:hover { background:var(--code-bg); }
+  #audit-root .swap-card-head { display:flex; align-items:center; gap:8px; }
+  #audit-root .swap-card .iname { font-weight:500; flex:1; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  #audit-root .swap-card .swap-arrow { font-family:ui-monospace, monospace; color:var(--muted); }
+  #audit-root .swap-card-meta { margin-top:4px; font-size:11px; color:var(--muted); display:flex; gap:6px; align-items:center; flex-wrap:wrap; }
+  #audit-root .swap-card-meta .from { padding:2px 6px; background:var(--code-bg); border-radius:3px; color:var(--med); }
+  #audit-root .swap-card-meta .to { padding:2px 6px; background:var(--code-bg); border-radius:3px; color:var(--high); }
+  #audit-root .swap-card .apply-row { margin-top:6px; display:flex; gap:6px; }
+  #audit-root .swap-card .apply-row button { font:inherit; padding:3px 10px; font-size:11px; border-radius:4px; border:1px solid var(--line); background:transparent; color:var(--fg); cursor:pointer; }
+  #audit-root .swap-card.applied { opacity:0.5; pointer-events:none; }
+  #audit-root .swap-card.applied .apply-row button { background:var(--high); color:#fff; border-color:var(--high); }
+  #audit-root .resize-handle { position:fixed; right:0; bottom:0; width:18px; height:18px; cursor:se-resize; z-index:100; }
+  #audit-root .resize-handle::before { content:''; position:absolute; right:3px; bottom:3px; width:11px; height:11px; border-right:2px solid var(--muted); border-bottom:2px solid var(--muted); opacity:0.5; }
+  #audit-root .resize-handle:hover::before { opacity:1; }
+  #audit-root .toast { position:fixed; bottom:12px; left:16px; right:16px; padding:8px 12px; border-radius:6px; background:var(--high); color:#fff; font-size:12px; opacity:0; transition:opacity 0.2s; }
+  #audit-root .toast.show { opacity:1; }
+  /* 가이드 외 색상 (M3) */
+  #audit-root .kind.offguide { background:#fff1f0; color:#c0362c; border:1px solid #f5c6c2; }
+  #audit-root .offguide-note { color:#c0362c; font-weight:600; }
+  #audit-root .offguide-banner { background:#fff1f0; border:1px solid #f5c6c2; color:#8a2a22; border-radius:8px; padding:10px 12px; font-size:11.5px; line-height:1.6; margin-bottom:10px; }
 </style>
 </head>
 <body>
@@ -109,14 +214,14 @@
   <div class="header-icon">🎨</div>
   <div>
     <div class="header-title">에스원 디자인시스템</div>
-    <div class="header-sub">Variables 설치 · 레거시 컴포넌트 교체</div>
+    <div class="header-sub">Variables 설치 · GUI 검수</div>
   </div>
   <div class="header-build" title="이 설치 패키지가 빌드된 시각">업데이트<strong>{{BUILD_TIME}}</strong></div>
 </div>
 
 <div class="tab-bar">
   <button class="tab-btn active" onclick="switchTab('install')">설치</button>
-  <button class="tab-btn" onclick="switchTab('legacy')">레거시 교체</button>
+  <button class="tab-btn" onclick="switchTab('audit')">검수</button>
 </div>
 
 <!-- ── 설치 탭 ── -->
@@ -186,37 +291,103 @@
 
 </div><!-- /tab-install -->
 
-<!-- ── 레거시 교체 탭 ── -->
-<div class="tab-panel" id="tab-legacy">
+<!-- ── 검수 탭 ── -->
+<div class="tab-panel" id="tab-audit">
+<div id="audit-root">
 
-  <div class="scan-intro">
-    <strong>현재 페이지</strong>에서 외부 라이브러리에 연결된 인스턴스를 찾아<br>
-    이 파일의 새 컴포넌트 세트로 교체합니다.<br>
-    교체할 페이지로 이동한 뒤 스캔을 시작하세요.
+  <header>
+    <div class="stats" id="stats">대기 중</div>
+  </header>
+  <div class="mode-tabs">
+    <button data-mode="color" class="active">색상 검수</button>
+    <button data-mode="swap">컴포넌트 교체</button>
+    <button data-mode="report">리포트</button>
   </div>
 
-  <div id="legacy-scan-area">
-    <div class="btn-row">
-      <button class="btn btn-primary" id="btn-scan" onclick="startScan()">현재 페이지 스캔</button>
+  <!-- ────────── 색상 검수 모드 ────────── -->
+  <div class="view active" id="view-color">
+    <div class="toolbar">
+      <button class="primary" id="btn-scan">선택 항목 스캔</button>
+      <span class="mode-label" style="margin-left:8px;">선택 노드 모드 일괄 적용</span>
+      <button id="btn-mode-light">라이트</button>
+      <button id="btn-mode-dark">다크</button>
+      <button id="btn-mode-clear">초기화</button>
+    </div>
+    <div class="tabs">
+      <button data-tab="component" class="active">컴포넌트 매칭 <span class="count" id="tab-count-component">0</span></button>
+      <button data-tab="generic">일반 토큰 <span class="count" id="tab-count-generic">0</span></button>
+      <button data-tab="offguide">가이드 외 색상 <span class="count" id="tab-count-offguide">0</span></button>
+    </div>
+    <div class="list" id="list">
+      <div class="empty">
+        Figma에서 컴포넌트·프레임을 선택한 후 <b>선택 항목 스캔</b>을 누르세요.<br/>
+        Semantic Color V2 / Foundation V2 외 변수와 직접 입력된 HEX 값을 찾아 V2 토큰을 제안합니다.
+      </div>
+    </div>
+    <div class="footer">
+      <div class="selected-info"><b id="picked-count">0</b>개 항목 선택됨</div>
+      <button class="primary" id="btn-apply-selected" disabled>선택 항목 적용</button>
     </div>
   </div>
 
-  <div id="legacy-progress-wrap" style="display:none; margin-bottom:14px;">
-    <div id="legacy-progress-label" style="font-size:11px;color:#6b7280;margin-bottom:6px;"></div>
-    <div id="progress-bar-track" style="height:6px;background:#e5e7eb;border-radius:3px;overflow:hidden;">
-      <div id="legacy-progress-fill" style="height:100%;background:#1d6ceb;border-radius:3px;width:0%;transition:width 0.2s;"></div>
+  <!-- ────────── 컴포넌트 교체 모드 ────────── -->
+  <div class="view" id="view-swap">
+    <div class="toolbar">
+      <button class="primary" id="btn-register-ref">1. 기준 등록</button>
+      <button id="btn-scan-swap" disabled>2. 교체 후보 스캔</button>
+      <button id="btn-clear-ref" style="margin-left:auto;" title="저장된 기준 초기화">기준 초기화</button>
+    </div>
+    <div class="ref-info" id="ref-info">
+      <b>기준 미등록</b> · UX 가이드 Figma 파일에서 컴포넌트 페이지/프레임 선택 후 <b>1. 기준 등록</b> 클릭
+    </div>
+    <div class="list" id="swap-list">
+      <div class="empty" style="text-align:left;padding:24px 16px;">
+        <div style="text-align:center;font-size:13px;color:var(--fg);margin-bottom:12px;"><b>사용 방법</b></div>
+        <div style="font-size:11px;color:var(--muted);line-height:1.7;padding:10px 14px;background:var(--code-bg);border-radius:4px;">
+          <b>1단계.</b> UX 가이드 Figma 파일을 열고 컴포넌트 정리 페이지/프레임 선택<br/>
+          → <b>1. 기준 등록</b> 클릭 (자동 저장, 한 번만 등록하면 됨)<br/><br/>
+          <b>2단계.</b> 시안 파일로 전환 → 검수할 페이지/프레임 선택<br/>
+          → <b>2. 교체 후보 스캔</b> 클릭<br/><br/>
+          <b>3단계.</b> 카드별 [교체] 또는 하단 [전체 교체] 클릭<br/>
+          → 라이브러리에서 자동 import하여 swap 실행
+        </div>
+        <div style="margin-top:12px;font-size:11px;color:var(--muted);line-height:1.6;">
+          ※ 기준 컴포넌트가 라이브러리로 <b>publish</b>되어 있어야 다른 파일에서 교체 가능합니다.
+        </div>
+      </div>
+    </div>
+    <div class="footer">
+      <div class="selected-info"><b id="swap-count">0</b>건의 교체 후보</div>
+      <button class="primary" id="btn-apply-swap-all" disabled>전체 교체</button>
     </div>
   </div>
 
-  <div id="legacy-result" style="display:none;"></div>
+  <div class="view" id="view-report">
+    <div class="toolbar">
+      <button class="primary" id="btn-build-report">캔버스 리포트 생성</button>
+    </div>
+    <div class="list" id="report-area">
+      <div class="empty" style="text-align:left;padding:20px 16px;">
+        <div style="font-size:11px;color:var(--muted);line-height:1.7;padding:10px 14px;background:var(--code-bg);border-radius:4px;">
+          현재 선택한 페이지/프레임을 검수해 <b>검수 결과서 프레임</b>을 캔버스에 생성합니다.<br/>
+          · <b>HEX 직접 사용</b> · <b>가이드 외 색상</b> · <b>레거시 컴포넌트 교체 후보</b>를 한 장으로 정리<br/>
+          · 레거시 항목은 <b>컴포넌트 교체</b> 탭에서 기준을 먼저 등록해야 집계됩니다.
+        </div>
+      </div>
+    </div>
+  </div>
 
-</div><!-- /tab-legacy -->
+  <div class="resize-handle" id="resize-handle" title="드래그하여 크기 조절"></div>
+  <div class="toast" id="toast"></div>
+
+</div><!-- /audit-root -->
+</div><!-- /tab-audit -->
 
 <script>
   // ── 탭 전환 ──
   function switchTab(name) {
     document.querySelectorAll('.tab-btn').forEach((b, i) => {
-      b.classList.toggle('active', ['install','legacy'][i] === name);
+      b.classList.toggle('active', ['install','audit'][i] === name);
     });
     document.querySelectorAll('.tab-panel').forEach((p) => {
       p.classList.toggle('active', p.id === 'tab-' + name);
@@ -396,6 +567,12 @@
     const msg = event.data.pluginMessage;
     if (!msg) return;
 
+    // 검수(audit) 메시지 분기 — 접두사 벗겨 검수 핸들러로 위임
+    if (msg.type && msg.type.indexOf('audit:') === 0) {
+      handleAuditUiMessage({ type: msg.type.slice(6), payload: msg.payload });
+      return;
+    }
+
     // 설치 진행
     if (msg.type === 'progress') {
       document.getElementById('progress-label').textContent = msg.step;
@@ -477,7 +654,8 @@
           <button class="btn btn-secondary" onclick="location.reload()">다시 시도</button>
           <button class="btn btn-secondary" onclick="parent.postMessage({pluginMessage:{type:'cancel'}},'*')">닫기</button>
         </div>`;
-      if (document.getElementById('tab-legacy').classList.contains('active')) {
+      const legacyTab = document.getElementById('tab-legacy');
+      if (legacyTab && lr && legacyTab.classList.contains('active')) {
         lr.style.display = 'block';
         lr.innerHTML = errHtml;
       } else {
@@ -486,6 +664,556 @@
       }
     }
   };
+</script>
+
+<!-- ══════════ 검수(audit) 스크립트 — figma-component-audit 이식. 송신은 audit: 접두사, 수신은 handleAuditUiMessage 로 위임 ══════════ -->
+<script>
+let lastIssues = [];
+let activeTab = "component"; // component | generic
+let picks = {}; // { issueId: suggestionIndex }
+let activeCat = {}; // { issueId: 'tab' | 'button' | 'foundation' | ... }
+let activeMode = "color"; // color | swap
+
+// 컴포넌트 교체 모드 상태
+let referencePool = []; // [{id, name, type}]
+let referenceRoots = [];
+let swapCandidates = [];
+
+const CATEGORY_LABEL = {
+  foundation: "Foundation 유사색",
+  text: "Text",
+  bg: "Bg",
+  surface: "Surface",
+  border: "Border",
+  line: "Line",
+  icon: "Icon",
+  label: "Label",
+  action: "Action",
+  status: "Status",
+  overlay: "Overlay",
+};
+
+function catLabel(cat) {
+  if (CATEGORY_LABEL[cat]) return CATEGORY_LABEL[cat];
+  return cat.charAt(0).toUpperCase() + cat.slice(1);
+}
+
+const $ = (sel) => document.querySelector(sel);
+const list = $("#list");
+const stats = $("#stats");
+const btnScan = $("#btn-scan");
+const toast = $("#toast");
+
+function showToast(msg) {
+  toast.textContent = msg;
+  toast.classList.add("show");
+  setTimeout(() => toast.classList.remove("show"), 1800);
+}
+
+function send(type, payload) {
+  parent.postMessage({ pluginMessage: { type: 'audit:' + type, payload } }, "*");
+}
+
+btnScan.addEventListener("click", () => {
+  list.innerHTML = '<div class="empty">스캔 중…</div>';
+  stats.textContent = "스캔 중…";
+  picks = {};
+  activeCat = {};
+  updatePickedCount();
+  send("scan");
+});
+
+$("#btn-mode-light").addEventListener("click", () => send("set-mode", { mode: "light" }));
+$("#btn-mode-dark").addEventListener("click", () => send("set-mode", { mode: "dark" }));
+$("#btn-mode-clear").addEventListener("click", () => send("set-mode", { mode: "clear" }));
+
+const __btnReport = document.getElementById("btn-build-report");
+if (__btnReport) __btnReport.addEventListener("click", () => {
+  __btnReport.disabled = true; __btnReport.textContent = "생성 중…";
+  send("build-report", { when: new Date().toLocaleString("ko-KR") });
+});
+
+document.querySelectorAll("#audit-root .tabs button").forEach((btn) => {
+  btn.addEventListener("click", () => {
+    activeTab = btn.dataset.tab;
+    document.querySelectorAll("#audit-root .tabs button").forEach((b) => b.classList.toggle("active", b === btn));
+    rerenderTab();
+  });
+});
+
+// 모드 전환 (색상 검수 / 컴포넌트 교체)
+document.querySelectorAll(".mode-tabs button").forEach((btn) => {
+  btn.addEventListener("click", () => {
+    activeMode = btn.dataset.mode;
+    document.querySelectorAll(".mode-tabs button").forEach((b) => b.classList.toggle("active", b === btn));
+    document.querySelectorAll("#audit-root .view").forEach((v) => v.classList.toggle("active", v.id === "view-" + activeMode));
+  });
+});
+
+// ─── 컴포넌트 교체 모드 핸들러 ────────────────────────────
+$("#btn-register-ref").addEventListener("click", () => send("register-reference"));
+$("#btn-scan-swap").addEventListener("click", () => {
+  if (referencePool.length === 0) return;
+  $("#swap-list").innerHTML = '<div class="empty">스캔 중…</div>';
+  send("scan-swap", { pool: referencePool });
+});
+$("#btn-clear-ref").addEventListener("click", () => {
+  if (referencePool.length === 0) {
+    showToast("초기화할 기준 없음");
+    return;
+  }
+  if (!confirm("저장된 기준 컴포넌트 풀을 초기화하시겠습니까?")) return;
+  send("clear-reference");
+});
+$("#btn-apply-swap-all").addEventListener("click", () => {
+  if (swapCandidates.length === 0) return;
+  $("#btn-apply-swap-all").disabled = true;
+  $("#btn-apply-swap-all").textContent = "교체 중…";
+  send("apply-swap-multi", { candidates: swapCandidates });
+});
+
+let referenceSourceName = "";
+function renderRefInfo(restored) {
+  const el = $("#ref-info");
+  if (referencePool.length === 0) {
+    el.innerHTML = '<b>기준 미등록</b> · UX 가이드 Figma 파일에서 컴포넌트 페이지/프레임 선택 후 <b>1. 기준 등록</b> 클릭';
+  } else {
+    const restoreTag = restored ? ' <span style="color:var(--high);font-weight:600;">· 자동 복원됨</span>' : '';
+    const src = referenceSourceName ? ` · 출처: <b>${escape(referenceSourceName)}</b>` : '';
+    el.innerHTML = `<b>기준:</b> ${referenceRoots.map(escape).join(", ")} · <b>${referencePool.length}</b>개 컴포넌트${src}${restoreTag}`;
+  }
+  $("#btn-scan-swap").disabled = referencePool.length === 0;
+}
+
+function renderSwapList(diag) {
+  const listEl = $("#swap-list");
+  $("#swap-count").textContent = swapCandidates.length;
+  $("#btn-apply-swap-all").disabled = swapCandidates.length === 0;
+  if (swapCandidates.length === 0) {
+    let html = '<div class="empty" style="text-align:left;">';
+    html += '<div style="text-align:center;font-size:13px;color:var(--fg);margin-bottom:12px;"><b>교체 후보 없음</b></div>';
+    if (diag) {
+      html += '<div style="font-size:11px;color:var(--muted);line-height:1.7;padding:8px 12px;background:var(--code-bg);border-radius:4px;">';
+      html += `· 선택된 노드: <b>${diag.selectionCount}</b>개<br/>`;
+      html += `· 그 안 INSTANCE: <b>${diag.instanceCount}</b>개<br/>`;
+      html += `· 기준 풀: <b>${diag.referencePoolSize}</b>개 컴포넌트<br/>`;
+      html += `· mainComponent 이름 일치: <b>${diag.matchedNameCount}</b>개<br/>`;
+      html += `· 이미 같은 컴포넌트 (스킵): <b>${diag.sameIdSkippedCount}</b>개<br/>`;
+      html += '</div>';
+      if (diag.instancesPreview && diag.instancesPreview.length > 0) {
+        html += '<div style="margin-top:12px;font-size:11px;color:var(--muted);">발견된 인스턴스 (상위 ' + diag.instancesPreview.length + '):</div>';
+        html += '<div style="margin-top:4px;font-size:11px;font-family:ui-monospace,monospace;line-height:1.6;">';
+        diag.instancesPreview.forEach((p, idx) => {
+          const status = p.sameAsTarget ? '<span style="color:var(--high);">[기준과 동일]</span>'
+            : p.matched ? '<span style="color:var(--med);">[이름 일치, ID 다름 — 후보였어야 함]</span>'
+            : '<span style="color:var(--muted);">[기준에 없음]</span>';
+          html += `${idx + 1}. <b>${escape(p.name)}</b> · main: <code>${escape(p.mainName)}</code> ${status}<br/>`;
+        });
+        html += '</div>';
+      }
+      if (diag.instanceCount === 0) {
+        html += '<div style="margin-top:12px;padding:8px 12px;background:#FFF4CE;border-radius:4px;color:#8F6A00;font-size:11px;">';
+        html += '⚠ 선택한 노드 안에 <b>INSTANCE 노드가 0개</b>입니다.<br/>';
+        html += '교체는 인스턴스에만 가능합니다. 컴포넌트 본체(원본)는 교체 대상이 아닙니다.<br/>';
+        html += '시안 페이지(인스턴스가 배치된 프레임)를 선택했는지 확인해주세요.';
+        html += '</div>';
+      } else if (diag.matchedNameCount === 0) {
+        html += '<div style="margin-top:12px;padding:8px 12px;background:#FFF4CE;border-radius:4px;color:#8F6A00;font-size:11px;">';
+        html += '⚠ 시안 인스턴스의 <b>mainComponent 이름이 기준 풀과 하나도 일치하지 않습니다</b>.<br/>';
+        html += '기준 등록한 페이지/프레임 안 컴포넌트 이름을 확인하거나, ComponentSet의 이름과 시안 인스턴스가 참조하는 컴포넌트 이름을 비교해주세요.';
+        html += '</div>';
+      }
+    }
+    html += '</div>';
+    listEl.innerHTML = html;
+    return;
+  }
+  listEl.innerHTML = "";
+  for (const c of swapCandidates) {
+    const div = document.createElement("div");
+    div.className = "swap-card";
+    div.dataset.id = c.id;
+    div.innerHTML = `
+      <div class="swap-card-head">
+        <div class="iname">${escape(c.instanceName)}</div>
+      </div>
+      <div class="swap-card-meta">
+        <span class="from">현재: ${escape(c.currentMainName)} · ${escape(c.currentMainPath)}</span>
+        <span class="swap-arrow">→</span>
+        <span class="to">교체: ${escape(c.suggestedName)} (기준)</span>
+      </div>
+      <div class="apply-row">
+        <button data-action="select">Figma에서 선택</button>
+        <button data-action="apply-swap" class="primary">교체</button>
+      </div>
+    `;
+    div.addEventListener("click", (e) => {
+      const t = e.target;
+      const action = t.dataset && t.dataset.action;
+      if (action === "select") {
+        send("select-node", { nodeId: c.instanceId });
+        e.stopPropagation();
+        return;
+      }
+      if (action === "apply-swap") {
+        t.disabled = true;
+        t.textContent = "…";
+        send("apply-swap", { candidate: c });
+        e.stopPropagation();
+        return;
+      }
+      send("select-node", { nodeId: c.instanceId });
+    });
+    listEl.appendChild(div);
+  }
+}
+
+const btnApplySelected = $("#btn-apply-selected");
+btnApplySelected.addEventListener("click", () => {
+  const picksList = [];
+  for (const id in picks) {
+    const issue = lastIssues.find((i) => i.id === id);
+    if (!issue) continue;
+    picksList.push({ issue, suggestionIndex: picks[id] });
+  }
+  if (picksList.length === 0) return;
+  btnApplySelected.disabled = true;
+  btnApplySelected.textContent = "적용 중…";
+  send("apply-multi", { picks: picksList });
+});
+
+// 우하단 핸들 드래그로 플러그인 창 리사이즈
+(function setupResize() {
+  const handle = $("#resize-handle");
+  let startX = 0, startY = 0, startW = 0, startH = 0, dragging = false;
+  handle.addEventListener("pointerdown", (e) => {
+    dragging = true;
+    startX = e.clientX; startY = e.clientY;
+    startW = window.innerWidth; startH = window.innerHeight;
+    handle.setPointerCapture(e.pointerId);
+    e.preventDefault();
+  });
+  handle.addEventListener("pointermove", (e) => {
+    if (!dragging) return;
+    const w = startW + (e.clientX - startX);
+    const h = startH + (e.clientY - startY);
+    send("resize", { w, h });
+  });
+  handle.addEventListener("pointerup", (e) => {
+    dragging = false;
+    handle.releasePointerCapture(e.pointerId);
+  });
+})();
+
+function updatePickedCount() {
+  const n = Object.keys(picks).length;
+  $("#picked-count").textContent = n;
+  btnApplySelected.disabled = n === 0;
+  btnApplySelected.textContent = n > 0 ? `선택 항목 적용 (${n})` : "선택 항목 적용";
+}
+
+function rerenderTab() {
+  const offGuideList = lastIssues.filter((i) => i.offGuide);
+  const componentMatched = lastIssues.filter((i) => i.hasComponentMatch && !i.offGuide);
+  const generic = lastIssues.filter((i) => !i.hasComponentMatch && !i.offGuide);
+  $("#tab-count-component").textContent = componentMatched.length;
+  $("#tab-count-generic").textContent = generic.length;
+  const ogCountEl = $("#tab-count-offguide"); if (ogCountEl) ogCountEl.textContent = offGuideList.length;
+
+  // 자동 탭 전환: 활성 탭이 비었으면 데이터 있는 탭으로 이동
+  if (lastIssues.length > 0) {
+    const bucket = { component: componentMatched, generic: generic, offguide: offGuideList };
+    if ((bucket[activeTab] || []).length === 0) {
+      const next = ["component", "generic", "offguide"].find((t) => bucket[t].length > 0);
+      if (next) activeTab = next;
+    }
+    document.querySelectorAll("#audit-root .tabs button").forEach((b) => {
+      b.classList.toggle("active", b.dataset.tab === activeTab);
+    });
+  }
+
+  const filtered = activeTab === "component" ? componentMatched
+    : activeTab === "offguide" ? offGuideList
+    : generic;
+  if (lastIssues.length === 0) {
+    list.innerHTML = '<div class="empty">위반 사항 없음 ✓<br/>모든 색상이 V2 토큰에 바인딩되어 있습니다.</div>';
+    return;
+  }
+  if (filtered.length === 0) {
+    list.innerHTML = '<div class="empty">이 탭에 해당하는 항목 없음</div>';
+    return;
+  }
+  list.innerHTML = activeTab === "offguide"
+    ? '<div class="offguide-banner">⚠ 우리 가이드 팔레트에 없는 색입니다. 자동 교정 대상이 아니며 <b>디자인 결정이 필요</b>합니다 (가장 가까운 팔레트 색은 아래 참고).</div>'
+    : "";
+  for (const issue of filtered) {
+    const div = document.createElement("div");
+    div.className = "issue";
+    div.dataset.id = issue.id;
+    const kindLabel = issue.reasonKind === "external-var" ? "외부 변수" : "미바인딩";
+    const confLabelMap = { high: "높음", medium: "보통", low: "낮음" };
+    const mtLabelMap = {
+      "role+component": "컴포넌트·역할",
+      "role": "역할",
+      "exact": "정확",
+      "near": "근접",
+    };
+    const collectionLabel = (name) =>
+      name === "Semantic Color V2" ? "Semantic" :
+      name === "Foundation V2" ? "Foundation" :
+      name.replace(" V2", "");
+
+    // 카테고리별 그룹화
+    const catGroups = {};
+    issue.suggestions.forEach((s, i) => {
+      const cat = s.category || "etc";
+      if (!catGroups[cat]) catGroups[cat] = [];
+      catGroups[cat].push({ s, i });
+    });
+    const catKeys = Object.keys(catGroups);
+
+    // 활성 카테고리 결정: picks가 있으면 그 sug의 카테고리, 없으면 contextSegments와 일치하는 첫 카테고리,
+    //   그것도 없으면 첫 번째 카테고리 (정렬에 의해 가장 적절한 카테고리)
+    let curCat = activeCat[issue.id];
+    if (!curCat || !catGroups[curCat]) {
+      const pickedIdxInit = picks[issue.id];
+      if (pickedIdxInit !== undefined && issue.suggestions[pickedIdxInit]) {
+        curCat = issue.suggestions[pickedIdxInit].category;
+      }
+    }
+    if (!curCat || !catGroups[curCat]) {
+      const ctxMatch = (issue.componentContext || []).find((c) => catGroups[c]);
+      curCat = ctxMatch || (catKeys[0] || "");
+    }
+    activeCat[issue.id] = curCat;
+
+    const chipsHtml = catKeys.length === 0 ? '' : catKeys.map((cat) => {
+      const isCtx = (issue.componentContext || []).indexOf(cat) >= 0;
+      return `<button class="cat-chip ${cat === curCat ? 'active' : ''}" data-cat="${cat}" data-issue-id="${issue.id}">${catLabel(cat)}${isCtx ? ' ●' : ''}<span class="ct">${catGroups[cat].length}</span></button>`;
+    }).join("");
+
+    const pickedIdx = picks[issue.id];
+    const visibleSugs = catGroups[curCat] || [];
+    const sugsHtml = visibleSugs.length === 0
+      ? '<div class="sug"><span class="name" style="color:var(--muted)">이 카테고리에 매칭 토큰 없음</span></div>'
+      : visibleSugs.map(({ s, i }) => {
+          const mtClass = s.matchType === "role+component" ? "role" : s.matchType === "role" ? "role" : s.matchType;
+          const mtLabel = (mtLabelMap[s.matchType] || s.matchType) + (s.matchInfo ? ` ${s.matchInfo}` : "");
+          const isPicked = pickedIdx === i;
+          return `
+            <label class="sug ${isPicked ? 'picked' : ''}" data-sug-idx="${i}">
+              <input type="radio" name="pick-${issue.id}" data-issue-id="${issue.id}" data-sug-idx="${i}" ${isPicked ? 'checked' : ''}/>
+              <span class="name">${s.variableName}</span>
+              <span class="mt ${mtClass}">${mtLabel}</span>
+              <span class="col">${collectionLabel(s.collectionName)}</span>
+              <span class="conf-${s.confidence}">${confLabelMap[s.confidence] || s.confidence}</span>
+              <button data-action="apply" data-sug="${i}">적용</button>
+            </label>
+          `;
+        }).join("");
+    div.innerHTML = `
+      <div class="issue-head">
+        <div class="swatch" style="background:${issue.hex}"></div>
+        <div class="name">${escape(issue.nodeName)}</div>
+        <span class="node-kind ${issue.nodeKind}">${({text:'텍스트',icon:'아이콘',shape:'도형'}[issue.nodeKind] || issue.nodeKind)}</span>
+        <span class="kind">${kindLabel}</span>
+        ${issue.offGuide ? '<span class="kind offguide">팔레트 외</span>' : ''}
+      </div>
+      <div class="issue-meta">
+        ${issue.property} · ${escape(issue.sourceLabel)} · <span class="hex">${issue.hex}</span>${issue.offGuide ? ` · <span class="offguide-note">가이드에 없는 색 · 최근접 Δ${Math.round(issue.nearestDistance)}</span>` : ''}
+      </div>
+      <div class="cat-chips">${chipsHtml}</div>
+      <div class="sugs">${sugsHtml}</div>
+    `;
+    div.addEventListener("click", (e) => {
+      const t = e.target;
+      // 카테고리 칩 클릭 → 활성 카테고리 변경 후 issue 카드만 다시 렌더링
+      const chip = t.closest && t.closest(".cat-chip");
+      if (chip) {
+        const newCat = chip.dataset.cat;
+        const issueId = chip.dataset.issueId;
+        activeCat[issueId] = newCat;
+        rerenderTab();
+        e.stopPropagation();
+        return;
+      }
+      const action = t.dataset && t.dataset.action;
+      // Apply 단건 버튼
+      if (action === "apply") {
+        if (t.classList.contains("applied")) {
+          e.stopPropagation();
+          return; // 이미 적용된 버튼 재클릭 무시
+        }
+        const idx = parseInt(t.dataset.sug, 10);
+        send("apply-one", { issue, suggestionIndex: idx });
+        // 시각 피드백은 apply-result 받은 후 처리 (낙관적 표시 X)
+        t.textContent = "...";
+        t.disabled = true;
+        e.stopPropagation();
+        return;
+      }
+      // 라디오 또는 sug 라벨 클릭 → 선택
+      if (t.tagName === "INPUT" && t.type === "radio") {
+        const issueId = t.dataset.issueId;
+        const sugIdx = parseInt(t.dataset.sugIdx, 10);
+        picks[issueId] = sugIdx;
+        // 같은 issue의 모든 sug 라벨에서 picked class 갱신
+        div.querySelectorAll(".sug").forEach((el) => {
+          const elIdx = parseInt(el.dataset.sugIdx, 10);
+          el.classList.toggle("picked", elIdx === sugIdx);
+        });
+        updatePickedCount();
+        e.stopPropagation();
+        return;
+      }
+      // sug label 영역 클릭 → 해당 라디오 선택
+      const sugEl = t.closest && t.closest(".sug");
+      if (sugEl && sugEl.dataset.sugIdx !== undefined) {
+        const radio = sugEl.querySelector('input[type="radio"]');
+        if (radio && !radio.checked) {
+          radio.checked = true;
+          radio.dispatchEvent(new Event("click", { bubbles: true }));
+        }
+        e.stopPropagation();
+        return;
+      }
+      // 그 외 (issue 카드 빈 영역, head, meta) → 노드 선택
+      send("select-node", { nodeId: issue.nodeId });
+    });
+    list.appendChild(div);
+  }
+}
+
+function escape(s) {
+  return String(s).replace(/[<>&"]/g, (c) => ({"<":"&lt;",">":"&gt;","&":"&amp;",'"':"&quot;"}[c]));
+}
+
+function handleAuditUiMessage(msg) {
+  if (msg.type === "scan-result") {
+    lastIssues = msg.payload.issues;
+    const s = msg.payload.stats;
+    stats.textContent = `${s.scanned} 노드 · 위반 ${s.issuesCount}건`;
+    rerenderTab();
+  } else if (msg.type === "report-done") {
+    const rbtn = document.getElementById("btn-build-report");
+    if (rbtn) { rbtn.disabled = false; rbtn.textContent = "캔버스 리포트 생성"; }
+    const c = msg.payload.counts || {};
+    showToast(`검수 리포트 생성 완료 — HEX ${c.hex||0} · 외부변수 ${c.extVar||0} · 가이드외 ${c.offGuide||0} · 레거시 ${c.legacy||0}`);
+  } else if (msg.type === "apply-result") {
+    const { issueId, suggestionIndex, ok } = msg.payload;
+    const el = list.querySelector(`[data-id="${issueId}"]`);
+    if (el) {
+      // 같은 issue의 모든 apply 버튼을 활성 상태로 복원 + applied 표시 해제
+      el.querySelectorAll('button[data-action="apply"]').forEach((b) => {
+        b.disabled = false;
+        b.textContent = "적용";
+        b.classList.remove("applied");
+      });
+      if (ok) {
+        // 방금 적용된 sug만 Applied 표시 (다른 후보는 클릭 가능 — 덮어쓰기 허용)
+        const target = el.querySelector(`button[data-action="apply"][data-sug="${suggestionIndex}"]`);
+        if (target) {
+          target.disabled = true;
+          target.textContent = "적용됨";
+          target.classList.add("applied");
+        }
+      }
+    }
+    showToast(ok ? "적용 완료" : "적용 실패");
+  } else if (msg.type === "apply-high-result") {
+    showToast(`${msg.payload.count}건 자동 적용 완료. 다시 스캔을 권장합니다.`);
+  } else if (msg.type === "apply-multi-result") {
+    const p = msg.payload;
+    for (const a of p.applied) {
+      const el = list.querySelector(`[data-id="${a.issueId}"]`);
+      if (el) {
+        el.querySelectorAll('button[data-action="apply"]').forEach((b) => {
+          b.disabled = false;
+          b.textContent = "적용";
+          b.classList.remove("applied");
+        });
+        const target = el.querySelector(`button[data-action="apply"][data-sug="${a.suggestionIndex}"]`);
+        if (target) {
+          target.disabled = true;
+          target.textContent = "적용됨";
+          target.classList.add("applied");
+        }
+      }
+      delete picks[a.issueId];
+    }
+    updatePickedCount();
+    showToast(`${p.ok}건 적용 완료${p.fail ? ` · ${p.fail}건 실패` : ""}.`);
+  } else if (msg.type === "set-mode-result") {
+    const p = msg.payload;
+    if (p.message) {
+      showToast(p.message);
+    } else {
+      showToast(`${p.count}개 노드 적용${p.skipped ? ` · ${p.skipped}개 skip` : ""}`);
+    }
+  } else if (msg.type === "register-reference-result") {
+    if (msg.payload.ok) {
+      referencePool = msg.payload.pool;
+      referenceRoots = msg.payload.rootNames;
+      referenceSourceName = msg.payload.sourceFileName || "";
+      renderRefInfo(false);
+      const wo = msg.payload.withoutKey || 0;
+      const warn = wo > 0 ? ` · ${wo}개는 key 없음 (publish 안 됨 — 다른 파일에선 교체 불가)` : "";
+      showToast(`${referencePool.length}개 컴포넌트 기준 등록 완료${warn}`);
+    } else {
+      showToast(msg.payload.message || "기준 등록 실패");
+    }
+  } else if (msg.type === "reference-loaded") {
+    referencePool = msg.payload.pool;
+    referenceRoots = msg.payload.rootNames;
+    referenceSourceName = msg.payload.sourceFileName || "";
+    renderRefInfo(true);
+  } else if (msg.type === "reference-cleared") {
+    referencePool = [];
+    referenceRoots = [];
+    swapCandidates = [];
+    renderRefInfo(false);
+    renderSwapList();
+    showToast("기준 초기화 완료");
+  } else if (msg.type === "scan-swap-result") {
+    swapCandidates = msg.payload.candidates || [];
+    renderSwapList(msg.payload.diagnostics);
+  } else if (msg.type === "apply-swap-result") {
+    const { id, ok } = msg.payload;
+    const card = $("#swap-list").querySelector(`[data-id="${id}"]`);
+    if (card) {
+      if (ok) {
+        card.classList.add("applied");
+        const btn = card.querySelector('[data-action="apply-swap"]');
+        if (btn) { btn.textContent = "교체됨"; btn.disabled = true; }
+        // 후보 리스트에서 제거 (상태 관리)
+        swapCandidates = swapCandidates.filter((c) => c.id !== id);
+        $("#swap-count").textContent = swapCandidates.length;
+        $("#btn-apply-swap-all").disabled = swapCandidates.length === 0;
+      } else {
+        const btn = card.querySelector('[data-action="apply-swap"]');
+        if (btn) { btn.textContent = "실패"; btn.disabled = false; }
+      }
+    }
+    showToast(ok ? "교체 완료" : "교체 실패");
+  } else if (msg.type === "apply-swap-multi-result") {
+    const p = msg.payload;
+    for (const id of p.applied) {
+      const card = $("#swap-list").querySelector(`[data-id="${id}"]`);
+      if (card) {
+        card.classList.add("applied");
+        const btn = card.querySelector('[data-action="apply-swap"]');
+        if (btn) { btn.textContent = "교체됨"; btn.disabled = true; }
+      }
+    }
+    swapCandidates = swapCandidates.filter((c) => p.applied.indexOf(c.id) === -1);
+    $("#swap-count").textContent = swapCandidates.length;
+    $("#btn-apply-swap-all").disabled = swapCandidates.length === 0;
+    $("#btn-apply-swap-all").textContent = "전체 교체";
+    showToast(`${p.applied.length}건 교체 완료${p.fail ? ` · ${p.fail}건 실패` : ""}`);
+  } else if (msg.type === "error") {
+    showToast("Error: " + msg.payload.message);
+  }
+}
 </script>
 </body>
 </html>
