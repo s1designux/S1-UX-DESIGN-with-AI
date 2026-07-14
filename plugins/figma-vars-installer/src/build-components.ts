@@ -852,9 +852,12 @@ async function buildInput(maps: BuildMaps, originY: number, originX: number = IN
           if (lab === "On") comp.appendChild(await makeBoundText("라벨", 14, "Medium", scv(maps, fc(dis ? "label/disabled" : "label/default"))));
           comp.appendChild(field);
           if (msg === "On") {
-            // 안내메시지 색: Error=빨강·Correct=파랑·Disabled=회색·기본 라벨색
-            const msgColor = dis ? "label/disabled" : st.name === "Error" ? "border/error" : st.name === "Correct" ? "border/correct" : "label/default";
-            comp.appendChild(await makeBoundText("안내 메세지", 12, "Regular", scv(maps, fc(msgColor))));
+            // 안내메시지 = 글자(text) 역할 토큰. 보더/라벨 토큰 오연결 정정(2026-07-13):
+            //   기본=text/state/caption · 오류=text/state/caution · 확인=text/state/correct · 비활성=text/state/disabled
+            //   기본(caption gray/500 #757575)은 Figma 실측으로 확정(2026-07-14). helper(gray/400 #9D9D9D)는 페이지네이션 예정 토큰이라 여기서 사용 안 함.
+            //   (최초엔 form-control/border·label = 테두리/라벨 토큰 오연결, 2026-07-13 정정 시 default 를 helper 로 잘못 둠 → caption 으로 재정정)
+            const msgColor = dis ? "color/text/state/disabled" : st.name === "Error" ? "color/text/state/caution" : st.name === "Correct" ? "color/text/state/correct" : "color/text/state/caption";
+            comp.appendChild(await makeBoundText("안내 메세지", 12, "Regular", scv(maps, msgColor)));
           }
           setLightMode(comp, maps);
           comps.push(comp);

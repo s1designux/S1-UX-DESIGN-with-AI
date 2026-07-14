@@ -23,6 +23,8 @@
 const fs = require('fs');
 const path = require('path');
 const cp = require('child_process');
+// 시스템 맵(수기·죽은파일·orphan·경계) 스캔 전용 모듈 — HTML 은 안 쓴다(쓰기는 이 파일만).
+const scanSystemMap = require('./scripts/scan-system-map.js');
 
 // ── 파괴적 연산 차단 (쓰기는 아래 writeOutput 한 곳만 허용) ──────────────
 for (const fn of ['unlink', 'unlinkSync', 'rm', 'rmSync', 'rmdir', 'rmdirSync',
@@ -37,6 +39,9 @@ for (const fn of ['unlink', 'unlinkSync', 'rm', 'rmSync', 'rmdir', 'rmdirSync',
 const argv = process.argv.slice(2);
 function argVal(flag) { const i = argv.indexOf(flag); return i >= 0 ? argv[i + 1] : null; }
 const RUN_CHECK = argv.includes('--check');
+// --self-check: 자기-드리프트 게이트(map:verify). 기존 --check(목적지 드리프트 측정)와 별개.
+// 재생성 결과가 커밋된 pipeline-status.html 과 (휘발성/측정값 제외) 다르면 exit 1. 파일은 쓰지 않는다.
+const SELF_CHECK = argv.includes('--self-check');
 const ROOT = path.resolve(argVal('--root') || '.');
 const OUT = argVal('--out') || 'pages/pipeline-status.html';
 const OUT_ABS = path.resolve(ROOT, OUT);
@@ -350,7 +355,7 @@ if (RUN_CHECK && gates.length) {
   }
 } else if (RUN_CHECK) {
   console.log('[--check] 실행할 게이트를 하나도 못 찾음. package.json 스크립트/생성기 --check 확인 필요.');
-} else if (gates.length) {
+} else if (gates.length && !SELF_CHECK) {
   console.log('\n[정적 모드] --check 시 실행될 명령 (' + gates.length + '건, 지금은 실행 안 함):');
   gates.forEach(g => console.log('   • ' + g.command + (g.writes_report ? '  ⚠리포트씀' : '')));
   if (skipped.length) {
@@ -389,12 +394,102 @@ const DATA = {
   },
   roots: rootFiles, generators: genInfo, destinations: destInfo,
   edges, gates, blind_spots: blindSpots,
+  // 시스템 맵 = 토큰 건강도(수기·죽은파일·orphan·경계). 파랑(자동)은 요약 배지 한 줄로만.
+  // 색 판정은 scan-system-map 이 "생성기 write 유무"로 동적 계산(하드코딩 아님).
+  system_map: scanSystemMap(ROOT, {
+    generators: genInfo, destinations: destInfo, gates, blindSpots, runCheck: RUN_CHECK,
+  }),
 };
 
 // ── 10. 뷰어 HTML 생성 ────────────────────────────────────────────────
 function writeOutput(absPath, html) {
   if (base(absPath) !== base(OUT)) throw new Error('출력 경로 안전 검증 실패: ' + absPath);
   fs.writeFileSync(absPath, html, 'utf8');  // 유일하게 허용된 쓰기
+}
+
+// ── 자기-드리프트 게이트 (--self-check / map:verify) ────────────────────────
+// 정규화 원칙: 휘발성/측정값 필드는 "삭제하지 않고" 양쪽 모두 sentinel 로 덮는다.
+//   → 값 변동=무시 / 키 삭제·추가·타입변경=FAIL 로 잡힘(삭제 방식은 영구 사각지대라 금지).
+const SENTINEL = '<VOLATILE>';
+const VOLATILE_FIELDS = [           // 매 실행 달라지는 휘발성 (사용자 지정 3 + 파생)
+  'meta.generated_at',             // 실행 시각
+  'system_map.scanned_at',         // 스캔 시각(생성 시각 파생)
+  'system_map.git',                // 커밋 해시·날짜(커밋 순간 기준선과 불일치)
+  'system_map.orphan',             // Gate 17 스냅샷(allowlist 타 세션 편집 → 실행마다 다름)
+];
+const RUNTIME_MEASUREMENT_FIELDS = [ // --check 실행 결과(내용 아님)
+  'meta.mode', 'meta.scanned_files',
+  'gates[].status', 'gates[].exit_code', 'gates[].output_tail', 'gates[].fail_kind',
+  'destinations[].drift',
+  'system_map.pipeline_summary.drift', 'system_map.pipeline_summary.measured',
+];
+const MASK_SPECS = VOLATILE_FIELDS.concat(RUNTIME_MEASUREMENT_FIELDS);
+
+// spec: 'a.b.c'(스칼라, 없으면 생성) 또는 'arr[].leaf'(배열 원소별 leaf 를 sentinel 로)
+function maskSpec(obj, spec) {
+  const ai = spec.indexOf('[].');
+  if (ai < 0) {
+    const keys = spec.split('.');
+    let o = obj;
+    for (let i = 0; i < keys.length - 1; i++) { if (o == null || typeof o !== 'object') return; o = o[keys[i]]; }
+    if (o && typeof o === 'object') o[keys[keys.length - 1]] = SENTINEL;  // 생성/덮어쓰기
+    return;
+  }
+  const arrPath = spec.slice(0, ai).split('.');
+  const leaf = spec.slice(ai + 3);
+  let o = obj;
+  for (const k of arrPath) { if (o == null) return; o = o[k]; }
+  if (Array.isArray(o)) o.forEach(el => { if (el && typeof el === 'object') el[leaf] = SENTINEL; });
+}
+function maskAll(D) {
+  const clone = JSON.parse(JSON.stringify(D));
+  MASK_SPECS.forEach(s => maskSpec(clone, s));
+  return clone;
+}
+// HTML 을 (임베드 D) + (나머지 셸)로 분리. 셸은 손편집 탐지용, D 는 마스킹 비교용.
+function splitDoc(html) {
+  const lines = html.split('\n');
+  const idx = lines.findIndex(l => l.startsWith('const D = JSON.parse('));
+  if (idx < 0) return null;
+  const line = lines[idx];
+  const jsonStr = line.slice('const D = JSON.parse('.length, line.lastIndexOf(');'));
+  let D;
+  try { D = JSON.parse(JSON.parse(jsonStr)); } catch (_) { return null; }
+  lines[idx] = 'const D = <<MASKED>>;';
+  return { shell: lines.join('\n'), D };
+}
+function selfCheck(freshHtml, absPath) {
+  const committed = read(absPath);
+  const excluded = MASK_SPECS;
+  const excludedLine = '  비교 제외 필드 ' + excluded.length + '개 (sentinel 치환·값차이 무시): ' + excluded.join(', ');
+  if (committed == null) {
+    console.error('❌ [map:verify] 비교 대상 파일 없음: ' + rel(absPath) + ' — 먼저 생성 필요.');
+    console.error(excludedLine);
+    return 1;
+  }
+  const A = splitDoc(committed), B = splitDoc(freshHtml);
+  if (!A || !B) {
+    console.error('❌ [map:verify] 임베드 D 추출 실패(구조 파손 의심).');
+    console.error(excludedLine);
+    return 1;
+  }
+  const shellSame = A.shell === B.shell;
+  const dataSame = JSON.stringify(maskAll(A.D)) === JSON.stringify(maskAll(B.D));
+  if (shellSame && dataSame) {
+    console.log('✅ [map:verify] pipeline-status.html 이 정본과 일치(휘발성 제외).');
+    console.log(excludedLine);
+    return 0;
+  }
+  console.error('❌ [map:verify] pipeline-status.html 이 정본과 불일치 — 재생성 필요.');
+  console.error('   (재생성: node pipeline-status.js --check --skip gate:check,components:presentation --out pages/pipeline-status.html)');
+  if (!shellSame) console.error('  · 템플릿/CSS/렌더 영역 불일치(손편집 의심).');
+  if (!dataSame) console.error('  · 임베드 데이터(내용 필드) 불일치.');
+  console.error(excludedLine);
+  return 1;
+}
+
+if (SELF_CHECK) {
+  process.exit(selfCheck(buildHTML(DATA), OUT_ABS));
 }
 writeOutput(OUT_ABS, buildHTML(DATA));
 
@@ -471,6 +566,31 @@ td.f{font-weight:600;word-break:break-all}
 .blindbox h2{color:#fff;margin:0 0 8px;font-size:14px}
 .blindbox .item{font-size:12.5px;padding:3px 0;border-bottom:1px solid #333}
 .empty{color:var(--sub);font-size:12.5px;padding:6px 0}
+/* 시스템 맵 */
+.sysmap-head{display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap}
+.sysmap-stamp{font-size:11px;color:var(--sub)}
+.sysmap-blue{background:#eef4fb;border:1px solid #cfe0f3;border-radius:8px;padding:9px 12px;font-size:12.5px;color:#1a4d80;margin:10px 0 14px}
+.sysmap-blue b{color:#123a5e}
+.sm-cats{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media(max-width:720px){.sm-cats{grid-template-columns:1fr}}
+.sm-cat{border:1px solid var(--line);border-radius:10px;padding:12px;border-left:4px solid var(--gray)}
+.sm-cat.manual{border-left-color:var(--fail);background:#fdf3f3}
+.sm-cat.dead{border-left-color:var(--gray);background:#f4f5f6}
+.sm-cat.blind{border-left-color:#111;background:#f5f5f6}
+.sm-cat.boundary{border-left-color:var(--warn);background:#fdf8ee}
+.sm-cat h4{margin:0 0 4px;font-size:12.5px}
+.sm-cat .tag{display:block;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;color:var(--sub);margin-bottom:6px}
+.sm-row{font-size:12px;padding:5px 0;border-top:1px solid rgba(0,0,0,.06);display:flex;justify-content:space-between;gap:10px;align-items:baseline}
+.sm-row:first-of-type{border-top:0}
+.sm-row .f{word-break:break-all}
+.sm-row .n{font-weight:700;white-space:nowrap}
+.sm-note{color:var(--sub);font-size:11px;margin-top:2px}
+.sm-na{color:var(--sub);font-style:italic}
+.sm-foot{margin-top:12px;display:flex;gap:10px;flex-wrap:wrap;font-size:11.5px;color:var(--sub)}
+.sm-chip{background:#fff;border:1px solid var(--line);border-radius:999px;padding:3px 10px}
+.sm-chip b{color:var(--ink)}
+.sm-mini{margin-top:8px;font-size:11px;color:var(--sub)}
+.sm-auto-tip{background:#eff8f4;border-color:#bfe6d8}
 </style></head><body>
 <div class="mobile-header">
   <button class="hamburger" id="sidebar-toggle" aria-label="메뉴">
@@ -515,7 +635,7 @@ td.f{font-weight:600;word-break:break-all}
   </div>
   <div id="map"><svg class="wires" id="wires"></svg><div class="cols" id="cols"></div></div>
 </div>
-<div class="blindbox" id="blindbox"></div>
+<div class="card" id="sysmap"><h2>🗺 토큰 시스템 맵 (스캔 자동 도출 · 토큰 건강도)</h2></div>
 <div class="grid">
   <div class="card"><h2>목적지 상태</h2><div id="desttbl"></div></div>
   <div class="card"><h2>게이트 / 값 일치 검사</h2><div id="gatetbl"></div></div>
@@ -609,13 +729,69 @@ function drawWires(){
     svg.appendChild(p);});
 }
 
-// 사각지대
-const bb=document.getElementById('blindbox');
-if(D.blind_spots.length){
-  bb.innerHTML='<h2>⚠ 사각지대 — 아무도 값을 검사하지 않는 목적지 ('+D.blind_spots.length+')</h2>'
-    +D.blind_spots.map(f=>'<div class="item">'+esc(f)+'</div>').join('')
-    +'<div style="margin-top:8px;font-size:12px;color:#bbb">생성기 --check도 없고 게이트 커버도 없음 = 여기 값이 틀려도 자동으로는 못 잡음.</div>';
-}else{ bb.style.display='none'; }
+// 🗺 시스템 맵 (수기·죽은파일·orphan·경계). 파랑(자동)은 요약 배지 한 줄. blind_spots 는 [값검사 공백] 카테고리로 이동.
+(function renderSystemMap(){
+  const SM=D.system_map||{};
+  const host=document.getElementById('sysmap');
+  if(!host) return;
+  const na=v=>(v===null||v===undefined)?'<span class="sm-na">확인 불가</span>':esc(String(v));
+  const row=(f,n,note)=>'<div class="sm-row"><div><div class="f">'+esc(f)+'</div>'+(note?'<div class="sm-note">'+esc(note)+'</div>':'')+'</div><div class="n">'+n+'</div></div>';
+
+  // 갱신 스탬프
+  const g=SM.git||{};
+  const stamp=[g.hash?('커밋 '+g.hash):null,g.branch||null,SM.scanned_at?('스캔 '+SM.scanned_at):null].filter(Boolean).map(esc).join('  ·  ');
+
+  // 파랑 요약(자동 경로는 여기 한 줄로만)
+  const ps=SM.pipeline_summary||{};
+  const blue='정본 <b>vars-data</b> (FOUNDATION '+na(ps.foundation_color)+' · SEMANTIC '+na(ps.semantic_color)+
+    ') → 생성기 <b>'+na(ps.generators)+'</b>개 → 생성물 <b>'+na(ps.destinations)+'</b>개 · 드리프트 '+
+    (ps.measured?('<b>'+na(ps.drift)+'</b>건'):'<span class="sm-na">미측정 (--check 로 실행)</span>');
+
+  // ① 값검사 공백 (blind_spots)
+  const blind=(D.blind_spots||[]);
+  const blindCard='<div class="sm-cat blind"><span class="tag">① 값검사 공백</span><h4>아무도 값을 검사 안 하는 목적지 ('+blind.length+')</h4>'
+    +(blind.length?blind.map(f=>row(bn(f),'검사 없음')).join(''):'<div class="sm-note">없음</div>')+'</div>';
+
+  // ② 수기 관리 (빨강 — 생성기 없으면 수기, 있으면 자동으로 전환)
+  const manual=(SM.manual||[]);
+  const manualRows=manual.map(m=>{
+    const auto=m.has_generator===true;
+    const cntTxt=(m.count===null||m.count===undefined)?'<span class="sm-na">확인 불가</span>':(esc(String(m.count))+(m.unit||''));
+    let extra=m.note||'';
+    if(m.raw_hex) extra+=' · 원시 hex '+m.raw_hex;
+    if(m.non_array_groups&&m.non_array_groups.length) extra+=' · 비배열 '+m.non_array_groups.length+'그룹: '+m.non_array_groups.join(', ');
+    return row(bn(m.file)+(auto?' (자동)':' (수기)'),cntTxt,extra);
+  }).join('');
+  const anyManual=manual.some(m=>m.has_generator!==true);
+  const manualCard='<div class="sm-cat '+(anyManual?'manual':'auto sm-auto-tip')+'"><span class="tag">② 수기 관리</span>'
+    +'<h4>vars-data 연동 없이 손으로 유지'+(anyManual?'':' — 모두 생성기 붙음 ✓')+'</h4>'+(manualRows||'<div class="sm-note">없음</div>')+'</div>';
+
+  // ③ 죽은 파일 (회색) + 죽은 토큰 선언 컴포넌트
+  const dead=(SM.dead_files||[]);
+  const dtc=SM.dead_token_components||{};
+  const deadRows=dead.map(d=>row(bn(d.file)+(d.loaded?' (로드됨)':''),(d.loaded?'<span class="sm-na">로드됨</span>':'죽음'),'정의 '+d.defines+'종 · '+d.reason)).join('');
+  const dtcRow=(dtc.count!==undefined)?row('죽은 토큰을 선언한 컴포넌트',dtc.count+' / '+dtc.of,'registry 선언 O + tokens.css 정의 X + 죽은 CSS 정의 O'):'';
+  const deadCard='<div class="sm-cat dead"><span class="tag">③ 죽은 파일</span><h4>로드되지 않는 CSS · 그 안의 죽은 토큰</h4>'+(deadRows||'<div class="sm-note">없음</div>')+dtcRow+'</div>';
+
+  // ④ 경계 위반
+  const b=SM.boundary||{};
+  const boundaryCard='<div class="sm-cat boundary"><span class="tag">④ 경계 위반</span><h4>데모 CSS 가 포털 역할토큰 사용</h4>'
+    +(b.role_token_refs!==undefined?row(bn(b.file),b.role_token_refs+'종',b.note):'<div class="sm-note">'+na(b.reason)+'</div>')+'</div>';
+
+  // 하단: orphan(실행 시점 스냅샷) + 확인 불가
+  const o=SM.orphan||{};
+  let orphanChip;
+  if(o.available) orphanChip='<span class="sm-chip">Gate 17 orphan <b>'+o.total+'</b> (allow '+o.allow+' · 예상밖 '+o.unexpected+' · stale '+o.stale+') <span class="sm-na">실행 시점 스냅샷 '+esc(o.snapshot_at||'')+'</span></span>';
+  else orphanChip='<span class="sm-chip">Gate 17 orphan <span class="sm-na">'+na(o.reason)+'</span></span>';
+  const unav=(SM.unavailable||[]).map(u=>'<span class="sm-chip">'+esc(u.item)+' <span class="sm-na">확인 불가</span></span>').join('');
+  const foot='<div class="sm-foot">'+orphanChip+unav+'</div>';
+
+  host.innerHTML='<h2>🗺 토큰 시스템 맵 (스캔 자동 도출 · 토큰 건강도)</h2>'
+    +'<div class="sysmap-head"><div class="muted">파랑(자동 흐름)은 위 파이프라인 지도가 이미 그림 — 여기선 요약 한 줄. 본체는 수기·죽은·경계.</div><div class="sysmap-stamp">'+stamp+'</div></div>'
+    +'<div class="sysmap-blue">'+blue+'</div>'
+    +'<div class="sm-cats">'+blindCard+manualCard+deadCard+boundaryCard+'</div>'
+    +foot;
+})();
 
 // 목적지 표
 document.getElementById('desttbl').innerHTML =
