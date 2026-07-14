@@ -1289,7 +1289,6 @@ async function buildDropdownList(maps: BuildMaps, originY: number): Promise<{ se
     // 2026-07-08 사용자 결정: 선택 배경=default와 동일 토큰(강조는 텍스트색만). option/bg/selected(하늘색)는
     // 더 이상 여기서 안 쓰지만 Time Picker Cell(별도 컴포넌트, buildTimePickerCell)은 계속 사용 — 그대로 둠.
     { name: "Selected", bg: "option/bg/default",  label: "option/label/selected" },
-    { name: "Disabled", bg: "option/bg/disabled", label: "option/label/disabled" },
   ];
   const sizes = [
     { size: "XXSM", h: 28, font: 12 },

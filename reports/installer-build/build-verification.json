@@ -1,9 +1,9 @@
 {
   "sourceFile": "plugins/figma-vars-installer/src/build-components.ts",
-  "sourceHash": "sha256:f0243fdafc861d17f2dec6ff8618af4b3e1ed2abb166bb04329f00626491e807",
-  "verifiedBy": "orchestrator",
+  "sourceHash": "sha256:cbd0a293f33e54ed7462649078f2e98c34a6122b942b195635c899df353d8f27",
+  "verifiedBy": "component-verifier",
   "verdict": "pass",
-  "changeType": "mechanical",
-  "verifiedAt": "2026-07-13T21:34:21.786Z",
-  "notes": ""
+  "changeType": "structural",
+  "verifiedAt": "2026-07-14T08:04:59.710Z",
+  "notes": "buildDropdownList Disabled 배리언트 제거 — states 3개(Default/Hover/Selected)·토큰 2개 제거·keycheck 누락0·부모조립 무의존 확인"
 }

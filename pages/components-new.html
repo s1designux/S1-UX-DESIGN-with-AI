@@ -1176,7 +1176,7 @@
       color: var(--color-dropdown-option-label-default);
     }
     .s1-dropdown-option.is-hover,
-    .s1-dropdown-option:hover:not(.is-selected):not(.is-disabled) {
+    .s1-dropdown-option:hover:not(.is-selected) {
       background: var(--color-dropdown-option-bg-hover);
       color: var(--color-dropdown-option-label-hover);
     }
@@ -1188,13 +1188,8 @@
     }
     /* 2026-07-08: 선택 + 호버 — Select(.s1-select-option.is-selected.is-hover)와 정합. 새 토큰 없이 호버 배경만 깔고 선택 글자색·굵기는 유지 */
     .s1-dropdown-option.is-selected.is-hover,
-    .s1-dropdown-option.is-selected:hover:not(.is-disabled) {
+    .s1-dropdown-option.is-selected:hover {
       background: var(--color-dropdown-option-bg-hover);
-    }
-    .s1-dropdown-option.is-disabled {
-      background: var(--color-dropdown-option-bg-disabled);
-      color: var(--color-dropdown-option-label-disabled);
-      cursor: default; pointer-events: none;
     }
     /* 사이즈 — XXSM(h28·font12) / XSM(h34·font14) / MD(h44·font14, 기본) */
     .s1-dropdown-list--xxsm .s1-dropdown-option { height: var(--sizing-28); font-size: 12px; }
@@ -5165,11 +5160,11 @@ document.addEventListener('click', function(e) {
 
 
       <!-- ═══ DROPDOWN ═══ -->
-      <section class="comp-section" id="dropdown" data-cov-states="default,hover,selected,disabled" data-cov-sizes="xxsm,xsm,md">
+      <section class="comp-section" id="dropdown" data-cov-states="default,hover,selected" data-cov-sizes="xxsm,xsm,md">
         <div class="comp-section-header">
           <h2 class="comp-section-title">Dropdown</h2>
           <span class="comp-badge comp-badge-blue">Core</span>
-          <span class="comp-badge">4 states</span>
+          <span class="comp-badge">3 states</span>
           <span class="comp-badge">3 sizes (XXSM · XSM · MD)</span>
           <span class="comp-badge comp-badge-blue">정본 buildDropdownList · color/dropdown/*</span>
         </div>
@@ -5215,32 +5210,28 @@ document.addEventListener('click', function(e) {
 
         <!-- ── Option States × Size (4상태 × 3사이즈) ── -->
         <div class="variant-block">
-          <div class="variant-label">Option States · Default · Hover · Selected · Disabled (사이즈별)</div>
+          <div class="variant-label">Option States · Default · Hover · Selected (사이즈별)</div>
           <div class="preview-area">
-            <div class="comp-state-matrix" style="grid-template-columns: 120px repeat(4, minmax(120px, 1fr));">
+            <div class="comp-state-matrix" style="grid-template-columns: 120px repeat(3, minmax(120px, 1fr));">
               <div class="matrix-col-header-action">Size</div>
               <div class="matrix-col-header">Default</div>
               <div class="matrix-col-header">Hover</div>
               <div class="matrix-col-header">Selected</div>
-              <div class="matrix-col-header">Disabled</div>
               <!-- MD -->
               <div class="comp-action-cell" style="font-size:12px;color:var(--color-text-secondary);">MD (h44)</div>
               <div class="comp-state-cell"><div class="s1-dropdown-list s1-dropdown-list--md"><div class="s1-dropdown-option">옵션</div></div></div>
               <div class="comp-state-cell"><div class="s1-dropdown-list s1-dropdown-list--md"><div class="s1-dropdown-option is-hover">옵션</div></div></div>
               <div class="comp-state-cell"><div class="s1-dropdown-list s1-dropdown-list--md"><div class="s1-dropdown-option is-selected">옵션</div></div></div>
-              <div class="comp-state-cell"><div class="s1-dropdown-list s1-dropdown-list--md"><div class="s1-dropdown-option is-disabled">옵션</div></div></div>
               <!-- XSM -->
               <div class="comp-action-cell" style="font-size:12px;color:var(--color-text-secondary);">XSM (h34)</div>
               <div class="comp-state-cell"><div class="s1-dropdown-list s1-dropdown-list--xsm"><div class="s1-dropdown-option">옵션</div></div></div>
               <div class="comp-state-cell"><div class="s1-dropdown-list s1-dropdown-list--xsm"><div class="s1-dropdown-option is-hover">옵션</div></div></div>
               <div class="comp-state-cell"><div class="s1-dropdown-list s1-dropdown-list--xsm"><div class="s1-dropdown-option is-selected">옵션</div></div></div>
-              <div class="comp-state-cell"><div class="s1-dropdown-list s1-dropdown-list--xsm"><div class="s1-dropdown-option is-disabled">옵션</div></div></div>
               <!-- XXSM -->
               <div class="comp-action-cell" style="font-size:12px;color:var(--color-text-secondary);">XXSM (h28)</div>
               <div class="comp-state-cell"><div class="s1-dropdown-list s1-dropdown-list--xxsm"><div class="s1-dropdown-option">옵션</div></div></div>
               <div class="comp-state-cell"><div class="s1-dropdown-list s1-dropdown-list--xxsm"><div class="s1-dropdown-option is-hover">옵션</div></div></div>
               <div class="comp-state-cell"><div class="s1-dropdown-list s1-dropdown-list--xxsm"><div class="s1-dropdown-option is-selected">옵션</div></div></div>
-              <div class="comp-state-cell"><div class="s1-dropdown-list s1-dropdown-list--xxsm"><div class="s1-dropdown-option is-disabled">옵션</div></div></div>
             </div>
           </div>
         </div>
@@ -5259,7 +5250,6 @@ document.addEventListener('click', function(e) {
   <span class="c-tag">&lt;div</span> <span class="c-attr">class</span>=<span class="c-str">"s1-dropdown-option"</span><span class="c-tag">&gt;</span>옵션<span class="c-tag">&lt;/div&gt;</span>
   <span class="c-tag">&lt;div</span> <span class="c-attr">class</span>=<span class="c-str">"s1-dropdown-option is-hover"</span><span class="c-tag">&gt;</span>옵션<span class="c-tag">&lt;/div&gt;</span>
   <span class="c-tag">&lt;div</span> <span class="c-attr">class</span>=<span class="c-str">"s1-dropdown-option is-selected"</span><span class="c-tag">&gt;</span>옵션<span class="c-tag">&lt;/div&gt;</span>
-  <span class="c-tag">&lt;div</span> <span class="c-attr">class</span>=<span class="c-str">"s1-dropdown-option is-disabled"</span><span class="c-tag">&gt;</span>옵션<span class="c-tag">&lt;/div&gt;</span>
 <span class="c-tag">&lt;/div&gt;</span>
 
 <span class="c-cmt">&lt;!-- XSM (h34) / XXSM (h28) — 패널에 사이즈 클래스 --&gt;</span>
@@ -5283,7 +5273,6 @@ document.addEventListener('click', function(e) {
 <span class="c-sel">.s1-dropdown-option.is-selected</span> { background: <span class="c-val">var(--color-dropdown-option-bg-default)</span>; color: <span class="c-val">var(--color-dropdown-option-label-selected)</span>; }
 <span class="c-cmt">/* 선택 + 호버 — 호버 배경만 깔고 선택 글자색·굵기 유지 */</span>
 <span class="c-sel">.s1-dropdown-option.is-selected.is-hover</span> { background: <span class="c-val">var(--color-dropdown-option-bg-hover)</span>; }
-<span class="c-sel">.s1-dropdown-option.is-disabled</span> { background: <span class="c-val">var(--color-dropdown-option-bg-disabled)</span>; color: <span class="c-val">var(--color-dropdown-option-label-disabled)</span>; }
 <span class="c-cmt">/* 사이즈 — XXSM(h28·font12) / XSM(h34·font14) / MD(h44·font14) */</span>
 <span class="c-sel">.s1-dropdown-list--xxsm .s1-dropdown-option</span> { height: <span class="c-val">var(--sizing-28)</span>; font-size: <span class="c-val">12px</span>; }
 <span class="c-sel">.s1-dropdown-list--xsm .s1-dropdown-option</span> { height: <span class="c-val">var(--sizing-34)</span>; font-size: <span class="c-val">14px</span>; }
@@ -8681,12 +8670,11 @@ document.addEventListener('click', function(e) {
       });
     }
 
-    // ── Dropdown 패널: 옵션 클릭 → 선택 이동, Disabled → 전체 사이즈 ──
+    // ── Dropdown 패널: 옵션 클릭 → 선택 이동 ──
     function wireDropdownPanel(el) {
       if (!el) return;
       el.querySelectorAll('.s1-dropdown-option').forEach(function(opt) {
         opt.addEventListener('click', function() {
-          if (el.classList.contains('is-disabled') || opt.classList.contains('is-disabled')) return;
           el.querySelectorAll('.s1-dropdown-option').forEach(function(o) { o.classList.remove('is-selected'); });
           opt.classList.add('is-selected');
         });
