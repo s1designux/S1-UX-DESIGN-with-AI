@@ -575,14 +575,17 @@ td.f{font-weight:600;word-break:break-all}
 /* 도식 컨테이너 + SVG 오버레이(연결선) */
 .sm-diagram{position:relative;overflow-x:auto;padding:4px 0}
 svg.sm-wires{position:absolute;inset:0;width:100%;height:100%;z-index:1;pointer-events:none}
-.sm-bands{position:relative;z-index:2;display:flex;flex-direction:column;gap:30px;min-width:720px;padding:6px 0}
+/* 3층: 밴드배경(::before z0) < 연결선 svg(z1) < 노드(z2) < 라벨(z3).
+   ⚠️ .sm-bands 에 z-index 를 주면 stacking context 를 가둬 3층이 무너진다 → z-index 없음(auto) 필수. */
+.sm-bands{position:relative;display:flex;flex-direction:column;gap:30px;min-width:720px;padding:6px 0}
 .sm-band{border-radius:10px;position:relative}
-.sm-band-label{position:absolute;top:-9px;left:10px;background:var(--card);border:1px solid var(--line);border-radius:4px;padding:0 6px;font-size:9.5px;font-weight:700;letter-spacing:.05em;color:var(--sub);text-transform:uppercase}
+.sm-band-label{position:absolute;z-index:3;top:-9px;left:10px;background:var(--card);border:1px solid var(--line);border-radius:4px;padding:0 6px;font-size:9.5px;font-weight:700;letter-spacing:.05em;color:var(--sub);text-transform:uppercase}
 /* 파랑(자동) 밴드 — 일부러 얇게·작게 */
-.sm-band.blue{background:#f4f8fd;border:1px solid #e2edf9;display:flex;gap:44px;align-items:center;padding:12px 14px 10px}
+.sm-band.blue{display:flex;gap:44px;align-items:center;padding:12px 14px 10px}
+.sm-band.blue::before{content:'';position:absolute;inset:0;z-index:0;background:#f4f8fd;border:1px solid #e2edf9;border-radius:10px}
 /* 혼합(수기·죽은·경계) 밴드 — 이 도식의 주인공 */
 .sm-band.mixed{display:flex;flex-wrap:wrap;gap:18px 44px;padding:16px 14px 12px}
-.sm-node{background:#fff;border:1px solid var(--line);border-left:3px solid var(--gray);border-radius:8px;padding:8px 11px;font-size:12px;min-width:148px}
+.sm-node{position:relative;z-index:2;background:#fff;border:1px solid var(--line);border-left:3px solid var(--gray);border-radius:8px;padding:8px 11px;font-size:12px;min-width:148px}
 .sm-node .nm{font-weight:600;word-break:break-all}
 .sm-node .mt{color:var(--sub);font-size:11px;margin-top:2px}
 .sm-node.blue{border-left-color:var(--gen);min-width:112px;padding:6px 10px;font-size:11px;background:#fbfdff}
@@ -856,16 +859,21 @@ function drawWires(){
       if(Math.abs(a.cy-z.cy)>40){ x1=a.cx;y1=a.b;x2=z.cx;y2=z.t; }   // 밴드 간(세로)
       else { x1=a.r;y1=a.cy;x2=z.l;y2=z.cy; }                        // 같은 밴드(가로)
       if(e.kind==='auto') wire(x1,y1,x2,y2,'#2b6cb0',false,'smb');
-      else if(e.kind==='x'){ wire(x1,y1,x2,y2,'#d64545',true,null); xmark((x1+x2)/2,(y1+y2)/2); }
+      else if(e.kind==='x'){ wire(x1,y1,x2,y2,'#d64545',true,null); xmark(x1+(x2-x1)*0.4,y1+(y2-y1)*0.4); }  // ✕ 를 source(vars-data)쪽 40% 지점에 — 선 위에 있어 소속 명확 + 밴드 라벨(gap 하단) 회피
       else if(e.kind==='deadref') wire(x1,y1,x2,y2,'#d64545',true,'smr');
       else if(e.kind==='boundary') wire(x1,y1,x2,y2,'#c9820a',true,'smo');
     });
   }
+  // rAF 디바운스 (ResizeObserver→그리기→리플로우 재발화 루프 방지)
+  let _smRaf=0;
+  function scheduleSysmap(){ if(_smRaf) return; _smRaf=requestAnimationFrame(function(){ _smRaf=0; drawSysmapWires(); }); }
   drawSysmapWires();
-  setTimeout(drawSysmapWires,80);
-  window.addEventListener('load',drawSysmapWires);
-  window.addEventListener('resize',drawSysmapWires);
-  if(window.ResizeObserver){ try{ new ResizeObserver(drawSysmapWires).observe(host.querySelector('.sm-bands')); }catch(_){ } }
+  setTimeout(drawSysmapWires,80);                    // 기존 폴백 유지
+  window.addEventListener('load',drawSysmapWires);   // 기존 폴백 유지
+  window.addEventListener('resize',drawSysmapWires); // 기존 폴백 유지
+  // 웹폰트(Pretendard CDN) swap 후 노드폭이 바뀌므로 재그리기 — 디바운스로 루프 방지
+  if(document.fonts&&document.fonts.ready){ document.fonts.ready.then(scheduleSysmap); }
+  if(window.ResizeObserver){ try{ new ResizeObserver(scheduleSysmap).observe(host.querySelector('.sm-bands')); }catch(_){ } }
 })();
 
 // 목적지 표
@@ -904,8 +912,14 @@ document.getElementById('gentbl').innerHTML=
    '<td>'+(g.has_check_flag?'있음':'—')+'</td></tr>').join('')
  +'</table>';
 
-window.addEventListener('load',drawWires);
-window.addEventListener('resize',drawWires);
-setTimeout(drawWires,60);
+window.addEventListener('load',drawWires);    // 기존 폴백 유지
+window.addEventListener('resize',drawWires);  // 기존 폴백 유지
+setTimeout(drawWires,60);                       // 기존 폴백 유지
+// 웹폰트(Pretendard CDN) swap·리플로우 후 재그리기 — drawWires 본체는 미수정, 호출부만 추가.
+// #map 스코프(시스템 맵 host 스코프와 분리 유지). rAF 디바운스로 ResizeObserver 루프 방지.
+var _pmRaf=0;
+function schedulePipeMap(){ if(_pmRaf) return; _pmRaf=requestAnimationFrame(function(){ _pmRaf=0; drawWires(); }); }
+if(document.fonts&&document.fonts.ready){ document.fonts.ready.then(schedulePipeMap); }
+if(window.ResizeObserver){ try{ var _colsEl=document.querySelector('.cols'); if(_colsEl) new ResizeObserver(schedulePipeMap).observe(_colsEl); }catch(_){ } }
 </script></body></html>`;
 }
