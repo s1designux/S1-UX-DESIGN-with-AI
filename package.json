@@ -73,6 +73,7 @@
     "figma:usage:apply": "npm run figma:usage:check && node scripts/figma/apply-figma-usage.mjs && npm run reports:sync && npm run reports:check",
     "figma:usage:dry-run": "node scripts/figma/apply-figma-usage.mjs --dry-run",
     "gate:check": "node scripts/gate-check.js",
+    "map:verify": "node pipeline-status.js --self-check --skip gate:check,components:presentation",
     "harness:audit": "node scripts/harness-audit.js",
     "harness:fix": "node scripts/harness-audit.js --fix",
     "docs:tokencheck": "node scripts/doc-token-ref-check.js",

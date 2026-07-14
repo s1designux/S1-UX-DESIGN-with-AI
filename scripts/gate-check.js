@@ -645,6 +645,31 @@ try {
   fail(`token-role-check 실행 실패: ${e.message}`);
 }
 
+// ── Gate 28: System Map Drift (pipeline-status.html 시스템 맵 신선도) ─────
+// pipeline-status.js --self-check: 현재 코드로 시스템 맵을 재생성해 커밋본과 (휘발성 제외) 대조.
+// warning 인 이유(2026-07-14 결정): pipeline-status.html 은 대시보드(생성물)라 낡아도 빌드가 안 깨진다.
+//   error 로 걸면 site-base.css 한 줄 고친 타 세션까지 커밋이 막혀(남의 알람이 내 문 앞에서 울림),
+//   그 마찰이 --no-verify 를 부르고 그러면 Gate 1~27 전부 무력화된다. 신선도보다 게이트 생태계 보존 우선.
+// --skip 은 게이트가 자동으로 붙인다(사람이 손으로 붙일 필요 없음). Gate 27 의 spawnSync 패턴 차용.
+console.log('\n🔎 [Gate 28] 시스템 맵 신선도 검사기 (System Map Drift)');
+try {
+  const { spawnSync } = require('child_process');
+  const r = spawnSync('node', [
+    path.join(ROOT, 'pipeline-status.js'), '--self-check',
+    '--skip', 'gate:check,components:presentation',
+  ], { cwd: ROOT, encoding: 'utf-8' });
+  if (r.status === 0) {
+    pass('시스템 맵 최신 — pipeline-status.html 이 현재 코드와 일치(휘발성 제외)');
+  } else {
+    warn('Gate 28: pipeline-status.html 이 현재 코드와 맞지 않습니다 (시스템 맵 낡음)\n'
+      + '       → 해결: npm run map:verify 로 확인 후, 재생성:\n'
+      + '         node pipeline-status.js --check --skip gate:check,components:presentation --out pages/pipeline-status.html\n'
+      + '       ※ 커밋은 막지 않습니다 — 대시보드 화면만 낡은 상태입니다(생성물).');
+  }
+} catch (e) {
+  warn(`Gate 28: 시스템 맵 신선도 검사 실행 실패 — ${e.message} (커밋은 막지 않음)`);
+}
+
 // ── Summary ───────────────────────────────────────────────────────
 console.log('\n─────────────────────────────────────────────────────');
 if (errors > 0) {
