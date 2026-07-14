@@ -622,6 +622,29 @@ try {
   fail(`icons-stats-check 실행 실패: ${e.message}`);
 }
 
+// ── Gate 27: Token Role (글자엔 글자 토큰) ──────────────────────────
+// "토큰 이름에 맞는 요소에만 그 토큰이 쓰였나" — 1차 규칙: 글자(TEXT) 색은 text/*·label/*·number/* 만.
+// border/*·bg/*·surface/* 를 글자색으로 쓰면 차단(icon/* 는 허용목록만). Input 안내메시지가
+// 테두리 토큰(form-control/border/error)에 연결됐는데 값 일치 게이트가 전부 ✅였던 사각지대 차단.
+// esbuild 번들 + recording mock 실행이 필요해 별도 프로세스로 호출(spawnSync). (2026-07-13 신설)
+console.log('\n🔎 [Gate 27] 토큰역할 검사기 (Token Role — 글자엔 글자 토큰)');
+try {
+  const { spawnSync } = require('child_process');
+  const r = spawnSync('node', [path.join(ROOT, 'scripts/token-role-check.js')], { encoding: 'utf-8' });
+  const out = (r.stdout || '') + (r.stderr || '');
+  if (r.status === 0) {
+    const m = out.match(/TEXT (\d+)개 검사/);
+    pass(`글자색 역할 위반 0${m ? ` (TEXT ${m[1]}개)` : ''} — 글자에 border/bg/surface 토큰 오연결 없음`);
+    for (const l of out.split('\n').filter((l) => l.includes('⚠️'))) warn(l.replace(/^\s*⚠️\s*/, ''));
+  } else {
+    const lines = out.split('\n').filter((l) => l.includes('❌') || l.trim().startsWith('·'));
+    for (const l of lines) fail(l.replace(/^\s*❌\s*/, '').trim());
+    if (lines.length === 0) fail(`token-role-check 실패 (exit ${r.status})`);
+  }
+} catch (e) {
+  fail(`token-role-check 실행 실패: ${e.message}`);
+}
+
 // ── Summary ───────────────────────────────────────────────────────
 console.log('\n─────────────────────────────────────────────────────');
 if (errors > 0) {
