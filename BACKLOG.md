@@ -14,6 +14,55 @@
 - **확인 방법**: 다음 설치기 실행 시, Calendar Cell/Tile 세트가 정상적으로 남아 있는지, 배리언트가 전부 있는지 육안 확인.
 - **부수 확인**: 모듈 캐시(`_calCell` 등)가 설치 실행 사이에 초기화되는지. 초기화되지 않으면 두 번째 실행부터 동작이 달라질 수 있음.
 
+## 📐 확정 규칙 · 확인된 버그 (③ selected-hover 관련)
+
+### 📐 시스템 규칙 확정 — "선택된 상태 위의 hover"
+기준: 선택 표시가 '배경색' 으로 되어 있는가?
+(A) 선택돼도 배경이 안 채워지는 유형 — dropdown 옵션, 리스트 항목 등
+    → selected 여도 일반 hover 배경(bg/hover) 이 그대로 나오는 게 맞다.
+    → selected-hover 토큰 불필요.
+(B) 선택되면 배경이 파랗게 채워지는 유형 — button, date-picker selected cell, chip solid
+    → 이미 파란 배경이므로 회색 hover 로 덮으면 안 된다. 더 진한 파랑이 맞다.
+    → selected-hover 토큰이 별도로 필요하다.
+
+### 🐞 확인된 버그 — date-picker selected cell 이 hover 시 회색으로 덮임
+위치: components-new.html 980–981
+  .s1-date-picker__day:hover:not([disabled]) > .day-inner {
+    background: var(--color-date-picker-cell-bg-hover);  /* gray/50 */
+  }
+증상: 브라우저 확인 완료. 선택된 칸(blue/400)에 마우스를 올리면 회색이 된다.
+판정: date-picker selected cell 은 위 규칙의 (B) 유형 → 웹 쪽 버그.
+      Figma 가 따라 그릴 스펙이 아니다.
+      → ②번이 Standard 에만 Hover 를 넣은 것은 이 규칙과 일치한다 (의도한 결정).
+필요 조치 (③번과 함께 처리):
+  - vars-data.ts 에 color/date-picker/cell/bg/selected-hover 신설 (현재 없음)
+    · 라이트/다크 각각 어떤 blue 를 alias 할지 GUI 결정 필요
+  - tokens.css 재생성 → 웹 CSS 를 selected 분기에 배선
+  - Figma 배리언트에 Selected-Hover 상태 추가
+
+⚠️ ③번(chip solid selected-hover)과 동일 규칙의 사례다.
+   chip solid 도 (B) 유형이므로 selected-hover 가 있는 것이 맞다.
+   ③번의 실제 문제는 토큰의 존재 여부가 아니라
+   chip-solid-bg-selected-hover 가 vars-data.ts 를 거치지 않고
+   tokens.css 에 직접 쓰인 우회 배선이라는 점이다.
+   → ③번은 '설계 판단' 이 아니라 '배선 정정' 이다.
+   → date-picker cell 과 chip 을 ③번에서 함께 처리할 것.
+     토큰 이름 · 값 체계가 어긋나지 않도록 반드시 한자리에서 결정한다.
+
+분리 이유: 토큰 신설 + 웹 수정 + 설치기 수정을 ②번 커밋에 섞지 않는다.
+
+### 🕳️ 게이트 사각지대 — Gate 6b 가 설치기 리빌드를 강제하지 못하는 경우
+Gate 6b(installer-freshness)는 zip 내부 code.js 에
+vars-data 의 토큰 키가 전부 embed 됐는지만 검사한다.
+→ 새 토큰을 만들지 않는 변경(기존 토큰을 컴포넌트에 배선만 하는 경우)은
+  zip 이 낡아도 Gate 6b 가 통과시킨다.
+실제 사례: 작업 ②(date-picker cell Hover 추가). cell/bg/hover 는 기존 토큰이라
+  옛 zip 으로도 Gate 6b 통과. 리빌드를 하지 않았다면
+  저장소의 배포용 zip 에 Hover 가 빠진 채 남았을 것이다.
+  (이번엔 리빌드했으므로 문제없음. 선례 4e1f85f · 1f9444c 도 zip 동봉)
+→ 검토 필요: 구조 변경(배리언트 추가·삭제)도 freshness 검사에 넣을 것인가.
+  예: zip 내 code.js 의 해시를 build-components.ts 기준으로 대조.
+
 ## 🔴 우선순위 높음
 
 ### 1. 별칭층 철거 backlog 마무리 (8개 컴포넌트)
