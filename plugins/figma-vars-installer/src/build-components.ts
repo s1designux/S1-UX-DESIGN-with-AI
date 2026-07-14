@@ -821,7 +821,7 @@ async function buildInput(maps: BuildMaps, originY: number, originX: number = IN
             lead.primaryAxisSizingMode = "AUTO"; lead.counterAxisSizingMode = "AUTO";
             lead.itemSpacing = 4; // spacing/4 — 텍스트와 커서 간격
             lead.appendChild(textNode);
-            lead.appendChild(makeCaret(scv(maps, fc("border/selected"))));
+            lead.appendChild(makeCaret(scv(maps, fc("text-cursor"))));
             field.appendChild(lead);
             lead.layoutGrow = 1; lead.layoutSizingHorizontal = "FILL"; // 좌측 채움 → 트레일링 우측 고정
             clearIcon = await makeClearIcon(scv(maps, fc("icon/default")), fcIconPx(sc.h, 0)); // 눈 뒤에 append
@@ -934,7 +934,7 @@ function makeFillIcon(svg: string, fillVar: Variable): FrameNode {
   return node;
 }
 
-// 입력 커서(캐럿) — Editing/Focus 상태에서 텍스트 뒤 깜빡이는 세로선. Figma 564:3757(blue/400=border/selected).
+// 입력 커서(캐럿) — Editing/Focus 상태에서 텍스트 뒤 깜빡이는 세로선. 색=color/form-control/text-cursor(호출부 바인딩, blue/400·dark blue-dark/350). Figma 564:3757.
 // 높이 = 16px(토큰 사이즈 기준, 사용자 결정 2026-06-19). 이름 "caret" 은 Anatomy Gate(11) 가 검증한다.
 function makeCaret(colorVar: Variable): RectangleNode {
   const caret = figma.createRectangle();
@@ -1097,7 +1097,7 @@ async function buildSearch(maps: BuildMaps, originY: number): Promise<{ set: Com
         lead.primaryAxisSizingMode = "AUTO"; lead.counterAxisSizingMode = "AUTO";
         lead.itemSpacing = 4;
         lead.appendChild(textNode);
-        lead.appendChild(makeCaret(scv(maps, fc("border/selected"))));
+        lead.appendChild(makeCaret(scv(maps, fc("text-cursor"))));
         comp.appendChild(lead);
         const trail = figma.createFrame();
         trail.name = "trail"; trail.fills = [];
@@ -1167,7 +1167,7 @@ async function buildTextarea(maps: BuildMaps, originY: number): Promise<{ set: C
       lead.primaryAxisSizingMode = "AUTO"; lead.counterAxisSizingMode = "AUTO";
       lead.itemSpacing = 4;
       lead.appendChild(textNode);
-      lead.appendChild(makeCaret(scv(maps, fc("border/selected"))));
+      lead.appendChild(makeCaret(scv(maps, fc("text-cursor"))));
       comp.appendChild(lead);
     } else {
       comp.appendChild(textNode);
