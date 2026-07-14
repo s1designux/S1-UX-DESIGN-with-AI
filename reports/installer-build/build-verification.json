@@ -1,9 +1,9 @@
 {
   "sourceFile": "plugins/figma-vars-installer/src/build-components.ts",
-  "sourceHash": "sha256:4638b72e00ea6061491cb6ae8ce0e98dc88b0c4d2468ff2f64e96f9dc147492e",
+  "sourceHash": "sha256:05265c259548803d4ef1a751a1132dda72e73dd657e4c89e12ed47467599b64d",
   "verifiedBy": "component-verifier",
   "verdict": "pass",
   "changeType": "structural",
-  "verifiedAt": "2026-07-14T10:57:46.533Z",
-  "notes": "캐럿 색 배선 정정(makeCaret 3곳 border/selected→text-cursor) + :937 스테일 주석을 text-cursor 기준으로 갱신. 주석은 esbuild 제거로 dist 무영향. component-verifier 2회 PASS(초기 5항목+게이트4종, 주석델타 재확인 3항목)."
+  "verifiedAt": "2026-07-14T12:08:10.545Z",
+  "notes": "작업② date-picker Calendar Cell Standard 축에 Hover 추가(Tile 미러링, cell/bg/hover) + 스펙표 Standard5/Range4 2표 분리. Range·공용렌더러 불변. 4게이트(variantcov/rolecheck/keycheck/anatomy) 통과."
 }

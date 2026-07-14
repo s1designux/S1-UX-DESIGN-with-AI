@@ -2720,12 +2720,16 @@ async function buildGNB(maps: BuildMaps, originY: number): Promise<{ set: Compon
 // lazy-build: 소비자가 먼저 호출해도 1회만 빌드(BUILT_SETS 캐시). CATEGORIES 는 위치만 결정.
 const DP = (k: string) => `color/date-picker/${k}`;
 
-// Calendar Cell — 44×44 outer, axes Type={Standard,Range} × State(4). 숫자 텍스트 layer 이름 = "num".
+// Calendar Cell — 44×44 outer, axes Type={Standard,Range} × State. Standard=5(Hover 포함)·Range=4(비대칭). 숫자 텍스트 layer 이름 = "num".
 // V2.4 구조: 44×44(center, p5) > [Range: 밴드 Rectangle(absolute)] + inner 30×30 원(센터) > 숫자.
 async function buildCalendarCell(maps: BuildMaps): Promise<{ set: ComponentSetNode; variants: Record<string, ComponentNode> }> {
   // [innerFill, innerStroke, textKey] (V2.4 실측 — selected stroke = border/today)
+  // Hover = Default 와 동일하되 inner 배경만 cell/bg/hover(gray/50) — Calendar Tile Hover(tile/bg/hover) 패턴 미러링.
+  //   웹 정본(components-new.html 980–981) `.s1-date-picker__day:hover > .day-inner { background: cell/bg/hover }` 과 일치.
+  //   Standard 에만 추가 — selected/range 는 (B)유형(파란 배경)이라 회색 hover 로 덮지 않는다(별도 selected-hover 토큰 필요, BACKLOG ③).
   const STD: Record<string, [string, string, string]> = {
     Default:  ["cell/bg/today",    "cell/bg/today",     "text/secondary"],
+    Hover:    ["cell/bg/hover",    "cell/bg/hover",     "text/secondary"],
     Today:    ["cell/bg/today",    "cell/border/today", "text/today"],
     Selected: ["cell/bg/selected", "cell/border/today", "text/selected"],
     Disabled: ["cell/bg/today",    "cell/bg/today",     "text/disabled"],
@@ -2764,8 +2768,8 @@ async function buildCalendarCell(maps: BuildMaps): Promise<{ set: ComponentSetNo
     return comp;
   }
 
-  // Type=Standard
-  for (const state of ["Default", "Today", "Selected", "Disabled"]) {
+  // Type=Standard (Hover 는 Default 뒤 = 상호작용 순서). Range 는 아래에서 4상태 유지(불변).
+  for (const state of ["Default", "Hover", "Today", "Selected", "Disabled"]) {
     const [f, s, txt] = STD[state];
     const comp = makeOuter(`Type=Standard, State=${state}`);
     comp.appendChild(await makeInner(f, s, txt, state === "Selected"));
@@ -3744,20 +3748,64 @@ async function buildBottomSheet(maps: BuildMaps, originY: number): Promise<{ set
 // CATEGORIES Form 에서 Date Picker 뒤 위치만 결정.
 async function buildCalendarCellLayout(maps: BuildMaps, originY: number): Promise<{ set: ComponentSetNode; bottomY: number }> {
   const { set, variants } = await getOrBuildCalendarCell(maps);
+  // ── 3안: 스펙 표를 Standard(5열)·Range(4열) 두 개로 분리한다 (2026-07-14, river 결정) ──
+  //   근거: 옛 colHeaders "Today / Start"·"Selected / End" 는 서로 무관한 두 상태를 "같은 열 번호"라는
+  //   이유만으로 슬래시로 합친 것이라 표가 이미 부정확했다. Hover 추가가 문제를 만든 게 아니라 원래의
+  //   무리를 드러냈다 → 억지로 열을 다시 맞추지 않고 표를 분리한다. Range 는 4상태 그대로 불변.
+  //   공용 렌더러(renderFlat/SpecOpts/decorateSetFlat/buildSpec)는 건드리지 않고 등록기 안에서만 분리한다.
+  //   한 세트 노드 위에 두 표를 세로로 쌓으므로(세트는 1개) renderFlat 을 2회 호출하되, 두 번째 표의
+  //   셀/라벨을 첫 표 높이(h1)만큼 내려 배치하는 오프셋 emit 을 등록기 로컬로 둔다(floatingEmit.cell 은
+  //   오프셋을 안 받아 그대로 쓰면 셀이 겹침).
+  const stdStates = ["Default", "Hover", "Today", "Selected", "Disabled"]; // Hover = Default 뒤(상호작용 순서)
+  const rngStates = ["Default", "Start", "End", "Disabled"];               // Range 불변(4상태)
+  const cellW = 80, cellH = 60, rowLabelW = 80;
+  const mkOpts = (title: string, states: string[], type: "Standard" | "Range"): SpecOpts => ({
+    title,
+    colHeaders: states,
+    rowLabels: [""], // 표 제목이 Standard/Range 를 알리므로 행 라벨은 비움(좌측 gutter 만 유지)
+    cellAt: (_r, c) => variants[`${type}:${states[c]}`] ?? null,
+    lightX: SPEC_LIGHT_X, darkX: SPEC_DARK_X, originY, cellW, cellH, rowLabelW,
+  });
+  const stdOpts = mkOpts("Calendar Cell — Standard", stdStates, "Standard");
+  const rngOpts = mkOpts("Calendar Cell — Range", rngStates, "Range");
+  const setW = Math.max(specWidth(rowLabelW, stdStates.length, cellW), specWidth(rowLabelW, rngStates.length, cellW));
+
+  // ── Light: 세트 원본을 두 표로 꾸민다(라벨=캔버스 절대좌표, 셀=세트 상대좌표). ──
+  const floatAt = (oy: number, cy: number): LayoutEmit => ({
+    text: async (s, x, y, w, al, col, fs, st) => { await makeLabel(s, fs, st, x, oy + y, w, al, col); },
+    band: (x, y, w, h, col) => { const b = figma.createRectangle(); b.resize(w, h); b.cornerRadius = 4; b.fills = [{ type: "SOLID", color: col }]; b.x = x; b.y = oy + y; },
+    cell: (comp, x, y) => { comp.x = x; comp.y = cy + y; },
+  });
   set.x = 0; set.y = originY;
-  // 2행(Standard·Range) × 4열(상태). Standard 상태 표기와 Range 상태 표기가 다르므로 행별 cellAt 분기.
-  const stdStates = ["Default", "Today", "Selected", "Disabled"];
-  const rngStates = ["Default", "Start", "End", "Disabled"];
-  const opts: SpecOpts = {
-    title: "Calendar Cell",
-    // 열 헤더 = 상태 설명. Standard/Range 행이 col별로 다른 상태라 둘 다 표기(rowLabels로 행 구분).
-    colHeaders: ["Default", "Today / Start", "Selected / End", "Disabled"],
-    rowLabels: ["Standard", "Range"],
-    cellAt: (r, c) => r === 0 ? (variants[`Standard:${stdStates[c]}`] ?? null) : (variants[`Range:${rngStates[c]}`] ?? null),
-    lightX: SPEC_LIGHT_X, darkX: SPEC_DARK_X, originY, cellW: 80, cellH: 60, rowLabelW: 80,
-  };
-  let bottomY = await decorateSetFlat(set, opts, maps);
-  try { bottomY = Math.max(bottomY, await buildSpec(opts, maps)); } catch (e) { console.warn(e); }
+  try { set.fills = [{ type: "SOLID", color: specPalette(false).bg }]; } catch (e) { /* skip */ }
+  const h1 = await renderFlat(stdOpts, false, floatAt(originY, 0));
+  const h2 = await renderFlat(rngOpts, false, floatAt(originY + h1, h1));
+  set.resize(setW, h1 + h2);
+  setLightMode(set, maps);
+  let bottomY = originY + h1 + h2;
+
+  // ── Dark: 스펙 프레임 1개에 두 표를 세로로 쌓는다(frameEmit 은 절대좌표라 2번째 표에 yOff 래핑). ──
+  try {
+    const modeId = maps.semanticDarkModeId;
+    const frame = figma.createFrame();
+    frame.name = "Calendar Cell — Spec Dark";
+    frame.fills = [{ type: "SOLID", color: specPalette(true).bg }];
+    frame.cornerRadius = 8;
+    frame.resize(setW, 1200);
+    frame.x = setW + 80; // 원본 세트 우측 밀착(buildSpec 기본과 동일)
+    frame.y = originY;
+    const base = frameEmit(frame, maps, modeId);
+    const dh1 = await renderFlat(stdOpts, true, base);
+    const off: LayoutEmit = {
+      text: (s, x, y, w, al, col, fs, st) => base.text(s, x, y + dh1, w, al, col, fs, st),
+      band: (x, y, w, h, col) => base.band(x, y + dh1, w, h, col),
+      cell: (comp, x, y) => base.cell(comp, x, y + dh1),
+    };
+    const dh2 = await renderFlat(rngOpts, true, off);
+    frame.resize(setW, dh1 + dh2);
+    setMode(frame, maps, modeId);
+    bottomY = Math.max(bottomY, frame.y + dh1 + dh2);
+  } catch (e) { console.warn(e); }
   return { set, bottomY };
 }
 
