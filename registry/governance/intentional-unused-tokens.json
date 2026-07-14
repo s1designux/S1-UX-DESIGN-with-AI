@@ -18,8 +18,6 @@
     { "token": "color/bg/level-1", "reason": "배경 깊이 스케일의 페이지 캔버스 레벨(라이트 gray/0·다크 gd50) — 설치기 컴포넌트는 level-0(표면)·level-2·level-3(url pill·pill)만 직접 칠하고, level-1 은 컴포넌트가 올라가는 '페이지 배경'이라 컴포넌트 빌더가 직접 set 하지 않음. 깊이 스케일 완전성을 위해 정본 유지(2026-06-30 bg 깊이 스케일 재구성)" },
     { "token": "color/date-picker/text/saturday", "reason": "캘린더 토요일 색 — 경비업 특성상 주말 색 미적용(사용자 결정 2026-06-30). 전 요일 text/primary 균일 → 현재 미사용. 향후 주말색 정책 대비 정본 유지(삭제 후보)" },
     { "token": "color/date-picker/text/sunday", "reason": "캘린더 일요일 색 — 주말 색 미적용(사용자 결정 2026-06-30). 현재 미사용. 향후 대비 정본 유지(삭제 후보)" },
-    { "token": "color/date-picker/text/other-month", "reason": "지난달/다음달 날짜 색 — 설치기 정본은 other-month 를 text/disabled 로 처리(사용자 결정 2026-06-30, HTML 도 date-picker/text/disabled 사용). 전용 토큰 현재 미사용(삭제 후보)" },
-    { "token": "color/text/state/caution", "reason": "Input 에러 안내메시지 색 — 설치기 정본이 form-control/border/error 사용으로 전환(2026-06-30). 범용 상태색이라 정본 유지(삭제 후보)" },
-    { "token": "color/text/state/caption", "reason": "Input 기본/도움말 메시지 색 — 설치기 정본이 form-control/label/default 사용으로 전환(2026-06-30). 범용 캡션색이라 정본 유지(삭제 후보)" }
+    { "token": "color/date-picker/text/other-month", "reason": "지난달/다음달 날짜 색 — 설치기 정본은 other-month 를 text/disabled 로 처리(사용자 결정 2026-06-30, HTML 도 date-picker/text/disabled 사용). 전용 토큰 현재 미사용(삭제 후보)" }
   ]
 }
