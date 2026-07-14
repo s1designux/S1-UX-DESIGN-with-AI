@@ -566,31 +566,35 @@ td.f{font-weight:600;word-break:break-all}
 .blindbox h2{color:#fff;margin:0 0 8px;font-size:14px}
 .blindbox .item{font-size:12.5px;padding:3px 0;border-bottom:1px solid #333}
 .empty{color:var(--sub);font-size:12.5px;padding:6px 0}
-/* 시스템 맵 */
+/* 시스템 맵 — 관계 도식 */
 .sysmap-head{display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap}
 .sysmap-stamp{font-size:11px;color:var(--sub)}
-.sysmap-blue{background:#eef4fb;border:1px solid #cfe0f3;border-radius:8px;padding:9px 12px;font-size:12.5px;color:#1a4d80;margin:10px 0 14px}
-.sysmap-blue b{color:#123a5e}
-.sm-cats{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-@media(max-width:720px){.sm-cats{grid-template-columns:1fr}}
-.sm-cat{border:1px solid var(--line);border-radius:10px;padding:12px;border-left:4px solid var(--gray)}
-.sm-cat.manual{border-left-color:var(--fail);background:#fdf3f3}
-.sm-cat.dead{border-left-color:var(--gray);background:#f4f5f6}
-.sm-cat.blind{border-left-color:#111;background:#f5f5f6}
-.sm-cat.boundary{border-left-color:var(--warn);background:#fdf8ee}
-.sm-cat h4{margin:0 0 4px;font-size:12.5px}
-.sm-cat .tag{display:block;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;color:var(--sub);margin-bottom:6px}
-.sm-row{font-size:12px;padding:5px 0;border-top:1px solid rgba(0,0,0,.06);display:flex;justify-content:space-between;gap:10px;align-items:baseline}
-.sm-row:first-of-type{border-top:0}
-.sm-row .f{word-break:break-all}
-.sm-row .n{font-weight:700;white-space:nowrap}
-.sm-note{color:var(--sub);font-size:11px;margin-top:2px}
+.sm-legend{display:flex;gap:16px;flex-wrap:wrap;font-size:11.5px;color:var(--sub);margin:10px 0 8px}
+.sm-legend span{display:inline-flex;align-items:center;gap:6px}
+.sm-legend i{width:11px;height:11px;border-radius:3px;display:inline-block}
+/* 도식 컨테이너 + SVG 오버레이(연결선) */
+.sm-diagram{position:relative;overflow-x:auto;padding:4px 0}
+svg.sm-wires{position:absolute;inset:0;width:100%;height:100%;z-index:1;pointer-events:none}
+.sm-bands{position:relative;z-index:2;display:flex;flex-direction:column;gap:30px;min-width:720px;padding:6px 0}
+.sm-band{border-radius:10px;position:relative}
+.sm-band-label{position:absolute;top:-9px;left:10px;background:var(--card);border:1px solid var(--line);border-radius:4px;padding:0 6px;font-size:9.5px;font-weight:700;letter-spacing:.05em;color:var(--sub);text-transform:uppercase}
+/* 파랑(자동) 밴드 — 일부러 얇게·작게 */
+.sm-band.blue{background:#f4f8fd;border:1px solid #e2edf9;display:flex;gap:44px;align-items:center;padding:12px 14px 10px}
+/* 혼합(수기·죽은·경계) 밴드 — 이 도식의 주인공 */
+.sm-band.mixed{display:flex;flex-wrap:wrap;gap:18px 44px;padding:16px 14px 12px}
+.sm-node{background:#fff;border:1px solid var(--line);border-left:3px solid var(--gray);border-radius:8px;padding:8px 11px;font-size:12px;min-width:148px}
+.sm-node .nm{font-weight:600;word-break:break-all}
+.sm-node .mt{color:var(--sub);font-size:11px;margin-top:2px}
+.sm-node.blue{border-left-color:var(--gen);min-width:112px;padding:6px 10px;font-size:11px;background:#fbfdff}
+.sm-node.manual{border-left-color:var(--fail);background:#fdf4f4}
+.sm-node.dead{border-left-color:var(--gray);background:#f3f4f5;opacity:.9}
+.sm-node.ref{border-left-color:var(--fail)}
+.sm-node.boundary{border-left-color:var(--warn);background:#fdf9ef}
+.sm-node.na{border-left-color:var(--gray);border-style:dashed;color:var(--sub)}
 .sm-na{color:var(--sub);font-style:italic}
-.sm-foot{margin-top:12px;display:flex;gap:10px;flex-wrap:wrap;font-size:11.5px;color:var(--sub)}
+.sm-foot{margin-top:14px;display:flex;gap:10px;flex-wrap:wrap;font-size:11.5px;color:var(--sub)}
 .sm-chip{background:#fff;border:1px solid var(--line);border-radius:999px;padding:3px 10px}
 .sm-chip b{color:var(--ink)}
-.sm-mini{margin-top:8px;font-size:11px;color:var(--sub)}
-.sm-auto-tip{background:#eff8f4;border-color:#bfe6d8}
 </style></head><body>
 <div class="mobile-header">
   <button class="hamburger" id="sidebar-toggle" aria-label="메뉴">
@@ -735,62 +739,133 @@ function drawWires(){
   const host=document.getElementById('sysmap');
   if(!host) return;
   const na=v=>(v===null||v===undefined)?'<span class="sm-na">확인 불가</span>':esc(String(v));
-  const row=(f,n,note)=>'<div class="sm-row"><div><div class="f">'+esc(f)+'</div>'+(note?'<div class="sm-note">'+esc(note)+'</div>':'')+'</div><div class="n">'+n+'</div></div>';
 
   // 갱신 스탬프
   const g=SM.git||{};
   const stamp=[g.hash?('커밋 '+g.hash):null,g.branch||null,SM.scanned_at?('스캔 '+SM.scanned_at):null].filter(Boolean).map(esc).join('  ·  ');
 
-  // 파랑 요약(자동 경로는 여기 한 줄로만)
+  // 스캔 필드
   const ps=SM.pipeline_summary||{};
-  const blue='정본 <b>vars-data</b> (FOUNDATION '+na(ps.foundation_color)+' · SEMANTIC '+na(ps.semantic_color)+
-    ') → 생성기 <b>'+na(ps.generators)+'</b>개 → 생성물 <b>'+na(ps.destinations)+'</b>개 · 드리프트 '+
-    (ps.measured?('<b>'+na(ps.drift)+'</b>건'):'<span class="sm-na">미측정 (--check 로 실행)</span>');
-
-  // ① 값검사 공백 (blind_spots)
-  const blind=(D.blind_spots||[]);
-  const blindCard='<div class="sm-cat blind"><span class="tag">① 값검사 공백</span><h4>아무도 값을 검사 안 하는 목적지 ('+blind.length+')</h4>'
-    +(blind.length?blind.map(f=>row(bn(f),'검사 없음')).join(''):'<div class="sm-note">없음</div>')+'</div>';
-
-  // ② 수기 관리 (빨강 — 생성기 없으면 수기, 있으면 자동으로 전환)
   const manual=(SM.manual||[]);
-  const manualRows=manual.map(m=>{
-    const auto=m.has_generator===true;
-    const cntTxt=(m.count===null||m.count===undefined)?'<span class="sm-na">확인 불가</span>':(esc(String(m.count))+(m.unit||''));
-    let extra=m.note||'';
-    if(m.raw_hex) extra+=' · 원시 hex '+m.raw_hex;
-    if(m.non_array_groups&&m.non_array_groups.length) extra+=' · 비배열 '+m.non_array_groups.length+'그룹: '+m.non_array_groups.join(', ');
-    return row(bn(m.file)+(auto?' (자동)':' (수기)'),cntTxt,extra);
-  }).join('');
-  const anyManual=manual.some(m=>m.has_generator!==true);
-  const manualCard='<div class="sm-cat '+(anyManual?'manual':'auto sm-auto-tip')+'"><span class="tag">② 수기 관리</span>'
-    +'<h4>vars-data 연동 없이 손으로 유지'+(anyManual?'':' — 모두 생성기 붙음 ✓')+'</h4>'+(manualRows||'<div class="sm-note">없음</div>')+'</div>';
-
-  // ③ 죽은 파일 (회색) + 죽은 토큰 선언 컴포넌트
-  const dead=(SM.dead_files||[]);
+  const mSite=manual.filter(m=>m.file.indexOf('site-base')>=0)[0]||null;
+  const mSem =manual.filter(m=>m.file.indexOf('semantic.colors')>=0)[0]||null;
+  const dead=(SM.dead_files||[]).filter(d=>d.loaded===false);   // 죽은 파일만
   const dtc=SM.dead_token_components||{};
-  const deadRows=dead.map(d=>row(bn(d.file)+(d.loaded?' (로드됨)':''),(d.loaded?'<span class="sm-na">로드됨</span>':'죽음'),'정의 '+d.defines+'종 · '+d.reason)).join('');
-  const dtcRow=(dtc.count!==undefined)?row('죽은 토큰을 선언한 컴포넌트',dtc.count+' / '+dtc.of,'registry 선언 O + tokens.css 정의 X + 죽은 CSS 정의 O'):'';
-  const deadCard='<div class="sm-cat dead"><span class="tag">③ 죽은 파일</span><h4>로드되지 않는 CSS · 그 안의 죽은 토큰</h4>'+(deadRows||'<div class="sm-note">없음</div>')+dtcRow+'</div>';
-
-  // ④ 경계 위반
   const b=SM.boundary||{};
-  const boundaryCard='<div class="sm-cat boundary"><span class="tag">④ 경계 위반</span><h4>데모 CSS 가 포털 역할토큰 사용</h4>'
-    +(b.role_token_refs!==undefined?row(bn(b.file),b.role_token_refs+'종',b.note):'<div class="sm-note">'+na(b.reason)+'</div>')+'</div>';
+  const blind=(D.blind_spots||[]);   // 값검사 공백 — 스캔 원천 보존, 하단 칩으로 표현
 
-  // 하단: orphan(실행 시점 스냅샷) + 확인 불가
+  // 노드 HTML (data-sm = 연결선 앵커 id)
+  const node=(id,cls,title,meta)=>'<div class="sm-node '+cls+'" data-sm="'+id+'"><div class="nm">'+esc(title)+'</div>'+(meta?'<div class="mt">'+meta+'</div>':'')+'</div>';
+  // 색 동적: has_generator=true → 자동(파랑), false → 수기(빨강)
+  const mcls=m=>(m&&m.has_generator===true)?'blue':'manual';
+
+  // 파랑(자동) 밴드 — 일부러 얇게. 상세 흐름은 위 파이프라인 지도가 그림.
+  const blueBand='<div class="sm-band blue"><span class="sm-band-label">자동 (vars-data → 생성물)</span>'
+    +node('vars-data','blue','vars-data','F '+na(ps.foundation_color)+' · S '+na(ps.semantic_color))
+    +node('gens','blue','생성기 '+na(ps.generators)+'개','')
+    +node('dests','blue','생성물 '+na(ps.destinations)+'개', ps.measured?('드리프트 '+na(ps.drift)):'<span class="sm-na">드리프트 미측정</span>')
+    +'</div>';
+
+  // 혼합 밴드 (수기·죽은·경계·확인불가) — 이 도식의 주인공
+  const ctIdx=dead.map((d,i)=>d.file.indexOf('component-tokens')>=0?i:-1).filter(i=>i>=0)[0];
+  let mixed='<div class="sm-band mixed"><span class="sm-band-label">수기 · 죽은 · 경계</span>';
+  if(mSite) mixed+=node('site-base',mcls(mSite),'site-base.css', na(mSite.count)+(mSite.unit||'')+(mSite.raw_hex?(' · hex '+mSite.raw_hex):'')+(mSite.has_generator===true?' · 생성기 있음':' · 생성기 없음'));
+  if(mSem)  mixed+=node('semantic-json',mcls(mSem),'semantic.colors.json', na(mSem.count)+(mSem.unit||'')+(mSem.non_array_groups&&mSem.non_array_groups.length?(' · 비배열 '+mSem.non_array_groups.length+'그룹'):'')+(mSem.has_generator===true?' · 생성기 있음':' · 생성기 없음'));
+  if(dtc.count!==undefined) mixed+=node('registry','ref','registry/components','죽은토큰 선언 '+na(dtc.count)+' / '+na(dtc.of));
+  dead.forEach((d,i)=>{ mixed+=node('dead'+i,'dead',bn(d.file),'죽음 · 정의 '+d.defines+'종'); });
+  if(b.role_token_refs!==undefined) mixed+=node('demo','boundary','components-new.html','경계 위반 '+b.role_token_refs+'종');
+  mixed+=node('figma-web','na','Figma ↔ 웹 컴포넌트','<span class="sm-na">확인 불가 (스캔 밖)</span>');
+  mixed+='</div>';
+
+  // 연결선 정의 (노드 id 쌍 + 종류). ✕ 는 has_generator=false 인 E3·E4 만.
+  const edges=[
+    {from:'vars-data',to:'gens',kind:(ps.generators?'auto':'x')},
+    {from:'gens',to:'dests',kind:(ps.destinations?'auto':'x')}
+  ];
+  if(mSite) edges.push({from:'vars-data',to:'site-base',kind:(mSite.has_generator===true)?'auto':'x'});
+  if(mSem)  edges.push({from:'vars-data',to:'semantic-json',kind:(mSem.has_generator===true)?'auto':'x'});
+  if(dtc.count>0 && ctIdx!==undefined) edges.push({from:'registry',to:'dead'+ctIdx,kind:'deadref'});
+  if(b.role_token_refs>0) edges.push({from:'demo',to:'site-base',kind:'boundary'});
+
+  // 범례
+  const legend='<div class="sm-legend">'
+    +'<span><i style="background:#2b6cb0"></i>자동(생성기 있음)</span>'
+    +'<span><i style="background:#d64545"></i>수기(생성기 없음)</span>'
+    +'<span><i style="background:#9aa1a9"></i>죽은 파일</span>'
+    +'<span><i style="background:#c9820a"></i>경계 위반</span>'
+    +'<span>✕ = 있어야 하는데 없는 연결(자동연동 없음)</span></div>';
+
+  // 하단 칩: 값검사 공백(blind_spots) + orphan(실행시점 스냅샷) + 확인불가
+  const blindChip='<span class="sm-chip">값검사 공백 <b>'+blind.length+'</b>'+(blind.length?(': '+blind.map(f=>esc(bn(f))).join(', ')):' <span class="sm-na">없음</span>')+'</span>';
   const o=SM.orphan||{};
-  let orphanChip;
-  if(o.available) orphanChip='<span class="sm-chip">Gate 17 orphan <b>'+o.total+'</b> (allow '+o.allow+' · 예상밖 '+o.unexpected+' · stale '+o.stale+') <span class="sm-na">실행 시점 스냅샷 '+esc(o.snapshot_at||'')+'</span></span>';
-  else orphanChip='<span class="sm-chip">Gate 17 orphan <span class="sm-na">'+na(o.reason)+'</span></span>';
+  const orphanChip=o.available
+    ? '<span class="sm-chip">Gate 17 orphan <b>'+o.total+'</b> (allow '+o.allow+'·예상밖 '+o.unexpected+'·stale '+o.stale+') <span class="sm-na">스냅샷 '+esc(o.snapshot_at||'')+'</span></span>'
+    : '<span class="sm-chip">Gate 17 orphan <span class="sm-na">'+na(o.reason)+'</span></span>';
   const unav=(SM.unavailable||[]).map(u=>'<span class="sm-chip">'+esc(u.item)+' <span class="sm-na">확인 불가</span></span>').join('');
-  const foot='<div class="sm-foot">'+orphanChip+unav+'</div>';
+  const foot='<div class="sm-foot">'+blindChip+orphanChip+unav+'</div>';
 
-  host.innerHTML='<h2>🗺 토큰 시스템 맵 (스캔 자동 도출 · 토큰 건강도)</h2>'
-    +'<div class="sysmap-head"><div class="muted">파랑(자동 흐름)은 위 파이프라인 지도가 이미 그림 — 여기선 요약 한 줄. 본체는 수기·죽은·경계.</div><div class="sysmap-stamp">'+stamp+'</div></div>'
-    +'<div class="sysmap-blue">'+blue+'</div>'
-    +'<div class="sm-cats">'+blindCard+manualCard+deadCard+boundaryCard+'</div>'
+  host.innerHTML='<h2>🗺 토큰 시스템 맵 (스캔 자동 도출 · 관계 도식)</h2>'
+    +'<div class="sysmap-head"><div class="muted">파랑(자동 흐름)은 위 파이프라인 지도가 상세히 그림 — 여기선 얇게. 주인공은 ✕(끊긴 연결)·죽은 파일·경계.</div><div class="sysmap-stamp">'+stamp+'</div></div>'
+    +legend
+    +'<div class="sm-diagram"><svg class="sm-wires"></svg><div class="sm-bands">'+blueBand+mixed+'</div></div>'
     +foot;
+
+  // ── 연결선: 시스템 맵 전용(파이프라인 지도 drawWires 와 완전 분리) ──
+  // 조회 범위를 host 하위로 한정 → 지도 노드를 잘못 잡지 않는다.
+  const diagram=host.querySelector('.sm-diagram');
+  const NS='http://www.w3.org/2000/svg';
+  function drawSysmapWires(){
+    const svg=host.querySelector('svg.sm-wires'); if(!svg||!diagram) return;
+    svg.setAttribute('width',diagram.scrollWidth); svg.setAttribute('height',diagram.scrollHeight);
+    while(svg.firstChild) svg.removeChild(svg.firstChild);
+    const defs=document.createElementNS(NS,'defs');
+    [['smb','#2b6cb0'],['smr','#d64545'],['smo','#c9820a']].forEach(pair=>{
+      const mk=document.createElementNS(NS,'marker');
+      mk.setAttribute('id',pair[0]);mk.setAttribute('markerWidth','8');mk.setAttribute('markerHeight','8');
+      mk.setAttribute('refX','6');mk.setAttribute('refY','4');mk.setAttribute('orient','auto');
+      const p=document.createElementNS(NS,'path');p.setAttribute('d','M0,0 L8,4 L0,8 Z');p.setAttribute('fill',pair[1]);
+      mk.appendChild(p);defs.appendChild(mk);
+    });
+    svg.appendChild(defs);
+    const R=diagram.getBoundingClientRect(), pos={};
+    host.querySelectorAll('.sm-node[data-sm]').forEach(n=>{
+      const r=n.getBoundingClientRect();
+      pos[n.getAttribute('data-sm')]={l:r.left-R.left+diagram.scrollLeft,r:r.right-R.left+diagram.scrollLeft,
+        t:r.top-R.top+diagram.scrollTop,b:r.bottom-R.top+diagram.scrollTop,
+        cx:(r.left+r.right)/2-R.left+diagram.scrollLeft,cy:(r.top+r.bottom)/2-R.top+diagram.scrollTop};
+    });
+    const wire=(x1,y1,x2,y2,color,dashed,marker)=>{
+      const mx=(x1+x2)/2, p=document.createElementNS(NS,'path');
+      p.setAttribute('d','M'+x1+','+y1+' C'+mx+','+y1+' '+mx+','+y2+' '+x2+','+y2);
+      p.setAttribute('fill','none');p.setAttribute('stroke',color);p.setAttribute('stroke-width','1.6');
+      if(dashed)p.setAttribute('stroke-dasharray','5 4');
+      if(marker)p.setAttribute('marker-end','url(#'+marker+')');
+      svg.appendChild(p);
+    };
+    const xmark=(x,y)=>{
+      const c=document.createElementNS(NS,'circle');
+      c.setAttribute('cx',x);c.setAttribute('cy',y);c.setAttribute('r','9');
+      c.setAttribute('fill','#fff');c.setAttribute('stroke','#d64545');c.setAttribute('stroke-width','2');svg.appendChild(c);
+      const p=document.createElementNS(NS,'path');
+      p.setAttribute('d','M'+(x-4)+','+(y-4)+' L'+(x+4)+','+(y+4)+' M'+(x+4)+','+(y-4)+' L'+(x-4)+','+(y+4));
+      p.setAttribute('stroke','#d64545');p.setAttribute('stroke-width','2');p.setAttribute('stroke-linecap','round');svg.appendChild(p);
+    };
+    edges.forEach(e=>{
+      const a=pos[e.from], z=pos[e.to]; if(!a||!z) return;
+      let x1,y1,x2,y2;
+      if(Math.abs(a.cy-z.cy)>40){ x1=a.cx;y1=a.b;x2=z.cx;y2=z.t; }   // 밴드 간(세로)
+      else { x1=a.r;y1=a.cy;x2=z.l;y2=z.cy; }                        // 같은 밴드(가로)
+      if(e.kind==='auto') wire(x1,y1,x2,y2,'#2b6cb0',false,'smb');
+      else if(e.kind==='x'){ wire(x1,y1,x2,y2,'#d64545',true,null); xmark((x1+x2)/2,(y1+y2)/2); }
+      else if(e.kind==='deadref') wire(x1,y1,x2,y2,'#d64545',true,'smr');
+      else if(e.kind==='boundary') wire(x1,y1,x2,y2,'#c9820a',true,'smo');
+    });
+  }
+  drawSysmapWires();
+  setTimeout(drawSysmapWires,80);
+  window.addEventListener('load',drawSysmapWires);
+  window.addEventListener('resize',drawSysmapWires);
+  if(window.ResizeObserver){ try{ new ResizeObserver(drawSysmapWires).observe(host.querySelector('.sm-bands')); }catch(_){ } }
 })();
 
 // 목적지 표
