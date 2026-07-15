@@ -538,6 +538,7 @@ export const SEMANTIC_COLOR: Record<string, SemanticColorEntry> = {
   "color/date-picker/cell/bg/hover":    { light: "gray/50",    dark: "gray-dark/200" },
   "color/date-picker/cell/bg/today":    { light: "base/white", dark: "gray-dark/100" },
   "color/date-picker/cell/bg/selected": { light: "blue/400",   dark: "blue-dark/300" },
+  "color/date-picker/cell/bg/selected-hover": { light: "blue/500", dark: "blue-dark/250" }, // (B)유형: 선택된 파란 칸의 hover는 회색 아닌 더 진한 파랑. chip-solid selected-hover 와 동일 단계.
   "color/date-picker/cell/bg/range":    { light: "blue/50",    dark: "blue-dark/100" },
   "color/date-picker/cell/border/today":{ light: "blue/400",   dark: "blue-dark/300" },
   // icon(헤더 이전/다음 < > — 현재 적용색 gray/900 보존, hover/disabled 신규)

@@ -977,7 +977,7 @@
       font-size: inherit; font-weight: inherit; color: inherit;
       background: transparent; box-sizing: border-box;
     }
-    .s1-date-picker__day:hover:not([disabled]) > .day-inner {
+    .s1-date-picker__day:hover:not([disabled]):not(.is-selected) > .day-inner {
       background: var(--color-date-picker-cell-bg-hover);
     }
     .s1-date-picker__day.is-other-month {
@@ -1001,6 +1001,12 @@
       background: var(--color-date-picker-cell-bg-selected);
       border-color: var(--color-date-picker-cell-bg-selected);
       color: var(--color-date-picker-text-selected);
+    }
+    /* Selected-Hover: (B)유형 — 선택된 파란 칸에 hover 시 회색이 아니라 더 진한 파랑.
+       specificity(5) > 일반 hover 규칙(4)이라 selected 칸에서 우선 적용. */
+    .s1-date-picker__day.is-selected:hover:not([disabled]) > .day-inner {
+      background: var(--color-date-picker-cell-bg-selected-hover);
+      border-color: var(--color-date-picker-cell-bg-selected-hover);
     }
     /* DatePicker trigger hover — Select hover와 동일 */
     /* Trigger hover — input은 form-control 구조를 따름 */
