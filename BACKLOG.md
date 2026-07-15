@@ -34,22 +34,20 @@
 판정: date-picker selected cell 은 위 규칙의 (B) 유형 → 웹 쪽 버그.
       Figma 가 따라 그릴 스펙이 아니다.
       → ②번이 Standard 에만 Hover 를 넣은 것은 이 규칙과 일치한다 (의도한 결정).
-필요 조치 (③번과 함께 처리):
-  - vars-data.ts 에 color/date-picker/cell/bg/selected-hover 신설 (현재 없음)
-    · 라이트/다크 각각 어떤 blue 를 alias 할지 GUI 결정 필요
-  - tokens.css 재생성 → 웹 CSS 를 selected 분기에 배선
-  - Figma 배리언트에 Selected-Hover 상태 추가
+✅ 해소됨 (작업 ③): color/date-picker/cell/bg/selected-hover 신설(light blue/500 · dark blue-dark/250,
+   chip-solid selected-hover 와 동일 단계) → tokens.css·semantic.html·install-prompt 재생성 → 웹 CSS
+   selected 분기 배선(일반 hover 규칙에 :not(.is-selected) 예외 + selected 전용 selected-hover 규칙).
+   범위: 웹만. Figma 배리언트는 추가 안 함(chip 선례가 웹 전용이라 일관성 유지 — GUI 결정 3).
 
-⚠️ ③번(chip solid selected-hover)과 동일 규칙의 사례다.
-   chip solid 도 (B) 유형이므로 selected-hover 가 있는 것이 맞다.
-   ③번의 실제 문제는 토큰의 존재 여부가 아니라
-   chip-solid-bg-selected-hover 가 vars-data.ts 를 거치지 않고
-   tokens.css 에 직접 쓰인 우회 배선이라는 점이다.
-   → ③번은 '설계 판단' 이 아니라 '배선 정정' 이다.
-   → date-picker cell 과 chip 을 ③번에서 함께 처리할 것.
-     토큰 이름 · 값 체계가 어긋나지 않도록 반드시 한자리에서 결정한다.
+⚠️ 정정 (작업 ③ 조사 결과): chip solid 는 '우회 배선' 이 아니었다 — 아래 기록이 오판이었음.
+   chip-solid-bg-selected-hover 는 vars-data.ts:443 에 이미 정의돼 있고(light blue/500 · dark blue-dark/250),
+   tokens.css 의 해당 줄은 GEN:SEMANTIC 자동생성 블록 안이며(수동 직접 배선 아님) vars-data 와 같은
+   커밋(6bbde8c3, 2026-07-10)에서 함께 생성됐다. 웹·semantic·install-prompt 전 표면에도 정상 반영돼 있었다.
+   → chip 은 작업 ③ 에서 손대지 않았다(고칠 것 없음). date-picker 만 실제 신설 작업이었다.
+   (이 항목은 chip 도 (B) 유형이라 selected-hover 가 필요하다는 규칙 판단 자체는 옳다 — 틀린 것은
+    "vars-data 를 거치지 않은 우회" 라는 상태 기술뿐이다.)
 
-분리 이유: 토큰 신설 + 웹 수정 + 설치기 수정을 ②번 커밋에 섞지 않는다.
+분리 이유: 토큰 신설 + 웹 수정 + 설치기 리빌드를 ②번 커밋에 섞지 않는다.
 
 ### 🕳️ 게이트 사각지대 — Gate 6b 가 설치기 리빌드를 강제하지 못하는 경우
 Gate 6b(installer-freshness)는 zip 내부 code.js 에
