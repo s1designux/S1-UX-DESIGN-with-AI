@@ -1,0 +1,65 @@
+{
+  "builtBy": "figma-library-builder",
+  "date": "2026-07-11",
+  "fileKey": "cysG5U1udpQqVagYY1hWHW",
+  "page": "16:1170",
+  "section": { "id": "1059:2", "name": "Video Widget Templates", "x": 0, "y": 1600, "w": 2340, "h": 640 },
+  "frameStyleTokens": {
+    "fill": "color/surface/raised (VariableID:820:190)",
+    "border": "color/line/gray/subtle (VariableID:8:1076), 1px",
+    "radius": "radius/8 (VariableID:8:943), all 4 corners bound",
+    "padding": 16, "gap": 12
+  },
+  "templates": [
+    {
+      "name": "Video/Dashboard Widget",
+      "id": "1059:3",
+      "size": "630x338",
+      "children": [
+        { "id": "1059:4", "role": "Widget Header On instance", "source": "1021:2", "kind": "video" },
+        { "id": "1059:19", "role": "content slot (styled frame, bg color/bg/level-1)", "label": { "id": "1059:20", "chars": "콘텐츠 영역", "font": "Pretendard/Regular", "fill": "color/text/body/tertiary" } }
+      ]
+    },
+    {
+      "name": "Video/List Feed Widget",
+      "id": "1060:16",
+      "size": "630x445",
+      "children": [
+        { "id": "1060:17", "role": "Widget Header On instance", "source": "1021:2", "kind": "video", "titleOverride": "이상 이벤트 리스트" },
+        { "id": "1060:28", "role": "Line Tab Set instance", "source": "956:18645", "kind": "core", "labelOverride": ["전체", "영상", "출입"] },
+        { "id": "1060:50", "role": "filter row (auto-layout gap8, FILL)", "children": [
+          { "id": "1060:51", "role": "Chip line instance", "source": "956:19900", "kind": "core", "labelOverride": "중복 제외" },
+          { "id": "1060:53", "role": "Select Box MD instance", "source": "958:23625", "kind": "core", "labelOverride": "전체 유형" },
+          { "id": "1060:62", "role": "Search Input MD instance", "source": "958:23373", "kind": "core", "placeholder": "검색" }
+        ]},
+        { "id": "1060:9220", "role": "card list (auto-layout gap0, FILL)", "children": [
+          { "id": "1060:9221", "role": "List Card Row Meta instance", "source": "1023:22", "kind": "video" },
+          { "id": "1060:9230", "role": "List Card Row Meta instance", "source": "1023:22", "kind": "video" },
+          { "id": "1060:9239", "role": "List Card Row Meta instance", "source": "1023:22", "kind": "video" }
+        ]}
+      ]
+    },
+    {
+      "name": "Video/Table Widget",
+      "id": "1061:84",
+      "size": "860x574",
+      "children": [
+        { "id": "1061:85", "role": "Widget Header On instance", "source": "1021:2", "kind": "video", "titleOverride": "출입문 대기열 현황" },
+        { "id": "1061:96", "role": "filter row (right-aligned MAX, FILL)", "children": [
+          { "id": "1061:97", "role": "Select Box MD instance", "source": "958:23625", "kind": "core", "labelOverride": "전체 문그룹" }
+        ]},
+        { "id": "1061:104", "role": "Table MD instance", "source": "958:27513", "kind": "core",
+          "cellOverrides": { "header": ["장소", "혼잡도", "대기", "평균 대기"], "rows": 8, "cellsSet": 32, "gauge": "omitted (text-only)" }
+        }
+      ]
+    }
+  ],
+  "provenance": {
+    "core": { "Line Tab Set": "956:18645", "Chip line": "956:19900", "Select Box MD": "958:23625", "Search Input MD": "958:23373", "Table MD": "958:27513" },
+    "video": { "Widget Header On": "1021:2", "List Card Row Meta": "1023:22" }
+  },
+  "selfCheck": { "rawHex": 0, "nonPretendardText": 0, "totalTextNodes": 66, "collapseOrOverlap": "none" },
+  "needsDecision": [
+    "혼잡도 열 Segment Gauge(1023:36) 오버레이는 생략하고 텍스트('혼잡/보통/원활')만 넣음 — Table 인스턴스 셀 내부에 게이지를 얹는 것이 인스턴스 구조상 임의 처리에 해당해 plan 허용대로 텍스트만 둠. 게이지 필요 시 후속 결정."
+  ]
+}

@@ -1,0 +1,145 @@
+{
+  "meta": {
+    "builder": "figma-library-builder",
+    "wave": "B",
+    "fileKey": "cysG5U1udpQqVagYY1hWHW",
+    "page": { "id": "16:1170", "name": "Video (준비중)" },
+    "builtAt": "2026-07-12",
+    "scope": "영상 도메인 패턴 확장 웨이브 B: 신규 부품 4종 + 신규 위젯 모듈 4종(다크+라이트 2벌) + 구성 패턴 3종 + 원본 1:1 대조 4행.",
+    "notes": "색 전부 Variable 바인딩(하드코딩 hex 0 — PreToolUse 훅 통과). 폰트 Pretendard(비-Pretendard 0). 아이콘은 원본 라이브러리(published)에서 importComponentByKeyAsync로 4종 import 후 인스턴스 배치(손그림 없음). auto-layout 컨테이너 default white fill 제거(transparent). 다크=Semantic Color V2 Dark(8:2) 명시, 라이트 클론=Light(8:1) 명시."
+  },
+  "sections": {
+    "videoParts3": { "id": "1131:1238", "name": "Video Parts 3", "x": 3120, "y": 0, "w": 760, "h": 1000, "fillBound": "color/bg/level-1 (VariableID:687:17885)", "strokes": "[] (removed — 조직용 크롬, 웨이브 A 섹션 1020:2 선례 동일; strokeCount=0)", "placement": "right of Video Parts 2 (ends x=3020); no overlap" },
+    "waveBWidgets": { "id": "1135:1249", "name": "Video Widgets Wave B", "x": 0, "y": 6100, "w": 1900, "h": 3900, "fillBound": "color/bg/level-1 (VariableID:687:17885)", "strokes": "[] (removed — 조직용 크롬, 웨이브 A 섹션 1020:2 선례 동일; strokeCount=0)", "placement": "below Video Widget Templates section (ends y=6000); no overlap" }
+  },
+  "iconImports": {
+    "note": "원본 파일 Tnihi6lixRR47N4RSAwUbF 의 published 아이콘 라이브러리에서 Line variant 를 importComponentByKeyAsync 로 가져옴. 타깃 파일에는 로컬 아이콘 컴포넌트가 없어 node id가 아닌 componentKey 로 import.",
+    "ic_주의(원형) Line": { "key": "234ede5b2ea9fa5679c67a9831ab5e0c0d53fdda", "importedComp": "1131:1242" },
+    "ic_닫기 Line": { "key": "ebbd0353692638526b8525769a7442727444aed2", "importedComp": "1131:1259" },
+    "ic_박스카메라 Line": { "key": "75a3a7e8fe9b32438bcaf44967be4b7f2a7e4307", "importedComp": "1132:1250" },
+    "ic_더하기 Line": { "key": "f69ebcb3811b4247d4b7d5aa119f1d37005027a7", "importedComp": "1132:10365" }
+  },
+  "parts": [
+    {
+      "name": "Video/Alert", "id": "1131:1267", "dims": "360x38", "variant": "single (Type=Error)",
+      "structure": "HORIZONTAL space-between, pad16/10, radius6, border1. [left: warn icon16 + message body/14R] · close icon16.",
+      "children": { "warnInst": "1131:1269", "msg": "1131:1275", "closeInst": "1131:1276" },
+      "bindings": {
+        "bg_PROVISIONAL": "red-dark/500 (VariableID:8:777)",
+        "border_PROVISIONAL": "red-dark/400 (VariableID:8:775)",
+        "text_PROVISIONAL": "red-dark/200 (VariableID:8:771)"
+      },
+      "provisionalNote": "semantic status-card bg/border error 토큰 부재 → 원본 red-dark/500·400·200 그대로 잠정 바인딩(1:1 재현). HD-A 참조."
+    },
+    {
+      "name": "Video/Memo Item", "id": "1131:10364", "dims": "279x52", "variant": "single",
+      "structure": "VERTICAL gap2, pad12/10, radius6. title body/12R + time body/10R.",
+      "children": { "title": "1131:10365", "time": "1131:10366" },
+      "bindings": { "title": "color/text/title/primary (VariableID:8:1127)", "time": "color/text/body/secondary (VariableID:8:1117)", "container": "transparent (fills=[])" }
+    },
+    {
+      "name": "Video/Device Tile", "id": "1132:1271", "dims": "137.5x144", "variant": "single (대표 아이콘=카메라)",
+      "structure": "VERTICAL space-between, pad10, radius4. top=[camera icon16 + label body/14M] / bottom=value title/32B.",
+      "children": { "camInst": "1132:1273", "label": "1132:1276", "value": "1132:1277" },
+      "bindings": { "label": "color/text/body/primary (VariableID:8:1116)", "value": "color/text/title/primary (VariableID:8:1127)", "container": "transparent (fills=[])" },
+      "note": "대표 아이콘 ic_박스카메라 1종만 배치. 서버/컨트롤러/리더용 ic_인터넷·ic_출입관리·ic_얼굴인증은 미적용(HD-C). value 타이포 title/32B 는 원본 스켈레톤이라 스타일 미확정(잠정)."
+    },
+    {
+      "name": "Video/FAB", "id": "1132:10373", "dims": "34x34", "variant": "single",
+      "structure": "원형 HORIZONTAL center, pad7, cornerRadius17. plus icon20.",
+      "children": { "plusInst": "1132:10374" },
+      "bindings": { "bg": "color/button/bg/primary--default (VariableID:8:969)", "iconRecolor": "plus vector → color/button/label/primary--default (VariableID:8:987) — 파란 배경 대비 흰색 오버라이드(Variable 바인딩)" },
+      "note": "core Button 원형/FAB variant 부재 → video 도메인 부품으로 잠정. needs-core-update 후보."
+    }
+  ],
+  "modulesDark": [
+    { "name": "Video/Device Summary Widget", "id": "1135:1250", "dims": "630x300", "represents": "위젯01",
+      "children": { "header": "1135:1251", "tileRow": "1135:1262", "tiles": ["1135:1263","1135:1270","1135:1277","1135:1284"], "abnormalList": "1135:10376", "listRows": ["1135:10377","1135:10380"] },
+      "content": "카메라128/서버24/컨트롤러56/리더312대 + 이상상태(통신 오류3·펌웨어 점검 필요2, 카운트=status-card/text/error 8:1109)" },
+    { "name": "Video/Person Search Widget", "id": "1136:1283", "dims": "360x319", "represents": "위젯07",
+      "children": { "header": "1136:1284", "select": "1136:1296", "search": "1136:1303", "avatars": ["1136:1308","1136:1315","1136:1322"] } },
+    { "name": "Video/Event Tab Widget", "id": "1137:1320", "dims": "360x483", "represents": "위젯08",
+      "children": { "header": "1137:1321", "lineTabSet": "1137:1332", "chipRow": "1137:1345", "chips": ["1137:1346","1137:1348","1137:1350"], "searchBtnRow": "1137:10437", "search": "1137:10438", "buttonAdd": "1137:10442", "metaRows": ["1137:10445","1137:10454","1137:10463"] } },
+    { "name": "Video/Memo Widget", "id": "1138:1373", "dims": "340x284", "represents": "위젯11",
+      "children": { "header": "1138:1374", "memoList": "1138:1385", "fab": "1138:1398" }, "note": "FAB layoutPositioning=ABSOLUTE 우하단 겹침." }
+  ],
+  "modulesLight": {
+    "note": "다크 모듈 clone 후 setExplicitVariableModeForCollection(Semantic Color V2, Light 8:1). 라이트로 정상 flip 확인(surface 흰색·텍스트 다크·video 부품 flip). core form-control 은 원래 라이트라 동일.",
+    "Video/Device Summary Widget (Light)": "1139:1394",
+    "Video/Person Search Widget (Light)": "1139:1408",
+    "Video/Event Tab Widget (Light)": "1139:1417",
+    "Video/Memo Widget (Light)": "1139:1431"
+  },
+  "patterns": [
+    { "name": "Video/Filter Bar", "id": "1140:1540", "label": "1140:1539", "compose": "Select + Search(FILL) + Chip (조립 프레임, 다크)" },
+    { "name": "Video/List Filter Stack", "id": "1140:10640", "label": "1140:10639", "compose": "Line Tab Set + Chip×2 + (Select+Search) + Meta×2 세로 (조립 프레임, 다크)" },
+    { "name": "Video/Dashboard Grid", "id": "1141:1589", "label": "1141:1588", "compose": "Widget Shell 사이즈 변형 1×1/2×1/2×2 배치 예시", "shells": ["1141:1590","1141:1592","1141:1594"] }
+  ],
+  "comparison": {
+    "areaHeaderLabelPresent": true,
+    "note": "각 행 = [우리 패턴(다크 clone) | 원본 시안 이미지] 나란히. 원본 = 대표 사이즈 variant 를 get_screenshot 캡처(showcase 전체 아닌 단일 위젯) → upload_assets 로 image fill 배치. 네이티브 사이즈라 우리 모듈과 동일 스케일 1:1.",
+    "rows": [
+      { "widget": "위젯01 Device Summary", "ourClone": "1143:10686", "origImage": "1143:1591", "origSrcNode": "1965:14634", "imageHash": "86c4c478c23a11729749306760af507f1062dd81", "dims": "630x378" },
+      { "widget": "위젯07 Person Search", "ourClone": "1143:10700", "origImage": "1143:1594", "origSrcNode": "1965:16852", "imageHash": "c8123a60e3aefd272aa401243ce4307714835d41", "dims": "311x378" },
+      { "widget": "위젯08 Event Tab", "ourClone": "1143:10709", "origImage": "1143:1597", "origSrcNode": "1965:16908", "imageHash": "78ebb19df0f8b53cd30db300ac7e65d848ad4b56", "dims": "311x571" },
+      { "widget": "위젯11 Memo", "ourClone": "1143:10723", "origImage": "1143:1600", "origSrcNode": "1965:17492/17524", "imageHash": "45e379d485e81525fa2944c16231f92d0d957e40", "dims": "311x378" }
+    ]
+  },
+  "variablesUsed": {
+    "color/surface/raised": "VariableID:820:190",
+    "color/line/gray/subtle": "VariableID:8:1076",
+    "color/bg/level-1": "VariableID:687:17885",
+    "color/bg/level-3": "VariableID:687:17887",
+    "color/text/body/primary": "VariableID:8:1116",
+    "color/text/body/secondary": "VariableID:8:1117",
+    "color/text/body/tertiary": "VariableID:8:1118",
+    "color/text/title/primary": "VariableID:8:1127",
+    "color/status-card/text/error": "VariableID:8:1109",
+    "color/button/bg/primary--default": "VariableID:8:969",
+    "color/button/label/primary--default": "VariableID:8:987",
+    "red-dark/500 (PROVISIONAL Alert bg)": "VariableID:8:777",
+    "red-dark/400 (PROVISIONAL Alert border)": "VariableID:8:775",
+    "red-dark/200 (PROVISIONAL Alert text)": "VariableID:8:771"
+  },
+  "structureNotes": {
+    "combineAsVariants": "N/A — 부품 4종은 단일 COMPONENT(변형세트 아님). 모듈/패턴은 조립 프레임(컴포넌트 승격 아님).",
+    "detach": "None — 순환 자기포함 없음.",
+    "remap": "N/A — 신규 생성만. 기존 인스턴스 remap 없음.",
+    "explicitModes": "다크 모듈·대조 clone = Semantic Color V2 Dark(8:2). 라이트 clone = Light(8:1).",
+    "iconOrigin": "importComponentByKeyAsync(published 원본 라이브러리). FAB plus 는 흰색 오버라이드(button/label/primary--default Variable 바인딩, 손그림 아님).",
+    "images": "get_screenshot(단일 위젯 variant) → upload_assets(POST bytes) → IMAGE fill. createImageAsync 는 use_figma 미지원이라 upload_assets 경로 사용."
+  },
+  "darkModePinFix": {
+    "date": "2026-07-13",
+    "method": "clearExplicitVariableModeForCollection(Semantic Color V2 8:963) — Light 핀 제거 → 부모 Dark(8:2) 상속. clear 만으로 전부 다크 flip(explicit Dark set 불필요). hex 주입 없음.",
+    "flippedNodeCount": 24,
+    "flippedNodes": {
+      "Person Search (1136:1283)": ["1136:1296 Select Box","1136:1303 Search Input"],
+      "Event Tab (1137:1320)": ["1137:1332 Line Tab Set","1137:1346 Chip","1137:1348 Chip","1137:1350 Chip","1137:10438 Search Input","1137:10442 Button"],
+      "대조클론 Person Search (1143:10700)": ["1143:10703 Select Box","1143:10704 Search Input"],
+      "대조클론 Event Tab (1143:10709)": ["1143:10711 Line Tab Set","1143:10713 Chip","1143:10714 Chip","1143:10715 Chip","1143:10717 Search Input","1143:10718 Button"],
+      "Filter Bar (1140:1540)": ["1140:1541 Select Box","1140:1548 Search Input","1140:1552 Chip"],
+      "List Filter Stack (1140:10640)": ["1140:10641 Line Tab Set","1140:10655 Chip","1140:10657 Chip","1140:10660 Select Box","1140:10667 Search Input"]
+    },
+    "remainingLightPins_waveB": 0,
+    "waveA_1059_2": "라이트-핀 7개(1106:2/20/99/10037/10077/10284/10311)는 모두 top-level 모듈 프레임=의도된 라이트 스펙 줄(dark 조상 없음). 다크-의도 form-control 아님 → 미변경.",
+    "excluded_unchanged": ["1139:1394","1139:1408","1139:1417","1139:1431","1143:1591","1143:1594","1143:1597","1143:1600","1116:1238~1243"],
+    "reRender": "M2/M3/Filter Bar 재렌더 — Select·Search·Chip·Tab 전부 다크(흰 입력요소 잔존 0), Button 은 primary 파랑 유지."
+  },
+  "selfCheck": {
+    "rawHexUnboundPaints": 0,
+    "nonPretendardFonts": 0,
+    "totalNodesScanned": 685,
+    "textNodesScanned": 195,
+    "packingCollapse": "none (모듈 네이티브 사이즈, 붕괴 없음)",
+    "overlap": "none (다크행 y=80 / 라이트행 y=650 / 패턴 y=1260 / 대조 y=1800~3758, x 분리)",
+    "renderScreenshots": "부품4 개별 + 모듈4 다크 개별 + M1/M3 라이트 + 섹션 전체(다크·라이트·패턴·대조 4행) 확인. 원본 이미지 배치·1:1 대조 정상. 클리핑/붕괴 없음."
+  },
+  "needsDecision": [
+    "HD-A (Alert 오류 색): semantic status-card 의 error surface(bg/border) 토큰이 없어(오직 text/error 존재) Alert 배경/테두리/텍스트를 foundation red-dark/500·400·200 으로 잠정 바인딩(원본 1:1). 원본이 다크 대시보드 안에서 연분홍(라이트-외형)으로 해석됨(appearance-pin 의심). 결정: (A) semantic status-error surface 토큰 신설 후 재바인딩 / (B) foundation 잠정 유지. 미결 시 현재대로 잠정 유지.",
+    "HD-C (기기 카테고리 아이콘): 대표 ic_박스카메라 1종만 적용, 4개 타일 모두 카메라 아이콘. 서버=ic_인터넷(28:6269)·컨트롤러=ic_출입관리(28:714)·리더=ic_얼굴인증(28:1417) Line variant 를 per-tile import·swap 하는 것은 backlog(키는 원본 파일에 있음).",
+    "FAB core-update: core Button 에 원형/아이콘전용 FAB variant 부재 → Video/FAB 는 video 부품으로 잠정. core 확장 후보(needs-core-update).",
+    "Device Tile value 타이포(title/32B): 원본이 스켈레톤이라 실제 수량 텍스트 스타일 미확정. 잠정 title/32B 선택.",
+    "RESOLVED (구 KNOWN-ISSUE): 다크 모듈/패턴/대조클론 안 core form-control 인스턴스 24개가 Light 모드 핀으로 흰색 렌더 → 각 노드 clearExplicitVariableModeForCollection(Semantic Color V2) 로 핀 제거(부모 Dark 8:2 상속). clear 만으로 전부 다크 flip 확인(explicit Dark set 불필요·core 다크값 부재 없음). 남은 라이트-핀 0. hex 주입 없음(모드 전환만). 라이트 스펙 줄(1139:*)·원본 이미지(1143:1591/1594/1597/1600)·웨이브 A 라이트 모듈(1106:*, 의도된 라이트) 미변경."
+  ]
+}

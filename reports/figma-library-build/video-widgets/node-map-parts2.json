@@ -1,0 +1,90 @@
+{
+  "meta": {
+    "builder": "figma-library-builder",
+    "fileKey": "cysG5U1udpQqVagYY1hWHW",
+    "page": { "id": "16:1170", "name": "Video (준비중)" },
+    "builtAt": "2026-07-11",
+    "scope": "영상 위젯 모듈 조립용 신규 도메인 부품 3개 (parts2). part1 세트는 node-map.json 참조.",
+    "notes": "Pretendard fonts loaded directly (Regular). All text bound to canonical text styles via setTextStyleIdAsync (body/12R, body/10R). All fills/strokes bound to Variables; provisional foundation colors limited to type dots + chart data marks (documented in set descriptions). Section boundary stroke removed as decorative chrome (rawHex 0)."
+  },
+  "section": { "id": "1076:356", "name": "Video Parts 2", "x": 2400, "y": 0, "w": 620, "h": 900, "fillBound": "color/bg/level-1 (VariableID:687:17885)", "placement": "clear space right of 'Video Widgets' section (1020:2 spans 0..2150); no overlap" },
+  "componentSets": [
+    {
+      "name": "Video/Type3 Block",
+      "setId": "1077:385",
+      "x": 2440, "y": 80, "w": 272, "h": 152,
+      "variantAxis": ["Layout"],
+      "source": "widget-02 (요약행형) + widget-03 (세로) — 임직원/내방객/협력사 유형3",
+      "structure": "각 유형 item = [색점(6x6) + 유형 라벨 + 값 placeholder]. Column=세로 3행(dot+label+FILL+value), Row=가로 3열(dot+label 위, value 아래).",
+      "variants": [
+        { "name": "Layout=Column", "id": "1077:356", "dims": "160x60" },
+        { "name": "Layout=Row", "id": "1077:369", "dims": "240x44" }
+      ],
+      "bindings": {
+        "typeLabel": "color/text/body/primary (VariableID:8:1116)",
+        "valuePlaceholder": "color/bg/level-3 (VariableID:687:17887)",
+        "container": "transparent (fills=[])",
+        "typeDots_PROVISIONAL": {
+          "임직원": "blue-dark/350 (VariableID:8:754)",
+          "내방객": "green-dark/350 (VariableID:8:834)",
+          "협력사": "orange-dark/350 (VariableID:8:794)"
+        }
+      }
+    },
+    {
+      "name": "Video/Video Tile",
+      "setId": "1077:394",
+      "x": 2440, "y": 300, "w": 456, "h": 144.5,
+      "variantAxis": ["State"],
+      "source": "widget-09 실시간 영상 타일",
+      "structure": "타일 컨테이너(200x112.5, 16:9, radius8, clipsContent) = 영상영역(base/black) + 좌상단 라벨 뱃지(x8,y8, bg level-3, radius4, 텍스트).",
+      "variants": [
+        { "name": "State=Default", "id": "1077:388", "badgeText": "카메라 01", "badgeTextBind": "color/text/body/primary (VariableID:8:1116)" },
+        { "name": "State=Alert", "id": "1077:391", "badgeText": "이상 발생", "badgeTextBind": "color/status-card/text/error (VariableID:8:1109)" }
+      ],
+      "bindings": {
+        "videoArea": "base/black (VariableID:8:711) — 영상 피드 의도적 흑색, Variable 바인딩(마커 불필요)",
+        "badgeBg": "color/bg/level-3 (VariableID:687:17887)",
+        "radius": "radius/8 (VariableID:8:943) — 4 corners bound"
+      }
+    },
+    {
+      "name": "Video/Chart",
+      "setId": "1079:379",
+      "x": 2440, "y": 520, "w": 560, "h": 174,
+      "variantAxis": ["Type"],
+      "source": "widget-03 (최근 추이 그래프) + widget-05 (꺾은선/막대)",
+      "structure": "VERTICAL [ plotRow(HORIZONTAL: Y눈금 라벨 + plot 200x100), X눈금 라벨 row ]. plot = Y축선 + X축선 + 데이터마크. 데이터는 예시.",
+      "variants": [
+        { "name": "Type=Line", "id": "1078:356", "dataMark": "VECTOR polyline (5pt), 예시 X=4/18~4/26" },
+        { "name": "Type=Bar", "id": "1079:356", "dataMark": "5 막대(heights 34/64/24/80/50), 예시 X=월~금" }
+      ],
+      "bindings": {
+        "axisLines": "color/line/gray/subtle (VariableID:8:1076)",
+        "tickLabels": "color/text/body/tertiary (VariableID:8:1118)",
+        "dataMark_PROVISIONAL": "blue-dark/350 (VariableID:8:754) — 선/막대"
+      }
+    }
+  ],
+  "structureNotes": {
+    "combineAsVariants": "3 sets combined via combineAsVariants(currentPage) then set to auto-layout (Type3=VERTICAL, Tile/Chart=HORIZONTAL) with padding16+itemSpacing so variants pack compactly. No packing collapse (widest set Chart 560px).",
+    "detach": "None — no cyclic self-containment (no variant embeds a sibling variant instance).",
+    "rename": "Variant components renamed to Prop=Value before combine; sets named Video/{Name} slash-folder (matches existing Video/ convention).",
+    "remap": "N/A — all sets newly created (no pre-existing instances).",
+    "placement": "New Section 'Video Parts 2' at x=2400 (right of Video Widgets section), 3 sets stacked vertically inside.",
+    "sectionStroke": "removed (strokes=[]) as decorative section-boundary chrome; section fill bound to bg/level-1."
+  },
+  "provisionalColors": [
+    "Type3 Block 유형 구분점 3색 (blue/green/orange-dark/350) — 확정 유형색 체계 미정",
+    "Chart 데이터 선/막대 (blue-dark/350) — 확정 데이터 시리즈 색 미정"
+  ],
+  "selfCheck": {
+    "rawHexUnboundPaints": 0,
+    "nonPretendardFonts": 0,
+    "totalNodesScanned": 79,
+    "packingCollapse": "none (widest set 560px)",
+    "overlap": "none (metadata-verified child bounds within each set)",
+    "renderScreenshots": "section overview + Type3 close + Tile close — dots colored, labels/placeholders present, tiles black + badges (Alert red), charts render (polyline + 5 bars + axes + ticks). No clipping."
+  },
+  "needsDecision": []
+}

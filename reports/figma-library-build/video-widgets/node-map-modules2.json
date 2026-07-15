@@ -1,0 +1,108 @@
+{
+  "meta": {
+    "builder": "figma-library-builder",
+    "fileKey": "cysG5U1udpQqVagYY1hWHW",
+    "page": { "id": "16:1170", "name": "Video (준비중)" },
+    "builtAt": "2026-07-11",
+    "scope": "영상 위젯 유형 모듈 4개 (modules2) — 틀 스타일 프레임 + core/video 부품 인스턴스 조립. 앞선 템플릿 3개(node-map-templates.json)와 동일 방식/스타일.",
+    "notes": "모든 부품은 지정 local node로 createInstance(원격 import 없음). 새 틀 프레임 fill=surface/raised·border=line/gray/subtle·radius=radius/8 Variable 바인딩. 내부 auto-layout 컨테이너 default white fill 은 제거(transparent). 텍스트 override 는 Pretendard 유지(비-Pretendard 0). 하드코딩 hex 없음(unbound solid fill 0)."
+  },
+  "section": {
+    "id": "1059:2", "name": "Video Widget Templates",
+    "resizedTo": { "w": 2460, "h": 1340 },
+    "note": "기존 템플릿 3개(row1, y=1600) 아래 새 row2(y=2320)에 모듈 4개 배치. 섹션을 확장해 포함(겹침 없음)."
+  },
+  "modules": [
+    {
+      "name": "Video/Stat Summary Widget",
+      "id": "1085:356",
+      "placement": { "x": 0, "y": 2320, "w": 630, "h": 138 },
+      "represents": "위젯03·05·10 (지표+유형3 요약형)",
+      "children": [
+        { "id": "1085:357", "role": "Widget Header On instance", "source": "1021:2", "kind": "video", "titleOverride": "일일 출입 등록자 현황" },
+        { "id": "1085:368", "role": "지표 행 (HORIZONTAL auto-layout, gap16, top-align, FILL)", "fill": "cleared(transparent)", "children": [
+          { "id": "1085:369", "role": "Summary Metric instance", "source": "1023:9222", "variant": "Trend=None", "kind": "video", "labelOverride": "총 등록" },
+          { "id": "1085:373", "role": "Summary Metric instance", "source": "1023:9226", "variant": "Trend=Up (▲12%)", "kind": "video", "labelOverride": "금일 신규" },
+          { "id": "1085:378", "role": "Summary Metric instance", "source": "1023:9231", "variant": "Trend=Down (▼8%)", "kind": "video", "labelOverride": "미승인" },
+          { "id": "1085:383", "role": "Type3 Block instance", "source": "1077:356", "variant": "Layout=Column", "kind": "video", "labels": "임직원/내방객/협력사 (default 유지)" }
+        ]}
+      ]
+    },
+    {
+      "name": "Video/Gauge Score Widget",
+      "id": "1086:389",
+      "placement": { "x": 680, "y": 2320, "w": 860, "h": 572 },
+      "represents": "위젯04·10 (점수+구역별 표)",
+      "children": [
+        { "id": "1086:390", "role": "Widget Header On instance", "source": "1021:2", "kind": "video", "titleOverride": "보안 점수" },
+        { "id": "1086:401", "role": "점수 표시 행 (HORIZONTAL, gap16, center-align, FILL)", "fill": "cleared(transparent)", "children": [
+          { "id": "1086:402", "role": "big score TEXT", "chars": "85", "textStyle": "title/32B (Pretendard Bold)", "fillBound": "color/text/title/primary (VariableID:8:1127)" },
+          { "id": "1086:403", "role": "Segment Gauge instance", "source": "1023:52", "variant": "Tone=Score, Fill=3", "kind": "video", "sizing": "FILL horizontal" }
+        ]},
+        { "id": "1086:407", "role": "Table MD instance", "source": "958:27513", "kind": "core", "sizing": "FILL(828)",
+          "cellOverrides": { "count": 36, "header": ["구역","위치","점수","상태"], "rows": 8,
+            "data": "구역명(A동 로비..외곽)/위치(1층·B1·RF·외부)/점수(92·78·85·88·95·70·82·90)/상태(양호·주의). 위치·기존 좌표순 grid 정렬 후 순차 override." }
+        }
+      ]
+    },
+    {
+      "name": "Video/CCTV Widget",
+      "id": "1088:590",
+      "placement": { "x": 1590, "y": 2320, "w": 444, "h": 315 },
+      "represents": "위젯09 (실시간 영상, 시그니처)",
+      "children": [
+        { "id": "1088:591", "role": "Widget Header On instance", "source": "1021:2", "kind": "video", "titleOverride": "실시간 영상" },
+        { "id": "1088:602", "role": "영상 그리드 (VERTICAL, gap12, FILL)", "fill": "cleared(transparent)", "children": [
+          { "id": "1088:603", "role": "행1 (HORIZONTAL, gap12)", "fill": "cleared", "tiles": [
+            { "role": "Video Tile instance", "source": "1077:388", "variant": "State=Default", "kind": "video", "badgeOverride": "카메라 01" },
+            { "role": "Video Tile instance", "source": "1077:388", "variant": "State=Default", "kind": "video", "badgeOverride": "카메라 02" }
+          ]},
+          { "id": "1088:610", "role": "행2 (HORIZONTAL, gap12)", "fill": "cleared", "tiles": [
+            { "role": "Video Tile instance", "source": "1077:388", "variant": "State=Default", "kind": "video", "badgeOverride": "카메라 03" },
+            { "role": "Video Tile instance", "source": "1077:391", "variant": "State=Alert", "kind": "video", "badge": "이상 발생 (default 유지, red)" }
+          ]}
+        ]}
+      ]
+    },
+    {
+      "name": "Video/Chart Widget",
+      "id": "1088:9702",
+      "placement": { "x": 2084, "y": 2320, "w": 332, "h": 430 },
+      "represents": "위젯03·05 (시간대별 추이)",
+      "children": [
+        { "id": "1088:9703", "role": "Widget Header On instance", "source": "1021:2", "kind": "video", "titleOverride": "시간대별 평균 출입자" },
+        { "id": "1088:9714", "role": "필터 행 (HORIZONTAL, right-align MAX, FILL)", "fill": "cleared(transparent)", "children": [
+          { "id": "1088:9715", "role": "Select Box MD instance", "source": "958:23625", "kind": "core", "labelOverride": "A동 정문" }
+        ]},
+        { "id": "1088:9722", "role": "Chart instance", "source": "1078:356", "variant": "Type=Line", "kind": "video" },
+        { "id": "1088:9739", "role": "Chart instance", "source": "1079:356", "variant": "Type=Bar", "kind": "video", "note": "Line+Bar 둘 다 표시(재량 옵션 포함)" }
+      ]
+    }
+  ],
+  "provenance": {
+    "core": { "Select Box MD": "958:23625", "Table MD": "958:27513" },
+    "video": {
+      "Widget Header On": "1021:2",
+      "Summary Metric": { "None": "1023:9222", "Up": "1023:9226", "Down": "1023:9231" },
+      "Segment Gauge Score/3": "1023:52",
+      "Type3 Block Column": "1077:356",
+      "Video Tile": { "Default": "1077:388", "Alert": "1077:391" },
+      "Chart": { "Line": "1078:356", "Bar": "1079:356" }
+    }
+  },
+  "structureNotes": {
+    "combineAsVariants": "N/A — 모듈은 조립 프레임(컴포넌트 승격 아님), 앞선 템플릿과 동일 성격.",
+    "detach": "None — 순환 참조 없음(모듈이 형제 모듈 인스턴스를 품지 않음).",
+    "remap": "N/A — 신규 프레임만 생성, 기존 인스턴스 remap 없음.",
+    "containerFills": "내부 auto-layout 컨테이너 6개(지표 행·점수 표시·영상 그리드·행1·행2·필터 행)의 createAutoLayout default white fill 제거 → transparent (unbound raw fill 방지)."
+  },
+  "selfCheck": {
+    "rawHexUnboundPaints": 0,
+    "nonPretendardFonts": 0,
+    "totalTextNodesScanned": 82,
+    "packingCollapse": "none",
+    "overlap": "none (모듈 4개 x=0/680/1590/2084 비겹침)",
+    "renderScreenshots": "4모듈 개별 스크린샷 확인 — Mod1 지표3+유형3(색점), Mod2 85+게이지+구역표(9행 정확), Mod3 CCTV 2x2(카메라01~03+이상발생 red), Mod4 Line+Bar+Select. 클리핑/붕괴 없음."
+  },
+  "needsDecision": []
+}
