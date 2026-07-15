@@ -31,7 +31,6 @@
       "scope": "Component sizing tokens with no shared usage",
       "description": "Component sizing/spacing/radius tokens that are not shared across components may reference Foundation primitives directly. The Semantic intermediary layer adds no value when only one component uses a value.",
       "examples": [
-        "--modal-border-radius: var(--radius-8)",
         "--chip-height-sm: var(--spacing-28)"
       ],
       "approvedAt": "2026-04-29",
