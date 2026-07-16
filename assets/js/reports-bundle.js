@@ -2,20 +2,68 @@
    Run: npm run reports:sync
 */
 window.REPORTS_INDEX = {
-  "generatedAt": "2026-07-03T00:32:31.681Z",
-  "totalCount": 62,
+  "generatedAt": "2026-07-16T00:54:44.760Z",
+  "totalCount": 64,
   "reports": [
     {
-      "id": "modal-component-spec",
-      "filename": "modal-component-spec.md",
-      "title": "Modal (공통 팝업) 규격 문서",
+      "id": "modal-content-family-backlog",
+      "filename": "modal-content-family-backlog.md",
+      "title": "Modal Content (콘텐츠 계열) — 별건 백로그",
       "stage": "Audit",
       "category": "audit",
       "status": "archive",
-      "sourcePath": "reports/modal-component-spec.md",
-      "updatedAt": "2026-07-03",
-      "summary": "작성 2026-07-03 · 상태: **확정(HD-1~4 전건 결정)** · 근거: 레거시 원본 3세트 분석(파일 `P8YvnCdGkQLDNVQhW74ZZW`) + 실측 토큰(get_variable_defs)",
-      "fileSizeKB": 10.4
+      "sourcePath": "reports/modal-content-family-backlog.md",
+      "updatedAt": "2026-07-15",
+      "summary": "**상태: 미착수.** 확인 계열(`registry/components/modal.json`, compact 텍스트-확인)과 **구분되는 별개 컴포넌트**.",
+      "fileSizeKB": 3.3
+    },
+    {
+      "id": "shadow-token-infra-backlog",
+      "filename": "shadow-token-infra-backlog.md",
+      "title": "shadow 토큰 인프라 신설 — 별건 백로그 (루트 A 시험에서 발견)",
+      "stage": "Audit",
+      "category": "audit",
+      "status": "archive",
+      "sourcePath": "reports/shadow-token-infra-backlog.md",
+      "updatedAt": "2026-07-15",
+      "summary": "**상태: 미착수.** 그림자 인프라가 갖춰지면 다크 모달에 얹는다.",
+      "fileSizeKB": 4.7
+    },
+    {
+      "id": "button-sync-check",
+      "filename": "button-sync-check.md",
+      "title": "Button Sync Check Report",
+      "stage": "Audit",
+      "category": "audit",
+      "status": "archive",
+      "sourcePath": "reports/button-sync-check.md",
+      "updatedAt": "2026-07-10",
+      "summary": "- **Variants:** primary, secondary, blue-line",
+      "fileSizeKB": 3.2
+    },
+    {
+      "id": "mvp-t2-token-sync",
+      "filename": "mvp-t2-token-sync.md",
+      "title": "MVP-T2 Token Sync Plugin Report",
+      "stage": "T2",
+      "category": "token",
+      "status": "archive",
+      "sourcePath": "reports/mvp-t2-token-sync.md",
+      "updatedAt": "2026-07-07",
+      "summary": "MVP-T1에서 구축한 CSS Token ↔ Registry Token ↔ Figma Variable mapping registry를 기반으로,",
+      "fileSizeKB": 5
+    },
+    {
+      "id": "harness-audit-2026-07-06",
+      "filename": "harness-audit-2026-07-06.md",
+      "title": "Harness Audit Report — 2026-07-06",
+      "stage": "Audit",
+      "category": "audit",
+      "status": "archive",
+      "sourcePath": "reports/harness-audit-2026-07-06.md",
+      "updatedAt": "2026-07-06",
+      "summary": "- ✅ [button] 모든 사이즈 분기 존재 (medium (h44) / xsmall (h34) / xxsmall (h28) / mobile (h48))",
+      "fileSizeKB": 2
     },
     {
       "id": "build-components-token-extraction",
@@ -78,30 +126,6 @@ window.REPORTS_INDEX = {
       "fileSizeKB": 2
     },
     {
-      "id": "mvp-t2-token-sync",
-      "filename": "mvp-t2-token-sync.md",
-      "title": "MVP-T2 Token Sync Plugin Report",
-      "stage": "T2",
-      "category": "token",
-      "status": "archive",
-      "sourcePath": "reports/mvp-t2-token-sync.md",
-      "updatedAt": "2026-06-30",
-      "summary": "MVP-T1에서 구축한 CSS Token ↔ Registry Token ↔ Figma Variable mapping registry를 기반으로,",
-      "fileSizeKB": 5.2
-    },
-    {
-      "id": "button-sync-check",
-      "filename": "button-sync-check.md",
-      "title": "Button Sync Check Report",
-      "stage": "Audit",
-      "category": "audit",
-      "status": "archive",
-      "sourcePath": "reports/button-sync-check.md",
-      "updatedAt": "2026-06-17",
-      "summary": "- **Variants:** primary, secondary, blue-line",
-      "fileSizeKB": 3.4
-    },
-    {
       "id": "changelog-archive",
       "filename": "changelog-archive.md",
       "title": "CLAUDE.md 변경 이력 아카이브 (Design System Harness)",
@@ -111,7 +135,7 @@ window.REPORTS_INDEX = {
       "sourcePath": "reports/changelog-archive.md",
       "updatedAt": "2026-06-17",
       "summary": "이 파일은 CLAUDE.md `변경 이력` 표의 **상세 보존본**이다. 컨텍스트 비용을 줄이기 위해 CLAUDE.md 본문에서 분리했다.",
-      "fileSizeKB": 46
+      "fileSizeKB": 57.2
     },
     {
       "id": "harness-audit-2026-06-17",
@@ -135,7 +159,7 @@ window.REPORTS_INDEX = {
       "sourcePath": "reports/harness-audit-2026-06-16.md",
       "updatedAt": "2026-06-16",
       "summary": "- ✅ [button] 모든 사이즈 분기 존재 (medium (h44) / xsmall (h34) / xxsmall (h28) / mobile (h48))",
-      "fileSizeKB": 2.2
+      "fileSizeKB": 2.1
     },
     {
       "id": "harness-audit-2026-06-15",
@@ -267,7 +291,7 @@ window.REPORTS_INDEX = {
       "sourcePath": "reports/mvp-f1-apply-result.md",
       "updatedAt": "2026-05-20",
       "summary": "총 53개 unique variable 확인. legacy-token-usage-map.json 미등록 항목: **22개**.",
-      "fileSizeKB": 96.9
+      "fileSizeKB": 95
     },
     {
       "id": "mvp-l1-legacy-token-audit",
@@ -279,7 +303,7 @@ window.REPORTS_INDEX = {
       "sourcePath": "reports/mvp-l1-legacy-token-audit.md",
       "updatedAt": "2026-05-20",
       "summary": "S1 UX 디자인가이드 2.4의 현재 Figma Variables를 legacy source snapshot으로 수집하고,",
-      "fileSizeKB": 26.6
+      "fileSizeKB": 26.4
     },
     {
       "id": "mvp-l2-foundation-reclassification",
@@ -291,7 +315,7 @@ window.REPORTS_INDEX = {
       "sourcePath": "reports/mvp-l2-foundation-reclassification.md",
       "updatedAt": "2026-05-20",
       "summary": "Foundation Token → Semantic Token → Component Token",
-      "fileSizeKB": 4.5
+      "fileSizeKB": 4.4
     },
     {
       "id": "mvp-l2-legacy-token-classification",
@@ -303,7 +327,7 @@ window.REPORTS_INDEX = {
       "sourcePath": "reports/mvp-l2-legacy-token-classification.md",
       "updatedAt": "2026-05-20",
       "summary": "`surface/status/main/primary`, `/sub/primary`, `/main/secondary`, `/sub/secondary`, `/main/tertiary`, `/sub/tertiary`",
-      "fileSizeKB": 13.3
+      "fileSizeKB": 13.1
     },
     {
       "id": "mvp-c0-component-token-coverage-pilot",
@@ -315,7 +339,7 @@ window.REPORTS_INDEX = {
       "sourcePath": "reports/mvp-c0-component-token-coverage-pilot.md",
       "updatedAt": "2026-05-19",
       "summary": "기준 파일: assets/css/tokens.css · registry/tokens/canonical-token-draft.json · canonical-token-promotion-plan.json · token-aliases.json · tokens/component-tokens-extracted.md · pages/components.html",
-      "fileSizeKB": 9.4
+      "fileSizeKB": 9.3
     },
     {
       "id": "mvp-f0-figma-variable-usage-audit",
@@ -327,7 +351,7 @@ window.REPORTS_INDEX = {
       "sourcePath": "reports/mvp-f0-figma-variable-usage-audit.md",
       "updatedAt": "2026-05-19",
       "summary": "Method: Figma MCP (`get_metadata`, `get_variable_defs`, `get_design_context`, `search_design_system`)",
-      "fileSizeKB": 13.1
+      "fileSizeKB": 12.9
     },
     {
       "id": "mvp-l4-5-token-coverage-review",
@@ -339,7 +363,7 @@ window.REPORTS_INDEX = {
       "sourcePath": "reports/mvp-l4-5-token-coverage-review.md",
       "updatedAt": "2026-05-19",
       "summary": "단계: L5 Canonical Token Promotion 전 보정/분류/검토",
-      "fileSizeKB": 13.2
+      "fileSizeKB": 12.9
     },
     {
       "id": "mvp-l5-canonical-token-promotion-plan",
@@ -351,7 +375,7 @@ window.REPORTS_INDEX = {
       "sourcePath": "reports/mvp-l5-canonical-token-promotion-plan.md",
       "updatedAt": "2026-05-19",
       "summary": "Promotion plan for canonical token v0.1 candidates based on legacy audit (MVP-L1 ~ L4.5), component coverage (C0), and Figma variable usage audit (F0). Incorporates HD-L4.5-A, HD-L4.5-B, HD-L4.5-C decisions.",
-      "fileSizeKB": 28.9,
+      "fileSizeKB": 28.4,
       "version": "0.1.0",
       "enrichedFrom": "registry/tokens/canonical-token-promotion-plan.json"
     },
@@ -365,7 +389,7 @@ window.REPORTS_INDEX = {
       "sourcePath": "reports/mvp-l3-canonical-token-architecture-draft.md",
       "updatedAt": "2026-05-18",
       "summary": "⚠️ 이 단계에서 금지된 작업: Figma Variable rename/write/delete · 레거시 토큰 삭제 · 정식 확정 · Figma 파일 직접 수정",
-      "fileSizeKB": 18.7
+      "fileSizeKB": 18.3
     },
     {
       "id": "mvp-l4-canonical-token-review",
@@ -377,7 +401,7 @@ window.REPORTS_INDEX = {
       "sourcePath": "reports/mvp-l4-canonical-token-review.md",
       "updatedAt": "2026-05-18",
       "summary": "Figma Variable write/rename/delete · UX Guide 2.4 운영 파일 수정 · Legacy token 삭제 · promote-candidate를 최종 canonical로 자동 확정",
-      "fileSizeKB": 14.3
+      "fileSizeKB": 14
     },
     {
       "id": "mvp-t1-token-mapping",
@@ -389,7 +413,7 @@ window.REPORTS_INDEX = {
       "sourcePath": "reports/mvp-t1-token-mapping.md",
       "updatedAt": "2026-05-18",
       "summary": "CSS 토큰과 Figma Variables가 서로 다른 이름을 사용하더라도 같은 의미로 연결될 수 있는 매핑 기준을 구축한다.",
-      "fileSizeKB": 11.8
+      "fileSizeKB": 11.6
     },
     {
       "id": "mvp-t2-figma-variable-metadata",
@@ -401,7 +425,7 @@ window.REPORTS_INDEX = {
       "sourcePath": "reports/mvp-t2-figma-variable-metadata.md",
       "updatedAt": "2026-05-18",
       "summary": "Figma Variables metadata를 수집하고,",
-      "fileSizeKB": 7.8
+      "fileSizeKB": 7.7
     },
     {
       "id": "mvp-t2-not-found-variable-name-review",
@@ -413,7 +437,7 @@ window.REPORTS_INDEX = {
       "sourcePath": "reports/mvp-t2-not-found-variable-name-review.md",
       "updatedAt": "2026-05-18",
       "summary": "registry의 `figmaVariable` 경로는 MVP-T1 단계에서 Figma Variables 이름을 직접 조회하지 않고 **의미 기반 추정**으로 작성된 경로다.",
-      "fileSizeKB": 11.8
+      "fileSizeKB": 11.6
     },
     {
       "id": "source-guard-bad-service",
@@ -425,7 +449,7 @@ window.REPORTS_INDEX = {
       "sourcePath": "reports/source-guard-bad-service.md",
       "updatedAt": "2026-05-18",
       "summary": "- **Path:** `/Users/designgroup_02/S1_AI_DESIGN_GUIDE/scripts/guard/__fixtures__/bad-service`",
-      "fileSizeKB": 5
+      "fileSizeKB": 4.9
     },
     {
       "id": "token-page-audit-2026-05-18",
@@ -437,7 +461,7 @@ window.REPORTS_INDEX = {
       "sourcePath": "reports/token-page-audit-2026-05-18.md",
       "updatedAt": "2026-05-18",
       "summary": "검수 목적: `assets/css/tokens.css` 실제 값 vs `pages/foundation.html` / `pages/semantic.html` 표시 값 일치 여부 확인",
-      "fileSizeKB": 5.4
+      "fileSizeKB": 5.3
     },
     {
       "id": "mvp3-4-1-button-sync",
@@ -449,7 +473,7 @@ window.REPORTS_INDEX = {
       "sourcePath": "reports/mvp3-4-1-button-sync.md",
       "updatedAt": "2026-05-12",
       "summary": "Button 관련 파일 전체 정합성 점검 + Figma MCP 비교 결과 반영 + 자동화 동기화 스크립트 구축.",
-      "fileSizeKB": 5.3
+      "fileSizeKB": 5.2
     },
     {
       "id": "mvp3-4-button-figma-mcp-comparison",
@@ -461,7 +485,7 @@ window.REPORTS_INDEX = {
       "sourcePath": "reports/mvp3-4-button-figma-mcp-comparison.md",
       "updatedAt": "2026-05-12",
       "summary": "- **파일:** SW-UX-GUIDE V2.4 (`yE5UCFEbmXJBlYJWB24Lz2`)",
-      "fileSizeKB": 11.3
+      "fileSizeKB": 11.1
     },
     {
       "id": "mvp3-5-source-guard",
@@ -473,7 +497,7 @@ window.REPORTS_INDEX = {
       "sourcePath": "reports/mvp3-5-source-guard.md",
       "updatedAt": "2026-05-12",
       "summary": "External service target scanning based on SW Design System registry.",
-      "fileSizeKB": 4.4
+      "fileSizeKB": 4.2
     },
     {
       "id": "mvp3-6-source-guard-fix-suggestions",
@@ -485,7 +509,7 @@ window.REPORTS_INDEX = {
       "sourcePath": "reports/mvp3-6-source-guard-fix-suggestions.md",
       "updatedAt": "2026-05-12",
       "summary": "Generate fix suggestions for external service target violations detected by Source Guard.",
-      "fileSizeKB": 5.8
+      "fileSizeKB": 5.7
     },
     {
       "id": "mvp3-7-source-guard-apply-mode",
@@ -497,7 +521,7 @@ window.REPORTS_INDEX = {
       "sourcePath": "reports/mvp3-7-source-guard-apply-mode.md",
       "updatedAt": "2026-05-12",
       "summary": "Apply high-confidence Source Guard fix suggestions to external service targets with explicit approval.",
-      "fileSizeKB": 4.9
+      "fileSizeKB": 4.8
     },
     {
       "id": "mvp3-8-source-guard-ci-dry-run",
@@ -509,7 +533,7 @@ window.REPORTS_INDEX = {
       "sourcePath": "reports/mvp3-8-source-guard-ci-dry-run.md",
       "updatedAt": "2026-05-12",
       "summary": "Run Source Guard checks and dry-run reports through GitHub Actions.",
-      "fileSizeKB": 4.2
+      "fileSizeKB": 4.1
     },
     {
       "id": "mvp4-1-input-patterns",
@@ -521,7 +545,7 @@ window.REPORTS_INDEX = {
       "sourcePath": "reports/mvp4-1-input-patterns.md",
       "updatedAt": "2026-05-12",
       "summary": "Search Input, Password Field, and Input with Unit are **not** treated as full Patterns.",
-      "fileSizeKB": 3.7
+      "fileSizeKB": 3.6
     },
     {
       "id": "mvp4-2-input-composed-fields",
@@ -533,7 +557,7 @@ window.REPORTS_INDEX = {
       "sourcePath": "reports/mvp4-2-input-composed-fields.md",
       "updatedAt": "2026-05-12",
       "summary": "MVP4.1에서 Related Composed Fields를 등록했으나, Search Input의 slot 구조가 Figma 기준과 다르게 구현되었습니다.",
-      "fileSizeKB": 7.1
+      "fileSizeKB": 6.9
     },
     {
       "id": "mvp4-3-a-date-picker",
@@ -545,7 +569,7 @@ window.REPORTS_INDEX = {
       "sourcePath": "reports/mvp4-3-a-date-picker.md",
       "updatedAt": "2026-05-12",
       "summary": "DatePicker를 Input의 state/variant로 포함하지 않고 별도 컴포넌트 후보로 정리한다.",
-      "fileSizeKB": 15.4
+      "fileSizeKB": 15.1
     },
     {
       "id": "pre-mvp4-input-classification",
@@ -557,7 +581,7 @@ window.REPORTS_INDEX = {
       "sourcePath": "reports/pre-mvp4-input-classification.md",
       "updatedAt": "2026-05-12",
       "summary": "Section 2 (6443:5451) 하위 7개 Frame을 분석한 결과:",
-      "fileSizeKB": 23.6
+      "fileSizeKB": 23
     },
     {
       "id": "source-guard-apply-log-bad-service",
@@ -581,7 +605,7 @@ window.REPORTS_INDEX = {
       "sourcePath": "reports/source-guard-apply-log-bad-service-apply-test.md",
       "updatedAt": "2026-05-12",
       "summary": "- **Path:** `/tmp/bad-service-apply-test`",
-      "fileSizeKB": 5.1
+      "fileSizeKB": 5
     },
     {
       "id": "source-guard-fix-suggestions-bad-service",
@@ -593,7 +617,7 @@ window.REPORTS_INDEX = {
       "sourcePath": "reports/source-guard-fix-suggestions-bad-service.md",
       "updatedAt": "2026-05-12",
       "summary": "- **Path:** `/Users/designgroup_02/S1_AI_DESIGN_GUIDE/scripts/guard/__fixtures__/bad-service`",
-      "fileSizeKB": 11.2
+      "fileSizeKB": 10.8
     },
     {
       "id": "component-review",
@@ -601,11 +625,11 @@ window.REPORTS_INDEX = {
       "title": "Component Review",
       "stage": "Audit",
       "category": "audit",
-      "status": "stable",
+      "status": "complete",
       "sourcePath": "reports/component-review.md",
       "updatedAt": "2026-05-11",
       "summary": "생성: 2026-05-11 / Phase: MVP0",
-      "fileSizeKB": 1
+      "fileSizeKB": 0.9
     },
     {
       "id": "darkmode-review",
@@ -617,7 +641,7 @@ window.REPORTS_INDEX = {
       "sourcePath": "reports/darkmode-review.md",
       "updatedAt": "2026-05-11",
       "summary": "생성: 2026-05-11 / Phase: MVP0",
-      "fileSizeKB": 1.2
+      "fileSizeKB": 1.1
     },
     {
       "id": "figma-map-review",
@@ -653,7 +677,7 @@ window.REPORTS_INDEX = {
       "sourcePath": "reports/mvp1-token-registry-review.md",
       "updatedAt": "2026-05-11",
       "summary": "- [x] `registry/tokens/foundation.colors.json` — 전면 업데이트 (22개 색상 그룹, V2.4 원본 HEX 직접 반영)",
-      "fileSizeKB": 6.1
+      "fileSizeKB": 6
     },
     {
       "id": "mvp2-portal-registry-review",
@@ -677,7 +701,7 @@ window.REPORTS_INDEX = {
       "sourcePath": "reports/mvp3-2-button-audit-fix.md",
       "updatedAt": "2026-05-11",
       "summary": "Complete (blue-line token 추가, ghost 제거, HTML/CSS code view 추가)",
-      "fileSizeKB": 4.9
+      "fileSizeKB": 4.8
     },
     {
       "id": "mvp3-3-button-components-integration",
@@ -689,7 +713,7 @@ window.REPORTS_INDEX = {
       "sourcePath": "reports/mvp3-3-button-components-integration.md",
       "updatedAt": "2026-05-11",
       "summary": "Components > Button integration, existing document alignment, duplicate registry menu cleanup, and ACTION test column addition.",
-      "fileSizeKB": 6.2
+      "fileSizeKB": 6.1
     },
     {
       "id": "mvp3-3-portal-ia-review",
@@ -713,7 +737,7 @@ window.REPORTS_INDEX = {
       "sourcePath": "reports/mvp3-button-review.md",
       "updatedAt": "2026-05-11",
       "summary": "Draft (harness 구현 완료, Figma 시각 비교 검수 미완료)",
-      "fileSizeKB": 6.5
+      "fileSizeKB": 6.4
     },
     {
       "id": "mvp3-core-harness-review",
@@ -737,7 +761,7 @@ window.REPORTS_INDEX = {
       "sourcePath": "reports/token-guide-update-dark-border.md",
       "updatedAt": "2026-05-11",
       "summary": "Complete (policy 반영, token candidate 전환)",
-      "fileSizeKB": 4
+      "fileSizeKB": 3.9
     },
     {
       "id": "token-review",
@@ -749,7 +773,7 @@ window.REPORTS_INDEX = {
       "sourcePath": "reports/token-review.md",
       "updatedAt": "2026-05-11",
       "summary": "생성: 2026-05-11 / Phase: MVP0",
-      "fileSizeKB": 1.1
+      "fileSizeKB": 1
     }
   ]
 };
