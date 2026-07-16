@@ -1,0 +1,94 @@
+{
+  "_meta": {
+    "id": "modal",
+    "name": "Modal",
+    "category": "overlay",
+    "updatedAt": "2026-07-15",
+    "version": "0.1.0",
+    "tokenStatus": "stable",
+    "codeStatus": "in-progress",
+    "darkModeStatus": "planned",
+    "a11yStatus": "planned",
+    "figmaStatus": "existing",
+    "harnessStatus": "not-started",
+    "description": "확인(compact 텍스트-확인) 계열 모달. 딤(overlay) 위 공통 팝업 셸 — 헤더(제목+닫기)+본문(텍스트)+푸터(버튼)의 3층 껍데기. 껍데기 고정, 제목은 항상 존재, 본문·버튼 라벨은 텍스트 속성으로 교체. 코어 Button·V2.2 라이브러리 아이콘 재사용(신규 보여주기 컴포넌트 아님)."
+  },
+  "origin": {
+    "classification": "B",
+    "note": "원본 틀 필요. V2.4 레거시 화면에서 편입(루트 A 신규 편입 시험 첫 대상).",
+    "legacySource": { "file": "yE5UCFEbmXJBlYJWB24Lz2", "canonicalSet": "6706:4218", "name": "modal_small (확인 계열 정본)", "example": { "node": "6706:4257", "state": "삭제" } }
+  },
+  "family": {
+    "id": "confirm-compact",
+    "label": "확인(compact 텍스트-확인)",
+    "canonicalNode": "6706:4218",
+    "spec": "제목 16px 항상 존재 · 버튼 h28(코어 Button XXSM 인스턴스) · 닫기 = V2.2 라이브러리 ic_닫기 · 본문 텍스트. 폭 360 고정.",
+    "note": "콘텐츠 계열(Modal Content, pc_modal 540:5815 — 제목18·버튼h34·4크기)과 구분된 별개 계열. 상세: reports/modal-content-family-backlog.md"
+  },
+  "variantAxis": {
+    "property": "Footer",
+    "values": ["Single", "Dual"],
+    "titleAlways": true,
+    "sizeAxis": "none (확인 계열은 폭 360 단일)",
+    "note": "변형축은 Footer(Single|Dual)뿐. 제목 고정(항상 존재). 토큰 전부 기존(신설 0)."
+  },
+  "guardrail": {
+    "rule": "패널 height/width 비율이 임계 초과 시 이 확인 계열 사용 금지 → 콘텐츠 계열(Modal Content)로 전환.",
+    "threshold": "TBD",
+    "reason": "확인 계열은 짧은 텍스트 확인용 compact. 긴/큰 본문은 콘텐츠 계열(4크기·딤 85% 스크롤)이 담당."
+  },
+  "scope": "light",
+  "states": [
+    {
+      "id": "삭제",
+      "footer": "dual",
+      "built": true,
+      "title": "삭제",
+      "body": "선택하신 항목이 삭제됩니다.\n정말 삭제 하시겠어요?",
+      "buttons": [
+        { "role": "secondary", "label": "아니오" },
+        { "role": "primary", "label": "네" }
+      ],
+      "note": "이번 빌드 대상 1건(Footer=Dual). buildModalShell 로 생성."
+    },
+    { "id": "입력취소", "footer": "dual", "built": false, "note": "미빌드 — Footer=Dual + 텍스트 교체로 확장" },
+    { "id": "마감취소", "footer": "dual", "built": false, "note": "미빌드 — Footer=Dual + 텍스트 교체로 확장" },
+    { "id": "필수항목미입력", "footer": "single", "built": false, "note": "미빌드 — Footer=Single 변형 추가 필요" },
+    { "id": "중복안내", "footer": "single", "built": false, "note": "미빌드 — Footer=Single 변형 추가 필요" }
+  ],
+  "anatomy": {
+    "panel": "VERTICAL · w360 · py20(padding/block/md) · gap32(section/lg) · radius8(radius/8 전체) · border 없음 · shadow 없음(라이트)",
+    "header": "HORIZONTAL space-between · items-end · px24(padding/inline/lg) · [title + close]",
+    "body": "VERTICAL · gap8(spacing/8) · px24 · 텍스트 2줄",
+    "footer": "HORIZONTAL 우측정렬(END) · gap8(cluster/xxs) · px24 · [secondary, primary] (코어 Button XXSM, min-width 유지)"
+  },
+  "tokens": {
+    "_note": "색은 예외 없이 Semantic 경유(HEX 직접 금지). 신규 토큰 0 — 전부 기존 V3.0 슬롯 재사용.",
+    "panel-bg": "color/surface/raised",
+    "title-text": "color/text/title/primary",
+    "body-text": "color/text/body/primary",
+    "close-icon": "color/icon/gray-dark",
+    "panel-radius": "radius/8 (공유 --radius-modal-md 와 동일값)",
+    "overlay": "color/overlay (딤 — 모달 사용 시 적용, EX03 rgba 예외)",
+    "shadow-dark": "shadow/raised — 미신설(별건 백로그: reports/shadow-token-infra-backlog.md). 라이트는 그림자 없음."
+  },
+  "reuses": {
+    "coreComponents": ["button"],
+    "libraryIcons": ["ic_닫기 (V2.2 아이콘 라이브러리)"],
+    "note": "푸터 버튼 = 코어 Button(Variant=primary/secondary, Size=XXSM h28). 닫기 = V2.2 아이콘 라이브러리 ic_닫기 인스턴스. 시각 override 금지(Core Reuse Rule)."
+  },
+  "figma": {
+    "componentSetKey": "",
+    "figmaNodeId": "",
+    "targetFile": "V3.0-TEST — Overlay/Modal 섹션",
+    "builder": "plugins/figma-vars-installer/src/build-components.ts · buildModalShell",
+    "propertyMap": { "footer": ["single", "dual"] },
+    "builtThisRound": ["dual"],
+    "note": "변형축 Footer=Single|Dual. 이번 빌드는 Footer=Dual 1변형만(삭제). combineAsVariants 로 세트화 → Footer=Single 추가로 나머지(미입력·중복) 확장."
+  },
+  "governance": {
+    "verify": "none",
+    "verifyNote": "빌드 직후 상태. 🤖 component-verifier 독립 검증(원본 6706:4257 대조) 후 verify→new 로 갱신 예정.",
+    "coreReuseRule": "button 은 dependencies.coreComponents 명시. 상태·variant 부족 시 needs-core-update 기록(임의 구현 금지)."
+  }
+}

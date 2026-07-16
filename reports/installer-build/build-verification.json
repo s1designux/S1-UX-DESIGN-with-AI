@@ -1,9 +1,9 @@
 {
   "sourceFile": "plugins/figma-vars-installer/src/build-components.ts",
-  "sourceHash": "sha256:05265c259548803d4ef1a751a1132dda72e73dd657e4c89e12ed47467599b64d",
+  "sourceHash": "sha256:e5810b94db186b2e8550ae09c17d5a322b34a7b1fb00b6a2611b0d0beaf2aa2a",
   "verifiedBy": "component-verifier",
   "verdict": "pass",
   "changeType": "structural",
-  "verifiedAt": "2026-07-14T12:08:10.545Z",
-  "notes": "작업② date-picker Calendar Cell Standard 축에 Hover 추가(Tile 미러링, cell/bg/hover) + 스펙표 Standard5/Range4 2표 분리. Range·공용렌더러 불변. 4게이트(variantcov/rolecheck/keycheck/anatomy) 통과."
+  "verifiedAt": "2026-07-16T00:03:20.181Z",
+  "notes": "buildModalShell(Modal 확인계열 Footer=Dual '삭제') 신설 + 4배선. 원본 6706:4257 독립 대조 PASS: 6슬롯 토큰 바인딩·패널배경 surface/raised(세트래퍼 level-3 별개)·인스턴스 참조(코어 Button XXSM + V2.2 ic_닫기)·raw hex 0·Pretendard·라이트 그림자 없음·titleAlways."
 }

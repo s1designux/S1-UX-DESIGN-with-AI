@@ -54,6 +54,7 @@
     { "name": "Time Picker Cell", "reason": "요소 — Time Picker 안 셀" },
     { "name": "Table Cell", "reason": "요소 — Table 안 셀" },
     { "name": "Bottom Sheet", "reason": "공용 오버레이 컴포넌트 — 모바일 사용은 Filter Chip(·Time Picker) 섹션의 바텀시트로 표출(전용 섹션 불요). Figma 라이브러리 정본." },
-    { "name": "Bottom Sheet Option", "reason": "요소 — Bottom Sheet 안 옵션 행(Text/Checkbox/Radio/List)." }
+    { "name": "Bottom Sheet Option", "reason": "요소 — Bottom Sheet 안 옵션 행(Text/Checkbox/Radio/List)." },
+    { "name": "Modal", "reason": "확인 계열 공통 팝업 셸(overlay) — codeStatus in-progress, 아직 HTML 하네스 데모 없음(harnessStatus not-started). Figma 라이브러리 정본. HTML 섹션 생기면 sectionFor 로 이관." }
   ]
 }

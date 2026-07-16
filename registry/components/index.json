@@ -44,6 +44,10 @@
     {
       "id": "navigation",
       "label": "Navigation"
+    },
+    {
+      "id": "overlay",
+      "label": "Overlay"
     }
   ],
   "components": [
@@ -236,6 +240,21 @@
         "viewport(1280/1440/1920)는 full-width 반응형으로 통합. 데모 캔버스 px-240 미구현.",
         "figmaNodeId: 540:5942(pc_gnb). 미결: HD-GNB-1(로고 색상)·HD-GNB-2(유틸 아이콘 색상) 사용자 확인 대기.",
         "darkModeStatus: candidate — dark 시각 검증 미완료."
+      ]
+    },
+    {
+      "id": "modal",
+      "name": "Modal",
+      "label": "Modal (공통 팝업)",
+      "category": "overlay",
+      "path": "registry/components/modal.json",
+      "status": "in-progress",
+      "harnessStatus": "not-started",
+      "priority": 17,
+      "notes": [
+        "2026-07-15 루트 A 신규 편입: V2.4 modal_small \"삭제\"(6706:4257) 라이트 기준 Core(shell).",
+        "buildModalShell(build-components.ts) Footer=Dual 1변형. 코어 Button(XXSM) + ic_닫기 인스턴스 재사용, 신규 토큰 0.",
+        "다크 그림자(shadow/raised)·나머지 4 State(Footer=Single)·사이즈 S/M/L/XL 미룸. component-verifier 검증 대기."
       ]
     }
   ]

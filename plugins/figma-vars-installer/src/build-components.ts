@@ -3743,6 +3743,112 @@ async function buildBottomSheet(maps: BuildMaps, originY: number): Promise<{ set
   return { set, bottomY };
 }
 
+// ── Modal (공통 팝업 셸) — 딤 위 팝업. 헤더+본문+푸터, 코어 Button 재사용. ───────
+//   원본 V2.4 modal_small "삭제"(6706:4257) 라이트 기준. Footer=Dual 1변형(D2, river 결정).
+//   라이트: 테두리 없음·그림자 없음(Figma effects 실측 확정). 다크 그림자(shadow/raised)는 별건 백로그.
+//   나머지 4 State(미입력·중복·입력취소·마감취소)는 Footer=Single 변형 추가 + 텍스트 교체로 확장(구조 감안).
+//   색은 전부 semantic 경유(scv/boundPaint), 아이콘=라이브러리 인스턴스(makeIconInstance), 버튼=코어 재사용.
+async function buildModalShell(maps: BuildMaps, originY: number): Promise<{ set: ComponentSetNode; bottomY: number }> {
+  const PANEL_W = 360;
+
+  // 헤더(제목+닫기) + 본문(2줄) 콘텐츠 그룹. gap 32(section/lg).
+  const buildContentGroup = async (): Promise<FrameNode> => {
+    const group = figma.createFrame();
+    group.name = "content"; group.fills = [];
+    group.layoutMode = "VERTICAL"; group.primaryAxisSizingMode = "AUTO"; group.counterAxisSizingMode = "FIXED";
+    group.itemSpacing = 32; // 헤더 ↔ 본문 (section/lg)
+    // 헤더: 제목 ↔ 닫기 X (좌우 24, 하단정렬 items-end)
+    const header = figma.createFrame();
+    header.name = "header"; header.fills = [];
+    header.layoutMode = "HORIZONTAL"; header.primaryAxisSizingMode = "FIXED"; header.counterAxisSizingMode = "AUTO";
+    header.primaryAxisAlignItems = "SPACE_BETWEEN"; header.counterAxisAlignItems = "MAX";
+    header.paddingLeft = 24; header.paddingRight = 24; // spacing/padding/inline/lg
+    const title = await makeBoundText("삭제", 16, "Bold", scv(maps, "color/text/title/primary")); title.name = "title";
+    header.appendChild(title);
+    const closeIcon = await makeIconInstance("close", scv(maps, "color/icon/gray-dark"), 24, CLOSE_ICON_SVG);
+    closeIcon.name = "close"; header.appendChild(closeIcon);
+    group.appendChild(header);
+    try { header.layoutAlign = "STRETCH"; } catch (e) { /* */ }
+    // 본문: 2줄 (body/14R, color/text/body/primary)
+    const body = figma.createFrame();
+    body.name = "body"; body.fills = [];
+    body.layoutMode = "VERTICAL"; body.primaryAxisSizingMode = "AUTO"; body.counterAxisSizingMode = "FIXED"; body.itemSpacing = 8; // spacing/8
+    body.paddingLeft = 24; body.paddingRight = 24;
+    const bodyText = await makeBoundText("선택하신 항목이 삭제됩니다.\n정말 삭제 하시겠어요?", 14, "Regular", scv(maps, "color/text/body/primary"));
+    bodyText.name = "message";
+    body.appendChild(bodyText);
+    group.appendChild(body);
+    try { body.layoutAlign = "STRETCH"; } catch (e) { /* */ }
+    return group;
+  };
+
+  // 푸터 버튼 = 코어 Button(XXSM h28) 인스턴스 재사용. 라벨 교체. 시각 override 금지(Core Reuse Rule).
+  //   h28 = SIZES 의 XXSM(build-components:114). 못 찾으면 즉시 중단(우회·무음 스킵 금지).
+  const makeFooterButton = async (variant: "primary" | "secondary", label: string): Promise<InstanceNode> => {
+    const vLabel = variant === "primary" ? "Primary" : "Secondary";
+    const comp = await getReuseComp(`Button:${variant}:XXSM:Default`, "Button",
+      [`Variant=${vLabel}`, "Size=XXSM", "State=Default"]);
+    if (!comp) {
+      throw new Error(`[buildModalShell] 코어 Button 인스턴스 미발견: Button:${variant}:XXSM:Default (h28 사이즈 키 불일치 — 빌드 중단, 우회 안 함)`);
+    }
+    const inst = comp.createInstance();
+    inst.name = variant;
+    await setInstanceLabel(inst, label);
+    return inst;
+  };
+
+  // ── Footer=Dual 변형 1개("삭제") ──
+  const comp = figma.createComponent();
+  comp.name = "Footer=Dual";
+  comp.layoutMode = "VERTICAL"; comp.primaryAxisSizingMode = "AUTO"; comp.counterAxisSizingMode = "FIXED";
+  comp.resize(PANEL_W, 100);
+  comp.itemSpacing = 32; // 콘텐츠 ↔ 푸터 (section/lg)
+  comp.paddingTop = 20; comp.paddingBottom = 20; comp.paddingLeft = 0; comp.paddingRight = 0; // padding/block/md (좌우는 헤더/본문/푸터가 24)
+  comp.counterAxisAlignItems = "CENTER";
+  comp.fills = [boundPaint(scv(maps, "color/surface/raised"))]; // HD-A: surface/raised 재사용
+  try { comp.cornerRadius = 8; } catch (e) { /* radius/8 전체 모서리 */ }
+  comp.clipsContent = true;
+  // 라이트: 테두리 없음·그림자 없음(실측 확정) — stroke/effect 미설정 유지.
+
+  const content = await buildContentGroup();
+  comp.appendChild(content);
+  try { content.layoutAlign = "STRETCH"; } catch (e) { /* */ }
+
+  // 푸터: 우측정렬(END), gap 8, px 24. 버튼은 코어 min-width 유지(FILL 안 함 — 원본이 우측 고정폭).
+  const footer = figma.createFrame();
+  footer.name = "footer"; footer.fills = [];
+  footer.layoutMode = "HORIZONTAL"; footer.primaryAxisSizingMode = "FIXED"; footer.counterAxisSizingMode = "AUTO";
+  footer.primaryAxisAlignItems = "MAX"; footer.counterAxisAlignItems = "CENTER";
+  footer.paddingLeft = 24; footer.paddingRight = 24; footer.itemSpacing = 8; // spacing/cluster/xxs
+  comp.appendChild(footer);
+  try { footer.layoutAlign = "STRETCH"; } catch (e) { /* */ }
+  const noBtn = await makeFooterButton("secondary", "아니오");
+  footer.appendChild(noBtn);
+  const yesBtn = await makeFooterButton("primary", "네");
+  footer.appendChild(yesBtn);
+
+  setLightMode(comp, maps);
+
+  const set = figma.combineAsVariants([comp], figma.currentPage);
+  set.name = "Modal";
+  set.x = 0; set.y = originY;
+  BUILT_SETS["Modal"] = set;
+
+  const opts: SpecOpts = {
+    title: "Modal",
+    colHeaders: ["Dual"],
+    rowLabels: [""],
+    cellAt: (_r, _c) => comp,
+    lightX: SPEC_LIGHT_X, darkX: SPEC_DARK_X, originY, cellW: 400, cellH: 260, rowLabelW: 16,
+  };
+  let bottomY = await decorateSetFlat(set, opts, maps);
+  try { bottomY = Math.max(bottomY, await buildSpec(opts, maps)); } catch (e) { console.warn(e); }
+  // 세트 외부(변형 컨테이너) 배경 = bg/level-3 — 패널 surface/raised 가 라이트 흰색이라 흰 섹션에 묻힘 방지.
+  //   Bottom Sheet 동일 패턴. decorateSetFlat 이 set.fills 를 덮으므로 반드시 그 이후에 적용.
+  set.fills = [boundPaint(scv(maps, "color/bg/level-3"))];
+  return { set, bottomY };
+}
+
 // ── Calendar Cell / Calendar Tile — 레이아웃 등록기 ───────────────────────────
 // 빌드는 lazy(Calendar/Date Picker 가 선행 호출) → 이미 만들어진 세트를 originY 로 재배치 + 스펙 데코레이트.
 // CATEGORIES Form 에서 Date Picker 뒤 위치만 결정.
@@ -4660,6 +4766,8 @@ export const COMPONENT_CATEGORIES_GRID: { name: string; members: string[] }[][] 
     // Bottom Sheet: 메인 컨테이너(Bottom Sheet) → 요소(Bottom Sheet Option) 표시순서.
     //   빌드는 BUILD_DEPENDENCIES 로 요소(Option)·Checkbox·Radio·Button 이 먼저(카테고리를 Selection·Actions 뒤에 둠).
     { name: "Bottom Sheet", members: ["Bottom Sheet", "Bottom Sheet Option"] },
+    // Modal(overlay): 공통 팝업 셸. 코어 Button(Actions, 앞 카테고리)을 인스턴스로 부착 → 카테고리 순서로 선빌드 보장.
+    { name: "Modal",        members: ["Modal"] },
   ],
   // Filter Chip은 별도로 (Chip 아래에 배치될 예정)
   [
@@ -4707,6 +4815,7 @@ export const BUILD_DEPENDENCIES: Record<string, string[]> = {
   // Bottom Sheet 컨테이너 = Bottom Sheet Option(Text) 리스트 + Button 인스턴스 부착 → 둘 다 선빌드.
   //   Option 은 같은 카테고리(요소 먼저), Button 은 Actions 카테고리(그리드 순서로 선빌드).
   "Bottom Sheet": ["Bottom Sheet Option", "Button"],
+  "Modal": ["Button"],                // 푸터가 코어 Button(XXSM) 인스턴스 부착 → Button 선빌드(Actions 카테고리 앞이라 순서로도 보장)
   // Bottom Sheet Option 의 Checkbox/Radio 행 = Checkbox·Radio 컴포넌트 인스턴스 부착(Selection 카테고리 선빌드).
   "Bottom Sheet Option": ["Checkbox", "Radio"],
 };
@@ -4799,6 +4908,7 @@ export async function buildAllComponents(
     "Date Picker Mobile Bottom Sheet": (oy) => buildDatePickerBottomSheet(maps, oy),
     "Bottom Sheet":         (oy) => buildBottomSheet(maps, oy),
     "Bottom Sheet Option":  (oy) => buildBottomSheetOption(maps, oy),
+    "Modal":                (oy) => buildModalShell(maps, oy),
     "Calendar Cell":        (oy) => buildCalendarCellLayout(maps, oy),
     "Calendar Tile":        (oy) => buildCalendarTileLayout(maps, oy),
     "Time Picker":          (oy) => buildTimePicker(maps, oy),
@@ -4937,7 +5047,7 @@ export async function buildAllComponents(
     const H_GAP = 120;  // 섹션 사이 가로 간격
     const TOP_Y = 0;    // 모든 섹션 상단 정렬 기준 y
     const ROW = ["Platform", "Navigation", "Line Tab", "Pagination", "Actions", "Selection", "Chip",
-      "Form Control", "Date Picker", "Time Picker", "Table"];
+      "Form Control", "Date Picker", "Time Picker", "Table", "Modal"];
     // 세로 스택 섹션: ROW 의 가로 컬럼 아래에 쌓는다(같은 X). below 는 ROW 컬럼명만 받는다(체인 불가) —
     //   같은 below 값을 가진 항목은 STACKED 배열 순서대로 차례로 쌓인다(다중 지원, 아래 루프 참고).
     //   Filter Chip→Chip 아래 · Dropdown→Selection 아래 · Bottom Sheet→"Selection" 아래(Dropdown 바로 다음

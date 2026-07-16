@@ -142,6 +142,12 @@ typography:
 | --- | --- | --- | --- | --- | --- | --- |
 | default | --color-form-control-bg-default → color-surface-default<br>--color-form-control-border-default → color-border-default<br>--color-form-control-text-default → color-text-secondary | — | — | --color-form-control-border-error → color-status-error<br>--color-text-state-error → color-status-error | --color-form-control-border-correct → color-border-focus<br>--color-text-state-correct | --color-form-control-bg-disabled → color-bg-subtle<br>--color-form-control-border-disabled → color-border-subtle<br>--color-form-control-text-disabled → color-text-disabled |
 
+### Modal
+
+| variant | default | hover | pressed | disabled |
+| --- | --- | --- | --- | --- |
+| default | — | — | — | — |
+
 ### Navigation
 
 | variant | default | hover | active | disabled |
@@ -200,4 +206,4 @@ typography:
 | --- | --- | --- | --- |
 | default | --toggle-on-bg → color-control-bg-selected<br>--toggle-knob → color-control-indicator-selected | --toggle-off-bg → color-control-indicator-unselected<br>--toggle-knob → color-control-indicator-selected | --toggle-disabled-bg → color-control-bg-disabled<br>--toggle-knob → color-control-indicator-selected |
 
-<!-- generated-stamp: 2035d626febe · 손편집 금지 -->
+<!-- generated-stamp: 6d22f89933fa · 손편집 금지 -->
