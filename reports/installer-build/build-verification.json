@@ -1,9 +1,9 @@
 {
   "sourceFile": "plugins/figma-vars-installer/src/build-components.ts",
-  "sourceHash": "sha256:e5810b94db186b2e8550ae09c17d5a322b34a7b1fb00b6a2611b0d0beaf2aa2a",
+  "sourceHash": "sha256:fe2fe55e0449ff92b82e48aaea7b2f3630974aa539ee35340ddfc8483d3c3004",
   "verifiedBy": "component-verifier",
   "verdict": "pass",
   "changeType": "structural",
-  "verifiedAt": "2026-07-16T00:03:20.181Z",
-  "notes": "buildModalShell(Modal 확인계열 Footer=Dual '삭제') 신설 + 4배선. 원본 6706:4257 독립 대조 PASS: 6슬롯 토큰 바인딩·패널배경 surface/raised(세트래퍼 level-3 별개)·인스턴스 참조(코어 Button XXSM + V2.2 ic_닫기)·raw hex 0·Pretendard·라이트 그림자 없음·titleAlways."
+  "verifiedAt": "2026-07-16T05:35:25.764Z",
+  "notes": "Modal 그릇 2종(Footer Single|Dual) — buildModalVariant 신설·combineAsVariants([single,dual])·spec colHeaders 2열. (C)Figma 변형세트+(D)코드구조 독립검증 PASS"
 }

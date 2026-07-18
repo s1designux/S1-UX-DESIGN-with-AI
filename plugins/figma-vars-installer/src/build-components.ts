@@ -3744,15 +3744,16 @@ async function buildBottomSheet(maps: BuildMaps, originY: number): Promise<{ set
 }
 
 // ── Modal (공통 팝업 셸) — 딤 위 팝업. 헤더+본문+푸터, 코어 Button 재사용. ───────
-//   원본 V2.4 modal_small "삭제"(6706:4257) 라이트 기준. Footer=Dual 1변형(D2, river 결정).
+//   원본 V2.4 modal_small(6706:4218) 라이트 기준. 그릇 2종 = Footer(Single|Dual) 변형축(river 결정).
 //   라이트: 테두리 없음·그림자 없음(Figma effects 실측 확정). 다크 그림자(shadow/raised)는 별건 백로그.
-//   나머지 4 State(미입력·중복·입력취소·마감취소)는 Footer=Single 변형 추가 + 텍스트 교체로 확장(구조 감안).
+//   Single = 알림/설명체 1버튼("확인") · Dual = 확인/질문체 2버튼("취소"+"확인"). 제목 항상 존재.
+//   글자는 마스터에 직접 구움(makeBoundText) — 문구는 "예시"일 뿐(실제 카피는 UX라이팅 영역, 컴포넌트 아님).
 //   색은 전부 semantic 경유(scv/boundPaint), 아이콘=라이브러리 인스턴스(makeIconInstance), 버튼=코어 재사용.
 async function buildModalShell(maps: BuildMaps, originY: number): Promise<{ set: ComponentSetNode; bottomY: number }> {
   const PANEL_W = 360;
 
-  // 헤더(제목+닫기) + 본문(2줄) 콘텐츠 그룹. gap 32(section/lg).
-  const buildContentGroup = async (): Promise<FrameNode> => {
+  // 헤더(제목+닫기) + 본문(2줄) 콘텐츠 그룹. gap 32(section/lg). 제목·본문 글자는 인자로 주입(예시 문구).
+  const buildContentGroup = async (titleText: string, bodyText: string): Promise<FrameNode> => {
     const group = figma.createFrame();
     group.name = "content"; group.fills = [];
     group.layoutMode = "VERTICAL"; group.primaryAxisSizingMode = "AUTO"; group.counterAxisSizingMode = "FIXED";
@@ -3763,7 +3764,7 @@ async function buildModalShell(maps: BuildMaps, originY: number): Promise<{ set:
     header.layoutMode = "HORIZONTAL"; header.primaryAxisSizingMode = "FIXED"; header.counterAxisSizingMode = "AUTO";
     header.primaryAxisAlignItems = "SPACE_BETWEEN"; header.counterAxisAlignItems = "MAX";
     header.paddingLeft = 24; header.paddingRight = 24; // spacing/padding/inline/lg
-    const title = await makeBoundText("삭제", 16, "Bold", scv(maps, "color/text/title/primary")); title.name = "title";
+    const title = await makeBoundText(titleText, 16, "Bold", scv(maps, "color/text/title/primary")); title.name = "title";
     header.appendChild(title);
     const closeIcon = await makeIconInstance("close", scv(maps, "color/icon/gray-dark"), 24, CLOSE_ICON_SVG);
     closeIcon.name = "close"; header.appendChild(closeIcon);
@@ -3774,9 +3775,9 @@ async function buildModalShell(maps: BuildMaps, originY: number): Promise<{ set:
     body.name = "body"; body.fills = [];
     body.layoutMode = "VERTICAL"; body.primaryAxisSizingMode = "AUTO"; body.counterAxisSizingMode = "FIXED"; body.itemSpacing = 8; // spacing/8
     body.paddingLeft = 24; body.paddingRight = 24;
-    const bodyText = await makeBoundText("선택하신 항목이 삭제됩니다.\n정말 삭제 하시겠어요?", 14, "Regular", scv(maps, "color/text/body/primary"));
-    bodyText.name = "message";
-    body.appendChild(bodyText);
+    const bodyNode = await makeBoundText(bodyText, 14, "Regular", scv(maps, "color/text/body/primary"));
+    bodyNode.name = "message";
+    body.appendChild(bodyNode);
     group.appendChild(body);
     try { body.layoutAlign = "STRETCH"; } catch (e) { /* */ }
     return group;
@@ -3797,48 +3798,59 @@ async function buildModalShell(maps: BuildMaps, originY: number): Promise<{ set:
     return inst;
   };
 
-  // ── Footer=Dual 변형 1개("삭제") ──
-  const comp = figma.createComponent();
-  comp.name = "Footer=Dual";
-  comp.layoutMode = "VERTICAL"; comp.primaryAxisSizingMode = "AUTO"; comp.counterAxisSizingMode = "FIXED";
-  comp.resize(PANEL_W, 100);
-  comp.itemSpacing = 32; // 콘텐츠 ↔ 푸터 (section/lg)
-  comp.paddingTop = 20; comp.paddingBottom = 20; comp.paddingLeft = 0; comp.paddingRight = 0; // padding/block/md (좌우는 헤더/본문/푸터가 24)
-  comp.counterAxisAlignItems = "CENTER";
-  comp.fills = [boundPaint(scv(maps, "color/surface/raised"))]; // HD-A: surface/raised 재사용
-  try { comp.cornerRadius = 8; } catch (e) { /* radius/8 전체 모서리 */ }
-  comp.clipsContent = true;
-  // 라이트: 테두리 없음·그림자 없음(실측 확정) — stroke/effect 미설정 유지.
+  // ── 그릇 변형 빌더 (Footer=Single|Dual). 글자는 마스터에 직접 구움(예시 문구·UX라이팅 영역). ──
+  //   패널: VERTICAL · w360 · py20(padding/block/md) · gap32(section/lg) · radius8 · surface/raised · 라이트 그림자 없음.
+  const buildModalVariant = async (footer: "Single" | "Dual", titleText: string, bodyText: string): Promise<ComponentNode> => {
+    const comp = figma.createComponent();
+    comp.name = `Footer=${footer}`;
+    comp.layoutMode = "VERTICAL"; comp.primaryAxisSizingMode = "AUTO"; comp.counterAxisSizingMode = "FIXED";
+    comp.resize(PANEL_W, 100);
+    comp.itemSpacing = 32; // 콘텐츠 ↔ 푸터 (section/lg)
+    comp.paddingTop = 20; comp.paddingBottom = 20; comp.paddingLeft = 0; comp.paddingRight = 0; // padding/block/md (좌우는 헤더/본문/푸터가 24)
+    comp.counterAxisAlignItems = "CENTER";
+    comp.fills = [boundPaint(scv(maps, "color/surface/raised"))]; // HD-A: surface/raised 재사용
+    try { comp.cornerRadius = 8; } catch (e) { /* radius/8 전체 모서리 */ }
+    comp.clipsContent = true;
+    // 라이트: 테두리 없음·그림자 없음(실측 확정) — stroke/effect 미설정 유지.
 
-  const content = await buildContentGroup();
-  comp.appendChild(content);
-  try { content.layoutAlign = "STRETCH"; } catch (e) { /* */ }
+    const content = await buildContentGroup(titleText, bodyText);
+    comp.appendChild(content);
+    try { content.layoutAlign = "STRETCH"; } catch (e) { /* */ }
 
-  // 푸터: 우측정렬(END), gap 8, px 24. 버튼은 코어 min-width 유지(FILL 안 함 — 원본이 우측 고정폭).
-  const footer = figma.createFrame();
-  footer.name = "footer"; footer.fills = [];
-  footer.layoutMode = "HORIZONTAL"; footer.primaryAxisSizingMode = "FIXED"; footer.counterAxisSizingMode = "AUTO";
-  footer.primaryAxisAlignItems = "MAX"; footer.counterAxisAlignItems = "CENTER";
-  footer.paddingLeft = 24; footer.paddingRight = 24; footer.itemSpacing = 8; // spacing/cluster/xxs
-  comp.appendChild(footer);
-  try { footer.layoutAlign = "STRETCH"; } catch (e) { /* */ }
-  const noBtn = await makeFooterButton("secondary", "아니오");
-  footer.appendChild(noBtn);
-  const yesBtn = await makeFooterButton("primary", "네");
-  footer.appendChild(yesBtn);
+    // 푸터: 우측정렬(END), gap 8, px 24. 버튼은 코어 min-width 유지(FILL 안 함 — 원본이 우측 고정폭).
+    //   Single = primary "확인" 1개 · Dual = secondary "취소" + primary "확인" 2개.
+    const footerFrame = figma.createFrame();
+    footerFrame.name = "footer"; footerFrame.fills = [];
+    footerFrame.layoutMode = "HORIZONTAL"; footerFrame.primaryAxisSizingMode = "FIXED"; footerFrame.counterAxisSizingMode = "AUTO";
+    footerFrame.primaryAxisAlignItems = "MAX"; footerFrame.counterAxisAlignItems = "CENTER";
+    footerFrame.paddingLeft = 24; footerFrame.paddingRight = 24; footerFrame.itemSpacing = 8; // spacing/cluster/xxs
+    comp.appendChild(footerFrame);
+    try { footerFrame.layoutAlign = "STRETCH"; } catch (e) { /* */ }
+    if (footer === "Dual") {
+      footerFrame.appendChild(await makeFooterButton("secondary", "취소"));
+      footerFrame.appendChild(await makeFooterButton("primary", "확인"));
+    } else {
+      footerFrame.appendChild(await makeFooterButton("primary", "확인"));
+    }
 
-  setLightMode(comp, maps);
+    setLightMode(comp, maps);
+    return comp;
+  };
 
-  const set = figma.combineAsVariants([comp], figma.currentPage);
+  // 그릇 2종(표시순 Single→Dual). 예시 문구는 말투 예시(Single=알림 평서문 / Dual=확인 의문문).
+  const singleComp = await buildModalVariant("Single", "제목 영역", "요청하신 작업이 정상적으로 처리되었습니다.\n변경된 내용은 목록에서 확인하실 수 있어요.");
+  const dualComp = await buildModalVariant("Dual", "제목 영역", "변경한 내용이 저장되지 않고 사라집니다.\n정말 이 작업을 진행하시겠어요?");
+
+  const set = figma.combineAsVariants([singleComp, dualComp], figma.currentPage);
   set.name = "Modal";
   set.x = 0; set.y = originY;
   BUILT_SETS["Modal"] = set;
 
   const opts: SpecOpts = {
     title: "Modal",
-    colHeaders: ["Dual"],
+    colHeaders: ["Single", "Dual"],
     rowLabels: [""],
-    cellAt: (_r, _c) => comp,
+    cellAt: (_r, c) => (c === 0 ? singleComp : dualComp),
     lightX: SPEC_LIGHT_X, darkX: SPEC_DARK_X, originY, cellW: 400, cellH: 260, rowLabelW: 16,
   };
   let bottomY = await decorateSetFlat(set, opts, maps);

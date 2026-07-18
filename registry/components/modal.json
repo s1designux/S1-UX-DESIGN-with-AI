@@ -3,15 +3,15 @@
     "id": "modal",
     "name": "Modal",
     "category": "overlay",
-    "updatedAt": "2026-07-15",
-    "version": "0.1.0",
+    "updatedAt": "2026-07-16",
+    "version": "0.2.0",
     "tokenStatus": "stable",
     "codeStatus": "in-progress",
     "darkModeStatus": "planned",
     "a11yStatus": "planned",
     "figmaStatus": "existing",
     "harnessStatus": "not-started",
-    "description": "확인(compact 텍스트-확인) 계열 모달. 딤(overlay) 위 공통 팝업 셸 — 헤더(제목+닫기)+본문(텍스트)+푸터(버튼)의 3층 껍데기. 껍데기 고정, 제목은 항상 존재, 본문·버튼 라벨은 텍스트 속성으로 교체. 코어 Button·V2.2 라이브러리 아이콘 재사용(신규 보여주기 컴포넌트 아님)."
+    "description": "확인 계열 모달 그릇 2종(Footer Single|Dual). 딤(overlay) 위 공통 팝업 셸 — 헤더(제목+닫기)+본문(텍스트)+푸터(버튼)의 3층 껍데기. 그릇(제목·본문·푸터 3층)만 정본이며, 실제 문구는 예시(UX라이팅 플러그인 영역·컴포넌트 아님). Single=알림/설명체 1버튼, Dual=확인/질문체 2버튼. 제목 항상 존재. 코어 Button·V2.2 라이브러리 아이콘 재사용(신규 보여주기 컴포넌트 아님)."
   },
   "origin": {
     "classification": "B",
@@ -38,24 +38,42 @@
     "reason": "확인 계열은 짧은 텍스트 확인용 compact. 긴/큰 본문은 콘텐츠 계열(4크기·딤 85% 스크롤)이 담당."
   },
   "scope": "light",
-  "states": [
+  "templates": [
     {
-      "id": "삭제",
+      "id": "single",
+      "footer": "single",
+      "built": true,
+      "verify": "none",
+      "example": {
+        "title": "제목 영역",
+        "body": "요청하신 작업이 정상적으로 처리되었습니다.\n변경된 내용은 목록에서 확인하실 수 있어요.",
+        "buttons": [
+          { "role": "primary", "label": "확인" }
+        ]
+      },
+      "note": "알림/설명체(평서문) 1버튼. buildModalVariant('Single') 로 생성. example 문구는 말투 예시일 뿐 — 실제 카피는 UX라이팅 영역."
+    },
+    {
+      "id": "dual",
       "footer": "dual",
       "built": true,
-      "title": "삭제",
-      "body": "선택하신 항목이 삭제됩니다.\n정말 삭제 하시겠어요?",
-      "buttons": [
-        { "role": "secondary", "label": "아니오" },
-        { "role": "primary", "label": "네" }
-      ],
-      "note": "이번 빌드 대상 1건(Footer=Dual). buildModalShell 로 생성."
-    },
-    { "id": "입력취소", "footer": "dual", "built": false, "note": "미빌드 — Footer=Dual + 텍스트 교체로 확장" },
-    { "id": "마감취소", "footer": "dual", "built": false, "note": "미빌드 — Footer=Dual + 텍스트 교체로 확장" },
-    { "id": "필수항목미입력", "footer": "single", "built": false, "note": "미빌드 — Footer=Single 변형 추가 필요" },
-    { "id": "중복안내", "footer": "single", "built": false, "note": "미빌드 — Footer=Single 변형 추가 필요" }
+      "verify": "none",
+      "example": {
+        "title": "제목 영역",
+        "body": "변경한 내용이 저장되지 않고 사라집니다.\n정말 이 작업을 진행하시겠어요?",
+        "buttons": [
+          { "role": "secondary", "label": "취소" },
+          { "role": "primary", "label": "확인" }
+        ]
+      },
+      "note": "확인/질문체(의문문) 2버튼. buildModalVariant('Dual') 로 생성. 기존 '삭제' 예시 문구를 범용 예시로 교체. example 문구는 말투 예시일 뿐 — 실제 카피는 UX라이팅 영역."
+    }
   ],
+  "exampleStatesArchive": {
+    "_note": "V2.4 6706:4218 판독으로 확인한 실서비스 예시 문구 상태들. 컴포넌트/변형이 아니라 그릇(Single|Dual)에 담기는 '예시 문구'일 뿐이며 실제 카피는 UX라이팅 플러그인 영역. 그릇 정본과 무관(참고용 아카이브).",
+    "single": ["필수항목미입력", "중복안내"],
+    "dual": ["삭제", "입력취소", "마감취소"]
+  },
   "anatomy": {
     "panel": "VERTICAL · w360 · py20(padding/block/md) · gap32(section/lg) · radius8(radius/8 전체) · border 없음 · shadow 없음(라이트)",
     "header": "HORIZONTAL space-between · items-end · px24(padding/inline/lg) · [title + close]",
@@ -78,17 +96,18 @@
     "note": "푸터 버튼 = 코어 Button(Variant=primary/secondary, Size=XXSM h28). 닫기 = V2.2 아이콘 라이브러리 ic_닫기 인스턴스. 시각 override 금지(Core Reuse Rule)."
   },
   "figma": {
-    "componentSetKey": "",
-    "figmaNodeId": "",
-    "targetFile": "V3.0-TEST — Overlay/Modal 섹션",
-    "builder": "plugins/figma-vars-installer/src/build-components.ts · buildModalShell",
+    "componentSetKey": "(미발행 — 라이브러리 publish 시 기록)",
+    "figmaNodeId": "1256:5453",
+    "masterNodeIds": { "single": "1267:8594", "dual": "1256:5439" },
+    "targetFile": "V3.0-TEST(cysG5U1udpQqVagYY1hWHW) — Overlay/Modal 섹션",
+    "builder": "plugins/figma-vars-installer/src/build-components.ts · buildModalShell → buildModalVariant",
     "propertyMap": { "footer": ["single", "dual"] },
-    "builtThisRound": ["dual"],
-    "note": "변형축 Footer=Single|Dual. 이번 빌드는 Footer=Dual 1변형만(삭제). combineAsVariants 로 세트화 → Footer=Single 추가로 나머지(미입력·중복) 확장."
+    "builtThisRound": ["single", "dual"],
+    "note": "변형축 Footer=Single|Dual(2변형). 세트 1256:5453 제자리 편집(새 세트·orphan 없음). Dual 마스터 1256:5439 글자·라벨 교체, Single 마스터 1267:8594 는 Dual clone(secondary 제거). 변형 표시순 Single→Dual. componentSetKey 는 라이브러리 발행 전이라 미기록."
   },
   "governance": {
     "verify": "none",
-    "verifyNote": "빌드 직후 상태. 🤖 component-verifier 독립 검증(원본 6706:4257 대조) 후 verify→new 로 갱신 예정.",
+    "verifyNote": "빌드 직후 상태. 🤖 component-verifier(D) 독립 검증(원본 V2.4 6706:4218 그릇 구조=제목·본문·푸터 3층 대조, 문구는 대조 대상 아님) 후 verify→new 로 갱신 예정.",
     "coreReuseRule": "button 은 dependencies.coreComponents 명시. 상태·variant 부족 시 needs-core-update 기록(임의 구현 금지)."
   }
 }
