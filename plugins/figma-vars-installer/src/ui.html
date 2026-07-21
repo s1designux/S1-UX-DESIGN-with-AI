@@ -68,28 +68,16 @@
   .tab-panel { display: none; }
   .tab-panel.active { display: block; }
 
-  /* ── legacy swap ── */
-  .scan-intro { background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 8px; padding: 12px 14px; font-size: 11.5px; color: #6b7280; line-height: 1.6; margin-bottom: 14px; }
-  .scan-intro strong { color: #374151; }
-  .remote-list { display: flex; flex-direction: column; gap: 6px; margin-bottom: 14px; max-height: 260px; overflow-y: auto; }
-  .remote-row { border: 1px solid #e5e7eb; border-radius: 8px; padding: 10px 12px; cursor: pointer; transition: border-color 0.12s, background 0.12s; }
-  .remote-row:hover { border-color: #c7d2fe; background: #fafbff; }
-  .remote-row.active { border-color: #1d6ceb; background: #f0f6ff; }
-  .remote-row-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px; }
-  .remote-name { font-size: 11.5px; font-weight: 600; color: #374151; word-break: break-all; }
-  .remote-count { font-size: 10px; color: #9ca3af; flex-shrink: 0; margin-left: 8px; white-space: nowrap; }
-  .remote-arrow { font-size: 10px; color: #9ca3af; margin: 3px 0 5px; }
-  .suggestion-chips { display: flex; flex-wrap: wrap; gap: 5px; }
-  .chip-suggestion { padding: 4px 10px; border-radius: 20px; border: 1.5px solid #d1d5db; font-size: 11px; color: #374151; background: #fff; cursor: pointer; transition: all 0.12s; white-space: nowrap; }
-  .chip-suggestion:hover { border-color: #1d6ceb; color: #1d6ceb; }
-  .chip-suggestion.selected { border-color: #1d6ceb; background: #1d6ceb; color: #fff; }
-  .chip-suggestion.auto { border-color: #10b981; background: #f0fdf4; color: #065f46; }
-  .chip-suggestion.auto.selected { background: #10b981; color: #fff; border-color: #10b981; }
-  .chip-none { font-size: 10.5px; color: #9ca3af; padding: 4px 0; }
-  .expand-btn { margin-top: 5px; font-size: 10.5px; color: #6b7280; background: none; border: none; cursor: pointer; padding: 2px 0; text-decoration: underline; }
-  .expand-select { display: none; margin-top: 5px; width: 100%; padding: 5px 8px; border: 1px solid #d1d5db; border-radius: 6px; font-size: 11.5px; }
-  .scan-summary { font-size: 11px; color: #6b7280; margin-bottom: 10px; }
-  .scan-summary strong { color: #374151; }
+  /* ── info tooltip (사용 방법 ⓘ 호버) ── */
+  .info-ic { display: inline-flex; align-items: center; justify-content: center; margin-left: 8px; width: 18px; height: 18px; border-radius: 50%; color: var(--muted); cursor: help; position: relative; font-size: 13px; outline: none; }
+  .info-ic:hover, .info-ic:focus { color: #1d6ceb; }
+  .info-tip { display: none; position: absolute; top: 24px; left: 0; z-index: 50; width: 260px; padding: 10px 12px; background: #1f2430; color: #eef1f6; border-radius: 6px; font-size: 11px; line-height: 1.6; box-shadow: 0 6px 18px rgba(0,0,0,0.25); font-weight: 400; text-align: left; white-space: normal; }
+  .info-tip b { color: #fff; }
+  .info-ic:hover .info-tip, .info-ic:focus .info-tip { display: block; }
+  .info-hint { color: var(--muted); font-size: 11px; }
+  /* ── 모듈(재구성 필요) 카드 ── */
+  .module-card { border: 1px dashed #d1a54a; border-radius: 8px; padding: 10px 12px; margin-bottom: 6px; background: #fffdf6; }
+  .module-badge { display: inline-block; font-size: 10px; font-weight: 600; color: #8a6100; background: #fff3d6; border-radius: 4px; padding: 1px 6px; margin-left: 6px; }
 
   /* ── buttons ── */
   .btn-row { display: flex; gap: 8px; }
@@ -121,11 +109,15 @@
   #audit-root .toolbar { padding:8px 16px; border-bottom:1px solid var(--line); display:flex; gap:8px; align-items:center; }
   #audit-root .toolbar.mode-bar { background:var(--code-bg); }
   #audit-root .mode-label { font-size:11px; color:var(--muted); margin-right:4px; }
-  #audit-root .tabs { display:flex; padding:0 16px; border-bottom:1px solid var(--line); gap:0; }
-  #audit-root .tabs button { background:transparent; border:none; border-bottom:2px solid transparent; padding:8px 12px; border-radius:0; color:var(--muted); font-size:12px; }
-  #audit-root .tabs button.active { color:var(--fg); border-bottom-color:var(--btn-bg); font-weight:600; }
-  #audit-root .tabs .count { display:inline-block; padding:1px 6px; margin-left:4px; background:var(--code-bg); border-radius:8px; font-size:10px; }
-  #audit-root .tabs button.active .count { background:var(--btn-bg); color:var(--btn-fg); }
+  /* 검수 요약 — 버튼 줄 최우측 (하단은 깔끔하게) */
+  #audit-root .audit-summary { margin-left:auto; text-align:right; font-size:11px; color:var(--muted); line-height:1.4; }
+  /* 하위 필터 = 칩 메뉴(pill) */
+  #audit-root .tabs { display:flex; padding:10px 16px 4px; gap:6px; flex-wrap:wrap; }
+  #audit-root .tabs button { background:var(--bg); border:1px solid var(--line); border-radius:999px; padding:4px 12px; color:var(--muted); font-size:11.5px; cursor:pointer; transition:all .12s; }
+  #audit-root .tabs button:hover { border-color:var(--btn-bg); color:var(--btn-bg); }
+  #audit-root .tabs button.active { background:var(--btn-bg); border-color:var(--btn-bg); color:var(--btn-fg); font-weight:600; }
+  #audit-root .tabs .count { display:inline-block; padding:0 5px; margin-left:4px; background:var(--code-bg); border-radius:8px; font-size:10px; }
+  #audit-root .tabs button.active .count { background:rgba(255,255,255,.28); color:var(--btn-fg); }
   #audit-root button { font:inherit; cursor:pointer; padding:6px 12px; border-radius:6px; border:1px solid var(--line); background:transparent; color:var(--fg); }
   #audit-root button.primary { background:var(--btn-bg); color:var(--btn-fg); border-color:var(--btn-bg); }
   #audit-root button.primary:disabled { opacity:0.4; cursor:not-allowed; }
@@ -178,9 +170,11 @@
   #audit-root .footer { position:sticky; bottom:0; padding:10px 16px; border-top:1px solid var(--line); background:var(--bg); display:flex; align-items:center; gap:8px; }
   #audit-root .footer .selected-info { flex:1; font-size:11px; color:var(--muted); }
   #audit-root .footer .selected-info b { color:var(--fg); font-weight:600; }
-  #audit-root .mode-tabs { display:flex; padding:6px 12px; border-bottom:1px solid var(--line); gap:4px; background:var(--code-bg); }
-  #audit-root .mode-tabs button { font:inherit; background:transparent; border:1px solid transparent; border-radius:6px; padding:5px 12px; font-size:12px; color:var(--muted); cursor:pointer; }
-  #audit-root .mode-tabs button.active { background:var(--bg); color:var(--fg); border-color:var(--line); font-weight:600; }
+  /* 상위 탭 = 라인탭(밑줄 인디케이터) */
+  #audit-root .mode-tabs { display:flex; padding:0 16px; border-bottom:1px solid var(--line); gap:0; background:var(--bg); }
+  #audit-root .mode-tabs button { font:inherit; background:transparent; border:none; border-bottom:2px solid transparent; border-radius:0; padding:10px 2px; margin-right:16px; font-size:13px; color:var(--muted); cursor:pointer; transition:color .12s, border-color .12s; }
+  #audit-root .mode-tabs button:hover { color:var(--fg); }
+  #audit-root .mode-tabs button.active { color:var(--fg); border-bottom-color:var(--btn-bg); font-weight:600; }
   #audit-root .view { display:none; }
   #audit-root .view.active { display:block; }
   #audit-root .ref-info { padding:8px 16px; background:var(--code-bg); border-bottom:1px solid var(--line); font-size:11px; color:var(--muted); }
@@ -213,7 +207,7 @@
 <div class="header">
   <div class="header-icon">🎨</div>
   <div>
-    <div class="header-title">에스원 디자인시스템</div>
+    <div class="header-title">에스원 UX Guide Installer</div>
     <div class="header-sub">Variables 설치 · GUI 검수</div>
   </div>
   <div class="header-build" title="이 설치 패키지가 빌드된 시각">업데이트<strong>{{BUILD_TIME}}</strong></div>
@@ -295,85 +289,43 @@
 <div class="tab-panel" id="tab-audit">
 <div id="audit-root">
 
-  <header>
-    <div class="stats" id="stats">대기 중</div>
-  </header>
-  <div class="mode-tabs">
-    <button data-mode="color" class="active">색상 검수</button>
-    <button data-mode="swap">컴포넌트 교체</button>
-    <button data-mode="report">리포트</button>
+  <!-- 단일 흐름: 프레임 선택 → 검수 → [컴포넌트][그 외] 칩으로 결과 분류 -->
+  <div class="toolbar">
+    <button class="primary" id="btn-audit">선택 프레임 검수</button>
+    <span class="info-ic" tabindex="0" aria-label="사용 방법">ⓘ<span class="info-tip">개선안 만들 <b>프레임 하나</b>를 선택하고 <b>검수</b>를 누르면, <b>원본은 그대로 두고</b> 옆에 <b>“— 개선안”</b> 복제본을 만들어: 정본으로 <b>교체 가능한 것</b>은 <b>[컴포넌트]</b>에서 교체 제안하고, 그 외 <b>HEX 색상</b>은 <b>[그 외]</b>에서 유사 시멘틱 토큰을 제안합니다.</span></span>
+    <span id="improved-summary" class="audit-summary"></span>
+  </div>
+  <div class="tabs" id="result-chips" style="display:none;">
+    <button data-bucket="component" class="active">컴포넌트 <span class="count" id="cnt-component">0</span></button>
+    <button data-bucket="color">그 외 <span class="count" id="cnt-color">0</span></button>
   </div>
 
-  <!-- ────────── 색상 검수 모드 ────────── -->
-  <div class="view active" id="view-color">
-    <div class="toolbar">
-      <button class="primary" id="btn-scan">선택 항목 스캔</button>
-      <span class="mode-label" style="margin-left:8px;">선택 노드 모드 일괄 적용</span>
-      <button id="btn-mode-light">라이트</button>
-      <button id="btn-mode-dark">다크</button>
-      <button id="btn-mode-clear">초기화</button>
-    </div>
-    <div class="tabs">
-      <button data-tab="component" class="active">컴포넌트 매칭 <span class="count" id="tab-count-component">0</span></button>
-      <button data-tab="generic">일반 토큰 <span class="count" id="tab-count-generic">0</span></button>
-      <button data-tab="offguide">가이드 외 색상 <span class="count" id="tab-count-offguide">0</span></button>
-    </div>
-    <div class="list" id="list">
-      <div class="empty">
-        Figma에서 컴포넌트·프레임을 선택한 후 <b>선택 항목 스캔</b>을 누르세요.<br/>
-        Semantic Color V2 / Foundation V2 외 변수와 직접 입력된 HEX 값을 찾아 V2 토큰을 제안합니다.
-      </div>
-    </div>
-    <div class="footer">
-      <div class="selected-info"><b id="picked-count">0</b>개 항목 선택됨</div>
-      <button class="primary" id="btn-apply-selected" disabled>선택 항목 적용</button>
-    </div>
-  </div>
-
-  <!-- ────────── 컴포넌트 교체 모드 ────────── -->
-  <div class="view" id="view-swap">
-    <div class="toolbar">
-      <button class="primary" id="btn-register-ref">1. 기준 등록</button>
-      <button id="btn-scan-swap" disabled>2. 교체 후보 스캔</button>
-      <button id="btn-clear-ref" style="margin-left:auto;" title="저장된 기준 초기화">기준 초기화</button>
-    </div>
-    <div class="ref-info" id="ref-info">
-      <b>기준 미등록</b> · UX 가이드 Figma 파일에서 컴포넌트 페이지/프레임 선택 후 <b>1. 기준 등록</b> 클릭
-    </div>
+  <!-- 컴포넌트 버킷: 교체 가능한 항목 (모듈은 최하단) -->
+  <div class="view active" id="bucket-component">
     <div class="list" id="swap-list">
-      <div class="empty" style="text-align:left;padding:24px 16px;">
-        <div style="text-align:center;font-size:13px;color:var(--fg);margin-bottom:12px;"><b>사용 방법</b></div>
-        <div style="font-size:11px;color:var(--muted);line-height:1.7;padding:10px 14px;background:var(--code-bg);border-radius:4px;">
-          <b>1단계.</b> UX 가이드 Figma 파일을 열고 컴포넌트 정리 페이지/프레임 선택<br/>
-          → <b>1. 기준 등록</b> 클릭 (자동 저장, 한 번만 등록하면 됨)<br/><br/>
-          <b>2단계.</b> 시안 파일로 전환 → 검수할 페이지/프레임 선택<br/>
-          → <b>2. 교체 후보 스캔</b> 클릭<br/><br/>
-          <b>3단계.</b> 카드별 [교체] 또는 하단 [전체 교체] 클릭<br/>
-          → 라이브러리에서 자동 import하여 swap 실행
-        </div>
-        <div style="margin-top:12px;font-size:11px;color:var(--muted);line-height:1.6;">
-          ※ 기준 컴포넌트가 라이브러리로 <b>publish</b>되어 있어야 다른 파일에서 교체 가능합니다.
-        </div>
+      <div class="empty" style="text-align:center;padding:28px 16px;color:var(--muted);font-size:12px;line-height:1.6;">
+        개선안 만들 프레임 하나를 선택하고 <b>검수</b>를 누르세요. <span class="info-hint">(ⓘ 사용 방법)</span>
       </div>
     </div>
+    <div id="improved-manual" style="display:none;"></div>
+    <div id="improved-failed" style="display:none;"></div>
+    <div id="improved-modules" style="display:none;"></div>
     <div class="footer">
       <div class="selected-info"><b id="swap-count">0</b>건의 교체 후보</div>
       <button class="primary" id="btn-apply-swap-all" disabled>전체 교체</button>
     </div>
   </div>
 
-  <div class="view" id="view-report">
-    <div class="toolbar">
-      <button class="primary" id="btn-build-report">캔버스 리포트 생성</button>
-    </div>
-    <div class="list" id="report-area">
-      <div class="empty" style="text-align:left;padding:20px 16px;">
-        <div style="font-size:11px;color:var(--muted);line-height:1.7;padding:10px 14px;background:var(--code-bg);border-radius:4px;">
-          현재 선택한 페이지/프레임을 검수해 <b>검수 결과서 프레임</b>을 캔버스에 생성합니다.<br/>
-          · <b>HEX 직접 사용</b> · <b>가이드 외 색상</b> · <b>레거시 컴포넌트 교체 후보</b>를 한 장으로 정리<br/>
-          · 레거시 항목은 <b>컴포넌트 교체</b> 탭에서 기준을 먼저 등록해야 집계됩니다.
-        </div>
+  <!-- 그 외 버킷: 교체 불가 → HEX를 시멘틱 토큰으로 제안 -->
+  <div class="view" id="bucket-color">
+    <div class="list" id="list">
+      <div class="empty" style="text-align:center;padding:28px 16px;color:var(--muted);font-size:12px;">
+        HEX 직접 색상 항목이 여기 표시됩니다.
       </div>
+    </div>
+    <div class="footer">
+      <div class="selected-info"><b id="picked-count">0</b>개 항목 선택됨</div>
+      <button class="primary" id="btn-apply-selected" disabled>선택 항목 적용</button>
     </div>
   </div>
 
@@ -700,8 +652,6 @@ function catLabel(cat) {
 
 const $ = (sel) => document.querySelector(sel);
 const list = $("#list");
-const stats = $("#stats");
-const btnScan = $("#btn-scan");
 const toast = $("#toast");
 
 function showToast(msg) {
@@ -714,76 +664,156 @@ function send(type, payload) {
   parent.postMessage({ pluginMessage: { type: 'audit:' + type, payload } }, "*");
 }
 
-btnScan.addEventListener("click", () => {
-  list.innerHTML = '<div class="empty">스캔 중…</div>';
-  stats.textContent = "스캔 중…";
+// ─── 단일 검수: 프레임 선택 → 개선안(복제본) + 통합 결과 ────────────────────
+$("#btn-audit").addEventListener("click", () => {
+  const btn = $("#btn-audit");
+  btn.disabled = true;
+  btn.textContent = "검수 중…";
+  $("#improved-summary").innerHTML = "";
   picks = {};
   activeCat = {};
   updatePickedCount();
-  send("scan");
+  send("build-improved");
 });
 
-$("#btn-mode-light").addEventListener("click", () => send("set-mode", { mode: "light" }));
-$("#btn-mode-dark").addEventListener("click", () => send("set-mode", { mode: "dark" }));
-$("#btn-mode-clear").addEventListener("click", () => send("set-mode", { mode: "clear" }));
-
-const __btnReport = document.getElementById("btn-build-report");
-if (__btnReport) __btnReport.addEventListener("click", () => {
-  __btnReport.disabled = true; __btnReport.textContent = "생성 중…";
-  send("build-report", { when: new Date().toLocaleString("ko-KR") });
-});
-
-document.querySelectorAll("#audit-root .tabs button").forEach((btn) => {
+// 결과 칩 전환 (컴포넌트 / 그 외)
+document.querySelectorAll("#result-chips button").forEach((btn) => {
   btn.addEventListener("click", () => {
-    activeTab = btn.dataset.tab;
-    document.querySelectorAll("#audit-root .tabs button").forEach((b) => b.classList.toggle("active", b === btn));
-    rerenderTab();
+    const bucket = btn.dataset.bucket;
+    document.querySelectorAll("#result-chips button").forEach((b) => b.classList.toggle("active", b === btn));
+    $("#bucket-component").classList.toggle("active", bucket === "component");
+    $("#bucket-color").classList.toggle("active", bucket === "color");
   });
 });
 
-// 모드 전환 (색상 검수 / 컴포넌트 교체)
-document.querySelectorAll(".mode-tabs button").forEach((btn) => {
-  btn.addEventListener("click", () => {
-    activeMode = btn.dataset.mode;
-    document.querySelectorAll(".mode-tabs button").forEach((b) => b.classList.toggle("active", b === btn));
-    document.querySelectorAll("#audit-root .view").forEach((v) => v.classList.toggle("active", v.id === "view-" + activeMode));
-  });
-});
+function renderImprovedSummary(payload) {
+  const btn = $("#btn-audit");
+  btn.disabled = false;
+  btn.textContent = "선택 프레임 검수";
+  const box = $("#improved-summary");
 
-// ─── 컴포넌트 교체 모드 핸들러 ────────────────────────────
-$("#btn-register-ref").addEventListener("click", () => send("register-reference"));
-$("#btn-scan-swap").addEventListener("click", () => {
-  if (referencePool.length === 0) return;
-  $("#swap-list").innerHTML = '<div class="empty">스캔 중…</div>';
-  send("scan-swap", { pool: referencePool });
-});
-$("#btn-clear-ref").addEventListener("click", () => {
-  if (referencePool.length === 0) {
-    showToast("초기화할 기준 없음");
+  if (!payload.ok) {
+    box.innerHTML = "";
+    const hint = payload.code === "need-install"
+      ? "이 페이지에 정본 컴포넌트가 없습니다. [설치] 탭을 먼저 실행해주세요."
+      : (payload.message || "개선안을 만들지 못했습니다.");
+    showToast("⚠ " + hint);
     return;
   }
-  if (!confirm("저장된 기준 컴포넌트 풀을 초기화하시겠습니까?")) return;
-  send("clear-reference");
-});
+
+  // 버튼 줄 최우측에 핵심 수치만 콤팩트하게 (하단 목록은 깔끔하게 유지)
+  const s = payload.summary;
+  const parts = [];
+  parts.push('<span style="color:var(--high);font-weight:600;">자동교체 ' + s.autoSwapped + '</span>');
+  if (s.ambiguous) parts.push('<span style="color:var(--med);font-weight:600;">확인필요 ' + s.ambiguous + '</span>');
+  if (s.manualNeeded) parts.push('<span style="color:var(--med);font-weight:600;">수동매핑 ' + s.manualNeeded + '</span>');
+  if (s.moduleNeeded) parts.push('<span style="color:#8a6100;font-weight:600;">모듈 ' + s.moduleNeeded + '</span>');
+  if (s.failed) parts.push('<span style="color:var(--low);font-weight:600;">실패 ' + s.failed + '</span>');
+  if (s.textUnpreserved) parts.push('<span style="color:var(--med);">텍스트 보존안됨 ' + s.textUnpreserved + '</span>');
+  box.innerHTML = parts.join(' · ');
+}
+
+// 수동 매핑 — 이름이 정본과 안 맞아 자동 선정 못 한 컴포넌트. 가장 비슷한 정본을 상위 제안(드롭다운),
+// 사용자가 고른 정본으로 교체(+텍스트 보존). 최종 선택은 사용자 몫(추측 자동교체 아님).
+let manualMap = {};
+function renderManualList(list) {
+  const box = $("#improved-manual");
+  manualMap = {};
+  if (!list || list.length === 0) { box.style.display = "none"; box.innerHTML = ""; return; }
+  box.style.display = "block";
+  let html = '<div style="font-size:11px;color:var(--fg);font-weight:600;margin:10px 2px 4px;">이름이 달라 자동 매칭 안 된 컴포넌트 ' + list.length + '건 — 바꿀 정본을 고르고 <b>교체</b></div>';
+  html += '<div style="font-size:10px;color:var(--muted);margin:0 2px 8px;">가장 비슷한 정본을 맨 위에 제안했습니다. 맞지 않으면 목록에서 직접 고르세요.</div>';
+  for (const c of list) {
+    manualMap[c.id] = c;
+    const opts = c.suggestions.map((s, i) =>
+      '<option value="' + i + '">' + escape(s.name) + (s.score > 0 ? ' (유사도 ' + Math.round(s.score * 100) + '%)' : '') + '</option>'
+    ).join('');
+    // 자동 교체 카드(renderSwapList)와 동일 규격: head · meta · (드롭다운) · apply-row(선택+교체)
+    html += '<div class="swap-card" data-manual-id="' + escape(c.id) + '">';
+    html += '<div class="swap-card-head"><div class="iname">' + escape(c.instanceName) + '</div><span style="font-size:10px;color:var(--med);font-weight:600;">이름 다름</span></div>';
+    html += '<div class="swap-card-meta"><span class="from">현재: ' + escape(c.currentMainName) + ' · ' + escape(c.currentMainPath) + '</span></div>';
+    html += '<select data-role="manual-pick" style="width:100%;margin-top:6px;font-size:11px;padding:5px;">' + opts + '</select>';
+    html += '<div class="apply-row">';
+    html += '<button data-action="manual-select">Figma에서 선택</button>';
+    html += '<button data-action="manual-swap" class="primary">교체</button>';
+    html += '</div></div>';
+  }
+  box.innerHTML = html;
+  box.querySelectorAll('[data-manual-id]').forEach((card) => {
+    const id = card.dataset.manualId;
+    card.querySelector('[data-action="manual-select"]').addEventListener("click", () => {
+      const c = manualMap[id];
+      if (c) send("select-node", { nodeId: c.instanceId });
+    });
+    card.querySelector('[data-action="manual-swap"]').addEventListener("click", () => {
+      const c = manualMap[id];
+      if (!c) return;
+      const sel = card.querySelector('[data-role="manual-pick"]');
+      const sug = c.suggestions[parseInt(sel.value, 10) || 0];
+      if (!sug) return;
+      const btn = card.querySelector('[data-action="manual-swap"]');
+      btn.disabled = true; btn.textContent = "…";
+      // 사용자가 고른 정본을 대상으로 하는 교체 후보를 구성 → 기존 apply-swap(lenient) 재사용
+      const candidate = {
+        id: c.id, instanceId: c.instanceId, instanceName: c.instanceName,
+        currentMainId: "", currentMainName: c.currentMainName, currentMainPath: c.currentMainPath,
+        suggestedId: sug.id, suggestedKey: sug.key, suggestedType: sug.type,
+        suggestedName: sug.name, suggestedSource: sug.source, confidence: "ambiguous"
+      };
+      send("apply-swap", { candidate });
+    });
+  });
+}
+
+// 모듈(여러 부품이 뭉친 것) — 통째/leaf 교체 부적절. "재구성 필요"로 표시만, Figma 선택은 제공.
+let moduleMap = {};
+function renderModuleList(list) {
+  const box = $("#improved-modules");
+  moduleMap = {};
+  if (!list || list.length === 0) { box.style.display = "none"; box.innerHTML = ""; return; }
+  box.style.display = "block";
+  let html = '<div style="font-size:11px;color:var(--fg);font-weight:600;margin:10px 2px 4px;">여러 부품이 뭉친 모듈 ' + list.length + '건 — 최신 컴포넌트로 재구성 필요</div>';
+  html += '<div style="font-size:10px;color:var(--muted);margin:0 2px 8px;">이런 모듈은 통째 교체가 부적절해 제외했습니다. 재구성이 필요하면 해당 모듈을 알려주세요(별도 작업).</div>';
+  for (const c of list) {
+    moduleMap[c.id] = c;
+    html += '<div class="module-card" data-module-id="' + escape(c.id) + '">';
+    html += '<div class="swap-card-head"><div class="iname">' + escape(c.instanceName) + '</div><span class="module-badge">모듈 · 부품 ' + (c.nestedCount || 0) + '개</span></div>';
+    html += '<div class="swap-card-meta"><span class="from">현재: ' + escape(c.currentMainName) + '</span></div>';
+    html += '<div class="apply-row"><button data-action="module-select">Figma에서 선택</button></div>';
+    html += '</div>';
+  }
+  box.innerHTML = html;
+  box.querySelectorAll('[data-module-id]').forEach((card) => {
+    const id = card.dataset.moduleId;
+    card.querySelector('[data-action="module-select"]').addEventListener("click", () => {
+      const c = moduleMap[id];
+      if (c) send("select-node", { nodeId: c.instanceId });
+    });
+  });
+}
+
+// 실패 건 — 재시도해도 같은 결과라 교체 버튼 없이 사유만 보여준다
+function renderFailedList(list) {
+  const box = $("#improved-failed");
+  if (!list || list.length === 0) { box.style.display = "none"; box.innerHTML = ""; return; }
+  box.style.display = "block";
+  let html = '<div style="font-size:11px;color:var(--low);font-weight:600;margin:8px 2px 4px;">교체할 수 없는 항목 ' + list.length + '건</div>';
+  for (const c of list) {
+    html += '<div style="padding:8px 10px;margin-bottom:4px;background:var(--code-bg);border-radius:4px;font-size:11px;line-height:1.6;">';
+    html += '<b>' + escape(c.instanceName) + '</b> · ' + escape(c.currentMainName) + '<br/>';
+    html += '<span style="color:var(--muted);">사유: ' + escape(c.demoteReason || "알 수 없음") + '</span>';
+    html += '</div>';
+  }
+  box.innerHTML = html;
+}
+
+// ─── 컴포넌트 교체 모드 핸들러 ────────────────────────────
 $("#btn-apply-swap-all").addEventListener("click", () => {
   if (swapCandidates.length === 0) return;
   $("#btn-apply-swap-all").disabled = true;
   $("#btn-apply-swap-all").textContent = "교체 중…";
   send("apply-swap-multi", { candidates: swapCandidates });
 });
-
-let referenceSourceName = "";
-function renderRefInfo(restored) {
-  const el = $("#ref-info");
-  if (referencePool.length === 0) {
-    el.innerHTML = '<b>기준 미등록</b> · UX 가이드 Figma 파일에서 컴포넌트 페이지/프레임 선택 후 <b>1. 기준 등록</b> 클릭';
-  } else {
-    const restoreTag = restored ? ' <span style="color:var(--high);font-weight:600;">· 자동 복원됨</span>' : '';
-    const src = referenceSourceName ? ` · 출처: <b>${escape(referenceSourceName)}</b>` : '';
-    el.innerHTML = `<b>기준:</b> ${referenceRoots.map(escape).join(", ")} · <b>${referencePool.length}</b>개 컴포넌트${src}${restoreTag}`;
-  }
-  $("#btn-scan-swap").disabled = referencePool.length === 0;
-}
 
 function renderSwapList(diag) {
   const listEl = $("#swap-list");
@@ -833,15 +863,20 @@ function renderSwapList(diag) {
     const div = document.createElement("div");
     div.className = "swap-card";
     div.dataset.id = c.id;
+    const badge = c.confidence === "ambiguous"
+      ? '<span style="font-size:10px;color:var(--med);font-weight:600;">확인필요</span>'
+      : '';
     div.innerHTML = `
       <div class="swap-card-head">
         <div class="iname">${escape(c.instanceName)}</div>
+        ${badge}
       </div>
       <div class="swap-card-meta">
         <span class="from">현재: ${escape(c.currentMainName)} · ${escape(c.currentMainPath)}</span>
         <span class="swap-arrow">→</span>
         <span class="to">교체: ${escape(c.suggestedName)} (기준)</span>
       </div>
+      ${c.demoteReason ? `<div style="font-size:10px;color:var(--muted);margin-top:2px;">사유: ${escape(c.demoteReason)}</div>` : ""}
       <div class="apply-row">
         <button data-action="select">Figma에서 선택</button>
         <button data-action="apply-swap" class="primary">교체</button>
@@ -913,38 +948,16 @@ function updatePickedCount() {
 }
 
 function rerenderTab() {
-  const offGuideList = lastIssues.filter((i) => i.offGuide);
-  const componentMatched = lastIssues.filter((i) => i.hasComponentMatch && !i.offGuide);
-  const generic = lastIssues.filter((i) => !i.hasComponentMatch && !i.offGuide);
-  $("#tab-count-component").textContent = componentMatched.length;
-  $("#tab-count-generic").textContent = generic.length;
-  const ogCountEl = $("#tab-count-offguide"); if (ogCountEl) ogCountEl.textContent = offGuideList.length;
-
-  // 자동 탭 전환: 활성 탭이 비었으면 데이터 있는 탭으로 이동
-  if (lastIssues.length > 0) {
-    const bucket = { component: componentMatched, generic: generic, offguide: offGuideList };
-    if ((bucket[activeTab] || []).length === 0) {
-      const next = ["component", "generic", "offguide"].find((t) => bucket[t].length > 0);
-      if (next) activeTab = next;
-    }
-    document.querySelectorAll("#audit-root .tabs button").forEach((b) => {
-      b.classList.toggle("active", b.dataset.tab === activeTab);
-    });
-  }
-
-  const filtered = activeTab === "component" ? componentMatched
-    : activeTab === "offguide" ? offGuideList
-    : generic;
+  // 통합 흐름: 교체 불가(그 외) = 색상 이슈 전체를 한 목록에 렌더. 하위 필터 없음.
+  const filtered = lastIssues;
+  const cntColor = $("#cnt-color"); if (cntColor) cntColor.textContent = lastIssues.length;
   if (lastIssues.length === 0) {
-    list.innerHTML = '<div class="empty">위반 사항 없음 ✓<br/>모든 색상이 V2 토큰에 바인딩되어 있습니다.</div>';
+    list.innerHTML = '<div class="empty" style="text-align:center;padding:28px 16px;color:var(--muted);font-size:12px;">HEX 직접 색상 없음 ✓<br/>모든 색상이 토큰에 바인딩되어 있습니다.</div>';
     return;
   }
-  if (filtered.length === 0) {
-    list.innerHTML = '<div class="empty">이 탭에 해당하는 항목 없음</div>';
-    return;
-  }
-  list.innerHTML = activeTab === "offguide"
-    ? '<div class="offguide-banner">⚠ 우리 가이드 팔레트에 없는 색입니다. 자동 교정 대상이 아니며 <b>디자인 결정이 필요</b>합니다 (가장 가까운 팔레트 색은 아래 참고).</div>'
+  const hasOffguide = lastIssues.some((i) => i.offGuide);
+  list.innerHTML = hasOffguide
+    ? '<div class="offguide-banner">⚠ 일부는 가이드 팔레트에 없는 색입니다(가장 가까운 색 참고). 나머지는 유사 시멘틱 토큰을 제안합니다.</div>'
     : "";
   for (const issue of filtered) {
     const div = document.createElement("div");
@@ -1091,14 +1104,7 @@ function escape(s) {
 function handleAuditUiMessage(msg) {
   if (msg.type === "scan-result") {
     lastIssues = msg.payload.issues;
-    const s = msg.payload.stats;
-    stats.textContent = `${s.scanned} 노드 · 위반 ${s.issuesCount}건`;
     rerenderTab();
-  } else if (msg.type === "report-done") {
-    const rbtn = document.getElementById("btn-build-report");
-    if (rbtn) { rbtn.disabled = false; rbtn.textContent = "캔버스 리포트 생성"; }
-    const c = msg.payload.counts || {};
-    showToast(`검수 리포트 생성 완료 — HEX ${c.hex||0} · 외부변수 ${c.extVar||0} · 가이드외 ${c.offGuide||0} · 레거시 ${c.legacy||0}`);
   } else if (msg.type === "apply-result") {
     const { issueId, suggestionIndex, ok } = msg.payload;
     const el = list.querySelector(`[data-id="${issueId}"]`);
@@ -1150,41 +1156,55 @@ function handleAuditUiMessage(msg) {
     } else {
       showToast(`${p.count}개 노드 적용${p.skipped ? ` · ${p.skipped}개 skip` : ""}`);
     }
-  } else if (msg.type === "register-reference-result") {
+  } else if (msg.type === "build-improved-result") {
+    renderImprovedSummary(msg.payload);
     if (msg.payload.ok) {
-      referencePool = msg.payload.pool;
-      referenceRoots = msg.payload.rootNames;
-      referenceSourceName = msg.payload.sourceFileName || "";
-      renderRefInfo(false);
-      const wo = msg.payload.withoutKey || 0;
-      const warn = wo > 0 ? ` · ${wo}개는 key 없음 (publish 안 됨 — 다른 파일에선 교체 불가)` : "";
-      showToast(`${referencePool.length}개 컴포넌트 기준 등록 완료${warn}`);
-    } else {
-      showToast(msg.payload.message || "기준 등록 실패");
+      // ── 컴포넌트 버킷: 교체 가능한 항목 ──
+      swapCandidates = msg.payload.candidates || [];
+      const manual = msg.payload.manual || [];
+      const modules = msg.payload.modules || [];
+      renderSwapList(null);
+      renderModuleList(modules);
+      renderManualList(manual);
+      renderFailedList(msg.payload.failed || []);
+      // ── 그 외 버킷: HEX 색상 → 시멘틱 토큰 제안 ──
+      lastIssues = msg.payload.colorIssues || [];
+      picks = {}; activeCat = {}; updatePickedCount();
+      rerenderTab();
+      // ── 칩 카운트 + 결과 칩 노출 ──
+      const compCount = swapCandidates.length + manual.length + modules.length;
+      $("#cnt-component").textContent = compCount;
+      $("#cnt-color").textContent = lastIssues.length;
+      $("#result-chips").style.display = "flex";
     }
-  } else if (msg.type === "reference-loaded") {
-    referencePool = msg.payload.pool;
-    referenceRoots = msg.payload.rootNames;
-    referenceSourceName = msg.payload.sourceFileName || "";
-    renderRefInfo(true);
-  } else if (msg.type === "reference-cleared") {
-    referencePool = [];
-    referenceRoots = [];
-    swapCandidates = [];
-    renderRefInfo(false);
-    renderSwapList();
-    showToast("기준 초기화 완료");
   } else if (msg.type === "scan-swap-result") {
     swapCandidates = msg.payload.candidates || [];
     renderSwapList(msg.payload.diagnostics);
   } else if (msg.type === "apply-swap-result") {
-    const { id, ok } = msg.payload;
+    const { id, ok, variantReset, unpreservedCount } = msg.payload;
+    // 수동 매핑 카드(#improved-manual)에서 온 교체면 그 카드를 갱신
+    const manualCard = $("#improved-manual").querySelector(`[data-manual-id="${id}"]`);
+    if (manualCard) {
+      const btn = manualCard.querySelector('[data-action="manual-swap"]');
+      const sel = manualCard.querySelector('[data-role="manual-pick"]');
+      if (ok) {
+        manualCard.classList.add("applied");
+        if (btn) { btn.textContent = variantReset ? "교체됨 · 상태 리셋" : "교체됨"; btn.disabled = true; }
+        if (sel) sel.disabled = true;
+        delete manualMap[id];
+      } else {
+        if (btn) { btn.textContent = "교체"; btn.disabled = false; }
+      }
+      const unpMsgM = unpreservedCount ? ` · 텍스트 ${unpreservedCount}건 보존안됨` : "";
+      showToast(ok ? ((variantReset ? "교체 완료 · 상태는 기본값으로 리셋됨" : "교체 완료") + unpMsgM) : "교체 실패");
+      return;
+    }
     const card = $("#swap-list").querySelector(`[data-id="${id}"]`);
     if (card) {
       if (ok) {
         card.classList.add("applied");
         const btn = card.querySelector('[data-action="apply-swap"]');
-        if (btn) { btn.textContent = "교체됨"; btn.disabled = true; }
+        if (btn) { btn.textContent = variantReset ? "교체됨 · 상태 리셋" : "교체됨"; btn.disabled = true; }
         // 후보 리스트에서 제거 (상태 관리)
         swapCandidates = swapCandidates.filter((c) => c.id !== id);
         $("#swap-count").textContent = swapCandidates.length;
@@ -1194,7 +1214,8 @@ function handleAuditUiMessage(msg) {
         if (btn) { btn.textContent = "실패"; btn.disabled = false; }
       }
     }
-    showToast(ok ? "교체 완료" : "교체 실패");
+    const unpMsg = unpreservedCount ? ` · 텍스트 ${unpreservedCount}건 보존안됨` : "";
+    showToast(ok ? ((variantReset ? "교체 완료 · 상태는 기본값으로 리셋됨" : "교체 완료") + unpMsg) : "교체 실패");
   } else if (msg.type === "apply-swap-multi-result") {
     const p = msg.payload;
     for (const id of p.applied) {
@@ -1209,8 +1230,11 @@ function handleAuditUiMessage(msg) {
     $("#swap-count").textContent = swapCandidates.length;
     $("#btn-apply-swap-all").disabled = swapCandidates.length === 0;
     $("#btn-apply-swap-all").textContent = "전체 교체";
-    showToast(`${p.applied.length}건 교체 완료${p.fail ? ` · ${p.fail}건 실패` : ""}`);
+    showToast(`${p.applied.length}건 교체 완료${p.variantResetCount ? ` · ${p.variantResetCount}건 상태 리셋` : ""}${p.unpreservedTotal ? ` · 텍스트 ${p.unpreservedTotal}건 보존안됨` : ""}${p.fail ? ` · ${p.fail}건 실패` : ""}`);
   } else if (msg.type === "error") {
+    // 개선안 생성 중 예외가 나도 버튼이 잠긴 채로 굳지 않도록 복구
+    const bi = $("#btn-build-improved");
+    if (bi && bi.disabled) { bi.disabled = false; bi.textContent = "설치기 기준으로 개선안 만들기"; }
     showToast("Error: " + msg.payload.message);
   }
 }

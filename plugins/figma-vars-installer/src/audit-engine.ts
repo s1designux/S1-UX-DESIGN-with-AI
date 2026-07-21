@@ -364,8 +364,9 @@ function pickSuggestions(
   return result;
 }
 
-async function audit(): Promise<{ issues: Issue[]; stats: { scanned: number; issuesCount: number; highCount: number } }> {
-  const sel = figma.currentPage.selection;
+async function audit(rootOverride?: SceneNode): Promise<{ issues: Issue[]; stats: { scanned: number; issuesCount: number; highCount: number } }> {
+  // rootOverride 를 주면 그 노드(예: 개선안 복제본)를 대상으로, 없으면 현재 선택 영역.
+  const sel: readonly SceneNode[] = rootOverride ? [rootOverride] : figma.currentPage.selection;
   if (sel.length === 0) {
     return { issues: [], stats: { scanned: 0, issuesCount: 0, highCount: 0 } };
   }
@@ -582,7 +583,13 @@ type SwapCandidate = {
   suggestedType: "COMPONENT" | "COMPONENT_SET";
   suggestedName: string;
   suggestedSource?: string;     // 출처 파일명
+  confidence: "high" | "ambiguous";  // 이름 매칭 신뢰도 (exact/normalized=high, partial=ambiguous)
+  demoteReason?: string;        // 자동교체에서 강등된 사유 (사용자에게 "왜 확인이 필요한지" 표시)
 };
+
+// swap 실행 결과 — 강등(demoted)과 진짜 실패(failed)를 구분
+type SwapOutcome = "swapped" | "demoted" | "failed";
+type SwapMode = "strict" | "lenient";
 
 // 노드 자손에서 모든 COMPONENT/COMPONENT_SET 수집 (key 포함)
 function collectComponents(root: BaseNode, sourceFileName?: string): ReferenceComponent[] {
@@ -627,56 +634,210 @@ type SwapDiagnostics = {
   referencePoolSize: number;
   matchedNameCount: number;    // mainComponent 이름이 기준 풀에 있는 인스턴스 수
   sameIdSkippedCount: number;  // 같은 컴포넌트라서 스킵된 수
+  skippedNestedCount: number;  // 인스턴스 내부(하위레이어)라 교체 불가로 제외된 수
+  noMatchCount: number;        // 기준 풀에 대응 이름이 없어 대상에서 빠진 수
   candidateCount: number;
   instancesPreview: { name: string; mainName: string; mainTopId: string; matched: boolean; sameAsTarget: boolean }[];
 };
+
+// 인스턴스 하위레이어인가? — 조상 체인에 INSTANCE 가 있으면 Figma 가 swapComponent 를 막는다
+// ("Cannot modify a node inside an instance"). 후보에서 제외해야 실패 버킷이 오염되지 않는다.
+function hasInstanceAncestor(n: BaseNode): boolean {
+  let p: BaseNode | null = n.parent;
+  while (p && p.type !== "PAGE" && p.type !== "DOCUMENT") {
+    if (p.type === "INSTANCE") return true;
+    p = p.parent;
+  }
+  return false;
+}
 
 // 이름 정규화 — 공백·하이픈·언더스코어·슬래시 제거 후 소문자
 function normalizeName(s: string): string {
   return (s || "").toLowerCase().replace(/[\s_\-\/]+/g, "").trim();
 }
 
+type MatchType = "exact" | "normalized" | "partial";
+type ReferenceMatch = { match: ReferenceComponent | null; matchType: MatchType | null };
+
 // 후보 풀에서 이름 매칭 — 정확 일치 → 정규화 일치 → 부분 일치 순으로 시도
-function findReferenceMatch(name: string, pool: ReferenceComponent[]): ReferenceComponent | null {
+// matchType 을 함께 반환해 호출부가 신뢰도(confidence)를 판정한다.
+function findReferenceMatch(name: string, pool: ReferenceComponent[]): ReferenceMatch {
   const lower = name.toLowerCase();
   // 1. 정확 일치 (소문자만)
   const exact = pool.find((p) => p.name.toLowerCase() === lower);
-  if (exact) return exact;
+  if (exact) return { match: exact, matchType: "exact" };
   // 2. 정규화 일치 (공백·하이픈·슬래시 제거)
   const norm = normalizeName(name);
   const normMatch = pool.find((p) => normalizeName(p.name) === norm);
-  if (normMatch) return normMatch;
+  if (normMatch) return { match: normMatch, matchType: "normalized" };
   // 3. 부분 일치 (양방향 substring, 정규화 후) — 최소 3자 이상일 때만
   if (norm.length >= 3) {
     const part = pool.find((p) => {
       const pn = normalizeName(p.name);
       return pn.length >= 3 && (pn.indexOf(norm) >= 0 || norm.indexOf(pn) >= 0);
     });
-    if (part) return part;
+    if (part) return { match: part, matchType: "partial" };
   }
-  return null;
+  return { match: null, matchType: null };
+}
+
+// ─── 이름 유사도(수동 매핑 자동 제안용) ────────────────────────────────
+// 이름이 정본과 "완전히" 일치하지 않는 레거시 컴포넌트는 자동 교체하지 않는다(추측 금지).
+// 대신 이 점수로 "가장 비슷한 정본"을 상위에 제안하고, 최종 선택은 사용자가 한다.
+function bigrams(s: string): string[] {
+  const out: string[] = [];
+  for (let i = 0; i < s.length - 1; i++) out.push(s.slice(i, i + 2));
+  return out;
+}
+function diceCoefficient(a: string, b: string): number {
+  if (a === b) return 1;
+  const A = bigrams(a), B = bigrams(b);
+  if (A.length === 0 || B.length === 0) return 0;
+  const freq: { [g: string]: number } = {};
+  for (const g of A) freq[g] = (freq[g] || 0) + 1;
+  let hit = 0;
+  for (const g of B) { if (freq[g] > 0) { freq[g]--; hit++; } }
+  return (2 * hit) / (A.length + B.length);
+}
+function tokenizeName(s: string): string[] {
+  return (s || "").toLowerCase().split(/[\s_\-\/,.]+/).filter((t) => t.length > 0);
+}
+// 0..1 — 문자 바이그램 유사 + 토큰 겹침 + 부분문자열 중 최댓값
+function scoreNameSimilarity(legacy: string, canon: string): number {
+  const ln = normalizeName(legacy), cn = normalizeName(canon);
+  if (!ln || !cn) return 0;
+  if (ln === cn) return 1;
+  let score = diceCoefficient(ln, cn);
+  const lt = new Set(tokenizeName(legacy));
+  const ct = tokenizeName(canon);
+  if (ct.length) {
+    let overlap = 0;
+    for (const t of ct) if (lt.has(t)) overlap++;
+    score = Math.max(score, overlap / ct.length);
+  }
+  if (ln.indexOf(cn) >= 0 || cn.indexOf(ln) >= 0) score = Math.max(score, 0.6);
+  return score;
+}
+type MappingSuggestion = { id: string; key: string; type: "COMPONENT" | "COMPONENT_SET"; name: string; source?: string; score: number };
+// 여러 부품이 뭉친 "모듈"(예: 테이블) 판정 임계 — 후손 인스턴스가 이 수 이상이면 통째/leaf 교체 대신 "재구성 필요"로 플래그.
+const MODULE_NESTED_THRESHOLD = 5;
+type ModuleFlag = { id: string; instanceId: string; instanceName: string; currentMainName: string; currentMainPath: string; nestedCount: number };
+// 미매칭 레거시 인스턴스 1건 + 유사도 내림차순 정본 제안 목록(최상위=가장 유사)
+type ManualMapCandidate = {
+  id: string;
+  instanceId: string;
+  instanceName: string;
+  currentMainName: string;
+  currentMainPath: string;
+  suggestions: MappingSuggestion[];
+};
+function rankSuggestions(legacyName: string, pool: ReferenceComponent[]): MappingSuggestion[] {
+  return pool
+    .map((p) => ({ id: p.id, key: p.key, type: p.type, name: p.name, source: p.sourceFileName, score: Math.round(scoreNameSimilarity(legacyName, p.name) * 100) / 100 }))
+    .sort((a, b) => (b.score - a.score) || a.name.localeCompare(b.name));
+}
+
+// ─── variant(변형) 정규화 — 딱 두 가지만: ①대소문자 무시 ②값 동의어 사전 ───
+// 추측 매핑 금지. 사전에 없으면 정규화 실패로 두어 strict 가 강등하도록 한다.
+// 복합 축(예: platform=pc-md)은 분해하지 않는다.
+const VARIANT_VALUE_SYNONYMS: { [k: string]: string } = {
+  small: "sm", sm: "sm",
+  medium: "md", md: "md",
+  large: "lg", lg: "lg",
+};
+
+function normAxisName(a: string): string {
+  return (a || "").toLowerCase().replace(/[\s_\-]+/g, "");
+}
+
+function normVariantValue(v: string): string {
+  const base = (v || "").toLowerCase().replace(/[\s_\-]+/g, "");
+  return VARIANT_VALUE_SYNONYMS[base] || base;
+}
+
+type VariantPick = { target: ComponentNode | null; reason: string | null; axisLoss: number };
+
+// 정본 세트에서 레거시 인스턴스의 변형 조합에 해당하는 낱개 variant 를 고른다.
+// 규칙(§0 실측 반영) — 교집합 축만 일치시킨다:
+//   · 양쪽에 다 있는 축   → 정규화 후 값이 같아야 함 (필수)
+//   · 정본에만 있는 축     → defaultVariant 값 사용
+//   · 레거시에만 있는 축   → 버림 (정본에 개념이 없음) = axisLoss 로 집계
+function pickVariantTarget(set: ComponentSetNode, legacyVP: { [k: string]: string } | null): VariantPick {
+  const variants = set.children.filter((c) => c.type === "COMPONENT") as ComponentNode[];
+  if (variants.length === 0) return { target: null, reason: "no-variant-match", axisLoss: 0 };
+  const def = (set.defaultVariant || variants[0]) as ComponentNode;
+  if (!legacyVP) return { target: def, reason: null, axisLoss: 0 };
+
+  const defVP = def.variantProperties || {};
+  const canonAxes = Object.keys(defVP);
+  const canonByNorm: { [norm: string]: string } = {};
+  for (const a of canonAxes) canonByNorm[normAxisName(a)] = a;
+
+  // 교집합 축 산출 + 레거시 전용 축(=버려지는 축) 집계
+  const shared: { canon: string; want: string }[] = [];
+  let axisLoss = 0;
+  for (const la of Object.keys(legacyVP)) {
+    const ca = canonByNorm[normAxisName(la)];
+    if (ca) shared.push({ canon: ca, want: normVariantValue(legacyVP[la]) });
+    else axisLoss++;
+  }
+  // 겹치는 축이 하나도 없으면 보존할 게 없다.
+  // 정본 세트에 낱개가 하나뿐이면 고를 여지가 없으므로 그대로 교체(리셋 위험 없음).
+  // 여러 개면 임의로 기본값을 고르는 셈이라 = 조용한 상태 리셋 → 강등(안전 우선).
+  if (shared.length === 0) {
+    if (variants.length === 1) return { target: def, reason: null, axisLoss };
+    return { target: null, reason: "no-variant-match", axisLoss };
+  }
+
+  const matches = variants.filter((v) => {
+    const vp = v.variantProperties || {};
+    return shared.every((s) => normVariantValue(vp[s.canon]) === s.want);
+  });
+  if (matches.length === 0) return { target: null, reason: "no-variant-match", axisLoss };
+  if (matches.length === 1) return { target: matches[0], reason: null, axisLoss };
+
+  // 여럿이면 정본에만 있는 축을 defaultVariant 값으로 좁힌다
+  const otherAxes = canonAxes.filter((a) => !shared.some((s) => s.canon === a));
+  const narrowed = matches.filter((v) => {
+    const vp = v.variantProperties || {};
+    return otherAxes.every((a) => vp[a] === defVP[a]);
+  });
+  if (narrowed.length === 1) return { target: narrowed[0], reason: null, axisLoss };
+  // 유일하게 안 좁혀지면 강등(안전 우선)
+  return { target: null, reason: "no-variant-match", axisLoss };
 }
 
 // 기준 풀과 현재 instance를 비교해 swap 후보 산정 + 진단 정보 반환
-async function scanSwapCandidates(pool: ReferenceComponent[]): Promise<{ candidates: SwapCandidate[]; diagnostics: SwapDiagnostics }> {
-  const sel = figma.currentPage.selection;
+async function scanSwapCandidates(
+  pool: ReferenceComponent[],
+  roots?: readonly BaseNode[]
+): Promise<{ candidates: SwapCandidate[]; diagnostics: SwapDiagnostics; manualCandidates: ManualMapCandidate[]; modules: ModuleFlag[] }> {
+  // roots 를 주면 그 노드들을 대상으로(개선안 복제본 스캔용), 없으면 기존대로 현재 선택 영역
+  const sel: readonly BaseNode[] = roots && roots.length ? roots : figma.currentPage.selection;
   const diag: SwapDiagnostics = {
     selectionCount: sel.length,
     instanceCount: 0,
     referencePoolSize: pool.length,
     matchedNameCount: 0,
     sameIdSkippedCount: 0,
+    skippedNestedCount: 0,
+    noMatchCount: 0,
     candidateCount: 0,
     instancesPreview: [],
   };
-  if (sel.length === 0) return { candidates: [], diagnostics: diag };
+  if (sel.length === 0) return { candidates: [], diagnostics: diag, manualCandidates: [], modules: [] };
   const candidates: SwapCandidate[] = [];
+  const manualCandidates: ManualMapCandidate[] = [];
+  const modules: ModuleFlag[] = [];
+  const manualSeen = new Set<string>();
   const seen = new Set<string>();
   let counter = 0;
   for (const root of sel) {
     const insts = collectInstances(root);
     diag.instanceCount += insts.length;
     for (const inst of insts) {
+      // 인스턴스 하위레이어는 Figma 가 교체를 막으므로 후보에서 제외
+      if (hasInstanceAncestor(inst)) { diag.skippedNestedCount++; continue; }
       const main = await inst.getMainComponentAsync();
       if (!main) {
         if (diag.instancesPreview.length < 8) diag.instancesPreview.push({ name: inst.name, mainName: "(mainComponent null)", mainTopId: "", matched: false, sameAsTarget: false });
@@ -687,11 +848,14 @@ async function scanSwapCandidates(pool: ReferenceComponent[]): Promise<{ candida
         : main.name;
       const currentTopId = main.parent && main.parent.type === "COMPONENT_SET" ? main.parent.id : main.id;
       // 유연 매칭: 정확 → 정규화 → 부분 일치
-      let target = findReferenceMatch(compareName, pool);
+      let found = findReferenceMatch(compareName, pool);
       // 인스턴스 노드 이름으로 보조 매칭 (예: instance.name이 "Button"이면 그것도 시도)
-      if (!target && inst.name && inst.name !== compareName) {
-        target = findReferenceMatch(inst.name, pool);
+      if (!found.match && inst.name && inst.name !== compareName) {
+        found = findReferenceMatch(inst.name, pool);
       }
+      const target = found.match;
+      // 신뢰도: 정확/정규화 일치 = high, 부분 일치 = ambiguous(사용자 확인 필요)
+      const confidence: "high" | "ambiguous" = found.matchType === "partial" ? "ambiguous" : "high";
       const matched = !!target;
       const sameAsTarget = !!target && target.id === currentTopId;
       if (matched) diag.matchedNameCount++;
@@ -699,7 +863,38 @@ async function scanSwapCandidates(pool: ReferenceComponent[]): Promise<{ candida
       if (diag.instancesPreview.length < 8) {
         diag.instancesPreview.push({ name: inst.name, mainName: compareName, mainTopId: currentTopId, matched, sameAsTarget });
       }
-      if (!matched || sameAsTarget) continue;
+      if (!matched) {
+        diag.noMatchCount++;
+        // 이름이 정본과 안 맞는 top-level 인스턴스(중첩은 이미 위에서 제외). 같은 컴포넌트는 대표 1건만.
+        if (pool.length > 0 && !manualSeen.has(currentTopId)) {
+          manualSeen.add(currentTopId);
+          // 내부에 부품이 많이 뭉친 "모듈"(예: 테이블)은 통째/leaf 교체가 부적절 → 재구성 필요로만 플래그.
+          // (내부 중첩 인스턴스는 Figma 가 개별 교체를 막고, 이름도 정본과 달라 leaf 자동매칭도 불가.)
+          const nestedCount = collectInstances(inst).length - 1; // 자신 제외 후손 인스턴스 수
+          if (nestedCount >= MODULE_NESTED_THRESHOLD) {
+            modules.push({
+              id: "g" + (++counter),
+              instanceId: inst.id,
+              instanceName: inst.name,
+              currentMainName: compareName,
+              currentMainPath: await describeComponentLocation(main),
+              nestedCount,
+            });
+          } else {
+            // 단순(부품 적은) 미매칭 → "가장 비슷한 정본"을 상위 제안하는 수동 매핑 후보(최종 선택은 사용자).
+            manualCandidates.push({
+              id: "m" + (++counter),
+              instanceId: inst.id,
+              instanceName: inst.name,
+              currentMainName: compareName,
+              currentMainPath: await describeComponentLocation(main),
+              suggestions: rankSuggestions(inst.name && inst.name !== compareName ? `${compareName} ${inst.name}` : compareName, pool),
+            });
+          }
+        }
+        continue;
+      }
+      if (sameAsTarget) continue;
       const key = inst.id + ":" + target!.id;
       if (seen.has(key)) continue;
       seen.add(key);
@@ -716,11 +911,12 @@ async function scanSwapCandidates(pool: ReferenceComponent[]): Promise<{ candida
         suggestedType: target!.type,
         suggestedName: target!.name,
         suggestedSource: target!.sourceFileName,
+        confidence,
       });
     }
   }
   diag.candidateCount = candidates.length;
-  return { candidates, diagnostics: diag };
+  return { candidates, diagnostics: diag, manualCandidates, modules };
 }
 
 async function describeComponentLocation(comp: ComponentNode): Promise<string> {
@@ -733,46 +929,292 @@ async function describeComponentLocation(comp: ComponentNode): Promise<string> {
   return pageName || "(외부)";
 }
 
-// swap 대상 ComponentNode 가져오기 — 현재 파일이면 직접, 아니면 라이브러리에서 import
-async function resolveSwapTarget(candidate: SwapCandidate): Promise<ComponentNode | null> {
-  // 1) 현재 파일 내 ID로 시도
+type ResolveResult = {
+  target: ComponentNode | null;
+  reason: string | null;       // null=성공 · "no-variant-match" · "resolve-failed"
+  variantReset: boolean;       // lenient 에서 조합을 못 찾아 기본값으로 교체한 경우
+  axisLoss: number;            // 레거시에만 있어 버려진 축 수
+};
+
+// 정본 세트/컴포넌트 노드 확보 — 현재 파일이면 직접, 아니면 라이브러리에서 import
+async function loadSuggestedNode(candidate: SwapCandidate): Promise<BaseNode | null> {
   try {
     const n = await figma.getNodeByIdAsync(candidate.suggestedId);
-    if (n) {
-      if (n.type === "COMPONENT") return n as ComponentNode;
-      if (n.type === "COMPONENT_SET") return (n as ComponentSetNode).defaultVariant;
-    }
+    if (n && (n.type === "COMPONENT" || n.type === "COMPONENT_SET")) return n;
   } catch {}
-  // 2) key가 있으면 라이브러리에서 import
   if (candidate.suggestedKey) {
     try {
       if (candidate.suggestedType === "COMPONENT_SET") {
-        const set = await figma.importComponentSetByKeyAsync(candidate.suggestedKey);
-        return set.defaultVariant;
-      } else {
-        const comp = await figma.importComponentByKeyAsync(candidate.suggestedKey);
-        return comp;
+        return await figma.importComponentSetByKeyAsync(candidate.suggestedKey);
       }
-    } catch (e) {
-      return null;
-    }
+      return await figma.importComponentByKeyAsync(candidate.suggestedKey);
+    } catch { return null; }
   }
   return null;
 }
 
-// 단건 swap 실행
-async function applySwap(candidate: SwapCandidate): Promise<{ ok: boolean; reason?: string }> {
-  const inst = await figma.getNodeByIdAsync(candidate.instanceId);
-  if (!inst || inst.type !== "INSTANCE") return { ok: false, reason: "인스턴스를 찾을 수 없음" };
-  const swapTarget = await resolveSwapTarget(candidate);
-  if (!swapTarget) {
-    return { ok: false, reason: "기준 컴포넌트를 import할 수 없습니다. 기준 파일에서 컴포넌트가 publish되었는지 확인해주세요." };
+// swap 대상 ComponentNode 결정 — 원본 인스턴스의 변형(State/Size 등)을 보존한다.
+//  · strict  (자동교체용): 조합을 못 찾으면 target=null + reason="no-variant-match" → 강등
+//  · lenient (수동교체용): 조합을 못 찾으면 defaultVariant + variantReset=true → "상태 리셋됨"
+async function resolveSwapTarget(
+  candidate: SwapCandidate,
+  mode: SwapMode,
+  legacyVP: { [k: string]: string } | null
+): Promise<ResolveResult> {
+  const node = await loadSuggestedNode(candidate);
+  if (!node) return { target: null, reason: "resolve-failed", variantReset: false, axisLoss: 0 };
+
+  // 변형 없는 단일 컴포넌트 — 리셋 위험 없음, 두 모드 동일
+  if (node.type === "COMPONENT") {
+    return { target: node as ComponentNode, reason: null, variantReset: false, axisLoss: 0 };
   }
+
+  const set = node as ComponentSetNode;
+  const pick = pickVariantTarget(set, legacyVP);
+  if (pick.target) {
+    return { target: pick.target, reason: null, variantReset: false, axisLoss: pick.axisLoss };
+  }
+  if (mode === "lenient") {
+    // 사용자가 명시적으로 고른 교체이므로 기본값 리셋을 허용하되 뱃지로 알린다
+    const fallback = (set.defaultVariant || (set.children.filter((c) => c.type === "COMPONENT")[0] as ComponentNode)) || null;
+    if (fallback) return { target: fallback as ComponentNode, reason: null, variantReset: true, axisLoss: pick.axisLoss };
+    return { target: null, reason: "resolve-failed", variantReset: false, axisLoss: pick.axisLoss };
+  }
+  return { target: null, reason: pick.reason || "no-variant-match", variantReset: false, axisLoss: pick.axisLoss };
+}
+
+// ─── 텍스트 콘텐츠 보존 (swap 시 시안 입력 텍스트가 정본 기본값으로 리셋되는 것 방지) ───
+// 원칙(§추측 배치 금지): 레이어 이름-경로 + 형제 인덱스가 정확히 대응되는 TEXT 에만 원래
+// characters 를 재적용한다. 대응 안 되는 캡처 텍스트는 강제 배치하지 않고 unpreserved 로 보고.
+// 스타일(폰트·색)은 정본 것을 유지하고 "내용"만 이식한다(적용 시 대상 노드의 현재 폰트 로드).
+type CapturedText = { key: string; chars: string };
+
+// 인스턴스 하위(중첩 인스턴스 내부 포함)의 모든 TEXT 를 경로 키와 함께 수집.
+// 경로 키 = 루트→leaf 각 단계 `이름#동일이름형제인덱스` 를 '/' 로 이은 것(반복 행·셀도 인덱스로 구분).
+function collectTextsWithPath(root: BaseNode): { key: string; node: TextNode }[] {
+  const out: { key: string; node: TextNode }[] = [];
+  const walk = (node: BaseNode, path: string[]): void => {
+    if (node.type === "TEXT") out.push({ key: path.join("/"), node: node as TextNode });
+    if ("children" in node) {
+      const kids = (node as any).children as BaseNode[];
+      const nameSeen: { [k: string]: number } = {};
+      for (const k of kids) {
+        const base = k.name || k.type;
+        const idx = (nameSeen[base] = (nameSeen[base] === undefined ? 0 : nameSeen[base] + 1));
+        walk(k, path.concat(`${base}#${idx}`));
+      }
+    }
+  };
+  walk(root, []);
+  return out;
+}
+
+function captureTextOverrides(inst: InstanceNode): Map<string, string> {
+  const map = new Map<string, string>();
+  for (const t of collectTextsWithPath(inst)) {
+    if (!map.has(t.key)) map.set(t.key, t.node.characters);
+  }
+  return map;
+}
+
+// 대상 TEXT 노드의 현재 폰트를 로드(단일/혼합 모두) — characters 설정 전 필수.
+async function loadFontsForText(node: TextNode): Promise<void> {
+  const fn = node.fontName;
+  if (fn === figma.mixed) {
+    const len = node.characters.length;
+    const seen = new Set<string>();
+    for (let i = 0; i < len; i++) {
+      const f = node.getRangeFontName(i, i + 1);
+      if (f !== figma.mixed) seen.add(JSON.stringify(f));
+    }
+    for (const s of seen) await figma.loadFontAsync(JSON.parse(s) as FontName);
+  } else {
+    await figma.loadFontAsync(fn as FontName);
+  }
+}
+
+// swap 후 새 인스턴스에 캡처 텍스트 복원. 경로 대응되는 것만 적용, 나머지는 unpreserved 반환.
+async function restoreTextOverrides(inst: InstanceNode, captured: Map<string, string>): Promise<{ restored: number; unpreserved: string[] }> {
+  if (captured.size === 0) return { restored: 0, unpreserved: [] };
+  const used = new Set<string>();
+  let restored = 0;
+  for (const { key, node } of collectTextsWithPath(inst)) {
+    if (!captured.has(key) || used.has(key)) continue;
+    const chars = captured.get(key)!;
+    used.add(key);
+    if (node.characters === chars) { restored++; continue; } // 이미 동일(Figma 가 보존함) — 손댈 필요 없음
+    try {
+      await loadFontsForText(node);
+      node.characters = chars;
+      restored++;
+    } catch (e) { used.delete(key); /* 프로퍼티 바인딩 텍스트 등 — 실패 시 unpreserved 로 떨어짐 */ }
+  }
+  const unpreserved: string[] = [];
+  for (const [key, chars] of captured) {
+    if (!used.has(key) && chars.trim() !== "") unpreserved.push(chars);
+  }
+  return { restored, unpreserved };
+}
+
+// 단건 swap 실행 — 결과를 swapped/demoted/failed 로 명확히 구분해 반환
+async function applySwap(
+  candidate: SwapCandidate,
+  mode: SwapMode = "lenient"
+): Promise<{ ok: boolean; result: SwapOutcome; reason?: string; variantReset?: boolean; axisLoss?: number; unpreserved?: string[] }> {
+  const inst = await figma.getNodeByIdAsync(candidate.instanceId);
+  if (!inst || inst.type !== "INSTANCE") {
+    return { ok: false, result: "failed", reason: "인스턴스를 찾을 수 없음" };
+  }
+  // 인스턴스 하위레이어는 Figma 가 교체를 막는다
+  if (hasInstanceAncestor(inst)) {
+    return { ok: false, result: "failed", reason: "다른 컴포넌트 안에 포함된 부품이라 개별 교체할 수 없습니다." };
+  }
+  const legacyVP = (inst as InstanceNode).variantProperties || null;
+  const res = await resolveSwapTarget(candidate, mode, legacyVP);
+  if (!res.target) {
+    if (res.reason === "no-variant-match") {
+      return { ok: false, result: "demoted", reason: "정본에 같은 상태(변형) 조합이 없어 자동 교체하지 않았습니다.", axisLoss: res.axisLoss };
+    }
+    return { ok: false, result: "failed", reason: "기준 컴포넌트를 import할 수 없습니다. 기준 파일에서 컴포넌트가 publish되었는지 확인해주세요." };
+  }
+  // 교체 직전 시안 입력 텍스트 캡처 → 교체 → 대응 위치에 복원(내용만, 스타일은 정본 유지)
+  const captured = captureTextOverrides(inst as InstanceNode);
   try {
-    (inst as InstanceNode).swapComponent(swapTarget);
-    return { ok: true };
+    (inst as InstanceNode).swapComponent(res.target);
   } catch (e: any) {
-    return { ok: false, reason: String(e && e.message || e) };
+    return { ok: false, result: "failed", reason: String(e && e.message || e) };
+  }
+  let unpreserved: string[] = [];
+  try {
+    const pres = await restoreTextOverrides(inst as InstanceNode, captured);
+    unpreserved = pres.unpreserved;
+  } catch (e) { /* 복원 실패해도 교체 자체는 성공 — 보존만 부분적 */ }
+  return { ok: true, result: "swapped", variantReset: res.variantReset, axisLoss: res.axisLoss, unpreserved };
+}
+
+// ─── 설치기 기준 자동수집 + 개선안(복제본) 생성 ───────────────
+
+// 이 파일에 설치된 정본 컴포넌트를 그대로 기준 풀로 사용한다(수동 등록 불필요).
+// 설치기 [설치] 탭은 정본을 현재 페이지에 COMPONENT_SET 으로 생성하지만, 실무에선
+// 정본이 별도 페이지(예: "Core")에 있고 화면은 다른 페이지에 있으므로 문서 전체를 훑는다.
+// 현재 페이지를 먼저 담아 같은 이름이 여러 곳에 있으면 현재 페이지 것이 이긴다.
+function collectPageReference(): ReferenceComponent[] {
+  const fileName = figma.root.name;
+  const seen: { [k: string]: boolean } = {};
+  const out: ReferenceComponent[] = [];
+  const push = (list: ReferenceComponent[]) => {
+    for (const c of list) {
+      const k = c.name.toLowerCase();
+      if (!seen[k]) { seen[k] = true; out.push(c); }
+    }
+  };
+  try { push(collectComponents(figma.currentPage, fileName)); } catch {}
+  for (const page of figma.root.children) {
+    if (page.id === figma.currentPage.id) continue;
+    try { push(collectComponents(page, fileName)); } catch {}
+  }
+  return out;
+}
+
+type ImprovedSummary = {
+  cloned: boolean;
+  cloneId: string;
+  cloneName: string;
+  sourceName: string;
+  autoSwapped: number;
+  ambiguous: number;
+  failed: number;
+  axisLoss: number;        // 레거시 전용 축을 버리고 교체한 건수(정보 손실 — 실패 아님)
+  skippedNested: number;   // 인스턴스 내부라 대상에서 제외된 수
+  alreadyCanonical: number;// 이미 정본이라 바꿀 필요가 없던 수
+  noMatch: number;         // 기준에 대응 컴포넌트가 없어 그대로 둔 수
+  manualNeeded: number;    // 이름이 안 맞아 수동 매핑이 필요한(제안과 함께 제시되는) 컴포넌트 수
+  moduleNeeded: number;    // 여러 부품이 뭉쳐 재구성이 필요한(교체 부적절) 모듈 수
+  textUnpreserved: number; // 자동교체 시 정본에 대응 위치가 없어 보존 못 한 입력 텍스트 수
+  totalInstances: number;
+  referencePoolSize: number;
+};
+
+type BuildImprovedResult =
+  | { ok: false; reason: string; code?: "need-install" | "need-single-frame" }
+  | { ok: true; summary: ImprovedSummary; ambiguousCandidates: SwapCandidate[]; failedCandidates: SwapCandidate[]; manualCandidates: ManualMapCandidate[]; modules: ModuleFlag[] };
+
+// 선택한 화면의 "개선안" 복제본을 만들고, 확실한 것만 정본으로 자동 교체한다.
+// 원본은 손대지 않는다(비파괴).
+async function buildImprovedCopy(): Promise<BuildImprovedResult> {
+  const sel = figma.currentPage.selection;
+  if (sel.length !== 1 || sel[0].type !== "FRAME") {
+    return { ok: false, code: "need-single-frame", reason: "개선안을 만들 화면 프레임을 하나만 선택해주세요." };
+  }
+  const src = sel[0] as FrameNode;
+
+  const pool = collectPageReference();
+  if (pool.length === 0) {
+    return { ok: false, code: "need-install", reason: "이 페이지에 정본 컴포넌트가 없습니다. [설치] 탭을 먼저 실행해주세요." };
+  }
+
+  // 원본 옆에 복제 — 페이지에 직접 붙이고 절대좌표로 배치(중첩 부모 회피)
+  const clone = src.clone();
+  try {
+    clone.name = src.name + " — 개선안";
+    figma.currentPage.appendChild(clone);
+    const box = src.absoluteBoundingBox;
+    if (box) { clone.x = box.x + box.width + 200; clone.y = box.y; }
+    else { clone.x = src.x + src.width + 200; clone.y = src.y; }
+
+    const { candidates, diagnostics, manualCandidates, modules } = await scanSwapCandidates(pool, [clone]);
+
+    let autoSwapped = 0, ambiguous = 0, failed = 0, axisLoss = 0, textUnpreserved = 0;
+    const ambiguousList: SwapCandidate[] = [];
+    const failedList: SwapCandidate[] = [];
+    for (const c of candidates) {
+      // 자동 교체 조건: 이름 신뢰도 high AND strict 변형 매칭 성공
+      if (c.confidence !== "high") {
+        ambiguous++;
+        ambiguousList.push({ ...c, demoteReason: "이름이 부분적으로만 일치해 확인이 필요합니다." });
+        continue;
+      }
+      const r = await applySwap(c, "strict");
+      if (r.result === "swapped") {
+        autoSwapped++;
+        if (r.axisLoss && r.axisLoss > 0) axisLoss++;
+        if (r.unpreserved && r.unpreserved.length) textUnpreserved += r.unpreserved.length;
+      } else if (r.result === "demoted") {
+        // 변형 조합이 없어 강등 — "확인필요"로 재태깅하고 사유를 함께 넘긴다
+        ambiguous++;
+        ambiguousList.push({ ...c, confidence: "ambiguous", demoteReason: r.reason || "정본에 같은 상태(변형) 조합이 없습니다." });
+      } else {
+        // 진짜 실패 — 재시도해도 같은 결과라 교체 목록과 분리한다
+        failed++;
+        failedList.push({ ...c, demoteReason: r.reason || "교체할 수 없습니다." });
+      }
+    }
+
+    return {
+      ok: true,
+      summary: {
+        cloned: true,
+        cloneId: clone.id,
+        cloneName: clone.name,
+        sourceName: src.name,
+        autoSwapped, ambiguous, failed, axisLoss, textUnpreserved,
+        manualNeeded: manualCandidates.length,
+        moduleNeeded: modules.length,
+        skippedNested: diagnostics.skippedNestedCount,
+        alreadyCanonical: diagnostics.sameIdSkippedCount,
+        noMatch: diagnostics.noMatchCount,
+        totalInstances: diagnostics.instanceCount,
+        referencePoolSize: pool.length,
+      },
+      ambiguousCandidates: ambiguousList,
+      failedCandidates: failedList,
+      manualCandidates,
+      modules,
+    };
+  } catch (e: any) {
+    // 도중 실패하면 반쯤 만들어진 복제본을 남기지 않는다(캔버스 오염 방지)
+    try { clone.remove(); } catch {}
+    throw e;
   }
 }
 
@@ -830,5 +1272,10 @@ export {
   clearReference,
   scanSwapCandidates,
   applySwap,
+  collectPageReference,
+  buildImprovedCopy,
 };
-export type { Issue, Suggestion, ReferenceComponent, SwapCandidate, SwapDiagnostics, SavedReference, NodeKind };
+export type {
+  Issue, Suggestion, ReferenceComponent, SwapCandidate, SwapDiagnostics, SavedReference, NodeKind,
+  SwapMode, SwapOutcome, ImprovedSummary, BuildImprovedResult,
+};

@@ -1,5 +1,5 @@
 /**
- * 에스원 디자인시스템 설치 — code.ts (선택형 설치, 2026-06-10 v4)
+ * 에스원 UX Guide Installer — code.ts (선택형 설치, 2026-06-10 v4)
  *
  * Foundation · Semantic · Text Styles · Component Set 을 하나 또는 여러 개 선택해 설치한다.
  * 선택하지 않은 의존 항목(Semantic←Foundation, Component←Foundation·Semantic·TextStyles)은
@@ -40,12 +40,11 @@ import { buildAllComponents } from "./build-components";
 import {
   audit, applyOne, applyHighConfidence, applyMulti, setVariablesMode,
   collectComponents, saveReference, loadReference, clearReference,
-  scanSwapCandidates, applySwap,
+  scanSwapCandidates, applySwap, buildImprovedCopy,
 } from "./audit-engine";
 import type { ReferenceComponent, SwapCandidate } from "./audit-engine";
-import { buildAuditReport } from "./audit-report";
 
-figma.showUI(__html__, { width: 440, height: 720, title: "에스원 디자인시스템 설치 · 검수" });
+figma.showUI(__html__, { width: 440, height: 720, title: "에스원 UX Guide Installer · 검수" });
 
 interface InstallSelection {
   foundation: boolean;
@@ -132,36 +131,57 @@ async function handleAuditMessage(type: string, payload: any): Promise<void> {
     } else if (type === "scan-swap") {
       const res = await scanSwapCandidates(payload.pool || []);
       figma.ui.postMessage({ type: "audit:scan-swap-result", payload: res });
+    } else if (type === "build-improved") {
+      // 설치기 기준으로 "개선안" 복제본 생성 + 확실한 것만 자동 교체 (원본 비파괴)
+      const res = await buildImprovedCopy();
+      if (!res.ok) {
+        figma.notify(res.reason);
+        figma.ui.postMessage({ type: "audit:build-improved-result", payload: { ok: false, code: res.code, message: res.reason } });
+      } else {
+        const node = await figma.getNodeByIdAsync(res.summary.cloneId);
+        if (node) { figma.currentPage.selection = [node as SceneNode]; figma.viewport.scrollAndZoomIntoView([node as SceneNode]); }
+        const s = res.summary;
+        // 통합 검수: 같은 복제본에 색상 검수도 실행 → 교체로 해결 안 되는 HEX 항목을 "그 외"로 수집
+        let colorIssues: any[] = [];
+        let colorStats: any = { scanned: 0, issuesCount: 0, highCount: 0 };
+        if (node && "type" in node) {
+          const ca = await audit(node as SceneNode);
+          colorIssues = ca.issues;
+          colorStats = ca.stats;
+        }
+        figma.notify(`검수 완료 — 자동교체 ${s.autoSwapped} · 확인필요 ${s.ambiguous}${s.manualNeeded ? ` · 수동매핑 ${s.manualNeeded}` : ""}${s.moduleNeeded ? ` · 모듈 ${s.moduleNeeded}` : ""} · 색상 ${colorIssues.length}`);
+        figma.ui.postMessage({ type: "audit:build-improved-result", payload: { ok: true, summary: s, candidates: res.ambiguousCandidates, failed: res.failedCandidates, manual: res.manualCandidates, modules: res.modules, colorIssues, colorStats } });
+      }
     } else if (type === "apply-swap") {
-      const res = await applySwap(payload.candidate);
-      figma.ui.postMessage({ type: "audit:apply-swap-result", payload: { id: payload.candidate.id, ok: res.ok, reason: res.reason } });
+      // 수동 교체 = lenient (변형 조합이 없으면 기본값으로 교체하고 "상태 리셋됨" 표시)
+      const res = await applySwap(payload.candidate, "lenient");
+      const unpreservedCount = res.unpreserved ? res.unpreserved.length : 0;
+      figma.ui.postMessage({ type: "audit:apply-swap-result", payload: { id: payload.candidate.id, ok: res.ok, result: res.result, reason: res.reason, variantReset: res.variantReset, axisLoss: res.axisLoss, unpreservedCount } });
     } else if (type === "apply-swap-multi") {
       const list: SwapCandidate[] = payload.candidates;
       const applied: string[] = [];
       const failures: { id: string; reason: string }[] = [];
+      let resetCount = 0;
+      let unpreservedTotal = 0;
       for (const c of list) {
-        const r = await applySwap(c);
-        if (r.ok) applied.push(c.id); else failures.push({ id: c.id, reason: r.reason || "unknown" });
+        const r = await applySwap(c, "lenient");
+        if (r.ok) { applied.push(c.id); if (r.variantReset) resetCount++; if (r.unpreserved) unpreservedTotal += r.unpreserved.length; }
+        else failures.push({ id: c.id, reason: r.reason || "unknown" });
       }
-      figma.notify(`${applied.length}건 교체 완료${failures.length ? ` · ${failures.length}건 실패` : ""}`);
-      figma.ui.postMessage({ type: "audit:apply-swap-multi-result", payload: { applied, fail: failures.length, failures } });
-    } else if (type === "build-report") {
-      const auditRes = await audit();
-      const saved = await loadReference();
-      let swapCands: SwapCandidate[] = [];
-      if (saved) { const r = await scanSwapCandidates(saved.pool); swapCands = r.candidates; }
-      const rep = await buildAuditReport({ issues: auditRes.issues, swapCandidates: swapCands, stats: auditRes.stats, when: payload && payload.when, fileName: figma.root.name });
-      const node = await figma.getNodeByIdAsync(rep.frameId);
-      if (node) { figma.currentPage.selection = [node as SceneNode]; figma.viewport.scrollAndZoomIntoView([node as SceneNode]); }
-      figma.notify(`검수 리포트 생성 — HEX ${rep.counts.hex} · 외부변수 ${rep.counts.extVar} · 가이드외 ${rep.counts.offGuide} · 레거시 ${rep.counts.legacy}`);
-      figma.ui.postMessage({ type: "audit:report-done", payload: { frameId: rep.frameId, counts: rep.counts } });
+      figma.notify(`${applied.length}건 교체 완료${resetCount ? ` · ${resetCount}건 상태 리셋` : ""}${unpreservedTotal ? ` · 텍스트 ${unpreservedTotal}건 보존안됨` : ""}${failures.length ? ` · ${failures.length}건 실패` : ""}`);
+      figma.ui.postMessage({ type: "audit:apply-swap-multi-result", payload: { applied, fail: failures.length, failures, variantResetCount: resetCount, unpreservedTotal } });
     } else if (type === "resize") {
       const w = Math.max(420, Math.min(1400, Math.round(payload.w)));
       const h = Math.max(480, Math.min(1200, Math.round(payload.h)));
       figma.ui.resize(w, h);
     }
   } catch (e: any) {
-    figma.ui.postMessage({ type: "audit:error", payload: { message: String(e && e.message || e) } });
+    const message = String(e && e.message || e);
+    // 개선안 생성 중 예외면 UI 버튼이 잠긴 채 굳지 않도록 전용 실패 응답도 함께 보낸다
+    if (type === "build-improved") {
+      figma.ui.postMessage({ type: "audit:build-improved-result", payload: { ok: false, message } });
+    }
+    figma.ui.postMessage({ type: "audit:error", payload: { message } });
   }
 }
 
