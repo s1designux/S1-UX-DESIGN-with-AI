@@ -3,10 +3,19 @@
 <head>
   <meta charset="UTF-8">
   <script>!function(){var z=localStorage.getItem("sw-ds-zoom");if(z)document.documentElement.style.zoom=z+"%"}();</script>
+  <!-- 임베드 모드: ?embed=1 로 열면 사이트 사이드바·모바일헤더·상단 제목영역을 숨겨 콘텐츠만 표출(포털 iframe용). 페인트 전에 클래스 부착해 깜빡임 방지 -->
+  <script>!function(){try{if(new URLSearchParams(location.search).get("embed"))document.documentElement.classList.add("embed")}catch(e){}}();</script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Design Guide Download — S1 UX DESIGN GUIDE</title>
   <link rel="stylesheet" href="../assets/css/style.css">
   <style>
+    /* ── 임베드 모드(?embed=1): 다른 포털 iframe 안에서 콘텐츠만 표출 ── */
+    html.embed .sidebar,
+    html.embed .mobile-header,
+    html.embed .sidebar-overlay { display: none; }
+    html.embed .main-content { margin-left: 0; padding-top: 0; }
+    html.embed .page-header { display: none; }   /* ⚡ Design Guide Download 제목·설명 숨김 */
+
     /* ── step layout ── */
     .install-steps { display:flex; flex-direction:column; gap:20px; }
     .install-step {
