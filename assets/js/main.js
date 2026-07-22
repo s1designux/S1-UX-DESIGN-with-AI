@@ -8,6 +8,7 @@ const SITE_NAV = [
   { type: 'label', text: 'Guide' },
   { type: 'item', id: 'policy', href: 'policy.html', rootHref: 'pages/policy.html', icon: '📋', text: 'Policy' },
   { type: 'item', id: 'install-prompt', href: 'install-prompt.html', rootHref: 'pages/install-prompt.html', icon: '⚡', text: 'Design Guide Download', status: 'ready' },
+  { type: 'item', id: 'ux-writing', href: 'ux-writing.html', rootHref: 'pages/ux-writing.html', icon: '✍️', text: 'UX Writing Assistant', status: 'ready' },
   { type: 'item', id: 'foundation', href: 'foundation.html', rootHref: 'pages/foundation.html', icon: '🎨', text: 'Foundation Tokens', status: 'ready' },
   { type: 'item', id: 'semantic', href: 'semantic.html', rootHref: 'pages/semantic.html', icon: '🌗', text: 'Semantic Tokens', status: 'ready' },
 
