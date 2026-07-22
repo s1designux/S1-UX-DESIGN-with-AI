@@ -1,5 +1,5 @@
 /**
- * 에스원 UX Guide Installer — code.ts (선택형 설치, 2026-06-10 v4)
+ * S-1 S/W UX Guide Agent — code.ts (선택형 설치, 2026-06-10 v4)
  *
  * Foundation · Semantic · Text Styles · Component Set 을 하나 또는 여러 개 선택해 설치한다.
  * 선택하지 않은 의존 항목(Semantic←Foundation, Component←Foundation·Semantic·TextStyles)은
@@ -44,7 +44,7 @@ import {
 } from "./audit-engine";
 import type { ReferenceComponent, SwapCandidate } from "./audit-engine";
 
-figma.showUI(__html__, { width: 440, height: 720, title: "에스원 UX Guide Installer · 검수" });
+figma.showUI(__html__, { width: 440, height: 720, title: "S-1 S/W UX Guide Agent · 검수" });
 
 interface InstallSelection {
   foundation: boolean;
