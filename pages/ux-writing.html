@@ -62,13 +62,17 @@
     /* ── 라이브 데모 (플러그인 외형을 본뜬 미니 패널) ── */
     .demo {
       border:1px solid #e5e7eb; border-radius:14px; background:#fff; overflow:hidden;
-      max-width:520px; box-shadow:0 1px 3px rgba(0,0,0,0.04);
+      max-width:980px; box-shadow:0 1px 3px rgba(0,0,0,0.04);
     }
     .demo-bar { display:flex; align-items:center; gap:8px; padding:10px 14px; background:#fafafa; border-bottom:1px solid #eee; }
     .demo-dot { width:9px; height:9px; border-radius:50%; background:#22c55e; box-shadow:0 0 0 3px rgba(34,197,94,.15); }
     .demo-bar-title { font-size:12px; font-weight:700; color:#374151; }
     .demo-bar-tag { margin-left:auto; font-size:10.5px; color:#9ca3af; }
     .demo-body { padding:14px; }
+    /* 입력칸(왼쪽)·결과(오른쪽) 2열 — 폭이 부족하면(약 740px 미만) 자동으로 위아래 1열로 접힌다 */
+    .demo-split { display:flex; flex-wrap:wrap; gap:20px; align-items:flex-start; }
+    .demo-col-input { flex:1 1 360px; min-width:280px; }
+    .demo-col-results { flex:1 1 360px; min-width:280px; }
     .demo textarea {
       width:100%; box-sizing:border-box; min-height:74px; resize:vertical;
       border:1px solid #d9d9d9; border-radius:10px; padding:11px 12px;
@@ -84,7 +88,9 @@
     .demo-run:hover { background:#374151; }
     .demo-run:disabled { background:#e5e7eb; color:#9ca3af; cursor:default; }
     .demo-hint { font-size:11px; color:#9ca3af; }
-    .demo-results { margin-top:14px; display:flex; flex-direction:column; gap:10px; }
+    /* max-height+overflow: 결과가 많아도 오른쪽 칸 안에서만 스크롤 — 페이지 전체는 안 늘어난다 */
+    .demo-results { display:flex; flex-direction:column; gap:10px; max-height:480px; overflow-y:auto; padding-right:2px; }
+    .demo-placeholder { font-size:12.5px; color:#b0b6bf; padding:10px 2px; }
     .demo-empty { font-size:12.5px; color:#9ca3af; padding:6px 2px; }
 
     /* 검토 결과 카드 (ui.html 스타일 이식) */
@@ -186,14 +192,20 @@
               <div class="demo" style="margin-top:16px;">
                 <div class="demo-bar"><span class="demo-dot"></span><span class="demo-bar-title">문구 검토하기</span><span class="demo-bar-tag">네이버 맞춤법 + 149개 규칙 · 실제 동작</span></div>
                 <div class="demo-body">
-                  <textarea id="reviewInput" placeholder="검토할 문구를 입력하세요. 여러 줄도 됩니다.&#10;예) 로그인 하세요&#10;예) 설정을 저장 합니다">로그인 하세요
+                  <div class="demo-split">
+                    <div class="demo-col-input">
+                      <textarea id="reviewInput" placeholder="검토할 문구를 입력하세요. 여러 줄도 됩니다.&#10;예) 로그인 하세요&#10;예) 설정을 저장 합니다">로그인 하세요
 설정을 저장 합니다
 비밀번호를 입력해주세요</textarea>
-                  <div class="demo-actions">
-                    <button class="demo-run" id="reviewRun">검토하기</button>
-                    <span class="demo-hint" id="reviewHint">입력한 문구가 네이버·검토 서버로 전송됩니다</span>
+                      <div class="demo-actions">
+                        <button class="demo-run" id="reviewRun">검토하기</button>
+                        <span class="demo-hint" id="reviewHint">입력한 문구가 네이버·검토 서버로 전송됩니다</span>
+                      </div>
+                    </div>
+                    <div class="demo-col-results">
+                      <div class="demo-results" id="reviewResults"><div class="demo-placeholder">검토하기를 누르면 여기에 결과가 표시됩니다</div></div>
+                    </div>
                   </div>
-                  <div class="demo-results" id="reviewResults"></div>
                 </div>
               </div>
             </div>
@@ -213,12 +225,18 @@
                     <span>💡</span>
                     <span>이 웹 데모의 추천은 <b>예시·규칙 기반 샘플</b>입니다. 서로 다른 접근의 <b>실제 AI 추천 3가지</b>는 플러그인을 설치하고 <b>개인 Claude 계정으로 로그인</b>해야 사용할 수 있어요(사용량은 개인 구독에서 차감).</span>
                   </div>
-                  <textarea id="recInput" placeholder="추천받을 상황이나 문구를 입력하세요.&#10;예) 로그인 하세요">로그인 하세요</textarea>
-                  <div class="demo-actions">
-                    <button class="demo-run" id="recRun">추천받기</button>
-                    <span class="demo-hint">브라우저 안에서 예시·규칙으로 제안해요(서버 전송 없음)</span>
+                  <div class="demo-split">
+                    <div class="demo-col-input">
+                      <textarea id="recInput" placeholder="추천받을 상황이나 문구를 입력하세요.&#10;예) 로그인 하세요">로그인 하세요</textarea>
+                      <div class="demo-actions">
+                        <button class="demo-run" id="recRun">추천받기</button>
+                        <span class="demo-hint">브라우저 안에서 예시·규칙으로 제안해요(서버 전송 없음)</span>
+                      </div>
+                    </div>
+                    <div class="demo-col-results">
+                      <div class="demo-results" id="recResults"><div class="demo-placeholder">추천받기를 누르면 여기에 결과가 표시됩니다</div></div>
+                    </div>
                   </div>
-                  <div class="demo-results" id="recResults"></div>
                 </div>
               </div>
             </div>
