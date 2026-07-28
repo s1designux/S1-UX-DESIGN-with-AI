@@ -9416,6 +9416,10 @@ window.REGISTRY_BUNDLE = {
       {
         "id": "navigation",
         "label": "Navigation"
+      },
+      {
+        "id": "overlay",
+        "label": "Overlay"
       }
     ],
     "components": [
@@ -9609,6 +9613,21 @@ window.REGISTRY_BUNDLE = {
           "figmaNodeId: 540:5942(pc_gnb). 미결: HD-GNB-1(로고 색상)·HD-GNB-2(유틸 아이콘 색상) 사용자 확인 대기.",
           "darkModeStatus: candidate — dark 시각 검증 미완료."
         ]
+      },
+      {
+        "id": "modal",
+        "name": "Modal",
+        "label": "Modal (공통 팝업)",
+        "category": "overlay",
+        "path": "registry/components/modal.json",
+        "status": "in-progress",
+        "harnessStatus": "not-started",
+        "priority": 17,
+        "notes": [
+          "2026-07-15 루트 A 신규 편입: V2.4 modal_small \"삭제\"(6706:4257) 라이트 기준 Core(shell).",
+          "buildModalShell(build-components.ts) Footer=Dual 1변형. 코어 Button(XXSM) + ic_닫기 인스턴스 재사용, 신규 토큰 0.",
+          "다크 그림자(shadow/raised)·나머지 4 State(Footer=Single)·사이즈 S/M/L/XL 미룸. component-verifier 검증 대기."
+        ]
       }
     ]
   },
@@ -9639,6 +9658,46 @@ window.REGISTRY_BUNDLE = {
           "primary disabled-border added: Figma confirms all disabled borders = color-border-default."
         ]
       },
+      "usage": {
+        "whenToUse": [
+          "사용자가 실행할 액션을 트리거할 때 — 저장·확인·취소·다음 등.",
+          "화면에서 가장 중요한 단일 액션은 primary, 보조 액션은 secondary, 약한 강조는 blue-line."
+        ],
+        "whenNotToUse": [
+          "페이지 이동만 하는 것은 링크를 고려한다.",
+          "on/off 상태 전환은 Toggle, 다중 선택은 Checkbox·Chip 을 쓴다."
+        ]
+      },
+      "anatomy": [
+        {
+          "part": "라벨",
+          "role": "버튼 텍스트. 굵기·색은 variant 토큰."
+        },
+        {
+          "part": "아이콘(선택)",
+          "role": "라벨 앞/뒤 보조 아이콘. 라이브러리 인스턴스."
+        },
+        {
+          "part": "컨테이너",
+          "role": "배경·테두리·반경. variant×state 토큰."
+        }
+      ],
+      "doDont": {
+        "do": [
+          "variant 는 primary·secondary·blue-line 만 쓴다.",
+          "크기는 PC medium(44)/xsmall(34)/xxsmall(28), Mobile mobile(48) 중에서 고른다.",
+          "색은 Semantic 경유 component 토큰(--button-*)으로만 참조한다."
+        ],
+        "dont": [
+          "Danger·ghost variant 를 재도입하지 않는다(폐지 확정).",
+          "한 화면에 primary 를 여러 개 두어 강조를 분산시키지 않는다.",
+          "raw HEX·Foundation 직접 참조 금지."
+        ]
+      },
+      "a11y": [
+        "아이콘만 있는 버튼은 aria-label 로 용도를 준다.",
+        "disabled 는 실제 비활성 처리하고 클릭을 막는다."
+      ],
       "summary": {
         "badge": "Core",
         "variantCount": 3,
@@ -9888,6 +9947,48 @@ window.REGISTRY_BUNDLE = {
           "darkModeStatus: pending — dark mode 시각 검증 미완료."
         ]
       },
+      "usage": {
+        "whenToUse": [
+          "선택 가능한 태그·필터를 나열할 때.",
+          "filter 는 드롭다운으로 값을 고르고 적용 완료(complete)를 표시할 때."
+        ],
+        "whenNotToUse": [
+          "단일 액션 실행은 Button.",
+          "긴 목록의 단일 선택은 Select·Dropdown."
+        ]
+      },
+      "anatomy": [
+        {
+          "part": "라벨",
+          "role": "칩 텍스트."
+        },
+        {
+          "part": "아이콘(선택)",
+          "role": "앞쪽 보조 아이콘."
+        },
+        {
+          "part": "닫기(X)(선택)",
+          "role": "선택·완료 상태에서 해제·삭제. filter complete 에 노출."
+        },
+        {
+          "part": "컨테이너",
+          "role": "line=외곽선 / solid=채운 배경."
+        }
+      ],
+      "doDont": {
+        "do": [
+          "line=외곽선, solid=채운 배경으로 용도에 맞게 쓴다.",
+          "filter 의 complete 는 선택값 노출 + 닫기(X)로 표시한다."
+        ],
+        "dont": [
+          "selection chip 에 complete(필터 완료) 개념을 쓰지 않는다 — filter 전용.",
+          "form-control 의 filled 와 혼동하지 않는다(다른 개념)."
+        ]
+      },
+      "a11y": [
+        "선택 상태를 aria-pressed 또는 role 로 노출한다.",
+        "닫기(X)에는 삭제·해제 aria-label 을 단다."
+      ],
       "variants": {
         "line": {
           "description": "Outlined chip. Background = surface-default, border changes on state. Default selection chip type.",
@@ -10209,6 +10310,44 @@ window.REGISTRY_BUNDLE = {
           "trigger placeholder text / selected text / list border / option selected text는 D001(2026-05-19) 추가 4개 candidate 토큰."
         ]
       },
+      "usage": {
+        "whenToUse": [
+          "트리거를 눌러 옵션 목록에서 하나를 고를 때.",
+          "Select 의 기반 컴포넌트."
+        ],
+        "whenNotToUse": [
+          "즉시 실행 액션 그룹은 Button.",
+          "적은 수의 상호배타 선택은 Radio."
+        ]
+      },
+      "anatomy": [
+        {
+          "part": "트리거",
+          "role": "현재 값·placeholder 표시. default·hover·open·disabled."
+        },
+        {
+          "part": "옵션 목록",
+          "role": "surface-raised 위에 떠 있는 패널."
+        },
+        {
+          "part": "옵션",
+          "role": "hover·selected 상태 항목."
+        }
+      ],
+      "doDont": {
+        "do": [
+          "목록 배경은 surface-raised(떠 있는 표면)를 쓴다.",
+          "트리거 테두리는 form-control 토큰을 참조한다."
+        ],
+        "dont": [
+          "목록 배경에 surface-default 를 쓰지 않는다(D002 결정: raised).",
+          "옵션 hover/selected 색을 raw 로 칠하지 않는다."
+        ]
+      },
+      "a11y": [
+        "트리거는 aria-expanded 로 열림 상태를 노출한다.",
+        "선택 옵션에 aria-selected, 목록은 role=listbox 패턴을 따른다."
+      ],
       "states": {
         "trigger": [
           "default",
@@ -10385,6 +10524,51 @@ window.REGISTRY_BUNDLE = {
         "description": "Base text input field. Pure input element without label/helper wrapper. Label/Helper combo = Input Slots pattern.",
         "hdResolved": "HD-1 through HD-8 resolved 2026-05-12. Token corrections applied after re-examination."
       },
+      "usage": {
+        "whenToUse": [
+          "한 줄 텍스트·숫자를 입력받을 때 — 로그인·검색·필터·설정 폼 등.",
+          "라벨·도움말과 함께 쓰려면 Input Slots(라벨/헬퍼 조합) 패턴으로 감싼다."
+        ],
+        "whenNotToUse": [
+          "여러 줄 입력은 Textarea 를 쓴다.",
+          "선택지 중 하나를 고르는 입력은 Select·Dropdown, 날짜·시간은 DatePicker·TimePicker 를 쓴다."
+        ]
+      },
+      "anatomy": [
+        {
+          "part": "입력 필드(base)",
+          "role": "텍스트·숫자를 입력하는 기본 영역. 배경·테두리·텍스트는 form-control 토큰."
+        },
+        {
+          "part": "placeholder",
+          "role": "입력 전 안내 문구. 입력되면 default 텍스트 색으로 전환."
+        },
+        {
+          "part": "suffix 액션 그룹(선택)",
+          "role": "오른쪽 액션 버튼 그룹. 검색=지우기+검색 아이콘, 비밀번호=표시전환+지우기."
+        },
+        {
+          "part": "helper 텍스트(선택)",
+          "role": "필드 아래 도움말·오류·성공 메시지. color-text-state 사용."
+        }
+      ],
+      "doDont": {
+        "do": [
+          "색·테두리는 form-control 역할 토큰(--color-form-control-*)을 통해 참조한다.",
+          "focus 는 파란 테두리(--input-focus-border)로만 표시하고 배경은 바꾸지 않는다.",
+          "라벨은 form-control 밖 제목 텍스트 토큰(--color-text-title-secondary)을 쓴다."
+        ],
+        "dont": [
+          "hover 상태를 새로 만들지 않는다 — Figma 에 정의돼 있지 않아 제거됨(HD-2).",
+          "filled·error·focus 에 별도 배경색을 넣지 않는다 — 배경은 default 와 동일, 구분은 텍스트·테두리 색으로만.",
+          "correct(성공) 테두리를 초록으로 칠하지 않는다 — 원본은 파란색(border-selected)."
+        ]
+      },
+      "a11y": [
+        "suffix 액션(지우기·검색·비밀번호 표시전환)에는 각각 aria-label 을 단다(예: 검색어 지우기, 비밀번호 보기/숨기기).",
+        "비밀번호 표시전환 토글은 aria-pressed 로 표시·숨김 상태를 노출한다.",
+        "지우기(clear) 버튼은 값이 있을 때만 노출한다(hidden 속성 제어)."
+      ],
       "platforms": {
         "pc-medium": {
           "height": "44px",
@@ -10665,6 +10849,44 @@ window.REGISTRY_BUNDLE = {
         "harnessStatus": "implemented",
         "description": "체크박스 컨트롤. default·hover·checked·indeterminate·disabled 상태."
       },
+      "usage": {
+        "whenToUse": [
+          "여러 항목을 독립적으로 켜고 끌 때(다중 선택).",
+          "목록 전체선택/부분선택(indeterminate) 헤더에."
+        ],
+        "whenNotToUse": [
+          "여러 보기 중 하나만 고를 때는 Radio.",
+          "단일 on/off 설정은 Toggle."
+        ]
+      },
+      "anatomy": [
+        {
+          "part": "박스",
+          "role": "체크 영역. 배경·테두리는 control 토큰."
+        },
+        {
+          "part": "체크 표시",
+          "role": "checked·indeterminate 인디케이터 아이콘."
+        },
+        {
+          "part": "라벨(선택)",
+          "role": "항목 텍스트. 박스와 함께 클릭 영역."
+        }
+      ],
+      "doDont": {
+        "do": [
+          "전체선택 헤더는 부분선택 시 indeterminate(is-indeterminate)를 쓴다.",
+          "박스는 코어 s1-checkbox 를 재사용한다(모듈 전용 체크박스 금지)."
+        ],
+        "dont": [
+          "Table·Filter 등 모듈에서 체크박스를 새로 만들지 않는다.",
+          "라벨 없이 쓸 때 aria-label 을 빠뜨리지 않는다."
+        ]
+      },
+      "a11y": [
+        "라벨이 없으면 aria-label 필수.",
+        "indeterminate 는 시각뿐 아니라 aria-checked=\"mixed\" 로 표현한다."
+      ],
       "states": [
         "default",
         "hover",
@@ -10770,6 +10992,43 @@ window.REGISTRY_BUNDLE = {
         "harnessStatus": "implemented",
         "description": "라디오 버튼 컨트롤. default·hover·selected·disabled 상태."
       },
+      "usage": {
+        "whenToUse": [
+          "여러 보기 중 하나만 고를 때(상호배타)."
+        ],
+        "whenNotToUse": [
+          "여러 개 동시 선택은 Checkbox.",
+          "단일 on/off 는 Toggle."
+        ]
+      },
+      "anatomy": [
+        {
+          "part": "원(circle)",
+          "role": "선택 영역. 테두리는 control 토큰."
+        },
+        {
+          "part": "점(dot)",
+          "role": "selected 인디케이터."
+        },
+        {
+          "part": "라벨(선택)",
+          "role": "보기 텍스트."
+        }
+      ],
+      "doDont": {
+        "do": [
+          "같은 그룹의 라디오는 name 으로 묶어 하나만 선택되게 한다.",
+          "원/점 색은 control 토큰을 쓴다."
+        ],
+        "dont": [
+          "독립 on/off 에 라디오를 쓰지 않는다.",
+          "라벨 없이 aria-label 을 빠뜨리지 않는다."
+        ]
+      },
+      "a11y": [
+        "role=radiogroup 으로 묶고 선택에 aria-checked 를 준다.",
+        "키보드 화살표로 그룹 내 이동이 가능하게 한다."
+      ],
       "states": [
         "default",
         "hover",
@@ -10870,6 +11129,39 @@ window.REGISTRY_BUNDLE = {
           "--toggle-off-bg: tokens.css 기준 var(--color-text-placeholder). component-tokens-extracted.md도 동일값으로 정합 완료(2026-05-18)."
         ]
       },
+      "usage": {
+        "whenToUse": [
+          "단일 설정을 즉시 켜고 끌 때(즉시 반영)."
+        ],
+        "whenNotToUse": [
+          "여러 항목 다중 선택은 Checkbox.",
+          "상호배타 다중 보기는 Radio."
+        ]
+      },
+      "anatomy": [
+        {
+          "part": "트랙",
+          "role": "on/off 배경. control 토큰."
+        },
+        {
+          "part": "노브(knob)",
+          "role": "좌우로 이동하는 인디케이터."
+        }
+      ],
+      "doDont": {
+        "do": [
+          "즉시 반영되는 설정에 쓴다(확인 없이 상태 전환).",
+          "off 배경은 미선택 인디케이터 색(--color-control-indicator-unselected)을 따른다."
+        ],
+        "dont": [
+          "제출이 필요한 폼 선택에 토글을 쓰지 않는다.",
+          "노브/트랙 색을 raw 로 칠하지 않는다."
+        ]
+      },
+      "a11y": [
+        "role=switch·aria-checked 로 상태를 노출한다.",
+        "라벨을 연결하거나 aria-label 을 준다."
+      ],
       "states": [
         "on",
         "off",
@@ -10937,6 +11229,39 @@ window.REGISTRY_BUNDLE = {
           "dark mode: 미확인 — candidate 상태."
         ]
       },
+      "usage": {
+        "whenToUse": [
+          "긴 목록·표를 페이지로 나눠 이동할 때."
+        ],
+        "whenNotToUse": [
+          "무한 스크롤 UX 에는 쓰지 않는다.",
+          "적은 항목은 페이지네이션 없이 한 번에 보여준다."
+        ]
+      },
+      "anatomy": [
+        {
+          "part": "화살표",
+          "role": "first/prev/next/last 이동."
+        },
+        {
+          "part": "페이지 번호",
+          "role": "현재 페이지는 텍스트 색으로만 구분."
+        }
+      ],
+      "doDont": {
+        "do": [
+          "선택 페이지는 배경 변화 없이 텍스트 색으로만 구분한다(Figma 기준).",
+          "비활성 화살표는 배경/테두리 동일, opacity 로 처리한다."
+        ],
+        "dont": [
+          "선택 페이지에 배경색을 넣지 않는다.",
+          "hover 배경을 임의 값으로 넣지 않는다(현재 gray-50 가정값 — 미확정)."
+        ]
+      },
+      "a11y": [
+        "현재 페이지에 aria-current 를 준다.",
+        "화살표 버튼에 이전·다음 등 aria-label 을 단다."
+      ],
       "variants": {
         "arrow": {
           "direction": [
@@ -11052,6 +11377,44 @@ window.REGISTRY_BUNDLE = {
           "alt 변형(label/default-alt, indicator/default-alt)은 CSS Cascade Override로 대응. 별도 canonical token 미신설."
         ]
       },
+      "usage": {
+        "whenToUse": [
+          "사이드바/상단 사이트 내비게이션 항목을 나열할 때.",
+          "현재 위치(active) 표시가 필요할 때."
+        ],
+        "whenNotToUse": [
+          "PC 글로벌 상단 바는 GNB.",
+          "날짜 캘린더의 이동 버튼(nav)과 혼동하지 않는다(다른 개념)."
+        ]
+      },
+      "anatomy": [
+        {
+          "part": "항목",
+          "role": "아이콘 + 라벨. default·hover·active."
+        },
+        {
+          "part": "활성 인디케이터",
+          "role": "현재 항목 강조 막대."
+        },
+        {
+          "part": "구분선",
+          "role": "그룹 구분 divider."
+        }
+      ],
+      "doDont": {
+        "do": [
+          "active 항목은 인디케이터 + 액션색으로 표시한다.",
+          "비선택 인디케이터는 --nav-item-indicator-default 를 쓴다."
+        ],
+        "dont": [
+          "DatePicker 의 nav 버튼 토큰과 섞지 않는다.",
+          "항목 색을 raw 로 칠하지 않는다."
+        ]
+      },
+      "a11y": [
+        "현재 항목에 aria-current=\"page\" 를 준다.",
+        "아이콘만 있는 항목엔 라벨/aria-label 을 준다."
+      ],
       "states": [
         "default",
         "hover",
@@ -11157,6 +11520,43 @@ window.REGISTRY_BUNDLE = {
           "Checkbox: 선택 컬럼은 s1-checkbox 코어 컴포넌트 재사용. Table에서 별도 체크박스 구현 금지."
         ]
       },
+      "usage": {
+        "whenToUse": [
+          "행·열의 정형 데이터를 보여줄 때.",
+          "정렬·선택(체크박스)·행 hover/selected 가 필요할 때."
+        ],
+        "whenNotToUse": [
+          "카드형 비정형 목록에는 쓰지 않는다."
+        ]
+      },
+      "anatomy": [
+        {
+          "part": "헤더",
+          "role": "열 제목 + 정렬 아이콘 + 전체선택 체크박스."
+        },
+        {
+          "part": "행(row)",
+          "role": "default·hover·selected."
+        },
+        {
+          "part": "선택 셀",
+          "role": "코어 s1-checkbox 재사용."
+        }
+      ],
+      "doDont": {
+        "do": [
+          "선택 컬럼은 코어 s1-checkbox 를 재사용한다.",
+          "정렬 가능한 헤더에는 정렬 방향 아이콘을 두어 정렬 상태를 표시한다."
+        ],
+        "dont": [
+          "Table 전용 체크박스를 새로 만들지 않는다(코어 재사용).",
+          "행 hover/selected 색을 raw 로 칠하지 않는다(table-cell 토큰)."
+        ]
+      },
+      "a11y": [
+        "헤더는 th·scope 로 표시한다.",
+        "정렬 상태는 aria-sort 로 노출한다."
+      ],
       "dependencies": {
         "coreComponents": [
           {
@@ -11370,6 +11770,40 @@ window.REGISTRY_BUNDLE = {
           "CSS 버그 수정 (2026-05-19): is-open trigger bg → var(--dropdown-trigger-open-bg), option.is-selected bg → var(--dropdown-option-selected-bg)."
         ]
       },
+      "usage": {
+        "whenToUse": [
+          "단일 값을 목록에서 고르는 폼 필드일 때.",
+          "Dropdown 토큰(--dropdown-*)을 재사용한다."
+        ],
+        "whenNotToUse": [
+          "다중 선택은 Checkbox·Chip.",
+          "즉시 실행 메뉴는 Dropdown/Button."
+        ]
+      },
+      "anatomy": [
+        {
+          "part": "트리거 필드",
+          "role": "현재 값·placeholder. default·hover·open·filled·disabled."
+        },
+        {
+          "part": "옵션 목록",
+          "role": "Dropdown 목록 재사용(surface-raised)."
+        }
+      ],
+      "doDont": {
+        "do": [
+          "색·목록은 Dropdown 의 --dropdown-* 토큰을 공유한다(별도 --select-* 없음).",
+          "open 은 트리거 테두리 focus 색으로 표시한다."
+        ],
+        "dont": [
+          "--select-* 전용 토큰을 새로 만들지 않는다.",
+          "목록 배경에 surface-default 를 쓰지 않는다(raised)."
+        ]
+      },
+      "a11y": [
+        "aria-expanded·role=listbox 패턴을 따른다.",
+        "선택 값에 aria-selected 를 준다."
+      ],
       "tokenDecision": "Select는 --dropdown-* 토큰을 재사용한다. --select-* 신규 토큰 불필요.",
       "tokenRef": "registry/components/dropdown.json",
       "states": [
@@ -11750,7 +12184,6 @@ window.REGISTRY_BUNDLE = {
           "scope": "Component sizing tokens with no shared usage",
           "description": "Component sizing/spacing/radius tokens that are not shared across components may reference Foundation primitives directly. The Semantic intermediary layer adds no value when only one component uses a value.",
           "examples": [
-            "--modal-border-radius: var(--radius-8)",
             "--chip-height-sm: var(--spacing-28)"
           ],
           "approvedAt": "2026-04-29",
@@ -11854,20 +12287,68 @@ window.REGISTRY_BUNDLE = {
     }
   },
   "reportsIndex": {
-    "generatedAt": "2026-07-03T00:32:31.681Z",
-    "totalCount": 62,
+    "generatedAt": "2026-07-18T08:54:48.423Z",
+    "totalCount": 64,
     "reports": [
       {
-        "id": "modal-component-spec",
-        "filename": "modal-component-spec.md",
-        "title": "Modal (공통 팝업) 규격 문서",
+        "id": "modal-content-family-backlog",
+        "filename": "modal-content-family-backlog.md",
+        "title": "Modal Content (콘텐츠 계열) — 별건 백로그",
         "stage": "Audit",
         "category": "audit",
         "status": "archive",
-        "sourcePath": "reports/modal-component-spec.md",
-        "updatedAt": "2026-07-03",
-        "summary": "작성 2026-07-03 · 상태: **확정(HD-1~4 전건 결정)** · 근거: 레거시 원본 3세트 분석(파일 `P8YvnCdGkQLDNVQhW74ZZW`) + 실측 토큰(get_variable_defs)",
-        "fileSizeKB": 10.4
+        "sourcePath": "reports/modal-content-family-backlog.md",
+        "updatedAt": "2026-07-15",
+        "summary": "**상태: 미착수.** 확인 계열(`registry/components/modal.json`, compact 텍스트-확인)과 **구분되는 별개 컴포넌트**.",
+        "fileSizeKB": 3.3
+      },
+      {
+        "id": "shadow-token-infra-backlog",
+        "filename": "shadow-token-infra-backlog.md",
+        "title": "shadow 토큰 인프라 신설 — 별건 백로그 (루트 A 시험에서 발견)",
+        "stage": "Audit",
+        "category": "audit",
+        "status": "archive",
+        "sourcePath": "reports/shadow-token-infra-backlog.md",
+        "updatedAt": "2026-07-15",
+        "summary": "**상태: 미착수.** 그림자 인프라가 갖춰지면 다크 모달에 얹는다.",
+        "fileSizeKB": 4.7
+      },
+      {
+        "id": "button-sync-check",
+        "filename": "button-sync-check.md",
+        "title": "Button Sync Check Report",
+        "stage": "Audit",
+        "category": "audit",
+        "status": "archive",
+        "sourcePath": "reports/button-sync-check.md",
+        "updatedAt": "2026-07-10",
+        "summary": "- **Variants:** primary, secondary, blue-line",
+        "fileSizeKB": 3.2
+      },
+      {
+        "id": "mvp-t2-token-sync",
+        "filename": "mvp-t2-token-sync.md",
+        "title": "MVP-T2 Token Sync Plugin Report",
+        "stage": "T2",
+        "category": "token",
+        "status": "archive",
+        "sourcePath": "reports/mvp-t2-token-sync.md",
+        "updatedAt": "2026-07-07",
+        "summary": "MVP-T1에서 구축한 CSS Token ↔ Registry Token ↔ Figma Variable mapping registry를 기반으로,",
+        "fileSizeKB": 5
+      },
+      {
+        "id": "harness-audit-2026-07-06",
+        "filename": "harness-audit-2026-07-06.md",
+        "title": "Harness Audit Report — 2026-07-06",
+        "stage": "Audit",
+        "category": "audit",
+        "status": "archive",
+        "sourcePath": "reports/harness-audit-2026-07-06.md",
+        "updatedAt": "2026-07-06",
+        "summary": "- ✅ [button] 모든 사이즈 분기 존재 (medium (h44) / xsmall (h34) / xxsmall (h28) / mobile (h48))",
+        "fileSizeKB": 2
       },
       {
         "id": "build-components-token-extraction",
@@ -11930,30 +12411,6 @@ window.REGISTRY_BUNDLE = {
         "fileSizeKB": 2
       },
       {
-        "id": "mvp-t2-token-sync",
-        "filename": "mvp-t2-token-sync.md",
-        "title": "MVP-T2 Token Sync Plugin Report",
-        "stage": "T2",
-        "category": "token",
-        "status": "archive",
-        "sourcePath": "reports/mvp-t2-token-sync.md",
-        "updatedAt": "2026-06-30",
-        "summary": "MVP-T1에서 구축한 CSS Token ↔ Registry Token ↔ Figma Variable mapping registry를 기반으로,",
-        "fileSizeKB": 5.2
-      },
-      {
-        "id": "button-sync-check",
-        "filename": "button-sync-check.md",
-        "title": "Button Sync Check Report",
-        "stage": "Audit",
-        "category": "audit",
-        "status": "archive",
-        "sourcePath": "reports/button-sync-check.md",
-        "updatedAt": "2026-06-17",
-        "summary": "- **Variants:** primary, secondary, blue-line",
-        "fileSizeKB": 3.4
-      },
-      {
         "id": "changelog-archive",
         "filename": "changelog-archive.md",
         "title": "CLAUDE.md 변경 이력 아카이브 (Design System Harness)",
@@ -11963,7 +12420,7 @@ window.REGISTRY_BUNDLE = {
         "sourcePath": "reports/changelog-archive.md",
         "updatedAt": "2026-06-17",
         "summary": "이 파일은 CLAUDE.md `변경 이력` 표의 **상세 보존본**이다. 컨텍스트 비용을 줄이기 위해 CLAUDE.md 본문에서 분리했다.",
-        "fileSizeKB": 46
+        "fileSizeKB": 57.2
       },
       {
         "id": "harness-audit-2026-06-17",
@@ -11987,7 +12444,7 @@ window.REGISTRY_BUNDLE = {
         "sourcePath": "reports/harness-audit-2026-06-16.md",
         "updatedAt": "2026-06-16",
         "summary": "- ✅ [button] 모든 사이즈 분기 존재 (medium (h44) / xsmall (h34) / xxsmall (h28) / mobile (h48))",
-        "fileSizeKB": 2.2
+        "fileSizeKB": 2.1
       },
       {
         "id": "harness-audit-2026-06-15",
@@ -12119,7 +12576,7 @@ window.REGISTRY_BUNDLE = {
         "sourcePath": "reports/mvp-f1-apply-result.md",
         "updatedAt": "2026-05-20",
         "summary": "총 53개 unique variable 확인. legacy-token-usage-map.json 미등록 항목: **22개**.",
-        "fileSizeKB": 96.9
+        "fileSizeKB": 95
       },
       {
         "id": "mvp-l1-legacy-token-audit",
@@ -12131,7 +12588,7 @@ window.REGISTRY_BUNDLE = {
         "sourcePath": "reports/mvp-l1-legacy-token-audit.md",
         "updatedAt": "2026-05-20",
         "summary": "S1 UX 디자인가이드 2.4의 현재 Figma Variables를 legacy source snapshot으로 수집하고,",
-        "fileSizeKB": 26.6
+        "fileSizeKB": 26.4
       },
       {
         "id": "mvp-l2-foundation-reclassification",
@@ -12143,7 +12600,7 @@ window.REGISTRY_BUNDLE = {
         "sourcePath": "reports/mvp-l2-foundation-reclassification.md",
         "updatedAt": "2026-05-20",
         "summary": "Foundation Token → Semantic Token → Component Token",
-        "fileSizeKB": 4.5
+        "fileSizeKB": 4.4
       },
       {
         "id": "mvp-l2-legacy-token-classification",
@@ -12155,7 +12612,7 @@ window.REGISTRY_BUNDLE = {
         "sourcePath": "reports/mvp-l2-legacy-token-classification.md",
         "updatedAt": "2026-05-20",
         "summary": "`surface/status/main/primary`, `/sub/primary`, `/main/secondary`, `/sub/secondary`, `/main/tertiary`, `/sub/tertiary`",
-        "fileSizeKB": 13.3
+        "fileSizeKB": 13.1
       },
       {
         "id": "mvp-c0-component-token-coverage-pilot",
@@ -12167,7 +12624,7 @@ window.REGISTRY_BUNDLE = {
         "sourcePath": "reports/mvp-c0-component-token-coverage-pilot.md",
         "updatedAt": "2026-05-19",
         "summary": "기준 파일: assets/css/tokens.css · registry/tokens/canonical-token-draft.json · canonical-token-promotion-plan.json · token-aliases.json · tokens/component-tokens-extracted.md · pages/components.html",
-        "fileSizeKB": 9.4
+        "fileSizeKB": 9.3
       },
       {
         "id": "mvp-f0-figma-variable-usage-audit",
@@ -12179,7 +12636,7 @@ window.REGISTRY_BUNDLE = {
         "sourcePath": "reports/mvp-f0-figma-variable-usage-audit.md",
         "updatedAt": "2026-05-19",
         "summary": "Method: Figma MCP (`get_metadata`, `get_variable_defs`, `get_design_context`, `search_design_system`)",
-        "fileSizeKB": 13.1
+        "fileSizeKB": 12.9
       },
       {
         "id": "mvp-l4-5-token-coverage-review",
@@ -12191,7 +12648,7 @@ window.REGISTRY_BUNDLE = {
         "sourcePath": "reports/mvp-l4-5-token-coverage-review.md",
         "updatedAt": "2026-05-19",
         "summary": "단계: L5 Canonical Token Promotion 전 보정/분류/검토",
-        "fileSizeKB": 13.2
+        "fileSizeKB": 12.9
       },
       {
         "id": "mvp-l5-canonical-token-promotion-plan",
@@ -12203,7 +12660,7 @@ window.REGISTRY_BUNDLE = {
         "sourcePath": "reports/mvp-l5-canonical-token-promotion-plan.md",
         "updatedAt": "2026-05-19",
         "summary": "Promotion plan for canonical token v0.1 candidates based on legacy audit (MVP-L1 ~ L4.5), component coverage (C0), and Figma variable usage audit (F0). Incorporates HD-L4.5-A, HD-L4.5-B, HD-L4.5-C decisions.",
-        "fileSizeKB": 28.9,
+        "fileSizeKB": 28.4,
         "version": "0.1.0",
         "enrichedFrom": "registry/tokens/canonical-token-promotion-plan.json"
       },
@@ -12217,7 +12674,7 @@ window.REGISTRY_BUNDLE = {
         "sourcePath": "reports/mvp-l3-canonical-token-architecture-draft.md",
         "updatedAt": "2026-05-18",
         "summary": "⚠️ 이 단계에서 금지된 작업: Figma Variable rename/write/delete · 레거시 토큰 삭제 · 정식 확정 · Figma 파일 직접 수정",
-        "fileSizeKB": 18.7
+        "fileSizeKB": 18.3
       },
       {
         "id": "mvp-l4-canonical-token-review",
@@ -12229,7 +12686,7 @@ window.REGISTRY_BUNDLE = {
         "sourcePath": "reports/mvp-l4-canonical-token-review.md",
         "updatedAt": "2026-05-18",
         "summary": "Figma Variable write/rename/delete · UX Guide 2.4 운영 파일 수정 · Legacy token 삭제 · promote-candidate를 최종 canonical로 자동 확정",
-        "fileSizeKB": 14.3
+        "fileSizeKB": 14
       },
       {
         "id": "mvp-t1-token-mapping",
@@ -12241,7 +12698,7 @@ window.REGISTRY_BUNDLE = {
         "sourcePath": "reports/mvp-t1-token-mapping.md",
         "updatedAt": "2026-05-18",
         "summary": "CSS 토큰과 Figma Variables가 서로 다른 이름을 사용하더라도 같은 의미로 연결될 수 있는 매핑 기준을 구축한다.",
-        "fileSizeKB": 11.8
+        "fileSizeKB": 11.6
       },
       {
         "id": "mvp-t2-figma-variable-metadata",
@@ -12253,7 +12710,7 @@ window.REGISTRY_BUNDLE = {
         "sourcePath": "reports/mvp-t2-figma-variable-metadata.md",
         "updatedAt": "2026-05-18",
         "summary": "Figma Variables metadata를 수집하고,",
-        "fileSizeKB": 7.8
+        "fileSizeKB": 7.7
       },
       {
         "id": "mvp-t2-not-found-variable-name-review",
@@ -12265,7 +12722,7 @@ window.REGISTRY_BUNDLE = {
         "sourcePath": "reports/mvp-t2-not-found-variable-name-review.md",
         "updatedAt": "2026-05-18",
         "summary": "registry의 `figmaVariable` 경로는 MVP-T1 단계에서 Figma Variables 이름을 직접 조회하지 않고 **의미 기반 추정**으로 작성된 경로다.",
-        "fileSizeKB": 11.8
+        "fileSizeKB": 11.6
       },
       {
         "id": "source-guard-bad-service",
@@ -12277,7 +12734,7 @@ window.REGISTRY_BUNDLE = {
         "sourcePath": "reports/source-guard-bad-service.md",
         "updatedAt": "2026-05-18",
         "summary": "- **Path:** `/Users/designgroup_02/S1_AI_DESIGN_GUIDE/scripts/guard/__fixtures__/bad-service`",
-        "fileSizeKB": 5
+        "fileSizeKB": 4.9
       },
       {
         "id": "token-page-audit-2026-05-18",
@@ -12289,7 +12746,7 @@ window.REGISTRY_BUNDLE = {
         "sourcePath": "reports/token-page-audit-2026-05-18.md",
         "updatedAt": "2026-05-18",
         "summary": "검수 목적: `assets/css/tokens.css` 실제 값 vs `pages/foundation.html` / `pages/semantic.html` 표시 값 일치 여부 확인",
-        "fileSizeKB": 5.4
+        "fileSizeKB": 5.3
       },
       {
         "id": "mvp3-4-1-button-sync",
@@ -12301,7 +12758,7 @@ window.REGISTRY_BUNDLE = {
         "sourcePath": "reports/mvp3-4-1-button-sync.md",
         "updatedAt": "2026-05-12",
         "summary": "Button 관련 파일 전체 정합성 점검 + Figma MCP 비교 결과 반영 + 자동화 동기화 스크립트 구축.",
-        "fileSizeKB": 5.3
+        "fileSizeKB": 5.2
       },
       {
         "id": "mvp3-4-button-figma-mcp-comparison",
@@ -12313,7 +12770,7 @@ window.REGISTRY_BUNDLE = {
         "sourcePath": "reports/mvp3-4-button-figma-mcp-comparison.md",
         "updatedAt": "2026-05-12",
         "summary": "- **파일:** SW-UX-GUIDE V2.4 (`yE5UCFEbmXJBlYJWB24Lz2`)",
-        "fileSizeKB": 11.3
+        "fileSizeKB": 11.1
       },
       {
         "id": "mvp3-5-source-guard",
@@ -12325,7 +12782,7 @@ window.REGISTRY_BUNDLE = {
         "sourcePath": "reports/mvp3-5-source-guard.md",
         "updatedAt": "2026-05-12",
         "summary": "External service target scanning based on SW Design System registry.",
-        "fileSizeKB": 4.4
+        "fileSizeKB": 4.2
       },
       {
         "id": "mvp3-6-source-guard-fix-suggestions",
@@ -12337,7 +12794,7 @@ window.REGISTRY_BUNDLE = {
         "sourcePath": "reports/mvp3-6-source-guard-fix-suggestions.md",
         "updatedAt": "2026-05-12",
         "summary": "Generate fix suggestions for external service target violations detected by Source Guard.",
-        "fileSizeKB": 5.8
+        "fileSizeKB": 5.7
       },
       {
         "id": "mvp3-7-source-guard-apply-mode",
@@ -12349,7 +12806,7 @@ window.REGISTRY_BUNDLE = {
         "sourcePath": "reports/mvp3-7-source-guard-apply-mode.md",
         "updatedAt": "2026-05-12",
         "summary": "Apply high-confidence Source Guard fix suggestions to external service targets with explicit approval.",
-        "fileSizeKB": 4.9
+        "fileSizeKB": 4.8
       },
       {
         "id": "mvp3-8-source-guard-ci-dry-run",
@@ -12361,7 +12818,7 @@ window.REGISTRY_BUNDLE = {
         "sourcePath": "reports/mvp3-8-source-guard-ci-dry-run.md",
         "updatedAt": "2026-05-12",
         "summary": "Run Source Guard checks and dry-run reports through GitHub Actions.",
-        "fileSizeKB": 4.2
+        "fileSizeKB": 4.1
       },
       {
         "id": "mvp4-1-input-patterns",
@@ -12373,7 +12830,7 @@ window.REGISTRY_BUNDLE = {
         "sourcePath": "reports/mvp4-1-input-patterns.md",
         "updatedAt": "2026-05-12",
         "summary": "Search Input, Password Field, and Input with Unit are **not** treated as full Patterns.",
-        "fileSizeKB": 3.7
+        "fileSizeKB": 3.6
       },
       {
         "id": "mvp4-2-input-composed-fields",
@@ -12385,7 +12842,7 @@ window.REGISTRY_BUNDLE = {
         "sourcePath": "reports/mvp4-2-input-composed-fields.md",
         "updatedAt": "2026-05-12",
         "summary": "MVP4.1에서 Related Composed Fields를 등록했으나, Search Input의 slot 구조가 Figma 기준과 다르게 구현되었습니다.",
-        "fileSizeKB": 7.1
+        "fileSizeKB": 6.9
       },
       {
         "id": "mvp4-3-a-date-picker",
@@ -12397,7 +12854,7 @@ window.REGISTRY_BUNDLE = {
         "sourcePath": "reports/mvp4-3-a-date-picker.md",
         "updatedAt": "2026-05-12",
         "summary": "DatePicker를 Input의 state/variant로 포함하지 않고 별도 컴포넌트 후보로 정리한다.",
-        "fileSizeKB": 15.4
+        "fileSizeKB": 15.1
       },
       {
         "id": "pre-mvp4-input-classification",
@@ -12409,7 +12866,7 @@ window.REGISTRY_BUNDLE = {
         "sourcePath": "reports/pre-mvp4-input-classification.md",
         "updatedAt": "2026-05-12",
         "summary": "Section 2 (6443:5451) 하위 7개 Frame을 분석한 결과:",
-        "fileSizeKB": 23.6
+        "fileSizeKB": 23
       },
       {
         "id": "source-guard-apply-log-bad-service",
@@ -12433,7 +12890,7 @@ window.REGISTRY_BUNDLE = {
         "sourcePath": "reports/source-guard-apply-log-bad-service-apply-test.md",
         "updatedAt": "2026-05-12",
         "summary": "- **Path:** `/tmp/bad-service-apply-test`",
-        "fileSizeKB": 5.1
+        "fileSizeKB": 5
       },
       {
         "id": "source-guard-fix-suggestions-bad-service",
@@ -12445,7 +12902,7 @@ window.REGISTRY_BUNDLE = {
         "sourcePath": "reports/source-guard-fix-suggestions-bad-service.md",
         "updatedAt": "2026-05-12",
         "summary": "- **Path:** `/Users/designgroup_02/S1_AI_DESIGN_GUIDE/scripts/guard/__fixtures__/bad-service`",
-        "fileSizeKB": 11.2
+        "fileSizeKB": 10.8
       },
       {
         "id": "component-review",
@@ -12453,11 +12910,11 @@ window.REGISTRY_BUNDLE = {
         "title": "Component Review",
         "stage": "Audit",
         "category": "audit",
-        "status": "stable",
+        "status": "complete",
         "sourcePath": "reports/component-review.md",
         "updatedAt": "2026-05-11",
         "summary": "생성: 2026-05-11 / Phase: MVP0",
-        "fileSizeKB": 1
+        "fileSizeKB": 0.9
       },
       {
         "id": "darkmode-review",
@@ -12469,7 +12926,7 @@ window.REGISTRY_BUNDLE = {
         "sourcePath": "reports/darkmode-review.md",
         "updatedAt": "2026-05-11",
         "summary": "생성: 2026-05-11 / Phase: MVP0",
-        "fileSizeKB": 1.2
+        "fileSizeKB": 1.1
       },
       {
         "id": "figma-map-review",
@@ -12505,7 +12962,7 @@ window.REGISTRY_BUNDLE = {
         "sourcePath": "reports/mvp1-token-registry-review.md",
         "updatedAt": "2026-05-11",
         "summary": "- [x] `registry/tokens/foundation.colors.json` — 전면 업데이트 (22개 색상 그룹, V2.4 원본 HEX 직접 반영)",
-        "fileSizeKB": 6.1
+        "fileSizeKB": 6
       },
       {
         "id": "mvp2-portal-registry-review",
@@ -12529,7 +12986,7 @@ window.REGISTRY_BUNDLE = {
         "sourcePath": "reports/mvp3-2-button-audit-fix.md",
         "updatedAt": "2026-05-11",
         "summary": "Complete (blue-line token 추가, ghost 제거, HTML/CSS code view 추가)",
-        "fileSizeKB": 4.9
+        "fileSizeKB": 4.8
       },
       {
         "id": "mvp3-3-button-components-integration",
@@ -12541,7 +12998,7 @@ window.REGISTRY_BUNDLE = {
         "sourcePath": "reports/mvp3-3-button-components-integration.md",
         "updatedAt": "2026-05-11",
         "summary": "Components > Button integration, existing document alignment, duplicate registry menu cleanup, and ACTION test column addition.",
-        "fileSizeKB": 6.2
+        "fileSizeKB": 6.1
       },
       {
         "id": "mvp3-3-portal-ia-review",
@@ -12565,7 +13022,7 @@ window.REGISTRY_BUNDLE = {
         "sourcePath": "reports/mvp3-button-review.md",
         "updatedAt": "2026-05-11",
         "summary": "Draft (harness 구현 완료, Figma 시각 비교 검수 미완료)",
-        "fileSizeKB": 6.5
+        "fileSizeKB": 6.4
       },
       {
         "id": "mvp3-core-harness-review",
@@ -12589,7 +13046,7 @@ window.REGISTRY_BUNDLE = {
         "sourcePath": "reports/token-guide-update-dark-border.md",
         "updatedAt": "2026-05-11",
         "summary": "Complete (policy 반영, token candidate 전환)",
-        "fileSizeKB": 4
+        "fileSizeKB": 3.9
       },
       {
         "id": "token-review",
@@ -12601,7 +13058,7 @@ window.REGISTRY_BUNDLE = {
         "sourcePath": "reports/token-review.md",
         "updatedAt": "2026-05-11",
         "summary": "생성: 2026-05-11 / Phase: MVP0",
-        "fileSizeKB": 1.1
+        "fileSizeKB": 1
       }
     ]
   }

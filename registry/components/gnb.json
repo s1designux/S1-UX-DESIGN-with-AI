@@ -13,6 +13,44 @@
     "harnessStatus": "implemented",
     "description": "Global Navigation Bar. 로고 + 메뉴 슬롯(slots_menu) + 유틸리티(아이콘 3종) 조립체. 메뉴 슬롯 9 variant(size md/sm/xsm × state default/hover/selected) + GNB 바 6 variant(size md/sm/xsm × align center-between/start). PC only. viewport(1280/1440/1920)는 full-width 반응형으로 통합."
   },
+  "usage": {
+    "whenToUse": [
+      "PC 상단 글로벌 내비게이션이 필요할 때.",
+      "로고 + 메뉴 + 유틸(아이콘) 조립."
+    ],
+    "whenNotToUse": [
+      "사이드바 내비게이션은 Navigation.",
+      "모바일 하단 탭은 Mobile Bottom Nav."
+    ]
+  },
+  "anatomy": [
+    {
+      "part": "로고",
+      "role": "좌측 브랜드."
+    },
+    {
+      "part": "메뉴 슬롯",
+      "role": "size md/sm/xsm × default/hover/selected."
+    },
+    {
+      "part": "유틸리티",
+      "role": "우측 아이콘 3종."
+    }
+  ],
+  "doDont": {
+    "do": [
+      "PC 전용으로 쓴다. 뷰포트(1280/1440/1920)는 full-width 반응형으로 통합한다.",
+      "메뉴 라벨 색은 navigation 역할 토큰을 쓴다."
+    ],
+    "dont": [
+      "모바일에 GNB 를 쓰지 않는다.",
+      "선택 메뉴 표시를 색만이 아니라 상태 토큰으로 일관되게 한다."
+    ]
+  },
+  "a11y": [
+    "현재 메뉴에 aria-current 를 준다.",
+    "유틸 아이콘 버튼에 aria-label 을 단다."
+  ],
   "variants": {
     "menuSlot": {
       "size": ["md", "sm", "xsm"],

@@ -27,6 +27,43 @@
       "산출물: reports/figma-to-code/time-picker-select/ (1-inventory·2-extraction·4-verification)."
     ]
   },
+  "usage": {
+    "whenToUse": [
+      "시간(시/분)을 고를 때. input 방식(클릭→드롭다운) 또는 select 방식(시·분 분리)."
+    ],
+    "whenNotToUse": [
+      "날짜는 DatePicker.",
+      "자유 텍스트만 필요하면 Input."
+    ]
+  },
+  "anatomy": [
+    {
+      "part": "트리거/필드",
+      "role": "시간 표시 + ic_시계 아이콘."
+    },
+    {
+      "part": "시/분 라벨",
+      "role": "select 방식 시/분 라벨. form-control-label 토큰."
+    },
+    {
+      "part": "드롭다운 패널",
+      "role": "시간 선택 목록."
+    }
+  ],
+  "doDont": {
+    "do": [
+      "색은 --color-form-control-* semantic 을 100% 재사용한다(전용 색 토큰 없음).",
+      "아이콘은 ic_시계로 통일하고 disabled 는 색으로 구분한다."
+    ],
+    "dont": [
+      "전용 색상 토큰을 새로 만들지 않는다.",
+      "드롭다운 패널에 전용 shadow 토큰을 가정하지 않는다(dropdown semantic 재사용)."
+    ]
+  },
+  "a11y": [
+    "시/분 입력에 라벨을 연결한다.",
+    "드롭다운은 aria-expanded/listbox 패턴을 따른다."
+  ],
   "variants": {
     "input": {
       "platform": ["pc-md", "pc-xsm", "pc-xxsm", "mobile"],

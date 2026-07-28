@@ -1,0 +1,120 @@
+{
+  "_meta": {
+    "role": "AI 소비용 DESIGN.md 의 전역 서술(§1 비주얼테마·§2 색상역할·§3 타이포·§5 레이아웃·§6 엘리베이션·§7 Do/Don't·§8 반응형·§9 Agent가이드) 정본.",
+    "note": "값(HEX·px)은 여기 넣지 않는다 — 값 단일 출처는 assets/css/tokens.css(생성기 frontmatter). 여기엔 역할·원칙·용도 '서술'만 둔다.",
+    "sourceOfTruth": "이 파일이 전역 서술의 정본. scripts/gen-design-md.js 가 읽어 design/DESIGN.core.md 로 렌더한다. 손편집 대상은 '이 JSON'이지 생성된 md 가 아니다(Gate 24 가 md 손편집을 차단).",
+    "componentProse": "컴포넌트별 서술(언제 쓰나·구성·Do/Don't·접근성)은 각 registry/components/*.json 의 usage/anatomy/doDont/a11y 필드에 둔다."
+  },
+  "visualTheme": {
+    "intro": [
+      "S1 디자인시스템은 관제·운영·업무용 소프트웨어(영상관제·모빌리티·빌딩 등)를 위한 엔터프라이즈 UI 시스템이다. 화려함보다 정보의 명확성·일관성·오래 봐도 편한 절제된 톤을 우선한다.",
+      "기본 무드는 중립적이고 차분하다. 넓은 회색(Gray) 스케일을 배경·표면·구분선에 쓰고, 파란색(Brand Blue)을 주요 액션·선택·포커스의 단일 강조색으로 절제해서 쓴다. 빨강은 경고·오류에만 쓴다."
+    ],
+    "principles": [
+      "절제된 강조 — 파란색은 지금 눌러야 할 것·선택된 것·포커스에만 쓴다. 화면 대부분은 중립 회색과 밝은 표면(다크에선 짙은 회색 표면)이다.",
+      "정보 우선 밀도 — 관리자 화면은 고밀도(compact), 일반 사용자 화면은 여유 밀도(comfortable). 같은 컴포넌트라도 소비 프로파일로 밀도를 조정한다.",
+      "Light 먼저, Dark는 검증 — 모든 토큰은 Light 기준으로 확정하고 Dark 값을 함께 정의한다. 다크는 배경↔표면의 명도 차이로 레이어 깊이를 만든다.",
+      "브랜드색은 UI에 직접 쓰지 않는다 — CI·로고 전용 색은 UI 요소 색으로 쓰지 않는다."
+    ]
+  },
+  "colorRoles": {
+    "intro": [
+      "색은 값이 아니라 역할로 쓴다. 컴포넌트는 항상 역할 기반 Semantic 토큰을 참조하고, 팔레트(Foundation) HEX 를 직접 쓰지 않는다. Light/Dark 전환은 Semantic 레이어에서 일어난다.",
+      "구체적 HEX 값은 이 문서 상단 frontmatter 의 colors 사전과 assets/css/tokens.css 가 단일 출처다. 아래는 각 역할 카테고리의 용도만 정리한다."
+    ],
+    "roles": [
+      { "category": "color-bg", "role": "페이지·레이아웃 섹션·화면 최하위 배경" },
+      { "category": "color-surface", "role": "그 위에 올라오는 컴포넌트 표면(카드·패널·모달·드롭다운). 라이트에선 배경과 같은 밝은 색이나 다크에서 깊이로 분리된다" },
+      { "category": "color-text (title·body·state 3트랙)", "role": "제목·본문·상태(도움말·오류·성공) 텍스트" },
+      { "category": "color-form-control", "role": "입력 필드군(Input·Select·Textarea·DatePicker·TimePicker) 공용 배경·테두리·텍스트·라벨" },
+      { "category": "color-control-border", "role": "체크박스·라디오·토글 등 컨트롤 테두리" },
+      { "category": "color-icon", "role": "아이콘 색(현 Variables 는 색상명으로 정의)" },
+      { "category": "color-overlay", "role": "딤·오버레이(알파 채널 포함 — rgba 허용 예외)" }
+    ],
+    "notes": [
+      "테두리 역할은 단일 토큰으로 통합돼 있지 않고 폼 컨트롤용·컨트롤용·구분선용으로 분산돼 있다(2026-06-23 정리).",
+      "포커스·선택·주요 액션의 강조는 파란색 계열 역할 토큰으로 표현한다. 성공·정보 피드백도 현재 서비스 기준으로 파란색 계열을 쓴다(상태색 일관성 정책).",
+      "명도 대비는 WCAG AA 를 필수 기준으로 한다."
+    ]
+  },
+  "typography": {
+    "intro": [
+      "폰트는 Pretendard 를 정본으로 한다. 크기·굵기·행간은 정의된 토큰만 쓰고 임의 값을 만들지 않는다. 구체적 크기·굵기 값은 frontmatter 의 typography 사전을 참조한다."
+    ],
+    "hierarchy": [
+      "크기 스케일(px): 10 · 12 · 14 · 16 · 18 · 20 · 24 · 32. 본문 기본은 14, 보조·캡션은 12, 제목은 16 이상.",
+      "굵기: Regular 400 · Medium 500 · Bold 700. 강조는 굵기로 주고, 색은 역할 토큰으로 준다.",
+      "행간: 기본 130%(1.3)."
+    ],
+    "rules": [
+      "정의된 토큰 외 크기·굵기 사용 금지. 새 값이 필요하면 토큰부터 신설한다.",
+      "약어 없는 의미 중심 네이밍을 쓴다(예: font-weight-medium, 약어 fw- 금지)."
+    ]
+  },
+  "layout": {
+    "intro": [
+      "레이아웃은 정의된 스페이싱 토큰과 플랫폼별 컨테이너·컬럼 그리드 위에서 구성한다. 임의 px 여백을 만들지 않는다."
+    ],
+    "grid": [
+      "플랫폼별 컨테이너·컬럼: web 1200px / 12컬럼 · app 1024px / 8컬럼 · mobile 375px / 4컬럼(소비 프로파일 참조).",
+      "페이지는 사이드바(LNB) + 메인 콘텐츠 셸 구조를 기본으로 한다. 페이지 폭은 넓게(wide) 또는 가독 폭(readable) 정책을 따른다."
+    ],
+    "spacing": [
+      "간격은 Foundation 스페이싱(2~128)과 역할 기반 Semantic 스페이싱(padding-block·section·stack·cluster·label-gap)을 쓴다.",
+      "관리자(compact)와 일반 사용자(comfortable) 밀도에 따라 간격을 조정한다."
+    ]
+  },
+  "elevation": {
+    "intro": [
+      "깊이(엘리베이션)는 현재 그림자 스케일이 아니라 표면 위계 + 레이어(z-index)로 표현한다."
+    ],
+    "model": [
+      "표면 위계: color-bg(최하위 배경) → color-surface-default(카드·패널·인풋) → color-surface-raised(모달·드롭다운·플로팅). 다크 모드에서 이 세 층이 명도로 분리돼 깊이를 만든다.",
+      "레이어(z-index) 기준: 기본 콘텐츠 < 고정 헤더·LNB < 드롭다운·팝오버 < 모달·오버레이(color-overlay 딤 동반)."
+    ],
+    "note": [
+      "그림자(shadow) 토큰(--shadow-*)은 아직 시스템에 정의돼 있지 않다(준비 중). 현재 화면·컴포넌트의 box-shadow 는 개별 raw 값이며, 향후 Foundation 그림자 토큰으로 승격 예정이다(백로그)."
+    ]
+  },
+  "doDont": {
+    "global": {
+      "do": [
+        "색은 반드시 역할 기반 Semantic 토큰으로 참조한다. Light/Dark 는 Semantic 레이어에서 전환된다.",
+        "이미 있는 코어 컴포넌트(Button·Input·Checkbox 등)를 먼저 찾아 재사용한다. 모듈은 배치·조합만 담당한다.",
+        "명도 대비 WCAG AA 를 지킨다. 상태(성공·오류·경고·정보) 색은 정책에 맞춰 일관되게 쓴다.",
+        "새 값이 필요하면 토큰부터 신설하고, 원본(Figma) 값을 그대로 보존한다(반올림·변환 금지)."
+      ],
+      "dont": [
+        "HEX 직접 사용 금지(예외: color-overlay 의 rgba 알파). Foundation 팔레트 직접 참조 남용 금지 — 색은 Semantic 경유.",
+        "코어 컴포넌트의 시각·상태 스타일을 모듈에서 재정의(override)하지 않는다.",
+        "CI·로고 전용 브랜드색을 UI 요소 색으로 쓰지 않는다.",
+        "폐지된 것(Danger·ghost 버튼 variant 등)을 재도입하지 않는다. Legacy 를 신규 기준처럼 쓰지 않는다.",
+        "다크모드 고려 없이 토큰을 확정하지 않는다."
+      ]
+    }
+  },
+  "responsive": {
+    "intro": [
+      "반응형은 정의된 브레이크포인트 토큰과 플랫폼 프로파일(web·app·mobile)로 다룬다. 구체적 브레이크포인트 값은 아래 표(토큰)를 참조한다."
+    ],
+    "adaptation": [
+      "플랫폼별 컨테이너·컬럼: web 1200px/12 · app 1024px/8 · mobile 375px/4.",
+      "컴포넌트는 플랫폼에 따라 크기·패딩·아이콘 슬롯이 달라질 수 있다(예: Input 은 PC 패딩 8px·토큰 radius / Mobile 패딩 12px·raw 4px, 모바일에서 지우기 버튼 노출). 각 컴포넌트의 플랫폼 차이는 해당 컴포넌트 항목을 참조한다."
+    ]
+  },
+  "agentGuide": {
+    "intro": [
+      "이 문서는 AI 에이전트가 S1 디자인시스템 기준으로 UI·토큰 산출물을 만들 때 통째로 읽는 단일 컨텍스트다."
+    ],
+    "promptTips": [
+      "색·간격·크기·굵기·반경은 정의된 토큰만 쓴다. 값이 없으면 만들지 말고 없음으로 보고한다(추측 금지).",
+      "컴포넌트를 새로 만들기 전에 §4 Components 에서 기존 코어를 먼저 찾는다.",
+      "Light 기준으로 만들고 Dark 값을 함께 확인한다.",
+      "상태(default·hover·pressed·focus·selected·disabled·error)를 누락 없이 다룬다."
+    ],
+    "resolution": [
+      "적용 해석 순서(뒤가 앞을 덮음): core → service(extends core) → role → platform → theme. 기본값: service=core · role=user · platform=web · theme=light.",
+      "서비스 분기(예: vms 영상관제)는 core 를 상속하고 차이분만 덮는다."
+    ]
+  }
+}

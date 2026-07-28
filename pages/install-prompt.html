@@ -231,7 +231,7 @@
                 <div class="step-title">AI 컨텍스트 프롬프트 받기</div>
                 <div class="step-desc">라우터(읽는 순서) + Core(9섹션 — 비주얼 테마·색상 역할·타이포·컴포넌트 사용맥락·레이아웃·엘리베이션·Do/Don't·반응형·Agent 가이드) + 서비스 분기</div>
               </div>
-              <span class="update-stamp" data-update-file="design/DESIGN.core.md"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> 업데이트 2026-07-21 10:40</span>
+              <span class="update-stamp" data-update-file="design/DESIGN.core.md"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> 업데이트 2026-07-21 13:18</span>
             </div>
             <div class="step-body">
               <div class="ai-info">
@@ -725,6 +725,15 @@ _Don't_
 - 비차단 알림은 토스트/인라인 메시지.
 - 복잡한 폼·다단계는 별도 페이지·패널을 고려한다.
 
+**구성 (Anatomy)**
+
+| 요소 | 역할 |
+| --- | --- |
+| 딤(overlay) | 뒤 배경을 덮는 color-overlay 딤. |
+| 헤더 | 제목 + 닫기(X). 제목 항상 존재. |
+| 본문 | 텍스트 내용. |
+| 푸터 | 코어 Button 1개(Single) 또는 2개(Dual). |
+
 | variant | default | hover | pressed | disabled |
 | --- | --- | --- | --- | --- |
 | default | — | — | — | — |
@@ -943,7 +952,7 @@ _Don't_
 
 _Do_
 - 선택 컬럼은 코어 s1-checkbox 를 재사용한다.
-- 정렬 아이콘은 지정 SVG(combobox_arrow 18×18)를 쓴다.
+- 정렬 가능한 헤더에는 정렬 방향 아이콘을 두어 정렬 상태를 표시한다.
 
 _Don't_
 - Table 전용 체크박스를 새로 만들지 않는다(코어 재사용).
@@ -1048,7 +1057,7 @@ _Don't_
 
 _Do_
 - 즉시 반영되는 설정에 쓴다(확인 없이 상태 전환).
-- off 배경은 --toggle-off-bg(placeholder 색) 기준을 따른다.
+- off 배경은 미선택 인디케이터 색(--color-control-indicator-unselected)을 따른다.
 
 _Don't_
 - 제출이 필요한 폼 선택에 토글을 쓰지 않는다.
@@ -1126,7 +1135,7 @@ _Don't_
 - 적용 해석 순서(뒤가 앞을 덮음): core → service(extends core) → role → platform → theme. 기본값: service=core · role=user · platform=web · theme=light.
 - 서비스 분기(예: vms 영상관제)는 core 를 상속하고 차이분만 덮는다.
 
-&lt;!-- generated-stamp: 9438b7f9fc4c · 손편집 금지 --&gt;
+&lt;!-- generated-stamp: 2df20cda48cc · 손편집 금지 --&gt;
 
 ---
 
@@ -1214,7 +1223,7 @@ _아직 `scope="vms"` 로 분기된 컴포넌트가 없습니다. core 정의를
    S1 UX DESIGN GUIDE — tokens.css
    Foundation → Semantic → Component
    Auto-synced from assets/css/tokens.css (npm run tokens:sync-prompt)
-   Last sync: 2026-07-21
+   Last sync: 2026-07-28
    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
 
 /* &gt;&gt;&gt; GEN:FOUNDATION &gt;&gt;&gt; Auto-generated from vars-data.ts (npm run tokens:gen:foundation) — Variables 정본. 수동 편집 금지. */

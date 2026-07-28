@@ -12,6 +12,51 @@
     "description": "Base text input field. Pure input element without label/helper wrapper. Label/Helper combo = Input Slots pattern.",
     "hdResolved": "HD-1 through HD-8 resolved 2026-05-12. Token corrections applied after re-examination."
   },
+  "usage": {
+    "whenToUse": [
+      "한 줄 텍스트·숫자를 입력받을 때 — 로그인·검색·필터·설정 폼 등.",
+      "라벨·도움말과 함께 쓰려면 Input Slots(라벨/헬퍼 조합) 패턴으로 감싼다."
+    ],
+    "whenNotToUse": [
+      "여러 줄 입력은 Textarea 를 쓴다.",
+      "선택지 중 하나를 고르는 입력은 Select·Dropdown, 날짜·시간은 DatePicker·TimePicker 를 쓴다."
+    ]
+  },
+  "anatomy": [
+    {
+      "part": "입력 필드(base)",
+      "role": "텍스트·숫자를 입력하는 기본 영역. 배경·테두리·텍스트는 form-control 토큰."
+    },
+    {
+      "part": "placeholder",
+      "role": "입력 전 안내 문구. 입력되면 default 텍스트 색으로 전환."
+    },
+    {
+      "part": "suffix 액션 그룹(선택)",
+      "role": "오른쪽 액션 버튼 그룹. 검색=지우기+검색 아이콘, 비밀번호=표시전환+지우기."
+    },
+    {
+      "part": "helper 텍스트(선택)",
+      "role": "필드 아래 도움말·오류·성공 메시지. color-text-state 사용."
+    }
+  ],
+  "doDont": {
+    "do": [
+      "색·테두리는 form-control 역할 토큰(--color-form-control-*)을 통해 참조한다.",
+      "focus 는 파란 테두리(--input-focus-border)로만 표시하고 배경은 바꾸지 않는다.",
+      "라벨은 form-control 밖 제목 텍스트 토큰(--color-text-title-secondary)을 쓴다."
+    ],
+    "dont": [
+      "hover 상태를 새로 만들지 않는다 — Figma 에 정의돼 있지 않아 제거됨(HD-2).",
+      "filled·error·focus 에 별도 배경색을 넣지 않는다 — 배경은 default 와 동일, 구분은 텍스트·테두리 색으로만.",
+      "correct(성공) 테두리를 초록으로 칠하지 않는다 — 원본은 파란색(border-selected)."
+    ]
+  },
+  "a11y": [
+    "suffix 액션(지우기·검색·비밀번호 표시전환)에는 각각 aria-label 을 단다(예: 검색어 지우기, 비밀번호 보기/숨기기).",
+    "비밀번호 표시전환 토글은 aria-pressed 로 표시·숨김 상태를 노출한다.",
+    "지우기(clear) 버튼은 값이 있을 때만 노출한다(hidden 속성 제어)."
+  ],
   "platforms": {
     "pc-medium": {
       "height": "44px",

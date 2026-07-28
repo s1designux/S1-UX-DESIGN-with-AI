@@ -17,6 +17,43 @@
       "Checkbox: 선택 컬럼은 s1-checkbox 코어 컴포넌트 재사용. Table에서 별도 체크박스 구현 금지."
     ]
   },
+  "usage": {
+    "whenToUse": [
+      "행·열의 정형 데이터를 보여줄 때.",
+      "정렬·선택(체크박스)·행 hover/selected 가 필요할 때."
+    ],
+    "whenNotToUse": [
+      "카드형 비정형 목록에는 쓰지 않는다."
+    ]
+  },
+  "anatomy": [
+    {
+      "part": "헤더",
+      "role": "열 제목 + 정렬 아이콘 + 전체선택 체크박스."
+    },
+    {
+      "part": "행(row)",
+      "role": "default·hover·selected."
+    },
+    {
+      "part": "선택 셀",
+      "role": "코어 s1-checkbox 재사용."
+    }
+  ],
+  "doDont": {
+    "do": [
+      "선택 컬럼은 코어 s1-checkbox 를 재사용한다.",
+      "정렬 가능한 헤더에는 정렬 방향 아이콘을 두어 정렬 상태를 표시한다."
+    ],
+    "dont": [
+      "Table 전용 체크박스를 새로 만들지 않는다(코어 재사용).",
+      "행 hover/selected 색을 raw 로 칠하지 않는다(table-cell 토큰)."
+    ]
+  },
+  "a11y": [
+    "헤더는 th·scope 로 표시한다.",
+    "정렬 상태는 aria-sort 로 노출한다."
+  ],
   "dependencies": {
     "coreComponents": [
       {

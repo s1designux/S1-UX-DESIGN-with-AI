@@ -17,6 +17,44 @@
       "trigger placeholder text / selected text / list border / option selected text는 D001(2026-05-19) 추가 4개 candidate 토큰."
     ]
   },
+  "usage": {
+    "whenToUse": [
+      "트리거를 눌러 옵션 목록에서 하나를 고를 때.",
+      "Select 의 기반 컴포넌트."
+    ],
+    "whenNotToUse": [
+      "즉시 실행 액션 그룹은 Button.",
+      "적은 수의 상호배타 선택은 Radio."
+    ]
+  },
+  "anatomy": [
+    {
+      "part": "트리거",
+      "role": "현재 값·placeholder 표시. default·hover·open·disabled."
+    },
+    {
+      "part": "옵션 목록",
+      "role": "surface-raised 위에 떠 있는 패널."
+    },
+    {
+      "part": "옵션",
+      "role": "hover·selected 상태 항목."
+    }
+  ],
+  "doDont": {
+    "do": [
+      "목록 배경은 surface-raised(떠 있는 표면)를 쓴다.",
+      "트리거 테두리는 form-control 토큰을 참조한다."
+    ],
+    "dont": [
+      "목록 배경에 surface-default 를 쓰지 않는다(D002 결정: raised).",
+      "옵션 hover/selected 색을 raw 로 칠하지 않는다."
+    ]
+  },
+  "a11y": [
+    "트리거는 aria-expanded 로 열림 상태를 노출한다.",
+    "선택 옵션에 aria-selected, 목록은 role=listbox 패턴을 따른다."
+  ],
   "states": {
     "trigger": ["default", "hover", "open", "disabled"],
     "option": ["default", "hover", "selected"]

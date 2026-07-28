@@ -20,6 +20,39 @@
       "구조 불일치(2026-07-14): 웹 Textarea 에는 안내(helper) 텍스트가 있으나(이 tokens 표 --input-helper-text), Figma 설치기 빌더는 Text Area 안내문을 생성하지 않는다(build-components.ts:1144 '1차는 필드 상태만'). 색이 아니라 '요소 존재'가 다름 — 별도 작업으로 Figma 빌더에 helper 요소 추가 필요(needs-core-update). 기본 안내색은 Input 과 동일 기준 text/state/caption(gray/500)."
     ]
   },
+  "usage": {
+    "whenToUse": [
+      "여러 줄 텍스트를 입력받을 때(메모·설명 등).",
+      "Input 과 시각 동일 — --input-* 토큰을 공유한다."
+    ],
+    "whenNotToUse": [
+      "한 줄 입력은 Input.",
+      "선택형 입력은 Select·Dropdown."
+    ]
+  },
+  "anatomy": [
+    {
+      "part": "입력 영역",
+      "role": "멀티라인 텍스트. --input-* 토큰."
+    },
+    {
+      "part": "helper 텍스트(선택)",
+      "role": "필드 아래 도움말·오류·성공. text/state/caption 기본."
+    }
+  ],
+  "doDont": {
+    "do": [
+      "색·상태는 Input 의 --input-* 토큰을 공유한다(추가 divergence 없음).",
+      "readonly 는 disabled 와 같은 bg/border, text 만 한 단계 진하게 한다."
+    ],
+    "dont": [
+      "--textarea-* 전용 토큰을 새로 만들지 않는다.",
+      "hover 상태를 만들지 않는다(HD-2, Figma 미정의)."
+    ]
+  },
+  "a11y": [
+    "라벨과 연결(for/id)하고, 오류 시 aria-invalid·aria-describedby 로 helper 를 연결한다."
+  ],
   "states": ["default", "focus", "error", "correct", "disabled", "readonly"],
   "stateNotes": {
     "focus":    "border → --input-focus-border (--color-form-control-border-selected)",

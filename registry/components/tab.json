@@ -13,6 +13,40 @@
     "harnessStatus": "implemented",
     "description": "라인탭 컴포넌트. 탭 하단에 인디케이터(밑줄)로 선택 상태를 표시. PC MD / PC SM / Mobile 3가지 variant."
   },
+  "usage": {
+    "whenToUse": [
+      "같은 화면에서 콘텐츠 영역을 전환할 때.",
+      "PC MD/SM, Mobile 크기 중 맥락에 맞게 고른다."
+    ],
+    "whenNotToUse": [
+      "페이지 이동은 Navigation.",
+      "상호배타 폼 선택은 Radio."
+    ]
+  },
+  "anatomy": [
+    {
+      "part": "탭 라벨",
+      "role": "unselected·selected 텍스트."
+    },
+    {
+      "part": "인디케이터(밑줄)",
+      "role": "선택 탭 하단 강조 막대."
+    }
+  ],
+  "doDont": {
+    "do": [
+      "선택 탭은 라벨 색 + 하단 인디케이터로 표시한다.",
+      "navigation 역할 토큰(label/indicator selected)을 쓴다."
+    ],
+    "dont": [
+      "선택 표시를 색만으로 하지 않는다(인디케이터 병행).",
+      "탭으로 페이지 이동을 대체하지 않는다."
+    ]
+  },
+  "a11y": [
+    "role=tablist/tab/tabpanel 패턴, 선택에 aria-selected 를 준다.",
+    "키보드 화살표로 탭을 이동할 수 있게 한다."
+  ],
   "variants": {
     "size": ["pc-md", "pc-sm", "mobile"],
     "state": ["unselected", "selected", "hover", "pressed"]

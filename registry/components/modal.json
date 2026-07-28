@@ -13,6 +13,48 @@
     "harnessStatus": "not-started",
     "description": "확인 계열 모달 그릇 2종(Footer Single|Dual). 딤(overlay) 위 공통 팝업 셸 — 헤더(제목+닫기)+본문(텍스트)+푸터(버튼)의 3층 껍데기. 그릇(제목·본문·푸터 3층)만 정본이며, 실제 문구는 예시(UX라이팅 플러그인 영역·컴포넌트 아님). Single=알림/설명체 1버튼, Dual=확인/질문체 2버튼. 제목 항상 존재. 코어 Button·V2.2 라이브러리 아이콘 재사용(신규 보여주기 컴포넌트 아님)."
   },
+  "usage": {
+    "whenToUse": [
+      "확인·알림 등 흐름을 멈추고 결정을 받을 때.",
+      "Single=알림/설명체 1버튼, Dual=확인/질문체 2버튼."
+    ],
+    "whenNotToUse": [
+      "비차단 알림은 토스트/인라인 메시지.",
+      "복잡한 폼·다단계는 별도 페이지·패널을 고려한다."
+    ]
+  },
+  "anatomy": [
+    {
+      "part": "딤(overlay)",
+      "role": "뒤 배경을 덮는 color-overlay 딤."
+    },
+    {
+      "part": "헤더",
+      "role": "제목 + 닫기(X). 제목 항상 존재."
+    },
+    {
+      "part": "본문",
+      "role": "텍스트 내용."
+    },
+    {
+      "part": "푸터",
+      "role": "코어 Button 1개(Single) 또는 2개(Dual)."
+    }
+  ],
+  "doDont": {
+    "do": [
+      "제목은 항상 둔다.",
+      "푸터 버튼은 코어 Button, 아이콘은 V2.2 라이브러리 인스턴스를 재사용한다."
+    ],
+    "dont": [
+      "모달 문구(실제 카피)를 컴포넌트 정본으로 넣지 않는다 — 예시일 뿐(UX라이팅 영역).",
+      "그릇(제목·본문·푸터 3층) 외 임의 레이아웃을 만들지 않는다."
+    ]
+  },
+  "a11y": [
+    "role=dialog·aria-modal 로 표시하고 포커스를 모달 안에 가둔다.",
+    "열릴 때 제목으로 포커스, 닫기는 Esc 로도 가능하게 한다."
+  ],
   "origin": {
     "classification": "B",
     "note": "원본 틀 필요. V2.4 레거시 화면에서 편입(루트 A 신규 편입 시험 첫 대상).",
@@ -74,7 +116,7 @@
     "single": ["필수항목미입력", "중복안내"],
     "dual": ["삭제", "입력취소", "마감취소"]
   },
-  "anatomy": {
+  "anatomySpec": {
     "panel": "VERTICAL · w360 · py20(padding/block/md) · gap32(section/lg) · radius8(radius/8 전체) · border 없음 · shadow 없음(라이트)",
     "header": "HORIZONTAL space-between · items-end · px24(padding/inline/lg) · [title + close]",
     "body": "VERTICAL · gap8(spacing/8) · px24 · 텍스트 2줄",
@@ -97,13 +139,18 @@
   },
   "figma": {
     "componentSetKey": "(미발행 — 라이브러리 publish 시 기록)",
-    "figmaNodeId": "1256:5453",
-    "masterNodeIds": { "single": "1267:8594", "dual": "1256:5439" },
-    "targetFile": "V3.0-TEST(cysG5U1udpQqVagYY1hWHW) — Overlay/Modal 섹션",
+    "fileKey": "cysG5U1udpQqVagYY1hWHW",
+    "pageNodeId": "5:5706",
+    "pageName": "Core",
+    "sectionNodeId": "1278:30834",
+    "sectionName": "Modal",
+    "figmaNodeId": "1278:30800",
+    "masterNodeIds": { "single": "1278:30774", "dual": "1278:30786" },
+    "targetFile": "SW UX GUIDE V3.0-TEST",
     "builder": "plugins/figma-vars-installer/src/build-components.ts · buildModalShell → buildModalVariant",
     "propertyMap": { "footer": ["single", "dual"] },
     "builtThisRound": ["single", "dual"],
-    "note": "변형축 Footer=Single|Dual(2변형). 세트 1256:5453 제자리 편집(새 세트·orphan 없음). Dual 마스터 1256:5439 글자·라벨 교체, Single 마스터 1267:8594 는 Dual clone(secondary 제거). 변형 표시순 Single→Dual. componentSetKey 는 라이브러리 발행 전이라 미기록."
+    "note": "변형축 Footer=Single|Dual(2변형), 표시순 Single→Dual. 세트=프레임 \"Modal\"(864×310), 마스터 각 360×192. 2026-07-18 Figma 커넥터로 실물 확인. 구 ID(1256:5453 / 1256:5439 / 1267:8594)는 폐기 — 설치기 리빌드 과정에서 노드가 재발급된 것으로 보임. 노드 ID 는 리빌드마다 또 바뀔 수 있으니, ID 가 안 맞으면 fileKey → pageNodeId(Core) → sectionNodeId(Modal) 순으로 되짚어 찾을 것. componentSetKey 는 라이브러리 발행 전이라 미기록."
   },
   "governance": {
     "verify": "none",

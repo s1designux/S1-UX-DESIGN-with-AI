@@ -128,7 +128,7 @@ function buildAiPromptBundle() {
 
 이 뭉치는 세 부분으로 구성됩니다.
 1. 라우터(manifest) — 어떤 순서로 읽고 무엇이 무엇을 덮는지(뒤가 앞을 override).
-2. Core — 토큰 사전 + 컴포넌트 상태표 + 프로파일 정의.
+2. Core — 9섹션(비주얼 테마·색상 역할·타이포·컴포넌트[상태표+사용맥락·Do/Don't·접근성]·레이아웃·엘리베이션·Do/Don't·반응형·Agent 가이드) + 토큰 사전 frontmatter + 프로파일.
 3. 서비스 분기 — Core 를 상속하고 차이분만 기재.
 
 ---

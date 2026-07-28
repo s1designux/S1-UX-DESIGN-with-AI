@@ -16,6 +16,48 @@
       "darkModeStatus: pending — dark mode 시각 검증 미완료."
     ]
   },
+  "usage": {
+    "whenToUse": [
+      "선택 가능한 태그·필터를 나열할 때.",
+      "filter 는 드롭다운으로 값을 고르고 적용 완료(complete)를 표시할 때."
+    ],
+    "whenNotToUse": [
+      "단일 액션 실행은 Button.",
+      "긴 목록의 단일 선택은 Select·Dropdown."
+    ]
+  },
+  "anatomy": [
+    {
+      "part": "라벨",
+      "role": "칩 텍스트."
+    },
+    {
+      "part": "아이콘(선택)",
+      "role": "앞쪽 보조 아이콘."
+    },
+    {
+      "part": "닫기(X)(선택)",
+      "role": "선택·완료 상태에서 해제·삭제. filter complete 에 노출."
+    },
+    {
+      "part": "컨테이너",
+      "role": "line=외곽선 / solid=채운 배경."
+    }
+  ],
+  "doDont": {
+    "do": [
+      "line=외곽선, solid=채운 배경으로 용도에 맞게 쓴다.",
+      "filter 의 complete 는 선택값 노출 + 닫기(X)로 표시한다."
+    ],
+    "dont": [
+      "selection chip 에 complete(필터 완료) 개념을 쓰지 않는다 — filter 전용.",
+      "form-control 의 filled 와 혼동하지 않는다(다른 개념)."
+    ]
+  },
+  "a11y": [
+    "선택 상태를 aria-pressed 또는 role 로 노출한다.",
+    "닫기(X)에는 삭제·해제 aria-label 을 단다."
+  ],
   "variants": {
     "line": {
       "description": "Outlined chip. Background = surface-default, border changes on state. Default selection chip type.",

@@ -14,6 +14,44 @@
     "figmaNote": "2026-05-20 MVP-F1 플러그인 스캔으로 COMPONENT_SET nodeId 540:3794 확인. Section 노드 6456:4033은 figma.figmaSectionNodeId에 보존. mobile bottomsheet 540:3836 확인.",
     "description": "Date selection component. Uses Base Input as trigger field. PC popover calendar panel (figma-unconfirmed) or Mobile bottom sheet (Figma confirmed)."
   },
+  "usage": {
+    "whenToUse": [
+      "날짜(단일/기간)를 고를 때. 트리거는 Base Input 필드.",
+      "PC 는 팝오버 캘린더, Mobile 은 바텀시트로 표출."
+    ],
+    "whenNotToUse": [
+      "시간만 고를 때는 TimePicker.",
+      "자유 텍스트 날짜 입력만 필요하면 Input."
+    ]
+  },
+  "anatomy": [
+    {
+      "part": "트리거 필드",
+      "role": "Base Input 재사용. 선택 날짜 표시."
+    },
+    {
+      "part": "캘린더 패널",
+      "role": "월 네비 + 날짜 셀 그리드."
+    },
+    {
+      "part": "날짜 셀",
+      "role": "default·hover·today·selected·other-month·disabled 상태."
+    }
+  ],
+  "doDont": {
+    "do": [
+      "트리거는 Base Input 을 재사용한다(별도 필드 만들지 않음).",
+      "오늘·선택·타월(other-month)·비활성 날짜를 상태 토큰으로 구분한다."
+    ],
+    "dont": [
+      "날짜 셀 색을 raw 로 칠하지 않는다 — bg-subtle 등 Semantic 경유.",
+      "PC 캘린더 레이아웃을 Figma 미확인 상태로 단정하지 않는다."
+    ]
+  },
+  "a11y": [
+    "날짜 셀은 키보드 이동이 가능해야 하고 선택 셀에 aria-selected 를 준다.",
+    "비활성 날짜는 aria-disabled 로 표시한다."
+  ],
   "baseComponent": "Input",
   "composition": [
     "Input trigger (s1-input-wrap + s1-input-field)",

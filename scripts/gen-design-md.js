@@ -36,19 +36,27 @@ const TOKENS_REL = 'assets/css/tokens.css';
 const ACTIVE_SERVICES = ['vms'];
 const SERVICE_OUT = { vms: VMS_REL }; // 서비스→출력경로 (리터럴 유지)
 
-// 소비자(AI)용 프로파일 — design.manifest.json 의 profiles 와 값 일치를 수동으로 유지한다.
-const PROFILES = {
-  role: [
-    { id: 'admin', density: 'compact', desc: '관리자 — 고밀도(정보 우선)' },
-    { id: 'user', density: 'comfortable', desc: '일반 사용자 — 여유 밀도(가독성 우선)' },
-  ],
-  platform: [
-    { id: 'web', container: '1200px', columns: 12 },
-    { id: 'app', container: '1024px', columns: 8 },
-    { id: 'mobile', container: '375px', columns: 4 },
-  ],
-  theme: ['light', 'dark'],
-};
+// 소비자(AI)용 프로파일 — design.manifest.json 의 profiles 를 단일 정본으로 읽어 파생한다.
+// (과거엔 상수로 중복 보관했으나 수동 동기화 드리프트를 없애려 manifest 참조로 단일화. 2026-07-21)
+const MANIFEST_REL = 'design/design.manifest.json';
+const NARRATIVE_REL = 'registry/governance/design-narrative.json';
+
+function loadProfiles() {
+  try {
+    const m = JSON.parse(fs.readFileSync(path.join(ROOT, MANIFEST_REL), 'utf8'));
+    if (m && m.profiles && typeof m.profiles === 'object') return m.profiles;
+  } catch (_) { /* manifest 없거나 깨짐 → 빈 프로파일 */ }
+  return { role: [], platform: [], theme: [] };
+}
+
+// 전역 서술 정본(§1·2·3·5·6·7·8·9). 없으면 {} — 섹션 빌더가 알아서 건너뜀.
+function loadNarrative() {
+  try {
+    const n = JSON.parse(fs.readFileSync(path.join(ROOT, NARRATIVE_REL), 'utf8'));
+    if (n && typeof n === 'object') return n;
+  } catch (_) { /* 없으면 서술 없는 문서로 생성(하위호환) */ }
+  return {};
+}
 
 // ── tokens.css 파싱 ─────────────────────────────────────────────────
 // `--이름: 값;` 을 뽑는다. (스펙의 `--(\w+)` 은 하이픈 미포함이라 실제 토큰명(--color-brand-blue 등)을
@@ -73,6 +81,7 @@ function parseTokens() {
     radius: pick((k) => /^radius-/.test(k)),
     fontSize: pick((k) => /^font-size-/.test(k)),
     fontWeight: pick((k) => /^font-weight-/.test(k)),
+    breakpoint: pick((k) => /^breakpoint-/.test(k)), // §8 반응형용
   };
 }
 
@@ -263,22 +272,155 @@ function yamlMap(obj, indent) {
   return keys.map((k) => `${pad}${k}: "${obj[k]}"`).join('\n');
 }
 
-function profilesBlock() {
+function profilesBlock(profiles) {
+  const p0 = profiles || { role: [], platform: [], theme: [] };
   const l = [];
-  l.push('## Profiles', '');
+  l.push('## 소비 프로파일 (Profiles)', '');
   l.push('> 소비자(역할·플랫폼·테마)별 적용 프로파일. 해석 순서는 `design.manifest.json` 의 resolutionOrder 참조.', '');
   l.push('### role');
-  for (const r of PROFILES.role) l.push(`- **${r.id}** — 밀도: \`${r.density}\` (${r.desc})`);
+  for (const r of (p0.role || [])) l.push(`- **${r.id}** — 밀도: \`${r.density}\` (${r.desc})`);
   l.push('', '### platform');
-  for (const p of PROFILES.platform) l.push(`- **${p.id}** — 컨테이너: \`${p.container}\`, 컬럼: \`${p.columns}\``);
+  for (const p of (p0.platform || [])) l.push(`- **${p.id}** — 컨테이너: \`${p.container}\`, 컬럼: \`${p.columns}\``);
   l.push('', '### theme');
-  l.push('- ' + PROFILES.theme.map((t) => `\`${t}\``).join(' / '));
+  l.push('- ' + (p0.theme || []).map((t) => `\`${t}\``).join(' / '));
   return l.join('\n');
+}
+
+// ── 서술(prose) 렌더 헬퍼 ────────────────────────────────────────────
+// 모두 결정적(입력 배열 순서 그대로). 빈 값이면 '' 반환 → 상위에서 섹션 생략 판단.
+function asArr(x) { return Array.isArray(x) ? x.filter(Boolean) : (x ? [x] : []); }
+function paras(x) { return asArr(x).join('\n\n'); }
+function bullets(x) { return asArr(x).map((s) => `- ${s}`).join('\n'); }
+function hasAny(...xs) { return xs.some((x) => asArr(x).length); }
+
+// 섹션 조립: 헤딩 + 블록들(빈 블록 제외). 내용이 하나도 없으면 '' 반환(섹션 자체 생략).
+function section(heading, blocks) {
+  const body = blocks.filter((b) => b && b.trim()).join('\n\n');
+  if (!body.trim()) return '';
+  return `## ${heading}\n\n${body}`;
+}
+
+// §1 Visual Theme & Atmosphere
+function buildVisualTheme(vt) {
+  if (!vt) return '';
+  return section('1. Visual Theme & Atmosphere', [paras(vt.intro), bullets(vt.principles)]);
+}
+
+// §2 Color Palette & Roles (역할 서술 — 값은 frontmatter/tokens.css 단일 출처)
+function buildColorRoles(cr) {
+  if (!cr) return '';
+  let table = '';
+  if (asArr(cr.roles).length) {
+    const rows = cr.roles.map((r) => `| \`${r.category}\` | ${r.role} |`).join('\n');
+    table = `| 카테고리 | 역할 |\n| --- | --- |\n${rows}`;
+  }
+  return section('2. Color Palette & Roles', [paras(cr.intro), table, bullets(cr.notes)]);
+}
+
+// §3 Typography (값은 frontmatter typography 사전)
+function buildTypography(ty) {
+  if (!ty) return '';
+  const hier = asArr(ty.hierarchy).length ? `**위계 (Hierarchy)**\n${bullets(ty.hierarchy)}` : '';
+  const rules = asArr(ty.rules).length ? `**규칙**\n${bullets(ty.rules)}` : '';
+  return section('3. Typography', [paras(ty.intro), hier, rules]);
+}
+
+// §5 Layout Principles
+function buildLayout(lo) {
+  if (!lo) return '';
+  const grid = asArr(lo.grid).length ? `**그리드 (Grid)**\n${bullets(lo.grid)}` : '';
+  const sp = asArr(lo.spacing).length ? `**간격 (Spacing)**\n${bullets(lo.spacing)}` : '';
+  return section('5. Layout Principles', [paras(lo.intro), grid, sp]);
+}
+
+// §6 Depth & Elevation
+function buildElevation(el) {
+  if (!el) return '';
+  const model = asArr(el.model).length ? bullets(el.model) : '';
+  const note = asArr(el.note).length ? `> ${asArr(el.note).join(' ')}` : '';
+  return section('6. Depth & Elevation', [paras(el.intro), model, note]);
+}
+
+// §7 Do's & Don'ts (전역 — 컴포넌트별 Do/Don't 는 §4 각 항목에)
+function buildDoDont(dd) {
+  const g = dd && dd.global;
+  if (!g) return '';
+  const doB = asArr(g.do).length ? `**Do**\n${bullets(g.do)}` : '';
+  const dontB = asArr(g.dont).length ? `**Don't**\n${bullets(g.dont)}` : '';
+  return section("7. Do's & Don'ts", [doB, dontB]);
+}
+
+// §8 Responsive Behavior (breakpoint 값은 tokens.css 파생)
+function buildResponsive(rs, tokens) {
+  const bp = (tokens && tokens.breakpoint) || {};
+  const bpKeys = Object.keys(bp);
+  let table = '';
+  if (bpKeys.length) {
+    const rows = bpKeys.map((k) => `| \`--${k}\` | ${bp[k]} |`).join('\n');
+    table = `**Breakpoints**\n\n| 토큰 | 값 |\n| --- | --- |\n${rows}`;
+  }
+  if (!rs && !table) return '';
+  const intro = rs ? paras(rs.intro) : '';
+  const adapt = rs && asArr(rs.adaptation).length ? bullets(rs.adaptation) : '';
+  return section('8. Responsive Behavior', [intro, table, adapt]);
+}
+
+// §9 Agent Prompt Guide
+function buildAgentGuide(ag) {
+  if (!ag) return '';
+  const tips = asArr(ag.promptTips).length ? `**프롬프트 팁**\n${bullets(ag.promptTips)}` : '';
+  const res = asArr(ag.resolution).length ? `**해석 순서 (Resolution)**\n${bullets(ag.resolution)}` : '';
+  return section('9. Agent Prompt Guide', [paras(ag.intro), tips, res]);
+}
+
+// ── §4 컴포넌트: 표(기존) + 서술(신규 registry 필드) ──────────────────
+function componentProse(comp) {
+  const j = comp.json || {};
+  const out = [];
+  const meta = j._meta || {};
+  if (meta.description) out.push(meta.description);
+  if (j.usage) {
+    if (asArr(j.usage.whenToUse).length) out.push(`**언제 쓰나**\n${bullets(j.usage.whenToUse)}`);
+    if (asArr(j.usage.whenNotToUse).length) out.push(`**쓰지 말아야 할 때**\n${bullets(j.usage.whenNotToUse)}`);
+  }
+  if (Array.isArray(j.anatomy) && j.anatomy.length) {
+    const rows = j.anatomy.map((a) => `| ${a.part} | ${a.role} |`).join('\n');
+    out.push(`**구성 (Anatomy)**\n\n| 요소 | 역할 |\n| --- | --- |\n${rows}`);
+  }
+  return out.join('\n\n');
+}
+
+function componentDoDontA11y(comp) {
+  const j = comp.json || {};
+  const out = [];
+  if (j.doDont && (asArr(j.doDont.do).length || asArr(j.doDont.dont).length)) {
+    const doB = asArr(j.doDont.do).length ? `_Do_\n${bullets(j.doDont.do)}` : '';
+    const dontB = asArr(j.doDont.dont).length ? `_Don't_\n${bullets(j.doDont.dont)}` : '';
+    out.push([doB, dontB].filter(Boolean).join('\n\n'));
+  }
+  if (Array.isArray(j.a11y) && j.a11y.length) out.push(`**접근성 (a11y)**\n${bullets(j.a11y)}`);
+  return out.join('\n\n');
+}
+
+function buildComponents(comps) {
+  const body = [];
+  if (!comps.length) { body.push('_등록된 컴포넌트가 없습니다._'); }
+  for (const c of comps) {
+    const parts = [`### ${c.name}`];
+    const pr = componentProse(c);
+    if (pr) parts.push(pr);
+    parts.push(componentTable(c));
+    const dd = componentDoDontA11y(c);
+    if (dd) parts.push(dd);
+    body.push(parts.join('\n\n'));
+  }
+  return section('4. Components', [body.join('\n\n')]);
 }
 
 const DONOT_EDIT = '> ⚠️ 이 파일은 자동 생성물입니다. 손으로 고치지 마세요. 정본은 `assets/css/tokens.css` + `registry/components/*.json` 이며, `npm run design:md:write` 로 재생성됩니다.';
 
-function buildCore(tokens, coreComps) {
+function buildCore(tokens, coreComps, narrative, profiles) {
+  const n = narrative || {};
   const fm = [];
   fm.push('---');
   fm.push('version: 1.0.0');
@@ -297,17 +439,27 @@ function buildCore(tokens, coreComps) {
   fm.push('  fontWeight:');
   fm.push(yamlMap(tokens.fontWeight, 4));
   fm.push('---');
+
+  // 본문 = 인트로 + 소비 프로파일 + 9섹션(awesome-design-md / Stitch 구조).
+  // 각 섹션 빌더는 정본 데이터가 없으면 '' 을 반환 → 빈 섹션은 자동 생략.
+  const sections = [
+    profilesBlock(profiles),
+    buildVisualTheme(n.visualTheme),            // §1
+    buildColorRoles(n.colorRoles),              // §2
+    buildTypography(n.typography),              // §3
+    buildComponents(coreComps),                 // §4
+    buildLayout(n.layout),                      // §5
+    buildElevation(n.elevation),                // §6
+    buildDoDont(n.doDont),                      // §7
+    buildResponsive(n.responsive, tokens),      // §8
+    buildAgentGuide(n.agentGuide),              // §9
+  ].filter((s) => s && s.trim());
+
   const body = [];
   body.push('', '# S1 Design System — Core', '');
   body.push(DONOT_EDIT, '');
-  body.push(profilesBlock());
-  body.push('', '## Components', '');
-  if (!coreComps.length) body.push('_등록된 컴포넌트가 없습니다._', '');
-  for (const c of coreComps) {
-    body.push(`### ${c.name}`, '');
-    body.push(componentTable(c), '');
-  }
-  return fm.join('\n') + '\n' + body.join('\n');
+  body.push(sections.join('\n\n'));
+  return fm.join('\n') + '\n' + body.join('\n') + '\n';
 }
 
 function buildService(scope, comps) {
@@ -323,18 +475,16 @@ function buildService(scope, comps) {
   const body = [];
   body.push('', `# S1 Design System — ${up}`, '');
   body.push('> ⚠️ 자동 생성물. 손편집 금지. 이 파일은 `../DESIGN.core.md` 를 상속하며, 아래는 이 서비스로 분기된 컴포넌트만 나열합니다.', '');
-  body.push('## Components', '');
   if (!comps.length) {
     // 분기 시작점 확보용 빈 스텁 — 아직 이 서비스로 분기된 컴포넌트가 없을 때.
+    body.push('## Components', '');
     body.push(`_아직 \`scope="${scope}"\` 로 분기된 컴포넌트가 없습니다. core 정의를 그대로 상속합니다._`, '');
     body.push(`컴포넌트를 이 서비스로 분기하려면 해당 \`registry/components/*.json\` 의 \`_meta.scope\` 를 \`"${scope}"\` 로 설정한 뒤 \`npm run design:md:write\` 를 실행하세요.`, '');
   } else {
-    for (const c of comps) {
-      body.push(`### ${c.name}`, '');
-      body.push(componentTable(c), '');
-    }
+    // core 와 동일한 렌더러(표 + 서술) 사용.
+    body.push(buildComponents(comps));
   }
-  return fm.join('\n') + '\n' + body.join('\n');
+  return fm.join('\n') + '\n' + body.join('\n') + '\n';
 }
 
 // 내용 sha256 앞 12자리를 스탬프로 붙인다(드리프트 감지용). 스탬프는 그 앞 내용만으로 계산.
@@ -347,11 +497,13 @@ function withStamp(content) {
 function main() {
   const tokens = parseTokens();
   const comps = loadComponents();
+  const narrative = loadNarrative();
+  const profiles = loadProfiles();
   const byScope = {};
   for (const c of comps) (byScope[c.scope] = byScope[c.scope] || []).push(c);
 
   const targets = [];
-  targets.push({ rel: CORE_REL, content: withStamp(buildCore(tokens, byScope.core || [])) });
+  targets.push({ rel: CORE_REL, content: withStamp(buildCore(tokens, byScope.core || [], narrative, profiles)) });
   for (const svc of ACTIVE_SERVICES) {
     targets.push({ rel: SERVICE_OUT[svc], content: withStamp(buildService(svc, byScope[svc] || [])) });
   }

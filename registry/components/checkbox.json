@@ -13,6 +13,44 @@
     "harnessStatus": "implemented",
     "description": "체크박스 컨트롤. default·hover·checked·indeterminate·disabled 상태."
   },
+  "usage": {
+    "whenToUse": [
+      "여러 항목을 독립적으로 켜고 끌 때(다중 선택).",
+      "목록 전체선택/부분선택(indeterminate) 헤더에."
+    ],
+    "whenNotToUse": [
+      "여러 보기 중 하나만 고를 때는 Radio.",
+      "단일 on/off 설정은 Toggle."
+    ]
+  },
+  "anatomy": [
+    {
+      "part": "박스",
+      "role": "체크 영역. 배경·테두리는 control 토큰."
+    },
+    {
+      "part": "체크 표시",
+      "role": "checked·indeterminate 인디케이터 아이콘."
+    },
+    {
+      "part": "라벨(선택)",
+      "role": "항목 텍스트. 박스와 함께 클릭 영역."
+    }
+  ],
+  "doDont": {
+    "do": [
+      "전체선택 헤더는 부분선택 시 indeterminate(is-indeterminate)를 쓴다.",
+      "박스는 코어 s1-checkbox 를 재사용한다(모듈 전용 체크박스 금지)."
+    ],
+    "dont": [
+      "Table·Filter 등 모듈에서 체크박스를 새로 만들지 않는다.",
+      "라벨 없이 쓸 때 aria-label 을 빠뜨리지 않는다."
+    ]
+  },
+  "a11y": [
+    "라벨이 없으면 aria-label 필수.",
+    "indeterminate 는 시각뿐 아니라 aria-checked=\"mixed\" 로 표현한다."
+  ],
   "states": ["default", "hover", "checked", "disabled"],
   "tokens": [
     { "cssVar": "--checkbox-default-bg",         "value": "var(--color-control-bg-default)",       "semanticRef": "color-control-bg-default",       "state": "default",  "property": "background" },
