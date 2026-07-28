@@ -156,3 +156,32 @@ vars-data 의 토큰 키가 전부 embed 됐는지만 검사한다.
 ### 11. 메모리 네임스페이스 분리
 - `-S1-AI-DESIGN-GUIDE/memory` (45개) vs `-S1-UX-DESIGN-with-AI/memory` (7개)
 - 옛 네임스페이스에 누적 메모리가 묶여 있음
+
+---
+
+## 2026-07-28 세션에서 나온 항목
+
+### 서술 필드 구체 사양 보강
+_meta.notes 는 gen-design-md.js 렌더 대상이 아니라 AI 프롬프트에 미노출.
+notes 에만 있는 구체 사양은 에이전트가 볼 수 없음 (구조적 빈칸)
+- 우선: table(정렬 아이콘 combobox_arrow 18×18), textarea(helper needs-core-update)
+- 검토: time-picker(가장 많음), pagination, select, dropdown
+- 제외: toggle (죽은 별칭이라 빠진 게 정상)
+- 별도 판단: _meta.notes 를 렌더 대상에 포함할지
+
+### 서술 필드 검증
+9섹션 서술은 손으로 작성됨. toggle 은 대조해서 맞았지만
+나머지 16개는 미검증. Gate 20 은 토큰 이름만 봐서 못 잡음
+
+### 번들 재생성 자동화
+registry/components 변경 시 build:bundle 을 게이트에서 강제하거나 warn
+(registry-data-bundle.js 가 186→601줄로 뒤늦게 반영된 건)
+
+### Gate 6b 사각지대
+토큰 키만 대조해서 플러그인 로직 변경을 못 잡음.
+zip 반영 여부를 수동 확인해야 하는 구조
+
+### 정리 후보
+- assets/downloads/s1-design-system-installer.zip (옛 이름 잔재, 7-7)
+- .gitignore 의 ds-apply 관련 규칙 3블록 통합
+- 스크래치패드의 _audit-dark-merge.html (보관 중, 불필요해지면 삭제)
