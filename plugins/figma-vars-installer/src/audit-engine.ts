@@ -12,7 +12,21 @@
  *  - Foundation V2 / Semantic Color V2 / Semantic Number V2
  */
 
+import { COMPONENT_CATEGORIES } from "./build-components";
+
 const V2_COLLECTION_NAMES = ["Foundation V2", "Semantic Color V2", "Semantic Number V2"];
+
+// 설치기가 만드는 정본 컴포넌트 이름 집합(정규화). 문서 전체에서 기준 풀을 모을 때
+// 이 목록에 있는 이름만 "정본"으로 인정해, 파일 내 다른 레거시 세트가 정본으로 둔갑하는 것을 막는다.
+const CANONICAL_NAME_SET: { [norm: string]: true } = (() => {
+  const m: { [norm: string]: true } = {};
+  for (const cat of COMPONENT_CATEGORIES) {
+    for (const name of cat.members) {
+      m[(name || "").toLowerCase().replace(/[\s_\-\/]+/g, "")] = true;
+    }
+  }
+  return m;
+})();
 
 type AliasInfo = { variableId: string; collectionName: string };
 type V2Var = {
@@ -1097,6 +1111,8 @@ async function applySwap(
 // 이 파일에 설치된 정본 컴포넌트를 그대로 기준 풀로 사용한다(수동 등록 불필요).
 // 설치기 [설치] 탭은 정본을 현재 페이지에 COMPONENT_SET 으로 생성하지만, 실무에선
 // 정본이 별도 페이지(예: "Core")에 있고 화면은 다른 페이지에 있으므로 문서 전체를 훑는다.
+// 단, 문서 전체를 훑으면 파일 내 레거시 세트가 섞일 수 있어 — 설치기 정본 이름 목록
+// (CANONICAL_NAME_SET)에 있는 것만 남긴다. 이것이 "설치기 기준"의 실체다.
 // 현재 페이지를 먼저 담아 같은 이름이 여러 곳에 있으면 현재 페이지 것이 이긴다.
 function collectPageReference(): ReferenceComponent[] {
   const fileName = figma.root.name;
@@ -1104,8 +1120,9 @@ function collectPageReference(): ReferenceComponent[] {
   const out: ReferenceComponent[] = [];
   const push = (list: ReferenceComponent[]) => {
     for (const c of list) {
-      const k = c.name.toLowerCase();
-      if (!seen[k]) { seen[k] = true; out.push(c); }
+      const norm = (c.name || "").toLowerCase().replace(/[\s_\-\/]+/g, "");
+      if (!CANONICAL_NAME_SET[norm]) continue;  // 정본 목록에 없는 이름은 기준에서 제외
+      if (!seen[norm]) { seen[norm] = true; out.push(c); }
     }
   };
   try { push(collectComponents(figma.currentPage, fileName)); } catch {}
