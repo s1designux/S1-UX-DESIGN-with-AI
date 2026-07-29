@@ -1,9 +1,9 @@
 {
   "sourceFile": "plugins/figma-vars-installer/src/build-components.ts",
-  "sourceHash": "sha256:fe2fe55e0449ff92b82e48aaea7b2f3630974aa539ee35340ddfc8483d3c3004",
+  "sourceHash": "sha256:5e82ad84721e398c749b6120262fcaa068f537e40a3168d943eca531d1875f79",
   "verifiedBy": "component-verifier",
   "verdict": "pass",
   "changeType": "structural",
-  "verifiedAt": "2026-07-16T05:35:25.764Z",
-  "notes": "Modal 그릇 2종(Footer Single|Dual) — buildModalVariant 신설·combineAsVariants([single,dual])·spec colHeaders 2열. (C)Figma 변형세트+(D)코드구조 독립검증 PASS"
+  "verifiedAt": "2026-07-29T05:12:40.918Z",
+  "notes": "그림자 배선 2차(지적 3건 수정본) 독립 재검증. (1)effects 4곳 try 밖 분리 실제 확인+상위 호출부(buildAllComponents run 루프)에 삼키는 catch 없음→runInstall 이 error 로 표면화. (2)shadowVarName 단일정본: code.ts 생성부와 build-components 바인딩부를 각각 실행/추출해 8개 변수명 문자열 완전 일치 대조(생성O/바인딩X 0, 반대 0). 복제상수 LETTERS/SHADOW_LAYER_LETTERS 잔존 0. (3)Gate 15b 배선이 Gate 15 와 동일 패턴, fail→errors++→exit1 확인, 사본 저장소에서 파서 고의 파손→quiet 모드 failed=1·failures 전달·CLI exit1, 모듈 파손→catch fail 확인, 약화 0. A~J 재확인(리터럴 0·B 동등성 exact·범위가드 throw·mock 8종 예외 0·zip 최신). Figma 실렌더는 MCP 미인증으로 확인 불가."
 }
