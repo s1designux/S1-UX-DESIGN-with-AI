@@ -30,6 +30,7 @@
     "audit:check": "tsc --project plugins/figma-component-audit/tsconfig.json --noEmit",
     "audit:build": "esbuild plugins/figma-component-audit/src/code.ts --bundle --outfile=plugins/figma-component-audit/dist/code.js --target=es2017 --platform=browser && cp plugins/figma-component-audit/manifest.json plugins/figma-component-audit/dist/manifest.json && cp plugins/figma-component-audit/src/ui.html plugins/figma-component-audit/dist/ui.html && mkdir -p ~/s1-component-audit && cp plugins/figma-component-audit/dist/manifest.json plugins/figma-component-audit/dist/code.js plugins/figma-component-audit/dist/ui.html ~/s1-component-audit/",
     "installer:coverage": "node scripts/installer-coverage-check.js",
+    "shadow:parsecheck": "node scripts/shadow-parse-check.js",
     "installer:freshness": "node scripts/installer-freshness-check.js",
     "components:keycheck": "node scripts/component-key-coverage-check.js",
     "components:anatomy": "node scripts/component-anatomy-check.js",

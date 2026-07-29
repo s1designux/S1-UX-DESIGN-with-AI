@@ -396,6 +396,25 @@ try {
   fail(`token-naming-check 실행 실패: ${e.message}`);
 }
 
+// ── Gate 15b: Shadow Parser (그림자 문자열 → Figma Effect 변환) ────
+//   왜 필요한가: 설치기는 그림자 수치를 코드에 적지 않고 vars-data 의 SEMANTIC_SHADOW 문자열을
+//   파싱해 쓴다. 파서가 조용히 틀리면 Figma 라이브러리 전체 그림자가 틀린 채 깔리는데,
+//   토큰 게이트(3·6·7)는 "문자열 값"만 봐서 이 변환은 사각지대였다.
+console.log('\n🔎 [Gate 15b] 그림자파서 검사기 (Shadow Parse)');
+try {
+  const { audit: shadowAudit } = require('./shadow-parse-check');
+  const r = shadowAudit({ quiet: true });
+  if (r.cases === 0) {
+    fail('shadow-parse-check 가 검사 0건을 반환 — 검사기 자체가 안 도는 상태(추출 0건=안 됨)');
+  } else if (r.failed === 0) {
+    pass(`그림자 파서 정상 — ${r.cases}건 (겹 분리·3/4개형·rgba 정규화·실패 시 throw·정본 6값)`);
+  } else {
+    for (const f of r.failures) fail(`[shadow-parse] ${f}`);
+  }
+} catch (e) {
+  fail(`shadow-parse-check 실행 실패: ${e.message}`);
+}
+
 // ── Gate 16: Component Origin Verification ────────────────────────
 // update-management.json 의 origin(분류)을 기준으로 "Ⓑ(원본틀 필요)인데 완료 표시인데
 // 원본 대조 0(verify=none)"을 차단 — 탭 사태 재발 방지. registry 신규 컴포넌트 미분류도 차단.

@@ -30,11 +30,12 @@
 
 import {
   FOUNDATION_COLOR, FOUNDATION_NUMBER,
-  SEMANTIC_COLOR, SEMANTIC_NUMBER,
+  SEMANTIC_COLOR, SEMANTIC_NUMBER, SEMANTIC_SHADOW,
   FOUNDATION_COLLECTION,
-  SEMANTIC_COLOR_COLLECTION, SEMANTIC_NUMBER_COLLECTION,
+  SEMANTIC_COLOR_COLLECTION, SEMANTIC_NUMBER_COLLECTION, SEMANTIC_SHADOW_COLLECTION,
   LIGHT_MODE, DARK_MODE,
 } from "./vars-data";
+import { parseCssShadow, shadowVarName } from "./shadow-parse";
 import { installTextStyles } from "./install-textstyles";
 import { buildAllComponents } from "./build-components";
 import {
@@ -497,6 +498,90 @@ async function installSemantic(
   };
 }
 
+// ── Semantic Shadow (그림자 겹당 변수) ────────────────────────────────────────
+//
+// Figma 는 그림자 **겹 수**를 변수 모드로 바꿀 수 없다(겹 수는 구조다). 대신 DropShadowEffect 의
+// boundVariables 로 겹당 속성(color·offsetY·radius·spread)을 변수에 묶으면, 그 변수가 모드에
+// 반응해 Light/Dark 전환이 된다. Modal(shadow/raised)을 양쪽 2겹으로 맞춘 이유가 이것이다.
+//
+// ⚠️ 값을 여기에 적지 않는다. 정본은 vars-data.ts 의 SEMANTIC_SHADOW 문자열 하나이며,
+//    shadow-parse 로 풀어 그대로 넣는다(설치기·웹이 같은 문자열에서 파생 → 표면 드리프트 0).
+
+/**
+ * 변수를 만들 그림자 토큰 목록 — **다크값이 확정된 것만** 넣는다.
+ * shadow/raised-up · shadow/dropdown 은 다크가 미확정(잠정으로 라이트 값 복사)이라 제외한다.
+ * 변수로 만들면 그 잠정값이 Figma 라이브러리에 "확정값"처럼 고정돼, 나중에 실측이 나와도
+ * 이미 배포된 인스턴스에 잘못된 값이 남는다. 확정되면 이 배열에 추가하면 된다.
+ */
+const SHADOW_TOKENS_WITH_VARS = ["shadow/raised"];
+
+interface ShadowResult {
+  shadowVarMap: Record<string, Variable>;
+  removed: string[];
+  count: number;
+}
+
+async function installShadow(): Promise<ShadowResult> {
+  post("progress", { step: "Semantic Shadow collection 준비 중…", pct: 86 });
+  const col = await getOrCreateCollection(SEMANTIC_SHADOW_COLLECTION);
+  const { lightId, darkId } = setupLightDarkModes(col);
+
+  const map: Record<string, Variable> = {};
+  const validColor = new Set<string>();
+  const validFloat = new Set<string>();
+
+  for (const token of SHADOW_TOKENS_WITH_VARS) {
+    const entry = SEMANTIC_SHADOW[token];
+    if (!entry) throw new Error(`[installShadow] SEMANTIC_SHADOW 에 '${token}' 이 없습니다.`);
+
+    const light = parseCssShadow(entry.light);
+    const dark = parseCssShadow(entry.dark);
+    // 겹 수가 다르면 겹당 바인딩으로 모드 전환을 표현할 수 없다 → 조용히 넘어가지 않고 던진다.
+    if (light.length !== dark.length) {
+      throw new Error(
+        `[installShadow] '${token}' 의 라이트(${light.length}겹)와 다크(${dark.length}겹) 겹 수가 다릅니다. ` +
+        `Figma 는 겹 수를 모드로 바꿀 수 없으므로 양쪽을 같게 맞춰야 합니다.`
+      );
+    }
+
+    for (let i = 0; i < light.length; i++) {
+      // 변수 이름은 shadow-parse 의 shadowVarName 하나로만 만든다
+      // (build-components 의 바인딩부와 같은 정본 — 각자 조립하면 한쪽만 바뀌어 조용히 어긋난다).
+      const colorName = shadowVarName(token, i, "color");
+      const cv = await getOrCreateVariable(colorName, col, "COLOR");
+      cv.setValueForMode(lightId, light[i].color);
+      cv.setValueForMode(darkId, dark[i].color);
+      cv.scopes = ["EFFECT_COLOR"];
+      map[colorName] = cv;
+      validColor.add(colorName);
+
+      // offsetX 는 정본 3종 모두 0 이라 변수화하지 않는다(불필요한 변수 증식 방지).
+      const floatFields: ["offset-y" | "blur" | "spread", keyof typeof light[number]][] = [
+        ["offset-y", "offsetY"],
+        ["blur", "blur"],
+        ["spread", "spread"],
+      ];
+      for (const [suffix, key] of floatFields) {
+        const name = shadowVarName(token, i, suffix);
+        const fv = await getOrCreateVariable(name, col, "FLOAT");
+        fv.setValueForMode(lightId, light[i][key] as number);
+        fv.setValueForMode(darkId, dark[i][key] as number);
+        fv.scopes = ["EFFECT_FLOAT"];
+        map[name] = fv;
+        validFloat.add(name);
+      }
+    }
+  }
+
+  const removedColor = await pruneCollection(col, validColor, "COLOR");
+  const removedFloat = await pruneCollection(col, validFloat, "FLOAT");
+  return {
+    shadowVarMap: map,
+    removed: [...removedColor, ...removedFloat],
+    count: Object.keys(map).length,
+  };
+}
+
 /** 이미 설치된 Semantic Color 컬렉션 + 변수 맵 + Light 모드를 불러온다 (컴포넌트만 설치 시). */
 async function loadExistingSemantic(): Promise<{
   semanticColorMap: Record<string, Variable>;
@@ -570,6 +655,36 @@ async function runInstall(sel: InstallSelection) {
       }
     }
 
+    // ── Semantic Shadow (또는 컴포넌트 위해 기존 로드) ──
+    //   Semantic 과 같은 스위치를 쓴다(둘 다 Semantic 층 토큰). 컴포넌트만 설치할 땐 기존 것을 읽어 온다.
+    let shadowVarMap: Record<string, Variable> = {};
+    let shadowCollectionId = "";
+    let shadowLightModeId = "";
+    let shadowDarkModeId = "";
+    if (sel.semantic || sel.components) {
+      if (sel.semantic) {
+        const r = await installShadow();
+        shadowVarMap = r.shadowVarMap;
+        semanticCount += r.count;
+        removedAll.push(...r.removed);
+      } else {
+        const sColor = await loadExistingVarMap(SEMANTIC_SHADOW_COLLECTION, "COLOR");
+        const sFloat = await loadExistingVarMap(SEMANTIC_SHADOW_COLLECTION, "FLOAT");
+        shadowVarMap = { ...sColor, ...sFloat };
+      }
+      // Spec Dark 프레임이 다크 그림자를 보여주려면 이 컬렉션의 모드도 함께 연결해야 한다
+      // (setMode 는 Semantic Color 컬렉션만 뒤집으므로).
+      const shadowCol = (await figma.variables.getLocalVariableCollectionsAsync())
+        .find((c) => c.name === SEMANTIC_SHADOW_COLLECTION);
+      if (shadowCol) {
+        shadowCollectionId = shadowCol.id;
+        const l = shadowCol.modes.find((m) => m.name === LIGHT_MODE);
+        const d = shadowCol.modes.find((m) => m.name === DARK_MODE);
+        shadowLightModeId = l ? l.modeId : shadowCol.modes[0].modeId;
+        shadowDarkModeId = d ? d.modeId : shadowLightModeId;
+      }
+    }
+
     // ── Text Styles (또는 컴포넌트 위해 동반 설치) ──
     let textStyleMap: Record<string, TextStyle> = {};
     if (sel.textStyles || sel.components) {
@@ -596,6 +711,10 @@ async function runInstall(sel: InstallSelection) {
           semanticColorCollectionId: scc.id,
           semanticLightModeId: lightModeId,
           semanticDarkModeId: darkModeId,
+          shadowVars: shadowVarMap,
+          semanticShadowCollectionId: shadowCollectionId || undefined,
+          semanticShadowLightModeId: shadowLightModeId || undefined,
+          semanticShadowDarkModeId: shadowDarkModeId || undefined,
         },
         (step, pct) => post("progress", { step, pct })
       );

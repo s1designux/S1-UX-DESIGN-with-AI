@@ -18,6 +18,9 @@
  *   Disabled → bg/border/label  disabled (공통, 모든 variant 동일)
  */
 
+import { SEMANTIC_SHADOW } from "./vars-data";
+import { toDropShadowEffects, shadowVarName } from "./shadow-parse";
+
 export interface BuildMaps {
   semanticColor: Record<string, Variable>;   // "color/button/bg/primary--default" 등
   foundationColor: Record<string, Variable>;  // "brand/ci","brand/blue" 등 — Foundation 색 직접 바인딩용(CI 로고)
@@ -26,6 +29,13 @@ export interface BuildMaps {
   semanticColorCollectionId: string;          // Semantic Color V2 컬렉션 id (Appearance 모드 연결)
   semanticLightModeId: string;                // Light 모드 id
   semanticDarkModeId: string;                 // Dark 모드 id (다크 스펙 프레임용)
+  // ── 그림자(2026-07-29) — 선택 필드 ──────────────────────────────────────────
+  // "shadow/raised/layer-a/color" 처럼 겹당 변수. 설치기 runInstall 이 채워 준다.
+  // 게이트 스크립트의 mock 실행에는 없으므로 optional — 없으면 바인딩 없이 값만 넣는다.
+  shadowVars?: Record<string, Variable>;
+  semanticShadowCollectionId?: string;        // Semantic Shadow V2 컬렉션 id (Spec Dark 프레임 모드 연결)
+  semanticShadowLightModeId?: string;
+  semanticShadowDarkModeId?: string;
 }
 
 // ── 크로스빌더 공유 참조 ──────────────────────────────────────────────────────
@@ -76,6 +86,58 @@ function setMode(node: SceneNode, maps: BuildMaps, modeId: string): void {
   } catch (e) {
     console.warn("[SW Installer] 모드 연결 실패:", e);
   }
+  // 그림자 변수는 별도 컬렉션(Semantic Shadow V2)에 있어 위 호출로는 안 뒤집힌다.
+  //   Spec Dark 프레임이 다크 그림자를 보여주려면 그 컬렉션 모드도 함께 연결해야 한다.
+  const sCid = maps.semanticShadowCollectionId;
+  if (sCid) {
+    const isDark = modeId === maps.semanticDarkModeId;
+    const sMid = isDark ? maps.semanticShadowDarkModeId : maps.semanticShadowLightModeId;
+    if (sMid) {
+      try {
+        (node as unknown as {
+          setExplicitVariableModeForCollection: (cid: string, mid: string) => void;
+        }).setExplicitVariableModeForCollection(sCid, sMid);
+      } catch (e) { /* 컬렉션 미설치·모의 실행 */ }
+    }
+  }
+}
+
+// ── 그림자 Effect 생성 (2026-07-29) ──────────────────────────────────────────
+// 🚫 그림자 수치를 이 파일에 적지 않는다. 정본은 vars-data.ts 의 SEMANTIC_SHADOW 문자열 하나이고,
+//    shadow-parse 로 풀어 쓴다. 설치기(Figma)와 웹(tokens.css)이 같은 문자열에서 파생돼야
+//    두 표면이 갈리지 않는다.
+
+/** 정본 문자열(라이트) → DropShadowEffect[]. 변수 바인딩 없음. */
+function shadowEffects(token: string): DropShadowEffect[] {
+  const entry = SEMANTIC_SHADOW[token];
+  if (!entry) throw new Error(`[build-components] SEMANTIC_SHADOW 에 '${token}' 이 없습니다.`);
+  // 라이트 값을 기본으로 넣는다. 다크는 (변수 바인딩이 있는 토큰에 한해) 모드가 뒤집는다.
+  return toDropShadowEffects(entry.light);
+}
+
+/**
+ * 겹당 변수 바인딩까지 붙인 Effect[]. 변수가 없으면(미설치·모의 실행) 값만 넣고 조용히 넘어간다
+ * — 이 경우는 "그림자가 라이트 값으로 고정"이라 시각 손실이 없다(값 유실 아님).
+ */
+function boundShadowEffects(maps: BuildMaps, token: string): Effect[] {
+  const base = shadowEffects(token);
+  const vars = maps.shadowVars;
+  if (!vars) return base;
+  return base.map((eff, i) => {
+    let out: Effect = eff;
+    // 변수 이름은 shadow-parse 의 shadowVarName 하나로만 만든다(code.ts 생성부와 같은 정본).
+    const bind = (field: VariableBindableEffectField, name: string): void => {
+      const v = vars[name];
+      if (!v) return;
+      try { out = figma.variables.setBoundVariableForEffect(out, field, v); }
+      catch (e) { /* 미지원 환경 — 값은 이미 들어가 있음 */ }
+    };
+    bind("color", shadowVarName(token, i, "color"));
+    bind("offsetY", shadowVarName(token, i, "offset-y"));
+    bind("radius", shadowVarName(token, i, "blur"));
+    bind("spread", shadowVarName(token, i, "spread"));
+    return out;
+  });
 }
 
 function setLightMode(node: SceneNode, maps: BuildMaps): void {
@@ -1356,6 +1418,10 @@ async function buildDropdown(maps: BuildMaps, originY: number): Promise<{ set: C
     comp.fills = [boundPaint(scv(maps, "color/dropdown/list/bg"))];
     comp.strokes = [boundPaint(scv(maps, "color/dropdown/list/border"))];
     comp.strokeWeight = 1; comp.strokeAlign = "OUTSIDE";
+    // 그림자 = shadow/dropdown. 다크값 미확정이라 변수 바인딩 없이 라이트 값 고정(잘못된 값 고착 방지).
+    // 파서·토큰 오류는 try 밖에서 던지게 둔다(그림자가 조용히 사라지는 것 방지). try 는 대입만 감싼다.
+    const ddEffects = shadowEffects("shadow/dropdown");
+    try { (comp as any).effects = ddEffects; } catch (e) { /* 환경 미지원 */ }
     comp.resize(140, 4 * sz.h + 8);
 
     // 4행: Default·Hover·Selected·Default
@@ -2091,7 +2157,7 @@ async function buildTimePickerDropdown(maps: BuildMaps, originY: number): Promis
     node.clipsContent = true;
     node.fills = [boundPaint(scv(maps, "color/dropdown/list/bg"))];
     node.strokes = [boundPaint(scv(maps, "color/dropdown/list/border"))]; node.strokeWeight = 1; node.strokeAlign = "INSIDE";
-    node.effects = [{ type: "DROP_SHADOW", color: { r: 0, g: 0, b: 0, a: 0.15 }, offset: { x: 0, y: 4 }, radius: 8, spread: 0, visible: true, blendMode: "NORMAL" }];
+    node.effects = shadowEffects("shadow/dropdown");   // 정본 파생(옛 하드코딩과 동일 값)
     node.resize(panelW, 100);              // 폭 고정 (resize 후 sizing 모드 설정)
     node.primaryAxisSizingMode = "AUTO";   // 높이 hug
     node.counterAxisSizingMode = "FIXED";  // 폭 = panelW 고정
@@ -2940,9 +3006,9 @@ async function buildCalendar(maps: BuildMaps, originY: number): Promise<{ set: C
     comp.strokes = [boundPaint(scv(maps, dp("panel/border")))];
     comp.strokeWeight = 1; comp.strokeAlign = "INSIDE";
     comp.clipsContent = true;
-    try {
-      (comp as any).effects = [{ type: "DROP_SHADOW", color: { r: 0, g: 0, b: 0, a: 0.15 }, offset: { x: 0, y: 4 }, radius: 8, spread: 0, visible: true, blendMode: "NORMAL" }];
-    } catch (_) { /* 환경 미지원 */ }
+    // 파서·토큰 오류는 try 밖에서 던지게 둔다(그림자가 조용히 사라지는 것 방지).
+    const calEffects = shadowEffects("shadow/dropdown");  // 정본 파생(옛 하드코딩과 동일 값)
+    try { (comp as any).effects = calEffects; } catch (_) { /* 환경 미지원 */ }
     const inner = figma.createFrame();
     inner.name = "content"; inner.fills = [];
     inner.layoutMode = "VERTICAL"; inner.primaryAxisSizingMode = "AUTO"; inner.counterAxisSizingMode = "AUTO";
@@ -3696,6 +3762,10 @@ async function buildBottomSheet(maps: BuildMaps, originY: number): Promise<{ set
     comp.fills = [boundPaint(scv(maps, "color/surface/raised"))];
     try { comp.topLeftRadius = 8; comp.topRightRadius = 8; comp.bottomLeftRadius = 0; comp.bottomRightRadius = 0; } catch (e) { /* */ }
     comp.clipsContent = true;
+    // 그림자 = shadow/raised-up (아래에서 올라오는 표면이라 y 부호 반전).
+    //   다크값 미확정이라 변수 바인딩 없이 라이트 값 고정(잘못된 값 고착 방지).
+    const sheetEffects = shadowEffects("shadow/raised-up");   // 오류는 여기서 던진다(삼키지 않음)
+    try { (comp as any).effects = sheetEffects; } catch (e) { /* 환경 미지원 */ }
 
     const content = await buildContent();
     comp.appendChild(content);
@@ -3745,7 +3815,11 @@ async function buildBottomSheet(maps: BuildMaps, originY: number): Promise<{ set
 
 // ── Modal (공통 팝업 셸) — 딤 위 팝업. 헤더+본문+푸터, 코어 Button 재사용. ───────
 //   원본 V2.4 modal_small(6706:4218) 라이트 기준. 그릇 2종 = Footer(Single|Dual) 변형축(river 결정).
-//   라이트: 테두리 없음·그림자 없음(Figma effects 실측 확정). 다크 그림자(shadow/raised)는 별건 백로그.
+//   테두리 없음. 그림자 = shadow/raised — **라이트·다크 모두 2겹**(2026-07-29 결정).
+//     옛 실측 "라이트 그림자 없음"(P8YvnCdGkQLDNVQhW74ZZW / 8177:264277)은 사실이나 의도가 아닌
+//     '누락'으로 판정돼, 라이트에도 그림자를 부여했다. 겹 수를 양쪽 2겹으로 맞춘 이유는 Figma 가
+//     겹 수를 변수 모드로 못 바꾸기 때문 — 겹 수가 같아야 겹당 속성을 변수에 묶어 모드 전환이 된다.
+//     값 정본 = vars-data.ts SEMANTIC_SHADOW["shadow/raised"] (여기에 수치를 적지 않는다).
 //   Single = 알림/설명체 1버튼("확인") · Dual = 확인/질문체 2버튼("취소"+"확인"). 제목 항상 존재.
 //   글자는 마스터에 직접 구움(makeBoundText) — 문구는 "예시"일 뿐(실제 카피는 UX라이팅 영역, 컴포넌트 아님).
 //   색은 전부 semantic 경유(scv/boundPaint), 아이콘=라이브러리 인스턴스(makeIconInstance), 버튼=코어 재사용.
@@ -3811,7 +3885,10 @@ async function buildModalShell(maps: BuildMaps, originY: number): Promise<{ set:
     comp.fills = [boundPaint(scv(maps, "color/surface/raised"))]; // HD-A: surface/raised 재사용
     try { comp.cornerRadius = 8; } catch (e) { /* radius/8 전체 모서리 */ }
     comp.clipsContent = true;
-    // 라이트: 테두리 없음·그림자 없음(실측 확정) — stroke/effect 미설정 유지.
+    // 테두리 없음. 그림자 = shadow/raised (라이트·다크 모두 2겹, 겹당 변수 바인딩 → 모드로 전환).
+    //   spread(-2/-4)가 적용되려면 "보이는 fill + clipsContent" 조건이 필요한데, 바로 위 두 줄이 그 조건이다.
+    const modalEffects = boundShadowEffects(maps, "shadow/raised");  // 오류는 여기서 던진다(삼키지 않음)
+    try { (comp as any).effects = modalEffects; } catch (e) { /* 환경 미지원 */ }
 
     const content = await buildContentGroup(titleText, bodyText);
     comp.appendChild(content);

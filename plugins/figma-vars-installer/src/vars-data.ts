@@ -35,6 +35,12 @@
 export const FOUNDATION_COLLECTION      = "Foundation V2";
 export const SEMANTIC_COLOR_COLLECTION  = "Semantic Color V2";
 export const SEMANTIC_NUMBER_COLLECTION = "Semantic Number V2";
+// 그림자 전용 컬렉션(2026-07-29 신설). 별도 컬렉션인 이유 2가지:
+//   ① Semantic Color V2 에 넣으면 installSemantic 의 pruneCollection(scc, SEMANTIC_COLOR 키, "COLOR")
+//      이 매 설치마다 그림자 색 변수를 "정의에 없는 것"으로 보고 지운다.
+//   ② Semantic Number V2 는 단일 모드(Default)라 라이트/다크로 갈리는 FLOAT(offset-y·blur·spread)를
+//      담을 수 없다. 그림자는 Light/Dark 2모드가 필요하다.
+export const SEMANTIC_SHADOW_COLLECTION = "Semantic Shadow V2";
 export const LIGHT_MODE = "Light";
 export const DARK_MODE  = "Dark";
 
