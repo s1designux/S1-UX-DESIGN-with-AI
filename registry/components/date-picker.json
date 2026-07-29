@@ -107,7 +107,7 @@
     "panel": {
       "note": "PC popover panel — figma-unconfirmed. mobile bottomsheet 구조 참고.",
       "--date-picker-panel-bg": "candidate: var(--color-surface-default)",
-      "--date-picker-panel-border": "candidate: var(--color-border-default)",
+      "panel-border": "stable: color/date-picker/panel/border (--color-date-picker-panel-border) — light gray/200 · dark gray-dark/500. 2026-07-29 라이트를 gray/300 → gray/200 으로 변경(사용자 결정): Modal·Dropdown·Time Picker Dropdown·Date Picker 4개 패널 보더 값 통일. 다크 불변. 종전 candidate 표기 `var(--color-border-default)` 는 폐지된 generic 토큰을 가리켜 실현되지 않았으므로 폐기함(웹 CSS 는 이미 --color-date-picker-panel-border 참조라 값이 자동 반영)",
       "panel-shadow": "stable: var(--shadow-dropdown) — 공용 그림자 토큰(tokens/semantic.md §9-A). 2026-07-29 교체: 종전 candidate `--date-picker-panel-shadow: 0 4px 16px rgba(0,0,0,0.10)` 은 어느 CSS 에도 정의된 적이 없고 실제 구현값(0 4px 8px rgba(0,0,0,0.15))과도 달라 실현하지 않고 폐기함"
     },
     "cell": {

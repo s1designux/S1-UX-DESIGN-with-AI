@@ -117,14 +117,15 @@
     "dual": ["삭제", "입력취소", "마감취소"]
   },
   "anatomySpec": {
-    "panel": "VERTICAL · w360 · py20(padding/block/md) · gap32(section/lg) · radius8(radius/8 전체) · border 없음 · shadow=--shadow-raised(라이트·다크 공통 참조. 2026-07-29 이전의 '라이트 shadow 없음'은 Figma 실측이 사실이나 의도가 아닌 누락으로 판정돼 라이트에도 그림자를 부여함)",
+    "panel": "VERTICAL · w360 · py20(padding/block/md) · gap32(section/lg) · radius8(radius/8 전체) · border=1px INSIDE color/modal/panel/border(2026-07-29 신설 — 종전 '테두리 없음'에서 변경, 사용자 결정) · shadow=--shadow-raised(라이트·다크 공통 참조. 2026-07-29 이전의 '라이트 shadow 없음'은 Figma 실측이 사실이나 의도가 아닌 누락으로 판정돼 라이트에도 그림자를 부여함)",
     "header": "HORIZONTAL space-between · items-end · px24(padding/inline/lg) · [title + close]",
     "body": "VERTICAL · gap8(spacing/8) · px24 · 텍스트 2줄",
     "footer": "HORIZONTAL 우측정렬(END) · gap8(cluster/xxs) · px24 · [secondary, primary] (코어 Button XXSM, min-width 유지)"
   },
   "tokens": {
-    "_note": "색은 예외 없이 Semantic 경유(HEX 직접 금지). 신규 토큰 0 — 전부 기존 V3.0 슬롯 재사용.",
+    "_note": "색은 예외 없이 Semantic 경유(HEX 직접 금지). 신규 토큰 1 — color/modal/panel/border(2026-07-29 신설). 나머지는 전부 기존 V3.0 슬롯 재사용. (2026-07-29 이전의 '신규 토큰 0' 방침은 패널 보더 신설로 더 이상 참이 아니다.)",
     "panel-bg": "color/surface/raised",
+    "panel-border": "color/modal/panel/border (--color-modal-panel-border) — light gray/200 · dark gray-dark/500. 2026-07-29 신설(사용자 결정). 컴포넌트별 그룹으로 둔 근거: semantic.md 2026-06-23 정리가 '테두리는 color-line-* 및 컴포넌트별 *-border-* 로 분산'이라 명시했고, color/surface/* 는 2026-06-30 에 의도적으로 드롭돼 확장 대상이 아니다. 결과적으로 Modal·Dropdown·Time Picker Dropdown·Date Picker 4개 패널 보더가 같은 값이 된다. 웹 CSS 는 Modal 셀렉터 부재로 미적용.",
     "title-text": "color/text/title/primary",
     "body-text": "color/text/body/primary",
     "close-icon": "color/icon/gray-dark",

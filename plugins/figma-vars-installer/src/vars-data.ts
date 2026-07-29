@@ -599,7 +599,9 @@ export const SEMANTIC_COLOR: Record<string, SemanticColorEntry> = {
   // 레거시 semantic 컬렉션에 없던 그룹 — 우리 코드의 datepicker 디자인 정합
   // panel(패널 배경·테두리) / cell(날짜칸 배경·테두리) 분리 + icon(헤더 < >) 신설 — 사용자 결정 2026-06-26 (값 보존, 이름만 이동)
   "color/date-picker/panel/bg":         { light: "base/white", dark: "gray-dark/100" },
-  "color/date-picker/panel/border":     { light: "gray/300",   dark: "gray-dark/500" },
+  // 2026-07-29: 라이트를 gray/300 → gray/200 으로 변경. 패널 보더 4종(Modal·Dropdown·
+  //   Time Picker Dropdown·Date Picker)을 같은 값으로 통일(사용자 결정). 다크는 불변.
+  "color/date-picker/panel/border":     { light: "gray/200",   dark: "gray-dark/500" },
   "color/date-picker/cell/bg/hover":    { light: "gray/50",    dark: "gray-dark/200" },
   "color/date-picker/cell/bg/today":    { light: "base/white", dark: "gray-dark/100" },
   "color/date-picker/cell/bg/selected": { light: "blue/400",   dark: "blue-dark/300" },
@@ -625,6 +627,15 @@ export const SEMANTIC_COLOR: Record<string, SemanticColorEntry> = {
   "color/date-picker/tile/bg/disabled":     { light: "gray/100",   dark: "gray-dark/200" },
   "color/date-picker/tile/border/default":  { light: "gray/200",   dark: "gray-dark/500" },
   "color/date-picker/tile/border/disabled": { light: "gray/100",   dark: "gray-dark/300" },
+
+  // ── modal ────────────────────────────────
+  // 딤 위 팝업 셸(buildModalShell)의 패널 테두리. 2026-07-29 신설(사용자 결정).
+  //   컴포넌트별 그룹으로 둔 이유: semantic.md 2026-06-23 정리가 "테두리는 color-line-* 및
+  //   컴포넌트별 *-border-* 로 분산"이라 명시했고(보더 33건 중 28건이 컴포넌트별),
+  //   color/surface/* 는 2026-06-30 에 의도적으로 드롭돼 raised 하나만 남은 그룹이라 확장 대상이 아니다.
+  //   값이 같아도 별도 키를 두는 것이 이 저장소 관례(gray/200+gray-dark/500 조합을 이미 8키가 각자 보유).
+  //   배경은 color/surface/raised 를 그대로 쓴다(이 그룹에 bg 를 만들지 않는다).
+  "color/modal/panel/border":           { light: "gray/200",   dark: "gray-dark/500" },
 
   // ── pagination ────────────────────────────────
   "color/pagination/control/bg/default": { light: "base/white", dark: "gray-dark/100" },

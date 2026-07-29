@@ -3873,7 +3873,8 @@ async function buildModalShell(maps: BuildMaps, originY: number): Promise<{ set:
   };
 
   // ── 그릇 변형 빌더 (Footer=Single|Dual). 글자는 마스터에 직접 구움(예시 문구·UX라이팅 영역). ──
-  //   패널: VERTICAL · w360 · py20(padding/block/md) · gap32(section/lg) · radius8 · surface/raised · 라이트 그림자 없음.
+  //   패널: VERTICAL · w360 · py20(padding/block/md) · gap32(section/lg) · radius8 · surface/raised ·
+  //         테두리 modal/panel/border(1px INSIDE, 2026-07-29 신설) · 그림자 shadow/raised(라이트·다크 2겹).
   const buildModalVariant = async (footer: "Single" | "Dual", titleText: string, bodyText: string): Promise<ComponentNode> => {
     const comp = figma.createComponent();
     comp.name = `Footer=${footer}`;
@@ -3884,9 +3885,13 @@ async function buildModalShell(maps: BuildMaps, originY: number): Promise<{ set:
     comp.counterAxisAlignItems = "CENTER";
     comp.fills = [boundPaint(scv(maps, "color/surface/raised"))]; // HD-A: surface/raised 재사용
     try { comp.cornerRadius = 8; } catch (e) { /* radius/8 전체 모서리 */ }
+    comp.strokes = [boundPaint(scv(maps, "color/modal/panel/border"))];
+    comp.strokeWeight = 1; comp.strokeAlign = "INSIDE";   // Calendar 패널(buildCalendar)과 동일 방식
     comp.clipsContent = true;
-    // 테두리 없음. 그림자 = shadow/raised (라이트·다크 모두 2겹, 겹당 변수 바인딩 → 모드로 전환).
-    //   spread(-2/-4)가 적용되려면 "보이는 fill + clipsContent" 조건이 필요한데, 바로 위 두 줄이 그 조건이다.
+    // 테두리 = color/modal/panel/border (2026-07-29 신설 — 종전 '테두리 없음'에서 변경, 사용자 결정).
+    //   Modal·Dropdown·Time Picker Dropdown·Date Picker 4개 패널 보더가 같은 값(gray/200·gray-dark/500)이 된다.
+    // 그림자 = shadow/raised (라이트·다크 모두 2겹, 겹당 변수 바인딩 → 모드로 전환).
+    //   spread(-2/-4)가 적용되려면 "보이는 fill + clipsContent" 조건이 필요한데, fills·clipsContent 두 줄이 그 조건이다.
     const modalEffects = boundShadowEffects(maps, "shadow/raised");  // 오류는 여기서 던진다(삼키지 않음)
     try { (comp as any).effects = modalEffects; } catch (e) { /* 환경 미지원 */ }
 

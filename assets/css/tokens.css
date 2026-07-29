@@ -552,7 +552,7 @@
 
   /* ── date-picker ── */
   --color-date-picker-panel-bg              : var(--color-base-white);
-  --color-date-picker-panel-border          : var(--color-gray-300);
+  --color-date-picker-panel-border          : var(--color-gray-200);
   --color-date-picker-cell-bg-hover         : var(--color-gray-50);
   --color-date-picker-cell-bg-today         : var(--color-base-white);
   --color-date-picker-cell-bg-selected      : var(--color-blue-400);
@@ -576,6 +576,9 @@
   --color-date-picker-tile-bg-disabled      : var(--color-gray-100);
   --color-date-picker-tile-border-default   : var(--color-gray-200);
   --color-date-picker-tile-border-disabled  : var(--color-gray-100);
+
+  /* ── modal ── */
+  --color-modal-panel-border: var(--color-gray-200);
 
   /* ── pagination ── */
   --color-pagination-control-bg-default     : var(--color-base-white);
@@ -790,6 +793,9 @@
   --color-date-picker-tile-bg-disabled      : var(--color-gray-dark-200);
   --color-date-picker-tile-border-default   : var(--color-gray-dark-500);
   --color-date-picker-tile-border-disabled  : var(--color-gray-dark-300);
+
+  /* ── modal ── */
+  --color-modal-panel-border: var(--color-gray-dark-500);
 
   /* ── pagination ── */
   --color-pagination-control-bg-default     : var(--color-gray-dark-100);

@@ -1,9 +1,9 @@
 {
   "sourceFile": "plugins/figma-vars-installer/src/build-components.ts",
-  "sourceHash": "sha256:5e82ad84721e398c749b6120262fcaa068f537e40a3168d943eca531d1875f79",
+  "sourceHash": "sha256:670ef18ae30a164a32774d430bad1cd6dbbc8c84bfc2ed122d0f78e820fc1161",
   "verifiedBy": "component-verifier",
   "verdict": "pass",
   "changeType": "structural",
-  "verifiedAt": "2026-07-29T05:12:40.918Z",
-  "notes": "그림자 배선 2차(지적 3건 수정본) 독립 재검증. (1)effects 4곳 try 밖 분리 실제 확인+상위 호출부(buildAllComponents run 루프)에 삼키는 catch 없음→runInstall 이 error 로 표면화. (2)shadowVarName 단일정본: code.ts 생성부와 build-components 바인딩부를 각각 실행/추출해 8개 변수명 문자열 완전 일치 대조(생성O/바인딩X 0, 반대 0). 복제상수 LETTERS/SHADOW_LAYER_LETTERS 잔존 0. (3)Gate 15b 배선이 Gate 15 와 동일 패턴, fail→errors++→exit1 확인, 사본 저장소에서 파서 고의 파손→quiet 모드 failed=1·failures 전달·CLI exit1, 모듈 파손→catch fail 확인, 약화 0. A~J 재확인(리터럴 0·B 동등성 exact·범위가드 throw·mock 8종 예외 0·zip 최신). Figma 실렌더는 MCP 미인증으로 확인 불가."
+  "verifiedAt": "2026-07-29T07:05:55.708Z",
+  "notes": "buildModalShell 패널 보더 추가(color/modal/panel/border 신설 light gray/200 dark gray-dark/500, 1px INSIDE, boundPaint+scv 로 buildCalendar 와 동일 방식) + color/date-picker/panel/border 라이트 gray/300→gray/200. 독립 검증: 값 정확성(vars-data 604/638, 다크 불변 확인)·4개 패널(Modal/Dropdown/TimePickerDropdown=dropdown-list-border/DatePicker) 최종값 #D9D9D9 / #3E4049 동일 확인·전파(tokens.css/install-prompt/semantic.html/zip, 생성기 재실행 byte-identical 대조)·회귀(surface/raised 미변경, dropdown/list/border 미변경, calInst.strokes=[] 3278 보존, BottomSheet 4종 stroke 대입 0건, shadow 배선 무손상)·mock 실행(installer:check tsc0, keycheck, anatomy, iconpolicy, rolecheck, variantcov 37/37, pagecheck)·게이트(orphan 미해당, darkdiv new=0, gate:check error 0 잔여경고 10=기준선9+무관1). 미검증: Figma 캔버스 실렌더(MCP 미인증). 잔여 비차단 항목: registry/components/index.json:256 '신규 토큰 0' 문서 드리프트, vars-data 그룹 알파벳 순서 예외 배치(date-picker 선례 답습)."
 }
