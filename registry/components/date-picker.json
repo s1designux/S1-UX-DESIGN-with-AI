@@ -108,7 +108,7 @@
       "note": "PC popover panel — figma-unconfirmed. mobile bottomsheet 구조 참고.",
       "--date-picker-panel-bg": "candidate: var(--color-surface-default)",
       "--date-picker-panel-border": "candidate: var(--color-border-default)",
-      "--date-picker-panel-shadow": "candidate: 0 4px 16px rgba(0,0,0,0.10) — shadow에 한해 rgba 허용"
+      "panel-shadow": "stable: var(--shadow-dropdown) — 공용 그림자 토큰(tokens/semantic.md §9-A). 2026-07-29 교체: 종전 candidate `--date-picker-panel-shadow: 0 4px 16px rgba(0,0,0,0.10)` 은 어느 CSS 에도 정의된 적이 없고 실제 구현값(0 4px 8px rgba(0,0,0,0.15))과도 달라 실현하지 않고 폐기함"
     },
     "cell": {
       "note": "Figma mobile bottomsheet (540:3836) 확인값",

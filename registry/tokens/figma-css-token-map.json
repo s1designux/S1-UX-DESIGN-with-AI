@@ -1228,10 +1228,10 @@
     {
       "id": "date-picker.panel.shadow",
       "meaning": "DatePicker panel drop shadow",
-      "cssVariable": "--date-picker-panel-shadow",
-      "cssValue": "candidate: 0 4px 16px rgba(0,0,0,0.10)",
-      "figmaVariable": "pending — shadow not a Figma variable",
-      "note": "Shadow is not a Figma Variable. rgba exception allowed for shadows per CLAUDE.md."
+      "cssVariable": "--shadow-dropdown",
+      "cssValue": "stable: light 0 4px 8px 0 rgba(0,0,0,0.15) / dark 미확정(잠정 light 동일)",
+      "figmaVariable": "n/a — shadow is not a Figma Variable (installer sets node.effects directly)",
+      "note": "2026-07-29 교체: 종전 candidate --date-picker-panel-shadow(0 4px 16px rgba(0,0,0,0.10))는 어느 CSS 에도 정의된 적이 없고 실제 구현값과도 달라 실현하지 않고 폐기, 공용 --shadow-dropdown 으로 대체. 정의=tokens/semantic.md §9-A · rgba 승인=token-exceptions EX07."
     },
     {
       "id": "button.primary.border",

@@ -55,6 +55,19 @@
       ],
       "approvedAt": "2026-04-30",
       "approvedBy": "design-system-lead"
+    },
+    {
+      "id": "EX07",
+      "rule": "rgba() prohibition",
+      "scope": "shadow/* (Semantic Shadow — Light + Dark)",
+      "description": "그림자 토큰의 값은 완성된 box-shadow 문자열이며, 그 안의 색은 alpha 채널이 기능적 의도다(반투명이라야 아래 표면이 비친다). Foundation 색 alias 로는 표현할 수 없어 rgba() 를 그대로 쓴다 — EX03(overlay) 과 같은 이유. 등록 취지는 차단 해제가 아니라 승인 기록이다: 게이트가 차단하지는 않으나(scripts/gate-check.js 의 Gate 3 은 assets/css/tokens.css 의 raw HEX 만 검사하고 rgba 는 검사하지 않으며, R07 을 집행하는 스크립트가 저장소에 없다), rgba 사용에 승인 기록을 남기기 위한 등록.",
+      "affectedTokens": [
+        "--shadow-raised (light: 0 4px 6px -2px rgba(0,0,0,0.06), 0 12px 20px -4px rgba(0,0,0,0.10) / dark: 0 8px 8px -4px rgba(0,0,0,1), 0 20px 24px -4px rgba(0,0,0,1))",
+        "--shadow-raised-up (light: 0 -4px 16px rgba(0,0,0,0.15) / dark: 미확정 — 잠정 light 동일)",
+        "--shadow-dropdown (light: 0 4px 8px 0 rgba(0,0,0,0.15) / dark: 미확정 — 잠정 light 동일)"
+      ],
+      "approvedAt": "2026-07-29",
+      "approvedBy": "design-system-lead"
     }
   ]
 }

@@ -2,7 +2,7 @@
 /**
  * token-naming-check.js  (Gate 15 — Token Naming Convention)
  *
- * vars-data.ts 의 SEMANTIC_COLOR·SEMANTIC_NUMBER 키(=Figma 변수 경로)가
+ * vars-data.ts 의 SEMANTIC_COLOR·SEMANTIC_NUMBER·SEMANTIC_SHADOW 키(=Figma 변수 경로)가
  * registry/governance/naming-rules.json 의 네이밍 규칙을 지키는지 기계 판정한다.
  *
  * 도입 사유: 기존 14개 게이트는 토큰의 "값·구조·존재"만 검사하고 "이름"은 안 봤다.
@@ -26,9 +26,16 @@ function loadKeys() {
   const vd = fs.readFileSync(VD, "utf8");
   // Semantic 경로 키: "color/…" (브랜드 별칭 등 Semantic 레이어). 숫자 Semantic 키도 포함.
   const NUM_NS = "spacing|radius|border-width|sizing|font-size|font-weight|line-height|opacity|letter-spacing";
+  // 그림자 네임스페이스는 NUM_NS 에 넣지 않고 분리한다(2026-07-29):
+  //   NUM_NS 는 이름 그대로 "숫자 Semantic" 목록이고 값이 숫자/숫자-alias 다.
+  //   shadow 값은 완성된 box-shadow 문자열이라 숫자가 아니므로, NUM_NS 에 끼워 넣으면
+  //   상수 이름이 내용과 어긋나 다음 사람이 오독한다. 적용되는 네이밍 규칙(kebab·금지세그먼트)은
+  //   동일하므로 키 집합에는 함께 합친다 — 분리는 "이름의 정직성"을 위한 것이지 규칙 완화가 아니다.
+  const SHADOW_NS = "shadow";
   const color = [...vd.matchAll(/"(color\/[^"]+)"/g)].map((m) => m[1]);
   const number = [...vd.matchAll(new RegExp(`"((?:${NUM_NS})\\/[^"]+)"`, "g"))].map((m) => m[1]);
-  return [...new Set([...color, ...number])];
+  const shadow = [...vd.matchAll(new RegExp(`"((?:${SHADOW_NS})\\/[^"]+)"`, "g"))].map((m) => m[1]);
+  return [...new Set([...color, ...number, ...shadow])];
 }
 
 // 세그먼트 분해: 상태 구분자 '--' 는 한 세그먼트 안에서 허용(예: primary--default)

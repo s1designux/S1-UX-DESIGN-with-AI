@@ -369,6 +369,65 @@ export interface SemanticColorEntry {
   dark: string;
 }
 
+// ── Semantic Shadow (그림자 — raw box-shadow 문자열) ─────────────────────────
+
+// SemanticColorEntry 와 필드 구조는 같지만 **의미가 다르므로 별도 인터페이스**로 둔다.
+//   SemanticColorEntry.light/dark = Foundation 색 키("gray/100") 또는 색 리터럴 → aliasToCss 로 var() 감쌈
+//   SemanticShadowEntry.light/dark = **완성된 box-shadow 문자열** → 절대 감싸지 않고 raw 출력
+// 같은 타입을 공유하면 "이 값은 Foundation 색 키다"라는 계약이 깨져, 생성기가 그림자를
+// var(--color-0 4px 16px …) 로 뭉갤 수 있다. 타입으로 두 계약을 분리한다.
+export interface SemanticShadowEntry {
+  light: string;
+  dark: string;
+}
+
+// ──────────────────────────────────────────────────────────────────────────
+// SEMANTIC_SHADOW — 그림자 토큰 (Semantic 층, 2026-07-29 신설)
+//
+// 층 결정(사람 판단 2026-07-29, 근거 (C)):
+//   tokens/foundation.md 는 스스로 "참고 문서·충돌 시 registry 우선"이라 선언하고,
+//   정본인 registry/tokens/ 에는 shadow 층 정의가 0건이다(충돌이 아니라 공백).
+//   shadow/* 아래 실제 토큰이 존재한 적이 없고(유일했던 --shadow-200 도 "참조 0건 고아"로
+//   2026-07-08 삭제), FOUNDATION_* 는 단일 모드라 {light, dark} 를 담을 자리가 없다.
+//   → foundation.md 의 shadow/* 줄은 "채워진 적 없는 예약석"으로 보고 Semantic 층에 둔다.
+//
+// SEMANTIC_NUMBER 에 넣지 않는 이유: 그 타입이 `string | number` 라 {light, dark} 를
+//   넣으면 tsc TS2322 가 난다(백로그 6표면 #1 진단).
+//
+// ⚠️ 배치 위치 주의 — 이 객체는 반드시 아래 SEMANTIC_COLOR 선언부보다 **앞**에 있어야 한다.
+//   scripts/token-sync-monitor.js · token-value-consistency-check.js · dark-divergence-check.js
+//   세 검사기가 그 선언부를 indexOf 로 찾은 지점부터 **파일 끝까지** 슬라이스한 뒤
+//   `"key": { light: "…", dark: "…" }` 정규식을 돌린다. 이 객체가 뒤에 있으면 그림자 엔트리가
+//   색 블록으로 오인돼 Gate 7·7b 오탐 / Gate 29 파싱개수 불일치 throw 가 난다.
+//   (근본 해결 = 세 검사기 정규식을 `"(color\/…)"` 로 좁히기 — 이번 단계 범위 밖, 백로그 참조)
+//
+// ⚠️ 주석에 그 선언부 문자열(대문자 상수명 + 콜론)을 **그대로 쓰지 말 것.**
+//   scripts/gen-semantic-tokens.js 의 block() 정규식과 위 세 검사기의 indexOf 가
+//   주석의 문자열에 먼저 걸려 색 토큰 400여 개가 통째로 유실된다(2026-07-29 실제 발생·수정).
+//
+// 값 정본: reports/shadow-token-infra-backlog.md "확정 토큰 3종"
+// 적용 대상(이번 단계에서는 기록만, 실제 바인딩은 다음 단계):
+//   shadow/raised     → Modal
+//   shadow/raised-up  → Bottom Sheet (하단에서 올라오는 표면이라 y 부호 반전)
+//   shadow/dropdown   → Dropdown · Calendar · Time Picker Dropdown
+// ──────────────────────────────────────────────────────────────────────────
+
+export const SEMANTIC_SHADOW: Record<string, SemanticShadowEntry> = {
+  // 딤 위에 떠있는 패널(Modal). 라이트·다크 **모두 2겹** — 겹 수는 테마가 아니라 표면 위계를 나타낸다.
+  //   양쪽 겹 수를 맞춘 이유: Figma 는 그림자 겹 수를 변수 모드로 바꿀 수 없다. 겹 수가 같아야
+  //   겹당 속성(색·offset·blur·spread)을 변수에 바인딩해 모드 전환을 표현할 수 있다.
+  //   테마 차이는 겹 수가 아니라 alpha 와 기하다(라이트 .06/.10 · 다크 1.0).
+  "shadow/raised": { light: "0 4px 6px -2px rgba(0,0,0,0.06), 0 12px 20px -4px rgba(0,0,0,0.10)", dark: "0 8px 8px -4px rgba(0,0,0,1), 0 20px 24px -4px rgba(0,0,0,1)" },
+
+  // 하단에서 올라오는 표면(Bottom Sheet). y 부호가 반전된다.
+  // TODO(shadow-dark): 미확정. Figma 다크 스펙 실측 후 교체 — 지금은 다크에서 그림자가 사라지는 회귀를 막으려 light 값 동일.
+  "shadow/raised-up": { light: "0 -4px 16px rgba(0,0,0,0.15)", dark: "0 -4px 16px rgba(0,0,0,0.15)" },
+
+  // 작은 팝오버 패널(Dropdown·Calendar·Time Picker Dropdown). 표면이 작아 blur 8.
+  // TODO(shadow-dark): 미확정. Figma 다크 스펙 실측 후 교체 — 지금은 다크에서 그림자가 사라지는 회귀를 막으려 light 값 동일.
+  "shadow/dropdown": { light: "0 4px 8px 0 rgba(0,0,0,0.15)", dark: "0 4px 8px 0 rgba(0,0,0,0.15)" },
+};
+
 // ──────────────────────────────────────────────────────────────────────────
 // SEMANTIC_COLOR — 레거시 DS 2.4 컴포넌트별 구조 (2026-06-08 전환)
 //

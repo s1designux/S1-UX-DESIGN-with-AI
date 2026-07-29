@@ -42,7 +42,7 @@ function loadCssVarNames(cssPath) {
 
 function loadFigmaPaths(tsPath) {
   const ts = fs.readFileSync(tsPath, 'utf-8');
-  const sections = ['FOUNDATION_COLOR', 'FOUNDATION_NUMBER', 'SEMANTIC_COLOR', 'SEMANTIC_NUMBER'];
+  const sections = ['FOUNDATION_COLOR', 'FOUNDATION_NUMBER', 'SEMANTIC_COLOR', 'SEMANTIC_NUMBER', 'SEMANTIC_SHADOW'];
   const result = {};
   for (const name of sections) {
     result[name] = new Set();
@@ -143,6 +143,9 @@ function categorize(cssName) {
   if (/^--sizing-/.test(cssName))                                 return 'SEMANTIC_NUMBER';
   if (/^--radius-(control|button|card|modal)-/.test(cssName))     return 'SEMANTIC_NUMBER';
 
+  // Semantic Shadow (2026-07-29) — spacing-/radius- 와 같은 방식: 접두사 regex → kind
+  if (/^--shadow-/.test(cssName))                                 return 'SEMANTIC_SHADOW';
+
   return null;
 }
 
@@ -209,6 +212,12 @@ function expectedFigmaPath(cssName, kind) {
     });
   }
 
+  if (kind === 'SEMANTIC_SHADOW') {
+    // --shadow-raised → shadow/raised · --shadow-raised-up → shadow/raised-up
+    // (첫 하이픈만 '/' 로 바꾼다. spacing-/radius- 와 동일한 prefix-map 방식)
+    return cssToFigmaSemantic(stripped, { 'shadow-': 'shadow/' });
+  }
+
   return null;
 }
 
@@ -230,7 +239,7 @@ function audit() {
   const cssNames = loadCssVarNames(TOKENS_CSS);
   const figmaSets = loadFigmaPaths(VARS_DATA);
 
-  const STRICT_KINDS = ['FOUNDATION_COLOR', 'FOUNDATION_NUMBER', 'SEMANTIC_COLOR', 'SEMANTIC_NUMBER'];
+  const STRICT_KINDS = ['FOUNDATION_COLOR', 'FOUNDATION_NUMBER', 'SEMANTIC_COLOR', 'SEMANTIC_NUMBER', 'SEMANTIC_SHADOW'];
   const missing = Object.fromEntries(STRICT_KINDS.map((k) => [k, []]));
   const stats   = Object.fromEntries(STRICT_KINDS.map((k) => [k, { expected: 0, present: 0 }]));
   const outOfScopeSemanticColor = []; // 설치기에 실제로 없는 semantic color (진짜 미반영)
@@ -287,6 +296,7 @@ function main() {
     FOUNDATION_NUMBER: 'Foundation Number (spacing/radius/border-width/font-*/line-height)',
     SEMANTIC_COLOR:    'Semantic Color (컴포넌트 폴더: button/chip/control/form-control/text/icon/… — 설치기 멤버십 검증)',
     SEMANTIC_NUMBER:   'Semantic Number (padding/section/stack/sizing/radius)',
+    SEMANTIC_SHADOW:   'Semantic Shadow (shadow/raised·raised-up·dropdown — raw box-shadow 문자열)',
   }[s]);
 
   console.log('\n── Installer Coverage Check ─────────────────────────');

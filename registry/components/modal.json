@@ -117,7 +117,7 @@
     "dual": ["삭제", "입력취소", "마감취소"]
   },
   "anatomySpec": {
-    "panel": "VERTICAL · w360 · py20(padding/block/md) · gap32(section/lg) · radius8(radius/8 전체) · border 없음 · shadow 없음(라이트)",
+    "panel": "VERTICAL · w360 · py20(padding/block/md) · gap32(section/lg) · radius8(radius/8 전체) · border 없음 · shadow=--shadow-raised(라이트·다크 공통 참조. 2026-07-29 이전의 '라이트 shadow 없음'은 Figma 실측이 사실이나 의도가 아닌 누락으로 판정돼 라이트에도 그림자를 부여함)",
     "header": "HORIZONTAL space-between · items-end · px24(padding/inline/lg) · [title + close]",
     "body": "VERTICAL · gap8(spacing/8) · px24 · 텍스트 2줄",
     "footer": "HORIZONTAL 우측정렬(END) · gap8(cluster/xxs) · px24 · [secondary, primary] (코어 Button XXSM, min-width 유지)"
@@ -130,7 +130,7 @@
     "close-icon": "color/icon/gray-dark",
     "panel-radius": "radius/8 (공유 --radius-modal-md 와 동일값)",
     "overlay": "color/overlay (딤 — 모달 사용 시 적용, EX03 rgba 예외)",
-    "shadow-dark": "shadow/raised — 미신설(별건 백로그: reports/shadow-token-infra-backlog.md). 라이트는 그림자 없음."
+    "shadow": "shadow/raised (--shadow-raised) — 2026-07-29 신설 완료. Light 2겹 `0 4px 6px -2px rgba(0,0,0,0.06), 0 12px 20px -4px rgba(0,0,0,0.10)` / Dark 2겹 `0 8px 8px -4px rgba(0,0,0,1), 0 20px 24px -4px rgba(0,0,0,1)` (겹 수는 표면 위계 — 라이트·다크 동일 2겹, 차이는 alpha·기하). 정의=tokens/semantic.md §9-A · rgba 승인=token-exceptions EX07 · 경위=reports/shadow-token-infra-backlog.md. 웹 CSS 는 Modal 셀렉터 부재로 미적용(다음 단계)."
   },
   "reuses": {
     "coreComponents": ["button"],

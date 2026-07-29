@@ -2,16 +2,23 @@
 /**
  * gen-semantic-tokens.js
  *
- * Variables(vars-data.ts SEMANTIC_COLOR)를 **정본**으로 tokens.css 의 Semantic 섹션
- * (Light :root + Dark [data-theme="dark"])을 자동 생성한다.
+ * Variables(vars-data.ts SEMANTIC_COLOR + SEMANTIC_SHADOW)를 **정본**으로 tokens.css 의
+ * Semantic 섹션(Light :root + Dark [data-theme="dark"])을 자동 생성한다.
  *
  *   Figma Variables (vars-data.ts)  ──[gen]──▶  tokens.css Semantic 섹션
  *
- * 변환 규칙:
+ * 변환 규칙 (색):
  *   - figma "color/table/cell/default"  → CSS  "--color-table-cell-default"
  *   - alias "blue/400"                  → CSS  "var(--color-blue-400)"
  *   - alias "base/white"/"gray-dark/100"→ CSS  "var(--color-base-white)" / "var(--color-gray-dark-100)"
  *   - "#HEX" / "rgba(...)"              → 리터럴 그대로
+ *
+ * 변환 규칙 (그림자 — 2026-07-29 신설):
+ *   - figma "shadow/raised"             → CSS  "--shadow-raised"
+ *   - 값은 **완성된 box-shadow 문자열**이라 aliasToCss 를 절대 태우지 않고 raw 그대로 출력한다.
+ *     (색 경로로 보내면 var(--color-0 4px 16px …) 로 뭉개진다 — 백로그 6표면 #2 진단)
+ *   - 2겹 값의 콤마는 vars-data 에서 따옴표 안에 있고, 파서가 "…" 통째로 캡처하며,
+ *     출력도 문자열 그대로 붙이므로 어느 단계에서도 콤마로 쪼개지지 않는다.
  *
  * 사용:
  *   node scripts/gen-semantic-tokens.js --preview   # 생성 결과를 stdout 으로 출력(파일 미변경)
@@ -38,8 +45,9 @@ function aliasToCss(ref) {
 }
 function figmaToCss(key) { return '--' + key.replace(/\//g, '-'); }       // color/x/y -> --color-x-y
 
-function parseSemantic(src) {
-  const b = block(src, 'SEMANTIC_COLOR');
+function parseEntries(src, objName) {
+  const b = block(src, objName);
+  // 값은 따옴표 안에서 통째로 캡처한다([^"]+). 그림자 2겹 값의 내부 콤마도 여기서 안 쪼개진다.
   const re = /"([^"]+)":\s*\{\s*light:\s*"([^"]+)"\s*,\s*dark:\s*"([^"]+)"\s*\}/g;
   const out = [];
   let m;
@@ -47,7 +55,10 @@ function parseSemantic(src) {
   return out;
 }
 
-function buildBlock(entries) {
+function parseSemantic(src) { return parseEntries(src, 'SEMANTIC_COLOR'); }
+function parseShadow(src)   { return parseEntries(src, 'SEMANTIC_SHADOW'); }
+
+function buildBlock(entries, shadows) {
   // group by category = 2nd path segment (color/<cat>/...)
   const groups = new Map();
   for (const e of entries) {
@@ -69,6 +80,24 @@ function buildBlock(entries) {
     lightLines.push('');
     darkLines.push('');
   }
+
+  // ── shadow — 색 그룹 뒤에 별도 그룹으로 붙인다 ──────────────────────────────
+  // 색과 달리 값을 aliasToCss 로 감싸지 않는다(완성된 box-shadow 문자열이므로 raw 출력).
+  // 그룹 키도 색처럼 "2번째 경로 세그먼트"로 묶으면 shadow/raised → 'raised' 로 흩어지므로
+  // 경로 1번째 세그먼트(shadow) 하나로 고정한다.
+  if (shadows && shadows.length) {
+    lightLines.push(`  /* ── shadow ── */`);
+    darkLines.push(`  /* ── shadow ── */`);
+    const w = Math.max(...shadows.map(e => figmaToCss(e.key).length));
+    for (const e of shadows) {
+      const name = figmaToCss(e.key).padEnd(w);
+      lightLines.push(`  ${name}: ${e.light};`);   // raw — aliasToCss 태우지 않음
+      darkLines.push(`  ${name}: ${e.dark};`);     // raw — 2겹 콤마 문자열 그대로
+    }
+    lightLines.push('');
+    darkLines.push('');
+  }
+
   const stamp = `Auto-generated from vars-data.ts (npm run tokens:gen) — Variables 정본. 수동 편집 금지.`;
   return `/* >>> GEN:SEMANTIC >>> ${stamp} */
 /* ══════════════════════════════════════════════════
@@ -90,11 +119,18 @@ ${darkLines.join('\n').replace(/\n+$/, '')}
 function main() {
   const src = fs.readFileSync(VARS, 'utf-8');
   const entries = parseSemantic(src);
-  const blockStr = buildBlock(entries);
+  const shadows = parseShadow(src);
+  // "추출 0건 = 안 됨" 원칙(Gate 17/19). SEMANTIC_SHADOW 가 선언돼 있는데 파싱이 0이면
+  // 서식 변경으로 조용히 빠진 것이므로 요란하게 실패한다.
+  if (/export const SEMANTIC_SHADOW\s*:/.test(src) && shadows.length === 0) {
+    console.error('❌ vars-data.ts 에 SEMANTIC_SHADOW 가 있으나 파싱 결과가 0건입니다 (서식 변경 의심). 중단.');
+    process.exit(1);
+  }
+  const blockStr = buildBlock(entries, shadows);
 
   if (PREVIEW) {
     process.stdout.write(blockStr + '\n');
-    process.stderr.write(`\n[gen] SEMANTIC_COLOR ${entries.length}개 생성\n`);
+    process.stderr.write(`\n[gen] SEMANTIC_COLOR ${entries.length}개 + SEMANTIC_SHADOW ${shadows.length}개 생성\n`);
     return;
   }
 
@@ -106,7 +142,7 @@ function main() {
   }
   css = css.replace(RE, blockStr);
   fs.writeFileSync(TOKENS_CSS, css, 'utf-8');
-  console.log(`✅ tokens.css Semantic 섹션 생성 완료 (${entries.length}개 토큰)`);
+  console.log(`✅ tokens.css Semantic 섹션 생성 완료 (color ${entries.length}개 + shadow ${shadows.length}개)`);
 }
 
 main();

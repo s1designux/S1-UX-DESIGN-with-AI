@@ -26,8 +26,9 @@ Foundation (Foundation)
   └─ typography/*                폰트 크기·굵기·행간
   └─ spacing/*                   간격 스케일
   └─ radius/*                    모서리 반경
-  └─ shadow/*                    그림자
 ```
+
+> **`shadow/*` 는 Semantic 층으로 이동했다 (2026-07-29).** 이 계통도에 예약돼 있었으나 그 아래 실제 토큰이 존재한 적이 없고(유일했던 `--shadow-200` 도 "참조 0건 고아"로 2026-07-08 삭제), 정본인 `registry/tokens/` 에도 shadow 층 정의가 0건이었다. 또 Foundation 은 단일 모드 구조라 그림자에 필요한 `{light, dark}` 를 담을 자리가 없다. → 정의는 `tokens/semantic.md` §9-A 참조.
 
 ---
 

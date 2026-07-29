@@ -5452,10 +5452,10 @@ window.REGISTRY_BUNDLE = {
         {
           "id": "date-picker.panel.shadow",
           "meaning": "DatePicker panel drop shadow",
-          "cssVariable": "--date-picker-panel-shadow",
-          "cssValue": "candidate: 0 4px 16px rgba(0,0,0,0.10)",
-          "figmaVariable": "pending — shadow not a Figma variable",
-          "note": "Shadow is not a Figma Variable. rgba exception allowed for shadows per CLAUDE.md."
+          "cssVariable": "--shadow-dropdown",
+          "cssValue": "stable: light 0 4px 8px 0 rgba(0,0,0,0.15) / dark 미확정(잠정 light 동일)",
+          "figmaVariable": "n/a — shadow is not a Figma Variable (installer sets node.effects directly)",
+          "note": "2026-07-29 교체: 종전 candidate --date-picker-panel-shadow(0 4px 16px rgba(0,0,0,0.10))는 어느 CSS 에도 정의된 적이 없고 실제 구현값과도 달라 실현하지 않고 폐기, 공용 --shadow-dropdown 으로 대체. 정의=tokens/semantic.md §9-A · rgba 승인=token-exceptions EX07."
         },
         {
           "id": "button.primary.border",
@@ -12208,6 +12208,19 @@ window.REGISTRY_BUNDLE = {
           ],
           "approvedAt": "2026-04-30",
           "approvedBy": "design-system-lead"
+        },
+        {
+          "id": "EX07",
+          "rule": "rgba() prohibition",
+          "scope": "shadow/* (Semantic Shadow — Light + Dark)",
+          "description": "그림자 토큰의 값은 완성된 box-shadow 문자열이며, 그 안의 색은 alpha 채널이 기능적 의도다(반투명이라야 아래 표면이 비친다). Foundation 색 alias 로는 표현할 수 없어 rgba() 를 그대로 쓴다 — EX03(overlay) 과 같은 이유. 등록 취지는 차단 해제가 아니라 승인 기록이다: 게이트가 차단하지는 않으나(scripts/gate-check.js 의 Gate 3 은 assets/css/tokens.css 의 raw HEX 만 검사하고 rgba 는 검사하지 않으며, R07 을 집행하는 스크립트가 저장소에 없다), rgba 사용에 승인 기록을 남기기 위한 등록.",
+          "affectedTokens": [
+            "--shadow-raised (light: 0 4px 6px -2px rgba(0,0,0,0.06), 0 12px 20px -4px rgba(0,0,0,0.10) / dark: 0 8px 8px -4px rgba(0,0,0,1), 0 20px 24px -4px rgba(0,0,0,1))",
+            "--shadow-raised-up (light: 0 -4px 16px rgba(0,0,0,0.15) / dark: 미확정 — 잠정 light 동일)",
+            "--shadow-dropdown (light: 0 4px 8px 0 rgba(0,0,0,0.15) / dark: 미확정 — 잠정 light 동일)"
+          ],
+          "approvedAt": "2026-07-29",
+          "approvedBy": "design-system-lead"
         }
       ]
     },
@@ -12287,9 +12300,21 @@ window.REGISTRY_BUNDLE = {
     }
   },
   "reportsIndex": {
-    "generatedAt": "2026-07-18T08:54:48.423Z",
-    "totalCount": 64,
+    "generatedAt": "2026-07-28T07:45:32.838Z",
+    "totalCount": 65,
     "reports": [
+      {
+        "id": "dark-divergence-initial",
+        "filename": "dark-divergence-initial.md",
+        "title": "다크값 갈림 초기 실측 (Gate 29 도입 시점)",
+        "stage": "Audit",
+        "category": "audit",
+        "status": "archive",
+        "sourcePath": "reports/dark-divergence-initial.md",
+        "updatedAt": "2026-07-28",
+        "summary": "작성: 2026-07-28 · 기준 커밋 `fb90bfe` · 데이터 소스: `plugins/figma-vars-installer/src/vars-data.ts` (SEMANTIC_COLOR 170개)",
+        "fileSizeKB": 9.4
+      },
       {
         "id": "modal-content-family-backlog",
         "filename": "modal-content-family-backlog.md",

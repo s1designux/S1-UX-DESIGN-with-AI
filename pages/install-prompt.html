@@ -231,7 +231,7 @@
                 <div class="step-title">AI 컨텍스트 프롬프트 받기</div>
                 <div class="step-desc">라우터(읽는 순서) + Core(9섹션 — 비주얼 테마·색상 역할·타이포·컴포넌트 사용맥락·레이아웃·엘리베이션·Do/Don't·반응형·Agent 가이드) + 서비스 분기</div>
               </div>
-              <span class="update-stamp" data-update-file="design/DESIGN.core.md"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> 업데이트 2026-07-21 13:18</span>
+              <span class="update-stamp" data-update-file="design/DESIGN.core.md"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> 업데이트 2026-07-28 11:01</span>
             </div>
             <div class="step-body">
               <div class="ai-info">
@@ -1196,7 +1196,7 @@ _아직 `scope="vms"` 로 분기된 컴포넌트가 없습니다. core 정의를
                 <div class="step-title">전체 기본 토큰 CSS 받기</div>
                 <div class="step-desc">Semantic (Light/Dark) + Component 토큰 전체 CSS</div>
               </div>
-              <span class="update-stamp" data-update-file="assets/css/tokens.css"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> 업데이트 2026-07-15 10:47</span>
+              <span class="update-stamp" data-update-file="assets/css/tokens.css"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> 업데이트 2026-07-29 13:18</span>
             </div>
             <div class="step-body">
               <div class="file-card">
@@ -1204,7 +1204,7 @@ _아직 `scope="vms"` 로 분기된 컴포넌트가 없습니다. core 정의를
                   <div class="file-icon">🎨</div>
                   <div>
                     <div class="file-name">tokens.css</div>
-                    <div class="file-meta">Foundation 259종 + Semantic 198종 + Component 14종 · Light + Dark</div>
+                    <div class="file-meta">Foundation 259종 + Semantic 198종 + Component 17종 · Light + Dark</div>
                   </div>
                 </div>
                 <button class="download-btn" onclick="downloadTokens()">
@@ -1223,7 +1223,7 @@ _아직 `scope="vms"` 로 분기된 컴포넌트가 없습니다. core 정의를
    S1 UX DESIGN GUIDE — tokens.css
    Foundation → Semantic → Component
    Auto-synced from assets/css/tokens.css (npm run tokens:sync-prompt)
-   Last sync: 2026-07-28
+   Last sync: 2026-07-29
    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
 
 /* &gt;&gt;&gt; GEN:FOUNDATION &gt;&gt;&gt; Auto-generated from vars-data.ts (npm run tokens:gen:foundation) — Variables 정본. 수동 편집 금지. */
@@ -1846,6 +1846,11 @@ _아직 `scope="vms"` 로 분기된 컴포넌트가 없습니다. core 정의를
 
   /* ── scroll ── */
   --color-scroll-bg: var(--color-gray-200);
+
+  /* ── shadow ── */
+  --shadow-raised   : 0 4px 6px -2px rgba(0,0,0,0.06), 0 12px 20px -4px rgba(0,0,0,0.10);
+  --shadow-raised-up: 0 -4px 16px rgba(0,0,0,0.15);
+  --shadow-dropdown : 0 4px 8px 0 rgba(0,0,0,0.15);
 }
 
 /* ══════════════════════════════════════════════════
@@ -2055,6 +2060,11 @@ _아직 `scope="vms"` 로 분기된 컴포넌트가 없습니다. core 정의를
 
   /* ── scroll ── */
   --color-scroll-bg: var(--color-gray-dark-600);
+
+  /* ── shadow ── */
+  --shadow-raised   : 0 8px 8px -4px rgba(0,0,0,1), 0 20px 24px -4px rgba(0,0,0,1);
+  --shadow-raised-up: 0 -4px 16px rgba(0,0,0,0.15);
+  --shadow-dropdown : 0 4px 8px 0 rgba(0,0,0,0.15);
 }
 /* &lt;&lt;&lt; GEN:SEMANTIC &lt;&lt;&lt; */
 </pre>
@@ -2070,7 +2080,7 @@ _아직 `scope="vms"` 로 분기된 컴포넌트가 없습니다. core 정의를
                 <div class="step-title">프로젝트에 추가</div>
                 <div class="step-desc">다운받은 tokens.css를 프로젝트에 복사한 뒤 아래 한 줄 추가</div>
               </div>
-              <span class="update-stamp" data-update-file="assets/css/tokens.css"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> 업데이트 2026-07-15 10:47</span>
+              <span class="update-stamp" data-update-file="assets/css/tokens.css"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> 업데이트 2026-07-29 13:18</span>
             </div>
             <div class="step-body">
               <div class="env-tabs">

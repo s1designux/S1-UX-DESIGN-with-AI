@@ -913,7 +913,7 @@
       background: var(--color-date-picker-panel-bg);
       border: 1px solid var(--color-date-picker-panel-border); /* Variables: control/popup border */
       border-radius: var(--radius-4, 4px); /* Figma: 4px */
-      box-shadow: 0 4px 8px rgba(0,0,0,0.15); /* Figma: shadow — rgba 허용 */
+      box-shadow: var(--shadow-dropdown);
       padding: 20px 24px; /* Figma: py=20px, grid-side=24px */
       min-height: 392px; /* 6행 달력 고정 높이: padding(40) + header(44) + weekdays(44) + 6rows(264) */
       box-sizing: border-box;
@@ -1173,6 +1173,7 @@
       background: var(--color-dropdown-list-bg);
       border: 1px solid var(--color-dropdown-list-border);
       border-radius: 4px; padding: 4px 0; min-width: 160px;
+      box-shadow: var(--shadow-dropdown); /* 2026-07-29 신규 적용 — 종전 그림자 없음 */
     }
     .s1-dropdown-option {
       display: flex; align-items: center; box-sizing: border-box;
@@ -1509,7 +1510,7 @@
       background: var(--color-dropdown-list-bg);
       border: 1px solid var(--color-dropdown-list-border);
       border-radius: var(--radius-4);
-      box-shadow: 0 4px 8px 0 rgba(0,0,0,0.15);
+      box-shadow: var(--shadow-dropdown);
       flex-direction: column; align-items: center;
       overflow: hidden;
       padding-top: 12px;
@@ -1574,7 +1575,7 @@
       border: 1px solid var(--color-dropdown-list-border);
       border-radius: var(--radius-control-xs);
       max-height: 160px; overflow-y: auto;
-      box-shadow: 0 4px 8px 0 rgba(0,0,0,0.15);
+      box-shadow: var(--shadow-dropdown);
     }
     .s1-tp-select-dropdown-item {
       height: var(--sizing-40); display: flex; align-items: center;
@@ -7448,7 +7449,7 @@ document.addEventListener('click', function(e) {
                   <!-- Dim overlay -->
                   <div style="position:absolute;inset:0;background:rgba(0,0,0,0.35);z-index:1;"></div>
                   <!-- Bottom Sheet -->
-                  <div style="position:absolute;bottom:0;left:0;right:0;background:var(--color-surface-default);border-radius:16px 16px 0 0;box-shadow:0 -4px 16px rgba(0,0,0,0.15);padding:12px 0 20px;z-index:2;">
+                  <div style="position:absolute;bottom:0;left:0;right:0;background:var(--color-surface-default);border-radius:16px 16px 0 0;box-shadow:var(--shadow-raised-up);padding:12px 0 20px;z-index:2;">
                     <div style="display:flex;justify-content:center;padding-bottom:10px;">
                       <div style="width:40px;height:4px;background:var(--color-border-subtle);border-radius:2px;"></div>
                     </div>
@@ -7487,7 +7488,7 @@ document.addEventListener('click', function(e) {
                   <!-- Dim -->
                   <div id="tp-mobile-dim" style="display:none;position:absolute;inset:0;background:rgba(0,0,0,0.35);z-index:1;" aria-hidden="true"></div>
                   <!-- Sheet -->
-                  <div id="tp-mobile-sheet" role="dialog" aria-label="시간 선택" style="display:none;position:absolute;bottom:0;left:0;right:0;background:var(--color-surface-default);border-radius:16px 16px 0 0;box-shadow:0 -4px 16px rgba(0,0,0,0.15);padding:12px 0 20px;z-index:2;">
+                  <div id="tp-mobile-sheet" role="dialog" aria-label="시간 선택" style="display:none;position:absolute;bottom:0;left:0;right:0;background:var(--color-surface-default);border-radius:16px 16px 0 0;box-shadow:var(--shadow-raised-up);padding:12px 0 20px;z-index:2;">
                     <div style="display:flex;justify-content:center;padding-bottom:10px;">
                       <div style="width:40px;height:4px;background:var(--color-border-subtle);border-radius:2px;"></div>
                     </div>

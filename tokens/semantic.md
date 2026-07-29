@@ -337,6 +337,43 @@ color-overlay   → 딤·오버레이
 
 ---
 
+## 9-A. Shadow — 그림자 (2026-07-29 신설)
+
+> **절 번호 규칙:** 이 파일은 뒤 번호를 밀지 않고 형제 절을 끼워 넣을 때 직전 번호에 접미를 붙인다(§4-A·§4-B·§8-2·§8-3). 그림자는 §9(숫자 토큰)와 **다른 계열**이라 문자 접미(§4-A 방식)를 써 §9-A 로 둔다. §10(CSS 구현 참조)은 번호를 유지한다.
+>
+> **층:** Semantic. `tokens/foundation.md` 계통도에 예약돼 있던 `shadow/*` 를 2026-07-29 이곳으로 옮겼다(사람 판단 — 정본 registry 에 shadow 층 정의 0건 + Foundation 은 단일 모드라 `{light, dark}` 를 담을 자리 없음).
+>
+> **값 형태가 다른 Semantic 토큰과 다르다.** 색은 Foundation alias(`gray/100`)를, 숫자는 숫자 alias(`radius/8`)를 참조하지만, **그림자는 완성된 `box-shadow` 문자열**이라 Foundation 참조 열이 없다. 생성기(`gen-semantic-tokens.js`)도 이 값만 `var()` 로 감싸지 않고 raw 로 내보낸다.
+>
+> **rgba 직접 사용 허용** — alpha 채널이 기능적 의도(반투명이라야 아래 표면이 비침)라 Foundation 색 alias 로 표현 불가. 승인 기록: `registry/governance/token-exceptions.json` **EX07**.
+
+| 키 (Figma) | CSS Variable | Light | Dark |
+|---|---|---|---|
+| `shadow/raised` | `--shadow-raised` | `0 4px 6px -2px rgba(0,0,0,0.06), 0 12px 20px -4px rgba(0,0,0,0.10)` | `0 8px 8px -4px rgba(0,0,0,1), 0 20px 24px -4px rgba(0,0,0,1)` |
+| `shadow/raised-up` | `--shadow-raised-up` | `0 -4px 16px rgba(0,0,0,0.15)` | ⚠️ **미확정** (잠정으로 Light 값과 동일하게 넣어 둠 — 다크에서 그림자가 사라지는 회귀 방지용이며 확정값이 아니다) |
+| `shadow/dropdown` | `--shadow-dropdown` | `0 4px 8px 0 rgba(0,0,0,0.15)` | ⚠️ **미확정** (위와 동일 — 잠정값) |
+
+### 적용 대상
+
+| CSS Variable | 적용 컴포넌트 |
+|---|---|
+| `--shadow-raised` | Modal |
+| `--shadow-raised-up` | Bottom Sheet (하단에서 올라오는 표면이라 y 부호 반전) |
+| `--shadow-dropdown` | Dropdown · Calendar · Time Picker Dropdown |
+
+> **적용은 아직 안 됐다.** 2026-07-29 1단계는 "값 생성 경로"(vars-data → tokens.css)까지만 배선했다. 실제 컴포넌트 바인딩·설치기·HTML 반영은 다음 단계다. 경위·미정 항목 전문: `reports/shadow-token-infra-backlog.md`.
+
+### 설계 근거
+
+- **겹 수는 테마가 아니라 표면 위계를 나타낸다.** Modal(`raised`)은 **라이트·다크 모두 2겹**, Bottom Sheet(`raised-up`)와 Dropdown 계열(`dropdown`)은 **양쪽 1겹**이다. 같은 토큰의 라이트/다크가 겹 수까지 달라지는 일은 없다.
+- **라이트와 다크의 겹 수를 맞춘 이유 — Figma 제약.** Figma 는 그림자 **겹 수를 변수 모드로 바꿀 수 없다**(겹 수는 구조다). 겹 수가 같아야 겹당 속성(색·offset·blur·spread)을 변수에 바인딩해 모드 전환을 표현할 수 있다. 라이트를 1겹으로 두면 다크 2겹을 표현할 방법이 "라이트에 투명한 빈 겹을 하나 두는 것"뿐이라 낭비가 생긴다.
+- **테마 차이는 겹 수가 아니라 alpha 와 기하다.** Modal 라이트는 alpha `.06` / `.10`, 다크는 alpha `1.0` — 어두운 배경에서 층위를 확보하려면 훨씬 강한 값이 필요하다. 다크 정본은 Figma 노드 2건(`Tnihi6lixRR47N4RSAwUbF` / `2550:5197`·`3119:16863`)에서 `node.effects[]` 직접 판독으로 동일 값 확인.
+- **1겹 토큰(`raised-up`·`dropdown`)의 라이트는 alpha `.15` 공통**이고 blur 만 표면 크기로 갈린다 — 큰 표면 `16` / 작은 패널 `8`. (이 `.15` 공통 규칙은 **Modal 에는 적용되지 않는다** — Modal 은 위 2겹 체계를 따른다.)
+- **y 부호는 표면이 나오는 방향을 따른다.** 위에서 내려오는 표면은 `+`, 아래에서 올라오는 표면(`raised-up`)은 `−`.
+- **네이밍은 `color/surface/raised` 와 짝.**
+
+---
+
 ## 10. CSS 구현 참조
 
 > ⚠️ **하드코딩 CSS 덤프 제거(2026-06-23).** 손으로 유지하던 3번째 사본이라 값이 정본과 반복적으로 어긋났다(드리프트 원인).

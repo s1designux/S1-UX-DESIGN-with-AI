@@ -215,3 +215,19 @@ zip 반영 여부를 수동 확인해야 하는 구조
 - **영향**: 색·Light/Dark 값·scopes·바인딩 **전부 무변경**. 표시용 메타데이터만.
 - **판단**: 무해하여 삭제하지 않음. **의도적으로 남긴 것.**
 - **삭제 방법**: 해당 변수에 `removeVariableCodeSyntax("WEB")`
+
+### vars-data.ts 파서의 구조적 취약성
+
+- **발견**: 2026-07-29, shadow 토큰 인프라 신설 작업 중.
+- **증상 1 — 주석 문자열이 파서를 가로챔**: `scripts/gen-semantic-tokens.js` 의 `block()` 정규식이 `vars-data.ts` **주석 안의 리터럴 문자열**에 먼저 걸려, `SEMANTIC_COLOR` 402줄이 `tokens.css` 생성물에서 소실됐다. 주석 문자열을 바꿔 복구했으나 **원인은 그대로 남아 있다.**
+- **증상 2 — 선언 순서 의존**: 아래 3개 검사기가 선언 지점부터 **파일 끝까지** 슬라이스한 뒤 `{light, dark}` 정규식을 돌린다.
+  - `scripts/token-sync-monitor.js:67`
+  - `scripts/token-value-consistency-check.js:84`
+  - `scripts/dark-divergence-check.js:73`
+
+  이 때문에 `SEMANTIC_SHADOW` 가 `SEMANTIC_COLOR` 선언부 **앞**에 있어야만 정상 동작한다. 선언 순서를 바꾸면 검사기가 **조용히 오작동**한다. 현재는 코드 주석으로 경고만 남긴 상태다.
+- **근본 원인**: TypeScript 소스를 정규식으로 긁는 구조. **주석·선언 순서 등 값과 무관한 요소가 파싱 결과를 바꾼다.**
+- **후보 조치 (확정 아님)**:
+  - 정규식을 `"(color\/…)"` 처럼 키 접두어로 좁힌다
+  - 소스 파싱 대신 컴파일된 값을 import 해서 읽는다
+- **영향**: 현재 값은 정상이다. 다만 `vars-data.ts` 를 편집할 때마다 생성물이 조용히 깨질 수 있다.
