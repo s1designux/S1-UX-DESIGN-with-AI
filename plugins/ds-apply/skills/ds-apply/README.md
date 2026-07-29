@@ -28,10 +28,6 @@ node release-skill.js --sync    # references/ 에 값 파일 2개 생성
 
 ## 설치 — 외부망 PC (GitHub 접속 가능)
 
-> ⚠️ **준비 중** — 아래 명령은 마켓플레이스 경로(`plugins/ds-apply`)가 아직 저장소에
-> 없어 현재는 동작하지 않습니다. 구조 정리 후 활성화 예정입니다.
-> 그때까지는 위의 "클론" 경로나 아래 "폐쇄망 zip" 경로를 쓰세요.
-
 Claude Code 에서:
 
 ```

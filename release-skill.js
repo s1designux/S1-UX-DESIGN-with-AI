@@ -32,13 +32,16 @@ const SRC = {
   tokens: path.join(ROOT, "assets/css/tokens.css"),
   design: path.join(ROOT, "design/DESIGN.core.md"),
 };
-const SKILL_DIR = path.join(ROOT, ".claude/skills/ds-apply");
+// 플러그인 규격: <플러그인 루트>/.claude-plugin/plugin.json + <플러그인 루트>/skills/<이름>/
+// (스킬은 skills/ 폴더에서 자동 발견되므로 plugin.json 에 목록을 적지 않는다)
+const PLUGIN_DIR = path.join(ROOT, "plugins/ds-apply");
+const SKILL_DIR = path.join(PLUGIN_DIR, "skills/ds-apply");
 const REF = {
   tokens: path.join(SKILL_DIR, "references/tokens.css"),
   design: path.join(SKILL_DIR, "references/DESIGN.core.md"),
   version: path.join(SKILL_DIR, "references/VERSION.txt"),
 };
-const PLUGIN_JSON = path.join(SKILL_DIR, "../../../.claude-plugin/plugin.json");
+const PLUGIN_JSON = path.join(PLUGIN_DIR, ".claude-plugin/plugin.json");
 const DIST_DIR = path.join(ROOT, "dist");
 
 const args = process.argv.slice(2);
