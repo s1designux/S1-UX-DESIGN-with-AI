@@ -185,3 +185,33 @@ zip 반영 여부를 수동 확인해야 하는 구조
 - assets/downloads/s1-design-system-installer.zip (옛 이름 잔재, 7-7)
 - .gitignore 의 ds-apply 관련 규칙 3블록 통합
 - 스크래치패드의 _audit-dark-merge.html (보관 중, 불필요해지면 삭제)
+
+---
+
+## 2026-07-29 세션에서 나온 항목
+
+### Figma MCP 경유 변수명 슬래시 문제
+
+- **판단: 도입 안 함 (2026-07-29 검토 종결).** codeSyntax 도입 근거 철회. 설치기 테스트 코드는 원복 완료.
+- **Dev Mode 는 codeSyntax 없이도 정상**: Figma 가 CSS 패널에서 변수명의 슬래시를 하이픈으로 변환해 출력한다. **미처리 노드 `1364:46565` 와 처리 노드 `1364:49041` 을 Dev Mode 에서 직접 대조해 확인.** → 사람 개발자 대상 실익 없음.
+- **슬래시가 그대로 나오는 곳은 Figma MCP `get_design_context` 출력뿐이다.**
+  - before: `var(--color\/bg\/level-2, #f5f5f5)`
+  - after(codeSyntax 기입 시): `var(--color-form-control-bg-default, white)`
+- **해결 방법(재개 시)**: 변수에 `setVariableCodeSyntax('WEB', 'var(--{path 의 / 를 - 로})')`. 이름 변환은 기계적으로 성립 — Semantic Color V2 **170/170** 이 tokens.css 의 실제 변수와 일치. 설치기에 넣는다면 `plugins/figma-vars-installer/src/code.ts` `installSemantic()` 의 `v.scopes = colorScopes(path);` 다음 줄, 순증 3줄.
+- **재검토 조건**: AI 에이전트가 Figma MCP 출력을 코드 생성에 직접 쓰는 시점.
+
+### V3.0-TEST 파일에 codeSyntax 3건 잔존
+
+- **파일**: `cysG5U1udpQqVagYY1hWHW` (SW UX GUIDE V3.0-TEST)
+- **대상 변수 3개**:
+
+  | Figma 변수 | 기입된 codeSyntax (WEB) |
+  |---|---|
+  | `color/form-control/bg/default` | `var(--color-form-control-bg-default)` |
+  | `color/form-control/border/default` | `var(--color-form-control-border-default)` |
+  | `color/form-control/text/placeholder` | `var(--color-form-control-text-placeholder)` |
+
+- **기입 경로**: 설치기(`code.ts`) 아님. **Figma MCP 로 직접 기입.** → 설치기를 다시 돌려도 재생성되지 않고, 원복된 설치기 코드와도 무관하다.
+- **영향**: 색·Light/Dark 값·scopes·바인딩 **전부 무변경**. 표시용 메타데이터만.
+- **판단**: 무해하여 삭제하지 않음. **의도적으로 남긴 것.**
+- **삭제 방법**: 해당 변수에 `removeVariableCodeSyntax("WEB")`
