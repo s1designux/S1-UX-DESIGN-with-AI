@@ -1,7 +1,31 @@
 {
-  "generatedAt": "2026-07-28T07:45:32.838Z",
-  "totalCount": 65,
+  "generatedAt": "2026-07-29T08:03:46.087Z",
+  "totalCount": 66,
   "reports": [
+    {
+      "id": "harness-audit-2026-07-29",
+      "filename": "harness-audit-2026-07-29.md",
+      "title": "Harness Audit Report — 2026-07-29",
+      "stage": "Audit",
+      "category": "audit",
+      "status": "archive",
+      "sourcePath": "reports/harness-audit-2026-07-29.md",
+      "updatedAt": "2026-07-29",
+      "summary": "- ✅ [button] 모든 사이즈 분기 존재 (medium (h44) / xsmall (h34) / xxsmall (h28) / mobile (h48))",
+      "fileSizeKB": 2
+    },
+    {
+      "id": "shadow-token-infra-backlog",
+      "filename": "shadow-token-infra-backlog.md",
+      "title": "shadow 토큰 인프라 신설 — 별건 백로그 (루트 A 시험에서 발견)",
+      "stage": "Audit",
+      "category": "audit",
+      "status": "archive",
+      "sourcePath": "reports/shadow-token-infra-backlog.md",
+      "updatedAt": "2026-07-29",
+      "summary": "**상태: 미착수.** 그림자 인프라가 갖춰지면 Modal·Bottom Sheet·Dropdown 계열에 한 세트로 얹는다.",
+      "fileSizeKB": 13.9
+    },
     {
       "id": "dark-divergence-initial",
       "filename": "dark-divergence-initial.md",
@@ -25,18 +49,6 @@
       "updatedAt": "2026-07-15",
       "summary": "**상태: 미착수.** 확인 계열(`registry/components/modal.json`, compact 텍스트-확인)과 **구분되는 별개 컴포넌트**.",
       "fileSizeKB": 3.3
-    },
-    {
-      "id": "shadow-token-infra-backlog",
-      "filename": "shadow-token-infra-backlog.md",
-      "title": "shadow 토큰 인프라 신설 — 별건 백로그 (루트 A 시험에서 발견)",
-      "stage": "Audit",
-      "category": "audit",
-      "status": "archive",
-      "sourcePath": "reports/shadow-token-infra-backlog.md",
-      "updatedAt": "2026-07-15",
-      "summary": "**상태: 미착수.** 그림자 인프라가 갖춰지면 다크 모달에 얹는다.",
-      "fileSizeKB": 4.7
     },
     {
       "id": "button-sync-check",
