@@ -2,9 +2,21 @@
    Run: npm run reports:sync
 */
 window.REPORTS_INDEX = {
-  "generatedAt": "2026-07-28T01:57:36.124Z",
-  "totalCount": 64,
+  "generatedAt": "2026-07-28T07:45:32.838Z",
+  "totalCount": 65,
   "reports": [
+    {
+      "id": "dark-divergence-initial",
+      "filename": "dark-divergence-initial.md",
+      "title": "다크값 갈림 초기 실측 (Gate 29 도입 시점)",
+      "stage": "Audit",
+      "category": "audit",
+      "status": "archive",
+      "sourcePath": "reports/dark-divergence-initial.md",
+      "updatedAt": "2026-07-28",
+      "summary": "작성: 2026-07-28 · 기준 커밋 `fb90bfe` · 데이터 소스: `plugins/figma-vars-installer/src/vars-data.ts` (SEMANTIC_COLOR 170개)",
+      "fileSizeKB": 9.4
+    },
     {
       "id": "modal-content-family-backlog",
       "filename": "modal-content-family-backlog.md",

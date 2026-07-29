@@ -670,6 +670,32 @@ try {
   warn(`Gate 28: 시스템 맵 신선도 검사 실행 실패 — ${e.message} (커밋은 막지 않음)`);
 }
 
+// ── Gate 29: Dark Divergence (라이트 동일·다크 갈림 — 단위 내부 이상치) ─────
+// 같은 비교 단위(컴포넌트 seg1 / 역할 계열은 seg1+seg2) 안에서 라이트 최종값이 같은데
+// 다크만 갈리는 이상치를 baseline 대조로 차단. 단위 간 갈림은 의도 가능성이 있어 기록만(warn).
+console.log('\n🔎 [Gate 29] 다크값갈림 검사기 (Dark Divergence)');
+try {
+  const dd = require('./dark-divergence-check');
+  const r = dd.check();
+  if (r.unresolved.length) {
+    r.unresolved.forEach((u) => fail(`Gate 29: 끊긴 참조 — ${u}`));
+  }
+  if (r.newOutliers.length) {
+    r.newOutliers.forEach((c) => fail(`Gate 29: 신규 다크갈림 이상치 — ${c.line}`));
+    console.error('       → baseline 에 넣지 말고 먼저 vars-data.ts 다크값을 확인·교정하세요. 상세: npm run tokens:darkdiv');
+  } else if (!r.unresolved.length) {
+    pass(`다크갈림 신규 0 — 이상치 ${r.current.length}건 전부 baseline 등재(단위 ${r.intraUnits.length}개)`);
+  }
+  if (r.resolved.length) {
+    warn(`Gate 29: baseline 중 ${r.resolved.length}건 해소됨 — 축소 갱신 가능: node scripts/dark-divergence-check.js --update-baseline`);
+  }
+  if (r.crossGroups > 0) {
+    warn(`Gate 29: 비교 단위 간 다크 갈림 ${r.crossGroups}그룹 — 의도 가능성이 있어 기록만(차단 아님). 상세: npm run tokens:darkdiv`);
+  }
+} catch (e) {
+  fail(`Gate 29 실행 실패: ${e.message}`);
+}
+
 // ── Summary ───────────────────────────────────────────────────────
 console.log('\n─────────────────────────────────────────────────────');
 if (errors > 0) {

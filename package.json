@@ -41,6 +41,7 @@
     "tokens:driftcheck": "node scripts/token-drift-check.js",
     "tokens:orphans": "node scripts/orphan-token-check.js",
     "tokens:rolecheck": "node scripts/token-role-check.js",
+    "tokens:darkdiv": "node scripts/dark-divergence-check.js",
     "origin:check": "node scripts/component-origin-gate-check.js",
     "components:bindinglookup": "node scripts/figma-binding-lookup.js",
     "content:check": "node scripts/content-verbatim-check.js",
