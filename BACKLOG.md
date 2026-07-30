@@ -231,3 +231,17 @@ zip 반영 여부를 수동 확인해야 하는 구조
   - 정규식을 `"(color\/…)"` 처럼 키 접두어로 좁힌다
   - 소스 파싱 대신 컴파일된 값을 import 해서 읽는다
 - **영향**: 현재 값은 정상이다. 다만 `vars-data.ts` 를 편집할 때마다 생성물이 조용히 깨질 수 있다.
+
+### 경로 지정 커밋에서 생성물 누락이 반복됨
+
+- **발견**: 2026-07-29, shadow·border 작업 중 **3회**.
+- **사례 1 — `ed159f7`**: `reports/installer-build/build-verification.json` 누락. 커밋 제목은 *"Gate 13 독립 검증"* 인데 **검증 기록이 없어**, 그 커밋만 체크아웃하면 Gate 13 이 stale 로 차단된다. `90be267` 로 보정.
+- **사례 2 — `f76ddba`**: `assets/js/reports-bundle.js` 누락. `npm run reports:sync` 는 `data/reports-index.json` 과 `assets/js/reports-bundle.js` **두 개**를 만드는데 하나만 커밋됐다. **Gate 4 는 index 만 검사하고 번들은 안 봐서 통과했다.** 그 커밋만 체크아웃하면 포털 리포트 목록이 65건만 표시된다. `6cffe45` 로 보정.
+- **사례 3 — Modal 보더 작업**: `npm run page:gen` 미실행으로 `pages/semantic.html` 미전파. **Gate 7·7b 가 error 로 잡아 사전 차단됨**(유출 없음).
+- **공통 원인**: `git commit -- <경로>` 는 파일을 명시해야 하는데, **어떤 npm 명령이 어떤 생성물을 만드는지 한눈에 보는 목록이 없다.** 사례 1·2 는 게이트가 잡지 못했다.
+- **후보 조치 (확정 아님)**:
+  - 명령 → 생성물 대응표를 문서화한다
+  - 커밋 전 `git status --porcelain` 에 남은 생성물이 있으면 경고하는 검사
+  - Gate 4 가 `reports-bundle.js` 도 검사하도록 확장
+  - 생성물 세트를 묶어 커밋하는 헬퍼 스크립트
+- **영향**: 현재 값은 정상이다. 다만 경로 지정 커밋을 쓰는 한 같은 누락이 반복될 수 있다.
