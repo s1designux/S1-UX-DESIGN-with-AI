@@ -184,7 +184,6 @@ zip 반영 여부를 수동 확인해야 하는 구조
 ### 정리 후보
 - assets/downloads/s1-design-system-installer.zip (옛 이름 잔재, 7-7)
 - .gitignore 의 ds-apply 관련 규칙 3블록 통합
-- 스크래치패드의 _audit-dark-merge.html (보관 중, 불필요해지면 삭제)
 
 ---
 

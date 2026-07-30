@@ -432,9 +432,8 @@ error
 | `pages/foundation.html` | Foundation 색상·타이포·간격 | ✅ 완료 |
 | `pages/semantic.html` | Semantic Token 테이블 | ✅ 완료 |
 | `pages/components-new.html` | Component 인터랙션 상태 미리보기 | ✅ 완료 |
-| `pages/md-review.html` | 수정 제안·결정 대기·Figma 체크리스트 | ✅ 완료 |
-| `pages/patterns.html` | Pattern 가이드 | 예정 |
-| `pages/legacy.html` | Legacy 마이그레이션 가이드 | 예정 |
+| `pages/patterns.html` | Pattern 가이드 | 파일 존재 · 완성도 미확인 |
+| `pages/legacy.html` | Legacy 마이그레이션 가이드 | 파일 존재 · 완성도 미확인 |
 | `pages/policy.html` | 토큰 사용 정책 | 작성 중 |
 
 ## 네비게이션 관리
