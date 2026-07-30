@@ -32,9 +32,10 @@
 > **정리(2026-06-19):** 완료 항목(구 1·4·7·8·10·15)은 「변경 이력」 표·git 히스토리·각 reports에 보존돼 본 목록에서 제거했다. 아래는 **활성 미결만** 남긴 것이다.
 
 ```
-1. Figma Button nodeId 등록
-   - registry/figma/figma-map.json 의 Button componentSetKey / figmaNodeId 모두 빈 문자열
-   - Figma URL (node-id 포함) 제공 시 즉시 등록 가능
+1. Figma Button componentSetKey 등록 (figmaNodeId 는 완료)
+   - figmaNodeId = "6440:4032" 등록됨 (registry/figma/figma-map.json)
+   - componentSetKey 는 빈 문자열 — figma-map.json _meta.note 에 따라
+     Figma Plugin 연동 전까지 의도적 보류
 
 2. Dark Mode 버튼·컨트롤 색상 확정
    - --color-text-disabled dark 값: 현재 #35363F → #55575F 조정 검토 중
@@ -45,9 +46,10 @@
    - 오타 수정: color/status-card/text/*--defualt → --default (3건)
    - surface/status/* → Domain Token 이동 여부 확정
 
-4. Dark border 4 토큰 확정
-   - --color-border-subtle/default/strong/emphasis dark 값 candidate 상태
-   - resolved HEX 또는 foundation dark scale 참조 확정 필요 (Human decision)
+4. Dark border 4 토큰 확정 — 해소 (2026-07-30 확인)
+   - --color-border-subtle / -default / -strong / -emphasis 4건 모두 status="stable"
+   - dark 값은 foundation dark scale 참조로 확정
+     (registry/tokens/semantic.colors.json:41~44)
 
 5. DatePicker component candidate Human Decisions (MVP4.3-A)
    - HD-1: Figma node 6443:4655 componentSetKey 확인 (MCP invalid — Figma 직접 확인 필요)
@@ -59,11 +61,14 @@
 6. TimePicker component candidate 정리 (figmaNodeId: 6443:4606)
 7. Pattern 페이지 설계 (search-table, tree-detail)
 8. Legacy 가이드 작성
-9. MVP-L1 UX Guide 2.4 Variables export → npm run figma:audit 실행
+9. MVP-L1 UX Guide 2.4 Variables export → npm run figma:audit — 산출물 존재 · 내용 미검증
    - Figma에서 실제 S1 UX 디자인가이드 2.4 파일 열기
    - SW Token Sync 플러그인 → Export Variables → Download JSON
    - registry/figma/snapshots/figma-variable-metadata.ux-guide-2.4.json으로 저장
    - npm run figma:audit 실행 → reports/mvp-l1-legacy-token-audit.md 생성
+   - 산출물 확인(2026-07-30): figma-variable-metadata.ux-guide-2.4.json 존재 (227,404 B)
+   - 산출물 확인(2026-07-30): reports/mvp-l1-legacy-token-audit.md 존재 (27,002 B)
+   - 두 파일의 내용은 미검증 — 완료 판정 보류
 ```
 
 
