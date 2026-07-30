@@ -1,5 +1,5 @@
 /**
- * S-1 S/W UX Guide Agent — code.ts (선택형 설치, 2026-06-10 v4)
+ * S-1 S/W UX Guide 설치/검수기 — code.ts (선택형 설치, 2026-06-10 v4)
  *
  * Foundation · Semantic · Text Styles · Component Set 을 하나 또는 여러 개 선택해 설치한다.
  * 선택하지 않은 의존 항목(Semantic←Foundation, Component←Foundation·Semantic·TextStyles)은
@@ -37,7 +37,7 @@ import {
 } from "./vars-data";
 import { parseCssShadow, shadowVarName } from "./shadow-parse";
 import { installTextStyles } from "./install-textstyles";
-import { buildAllComponents } from "./build-components";
+import { buildAllComponents, COMPONENT_CATEGORIES } from "./build-components";
 import {
   audit, applyOne, applyHighConfidence, applyMulti, setVariablesMode,
   collectComponents, saveReference, loadReference, clearReference,
@@ -45,7 +45,9 @@ import {
 } from "./audit-engine";
 import type { ReferenceComponent, SwapCandidate } from "./audit-engine";
 
-figma.showUI(__html__, { width: 440, height: 720, title: "S-1 S/W UX Guide Agent · 검수" });
+// height 800: 설치 탭 첫 화면(항목 4개 + 의존성 안내 + 푸터)이 스크롤 없이 들어가는 높이.
+//   ui.html 은 앱셸(내부 .iscroll 만 스크롤)이라 더 작은 창에서도 깨지지 않는다. resize 클램프는 480~1200.
+figma.showUI(__html__, { width: 440, height: 800, title: "S-1 S/W UX Guide 설치/검수기 0.2Ver" });
 
 interface InstallSelection {
   foundation: boolean;
@@ -62,6 +64,10 @@ figma.ui.onmessage = async (msg: { type: string; payload?: any } & Partial<Insta
       textStyles: msg.textStyles === true,
       components: msg.components === true,
     });
+  } else if (msg.type === "reinstall-clean") {
+    await removeInstalledComponents();
+    // ↓ 아래 3케이스(scan-legacy·select-instances·swap-components)는 레거시 교체 탭 잔재로
+    //   UI 에서 더는 전송하지 않는다(도달 불가). 구현 제거는 별도 청소 과제.
   } else if (msg.type === "scan-legacy") {
     await scanLegacyComponents();
   } else if (msg.type === "select-instances") {
@@ -737,6 +743,69 @@ async function runInstall(sel: InstallSelection) {
   } catch (err: unknown) {
     const msg = err instanceof Error ? err.message : String(err);
     post("error", { message: msg });
+  }
+}
+
+// ── 재설치: 설치된 컴포넌트 제거 ──────────────────────────────────────────────
+//   컴포넌트 설치가 중간에 멈추거나 배치가 어긋났을 때 "지우고 처음부터" 하기 위한 경로.
+//
+//   왜 SECTION 을 지우는가:
+//     buildAllComponents 의 wrapCategoryInSection 이 카테고리 Y밴드의 *모든* 노드를 섹션에
+//     appendChild 한다 — 세트 + "— Spec Dark" 프레임 + decorateSet 이 만든 "이름 없는"
+//     그룹라벨/밴드 사각형까지. 이름 기반 삭제(footprint)는 그 이름 없는 장식을 원리적으로
+//     찾을 수 없으므로(build-components.ts 주석 참조), 섹션을 통째로 지우는 것이 유일한 완전 경로.
+//
+//   지우지 않는 것: Variable 컬렉션 · Variable · Text Style.
+//     이름 기반 upsert(getOrCreateCollection/getOrCreateVariable/getOrCreateTextStyle)라
+//     재설치 시 값만 갱신되고 기존 바인딩이 보존된다. 삭제하면 사용자 화면의 바인딩이 깨진다.
+async function removeInstalledComponents(): Promise<void> {
+  try {
+    const page = figma.currentPage;
+    const total = COMPONENT_CATEGORIES.length;
+    let removedSections = 0;
+
+    // 1) 카테고리 섹션(과 그 안의 모든 것) 제거
+    for (let i = 0; i < total; i++) {
+      const cat = COMPONENT_CATEGORIES[i];
+      post("progress", { step: `${cat.name} 삭제 중…`, pct: Math.round(((i + 1) / (total + 1)) * 100) });
+      // UI 가 실제로 다시 그릴 틈을 준다(양보 없으면 진행 표시가 화면에 반영되지 않는다)
+      await new Promise<void>((r) => setTimeout(r, 0));
+      let found: SceneNode[] = [];
+      try {
+        const r = page.findAll((n) => n.type === "SECTION" && n.name === cat.name);
+        if (Array.isArray(r)) found = r as SceneNode[];
+      } catch (e) { /* mock/page 없음 → 스킵 */ }
+      for (const n of found) {
+        try { n.remove(); removedSections++; } catch (e) { /* ignore */ }
+      }
+    }
+
+    // 2) 최상위에 남은 세트/스펙 프레임 정리 — 섹션 도입 이전 설치본 대비
+    post("progress", { step: "남은 노드 정리 중…", pct: 100 });
+    await new Promise<void>((r) => setTimeout(r, 0));
+    const names = new Set<string>();
+    for (const cat of COMPONENT_CATEGORIES) {
+      for (const m of cat.members) {
+        names.add(m);
+        names.add(`${m} — Spec Light`);
+        names.add(`${m} — Spec Dark`);
+      }
+    }
+    let removedTopLevel = 0;
+    let topNodes: SceneNode[] = [];
+    try { if (Array.isArray(page.children)) topNodes = page.children.slice() as SceneNode[]; } catch (e) { /* mock */ }
+    for (const n of topNodes) {
+      if (!names.has(n.name)) continue;
+      try { n.remove(); removedTopLevel++; } catch (e) { /* ignore */ }
+    }
+
+    post("clean-done", { removedSections, removedTopLevel });
+    if (removedSections + removedTopLevel > 0) {
+      figma.notify(`기존 컴포넌트를 삭제했습니다(섹션 ${removedSections}개) — [선택 항목 설치]로 다시 설치하세요.`);
+    }
+  } catch (err: unknown) {
+    const msg = err instanceof Error ? err.message : String(err);
+    post("error", { message: `재설치 준비(삭제) 중 오류: ${msg}` });
   }
 }
 

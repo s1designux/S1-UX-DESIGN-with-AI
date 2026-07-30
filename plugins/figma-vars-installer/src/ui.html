@@ -4,22 +4,33 @@
 <meta charset="UTF-8">
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
+  /* ── 앱셸 ──
+     문서(html/body)는 스크롤하지 않는다. 스크롤은 내부 .iscroll 한 곳만 담당하고
+     하단 버튼 행(.install-footer)은 스크롤 영역 밖의 고정 행이다.
+     (옛 구조: body 가 문서 스크롤러 + #btn-row 가 sticky → 스크롤바가 버튼 영역을 관통) */
+  html, body { height: 100%; }
   body {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
     font-size: 13px; color: #111827;
-    background: #fff; padding: 20px;
+    background: #fff;
+    padding: 20px 20px 0;          /* 하단 20px 은 .install-footer 가 자기 padding 으로 가진다 */
+    display: flex; flex-direction: column;
+    overflow: hidden;
   }
 
   .header {
     display: flex; align-items: center; gap: 10px;
-    margin-bottom: 16px;
+    margin-bottom: 16px; flex: 0 0 auto;
   }
   .header-icon {
     width: 36px; height: 36px; border-radius: 10px;
     background: #111827; display: flex; align-items: center;
     justify-content: center; font-size: 18px; flex-shrink: 0;
   }
-  .header-title { font-size: 15px; font-weight: 700; color: #111827; }
+  /* 제목 + 버전이 한 줄에 들어가야 한다(폭 440 · 우측 빌드 스탬프와 경쟁) → 14px + nowrap */
+  .header-title { font-size: 14px; font-weight: 700; color: #111827; white-space: nowrap; }
+  /* 버전 배지 — 손으로 올린다(빌드 스탬프 .header-build 와 별개) */
+  .header-ver { font-size: 10.5px; font-weight: 600; color: #1d6ceb; margin-left: 5px; vertical-align: 1px; }
   .header-sub   { font-size: 11px; color: #9ca3af; margin-top: 2px; }
   .header-build { margin-left: auto; text-align: right; font-size: 10px; color: #9ca3af; line-height: 1.5; white-space: nowrap; }
   .header-build strong { display: block; color: #2563eb; font-weight: 700; font-size: 11px; }
@@ -47,14 +58,37 @@
     font-size: 10.5px; color: #6b7280; margin-bottom: 16px; line-height: 1.6;
   }
 
-  /* ── progress ── */
-  #progress-wrap { display: none; margin-bottom: 16px; }
-  #progress-label { font-size: 11px; color: #6b7280; margin-bottom: 6px; word-break: break-all; }
+  /* ══════════ 설치 탭 3화면 상태기계 (선택 → 설치중 → 완료) ══════════
+     #audit-root .view/.view.active 는 검수 스코프 전용이라 여기서 쓸 수 없다 → 무스코프 .iscreen 신설 */
+  .iscreen { display: none; }
+  .iscreen.active { display: flex; flex-direction: column; flex: 1 1 auto; min-height: 0; }
+  /* 이 탭의 유일한 스크롤 영역 */
+  .iscroll { flex: 1 1 auto; min-height: 0; overflow-y: auto; }
+  /* 진행 화면은 내용이 적어 위로 몰린다 → auto 마진으로 수직 중앙(오버플로 시에도 위가 잘리지 않음) */
+  #iscreen-installing .iscroll { display: flex; flex-direction: column; }
+  .istack { margin: auto 0; }
+
+  /* ── progress (설치중 화면) ── */
+  @keyframes s1-spin { to { transform: rotate(360deg); } }
+  .spinner {
+    width: 40px; height: 40px; margin: 30px auto 18px; border-radius: 50%;
+    border: 3px solid #e5e7eb; border-top-color: #1d6ceb;
+    animation: s1-spin 0.8s linear infinite;
+  }
+  #progress-pct { text-align: center; font-size: 30px; font-weight: 700; color: #111827; letter-spacing: -0.5px; line-height: 1.1; }
+  #progress-heading { text-align: center; font-size: 13px; font-weight: 600; color: #374151; margin-top: 6px; }
+  #progress-label { font-size: 11px; color: #6b7280; margin: 8px 0 12px; word-break: break-all; text-align: center; min-height: 15px; }
   #progress-bar-track { height: 6px; background: #e5e7eb; border-radius: 3px; overflow: hidden; }
   #progress-bar-fill { height: 100%; background: #1d6ceb; border-radius: 3px; width: 0%; transition: width 0.2s ease; }
+  .warn-note {
+    margin-top: 20px; background: #fffbeb; border: 1px solid #fde68a; border-radius: 10px;
+    padding: 12px 14px; font-size: 11.5px; color: #92400e; line-height: 1.75;
+  }
+  .warn-note b { color: #7c2d12; }
+  /* 설치 중 탭 이동 금지 */
+  .tab-bar.locked { opacity: 0.45; pointer-events: none; }
 
   /* ── result ── */
-  #result { display: none; }
   .result-success { background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 10px; padding: 16px; margin-bottom: 16px; }
   .result-title { font-size: 14px; font-weight: 700; color: #166534; margin-bottom: 6px; }
   .result-sub { font-size: 12px; color: #374151; line-height: 1.7; }
@@ -62,11 +96,15 @@
   .result-error-title { font-size: 14px; font-weight: 700; color: #991b1b; margin-bottom: 6px; }
 
   /* ── tabs ── */
-  .tab-bar { display: flex; gap: 2px; margin-bottom: 16px; background: #f3f4f6; border-radius: 10px; padding: 3px; }
+  .tab-bar { display: flex; gap: 2px; margin-bottom: 16px; background: #f3f4f6; border-radius: 10px; padding: 3px; flex: 0 0 auto; }
   .tab-btn { flex: 1; padding: 7px 10px; border: none; background: transparent; border-radius: 8px; font-size: 12px; font-weight: 600; color: #6b7280; cursor: pointer; transition: all 0.15s; }
   .tab-btn.active { background: #fff; color: #111827; box-shadow: 0 1px 3px rgba(0,0,0,0.08); }
   .tab-panel { display: none; }
   .tab-panel.active { display: block; }
+  /* 설치 탭만 flex 컬럼 셸 — 검수 탭(#audit-root)의 자체 레이아웃은 건드리지 않는다 */
+  #tab-install.tab-panel.active { display: flex; flex-direction: column; flex: 1 1 auto; min-height: 0; }
+  /* 문서 스크롤러가 없어졌으므로 검수 탭을 자체 스크롤러로 승격(내부 .list 스크롤은 그대로) */
+  #tab-audit.tab-panel.active { flex: 1 1 auto; min-height: 0; overflow-y: auto; }
 
   /* ── info tooltip (사용 방법 ⓘ 호버) ── */
   .info-ic { display: inline-flex; align-items: center; justify-content: center; margin-left: 8px; width: 18px; height: 18px; border-radius: 50%; color: var(--muted); cursor: help; position: relative; font-size: 13px; outline: none; }
@@ -75,14 +113,32 @@
   .info-tip b { color: #fff; }
   .info-ic:hover .info-tip, .info-ic:focus .info-tip { display: block; }
   .info-hint { color: var(--muted); font-size: 11px; }
+
+  /* ── 툴팁 변형 (기존 .info-ic/.info-tip 규칙은 건드리지 않는다 — 검수 탭이 그대로 쓴다) ── */
+  /*   --up  : 화면 하단에서 아래로 열리면 버튼을 덮거나 잘리므로 위로 연다.
+                오른쪽 끝 아이콘 기준이라 left:0(기본) 대신 right:0 으로 안쪽을 향해 편다. */
+  .info-tip--up   { top: auto; bottom: 24px; left: auto; right: 0; }
+  /*   --wrap: color/date-picker/panel/border 같은 긴 토큰명이 260px 폭을 넘지 않게 강제 줄바꿈 */
+  .info-tip--wrap { overflow-wrap: anywhere; word-break: break-word; }
+
+  /* ── 이번 업데이트 행 (설치 탭) ── */
+  /*   .info-ic 이 color: var(--muted) 를 참조하는데 --muted 는 #audit-root 스코프에만 있다.
+       기존 규칙을 고치는 대신 설치 탭 컨테이너에만 같은 이름으로 정의한다.
+       #audit-root 는 자기 --muted 를 재선언하므로(#audit-root 가 더 가까운 조상) 검수 탭은 무영향. */
+  #tab-install { --muted: #9ca3af; }
+  .update-row { display: flex; align-items: center; margin-bottom: 14px; font-size: 11px; color: #6b7280; flex: 0 0 auto; }
+  .update-row .info-ic { margin-left: auto; }   /* 우측 정렬 — 기본 margin-left:8px 를 이 행에서만 덮음 */
+  .update-label { font-weight: 600; }
+  .update-tip { line-height: 1.7; }
+  .update-legend { display: block; margin-top: 6px; padding-top: 6px; border-top: 1px solid #3a4050; color: #9ca3af; font-size: 10px; }
   /* ── 모듈(재구성 필요) 카드 ── */
   .module-card { border: 1px dashed #d1a54a; border-radius: 8px; padding: 10px 12px; margin-bottom: 6px; background: #fffdf6; }
   .module-badge { display: inline-block; font-size: 10px; font-weight: 600; color: #8a6100; background: #fff3d6; border-radius: 4px; padding: 1px 6px; margin-left: 6px; }
 
   /* ── buttons ── */
   .btn-row { display: flex; gap: 8px; }
-  /* 설치 탭 하단 버튼: 내용이 창보다 길어져도 항상 화면 아래에 붙어 보이게 고정 */
-  #btn-row { position: sticky; bottom: 0; background: #fff; padding-top: 10px; margin-top: 2px; border-top: 1px solid #f3f4f6; }
+  /* 설치 탭 하단 버튼: sticky 대신 앱셸의 고정 푸터 — 스크롤바가 버튼 영역을 지나가지 않는다 */
+  .install-footer { flex: 0 0 auto; background: #fff; padding: 10px 0 20px; margin-top: 2px; border-top: 1px solid #f3f4f6; }
   .btn { flex: 1; padding: 10px; border-radius: 8px; border: none; font-size: 13px; font-weight: 600; cursor: pointer; transition: background 0.15s; }
   .btn-primary { background: #111827; color: #fff; }
   .btn-primary:hover { background: #374151; }
@@ -207,7 +263,8 @@
 <div class="header">
   <div class="header-icon">🎨</div>
   <div>
-    <div class="header-title">S-1 S/W UX Guide Agent</div>
+    <!-- 버전(0.2Ver)은 손으로 올린다. 자동 스탬프는 우측 .header-build(빌드 시각)뿐. -->
+    <div class="header-title">S-1 S/W UX Guide 설치/검수기 <span class="header-ver">0.2Ver</span></div>
     <div class="header-sub">Variables 설치 · GUI 검수</div>
   </div>
   <div class="header-build" title="이 설치 패키지가 빌드된 시각">업데이트<strong>{{BUILD_TIME}}</strong></div>
@@ -221,13 +278,17 @@
 <!-- ── 설치 탭 ── -->
 <div class="tab-panel active" id="tab-install">
 
+<!-- ═══ 화면 1 : 설치 항목 선택 ═══ -->
+<div class="iscreen active" id="iscreen-select">
+<div class="iscroll">
+
 <div class="select-list" id="select-list">
   <label class="select-row" data-opt="opt-foundation">
     <input type="checkbox" id="opt-foundation">
     <div class="select-body">
       <div class="select-name">Foundation</div>
       <div class="select-desc">색상 팔레트(light/dark 분리) + spacing·radius·border-width·font 원시값. 단일 Default 모드.</div>
-      <div class="select-date">최신 업데이트 · <strong>2026-06-08</strong></div>
+      <div class="select-date">최신 업데이트 · <strong>{{FOUNDATION_DATE}}</strong></div>
     </div>
   </label>
 
@@ -236,7 +297,7 @@
     <div class="select-body">
       <div class="select-name">Semantic</div>
       <div class="select-desc">색상 역할 alias + 컴포넌트별 토큰(button 등) Light/Dark 2모드 · 숫자 역할 alias. Foundation 참조.</div>
-      <div class="select-date">최신 업데이트 · <strong>2026-06-19</strong></div>
+      <div class="select-date">최신 업데이트 · <strong>{{SEMANTIC_DATE}}</strong></div>
     </div>
   </label>
 
@@ -245,7 +306,7 @@
     <div class="select-body">
       <div class="select-name">Text Styles</div>
       <div class="select-desc">title·body·caption·helper 19개 (Pretendard). V2.4 출처. get-or-create.</div>
-      <div class="select-date">최신 업데이트 · <strong>2026-06-10</strong></div>
+      <div class="select-date">최신 업데이트 · <strong>{{TEXTSTYLES_DATE}}</strong></div>
     </div>
   </label>
 
@@ -254,11 +315,11 @@
     <div class="select-body">
       <div class="select-name">Component Set 생성 <span class="tag-updating">업데이트 중</span></div>
       <div class="select-desc">
-        현재 컴포넌트: <strong>Button · Checkbox · Radio · Toggle · Chip · Filter Chip · Input · Search · Text Area · Select · Dropdown List · Line Tab · Line Tab Set · Table Cell · Table · GNB Utility Icon · Language Icon · Mobile Bottom Nav · Time Picker · Time Picker Dropdown · Pagination · GNB · Calendar · Date Picker · Date Picker Mobile Bottom Sheet · StatusBar(App·Web) · NavBar(App·Web) · LoginGNB · WebTabBar · CI · C/IMG/Logo/Samsung_30 · Footer(PC·Mobile)</strong> (계속 추가 중)<br>
+        코어 컴포넌트 <strong>{{COMPONENT_COUNT}}종</strong><br>
         각 컴포넌트 = 세트 + Light/Dark 스펙 · Semantic 변수 바인딩 · 모드 연결.<br>
         토큰만 필요하면 체크 해제하세요.
       </div>
-      <div class="select-date">최신 업데이트 · <strong>{{BUILD_DATE}}</strong></div>
+      <div class="select-date">최신 업데이트 · <strong>{{COMPONENTSET_DATE}}</strong></div>
     </div>
   </label>
 </div>
@@ -269,19 +330,94 @@
   같은 이름의 컬렉션이 있으면 값만 업데이트되며 기존 바인딩은 유지됩니다.
 </div>
 
-<!-- progress -->
-<div id="progress-wrap">
-  <div id="progress-label">설치 중…</div>
-  <div id="progress-bar-track"><div id="progress-bar-fill"></div></div>
+</div><!-- /.iscroll — 스크롤은 여기까지. 아래 .update-row 는 툴팁이 잘리지 않게 스크롤 영역 밖에 둔다 -->
+
+<!-- ══════════════════════════════════════════════════════════════════════════
+     이번 업데이트 — 과거 이력은 쌓지 않는다. 항상 "이번 것"만 보여준다.
+
+     ⚠️ 여기를 손으로 고치지 마세요. 아래 두 자리는 빌드 때 자동으로 채워집니다.
+        UPDATE_DATE  자리 = 이번 릴리스 날짜
+        UPDATE_NOTES 자리 = 변경 항목 줄들 (+ 신설 · ~ 값 변경 · - 폐기)
+        (주석에 플레이스홀더를 중괄호째로 적지 마세요 — 존재 검사가 주석에 속아
+         실제 자리가 지워져도 빌드가 통과해버립니다.)
+
+        만드는 곳: scripts/installer-update-notes.js
+          직전 릴리스와 현재의 "Figma 표출 정보 지문"을 빼서 문장을 만든다.
+          지문 = 토큰(변수) + 컴포넌트 시각 사양(색·보더·그림자·모서리·여백…).
+          이전 상태는 저장하지 않고 git 에서 그때마다 재계산한다(값 사본 0).
+        확인: node scripts/installer-update-notes.js
+     ══════════════════════════════════════════════════════════════════════ -->
+<div class="update-row">
+  <span class="update-label">📋 이번 업데이트</span>
+  <span class="info-ic" tabindex="0" aria-label="이번 업데이트 내용"
+    >ⓘ<span class="info-tip info-tip--up info-tip--wrap update-tip"
+      ><b>{{UPDATE_DATE}}</b><br>
+      {{UPDATE_NOTES}}
+      <span class="update-legend">+ 신설 · ~ 값 변경 · - 폐기</span
+    ></span
+  ></span>
 </div>
 
-<!-- result -->
-<div id="result"></div>
-
-<div class="btn-row" id="btn-row">
+<div class="btn-row install-footer" id="btn-row">
   <button class="btn btn-secondary" id="btn-cancel" onclick="cancel()">취소</button>
   <button class="btn btn-primary"   id="btn-install" onclick="install()">선택 항목 설치</button>
 </div>
+
+</div><!-- /iscreen-select -->
+
+<!-- ═══ 화면 2 : 설치 진행 중 (푸터 없음 — 중간에 누를 것이 없다) ═══ -->
+<div class="iscreen" id="iscreen-installing">
+<div class="iscroll">
+<div class="istack">
+  <div class="spinner"></div>
+  <div id="progress-pct">0%</div>
+  <div id="progress-heading">설치 중입니다</div>
+  <div id="progress-label">준비 중…</div>
+  <div id="progress-bar-track"><div id="progress-bar-fill"></div></div>
+
+  <div class="warn-note">
+    ⚠️ <b>설치가 진행 중입니다. 완료될 때까지 잠시만 기다려 주세요.</b><br>
+    설치 중에 <b>캔버스를 이동·확대/축소하거나 다른 레이어를 선택·편집하면</b>
+    설치가 실패하거나 컴포넌트가 잘못 배치될 수 있습니다.<br>
+    플러그인 창을 닫지 마세요. <b>컴포넌트 단계는 몇 분 걸릴 수 있고</b>, 그동안 숫자가 잠시 멈춰 보일 수 있습니다.
+  </div>
+</div><!-- /.istack -->
+</div>
+</div><!-- /iscreen-installing -->
+
+<!-- ═══ 화면 3 : 설치 완료 / 오류 ═══ -->
+<div class="iscreen" id="iscreen-done">
+<div class="iscroll">
+  <div id="result"></div>
+
+  <!-- 재설치 확인 — 기본 숨김. [재설치] 를 누르면 노출되고 푸터가 [취소][재설치 시작] 으로 바뀐다.
+       카드 안에는 버튼을 두지 않는다(버튼은 항상 화면 맨 아래 2개뿐). -->
+  <div id="reinstall-confirm" style="display:none;">
+    <div class="result-error">
+      <div class="result-error-title">⚠️ 재설치 전 확인</div>
+      <div class="result-sub">
+        현재 페이지의 <b>컴포넌트 섹션과 그 안의 컴포넌트 세트를 모두 삭제</b>한 뒤 처음 화면으로 돌아갑니다.<br><br>
+        · 이 파일에 <b>이미 배치해 둔 인스턴스는 연결이 끊어집니다(detach)</b> — Figma는 새로 만든 컴포넌트로 자동 연결해 주지 않습니다.<br>
+        · <b>Variables · Text Styles는 삭제하지 않습니다</b>(기존 바인딩 유지).<br>
+        · 되돌리려면 삭제 직후 Figma에서 <b>Undo(⌘Z)</b> 하세요.
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 버튼 자리 고정: 왼쪽 = 물러나기(닫기·취소) · 오른쪽 = 진행하기(재설치·재설치 시작·처음으로).
+     DOM 순서가 곧 좌우 순서(.btn-row = flex)이므로 왼쪽 슬롯을 먼저 선언한다.
+     한 모드에서 보이는 버튼은 항상 2개 — setDoneFooter(mode) 가 display 로 제어. -->
+<div class="btn-row install-footer" id="done-footer">
+  <!-- 왼쪽 슬롯 -->
+  <button class="btn btn-secondary" id="btn-close"          onclick="cancel()">닫기</button>
+  <button class="btn btn-secondary" id="btn-confirm-cancel" style="display:none;" onclick="hideReinstallConfirm()">취소</button>
+  <!-- 오른쪽 슬롯 -->
+  <button class="btn btn-secondary" id="btn-reinstall"      onclick="showReinstallConfirm()">재설치</button>
+  <button class="btn btn-primary"   id="btn-confirm-go"     style="display:none;" onclick="runReinstall()">재설치 시작</button>
+  <button class="btn btn-primary"   id="btn-back"           style="display:none;" onclick="backToSelect()">처음으로</button>
+</div>
+</div><!-- /iscreen-done -->
 
 </div><!-- /tab-install -->
 
@@ -336,8 +472,61 @@
 </div><!-- /tab-audit -->
 
 <script>
+  // ══════════ 설치 탭 화면 전환 (선택 → 설치중 → 완료) ══════════
+  let INSTALLING = false;   // 설치/삭제 진행 중 — 탭 이동 잠금에 사용
+  let _pct = 0;             // 화면에 찍는 진행률(단조 증가만 허용)
+
+  function showInstallScreen(name) {          // 'select' | 'installing' | 'done'
+    INSTALLING = (name === 'installing');
+    document.querySelectorAll('#tab-install .iscreen').forEach((s) => {
+      s.classList.toggle('active', s.id === 'iscreen-' + name);
+    });
+    document.querySelector('.tab-bar').classList.toggle('locked', INSTALLING);
+    const sc = document.querySelector('#iscreen-' + name + ' .iscroll');
+    if (sc) sc.scrollTop = 0;
+  }
+
+  function resetProgress(heading) {
+    _pct = 0;
+    document.getElementById('progress-pct').textContent = '0%';
+    document.getElementById('progress-heading').textContent = heading || '설치 중입니다';
+    document.getElementById('progress-label').textContent = '준비 중…';
+    document.getElementById('progress-bar-fill').style.width = '0%';
+  }
+
+  function backToSelect() {
+    hideReinstallConfirm();
+    showInstallScreen('select');
+  }
+
+  // 완료 화면 푸터 — 한 모드에 버튼 2개만. 왼쪽=물러나기(닫기·취소) · 오른쪽=진행하기.
+  //   success  [닫기]        [재설치]
+  //   confirm  [취소]        [재설치 시작]
+  //   error    [닫기]        [처음으로]
+  const DONE_FOOTER_MODES = {
+    success: ['btn-close',          'btn-reinstall'],
+    confirm: ['btn-confirm-cancel', 'btn-confirm-go'],
+    error:   ['btn-close',          'btn-back'],
+  };
+  const DONE_FOOTER_BTNS = ['btn-close', 'btn-confirm-cancel', 'btn-reinstall', 'btn-confirm-go', 'btn-back'];
+  let _doneMode = 'success';   // confirm 에서 [취소] 시 돌아갈 원래 모드
+
+  function setDoneFooter(mode) {
+    const shown = DONE_FOOTER_MODES[mode] || DONE_FOOTER_MODES.success;
+    DONE_FOOTER_BTNS.forEach((id) => {
+      document.getElementById(id).style.display = shown.indexOf(id) >= 0 ? '' : 'none';
+    });
+    if (mode !== 'confirm') _doneMode = mode;
+  }
+
+  function esc(s) {
+    return String(s == null ? '' : s)
+      .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  }
+
   // ── 탭 전환 ──
   function switchTab(name) {
+    if (INSTALLING) return;   // 설치 중 이동 금지(.tab-bar.locked 의 pointer-events 우회 대비)
     document.querySelectorAll('.tab-btn').forEach((b, i) => {
       b.classList.toggle('active', ['install','audit'][i] === name);
     });
@@ -364,9 +553,8 @@
       alert('설치할 항목을 하나 이상 선택하세요.');
       return;
     }
-    document.getElementById('btn-install').disabled = true;
-    document.getElementById('btn-cancel').disabled  = true;
-    document.getElementById('progress-wrap').style.display = 'block';
+    resetProgress('설치 중입니다');
+    showInstallScreen('installing');
     parent.postMessage({ pluginMessage: { type: 'install', ...sel } }, '*');
   }
 
@@ -374,144 +562,27 @@
     parent.postMessage({ pluginMessage: { type: 'cancel' } }, '*');
   }
 
-  // ── 레거시 교체 탭 ──
-  let _localSets = [];
-
-  function startScan() {
-    document.getElementById('btn-scan').disabled = true;
-    document.getElementById('legacy-progress-wrap').style.display = 'block';
-    document.getElementById('legacy-result').style.display = 'none';
-    parent.postMessage({ pluginMessage: { type: 'scan-legacy' } }, '*');
+  // ══════════ 재설치 (기존 컴포넌트 삭제 → 처음 화면) ══════════
+  //   삭제 대상은 "현재 페이지의 컴포넌트 섹션"이다(코드: code.ts removeInstalledComponents).
+  //   Variables · Text Styles 는 지우지 않는다 — 이름 기반 upsert 라 재설치 시 값만 갱신되고
+  //   기존 바인딩이 보존된다. 삭제는 되돌리기 어려우므로 확인 카드를 한 번 거친다.
+  function showReinstallConfirm() {
+    document.getElementById('reinstall-confirm').style.display = 'block';
+    setDoneFooter('confirm');                    // 푸터가 [취소][재설치 시작] 으로 통째 교체
+    const sc = document.querySelector('#iscreen-done .iscroll');
+    if (sc) sc.scrollTop = sc.scrollHeight;
   }
 
-  // 행 클릭 → Figma 캔버스 선택
-  function selectOnCanvas(nodeIds, rowEl) {
-    document.querySelectorAll('.remote-row').forEach(r => r.classList.remove('active'));
-    rowEl.classList.add('active');
-    parent.postMessage({ pluginMessage: { type: 'select-instances', nodeIds } }, '*');
+  function hideReinstallConfirm() {
+    document.getElementById('reinstall-confirm').style.display = 'none';
+    setDoneFooter(_doneMode);                    // 원래 모드(success/error)로 복귀
   }
 
-  // 칩 선택 토글
-  function selectChip(chipEl, oldId, newSetId) {
-    const row = chipEl.closest('.remote-row');
-    row.querySelectorAll('.chip-suggestion').forEach(c => c.classList.remove('selected'));
-    chipEl.classList.add('selected');
-    row.dataset.selectedId = newSetId;
-    // 직접 선택 드롭다운도 동기화
-    const sel = row.querySelector('.expand-select');
-    if (sel) sel.value = newSetId;
-  }
-
-  // 드롭다운 "직접 선택" 펼치기
-  function toggleExpand(btn) {
-    const row = btn.closest('.remote-row');
-    const sel = row.querySelector('.expand-select');
-    if (sel.style.display === 'block') {
-      sel.style.display = 'none';
-      btn.textContent = '다른 컴포넌트 선택 ▾';
-    } else {
-      sel.style.display = 'block';
-      btn.textContent = '접기 ▴';
-    }
-  }
-
-  // 드롭다운 변경 → 칩 선택 해제 후 드롭다운 값 사용
-  function onExpandSelect(selEl) {
-    const row = selEl.closest('.remote-row');
-    row.querySelectorAll('.chip-suggestion').forEach(c => c.classList.remove('selected'));
-    row.dataset.selectedId = selEl.value;
-  }
-
-  function renderScanResult(msg) {
-    document.getElementById('legacy-progress-wrap').style.display = 'none';
-    _localSets = msg.localSets || [];
-    const r = document.getElementById('legacy-result');
-    r.style.display = 'block';
-
-    if (msg.remoteList.length === 0) {
-      r.innerHTML = `
-        <div class="result-success">
-          <div class="result-title">✅ 레거시 없음</div>
-          <div class="result-sub">현재 페이지(${msg.totalScanned}개 인스턴스)에서 외부 라이브러리 연결 컴포넌트를 찾지 못했습니다.</div>
-        </div>
-        <div class="btn-row" style="margin-top:8px;">
-          <button class="btn btn-secondary" onclick="resetScan()">다시 스캔</button>
-        </div>`;
-      return;
-    }
-
-    const autoCount = msg.remoteList.filter(i => i.autoMatchId).length;
-
-    const rows = msg.remoteList.map((item) => {
-      const nodeIdsJson = JSON.stringify(item.nodeIds || []);
-      // 자동 매칭이 있으면 그것만, 없으면 상위 3개 후보 표시
-      const chipsToShow = item.autoMatchId
-        ? item.suggestions.filter(s => s.id === item.autoMatchId)
-        : item.suggestions.filter(s => s.score > 0);
-      const chips = chipsToShow.map((s) => {
-        const isAuto = s.id === item.autoMatchId;
-        const label = isAuto ? `✓ ${s.name}` : s.name;
-        const cls = `chip-suggestion${isAuto ? ' auto selected' : ''}`;
-        return `<button class="${cls}" title="${s.name}"
-          onclick="selectChip(this,'${item.oldId}','${s.id}')">${label}</button>`;
-      }).join('');
-
-      const localOptions = _localSets.map(s =>
-        `<option value="${s.id}">${s.name}</option>`
-      ).join('');
-
-      return `
-        <div class="remote-row" data-old-id="${item.oldId}"
-             data-selected-id="${item.autoMatchId || ''}"
-             data-node-ids='${nodeIdsJson}'
-             onclick="selectOnCanvas(JSON.parse(this.dataset.nodeIds), this)">
-          <div class="remote-row-header">
-            <span class="remote-name">${item.oldName}</span>
-            <span class="remote-count">${item.count}개 인스턴스</span>
-          </div>
-          <div class="remote-arrow">↓ 교체할 컴포넌트 세트</div>
-          <div class="suggestion-chips" onclick="event.stopPropagation()">
-            ${chips || '<span class="chip-none">유사 항목 없음</span>'}
-          </div>
-          <button class="expand-btn" onclick="event.stopPropagation();toggleExpand(this)">다른 컴포넌트 선택 ▾</button>
-          <select class="expand-select" onchange="onExpandSelect(this)" onclick="event.stopPropagation()">
-            <option value="">— 교체 안 함 —</option>
-            ${localOptions}
-          </select>
-        </div>`;
-    }).join('');
-
-    r.innerHTML = `
-      <div class="scan-summary">
-        외부 라이브러리 <strong>${msg.remoteList.length}종</strong> ·
-        <strong>${msg.remoteCount}개</strong> 인스턴스 발견 ·
-        자동 매칭 <strong>${autoCount}종</strong>.
-        행을 클릭하면 Figma에서 선택됩니다.
-      </div>
-      <div class="remote-list">${rows}</div>
-      <div class="btn-row">
-        <button class="btn btn-secondary" onclick="resetScan()">다시 스캔</button>
-        <button class="btn btn-primary" onclick="runSwap()">교체 실행</button>
-      </div>`;
-  }
-
-  function runSwap() {
-    const mappings = [];
-    document.querySelectorAll('.remote-row').forEach((row) => {
-      const newSetId = row.dataset.selectedId;
-      if (newSetId) mappings.push({ oldId: row.dataset.oldId, newSetId });
-    });
-    if (mappings.length === 0) { alert('교체할 항목을 하나 이상 지정하세요.'); return; }
-
-    document.getElementById('legacy-result').style.display = 'none';
-    document.getElementById('legacy-progress-wrap').style.display = 'block';
-    document.getElementById('legacy-progress-label').textContent = '교체 준비 중…';
-    parent.postMessage({ pluginMessage: { type: 'swap-components', mappings } }, '*');
-  }
-
-  function resetScan() {
-    document.getElementById('btn-scan').disabled = false;
-    document.getElementById('legacy-result').style.display = 'none';
+  function runReinstall() {
+    hideReinstallConfirm();
+    resetProgress('기존 컴포넌트 삭제 중');
+    showInstallScreen('installing');
+    parent.postMessage({ pluginMessage: { type: 'reinstall-clean' } }, '*');
   }
 
   // ── 공통 메시지 핸들러 ──
@@ -527,19 +598,18 @@
 
     // 설치 진행
     if (msg.type === 'progress') {
-      document.getElementById('progress-label').textContent = msg.step;
-      document.getElementById('progress-bar-fill').style.width = msg.pct + '%';
-      // 레거시 탭 진행도도 업데이트
-      const lbl = document.getElementById('legacy-progress-label');
-      const fill = document.getElementById('legacy-progress-fill');
-      if (lbl) lbl.textContent = msg.step;
-      if (fill) fill.style.width = (msg.pct || 0) + '%';
+      if (!INSTALLING) showInstallScreen('installing');   // 멱등 — 첫 progress 로도 진행 화면 진입
+      // 진행률은 단조 증가만 허용한다. 설치기 내부 pct 예산에 되돌아가는 구간(94→92)이 있어
+      // 숫자를 크게 띄우면 그대로 보인다. (예산 재배분은 후속 과제 — 화면에서만 막는다)
+      const raw = Math.max(0, Math.min(100, Number(msg.pct) || 0));
+      _pct = Math.max(_pct, raw);
+      document.getElementById('progress-pct').textContent   = _pct + '%';
+      document.getElementById('progress-label').textContent = msg.step || '';
+      document.getElementById('progress-bar-fill').style.width = _pct + '%';
     }
 
     // 설치 완료
     if (msg.type === 'done') {
-      document.getElementById('progress-wrap').style.display = 'none';
-      document.getElementById('btn-row').style.display = 'none';
       const lines = [];
       if (msg.foundationCount) lines.push(`Foundation: <strong>${msg.foundationCount}개</strong> 변수`);
       if (msg.semanticCount)   lines.push(`Semantic: <strong>${msg.semanticCount}개</strong> 변수 (Light/Dark)`);
@@ -551,69 +621,43 @@
       if (skipped.length) lines.push(`기존 세트 보존: <strong>${skipped.length}개</strong> <span style="color:#9ca3af;font-size:11px;">(이미 존재 — 값 변경은 Variables로 자동 반영)</span>`);
       if (!added.length && !skipped.length && msg.componentCount) lines.push(`Component Set: <strong>${msg.componentCount}개</strong> variant`);
       if (msg.removedCount)    lines.push(`옛 잔재 변수 <strong>${msg.removedCount}개</strong> 정리`);
-      const r = document.getElementById('result');
-      r.style.display = 'block';
-      r.innerHTML = `
+      document.getElementById('result').innerHTML = `
         <div class="result-success">
           <div class="result-title">✅ 설치 완료</div>
           <div class="result-sub">${lines.join('<br>') || '설치된 항목이 없습니다.'}<br><br>
             왼쪽 패널 <strong>Local variables</strong> · <strong>Text styles</strong> · <strong>Assets</strong>에서 확인하세요.
           </div>
         </div>
-        <div class="btn-row">
-          <button class="btn btn-primary" onclick="parent.postMessage({pluginMessage:{type:'cancel'}},'*')">닫기</button>
+        <div class="result-sub" style="color:#6b7280;font-size:11px;line-height:1.7;">
+          컴포넌트 설치가 중간에 멈췄거나 배치가 이상하면 <strong>[재설치]</strong>를 누르세요 —
+          기존 컴포넌트를 지우고 처음부터 다시 설치합니다.
         </div>`;
+      document.getElementById('reinstall-confirm').style.display = 'none';
+      setDoneFooter('success');
+      showInstallScreen('done');
     }
 
-    // 스캔 결과
-    if (msg.type === 'scan-result') {
-      renderScanResult(msg);
+    // 재설치 삭제 완료 → 처음 화면으로
+    if (msg.type === 'clean-done') {
+      const sections = msg.removedSections || 0;
+      const tops     = msg.removedTopLevel || 0;
+      backToSelect();
+      if (sections + tops === 0) {
+        alert('이 페이지에서 설치된 컴포넌트를 찾지 못했습니다.\n\n컴포넌트를 설치한 페이지로 이동한 뒤 다시 [재설치]를 눌러 주세요.');
+      }
     }
 
-    // 교체 완료
-    if (msg.type === 'swap-done') {
-      document.getElementById('legacy-progress-wrap').style.display = 'none';
-      const r = document.getElementById('legacy-result');
-      r.style.display = 'block';
-      r.innerHTML = `
-        <div class="result-success">
-          <div class="result-title">✅ 교체 완료</div>
-          <div class="result-sub">
-            교체됨: <strong>${msg.swapped}개</strong> 인스턴스<br>
-            ${msg.failed ? `실패: <strong>${msg.failed}개</strong><br>` : ''}
-            ${msg.skipped ? `매핑 없음(건너뜀): <strong>${msg.skipped}개</strong>` : ''}
-          </div>
-        </div>
-        <div class="btn-row" style="margin-top:8px;">
-          <button class="btn btn-secondary" onclick="resetScan()">다시 스캔</button>
-          <button class="btn btn-primary" onclick="parent.postMessage({pluginMessage:{type:'cancel'}},'*')">닫기</button>
-        </div>`;
-    }
-
-    // 오류
+    // 오류 — 반드시 "보이는" 화면에 렌더한다(옛 코드는 없는 요소를 만져 TypeError 로 빈 패널이 됐다)
     if (msg.type === 'error') {
-      document.getElementById('progress-wrap').style.display = 'none';
-      document.getElementById('btn-row').style.display = 'none';
-      document.getElementById('legacy-progress-wrap').style.display = 'none';
-      const r = document.getElementById('result');
-      const lr = document.getElementById('legacy-result');
-      const errHtml = `
+      document.getElementById('result').innerHTML = `
         <div class="result-error">
           <div class="result-error-title">❌ 오류 발생</div>
-          <div class="result-sub">${msg.message}</div>
-        </div>
-        <div class="btn-row">
-          <button class="btn btn-secondary" onclick="location.reload()">다시 시도</button>
-          <button class="btn btn-secondary" onclick="parent.postMessage({pluginMessage:{type:'cancel'}},'*')">닫기</button>
+          <div class="result-sub">${esc(msg.message)}</div>
         </div>`;
-      const legacyTab = document.getElementById('tab-legacy');
-      if (legacyTab && lr && legacyTab.classList.contains('active')) {
-        lr.style.display = 'block';
-        lr.innerHTML = errHtml;
-      } else {
-        r.style.display = 'block';
-        r.innerHTML = errHtml;
-      }
+      // 실패한 설치는 지울 것이 없을 수 있다 → [재설치] 대신 [처음으로]
+      document.getElementById('reinstall-confirm').style.display = 'none';
+      setDoneFooter('error');
+      showInstallScreen('done');
     }
   };
 </script>

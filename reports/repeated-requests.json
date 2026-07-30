@@ -14,8 +14,14 @@
       "promotionStatus": "promoted",
       "promotedRule": "plugins/figma-vars-installer/src/{vars-data,code}.ts Hybrid 모델 + scripts/installer-coverage-check.js DARK_FOLDED 카테고리 폐기",
       "occurrences": [
-        { "date": "2026-06-08", "summary": "Foundation 컬렉션 단일 Default 모드 + light/dark 팔레트 별도 변수(gray/N·gray-dark/N). Semantic만 Light/Dark 2-mode (Dark는 -dark alias). CSS tokens.css와 1:1 정합. Foundation Color 검증 208/208 PASS." },
-        { "date": "2026-06-08", "summary": "figma-token-sync Import 기능에도 동일 패턴 적용. CollectionMode 타입(single|light-dark) + UI 라디오. Foundation 성격 컬렉션 import 시 잘못된 2-mode 강제 방지." }
+        {
+          "date": "2026-06-08",
+          "summary": "Foundation 컬렉션 단일 Default 모드 + light/dark 팔레트 별도 변수(gray/N·gray-dark/N). Semantic만 Light/Dark 2-mode (Dark는 -dark alias). CSS tokens.css와 1:1 정합. Foundation Color 검증 208/208 PASS."
+        },
+        {
+          "date": "2026-06-08",
+          "summary": "figma-token-sync Import 기능에도 동일 패턴 적용. CollectionMode 타입(single|light-dark) + UI 라디오. Foundation 성격 컬렉션 import 시 잘못된 2-mode 강제 방지."
+        }
       ],
       "automationNote": "Gate 6 Installer Coverage가 light·dark 팔레트 모두 별도 검증. dark 팔레트 별도 변수로 등재된 후 'DARK_FOLDED' 흡수 분류 폐기."
     },
@@ -28,9 +34,18 @@
       "promotionStatus": "promoted",
       "promotedRule": "RULE-1b CSS_SIZE_SPLIT (harness-audit.js)",
       "occurrences": [
-        { "date": "2026-05-20", "summary": "레이아웃 정합 — 신규 컴포넌트 코드블록 표준화" },
-        { "date": "2026-05-27", "summary": "Action 열 오른쪽 gap 32px, 상태 열 minmax 전환, Input overflow 해소" },
-        { "date": "2026-05-27", "summary": "버튼 좌측정렬 복원, 우측 빈공간 미사용 수정" }
+        {
+          "date": "2026-05-20",
+          "summary": "레이아웃 정합 — 신규 컴포넌트 코드블록 표준화"
+        },
+        {
+          "date": "2026-05-27",
+          "summary": "Action 열 오른쪽 gap 32px, 상태 열 minmax 전환, Input overflow 해소"
+        },
+        {
+          "date": "2026-05-27",
+          "summary": "버튼 좌측정렬 복원, 우측 빈공간 미사용 수정"
+        }
       ],
       "automationNote": "harness-audit RULE-1(SIZE_SPLIT) + CSS_SIZE_SPLIT으로 일부 커버됨. 간격·정렬 자동 검사는 추가 필요."
     },
@@ -43,10 +58,22 @@
       "promotionStatus": "promoted",
       "promotedRule": "RULE-1 SIZE_SPLIT (harness-audit.js)",
       "occurrences": [
-        { "date": "2026-05-27", "summary": "Table md/sm 사이즈 비교 뷰 없음 → 추가 요청" },
-        { "date": "2026-05-27", "summary": "Table HTML 코드탭에 s1-table--md/sm 분기 없음 → 추가 요청" },
-        { "date": "2026-05-27", "summary": "TimePicker HTML 탭 사이즈 분기 누락 확인 → SIZE_RULES에 추가" },
-        { "date": "2026-06-05", "summary": "TimePicker Select형 sm(h28) 사이즈 누락(md만 구현) → figma-to-code 워크플로우로 sm 추가 + SIZE_RULES tp-select 등록" }
+        {
+          "date": "2026-05-27",
+          "summary": "Table md/sm 사이즈 비교 뷰 없음 → 추가 요청"
+        },
+        {
+          "date": "2026-05-27",
+          "summary": "Table HTML 코드탭에 s1-table--md/sm 분기 없음 → 추가 요청"
+        },
+        {
+          "date": "2026-05-27",
+          "summary": "TimePicker HTML 탭 사이즈 분기 누락 확인 → SIZE_RULES에 추가"
+        },
+        {
+          "date": "2026-06-05",
+          "summary": "TimePicker Select형 sm(h28) 사이즈 누락(md만 구현) → figma-to-code 워크플로우로 sm 추가 + SIZE_RULES tp-select 등록"
+        }
       ],
       "automationNote": "harness-audit RULE-1 SIZE_SPLIT으로 완전 커버됨. Button/Chip/Table/TimePicker(input·select)/Tab 등록 완료."
     },
@@ -59,8 +86,14 @@
       "promotionStatus": "candidate",
       "promotedRule": null,
       "occurrences": [
-        { "date": "2026-05-20", "summary": "Textarea harnessStatus skeleton → implemented 갱신 요청" },
-        { "date": "2026-05-27", "summary": "Table harnessStatus skeleton → implemented 갱신 — 질문 후 파악" }
+        {
+          "date": "2026-05-20",
+          "summary": "Textarea harnessStatus skeleton → implemented 갱신 요청"
+        },
+        {
+          "date": "2026-05-27",
+          "summary": "Table harnessStatus skeleton → implemented 갱신 — 질문 후 파악"
+        }
       ],
       "automationNote": "registry JSON harnessStatus vs components.html 섹션 존재 여부 비교 검사 필요. Gate 1(Registry)에 추가 가능."
     },
@@ -73,8 +106,14 @@
       "promotionStatus": "candidate",
       "promotedRule": null,
       "occurrences": [
-        { "date": "2026-05-20", "summary": "레이아웃 정합 — HTML·CSS·Token Details 탭 순서 통일 작업" },
-        { "date": "2026-05-27", "summary": "Table HTML 코드탭 단일 예시만 있고 구성 불완전" }
+        {
+          "date": "2026-05-20",
+          "summary": "레이아웃 정합 — HTML·CSS·Token Details 탭 순서 통일 작업"
+        },
+        {
+          "date": "2026-05-27",
+          "summary": "Table HTML 코드탭 단일 예시만 있고 구성 불완전"
+        }
       ],
       "automationNote": "각 컴포넌트 섹션에 code-pane HTML/CSS/Token Details가 모두 존재하는지 검사. harness-audit RULE-4 후보."
     },
@@ -87,7 +126,10 @@
       "promotionStatus": "promoted",
       "promotedRule": "Gate 3 install-prompt 동기화 검사 + scripts/sync-install-prompt.js + npm run tokens:sync-prompt",
       "occurrences": [
-        { "date": "2026-06-05", "summary": "사용자 시각 확인 — 다운로드 파일 240/549 토큰 누락 발견. 자동 동기화 스크립트 신설 + Gate 3 통합" }
+        {
+          "date": "2026-06-05",
+          "summary": "사용자 시각 확인 — 다운로드 파일 240/549 토큰 누락 발견. 자동 동기화 스크립트 신설 + Gate 3 통합"
+        }
       ],
       "automationNote": "Gate 3 Quality 가 tokens.css 변경 시마다 install-prompt.html 인라인 동기화 여부 자동 검증. 불일치 시 FAIL. 동기화는 npm run tokens:sync-prompt 로 자동 실행."
     },
@@ -100,7 +142,10 @@
       "promotionStatus": "promoted",
       "promotedRule": "Gate 4 Installer Coverage (scripts/installer-coverage-check.js + gate-check.js)",
       "occurrences": [
-        { "date": "2026-06-02", "summary": "Figma Variables installer에 spacing·icon-size 등 누락 — 색상만 들어있음 → FOUNDATION_NUMBER + SEMANTIC_NUMBER 추가 + Gate 4 신설" }
+        {
+          "date": "2026-06-02",
+          "summary": "Figma Variables installer에 spacing·icon-size 등 누락 — 색상만 들어있음 → FOUNDATION_NUMBER + SEMANTIC_NUMBER 추가 + Gate 4 신설"
+        }
       ],
       "automationNote": "Gate 4가 tokens.css의 Foundation·Semantic CSS var와 vars-data.ts의 Figma 경로를 자동 대조. installer-coverage-check.js가 누락분 ERROR/WARN 보고."
     },
@@ -113,8 +158,14 @@
       "promotionStatus": "candidate",
       "promotedRule": null,
       "occurrences": [
-        { "date": "2026-05-27", "summary": "TimePicker Select 드롭다운 gap 이상 → 검수 요청" },
-        { "date": "2026-05-27", "summary": "Select·DatePicker·TimePicker 드롭다운 gap 8px 통일 요청" }
+        {
+          "date": "2026-05-27",
+          "summary": "TimePicker Select 드롭다운 gap 이상 → 검수 요청"
+        },
+        {
+          "date": "2026-05-27",
+          "summary": "Select·DatePicker·TimePicker 드롭다운 gap 8px 통일 요청"
+        }
       ],
       "automationNote": "각 컴포넌트 드롭다운 패널 top 값이 calc(100% + 8px)인지 검사. harness-audit RULE 추가 가능."
     },
@@ -127,10 +178,30 @@
       "promotionStatus": "candidate",
       "promotedRule": null,
       "occurrences": [
-        { "date": "2026-06-05", "summary": "TimePicker Select 화살표 24px 박스 누락 → 값 검증 PASS였으나 화살표가 가운데 떠 우측 28.3px 빈공간. 사용자 이미지 제보로 발견. component-verifier·skill Stage 4에 preview_eval 실측+Figma 스크린샷 시각 대조 필수화." },
-        { "date": "2026-06-06", "summary": "GNB 유틸 아이콘이 32px(프레임)로 렌더돼 너무 큼. 실제 글리프는 프레임 inset 12.5% 적용 24px(md/sm)/18px(xsm)여야. verifier가 박스(40px)는 쟀으나 글리프 크기를 Figma 스크린샷과 비교 안 함 → 사용자 '아이콘 너무 큼' 제보. get_screenshot 원본 대조로 확인·수정." }
+        {
+          "date": "2026-06-05",
+          "summary": "TimePicker Select 화살표 24px 박스 누락 → 값 검증 PASS였으나 화살표가 가운데 떠 우측 28.3px 빈공간. 사용자 이미지 제보로 발견. component-verifier·skill Stage 4에 preview_eval 실측+Figma 스크린샷 시각 대조 필수화."
+        },
+        {
+          "date": "2026-06-06",
+          "summary": "GNB 유틸 아이콘이 32px(프레임)로 렌더돼 너무 큼. 실제 글리프는 프레임 inset 12.5% 적용 24px(md/sm)/18px(xsm)여야. verifier가 박스(40px)는 쟀으나 글리프 크기를 Figma 스크린샷과 비교 안 함 → 사용자 '아이콘 너무 큼' 제보. get_screenshot 원본 대조로 확인·수정."
+        }
       ],
       "automationNote": "아이콘은 '프레임 크기'가 아니라 '글리프 렌더 크기'(프레임×(1-2×inset))로 검증해야 함. component-verifier 시각 대조 시 아이콘 글리프를 Figma get_screenshot과 비례 비교하도록 강화. 2회 도달 — 승격 검토."
+    },
+    {
+      "id": "installer-ui-flow-layout",
+      "label": "설치기 플러그인 UI 레이아웃·화면흐름 개선 (스크롤·진행표시·완료안내)",
+      "description": "설치기 UI 가 단일 화면에 선택·진행·완료를 모두 얹어 스크롤바가 버튼 영역을 관통하고 완료 안내가 첫 화면에 끼어들었다. 앱셸 레이아웃 + 3화면 상태기계(선택→진행→완료)로 재구성.",
+      "count": 1,
+      "promotionStatus": "tracking",
+      "occurrences": [
+        {
+          "date": "2026-07-30",
+          "summary": "0.2Ver — 버튼영역 스크롤 제거(앱셸·창높이 800)·이름/버전 배지·설치중 화면(스피너+퍼센트+화면이동 경고)·완료 화면+[재설치](섹션 삭제 후 첫화면)"
+        }
+      ],
+      "automationNote": "설치기 ui.html 은 게이트 사각지대(Gate 6b 는 zip 의 code.js 토큰키만, Gate 13 은 build-components.ts 해시만 본다). 3회 도달 시 440×800 iframe 렌더 프로브(문서스크롤 0·푸터 가시성·화면전환 4종)를 게이트로 승격 검토."
     }
   ]
 }
