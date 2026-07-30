@@ -205,6 +205,28 @@ try {
   fail(`installer-freshness-check 실행 실패: ${e.message}`);
 }
 
+// ── Gate 6c: Installer Tooltip Freshness ─────────────────────────
+// 커밋된 zip 안 ui.html 의 "이번 업데이트" 툴팁·카드 4개 날짜가 소스 재계산값과 같은지.
+// Gate 6b 는 code.js 의 토큰 "키"만 봐서, ui.html 의 "문장"(툴팁·날짜)은 사각지대였다.
+//   → 소스를 고치고 installer:build 를 잊은 채 커밋하면 사용자가 낡은 툴팁을 본다.
+// esbuild 번들 + mock 실행 + git 이력 조회가 필요해 별도 프로세스로 호출(spawnSync).
+console.log('\n🔎 [Gate 6c] 설치기툴팁 검사기 (Installer Tooltip)');
+try {
+  const { spawnSync } = require('child_process');
+  const r = spawnSync('node', [path.join(ROOT, 'scripts/installer-tooltip-check.js')], { encoding: 'utf-8' });
+  if (r.status === 0) {
+    const m = (r.stdout || '').match(/✅\s*(.+)/);
+    pass(m ? m[1].trim() : '설치기 zip 툴팁·카드날짜 일치');
+  } else {
+    const out = (r.stdout || '') + (r.stderr || '');
+    const lines = out.split('\n').filter((l) => l.trim());
+    if (lines.length === 0) fail(`installer-tooltip-check 실패 (exit ${r.status})`);
+    else for (const l of lines) fail(l.replace(/^\s*❌\s*/, ''));
+  }
+} catch (e) {
+  fail(`installer-tooltip-check 실행 실패: ${e.message}`);
+}
+
 // ── Gate 7: Token Sync Monitor ───────────────────────────────────
 // 토큰 "값"이 모든 표면에서 정본(vars-data)과 일치하는지 기계 판정. (site-base 는 사이트 전용·검수 제외)
 console.log('\n🔎 [Gate 7] 토큰값일치 검사기 (Token Sync)');
