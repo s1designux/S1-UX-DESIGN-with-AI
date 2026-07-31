@@ -282,7 +282,16 @@ function readonlyReason(cmd) {
   if (/\b(writeFileSync|writeFile|createWriteStream)\s*\(/.test(src)) {
     const wt = findCallPaths(src, ['writeFileSync', 'writeFile', 'createWriteStream']).flatMap(w => w.paths).map(base);
     if (wt.some(t => destBasenames.includes(t))) return { ok: false, why: '토큰 화면에 씀(위험)' };
-    return { ok: true, writes_report: true };   // 화면 아닌 리포트만 씀 → 실행하되 표기
+    // 화면 아닌 곳에 씀 → 실행 허용. 종전에는 여기서 writes_report:true 를 달아
+    //   "⚠리포트씀" 배지를 붙였으나, 소스에 writeFileSync 문자열이 있는지로 추정하는
+    //   방식이라 결과가 사실과 반대였다(2026-07-31 실측): 배지가 붙은 12건은 전부
+    //   os.tmpdir 임시번들이거나 --fix/--record/--update-baseline 가드 뒤라 저장소에
+    //   쓰지 않았고, 정작 저장소에 쓰는 sync:button 은 writeReport 헬퍼(sync/utils.js:28)
+    //   경유라 탐지에서 빠져 배지가 없었다. 화면이 사람을 반대로 안내해 배지를 제거했다.
+    //   (git status 차이로 실측하는 대안도 검토했으나, 같은 내용 재작성은 diff 가 없어
+    //    "쓴다"를 못 잡는 것으로 실측 확인 — 목적 미달이라 채택하지 않음.)
+    //   ※ 위 :284 의 '토큰 화면에 씀' 판정은 실행 여부를 가르는 안전 장치라 유지한다.
+    return { ok: true };
   }
   return { ok: true };                            // 진짜 무쓰기
 }
@@ -309,7 +318,7 @@ for (const [name, cmd] of Object.entries(pkgScripts)) {
   if (!r.ok) { if (checkish) skipped.push({ name, command: 'npm run ' + name, reason: r.why }); continue; }
   const bf = backingFile(cmd);
   const covers = bf && !/^tsc/.test(cmd) ? mentions(read(path.resolve(ROOT, bf)) || '', destBasenames) : [];
-  gates.push({ name, command: 'npm run ' + name, backing_file: bf, writes_report: !!r.writes_report,
+  gates.push({ name, command: 'npm run ' + name, backing_file: bf,
     covers: [...new Set(covers)], status: 'not_run', exit_code: null, output_tail: '' });
 }
 // 생성기 자체 --check (스크립트로 직접 도는 것만)
@@ -322,9 +331,8 @@ genInfo.filter(g => g.has_check_flag).forEach(g => {
 
 // ── 7. (--check 모드) 게이트 실행 ─────────────────────────────────────
 if (RUN_CHECK && gates.length) {
-  const anyReport = gates.some(g => g.writes_report);
-  console.log('\n[--check] 아래 명령을 실행합니다 (토큰 화면/소스에 쓰는 것은 제외' + (anyReport ? '; ⚠=자기 리포트 갱신' : '') + '):');
-  gates.forEach(g => console.log('   • ' + g.command + (g.writes_report ? '  ⚠리포트씀' : '') + (g.backing_file ? '   → ' + g.backing_file : '')));
+  console.log('\n[--check] 아래 명령을 실행합니다 (토큰 화면/소스에 쓰는 것은 제외):');
+  gates.forEach(g => console.log('   • ' + g.command + (g.backing_file ? '   → ' + g.backing_file : '')));
   if (skipped.length) {
     console.log('\n   실행 제외 (' + skipped.length + '건):');
     skipped.forEach(s => console.log('   ⏭ ' + s.name + '  (' + s.reason + ')'));
@@ -357,7 +365,7 @@ if (RUN_CHECK && gates.length) {
   console.log('[--check] 실행할 게이트를 하나도 못 찾음. package.json 스크립트/생성기 --check 확인 필요.');
 } else if (gates.length && !SELF_CHECK) {
   console.log('\n[정적 모드] --check 시 실행될 명령 (' + gates.length + '건, 지금은 실행 안 함):');
-  gates.forEach(g => console.log('   • ' + g.command + (g.writes_report ? '  ⚠리포트씀' : '')));
+  gates.forEach(g => console.log('   • ' + g.command));
   if (skipped.length) {
     console.log('\n   실행 제외 (' + skipped.length + '건, 사전):');
     skipped.forEach(s => console.log('   ⏭ ' + s.name + '  (' + s.reason + ')'));
@@ -892,7 +900,7 @@ if(D.gates.length){
     const s = g.status==='pass'?'<span class="b pass">pass</span>'
       :g.status==='fail'?(g.fail_kind==='drift'?'<span class="b fail">드리프트</span>':'<span class="b warn">검사 실패</span>')
       :g.status==='error'?'<span class="b warn">측정 유보</span>':'<span class="b">미실행</span>';
-    return '<tr><td class="f">'+esc(g.command)+(g.writes_report?' <span class="b warn" style="font-size:9.5px">리포트씀</span>':'')+(g.output_tail?'<div class="tail">'+esc(g.output_tail)+'</div>':'')+'</td>'+
+    return '<tr><td class="f">'+esc(g.command)+(g.output_tail?'<div class="tail">'+esc(g.output_tail)+'</div>':'')+'</td>'+
       '<td>'+(g.covers.length?esc(g.covers.join(', ')):'<span class="muted">미검출</span>')+'</td>'+
       '<td>'+s+'</td></tr>';
   }).join('')+'</table>';
