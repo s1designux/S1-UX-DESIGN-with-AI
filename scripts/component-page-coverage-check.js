@@ -75,8 +75,36 @@ function main() {
   // stale config: sectionFor/excluded 에 있는데 설치기 목록에 없는 항목
   const instSet = new Set(installer);
   const stale = [...Object.keys(sectionFor), ...excluded].filter((n) => !instSet.has(n));
-  // orphan section: HTML 섹션인데 어떤 sectionFor 값도 아님
-  const usedSids = new Set(Object.values(sectionFor));
+
+  // 고아 섹션 판정(2026-07-31 교정) — 헤더 §판정의 선언은 "HTML 섹션인데 **어떤 설치기
+  //   컴포넌트도** 안 가리킴"인데, 구현은 sectionFor 의 값만 봤다. noSectionNeeded 23개도
+  //   똑같이 설치기 컴포넌트이고 그중 다수가 자기 섹션을 갖고 있어(요소·shell 표출),
+  //   의도적 제외 대상 18개가 전부 고아로 잡히던 상태였다. 선언대로 양쪽을 다 본다.
+  //   이름↔섹션id 대응은 slug 정규화(소문자·영숫자만)로 맞추고, 축약/단어누락처럼
+  //   정규화로 못 맞추는 것은 억지 규칙을 만들지 않고 config 의 sectionId 로 명시 선언한다.
+  //   어느 쪽으로도 못 맞춘 항목은 조용히 넘기지 않고 "섹션 미대응"으로 세어 출력한다.
+  const slug = (s) => String(s).toLowerCase().replace(/[^a-z0-9]/g, '');
+  const sectionBySlug = new Map([...sections].map((s) => [slug(s), s]));
+  const excludedSectionIds = new Set();
+  const excludedNoSection = [];   // 섹션을 못 찾은 제외 컴포넌트(정상일 수도 있음 — 미계측으로 보고)
+  for (const e of (cfg.noSectionNeeded || [])) {
+    if (!instSet.has(e.name)) continue;                      // 설치기에 없는 항목은 stale 소관
+    let sid = null;
+    if (e.sectionId) {                                       // ① 명시 선언 우선
+      if (!sections.has(e.sectionId)) {
+        missingSection.push(`${e.name} → 선언한 섹션 id="${e.sectionId}" 없음 (noSectionNeeded.sectionId)`);
+        continue;
+      }
+      sid = e.sectionId;
+    } else {                                                 // ② slug 정규화 자동 대응
+      sid = sectionBySlug.get(slug(e.name)) || null;
+    }
+    if (sid) excludedSectionIds.add(sid);
+    else excludedNoSection.push(e.name);
+  }
+
+  // orphan section: HTML 섹션인데 어떤 설치기 컴포넌트(sectionFor ∪ noSectionNeeded)도 안 가리킴
+  const usedSids = new Set([...Object.values(sectionFor), ...excludedSectionIds]);
   const orphanSection = [...sections].filter((s) => !usedSids.has(s));
 
   const mains = Object.keys(sectionFor).filter((c) => instSet.has(c)).length;
@@ -86,10 +114,16 @@ function main() {
   if (unclassified.length) { console.log(`  ❌ 미분류 ${unclassified.length} (설치기에 있는데 sectionFor/noSectionNeeded 둘 다 없음 — HTML 반영 또는 제외분류 필요):`); unclassified.forEach((c) => console.log('     -', c)); fails.push(...unclassified); }
   if (missingSection.length) { console.log(`  ❌ 섹션 누락 ${missingSection.length} (sectionFor 가 가리키는 HTML 섹션/nav 없음):`); missingSection.forEach((c) => console.log('     -', c)); fails.push(...missingSection); }
   if (orphanSection.length) { console.log(`  ⚠️ 고아 섹션 ${orphanSection.length} (HTML 섹션인데 설치기 컴포넌트 매핑 없음):`); orphanSection.forEach((c) => console.log('     -', c)); }
+  // 미계측 정직 보고(Gate 19 "추출 0건=안 됨" 원칙) — 섹션을 못 찾은 제외 컴포넌트.
+  //   섹션이 원래 없어서일 수도, 이름이 달라 못 맞춘 것일 수도 있어 기계가 구분 못 한다.
+  //   고아 섹션이 함께 남아 있으면 이 목록과 짝을 맞춰 보라는 신호다.
+  if (excludedNoSection.length) { console.log(`  ⚠️ 섹션 미대응 ${excludedNoSection.length} (제외 분류인데 대응 섹션 못 찾음 — 섹션이 없거나 이름이 달라 미계측. 이름이 다르면 config 의 noSectionNeeded[].sectionId 로 명시):`); excludedNoSection.forEach((c) => console.log('     -', c)); }
   if (stale.length) { console.log(`  ⚠️ stale config ${stale.length} (config 에 있으나 설치기 목록에 없음):`); stale.forEach((c) => console.log('     -', c)); }
   if (!fails.length) console.log('  ✅ 설치기 컴포넌트 전부 HTML 섹션 연결 또는 제외분류됨 — 미분류·섹션누락 0');
 
-  console.log(`PAGECOV_SUMMARY installer=${installer.length} mains=${mains} excluded=${[...excluded].filter((n) => instSet.has(n)).length} unclassified=${unclassified.length} missingSection=${missingSection.length} orphanSection=${orphanSection.length} stale=${stale.length}`);
+  // ⚠️ 필드 순서 주의: gate-check.js:487 의 정규식이 `… orphanSection=N stale=N` 을 그 순서로
+  //   찾는다(앵커 없음). 새 필드는 반드시 stale= **뒤에** 붙여야 기존 파싱이 안 깨진다.
+  console.log(`PAGECOV_SUMMARY installer=${installer.length} mains=${mains} excluded=${[...excluded].filter((n) => instSet.has(n)).length} unclassified=${unclassified.length} missingSection=${missingSection.length} orphanSection=${orphanSection.length} stale=${stale.length} excludedNoSection=${excludedNoSection.length}`);
   process.exit(fails.length ? 1 : 0);
 }
 
