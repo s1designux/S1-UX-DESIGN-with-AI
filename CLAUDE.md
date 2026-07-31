@@ -2,7 +2,7 @@
 
 > 이 문서는 Claude가 디자인 시스템을 **수집, 정리, 구조화, 검증**하기 위한 기준입니다.
 > 현재 목표는 UI 구현이 아니라 **디자인 시스템을 구축하는 것**입니다.
-> 마지막 업데이트: 2026-06-06 (규칙 체계 정리: 두 갈래 분류 원리 상위화·rgba EX02/EX06·R12/R13 폐지·hover 레거시 누락 처리·공통 규칙 허브 신설·중복 정본화(audit-rules.json/CLAUDE.md)·README 요약+링크.)
+> 마지막 업데이트: 2026-07-31 (게이트 한눈표 정합: 실행되는 6c·15b·28 행 추가 · gate:check 미배선인 2·5 실행 방식 명시 · 7b 번호 순 이동 · 일괄 실행 줄 개수 정정.)
 
 ---
 
@@ -965,13 +965,15 @@ Claude는 **Main Orchestrator**다. 사용자는 **목표 수준 의도**만 준
 | # | 이름 | 무엇을 지키나 |
 |---|------|------|
 | 1 | Registry | registry JSON 구조·Semantic 경유·네이밍·필드 |
-| 2 | Figma | 등록 figmaNodeId/componentKey 유효성(MCP, 실패=SKIP) |
+| 2 | Figma | **gate:check 미배선 · 수동 절차** — 등록 figmaNodeId/componentKey 유효성(MCP, 실패=SKIP). 정의 `.claude/docs/gates-reference.md:21~29` · 실행 주체 `.claude/agents/figma-inspector.md` |
 | 3 | Quality | Foundation 외 raw HEX 금지·rgba 예외만·install-prompt 존재 |
 | 4 | Report | reports 색인 커버리지 |
-| 5 | UI + Harness Audit | 페이지 Nav 등록·인라인 HEX 금지·사이즈 분기·다크 비교·아이콘 색 |
+| 5 | UI + Harness Audit | **gate:check 미배선** — Harness 부분만 `npm run harness:audit` 단독 실행(scripts/harness-audit.js:523 이 `[Gate 5]` 로 출력 · 사이즈 분기·다크 비교·아이콘 색). UI Gate 부분(페이지 Nav 등록·인라인 HEX 금지)은 검사 코드 없음 — 수동 |
 | 6 | Installer Coverage | 설치기 토큰 커버리지 |
 | 6b | Installer Build Freshness | 커밋 zip 이 최신 빌드인지 |
+| 6c | Installer Tooltip | 커밋 zip 안 ui.html 의 "이번 업데이트" 툴팁·카드 4개 날짜가 소스 재계산값과 같은지. Gate 6b 는 code.js 의 토큰 "키"만 봐서 ui.html 의 "문장"(툴팁·날짜)은 사각지대였음 — 소스를 고치고 `installer:build` 를 잊은 채 커밋하면 사용자가 낡은 툴팁을 봄. 검사기 `scripts/installer-tooltip-check.js`(별도 프로세스 spawnSync) |
 | 7 | Token Sync Monitor | 전 표면 토큰 '값' 일치(정본=vars-data) |
+| 7b | Token Value Consistency | tokens.css↔vars-data↔semantic.html 해석 HEX 표면 일치(Gate 7 옆 배선) |
 | 8 | Component Key Coverage | 빌더 동적 조합 키가 정본에 다 있나 |
 | 9 | Number/Sizing Page | number 토큰 페이지 일치·폐지 사이징 재유입 0 |
 | 10 | Doc Token Ref Drift | 옛 토큰명 잔재·폐기 토큰 재유입·유령행 차단 |
@@ -980,6 +982,7 @@ Claude는 **Main Orchestrator**다. 사용자는 **목표 수준 의도**만 준
 | 13 | Installer Build Verification | build-components.ts 독립 검증(해시)·⭐ 단독 자가검증 차단 |
 | 14 | Verified Content | 검증 고정 문구(법인·약관·브랜드) verbatim·날조 차단 |
 | 15 | Token Naming | 토큰 이름 규칙(bg·brand-in-semantic 금지·kebab) |
+| 15b | Shadow Parse | 그림자 문자열 → Figma Effect 변환 파서가 맞나. 설치기는 그림자 수치를 코드에 적지 않고 vars-data 의 SEMANTIC_SHADOW 문자열을 파싱해 쓰는데, 파서가 조용히 틀리면 Figma 라이브러리 전체 그림자가 틀린 채 깔림(토큰 게이트 3·6·7 은 "문자열 값"만 봐 이 변환은 사각지대). 검사 0건이면 fail("추출 0건=안 됨"). 검사기 `scripts/shadow-parse-check.js` |
 | 16 | Component Origin | Ⓑ(원본틀 필요)인데 완료+원본대조 0 차단·미분류 차단 |
 | 17 | Orphan Token | 안 쓰이는 semantic color 토큰 결정론 검사 |
 | 18 | Component Page Coverage | 설치기 컴포넌트 ↔ HTML 페이지 대조 |
@@ -989,13 +992,13 @@ Claude는 **Main Orchestrator**다. 사용자는 **목표 수준 의도**만 준
 | 22 | Page Layout Policy | 페이지 공통 틀·폭 정책(wide/readable) 준수 |
 | 23 | Component Presentation | PC 컴포넌트 표출 규칙(실제 렌더 DOM 대조) |
 | 24 | DESIGN.md Drift | DESIGN.md(AI 소비용) 가 정본(tokens.css+registry)보다 낡으면 차단 |
-| 7b | Token Value Consistency | tokens.css↔vars-data↔semantic.html 해석 HEX 표면 일치(Gate 7 옆 배선) |
 | 25 | Component Alias Canonical | 활성 페이지 컴포넌트-별칭(--{comp}-*)이 정본 토큰으로 해석되나·표면드리프트 차단(정본 밖 별칭 재유입 방지) |
 | 26 | Icons Stats Consistency | 표출용 아이콘 개수(icons-stats.js)가 정본(icons-data.js)과 일치하나(손편집 후 재생성 누락 차단·재생성 `npm run icons:stats`) |
 | 27 | Token Role (글자엔 글자 토큰) | 글자(TEXT) 색은 text/*·label/*·number/* 만 — border/*·bg/*·surface/* 오연결 차단(icon/*=허용목록만). build-components.ts mock 실행해 글자 fill 역할 대조. Input 안내메시지 테두리토큰 오연결(값 게이트 전부 ✅였던 사각지대) 재발 차단. 단독 `npm run tokens:rolecheck` |
+| 28 | System Map Drift | `pipeline-status.js --self-check` 로 현재 코드에서 시스템 맵을 재생성해 커밋본과 대조(휘발성 제외) — pipeline-status.html 이 낡았나. **불일치=경고(비차단)**: 대시보드는 생성물이라 낡아도 빌드가 안 깨지고, error 로 걸면 타 세션 커밋까지 막혀 `--no-verify` 를 부르고 그러면 Gate 1~27 이 전부 무력화되기 때문(2026-07-14 결정 — 신선도보다 게이트 생태계 보존 우선). 재생성 `node pipeline-status.js --check --skip gate:check,components:presentation --out pages/pipeline-status.html` |
 | 29 | Dark Divergence (다크값갈림) | 라이트 최종값이 같은데 같은 비교 단위(컴포넌트 seg1/역할계열 seg1+seg2) 안에서 다크만 갈리는 이상치 토큰을 baseline 래칫(줄이기 전용)으로 차단. 단위 간 갈림은 기록만(의도 가능). 단독 `npm run tokens:darkdiv` |
 
-스크립트 일괄 실행: `npm run gate:check` (Gate 1~29 자동). 개별 게이트 트리거·판정 로직·도입 사유·`npm run` 단독 실행 명령은 참조 문서에 전문 수록.
+스크립트 일괄 실행: `npm run gate:check` (31개 자동). **Gate 2·5 는 여기에 포함되지 않는다** — 위 표 참조. 개별 게이트 트리거·판정 로직·도입 사유·`npm run` 단독 실행 명령은 참조 문서에 전문 수록.
 
 ## ⚙️ 강제 계층 — Hooks (2026-06-11 신설)
 
