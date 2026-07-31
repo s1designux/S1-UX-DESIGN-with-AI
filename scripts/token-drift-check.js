@@ -88,13 +88,29 @@ function entriesOf(obj, out) {
   files = files.filter((rel) => !isLegacyFile(rel));
 
   const drift = new Map();
+  // 미계측 계수(2026-07-31) — entriesOf 는 {name|cssVar} + {value|ref} 형태의 "객체형" 엔트리만
+  //   인정한다. registry/components/*.json 중 일부는 tokens 를 {"background": ["--a","--b"]} 처럼
+  //   문자열 배열로 적어 두는데, 그러면 추출이 0건이 되고 그 파일은 통째로 검사에서 빠진다.
+  //   지금까지 그 사실이 출력 어디에도 드러나지 않아 "검사됨"과 구분되지 않았다.
+  //   → 추출 0건인데 파일 안에 --토큰 이름이 있는 파일을 "미계측"으로 세어 보고한다.
+  //   (배열형까지 읽게 만드는 확장은 하지 않는다. baseline ratchet 방식이라 추출이 늘면
+  //    newItems 폭증으로 즉시 차단된다 — 별칭층 철거 방침이 정해진 뒤 별건으로 다룰 일.)
+  //   보고 전용이며 exit 코드에 영향을 주지 않는다.
+  const scanStats = [];
   for (const rel of files) {
     const full = path.join(ROOT, rel);
     if (!fs.existsSync(full)) continue;
+    let raw;
+    try { raw = fs.readFileSync(full, 'utf8'); }
+    catch (e) { drift.set(`${rel}::READ`, `${rel}: 읽기 실패 — ${e.message}`); continue; }
     let data;
-    try { data = JSON.parse(fs.readFileSync(full, 'utf8')); }
+    try { data = JSON.parse(raw); }
     catch (e) { drift.set(`${rel}::PARSE`, `${rel}: JSON parse 실패 — ${e.message}`); continue; }
     const entries = []; entriesOf(data, entries);
+    // 파일 안에 실제로 토큰 이름이 있는가(접두 조각 제외) — 추출 0건이 "형식 때문"인지
+    // "애초에 토큰이 없어서"인지 구분한다. 후자는 미계측이 아니다.
+    const tokenNames = new Set([...raw.matchAll(/--[a-z0-9-]+/g)].map((m) => m[0]).filter((t) => !t.endsWith('-')));
+    scanStats.push({ rel, entries: entries.length, tokenNames: tokenNames.size });
     for (const e of entries) {
       const refs = [...e.value.matchAll(/var\((--color-[a-z0-9-]+)\)/g)].map((m) => m[1]);
       for (const r of refs) {
@@ -129,11 +145,31 @@ function entriesOf(obj, out) {
   console.log('🔎 토큰 drift 검사기 (Registry Token Drift · baseline ratchet)');
   console.log(`  기준=최신 컴포넌트 실사용 토큰 ${usedPaths.size}종 · registry stale: 알려진 ${baseline.size}건 · 새로 생김 ${newItems.length}건 · 해소됨 ${fixedItems.length}건`);
   if (fixedItems.length) console.log(`  ✅ ${fixedItems.length}건 해소 — \`node scripts/token-drift-check.js --update-baseline\` 로 baseline 줄이기 권장`);
+
+  // 미계측 보고 — 성공/차단 어느 쪽으로 끝나든 반드시 찍는다(조용히 사라지지 않게).
+  //   ⚠️ 출력 규약 2가지:
+  //     ① gate-check.js:531 의 정규식은 위 요약줄의 `알려진 N건 · 새로 생김 N건 · 해소됨 N건`
+  //        연속 구간을 잡는다. 그 줄은 건드리지 말고 **별도 줄**로만 덧붙일 것.
+  //     ② gate-check.js:537 의 실패 분기는 `•` 가 든 줄을 실패 항목으로 수집한다.
+  //        아래 줄에는 `•` 를 쓰지 않는다(`-` 사용).
+  const printScanReport = () => {
+    const uninstrumented = scanStats.filter((s) => s.entries === 0 && s.tokenNames > 0);
+    const totalEntries = scanStats.reduce((n, s) => n + s.entries, 0);
+    console.log(`  ℹ️ 스캔 ${scanStats.length}파일 · 추출 ${totalEntries}엔트리 · 미계측 ${uninstrumented.length}파일`);
+    if (uninstrumented.length) {
+      console.log('     (아래는 토큰 이름이 있는데 추출 0건 — tokens 가 {name,value} 객체형이 아니라 검사에서 빠짐)');
+      uninstrumented.forEach((s) => console.log(`     - ${s.rel} (토큰명 ${s.tokenNames}종)`));
+    }
+    console.log(`DRIFT_SUMMARY files=${scanStats.length} entries=${totalEntries} uninstrumented=${uninstrumented.length}`);
+  };
+
   if (newItems.length) {
     console.log('  ❌ 새 stale 추가 감지 (차단) — 최신 컴포넌트가 쓰는 토큰만 언급하세요:');
     newItems.forEach((k) => console.log('     • ' + drift.get(k)));
     console.log(`  → ${newItems.length}건.`);
+    printScanReport();
     process.exit(1);
   }
   console.log('  ✅ 새 stale 0 — registry 가 최신 컴포넌트 토큰 밖을 더 언급하지 않음 (알려진 backlog 만 잔존)');
+  printScanReport();
 })();
