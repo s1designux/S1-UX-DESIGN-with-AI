@@ -6,7 +6,7 @@
 
 ---
 
-## Gate 정의 (Gate 1~23)
+## Gate 정의 (Gate 1~19 · 정의문 보유분)
 
 ### Gate 1: Registry Gate
 **파일:** `.claude/agents/token-validator.md`
@@ -181,6 +181,7 @@
   5. Gate 5 (UI)        — pages/*.html 변경 시
   6. Gate 6 (Installer Coverage) — tokens.css 또는 vars-data.ts 변경 시 / 항상
   6b. Gate 6b (Installer Build Freshness) — 커밋된 zip 이 vars-data 최신 빌드인지(빌드 누락 stale 탐지) / 항상
+  6c. Gate 6c (Installer Tooltip) — 커밋 zip 안 ui.html 의 "이번 업데이트" 툴팁·카드 4개 날짜가 소스 재계산값과 같은지. Gate 6b 는 code.js 의 토큰 "키"만 봐서 ui.html 의 "문장"(툴팁·날짜)은 사각지대였음 — 소스를 고치고 `installer:build` 를 잊은 채 커밋하면 사용자가 낡은 툴팁을 봄. 검사기 `scripts/installer-tooltip-check.js`(별도 프로세스 spawnSync)
   7. Gate 7 (Token Sync Monitor) — 토큰 값(tokens.css·vars-data·semantic.html·registry) 변경 시 / 항상 (site-base.css = 사이트 전용·검수 제외)
   8. Gate 8 (Component Key Coverage) — build-components.ts 또는 vars-data.ts 변경 시 / 항상
   9. Gate 9 (Number/Sizing Page Consistency) — number 토큰(sizing·spacing·radius·border-width·font·opacity·breakpoint)·foundation/semantic 페이지 변경 시 / 항상
@@ -190,6 +191,7 @@
   13. Gate 13 (Installer Build Verification) — build-components.ts 변경 시 / 항상. 내용이 독립 검증(component-verifier) 거쳤는지 해시로 강제. ⭐ 단독 빌드+자가검증 차단
   14. Gate 14 (Verified Content / 원본대조 문구) — 검증된 고정 문구 / 항상. 법인정보·약관·브랜드 등이 정본(registry/content/*.json)과 verbatim 일치, 날조 텍스트 차단 (풋터 포함 일반화)
   15. Gate 15 (Token Naming Convention) — vars-data.ts 변경 시 / 항상. 토큰 이름이 naming-rules.json 규칙(bg·brand-in-semantic 금지·kebab) 준수하는지 강제. 레거시명·우회 별칭 유입 차단
+  15b. Gate 15b (Shadow Parse) — 그림자 문자열 → Figma Effect 변환 파서가 맞나. 설치기는 그림자 수치를 코드에 적지 않고 vars-data 의 SEMANTIC_SHADOW 문자열을 파싱해 쓰는데, 파서가 조용히 틀리면 Figma 라이브러리 전체 그림자가 틀린 채 깔림(토큰 게이트 3·6·7 은 "문자열 값"만 봐 이 변환은 사각지대). 검사 0건이면 fail("추출 0건=안 됨"). 검사기 `scripts/shadow-parse-check.js`
   16. Gate 16 (Component Origin Verification) — update-management.json·registry/components|patterns 변경 시 / 항상. Ⓑ(원본틀 필요)인데 완료표시+원본대조 0(verify=none)이면 차단·미분류 escape 차단. 미완성 Ⓑ 백로그는 통과(마비 방지). 탭 사태 재발 방지
   17. Gate 17 (Orphan Token) — vars-data·build-components·registry/components|patterns·웹CSS 변경 시 / 항상. 빌더(mock)+웹CSS+registry spec 전 표면에서 안 쓰이는 semantic color 토큰(orphan)을 결정론 검사해 레거시 누적 가시화. 의도보존분=`registry/governance/intentional-unused-tokens.json` 면제, 예상밖 orphan·stale allow=경고(비차단). "이 토큰 어디서 쓰나"를 손 grep 아닌 기계가 답(거짓 단정 차단). 단독 `npm run tokens:orphans`
   18. Gate 18 (Component Page Coverage) — build-components.ts·components-new.html·component-page-coverage.json 변경 시 / 항상. **설치기(COMPONENT_CATEGORIES_GRID 정본)에 있는 컴포넌트가 HTML components 페이지에도 다 있나**를 기계 대조. 미분류(새 컴포넌트가 sectionFor/noSectionNeeded 둘 다 없음)·섹션누락=차단(설치기=기준 강제), 고아섹션·stale config=경고. 정본=`registry/governance/component-page-coverage.json`. "HTML에 빠진 컴포넌트"를 손으로 안 찾고 기계가 답(Multi Toggle·Dropdown 드리프트 재발 차단). 단독 `npm run components:pagecheck`
@@ -201,10 +203,13 @@
   24. Gate 24 (DESIGN.md Drift) — tokens.css·registry 변경 시 / 항상. **AI 소비용 단일 컨텍스트 `design/DESIGN.*.md` 가 정본(tokens.css+registry)보다 낡으면 차단**(재생성 강제). gen-design-md dry-run 에 "변경감지"면 fail. 갱신 `npm run design:md:write`, 단독 `npm run design:md:check`
   7b. Gate 7b (Token Value Consistency) — 항상. 존재하나 gate:check 에 미연결이던 `token-value-consistency-check` 를 배선(2026-07-10). token-sync-monitor(정본↔각 표면)와 달리 **`tokens.css` ↔ `vars-data.ts` ↔ `pages/semantic.html` 의 "해석된 HEX"가 Light/Dark 모두 일치**하는지 교차 대조. 불일치=차단. 단독 `npm run tokens:consistency`
   25. Gate 25 (Component Alias Canonical) — pages/*.html 변경 시 / 항상. **활성 페이지에 정의된 컴포넌트-별칭 토큰(`--{button|chip|input|dropdown|select|table|nav|gnb|pagination|checkbox|radio|toggle|tab}-*`)의 var() 체인이 정본(tokens.css∪site-base∪페이지-로컬)까지 해석되는지** 검사. ❌차단 = ①유령참조(체인이 정의 없는 토큰에 닿음 = 정본 밖 별칭 이름·오타·삭제 토큰 재유입) ②표면드리프트(같은 별칭 이름이 페이지 간 다른 최종 HEX). 배경: 모든 토큰 게이트가 vars-data/tokens.css 만 봐서 그 바깥 `--{comp}-*` 별칭층은 사각지대였다(`--dropdown-trigger-*` 유출 계기). 은퇴 별칭 CSS(component-tokens.css)는 legacyFiles 라 제외. 단독 `node scripts/component-alias-canonical-check.js`
+  26. Gate 26 (Icons Stats Consistency) — 표출용 아이콘 개수(icons-stats.js)가 정본(icons-data.js)과 일치하나(손편집 후 재생성 누락 차단·재생성 `npm run icons:stats`)
+  27. Gate 27 (Token Role / 글자엔 글자 토큰) — 글자(TEXT) 색은 text/*·label/*·number/* 만 — border/*·bg/*·surface/* 오연결 차단(icon/*=허용목록만). build-components.ts mock 실행해 글자 fill 역할 대조. Input 안내메시지 테두리토큰 오연결(값 게이트 전부 ✅였던 사각지대) 재발 차단. 단독 `npm run tokens:rolecheck`
+  28. Gate 28 (System Map Drift) — `pipeline-status.js --self-check` 로 현재 코드에서 시스템 맵을 재생성해 커밋본과 대조(휘발성 제외) — pipeline-status.html 이 낡았나. **불일치=경고(비차단)**: 대시보드는 생성물이라 낡아도 빌드가 안 깨지고, error 로 걸면 타 세션 커밋까지 막혀 `--no-verify` 를 부르고 그러면 Gate 1~27 이 전부 무력화되기 때문(2026-07-14 결정 — 신선도보다 게이트 생태계 보존 우선). 재생성 `node pipeline-status.js --check --skip gate:check,components:presentation --out pages/pipeline-status.html`
   29. Gate 29 (Dark Divergence / 다크값갈림) — vars-data.ts 변경 시 / 항상. **라이트 최종값이 같은데 같은 비교 단위 안에서 다크 최종값만 갈리는 이상치 토큰**을 baseline(`registry/governance/dark-divergence-baseline.json`) 대조로 차단. 비교 단위 = 컴포넌트 계열은 `color/{seg1}` 의 seg1, 역할 계열(text·icon·bg·line·overlay·surface)은 seg1/seg2. 이상치 = 단위×라이트값 그룹에서 다수파와 다른 다크값(동수면 전원 등록·`[동수]` 표시, 옳은 쪽 판정 안 함). ❌차단 = baseline 에 없는 신규 이상치·끊긴 참조. ⚠️기록만 = 단위 간 갈림(의도 가능 — form-control 이 다크에서 밝게 가는 류)·baseline 해소분 알림. baseline 키 = `<단위>::<라이트값>::<토큰명>::<다크값>` (이상치 토큰 자체가 키 — 정상 토큰 추가로는 안 흔들림), reason 선택. **갱신은 줄이기 전용 래칫**(`--update-baseline` — 신규 있으면 기록 거부, gate20-fix A안 선반영). 도입 사유(2026-07-28): chip 선택 라벨 다크(blue-dark/350)가 같은 chip 선택 계열(300)과 홀로 어긋난 것을 사람이 발견 — 같은 유형을 기계가 잡도록 신설. 단독 `npm run tokens:darkdiv`
 ```
 
-스크립트 일괄 실행: `npm run gate:check` (Gate 1 + 3 + 4 + 6 + 6b + 7 + 7b + 8 + 9 + 10 + 11 + 12 + 13 + 14 + 15 + 16 + 17 + 18 + 19 + 20 + 21 + 22 + 23 + 24 + 25 + 29 자동)
+스크립트 일괄 실행: `npm run gate:check` (Gate 1 + 3 + 4 + 6 + 6b + 6c + 7 + 7b + 8 + 9 + 10 + 11 + 12 + 13 + 14 + 15 + 15b + 16 + 17 + 18 + 19 + 20 + 21 + 22 + 23 + 24 + 25 + 26 + 27 + 28 + 29 자동)
 
 > **Gate 10 (doc-token-ref-check):** 토큰을 rename/remove 하면 옛 이름을 쥔 가이드 문서가 자동 적발된다. **정본 rename 시 `registry/tokens/deprecated-tokens.json` 의 `renamedGroups` 에 `{from,to}` 한 줄 추가**하면 이후 게이트가 전 활성 페이지에서 잔재를 차단(Check B). `--color-*` 참조 존재성은 Check A(경고)로 가시화. **정본 삭제 시 `deprecated-tokens.json` 의 `deprecatedTokens` 에 `{cssVariable}` 한 줄 추가**하면 Check C 가 그 폐기 토큰(컴포넌트 토큰 `--button-*`·`--input-*` 포함, 와일드카드)이 활성 페이지에 **재유입되는 것을 차단**한다(예: 삭제한 `--button-*-focus-ring` 이 Token Details 에 되살아남 방지). 또 Token Details 값 칸이 `(none)`·`미정의` 로 **존재하지 않는 토큰을 문서화하면 차단**(없는 토큰은 행 삭제 — 이 유령행이 레거시 재유입 통로였음, 2026-07-03 신설). 단독 실행 `npm run docs:tokencheck`. `components.html`(폐기 예정)은 검사 제외.
 
