@@ -289,3 +289,38 @@ zip 반영 여부를 수동 확인해야 하는 구조
   - 경로 지정 커밋을 기계적으로 강제하는 방법
   - 세션별 worktree 분리
   - 커밋 전 인덱스에 남의 파일이 있으면 경고
+
+---
+
+## 2026-07-31 세션에서 나온 항목
+
+### 포털 사이트 정본 정합 (중단 — 우선순위 낮음)
+
+- **상태**: 보류
+
+**[확인된 사실 — 2026-07-31 조사]**
+
+- `assets/css/style.css` 1,049줄: `var(--color-*)` 참조 1건(:90), 하드코딩 HEX 242건 / 고유 69색. `.s1-*` `.sw-*` 클래스 0건. 포털은 자체 크롬 클래스 + 하드코딩으로 구성됨
+- `site-base.css` 49종 중 `registry/components` 참조 21종(엔트리 48건), 페이지 참조 139건
+- `--color-surface-raised` 값 갈림: `tokens.css` #1C1D23 / `site-base` #35363F. `tokens.css` 를 `<link>` 하지 않는 6개 페이지에서 옛값 적용
+- `pages/policy.html:314·337` 에 `--color-action-primary` 유령 참조 2건 (정의 없음. 정본은 `--color-action-primary-default`)
+- `plugins/ds-apply/skills/ds-apply/references/tokens.css` 가 원본보다 4종 뒤짐 (`--color-modal-panel-border`, `--shadow-dropdown`, `--shadow-raised`, `--shadow-raised-up`)
+- 정본 신설 후보 29건(개념 부재): chip icon 12 / dropdown trigger 10 / navigation icon·border 5 / toggle knob 1 / gnb underline 1
+- 명명 관례 차이 31건 (checked↔selected, focus↔selected, on·off↔selected·unselected, row↔cell, text↔label)
+- ds-apply 스킬 적용 불가 — `SKILL.md:3` 이 design-system 유지보수 작업을 명시적으로 배제
+
+**[미확인]**
+
+- 페이지 139건 각각의 정본 대응 여부 (미대조)
+- `style.css` 69색의 정본 대응 여부 (미대조)
+- `components-new.html` 인라인 `style=` 538건의 선택자 소속 (판정 불가)
+
+**[결정된 방침]**
+
+- `site-base.css` 폐지는 목표에서 제외. 사이트 정본 정합과 별개 문제이며 정본 신설 29건이 선행돼야 함
+- 분리 방식은 "정본 대응분을 정본 직접 참조로 바꿔 제거 → 잔량만 `--site-` 접두어로 개명". 전량 개명 아님 (정본을 따라야 할 토큰을 개명하면 정본 변경이 포털에 전파되지 않음)
+- 개명 시점은 잔량 확정 후
+
+**[재개 시 첫 작업]**
+
+- `style.css` 69색과 `tokens.css` 정본의 값 대조
