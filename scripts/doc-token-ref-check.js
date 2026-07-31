@@ -37,6 +37,24 @@ function read(rel) {
   try { return fs.readFileSync(path.join(ROOT, rel), 'utf8'); } catch { return ''; }
 }
 
+// 생성물 데이터 블록 제외(2026-07-31) — `JSON.parse("…")` 문자열 리터럴 1개를 통째로 비운다.
+//   왜 필요한가: pages/pipeline-status.html:144 는 pipeline-status.js 가 만든 대시보드
+//   데이터(67KB)를 JSON 문자열로 인라인하는데, 그 안에 각 게이트의 **과거 stdout 이 통째로**
+//   담긴다(output_tail). 그래서 이 검사기 자신의 옛 경고문에 적힌 토큰 이름을 다음 실행이
+//   "CSS 참조"로 오인해 스스로를 다시 신고하는 고리가 생겼다(--color-control-label-selected ·
+//   --color-icon-gray-hover · --color-text-body-inverse 3건, 전부 그 블록 안에만 존재).
+//   실측: pipeline-status.html 의 --color-* 3건은 100% 이 블록 안이고, 실제 CSS 참조는 0건이다
+//   (이 페이지는 --sub·--line·--fail 등 자체 변수 57개로 스타일링한다).
+//   왜 페이지 통째 제외가 아닌가: 그러면 그 페이지에 나중에 생길 진짜 CSS 참조까지 눈감는다.
+//   왜 <script> 통째 제외가 아닌가: semantic.html 의 정본 토큰 169종이 script 안에 있어
+//   그걸 빼면 검사 범위가 794→616 으로 줄어든다(측정치) — 명백한 약화라 채택 불가.
+//   범위: 저작 내용이 아니라 "과거 실행 기록"이므로 Check A/B/C 모두에 동일 적용한다.
+//   (블록 안 토큰은 DOM 에 적용되지 않으므로 드리프트가 될 수 없다. 대시보드 자체의
+//    신선도는 Gate 28 System Map Drift 소관.)
+function stripGeneratedDataBlobs(text) {
+  return text.replace(/JSON\.parse\(\s*"(?:[^"\\]|\\.)*"\s*\)/g, 'JSON.parse("")');
+}
+
 // --- canonical 정의 집합 (--color-*) ---
 function extractColorDefs(text) {
   const set = new Set();
@@ -61,7 +79,7 @@ const pages = fs.readdirSync(PAGES_DIR)
   .filter(f => f.endsWith('.html') && !isLegacyFile('pages/' + f));
 
 for (const page of pages) {
-  const txt = read(path.join('pages', page));
+  const txt = stripGeneratedDataBlobs(read(path.join('pages', page)));
   const localDefs = extractColorDefs(txt);             // 페이지 inline :root 정의
   const valid = new Set([...globalDefs, ...localDefs]);
 
