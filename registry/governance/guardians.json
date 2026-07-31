@@ -229,6 +229,97 @@
    "name": "DESIGN.md 드리프트",
    "guards": "AI 소비용 DESIGN.md 가 정본(tokens.css+registry)과 같은지 (낡으면 재생성 강제)",
    "auto": true
+  },
+  {
+   "num": "6c",
+   "group": "complete",
+   "name": "설치기 툴팁",
+   "guards": "설치기 툴팁·날짜가 최신 소스와 같나",
+   "auto": true
+  },
+  {
+   "num": "7b",
+   "group": "same",
+   "name": "토큰값 표면일치",
+   "guards": "코드·설치기·사이트의 색 값이 서로 같나",
+   "auto": true
+  },
+  {
+   "num": "15b",
+   "group": "build",
+   "name": "그림자 파서",
+   "guards": "그림자 값이 피그마로 제대로 변환되나",
+   "auto": true
+  },
+  {
+   "num": 16,
+   "group": "build",
+   "name": "컴포넌트 분류·검증",
+   "guards": "원본 대조 없이 완료 처리된 컴포넌트가 없나",
+   "auto": true
+  },
+  {
+   "num": 20,
+   "group": "rules",
+   "name": "토큰 drift",
+   "guards": "옛 토큰 이름이 등록부에 남아 있나",
+   "auto": true
+  },
+  {
+   "num": 21,
+   "group": "link",
+   "name": "레지스트리 active/legacy 일관성",
+   "guards": "은퇴한 파일이 사용 중으로 남아 있나",
+   "auto": true
+  },
+  {
+   "num": 22,
+   "group": "link",
+   "name": "페이지 레이아웃",
+   "guards": "페이지가 공통 레이아웃·폭 규칙을 지키나",
+   "auto": true
+  },
+  {
+   "num": 23,
+   "group": "link",
+   "name": "컴포넌트 표출 레이아웃",
+   "guards": "컴포넌트가 정해진 표출 규칙대로 보이나",
+   "auto": true
+  },
+  {
+   "num": 25,
+   "group": "same",
+   "name": "컴포넌트 별칭-정본 해석",
+   "guards": "페이지의 별칭 토큰이 정본까지 연결되나",
+   "auto": true
+  },
+  {
+   "num": 26,
+   "group": "same",
+   "name": "아이콘 개수 정합",
+   "guards": "표시되는 아이콘 개수가 실제와 같나",
+   "auto": true
+  },
+  {
+   "num": 27,
+   "group": "rules",
+   "name": "토큰 역할",
+   "guards": "글자 색에 글자용 토큰만 쓰였나",
+   "auto": true
+  },
+  {
+   "num": 28,
+   "group": "link",
+   "name": "시스템 맵 신선도",
+   "guards": "시스템 맵이 현재 코드와 맞나",
+   "auto": true
+  },
+  {
+   "num": 29,
+   "group": "same",
+   "name": "다크값 갈림",
+   "guards": "다크모드 값만 홀로 어긋난 토큰이 없나",
+   "auto": true
   }
  ],
  "hooks": [
