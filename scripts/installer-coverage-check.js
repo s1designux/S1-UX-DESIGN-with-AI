@@ -251,6 +251,16 @@ function audit() {
   const installedSemanticCssVars = new Set(
     [...figmaSets.SEMANTIC_COLOR].map((k) => '--' + k.replace(/\//g, '-'))
   );
+  // 침묵 통과 방어(2026-07-31): 위 멤버십 판정은 이 집합이 실제로 채워져 있을 때만 뜻이 있다.
+  //   loadFigmaPaths 는 섹션을 못 찾으면 `continue`(:51)로 조용히 빈 Set 을 남기므로,
+  //   SEMANTIC_COLOR 선언부가 사라지면 역할 토큰 전부가 아래 :264 로 빠져 WARN 이 되고
+  //   stats.SEMANTIC_COLOR 는 0 인 채 `✅ 0 / 0 covered · exit 0` 으로 통과한다(실측).
+  //   "개별 토큰이 설치기에 없다"(=정보용 WARN, 2026-06-08 설계)와
+  //   "집합을 통째로 못 읽었다"(=검사 불능)는 다른 사건이라 후자만 여기서 막는다.
+  //   정상값 171종(이력 최소 21종, 0 이었던 적 없음)이라 정상 동작에는 영향 없음.
+  if (installedSemanticCssVars.size === 0) {
+    throw new Error(`SEMANTIC_COLOR 를 ${path.relative(ROOT, VARS_DATA)} 에서 한 건도 읽지 못함 (선언부 이름 변경/삭제 의심). 멤버십 판정 불능이라 커버리지를 신뢰할 수 없어 중단.`);
+  }
 
   for (const cssName of cssNames) {
     const kind = categorize(cssName);
