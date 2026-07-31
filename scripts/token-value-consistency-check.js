@@ -86,6 +86,22 @@ function parseVarsData() {
   for (const m of sBlock.matchAll(/"([^"]+)"\s*:\s*\{\s*light:\s*"([^"]+)"\s*,\s*dark:\s*"([^"]+)"\s*\}/g)) {
     semantic[m[1]] = { light: m[2], dark: m[3] };
   }
+  // 침묵 누락 방어(2026-07-31): 위 정규식은 "한 줄·light 먼저" 서식을 전제하고,
+  // sStart 가 -1 이면 sBlock 이 빈 문자열이 된다. 어느 쪽이든 semantic 이 조용히 비어
+  // Check A 루프가 0회 돌고 mismatches 도 0 이라 ✅ 로 통과해버린다(Check B 는 vars-data 를
+  // 읽지 않아 계속 정상 건수를 찍으므로 착시가 생긴다). 블록 안의 "color/…" 키 개수와
+  // 파싱 개수가 다르면 요란하게 실패한다. dark-divergence-check.js:81-86 과 동일한 방어.
+  //   선언부 자체를 못 찾은 경우(sStart < 0)는 keyCount·parsed 가 둘 다 0 이라 개수 대조를
+  //   빠져나가므로 따로 막는다.
+  if (sStart < 0) {
+    throw new Error('SEMANTIC_COLOR 선언부를 vars-data.ts 에서 찾지 못함 (이름 변경/삭제 의심). 검사를 신뢰할 수 없어 중단.');
+  }
+  const sEnd = sBlock.indexOf('};');
+  const keyCount = [...(sEnd >= 0 ? sBlock.slice(0, sEnd) : sBlock).matchAll(/"color\/[^"]+"\s*:/g)].length;
+  const parsed = Object.keys(semantic).length;
+  if (keyCount !== parsed) {
+    throw new Error(`SEMANTIC_COLOR 파싱 누락 — 블록 내 키 ${keyCount}개 중 ${parsed}개만 파싱됨 (vars-data.ts 서식 변경 의심). 검사를 신뢰할 수 없어 중단.`);
+  }
   return { foundationHex, semantic };
 }
 
@@ -123,6 +139,12 @@ function check() {
     if (vdDark && tcDark && tcDark !== vdDark) {
       A.mismatches.push({ token: cssVar, mode: 'dark', tokensCss: tcDark, varsData: `${refs.dark}=${vdDark}` });
     }
+  }
+  // 추출 0건 = 검증 안 됨(✅ 아님) — token-sync-monitor.js:249 의 unmonitored 판정 기준을
+  // 그대로 쓰되, 이쪽은 vars-data 대조 경로가 이 루프 하나뿐이라 경고가 아니라 중단으로 처리한다.
+  // (파싱은 됐는데 tokens.css 와 교집합이 0 인 경우 — 이름 규칙이 바뀌면 여기서 걸린다.)
+  if (A.compared === 0) {
+    throw new Error(`Check A 비교 0건 — tokens.css ↔ vars-data 교집합 없음 (semantic ${Object.keys(semantic).length}종 · skip ${A.skipped}). 검사를 신뢰할 수 없어 중단.`);
   }
 
   const B = { compared: 0, mismatches: [] };
