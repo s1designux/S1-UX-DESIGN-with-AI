@@ -46,12 +46,14 @@
          1007~1010 (selected 전용 selected-hover 규칙) — 2026-07-30 재확인
 
 ⚠️ 정정 (작업 ③ 조사 결과): chip solid 는 '우회 배선' 이 아니었다 — 아래 기록이 오판이었음.
-   chip-solid-bg-selected-hover 는 vars-data.ts:443 에 이미 정의돼 있고(light blue/500 · dark blue-dark/250),
+   chip-solid-bg-selected-hover 는 plugins/figma-vars-installer/src/vars-data.ts:508 에 이미 정의돼 있고(light blue/500 · dark blue-dark/250),
    tokens.css 의 해당 줄은 GEN:SEMANTIC 자동생성 블록 안이며(수동 직접 배선 아님) vars-data 와 같은
    커밋(6bbde8c3, 2026-07-10)에서 함께 생성됐다. 웹·semantic·install-prompt 전 표면에도 정상 반영돼 있었다.
    → chip 은 작업 ③ 에서 손대지 않았다(고칠 것 없음). date-picker 만 실제 신설 작업이었다.
    (이 항목은 chip 도 (B) 유형이라 selected-hover 가 필요하다는 규칙 판단 자체는 옳다 — 틀린 것은
     "vars-data 를 거치지 않은 우회" 라는 상태 기술뿐이다.)
+   근거: plugins/figma-vars-installer/src/vars-data.ts 508 ("color/chip/solid/bg/selected-hover" 엔트리) ·
+         438~448 (SEMANTIC_COLOR 설명 주석 블록 — 옛 인용 443 은 이 주석 안) — 2026-07-31 재확인
 
 분리 이유: 토큰 신설 + 웹 수정 + 설치기 리빌드를 ②번 커밋에 섞지 않는다.
 
@@ -75,8 +77,11 @@ vars-data 의 토큰 키가 전부 embed 됐는지만 검사한다.
 - 현재 상태: `tokens[]`의 별칭이 **낡은 범용 시맨틱**을 가리킴
   - 예) `--pagination-control-bg` → `var(--color-surface-default)` ❌
   - 정본: `--color-pagination-control-bg-default`
-- **⚠️ 실해(實害) 발생 중**: `design/DESIGN.core.md` 157~162행에 이 별칭이 그대로 실려 있음
+- **⚠️ 실해(實害) 발생 중**: `design/DESIGN.core.md` 495~500행에 별칭 2개가 실려 있음 — `--pagination-control-hover-bg`(499·500행) · `--pagination-number-text-selected`(500행). `--pagination-control-bg` 는 이 파일에 0건
   → **AI가 이걸 읽고 죽은 별칭으로 코드를 짜고 있음**
+  - **수정 경로**: DESIGN.core.md 는 `scripts/gen-design-md.js` 가 `registry/components/pagination.json` 의 `tokens[]`(89행 hover-bg · 105행 number-text-selected)를 읽어 재생성하는 산출물이다. DESIGN.core.md 를 직접 고치지 말고 pagination.json 을 고친 뒤 재생성할 것
+  - 근거: design/DESIGN.core.md 499·500 (pagination variant 표) ·
+        registry/components/pagination.json 89·105 (tokens[] 별칭 엔트리) — 2026-07-31 재확인
 - 함께 처리해야 할 것:
   - Gate 20 `registry-drift-baseline.json` (지금 틀린 상태를 정상으로 기록 중)
   - `DESIGN.core.md` 재생성 (Gate 24)
