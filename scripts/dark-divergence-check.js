@@ -78,6 +78,13 @@ function parseVars(tsPath) {
   // 침묵 누락 방어(검증자 지적 2026-07-28): 위 정규식은 "한 줄·light 먼저" 서식을 전제한다.
   // 서식이 달라진 엔트리는 조용히 검사 대상에서 빠지므로, 블록 안의 "color/…" 키 개수와
   // 파싱 개수가 다르면 요란하게 실패한다(Gate 17/19 "추출 0건=안 됨" 원칙의 적용).
+  //   선언부 자체를 못 찾은 경우(sStart < 0)는 sBlock 이 빈 문자열이라 keyCount·parsed 가
+  //   둘 다 0 이 되어 아래 개수 대조를 그대로 빠져나간다(실측: units=0 outliers=0
+  //   crossGroups=0 인 채 exit 0). 그래서 따로 막는다 — 7f64bc3 에서
+  //   token-value-consistency-check.js 에 넣은 방어와 동일.
+  if (sStart < 0) {
+    throw new Error(`SEMANTIC_COLOR 선언부를 ${path.relative(ROOT, tsPath)} 에서 찾지 못함 (이름 변경/삭제 의심). 검사를 신뢰할 수 없어 중단.`);
+  }
   const sEnd = sBlock.indexOf('};');
   const keyCount = [...(sEnd >= 0 ? sBlock.slice(0, sEnd) : sBlock).matchAll(/"color\/[^"]+"\s*:/g)].length;
   const parsed = Object.keys(semantic).length;
