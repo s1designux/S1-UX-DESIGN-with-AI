@@ -305,8 +305,17 @@ zip 반영 여부를 수동 확인해야 하는 구조
 - `--color-surface-raised` 값 갈림: `tokens.css` #1C1D23 / `site-base` #35363F. `tokens.css` 를 `<link>` 하지 않는 6개 페이지에서 옛값 적용
 - `pages/policy.html:314·337` 에 `--color-action-primary` 유령 참조 2건 (정의 없음. 정본은 `--color-action-primary-default`)
 - `plugins/ds-apply/skills/ds-apply/references/tokens.css` 가 원본보다 4종 뒤짐 (`--color-modal-panel-border`, `--shadow-dropdown`, `--shadow-raised`, `--shadow-raised-up`)
-- 정본 신설 후보 29건(개념 부재): chip icon 12 / dropdown trigger 10 / navigation icon·border 5 / toggle knob 1 / gnb underline 1
-- 명명 관례 차이 31건 (checked↔selected, focus↔selected, on·off↔selected·unselected, row↔cell, text↔label)
+- **정본 신설 후보 0건.** `vars-data.ts` SEMANTIC_COLOR 171종 = `tokens.css` Semantic 171종(차집합 양쪽 0). 설치기는 이 171개로 전 컴포넌트를 그리며, 부품 전용 토큰 대신 기존 토큰을 재사용한다
+  - dropdown 트리거 → `color/form-control/{bg,border,text,icon}/*` (`build-components.ts:1263~1267`)
+  - toggle knob → `color/control/indicator/selected` · `indicator/disabled` (`:747`)
+  - gnb 밑줄 → `color/navigation/indicator/selected` (`:2500`)
+  - navigation 테두리 → `color/line/gray/subtle` (`:2742`)
+  - Line Tab 라벨·인디케이터 → `color/navigation/label/*` · `indicator/*` (`:1511·1524`)
+  - chip 아이콘 → registry 가 이미 `color/chip/{v}/label/{state}` 를 가리킴 (`chip.json:80~85·106~111`)
+- 실제 문제는 값이 아니라 **이름 배선**이다. registry 의 `name` 이 정본에 없는 별칭(예 `--chip-line-default-icon`)이고, `scripts/gen-design-md.js` 가 그 이름을 `DESIGN.core.md` 에 실어 AI 에 노출한다. 고칠 곳은 registry 의 `name` 필드 또는 `gen-design-md.js` 의 출력 방식 — 둘 중 하나
+- registry 엔트리 138건 중 정본과 이름이 대응하지 않는 것 60건. 전부 이름 문제이며 값 신설은 불필요 (명명 관례 차이 포함: checked↔selected, focus↔selected, on·off↔selected·unselected, row↔cell, text↔label)
+- 값이 정확히 일치하는 정본이 없는 것은 registry 참조 48건 중 3건뿐이고, 셋 다 다크값만 갈린다 — `dropdown.json:75` `--dropdown-list-bg`(surface-raised 다크 #35363F vs 정본 #1C1D23) · `textarea.json:77` `--input-readonly-text`(다크 #3E4049 vs 정본 #8A8C96) · `textarea.json:79` `--input-error-text`(라이트 red-400 vs 정본 red-300)
+- **별건 발견**: 설치기 Chip 에 아이콘·닫기(X) 변형 부품이 없다(`build-components.ts:771~837` 은 fill·stroke·label 3개만). registry `chip.json:150` 은 `subVariants ["text-only","with-icon","with-close"]` 를 선언한다. 토큰 문제가 아니라 컴포넌트 커버리지 공백 — 별도 항목
 - ds-apply 스킬 적용 불가 — `SKILL.md:3` 이 design-system 유지보수 작업을 명시적으로 배제
 
 **[미확인]**
@@ -317,10 +326,11 @@ zip 반영 여부를 수동 확인해야 하는 구조
 
 **[결정된 방침]**
 
-- `site-base.css` 폐지는 목표에서 제외. 사이트 정본 정합과 별개 문제이며 정본 신설 29건이 선행돼야 함
+- `site-base.css` 폐지는 목표에서 제외. 사이트 정본 정합과 별개 문제다
 - 분리 방식은 "정본 대응분을 정본 직접 참조로 바꿔 제거 → 잔량만 `--site-` 접두어로 개명". 전량 개명 아님 (정본을 따라야 할 토큰을 개명하면 정본 변경이 포털에 전파되지 않음)
 - 개명 시점은 잔량 확정 후
 
 **[재개 시 첫 작업]**
 
+- registry 의 `name` 필드를 정본 이름으로 바꿀지, `gen-design-md.js` 출력 방식을 바꿀지 결정
 - `style.css` 69색과 `tokens.css` 정본의 값 대조
