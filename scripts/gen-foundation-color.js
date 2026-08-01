@@ -38,24 +38,20 @@ const MARK_END = '/* <<< GEN:FOUNDATION-COLOR <<< */';
 const LIGHT_PAD = 14; // 기존 파일 관례: light 키필드 폭
 const DARK_PAD = 17;  // 기존 파일 관례: dark 키필드 폭(긴 키는 초과 시 +1 space)
 
-// ── vars-data FOUNDATION_COLOR 블록 추출 ──────────────────────────────────
-function foundationColorBlock() {
-  const text = fs.readFileSync(VARS_DATA, 'utf8');
-  const i = text.indexOf('const FOUNDATION_COLOR:');
-  const open = text.indexOf('{', i);
-  let depth = 0;
-  for (let j = open; j < text.length; j++) {
-    if (text[j] === '{') depth++;
-    else if (text[j] === '}') { depth--; if (depth === 0) return text.slice(open, j + 1); }
-  }
-  throw new Error('FOUNDATION_COLOR block not found');
-}
+// ── vars-data FOUNDATION_COLOR 로드 ───────────────────────────────────────
+// 2026-08-01 Phase 1: 소스 텍스트 긁기(중괄호 깊이 추적+정규식) → 공용 로더 이관.
+// "group/step" → hex|rgba 를 선언 순서대로 수집(모듈 객체 삽입 순서 = 선언 순서).
+const { loadVarsData } = require('./lib/load-vars-data');
 
-// "group/step": "#HEX" 를 선언 순서대로 수집
-function parseColorEntries(block) {
+function parseColorEntries() {
+  const V = loadVarsData();
   const out = [];
-  const re = /"([a-z0-9-]+)\/([a-z0-9-]+)"\s*:\s*"(#[0-9A-Fa-f]{3,8}|rgba?\([^)]*\))"/g;
-  for (const m of block.matchAll(re)) out.push({ group: m[1], step: m[2], hex: m[3] });
+  const VAL = /^(#[0-9A-Fa-f]{3,8}|rgba?\([^)]*\))$/;
+  for (const [key, hex] of Object.entries(V.FOUNDATION_COLOR)) {
+    const m = key.match(/^([a-z0-9-]+)\/([a-z0-9-]+)$/);
+    if (!m || typeof hex !== 'string' || !VAL.test(hex)) continue;
+    out.push({ group: m[1], step: m[2], hex });
+  }
   return out;
 }
 
@@ -154,7 +150,7 @@ function locateRegion(html) {
 
 function main() {
   const html = fs.readFileSync(FOUNDATION_HTML, 'utf8');
-  const entries = parseColorEntries(foundationColorBlock());
+  const entries = parseColorEntries();
   const region = locateRegion(html);
   const oldRegion = html.slice(region.start, region.end);
   const brandProse = parseExistingBrand(oldRegion);

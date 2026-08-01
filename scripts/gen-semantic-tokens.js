@@ -35,28 +35,25 @@ const TOKENS_CSS = path.join(ROOT, 'assets/css/tokens.css');
 
 const PREVIEW = process.argv.includes('--preview');
 
-function block(src, name) {
-  const m = src.match(new RegExp('export const ' + name + ':[\\s\\S]*?=\\s*\\{([\\s\\S]*?)\\n\\};', 'm'));
-  return m ? m[1] : '';
-}
+// 2026-08-01 Phase 1: 소스 텍스트 정규식 긁기 → 공용 로더(esbuild 모듈 로드) 이관.
+//   종전 block() 정규식은 "주석에 상수명이 등장하면 먼저 걸리는" 결합이 있었고,
+//   2026-07-29 실제로 색 토큰 400여 개가 통째로 유실됐다. 모듈 로드는 그 결합이 없다.
+const { loadVarsData } = require('./lib/load-vars-data');
+
 function aliasToCss(ref) {
   if (/^#/.test(ref) || /^rgba?\(/i.test(ref)) return ref;               // literal hex/rgba
   return `var(--color-${ref.replace(/\//g, '-')})`;                       // foundation alias
 }
 function figmaToCss(key) { return '--' + key.replace(/\//g, '-'); }       // color/x/y -> --color-x-y
 
-function parseEntries(src, objName) {
-  const b = block(src, objName);
-  // 값은 따옴표 안에서 통째로 캡처한다([^"]+). 그림자 2겹 값의 내부 콤마도 여기서 안 쪼개진다.
-  const re = /"([^"]+)":\s*\{\s*light:\s*"([^"]+)"\s*,\s*dark:\s*"([^"]+)"\s*\}/g;
+// 모듈 객체 → {key, light, dark}[] (선언 순서 = 객체 삽입 순서 보존)
+function parseEntries(obj) {
   const out = [];
-  let m;
-  while ((m = re.exec(b))) out.push({ key: m[1], light: m[2], dark: m[3] });
+  for (const [key, e] of Object.entries(obj || {})) {
+    if (e && typeof e.light === 'string' && typeof e.dark === 'string') out.push({ key, light: e.light, dark: e.dark });
+  }
   return out;
 }
-
-function parseSemantic(src) { return parseEntries(src, 'SEMANTIC_COLOR'); }
-function parseShadow(src)   { return parseEntries(src, 'SEMANTIC_SHADOW'); }
 
 function buildBlock(entries, shadows) {
   // group by category = 2nd path segment (color/<cat>/...)
@@ -117,15 +114,10 @@ ${darkLines.join('\n').replace(/\n+$/, '')}
 }
 
 function main() {
-  const src = fs.readFileSync(VARS, 'utf-8');
-  const entries = parseSemantic(src);
-  const shadows = parseShadow(src);
-  // "추출 0건 = 안 됨" 원칙(Gate 17/19). SEMANTIC_SHADOW 가 선언돼 있는데 파싱이 0이면
-  // 서식 변경으로 조용히 빠진 것이므로 요란하게 실패한다.
-  if (/export const SEMANTIC_SHADOW\s*:/.test(src) && shadows.length === 0) {
-    console.error('❌ vars-data.ts 에 SEMANTIC_SHADOW 가 있으나 파싱 결과가 0건입니다 (서식 변경 의심). 중단.');
-    process.exit(1);
-  }
+  // "추출 0건 = 안 됨" 원칙(Gate 17/19)은 로더가 집행한다(0건/급감 시 throw).
+  const V = loadVarsData();
+  const entries = parseEntries(V.SEMANTIC_COLOR);
+  const shadows = parseEntries(V.SEMANTIC_SHADOW);
   const blockStr = buildBlock(entries, shadows);
 
   if (PREVIEW) {

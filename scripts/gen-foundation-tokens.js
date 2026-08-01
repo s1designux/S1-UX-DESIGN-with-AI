@@ -36,19 +36,18 @@ const TOKENS_CSS = path.join(ROOT, 'assets/css/tokens.css');
 
 const PREVIEW = process.argv.includes('--preview');
 
-// ── vars-data.ts 파싱 ──────────────────────────────────────────────────────
-function block(src, name) {
-  const m = src.match(new RegExp('export const ' + name + ':[\\s\\S]*?=\\s*\\{([\\s\\S]*?)\\n\\};', 'm'));
-  if (!m) throw new Error('vars-data.ts에서 블록을 못 찾음: ' + name);
-  return m[1];
-}
+// ── vars-data 로드 ─────────────────────────────────────────────────────────
+// 2026-08-01 Phase 1: 소스 텍스트 정규식 긁기 → 공용 로더(esbuild 모듈 로드) 이관.
+const { loadVarsData } = require('./lib/load-vars-data');
 
-function parseFlat(blockText) {
+// 모듈 객체 → {key, val}[] (선언 순서 보존). 종전 parseFlat 과 동일하게
+// "seg/seg" 꼴 키만 수집하고, 문자열 값은 그대로·숫자 값은 number 로 담는다.
+function parseFlat(obj) {
   const entries = [];
-  const re = /"([a-zA-Z0-9_\-]+\/[a-zA-Z0-9_\-]+)"\s*:\s*("([^"]*)"|-?[0-9.]+)/g;
-  let m;
-  while ((m = re.exec(blockText))) {
-    entries.push({ key: m[1], val: m[3] !== undefined ? m[3] : m[2] });
+  for (const [key, val] of Object.entries(obj || {})) {
+    if (!/^[a-zA-Z0-9_-]+\/[a-zA-Z0-9_-]+$/.test(key)) continue;
+    if (typeof val !== 'string' && typeof val !== 'number') continue;
+    entries.push({ key, val });
   }
   return entries;
 }
@@ -247,9 +246,9 @@ ${letterSpacing.replace(/\n$/, '').split('\n').map((l) => '  ' + l.trim()).join(
 }
 
 function main() {
-  const varsSrc = fs.readFileSync(VARS, 'utf-8');
-  const colorEntries = parseFlat(block(varsSrc, 'FOUNDATION_COLOR'));
-  const numberEntries = parseFlat(block(varsSrc, 'FOUNDATION_NUMBER'));
+  const V = loadVarsData();
+  const colorEntries = parseFlat(V.FOUNDATION_COLOR);
+  const numberEntries = parseFlat(V.FOUNDATION_NUMBER);
 
   const innerBlock = buildFoundationInner(colorEntries, numberEntries);
   const genBlock = `/* >>> GEN:FOUNDATION >>> ${STAMP} */\n${innerBlock}\n/* <<< GEN:FOUNDATION <<< */`;

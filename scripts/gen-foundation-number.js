@@ -37,23 +37,22 @@ const DIMS = [
   { cat: 'breakpoint',  marker: 'FOUNDATION-BREAKPOINT', arr: 'BREAKPOINTS',   prop: 'px'  },
 ];
 
+// 2026-08-01 Phase 1: 소스 텍스트 긁기(중괄호 깊이 추적+정규식) → 공용 로더 이관.
+const { loadVarsData } = require('./lib/load-vars-data');
+
 function foundationNumberBlock() {
-  const text = fs.readFileSync(VARS_DATA, 'utf8');
-  const i = text.indexOf('const FOUNDATION_NUMBER:');
-  const open = text.indexOf('{', i);
-  let depth = 0;
-  for (let j = open; j < text.length; j++) {
-    if (text[j] === '{') depth++;
-    else if (text[j] === '}') { depth--; if (depth === 0) return text.slice(open, j + 1); }
-  }
-  throw new Error('FOUNDATION_NUMBER block not found');
+  return loadVarsData().FOUNDATION_NUMBER;
 }
 
-// cat 별 항목 수집(선언 순서). 값은 number(정수·소수 모두).
-function entriesOf(block, cat) {
+// cat 별 항목 수집(선언 순서 = 모듈 객체 삽입 순서). 값은 number(정수·소수 모두).
+function entriesOf(numObj, cat) {
   const out = [];
-  const re = new RegExp('"' + cat + '\\/([a-z0-9-]+)"\\s*:\\s*([0-9.]+)', 'g');
-  for (const m of block.matchAll(re)) out.push({ key: m[1], val: Number(m[2]) });
+  const prefix = cat + '/';
+  for (const [key, val] of Object.entries(numObj || {})) {
+    if (key.startsWith(prefix) && typeof val === 'number' && /^[a-z0-9-]+$/.test(key.slice(prefix.length))) {
+      out.push({ key: key.slice(prefix.length), val });
+    }
+  }
   return out;
 }
 

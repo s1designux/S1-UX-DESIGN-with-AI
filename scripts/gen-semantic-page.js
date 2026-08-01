@@ -61,7 +61,7 @@ function roleOf(key)     { return key.split('/').slice(2).join(' / '); }  // pro
 function build() {
   const css = parseTokensCss();
   const resolve = makeResolver(css);
-  const { semantic } = parseVarsData();                                   // 선언 순서 보존(matchAll)
+  const { semantic } = parseVarsData();                       // 선언 순서 보존(모듈 객체 삽입 순서 — Phase 1 로더 경유)
 
   const groups = [];           // [{ key, label, desc, tokens:[...] }]
   const index = new Map();
