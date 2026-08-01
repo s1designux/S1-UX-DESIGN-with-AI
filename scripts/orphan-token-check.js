@@ -27,9 +27,12 @@ const BC = path.join(ROOT, 'plugins/figma-vars-installer/src/build-components.ts
 const VD = path.join(ROOT, 'plugins/figma-vars-installer/src/vars-data.ts');
 const ALLOW = path.join(ROOT, 'registry/governance/intentional-unused-tokens.json');
 
-// ── 1. 공급: vars-data SEMANTIC_COLOR 키 ("color/…": 형태) ──────────────────
-const vd = fs.readFileSync(VD, 'utf8');
-const supply = new Set([...vd.matchAll(/"(color\/[^"]+)"\s*:/g)].map((m) => m[1]));
+// ── 1. 공급: vars-data SEMANTIC_COLOR 키 ("color/…" 형태) ───────────────────
+// 2026-08-01 Phase 1: 파일 전체 정규식 → 공용 로더(모듈 값) 이관. 종전 정규식은 주석 안의
+//   "color/…" 문자열까지 공급으로 오집계할 수 있었다(로더는 실제 키만 본다).
+const { loadVarsData } = require('./lib/load-vars-data');
+const vd = fs.readFileSync(VD, 'utf8');   // 아래 "주석 언급" 리포트용으로만 계속 사용
+const supply = new Set(Object.keys(loadVarsData().SEMANTIC_COLOR).filter((k) => k.startsWith('color/')));
 
 // ── 2. 웹 소비: var(--color-…) ────────────────────────────────────────────
 const WEB = [

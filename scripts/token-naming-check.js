@@ -22,8 +22,12 @@ const ROOT = path.join(__dirname, "..");
 const VD = path.join(ROOT, "plugins/figma-vars-installer/src/vars-data.ts");
 const RULES = path.join(ROOT, "registry/governance/naming-rules.json");
 
+// 2026-08-01 Phase 1: 파일 전체 정규식 → 공용 로더(모듈 값) 이관.
+//   종전에는 주석·다른 상수에 등장하는 문자열까지 키로 오집계될 수 있었다.
+const { loadVarsData } = require("./lib/load-vars-data");
+
 function loadKeys() {
-  const vd = fs.readFileSync(VD, "utf8");
+  const V = loadVarsData();
   // Semantic 경로 키: "color/…" (브랜드 별칭 등 Semantic 레이어). 숫자 Semantic 키도 포함.
   const NUM_NS = "spacing|radius|border-width|sizing|font-size|font-weight|line-height|opacity|letter-spacing";
   // 그림자 네임스페이스는 NUM_NS 에 넣지 않고 분리한다(2026-07-29):
@@ -32,10 +36,20 @@ function loadKeys() {
   //   상수 이름이 내용과 어긋나 다음 사람이 오독한다. 적용되는 네이밍 규칙(kebab·금지세그먼트)은
   //   동일하므로 키 집합에는 함께 합친다 — 분리는 "이름의 정직성"을 위한 것이지 규칙 완화가 아니다.
   const SHADOW_NS = "shadow";
-  const color = [...vd.matchAll(/"(color\/[^"]+)"/g)].map((m) => m[1]);
-  const number = [...vd.matchAll(new RegExp(`"((?:${NUM_NS})\\/[^"]+)"`, "g"))].map((m) => m[1]);
-  const shadow = [...vd.matchAll(new RegExp(`"((?:${SHADOW_NS})\\/[^"]+)"`, "g"))].map((m) => m[1]);
-  return [...new Set([...color, ...number, ...shadow])];
+  const NUM_RE = new RegExp(`^(?:${NUM_NS})\\/`);
+  const SHADOW_RE = new RegExp(`^(?:${SHADOW_NS})\\/`);
+  // 정본 5개 객체의 키 + Semantic 값에 등장하는 Foundation 참조 경로(종전 파일 스캔이 잡던 범위)
+  const all = [
+    ...Object.keys(V.FOUNDATION_COLOR), ...Object.keys(V.FOUNDATION_NUMBER),
+    ...Object.keys(V.SEMANTIC_COLOR), ...Object.keys(V.SEMANTIC_NUMBER), ...Object.keys(V.SEMANTIC_SHADOW),
+  ];
+  for (const e of Object.values(V.SEMANTIC_COLOR)) {
+    for (const ref of [e && e.light, e && e.dark]) if (typeof ref === "string") all.push(ref);
+  }
+  for (const v of Object.values(V.SEMANTIC_NUMBER)) if (typeof v === "string") all.push(v);
+  const keys = all.filter((k) => typeof k === "string" &&
+    (k.startsWith("color/") || NUM_RE.test(k) || SHADOW_RE.test(k)));
+  return [...new Set(keys)];
 }
 
 // 세그먼트 분해: 상태 구분자 '--' 는 한 세그먼트 안에서 허용(예: primary--default)

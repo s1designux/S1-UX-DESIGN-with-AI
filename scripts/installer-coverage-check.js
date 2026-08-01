@@ -38,29 +38,19 @@ function loadCssVarNames(cssPath) {
   return names;
 }
 
-// ── vars-data.ts 파서 ─────────────────────────────────────────────────────────
+// ── vars-data 로드 ────────────────────────────────────────────────────────────
+// 2026-08-01 Phase 1: "선언 위치부터 다음 export 까지 텍스트 슬라이스 + 키 정규식"
+//   → 공용 로더(모듈 값) 이관. 선언 순서·구분 주석이 더 이상 파서 계약이 아니다.
+const { loadVarsData } = require('./lib/load-vars-data');
 
-function loadFigmaPaths(tsPath) {
-  const ts = fs.readFileSync(tsPath, 'utf-8');
-  const sections = ['FOUNDATION_COLOR', 'FOUNDATION_NUMBER', 'SEMANTIC_COLOR', 'SEMANTIC_NUMBER', 'SEMANTIC_SHADOW'];
+function loadFigmaPaths() {
+  const V = loadVarsData();
+  const src = {
+    FOUNDATION_COLOR: V.FOUNDATION_COLOR, FOUNDATION_NUMBER: V.FOUNDATION_NUMBER,
+    SEMANTIC_COLOR: V.SEMANTIC_COLOR, SEMANTIC_NUMBER: V.SEMANTIC_NUMBER, SEMANTIC_SHADOW: V.SEMANTIC_SHADOW,
+  };
   const result = {};
-  for (const name of sections) {
-    result[name] = new Set();
-    // `const SEMANTIC_NUMBER:` 처럼 colon 표기까지 정확히 매칭 (SEMANTIC_NUMBER_COLLECTION 같은 동명 상수 제외)
-    const start = ts.indexOf(`const ${name}:`);
-    if (start < 0) continue;
-    // 다음 const/export 까지가 한 섹션
-    const rest = ts.slice(start + name.length + 1);
-    const nextIdx = rest.search(/\n(export\s+const|export\s+interface)\s+/);
-    const chunk = nextIdx > 0 ? rest.slice(0, nextIdx) : rest;
-    // 키만 추출: "path/..." :
-    for (const r of chunk.matchAll(/"([^"]+)"\s*:/g)) {
-      const key = r[1];
-      // value 안의 "light"/"dark" property 키는 제외
-      if (key === 'light' || key === 'dark') continue;
-      result[name].add(key);
-    }
-  }
+  for (const [name, obj] of Object.entries(src)) result[name] = new Set(Object.keys(obj || {}));
   return result;
 }
 
@@ -237,7 +227,7 @@ function cssToFigmaSemantic(stripped, map) {
 
 function audit() {
   const cssNames = loadCssVarNames(TOKENS_CSS);
-  const figmaSets = loadFigmaPaths(VARS_DATA);
+  const figmaSets = loadFigmaPaths();
 
   const STRICT_KINDS = ['FOUNDATION_COLOR', 'FOUNDATION_NUMBER', 'SEMANTIC_COLOR', 'SEMANTIC_NUMBER', 'SEMANTIC_SHADOW'];
   const missing = Object.fromEntries(STRICT_KINDS.map((k) => [k, []]));

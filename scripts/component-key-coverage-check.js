@@ -30,12 +30,34 @@ const VD = path.join(ROOT, "plugins/figma-vars-installer/src/vars-data.ts");
 const NUM_NS = "spacing|radius|border-width|sizing|font-size|font-weight|line-height|opacity|letter-spacing";
 
 // ── vars-data 공급 키 집합 ──────────────────────────────────────────────
+// 2026-08-01 Phase 1: 파일 전체 정규식 → 공용 로더(모듈 값) 이관.
+const { loadVarsData } = require("./lib/load-vars-data");
+
 function loadSupply() {
-  const vd = fs.readFileSync(VD, "utf8");
-  const color = new Set([...vd.matchAll(/"(color\/[^"]+)"/g)].map((m) => m[1]));
-  const number = new Set([...vd.matchAll(new RegExp(`"((?:${NUM_NS})\\/[^"]+)"`, "g"))].map((m) => m[1]));
+  const V = loadVarsData();
+  const NUM_RE = new RegExp(`^(?:${NUM_NS})\\/`);
+  const color = new Set(), number = new Set();
+  // 키 + Semantic 값에 등장하는 참조 경로(종전 파일 스캔이 잡던 범위와 동일)
+  const pool = [
+    ...Object.keys(V.SEMANTIC_COLOR), ...Object.keys(V.SEMANTIC_NUMBER),
+    ...Object.keys(V.FOUNDATION_COLOR), ...Object.keys(V.FOUNDATION_NUMBER),
+    ...Object.keys(V.SEMANTIC_SHADOW),
+  ];
+  for (const e of Object.values(V.SEMANTIC_COLOR)) {
+    for (const ref of [e && e.light, e && e.dark]) if (typeof ref === "string") pool.push(ref);
+  }
+  for (const v of Object.values(V.SEMANTIC_NUMBER)) if (typeof v === "string") pool.push(v);
+  for (const k of pool) {
+    if (typeof k !== "string") continue;
+    if (k.startsWith("color/")) color.add(k);
+    else if (NUM_RE.test(k)) number.add(k);
+  }
   // FOUNDATION_COLOR: 헥스값으로 정의된 Foundation 팔레트 키(예: "brand/ci": "#004097")
-  const foundation = new Set([...vd.matchAll(/"([a-z][\w-]*\/[\w-]+)"\s*:\s*"#/g)].map((m) => m[1]));
+  const foundation = new Set(
+    Object.entries(V.FOUNDATION_COLOR)
+      .filter(([k, v]) => typeof v === "string" && v.startsWith("#") && /^[a-z][\w-]*\/[\w-]+$/.test(k))
+      .map(([k]) => k)
+  );
   return { color, number, foundation };
 }
 

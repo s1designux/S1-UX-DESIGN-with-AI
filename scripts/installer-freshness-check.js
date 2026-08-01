@@ -25,46 +25,22 @@ const VARS_DATA = path.join(ROOT, 'plugins/figma-vars-installer/src/vars-data.ts
 const ZIP = path.join(ROOT, 'assets/downloads/s1-ux-design-guide-installer.zip');
 const ZIP_ENTRY = 's1-ux-design-guide-installer/code.js';
 
-// 침묵 통과 방어(2026-07-31): 원래 이 함수는 선언부를 못 찾거나 중괄호가 안 닫히면 '' 을
-//   돌려주고 조용히 진행했다. 그러면 그 섹션의 키가 통째로 빠지는데, 아래 check() 는
-//   "빠진 키"가 아니라 "읽어낸 키"만 zip 과 대조하므로 검사 대상이 줄어든 채 ✅ 로 통과한다
-//   (실측: FOUNDATION_COLOR 개명 시 464→256, SEMANTIC_COLOR 개명 시 464→293, 둘 다 exit 0).
-//   호출부는 canonicalKeys() 4곳뿐이고 모두 실재하는 섹션을 기대하므로 '' 이 정상인 경로는 없다.
-function block(text, ident) {
-  const i = text.indexOf(ident);
-  if (i < 0) {
-    throw new Error(`${path.relative(ROOT, VARS_DATA)} 에서 \`${ident}\` 선언부를 찾지 못함 (이름 변경/삭제 의심). 토큰 목록이 불완전해 zip 최신성을 신뢰할 수 없어 중단.`);
-  }
-  const open = text.indexOf('{', i);
-  let depth = 0;
-  for (let j = open; j < text.length; j++) {
-    if (text[j] === '{') depth++;
-    else if (text[j] === '}') { depth--; if (depth === 0) return text.slice(open, j + 1); }
-  }
-  throw new Error(`${path.relative(ROOT, VARS_DATA)} 의 \`${ident}\` 블록이 닫히지 않음 (중괄호 불일치). 토큰 목록이 불완전해 zip 최신성을 신뢰할 수 없어 중단.`);
-}
-function topKeys(blk) {
-  // 최상위 "key": 만 (중첩 SEMANTIC_COLOR light/dark 객체 안의 light/dark 제외)
-  const out = [];
-  for (const m of blk.matchAll(/"([a-z0-9/-]+)"\s*:/g)) {
-    if (m[1] === 'light' || m[1] === 'dark') continue;
-    out.push(m[1]);
-  }
-  return out;
-}
+// 2026-08-01 Phase 1: 텍스트 슬라이스(선언부 탐색 + 중괄호 깊이 추적) → 공용 로더 이관.
+//   종전의 침묵 통과 방어(선언부 못 찾으면 throw)는 로더가 승계한다 — 로더는 5개 상수를
+//   모두 확인하고 0건/급감이면 throw 하므로, "검사 대상이 줄어든 채 ✅ 통과"가 구조적으로
+//   불가능하다(실측 사례: FOUNDATION_COLOR 개명 시 464→256 인 채 exit 0 이던 옛 결함).
+const { loadVarsData } = require('./lib/load-vars-data');
 
 function canonicalKeys() {
-  const vd = fs.readFileSync(VARS_DATA, 'utf8');
+  const V = loadVarsData();
   return [
-    ...topKeys(block(vd, 'const FOUNDATION_COLOR:')),
-    ...topKeys(block(vd, 'const FOUNDATION_NUMBER:')),
-    ...topKeys(block(vd, 'const SEMANTIC_COLOR:')),
-    ...topKeys(block(vd, 'const SEMANTIC_NUMBER:')),
+    ...Object.keys(V.FOUNDATION_COLOR),
+    ...Object.keys(V.FOUNDATION_NUMBER),
+    ...Object.keys(V.SEMANTIC_COLOR),
+    ...Object.keys(V.SEMANTIC_NUMBER),
     // 2026-07-31 편입: 그림자 3종이 이 목록에 없어 zip 최신성 검사 밖이었다
     //   (Gate 6 installer-coverage 는 이미 3/3 검사 중이라 소스 커버리지만 지켜지던 상태).
-    //   키 형식은 다른 섹션과 같은 "shadow/raised" 꼴이고, 값이 {light, dark} 인 것도
-    //   SEMANTIC_COLOR 와 동일해 topKeys 의 light/dark 제외 규칙이 그대로 적용된다.
-    ...topKeys(block(vd, 'const SEMANTIC_SHADOW:')),
+    ...Object.keys(V.SEMANTIC_SHADOW),
   ];
 }
 
