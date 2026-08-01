@@ -52,20 +52,18 @@ const figmaPathToCssVar = (p) => '--' + (p.startsWith('color/') ? p : 'color/' +
 const foundationPathToCssVar = (p) => '--color-' + p.replace(/\//g, '-'); // "gray/100" → --color-gray-100
 
 // ── 1. 정본 빌드 (vars-data) ─────────────────────
+// 2026-08-01 Phase 1: 소스 텍스트 정규식 긁기 → 공용 로더(esbuild 모듈 로드)로 이관.
+//   선언 순서·주석 내용은 더 이상 파서 계약이 아니다 (scripts/lib/load-vars-data.js 참조).
+const { loadVarsData } = require('./lib/load-vars-data');
+
 function buildCanonical() {
-  const text = fs.readFileSync(P.varsData, 'utf8');
+  const V = loadVarsData();
 
-  // FOUNDATION_COLOR: "gray/100": "#E9E9E9"
+  // FOUNDATION_COLOR: "gray/100" → "#E9E9E9" (hex 값만 — 그 외 형식은 종전 정규식과 동일하게 제외)
   const foundationByPath = {};
-  const fStart = text.indexOf('FOUNDATION_COLOR');
-  const fBlock = text.slice(fStart, text.indexOf('};', fStart));
-  for (const m of fBlock.matchAll(/"([^"]+)"\s*:\s*"(#[0-9a-fA-F]{3,8})"/g)) {
-    foundationByPath[m[1]] = m[2].toUpperCase();
+  for (const [p, hex] of Object.entries(V.FOUNDATION_COLOR)) {
+    if (typeof hex === 'string' && /^#[0-9a-fA-F]{3,8}$/.test(hex)) foundationByPath[p] = hex.toUpperCase();
   }
-
-  // SEMANTIC_COLOR: "color/x/y": { light: "gray/100", dark: "a/b" }
-  const sStart = text.indexOf('SEMANTIC_COLOR:');
-  const sBlock = sStart >= 0 ? text.slice(sStart) : '';
 
   // canonical: cssVar → {light, dark, src} (resolved hex)
   const canonical = {};
@@ -77,11 +75,12 @@ function buildCanonical() {
     canonical[foundationPathToCssVar(p)] = { light: hex, dark: hex, src: 'vars-data' };
   }
   // [layer 1b] legacy component semantic (color/button·control·text·icon …) — vars-data 정본
-  for (const m of sBlock.matchAll(/"([^"]+)"\s*:\s*\{\s*light:\s*"([^"]+)"\s*,\s*dark:\s*"([^"]+)"\s*\}/g)) {
-    semanticColorSet.add(figmaPathToCssVar(m[1]));        // 값 해석 여부와 무관하게 집합엔 등록(rgba overlay 포함)
-    const lh = foundationByPath[m[2]];
-    const dh = foundationByPath[m[3]];
-    if (lh && dh) canonical[figmaPathToCssVar(m[1])] = { light: lh, dark: dh, src: 'vars-data' };
+  for (const [key, entry] of Object.entries(V.SEMANTIC_COLOR)) {
+    if (!entry || typeof entry.light !== 'string' || typeof entry.dark !== 'string') continue;
+    semanticColorSet.add(figmaPathToCssVar(key));          // 값 해석 여부와 무관하게 집합엔 등록(rgba overlay 포함)
+    const lh = foundationByPath[entry.light];
+    const dh = foundationByPath[entry.dark];
+    if (lh && dh) canonical[figmaPathToCssVar(key)] = { light: lh, dark: dh, src: 'vars-data' };
   }
 
   // [site-base 제외 — 2026-06-16 사용자 결정]

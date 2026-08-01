@@ -67,40 +67,25 @@ function makeResolver({ light, dark }) {
   };
 }
 
-// ── vars-data.ts 파서 ────────────────────────────────
+// ── vars-data 로드 ───────────────────────────────────
+// 2026-08-01 Phase 1: 정규식 긁기 → 공용 로더(esbuild 모듈 로드) 이관.
+//   종전의 침묵 누락 방어(keyCount 대조·선언부 탐색)는 "정규식이 서식에 결합"돼 있어
+//   필요했던 것 — 로더는 모듈 값을 직접 읽고, 0건/급감 시 로더 자신이 throw 한다.
+const { loadVarsData } = require('./lib/load-vars-data');
+
 function parseVarsData() {
-  const text = fs.readFileSync(VARS_DATA, 'utf8');
+  const V = loadVarsData();
 
-  // FOUNDATION_COLOR: "key": "#HEX"
+  // FOUNDATION_COLOR: "key" → "#HEX" (대문자 정규화 — 종전 파서와 동일)
   const foundationHex = {};
-  const fStart = text.indexOf('FOUNDATION_COLOR');
-  const fBlock = text.slice(fStart, text.indexOf('};', fStart));
-  for (const m of fBlock.matchAll(/"([^"]+)"\s*:\s*"(#[0-9a-fA-F]{3,8})"/g)) {
-    foundationHex[m[1]] = m[2].toUpperCase();
+  for (const [k, hex] of Object.entries(V.FOUNDATION_COLOR)) {
+    if (typeof hex === 'string' && /^#[0-9a-fA-F]{3,8}$/.test(hex)) foundationHex[k] = hex.toUpperCase();
   }
 
-  // SEMANTIC_COLOR: "key": { light: "x/y", dark: "a/b" }
+  // SEMANTIC_COLOR: "key" → { light, dark }
   const semantic = {};
-  const sStart = text.indexOf('SEMANTIC_COLOR:');
-  const sBlock = sStart >= 0 ? text.slice(sStart) : '';
-  for (const m of sBlock.matchAll(/"([^"]+)"\s*:\s*\{\s*light:\s*"([^"]+)"\s*,\s*dark:\s*"([^"]+)"\s*\}/g)) {
-    semantic[m[1]] = { light: m[2], dark: m[3] };
-  }
-  // 침묵 누락 방어(2026-07-31): 위 정규식은 "한 줄·light 먼저" 서식을 전제하고,
-  // sStart 가 -1 이면 sBlock 이 빈 문자열이 된다. 어느 쪽이든 semantic 이 조용히 비어
-  // Check A 루프가 0회 돌고 mismatches 도 0 이라 ✅ 로 통과해버린다(Check B 는 vars-data 를
-  // 읽지 않아 계속 정상 건수를 찍으므로 착시가 생긴다). 블록 안의 "color/…" 키 개수와
-  // 파싱 개수가 다르면 요란하게 실패한다. dark-divergence-check.js:81-86 과 동일한 방어.
-  //   선언부 자체를 못 찾은 경우(sStart < 0)는 keyCount·parsed 가 둘 다 0 이라 개수 대조를
-  //   빠져나가므로 따로 막는다.
-  if (sStart < 0) {
-    throw new Error('SEMANTIC_COLOR 선언부를 vars-data.ts 에서 찾지 못함 (이름 변경/삭제 의심). 검사를 신뢰할 수 없어 중단.');
-  }
-  const sEnd = sBlock.indexOf('};');
-  const keyCount = [...(sEnd >= 0 ? sBlock.slice(0, sEnd) : sBlock).matchAll(/"color\/[^"]+"\s*:/g)].length;
-  const parsed = Object.keys(semantic).length;
-  if (keyCount !== parsed) {
-    throw new Error(`SEMANTIC_COLOR 파싱 누락 — 블록 내 키 ${keyCount}개 중 ${parsed}개만 파싱됨 (vars-data.ts 서식 변경 의심). 검사를 신뢰할 수 없어 중단.`);
+  for (const [k, e] of Object.entries(V.SEMANTIC_COLOR)) {
+    if (e && typeof e.light === 'string' && typeof e.dark === 'string') semantic[k] = { light: e.light, dark: e.dark };
   }
   return { foundationHex, semantic };
 }
