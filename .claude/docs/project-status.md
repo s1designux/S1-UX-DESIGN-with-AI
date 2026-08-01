@@ -15,7 +15,7 @@
 * ✅ Component Token — 9개 그룹 추출 및 Semantic 참조 구조 정의 완료 (`tokens/component-tokens-extracted.md`)
 * ✅ Button variants — primary / secondary / blue-line 토큰 완료 (Danger 삭제, ghost deprecated 확정)
 * ✅ Button blue-line variant — tokens.css + component.tokens.json 추가 완료 (2026-05-11)
-* ✅ 가이드 HTML — foundation / semantic / components-new 페이지 완료
+* ✅ 가이드 HTML — foundation / semantic / components 페이지 완료
 * ✅ MVP3.3 Portal IA 재편 — System 그룹 분리, Button 페이지 6탭 구조 전환 완료 (2026-05-11)
 * ✅ MVP3.4 Button Figma MCP 비교 — 토큰 불일치 7건 + 이중 CSS 구조 문서화 완료 (2026-05-12)
 * ✅ MVP3.4.1 Button Sync 자동화 — 37개 정합성 검사 스크립트 + GitHub Actions 일일 자동화 완료 (2026-05-12)
@@ -84,7 +84,7 @@ tokens/
 pages/
   foundation.html    ✅ Dark Palette 포함
   semantic.html      ✅ Light/Dark 테마 전환
-  components-new.html ✅ PC/Mobile 플랫폼 전환 포함
+  components.html ✅ PC/Mobile 플랫폼 전환 포함
   policy.html        🚧 작성 중
   patterns.html      파일 존재 · 완성도 미확인
   legacy.html        파일 존재 · 완성도 미확인

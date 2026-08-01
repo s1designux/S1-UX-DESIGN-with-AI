@@ -429,7 +429,7 @@ async function main() {
   const html = `<!doctype html><html lang="ko"><head><meta charset="utf-8">
 <title>Builder Preview${filter ? " · " + esc(filter) : ""}</title>
 <style>
-  /* components-new.html 레이아웃 chrome 재현 (별도 파일 — 페이지엔 안 섞음) */
+  /* components.html 레이아웃 chrome 재현 (별도 파일 — 페이지엔 안 섞음) */
   body { font-family: Pretendard, system-ui, sans-serif; margin: 0; background: #fff; color: #202020; }
   .top { padding: 18px 40px; border-bottom: 1px solid #ECECEC; position: sticky; top: 0; background: #fff; z-index: 5; display: flex; align-items: center; justify-content: space-between; gap: 20px; }
   .top h1 { margin: 0; font-size: 18px; font-weight: 700; letter-spacing: -.02em; }

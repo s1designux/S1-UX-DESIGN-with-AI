@@ -70,7 +70,7 @@ reports/screen-rebuild/{service}/{flow}/
    - 🔑 **이름으로 판단 금지 — 키로만 판단.** 허용 여부는 컴포넌트 `key` 를 **`registry/figma/allowed-remote-keys.json`**(단일 출처, = build-components.ts `ICON_KEYS` 9키)과 대조해서만 결정한다. `input`·`button`·`ic_*` 같은 정본스러운 **이름은 외부 라이브러리도 똑같이 쓰므로 신뢰 금지**(2026-06-19 오탐·누수의 근본 원인).
    - 📐 **필수 스캔 루틴:** 빌드 종료 전·검증 시 `references/provenance-scan.md` 의 키 기반 스캔을 **실제로 실행**해 `violationCount===0` 을 확인한다. 위반은 거기 결정 트리(로컬 교체 / figma-library-build 컴포넌트화 / (c)애매 아이콘 확인)로 처리한다.
    - **레거시 원본 화면(1단계 조사 대상)은 "스펙 읽기 전용"이다.** 원본의 인스턴스를 `clone()` 하거나 `getMainComponentAsync()`로 그 mainComponent를 재사용해 새 인스턴스를 만드는 것을 **금지한다** — 레거시 화면은 외부/타 라이브러리(예: UVIS시스템·관계사용)로 만들어졌을 수 있어 외부 참조가 그대로 전파된다. (← 2026-06-19 PC 로그인에서 19개 인스턴스 전부 외부 UVIS 라이브러리가 새어든 실패의 근본 원인.)
-   - 빌드 시작 전 **로컬 정본 세트를 먼저 찾아라**: `figma.root.findAll(n => n.type==="COMPONENT_SET" && !n.remote)` (또는 components-new 페이지). 필요한 컴포넌트의 로컬 세트 id·variant를 확정한 뒤, **그 로컬 세트에서 `.defaultVariant`/해당 variant로 인스턴스 생성**.
+   - 빌드 시작 전 **로컬 정본 세트를 먼저 찾아라**: `figma.root.findAll(n => n.type==="COMPONENT_SET" && !n.remote)` (또는 components 페이지). 필요한 컴포넌트의 로컬 세트 id·variant를 확정한 뒤, **그 로컬 세트에서 `.defaultVariant`/해당 variant로 인스턴스 생성**.
    - 로컬 정본 세트가 **없는** 컴포넌트(예: base Input 미설치)는 임의로 외부 것을 끌어오지 말고 **`needs-core-update`로 에스컬레이트**(figma-library-build로 먼저 로컬 설치).
    - 인스턴스 생성 직후 `await inst.getMainComponentAsync()` 의 `remote`가 `false`(아이콘은 허용 key)인지 **반드시 확인**. `remote===true`(비-아이콘)면 즉시 중단·보고.
 4. **원본 아이콘 강제** — 아이콘은 손으로 그리지 않는다. **V2.2 아이콘 라이브러리(key `yE5UCFEbmXJBlYJWB24Lz2`)에서** `importComponentByKeyAsync`로 가져온다. 레거시 원본의 아이콘 인스턴스를 clone 금지(외부 라이브러리일 수 있음 — `ic_` 이름이어도 key가 V2.2가 아니면 금지). 라이브러리에 없으면 보고·에스컬레이트(가짜 도형 금지).

@@ -26,7 +26,7 @@
     → selected-hover 토큰이 별도로 필요하다.
 
 ### 🐞 확인된 버그 — date-picker selected cell 이 hover 시 회색으로 덮임
-위치: pages/components-new.html 980 (일반 hover) · 1007~1010 (selected-hover)
+위치: pages/components.html 980 (일반 hover) · 1007~1010 (selected-hover)
   .s1-date-picker__day:hover:not([disabled]):not(.is-selected) > .day-inner {
     background: var(--color-date-picker-cell-bg-hover);
   }
@@ -42,7 +42,7 @@
    chip-solid selected-hover 와 동일 단계) → tokens.css·semantic.html·install-prompt 재생성 → 웹 CSS
    selected 분기 배선(일반 hover 규칙에 :not(.is-selected) 예외 + selected 전용 selected-hover 규칙).
    범위: 웹만. Figma 배리언트는 추가 안 함(chip 선례가 웹 전용이라 일관성 유지 — GUI 결정 3).
-   근거: pages/components-new.html 980 (일반 hover, :not(.is-selected) 예외) ·
+   근거: pages/components.html 980 (일반 hover, :not(.is-selected) 예외) ·
          1007~1010 (selected 전용 selected-hover 규칙) — 2026-07-30 재확인
 
 ⚠️ 정정 (작업 ③ 조사 결과): chip solid 는 '우회 배선' 이 아니었다 — 아래 기록이 오판이었음.
@@ -322,7 +322,7 @@ zip 반영 여부를 수동 확인해야 하는 구조
 
 - 페이지 139건 각각의 정본 대응 여부 (미대조)
 - `style.css` 69색의 정본 대응 여부 (미대조)
-- `components-new.html` 인라인 `style=` 538건의 선택자 소속 (판정 불가)
+- `components.html` 인라인 `style=` 538건의 선택자 소속 (판정 불가)
 
 **[결정된 방침]**
 

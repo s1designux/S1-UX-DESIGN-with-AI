@@ -1,6 +1,6 @@
 # Button Sync Check Report
 
-**Date:** 2026-07-31  
+**Date:** 2026-08-01  
 **Status:** ❌ 1 issue(s) found  
 **Summary:** 32 passed · 1 warnings · 1 issues (total 34 checks)
 
@@ -43,12 +43,12 @@
 - [OK]    registry/tokens/component.tokens.json: "secondary" token array present
 - [OK]    registry/tokens/component.tokens.json: "blue-line" token array present
 - [OK]    registry/tokens/component.tokens.json: no raw HEX values in button tokens
-- [OK]    pages/components-new.html: primary variant CSS class present
-- [OK]    pages/components-new.html: secondary variant CSS class present
-- [OK]    pages/components-new.html: blue-line variant CSS class present
-- [OK]    pages/components-new.html: ACTION column cell present
-- [OK]    pages/components-new.html: static preview class present
-- [OK]    pages/components-new.html: ghost should not be exposed in components.html button section
+- [OK]    pages/components.html: primary variant CSS class present
+- [OK]    pages/components.html: secondary variant CSS class present
+- [OK]    pages/components.html: blue-line variant CSS class present
+- [OK]    pages/components.html: ACTION column cell present
+- [OK]    pages/components.html: static preview class present
+- [OK]    pages/components.html: ghost should not be exposed in components.html button section
 - [OK]    README.md: Button Current Standard section present
 - [OK]    README.md: "action" column reference present
 - [OK]    CLAUDE.md: Current Button Standard section present
@@ -68,7 +68,7 @@
 - `tokens/component-tokens-extracted.md`
 - `README.md`
 - `CLAUDE.md`
-- `pages/components-new.html`
+- `pages/components.html`
 - `assets/css/components/button.css`
 - `assets/js/button-harness.js`
 

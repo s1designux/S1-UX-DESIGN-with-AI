@@ -7,7 +7,7 @@
  * (이전엔 이 대조 장치가 0개라 Multi Toggle·Dropdown 누락이 손으로 발견됨 → 2026-06-30 게이트화.)
  *
  * 분류 정본 = registry/governance/component-page-coverage.json
- *   - sectionFor[컴포넌트] = HTML 섹션 id  → 그 섹션이 components-new.html 에 실재해야 함
+ *   - sectionFor[컴포넌트] = HTML 섹션 id  → 그 섹션이 components.html 에 실재해야 함
  *   - noSectionNeeded[]    = 섹션 불요(Platform shell·요소 컴포넌트 등, 사유 포함)
  *
  * 판정:
@@ -25,7 +25,7 @@ const path = require('path');
 
 const ROOT = path.resolve(__dirname, '..');
 const BC = path.join(ROOT, 'plugins/figma-vars-installer/src/build-components.ts');
-const HTML = path.join(ROOT, 'pages/components-new.html');
+const HTML = path.join(ROOT, 'pages/components.html');
 const CFG = path.join(ROOT, 'registry/governance/component-page-coverage.json');
 
 // ── 1. 설치기 컴포넌트 목록 (COMPONENT_CATEGORIES export 를 esbuild+require 로 정확 추출) ──
@@ -43,7 +43,7 @@ function installerComponents() {
   return members;
 }
 
-// ── 2. HTML 섹션 id (components-new.html) ──────────────────────────────────
+// ── 2. HTML 섹션 id (components.html) ──────────────────────────────────
 function htmlSections() {
   const t = fs.readFileSync(HTML, 'utf8');
   const ids = new Set();
@@ -108,7 +108,7 @@ function main() {
   const orphanSection = [...sections].filter((s) => !usedSids.has(s));
 
   const mains = Object.keys(sectionFor).filter((c) => instSet.has(c)).length;
-  console.log('[Gate 18] 컴포넌트 페이지 커버리지 — 설치기 정본 ↔ components-new.html');
+  console.log('[Gate 18] 컴포넌트 페이지 커버리지 — 설치기 정본 ↔ components.html');
   console.log(`  설치기 컴포넌트 ${installer.length} · 섹션연결(main) ${mains} · 제외(요소·shell) ${[...excluded].filter((n) => instSet.has(n)).length} · HTML 섹션 ${sections.size}`);
   const fails = [];
   if (unclassified.length) { console.log(`  ❌ 미분류 ${unclassified.length} (설치기에 있는데 sectionFor/noSectionNeeded 둘 다 없음 — HTML 반영 또는 제외분류 필요):`); unclassified.forEach((c) => console.log('     -', c)); fails.push(...unclassified); }

@@ -2261,7 +2261,7 @@ async function buildTimePickerDropdown(maps: BuildMaps, originY: number): Promis
 }
 
 // ── Pagination Cell — 페이지네이션 하위 요소 셀(Arrow·Edge·Number) ─
-// 정본: pages/components-new.html. Arrow 28×28(border·bg), Number 28×28(텍스트만).
+// 정본: pages/components.html. Arrow 28×28(border·bg), Number 28×28(텍스트만).
 // Arrow: Default/Hover/Disabled · Number: Default/Hover/Selected (4 states 매트릭스, 무효칸=null).
 // 이 셀들을 조합한 "Pagination"(완성 바) 세트는 buildPaginationBar 가 만든다(Table 푸터·홈페이지 ACTION 동일).
 // 색 바인딩(값 정본 일치):
@@ -2378,7 +2378,7 @@ async function buildPaginationCell(maps: BuildMaps, originY: number): Promise<{ 
 }
 
 // ── Pagination — 하위 요소 셀(Pagination Cell)을 조합한 완성 바 (State 변형세트) ──────
-// 정본: pages/components-new.html State Scenarios / registry/components/pagination.json.
+// 정본: pages/components.html State Scenarios / registry/components/pagination.json.
 //   구성(좌→우): ㅣ<(맨앞) · <(이전) · 1 2 3 4 5 6 · >(다음) · >ㅣ(맨뒤). 그룹 내 gap4, 숫자그룹↔화살표 gap8.
 //   방향: 이전=Arrow(base ‹ 좌향, 회전없음) · 다음=Arrow 180°(›) · 맨앞=Edge(base ㅣ< 좌향, 회전없음) · 맨뒤=Edge 180°(>ㅣ).
 //   상태(State 변형): 원페이지/맨앞/맨뒤/중간 — 이동버튼 활성·비활성, selected 숫자가 케이스마다 다름.
@@ -2470,7 +2470,7 @@ async function buildPaginationBar(maps: BuildMaps, originY: number): Promise<{ s
 }
 
 // ── GNB — 메뉴 슬롯(9 variants) + GNB 바(6 variants) ─────────────────────────
-// 정본: pages/components-new.html. PC only. 색은 color/navigation/* + line/gray/subtle + text/title/primary + icon/gray-dark.
+// 정본: pages/components.html. PC only. 색은 color/navigation/* + line/gray/subtle + text/title/primary + icon/gray-dark.
 // 메뉴 슬롯: 라벨 + 하단 2px 라인. Default=label/default-alt·밑줄 없음 / Hover·Selected=label/selected·밑줄(indicator/selected).
 const GNB_MENU_SIZE: Record<string, { h: number; font: number; padX: number; inset: number }> = {
   md:  { h: 56, font: 18, padX: 40, inset: 24 },
@@ -2478,7 +2478,7 @@ const GNB_MENU_SIZE: Record<string, { h: number; font: number; padX: number; ins
   xsm: { h: 36, font: 14, padX: 32, inset: 20 },
 };
 const GNB_UTIL_SVGS = {
-  // 원본 글리프(components-new.html). currentColor fill → icon/gray-dark 바인딩. viewBox 비율 보존(max side ≈ 24).
+  // 원본 글리프(components.html). currentColor fill → icon/gray-dark 바인딩. viewBox 비율 보존(max side ≈ 24).
   lang: `<svg width="24" height="24" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M9 18C13.9659 18 18 13.9659 18 9C18 4.03412 13.9659 0 9 0C4.03412 0 0 4.03412 0 9C0 13.9659 4.03412 18 9 18ZM2.97529 3.84353C3.56824 4.09765 4.18235 4.32 4.81765 4.5C4.42588 5.80235 4.20353 7.13647 4.16118 8.47059H1.09059C1.20706 6.71294 1.89529 5.10353 2.97529 3.84353ZM5.99294 1.65176C5.67529 2.25529 5.4 2.86941 5.16706 3.49412C4.69059 3.35647 4.22471 3.20824 3.78 3.02824C4.43647 2.45647 5.17765 1.99059 5.99294 1.65176ZM8.47059 1.09059V4.01294C7.71882 3.98118 6.95647 3.89647 6.20471 3.73765C6.53294 2.88 6.93529 2.03294 7.43294 1.21765C7.77177 1.15412 8.12118 1.11176 8.47059 1.09059ZM10.5671 1.21765C11.0647 2.03294 11.4671 2.88 11.7953 3.73765C11.0435 3.88588 10.2918 3.98118 9.52941 4.01294V1.09059C9.87882 1.11176 10.2282 1.15412 10.5671 1.21765ZM14.22 3.02824C13.7753 3.20824 13.3094 3.36706 12.8329 3.49412C12.6 2.86941 12.3247 2.25529 12.0071 1.65176C12.8224 1.99059 13.5635 2.45647 14.22 3.02824ZM16.9094 8.47059H13.8388C13.7965 7.13647 13.5741 5.80235 13.1824 4.5C13.8282 4.32 14.4424 4.09765 15.0247 3.84353C16.1047 5.10353 16.7929 6.71294 16.9094 8.47059ZM15.0247 14.1565C14.4424 13.9024 13.8176 13.68 13.1824 13.5C13.5741 12.1976 13.7965 10.8635 13.8388 9.52941H16.9094C16.7929 11.2871 16.1047 12.8965 15.0247 14.1565ZM12.0071 16.3482C12.3247 15.7447 12.6 15.1306 12.8329 14.5059C13.3094 14.6435 13.7753 14.7918 14.22 14.9718C13.5635 15.5435 12.8224 16.0094 12.0071 16.3482ZM9.52941 16.9094V13.9871C10.2812 14.0188 11.0435 14.1035 11.7953 14.2624C11.4671 15.12 11.0647 15.9671 10.5671 16.7824C10.2282 16.8459 9.87882 16.8882 9.52941 16.9094ZM7.43294 16.7824C6.93529 15.9671 6.53294 15.12 6.20471 14.2624C6.95647 14.1141 7.70824 14.0188 8.47059 13.9871V16.9094C8.12118 16.8882 7.77177 16.8459 7.43294 16.7824ZM3.78 14.9718C4.22471 14.7918 4.69059 14.6329 5.16706 14.5059C5.4 15.1306 5.67529 15.7447 5.99294 16.3482C5.17765 16.0094 4.43647 15.5435 3.78 14.9718ZM5.84471 4.74353C6.71294 4.92353 7.59177 5.04 8.47059 5.07176V8.47059H5.22C5.26235 7.22118 5.47412 5.97177 5.85529 4.74353H5.84471ZM12.1553 4.74353C12.5259 5.97177 12.7376 7.22118 12.7906 8.47059H9.54V5.07176C10.4188 5.04 11.2871 4.93412 12.1659 4.74353H12.1553ZM12.1553 13.2565C11.2871 13.0765 10.4082 12.96 9.52941 12.9388V9.54H12.78C12.7376 10.7894 12.5259 12.0388 12.1447 13.2671L12.1553 13.2565ZM8.47059 9.52941V12.9282C7.59177 12.96 6.72353 13.0659 5.84471 13.2459C5.47412 12.0176 5.26235 10.7682 5.20941 9.51882H8.46L8.47059 9.52941ZM4.16118 9.52941C4.20353 10.8635 4.42588 12.1976 4.81765 13.5C4.17177 13.68 3.55765 13.9024 2.97529 14.1565C1.89529 12.8965 1.20706 11.2871 1.09059 9.52941H4.16118Z" fill="currentColor"/></svg>`,
   account: `<svg width="24" height="21.58" viewBox="0 0 24 21.5816" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M16.561 13.7324H7.43901C5.67118 13.7324 4.00236 14.3971 2.84266 15.5568C0.494991 17.9186 0.0141426 21.2704 0 21.3977L1.37183 21.5816C1.37183 21.5816 1.81025 18.5409 3.8185 16.5185C4.72363 15.6134 6.03889 15.1042 7.43901 15.1042H16.561C17.9611 15.1042 19.2764 15.6275 20.1815 16.5185C22.1897 18.5409 22.6282 21.5391 22.6282 21.5816L24 21.3977C23.9859 21.2563 23.505 17.9045 21.1573 15.5568C19.9976 14.3971 18.3288 13.7324 16.561 13.7324Z" fill="currentColor"/><path d="M5.9968 6.01061C5.9968 9.31998 8.69803 12.0212 12.0074 12.0212C15.3168 12.0212 18.018 9.31998 18.018 6.01061C18.018 2.70124 15.3168 0 12.0074 0C8.69803 0 5.9968 2.70124 5.9968 6.01061ZM16.6037 6.01061C16.6037 8.54213 14.5389 10.607 12.0074 10.607C9.47588 10.607 7.41106 8.54213 7.41106 6.01061C7.41106 3.47908 9.47588 1.41426 12.0074 1.41426C14.5389 1.41426 16.6037 3.47908 16.6037 6.01061Z" fill="currentColor"/></svg>`,
   menu: `<svg width="24" height="16.93" viewBox="0 0 24 16.9274" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M0 1.41176H24V0.705882V0H0V1.41176Z" fill="currentColor"/><path d="M0 9.17647H24V8.47059V7.76471H0V9.17647Z" fill="currentColor"/><path d="M0 16.9274H24V16.2215V15.5156H0V16.9274Z" fill="currentColor"/></svg>`,
@@ -2776,7 +2776,7 @@ async function buildGNB(maps: BuildMaps, originY: number): Promise<{ set: Compon
 }
 
 // ── Date Picker — 트리거(form-control 재사용) + 캘린더 패널(color/date-picker/*) ─
-// 정본: pages/components-new.html / Figma 540:3794(input)·540:4216(PC calendar).
+// 정본: pages/components.html / Figma 540:3794(input)·540:4216(PC calendar).
 // 미결 HD(needs-decision): componentSetKey 미확정 · 모바일 인터랙션(bottom sheet vs inline) 미정 → 모바일 패널은 생성하지 않음.
 // 트리거는 Select 와 동일 구조(form-control), Open 상태에 PC 캘린더 패널을 부착.
 
@@ -2791,7 +2791,7 @@ const DP = (k: string) => `color/date-picker/${k}`;
 async function buildCalendarCell(maps: BuildMaps): Promise<{ set: ComponentSetNode; variants: Record<string, ComponentNode> }> {
   // [innerFill, innerStroke, textKey] (V2.4 실측 — selected stroke = border/today)
   // Hover = Default 와 동일하되 inner 배경만 cell/bg/hover(gray/50) — Calendar Tile Hover(tile/bg/hover) 패턴 미러링.
-  //   웹 정본(components-new.html 980–981) `.s1-date-picker__day:hover > .day-inner { background: cell/bg/hover }` 과 일치.
+  //   웹 정본(components.html 980–981) `.s1-date-picker__day:hover > .day-inner { background: cell/bg/hover }` 과 일치.
   //   Standard 에만 추가 — selected/range 는 (B)유형(파란 배경)이라 회색 hover 로 덮지 않는다(별도 selected-hover 토큰 필요, BACKLOG ③).
   const STD: Record<string, [string, string, string]> = {
     Default:  ["cell/bg/today",    "cell/bg/today",     "text/secondary"],

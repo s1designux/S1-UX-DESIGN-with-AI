@@ -1,7 +1,7 @@
 {
   "_meta": {
     "title": "Component Presentation Policy — PC 컴포넌트 표출 레이아웃 의도 정본",
-    "purpose": "components-new.html 각 컴포넌트 섹션이 화면에 '어떻게 표출되어야 하나'(공통 틀 + 개별 규칙)를 여기 한 번 선언하고, Gate 23(scripts/presentation-layout-check.js)이 실제 렌더 구조와 기계 대조한다. 소스가 아니라 렌더 결과가 기준 — ⭐가 소스 훑고 짐작하던 사각지대(§⚖️ 정본 오독)를 스크립트가 판정.",
+    "purpose": "components.html 각 컴포넌트 섹션이 화면에 '어떻게 표출되어야 하나'(공통 틀 + 개별 규칙)를 여기 한 번 선언하고, Gate 23(scripts/presentation-layout-check.js)이 실제 렌더 구조와 기계 대조한다. 소스가 아니라 렌더 결과가 기준 — ⭐가 소스 훑고 짐작하던 사각지대(§⚖️ 정본 오독)를 스크립트가 판정.",
     "scope": "platform=pc, 사용자 노출 메인 컴포넌트 17개. mobile 및 요소/셸 부품 섹션은 별도(추후).",
     "source": "규칙 = 사용자(river) 확정 2026-07-06. 실제 렌더 재고조사 = 📖 source-reader (헤드리스 크롬 17개). 축 값 = 설치기 build-components.ts 실측(Gate 19와 동일 정본).",
     "common": {

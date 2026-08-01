@@ -17,7 +17,7 @@
     "foundation.html": { "width": "wide" },
     "semantic.html": { "width": "wide" },
     "dashboard.html": { "width": "wide", "note": "Agent Team" },
-    "components-new.html": { "width": "wide" },
+    "components.html": { "width": "wide" },
     "harness-overview.html": { "width": "wide" },
     "migration-board.html": { "width": "wide" },
     "patterns.html": { "width": "wide" },
@@ -31,6 +31,7 @@
     "install-prompt.html": { "width": "readable", "note": "설치 안내·코드 읽기용 — 폭 제한 유지" },
     "ux-writing.html": { "width": "readable", "note": "UX Writing 플러그인 소개·라이브 데모·다운로드 — 폭 제한 유지" },
     "legacy.html": { "retired": true, "note": "레거시 마이그레이션 가이드 — 폐기. deprecated-tokens.json legacyFiles 격리 + site-map _archive. nav/검색 활성 등록 금지." },
+    "components-new.html": { "shell": "standalone", "note": "components.html 개명(2026-08-01) 후 옛 URL 호환용 meta-refresh 리다이렉트 스텁 — 자체완결 수 줄짜리. nav/검색/site-map 미등록." },
     "pipeline-status.html": { "shell": "custom", "note": "pipeline-status.js 생성 진단 대시보드 — 공통 틀(사이드바/헤더/main.js) 부착, 본문은 자체 .wrap 지도 레이아웃(폭 검사 제외). nav 링크 노출." }
   }
 }

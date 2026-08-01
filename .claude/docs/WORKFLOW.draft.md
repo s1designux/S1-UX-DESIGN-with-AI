@@ -144,7 +144,7 @@ vars-data.ts (단일 정본)
 - [ ] **tokens.css** — gen 재실행했나 (직접 편집 아님)
 - [ ] **Figma / zip** — 리빌드했나 (아래 Gate 6 주의)
 - [ ] **웹·문서 화면** — 정본 배선 + 하드코딩 hex 없음
-      (components-new.html · semantic.html · install-prompt.html · foundation.html · token download 등 **소비 화면 전부**)
+      (components.html · semantic.html · install-prompt.html · foundation.html · token download 등 **소비 화면 전부**)
 - [ ] **registry** — ⚠️ 미검증 baseline. 지금은 수동 갱신 or "의도적 보류" 명시. (§7 참조)
 - [ ] **주석 / 문서** — 코드와 불일치 없음 (스테일 주석 재발 방지)
 - [ ] **육안 확인** — 자동 검증이 못 잡는 상태(예: :hover)는 브라우저에서 직접 볼 것
@@ -156,7 +156,7 @@ vars-data.ts (단일 정본)
 > | tokens.css | 재생성 | gen (직접편집 금지) |
 > | semantic.html | 토큰 표 행 추가 | 수동 |
 > | install-prompt.html | 인라인 CSS(light·dark) | 수동 |
-> | components-new.html | 웹 CSS 규칙 | 수동 |
+> | components.html | 웹 CSS 규칙 | 수동 |
 > | build-components.ts | Figma 배리언트 | (Figma 건드릴 때만) |
 > | 설치기 zip | 리빌드 | (Figma·신규토큰일 때) |
 > 자동 3 · 수동 3 · 조건부 2. **웹 하나만 고치고 끝내면 나머지가 드리프트한다.**

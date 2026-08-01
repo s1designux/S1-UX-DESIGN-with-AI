@@ -477,7 +477,7 @@ try {
 }
 
 // ── Gate 18: Component Page Coverage (설치기 ↔ HTML 섹션) ──────────
-// "설치기에 있는 컴포넌트가 components-new.html 에도 다 있나"를 정본(COMPONENT_CATEGORIES_GRID) 기준 대조.
+// "설치기에 있는 컴포넌트가 components.html 에도 다 있나"를 정본(COMPONENT_CATEGORIES_GRID) 기준 대조.
 // 미분류·섹션누락 = 차단(설치기=기준 강제), 고아섹션·stale config = 경고. esbuild 필요 → spawnSync.
 console.log('\n🔎 [Gate 18] 컴포넌트페이지 커버리지 검사기 (Component Page Coverage)');
 try {

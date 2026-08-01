@@ -44,7 +44,7 @@ const P = {
   TOKENS_CSS: 'assets/css/tokens.css',
   DEAD_CSS: ['assets/css/component-tokens.css', 'assets/css/components/input.css'],
   REGISTRY_COMPONENTS: 'registry/components',
-  BOUNDARY_PAGE: 'pages/components-new.html',
+  BOUNDARY_PAGE: 'pages/components.html',
   ORPHAN_CHECK: 'scripts/orphan-token-check.js',
 };
 
@@ -294,7 +294,7 @@ module.exports = function scanSystemMap(root, ctx) {
   } catch (_) { deadTokenComponents = { available: false, reason: 'registry/components 읽기 실패' }; }
 
   // ── ④ 경계 위반 — 데모 CSS 가 포털 역할토큰을 참조 ───────────────────────
-  let boundary = { available: false, reason: 'components-new.html 없음' };
+  let boundary = { available: false, reason: 'components.html 없음' };
   if (exists(root, P.BOUNDARY_PAGE)) {
     const src = read(root, P.BOUNDARY_PAGE);
     // 페이지 내부 <style> 블록만 대상

@@ -503,7 +503,7 @@ Foundation(Foundation)를 직접 참조하지 않습니다.
 --color-pagination-number-hover           : var(--color-gray-dark-600);  /* #55575F */
 --color-pagination-number-selected        : var(--color-gray-dark-800);  /* #B8BABF */
 
-/* 컴포넌트 소비 별칭 (components-new.html) */
+/* 컴포넌트 소비 별칭 (components.html) */
 --pagination-control-bg:            var(--color-pagination-control-bg-default);
 --pagination-control-border:        var(--color-pagination-control-border-default);
 --pagination-control-hover-bg:      var(--color-pagination-control-bg-hover);

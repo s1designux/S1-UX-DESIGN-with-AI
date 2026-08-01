@@ -2,10 +2,10 @@
 /**
  * presentation-layout-check.js  (Gate 23 — 컴포넌트 표출 레이아웃 검수기)
  * ─────────────────────────────────────────────────────────────────────────
- * "components-new.html 각 PC 컴포넌트 섹션이 '어떻게 표출되어야 하나'(정본
+ * "components.html 각 PC 컴포넌트 섹션이 '어떻게 표출되어야 하나'(정본
  *  component-presentation-policy.json)를 실제로 지키나"를 **실제 렌더 DOM** 기준으로 대조한다.
  *
- * ★ 왜 렌더 DOM인가: 이 페이지는 로드 시 JS(components-new.html IIFE)가 매트릭스를 재배치한다
+ * ★ 왜 렌더 DOM인가: 이 페이지는 로드 시 JS(components.html IIFE)가 매트릭스를 재배치한다
  *   (Action 을 comp-action-top 스트립으로 승격 등). 소스만 보면 배치를 오독한다(§⚖️ 정본 오독).
  *   그래서 헤드리스 크롬 --dump-dom 으로 **재배치가 끝난 DOM**을 받아 검사한다.
  *
@@ -25,7 +25,7 @@ const path = require('path');
 const { spawnSync } = require('child_process');
 
 const ROOT = path.resolve(__dirname, '..');
-const HTML = path.join(ROOT, 'pages/components-new.html');
+const HTML = path.join(ROOT, 'pages/components.html');
 const POLICY = path.join(ROOT, 'registry/governance/component-presentation-policy.json');
 
 function findChrome() {

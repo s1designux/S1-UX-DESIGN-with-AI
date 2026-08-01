@@ -784,7 +784,7 @@ function drawWires(){
   if(mSem)  mixed+=node('semantic-json',mcls(mSem),'semantic.colors.json', na(mSem.count)+(mSem.unit||'')+(mSem.non_array_groups&&mSem.non_array_groups.length?(' · 비배열 '+mSem.non_array_groups.length+'그룹'):'')+(mSem.has_generator===true?' · 생성기 있음':' · 생성기 없음'));
   if(dtc.count!==undefined) mixed+=node('registry','ref','registry/components','죽은토큰 선언 '+na(dtc.count)+' / '+na(dtc.of));
   dead.forEach((d,i)=>{ mixed+=node('dead'+i,'dead',bn(d.file),'죽음 · 정의 '+d.defines+'종'); });
-  if(b.role_token_refs!==undefined) mixed+=node('demo','boundary','components-new.html','경계 위반 '+b.role_token_refs+'종');
+  if(b.role_token_refs!==undefined) mixed+=node('demo','boundary','components.html','경계 위반 '+b.role_token_refs+'종');
   mixed+=node('figma-web','na','Figma ↔ 웹 컴포넌트','<span class="sm-na">확인 불가 (스캔 밖)</span>');
   mixed+='</div>';
 

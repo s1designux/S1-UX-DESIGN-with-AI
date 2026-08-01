@@ -5875,7 +5875,7 @@ window.REGISTRY_BUNDLE = {
         },
         {
           "path": "assets/css/component-tokens.css",
-          "reason": "은퇴된 '컴포넌트-별칭 토큰층'(--{component}-{part}-{state}-{property})의 CSS 사본. 2026-06-09(763a70a) 자동 리팩터가 tokens.css 에서 분리·'보존'한 파일로, 어떤 HTML 도 link 하지 않아 렌더되지 않는 죽은 스타일시트. 정본=build-components.ts(각 컴포넌트를 color/form-control/* 등 semantic 에 직접 바인딩). 이 파일의 --dropdown-trigger-* 값은 registry/dropdown.json 과 드리프트했었고(같은 이름 다른 값), 유일 활성 소비처였던 components-new.html 는 2026-07-10 정본 토큰으로 이관됨. doc-token-ref-check/orphan-token-check 의 정의·소비 풀에서 제외(하드코딩 참조 제거).",
+          "reason": "은퇴된 '컴포넌트-별칭 토큰층'(--{component}-{part}-{state}-{property})의 CSS 사본. 2026-06-09(763a70a) 자동 리팩터가 tokens.css 에서 분리·'보존'한 파일로, 어떤 HTML 도 link 하지 않아 렌더되지 않는 죽은 스타일시트. 정본=build-components.ts(각 컴포넌트를 color/form-control/* 등 semantic 에 직접 바인딩). 이 파일의 --dropdown-trigger-* 값은 registry/dropdown.json 과 드리프트했었고(같은 이름 다른 값), 유일 활성 소비처였던 components.html 는 2026-07-10 정본 토큰으로 이관됨. doc-token-ref-check/orphan-token-check 의 정의·소비 풀에서 제외(하드코딩 참조 제거).",
           "since": "2026-07-10"
         }
       ]
@@ -12300,9 +12300,45 @@ window.REGISTRY_BUNDLE = {
     }
   },
   "reportsIndex": {
-    "generatedAt": "2026-07-28T07:45:32.838Z",
-    "totalCount": 65,
+    "generatedAt": "2026-07-31T08:06:28.460Z",
+    "totalCount": 67,
     "reports": [
+      {
+        "id": "component-alias-canonical-mapping",
+        "filename": "component-alias-canonical-mapping.md",
+        "title": "컴포넌트 별칭 ↔ 정본 토큰 대조 (2026-07-31 조사)",
+        "stage": "Audit",
+        "category": "audit",
+        "status": "complete",
+        "sourcePath": "reports/component-alias-canonical-mapping.md",
+        "updatedAt": "2026-07-31",
+        "summary": "조사 중간에 **\"정본에 없는 토큰 29건을 새로 만들어야 한다\"**고 보고했으나 **틀렸다. 신설 필요는 0건이다.**",
+        "fileSizeKB": 32
+      },
+      {
+        "id": "harness-audit-2026-07-29",
+        "filename": "harness-audit-2026-07-29.md",
+        "title": "Harness Audit Report — 2026-07-29",
+        "stage": "Audit",
+        "category": "audit",
+        "status": "archive",
+        "sourcePath": "reports/harness-audit-2026-07-29.md",
+        "updatedAt": "2026-07-29",
+        "summary": "- ✅ [button] 모든 사이즈 분기 존재 (medium (h44) / xsmall (h34) / xxsmall (h28) / mobile (h48))",
+        "fileSizeKB": 2
+      },
+      {
+        "id": "shadow-token-infra-backlog",
+        "filename": "shadow-token-infra-backlog.md",
+        "title": "shadow 토큰 인프라 신설 — 별건 백로그 (루트 A 시험에서 발견)",
+        "stage": "Audit",
+        "category": "audit",
+        "status": "archive",
+        "sourcePath": "reports/shadow-token-infra-backlog.md",
+        "updatedAt": "2026-07-29",
+        "summary": "**상태: 미착수.** 그림자 인프라가 갖춰지면 Modal·Bottom Sheet·Dropdown 계열에 한 세트로 얹는다.",
+        "fileSizeKB": 13.9
+      },
       {
         "id": "dark-divergence-initial",
         "filename": "dark-divergence-initial.md",
@@ -12326,18 +12362,6 @@ window.REGISTRY_BUNDLE = {
         "updatedAt": "2026-07-15",
         "summary": "**상태: 미착수.** 확인 계열(`registry/components/modal.json`, compact 텍스트-확인)과 **구분되는 별개 컴포넌트**.",
         "fileSizeKB": 3.3
-      },
-      {
-        "id": "shadow-token-infra-backlog",
-        "filename": "shadow-token-infra-backlog.md",
-        "title": "shadow 토큰 인프라 신설 — 별건 백로그 (루트 A 시험에서 발견)",
-        "stage": "Audit",
-        "category": "audit",
-        "status": "archive",
-        "sourcePath": "reports/shadow-token-infra-backlog.md",
-        "updatedAt": "2026-07-15",
-        "summary": "**상태: 미착수.** 그림자 인프라가 갖춰지면 다크 모달에 얹는다.",
-        "fileSizeKB": 4.7
       },
       {
         "id": "button-sync-check",

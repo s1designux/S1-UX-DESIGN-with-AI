@@ -1,7 +1,7 @@
 {
   "_note": "Gate 18(component-page-coverage) 정본. 설치기(build-components.ts COMPONENT_CATEGORIES_GRID)의 모든 컴포넌트를 ①sectionFor(HTML 섹션이 있어야 함) 또는 ②noSectionNeeded(섹션 불요·사유) 로 분류한다. 설치기에 새 컴포넌트가 생겼는데 둘 다 없으면(미분류) Gate 18 이 커밋 차단 → 'HTML 페이지에 반영' 또는 '제외 분류'를 강제. 정본=설치기. 단독 npm run components:pagecheck.",
   "_updated": "2026-06-30",
-  "htmlPage": "pages/components-new.html",
+  "htmlPage": "pages/components.html",
   "sectionFor": {
     "Button": "button",
     "Checkbox": "checkbox",

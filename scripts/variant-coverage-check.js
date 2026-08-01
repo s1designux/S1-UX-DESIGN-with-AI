@@ -22,7 +22,7 @@ const path = require('path');
 
 const ROOT = path.resolve(__dirname, '..');
 const BC = path.join(ROOT, 'plugins/figma-vars-installer/src/build-components.ts');
-const HTML = path.join(ROOT, 'pages/components-new.html');
+const HTML = path.join(ROOT, 'pages/components.html');
 const CFG = path.join(ROOT, 'registry/governance/component-page-coverage.json');
 
 const IGNORE_AXES = new Set(['position', 'break']); // position=요소 내부 / break=PC·Mobile 는 platform 토글이 담당(별도)
