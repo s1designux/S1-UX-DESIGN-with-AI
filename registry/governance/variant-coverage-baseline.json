@@ -1,0 +1,89 @@
+{
+  "_role": "Gate 19 변형 커버리지 — 기존 공백 동결 목록. 여기 있는 (섹션×축)은 차단하지 않고 목록으로만 보인다.",
+  "_policy": [
+    "새 공백은 차단된다 — 여기 넣으려면 왜 지금 못 채우는지 사유를 반드시 적는다.",
+    "줄이는 방향으로만 갱신한다. 항목이 늘어나는 갱신은 그 자체가 검토 대상이다.",
+    "해소된 항목은 --update-baseline 으로 빼면 다시 채워졌을 때 회귀가 차단된다."
+  ],
+  "_updated": "2026-08-02",
+  "knownGaps": [
+    {
+      "key": "multi-toggle.position",
+      "kind": "uninstrumented",
+      "detail": "정본 [first,middle-left,middle-right,last] — data-cov-position 미선언",
+      "reason": "낱개 표 8칸이 전부 --first 위치로만 렌더된다(가운데·오른쪽 칸의 hover·disabled 가 페이지 어디에도 없음). 게다가 웹 CSS 는 position 3종(first/middle/last)인데 정본은 4종(middle-left/middle-right 분리)이라 축 자체가 어긋나 있다 → 웹 클래스 정합부터 정해야 채울 수 있다."
+    },
+    {
+      "key": "date-picker.state",
+      "kind": "missing",
+      "detail": "설치기 [date, year, month, hover, today, selected, start, end] 가 data-cov-state 에 없음",
+      "reason": "달력의 연도·월 선택 화면(Calendar State=Year/Month)이 가이드 어디에도 없다. 달력 칸의 hover·기간선택 상태도 미표출. Calendar Tile 은 섹션에 클래스 자체가 없다."
+    },
+    {
+      "key": "date-picker.type",
+      "kind": "uninstrumented",
+      "detail": "정본 [standard,range] — data-cov-type 미선언",
+      "reason": "달력 칸의 기간선택(Range) 4변형에 대응하는 웹 CSS 가 전무하다 — 마크업만 추가할 수 없고 CSS 를 새로 써야 한다."
+    },
+    {
+      "key": "time-picker.state",
+      "kind": "missing",
+      "detail": "설치기 [시 hover, 시 selected, 분 hover, 분 selected, selected] 가 data-cov-state 에 없음",
+      "reason": "시간 드롭다운이 프리뷰 나열이라 셀 상태가 열/행 좌표로 읽히지 않는다. 상위에 붙는 드롭다운은 8변형 중 1개(24h·시 Selected)뿐."
+    },
+    {
+      "key": "time-picker.type",
+      "kind": "uninstrumented",
+      "detail": "정본 [24h,12h] — data-cov-type 미선언",
+      "reason": "24h/12h 드롭다운이 프리뷰로는 둘 다 있으나 좌표 있는 매트릭스가 아니라 축으로 선언할 수 없다."
+    },
+    {
+      "key": "time-picker.content",
+      "kind": "uninstrumented",
+      "detail": "정본 [timeonly,datetime] — data-cov-content 미선언",
+      "reason": "모바일 바텀시트의 TimeOnly/DateTime 두 변형이 섹션에서 구분 표출되지 않는다."
+    },
+    {
+      "key": "table.size",
+      "kind": "missing",
+      "detail": "설치기 [small, medium] 가 data-cov-size 에 없음",
+      "reason": "정본 어휘 불일치 — Table 은 md/sm, Table Cell 은 SMALL/MEDIUM 을 쓴다. 웹은 md/sm 뿐. 설치기 variant 이름을 통일해야 하는 별건(이름 바꾸면 Figma 변형 이름이 바뀜)."
+    },
+    {
+      "key": "table.type",
+      "kind": "uninstrumented",
+      "detail": "정본 [cell,header] — data-cov-type 미선언",
+      "reason": "표 셀의 Cell/Header 구분이 셀 단위 표로 표출되지 않는다(헤더는 표 안에서만 보임)."
+    },
+    {
+      "key": "table.variant",
+      "kind": "uninstrumented",
+      "detail": "정본 [default,hover,selected] — data-cov-variant 미선언",
+      "reason": "표 셀 상태(default/hover/selected)가 셀이 아니라 행(.s1-table-row)에 걸려 있어 낱개 셀 상태를 만들 클래스가 없다 — 웹 CSS 구조 재설계가 필요한 별건."
+    },
+    {
+      "key": "pagination.element",
+      "kind": "uninstrumented",
+      "detail": "정본 [arrow,edge,number] — data-cov-element 미선언",
+      "reason": "맨앞/맨뒤(Edge) 칸이 화살표와 같은 클래스로 렌더돼 별도 축으로 구분 표출되지 않는다."
+    },
+    {
+      "key": "gnb.language",
+      "kind": "uninstrumented",
+      "detail": "정본 [on,off,english,korean] — data-cov-language 미선언",
+      "reason": "GNB 유틸 아이콘의 언어 축(English/Korean)이 웹에 존재하지 않는다 — 언어 아이콘 클래스 자체가 렌더 DOM 에 없다."
+    },
+    {
+      "key": "gnb.full menu",
+      "kind": "uninstrumented",
+      "detail": "정본 [on,off] — data-cov-full menu 미선언",
+      "reason": "유틸 아이콘 on/off 조합(정본 5종)이 웹에 modifier 로 존재하지 않는다 — 3버튼이 항상 렌더된다."
+    },
+    {
+      "key": "gnb.user",
+      "kind": "uninstrumented",
+      "detail": "정본 [on,off] — data-cov-user 미선언",
+      "reason": "위와 같음(유틸 아이콘 on/off 조합 미구현)."
+    }
+  ]
+}

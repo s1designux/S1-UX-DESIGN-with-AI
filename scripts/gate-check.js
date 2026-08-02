@@ -538,21 +538,23 @@ try {
   fail(`component-page-coverage-check 실행 실패: ${e.message}`);
 }
 
-// ── Gate 19: Variant/State Coverage (설치기 State 축 ↔ HTML) ───────
-// HTML 섹션이 설치기 변형의 State(상태)를 다 보여주나. 섹션이 data-cov-states 로 옵트인하면 검증,
-// 안 하면 '미계측'으로 정직 보고(거짓 완전성 차단). 선언 섹션의 상태누락=차단, 미계측=경고. esbuild → spawnSync.
+// ── Gate 19: Variant/State Coverage (설치기 변형 축 ↔ HTML) ───────
+// 상위 섹션이 설치기 변형 축을 다 보여주나. 2026-08-02 개편: 부품(요소) 컴포넌트 축을 상위 섹션에
+// 합산(axisSource 전수 등재)하고, 기존 공백은 사유와 함께 baseline 동결·**새 공백만 차단**(래칫).
 console.log('\n🔎 [Gate 19] 변형상태 커버리지 검사기 (Variant/State Coverage)');
 try {
   const { spawnSync } = require('child_process');
   const r = spawnSync('node', [path.join(ROOT, 'scripts/variant-coverage-check.js')], { encoding: 'utf-8' });
   const out = (r.stdout || '') + (r.stderr || '');
-  const m = out.match(/VARCOV_SUMMARY pairs=(\d+) verified=(\d+) uninstrumented=(\d+) missing=(\d+)/);
+  const m = out.match(/VARCOV_SUMMARY pairs=(\d+) verified=(\d+) baselined=(\d+) newGaps=(\d+) resolved=(\d+)/);
   if (r.status === 0 && m) {
-    pass(`변형축 검증 ${m[2]}/${m[1]} (섹션×축, 설치기 변형 ⊆ HTML data-cov-*)`);
-    if (Number(m[3]) > 0) warn(`변형축 미계측 ${m[3]}개 (섹션×축, data-cov-* 미선언 — 검증 안 됨). 상세: npm run components:variantcov`);
+    pass(`변형축 검증 ${m[2]}/${m[1]} (섹션×축, 부품 축 합산) · 신규 표출공백 0`);
+    if (Number(m[3]) > 0) warn(`Gate 19: 동결된 표출 공백 ${m[3]}건(부품이 상위에서 덜 보임 — 사유는 baseline 참조). 상세: npm run components:variantcov`);
+    if (Number(m[5]) > 0) warn(`Gate 19: baseline 중 ${m[5]}건 해소됨 — 축소 갱신 권장: node scripts/variant-coverage-check.js --update-baseline`);
   } else {
-    const lines = out.split('\n').filter((l) => l.includes('설치기 State'));
-    for (const l of lines) fail(l.replace(/^\s*-\s*/, '').trim());
+    // NEWGAP 접두만 수집 — 동결분(FROZEN)이 실패로 섞이던 결함 수정(2026-08-02 적대 테스트로 적발)
+    const lines = out.split('\n').filter((l) => l.includes('NEWGAP'));
+    for (const l of lines) fail(`Gate 19: 새 표출 공백 — ${l.replace(/^\s*-\s*NEWGAP\s*/, '').trim()}`);
     if (lines.length === 0) fail(`variant-coverage-check 실패 (exit ${r.status})`);
   }
 } catch (e) {

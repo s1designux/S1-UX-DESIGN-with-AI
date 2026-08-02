@@ -28,10 +28,6 @@
     "Line Tab Set": "HTML 섹션 id=tab (Line Tab)"
   },
   "_variantCoverageNote": "Gate 19(variant-coverage) 용. 각 HTML 섹션이 보여줘야 할 '상태(State)'의 정본 = 설치기 변형의 State 축. stateSource 는 상태가 메인이 아니라 요소 컴포넌트에 있는 예외만 명시(기본=섹션의 main 컴포넌트). HTML 섹션은 data-cov-states 속성으로 자기 커버리지를 선언하고, Gate 19 가 설치기 State ⊆ 선언 인지 대조한다. 미선언 섹션은 '미계측'으로 정직 보고(거짓 완전성 차단).",
-  "stateSource": {
-    "multi-toggle": "Multi Toggle Element",
-    "dropdown": "Dropdown List"
-  },
   "noSectionNeeded": [
     {
       "name": "StatusBar",
@@ -131,5 +127,38 @@
   "mobileOnly": [
     "mobile-bottom-nav"
   ],
-  "_mobileOnlyNote": "Gate 30 이 component-presentation-policy.json 등재를 요구하지 않는 목록. 그 정책은 스스로 scope 를 \"platform=pc … mobile 및 요소/셸 부품 섹션은 별도(추후)\"로 선언하므로, 모바일 전용 컴포넌트는 부채(baseline)가 아니라 **범위 밖**이다. 모바일 표출 규칙이 정본화되면 이 목록을 비우고 정책에 등재한다."
+  "_mobileOnlyNote": "Gate 30 이 component-presentation-policy.json 등재를 요구하지 않는 목록. 그 정책은 스스로 scope 를 \"platform=pc … mobile 및 요소/셸 부품 섹션은 별도(추후)\"로 선언하므로, 모바일 전용 컴포넌트는 부채(baseline)가 아니라 **범위 밖**이다. 모바일 표출 규칙이 정본화되면 이 목록을 비우고 정책에 등재한다.",
+  "axisSource": {
+    "multi-toggle": [
+      "Multi Toggle Element"
+    ],
+    "dropdown": [
+      "Dropdown List"
+    ],
+    "tab": [
+      "Line Tab"
+    ],
+    "table": [
+      "Table Cell"
+    ],
+    "pagination": [
+      "Pagination Cell"
+    ],
+    "gnb": [
+      "GNB Utility Icon",
+      "Language Icon"
+    ],
+    "date-picker": [
+      "Calendar",
+      "Calendar Cell",
+      "Calendar Tile",
+      "Date Picker Mobile Bottom Sheet"
+    ],
+    "time-picker": [
+      "Time Picker Dropdown",
+      "Time Picker Cell",
+      "Time Picker Mobile Bottom Sheet"
+    ]
+  },
+  "_axisSourceNote": "부품(요소) 컴포넌트의 변형 축을 상위 섹션 검사에 합산한다. 2026-08-02 이전에는 2건(multi-toggle·dropdown)뿐이라 나머지 부품의 표출 공백이 계측 자체가 없었다. 근거는 BUILD_DEPENDENCIES / 실제 인스턴스 부착. 상위 섹션이 없는 부품(Bottom Sheet Option·Bottom Sheet·Modal)은 매핑 대상이 아니다."
 }
