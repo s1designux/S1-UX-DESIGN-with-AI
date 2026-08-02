@@ -980,6 +980,35 @@
     .s1-date-picker__day:hover:not([disabled]):not(.is-selected) > .day-inner {
       background: var(--color-date-picker-cell-bg-hover);
     }
+    /* 명시 hover 클래스 — 매트릭스에서 상태를 고정 표출하려면 :hover 만으로는 안 된다(2026-08-02). */
+    .s1-date-picker__day.is-hover:not([disabled]):not(.is-selected) > .day-inner {
+      background: var(--color-date-picker-cell-bg-hover);
+    }
+    /* Range(기간선택) — 정본 buildCalendarCell RNG 표 그대로: 셀 44×44 안에 밴드(h30·top7)를 깔고
+       그 위에 30×30 원. Default 밴드 x0 w44 / Start x22 w22 / End x0 w22 / Disabled x0 w44.
+       색은 전부 기존 토큰(cell/bg/range·cell/bg/today·cell/bg/selected·cell/border/today)이라 신규 토큰 0. */
+    .s1-date-picker__day--range { position: relative; }
+    .s1-date-picker__day--range::before {
+      content: ''; position: absolute; top: 7px; height: 30px;
+      left: 0; width: 44px;
+      background: var(--color-date-picker-cell-bg-range);
+      pointer-events: none;
+    }
+    .s1-date-picker__day--range-start::before { left: 22px; width: 22px; }
+    .s1-date-picker__day--range-end::before   { left: 0;   width: 22px; }
+    .s1-date-picker__day--range > .day-inner { position: relative; z-index: 1; }
+    .s1-date-picker__day--range-start > .day-inner {
+      background: var(--color-date-picker-cell-bg-today);
+      border-color: var(--color-date-picker-cell-border-today);
+      color: var(--color-date-picker-text-today);
+    }
+    .s1-date-picker__day--range-end > .day-inner {
+      background: var(--color-date-picker-cell-bg-selected);
+      border-color: var(--color-date-picker-cell-border-today);
+      color: var(--color-date-picker-text-selected);
+    }
+    .s1-date-picker__day--range.is-disabled { color: var(--color-date-picker-text-disabled); }
+
     .s1-date-picker__day.is-other-month {
       color: var(--color-date-picker-text-disabled); /* 설치기 정본: other-month → Standard:Disabled 매핑 = text/disabled (다크 gray-dark/500) */
     }
@@ -1049,10 +1078,21 @@
       display: flex; align-items: center; justify-content: center;
       height: 100%; min-height: 44px; border: 1px solid transparent;
       border-radius: var(--radius-4, 4px);
-      background: transparent; cursor: pointer;
+      background: var(--color-date-picker-tile-bg-default); cursor: pointer;
       font-size: 14px; font-weight: 500;
       color: var(--color-date-picker-text-secondary);
       transition: background 0.1s;
+    }
+    /* 정본 buildCalendarTile 은 타일에 tile/bg·tile/border 를 바인딩한다. 종전 웹은 transparent 라
+       Default/Disabled 가 표현되지 않았다(2026-08-02 정합). */
+    .s1-date-picker__selector-btn { border-color: var(--color-date-picker-tile-border-default); }
+    .s1-date-picker__selector-btn.is-hover { background: var(--color-date-picker-tile-bg-hover); }
+    .s1-date-picker__selector-btn.is-disabled,
+    .s1-date-picker__selector-btn[disabled] {
+      background: var(--color-date-picker-tile-bg-disabled);
+      border-color: var(--color-date-picker-tile-border-disabled);
+      color: var(--color-date-picker-text-disabled);
+      cursor: default; pointer-events: none;
     }
     .s1-date-picker__selector-btn:hover { background: var(--color-date-picker-cell-bg-hover); }
     .s1-date-picker__selector-btn.is-selected {
@@ -1268,6 +1308,10 @@
     .s1-table-row:hover .s1-table-td,
     .s1-table-row.is-hover .s1-table-td { background: var(--color-table-cell-hover); }
     .s1-table-row.is-selected .s1-table-td { background: var(--color-table-cell-selected); }
+    /* 셀 단위 상태 — 정본(buildTableCell Variant=Default/Hover/Selected)은 상태를 셀에 준다.
+       행 규칙만 있으면 낱개 셀 상태를 표출할 수 없어 2026-08-02 신설(같은 토큰, 특이도 충돌 없음). */
+    .s1-table-td.is-hover { background: var(--color-table-cell-hover); }
+    .s1-table-td.is-selected { background: var(--color-table-cell-selected); }
     /* Table selection cell — placement only (checkbox style is from core s1-checkbox) */
     .s1-table-td--selection { padding: 0 8px; text-align: center; width: 48px; }
     .s1-table-th--selection { width: 48px; }
@@ -1792,6 +1836,16 @@
       color: var(--color-icon-gray-dark);
     }
     .s1-gnb-util-btn svg { width: 24px; height: 24px; display: block; } /* Figma 아이콘 글리프: 32px 프레임 내 inset 12.5% → 실제 24px */
+    /* Language Icon — 정본 buildLanguageIcon(2566~): globe 32 컨테이너 + 아이콘 24 + 라벨 14 Medium,
+       gap 4 · padding-right 8. 종전 웹은 라벨 없는 globe 버튼뿐이라 Language 축(English/Korean)이 없었다(2026-08-02 신설). */
+    .s1-gnb-lang {
+      display: inline-flex; align-items: center; gap: 4px; padding-right: 8px;
+      background: none; border: none; cursor: pointer;
+    }
+    .s1-gnb-lang-globe { display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; color: var(--color-icon-gray-dark); }
+    .s1-gnb-lang-globe svg { width: 24px; height: 24px; display: block; }
+    .s1-gnb-lang-label { font-size: 14px; font-weight: 500; color: var(--color-text-body-primary); white-space: nowrap; }
+
     /* xsm — 박스 32, 아이콘 24 */
     .s1-gnb--xsm .s1-gnb-util-btn { width: 32px; height: 32px; }
     .s1-gnb--xsm .s1-gnb-util-btn svg { width: 18px; height: 18px; } /* xsm: 24px 프레임 내 inset → 실제 18px */
@@ -2744,6 +2798,7 @@ checkboxes.forEach(function(chk) {
           </div>
 
         </div><!-- /platform-section-pc -->
+
 
         <!-- ── Mobile ── -->
         <div class="platform-section platform-section-mobile">
@@ -4658,7 +4713,7 @@ function setDisabled(on) {
       </section>
 
 
-      <section class="comp-section" id="gnb" data-cov-align="center-between,start" data-cov-sizes="md,sm,xsm">
+      <section class="comp-section" id="gnb" data-cov-align="center-between,start" data-cov-sizes="md,sm,xsm" data-cov-user="on,off" data-cov-language="on,off,english,korean">
         <div class="comp-section-header">
           <h2 class="comp-section-title">GNB</h2>
           <span class="comp-badge comp-badge-blue">Core</span>
@@ -4802,6 +4857,51 @@ function setDisabled(on) {
             <li><strong>유틸리티 아이콘 3종</strong> (<code>s1-gnb-util-btn</code>, 40×40 · xsm 32×32, 아이콘 24×24, 색상 <code>--gnb-icon</code>) — 언어(globe · <code>ic_인터넷</code>) / 계정(account · <code>ic_계정·사용자·ID</code>) / 메뉴(hamburger · <code>ic_메뉴</code>).</li>
             <li><strong>정렬 2종</strong> — center-between(로고 · 메뉴 · 유틸 3분할) / start(로고+메뉴 좌측 묶음, 유틸 우측). start 는 로고↔메뉴 gap 64px(<code>s1-gnb-leading</code>).</li>
           </ul>
+        </div>
+
+
+        <!-- ── GNB 유틸 아이콘 · 언어 아이콘 — 셀 단위 (정본 buildGNBUtilIcon · buildLanguageIcon) ── -->
+        <div class="variant-group">
+          <h3 class="variant-group-title">유틸 아이콘 조합 · 언어 아이콘</h3>
+          <p class="variant-group-desc">정본은 유틸 영역을 <code>language</code> · <code>user</code> · <code>full menu</code> 세 스위치의 <strong>5조합</strong>으로 정의한다(빈 조합 없음). 표시 순서는 언어 → 계정 → 메뉴.</p>
+          <div class="variant-block">
+            <div class="variant-label">Utility Icon · 조합 5종</div>
+            <div class="preview-area">
+              <div class="comp-state-matrix" style="grid-template-columns: 250px minmax(150px,auto) minmax(120px,1fr);">
+                <div class="matrix-col-header-action">조합</div>
+                <div class="matrix-col-header">표출</div>
+                <div class="matrix-col-header">보이는 아이콘</div>
+              <div class="comp-action-cell" style="font-size:12px;color:var(--color-text-secondary);">language=on · user=on · full menu=on</div>
+              <div class="comp-state-cell"><div class="s1-gnb-util"><button class="s1-gnb-util-btn" type="button" aria-label="언어"><svg viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M9 18C13.9659 18 18 13.9659 18 9C18 4.03412 13.9659 0 9 0C4.03412 0 0 4.03412 0 9C0 13.9659 4.03412 18 9 18ZM2.97529 3.84353C3.56824 4.09765 4.18235 4.32 4.81765 4.5C4.42588 5.80235 4.20353 7.13647 4.16118 8.47059H1.09059C1.20706 6.71294 1.89529 5.10353 2.97529 3.84353ZM5.99294 1.65176C5.67529 2.25529 5.4 2.86941 5.16706 3.49412C4.69059 3.35647 4.22471 3.20824 3.78 3.02824C4.43647 2.45647 5.17765 1.99059 5.99294 1.65176ZM8.47059 1.09059V4.01294C7.71882 3.98118 6.95647 3.89647 6.20471 3.73765C6.53294 2.88 6.93529 2.03294 7.43294 1.21765C7.77177 1.15412 8.12118 1.11176 8.47059 1.09059ZM10.5671 1.21765C11.0647 2.03294 11.4671 2.88 11.7953 3.73765C11.0435 3.88588 10.2918 3.98118 9.52941 4.01294V1.09059C9.87882 1.11176 10.2282 1.15412 10.5671 1.21765ZM14.22 3.02824C13.7753 3.20824 13.3094 3.36706 12.8329 3.49412C12.6 2.86941 12.3247 2.25529 12.0071 1.65176C12.8224 1.99059 13.5635 2.45647 14.22 3.02824ZM16.9094 8.47059H13.8388C13.7965 7.13647 13.5741 5.80235 13.1824 4.5C13.8282 4.32 14.4424 4.09765 15.0247 3.84353C16.1047 5.10353 16.7929 6.71294 16.9094 8.47059ZM15.0247 14.1565C14.4424 13.9024 13.8176 13.68 13.1824 13.5C13.5741 12.1976 13.7965 10.8635 13.8388 9.52941H16.9094C16.7929 11.2871 16.1047 12.8965 15.0247 14.1565ZM12.0071 16.3482C12.3247 15.7447 12.6 15.1306 12.8329 14.5059C13.3094 14.6435 13.7753 14.7918 14.22 14.9718C13.5635 15.5435 12.8224 16.0094 12.0071 16.3482ZM9.52941 16.9094V13.9871C10.2812 14.0188 11.0435 14.1035 11.7953 14.2624C11.4671 15.12 11.0647 15.9671 10.5671 16.7824C10.2282 16.8459 9.87882 16.8882 9.52941 16.9094ZM7.43294 16.7824C6.93529 15.9671 6.53294 15.12 6.20471 14.2624C6.95647 14.1141 7.70824 14.0188 8.47059 13.9871V16.9094C8.12118 16.8882 7.77177 16.8459 7.43294 16.7824ZM3.78 14.9718C4.22471 14.7918 4.69059 14.6329 5.16706 14.5059C5.4 15.1306 5.67529 15.7447 5.99294 16.3482C5.17765 16.0094 4.43647 15.5435 3.78 14.9718ZM5.84471 4.74353C6.71294 4.92353 7.59177 5.04 8.47059 5.07176V8.47059H5.22C5.26235 7.22118 5.47412 5.97177 5.85529 4.74353H5.84471ZM12.1553 4.74353C12.5259 5.97177 12.7376 7.22118 12.7906 8.47059H9.54V5.07176C10.4188 5.04 11.2871 4.93412 12.1659 4.74353H12.1553ZM12.1553 13.2565C11.2871 13.0765 10.4082 12.96 9.52941 12.9388V9.54H12.78C12.7376 10.7894 12.5259 12.0388 12.1447 13.2671L12.1553 13.2565ZM8.47059 9.52941V12.9282C7.59177 12.96 6.72353 13.0659 5.84471 13.2459C5.47412 12.0176 5.26235 10.7682 5.20941 9.51882H8.46L8.47059 9.52941ZM4.16118 9.52941C4.20353 10.8635 4.42588 12.1976 4.81765 13.5C4.17177 13.68 3.55765 13.9024 2.97529 14.1565C1.89529 12.8965 1.20706 11.2871 1.09059 9.52941H4.16118Z" fill="currentColor"/></svg></button><button class="s1-gnb-util-btn" type="button" aria-label="계정"><svg viewBox="0 0 24 21.5816" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M16.561 13.7324H7.43901C5.67118 13.7324 4.00236 14.3971 2.84266 15.5568C0.494991 17.9186 0.0141426 21.2704 0 21.3977L1.37183 21.5816C1.37183 21.5816 1.81025 18.5409 3.8185 16.5185C4.72363 15.6134 6.03889 15.1042 7.43901 15.1042H16.561C17.9611 15.1042 19.2764 15.6275 20.1815 16.5185C22.1897 18.5409 22.6282 21.5391 22.6282 21.5816L24 21.3977C23.9859 21.2563 23.505 17.9045 21.1573 15.5568C19.9976 14.3971 18.3288 13.7324 16.561 13.7324Z" fill="currentColor"/><path d="M5.9968 6.01061C5.9968 9.31998 8.69803 12.0212 12.0074 12.0212C15.3168 12.0212 18.018 9.31998 18.018 6.01061C18.018 2.70124 15.3168 0 12.0074 0C8.69803 0 5.9968 2.70124 5.9968 6.01061ZM16.6037 6.01061C16.6037 8.54213 14.5389 10.607 12.0074 10.607C9.47588 10.607 7.41106 8.54213 7.41106 6.01061C7.41106 3.47908 9.47588 1.41426 12.0074 1.41426C14.5389 1.41426 16.6037 3.47908 16.6037 6.01061Z" fill="currentColor"/></svg></button><button class="s1-gnb-util-btn" type="button" aria-label="메뉴"><svg viewBox="0 0 24 16.9274" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M0 1.41176H24V0.705882V0H0V1.41176Z" fill="currentColor"/><path d="M0 9.17647H24V8.47059V7.76471H0V9.17647Z" fill="currentColor"/><path d="M0 16.9274H24V16.2215V15.5156H0V16.9274Z" fill="currentColor"/></svg></button></div></div>
+              <div class="comp-state-cell" style="font-size:11px;color:var(--color-text-secondary);justify-content:flex-start;">언어 · 계정 · 메뉴</div>
+              <div class="comp-action-cell" style="font-size:12px;color:var(--color-text-secondary);">language=on · user=on · full menu=off</div>
+              <div class="comp-state-cell"><div class="s1-gnb-util"><button class="s1-gnb-util-btn" type="button" aria-label="언어"><svg viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M9 18C13.9659 18 18 13.9659 18 9C18 4.03412 13.9659 0 9 0C4.03412 0 0 4.03412 0 9C0 13.9659 4.03412 18 9 18ZM2.97529 3.84353C3.56824 4.09765 4.18235 4.32 4.81765 4.5C4.42588 5.80235 4.20353 7.13647 4.16118 8.47059H1.09059C1.20706 6.71294 1.89529 5.10353 2.97529 3.84353ZM5.99294 1.65176C5.67529 2.25529 5.4 2.86941 5.16706 3.49412C4.69059 3.35647 4.22471 3.20824 3.78 3.02824C4.43647 2.45647 5.17765 1.99059 5.99294 1.65176ZM8.47059 1.09059V4.01294C7.71882 3.98118 6.95647 3.89647 6.20471 3.73765C6.53294 2.88 6.93529 2.03294 7.43294 1.21765C7.77177 1.15412 8.12118 1.11176 8.47059 1.09059ZM10.5671 1.21765C11.0647 2.03294 11.4671 2.88 11.7953 3.73765C11.0435 3.88588 10.2918 3.98118 9.52941 4.01294V1.09059C9.87882 1.11176 10.2282 1.15412 10.5671 1.21765ZM14.22 3.02824C13.7753 3.20824 13.3094 3.36706 12.8329 3.49412C12.6 2.86941 12.3247 2.25529 12.0071 1.65176C12.8224 1.99059 13.5635 2.45647 14.22 3.02824ZM16.9094 8.47059H13.8388C13.7965 7.13647 13.5741 5.80235 13.1824 4.5C13.8282 4.32 14.4424 4.09765 15.0247 3.84353C16.1047 5.10353 16.7929 6.71294 16.9094 8.47059ZM15.0247 14.1565C14.4424 13.9024 13.8176 13.68 13.1824 13.5C13.5741 12.1976 13.7965 10.8635 13.8388 9.52941H16.9094C16.7929 11.2871 16.1047 12.8965 15.0247 14.1565ZM12.0071 16.3482C12.3247 15.7447 12.6 15.1306 12.8329 14.5059C13.3094 14.6435 13.7753 14.7918 14.22 14.9718C13.5635 15.5435 12.8224 16.0094 12.0071 16.3482ZM9.52941 16.9094V13.9871C10.2812 14.0188 11.0435 14.1035 11.7953 14.2624C11.4671 15.12 11.0647 15.9671 10.5671 16.7824C10.2282 16.8459 9.87882 16.8882 9.52941 16.9094ZM7.43294 16.7824C6.93529 15.9671 6.53294 15.12 6.20471 14.2624C6.95647 14.1141 7.70824 14.0188 8.47059 13.9871V16.9094C8.12118 16.8882 7.77177 16.8459 7.43294 16.7824ZM3.78 14.9718C4.22471 14.7918 4.69059 14.6329 5.16706 14.5059C5.4 15.1306 5.67529 15.7447 5.99294 16.3482C5.17765 16.0094 4.43647 15.5435 3.78 14.9718ZM5.84471 4.74353C6.71294 4.92353 7.59177 5.04 8.47059 5.07176V8.47059H5.22C5.26235 7.22118 5.47412 5.97177 5.85529 4.74353H5.84471ZM12.1553 4.74353C12.5259 5.97177 12.7376 7.22118 12.7906 8.47059H9.54V5.07176C10.4188 5.04 11.2871 4.93412 12.1659 4.74353H12.1553ZM12.1553 13.2565C11.2871 13.0765 10.4082 12.96 9.52941 12.9388V9.54H12.78C12.7376 10.7894 12.5259 12.0388 12.1447 13.2671L12.1553 13.2565ZM8.47059 9.52941V12.9282C7.59177 12.96 6.72353 13.0659 5.84471 13.2459C5.47412 12.0176 5.26235 10.7682 5.20941 9.51882H8.46L8.47059 9.52941ZM4.16118 9.52941C4.20353 10.8635 4.42588 12.1976 4.81765 13.5C4.17177 13.68 3.55765 13.9024 2.97529 14.1565C1.89529 12.8965 1.20706 11.2871 1.09059 9.52941H4.16118Z" fill="currentColor"/></svg></button><button class="s1-gnb-util-btn" type="button" aria-label="계정"><svg viewBox="0 0 24 21.5816" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M16.561 13.7324H7.43901C5.67118 13.7324 4.00236 14.3971 2.84266 15.5568C0.494991 17.9186 0.0141426 21.2704 0 21.3977L1.37183 21.5816C1.37183 21.5816 1.81025 18.5409 3.8185 16.5185C4.72363 15.6134 6.03889 15.1042 7.43901 15.1042H16.561C17.9611 15.1042 19.2764 15.6275 20.1815 16.5185C22.1897 18.5409 22.6282 21.5391 22.6282 21.5816L24 21.3977C23.9859 21.2563 23.505 17.9045 21.1573 15.5568C19.9976 14.3971 18.3288 13.7324 16.561 13.7324Z" fill="currentColor"/><path d="M5.9968 6.01061C5.9968 9.31998 8.69803 12.0212 12.0074 12.0212C15.3168 12.0212 18.018 9.31998 18.018 6.01061C18.018 2.70124 15.3168 0 12.0074 0C8.69803 0 5.9968 2.70124 5.9968 6.01061ZM16.6037 6.01061C16.6037 8.54213 14.5389 10.607 12.0074 10.607C9.47588 10.607 7.41106 8.54213 7.41106 6.01061C7.41106 3.47908 9.47588 1.41426 12.0074 1.41426C14.5389 1.41426 16.6037 3.47908 16.6037 6.01061Z" fill="currentColor"/></svg></button></div></div>
+              <div class="comp-state-cell" style="font-size:11px;color:var(--color-text-secondary);justify-content:flex-start;">언어 · 계정</div>
+              <div class="comp-action-cell" style="font-size:12px;color:var(--color-text-secondary);">language=on · user=off · full menu=off</div>
+              <div class="comp-state-cell"><div class="s1-gnb-util"><button class="s1-gnb-util-btn" type="button" aria-label="언어"><svg viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M9 18C13.9659 18 18 13.9659 18 9C18 4.03412 13.9659 0 9 0C4.03412 0 0 4.03412 0 9C0 13.9659 4.03412 18 9 18ZM2.97529 3.84353C3.56824 4.09765 4.18235 4.32 4.81765 4.5C4.42588 5.80235 4.20353 7.13647 4.16118 8.47059H1.09059C1.20706 6.71294 1.89529 5.10353 2.97529 3.84353ZM5.99294 1.65176C5.67529 2.25529 5.4 2.86941 5.16706 3.49412C4.69059 3.35647 4.22471 3.20824 3.78 3.02824C4.43647 2.45647 5.17765 1.99059 5.99294 1.65176ZM8.47059 1.09059V4.01294C7.71882 3.98118 6.95647 3.89647 6.20471 3.73765C6.53294 2.88 6.93529 2.03294 7.43294 1.21765C7.77177 1.15412 8.12118 1.11176 8.47059 1.09059ZM10.5671 1.21765C11.0647 2.03294 11.4671 2.88 11.7953 3.73765C11.0435 3.88588 10.2918 3.98118 9.52941 4.01294V1.09059C9.87882 1.11176 10.2282 1.15412 10.5671 1.21765ZM14.22 3.02824C13.7753 3.20824 13.3094 3.36706 12.8329 3.49412C12.6 2.86941 12.3247 2.25529 12.0071 1.65176C12.8224 1.99059 13.5635 2.45647 14.22 3.02824ZM16.9094 8.47059H13.8388C13.7965 7.13647 13.5741 5.80235 13.1824 4.5C13.8282 4.32 14.4424 4.09765 15.0247 3.84353C16.1047 5.10353 16.7929 6.71294 16.9094 8.47059ZM15.0247 14.1565C14.4424 13.9024 13.8176 13.68 13.1824 13.5C13.5741 12.1976 13.7965 10.8635 13.8388 9.52941H16.9094C16.7929 11.2871 16.1047 12.8965 15.0247 14.1565ZM12.0071 16.3482C12.3247 15.7447 12.6 15.1306 12.8329 14.5059C13.3094 14.6435 13.7753 14.7918 14.22 14.9718C13.5635 15.5435 12.8224 16.0094 12.0071 16.3482ZM9.52941 16.9094V13.9871C10.2812 14.0188 11.0435 14.1035 11.7953 14.2624C11.4671 15.12 11.0647 15.9671 10.5671 16.7824C10.2282 16.8459 9.87882 16.8882 9.52941 16.9094ZM7.43294 16.7824C6.93529 15.9671 6.53294 15.12 6.20471 14.2624C6.95647 14.1141 7.70824 14.0188 8.47059 13.9871V16.9094C8.12118 16.8882 7.77177 16.8459 7.43294 16.7824ZM3.78 14.9718C4.22471 14.7918 4.69059 14.6329 5.16706 14.5059C5.4 15.1306 5.67529 15.7447 5.99294 16.3482C5.17765 16.0094 4.43647 15.5435 3.78 14.9718ZM5.84471 4.74353C6.71294 4.92353 7.59177 5.04 8.47059 5.07176V8.47059H5.22C5.26235 7.22118 5.47412 5.97177 5.85529 4.74353H5.84471ZM12.1553 4.74353C12.5259 5.97177 12.7376 7.22118 12.7906 8.47059H9.54V5.07176C10.4188 5.04 11.2871 4.93412 12.1659 4.74353H12.1553ZM12.1553 13.2565C11.2871 13.0765 10.4082 12.96 9.52941 12.9388V9.54H12.78C12.7376 10.7894 12.5259 12.0388 12.1447 13.2671L12.1553 13.2565ZM8.47059 9.52941V12.9282C7.59177 12.96 6.72353 13.0659 5.84471 13.2459C5.47412 12.0176 5.26235 10.7682 5.20941 9.51882H8.46L8.47059 9.52941ZM4.16118 9.52941C4.20353 10.8635 4.42588 12.1976 4.81765 13.5C4.17177 13.68 3.55765 13.9024 2.97529 14.1565C1.89529 12.8965 1.20706 11.2871 1.09059 9.52941H4.16118Z" fill="currentColor"/></svg></button></div></div>
+              <div class="comp-state-cell" style="font-size:11px;color:var(--color-text-secondary);justify-content:flex-start;">언어</div>
+              <div class="comp-action-cell" style="font-size:12px;color:var(--color-text-secondary);">language=off · user=on · full menu=on</div>
+              <div class="comp-state-cell"><div class="s1-gnb-util"><button class="s1-gnb-util-btn" type="button" aria-label="계정"><svg viewBox="0 0 24 21.5816" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M16.561 13.7324H7.43901C5.67118 13.7324 4.00236 14.3971 2.84266 15.5568C0.494991 17.9186 0.0141426 21.2704 0 21.3977L1.37183 21.5816C1.37183 21.5816 1.81025 18.5409 3.8185 16.5185C4.72363 15.6134 6.03889 15.1042 7.43901 15.1042H16.561C17.9611 15.1042 19.2764 15.6275 20.1815 16.5185C22.1897 18.5409 22.6282 21.5391 22.6282 21.5816L24 21.3977C23.9859 21.2563 23.505 17.9045 21.1573 15.5568C19.9976 14.3971 18.3288 13.7324 16.561 13.7324Z" fill="currentColor"/><path d="M5.9968 6.01061C5.9968 9.31998 8.69803 12.0212 12.0074 12.0212C15.3168 12.0212 18.018 9.31998 18.018 6.01061C18.018 2.70124 15.3168 0 12.0074 0C8.69803 0 5.9968 2.70124 5.9968 6.01061ZM16.6037 6.01061C16.6037 8.54213 14.5389 10.607 12.0074 10.607C9.47588 10.607 7.41106 8.54213 7.41106 6.01061C7.41106 3.47908 9.47588 1.41426 12.0074 1.41426C14.5389 1.41426 16.6037 3.47908 16.6037 6.01061Z" fill="currentColor"/></svg></button><button class="s1-gnb-util-btn" type="button" aria-label="메뉴"><svg viewBox="0 0 24 16.9274" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M0 1.41176H24V0.705882V0H0V1.41176Z" fill="currentColor"/><path d="M0 9.17647H24V8.47059V7.76471H0V9.17647Z" fill="currentColor"/><path d="M0 16.9274H24V16.2215V15.5156H0V16.9274Z" fill="currentColor"/></svg></button></div></div>
+              <div class="comp-state-cell" style="font-size:11px;color:var(--color-text-secondary);justify-content:flex-start;">계정 · 메뉴</div>
+              <div class="comp-action-cell" style="font-size:12px;color:var(--color-text-secondary);">language=off · user=on · full menu=off</div>
+              <div class="comp-state-cell"><div class="s1-gnb-util"><button class="s1-gnb-util-btn" type="button" aria-label="계정"><svg viewBox="0 0 24 21.5816" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M16.561 13.7324H7.43901C5.67118 13.7324 4.00236 14.3971 2.84266 15.5568C0.494991 17.9186 0.0141426 21.2704 0 21.3977L1.37183 21.5816C1.37183 21.5816 1.81025 18.5409 3.8185 16.5185C4.72363 15.6134 6.03889 15.1042 7.43901 15.1042H16.561C17.9611 15.1042 19.2764 15.6275 20.1815 16.5185C22.1897 18.5409 22.6282 21.5391 22.6282 21.5816L24 21.3977C23.9859 21.2563 23.505 17.9045 21.1573 15.5568C19.9976 14.3971 18.3288 13.7324 16.561 13.7324Z" fill="currentColor"/><path d="M5.9968 6.01061C5.9968 9.31998 8.69803 12.0212 12.0074 12.0212C15.3168 12.0212 18.018 9.31998 18.018 6.01061C18.018 2.70124 15.3168 0 12.0074 0C8.69803 0 5.9968 2.70124 5.9968 6.01061ZM16.6037 6.01061C16.6037 8.54213 14.5389 10.607 12.0074 10.607C9.47588 10.607 7.41106 8.54213 7.41106 6.01061C7.41106 3.47908 9.47588 1.41426 12.0074 1.41426C14.5389 1.41426 16.6037 3.47908 16.6037 6.01061Z" fill="currentColor"/></svg></button></div></div>
+              <div class="comp-state-cell" style="font-size:11px;color:var(--color-text-secondary);justify-content:flex-start;">계정</div>
+              </div>
+            </div>
+          </div>
+          <div class="variant-block">
+            <div class="variant-label">Language Icon · Language(English · Korean) <span style="font-weight:400;font-size:11px;color:#9ca3af;text-transform:none;letter-spacing:0;">— 지구본 + 언어 라벨. 유틸 영역의 언어 슬롯이 이 형태다</span></div>
+            <div class="preview-area">
+              <div class="comp-state-matrix" style="grid-template-columns: 150px repeat(2, minmax(120px, 1fr));">
+                <div class="matrix-col-header-action">Language</div>
+                <div class="matrix-col-header">English</div>
+                <div class="matrix-col-header">Korean</div>
+                <div class="comp-action-cell" style="font-size:12px;color:var(--color-text-secondary);">기본</div>
+              <div class="comp-state-cell"><button type="button" class="s1-gnb-lang"><span class="s1-gnb-lang-globe"><svg viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M9 18C13.9659 18 18 13.9659 18 9C18 4.03412 13.9659 0 9 0C4.03412 0 0 4.03412 0 9C0 13.9659 4.03412 18 9 18ZM2.97529 3.84353C3.56824 4.09765 4.18235 4.32 4.81765 4.5C4.42588 5.80235 4.20353 7.13647 4.16118 8.47059H1.09059C1.20706 6.71294 1.89529 5.10353 2.97529 3.84353ZM5.99294 1.65176C5.67529 2.25529 5.4 2.86941 5.16706 3.49412C4.69059 3.35647 4.22471 3.20824 3.78 3.02824C4.43647 2.45647 5.17765 1.99059 5.99294 1.65176ZM8.47059 1.09059V4.01294C7.71882 3.98118 6.95647 3.89647 6.20471 3.73765C6.53294 2.88 6.93529 2.03294 7.43294 1.21765C7.77177 1.15412 8.12118 1.11176 8.47059 1.09059ZM10.5671 1.21765C11.0647 2.03294 11.4671 2.88 11.7953 3.73765C11.0435 3.88588 10.2918 3.98118 9.52941 4.01294V1.09059C9.87882 1.11176 10.2282 1.15412 10.5671 1.21765ZM14.22 3.02824C13.7753 3.20824 13.3094 3.36706 12.8329 3.49412C12.6 2.86941 12.3247 2.25529 12.0071 1.65176C12.8224 1.99059 13.5635 2.45647 14.22 3.02824ZM16.9094 8.47059H13.8388C13.7965 7.13647 13.5741 5.80235 13.1824 4.5C13.8282 4.32 14.4424 4.09765 15.0247 3.84353C16.1047 5.10353 16.7929 6.71294 16.9094 8.47059ZM15.0247 14.1565C14.4424 13.9024 13.8176 13.68 13.1824 13.5C13.5741 12.1976 13.7965 10.8635 13.8388 9.52941H16.9094C16.7929 11.2871 16.1047 12.8965 15.0247 14.1565ZM12.0071 16.3482C12.3247 15.7447 12.6 15.1306 12.8329 14.5059C13.3094 14.6435 13.7753 14.7918 14.22 14.9718C13.5635 15.5435 12.8224 16.0094 12.0071 16.3482ZM9.52941 16.9094V13.9871C10.2812 14.0188 11.0435 14.1035 11.7953 14.2624C11.4671 15.12 11.0647 15.9671 10.5671 16.7824C10.2282 16.8459 9.87882 16.8882 9.52941 16.9094ZM7.43294 16.7824C6.93529 15.9671 6.53294 15.12 6.20471 14.2624C6.95647 14.1141 7.70824 14.0188 8.47059 13.9871V16.9094C8.12118 16.8882 7.77177 16.8459 7.43294 16.7824ZM3.78 14.9718C4.22471 14.7918 4.69059 14.6329 5.16706 14.5059C5.4 15.1306 5.67529 15.7447 5.99294 16.3482C5.17765 16.0094 4.43647 15.5435 3.78 14.9718ZM5.84471 4.74353C6.71294 4.92353 7.59177 5.04 8.47059 5.07176V8.47059H5.22C5.26235 7.22118 5.47412 5.97177 5.85529 4.74353H5.84471ZM12.1553 4.74353C12.5259 5.97177 12.7376 7.22118 12.7906 8.47059H9.54V5.07176C10.4188 5.04 11.2871 4.93412 12.1659 4.74353H12.1553ZM12.1553 13.2565C11.2871 13.0765 10.4082 12.96 9.52941 12.9388V9.54H12.78C12.7376 10.7894 12.5259 12.0388 12.1447 13.2671L12.1553 13.2565ZM8.47059 9.52941V12.9282C7.59177 12.96 6.72353 13.0659 5.84471 13.2459C5.47412 12.0176 5.26235 10.7682 5.20941 9.51882H8.46L8.47059 9.52941ZM4.16118 9.52941C4.20353 10.8635 4.42588 12.1976 4.81765 13.5C4.17177 13.68 3.55765 13.9024 2.97529 14.1565C1.89529 12.8965 1.20706 11.2871 1.09059 9.52941H4.16118Z" fill="currentColor"/></svg></span><span class="s1-gnb-lang-label">English</span></button></div>
+              <div class="comp-state-cell"><button type="button" class="s1-gnb-lang"><span class="s1-gnb-lang-globe"><svg viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M9 18C13.9659 18 18 13.9659 18 9C18 4.03412 13.9659 0 9 0C4.03412 0 0 4.03412 0 9C0 13.9659 4.03412 18 9 18ZM2.97529 3.84353C3.56824 4.09765 4.18235 4.32 4.81765 4.5C4.42588 5.80235 4.20353 7.13647 4.16118 8.47059H1.09059C1.20706 6.71294 1.89529 5.10353 2.97529 3.84353ZM5.99294 1.65176C5.67529 2.25529 5.4 2.86941 5.16706 3.49412C4.69059 3.35647 4.22471 3.20824 3.78 3.02824C4.43647 2.45647 5.17765 1.99059 5.99294 1.65176ZM8.47059 1.09059V4.01294C7.71882 3.98118 6.95647 3.89647 6.20471 3.73765C6.53294 2.88 6.93529 2.03294 7.43294 1.21765C7.77177 1.15412 8.12118 1.11176 8.47059 1.09059ZM10.5671 1.21765C11.0647 2.03294 11.4671 2.88 11.7953 3.73765C11.0435 3.88588 10.2918 3.98118 9.52941 4.01294V1.09059C9.87882 1.11176 10.2282 1.15412 10.5671 1.21765ZM14.22 3.02824C13.7753 3.20824 13.3094 3.36706 12.8329 3.49412C12.6 2.86941 12.3247 2.25529 12.0071 1.65176C12.8224 1.99059 13.5635 2.45647 14.22 3.02824ZM16.9094 8.47059H13.8388C13.7965 7.13647 13.5741 5.80235 13.1824 4.5C13.8282 4.32 14.4424 4.09765 15.0247 3.84353C16.1047 5.10353 16.7929 6.71294 16.9094 8.47059ZM15.0247 14.1565C14.4424 13.9024 13.8176 13.68 13.1824 13.5C13.5741 12.1976 13.7965 10.8635 13.8388 9.52941H16.9094C16.7929 11.2871 16.1047 12.8965 15.0247 14.1565ZM12.0071 16.3482C12.3247 15.7447 12.6 15.1306 12.8329 14.5059C13.3094 14.6435 13.7753 14.7918 14.22 14.9718C13.5635 15.5435 12.8224 16.0094 12.0071 16.3482ZM9.52941 16.9094V13.9871C10.2812 14.0188 11.0435 14.1035 11.7953 14.2624C11.4671 15.12 11.0647 15.9671 10.5671 16.7824C10.2282 16.8459 9.87882 16.8882 9.52941 16.9094ZM7.43294 16.7824C6.93529 15.9671 6.53294 15.12 6.20471 14.2624C6.95647 14.1141 7.70824 14.0188 8.47059 13.9871V16.9094C8.12118 16.8882 7.77177 16.8459 7.43294 16.7824ZM3.78 14.9718C4.22471 14.7918 4.69059 14.6329 5.16706 14.5059C5.4 15.1306 5.67529 15.7447 5.99294 16.3482C5.17765 16.0094 4.43647 15.5435 3.78 14.9718ZM5.84471 4.74353C6.71294 4.92353 7.59177 5.04 8.47059 5.07176V8.47059H5.22C5.26235 7.22118 5.47412 5.97177 5.85529 4.74353H5.84471ZM12.1553 4.74353C12.5259 5.97177 12.7376 7.22118 12.7906 8.47059H9.54V5.07176C10.4188 5.04 11.2871 4.93412 12.1659 4.74353H12.1553ZM12.1553 13.2565C11.2871 13.0765 10.4082 12.96 9.52941 12.9388V9.54H12.78C12.7376 10.7894 12.5259 12.0388 12.1447 13.2671L12.1553 13.2565ZM8.47059 9.52941V12.9282C7.59177 12.96 6.72353 13.0659 5.84471 13.2459C5.47412 12.0176 5.26235 10.7682 5.20941 9.51882H8.46L8.47059 9.52941ZM4.16118 9.52941C4.20353 10.8635 4.42588 12.1976 4.81765 13.5C4.17177 13.68 3.55765 13.9024 2.97529 14.1565C1.89529 12.8965 1.20706 11.2871 1.09059 9.52941H4.16118Z" fill="currentColor"/></svg></span><span class="s1-gnb-lang-label">한국어</span></button></div>
+              </div>
+            </div>
+          </div>
         </div>
 
         <!-- ── variant-group: 메뉴 슬롯 ── -->
@@ -5359,7 +5459,7 @@ document.addEventListener('click', function(e) {
       </section>
 
 
-      <section class="comp-section" id="table" data-cov-sizes="md,sm">
+      <section class="comp-section" id="table" data-cov-sizes="md,sm" data-cov-type="cell,header" data-cov-variant="default,hover,selected">
         <div class="comp-section-header">
           <h2 class="comp-section-title">Table</h2>
           <span class="comp-badge comp-badge-blue">Core</span>
@@ -5477,6 +5577,35 @@ document.addEventListener('click', function(e) {
           </div>
         </div>
 
+
+        <!-- ── Table Cell — 셀 단위 (정본 buildTableCell: Type × Variant × Size) ── -->
+        <div class="variant-block">
+          <div class="variant-label">Table Cell · 셀 단위 <span style="font-weight:400;font-size:11px;color:#9ca3af;text-transform:none;letter-spacing:0;">— Type(Cell · Header) × 상태 3종 × 사이즈 2종. Header 는 정본에 Default 만 있다</span></div>
+          <div class="preview-area">
+            <div class="comp-state-matrix" style="grid-template-columns: 150px repeat(3, minmax(120px, 1fr));">
+              <div class="matrix-col-header-action">Size · Type</div>
+              <div class="matrix-col-header">Default</div>
+              <div class="matrix-col-header">Hover</div>
+              <div class="matrix-col-header">Selected</div>
+              <div class="comp-action-cell" style="font-size:12px;color:var(--color-text-secondary);">md (h44) · Cell</div>
+              <div class="comp-state-cell"><table class="s1-table" style="width:auto;"><tbody><tr class="s1-table-row"><td class="s1-table-td">셀 내용</td></tr></tbody></table></div>
+              <div class="comp-state-cell"><table class="s1-table" style="width:auto;"><tbody><tr class="s1-table-row"><td class="s1-table-td is-hover">셀 내용</td></tr></tbody></table></div>
+              <div class="comp-state-cell"><table class="s1-table" style="width:auto;"><tbody><tr class="s1-table-row"><td class="s1-table-td is-selected">셀 내용</td></tr></tbody></table></div>
+              <div class="comp-action-cell" style="font-size:12px;color:var(--color-text-secondary);">md (h44) · Header</div>
+              <div class="comp-state-cell"><table class="s1-table" style="width:auto;"><tbody><tr class="s1-table-row"><th class="s1-table-th"><div class="s1-table-th-inner">헤더</div></th></tr></tbody></table></div>
+              <div class="comp-state-cell" style="color:#d1d5db;font-size:12px;">—</div>
+              <div class="comp-state-cell" style="color:#d1d5db;font-size:12px;">—</div>
+              <div class="comp-action-cell" style="font-size:12px;color:var(--color-text-secondary);">sm (h38) · Cell</div>
+              <div class="comp-state-cell"><table class="s1-table s1-table--sm" style="width:auto;"><tbody><tr class="s1-table-row"><td class="s1-table-td">셀 내용</td></tr></tbody></table></div>
+              <div class="comp-state-cell"><table class="s1-table s1-table--sm" style="width:auto;"><tbody><tr class="s1-table-row"><td class="s1-table-td is-hover">셀 내용</td></tr></tbody></table></div>
+              <div class="comp-state-cell"><table class="s1-table s1-table--sm" style="width:auto;"><tbody><tr class="s1-table-row"><td class="s1-table-td is-selected">셀 내용</td></tr></tbody></table></div>
+              <div class="comp-action-cell" style="font-size:12px;color:var(--color-text-secondary);">sm (h38) · Header</div>
+              <div class="comp-state-cell"><table class="s1-table s1-table--sm" style="width:auto;"><tbody><tr class="s1-table-row"><th class="s1-table-th"><div class="s1-table-th-inner">헤더</div></th></tr></tbody></table></div>
+              <div class="comp-state-cell" style="color:#d1d5db;font-size:12px;">—</div>
+              <div class="comp-state-cell" style="color:#d1d5db;font-size:12px;">—</div>
+            </div>
+          </div>
+        </div>
         <!-- Row States + Sizes (md · sm 한 섹션에 함께) -->
         <div class="variant-block">
           <div class="variant-label">Row States + Sizes <span style="font-weight:400;font-size:11px;color:#9ca3af;text-transform:none;letter-spacing:0;">— md · sm 함께</span></div>
@@ -5972,7 +6101,7 @@ updateHeader(); // 초기 헤더 상태 동기화</pre>
       </section>
 
 
-      <section class="comp-section" id="pagination" data-cov-states="single,first,last,middle,default,hover,selected,disabled">
+      <section class="comp-section" id="pagination" data-cov-states="single,first,last,middle,default,hover,selected,disabled" data-cov-element="arrow,edge,number">
         <div class="comp-section-header">
           <h2 class="comp-section-title">Pagination</h2>
           <span class="comp-badge comp-badge-blue">Core</span>
@@ -6003,32 +6132,37 @@ updateHeader(); // 초기 헤더 상태 동기화</pre>
 
         <!-- States — 상태값을 세로(아래로)로 나열 (Arrow · Number 열) -->
         <div class="variant-block">
-          <div class="variant-label">States <span style="font-weight:400;font-size:11px;color:#9ca3af;text-transform:none;letter-spacing:0;">— 상태를 세로로 나열 (Arrow · Number)</span></div>
+          <div class="variant-label">States <span style="font-weight:400;font-size:11px;color:#9ca3af;text-transform:none;letter-spacing:0;">— 상태를 세로로 나열 (Arrow · Edge · Number)</span></div>
           <div class="preview-area" style="overflow-x:auto;">
-            <div class="comp-state-matrix" style="grid-template-columns: 110px repeat(2, minmax(90px,auto)); row-gap: 12px;">
+            <div class="comp-state-matrix" style="grid-template-columns: 110px repeat(3, minmax(90px,auto)); row-gap: 12px;">
               <!-- 헤더 행 -->
               <div class="matrix-col-header" style="text-align:left;">State</div>
               <div class="matrix-col-header">Arrow</div>
+              <div class="matrix-col-header">Edge</div>
               <div class="matrix-col-header">Number</div>
 
               <!-- Default -->
               <div class="comp-row-label" style="align-self:center;">Default</div>
               <div class="comp-state-cell"><button class="s1-pagination-arrow is-preview" aria-label="이전"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M9 3.5L5 7l4 3.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></button></div>
+                            <div class="comp-state-cell"><button class="s1-pagination-arrow is-preview" aria-label="첫 페이지"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M10 3.5L6.5 7l3.5 3.5M3.5 3.5v7" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></button></div>
               <div class="comp-state-cell"><button class="s1-pagination-number is-preview">3</button></div>
 
               <!-- Hover -->
               <div class="comp-row-label" style="align-self:center;">Hover</div>
               <div class="comp-state-cell"><button class="s1-pagination-arrow is-hover is-preview" aria-label="이전"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M9 3.5L5 7l4 3.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></button></div>
+                            <div class="comp-state-cell"><button class="s1-pagination-arrow is-hover is-preview" aria-label="첫 페이지"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M10 3.5L6.5 7l3.5 3.5M3.5 3.5v7" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></button></div>
               <div class="comp-state-cell"><button class="s1-pagination-number is-hover is-preview">3</button></div>
 
               <!-- Selected (번호에만 존재) -->
               <div class="comp-row-label" style="align-self:center;">Selected</div>
+              <div class="comp-state-cell" style="color:#d1d5db;font-size:12px;">—</div>
               <div class="comp-state-cell" style="color:#d1d5db;font-size:12px;">—</div>
               <div class="comp-state-cell"><button class="s1-pagination-number is-selected is-preview">3</button></div>
 
               <!-- Disabled (화살표에만 존재) -->
               <div class="comp-row-label" style="align-self:center;">Disabled</div>
               <div class="comp-state-cell"><button class="s1-pagination-arrow is-preview" disabled aria-label="이전"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M9 3.5L5 7l4 3.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></button></div>
+              <div class="comp-state-cell"><button class="s1-pagination-arrow is-preview" disabled aria-label="첫 페이지"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M10 3.5L6.5 7l3.5 3.5M3.5 3.5v7" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></button></div>
               <div class="comp-state-cell" style="color:#d1d5db;font-size:12px;">—</div>
             </div>
           </div>
@@ -6526,7 +6660,7 @@ update(); // 초기화</pre>
 
 
       <!-- ═══ DATE PICKER ═══ -->
-      <section class="comp-section" id="date-picker" data-cov-states="default,filled,open,disabled" data-cov-sizes="xxsm,xsm,md">
+      <section class="comp-section" id="date-picker" data-cov-states="default,filled,open,disabled,date,year,month,hover,today,selected,start,end" data-cov-sizes="xxsm,xsm,md" data-cov-type="standard,range">
         <div class="comp-section-header">
           <h2 class="comp-section-title">Date Picker</h2>
           <span class="comp-badge comp-badge-blue">Core</span>
@@ -6756,6 +6890,70 @@ update(); // 초기화</pre>
 
         </div><!-- /platform-section-pc -->
 
+        <!-- ── Calendar 부품 — 셀·타일 단위 (정본 buildCalendarCell · buildCalendarTile) ── -->
+        <div class="variant-group">
+          <h3 class="variant-group-title">Calendar 부품 (하위 항목)</h3>
+          <p class="variant-group-desc">달력 패널을 구성하는 낱개 부품. 정본은 날짜 칸을 <code>Standard</code>(5상태)와 <code>Range</code>(기간선택 4변형)로 나누고, 연·월 선택 화면의 타일을 별도 4상태로 정의한다.</p>
+
+          <div class="variant-block">
+            <div class="variant-label">Calendar Cell · 날짜 칸 <span style="font-weight:400;font-size:11px;color:#9ca3af;text-transform:none;letter-spacing:0;">— Range 는 44×44 칸 안에 밴드(h30)를 깔고 그 위에 30×30 원. Start 는 오른쪽 절반, End 는 왼쪽 절반만 밴드</span></div>
+            <div class="preview-area">
+              <div class="comp-state-matrix" style="grid-template-columns: 110px repeat(5, minmax(80px, 1fr));">
+                <div class="matrix-col-header-action">Type</div>
+                <div class="matrix-col-header">Default</div>
+                <div class="matrix-col-header">Hover / Start</div>
+                <div class="matrix-col-header">Today / End</div>
+                <div class="matrix-col-header">Selected</div>
+                <div class="matrix-col-header">Disabled</div>
+              <div class="comp-action-cell" style="font-size:12px;color:var(--color-text-secondary);">Standard</div>
+              <div class="comp-state-cell"><button type="button" class="s1-date-picker__day"><span class="day-inner">15</span></button></div>
+              <div class="comp-state-cell"><button type="button" class="s1-date-picker__day is-hover"><span class="day-inner">15</span></button></div>
+              <div class="comp-state-cell"><button type="button" class="s1-date-picker__day is-today"><span class="day-inner">15</span></button></div>
+              <div class="comp-state-cell"><button type="button" class="s1-date-picker__day is-selected"><span class="day-inner">15</span></button></div>
+              <div class="comp-state-cell"><button type="button" class="s1-date-picker__day" disabled><span class="day-inner">15</span></button></div>
+              <div class="comp-action-cell" style="font-size:12px;color:var(--color-text-secondary);">Range</div>
+              <div class="comp-state-cell"><button type="button" class="s1-date-picker__day s1-date-picker__day--range"><span class="day-inner">15</span></button></div>
+              <div class="comp-state-cell"><button type="button" class="s1-date-picker__day s1-date-picker__day--range s1-date-picker__day--range-start"><span class="day-inner">15</span></button></div>
+              <div class="comp-state-cell"><button type="button" class="s1-date-picker__day s1-date-picker__day--range s1-date-picker__day--range-end"><span class="day-inner">15</span></button></div>
+              <div class="comp-state-cell"><button type="button" class="s1-date-picker__day s1-date-picker__day--range is-disabled" disabled><span class="day-inner">15</span></button></div>
+              <div class="comp-state-cell" style="color:#d1d5db;font-size:12px;">—</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="variant-block">
+            <div class="variant-label">Calendar Tile · 연·월 선택 타일 <span style="font-weight:400;font-size:11px;color:#9ca3af;text-transform:none;letter-spacing:0;">— 달력 헤더의 연월 라벨을 누르면 나오는 화면의 칸</span></div>
+            <div class="preview-area">
+              <div class="comp-state-matrix" style="grid-template-columns: 110px repeat(4, minmax(90px, 1fr));">
+                <div class="matrix-col-header-action">State</div>
+                <div class="matrix-col-header">Default</div>
+                <div class="matrix-col-header">Hover</div>
+                <div class="matrix-col-header">Selected</div>
+                <div class="matrix-col-header">Disabled</div>
+                <div class="comp-action-cell" style="font-size:12px;color:var(--color-text-secondary);">타일</div>
+              <div class="comp-state-cell"><button type="button" class="s1-date-picker__selector-btn" style="width:64px;min-height:44px;">2022</button></div>
+              <div class="comp-state-cell"><button type="button" class="s1-date-picker__selector-btn is-hover" style="width:64px;min-height:44px;">2023</button></div>
+              <div class="comp-state-cell"><button type="button" class="s1-date-picker__selector-btn is-selected" style="width:64px;min-height:44px;">2025</button></div>
+              <div class="comp-state-cell"><button type="button" class="s1-date-picker__selector-btn is-disabled" style="width:64px;min-height:44px;" disabled>2021</button></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="variant-block">
+            <div class="variant-label">Calendar · 패널 화면 3종 <span style="font-weight:400;font-size:11px;color:#9ca3af;text-transform:none;letter-spacing:0;">— Date(날짜) · Month(월 선택) · Year(연 선택). 종전 가이드에는 Date 만 보였다</span></div>
+            <div class="preview-area">
+              <div class="comp-state-matrix" style="grid-template-columns: repeat(3, minmax(220px, 1fr));">
+                <div class="matrix-col-header">State=Date</div>
+                <div class="matrix-col-header">State=Month</div>
+                <div class="matrix-col-header">State=Year</div>
+                <div class="comp-state-cell" style="font-size:12px;color:var(--color-text-secondary);align-items:flex-start;">달력 그리드 — 위 Date Picker Open 상태 참조</div>
+                <div class="comp-state-cell"><div class="s1-date-picker__selector-grid" style="width:220px;gap:4px;"><button type="button" class="s1-date-picker__selector-btn">1월</button><button type="button" class="s1-date-picker__selector-btn">2월</button><button type="button" class="s1-date-picker__selector-btn">3월</button><button type="button" class="s1-date-picker__selector-btn">4월</button><button type="button" class="s1-date-picker__selector-btn">5월</button><button type="button" class="s1-date-picker__selector-btn">6월</button><button type="button" class="s1-date-picker__selector-btn">7월</button><button type="button" class="s1-date-picker__selector-btn is-selected">8월</button><button type="button" class="s1-date-picker__selector-btn">9월</button><button type="button" class="s1-date-picker__selector-btn">10월</button><button type="button" class="s1-date-picker__selector-btn">11월</button><button type="button" class="s1-date-picker__selector-btn">12월</button></div></div>
+                <div class="comp-state-cell"><div class="s1-date-picker__selector-grid" style="width:220px;gap:4px;"><button type="button" class="s1-date-picker__selector-btn">2021</button><button type="button" class="s1-date-picker__selector-btn">2022</button><button type="button" class="s1-date-picker__selector-btn">2023</button><button type="button" class="s1-date-picker__selector-btn">2024</button><button type="button" class="s1-date-picker__selector-btn is-selected">2025</button><button type="button" class="s1-date-picker__selector-btn">2026</button><button type="button" class="s1-date-picker__selector-btn">2027</button><button type="button" class="s1-date-picker__selector-btn">2028</button><button type="button" class="s1-date-picker__selector-btn">2029</button></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
         <!-- ── Mobile ── -->
         <div class="platform-section platform-section-mobile">
           <div class="platform-header">lg (h48)</div>
@@ -6873,7 +7071,7 @@ update(); // 초기화</pre>
 
       </section>
 
-      <section class="comp-section" id="time-picker" data-cov-states="default,hover,focus,filled,disabled" data-cov-sizes="xxsm,xsm,md">
+      <section class="comp-section" id="time-picker" data-cov-states="default,hover,focus,filled,disabled,selected,시 hover,시 selected,분 hover,분 selected" data-cov-sizes="xxsm,xsm,md" data-cov-type="24h,12h">
         <div class="comp-section-header">
           <h2 class="comp-section-title">Time Picker</h2>
           <span class="comp-badge comp-badge-blue">Core</span>
