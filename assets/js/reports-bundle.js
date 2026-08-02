@@ -2,9 +2,21 @@
    Run: npm run reports:sync
 */
 window.REPORTS_INDEX = {
-  "generatedAt": "2026-08-02T09:20:07.961Z",
+  "generatedAt": "2026-08-02T13:24:04.621Z",
   "totalCount": 69,
   "reports": [
+    {
+      "id": "button-sync-check",
+      "filename": "button-sync-check.md",
+      "title": "Button Sync Check Report",
+      "stage": "Audit",
+      "category": "audit",
+      "status": "archive",
+      "sourcePath": "reports/button-sync-check.md",
+      "updatedAt": "2026-08-02",
+      "summary": "- **Variants:** primary, secondary, blue-line",
+      "fileSizeKB": 3.2
+    },
     {
       "id": "handoff-pipeline-rebuild",
       "filename": "handoff-pipeline-rebuild.md",
@@ -14,8 +26,8 @@ window.REPORTS_INDEX = {
       "status": "complete",
       "sourcePath": "reports/handoff-pipeline-rebuild.md",
       "updatedAt": "2026-08-02",
-      "summary": "**main 브랜치에 Phase 0~4 가 전부 병합돼 있고 `npm run gate:check` PASSED(경고 9)다.** 작업트리 2개(`pipeline-rebuild`·`phase4-stubs`)는 병합 완료라 지워도 된다.",
-      "fileSizeKB": 9.8
+      "summary": "**main 브랜치에 Phase 0~4 + 4e 가 전부 병합돼 있고 `npm run gate:check` PASSED(경고 9)다.** 작업트리 2개(`pipeline-rebuild`·`phase4-stubs`)와 `eager-hermann-5803ee` 는 전부 main 에 포함돼 있어 지워도 된다.",
+      "fileSizeKB": 14.2
     },
     {
       "id": "harness-audit-2026-08-02",
@@ -28,30 +40,6 @@ window.REPORTS_INDEX = {
       "updatedAt": "2026-08-02",
       "summary": "- ✅ [button] 모든 사이즈 분기 존재 (md (h44) / xsm (h34) / xxsm (h28) / lg (h48))",
       "fileSizeKB": 2
-    },
-    {
-      "id": "mvp-t2-token-sync",
-      "filename": "mvp-t2-token-sync.md",
-      "title": "MVP-T2 Token Sync Plugin Report",
-      "stage": "T2",
-      "category": "token",
-      "status": "archive",
-      "sourcePath": "reports/mvp-t2-token-sync.md",
-      "updatedAt": "2026-08-02",
-      "summary": "MVP-T1에서 구축한 CSS Token ↔ Registry Token ↔ Figma Variable mapping registry를 기반으로,",
-      "fileSizeKB": 5
-    },
-    {
-      "id": "button-sync-check",
-      "filename": "button-sync-check.md",
-      "title": "Button Sync Check Report",
-      "stage": "Audit",
-      "category": "audit",
-      "status": "archive",
-      "sourcePath": "reports/button-sync-check.md",
-      "updatedAt": "2026-08-01",
-      "summary": "- **Variants:** primary, secondary, blue-line",
-      "fileSizeKB": 3.2
     },
     {
       "id": "component-alias-canonical-mapping",
@@ -112,6 +100,18 @@ window.REPORTS_INDEX = {
       "updatedAt": "2026-07-15",
       "summary": "**상태: 미착수.** 확인 계열(`registry/components/modal.json`, compact 텍스트-확인)과 **구분되는 별개 컴포넌트**.",
       "fileSizeKB": 3.3
+    },
+    {
+      "id": "mvp-t2-token-sync",
+      "filename": "mvp-t2-token-sync.md",
+      "title": "MVP-T2 Token Sync Plugin Report",
+      "stage": "T2",
+      "category": "token",
+      "status": "archive",
+      "sourcePath": "reports/mvp-t2-token-sync.md",
+      "updatedAt": "2026-07-07",
+      "summary": "MVP-T1에서 구축한 CSS Token ↔ Registry Token ↔ Figma Variable mapping registry를 기반으로,",
+      "fileSizeKB": 5
     },
     {
       "id": "harness-audit-2026-07-06",
