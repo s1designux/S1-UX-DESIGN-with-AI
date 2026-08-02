@@ -287,6 +287,9 @@ function audit() {
 
 function main() {
   const { missing, outOfScopeSemanticColor, unresolved, stats } = audit();
+  // 역방향 검사(아래 2번)용 원자료 — audit() 이 쓰는 것과 같은 소스를 다시 읽는다.
+  const figmaSetsForReverse = loadVarsData();
+  const cssNamesForReverse = loadCssVarNames(TOKENS_CSS);
 
   let errors = 0;
   let warnings = 0;
@@ -340,6 +343,31 @@ function main() {
       console.log(`  ⚠️  ${u.cssName}  (kind=${u.kind})`);
     }
     warnings += unresolved.length;
+  }
+
+  // 2) 역방향(vars-data → tokens.css) — 2026-08-01 신설.
+  //    종전엔 tokens.css → vars-data 단방향이라, **정본에 새 Foundation 토큰을 넣고
+  //    tokens.css 재생성을 잊으면** 아무 게이트도 안 잡았다(웹은 그 토큰을 못 씀).
+  //    Foundation 은 이름 변환이 결정론(키 "gray/100" → --color-gray-100)이라 정확히 대조된다.
+  //    Semantic 은 컴포넌트 폴더 구조라 1:1 이 아니므로 이 방향 검사는 Foundation 한정.
+  {
+    const reverseMissing = [];
+    for (const k of Object.keys(figmaSetsForReverse.FOUNDATION_COLOR)) {
+      const css = '--color-' + k.replace(/\//g, '-');
+      if (!cssNamesForReverse.has(css)) reverseMissing.push(`${k} → ${css}`);
+    }
+    for (const k of Object.keys(figmaSetsForReverse.FOUNDATION_NUMBER)) {
+      const css = '--' + k.replace(/\//g, '-');
+      if (!cssNamesForReverse.has(css)) reverseMissing.push(`${k} → ${css}`);
+    }
+    console.log('\n[역방향: vars-data Foundation → tokens.css]');
+    if (reverseMissing.length === 0) {
+      console.log('  ✅ 정본 Foundation 토큰 전부 tokens.css 에 존재');
+    } else {
+      for (const r of reverseMissing) console.log(`  ❌ tokens.css 에 없음: ${r}`);
+      console.log('     → npm run tokens:gen:foundation (또는 npm run tokens:reconcile) 로 재생성');
+      errors += reverseMissing.length;
+    }
   }
 
   console.log('\n─────────────────────────────────────────────────────');

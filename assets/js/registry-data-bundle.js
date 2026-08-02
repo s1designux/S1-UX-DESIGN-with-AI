@@ -9464,9 +9464,24 @@ window.REGISTRY_BUNDLE = {
         "priority": 4
       },
       {
+        "id": "multi-toggle",
+        "name": "Multi Toggle",
+        "label": "Multi Toggle",
+        "category": "selection",
+        "path": "registry/components/multi-toggle.json",
+        "status": "in-progress",
+        "harnessStatus": "implemented",
+        "priority": 18,
+        "notes": [
+          "2026-08-01 소급 등록(Gate 30 신설로 미등록 적발). 설치기·HTML 은 2026-06-30 부터 반영돼 있었으나 registry 문서만 없었다.",
+          "정본 2세트 — Multi Toggle Element(32 variants) + Multi Toggle 조합형(6 variants).",
+          "origin 분류 tbd — Ⓐ/Ⓑ river 결정 대기."
+        ]
+      },
+      {
         "id": "chip",
         "name": "Chip",
-        "label": "Chip · FilterChip",
+        "label": "Chip",
         "category": "selection",
         "path": "registry/components/chip.json",
         "status": "in-progress",
@@ -9476,7 +9491,23 @@ window.REGISTRY_BUNDLE = {
           "2026-05-19 MVP-C1: line/solid split token 구조 확정. hover·icon·close-icon variant 추가. Token Details 탭 구현.",
           "chip.json 구식 unified 구조 → line/solid split 재작성.",
           "darkModeStatus: pending — dark mode 시각 검증 미완료.",
-          "figmaNodeId: '' — Scan from Selection으로 확인 필요."
+          "figmaNodeId: '' — Scan from Selection으로 확인 필요.",
+          "2026-08-01: Filter Chip 을 registry/components/filter-chip.json 으로 분리(별개 컴포넌트 — 상태 5개·Title 축·Dropdown 부착). 이 항목 label 의 흡수 표기 해제."
+        ]
+      },
+      {
+        "id": "filter-chip",
+        "name": "Filter Chip",
+        "label": "Filter Chip",
+        "category": "selection",
+        "path": "registry/components/filter-chip.json",
+        "status": "in-progress",
+        "harnessStatus": "implemented",
+        "priority": 19,
+        "notes": [
+          "2026-08-01 소급 등록(Gate 30 신설로 미등록 적발). 종전엔 chip.json 의 variants.filter 로만 서술됐다.",
+          "Chip 과 색 토큰 100% 공유하나 별개 세트(상태 5개·Title 축·화살표·Dropdown 부착).",
+          "Figma 원본 대조 리포트 없음 — origin tbd."
         ]
       },
       {
@@ -9612,6 +9643,21 @@ window.REGISTRY_BUNDLE = {
           "viewport(1280/1440/1920)는 full-width 반응형으로 통합. 데모 캔버스 px-240 미구현.",
           "figmaNodeId: 540:5942(pc_gnb). 미결: HD-GNB-1(로고 색상)·HD-GNB-2(유틸 아이콘 색상) 사용자 확인 대기.",
           "darkModeStatus: candidate — dark 시각 검증 미완료."
+        ]
+      },
+      {
+        "id": "mobile-bottom-nav",
+        "name": "Mobile Bottom Nav",
+        "label": "Bottom Nav",
+        "category": "navigation",
+        "path": "registry/components/mobile-bottom-nav.json",
+        "status": "in-progress",
+        "harnessStatus": "implemented",
+        "priority": 20,
+        "notes": [
+          "2026-08-01 소급 등록(Gate 30 신설로 미등록 적발). 설치기 편입은 2026-07-02.",
+          "정본은 탭 아이템 1칸(60×60) — 4탭 바는 컴포넌트가 아니라 인스턴스 조합.",
+          "origin B · figma-library-builder 빌드 + component-verifier 검증 완료(2026-07-02)."
         ]
       },
       {
@@ -9945,6 +9991,9 @@ window.REGISTRY_BUNDLE = {
         "openIssues": [
           "figmaNodeId: Figma Chip componentSetKey 미확인 — Scan from Selection으로 확인 필요.",
           "darkModeStatus: pending — dark mode 시각 검증 미완료."
+        ],
+        "notes": [
+          "2026-08-01: variants.filter 상세를 registry/components/filter-chip.json 으로 이관(포인터만 유지)."
         ]
       },
       "usage": {
@@ -10215,45 +10264,10 @@ window.REGISTRY_BUNDLE = {
           ]
         },
         "filter": {
-          "description": "Filter chip with dropdown. Available in line and solid types. Sub-variants: label-only and with-title.",
-          "tokenStatus": "stable",
-          "codeStatus": "implemented",
-          "darkModeStatus": "pending",
+          "_movedTo": "registry/components/filter-chip.json",
+          "description": "Filter Chip 은 2026-08-01 별도 컴포넌트 문서로 분리됐다(상태 5개·Title 축·화살표·Dropdown 부착으로 Chip 과 축이 다름). 색 토큰은 여전히 chip line/solid 를 100% 공유한다.",
           "cssClass": "ds-filter-chip",
-          "cssModifierSolid": "ds-filter-chip--solid",
-          "subVariants": [
-            "label-only",
-            "with-title"
-          ],
-          "types": [
-            "line",
-            "solid"
-          ],
-          "notes": [
-            "Filter chip uses chip-line/solid tokens — no separate filter-specific tokens.",
-            "label-only selected: border changes to action-primary (line) or bg fills action-primary (solid).",
-            "with-title: title text always shows as selected-text color when not disabled."
-          ],
-          "tokenRefsLine": [
-            "--chip-line-default-bg",
-            "--chip-line-default-border",
-            "--chip-line-default-text",
-            "--chip-line-selected-border",
-            "--chip-line-selected-text",
-            "--chip-line-disabled-bg",
-            "--chip-line-disabled-border",
-            "--chip-line-disabled-text"
-          ],
-          "tokenRefsSolid": [
-            "--chip-solid-default-bg",
-            "--chip-solid-default-border",
-            "--chip-solid-default-text",
-            "--chip-solid-selected-bg",
-            "--chip-solid-selected-border",
-            "--chip-solid-selected-text",
-            "--chip-solid-disabled-bg",
-            "--chip-solid-disabled-text"
-          ]
+          "note": "이 노드에 상세를 다시 적지 말 것 — 두 곳에 같은 사실이 있으면 드리프트한다. 정본은 filter-chip.json."
         }
       },
       "sizing": {

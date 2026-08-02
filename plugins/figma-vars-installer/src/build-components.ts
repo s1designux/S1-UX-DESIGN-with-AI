@@ -4914,6 +4914,17 @@ export const BUILD_DEPENDENCIES: Record<string, string[]> = {
   "Bottom Sheet Option": ["Checkbox", "Radio"],
 };
 
+// 부모가 **부수 생성**하는 컴포넌트 — 자기 runner 가 없는 것이 정상이다(2026-08-01 명시화).
+//   BUILD_DEPENDENCIES(=부모가 자식 인스턴스를 부착하니 자식을 먼저 빌드) 와 방향이 반대다:
+//   여기 있는 것은 "자식 세트 자체를 부모 빌더가 만들어 준다"는 뜻.
+//   종전에는 runners 에 없으면 `continue` 로 조용히 넘어가, '빌더를 안 만든 것'과
+//   '부모가 만들어 주는 것'을 구분할 수 없었다. 이제 선언한 것만 면제하고
+//   나머지는 noRunner 로 보고 → Gate 30 이 차단한다.
+export const BUILT_BY_PARENT: { [child: string]: string } = {
+  // buildTimePickerDropdown 이 buildTimePickerCell 을 호출해 셀 세트까지 생성(build-components.ts:2124).
+  "Time Picker Cell": "Time Picker Dropdown",
+};
+
 // 카테고리 members(표시 순서)를 "요소 먼저" 빌드 순서로 위상정렬.
 //   카테고리 내부 의존만 반영(intra-category). 안정 정렬(의존 없으면 원순서 유지).
 export function buildOrderFor(members: string[]): string[] {
@@ -4935,7 +4946,7 @@ export function buildOrderFor(members: string[]): string[] {
 export async function buildAllComponents(
   maps: BuildMaps,
   onProgress?: (step: string, pct: number) => void
-): Promise<{ created: number; added: string[]; skipped: string[] }> {
+): Promise<{ created: number; added: string[]; skipped: string[]; noRunner: string[] }> {
   TEXT_STYLES = maps.textStyles || {};  // makeBoundText 가 텍스트 스타일 바인딩에 사용
   const page = figma.currentPage;
 
@@ -4980,6 +4991,10 @@ export async function buildAllComponents(
   let created = 0;
   const added: string[] = [];
   const skipped: string[] = [];
+  // members 에는 있는데 runners 에 빌더가 없어 건너뛴 컴포넌트(2026-08-01 Phase 2).
+  //   종전에는 `if (!run) continue;` 로 **조용히** 넘어가 설치 결과에서 통째로 빠져도
+  //   아무도 몰랐다(실측: "Time Picker Cell"). 이제 모아서 반환·보고하고 Gate 30 이 차단한다.
+  const noRunner: string[] = [];
 
   // 컴포넌트 빌더 — 이름 → (originY) => {set, bottomY}. Input 은 originX=0(섹션 컬럼 좌측정렬).
   const runners: { [name: string]: (oy: number) => Promise<{ set: ComponentSetNode; bottomY: number }> } = {
@@ -5046,7 +5061,13 @@ export async function buildAllComponents(
     //   빌드 시점 Y(catY)는 임시(겹치지 않게 세로로 쌓음). 최종 세로 위치는 아래 layout 패스가 정한다.
     for (const name of buildOrderFor(cat.members)) {
       const run = runners[name];
-      if (!run) continue;
+      // 조용한 스킵 금지 — 부모가 부수 생성한다고 **선언된** 것만 면제, 나머지는 집계·보고(Gate 30)
+      // hasOwnProperty 로 조회한다 — 객체 리터럴은 Object.prototype 을 상속하므로 컴포넌트 이름이
+      //   "constructor"·"toString" 같으면 선언 없이 자동 면제돼 버린다(🤖 verifier 지적 R2).
+      if (!run) {
+        if (!Object.prototype.hasOwnProperty.call(BUILT_BY_PARENT, name)) noRunner.push(name);
+        continue;
+      }
       done++;
       const isDepSet = name === "Calendar Cell" || name === "Calendar Tile";
       if (existing.has(name) && !isDepSet) {
@@ -5179,8 +5200,16 @@ export async function buildAllComponents(
     }
   } catch (e) { /* mock/no-page */ }
 
+  if (noRunner.length) {
+    // ⚠️ 이 경고는 **Figma 개발자 콘솔에만** 뜬다(Plugins → Development → Open console).
+    //    배포본을 쓰는 디자이너에게는 안 보인다 — post("done") 페이로드에 noRunner 가 없기 때문
+    //    (code.ts 는 created/added/skipped 만 꺼낸다). 사용자 노출이 필요해지면 그쪽을 함께 고쳐야 한다.
+    //    제품 노출이 없어도 되는 이유: Gate 30 이 **커밋 단계에서** 차단하므로 미등록 상태가
+    //    배포까지 가지 못한다. (🤖 component-verifier 지적 (c)-2 로 주석을 사실에 맞게 교정, 2026-08-01)
+    console.warn(`[installer] 빌더 미등록으로 건너뜀 ${noRunner.length}개: ${noRunner.join(", ")}`);
+  }
   if (onProgress) onProgress(`완료 — 추가 ${added.length}개 · 기존 보존 ${skipped.length}개`, 100);
-  return { created, added, skipped };
+  return { created, added, skipped, noRunner };
 }
 
 // ── 섹션 래핑 (대메뉴 묶기) ───────────────────────────────────────────────────

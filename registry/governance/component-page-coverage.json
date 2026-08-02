@@ -1,6 +1,6 @@
 {
   "_note": "Gate 18(component-page-coverage) 정본. 설치기(build-components.ts COMPONENT_CATEGORIES_GRID)의 모든 컴포넌트를 ①sectionFor(HTML 섹션이 있어야 함) 또는 ②noSectionNeeded(섹션 불요·사유) 로 분류한다. 설치기에 새 컴포넌트가 생겼는데 둘 다 없으면(미분류) Gate 18 이 커밋 차단 → 'HTML 페이지에 반영' 또는 '제외 분류'를 강제. 정본=설치기. 단독 npm run components:pagecheck.",
-  "_updated": "2026-06-30",
+  "_updated": "2026-08-01",
   "htmlPage": "pages/components.html",
   "sectionFor": {
     "Button": "button",
@@ -33,28 +33,103 @@
     "dropdown": "Dropdown List"
   },
   "noSectionNeeded": [
-    { "name": "StatusBar", "reason": "Platform/Shell — 레이아웃·템플릿 성격. components 페이지 제외(사용자 결정 2026-06-30 A)" },
-    { "name": "NavBar", "reason": "Platform/Shell — 제외(사용자 결정 2026-06-30 A)" },
-    { "name": "CI", "reason": "Platform/Shell — 제외(사용자 결정 2026-06-30 A)" },
-    { "name": "LoginGNB", "reason": "Platform/Shell — 제외(사용자 결정 2026-06-30 A)" },
-    { "name": "WebTabBar", "reason": "Platform/Shell — 제외(사용자 결정 2026-06-30 A)" },
-    { "name": "Footer", "reason": "Platform/Shell — 제외(사용자 결정 2026-06-30 A)" },
-    { "name": "GNB Utility Icon", "sectionId": "gnb-util-icon", "reason": "요소(element) — GNB 안 인스턴스 부품. HTML 섹션 제목은 축약형 'GNB Util Icon' 이라 slug 자동 대응이 안 돼 sectionId 로 명시(2026-07-31)" },
-    { "name": "Language Icon", "reason": "요소 — GNB 안 인스턴스 부품" },
-    { "name": "Line Tab", "reason": "요소 — Line Tab Set(tab 섹션) 안 셀" },
-    { "name": "Pagination Cell", "reason": "요소 — Pagination 안 셀" },
-    { "name": "Multi Toggle Element", "reason": "요소 — Multi Toggle 안 셀(multi-toggle 섹션 Element States 로 표출)" },
-    { "name": "Dropdown List", "reason": "요소 — Dropdown(dropdown 섹션) 안 옵션 리스트로 표출" },
-    { "name": "Calendar", "reason": "요소 — Date Picker 안 캘린더 패널" },
-    { "name": "Calendar Cell", "reason": "요소 — Date Picker 안 날짜 셀" },
-    { "name": "Calendar Tile", "reason": "요소 — Date Picker 안 타일" },
-    { "name": "Date Picker Mobile Bottom Sheet", "sectionId": "date-picker-bottom-sheet", "reason": "요소/변형 — Date Picker(date-picker 섹션) 모바일 폼. HTML 섹션 제목이 'Date Picker Bottom Sheet'(Mobile 생략)이라 slug 자동 대응이 안 돼 sectionId 로 명시(2026-07-31)" },
-    { "name": "Time Picker Mobile Bottom Sheet", "reason": "요소/변형 — Time Picker(time-picker 섹션) 모바일 폼(휠 바텀시트)" },
-    { "name": "Time Picker Dropdown", "reason": "요소 — Time Picker 안 드롭다운 패널" },
-    { "name": "Time Picker Cell", "reason": "요소 — Time Picker 안 셀" },
-    { "name": "Table Cell", "reason": "요소 — Table 안 셀" },
-    { "name": "Bottom Sheet", "reason": "공용 오버레이 컴포넌트 — 모바일 사용은 Filter Chip(·Time Picker) 섹션의 바텀시트로 표출(전용 섹션 불요). Figma 라이브러리 정본." },
-    { "name": "Bottom Sheet Option", "reason": "요소 — Bottom Sheet 안 옵션 행(Text/Checkbox/Radio/List)." },
-    { "name": "Modal", "reason": "확인 계열 공통 팝업 셸(overlay) — codeStatus in-progress, 아직 HTML 하네스 데모 없음(harnessStatus not-started). Figma 라이브러리 정본. HTML 섹션 생기면 sectionFor 로 이관." }
-  ]
+    {
+      "name": "StatusBar",
+      "reason": "Platform/Shell — 레이아웃·템플릿 성격. components 페이지 제외(사용자 결정 2026-06-30 A)"
+    },
+    {
+      "name": "NavBar",
+      "reason": "Platform/Shell — 제외(사용자 결정 2026-06-30 A)"
+    },
+    {
+      "name": "CI",
+      "reason": "Platform/Shell — 제외(사용자 결정 2026-06-30 A)"
+    },
+    {
+      "name": "LoginGNB",
+      "reason": "Platform/Shell — 제외(사용자 결정 2026-06-30 A)"
+    },
+    {
+      "name": "WebTabBar",
+      "reason": "Platform/Shell — 제외(사용자 결정 2026-06-30 A)"
+    },
+    {
+      "name": "Footer",
+      "reason": "Platform/Shell — 제외(사용자 결정 2026-06-30 A)"
+    },
+    {
+      "name": "GNB Utility Icon",
+      "sectionId": "gnb-util-icon",
+      "reason": "요소(element) — GNB 안 인스턴스 부품. HTML 섹션 제목은 축약형 'GNB Util Icon' 이라 slug 자동 대응이 안 돼 sectionId 로 명시(2026-07-31)"
+    },
+    {
+      "name": "Language Icon",
+      "reason": "요소 — GNB 안 인스턴스 부품"
+    },
+    {
+      "name": "Line Tab",
+      "reason": "요소 — Line Tab Set(tab 섹션) 안 셀"
+    },
+    {
+      "name": "Pagination Cell",
+      "reason": "요소 — Pagination 안 셀"
+    },
+    {
+      "name": "Multi Toggle Element",
+      "reason": "요소 — Multi Toggle 안 셀(multi-toggle 섹션 Element States 로 표출)"
+    },
+    {
+      "name": "Dropdown List",
+      "reason": "요소 — Dropdown(dropdown 섹션) 안 옵션 리스트로 표출"
+    },
+    {
+      "name": "Calendar",
+      "reason": "요소 — Date Picker 안 캘린더 패널"
+    },
+    {
+      "name": "Calendar Cell",
+      "reason": "요소 — Date Picker 안 날짜 셀"
+    },
+    {
+      "name": "Calendar Tile",
+      "reason": "요소 — Date Picker 안 타일"
+    },
+    {
+      "name": "Date Picker Mobile Bottom Sheet",
+      "sectionId": "date-picker-bottom-sheet",
+      "reason": "요소/변형 — Date Picker(date-picker 섹션) 모바일 폼. HTML 섹션 제목이 'Date Picker Bottom Sheet'(Mobile 생략)이라 slug 자동 대응이 안 돼 sectionId 로 명시(2026-07-31)"
+    },
+    {
+      "name": "Time Picker Mobile Bottom Sheet",
+      "reason": "요소/변형 — Time Picker(time-picker 섹션) 모바일 폼(휠 바텀시트)"
+    },
+    {
+      "name": "Time Picker Dropdown",
+      "reason": "요소 — Time Picker 안 드롭다운 패널"
+    },
+    {
+      "name": "Time Picker Cell",
+      "reason": "요소 — Time Picker 안 셀"
+    },
+    {
+      "name": "Table Cell",
+      "reason": "요소 — Table 안 셀"
+    },
+    {
+      "name": "Bottom Sheet",
+      "reason": "공용 오버레이 컴포넌트 — 모바일 사용은 Filter Chip(·Time Picker) 섹션의 바텀시트로 표출(전용 섹션 불요). Figma 라이브러리 정본."
+    },
+    {
+      "name": "Bottom Sheet Option",
+      "reason": "요소 — Bottom Sheet 안 옵션 행(Text/Checkbox/Radio/List)."
+    },
+    {
+      "name": "Modal",
+      "reason": "확인 계열 공통 팝업 셸(overlay) — codeStatus in-progress, 아직 HTML 하네스 데모 없음(harnessStatus not-started). Figma 라이브러리 정본. HTML 섹션 생기면 sectionFor 로 이관."
+    }
+  ],
+  "mobileOnly": [
+    "mobile-bottom-nav"
+  ],
+  "_mobileOnlyNote": "Gate 30 이 component-presentation-policy.json 등재를 요구하지 않는 목록. 그 정책은 스스로 scope 를 \"platform=pc … mobile 및 요소/셸 부품 섹션은 별도(추후)\"로 선언하므로, 모바일 전용 컴포넌트는 부채(baseline)가 아니라 **범위 밖**이다. 모바일 표출 규칙이 정본화되면 이 목록을 비우고 정책에 등재한다."
 }

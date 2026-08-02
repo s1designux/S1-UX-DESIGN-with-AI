@@ -55,11 +55,29 @@ function check({ pass, warn, fail }) {
   }
   const keys = canonicalKeys();
   const missing = keys.filter((k) => !bundle.includes(`"${k}"`));
-  if (missing.length === 0) {
-    pass(`설치기 zip = vars-data 최신 빌드 (토큰 ${keys.length}개 embed 확인)`);
-  } else {
+  if (missing.length) {
     fail(`설치기 zip 이 stale — vars-data 토큰 ${missing.length}개 누락. \`npm run installer:build\` 필요: ${missing.slice(0, 8).join(', ')}${missing.length > 8 ? ' …' : ''}`);
+    return;
   }
+
+  // ── 값 검사(2026-08-01 신설) — 종전엔 "키 존재"만 봐서 **값만 바꾸고 빌드를 잊으면 통과**했다.
+  //   (Gate 6c 는 툴팁 날짜, Gate 13 은 build-components 해시라 값은 어느 게이트도 안 봤다.)
+  //   esbuild 번들은 Foundation hex 를 그대로 inline 하므로 "키: 값" 쌍이 번들에 있어야 한다.
+  //   대상은 리터럴 hex 로 값이 고정된 FOUNDATION_COLOR (semantic 은 참조라 문자열 형태가 다양).
+  const V = loadVarsData();
+  const valueMismatch = [];
+  for (const [k, hex] of Object.entries(V.FOUNDATION_COLOR)) {
+    if (typeof hex !== 'string' || !/^#[0-9a-fA-F]{3,8}$/.test(hex)) continue;
+    // 번들은 "key": "#HEX" 형태로 유지된다(esbuild 는 객체 리터럴을 보존).
+    const re = new RegExp(`"${k.replace(/[/\\^$*+?.()|[\]{}]/g, '\\$&')}"\\s*:\\s*"([^"]+)"`);
+    const m = bundle.match(re);
+    if (m && m[1].toUpperCase() !== hex.toUpperCase()) valueMismatch.push(`${k}: zip="${m[1]}" ≠ 정본="${hex}"`);
+  }
+  if (valueMismatch.length) {
+    fail(`설치기 zip 값 드리프트 ${valueMismatch.length}건 — 값만 바꾸고 \`npm run installer:build\` 를 잊었습니다: ${valueMismatch.slice(0, 5).join(' · ')}${valueMismatch.length > 5 ? ' …' : ''}`);
+    return;
+  }
+  pass(`설치기 zip = vars-data 최신 빌드 (토큰 ${keys.length}개 키 + Foundation 색 값 일치 확인)`);
 }
 
 module.exports = { check };

@@ -311,6 +311,27 @@ try {
   fail(`number-page-check 실행 실패: ${e.message}`);
 }
 
+// ── Gate 9b: Foundation Color Page Consistency ────────────────────
+// foundation.html 의 색 팔레트 3블록(BRAND·PALETTES·DARK_PALETTES)이 vars-data 정본과 같은지.
+// 종전엔 `color:check` 가 존재하는데도 **어디에도 배선되지 않아** 색 스와치가 무게이트였다
+// (숫자 5블록만 Gate 9 가 지킴 — 2026-08-01 진단에서 적발한 사각지대).
+console.log('\n🔎 [Gate 9b] 파운데이션 색페이지 검사기 (Foundation Color Page)');
+try {
+  const { spawnSync } = require('child_process');
+  const r = spawnSync('node', [path.join(ROOT, 'scripts/gen-foundation-color.js'), '--check'], { encoding: 'utf-8' });
+  const out = ((r.stdout || '') + (r.stderr || '')).split('\n').filter((l) => l.trim());
+  if (r.status === 0) {
+    const ok = out.find((l) => l.includes('✅'));
+    pass(ok ? ok.replace(/^\s*\[color:gen\]\s*/, '').replace(/\s*✅\s*$/, '').trim() : 'foundation.html 색 팔레트 정본 일치');
+  } else {
+    const bad = out.filter((l) => l.includes('❌') || l.includes('불일치') || l.includes('drift'));
+    if (bad.length === 0) fail(`Gate 9b: foundation.html 색 블록이 정본과 어긋남 (exit ${r.status}) — npm run color:gen 으로 재생성`);
+    else for (const l of bad) fail(`Gate 9b: ${l.trim()} — npm run color:gen 으로 재생성`);
+  }
+} catch (e) {
+  fail(`Gate 9b 실행 실패: ${e.message}`);
+}
+
 // ── Gate 10: Doc Token Reference Drift ────────────────────────────
 // 가이드/레퍼런스 HTML 이 rename·삭제된 토큰명을 쥐고 있는지 강제.
 // Check B(rename denylist)=차단 · Check A(미정의 --color-* 참조)=경고(기존 드리프트)
@@ -735,6 +756,30 @@ try {
   }
 } catch (e) {
   fail(`Gate 29 실행 실패: ${e.message}`);
+}
+
+// ── Gate 30: Component Registration Coverage (설치기 전집합 ↔ 등록 표면 4종) ──
+// Gate 18(설치기↔HTML 섹션) 의 전집합 대조 패턴을 나머지 등록 표면으로 복제한 것.
+// 종전에 Gate 16·23 은 "등록된 것만" 순회해 **미등록은 침묵 통과**했다(실측: mobile-bottom-nav·
+// multi-toggle·filter-chip 이 미등록인 채 전 게이트 통과). 빌더(runners) 미등록도 함께 잡는다.
+// esbuild 번들 + buildAllComponents mock 비동기 실행이 필요해 별도 프로세스로 호출(Gate 6c 와 동일 패턴).
+console.log('\n🔎 [Gate 30] 컴포넌트 등록 커버리지 검사기 (Component Registration)');
+try {
+  const { spawnSync } = require('child_process');
+  const r = spawnSync('node', [path.join(ROOT, 'scripts/component-registration-check.js')], { encoding: 'utf-8' });
+  const out = ((r.stdout || '') + (r.stderr || '')).split('\n');
+  if (r.status === 0) {
+    const ok = out.find((l) => l.includes('✅'));
+    pass(ok ? ok.replace(/^\s*✅\s*/, '').trim() : '컴포넌트 등록 누락 0');
+    for (const l of out.filter((l) => l.includes('ℹ️'))) warn(`Gate 30: ${l.replace(/^\s*ℹ️\s*/, '').trim()}`);
+  } else {
+    const bad = out.filter((l) => l.includes('❌'));
+    if (bad.length === 0) fail(`component-registration-check 실패 (exit ${r.status})`);
+    else for (const l of bad) fail(`Gate 30: ${l.replace(/^\s*❌\s*/, '').trim()}`);
+  }
+  for (const l of out.filter((l) => l.includes('⚠️'))) warn(`Gate 30: ${l.replace(/^\s*⚠️\s*/, '').trim()}`);
+} catch (e) {
+  fail(`Gate 30 실행 실패: ${e.message}`);
 }
 
 // ── Summary ───────────────────────────────────────────────────────

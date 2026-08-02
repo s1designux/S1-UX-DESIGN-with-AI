@@ -1,0 +1,18 @@
+{
+  "_role": "Gate 30(component-registration-check) 면제 목록 — 기존 부채를 동결하고 신규 미등록만 차단한다.",
+  "_policy": [
+    "게이트 강화가 마찰을 늘리면 --no-verify 를 부르고, 그러면 Gate 1~30 이 통째로 무력화된다.",
+    "그래서 '지금 있는 부채'는 여기 사유와 함께 동결하고, 새로 생기는 미등록만 차단한다(Gate 20/29 와 같은 래칫 원리).",
+    "면제는 줄이는 방향으로만 갱신한다 — 항목을 늘리려면 왜 등록할 수 없는지 사유를 반드시 적는다."
+  ],
+  "_updated": "2026-08-01",
+  "spec": [],
+  "updateManagement": [],
+  "presentation": [],
+  "index": [
+    "nav"
+  ],
+  "_notes": {
+    "nav": "registry/components/nav.json 은 설치기 정본(COMPONENT_CATEGORIES)에 없는 '사이트 사이드바 네비게이션' 문서(2026-05-20 작성, codeStatus=not-started·harnessStatus=skeleton). 색인에 넣으면 정본에 없는 컴포넌트가 뷰어에 뜨고, 지우면 문서가 사라진다 — 어느 쪽인지는 Phase 3(레지스트리 정리)에서 판정한다. Gate 20 이 이 파일의 stale 토큰 15건을 이미 알려진 부채로 들고 있다."
+  }
+}

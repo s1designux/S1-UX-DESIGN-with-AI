@@ -22,26 +22,301 @@
     }
   },
   "components": [
-    { "id": "tab",         "origin": "B",   "sourceNode": "V2.4 540:6032", "verify": "new", "verifyDate": "2026-06-24", "mobile": "완료", "dates": { "installer": "", "tokens": "2026-05-28", "html": "2026-05-28" }, "note": "라인탭. 새 방식(원본 재측정)으로 재빌드·검증 완료." },
-    { "id": "gnb",         "origin": "B",   "sourceNode": "V3.0 956:18233(bar) + 956:18031(menuSlot set)", "verify": "new", "verifyDate": "2026-07-09", "mobile": "na", "dates": { "installer": "", "tokens": "", "html": "2026-07-09" }, "note": "V3.0 원본(bar 956:18233 + menuSlot 956:18031) 대조 완료 — 15 variant 구조·색·타이포·sizing 정합. HD-GNB-1/2 resolved(로고 #202020·유틸아이콘 #353535 = 코드값). 반영: 기본 라벨색 #434343·xsm 자간 -0.28px(토큰·구현은 이미 V3.0, 설명만 정합). 미확정 백로그(use_figma 미보유): 다크모드 gnb 스펙 존재여부 미확인→darkModeStatus candidate 유지 · 아이콘 provenance·componentSetKey 미확정 · xsm 유틸아이콘 크기(DIFF-2)는 유틸아이콘 세트 소관, gnb 범위 밖." },
-    { "id": "pagination",  "origin": "B",   "sourceNode": "V3.0 956:19066", "verify": "new", "verifyDate": "2026-07-09", "mobile": "na", "dates": { "installer": "", "tokens": "2026-07-09", "html": "2026-07-09" }, "note": "V3.0 원본(956:19066) 대조 완료 — 토큰(라이트/다크)·조립상태(Single/First/Last/Middle)·disabled 전용색·opacity 제거 정합. 미확정(use_figma 미보유 백로그): paginationArrow는 Arrow/Edge 2-Element 분리(Q1 보류)라 단일 필드 미갱신(57:6244 잔존) · 아이콘 provenance(remote/key) 미확정 · componentSetKey 미추출." },
-    { "id": "nav",         "origin": "B",   "sourceNode": "", "verify": "none", "verifyDate": "", "mobile": "na", "dates": { "installer": "", "tokens": "", "html": "" }, "note": "골격만(harness=skeleton). 원본 틀 세팅 필요. 원본 노드 미지정. (설치기 미빌드 — navigation 묶음에 표시)" },
-    { "id": "button",      "origin": "A",   "sourceNode": "", "verify": "na", "verifyDate": "", "mobile": "완료", "dates": { "installer": "", "tokens": "", "html": "" }, "note": "정리 완료. (PC + 모바일 사이즈 h48)" },
-    { "id": "checkbox",    "origin": "A",   "sourceNode": "", "verify": "na", "verifyDate": "", "mobile": "na", "dates": { "installer": "", "tokens": "", "html": "" }, "note": "정리 완료." },
-    { "id": "radio",       "origin": "A",   "sourceNode": "", "verify": "na", "verifyDate": "", "mobile": "na", "dates": { "installer": "", "tokens": "", "html": "" }, "note": "정리 완료." },
-    { "id": "toggle",      "origin": "A",   "sourceNode": "", "verify": "na", "verifyDate": "", "mobile": "na", "dates": { "installer": "", "tokens": "", "html": "" }, "note": "정리 완료." },
-    { "id": "multi-toggle", "origin": "tbd", "sourceNode": "", "verify": "none", "verifyDate": "", "mobile": "na", "dates": { "installer": "", "tokens": "", "html": "2026-06-30" }, "note": "분절 컨트롤(Selection). 설치기·HTML 섹션 반영(2026-06-30). origin 분류 미정 — 레거시 원본 대조 필요 여부 확인 요." },
-    { "id": "chip",        "origin": "A",   "sourceNode": "", "verify": "na", "verifyDate": "", "mobile": "na", "dates": { "installer": "", "tokens": "", "html": "" }, "note": "정리 완료. (다크 pending)" },
-    { "id": "input",       "origin": "A",   "sourceNode": "", "verify": "na", "verifyDate": "", "mobile": "na", "dates": { "installer": "", "tokens": "", "html": "" }, "note": "정리 완료. (다크 pending)" },
-    { "id": "textarea",    "origin": "A",   "sourceNode": "", "verify": "na", "verifyDate": "", "mobile": "na", "dates": { "installer": "", "tokens": "", "html": "" }, "note": "정리 완료. (다크 pending)" },
-    { "id": "dropdown",    "origin": "A",   "sourceNode": "", "verify": "na", "verifyDate": "", "mobile": "na", "dates": { "installer": "", "tokens": "", "html": "2026-06-30" }, "note": "정리 완료. (다크 pending) HTML 독립 섹션 분리(2026-06-30)." },
-    { "id": "select",      "origin": "A",   "sourceNode": "", "verify": "na", "verifyDate": "", "mobile": "na", "dates": { "installer": "", "tokens": "", "html": "" }, "note": "정리 완료. (다크 pending)" },
-    { "id": "date-picker", "origin": "A",   "sourceNode": "", "verify": "na", "verifyDate": "", "mobile": "완료", "dates": { "installer": "", "tokens": "", "html": "" }, "note": "정리 완료. 모바일 바텀시트 빌드·검증 완료." },
-    { "id": "time-picker", "origin": "B",   "sourceNode": "V3.0 958:26994(main) + 958:26319(dropdown) + 958:27433(mobile bottom sheet)", "verify": "new", "verifyDate": "2026-07-09", "mobile": "완료", "dates": { "installer": "2026-07-09", "tokens": "", "html": "" }, "note": "PC·모바일 구현 완료 (모바일 바텀시트 TimeOnly+DateTime 설치기 정본 기준 완료 — buildTimePickerMobileBottomSheet). V3.0 958 대역 대조 완료: main/select 통합(958:26994)·드롭다운 공유세트(958:26319)·Cell(958:25998)·Mobile Bottom Sheet(958:27433). 미확정 백로그: pc_timepicker_calendar(540:4216)는 date-picker 이관 대기(다음 세션 1순위) · 웹 하네스 DateTime 프리뷰 없음 · 설치기 DateTime 렌더 픽셀 대조 미확인." },
-    { "id": "table",       "origin": "B",   "sourceNode": "V2.4 540:4822", "verify": "new", "verifyDate": "2026-06-30", "mobile": "na", "dates": { "installer": "2026-06-30", "tokens": "2026-06-30", "html": "2026-06-30" }, "note": "새 방식(원본 V2.4 540:4822 cross-file 대조)으로 검증. 헤더밑줄·헤더배경·선택행을 레거시 값(light·#FAFAFA·#E2F1FF)으로 정정. 상하단 emphasis 라인(2px/1px)은 원본엔 없는 개선. 설치기·웹사이트 동기화 확인." },
-    { "id": "modal",       "origin": "B",   "sourceNode": "V2.4 6706:4257", "verify": "none", "verifyDate": "", "mobile": "-", "dates": { "installer": "", "tokens": "", "html": "" }, "note": "루트 A 신규 편입(2026-07-15). 공통 팝업 셸 — modal_small \"삭제\" 라이트 기준 Core(shell). buildModalShell Footer=Dual 1변형, 코어 Button(XXSM)+ic_닫기 재사용·신규토큰 0. 빌드 직후 — component-verifier 독립 검증(원본 대조) 대기, 통과 시 verify→new. 다크 그림자·나머지 4 State 미룸." }
+    {
+      "id": "tab",
+      "origin": "B",
+      "sourceNode": "V2.4 540:6032",
+      "verify": "new",
+      "verifyDate": "2026-06-24",
+      "mobile": "완료",
+      "dates": {
+        "installer": "",
+        "tokens": "2026-05-28",
+        "html": "2026-05-28"
+      },
+      "note": "라인탭. 새 방식(원본 재측정)으로 재빌드·검증 완료."
+    },
+    {
+      "id": "gnb",
+      "origin": "B",
+      "sourceNode": "V3.0 956:18233(bar) + 956:18031(menuSlot set)",
+      "verify": "new",
+      "verifyDate": "2026-07-09",
+      "mobile": "na",
+      "dates": {
+        "installer": "",
+        "tokens": "",
+        "html": "2026-07-09"
+      },
+      "note": "V3.0 원본(bar 956:18233 + menuSlot 956:18031) 대조 완료 — 15 variant 구조·색·타이포·sizing 정합. HD-GNB-1/2 resolved(로고 #202020·유틸아이콘 #353535 = 코드값). 반영: 기본 라벨색 #434343·xsm 자간 -0.28px(토큰·구현은 이미 V3.0, 설명만 정합). 미확정 백로그(use_figma 미보유): 다크모드 gnb 스펙 존재여부 미확인→darkModeStatus candidate 유지 · 아이콘 provenance·componentSetKey 미확정 · xsm 유틸아이콘 크기(DIFF-2)는 유틸아이콘 세트 소관, gnb 범위 밖."
+    },
+    {
+      "id": "mobile-bottom-nav",
+      "origin": "B",
+      "sourceNode": "V2.4 540:6025 → V3.0 723:6",
+      "verify": "new",
+      "verifyDate": "2026-07-02",
+      "mobile": "완료",
+      "dates": {
+        "installer": "2026-07-02",
+        "tokens": "",
+        "html": "2026-07-02"
+      },
+      "note": "모바일 하단 내비 탭 아이템(Navigation). 빌드=figma-library-builder·검증=component-verifier 분리 수행(2026-07-02, 3회 재검증, ❌(a) 0건). V2.4 구본 세트는 2026-07-02 삭제 완료. 2026-08-01 Gate 30 신설로 registry 미등록 적발 → 소급 등록."
+    },
+    {
+      "id": "pagination",
+      "origin": "B",
+      "sourceNode": "V3.0 956:19066",
+      "verify": "new",
+      "verifyDate": "2026-07-09",
+      "mobile": "na",
+      "dates": {
+        "installer": "",
+        "tokens": "2026-07-09",
+        "html": "2026-07-09"
+      },
+      "note": "V3.0 원본(956:19066) 대조 완료 — 토큰(라이트/다크)·조립상태(Single/First/Last/Middle)·disabled 전용색·opacity 제거 정합. 미확정(use_figma 미보유 백로그): paginationArrow는 Arrow/Edge 2-Element 분리(Q1 보류)라 단일 필드 미갱신(57:6244 잔존) · 아이콘 provenance(remote/key) 미확정 · componentSetKey 미추출."
+    },
+    {
+      "id": "nav",
+      "origin": "B",
+      "sourceNode": "",
+      "verify": "none",
+      "verifyDate": "",
+      "mobile": "na",
+      "dates": {
+        "installer": "",
+        "tokens": "",
+        "html": ""
+      },
+      "note": "골격만(harness=skeleton). 원본 틀 세팅 필요. 원본 노드 미지정. (설치기 미빌드 — navigation 묶음에 표시)"
+    },
+    {
+      "id": "button",
+      "origin": "A",
+      "sourceNode": "",
+      "verify": "na",
+      "verifyDate": "",
+      "mobile": "완료",
+      "dates": {
+        "installer": "",
+        "tokens": "",
+        "html": ""
+      },
+      "note": "정리 완료. (PC + 모바일 사이즈 h48)"
+    },
+    {
+      "id": "checkbox",
+      "origin": "A",
+      "sourceNode": "",
+      "verify": "na",
+      "verifyDate": "",
+      "mobile": "na",
+      "dates": {
+        "installer": "",
+        "tokens": "",
+        "html": ""
+      },
+      "note": "정리 완료."
+    },
+    {
+      "id": "radio",
+      "origin": "A",
+      "sourceNode": "",
+      "verify": "na",
+      "verifyDate": "",
+      "mobile": "na",
+      "dates": {
+        "installer": "",
+        "tokens": "",
+        "html": ""
+      },
+      "note": "정리 완료."
+    },
+    {
+      "id": "toggle",
+      "origin": "A",
+      "sourceNode": "",
+      "verify": "na",
+      "verifyDate": "",
+      "mobile": "na",
+      "dates": {
+        "installer": "",
+        "tokens": "",
+        "html": ""
+      },
+      "note": "정리 완료."
+    },
+    {
+      "id": "multi-toggle",
+      "origin": "tbd",
+      "sourceNode": "",
+      "verify": "none",
+      "verifyDate": "",
+      "mobile": "na",
+      "dates": {
+        "installer": "",
+        "tokens": "",
+        "html": "2026-06-30"
+      },
+      "note": "분절 컨트롤(Selection). 설치기·HTML 섹션 반영(2026-06-30). origin 분류 미정 — 레거시 원본 대조 필요 여부 확인 요."
+    },
+    {
+      "id": "chip",
+      "origin": "A",
+      "sourceNode": "",
+      "verify": "na",
+      "verifyDate": "",
+      "mobile": "na",
+      "dates": {
+        "installer": "",
+        "tokens": "",
+        "html": ""
+      },
+      "note": "정리 완료. (다크 pending)"
+    },
+    {
+      "id": "filter-chip",
+      "origin": "tbd",
+      "sourceNode": "",
+      "verify": "none",
+      "mobile": "완료",
+      "dates": {
+        "installer": "",
+        "tokens": "",
+        "html": ""
+      },
+      "note": "필터 칩(Selection). Chip 과 색 토큰 100% 공유하나 별개 세트 — 상태 5개(Complete 추가)·Title 축·화살표·Selected 시 Dropdown 부착. 2026-08-01 Gate 30 신설로 미등록 적발 → 소급 등록. Figma 원본 대조 리포트가 없어 origin 미정(코드 주석의 V2.4 540:3226 이 유일 근거, 미검증)."
+    },
+    {
+      "id": "input",
+      "origin": "A",
+      "sourceNode": "",
+      "verify": "na",
+      "verifyDate": "",
+      "mobile": "na",
+      "dates": {
+        "installer": "",
+        "tokens": "",
+        "html": ""
+      },
+      "note": "정리 완료. (다크 pending)"
+    },
+    {
+      "id": "textarea",
+      "origin": "A",
+      "sourceNode": "",
+      "verify": "na",
+      "verifyDate": "",
+      "mobile": "na",
+      "dates": {
+        "installer": "",
+        "tokens": "",
+        "html": ""
+      },
+      "note": "정리 완료. (다크 pending)"
+    },
+    {
+      "id": "dropdown",
+      "origin": "A",
+      "sourceNode": "",
+      "verify": "na",
+      "verifyDate": "",
+      "mobile": "na",
+      "dates": {
+        "installer": "",
+        "tokens": "",
+        "html": "2026-06-30"
+      },
+      "note": "정리 완료. (다크 pending) HTML 독립 섹션 분리(2026-06-30)."
+    },
+    {
+      "id": "select",
+      "origin": "A",
+      "sourceNode": "",
+      "verify": "na",
+      "verifyDate": "",
+      "mobile": "na",
+      "dates": {
+        "installer": "",
+        "tokens": "",
+        "html": ""
+      },
+      "note": "정리 완료. (다크 pending)"
+    },
+    {
+      "id": "date-picker",
+      "origin": "A",
+      "sourceNode": "",
+      "verify": "na",
+      "verifyDate": "",
+      "mobile": "완료",
+      "dates": {
+        "installer": "",
+        "tokens": "",
+        "html": ""
+      },
+      "note": "정리 완료. 모바일 바텀시트 빌드·검증 완료."
+    },
+    {
+      "id": "time-picker",
+      "origin": "B",
+      "sourceNode": "V3.0 958:26994(main) + 958:26319(dropdown) + 958:27433(mobile bottom sheet)",
+      "verify": "new",
+      "verifyDate": "2026-07-09",
+      "mobile": "완료",
+      "dates": {
+        "installer": "2026-07-09",
+        "tokens": "",
+        "html": ""
+      },
+      "note": "PC·모바일 구현 완료 (모바일 바텀시트 TimeOnly+DateTime 설치기 정본 기준 완료 — buildTimePickerMobileBottomSheet). V3.0 958 대역 대조 완료: main/select 통합(958:26994)·드롭다운 공유세트(958:26319)·Cell(958:25998)·Mobile Bottom Sheet(958:27433). 미확정 백로그: pc_timepicker_calendar(540:4216)는 date-picker 이관 대기(다음 세션 1순위) · 웹 하네스 DateTime 프리뷰 없음 · 설치기 DateTime 렌더 픽셀 대조 미확인."
+    },
+    {
+      "id": "table",
+      "origin": "B",
+      "sourceNode": "V2.4 540:4822",
+      "verify": "new",
+      "verifyDate": "2026-06-30",
+      "mobile": "na",
+      "dates": {
+        "installer": "2026-06-30",
+        "tokens": "2026-06-30",
+        "html": "2026-06-30"
+      },
+      "note": "새 방식(원본 V2.4 540:4822 cross-file 대조)으로 검증. 헤더밑줄·헤더배경·선택행을 레거시 값(light·#FAFAFA·#E2F1FF)으로 정정. 상하단 emphasis 라인(2px/1px)은 원본엔 없는 개선. 설치기·웹사이트 동기화 확인."
+    },
+    {
+      "id": "modal",
+      "origin": "B",
+      "sourceNode": "V2.4 6706:4257",
+      "verify": "none",
+      "verifyDate": "",
+      "mobile": "-",
+      "dates": {
+        "installer": "",
+        "tokens": "",
+        "html": ""
+      },
+      "note": "루트 A 신규 편입(2026-07-15). 공통 팝업 셸 — modal_small \"삭제\" 라이트 기준 Core(shell). buildModalShell Footer=Dual 1변형, 코어 Button(XXSM)+ic_닫기 재사용·신규토큰 0. 빌드 직후 — component-verifier 독립 검증(원본 대조) 대기, 통과 시 verify→new. 다크 그림자·나머지 4 State 미룸."
+    }
   ],
   "patterns": [
-    { "id": "login", "label": "Login (PC Web)", "registryPath": "", "origin": "B", "sourceNode": "", "verify": "legacy", "verifyDate": "", "dates": { "installer": "", "tokens": "", "html": "" }, "note": "원본 틀 필요. screen-rebuild로 제작(reports/screen-rebuild/login). registry/patterns 미등록 — 등록 필요." }
+    {
+      "id": "login",
+      "label": "Login (PC Web)",
+      "registryPath": "",
+      "origin": "B",
+      "sourceNode": "",
+      "verify": "legacy",
+      "verifyDate": "",
+      "dates": {
+        "installer": "",
+        "tokens": "",
+        "html": ""
+      },
+      "note": "원본 틀 필요. screen-rebuild로 제작(reports/screen-rebuild/login). registry/patterns 미등록 — 등록 필요."
+    }
   ]
 }
