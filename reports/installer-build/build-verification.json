@@ -1,9 +1,9 @@
 {
   "sourceFile": "plugins/figma-vars-installer/src/build-components.ts",
-  "sourceHash": "sha256:9d5ef6607971d29ca305c88fbfb58f10ddfafd5ff5c371b9bee6d97cb380f3dd",
+  "sourceHash": "sha256:1fcf85841ea192351f1d635b96f08ff98b4a33bbcb13f7032e00becf026c351a",
   "verifiedBy": "component-verifier",
   "verdict": "pass",
   "changeType": "structural",
-  "verifiedAt": "2026-08-02T09:23:02.647Z",
-  "notes": "Phase4e 크기·속성 개명 검증: Table Cell SMALL/MEDIUM→SM/MD · GNB prop 'full menu'→'menu'. mock 빌드로 45세트·515변형 1:1 대조 — 픽셀 변경 0건·이름 변경 정확히 13건(GNB5+TableCell8)·빌드 완주·dist↔zip 바이트 동일. TableCell 조회키 정합 실증(의존성 강제 시 36/36 인스턴스, MD→MD·SM→SM). 적발 1건(button.json pcSize/mobileSize 옛 어휘 잔존)은 수정 완료 + Gate 32 가 /size$/ 키까지 잡도록 확장."
+  "verifiedAt": "2026-08-02T10:03:16.006Z",
+  "notes": "Table 이 Table Cell 을 실제 재사용하도록 BUILD/ATTACH_DEPENDENCIES 편입 + 그로 인해 드러난 회귀 2건 수정(셀 하단 구분선 constraints STRETCH/MAX · Header 글자 Medium=웹 정본 정합). 🤖 2라운드 검증: 인스턴스 36/변형·fallback 0·Size 매칭 정확·순환 0·위상정렬 전수·members 순서 불변·43세트 치수 차이 0·토큰 1:1 동일·체크박스 컬럼 영향 0. 3번째 수정(skipped 를 열화 시드에 편입)은 16쌍 거짓 경보가 실측돼 원복하고 BACKLOG 로 이관. 미확인 1건: 구분선 실제 신축은 캔버스 육안 1회 필요(mock 은 constraints 전파 미흡내, 설정값·API 규약·파일 내 선례는 정합)."
 }

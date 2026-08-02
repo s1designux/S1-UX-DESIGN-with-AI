@@ -377,3 +377,27 @@ zip 반영 여부를 수동 확인해야 하는 구조
 
 - registry 의 `name` 필드를 정본 이름으로 바꿀지, `gen-design-md.js` 출력 방식을 바꿀지 결정
 - `style.css` 69색과 `tokens.css` 정본의 값 대조
+
+## 설치기 — 기존 보존(skip) 시 부모가 부품을 재사용하지 못함 (2026-08-02 · 🤖 검증 실측)
+
+**증상:** 부품 세트가 캔버스에 이미 있어 `skipped` 로 보존되면 `BUILT_COMPS` 가 비어, 그 부품을
+인스턴스로 붙이는 부모가 **조용히 fallback 으로 떨어진다**(경고 없음).
+
+**범위:** 의존 23쌍 중 **7쌍**만 해당. 나머지 16쌍은 `getBuiltSet()`(build-components.ts:66-69)·
+`getReuseComp()`(:3560-3567) 이 `figma.currentPage.findOne()` 으로 캔버스의 기존 세트를 찾아
+정상 부착하므로 문제 없다.
+
+| 캔버스 fallback 이 없어 실제 공백이 생기는 7쌍 |
+|---|
+| Table → Table Cell(:1739) · Checkbox(:1723) · Select Box(:1796) |
+| Dropdown → Dropdown List(:1432) |
+| Time Picker → Time Picker Dropdown(:2056) |
+| GNB Utility Icon → Language Icon(:2547) |
+| Bottom Sheet → Bottom Sheet Option(:3735) |
+
+**하지 말 것(이미 시도·되돌림):** 열화 전파 시드에 `skipped` 를 넣는 방식. 위 16쌍에 **거짓 경보**가
+되고, 그 경보는 콘솔이 아니라 `ui.html:628-643` 의 주황 경고 블록으로 **디자이너 화면**에 뜨며
+완료 제목을 "일부 누락"으로 바꾼다. 6종 시나리오 mock 실측으로 확인 후 원복했다.
+
+**옳은 해법:** skip 시 캔버스의 기존 세트를 `BUILT_COMPS` 에 **재등록**해 부모가 진짜로 재사용하게
+만든다 → 보고가 아니라 해결이 되고, 7쌍 전부 한 번에 해소된다. 씬그래프 탐색이 들어가므로 별건.

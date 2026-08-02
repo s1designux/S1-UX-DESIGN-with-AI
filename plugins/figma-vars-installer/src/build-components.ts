@@ -1651,7 +1651,10 @@ async function buildTableCell(maps: BuildMaps, originY: number): Promise<{ set: 
       comp.name = `Size=${sc.size}, Type=${v.type}, Variant=${v.state}`;
       comp.resize(W, sc.h);
       comp.fills = [boundPaint(scv(maps, v.bg))];
-      const t = await makeBoundText("1층 정문", sc.font, "Regular", scv(maps, v.text));
+      // 헤더 글자는 Medium — 웹 정본 `.s1-table-th { font-weight:500 }`(components.html) 과 정합.
+      //   종전엔 항상 Regular 였는데, Table 이 셀을 재사용하지 않고 자체 fallback(Header=Medium)으로
+      //   그리던 시절이라 이 어긋남이 표에 드러나지 않았다(2026-08-02 🤖 검증에서 적발).
+      const t = await makeBoundText("1층 정문", sc.font, v.type === "Header" ? "Medium" : "Regular", scv(maps, v.text));
       comp.appendChild(t);
       t.x = 16; t.y = (sc.h - 1 - t.height) / 2;
       const border = figma.createRectangle();
@@ -1659,6 +1662,11 @@ async function buildTableCell(maps: BuildMaps, originY: number): Promise<{ set: 
       border.fills = [boundPaint(scv(maps, v.border))];
       comp.appendChild(border);
       border.x = 0; border.y = sc.h - 1;
+      // 하단 구분선은 셀 폭을 따라 늘어나야 한다 — Table 이 이 셀을 컬럼 폭(360/200/110)으로
+      //   resize 해 쓰므로, 기본 constraints(MIN/MIN)면 선이 컴포넌트 원폭 130px 에 머물러
+      //   행 구분선이 중간에 끊긴다. Line Tab 인디케이터가 STRETCH 로 푼 것과 같은 문제·같은 해법
+      //   (build-components.ts 의 Line Tab 주석 참조). 2026-08-02 🤖 검증에서 적발.
+      border.constraints = { horizontal: "STRETCH", vertical: "MAX" };
       setLightMode(comp, maps);
       comps.push(comp);
       cells.push({ comp, row, col });
@@ -4908,7 +4916,11 @@ export const BUILD_DEPENDENCIES: Record<string, string[]> = {
   "Line Tab Set": ["Line Tab"],       // 탭 3개 묶음 세트가 Line Tab 셀 인스턴스 조합
   // Table 푸터가 완성 Pagination 바(BUILT_COMPS["Pagination:Bar/Middle"]) 인스턴스 부착.
   //   (타 카테고리 의존 = 카테고리 순서로 보장: Pagination 카테고리가 Table 보다 먼저라 선빌드됨.)
-  "Table": ["Pagination"],
+  //   Table 본문 칸은 Table Cell 인스턴스 재사용 — 2026-08-02 이전엔 이 의존이 없어 Table(39번째)이
+  //   Table Cell(40번째)보다 먼저 빌드됐고, makeTableRow 의 조회가 매번 빈손이라 **72칸 전부 fallback
+  //   plain frame**(인스턴스 0)이었다. 즉 셀 컴포넌트를 고쳐도 표에 반영되지 않았다.
+  //   🤖 component-verifier 실측으로 원인·해법 확인 후 편입(인스턴스 36/36 · MD→MD·SM→SM 정확 매칭).
+  "Table": ["Pagination", "Table Cell"],
   // Bottom Sheet 컨테이너 = Bottom Sheet Option(Text) 리스트 + Button 인스턴스 부착 → 둘 다 선빌드.
   //   Option 은 같은 카테고리(요소 먼저), Button 은 Actions 카테고리(그리드 순서로 선빌드).
   "Bottom Sheet": ["Bottom Sheet Option", "Button"],
@@ -4926,13 +4938,12 @@ export const BUILD_DEPENDENCIES: Record<string, string[]> = {
 //     Checkbox 실패 → Table 의 체크박스 인스턴스 25→0 인데 Table 은 "정상"으로 보고됐다.
 //     Table Cell 실패 → 셀 인스턴스 8→0, 역시 미보고.
 const ATTACH_DEPENDENCIES: { [parent: string]: string[] } = {
-  // buildTable 이 실제로 붙이는 것들(BUILT_COMPS 조회 기준). Pagination 만 순서표에 있었다.
-  //   ⚠️ "Table Cell" 은 **일부러 뺐다.** buildTable 은 BUILT_COMPS 의 셀을 읽되 없으면 plain frame
-  //   으로 그리는 fallback 이 있고, BUILD_DEPENDENCIES 에 Table→Table Cell 이 없어 Table 이 먼저
-  //   빌드되므로 **실측 부착 0건**(🤖 component-verifier: 정상 빌드에서 Table 의 Table Cell 인스턴스 0).
-  //   선언하면 Table Cell 실패 시 "Table 이 불완전"이라는 **거짓 경보**가 뜬다. 실제 재사용을
-  //   원하면 빌드 순서를 먼저 고쳐야 하고, 그건 씬그래프가 바뀌는 별건이다(BACKLOG).
-  "Table": ["Pagination", "Checkbox", "Select Box"],
+  // buildTable 이 실제로 붙이는 것들(BUILT_COMPS 조회 기준).
+  //   "Table Cell" 은 2026-08-02 에 **편입**했다. 그 전까지는 빌드 순서가 Table→Table Cell 이라
+  //   실측 부착 0건이었고(fallback plain frame), 선언하면 거짓 경보가 되므로 일부러 빼 뒀었다.
+  //   이제 BUILD_DEPENDENCIES 에 Table→Table Cell 이 있어 실제로 36/36 부착되므로, 셀이 실패하면
+  //   Table 이 정말 껍데기가 된다 → 열화 보고 대상이 맞다.
+  "Table": ["Pagination", "Checkbox", "Select Box", "Table Cell"],
 };
 
 // 부모가 **부수 생성**하는 컴포넌트 — 자기 runner 가 없는 것이 정상이다(2026-08-01 명시화).
@@ -5286,8 +5297,19 @@ export async function buildAllComponents(
   //   직접 의존만 보면 UI 가 "나머지는 정상"이라고 거짓을 말한다 — 이 변경이 없애려던
   //   "조용한 반쪽"이 한 층 위로 옮겨갈 뿐이다. 그래서 더 이상 늘지 않을 때까지 반복한다.
   const degraded: { name: string; missing: string[] }[] = [];
+  // 전파 기준 = 실패 ∪ 열화. **skipped(기존 보존)는 넣지 않는다.**
+  //   2026-08-02 에 "부품이 skipped 면 부모가 조용히 fallback 으로 떨어진다"는 이유로 skipped 를
+  //   시드에 넣어 봤다가 **되돌렸다.** 의존 23쌍 중 16쌍은 getBuiltSet()/getReuseComp() 가
+  //   BUILT_COMPS 가 비면 `figma.currentPage.findOne()` 으로 캔버스의 기존 세트를 찾아 정상
+  //   부착하므로, 그 16쌍에는 **거짓 경보**가 된다(🤖 component-verifier 6종 시나리오 실측).
+  //   그 경보는 콘솔이 아니라 ui.html 의 주황 경고 블록으로 **디자이너 화면에 뜨고** 완료 제목까지
+  //   "일부 누락"으로 바꾼다 — "세트 하나만 지우고 재설치"라는 흔한 작업마다 멀쩡한 설치에 빨간불.
+  //   캔버스 fallback 이 없는 7쌍(Table→Table Cell·Checkbox·Select Box, Dropdown→Dropdown List,
+  //   Time Picker→Time Picker Dropdown, GNB Utility Icon→Language Icon, Bottom Sheet→Bottom Sheet
+  //   Option)에는 실제 공백이 남는다. 옳은 해법은 보고가 아니라 **skip 시 캔버스의 기존 세트를
+  //   BUILT_COMPS 에 재등록**해 부모가 진짜로 재사용하게 만드는 것 → BACKLOG(별건).
   if (failed.length) {
-    const broken = new Set(failed.map((f) => f.name));   // 실패 ∪ 열화 (전파 기준)
+    const broken = new Set(failed.map((f) => f.name));
     // hasOwnProperty 로 조회 — 객체 리터럴은 Object.prototype 을 상속하므로 컴포넌트 이름이
     //   "constructor" 같으면 배열이 아닌 값이 나와 스프레드에서 TypeError 가 난다(설치 전체 실패).
     const own = (o: { [k: string]: string[] }, k: string): string[] =>
