@@ -23,18 +23,40 @@
       "구체적 HEX 값은 이 문서 상단 frontmatter 의 colors 사전과 assets/css/tokens.css 가 단일 출처다. 아래는 각 역할 카테고리의 용도만 정리한다."
     ],
     "roles": [
-      { "category": "color-bg", "role": "페이지·레이아웃 섹션·화면 최하위 배경" },
-      { "category": "color-surface", "role": "그 위에 올라오는 컴포넌트 표면(카드·패널·모달·드롭다운). 라이트에선 배경과 같은 밝은 색이나 다크에서 깊이로 분리된다" },
-      { "category": "color-text (title·body·state 3트랙)", "role": "제목·본문·상태(도움말·오류·성공) 텍스트" },
-      { "category": "color-form-control", "role": "입력 필드군(Input·Select·Textarea·DatePicker·TimePicker) 공용 배경·테두리·텍스트·라벨" },
-      { "category": "color-control-border", "role": "체크박스·라디오·토글 등 컨트롤 테두리" },
-      { "category": "color-icon", "role": "아이콘 색(현 Variables 는 색상명으로 정의)" },
-      { "category": "color-overlay", "role": "딤·오버레이(알파 채널 포함 — rgba 허용 예외)" }
+      {
+        "category": "color-bg",
+        "role": "페이지·레이아웃 섹션·화면 최하위 배경"
+      },
+      {
+        "category": "color-surface",
+        "role": "그 위에 올라오는 컴포넌트 표면(카드·패널·모달·드롭다운). 라이트에선 배경과 같은 밝은 색이나 다크에서 깊이로 분리된다"
+      },
+      {
+        "category": "color-text (title·body·state 3트랙)",
+        "role": "제목·본문·상태(도움말·오류·성공) 텍스트"
+      },
+      {
+        "category": "color-form-control",
+        "role": "입력 필드군(Input·Select·Textarea·DatePicker·TimePicker) 공용 배경·테두리·텍스트·라벨"
+      },
+      {
+        "category": "color-control-border",
+        "role": "체크박스·라디오·토글 등 컨트롤 테두리"
+      },
+      {
+        "category": "color-icon",
+        "role": "아이콘 색(현 Variables 는 색상명으로 정의)"
+      },
+      {
+        "category": "color-overlay",
+        "role": "딤·오버레이(알파 채널 포함 — rgba 허용 예외)"
+      }
     ],
     "notes": [
       "테두리 역할은 단일 토큰으로 통합돼 있지 않고 폼 컨트롤용·컨트롤용·구분선용으로 분산돼 있다(2026-06-23 정리).",
       "포커스·선택·주요 액션의 강조는 파란색 계열 역할 토큰으로 표현한다. 성공·정보 피드백도 현재 서비스 기준으로 파란색 계열을 쓴다(상태색 일관성 정책).",
-      "명도 대비는 WCAG AA 를 필수 기준으로 한다."
+      "명도 대비는 WCAG AA 를 필수 기준으로 한다.",
+      "다크 팔레트는 스텝 의미가 라이트와 반대다 — 낮은 숫자(0·50·100)가 가장 어둡고(배경), 높은 숫자(700·800·900)가 가장 밝다(텍스트). 그래서 다크에서 배경 역할은 낮은 스텝을, 텍스트 역할은 높은 스텝을 참조한다. 라이트의 스텝 방향을 그대로 따르면 어두운 배경 위에 어두운 글자가 올라오는 역전이 생긴다."
     ]
   },
   "typography": {

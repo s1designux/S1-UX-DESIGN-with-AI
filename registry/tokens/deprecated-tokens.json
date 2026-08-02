@@ -186,13 +186,55 @@
       "reason": "data→table 그룹명 변경에 따른 CSS 변수 prefix 변경.",
       "scope": "active-pages"
     },
-    { "from": "--color-date-picker-bg-panel",     "to": "--color-date-picker-panel-bg",      "renamedAt": "2026-06-26", "reason": "date-picker panel/cell 분리(사용자 결정). 활성 페이지 옛 이름 금지.", "scope": "active-pages" },
-    { "from": "--color-date-picker-border-panel", "to": "--color-date-picker-panel-border",  "renamedAt": "2026-06-26", "reason": "date-picker panel/cell 분리.", "scope": "active-pages" },
-    { "from": "--color-date-picker-bg-hover",     "to": "--color-date-picker-cell-bg-hover", "renamedAt": "2026-06-26", "reason": "date-picker panel/cell 분리.", "scope": "active-pages" },
-    { "from": "--color-date-picker-bg-today",     "to": "--color-date-picker-cell-bg-today", "renamedAt": "2026-06-26", "reason": "date-picker panel/cell 분리.", "scope": "active-pages" },
-    { "from": "--color-date-picker-bg-selected",  "to": "--color-date-picker-cell-bg-selected", "renamedAt": "2026-06-26", "reason": "date-picker panel/cell 분리.", "scope": "active-pages" },
-    { "from": "--color-date-picker-bg-range",     "to": "--color-date-picker-cell-bg-range", "renamedAt": "2026-06-26", "reason": "date-picker panel/cell 분리.", "scope": "active-pages" },
-    { "from": "--color-date-picker-border-today", "to": "--color-date-picker-cell-border-today", "renamedAt": "2026-06-26", "reason": "date-picker panel/cell 분리.", "scope": "active-pages" }
+    {
+      "from": "--color-date-picker-bg-panel",
+      "to": "--color-date-picker-panel-bg",
+      "renamedAt": "2026-06-26",
+      "reason": "date-picker panel/cell 분리(사용자 결정). 활성 페이지 옛 이름 금지.",
+      "scope": "active-pages"
+    },
+    {
+      "from": "--color-date-picker-border-panel",
+      "to": "--color-date-picker-panel-border",
+      "renamedAt": "2026-06-26",
+      "reason": "date-picker panel/cell 분리.",
+      "scope": "active-pages"
+    },
+    {
+      "from": "--color-date-picker-bg-hover",
+      "to": "--color-date-picker-cell-bg-hover",
+      "renamedAt": "2026-06-26",
+      "reason": "date-picker panel/cell 분리.",
+      "scope": "active-pages"
+    },
+    {
+      "from": "--color-date-picker-bg-today",
+      "to": "--color-date-picker-cell-bg-today",
+      "renamedAt": "2026-06-26",
+      "reason": "date-picker panel/cell 분리.",
+      "scope": "active-pages"
+    },
+    {
+      "from": "--color-date-picker-bg-selected",
+      "to": "--color-date-picker-cell-bg-selected",
+      "renamedAt": "2026-06-26",
+      "reason": "date-picker panel/cell 분리.",
+      "scope": "active-pages"
+    },
+    {
+      "from": "--color-date-picker-bg-range",
+      "to": "--color-date-picker-cell-bg-range",
+      "renamedAt": "2026-06-26",
+      "reason": "date-picker panel/cell 분리.",
+      "scope": "active-pages"
+    },
+    {
+      "from": "--color-date-picker-border-today",
+      "to": "--color-date-picker-cell-border-today",
+      "renamedAt": "2026-06-26",
+      "reason": "date-picker panel/cell 분리.",
+      "scope": "active-pages"
+    }
   ],
   "_bgDepthScaleNote": "2026-06-30 배경 토큰을 깊이 스케일(--color-bg-level-0~3)로 재구성: DS 쪽(vars-data SEMANTIC_COLOR + tokens.css 생성물 + build-components)만 변경. 옛 --color-bg-default(→level-1)·subtle(→level-2)·muted(→level-3)·surface/* 는 포털 site-base.css 가 자체 정의(Variables 검수 제외)하므로 포털 페이지에 그대로 잔존해도 안 깨짐. renamedGroups(Check B 차단)에는 넣지 않는다 — site-base 가 여전히 정의하는 살아있는 포털 토큰이라 차단하면 건드리면 안 되는 포털 페이지 수정을 강제하게 됨.",
   "legacyFiles": [
@@ -220,6 +262,31 @@
       "path": "assets/css/component-tokens.css",
       "reason": "은퇴된 '컴포넌트-별칭 토큰층'(--{component}-{part}-{state}-{property})의 CSS 사본. 2026-06-09(763a70a) 자동 리팩터가 tokens.css 에서 분리·'보존'한 파일로, 어떤 HTML 도 link 하지 않아 렌더되지 않는 죽은 스타일시트. 정본=build-components.ts(각 컴포넌트를 color/form-control/* 등 semantic 에 직접 바인딩). 이 파일의 --dropdown-trigger-* 값은 registry/dropdown.json 과 드리프트했었고(같은 이름 다른 값), 유일 활성 소비처였던 components.html 는 2026-07-10 정본 토큰으로 이관됨. doc-token-ref-check/orphan-token-check 의 정의·소비 풀에서 제외(하드코딩 참조 제거).",
       "since": "2026-07-10"
+    },
+    {
+      "path": "tokens/legacy/semantic.md",
+      "reason": "손유지 Semantic 토큰 문서. 값은 정본(vars-data→tokens.css)이 대신하고, 사람이 읽는 문서 역할은 자동 생성 DESIGN.md + 웹 가이드가 승계. 2026-06-23 토큰 정리 사유 기록을 담고 있어 삭제하지 않고 아카이브(이력 보존). 검사 제외.",
+      "since": "2026-08-01"
+    },
+    {
+      "path": "tokens/legacy/foundation.md",
+      "reason": "손유지 Foundation 팔레트 문서. 값은 정본이 대신함. 유일 정본이던 \"Dark 스텝 방향 규칙\"은 vars-data.ts 팔레트 주석 + design-narrative.json(→DESIGN.md §2)으로 이관 완료. 검사 제외.",
+      "since": "2026-08-01"
+    },
+    {
+      "path": "tokens/legacy/component-tokens-extracted.md",
+      "reason": "은퇴한 컴포넌트-별칭층 시대(2026-04~05)의 추출 기록. 정본은 설치기가 컴포넌트를 semantic 에 직접 바인딩하는 방식. 이 문서에만 있던 Pagination V3.0 재실측은 registry/components/pagination.json 으로 이관 완료. 검사 제외.",
+      "since": "2026-08-01"
+    },
+    {
+      "path": "registry/tokens/legacy/sw-v2.4.tokens.css",
+      "reason": "2026-04-30 tokens.css 스냅샷(사본의 사본). 정의 478개 중 208개가 현행 tokens.css 에 없는 낡은 상태. 어떤 코드도 내용을 읽지 않음(경로 상수만 남아 있던 죽은 배선). 검사 제외.",
+      "since": "2026-08-01"
+    },
+    {
+      "path": "registry/tokens/legacy/semantic.colors.json",
+      "reason": "역할기반 토큰 목록(--color-bg-default 등). 46개 중 43개가 정본(vars-data)에 없는 별개 계보이고 Gate 7 실제 대조는 2건뿐이었다. 역할 토큰의 실제 정본은 assets/css/site-base.css. 검사 제외.",
+      "since": "2026-08-01"
     }
   ]
 }

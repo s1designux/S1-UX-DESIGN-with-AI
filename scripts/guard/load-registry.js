@@ -19,7 +19,9 @@ function loadJson(rel) {
 function loadRegistry() {
   const buttonJson        = loadJson('registry/components/button.json');
   const componentTokens   = loadJson('registry/tokens/component.tokens.json');
-  const semanticColors    = loadJson('registry/tokens/semantic.colors.json');
+  // 2026-08-01 아카이브 → legacy 경로. 역할 토큰의 실제 정본은 assets/css/site-base.css 이며,
+  //   Source Guard 를 그쪽으로 옮기는 것은 별건(BACKLOG). 지금은 경로만 따라가 기능 저하를 막는다.
+  const semanticColors    = loadJson('registry/tokens/legacy/semantic.colors.json');
   const foundationColors  = loadJson('registry/tokens/foundation.colors.json');
   const auditRules        = loadJson('registry/governance/audit-rules.json');
   const tokenExceptions   = loadJson('registry/governance/token-exceptions.json');

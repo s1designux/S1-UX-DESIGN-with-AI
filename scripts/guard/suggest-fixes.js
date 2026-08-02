@@ -270,7 +270,7 @@ function main() {
   console.log('Loading SW Design System registry...');
   const registry       = loadRegistry();
   const foundationColors = loadJson('registry/tokens/foundation.colors.json');
-  const semanticColors   = loadJson('registry/tokens/semantic.colors.json');
+  const semanticColors   = loadJson('registry/tokens/legacy/semantic.colors.json');
 
   // Build suggestion engine
   const engine = buildSuggestionEngine(registry, foundationColors, semanticColors);

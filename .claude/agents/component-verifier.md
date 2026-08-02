@@ -21,7 +21,7 @@ description: "구현/빌드 결과를 원본·계획서 기준으로 대조하�
 > 🚫 **HARD RULE — 인스턴스 출처(provenance) 검사 (Figma 검증 (B)·(C) 공통, 2026-06-19 실패로 신설).**
 > Figma 화면/라이브러리를 검증할 때 **모든 INSTANCE의 `await getMainComponentAsync()`의 `remote`·`key`·`name`을 실제로 출력해 표로 제시**한다.
 > - 정본 V3.0 컴포넌트 = **이 파일 로컬(`remote === false`)**. 허용 출처는 **①로컬(remote=false)** 또는 **②허용목록의 V2.2 아이콘 키** 뿐.
-> - 🔑 **키로만 판단.** 허용 아이콘 여부는 `key` 를 **`registry/figma/allowed-remote-keys.json`**(단일 출처, 9키)과 대조해 결정한다. **이름(`ic_*`·`input`·`button`)으로 판단 금지** — 외부 라이브러리도 같은 이름을 쓰고, V2.2 아이콘은 `ic_` 없이 `chevron`·`remove` 로도 불린다(양방향 오판 원인).
+> - 🔑 **키로만 판단.** 허용 아이콘 여부는 `key` 를 **`registry/figma/allowed-remote-keys.json`**(단일 출처 — 2026-08-01 기준 허용 19키, 그중 설치기 ICON_KEYS 12키. 개수는 Gate 31 이 정본과 자동 대조하므로 여기 숫자는 참고값이다)과 대조해 결정한다. **이름(`ic_*`·`input`·`button`)으로 판단 금지** — 외부 라이브러리도 같은 이름을 쓰고, V2.2 아이콘은 `ic_` 없이 `chevron`·`remove` 로도 불린다(양방향 오판 원인).
 > - 검사는 `.claude/skills/screen-rebuild/references/provenance-scan.md` 의 키 기반 스캔을 **실제 실행**해 수행한다.
 > - **`remote === true` 인데 허용목록에 없는 key = 외부 라이브러리 = ❌(a) FAIL.** 절대 (c)로 흘리지 않는다. (단, `ic_*` 이름인데 미등록 키는 (c)애매로 사용자 확인 — 정식 V2.2면 허용목록에 키 추가.)
 > - ⚠️ **`remote === true`를 "참조된 정본"으로 해석 금지.**

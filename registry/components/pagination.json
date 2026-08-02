@@ -3,7 +3,7 @@
     "id": "pagination",
     "name": "Pagination",
     "category": "navigation",
-    "updatedAt": "2026-05-20",
+    "updatedAt": "2026-08-01",
     "version": "0.2.0",
     "tokenStatus": "stable",
     "codeStatus": "implemented",
@@ -14,9 +14,10 @@
     "description": "페이지네이션 컨트롤. 화살표(first/prev/next/last) + 페이지 번호. 선택 페이지는 텍스트 색으로만 구분.",
     "notes": [
       "Figma 확인: 선택 페이지 = bg 변화 없음, 텍스트 색만 변경 (#9D9D9D → #353535).",
-      "Disabled 화살표 = bg/border 동일, opacity:0.9만 적용.",
-      "--pagination-control-hover-bg는 Figma 미정의 — assumed (gray-50).",
-      "dark mode: 미확인 — candidate 상태."
+      "Disabled 화살표 = 전용 토큰 사용(bg gray/50 · border gray/100 · icon gray/300). V3.0 재실측(2026-07-08, node 956:19066)으로 확정 — 종전 '옵션 없이 opacity:0.9만 적용' 서술은 폐기(2026-08-01 교정).",
+      "hover 는 전용 토큰이 V3.0 원본에 정의됨(color/pagination/control/bg·border·icon/hover) — 종전 'Figma 미정의 · assumed' 상태 해소(2026-07-08 재실측).",
+      "dark mode: 미확인 — candidate 상태.",
+      "2026-08-01: 위 2건은 tokens/component-tokens-extracted.md 에만 있던 V3.0 재실측 기록을 registry 정본으로 옮긴 것이다(그 문서는 아카이브됨). 정본 토큰 실재는 vars-data 로 확인함."
     ]
   },
   "usage": {
@@ -41,7 +42,7 @@
   "doDont": {
     "do": [
       "선택 페이지는 배경 변화 없이 텍스트 색으로만 구분한다(Figma 기준).",
-      "비활성 화살표는 배경/테두리 동일, opacity 로 처리한다."
+      "비활성 화살표는 전용 disabled 토큰(bg·border·icon)으로 표현한다 — opacity 로 처리하지 않는다."
     ],
     "dont": [
       "선택 페이지에 배경색을 넣지 않는다.",
@@ -54,11 +55,22 @@
   ],
   "variants": {
     "arrow": {
-      "direction": ["<<", "<", ">", ">>"],
-      "state": ["default", "disabled"]
+      "direction": [
+        "<<",
+        "<",
+        ">",
+        ">>"
+      ],
+      "state": [
+        "default",
+        "disabled"
+      ]
     },
     "number": {
-      "state": ["default", "selected"]
+      "state": [
+        "default",
+        "selected"
+      ]
     }
   },
   "sizing": {
@@ -67,7 +79,12 @@
     "font": "Pretendard Medium 14px",
     "gap": "4px (화살표 그룹 내) / 8px (그룹 간)"
   },
-  "states": ["default", "hover", "selected", "disabled"],
+  "states": [
+    "default",
+    "hover",
+    "selected",
+    "disabled"
+  ],
   "tokens": [
     {
       "name": "--pagination-control-bg",

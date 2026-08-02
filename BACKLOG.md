@@ -58,6 +58,10 @@
 분리 이유: 토큰 신설 + 웹 수정 + 설치기 리빌드를 ②번 커밋에 섞지 않는다.
 
 ### 🕳️ 게이트 사각지대 — Gate 6b 가 설치기 리빌드를 강제하지 못하는 경우
+> **부분 해소 (2026-08-01, Phase 2):** Gate 6b 에 **값 검사**를 추가했다 — zip 안 code.js 의
+> Foundation hex 값이 정본과 다르면 차단(적대 테스트로 확인). 따라서 "토큰 값만 바꾸고 리빌드를
+> 잊는" 경로는 이제 막힌다. **아래에 적힌 '기존 토큰을 배선만 하는 변경'은 여전히 Gate 6b 밖**이며,
+> 그쪽은 Gate 13(build-components.ts 해시 검증 기록)이 커밋을 막는 방식으로 커버된다.
 Gate 6b(installer-freshness)는 zip 내부 code.js 에
 vars-data 의 토큰 키가 전부 embed 됐는지만 검사한다.
 → 새 토큰을 만들지 않는 변경(기존 토큰을 컴포넌트에 배선만 하는 경우)은
@@ -92,6 +96,45 @@ vars-data 의 토큰 키가 전부 embed 됐는지만 검사한다.
 - tokens.css 대조 없이 상태를 통째로 승인함
 - 1번 작업 시 Gate 20이 대량 반응 → 무심코 승인하면 **틀린 걸 정답으로 굳힘**
 - 1번보다 먼저 볼 것
+
+### 검수 결과서(리포트) 기능 미구현 — 죽은 코드 제거됨
+- **경위**: `plugins/figma-vars-installer/src/audit-report.ts`(252줄, `buildAuditReport()`)가
+  검수 결과를 캔버스 프레임으로 그리는 기능으로 작성됐으나 **어디에서도 import 되지 않았다**
+  (전 저장소 참조 0건). CLAUDE.md 2026-07-14 이력은 이 기능이 '리포트 서브탭'으로 있는 것처럼
+  적었으나 실제 ui.html 에는 그 탭이 없다(🤖 component-verifier 2026-08-01 실측).
+- **처리**: 2026-08-01 파일 삭제(git 이력에 보존). 죽은 코드가 '있는 기능'처럼 보이는 상태를 없앴다.
+- **남은 일**: 검수 결과서가 정말 필요하면 다시 만든다. 되살릴 때는 git 이력에서 구현을 참고할 수 있다
+  (`git log --all -- plugins/figma-vars-installer/src/audit-report.ts`).
+
+### 검수기 색 제안 품질 — 그림자 토큰이 검정 fill 에 exact 로 뜬다
+- **증상**: Semantic Shadow V2 의 COLOR 변수는 전부 `rgba(0,0,0,*)` 인데 `rgbToHex` 가 alpha 를 버려
+  `#000000` 으로 후보풀(`byHex`)에 들어간다. 그래서 검정 fill 을 검수하면 `shadow/raised/layer-a/color`
+  류가 **"정확일치(exact)" 제안**으로 표시된다. (🤖 component-verifier 2026-08-01 실측)
+- **현재 위험도**: 낮음 — 자동적용(high) 조건은 "exact + 후보 1개"라 실제로 자동 적용되지는 않는다.
+  다만 사람이 제안 목록에서 잘못 고를 수 있다.
+- **고칠 방향**: 후보풀 구성 시 alpha<1 인 변수를 제외하거나, EFFECT_COLOR scope 변수는 paint 제안에서 배제.
+- **관련**: `plugins/figma-vars-installer/src/audit-engine.ts` `rgbToHex()`·`loadV2Vars()` byHex 구성부.
+
+### 설치기 실패 시 이름 없는 부산물이 캔버스에 남는다
+- **증상**: 컴포넌트 빌드가 중간에 실패하면 이름을 붙이기 전 만든 노드(TEXT·RECT·떠 있는 COMPONENT 등)가
+  최상위에 남는다. 실측 26개(완성 후 실패)·16개(중간 실패). 현재 정리는 `footprint(name)` **이름이 일치하는**
+  새 노드만 지우므로 이름 없는 것은 대상이 아니다.
+- **영향**: 실패 지점에서 `catY` 를 전진시키지 않아 다음 컴포넌트가 같은 자리에 겹쳐 그려질 수 있고,
+  재시도할 때마다 누적된다. [재설치]로는 정리된다.
+- **고칠 방향(정책 판단 필요)**: id 스냅샷이 이미 있으므로 "이번 시도의 새 노드 전부"로 넓히면 완결되나,
+  그러면 부모 실패 시 자식이 만든 세트까지 지우게 되어 정리 정책이 바뀐다. river 결정 사항.
+
+### Table 이 Table Cell 컴포넌트를 재사용하지 않는다 (코어 재사용 원칙 위배)
+- **실측(🤖 component-verifier 2026-08-01)**: 정상 빌드에서 Table 이 붙인 Table Cell 인스턴스 **0건**.
+  `buildTable` 은 `BUILT_COMPS["TableCell:…"]` 을 읽되 없으면 plain frame 으로 그리는 fallback 이 있는데,
+  `BUILD_DEPENDENCIES` 에 `"Table": ["Table Cell"]` 이 없어 **Table 이 Table Cell 보다 먼저 빌드**된다
+  → `cellComp` 가 항상 undefined → 언제나 fallback. HEAD 이전부터 그랬다(신규 버그 아님).
+- **영향**: CLAUDE.md §🔁 Core Component Reuse Rule("모듈은 코어 컴포넌트를 재사용한다")과 어긋난다.
+  셀 스타일을 고쳐도 Table 에 반영되지 않는다.
+- **고칠 방향**: `BUILD_DEPENDENCIES["Table"] = ["Table Cell"]` 추가 → 실제 인스턴스 사용.
+  **단 씬그래프가 바뀐다**(raw frame → 인스턴스) → 회귀·렌더 재검증 필요한 별건 변경.
+  고친 뒤에는 `ATTACH_DEPENDENCIES["Table"]` 에 `"Table Cell"` 을 다시 넣어야 열화 보고가 정확해진다
+  (2026-08-01 에는 실측과 맞추려고 뺐다).
 
 ## 🟡 중간
 

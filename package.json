@@ -62,6 +62,8 @@
     "sizing:gen": "npm run number:gen",
     "color:gen": "node scripts/gen-foundation-color.js",
     "color:check": "node scripts/gen-foundation-color.js --check",
+    "registry:foundation:gen": "node scripts/gen-foundation-registry.js",
+    "registry:foundation:check": "node scripts/gen-foundation-registry.js --check",
     "typo:check": "node scripts/typography-gen.js --check",
     "number:check": "node scripts/number-page-check.js",
     "sizing:check": "npm run number:check",

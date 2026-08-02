@@ -9,12 +9,33 @@
  *  3. high-confidence (HEX 완전일치 + V2 후보 1개) 자동 적용 옵션
  *
  * V2 컬렉션 이름 (런타임 동적 탐색):
- *  - Foundation V2 / Semantic Color V2 / Semantic Number V2
+ *  - 정본 vars-data.ts 의 컬렉션 상수에서 **파생**한다(하드코딩 사본 금지).
  */
 
 import { COMPONENT_CATEGORIES } from "./build-components";
+import {
+  FOUNDATION_COLLECTION,
+  SEMANTIC_COLOR_COLLECTION,
+  SEMANTIC_NUMBER_COLLECTION,
+  SEMANTIC_SHADOW_COLLECTION,
+} from "./vars-data";
 
-const V2_COLLECTION_NAMES = ["Foundation V2", "Semantic Color V2", "Semantic Number V2"];
+// 검수 대상 컬렉션 = 설치기가 만드는 V2 컬렉션 전부.
+//   2026-08-01: 종전에는 이 목록이 문자열 하드코딩 사본이었고, 2026-07-29 신설된
+//   "Semantic Shadow V2" 가 빠져 있었다(정본 4개 vs 사본 3개 = 드리프트).
+//   ⚠️ 다만 "그림자 paint 가 external-var 로 오탐된다"는 종전 서술은 **실측과 다르다**:
+//   검수기는 fills/strokes paint 만 스캔하는데 그림자 색 변수는 scopes=["EFFECT_COLOR"] 라
+//   paint 에 바인딩되지 않는다(🤖 component-verifier 2026-08-01 실측 — 재현 불가).
+//   실제 의미는 "정본이 늘어도 사본이 안 따라오는 구조"를 없앤 것이다.
+//   알려진 부작용(별건): Shadow 컬렉션의 COLOR 변수는 rgba(0,0,0,*) 이라 rgbToHex 가 alpha 를
+//   버려 #000000 후보풀에 들어간다 → 검정 fill 에 shadow 토큰이 exact 제안으로 뜰 수 있다.
+//   자동적용(high) 조건에는 안 걸리나, 제안 품질 문제로 BACKLOG 에 남긴다.
+const V2_COLLECTION_NAMES = [
+  FOUNDATION_COLLECTION,
+  SEMANTIC_COLOR_COLLECTION,
+  SEMANTIC_NUMBER_COLLECTION,
+  SEMANTIC_SHADOW_COLLECTION,
+];
 
 // 설치기가 만드는 정본 컴포넌트 이름 집합(정규화). 문서 전체에서 기준 풀을 모을 때
 // 이 목록에 있는 이름만 "정본"으로 인정해, 파일 내 다른 레거시 세트가 정본으로 둔갑하는 것을 막는다.
@@ -73,7 +94,7 @@ const OFF_GUIDE_THRESHOLD = 12;
 function nearestFoundationDistance(hex: string, v2All: V2Var[]): number {
   let best = 999;
   for (const v of v2All) {
-    if (v.collectionName !== "Foundation V2") continue;
+    if (v.collectionName !== FOUNDATION_COLLECTION) continue;
     const modes = Object.keys(v.hexByMode);
     if (modes.length === 0) continue;
     const d = hexDistance(hex, v.hexByMode[modes[0]]);
@@ -283,7 +304,7 @@ function pickSuggestions(
 
   // 1) Semantic Color V2 전 토큰 순회 — role 매칭 토큰만 채택 (카테고리 무관, 갯수 제한 없음)
   for (const v of v2All) {
-    if (v.collectionName !== "Semantic Color V2") continue;
+    if (v.collectionName !== SEMANTIC_COLOR_COLLECTION) continue;
     const lower = v.name.toLowerCase();
     // role 매칭 여부
     let hasRoleMatch = false;
@@ -330,7 +351,7 @@ function pickSuggestions(
       collectionName: v.collectionName,
       confidence: "medium",
       matchType: "exact",
-      category: v.collectionName === "Foundation V2" ? "foundation" : categoryOf(v.name),
+      category: v.collectionName === FOUNDATION_COLLECTION ? "foundation" : categoryOf(v.name),
     });
     added.add(v.id);
   }
@@ -339,7 +360,7 @@ function pickSuggestions(
   type Near = { v: V2Var; dist: number };
   const nears: Near[] = [];
   for (const v of v2All) {
-    if (v.collectionName !== "Foundation V2") continue;
+    if (v.collectionName !== FOUNDATION_COLLECTION) continue;
     if (added.has(v.id)) continue;
     const modes = Object.keys(v.hexByMode);
     if (modes.length === 0) continue;
@@ -552,7 +573,7 @@ async function setVariablesMode(mode: "light" | "dark" | "clear"): Promise<{ cou
 
   // Light/Dark 설정
   const collections = await figma.variables.getLocalVariableCollectionsAsync();
-  const semantic = collections.find((c) => c.name === "Semantic Color V2");
+  const semantic = collections.find((c) => c.name === SEMANTIC_COLOR_COLLECTION);
   if (!semantic) {
     return { count: 0, skipped: 0, message: "Semantic Color V2 컬렉션 없음" };
   }

@@ -621,19 +621,39 @@
       if (skipped.length) lines.push(`기존 세트 보존: <strong>${skipped.length}개</strong> <span style="color:#9ca3af;font-size:11px;">(이미 존재 — 값 변경은 Variables로 자동 반영)</span>`);
       if (!added.length && !skipped.length && msg.componentCount) lines.push(`Component Set: <strong>${msg.componentCount}개</strong> variant`);
       if (msg.removedCount)    lines.push(`옛 잔재 변수 <strong>${msg.removedCount}개</strong> 정리`);
+      // 건별 실패·빌더 미등록 — 설치가 조용히 반쪽이 되지 않도록 완료 화면에 명시한다.
+      //   (종전엔 1개 실패 시 전체가 중단됐고, 그마저도 개발자 콘솔에만 남았다.)
+      const failedList = msg.componentFailed || [];
+      const noRunnerList = msg.componentNoRunner || [];
+      const degradedList = msg.componentDegraded || [];
+      const problem = failedList.length + noRunnerList.length + degradedList.length;
+      const warnBlock = problem ? `
+        <div class="result-sub" style="margin-top:10px;padding:10px 12px;border-radius:8px;background:#fff7ed;color:#9a3412;font-size:12px;line-height:1.7;">
+          <strong>⚠️ 일부 컴포넌트가 설치되지 않았습니다 (${problem}개)</strong><br>
+          ${failedList.length ? `생성 실패: <strong>${esc(failedList.map(f => f.name).join(' · '))}</strong><br>
+          <span style="color:#b45309;font-size:11px;">사유: ${esc(failedList.map(f => `${f.name} — ${f.reason || '알 수 없음'}`).join(' / '))}</span><br>` : ''}
+          ${noRunnerList.length ? `빌더 미등록: <strong>${esc(noRunnerList.join(' · '))}</strong><br>` : ''}
+          ${degradedList.length ? `부품이 빠진 채 만들어짐: <strong>${esc(degradedList.map(d => {
+            const failedNames = new Set(failedList.map(f => f.name));
+            // 부품이 아예 안 만들어진 것(실패) vs 만들어졌지만 속이 빈 것(열화)을 구분해 적는다.
+            const parts = (d.missing||[]).map(m => failedNames.has(m) ? `${m} 없음` : `${m} 불완전`);
+            return `${d.name}(${parts.join('·')})`;
+          }).join(' · '))}</strong><br>` : ''}
+          <strong>[재설치]</strong>로 다시 시도하거나, 위 사유를 디자인시스템 담당자에게 알려주세요.
+        </div>` : '';
       document.getElementById('result').innerHTML = `
         <div class="result-success">
-          <div class="result-title">✅ 설치 완료</div>
+          <div class="result-title">${problem ? '⚠️ 설치 완료 (일부 누락)' : '✅ 설치 완료'}</div>
           <div class="result-sub">${lines.join('<br>') || '설치된 항목이 없습니다.'}<br><br>
             왼쪽 패널 <strong>Local variables</strong> · <strong>Text styles</strong> · <strong>Assets</strong>에서 확인하세요.
           </div>
-        </div>
+        </div>${warnBlock}
         <div class="result-sub" style="color:#6b7280;font-size:11px;line-height:1.7;">
           컴포넌트 설치가 중간에 멈췄거나 배치가 이상하면 <strong>[재설치]</strong>를 누르세요 —
           기존 컴포넌트를 지우고 처음부터 다시 설치합니다.
         </div>`;
       document.getElementById('reinstall-confirm').style.display = 'none';
-      setDoneFooter('success');
+      setDoneFooter(problem ? 'error' : 'success');   // 일부 누락이면 재설치 유도 푸터
       showInstallScreen('done');
     }
 

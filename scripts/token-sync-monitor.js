@@ -17,10 +17,9 @@
  *   각 표면은 자기가 렌더하는 토큰 ∩ 정본 만 비교(이름 차이로 인한 false positive 0).
  *
  * ── 심각도 ───────────────────────────────────────
- *   Tier 1 (ERROR): 기능/주요 화면 — tokens.css · install-prompt · semantic.html
- *                   · registry semantic.colors.json · registry foundation.colors.json
- *   Tier 2 (WARN):  문서 — tokens/semantic.md · tokens/foundation.md
- *   (foundation.html·component-tokens-extracted.md 는 확장 슬롯으로 남김 — 아래 SURFACES 주석)
+ *   Tier 1 (ERROR): tokens.css · install-prompt · semantic.html · registry foundation.colors.json
+ *   Tier 2 (WARN):  현재 없음 — 2026-08-01 문서 표면(tokens/*.md)·registry semantic.colors.json 아카이브
+ *   (foundation.html 스와치는 확장 슬롯으로 남김 — 아래 SURFACES 주석)
  *
  * 사용:
  *   node scripts/token-sync-monitor.js            # 전체 표면 리포트
@@ -35,13 +34,9 @@ const ROOT = path.resolve(__dirname, '..');
 const P = {
   varsData:       path.join(ROOT, 'plugins/figma-vars-installer/src/vars-data.ts'),
   tokensCss:      path.join(ROOT, 'assets/css/tokens.css'),
-  swV24:          path.join(ROOT, 'registry/tokens/sw-v2.4.tokens.css'),
   installPrompt:  path.join(ROOT, 'pages/install-prompt.html'),
   semanticHtml:   path.join(ROOT, 'pages/semantic.html'),
-  semanticJson:   path.join(ROOT, 'registry/tokens/semantic.colors.json'),
   foundationJson: path.join(ROOT, 'registry/tokens/foundation.colors.json'),
-  semanticMd:     path.join(ROOT, 'tokens/semantic.md'),
-  foundationMd:   path.join(ROOT, 'tokens/foundation.md'),
 };
 
 const HEX_RE = /^#[0-9a-fA-F]{3,8}$/;
@@ -165,19 +160,8 @@ function refResolver(canonical) {
     return null; // 해석 불가(외부 후보값 등) → 비교 제외
   };
 }
-function fromSemanticJson(canonical) {
-  const j = JSON.parse(fs.readFileSync(P.semanticJson, 'utf8'));
-  const rr = refResolver(canonical);
-  const out = {};
-  for (const cat of Object.values(j.tokens || {})) {
-    if (!Array.isArray(cat)) continue;
-    for (const t of cat) {
-      if (!t.cssVar) continue;
-      out[t.cssVar] = { light: rr(t.light, 'light'), dark: rr(t.dark, 'dark') };
-    }
-  }
-  return out;
-}
+// fromSemanticJson / fromMdPalette 는 2026-08-01 표면 아카이브와 함께 제거됨(호출처 0).
+//   되살릴 일이 있으면 git 이력에서 가져온다.
 function fromFoundationJson() {
   const j = JSON.parse(fs.readFileSync(P.foundationJson, 'utf8'));
   const out = {};
@@ -192,15 +176,6 @@ function fromFoundationJson() {
   walk(j);
   return out;
 }
-function fromMdPalette(file) {
-  // "| gray-dark/0 | #0D0E12 | ... |"  (foundation 팔레트 표)
-  const text = fs.readFileSync(file, 'utf8');
-  const out = {};
-  for (const m of text.matchAll(/\|\s*([a-z][\w-]*\/[\w-]+)\s*\|\s*(#[0-9a-fA-F]{3,8})\s*\|/g)) {
-    out[foundationPathToCssVar(m[1])] = { light: up(m[2]), dark: up(m[2]) };
-  }
-  return out;
-}
 
 // ── 4. 표면 레지스트리 (확장 지점) ────────────────
 //   새 표면을 추가하려면 여기 한 줄. extractor 는 cssVar→{light,dark} resolved hex 반환.
@@ -210,11 +185,16 @@ const SURFACES = [
   { id: 'tokens.css',              tier: 1, extract: () => fromCssFile(P.tokensCss) },
   { id: 'install-prompt.html',     tier: 1, extract: fromInstallPrompt },
   { id: 'semantic.html',           tier: 1, extract: fromSemanticHtml, complete: 'semantic' },
-  { id: 'registry/semantic.colors',tier: 1, extract: (c) => fromSemanticJson(c) },
   { id: 'registry/foundation.colors', tier: 1, extract: fromFoundationJson },
-  { id: 'tokens/semantic.md',      tier: 2, extract: () => fromMdPalette(P.semanticMd) },
-  // 확장 슬롯(미구현): foundation.md(스텝-only 표 `| 0 | #HEX |` — 팔레트 헤더 컨텍스트 파싱 필요),
-  //                   foundation.html(스와치 hex↔라벨 페어링), component-tokens-extracted.md(alias 표).
+  // 2026-08-01 제거된 표면 (아카이브 — deprecated-tokens.json legacyFiles):
+  //   · registry/semantic.colors — 역할기반 별개 계보. 46개 중 43개가 정본에 없어 실대조가 2건뿐이었다.
+  //     역할 토큰의 정본은 assets/css/site-base.css(사이트 전용, Variables 검수 제외 — 위 §1b 참조).
+  //   · tokens/semantic.md — 손유지 문서. 실대조 21건(팔레트 표만). 값 정본은 tokens.css,
+  //     사람이 읽는 문서 역할은 자동 생성 DESIGN.md 가 승계.
+  //   두 표면 다 "손으로 유지하며 정본과 겹치던 사본"이라, 대조를 늘리는 대신 사본 자체를 없앴다.
+  //   registry/foundation.colors 만 남긴 이유: 그건 208건을 실제로 대조하던 살아있는 표면이라
+  //   없애면 검사 커버리지가 줄어든다 → 아카이브 대신 **생성물로 전환**(gen-foundation-registry.js).
+  // 확장 슬롯(미구현): foundation.html(스와치 hex↔라벨 페어링).
 ];
 
 // ── 5. 모니터 실행 ───────────────────────────────

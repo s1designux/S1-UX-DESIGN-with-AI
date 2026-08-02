@@ -620,6 +620,11 @@ async function runInstall(sel: InstallSelection) {
     let componentCount = 0;
     let componentAdded: string[] = [];
     let componentSkipped: string[] = [];
+    // 건별 실패·빌더 미등록 — 설치가 조용히 반쪽이 되는 것을 사용자에게 알리기 위해 UI 로 전달한다.
+    let componentFailed: { name: string; reason: string }[] = [];
+    let componentNoRunner: string[] = [];
+    // 실패한 부품 때문에 '만들어졌지만 불완전한' 컴포넌트 — 성공으로만 보이면 안 된다.
+    let componentDegraded: { name: string; missing: string[] }[] = [];
 
     // ── Foundation (또는 의존 항목 위해 기존 로드) ──
     let foundationColorMap: Record<string, Variable> = {};
@@ -727,6 +732,9 @@ async function runInstall(sel: InstallSelection) {
       componentCount = compResult.created;       // 새로 추가된 variant 수 (기존 보존분 제외)
       componentAdded = compResult.added;          // 새로 추가한 세트 이름
       componentSkipped = compResult.skipped;      // 이미 존재해 보존한 세트 이름
+      componentFailed = compResult.failed;        // 생성 중 예외로 실패한 것(전체 중단 대신 계속 진행)
+      componentNoRunner = compResult.noRunner;    // 빌더 미등록으로 건너뛴 것(Gate 30 이 커밋 단계에서 차단)
+      componentDegraded = compResult.degraded;    // 부품 누락으로 불완전하게 완성된 것
     }
 
     post("progress", { step: "완료", pct: 100 });
@@ -737,6 +745,9 @@ async function runInstall(sel: InstallSelection) {
       componentCount,
       componentAdded,
       componentSkipped,
+      componentFailed,
+      componentNoRunner,
+      componentDegraded,
       removedCount: removedAll.length,
       removedNames: removedAll,
     });

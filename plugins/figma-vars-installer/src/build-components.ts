@@ -1011,7 +1011,10 @@ function makeCaret(colorVar: Variable): RectangleNode {
 // role → "Property 1=Line" 변형 컴포넌트 키. importComponentByKeyAsync 로 인스턴스 삽입 후 색 재바인딩·사이즈.
 // 라이브러리 출처: 아이콘 라이브러리 V2.2(파일 YcBbW9e0MTR9T3W5Sz0Ukx · 14.UI 섹션). 전부 게시 확인됨.
 // 새 아이콘은 여기 키만 추가하고 makeIconInstance 로 삽입 — createNodeFromSvg 직삽입은 Gate 12 가 차단한다.
-const ICON_KEYS: Record<string, string> = {
+// export 인 이유: 검사기(scripts/icon-key-consistency-check.js)가 이 정본을 **직접 읽어**
+//   registry/figma/allowed-remote-keys.json 과 대조한다. 종전엔 두 곳이 손 동기화라
+//   개수가 12 / 19 / 주석 "9키" 로 셋 다 어긋나 있었다(2026-08-01 실측).
+export const ICON_KEYS: Record<string, string> = {
   remove:   "24b2df622d341e0af21cd4b23b4a7d23b97a5ea7", // 삭제(원+X) 439:84
   close:    "2a1abbd3597b536e34fd9523fb61eade3afe9934", // 닫기(plain-X, 원 없음) ic_닫기 89:4927 — 바텀시트/모달 닫기. remove(원+X)와 구분
   check:    "5ab251e0d90adb555ee2fa316f84e86041f19916", // 확인(체크마크 ✓) 97:167 — 체크박스 내부용(ic_체크는 박스형이라 ic_확인 사용)
@@ -4914,6 +4917,24 @@ export const BUILD_DEPENDENCIES: Record<string, string[]> = {
   "Bottom Sheet Option": ["Checkbox", "Radio"],
 };
 
+// 실제 **인스턴스 부착** 관계 (2026-08-01 신설) — BUILD_DEPENDENCIES 와 목적이 다르다.
+//   BUILD_DEPENDENCIES = "먼저 빌드해야 하는 것"(빌드 순서표). 카테고리 순서로 이미 보장되는
+//     부착은 거기 안 적혀 있다 — 순서표로서는 그게 맞다.
+//   ATTACH_DEPENDENCIES = "이 컴포넌트가 인스턴스로 붙여 쓰는 것" 전부. 부품이 실패했을 때
+//     **어떤 부모가 껍데기가 되는지** 판정하는 데 쓴다(열화 보고 전용, 빌드 순서에 영향 없음).
+//   왜 분리했나: 순서표만으로 열화를 판정하면 과소보고가 난다. 실측(🤖 component-verifier):
+//     Checkbox 실패 → Table 의 체크박스 인스턴스 25→0 인데 Table 은 "정상"으로 보고됐다.
+//     Table Cell 실패 → 셀 인스턴스 8→0, 역시 미보고.
+const ATTACH_DEPENDENCIES: { [parent: string]: string[] } = {
+  // buildTable 이 실제로 붙이는 것들(BUILT_COMPS 조회 기준). Pagination 만 순서표에 있었다.
+  //   ⚠️ "Table Cell" 은 **일부러 뺐다.** buildTable 은 BUILT_COMPS 의 셀을 읽되 없으면 plain frame
+  //   으로 그리는 fallback 이 있고, BUILD_DEPENDENCIES 에 Table→Table Cell 이 없어 Table 이 먼저
+  //   빌드되므로 **실측 부착 0건**(🤖 component-verifier: 정상 빌드에서 Table 의 Table Cell 인스턴스 0).
+  //   선언하면 Table Cell 실패 시 "Table 이 불완전"이라는 **거짓 경보**가 뜬다. 실제 재사용을
+  //   원하면 빌드 순서를 먼저 고쳐야 하고, 그건 씬그래프가 바뀌는 별건이다(BACKLOG).
+  "Table": ["Pagination", "Checkbox", "Select Box"],
+};
+
 // 부모가 **부수 생성**하는 컴포넌트 — 자기 runner 가 없는 것이 정상이다(2026-08-01 명시화).
 //   BUILD_DEPENDENCIES(=부모가 자식 인스턴스를 부착하니 자식을 먼저 빌드) 와 방향이 반대다:
 //   여기 있는 것은 "자식 세트 자체를 부모 빌더가 만들어 준다"는 뜻.
@@ -4946,7 +4967,7 @@ export function buildOrderFor(members: string[]): string[] {
 export async function buildAllComponents(
   maps: BuildMaps,
   onProgress?: (step: string, pct: number) => void
-): Promise<{ created: number; added: string[]; skipped: string[]; noRunner: string[] }> {
+): Promise<{ created: number; added: string[]; skipped: string[]; noRunner: string[]; failed: { name: string; reason: string }[]; degraded: { name: string; missing: string[] }[] }> {
   TEXT_STYLES = maps.textStyles || {};  // makeBoundText 가 텍스트 스타일 바인딩에 사용
   const page = figma.currentPage;
 
@@ -4995,6 +5016,8 @@ export async function buildAllComponents(
   //   종전에는 `if (!run) continue;` 로 **조용히** 넘어가 설치 결과에서 통째로 빠져도
   //   아무도 몰랐다(실측: "Time Picker Cell"). 이제 모아서 반환·보고하고 Gate 30 이 차단한다.
   const noRunner: string[] = [];
+  // 빌드 중 예외로 실패한 컴포넌트(건별 집계 — 전체 중단 대신 계속 진행).
+  const failed: { name: string; reason: string }[] = [];
 
   // 컴포넌트 빌더 — 이름 → (originY) => {set, bottomY}. Input 은 originX=0(섹션 컬럼 좌측정렬).
   const runners: { [name: string]: (oy: number) => Promise<{ set: ComponentSetNode; bottomY: number }> } = {
@@ -5078,10 +5101,51 @@ export async function buildAllComponents(
       }
       if (onProgress) onProgress(`${name} 생성 중…`, 92 + Math.round((done / TOTAL) * 8));
       removeByNames(footprint(name));
-      const res = await run(catY);
-      created += res.set.children.length;
-      added.push(name);
-      catY = res.bottomY + 140;
+      // 건별 try/catch — 컴포넌트 1개가 실패해도 나머지를 계속 만든다(2026-08-01 신설).
+      //   종전엔 이 자리에 방어가 없어 **1개 실패 = 전체 설치 중단**이었다. 뒤 컴포넌트는
+      //   하나도 안 생기고, 앞서 만든 것만 캔버스에 남은 반쪽 상태가 됐다.
+      //   정답 패턴은 이미 저장소에 있었다 — code.ts 의 다건 스왑 루프가 건별 성공/실패를
+      //   집계해 UI 에 보고한다(applied/failures). 그것을 여기로 이식한다.
+      // 실패 시 "이번 시도로 새로 생긴 것"만 지우기 위한 직전 스냅샷(노드 id 기준).
+      //   ⚠️ 이름만으로 지우면 **멀쩡한 것까지 지운다.** footprint() 는 자기 세트뿐 아니라
+      //   부모가 만드는 자식 세트("Time Picker Dropdown"→"Time Picker Cell", "GNB"→"GNB Menu")와
+      //   옛 이름 별칭(Platform/·Shell/·Samsung_30 …)까지 포함하기 때문이다.
+      //   예: "Calendar Cell" 은 자기 runner 도 있고 buildCalendar 도 만든다 — 자기 runner 가
+      //   실패했다고 이름으로 싹 지우면 Calendar 가 만들어 둔 세트까지 날아가 Date Picker 가 깨진다.
+      //   id 스냅샷 차집합으로 좁히면 이 클래스의 사고가 구조적으로 불가능해진다.
+      let beforeIds: Set<string> = new Set();
+      try {
+        const kids = figma.currentPage.children as SceneNode[];
+        if (Array.isArray(kids)) beforeIds = new Set(kids.map((n) => n.id));
+      } catch (_) { /* mock/no-page */ }
+
+      try {
+        const res = await run(catY);
+        created += res.set.children.length;
+        added.push(name);
+        catY = res.bottomY + 140;
+      } catch (e: any) {
+        const reason = (e && (e.message || String(e))) || "unknown";
+        // 부분 산출물 제거 — 이게 없으면 "정상으로 위장된 반쪽"이 영구 고착된다.
+        //   빌더가 세트 이름을 붙인 뒤 죽으면 이름만 맞는 반쪽 세트가 캔버스에 남고,
+        //   existing 은 매 실행 시작에 캔버스를 다시 읽으므로 다음 [설치]에서 그 반쪽이
+        //   "이미 있음"으로 보존되며(skipped) **경고조차 사라진 초록 화면**이 뜬다
+        //   (🤖 component-verifier 가 2회 실행 시뮬레이션으로 재현: 2회차 failed=[] · 화면 ✅).
+        //   removeByNames 는 못 쓴다 — 함수 진입 시 캡처한 topNodes 만 훑어 이번 실행 생성분을
+        //   못 잡는다. 그래서 페이지를 다시 읽되, **직전 스냅샷에 없던 노드**로만 한정한다.
+        try {
+          const names = new Set(footprint(name));
+          const kids = figma.currentPage.children as SceneNode[];
+          if (Array.isArray(kids)) {
+            for (const n of kids.filter((x) => !beforeIds.has(x.id) && names.has(x.name))) {
+              try { n.remove(); } catch (_) { /* ignore */ }
+            }
+          }
+        } catch (_) { /* mock/no-page 환경 — 정리 실패가 루프를 죽이지 않게 */ }
+        failed.push({ name, reason });
+        console.error(`[installer] "${name}" 생성 실패 — 이번 시도 산출물만 정리하고 계속합니다: ${reason}`);
+        // 위치는 진행시키지 않는다(다음 컴포넌트가 실패분 자리를 그대로 쓰게 둔다).
+      }
     }
     // ── layout 패스: 카테고리 내부를 members(표시) 순서대로 세로 재배치 ──
     //   메인 컴포넌트 → 요소 컴포넌트 순으로 보이도록, 각 컴포넌트의 풋프린트를 통째 Y 이동.
@@ -5208,8 +5272,65 @@ export async function buildAllComponents(
     //    배포까지 가지 못한다. (🤖 component-verifier 지적 (c)-2 로 주석을 사실에 맞게 교정, 2026-08-01)
     console.warn(`[installer] 빌더 미등록으로 건너뜀 ${noRunner.length}개: ${noRunner.join(", ")}`);
   }
-  if (onProgress) onProgress(`완료 — 추가 ${added.length}개 · 기존 보존 ${skipped.length}개`, 100);
-  return { created, added, skipped, noRunner };
+  // ── 의존 열화 집계 ────────────────────────────────────────────────────────
+  //   실패한 부품에 의존하는 부모는 **만들어지긴 하되 그 부품이 빠진 채** 완성된다
+  //   (빌더들이 `if (comp)` 가드로 자식 인스턴스를 건너뛰기 때문). 종전에는 부품이 죽으면
+  //   전체가 중단돼 이 경로에 도달할 수 없었는데, "계속 진행"으로 바꾸면서 처음 열렸다.
+  //   그대로 두면 사용자에게 "Table 추가 ✅ · Pagination 실패"로만 보이고 **Table 이 불완전해진
+  //   사실은 어디에도 안 나온다**(🤖 component-verifier 실측: Table 푸터의 pagination 인스턴스 2→0).
+  //   BUILD_DEPENDENCIES 를 역인덱스해 "실패분에 의존하면서 실제로 만들어진 것"을 보고한다.
+  //   ⚠️ **전이(간접) 의존까지 고정점 전파**해야 한다. 실측(🤖 component-verifier) 2단 체인 3개:
+  //     Dropdown List 실패 → Dropdown 열화(옵션 21→0) → **Select Box·Filter Chip** 도 껍데기인데 미보고
+  //     Checkbox 실패 → Bottom Sheet Option 열화 → **Bottom Sheet** 미보고
+  //     Language Icon 실패 → GNB Utility Icon 열화 → **GNB** 미보고
+  //   직접 의존만 보면 UI 가 "나머지는 정상"이라고 거짓을 말한다 — 이 변경이 없애려던
+  //   "조용한 반쪽"이 한 층 위로 옮겨갈 뿐이다. 그래서 더 이상 늘지 않을 때까지 반복한다.
+  const degraded: { name: string; missing: string[] }[] = [];
+  if (failed.length) {
+    const broken = new Set(failed.map((f) => f.name));   // 실패 ∪ 열화 (전파 기준)
+    // hasOwnProperty 로 조회 — 객체 리터럴은 Object.prototype 을 상속하므로 컴포넌트 이름이
+    //   "constructor" 같으면 배열이 아닌 값이 나와 스프레드에서 TypeError 가 난다(설치 전체 실패).
+    const own = (o: { [k: string]: string[] }, k: string): string[] =>
+      (Object.prototype.hasOwnProperty.call(o, k) && Array.isArray(o[k]) ? o[k] : []);
+    const depsOf = (p: string): string[] =>
+      Array.from(new Set([...own(BUILD_DEPENDENCIES, p), ...own(ATTACH_DEPENDENCIES, p)]));
+    // 상한 = added.length + 1. 한 바퀴에 최소 한 단계는 진행하므로 이 횟수면 반드시 수렴한다.
+    //   (종전 고정 20회는 깊은 체인에서 **조용히 잘렸다** — 조용한 절단은 이 게이트가 없애려는 것이다.)
+    const maxRounds = added.length + 1;
+    let rounds = 0;
+    for (; rounds < maxRounds; rounds++) {
+      let changed = false;
+      for (const parent of added) {
+        if (broken.has(parent)) continue;
+        const missing = depsOf(parent).filter((d) => broken.has(d));
+        if (missing.length) {
+          degraded.push({ name: parent, missing });
+          broken.add(parent);
+          changed = true;
+        }
+      }
+      if (!changed) break;
+    }
+    if (rounds >= maxRounds) {
+      console.error(`[installer] 열화 전파가 ${maxRounds}회에 수렴하지 않았습니다 — 의존 그래프에 순환이 있는지 확인 필요(보고가 불완전할 수 있음).`);
+    }
+  }
+
+  if (failed.length) {
+    console.error(`[installer] 생성 실패 ${failed.length}개: ${failed.map((f) => f.name).join(", ")}`);
+  }
+  if (degraded.length) {
+    console.error(`[installer] 부품 누락으로 불완전 ${degraded.length}개: ${degraded.map((d) => `${d.name}(${d.missing.join("·")} 빠짐)`).join(", ")}`);
+  }
+  if (onProgress) {
+    onProgress(
+      `완료 — 추가 ${added.length}개 · 기존 보존 ${skipped.length}개` +
+      (failed.length ? ` · 실패 ${failed.length}개(${failed.map((f) => f.name).join(", ")})` : "") +
+      (degraded.length ? ` · 불완전 ${degraded.length}개(${degraded.map((d) => d.name).join(", ")})` : ""),
+      100
+    );
+  }
+  return { created, added, skipped, noRunner, failed, degraded };
 }
 
 // ── 섹션 래핑 (대메뉴 묶기) ───────────────────────────────────────────────────

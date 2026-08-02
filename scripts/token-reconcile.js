@@ -7,11 +7,12 @@
  *   2. tokens:gen:foundation  vars-data FOUNDATION_* → tokens.css Foundation 섹션
  *   3. color:gen              vars-data → foundation.html 색 팔레트 3블록
  *   4. number:gen             vars-data → foundation.html number 5블록
- *   5. page:gen               tokens.css → semantic.html SEMANTIC_PAGE   (1·2 뒤여야 함)
- *   6. design:md:write        tokens.css+registry → DESIGN.core/vms.md   (1·2 뒤여야 함)
- *   7. tokens:sync-prompt     tokens.css + design/*.md → install-prompt.html (6 뒤여야 함 —
+ *   5. registry:foundation:gen vars-data → registry/tokens/foundation.colors.json (Gate 7 표면)
+ *   6. page:gen               tokens.css → semantic.html SEMANTIC_PAGE   (1·2 뒤여야 함)
+ *   7. design:md:write        tokens.css+registry → DESIGN.core/vms.md   (1·2 뒤여야 함)
+ *   8. tokens:sync-prompt     tokens.css + design/*.md → install-prompt.html (6 뒤여야 함 —
  *                             design md 를 임베드하므로 6보다 먼저 돌면 낡은 AI 프롬프트를 품는다)
- *   8. installer:build        vars-data → 설치기 zip (+ ~/s1-ux-design-guide-installer)
+ *   9. installer:build        vars-data → 설치기 zip (+ ~/s1-ux-design-guide-installer)
  *
  * 그 후 모니터 실행 → 자동 재생성으로 못 고치는 **손유지 표면**의 잔여 드리프트를 보고한다.
  * 이 잔여분은 token-sync 에이전트/수동으로 정본에 맞춰 고친다(값 추측 금지).
@@ -37,17 +38,18 @@ function run(label, cmd) {
 
 console.log('\n🔧 Token Reconcile — 정본 → 파생 표면 재생성\n');
 
-run('1/8 tokens:gen            (vars-data → tokens.css Semantic)', 'npm run --silent tokens:gen');
-run('2/8 tokens:gen:foundation (vars-data → tokens.css Foundation)', 'npm run --silent tokens:gen:foundation');
-run('3/8 color:gen             (vars-data → foundation.html 색 팔레트)', 'npm run --silent color:gen');
-run('4/8 number:gen            (vars-data → foundation.html number 5종)', 'npm run --silent number:gen');
-run('5/8 page:gen              (tokens.css → semantic.html SEMANTIC_PAGE)', 'npm run --silent page:gen');
-run('6/8 design:md:write       (tokens.css+registry → DESIGN.core/vms.md)', 'npm run --silent design:md:write');
-run('7/8 tokens:sync-prompt    (tokens.css+design md → install-prompt.html)', 'npm run --silent tokens:sync-prompt');
+run('1/9 tokens:gen            (vars-data → tokens.css Semantic)', 'npm run --silent tokens:gen');
+run('2/9 tokens:gen:foundation (vars-data → tokens.css Foundation)', 'npm run --silent tokens:gen:foundation');
+run('3/9 color:gen             (vars-data → foundation.html 색 팔레트)', 'npm run --silent color:gen');
+run('4/9 number:gen            (vars-data → foundation.html number 5종)', 'npm run --silent number:gen');
+run('5/9 registry:foundation:gen (vars-data → registry/tokens/foundation.colors.json)', 'npm run --silent registry:foundation:gen');
+run('6/9 page:gen              (tokens.css → semantic.html SEMANTIC_PAGE)', 'npm run --silent page:gen');
+run('7/9 design:md:write       (tokens.css+registry → DESIGN.core/vms.md)', 'npm run --silent design:md:write');
+run('8/9 tokens:sync-prompt    (tokens.css+design md → install-prompt.html)', 'npm run --silent tokens:sync-prompt');
 if (!skipInstaller) {
-  run('8/8 installer:build       (vars-data → 설치기 zip)', 'npm run --silent installer:build');
+  run('9/9 installer:build       (vars-data → 설치기 zip)', 'npm run --silent installer:build');
 } else {
-  console.log('\n▶ 8/8 installer:build — 건너뜀(--no-installer)');
+  console.log('\n▶ 9/9 installer:build — 건너뜀(--no-installer)');
 }
 
 console.log('\n──────────────────────────────────────────────');

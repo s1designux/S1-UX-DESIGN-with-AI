@@ -231,7 +231,7 @@
                 <div class="step-title">AI 컨텍스트 프롬프트 받기</div>
                 <div class="step-desc">라우터(읽는 순서) + Core(9섹션 — 비주얼 테마·색상 역할·타이포·컴포넌트 사용맥락·레이아웃·엘리베이션·Do/Don't·반응형·Agent 가이드) + 서비스 분기</div>
               </div>
-              <span class="update-stamp" data-update-file="design/DESIGN.core.md"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> 업데이트 2026-08-02 08:32</span>
+              <span class="update-stamp" data-update-file="design/DESIGN.core.md"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> 업데이트 2026-08-02 09:30</span>
             </div>
             <div class="step-body">
               <div class="ai-info">
@@ -433,6 +433,7 @@ S1 디자인시스템은 관제·운영·업무용 소프트웨어(영상관제�
 - 테두리 역할은 단일 토큰으로 통합돼 있지 않고 폼 컨트롤용·컨트롤용·구분선용으로 분산돼 있다(2026-06-23 정리).
 - 포커스·선택·주요 액션의 강조는 파란색 계열 역할 토큰으로 표현한다. 성공·정보 피드백도 현재 서비스 기준으로 파란색 계열을 쓴다(상태색 일관성 정책).
 - 명도 대비는 WCAG AA 를 필수 기준으로 한다.
+- 다크 팔레트는 스텝 의미가 라이트와 반대다 — 낮은 숫자(0·50·100)가 가장 어둡고(배경), 높은 숫자(700·800·900)가 가장 밝다(텍스트). 그래서 다크에서 배경 역할은 낮은 스텝을, 텍스트 역할은 높은 스텝을 참조한다. 라이트의 스텝 방향을 그대로 따르면 어두운 배경 위에 어두운 글자가 올라오는 역전이 생긴다.
 
 ## 3. Typography
 
@@ -935,7 +936,7 @@ _Don't_
 
 _Do_
 - 선택 페이지는 배경 변화 없이 텍스트 색으로만 구분한다(Figma 기준).
-- 비활성 화살표는 배경/테두리 동일, opacity 로 처리한다.
+- 비활성 화살표는 전용 disabled 토큰(bg·border·icon)으로 표현한다 — opacity 로 처리하지 않는다.
 
 _Don't_
 - 선택 페이지에 배경색을 넣지 않는다.
@@ -1259,7 +1260,7 @@ _Don't_
 - 적용 해석 순서(뒤가 앞을 덮음): core → service(extends core) → role → platform → theme. 기본값: service=core · role=user · platform=web · theme=light.
 - 서비스 분기(예: vms 영상관제)는 core 를 상속하고 차이분만 덮는다.
 
-&lt;!-- generated-stamp: feb690943b5e · 손편집 금지 --&gt;
+&lt;!-- generated-stamp: 43605304553f · 손편집 금지 --&gt;
 
 ---
 
@@ -1347,7 +1348,7 @@ _아직 `scope="vms"` 로 분기된 컴포넌트가 없습니다. core 정의를
    S1 UX DESIGN GUIDE — tokens.css
    Foundation → Semantic → Component
    Auto-synced from assets/css/tokens.css (npm run tokens:sync-prompt)
-   Last sync: 2026-08-01
+   Last sync: 2026-08-02
    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
 
 /* &gt;&gt;&gt; GEN:FOUNDATION &gt;&gt;&gt; Auto-generated from vars-data.ts (npm run tokens:gen:foundation) — Variables 정본. 수동 편집 금지. */

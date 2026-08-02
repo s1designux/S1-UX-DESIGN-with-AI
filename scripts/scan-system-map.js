@@ -40,7 +40,7 @@ const RULES = {
 const P = {
   VARS_DATA: 'plugins/figma-vars-installer/src/vars-data.ts',
   SITE_BASE: 'assets/css/site-base.css',
-  SEMANTIC_JSON: 'registry/tokens/semantic.colors.json',
+  SEMANTIC_JSON: 'registry/tokens/legacy/semantic.colors.json',   // 2026-08-01 아카이브(역할기반 별개 계보)
   TOKENS_CSS: 'assets/css/tokens.css',
   DEAD_CSS: ['assets/css/component-tokens.css', 'assets/css/components/input.css'],
   REGISTRY_COMPONENTS: 'registry/components',

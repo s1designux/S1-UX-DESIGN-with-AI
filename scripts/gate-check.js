@@ -53,7 +53,6 @@ try {
 }
 
 const tokenRegistryFiles = [
-  'registry/tokens/semantic.colors.json',
   'registry/tokens/canonical-token-draft.json',
   'registry/tokens/token-aliases.json',
 ];
@@ -330,6 +329,26 @@ try {
   }
 } catch (e) {
   fail(`Gate 9b 실행 실패: ${e.message}`);
+}
+
+// ── Gate 9c: Registry Foundation Colors (생성물 드리프트) ──────────
+// registry/tokens/foundation.colors.json 은 2026-08-01 부터 vars-data 파생 생성물이다.
+// 손편집으로 되돌아가면 Gate 7 이 대조하는 208건이 정본과 조용히 갈린다.
+console.log('\n🔎 [Gate 9c] 레지스트리 색목록 검사기 (Registry Foundation Colors)');
+try {
+  const { spawnSync } = require('child_process');
+  const r = spawnSync('node', [path.join(ROOT, 'scripts/gen-foundation-registry.js'), '--check'], { encoding: 'utf-8' });
+  const out = ((r.stdout || '') + (r.stderr || '')).split('\n').filter((l) => l.trim());
+  if (r.status === 0) {
+    const ok = out.find((l) => l.includes('✅'));
+    pass(ok ? ok.replace(/^\s*✅\s*/, '').trim() : 'registry Foundation 색 정본 일치');
+  } else {
+    const bad = out.filter((l) => l.includes('❌'));
+    if (bad.length === 0) fail(`Gate 9c: registry/tokens/foundation.colors.json 이 정본과 어긋남 (exit ${r.status})`);
+    else for (const l of bad) fail(`Gate 9c: ${l.replace(/^\s*❌\s*/, '').trim()}`);
+  }
+} catch (e) {
+  fail(`Gate 9c 실행 실패: ${e.message}`);
 }
 
 // ── Gate 10: Doc Token Reference Drift ────────────────────────────
@@ -780,6 +799,17 @@ try {
   for (const l of out.filter((l) => l.includes('⚠️'))) warn(`Gate 30: ${l.replace(/^\s*⚠️\s*/, '').trim()}`);
 } catch (e) {
   fail(`Gate 30 실행 실패: ${e.message}`);
+}
+
+// ── Gate 31: Icon Key Consistency (설치기 ICON_KEYS ↔ provenance 허용목록) ──
+// 두 곳이 손 동기화라 개수가 12/19/주석"9키" 로 셋 다 어긋나 있었다(2026-08-01 실측).
+// 어긋나면 Gate 12(아이콘 인스턴스 정책)가 정상 아이콘을 위반으로 잡거나 미등록을 통과시킨다.
+console.log('\n🔎 [Gate 31] 아이콘키 정합 검사기 (Icon Key Consistency)');
+try {
+  const { check: iconKeyCheck } = require('./icon-key-consistency-check');
+  iconKeyCheck({ pass, warn, fail });
+} catch (e) {
+  fail(`icon-key-consistency-check 실행 실패: ${e.message}`);
 }
 
 // ── Summary ───────────────────────────────────────────────────────

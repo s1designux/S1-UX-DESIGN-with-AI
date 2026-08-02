@@ -51,11 +51,10 @@ const SURFACES = [
   { file: 'assets/css/tokens.css',                              kind: 'SOURCE', note: 'CSS 정본 (Light/Dark 블록). 값 변경의 출발점.' },
   { file: 'plugins/figma-vars-installer/src/vars-data.ts',      kind: 'SOURCE', note: 'Figma 설치기 팔레트 매핑. light/dark 팔레트 경로 사용(gray/100 형식).' },
   { file: 'pages/semantic.html',                                kind: 'DOC',    note: 'Semantic 표 — resolved hex(light/dark) 하드코딩. 문서화된 토큰만.' },
-  { file: 'tokens/semantic.md',                                 kind: 'DOC',    note: 'Semantic 사람용 문서. 문서화된 토큰만.' },
-  { file: 'tokens/component-tokens-extracted.md',               kind: 'DOC',    note: 'Component 토큰 사람용 문서. 해당 시에만.' },
-  { file: 'registry/tokens/semantic.colors.json',              kind: 'DOC',    note: 'Semantic 레지스트리. 문서화된 토큰만.' },
+  // 2026-08-01 제거: tokens/*.md 3종·registry/tokens/semantic.colors.json 은 아카이브됨(손유지 사본 폐지).
+  //   사람이 읽는 토큰 문서 역할은 design/DESIGN.core.md(자동 생성) + 웹 가이드 페이지가 승계한다.
   { file: 'pages/install-prompt.html',                          kind: 'AUTO',   note: 'npm run tokens:sync-prompt 로 tokens.css에서 재생성.' },
-  { file: 'assets/downloads/s1-design-system-installer.zip',      kind: 'AUTO',   note: 'npm run installer:build 로 vars-data.ts에서 재빌드.' },
+  { file: 'assets/downloads/s1-ux-design-guide-installer.zip',      kind: 'AUTO',   note: 'npm run installer:build 로 vars-data.ts에서 재빌드.' },
   { file: 'pages/components.html',                          kind: 'REF',    note: 'tokens.css link 상속 — JS resolved. 값 하드코딩 아님. (구 components.html 은 레거시·검수 제외)' },
 ];
 

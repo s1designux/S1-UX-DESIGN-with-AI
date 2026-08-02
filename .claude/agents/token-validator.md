@@ -1,7 +1,7 @@
 ---
 name: token-validator
 model: opus
-description: "SW Design System의 토큰 구조를 검증하는 전문 에이전트. semantic.md와 component-tokens-extracted.md를 분석하여 참조 일관성, 네이밍 규칙, 상태값 누락, 다크모드 대응 여부를 검증한다. figma-to-code 워크플로우의 2단계 매핑 검증도 담당한다."
+description: "SW Design System의 토큰 구조를 검증하는 전문 에이전트. 정본(vars-data.ts)과 파생 표면(tokens.css·registry)을 분석해 참조 일관성, 네이밍 규칙, 상태값 누락, 다크모드 대응 여부를 검증한다. figma-to-code 워크플로우의 2단계 매핑 검증도 담당한다."
 ---
 
 > **🤖 출처 표식:** 이 에이전트가 실제로 spawn돼 작업하면 반환 보고 첫 줄을 `🤖 토큰구조 검사 에이전트(token-validator) — …` 로 시작한다(내가 직접 한 일 ⭐ 과 구분).
@@ -49,7 +49,9 @@ Foundation → Semantic → Component 3단계 토큰 체계의 정합성을 검�
 
 ```
 1. registry/components/index.json 로드 → 등록된 모든 component path 존재 확인
-2. tokens/semantic.md + tokens/component-tokens-extracted.md 교차 검증
+2. 정본 vars-data.ts(FOUNDATION_COLOR·SEMANTIC_COLOR) ↔ assets/css/tokens.css 교차 검증
+   (2026-08-01: 종전 입력이던 tokens/semantic.md·component-tokens-extracted.md 는 아카이브됨.
+    값 대조는 `npm run tokens:monitor`(Gate 7)가 전 표면을 기계 판정하므로 그 결과를 근거로 삼는다.)
 3. assets/css/tokens.css에서 raw HEX (Foundation 외) 감지
 4. 신규 추가 컴포넌트의 harnessStatus / tokenStatus / darkModeStatus 필드 확인
 ```

@@ -10,7 +10,8 @@
       "Figma Plugin (planned)",
       "Source Guard (planned)"
     ],
-    "tokenSourceCss": "registry/tokens/sw-v2.4.tokens.css"
+    "tokenSourceCss": "assets/css/tokens.css",
+    "_tokenSourceCssNote": "2026-08-01: 종전 값 registry/tokens/sw-v2.4.tokens.css 는 2026-04-30 스냅샷(사본의 사본)이라 아카이브됨. 현행 정본 CSS 는 assets/css/tokens.css(vars-data 파생 생성물)다."
   },
   "tokens": {
     "foundation": {
@@ -21,7 +22,6 @@
       "border": "registry/tokens/foundation.border.json"
     },
     "semantic": {
-      "colors": "registry/tokens/semantic.colors.json",
       "spacing": "registry/tokens/semantic.spacing.json",
       "sizing": "registry/tokens/semantic.sizing.json",
       "radius": "registry/tokens/semantic.radius.json",
@@ -37,7 +37,13 @@
     "tokenAliases": "registry/tokens/token-aliases.json",
     "deprecatedTokens": "registry/tokens/deprecated-tokens.json",
     "canonicalDraft": "registry/tokens/canonical-token-draft.json",
-    "canonicalPromotionPlan": "registry/tokens/canonical-token-promotion-plan.json"
+    "canonicalPromotionPlan": "registry/tokens/canonical-token-promotion-plan.json",
+    "_semanticColorsRetired": {
+      "path": "registry/tokens/legacy/semantic.colors.json",
+      "status": "retired",
+      "retiredAt": "2026-08-01",
+      "reason": "역할기반 토큰 목록(별개 계보). 46개 중 43개가 정본 vars-data 에 없고 Gate 7 실대조는 2건뿐이었다. 역할 토큰 정본은 assets/css/site-base.css."
+    }
   },
   "componentIndex": "registry/components/index.json",
   "components": {

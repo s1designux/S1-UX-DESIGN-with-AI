@@ -37,13 +37,13 @@ description: "토큰 '값' 1건이 수정될 때, 연관된 모든 표면(tokens
 | `assets/css/site-base.css` | **SOURCE** (역할 semantic) | `var(--color-gray-100)` | 수동. Light/Dark 블록 각각. |
 | `assets/css/tokens.css` (Semantic 섹션) | **GEN** | `var(--color-gray-100)` | `npm run tokens:gen` (손편집 금지). Foundation 섹션은 수동. |
 | `pages/semantic.html` | **DOC** | resolved hex `light:'#E9E9E9'` | 수동. **해당 토큰이 표에 있을 때만.** |
-| `registry/tokens/semantic.colors.json` · `sw-v2.4.tokens.css` | **DOC** | `"dark":"var(--ref)"` | 수동. 등록 토큰만. |
-| `tokens/semantic.md` · `component-tokens-extracted.md` | **DOC** | `--ref`/hex | 수동. 문서화된 토큰만. |
+| `registry/tokens/foundation.colors.json` | **GEN** | `"value":"#E9E9E9"` | `npm run registry:foundation:gen`(reconcile 5단계). 손편집 금지 — Gate 9c 차단. |
+| ~~`registry/tokens/semantic.colors.json`·`sw-v2.4.tokens.css`·`tokens/*.md`~~ | — | — | **2026-08-01 아카이브**(손유지 사본 폐지). 더 이상 전파 대상이 아니다. |
 | `pages/install-prompt.html` | **AUTO** | (tokens.css 복제) | `npm run tokens:sync-prompt` |
-| `assets/downloads/s1-design-system-installer.zip` | **AUTO** | (vars-data 번들) | `npm run installer:build` |
+| `assets/downloads/s1-ux-design-guide-installer.zip` | **AUTO** | (vars-data 번들) | `npm run installer:build` |
 | `pages/components*.html` | **REF** | `var(--token)` | 수정 안 함(자동 상속). |
 
-> **권장 흐름:** 정본(vars-data 또는 site-base) 수정 → `npm run tokens:reconcile`(tokens:gen·sync-prompt·installer:build 자동) → `npm run tokens:monitor`로 잔여 손유지 표면(semantic.html hex·registry json) 확인 후 수동 정정.
+> **권장 흐름:** 정본(vars-data 또는 site-base) 수정 → **`npm run tokens:reconcile` 1회**(2026-08-01 부터 9단계 — tokens.css Semantic·Foundation / foundation.html 색·number / registry foundation.colors / semantic.html / DESIGN.md / install-prompt / 설치기 zip 을 전부 재생성) → 끝. 손유지 표면은 아카이브로 없앴으므로 수동 정정 단계가 사라졌다.
 > **resolved hex 함정:** `semantic.html`·docs는 계산된 hex를 하드코딩한다. palette step을 바꾸면 hex도 같이(예: gray/50 `#F5F5F5` → gray/100 `#E9E9E9`). 실제 hex는 Foundation 정의에서 확인(추측 금지). **이 정합은 Gate 7 Monitor(`npm run tokens:monitor`)가 전 표면 기계 검증한다.**
 
 ## 작업 순서 (고정)

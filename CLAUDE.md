@@ -123,8 +123,9 @@ Component Token    (컴포넌트 별칭 — --input-* / --button-* 등)
 
 ## 전체 색상 계열 · Dark 스텝 방향
 
-> **전 색상 계열(Gray·Blue·Red·Orange·Yellow·Green·Skyblue·Purple·Brown·Visual Gray + Base·Brand)의 Light/Dark 접두사·스텝 범위·실제 HEX 값과 Dark Primitive 스텝 방향 규칙(gray-dark 0→900·blue-dark 50→500 등) 정본은 `tokens/foundation.md`** (CLAUDE.md 본문보다 풍부·전 계열 HEX 수록). 스텝 간격: 모든 계열 50 단위(Gray만 0·50·100·200~900 예외).
-> **Status Dark**(`--color-status-dark-red`/`-green`/`-yellow`, 각 계열 350 step alias, 피드백 상태 전용)는 foundation.md 프로즈엔 없고 `assets/css/tokens.css`·`tokens/semantic.md`·`registry/tokens/foundation.colors.json`에 정의됨.
+> **전 색상 계열의 실제 HEX 값 정본은 `plugins/figma-vars-installer/src/vars-data.ts` FOUNDATION_COLOR** (사람이 보기 편한 표는 `pages/foundation.html`, AI 소비용은 `design/DESIGN.core.md` frontmatter). 스텝 간격: 모든 계열 50 단위(Gray만 0·50·100·200~900 예외).
+> **Dark 스텝 방향 규칙**(낮은 숫자=어두움·높은 숫자=밝음 + 새 팔레트 추가 체크리스트) 정본은 **vars-data.ts 의 gray-dark 팔레트 주석**이며, 사람이 읽는 요약은 `registry/governance/design-narrative.json` → DESIGN.md §2 에 있다. (2026-08-01: 종전 정본이던 `tokens/foundation.md` 아카이브에 맞춰 이관.)
+> **Status Dark**(`--color-status-dark-red`/`-green`/`-yellow`, 각 계열 350 step alias, 피드백 상태 전용)는 vars-data 정본에 없는 별칭이라 `assets/css/tokens.css` 에 정의되고, `registry/tokens/foundation.colors.json` 의 `_nonCanonical.statusDarkAlias` 로 보존된다(생성기가 지우지 않음).
 
 ---
 
@@ -420,9 +421,9 @@ error
 
 | 파일 | 역할 | 상태 |
 |---|---|---|
-| `tokens/semantic.md` | Semantic Token 정의 (Light/Dark) | ✅ 완료 |
-| `tokens/component-tokens-extracted.md` | Component Token 정의 (9개 그룹) | ✅ 완료 |
-| `tokens/foundation.md` | Foundation Primitive 정의 + Dark 스텝 방향 규칙 | ✅ 완료 |
+| ~~`tokens/semantic.md`~~ | **아카이브(2026-08-01)** → `tokens/legacy/`. 값 정본=vars-data, 사람용 문서=DESIGN.md·웹 가이드 |
+| ~~`tokens/component-tokens-extracted.md`~~ | **아카이브(2026-08-01)** → `tokens/legacy/`. 은퇴한 컴포넌트-별칭층 시대의 추출 기록 |
+| ~~`tokens/foundation.md`~~ | **아카이브(2026-08-01)** → `tokens/legacy/`. Dark 스텝 규칙은 vars-data 주석 + design-narrative 로 이관 |
 | `tokens/token-map.json` | 전체 토큰 매핑 JSON | 작성 예정 |
 
 ## HTML 가이드 페이지
@@ -509,26 +510,22 @@ Button 페이지 편집 시:
 
 ## 연동 관계 맵
 
-### `tokens/semantic.md` 변경 시
-| 연동 대상 | 동기화 내용 |
-|---|---|
-| `assets/css/tokens.css` | Semantic 섹션 값·구조 반영 |
-| `pages/semantic.html` | 토큰 테이블 표시 업데이트 |
-| `pages/install-prompt.html` | `<pre id="code-full">` 인라인 CSS 동기화 |
+### `plugins/figma-vars-installer/src/vars-data.ts`(토큰 값 정본) 변경 시
+> **`npm run tokens:reconcile` 한 번이면 아래가 전부 재생성된다** (2026-08-01: 9단계 우산 명령 완성).
+> 손으로 하나씩 칠 필요 없고, 빠뜨리면 게이트가 커밋을 막는다.
 
-### `tokens/component-tokens-extracted.md` 변경 시
-| 연동 대상 | 동기화 내용 |
-|---|---|
-| `assets/css/tokens.css` | Component 섹션 값·구조 반영 |
-| `pages/components.html` | 컴포넌트 미리보기 업데이트 |
-| `pages/install-prompt.html` | `<pre id="code-full">` 인라인 CSS 동기화 |
+| 연동 대상 | 동기화 내용 | 생성 단계 |
+|---|---|---|
+| `assets/css/tokens.css` | Semantic·Foundation 섹션 전체 | 1·2 |
+| `pages/foundation.html` | 색 팔레트 3블록 + number 5블록 | 3·4 |
+| `registry/tokens/foundation.colors.json` | Foundation 색 목록(Gate 7 대조 표면) | 5 |
+| `pages/semantic.html` | 토큰 표 | 6 |
+| `design/DESIGN.core.md`·`DESIGN.vms.md` | AI 소비용 문서 | 7 |
+| `pages/install-prompt.html` | 다운로드 인라인 CSS + AI 프롬프트 | 8 |
+| 설치기 zip | Figma Variables 설치본 | 9 |
 
-### `tokens/foundation.md` 변경 시
-| 연동 대상 | 동기화 내용 |
-|---|---|
-| `assets/css/tokens.css` | Foundation 섹션 값·구조 반영 |
-| `pages/foundation.html` | 색상·타이포 팔레트 업데이트 |
-| `pages/install-prompt.html` | `<pre id="code-full">` 인라인 CSS 동기화 |
+> 종전에 여기 있던 `tokens/semantic.md`·`foundation.md`·`component-tokens-extracted.md` 3개 항목은
+> 그 문서들이 2026-08-01 아카이브되면서 제거됐다(손유지 사본 폐지 — 정본은 1곳).
 
 ### `assets/css/tokens.css` 변경 시
 | 연동 대상 | 동기화 내용 |
@@ -556,7 +553,7 @@ Button 페이지 편집 시:
 ### `pages/md-review.html` (결정 확정 항목) 변경 시
 | 연동 대상 | 동기화 내용 |
 |---|---|
-| `tokens/semantic.md` 또는 `tokens/component-tokens-extracted.md` | 확정된 항목 즉시 반영 |
+| `plugins/figma-vars-installer/src/vars-data.ts` | 확정된 항목 즉시 반영 후 `npm run tokens:reconcile` |
 | `assets/css/tokens.css` | 확정된 토큰 값 즉시 반영 |
 
 ## 동기화 원칙
@@ -599,9 +596,10 @@ Claude는 "구현"이 아니라 "구조"를 만든다.
 토큰 이름·값·구조를 생성하거나 수정하기 전 반드시 확인:
 
 ```
-1. tokens/component-tokens-extracted.md — 기추출 Component Token
-2. tokens/semantic.md — Semantic Token 정의
-3. Figma MCP (get_variable_defs, get_design_context) — 원본 직접 조회
+1. plugins/figma-vars-installer/src/vars-data.ts — 토큰 값 정본(FOUNDATION_COLOR·SEMANTIC_COLOR 등)
+2. design/DESIGN.core.md — 역할·용도 서술(자동 생성, 손편집 금지)
+3. registry/components/*.json — 컴포넌트가 어떤 토큰을 쓰나
+4. Figma MCP (get_variable_defs, get_design_context) — 원본 직접 조회
 ```
 
 위 확인 없이 새 토큰 이름이나 값을 생성하는 것은 금지한다.
