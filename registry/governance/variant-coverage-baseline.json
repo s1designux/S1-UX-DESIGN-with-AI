@@ -12,18 +12,6 @@
       "kind": "uninstrumented",
       "detail": "정본 [timeonly,datetime] — data-cov-content 미선언",
       "reason": "모바일 시간 바텀시트(휠 4열 + 상하 페이드 + 시트 셸)의 웹 CSS 가 없다. 정본 토큰은 다 있으나(surface/raised·overlay/wheel-fade·text/state-accent) 페이드를 CSS 로 어떻게 구현할지(mask-image 그라데이션 등) 방식 결정이 필요해 별건으로 둔다."
-    },
-    {
-      "key": "table.size",
-      "kind": "missing",
-      "detail": "설치기 [small, medium] 가 data-cov-size 에 없음",
-      "reason": "정본 어휘 불일치 — Table 은 md/sm, Table Cell 은 SMALL/MEDIUM. 높이는 3자(설치기 Table·Table Cell·웹) 모두 44/38 로 일치 확인됨. 이름만 다르다. 설치기 Table Cell 변형명을 md/sm 으로 개명(Figma 변형명 변경) vs 별칭 병기 — river 결정 대기."
-    },
-    {
-      "key": "gnb.full menu",
-      "kind": "uninstrumented",
-      "detail": "정본 [on,off] — data-cov-full menu 미선언",
-      "reason": "유틸 아이콘 조합 5종은 2026-08-02 에 표출 완료(웹에 조합 매트릭스 신설). 다만 정본 prop 이름이 \"full menu\" 로 **공백을 포함**해 HTML 속성명(data-cov-full menu)으로 쓸 수 없어 선언만 불가하다. 설치기 prop 개명(fullmenu) vs 게이트에 공백 정규화 추가 — river 결정 대기."
     }
   ]
 }

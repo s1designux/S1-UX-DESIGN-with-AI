@@ -834,6 +834,27 @@ try {
   fail(`icon-key-consistency-check 실행 실패: ${e.message}`);
 }
 
+// ── Gate 32: Size Naming Consistency (크기 이름 규칙) ──
+// 크기 '기준'(버튼 md=44 · GNB md=56)은 컴포넌트마다 달라도 되지만, **같은 것을 다른 단어로
+// 적는 것**은 막는다. 2026-08-02 실측에서 표기가 5계보로 갈려 있었고(설치기 축약형·표셀만
+// 풀네임 MEDIUM/SMALL·웹 CSS 가 44를 lg 로·라벨 medium·registry pc-medium), 과거 통일 작업이
+// 표 셀에서 누락된 채 Gate 19 의 소문자 정규화에 가려 안 보였다.
+console.log('\n🔎 [Gate 32] 크기이름 검사기 (Size Naming Consistency)');
+try {
+  const { spawnSync } = require('child_process');
+  const r = spawnSync('node', [path.join(ROOT, 'scripts/size-naming-check.js')], { encoding: 'utf-8' });
+  const out = (r.stdout || '').split('\n');
+  for (const l of out.filter((l) => l.includes('✅'))) pass(l.replace(/^\s*✅\s*/, '').trim());
+  for (const l of out.filter((l) => l.includes('⚠️'))) warn(l.replace(/^\s*⚠️\s*/, '').replace(/^Gate 32:\s*/, 'Gate 32: ').trim());
+  if (r.status !== 0) {
+    const bad = out.filter((l) => l.includes('❌'));
+    if (bad.length === 0) fail(`size-naming-check 실패 (exit ${r.status})`);
+    else for (const l of bad) fail(l.replace(/^\s*❌\s*/, '').trim());
+  }
+} catch (e) {
+  fail(`Gate 32 실행 실패: ${e.message}`);
+}
+
 // ── Summary ───────────────────────────────────────────────────────
 console.log('\n─────────────────────────────────────────────────────');
 if (errors > 0) {

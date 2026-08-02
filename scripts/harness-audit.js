@@ -36,10 +36,10 @@ const SIZE_RULES = [
     htmlPaneId: 'btn-pri-pc',         // primary PC 탭 (대표 확인)
     description: 'Button HTML 코드탭 — PC 사이즈(medium/xsmall/xxsmall) + Mobile 분기',
     sizes: [
-      { label: 'medium (h44)',  mustContain: 's1-btn-lg'     },
-      { label: 'xsmall (h34)',  mustContain: 's1-btn-primary"' }, // 무수식어
-      { label: 'xxsmall (h28)', mustContain: 's1-btn-sm'     },
-      { label: 'mobile (h48)',  mustContain: 's1-btn-mobile'  },
+      { label: 'md (h44)',      mustContain: 's1-btn-md'     },
+      { label: 'xsm (h34)',     mustContain: 's1-btn-primary"' }, // 무수식어
+      { label: 'xxsm (h28)',    mustContain: 's1-btn-xxsm'   },
+      { label: 'lg (h48)',      mustContain: 's1-btn-lg'     },
     ],
   },
   {
@@ -78,7 +78,7 @@ const SIZE_RULES = [
     description: 'TimePicker 셀렉트형 HTML 코드탭 — md(h44) / sm(h28) 사이즈 분기',
     sizes: [
       { label: 'md (h44)', mustContain: 's1-timepicker-select-group"'      },
-      { label: 'sm (h28)', mustContain: 's1-timepicker-select-group--sm' },
+      { label: 'xxsm (h28)', mustContain: 's1-timepicker-select-group--xxsm' },
     ],
   },
   {

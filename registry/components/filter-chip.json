@@ -66,9 +66,9 @@
     "complete": "선택이 끝나 드롭다운이 닫힌 상태. 색은 default 와 같고 값 라벨만 확정값으로 바뀐다."
   },
   "sizing": {
-    "sm-pc": { "height": 28, "fontSize": 14, "paddingLeft": 12, "paddingRight": 6 },
-    "md-pc": { "height": 34, "fontSize": 14, "paddingLeft": 16, "paddingRight": 8 },
-    "md-mobile": { "height": 30, "fontSize": 14, "paddingLeft": 12, "paddingRight": 6 }
+    "pc-sm": { "height": 28, "fontSize": 14, "paddingLeft": 12, "paddingRight": 6 },
+    "pc-md": { "height": 34, "fontSize": 14, "paddingLeft": 16, "paddingRight": 8 },
+    "mobile-md": { "height": 30, "fontSize": 14, "paddingLeft": 12, "paddingRight": 6 }
   },
   "variants": {
     "line": {

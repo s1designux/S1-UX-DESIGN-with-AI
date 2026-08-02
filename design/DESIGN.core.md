@@ -168,7 +168,7 @@ Core interactive button component. Primary / Secondary / Blue-line variants with
 
 _Do_
 - variant 는 primary·secondary·blue-line 만 쓴다.
-- 크기는 PC medium(44)/xsmall(34)/xxsmall(28), Mobile mobile(48) 중에서 고른다.
+- 크기는 PC md(44)/xsm(34)/xxsm(28), Mobile lg(48) 중에서 고른다.
 - 색은 Semantic 경유 component 토큰(--button-*)으로만 참조한다.
 
 _Don't_
@@ -950,4 +950,4 @@ _Don't_
 - 적용 해석 순서(뒤가 앞을 덮음): core → service(extends core) → role → platform → theme. 기본값: service=core · role=user · platform=web · theme=light.
 - 서비스 분기(예: vms 영상관제)는 core 를 상속하고 차이분만 덮는다.
 
-<!-- generated-stamp: 43605304553f · 손편집 금지 -->
+<!-- generated-stamp: e768acf4ab20 · 손편집 금지 -->

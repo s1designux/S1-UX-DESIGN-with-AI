@@ -1,8 +1,7 @@
 {
   "note": "registry 비정본(descriptive) 데이터의 알려진 stale 목록. 기준=최신 컴포넌트 실사용 토큰(build-components). 새 stale 는 token-drift-check 가 차단. 줄면 --update-baseline.",
-  "count": 86,
+  "count": 78,
   "knownDrift": [
-    "registry/components/dropdown.json::--dropdown-list-bg::removed::--color-surface-raised",
     "registry/components/dropdown.json::--dropdown-list-border::removed::--color-border-default",
     "registry/components/dropdown.json::--dropdown-option-hover-bg::removed::--color-bg-subtle",
     "registry/components/dropdown.json::--dropdown-option-selected-text::removed::--color-action-primary-default",
@@ -20,6 +19,7 @@
     "registry/components/gnb.json::--color-navigation-icon::figmismatch",
     "registry/components/gnb.json::--color-navigation-icon::unused::--color-gray-800",
     "registry/components/gnb.json::--color-navigation-label-default-alt::figmismatch",
+    "registry/components/gnb.json::--color-navigation-label-default-alt::unused::--color-gray-700",
     "registry/components/gnb.json::--gnb-border::figmismatch",
     "registry/components/gnb.json::--gnb-border::removed::--color-border-subtle",
     "registry/components/gnb.json::--gnb-icon::figmismatch",
@@ -46,8 +46,6 @@
     "registry/components/nav.json::--nav-item-indicator::removed::--color-action-primary-default",
     "registry/components/pagination.json::--pagination-control-bg::figmismatch",
     "registry/components/pagination.json::--pagination-control-bg::removed::--color-surface-default",
-    "registry/components/pagination.json::--pagination-control-border::figmismatch",
-    "registry/components/pagination.json::--pagination-control-border::removed::--color-border-subtle",
     "registry/components/pagination.json::--pagination-control-hover-bg::removed::--color-bg-subtle",
     "registry/components/pagination.json::--pagination-number-text-selected::figmismatch",
     "registry/components/pagination.json::--pagination-number-text-selected::removed::--color-text-secondary",
@@ -57,15 +55,11 @@
     "registry/components/table.json::--table-border-light::removed::--color-border-subtle",
     "registry/components/table.json::--table-border-strong::figmismatch",
     "registry/components/table.json::--table-border-strong::removed::--color-border-emphasis",
-    "registry/components/table.json::--table-cell-text::figmismatch",
-    "registry/components/table.json::--table-cell-text::removed::--color-text-secondary",
     "registry/components/table.json::--table-header-bg::removed::--color-bg-default",
     "registry/components/table.json::--table-header-text::figmismatch",
     "registry/components/table.json::--table-header-text::figunused::color/text/title/secondary",
     "registry/components/table.json::--table-header-text::removed::--color-text-secondary",
-    "registry/components/textarea.json::--input-correct-text::unused::--color-text-state-correct",
     "registry/components/textarea.json::--input-error-text::removed::--color-text-state-error",
-    "registry/components/textarea.json::--input-helper-text::unused::--color-text-state-helper",
     "registry/components/textarea.json::--input-readonly-text::removed::--color-text-readonly",
     "registry/components/time-picker.json::--color-form-control-bg-default::figmismatch",
     "registry/components/time-picker.json::--color-form-control-bg-default::removed::--color-surface-default",
@@ -85,7 +79,6 @@
     "registry/components/time-picker.json::--color-form-control-text-disabled::figmismatch",
     "registry/components/time-picker.json::--color-form-control-text-disabled::removed::--color-text-disabled",
     "registry/components/time-picker.json::--color-form-control-text-placeholder::figmismatch",
-    "registry/components/time-picker.json::--color-form-control-text-placeholder::removed::--color-text-placeholder",
-    "registry/components/gnb.json::--color-navigation-label-default-alt::unused::--color-gray-700"
+    "registry/components/time-picker.json::--color-form-control-text-placeholder::removed::--color-text-placeholder"
   ]
 }

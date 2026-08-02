@@ -109,11 +109,11 @@ npm run harness:fix            # (향후) 자동 수정 모드
 
 | 컴포넌트 | HTML pane ID | 필수 클래스 |
 |---------|-------------|------------|
-| Button | `btn-pri-pc` | `s1-btn-lg` / `s1-btn-primary"` / `s1-btn-sm` / `s1-btn-mobile` |
+| Button | `btn-pri-pc` | `s1-btn-md` / `s1-btn-primary"` / `s1-btn-xxsm` / `s1-btn-lg` |
 | Chip | `chip-html` | `s1-chip"` / `s1-chip--sm` / `s1-chip--mobile` |
 | Table | `table-html` | `s1-table--md` / `s1-table--sm` |
 | TimePicker (input형) | `tp-input-html` | `s1-timepicker-wrap"` / `--xsm` / `--xxsm` / `--mobile` |
-| TimePicker (select형) | `tp-select-html` | `s1-timepicker-select-group"` / `s1-timepicker-select-group--sm` |
+| TimePicker (select형) | `tp-select-html` | `s1-timepicker-select-group"` / `s1-timepicker-select-group--xxsm` |
 | Line Tab (PC) | `tab-pc-html` | `s1-tab--pc-md` / `s1-tab--pc-sm` |
 | Line Tab (Mobile) | `tab-mo-html` | `s1-tab--mobile` |
 | GNB (menu slot) | `gnb-pc-html` | `s1-gnb-menu is-selected` (md) / `s1-gnb-menu--sm` / `s1-gnb-menu--xsm` |

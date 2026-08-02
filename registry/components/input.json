@@ -58,21 +58,21 @@
     "지우기(clear) 버튼은 값이 있을 때만 노출한다(hidden 속성 제어)."
   ],
   "platforms": {
-    "pc-medium": {
+    "pc-md": {
       "height": "44px",
       "heightToken": "--sizing/form-control/height/md",
       "paddingBlock": "8px",
       "paddingBlockToken": "--spacing/padding/block/xxs",
       "radiusToken": "--radius/control/sm"
     },
-    "pc-xsmall": {
+    "pc-xsm": {
       "height": "34px",
       "heightToken": "(미확인)",
       "paddingBlock": "8px",
       "paddingBlockToken": "--spacing/padding/block/xxs",
       "radiusToken": "--radius/control/sm"
     },
-    "pc-xxsmall": {
+    "pc-xxsm": {
       "height": "28px",
       "heightToken": "(미확인)",
       "paddingBlock": "8px",

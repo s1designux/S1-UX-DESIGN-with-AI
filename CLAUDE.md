@@ -478,8 +478,8 @@ Button을 편집하거나 검토할 때 아래 기준을 단일 참조점으로 
 3. **Harness columns** — action / default / hover / pressed / disabled
 4. **action ≠ Figma state** — action은 Figma 디자인 상태가 아니다. HTML harness의 실제 인터랙션 테스트 컬럼이다.
 5. **default = static preview** — default 컬럼 버튼에는 `.is-preview`를 적용한다.
-6. **Size** — PC: medium(h44) / xsmall(h34) / xxsmall(h28), Mobile: mobile(h48)
-7. **CSS class** — s1-btn-lg=medium, 무수식어=xsmall, s1-btn-sm=xxsmall, s1-btn-mobile=mobile. **s1-btn이 공식 CSS 시스템. sw-button(button.css)은 deprecated.**
+6. **Size** — PC: md(h44) / xsm(h34) / xxsm(h28), Mobile: lg(h48). **크기 어휘는 정본(설치기) 표기를 따른다** — 웹은 소문자, 설치기(Figma)는 대문자(MD·XSM·XXSM·LG)로 같은 단어를 쓴다.
+7. **CSS class** — `s1-btn-md`=md(44), 무수식어=xsm(34), `s1-btn-xxsm`=xxsm(28), `s1-btn-lg`=lg(48). **s1-btn이 공식 CSS 시스템. sw-button(button.css)은 deprecated.** (2026-08-02 개명: 종전 `s1-btn-lg`가 44를, `s1-btn-sm`이 28을 가리켜 정본과 어긋나고 `lg`가 44·48 두 값을 가리키던 충돌을 해소.)
 8. **Token policy** — 색상은 반드시 Semantic 경유. raw HEX 금지. Foundation 직접 참조 금지.
 9. **focus-ring 없음** — 디자인시스템 기준 미정의. --button-*-focus-ring 토큰 없음. is-focus outline CSS 없음.
 10. **Sync** — Button 기준 변경 시 registry / HTML / md / reports를 함께 수정. `npm run sync:button`으로 정합성 검사.
@@ -496,8 +496,8 @@ Button 페이지 편집 시:
 5. **ACTION = 인터랙션 전용** — ACTION 셀만 실제 클릭/disabled 테스트가 가능하다.
 6. **DEFAULT = 정적 프리뷰** — DEFAULT 셀 버튼에는 `.is-preview`를 적용한다 (pointer-events: none).
 7. **공식 variants** — primary / secondary / blue-line만 공식 노출. ghost는 노출 금지.
-8. **Size 명칭** — PC: medium(h44) / xsmall(h34) / xxsmall(h28), Mobile: mobile(h48).
-9. **Class naming** — `s1-btn` 기반 (s1-btn-lg=medium, 무수식어=xsmall, s1-btn-sm=xxsmall, s1-btn-mobile=mobile).
+8. **Size 명칭** — PC: md(h44) / xsm(h34) / xxsm(h28), Mobile: lg(h48).
+9. **Class naming** — `s1-btn` 기반 (`s1-btn-md`=md, 무수식어=xsm, `s1-btn-xxsm`=xxsm, `s1-btn-lg`=lg).
 10. **변경 기록** — `reports/mvp3-3-button-components-integration.md`에 기록한다.
 
 ---
@@ -995,8 +995,11 @@ Claude는 **Main Orchestrator**다. 사용자는 **목표 수준 의도**만 준
 | 27 | Token Role (글자엔 글자 토큰) | 글자(TEXT) 색은 text/*·label/*·number/* 만 — border/*·bg/*·surface/* 오연결 차단(icon/*=허용목록만). build-components.ts mock 실행해 글자 fill 역할 대조. Input 안내메시지 테두리토큰 오연결(값 게이트 전부 ✅였던 사각지대) 재발 차단. 단독 `npm run tokens:rolecheck` |
 | 28 | System Map Drift | `pipeline-status.js --self-check` 로 현재 코드에서 시스템 맵을 재생성해 커밋본과 대조(휘발성 제외) — pipeline-status.html 이 낡았나. **불일치=경고(비차단)**: 대시보드는 생성물이라 낡아도 빌드가 안 깨지고, error 로 걸면 타 세션 커밋까지 막혀 `--no-verify` 를 부르고 그러면 Gate 1~27 이 전부 무력화되기 때문(2026-07-14 결정 — 신선도보다 게이트 생태계 보존 우선). 재생성 `node pipeline-status.js --check --skip gate:check,components:presentation --out pages/pipeline-status.html` |
 | 29 | Dark Divergence (다크값갈림) | 라이트 최종값이 같은데 같은 비교 단위(컴포넌트 seg1/역할계열 seg1+seg2) 안에서 다크만 갈리는 이상치 토큰을 baseline 래칫(줄이기 전용)으로 차단. 단위 간 갈림은 기록만(의도 가능). 단독 `npm run tokens:darkdiv` |
+| 30 | Component Registration | 설치기 전집합 ↔ 등록 4면(registry/components·update-management·presentation-policy·coverage) 차집합 대조 + 빌더 runners 완전성. 미등록 컴포넌트의 침묵 통과 차단. 단독 `node scripts/component-registration-check.js` |
+| 31 | Icon Key Consistency | 설치기 `ICON_KEYS` ↔ provenance 허용목록 3면 정합(손 동기화라 12/19/주석9 로 셋 다 어긋나 있었음). 단독 `node scripts/icon-key-consistency-check.js` |
+| 32 | Size Naming (크기 이름 규칙) | **크기 '기준'은 컴포넌트마다 달라도 된다**(버튼 md=44·GNB md=56 정상). 막는 것은 **같은 것을 다른 단어로 적는 것**: (A)정본이 허용 어휘(xxsm·xsm·sm·md·lg) 밖 단어 사용 (B)variant 속성 이름에 공백/특수문자(웹 `data-cov-*` 로 못 옮겨 그 축이 영영 검사 밖에 남음) (C)파생 표면(registry·policy·data-cov)이 정본에 없는 크기 단어 사용 (D)harness-audit 의 라벨 단어↔클래스 단어 불일치. 2026-08-02 실측에서 표기가 5계보로 갈려 있었고(설치기 축약형·표셀만 MEDIUM/SMALL·웹 CSS 가 44를 `lg` 로·라벨 medium·registry pc-medium), 과거 통일 작업이 표 셀에서 누락된 채 **Gate 19 의 소문자 정규화에 가려** 안 보였다. 정본=`registry/governance/size-naming-policy.json`. 단독 `npm run components:sizenaming` |
 
-스크립트 일괄 실행: `npm run gate:check` (31개 자동). **Gate 2·5 는 여기에 포함되지 않는다** — 위 표 참조. 개별 게이트 트리거·판정 로직·도입 사유·`npm run` 단독 실행 명령은 참조 문서에 전문 수록.
+스크립트 일괄 실행: `npm run gate:check` (36개 자동 — 2026-08-02 실측). **Gate 2·5 는 여기에 포함되지 않는다** — 위 표 참조. 개별 게이트 트리거·판정 로직·도입 사유·`npm run` 단독 실행 명령은 참조 문서에 전문 수록.
 
 ## ⚙️ 강제 계층 — Hooks (2026-06-11 신설)
 

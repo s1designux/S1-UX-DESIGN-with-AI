@@ -1,0 +1,40 @@
+{
+  "_note": "Gate 32(크기 이름 규칙) 정본. 크기(size) 어휘를 표면마다 다르게 적는 것을 차단한다. **크기의 '기준'은 컴포넌트마다 다를 수 있다**(버튼 md=44 · GNB md=56 은 정상) — 이 게이트가 막는 것은 '같은 것을 다른 단어로 적는 것'뿐이다. 단독 실행 npm run components:sizenaming.",
+  "_updated": "2026-08-02",
+  "_why": "2026-08-02 전수 판독에서 크기 표기가 5계보로 갈려 있었다: 설치기 축약형(MD/SM) · 표 셀만 풀네임(MEDIUM/SMALL) · 웹 CSS 는 44를 lg 로(정본은 LG=48) · 라벨은 medium/xsmall · registry 는 pc-medium/sm-pc. build-components.ts:958 주석('Issue 8 리네임 잔재(XSMALL/SMALL/MEDIUM)였음')이 보여주듯 과거에 통일 작업을 했으나 표 셀이 누락됐고, Gate 19 가 비교 전에 전부 소문자로 바꾸는 바람에 어긋남이 기계에 안 보였다. 이 게이트는 그 재발을 막는다.",
+
+  "allowedSizeWords": ["xxsm", "xsm", "sm", "md", "lg"],
+  "_allowedSizeWordsNote": "크기 단어의 유일한 어휘. 풀네임(medium·small·xsmall·xxsmall)·다른 축약(xs·xxs)은 위반. 대소문자는 표면 관례를 따른다(설치기/Figma=대문자 MD, 웹=소문자 md) — 같은 단어면 통과.",
+
+  "platformWords": ["pc", "mobile"],
+  "_platformWordsNote": "복합 id(pc-md·mobile-md·mobile)에서 플랫폼을 나타내는 조각. 크기 단어 판정에서 제외한다.",
+
+  "propNamePattern": "^[A-Za-z][A-Za-z0-9]*$",
+  "_propNamePatternNote": "Figma variant property 이름 규칙 — 공백·하이픈·언더스코어 금지. 공백이 들어가면 웹 속성명(data-cov-*)으로 옮길 수 없어 그 축이 영영 검사 밖에 남는다(2026-08-02 'full menu' 실례).",
+
+  "surfaces": {
+    "installer": "plugins/figma-vars-installer/src/build-components.ts (정본 · mock 실측)",
+    "dataCov": "pages/components.html 의 data-cov-sizes",
+    "registry": "registry/components/*.json 의 sizing/sizes/platforms 키",
+    "policy": "registry/governance/component-presentation-policy.json 의 sizes",
+    "harnessAudit": "scripts/harness-audit.js 의 sizes[].label ↔ mustContain"
+  },
+
+  "registrySizeKeyPaths": [
+    "sizing.pc[].id",
+    "sizing.mobile[].id",
+    "sizes",
+    "platforms",
+    "variants.Size",
+    "axes.Size"
+  ],
+  "_registrySizeKeyPathsNote": "registry 컴포넌트 JSON 에서 크기 id 가 실려 있는 자리. 새 스키마가 생기면 여기에 추가한다.",
+
+  "ignoreSectionAxes": {
+    "tab": "설치기 Line Tab 은 Size 축과 Break 축을 따로 두는데 웹은 pc-md/pc-sm/mobile 로 합쳐 쓴다. 축 구조 차이라 크기 '단어'만 대조한다(md·sm 은 일치).",
+    "_note": "여기 등재는 '단어 대조는 계속하되 축 구조 차이는 위반으로 보지 않는다'는 뜻이다. 단어가 어긋나면 등재돼 있어도 FAIL."
+  },
+
+  "knownNonSizeWords": ["default", "base", "action", "cell", "header", "arrow", "edge", "number"],
+  "_knownNonSizeWordsNote": "harness-audit 라벨 첫 낱말이 크기가 아닌 경우(예: 'default (h44)'). 크기 대조 대상에서 제외한다."
+}

@@ -9731,7 +9731,7 @@ window.REGISTRY_BUNDLE = {
       "doDont": {
         "do": [
           "variant 는 primary·secondary·blue-line 만 쓴다.",
-          "크기는 PC medium(44)/xsmall(34)/xxsmall(28), Mobile mobile(48) 중에서 고른다.",
+          "크기는 PC md(44)/xsm(34)/xxsm(28), Mobile lg(48) 중에서 고른다.",
           "색은 Semantic 경유 component 토큰(--button-*)으로만 참조한다."
         ],
         "dont": [
@@ -9766,12 +9766,12 @@ window.REGISTRY_BUNDLE = {
           "blue-line"
         ],
         "pcSize": [
-          "medium",
-          "xsmall",
-          "xxsmall"
+          "md",
+          "xsm",
+          "xxsm"
         ],
         "mobileSize": [
-          "mobile"
+          "lg"
         ],
         "state": [
           "default",
@@ -9868,35 +9868,35 @@ window.REGISTRY_BUNDLE = {
       "sizing": {
         "pc": [
           {
-            "id": "medium",
-            "label": "medium",
+            "id": "md",
+            "label": "md",
             "height": "h44",
-            "cssClass": "s1-btn-lg",
+            "cssClass": "s1-btn-md",
             "token": "--sizing-44"
           },
           {
-            "id": "xsmall",
-            "label": "xsmall",
+            "id": "xsm",
+            "label": "xsm",
             "height": "h34",
             "cssClass": "",
             "token": "--sizing-34",
             "note": "기본 사이즈 — 크기 수식어 없음"
           },
           {
-            "id": "xxsmall",
-            "label": "xxsmall",
+            "id": "xxsm",
+            "label": "xxsm",
             "height": "h28",
-            "cssClass": "s1-btn-sm",
+            "cssClass": "s1-btn-xxsm",
             "token": "--sizing-28",
             "note": "신규 토큰 — 2026-05-11 tokens.css에 추가됨"
           }
         ],
         "mobile": [
           {
-            "id": "mobile",
-            "label": "mobile",
+            "id": "lg",
+            "label": "lg",
             "height": "h48",
-            "cssClass": "s1-btn-mobile",
+            "cssClass": "s1-btn-lg",
             "token": "--sizing-48"
           }
         ],
@@ -9957,15 +9957,15 @@ window.REGISTRY_BUNDLE = {
           "primary": "Primary",
           "secondary": "Secondary",
           "blue-line": "Blue Line",
-          "medium": "Large",
-          "xsmall": "Medium",
-          "xxsmall": "XSmall",
-          "mobile": "Large",
+          "md": "Large",
+          "xsm": "Medium",
+          "xxsm": "XSmall",
+          "lg": "Large",
           "default": "Default",
           "hover": "Hover",
           "pressed": "Pressed",
           "disabled": "Disabled",
-          "_note": "Figma size names differ from components.html labels. medium(h44)=Figma Large, xsmall(h34)=Figma Medium, xxsmall(h28)=Figma XSmall."
+          "_note": "레거시 Figma V2.4 의 크기 이름은 정본 어휘와 다르다. md(h44)=V2.4 Large, xsm(h34)=V2.4 Medium, xxsm(h28)=V2.4 XSmall, lg(h48)=V2.4 Large."
         }
       },
       "governance": {
@@ -10584,21 +10584,21 @@ window.REGISTRY_BUNDLE = {
         "지우기(clear) 버튼은 값이 있을 때만 노출한다(hidden 속성 제어)."
       ],
       "platforms": {
-        "pc-medium": {
+        "pc-md": {
           "height": "44px",
           "heightToken": "--sizing/form-control/height/md",
           "paddingBlock": "8px",
           "paddingBlockToken": "--spacing/padding/block/xxs",
           "radiusToken": "--radius/control/sm"
         },
-        "pc-xsmall": {
+        "pc-xsm": {
           "height": "34px",
           "heightToken": "(미확인)",
           "paddingBlock": "8px",
           "paddingBlockToken": "--spacing/padding/block/xxs",
           "radiusToken": "--radius/control/sm"
         },
-        "pc-xxsmall": {
+        "pc-xxsm": {
           "height": "28px",
           "heightToken": "(미확인)",
           "paddingBlock": "8px",

@@ -53,17 +53,17 @@
 }
 
 /* ── Sizes ── */
-.s1-input-field.input-size-small {
-  height: var(--sizing-34);   /* Small: 34px */
+.s1-input-field.input-size-xsm {
+  height: var(--sizing-34);   /* xsm: 34px (Figma V2.4 SMALL) */
   padding: 0 var(--spacing-8) 0 var(--spacing-12);
 }
 
-.s1-input-field.input-size-xsmall {
-  height: var(--sizing-28);  /* XSmall: 28px */
+.s1-input-field.input-size-xxsm {
+  height: var(--sizing-28);  /* xxsm: 28px (Figma V2.4 XSMALL) */
   padding: 0 var(--spacing-8) 0 var(--spacing-12);
 }
 
-.s1-input-field.input-size-xsmall input {
+.s1-input-field.input-size-xxsm input {
   font-size: var(--font-size-12);
   letter-spacing: 0;
 }

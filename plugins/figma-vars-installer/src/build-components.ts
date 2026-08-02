@@ -1638,8 +1638,8 @@ async function buildTableCell(maps: BuildMaps, originY: number): Promise<{ set: 
     { type: "Header", state: "Default",  bg: "color/table/header/bg",      border: "color/table/border/default", text: "color/text/body/secondary", head: "Header" },
   ];
   const sizes = [
-    { size: "SMALL",  h: 38, font: 13 },
-    { size: "MEDIUM", h: 44, font: 14 },
+    { size: "SM", h: 38, font: 13 },
+    { size: "MD", h: 44, font: 14 },
   ];
   const W = 130;
   const comps: ComponentNode[] = [];
@@ -1669,7 +1669,7 @@ async function buildTableCell(maps: BuildMaps, originY: number): Promise<{ set: 
   set.x = 0; set.y = originY;
   // Table 에서 인스턴스 재사용 — BUILT_COMPS 등록 (Table.makeTableRow 가 이 키로 조회)
   for (const { comp, row, col } of cells) {
-    const size = sizes[row].size;        // "SMALL" | "MEDIUM"
+    const size = sizes[row].size;        // "SM" | "MD"
     const v    = variants[col];           // { type, state, … }
     BUILT_COMPS[`TableCell:${size}:${v.type}:${v.state}`] = comp;
   }
@@ -1694,7 +1694,7 @@ async function buildTable(maps: BuildMaps, originY: number): Promise<{ set: Comp
   const W = 828;
   const FOOTER_H = 44;
 
-  // sizeKey: "MEDIUM"(MD) | "SMALL"(SM) — BUILT_COMPS["TableCell:SIZE:TYPE:STATE"] 조회키
+  // sizeKey: "MD" | "SM" — BUILT_COMPS["TableCell:SIZE:TYPE:STATE"] 조회키 (Table 과 동일 어휘)
   async function makeTableRow(h: number, sizeKey: string, isHeader: boolean, state: string, ri: number): Promise<FrameNode> {
     const row = figma.createFrame();
     row.name = isHeader ? "header" : `row-${ri + 1}`;
@@ -1730,7 +1730,7 @@ async function buildTable(maps: BuildMaps, originY: number): Promise<{ set: Comp
     row.appendChild(chkFrame); chkFrame.x = 0; chkFrame.y = 0;
 
     // ── COL[1..4] 텍스트 컬럼 — Table Cell 인스턴스 재사용 ──────────────────
-    const font = sizeKey === "MEDIUM" ? 14 : 13;  // fallback 전용
+    const font = sizeKey === "MD" ? 14 : 13;  // fallback 전용
     let xOff = COL[0];
     for (let k = 0; k < 4; k++) {
       const colW   = COL[k + 1];
@@ -1802,8 +1802,8 @@ async function buildTable(maps: BuildMaps, originY: number): Promise<{ set: Comp
   }
 
   const sizes = [
-    { size: "MD", sizeKey: "MEDIUM", h: 44 },
-    { size: "SM", sizeKey: "SMALL",  h: 38 },
+    { size: "MD", sizeKey: "MD", h: 44 },
+    { size: "SM", sizeKey: "SM", h: 38 },
   ];
   // 8개 바디 행: Default·Hover·Selected·Default×5
   const ROW_STATES = ["Default", "Hover", "Selected", "Default", "Default", "Default", "Default", "Default"];
@@ -2506,9 +2506,9 @@ async function fillGnbMenu(node: ComponentNode | FrameNode, maps: BuildMaps, siz
 }
 
 // ── GNB Utility Icon — 레거시 slot_utility(P8YvnCdG… 1980:53435) 동일 변형세트 ──────
-// 3 토글 프로퍼티(language·full menu·user)의 5개 조합. 시각 순서: language → user → full menu, gap 8.
+// 3 토글 프로퍼티(language·menu·user)의 5개 조합. 시각 순서: language → user → menu, gap 8.
 //   language=on → Language Icon(지구본+한국어) 컴포넌트 인스턴스(레거시 globe 아이콘 교체).
-//   user/full menu → V2.2 라이브러리 아이콘(account·menu) 32px 박스·24 glyph.
+//   user/menu → V2.2 라이브러리 아이콘(account·menu) 32px 박스·24 glyph.
 // GNB 바는 이 세트의 all-on 변형(BUILT_COMPS["GNBUtil:full"]) 인스턴스를 유틸 영역에 넣는다.
 async function buildGNBUtilIcon(maps: BuildMaps, originY: number): Promise<{ set: ComponentSetNode; bottomY: number }> {
   // 계정·메뉴 아이콘 = 32px 박스(가운데 정렬, 24 glyph). 라이브러리 인스턴스.
@@ -2520,7 +2520,7 @@ async function buildGNBUtilIcon(maps: BuildMaps, originY: number): Promise<{ set
     box.appendChild(await makeIconInstance(role, scv(maps, "color/icon/gray-dark"), 24, svg));
     return box;
   };
-  // 레거시 1980:53435 의 5개 변형 (language·full menu·user on/off). 순서·구성 동일.
+  // 레거시 1980:53435 의 5개 변형 (language·menu·user on/off). 순서·구성 동일.
   const defs = [
     { language: "on",  menu: "on",  user: "on",  label: "언어·계정·메뉴" },
     { language: "on",  menu: "off", user: "on",  label: "언어·계정" },
@@ -2531,11 +2531,11 @@ async function buildGNBUtilIcon(maps: BuildMaps, originY: number): Promise<{ set
   const comps: ComponentNode[] = [];
   for (const d of defs) {
     const comp = figma.createComponent();
-    comp.name = `language=${d.language}, full menu=${d.menu}, user=${d.user}`;
+    comp.name = `language=${d.language}, menu=${d.menu}, user=${d.user}`;
     comp.layoutMode = "HORIZONTAL"; comp.counterAxisAlignItems = "CENTER";
     comp.primaryAxisSizingMode = "AUTO"; comp.counterAxisSizingMode = "AUTO";
     comp.itemSpacing = 8; comp.fills = [];
-    // 시각 순서: language → user(계정) → full menu (레거시 코드 순서)
+    // 시각 순서: language → user(계정) → menu (레거시 코드 순서)
     if (d.language === "on") {
       const langComp = BUILT_COMPS["LanguageIcon:Korean"] ?? BUILT_COMPS["LanguageIcon:English"];
       if (langComp) comp.appendChild(langComp.createInstance());
@@ -2721,7 +2721,7 @@ async function buildGNB(maps: BuildMaps, originY: number): Promise<{ set: Compon
       let utilComp: ComponentNode | undefined = BUILT_COMPS["GNBUtil:full"];
       if (!utilComp) {
         const us = await getBuiltSet("GNB Utility Icon");
-        if (us) utilComp = ((us.children as ComponentNode[]) || []).find((c) => c.type === "COMPONENT" && c.name.includes("language=on, full menu=on, user=on"))
+        if (us) utilComp = ((us.children as ComponentNode[]) || []).find((c) => c.type === "COMPONENT" && c.name.includes("language=on, menu=on, user=on"))
           ?? ((us.children as ComponentNode[]) || []).find((c) => c.type === "COMPONENT");
       }
       const util = utilComp ? utilComp.createInstance() : null;
