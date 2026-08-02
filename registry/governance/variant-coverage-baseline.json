@@ -6,12 +6,5 @@
     "해소된 항목은 --update-baseline 으로 빼면 다시 채워졌을 때 회귀가 차단된다."
   ],
   "_updated": "2026-08-02",
-  "knownGaps": [
-    {
-      "key": "time-picker.content",
-      "kind": "uninstrumented",
-      "detail": "정본 [timeonly,datetime] — data-cov-content 미선언",
-      "reason": "모바일 시간 바텀시트(휠 4열 + 상하 페이드 + 시트 셸)의 웹 CSS 가 없다. 정본 토큰은 다 있으나(surface/raised·overlay/wheel-fade·text/state-accent) 페이드를 CSS 로 어떻게 구현할지(mask-image 그라데이션 등) 방식 결정이 필요해 별건으로 둔다."
-    }
-  ]
+  "knownGaps": []
 }

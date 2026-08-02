@@ -1729,6 +1729,52 @@
       height: 30px;
       padding: 0 var(--spacing-16);
     }
+    /* ── Time Picker · Mobile Bottom Sheet ───────────────────────────────────
+       정본 구조: build-components.ts `buildTimePickerMobileBottomSheet`
+         (Content=TimeOnly | DateTime · 시트 360 · 세로 간격 32 · 상하 패딩 20 · 반경 8)
+       겉모습 기준: Figma V2.4 원본 540:3729 (river 확정 2026-08-02). 아래 수치는 그 원본 실측값 —
+         항목 높이 42 · 행 간격 32 · 열 폭 오전오후 56 / 시 20 / 콜론 10 / 분 39 ·
+         오전오후↔시 간격 36 · 시↔콜론↔분 간격 32 · 휠 영역 270(상하 패딩 40) · 버튼 320×48.
+       위/아래 흐림: Figma 는 alpha 마스크(0.9→0)로 그리는데 웹에 1:1 대응이 없어
+         **정본과 같은 토큰(--color-overlay-wheel-fade)의 그라데이션 오버레이**로 구현한다.
+         값이 시트 배경과 같은 색이라 결과가 동일하다(라이트 #FFFFFF · 다크 #1C1D23).
+       선택 강조는 별도 표시가 아니라 **가운데만 안 흐려져서** 생긴다(정본과 동일 — 선택 배경 없음). */
+    .s1-tp-sheet {
+      width: 360px; box-sizing: border-box;
+      display: flex; flex-direction: column; gap: var(--spacing-32);
+      padding: var(--spacing-20) 0;
+      background: var(--color-surface-raised);
+      border-radius: 8px 8px 0 0;
+    }
+    .s1-tp-sheet__header { display: flex; align-items: center; justify-content: space-between; padding: 0 var(--spacing-20); }
+    .s1-tp-sheet__title { font-size: var(--font-size-20); font-weight: var(--font-weight-bold); line-height: var(--line-height-130); color: var(--color-text-title-primary); }
+    .s1-tp-sheet__close { width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; padding: 0; border: 0; background: none; color: var(--color-icon-gray-dark); cursor: pointer; }
+    .s1-tp-sheet__tabs { padding: 0 var(--spacing-24); }
+    .s1-tp-sheet__wheel { position: relative; height: 270px; display: flex; align-items: center; justify-content: center; gap: var(--spacing-36); overflow: hidden; }
+    .s1-tp-wheel-group { display: flex; align-items: center; gap: var(--spacing-32); }
+    .s1-tp-wheel-col { display: flex; flex-direction: column; gap: var(--spacing-32); }
+    .s1-tp-wheel-item {
+      height: 42px; line-height: 42px;
+      font-size: 32px; font-weight: var(--font-weight-regular);
+      color: var(--color-text-state-accent);
+      text-align: center; white-space: nowrap;
+    }
+    .s1-tp-wheel-col--ampm   .s1-tp-wheel-item { width: 56px; }
+    .s1-tp-wheel-col--hour   .s1-tp-wheel-item { width: 20px; text-align: right; }
+    .s1-tp-wheel-col--colon  .s1-tp-wheel-item { width: 10px; }
+    .s1-tp-wheel-col--minute .s1-tp-wheel-item { width: 39px; text-align: left; }
+    .s1-tp-sheet__fade { position: absolute; left: 0; right: 0; height: 110px; pointer-events: none; }
+    .s1-tp-sheet__fade--top    { top: 0;    background: linear-gradient(to bottom, var(--color-overlay-wheel-fade), transparent); }
+    .s1-tp-sheet__fade--bottom { bottom: 0; background: linear-gradient(to top,    var(--color-overlay-wheel-fade), transparent); }
+    .s1-tp-sheet__action { padding: 0 var(--spacing-20); }
+    .s1-tp-sheet__action .s1-btn { width: 100%; }
+    /* 프리뷰 맥락 — 시트가 '떠 있는 상태'임을 보여주는 딤·무대.
+       딤은 컴포넌트의 일부가 아니다(정본에 없음 · 업계 관행도 공용 오버레이 레이어로 분리).
+       색은 정본 오버레이 토큰을 쓴다. */
+    .s1-tp-sheet-stage { position: relative; width: 360px; border-radius: 12px; overflow: hidden; background: var(--color-bg-subtle); }
+    .s1-tp-sheet-stage__dim { position: absolute; inset: 0; background: var(--color-overlay); }
+    .s1-tp-sheet-stage .s1-tp-sheet { position: absolute; left: 0; bottom: 0; }
+
     /* Sliding indicator */
     .s1-tab.has-sliding-indicator { position: relative; }
     .s1-tab.has-sliding-indicator .s1-tab-item.is-selected { border-bottom-color: transparent; }
@@ -7071,7 +7117,7 @@ update(); // 초기화</pre>
 
       </section>
 
-      <section class="comp-section" id="time-picker" data-cov-states="default,hover,focus,filled,disabled,selected,시 hover,시 selected,분 hover,분 selected" data-cov-sizes="xxsm,xsm,md" data-cov-type="24h,12h">
+      <section class="comp-section" id="time-picker" data-cov-states="default,hover,focus,filled,disabled,selected,시 hover,시 selected,분 hover,분 selected" data-cov-sizes="xxsm,xsm,md" data-cov-content="timeonly,datetime" data-cov-type="24h,12h">
         <div class="comp-section-header">
           <h2 class="comp-section-title">Time Picker</h2>
           <span class="comp-badge comp-badge-blue">Core</span>
@@ -7661,89 +7707,99 @@ document.addEventListener('click', function(e) {
 
         <!-- ═══ Mobile — 바텀시트만 ═══ -->
         <div class="platform-section platform-section-mobile">
-        <!-- Mobile Bottom Sheet (HD-Time-4) -->
+        <!-- Mobile Bottom Sheet — 정본 Content 축 2변형(TimeOnly · DateTime) -->
         <div class="variant-group" style="margin-top:24px;">
-          <h3 class="variant-group-title">Mobile — Bottom Sheet <span class="comp-badge comp-badge-green" style="font-size:10px;margin-left:8px;">HD-Time-4 확정</span></h3>
-          <p class="variant-group-desc">모바일에서는 inline 드롭다운 대신 바텀시트 패널. 트리거 높이 48px (--sizing-48). 반투명 dim 오버레이 + 슬라이드업 패널.</p>
+          <h3 class="variant-group-title">Mobile — Bottom Sheet</h3>
+          <p class="variant-group-desc">모바일에서는 inline 드롭다운 대신 바텀시트. 정본 변형은 <code>Content=TimeOnly</code>(시간만) · <code>Content=DateTime</code>(날짜+시간 탭) 2가지다. 시트 폭 360 · 상하 여백 20 · 블록 간격 32 · 상단 모서리 8. 가운데 줄이 도드라지는 것은 선택 배경이 아니라 <strong>위/아래가 흐려지기</strong> 때문이며, 흐림은 <code>--color-overlay-wheel-fade</code>(시트 배경과 같은 색)로 그린다. 딤은 컴포넌트가 아니라 &lsquo;떠 있는 상태&rsquo;를 보여주는 프리뷰 맥락이다.</p>
           <div class="variant-block">
-            <div class="variant-label">States</div>
+            <div class="variant-label">Content — 시간만 / 날짜+시간</div>
             <div class="preview-area" style="display:flex;gap:32px;align-items:flex-start;flex-wrap:wrap;">
-              <!-- Closed -->
               <div>
-                <div class="s1-dp-state-label">Closed</div>
-                <div style="width:280px;height:360px;background:var(--color-bg-subtle);border-radius:12px;padding:20px;position:relative;overflow:hidden;margin-top:6px;">
-                  <div style="margin-bottom:12px;font-size:12px;color:var(--color-text-placeholder);">앱 콘텐츠 영역</div>
-                  <div class="s1-timepicker-wrap" style="height:48px;width:100%;pointer-events:none;">
-                    <span class="s1-timepicker-placeholder">시간을 선택하세요</span>
-                    <span class="s1-timepicker-icon"><svg width="18" height="18" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="7.5" stroke="currentColor" stroke-width="1.2"/><path d="M9 5v4l2.5 2.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg></span>
-                  </div>
+                <div class="s1-dp-state-label">TimeOnly — 시간만</div>
+                <div class="s1-tp-sheet-stage" style="height:520px;margin-top:6px;">
+                  <div class="s1-tp-sheet-stage__dim" aria-hidden="true"></div>
+          <div class="s1-tp-sheet">
+            <div class="s1-tp-sheet__header">
+              <span class="s1-tp-sheet__title">시간 선택</span>
+              <button type="button" class="s1-tp-sheet__close is-preview" aria-label="닫기"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M6 6L18 18M18 6L6 18" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></button>
+            </div>
+            <div class="s1-tp-sheet__wheel">
+              <div class="s1-tp-wheel-col s1-tp-wheel-col--ampm">
+                <div class="s1-tp-wheel-item">오전</div>
+                <div class="s1-tp-wheel-item">오후</div>
+                <div class="s1-tp-wheel-item" aria-hidden="true"></div>
+              </div>
+              <div class="s1-tp-wheel-group">
+                <div class="s1-tp-wheel-col s1-tp-wheel-col--hour">
+                  <div class="s1-tp-wheel-item">7</div>
+                  <div class="s1-tp-wheel-item">8</div>
+                  <div class="s1-tp-wheel-item">9</div>
+                </div>
+                <div class="s1-tp-wheel-col s1-tp-wheel-col--colon">
+                  <div class="s1-tp-wheel-item">:</div>
+                  <div class="s1-tp-wheel-item">:</div>
+                  <div class="s1-tp-wheel-item">:</div>
+                </div>
+                <div class="s1-tp-wheel-col s1-tp-wheel-col--minute">
+                  <div class="s1-tp-wheel-item">59</div>
+                  <div class="s1-tp-wheel-item">00</div>
+                  <div class="s1-tp-wheel-item">01</div>
                 </div>
               </div>
-              <!-- Open (static) -->
-              <div>
-                <div class="s1-dp-state-label">Open (static)</div>
-                <div style="width:280px;height:360px;background:var(--color-bg-subtle);border-radius:12px;padding:20px;position:relative;overflow:hidden;margin-top:6px;">
-                  <div style="margin-bottom:12px;font-size:12px;color:var(--color-text-placeholder);">앱 콘텐츠 영역</div>
-                  <div class="s1-timepicker-wrap" style="height:48px;width:100%;opacity:0.4;pointer-events:none;">
-                    <span class="s1-timepicker-placeholder">시간을 선택하세요</span>
-                    <span class="s1-timepicker-icon"><svg width="18" height="18" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="7.5" stroke="currentColor" stroke-width="1.2"/><path d="M9 5v4l2.5 2.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg></span>
-                  </div>
-                  <!-- Dim overlay -->
-                  <div style="position:absolute;inset:0;background:rgba(0,0,0,0.35);z-index:1;"></div>
-                  <!-- Bottom Sheet -->
-                  <div style="position:absolute;bottom:0;left:0;right:0;background:var(--color-surface-default);border-radius:16px 16px 0 0;box-shadow:var(--shadow-raised-up);padding:12px 0 20px;z-index:2;">
-                    <div style="display:flex;justify-content:center;padding-bottom:10px;">
-                      <div style="width:40px;height:4px;background:var(--color-border-subtle);border-radius:2px;"></div>
-                    </div>
-                    <div style="padding:0 16px 12px;font-size:15px;font-weight:600;color:var(--color-text-primary);">시간 선택</div>
-                    <div style="display:flex;align-items:stretch;height:136px;padding:0 16px;">
-                      <div style="flex:1;overflow:hidden;display:flex;flex-direction:column;gap:0;">
-                        <div class="s1-tp-col-item" style="width:100%;height:32px;font-size:14px;">8</div>
-                        <div class="s1-tp-col-item is-selected" style="width:100%;height:32px;font-size:14px;">9</div>
-                        <div class="s1-tp-col-item" style="width:100%;height:32px;font-size:14px;">10</div>
-                        <div class="s1-tp-col-item" style="width:100%;height:32px;font-size:14px;">11</div>
-                      </div>
-                      <div style="display:flex;align-items:center;padding:0 10px;color:var(--color-text-secondary);font-size:16px;font-weight:600;">:</div>
-                      <div style="flex:1;overflow:hidden;display:flex;flex-direction:column;gap:0;">
-                        <div class="s1-tp-col-item" style="width:100%;height:32px;font-size:14px;">28</div>
-                        <div class="s1-tp-col-item" style="width:100%;height:32px;font-size:14px;">29</div>
-                        <div class="s1-tp-col-item is-selected" style="width:100%;height:32px;font-size:14px;">30</div>
-                        <div class="s1-tp-col-item" style="width:100%;height:32px;font-size:14px;">31</div>
-                      </div>
-                    </div>
-                    <div style="display:flex;justify-content:flex-end;padding:8px 16px 0;">
-                      <button type="button" class="is-preview" style="height:36px;padding:0 20px;background:var(--color-action-primary-default);color:var(--color-base-white);border:none;border-radius:4px;font-size:14px;font-weight:500;cursor:pointer;">확인</button>
-                    </div>
-                  </div>
+              <div class="s1-tp-sheet__fade s1-tp-sheet__fade--top" aria-hidden="true"></div>
+              <div class="s1-tp-sheet__fade s1-tp-sheet__fade--bottom" aria-hidden="true"></div>
+            </div>
+            <div class="s1-tp-sheet__action">
+              <button type="button" class="s1-btn s1-btn-primary s1-btn-lg is-preview">적용</button>
+            </div>
+          </div>
                 </div>
               </div>
-              <!-- Interactive -->
               <div>
-                <div class="s1-dp-state-label">Interactive</div>
-                <div id="tp-mobile-frame" style="width:280px;height:360px;background:var(--color-bg-subtle);border-radius:12px;padding:20px;position:relative;overflow:hidden;margin-top:6px;">
-                  <div style="margin-bottom:12px;font-size:12px;color:var(--color-text-placeholder);">앱 콘텐츠 영역 (트리거 클릭)</div>
-                  <div id="tp-mobile-trigger" class="s1-timepicker-wrap" style="height:48px;width:100%;cursor:pointer;" tabindex="0" role="button" aria-haspopup="dialog">
-                    <span id="tp-mobile-ph" class="s1-timepicker-placeholder">시간을 선택하세요</span>
-                    <span id="tp-mobile-val" class="s1-timepicker-value" style="display:none;"></span>
-                    <span class="s1-timepicker-icon"><svg width="18" height="18" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="7.5" stroke="currentColor" stroke-width="1.2"/><path d="M9 5v4l2.5 2.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg></span>
-                  </div>
-                  <!-- Dim -->
-                  <div id="tp-mobile-dim" style="display:none;position:absolute;inset:0;background:rgba(0,0,0,0.35);z-index:1;" aria-hidden="true"></div>
-                  <!-- Sheet -->
-                  <div id="tp-mobile-sheet" role="dialog" aria-label="시간 선택" style="display:none;position:absolute;bottom:0;left:0;right:0;background:var(--color-surface-default);border-radius:16px 16px 0 0;box-shadow:var(--shadow-raised-up);padding:12px 0 20px;z-index:2;">
-                    <div style="display:flex;justify-content:center;padding-bottom:10px;">
-                      <div style="width:40px;height:4px;background:var(--color-border-subtle);border-radius:2px;"></div>
-                    </div>
-                    <div style="padding:0 16px 12px;font-size:15px;font-weight:600;color:var(--color-text-primary);">시간 선택</div>
-                    <div style="display:flex;align-items:stretch;height:160px;padding:0 16px;">
-                      <div id="tp-mobile-hour-col" style="flex:1;overflow-y:auto;scroll-behavior:smooth;"></div>
-                      <div style="display:flex;align-items:center;padding:0 10px;color:var(--color-text-secondary);font-size:16px;font-weight:600;">:</div>
-                      <div id="tp-mobile-min-col" style="flex:1;overflow-y:auto;scroll-behavior:smooth;"></div>
-                    </div>
-                    <div style="display:flex;justify-content:flex-end;padding:8px 16px 0;">
-                      <button id="tp-mobile-confirm" type="button" style="height:36px;padding:0 20px;background:var(--color-action-primary-default);color:var(--color-base-white);border:none;border-radius:4px;font-size:14px;font-weight:500;cursor:pointer;">확인</button>
-                    </div>
-                  </div>
+                <div class="s1-dp-state-label">DateTime — 날짜+시간</div>
+                <div class="s1-tp-sheet-stage" style="height:590px;margin-top:6px;">
+                  <div class="s1-tp-sheet-stage__dim" aria-hidden="true"></div>
+          <div class="s1-tp-sheet">
+            <div class="s1-tp-sheet__header">
+              <span class="s1-tp-sheet__title">시작 일시</span>
+              <button type="button" class="s1-tp-sheet__close is-preview" aria-label="닫기"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M6 6L18 18M18 6L6 18" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></button>
+            </div>
+            <div class="s1-tp-sheet__tabs">
+              <div class="s1-tab s1-tab--mobile" style="display:flex;">
+                <div class="s1-tab-item is-preview" style="flex:1;">날짜</div>
+                <div class="s1-tab-item is-selected is-preview" style="flex:1;">시간</div>
+              </div>
+            </div>
+            <div class="s1-tp-sheet__wheel">
+              <div class="s1-tp-wheel-col s1-tp-wheel-col--ampm">
+                <div class="s1-tp-wheel-item">오전</div>
+                <div class="s1-tp-wheel-item">오후</div>
+                <div class="s1-tp-wheel-item" aria-hidden="true"></div>
+              </div>
+              <div class="s1-tp-wheel-group">
+                <div class="s1-tp-wheel-col s1-tp-wheel-col--hour">
+                  <div class="s1-tp-wheel-item">7</div>
+                  <div class="s1-tp-wheel-item">8</div>
+                  <div class="s1-tp-wheel-item">9</div>
+                </div>
+                <div class="s1-tp-wheel-col s1-tp-wheel-col--colon">
+                  <div class="s1-tp-wheel-item">:</div>
+                  <div class="s1-tp-wheel-item">:</div>
+                  <div class="s1-tp-wheel-item">:</div>
+                </div>
+                <div class="s1-tp-wheel-col s1-tp-wheel-col--minute">
+                  <div class="s1-tp-wheel-item">59</div>
+                  <div class="s1-tp-wheel-item">00</div>
+                  <div class="s1-tp-wheel-item">01</div>
+                </div>
+              </div>
+              <div class="s1-tp-sheet__fade s1-tp-sheet__fade--top" aria-hidden="true"></div>
+              <div class="s1-tp-sheet__fade s1-tp-sheet__fade--bottom" aria-hidden="true"></div>
+            </div>
+            <div class="s1-tp-sheet__action">
+              <button type="button" class="s1-btn s1-btn-primary s1-btn-lg is-preview">적용</button>
+            </div>
+          </div>
                 </div>
               </div>
             </div>
@@ -9730,70 +9786,8 @@ document.addEventListener('click', function(e) {
   }
   setupTimePicker(document);
 
-  // ── TimePicker Mobile Bottom Sheet (HD-Time-4) ──
-  (function() {
-    var trigger = document.getElementById('tp-mobile-trigger');
-    var dim     = document.getElementById('tp-mobile-dim');
-    var sheet   = document.getElementById('tp-mobile-sheet');
-    var confirm = document.getElementById('tp-mobile-confirm');
-    var ph      = document.getElementById('tp-mobile-ph');
-    var val     = document.getElementById('tp-mobile-val');
-    var hourCol = document.getElementById('tp-mobile-hour-col');
-    var minCol  = document.getElementById('tp-mobile-min-col');
-    if (!trigger || !sheet) return;
-
-    var selHour = 9, selMin = 30;
-
-    function pad2(n) { return n < 10 ? '0' + n : '' + n; }
-
-    function buildCol(col, count, selected, labelFn) {
-      col.innerHTML = '';
-      for (var i = 0; i < count; i++) {
-        var el = document.createElement('div');
-        el.className = 's1-tp-col-item' + (i === selected ? ' is-selected' : '');
-        el.textContent = labelFn ? labelFn(i) : pad2(i);
-        (function(idx, isHour) {
-          el.addEventListener('click', function() {
-            col.querySelectorAll('.s1-tp-col-item').forEach(function(x) { x.classList.remove('is-selected'); });
-            el.classList.add('is-selected');
-            if (isHour) selHour = idx; else selMin = idx;
-          });
-        })(i, col === hourCol);
-        col.appendChild(el);
-      }
-    }
-
-    function openSheet() {
-      buildCol(hourCol, 24, selHour, function(i) { return pad2(i); });
-      buildCol(minCol, 60, selMin, function(i) { return pad2(i); });
-      dim.style.display = 'block';
-      sheet.style.display = 'block';
-      // scroll to selected
-      var selH = hourCol.querySelector('.is-selected');
-      var selM = minCol.querySelector('.is-selected');
-      if (selH) hourCol.scrollTop = selH.offsetTop - 64;
-      if (selM) minCol.scrollTop = selM.offsetTop - 64;
-    }
-
-    function closeSheet() {
-      dim.style.display = 'none';
-      sheet.style.display = 'none';
-    }
-
-    function confirmTime() {
-      var t = pad2(selHour) + ':' + pad2(selMin);
-      ph.style.display = 'none';
-      val.textContent = t;
-      val.style.display = '';
-      trigger.classList.add('is-filled');
-      closeSheet();
-    }
-
-    trigger.addEventListener('click', openSheet);
-    trigger.addEventListener('keydown', function(e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openSheet(); } });
-    dim.addEventListener('click', closeSheet);
-    confirm.addEventListener('click', confirmTime);
-  })();
+  // TimePicker 모바일 바텀시트의 인터랙티브 데모 JS 는 2026-08-02 에 제거했다 —
+  //   정본(Content=TimeOnly/DateTime) 겉모습을 정적으로 표출하는 방식으로 바꾸면서 대상 노드가 사라졌다.
 
   // ── Filter Chip Mobile Bottom Sheet (정렬, 즉시 적용) ──
   (function() {
