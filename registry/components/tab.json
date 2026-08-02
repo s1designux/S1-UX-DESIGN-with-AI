@@ -55,12 +55,15 @@
     "pcMdContentHeight": "40px",
     "pcSmContentHeight": "40px",
     "mobileContentHeight": "30px",
-    "pcMdIndicatorSelected": "4px",
+    "mobileTotalHeight": "32px",
+    "_heightNote": "ContentHeight 는 밑줄(인디케이터)을 뺀 값이다. 모바일 총높이 = 내용 30 + 밑줄 2 = 32 로 정본(build-components.ts buildLineTab Mobile/SM)·V2.4 원본과 일치한다. 이 구분이 없어 2026-08-02 에 '원본 30 vs 정본 32' 라는 헛된 모순 기록이 생겼다. PC 값(40)은 프로토타입 잔재로 정본(SM 42·MD 44)과 다르며 후속 전수 검수에서 정정한다.",
+    "pcMdIndicatorSelected": "2px",
     "pcSmIndicatorSelected": "2px",
     "mobileIndicatorSelected": "2px",
     "indicatorDefault": "1px",
-    "pcPaddingInline": "var(--spacing-padding-inline-lg)",
-    "mobilePaddingInline": "var(--spacing-padding-inline-sm)"
+    "pcPaddingInline": "var(--spacing-16)",
+    "mobilePaddingInline": "var(--spacing-16)",
+    "_paddingNote": "정본 buildLineTab 의 PAD_X=16 (PC·모바일 공통). 종전 값 --spacing-padding-inline-lg/sm 은 실존하지 않는 토큰이었다."
   },
   "typography": {
     "pcMdSelected": "Pretendard Bold 20px / line-height 1.3",

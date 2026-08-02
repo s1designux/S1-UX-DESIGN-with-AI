@@ -18,7 +18,7 @@
 - ✅ [table] 모든 사이즈 분기 존재 (md (h44) / sm (h38))
 - ✅ [time-picker (input형)] 모든 사이즈 분기 존재 (default (h44) / xsm (h34) / xxsm (h28) / mobile (h48))
 - ✅ [time-picker (select형)] 모든 사이즈 분기 존재 (md (h44) / xxsm (h28))
-- ✅ [tab (line tab)] 모든 사이즈 분기 존재 (pc-md (font 20px · indicator 4px) / pc-sm (font 16px · indicator 2px))
+- ✅ [tab (line tab)] 모든 사이즈 분기 존재 (pc-md (font 20px · indicator 2px) / pc-sm (font 16px · indicator 2px))
 - ✅ [tab (line tab · mobile)] 모든 사이즈 분기 존재 (mobile (h30 · padding-inline sm))
 - ✅ [gnb (menu slot)] 모든 사이즈 분기 존재 (md (h56 · 18px) / sm (h48 · 18px) / xsm (h36 · 14px))
 - ✅ [multi-toggle] 모든 사이즈 분기 존재 (md (h44) / sm (h34))
