@@ -1142,7 +1142,12 @@
     }
     /* 위치별 코너 반경 + 보더 변 */
     .s1-multi-toggle-cell--first  { border-radius: 4px 0 0 4px; border-width: 1px 0 1px 1px; }
-    .s1-multi-toggle-cell--middle { border-radius: 0; border-width: 1px 0 1px 1px; }
+    /* 정본(설치기)은 가운데를 middle-left / middle-right 로 나눈다 — 선택된 파란 칸에 닿는 면의
+       보더를 빼서 이중선을 막기 때문(경계는 파란 칸이 책임진다). 종전 웹은 --middle 하나뿐이라
+       축이 어긋나 있었다(2026-08-02 정합). --middle 은 middle-left 와 동작이 같아 하위호환으로 남긴다. */
+    .s1-multi-toggle-cell--middle       { border-radius: 0; border-width: 1px 0 1px 1px; }
+    .s1-multi-toggle-cell--middle-left  { border-radius: 0; border-width: 1px 0 1px 1px; }
+    .s1-multi-toggle-cell--middle-right { border-radius: 0; border-width: 1px 1px 1px 0; }
     .s1-multi-toggle-cell--last   { border-radius: 0 4px 4px 0; border-width: 1px 1px 1px 1px; }
     /* hover = secondary 버튼 hover 토큰 */
     .s1-multi-toggle-cell:hover:not(.is-selected):not(.is-disabled),
@@ -2413,7 +2418,7 @@ checkboxes.forEach(function(chk) {
 
 
       <!-- ═══ MULTI TOGGLE ═══ -->
-      <section class="comp-section" id="multi-toggle" data-cov-states="default,hover,selected,disabled" data-cov-sizes="md,sm" data-cov-selected="left,center,right">
+      <section class="comp-section" id="multi-toggle" data-cov-states="default,hover,selected,disabled" data-cov-position="first,middle-left,middle-right,last" data-cov-sizes="md,sm" data-cov-selected="left,center,right">
         <div class="comp-section-header">
           <h2 class="comp-section-title">Multi Toggle</h2>
           <span class="comp-badge comp-badge-blue">Core</span>
@@ -2497,26 +2502,62 @@ checkboxes.forEach(function(chk) {
 
         <!-- ── Element States — 셀 단위 4상태 ── -->
         <div class="variant-block">
-          <div class="variant-label">Element States · 셀 단위 (default · hover · selected · disabled)</div>
+          <div class="variant-label">Element States · 셀 단위 — 위치(first · middle-left · middle-right · last) × 상태 4종 × 사이즈 2종</div>
           <div class="preview-area">
-            <div class="comp-state-matrix" style="grid-template-columns: 120px repeat(4, minmax(110px, 1fr));">
-              <div class="matrix-col-header-action">Size</div>
+            <div class="comp-state-matrix" style="grid-template-columns: 170px repeat(4, minmax(110px, 1fr));">
+              <div class="matrix-col-header-action">Size · Position</div>
               <div class="matrix-col-header">Default</div>
               <div class="matrix-col-header">Hover</div>
               <div class="matrix-col-header">Selected</div>
               <div class="matrix-col-header">Disabled</div>
-              <!-- md row -->
-              <div class="comp-action-cell" style="font-size:12px;color:var(--color-text-secondary);">md (h44)</div>
+              <!-- md · first row -->
+              <div class="comp-action-cell" style="font-size:12px;color:var(--color-text-secondary);">md (h44) · first</div>
               <div class="comp-state-cell"><div class="s1-multi-toggle"><div class="s1-multi-toggle-cell s1-multi-toggle-cell--first">항목</div></div></div>
               <div class="comp-state-cell"><div class="s1-multi-toggle"><div class="s1-multi-toggle-cell s1-multi-toggle-cell--first is-hover">항목</div></div></div>
               <div class="comp-state-cell"><div class="s1-multi-toggle"><div class="s1-multi-toggle-cell s1-multi-toggle-cell--first is-selected">항목</div></div></div>
               <div class="comp-state-cell"><div class="s1-multi-toggle"><div class="s1-multi-toggle-cell s1-multi-toggle-cell--first is-disabled">항목</div></div></div>
-              <!-- sm row -->
-              <div class="comp-action-cell" style="font-size:12px;color:var(--color-text-secondary);">sm (h34)</div>
+              <!-- md · middle-left row -->
+              <div class="comp-action-cell" style="font-size:12px;color:var(--color-text-secondary);">md (h44) · middle-left</div>
+              <div class="comp-state-cell"><div class="s1-multi-toggle"><div class="s1-multi-toggle-cell s1-multi-toggle-cell--middle-left">항목</div></div></div>
+              <div class="comp-state-cell"><div class="s1-multi-toggle"><div class="s1-multi-toggle-cell s1-multi-toggle-cell--middle-left is-hover">항목</div></div></div>
+              <div class="comp-state-cell"><div class="s1-multi-toggle"><div class="s1-multi-toggle-cell s1-multi-toggle-cell--middle-left is-selected">항목</div></div></div>
+              <div class="comp-state-cell"><div class="s1-multi-toggle"><div class="s1-multi-toggle-cell s1-multi-toggle-cell--middle-left is-disabled">항목</div></div></div>
+              <!-- md · middle-right row -->
+              <div class="comp-action-cell" style="font-size:12px;color:var(--color-text-secondary);">md (h44) · middle-right</div>
+              <div class="comp-state-cell"><div class="s1-multi-toggle"><div class="s1-multi-toggle-cell s1-multi-toggle-cell--middle-right">항목</div></div></div>
+              <div class="comp-state-cell"><div class="s1-multi-toggle"><div class="s1-multi-toggle-cell s1-multi-toggle-cell--middle-right is-hover">항목</div></div></div>
+              <div class="comp-state-cell"><div class="s1-multi-toggle"><div class="s1-multi-toggle-cell s1-multi-toggle-cell--middle-right is-selected">항목</div></div></div>
+              <div class="comp-state-cell"><div class="s1-multi-toggle"><div class="s1-multi-toggle-cell s1-multi-toggle-cell--middle-right is-disabled">항목</div></div></div>
+              <!-- md · last row -->
+              <div class="comp-action-cell" style="font-size:12px;color:var(--color-text-secondary);">md (h44) · last</div>
+              <div class="comp-state-cell"><div class="s1-multi-toggle"><div class="s1-multi-toggle-cell s1-multi-toggle-cell--last">항목</div></div></div>
+              <div class="comp-state-cell"><div class="s1-multi-toggle"><div class="s1-multi-toggle-cell s1-multi-toggle-cell--last is-hover">항목</div></div></div>
+              <div class="comp-state-cell"><div class="s1-multi-toggle"><div class="s1-multi-toggle-cell s1-multi-toggle-cell--last is-selected">항목</div></div></div>
+              <div class="comp-state-cell"><div class="s1-multi-toggle"><div class="s1-multi-toggle-cell s1-multi-toggle-cell--last is-disabled">항목</div></div></div>
+              <!-- sm · first row -->
+              <div class="comp-action-cell" style="font-size:12px;color:var(--color-text-secondary);">sm (h34) · first</div>
               <div class="comp-state-cell"><div class="s1-multi-toggle s1-multi-toggle--sm"><div class="s1-multi-toggle-cell s1-multi-toggle-cell--first">항목</div></div></div>
               <div class="comp-state-cell"><div class="s1-multi-toggle s1-multi-toggle--sm"><div class="s1-multi-toggle-cell s1-multi-toggle-cell--first is-hover">항목</div></div></div>
               <div class="comp-state-cell"><div class="s1-multi-toggle s1-multi-toggle--sm"><div class="s1-multi-toggle-cell s1-multi-toggle-cell--first is-selected">항목</div></div></div>
               <div class="comp-state-cell"><div class="s1-multi-toggle s1-multi-toggle--sm"><div class="s1-multi-toggle-cell s1-multi-toggle-cell--first is-disabled">항목</div></div></div>
+              <!-- sm · middle-left row -->
+              <div class="comp-action-cell" style="font-size:12px;color:var(--color-text-secondary);">sm (h34) · middle-left</div>
+              <div class="comp-state-cell"><div class="s1-multi-toggle s1-multi-toggle--sm"><div class="s1-multi-toggle-cell s1-multi-toggle-cell--middle-left">항목</div></div></div>
+              <div class="comp-state-cell"><div class="s1-multi-toggle s1-multi-toggle--sm"><div class="s1-multi-toggle-cell s1-multi-toggle-cell--middle-left is-hover">항목</div></div></div>
+              <div class="comp-state-cell"><div class="s1-multi-toggle s1-multi-toggle--sm"><div class="s1-multi-toggle-cell s1-multi-toggle-cell--middle-left is-selected">항목</div></div></div>
+              <div class="comp-state-cell"><div class="s1-multi-toggle s1-multi-toggle--sm"><div class="s1-multi-toggle-cell s1-multi-toggle-cell--middle-left is-disabled">항목</div></div></div>
+              <!-- sm · middle-right row -->
+              <div class="comp-action-cell" style="font-size:12px;color:var(--color-text-secondary);">sm (h34) · middle-right</div>
+              <div class="comp-state-cell"><div class="s1-multi-toggle s1-multi-toggle--sm"><div class="s1-multi-toggle-cell s1-multi-toggle-cell--middle-right">항목</div></div></div>
+              <div class="comp-state-cell"><div class="s1-multi-toggle s1-multi-toggle--sm"><div class="s1-multi-toggle-cell s1-multi-toggle-cell--middle-right is-hover">항목</div></div></div>
+              <div class="comp-state-cell"><div class="s1-multi-toggle s1-multi-toggle--sm"><div class="s1-multi-toggle-cell s1-multi-toggle-cell--middle-right is-selected">항목</div></div></div>
+              <div class="comp-state-cell"><div class="s1-multi-toggle s1-multi-toggle--sm"><div class="s1-multi-toggle-cell s1-multi-toggle-cell--middle-right is-disabled">항목</div></div></div>
+              <!-- sm · last row -->
+              <div class="comp-action-cell" style="font-size:12px;color:var(--color-text-secondary);">sm (h34) · last</div>
+              <div class="comp-state-cell"><div class="s1-multi-toggle s1-multi-toggle--sm"><div class="s1-multi-toggle-cell s1-multi-toggle-cell--last">항목</div></div></div>
+              <div class="comp-state-cell"><div class="s1-multi-toggle s1-multi-toggle--sm"><div class="s1-multi-toggle-cell s1-multi-toggle-cell--last is-hover">항목</div></div></div>
+              <div class="comp-state-cell"><div class="s1-multi-toggle s1-multi-toggle--sm"><div class="s1-multi-toggle-cell s1-multi-toggle-cell--last is-selected">항목</div></div></div>
+              <div class="comp-state-cell"><div class="s1-multi-toggle s1-multi-toggle--sm"><div class="s1-multi-toggle-cell s1-multi-toggle-cell--last is-disabled">항목</div></div></div>
             </div>
           </div>
         </div>

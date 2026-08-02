@@ -8,12 +8,6 @@
   "_updated": "2026-08-02",
   "knownGaps": [
     {
-      "key": "multi-toggle.position",
-      "kind": "uninstrumented",
-      "detail": "정본 [first,middle-left,middle-right,last] — data-cov-position 미선언",
-      "reason": "낱개 표 8칸이 전부 --first 위치로만 렌더된다(가운데·오른쪽 칸의 hover·disabled 가 페이지 어디에도 없음). 게다가 웹 CSS 는 position 3종(first/middle/last)인데 정본은 4종(middle-left/middle-right 분리)이라 축 자체가 어긋나 있다 → 웹 클래스 정합부터 정해야 채울 수 있다."
-    },
-    {
       "key": "date-picker.state",
       "kind": "missing",
       "detail": "설치기 [date, year, month, hover, today, selected, start, end] 가 data-cov-state 에 없음",
