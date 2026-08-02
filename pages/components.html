@@ -1686,8 +1686,8 @@
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      padding: 0 var(--spacing-24);
-      height: 40px; /* pc-md, pc-sm default */
+      padding: 0 var(--spacing-16); /* 정본 buildLineTab PAD_X=16 (PC·모바일 공통) — 종전 24 는 프로토타입 값 */
+      height: 40px; /* pc-md, pc-sm — 정본은 SM 42·MD 44. 후속 전수 검수에서 정정 */
       font-size: 16px;
       font-weight: var(--font-weight-medium);
       color: var(--color-navigation-label-default);
@@ -1704,12 +1704,12 @@
     .s1-tab-item:not(.is-disabled):not(.is-preview):hover,
     .s1-tab-item.is-hover {
       color: var(--color-navigation-label-selected);
-      font-weight: var(--font-weight-bold); /* Figma: hover = Bold(700), selected와 동일 */
+      font-weight: var(--font-weight-medium); /* 정본 buildLineTab 은 전 상태 Medium — 구분은 밑줄이 담당 */
       border-bottom: 2px solid var(--color-navigation-indicator-hover); /* 설치기 정본: hover = navigation/indicator/hover 파란 2px 밑줄 */
     }
     .s1-tab-item.is-selected {
       color: var(--color-navigation-label-selected);
-      font-weight: var(--font-weight-bold);
+      font-weight: var(--font-weight-medium); /* 정본 buildLineTab 은 전 상태 Medium */
       border-bottom: 2px solid var(--color-navigation-indicator-selected);
     }
     .s1-tab-item.is-disabled {
@@ -1724,9 +1724,10 @@
     .s1-tab--pc-md .s1-tab-item.is-selected {
       border-bottom-width: 2px; /* Figma 540:6032 — 4px container 안 2px 색상선 */
     }
-    /* Mobile — height 30px, padding-inline sm */
+    /* Mobile — 총높이 32px(내용 30 + 밑줄 2), padding-inline 16.
+       정본 buildLineTab Mobile/SM 및 V2.4 원본과 동일. 종전 30 은 프로토타입 값. */
     .s1-tab--mobile .s1-tab-item {
-      height: 30px;
+      height: 32px;
       padding: 0 var(--spacing-16);
     }
     /* ── Time Picker · Mobile Bottom Sheet ───────────────────────────────────
@@ -1735,7 +1736,7 @@
        겉모습 기준: Figma V2.4 원본 540:3729 (river 확정 2026-08-02). 아래 수치는 그 원본 실측값 —
          항목 높이 42 · 행 간격 32 · 열 폭 오전오후 56 / 시 20 / 콜론 10 / 분 39 ·
          오전오후↔시 간격 36 · 시↔콜론↔분 간격 32 · 휠 영역 270(상하 패딩 40) · 버튼 320×48.
-       위/아래 흐림: Figma 는 alpha 마스크(0.9→0)로 그리는데 웹에 1:1 대응이 없어
+       위/아래 흐림: Figma 는 alpha 마스크(4단계 곡선)로 그리는데 웹에 1:1 대응이 없어
          **정본과 같은 토큰(--color-overlay-wheel-fade)의 그라데이션 오버레이**로 구현한다.
          값이 시트 배경과 같은 색이라 결과가 동일하다(라이트 #FFFFFF · 다크 #1C1D23).
        선택 강조는 별도 표시가 아니라 **가운데만 안 흐려져서** 생긴다(정본과 동일 — 선택 배경 없음). */
@@ -1764,8 +1765,26 @@
     .s1-tp-wheel-col--colon  .s1-tp-wheel-item { width: 10px; }
     .s1-tp-wheel-col--minute .s1-tp-wheel-item { width: 39px; text-align: left; }
     .s1-tp-sheet__fade { position: absolute; left: 0; right: 0; height: 110px; pointer-events: none; }
-    .s1-tp-sheet__fade--top    { top: 0;    background: linear-gradient(to bottom, var(--color-overlay-wheel-fade), transparent); }
-    .s1-tp-sheet__fade--bottom { bottom: 0; background: linear-gradient(to top,    var(--color-overlay-wheel-fade), transparent); }
+    /* 4단계 곡선 — 정본(build-components.ts makeWheelFade)의 alpha 마스크와 같은 값.
+       원본 오버레이(V2.4 540:3785/3786·3758/3759) 실측 근거. 종전 2단계 직선은 바깥 줄이 너무 빨리 사라졌다.
+       --color-overlay-wheel-fade 는 불투명색이라 단계별 투명도를 color-mix 로 만든다(이 저장소 첫 사례 —
+       hex·rgba 를 직접 쓰지 않아 색 규칙 위반 아님). 바깥쪽 끝이 0.9 인 것도 정본과 동일. */
+    .s1-tp-sheet__fade--top {
+      top: 0;
+      background: linear-gradient(to bottom,
+        color-mix(in srgb, var(--color-overlay-wheel-fade) 90%, transparent) 0%,
+        color-mix(in srgb, var(--color-overlay-wheel-fade) 90%, transparent) 25%,
+        color-mix(in srgb, var(--color-overlay-wheel-fade) 70%, transparent) 65%,
+        transparent 100%);
+    }
+    .s1-tp-sheet__fade--bottom {
+      bottom: 0;
+      background: linear-gradient(to top,
+        color-mix(in srgb, var(--color-overlay-wheel-fade) 90%, transparent) 0%,
+        color-mix(in srgb, var(--color-overlay-wheel-fade) 90%, transparent) 25%,
+        color-mix(in srgb, var(--color-overlay-wheel-fade) 70%, transparent) 65%,
+        transparent 100%);
+    }
     .s1-tp-sheet__action { padding: 0 var(--spacing-20); }
     .s1-tp-sheet__action .s1-btn { width: 100%; }
     /* 프리뷰 맥락 — 시트가 '떠 있는 상태'임을 보여주는 딤·무대.
@@ -4623,13 +4642,13 @@ function setDisabled(on) {
                     </div>
                   </div>
                   <div class="comp-state-cell">
-                    <button class="s1-tab-item is-preview" style="font-size:16px;height:30px;padding:0 16px;border-bottom:1px solid var(--color-navigation-indicator-default);">메뉴1</button>
+                    <button class="s1-tab-item is-preview" style="font-size:16px;height:32px;padding:0 16px;border-bottom:1px solid var(--color-navigation-indicator-default);">메뉴1</button>
                   </div>
                   <div class="comp-state-cell">
-                    <button class="s1-tab-item is-selected is-preview" style="font-size:16px;height:30px;padding:0 16px;">메뉴2</button>
+                    <button class="s1-tab-item is-selected is-preview" style="font-size:16px;height:32px;padding:0 16px;">메뉴2</button>
                   </div>
                   <div class="comp-state-cell">
-                    <button class="s1-tab-item is-hover is-preview" style="font-size:16px;height:30px;padding:0 16px;border-bottom:2px solid var(--color-navigation-indicator-hover);">메뉴3</button>
+                    <button class="s1-tab-item is-hover is-preview" style="font-size:16px;height:32px;padding:0 16px;border-bottom:2px solid var(--color-navigation-indicator-hover);">메뉴3</button>
                   </div>
                 </div>
               </div>
@@ -4662,7 +4681,7 @@ function setDisabled(on) {
 <span class="c-tag">&lt;/div&gt;</span></pre>
           </div>
           <div class="code-pane" id="tab-mo-html">
-            <pre id="tab-mo-html-pre"><span class="c-cmt">&lt;!-- size: mobile (font 16px · height 30px · indicator 2px · padding-inline sm) --&gt;</span>
+            <pre id="tab-mo-html-pre"><span class="c-cmt">&lt;!-- size: mobile (font 16px · height 32px · indicator 2px · padding-inline sm) --&gt;</span>
 <span class="c-tag">&lt;div</span> <span class="c-attr">class</span>=<span class="c-str">"s1-tab s1-tab--mobile"</span><span class="c-tag">&gt;</span>
   <span class="c-tag">&lt;button</span> <span class="c-attr">class</span>=<span class="c-str">"s1-tab-item is-selected"</span> <span class="c-attr">type</span>=<span class="c-str">"button"</span> <span class="c-attr">aria-selected</span>=<span class="c-str">"true"</span><span class="c-tag">&gt;</span>메뉴1<span class="c-tag">&lt;/button&gt;</span>
   <span class="c-tag">&lt;button</span> <span class="c-attr">class</span>=<span class="c-str">"s1-tab-item"</span> <span class="c-attr">type</span>=<span class="c-str">"button"</span><span class="c-tag">&gt;</span>메뉴2<span class="c-tag">&lt;/button&gt;</span>
@@ -4689,9 +4708,8 @@ function setDisabled(on) {
 }
 <span class="c-sel">.s1-tab-item.is-selected</span> {
   <span class="c-prop">color</span>: <span class="c-val">var(--color-navigation-label-selected)</span>;
-  <span class="c-prop">font-weight</span>: <span class="c-val">var(--font-weight-bold)</span>;
+  <span class="c-prop">font-weight</span>: <span class="c-val">var(--font-weight-medium)</span>;
   <span class="c-prop">border-bottom</span>: <span class="c-val">2px solid var(--color-navigation-indicator-selected)</span>;
-  <span class="c-prop">letter-spacing</span>: <span class="c-val">0</span>;
 }
 <span class="c-sel">.s1-tab--pc-md .s1-tab-item</span>             { <span class="c-prop">font-size</span>: <span class="c-val">20px</span>; <span class="c-prop">letter-spacing</span>: <span class="c-val">0</span>; }
 <span class="c-sel">.s1-tab--pc-md .s1-tab-item.is-selected</span> { <span class="c-prop">border-bottom-width</span>: <span class="c-val">2px</span>; }

@@ -95,7 +95,7 @@ const SIZE_RULES = [
     htmlPaneId: 'tab-mo-html',   // Mobile HTML pane
     description: 'Line Tab Mobile HTML 코드탭 — mobile 사이즈 확인',
     sizes: [
-      { label: 'mobile (h30 · padding-inline sm)', mustContain: 's1-tab--mobile' },
+      { label: 'mobile (h32 · padding-inline 16)', mustContain: 's1-tab--mobile' },
     ],
   },
   {
