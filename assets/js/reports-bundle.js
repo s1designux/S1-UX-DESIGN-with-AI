@@ -2,9 +2,33 @@
    Run: npm run reports:sync
 */
 window.REPORTS_INDEX = {
-  "generatedAt": "2026-07-31T08:06:28.460Z",
-  "totalCount": 67,
+  "generatedAt": "2026-08-02T08:16:44.280Z",
+  "totalCount": 68,
   "reports": [
+    {
+      "id": "handoff-pipeline-rebuild",
+      "filename": "handoff-pipeline-rebuild.md",
+      "title": "인수인계 — 파이프라인 정비 (Phase 0~4 완료 · Phase 5~6 남음)",
+      "stage": "Audit",
+      "category": "audit",
+      "status": "complete",
+      "sourcePath": "reports/handoff-pipeline-rebuild.md",
+      "updatedAt": "2026-08-02",
+      "summary": "**main 브랜치에 Phase 0~4 가 전부 병합돼 있고 `npm run gate:check` PASSED(경고 9)다.** 작업트리 2개(`pipeline-rebuild`·`phase4-stubs`)는 병합 완료라 지워도 된다.",
+      "fileSizeKB": 9.8
+    },
+    {
+      "id": "button-sync-check",
+      "filename": "button-sync-check.md",
+      "title": "Button Sync Check Report",
+      "stage": "Audit",
+      "category": "audit",
+      "status": "archive",
+      "sourcePath": "reports/button-sync-check.md",
+      "updatedAt": "2026-08-01",
+      "summary": "- **Variants:** primary, secondary, blue-line",
+      "fileSizeKB": 3.2
+    },
     {
       "id": "component-alias-canonical-mapping",
       "filename": "component-alias-canonical-mapping.md",
@@ -64,18 +88,6 @@ window.REPORTS_INDEX = {
       "updatedAt": "2026-07-15",
       "summary": "**상태: 미착수.** 확인 계열(`registry/components/modal.json`, compact 텍스트-확인)과 **구분되는 별개 컴포넌트**.",
       "fileSizeKB": 3.3
-    },
-    {
-      "id": "button-sync-check",
-      "filename": "button-sync-check.md",
-      "title": "Button Sync Check Report",
-      "stage": "Audit",
-      "category": "audit",
-      "status": "archive",
-      "sourcePath": "reports/button-sync-check.md",
-      "updatedAt": "2026-07-10",
-      "summary": "- **Variants:** primary, secondary, blue-line",
-      "fileSizeKB": 3.2
     },
     {
       "id": "mvp-t2-token-sync",
