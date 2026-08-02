@@ -351,6 +351,26 @@ try {
   fail(`Gate 9c 실행 실패: ${e.message}`);
 }
 
+// ── Gate 9d: Component Element Stubs (생성물 드리프트) ─────────────
+// pages/components.html 의 부품(요소) 섹션 18개는 2026-08-02 부터 data/component-element-stubs.json
+// 파생 생성물이다. 손편집으로 되돌아가면 토큰 표가 정본과 조용히 갈린다(종전 gnb-util-icon 배지처럼).
+console.log('\n🔎 [Gate 9d] 부품섹션 생성물 검사기 (Component Element Stubs)');
+try {
+  const { spawnSync } = require('child_process');
+  const r = spawnSync('node', [path.join(ROOT, 'scripts/gen-component-stubs.js'), '--check'], { encoding: 'utf-8' });
+  const out = ((r.stdout || '') + (r.stderr || '')).split('\n').filter((l) => l.trim());
+  if (r.status === 0) {
+    const ok = out.find((l) => l.includes('✅'));
+    pass(ok ? ok.replace(/^\s*✅\s*/, '').trim() : '부품 섹션 정본 일치');
+  } else {
+    const bad = out.filter((l) => l.includes('❌'));
+    if (bad.length === 0) fail(`Gate 9d: 부품 섹션이 정본과 어긋남 (exit ${r.status}) — npm run stubs:gen`);
+    else for (const l of bad) fail(`Gate 9d: ${l.replace(/^\s*❌\s*/, '').trim()}`);
+  }
+} catch (e) {
+  fail(`Gate 9d 실행 실패: ${e.message}`);
+}
+
 // ── Gate 10: Doc Token Reference Drift ────────────────────────────
 // 가이드/레퍼런스 HTML 이 rename·삭제된 토큰명을 쥐고 있는지 강제.
 // Check B(rename denylist)=차단 · Check A(미정의 --color-* 참조)=경고(기존 드리프트)

@@ -1,0 +1,448 @@
+{
+  "_role": "pages/components.html 의 부품(요소) 섹션 정본 데이터. scripts/gen-component-stubs.js 가 이걸 읽어 HTML 마커 구간을 생성한다.",
+  "_policy": [
+    "HTML 을 손으로 고치지 말 것 — Gate 9d 가 차단한다. 값을 바꾸려면 이 파일을 고치고 npm run stubs:gen 을 돌린다.",
+    "paneId 는 규칙으로 파생할 수 없어(lt·sb·lgnb·mte·gui …) 필드로 보관한다. 새 항목은 기존과 겹치지 않는 값을 쓴다.",
+    "exposed:true 는 좌측 필터·딥링크에 노출한다는 뜻. 부품은 기본 비노출(상위 섹션 안에서 표출하는 것이 정책)이고, 상위가 없는 회사 고유 자산만 노출한다."
+  ],
+  "_updated": "2026-08-02",
+  "stubs": [
+    {
+      "id": "line-tab",
+      "title": "Line Tab",
+      "paneId": "lt-tokens",
+      "rows": [
+        {
+          "token": "--color-navigation-label-default",
+          "value": "var(--color-gray-600)",
+          "role": "text · default"
+        },
+        {
+          "token": "--color-navigation-label-hover",
+          "value": "var(--color-blue-400)",
+          "role": "text · hover"
+        },
+        {
+          "token": "--color-navigation-label-selected",
+          "value": "var(--color-blue-400)",
+          "role": "text · selected"
+        },
+        {
+          "token": "--color-navigation-indicator-default",
+          "value": "var(--color-gray-200)",
+          "role": "indicator · default"
+        },
+        {
+          "token": "--color-navigation-indicator-selected",
+          "value": "var(--color-blue-400)",
+          "role": "indicator · selected"
+        }
+      ]
+    },
+    {
+      "id": "status-bar",
+      "title": "Status Bar",
+      "paneId": "sb-tokens",
+      "rows": [
+        {
+          "token": "--color-bg-default",
+          "value": "var(--color-gray-0)",
+          "role": "background"
+        },
+        {
+          "token": "--color-text-body-primary",
+          "value": "var(--color-gray-900)",
+          "role": "text"
+        },
+        {
+          "token": "--color-icon-gray",
+          "value": "var(--color-gray-dark-600)",
+          "role": "icon"
+        }
+      ]
+    },
+    {
+      "id": "nav-bar",
+      "title": "Nav Bar",
+      "paneId": "nb-tokens",
+      "rows": [
+        {
+          "token": "--color-navigation-bg",
+          "value": "var(--color-base-white)",
+          "role": "background"
+        },
+        {
+          "token": "--color-navigation-label-default",
+          "value": "var(--color-gray-600)",
+          "role": "text · default"
+        },
+        {
+          "token": "--color-navigation-label-selected",
+          "value": "var(--color-blue-400)",
+          "role": "text · selected"
+        },
+        {
+          "token": "--color-icon-gray",
+          "value": "var(--color-gray-dark-600)",
+          "role": "icon · default"
+        }
+      ]
+    },
+    {
+      "id": "login-gnb",
+      "title": "Login GNB",
+      "paneId": "lgnb-tokens",
+      "rows": [
+        {
+          "token": "--color-navigation-bg",
+          "value": "var(--color-base-white)",
+          "role": "background"
+        },
+        {
+          "token": "--color-text-title-primary",
+          "value": "var(--color-gray-900)",
+          "role": "text"
+        },
+        {
+          "token": "--color-icon-gray",
+          "value": "var(--color-gray-dark-600)",
+          "role": "icon"
+        }
+      ],
+      "exposed": true,
+      "navLabel": "Login GNB",
+      "navPlatforms": "pc"
+    },
+    {
+      "id": "web-tab-bar",
+      "title": "Web Tab Bar",
+      "paneId": "wtb-tokens",
+      "rows": [
+        {
+          "token": "--color-navigation-label-default",
+          "value": "var(--color-gray-600)",
+          "role": "text · default"
+        },
+        {
+          "token": "--color-navigation-label-selected",
+          "value": "var(--color-blue-400)",
+          "role": "text · selected"
+        },
+        {
+          "token": "--color-navigation-indicator-default",
+          "value": "var(--color-gray-200)",
+          "role": "indicator · default"
+        },
+        {
+          "token": "--color-navigation-indicator-selected",
+          "value": "var(--color-blue-400)",
+          "role": "indicator · selected"
+        }
+      ]
+    },
+    {
+      "id": "ci",
+      "title": "CI",
+      "paneId": "ci-tokens",
+      "rows": [
+        {
+          "token": "--color-brand-blue",
+          "value": "#0072CE",
+          "role": "brand primary"
+        },
+        {
+          "token": "--color-brand-gray",
+          "value": "#DFDEDE",
+          "role": "brand secondary"
+        }
+      ],
+      "exposed": true,
+      "navLabel": "CI Logo",
+      "navPlatforms": "pc mobile"
+    },
+    {
+      "id": "multi-toggle-element",
+      "title": "Multi Toggle Element",
+      "paneId": "mte-tokens",
+      "rows": [
+        {
+          "token": "--color-control-bg-default",
+          "value": "var(--color-base-white)",
+          "role": "background · default"
+        },
+        {
+          "token": "--color-control-bg-selected",
+          "value": "var(--color-blue-400)",
+          "role": "background · selected"
+        },
+        {
+          "token": "--color-control-label-default",
+          "value": "var(--color-gray-800)",
+          "role": "text · default"
+        },
+        {
+          "token": "--color-button-label-primary--default",
+          "value": "var(--color-base-white)",
+          "role": "text · selected"
+        }
+      ]
+    },
+    {
+      "id": "footer",
+      "title": "Footer",
+      "paneId": "footer-tokens",
+      "rows": [
+        {
+          "token": "--color-bg-default",
+          "value": "var(--color-gray-0)",
+          "role": "background"
+        },
+        {
+          "token": "--color-text-body-primary",
+          "value": "var(--color-gray-900)",
+          "role": "text primary"
+        },
+        {
+          "token": "--color-text-body-secondary",
+          "value": "var(--color-gray-800)",
+          "role": "text secondary"
+        },
+        {
+          "token": "--color-action-primary-default",
+          "value": "var(--color-blue-400)",
+          "role": "link"
+        }
+      ],
+      "exposed": true,
+      "navLabel": "Footer",
+      "navPlatforms": "pc"
+    },
+    {
+      "id": "gnb-util-icon",
+      "title": "GNB Util Icon",
+      "paneId": "gui-tokens",
+      "rows": [
+        {
+          "token": "--color-icon-gray-dark",
+          "value": "var(--color-gray-800)",
+          "role": "유틸 아이콘 · 단일색(hover 별도 토큰 없음)"
+        }
+      ],
+      "_fix": "2026-08-02 교정: 배지가 \"2 tokens\" 였으나 실제 행은 1개다. role 이 \"hover 별도 토큰 없음\"이라 1이 맞고 배지가 stale 이었다. 배지를 행 수에서 파생하도록 바꿔 해소."
+    },
+    {
+      "id": "language-icon",
+      "title": "Language Icon",
+      "paneId": "li-tokens",
+      "rows": [
+        {
+          "token": "--color-icon-gray",
+          "value": "var(--color-gray-dark-600)",
+          "role": "icon · default"
+        }
+      ]
+    },
+    {
+      "id": "pagination-cell",
+      "title": "Pagination Cell",
+      "paneId": "pc-tokens",
+      "rows": [
+        {
+          "token": "--color-pagination-number-default",
+          "value": "var(--color-gray-400)",
+          "role": "번호 텍스트 · default"
+        },
+        {
+          "token": "--color-pagination-number-hover",
+          "value": "var(--color-gray-400)",
+          "role": "번호 텍스트 · hover"
+        },
+        {
+          "token": "--color-pagination-number-selected",
+          "value": "var(--color-gray-800)",
+          "role": "번호 텍스트 · selected"
+        },
+        {
+          "token": "--color-pagination-control-icon-default",
+          "value": "var(--color-gray-800)",
+          "role": "화살표 아이콘 · default"
+        }
+      ]
+    },
+    {
+      "id": "calendar",
+      "title": "Calendar",
+      "paneId": "calendar-tokens",
+      "rows": [
+        {
+          "token": "--color-bg-default",
+          "value": "var(--color-gray-0)",
+          "role": "background"
+        },
+        {
+          "token": "--color-surface-default",
+          "value": "var(--color-base-white)",
+          "role": "background header"
+        },
+        {
+          "token": "--color-border-default",
+          "value": "var(--color-gray-200)",
+          "role": "border"
+        }
+      ]
+    },
+    {
+      "id": "calendar-cell",
+      "title": "Calendar Cell",
+      "paneId": "cc-tokens",
+      "rows": [
+        {
+          "token": "--calendar-cell-bg-default",
+          "value": "transparent",
+          "role": "background · default"
+        },
+        {
+          "token": "--color-bg-subtle",
+          "value": "var(--color-gray-50)",
+          "role": "background · hover"
+        },
+        {
+          "token": "--color-action-primary-default",
+          "value": "var(--color-blue-400)",
+          "role": "background · selected"
+        },
+        {
+          "token": "--color-text-body-primary",
+          "value": "var(--color-gray-900)",
+          "role": "text · default"
+        },
+        {
+          "token": "--color-text-inverse",
+          "value": "var(--color-base-white)",
+          "role": "text · selected"
+        }
+      ]
+    },
+    {
+      "id": "calendar-tile",
+      "title": "Calendar Tile",
+      "paneId": "ct-tokens",
+      "rows": [
+        {
+          "token": "--calendar-tile-bg-default",
+          "value": "transparent",
+          "role": "background · default"
+        },
+        {
+          "token": "--color-bg-subtle",
+          "value": "var(--color-gray-50)",
+          "role": "background · hover"
+        },
+        {
+          "token": "--color-text-body-primary",
+          "value": "var(--color-gray-900)",
+          "role": "text · default"
+        }
+      ]
+    },
+    {
+      "id": "date-picker-bottom-sheet",
+      "title": "Date Picker Bottom Sheet",
+      "paneId": "dpbs-tokens",
+      "rows": [
+        {
+          "token": "--color-surface-default",
+          "value": "var(--color-base-white)",
+          "role": "background"
+        },
+        {
+          "token": "--color-border-default",
+          "value": "var(--color-gray-200)",
+          "role": "border"
+        },
+        {
+          "token": "--color-bg-default",
+          "value": "var(--color-gray-0)",
+          "role": "background header"
+        }
+      ]
+    },
+    {
+      "id": "time-picker-dropdown",
+      "title": "Time Picker Dropdown",
+      "paneId": "tpd-tokens",
+      "rows": [
+        {
+          "token": "--color-dropdown-list-bg",
+          "value": "var(--color-base-white)",
+          "role": "background"
+        },
+        {
+          "token": "--color-dropdown-list-border",
+          "value": "var(--color-gray-200)",
+          "role": "border"
+        }
+      ]
+    },
+    {
+      "id": "time-picker-cell",
+      "title": "Time Picker Cell",
+      "paneId": "tpc-tokens",
+      "rows": [
+        {
+          "token": "--time-picker-cell-bg-default",
+          "value": "transparent",
+          "role": "background · default"
+        },
+        {
+          "token": "--color-bg-subtle",
+          "value": "var(--color-gray-50)",
+          "role": "background · hover"
+        },
+        {
+          "token": "--color-action-primary-default",
+          "value": "var(--color-blue-400)",
+          "role": "background · selected"
+        },
+        {
+          "token": "--color-text-body-primary",
+          "value": "var(--color-gray-900)",
+          "role": "text · default"
+        },
+        {
+          "token": "--color-text-inverse",
+          "value": "var(--color-base-white)",
+          "role": "text · selected"
+        }
+      ]
+    },
+    {
+      "id": "table-cell",
+      "title": "Table Cell",
+      "paneId": "tc-tokens",
+      "rows": [
+        {
+          "token": "--color-table-cell-default",
+          "value": "var(--color-base-white)",
+          "role": "background · default"
+        },
+        {
+          "token": "--color-table-cell-hover",
+          "value": "var(--color-gray-50)",
+          "role": "background · hover"
+        },
+        {
+          "token": "--color-table-cell-selected",
+          "value": "var(--color-blue-50)",
+          "role": "background · selected"
+        },
+        {
+          "token": "--color-text-body-primary",
+          "value": "var(--color-gray-900)",
+          "role": "text · default"
+        }
+      ]
+    }
+  ],
+  "_exposeNote": "회사 고유 자산(CI 로고·푸터·로그인 GNB)만 노출한다(river 결정 2026-08-02). 기기/OS 크롬(상태바·내비바·웹탭바)은 범용이라 가이드에 올리지 않고, 나머지 부품은 상위 섹션 안에서 표출하는 정책이라 비노출 유지."
+}

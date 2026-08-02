@@ -53,6 +53,8 @@
     "tokens:gen:foundation": "node scripts/gen-foundation-tokens.js",
     "typo:gen": "node scripts/typography-gen.js",
     "page:gen": "node scripts/gen-semantic-page.js",
+    "stubs:gen": "node scripts/gen-component-stubs.js",
+    "stubs:check": "node scripts/gen-component-stubs.js --check",
     "dashboard:gen": "node scripts/gen-dashboard.js",
     "design:md": "node scripts/gen-design-md.js",
     "design:md:write": "node scripts/gen-design-md.js --write",

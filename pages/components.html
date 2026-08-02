@@ -2011,6 +2011,9 @@
           <button class="comp-nav-btn" data-category="navigation" data-platforms="pc" onclick="showSection('gnb', this)">GNB</button>
           <button class="comp-nav-btn" data-category="navigation" data-platforms="pc" onclick="showSection('pagination', this)">Pagination</button>
           <button class="comp-nav-btn" data-category="navigation" data-platforms="mobile" onclick="showSection('mobile-bottom-nav', this)">Bottom Nav</button>
+          <button class="comp-nav-btn" data-category="navigation" data-platforms="pc mobile" onclick="showSection('ci', this)">CI Logo</button>
+          <button class="comp-nav-btn" data-category="navigation" data-platforms="pc" onclick="showSection('footer', this)">Footer</button>
+          <button class="comp-nav-btn" data-category="navigation" data-platforms="pc" onclick="showSection('login-gnb', this)">Login GNB</button>
         </div><!-- /comp-nav -->
       </div><!-- /component-filter -->
 
@@ -7537,6 +7540,7 @@ document.addEventListener('click', function(e) {
         </div>
       </section>
 
+      <!-- >>> GEN:COMPONENT-STUBS >>> 자동 생성 (npm run stubs:gen). 수동 편집 금지. -->
       <!-- ═══ LINE TAB ═══ -->
       <section class="comp-section" id="line-tab">
         <div class="comp-section-header">
@@ -7755,7 +7759,7 @@ document.addEventListener('click', function(e) {
         <div class="comp-section-header">
           <h2 class="comp-section-title">GNB Util Icon</h2>
           <span class="comp-badge">Element</span>
-          <span class="comp-badge">2 tokens</span>
+          <span class="comp-badge">1 token</span>
         </div>
         <div class="code-block">
           <div class="code-tabs">
@@ -8010,6 +8014,7 @@ document.addEventListener('click', function(e) {
           </div>
         </div>
       </section>
+      <!-- <<< GEN:COMPONENT-STUBS <<< -->
 
     </div>
   </main>
@@ -8406,7 +8411,7 @@ document.addEventListener('click', function(e) {
   applyPlatformMenu();
 
   (function initFromHash() {
-    var valid = ['button','checkbox','radio','toggle','multi-toggle','chip','filter-chip','input','date-picker','time-picker','textarea','select','dropdown','table','pagination','tab','gnb','mobile-bottom-nav']; // Components New: 마이그레이션 완료 컴포넌트만
+    var valid = ['button','checkbox','radio','toggle','multi-toggle','chip','filter-chip','input','date-picker','time-picker','textarea','select','dropdown','table','pagination','tab','gnb','mobile-bottom-nav','ci','footer','login-gnb']; // 마이그레이션 완료 컴포넌트 + 회사 고유 자산 3종(상위가 없어 어디에도 안 보이던 것 — 2026-08-02 노출)
     var hash  = window.location.hash.replace('#', '');
     var id    = (hash && valid.includes(hash)) ? hash : 'button'; // 기본은 Button(양 플랫폼 공통)
     var btn   = document.querySelector('.comp-nav-btn[onclick*="\'' + id + '\'"]');
