@@ -67,12 +67,17 @@ comp (VERTICAL, w=360 FIXED, h=AUTO, py 20, gap 32)
 
 1단계 결론 유지: 모바일 휠(32px accent 텍스트 + 흐림 마스크)과 기존 "Time Picker Cell"(PC 드롭다운용, 14px + bg 하이라이트)은 시각 원리가 달라 재사용 부적합 → 신규 조립.
 
+> ⚠️ **아래 구조는 2026-08-02 에 갱신됐다.** 종전 계획(평탄 4열 gap 36 · 콜론 gap 40 · 항목 35h)은
+> V2.4 원본 실측과 달랐고, 그 값으로는 휠이 286 이 나와 원본 270 과 맞지 않았다.
+> 원본 실측(river 확정)은 **항목 42 · 행간격 32 · 열간격 36/32/32** 이며 코드가 이것을 따른다.
+
 ```
-wheelWrap (HORIZONTAL, items-center, px 24, py 40, gap 36)
-├─ ampmCol (VERTICAL, gap 32) — "오전"/"오후" 2행, 텍스트 color/text/state/accent
-├─ hourCol (VERTICAL, gap 32, text-right) — 3행(예: 7·8·9), color/text/state/accent
-├─ colonCol (VERTICAL, gap 40) — ":" × 3행, 각 35h×10w, color/text/state/accent
-└─ minuteCol (VERTICAL, gap 32) — 3행(예: 59·00·01), color/text/state/accent
+wheelWrap (HORIZONTAL, counter-axis MIN, px 24, py 40, gap 36)   ← MIN: 오전/오후를 1·2행에
+├─ ampmCol (VERTICAL, gap 32) — "오전"/"오후" 2행, color/text/state/accent
+└─ time-group (HORIZONTAL, gap 32)                                ← 원본의 중첩 구조
+   ├─ hourCol   (VERTICAL, gap 32, text-right) — 3행(7·8·9)
+   ├─ colonCol  (VERTICAL, gap 32) — ":" × 3행   ← 숫자열과 pitch 일치(종전 40 은 3행째 16px 밀림)
+   └─ minuteCol (VERTICAL, gap 32, text-left) — 3행(59·00·01)
 ```
 - 휠 텍스트: Pretendard Regular 32(원본 raw — named 텍스트 스타일 없음. `setTextStyleIdAsync` 대상 스타일이 없으므로 `loadFontAsync` 로 Pretendard 직접 적용 후 유지. 단, 이 PC에서 Pretendard 로드 불가 시 임시 Noto 입력 후 **가장 가까운 body 계열 텍스트 스타일로 재바인딩 대신, 폰트 훅 규정에 따라 `figma-font-temp` 마커 남기고 이후 재검증**).
 - 각 컬럼 3행은 전부 동일색(`color/text/state/accent`) — 원본과 동일(위/아래가 "다른 색"이 아니라 마스크로 흐려 보이는 것).
@@ -132,10 +137,20 @@ wheelWrap (HORIZONTAL, items-center, px 24, py 40, gap 36)
   사유: 공용 Line Tab 부품 변경 시 타 화면 영향 → 사용자 결정(2026-07-06)으로 현 상태 유지.
   빌더 지시: raw 유지(Line Tab 인스턴스 그대로 사용, 별도 override 금지).
 
-허용편차 #2: [tabRow 높이] 30px(원본) vs Line Tab Mobile/SM 32px(재사용 표준 사이즈).
-  사유: 표준 사이즈 컴포넌트 재사용 우선(2px 차이는 시각적으로 무의미).
-  빌더 지시: Line Tab 표준 그대로 사용, 리사이즈 금지.
+허용편차 #2: [tabRow 높이] — **해소(2026-08-02).**
+  "원본 30 vs 정본 32" 는 기록 오류였다. 원본 탭도 내용 30 + 밑줄 2 = 총 32 로 정본과 같다
+  (V2.4 540:3735 재실측 · 캔버스 1457:7541 안 tab-1~3 각 90×32 실측). 편차 아님.
+
+허용편차 #3: [wheelWrap gap] — **해소(2026-08-02).**
+  원본 중첩 구조(ampm↔group 36 / group 내부 32)를 코드에 반영. 위 3절 계획이 낡았던 것.
+
+허용편차 #4: [콜론 pitch] 원본은 항목 35 + 간격 40 = pitch 75 로 숫자열(74)과 1px 어긋나 있다
+  (레거시 손배치 흔적). 그 오차는 베끼지 않고 숫자열과 pitch 를 완전히 일치시킨다(41.6 + 32).
+  사유: 3행 누적 시 눈에 띄는 어긋남이 되고, 원본의 의도는 '줄맞춤'이 분명하다.
 ```
+
+> **2026-08-02 기록:** 위 #1 은 river 재확인으로 유지 확정(웹이 Bold 였던 것은 프로토타입 잔재 →
+> 웹을 Medium 으로 교정). #2·#3 해소, #4 신설. 상세는 `node-map.json` 의 3번째 revision 참조.
 
 ---
 

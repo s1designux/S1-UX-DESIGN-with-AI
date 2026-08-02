@@ -3369,12 +3369,23 @@ async function buildTimePickerMobileBottomSheet(maps: BuildMaps, originY: number
     fade.name = position === "top" ? "fade-top" : "fade-bottom";
     fade.fills = []; fade.clipsContent = true;
     fade.resize(SHEET_W, FADE_H);
-    const A = 0.9;
     const mask = figma.createRectangle();
     mask.name = "fade-mask"; mask.resize(SHEET_W, FADE_H);
+    // 4-stop 곡선 — V2.4 원본 오버레이(540:3785/3786·3758/3759) 실측을 마스크 좌표로 옮긴 값.
+    //   종전엔 2-stop 직선(0.9→0)이라 바깥 줄이 너무 빨리 사라졌다. 캔버스에서 손으로 교정해
+    //   node-map.json revisions 에 기록해 뒀으나 **이 코드에는 반영되지 않아 재설치하면 사라지던**
+    //   상태였다(2026-08-02 적발). 여기 박아 재설치 안전성을 확보한다.
+    //   ⚠️ top 과 bottom 의 숫자가 대칭이 아닌 이유: 마스크 position 은 **바깥→중앙** 방향 거리라
+    //   top(0=위 바깥, 1=중앙)과 bottom(0=중앙, 1=아래 바깥)의 기준점이 서로 반대다.
     const stops: ColorStop[] = position === "top"
-      ? [{ position: 0, color: { r: 1, g: 1, b: 1, a: A } }, { position: 1, color: { r: 1, g: 1, b: 1, a: 0 } }]
-      : [{ position: 0, color: { r: 1, g: 1, b: 1, a: 0 } }, { position: 1, color: { r: 1, g: 1, b: 1, a: A } }];
+      ? [{ position: 0,    color: { r: 1, g: 1, b: 1, a: 0.9 } },
+         { position: 0.25, color: { r: 1, g: 1, b: 1, a: 0.9 } },
+         { position: 0.65, color: { r: 1, g: 1, b: 1, a: 0.7 } },
+         { position: 1,    color: { r: 1, g: 1, b: 1, a: 0.0 } }]
+      : [{ position: 0,    color: { r: 1, g: 1, b: 1, a: 0.0 } },
+         { position: 0.35, color: { r: 1, g: 1, b: 1, a: 0.7 } },
+         { position: 0.75, color: { r: 1, g: 1, b: 1, a: 0.9 } },
+         { position: 1,    color: { r: 1, g: 1, b: 1, a: 0.9 } }];
     mask.fills = [{ type: "GRADIENT_LINEAR", gradientTransform: [[0, 1, 0], [-1, 0, 1]], gradientStops: stops } as GradientPaint];
     mask.isMask = true;
     fade.appendChild(mask);
@@ -3462,16 +3473,31 @@ async function buildTimePickerMobileBottomSheet(maps: BuildMaps, originY: number
     const wheelWrap = figma.createFrame();
     wheelWrap.name = "wheel"; wheelWrap.fills = [];
     wheelWrap.layoutMode = "HORIZONTAL"; wheelWrap.primaryAxisSizingMode = "FIXED"; wheelWrap.counterAxisSizingMode = "AUTO";
-    wheelWrap.primaryAxisAlignItems = "CENTER"; wheelWrap.counterAxisAlignItems = "CENTER";
+    // counterAxis=MIN — 오전/오후 열(2행)이 **위에서 첫·둘째 줄**에 오게 한다(원본 y=0).
+    //   종전 CENTER 는 2행짜리 ampm 을 세로 중앙에 놓아 숫자 줄과 어긋나게 만들었다.
+    //   숫자 3열은 아래 pitch 통일로 높이가 같아져 MIN/CENTER 차이가 없다.
+    wheelWrap.primaryAxisAlignItems = "CENTER"; wheelWrap.counterAxisAlignItems = "MIN";
     wheelWrap.paddingLeft = 24; wheelWrap.paddingRight = 24; wheelWrap.paddingTop = 40; wheelWrap.paddingBottom = 40;
     wheelWrap.itemSpacing = 36; wheelWrap.clipsContent = false;
     comp.appendChild(wheelWrap);
     try { wheelWrap.layoutAlign = "STRETCH"; } catch (e) { /* */ }
     // 4열: 오전/오후(2행) · 시(3행·우측) · 콜론(3행) · 분(3행·좌측). 전 셀 accent(위/아래는 마스크로 흐려짐).
+    //   열 간격은 원본이 **36 / 32 / 32** 로 평탄하지 않다 — 오전오후와 시각 묶음 사이만 36 이고
+    //   시·콜론·분 사이는 32. 그래서 [시·콜론·분]을 time-group 으로 묶어 안쪽 32 를 준다.
+    //   (종전엔 4열 평탄 36 이라 콜론이 숫자에서 4px 씩 더 떨어져 있었다.)
     wheelWrap.appendChild(await makeWheelCol("ampm", ["오전", "오후"], 32, "CENTER"));
-    wheelWrap.appendChild(await makeWheelCol("hour", ["7", "8", "9"], 32, "MAX"));
-    wheelWrap.appendChild(await makeWheelCol("colon", [":", ":", ":"], 40, "CENTER"));
-    wheelWrap.appendChild(await makeWheelCol("minute", ["59", "00", "01"], 32, "MIN"));
+    const timeGroup = figma.createFrame();
+    timeGroup.name = "time-group"; timeGroup.fills = [];
+    timeGroup.layoutMode = "HORIZONTAL"; timeGroup.primaryAxisSizingMode = "AUTO"; timeGroup.counterAxisSizingMode = "AUTO";
+    timeGroup.primaryAxisAlignItems = "CENTER"; timeGroup.counterAxisAlignItems = "MIN"; timeGroup.itemSpacing = 32;
+    timeGroup.clipsContent = false;
+    wheelWrap.appendChild(timeGroup);
+    timeGroup.appendChild(await makeWheelCol("hour", ["7", "8", "9"], 32, "MAX"));
+    // 콜론 행 간격 32 — 숫자열과 **pitch 를 완전히 일치**시킨다. 종전 40 은 콜론 항목 높이가
+    //   숫자와 같은 32px(행간 130% = 41.6)인데 간격만 40 이라 3행째에서 약 16px 밀렸다.
+    //   (원본은 항목 35 + 간격 40 = 75 로 숫자열 74 와 1px 어긋나 있다 — 그 오차는 베끼지 않는다.)
+    timeGroup.appendChild(await makeWheelCol("colon", [":", ":", ":"], 32, "CENTER"));
+    timeGroup.appendChild(await makeWheelCol("minute", ["59", "00", "01"], 32, "MIN"));
     // 흐림 오버레이 2장 — 컬럼 위에 절대배치(위=상단 고정, 아래=하단 고정).
     const wheelH = wheelWrap.height;
     const fadeTop = makeWheelFade("top");

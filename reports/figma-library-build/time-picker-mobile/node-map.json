@@ -19,6 +19,16 @@
       },
       "sizeCheck": "fade 프레임 110×360 유지. 원본 오버레이 60px(≈한 줄)이나 내 프레임은 wheelWrap py40 패딩 포함 → 실제 활성 fade 구간 ~70px(=110-40)≈한 줄. 곡선이 중앙행 직전(y~110, 중앙행 시작 y~122)에서 alpha0 도달 → 중앙 crisp. 비율 일치로 리사이즈 안 함.",
       "renderCheck": "Light·Dark 둘 다 렌더 확인: 외곽 줄(7:59/9:01) 은은히 흐려 여전히 읽히는 정도(연파랑), 가운데(8:00) 또렷 — 이전 과한 버전보다 부드럽고 원본과 유사. (자기검증 아님 — component-verifier 재확인 예정)"
+    },
+    {
+      "date": "2026-08-02 (캔버스 교정 → 코드 역반영 · component-verifier 검증)",
+      "why": "위 2026-07-06 교정 2건(ampm 정렬·fade 곡선)은 **캔버스에서만** 고쳐지고 build-components.ts 에는 반영되지 않은 상태였다. 즉 설치기를 다시 돌리면 교정이 사라졌다(2026-08-02 V2.4 원본 전수 대조에서 적발). 이번에 코드에 박아 재설치 안전성을 확보했다.",
+      "fix1_ampmAlign_codeSide": "구현 메커니즘이 캔버스 교정과 다르다(결과는 동등). 캔버스는 '3번째 빈 슬롯 프레임(42px) 추가'로 풀었으나, 코드는 wheelWrap.counterAxisAlignItems 를 CENTER→MIN 으로 바꿔 푼다. 글자 실제 높이가 41.6(32×130%)이라 42 를 하드코딩하면 열끼리 0.4px 어긋나고, 의미 없는 자리채움 노드를 늘리지 않기 위함. 오전=1행·오후=2행 y 동일 확인.",
+      "fix2_fadeCurve_codeSide": "4-stop 곡선을 코드에 이관 — top [0:0.9, 0.25:0.9, 0.65:0.7, 1:0.0] · bottom [0:0.0, 0.35:0.7, 0.75:0.9, 1:0.9]. 위 재교정 revision 의 실측 근거(원본 오버레이 540:3785/3786·3758/3759)와 동일 값. gradientTransform·FADE_H=110·isMask·wheel-fade 바인딩 불변.",
+      "fix3_wheelGap": "열 간격 평탄 36 → 원본 중첩 36/32/32. [시·콜론·분]을 time-group(gap 32)으로 묶고 wheelWrap gap 36 유지 → 허용편차 #3 해소.",
+      "fix4_colonPitch": "콜론 행 간격 40→32. 콜론 항목 높이가 숫자와 같은 41.6 인데 간격만 40 이라 3행째 약 16px 밀렸다. 부수효과(의도): 휠 286→270 · 시트 TimeOnly 464→448 · DateTime 526→512 로 **원본 실측값과 일치**하게 됨.",
+      "verified": "🤖 component-verifier — 코드결함 0건. 45세트·502변형·485토큰 동일, resize 호출 2185 동일, 지문 차이 3행 전부 이 컴포넌트 내부. fade 2장 ABSOLUTE·constraints·isMask 유지 확인. 미확인: fadeBottom.y 실제값·캔버스 렌더(mock 한계) → river 재설치 육안 확인.",
+      "codeReflected": true
     }
   ],
   "set": {
@@ -26,7 +36,10 @@
     "name": "Time Picker Mobile Bottom Sheet",
     "variantAxis": "Content",
     "layout": "HORIZONTAL auto-layout, padding 40, itemSpacing 80, counterAxisAlignItems MIN (packed, no coordinate collapse)",
-    "size": { "width": 880, "height": 608 },
+    "size": {
+      "width": 880,
+      "height": 608
+    },
     "fill": "color/bg/level-3 (VariableID:687:17887) — 흰 시트가 회색 위에서 보이게",
     "placement": "Time Picker 섹션(912:39987) 내부, rel(64,2858) / abs(21308,2858)"
   },
@@ -34,9 +47,14 @@
     {
       "id": "918:6250",
       "name": "Content=TimeOnly",
-      "properties": { "Content": "TimeOnly" },
+      "properties": {
+        "Content": "TimeOnly"
+      },
       "title": "시간 선택",
-      "size": { "width": 360, "height": 462 },
+      "size": {
+        "width": 360,
+        "height": 462
+      },
       "children": {
         "header": "918:6251",
         "title": "918:6252",
@@ -55,9 +73,14 @@
     {
       "id": "919:9264",
       "name": "Content=DateTime",
-      "properties": { "Content": "DateTime" },
+      "properties": {
+        "Content": "DateTime"
+      },
       "title": "시작 일시",
-      "size": { "width": 360, "height": 528 },
+      "size": {
+        "width": 360,
+        "height": 528
+      },
       "notes": "TimeOnly clone + tabRow 삽입(index 1). 나머지 하위(header/wheel/overlays/button)는 clone된 새 id (미개별기록, tabRow만 별도 조작)",
       "children": {
         "tabRow": "919:9295",
@@ -70,7 +93,10 @@
     "id": "922:6262",
     "name": "Time Picker Mobile Bottom Sheet — Spec Dark",
     "placement": "섹션 내부, rel(1024,2858) / abs(22268,2858)",
-    "size": { "width": 880, "height": 608 },
+    "size": {
+      "width": 880,
+      "height": 608
+    },
     "modeOverride": "Semantic Color V2 → Dark (setExplicitVariableModeForCollection, modeId 8:2)",
     "contents": "TimeOnly + DateTime variant 인스턴스 (라이브러리 컨벤션: 선례 Date Picker Mobile Bottom Sheet Spec Dark 동일)"
   },
@@ -80,7 +106,10 @@
       "id": "VariableID:916:2",
       "collection": "Semantic Color V2 (VariableCollectionId:8:963)",
       "resolvedType": "COLOR",
-      "scopes": ["FRAME_FILL", "SHAPE_FILL"],
+      "scopes": [
+        "FRAME_FILL",
+        "SHAPE_FILL"
+      ],
       "values": {
         "Light (mode 8:1)": "ALIAS → base/white (VariableID:8:710)",
         "Dark (mode 8:2)": "ALIAS → gray-dark/100 (VariableID:8:729)"
@@ -121,8 +150,16 @@
     "tabLabels": "body/16M 재바인딩 → Pretendard Medium (compliant, 허용편차 #1: 원본 Selected Bold였으나 재사용 Line Tab Medium 유지)",
     "wheelText": "raw 32px Regular, 대응 텍스트 스타일 없음(title/32B는 Bold라 부적합) → Noto Sans KR Regular 유지 + `// figma-font-temp:` 마커. 변형당 11셀. Pretendard 설치 환경에서 재검증 필요(component-verifier가 데이터 스캔으로 확인).",
     "fontScanResult": {
-      "TimeOnly": { "Pretendard Bold": 1, "Pretendard Medium": 1, "Noto Sans KR Regular": 11 },
-      "DateTime": { "Pretendard Bold": 1, "Pretendard Medium": 3, "Noto Sans KR Regular": 11 }
+      "TimeOnly": {
+        "Pretendard Bold": 1,
+        "Pretendard Medium": 1,
+        "Noto Sans KR Regular": 11
+      },
+      "DateTime": {
+        "Pretendard Bold": 1,
+        "Pretendard Medium": 3,
+        "Noto Sans KR Regular": 11
+      }
     },
     "renderNote": "MCP 스크린샷은 Pretendard 미설치라 일부 인스턴스 라벨이 stale glyph('메뉴')로 표시될 수 있음 — 데이터(fontName/characters)는 정확. 정책상 폰트 검증은 렌더 금지·데이터 스캔.",
     "pretendardRetryLog": "2026-07-06 재시도(총괄 지시): figma.loadFontAsync({family:'Pretendard',style:'Regular'}) 여전히 FAIL. 에러='The font \"Pretendard Regular\" could not be loaded. The font family \"Pretendard\" does not exist. Fonts from text styles: Pretendard (Regular, Bold, Medium)'. use_figma(MCP 플러그인 컨텍스트)에서 Pretendard 직접 로드 불가(텍스트 스타일 경유로만 존재). Regular 32 텍스트 스타일 신설은 fontName 설정에 로드가 필요해 불가 → 지시 #3대로 임의진행/Noto 재입력 안 함. 휠 22칸은 Noto Sans KR Regular + figma-font-temp 마커 상태 그대로 유지(미변경). 총괄 재판단 대기.",
@@ -140,9 +177,10 @@
     "sectionExpanded": "Time Picker 섹션 912:39987 높이 2858→3620 (신규 프레임 하단 수용). 기존 콘텐츠(bottom≈2794)와 겹침 없음(신규 시작 y=2858)."
   },
   "allowedDeviations": [
-    "#1 탭 Selected 라벨 굵기: 원본 Bold, 재사용 Line Tab Medium 유지(override 금지) — 2-plan 6절",
-    "#2 탭 높이: 원본 30px, Line Tab Mobile/SM 표준 32px 사용(리사이즈 금지) — 2-plan 6절",
-    "#3 wheelWrap gap: 2-plan 3절 계획대로 4컬럼 직속·gap36 평탄 구조 채택(원본 실측은 ampm↔group 36 / group 내부 32의 중첩구조였으나 계획이 정본). 4px 차이."
+    "#1 탭 Selected 라벨 굵기: 원본 Bold, 재사용 Line Tab Medium 유지(override 금지) — 2-plan 6절. **2026-08-02 river 재확인으로 유지 확정**(웹이 Bold 였던 것은 프로토타입 잔재 → 웹을 Medium 으로 교정).",
+    "#2 탭 높이: **해소(2026-08-02).** '원본 30 vs 정본 32' 는 기록 오류였다 — 원본 탭도 내용 30 + 밑줄 2 = **총 32** 로 정본과 같다(V2.4 540:3735 재실측 · 캔버스 1457:7541 실측 tab-1~3 각 90×32). 편차 아님.",
+    "#3 wheelWrap gap: **해소(2026-08-02).** 원본 중첩 구조(ampm↔group 36 / group 내부 32)를 코드에 반영. 계획서가 낡았던 것으로 정리.",
+    "#4 콜론 pitch(신설): 원본은 항목 35 + 간격 40 = pitch 75 로 숫자열(74)과 **1px 어긋나 있다**(레거시 손배치 흔적). 그 오차는 베끼지 않고 숫자열과 pitch 를 완전히 일치시킨다(항목 41.6 + 간격 32)."
   ],
   "followUp": [
     "신규 토큰 color/overlay/wheel-fade 를 vars-data.ts / semantic.colors.json 에 반영(2-plan 8절, 검증 후 별도 처리 — 빌더 범위 밖)",

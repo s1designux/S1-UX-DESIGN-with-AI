@@ -1,9 +1,9 @@
 {
   "sourceFile": "plugins/figma-vars-installer/src/build-components.ts",
-  "sourceHash": "sha256:1fcf85841ea192351f1d635b96f08ff98b4a33bbcb13f7032e00becf026c351a",
+  "sourceHash": "sha256:db08190c759310b816fb44ff3698cb943ec163517ee6208dfea16b9e43b53b4a",
   "verifiedBy": "component-verifier",
   "verdict": "pass",
   "changeType": "structural",
-  "verifiedAt": "2026-08-02T10:03:16.006Z",
-  "notes": "Table 이 Table Cell 을 실제 재사용하도록 BUILD/ATTACH_DEPENDENCIES 편입 + 그로 인해 드러난 회귀 2건 수정(셀 하단 구분선 constraints STRETCH/MAX · Header 글자 Medium=웹 정본 정합). 🤖 2라운드 검증: 인스턴스 36/변형·fallback 0·Size 매칭 정확·순환 0·위상정렬 전수·members 순서 불변·43세트 치수 차이 0·토큰 1:1 동일·체크박스 컬럼 영향 0. 3번째 수정(skipped 를 열화 시드에 편입)은 16쌍 거짓 경보가 실측돼 원복하고 BACKLOG 로 이관. 미확인 1건: 구분선 실제 신축은 캔버스 육안 1회 필요(mock 은 constraints 전파 미흡내, 설정값·API 규약·파일 내 선례는 정합)."
+  "verifiedAt": "2026-08-02T13:06:05.659Z",
+  "notes": "시간 바텀시트 휠 4건을 V2.4 원본에 정합: ampm 세로정렬 CENTER→MIN(1·2행) · 열간격 평탄36→중첩36/32/32(time-group 신설) · 콜론 행간격 40→32(pitch 숫자열 일치) · fade 마스크 2-stop→4-stop(캔버스 교정 역반영). 🤖 검증: 코드결함 0건. 45세트·502변형·485토큰 동일, resize 호출 2185 동일, 지문 차이 3행 전부 이 컴포넌트 내부, 타 컴포넌트 변경 0. fade 2장 ABSOLUTE·constraints·isMask·wheel-fade 바인딩 유지 확인. 부수효과(의도): 콜론 40간격이 만들던 부풀림이 사라져 휠 286→270·시트 464→448 로 원본값과 일치. 미확인: fadeBottom.y 실제값·캔버스 렌더(mock 한계) — river 재설치 육안 확인 예정."
 }
