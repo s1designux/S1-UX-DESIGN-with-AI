@@ -2,7 +2,7 @@
    Run: npm run reports:sync
 */
 window.REPORTS_INDEX = {
-  "generatedAt": "2026-08-03T08:05:17.259Z",
+  "generatedAt": "2026-08-03T08:13:11.132Z",
   "totalCount": 70,
   "reports": [
     {
@@ -27,7 +27,7 @@ window.REPORTS_INDEX = {
       "sourcePath": "reports/handoff-canon-consolidation.md",
       "updatedAt": "2026-08-03",
       "summary": "정본 목록의 기계가독 정의는 이제 **`registry/governance/canon-manifest.json`** 에 있다(Gate 36 이 집행).",
-      "fileSizeKB": 7.1
+      "fileSizeKB": 7.4
     },
     {
       "id": "mvp-t2-token-sync",

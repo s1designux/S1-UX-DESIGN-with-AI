@@ -86,16 +86,18 @@ DESIGN.md §4 값이 별칭→semantic 으로 바뀌는 것은 H6 상 정상(원
 
 ---
 
-## 4. river 판단이 필요한 별건 3건
+## 4. 별건 3건 — 2026-08-03 처리 완료 (`5bd591a`)
 
-1. **`--no-verify` 가 무마찰로 허용돼 있다** — `.claude/settings.local.json` `permissions.allow` 에
-   `Bash(git commit --no-verify -m ' *)` 등재. 커밋 검문소를 마찰 없이 우회 가능하고,
-   우회하면 게이트 39개가 통째로 무력화된다. **빼는 것을 권한다.**
-2. **PreToolUse 훅이 발동하지 않을 수 있다** — 전역 설정 matcher 가 `mcp__claude_ai_Figma__use_figma`
-   인데 현재 노출된 Figma 도구는 `mcp__figma__*` 계열. 이름이 안 맞으면 hex·폰트 차단 훅(H2·H3)이
-   아예 안 걸린다. 실행 검증 필요.
-3. **CLAUDE.md 가 88KB** — 자가 점검 기준(85KB) 초과. 오래된 변경 이력 행을
-   `reports/changelog-archive.md` 로 옮기는 정리 권장.
+1. **`--no-verify` 무마찰 허용 — 이 컴퓨터에는 해당 없음.** `.claude/settings.local.json` 자체가
+   없어 그 permission 도 없다(이전 컴퓨터의 문제였다). 조치 불필요.
+2. **PreToolUse 훅 — "이름이 안 맞을 수 있다"가 아니라 아예 없었다.** 전역 설정에 hooks 섹션이
+   없어 hex·폰트 차단(H2·H3)이 **완전히 꺼진 상태**였다. 봉합:
+   배선을 프로젝트 `.claude/settings.json`(커밋됨, .gitignore 예외)으로 옮겨 컴퓨터 이동에도
+   따라가게 하고, 종전의 `jq | node` 파이프 의존을 `scripts/lib/hook-input.js`(훅 JSON 직접 파싱)로
+   제거했다. matcher 는 도구 이름 변형을 다 잡도록 `use_figma` 부분매칭. 시험 3종 통과.
+   ※ **다음 Figma 작업 때 실제 발동을 한 번 확인**하면 좋다(설정 유효성·스크립트 동작은 검증됨).
+3. **CLAUDE.md 다이어트 완료** — 90,355 → 84,905 byte. 오래된 이력 6행을 아카이브로 이관
+   (유실 0 기계 검증), 하드룰 7개·게이트 표 불변.
 
 ---
 
