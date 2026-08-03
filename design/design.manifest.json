@@ -1,6 +1,6 @@
 {
   "_role": "AI 에이전트 진입점 라우터 — 디자인시스템을 어떤 파일부터·어떤 순서로 읽고 덮을지 안내한다.",
-  "_note": "이 매니페스트와 DESIGN.*.md 는 소비용 산출물이다. 정본은 assets/css/tokens.css + registry/components/*.json 이며, DESIGN.*.md 는 scripts/gen-design-md.js 가 생성한다. 손편집 금지(design:md:check 드리프트 게이트가 차단).",
+  "_note": "이 매니페스트와 DESIGN.*.md 는 소비용 산출물이다. 정본 목록은 registry/governance/canon-manifest.json(Gate 36 이 집행)이며, 값의 정본은 plugins/figma-vars-installer/src 의 vars-data·textstyles-data·build-components 다. 이 문서는 assets/css/tokens.css(정본의 1차 파생) + registry/components/*.json 의 메타에서 scripts/gen-design-md.js 가 생성한다. 손편집 금지(design:md:check 드리프트 게이트가 차단).",
   "version": "1.0.0",
   "core": "DESIGN.core.md",
   "services": {

@@ -818,9 +818,19 @@ reports/                      ← 검수 결과물 (MD)
 
 ## Claude가 registry를 사용하는 방법
 
-- 토큰 이름·값을 확인할 때: `registry/tokens/*.json` 우선 참조
-- 컴포넌트 사양을 확인할 때: `registry/components/*.json` 참조
-- 새 토큰 생성 전: `registry/governance/audit-rules.json` 검증 규칙 확인
+> ⚠️ **2026-08-03 정정.** 이 섹션은 2026-05-11(MVP0) 기준으로 쓰여 "registry JSON 이 기준 데이터"라고
+> 했으나, 그 뒤 정본이 설치기 소스로 이관됐다. **값의 정본은 `registry/**` 가 아니다**(하드룰 H6).
+> 정본 목록은 `registry/governance/canon-manifest.json`(Gate 36 이 집행). 아래는 그에 맞춰 고친 것.
+
+- **토큰 이름·값**을 확인할 때: 정본 `plugins/figma-vars-installer/src/vars-data.ts`
+  (또는 1차 파생 `assets/css/tokens.css`). `registry/tokens/*.json` 은 파생 표면이다.
+- **글자 스타일**을 확인할 때: 정본 `textstyles-data.ts`(파생 `assets/css/typography.css`)
+- **컴포넌트가 어떤 토큰·크기를 쓰나**: 정본 `build-components.ts`.
+  `registry/components/*.json` 의 값 필드는 **손편집 사본이라 믿지 않는다**(알려진 stale 78건).
+- **컴포넌트의 설명·상태·Figma 노드 매핑·사용맥락·접근성**: `registry/components/*.json`
+  (이건 여기에만 있는 정보 = 메타의 정본)
+- 새 토큰 생성 전: `registry/governance/audit-rules.json` 검증 규칙 확인 +
+  **정본에 항목을 새로 만드는 것은 ⭐ 단독 금지**(하드룰 H7 · Gate 34 승인 필요)
 - Deprecated 항목: `registry/governance/deprecated.json` 확인 후 재추가 금지
 
 ## 상태값 (status / darkStatus)
@@ -834,9 +844,12 @@ reports/                      ← 검수 결과물 (MD)
 
 ## 기존 MD 파일과의 관계
 
-`tokens/*.md` 파일은 인간 가독 문서로 유지된다.
-**기준 데이터는 registry JSON이며, MD는 설명 문서다.**
-충돌 시 registry JSON이 우선한다.
+`tokens/*.md` 파일은 인간 가독 문서로 유지된다(대부분 2026-08-01 아카이브됨).
+
+**우선순위 (2026-08-03 정정 — 종전 "충돌 시 registry JSON 우선"은 H6 과 모순이라 폐기):**
+정본(`canon-manifest.json` 이 선언한 3벌) > registry JSON·MD·웹 가이드(전부 파생).
+값이 어긋나면 **저울질 없이 파생을 고친다.** 단 registry 의 **메타 정보**(설명·상태·거버넌스·
+Figma 매핑)는 정본에 대응물이 없으므로 그 부분은 registry 가 기준이다.
 
 ---
 

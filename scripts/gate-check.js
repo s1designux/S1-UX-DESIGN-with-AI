@@ -668,8 +668,10 @@ try {
 }
 
 // ── Gate 24: DESIGN.md Drift (소비 산출물 최신성) ─────
-// DESIGN.md(AI 소비용 단일 컨텍스트)가 정본(tokens.css + registry)보다 낡으면 차단(재생성 강제).
-// 정본=tokens.css+registry, 산출물=design/DESIGN.*.md. gen-design-md dry-run 에 "변경감지"면 fail. (2026-07-10 신설)
+// DESIGN.md(AI 소비용 단일 컨텍스트)가 입력(tokens.css + registry 메타)보다 낡으면 차단(재생성 강제).
+// 입력=tokens.css(정본 vars-data 의 1차 파생)+registry 메타, 산출물=design/DESIGN.*.md.
+// 정본 목록은 canon-manifest.json(Gate 36) — registry 는 값의 정본이 아니다(H6).
+// gen-design-md dry-run 에 "변경감지"면 fail. (2026-07-10 신설 · 2026-08-03 문구 정정)
 console.log('\n🔎 [Gate 24] DESIGN.md 드리프트 검사기 (Design MD Drift)');
 try {
   const { spawnSync } = require('child_process');

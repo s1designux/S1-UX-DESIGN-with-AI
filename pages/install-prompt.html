@@ -231,7 +231,7 @@
                 <div class="step-title">AI 컨텍스트 프롬프트 받기</div>
                 <div class="step-desc">라우터(읽는 순서) + Core(9섹션 — 비주얼 테마·색상 역할·타이포·컴포넌트 사용맥락·레이아웃·엘리베이션·Do/Don't·반응형·Agent 가이드) + 서비스 분기</div>
               </div>
-              <span class="update-stamp" data-update-file="design/DESIGN.core.md"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> 업데이트 2026-08-02 18:27</span>
+              <span class="update-stamp" data-update-file="design/DESIGN.core.md"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> 업데이트 2026-08-03 14:59</span>
             </div>
             <div class="step-body">
               <div class="ai-info">
@@ -254,7 +254,7 @@
 
 &gt; 이 문서를 AI(Claude·GPT 등) 대화의 첫 메시지로 통째로 붙여넣으세요.
 &gt; 그러면 AI 가 S1 디자인시스템 기준(토큰·컴포넌트·프로파일)으로 산출물을 만듭니다.
-&gt; 정본: assets/css/tokens.css + registry/components/*.json · 자동 생성 뭉치(손편집 금지).
+&gt; 정본 목록: registry/governance/canon-manifest.json · 값의 정본은 설치기 소스(vars-data · textstyles-data · build-components) · 이 뭉치는 자동 생성물(손편집 금지).
 
 이 뭉치는 세 부분으로 구성됩니다.
 1. 라우터(manifest) — 어떤 순서로 읽고 무엇이 무엇을 덮는지(뒤가 앞을 override).
@@ -268,7 +268,7 @@
 ```json
 {
   "_role": "AI 에이전트 진입점 라우터 — 디자인시스템을 어떤 파일부터·어떤 순서로 읽고 덮을지 안내한다.",
-  "_note": "이 매니페스트와 DESIGN.*.md 는 소비용 산출물이다. 정본은 assets/css/tokens.css + registry/components/*.json 이며, DESIGN.*.md 는 scripts/gen-design-md.js 가 생성한다. 손편집 금지(design:md:check 드리프트 게이트가 차단).",
+  "_note": "이 매니페스트와 DESIGN.*.md 는 소비용 산출물이다. 정본 목록은 registry/governance/canon-manifest.json(Gate 36 이 집행)이며, 값의 정본은 plugins/figma-vars-installer/src 의 vars-data·textstyles-data·build-components 다. 이 문서는 assets/css/tokens.css(정본의 1차 파생) + registry/components/*.json 의 메타에서 scripts/gen-design-md.js 가 생성한다. 손편집 금지(design:md:check 드리프트 게이트가 차단).",
   "version": "1.0.0",
   "core": "DESIGN.core.md",
   "services": {
@@ -385,7 +385,7 @@ typography:
 
 # S1 Design System — Core
 
-&gt; ⚠️ 이 파일은 자동 생성물입니다. 손으로 고치지 마세요. 정본은 `assets/css/tokens.css` + `registry/components/*.json` 이며, `npm run design:md:write` 로 재생성됩니다.
+&gt; ⚠️ 이 파일은 자동 생성물입니다. 손으로 고치지 마세요. 정본 목록은 `registry/governance/canon-manifest.json` 이고, 이 문서는 `assets/css/tokens.css`(정본 파생) + `registry/components/*.json`(메타)에서 `npm run design:md:write` 로 재생성됩니다.
 
 ## 소비 프로파일 (Profiles)
 
@@ -1260,7 +1260,7 @@ _Don't_
 - 적용 해석 순서(뒤가 앞을 덮음): core → service(extends core) → role → platform → theme. 기본값: service=core · role=user · platform=web · theme=light.
 - 서비스 분기(예: vms 영상관제)는 core 를 상속하고 차이분만 덮는다.
 
-&lt;!-- generated-stamp: e768acf4ab20 · 손편집 금지 --&gt;
+&lt;!-- generated-stamp: ccc4268de857 · 손편집 금지 --&gt;
 
 ---
 

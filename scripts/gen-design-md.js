@@ -3,7 +3,9 @@
  * 🔧 DESIGN.md 생성기 — 디자인시스템 "소비용" 단일 컨텍스트 파일
  *
  * 목적: AI 에이전트가 "한 번에 읽는" 디자인시스템 스냅샷을 만든다.
- *   정본(assets/css/tokens.css + registry/components/*.json)을 스캔해 매번 재생성한다.
+ *   입력 = `assets/css/tokens.css`(정본 vars-data.ts 의 1차 파생) + `registry/components/*.json`
+ *   의 메타(설명·anatomy·doDont·a11y). 매번 재생성한다.
+ *   정본 목록은 `registry/governance/canon-manifest.json`(Gate 36) — registry 는 값의 정본이 아니다.
  *   ⚠️ DESIGN.md 는 소비용 "산출물"이지 정본이 아니다 — 손으로 고치지 말 것(드리프트 게이트가 막음).
  *
  * 서비스 분기: registry 컴포넌트의 `_meta.scope` 태그가 유일한 스위치.
@@ -417,7 +419,7 @@ function buildComponents(comps) {
   return section('4. Components', [body.join('\n\n')]);
 }
 
-const DONOT_EDIT = '> ⚠️ 이 파일은 자동 생성물입니다. 손으로 고치지 마세요. 정본은 `assets/css/tokens.css` + `registry/components/*.json` 이며, `npm run design:md:write` 로 재생성됩니다.';
+const DONOT_EDIT = '> ⚠️ 이 파일은 자동 생성물입니다. 손으로 고치지 마세요. 정본 목록은 `registry/governance/canon-manifest.json` 이고, 이 문서는 `assets/css/tokens.css`(정본 파생) + `registry/components/*.json`(메타)에서 `npm run design:md:write` 로 재생성됩니다.';
 
 function buildCore(tokens, coreComps, narrative, profiles) {
   const n = narrative || {};

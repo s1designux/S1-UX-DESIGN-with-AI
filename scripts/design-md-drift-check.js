@@ -3,7 +3,7 @@
  * 🔎 DESIGN.md 드리프트 검사기 (token-drift-check.js 와 동일 패턴)
  *
  * 역할: gen-design-md.js 를 dry-run 으로 돌려, 소비용 산출물(design/DESIGN.core.md·services/*.md)이
- *       정본(tokens.css + registry)보다 낡았는지(=재생성하면 바뀌는지) 확인한다.
+ *       입력(tokens.css + registry 메타)보다 낡았는지(=재생성하면 바뀌는지) 확인한다.
  *       바뀔 게 있으면 커밋을 막아(재생성 강제) md 손편집·드리프트를 차단한다.
  *
  * 판정: gen-design-md dry-run stdout 에 "변경감지" 가 있으면 exit 1(차단), 없으면 exit 0.
@@ -27,7 +27,7 @@ if (r.status !== 0) {
 
 if (out.includes('변경감지')) {
   const lines = out.split('\n').filter((l) => l.includes('변경감지'));
-  console.error('  ❌ DESIGN.md 가 정본(tokens.css + registry)보다 낡음 — 재생성 필요:');
+  console.error('  ❌ DESIGN.md 가 입력(tokens.css + registry 메타)보다 낡음 — 재생성 필요:');
   for (const l of lines) console.error('     • ' + l.trim());
   console.error('  → npm run design:md:write 후 커밋하세요.');
   process.exit(1);

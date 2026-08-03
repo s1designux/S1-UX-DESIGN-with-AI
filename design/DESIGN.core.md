@@ -75,7 +75,7 @@ typography:
 
 # S1 Design System — Core
 
-> ⚠️ 이 파일은 자동 생성물입니다. 손으로 고치지 마세요. 정본은 `assets/css/tokens.css` + `registry/components/*.json` 이며, `npm run design:md:write` 로 재생성됩니다.
+> ⚠️ 이 파일은 자동 생성물입니다. 손으로 고치지 마세요. 정본 목록은 `registry/governance/canon-manifest.json` 이고, 이 문서는 `assets/css/tokens.css`(정본 파생) + `registry/components/*.json`(메타)에서 `npm run design:md:write` 로 재생성됩니다.
 
 ## 소비 프로파일 (Profiles)
 
@@ -950,4 +950,4 @@ _Don't_
 - 적용 해석 순서(뒤가 앞을 덮음): core → service(extends core) → role → platform → theme. 기본값: service=core · role=user · platform=web · theme=light.
 - 서비스 분기(예: vms 영상관제)는 core 를 상속하고 차이분만 덮는다.
 
-<!-- generated-stamp: e768acf4ab20 · 손편집 금지 -->
+<!-- generated-stamp: ccc4268de857 · 손편집 금지 -->

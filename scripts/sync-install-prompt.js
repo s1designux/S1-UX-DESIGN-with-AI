@@ -126,7 +126,7 @@ function buildAiPromptBundle() {
 
 > 이 문서를 AI(Claude·GPT 등) 대화의 첫 메시지로 통째로 붙여넣으세요.
 > 그러면 AI 가 S1 디자인시스템 기준(토큰·컴포넌트·프로파일)으로 산출물을 만듭니다.
-> 정본: assets/css/tokens.css + registry/components/*.json · 자동 생성 뭉치(손편집 금지).
+> 정본 목록: registry/governance/canon-manifest.json · 값의 정본은 설치기 소스(vars-data · textstyles-data · build-components) · 이 뭉치는 자동 생성물(손편집 금지).
 
 이 뭉치는 세 부분으로 구성됩니다.
 1. 라우터(manifest) — 어떤 순서로 읽고 무엇이 무엇을 덮는지(뒤가 앞을 override).
