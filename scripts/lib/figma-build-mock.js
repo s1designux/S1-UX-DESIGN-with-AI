@@ -102,12 +102,30 @@ function serialize(prop, val) {
  * @param {object} mod  esbuild 로 번들해 require 한 build-components 모듈
  * @returns {Promise<{nodes: Array, unknownProps: string[]}>}
  */
-async function runBuild(mod) {
+async function runBuild(mod, opts) {
   const NODES = [];
   const seenProps = new Set();
+  const trackOrigin = !!(opts && opts.trackOrigin);
+
+  // 이 TEXT 노드를 만든 함수 이름(makeBoundText / buildOne / makeLabel).
+  //   Gate 33 이 "컴포넌트 글자"와 "스펙 프레임 설명 라벨"을 구분하는 데 쓴다.
+  //   esbuild 를 minify 없이 번들하므로 스택에 함수명이 그대로 남는다.
+  //   opts.trackOrigin 일 때만 스택을 뜬다 → 지문 경로는 비용 0.
+  const ORIGIN_FNS = ['makeBoundText', 'makeLabel', 'buildOne'];
+  function originFromStack() {
+    const st = new Error().stack || '';
+    for (const line of st.split('\n')) {
+      const hit = ORIGIN_FNS.find((f) => line.includes(f));
+      if (hit) return hit;
+    }
+    return null;
+  }
 
   function recNode(type) {
     const state = { type, props: {}, children: [], parentSet: null };
+    // origin 은 **state 최상위**에 둔다(props 가 아님) — props 만 지문에 들어가므로
+    //   여기 두면 installer-fingerprint 해시에 영향이 0 이다.
+    if (trackOrigin && type === 'TEXT') state.origin = originFromStack();
     NODES.push(state);
 
     const attach = (child) => {
@@ -125,6 +143,14 @@ async function runBuild(mod) {
         if (prop === 'children') return state.children;
         if (prop === 'appendChild') return attach;
         if (prop === 'insertChild') return (_i, c) => attach(c);
+        // 텍스트 스타일 바인딩 결과를 기록한다. 종전엔 makeStub() 이 삼켜서
+        //   "빌더가 요청한 크기·굵기"(fontSize·fontName 은 setter 라 이미 기록됨)와
+        //   "실제로 적용된 스타일"을 짝지을 수 없었다 → 조용한 치환이 안 보였다.
+        //   ⚠️ PROP_CLASS 에 textStyleId 를 등록하지 **않는다**: 등록하면 전 컴포넌트
+        //   지문 해시가 한 번 통째로 바뀌어 Gate 6c 가 zip 재빌드를 요구한다.
+        //   미등록의 정보 손실은 0 — textStyleKey() 가 (fontSize, style) 의 순수함수라
+        //   결과가 바뀌려면 이미 지문에 있는 그 둘이 바뀌어야 한다.
+        if (prop === 'setTextStyleIdAsync') return async (id) => { state.props.textStyleId = String(id); };
         if (prop === 'then') return undefined;
         if (prop === Symbol.toPrimitive) return () => 0;
         if (prop === Symbol.iterator) return undefined;
@@ -181,7 +207,10 @@ async function runBuild(mod) {
     semanticColor: taggedMap(),
     foundationColor: taggedMap(),
     foundationNumber: taggedMap(),
-    textStyles: new Proxy({}, { get: () => makeStub() }),
+    // 요청된 스타일 키를 그대로 id 로 돌려주는 태그맵 — 빌더는 `.id` 만 읽는다
+    //   (build-components.ts 의 requireStyle·makeBoundText 확인). 종전 makeStub() 도
+    //   truthy 라 분기 결과는 동일하고, 이제 어떤 키를 요청했는지가 관측된다.
+    textStyles: new Proxy({}, { get: (_t, k) => (typeof k === 'string' ? { id: k } : undefined) }),
     semanticColorCollectionId: 'cid',
     semanticLightModeId: 'light',
     semanticDarkModeId: 'dark',
