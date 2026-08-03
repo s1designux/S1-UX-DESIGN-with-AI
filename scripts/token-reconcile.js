@@ -1,18 +1,19 @@
 #!/usr/bin/env node
 /**
- * Token Reconcile — 정본(vars-data)에서 파생 표면을 재생성해 싱크를 맞춘다. (site-base 는 사이트 전용·Variables 검수 제외)
+ * Token Reconcile — 정본(vars-data·textstyles-data)에서 파생 표면을 재생성해 싱크를 맞춘다. (site-base 는 사이트 전용·Variables 검수 제외)
  *
- * 자동 재생성(결정론적) — 순서가 곧 의존성이다 (2026-08-01 확장: 누락 3단계 편입 + 순서 함정 내재화):
- *   1. tokens:gen             vars-data SEMANTIC_COLOR → tokens.css Semantic 섹션
- *   2. tokens:gen:foundation  vars-data FOUNDATION_* → tokens.css Foundation 섹션
- *   3. color:gen              vars-data → foundation.html 색 팔레트 3블록
- *   4. number:gen             vars-data → foundation.html number 5블록
- *   5. registry:foundation:gen vars-data → registry/tokens/foundation.colors.json (Gate 7 표면)
- *   6. page:gen               tokens.css → semantic.html SEMANTIC_PAGE   (1·2 뒤여야 함)
- *   7. design:md:write        tokens.css+registry → DESIGN.core/vms.md   (1·2 뒤여야 함)
- *   8. tokens:sync-prompt     tokens.css + design/*.md → install-prompt.html (6 뒤여야 함 —
- *                             design md 를 임베드하므로 6보다 먼저 돌면 낡은 AI 프롬프트를 품는다)
- *   9. installer:build        vars-data → 설치기 zip (+ ~/s1-ux-design-guide-installer)
+ * 자동 재생성(결정론적) — 순서가 곧 의존성이다 (2026-08-01 확장: 누락 3단계 편입 + 순서 함정 내재화 · 2026-08-03 typo:gen 편입 9→10단계):
+ *   1. typo:gen               textstyles-data → typography.css (텍스트 스타일 정본 — Gate 35 표면)
+ *   2. tokens:gen             vars-data SEMANTIC_COLOR → tokens.css Semantic 섹션
+ *   3. tokens:gen:foundation  vars-data FOUNDATION_* → tokens.css Foundation 섹션
+ *   4. color:gen              vars-data → foundation.html 색 팔레트 3블록
+ *   5. number:gen             vars-data → foundation.html number 5블록
+ *   6. registry:foundation:gen vars-data → registry/tokens/foundation.colors.json (Gate 7 표면)
+ *   7. page:gen               tokens.css → semantic.html SEMANTIC_PAGE   (2·3 뒤여야 함)
+ *   8. design:md:write        tokens.css+registry → DESIGN.core/vms.md   (2·3 뒤여야 함)
+ *   9. tokens:sync-prompt     tokens.css + design/*.md → install-prompt.html (8 뒤여야 함 —
+ *                             design md 를 임베드하므로 8보다 먼저 돌면 낡은 AI 프롬프트를 품는다)
+ *  10. installer:build        vars-data+textstyles-data → 설치기 zip (+ ~/s1-ux-design-guide-installer)
  *
  * 그 후 모니터 실행 → 자동 재생성으로 못 고치는 **손유지 표면**의 잔여 드리프트를 보고한다.
  * 이 잔여분은 token-sync 에이전트/수동으로 정본에 맞춰 고친다(값 추측 금지).
@@ -53,7 +54,7 @@ run('9/10 tokens:sync-prompt    (tokens.css+design md → install-prompt.html)',
 if (!skipInstaller) {
   run('10/10 installer:build       (vars-data → 설치기 zip)', 'npm run --silent installer:build');
 } else {
-  console.log('\n▶ 9/9 installer:build — 건너뜀(--no-installer)');
+  console.log('\n▶ 10/10 installer:build — 건너뜀(--no-installer)');
 }
 
 console.log('\n──────────────────────────────────────────────');

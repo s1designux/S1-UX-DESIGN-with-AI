@@ -149,6 +149,9 @@ const generators = files.filter(p => {
   if (sz > 300 * 1024) return false;                          // 번들류 건너뜀
   const src = read(p) || '';
   if (!/\b(writeFileSync|writeFile|createWriteStream)\s*\(/.test(src)) return false;
+  // @writes: 선언이 있으면 생성기로 인정한다 — 변수 경유 write(예: writeFileSync(INSTALL_PROMPT,…))는
+  //   아래 정적분석이 문자열 리터럴을 못 뽑아 생성기 목록에서 통째로 빠졌다(2026-08-03 실측).
+  if (/@writes:/.test(src)) return true;
   // (a) 쓰기 대상이 목적지 화면인가  (b) GEN 마커 문자열을 가졌는가(=마커 사이 교체형 생성기)
   const writeTargets = findCallPaths(src, ['writeFileSync', 'writeFile', 'createWriteStream'])
     .flatMap(w => w.paths).map(base);
@@ -173,14 +176,33 @@ const genInfo = generators.map(gp => {
     m.replace(/@reads:\s*/, '').split(',').forEach(x => { const t = x.trim(); if (t) readsHint.push(t); });
   });
   readsHint.forEach(h => { if (!lits.includes(h)) lits.push(h); });  // 참조 목록에 합류 → 정본 도출·엣지가 살아남
+  // @writes: 힌트 — @reads: 의 대칭. 변수 경유 write 를 파일이 직접 선언한다.
+  //   sync-install-prompt.js 는 writeFileSync(INSTALL_PROMPT, …) 처럼 변수를 쓰므로 findCallPaths 가
+  //   리터럴을 못 뽑고, 자기 파일을 읽기도 해서 readDest 로 분류돼 install-prompt.html 의
+  //   generated_by 가 빈 배열이었다(2026-08-03 실측 사각지대).
+  const writesHint = [];
+  (src.match(/@writes:\s*([^\n*]+)/g) || []).forEach(m => {
+    m.replace(/@writes:\s*/, '').split(',').forEach(x => { const t = x.trim(); if (t) writesHint.push(t); });
+  });
+  writesHint.forEach(h => { if (!lits.includes(h)) lits.push(h); });
   const readLits = [...new Set(reads.flatMap(r => r.paths).concat(readsHint))];
-  const writeLits = [...new Set(writes.flatMap(w => w.paths))];
+  const writeLits = [...new Set(writes.flatMap(w => w.paths).concat(writesHint))];
   // 참조하는 목적지 (호출 지점 변수 경유를 놓칠 수 있어 파일 전체 리터럴로 보수적으로 매칭)
   const refDest = destinations.filter(d =>
     lits.some(l => rel(d).endsWith(l) || l.endsWith(base(d)))).map(rel);
   // 읽는 목적지(=중간 산출물 소비) vs 쓰는 목적지(=이 생성기의 출력)
-  const readDest = refDest.filter(d => readLits.some(l => base(d) === base(l)));
-  const writeDest = refDest.filter(d => !readDest.includes(d));
+  //   @writes: 선언이 있으면 **선언된 것만** 출력으로 보고 나머지 참조는 입력으로 본다.
+  //   (선언한 파일은 read/write 호출이 변수 경유라 정적분석이 둘 다 못 뽑는다 — 그 상태에서
+  //    "read 로 안 잡힌 것 = 출력"이라는 기존 추론을 그대로 쓰면 읽기만 하는 tokens.css·
+  //    DESIGN.md 까지 출력으로 뒤집힌다. 선언이 있을 때는 선언을 신뢰한다.)
+  const hintedWrite = (d) => writesHint.some(h => base(d) === base(h));
+  const hasWriteHint = writesHint.length > 0;
+  const readDest = hasWriteHint
+    ? refDest.filter(d => !hintedWrite(d))
+    : refDest.filter(d => readLits.some(l => base(d) === base(l)));
+  const writeDest = hasWriteHint
+    ? refDest.filter(d => hintedWrite(d))
+    : refDest.filter(d => !readDest.includes(d));
   return {
     file: rel(gp), mtime: mtime(gp),
     read_paths: readLits,

@@ -16,7 +16,7 @@
  */
 const fs = require('fs');
 const path = require('path');
-const { execSync } = require('child_process');
+const { readZipEntry } = require('./lib/read-zip-entry');
 
 const ROOT = path.resolve(__dirname, '..');
 const VARS_DATA = path.join(ROOT, 'plugins/figma-vars-installer/src/vars-data.ts');
@@ -48,7 +48,8 @@ function check({ pass, warn, fail }) {
   if (!fs.existsSync(ZIP)) { fail('설치기 zip 없음 — npm run installer:build 필요'); return; }
   let bundle;
   try {
-    bundle = execSync(`unzip -p "${ZIP}" "${ZIP_ENTRY}"`, { encoding: 'utf-8', maxBuffer: 32 * 1024 * 1024 });
+    // 순수 Node 로 읽는다 — 종전 `unzip -p` 는 Windows 에 없어 게이트가 OS 에 좌우됐다(2026-08-03).
+    bundle = readZipEntry(ZIP, ZIP_ENTRY);
   } catch (e) {
     fail(`설치기 zip 에서 code.js 추출 실패: ${e.message}`);
     return;

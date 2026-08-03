@@ -16,6 +16,7 @@ const os = require('os');
 const path = require('path');
 const { execFileSync } = require('child_process');
 const { fingerprint, SOURCE_FILES } = require('./installer-fingerprint');
+const { extractTar } = require('./extract-tar');
 
 const ROOT = path.resolve(__dirname, '..', '..');
 const SRC_REL = 'plugins/figma-vars-installer/src';
@@ -46,9 +47,15 @@ function isDirty() {
 function checkoutSrc(sha) {
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), `ihist-${sha.slice(0, 7)}-`));
   try {
-    // git archive | tar -x — 워킹트리를 건드리지 않는 유일한 안전한 방법.
-    execFileSync('/bin/sh', ['-c', `git archive ${sha} ${SRC_REL} | tar -x -C ${JSON.stringify(dir)}`],
-      { cwd: ROOT, maxBuffer: 64 * 1024 * 1024 });
+    // 워킹트리를 건드리지 않고 과거 ref 의 파일만 꺼낸다.
+    //   종전엔 `/bin/sh -c "git archive … | tar -x"` 로 파이프를 썼는데 Windows 에는 /bin/sh 가
+    //   없고, 파이프를 없애도 어느 tar 가 PATH 에 잡히느냐로 갈렸다(Git Bash 의 MSYS tar 는
+    //   `C:\…` 를 원격 호스트로 오해). 게이트가 셸·PATH 에 좌우되지 않게 tar 를 Node 로 푼다.
+    //   (2026-08-03 — zip 은 read-zip-entry.js 가 같은 이유로 담당.)
+    const tarBuf = execFileSync('git', ['archive', '--format=tar', sha, SRC_REL],
+      { cwd: ROOT, maxBuffer: 256 * 1024 * 1024 });
+    const files = extractTar(tarBuf, dir);
+    if (files.length === 0) throw new Error(`아카이브가 비었습니다(${SRC_REL} 없음)`);
   } catch (e) {
     fs.rmSync(dir, { recursive: true, force: true });
     throw new Error(`[history] ${sha.slice(0, 7)} 의 소스를 꺼내지 못했습니다: ${e.message}`);

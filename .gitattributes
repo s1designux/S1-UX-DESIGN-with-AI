@@ -1,0 +1,22 @@
+# 줄바꿈 고정 — 저장소 전체 LF (2026-08-03 신설)
+#
+# 왜 필요한가: 이 저장소를 Windows 로 옮겼을 때 git 의 core.autocrlf=true 가 체크아웃
+# 파일 전체를 CRLF 로 바꿔놨고, 생성기·검사기(typo:gen·color:gen·design:md 등)는 LF 로
+# 내용을 만들어 비교하기 때문에 **내용이 같아도 전 표면이 "드리프트"로 판정**됐다
+# (실측: gate:check 18 error, 전부 거짓 드리프트).
+#
+# 정본↔파생 대조가 OS 설정에 좌우되지 않도록 여기서 LF 로 못박는다.
+* text=auto eol=lf
+
+# 바이너리 — 변환 금지
+*.zip binary
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.woff binary
+*.woff2 binary
+*.ttf binary
+*.otf binary
+*.ico binary
+*.pdf binary

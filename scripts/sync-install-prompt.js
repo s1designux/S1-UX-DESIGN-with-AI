@@ -2,6 +2,8 @@
 /**
  * Sync Install Prompt
  *
+ * @writes: pages/install-prompt.html
+ *
  * `pages/install-prompt.html` 의 자동 생성 영역들을 정본에서 동기화한다.
  *   1) 다운로드용 인라인 (`<pre id="code-full">…</pre>`) ← `assets/css/tokens.css`
  *   2) AI 프롬프트 탭 뭉치 (`<pre id="ai-prompt-full">…</pre>`) ← `design/` 의 DESIGN.md 뭉치

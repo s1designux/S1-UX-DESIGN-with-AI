@@ -20,6 +20,9 @@
  * 검사 4종:
  *   (1) registry/components/<id>.json 파일 존재
  *   (2) registry/components/index.json 등재  (+ 디스크↔색인 양방향 드리프트)
+ *   (2b) registry/index.json(루트 색인) components 맵 ↔ 디스크 양방향 대조 — 이 맵을
+ *        build-registry-bundle.js 가 그대로 순회해 웹 번들을 만드는데, 종전엔 아무 게이트도
+ *        안 봐서 디스크 20개 중 9개가 조용히 누락돼 있었다(2026-08-03 실측).
  *   (3) registry/governance/update-management.json components[] 등재 (Gate 16 정본)
  *   (4) registry/governance/component-presentation-policy.json components 등재 (Gate 23 정본, PC 한정)
  *   (5) **runners 완전성** — buildAllComponents 를 mock 으로 실행해 "members 에 있는데 빌더가
@@ -30,7 +33,7 @@
  *   (게이트 강화가 마찰을 늘려 --no-verify 를 부르지 않게 — Gate 20/29 의 baseline 패턴).
  *   baseline: registry/governance/component-registration-baseline.json
  *
- * 출력 끝줄: `COMPREG_SUMMARY mains=<n> missingSpec=<n> missingIndex=<n> missingUpdate=<n> missingPresentation=<n> noRunner=<n> falseExempt=<n> baselined=<n>`
+ * 출력 끝줄: `COMPREG_SUMMARY mains=<n> missingSpec=<n> missingIndex=<n> missingUpdate=<n> missingPresentation=<n> missingRootIndex=<n> noRunner=<n> falseExempt=<n> baselined=<n>`
  * 사용: node scripts/component-registration-check.js   (npm run components:registration)
  */
 const fs = require('fs');
@@ -42,6 +45,7 @@ const BC = path.join(ROOT, 'plugins/figma-vars-installer/src/build-components.ts
 const COVERAGE = path.join(ROOT, 'registry/governance/component-page-coverage.json');
 const SPEC_DIR = path.join(ROOT, 'registry/components');
 const SPEC_INDEX = path.join(SPEC_DIR, 'index.json');
+const ROOT_INDEX = path.join(ROOT, 'registry/index.json');
 const UPDATE_MGMT = path.join(ROOT, 'registry/governance/update-management.json');
 const PRESENTATION = path.join(ROOT, 'registry/governance/component-presentation-policy.json');
 const BASELINE = path.join(ROOT, 'registry/governance/component-registration-baseline.json');
@@ -148,6 +152,12 @@ async function audit() {
   const diskNotIndexed = [...diskIds].filter((id) => !indexIds.has(id) && !exempt('index', id));
   const indexedNotOnDisk = [...indexIds].filter((id) => !diskIds.has(id));
 
+  // (2b) 루트 색인(registry/index.json) components 맵 ↔ 디스크 — 번들 생성기의 실제 순회 대상
+  const rootMap = readJson(ROOT_INDEX).components || {};
+  const rootIds = new Set(Object.keys(rootMap));
+  const diskNotInRoot = [...diskIds].filter((id) => !rootIds.has(id) && !exempt('rootIndex', id));
+  const rootNotOnDisk = [...rootIds].filter((id) => !diskIds.has(id));
+
   // ── runners 완전성 + **면제 선언 검증** ────────────────────────────────────
   //   mock 실행이 예외로 죽으면 판정을 '이상 없음'으로 만들지 않고 **던진다**(호출부가 FAIL 처리).
   //   종전엔 null 을 돌려 경고(비차단)로 빠졌는데, 그러면 mock 이 언젠가 깨지는 순간
@@ -183,7 +193,8 @@ async function audit() {
 
   return {
     members, mains, missingSpec, missingIndex, missingUpdate, missingPresentation,
-    diskNotIndexed, indexedNotOnDisk, noRunner, falseExemptions, baselinedCount,
+    diskNotIndexed, indexedNotOnDisk, diskNotInRoot, rootNotOnDisk,
+    noRunner, falseExemptions, baselinedCount,
   };
 }
 
@@ -205,6 +216,8 @@ if (require.main === module) {
     if (r.missingPresentation.length) { bad++; console.log(`  ❌ component-presentation-policy.json 미등재 ${r.missingPresentation.length}: ${list(r.missingPresentation)} (Gate 23 이 못 보는 사각)`); }
     if (r.diskNotIndexed.length) { bad++; console.log(`  ❌ 디스크에 있으나 index.json 미등재 ${r.diskNotIndexed.length}: ${r.diskNotIndexed.join(', ')} (번들·뷰어에서 누락됨)`); }
     if (r.indexedNotOnDisk.length) { bad++; console.log(`  ❌ index.json 이 가리키는 파일 없음 ${r.indexedNotOnDisk.length}: ${r.indexedNotOnDisk.join(', ')}`); }
+    if (r.diskNotInRoot.length) { bad++; console.log(`  ❌ 루트 registry/index.json components 맵 미등재 ${r.diskNotInRoot.length}: ${r.diskNotInRoot.join(', ')} (build:bundle 이 이 맵을 순회 — 웹 번들에서 누락됨)`); }
+    if (r.rootNotOnDisk.length) { bad++; console.log(`  ❌ 루트 registry/index.json 이 가리키는 파일 없음 ${r.rootNotOnDisk.length}: ${r.rootNotOnDisk.join(', ')}`); }
 
     if (r.noRunner.length) {
       bad++;
@@ -221,7 +234,7 @@ if (require.main === module) {
     }
     if (r.baselinedCount) console.log(`  ℹ️ baseline 면제 ${r.baselinedCount}건(기존 부채 — 신규만 차단)`);
 
-    console.log(`COMPREG_SUMMARY mains=${r.mains.length} missingSpec=${r.missingSpec.length} missingIndex=${r.missingIndex.length} missingUpdate=${r.missingUpdate.length} missingPresentation=${r.missingPresentation.length} noRunner=${r.noRunner.length} falseExempt=${r.falseExemptions.length} baselined=${r.baselinedCount}`);
+    console.log(`COMPREG_SUMMARY mains=${r.mains.length} missingSpec=${r.missingSpec.length} missingIndex=${r.missingIndex.length} missingUpdate=${r.missingUpdate.length} missingPresentation=${r.missingPresentation.length} missingRootIndex=${r.diskNotInRoot.length + r.rootNotOnDisk.length} noRunner=${r.noRunner.length} falseExempt=${r.falseExemptions.length} baselined=${r.baselinedCount}`);
     process.exit(bad ? 1 : 0);
   })();
 }
