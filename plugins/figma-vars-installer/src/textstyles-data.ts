@@ -44,6 +44,10 @@ export const TEXT_STYLES: TextStyleDef[] = [
   { name: "title/16B", fontStyle: "Bold",    fontSize: 16, lineHeightPercent: 130, letterSpacingPercent: 0 },
   { name: "title/16M", fontStyle: "Medium",  fontSize: 16, lineHeightPercent: 130, letterSpacingPercent: -2 },
   { name: "title/14B", fontStyle: "Bold",    fontSize: 14, lineHeightPercent: 130, letterSpacingPercent: 0 },
+  // title/14M — 2026-08-03 신설(river 지시). 표 헤더처럼 **제목 역할인데 굵기가 Medium** 인 자리가
+  //   title 계열에 없어서 body/14M 으로 갈 수밖에 없었다. 역할(제목)과 계열(body)이 어긋나던 것을 해소한다.
+  //   Gate 34 승인 기록: registry/governance/canon-additions-baseline.json
+  { name: "title/14M", fontStyle: "Medium",  fontSize: 14, lineHeightPercent: 130, letterSpacingPercent: 0 },
 
   // ── body ────────────────────────────────────────────
   { name: "body/18M", fontStyle: "Medium",  fontSize: 18, lineHeightPercent: 130, letterSpacingPercent: -2 },

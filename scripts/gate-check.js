@@ -855,6 +855,43 @@ try {
   fail(`Gate 32 실행 실패: ${e.message}`);
 }
 
+// ── Gate 34: Canon Addition Approval (정본 신설 승인) ──
+// 32개 게이트 전부가 "정본 → 파생 일치"만 봐서 **정본에 줄이 늘어나는 것을 사건으로 보는
+// 게이트가 0개**였다. 2026-08-03 에 ⭐ 가 사용자가 거부한 스타일 신설을 자기 규칙을 만들어
+// 강행했는데 재생성만 돌리니 전 게이트가 ✅ 로 통과했다. 하드룰 H7 의 집행 장치.
+//   막는 대상은 ⭐ 이지 사용자가 아니다 — 승인 기록이 있으면 그대로 통과한다.
+console.log('\n🔎 [Gate 34] 정본신설승인 검사기 (Canon Addition Approval)');
+try {
+  const { spawnSync } = require('child_process');
+  const r = spawnSync('node', [path.join(ROOT, 'scripts/canon-addition-check.js')], { encoding: 'utf-8' });
+  const out = (r.stdout || '').split('\n');
+  for (const l of out.filter((l) => l.includes('✅'))) pass(l.replace(/^\s*✅\s*/, '').trim());
+  for (const l of out.filter((l) => l.includes('⚠️'))) warn(l.replace(/^\s*⚠️\s*/, '').trim());
+  if (r.status !== 0) {
+    const bad = out.filter((l) => l.includes('❌'));
+    if (bad.length === 0) fail(`canon-addition-check 실패 (exit ${r.status})`);
+    else for (const l of bad) fail(l.replace(/^\s*❌\s*/, '').trim());
+  }
+} catch (e) {
+  fail(`Gate 34 실행 실패: ${e.message}`);
+}
+
+// ── Gate 35: Typography Generation (타이포 생성물 신선도) ──
+// `typo:check` 가 존재하는데 gate-check 에 **배선돼 있지 않았다**(Gate 7b·9b 와 같은
+// "존재하나 미연결" 유형). 그래서 텍스트 스타일 정본은 게이트가 0개인 상태였다.
+console.log('\n🔎 [Gate 35] 타이포생성물 검사기 (Typography Generation)');
+try {
+  const { spawnSync } = require('child_process');
+  const r = spawnSync('node', [path.join(ROOT, 'scripts/typography-gen.js'), '--check'], { encoding: 'utf-8' });
+  if (r.status === 0) pass('typography.css 가 정본(textstyles-data.ts)과 일치');
+  else {
+    const msg = ((r.stdout || '') + (r.stderr || '')).split('\n').filter(Boolean).slice(-3).join(' / ');
+    fail(`typography.css 가 정본과 다릅니다 — \`npm run typo:gen\` 필요. ${msg}`);
+  }
+} catch (e) {
+  fail(`Gate 35 실행 실패: ${e.message}`);
+}
+
 // ── Summary ───────────────────────────────────────────────────────
 console.log('\n─────────────────────────────────────────────────────');
 if (errors > 0) {

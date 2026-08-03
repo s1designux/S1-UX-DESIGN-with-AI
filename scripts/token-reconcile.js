@@ -38,16 +38,20 @@ function run(label, cmd) {
 
 console.log('\n🔧 Token Reconcile — 정본 → 파생 표면 재생성\n');
 
-run('1/9 tokens:gen            (vars-data → tokens.css Semantic)', 'npm run --silent tokens:gen');
-run('2/9 tokens:gen:foundation (vars-data → tokens.css Foundation)', 'npm run --silent tokens:gen:foundation');
-run('3/9 color:gen             (vars-data → foundation.html 색 팔레트)', 'npm run --silent color:gen');
-run('4/9 number:gen            (vars-data → foundation.html number 5종)', 'npm run --silent number:gen');
-run('5/9 registry:foundation:gen (vars-data → registry/tokens/foundation.colors.json)', 'npm run --silent registry:foundation:gen');
-run('6/9 page:gen              (tokens.css → semantic.html SEMANTIC_PAGE)', 'npm run --silent page:gen');
-run('7/9 design:md:write       (tokens.css+registry → DESIGN.core/vms.md)', 'npm run --silent design:md:write');
-run('8/9 tokens:sync-prompt    (tokens.css+design md → install-prompt.html)', 'npm run --silent tokens:sync-prompt');
+// 0단계: 텍스트 스타일 정본(textstyles-data.ts) → typography.css.
+//   2026-08-03 편입 — 종전 우산은 vars-data 만 봐서 **텍스트 스타일을 추가해도 파생이 안 따라왔다**.
+//   Gate 35 가 그 어긋남을 잡는다.
+run('1/10 typo:gen              (textstyles-data → assets/css/typography.css)', 'npm run --silent typo:gen');
+run('2/10 tokens:gen            (vars-data → tokens.css Semantic)', 'npm run --silent tokens:gen');
+run('3/10 tokens:gen:foundation (vars-data → tokens.css Foundation)', 'npm run --silent tokens:gen:foundation');
+run('4/10 color:gen             (vars-data → foundation.html 색 팔레트)', 'npm run --silent color:gen');
+run('5/10 number:gen            (vars-data → foundation.html number 5종)', 'npm run --silent number:gen');
+run('6/10 registry:foundation:gen (vars-data → registry/tokens/foundation.colors.json)', 'npm run --silent registry:foundation:gen');
+run('7/10 page:gen              (tokens.css → semantic.html SEMANTIC_PAGE)', 'npm run --silent page:gen');
+run('8/10 design:md:write       (tokens.css+registry → DESIGN.core/vms.md)', 'npm run --silent design:md:write');
+run('9/10 tokens:sync-prompt    (tokens.css+design md → install-prompt.html)', 'npm run --silent tokens:sync-prompt');
 if (!skipInstaller) {
-  run('9/9 installer:build       (vars-data → 설치기 zip)', 'npm run --silent installer:build');
+  run('10/10 installer:build       (vars-data → 설치기 zip)', 'npm run --silent installer:build');
 } else {
   console.log('\n▶ 9/9 installer:build — 건너뜀(--no-installer)');
 }
