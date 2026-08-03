@@ -2,21 +2,9 @@
    Run: npm run reports:sync
 */
 window.REPORTS_INDEX = {
-  "generatedAt": "2026-08-03T01:21:55.415Z",
+  "generatedAt": "2026-08-03T06:27:39.227Z",
   "totalCount": 70,
   "reports": [
-    {
-      "id": "handoff-canon-consolidation",
-      "filename": "handoff-canon-consolidation.md",
-      "title": "인수인계 — 정본 단일화 논의 (2026-08-03)",
-      "stage": "Audit",
-      "category": "audit",
-      "status": "archive",
-      "sourcePath": "reports/handoff-canon-consolidation.md",
-      "updatedAt": "2026-08-03",
-      "summary": "앞 세션 컨텍스트가 길어져 새 세션으로 넘긴다.",
-      "fileSizeKB": 10.7
-    },
     {
       "id": "button-sync-check",
       "filename": "button-sync-check.md",
@@ -25,9 +13,33 @@ window.REPORTS_INDEX = {
       "category": "audit",
       "status": "archive",
       "sourcePath": "reports/button-sync-check.md",
-      "updatedAt": "2026-08-02",
+      "updatedAt": "2026-08-03",
       "summary": "- **Variants:** primary, secondary, blue-line",
       "fileSizeKB": 3.2
+    },
+    {
+      "id": "handoff-canon-consolidation",
+      "filename": "handoff-canon-consolidation.md",
+      "title": "인수인계 — 정본 단일화 (2026-08-03 갱신)",
+      "stage": "Audit",
+      "category": "audit",
+      "status": "complete",
+      "sourcePath": "reports/handoff-canon-consolidation.md",
+      "updatedAt": "2026-08-03",
+      "summary": "정본 목록의 기계가독 정의는 이제 **`registry/governance/canon-manifest.json`** 에 있다(Gate 36 이 집행).",
+      "fileSizeKB": 7.1
+    },
+    {
+      "id": "mvp-t2-token-sync",
+      "filename": "mvp-t2-token-sync.md",
+      "title": "MVP-T2 Token Sync Plugin Report",
+      "stage": "T2",
+      "category": "token",
+      "status": "archive",
+      "sourcePath": "reports/mvp-t2-token-sync.md",
+      "updatedAt": "2026-08-03",
+      "summary": "MVP-T1에서 구축한 CSS Token ↔ Registry Token ↔ Figma Variable mapping registry를 기반으로,",
+      "fileSizeKB": 5
     },
     {
       "id": "handoff-pipeline-rebuild",
@@ -112,18 +124,6 @@ window.REPORTS_INDEX = {
       "updatedAt": "2026-07-15",
       "summary": "**상태: 미착수.** 확인 계열(`registry/components/modal.json`, compact 텍스트-확인)과 **구분되는 별개 컴포넌트**.",
       "fileSizeKB": 3.3
-    },
-    {
-      "id": "mvp-t2-token-sync",
-      "filename": "mvp-t2-token-sync.md",
-      "title": "MVP-T2 Token Sync Plugin Report",
-      "stage": "T2",
-      "category": "token",
-      "status": "archive",
-      "sourcePath": "reports/mvp-t2-token-sync.md",
-      "updatedAt": "2026-07-07",
-      "summary": "MVP-T1에서 구축한 CSS Token ↔ Registry Token ↔ Figma Variable mapping registry를 기반으로,",
-      "fileSizeKB": 5
     },
     {
       "id": "harness-audit-2026-07-06",
