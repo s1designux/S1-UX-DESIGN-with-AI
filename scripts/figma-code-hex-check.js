@@ -23,8 +23,11 @@
  *           회색 배경·라벨 같은 순수 장식 크롬(컴포넌트 부품이 아님)에만 허용
  *   - 컴포넌트 부품(셀·타일·아이콘·텍스트 등)의 색은 마커로 우회하지 말고 Variable 바인딩.
  *
- * 입력: stdin 으로 use_figma 의 code 문자열(훅이 `jq -r '.tool_input.code'` 로 추출해 파이프).
+ * 입력: stdin 으로 **훅 JSON 전체**(`{"tool_input":{"code":"..."}}`) — 스크립트가 직접 파싱한다.
+ *       code 문자열 원문도 받는다(옛 `jq | node` 파이프 방식 하위호환).
  *       또는 인자로 파일 경로(테스트용).
+ *       ※ 2026-08-03: jq 가 없는 환경(Windows)에서 훅이 조용히 안 걸리던 문제를 없애려고
+ *         `scripts/lib/hook-input.js` 로 파싱을 옮겼다.
  * 종료코드: 위반 있으면 2(PreToolUse 차단), 없으면 0.
  */
 
@@ -84,9 +87,11 @@ if (require.main === module) {
   if (fileArg && fs.existsSync(fileArg)) {
     run(fs.readFileSync(fileArg, "utf8"));
   } else {
+    // 훅 JSON 을 직접 파싱한다 — jq·파이프(셸) 없이 동작해야 OS 에 좌우되지 않는다.
+    const { extractCode } = require("./lib/hook-input");
     let buf = "";
     process.stdin.setEncoding("utf8");
     process.stdin.on("data", (c) => (buf += c));
-    process.stdin.on("end", () => run(buf));
+    process.stdin.on("end", () => run(extractCode(buf).code));
   }
 }

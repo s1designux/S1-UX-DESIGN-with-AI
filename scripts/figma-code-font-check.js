@@ -20,7 +20,10 @@
  *   스캔(figma-font-scan.md)을 component-verifier 가 실행하는 것이다. 마커는 면죄부 아님.
  *
  * 정본: registry/governance/figma-font-policy.json (canonicalFamily·tempAllowedFamilies·marker)
- * 입력: stdin 으로 use_figma 의 code 문자열. 또는 인자로 파일 경로(테스트용).
+ * 입력: stdin 으로 **훅 JSON 전체**(`{"tool_input":{"code":"..."}}`) — 스크립트가 직접 파싱한다.
+ *       code 문자열 원문도 받는다(하위호환). 또는 인자로 파일 경로(테스트용).
+ *       ※ 2026-08-03: jq 없는 환경에서 훅이 조용히 안 걸리던 문제를 없애려고
+ *         `scripts/lib/hook-input.js` 로 파싱을 옮겼다.
  * 종료코드: 위반 있으면 2(PreToolUse 차단), 없으면 0.
  */
 
@@ -106,9 +109,11 @@ if (require.main === module) {
   if (fileArg && fs.existsSync(fileArg)) {
     run(fs.readFileSync(fileArg, "utf8"));
   } else {
+    // 훅 JSON 을 직접 파싱한다 — jq·파이프(셸) 없이 동작해야 OS 에 좌우되지 않는다.
+    const { extractCode } = require("./lib/hook-input");
     let buf = "";
     process.stdin.setEncoding("utf8");
     process.stdin.on("data", (c) => (buf += c));
-    process.stdin.on("end", () => run(buf));
+    process.stdin.on("end", () => run(extractCode(buf).code));
   }
 }

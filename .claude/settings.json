@@ -1,0 +1,25 @@
+{
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "use_figma",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node",
+            "args": ["scripts/figma-code-hex-check.js"],
+            "statusMessage": "Figma 색 검사(하드코딩 hex 차단)",
+            "timeout": 30
+          },
+          {
+            "type": "command",
+            "command": "node",
+            "args": ["scripts/figma-code-font-check.js"],
+            "statusMessage": "Figma 폰트 검사(비-Pretendard 차단)",
+            "timeout": 30
+          }
+        ]
+      }
+    ]
+  }
+}
