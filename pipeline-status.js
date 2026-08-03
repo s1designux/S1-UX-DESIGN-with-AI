@@ -255,6 +255,69 @@ const rootFiles = files.filter(p => {
     b === base(l) || stripExt(p) === stripExt(l)));
 }).map(p => ({ file: rel(p), mtime: mtime(p), role: extractRole(p) }));
 
+// ── 4b. 정본 목록(canon-manifest.json)과 대조 ─────────────────────────────
+//   위 도출은 **휴리스틱**이라 스크립트를 정본으로 오분류하고(guard/index.js·load-vars-data.js),
+//   자기 자신을 파생이라 선언한 파일(design.manifest.json)까지 정본으로 넣었다.
+//   휴리스틱을 없애지 않고(회귀 위험) 선언과 **대조**해 어긋난 것을 화면에 드러낸다.
+//   선언 = registry/governance/canon-manifest.json (Gate 36 이 선언↔배선을 강제).
+const canonManifest = (() => {
+  try { return JSON.parse(read(path.join(ROOT, 'registry/governance/canon-manifest.json')) || 'null'); }
+  catch (_) { return null; }
+})();
+const normPath = s => String(s).replace(/\\/g, '/');
+const declaredCanon = new Map();     // 선언 경로 → { role }
+const declaredDerived = new Map();   // 파생이라 명시된 경로 → why
+const declaredPolicy = new Map();    // 정책 정본(게이트 판정 기준) → { role }
+const declaredLedger = [];           // 메타 장부(손편집) — 정확 경로 또는 *.json 글롭
+if (canonManifest) {
+  for (const c of (canonManifest.canon || [])) declaredCanon.set(normPath(c.path), c);
+  for (const d of (canonManifest.declaredDerived || [])) declaredDerived.set(normPath(d.path), d.why || '');
+  const pc = canonManifest.policyCanon || {};
+  for (const [f, v] of Object.entries(pc.files || {})) {
+    declaredPolicy.set(normPath(`${pc.dir || 'registry/governance'}/${f}`), v || {});
+  }
+  for (const l of (canonManifest.metaLedgers || [])) declaredLedger.push({ pattern: normPath(l.path), role: l.role || '' });
+}
+// 메타 장부 매칭: **정확 경로 우선**, 없으면 `dir/*.json` 글롭
+//   (글롭을 먼저 보면 index.json 처럼 자기 항목이 따로 있는 파일에 엉뚱한 역할 설명이 붙는다)
+function matchLedger(p) {
+  return declaredLedger.find(l => l.pattern === p)
+    || declaredLedger.find(l => l.pattern.endsWith('/*.json')
+      && p.startsWith(l.pattern.slice(0, -7) + '/') && p.endsWith('.json'));
+}
+// 각 root 에 선언 여부·선언된 역할을 붙인다(선언 역할이 있으면 우선 — 정본 파일에 주석을
+// 새로 넣지 않는다: build-components.ts 는 1줄만 바뀌어도 Gate 13 해시가 stale 이 된다).
+rootFiles.forEach(r => {
+  const key = normPath(r.file);
+  const dec = declaredCanon.get(key);
+  r.declared = !!dec;
+  if (dec && dec.role) r.role = dec.role;
+  if (declaredDerived.has(key)) {
+    r.declared_derived = true;
+    r.derived_why = declaredDerived.get(key);
+  }
+  // 값 정본은 아니지만 선언된 것들 — 정책 정본(게이트 판정 기준) / 메타 장부(손편집)
+  const pol = declaredPolicy.get(key);
+  if (pol) { r.declared_kind = 'policy'; if (!r.role && pol.role) r.role = pol.role; }
+  const led = matchLedger(key);
+  if (led && !pol) { r.declared_kind = 'ledger'; if (!r.role && led.role) r.role = led.role.slice(0, 90); }
+});
+// 선언은 됐는데 휴리스틱이 못 찾은 정본(= 대시보드에서 사라진 정본)
+const declaredMissingFromMap = [...declaredCanon.keys()]
+  .filter(k => !rootFiles.some(r => normPath(r.file) === k));
+const canonSummary = {
+  declared: declaredCanon.size,
+  detected_and_declared: rootFiles.filter(r => r.declared).length,
+  policy: rootFiles.filter(r => r.declared_kind === 'policy').length,
+  ledger: rootFiles.filter(r => r.declared_kind === 'ledger').length,
+  // 어느 선언에도 안 걸린 것 = 진짜 미분류(정본인지 파생인지 아무도 안 정한 파일)
+  unclassified: rootFiles
+    .filter(r => !r.declared && !r.declared_derived && !r.declared_kind)
+    .map(r => r.file),
+  declared_but_undetected: declaredMissingFromMap,
+  manifest_present: !!canonManifest,
+};
+
 // 정본 파일에서 역할 한 줄 추출: .ts/.js 는 @role:, .json 은 "_role"
 function extractRole(p) {
   const src = read(p) || '';
@@ -424,6 +487,7 @@ const DATA = {
   },
   roots: rootFiles, generators: genInfo, destinations: destInfo,
   edges, gates, blind_spots: blindSpots,
+  canon_manifest: canonSummary,
   // 시스템 맵 = 토큰 건강도(수기·죽은파일·orphan·경계). 파랑(자동)은 요약 배지 한 줄로만.
   // 색 판정은 scan-system-map 이 "생성기 write 유무"로 동적 계산(하드코딩 아님).
   system_map: scanSystemMap(ROOT, {
@@ -733,9 +797,31 @@ Object.keys(groups).sort().forEach(label=>{
   const h=document.createElement('div');h.className='group-h';
   h.innerHTML=esc(label)+' <span class="cnt">('+groups[label].length+')</span>';
   c1.appendChild(h);
-  groups[label].forEach(r=>c1.appendChild(nodeEl(r.file,'src',r.file, r.role?esc(r.role):'')));
+  groups[label].forEach(r=>{
+    // 선언된 정본인지 표시 — canon-manifest.json 이 정본 목록의 정본이고, 여기 없는 것은
+    // 휴리스틱이 주워온 것(스크립트 오분류 등)이라 화면에서 구분해 보여준다.
+    let sub = r.role?esc(r.role):'';
+    if(r.declared_derived) sub = '⚠ 선언상 파생(정본 아님)' + (sub?' · '+sub:'');
+    else if(r.declared) sub = '✔ 선언 정본' + (sub?' · '+sub:'');
+    else if(r.declared_kind==='policy') sub = '◆ 정책 정본(게이트 기준)' + (sub?' · '+sub:'');
+    else if(r.declared_kind==='ledger') sub = '▤ 메타 장부(손편집)' + (sub?' · '+sub:'');
+    else sub = '? 미분류 — 정본 목록에 선언 필요' + (sub?' · '+sub:'');
+    c1.appendChild(nodeEl(r.file,'src',r.file, sub));
+  });
 });
 if(!D.roots.length) c1.appendChild((()=>{const d=document.createElement('div');d.className='meta';d.textContent='정본 미검출';return d;})());
+// 정본 목록 대조 요약 한 줄
+if(D.canon_manifest){
+  const cm=D.canon_manifest; const d=document.createElement('div'); d.className='meta';
+  d.style.marginTop='8px';
+  d.textContent = cm.manifest_present
+    ? '정본 목록(canon-manifest): 값 정본 '+cm.detected_and_declared+'/'+cm.declared
+      +' · 정책 정본 '+cm.policy+' · 메타 장부 '+cm.ledger
+      +(cm.declared_but_undetected.length?' · 선언됐으나 지도 미검출 '+cm.declared_but_undetected.length:'')
+      +(cm.unclassified.length?' · ⚠ 미분류 '+cm.unclassified.length:' · 미분류 0')
+    : '정본 목록 파일 없음 — Gate 36 확인 필요';
+  c1.appendChild(d);
+}
 
 // 가운데: 생성기
 D.generators.forEach(g=>c2.appendChild(nodeEl(g.file,'gen',g.file, g.has_check_flag?'--check 있음':'--check 없음')));

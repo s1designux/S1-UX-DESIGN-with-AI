@@ -892,6 +892,18 @@ try {
   fail(`Gate 35 실행 실패: ${e.message}`);
 }
 
+// ── Gate 36: Canon Manifest (정본 목록 ↔ 실제 배선) ──
+// 정본이 Figma 구조상 3벌로 나뉘는데 "무엇이 정본인가"가 산문에만 있어서, 텍스트 스타일
+// 정본이 게이트 0개·우산 명령 밖에 방치돼 있었다. 선언(canon-manifest.json)과 실제 배선을
+// 대조해 같은 누락이 재발하지 않게 한다. 적대 4종(선언누락·정본삭제·유령명령·몰래강등) 확인.
+console.log('\n🔎 [Gate 36] 정본목록 검사기 (Canon Manifest)');
+try {
+  const { check: canonManifestCheck } = require('./canon-manifest-check');
+  canonManifestCheck({ pass, warn, fail });
+} catch (e) {
+  fail(`Gate 36 실행 실패: ${e.message}`);
+}
+
 // ── Summary ───────────────────────────────────────────────────────
 console.log('\n─────────────────────────────────────────────────────');
 if (errors > 0) {

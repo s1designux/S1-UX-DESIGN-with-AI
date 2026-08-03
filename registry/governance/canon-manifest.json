@@ -1,0 +1,117 @@
+{
+  "_role": "정본 목록의 정본(canon manifest) — 무엇이 정본이고, 각 정본의 파생 표면·재생성 명령·감시 게이트가 무엇인지 기계가독으로 선언한다. Gate 36 이 이 선언과 실제 배선을 대조한다.",
+  "_why": "정본이 여러 벌인 것은 Figma 구조상 불가피하다(Variables·Text Styles·Components 는 서로 다른 개체·다른 설치 API). 문제는 '무엇이 정본인가'가 산문에만 있어서 문서끼리 어긋났고(CLAUDE.md MVP0 섹션 vs 하드룰 H6), 대시보드는 정본을 휴리스틱으로 추측하다 스크립트를 정본으로 오분류했다. 파일을 합치는 대신 '정본 목록'을 한 곳에 선언하고 기계가 집행한다.",
+  "_updated": "2026-08-03",
+
+  "umbrella": {
+    "regen": "tokens:reconcile",
+    "verify": "gate:check",
+    "dashboard": "node pipeline-status.js --check",
+    "_note": "사용자는 정본이 몇 벌인지 몰라도 된다 — 재생성은 명령 하나, 검증은 게이트 하나, 현황은 대시보드 하나로 수렴한다."
+  },
+
+  "canon": [
+    {
+      "id": "vars-data",
+      "path": "plugins/figma-vars-installer/src/vars-data.ts",
+      "role": "Figma Variables 정본 — Foundation 색 208 · Foundation 숫자 75 · Semantic 색 171 · Semantic 숫자 10 · 그림자 3",
+      "figmaEntity": "Variables",
+      "additionsGate": "34",
+      "surfaces": [
+        { "path": "assets/css/tokens.css", "kind": "generated", "regen": ["tokens:gen", "tokens:gen:foundation"], "gates": ["3", "7", "7b"] },
+        { "path": "pages/foundation.html", "kind": "generated", "regen": ["color:gen", "number:gen"], "gates": ["9", "9b"] },
+        { "path": "registry/tokens/foundation.colors.json", "kind": "generated", "regen": ["registry:foundation:gen"], "gates": ["9c"] },
+        { "path": "pages/semantic.html", "kind": "generated", "regen": ["page:gen"], "gates": ["7"] },
+        { "path": "design/DESIGN.core.md", "kind": "generated", "regen": ["design:md:write"], "gates": ["24"] },
+        { "path": "design/services/DESIGN.vms.md", "kind": "generated", "regen": ["design:md:write"], "gates": ["24"] },
+        { "path": "pages/install-prompt.html", "kind": "generated", "regen": ["tokens:sync-prompt"], "gates": ["3"] },
+        { "path": "assets/downloads/s1-ux-design-guide-installer.zip", "kind": "generated", "regen": ["installer:build"], "gates": ["6", "6b", "6c"] }
+      ]
+    },
+    {
+      "id": "textstyles-data",
+      "path": "plugins/figma-vars-installer/src/textstyles-data.ts",
+      "role": "Figma Text Styles 정본 — 글자 스타일 19종(title 10 · body 9)",
+      "figmaEntity": "Text Styles",
+      "additionsGate": "34",
+      "_cannotMergeWith": "vars-data — Figma 에서 Text Styles 는 Variables 와 별개 개체이고 설치 API 도 다르다(figma.createTextStyle / install-textstyles.ts). 물리 병합 불가.",
+      "surfaces": [
+        { "path": "assets/css/typography.css", "kind": "generated", "regen": ["typo:gen"], "gates": ["35"] },
+        { "path": "assets/downloads/s1-ux-design-guide-installer.zip", "kind": "generated", "regen": ["installer:build"], "gates": ["6b", "6c"] }
+      ]
+    },
+    {
+      "id": "build-components",
+      "path": "plugins/figma-vars-installer/src/build-components.ts",
+      "role": "Figma Components 정본 — 컴포넌트 구조·변형·토큰 배정(빌더 41 러너 · 15섹션 42멤버)",
+      "figmaEntity": "Components",
+      "additionsGate": "34",
+      "changeControl": "Gate 13 — 구조 변경은 🤖 component-verifier 독립 검증 기록(해시)이 있어야 커밋된다(⭐ 단독 자가검증 차단).",
+      "surfaces": [
+        { "path": "assets/downloads/s1-ux-design-guide-installer.zip", "kind": "generated", "regen": ["installer:build"], "gates": ["6b", "13"] },
+        { "path": "pages/components.html", "kind": "hand-maintained", "gates": ["18", "19", "23", "32"] },
+        { "path": "registry/governance/update-management.json", "kind": "hand-maintained", "regen": ["update:gen"], "gates": ["16", "30"] }
+      ]
+    }
+  ],
+
+  "policyCanon": {
+    "_role": "게이트가 판정 기준으로 삼는 정책 정본. 값이 아니라 '규칙'을 담는다.",
+    "dir": "registry/governance",
+    "files": {
+      "audit-rules.json": { "role": "토큰 열거 규칙 R01~R11", "consumers": ["guard"] },
+      "canon-additions-baseline.json": { "role": "정본 항목명 동결 목록 + 승인 기록", "gates": ["34"] },
+      "canon-manifest.json": { "role": "정본 목록의 정본(이 파일)", "gates": ["36"] },
+      "component-page-coverage.json": { "role": "설치기 컴포넌트 ↔ HTML 섹션 분류", "gates": ["18", "19", "30", "32"] },
+      "component-presentation-policy.json": { "role": "컴포넌트 표출 레이아웃 규칙", "gates": ["23", "30", "32"] },
+      "component-registration-baseline.json": { "role": "등록 표면 baseline", "gates": ["30"] },
+      "dark-divergence-baseline.json": { "role": "다크값갈림 이상치 래칫", "gates": ["29"] },
+      "design-narrative.json": { "role": "디자인 서술(DESIGN.md 입력)", "consumers": ["design:md:write"] },
+      "figma-font-policy.json": { "role": "Pretendard 정본 폰트 정책", "consumers": ["PreToolUse 폰트 훅", "component-verifier"] },
+      "guardians.json": { "role": "하네스 운영 구성", "consumers": ["dashboard:gen"] },
+      "intentional-unused-tokens.json": { "role": "의도적 미사용 토큰 allowlist", "gates": ["17", "20"] },
+      "naming-rules.json": { "role": "토큰 네이밍 규칙", "gates": ["15"] },
+      "page-layout-policy.json": { "role": "페이지 공통 틀·폭 정책", "gates": ["22"] },
+      "registry-drift-baseline.json": { "role": "비정본 registry stale 래칫", "gates": ["20"] },
+      "size-naming-policy.json": { "role": "크기 어휘 정본", "gates": ["32"] },
+      "token-exceptions.json": { "role": "토큰 예외(rgba 등)", "consumers": ["guard"] },
+      "update-management.json": { "role": "컴포넌트 진행 현황", "gates": ["16", "30"] },
+      "variant-coverage-baseline.json": { "role": "변형/상태 커버리지 knownGaps", "gates": ["19"] },
+      "deprecated.json": { "role": "폐기 토큰 메타", "gates": [], "_note": "소비 게이트 0 — 폐기 여부는 needs-decision" },
+      "migration.json": { "role": "마이그레이션 이력", "gates": [], "_note": "소비 게이트 0 — 폐기 여부는 needs-decision" },
+      "versions.json": { "role": "버전 이력", "gates": [], "_note": "소비 게이트 0 — 폐기 여부는 needs-decision" }
+    }
+  },
+
+  "metaLedgers": [
+    {
+      "path": "registry/components/*.json",
+      "role": "손편집 전용 메타 장부 — 설명·미결이슈·진행상태 6축·usage(언제 쓰나)·anatomy·doDont·a11y·Figma 노드 매핑·거버넌스·사람 결정 기록. 이 정보는 정본에 대응물이 없어 여기에만 존재한다.",
+      "isCanonFor": ["메타데이터(설명·상태·거버넌스·figma 매핑)"],
+      "isNotCanonFor": ["값(높이·padding·variant 축·토큰 슬롯·typography) — 정본은 build-components.ts. H6 에 따라 어긋나면 이쪽을 고친다."],
+      "gates": ["1", "16", "20", "30"],
+      "_plannedFix": "값 이중 기재는 registry/components/component-facts.json(정본에서 자동 생성)으로 이관 예정 — 계획 Phase 4~6."
+    },
+    {
+      "path": "registry/components/index.json",
+      "role": "컴포넌트 스펙 색인 — 파일 목록·진행상태·우선순위. 손편집.",
+      "gates": ["30"]
+    },
+    {
+      "path": "registry/index.json",
+      "role": "레지스트리 루트 색인 — 토큰·컴포넌트·거버넌스 파일의 진입점. build:bundle 이 components 맵을 순회해 웹 번들을 만든다. 손편집.",
+      "gates": ["21", "30"]
+    },
+    {
+      "path": "registry/patterns/index.json",
+      "role": "패턴 색인 — 반복 구조(search-table 등) 목록. 손편집.",
+      "gates": []
+    }
+  ],
+
+  "declaredDerived": [
+    { "path": "design/design.manifest.json", "why": "자기 파일이 _note 로 '소비용 산출물'이라 선언한다 — 정본 아님(대시보드 휴리스틱이 정본으로 오분류했던 항목)." },
+    { "path": "scripts/guard/index.js", "why": "스크립트다. 대시보드 휴리스틱이 '읽히지만 생성되지 않는 파일'이라는 이유로 정본으로 오분류했던 항목." },
+    { "path": "scripts/lib/load-vars-data.js", "why": "정본을 읽는 공용 로더 스크립트 — 정본이 아니다(같은 오분류)." }
+  ]
+}

@@ -42,6 +42,7 @@
     "components:sizenaming": "node scripts/size-naming-check.js",
     "canon:check": "node scripts/canon-addition-check.js",
     "canon:approve": "node scripts/canon-addition-check.js --approve",
+    "canon:manifest": "node scripts/canon-manifest-check.js",
     "components:buildverify": "node scripts/installer-build-verify-check.js",
     "tokens:namingcheck": "node scripts/token-naming-check.js",
     "tokens:driftcheck": "node scripts/token-drift-check.js",
