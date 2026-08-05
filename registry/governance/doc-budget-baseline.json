@@ -1,0 +1,15 @@
+{
+  "_note": "Gate 37(Doc Budget) 상한. CLAUDE.md 상시 로드 비용을 동결한다 — 매 세션 + 매 에이전트 spawn 마다 전액 지불되므로. 상향은 사용자 승인(--approve)으로만. 규칙은 .claude/rules/*.md(조건부 로드)로 옮기는 것이 기본.",
+  "target": "CLAUDE.md",
+  "maxBytes": 43275,
+  "maxHistoryRows": 3,
+  "approvals": [
+    {
+      "date": "2026-08-05",
+      "by": "river",
+      "reason": "CLAUDE.md 구조 정비 직후 크기 동결 (정비 결과 +10% · HD-A 승인 2026-08-05)",
+      "bytesAtApproval": 39341,
+      "maxBytes": 43275
+    }
+  ]
+}

@@ -11,8 +11,8 @@
 
 * ✅ Foundation Token — Primitive 색상 팔레트 (Light + Dark) 정의 완료
 * ✅ Dark Primitive — `gray-dark` (0–900), `blue-dark` (50–500) 추가 완료
-* ✅ Semantic Token — 8개 카테고리 Light/Dark 값 전체 정의 완료 (`tokens/semantic.md`)
-* ✅ Component Token — 9개 그룹 추출 및 Semantic 참조 구조 정의 완료 (`tokens/component-tokens-extracted.md`)
+* ✅ Semantic Token — 8개 카테고리 Light/Dark 값 전체 정의 완료 (정본 `plugins/figma-vars-installer/src/vars-data.ts`)
+* ✅ Component Token — 9개 그룹 추출 및 Semantic 참조 구조 정의 완료 (정본 `plugins/figma-vars-installer/src/build-components.ts` · 별칭 CSS 변수층은 2026-07-02 은퇴)
 * ✅ Button variants — primary / secondary / blue-line 토큰 완료 (Danger 삭제, ghost deprecated 확정)
 * ✅ Button blue-line variant — tokens.css + component.tokens.json 추가 완료 (2026-05-11)
 * ✅ 가이드 HTML — foundation / semantic / components 페이지 완료
@@ -75,11 +75,15 @@
 # 📦 산출물 현황
 
 ```
-tokens/
-  semantic.md                    ✅ Light/Dark 전체 정의 완료
-  component-tokens-extracted.md  ✅ 9개 그룹 완료 (Danger 제거됨)
-  foundation.md                  ✅ 완료 (Dark 스텝 방향 규칙 포함)
-  token-map.json                 ⬜ 미작성
+plugins/figma-vars-installer/src/   ← 정본 3벌
+  vars-data.ts         ✅ 토큰 값(Foundation·Semantic·number·shadow)
+  textstyles-data.ts   ✅ 텍스트 스타일
+  build-components.ts  ✅ 컴포넌트가 쓰는 토큰·크기 (Danger 제거됨)
+
+tokens/legacy/                      ← 2026-08-01 아카이브 (정본 아님)
+  semantic.md · component-tokens-extracted.md · foundation.md
+  (Dark 스텝 방향 규칙은 vars-data.ts 주석 + design-narrative.json 으로 이관)
+  token-map.json       ⬜ 미작성 — BACKLOG 로 이관하거나 폐기 결정 대기
 
 pages/
   foundation.html    ✅ Dark Palette 포함

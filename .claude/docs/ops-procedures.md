@@ -27,3 +27,20 @@ ACCESS-01 해소 (2026-05-20 MVP-F1 플러그인 스캔 완료):
 - `540:3489` — TimePicker Select Dropdown
 - `540:3506` — TimePicker PC Input Dropdown
 - `540:4216` — TimePicker PC Calendar
+
+---
+
+## 대시보드 업데이트
+
+> CLAUDE.md 에서 이동(2026-08-05). 문장은 원문 그대로다. river 가 "대시보드 업데이트"(또는 "대시보드 갱신")라고 말하면 이 절차를 따른다.
+
+1. 프로젝트 루트에서 `node pipeline-status.js --check --skip gate:check,components:presentation --out pages/pipeline-status.html` 를 실행한다.
+2. 끝나면 pages/pipeline-status.html 을 연다.
+3. 콘솔 출력에서 "사각지대", "드리프트", "표면 무관 검사 실패" 줄을 요약해 알려준다.
+주의 — **이 명령이 쓰는 파일은 2개다** (2026-07-31 실측 정정. 종전 서술 "하나만 쓴다"는 도입 시점부터 틀렸다):
+- `pages/pipeline-status.html` — 대시보드 본체
+- `reports/button-sync-check.md` — `--check` 가 게이트를 실제로 실행하는데, 그중 `sync:button`(`scripts/sync/button-sync-check.js:267` → `scripts/sync/utils.js:28` `writeReport()`)이 자기 리포트를 갱신한다. 바뀌는 건 날짜 스탬프 1줄이고, **같은 날 두 번째 실행부터는 내용이 같아 `git diff` 가 나지 않는다**(첫 실행에서만 변경으로 잡힘).
+
+→ 커밋할 때 **두 경로를 다 확인**한다: `git commit -- pages/pipeline-status.html reports/button-sync-check.md` (둘째 파일에 변경이 없으면 첫째만 명시).
+그 밖의 토큰 화면·소스 파일은 건드리지 않는다 — 그런 명령은 `pipeline-status.js:284` 가 실행 대상에서 제외한다.
+pipeline-status.js 가 루트에 없으면 먼저 위치를 찾아 실행한다.

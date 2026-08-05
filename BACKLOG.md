@@ -401,3 +401,29 @@ zip 반영 여부를 수동 확인해야 하는 구조
 
 **옳은 해법:** skip 시 캔버스의 기존 세트를 `BUILT_COMPS` 에 **재등록**해 부모가 진짜로 재사용하게
 만든다 → 보고가 아니라 해결이 되고, 7쌍 전부 한 번에 해소된다. 씬그래프 탐색이 들어가므로 별건.
+
+---
+
+## 유실된 규칙 문서 4건 복원 (2026-08-05 등록)
+
+CLAUDE.md 의 「🗂️ 아카이브된 휴면 규칙」 표가 아래 4개 문서를 "작업 트리거 시 반드시 Read"
+하라고 지시하고 있었으나, **git 역사상 그 파일들은 한 번도 존재한 적이 없다**(`git log --all` 확인).
+즉 표가 유실을 가리고 있었다. 표는 제거했고(2026-08-05 CLAUDE.md 정비), 규칙 자체의 복원은 여기 남긴다.
+
+| 없는 문서 | 담당했어야 할 규칙 | 원래 트리거 |
+|---|---|---|
+| `.claude/docs/portal-harness-rules.md` | Portal 페이지 렌더링·Core Harness·Button/Dark Border 토큰 편집 (MVP2/MVP3) | Portal·Harness 작업 |
+| `.claude/docs/source-guard-rules.md` | Source Guard — 외부 서비스 토큰 검수/수정/CI (MVP3.5~3.8) | Source Guard 작업 |
+| `.claude/docs/input-component-rules.md` | Input·Search·Password·Unit·DatePicker 컴포넌트 편집 (MVP4.x) | 해당 컴포넌트 편집 |
+| `.claude/docs/token-mapping-sync-rules.md` | Figma Variable 매핑·Token Sync 플러그인·Legacy 토큰 감사 (MVP-T1/T2/L1) | 매핑·Sync 작업 |
+
+**복원 방법(제안):** 각 MVP 단계의 `reports/` 리포트와 `reports/changelog-archive.md`, 그리고
+해당 시기 커밋 메시지에서 확정 규칙을 추려 문서화한다. **⭐ 단독으로 규칙을 새로 지어내지 않는다**
+(하드룰 H7) — 근거를 찾지 못한 항목은 `needs-decision` 으로 river 에게 올린다.
+
+## 토큰 수정 제안 등록처 재설계 (2026-08-05 등록 · 종전 CLAUDE.md 본문에 있던 과제)
+
+「토큰 수정 제안 워크플로우(Review → 승인 → 반영)」가 등록처로 지정했던 `pages/md-review.html` 은
+2026-06-24 삭제되어 현재 **제안을 등록할 곳이 없다**. 리뷰 대상 유형(오타·네이밍 오류 · Semantic 참조
+불일치 · 상태값 누락 · 구조 개선 · 다크모드 대응 누락)과 "사용자 승인 후에만 정본 반영" 원칙은 유효하다.
+등록처를 어디로 할지(웹 페이지 재생성 / registry JSON / reports MD)가 결정 대기.

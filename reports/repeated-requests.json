@@ -2,7 +2,7 @@
   "_meta": {
     "description": "사용자가 반복 요청한 패턴 추적 파일. count >= 3 이면 자동 감사 규칙 승격 후보.",
     "promotionThreshold": 3,
-    "updatedAt": "2026-08-03",
+    "updatedAt": "2026-08-05",
     "note": "이 JSON 이 단일 정본이다. CLAUDE.md 에 있던 승격 현황 표는 2026-08-03 에 삭제했다(정본과 드리프트 중이었음)."
   },
   "patterns": [
@@ -269,6 +269,30 @@
         {
           "date": "2026-08-03",
           "summary": "거부 직후 자기 규칙을 만들어 body/20M 신설 → '그냥 새로 만들어버렸어??'"
+        }
+      ]
+    },
+    {
+      "id": "always-loaded-doc-bloat",
+      "category": "context-economy",
+      "label": "상시 로드 문서(CLAUDE.md)가 비대해져 비용·규칙 준수율을 함께 떨어뜨림",
+      "description": "루트 CLAUDE.md 는 매 세션 시작 + 커스텀 에이전트 spawn 마다 전액 재로드된다. 이 하네스는 「만드는 자≠검증하는 자」 때문에 spawn 이 잦아 비용이 배수로 나간다. 84,905 byte(1,144줄)까지 자랐고 길이 자체가 규칙 준수율을 낮췄다. 그런데 방지책이 §🧹 산문 자가점검뿐이라 매번 사람이 알아채야 했다. 부수 증상으로 「존재한 적 없는 규칙 문서 4개를 반드시 Read 하라고 가리키는 표」가 규칙 유실을 가리고 있었다.",
+      "count": 3,
+      "promotionStatus": "promoted",
+      "promotedRule": "**Gate 37(doc-budget-check.js)** — ①CLAUDE.md 크기 래칫(승인 없이 상향 불가) ②CLAUDE.md·.claude/rules 의 백틱 경로 실존(basename 이 저장소에 0건인 것만 차단) ③변경이력 3행 상한. + 작업 영역별 규칙을 `.claude/rules/*.md`(paths 조건부 로드)로 이관해 상시 비용에서 제외.",
+      "automationNote": "규칙을 새로 쓸 때 기본 위치는 루트가 아니라 `.claude/rules/`(해당 파일 편집 시 자동 로드) 다. 루트에 남기는 것은 「계획 단계에 필요」하거나 「매 보고에 필요」한 것뿐 — 하드룰·두갈래분류·정본우선은 path rule 로 내리면 계획 단계에 늦으므로 루트 유지. 근거 서사는 HTML 주석(토큰 0)으로.",
+      "occurrences": [
+        {
+          "date": "2026-06-17",
+          "summary": "변경 이력이 컨텍스트를 무겁게 해 changelog-archive.md 분리 정책 확정(산문 규칙)"
+        },
+        {
+          "date": "2026-07-07",
+          "summary": "「컨텍스트 비대화 자가 점검」 섹션 신설 — 성실성 의존 상태로 남음"
+        },
+        {
+          "date": "2026-08-05",
+          "summary": "84,905 byte 도달 → 규칙 이관 + Gate 37 로 기계 차단 승격 (58.8% 절감)"
         }
       ]
     }

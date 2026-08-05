@@ -1,19 +1,20 @@
 #!/usr/bin/env node
 /**
- * Gate Check — Registry + Report + Quality + Installer Coverage gates
+ * Gate Check — 이 저장소의 커밋 검문소 (pre-commit 훅이 호출)
  * Usage: node scripts/gate-check.js
  *
- * 2026-07-08: 아래 번호를 CLAUDE.md/gates-reference.md 문서 번호(Report=4,
- * Installer Coverage=6)에 맞춰 정정. 라벨·주석만 변경, 검사 로직은 무변경.
+ * **게이트 목록을 여기에 중복 적지 않는다.** 종전 이 자리에 6개만 나열돼 있어
+ * 실제(40개)와 어긋난 채 방치됐다(2026-08-05 정정). 목록·정의의 위치는 하나씩만:
  *
- * Gate 1: Registry            — component registry path/JSON 유효성
- * Gate 4: Report              — reports-index.json vs 실제 파일 정합성
- * Gate 3: Quality             — tokens.css raw HEX / Foundation 직접 참조 감지
- * Gate 6: Installer Coverage  — tokens.css 의 Foundation·Semantic 토큰이
- *                                figma-vars-installer 의 Variables 정의에 반영됐는지
- * Gate 7: Token Sync Monitor  — 토큰 "값"이 전 표면에서 정본과 일치하는지
- * Gate 8: Component Key Cov.   — build-components.ts 빌더의 동적 scv 키가
- *                                vars-data 정본에 모두 존재하는지(런타임 누락 사전 차단)
+ *   · 한눈표(번호·이름·한 줄)        → CLAUDE.md §🚦 Gate 한눈표
+ *   · 정의·판정 로직·도입 사유·단독 실행 → .claude/docs/gates-reference.md
+ *   · 실제로 무엇이 도는가            → 이 파일의 `[Gate N]` 콘솔 출력 (= 정본)
+ *
+ * 이 파일에 배선되지 않은 것: Gate 2(Figma·수동) · Gate 5 의 UI 부분(수동).
+ * Gate 5 의 Harness 부분은 `npm run harness:audit` 로 단독 실행한다.
+ *
+ * 게이트를 추가하면: 아래에 `[Gate N]` 블록을 붙이고 → CLAUDE.md 한눈표 1행 →
+ * gates-reference.md 정의를 함께 쓴다. (검사 항목을 사용자 승인 없이 약화하는 것은 금지)
  */
 
 const fs = require('fs');
@@ -904,6 +905,19 @@ try {
   canonManifestCheck({ pass, warn, fail });
 } catch (e) {
   fail(`Gate 36 실행 실패: ${e.message}`);
+}
+
+// ── Gate 37: Doc Budget (CLAUDE.md 재비대화 차단) ──
+// CLAUDE.md 는 매 세션 + **매 에이전트 spawn 마다** 전액 로드된다. 84,905 byte 까지
+// 자라 있었고(2026-08-05 정비 전), 길수록 규칙 준수율 자체가 떨어진다. 그런데
+// CLAUDE.md 를 보는 게이트가 0개였고 방지책이 §🧹 산문 자가점검뿐 = 성실성 의존.
+// 크기 래칫 · 참조 경로 실존 · 변경이력 행수를 기계로 막는다.
+console.log('\n🔎 [Gate 37] 문서예산 검사기 (Doc Budget)');
+try {
+  const { check: docBudgetCheck } = require('./doc-budget-check');
+  docBudgetCheck({ pass, warn, fail });
+} catch (e) {
+  fail(`Gate 37 실행 실패: ${e.message}`);
 }
 
 // ── Summary ───────────────────────────────────────────────────────

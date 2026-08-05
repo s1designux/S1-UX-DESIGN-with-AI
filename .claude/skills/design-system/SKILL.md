@@ -1,6 +1,6 @@
 ---
 name: design-system
-description: "SW Design System Guide 프로젝트 작업 오케스트레이터. 토큰 검증·HTML 가이드 생성·Figma 동기화·MD 리뷰·구현 결과 대조 검증을 자동화한다. (1) '토큰 검증해줘', '참조 오류 찾아줘' 요청 시 token-validator 실행, (2) 'guide-md 동기화', '가이드 페이지 업데이트', '새 페이지 만들어줘' 요청 시 guide-builder 실행, (3) 'Figma랑 비교해줘', 'Figma 동기화', '원본 확인' 요청 시 figma-inspector 실행, (4) '리뷰 등록해줘', '결정 대기 추가' 요청 시 md-review.html 업데이트, (5) '구현 결과 대조해줘', '항목별 검수해줘' 요청 시 component-verifier 실행, (6) 복합 작업·재검증·업데이트 요청 시에도 사용. **단, 'Figma 컴포넌트 구현/변환/만들어줘'처럼 Figma 원본을 코드로 옮기는 작업은 이 스킬이 아니라 figma-to-code 스킬을 사용한다.**"
+description: "SW Design System Guide 프로젝트 작업 오케스트레이터. 토큰 검증·HTML 가이드 생성·Figma 동기화·MD 리뷰·구현 결과 대조 검증을 자동화한다. (1) '토큰 검증해줘', '참조 오류 찾아줘' 요청 시 token-validator 실행, (2) 'guide-md 동기화', '가이드 페이지 업데이트', '새 페이지 만들어줘' 요청 시 guide-builder 실행, (3) 'Figma랑 비교해줘', 'Figma 동기화', '원본 확인' 요청 시 figma-inspector 실행, (4) '리뷰 등록해줘', '결정 대기 추가' 요청 시 needs-decision 으로 보고(등록처는 재설계 대기 — BACKLOG.md 참조), (5) '구현 결과 대조해줘', '항목별 검수해줘' 요청 시 component-verifier 실행, (6) 복합 작업·재검증·업데이트 요청 시에도 사용. **단, 'Figma 컴포넌트 구현/변환/만들어줘'처럼 Figma 원본을 코드로 옮기는 작업은 이 스킬이 아니라 figma-to-code 스킬을 사용한다.**"
 ---
 
 # Design System Orchestrator
@@ -69,7 +69,8 @@ TaskCreate(tasks: [
 
 1. 각 에이전트 산출물 수집 (`_workspace/*.md`)
 2. 사용자에게 결과 요약 보고
-3. md-review.html 등록이 필요한 항목 → 바로 추가하거나 사용자 확인 후 추가
+3. 결정이 필요한 항목 → Orchestrator Summary 의 `미결 사항(HD)` 으로 올린다.
+   (종전 등록처 `pages/md-review.html` 은 2026-06-24 삭제됨 — 등록처 재설계는 `BACKLOG.md`)
 
 ## 에이전트 파일 경로
 
@@ -84,17 +85,24 @@ TaskCreate(tasks: [
 
 ```
 S1_AI_DESIGN_GUIDE/
-├── tokens/
-│   ├── semantic.md                  # Semantic Token 기준 파일
-│   └── component-tokens-extracted.md # Component Token 기준 파일
-├── pages/
+├── plugins/figma-vars-installer/src/
+│   ├── vars-data.ts                 # 토큰 값 정본
+│   ├── textstyles-data.ts           # 텍스트 스타일 정본
+│   └── build-components.ts          # 컴포넌트가 쓰는 토큰·크기 정본
+├── registry/governance/
+│   ├── canon-manifest.json          # 「무엇이 정본인가」 기계가독 선언 (Gate 36)
+│   └── audit-rules.json             # 토큰 열거 규칙 R01~R11
+├── pages/                           # 파생 표면 (웹 가이드)
 │   ├── components.html              # 컴포넌트 인터랙션 미리보기
-│   ├── semantic.html                # Semantic 토큰 테이블
-│   ├── guide-md.html                # MD 원본 코드스니펫
-│   └── md-review.html               # 리뷰·결정·체크리스트
+│   └── semantic.html                # Semantic 토큰 테이블
+├── assets/css/tokens.css            # 파생 — vars-data 에서 생성
 ├── assets/js/main.js                # 사이드바 SITE_NAV
 ├── data/site-map.json               # 페이지 메타데이터
+├── .claude/rules/                   # 작업 영역별 규칙(해당 파일 편집 시 자동 로드)
 └── CLAUDE.md                        # AI 작업 기준 문서
+
+> 정본을 고쳤으면 `npm run tokens:reconcile` — 파생은 손으로 고치지 않는다(하드룰 H6).
+> `tokens/semantic.md`·`component-tokens-extracted.md`·`foundation.md` 는 2026-08-01 `tokens/legacy/` 로 아카이브됐다.
 ```
 
 ## 에러 핸들링
@@ -108,7 +116,7 @@ S1_AI_DESIGN_GUIDE/
 ### 정상 흐름: 토큰 검증
 
 ```
-입력: "component-tokens-extracted.md에서 참조 오류 찾아줘"
+입력: "vars-data.ts 기준으로 참조 오류 찾아줘"
 → Phase 0: _workspace/ 없음 → 초기 실행
 → Phase 1: token-validator 라우팅
 → Phase 2: 서브 에이전트로 token-validator 실행
@@ -118,9 +126,9 @@ S1_AI_DESIGN_GUIDE/
 ### 에러 흐름: Figma MCP 불가
 
 ```
-입력: "Figma랑 semantic.md 비교해줘"
+입력: "Figma랑 정본(vars-data.ts) 비교해줘"
 → Phase 2: figma-inspector 실행 → MCP 실패
 → 재시도 → 재실패
 → 보고서에 "Figma MCP 접근 불가, 파일 기반 분석으로 대체" 기록
-→ tokens/*.md 내부 일관성 검증으로 전환하여 진행
+→ 정본(vars-data.ts) 기준 내부 일관성 검증으로 전환하여 진행
 ```

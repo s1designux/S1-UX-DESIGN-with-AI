@@ -216,3 +216,102 @@
 > **🗂️ 레거시 격리 규약 (2026-06-16):** 활성 정본과 레거시를 **파일 단위로 분리**해 검사 제외한다. 폐기 토큰 CSS = `assets/css/legacy-tokens.css`(미로드), 폐기 문서 = `tokens/legacy/deprecated-reference.md`(아카이브). **단일 정본 = `registry/tokens/deprecated-tokens.json`**(`deprecatedTokens[].cssVariable`·`renamedGroups`·`legacyFiles`). 공용 필터 `scripts/lib/legacy-skip.js`(`isDeprecatedToken`·`isLegacyFile`)를 게이트가 공유 → **새 폐기 건은 deprecated-tokens.json 에 등록만 하면 전 검사에서 자동 제외**. 와일드카드 `--button-ghost-*` 형태 지원. 신규 게이트도 이 헬퍼를 import 해 레거시를 건너뛴다.
 
 > **Gate 9 (number-page-check):** 색상 전용이던 자동 동기화(생성기·Gate 7)의 **number 사각지대**를 메운다. 검사 3종 — **(A)** foundation.html 의 number 5종 GEN 블록(`SIZING`·`FONT_SIZES`·`LINE_HEIGHTS`·`OPACITIES`·`BREAKPOINTS`) = vars-data FOUNDATION_NUMBER 정본 일치(`npm run number:gen`), **(B)** vars-data 의 **모든** Foundation/Semantic number 토큰이 foundation.html / semantic.html 에 실제 노출(신규 토큰 추가 시 페이지 미반영 탐지·font-weight는 Typography 표가 담당해 제외), **(C)** 폐지된 컴포넌트 사이징 토큰(`--sizing-{button-height|chip-height|table-row-height|form-control-height|dropdown-item-height|icon|button-min-width}-*`) 재유입 0건. 데이터 파이프라인(tokens.css·install-prompt·설치기 zip)은 Gate 6(installer-coverage)+Gate 3가 별도 강제.
+
+---
+
+## Gate 정의 (추가분 — 2026-08-05 CLAUDE.md 한눈표에서 이관)
+
+> 아래는 CLAUDE.md 의 게이트 한눈표에 **상세 서술로 들어 있던 항목**을 그대로 옮긴 것이다(6b·6c·7b·9·10·15b·20~36).
+> 루트에는 번호·이름·한 줄 요약만 남는다. 문장은 원문 그대로이며, 표 셀 구분자 `|` 만 문단으로 풀었다.
+
+### Gate 6b: Installer Build Freshness
+
+커밋 zip 이 최신 빌드인지
+
+### Gate 6c: Installer Tooltip
+
+커밋 zip 안 ui.html 의 "이번 업데이트" 툴팁·카드 4개 날짜가 소스 재계산값과 같은지. Gate 6b 는 code.js 의 토큰 "키"만 봐서 ui.html 의 "문장"(툴팁·날짜)은 사각지대였음 — 소스를 고치고 `installer:build` 를 잊은 채 커밋하면 사용자가 낡은 툴팁을 봄. 검사기 `scripts/installer-tooltip-check.js`(별도 프로세스 spawnSync)
+
+### Gate 7b: Token Value Consistency
+
+tokens.css↔vars-data↔semantic.html 해석 HEX 표면 일치(Gate 7 옆 배선)
+
+### Gate 9: Number/Sizing Page
+
+number 토큰 페이지 일치·폐지 사이징 재유입 0
+
+### Gate 10: Doc Token Ref Drift
+
+옛 토큰명 잔재·폐기 토큰 재유입·유령행 차단
+
+### Gate 15b: Shadow Parse
+
+그림자 문자열 → Figma Effect 변환 파서가 맞나. 설치기는 그림자 수치를 코드에 적지 않고 vars-data 의 SEMANTIC_SHADOW 문자열을 파싱해 쓰는데, 파서가 조용히 틀리면 Figma 라이브러리 전체 그림자가 틀린 채 깔림(토큰 게이트 3·6·7 은 "문자열 값"만 봐 이 변환은 사각지대). 검사 0건이면 fail("추출 0건=안 됨"). 검사기 `scripts/shadow-parse-check.js`
+
+### Gate 20: Registry Token Drift
+
+비정본 registry 의 stale 토큰 언급 추적(legacy-skip)
+
+### Gate 21: Registry Active/Legacy
+
+은퇴 파일이 index active 로 남는 좀비 등록 차단
+
+### Gate 22: Page Layout Policy
+
+페이지 공통 틀·폭 정책(wide/readable) 준수
+
+### Gate 23: Component Presentation
+
+PC 컴포넌트 표출 규칙(실제 렌더 DOM 대조)
+
+### Gate 24: DESIGN.md Drift
+
+DESIGN.md(AI 소비용) 가 정본(tokens.css+registry)보다 낡으면 차단
+
+### Gate 25: Component Alias Canonical
+
+활성 페이지 컴포넌트-별칭(--{comp}-*)이 정본 토큰으로 해석되나·표면드리프트 차단(정본 밖 별칭 재유입 방지)
+
+### Gate 26: Icons Stats Consistency
+
+표출용 아이콘 개수(icons-stats.js)가 정본(icons-data.js)과 일치하나(손편집 후 재생성 누락 차단·재생성 `npm run icons:stats`)
+
+### Gate 27: Token Role (글자엔 글자 토큰)
+
+글자(TEXT) 색은 text/*·label/*·number/* 만 — border/*·bg/*·surface/* 오연결 차단(icon/*=허용목록만). build-components.ts mock 실행해 글자 fill 역할 대조. Input 안내메시지 테두리토큰 오연결(값 게이트 전부 ✅였던 사각지대) 재발 차단. 단독 `npm run tokens:rolecheck`
+
+### Gate 28: System Map Drift
+
+`pipeline-status.js --self-check` 로 현재 코드에서 시스템 맵을 재생성해 커밋본과 대조(휘발성 제외) — pipeline-status.html 이 낡았나. **불일치=경고(비차단)**: 대시보드는 생성물이라 낡아도 빌드가 안 깨지고, error 로 걸면 타 세션 커밋까지 막혀 `--no-verify` 를 부르고 그러면 Gate 1~27 이 전부 무력화되기 때문(2026-07-14 결정 — 신선도보다 게이트 생태계 보존 우선). 재생성 `node pipeline-status.js --check --skip gate:check,components:presentation --out pages/pipeline-status.html`
+
+### Gate 29: Dark Divergence (다크값갈림)
+
+라이트 최종값이 같은데 같은 비교 단위(컴포넌트 seg1/역할계열 seg1+seg2) 안에서 다크만 갈리는 이상치 토큰을 baseline 래칫(줄이기 전용)으로 차단. 단위 간 갈림은 기록만(의도 가능). 단독 `npm run tokens:darkdiv`
+
+### Gate 30: Component Registration
+
+설치기 전집합 ↔ 등록 4면(registry/components·update-management·presentation-policy·coverage) 차집합 대조 + 빌더 runners 완전성. 미등록 컴포넌트의 침묵 통과 차단. 단독 `node scripts/component-registration-check.js`
+
+### Gate 31: Icon Key Consistency
+
+설치기 `ICON_KEYS` ↔ provenance 허용목록 3면 정합(손 동기화라 12/19/주석9 로 셋 다 어긋나 있었음). 단독 `node scripts/icon-key-consistency-check.js`
+
+### Gate 32: Size Naming (크기 이름 규칙)
+
+**크기 '기준'은 컴포넌트마다 달라도 된다**(버튼 md=44·GNB md=56 정상). 막는 것은 **같은 것을 다른 단어로 적는 것**: (A)정본이 허용 어휘(xxsm·xsm·sm·md·lg) 밖 단어 사용 (B)variant 속성 이름에 공백/특수문자(웹 `data-cov-*` 로 못 옮겨 그 축이 영영 검사 밖에 남음) (C)파생 표면(registry·policy·data-cov)이 정본에 없는 크기 단어 사용 (D)harness-audit 의 라벨 단어↔클래스 단어 불일치. 2026-08-02 실측에서 표기가 5계보로 갈려 있었고(설치기 축약형·표셀만 MEDIUM/SMALL·웹 CSS 가 44를 `lg` 로·라벨 medium·registry pc-medium), 과거 통일 작업이 표 셀에서 누락된 채 **Gate 19 의 소문자 정규화에 가려** 안 보였다. 정본=`registry/governance/size-naming-policy.json`. 단독 `npm run components:sizenaming`
+
+### Gate 33: *(예약)*
+
+텍스트 스타일 정합 검사기 자리 — 후속 계획 참조
+
+### Gate 34: Canon Addition Approval (정본 신설 승인)
+
+**정본에 새 항목이 생기는 것을 사건으로 보는 유일한 게이트.** 추적 대상 = 텍스트 스타일명·토큰 키·**컴포넌트 세트 이름**(2026-08-03 확장 — H7 이 "컴포넌트·variant"를 명시하는데 게이트는 토큰·스타일만 봤고, Gate 30 은 "등록됐나"(커버리지)지 "생겨도 되나"(승인)가 아니라 신설+성실등록이면 전 게이트를 통과했다. variant 축은 마찰 과잉이라 제외). 새 종류 감시 시작은 `--extend-tracking <종류>`(정본을 안 건드리는 감시 확대라 승인 불필요하되 **1회만**·지정 종류 밖 신설이 섞이면 거부 — 적대 테스트로 우회로 4종 확인). ⭐ 가 텍스트 스타일·토큰을 임의로 신설하면 **커밋 차단**, 사용자 승인 기록이 있으면 통과(`npm run canon:approve -- --by river --reason "…"`). 종전엔 32개 게이트 전부가 "정본→파생 일치"만 봐서 **정본에 줄이 늘어나는 것을 아무도 안 봤다** — 재생성만 돌리면 전 게이트가 통과했다. 하드룰 H7 집행. 정본=`registry/governance/canon-additions-baseline.json`. 단독 `npm run canon:check`
+
+### Gate 35: Typography Generation
+
+`typography.css` 가 텍스트 스타일 정본(`textstyles-data.ts`)과 일치하나. `typo:check` 가 **존재하는데 배선돼 있지 않아** 텍스트 스타일 정본은 게이트가 0개였다(Gate 7b·9b 와 같은 "존재하나 미연결" 유형). 재생성 `npm run typo:gen`(이제 `tokens:reconcile` 1단계에 편입)
+
+### Gate 36: Canon Manifest (정본 목록)
+
+**「무엇이 정본인가」를 기계가 알게 하는 게이트.** 정본은 Figma 구조상 3벌로 나뉘는데(Variables·Text Styles·Components — 다른 개체·다른 설치 API 라 병합 불가) 그 목록이 **산문에만** 있어서, 텍스트 스타일 정본이 게이트 0개·우산 명령 밖에 방치됐고 대시보드는 정본을 휴리스틱으로 추측하다 스크립트를 정본으로 오분류했다. `canon-manifest.json` 이 정본·파생 표면·재생성 명령·담당 게이트를 선언하고, 이 게이트가 **선언 ↔ 실제 배선을 양방향 대조**한다(우산이 도는데 미선언인 단계=차단 · 재생성 경로 없는 표면=경고 · 유령 명령=차단 · 정본을 파생으로 몰래 강등=차단). 적대 4종 확인. 대시보드도 이 선언과 대조해 "값 정본/정책 정본/메타 장부/미분류"를 표시한다. 정본=`registry/governance/canon-manifest.json`. 단독 `npm run canon:manifest`
