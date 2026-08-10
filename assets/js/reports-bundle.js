@@ -2,7 +2,7 @@
    Run: npm run reports:sync
 */
 window.REPORTS_INDEX = {
-  "generatedAt": "2026-08-03T08:13:11.132Z",
+  "generatedAt": "2026-08-10T03:57:40.810Z",
   "totalCount": 70,
   "reports": [
     {
@@ -13,7 +13,7 @@ window.REPORTS_INDEX = {
       "category": "audit",
       "status": "archive",
       "sourcePath": "reports/button-sync-check.md",
-      "updatedAt": "2026-08-03",
+      "updatedAt": "2026-08-10",
       "summary": "- **Variants:** primary, secondary, blue-line",
       "fileSizeKB": 3.2
     },
@@ -28,18 +28,6 @@ window.REPORTS_INDEX = {
       "updatedAt": "2026-08-03",
       "summary": "정본 목록의 기계가독 정의는 이제 **`registry/governance/canon-manifest.json`** 에 있다(Gate 36 이 집행).",
       "fileSizeKB": 7.4
-    },
-    {
-      "id": "mvp-t2-token-sync",
-      "filename": "mvp-t2-token-sync.md",
-      "title": "MVP-T2 Token Sync Plugin Report",
-      "stage": "T2",
-      "category": "token",
-      "status": "archive",
-      "sourcePath": "reports/mvp-t2-token-sync.md",
-      "updatedAt": "2026-08-03",
-      "summary": "MVP-T1에서 구축한 CSS Token ↔ Registry Token ↔ Figma Variable mapping registry를 기반으로,",
-      "fileSizeKB": 5
     },
     {
       "id": "handoff-pipeline-rebuild",
@@ -126,6 +114,18 @@ window.REPORTS_INDEX = {
       "fileSizeKB": 3.3
     },
     {
+      "id": "mvp-t2-token-sync",
+      "filename": "mvp-t2-token-sync.md",
+      "title": "MVP-T2 Token Sync Plugin Report",
+      "stage": "T2",
+      "category": "token",
+      "status": "archive",
+      "sourcePath": "reports/mvp-t2-token-sync.md",
+      "updatedAt": "2026-07-07",
+      "summary": "MVP-T1에서 구축한 CSS Token ↔ Registry Token ↔ Figma Variable mapping registry를 기반으로,",
+      "fileSizeKB": 5
+    },
+    {
       "id": "harness-audit-2026-07-06",
       "filename": "harness-audit-2026-07-06.md",
       "title": "Harness Audit Report — 2026-07-06",
@@ -207,7 +207,7 @@ window.REPORTS_INDEX = {
       "sourcePath": "reports/changelog-archive.md",
       "updatedAt": "2026-06-17",
       "summary": "이 파일은 CLAUDE.md `변경 이력` 표의 **상세 보존본**이다. 컨텍스트 비용을 줄이기 위해 CLAUDE.md 본문에서 분리했다.",
-      "fileSizeKB": 63.3
+      "fileSizeKB": 70.4
     },
     {
       "id": "harness-audit-2026-06-17",

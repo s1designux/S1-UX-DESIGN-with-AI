@@ -14438,21 +14438,9 @@ window.REGISTRY_BUNDLE = {
     }
   },
   "reportsIndex": {
-    "generatedAt": "2026-08-03T01:21:55.415Z",
+    "generatedAt": "2026-08-10T03:57:40.810Z",
     "totalCount": 70,
     "reports": [
-      {
-        "id": "handoff-canon-consolidation",
-        "filename": "handoff-canon-consolidation.md",
-        "title": "인수인계 — 정본 단일화 논의 (2026-08-03)",
-        "stage": "Audit",
-        "category": "audit",
-        "status": "archive",
-        "sourcePath": "reports/handoff-canon-consolidation.md",
-        "updatedAt": "2026-08-03",
-        "summary": "앞 세션 컨텍스트가 길어져 새 세션으로 넘긴다.",
-        "fileSizeKB": 10.7
-      },
       {
         "id": "button-sync-check",
         "filename": "button-sync-check.md",
@@ -14461,9 +14449,21 @@ window.REGISTRY_BUNDLE = {
         "category": "audit",
         "status": "archive",
         "sourcePath": "reports/button-sync-check.md",
-        "updatedAt": "2026-08-02",
+        "updatedAt": "2026-08-10",
         "summary": "- **Variants:** primary, secondary, blue-line",
         "fileSizeKB": 3.2
+      },
+      {
+        "id": "handoff-canon-consolidation",
+        "filename": "handoff-canon-consolidation.md",
+        "title": "인수인계 — 정본 단일화 (2026-08-03 갱신)",
+        "stage": "Audit",
+        "category": "audit",
+        "status": "complete",
+        "sourcePath": "reports/handoff-canon-consolidation.md",
+        "updatedAt": "2026-08-03",
+        "summary": "정본 목록의 기계가독 정의는 이제 **`registry/governance/canon-manifest.json`** 에 있다(Gate 36 이 집행).",
+        "fileSizeKB": 7.4
       },
       {
         "id": "handoff-pipeline-rebuild",
@@ -14643,7 +14643,7 @@ window.REGISTRY_BUNDLE = {
         "sourcePath": "reports/changelog-archive.md",
         "updatedAt": "2026-06-17",
         "summary": "이 파일은 CLAUDE.md `변경 이력` 표의 **상세 보존본**이다. 컨텍스트 비용을 줄이기 위해 CLAUDE.md 본문에서 분리했다.",
-        "fileSizeKB": 57.2
+        "fileSizeKB": 70.4
       },
       {
         "id": "harness-audit-2026-06-17",

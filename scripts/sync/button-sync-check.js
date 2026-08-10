@@ -32,7 +32,7 @@ const FILES = {
   componentTokens: 'registry/tokens/component.tokens.json',
   componentsMd:    'tokens/component-tokens-extracted.md',
   readme:          'README.md',
-  claudeMd:        'CLAUDE.md',
+  buttonRules:     '.claude/rules/pages.md',
   componentsHtml:  'pages/components.html',  // 정본 (구 components.html 은 레거시·검수 제외 2026-06-17)
   buttonCss:       'assets/css/components/button.css',
   buttonHarnessJs: 'assets/js/button-harness.js',
@@ -187,13 +187,13 @@ function checkReadme() {
   checkTextFile(FILES.readme, [
     { keyword: 'Button Current Standard', expect: 'present', message: 'Button Current Standard section present' },
     { keyword: 'action',                  expect: 'present', message: '"action" column reference present' },
-    { keyword: 'ghost` is not',            expect: 'present', message: 'ghost disclaimer present' },
+    { keyword: 'ghost deprecated',         expect: 'present', message: 'ghost disclaimer present' },
   ]);
 }
 
-// ── CLAUDE.md 검사 ───────────────────────────────────────────────
-function checkClaudeMd() {
-  checkTextFile(FILES.claudeMd, [
+// ── Button 규칙 정본 검사 ────────────────────────────────────────
+function checkButtonRules() {
+  checkTextFile(FILES.buttonRules, [
     { keyword: 'Current Button Standard', expect: 'present', message: 'Current Button Standard section present' },
     { keyword: 'action ≠ Figma state',    expect: 'present', message: 'action ≠ Figma state rule present' },
     { keyword: 'ghost',                   expect: 'present', message: 'ghost deprecation rule present' },
@@ -278,7 +278,7 @@ function main() {
   checkComponentTokens();
   checkComponentsHtml();
   checkReadme();
-  checkClaudeMd();
+  checkButtonRules();
   checkButtonCss();
 
   const { issueCount, warnCount } = generateReport();

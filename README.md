@@ -144,8 +144,8 @@ Registry data is still used internally to render and validate the Button guide a
 
 ## Button Current Standard
 
-> **규칙 정본: [`CLAUDE.md` → "Current Button Standard"](CLAUDE.md).** 공식 variant = primary·secondary·blue-line (ghost deprecated·danger 삭제), Figma states = default·hover·pressed·disabled. 정합성 검사 `npm run sync:button`.
-> (이 섹션은 요약. 상세·최신은 CLAUDE.md 우선.)
+> **규칙 정본: [`.claude/rules/pages.md` → "Current Button Standard"](.claude/rules/pages.md).** 공식 variant = primary·secondary·blue-line (ghost deprecated·danger 삭제), Figma states = default·hover·pressed·disabled. 정합성 검사 `npm run sync:button`.
+> (이 섹션은 요약. 상세·최신은 `.claude/rules/pages.md` 우선.)
 
 ---
 

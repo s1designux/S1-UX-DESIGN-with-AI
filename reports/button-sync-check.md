@@ -1,8 +1,8 @@
 # Button Sync Check Report
 
-**Date:** 2026-08-03  
-**Status:** ❌ 1 issue(s) found  
-**Summary:** 32 passed · 1 warnings · 1 issues (total 34 checks)
+**Date:** 2026-08-10  
+**Status:** ✅ PASS  
+**Summary:** 33 passed · 1 warnings · 0 issues (total 34 checks)
 
 ---
 
@@ -15,15 +15,11 @@
 
 ---
 
-## Issues (1)
-
-- [ISSUE] README.md: ghost disclaimer present
-
 ## Warnings (1)
 
 - [WARN]  assets/css/components/button.css: raw HEX detected — verify no component-level HEX
 
-## Passed (32)
+## Passed (33)
 
 - [OK]    registry/components/button.json: variant "primary" present
 - [OK]    registry/components/button.json: variant "secondary" present
@@ -51,9 +47,10 @@
 - [OK]    pages/components.html: ghost should not be exposed in components.html button section
 - [OK]    README.md: Button Current Standard section present
 - [OK]    README.md: "action" column reference present
-- [OK]    CLAUDE.md: Current Button Standard section present
-- [OK]    CLAUDE.md: action ≠ Figma state rule present
-- [OK]    CLAUDE.md: ghost deprecation rule present
+- [OK]    README.md: ghost disclaimer present
+- [OK]    .claude/rules/pages.md: Current Button Standard section present
+- [OK]    .claude/rules/pages.md: action ≠ Figma state rule present
+- [OK]    .claude/rules/pages.md: ghost deprecation rule present
 - [OK]    assets/css/components/button.css: primary CSS class present
 - [OK]    assets/css/components/button.css: secondary CSS class present
 - [OK]    assets/css/components/button.css: blue-line CSS class present
@@ -67,7 +64,7 @@
 - `registry/tokens/component.tokens.json`
 - `tokens/component-tokens-extracted.md`
 - `README.md`
-- `CLAUDE.md`
+- `.claude/rules/pages.md`
 - `pages/components.html`
 - `assets/css/components/button.css`
 - `assets/js/button-harness.js`
