@@ -318,4 +318,4 @@ DESIGN.md(AI 소비용) 가 정본(tokens.css+registry)보다 낡으면 차단
 
 ### Gate 38: Component Guide Generation
 
-컴포넌트 정본의 실제 scene graph에서 생성한 `component-guide-model.json`과 메인 사이트 `components.html` 생성 구간이 최신인지 `--check` byte 대조로 차단한다. 정본 변경 뒤 사이트 재생성을 빠뜨리거나 생성 구간을 손으로 수정하면 실패한다. Gate 18의 42개 공개·제외 분류, Gate 19의 variant 커버리지, Gate 23의 실제 렌더, Gate 32의 크기 어휘와 함께 사용한다. 재생성은 `npm run components:guide-model:write`와 `npm run components:guide-site:write`, 일괄은 `npm run tokens:reconcile`이다. 단독 `npm run components:guide:check`.
+컴포넌트 정본의 실제 scene graph에서 생성한 `component-guide-model.json`이 최신인지 `--check` byte 대조로 차단한다. 메인 사이트 `components.html`은 기존 손관리 화면을 유지하며 자동 생성·byte 대조 대상이 아니다. Gate 18의 공개·제외 분류, Gate 19의 variant 커버리지, Gate 23의 실제 렌더, Gate 32의 크기 어휘가 사이트를 별도로 검증한다. 모델 재생성은 `npm run components:guide-model:write`, 일괄은 `npm run tokens:reconcile`이다. 단독 `npm run components:guide:check`.

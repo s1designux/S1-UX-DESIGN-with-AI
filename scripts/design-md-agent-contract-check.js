@@ -39,12 +39,12 @@ expect('Input builder state 누락', ['Default', 'Filled', 'Editing', 'Error', '
 const inputBuilderStates = between(input, 'builder:', 'metadata:');
 expect('Input hover가 builder state로 재유입', !inputBuilderStates.includes('- "Hover"'));
 expect('Input mobile 48 geometry 누락', input.includes('height: 48'));
-expect('Input 기본 편집/label 연결 행동 계약 누락', input.includes('edit the native input value') && input.includes('connect one label to input with unique id/for'));
+expect('Input clear/focus 행동 계약 누락', input.includes('clear the value') && input.includes('return focus to the input'));
 
 const filterChip = section('Filter Chip');
 expect('Filter Chip complete/selected 구분 누락', filterChip.includes('- "Selected"') && filterChip.includes('- "Complete"'));
 expect('Filter Chip Dropdown 재사용 누락', filterChip.includes('- "Dropdown"'));
-expect('Filter Chip 선택/닫힘 행동 계약 누락', filterChip.includes('update the trigger label') && filterChip.includes('Escape: "close"') && filterChip.includes('aria-haspopup=listbox'));
+expect('Filter Chip 선택/닫힘 행동 계약 누락', filterChip.includes('update the trigger label') && filterChip.includes('target: "outside"'));
 
 const table = section('Table');
 expect('Table Pagination/Table Cell 재사용 누락', table.includes('- "Pagination"') && table.includes('- "Table Cell"'));
@@ -52,13 +52,13 @@ expect('Table Checkbox 재사용 메타 누락', table.includes('- "checkbox"'))
 
 const pagination = section('Pagination');
 expect('Pagination geometry 누락', pagination.includes('height: 28'));
-expect('Pagination 이동/경계 행동 계약 누락', pagination.includes('move to the previous page') && pagination.includes('disable unavailable edge actions'));
+expect('Pagination 블록 이동/경계 행동 계약 누락', pagination.includes('previous block') && pagination.includes('disable unavailable edge/block actions'));
 
 const datePicker = section('DatePicker');
 expect('DatePicker 키보드/포커스 행동 계약 누락', datePicker.includes('ArrowDown') && datePicker.includes('return focus to input'));
 
 const timePicker = section('TimePicker');
-expect('TimePicker 단일 선택/닫힘 행동 계약 누락', timePicker.includes('single time value') && timePicker.includes('Escape: "close"') && timePicker.includes('aria-haspopup=listbox'));
+expect('TimePicker 시/분 선택 행동 계약 누락', timePicker.includes('one hour and one minute') && timePicker.includes('target: "outside"'));
 
 const modal = section('Modal');
 expect('PC 사이트에 없는 Modal 행동이 임의 생성됨', modal.includes('behavior:') && modal.includes('status: "not-defined"'));

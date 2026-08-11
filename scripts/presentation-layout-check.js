@@ -87,10 +87,7 @@ function observe(slice) {
   const labels = [];
   const lre = /class="variant-label"[^>]*>([^<]{1,80})/g;
   let m; while ((m = lre.exec(slice))) labels.push(m[1].trim());
-  // 이전 손작성 매트릭스의 class뿐 아니라, 전체 페이지 생성기가 쓰는
-  // `variant-label`의 Action 표기도 같은 사용자 노출 Action 영역으로 본다.
-  const actionPresent = /\bcomp-action-top\b|\bmatrix-col-header-action\b|\bdata-action-test\b|\bcomp-action-cell\b|\baction-cell\b/.test(slice)
-    || labels.some((text) => /^Action\b/i.test(text));
+  const actionPresent = /\bcomp-action-top\b|\bmatrix-col-header-action\b|\bdata-action-test\b|\bcomp-action-cell\b|\baction-cell\b/.test(slice);
   const sizeBlocks = labels.filter((t) => /^(sizes?|size variants)\b/i.test(t));
   const labelBlocks = labels.filter((t) => /^label\b/i.test(t)); // radio "Label=Off" 등
   return { labels, actionPresent, sizeBlocks, labelBlocks };

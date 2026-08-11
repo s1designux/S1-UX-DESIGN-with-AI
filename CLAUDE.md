@@ -17,7 +17,7 @@
 | 토큰 **값** 1건 변경 ("이 토큰 gray/100 으로") | 🤖 `token-sync` → 정본 1곳 수정 후 `npm run tokens:reconcile` (표면 위치는 `npm run tokens:locate -- <token>`) | `.claude/rules/tokens.md` |
 | 토큰 **구조·네이밍** 검증·설계 | 🤖 `token-validator` (`design-system` 스킬) — **새 토큰 생성·네이밍·구조 변경은 token-sync 범위 밖** | `.claude/rules/tokens.md` |
 | 가이드 페이지 생성·업데이트 | 🤖 `guide-builder` (`design-system` 스킬) | `.claude/rules/pages.md` |
-| 컴포넌트 정본 → 메인 사이트·설치기 자동 동기화 | 🧭 `component-guide-sync` — 생성=`guide-builder`, 검증=`component-verifier` | `.claude/rules/pages.md`·`.claude/rules/components.md`·`.claude/rules/installer.md` |
+| 컴포넌트 정본 → 모델·설치기 자동 동기화 | 🧭 `component-guide-sync` — 생성=`guide-builder`, 검증=`component-verifier` (사이트는 손관리·자동 덮어쓰기 금지) | `.claude/rules/pages.md`·`.claude/rules/components.md`·`.claude/rules/installer.md` |
 | Figma 원본 조회·비교 | 🤖 `figma-inspector` (읽기 절차 = `.claude/docs/figma-mcp-read.md`) | — |
 | **Figma 컴포넌트 → 코드** ("Figma ~ 구현/변환해줘") | 🪜 `figma-to-code` 스킬 (5단계 검문소) | `.claude/rules/pages.md`·`.claude/rules/components.md` |
 | **레거시 화면 → Figma 재현** ("이 화면 그대로 만들어줘") | 🪞 `screen-rebuild` 스킬 — 빌드=`screen-rebuilder`, 검증=`component-verifier` | — |
@@ -304,7 +304,7 @@ Claude는 **Main Orchestrator**다. 사용자는 **목표 수준 의도**만 준
 | 35 | Typography Generation | typography.css 가 textstyles-data.ts 와 일치 |
 | 36 | Canon Manifest | **「무엇이 정본인가」** 선언 ↔ 실제 배선 양방향 대조 |
 | 37 | Doc Budget | **CLAUDE.md 재비대화 차단** — 크기 래칫·참조 경로 실존·변경이력 3행 |
-| 38 | Component Guide Generation | `build-components.ts` → guide model → 메인 사이트 생성 구간 드리프트 차단 |
+| 38 | Component Guide Generation | `build-components.ts` → guide model 드리프트 차단 (메인 사이트는 손관리) |
 
 일괄 실행: `npm run gate:check`. **Gate 2·5 는 여기에 포함되지 않는다**(위 표 참조).
 

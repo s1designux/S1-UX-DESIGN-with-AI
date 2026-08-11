@@ -512,10 +512,9 @@ agent:
         target: "checkbox"
         guard: "disabled=true"
         result: "keep the current value"
-    keyboard: "native-button Enter/Space"
-    focus: "native-button"
-    accessibility:
-      checked: "synchronize role=checkbox and aria-checked"
+    keyboard: "not-defined"
+    focus: "not-defined"
+    accessibility: "not-defined"
   geometry:
     common:
       target: "root"
@@ -668,10 +667,9 @@ agent:
         target: "chip"
         guard: "disabled=true"
         result: "keep the current value"
-    keyboard: "native-button Enter/Space"
-    focus: "native-button"
-    accessibility:
-      pressed: "synchronize aria-pressed"
+    keyboard: "not-defined"
+    focus: "not-defined"
+    accessibility: "not-defined"
   geometry:
     common:
       target: "root"
@@ -926,13 +924,25 @@ agent:
     events:
       -
         on: "click"
-        target: "calendar trigger"
-        result: "toggle the dialog"
+        target: "input or calendar action"
+        result: "toggle the panel"
       -
         on: "click"
         target: "day"
-        guard: "aria-disabled=false"
-        result: "select the day and close"
+        guard: "date is enabled"
+        result: "write YY.MM.DD, select the day, and close"
+      -
+        on: "click"
+        target: "month label"
+        result: "cycle calendar → month → year → calendar"
+      -
+        on: "click"
+        target: "previous or next"
+        result: "move one month, one year, or one 12-year block according to the current view"
+      -
+        on: "click"
+        target: "outside"
+        result: "close"
     keyboard:
       Escape: "close and return focus to input"
       ArrowLeft: "previous enabled day"
@@ -944,12 +954,13 @@ agent:
       onOpen: "focus the first enabled day"
       onEscape: "return to input"
     accessibility:
-      expanded: "synchronize aria-expanded on the dialog trigger"
-      disabledDate: "aria-disabled=true blocks selection"
-      day: "role=gridcell and synchronized aria-selected"
+      expanded: "synchronize aria-expanded on input and calendar action"
+      disabledDate: "native disabled plus aria-disabled=true"
+      day: "aria-label uses YY.MM.DD"
     constraints:
-      - "Mobile uses only the approved bottom-sheet dependency marker"
-      - "disabled dates cannot be selected"
+      - "week starts on Sunday"
+      - "disabled dates come from data-disabled-dates"
+      - "adjacent-month days remain selectable when enabled"
   geometry:
     common:
       target: "trigger"
@@ -1132,16 +1143,9 @@ agent:
         result: "select the clicked option and unselect every sibling"
     selection: "single"
     openClose: "owned by the composing trigger component"
-    keyboard:
-      ArrowUpOrDown: "move through options when composed by Select Box or Time Picker"
-      Home: "first option"
-      End: "last option"
-      Enter: "choose focused option"
-      Escape: "close owner"
-    focus: "roving option tabindex when composed"
-    accessibility:
-      panel: "role=listbox"
-      option: "synchronize aria-selected"
+    keyboard: "not-defined"
+    focus: "not-defined"
+    accessibility: "not-defined"
   geometry:
     common:
       target: "root"
@@ -1338,18 +1342,17 @@ agent:
         target: "option"
         result: "select one option, update the trigger label, and close"
       -
+        on: "click"
+        target: "outside"
+        result: "close"
+      -
         on: "disable"
         target: "filter chip"
         result: "close and block trigger clicks"
     selection: "single"
-    keyboard:
-      ArrowUpOrDown: "open and move through options"
-      EnterOrSpace: "choose focused option"
-      Escape: "close"
-    focus: "focus selected option on open and return to trigger on close"
-    accessibility:
-      trigger: "aria-haspopup=listbox and synchronized aria-expanded"
-      option: "synchronize aria-selected"
+    keyboard: "not-defined"
+    focus: "not-defined"
+    accessibility: "not-defined"
   geometry:
     common:
       target: "chip"
@@ -1576,11 +1579,9 @@ agent:
         target: "menu"
         result: "select the clicked menu and unselect every sibling"
     selection: "single"
-    keyboard: "native-button Enter/Space"
+    keyboard: "native-button-click-only"
     focus: "native-button"
-    accessibility:
-      currentMenu: "synchronize aria-current=page"
-      utility: "Registry aria-label for each utility action"
+    accessibility: "not-defined"
   geometry:
     common:
       target: "root"
@@ -1756,18 +1757,31 @@ agent:
     initialState: "empty and unfocused"
     events:
       -
-        on: "input"
-        target: "text or search input"
-        result: "edit the native input value"
+        on: "focus"
+        target: "input"
+        result: "enter editing/focus state"
       -
-        on: "submit"
-        target: "search action button"
-        result: "invoke the composing application's search action"
+        on: "blur"
+        target: "input"
+        result: "leave editing/focus state unless focus moves to a suffix action"
+      -
+        on: "input"
+        target: "search or password input"
+        result: "show clear action only when a value exists"
+      -
+        on: "click"
+        target: "clear action"
+        result: "clear the value, hide the clear action, and return focus to the input"
+      -
+        on: "click"
+        target: "password visibility action"
+        result: "toggle password ↔ text and return focus to the input"
     keyboard: "native-input"
-    focus: "native-input"
+    focus:
+      clear: "return to input"
+      passwordVisibility: "return to input"
     accessibility:
-      label: "connect one label to input with unique id/for"
-      searchAction: "button has an aria-label"
+      passwordVisibility: "synchronize aria-label and aria-pressed"
   geometry:
     common:
       target: "field"
@@ -2196,15 +2210,9 @@ agent:
         guard: "disabled=true"
         result: "keep the current selection"
     selection: "single"
-    keyboard:
-      ArrowLeft: "previous segment"
-      ArrowRight: "next segment"
-      Home: "first segment"
-      End: "last segment"
-    focus: "roving tabindex"
-    accessibility:
-      group: "role=radiogroup"
-      checked: "synchronize aria-checked"
+    keyboard: "not-defined"
+    focus: "not-defined"
+    accessibility: "not-defined"
   geometry:
     common:
       layoutMode: "HORIZONTAL"
@@ -2517,32 +2525,31 @@ agent:
       -
         on: "click"
         target: "page number"
-        result: "set aria-current on the selected page number"
+        result: "set the current page and rerender the current number block"
       -
         on: "click"
         target: "first"
         result: "move to page 1"
       -
         on: "click"
-        target: "previous"
-        result: "move to the previous page"
+        target: "previous block"
+        result: "move to the first page of the previous block"
       -
         on: "click"
-        target: "next"
-        result: "move to the next page"
+        target: "next block"
+        result: "move to the first page of the next block"
       -
         on: "click"
         target: "last"
         result: "move to the final page"
     constraints:
-      - "clamp current page to the rendered number range"
-      - "disable unavailable edge actions"
+      - "show at most 6 page numbers per block"
+      - "disable unavailable edge/block actions"
       - "single-page mode disables all navigation actions"
     keyboard: "native-button"
     focus: "native-button"
     accessibility:
-      pageNumber: "mark the current page with aria-current=page"
-      actions: "first/previous/next/last use Registry aria-labels"
+      pageNumber: "aria-label includes the page number and marks the current page in its accessible name"
   geometry:
     common:
       target: "root"
@@ -2685,21 +2692,15 @@ agent:
         on: "click"
         target: "radio"
         guard: "disabled=false"
-        result: "select the clicked radio and unselect siblings"
+        result: "toggle unselected ↔ selected"
       -
         on: "click"
         target: "radio"
         guard: "disabled=true"
         result: "keep the current value"
-    keyboard:
-      ArrowLeftOrUp: "previous radio"
-      ArrowRightOrDown: "next radio"
-      Home: "first radio"
-      End: "last radio"
-    focus: "roving tabindex"
-    accessibility:
-      group: "role=radiogroup"
-      checked: "synchronize aria-checked"
+    keyboard: "not-defined"
+    focus: "not-defined"
+    accessibility: "not-defined"
   geometry:
     common:
       target: "circle"
@@ -2846,20 +2847,17 @@ agent:
         target: "option"
         result: "select one option, update the trigger text, mark filled, and close"
       -
+        on: "click"
+        target: "outside"
+        result: "close"
+      -
         on: "disable"
         target: "select"
         result: "close and block trigger clicks"
     selection: "single"
-    keyboard:
-      ArrowUpOrDown: "open or move through options"
-      Home: "first option"
-      End: "last option"
-      Enter: "choose focused option"
-      Escape: "close"
-    focus: "focus selected option on open and return to trigger on close"
-    accessibility:
-      trigger: "aria-haspopup=listbox and synchronized aria-expanded"
-      option: "synchronize aria-selected"
+    keyboard: "not-defined"
+    focus: "not-defined"
+    accessibility: "not-defined"
   geometry:
     common:
       target: "trigger"
@@ -3056,15 +3054,10 @@ agent:
         target: "tab"
         result: "select the clicked tab, unselect siblings, and move the indicator"
     selection: "single"
-    keyboard:
-      ArrowLeft: "previous tab"
-      ArrowRight: "next tab"
-      Home: "first tab"
-      End: "last tab"
-    focus: "roving tabindex"
+    keyboard: "native-button-click-only"
+    focus: "native-button"
     accessibility:
-      selectedTab: "synchronize aria-selected"
-      panel: "connect aria-controls to role=tabpanel"
+      selectedTab: "set aria-selected=true and remove aria-selected from siblings"
   geometry:
     common:
       target: "root"
@@ -3209,11 +3202,9 @@ agent:
         target: "header checkbox"
         result: "select all rows when any row is unchecked; otherwise clear all rows"
     selection: "multiple"
-    keyboard: "native-button Enter/Space for checkbox and sort trigger"
-    focus: "native-button"
-    accessibility:
-      selection: "synchronize row/header aria-checked including mixed"
-      sorting: "synchronize th aria-sort"
+    keyboard: "not-defined"
+    focus: "not-defined"
+    accessibility: "not-defined"
   geometry:
     common:
       target: "root"
@@ -3558,22 +3549,27 @@ agent:
       -
         on: "click"
         target: "input trigger"
-        result: "toggle the time option listbox"
+        result: "toggle the hour/minute panel"
       -
         on: "click"
-        target: "time option"
-        result: "select one time, update the trigger value, and close"
-    selection: "single time value"
-    keyboard:
-      ArrowUpOrDown: "open or move through options"
-      Home: "first option"
-      End: "last option"
-      Enter: "choose focused option"
-      Escape: "close"
-    focus: "focus selected option on open and return to trigger on close"
-    accessibility:
-      trigger: "aria-haspopup=listbox and synchronized aria-expanded"
-      option: "synchronize aria-selected"
+        target: "hour or minute"
+        result: "select one value in that column; show HH:MM after both values exist"
+      -
+        on: "click"
+        target: "confirm"
+        result: "close the panel"
+      -
+        on: "click"
+        target: "outside"
+        result: "close the panel"
+      -
+        on: "click"
+        target: "select-style hour or minute field"
+        result: "open only that field list; selecting a value updates it and closes"
+    selection: "one hour and one minute"
+    keyboard: "not-defined"
+    focus: "selected values scroll into view when a panel opens"
+    accessibility: "not-defined"
   geometry:
     common:
       target: "trigger"
@@ -3754,10 +3750,9 @@ agent:
         target: "toggle"
         guard: "disabled=true"
         result: "keep the current value"
-    keyboard: "native-button Enter/Space"
-    focus: "native-button"
-    accessibility:
-      checked: "synchronize role=switch and aria-checked"
+    keyboard: "not-defined"
+    focus: "not-defined"
+    accessibility: "not-defined"
   geometry:
     common:
       target: "root"
@@ -3907,4 +3902,4 @@ DESIGN_SYSTEM_GAP:
 - 적용 해석 순서(뒤가 앞을 덮음): core → service(extends core) → role → platform → theme. 기본값: service=core · role=user · platform=web · theme=light.
 - 서비스 분기(예: vms 영상관제)는 core 를 상속하고 차이분만 덮는다.
 
-<!-- generated-stamp: eef18115e299 · 손편집 금지 -->
+<!-- generated-stamp: 803d48ade0ef · 손편집 금지 -->

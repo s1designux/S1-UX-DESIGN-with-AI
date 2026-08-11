@@ -12,10 +12,11 @@
  *   7. page:gen               tokens.css → semantic.html SEMANTIC_PAGE   (2·3 뒤여야 함)
  *   8. components:facts:write build-components 실제 실행 → component-facts.json
  *   9. components:guide-model:write build-components 실제 scene graph → component-guide-model.json
- *  10. components:guide-site:write  guide model+registry meta → components.html 생성 구간
- *  11. design:md:write        tokens.css+component facts+registry → DESIGN.core/vms.md
- *  12. tokens:sync-prompt     tokens.css + design/*.md → install-prompt.html (11 뒤여야 함)
- *  13. installer:build        vars-data+textstyles-data → 설치기 zip (+ ~/s1-ux-design-guide-installer)
+ *  10. design:md:write        tokens.css+component facts+registry → DESIGN.core/vms.md
+ *  11. tokens:sync-prompt     tokens.css + design/*.md → install-prompt.html (10 뒤여야 함)
+ *  12. installer:build        vars-data+textstyles-data → 설치기 zip (+ ~/s1-ux-design-guide-installer)
+ *
+ * pages/components.html은 손관리 화면이다. 이 명령은 사이트를 생성하거나 덮어쓰지 않는다.
  *
  * 그 후 모니터 실행 → 자동 재생성으로 못 고치는 **손유지 표면**의 잔여 드리프트를 보고한다.
  * 이 잔여분은 token-sync 에이전트/수동으로 정본에 맞춰 고친다(값 추측 금지).
@@ -44,22 +45,21 @@ console.log('\n🔧 Token Reconcile — 정본 → 파생 표면 재생성\n');
 // 0단계: 텍스트 스타일 정본(textstyles-data.ts) → typography.css.
 //   2026-08-03 편입 — 종전 우산은 vars-data 만 봐서 **텍스트 스타일을 추가해도 파생이 안 따라왔다**.
 //   Gate 35 가 그 어긋남을 잡는다.
-run('1/13 typo:gen              (textstyles-data → assets/css/typography.css)', 'npm run --silent typo:gen');
-run('2/13 tokens:gen            (vars-data → tokens.css Semantic)', 'npm run --silent tokens:gen');
-run('3/13 tokens:gen:foundation (vars-data → tokens.css Foundation)', 'npm run --silent tokens:gen:foundation');
-run('4/13 color:gen             (vars-data → foundation.html 색 팔레트)', 'npm run --silent color:gen');
-run('5/13 number:gen            (vars-data → foundation.html number 5종)', 'npm run --silent number:gen');
-run('6/13 registry:foundation:gen (vars-data → registry/tokens/foundation.colors.json)', 'npm run --silent registry:foundation:gen');
-run('7/13 page:gen              (tokens.css → semantic.html SEMANTIC_PAGE)', 'npm run --silent page:gen');
-run('8/13 components:facts:write (build-components → component-facts.json)', 'npm run --silent components:facts:write');
-run('9/13 components:guide-model:write (build-components → component-guide-model.json)', 'npm run --silent components:guide-model:write');
-run('10/13 components:guide-site:write (guide model+registry → components.html)', 'npm run --silent components:guide-site:write');
-run('11/13 design:md:write       (tokens+facts+registry → DESIGN.core/vms.md)', 'npm run --silent design:md:write');
-run('12/13 tokens:sync-prompt   (tokens.css+design md → install-prompt.html)', 'npm run --silent tokens:sync-prompt');
+run('1/12 typo:gen              (textstyles-data → assets/css/typography.css)', 'npm run --silent typo:gen');
+run('2/12 tokens:gen            (vars-data → tokens.css Semantic)', 'npm run --silent tokens:gen');
+run('3/12 tokens:gen:foundation (vars-data → tokens.css Foundation)', 'npm run --silent tokens:gen:foundation');
+run('4/12 color:gen             (vars-data → foundation.html 색 팔레트)', 'npm run --silent color:gen');
+run('5/12 number:gen            (vars-data → foundation.html number 5종)', 'npm run --silent number:gen');
+run('6/12 registry:foundation:gen (vars-data → registry/tokens/foundation.colors.json)', 'npm run --silent registry:foundation:gen');
+run('7/12 page:gen              (tokens.css → semantic.html SEMANTIC_PAGE)', 'npm run --silent page:gen');
+run('8/12 components:facts:write (build-components → component-facts.json)', 'npm run --silent components:facts:write');
+run('9/12 components:guide-model:write (build-components → component-guide-model.json)', 'npm run --silent components:guide-model:write');
+run('10/12 design:md:write       (tokens+facts+registry → DESIGN.core/vms.md)', 'npm run --silent design:md:write');
+run('11/12 tokens:sync-prompt   (tokens.css+design md → install-prompt.html)', 'npm run --silent tokens:sync-prompt');
 if (!skipInstaller) {
-  run('13/13 installer:build       (vars-data → 설치기 zip)', 'npm run --silent installer:build');
+  run('12/12 installer:build       (vars-data → 설치기 zip)', 'npm run --silent installer:build');
 } else {
-  console.log('\n▶ 13/13 installer:build — 건너뜀(--no-installer)');
+  console.log('\n▶ 12/12 installer:build — 건너뜀(--no-installer)');
 }
 
 console.log('\n──────────────────────────────────────────────');

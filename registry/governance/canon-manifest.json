@@ -51,7 +51,7 @@
         { "path": "registry/components/component-facts.json", "kind": "generated", "regen": ["components:facts:write"], "gates": ["24"] },
         { "path": "registry/components/component-guide-model.json", "kind": "generated", "regen": ["components:guide-model:write"], "gates": ["38"] },
         { "path": "assets/downloads/s1-ux-design-guide-installer.zip", "kind": "generated", "regen": ["installer:build"], "gates": ["6b", "13"] },
-        { "path": "pages/components.html", "kind": "generated", "regen": ["components:guide-site:write"], "gates": ["18", "19", "23", "32", "38"], "_scope": "전체 페이지. scripts/templates/components-page.html의 공통 chrome과 component guide model·Registry·presentation renderer·component stubs 입력을 결정론적으로 조립하며 출력 파일 직접 편집을 금지." },
+        { "path": "pages/components.html", "kind": "hand-maintained", "gates": ["18", "19", "23", "32"], "_scope": "기존 UI 라이브러리 화면을 유지한다. 정본 동기화 명령은 이 파일을 자동 생성하거나 덮어쓰지 않는다." },
         { "path": "registry/governance/update-management.json", "kind": "hand-maintained", "regen": ["update:gen"], "gates": ["16", "30"] }
       ]
     }

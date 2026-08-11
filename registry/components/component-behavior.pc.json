@@ -9,7 +9,7 @@
   },
   "components": {
     "Button": {
-      "source": { "sectionId": "button", "sourceEvidence": ["[data-guide-action=\"invoke-count\"]", "action && !action.disabled", "Number(count.textContent) + 1"] },
+      "source": { "sectionId": "button", "sourceEvidence": ["function setupButtonActionTests()", "if (btn.disabled) return;", "count += 1;"] },
       "status": "verified",
       "initialState": "enabled",
       "events": [
@@ -21,43 +21,43 @@
       "accessibility": { "disabled": "use the native disabled attribute" }
     },
     "Checkbox": {
-      "source": { "sectionId": "checkbox", "sourceEvidence": ["[data-component=\"checkbox\"]", "checkbox.setAttribute('aria-checked',String(on))", "!checkbox.disabled"] },
+      "source": { "sectionId": "checkbox", "sourceEvidence": ["chkTarget.classList.toggle('is-checked')", "chkTarget.classList.contains('is-disabled')"] },
       "status": "verified",
       "initialState": "unchecked",
       "events": [
         { "on": "click", "target": "checkbox", "guard": "disabled=false", "result": "toggle unchecked ↔ checked" },
         { "on": "click", "target": "checkbox", "guard": "disabled=true", "result": "keep the current value" }
       ],
-      "keyboard": "native-button Enter/Space",
-      "focus": "native-button",
-      "accessibility": { "checked": "synchronize role=checkbox and aria-checked" }
+      "keyboard": "not-defined",
+      "focus": "not-defined",
+      "accessibility": "not-defined"
     },
     "Radio": {
-      "source": { "sectionId": "radio", "sourceEvidence": ["[data-component=\"radio-group\"] [role=\"radio\"]", "r.setAttribute('aria-checked',String(on))", "r.tabIndex=on?0:-1"] },
+      "source": { "sectionId": "radio", "sourceEvidence": ["radioTarget.classList.toggle('is-selected')", "radioTarget.classList.contains('is-disabled')"] },
       "status": "verified",
       "initialState": "unselected",
       "events": [
-        { "on": "click", "target": "radio", "guard": "disabled=false", "result": "select the clicked radio and unselect siblings" },
+        { "on": "click", "target": "radio", "guard": "disabled=false", "result": "toggle unselected ↔ selected" },
         { "on": "click", "target": "radio", "guard": "disabled=true", "result": "keep the current value" }
       ],
-      "keyboard": { "ArrowLeftOrUp": "previous radio", "ArrowRightOrDown": "next radio", "Home": "first radio", "End": "last radio" },
-      "focus": "roving tabindex",
-      "accessibility": { "group": "role=radiogroup", "checked": "synchronize aria-checked" }
+      "keyboard": "not-defined",
+      "focus": "not-defined",
+      "accessibility": "not-defined"
     },
     "Toggle": {
-      "source": { "sectionId": "toggle", "sourceEvidence": ["[data-component=\"toggle\"]", "toggle.setAttribute('aria-checked',String(pressed))", "!toggle.disabled"] },
+      "source": { "sectionId": "toggle", "sourceEvidence": ["togTarget.classList.toggle('is-on')", "togTarget.classList.contains('is-disabled')"] },
       "status": "verified",
       "initialState": "off",
       "events": [
         { "on": "click", "target": "toggle", "guard": "disabled=false", "result": "toggle off ↔ on" },
         { "on": "click", "target": "toggle", "guard": "disabled=true", "result": "keep the current value" }
       ],
-      "keyboard": "native-button Enter/Space",
-      "focus": "native-button",
-      "accessibility": { "checked": "synchronize role=switch and aria-checked" }
+      "keyboard": "not-defined",
+      "focus": "not-defined",
+      "accessibility": "not-defined"
     },
     "Multi Toggle": {
-      "source": { "sectionId": "multi-toggle", "sourceEvidence": ["[data-component=\"multi-toggle\"] [role=\"radio\"]", "function selectMulti(root,item,focus)", "event.key==='Home'"] },
+      "source": { "sectionId": "multi-toggle", "sourceEvidence": ["function wireMultiToggle(el)", "cell.classList.add('is-selected')", "el.classList.contains('is-disabled')"] },
       "status": "verified",
       "initialState": "one segment selected",
       "events": [
@@ -65,50 +65,54 @@
         { "on": "click", "target": "segment", "guard": "disabled=true", "result": "keep the current selection" }
       ],
       "selection": "single",
-      "keyboard": { "ArrowLeft": "previous segment", "ArrowRight": "next segment", "Home": "first segment", "End": "last segment" },
-      "focus": "roving tabindex",
-      "accessibility": { "group": "role=radiogroup", "checked": "synchronize aria-checked" }
+      "keyboard": "not-defined",
+      "focus": "not-defined",
+      "accessibility": "not-defined"
     },
     "Chip": {
-      "source": { "sectionId": "chip", "sourceEvidence": ["[data-component=\"chip\"]", "chip.setAttribute('aria-pressed',String(chipOn))", "!chip.disabled"] },
+      "source": { "sectionId": "chip", "sourceEvidence": ["function setupChipActionGroup(disabledAttr)", "c.classList.toggle('is-selected')", "c.classList.contains('is-disabled')"] },
       "status": "verified",
       "initialState": "unselected",
       "events": [
         { "on": "click", "target": "chip", "guard": "disabled=false", "result": "toggle unselected ↔ selected" },
         { "on": "click", "target": "chip", "guard": "disabled=true", "result": "keep the current value" }
       ],
-      "keyboard": "native-button Enter/Space",
-      "focus": "native-button",
-      "accessibility": { "pressed": "synchronize aria-pressed" }
+      "keyboard": "not-defined",
+      "focus": "not-defined",
+      "accessibility": "not-defined"
     },
     "Filter Chip": {
-      "source": { "sectionId": "filter-chip", "sourceEvidence": ["[data-component=\"filter-chip\"]>.guide-filter-trigger", "function toggleFilter(root,open)", "function chooseFilter(root,option)", "event.key==='Escape'"] },
+      "source": { "sectionId": "filter-chip", "sourceEvidence": ["function setupFilterChipGroup(disabledAttr)", "wrap.classList.toggle('is-open')", "wrap.querySelector('.ds-filter-chip-label').textContent = opt.textContent", "if (!wrap.contains(e.target)) wrap.classList.remove('is-open')"] },
       "status": "verified",
       "initialState": "closed",
       "events": [
         { "on": "click", "target": "trigger", "guard": "disabled=false", "result": "toggle closed ↔ open" },
         { "on": "click", "target": "option", "result": "select one option, update the trigger label, and close" },
+        { "on": "click", "target": "outside", "result": "close" },
         { "on": "disable", "target": "filter chip", "result": "close and block trigger clicks" }
       ],
       "selection": "single",
-      "keyboard": { "ArrowUpOrDown": "open and move through options", "EnterOrSpace": "choose focused option", "Escape": "close" },
-      "focus": "focus selected option on open and return to trigger on close",
-      "accessibility": { "trigger": "aria-haspopup=listbox and synchronized aria-expanded", "option": "synchronize aria-selected" }
+      "keyboard": "not-defined",
+      "focus": "not-defined",
+      "accessibility": "not-defined"
     },
     "Input": {
-      "source": { "sectionId": "input", "sourceEvidence": ["data-component=\"input\"", "<label for=\"guide-input-", "class=\"guide-form-input\" type=\"text\"", "data-component=\"search-input\""] },
+      "source": { "sectionId": "input", "sourceEvidence": ["function setupSearchInputField(root)", "function setupPasswordFieldInput(root)", "input.value = '';", "toggleBtn.setAttribute('aria-pressed'", "input.focus();"] },
       "status": "verified",
       "initialState": "empty and unfocused",
       "events": [
-        { "on": "input", "target": "text or search input", "result": "edit the native input value" },
-        { "on": "submit", "target": "search action button", "result": "invoke the composing application's search action" }
+        { "on": "focus", "target": "input", "result": "enter editing/focus state" },
+        { "on": "blur", "target": "input", "result": "leave editing/focus state unless focus moves to a suffix action" },
+        { "on": "input", "target": "search or password input", "result": "show clear action only when a value exists" },
+        { "on": "click", "target": "clear action", "result": "clear the value, hide the clear action, and return focus to the input" },
+        { "on": "click", "target": "password visibility action", "result": "toggle password ↔ text and return focus to the input" }
       ],
       "keyboard": "native-input",
-      "focus": "native-input",
-      "accessibility": { "label": "connect one label to input with unique id/for", "searchAction": "button has an aria-label" }
+      "focus": { "clear": "return to input", "passwordVisibility": "return to input" },
+      "accessibility": { "passwordVisibility": "synchronize aria-label and aria-pressed" }
     },
     "Text Area": {
-      "source": { "sectionId": "textarea", "sourceEvidence": ["data-component=\"textarea\"", "class=\"guide-textarea guide-form-textarea", " readonly"] },
+      "source": { "sectionId": "textarea", "sourceEvidence": ["textareaInput.addEventListener('focus'", "textareaInput.addEventListener('blur'", "textareaInput.setAttribute('readonly', '')"] },
       "status": "verified",
       "initialState": "editable and unfocused",
       "events": [
@@ -121,21 +125,22 @@
       "accessibility": { "readonly": "use the native readonly attribute" }
     },
     "Select Box": {
-      "source": { "sectionId": "select", "sourceEvidence": ["[data-component=\"select\"]>.guide-form-trigger", "function open(r,on)", "function choose(r,o)", "e.key==='Home'"] },
+      "source": { "sectionId": "select", "sourceEvidence": ["function wireActionSelect(selectEl)", "selectEl.classList.toggle('is-open')", "selectEl.classList.add('has-value')", "if (!selectEl.contains(e.target)) selectEl.classList.remove('is-open')"] },
       "status": "verified",
       "initialState": "closed without value",
       "events": [
         { "on": "click", "target": "trigger", "guard": "disabled=false", "result": "toggle closed ↔ open" },
         { "on": "click", "target": "option", "result": "select one option, update the trigger text, mark filled, and close" },
+        { "on": "click", "target": "outside", "result": "close" },
         { "on": "disable", "target": "select", "result": "close and block trigger clicks" }
       ],
       "selection": "single",
-      "keyboard": { "ArrowUpOrDown": "open or move through options", "Home": "first option", "End": "last option", "Enter": "choose focused option", "Escape": "close" },
-      "focus": "focus selected option on open and return to trigger on close",
-      "accessibility": { "trigger": "aria-haspopup=listbox and synchronized aria-expanded", "option": "synchronize aria-selected" }
+      "keyboard": "not-defined",
+      "focus": "not-defined",
+      "accessibility": "not-defined"
     },
     "Dropdown": {
-      "source": { "sectionId": "dropdown", "sourceEvidence": ["data-component=\"dropdown\"", "options(r).forEach", "x.setAttribute('aria-selected',String(on))"] },
+      "source": { "sectionId": "dropdown", "sourceEvidence": ["function wireDropdownPanel(el)", "opt.classList.add('is-selected')"] },
       "status": "verified",
       "initialState": "one or zero options selected",
       "events": [
@@ -143,78 +148,84 @@
       ],
       "selection": "single",
       "openClose": "owned by the composing trigger component",
-      "keyboard": { "ArrowUpOrDown": "move through options when composed by Select Box or Time Picker", "Home": "first option", "End": "last option", "Enter": "choose focused option", "Escape": "close owner" },
-      "focus": "roving option tabindex when composed",
-      "accessibility": { "panel": "role=listbox", "option": "synchronize aria-selected" }
+      "keyboard": "not-defined",
+      "focus": "not-defined",
+      "accessibility": "not-defined"
     },
     "Line Tab": {
-      "source": { "sectionId": "tab", "sourceEvidence": ["[data-component=\"line-tab\"] [role=\"tab\"]", "function select(root, tab, focus)", "item.setAttribute('aria-selected', String(selected))", "place(root, tab, true)"] },
+      "source": { "sectionId": "tab", "sourceEvidence": ["function setupTabStrip(el)", "btn.setAttribute('aria-selected', 'true')", "placeIndicator(btn)"] },
       "status": "verified",
       "initialState": "one tab selected",
       "events": [
         { "on": "click", "target": "tab", "result": "select the clicked tab, unselect siblings, and move the indicator" }
       ],
       "selection": "single",
-      "keyboard": { "ArrowLeft": "previous tab", "ArrowRight": "next tab", "Home": "first tab", "End": "last tab" },
-      "focus": "roving tabindex",
-      "accessibility": { "selectedTab": "synchronize aria-selected", "panel": "connect aria-controls to role=tabpanel" }
+      "keyboard": "native-button-click-only",
+      "focus": "native-button",
+      "accessibility": { "selectedTab": "set aria-selected=true and remove aria-selected from siblings" }
     },
     "GNB": {
-      "source": { "sectionId": "gnb", "sourceEvidence": ["[data-component=\"gnb\"] [data-component=\"gnb-menu\"]", "menu.setAttribute('aria-current','page')", "menu.dataset.state='selected'"] },
+      "source": { "sectionId": "gnb", "sourceEvidence": ["function setupGnb(el)", "btn.classList.add('is-selected')"] },
       "status": "verified",
       "initialState": "one menu selected",
       "events": [
         { "on": "click", "target": "menu", "result": "select the clicked menu and unselect every sibling" }
       ],
       "selection": "single",
-      "keyboard": "native-button Enter/Space",
+      "keyboard": "native-button-click-only",
       "focus": "native-button",
-      "accessibility": { "currentMenu": "synchronize aria-current=page", "utility": "Registry aria-label for each utility action" }
+      "accessibility": "not-defined"
     },
     "Pagination": {
-      "source": { "sectionId": "pagination", "sourceEvidence": ["function updatePagination(root,index)", "page.setAttribute('aria-current','page')", "button.disabled=next===0", "button.disabled=next===pages.length-1", "action==='last'"] },
+      "source": { "sectionId": "pagination", "sourceEvidence": ["function setupPagination()", "currentPage = page; update();", "block.blockIndex === 0 || single", "block.end >= tp || single"] },
       "status": "verified",
       "initialState": "page 1",
       "events": [
-        { "on": "click", "target": "page number", "result": "set aria-current on the selected page number" },
+        { "on": "click", "target": "page number", "result": "set the current page and rerender the current number block" },
         { "on": "click", "target": "first", "result": "move to page 1" },
-        { "on": "click", "target": "previous", "result": "move to the previous page" },
-        { "on": "click", "target": "next", "result": "move to the next page" },
+        { "on": "click", "target": "previous block", "result": "move to the first page of the previous block" },
+        { "on": "click", "target": "next block", "result": "move to the first page of the next block" },
         { "on": "click", "target": "last", "result": "move to the final page" }
       ],
-      "constraints": ["clamp current page to the rendered number range", "disable unavailable edge actions", "single-page mode disables all navigation actions"],
+      "constraints": ["show at most 6 page numbers per block", "disable unavailable edge/block actions", "single-page mode disables all navigation actions"],
       "keyboard": "native-button",
       "focus": "native-button",
-      "accessibility": { "pageNumber": "mark the current page with aria-current=page", "actions": "first/previous/next/last use Registry aria-labels" }
+      "accessibility": { "pageNumber": "aria-label includes the page number and marks the current page in its accessible name" }
     },
     "Date Picker": {
-      "source": { "sectionId": "date-picker", "sourceEvidence": ["[data-component=\"date-picker\"]>.guide-form-trigger", "t.setAttribute('aria-expanded',String(on))", "[data-component=\"date-picker\"] [role=\"gridcell\"]", "e.key==='Escape'", "d.getAttribute('aria-disabled')!=='true'"] },
+      "source": { "sectionId": "date-picker", "sourceEvidence": ["function setupDatePicker(root)", "input.setAttribute('aria-expanded', 'true')", "panel.addEventListener('keydown'", "if (e.key === 'Escape')", "data-disabled-dates"] },
       "status": "verified",
       "initialState": "closed in calendar view",
       "events": [
-        { "on": "click", "target": "calendar trigger", "result": "toggle the dialog" },
-        { "on": "click", "target": "day", "guard": "aria-disabled=false", "result": "select the day and close" }
+        { "on": "click", "target": "input or calendar action", "result": "toggle the panel" },
+        { "on": "click", "target": "day", "guard": "date is enabled", "result": "write YY.MM.DD, select the day, and close" },
+        { "on": "click", "target": "month label", "result": "cycle calendar → month → year → calendar" },
+        { "on": "click", "target": "previous or next", "result": "move one month, one year, or one 12-year block according to the current view" },
+        { "on": "click", "target": "outside", "result": "close" }
       ],
       "keyboard": { "Escape": "close and return focus to input", "ArrowLeft": "previous enabled day", "ArrowRight": "next enabled day", "ArrowUp": "previous week", "ArrowDown": "next week", "EnterOrSpace": "select focused day" },
       "focus": { "onOpen": "focus the first enabled day", "onEscape": "return to input" },
-      "accessibility": { "expanded": "synchronize aria-expanded on the dialog trigger", "disabledDate": "aria-disabled=true blocks selection", "day": "role=gridcell and synchronized aria-selected" },
-      "constraints": ["Mobile uses only the approved bottom-sheet dependency marker", "disabled dates cannot be selected"]
+      "accessibility": { "expanded": "synchronize aria-expanded on input and calendar action", "disabledDate": "native disabled plus aria-disabled=true", "day": "aria-label uses YY.MM.DD" },
+      "constraints": ["week starts on Sunday", "disabled dates come from data-disabled-dates", "adjacent-month days remain selectable when enabled"]
     },
     "Time Picker": {
-      "source": { "sectionId": "time-picker", "sourceEvidence": ["[data-component=\"time-picker\"]>.guide-form-trigger", "r.dataset.component==='time-picker'?'focus':'open'", "[data-component=\"time-picker\"] [role=\"option\"]", "e.key==='Escape'"] },
+      "source": { "sectionId": "time-picker", "sourceEvidence": ["function setupTimePicker(root)", "dropdown.classList.add('is-open')", "selHour >= 0 && selMin >= 0", "if (!trigger.contains(e.target) && !dropdown.contains(e.target)) closePanel()"] },
       "status": "verified",
       "initialState": "closed without a committed time",
       "events": [
-        { "on": "click", "target": "input trigger", "result": "toggle the time option listbox" },
-        { "on": "click", "target": "time option", "result": "select one time, update the trigger value, and close" }
+        { "on": "click", "target": "input trigger", "result": "toggle the hour/minute panel" },
+        { "on": "click", "target": "hour or minute", "result": "select one value in that column; show HH:MM after both values exist" },
+        { "on": "click", "target": "confirm", "result": "close the panel" },
+        { "on": "click", "target": "outside", "result": "close the panel" },
+        { "on": "click", "target": "select-style hour or minute field", "result": "open only that field list; selecting a value updates it and closes" }
       ],
-      "selection": "single time value",
-      "keyboard": { "ArrowUpOrDown": "open or move through options", "Home": "first option", "End": "last option", "Enter": "choose focused option", "Escape": "close" },
-      "focus": "focus selected option on open and return to trigger on close",
-      "accessibility": { "trigger": "aria-haspopup=listbox and synchronized aria-expanded", "option": "synchronize aria-selected" }
+      "selection": "one hour and one minute",
+      "keyboard": "not-defined",
+      "focus": "selected values scroll into view when a panel opens",
+      "accessibility": "not-defined"
     },
     "Table": {
-      "source": { "sectionId": "table", "sourceEvidence": ["[data-component=\"table\"] [role=\"checkbox\"]", "function setTableCheck(check,value)", "function syncTableHeader(root)", "[data-table-sort]", "th.setAttribute('aria-sort'"] },
+      "source": { "sectionId": "table", "sourceEvidence": ["function setupTableSelection(root)", "rows[i].classList.toggle('is-selected', checked)", "var allChecked = rowChks.every"] },
       "status": "verified",
       "initialState": "zero or more rows selected",
       "events": [
@@ -222,9 +233,9 @@
         { "on": "click", "target": "header checkbox", "result": "select all rows when any row is unchecked; otherwise clear all rows" }
       ],
       "selection": "multiple",
-      "keyboard": "native-button Enter/Space for checkbox and sort trigger",
-      "focus": "native-button",
-      "accessibility": { "selection": "synchronize row/header aria-checked including mixed", "sorting": "synchronize th aria-sort" }
+      "keyboard": "not-defined",
+      "focus": "not-defined",
+      "accessibility": "not-defined"
     },
     "CI": {
       "source": { "sectionId": "ci", "sourceEvidence": ["<section class=\"comp-section\" id=\"ci\""] },

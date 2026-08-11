@@ -4,8 +4,8 @@
 /**
  * Gate 38 — Component Guide Generation
  *
- * 정본에서 생성된 guide model과 메인 사이트 생성 구간이 현재 작업 트리와 같은지 확인한다.
- * 생성 결과를 직접 편집하거나 정본 변경 뒤 재생성을 빠뜨리면 실패한다.
+ * 정본에서 생성된 guide model이 현재 작업 트리와 같은지 확인한다.
+ * 메인 사이트는 손관리 화면이므로 이 Gate가 생성하거나 byte 대조하지 않는다.
  */
 const { spawnSync } = require('child_process');
 const path = require('path');
@@ -27,7 +27,6 @@ function run(script, args = []) {
 function check({ pass, fail }) {
   const checks = [
     ['guide model', 'scripts/gen-component-guide-model.js', ['--check']],
-    ['guide site', 'scripts/gen-component-guide-site.js', ['--check']],
   ];
   let bad = 0;
   for (const [label, script, args] of checks) {
@@ -37,7 +36,7 @@ function check({ pass, fail }) {
       pass(`${label} 생성 결과 최신 — ${summary}`);
     } else {
       bad += 1;
-      fail(`${label} 생성 결과 드리프트(exit ${result.status}) — npm run components:${label === 'guide model' ? 'guide-model' : 'guide-site'}:write`);
+      fail(`${label} 생성 결과 드리프트(exit ${result.status}) — npm run components:guide-model:write`);
       for (const line of result.output.split('\n').filter((line) => /❌|drift|불일치|missing|누락/i.test(line)).slice(0, 8)) {
         fail(`  ${line.trim()}`);
       }
