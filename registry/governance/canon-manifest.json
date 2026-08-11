@@ -1,7 +1,7 @@
 {
   "_role": "정본 목록의 정본(canon manifest) — 무엇이 정본이고, 각 정본의 파생 표면·재생성 명령·감시 게이트가 무엇인지 기계가독으로 선언한다. Gate 36 이 이 선언과 실제 배선을 대조한다.",
   "_why": "정본이 여러 벌인 것은 Figma 구조상 불가피하다(Variables·Text Styles·Components 는 서로 다른 개체·다른 설치 API). 문제는 '무엇이 정본인가'가 산문에만 있어서 문서끼리 어긋났고(CLAUDE.md MVP0 섹션 vs 하드룰 H6), 대시보드는 정본을 휴리스틱으로 추측하다 스크립트를 정본으로 오분류했다. 파일을 합치는 대신 '정본 목록'을 한 곳에 선언하고 기계가 집행한다.",
-  "_updated": "2026-08-03",
+  "_updated": "2026-08-11",
 
   "umbrella": {
     "regen": "tokens:reconcile",
@@ -48,6 +48,7 @@
       "additionsGate": "34",
       "changeControl": "Gate 13 — 구조 변경은 🤖 component-verifier 독립 검증 기록(해시)이 있어야 커밋된다(⭐ 단독 자가검증 차단).",
       "surfaces": [
+        { "path": "registry/components/component-facts.json", "kind": "generated", "regen": ["components:facts:write"], "gates": ["24"] },
         { "path": "assets/downloads/s1-ux-design-guide-installer.zip", "kind": "generated", "regen": ["installer:build"], "gates": ["6b", "13"] },
         { "path": "pages/components.html", "kind": "hand-maintained", "gates": ["18", "19", "23", "32"] },
         { "path": "registry/governance/update-management.json", "kind": "hand-maintained", "regen": ["update:gen"], "gates": ["16", "30"] }
@@ -84,6 +85,14 @@
   },
 
   "metaLedgers": [
+    {
+      "path": "registry/components/component-behavior.pc.json",
+      "role": "PC UI 라이브러리 JavaScript를 AI 실행 규칙으로 번역한 행동 계약 장부. pages/components.html의 근거 문자열과 Gate 24에서 대조한다.",
+      "isCanonFor": ["PC 컴포넌트 click·state transition·keyboard·focus·a11y 행동 계약"],
+      "isNotCanonFor": ["시각 값·Figma 구조·모바일 행동"],
+      "source": "pages/components.html?platform=pc",
+      "gates": ["24"]
+    },
     {
       "path": "registry/components/*.json",
       "role": "손편집 전용 메타 장부 — 설명·미결이슈·진행상태 6축·usage(언제 쓰나)·anatomy·doDont·a11y·Figma 노드 매핑·거버넌스·사람 결정 기록. 이 정보는 정본에 대응물이 없어 여기에만 존재한다.",

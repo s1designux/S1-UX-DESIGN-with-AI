@@ -2,10 +2,25 @@
   "_meta": {
     "description": "사용자가 반복 요청한 패턴 추적 파일. count >= 3 이면 자동 감사 규칙 승격 후보.",
     "promotionThreshold": 3,
-    "updatedAt": "2026-08-05",
+    "updatedAt": "2026-08-11",
     "note": "이 JSON 이 단일 정본이다. CLAUDE.md 에 있던 승격 현황 표는 2026-08-03 에 삭제했다(정본과 드리프트 중이었음)."
   },
   "patterns": [
+    {
+      "id": "canonical-component-size-addition",
+      "category": "component-canonical-expansion",
+      "label": "기존 컴포넌트 정본에 새 사이즈 기준 추가",
+      "description": "기존 컴포넌트의 크기 축에 없던 사이즈를 사용자 승인 기준으로 신설하고, 세트·웹 가이드·registry·검사기까지 함께 동기화하는 요청",
+      "count": 1,
+      "promotionStatus": "tracking",
+      "occurrences": [
+        {
+          "date": "2026-08-11",
+          "summary": "Line Tab에 PC XSM(40px·body/14M·좌우 16·텍스트 Hug·밑줄 Stretch) 추가, Line Tab Set과 파생 표면 동기화"
+        }
+      ],
+      "automationNote": "3회 도달 시 컴포넌트별 사이즈 축 신설을 정본→세트→facts→웹→registry→검사 규칙까지 대조하는 전용 체크리스트 또는 Gate 승격 검토."
+    },
     {
       "id": "figma-foundation-hybrid-pattern",
       "category": "design-system-architecture",

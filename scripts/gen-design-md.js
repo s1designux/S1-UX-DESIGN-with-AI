@@ -3,8 +3,10 @@
  * 🔧 DESIGN.md 생성기 — 디자인시스템 "소비용" 단일 컨텍스트 파일
  *
  * 목적: AI 에이전트가 "한 번에 읽는" 디자인시스템 스냅샷을 만든다.
- *   입력 = `assets/css/tokens.css`(정본 vars-data.ts 의 1차 파생) + `registry/components/*.json`
- *   의 메타(설명·anatomy·doDont·a11y). 매번 재생성한다.
+ *   입력 = `assets/css/tokens.css`(정본 vars-data.ts 의 1차 파생)
+ *   + `registry/components/component-facts.json`(build-components.ts 실제 실행 파생)
+ *   + `registry/components/component-behavior.pc.json`(PC UI 라이브러리 JavaScript 행동 계약)
+ *   + `registry/components/*.json` 의 메타(설명·anatomy·doDont·a11y·Figma mapping).
  *   정본 목록은 `registry/governance/canon-manifest.json`(Gate 36) — registry 는 값의 정본이 아니다.
  *   ⚠️ DESIGN.md 는 소비용 "산출물"이지 정본이 아니다 — 손으로 고치지 말 것(드리프트 게이트가 막음).
  *
@@ -33,6 +35,7 @@ const WRITE = process.argv.includes('--write');
 const CORE_REL = 'design/DESIGN.core.md';
 const VMS_REL = 'design/services/DESIGN.vms.md';
 const TOKENS_REL = 'assets/css/tokens.css';
+const COMPONENT_TOKENS_REL = 'assets/css/component-tokens.css';
 
 // 현재 활성 서비스 분기: 영상=vms 만. (mobility/building 은 매니페스트에 자리만, 아직 파일 생성 안 함)
 const ACTIVE_SERVICES = ['vms'];
@@ -42,6 +45,9 @@ const SERVICE_OUT = { vms: VMS_REL }; // 서비스→출력경로 (리터럴 유
 // (과거엔 상수로 중복 보관했으나 수동 동기화 드리프트를 없애려 manifest 참조로 단일화. 2026-07-21)
 const MANIFEST_REL = 'design/design.manifest.json';
 const NARRATIVE_REL = 'registry/governance/design-narrative.json';
+const COMPONENT_FACTS_REL = 'registry/components/component-facts.json';
+const COMPONENT_BEHAVIOR_PC_REL = 'registry/components/component-behavior.pc.json';
+const FIGMA_MAP_REL = 'registry/figma/figma-map.json';
 
 function loadProfiles() {
   try {
@@ -60,11 +66,22 @@ function loadNarrative() {
   return {};
 }
 
+function readJsonOr(rel, fallback) {
+  try { return JSON.parse(fs.readFileSync(path.join(ROOT, rel), 'utf8')); }
+  catch (_) { return fallback; }
+}
+
+function loadComponentFacts() { return readJsonOr(COMPONENT_FACTS_REL, { components: {}, iconLibrary: {} }); }
+function loadComponentBehaviorPc() { return readJsonOr(COMPONENT_BEHAVIOR_PC_REL, { components: {} }); }
+function loadFigmaMap() { return readJsonOr(FIGMA_MAP_REL, { components: {} }); }
+
 // ── tokens.css 파싱 ─────────────────────────────────────────────────
 // `--이름: 값;` 을 뽑는다. (스펙의 `--(\w+)` 은 하이픈 미포함이라 실제 토큰명(--color-brand-blue 등)을
 //  못 잡음 → [\w-]+ 로 조정. 값은 `;` 앞까지라 줄 끝 주석은 자동 제외됨.)
 function parseTokens() {
-  const css = fs.readFileSync(path.join(ROOT, TOKENS_REL), 'utf8');
+  const css = [TOKENS_REL, COMPONENT_TOKENS_REL]
+    .map((rel) => fs.existsSync(path.join(ROOT, rel)) ? fs.readFileSync(path.join(ROOT, rel), 'utf8') : '')
+    .join('\n');
   const all = {};
   for (const m of css.matchAll(/--([\w-]+)\s*:\s*([^;]+);/g)) {
     const name = m[1];
@@ -77,6 +94,7 @@ function parseTokens() {
     return o;
   };
   return {
+    all,
     // colors: 브랜드 + Gray 숫자 스케일(다크 gray-dark-* 는 제외)
     colors: pick((k) => /^color-brand-/.test(k) || /^color-gray-\d/.test(k)),
     spacing: pick((k) => /^spacing-\d/.test(k)),   // Foundation 숫자 스페이싱만(semantic spacing 제외)
@@ -92,7 +110,7 @@ function loadComponents() {
   const dir = path.join(ROOT, 'registry/components');
   const out = [];
   for (const f of fs.readdirSync(dir)) {
-    if (!f.endsWith('.json') || f === 'index.json') continue; // index.json 은 색인이라 제외
+    if (!f.endsWith('.json') || ['index.json', 'component-facts.json', 'component-behavior.pc.json'].includes(f)) continue; // 색인·공용 facts 제외
     let j;
     try { j = JSON.parse(fs.readFileSync(path.join(dir, f), 'utf8')); }
     catch (e) { continue; } // 깨진 JSON 은 건너뜀(Gate 1 이 별도로 잡음)
@@ -158,19 +176,16 @@ function normalizeEntry(e) {
 function entriesFromField(t) {
   const out = [];
   const push = (e) => { const n = normalizeEntry(e); if (n) out.push(n); };
-  if (Array.isArray(t)) {
-    t.forEach(push);
-  } else if (t && typeof t === 'object') {
-    for (const v of Object.values(t)) {
-      if (Array.isArray(v)) { v.forEach(push); continue; }
-      if (v && typeof v === 'object') {
-        if (Array.isArray(v.reuses)) v.reuses.forEach(push); // date-picker: {reuses:[...], note}
-        for (const [k, val] of Object.entries(v)) {           // input: {"--css": "var(--sem)"}
-          if (k.startsWith('--') && typeof val === 'string') push({ name: k, value: val });
-        }
-      }
+  const walk = (v) => {
+    if (Array.isArray(v)) { v.forEach((x) => { push(x); if (x && typeof x === 'object') walk(x); }); return; }
+    if (!v || typeof v !== 'object') return;
+    push(v);
+    for (const [k, val] of Object.entries(v)) {
+      if (k.startsWith('--') && typeof val === 'string') push({ name: k, value: val });
+      else if (val && typeof val === 'object') walk(val);
     }
-  }
+  };
+  walk(t);
   return out;
 }
 
@@ -372,7 +387,221 @@ function buildAgentGuide(ag) {
   if (!ag) return '';
   const tips = asArr(ag.promptTips).length ? `**프롬프트 팁**\n${bullets(ag.promptTips)}` : '';
   const res = asArr(ag.resolution).length ? `**해석 순서 (Resolution)**\n${bullets(ag.resolution)}` : '';
-  return section('9. Agent Prompt Guide', [paras(ag.intro), tips, res]);
+  const priority = asArr(ag.implementationPriority).length
+    ? `**UI 구현 우선순위**\n${ag.implementationPriority.map((s, i) => `${i + 1}. ${s}`).join('\n')}` : '';
+  const invent = asArr(ag.doNotInvent).length
+    ? `**DO NOT invent**\n${bullets(ag.doNotInvent.map((s) => `\`${s}\``))}` : '';
+  const gap = ag.gapFormat ? `**정의가 없을 때의 응답 형식**\n\n\`\`\`text\n${ag.gapFormat}\n\`\`\`` : '';
+  return section('9. Agent Prompt Guide', [paras(ag.intro), priority, invent, gap, tips, res]);
+}
+
+// ── Agent-readable component contract ───────────────────────────────────
+const FACT_NAME = {
+  select: 'Select Box', 'date-picker': 'Date Picker', 'time-picker': 'Time Picker',
+  textarea: 'Text Area', tab: 'Line Tab', 'mobile-bottom-nav': 'Mobile Bottom Nav',
+};
+
+function yamlScalar(v) {
+  if (v === null) return 'null';
+  if (typeof v === 'number' || typeof v === 'boolean') return String(v);
+  return JSON.stringify(String(v));
+}
+
+function yamlValue(value, indent = 0) {
+  const pad = ' '.repeat(indent);
+  if (Array.isArray(value)) {
+    if (!value.length) return `${pad}[]`;
+    return value.map((v) => {
+      if (v && typeof v === 'object') return `${pad}-\n${yamlValue(v, indent + 2)}`;
+      return `${pad}- ${yamlScalar(v)}`;
+    }).join('\n');
+  }
+  if (value && typeof value === 'object') {
+    const entries = Object.entries(value).filter(([, v]) => v !== undefined);
+    if (!entries.length) return `${pad}{}`;
+    return entries.map(([k, v]) => {
+      const key = /^[A-Za-z_][\w-]*$/.test(k) ? k : JSON.stringify(k);
+      if (v && typeof v === 'object') return `${pad}${key}:\n${yamlValue(v, indent + 2)}`;
+      return `${pad}${key}: ${yamlScalar(v)}`;
+    }).join('\n');
+  }
+  return `${pad}${yamlScalar(value)}`;
+}
+
+function stateMetadata(j) {
+  if (Array.isArray(j.states)) return j.states;
+  if (j.states && typeof j.states === 'object') return j.states;
+  if (j.variants && Array.isArray(j.variants.state)) return j.variants.state;
+  return 'unknown';
+}
+
+function behaviorContract(comp, behaviorDoc) {
+  const factName = FACT_NAME[comp.id] || comp.name;
+  const found = behaviorDoc && behaviorDoc.components && behaviorDoc.components[factName];
+  if (!found) return { platform: 'PC', status: 'not-defined' };
+  const out = { platform: 'PC' };
+  for (const [key, value] of Object.entries(found)) {
+    if (key === 'source') {
+      out.source = value && value.sectionId
+        ? `${COMPONENT_BEHAVIOR_PC_REL} ← pages/components.html#${value.sectionId}`
+        : COMPONENT_BEHAVIOR_PC_REL;
+      continue;
+    }
+    out[key] = value;
+  }
+  return out;
+}
+
+function registryReuse(j) {
+  const out = [];
+  const add = (v) => {
+    if (typeof v === 'string') out.push(v);
+    else if (v && typeof v === 'object') out.push(v.id || v.name);
+  };
+  const sources = [j.dependencies && j.dependencies.coreComponents, j.reuses && j.reuses.coreComponents];
+  for (const source of sources) if (Array.isArray(source)) source.forEach(add);
+  if (typeof j.baseComponent === 'string') out.push(j.baseComponent);
+  return [...new Set(out.filter(Boolean))];
+}
+
+function registryMustNotCreate(j) {
+  const out = [];
+  const deps = j.dependencies && j.dependencies.coreComponents;
+  for (const dep of (Array.isArray(deps) ? deps : [])) {
+    if (dep && typeof dep === 'object' && Array.isArray(dep.notAllowed)) out.push(...dep.notAllowed);
+  }
+  return [...new Set(out)];
+}
+
+function figmaContract(comp, figmaMap) {
+  const local = comp.json.figma && typeof comp.json.figma === 'object' ? comp.json.figma : {};
+  const mapKey = comp.id.replace(/-([a-z])/g, (_, c) => c.toUpperCase());
+  const shared = (figmaMap.components && (figmaMap.components[comp.id] || figmaMap.components[mapKey])) || {};
+  const identifiers = {};
+  const copy = (src, key) => { if (typeof src[key] === 'string' && src[key].trim()) identifiers[key] = src[key]; };
+  for (const key of ['componentName', 'figmaComponentName', 'componentSetKey', 'componentKey', 'fileKey', 'figmaFileKey', 'figmaNodeId', 'sectionNodeId', 'figmaSectionNodeId', 'pageNodeId']) {
+    copy(local, key); if (!(key in identifiers)) copy(shared, key);
+  }
+  const explicitStatus = local.status || shared.status;
+  const hasNode = Object.keys(identifiers).some((k) => /(?:NodeId|Key)$/.test(k) && identifiers[k] && !/[미발행미확인]/.test(identifiers[k]));
+  return {
+    status: explicitStatus || (hasNode ? 'available' : 'figma-unconfirmed'),
+    identifiers: Object.keys(identifiers).length ? identifiers : 'figma-unconfirmed',
+    variants: local.propertyMap && Object.keys(local.propertyMap).length ? local.propertyMap
+      : (shared.propertyMap && Object.keys(shared.propertyMap).length ? shared.propertyMap : 'figma-unconfirmed'),
+  };
+}
+
+function iconContract(j, iconLibrary) {
+  const allowed = [];
+  if (Array.isArray(j.icons)) for (const i of j.icons) if (i && i.name) allowed.push(i.name);
+  if (j.reuses && Array.isArray(j.reuses.libraryIcons)) allowed.push(...j.reuses.libraryIcons);
+  return {
+    allowed: allowed.length ? [...new Set(allowed)] : 'figma-unconfirmed',
+    slots: j.iconSlots || 'unknown',
+  };
+}
+
+function aliasChains(comp, allTokens) {
+  const entries = collectEntries(comp);
+  const source = [...(entries.all || []), ...Object.values(entries.byVariant || {}).flat()];
+  const chains = [];
+  const seenChain = new Set();
+  for (const entry of source) {
+    let current = String(entry.name || '').replace(/^--/, '');
+    if (!current || !(current in allTokens)) continue;
+    const chain = [`--${current}`];
+    let status = 'resolved';
+    const seen = new Set([current]);
+    for (let hop = 0; hop < 8; hop++) {
+      const value = allTokens[current];
+      const next = semanticFromValue(value);
+      if (!next) { if (value && value !== chain[chain.length - 1]) chain.push(value); break; }
+      if (seen.has(next)) break;
+      chain.push(`--${next}`); seen.add(next); current = next;
+      if (!(current in allTokens)) { status = 'unresolved'; break; }
+    }
+    if (chain.length < 2) continue;
+    const rendered = chain.join(' → ');
+    const sig = `${status}:${rendered}`;
+    if (!seenChain.has(sig)) { seenChain.add(sig); chains.push({ chain: rendered, status }); }
+  }
+  return chains;
+}
+
+function compactGeometry(profiles) {
+  if (!Array.isArray(profiles) || !profiles.length) return 'not-defined';
+  const ignored = new Set(['when']);
+  const keys = [...new Set(profiles.flatMap((p) => Object.keys(p).filter((k) => !ignored.has(k))))];
+  const common = {};
+  for (const key of keys) {
+    const values = profiles.map((p) => JSON.stringify(p[key]));
+    if (values.every((v) => v === values[0]) && profiles[0][key] !== undefined) common[key] = profiles[0][key];
+  }
+  const variants = profiles.map((profile) => {
+    const out = { when: profile.when };
+    for (const [key, value] of Object.entries(profile)) {
+      if (key !== 'when' && !(key in common)) out[key] = value;
+    }
+    return out;
+  });
+  return { common: Object.keys(common).length ? common : 'not-defined', variants };
+}
+
+function agentContract(comp, factsDoc, behaviorDoc, figmaMap, allTokens) {
+  const factName = FACT_NAME[comp.id] || comp.name;
+  const facts = (factsDoc.components || {})[factName] || null;
+  const builderReuse = facts && facts.composition && Array.isArray(facts.composition.buildDependencies)
+    ? facts.composition.buildDependencies : [];
+  const reuse = [...new Set([...builderReuse, ...registryReuse(comp.json)])];
+  const aliases = aliasChains(comp, allTokens);
+  return {
+    agent: {
+      component: comp.name,
+      variantAxes: facts ? facts.variantAxes : 'not-defined',
+      states: {
+        builder: facts && facts.variantAxes && facts.variantAxes.State ? facts.variantAxes.State : 'not-defined',
+        metadata: stateMetadata(comp.json),
+      },
+      behavior: behaviorContract(comp, behaviorDoc),
+      geometry: compactGeometry(facts && facts.geometry),
+      composition: {
+        mustReuse: reuse.length ? reuse : 'not-defined',
+        mustNotCreate: registryMustNotCreate(comp.json).length ? registryMustNotCreate(comp.json) : 'not-defined',
+        declaredParts: facts && facts.anatomy && facts.anatomy.length ? facts.anatomy : 'not-defined',
+      },
+      constraints: comp.json.constraints || 'unknown',
+      tokens: {
+        figmaSemanticBindings: facts && facts.tokenBindings && facts.tokenBindings.length ? facts.tokenBindings : 'not-defined',
+        aliasChains: aliases.length ? aliases : 'not-defined',
+      },
+      figma: figmaContract(comp, figmaMap),
+      icons: iconContract(comp.json, factsDoc.iconLibrary || {}),
+    },
+  };
+}
+
+function agentContractDefaults(factsDoc) {
+  return {
+    agentContractDefaults: {
+      sourcePriority: [
+        `${COMPONENT_FACTS_REL} (build-components.ts mock execution)`,
+        `${COMPONENT_BEHAVIOR_PC_REL} (pages/components.html PC runtime behavior)`,
+        'registry/components/*.json (description/composition/Figma metadata)',
+        `${TOKENS_REL} + ${COMPONENT_TOKENS_REL} (actual CSS alias chain)`,
+      ],
+      rules: [
+        'Reuse the existing component and listed variant before creating UI.',
+        'Only listed states are allowed; a missing state is not permission to invent it.',
+        'For PC interaction, implement only behavior.status=verified rules. not-defined is not permission to invent keyboard, focus, or accessibility behavior.',
+        'Use the highest available semantic/component token; never copy a raw terminal value into UI code.',
+        'Component-specific icon lists override the global icon library. figma-unconfirmed means ask/report, not invent.',
+      ],
+      iconLibrary: factsDoc.iconLibrary || { source: 'unknown', allowed: 'unknown' },
+      unknownMarkers: ['unknown', 'not-defined', 'figma-unconfirmed'],
+      missingDefinitionResponse: 'DESIGN_SYSTEM_GAP: <missing definition>',
+    },
+  };
 }
 
 // ── §4 컴포넌트: 표(기존) + 서술(신규 registry 필드) ──────────────────
@@ -404,14 +633,16 @@ function componentDoDontA11y(comp) {
   return out.join('\n\n');
 }
 
-function buildComponents(comps) {
+function buildComponents(comps, factsDoc, behaviorDoc, figmaMap, allTokens) {
   const body = [];
+  body.push(`### Agent contract defaults\n\n\`\`\`yaml\n${yamlValue(agentContractDefaults(factsDoc))}\n\`\`\``);
   if (!comps.length) { body.push('_등록된 컴포넌트가 없습니다._'); }
   for (const c of comps) {
     const parts = [`### ${c.name}`];
     const pr = componentProse(c);
     if (pr) parts.push(pr);
     parts.push(componentTable(c));
+    parts.push(`#### Agent-readable contract\n\n\`\`\`yaml\n${yamlValue(agentContract(c, factsDoc, behaviorDoc, figmaMap, allTokens))}\n\`\`\``);
     const dd = componentDoDontA11y(c);
     if (dd) parts.push(dd);
     body.push(parts.join('\n\n'));
@@ -419,9 +650,9 @@ function buildComponents(comps) {
   return section('4. Components', [body.join('\n\n')]);
 }
 
-const DONOT_EDIT = '> ⚠️ 이 파일은 자동 생성물입니다. 손으로 고치지 마세요. 정본 목록은 `registry/governance/canon-manifest.json` 이고, 이 문서는 `assets/css/tokens.css`(정본 파생) + `registry/components/*.json`(메타)에서 `npm run design:md:write` 로 재생성됩니다.';
+const DONOT_EDIT = '> ⚠️ 이 파일은 자동 생성물입니다. 손으로 고치지 마세요. 정본 목록은 `registry/governance/canon-manifest.json` 이고, 이 문서는 `component-facts.json`(Figma 빌더 실행 파생) + `component-behavior.pc.json`(PC 동작 계약) + `tokens.css`/`component-tokens.css`(토큰 파생) + `registry/components/*.json`(메타)에서 `npm run design:md:write` 로 재생성됩니다.';
 
-function buildCore(tokens, coreComps, narrative, profiles) {
+function buildCore(tokens, coreComps, narrative, profiles, factsDoc, behaviorDoc, figmaMap) {
   const n = narrative || {};
   const fm = [];
   fm.push('---');
@@ -449,7 +680,7 @@ function buildCore(tokens, coreComps, narrative, profiles) {
     buildVisualTheme(n.visualTheme),            // §1
     buildColorRoles(n.colorRoles),              // §2
     buildTypography(n.typography),              // §3
-    buildComponents(coreComps),                 // §4
+    buildComponents(coreComps, factsDoc, behaviorDoc, figmaMap, tokens.all), // §4
     buildLayout(n.layout),                      // §5
     buildElevation(n.elevation),                // §6
     buildDoDont(n.doDont),                      // §7
@@ -464,7 +695,7 @@ function buildCore(tokens, coreComps, narrative, profiles) {
   return fm.join('\n') + '\n' + body.join('\n') + '\n';
 }
 
-function buildService(scope, comps) {
+function buildService(scope, comps, factsDoc, behaviorDoc, figmaMap, allTokens) {
   const up = scope.toUpperCase();
   const fm = [];
   fm.push('---');
@@ -484,7 +715,7 @@ function buildService(scope, comps) {
     body.push(`컴포넌트를 이 서비스로 분기하려면 해당 \`registry/components/*.json\` 의 \`_meta.scope\` 를 \`"${scope}"\` 로 설정한 뒤 \`npm run design:md:write\` 를 실행하세요.`, '');
   } else {
     // core 와 동일한 렌더러(표 + 서술) 사용.
-    body.push(buildComponents(comps));
+    body.push(buildComponents(comps, factsDoc, behaviorDoc, figmaMap, allTokens));
   }
   return fm.join('\n') + '\n' + body.join('\n') + '\n';
 }
@@ -501,13 +732,16 @@ function main() {
   const comps = loadComponents();
   const narrative = loadNarrative();
   const profiles = loadProfiles();
+  const factsDoc = loadComponentFacts();
+  const behaviorDoc = loadComponentBehaviorPc();
+  const figmaMap = loadFigmaMap();
   const byScope = {};
   for (const c of comps) (byScope[c.scope] = byScope[c.scope] || []).push(c);
 
   const targets = [];
-  targets.push({ rel: CORE_REL, content: withStamp(buildCore(tokens, byScope.core || [], narrative, profiles)) });
+  targets.push({ rel: CORE_REL, content: withStamp(buildCore(tokens, byScope.core || [], narrative, profiles, factsDoc, behaviorDoc, figmaMap)) });
   for (const svc of ACTIVE_SERVICES) {
-    targets.push({ rel: SERVICE_OUT[svc], content: withStamp(buildService(svc, byScope[svc] || [])) });
+    targets.push({ rel: SERVICE_OUT[svc], content: withStamp(buildService(svc, byScope[svc] || [], factsDoc, behaviorDoc, figmaMap, tokens.all)) });
   }
 
   let changed = 0;

@@ -1482,10 +1482,12 @@ async function buildLineTab(maps: BuildMaps, originY: number): Promise<{ set: Co
     { name: "Hover",      label: "label/hover",     ind: "indicator/hover" },
     { name: "Selected",   label: "label/selected",  ind: "indicator/selected" },
   ];
-  // V2.4 원본 실측(540:6032): pc-md 44h/font20 · pc-sm 42h/font16 · mobile 32h/font16. (높이=인디케이터 포함 총 심볼 높이)
+  // V2.4 원본 실측(540:6032): pc-md 44h/font20 · pc-sm 42h/font16 · mobile 32h/font16.
+  // PC XSM 은 river 승인 신규 기준(2026-08-11): 40h/body 14M · SM 과 같은 좌우 padding 16. (높이=인디케이터 포함 총 심볼 높이)
   const sizes = [
     { size: "SM", brk: "PC",     h: 42, font: 16 },
     { size: "MD", brk: "PC",     h: 44, font: 20 },
+    { size: "XSM", brk: "PC",    h: 40, font: 14 },
     { size: "SM", brk: "Mobile", h: 32, font: 16 },
   ];
   const MIN_W = 76; // 최소 폭(짧은 라벨도 보기 좋게). 긴 라벨은 텍스트 폭만큼 hug.
@@ -1539,7 +1541,7 @@ async function buildLineTab(maps: BuildMaps, originY: number): Promise<{ set: Co
   set.x = 0; set.y = originY;
   const opts: GroupedSpecOpts = {
     title: "Line Tab",
-    platforms: [{ name: "PC", sizes: ["SM", "MD"] }, { name: "Mobile", sizes: ["SM"] }],
+    platforms: [{ name: "PC", sizes: ["SM", "MD", "XSM"] }, { name: "Mobile", sizes: ["SM"] }],
     rowLabels: [""],
     colHeaders: states.map((s) => s.name),
     cellAt: (platName, size, _ri, ci) =>
@@ -1553,13 +1555,14 @@ async function buildLineTab(maps: BuildMaps, originY: number): Promise<{ set: Co
 
 // ── Line Tab Set — Line Tab 셀 3개를 가로로 묶은 사용 예시(첫 탭 Selected) ──────────
 // 정본: 라인탭이 실제로 쓰이는 모습(탭 3개 나란히, 하나 활성). 셀은 buildLineTab 의 Line Tab 셀 인스턴스 재활용.
-//   Size 변형 = PC(md)·PC(sm)·Mobile. 각 변형에서 첫 탭 Selected, 나머지 Unselected. 라벨은 인스턴스 텍스트 override.
+//   Size 변형 = PC(md)·PC(sm)·PC(xsm)·Mobile. 각 변형에서 첫 탭 Selected, 나머지 Unselected. 라벨은 인스턴스 텍스트 override.
 async function buildLineTabSet(maps: BuildMaps, originY: number): Promise<{ set: ComponentSetNode; bottomY: number }> {
   const TAB_LABELS = ["탭 메뉴 1", "탭 메뉴 2", "탭 메뉴 3"];
   // Size 변형 → 사용할 Line Tab 셀 키(brk-size) 매핑. Break(PC/Mobile)별로 그룹형 스펙에 나눠 배치한다.
   const sizeDefs = [
     { name: "MD", brk: "PC",     size: "MD" },
     { name: "SM", brk: "PC",     size: "SM" },
+    { name: "XSM", brk: "PC",    size: "XSM" },
     { name: "SM", brk: "Mobile", size: "SM" },
   ];
   // Line Tab 셀(먼저 빌드됨) — 없으면 세트에서 탐색(부분 재설치 폴백).
@@ -1617,7 +1620,7 @@ async function buildLineTabSet(maps: BuildMaps, originY: number): Promise<{ set:
   // Break(PC/Mobile)별 그룹형 스펙(buildLineTab 셀 세트와 동일 형식) — 평면 스펙은 PC/Mobile 혼재로 audit 위반.
   const opts: GroupedSpecOpts = {
     title: "Line Tab Set",
-    platforms: [{ name: "PC", sizes: ["MD", "SM"] }, { name: "Mobile", sizes: ["SM"] }],
+    platforms: [{ name: "PC", sizes: ["MD", "SM", "XSM"] }, { name: "Mobile", sizes: ["SM"] }],
     rowLabels: [""],
     colHeaders: [""],
     cellAt: (platName, size, _ri, _ci) => cellByKey.get(`${platName}/${size}`) ?? null,

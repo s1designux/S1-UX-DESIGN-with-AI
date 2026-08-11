@@ -1687,7 +1687,7 @@
       align-items: center;
       justify-content: center;
       padding: 0 var(--spacing-16); /* 정본 buildLineTab PAD_X=16 (PC·모바일 공통) — 종전 24 는 프로토타입 값 */
-      height: 40px; /* pc-md, pc-sm — 정본은 SM 42·MD 44. 후속 전수 검수에서 정정 */
+      height: 40px; /* pc-xsm 정본 h40. pc-md·pc-sm 는 기존 가이드 값을 유지하며 후속 전수 검수에서 정정 */
       font-size: 16px;
       font-weight: var(--font-weight-medium);
       color: var(--color-navigation-label-default);
@@ -1723,6 +1723,12 @@
     }
     .s1-tab--pc-md .s1-tab-item.is-selected {
       border-bottom-width: 2px; /* Figma 540:6032 — 4px container 안 2px 색상선 */
+    }
+    /* PC XSM — h40 · body/14M · SM 과 동일한 좌우 padding 16 */
+    .s1-tab--pc-xsm .s1-tab-item {
+      height: 40px;
+      font-size: 14px;
+      letter-spacing: -0.28px;
     }
     /* Mobile — 총높이 32px(내용 30 + 밑줄 2), padding-inline 16.
        정본 buildLineTab Mobile/SM 및 V2.4 원본과 동일. 종전 30 은 프로토타입 값. */
@@ -4567,16 +4573,16 @@ function setDisabled(on) {
       </section>
 
 
-            <section class="comp-section" id="tab" data-cov-sizes="md,sm" data-cov-states="unselected,hover,selected">
+            <section class="comp-section" id="tab" data-cov-sizes="md,sm,xsm" data-cov-states="unselected,hover,selected">
         <div class="comp-section-header">
           <h2 class="comp-section-title">Line Tab</h2>
           <span class="comp-badge comp-badge-blue">Core</span>
-          <span class="comp-badge"><span class="platform-only-pc">2 sizes</span><span class="platform-only-mobile">1 size</span></span>
+          <span class="comp-badge"><span class="platform-only-pc">3 sizes</span><span class="platform-only-mobile">1 size</span></span>
           <span class="comp-badge">interactive</span>
         </div>
 
         <!-- ── States variant-block ──
-             Input식 표준(2026-07-08): 사이즈(MD·SM)는 Action 스트립에만 인터랙티브로,
+             Input식 표준(2026-07-08): 사이즈(MD·SM·XSM)는 Action 스트립에만 인터랙티브로,
              상태(Unselected/Selected/Hover)는 사이즈와 분리된 하나의 가로 스트립(대표 사이즈 md).
              셀에 명시적 grid 좌표를 두지 않아 reflowComponentMatrices() 의 liftable 조건
              (Action 헤더 1개 + 'Action'으로 시작 + 좌표 없음)을 만족 → Action 상단 승격. -->
@@ -4603,6 +4609,14 @@ function setDisabled(on) {
                       <div class="btn-action-item">
                         <div class="matrix-row-label">SM<span>font 16</span></div>
                         <div class="s1-tab s1-tab--pc-sm" id="tab-action-pcsm">
+                          <button class="s1-tab-item is-selected" type="button" aria-selected="true">메뉴1</button>
+                          <button class="s1-tab-item" type="button">메뉴2</button>
+                          <button class="s1-tab-item" type="button">메뉴3</button>
+                        </div>
+                      </div>
+                      <div class="btn-action-item">
+                        <div class="matrix-row-label">XSM<span>h40 · font 14M</span></div>
+                        <div class="s1-tab s1-tab--pc-xsm" id="tab-action-pcxsm">
                           <button class="s1-tab-item is-selected" type="button" aria-selected="true">메뉴1</button>
                           <button class="s1-tab-item" type="button">메뉴2</button>
                           <button class="s1-tab-item" type="button">메뉴3</button>
@@ -4678,6 +4692,13 @@ function setDisabled(on) {
   <span class="c-tag">&lt;button</span> <span class="c-attr">class</span>=<span class="c-str">"s1-tab-item is-selected"</span> <span class="c-attr">type</span>=<span class="c-str">"button"</span> <span class="c-attr">aria-selected</span>=<span class="c-str">"true"</span><span class="c-tag">&gt;</span>메뉴1<span class="c-tag">&lt;/button&gt;</span>
   <span class="c-tag">&lt;button</span> <span class="c-attr">class</span>=<span class="c-str">"s1-tab-item"</span> <span class="c-attr">type</span>=<span class="c-str">"button"</span><span class="c-tag">&gt;</span>메뉴2<span class="c-tag">&lt;/button&gt;</span>
   <span class="c-tag">&lt;button</span> <span class="c-attr">class</span>=<span class="c-str">"s1-tab-item"</span> <span class="c-attr">type</span>=<span class="c-str">"button"</span><span class="c-tag">&gt;</span>메뉴3<span class="c-tag">&lt;/button&gt;</span>
+<span class="c-tag">&lt;/div&gt;</span>
+
+<span class="c-cmt">&lt;!-- ③ size: pc-xsm (font 14M · height 40px · padding-inline 16 · indicator 2px) --&gt;</span>
+<span class="c-tag">&lt;div</span> <span class="c-attr">class</span>=<span class="c-str">"s1-tab s1-tab--pc-xsm"</span><span class="c-tag">&gt;</span>
+  <span class="c-tag">&lt;button</span> <span class="c-attr">class</span>=<span class="c-str">"s1-tab-item is-selected"</span> <span class="c-attr">type</span>=<span class="c-str">"button"</span> <span class="c-attr">aria-selected</span>=<span class="c-str">"true"</span><span class="c-tag">&gt;</span>메뉴1<span class="c-tag">&lt;/button&gt;</span>
+  <span class="c-tag">&lt;button</span> <span class="c-attr">class</span>=<span class="c-str">"s1-tab-item"</span> <span class="c-attr">type</span>=<span class="c-str">"button"</span><span class="c-tag">&gt;</span>메뉴2<span class="c-tag">&lt;/button&gt;</span>
+  <span class="c-tag">&lt;button</span> <span class="c-attr">class</span>=<span class="c-str">"s1-tab-item"</span> <span class="c-attr">type</span>=<span class="c-str">"button"</span><span class="c-tag">&gt;</span>메뉴3<span class="c-tag">&lt;/button&gt;</span>
 <span class="c-tag">&lt;/div&gt;</span></pre>
           </div>
           <div class="code-pane" id="tab-mo-html">
@@ -4698,7 +4719,7 @@ function setDisabled(on) {
 }
 <span class="c-sel">.s1-tab-item</span> {
   <span class="c-prop">height</span>: <span class="c-val">40px</span>;
-  <span class="c-prop">padding</span>: <span class="c-val">0 var(--spacing-24)</span>;
+  <span class="c-prop">padding</span>: <span class="c-val">0 var(--spacing-16)</span>;
   <span class="c-prop">font-size</span>: <span class="c-val">16px</span>;
   <span class="c-prop">font-weight</span>: <span class="c-val">var(--font-weight-medium)</span>;
   <span class="c-prop">color</span>: <span class="c-val">var(--color-navigation-label-default)</span>;
@@ -4713,6 +4734,7 @@ function setDisabled(on) {
 }
 <span class="c-sel">.s1-tab--pc-md .s1-tab-item</span>             { <span class="c-prop">font-size</span>: <span class="c-val">20px</span>; <span class="c-prop">letter-spacing</span>: <span class="c-val">0</span>; }
 <span class="c-sel">.s1-tab--pc-md .s1-tab-item.is-selected</span> { <span class="c-prop">border-bottom-width</span>: <span class="c-val">2px</span>; }
+<span class="c-sel">.s1-tab--pc-xsm .s1-tab-item</span> { <span class="c-prop">height</span>: <span class="c-val">40px</span>; <span class="c-prop">font-size</span>: <span class="c-val">14px</span>; <span class="c-prop">letter-spacing</span>: <span class="c-val">-0.28px</span>; }
 <span class="c-sel">.s1-tab--mobile .s1-tab-item</span> {
   <span class="c-prop">height</span>: <span class="c-val">30px</span>;
   <span class="c-prop">padding</span>: <span class="c-val">0 var(--spacing-16)</span>;

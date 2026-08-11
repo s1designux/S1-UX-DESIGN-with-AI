@@ -122,7 +122,9 @@ async function runBuild(mod, opts) {
   }
 
   function recNode(type) {
-    const state = { type, props: {}, children: [], parentSet: null };
+    // geometry 는 props 밖에 둔다. 기존 installer fingerprint 는 props 만 해시하므로
+    // 폭·높이 관측을 추가해도 기존 지문/게이트 결과를 흔들지 않는다.
+    const state = { type, props: {}, geometry: {}, boundVariables: {}, children: [], parentSet: null };
     // origin 은 **state 최상위**에 둔다(props 가 아님) — props 만 지문에 들어가므로
     //   여기 두면 installer-fingerprint 해시에 영향이 0 이다.
     if (trackOrigin && type === 'TEXT') state.origin = originFromStack();
@@ -143,6 +145,19 @@ async function runBuild(mod, opts) {
         if (prop === 'children') return state.children;
         if (prop === 'appendChild') return attach;
         if (prop === 'insertChild') return (_i, c) => attach(c);
+        if (prop === 'resize' || prop === 'resizeWithoutConstraints') {
+          return (w, h) => {
+            state.geometry.width = Number(w);
+            state.geometry.height = Number(h);
+          };
+        }
+        if (prop === 'setBoundVariable') {
+          return (field, variable) => {
+            if (typeof field === 'string' && variable && variable.__tokenKey) {
+              state.boundVariables[field] = variable.__tokenKey;
+            }
+          };
+        }
         // 텍스트 스타일 바인딩 결과를 기록한다. 종전엔 makeStub() 이 삼켜서
         //   "빌더가 요청한 크기·굵기"(fontSize·fontName 은 setter 라 이미 기록됨)와
         //   "실제로 적용된 스타일"을 짝지을 수 없었다 → 조용한 치환이 안 보였다.

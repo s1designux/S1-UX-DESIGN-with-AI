@@ -83,11 +83,12 @@ const SIZE_RULES = [
   },
   {
     compId: 'tab (line tab)',
-    htmlPaneId: 'tab-pc-html',   // PC HTML pane (pc-md + pc-sm)
-    description: 'Line Tab PC HTML 코드탭 — pc-md / pc-sm 사이즈 분기',
+    htmlPaneId: 'tab-pc-html',   // PC HTML pane (pc-md + pc-sm + pc-xsm)
+    description: 'Line Tab PC HTML 코드탭 — pc-md / pc-sm / pc-xsm 사이즈 분기',
     sizes: [
       { label: 'pc-md (font 20px · indicator 2px)', mustContain: 's1-tab--pc-md' },
       { label: 'pc-sm (font 16px · indicator 2px)', mustContain: 's1-tab--pc-sm' },
+      { label: 'pc-xsm (h40 · font 14px · indicator 2px)', mustContain: 's1-tab--pc-xsm' },
     ],
   },
   {

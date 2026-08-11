@@ -131,7 +131,7 @@ async function audit() {
   }
 
   const diskIds = new Set(fs.readdirSync(SPEC_DIR)
-    .filter((f) => f.endsWith('.json') && f !== 'index.json')
+    .filter((f) => f.endsWith('.json') && !['index.json', 'component-facts.json', 'component-behavior.pc.json'].includes(f))
     .map((f) => f.replace(/\.json$/, '')));
   const indexIds = new Set((readJson(SPEC_INDEX).components || []).map((c) => c.id));
   const updateIds = new Set((readJson(UPDATE_MGMT).components || []).map((c) => c.id));

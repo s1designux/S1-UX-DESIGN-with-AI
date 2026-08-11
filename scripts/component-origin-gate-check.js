@@ -49,7 +49,7 @@ function listRegistryIds(dir) {
   const d = path.join(ROOT, "registry", dir);
   if (!fs.existsSync(d)) return [];
   return fs.readdirSync(d)
-    .filter((f) => f.endsWith(".json") && f !== "index.json")
+    .filter((f) => f.endsWith(".json") && !["index.json", "component-facts.json", "component-behavior.pc.json"].includes(f))
     .map((f) => f.replace(/\.json$/, ""));
 }
 
