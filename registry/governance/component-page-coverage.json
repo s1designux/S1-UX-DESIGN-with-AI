@@ -132,33 +132,17 @@
     "multi-toggle": [
       "Multi Toggle Element"
     ],
-    "dropdown": [
-      "Dropdown List"
-    ],
     "tab": [
       "Line Tab"
     ],
     "table": [
       "Table Cell"
     ],
-    "pagination": [
-      "Pagination Cell"
-    ],
     "gnb": [
-      "GNB Utility Icon",
-      "Language Icon"
+      "GNB Menu"
     ],
-    "date-picker": [
-      "Calendar",
-      "Calendar Cell",
-      "Calendar Tile",
-      "Date Picker Mobile Bottom Sheet"
-    ],
-    "time-picker": [
-      "Time Picker Dropdown",
-      "Time Picker Cell",
-      "Time Picker Mobile Bottom Sheet"
-    ]
+    "date-picker": [],
+    "time-picker": []
   },
-  "_axisSourceNote": "부품(요소) 컴포넌트의 변형 축을 상위 섹션 검사에 합산한다. 2026-08-02 이전에는 2건(multi-toggle·dropdown)뿐이라 나머지 부품의 표출 공백이 계측 자체가 없었다. 근거는 BUILD_DEPENDENCIES / 실제 인스턴스 부착. 상위 섹션이 없는 부품(Bottom Sheet Option·Bottom Sheet·Modal)은 매핑 대상이 아니다."
+  "_axisSourceNote": "부품 축은 상위 섹션이 그 부품 자체의 variant를 표출할 때만 합산한다. Dropdown은 패널 3종, Date Picker는 트리거 16종, Time Picker는 Input형 트리거 20종의 정본 경계를 각각 유지한다."
 }

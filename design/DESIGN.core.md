@@ -512,9 +512,10 @@ agent:
         target: "checkbox"
         guard: "disabled=true"
         result: "keep the current value"
-    keyboard: "not-defined"
-    focus: "not-defined"
-    accessibility: "not-defined"
+    keyboard: "native-button Enter/Space"
+    focus: "native-button"
+    accessibility:
+      checked: "synchronize role=checkbox and aria-checked"
   geometry:
     common:
       target: "root"
@@ -667,9 +668,10 @@ agent:
         target: "chip"
         guard: "disabled=true"
         result: "keep the current value"
-    keyboard: "not-defined"
-    focus: "not-defined"
-    accessibility: "not-defined"
+    keyboard: "native-button Enter/Space"
+    focus: "native-button"
+    accessibility:
+      pressed: "synchronize aria-pressed"
   geometry:
     common:
       target: "root"
@@ -924,25 +926,13 @@ agent:
     events:
       -
         on: "click"
-        target: "input or calendar action"
-        result: "toggle the panel"
+        target: "calendar trigger"
+        result: "toggle the dialog"
       -
         on: "click"
         target: "day"
-        guard: "date is enabled"
-        result: "write YY.MM.DD, select the day, and close"
-      -
-        on: "click"
-        target: "month label"
-        result: "cycle calendar → month → year → calendar"
-      -
-        on: "click"
-        target: "previous or next"
-        result: "move one month, one year, or one 12-year block according to the current view"
-      -
-        on: "click"
-        target: "outside"
-        result: "close"
+        guard: "aria-disabled=false"
+        result: "select the day and close"
     keyboard:
       Escape: "close and return focus to input"
       ArrowLeft: "previous enabled day"
@@ -954,13 +944,12 @@ agent:
       onOpen: "focus the first enabled day"
       onEscape: "return to input"
     accessibility:
-      expanded: "synchronize aria-expanded on input and calendar action"
-      disabledDate: "native disabled plus aria-disabled=true"
-      day: "aria-label uses YY.MM.DD"
+      expanded: "synchronize aria-expanded on the dialog trigger"
+      disabledDate: "aria-disabled=true blocks selection"
+      day: "role=gridcell and synchronized aria-selected"
     constraints:
-      - "week starts on Sunday"
-      - "disabled dates come from data-disabled-dates"
-      - "adjacent-month days remain selectable when enabled"
+      - "Mobile uses only the approved bottom-sheet dependency marker"
+      - "disabled dates cannot be selected"
   geometry:
     common:
       target: "trigger"
@@ -1004,10 +993,21 @@ agent:
       - "Input"
     mustNotCreate: "not-defined"
     declaredParts:
+      - "calendar"
       - "trigger"
   constraints: "unknown"
   tokens:
     figmaSemanticBindings:
+      - "color/date-picker/cell/bg/selected"
+      - "color/date-picker/cell/bg/today"
+      - "color/date-picker/cell/border/today"
+      - "color/date-picker/panel/bg"
+      - "color/date-picker/panel/border"
+      - "color/date-picker/text/disabled"
+      - "color/date-picker/text/primary"
+      - "color/date-picker/text/secondary"
+      - "color/date-picker/text/selected"
+      - "color/date-picker/text/today"
       - "color/form-control/bg/default"
       - "color/form-control/bg/disabled"
       - "color/form-control/bg/selected"
@@ -1080,7 +1080,7 @@ _Don't_
 
 ### Dropdown
 
-드롭다운 트리거 + 옵션 목록 컴포넌트. trigger 상태(default·hover·open·disabled)와 option 상태(hover·selected) 포함.
+Select Box와 Filter Chip이 재사용하는 옵션 패널 컴포넌트. 정본은 Size별 Default 패널 3종이며 트리거 상태는 Select Box가 담당한다.
 
 **언제 쓰나**
 - 트리거를 눌러 옵션 목록에서 하나를 고를 때.
@@ -1118,15 +1118,8 @@ agent:
     builder:
       - "Default"
     metadata:
-      trigger:
+      panel:
         - "default"
-        - "hover"
-        - "open"
-        - "disabled"
-      option:
-        - "default"
-        - "hover"
-        - "selected"
   behavior:
     platform: "PC"
     source: "registry/components/component-behavior.pc.json ← pages/components.html#dropdown"
@@ -1139,9 +1132,16 @@ agent:
         result: "select the clicked option and unselect every sibling"
     selection: "single"
     openClose: "owned by the composing trigger component"
-    keyboard: "not-defined"
-    focus: "not-defined"
-    accessibility: "not-defined"
+    keyboard:
+      ArrowUpOrDown: "move through options when composed by Select Box or Time Picker"
+      Home: "first option"
+      End: "last option"
+      Enter: "choose focused option"
+      Escape: "close owner"
+    focus: "roving option tabindex when composed"
+    accessibility:
+      panel: "role=listbox"
+      option: "synchronize aria-selected"
   geometry:
     common:
       target: "root"
@@ -1172,12 +1172,18 @@ agent:
     mustReuse:
       - "Dropdown List"
     mustNotCreate: "not-defined"
-    declaredParts: "not-defined"
+    declaredParts:
+      - "ddl-row"
   constraints: "unknown"
   tokens:
     figmaSemanticBindings:
       - "color/dropdown/list/bg"
       - "color/dropdown/list/border"
+      - "color/dropdown/option/bg/default"
+      - "color/dropdown/option/bg/hover"
+      - "color/dropdown/option/label/default"
+      - "color/dropdown/option/label/hover"
+      - "color/dropdown/option/label/selected"
     aliasChains:
       -
         chain: "--dropdown-trigger-default-bg → --color-form-control-bg-default → --color-base-white → #FFFFFF"
@@ -1332,17 +1338,18 @@ agent:
         target: "option"
         result: "select one option, update the trigger label, and close"
       -
-        on: "click"
-        target: "outside"
-        result: "close"
-      -
         on: "disable"
         target: "filter chip"
         result: "close and block trigger clicks"
     selection: "single"
-    keyboard: "not-defined"
-    focus: "not-defined"
-    accessibility: "not-defined"
+    keyboard:
+      ArrowUpOrDown: "open and move through options"
+      EnterOrSpace: "choose focused option"
+      Escape: "close"
+    focus: "focus selected option on open and return to trigger on close"
+    accessibility:
+      trigger: "aria-haspopup=listbox and synchronized aria-expanded"
+      option: "synchronize aria-selected"
   geometry:
     common:
       target: "chip"
@@ -1382,6 +1389,7 @@ agent:
     mustNotCreate: "not-defined"
     declaredParts:
       - "chip"
+      - "dropdown"
   constraints: "unknown"
   tokens:
     figmaSemanticBindings:
@@ -1405,6 +1413,13 @@ agent:
       - "color/chip/solid/label/default"
       - "color/chip/solid/label/disabled"
       - "color/chip/solid/label/selected"
+      - "color/dropdown/list/bg"
+      - "color/dropdown/list/border"
+      - "color/dropdown/option/bg/default"
+      - "color/dropdown/option/bg/hover"
+      - "color/dropdown/option/label/default"
+      - "color/dropdown/option/label/hover"
+      - "color/dropdown/option/label/selected"
     aliasChains:
       -
         chain: "--color-chip-line-bg-default → --color-base-white → #FFFFFF"
@@ -1561,9 +1576,11 @@ agent:
         target: "menu"
         result: "select the clicked menu and unselect every sibling"
     selection: "single"
-    keyboard: "native-button-click-only"
+    keyboard: "native-button Enter/Space"
     focus: "native-button"
-    accessibility: "not-defined"
+    accessibility:
+      currentMenu: "synchronize aria-current=page"
+      utility: "Registry aria-label for each utility action"
   geometry:
     common:
       target: "root"
@@ -1601,6 +1618,7 @@ agent:
     mustNotCreate: "not-defined"
     declaredParts:
       - "border"
+      - "language=on, menu=on, user=on"
       - "leading"
       - "menus"
   constraints: "unknown"
@@ -1608,6 +1626,10 @@ agent:
     figmaSemanticBindings:
       - "color/line/gray/subtle"
       - "color/navigation/bg"
+      - "color/navigation/indicator/selected"
+      - "color/navigation/label/default-alt"
+      - "color/navigation/label/selected"
+      - "color/text/body/primary"
       - "color/text/title/primary"
     aliasChains:
       -
@@ -1734,31 +1756,18 @@ agent:
     initialState: "empty and unfocused"
     events:
       -
-        on: "focus"
-        target: "input"
-        result: "enter editing/focus state"
-      -
-        on: "blur"
-        target: "input"
-        result: "leave editing/focus state unless focus moves to a suffix action"
-      -
         on: "input"
-        target: "search or password input"
-        result: "show clear action only when a value exists"
+        target: "text or search input"
+        result: "edit the native input value"
       -
-        on: "click"
-        target: "clear action"
-        result: "clear the value, hide the clear action, and return focus to the input"
-      -
-        on: "click"
-        target: "password visibility action"
-        result: "toggle password ↔ text and return focus to the input"
+        on: "submit"
+        target: "search action button"
+        result: "invoke the composing application's search action"
     keyboard: "native-input"
-    focus:
-      clear: "return to input"
-      passwordVisibility: "return to input"
+    focus: "native-input"
     accessibility:
-      passwordVisibility: "synchronize aria-label and aria-pressed"
+      label: "connect one label to input with unique id/for"
+      searchAction: "button has an aria-label"
   geometry:
     common:
       target: "field"
@@ -2080,10 +2089,19 @@ agent:
   constraints: "unknown"
   tokens:
     figmaSemanticBindings:
+      - "border-width/1"
+      - "color/button/bg/primary--default"
+      - "color/button/bg/secondary--default"
+      - "color/button/border/primary--default"
+      - "color/button/border/secondary--default"
+      - "color/button/label/primary--default"
+      - "color/button/label/secondary--default"
       - "color/modal/panel/border"
       - "color/surface/raised"
       - "color/text/body/primary"
       - "color/text/title/primary"
+      - "radius/4"
+      - "spacing/8"
     aliasChains: "not-defined"
   figma:
     status: "available"
@@ -2178,29 +2196,97 @@ agent:
         guard: "disabled=true"
         result: "keep the current selection"
     selection: "single"
-    keyboard: "not-defined"
-    focus: "not-defined"
-    accessibility: "not-defined"
+    keyboard:
+      ArrowLeft: "previous segment"
+      ArrowRight: "next segment"
+      Home: "first segment"
+      End: "last segment"
+    focus: "roving tabindex"
+    accessibility:
+      group: "role=radiogroup"
+      checked: "synchronize aria-checked"
   geometry:
     common:
-      target: "root"
       layoutMode: "HORIZONTAL"
       primaryAxisSizingMode: "AUTO"
-      counterAxisSizingMode: "AUTO"
+      counterAxisSizingMode: "FIXED"
       primaryAxisAlignItems: "CENTER"
       counterAxisAlignItems: "CENTER"
-      itemSpacing: "0"
+      topLeftRadius: "4"
+      topRightRadius: "0"
+      bottomLeftRadius: "4"
+      bottomRightRadius: "0"
+      strokeWeight: "1"
+      strokeAlign: "INSIDE"
     variants:
       -
-        when: "all"
+        when:
+          Size: "md"
+          Selected: "Left"
+        target: "position=first, state=selected, size=md"
+        height: 44
+        paddingRight: "12"
+        paddingLeft: "12"
+        minWidth: "64"
+      -
+        when:
+          Size: "md"
+          Selected:
+            - "Center"
+            - "Right"
+        target: "position=first, state=default, size=md"
+        height: 44
+        paddingRight: "12"
+        paddingLeft: "12"
+        minWidth: "64"
+      -
+        when:
+          Size: "sm"
+          Selected: "Left"
+        target: "position=first, state=selected, size=sm"
+        height: 34
+        paddingRight: "8"
+        paddingLeft: "8"
+        minWidth: "56"
+      -
+        when:
+          Size: "sm"
+          Selected:
+            - "Center"
+            - "Right"
+        target: "position=first, state=default, size=sm"
+        height: 34
+        paddingRight: "8"
+        paddingLeft: "8"
+        minWidth: "56"
   composition:
     mustReuse:
       - "Multi Toggle Element"
     mustNotCreate: "not-defined"
-    declaredParts: "not-defined"
+    declaredParts:
+      - "position=first, state=default, size=md"
+      - "position=first, state=default, size=sm"
+      - "position=first, state=selected, size=md"
+      - "position=first, state=selected, size=sm"
+      - "position=last, state=default, size=md"
+      - "position=last, state=default, size=sm"
+      - "position=last, state=selected, size=md"
+      - "position=last, state=selected, size=sm"
+      - "position=middle-left, state=default, size=md"
+      - "position=middle-left, state=default, size=sm"
+      - "position=middle-left, state=selected, size=md"
+      - "position=middle-left, state=selected, size=sm"
+      - "position=middle-right, state=default, size=md"
+      - "position=middle-right, state=default, size=sm"
   constraints: "unknown"
   tokens:
-    figmaSemanticBindings: "not-defined"
+    figmaSemanticBindings:
+      - "color/button/bg/primary--default"
+      - "color/button/bg/secondary--default"
+      - "color/button/border/primary--default"
+      - "color/button/border/secondary--default"
+      - "color/button/label/primary--default"
+      - "color/button/label/secondary--default"
     aliasChains:
       -
         chain: "--color-button-bg-secondary--default → --color-base-white → #FFFFFF"
@@ -2431,31 +2517,32 @@ agent:
       -
         on: "click"
         target: "page number"
-        result: "set the current page and rerender the current number block"
+        result: "set aria-current on the selected page number"
       -
         on: "click"
         target: "first"
         result: "move to page 1"
       -
         on: "click"
-        target: "previous block"
-        result: "move to the first page of the previous block"
+        target: "previous"
+        result: "move to the previous page"
       -
         on: "click"
-        target: "next block"
-        result: "move to the first page of the next block"
+        target: "next"
+        result: "move to the next page"
       -
         on: "click"
         target: "last"
         result: "move to the final page"
     constraints:
-      - "show at most 6 page numbers per block"
-      - "disable unavailable edge/block actions"
+      - "clamp current page to the rendered number range"
+      - "disable unavailable edge actions"
       - "single-page mode disables all navigation actions"
     keyboard: "native-button"
     focus: "native-button"
     accessibility:
-      pageNumber: "aria-label includes the page number and marks the current page in its accessible name"
+      pageNumber: "mark the current page with aria-current=page"
+      actions: "first/previous/next/last use Registry aria-labels"
   geometry:
     common:
       target: "root"
@@ -2476,10 +2563,26 @@ agent:
     mustReuse:
       - "Pagination Cell"
     mustNotCreate: "not-defined"
-    declaredParts: "not-defined"
+    declaredParts:
+      - "pg-first"
+      - "pg-last"
+      - "pg-next"
+      - "pg-num-1"
+      - "pg-num-2"
+      - "pg-num-3"
+      - "pg-num-4"
+      - "pg-num-5"
+      - "pg-num-6"
+      - "pg-prev"
   constraints: "unknown"
   tokens:
-    figmaSemanticBindings: "not-defined"
+    figmaSemanticBindings:
+      - "color/pagination/control/bg/default"
+      - "color/pagination/control/bg/disabled"
+      - "color/pagination/control/border/default"
+      - "color/pagination/control/border/disabled"
+      - "color/pagination/number/default"
+      - "color/pagination/number/selected"
     aliasChains:
       -
         chain: "--pagination-control-bg → --color-surface-default"
@@ -2582,15 +2685,21 @@ agent:
         on: "click"
         target: "radio"
         guard: "disabled=false"
-        result: "toggle unselected ↔ selected"
+        result: "select the clicked radio and unselect siblings"
       -
         on: "click"
         target: "radio"
         guard: "disabled=true"
         result: "keep the current value"
-    keyboard: "not-defined"
-    focus: "not-defined"
-    accessibility: "not-defined"
+    keyboard:
+      ArrowLeftOrUp: "previous radio"
+      ArrowRightOrDown: "next radio"
+      Home: "first radio"
+      End: "last radio"
+    focus: "roving tabindex"
+    accessibility:
+      group: "role=radiogroup"
+      checked: "synchronize aria-checked"
   geometry:
     common:
       target: "circle"
@@ -2737,17 +2846,20 @@ agent:
         target: "option"
         result: "select one option, update the trigger text, mark filled, and close"
       -
-        on: "click"
-        target: "outside"
-        result: "close"
-      -
         on: "disable"
         target: "select"
         result: "close and block trigger clicks"
     selection: "single"
-    keyboard: "not-defined"
-    focus: "not-defined"
-    accessibility: "not-defined"
+    keyboard:
+      ArrowUpOrDown: "open or move through options"
+      Home: "first option"
+      End: "last option"
+      Enter: "choose focused option"
+      Escape: "close"
+    focus: "focus selected option on open and return to trigger on close"
+    accessibility:
+      trigger: "aria-haspopup=listbox and synchronized aria-expanded"
+      option: "synchronize aria-selected"
   geometry:
     common:
       target: "trigger"
@@ -2790,10 +2902,18 @@ agent:
       - "Dropdown"
     mustNotCreate: "not-defined"
     declaredParts:
+      - "dropdown"
       - "trigger"
   constraints: "unknown"
   tokens:
     figmaSemanticBindings:
+      - "color/dropdown/list/bg"
+      - "color/dropdown/list/border"
+      - "color/dropdown/option/bg/default"
+      - "color/dropdown/option/bg/hover"
+      - "color/dropdown/option/label/default"
+      - "color/dropdown/option/label/hover"
+      - "color/dropdown/option/label/selected"
       - "color/form-control/bg/default"
       - "color/form-control/bg/disabled"
       - "color/form-control/bg/hover"
@@ -2881,11 +3001,11 @@ _Don't_
 
 ### Line Tab
 
-라인탭 컴포넌트. 탭 하단에 인디케이터(밑줄)로 선택 상태를 표시. PC MD / PC SM / PC XSM / Mobile 4가지 variant.
+라인탭 컴포넌트. 탭 하단 인디케이터로 선택 상태를 표시한다. 크기·상태·시각 수치는 component-guide-model.json에서 자동으로 가져온다.
 
 **언제 쓰나**
 - 같은 화면에서 콘텐츠 영역을 전환할 때.
-- PC MD/SM/XSM, Mobile 크기 중 맥락에 맞게 고른다.
+- 정본에 등록된 플랫폼과 크기 중 사용 맥락에 맞는 항목을 고른다.
 
 **쓰지 말아야 할 때**
 - 페이지 이동은 Navigation.
@@ -2898,9 +3018,9 @@ _Don't_
 | 탭 라벨 | unselected·selected 텍스트. |
 | 인디케이터(밑줄) | 선택 탭 하단 강조 막대. |
 
-| variant | unselected | selected | hover | pressed |
+| variant | default | hover | pressed | disabled |
 | --- | --- | --- | --- | --- |
-| size | — | --tab-label-selected → color-navigation-label-selected<br>--tab-indicator-selected → color-navigation-indicator-selected | — | — |
+| default | --tab-label-default → color-navigation-label-default<br>--tab-indicator-default → color-navigation-indicator-default | — | — | — |
 
 #### Agent-readable contract
 
@@ -2924,11 +3044,7 @@ agent:
       - "Unselected"
       - "Hover"
       - "Selected"
-    metadata:
-      - "unselected"
-      - "selected"
-      - "hover"
-      - "pressed"
+    metadata: "unknown"
   behavior:
     platform: "PC"
     source: "registry/components/component-behavior.pc.json ← pages/components.html#tab"
@@ -2940,10 +3056,15 @@ agent:
         target: "tab"
         result: "select the clicked tab, unselect siblings, and move the indicator"
     selection: "single"
-    keyboard: "native-button-click-only"
-    focus: "native-button"
+    keyboard:
+      ArrowLeft: "previous tab"
+      ArrowRight: "next tab"
+      Home: "first tab"
+      End: "last tab"
+    focus: "roving tabindex"
     accessibility:
-      selectedTab: "set aria-selected=true and remove aria-selected from siblings"
+      selectedTab: "synchronize aria-selected"
+      panel: "connect aria-controls to role=tabpanel"
   geometry:
     common:
       target: "root"
@@ -3088,9 +3209,11 @@ agent:
         target: "header checkbox"
         result: "select all rows when any row is unchecked; otherwise clear all rows"
     selection: "multiple"
-    keyboard: "not-defined"
-    focus: "not-defined"
-    accessibility: "not-defined"
+    keyboard: "native-button Enter/Space for checkbox and sort trigger"
+    focus: "native-button"
+    accessibility:
+      selection: "synchronize row/header aria-checked including mixed"
+      sorting: "synchronize th aria-sort"
   geometry:
     common:
       target: "root"
@@ -3129,12 +3252,26 @@ agent:
   constraints: "unknown"
   tokens:
     figmaSemanticBindings:
+      - "color/control/bg/default"
+      - "color/control/bg/hover"
+      - "color/control/bg/selected"
+      - "color/control/border/default"
+      - "color/control/border/selected"
+      - "color/form-control/bg/default"
+      - "color/form-control/border/default"
+      - "color/form-control/text/placeholder"
+      - "color/pagination/control/bg/default"
+      - "color/pagination/control/border/default"
+      - "color/pagination/number/default"
+      - "color/pagination/number/selected"
       - "color/table/border/default"
       - "color/table/border/strong"
       - "color/table/cell/default"
       - "color/table/cell/hover"
       - "color/table/cell/selected"
       - "color/table/header/bg"
+      - "color/text/body/primary"
+      - "color/text/body/secondary"
     aliasChains:
       -
         chain: "--table-header-bg → --color-table-header-bg → --color-gray-0 → #FAFAFA"
@@ -3213,9 +3350,9 @@ _Don't_
 | 입력 영역 | 멀티라인 텍스트. --input-* 토큰. |
 | helper 텍스트(선택) | 필드 아래 도움말·오류·성공. text/state/caption 기본. |
 
-| variant | default | focus | error | correct | disabled | readonly |
-| --- | --- | --- | --- | --- | --- | --- |
-| default | --input-default-bg → color-form-control-bg-default<br>--input-default-border → color-form-control-border-default<br>--input-placeholder-text → color-form-control-text-placeholder<br>--input-helper-text → color-text-state-caption | --input-focus-border → color-form-control-border-selected<br>--input-placeholder-text → color-form-control-text-placeholder | --input-error-border → color-form-control-border-error<br>--input-placeholder-text → color-form-control-text-placeholder<br>--input-error-text → color-text-state-error | --input-correct-border → color-form-control-border-correct<br>--input-placeholder-text → color-form-control-text-placeholder<br>--input-correct-text → color-text-state-correct | --input-disabled-bg → color-form-control-bg-disabled<br>--input-disabled-border → color-form-control-border-disabled<br>--input-placeholder-text → color-form-control-text-placeholder<br>--input-disabled-text → color-form-control-text-disabled | --input-readonly-bg → color-form-control-bg-disabled<br>--input-readonly-border → color-form-control-border-disabled<br>--input-placeholder-text → color-form-control-text-placeholder<br>--input-readonly-text → color-text-readonly |
+| variant | default | focus | filled | disabled | readonly |
+| --- | --- | --- | --- | --- | --- |
+| default | --input-default-bg → color-form-control-bg-default<br>--input-default-border → color-form-control-border-default<br>--input-placeholder-text → color-form-control-text-placeholder<br>--input-helper-text → color-text-state-caption | --input-focus-border → color-form-control-border-selected<br>--input-placeholder-text → color-form-control-text-placeholder | --input-placeholder-text → color-form-control-text-placeholder | --input-disabled-bg → color-form-control-bg-disabled<br>--input-disabled-border → color-form-control-border-disabled<br>--input-placeholder-text → color-form-control-text-placeholder<br>--input-disabled-text → color-form-control-text-disabled | --input-readonly-bg → color-form-control-bg-disabled<br>--input-readonly-border → color-form-control-border-disabled<br>--input-placeholder-text → color-form-control-text-placeholder<br>--input-readonly-text → color-text-readonly |
 
 #### Agent-readable contract
 
@@ -3239,8 +3376,7 @@ agent:
     metadata:
       - "default"
       - "focus"
-      - "error"
-      - "correct"
+      - "filled"
       - "disabled"
       - "readonly"
   behavior:
@@ -3321,12 +3457,6 @@ agent:
         chain: "--input-focus-border → --color-form-control-border-selected → --color-blue-400 → #1D6CEB"
         status: "resolved"
       -
-        chain: "--input-error-border → --color-form-control-border-error → --color-red-300 → #FF4554"
-        status: "resolved"
-      -
-        chain: "--input-correct-border → --color-form-control-border-correct → --color-blue-400 → #1D6CEB"
-        status: "resolved"
-      -
         chain: "--input-disabled-border → --color-form-control-border-disabled → --color-gray-100 → #E9E9E9"
         status: "resolved"
       -
@@ -3343,12 +3473,6 @@ agent:
         status: "unresolved"
       -
         chain: "--input-helper-text → --color-text-state-helper → --color-gray-400 → #9D9D9D"
-        status: "resolved"
-      -
-        chain: "--input-error-text → --color-text-state-error"
-        status: "unresolved"
-      -
-        chain: "--input-correct-text → --color-text-state-correct → --color-blue-400 → #1D6CEB"
         status: "resolved"
   figma:
     status: "available"
@@ -3373,10 +3497,10 @@ _Don't_
 
 ### TimePicker
 
-시간 선택 컴포넌트. input 방식(클릭 → 드롭다운 패널)과 select 방식(시/분 분리 셀렉트) 2가지 variant.
+시간 입력 트리거를 눌러 드롭다운 목록에서 시간을 고르는 Time Picker Input 컴포넌트.
 
 **언제 쓰나**
-- 시간(시/분)을 고를 때. input 방식(클릭→드롭다운) 또는 select 방식(시·분 분리).
+- 시간(시/분)을 드롭다운 목록에서 고를 때.
 
 **쓰지 말아야 할 때**
 - 날짜는 DatePicker.
@@ -3387,14 +3511,12 @@ _Don't_
 | 요소 | 역할 |
 | --- | --- |
 | 트리거/필드 | 시간 표시 + ic_시계 아이콘. |
-| 시/분 라벨 | select 방식 시/분 라벨. form-control-label 토큰. |
 | 드롭다운 패널 | 시간 선택 목록. |
 
 | variant | default | focus | filled | disabled |
 | --- | --- | --- | --- | --- |
-| input | --color-form-control-bg-default → color-surface-default<br>--color-form-control-border-default → color-control-border-default<br>--color-form-control-text-default → color-text-secondary<br>--color-form-control-label-default → color-text-secondary | — | — | --color-form-control-bg-disabled → color-bg-subtle<br>--color-form-control-border-disabled → color-border-subtle<br>--color-form-control-text-disabled → color-text-disabled<br>--color-form-control-label-disabled → color-text-disabled |
-| select | --color-form-control-bg-default → color-surface-default<br>--color-form-control-border-default → color-control-border-default<br>--color-form-control-text-default → color-text-secondary<br>--color-form-control-label-default → color-text-secondary | — | — | --color-form-control-bg-disabled → color-bg-subtle<br>--color-form-control-border-disabled → color-border-subtle<br>--color-form-control-text-disabled → color-text-disabled<br>--color-form-control-label-disabled → color-text-disabled |
-| dropdown_panel | --color-form-control-bg-default → color-surface-default<br>--color-form-control-border-default → color-control-border-default<br>--color-form-control-text-default → color-text-secondary<br>--color-form-control-label-default → color-text-secondary | — | — | --color-form-control-bg-disabled → color-bg-subtle<br>--color-form-control-border-disabled → color-border-subtle<br>--color-form-control-text-disabled → color-text-disabled<br>--color-form-control-label-disabled → color-text-disabled |
+| input | --color-form-control-bg-default → color-surface-default<br>--color-form-control-border-default → color-control-border-default<br>--color-form-control-text-default → color-text-secondary | — | — | --color-form-control-bg-disabled → color-bg-subtle<br>--color-form-control-border-disabled → color-border-subtle<br>--color-form-control-text-disabled → color-text-disabled |
+| dropdown_panel | --color-form-control-bg-default → color-surface-default<br>--color-form-control-border-default → color-control-border-default<br>--color-form-control-text-default → color-text-secondary | — | — | --color-form-control-bg-disabled → color-bg-subtle<br>--color-form-control-border-disabled → color-border-subtle<br>--color-form-control-text-disabled → color-text-disabled |
 
 #### Agent-readable contract
 
@@ -3436,27 +3558,22 @@ agent:
       -
         on: "click"
         target: "input trigger"
-        result: "toggle the hour/minute panel"
+        result: "toggle the time option listbox"
       -
         on: "click"
-        target: "hour or minute"
-        result: "select one value in that column; show HH:MM after both values exist"
-      -
-        on: "click"
-        target: "confirm"
-        result: "close the panel"
-      -
-        on: "click"
-        target: "outside"
-        result: "close the panel"
-      -
-        on: "click"
-        target: "select-style hour or minute field"
-        result: "open only that field list; selecting a value updates it and closes"
-    selection: "one hour and one minute"
-    keyboard: "not-defined"
-    focus: "selected values scroll into view when a panel opens"
-    accessibility: "not-defined"
+        target: "time option"
+        result: "select one time, update the trigger value, and close"
+    selection: "single time value"
+    keyboard:
+      ArrowUpOrDown: "open or move through options"
+      Home: "first option"
+      End: "last option"
+      Enter: "choose focused option"
+      Escape: "close"
+    focus: "focus selected option on open and return to trigger on close"
+    accessibility:
+      trigger: "aria-haspopup=listbox and synchronized aria-expanded"
+      option: "synchronize aria-selected"
   geometry:
     common:
       target: "trigger"
@@ -3506,10 +3623,17 @@ agent:
       - "Time Picker Dropdown"
     mustNotCreate: "not-defined"
     declaredParts:
+      - "tpd"
       - "trigger"
   constraints: "unknown"
   tokens:
     figmaSemanticBindings:
+      - "color/dropdown/list/bg"
+      - "color/dropdown/list/border"
+      - "color/dropdown/option/bg/default"
+      - "color/dropdown/option/bg/selected"
+      - "color/dropdown/option/label/default"
+      - "color/dropdown/option/label/selected"
       - "color/form-control/bg/default"
       - "color/form-control/bg/disabled"
       - "color/form-control/bg/hover"
@@ -3519,6 +3643,8 @@ agent:
       - "color/form-control/text/default"
       - "color/form-control/text/disabled"
       - "color/form-control/text/placeholder"
+      - "color/line/gray/subtle"
+      - "color/text/state/disabled"
     aliasChains:
       -
         chain: "--color-form-control-bg-default → --color-base-white → #FFFFFF"
@@ -3544,12 +3670,6 @@ agent:
       -
         chain: "--color-form-control-text-disabled → --color-gray-300 → #C4C4C4"
         status: "resolved"
-      -
-        chain: "--color-form-control-label-default → --color-gray-800 → #353535"
-        status: "resolved"
-      -
-        chain: "--color-form-control-label-disabled → --color-gray-300 → #C4C4C4"
-        status: "resolved"
   figma:
     status: "available"
     identifiers:
@@ -3573,7 +3693,7 @@ _Don't_
 - 드롭다운 패널에 전용 shadow 토큰을 가정하지 않는다(dropdown semantic 재사용).
 
 **접근성 (a11y)**
-- 시/분 입력에 라벨을 연결한다.
+- 시간 트리거에 접근 가능한 이름을 제공한다.
 - 드롭다운은 aria-expanded/listbox 패턴을 따른다.
 
 ### Toggle
@@ -3634,9 +3754,10 @@ agent:
         target: "toggle"
         guard: "disabled=true"
         result: "keep the current value"
-    keyboard: "not-defined"
-    focus: "not-defined"
-    accessibility: "not-defined"
+    keyboard: "native-button Enter/Space"
+    focus: "native-button"
+    accessibility:
+      checked: "synchronize role=switch and aria-checked"
   geometry:
     common:
       target: "root"
@@ -3786,4 +3907,4 @@ DESIGN_SYSTEM_GAP:
 - 적용 해석 순서(뒤가 앞을 덮음): core → service(extends core) → role → platform → theme. 기본값: service=core · role=user · platform=web · theme=light.
 - 서비스 분기(예: vms 영상관제)는 core 를 상속하고 차이분만 덮는다.
 
-<!-- generated-stamp: fb73aa7c21ab · 손편집 금지 -->
+<!-- generated-stamp: eef18115e299 · 손편집 금지 -->

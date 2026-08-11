@@ -70,6 +70,12 @@
     "fileKey": "Tnihi6lixRR47N4RSAwUbF",
     "propertyMap": {}
   },
+  "guide": {
+    "sampleLabels": ["선택 항목"],
+    "webTag": "button",
+    "interactionPattern": "checkbox-toggle",
+    "accessibility": { "role": "checkbox", "keyboard": ["Space"], "attributes": ["aria-checked", "aria-label"] }
+  },
   "governance": {
     "owner": "Design System Team",
     "deprecated": false,

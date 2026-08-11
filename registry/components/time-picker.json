@@ -11,25 +11,21 @@
     "a11yStatus": "pending",
     "figmaStatus": "confirmed",
     "harnessStatus": "implemented",
-    "description": "시간 선택 컴포넌트. input 방식(클릭 → 드롭다운 패널)과 select 방식(시/분 분리 셀렉트) 2가지 variant.",
+    "description": "시간 입력 트리거를 눌러 드롭다운 목록에서 시간을 고르는 Time Picker Input 컴포넌트.",
     "notes": [
       "색상 토큰 100% -- color-form-control-* semantic 재사용. 전용 색상 토큰 없음.",
-      "신규 semantic 2개: --color-form-control-label-default/disabled (timepicker_select '시'/'분' 라벨용).",
       "HD-Time-1: 확정 — ic_시계 아이콘 통일. disabled color 처리로 시각 구분.",
       "HD-Time-2: token-aliases.json에 editing→focus alias 추가 완료 (2026-05-20).",
-      "HD-Time-3: --color-form-control-label-default = var(--color-text-secondary)(#353535). Figma 원본 일치.",
       "HD-Time-4: Mobile 인터랙션 미정의 — timepicker_input mobile variant 있으나 bottom sheet 여부 미확정.",
       "HD-Time-5: 드롭다운 패널 전용 토큰(shadow, column divider) — dropdown semantic 재사용으로 처리.",
       "pc-xxsm (h28) size만 font-size 12px. 나머지는 모두 14px.",
-      "select형 harness md/sm 2사이즈 완성 (2026-06-05, figma-to-code 워크플로우). Figma timepicker_select 540:3636 실측: md(h44, 라벨16px, 값ls0, min-w78) / sm(h28, 라벨14px, 값ls-0.28px, pad 4/4/4/12, group gap 12). state=default/focus(editing)/disabled, filled 없음.",
       "HD-TPS-1 확정: --color-form-control-border-disabled를 border-subtle(#E9E9E9)→control-border-default(#D9D9D9)로 변경. Figma form-control/border/disabled 기준 통일. Input·Select·DatePicker 공유 영향.",
-      "HD-TPS-2 확정: select 화살표 = 원본 ic_화살표,더보기(563:3158) 벡터 사용. 우향 chevron path M0.707107 0.707107L4.95711 4.95711L0.707107 9.20711, CSS 90° 회전(아래)·focus -90°(위). 기존 손그림 chevron 교체.",
-      "산출물: reports/figma-to-code/time-picker-select/ (1-inventory·2-extraction·4-verification)."
+      "Time Picker Input 정본 20종만 이 가이드의 상위 구성으로 표출한다."
     ]
   },
   "usage": {
     "whenToUse": [
-      "시간(시/분)을 고를 때. input 방식(클릭→드롭다운) 또는 select 방식(시·분 분리)."
+      "시간(시/분)을 드롭다운 목록에서 고를 때."
     ],
     "whenNotToUse": [
       "날짜는 DatePicker.",
@@ -40,10 +36,6 @@
     {
       "part": "트리거/필드",
       "role": "시간 표시 + ic_시계 아이콘."
-    },
-    {
-      "part": "시/분 라벨",
-      "role": "select 방식 시/분 라벨. form-control-label 토큰."
     },
     {
       "part": "드롭다운 패널",
@@ -61,7 +53,7 @@
     ]
   },
   "a11y": [
-    "시/분 입력에 라벨을 연결한다.",
+    "시간 트리거에 접근 가능한 이름을 제공한다.",
     "드롭다운은 aria-expanded/listbox 패턴을 따른다."
   ],
   "variants": {
@@ -70,13 +62,7 @@
       "state": ["default", "focus", "filled", "disabled"],
       "type": ["24h", "12h"]
     },
-    "select": {
-      "size": ["md", "sm"],
-      "state": ["default", "focus", "disabled"]
-    },
-    "dropdown_panel": {
-      "type": ["24h", "12h"]
-    }
+    "dropdown_panel": { "dependency": "Time Picker Dropdown" }
   },
   "sizing": {
     "mobile":   "48px (var(--sizing-48))",
@@ -161,24 +147,6 @@
       "figmaVariable": "color/form-control/text/disabled",
       "status": "stable",
       "description": "disabled 텍스트"
-    },
-    {
-      "name": "--color-form-control-label-default",
-      "type": "semantic-new",
-      "value": "var(--color-text-secondary)",
-      "resolvedLight": "#353535",
-      "figmaVariable": "color/form-control/label/default",
-      "status": "stable",
-      "description": "timepicker_select '시'/'분' 라벨 텍스트 — 2026-05-20 신설"
-    },
-    {
-      "name": "--color-form-control-label-disabled",
-      "type": "semantic-new",
-      "value": "var(--color-text-disabled)",
-      "resolvedLight": "#C4C4C4",
-      "figmaVariable": "color/form-control/label/disabled",
-      "status": "stable",
-      "description": "timepicker_select disabled 라벨 텍스트 — 2026-05-20 신설"
     }
   ],
   "figma": {
@@ -186,8 +154,6 @@
     "figmaNodeId": "958:26994",
     "nodes": {
       "timepicker_input":            "958:26994",
-      "timepicker_select":           "958:26994",
-      "timepicker_select_dropdown":  "958:26319",
       "pc_timepicker_input_dropdown":"958:26319",
       "timepicker_cell":                 "958:25998",
       "timepicker_mobile_bottom_sheet":  "958:27433",
@@ -211,6 +177,7 @@
     "HD-Time-4": "결정 — Mobile bottom sheet 채택 (DatePicker HD-4와 동일 기준). harness 구현 완료 (2026-05-26)",
     "HD-Time-5": "결정 — 드롭다운 패널 shadow rgba(0,0,0,0.15) 예외 허용 (DatePicker panel shadow 예외와 동일 정책)"
   },
+  "guide": { "sampleLabel": "시간", "samplePlaceholder": "시간을 선택하세요", "sampleValue": "09:30", "sampleOptions": ["09:00", "09:30", "10:00", "10:30"], "webTag": "button", "interactionPattern": "single-select-listbox" },
   "governance": {
     "owner": "Design System Team",
     "deprecated": false,

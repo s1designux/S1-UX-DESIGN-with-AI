@@ -283,7 +283,8 @@ module.exports = function scanSystemMap(root, ctx) {
   let deadTokenComponents = { count: 0, of: 0, list: [] };
   const compDir = path.join(root, P.REGISTRY_COMPONENTS);
   try {
-    const files = fs.readdirSync(compDir).filter(f => f.endsWith('.json') && !['index.json', 'component-facts.json', 'component-behavior.pc.json'].includes(f));
+    const nonSpecFiles = new Set(['index.json', 'component-facts.json', 'component-behavior.pc.json', 'component-guide-model.json']);
+    const files = fs.readdirSync(compDir).filter(f => f.endsWith('.json') && !nonSpecFiles.has(f));
     deadTokenComponents.of = files.length;
     files.forEach(f => {
       let json; try { json = JSON.parse(fs.readFileSync(path.join(compDir, f), 'utf8')); } catch (_) { return; }

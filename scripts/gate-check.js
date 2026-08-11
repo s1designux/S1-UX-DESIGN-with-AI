@@ -920,6 +920,16 @@ try {
   fail(`Gate 37 실행 실패: ${e.message}`);
 }
 
+// ── Gate 38: Component Guide Generation ──────────────────────────
+// build-components 정본 → guide model → components.html 생성 구간의 드리프트를 차단한다.
+console.log('\n🔎 [Gate 38] 컴포넌트 가이드 생성물 검사기 (Component Guide Generation)');
+try {
+  const { check: componentGuideCheck } = require('./component-guide-generation-check');
+  componentGuideCheck({ pass, fail });
+} catch (e) {
+  fail(`Gate 38 실행 실패: ${e.message}`);
+}
+
 // ── Summary ───────────────────────────────────────────────────────
 console.log('\n─────────────────────────────────────────────────────');
 if (errors > 0) {

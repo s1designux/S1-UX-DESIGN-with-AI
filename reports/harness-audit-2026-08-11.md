@@ -9,17 +9,16 @@
 |------|------|
 | 🔴 Error | 0 |
 | 🟡 Warn  | 0  |
-| ✅ Pass  | 17 |
+| ✅ Pass  | 16 |
 
 ## RULE-1 — 사이즈 HTML 분기
 
-- ✅ [button] 모든 사이즈 분기 존재 (md (h44) / xsm (h34) / xxsm (h28) / lg (h48))
+- ✅ [button] 모든 사이즈 분기 존재 (pc-md (정본 자동 발견) / pc-xsm (정본 자동 발견) / pc-xxsm (정본 자동 발견) / mobile-lg (정본 자동 발견))
 - ✅ [chip] 모든 사이즈 분기 존재 (md/default / sm (h28) / mobile)
 - ✅ [table] 모든 사이즈 분기 존재 (md (h44) / sm (h38))
 - ✅ [time-picker (input형)] 모든 사이즈 분기 존재 (default (h44) / xsm (h34) / xxsm (h28) / mobile (h48))
-- ✅ [time-picker (select형)] 모든 사이즈 분기 존재 (md (h44) / xxsm (h28))
-- ✅ [tab (line tab)] 모든 사이즈 분기 존재 (pc-md (font 20px · indicator 2px) / pc-sm (font 16px · indicator 2px) / pc-xsm (h40 · font 14px · indicator 2px))
-- ✅ [tab (line tab · mobile)] 모든 사이즈 분기 존재 (mobile (h32 · padding-inline 16))
+- ✅ [tab (line tab)] 모든 사이즈 분기 존재 (pc-sm (정본 자동 발견) / pc-md (정본 자동 발견) / pc-xsm (정본 자동 발견))
+- ✅ [tab (line tab · mobile)] 모든 사이즈 분기 존재 (mobile-sm (정본 자동 발견))
 - ✅ [gnb (menu slot)] 모든 사이즈 분기 존재 (md (h56 · 18px) / sm (h48 · 18px) / xsm (h36 · 14px))
 - ✅ [multi-toggle] 모든 사이즈 분기 존재 (md (h44) / sm (h34))
 - ✅ [dropdown] 모든 사이즈 분기 존재 (md (h44) / xsm (h34) / xxsm (h28))
@@ -31,7 +30,7 @@
 ## RULE-3 — 아이콘 색상 일관성
 
 - ✅ [form-control-icon-default] 아이콘 색상 일관됨 — var(--color-form-control-icon-default)
-- ✅ [disabled-icon-color] disabled 아이콘 색상 — 허용 토큰 사용 중 (var(--color-form-control-icon-disabled), var(--color-form-control-text-disabled))
+- ✅ [disabled-icon-color] disabled 아이콘 색상 — 허용 토큰 사용 중 (var(--color-form-control-icon-disabled))
 
 ## RULE-1b — 사이즈 CSS 탭 분기
 

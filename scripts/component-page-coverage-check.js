@@ -48,8 +48,12 @@ function htmlSections() {
   const t = fs.readFileSync(HTML, 'utf8');
   const ids = new Set();
   for (const m of t.matchAll(/<section[^>]*\bid="([a-z0-9-]+)"/g)) ids.add(m[1]);
-  // comp-nav 의 showSection('id') 도 수집(섹션과 교차 확인용)
-  const navIds = new Set([...t.matchAll(/showSection\('([a-z0-9-]+)'/g)].map((m) => m[1]));
+  // comp-nav 의 선언적 data-section 또는 legacy showSection('id')를 수집한다.
+  // components 전체 template 전환 뒤에는 공통 runtime이 data-section을 자동 탐색한다.
+  const navIds = new Set([
+    ...[...t.matchAll(/\bdata-section="([a-z0-9-]+)"/g)].map((m) => m[1]),
+    ...[...t.matchAll(/showSection\('([a-z0-9-]+)'/g)].map((m) => m[1]),
+  ]);
   return { ids, navIds };
 }
 

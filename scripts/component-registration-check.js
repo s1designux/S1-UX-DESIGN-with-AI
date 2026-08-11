@@ -49,6 +49,7 @@ const ROOT_INDEX = path.join(ROOT, 'registry/index.json');
 const UPDATE_MGMT = path.join(ROOT, 'registry/governance/update-management.json');
 const PRESENTATION = path.join(ROOT, 'registry/governance/component-presentation-policy.json');
 const BASELINE = path.join(ROOT, 'registry/governance/component-registration-baseline.json');
+const NON_SPEC_FILES = new Set(['index.json', 'component-facts.json', 'component-behavior.pc.json', 'component-guide-model.json']);
 
 // ── 설치기 정본 로드 (Gate 18 · stamp-installer-ui 와 동일 패턴) ──────────────
 function loadBuildComponents() {
@@ -131,7 +132,7 @@ async function audit() {
   }
 
   const diskIds = new Set(fs.readdirSync(SPEC_DIR)
-    .filter((f) => f.endsWith('.json') && !['index.json', 'component-facts.json', 'component-behavior.pc.json'].includes(f))
+    .filter((f) => f.endsWith('.json') && !NON_SPEC_FILES.has(f))
     .map((f) => f.replace(/\.json$/, '')));
   const indexIds = new Set((readJson(SPEC_INDEX).components || []).map((c) => c.id));
   const updateIds = new Set((readJson(UPDATE_MGMT).components || []).map((c) => c.id));

@@ -61,6 +61,12 @@
     "figmaNodeId": "",
     "propertyMap": {}
   },
+  "guide": {
+    "sampleLabels": ["설정"],
+    "webTag": "button",
+    "interactionPattern": "switch-toggle",
+    "accessibility": { "role": "switch", "keyboard": ["Space"], "attributes": ["aria-checked", "aria-label"] }
+  },
   "governance": {
     "owner": "Design System Team",
     "deprecated": false,

@@ -18,9 +18,40 @@ const path = require('path');
 const ROOT    = path.resolve(__dirname, '..');
 const HTML    = path.join(ROOT, 'pages/components.html');  // 정본 컴포넌트 페이지 (구 components.html 은 레거시·검수 제외 2026-06-17)
 const REPORTS = path.join(ROOT, 'reports');
+const GUIDE_MODEL = path.join(ROOT, 'registry/components/component-guide-model.json');
 
 const FIX_MODE = process.argv.includes('--fix');
 const today = new Date().toISOString().slice(0, 10);
+
+function lineTabSizeRules(platform) {
+  const model = JSON.parse(fs.readFileSync(GUIDE_MODEL, 'utf8'));
+  const set = (model.componentSets || []).find((item) => item.name === 'Line Tab');
+  if (!set) throw new Error('component-guide-model.json에 Line Tab 세트가 없습니다.');
+  const values = [];
+  for (const variant of set.variants || []) {
+    if (variant.axes.Break !== platform || values.includes(variant.axes.Size)) continue;
+    values.push(variant.axes.Size);
+  }
+  return values.map((size) => ({
+    label: `${platform.toLowerCase()}-${size.toLowerCase()} (정본 자동 발견)`,
+    mustContain: platform === 'Mobile' ? 's1-tab--mobile' : `s1-tab--pc-${size.toLowerCase()}`,
+  }));
+}
+
+function buttonSizeRules() {
+  const model = JSON.parse(fs.readFileSync(GUIDE_MODEL, 'utf8'));
+  const set = (model.componentSets || []).find((item) => item.name === 'Button');
+  if (!set) throw new Error('component-guide-model.json에 Button 세트가 없습니다.');
+  const values = [];
+  for (const variant of set.variants || []) {
+    const key = `${variant.axes.Break}/${variant.axes.Size}`;
+    if (!values.includes(key)) values.push(key);
+  }
+  return values.map((key) => {
+    const [platform, size] = key.split('/');
+    return { label: `${platform.toLowerCase()}-${size.toLowerCase()} (정본 자동 발견)`, mustContain: `data-size="${size.toLowerCase()}"` };
+  });
+}
 
 // ─────────────────────────────────────────────
 // RULE 정의
@@ -33,14 +64,9 @@ const today = new Date().toISOString().slice(0, 10);
 const SIZE_RULES = [
   {
     compId: 'button',
-    htmlPaneId: 'btn-pri-pc',         // primary PC 탭 (대표 확인)
-    description: 'Button HTML 코드탭 — PC 사이즈(medium/xsmall/xxsmall) + Mobile 분기',
-    sizes: [
-      { label: 'md (h44)',      mustContain: 's1-btn-md'     },
-      { label: 'xsm (h34)',     mustContain: 's1-btn-primary"' }, // 무수식어
-      { label: 'xxsm (h28)',    mustContain: 's1-btn-xxsm'   },
-      { label: 'lg (h48)',      mustContain: 's1-btn-lg'     },
-    ],
+    htmlPaneId: 'button',
+    description: 'Button 섹션 — component guide model의 플랫폼/사이즈 전수',
+    sizes: buttonSizeRules(),
   },
   {
     compId: 'chip',
@@ -73,31 +99,16 @@ const SIZE_RULES = [
     ],
   },
   {
-    compId: 'time-picker (select형)',
-    htmlPaneId: 'tp-select-html',
-    description: 'TimePicker 셀렉트형 HTML 코드탭 — md(h44) / sm(h28) 사이즈 분기',
-    sizes: [
-      { label: 'md (h44)', mustContain: 's1-timepicker-select-group"'      },
-      { label: 'xxsm (h28)', mustContain: 's1-timepicker-select-group--xxsm' },
-    ],
-  },
-  {
     compId: 'tab (line tab)',
-    htmlPaneId: 'tab-pc-html',   // PC HTML pane (pc-md + pc-sm + pc-xsm)
-    description: 'Line Tab PC HTML 코드탭 — pc-md / pc-sm / pc-xsm 사이즈 분기',
-    sizes: [
-      { label: 'pc-md (font 20px · indicator 2px)', mustContain: 's1-tab--pc-md' },
-      { label: 'pc-sm (font 16px · indicator 2px)', mustContain: 's1-tab--pc-sm' },
-      { label: 'pc-xsm (h40 · font 14px · indicator 2px)', mustContain: 's1-tab--pc-xsm' },
-    ],
+    htmlPaneId: 'tab-pc-html',
+    description: 'Line Tab PC HTML 코드탭 — component guide model의 PC 사이즈 전수',
+    sizes: lineTabSizeRules('PC'),
   },
   {
     compId: 'tab (line tab · mobile)',
     htmlPaneId: 'tab-mo-html',   // Mobile HTML pane
     description: 'Line Tab Mobile HTML 코드탭 — mobile 사이즈 확인',
-    sizes: [
-      { label: 'mobile (h32 · padding-inline 16)', mustContain: 's1-tab--mobile' },
-    ],
+    sizes: lineTabSizeRules('Mobile'),
   },
   {
     compId: 'gnb (menu slot)',
@@ -190,8 +201,10 @@ function extractPaneContent(html, paneId) {
   const startTag = `id="${paneId}"`;
   const idx = html.indexOf(startTag);
   if (idx === -1) return null;
-  // pane div 다음 300줄 분량
-  return html.slice(idx, idx + 8000);
+  // 생성된 model-driven 예시는 SVG/scene graph 때문에 길 수 있다.
+  // 고정 글자 수로 자르지 않고 현재 code pane의 실제 닫힘까지 읽는다.
+  const end = html.indexOf('</pre></div>', idx);
+  return end === -1 ? html.slice(idx) : html.slice(idx, end + '</pre></div>'.length);
 }
 
 // ─────────────────────────────────────────────
@@ -452,8 +465,8 @@ function generateReport(allFindings) {
   };
 
   let md = `# Harness Audit Report — ${today}\n\n`;
-  md += `> **자동 생성:** \`npm run harness:audit\`  \n`;
-  md += `> **대상:** \`pages/components.html\`  \n\n`;
+  md += `> **자동 생성:** \`npm run harness:audit\`\n`;
+  md += `> **대상:** \`pages/components.html\`\n\n`;
 
   md += `## 요약\n\n`;
   md += `| 구분 | 건수 |\n|------|------|\n`;

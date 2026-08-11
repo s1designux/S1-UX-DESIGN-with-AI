@@ -1,4 +1,5 @@
 'use strict';
+let offlineFallbackSummaryShown = false;
 /**
  * figma-build-mock.js — build-components.ts 를 가짜 Figma 로 실행해 "표출 정보"를 기록한다.
  * ─────────────────────────────────────────────────────────────────────────
@@ -24,6 +25,7 @@
 const PROP_CLASS = {
   // ── 시각 ──
   fills: 'VISUAL', strokes: 'VISUAL', effects: 'VISUAL',
+  opacity: 'VISUAL',
   strokeWeight: 'VISUAL', strokeAlign: 'VISUAL',
   strokeTopWeight: 'VISUAL', strokeRightWeight: 'VISUAL',
   strokeBottomWeight: 'VISUAL', strokeLeftWeight: 'VISUAL',
@@ -97,6 +99,17 @@ function serialize(prop, val) {
   return String(val);
 }
 
+function paintPayload(val) {
+  if (!Array.isArray(val)) return [];
+  return val.map((paint) => {
+    if (!paint || typeof paint !== 'object') return null;
+    const out = {};
+    for (const key of ['type', 'opacity', 'visible', '__tokenKey']) if (paint[key] != null) out[key] = paint[key];
+    if (paint.color) out.color = { r: Number(paint.color.r || 0), g: Number(paint.color.g || 0), b: Number(paint.color.b || 0) };
+    return out;
+  }).filter(Boolean);
+}
+
 /**
  * mock 을 만들어 buildAllComponents 를 실행하고 노드 기록을 돌려준다.
  * @param {object} mod  esbuild 로 번들해 require 한 build-components 모듈
@@ -124,7 +137,7 @@ async function runBuild(mod, opts) {
   function recNode(type) {
     // geometry 는 props 밖에 둔다. 기존 installer fingerprint 는 props 만 해시하므로
     // 폭·높이 관측을 추가해도 기존 지문/게이트 결과를 흔들지 않는다.
-    const state = { type, props: {}, geometry: {}, boundVariables: {}, children: [], parentSet: null };
+    const state = { type, props: {}, geometry: {}, boundVariables: {}, paintPayload: {}, asset: null, children: [], parentSet: null };
     // origin 은 **state 최상위**에 둔다(props 가 아님) — props 만 지문에 들어가므로
     //   여기 두면 installer-fingerprint 해시에 영향이 0 이다.
     if (trackOrigin && type === 'TEXT') state.origin = originFromStack();
@@ -145,6 +158,49 @@ async function runBuild(mod, opts) {
         if (prop === 'children') return state.children;
         if (prop === 'appendChild') return attach;
         if (prop === 'insertChild') return (_i, c) => attach(c);
+        if (prop === 'createInstance') {
+          return () => {
+            const instance = recNode('INSTANCE');
+            const instanceState = instance.__state;
+            instanceState.props = Object.assign({}, state.props);
+            instanceState.geometry = Object.assign({}, state.geometry);
+            instanceState.boundVariables = Object.assign({}, state.boundVariables);
+            // 인스턴스의 내부 구조는 생성 시점 컴포넌트 구조의 결정론적 스냅샷이다.
+            // 이후 findOne 텍스트 override는 빌더 실행 호환을 위해 stub이 삼키며,
+            // 원본 component variant의 정본 구조는 COMPONENT_SET 아래에 별도로 보존된다.
+            const cloneState = (source) => {
+              if (!source || typeof source !== 'object' || !source.type) return null;
+              const copy = {
+                type: source.type === 'COMPONENT' ? 'INSTANCE' : source.type,
+                props: Object.assign({}, source.props),
+                geometry: Object.assign({}, source.geometry),
+                boundVariables: Object.assign({}, source.boundVariables),
+                paintPayload: JSON.parse(JSON.stringify(source.paintPayload || {})),
+                asset: source.asset ? Object.assign({}, source.asset) : null,
+                parentSet: source.parentSet || null,
+                children: [],
+              };
+              copy.children = (source.children || []).map(cloneState).filter(Boolean);
+              if (copy.type === 'INSTANCE') copy.swapComponent = function () {};
+              return copy;
+            };
+            instanceState.children = (state.children || []).map(cloneState).filter(Boolean);
+            return instance;
+          };
+        }
+        if (prop === 'swapComponent') return () => {};
+        if (prop === 'findAll' && state.asset && state.asset.kind === 'svg') {
+          return (predicate) => {
+            const hasStroke = /\bstroke="(?!none)[^"]+"/i.test(state.asset.payload || '');
+            const hasFill = /\bfill="(?!none)[^"]+"/i.test(state.asset.payload || '');
+            let strokes = hasStroke ? [{}] : [], fills = hasFill ? [{}] : [];
+            const shape = { type: 'VECTOR', isMask: false };
+            Object.defineProperty(shape, 'strokes', { get: () => strokes, set: (value) => { strokes = value; const token = tokenOfPaints(value); if (token) { state.asset.colorToken = token; state.asset.colorBinding = state.asset.colorBinding === 'fill' ? 'both' : 'stroke'; } } });
+            Object.defineProperty(shape, 'fills', { get: () => fills, set: (value) => { fills = value; const token = tokenOfPaints(value); if (token) { state.asset.colorToken = token; state.asset.colorBinding = state.asset.colorBinding === 'stroke' ? 'both' : 'fill'; } } });
+            return !predicate || predicate(shape) ? [shape] : [];
+          };
+        }
+        if (prop === 'findOne' || prop === 'findAll' || prop === 'findChild') return makeStub();
         if (prop === 'resize' || prop === 'resizeWithoutConstraints') {
           return (w, h) => {
             state.geometry.width = Number(w);
@@ -175,6 +231,7 @@ async function runBuild(mod, opts) {
       set(_t, prop, val) {
         if (typeof prop === 'string') {
           seenProps.add(prop);
+          if (prop === 'fills' || prop === 'strokes') state.paintPayload[prop] = paintPayload(val);
           state.props[prop] = serialize(prop, val);
         }
         return true;
@@ -205,14 +262,21 @@ async function runBuild(mod, opts) {
     createEllipse: () => recNode('ELLIPSE'),
     createLine: () => recNode('LINE'),
     createVector: () => recNode('VECTOR'),
-    createNodeFromSvg: () => recNode('FRAME'),
+    createNodeFromSvg: (svg) => {
+      const node = recNode('FRAME');
+      node.__state.asset = { kind: 'svg', payload: String(svg || ''), colorToken: null, colorBinding: null };
+      return node;
+    },
     combineAsVariants: (comps) => {
       const set = recNode('COMPONENT_SET');
       for (const c of comps || []) set.appendChild(c);
       return set;
     },
     loadFontAsync: async () => {},
-    importComponentByKeyAsync: async () => ({ createInstance: () => recNode('INSTANCE') }),
+    // The offline guide build cannot fetch remote library component geometry.
+    // Fail explicitly so build-components.ts follows its canonical, source-owned
+    // SVG fallback path instead of serializing a visually empty INSTANCE.
+    importComponentByKeyAsync: async () => { throw new Error('offline guide model: use canonical source SVG fallback'); },
     variables,
     currentPage: recNode('PAGE'),
   };
@@ -235,9 +299,31 @@ async function runBuild(mod, opts) {
     semanticShadowDarkModeId: 'sdark',
   };
 
-  // 예외를 삼키지 않는다 — 과거 ref 빌드가 중간에 죽으면 지문이 짧아져
-  // "없던 신설"이 대량 생성된다. 조용한 오답보다 중단이 낫다.
-  await mod.buildAllComponents(maps);
+  // 오프라인 guide model은 원격 icon import를 의도적으로 실패시켜 정본 소스의
+  // fallback SVG를 사용한다. 이 알려진 경고만 빌드 범위에서 모아 한 줄로 요약한다.
+  // 다른 warning과 실제 build 예외는 그대로 통과시키며 전역 console은 항상 복구한다.
+  const originalWarn = console.warn;
+  const offlineFallbackCause = 'offline guide model: use canonical source SVG fallback';
+  let offlineFallbackCount = 0;
+  console.warn = (...args) => {
+    const [message, cause] = args;
+    const expected = typeof message === 'string'
+      && /^icon .+ import 실패 → 벡터 폴백:$/.test(message)
+      && cause && cause.message === offlineFallbackCause;
+    if (expected) { offlineFallbackCount += 1; return; }
+    Reflect.apply(originalWarn, console, args);
+  };
+  try {
+    // 예외를 삼키지 않는다 — 과거 ref 빌드가 중간에 죽으면 지문이 짧아져
+    // "없던 신설"이 대량 생성된다. 조용한 오답보다 중단이 낫다.
+    await mod.buildAllComponents(maps);
+  } finally {
+    console.warn = originalWarn;
+    if (offlineFallbackCount && !offlineFallbackSummaryShown) {
+      offlineFallbackSummaryShown = true;
+      originalWarn(`[component-guide-model] offline icon import ${offlineFallbackCount}건 → 정본 source SVG fallback 사용 (이후 동일 경고 생략)`);
+    }
+  }
 
   // 세트 소속 역참조: COMPONENT_SET 의 자식(=variant)에 세트 이름을 달아 준다.
   for (const n of NODES) {
@@ -249,4 +335,4 @@ async function runBuild(mod, opts) {
   return { nodes: NODES, unknownProps };
 }
 
-module.exports = { runBuild, PROP_CLASS, makeStub };
+module.exports = { runBuild, PROP_CLASS, makeStub, tokenOfPaints, serialize };

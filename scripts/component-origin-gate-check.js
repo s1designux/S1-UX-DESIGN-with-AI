@@ -28,6 +28,7 @@ const path = require("path");
 
 const ROOT = path.resolve(__dirname, "..");
 const DATA = path.join(ROOT, "registry/governance/update-management.json");
+const NON_SPEC_FILES = new Set(["index.json", "component-facts.json", "component-behavior.pc.json", "component-guide-model.json"]);
 
 const VALID_ORIGIN = ["A", "B", "tbd"];
 const VALID_VERIFY = ["new", "legacy", "none", "na"];
@@ -49,7 +50,7 @@ function listRegistryIds(dir) {
   const d = path.join(ROOT, "registry", dir);
   if (!fs.existsSync(d)) return [];
   return fs.readdirSync(d)
-    .filter((f) => f.endsWith(".json") && !["index.json", "component-facts.json", "component-behavior.pc.json"].includes(f))
+    .filter((f) => f.endsWith(".json") && !NON_SPEC_FILES.has(f))
     .map((f) => f.replace(/\.json$/, ""));
 }
 

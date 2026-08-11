@@ -288,6 +288,22 @@
       ]
     },
     {
+      "id": "component-canon-derived-surface-sync",
+      "category": "external-artifact-sync",
+      "label": "컴포넌트 정본과 웹 가이드·설치기 자동 동기화",
+      "description": "컴포넌트 정본 변경이 웹 가이드·Registry·설치기·검문소까지 자동으로 이어지고, 생성 결과 직접 수정은 드리프트로 차단되도록 요청",
+      "count": 1,
+      "promotionStatus": "promoted",
+      "promotedRule": "component-guide-sync skill + Gate 38 + tokens:reconcile — build-components.ts에서 guide model과 전체 components.html을 결정론적으로 생성",
+      "occurrences": [
+        {
+          "date": "2026-08-11",
+          "summary": "Selection·Form·Table·Navigation을 정본 기반 생성으로 전환하고 전체 components.html·preview·installer 동기화 및 직접 수정 감지 구축"
+        }
+      ],
+      "automationNote": "이후 컴포넌트 변경은 생성 사이트를 직접 편집하지 않고 정본→model→site→installer→Gate 38 순서로 검증한다."
+    },
+    {
       "id": "always-loaded-doc-bloat",
       "category": "context-economy",
       "label": "상시 로드 문서(CLAUDE.md)가 비대해져 비용·규칙 준수율을 함께 떨어뜨림",

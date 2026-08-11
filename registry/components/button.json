@@ -64,6 +64,19 @@
     "아이콘만 있는 버튼은 aria-label 로 용도를 준다.",
     "disabled 는 실제 비활성 처리하고 클릭을 막는다."
   ],
+  "guide": {
+    "sampleLabels": ["버튼"],
+    "webTag": "button",
+    "interactionPattern": "invoke-count",
+    "accessibility": { "keyboard": "native-button", "disabled": "native-disabled" },
+    "classInterface": {
+      "base": "s1-btn",
+      "variantPrefix": "s1-btn-",
+      "sizePrefix": "s1-btn-",
+      "sizeAliases": { "XSM": "", "MD": "md", "XXSM": "xxsm", "LG": "lg" },
+      "paneAliases": { "Primary": "pri", "Secondary": "sec", "Blue-Line": "bl" }
+    }
+  },
   "summary": {
     "badge": "Core",
     "variantCount": 3,

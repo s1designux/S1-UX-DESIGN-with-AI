@@ -198,6 +198,7 @@
       "checkBox": "check box"
     }
   },
+  "guide": { "sampleColumns": ["선택", "이름", "상태", "담당자", "수정일"], "sampleRows": [["홍길동", "진행 중", "김담당", "08.11"], ["김영희", "완료", "이담당", "08.10"], ["박민수", "대기", "최담당", "08.09"], ["정수진", "진행 중", "한담당", "08.08"], ["이도윤", "검토 중", "윤담당", "08.07"], ["최서연", "완료", "오담당", "08.06"], ["강민준", "대기", "임담당", "08.05"], ["윤지우", "진행 중", "서담당", "08.04"]], "interactionPattern": "sortable-selectable-grid", "webTag": "table", "dependencies": ["Table Cell", "Checkbox", "Pagination", "Select Box"] },
   "governance": {
     "owner": "Design System Team",
     "deprecated": false,

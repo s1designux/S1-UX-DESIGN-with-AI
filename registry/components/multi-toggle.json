@@ -126,5 +126,11 @@
       "_note": "reports/figma-library-build/multi-toggle/4-verification.md:9 기재. 같은 줄의 fileKey 표기가 V2.4 정본 키와 글자 수가 달라(오타 의심) 여기 옮기지 않았다 — 확인 후 보완."
     }
   },
+  "guide": {
+    "sampleLabels": ["왼쪽", "가운데", "오른쪽"],
+    "webTag": "button",
+    "interactionPattern": "segmented-radio",
+    "accessibility": { "role": "radiogroup", "itemRole": "radio", "keyboard": ["ArrowLeft", "ArrowRight", "Home", "End"], "attributes": ["aria-checked"] }
+  },
   "governance": { "owner": "design-system", "deprecated": false, "replacement": null }
 }

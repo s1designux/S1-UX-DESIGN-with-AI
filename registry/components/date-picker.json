@@ -241,5 +241,6 @@
     "HD-6": "확정 — Core는 인터페이스만 제공. data-disabled-dates=\"YYYY-MM-DD,...\" 속성으로 날짜 주입. 비활성 기준은 서비스 레벨 결정.",
     "HD-7": "확정 — 이전달/다음달 날짜 항상 클릭 허용. 클릭 시 해당 월로 이동 후 날짜 선택."
   },
-  "updatedAt": "2026-05-26"
+  "updatedAt": "2026-05-26",
+  "guide": { "sampleLabel": "날짜", "samplePlaceholder": "YY.MM.DD", "sampleValue": "26.08.11", "sampleDates": ["9", "10", "11", "12", "13", "14", "15"], "webTag": "button", "interactionPattern": "calendar-grid", "mobileDependency": "Date Picker Mobile Bottom Sheet" }
 }

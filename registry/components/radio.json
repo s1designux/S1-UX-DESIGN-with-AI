@@ -67,6 +67,12 @@
     "figmaNodeId": "",
     "propertyMap": {}
   },
+  "guide": {
+    "sampleLabels": ["옵션 1", "옵션 2", "옵션 3"],
+    "webTag": "button",
+    "interactionPattern": "radio-group",
+    "accessibility": { "role": "radiogroup", "itemRole": "radio", "keyboard": ["ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown", "Home", "End"], "attributes": ["aria-checked"] }
+  },
   "governance": {
     "owner": "Design System Team",
     "deprecated": false,

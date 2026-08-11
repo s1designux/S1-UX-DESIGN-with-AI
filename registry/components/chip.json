@@ -323,6 +323,12 @@
     "with-icon",
     "with-close"
   ],
+  "guide": {
+    "sampleLabels": ["라벨"],
+    "webTag": "button",
+    "interactionPattern": "press-toggle",
+    "accessibility": { "role": "button", "keyboard": ["Enter", "Space"], "attributes": ["aria-pressed"] }
+  },
   "filterSubVariants": [
     "label-only",
     "with-title"

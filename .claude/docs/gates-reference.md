@@ -315,3 +315,7 @@ DESIGN.md(AI 소비용) 가 정본(tokens.css+registry)보다 낡으면 차단
 ### Gate 36: Canon Manifest (정본 목록)
 
 **「무엇이 정본인가」를 기계가 알게 하는 게이트.** 정본은 Figma 구조상 3벌로 나뉘는데(Variables·Text Styles·Components — 다른 개체·다른 설치 API 라 병합 불가) 그 목록이 **산문에만** 있어서, 텍스트 스타일 정본이 게이트 0개·우산 명령 밖에 방치됐고 대시보드는 정본을 휴리스틱으로 추측하다 스크립트를 정본으로 오분류했다. `canon-manifest.json` 이 정본·파생 표면·재생성 명령·담당 게이트를 선언하고, 이 게이트가 **선언 ↔ 실제 배선을 양방향 대조**한다(우산이 도는데 미선언인 단계=차단 · 재생성 경로 없는 표면=경고 · 유령 명령=차단 · 정본을 파생으로 몰래 강등=차단). 적대 4종 확인. 대시보드도 이 선언과 대조해 "값 정본/정책 정본/메타 장부/미분류"를 표시한다. 정본=`registry/governance/canon-manifest.json`. 단독 `npm run canon:manifest`
+
+### Gate 38: Component Guide Generation
+
+컴포넌트 정본의 실제 scene graph에서 생성한 `component-guide-model.json`과 메인 사이트 `components.html` 생성 구간이 최신인지 `--check` byte 대조로 차단한다. 정본 변경 뒤 사이트 재생성을 빠뜨리거나 생성 구간을 손으로 수정하면 실패한다. Gate 18의 42개 공개·제외 분류, Gate 19의 variant 커버리지, Gate 23의 실제 렌더, Gate 32의 크기 어휘와 함께 사용한다. 재생성은 `npm run components:guide-model:write`와 `npm run components:guide-site:write`, 일괄은 `npm run tokens:reconcile`이다. 단독 `npm run components:guide:check`.

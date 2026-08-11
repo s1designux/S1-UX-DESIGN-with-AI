@@ -126,5 +126,13 @@
     "note": "Chip 과 토큰을 공유하지만 별개 세트. Figma 원본 대조 리포트가 없어 Ⓐ/Ⓑ 판정 불가 — 원본 재측정 필요 여부는 river 결정 대기.",
     "legacySource": { "canonicalSet": "540:3226", "_note": "코드 주석 기반. 미검증." }
   },
+  "guide": {
+    "sampleLabels": ["최신순", "과거순", "인기순"],
+    "sampleTitle": "정렬",
+    "webTag": "button",
+    "interactionPattern": "disclosure-listbox",
+    "mobileInteractionPattern": "dialog-single-select",
+    "accessibility": { "role": "button", "popupRole": "listbox", "keyboard": ["Enter", "Space", "Escape", "ArrowDown", "ArrowUp"], "attributes": ["aria-haspopup", "aria-expanded"] }
+  },
   "governance": { "owner": "design-system", "deprecated": false, "replacement": null }
 }

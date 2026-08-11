@@ -47,6 +47,7 @@ const MANIFEST_REL = 'design/design.manifest.json';
 const NARRATIVE_REL = 'registry/governance/design-narrative.json';
 const COMPONENT_FACTS_REL = 'registry/components/component-facts.json';
 const COMPONENT_BEHAVIOR_PC_REL = 'registry/components/component-behavior.pc.json';
+const NON_SPEC_FILES = new Set(['index.json', 'component-facts.json', 'component-behavior.pc.json', 'component-guide-model.json']);
 const FIGMA_MAP_REL = 'registry/figma/figma-map.json';
 
 function loadProfiles() {
@@ -110,7 +111,7 @@ function loadComponents() {
   const dir = path.join(ROOT, 'registry/components');
   const out = [];
   for (const f of fs.readdirSync(dir)) {
-    if (!f.endsWith('.json') || ['index.json', 'component-facts.json', 'component-behavior.pc.json'].includes(f)) continue; // 색인·공용 facts 제외
+    if (!f.endsWith('.json') || NON_SPEC_FILES.has(f)) continue; // 색인·공용 facts·guide 집계 제외
     let j;
     try { j = JSON.parse(fs.readFileSync(path.join(dir, f), 'utf8')); }
     catch (e) { continue; } // 깨진 JSON 은 건너뜀(Gate 1 이 별도로 잡음)

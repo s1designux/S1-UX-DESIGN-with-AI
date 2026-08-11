@@ -8,15 +8,15 @@
     "tokenStatus": "stable",
     "codeStatus": "implemented",
     "darkModeStatus": "candidate",
-    "a11yStatus": "pending",
+    "a11yStatus": "implemented",
     "figmaStatus": "confirmed",
     "harnessStatus": "implemented",
-    "description": "라인탭 컴포넌트. 탭 하단에 인디케이터(밑줄)로 선택 상태를 표시. PC MD / PC SM / PC XSM / Mobile 4가지 variant."
+    "description": "라인탭 컴포넌트. 탭 하단 인디케이터로 선택 상태를 표시한다. 크기·상태·시각 수치는 component-guide-model.json에서 자동으로 가져온다."
   },
   "usage": {
     "whenToUse": [
       "같은 화면에서 콘텐츠 영역을 전환할 때.",
-      "PC MD/SM/XSM, Mobile 크기 중 맥락에 맞게 고른다."
+      "정본에 등록된 플랫폼과 크기 중 사용 맥락에 맞는 항목을 고른다."
     ],
     "whenNotToUse": [
       "페이지 이동은 Navigation.",
@@ -47,35 +47,14 @@
     "role=tablist/tab/tabpanel 패턴, 선택에 aria-selected 를 준다.",
     "키보드 화살표로 탭을 이동할 수 있게 한다."
   ],
-  "variants": {
-    "size": ["pc-md", "pc-sm", "pc-xsm", "mobile"],
-    "state": ["unselected", "selected", "hover", "pressed"]
-  },
-  "sizing": {
-    "pcMdContentHeight": "40px",
-    "pcSmContentHeight": "40px",
-    "pcXsmTotalHeight": "40px",
-    "mobileContentHeight": "30px",
-    "mobileTotalHeight": "32px",
-    "_heightNote": "ContentHeight 는 밑줄(인디케이터)을 뺀 값이다. 모바일 총높이 = 내용 30 + 밑줄 2 = 32 로 정본(build-components.ts buildLineTab Mobile/SM)·V2.4 원본과 일치한다. 이 구분이 없어 2026-08-02 에 '원본 30 vs 정본 32' 라는 헛된 모순 기록이 생겼다. PC 값(40)은 프로토타입 잔재로 정본(SM 42·MD 44)과 다르며 후속 전수 검수에서 정정한다.",
-    "pcMdIndicatorSelected": "2px",
-    "pcSmIndicatorSelected": "2px",
-    "pcXsmIndicatorSelected": "2px",
-    "mobileIndicatorSelected": "2px",
-    "indicatorDefault": "1px",
-    "pcPaddingInline": "var(--spacing-16)",
-    "mobilePaddingInline": "var(--spacing-16)",
-    "_paddingNote": "정본 buildLineTab 의 PAD_X=16 (PC·모바일 공통). 종전 값 --spacing-padding-inline-lg/sm 은 실존하지 않는 토큰이었다."
-  },
-  "typography": {
-    "pcMdSelected": "Pretendard Bold 20px / line-height 1.3",
-    "pcMdUnselected": "Pretendard Medium 20px / line-height 1.3",
-    "pcSmSelected": "Pretendard Bold 16px / line-height 1.3 / letter-spacing 0",
-    "pcSmUnselected": "Pretendard Medium 16px / line-height 1.3 / letter-spacing -0.32px",
-    "pcXsmSelected": "Pretendard Medium 14px / line-height 1.3 / letter-spacing -0.28px",
-    "pcXsmUnselected": "Pretendard Medium 14px / line-height 1.3 / letter-spacing -0.28px",
-    "mobileSelected": "Pretendard Bold 16px / line-height 1.3",
-    "mobileUnselected": "Pretendard Medium 16px / line-height 1.3 / letter-spacing -0.32px"
+  "guide": {
+    "sampleLabels": ["메뉴1", "메뉴2", "메뉴3"],
+    "interactionPattern": "selection-follows-focus",
+    "accessibility": {
+      "label": "콘텐츠 보기 선택",
+      "roles": ["tablist", "tab", "tabpanel"],
+      "keyboard": ["ArrowLeft", "ArrowRight", "Home", "End"]
+    }
   },
   "tokens": [
     {
