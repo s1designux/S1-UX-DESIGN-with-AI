@@ -5,9 +5,15 @@
  * @writes: pages/install-prompt.html
  *
  * `pages/install-prompt.html` 의 자동 생성 영역들을 정본에서 동기화한다.
- *   1) 다운로드용 인라인 (`<pre id="code-full">…</pre>`) ← `assets/css/tokens.css`
- *   2) AI 프롬프트 탭 뭉치 (`<pre id="ai-prompt-full">…</pre>`) ← `design/` 의 DESIGN.md 뭉치
+ *   1) 다운로드용 인라인 (`<pre id="code-full">…</pre>`) ← `assets/css/tokens.css`   [선택]
+ *   2) AI 프롬프트 탭 뭉치 (`<pre id="ai-prompt-full">…</pre>`) ← `design/` 의 DESIGN.md 뭉치  [선택]
  *      (라우터 design.manifest.json + DESIGN.core.md + services/DESIGN.vms.md)
+ *   3) 각 항목 "마지막 업데이트" 시각 스탬프 (`data-update-file`)                      [항상]
+ *
+ * ⚠️ 2026-08-12 — 1)·2) 는 "있으면 동기화"로 바뀌었다(종전: 없으면 exit 1).
+ *    개발자 탭·AI 탭이 GitHub 저장소(S-1-UX-DESIGN-AI-GUIDELINE) 안내 방식으로 바뀌면서
+ *    페이지에 통짜 CSS/MD 를 인라인하지 않게 됐다. 두 블록의 부재는 정상 상태다.
+ *    블록이 다시 생기면 종전대로 자동 동기화된다.
  *
  * - tokens.css 의 모든 토큰(Foundation·Semantic·Component·Light·Dark)을 HTML-escape 후 삽입
  * - 메타 텍스트(`Foundation + Semantic Nx종 + Component Nx종`)는 실제 카운트로 자동 갱신
@@ -173,31 +179,36 @@ function main() {
   const html = fs.readFileSync(INSTALL_PROMPT, 'utf-8');
   const counts = countTokens(css);
 
-  // 1) <pre id="code-full">...</pre> 본문 교체
+  let updated = html;
+  const done = [];   // 실제로 수행한 동기화만 기록 — 없는 블록을 했다고 보고하지 않는다
+
+  // 1) <pre id="code-full">...</pre> 본문 교체 (블록이 있을 때만)
+  //    2026-08-12: 개발자 탭이 GitHub 저장소 안내로 바뀌면서 인라인 CSS 블록이 사라짐.
+  //    블록 부재는 정상 상태이므로 실패로 보지 않고 건너뛴다.
   const PRE_RE = /(<pre\s+class="expand-pre"\s+id="code-full">)([\s\S]*?)(<\/pre>)/;
-  const match = html.match(PRE_RE);
-  if (!match) {
-    console.error('❌ <pre id="code-full"> 블록을 찾을 수 없음');
-    process.exit(1);
+  if (PRE_RE.test(updated)) {
+    const newInline = buildInlineBlock(css, counts);
+    updated = updated.replace(PRE_RE, `$1${newInline}$3`);
+
+    // 2) 메타 텍스트 갱신: "Foundation + Semantic N종 + Component N종"
+    //    인라인 CSS 카드에 딸린 표기이므로 위 블록이 있을 때만 갱신한다.
+    const META_RE = /(<div class="file-meta">)([^<]*?)(<\/div>)/;
+    const newMeta = `Foundation ${counts.foundation}종 + Semantic ${counts.semantic}종 + Component ${counts.component}종 · Light + Dark`;
+    updated = updated.replace(META_RE, `$1${newMeta}$3`);
+    done.push(`tokens.css → <pre id="code-full"> (${css.length} bytes, ${counts.total} 토큰)`);
+    done.push(`메타 텍스트: Foundation ${counts.foundation}종 + Semantic ${counts.semantic}종 + Component ${counts.component}종`);
   }
-  const newInline = buildInlineBlock(css, counts);
-  let updated = html.replace(PRE_RE, `$1${newInline}$3`);
 
-  // 2) 메타 텍스트 갱신: "Foundation + Semantic N종 + Component N종"
-  const META_RE = /(<div class="file-meta">)([^<]*?)(<\/div>)/;
-  const newMeta = `Foundation ${counts.foundation}종 + Semantic ${counts.semantic}종 + Component ${counts.component}종 · Light + Dark`;
-  updated = updated.replace(META_RE, `$1${newMeta}$3`);
-
-  // 3) AI 프롬프트 뭉치(<pre id="ai-prompt-full">) 본문 교체 — design/*.md 이어붙임
+  // 3) AI 프롬프트 뭉치(<pre id="ai-prompt-full">) 본문 교체 — design/*.md 이어붙임 (블록이 있을 때만)
+  //    2026-08-12: AI 탭이 MD 통짜 붙여넣기 → GitHub 저장소 안내로 바뀌면서 이 블록도 사라짐.
   const AI_PRE_RE = /(<pre\s+class="ai-pre"\s+id="ai-prompt-full">)([\s\S]*?)(<\/pre>)/;
-  if (!AI_PRE_RE.test(updated)) {
-    console.error('❌ <pre id="ai-prompt-full"> 블록을 찾을 수 없음');
-    process.exit(1);
+  if (AI_PRE_RE.test(updated)) {
+    const aiBundle = buildAiPromptBundle();
+    updated = updated.replace(AI_PRE_RE, `$1${aiBundle}$3`);
+    done.push('design/*.md → <pre id="ai-prompt-full">');
   }
-  const aiBundle = buildAiPromptBundle();
-  updated = updated.replace(AI_PRE_RE, `$1${aiBundle}$3`);
 
-  // 4) 각 항목 "마지막 업데이트" 시각 동기화
+  // 4) 각 항목 "마지막 업데이트" 시각 동기화 (항상 수행)
   updated = injectUpdateStamps(updated);
 
   if (CHECK_ONLY) {
@@ -225,8 +236,8 @@ function main() {
 
   fs.writeFileSync(INSTALL_PROMPT, updated, 'utf-8');
   console.log(`✅ install-prompt.html 동기화 완료`);
-  console.log(`   tokens.css → <pre id="code-full"> (${css.length} bytes, ${counts.total} 토큰)`);
-  console.log(`   메타 텍스트: Foundation ${counts.foundation}종 + Semantic ${counts.semantic}종 + Component ${counts.component}종`);
+  done.push('업데이트 시각 스탬프(data-update-file)');
+  for (const d of done) console.log(`   ${d}`);
 }
 
 if (require.main === module) {

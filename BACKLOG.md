@@ -75,6 +75,20 @@ vars-data 의 토큰 키가 전부 embed 됐는지만 검사한다.
 
 ## 🔴 우선순위 높음
 
+### 0. 컴포넌트 CSS 배포 — guide model → `components.css` 생성기 (2026-08-12 신규)
+
+- **배경**: Design Guide Download 개발자 탭을 GitHub 저장소(`S-1-UX-DESIGN-AI-GUIDELINE`) 안내로 전환했으나, **개발자·퍼블리셔가 실제로 컴포넌트를 만들 CSS 를 못 받는다.** `.s1-btn` 등 컴포넌트 스타일 **619규칙·100KB 가 `pages/components.html` 안 `<style>` 블록에만** 존재하고, import 가능한 파일이 없다. 저장소의 CSS 3종은 "변수"만 준다.
+- **하면 안 되는 방법**: `components.html` 의 `<style>` 을 그대로 뽑아 배포하는 것. 그 화면은 **손관리**라 **Gate 38 이 값 대조에서 명시적으로 제외**한다 — 정본과 일치하는지 검사하는 게이트가 없다. 2026-08-12 확인: Button·Checkbox·Toggle 3건은 정본과 일치했고 `harness:audit` 17/17 통과했으나, 이름 자동 대조로는 **43개 중 8개만** 매칭돼 **35개는 미확인**. 검증 안 된 값에 "S1 표준" 이름표를 다는 위험(river님 지적).
+- **올바른 경로**: `registry/components/component-guide-model.json`(11MB) 에서 생성한다. 이 모델은 `plugins/figma-vars-installer/src/build-components.ts`(정본)에서 자동 생성되고 **Gate 38 이 드리프트를 차단**한다. 42개 컴포넌트 · 43개 세트 전 variant 에 대해 `dimensions` · `layout`(layoutMode·align·padding·gap) · `appearance`(fill 의 `__tokenKey`·cornerRadius·strokeWeight) · `text` · `children` 트리가 모두 들어있다.
+- **필요한 작업**:
+  1. Figma auto-layout → CSS flexbox 변환 규칙 정의 (`HORIZONTAL`+`SPACE_BETWEEN` → `display:flex; justify-content:space-between` 등)
+  2. `__tokenKey`(`color/bg/level-0`) → CSS 변수(`--color-bg-level-0`) 매핑 — 기존 변환 규칙 재사용
+  3. variant 축(Size·State·Variant·Break) → 클래스 네이밍 설계. **기존 `.s1-btn` 어휘와 충돌/정합 확인 필수**(`.claude/rules/pages.md` Button 표준 7번)
+  4. 생성물 ↔ `components.html` 실렌더 대조 검증 (🤖 `component-verifier` 분리)
+  5. 새 Gate: 생성기 출력 드리프트 차단
+- **완료 판정**: 저장소에 `assets/css/components.css` 가 포함되고, **개발자 탭(현재 「준비 중」 상태 화면)** 이 실제 배포 안내로 열린다. 2026-08-12 결정 — 토큰만으로는 컴포넌트를 만들 수 없으므로 설치 안내를 자세히 두면 개발자가 "이걸로 되겠지" 하고 시작했다가 막힌다. 반쪽짜리를 완성처럼 내놓지 않기 위해 탭 내용을 비우고 준비 중으로 표기했다(river님 결정). 열 때 함께 제공: 토큰 CSS · 컴포넌트 CSS · 컴포넌트 마크업 · PC 동작 규칙.
+- **부수 확인**: `components.html` 인라인 CSS 가 **사이트 전용 `site-base.css` 의 역할 토큰 11개**(`--color-text-secondary`·`--color-bg-default`·`--color-surface-default` 등)에 의존 중이다. 컴포넌트가 사이트 전용 토큰을 참조하는 상태이므로 함께 정리해야 한다 ([[site-base 정리 판정]] 진행 중 과제와 겹침).
+
 ### 1. 별칭층 철거 backlog 마무리 (8개 컴포넌트)
 - 2026-07-10 `d167c7b`에서 라이브 CSS·문서탭은 정본화 완료, registry는 backlog로 남김
 - 대상: textarea, table, pagination, gnb, tab, toggle, radio, checkbox
