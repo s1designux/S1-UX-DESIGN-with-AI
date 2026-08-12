@@ -6,6 +6,8 @@ paths:
 
 # 컴포넌트 규칙 (분류 · 재사용)
 
+> 📏 **좁혀읽기:** `pages/components.html`(774KB)은 통독 금지 — `id=` 앵커·Grep 으로 해당 컴포넌트 섹션만. `component-guide-model.json`(10.6MB)은 **Read 금지**, 대조는 `npm run components:guide-model:check`.
+
 > CLAUDE.md 에서 이동(2026-08-05). 문장은 원문 그대로다.
 
 # 🎛️ 컴포넌트 관리 기준

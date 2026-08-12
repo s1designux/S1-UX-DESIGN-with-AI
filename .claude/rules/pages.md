@@ -9,6 +9,8 @@ paths:
 
 # 가이드 페이지 규칙 (IA · Button 표준 · 검증 기준 · CSS 네이밍)
 
+> 📏 **좁혀읽기:** 이 영역의 대형 파일(`pages/components.html` 774KB·`assets/js/icons-data.js` 682KB 등)은 통독 금지 — `id=` 앵커(components.html 에 250개)·Grep 으로 관련 섹션만 정독. 레이아웃 사실 확인은 📖 source-reader(H5).
+
 > CLAUDE.md 에서 이동(2026-08-05). 문장은 원문 그대로다(Button Integration 규칙 2번만 하드룰 H6 정합으로 정정 — 해당 줄에 표시).
 
 ## 네비게이션 관리

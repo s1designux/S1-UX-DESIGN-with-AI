@@ -10,6 +10,8 @@ paths:
 
 # 토큰 규칙 (Foundation · Semantic · Component · Light/Dark · 연동)
 
+> 📏 **좁혀읽기:** 이 영역의 대형 파일(`build-components.ts` 341KB 등)은 통독 금지 — Grep/심볼로 관련 구간만 정독. 토큰 1건의 표면 위치는 `npm run tokens:locate`, hex 역매핑은 `node scripts/figma-binding-lookup.js`.
+
 > CLAUDE.md 에서 이동(2026-08-05). 문장은 원문 그대로다. 정본·우선순위·정본 신설 금지는 루트 CLAUDE.md 소관.
 
 # 🎨 Foundation Token 규칙

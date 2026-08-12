@@ -25,6 +25,7 @@ guide model과 설치기는 결정론적 생성 결과를 소비하게 하는 �
 - 시각 구조·수치·variant·토큰·타이포: `build-components.ts`
 - 설명·사용 맥락·접근성·웹 태그·동작 유형·예시 문구: `registry/components/*.json`
 - `component-guide-model.json`, `component-facts.json`, DESIGN 문서와 설치기 zip은 파생 결과다.
+  ⚠️ `component-guide-model.json` 은 10.6MB — **Read 금지**, 대조는 `npm run components:guide-model:check` 로만. 부분 확인은 Grep.
 - `pages/components.html`은 손관리 화면이며 자동 생성 파생 결과가 아니다.
 - 파생 결과에서 값을 고치지 않는다. 정본 또는 메타를 고친 뒤 재생성한다.
 

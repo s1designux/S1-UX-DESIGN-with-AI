@@ -3,3 +3,10 @@ reports/component-preview/
 
 # 소스가드 자동 적용 백업 — 복구 전용, 일상 작업 불필요
 reports/apply-backups/
+
+# 토큰 폭탄 방어선 (2026-08-12) — 스크립트만 소비하는 대형 생성물. Read 시 컨텍스트 붕괴.
+# guide model(10.6MB·26만 줄)은 npm run components:guide-model:check 로만 대조한다.
+registry/components/component-guide-model.json
+
+# Figma 변수 스냅샷(227~410KB) — 스크립트 입력 전용, 에이전트 직접 읽기 불필요
+registry/figma/snapshots/
