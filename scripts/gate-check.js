@@ -6,15 +6,15 @@
  * **게이트 목록을 여기에 중복 적지 않는다.** 종전 이 자리에 6개만 나열돼 있어
  * 실제(40개)와 어긋난 채 방치됐다(2026-08-05 정정). 목록·정의의 위치는 하나씩만:
  *
- *   · 한눈표(번호·이름·한 줄)        → CLAUDE.md §🚦 Gate 한눈표
+ *   · 한눈표(번호·이름·한 줄)        → .claude/docs/gates-reference.md 상단 (2026-08-12 CLAUDE.md 에서 이관)
  *   · 정의·판정 로직·도입 사유·단독 실행 → .claude/docs/gates-reference.md
- *   · 실제로 무엇이 도는가            → 이 파일의 `[Gate N]` 콘솔 출력 (= 정본)
+ *   · 실제로 무엇이 도는가            → 이 파일의 `[Gate N]` 블록 (= 정본, 성공 게이트는 --verbose 로만 출력)
  *
  * 이 파일에 배선되지 않은 것: Gate 2(Figma·수동) · Gate 5 의 UI 부분(수동).
  * Gate 5 의 Harness 부분은 `npm run harness:audit` 로 단독 실행한다.
  *
- * 게이트를 추가하면: 아래에 `[Gate N]` 블록을 붙이고 → CLAUDE.md 한눈표 1행 →
- * gates-reference.md 정의를 함께 쓴다. (검사 항목을 사용자 승인 없이 약화하는 것은 금지)
+ * 게이트를 추가하면: 아래에 `[Gate N]` 블록을 붙이고 → gates-reference.md 한눈표 1행 +
+ * 정의를 함께 쓴다. (검사 항목을 사용자 승인 없이 약화하는 것은 금지)
  */
 
 const fs = require('fs');

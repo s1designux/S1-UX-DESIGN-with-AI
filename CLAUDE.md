@@ -2,32 +2,32 @@
 
 > 이 문서는 Claude가 디자인 시스템을 **수집, 정리, 구조화, 검증**하기 위한 기준입니다.
 > 현재 목표는 UI 구현이 아니라 **디자인 시스템을 구축하는 것**입니다.
-> 마지막 업데이트: 2026-08-05 (문서 구조 정비 — 작업 영역별 규칙을 `.claude/rules/` 로 이관해 상시 로드 비용 절감. 규칙 유실 0.)
+> 마지막 업데이트: 2026-08-12 (토큰 효율화 중간 정리 — Gate 한눈표를 gates-reference 로 이관, 중복 재기술 포인터화. 규칙 유실 0.)
 
 **이 문서에 남는 것 = 「계획 단계에 필요한 것」과 「매 보고에 필요한 것」뿐이다.** 작업 영역별 상세 규칙은
-`.claude/rules/*.md` 에 있고 **그 영역 파일을 열 때 자동으로 로드**된다(아래 라우팅 표의 「자동 로드」 열).
+`.claude/rules/*.md` 에 있고 **그 영역 파일을 열 때 자동으로 로드**된다(각 규칙 파일 frontmatter 의 `paths` 가 배선).
 루트를 다시 불리지 않는다 — **Gate 37(Doc Budget)** 이 크기·참조·이력 행수를 기계로 막는다.
 
 ---
 
-## 🧭 라우팅 — 하려는 일 → 진입점 → 자동 로드되는 규칙
+## 🧭 라우팅 — 하려는 일 → 진입점
 
-| 하려는 일 | 진입점 (스킬/에이전트) | 편집 시 자동 로드 |
-|---|---|---|
-| 토큰 **값** 1건 변경 ("이 토큰 gray/100 으로") | 🤖 `token-sync` → 정본 1곳 수정 후 `npm run tokens:reconcile` (표면 위치는 `npm run tokens:locate -- <token>`) | `.claude/rules/tokens.md` |
-| 토큰 **구조·네이밍** 검증·설계 | 🤖 `token-validator` (`design-system` 스킬) — **새 토큰 생성·네이밍·구조 변경은 token-sync 범위 밖** | `.claude/rules/tokens.md` |
-| 가이드 페이지 생성·업데이트 | 🤖 `guide-builder` (`design-system` 스킬) | `.claude/rules/pages.md` |
-| 컴포넌트 정본 → 모델·설치기 자동 동기화 | 🧭 `component-guide-sync` — 생성=`guide-builder`, 검증=`component-verifier` (사이트는 손관리·자동 덮어쓰기 금지) | `.claude/rules/pages.md`·`.claude/rules/components.md`·`.claude/rules/installer.md` |
-| Figma 원본 조회·비교 | 🤖 `figma-inspector` (읽기 절차 = `.claude/docs/figma-mcp-read.md`) | — |
-| **Figma 컴포넌트 → 코드** ("Figma ~ 구현/변환해줘") | 🪜 `figma-to-code` 스킬 (5단계 검문소) | `.claude/rules/pages.md`·`.claude/rules/components.md` |
-| **레거시 화면 → Figma 재현** ("이 화면 그대로 만들어줘") | 🪞 `screen-rebuild` 스킬 — 빌드=`screen-rebuilder`, 검증=`component-verifier` | — |
-| **Figma 라이브러리 컴포넌트/변형세트 빌드·편집** ("Figma에 ~ 만들어줘", "variant 세트로 묶어줘") | 🏗️ `figma-library-build` 스킬 — 빌드=`figma-library-builder`, 검증=`component-verifier`, ⭐는 흐름만 (**하드룰 H1**) | — |
-| 설치기 생성기(`build-components.ts`) 수정 | ⭐ 또는 코드 에이전트가 빌드, 검증은 🤖 `component-verifier` 분리 (**하드룰 H4**·Gate 13) | `.claude/rules/installer.md`·`.claude/rules/tokens.md` |
-| 구현 결과 원본 대조 검수 | 🤖 `component-verifier` | — |
-| 저장소 **정본 사실** 확인(레이아웃·값·이름) | 📖 `source-reader` (**하드룰 H5** — ⭐ 자기 훑기 금지) | — |
-| 컴포넌트 재사용·분류 판단 | `.claude/rules/components.md` 확인 후 진행 | `.claude/rules/components.md` |
-| 대시보드 갱신·Figma 플러그인 재등록 | `.claude/docs/ops-procedures.md` | — |
-| 다음 작업 계획 | `.claude/docs/project-status.md` (완료 단계·미결 우선순위) | — |
+| 하려는 일 | 진입점 (스킬/에이전트) |
+|---|---|
+| 토큰 **값** 1건 변경 ("이 토큰 gray/100 으로") | 🤖 `token-sync` → 정본 1곳 수정 후 `npm run tokens:reconcile` (표면 위치는 `npm run tokens:locate -- <token>`) |
+| 토큰 **구조·네이밍** 검증·설계 | 🤖 `token-validator` (`design-system` 스킬) — **새 토큰 생성·네이밍·구조 변경은 token-sync 범위 밖** |
+| 가이드 페이지 생성·업데이트 | 🤖 `guide-builder` (`design-system` 스킬) |
+| 컴포넌트 정본 → 모델·설치기 자동 동기화 | 🧭 `component-guide-sync` — 생성=`guide-builder`, 검증=`component-verifier` (사이트는 손관리·자동 덮어쓰기 금지) |
+| Figma 원본 조회·비교 | 🤖 `figma-inspector` (읽기 절차 = `.claude/docs/figma-mcp-read.md`) |
+| **Figma 컴포넌트 → 코드** ("Figma ~ 구현/변환해줘") | 🪜 `figma-to-code` 스킬 (5단계 검문소) |
+| **레거시 화면 → Figma 재현** ("이 화면 그대로 만들어줘") | 🪞 `screen-rebuild` 스킬 — 빌드=`screen-rebuilder`, 검증=`component-verifier` |
+| **Figma 라이브러리 컴포넌트/변형세트 빌드·편집** ("Figma에 ~ 만들어줘", "variant 세트로 묶어줘") | 🏗️ `figma-library-build` 스킬 — 빌드=`figma-library-builder`, 검증=`component-verifier`, ⭐는 흐름만 (**하드룰 H1**) |
+| 설치기 생성기(`build-components.ts`) 수정 | ⭐ 또는 코드 에이전트가 빌드, 검증은 🤖 `component-verifier` 분리 (**하드룰 H4**·Gate 13) |
+| 구현 결과 원본 대조 검수 | 🤖 `component-verifier` |
+| 저장소 **정본 사실** 확인(레이아웃·값·이름) | 📖 `source-reader` (**하드룰 H5** — ⭐ 자기 훑기 금지) |
+| 컴포넌트 재사용·분류 판단 | `.claude/rules/components.md` 확인 후 진행 |
+| 대시보드 갱신·Figma 플러그인 재등록 | `.claude/docs/ops-procedures.md` |
+| 다음 작업 계획 | `.claude/docs/project-status.md` (완료 단계·미결 우선순위) |
 
 **에이전트 정본:** `.claude/agents/` — token-validator · guide-builder · figma-inspector · component-verifier · token-sync · screen-rebuilder(🪞) · figma-library-builder(🏗️) · source-reader(📖). 상세 이름표는 `.claude/docs/actors-reference.md`.
 
@@ -64,9 +64,8 @@ Claude는 다음 역할만 수행한다:
 
 ### 세 가지 원칙
 
-1. **값이 어긋나면 저울질 없이 파생을 고친다** (하드룰 H6). 파생 값은 증거가 아니다.
-   **"파생이 A 인데 정본은 B 다, 어느 쪽이 맞나?"는 성립하지 않는 질문이다.** 성립하는 질문은 **"정본을 A 로 바꿀까요?"** 하나뿐이다.
-2. **정본에 새 항목을 ⭐ 가 임의로 만들지 않는다** (하드룰 H7). 근거가 없으면 만들어 메우지 말고 `needs-decision` 으로 올린다. 사용자 승인 시에는 추가된다 — **Gate 34** 가 승인 기록을 본다.
+1. **값이 어긋나면 저울질 없이 파생을 고친다** — 파생 값은 증거가 아니다 (전문: 하드룰 H6).
+2. **정본에 새 항목을 ⭐ 가 임의로 만들지 않는다** — 근거가 없으면 `needs-decision` 으로 올린다 (전문: 하드룰 H7 · Gate 34).
 3. **정본을 고쳤으면 `npm run tokens:reconcile` 한 번**으로 파생 전체가 재생성된다. **파생 손편집 금지.** 자동 연동 경로가 없는 곳을 발견하면 손으로 메우지 말고 **연동을 만든다.**
 
 > registry 의 **메타 정보**(설명·상태·거버넌스·Figma 노드 매핑·사용맥락·접근성)는 정본에 대응물이 없으므로 **그 부분은 registry 가 기준**이다. `registry/components/*.json` 의 **값 필드는 손편집 사본이라 믿지 않는다**(알려진 stale 78건).
@@ -119,9 +118,7 @@ Pattern → Legacy
 
 ## 두 갈래 분류 (레거시 ↔ 정본 불일치 처리)
 
-> ⚠️ **적용 범위 — 반드시 먼저 읽을 것.** 이 분류는 **레거시(DS 2.4) ↔ 정본** 사이에만 쓴다.
-> **정본 ↔ 파생 표면 사이에는 적용 금지**다 — 파생이 정본과 다른 것은 (b)'사전 등록된 개선'이 될 수 없고,
-> 그냥 **파생이 틀린 것**이라 저울질 없이 파생을 고친다(§🏛️ 하드룰 H6).
+> ⚠️ **적용 범위:** 이 분류는 **레거시(DS 2.4) ↔ 정본** 사이에만 쓴다. **정본 ↔ 파생 사이 적용 금지** — 파생 불일치는 저울질 없이 파생을 고친다(하드룰 H6).
 
 - **(a) 코드 실수** (색 오연결·variant 누락 등) → **코드를 고친다.**
 - **(b) 사전 등록된 개선** (Figma 레거시의 누락/구식을 코드가 개선) → **코드를 유지하고 "Figma 개선 필요 목록"에 적재.** 이미 합의된 개선(예: **hover** — 레거시에 자주 누락)은 (b)로 사전 등록한다.
@@ -257,69 +254,22 @@ Claude는 **Main Orchestrator**다. 사용자는 **목표 수준 의도**만 준
 
 ---
 
-# 🚦 Gate 한눈표
+# 🚦 Gate — 커밋 검문소
 
-> **정의·판정 로직·도입 사유·단독 실행 명령 전문은 `.claude/docs/gates-reference.md`.** 강제는 `npm run gate:check` 가 수행한다 — **Claude 가 정의문을 외워 지키는 게 아니다.** 아래는 무슨 Gate 가 있는지만.
-
-| # | 이름 | 한 줄 |
-|---|------|------|
-| 1 | Registry | registry JSON 구조·Semantic 경유·네이밍·필드 |
-| 2 | Figma | 등록 nodeId/componentKey 유효성 — **gate:check 미배선 · 수동** |
-| 3 | Quality | Foundation 외 raw HEX 금지·rgba 예외만 |
-| 4 | Report | reports 색인 커버리지 |
-| 5 | UI + Harness Audit | 사이즈 분기·다크 비교·아이콘 색 — **`npm run harness:audit` 단독 · UI 부분 수동** |
-| 6 | Installer Coverage | 설치기 토큰 커버리지 |
-| 6b | Installer Build Freshness | 커밋 zip 이 최신 빌드인지 |
-| 6c | Installer Tooltip | zip 안 ui.html 툴팁·날짜가 소스 재계산값과 같은지 |
-| 7 | Token Sync Monitor | 전 표면 토큰 '값' 일치(정본=vars-data) |
-| 7b | Token Value Consistency | 해석 HEX 표면 일치(tokens.css↔vars-data↔semantic.html) |
-| 8 | Component Key Coverage | 빌더 동적 조합 키가 정본에 다 있나 |
-| 9 | Number/Sizing Page | number 토큰 페이지 일치·폐지 사이징 재유입 0 |
-| 10 | Doc Token Ref Drift | 옛 토큰명 잔재·폐기 토큰 재유입·유령행 차단 |
-| 11 | Component Anatomy | 상태별 필수/금지 하위 요소(caret·clear 등) |
-| 12 | Icon Instance Policy | 아이콘=라이브러리 인스턴스 강제 |
-| 13 | Installer Build Verification | build-components.ts 독립 검증(해시)·⭐ 자가검증 차단 |
-| 14 | Verified Content | 검증 고정 문구 verbatim·날조 차단 |
-| 15 | Token Naming | 토큰 이름 규칙(kebab·brand-in-semantic 금지) |
-| 15b | Shadow Parse | 그림자 문자열 → Figma Effect 변환 파서가 맞나 |
-| 16 | Component Origin | 원본틀 필요인데 원본대조 0 차단·미분류 차단 |
-| 17 | Orphan Token | 안 쓰이는 semantic color 토큰 |
-| 18 | Component Page Coverage | 설치기 컴포넌트 ↔ HTML 페이지 대조 |
-| 19 | Variant/State Coverage | 섹션이 설치기 State 다 보여주나 |
-| 20 | Registry Token Drift | 비정본 registry 의 stale 토큰 언급 추적 |
-| 21 | Registry Active/Legacy | 은퇴 파일이 index active 로 남는 좀비 등록 차단 |
-| 22 | Page Layout Policy | 페이지 공통 틀·폭 정책(wide/readable) |
-| 23 | Component Presentation | PC 컴포넌트 표출 규칙(실제 렌더 DOM 대조) |
-| 24 | DESIGN.md Drift | DESIGN.md 가 정본보다 낡으면 차단 |
-| 25 | Component Alias Canonical | 컴포넌트-별칭이 정본 토큰으로 해석되나 |
-| 26 | Icons Stats Consistency | 아이콘 개수가 정본(icons-data.js)과 일치 |
-| 27 | Token Role | **글자엔 글자 토큰** — border/bg/surface 오연결 차단 |
-| 28 | System Map Drift | 대시보드가 낡았나 — **불일치=경고(비차단)** |
-| 29 | Dark Divergence | 라이트 같은데 다크만 갈리는 이상치(래칫) |
-| 30 | Component Registration | 설치기 전집합 ↔ 등록 4면 차집합 대조 |
-| 31 | Icon Key Consistency | 설치기 `ICON_KEYS` ↔ provenance 3면 정합 |
-| 32 | Size Naming | 같은 것을 다른 단어로 적는 것 차단(허용 어휘) |
-| 33 | *(예약)* | 텍스트 스타일 정합 검사기 자리 |
-| 34 | Canon Addition Approval | **정본에 줄이 늘어나는 것을 보는 유일한 게이트** — 무승인 차단(H7) |
-| 35 | Typography Generation | typography.css 가 textstyles-data.ts 와 일치 |
-| 36 | Canon Manifest | **「무엇이 정본인가」** 선언 ↔ 실제 배선 양방향 대조 |
-| 37 | Doc Budget | **CLAUDE.md 재비대화 차단** — 크기 래칫·참조 경로 실존·변경이력 3행 |
-| 38 | Component Guide Generation | `build-components.ts` → guide model 드리프트 차단 (메인 사이트는 손관리) |
-
-일괄 실행: `npm run gate:check`. **Gate 2·5 는 여기에 포함되지 않는다**(위 표 참조).
+**Gate 1~38 한눈표·정의·판정 로직·단독 실행 명령 전문 = `.claude/docs/gates-reference.md`** (Gate 작업 시 그 파일을 먼저 Read). 강제는 `npm run gate:check` 가 수행한다 — **Claude 가 정의문을 외워 지키는 게 아니다.** 성공 시 요약 1줄, 상세는 `--verbose`.
+**예외(gate:check 미배선·수동):** Gate 2(Figma nodeId 유효성) · Gate 5 UI 부분(Harness 부분은 `npm run harness:audit` 단독).
 
 ## ⚙️ 강제 계층 — Hooks
 
-> **핵심:** Gate·서브에이전트는 *자동이 아니다*. Gate는 사람이 `npm run gate:check`를 칠 때만, 에이전트는 호출돼야만 돈다. **진짜 자동·강제는 hook만 가능하다.**
+> **핵심:** Gate·서브에이전트는 *자동이 아니다*. **진짜 자동·강제는 hook만 가능하다.** (전파=token-sync · 판정=Gate · 강제=hooks)
 
-| 훅 | 위치 | 발동 | 동작 |
-|----|------|------|------|
-| **PreToolUse** (차단) | `.claude/settings.json`(커밋됨) → `scripts/figma-code-hex-check.js` | `use_figma` 호출 직전 | 하드코딩 hex 탐지 → exit 2로 **도구 실행 차단**. 순수 장식 크롬만 `// figma-hex-allow: 사유` 예외 |
-| **PreToolUse** (차단) | `.claude/settings.json` → `scripts/figma-code-font-check.js` | `use_figma` 호출 직전 | 비-Pretendard 폰트 탐지 → exit 2로 **차단**. 일시 Noto 는 `// figma-font-temp:` 마커 필수 |
-| **pre-commit** (차단) | `.git/hooks/pre-commit` (정본 `scripts/hooks/pre-commit`) | `git commit` 시 | `npm run gate:check` 실행, error면 **커밋 차단** |
+| 훅 (전부 차단형) | 위치 | 발동 → 동작 |
+|----|------|------|
+| **PreToolUse** hex | `.claude/settings.json` → `scripts/figma-code-hex-check.js` | `use_figma` 직전 — 하드코딩 hex 면 exit 2 차단 (장식 크롬만 `// figma-hex-allow: 사유`) |
+| **PreToolUse** 폰트 | `.claude/settings.json` → `scripts/figma-code-font-check.js` | `use_figma` 직전 — 비-Pretendard 면 차단 (일시 Noto 는 `// figma-font-temp:` 마커) |
+| **pre-commit** | `.git/hooks/pre-commit` (정본 `scripts/hooks/pre-commit`) | `git commit` 시 `npm run gate:check`, error 면 커밋 차단 |
 
-- **재설치:** package.json `prepare` 가 `npm install` 시 자동 설치. Windows 에서 실패하면 Git Bash 에서 `bash scripts/hooks/install-git-hooks.sh` 1회.
-- **책임 분리:** 전파=token-sync(작업자) · 판정=Gate(검사기) · **강제=hooks(집행자, commit 시점)**.
+- **재설치:** `npm install` 시 자동(`prepare`). 실패 시 Git Bash 에서 `bash scripts/hooks/install-git-hooks.sh` 1회.
 <!-- 이식성 봉합(2026-08-03): 종전 배선이 전역 설정에만 있어 컴퓨터를 옮기자 훅이 통째로 사라져 있었고 차단장치가 꺼진 것을 아무도 몰랐다. 또 종전 배선은 `jq -r '.tool_input.code' | node …` 로 jq+파이프(셸)에 의존해 jq 없는 환경에서는 등록해도 안 걸렸다 → `scripts/lib/hook-input.js` 가 훅 JSON 을 직접 파싱해 외부 의존 0. matcher 는 도구 이름 변형(mcp__figma__* 등)을 모두 잡도록 `use_figma` 부분매칭. 우회: `git commit --no-verify`(비권장 — 드리프트가 저장소에 유입됨). 검증 완료(2026-06-11): vars-data 값을 일부러 어긋나게 하면 pre-commit 이 exit 1 로 커밋을 막는 것을 확인. -->
 
 ---
@@ -388,6 +338,6 @@ Claude는 **Main Orchestrator**다. 사용자는 **목표 수준 의도**만 준
 
 | 날짜 | 변경 내용 (한 줄) |
 |------|------------------|
-| 2026-08-05 | **CLAUDE.md 구조 정비 — 작업 영역별 규칙을 `.claude/rules/` 로 이관(paths 조건부 로드) + Gate 37 Doc Budget 신설.** 루트가 매 세션·**매 에이전트 spawn 마다** 전액 로드돼 비용이 배수로 나가고 있었고, 길이 자체가 규칙 준수율을 떨어뜨렸다. 규칙 문장은 재작성 없이 그대로 이동(tokens·pages·components·installer 4개) · Gate 20~36 상세는 gates-reference 로 · 하드룰 근거 서사는 HTML 주석(토큰 0)으로 보존. stale 3건 제거(존재한 적 없는 규칙 문서 4개를 가리키던 표 → BACKLOG 복원 과제 · 삭제된 md-review 워크플로우 → BACKLOG · 미작성 token-map.json 행) · Button Integration 규칙의 H6 모순 정정. 재비대화는 산문 자가점검에서 **기계 차단**으로 승격. |
+| 2026-08-12 | **토큰 효율화 중간 정리 1차 — 검사기 출력 다이어트(gate:check 172줄→요약, `--verbose` 복원) + CLAUDE.md 감량(Gate 한눈표는 gates-reference 로 이관, H6/H7 중복 재기술 포인터화, 라우팅 자동로드 열 제거 — frontmatter paths 가 정본).** 판정 로직·규칙 의미 무변경. |
 
 > 이전 전체 상세 이력: **`reports/changelog-archive.md`** 참조.

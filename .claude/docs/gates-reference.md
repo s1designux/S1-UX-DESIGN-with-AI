@@ -1,8 +1,58 @@
 # Gate 정의 · 실행 순서 (참조 문서)
 
-> CLAUDE.md 본문에서 분리한 **참조 전용** 문서다. Gate 상세 정의와 실행 순서 전문을 담는다.
-> 본문에는 Gate 번호·이름 요약표와 이 파일 포인터만 둔다. **Gate 작업(신설/수정/디버깅) 시 이 파일을 먼저 Read** 한다.
+> CLAUDE.md 본문에서 분리한 **참조 전용** 문서다. Gate 한눈표·상세 정의·실행 순서 전문을 담는다.
+> 본문에는 이 파일 포인터만 둔다(한눈표도 2026-08-12 이 파일로 이관 — 상시 로드 4KB 절감). **Gate 작업(신설/수정/디버깅) 시 이 파일을 먼저 Read** 한다.
 > 정본 강제는 `npm run gate:check`(= `scripts/gate-check.js`)가 수행하므로, 이 정의문을 매 세션 로드할 필요는 없다.
+> 게이트를 추가하면: `gate-check.js` 에 `[Gate N]` 블록 → 아래 한눈표 1행 → 이 파일에 정의를 함께 쓴다.
+
+---
+
+## 🚦 Gate 한눈표
+
+| # | 이름 | 한 줄 |
+|---|------|------|
+| 1 | Registry | registry JSON 구조·Semantic 경유·네이밍·필드 |
+| 2 | Figma | 등록 nodeId/componentKey 유효성 — **gate:check 미배선 · 수동** |
+| 3 | Quality | Foundation 외 raw HEX 금지·rgba 예외만 |
+| 4 | Report | reports 색인 커버리지 |
+| 5 | UI + Harness Audit | 사이즈 분기·다크 비교·아이콘 색 — **`npm run harness:audit` 단독 · UI 부분 수동** |
+| 6 | Installer Coverage | 설치기 토큰 커버리지 |
+| 6b | Installer Build Freshness | 커밋 zip 이 최신 빌드인지 |
+| 6c | Installer Tooltip | zip 안 ui.html 툴팁·날짜가 소스 재계산값과 같은지 |
+| 7 | Token Sync Monitor | 전 표면 토큰 '값' 일치(정본=vars-data) |
+| 7b | Token Value Consistency | 해석 HEX 표면 일치(tokens.css↔vars-data↔semantic.html) |
+| 8 | Component Key Coverage | 빌더 동적 조합 키가 정본에 다 있나 |
+| 9 | Number/Sizing Page | number 토큰 페이지 일치·폐지 사이징 재유입 0 |
+| 10 | Doc Token Ref Drift | 옛 토큰명 잔재·폐기 토큰 재유입·유령행 차단 |
+| 11 | Component Anatomy | 상태별 필수/금지 하위 요소(caret·clear 등) |
+| 12 | Icon Instance Policy | 아이콘=라이브러리 인스턴스 강제 |
+| 13 | Installer Build Verification | build-components.ts 독립 검증(해시)·⭐ 자가검증 차단 |
+| 14 | Verified Content | 검증 고정 문구 verbatim·날조 차단 |
+| 15 | Token Naming | 토큰 이름 규칙(kebab·brand-in-semantic 금지) |
+| 15b | Shadow Parse | 그림자 문자열 → Figma Effect 변환 파서가 맞나 |
+| 16 | Component Origin | 원본틀 필요인데 원본대조 0 차단·미분류 차단 |
+| 17 | Orphan Token | 안 쓰이는 semantic color 토큰 |
+| 18 | Component Page Coverage | 설치기 컴포넌트 ↔ HTML 페이지 대조 |
+| 19 | Variant/State Coverage | 섹션이 설치기 State 다 보여주나 |
+| 20 | Registry Token Drift | 비정본 registry 의 stale 토큰 언급 추적 |
+| 21 | Registry Active/Legacy | 은퇴 파일이 index active 로 남는 좀비 등록 차단 |
+| 22 | Page Layout Policy | 페이지 공통 틀·폭 정책(wide/readable) |
+| 23 | Component Presentation | PC 컴포넌트 표출 규칙(실제 렌더 DOM 대조) |
+| 24 | DESIGN.md Drift | DESIGN.md 가 정본보다 낡으면 차단 |
+| 25 | Component Alias Canonical | 컴포넌트-별칭이 정본 토큰으로 해석되나 |
+| 26 | Icons Stats Consistency | 아이콘 개수가 정본(icons-data.js)과 일치 |
+| 27 | Token Role | **글자엔 글자 토큰** — border/bg/surface 오연결 차단 |
+| 28 | System Map Drift | 대시보드가 낡았나 — **불일치=경고(비차단)** |
+| 29 | Dark Divergence | 라이트 같은데 다크만 갈리는 이상치(래칫) |
+| 30 | Component Registration | 설치기 전집합 ↔ 등록 4면 차집합 대조 |
+| 31 | Icon Key Consistency | 설치기 `ICON_KEYS` ↔ provenance 3면 정합 |
+| 32 | Size Naming | 같은 것을 다른 단어로 적는 것 차단(허용 어휘) |
+| 33 | *(예약)* | 텍스트 스타일 정합 검사기 자리 |
+| 34 | Canon Addition Approval | **정본에 줄이 늘어나는 것을 보는 유일한 게이트** — 무승인 차단(H7) |
+| 35 | Typography Generation | typography.css 가 textstyles-data.ts 와 일치 |
+| 36 | Canon Manifest | **「무엇이 정본인가」** 선언 ↔ 실제 배선 양방향 대조 |
+| 37 | Doc Budget | **CLAUDE.md 재비대화 차단** — 크기 래칫·참조 경로 실존·변경이력 3행 |
+| 38 | Component Guide Generation | `build-components.ts` → guide model 드리프트 차단 (메인 사이트는 손관리) |
 
 ---
 
