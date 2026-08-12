@@ -172,10 +172,6 @@
       font-family:'SF Mono','Fira Code',monospace;
       font-size:11.5px; color:#1d6ceb; word-break:break-all;
     }
-    /* 첫 칸이 파일경로가 아니라 한글 항목명일 때 */
-    .info-table.plain td:first-child {
-      font-family:inherit; font-size:12.5px; font-weight:600; color:#111827; word-break:keep-all;
-    }
     .info-table td code {
       font-family:'SF Mono','Fira Code',monospace; font-size:11px;
       background:#f3f4f6; padding:1px 5px; border-radius:4px; color:#1d6ceb; word-break:break-all;
@@ -211,23 +207,50 @@
       background:#f3f4f6; padding:1px 6px; border-radius:4px; font-size:11.5px; color:#1d6ceb;
     }
 
-    /* ── 주의 박스 ── */
-    .notice-box {
-      padding:12px 15px; margin-bottom:16px;
-      background:#fffbeb; border:1px solid #fde68a; border-radius:10px;
-      font-size:12px; color:#92400e; line-height:1.8;
+    /* ── 준비 중 패널 (개발자 탭) ── */
+    .wip-panel {
+      max-width:600px; margin:24px auto 40px; text-align:center;
+      padding:44px 32px 36px;
+      border:1.5px solid #e5e7eb; border-radius:18px; background:#fff;
     }
-    .notice-box code {
-      background:rgba(146,64,14,0.1); padding:1px 5px; border-radius:4px; font-size:11.5px;
+    .wip-icon {
+      width:56px; height:56px; margin:0 auto 16px; border-radius:16px;
+      display:flex; align-items:center; justify-content:center;
+      background:#fff7ed; color:#c2410c;
     }
-    /* ── 제공 상태 배지 ── */
-    .status-badge {
-      display:inline-block; padding:3px 9px; border-radius:999px;
-      font-size:11px; font-weight:700; white-space:nowrap;
+    .wip-badge {
+      display:inline-block; padding:4px 12px; border-radius:999px;
+      background:#fff7ed; color:#c2410c; font-size:11.5px; font-weight:700;
     }
-    .status-badge.ready { background:#ecfdf5; color:#059669; }
-    .status-badge.wip   { background:#fff7ed; color:#c2410c; }
-    .muted-note { color:#9ca3af; font-size:11.5px; }
+    .wip-title { font-size:19px; font-weight:700; color:#111827; margin:12px 0 0; }
+    .wip-desc  { font-size:13.5px; color:#6b7280; line-height:1.85; margin:10px 0 0; }
+
+    .wip-reason, .wip-next, .wip-meanwhile {
+      text-align:left; margin-top:22px; padding:16px 18px;
+      border-radius:12px; background:#fafafa; border:1px solid #f0f1f3;
+    }
+    .wip-meanwhile { background:#f5f9ff; border-color:#dbeafe; }
+    .wip-reason-title, .wip-next-title, .wip-meanwhile-title {
+      font-size:12px; font-weight:700; color:#111827; margin-bottom:8px;
+    }
+    .wip-reason p, .wip-meanwhile p {
+      margin:0; font-size:12.5px; color:#4b5563; line-height:1.95;
+    }
+    .wip-next ul { margin:0; padding-left:20px; list-style:disc; }
+    .wip-next li { font-size:12.5px; color:#4b5563; line-height:2.05; }
+    .wip-cta {
+      display:inline-flex; align-items:center; gap:7px; margin-top:14px;
+      padding:9px 18px; border-radius:9px; border:none; cursor:pointer;
+      font-size:13px; font-weight:600; background:#1d6ceb; color:#fff;
+      transition:background 0.15s;
+    }
+    .wip-cta:hover { background:#2158c8; }
+
+    .tab-wip-dot {
+      display:inline-block; margin-left:6px; padding:1px 7px; border-radius:999px;
+      background:#fff7ed; color:#c2410c; font-size:10px; font-weight:700;
+      vertical-align:middle;
+    }
 
     .optional-tag {
       display:inline-block; margin-left:6px; padding:2px 8px; border-radius:999px;
@@ -270,7 +293,7 @@
       <!-- ── 상단 탭: 디자이너 / 개발자 / AI프롬프트 ── -->
       <div class="top-tabs">
         <button class="top-tab active" data-top="designer">디자이너</button>
-        <button class="top-tab"        data-top="dev">개발자</button>
+        <button class="top-tab"        data-top="dev">개발자<span class="tab-wip-dot">준비 중</span></button>
         <button class="top-tab"        data-top="ai">AI프롬프트</button>
       </div>
 
@@ -418,225 +441,55 @@
         </div><!-- /install-steps -->
       </div><!-- /top-ai -->
 
-      <!-- ══ 개발자용 패널 ══ -->
+      <!-- ══ 개발자용 패널 (준비 중) ══
+           2026-08-12 — 내용을 의도적으로 비웠다. 토큰 CSS 만으로는 컴포넌트를 만들 수 없는데
+           설치 방법을 자세히 안내하면 개발자가 "이걸로 되겠지" 하고 시작했다가 막힌다.
+           컴포넌트 CSS 배포(BACKLOG 0번)가 끝나면 그때 한 벌로 연다. -->
       <div class="top-panel" id="top-dev">
-        <div class="install-steps">
+        <div class="wip-panel">
+          <div class="wip-icon">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+              <circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15.5 14"/>
+            </svg>
+          </div>
+          <div class="wip-badge">준비 중</div>
+          <h2 class="wip-title">개발자용 배포는 준비 중입니다</h2>
+          <p class="wip-desc">
+            지금 공개하면 <strong>반쪽짜리 기준</strong>을 드리게 되어, 준비가 끝날 때까지 열지 않습니다.
+          </p>
 
-          <!-- Step 1 : 저장소 받기 -->
-          <div class="install-step">
-            <div class="step-header">
-              <div class="step-number">1</div>
-              <div>
-                <div class="step-title">디자인가이드 저장소 받기</div>
-                <div class="step-desc">토큰 CSS · 컴포넌트 실측 사양 · PC 동작 계약 · 참고 화면이 한 벌로 들어있습니다</div>
-              </div>
-              <span class="update-stamp" data-update-file="assets/css/tokens.css"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> 업데이트 2026-07-29 16:55</span>
-            </div>
-            <div class="step-body">
-              <div class="file-card">
-                <div class="file-card-left">
-                  <div class="file-icon">📦</div>
-                  <div>
-                    <div class="file-name" id="repo-url-dev">https://github.com/s1designux/S-1-UX-DESIGN-AI-GUIDELINE</div>
-                    <div class="repo-note">GitHub 공개 저장소 · 매일 한국시간 오전 3시 15분에 원본에서 자동 동기화</div>
-                  </div>
-                </div>
-                <div style="display:flex;gap:8px;flex-wrap:wrap;">
-                  <a class="download-btn" href="https://github.com/s1designux/S-1-UX-DESIGN-AI-GUIDELINE" target="_blank" rel="noopener">
-                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
-                    GitHub에서 열기
-                  </a>
-                  <button class="copy-all-btn" onclick="copyBlock(this, 'repo-url-dev')">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
-                    주소 복사
-                  </button>
-                </div>
-              </div>
-
-              <div class="snippet-row" style="margin-top:14px;">
-                <span class="snippet-label">받기</span>
-                <div class="snippet-block">
-                  <code class="snippet-code">git clone https://github.com/s1designux/S-1-UX-DESIGN-AI-GUIDELINE.git</code>
-                  <button class="snippet-copy" onclick="copySnippet(this, 'git clone https://github.com/s1designux/S-1-UX-DESIGN-AI-GUIDELINE.git')">복사</button>
-                </div>
-              </div>
-              <div class="snippet-row" style="margin-top:10px;">
-                <span class="snippet-label">최신화</span>
-                <div class="snippet-block">
-                  <code class="snippet-code">git pull</code>
-                  <button class="snippet-copy" onclick="copySnippet(this, 'git pull')">복사</button>
-                </div>
-              </div>
-              <div class="use-hint">저장소는 매일 갱신되므로, 작업 시작 전 <strong>최신화</strong>를 한 번 실행하세요. git을 쓰지 않는다면 GitHub 화면 오른쪽 위 <strong>Code → Download ZIP</strong> 으로 받아도 됩니다(이 경우 갱신 때마다 다시 받아야 합니다).</div>
-            </div>
+          <div class="wip-reason">
+            <div class="wip-reason-title">왜 아직인가</div>
+            <p>
+              색·간격 같은 <strong>토큰</strong>은 준비돼 있지만, 그것만으로는 버튼 하나를 만들 수 없습니다.
+              실제 컴포넌트 스타일은 아직 <strong>가져다 쓸 수 있는 파일로 정리되지 않았고</strong>,
+              그 값이 디자인 정본과 일치하는지도 확인이 끝나지 않았습니다.
+              검증되지 않은 값을 「S1 표준」으로 배포하면, 서비스마다 서로 다른 기준이 퍼집니다.
+            </p>
           </div>
 
-          <!-- Step 2 : 프로젝트에 설치 -->
-          <div class="install-step">
-            <div class="step-header">
-              <div class="step-number">2</div>
-              <div>
-                <div class="step-title">토큰 CSS를 프로젝트에 설치</div>
-                <div class="step-desc">저장소 <code>assets/css/</code> 안의 <strong>3개 파일만</strong> 프로젝트로 복사한 뒤 아래 3줄을 추가</div>
-              </div>
-            </div>
-            <div class="step-body">
-
-              <table class="info-table" style="margin-bottom:6px;">
-                <thead><tr><th style="width:32%">가져갈 파일</th><th>무엇이 들었나</th></tr></thead>
-                <tbody>
-                  <tr><td>tokens.css</td><td>색·간격·반경·글자크기 등 <strong>기본 변수</strong>. 대부분의 값이 여기 있습니다</td></tr>
-                  <tr><td>component-tokens.css</td><td>버튼·인풋 등의 <strong>상태별 색 별칭</strong>(<code>--button-primary-hover-bg</code> 같은 것)</td></tr>
-                  <tr><td>typography.css</td><td>본문 글자용 <strong>유틸리티 클래스</strong> 19종 (<code>.typo-body-14r</code> 등)</td></tr>
-                </tbody>
-              </table>
-
-              <div class="notice-box">
-                <strong>같은 폴더의 <code>style.css</code>·<code>site-base.css</code>는 가져가지 마세요.</strong> 이 가이드 사이트 자체를 그리는 스타일이라, 제품에 넣으면 사이드바·카드 같은 포털 디자인이 딸려 들어옵니다.
-              </div>
-
-              <div class="env-tabs">
-                <button class="env-tab active" data-env="css">CSS</button>
-                <button class="env-tab" data-env="html">HTML</button>
-                <button class="env-tab" data-env="react">React</button>
-                <button class="env-tab" data-env="vue">Vue</button>
-                <button class="env-tab" data-env="next">Next.js</button>
-              </div>
-
-              <div class="env-panel active" id="env-css">
-                <div class="snippet-row">
-                  <span class="snippet-label">globals.css</span>
-                  <div class="snippet-block">
-                    <code class="snippet-code">@import './tokens.css';
-@import './component-tokens.css';
-@import './typography.css';</code>
-                    <button class="snippet-copy" onclick="copySnippet(this, `@import './tokens.css';\n@import './component-tokens.css';\n@import './typography.css';`)">복사</button>
-                  </div>
-                </div>
-              </div>
-
-              <div class="env-panel" id="env-html">
-                <div class="snippet-row">
-                  <span class="snippet-label">&lt;head&gt;</span>
-                  <div class="snippet-block">
-                    <code class="snippet-code">&lt;link rel="stylesheet" href="./tokens.css"&gt;
-&lt;link rel="stylesheet" href="./component-tokens.css"&gt;
-&lt;link rel="stylesheet" href="./typography.css"&gt;</code>
-                    <button class="snippet-copy" onclick="copySnippet(this, '<link rel=&quot;stylesheet&quot; href=&quot;./tokens.css&quot;>\n<link rel=&quot;stylesheet&quot; href=&quot;./component-tokens.css&quot;>\n<link rel=&quot;stylesheet&quot; href=&quot;./typography.css&quot;>')">복사</button>
-                  </div>
-                </div>
-              </div>
-
-              <div class="env-panel" id="env-react">
-                <div class="snippet-row">
-                  <span class="snippet-label">App.tsx</span>
-                  <div class="snippet-block">
-                    <code class="snippet-code">import './tokens.css';
-import './component-tokens.css';
-import './typography.css';</code>
-                    <button class="snippet-copy" onclick="copySnippet(this, `import './tokens.css';\nimport './component-tokens.css';\nimport './typography.css';`)">복사</button>
-                  </div>
-                </div>
-              </div>
-
-              <div class="env-panel" id="env-vue">
-                <div class="snippet-row">
-                  <span class="snippet-label">main.ts</span>
-                  <div class="snippet-block">
-                    <code class="snippet-code">import './assets/tokens.css';
-import './assets/component-tokens.css';
-import './assets/typography.css';</code>
-                    <button class="snippet-copy" onclick="copySnippet(this, `import './assets/tokens.css';\nimport './assets/component-tokens.css';\nimport './assets/typography.css';`)">복사</button>
-                  </div>
-                </div>
-              </div>
-
-              <div class="env-panel" id="env-next">
-                <div class="snippet-row">
-                  <span class="snippet-label">globals.css</span>
-                  <div class="snippet-block">
-                    <code class="snippet-code">@import '../styles/tokens.css';
-@import '../styles/component-tokens.css';
-@import '../styles/typography.css';</code>
-                    <button class="snippet-copy" onclick="copySnippet(this, `@import '../styles/tokens.css';\n@import '../styles/component-tokens.css';\n@import '../styles/typography.css';`)">복사</button>
-                  </div>
-                </div>
-              </div>
-
-              <div class="use-hint">설치되면 <code>color: var(--color-text-body-primary)</code> 처럼 변수로 값을 참조할 수 있습니다. 색은 반드시 변수로 쓰고 HEX를 직접 적지 않습니다 — 그래야 다크모드가 자동으로 따라옵니다.</div>
-            </div>
+          <div class="wip-next">
+            <div class="wip-next-title">준비가 끝나면 여기서 받을 수 있습니다</div>
+            <ul>
+              <li>토큰 CSS — 색 · 간격 · 반경 · 글자, 다크모드 포함</li>
+              <li>컴포넌트 CSS — 버튼 · 인풋 등 실제 스타일 (디자인 정본에서 자동 생성)</li>
+              <li>컴포넌트 마크업 — 클래스 이름과 구조</li>
+              <li>PC 동작 규칙 — 클릭 · 선택 · 열고닫기 · 키보드 · 포커스</li>
+            </ul>
           </div>
 
-          <!-- Step 3 : 현재 제공 범위 -->
-          <div class="install-step">
-            <div class="step-header">
-              <div class="step-number">3</div>
-              <div>
-                <div class="step-title">지금 무엇까지 제공되나</div>
-                <div class="step-desc">받은 저장소로 어디까지 할 수 있는지 — 헛걸음하지 않도록 있는 그대로 적었습니다</div>
-              </div>
-            </div>
-            <div class="step-body">
-              <table class="info-table plain">
-                <thead><tr><th style="width:22%">항목</th><th style="width:14%">상태</th><th>내용</th></tr></thead>
-                <tbody>
-                  <tr>
-                    <td>토큰 CSS</td>
-                    <td><span class="status-badge ready">제공</span></td>
-                    <td>색·간격·반경·글자 변수와 다크모드. 위 2단계로 바로 적용됩니다</td>
-                  </tr>
-                  <tr>
-                    <td>PC 동작 계약</td>
-                    <td><span class="status-badge ready">제공</span></td>
-                    <td><code>registry/components/component-behavior.pc.json</code> — 클릭·선택·열고닫기·키보드·포커스 규칙. <strong>검증 완료 17건</strong>만 구현하고, <code>not-defined</code>는 임의로 만들지 않습니다</td>
-                  </tr>
-                  <tr>
-                    <td>컴포넌트 실측 사양</td>
-                    <td><span class="status-badge ready">제공</span></td>
-                    <td><code>registry/components/component-facts.json</code> — 높이·패딩·구성요소. <span class="muted-note">Figma 용어(auto-layout)로 적혀 있어 CSS로 옮길 때 해석이 필요합니다</span></td>
-                  </tr>
-                  <tr>
-                    <td>참고 화면</td>
-                    <td><span class="status-badge ready">제공</span></td>
-                    <td><code>pages/components.html</code> — 실제로 움직이는 PC 컴포넌트 화면</td>
-                  </tr>
-                  <tr>
-                    <td><strong>컴포넌트 CSS</strong></td>
-                    <td><span class="status-badge wip">준비 중</span></td>
-                    <td><strong>아직 별도 파일로 제공하지 않습니다.</strong> <code>.s1-btn</code> 같은 컴포넌트 스타일은 현재 참고 화면 안에 들어있어, 지금은 그 화면을 열어 확인해야 합니다. 정본에서 자동 생성해 배포하는 작업을 준비 중입니다</td>
-                  </tr>
-                </tbody>
-              </table>
-
-              <div class="section-label">참고 화면 열어보기</div>
-              <div class="snippet-row">
-                <span class="snippet-label">터미널</span>
-                <div class="snippet-block">
-                  <code class="snippet-code">python3 -m http.server 8000</code>
-                  <button class="snippet-copy" onclick="copySnippet(this, 'python3 -m http.server 8000')">복사</button>
-                </div>
-              </div>
-              <div class="snippet-row" style="margin-top:10px;">
-                <span class="snippet-label">브라우저</span>
-                <div class="snippet-block">
-                  <code class="snippet-code">http://localhost:8000/pages/components.html?platform=pc</code>
-                  <button class="snippet-copy" onclick="copySnippet(this, 'http://localhost:8000/pages/components.html?platform=pc')">복사</button>
-                </div>
-              </div>
-            </div>
+          <div class="wip-meanwhile">
+            <div class="wip-meanwhile-title">그동안에는</div>
+            <p>
+              <strong>AI 코딩 도구</strong>(Claude Code · Cursor 등)를 쓰신다면 지금도 작업할 수 있습니다.
+              <strong>AI 프롬프트</strong> 탭에서 디자인가이드 저장소를 받아 연결하세요.
+            </p>
+            <button class="wip-cta" onclick="goTab('ai')">
+              AI 프롬프트 탭으로 이동
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+            </button>
           </div>
-
-          <!-- 관련 링크 -->
-          <div style="margin-top:8px;padding:20px 24px;background:#f9fafb;border:1px solid #e5e7eb;border-radius:16px;">
-            <div style="font-size:13px;font-weight:700;color:#111827;margin-bottom:12px;">관련 메뉴</div>
-            <div style="display:flex;gap:10px;flex-wrap:wrap;">
-              <a href="components.html" style="display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border-radius:8px;background:#eff6ff;color:#1d6ceb;font-size:13px;font-weight:600;text-decoration:none;">Components</a>
-              <a href="foundation.html" style="display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border-radius:8px;background:#f3f4f6;color:#374151;font-size:13px;font-weight:600;text-decoration:none;">Foundation Tokens</a>
-              <a href="semantic.html" style="display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border-radius:8px;background:#f3f4f6;color:#374151;font-size:13px;font-weight:600;text-decoration:none;">Semantic Tokens</a>
-            </div>
-          </div>
-
-        </div><!-- /install-steps -->
+        </div>
       </div><!-- /top-dev -->
 
       <!-- ══ 디자이너 패널 ══ -->
@@ -746,6 +599,12 @@ import './assets/typography.css';</code>
     btn.textContent = '✓';
     btn.classList.add('copied');
     setTimeout(() => { btn.textContent = orig; btn.classList.remove('copied'); }, 1800);
+  }
+
+  /* ── 다른 탭으로 이동 (준비 중 패널의 안내 버튼) ── */
+  function goTab(name) {
+    const btn = document.querySelector('.top-tab[data-top="' + name + '"]');
+    if (btn) { btn.click(); window.scrollTo({ top: 0, behavior: 'smooth' }); }
   }
 
   /* ── 블록(저장소 주소·요청문) 통째 복사 ── */

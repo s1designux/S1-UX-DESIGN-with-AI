@@ -86,7 +86,7 @@ vars-data 의 토큰 키가 전부 embed 됐는지만 검사한다.
   3. variant 축(Size·State·Variant·Break) → 클래스 네이밍 설계. **기존 `.s1-btn` 어휘와 충돌/정합 확인 필수**(`.claude/rules/pages.md` Button 표준 7번)
   4. 생성물 ↔ `components.html` 실렌더 대조 검증 (🤖 `component-verifier` 분리)
   5. 새 Gate: 생성기 출력 드리프트 차단
-- **완료 판정**: 저장소에 `assets/css/components.css` 가 포함되고, 개발자 탭 3단계의 "컴포넌트 CSS — 준비 중" 배지가 "제공" 으로 바뀐다.
+- **완료 판정**: 저장소에 `assets/css/components.css` 가 포함되고, **개발자 탭(현재 「준비 중」 상태 화면)** 이 실제 배포 안내로 열린다. 2026-08-12 결정 — 토큰만으로는 컴포넌트를 만들 수 없으므로 설치 안내를 자세히 두면 개발자가 "이걸로 되겠지" 하고 시작했다가 막힌다. 반쪽짜리를 완성처럼 내놓지 않기 위해 탭 내용을 비우고 준비 중으로 표기했다(river님 결정). 열 때 함께 제공: 토큰 CSS · 컴포넌트 CSS · 컴포넌트 마크업 · PC 동작 규칙.
 - **부수 확인**: `components.html` 인라인 CSS 가 **사이트 전용 `site-base.css` 의 역할 토큰 11개**(`--color-text-secondary`·`--color-bg-default`·`--color-surface-default` 등)에 의존 중이다. 컴포넌트가 사이트 전용 토큰을 참조하는 상태이므로 함께 정리해야 한다 ([[site-base 정리 판정]] 진행 중 과제와 겹침).
 
 ### 1. 별칭층 철거 backlog 마무리 (8개 컴포넌트)
