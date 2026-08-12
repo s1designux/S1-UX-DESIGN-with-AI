@@ -7,6 +7,20 @@
   },
   "patterns": [
     {
+      "id": "harness-token-efficiency",
+      "category": "harness-operations",
+      "label": "하네스 토큰 소비 절감 정비 (문서·출력·읽기 통제)",
+      "count": 1,
+      "promotionStatus": "tracking",
+      "occurrences": [
+        {
+          "date": "2026-08-12",
+          "summary": "토큰 소진 원인 3방향 실측 후 정비: gate:check 출력 172줄→요약 1줄(--verbose 복원), CLAUDE.md 39.8→31.9KB(한눈표 이관·중복 포인터화·하드룰 7→5 재편), 좁혀읽기 원칙 이식+.claudeignore 방어선, component-verifier 21.4→7.6KB(시나리오 references/ 이관)"
+        }
+      ],
+      "automationNote": "3회 도달 시 '상시 로드 총량(CLAUDE.md+에이전트 정의)·검사기 출력량'을 재는 관측 지표를 Gate 37 확장 또는 별도 검사기로 승격 검토."
+    },
+    {
       "id": "canonical-component-size-addition",
       "category": "component-canonical-expansion",
       "label": "기존 컴포넌트 정본에 새 사이즈 기준 추가",
