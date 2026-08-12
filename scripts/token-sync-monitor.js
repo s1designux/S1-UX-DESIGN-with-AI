@@ -17,7 +17,8 @@
  *   각 표면은 자기가 렌더하는 토큰 ∩ 정본 만 비교(이름 차이로 인한 false positive 0).
  *
  * ── 심각도 ───────────────────────────────────────
- *   Tier 1 (ERROR): tokens.css · install-prompt · semantic.html · registry foundation.colors.json
+ *   Tier 1 (ERROR): tokens.css · semantic.html · registry foundation.colors.json
+ *                   (install-prompt 은 2026-08-12 제외 — 아래 SURFACES 주석 참조)
  *   Tier 2 (WARN):  현재 없음 — 2026-08-01 문서 표면(tokens/*.md)·registry semantic.colors.json 아카이브
  *   (foundation.html 스와치는 확장 슬롯으로 남김 — 아래 SURFACES 주석)
  *
@@ -133,7 +134,8 @@ function fromCssFile(file) {
   for (const name of Object.keys(light)) out[name] = { light: resolve(name, false), dark: resolve(name, true) };
   return out;
 }
-function fromInstallPrompt() {
+// 2026-08-12 현재 SURFACES 에서 빠져 있다(위 주석). 페이지에 토큰 인라인이 부활하면 그대로 재사용한다.
+function fromInstallPrompt() {  // eslint-disable-line no-unused-vars
   const html = fs.readFileSync(P.installPrompt, 'utf8');
   const m = html.match(/<pre[^>]*id="code-full"[^>]*>([\s\S]*?)<\/pre>/);
   if (!m) return {};
@@ -183,9 +185,14 @@ function fromFoundationJson() {
 //                      component-tokens-extracted.md(컴포넌트 alias 표).
 const SURFACES = [
   { id: 'tokens.css',              tier: 1, extract: () => fromCssFile(P.tokensCss) },
-  { id: 'install-prompt.html',     tier: 1, extract: fromInstallPrompt },
   { id: 'semantic.html',           tier: 1, extract: fromSemanticHtml, complete: 'semantic' },
   { id: 'registry/foundation.colors', tier: 1, extract: fromFoundationJson },
+  // 2026-08-12 제거된 표면:
+  //   · install-prompt.html — 개발자 탭이 tokens.css 통짜 인라인 다운로드 → GitHub 저장소
+  //     (S-1-UX-DESIGN-AI-GUIDELINE) 안내로 바뀌면서, 이 페이지는 더 이상 토큰 "값"의 사본이 아니다.
+  //     남겨두면 영구히 "추출 0건 — 모니터 안 됨" 경고만 내 오탐이 된다(사본이 없으니 드리프트도 없다).
+  //     ⚠️ 페이지에 토큰 값 인라인이 다시 생기면 이 줄을 되살릴 것:
+  //        { id: 'install-prompt.html', tier: 1, extract: fromInstallPrompt },
   // 2026-08-01 제거된 표면 (아카이브 — deprecated-tokens.json legacyFiles):
   //   · registry/semantic.colors — 역할기반 별개 계보. 46개 중 43개가 정본에 없어 실대조가 2건뿐이었다.
   //     역할 토큰의 정본은 assets/css/site-base.css(사이트 전용, Variables 검수 제외 — 위 §1b 참조).
