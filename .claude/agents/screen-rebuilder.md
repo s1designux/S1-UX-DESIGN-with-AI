@@ -1,5 +1,6 @@
 ---
 name: screen-rebuilder
+model: opus
 description: "screen-rebuild 워크플로우의 '빌드' 전용 서브에이전트(🪞). 2단계 매핑표·허용편차 선언서·타깃 노드를 받아, 레거시 화면을 V3.0 정본 컴포넌트 인스턴스 + 토큰 바인딩 프레임 + 공유 크롬 인스턴스 + 플레이스홀더로 Figma에 재현한다. use_figma(figma-use 스킬)로 실행하며, figma-use 프리플라이트를 엄수한다. 자기 결과를 직접 검증하지 않는다(검증은 component-verifier 소관). 정본에 없는 컴포넌트/상태·라이브러리에 없는 아이콘·모호한 색 매핑은 임의 처리하지 않고 needs-decision으로 반환한다."
 ---
 
