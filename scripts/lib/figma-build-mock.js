@@ -319,7 +319,8 @@ async function runBuild(mod, opts) {
     await mod.buildAllComponents(maps);
   } finally {
     console.warn = originalWarn;
-    if (offlineFallbackCount && !offlineFallbackSummaryShown) {
+    // 의도된 오프라인 폴백 — 정보량이 없어 기본 침묵, GUIDE_VERBOSE=1 일 때만 보고
+    if (offlineFallbackCount && !offlineFallbackSummaryShown && process.env.GUIDE_VERBOSE) {
       offlineFallbackSummaryShown = true;
       originalWarn(`[component-guide-model] offline icon import ${offlineFallbackCount}건 → 정본 source SVG fallback 사용 (이후 동일 경고 생략)`);
     }

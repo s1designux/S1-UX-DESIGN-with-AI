@@ -524,7 +524,8 @@ function main() {
   console.log(`🔎 [Gate 5] 컴포넌트표출 검사기 (Harness) — 결과: 🔴 ${errors.length} errors  🟡 ${warns.length} warns  ✅ ${passes.length} pass\n`);
 
   findings.forEach(f => {
-    const icon = f.severity === 'pass' ? '✅' : f.severity === 'warn' ? '🟡' : '🔴';
+    if (f.severity === 'pass') return; // 요약줄에 카운트가 이미 있음 — 개별 ✅ 는 리포트 파일에만
+    const icon = f.severity === 'warn' ? '🟡' : '🔴';
     console.log(`${icon} [${f.rule}] ${f.message}`);
     if (f.detail) {
       f.detail.split('\n').forEach(l => console.log(`   ${l}`));

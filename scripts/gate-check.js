@@ -24,13 +24,29 @@ const ROOT = path.resolve(__dirname, '..');
 
 let errors = 0;
 let warnings = 0;
+let passes = 0;
+let gates = 0;
 
-const pass = (msg) => console.log(`  ✅ ${msg}`);
-const warn = (msg) => { console.warn(`  ⚠️  ${msg}`); warnings++; };
-const fail = (msg) => { console.error(`  ❌ ${msg}`); errors++; };
+// 기본은 조용한 모드: 성공(✅)은 세기만 하고, 경고/실패가 있는 게이트만 헤더+상세를 찍는다.
+// 판정 로직은 그대로다 — 출력만 다르다. 종전 전체 출력은 --verbose 로 복원.
+// (실측 2026-08-12: 성공 시 172줄/9.4KB 중 실정보는 경고 9줄 — 나머지가 매 커밋 대화 컨텍스트를 소모)
+const VERBOSE = process.argv.includes('--verbose');
+let pendingHeader = null; // 조용한 모드에서 현 게이트 헤더 — 첫 경고/실패 때만 출력
+
+const gateHeader = (title) => {
+  gates++;
+  if (VERBOSE) console.log(`\n🔎 ${title}`);
+  else pendingHeader = title;
+};
+const flushHeader = () => {
+  if (pendingHeader) { console.log(`\n🔎 ${pendingHeader}`); pendingHeader = null; }
+};
+const pass = (msg) => { passes++; if (VERBOSE) console.log(`  ✅ ${msg}`); };
+const warn = (msg) => { flushHeader(); console.warn(`  ⚠️  ${msg}`); warnings++; };
+const fail = (msg) => { flushHeader(); console.error(`  ❌ ${msg}`); errors++; };
 
 // ── Gate 1: Registry Gate ─────────────────────────────────────────
-console.log('\n🔎 [Gate 1] 부품명세 검사기 (Registry)');
+gateHeader('[Gate 1] 부품명세 검사기 (Registry)');
 
 try {
   const compIndexPath = path.join(ROOT, 'registry/components/index.json');
@@ -72,7 +88,7 @@ for (const rel of tokenRegistryFiles) {
 }
 
 // ── Gate 4: Report Gate ───────────────────────────────────────────
-console.log('\n🔎 [Gate 4] 리포트색인 검사기 (Report)');
+gateHeader('[Gate 4] 리포트색인 검사기 (Report)');
 
 const reportsDir = path.join(ROOT, 'reports');
 const reportsIndexPath = path.join(ROOT, 'data/reports-index.json');
@@ -100,7 +116,7 @@ if (!fs.existsSync(reportsIndexPath)) {
 }
 
 // ── Gate 3: Quality Gate ──────────────────────────────────────────
-console.log('\n🔎 [Gate 3] 색상규칙 검사기 (Quality)');
+gateHeader('[Gate 3] 색상규칙 검사기 (Quality)');
 
 const tokensCSSPath = path.join(ROOT, 'assets/css/tokens.css');
 if (!fs.existsSync(tokensCSSPath)) {
@@ -170,7 +186,7 @@ if (!fs.existsSync(tokensCSSPath)) {
 }
 
 // ── Gate 6: Installer Coverage Gate ──────────────────────────────
-console.log('\n🔎 [Gate 6] 설치기누락 검사기 (Installer Coverage)');
+gateHeader('[Gate 6] 설치기누락 검사기 (Installer Coverage)');
 
 try {
   const { audit } = require('./installer-coverage-check');
@@ -210,7 +226,7 @@ try {
 // Gate 6b 는 code.js 의 토큰 "키"만 봐서, ui.html 의 "문장"(툴팁·날짜)은 사각지대였다.
 //   → 소스를 고치고 installer:build 를 잊은 채 커밋하면 사용자가 낡은 툴팁을 본다.
 // esbuild 번들 + mock 실행 + git 이력 조회가 필요해 별도 프로세스로 호출(spawnSync).
-console.log('\n🔎 [Gate 6c] 설치기툴팁 검사기 (Installer Tooltip)');
+gateHeader('[Gate 6c] 설치기툴팁 검사기 (Installer Tooltip)');
 try {
   const { spawnSync } = require('child_process');
   const r = spawnSync('node', [path.join(ROOT, 'scripts/installer-tooltip-check.js')], { encoding: 'utf-8' });
@@ -229,7 +245,7 @@ try {
 
 // ── Gate 7: Token Sync Monitor ───────────────────────────────────
 // 토큰 "값"이 모든 표면에서 정본(vars-data)과 일치하는지 기계 판정. (site-base 는 사이트 전용·검수 제외)
-console.log('\n🔎 [Gate 7] 토큰값일치 검사기 (Token Sync)');
+gateHeader('[Gate 7] 토큰값일치 검사기 (Token Sync)');
 
 try {
   const { monitor } = require('./token-sync-monitor');
@@ -263,7 +279,7 @@ try {
 // 존재하나 gate:check 에 미연결이던 검사기를 배선(2026-07-10). token-sync-monitor 가
 // 정본↔각 표면을 보는 반면, 이건 tokens.css↔vars-data↔semantic.html 의 "해석된 HEX"가
 // Light/Dark 모두 일치하는지 교차 대조한다.
-console.log('\n🔎 [Gate 7b] 토큰값 표면일치 검사기 (Value Consistency)');
+gateHeader('[Gate 7b] 토큰값 표면일치 검사기 (Value Consistency)');
 try {
   const { check: consistencyCheck } = require('./token-value-consistency-check');
   const { A, B } = consistencyCheck();
@@ -284,7 +300,7 @@ try {
 // build-components.ts 빌더가 동적 조합하는 scv 키가 vars-data 정본에 다 있는지.
 // audit-bindings(네임스페이스만 검사)의 사각지대 — leaf 키 누락 시 Figma 실행 중 크래시.
 // esbuild 번들 + mock 실행이 필요해 별도 프로세스로 호출(spawnSync).
-console.log('\n🔎 [Gate 8] 부품–변수연결 검사기 (Component Key)');
+gateHeader('[Gate 8] 부품–변수연결 검사기 (Component Key)');
 try {
   const { spawnSync } = require('child_process');
   const r = spawnSync('node', [path.join(ROOT, 'scripts/component-key-coverage-check.js')], { encoding: 'utf-8' });
@@ -303,7 +319,7 @@ try {
 // ── Gate 9: Number/Sizing Page Consistency ────────────────────────
 // 컴포넌트별 사이징 Semantic 폐지 → Foundation --sizing-N 직접 참조 전환을 영구 강제.
 // (A) foundation.html Sizing 블록 = vars-data 정본 / (B) 폐지 토큰 재유입 0건.
-console.log('\n🔎 [Gate 9] 사이즈·숫자페이지 검사기 (Number Page)');
+gateHeader('[Gate 9] 사이즈·숫자페이지 검사기 (Number Page)');
 try {
   const { check: numberPageCheck } = require('./number-page-check');
   numberPageCheck({ pass, warn, fail });
@@ -315,7 +331,7 @@ try {
 // foundation.html 의 색 팔레트 3블록(BRAND·PALETTES·DARK_PALETTES)이 vars-data 정본과 같은지.
 // 종전엔 `color:check` 가 존재하는데도 **어디에도 배선되지 않아** 색 스와치가 무게이트였다
 // (숫자 5블록만 Gate 9 가 지킴 — 2026-08-01 진단에서 적발한 사각지대).
-console.log('\n🔎 [Gate 9b] 파운데이션 색페이지 검사기 (Foundation Color Page)');
+gateHeader('[Gate 9b] 파운데이션 색페이지 검사기 (Foundation Color Page)');
 try {
   const { spawnSync } = require('child_process');
   const r = spawnSync('node', [path.join(ROOT, 'scripts/gen-foundation-color.js'), '--check'], { encoding: 'utf-8' });
@@ -335,7 +351,7 @@ try {
 // ── Gate 9c: Registry Foundation Colors (생성물 드리프트) ──────────
 // registry/tokens/foundation.colors.json 은 2026-08-01 부터 vars-data 파생 생성물이다.
 // 손편집으로 되돌아가면 Gate 7 이 대조하는 208건이 정본과 조용히 갈린다.
-console.log('\n🔎 [Gate 9c] 레지스트리 색목록 검사기 (Registry Foundation Colors)');
+gateHeader('[Gate 9c] 레지스트리 색목록 검사기 (Registry Foundation Colors)');
 try {
   const { spawnSync } = require('child_process');
   const r = spawnSync('node', [path.join(ROOT, 'scripts/gen-foundation-registry.js'), '--check'], { encoding: 'utf-8' });
@@ -355,7 +371,7 @@ try {
 // ── Gate 9d: Component Element Stubs (생성물 드리프트) ─────────────
 // pages/components.html 의 부품(요소) 섹션 18개는 2026-08-02 부터 data/component-element-stubs.json
 // 파생 생성물이다. 손편집으로 되돌아가면 토큰 표가 정본과 조용히 갈린다(종전 gnb-util-icon 배지처럼).
-console.log('\n🔎 [Gate 9d] 부품섹션 생성물 검사기 (Component Element Stubs)');
+gateHeader('[Gate 9d] 부품섹션 생성물 검사기 (Component Element Stubs)');
 try {
   const { spawnSync } = require('child_process');
   const r = spawnSync('node', [path.join(ROOT, 'scripts/gen-component-stubs.js'), '--check'], { encoding: 'utf-8' });
@@ -376,7 +392,7 @@ try {
 // 가이드/레퍼런스 HTML 이 rename·삭제된 토큰명을 쥐고 있는지 강제.
 // Check B(rename denylist)=차단 · Check A(미정의 --color-* 참조)=경고(기존 드리프트)
 // · Check C(폐기 토큰 재유입 + Token Details '(none)/미정의' 유령행)=차단.
-console.log('\n🔎 [Gate 10] 문서토큰이름 검사기 (Doc Token Ref)');
+gateHeader('[Gate 10] 문서토큰이름 검사기 (Doc Token Ref)');
 try {
   const { spawnSync } = require('child_process');
   const r = spawnSync('node', [path.join(ROOT, 'scripts/doc-token-ref-check.js')], { encoding: 'utf-8' });
@@ -398,7 +414,7 @@ try {
 // 상태별 필수 하위 요소(Editing 의 caret·selected 의 clear 아이콘 등)를 빌더가 실제로
 // 생성하는지 강제. 토큰만 보던 게이트들의 "구조 사각지대" — caret·close 누락 2회 유출 차단.
 // esbuild 번들 + recording mock 실행이 필요해 별도 프로세스로 호출(spawnSync).
-console.log('\n🔎 [Gate 11] 부품해부 검사기 (Component Anatomy)');
+gateHeader('[Gate 11] 부품해부 검사기 (Component Anatomy)');
 try {
   const { spawnSync } = require('child_process');
   const r = spawnSync('node', [path.join(ROOT, 'scripts/component-anatomy-check.js')], { encoding: 'utf-8' });
@@ -417,7 +433,7 @@ try {
 
 // ── Gate 12: Icon Instance Policy ─────────────────────────────────
 // 아이콘은 V2.2 라이브러리 컴포넌트 인스턴스(makeIconInstance)로만. 벡터 직삽입은 allow 마커 필수.
-console.log('\n🔎 [Gate 12] 아이콘인스턴스 검사기 (Icon Instance Policy)');
+gateHeader('[Gate 12] 아이콘인스턴스 검사기 (Icon Instance Policy)');
 try {
   const { check: iconCheck } = require('./icon-instance-policy-check');
   const r = iconCheck();
@@ -433,7 +449,7 @@ try {
 // ── Gate 13: Installer Build Verification ─────────────────────────
 // build-components.ts(설치기 생성기 코드) 내용이 독립 검증(component-verifier)을 거쳤는지
 // 해시로 묶어 강제. 빌드자 ≠ 검증자 — ⭐ 단독 빌드+자가검증(self-certify)을 커밋 단계 차단.
-console.log('\n🔎 [Gate 13] 설치기빌드검증 검사기 (Installer Build Verify)');
+gateHeader('[Gate 13] 설치기빌드검증 검사기 (Installer Build Verify)');
 try {
   const { check: buildVerifyCheck } = require('./installer-build-verify-check');
   buildVerifyCheck({ pass, warn, fail });
@@ -445,7 +461,7 @@ try {
 // 검증된 고정 문구(풋터 법인정보·링크·카피라이트 등)가 정본(registry/content/*.json)과
 // 일치하는지. 풋터에 국한하지 않고 모든 '검증된 콘텐츠 블록'을 검사 — 임의 작성/날조
 // 텍스트 재유입을 커밋 단계 차단. (2026-06-22 신설 footer · 2026-06-25 일반화)
-console.log('\n🔎 [Gate 14] 원본대조 문구 검사기 (Verified Content)');
+gateHeader('[Gate 14] 원본대조 문구 검사기 (Verified Content)');
 try {
   const { spawnSync } = require('child_process');
   const r = spawnSync('node', [path.join(ROOT, 'scripts/content-verbatim-check.js')], { encoding: 'utf-8' });
@@ -466,7 +482,7 @@ try {
 // vars-data 토큰 이름(Figma 변수 경로)이 naming-rules.json 규칙을 지키는지 강제.
 // 기존 게이트는 값·구조·존재만 봤음 — 이름 사각지대로 레거시 원본명(navigation/background)·
 // 빌더 우회 별칭(icon/brand-ci)이 정본에 유입됨. 새 토큰/리네임의 이름을 커밋 단계 차단. (2026-06-23 신설)
-console.log('\n🔎 [Gate 15] 토큰네이밍 검사기 (Token Naming Convention)');
+gateHeader('[Gate 15] 토큰네이밍 검사기 (Token Naming Convention)');
 try {
   const { audit: namingAudit } = require('./token-naming-check');
   const r = namingAudit();
@@ -483,7 +499,7 @@ try {
 //   왜 필요한가: 설치기는 그림자 수치를 코드에 적지 않고 vars-data 의 SEMANTIC_SHADOW 문자열을
 //   파싱해 쓴다. 파서가 조용히 틀리면 Figma 라이브러리 전체 그림자가 틀린 채 깔리는데,
 //   토큰 게이트(3·6·7)는 "문자열 값"만 봐서 이 변환은 사각지대였다.
-console.log('\n🔎 [Gate 15b] 그림자파서 검사기 (Shadow Parse)');
+gateHeader('[Gate 15b] 그림자파서 검사기 (Shadow Parse)');
 try {
   const { audit: shadowAudit } = require('./shadow-parse-check');
   const r = shadowAudit({ quiet: true });
@@ -502,7 +518,7 @@ try {
 // update-management.json 의 origin(분류)을 기준으로 "Ⓑ(원본틀 필요)인데 완료 표시인데
 // 원본 대조 0(verify=none)"을 차단 — 탭 사태 재발 방지. registry 신규 컴포넌트 미분류도 차단.
 // 마비 방지 계단식: 미완성 Ⓑ 백로그(skeleton/not-started)는 통과, 완료 표시·미검증만 차단. (2026-06-25 신설)
-console.log('\n🔎 [Gate 16] 컴포넌트 분류·검증 게이트 (Component Origin Verification)');
+gateHeader('[Gate 16] 컴포넌트 분류·검증 게이트 (Component Origin Verification)');
 try {
   const { audit: originAudit } = require('./component-origin-gate-check');
   const r = originAudit();
@@ -516,7 +532,7 @@ try {
 // ── Gate 17: Orphan Token (미사용 Semantic Color) ─────────────────
 // 빌더(mock)+웹CSS+registry spec 전 표면에서 안 쓰이는 토큰을 결정론 검사 → 레거시 누적 가시화.
 // 의도보존분(intentional-unused-tokens.json)은 면제. 예상밖 orphan = 경고(비차단). esbuild 필요 → spawnSync.
-console.log('\n🔎 [Gate 17] 미사용토큰 검사기 (Orphan Token)');
+gateHeader('[Gate 17] 미사용토큰 검사기 (Orphan Token)');
 try {
   const { spawnSync } = require('child_process');
   const r = spawnSync('node', [path.join(ROOT, 'scripts/orphan-token-check.js')], { encoding: 'utf-8' });
@@ -540,7 +556,7 @@ try {
 // ── Gate 18: Component Page Coverage (설치기 ↔ HTML 섹션) ──────────
 // "설치기에 있는 컴포넌트가 components.html 에도 다 있나"를 정본(COMPONENT_CATEGORIES_GRID) 기준 대조.
 // 미분류·섹션누락 = 차단(설치기=기준 강제), 고아섹션·stale config = 경고. esbuild 필요 → spawnSync.
-console.log('\n🔎 [Gate 18] 컴포넌트페이지 커버리지 검사기 (Component Page Coverage)');
+gateHeader('[Gate 18] 컴포넌트페이지 커버리지 검사기 (Component Page Coverage)');
 try {
   const { spawnSync } = require('child_process');
   const r = spawnSync('node', [path.join(ROOT, 'scripts/component-page-coverage-check.js')], { encoding: 'utf-8' });
@@ -562,7 +578,7 @@ try {
 // ── Gate 19: Variant/State Coverage (설치기 변형 축 ↔ HTML) ───────
 // 상위 섹션이 설치기 변형 축을 다 보여주나. 2026-08-02 개편: 부품(요소) 컴포넌트 축을 상위 섹션에
 // 합산(axisSource 전수 등재)하고, 기존 공백은 사유와 함께 baseline 동결·**새 공백만 차단**(래칫).
-console.log('\n🔎 [Gate 19] 변형상태 커버리지 검사기 (Variant/State Coverage)');
+gateHeader('[Gate 19] 변형상태 커버리지 검사기 (Variant/State Coverage)');
 try {
   const { spawnSync } = require('child_process');
   const r = spawnSync('node', [path.join(ROOT, 'scripts/variant-coverage-check.js')], { encoding: 'utf-8' });
@@ -586,7 +602,7 @@ try {
 // registry 설명 데이터(component.tokens·components/*.json)의 토큰 정보가 정본(vars-data/tokens.css)과
 // 어긋나는 stale 를 baseline ratchet 으로 추적. 알려진 backlog=경고(개수), 새 stale 추가=차단.
 // 정본=vars-data(값)·build-components(사용). registry 설명 데이터는 비정본 — grep 오도 방지. (2026-06-30 신설)
-console.log('\n🔎 [Gate 20] 토큰 drift 검사기 (Registry Token Drift)');
+gateHeader('[Gate 20] 토큰 drift 검사기 (Registry Token Drift)');
 try {
   const { spawnSync } = require('child_process');
   const r = spawnSync('node', [path.join(ROOT, 'scripts/token-drift-check.js')], { encoding: 'utf-8' });
@@ -608,7 +624,7 @@ try {
 // ── Gate 21: Registry Active/Legacy Consistency (좀비 등록 재발 방지) ─────
 // index.json 에 active 등록된 파일이 레거시 격리(legacyFiles)와 모순되면 차단. 은퇴 파일이
 // active 포인터로 남아 사람·AI 를 오도(component.tokens.json 사태)하는 것을 예방. (2026-07-02 신설)
-console.log('\n🔎 [Gate 21] 레지스트리 active/legacy 일관성 검사기 (Registry Active/Legacy Consistency)');
+gateHeader('[Gate 21] 레지스트리 active/legacy 일관성 검사기 (Registry Active/Legacy Consistency)');
 try {
   const { spawnSync } = require('child_process');
   const r = spawnSync('node', [path.join(ROOT, 'scripts/registry-active-legacy-check.js')], { encoding: 'utf-8' });
@@ -629,7 +645,7 @@ try {
 // ── Gate 22: Page Layout Policy (헤더 LNB 미부착·폭 드리프트 차단) ─────
 // 페이지가 공통 레이아웃 틀(헤더가 사이드바에 붙음)과 폭 정책(wide/readable)을 지키는지
 // 정본(page-layout-policy.json)과 기계 대조. self-certify 로 놓치던 시각/구조 사각지대. (2026-07-03 신설)
-console.log('\n🔎 [Gate 22] 페이지 레이아웃 검수기 (Page Layout Policy)');
+gateHeader('[Gate 22] 페이지 레이아웃 검수기 (Page Layout Policy)');
 try {
   const { spawnSync } = require('child_process');
   const r = spawnSync('node', [path.join(ROOT, 'scripts/page-layout-check.js')], { encoding: 'utf-8' });
@@ -650,7 +666,7 @@ try {
 // ── Gate 23: Component Presentation Policy (표출 레이아웃 구조 차단) ─────
 // 컴포넌트 섹션이 표출 규칙(component-presentation-policy.json)을 실제 렌더 DOM 기준으로 지키는지 대조.
 // Action 유무·별도 사이즈/라벨 블록 금지 등 '구조'를 검증. 크롬 없으면 SKIP(exit 0). (2026-07-06 신설)
-console.log('\n🔎 [Gate 23] 컴포넌트 표출 레이아웃 검수기 (Component Presentation Policy)');
+gateHeader('[Gate 23] 컴포넌트 표출 레이아웃 검수기 (Component Presentation Policy)');
 try {
   const { spawnSync } = require('child_process');
   const r = spawnSync('node', [path.join(ROOT, 'scripts/presentation-layout-check.js')], { encoding: 'utf-8' });
@@ -673,7 +689,7 @@ try {
 // 입력=tokens.css(정본 vars-data 의 1차 파생)+registry 메타, 산출물=design/DESIGN.*.md.
 // 정본 목록은 canon-manifest.json(Gate 36) — registry 는 값의 정본이 아니다(H6).
 // gen-design-md dry-run 에 "변경감지"면 fail. (2026-07-10 신설 · 2026-08-03 문구 정정)
-console.log('\n🔎 [Gate 24] DESIGN.md 드리프트 검사기 (Design MD Drift)');
+gateHeader('[Gate 24] DESIGN.md 드리프트 검사기 (Design MD Drift)');
 try {
   const { spawnSync } = require('child_process');
   const r = spawnSync('node', [path.join(ROOT, 'scripts/design-md-drift-check.js')], { encoding: 'utf-8' });
@@ -693,7 +709,7 @@ try {
 // 활성 페이지의 컴포넌트-별칭 토큰(--{comp}-*)이 정본 토큰으로 실제 해석되는지 검사.
 // 모든 토큰 게이트가 vars-data/tokens.css 만 기준으로 봐서 그 바깥의 별칭층은 사각지대였다
 // (--dropdown-trigger-* 유출 계기, 2026-07-10 신설). 유령참조·표면드리프트 = 차단. 정본=tokens.css.
-console.log('\n🔎 [Gate 25] 컴포넌트 별칭-정본 해석 검사기 (Component Alias Canonical)');
+gateHeader('[Gate 25] 컴포넌트 별칭-정본 해석 검사기 (Component Alias Canonical)');
 try {
   const { check: aliasCheck } = require('./component-alias-canonical-check');
   const r = aliasCheck();
@@ -714,7 +730,7 @@ try {
 // index.html 이 표출하는 아이콘 개수(icons-stats.js)가 정본(icons-data.js)과 일치하는지 검사.
 // 사람이 아이콘을 추가/개명하고 stats 재생성을 잊으면 표출 숫자가 stale → 커밋 차단.
 // [Figma↔icons-data] 는 검사 안 함(사내망 Figma 불가). Figma 대조는 npm run icons:figma:check.
-console.log('\n🔎 [Gate 26] 아이콘 개수 정합 검사기 (Icons Stats Consistency)');
+gateHeader('[Gate 26] 아이콘 개수 정합 검사기 (Icons Stats Consistency)');
 try {
   const { check: iconsStatsCheck } = require('./icons-stats-check');
   const r = iconsStatsCheck();
@@ -733,7 +749,7 @@ try {
 // border/*·bg/*·surface/* 를 글자색으로 쓰면 차단(icon/* 는 허용목록만). Input 안내메시지가
 // 테두리 토큰(form-control/border/error)에 연결됐는데 값 일치 게이트가 전부 ✅였던 사각지대 차단.
 // esbuild 번들 + recording mock 실행이 필요해 별도 프로세스로 호출(spawnSync). (2026-07-13 신설)
-console.log('\n🔎 [Gate 27] 토큰역할 검사기 (Token Role — 글자엔 글자 토큰)');
+gateHeader('[Gate 27] 토큰역할 검사기 (Token Role — 글자엔 글자 토큰)');
 try {
   const { spawnSync } = require('child_process');
   const r = spawnSync('node', [path.join(ROOT, 'scripts/token-role-check.js')], { encoding: 'utf-8' });
@@ -757,7 +773,7 @@ try {
 //   error 로 걸면 site-base.css 한 줄 고친 타 세션까지 커밋이 막혀(남의 알람이 내 문 앞에서 울림),
 //   그 마찰이 --no-verify 를 부르고 그러면 Gate 1~27 전부 무력화된다. 신선도보다 게이트 생태계 보존 우선.
 // --skip 은 게이트가 자동으로 붙인다(사람이 손으로 붙일 필요 없음). Gate 27 의 spawnSync 패턴 차용.
-console.log('\n🔎 [Gate 28] 시스템 맵 신선도 검사기 (System Map Drift)');
+gateHeader('[Gate 28] 시스템 맵 신선도 검사기 (System Map Drift)');
 try {
   const { spawnSync } = require('child_process');
   const r = spawnSync('node', [
@@ -779,7 +795,7 @@ try {
 // ── Gate 29: Dark Divergence (라이트 동일·다크 갈림 — 단위 내부 이상치) ─────
 // 같은 비교 단위(컴포넌트 seg1 / 역할 계열은 seg1+seg2) 안에서 라이트 최종값이 같은데
 // 다크만 갈리는 이상치를 baseline 대조로 차단. 단위 간 갈림은 의도 가능성이 있어 기록만(warn).
-console.log('\n🔎 [Gate 29] 다크값갈림 검사기 (Dark Divergence)');
+gateHeader('[Gate 29] 다크값갈림 검사기 (Dark Divergence)');
 try {
   const dd = require('./dark-divergence-check');
   const r = dd.check();
@@ -807,7 +823,7 @@ try {
 // 종전에 Gate 16·23 은 "등록된 것만" 순회해 **미등록은 침묵 통과**했다(실측: mobile-bottom-nav·
 // multi-toggle·filter-chip 이 미등록인 채 전 게이트 통과). 빌더(runners) 미등록도 함께 잡는다.
 // esbuild 번들 + buildAllComponents mock 비동기 실행이 필요해 별도 프로세스로 호출(Gate 6c 와 동일 패턴).
-console.log('\n🔎 [Gate 30] 컴포넌트 등록 커버리지 검사기 (Component Registration)');
+gateHeader('[Gate 30] 컴포넌트 등록 커버리지 검사기 (Component Registration)');
 try {
   const { spawnSync } = require('child_process');
   const r = spawnSync('node', [path.join(ROOT, 'scripts/component-registration-check.js')], { encoding: 'utf-8' });
@@ -829,7 +845,7 @@ try {
 // ── Gate 31: Icon Key Consistency (설치기 ICON_KEYS ↔ provenance 허용목록) ──
 // 두 곳이 손 동기화라 개수가 12/19/주석"9키" 로 셋 다 어긋나 있었다(2026-08-01 실측).
 // 어긋나면 Gate 12(아이콘 인스턴스 정책)가 정상 아이콘을 위반으로 잡거나 미등록을 통과시킨다.
-console.log('\n🔎 [Gate 31] 아이콘키 정합 검사기 (Icon Key Consistency)');
+gateHeader('[Gate 31] 아이콘키 정합 검사기 (Icon Key Consistency)');
 try {
   const { check: iconKeyCheck } = require('./icon-key-consistency-check');
   iconKeyCheck({ pass, warn, fail });
@@ -842,7 +858,7 @@ try {
 // 적는 것**은 막는다. 2026-08-02 실측에서 표기가 5계보로 갈려 있었고(설치기 축약형·표셀만
 // 풀네임 MEDIUM/SMALL·웹 CSS 가 44를 lg 로·라벨 medium·registry pc-medium), 과거 통일 작업이
 // 표 셀에서 누락된 채 Gate 19 의 소문자 정규화에 가려 안 보였다.
-console.log('\n🔎 [Gate 32] 크기이름 검사기 (Size Naming Consistency)');
+gateHeader('[Gate 32] 크기이름 검사기 (Size Naming Consistency)');
 try {
   const { spawnSync } = require('child_process');
   const r = spawnSync('node', [path.join(ROOT, 'scripts/size-naming-check.js')], { encoding: 'utf-8' });
@@ -863,7 +879,7 @@ try {
 // 게이트가 0개**였다. 2026-08-03 에 ⭐ 가 사용자가 거부한 스타일 신설을 자기 규칙을 만들어
 // 강행했는데 재생성만 돌리니 전 게이트가 ✅ 로 통과했다. 하드룰 H7 의 집행 장치.
 //   막는 대상은 ⭐ 이지 사용자가 아니다 — 승인 기록이 있으면 그대로 통과한다.
-console.log('\n🔎 [Gate 34] 정본신설승인 검사기 (Canon Addition Approval)');
+gateHeader('[Gate 34] 정본신설승인 검사기 (Canon Addition Approval)');
 try {
   const { spawnSync } = require('child_process');
   const r = spawnSync('node', [path.join(ROOT, 'scripts/canon-addition-check.js')], { encoding: 'utf-8' });
@@ -882,7 +898,7 @@ try {
 // ── Gate 35: Typography Generation (타이포 생성물 신선도) ──
 // `typo:check` 가 존재하는데 gate-check 에 **배선돼 있지 않았다**(Gate 7b·9b 와 같은
 // "존재하나 미연결" 유형). 그래서 텍스트 스타일 정본은 게이트가 0개인 상태였다.
-console.log('\n🔎 [Gate 35] 타이포생성물 검사기 (Typography Generation)');
+gateHeader('[Gate 35] 타이포생성물 검사기 (Typography Generation)');
 try {
   const { spawnSync } = require('child_process');
   const r = spawnSync('node', [path.join(ROOT, 'scripts/typography-gen.js'), '--check'], { encoding: 'utf-8' });
@@ -899,7 +915,7 @@ try {
 // 정본이 Figma 구조상 3벌로 나뉘는데 "무엇이 정본인가"가 산문에만 있어서, 텍스트 스타일
 // 정본이 게이트 0개·우산 명령 밖에 방치돼 있었다. 선언(canon-manifest.json)과 실제 배선을
 // 대조해 같은 누락이 재발하지 않게 한다. 적대 4종(선언누락·정본삭제·유령명령·몰래강등) 확인.
-console.log('\n🔎 [Gate 36] 정본목록 검사기 (Canon Manifest)');
+gateHeader('[Gate 36] 정본목록 검사기 (Canon Manifest)');
 try {
   const { check: canonManifestCheck } = require('./canon-manifest-check');
   canonManifestCheck({ pass, warn, fail });
@@ -912,7 +928,7 @@ try {
 // 자라 있었고(2026-08-05 정비 전), 길수록 규칙 준수율 자체가 떨어진다. 그런데
 // CLAUDE.md 를 보는 게이트가 0개였고 방지책이 §🧹 산문 자가점검뿐 = 성실성 의존.
 // 크기 래칫 · 참조 경로 실존 · 변경이력 행수를 기계로 막는다.
-console.log('\n🔎 [Gate 37] 문서예산 검사기 (Doc Budget)');
+gateHeader('[Gate 37] 문서예산 검사기 (Doc Budget)');
 try {
   const { check: docBudgetCheck } = require('./doc-budget-check');
   docBudgetCheck({ pass, warn, fail });
@@ -922,7 +938,7 @@ try {
 
 // ── Gate 38: Component Guide Generation ──────────────────────────
 // build-components 정본 → guide model → components.html 생성 구간의 드리프트를 차단한다.
-console.log('\n🔎 [Gate 38] 컴포넌트 가이드 생성물 검사기 (Component Guide Generation)');
+gateHeader('[Gate 38] 컴포넌트 가이드 생성물 검사기 (Component Guide Generation)');
 try {
   const { check: componentGuideCheck } = require('./component-guide-generation-check');
   componentGuideCheck({ pass, fail });
@@ -931,14 +947,15 @@ try {
 }
 
 // ── Summary ───────────────────────────────────────────────────────
-console.log('\n─────────────────────────────────────────────────────');
+if (VERBOSE || errors > 0 || warnings > 0) console.log('\n─────────────────────────────────────────────────────');
+const tally = `게이트 ${gates}개 · ✅ ${passes}건${VERBOSE ? '' : ' (상세: --verbose)'}`;
 if (errors > 0) {
-  console.error(`\nGate Check FAILED — ${errors} error(s), ${warnings} warning(s)\n`);
+  console.error(`\nGate Check FAILED — ${errors} error(s), ${warnings} warning(s) · ${tally}\n`);
   process.exit(1);
 } else if (warnings > 0) {
-  console.warn(`\nGate Check PASSED with ${warnings} warning(s)\n`);
+  console.warn(`\nGate Check PASSED with ${warnings} warning(s) · ${tally}\n`);
   process.exit(0);
 } else {
-  console.log(`\n🔎 검사기 전부 통과 — all gates clear\n`);
+  console.log(`🔎 검사기 전부 통과 — ${tally}\n`);
   process.exit(0);
 }

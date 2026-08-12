@@ -188,7 +188,8 @@ function check({ pass, warn, fail }) {
     pass(`변경 이력 ${rows}행 / 상한 ${MAX_HISTORY_ROWS}`);
   }
 
-  console.log(`DOCBUDGET_SUMMARY bytes=${bytes} limit=${limit} badrefs=${bad.length} histrows=${rows}`);
+  // 기계 파싱용 요약줄 — 단독 실행 시에만 (gate-check 경유 시 침묵, 자동화는 단독 실행으로 파싱)
+  if (require.main === module) console.log(`DOCBUDGET_SUMMARY bytes=${bytes} limit=${limit} badrefs=${bad.length} histrows=${rows}`);
 }
 
 // ── CLI ──────────────────────────────────────────────────────────

@@ -29,12 +29,13 @@ const ROOT = path.resolve(__dirname, '..');
 const skipInstaller = process.argv.includes('--no-installer');
 
 function run(label, cmd) {
-  process.stdout.write(`\n▶ ${label}\n`);
+  // 성공 단계는 1줄로 접는다 — 자식 출력 상세는 실패 시에만 (대화 컨텍스트 절약, 2026-08-12)
   try {
-    const out = execSync(cmd, { cwd: ROOT, stdio: 'pipe' }).toString();
-    process.stdout.write(out.split('\n').filter(Boolean).slice(-4).map(l => '   ' + l).join('\n') + '\n');
+    execSync(cmd, { cwd: ROOT, stdio: 'pipe' });
+    process.stdout.write(`▶ ${label} ✅\n`);
     return true;
   } catch (e) {
+    process.stdout.write(`\n▶ ${label}\n`);
     process.stdout.write(`   ⚠️ ${label} 실패: ${(e.stdout || e.message).toString().slice(0, 300)}\n`);
     return false;
   }
@@ -67,9 +68,11 @@ console.log('🛰️  재생성 후 모니터 — 잔여 드리프트(손유지 
 
 let monitorFailed = false;
 try {
-  execSync('node scripts/token-sync-monitor.js', { cwd: ROOT, stdio: 'inherit' });
+  execSync('node scripts/token-sync-monitor.js', { cwd: ROOT, stdio: 'pipe' });
+  console.log('   토큰 값 모니터 ✅ — 전 표면 정본 일치');
 } catch (e) {
   monitorFailed = true;
+  process.stdout.write(((e.stdout || '') + (e.stderr || '')).toString());
 }
 
 if (monitorFailed) {
@@ -84,10 +87,11 @@ if (monitorFailed) {
 //   모니터는 "일치"로 통과시킨다(2026-06-16 발견된 사각지대).
 //   sync-install-prompt --check 는 #code-full(다운로드)·#code-ai(AI 컨텍스트 프롬프트)
 //   둘 다 tokens.css 와 완전 일치하는지 검사(exit 1 if diff) → stale 시 reconcile 실패.
-console.log('\n🔎 install-prompt 동기화 권위 검증 (#code-full · #code-ai):');
 try {
-  execSync('node scripts/sync-install-prompt.js --check', { cwd: ROOT, stdio: 'inherit' });
+  execSync('node scripts/sync-install-prompt.js --check', { cwd: ROOT, stdio: 'pipe' });
+  console.log('   install-prompt 권위 검증 ✅ (#code-full · #code-ai)');
 } catch (e) {
+  process.stdout.write(((e.stdout || '') + (e.stderr || '')).toString());
   console.log('\n🔴 install-prompt 가 정본과 불일치(누락/드리프트) — `npm run tokens:sync-prompt` 후 재확인.');
   process.exit(1);
 }

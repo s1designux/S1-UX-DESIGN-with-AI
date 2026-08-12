@@ -11,10 +11,15 @@ ROOT="$(git rev-parse --show-toplevel)"
 cd "$ROOT" || exit 0
 
 echo "🚧 커밋 검문소 ▶ 검사기 전부 돌리는 중 (npm run gate:check) ..."
-if npm run --silent gate:check; then
-  echo "🚧 ✅ 검사기 전부 통과 — 커밋 진행"
+# 성공 시 요약 1줄만 남긴다 — 전체 출력이 매 커밋 대화/터미널을 채우던 것을 접음 (2026-08-12).
+# 상세가 필요하면: npm run gate:check (경고 포함) / node scripts/gate-check.js --verbose (전체)
+OUT="$(npm run --silent gate:check 2>&1)"
+if [ $? -eq 0 ]; then
+  printf '%s\n' "$OUT" | tail -n 2 | sed '/^$/d'
+  echo "🚧 ✅ 검사기 통과 — 커밋 진행"
   exit 0
 else
+  printf '%s\n' "$OUT"
   echo ""
   echo "🚧 🔴 커밋 차단 — 검사기 실패. 위 ❌ 항목을 고친 뒤 다시 커밋하세요."
   echo "   드리프트면: npm run tokens:sync-prompt && npm run installer:build"
