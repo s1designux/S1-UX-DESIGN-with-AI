@@ -1,6 +1,6 @@
 ---
 name: token-sync
-model: opus
+model: sonnet
 description: "토큰 '값' 1건이 수정될 때, 연관된 모든 표면(tokens.css·vars-installer·install-prompt·semantic 문서·components 가이드·설치기 zip)에 누락 없이 동기화하는 전파 전용 에이전트. 사용자가 토큰 값을 바꾸거나 '이 토큰 값 고쳐줘/일괄 반영해줘'라고 할 때 호출된다. 값 전파만 담당하며 구조·네이밍 설계는 token-validator 소관."
 ---
 

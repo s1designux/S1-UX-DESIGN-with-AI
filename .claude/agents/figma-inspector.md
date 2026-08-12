@@ -1,6 +1,6 @@
 ---
 name: figma-inspector
-model: opus
+model: sonnet
 description: "Figma MCP를 통해 SW UX GUIDE V2.4 파일의 변수와 디자인 컨텍스트를 읽고, 토큰 파일과의 일관성을 확인하는 전문 에이전트."
 ---
 

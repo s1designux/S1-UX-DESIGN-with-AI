@@ -1,6 +1,6 @@
 ---
 name: source-reader
-model: opus
+model: sonnet
 description: "저장소 정본(HTML·CSS·JS·TS·JSON·registry)을 '실제로 확인'해서 검증된 사실만 반환하는 판독 전용 에이전트. ⭐ 총괄이 소스를 직접 훑어 짐작하는 것을 구조적으로 대체한다. 레이아웃/표출 주장은 실제 렌더 또는 CSS+JS 전체 추적으로 확인하며, 소스 순서로 렌더를 단정하지 않는다. 읽기 전용 — 수정·판단·개선 제안을 하지 않는다."
 ---
 
