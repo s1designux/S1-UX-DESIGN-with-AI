@@ -9,6 +9,11 @@ const ROOT = path.resolve(__dirname, '..', '..');
 const DEFAULT_BUILD_SOURCE = path.join(ROOT, 'plugins/figma-vars-installer/src/build-components.ts');
 const DEFAULT_COVERAGE = path.join(ROOT, 'registry/governance/component-page-coverage.json');
 
+// 생성물이 OS 에 따라 갈리지 않게 경로는 항상 POSIX 구분자로 기록한다 (Windows 백슬래시 금지)
+function toPosix(relPath) {
+  return relPath.split(path.sep).join('/');
+}
+
 function parseValue(value) {
   if (value == null) return null;
   if (typeof value !== 'string') return value;
@@ -201,8 +206,8 @@ async function buildGuideModel(options = {}) {
 
   return {
     schemaVersion: 1,
-    source: path.relative(ROOT, buildSource),
-    classificationSource: path.relative(ROOT, coveragePath),
+    source: toPosix(path.relative(ROOT, buildSource)),
+    classificationSource: toPosix(path.relative(ROOT, coveragePath)),
     componentCount: componentIndex.length,
     componentIndex,
     componentSets,
