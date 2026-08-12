@@ -207,44 +207,18 @@
       background:#f3f4f6; padding:1px 6px; border-radius:4px; font-size:11.5px; color:#1d6ceb;
     }
 
-    /* ── 준비 중 패널 (개발자 탭) ── */
-    .wip-panel {
-      max-width:600px; margin:24px auto 40px; text-align:center;
-      padding:44px 32px 36px;
-      border:1.5px solid #e5e7eb; border-radius:18px; background:#fff;
-    }
-    .wip-icon {
-      width:56px; height:56px; margin:0 auto 16px; border-radius:16px;
-      display:flex; align-items:center; justify-content:center;
-      background:#fff7ed; color:#c2410c;
+    /* ── 준비 중 패널 (개발자 탭) ──
+       컨테이너는 다른 탭과 동일하게 .install-steps > .install-step 을 그대로 쓴다(같은 폭). */
+    .wip-box {
+      padding:72px 24px; text-align:center; background:#fff;
     }
     .wip-badge {
       display:inline-block; padding:4px 12px; border-radius:999px;
       background:#fff7ed; color:#c2410c; font-size:11.5px; font-weight:700;
     }
-    .wip-title { font-size:19px; font-weight:700; color:#111827; margin:12px 0 0; }
-    .wip-desc  { font-size:13.5px; color:#6b7280; line-height:1.85; margin:10px 0 0; }
-
-    .wip-reason, .wip-next, .wip-meanwhile {
-      text-align:left; margin-top:22px; padding:16px 18px;
-      border-radius:12px; background:#fafafa; border:1px solid #f0f1f3;
+    .wip-line {
+      margin:14px 0 0; font-size:15px; font-weight:600; color:#374151;
     }
-    .wip-meanwhile { background:#f5f9ff; border-color:#dbeafe; }
-    .wip-reason-title, .wip-next-title, .wip-meanwhile-title {
-      font-size:12px; font-weight:700; color:#111827; margin-bottom:8px;
-    }
-    .wip-reason p, .wip-meanwhile p {
-      margin:0; font-size:12.5px; color:#4b5563; line-height:1.95;
-    }
-    .wip-next ul { margin:0; padding-left:20px; list-style:disc; }
-    .wip-next li { font-size:12.5px; color:#4b5563; line-height:2.05; }
-    .wip-cta {
-      display:inline-flex; align-items:center; gap:7px; margin-top:14px;
-      padding:9px 18px; border-radius:9px; border:none; cursor:pointer;
-      font-size:13px; font-weight:600; background:#1d6ceb; color:#fff;
-      transition:background 0.15s;
-    }
-    .wip-cta:hover { background:#2158c8; }
 
     .tab-wip-dot {
       display:inline-block; margin-left:6px; padding:1px 7px; border-radius:999px;
@@ -443,51 +417,13 @@
 
       <!-- ══ 개발자용 패널 (준비 중) ══
            2026-08-12 — 내용을 의도적으로 비웠다. 토큰 CSS 만으로는 컴포넌트를 만들 수 없는데
-           설치 방법을 자세히 안내하면 개발자가 "이걸로 되겠지" 하고 시작했다가 막힌다.
+           설치 방법을 안내하면 개발자가 "이걸로 되겠지" 하고 시작했다가 막힌다.
            컴포넌트 CSS 배포(BACKLOG 0번)가 끝나면 그때 한 벌로 연다. -->
       <div class="top-panel" id="top-dev">
-        <div class="wip-panel">
-          <div class="wip-icon">
-            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-              <circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15.5 14"/>
-            </svg>
-          </div>
-          <div class="wip-badge">준비 중</div>
-          <h2 class="wip-title">개발자용 배포는 준비 중입니다</h2>
-          <p class="wip-desc">
-            지금 공개하면 <strong>반쪽짜리 기준</strong>을 드리게 되어, 준비가 끝날 때까지 열지 않습니다.
-          </p>
-
-          <div class="wip-reason">
-            <div class="wip-reason-title">왜 아직인가</div>
-            <p>
-              색·간격 같은 <strong>토큰</strong>은 준비돼 있지만, 그것만으로는 버튼 하나를 만들 수 없습니다.
-              실제 컴포넌트 스타일은 아직 <strong>가져다 쓸 수 있는 파일로 정리되지 않았고</strong>,
-              그 값이 디자인 정본과 일치하는지도 확인이 끝나지 않았습니다.
-              검증되지 않은 값을 「S1 표준」으로 배포하면, 서비스마다 서로 다른 기준이 퍼집니다.
-            </p>
-          </div>
-
-          <div class="wip-next">
-            <div class="wip-next-title">준비가 끝나면 여기서 받을 수 있습니다</div>
-            <ul>
-              <li>토큰 CSS — 색 · 간격 · 반경 · 글자, 다크모드 포함</li>
-              <li>컴포넌트 CSS — 버튼 · 인풋 등 실제 스타일 (디자인 정본에서 자동 생성)</li>
-              <li>컴포넌트 마크업 — 클래스 이름과 구조</li>
-              <li>PC 동작 규칙 — 클릭 · 선택 · 열고닫기 · 키보드 · 포커스</li>
-            </ul>
-          </div>
-
-          <div class="wip-meanwhile">
-            <div class="wip-meanwhile-title">그동안에는</div>
-            <p>
-              <strong>AI 코딩 도구</strong>(Claude Code · Cursor 등)를 쓰신다면 지금도 작업할 수 있습니다.
-              <strong>AI 프롬프트</strong> 탭에서 디자인가이드 저장소를 받아 연결하세요.
-            </p>
-            <button class="wip-cta" onclick="goTab('ai')">
-              AI 프롬프트 탭으로 이동
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
-            </button>
+        <div class="install-steps">
+          <div class="install-step wip-box">
+            <div class="wip-badge">준비 중</div>
+            <p class="wip-line">개발자용 배포는 준비 중입니다.</p>
           </div>
         </div>
       </div><!-- /top-dev -->
@@ -599,12 +535,6 @@
     btn.textContent = '✓';
     btn.classList.add('copied');
     setTimeout(() => { btn.textContent = orig; btn.classList.remove('copied'); }, 1800);
-  }
-
-  /* ── 다른 탭으로 이동 (준비 중 패널의 안내 버튼) ── */
-  function goTab(name) {
-    const btn = document.querySelector('.top-tab[data-top="' + name + '"]');
-    if (btn) { btn.click(); window.scrollTo({ top: 0, behavior: 'smooth' }); }
   }
 
   /* ── 블록(저장소 주소·요청문) 통째 복사 ── */
