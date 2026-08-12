@@ -48,7 +48,7 @@
 | 31 | Icon Key Consistency | 설치기 `ICON_KEYS` ↔ provenance 3면 정합 |
 | 32 | Size Naming | 같은 것을 다른 단어로 적는 것 차단(허용 어휘) |
 | 33 | *(예약)* | 텍스트 스타일 정합 검사기 자리 |
-| 34 | Canon Addition Approval | **정본에 줄이 늘어나는 것을 보는 유일한 게이트** — 무승인 차단(H7) |
+| 34 | Canon Addition Approval | **정본에 줄이 늘어나는 것을 보는 유일한 게이트** — 무승인 차단(H6② — 구 H7) |
 | 35 | Typography Generation | typography.css 가 textstyles-data.ts 와 일치 |
 | 36 | Canon Manifest | **「무엇이 정본인가」** 선언 ↔ 실제 배선 양방향 대조 |
 | 37 | Doc Budget | **CLAUDE.md 재비대화 차단** — 크기 래칫·참조 경로 실존·변경이력 3행 |
@@ -356,7 +356,7 @@ DESIGN.md(AI 소비용) 가 정본(tokens.css+registry)보다 낡으면 차단
 
 ### Gate 34: Canon Addition Approval (정본 신설 승인)
 
-**정본에 새 항목이 생기는 것을 사건으로 보는 유일한 게이트.** 추적 대상 = 텍스트 스타일명·토큰 키·**컴포넌트 세트 이름**(2026-08-03 확장 — H7 이 "컴포넌트·variant"를 명시하는데 게이트는 토큰·스타일만 봤고, Gate 30 은 "등록됐나"(커버리지)지 "생겨도 되나"(승인)가 아니라 신설+성실등록이면 전 게이트를 통과했다. variant 축은 마찰 과잉이라 제외). 새 종류 감시 시작은 `--extend-tracking <종류>`(정본을 안 건드리는 감시 확대라 승인 불필요하되 **1회만**·지정 종류 밖 신설이 섞이면 거부 — 적대 테스트로 우회로 4종 확인). ⭐ 가 텍스트 스타일·토큰을 임의로 신설하면 **커밋 차단**, 사용자 승인 기록이 있으면 통과(`npm run canon:approve -- --by river --reason "…"`). 종전엔 32개 게이트 전부가 "정본→파생 일치"만 봐서 **정본에 줄이 늘어나는 것을 아무도 안 봤다** — 재생성만 돌리면 전 게이트가 통과했다. 하드룰 H7 집행. 정본=`registry/governance/canon-additions-baseline.json`. 단독 `npm run canon:check`
+**정본에 새 항목이 생기는 것을 사건으로 보는 유일한 게이트.** 추적 대상 = 텍스트 스타일명·토큰 키·**컴포넌트 세트 이름**(2026-08-03 확장 — H7 이 "컴포넌트·variant"를 명시하는데 게이트는 토큰·스타일만 봤고, Gate 30 은 "등록됐나"(커버리지)지 "생겨도 되나"(승인)가 아니라 신설+성실등록이면 전 게이트를 통과했다. variant 축은 마찰 과잉이라 제외). 새 종류 감시 시작은 `--extend-tracking <종류>`(정본을 안 건드리는 감시 확대라 승인 불필요하되 **1회만**·지정 종류 밖 신설이 섞이면 거부 — 적대 테스트로 우회로 4종 확인). ⭐ 가 텍스트 스타일·토큰을 임의로 신설하면 **커밋 차단**, 사용자 승인 기록이 있으면 통과(`npm run canon:approve -- --by river --reason "…"`). 종전엔 32개 게이트 전부가 "정본→파생 일치"만 봐서 **정본에 줄이 늘어나는 것을 아무도 안 봤다** — 재생성만 돌리면 전 게이트가 통과했다. 하드룰 H6②(구 H7) 집행. 정본=`registry/governance/canon-additions-baseline.json`. 단독 `npm run canon:check`
 
 ### Gate 35: Typography Generation
 

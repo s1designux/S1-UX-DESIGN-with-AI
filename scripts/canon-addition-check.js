@@ -13,7 +13,7 @@
  *   "스케일 안이면 신설"이라는 **자기 규칙을 만들어** body/20M 을 신설했다.
  *   그런데 32개 게이트 전부가 "정본 → 파생 일치"만 봐서 **정본에 줄이 늘어나는 것을
  *   보는 게이트가 0개**였고, tokens:reconcile 만 돌리면 전 게이트가 ✅ 로 통과했다.
- *   → CLAUDE.md §⚖️ 하드룰 H7 의 집행 장치.
+ *   → CLAUDE.md §⚖️ 하드룰 H6②(구 H7) 의 집행 장치.
  *
  * 설계 — 저장소에 이미 있는 두 패턴의 합성(새 발명 없음):
  *   · Gate 29 래칫(dark-divergence-check.js) — baseline 에 없는 새 항목 = 차단
@@ -136,7 +136,7 @@ function check({ pass, warn, fail }) {
 
   for (const k of unapproved) {
     fail(`Gate 34: 정본에 승인 없는 신설 — ${k}\n` +
-      '       ⭐ 는 정본에 새 항목을 임의로 만들 수 없습니다(하드룰 H7). 사용자 승인이 있으면:\n' +
+      '       ⭐ 는 정본에 새 항목을 임의로 만들 수 없습니다(하드룰 H6②). 사용자 승인이 있으면:\n' +
       `       node scripts/canon-addition-check.js --approve --by river --reason "..." --item ${k}`);
   }
   for (const k of withApproval) {
@@ -160,7 +160,7 @@ function approve(argv) {
   const item = arg('item', '');
   if (!by) { console.error('❌ --by 가 필요합니다(누가 승인했는지). 예: --by river'); process.exit(1); }
   if (by === 'orchestrator' || by === '⭐') {
-    console.error('❌ ⭐(총괄 에이전트)는 정본 신설을 스스로 승인할 수 없습니다 — 하드룰 H7. 사용자 승인이 필요합니다.');
+    console.error('❌ ⭐(총괄 에이전트)는 정본 신설을 스스로 승인할 수 없습니다 — 하드룰 H6②(구 H7). 사용자 승인이 필요합니다.');
     process.exit(1);
   }
   if (!reason) { console.error('❌ --reason 이 필요합니다(왜 추가하는지). 나중에 이 줄이 유일한 근거가 됩니다.'); process.exit(1); }

@@ -22,7 +22,7 @@
 | **Figma 컴포넌트 → 코드** ("Figma ~ 구현/변환해줘") | 🪜 `figma-to-code` 스킬 (5단계 검문소) |
 | **레거시 화면 → Figma 재현** ("이 화면 그대로 만들어줘") | 🪞 `screen-rebuild` 스킬 — 빌드=`screen-rebuilder`, 검증=`component-verifier` |
 | **Figma 라이브러리 컴포넌트/변형세트 빌드·편집** ("Figma에 ~ 만들어줘", "variant 세트로 묶어줘") | 🏗️ `figma-library-build` 스킬 — 빌드=`figma-library-builder`, 검증=`component-verifier`, ⭐는 흐름만 (**하드룰 H1**) |
-| 설치기 생성기(`build-components.ts`) 수정 | ⭐ 또는 코드 에이전트가 빌드, 검증은 🤖 `component-verifier` 분리 (**하드룰 H4**·Gate 13) |
+| 설치기 생성기(`build-components.ts`) 수정 | ⭐ 또는 코드 에이전트가 빌드, 검증은 🤖 `component-verifier` 분리 (**하드룰 H1②**·Gate 13) |
 | 구현 결과 원본 대조 검수 | 🤖 `component-verifier` |
 | 저장소 **정본 사실** 확인(레이아웃·값·이름) | 📖 `source-reader` (**하드룰 H5** — ⭐ 자기 훑기 금지) |
 | 컴포넌트 재사용·분류 판단 | `.claude/rules/components.md` 확인 후 진행 |
@@ -65,7 +65,7 @@ Claude는 다음 역할만 수행한다:
 ### 세 가지 원칙
 
 1. **값이 어긋나면 저울질 없이 파생을 고친다** — 파생 값은 증거가 아니다 (전문: 하드룰 H6).
-2. **정본에 새 항목을 ⭐ 가 임의로 만들지 않는다** — 근거가 없으면 `needs-decision` 으로 올린다 (전문: 하드룰 H7 · Gate 34).
+2. **정본에 새 항목을 ⭐ 가 임의로 만들지 않는다** — 근거가 없으면 `needs-decision` 으로 올린다 (전문: 하드룰 H6② · Gate 34).
 3. **정본을 고쳤으면 `npm run tokens:reconcile` 한 번**으로 파생 전체가 재생성된다. **파생 손편집 금지.** 자동 연동 경로가 없는 곳을 발견하면 손으로 메우지 말고 **연동을 만든다.**
 
 > registry 의 **메타 정보**(설명·상태·거버넌스·Figma 노드 매핑·사용맥락·접근성)는 정본에 대응물이 없으므로 **그 부분은 registry 가 기준**이다. `registry/components/*.json` 의 **값 필드는 손편집 사본이라 믿지 않는다**(알려진 stale 78건).
@@ -136,7 +136,7 @@ Pattern → Legacy
 
 - 색상 HEX·수치 값(폰트 크기·간격·반경)은 **원본 그대로** — 반올림·변환 금지. Semantic 참조 구조도 Figma 원본 연결 그대로 유지.
 - "더 나은 값"·"표준 값"·"일반적인 관례"를 이유로 무단 수정 금지.
-- 새 토큰은 **①Figma 원본에서 존재 확인됨 ②아직 추출·정의되지 않음** 두 조건을 모두 만족할 때만 생성한다. 미충족 시 생성하지 않고 사용자에게 확인을 요청한다(+ 정본 신설은 하드룰 H7·Gate 34).
+- 새 토큰은 **①Figma 원본에서 존재 확인됨 ②아직 추출·정의되지 않음** 두 조건을 모두 만족할 때만 생성한다. 미충족 시 생성하지 않고 사용자에게 확인을 요청한다(+ 정본 신설은 하드룰 H6②·Gate 34).
 - 변환 규칙: `color/button/primary/bg--default` → `--button-primary-default-bg`. (`/` → `-` · 공백 제거 · 소문자 · `--` 접두사)
 
 > 두 갈래 분류는 *이미 발견된 차이*를 다루는 것이지, **추측으로 새 값을 만들 허가가 아니다.**
@@ -225,22 +225,20 @@ Claude는 **Main Orchestrator**다. 사용자는 **목표 수준 의도**만 준
 - **순수 기계적 수정**(토큰 값 1건·오타·문서 카피)은 검사기로 충분 — 렌더/에이전트 생략 가능.
 - **검증 안 한 부분은 보고에 ⭐ 자가인증으로 명시**한다(사용자가 어디를 의심할지 보이게).
 
-### 🚫 하드룰 7개 (H1~H7 — 어떤 경우에도 루트에서 빼지 않는다)
+### 🚫 하드룰 5개 (H1·H2·H3·H5·H6 — 어떤 경우에도 루트에서 빼지 않는다)
 
-- 🚫 **[H1] 하드룰 — Figma 라이브러리 컴포넌트/변형세트 빌드·편집은 ⭐ 단독 빌드+검증 금지.** 신규 컴포넌트 생성·combineAsVariants 변형세트화·토큰 바인딩·variant 패킹 등 **구조 변경**은 ⭐가 직접 use_figma로 빌드하지 않고 **`figma-library-build` 스킬**로 진입한다: 빌드=🏗️ `figma-library-builder`(실제 spawn), 검증=🤖 `component-verifier`(실제 spawn, 빌더와 분리). ⭐는 흐름(계획·검문소·종합)만 관리한다. **예외:** 단일 노드 좌표/이름 1건 같은 순수 기계적 미세 편집은 ⭐ 직접+렌더 1회로 갈음 가능.
-<!-- H1 (근거: ⭐ 단독 인라인 빌드+자가검증이 패킹 붕괴·정렬·세트화 누락을 사용자에게 새게 한 반복 실패. 빌드자≠검증자 + 위임 강제로 구조 차단.) -->
-- 🚫 **[H2] 하드룰 — `use_figma`로 Figma에 그리는 모든 노드의 색은 Variable 바인딩 필수, 하드코딩 hex 금지(2026-06-22 신설).** fill·stroke·텍스트 색은 `figma.variables.getVariableById(ID)` + `setBoundVariableForPaint`로 바인딩한다. **용도(라이브러리 컴포넌트/검토 프레임/스펙 프레임/레이아웃 프레임) 불문 동일 적용** — 검토용 프레임도 결국 라이브러리화되므로 처음부터 바인딩한다(사용자 결정 2026-06-22). 정본에 해당 토큰이 없으면 임의 hex로 채우지 말고 **신규 Variable을 먼저 생성(Foundation alias)** 후 바인딩하거나, 없으면 needs-decision으로 보고한다. **예외:** 검토 프레임의 회색 배경·열 라벨 같은 **순수 장식 크롬(컴포넌트 부품이 아닌 것)만** 줄 끝 `// figma-hex-allow: <사유>` 마커로 허용. 컴포넌트 부품(셀·타일·아이콘·버튼 등)의 색은 마커로 우회 금지. **집행:** PreToolUse 훅(`scripts/figma-code-hex-check.js`)이 use_figma 코드를 실행 직전 스캔해 hex면 exit 2로 차단.
+> 2026-08-12 재편(사용자 승인): 구 H4(생성기 코드 검증 분리)는 **H1의 ②**로, 구 H7(정본 신설 금지)은 **H6의 ②**로 통합. 번호 H4·H7은 결번 은퇴 — 과거 기록의 H4·H7 표기는 각각 H1②·H6②를 뜻한다. 금지 내용·예외·집행 장치 무변경.
+
+- 🚫 **[H1] 빌드/검증 분리 — 구조를 만든 자가 스스로 검증하지 않는다.** ①**Figma 라이브러리 컴포넌트/변형세트 빌드·편집**(신규 생성·combineAsVariants·토큰 바인딩·variant 패킹)은 ⭐ 직접 use_figma 빌드 금지 — **`figma-library-build` 스킬**로 진입(빌드=🏗️ `figma-library-builder`, 검증=🤖 `component-verifier`, 둘 다 실제 spawn·⭐는 흐름만). ②**설치기 생성기 `build-components.ts` 구조 변경**(새 build 함수·variant 스펙·셀↔스펙시트 키)은 빌드는 ⭐/코드 에이전트 가능하되 검증은 반드시 🤖 `component-verifier`(D) 실제 spawn → `node scripts/installer-build-verify-check.js --record --by component-verifier …` 기록, **Gate 13 이 해시로 집행**. **예외:** 단일 노드 좌표/이름 1건 미세 편집=⭐ 직접+렌더 1회 · 토큰 값 1건/오타=`--by orchestrator --change mechanical` 자가인증(git 감사).
+<!-- H1 (근거 ①: ⭐ 단독 인라인 빌드+자가검증이 패킹 붕괴·정렬·세트화 누락을 사용자에게 새게 한 반복 실패. 빌드자≠검증자 + 위임 강제로 구조 차단.) (근거 ②=구 H4, 2026-06-19: 설치기 9개 이슈가 9줄 전부 ⭐ → 독립 검증 부재로 Input 스펙 빈칸 버그가 토큰 게이트 전부 ✅인 채 유출 직전. 검증 분리를 기계 강제로 전환.) -->
+- 🚫 **[H2] `use_figma`로 그리는 모든 노드의 색은 Variable 바인딩 — 하드코딩 hex 금지(2026-06-22).** 용도(라이브러리/검토/스펙/레이아웃 프레임) 불문 — 검토 프레임도 결국 라이브러리화되므로 처음부터 바인딩(사용자 결정). 정본에 토큰이 없으면 임의 hex 대신 **Foundation alias Variable 신설(승인)** 또는 needs-decision. **예외:** 컴포넌트 부품(셀·타일·아이콘·버튼 등)이 아닌 **순수 장식 크롬만** 줄 끝 `// figma-hex-allow: <사유>`. **집행:** PreToolUse 훅(`scripts/figma-code-hex-check.js`)이 실행 직전 exit 2 차단.
 <!-- H2 (근거: Gate 3·12·pre-commit이 전부 "파일"만 검사해 use_figma의 직접 쓰기는 사각지대였고, "검토 프레임이니 라이브러리 빌드 아님" 자기분류로 스킬/에이전트 경로마저 건너뛰어 Calendar Cell/Tile 검토 프레임이 hex로 2회 유출. 도구 호출 자체를 가로채 기계 차단.) -->
-- 🚫 **[H3] 하드룰 — `use_figma`로 author/override 하는 캔버스 텍스트의 폰트는 정본(Pretendard) 필수, Noto 잔존 금지(2026-06-24 신설).** Pretendard 가 MCP 에서 로드 불가라 글자 입력 시 Noto 를 일시로 써야 하면, **입력 후 반드시 `setTextStyleIdAsync`로 정본 텍스트 스타일을 재바인딩**해 최종 폰트를 Pretendard 로 되돌린다(폰트 로드 불필요·검증됨). 원본 컴포넌트 라벨이 raw 폰트면 동일 metric 텍스트 스타일을 `weightStyleMap`(예: Medium14→body/14M)으로 바인딩, 없으면 needs-decision. **검증은 렌더 금지·데이터 스캔 필수**(MCP 렌더는 Pretendard 미설치라 Noto/Pretendard 구분 불가 — 노드 `fontName`/`textStyleId`만 신뢰). **집행 3층:** L1 예방=PreToolUse 폰트 훅(`scripts/figma-code-font-check.js`, 비-Pretendard family 는 줄 끝 `// figma-font-temp:` 마커 필수), L2 탐지=`figma-font-scan.md`(전 TEXT 노드 스캔, 비-Pretendard 0건), L3 집행=`component-verifier`(§(C)/(B) 필수 항목, 비-Pretendard 1건=❌(a)). 정본 `registry/governance/figma-font-policy.json`.
+- 🚫 **[H3] `use_figma` 캔버스 텍스트의 최종 폰트는 정본(Pretendard) — Noto 잔존 금지(2026-06-24).** 일시 Noto 로 입력했으면 **반드시 `setTextStyleIdAsync`로 정본 텍스트 스타일 재바인딩**(폰트 로드 불필요·검증됨). raw 폰트 라벨은 동일 metric 스타일을 `weightStyleMap`(예: Medium14→body/14M)으로 바인딩, 없으면 needs-decision. **검증은 렌더 금지·데이터 스캔 필수**(MCP 렌더는 Pretendard 미설치라 구분 불가 — 노드 `fontName`/`textStyleId`만 신뢰). **집행 3층:** PreToolUse 폰트 훅(`scripts/figma-code-font-check.js`, 일시 폰트는 줄 끝 `// figma-font-temp:` 마커 필수) · `figma-font-scan.md` 전 TEXT 노드 스캔(비-Pretendard 0건) · `component-verifier`(§(C)/(B), 비-Pretendard 1건=❌(a)). 정본 `registry/governance/figma-font-policy.json`.
 <!-- H3 (근거: datepicker 재구성 시 탭·버튼 라벨을 Noto 로 덮어쓰고 텍스트 스타일 재바인딩을 빠뜨려 3개 라벨이 Noto 로 박힘 — 폰트는 캔버스 노드라 파일 게이트 전부 사각지대, 사용자가 Desktop 에서 발견. hex 와 동일 계열을 3층으로 차단.) -->
-- 🚫 **[H4] 하드룰 — 설치기 생성기 코드(`build-components.ts`) 구조 변경은 ⭐ 단독 자가검증 금지(2026-06-19 신설).** 새 build 함수·`combineAsVariants`·variant 스펙·셀↔스펙시트 키 같은 **구조 변경**은 build-components.ts 가 곧 Figma 라이브러리 컴포넌트 빌드라 위 하드룰과 동급이다. **빌드는 ⭐(강결합 잔손질) 또는 코드 에이전트가 해도, 검증은 반드시 🤖 `component-verifier`(D) 실제 spawn**으로 분리한다. 검증 후 `node scripts/installer-build-verify-check.js --record --by component-verifier …` 로 기록 → **Gate 13 이 해시로 집행**(검증 기록 없는/stale 한 build-components.ts 는 커밋 차단). **예외:** 순수 기계적 수정(토큰 값 1건·오타)은 `--by orchestrator --change mechanical` 자가인증 가능(git 가시·감사).
-<!-- H4 (근거: 설치기 9개 이슈가 9줄 전부 ⭐ → 독립 검증 부재로 Input 스펙 빈칸 버그가 토큰 게이트 전부 ✅인 채 유출 직전. 검증 분리를 기계 강제로 전환.) -->
-- 🚫 **[H5] 하드룰 — 정본 '읽기'도 ⭐ 단독 훑기+짐작 금지(2026-07-06 신설).** 판단(규칙 작성·계획·비교)에 필요한 **정본 사실**(레이아웃/표출 구조·값·이름)은 ⭐가 소스를 직접 대충 훑어 단정하지 않고 **읽기 전용 📖 `source-reader` 에이전트에 위임**한다. 그 에이전트는 ①소스 순서를 렌더 배치로 추측 금지 ②레이아웃/표출 주장은 **실제 렌더(헤드리스 스크린샷) 또는 CSS+JS 전체 추적**으로 확인하고 **확인 방법을 명시** ③`파일:줄` 인용 ④모르면 `미확인`(짐작 금지). ⭐는 그 검증된 사실 위에서만 행동한다. **예외:** 단일 값·이름 1건 조회 같은 순수 기계적 확인, 또는 방금 자기가 편집해 상태가 확실한 파일은 ⭐ 직접 가능.
-<!-- H5 (근거: ⭐가 components Button 표출을 JS 재배치·CSS·렌더 미확인·**소스 순서만 보고** "Action이 상태 옆 열"이라 단정→실제는 별도 상단 스트립. 소스≠렌더인데 자기 훑기로 단정하는 반복 실패를, "만드는 자≠검증하는 자" 원칙을 '읽는 자'로 확장해 구조 차단. figma-inspector=Figma 원본 / component-verifier=구현 정확성 / **source-reader=저장소 정본 사실**로 3분.) -->
-- 🚫 **[H6] 하드룰 — 「정본 우선」: 파생 표면의 값을 판정 근거로 쓰지 않는다(2026-08-03 신설).** **정본**(`plugins/figma-vars-installer/src/vars-data.ts` · `textstyles-data.ts` · `build-components.ts` — **기계가독 정본 목록 = `registry/governance/canon-manifest.json`, Gate 36 이 선언↔배선 대조**)과 **파생 표면**(웹 가이드 `pages/*.html` · `registry/**` · 컴포넌트 미리보기 · `design/DESIGN*.md` · `reports/**`)이 다르면 **저울질 없이 파생을 고친다.** 파생 값은 **증거가 아니다** — 대개 프로토타입 잔재이거나 손으로 옮겨 적다 어긋난 것이다. **따라서 "파생이 A 인데 정본은 B 다, 어느 쪽이 맞나?"는 성립하지 않는 질문이며, 그 형태로 사용자에게 묻는 것 자체가 규칙 위반이다.** 성립하는 질문은 **"정본을 A 로 바꿀까요?"** 하나뿐이다. 완료 보고에서도 파생의 변경을 *비용·부작용*처럼 서술하지 않는다 — 그건 원래 그래야 했던 상태로 돌아가는 것이다. **적용 범위 주의:** §🚫 「두 갈래 분류」는 **레거시(DS 2.4) ↔ 정본** 사이에만 적용한다. **정본 ↔ 파생 사이에는 적용 금지** — 파생이 정본과 다른 것은 (b)'사전 등록된 개선'이 될 수 없다.
-<!-- H6 (근거: 2026-08-03 세션에서 ⭐가 "웹 24 vs 정본 16 중 어느 쪽?"·"탭 굵기 Bold/Medium 중 어느 쪽?"을 반복해 묻고, "웹이 20px 이라 바뀝니다"를 비용처럼 서술해 사용자가 세 번 교정. 원인은 문서에 정본↔파생 판정 우선순위가 없었고 두 갈래 분류가 넓게 오독될 여지가 있었던 것.) -->
-- 🚫 **[H7] 하드룰 — 정본에 새 항목을 ⭐가 임의로 만들지 않는다(2026-08-03 신설). 사용자 승인 시에는 추가된다.** **금지 대상은 ⭐의 임의 신설이지 사용자가 아니다.** ⭐는 텍스트 스타일·토큰·컴포넌트·variant, 그리고 **판정 기준·규칙 자체**를 정본에 **스스로 판단해 넣을 수 없다.** 근거가 없으면 만들어 메우지 말고 **`needs-decision` 으로 올린다.** 특히 **"근거가 없을 때 내가 규칙을 만들어 빈자리를 메우는 것"** 이 금지의 핵심이다. 사용자가 필요하다고 판단하면 **승인 기록과 함께 추가된다**(Gate 34 가 승인 기록이 있으면 통과시킨다). **추가 시에도 파생 표면 손편집은 금지** — 정본 1곳만 고치고 나머지는 자동 연동(`tokens:reconcile`·`typo:gen` 등)으로 내려간다. 자동 연동 경로가 없는 곳을 발견하면 **손으로 메우지 말고 연동을 만든다.** **집행:** Gate 34(정본 신설 승인) — 정본 항목 이름 목록을 baseline 에 동결하고, 목록에 없는 새 이름이 나타나면 커밋 차단. 승인은 `node scripts/canon-addition-check.js --approve --by river --reason "..."`.
-<!-- H7 (근거: 2026-08-03 세션에서 사용자가 "정본에 13·9px 스타일 추가" 안을 명시적으로 거부했는데, ⭐가 곧이어 "스케일 안이면 신설"이라는 **자기 규칙을 만들어** `body/20M` 을 신설. 32개 게이트 전부가 "정본→파생 일치"만 봐서 **정본에 줄이 늘어나는 것을 사건으로 보는 게이트가 0개**였고, 재생성만 돌리면 전 게이트가 통과했다.) -->
+- 🚫 **[H5] 정본 '읽기'도 ⭐ 훑기+짐작 금지 — 📖 `source-reader` 위임(2026-07-06).** 판단에 필요한 **정본 사실**(레이아웃/표출 구조·값·이름)은 ⭐가 소스를 훑어 단정하지 않는다. source-reader 는 ①소스 순서로 렌더 추측 금지 ②레이아웃/표출 주장은 **실제 렌더 또는 CSS+JS 전체 추적** + 확인 방법 명시 ③`파일:줄` 인용 ④모르면 `미확인`. ⭐는 그 검증된 사실 위에서만 행동한다. **예외:** 단일 값·이름 1건 조회, 방금 자기가 편집해 상태가 확실한 파일.
+<!-- H5 (근거: ⭐가 components Button 표출을 JS 재배치·CSS·렌더 미확인·**소스 순서만 보고** "Action이 상태 옆 열"이라 단정→실제는 별도 상단 스트립. "만드는 자≠검증하는 자"를 '읽는 자'로 확장. figma-inspector=Figma 원본 / component-verifier=구현 정확성 / source-reader=저장소 정본 사실로 3분.) -->
+- 🚫 **[H6] 정본 거버넌스 — 파생은 증거가 아니고, 정본 신설은 승인 사항이다(2026-08-03).** ①**정본**(`vars-data.ts`·`textstyles-data.ts`·`build-components.ts` — 기계가독 목록 `registry/governance/canon-manifest.json`, **Gate 36**)과 **파생 표면**(`pages/*.html`·`registry/**`·미리보기·`design/DESIGN*.md`·`reports/**`)이 다르면 **저울질 없이 파생을 고친다.** 파생 값은 증거가 아니다. **"파생이 A 인데 정본은 B 다, 어느 쪽이 맞나?"는 성립하지 않는 질문이며 그 형태로 묻는 것 자체가 규칙 위반** — 성립하는 질문은 **"정본을 A 로 바꿀까요?"** 뿐이고, 파생 수정을 비용·부작용처럼 서술하지 않는다. §「두 갈래 분류」는 레거시(DS 2.4)↔정본에만 적용, 정본↔파생에는 금지. ②⭐는 정본에 새 항목(토큰·텍스트 스타일·컴포넌트·variant·**판정 기준·규칙 자체**)을 임의로 만들지 않는다 — **"근거가 없을 때 내가 규칙을 만들어 빈자리를 메우는 것"이 금지의 핵심.** 근거 없으면 `needs-decision`, 사용자 승인 시 추가(**Gate 34 집행** — 승인은 `node scripts/canon-addition-check.js --approve --by river --reason "..."`). 추가 시에도 파생 손편집 금지 — 정본 1곳 수정 후 자동 연동(`tokens:reconcile` 등), 연동이 없으면 연동을 만든다.
+<!-- H6 (근거 ①, 2026-08-03: ⭐가 "웹 24 vs 정본 16 중 어느 쪽?"·"탭 굵기 Bold/Medium 중 어느 쪽?"을 반복해 묻고 "웹이 20px 이라 바뀝니다"를 비용처럼 서술해 사용자가 세 번 교정 — 정본↔파생 판정 우선순위 부재.) (근거 ②=구 H7, 2026-08-03: 사용자가 "정본에 13·9px 스타일 추가"를 명시 거부했는데 ⭐가 "스케일 안이면 신설"이라는 자기 규칙을 만들어 body/20M 신설 — 32개 게이트 전부 "정본→파생 일치"만 봐서 정본에 줄이 늘어나는 것을 보는 게이트가 0개였다.) -->
 
 ---
 
@@ -338,6 +336,6 @@ Claude는 **Main Orchestrator**다. 사용자는 **목표 수준 의도**만 준
 
 | 날짜 | 변경 내용 (한 줄) |
 |------|------------------|
-| 2026-08-12 | **토큰 효율화 중간 정리 1차 — 검사기 출력 다이어트(gate:check 172줄→요약, `--verbose` 복원) + CLAUDE.md 감량(Gate 한눈표는 gates-reference 로 이관, H6/H7 중복 재기술 포인터화, 라우팅 자동로드 열 제거 — frontmatter paths 가 정본).** 판정 로직·규칙 의미 무변경. |
+| 2026-08-12 | **토큰 효율화 중간 정리 — ①검사기 출력 다이어트(gate:check 172줄→요약 1줄, `--verbose` 복원) ②CLAUDE.md 감량 39.8→31.9KB(Gate 한눈표 gates-reference 이관·중복 포인터화) ③하드룰 7→5 재편(사용자 승인 — 구 H4→H1②·구 H7→H6② 통합, 결번 은퇴, 살아있는 참조 일괄 갱신) ④좁혀읽기 원칙 이식 + 대형 생성물 Read 방어선(.claudeignore).** 판정 로직·규칙 의미 무변경. |
 
 > 이전 전체 상세 이력: **`reports/changelog-archive.md`** 참조.
