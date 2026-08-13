@@ -64,7 +64,9 @@ function walk(dir, acc, depth) {
   }
   return acc;
 }
-const rel = p => path.relative(ROOT, p) || path.basename(p);
+// 경로는 항상 '/' 로 정규화한다 — 윈도우에서 생성하면 '\' 가 섞여 뷰어의 basename 추출(split('/'))이
+// 깨지고, 맥/윈도우 사이에서 self-check 가 경로 구분자만으로 드리프트를 오보한다.
+const rel = p => (path.relative(ROOT, p) || path.basename(p)).replace(/\\/g, '/');
 const base = p => path.basename(p);
 function read(p) { try { return fs.readFileSync(p, 'utf8'); } catch (_) { return null; } }
 function mtime(p) { try { return fs.statSync(p).mtime.toISOString(); } catch (_) { return null; } }
@@ -278,6 +280,18 @@ if (canonManifest) {
   }
   for (const l of (canonManifest.metaLedgers || [])) declaredLedger.push({ pattern: normPath(l.path), role: l.role || '' });
 }
+// 정본이 "자동 생성한다"고 선언한 표면 = 정본도 장부도 아니다.
+//   (component-facts.json·component-guide-model.json 이 실제로 그랬다 — 장부 글롭
+//    registry/components/*.json 에 먼저 걸려 '손편집 장부'로 표시됐지만, canon-manifest 는
+//    build-components.ts 가 생성하는 표면이라고 선언한다. 선언이 글롭보다 우선한다.)
+const declaredSurface = new Map();   // 경로 → { by: 생성 정본 경로, id }
+if (canonManifest) {
+  for (const c of (canonManifest.canon || [])) {
+    for (const s of (c.surfaces || [])) {
+      if (s.kind === 'generated') declaredSurface.set(normPath(s.path), { by: c.path, id: c.id });
+    }
+  }
+}
 // 메타 장부 매칭: **정확 경로 우선**, 없으면 `dir/*.json` 글롭
 //   (글롭을 먼저 보면 index.json 처럼 자기 항목이 따로 있는 파일에 엉뚱한 역할 설명이 붙는다)
 function matchLedger(p) {
@@ -296,6 +310,8 @@ rootFiles.forEach(r => {
     r.declared_derived = true;
     r.derived_why = declaredDerived.get(key);
   }
+  // 생성 표면이라고 선언된 파일은 정책·장부 분류를 붙이지 않는다(선언 > 글롭)
+  if (declaredSurface.has(key)) return;
   // 값 정본은 아니지만 선언된 것들 — 정책 정본(게이트 판정 기준) / 메타 장부(손편집)
   const pol = declaredPolicy.get(key);
   if (pol) { r.declared_kind = 'policy'; if (!r.role && pol.role) r.role = pol.role; }
@@ -317,6 +333,185 @@ const canonSummary = {
   declared_but_undetected: declaredMissingFromMap,
   manifest_present: !!canonManifest,
 };
+
+// ── 4c. 정본·소스 계층 도출 (층 + 상하 관계) ──────────────────────────────
+//   종전 왼쪽 칸은 "파일명 글자 맞추기"(typeLabel)로 묶여서 ①서로 다른 index.json 3개가 한 덩어리가 되고
+//   ②진짜 값 정본(vars-data)이 알파벳 순서 때문에 잡동사니 아래로 밀렸다. 묶는 기준을 둘로 바꾼다.
+//
+//   ① 층(tier) = canon-manifest.json 이 **이미 선언한 구획**을 그대로 쓴다(여기서 새 판정 기준을 만들지 않는다).
+//        canon → 값 층 / policyCanon → 규칙 층 / metaLedgers → 장부 층 / declaredDerived·생성표면 → 지도 밖
+//   ② 상하(under) = **실측으로만** 잇는다. 못 찾으면 잇지 않고 depth 0 으로 둔다(관계 미확인).
+//        규칙 층: canon-manifest 가 그 파일을 정책 정본으로 선언함 → 선언이 곧 상하
+//        값  층: 소비 파일이 상위 정본을 import 하거나, 상위 정본이 정의한 '키 이름'을 실제 문자열로 씀
+//        장부 층: 색인 파일 본문이 하위 파일의 경로 문자열을 실제로 담고 있음
+const CANON_MANIFEST_REL = 'registry/governance/canon-manifest.json';
+const TIERS = [
+  { id: 'rule', label: '① 규칙 층', desc: '무엇이 정본인지·무엇으로 판정할지를 정하는 파일' },
+  { id: 'value', label: '② 값 층', desc: '실제 값이 사는 곳 — Figma 정본 3벌' },
+  { id: 'ledger', label: '③ 장부 층', desc: '사람이 손으로 쓰는 메타(값 아님)' },
+  { id: 'unclassified', label: '④ 미분류', desc: '정본인지 파생인지 아무도 선언하지 않은 파일 — 선언이 필요함' },
+  { id: 'outside', label: '⑤ 지도 밖', desc: '정본이 아닌데 스캔이 주워온 것' },
+];
+
+rootFiles.forEach(r => {
+  const key = normPath(r.file);
+  r.under = [];
+  const surf = declaredSurface.get(key);
+  if (surf) {
+    r.tier = 'outside'; r.declared_kind = 'surface';
+    r.outside_why = '정본 ' + base(surf.by) + ' 가 자동 생성하는 파생 표면';
+  } else if (r.declared_derived) {
+    r.tier = 'outside';
+    r.outside_why = r.derived_why || '정본 목록이 "파생"이라 선언함';
+  } else if (r.declared) r.tier = 'value';
+  else if (r.declared_kind === 'policy') r.tier = 'rule';
+  else if (r.declared_kind === 'ledger') r.tier = 'ledger';
+  else { r.tier = 'unclassified'; r.unclassified = true; }
+});
+
+// (1) 규칙 층 — canon-manifest 가 선언한 정책 정본은 그 아래
+rootFiles.filter(r => r.tier === 'rule' && normPath(r.file) !== CANON_MANIFEST_REL)
+  .forEach(r => {
+    if (rootFiles.some(x => normPath(x.file) === CANON_MANIFEST_REL))
+      r.under.push({ file: CANON_MANIFEST_REL, why: '정책 정본으로 선언됨' });
+  });
+
+// (2) 값 층 — 상위 정본의 '키 이름'을 실제로 쓰는가 / import 하는가
+const srcCache = new Map();
+const readRoot = f => {
+  if (!srcCache.has(f)) srcCache.set(f, read(path.join(ROOT, f)) || '');
+  return srcCache.get(f);
+};
+// 정본이 "정의한 이름" 추출 — 두 모양 모두 지원:
+//   ① 레코드형  export const X = { "gray/100": … }        → 키
+//   ② 배열형    export const Y = [ { name: "body/14M", … } ] → name 값 (textstyles-data 가 이 모양)
+function exportBlockKeys(src) {
+  const out = new Set();
+  const re = /export const (\w+)/g; let m;
+  while ((m = re.exec(src))) {
+    const rest = src.slice(m.index + m[0].length);
+    const end = rest.search(/\nexport const /);
+    const block = end < 0 ? rest : rest.slice(0, end);
+    (block.match(/^\s*"([^"]+)"\s*:/gm) || []).forEach(s => {
+      const k = s.match(/"([^"]+)"/); if (k) out.add(k[1]);
+    });
+    (block.match(/\bname\s*:\s*"([^"]+)"/g) || []).forEach(s => {
+      const k = s.match(/"([^"]+)"/); if (k) out.add(k[1]);
+    });
+  }
+  return out;
+}
+function canonKeys(f) {                   // 정본이 정의한 이름들
+  if (/vars-data\.ts$/.test(f)) {         // 정본은 긁지 말고 로드 (Phase 1 원칙) — 실패하면 정적 추출로 폴백
+    try {
+      const { loadVarsData } = require(path.join(ROOT, 'scripts/lib/load-vars-data.js'));
+      const V = loadVarsData();
+      const s = new Set();
+      ['FOUNDATION_COLOR', 'FOUNDATION_NUMBER', 'SEMANTIC_COLOR', 'SEMANTIC_NUMBER', 'SEMANTIC_SHADOW']
+        .forEach(g => Object.keys(V[g] || {}).forEach(k => s.add(k)));
+      if (s.size) return s;
+    } catch (_) {}
+  }
+  return exportBlockKeys(readRoot(f));
+}
+const valueRoots = rootFiles.filter(r => r.tier === 'value');
+const keyCache = new Map();
+valueRoots.forEach(B => {
+  const lits = new Set(stringLiterals(readRoot(B.file)));
+  valueRoots.forEach(A => {
+    if (A === B) return;
+    if (!keyCache.has(A.file)) keyCache.set(A.file, canonKeys(A.file));
+    const keys = keyCache.get(A.file);
+    let hits = 0; keys.forEach(k => { if (lits.has(k)) hits++; });
+    const imports = [...lits].some(l => isPathLike(l) && stripExt(l) === stripExt(A.file));
+    if (!hits && !imports) return;
+    const why = [imports ? '직접 import' : null, hits ? '정의한 이름 ' + hits + '종 사용' : null]
+      .filter(Boolean).join(' · ');
+    B.under.push({ file: A.file, why });
+  });
+});
+
+// (3) 장부·미분류 — 색인 장부 본문이 그 경로를 실제로 담고 있는가
+//   상위 후보를 '장부 층'으로 한정한다. canon-manifest 도 이 경로들을 담고 있지만 그건 "선언"이지
+//   "색인"이 아니고, 규칙 층↔장부 층을 섞으면 층 구분이 무의미해진다.
+const ledgerRoots = rootFiles.filter(r => r.tier === 'ledger' && /\.json$/i.test(r.file));
+rootFiles.filter(r => r.tier === 'ledger' || r.tier === 'unclassified').forEach(child => {
+  ledgerRoots.forEach(parent => {
+    if (parent.file === child.file) return;
+    if (readRoot(parent.file).includes('"' + normPath(child.file) + '"'))
+      child.under.push({ file: parent.file, why: '이 색인이 경로로 가리킴' });
+  });
+});
+
+// depth 계산 (순환은 잘라낸다 — 실측 배선이라 순환이 나오면 그건 오류다)
+rootFiles.forEach(r => { r.depth = 0; });
+for (let pass = 0; pass < 4; pass++) {
+  rootFiles.forEach(r => {
+    r.under.forEach(u => {
+      const p = rootFiles.find(x => normPath(x.file) === normPath(u.file));
+      if (p && p !== r && p.tier === r.tier) r.depth = Math.max(r.depth, (p.depth || 0) + 1);
+    });
+  });
+}
+const tierSummary = TIERS.map(t => ({
+  id: t.id, label: t.label, desc: t.desc,
+  count: rootFiles.filter(r => r.tier === t.id).length,
+}));
+
+// ── 4d. 정본 흐름 (화면 v3 의 본체) ──────────────────────────────────────
+//   "정본 하나를 고치면 어디까지 따라오나 / 어디가 끊겨 있나"를 보여주기 위한 데이터.
+//   전부 canon-manifest.json 의 선언에서 나온다 — 지어낸 경로가 없다.
+//   파일의 '수정한 날짜'는 쓰지 않는다: 저장소를 새로 받으면 전부 받은 날짜로 바뀌어 거짓이 된다.
+//   대신 git 의 마지막 변경일을 쓴다.
+function gitDate(relPath) {
+  try {
+    return cp.execSync(`git log -1 --format=%cs -- "${relPath}"`,
+      { cwd: ROOT, timeout: 5000, stdio: ['ignore', 'pipe', 'ignore'] }).toString().trim() || null;
+  } catch (_) { return null; }
+}
+const canonFlow = ((canonManifest || {}).canon || []).map(c => {
+  const self = rootFiles.find(r => normPath(r.file) === normPath(c.path));
+  return {
+    id: c.id, path: c.path, role: c.role, figma_entity: c.figmaEntity,
+    change_control: c.changeControl || null,
+    last_change: gitDate(c.path),
+    uses: (self && self.under) || [],          // 이 정본이 받아 쓰는 상위 정본 (§4c 에서 실측)
+    surfaces: (c.surfaces || []).map(s => {
+      const dest = destInfo.find(d => normPath(d.file) === normPath(s.path));
+      return {
+        path: s.path, kind: s.kind, gates: s.gates || [], regen: s.regen || [],
+        last_change: gitDate(s.path),
+        drift: dest ? dest.drift : null,
+        // 신호등: 값을 지키는 게이트가 있나 / 이름·구조만 보나 / 아무도 안 보나
+        signal: (s.gates || []).length ? (s.kind === 'generated' ? 'green' : 'yellow') : 'red',
+      };
+    }),
+  };
+});
+
+// Gate 39(정본 수치 ↔ 웹 크기 CSS) 결과 — "정본과 끊긴 구역"의 실측 근거
+let geometry = null;
+try {
+  const g = require('./scripts/component-geometry-check.js').build();
+  const bl = (() => {
+    try { return JSON.parse(read(path.join(ROOT, 'registry/governance/component-geometry-baseline.json')) || 'null'); }
+    catch (_) { return null; }
+  })();
+  geometry = {
+    matched: g.results.filter(r => r.status === 'ok').map(r => r.set),
+    mismatch: g.results.filter(r => r.status === 'suspect').map(r => ({
+      set: r.set, section: r.section,
+      detail: Object.entries(r.props).filter(([, p]) => p.canonOnly.length && p.web.length)
+        .map(([k, p]) => ({ prop: k, canonOnly: p.canonOnly, web: p.web })),
+    })),
+    unmeasurable: g.results.filter(r => !['ok', 'suspect'].includes(r.status))
+      .map(r => ({ set: r.set, why: r.reasons[0] || r.status })),
+    uncovered: g.uncovered,
+    frozen: bl ? Object.keys(bl.knownMismatch || {}).length : null,
+  };
+} catch (e) {
+  geometry = { error: String(e.message || e).slice(0, 160) };
+}
 
 // 정본 파일에서 역할 한 줄 추출: .ts/.js 는 @role:, .json 은 "_role"
 function extractRole(p) {
@@ -488,6 +683,9 @@ const DATA = {
   roots: rootFiles, generators: genInfo, destinations: destInfo,
   edges, gates, blind_spots: blindSpots,
   canon_manifest: canonSummary,
+  canon_tiers: tierSummary,
+  canon_flow: canonFlow,
+  geometry,
   // 시스템 맵 = 토큰 건강도(수기·죽은파일·orphan·경계). 파랑(자동)은 요약 배지 한 줄로만.
   // 색 판정은 scan-system-map 이 "생성기 write 유무"로 동적 계산(하드코딩 아님).
   system_map: scanSystemMap(ROOT, {
@@ -642,6 +840,76 @@ border-radius:8px;padding:8px 10px;margin-bottom:10px;font-size:12.5px;position:
 .node.src{border-left-color:var(--src)} .node.gen{border-left-color:var(--gen)} .node.dst{border-left-color:var(--dst)}
 .node .nm{font-weight:600;word-break:break-all}
 .node .meta{color:var(--sub);font-size:11px;margin-top:2px}
+/* 정본·소스 계층 (층 + 상하) */
+.group-h.tier-h{border-left-width:4px;margin:18px 0 8px}
+.group-h.tier-h .tdesc{font-weight:400;color:var(--sub);font-size:10.5px;margin-top:2px;letter-spacing:0}
+.group-h.tier-h.rule{border-left-color:#8a6400;color:#8a6400}
+.group-h.tier-h.value{border-left-color:var(--src);color:#5a3fd6}
+.group-h.tier-h.ledger{border-left-color:var(--warn);color:#a06c08}
+.group-h.tier-h.unclassified{border-left-color:var(--fail);color:var(--fail)}
+.group-h.tier-h.outside{border-left-color:var(--gray);color:var(--sub)}
+.node.tier-rule{border-left-color:#c9a227}
+.node.tier-value{border-left-color:var(--src)}
+.node.tier-ledger{border-left-color:var(--warn)}
+.node.tier-unclassified{border-left-color:var(--fail)}
+.node.tier-outside{border-left-color:var(--gray)}
+.node.faded{opacity:.62;background:#fafbfc}
+.node.d1{margin-left:16px}.node.d2{margin-left:32px}.node.d3{margin-left:48px}
+.node .nm .dir{color:var(--sub);font-weight:400}
+.node .nm .tw{color:var(--gray);margin-right:4px}
+.node .kinds{margin-top:3px}
+.node .k{font-size:10px;padding:1px 6px;border-radius:999px;border:1px solid var(--line);background:#fafbfc;color:var(--sub)}
+.node .k.canon{color:#5a3fd6;border-color:#d8cffb;background:#f6f3ff}
+.node .k.pol{color:#8a6400;border-color:#f0d98a;background:#fff8e6}
+.node .k.led{color:#a06c08;border-color:#f0e0b8;background:#fffaf0}
+.node .k.unk{color:var(--fail);border-color:#f2c4c4;background:#fdf4f4}
+.node .k.out{color:var(--sub)}
+.node .uses{margin-top:5px;font-size:10.5px;color:#5b6672;background:#f7f8fa;border-radius:5px;padding:3px 6px}
+.node .uses b{color:var(--ink);font-weight:600}
+/* ── v3: 신호등 요약 ─────────────────────────────────────── */
+.tally{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:16px}
+.tally .t{background:var(--card);border:1px solid var(--line);border-left:4px solid var(--gray);border-radius:12px;padding:14px 16px}
+.tally .t.g{border-left-color:var(--pass)} .tally .t.y{border-left-color:var(--warn)} .tally .t.r{border-left-color:var(--fail)}
+.tally .n{font-size:26px;font-weight:700;line-height:1.1}
+.tally .t.g .n{color:var(--pass)} .tally .t.y .n{color:var(--warn)} .tally .t.r .n{color:var(--fail)}
+.tally .lb{font-size:12px;font-weight:600;margin-top:4px}
+.tally .sb{font-size:11px;color:var(--sub);margin-top:3px;line-height:1.45}
+/* ── v3: 정본 가지 ──────────────────────────────────────── */
+.canon{border:1px solid var(--line);border-radius:12px;padding:14px 16px;margin-bottom:14px;background:#fcfdfe}
+.canon-h{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+.canon-h .ttl{font-size:14px;font-weight:700}
+.canon-h .pth{font:11px ui-monospace,Menlo,Consolas,monospace;color:var(--sub);word-break:break-all}
+.canon-h .dt{font-size:11px;color:var(--sub);margin-left:auto}
+.canon .rl{font-size:11.5px;color:var(--sub);margin-top:3px}
+.canon .uses2{margin-top:8px;font-size:11.5px;background:#f2f6fb;border:1px solid #dce8f5;border-radius:6px;padding:5px 9px;color:#33506e}
+.canon .cc{margin-top:6px;font-size:11.5px;color:#8a6400;background:#fff8e6;border:1px solid #f0d98a;border-radius:6px;padding:5px 9px}
+.cmd{margin:10px 0 4px;font-size:11.5px;color:var(--sub)}
+.cmd code{background:#eef2f6;border:1px solid var(--line);border-radius:5px;padding:2px 8px;font:11.5px ui-monospace,Menlo,Consolas,monospace;color:var(--ink)}
+.branch{margin-top:4px;border-left:2px solid var(--line);margin-left:8px;padding-left:14px}
+.leaf{display:flex;gap:9px;align-items:flex-start;padding:6px 0;border-bottom:1px dashed #eef1f4}
+.leaf:last-child{border-bottom:0}
+.leaf .sg{flex:0 0 auto;width:9px;height:9px;border-radius:50%;margin-top:5px}
+.leaf .sg.green{background:var(--pass)} .leaf .sg.yellow{background:var(--warn)} .leaf .sg.red{background:var(--fail)}
+.leaf .bd{flex:1 1 auto;min-width:0}
+.leaf .fp{font-size:12px;font-weight:600;word-break:break-all}
+.leaf .fp .dir{color:var(--sub);font-weight:400}
+.leaf .ex{font-size:11px;color:var(--sub);margin-top:2px}
+.leaf .rt{flex:0 0 auto;font-size:10.5px;color:var(--sub);text-align:right;white-space:nowrap}
+.cut{margin:8px 0 8px 8px;padding:8px 12px;border-left:2px dashed var(--fail);background:#fdf4f4;border-radius:0 8px 8px 0;font-size:11.5px;color:#8a2f2f}
+.cut b{color:var(--fail)}
+/* ── v3: 컴포넌트 대조 ──────────────────────────────────── */
+.gbar{height:9px;border-radius:999px;background:#edf0f3;overflow:hidden;display:flex;margin:8px 0 4px}
+.gbar i{display:block;height:100%}
+.gbar i.ok{background:var(--pass)} .gbar i.ng{background:var(--fail)} .gbar i.un{background:#c9cdd2}
+.glist{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.gchip{font-size:11px;border:1px solid var(--line);border-radius:999px;padding:2px 9px;background:#fff}
+.gchip.ok{color:var(--pass);border-color:#bfe6d8;background:#effaf5}
+.gchip.ng{color:var(--fail);border-color:#f2c4c4;background:#fdf4f4}
+.gchip.un{color:var(--sub)}
+.gdetail{margin-top:10px;font-size:11.5px}
+.gdetail .row{padding:6px 0;border-top:1px solid var(--line)}
+.gdetail .row b{color:var(--fail)}
+details.devmap>summary{cursor:pointer;font-size:13px;font-weight:600;color:var(--sub);list-style:revert}
 .badges{margin-top:6px;display:flex;gap:5px;flex-wrap:wrap}
 .b{font-size:10.5px;padding:1px 7px;border-radius:999px;border:1px solid var(--line);color:var(--sub);background:#fafbfc}
 .b.auto{color:#0e8a6e;border-color:#bfe6d8;background:#effaf5}
@@ -727,15 +995,25 @@ svg.sm-wires{position:absolute;inset:0;width:100%;height:100%;z-index:1;pointer-
     <span><i class="sw" style="background:var(--warn)"></i>검사 실패·측정 유보</span>
   </div>
 </div>
-<div class="card"><h2>파이프라인 지도 (스캔으로 자동 도출)</h2>
+<div class="tally" id="tally"></div>
+<div class="card"><h2>정본에서 어디까지 내려오나 · 어디가 끊겨 있나</h2>
   <div class="legend">
-    <span><i class="dot" style="background:var(--src)"></i>정본/소스 (유형별 묶음)</span>
+    <span><i class="dot" style="background:var(--pass)"></i>정본에서 자동 생성 + 값까지 검사됨</span>
+    <span><i class="dot" style="background:var(--warn)"></i>이름·구조만 검사 (값은 안 봄)</span>
+    <span><i class="dot" style="background:var(--fail)"></i>정본과 끊김 — 아무도 값을 안 봄</span>
+  </div>
+  <div id="flow"></div>
+</div>
+<div class="card" id="geomcard"><h2>컴포넌트 수치 대조 (정본 ↔ 웹 가이드)</h2><div id="geom"></div></div>
+<details class="card devmap"><summary>전체 배선 보기 (개발용) — 정본·생성기·목적지 3칸 지도</summary>
+  <div class="legend" style="margin-top:12px">
+    <span><i class="dot" style="background:var(--src)"></i>정본/소스 (층 · 상하 관계)</span>
     <span><i class="dot" style="background:var(--gen)"></i>생성기</span>
     <span><i class="dot" style="background:var(--dst)"></i>목적지</span>
     <span>실선=생성 · 점선=2단계(산출물을 다시 읽음)</span>
   </div>
   <div id="map"><svg class="wires" id="wires"></svg><div class="cols" id="cols"></div></div>
-</div>
+</details>
 <div class="card" id="sysmap"><h2>🗺 토큰 시스템 맵 (스캔 자동 도출 · 토큰 건강도)</h2></div>
 <div class="grid">
   <div class="card"><h2>목적지 상태</h2><div id="desttbl"></div></div>
@@ -775,47 +1053,167 @@ function destBadges(dd){
   return b;
 }
 
-// 정본 유형 라벨 (파일명 기준 자동 추정, 못 맞추면 파일명 그대로)
-function typeLabel(f){
-  const b=bn(f).toLowerCase();
-  if(/textstyle|typo/.test(b)) return '타이포그래피';
-  if(/vars|color|token/.test(b)) return '색·토큰';
-  if(/component|build-comp/.test(b)) return '컴포넌트';
-  if(/guardian|governance|update-management|dashboard/.test(b)) return '거버넌스·현황';
-  return bn(f);
+// 정본·소스 노드 (계층용 — 폴더 경로를 흐리게 앞에 붙여 같은 이름 파일을 구분한다)
+function srcNodeEl(r){
+  const d=document.createElement('div');
+  d.className='node src tier-'+r.tier+(r.depth?' d'+Math.min(r.depth,3):'')+(r.tier==='outside'?' faded':'');
+  d.dataset.id=r.file;
+  const dir=String(r.file).split('/').slice(0,-1).join('/');
+  const nm=(r.depth?'<span class="tw">↳</span>':'')
+    +(dir?'<span class="dir">'+esc(dir)+'/</span>':'')+esc(bn(r.file));
+  let kind='';
+  if(r.tier==='outside') kind='<span class="k out">정본 아님</span>';
+  else if(r.unclassified) kind='<span class="k unk">? 미분류 — 정본 목록에 선언 필요</span>';
+  else if(r.declared) kind='<span class="k canon">✔ 선언 정본</span>';
+  else if(r.declared_kind==='policy') kind='<span class="k pol">◆ 정책 정본</span>';
+  else if(r.declared_kind==='ledger') kind='<span class="k led">▤ 손편집 장부</span>';
+  const why=r.tier==='outside'&&r.outside_why?'<div class="meta">'+esc(r.outside_why)+'</div>':'';
+  const uses=(r.under&&r.under.length)
+    ? '<div class="uses">↳ 상위: '+r.under.map(u=>'<b>'+esc(bn(u.file))+'</b>'+(u.why?' — '+esc(u.why):'')).join(' · ')+'</div>'
+    : '';
+  d.innerHTML='<div class="nm">'+nm+'</div>'+(kind?'<div class="kinds">'+kind+'</div>':'')
+    +(r.role?'<div class="meta">'+esc(r.role)+'</div>':'')+why+uses;
+  return d;
 }
+
+// ══ v3: 정본에서 어디까지 내려오나 ═══════════════════════════════════════
+// 결과 파일의 '쉬운 설명'. 파일 경로는 그대로 두고 사람 말을 덧붙인다(UI 문구 — 정본 데이터 아님).
+const PLAIN={
+  'assets/css/tokens.css':'웹 가이드가 쓰는 색·숫자',
+  'assets/css/typography.css':'웹 가이드 글자 크기·굵기',
+  'pages/foundation.html':'파운데이션 페이지',
+  'pages/semantic.html':'시멘틱 페이지',
+  'pages/install-prompt.html':'설치 안내 페이지',
+  'pages/components.html':'컴포넌트 라이브러리 화면',
+  'registry/tokens/foundation.colors.json':'색 목록 데이터',
+  'registry/components/component-facts.json':'컴포넌트 수치 데이터(높이·여백·반경)',
+  'registry/components/component-guide-model.json':'가이드 화면용 모델',
+  'registry/governance/update-management.json':'컴포넌트 진행 현황',
+  'design/DESIGN.core.md':'AI 가 읽는 공통 설명서',
+  'design/services/DESIGN.vms.md':'AI 가 읽는 영상 도메인 설명서',
+  'assets/downloads/s1-ux-design-guide-installer.zip':'Figma 설치기 (플러그인 실행은 사람이)',
+};
+const CANON_ICON={'vars-data':'🎨','textstyles-data':'🔤','build-components':'🧩'};
+const CANON_TITLE={'vars-data':'색 · 숫자 · 그림자','textstyles-data':'글자 스타일','build-components':'컴포넌트 (구조·변형·크기)'};
+function pathHtml(p){const i=String(p).lastIndexOf('/');
+  return i<0?esc(p):'<span class="dir">'+esc(p.slice(0,i+1))+'</span>'+esc(p.slice(i+1));}
+
+(function renderFlow(){
+  const host=document.getElementById('flow'); if(!host) return;
+  const flow=D.canon_flow||[];
+  // 신호등 집계 (같은 파일이 여러 정본의 표면이면 한 번만 센다)
+  const seen={}; flow.forEach(c=>c.surfaces.forEach(s=>{
+    const cur=seen[s.path]; if(!cur||cur==='green') seen[s.path]=cur&&cur==='green'&&s.signal!=='green'?s.signal:(cur||s.signal);
+  }));
+  const cnt={green:0,yellow:0,red:0}; Object.values(seen).forEach(v=>cnt[v]++);
+  const geo=D.geometry||{};
+  const cut=(geo.mismatch||[]).length, unk=(geo.unmeasurable||[]).length+(geo.uncovered||[]).length;
+  const t=document.getElementById('tally');
+  if(t) t.innerHTML=
+     '<div class="t g"><div class="n">'+cnt.green+'</div><div class="lb">자동으로 내려오고 값까지 검사됨</div>'
+    +'<div class="sb">정본을 고치면 명령 한 줄로 따라오고, 어긋나면 게이트가 막습니다.</div></div>'
+    +'<div class="t y"><div class="n">'+cnt.yellow+'</div><div class="lb">내려오지만 값은 안 봄</div>'
+    +'<div class="sb">손관리 화면. 빠진 컴포넌트·이름은 보지만 수치가 맞는지는 다른 검사기 몫입니다.</div></div>'
+    +'<div class="t r"><div class="n">'+(cut+ (cnt.red||0))+'</div><div class="lb">정본과 어긋났거나 아무도 안 보는 곳</div>'
+    +'<div class="sb">컴포넌트 수치 불일치 '+cut+'세트 · 대조조차 못 하는 세트 '+unk+'개.</div></div>';
+
+  flow.forEach(c=>{
+    const el=document.createElement('div'); el.className='canon';
+    const icon=CANON_ICON[c.id]||'📄', title=CANON_TITLE[c.id]||c.id;
+    let h='<div class="canon-h"><span class="ttl">'+icon+' '+esc(title)+'</span>'
+      +'<span class="pth">'+esc(c.path)+'</span>'
+      +(c.last_change?'<span class="dt">마지막 변경 '+esc(c.last_change)+'</span>':'')+'</div>';
+    if(c.role) h+='<div class="rl">'+esc(c.role)+'</div>';
+    if(c.uses&&c.uses.length) h+='<div class="uses2">↑ 위 정본을 받아 씀 — '
+      +c.uses.map(u=>'<b>'+esc(bn(u.file))+'</b>'+(u.why?' ('+esc(u.why)+')':'')).join(' · ')
+      +'<br>그래서 이걸 바꾸면 아래 컴포넌트에도 자동으로 반영됩니다.</div>';
+    if(c.change_control) h+='<div class="cc">🔒 '+esc(c.change_control)+'</div>';
+    const cmds=[...new Set(c.surfaces.flatMap(s=>s.regen||[]))];
+    h+='<div class="cmd">고친 뒤 이 한 줄 → <code>npm run tokens:reconcile</code>'
+      +(cmds.length?'<span style="color:var(--sub)"> (안에서 '+cmds.length+'개 생성기가 돕니다)</span>':'')+'</div>';
+    h+='<div class="branch">';
+    c.surfaces.forEach(s=>{
+      const plain=PLAIN[s.path]||'';
+      const kindTxt=s.kind==='generated'?'자동 생성':'손관리 — 자동으로 안 바뀜';
+      const gateTxt=s.gates.length?('Gate '+s.gates.join('·')):'지키는 게이트 없음';
+      h+='<div class="leaf"><span class="sg '+s.signal+'"></span><div class="bd">'
+        +'<div class="fp">'+pathHtml(s.path)+'</div>'
+        +'<div class="ex">'+(plain?esc(plain)+' · ':'')+esc(kindTxt)+' · '+esc(gateTxt)+'</div>'
+        +'</div><div class="rt">'+(s.last_change?esc(s.last_change):'')+'</div></div>';
+    });
+    h+='</div>';
+    // 끊긴 곳 표시 — 이 정본에서 값 대조가 성립하지 않는 구간
+    if(c.id==='build-components'&&(D.geometry&&(D.geometry.mismatch||[]).length!==undefined)){
+      const g=D.geometry;
+      h+='<div class="cut">✂ <b>여기가 끊겨 있습니다.</b> 위 <b>component-facts.json</b> 에 정본 수치가 다 있는데도, '
+        +'<b>pages/components.html</b> 은 손관리 화면이라 그 수치가 자동으로 내려가지 않습니다.<br>'
+        +'2026-08-12 에 <b>Gate 39</b>(수치 대조)를 새로 놓아 이제 어긋나면 보입니다 — 아래 표 참조.</div>';
+    }
+    el.innerHTML=h; host.appendChild(el);
+  });
+})();
+
+// ══ v3: 컴포넌트 수치 대조 (Gate 39) ═════════════════════════════════════
+(function renderGeom(){
+  const host=document.getElementById('geom'); if(!host) return;
+  const g=D.geometry||{};
+  if(g.error){host.innerHTML='<div class="empty">대조 실행 실패: '+esc(g.error)+'</div>';return;}
+  const ok=(g.matched||[]).length, ng=(g.mismatch||[]).length;
+  const un=(g.unmeasurable||[]).length+(g.uncovered||[]).length;
+  const tot=ok+ng+un||1;
+  const pc=n=>(n/tot*100).toFixed(1)+'%';
+  let h='<div class="muted">정본 <b>component-facts.json</b>(build-components.ts 에서 자동 생성)의 높이·여백·반경·간격을 '
+    +'<b>pages/components.html</b> 의 CSS 와 값으로 대조합니다. '
+    +'“정본에 있는데 웹에 없는 수치”를 찾습니다 — 정본을 고쳤는데 웹이 안 따라온 상태입니다.</div>';
+  h+='<div class="gbar"><i class="ok" style="width:'+pc(ok)+'"></i><i class="ng" style="width:'+pc(ng)+'"></i><i class="un" style="width:'+pc(un)+'"></i></div>';
+  h+='<div class="muted">✅ 일치 '+ok+' · ❌ 어긋남 '+ng+' · ❓ 대조 불가 '+un+'  (전체 '+tot+'세트'
+    +(g.frozen!=null?' · 기존 부채 동결 '+g.frozen+'건 — 신규만 차단':'')+')</div>';
+  h+='<div class="glist">'
+    +(g.matched||[]).map(s=>'<span class="gchip ok">✅ '+esc(s)+'</span>').join('')
+    +(g.mismatch||[]).map(m=>'<span class="gchip ng">❌ '+esc(m.set)+'</span>').join('')
+    +(g.unmeasurable||[]).map(m=>'<span class="gchip un">❓ '+esc(m.set)+'</span>').join('')
+    +'</div>';
+  if(ng){
+    h+='<div class="gdetail"><b>어긋난 곳 — 정본이 맞습니다. 웹을 고칩니다(하드룰 H6)</b>';
+    (g.mismatch||[]).forEach(m=>{
+      h+='<div class="row"><b>'+esc(m.set)+'</b> <span class="muted">(섹션 '+esc(m.section)+')</span><br>'
+        +m.detail.map(d=>'&nbsp;&nbsp;'+esc({height:'높이',padding:'여백',radius:'반경',gap:'간격'}[d.prop]||d.prop)
+          +' — 정본 <b>'+d.canonOnly.join(' · ')+'</b> 가 웹에 없음 <span class="muted">(웹이 쓰는 값: '+d.web.join(' · ')+')</span>').join('<br>')
+        +'</div>';
+    });
+    h+='</div>';
+  }
+  if((g.uncovered||[]).length){
+    h+='<div class="gdetail"><div class="row"><span class="muted">아직 대조 못 하는 세트 '+g.uncovered.length
+      +'개 — 웹 가이드에 해당 섹션이 선언되지 않았습니다: '+esc(g.uncovered.join(' · '))+'</span></div></div>';
+  }
+  host.innerHTML=h;
+})();
 
 const cols=document.getElementById('cols');
 const c1=document.createElement('div');c1.className='col';c1.innerHTML='<h3>정본 · 소스</h3>';
 const c2=document.createElement('div');c2.className='col';c2.innerHTML='<h3>생성기</h3>';
 const c3=document.createElement('div');c3.className='col';c3.innerHTML='<h3>목적지</h3>';
 
-// 왼쪽: 정본을 유형별로 묶어서
-const groups={};
-D.roots.forEach(r=>{const k=typeLabel(r.file);(groups[k]=groups[k]||[]).push(r);});
-Object.keys(groups).sort().forEach(label=>{
-  const h=document.createElement('div');h.className='group-h';
-  h.innerHTML=esc(label)+' <span class="cnt">('+groups[label].length+')</span>';
+// 왼쪽: 층(canon-manifest 선언 구획) → 층 안에서 상하(실측 배선) 순서로
+(D.canon_tiers||[]).forEach(t=>{
+  const list=D.roots.filter(r=>r.tier===t.id)
+    .sort((a,b)=>(a.depth-b.depth)||a.file.localeCompare(b.file));
+  if(!list.length) return;
+  const h=document.createElement('div');h.className='group-h tier-h '+t.id;
+  h.innerHTML=esc(t.label)+' <span class="cnt">('+list.length+')</span>'
+    +'<div class="tdesc">'+esc(t.desc)+'</div>';
   c1.appendChild(h);
-  groups[label].forEach(r=>{
-    // 선언된 정본인지 표시 — canon-manifest.json 이 정본 목록의 정본이고, 여기 없는 것은
-    // 휴리스틱이 주워온 것(스크립트 오분류 등)이라 화면에서 구분해 보여준다.
-    let sub = r.role?esc(r.role):'';
-    if(r.declared_derived) sub = '⚠ 선언상 파생(정본 아님)' + (sub?' · '+sub:'');
-    else if(r.declared) sub = '✔ 선언 정본' + (sub?' · '+sub:'');
-    else if(r.declared_kind==='policy') sub = '◆ 정책 정본(게이트 기준)' + (sub?' · '+sub:'');
-    else if(r.declared_kind==='ledger') sub = '▤ 메타 장부(손편집)' + (sub?' · '+sub:'');
-    else sub = '? 미분류 — 정본 목록에 선언 필요' + (sub?' · '+sub:'');
-    c1.appendChild(nodeEl(r.file,'src',r.file, sub));
-  });
+  list.forEach(r=>c1.appendChild(srcNodeEl(r)));
 });
 if(!D.roots.length) c1.appendChild((()=>{const d=document.createElement('div');d.className='meta';d.textContent='정본 미검출';return d;})());
 // 정본 목록 대조 요약 한 줄
 if(D.canon_manifest){
   const cm=D.canon_manifest; const d=document.createElement('div'); d.className='meta';
   d.style.marginTop='8px';
-  d.textContent = cm.manifest_present
-    ? '정본 목록(canon-manifest): 값 정본 '+cm.detected_and_declared+'/'+cm.declared
+  d.innerHTML = cm.manifest_present
+    ? '층 구분 기준 = <b>canon-manifest.json</b> 의 선언(값/정책/장부/파생) · 상하는 실측 배선(import·이름 사용·색인 참조)으로만 잇고 못 찾으면 잇지 않음.<br>'
+      +'정본 목록 대조: 값 정본 '+cm.detected_and_declared+'/'+cm.declared
       +' · 정책 정본 '+cm.policy+' · 메타 장부 '+cm.ledger
       +(cm.declared_but_undetected.length?' · 선언됐으나 지도 미검출 '+cm.declared_but_undetected.length:'')
       +(cm.unclassified.length?' · ⚠ 미분류 '+cm.unclassified.length:' · 미분류 0')

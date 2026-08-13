@@ -64,6 +64,8 @@
       "audit-rules.json": { "role": "토큰 열거 규칙 R01~R11", "consumers": ["guard"] },
       "canon-additions-baseline.json": { "role": "정본 항목명 동결 목록 + 승인 기록", "gates": ["34"] },
       "canon-manifest.json": { "role": "정본 목록의 정본(이 파일)", "gates": ["36"] },
+      "component-geometry-map.json": { "role": "정본 세트 ↔ 웹 CSS 클래스 선언(수치 대조용)", "gates": ["39"] },
+      "component-geometry-baseline.json": { "role": "정본↔웹 수치 어긋남 동결 목록(래칫)", "gates": ["39"] },
       "component-page-coverage.json": { "role": "설치기 컴포넌트 ↔ HTML 섹션 분류", "gates": ["18", "19", "30", "32"] },
       "component-presentation-policy.json": { "role": "컴포넌트 표출 레이아웃 규칙", "gates": ["23", "30", "32"] },
       "component-registration-baseline.json": { "role": "등록 표면 baseline", "gates": ["30"] },

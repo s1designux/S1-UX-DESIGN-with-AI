@@ -100,7 +100,9 @@
     "docs:tokencheck": "node scripts/doc-token-ref-check.js",
     "layout:check": "node scripts/page-layout-check.js",
     "layout:fix": "node scripts/page-layout-check.js --fix",
-    "components:presentation": "node scripts/presentation-layout-check.js"
+    "components:presentation": "node scripts/presentation-layout-check.js",
+    "components:geometry": "node scripts/component-geometry-check.js",
+    "components:geometry:check": "node scripts/component-geometry-check.js --check"
   },
   "devDependencies": {
     "@figma/plugin-typings": "^1.97.0",

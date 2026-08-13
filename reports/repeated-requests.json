@@ -359,6 +359,20 @@
           "summary": "AI프롬프트 탭·개발자 탭을 GitHub 저장소 안내 방식으로 교체. 인라인 MD/CSS 블록 제거(5,402줄 → 698줄)"
         }
       ]
+    },
+    {
+      "id": "canon-classification-by-name-heuristic",
+      "category": "canonical-discipline",
+      "label": "선언(canon-manifest)이 있는데도 도구가 파일명 글자 맞추기로 분류·묶음",
+      "description": "파이프라인 지도 왼쪽 칸이 typeLabel(파일명 정규식)로 묶여서 ①registry 의 서로 다른 index.json 3개가 한 덩어리가 되고 ②알파벳 순서 때문에 진짜 값 정본(vars-data)이 잡동사니 아래로 밀리고 ③canon-manifest 가 build-components 의 생성 표면이라고 선언한 component-facts.json·component-guide-model.json 이 장부 글롭에 먼저 걸려 '손편집 장부'로 표시됐다. 같은 파일군의 scan-system-map.js 는 이미 '이름으로 억지 매칭 금지, 판정은 생성기 write 유무로만' 원칙을 명시하고 있었는데 지도 본체는 그 원칙을 안 따르고 있었다. 교정: 층 구분은 canon-manifest 의 선언 구획으로, 상하는 실측 배선(import·정의한 이름 사용·색인 경로 참조)으로만.",
+      "count": 1,
+      "promotionStatus": "watching",
+      "occurrences": [
+        {
+          "date": "2026-08-12",
+          "summary": "파이프라인 지도 재구성 요청 — 정본/소스 항목의 상하 관계를 구체적으로 표출해달라"
+        }
+      ]
     }
   ]
 }

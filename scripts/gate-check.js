@@ -946,6 +946,22 @@ try {
   fail(`Gate 38 실행 실패: ${e.message}`);
 }
 
+// ── Gate 39: Component Geometry (정본 수치 ↔ 웹 크기 CSS) ──────────
+// components.html 은 손관리 화면이라 Gate 18·19·23·32 가 커버리지·구조·어휘만 본다.
+// "정본을 고쳤는데 웹이 안 따라온" 수치 미반영을 잡는 게이트가 0개였다(2026-08-12 판독).
+// 기존 부채는 baseline 동결, 신규만 차단(래칫).
+gateHeader('[Gate 39] 컴포넌트 수치 대조 검사기 (Component Geometry)');
+try {
+  const { spawnSync } = require('child_process');
+  const r = spawnSync(process.execPath, [path.join(ROOT, 'scripts/component-geometry-check.js'), '--check'],
+    { cwd: ROOT, encoding: 'utf8' });
+  const out = (r.stdout || '').trim();
+  if (r.status === 0) pass(out.split('\n').pop() || '정본 수치 ↔ 웹 크기 CSS 일치');
+  else fail('Gate 39: 정본 수치가 웹 가이드에 반영되지 않았습니다\n' + out);
+} catch (e) {
+  fail(`Gate 39 실행 실패: ${e.message}`);
+}
+
 // ── Summary ───────────────────────────────────────────────────────
 if (VERBOSE || errors > 0 || warnings > 0) console.log('\n─────────────────────────────────────────────────────');
 const tally = `게이트 ${gates}개 · ✅ ${passes}건${VERBOSE ? '' : ' (상세: --verbose)'}`;

@@ -1,0 +1,31 @@
+{
+  "_role": "정본 수치 ↔ 웹 크기 CSS 대조(Gate 39)에서, 정본 컴포넌트 세트가 pages/components.html 의 어떤 CSS 클래스로 표현되는지 선언한다. 세트↔섹션 매핑은 component-page-coverage.json(Gate 18)이 정본이고, 이 파일은 그 섹션 '안에서 어느 클래스가 그 컴포넌트인지'만 덧붙인다.",
+  "_why": "components.html 은 손편집 화면이라 클래스 이름 규칙이 하나가 아니다 — `s1-btn` 과 `ds-filter-chip` 이 섞여 있다(실측). 접두사를 코드에 하드코딩하면 규칙이 다른 컴포넌트가 조용히 빠지고, 섹션 안 클래스를 전부 긁으면 표·배지 같은 페이지 공통 크롬 수치가 섞인다. 그래서 '어느 클래스가 그 컴포넌트인가'를 선언으로 남긴다.",
+  "_howDerived": "추측이 아니라 측정으로 도출했다(2026-08-12): 섹션마다 '크기 CSS 규칙을 가진 클래스'의 등장 횟수를 세어 상위 접두사를 뽑았다. 그리고 검사기가 매 실행마다 '선언한 접두사가 그 섹션 마크업에 실제로 쓰이는가'를 재검증한다 — 선언이 틀리거나 낡으면 unverified 로 드러난다.",
+  "_updated": "2026-08-12",
+
+  "sets": {
+    "Button": { "prefixes": ["s1-btn"] },
+    "Checkbox": { "prefixes": ["s1-checkbox"] },
+    "Radio": { "prefixes": ["s1-radio"] },
+    "Toggle": { "prefixes": ["s1-toggle"] },
+    "Multi Toggle": { "prefixes": ["s1-multi-toggle"] },
+    "Chip": { "prefixes": ["s1-chip"] },
+    "Filter Chip": { "prefixes": ["ds-filter-chip"] },
+    "Input": { "prefixes": ["s1-input"] },
+    "Select Box": { "prefixes": ["s1-select"] },
+    "Dropdown": { "prefixes": ["s1-dropdown"] },
+    "Date Picker": { "prefixes": ["s1-date-picker"] },
+    "Time Picker": { "prefixes": ["s1-tp"] },
+    "Table": { "prefixes": ["s1-table"] },
+    "Line Tab Set": { "prefixes": ["s1-tab"] },
+    "Pagination": { "prefixes": ["s1-pagination"] },
+    "GNB": { "prefixes": ["s1-gnb"] },
+    "Mobile Bottom Nav": { "prefixes": ["s1-bottom-nav"] }
+  },
+
+  "notMeasurable": {
+    "Search Input": "웹에서 Input 과 같은 클래스(s1-input-*)를 쓴다 — 정본은 별개 세트인데 웹에 고유 클래스가 없어 값 대조가 성립하지 않는다. 분리 여부는 needs-decision.",
+    "Text Area": "웹에서 Input 의 클래스에 수식자만 붙여 쓴다(s1-input-wrap--textarea) — 고유 크기 규칙이 분리돼 있지 않아 세트 단위 대조가 성립하지 않는다."
+  }
+}
