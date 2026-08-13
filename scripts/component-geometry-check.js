@@ -67,7 +67,13 @@ const PROPS = {
     css: ['border-radius', 'border-top-left-radius', 'border-top-right-radius',
       'border-bottom-left-radius', 'border-bottom-right-radius'], label: '반경',
   },
-  gap: { canon: ['itemSpacing'], css: ['gap', 'column-gap', 'row-gap'], label: '간격' },
+  gap: {
+    canon: ['itemSpacing'], css: ['gap', 'column-gap', 'row-gap'], label: '간격',
+    // Figma 오토레이아웃이 SPACE_BETWEEN 이면 간격은 '자동'이라 itemSpacing 값이 화면에 쓰이지 않는다.
+    // 정본도 그런 자리에 0 을 두고 있다(build-components.ts:2709 GNB — SPACE_BETWEEN 옆의 itemSpacing=0).
+    // 그 0 을 웹 gap 과 대조하면 존재하지 않는 어긋남이 잡힌다. 2026-08-13 확인.
+    skipWhen: g => g.primaryAxisAlignItems === 'SPACE_BETWEEN',
+  },
 };
 
 // ── 토큰 이름 → 숫자 (정본은 긁지 말고 로드) ──────────────────────────────
@@ -259,6 +265,7 @@ function build() {
     for (const [key, spec] of Object.entries(PROPS)) canonSets[key] = new Set();
     (comp.geometry || []).forEach(g => {
       for (const [key, spec] of Object.entries(PROPS)) {
+        if (spec.skipWhen && spec.skipWhen(g)) continue;
         spec.canon.forEach(ck => {
           if (!(ck in g)) return;
           const n = canonNumber(g[ck]);
@@ -353,7 +360,10 @@ function main() {
       return 1;
     }
     const measured = data.results.filter(r => Object.values(r.props).some(p => p.measured)).length;
+    // 동결은 "확인하고 넘긴 것"이어야 한다. 사유 없는 동결은 그냥 숨긴 것이므로 눈에 보이게 남긴다.
+    const noReason = Object.keys(known).filter(s => !((base._reasons || {})[s]));
     console.log(`정본 수치 ↔ 웹 크기 CSS 일치 — 대조 ${measured}세트 · 동결 ${Object.keys(known).length}건`
+      + (noReason.length ? ` · ⚠ 사유 미기재 ${noReason.length}건(${noReason.join('·')})` : '')
       + (fixed.length ? ` · 해소 ${fixed.length}건(baseline 갱신 권장)` : ''));
     return 0;
   }
