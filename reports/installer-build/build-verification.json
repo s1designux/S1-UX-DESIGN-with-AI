@@ -1,9 +1,9 @@
 {
   "sourceFile": "plugins/figma-vars-installer/src/build-components.ts",
-  "sourceHash": "sha256:00bca477db5c11544a83d680c3d2ecd16be234064802cf72fd90ea9643f3e04c",
+  "sourceHash": "sha256:b56fc459e65ede2491f47a953250c660cc5cb3a932b2f87f435f98a4f875496b",
   "verifiedBy": "component-verifier",
   "verdict": "pass",
   "changeType": "structural",
-  "verifiedAt": "2026-08-11T01:50:13.095Z",
-  "notes": "Line Tab XSM variant 구조 대조"
+  "verifiedAt": "2026-08-13T07:53:48.986Z",
+  "notes": "bindRadius 헬퍼 신설 + 알약 반경 3곳(Chip·Filter Chip·Calendar inner) raw 999 -> Foundation Number radius/full(9999) 바인딩, Button 4줄 반복도 헬퍼로 축약. 대조: diff 5훅 전부 반경 한정(곁가지 0) · 헬퍼가 기존 Button 4줄과 동일 변수·동일 4모서리 · tsc/keycheck(number 7/79 누락0)/anatomy/iconpolicy/facts/guide-model/geometry 전부 통과 · 파생 재생성 정확(facts 999 6건->0, radius/full 전파 6세트 전부 칩·달력 포함 상위세트) · 시각 무회귀 헤드리스 실측(999px vs 9999px PNG 해시 동일, 실제 페이지 계산값 9999px) · zip 재빌드 확인(code.js radius/full 4, 999 0). 적발 1건(미리보기 렌더러가 모서리 바인딩 미해석 -> 186노드 반경 소실)은 파생 scene-renderer 수정으로 해소, 복원 실측 확인(chip 168·calendar 88·button 96). Figma 실제 캔버스 렌더는 이 환경에서 불가 - mock/데이터 기준 판정."
 }

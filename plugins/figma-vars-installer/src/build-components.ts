@@ -224,6 +224,20 @@ function requireVar(map: Record<string, Variable>, key: string, kind: string): V
   return v;
 }
 
+/**
+ * 네 모서리 반경을 Foundation Number 변수에 바인딩한다.
+ * 반경을 raw 숫자로 두면 Figma 에도 토큰이 안 붙고, 웹 파생과 값이 갈려도 기계가 못 잡는다
+ * (알약 모양을 정본은 999·웹은 radius/full=9999 로 적어 Gate 39 가 어긋남으로 잡았다 — 2026-08-13).
+ * 색이 Variable 바인딩 필수인 것과 같은 취지를 반경에 적용한다.
+ */
+function bindRadius(node: ComponentNode | FrameNode, maps: BuildMaps, token: string): void {
+  const v = requireVar(maps.foundationNumber, token, "Foundation Number");
+  node.setBoundVariable("topLeftRadius", v);
+  node.setBoundVariable("topRightRadius", v);
+  node.setBoundVariable("bottomLeftRadius", v);
+  node.setBoundVariable("bottomRightRadius", v);
+}
+
 function requireStyle(map: Record<string, TextStyle>, key: string): TextStyle {
   const s = map[key];
   if (!s) throw new Error(`Text Style 누락: ${key} — 먼저 Text Styles 설치가 필요합니다.`);
@@ -269,11 +283,7 @@ async function buildOne(variant: VariantId, size: SizeId, state: StateId, maps: 
   const bwVar = requireVar(maps.foundationNumber, "border-width/1", "Foundation Number");
   comp.setBoundVariable("strokeWeight", bwVar);
 
-  const radiusVar = requireVar(maps.foundationNumber, "radius/4", "Foundation Number");
-  comp.setBoundVariable("topLeftRadius", radiusVar);
-  comp.setBoundVariable("topRightRadius", radiusVar);
-  comp.setBoundVariable("bottomLeftRadius", radiusVar);
-  comp.setBoundVariable("bottomRightRadius", radiusVar);
+  bindRadius(comp, maps, "radius/4");
 
   // 높이 고정 (참고 파일도 height 는 raw — 미바인딩)
   comp.resize(comp.width, cfg.height);
@@ -803,7 +813,7 @@ async function buildChip(maps: BuildMaps, originY: number): Promise<{ set: Compo
         comp.primaryAxisSizingMode = "AUTO";
         comp.counterAxisSizingMode = "FIXED";
         comp.paddingLeft = sc.pad; comp.paddingRight = sc.pad;
-        comp.cornerRadius = 999;
+        bindRadius(comp, maps, "radius/full");
         comp.fills = [boundPaint(scv(maps, `color/chip/${v}/bg/${ss.bg}`))];
         comp.strokes = [boundPaint(scv(maps, `color/chip/${v}/${ss.bdGroup ?? "border"}/${ss.bd}`))];
         comp.strokeWeight = 1; comp.strokeAlign = "INSIDE";
@@ -1920,7 +1930,8 @@ async function buildFilterChip(maps: BuildMaps, originY: number): Promise<{ set:
           chip.name = "chip";
           chip.layoutMode = "HORIZONTAL"; chip.counterAxisAlignItems = "CENTER";
           chip.primaryAxisSizingMode = "AUTO"; chip.counterAxisSizingMode = "FIXED";
-          chip.itemSpacing = 4; chip.paddingLeft = sc.padL; chip.paddingRight = sc.padR; chip.cornerRadius = 999;
+          chip.itemSpacing = 4; chip.paddingLeft = sc.padL; chip.paddingRight = sc.padR;
+          bindRadius(chip, maps, "radius/full");
           chip.fills = [boundPaint(scv(maps, `color/chip/${v}/bg/${ss.bg}`))];
           chip.strokes = [boundPaint(scv(maps, `color/chip/${v}/${ss.bdGroup ?? "border"}/${ss.bd}`))];
           chip.strokeWeight = 1; chip.strokeAlign = "INSIDE";
@@ -2824,7 +2835,7 @@ async function buildCalendarCell(maps: BuildMaps): Promise<{ set: ComponentSetNo
 
   // inner 30×30 원 + 숫자("num") 생성
   async function makeInner(fillKey: string, strokeKey: string, textKey: string, bold: boolean): Promise<FrameNode> {
-    const inner = figma.createFrame(); inner.name = "inner"; inner.cornerRadius = 999;
+    const inner = figma.createFrame(); inner.name = "inner"; bindRadius(inner, maps, "radius/full");
     inner.layoutMode = "HORIZONTAL"; inner.primaryAxisAlignItems = "CENTER"; inner.counterAxisAlignItems = "CENTER";
     inner.primaryAxisSizingMode = "FIXED"; inner.counterAxisSizingMode = "FIXED"; inner.resize(30, 30);
     inner.fills = [boundPaint(scv(maps, DP(fillKey)))];
