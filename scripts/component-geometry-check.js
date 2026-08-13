@@ -314,10 +314,14 @@ function main() {
   if (UPDATE) {
     const known = {};
     suspects.forEach(r => { known[r.set] = fingerprintOf(r); });
+    // 사람이 채운 사유(_reasons)는 갱신 때 보존한다 — 단, 동결 목록에서 빠진 세트의 사유는 같이 지운다.
+    const prev = loadBaseline() || {};
+    const reasons = {};
+    Object.entries(prev._reasons || {}).forEach(([set, why]) => { if (known[set]) reasons[set] = why; });
     fs.writeFileSync(BASELINE, JSON.stringify({
       _role: '정본 수치 ↔ 웹 크기 CSS 대조(Gate 39)의 기존 부채 동결 목록. 신규만 차단한다.',
-      _note: '값은 "정본에 있는데 웹에 없는 수치"의 지문이다. 웹을 정본에 맞춰 고치면 이 줄을 지우면 된다(하드룰 H6: 정본이 맞고 웹을 고친다). 층위가 달라 대조 자체가 성립하지 않는 항목(표 전체 프레임 높이 등)도 여기 동결되므로, 각 줄의 사유는 사람이 확인해 채운다.',
-      _reasons: {},
+      _note: '값은 "정본에 있는데 웹에 없는 수치"의 지문이다. 웹을 정본에 맞춰 고치면 이 줄을 지우면 된다(하드룰 H6: 정본이 맞고 웹을 고친다). 층위가 달라 대조 자체가 성립하지 않는 항목(표 전체 프레임 높이 등)도 여기 동결되므로, 각 줄의 사유는 사람이 확인해 _reasons 에 채운다(갱신 시 보존됨).',
+      _reasons: reasons,
       _updated: new Date().toISOString().slice(0, 10),
       knownMismatch: known,
     }, null, 2) + '\n');
