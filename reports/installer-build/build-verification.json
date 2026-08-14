@@ -1,9 +1,9 @@
 {
   "sourceFile": "plugins/figma-vars-installer/src/build-components.ts",
-  "sourceHash": "sha256:b56fc459e65ede2491f47a953250c660cc5cb3a932b2f87f435f98a4f875496b",
+  "sourceHash": "sha256:a459dc6e839746863037aa7e6cb6725a51aaf44fa95c1b0619d7a7110e1d9a26",
   "verifiedBy": "component-verifier",
   "verdict": "pass",
   "changeType": "structural",
-  "verifiedAt": "2026-08-13T07:53:48.986Z",
-  "notes": "bindRadius 헬퍼 신설 + 알약 반경 3곳(Chip·Filter Chip·Calendar inner) raw 999 -> Foundation Number radius/full(9999) 바인딩, Button 4줄 반복도 헬퍼로 축약. 대조: diff 5훅 전부 반경 한정(곁가지 0) · 헬퍼가 기존 Button 4줄과 동일 변수·동일 4모서리 · tsc/keycheck(number 7/79 누락0)/anatomy/iconpolicy/facts/guide-model/geometry 전부 통과 · 파생 재생성 정확(facts 999 6건->0, radius/full 전파 6세트 전부 칩·달력 포함 상위세트) · 시각 무회귀 헤드리스 실측(999px vs 9999px PNG 해시 동일, 실제 페이지 계산값 9999px) · zip 재빌드 확인(code.js radius/full 4, 999 0). 적발 1건(미리보기 렌더러가 모서리 바인딩 미해석 -> 186노드 반경 소실)은 파생 scene-renderer 수정으로 해소, 복원 실측 확인(chip 168·calendar 88·button 96). Figma 실제 캔버스 렌더는 이 환경에서 불가 - mock/데이터 기준 판정."
+  "verifiedAt": "2026-08-14T05:01:42.107Z",
+  "notes": "Dropdown 다중선택(체크박스) 유형 신설 — Dropdown List 9→27(Type=Text/Checkbox/Checkbox+All)·Dropdown 3→6(Type=Text/Checkbox). 재설치 6종 시나리오를 mock 캔버스(findAll/findOne 실조회 교체)로 실측: 빈캔버스·Checkbox잔존·DropdownList잔존·옛DropdownList(Type축없음)·옛Dropdown·새Dropdown. 결과 Type=Checkbox 18변형 전부 Checkbox INSTANCE(가짜 0), 패널 6개가 정확한 사이즈·유형 변형을 부착, 껍데기 패널 0, Select Box Open·Filter Chip Selected 는 Type=Text 만 부착(체크박스 0), 옛 캔버스 하위호환 정상. 최후 폴백 3상태(Default/Hover/Checked) bg·border·체크SVG가 정본 buildCheckbox 와 완전 일치(payload 바이트 동일). 검사기 installer:check·keycheck·anatomy·iconpolicy·variantcov49/49·pagecheck·geometry·behavior·guide-model(42)·facts·freshness 전부 통과. 한계: Figma 캔버스 실제 렌더 육안 미검증(코드 레벨). 미결(사용자 결정, 이 기록 범위 밖): 단일선택 Selected 글자굵기 정본 Regular vs 웹 Medium."
 }

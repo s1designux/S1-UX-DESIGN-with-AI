@@ -68,6 +68,24 @@ async function getBuiltSet(name: string): Promise<ComponentSetNode | null> {
   try { const f = figma.currentPage.findOne((n) => n.type === "COMPONENT_SET" && n.name === name); return (f as ComponentSetNode) || null; } catch (e) { return null; }
 }
 
+/** 세트 안의 변형 컴포넌트를 BUILT_COMPS → 캔버스 순으로 찾고, 찾으면 BUILT_COMPS 에 **재등록**한다.
+ *  재설치에서 부품 세트가 skip(기존 보존)되면 BUILT_COMPS 가 비어 부모가 조용히 fallback 을 그리는데,
+ *  그 fallback 이 '빈자리'가 아니라 '가짜 부품'이면 눈에 안 보인 채 라이브러리에 고착된다.
+ *  (2026-08-14 신설 — 🤖 component-verifier 가 Dropdown List 의 체크박스 18개가 통째로 가짜가 되는 것을 실측.)
+ *  matches = 변형 이름에 모두 포함돼야 하는 조각(예: ["Size=MD","Type=Checkbox","State=Default"]). */
+async function reuseVariant(setName: string, cacheKey: string, matches: string[]): Promise<ComponentNode | null> {
+  if (BUILT_COMPS[cacheKey]) return BUILT_COMPS[cacheKey];
+  const set = await getBuiltSet(setName);
+  if (!set) return null;
+  let found: ComponentNode | undefined;
+  try {
+    found = (set.children as ComponentNode[]).find(
+      (c) => c.type === "COMPONENT" && matches.every((m) => c.name.includes(m)));
+  } catch (e) { return null; } // mock 환경(children 이 배열 아님)
+  if (found) BUILT_COMPS[cacheKey] = found;
+  return found ?? null;
+}
+
 async function getBuiltComp(name: string): Promise<ComponentNode | null> {
   if (BUILT_COMPS[name]) return BUILT_COMPS[name];
   try {
@@ -1318,7 +1336,10 @@ async function buildSelect(maps: BuildMaps, originY: number): Promise<{ set: Com
           // 재설치 중 Dropdown이 skip된 경우 — 페이지에서 탐색
           const ddSet = await getBuiltSet("Dropdown");
           if (ddSet) {
-            ddComp = (ddSet.children as ComponentNode[]).find(c => c.type === "COMPONENT" && c.name.includes(`Size=${sc.size}`))
+            // Type 축 신설(2026-08-14) 후 같은 Size 에 Text·Checkbox 두 벌이 있으므로 Type=Text 를 명시해 집는다.
+            ddComp = (ddSet.children as ComponentNode[]).find(c => c.type === "COMPONENT" && c.name.includes(`Size=${sc.size}`) && c.name.includes("Type=Text"))
+              ?? (ddSet.children as ComponentNode[]).find(c => c.type === "COMPONENT" && c.name.includes(`Size=${sc.size}`))
+              ?? (ddSet.children as ComponentNode[]).find(c => c.type === "COMPONENT" && c.name.includes("Type=Text"))
               ?? (ddSet.children as ComponentNode[]).find(c => c.type === "COMPONENT");
           }
         }
@@ -1356,37 +1377,134 @@ async function buildSelect(maps: BuildMaps, originY: number): Promise<{ set: Com
 // ── Dropdown List (옵션 상태) — color/dropdown/option/* ──────────────────────
 // 원본은 리스트 패널(Hover/Selected/Option). 재사용 단위인 옵션 상태 세트로 구성.
 // #11: 3사이즈(XXSM/XSM/MD) × 4상태. 폰트·옵션높이는 Select Box 기준(2026-06-19).
+//
+// 2026-08-14 사용자 결정 — 다중 선택(체크박스) 유형 신설. Type 축 추가:
+//   Type=Text         글자만 (기존 단일 선택 옵션)
+//   Type=Checkbox     Checkbox 인스턴스 + 글자 (다중 선택 옵션)
+//   Type=Checkbox+All 위 + 라벨 "전체 선택" + 하단 1px 구분선 (체크박스 패널 최상단 전용)
+// 설계 근거(사용자와 합의):
+//   ▸ 체크박스는 직접 그리지 않고 **Selection 카테고리의 Checkbox 컴포넌트 인스턴스**를 부착한다.
+//     Table 행과 동일한 방식으로, 체크박스 규칙(색·상태·크기)이 한 벌로 유지된다. 직접 그리면 규칙이 두 벌이 된다.
+//   ▸ 갈래는 이 "옵션 한 줄"에만 세우고 트리거(Select Box)는 손대지 않는다. 트리거의 다중선택 표시는
+//     글자 override 수준이라 20개 variant 를 복제할 값어치가 없다(2026-08-14 검토에서 철회).
+//   ▸ 체크 유형의 Selected 는 **글자를 강조하지 않는다**(사용자 결정): 체크 표시가 이미 선택을 말하므로
+//     라벨색은 default 유지. 단일 선택(Text)은 종전대로 option/label/selected 강조 유지.
+//   ▸ 구분선은 패널이 아니라 "전체 선택 줄"이 들고 있다 — 패널을 건드리지 않아야 이 패널을 쓰는
+//     Select Box·Filter Chip 이 영향을 안 받는다.
+// 새 토큰 0건 — 색은 전부 기존 color/dropdown/* · color/control/* 재사용.
 async function buildDropdownList(maps: BuildMaps, originY: number): Promise<{ set: ComponentSetNode; bottomY: number }> {
   const dd = (k: string) => `color/dropdown/${k}`;
   const states = [
-    { name: "Default",  bg: "option/bg/default",  label: "option/label/default" },
-    { name: "Hover",    bg: "option/bg/hover",    label: "option/label/hover" },
+    { name: "Default",  bg: "option/bg/default",  label: "option/label/default",  chk: "Default" },
+    { name: "Hover",    bg: "option/bg/hover",    label: "option/label/hover",    chk: "Hover"   },
     // 2026-07-08 사용자 결정: 선택 배경=default와 동일 토큰(강조는 텍스트색만). option/bg/selected(하늘색)는
     // 더 이상 여기서 안 쓰지만 Time Picker Cell(별도 컴포넌트, buildTimePickerCell)은 계속 사용 — 그대로 둠.
-    { name: "Selected", bg: "option/bg/default",  label: "option/label/selected" },
+    { name: "Selected", bg: "option/bg/default",  label: "option/label/selected", chk: "Checked" },
+  ];
+  const types = [
+    { name: "Text",         checkbox: false, divider: false, text: "옵션" },
+    { name: "Checkbox",     checkbox: true,  divider: false, text: "옵션" },
+    { name: "Checkbox+All", checkbox: true,  divider: true,  text: "전체 선택" },
   ];
   const sizes = [
     { size: "XXSM", h: 28, font: 12 },
     { size: "XSM",  h: 34, font: 14 },
     { size: "MD",   h: 44, font: 14 },
   ];
+  const CHK_GAP = 8;   // 체크박스↔글자 간격 = spacing/8 (Foundation)
+  const CHK_PX  = 18;  // Checkbox 컴포넌트 실치수 — 최소 행높이 28 에도 위아래 5px 여유
+
+  /** 옵션 한 줄의 내용(배경·체크박스·글자)을 host 에 채운다. host = 컴포넌트 자신 또는 내부 content 프레임. */
+  const fillRow = async (
+    host: ComponentNode | FrameNode,
+    sz: { h: number; font: number },
+    ty: { checkbox: boolean; text: string },
+    st: { bg: string; label: string; chk: string },
+    rowH: number,
+  ) => {
+    host.layoutMode = "HORIZONTAL"; host.counterAxisAlignItems = "CENTER";
+    host.primaryAxisSizingMode = "FIXED"; host.counterAxisSizingMode = "FIXED";
+    host.paddingLeft = 12; host.paddingRight = 12; host.paddingTop = 0; host.paddingBottom = 0;
+    host.itemSpacing = ty.checkbox ? CHK_GAP : 0;
+    host.fills = [boundPaint(scv(maps, dd(st.bg)))];
+    host.resize(140, rowH);
+    if (ty.checkbox) {
+      // 이번 빌드에서 만든 Checkbox(BUILT_COMPS) → 캔버스에 이미 있는 Checkbox 세트(재설치 시 skip 됨) 순으로 찾는다.
+      //   BUILT_COMPS 만 보면 "Checkbox 는 그대로 두고 Dropdown List 만 다시 만드는" 흔한 재설치에서
+      //   전부 fallback 으로 떨어져 가짜 체크박스가 고착된다(🤖 component-verifier 실측 2026-08-14).
+      //   BUILD_DEPENDENCIES 는 **같은 카테고리 안 순서만** 정렬하므로(buildOrderFor 의 inCat 조건)
+      //   Selection↔Dropdown 처럼 카테고리가 다르면 이 사고를 막지 못한다 — 그래서 캔버스 재등록이 필요하다.
+      const chkComp = await reuseVariant("Checkbox", `Checkbox:${st.chk}`, [`State=${st.chk}`]);
+      if (chkComp) {
+        const inst = chkComp.createInstance();
+        inst.name = "checkbox";
+        host.appendChild(inst);
+      } else {
+        // 최후 fallback — Checkbox 가 이번 빌드에도 캔버스에도 없는 경우(부품 없이 단독 설치).
+        //   정본 buildCheckbox 와 **같은 토큰 + 같은 체크 표시**로 그린다. 체크 아이콘을 빼면
+        //   "체크 안 보이는 파란 사각형"이 되어 체크박스 유형이 유형 구실을 못 한다.
+        console.warn(`[Dropdown List] Checkbox 컴포넌트를 찾지 못해 임시 도형으로 그립니다 (State=${st.chk}) — Checkbox 를 먼저 설치하면 인스턴스로 붙습니다.`);
+        const box = figma.createFrame();
+        box.name = "checkbox"; box.resize(CHK_PX, CHK_PX); box.cornerRadius = 2;
+        const on = st.chk === "Checked";
+        // 정본 buildCheckbox 와 동일한 **3분기**(Default/Hover/Checked). 2분기로 두면 Hover 가
+        //   bg/default 로 떨어져 정본과 어긋난다(🤖 component-verifier 재검증 지적 2026-08-14).
+        const bgKey = on ? "color/control/bg/selected"
+          : st.chk === "Hover" ? "color/control/bg/hover"
+          : "color/control/bg/default";
+        box.fills   = [boundPaint(scv(maps, bgKey))];
+        box.strokes = [boundPaint(scv(maps, on ? "color/control/border/selected" : "color/control/border/default"))];
+        box.strokeWeight = 1; box.strokeAlign = "INSIDE";
+        if (on) {
+          const icon = await makeCheckIcon(scv(maps, "color/control/indicator/selected"));
+          box.appendChild(icon); icon.x = 1; icon.y = 1;
+        }
+        host.appendChild(box);
+      }
+    }
+    // 체크 유형은 선택돼도 라벨 강조 없음(체크 표시가 선택을 표현) — 사용자 결정 2026-08-14.
+    const labelKey = ty.checkbox && st.label === "option/label/selected" ? "option/label/default" : st.label;
+    host.appendChild(await makeBoundText(ty.text, sz.font, "Regular", scv(maps, dd(labelKey))));
+  };
+
   const comps: ComponentNode[] = [];
-  const cells: { comp: ComponentNode; size: string; colIdx: number }[] = [];
+  const cells: { comp: ComponentNode; size: string; rowIdx: number; colIdx: number }[] = [];
   for (const sz of sizes) {
-    for (let col = 0; col < states.length; col++) {
-      const st = states[col];
-      const comp = figma.createComponent();
-      comp.name = `Size=${sz.size}, State=${st.name}`;
-      comp.layoutMode = "HORIZONTAL"; comp.counterAxisAlignItems = "CENTER";
-      comp.primaryAxisSizingMode = "FIXED"; comp.counterAxisSizingMode = "FIXED";
-      comp.paddingLeft = 12; comp.paddingRight = 12; comp.paddingTop = 0; comp.paddingBottom = 0;
-      comp.fills = [boundPaint(scv(maps, dd(st.bg)))];
-      comp.appendChild(await makeBoundText("옵션", sz.font, "Regular", scv(maps, dd(st.label))));
-      comp.resize(140, sz.h);
-      comps.push(comp);
-      cells.push({ comp, size: sz.size, colIdx: col });
-      BUILT_COMPS[`DropdownList:${sz.size}:${st.name}`] = comp;
-      if (sz.size === "MD") BUILT_COMPS[`DropdownList:${st.name}`] = comp; // 레거시 키 (MD=기본)
+    for (let ri = 0; ri < types.length; ri++) {
+      const ty = types[ri];
+      for (let col = 0; col < states.length; col++) {
+        const st = states[col];
+        const comp = figma.createComponent();
+        comp.name = `Size=${sz.size}, Type=${ty.name}, State=${st.name}`;
+        if (ty.divider) {
+          // [내용 행 + 1px 구분선] 세로 스택. 총높이는 다른 줄과 같게 유지(내용 = h-1).
+          comp.layoutMode = "VERTICAL"; comp.itemSpacing = 0;
+          comp.primaryAxisSizingMode = "FIXED"; comp.counterAxisSizingMode = "FIXED";
+          comp.paddingLeft = 0; comp.paddingRight = 0; comp.paddingTop = 0; comp.paddingBottom = 0;
+          comp.fills = [];
+          comp.resize(140, sz.h);
+          const row = figma.createFrame();
+          row.name = "option";
+          await fillRow(row, sz, ty, st, sz.h - 1);
+          comp.appendChild(row);
+          try { (row as any).layoutAlign = "STRETCH"; } catch (e) { /* mock */ }
+          const div = figma.createRectangle();
+          div.name = "divider";
+          div.resize(140, 1);
+          div.fills = [boundPaint(scv(maps, "color/dropdown/list/border"))]; // 패널 테두리색 재사용(새 토큰 0)
+          comp.appendChild(div);
+          try { (div as any).layoutAlign = "STRETCH"; } catch (e) { /* mock */ }
+        } else {
+          await fillRow(comp, sz, ty, st, sz.h);
+        }
+        comps.push(comp);
+        cells.push({ comp, size: sz.size, rowIdx: ri, colIdx: col });
+        BUILT_COMPS[`DropdownList:${sz.size}:${ty.name}:${st.name}`] = comp;
+        if (ty.name === "Text") {
+          BUILT_COMPS[`DropdownList:${sz.size}:${st.name}`] = comp;                    // 기존 키(=Text) 유지
+          if (sz.size === "MD") BUILT_COMPS[`DropdownList:${st.name}`] = comp;         // 레거시 키 (MD=기본)
+        }
+      }
     }
   }
   const set = figma.combineAsVariants(comps, figma.currentPage);
@@ -1397,10 +1515,10 @@ async function buildDropdownList(maps: BuildMaps, originY: number): Promise<{ se
   const opts: GroupedSpecOpts = {
     title: "Dropdown List",
     platforms: [{ name: "PC", sizes: sizes.map((s) => s.size) }],
-    rowLabels: [""],
+    rowLabels: types.map((t) => t.name),
     colHeaders: states.map((s) => s.name),
-    cellAt: (_p, size, _ri, ci) => cells.find((x) => x.size === size && x.colIdx === ci)?.comp ?? null,
-    lightX: SPEC_LIGHT_X, darkX: SPEC_DARK_X, originY, cellW: 160, cellH: 60, rowLabelW: 16,
+    cellAt: (_p, size, ri, ci) => cells.find((x) => x.size === size && x.rowIdx === ri && x.colIdx === ci)?.comp ?? null,
+    lightX: SPEC_LIGHT_X, darkX: SPEC_DARK_X, originY, cellW: 160, cellH: 60, rowLabelW: 96,
   };
   let bottomY = await decorateSetGrouped(set, opts, maps);
   try { bottomY = Math.max(bottomY, await buildGroupedSpec(opts, maps)); } catch (e) { console.warn(e); }
@@ -1410,6 +1528,14 @@ async function buildDropdownList(maps: BuildMaps, originY: number): Promise<{ se
 // ── Dropdown (드롭다운 패널 컴포넌트 세트 — Dropdown List 인스턴스 4행 조합) ─────────
 // Select Box Open 상태와 Time Picker Focus 상태에서 인스턴스로 참조한다.
 // #11: 3사이즈(XXSM/XSM/MD). 각 사이즈별로 DropdownList 인스턴스 4행 조합(2026-06-19).
+//
+// 2026-08-14 사용자 결정 — Type 축 추가(3개 → 6개):
+//   Type=Text     기존 단일 선택 패널(옵션 4행).
+//   Type=Checkbox 다중 선택 패널. **최상단 "전체 선택" 줄을 기본 포함**한다(사용자 결정:
+//                 "불필요한 경우엔 작업자가 논의하에 빼면 된다" → 있는/없는 두 벌로 갈래를 늘리지 않고
+//                 기본형 하나만 두고, 필요 없으면 인스턴스에서 맨 윗줄을 지운다).
+// 패널이 들고 있는 것(배경·테두리·모서리·그림자·안쪽여백)은 손으로 다시 그리면 매번 어긋나므로
+// 완제품 패널을 유지한다 — 특히 그림자는 다크값 미확정이라 변수 바인딩 없이 고정돼 있다.
 async function buildDropdown(maps: BuildMaps, originY: number): Promise<{ set: ComponentSetNode; bottomY: number }> {
   const dd = (k: string) => `color/dropdown/${k}`;
   const sizes = [
@@ -1417,12 +1543,19 @@ async function buildDropdown(maps: BuildMaps, originY: number): Promise<{ set: C
     { size: "XSM",  h: 34 },
     { size: "MD",   h: 44 },
   ];
+  // 각 패널이 담는 4행 = [옵션줄 Type, State]. 상태를 한눈에 보여주는 기존 관례(Default·Hover·Selected·Default) 유지.
+  const panelTypes = [
+    { name: "Text",     rows: [["Text", "Default"], ["Text", "Hover"], ["Text", "Selected"], ["Text", "Default"]] },
+    { name: "Checkbox", rows: [["Checkbox+All", "Default"], ["Checkbox", "Selected"], ["Checkbox", "Default"], ["Checkbox", "Hover"]] },
+  ];
   const comps: ComponentNode[] = [];
-  const cells: { comp: ComponentNode; size: string }[] = [];
+  const cells: { comp: ComponentNode; size: string; typeIdx: number }[] = [];
 
   for (const sz of sizes) {
+  for (let ti = 0; ti < panelTypes.length; ti++) {
+    const pt = panelTypes[ti];
     const comp = figma.createComponent();
-    comp.name = `Size=${sz.size}, State=Default`;
+    comp.name = `Size=${sz.size}, Type=${pt.name}, State=Default`;
     comp.layoutMode = "VERTICAL";
     comp.primaryAxisSizingMode = "AUTO";
     comp.counterAxisSizingMode = "FIXED";
@@ -1437,16 +1570,33 @@ async function buildDropdown(maps: BuildMaps, originY: number): Promise<{ set: C
     try { (comp as any).effects = ddEffects; } catch (e) { /* 환경 미지원 */ }
     comp.resize(140, 4 * sz.h + 8);
 
-    // 4행: Default·Hover·Selected·Default
-    for (const stateName of ["Default", "Hover", "Selected", "Default"] as const) {
-      const ddComp = BUILT_COMPS[`DropdownList:${sz.size}:${stateName}`] ?? BUILT_COMPS[`DropdownList:${stateName}`];
+    // 4행 — Text: Default·Hover·Selected·Default / Checkbox: 전체선택·Selected·Default·Hover
+    for (const [rowType, stateName] of pt.rows) {
+      // BUILT_COMPS → 캔버스(재설치로 Dropdown List 가 skip 된 경우) 순으로 찾는다.
+      let ddComp = await reuseVariant(
+        "Dropdown List", `DropdownList:${sz.size}:${rowType}:${stateName}`,
+        [`Size=${sz.size}`, `Type=${rowType}`, `State=${stateName}`]);
+      if (!ddComp && rowType === "Text") {
+        // Type 축이 없던 옛 캔버스(이름에 Type= 없음) 하위호환.
+        ddComp = BUILT_COMPS[`DropdownList:${sz.size}:${stateName}`]
+          ?? BUILT_COMPS[`DropdownList:${stateName}`]
+          ?? await reuseVariant("Dropdown List", `DropdownList:${sz.size}:${stateName}`, [`Size=${sz.size}`, `State=${stateName}`])
+          ?? undefined;
+      }
+      if (!ddComp && rowType !== "Text") {
+        // 체크박스 줄은 흉내내지 않는다 — 글자 줄로 바꿔 그리면 이름만 Type=Checkbox 인
+        //   "체크박스 0개 · 전체선택 라벨 없음 · 구분선 없음" 껍데기가 조용히 만들어진다
+        //   (🤖 component-verifier 실측 2026-08-14). 줄을 비워 눈에 보이게 실패시킨다.
+        console.warn(`[Dropdown] 옵션 줄 ${rowType}/${stateName} (${sz.size}) 을 찾지 못해 건너뜁니다 — Dropdown List 를 함께 설치하세요.`);
+        continue;
+      }
       if (ddComp) {
         const inst = ddComp.createInstance();
         inst.name = "ddl-row";
         comp.appendChild(inst);
         (inst as any).layoutAlign = "STRETCH";
       } else {
-        // Fallback (재설치 중 Dropdown List가 skip된 경우)
+        // Fallback — 글자 줄만 그린다(여기까지 오면 rowType 은 항상 Text: 위에서 체크박스 줄은 continue).
         const sn = stateName.toLowerCase();
         const row = figma.createFrame();
         row.name = "ddl-row";
@@ -1460,8 +1610,11 @@ async function buildDropdown(maps: BuildMaps, originY: number): Promise<{ set: C
       }
     }
     comps.push(comp);
-    cells.push({ comp, size: sz.size });
-    BUILT_COMPS[`Dropdown:${sz.size}:Default`] = comp;
+    cells.push({ comp, size: sz.size, typeIdx: ti });
+    // 기존 키(=Text 패널)를 그대로 유지 — Select Box Open·Filter Chip Selected 가 이 키로 붙는다.
+    if (pt.name === "Text") BUILT_COMPS[`Dropdown:${sz.size}:Default`] = comp;
+    else                    BUILT_COMPS[`Dropdown:${sz.size}:${pt.name}`] = comp;
+  }
   }
   // 레거시 키 → MD (Select Box 폴백 경로 유지)
   BUILT_COMPS["Dropdown:Default"] = BUILT_COMPS["Dropdown:MD:Default"];
@@ -1474,9 +1627,9 @@ async function buildDropdown(maps: BuildMaps, originY: number): Promise<{ set: C
 
   const opts: SpecOpts = {
     title: "Dropdown",
-    colHeaders: ["Default"],
-    rowLabels: cells.map((c) => c.size),
-    cellAt: (r, _c) => cells[r]?.comp ?? null,
+    colHeaders: panelTypes.map((t) => t.name),
+    rowLabels: sizes.map((s) => s.size),
+    cellAt: (r, c) => cells.find((x) => x.size === sizes[r]?.size && x.typeIdx === c)?.comp ?? null,
     lightX: SPEC_LIGHT_X, darkX: SPEC_DARK_X, originY, cellW: 200, cellH: 220,
   };
   let bottomY = await decorateSetFlat(set, opts, maps);
@@ -1965,7 +2118,10 @@ async function buildFilterChip(maps: BuildMaps, originY: number): Promise<{ set:
             if (!ddComp) {
               const ddSet = await getBuiltSet("Dropdown");
               if (ddSet) {
-                ddComp = (ddSet.children as ComponentNode[]).find(c => c.type === "COMPONENT" && c.name.includes(`Size=${ddSize}`))
+                // Type 축 신설(2026-08-14) 후 같은 Size 에 Text·Checkbox 두 벌 — Filter Chip 은 단일 선택이라 Type=Text.
+                ddComp = (ddSet.children as ComponentNode[]).find(c => c.type === "COMPONENT" && c.name.includes(`Size=${ddSize}`) && c.name.includes("Type=Text"))
+                  ?? (ddSet.children as ComponentNode[]).find(c => c.type === "COMPONENT" && c.name.includes(`Size=${ddSize}`))
+                  ?? (ddSet.children as ComponentNode[]).find(c => c.type === "COMPONENT" && c.name.includes("Type=Text"))
                   ?? (ddSet.children as ComponentNode[]).find(c => c.type === "COMPONENT");
               }
             }
@@ -4941,6 +5097,12 @@ export const COMPONENT_CATEGORIES: { name: string; members: string[] }[] =
 export const BUILD_DEPENDENCIES: Record<string, string[]> = {
   "Select Box":  ["Dropdown"],        // Open 상태가 Dropdown 패널 인스턴스 부착
   "Dropdown":    ["Dropdown List"],   // Dropdown 패널이 Dropdown List 옵션 인스턴스 4행 부착
+  // Dropdown List 의 체크박스 유형(Type=Checkbox·Checkbox+All)이 Checkbox 인스턴스 부착(2026-08-14).
+  //   ⚠️ 이 선언은 **순서를 보장하지 않는다** — buildOrderFor 는 같은 카테고리 안(inCat) 의존만 정렬하고
+  //   Checkbox(Selection) ↔ Dropdown List(Dropdown) 는 카테고리가 다르다. 신규 전체 설치는 카테고리
+  //   순서(Selection 이 앞)로 충족되고, **재설치(세트 skip)** 는 buildDropdownList 의 reuseVariant 가
+  //   캔버스의 기존 Checkbox 를 재등록해 해결한다. 이 줄은 의존 관계를 문서/열화보고에 남기는 용도다.
+  "Dropdown List": ["Checkbox"],
   "Filter Chip": ["Dropdown"],        // Selected 상태가 Dropdown 패널 인스턴스 부착(타 카테고리=순서 보장)
   "Time Picker": ["Time Picker Dropdown"], // Focus 상태가 Time Picker Dropdown 인스턴스 부착
   "GNB": ["GNB Utility Icon"],        // GNB 바 유틸 영역이 GNB Utility Icon all-on 인스턴스 부착

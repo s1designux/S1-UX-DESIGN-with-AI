@@ -2,9 +2,21 @@
    Run: npm run reports:sync
 */
 window.REPORTS_INDEX = {
-  "generatedAt": "2026-08-12T04:13:57.366Z",
-  "totalCount": 72,
+  "generatedAt": "2026-08-14T07:51:06.370Z",
+  "totalCount": 73,
   "reports": [
+    {
+      "id": "harness-audit-2026-08-14",
+      "filename": "harness-audit-2026-08-14.md",
+      "title": "Harness Audit Report — 2026-08-14",
+      "stage": "Audit",
+      "category": "audit",
+      "status": "archive",
+      "sourcePath": "reports/harness-audit-2026-08-14.md",
+      "updatedAt": "2026-08-14",
+      "summary": "- ✅ [button] 모든 사이즈 분기 존재 (md (h44) / xsm (h34) / xxsm (h28) / lg (h48))",
+      "fileSizeKB": 2
+    },
     {
       "id": "harness-audit-2026-08-12",
       "filename": "harness-audit-2026-08-12.md",
@@ -231,7 +243,7 @@ window.REPORTS_INDEX = {
       "sourcePath": "reports/changelog-archive.md",
       "updatedAt": "2026-06-17",
       "summary": "이 파일은 CLAUDE.md `변경 이력` 표의 **상세 보존본**이다. 컨텍스트 비용을 줄이기 위해 CLAUDE.md 본문에서 분리했다.",
-      "fileSizeKB": 70.4
+      "fileSizeKB": 71
     },
     {
       "id": "harness-audit-2026-06-17",

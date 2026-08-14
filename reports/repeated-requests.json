@@ -2,7 +2,7 @@
   "_meta": {
     "description": "사용자가 반복 요청한 패턴 추적 파일. count >= 3 이면 자동 감사 규칙 승격 후보.",
     "promotionThreshold": 3,
-    "updatedAt": "2026-08-12",
+    "updatedAt": "2026-08-14",
     "note": "이 JSON 이 단일 정본이다. CLAUDE.md 에 있던 승격 현황 표는 2026-08-03 에 삭제했다(정본과 드리프트 중이었음)."
   },
   "patterns": [
@@ -23,17 +23,21 @@
     {
       "id": "canonical-component-size-addition",
       "category": "component-canonical-expansion",
-      "label": "기존 컴포넌트 정본에 새 사이즈 기준 추가",
-      "description": "기존 컴포넌트의 크기 축에 없던 사이즈를 사용자 승인 기준으로 신설하고, 세트·웹 가이드·registry·검사기까지 함께 동기화하는 요청",
-      "count": 1,
+      "label": "기존 컴포넌트 정본에 새 축(사이즈·유형) 기준 추가",
+      "description": "기존 컴포넌트의 variant 축(크기·유형)에 없던 값을 사용자 승인 기준으로 신설하고, 세트·웹 가이드·registry·검사기까지 함께 동기화하는 요청",
+      "count": 2,
       "promotionStatus": "tracking",
       "occurrences": [
         {
           "date": "2026-08-11",
           "summary": "Line Tab에 PC XSM(40px·body/14M·좌우 16·텍스트 Hug·밑줄 Stretch) 추가, Line Tab Set과 파생 표면 동기화"
+        },
+        {
+          "date": "2026-08-14",
+          "summary": "Dropdown List·Dropdown 에 Type 축 신설(체크박스 다중 선택 + 전체선택 줄). Checkbox 인스턴스 재사용·새 토큰 0건. 웹 가이드 섹션·behavior 계약·Gate 39 baseline 까지 동기화"
         }
       ],
-      "automationNote": "3회 도달 시 컴포넌트별 사이즈 축 신설을 정본→세트→facts→웹→registry→검사 규칙까지 대조하는 전용 체크리스트 또는 Gate 승격 검토."
+      "automationNote": "3회 도달 시 컴포넌트별 축(사이즈·유형) 신설을 정본→세트→facts→웹→registry→behavior→검사 규칙까지 대조하는 전용 체크리스트 또는 Gate 승격 검토."
     },
     {
       "id": "figma-foundation-hybrid-pattern",
@@ -204,7 +208,7 @@
       "category": "verification-quality",
       "label": "검수 통과했으나 시각·레이아웃이 Figma와 다름",
       "description": "4단계 자가대조가 CSS 선언값만 비교하고 렌더 레이아웃을 실측하지 않아, 값은 맞지만 시각이 다른 불일치(아이콘 컨테이너 치수 누락 등)를 놓침",
-      "count": 2,
+      "count": 3,
       "promotionStatus": "candidate",
       "promotedRule": null,
       "occurrences": [
@@ -215,9 +219,13 @@
         {
           "date": "2026-06-06",
           "summary": "GNB 유틸 아이콘이 32px(프레임)로 렌더돼 너무 큼. 실제 글리프는 프레임 inset 12.5% 적용 24px(md/sm)/18px(xsm)여야. verifier가 박스(40px)는 쟀으나 글리프 크기를 Figma 스크린샷과 비교 안 함 → 사용자 '아이콘 너무 큼' 제보. get_screenshot 원본 대조로 확인·수정."
+        },
+        {
+          "date": "2026-08-14",
+          "summary": "Input Editing 상태가 정본과 달랐음 — 커서가 필드 오른쪽 끝으로 밀리고(정본은 [텍스트+캐럿] lead 프레임 hug), 삭제(×) 아이콘 누락, bg/selected·text/selected 미적용. Search Input Focus·Textarea Focus 도 같은 원인. Gate/Harness 는 전부 PASS(선언값·토큰만 검사) → 사용자 육안 제보로 발견. 정적 데모에서 input width:100% 가 캐럿을 밀어내는 구조적 패턴."
         }
       ],
-      "automationNote": "아이콘은 '프레임 크기'가 아니라 '글리프 렌더 크기'(프레임×(1-2×inset))로 검증해야 함. component-verifier 시각 대조 시 아이콘 글리프를 Figma get_screenshot과 비례 비교하도록 강화. 2회 도달 — 승격 검토."
+      "automationNote": "아이콘은 '프레임 크기'가 아니라 '글리프 렌더 크기'로 검증. 3회 도달(2026-08-14) — 승격 후보: 정본에 '자식 순서·hug/fill 구조'가 선언된 상태(lead/trail 프레임)를 파생 HTML 의 실제 렌더 박스 좌표와 대조하는 검사기. 선언값 비교로는 절대 안 잡히며, 매번 사용자 육안 제보로만 발견됨."
     },
     {
       "id": "installer-ui-flow-layout",
