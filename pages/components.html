@@ -739,13 +739,22 @@
       color: var(--color-text-secondary); cursor: pointer;
     }
     .ds-fc-sheet-list { display: flex; flex-direction: column; }
+    /* 2026-08-18 정본 정렬(H6) — 이 행은 정본 Bottom Sheet Option(buildBottomSheetOption)의 표출이다
+       (component-page-coverage.json: "Bottom Sheet … 모바일 사용은 Filter Chip 섹션의 바텀시트로 표출").
+       정본 실측: h48 · 좌우 padding 20 · 라벨 body/16M(16px·Medium·행간130%·자간-2%) ·
+       기본 color/text/body/primary · 선택 color/text/state/accent + 우측 체크 24px color/icon/blue.
+       종전 웹 값(15px·400/600·좌우16·자간-0.028em·체크20px·site-base 토큰)은 전부 파생 드리프트였다. */
     .ds-fc-sheet-option {
       display: flex; align-items: center; justify-content: space-between;
-      height: 48px; padding: 0 16px; cursor: pointer;
-      font-size: 15px; color: var(--color-text-primary); letter-spacing: -0.028em;
+      height: 48px; padding: 0 20px; cursor: pointer;
+      font-size: 16px; font-weight: var(--font-weight-medium);
+      line-height: var(--line-height-130); letter-spacing: var(--letter-spacing-tight);
+      color: var(--color-text-body-primary);
     }
-    .ds-fc-sheet-option .ds-fc-sheet-check { display: none; color: var(--color-text-state-accent); }
-    .ds-fc-sheet-option.is-selected { color: var(--color-text-state-accent); font-weight: 600; }
+    /* 체크는 아이콘이므로 글자 토큰이 아니라 아이콘 토큰을 쓴다(Gate 27 역할 규칙) — 값은 정본과 동일 계열 */
+    .ds-fc-sheet-option .ds-fc-sheet-check { display: none; color: var(--color-icon-blue); }
+    /* 선택 강조 = 글자색 + 우측 체크. 굵기는 바꾸지 않는다(정본은 전 상태 Medium) */
+    .ds-fc-sheet-option.is-selected { color: var(--color-text-state-accent); }
     .ds-fc-sheet-option.is-selected .ds-fc-sheet-check { display: block; }
 
     /* Input */
@@ -4067,7 +4076,7 @@ clearBtn.<span class="c-fn">addEventListener</span>(<span class="c-str">'click'<
                       <span class="ds-fc-sheet-close" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M6 6L18 18M18 6L6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span>
                     </div>
                     <div class="ds-fc-sheet-list">
-                      <div class="ds-fc-sheet-option is-selected"><span>최신순</span><svg class="ds-fc-sheet-check" width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M5 12.5L10 17.5L19 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+                      <div class="ds-fc-sheet-option is-selected"><span>최신순</span><svg class="ds-fc-sheet-check" width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M5 12.5L10 17.5L19 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
                       <div class="ds-fc-sheet-option"><span>과거순</span></div>
                       <div class="ds-fc-sheet-option"><span>인기순</span></div>
                     </div>
@@ -4094,9 +4103,9 @@ clearBtn.<span class="c-fn">addEventListener</span>(<span class="c-str">'click'<
                       <button id="fc-mobile-close" type="button" class="ds-fc-sheet-close" aria-label="닫기"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M6 6L18 18M18 6L6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button>
                     </div>
                     <div class="ds-fc-sheet-list" id="fc-mobile-list">
-                      <div class="ds-fc-sheet-option is-selected" data-value="최신순"><span>최신순</span><svg class="ds-fc-sheet-check" width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M5 12.5L10 17.5L19 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-                      <div class="ds-fc-sheet-option" data-value="과거순"><span>과거순</span><svg class="ds-fc-sheet-check" width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M5 12.5L10 17.5L19 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-                      <div class="ds-fc-sheet-option" data-value="인기순"><span>인기순</span><svg class="ds-fc-sheet-check" width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M5 12.5L10 17.5L19 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+                      <div class="ds-fc-sheet-option is-selected" data-value="최신순"><span>최신순</span><svg class="ds-fc-sheet-check" width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M5 12.5L10 17.5L19 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+                      <div class="ds-fc-sheet-option" data-value="과거순"><span>과거순</span><svg class="ds-fc-sheet-check" width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M5 12.5L10 17.5L19 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+                      <div class="ds-fc-sheet-option" data-value="인기순"><span>인기순</span><svg class="ds-fc-sheet-check" width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M5 12.5L10 17.5L19 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
                     </div>
                   </div>
                 </div>
