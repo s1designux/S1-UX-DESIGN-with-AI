@@ -1,0 +1,220 @@
+{
+  "mutatedNodeIds": [
+    "1577:844",
+    "1564:248",
+    "1577:850",
+    "1564:327",
+    "I1566:638;1546:17953",
+    "1566:638",
+    "I1567:723;1546:17965",
+    "1567:723"
+  ],
+  "yPositions": [
+    {
+      "screenId": "1562:6",
+      "spacerId": "1577:844",
+      "spacerHeight": 28,
+      "inputHeights": {
+        "id": 70,
+        "password": 48
+      },
+      "actual": {
+        "id": 188,
+        "password": 286,
+        "login": 368,
+        "helper": 436,
+        "phone": 479
+      },
+      "expected": {
+        "id": 188,
+        "password": 286,
+        "login": 368,
+        "helper": 436,
+        "phone": 479
+      }
+    },
+    {
+      "screenId": "1562:7",
+      "spacerId": "1577:850",
+      "spacerHeight": 50,
+      "inputHeights": {
+        "id": 48,
+        "password": 70
+      },
+      "actual": {
+        "id": 188,
+        "password": 248,
+        "login": 368,
+        "helper": 436,
+        "phone": 479
+      },
+      "expected": {
+        "id": 188,
+        "password": 248,
+        "login": 368,
+        "helper": 436,
+        "phone": 479
+      }
+    }
+  ],
+  "modalResults": [
+    {
+      "screenId": "1562:11",
+      "text": {
+        "id": "I1566:638;1546:17953",
+        "name": "message",
+        "x": 24,
+        "y": 338.5,
+        "width": 238,
+        "height": 54,
+        "textAutoResize": "HEIGHT",
+        "characters": "서비스를 이용하시려면 본인 인증을 해 주세요. 본인 인증 시 기존 기기는 인증이 해제됩니다."
+      },
+      "modal": {
+        "id": "1566:638",
+        "name": "Modal / Login Notice",
+        "x": 0,
+        "y": 261.5,
+        "width": 360,
+        "height": 212
+      },
+      "parentChain": [
+        {
+          "id": "I1566:638;1546:17952",
+          "name": "body",
+          "x": 0,
+          "y": 338.5,
+          "width": 358,
+          "height": 54
+        },
+        {
+          "id": "I1566:638;1546:17946",
+          "name": "content",
+          "x": 1,
+          "y": 282.5,
+          "width": 358,
+          "height": 110
+        },
+        {
+          "id": "1566:638",
+          "name": "Modal / Login Notice",
+          "x": 0,
+          "y": 261.5,
+          "width": 360,
+          "height": 212
+        },
+        {
+          "id": "1566:637",
+          "name": "ModalOverlay",
+          "x": 0,
+          "y": 0,
+          "width": 360,
+          "height": 735
+        },
+        {
+          "id": "1566:566",
+          "name": "PatternContent",
+          "x": 0,
+          "y": 0,
+          "width": 360,
+          "height": 780
+        }
+      ]
+    },
+    {
+      "screenId": "1562:13",
+      "text": {
+        "id": "I1567:723;1546:17965",
+        "name": "message",
+        "x": 24,
+        "y": 320.5,
+        "width": 218,
+        "height": 90,
+        "textAutoResize": "HEIGHT",
+        "characters": "에스원은 고객님의 소중한 정보를 보호하기 위해 인증 기기 등록 후 서비스를 제공하고 있습니다.\n현재 인증한 기기로 등록 후 로그인 할까요?"
+      },
+      "modal": {
+        "id": "1567:723",
+        "name": "Modal / Device Registration",
+        "x": 0,
+        "y": 243.5,
+        "width": 360,
+        "height": 248
+      },
+      "parentChain": [
+        {
+          "id": "I1567:723;1546:17964",
+          "name": "body",
+          "x": 0,
+          "y": 320.5,
+          "width": 358,
+          "height": 90
+        },
+        {
+          "id": "I1567:723;1546:17958",
+          "name": "content",
+          "x": 1,
+          "y": 264.5,
+          "width": 358,
+          "height": 146
+        },
+        {
+          "id": "1567:723",
+          "name": "Modal / Device Registration",
+          "x": 0,
+          "y": 243.5,
+          "width": 360,
+          "height": 248
+        },
+        {
+          "id": "1567:722",
+          "name": "ModalOverlay",
+          "x": 0,
+          "y": 0,
+          "width": 360,
+          "height": 735
+        },
+        {
+          "id": "1567:651",
+          "name": "PatternContent",
+          "x": 0,
+          "y": 0,
+          "width": 360,
+          "height": 780
+        }
+      ]
+    }
+  ],
+  "rawViolations": [],
+  "overflow": [],
+  "violations": [
+    {
+      "screenId": "1562:11",
+      "expectedCharacters": "서비스를 이용하시려면 본인 인증을 해 주세요. 본인 인증 시 기존 기기는 인증이 해제됩니다.",
+      "actualCharacters": "서비스를 이용하시려면 본인 인증을 해 주세요. 본인 인증 시 기존 기기는 인증이 해제됩니다.",
+      "expectedWidth": 312,
+      "actualWidth": 238,
+      "expectedAutoResize": "HEIGHT",
+      "actualAutoResize": "HEIGHT"
+    },
+    {
+      "screenId": "1562:13",
+      "expectedCharacters": "에스원은 고객님의 소중한 정보를 보호하기 위해 인증 기기 등록 후 서비스를 제공하고 있습니다.\n현재 인증한 기기로 등록 후 로그인 할까요?",
+      "actualCharacters": "에스원은 고객님의 소중한 정보를 보호하기 위해 인증 기기 등록 후 서비스를 제공하고 있습니다.\n현재 인증한 기기로 등록 후 로그인 할까요?",
+      "expectedWidth": 312,
+      "actualWidth": 218,
+      "expectedAutoResize": "HEIGHT",
+      "actualAutoResize": "HEIGHT"
+    }
+  ],
+  "counts": {
+    "spacingTargets": 2,
+    "modalTexts": 2,
+    "position": 0,
+    "text": 2,
+    "raw": 0,
+    "overflow": 0,
+    "total": 2
+  }
+}
+

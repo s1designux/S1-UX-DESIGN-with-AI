@@ -1,0 +1,947 @@
+{
+  "_meta": {
+    "step": "3-build",
+    "builtBy": "figma-library-builder",
+    "builtAt": "2026-08-21",
+    "plan": "reports/figma-library-build/input-show-message-preview/2-plan.md",
+    "inventory": "reports/figma-library-build/input-show-message-preview/1-inventory.md",
+    "fileKey": "cysG5U1udpQqVagYY1hWHW",
+    "fileName": "SW-UX-GUIDE-V3.0-TEST",
+    "page": {
+      "id": "5:5706",
+      "name": "Core"
+    },
+    "note": "검토용 임시 자산. 라이브러리 publish 하지 않음. 합격 판정은 component-verifier 소관 — 이 파일은 빌드 사실만 기록한다.",
+    "repoFilesTouched": [
+      "reports/figma-library-build/input-show-message-preview/node-map.json"
+    ],
+    "revision": 2,
+    "revisionNote": "rev2 (2026-08-21): component-verifier ❌(a) A1 수정 반영 — field/trail strokesIncludedInLayout 를 정본과 동일하게 true 로 교정. 재빌드 없음, 속성 8건만 변경."
+  },
+  "componentSet": {
+    "id": "1664:7013",
+    "name": "TEMP/Input — Show message Preview",
+    "description": "정본 반영 전 미리보기 · 배포 금지",
+    "parentId": "5:5706",
+    "parentType": "PAGE",
+    "topLevel": true,
+    "insideAnySection": false,
+    "x": 13968,
+    "y": 5645,
+    "width": 520,
+    "height": 240,
+    "variantCount": 4,
+    "plannedCoords": {
+      "x": 13968,
+      "y": 5645
+    },
+    "coordsMatchPlan": true
+  },
+  "componentProperties": [
+    {
+      "key": "Show message#1664:0",
+      "name": "Show message",
+      "type": "BOOLEAN",
+      "defaultValue": false,
+      "boundTo": "각 variant 의 '안내 메세지' TEXT 레이어 componentPropertyReferences.visible",
+      "boundVariantCount": 4,
+      "ownerNode": "COMPONENT_SET 1664:7013 (set.addComponentProperty)"
+    },
+    {
+      "key": "Password Icon#1664:5",
+      "name": "Password Icon",
+      "type": "BOOLEAN",
+      "defaultValue": false,
+      "boundTo": "각 variant 의 field > trail > eye INSTANCE componentPropertyReferences.visible",
+      "boundVariantCount": 4,
+      "ownerNode": "COMPONENT_SET 1664:7013 (set.addComponentProperty)"
+    },
+    {
+      "key": "State",
+      "type": "VARIANT",
+      "defaultValue": "Default",
+      "variantOptions": [
+        "Default",
+        "Error"
+      ]
+    },
+    {
+      "key": "Label",
+      "type": "VARIANT",
+      "defaultValue": "Off",
+      "variantOptions": [
+        "Off",
+        "On"
+      ]
+    }
+  ],
+  "variants": [
+    {
+      "variantName": "State=Default, Label=Off",
+      "variantId": "1663:7013",
+      "packedX": 40,
+      "packedY": 40,
+      "width": 200,
+      "height": 48,
+      "layers": {
+        "label": null,
+        "field": {
+          "id": "1663:7014",
+          "type": "FRAME",
+          "w": 200,
+          "h": 48,
+          "fillVar": "VariableID:8:1052",
+          "strokeVar": "VariableID:8:1057",
+          "cornerRadius": 4,
+          "strokeWeight": 1,
+          "strokeAlign": "INSIDE",
+          "padding": [
+            0,
+            12,
+            0,
+            16
+          ],
+          "strokesIncludedInLayout": true,
+          "strokesIncludedInLayoutBefore": false
+        },
+        "input": {
+          "id": "1663:7015",
+          "name": "입력",
+          "chars": "입력",
+          "textStyleId": "S:35d6b9f34501f327f4672b8393023695d2f36c5d,",
+          "fillVar": "VariableID:8:1065",
+          "layoutGrow": 1,
+          "textAutoResize": "HEIGHT",
+          "w": 70,
+          "wBefore": 72,
+          "leftInset": 17,
+          "leftInsetBefore": 16,
+          "matchesCanon": true
+        },
+        "trail": {
+          "id": "1663:7016",
+          "type": "FRAME",
+          "w": 100,
+          "h": 100,
+          "fillsLength": 0,
+          "strokesIncludedInLayout": true,
+          "strokesIncludedInLayoutBefore": false
+        },
+        "eye": {
+          "id": "1663:7017",
+          "type": "INSTANCE",
+          "visible": false,
+          "mainComponentId": "338:4",
+          "mainComponentName": "Property 1=Line",
+          "propRef": "Password Icon#1664:5",
+          "origin": "clone() of 1654:42015"
+        },
+        "message": {
+          "id": "1663:7018",
+          "name": "안내 메세지",
+          "chars": "안내 메세지",
+          "visible": false,
+          "textStyleId": "S:688caf7c5d281ba8b15ce89feda98adccca04d54,",
+          "fillVar": "VariableID:8:1121",
+          "propRef": "Show message#1664:0"
+        }
+      }
+    },
+    {
+      "variantName": "State=Default, Label=On",
+      "variantId": "1663:16943",
+      "packedX": 40,
+      "packedY": 128,
+      "width": 200,
+      "height": 72,
+      "layers": {
+        "label": {
+          "id": "1663:16949",
+          "name": "라벨",
+          "chars": "라벨",
+          "textStyleId": "S:0b8aad8ca7e2cfac03033ed19607a4d2fb76aa2a,",
+          "fillVar": "VariableID:8:1061"
+        },
+        "field": {
+          "id": "1663:16944",
+          "type": "FRAME",
+          "w": 200,
+          "h": 48,
+          "fillVar": "VariableID:8:1052",
+          "strokeVar": "VariableID:8:1057",
+          "cornerRadius": 4,
+          "strokeWeight": 1,
+          "strokeAlign": "INSIDE",
+          "padding": [
+            0,
+            12,
+            0,
+            16
+          ],
+          "strokesIncludedInLayout": true,
+          "strokesIncludedInLayoutBefore": false
+        },
+        "input": {
+          "id": "1663:16945",
+          "name": "입력",
+          "chars": "입력",
+          "textStyleId": "S:35d6b9f34501f327f4672b8393023695d2f36c5d,",
+          "fillVar": "VariableID:8:1065",
+          "layoutGrow": 1,
+          "textAutoResize": "HEIGHT",
+          "w": 70,
+          "wBefore": 72,
+          "leftInset": 17,
+          "leftInsetBefore": 16,
+          "matchesCanon": true
+        },
+        "trail": {
+          "id": "1663:16946",
+          "type": "FRAME",
+          "w": 100,
+          "h": 100,
+          "fillsLength": 0,
+          "strokesIncludedInLayout": true,
+          "strokesIncludedInLayoutBefore": false
+        },
+        "eye": {
+          "id": "1663:16947",
+          "type": "INSTANCE",
+          "visible": false,
+          "mainComponentId": "338:4",
+          "mainComponentName": "Property 1=Line",
+          "propRef": "Password Icon#1664:5",
+          "origin": "clone chain from 1654:42015"
+        },
+        "message": {
+          "id": "1663:16948",
+          "name": "안내 메세지",
+          "chars": "안내 메세지",
+          "visible": false,
+          "textStyleId": "S:688caf7c5d281ba8b15ce89feda98adccca04d54,",
+          "fillVar": "VariableID:8:1121",
+          "propRef": "Show message#1664:0"
+        }
+      }
+    },
+    {
+      "variantName": "State=Error, Label=Off",
+      "variantId": "1663:16950",
+      "packedX": 280,
+      "packedY": 40,
+      "width": 200,
+      "height": 48,
+      "layers": {
+        "label": null,
+        "field": {
+          "id": "1663:16951",
+          "type": "FRAME",
+          "w": 200,
+          "h": 48,
+          "fillVar": "VariableID:8:1052",
+          "strokeVar": "VariableID:8:1059",
+          "cornerRadius": 4,
+          "strokeWeight": 1,
+          "strokeAlign": "INSIDE",
+          "padding": [
+            0,
+            12,
+            0,
+            16
+          ],
+          "strokesIncludedInLayout": true,
+          "strokesIncludedInLayoutBefore": false
+        },
+        "input": {
+          "id": "1663:16952",
+          "name": "텍스트",
+          "chars": "텍스트",
+          "textStyleId": "S:35d6b9f34501f327f4672b8393023695d2f36c5d,",
+          "fillVar": "VariableID:8:1063",
+          "layoutGrow": 1,
+          "textAutoResize": "HEIGHT",
+          "w": 70,
+          "wBefore": 72,
+          "leftInset": 17,
+          "leftInsetBefore": 16,
+          "matchesCanon": true
+        },
+        "trail": {
+          "id": "1663:16953",
+          "type": "FRAME",
+          "w": 100,
+          "h": 100,
+          "fillsLength": 0,
+          "strokesIncludedInLayout": true,
+          "strokesIncludedInLayoutBefore": false
+        },
+        "eye": {
+          "id": "1663:16954",
+          "type": "INSTANCE",
+          "visible": false,
+          "mainComponentId": "338:4",
+          "mainComponentName": "Property 1=Line",
+          "propRef": "Password Icon#1664:5",
+          "origin": "clone chain from 1654:42015"
+        },
+        "message": {
+          "id": "1663:16955",
+          "name": "안내 메세지",
+          "chars": "안내 메세지",
+          "visible": false,
+          "textStyleId": "S:688caf7c5d281ba8b15ce89feda98adccca04d54,",
+          "fillVar": "VariableID:8:1122",
+          "propRef": "Show message#1664:0"
+        }
+      }
+    },
+    {
+      "variantName": "State=Error, Label=On",
+      "variantId": "1663:16956",
+      "packedX": 280,
+      "packedY": 128,
+      "width": 200,
+      "height": 72,
+      "layers": {
+        "label": {
+          "id": "1663:16962",
+          "name": "라벨",
+          "chars": "라벨",
+          "textStyleId": "S:0b8aad8ca7e2cfac03033ed19607a4d2fb76aa2a,",
+          "fillVar": "VariableID:8:1061"
+        },
+        "field": {
+          "id": "1663:16957",
+          "type": "FRAME",
+          "w": 200,
+          "h": 48,
+          "fillVar": "VariableID:8:1052",
+          "strokeVar": "VariableID:8:1059",
+          "cornerRadius": 4,
+          "strokeWeight": 1,
+          "strokeAlign": "INSIDE",
+          "padding": [
+            0,
+            12,
+            0,
+            16
+          ],
+          "strokesIncludedInLayout": true,
+          "strokesIncludedInLayoutBefore": false
+        },
+        "input": {
+          "id": "1663:16958",
+          "name": "텍스트",
+          "chars": "텍스트",
+          "textStyleId": "S:35d6b9f34501f327f4672b8393023695d2f36c5d,",
+          "fillVar": "VariableID:8:1063",
+          "layoutGrow": 1,
+          "textAutoResize": "HEIGHT",
+          "w": 70,
+          "wBefore": 72,
+          "leftInset": 17,
+          "leftInsetBefore": 16,
+          "matchesCanon": true
+        },
+        "trail": {
+          "id": "1663:16959",
+          "type": "FRAME",
+          "w": 100,
+          "h": 100,
+          "fillsLength": 0,
+          "strokesIncludedInLayout": true,
+          "strokesIncludedInLayoutBefore": false
+        },
+        "eye": {
+          "id": "1663:16960",
+          "type": "INSTANCE",
+          "visible": false,
+          "mainComponentId": "338:4",
+          "mainComponentName": "Property 1=Line",
+          "propRef": "Password Icon#1664:5",
+          "origin": "clone chain from 1654:42015"
+        },
+        "message": {
+          "id": "1663:16961",
+          "name": "안내 메세지",
+          "chars": "안내 메세지",
+          "visible": false,
+          "textStyleId": "S:688caf7c5d281ba8b15ce89feda98adccca04d54,",
+          "fillVar": "VariableID:8:1122",
+          "propRef": "Show message#1664:0"
+        }
+      }
+    }
+  ],
+  "board": {
+    "id": "1665:7013",
+    "name": "TEMP/Input — 조합 확인 보드",
+    "parentId": "5:5706",
+    "parentType": "PAGE",
+    "topLevel": true,
+    "x": 14688,
+    "y": 5645,
+    "width": 812,
+    "height": 858,
+    "fillsLength": 0,
+    "layout": {
+      "layoutMode": "VERTICAL",
+      "itemSpacing": 24,
+      "padding": 40
+    },
+    "plannedX": "set.x + set.width + 200 = 13968 + 520 + 200 = 14688",
+    "coordsMatchPlan": true,
+    "combinationRows": [
+      {
+        "n": 1,
+        "rowId": "1665:7014",
+        "captionId": "1665:7015",
+        "caption": "1. 라벨 있음 · State=Default · Show message=False",
+        "instanceId": "1665:7016",
+        "props": {
+          "State": "Default",
+          "Label": "On",
+          "Show message#1664:0": false,
+          "Password Icon#1664:5": false
+        },
+        "measuredW": 200,
+        "measuredH": 72,
+        "measuredInputW": 70,
+        "measuredInputLeftInset": 17
+      },
+      {
+        "n": 2,
+        "rowId": "1665:7042",
+        "captionId": "1665:7043",
+        "caption": "2. 라벨 있음 · State=Error · Show message=False",
+        "instanceId": "1665:7044",
+        "props": {
+          "State": "Error",
+          "Label": "On",
+          "Show message#1664:0": false,
+          "Password Icon#1664:5": false
+        },
+        "measuredW": 200,
+        "measuredH": 72,
+        "measuredInputW": 70,
+        "measuredInputLeftInset": 17
+      },
+      {
+        "n": 3,
+        "rowId": "1665:7063",
+        "captionId": "1665:7064",
+        "caption": "3. 라벨 있음 · State=Error · Show message=True",
+        "instanceId": "1665:7065",
+        "props": {
+          "State": "Error",
+          "Label": "On",
+          "Show message#1664:0": true,
+          "Password Icon#1664:5": false
+        },
+        "measuredW": 200,
+        "measuredH": 94,
+        "measuredInputW": 70,
+        "measuredInputLeftInset": 17
+      },
+      {
+        "n": 4,
+        "rowId": "1665:17001",
+        "captionId": "1665:17002",
+        "caption": "4. 라벨 없음 · State=Default · Show message=False",
+        "instanceId": "1665:17003",
+        "props": {
+          "State": "Default",
+          "Label": "Off",
+          "Show message#1664:0": false,
+          "Password Icon#1664:5": false
+        },
+        "measuredW": 200,
+        "measuredH": 48,
+        "measuredInputW": 70,
+        "measuredInputLeftInset": 17
+      },
+      {
+        "n": 5,
+        "rowId": "1665:17009",
+        "captionId": "1665:17010",
+        "caption": "5. 라벨 없음 · State=Error · Show message=False",
+        "instanceId": "1665:17011",
+        "props": {
+          "State": "Error",
+          "Label": "Off",
+          "Show message#1664:0": false,
+          "Password Icon#1664:5": false
+        },
+        "measuredW": 200,
+        "measuredH": 48,
+        "measuredInputW": 70,
+        "measuredInputLeftInset": 17
+      },
+      {
+        "n": 6,
+        "rowId": "1665:17029",
+        "captionId": "1665:17030",
+        "caption": "6. 라벨 없음 · State=Error · Show message=True",
+        "instanceId": "1665:17031",
+        "props": {
+          "State": "Error",
+          "Label": "Off",
+          "Show message#1664:0": true,
+          "Password Icon#1664:5": false
+        },
+        "measuredW": 200,
+        "measuredH": 70,
+        "measuredInputW": 70,
+        "measuredInputLeftInset": 17
+      }
+    ],
+    "comparisonBlock": {
+      "id": "1666:7046",
+      "name": "기존 ↔ 개선 대조",
+      "width": 732,
+      "headerRow": {
+        "id": "1666:7047",
+        "captionIds": [
+          "1666:7048",
+          "1666:7049",
+          "1666:7050"
+        ],
+        "captions": [
+          "구분",
+          "기존 Input (Message 변형축)",
+          "TEMP (Show message Boolean)"
+        ]
+      },
+      "rows": [
+        {
+          "name": "cmp-1",
+          "rowId": "1666:7051",
+          "captionId": "1666:7052",
+          "caption": "State=Error · 안내 메시지 보임",
+          "existingInstanceId": "1666:7053",
+          "existingMainSet": "1654:42409",
+          "existingProps": {
+            "Size": "MD",
+            "Break": "Mobile",
+            "Label": "Off",
+            "State": "Error",
+            "Message": "On"
+          },
+          "existingHeight": 70,
+          "tempInstanceId": "1666:7077",
+          "tempProps": {
+            "State": "Error",
+            "Label": "Off",
+            "Show message#1664:0": true
+          },
+          "tempHeight": 70,
+          "heightMatch": true,
+          "existingInputW": 70,
+          "existingInset": 17,
+          "tempInputW": 70,
+          "tempInset": 17,
+          "delta": {
+            "height": 0,
+            "width": 0,
+            "inputW": 0,
+            "inset": 0
+          },
+          "allDeltasZero": true
+        },
+        {
+          "name": "cmp-2",
+          "rowId": "1666:17026",
+          "captionId": "1666:17027",
+          "caption": "State=Error · 안내 메시지 숨김",
+          "existingInstanceId": "1666:17028",
+          "existingMainSet": "1654:42409",
+          "existingProps": {
+            "Size": "MD",
+            "Break": "Mobile",
+            "Label": "Off",
+            "State": "Error",
+            "Message": "Off"
+          },
+          "existingHeight": 48,
+          "tempInstanceId": "1666:17044",
+          "tempProps": {
+            "State": "Error",
+            "Label": "Off",
+            "Show message#1664:0": false
+          },
+          "tempHeight": 48,
+          "heightMatch": true,
+          "existingInputW": 70,
+          "existingInset": 17,
+          "tempInputW": 70,
+          "tempInset": 17,
+          "delta": {
+            "height": 0,
+            "width": 0,
+            "inputW": 0,
+            "inset": 0
+          },
+          "allDeltasZero": true
+        },
+        {
+          "name": "cmp-3",
+          "rowId": "1666:17055",
+          "captionId": "1666:17056",
+          "caption": "State=Default · 안내 메시지 숨김",
+          "existingInstanceId": "1666:17057",
+          "existingMainSet": "1654:42409",
+          "existingProps": {
+            "Size": "MD",
+            "Break": "Mobile",
+            "Label": "Off",
+            "State": "Default",
+            "Message": "Off"
+          },
+          "existingHeight": 48,
+          "tempInstanceId": "1666:17073",
+          "tempProps": {
+            "State": "Default",
+            "Label": "Off",
+            "Show message#1664:0": false
+          },
+          "tempHeight": 48,
+          "heightMatch": true,
+          "existingInputW": 70,
+          "existingInset": 17,
+          "tempInputW": 70,
+          "tempInset": 17,
+          "delta": {
+            "height": 0,
+            "width": 0,
+            "inputW": 0,
+            "inset": 0
+          },
+          "allDeltasZero": true
+        }
+      ]
+    }
+  },
+  "measuredHeights": {
+    "note": "TEMP 세트 인스턴스 실측. 기존 정본 실측치와 동일.",
+    "labelOff_showMessageFalse": 48,
+    "labelOff_showMessageTrue": 70,
+    "labelOn_showMessageFalse": 72,
+    "labelOn_showMessageTrue": 94,
+    "existingCanonReference": {
+      "labelOff_messageOff": 48,
+      "labelOff_messageOn": 70,
+      "labelOn_messageOff": 72,
+      "labelOn_messageOn": 94
+    }
+  },
+  "existingAssetIntegrity": {
+    "readOnlyTarget": "1654:42409",
+    "verifiedAfterBuild": true,
+    "name": "Input",
+    "variantCount": 112,
+    "variantCountBefore": 112,
+    "propCount": 6,
+    "propKeys": [
+      "Password Icon#1654:226",
+      "Size",
+      "State",
+      "Label",
+      "Message",
+      "Break"
+    ],
+    "bounds": {
+      "x": 64,
+      "y": 140,
+      "w": 1726,
+      "h": 1674
+    },
+    "sourceEyeInstance": "1654:42015",
+    "sourceEyeParentChildCount": 1,
+    "sourceEyeParentChildCountBefore": 1,
+    "detachPerformed": false,
+    "renamePerformed": false,
+    "propertyAddedToExistingSet": false,
+    "formControlSection": {
+      "id": "1654:44721",
+      "childCount": 105,
+      "bounds": {
+        "x": 13968,
+        "y": 0,
+        "w": 3660,
+        "h": 4452
+      },
+      "modified": false
+    },
+    "conclusion": "기존 Input 세트·소스 eye 인스턴스·Form Control 섹션 전부 무변경. 새 자산은 페이지 최상위에만 추가(page top-level 15 → 17).",
+    "verifiedAfterRev2Fix": true,
+    "rev2Recheck": {
+      "variantCount": 112,
+      "propKeys": [
+        "Password Icon#1654:226",
+        "Size",
+        "State",
+        "Label",
+        "Message",
+        "Break"
+      ],
+      "bounds": {
+        "x": 64,
+        "y": 140,
+        "w": 1726,
+        "h": 1674
+      },
+      "sourceEyeParentChildCount": 1,
+      "canonTrailStrokesIncludedInLayout": true,
+      "conclusion": "rev2 수정 중에도 1654:42409 는 읽기만. variant 수·속성 키·bounds 전부 불변."
+    }
+  },
+  "structuralNotes": {
+    "combineAsVariants": "4개 COMPONENT → COMPONENT_SET 1664:7013. 결합 전 각 컴포넌트 이름을 'State=…, Label=…' 로 설정해 State/Label 2축이 자동 도출됨.",
+    "variantPacking": "결합 직후 2열×2행 패킹 수행 (padding 40, gap 40). 좌표 (40,40)/(40,128)/(280,40)/(280,128). 이후 resizeWithoutConstraints 로 hug → 520×240. 폭 붕괴 없음.",
+    "cyclicReferenceCheck": "TEMP 세트의 어떤 variant 도 같은 세트의 형제 variant 인스턴스를 포함하지 않음. 내부 INSTANCE 는 eye(main 338:4) 뿐 — 외부 아이콘 컴포넌트라 순환 없음.",
+    "iconOrigin": "eye 는 1654:42015 INSTANCE 를 clone() 한 것. detach 하지 않았고 mainComponent 338:4 (Property 1=Line) 를 그대로 승계. 손으로 그린 아이콘 0건.",
+    "clonePropagation": "variant 1 을 검증 후 clone 하여 variant 2~4 생성 → 4개 variant 구조가 기계적으로 동일. eye 는 원본 세트에서 1회만 clone(그 후 clone 체인).",
+    "danglingRefCleared": "clone 된 eye 는 원본 세트의 'Password Icon#1654:226' 참조를 물고 왔으므로 componentPropertyReferences 를 비운 뒤 새 'Password Icon#1664:5' 로 재바인딩했다.",
+    "instanceRemap": "기존 인스턴스 remap 없음 — 기존 컴포넌트를 세트로 합치거나 이름을 바꾸지 않았고, 신규 세트만 추가했다.",
+    "emptiedContainers": "없음 (비운 컨테이너 0건).",
+    "axesOmitted": "Size·Break 축 미포함 (계획서 허용편차 #2). MD/Mobile 1종만.",
+    "namingDeviation": "세트 이름 접두사 'TEMP/' (계획서 허용편차 #1)."
+  },
+  "selfCheck": {
+    "scope": "새로 만든 노드 전체 (세트 1664:7013 + 보드 1665:7013 서브트리)",
+    "nodesScanned": 106,
+    "fontScan": {
+      "method": "전 TEXT 노드 fontName 스캔 (mixed 는 getStyledTextSegments(['fontName']) 로 분해). 렌더 판정 아님 — 데이터 스캔.",
+      "textNodesScanned": 41,
+      "nonPretendardCount": 0,
+      "violations": [],
+      "temporaryFontUsed": false,
+      "note": "Pretendard Regular/Medium 를 loadFontAsync 로 직접 로드해 일시 폰트(Noto) 경유 없음. 전 TEXT 에 정본 텍스트 스타일(body/14M · body/14R · body/12R) 바인딩됨."
+    },
+    "hexScan": {
+      "method": "새 노드의 fills/strokes SOLID paint 전수 검사 — boundVariables.color 없으면 위반. INSTANCE 내부는 main component 바인딩 상속이라 제외.",
+      "solidPaintsScanned": 30,
+      "unboundRawColorCount": 0,
+      "violations": [],
+      "note": "코드에 hex 리터럴 0건. 바인딩은 setBoundVariableForPaint 반환 paint 를 재대입하는 방식으로만 수행. 구조 컨테이너(comp 래퍼·trail·보드·row)는 fills = [] (허용편차 #3)."
+    },
+    "renderCheck": {
+      "method": "node.screenshot() 로 세트·보드 렌더",
+      "setCollapse": false,
+      "setSize": "520x240 (붕괴 없음, 수정 후 불변)",
+      "boardSize": "812x858",
+      "obviousBreakageFound": false
+    },
+    "selfRepairs": [
+      "rev2: field 4개 + trail 4개 strokesIncludedInLayout false → true (component-verifier 지시에 따른 수정. 빌더 자발적 판단 아님)."
+    ],
+    "verdict": "판정하지 않음 — 합격/불합격 판단은 component-verifier 소관. rev2 는 지시받은 A1 1건만 수정하고 지정 실측치 도달을 확인한 상태다.",
+    "revision": 2,
+    "nodesScannedRev1": 120,
+    "nodeCountDeltaExplained": "rev1 120 → rev2 106. 구조 손실이 아니다. Figma 는 INSTANCE 서브트리의 '숨겨진' 자식을 열거하지 않는다. 메인 컴포넌트를 수정하자 9개 TEMP 인스턴스가 재동기화되어, 이전에 열거되던 hidden eye/message 노드가 열거 대상에서 빠졌다. 동일 현상이 기존 정본 인스턴스(1666:7053 등)에서도 똑같이 관측된다(hasEye=false). 증거: 세트 서브트리 27개 노드 완전(4 comp+4 field+4 input+4 trail+4 eye+4 msg+2 label+1 set), TEXT 41개·SOLID paint 30개 rev1 과 동일, 인스턴스 12개 전부 field/input/trail 정상, 실측 수치 전부 정본 일치.",
+    "functionalTest": {
+      "method": "일회용 인스턴스를 만들어 두 BOOLEAN 속성을 토글하고 즉시 삭제(1681:7074, 삭제 확인됨). 페이지 최상위 17개 불변.",
+      "results": [
+        {
+          "state": "both false",
+          "h": 48,
+          "eyeVisible": null,
+          "msgVisible": null,
+          "inputW": 70
+        },
+        {
+          "state": "Password Icon = true",
+          "h": 48,
+          "eyeVisible": true,
+          "msgVisible": null,
+          "inputW": 146,
+          "trailW": 24
+        },
+        {
+          "state": "both true",
+          "h": 70,
+          "eyeVisible": true,
+          "msgVisible": true,
+          "inputW": 146,
+          "trailW": 24
+        }
+      ],
+      "conclusion": "Show message 와 Password Icon 두 속성 모두 대상 레이어를 실제로 표시/숨김한다(배선 실동작 확인). eye 는 24x24 로 정상 출현."
+    }
+  },
+  "observationsForVerifier": [
+    {
+      "item": "[rev1 관찰① 철회] 입력 TEXT 폭 72px",
+      "detail": "rev1 에서 '정본 70 이 2px 작다'고 기록한 것은 오진이었다. component-verifier 가 원인을 strokesIncludedInLayout 플래그 미복제로 특정했고, rev2 에서 교정하여 현재 4개 전부 폭 70 · inset 17 로 정본과 일치한다. 교훈: 정본 실측 대조 없이 계산식으로 자기 값을 정당화하지 말 것.",
+      "status": "resolved in rev2"
+    },
+    {
+      "item": "trail 프레임 100×100 (eye 숨김 상태)",
+      "detail": "계획서대로 AUTO/AUTO · itemSpacing 2 · fills [] 로 생성. 유일 자식 eye 가 hidden 이라 100×100 으로 보고된다. 기존 정본 trail 도 동일하게 100×100 · strokesIncludedInLayout true 라 정본과 일치. Password Icon=true 로 eye 를 켜면 trail 24 로 hug 되고 입력 폭 146 이 된다(실동작 확인).",
+      "visualImpact": "없음 (field 가 FIXED 200×48)",
+      "status": "matches canon"
+    },
+    {
+      "item": "인스턴스에서 Password Icon 토글 후 trail 폭 stickiness",
+      "detail": "일회용 인스턴스에서 Password Icon 을 true→false 로 되돌렸을 때 trail 이 100 으로 복귀하지 않고 24 로 남았다(높이는 48 로 정상 복귀). TEMP 구조는 정본과 동일 구성(trail AUTO/AUTO + hidden eye + strokesIncludedInLayout true)이므로 정본에서도 같은 동작이 예상되나 정본 인스턴스로 동일 토글 재현 테스트는 하지 않았다 — 미확인. 판정은 검증기 소관.",
+      "verified": false,
+      "status": "unverified — flagged for verifier"
+    },
+    {
+      "item": "Password Icon 은 4 variant 모두 default false",
+      "detail": "정본 동작 유지. 보드 인스턴스 12개도 전부 false(계획서 조합표에 Password Icon 조합 없음).",
+      "status": "as planned"
+    }
+  ],
+  "needsDecision": [],
+  "prohibitionsRespected": {
+    "existingSetReadOnly": true,
+    "noDetach": true,
+    "noRepoCanonEdits": true,
+    "repoFilesModified": [
+      "reports/figma-library-build/input-show-message-preview/node-map.json"
+    ],
+    "buildComponentsTsTouched": false,
+    "registryTouched": false,
+    "installerZipTouched": false,
+    "componentsHtmlTouched": false,
+    "rawHexUsed": false,
+    "nonPretendardFontLeft": false,
+    "libraryPublished": false
+  },
+  "fixes": [
+    {
+      "round": 2,
+      "date": "2026-08-21",
+      "raisedBy": "component-verifier",
+      "finding": "❌(a) A1 — field 프레임의 strokesIncludedInLayout 이 정본과 반대(정본 true / TEMP false)",
+      "consequence": "입력 TEXT 폭 72(정본 70), 좌측 inset 16(정본 17). 대조 블록 3쌍 전부 동일 delta.",
+      "classification": "(a) 코드 실수 — 계획서에 허용편차 선언이 없어 (b) 불가",
+      "builderPriorMisdiagnosis": "rev1 observationsForVerifier ①에서 '정본 70이 2px 작다'고 기록했으나 진단이 반대였다. 정본 70/inset 17 이 정상값이고, 72/16 은 strokesIncludedInLayout 플래그를 복제하지 않아 생긴 값이다. 빌더가 정본 대조 없이 계산식으로 자기 값을 정당화한 오류.",
+      "canonReferenceRead": {
+        "source": "1654:42409 MD/Mobile variants 1654:42024 / 1654:42049 / 1654:42224 / 1654:42250",
+        "fieldStrokesIncludedInLayout": true,
+        "trailStrokesIncludedInLayout": true,
+        "inputW": 70,
+        "inputLeftInset": 17,
+        "trailW": 100,
+        "readOnly": true
+      },
+      "changedNodes": [
+        {
+          "id": "1663:7014",
+          "name": "field",
+          "variant": "State=Default, Label=Off",
+          "prop": "strokesIncludedInLayout",
+          "before": false,
+          "after": true
+        },
+        {
+          "id": "1663:16944",
+          "name": "field",
+          "variant": "State=Default, Label=On",
+          "prop": "strokesIncludedInLayout",
+          "before": false,
+          "after": true
+        },
+        {
+          "id": "1663:16951",
+          "name": "field",
+          "variant": "State=Error, Label=Off",
+          "prop": "strokesIncludedInLayout",
+          "before": false,
+          "after": true
+        },
+        {
+          "id": "1663:16957",
+          "name": "field",
+          "variant": "State=Error, Label=On",
+          "prop": "strokesIncludedInLayout",
+          "before": false,
+          "after": true
+        },
+        {
+          "id": "1663:7016",
+          "name": "trail",
+          "variant": "State=Default, Label=Off",
+          "prop": "strokesIncludedInLayout",
+          "before": false,
+          "after": true
+        },
+        {
+          "id": "1663:16946",
+          "name": "trail",
+          "variant": "State=Default, Label=On",
+          "prop": "strokesIncludedInLayout",
+          "before": false,
+          "after": true
+        },
+        {
+          "id": "1663:16953",
+          "name": "trail",
+          "variant": "State=Error, Label=Off",
+          "prop": "strokesIncludedInLayout",
+          "before": false,
+          "after": true
+        },
+        {
+          "id": "1663:16959",
+          "name": "trail",
+          "variant": "State=Error, Label=On",
+          "prop": "strokesIncludedInLayout",
+          "before": false,
+          "after": true
+        }
+      ],
+      "changedNodeCount": 8,
+      "rebuildRequired": false,
+      "otherPropertiesTouched": "없음 — strokesIncludedInLayout 외 어떤 속성·구조도 변경하지 않았다.",
+      "existingCanonSetTouched": false,
+      "postFixMeasurements": {
+        "inputWidthAll4": 70,
+        "inputLeftInsetAll4": 17,
+        "matchesCanon": true,
+        "variantHeights": {
+          "Default/Off": 48,
+          "Default/On": 72,
+          "Error/Off": 48,
+          "Error/On": 72
+        },
+        "instanceHeights": {
+          "labelOff_false": 48,
+          "labelOff_true": 70,
+          "labelOn_false": 72,
+          "labelOn_true": 94
+        },
+        "instanceHeightsUnchanged": true,
+        "setBounds": "520x240 (불변)",
+        "setPosition": "x=13968, y=5645 (불변)",
+        "boardBounds": "812x858 (불변)",
+        "comparisonPairDeltas": [
+          {
+            "pair": "cmp-1",
+            "h": 0,
+            "w": 0,
+            "inputW": 0,
+            "inset": 0
+          },
+          {
+            "pair": "cmp-2",
+            "h": 0,
+            "w": 0,
+            "inputW": 0,
+            "inset": 0
+          },
+          {
+            "pair": "cmp-3",
+            "h": 0,
+            "w": 0,
+            "inputW": 0,
+            "inset": 0
+          }
+        ],
+        "allPairDeltasZero": true
+      }
+    }
+  ]
+}

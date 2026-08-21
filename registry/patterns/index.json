@@ -1,10 +1,69 @@
 {
   "meta": {
     "name": "SW Pattern Registry Index",
-    "version": "0.1.0",
+    "version": "0.1.1",
     "status": "mvp-pattern",
-    "updatedAt": "2026-06-08",
+    "updatedAt": "2026-08-20",
     "description": "Pattern Harness entry point. 패턴은 코어 컴포넌트를 조합한 반복 레이아웃이며 components/index.json과 분리 관리한다."
   },
-  "patterns": []
+  "patterns": [
+    {
+      "id": "mobile-login",
+      "name": "Mobile Login",
+      "status": "promoted",
+      "platform": "mobile",
+      "description": "아이디·비밀번호 입력, 로그인 실패(아이디·비밀번호 불일치), 키보드, 자동 로그인, 신규 기기 인증 상태를 포함한 모바일 로그인 패턴",
+      "source": {
+        "service": "modu-app",
+        "fileKey": "aLxh458o9BRXklRFM3YYzk",
+        "nodeId": "30812:4006"
+      },
+      "figma": {
+        "fileKey": "cysG5U1udpQqVagYY1hWHW",
+        "pageId": "173:2431",
+        "sectionId": "1562:2"
+      },
+      "dependencies": {
+        "coreComponents": [
+          "StatusBar",
+          "NavBar",
+          "CI",
+          "Footer",
+          "Button",
+          "Input",
+          "Modal"
+        ]
+      },
+      "behavior": {
+        "loginButton": {
+          "rule": "아이디 또는 비밀번호가 미입력이면 로그인 버튼을 비활성(Button State=Disabled)으로 둔다. 두 칸 모두 입력되면 활성(State=Default).",
+          "decidedBy": "river",
+          "decidedAt": "2026-08-21",
+          "rationale": "로그인 화면에서는 입력 형식·규정을 실시간 검증하지 않으므로(서버 판정 필요), 빈 칸 상태는 오류 화면 대신 버튼 비활성으로 막는다. 미입력 오류 화면 2종을 삭제한 결정과 짝을 이룬다.",
+          "conformance": {
+            "checkedAt": "2026-08-21",
+            "screensDisabled": ["1562:3 최초진입(둘 다 빈칸)", "1562:4 입력 A(비밀번호 빈칸)"],
+            "screensEnabled": ["1562:5 입력 B", "1562:8 잘못된 아이디비번", "1562:9", "1562:10", "1562:11", "1562:12", "1562:13", "1562:14", "1562:15"],
+            "violations": 0
+          }
+        }
+      },
+      "verification": {
+        "status": "PASS",
+        "screenCount": 11,
+        "report": "reports/screen-rebuild/modu-app/login-mobile/4-verification.md",
+        "_screenCountNote": "2026-08-21 사양 축소로 13→11. 검증 보고서(4-verification.md)는 13화면 시점 기록이며 이력으로 보존한다."
+      },
+      "specChanges": [
+        {
+          "date": "2026-08-21",
+          "by": "river",
+          "change": "미입력 오류 화면 2종 삭제 — '아이디 미입력'(1562:6)·'비밀번호 미입력'(1562:7)",
+          "reason": "로그인 화면에서 입력 형식·규정 검증은 하지 않고(서버 판정 필요) 빈 칸 안내는 필드 내 안내 문구가 대신한다는 판단. 로그인 실패는 아이디·비밀번호 불일치(1562:8) 한 종으로 유지.",
+          "record": "reports/screen-rebuild/modu-app/login-mobile/spec-change-2026-08-21.md"
+        }
+      ],
+      "registeredAt": "2026-08-20"
+    }
+  ]
 }

@@ -2,7 +2,7 @@
   "_meta": {
     "description": "사용자가 반복 요청한 패턴 추적 파일. count >= 3 이면 자동 감사 규칙 승격 후보.",
     "promotionThreshold": 3,
-    "updatedAt": "2026-08-14",
+    "updatedAt": "2026-08-21",
     "note": "이 JSON 이 단일 정본이다. CLAUDE.md 에 있던 승격 현황 표는 2026-08-03 에 삭제했다(정본과 드리프트 중이었음)."
   },
   "patterns": [
@@ -208,7 +208,7 @@
       "category": "verification-quality",
       "label": "검수 통과했으나 시각·레이아웃이 Figma와 다름",
       "description": "4단계 자가대조가 CSS 선언값만 비교하고 렌더 레이아웃을 실측하지 않아, 값은 맞지만 시각이 다른 불일치(아이콘 컨테이너 치수 누락 등)를 놓침",
-      "count": 3,
+      "count": 4,
       "promotionStatus": "candidate",
       "promotedRule": null,
       "occurrences": [
@@ -223,9 +223,13 @@
         {
           "date": "2026-08-14",
           "summary": "Input Editing 상태가 정본과 달랐음 — 커서가 필드 오른쪽 끝으로 밀리고(정본은 [텍스트+캐럿] lead 프레임 hug), 삭제(×) 아이콘 누락, bg/selected·text/selected 미적용. Search Input Focus·Textarea Focus 도 같은 원인. Gate/Harness 는 전부 PASS(선언값·토큰만 검사) → 사용자 육안 제보로 발견. 정적 데모에서 input width:100% 가 캐럿을 밀어내는 구조적 패턴."
+        },
+        {
+          "date": "2026-08-21",
+          "summary": "로그인 패턴 CI 로고 — 재현 검증은 PASS 였고 'CI 78×30→42×16' 은 허용편차로 **선언·승인**된 상태였는데도, 사용자가 화면을 보고 '원본보다 작다'고 반품. 즉 선언된 허용편차라도 원본과의 시각 격차가 크면(로고 면적 약 47%) 결국 되돌려진다. 정본 42×16 → 78.75×30 으로 정정(벡터 41.5254×1.875=77.8601 = 원본 실측치와 일치)."
         }
       ],
-      "automationNote": "아이콘은 '프레임 크기'가 아니라 '글리프 렌더 크기'로 검증. 3회 도달(2026-08-14) — 승격 후보: 정본에 '자식 순서·hug/fill 구조'가 선언된 상태(lead/trail 프레임)를 파생 HTML 의 실제 렌더 박스 좌표와 대조하는 검사기. 선언값 비교로는 절대 안 잡히며, 매번 사용자 육안 제보로만 발견됨."
+      "automationNote": "아이콘은 '프레임 크기'가 아니라 '글리프 렌더 크기'로 검증. 3회 도달(2026-08-14) — 승격 후보: 정본에 '자식 순서·hug/fill 구조'가 선언된 상태(lead/trail 프레임)를 파생 HTML 의 실제 렌더 박스 좌표와 대조하는 검사기. 선언값 비교로는 절대 안 잡히며, 매번 사용자 육안 제보로만 발견됨. | 2026-08-21 보강: 허용편차 선언 시 '원본 대비 크기 비율'을 함께 적고, 일정 비율(예: 면적 70% 미만) 이하로 축소하는 편차는 자동 승인 대상에서 제외해 사용자 확인을 받도록 하는 규칙 승격 검토."
     },
     {
       "id": "installer-ui-flow-layout",
@@ -389,6 +393,38 @@
           "summary": "정본 반경을 토큰 바인딩으로 바꾸자 미리보기 렌더러가 boundVariables.cornerRadius 라는 단일 모양만 가정해 반경이 통째로 사라짐 — Button 은 이전부터 깨져 있었고 아무도 몰랐다. 🤖 component-verifier 가 적발"
         }
       ]
+    },
+    {
+      "id": "canon-change-preview-gate",
+      "category": "workflow-governance",
+      "label": "정본 반영 전 Figma 임시(TEMP) 세트로 개선안 선검토 후 승인",
+      "description": "구조 개선 요청 시 정본·설치기·기존 인스턴스를 건드리기 전에 별도 TEMP 컴포넌트 세트로 미리보기를 만들어 사용자 승인을 받고, 승인 후에만 코드 정본에 반영하는 3단계 게이트 요청",
+      "count": 1,
+      "promotionStatus": "tracking",
+      "occurrences": [
+        {
+          "date": "2026-08-21",
+          "summary": "Input 메시지 구조 개선 — TEMP/Input — Show message Preview(1664:7013) 를 Core 페이지 최상위에 별도 생성. 정본(1654:42409 · 112변형)·인스턴스 115건·build-components.ts·registry·설치기 ZIP 무변경 상태로 검토. 결과적으로 **정본 변경 불필요** 결론에 도달 — 미리보기 게이트가 불필요한 정본 변경을 실제로 차단했다."
+        }
+      ],
+      "automationNote": "3회 도달 시 'TEMP/ 접두사 세트는 정본 게이트·설치기 footprint·publish 대상에서 자동 제외되고, 정본 반영 시 삭제 여부를 물어주는' 절차를 스킬/검사기로 승격 검토.",
+      "outcome": "validated-prevented-unneeded-canon-change"
+    },
+    {
+      "id": "variant-axis-to-boolean-property",
+      "category": "component-canonical-expansion",
+      "label": "variant 축을 Boolean 컴포넌트 속성으로 전환(조합 폭발 해소)",
+      "description": "켜짐/꺼짐 성격의 표시 여부가 variant 축으로 들어가 조합이 배로 늘고 텍스트 override 가 유실되는 구조를, Boolean 속성 + 레이어 visible 바인딩으로 바꾸는 요청",
+      "count": 1,
+      "promotionStatus": "tracking",
+      "occurrences": [
+        {
+          "date": "2026-08-21",
+          "summary": "Input 의 Message=Off/On 축을 Show message BOOLEAN 으로 전환 검토(B안). Figma TEMP 세트로 실증까지 완료(숨김 시 높이+itemSpacing 6px 회수 확인, 48/70/72/94 실측) 후 **미채택** — 필요했던 조합(Error 테두리+메시지 없음)이 이미 정본에 있었고, 로그인 사양 축소로 요구 자체가 사라졌다. 정본 무변경."
+        }
+      ],
+      "automationNote": "3회 도달 시 'Off/On 2값 축은 Boolean 속성 후보'로 감지하는 검사기(variant 축 감사) 승격 검토.",
+      "outcome": "not-adopted-2026-08-21"
     }
   ]
 }

@@ -1,0 +1,43 @@
+{
+  "schemaVersion": 1,
+  "frameSize": { "width": 360, "height": 780 },
+  "commonAnchors": {
+    "idInputY": 188,
+    "passwordInputY": 248,
+    "loginDefaultY": 330,
+    "loginErrorY": 368,
+    "helperDefaultY": 398,
+    "helperErrorY": 436,
+    "phoneDefaultY": 441,
+    "phoneErrorY": 479,
+    "keyboardY": 439
+  },
+  "keyboardRepresentation": {
+    "type": "navbar-keyboard-variant",
+    "componentSetId": "1545:6664",
+    "variantId": "1628:6740",
+    "variant": "Platform=App + Keyboard",
+    "asset": "reports/screen-rebuild/modu-app/login-mobile/assets/android-keyboard-reference.png",
+    "width": 360,
+    "height": 341,
+    "keyboardSurfaceHeight": 296,
+    "sha256": "22e243659e1c5b1f0cdc45f3ae95392e6dda7d740d3d40050c388cf15d85543c",
+    "blankPlaceholderAllowed": false
+  },
+  "pilotTargetNodeIds": ["1562:3", "1562:4", "1562:8", "1562:13"],
+  "screens": [
+    { "sourceNodeId": "8403:60128", "targetNodeId": "1562:3", "archetype": "base", "keyboard": false, "overlay": false },
+    { "sourceNodeId": "8403:60155", "targetNodeId": "1562:4", "archetype": "editing", "keyboard": true, "overlay": false },
+    { "sourceNodeId": "30812:3889", "targetNodeId": "1562:5", "archetype": "editing", "keyboard": true, "overlay": false },
+    { "sourceNodeId": "8403:60255", "targetNodeId": "1562:6", "archetype": "error", "keyboard": false, "overlay": false },
+    { "sourceNodeId": "8403:60287", "targetNodeId": "1562:7", "archetype": "error", "keyboard": false, "overlay": false },
+    { "sourceNodeId": "8403:60315", "targetNodeId": "1562:8", "archetype": "error", "keyboard": false, "overlay": false },
+    { "sourceNodeId": "8403:60181", "targetNodeId": "1562:9", "archetype": "overlay", "keyboard": false, "overlay": true },
+    { "sourceNodeId": "21446:2889", "targetNodeId": "1562:10", "archetype": "overlay", "keyboard": false, "overlay": true },
+    { "sourceNodeId": "30812:3215", "targetNodeId": "1562:11", "archetype": "overlay", "keyboard": false, "overlay": true },
+    { "sourceNodeId": "30812:3288", "targetNodeId": "1562:12", "archetype": "overlay", "keyboard": false, "overlay": true },
+    { "sourceNodeId": "30812:3252", "targetNodeId": "1562:13", "archetype": "overlay", "keyboard": false, "overlay": true },
+    { "sourceNodeId": "8403:60218", "targetNodeId": "1562:14", "archetype": "base", "keyboard": false, "overlay": false },
+    { "sourceNodeId": "21446:2852", "targetNodeId": "1562:15", "archetype": "base", "keyboard": false, "overlay": false }
+  ]
+}

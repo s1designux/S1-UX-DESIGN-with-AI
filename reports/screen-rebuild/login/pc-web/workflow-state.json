@@ -1,0 +1,54 @@
+{
+  "schemaVersion": 1,
+  "workflow": "screen-rebuild",
+  "target": {
+    "service": "login",
+    "flow": "pc-web"
+  },
+  "source": {
+    "url": "figma://cysG5U1udpQqVagYY1hWHW/261:13153",
+    "fileKey": "cysG5U1udpQqVagYY1hWHW",
+    "nodeId": "261:13153",
+    "name": "웹_로그인 화면"
+  },
+  "targetFigma": {
+    "fileKey": "cysG5U1udpQqVagYY1hWHW",
+    "pageId": "80:16697",
+    "sectionId": "268:368"
+  },
+  "currentPhase": "3-build",
+  "status": "superseded",
+  "lastCompletedCheckpoint": 2,
+  "nextAction": "외부 라이브러리 기반 프레임 268:369를 완료본으로 사용하지 말고 현재 로컬 정본 컴포넌트로 새로 빌드한다.",
+  "artifacts": {
+    "inventory": "1-inventory.md",
+    "mapping": "2-mapping.md",
+    "build": null,
+    "nodeMap": "node-map.json",
+    "verification": "4-verification.md",
+    "registration": null
+  },
+  "screens": [
+    {
+      "sourceNodeId": "261:13153",
+      "name": "웹_로그인 화면",
+      "status": "mapped",
+      "targetNodeId": "268:369"
+    }
+  ],
+  "decisions": [],
+  "blockers": [
+    "기존 targetNodeId 268:369 내부 인스턴스 19개가 모두 허용되지 않은 외부 라이브러리 출처다.",
+    "4-verification.md의 과거 PASS는 provenance-scan.md로 무효화됐다."
+  ],
+  "registration": {
+    "status": "pending",
+    "patternId": "pc-login",
+    "note": "로컬 정본 재빌드와 재검증 전 등록 금지"
+  },
+  "handoff": {
+    "lastActor": "codex",
+    "updatedAt": "2026-08-20",
+    "summary": "과거 PASS와 후속 출처 검사의 모순을 해소했다. 후속 검사를 우선하며 기존 결과는 superseded 상태다."
+  }
+}

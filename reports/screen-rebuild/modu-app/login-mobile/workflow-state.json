@@ -1,0 +1,155 @@
+{
+  "schemaVersion": 1,
+  "workflow": "screen-rebuild",
+  "target": {
+    "service": "modu-app",
+    "flow": "login-mobile"
+  },
+  "source": {
+    "url": "https://www.figma.com/design/aLxh458o9BRXklRFM3YYzk/MoDU-APP-20240327-%EC%B5%9C%EC%A2%85-?node-id=30812-4006&m=dev",
+    "fileKey": "aLxh458o9BRXklRFM3YYzk",
+    "nodeId": "30812:4006",
+    "name": "2.1 로그인",
+    "size": "7212x980",
+    "screenFrameSize": "360x780",
+    "observedAt": "2026-08-20"
+  },
+  "targetFigma": {
+    "fileKey": "cysG5U1udpQqVagYY1hWHW",
+    "pageId": "173:2431",
+    "sectionId": "1562:2"
+  },
+  "currentPhase": "complete",
+  "status": "complete",
+  "lastCompletedCheckpoint": 5,
+  "nextAction": "완료. 후속 요청이 생기면 이 상태 파일과 최신 Figma 노드 ID를 기준으로 재개한다.",
+  "artifacts": {
+    "inventory": "reports/screen-rebuild/modu-app/login-mobile/1-inventory.md",
+    "mapping": "reports/screen-rebuild/modu-app/login-mobile/2-mapping.md",
+    "build": "reports/screen-rebuild/modu-app/login-mobile/3-build.md",
+    "nodeMap": "reports/screen-rebuild/modu-app/login-mobile/node-map.json",
+    "screenSpec": "reports/screen-rebuild/modu-app/login-mobile/screen-spec.json",
+    "canonicalManifest": "reports/screen-rebuild/modu-app/login-mobile/canonical-manifest.json",
+    "scanSummary": "reports/screen-rebuild/modu-app/login-mobile/scan-summary.json",
+    "fastSafeRegression": "reports/screen-rebuild/modu-app/login-mobile/fast-safe-regression.md",
+    "verification": "reports/screen-rebuild/modu-app/login-mobile/4-verification.md",
+    "registration": "reports/screen-rebuild/modu-app/login-mobile/5-registration.md",
+    "specChange": "reports/screen-rebuild/modu-app/login-mobile/spec-change-2026-08-21.md"
+  },
+  "screens": [
+    {
+      "sourceNodeId": "8403:60128",
+      "name": "2.1 로그인_1 최초 진입",
+      "status": "verified",
+      "targetNodeId": "1562:3"
+    },
+    {
+      "sourceNodeId": "8403:60155",
+      "name": "2.1 로그인_2 입력 A",
+      "status": "verified",
+      "targetNodeId": "1562:4"
+    },
+    {
+      "sourceNodeId": "30812:3889",
+      "name": "2.1 로그인_2 입력 B",
+      "status": "verified",
+      "targetNodeId": "1562:5"
+    },
+    {
+      "sourceNodeId": "8403:60255",
+      "name": "2.1 로그인_3 아이디 미입력",
+      "status": "removed",
+      "targetNodeId": null,
+      "removedAt": "2026-08-21",
+      "removedReason": "사양 축소(river 결정) — 미입력 오류 화면 폐지. 빈 칸은 로그인 버튼 비활성으로 처리."
+    },
+    {
+      "sourceNodeId": "8403:60287",
+      "name": "2.1 로그인_4 비번 미입력",
+      "status": "removed",
+      "targetNodeId": null,
+      "removedAt": "2026-08-21",
+      "removedReason": "사양 축소(river 결정) — 미입력 오류 화면 폐지. 빈 칸은 로그인 버튼 비활성으로 처리."
+    },
+    {
+      "sourceNodeId": "8403:60315",
+      "name": "2.1 로그인_5 잘못된 아이디비번",
+      "status": "verified",
+      "targetNodeId": "1562:8"
+    },
+    {
+      "sourceNodeId": "8403:60181",
+      "name": "2.1 로그인_7 자동 로그인 선택 A",
+      "status": "verified",
+      "targetNodeId": "1562:9"
+    },
+    {
+      "sourceNodeId": "21446:2889",
+      "name": "2.1 로그인_7 자동 로그인 선택 B",
+      "status": "verified",
+      "targetNodeId": "1562:10"
+    },
+    {
+      "sourceNodeId": "30812:3215",
+      "name": "2.1 로그인_6 새로운 기기로 로그인 A",
+      "status": "verified",
+      "targetNodeId": "1562:11"
+    },
+    {
+      "sourceNodeId": "30812:3288",
+      "name": "2.1 로그인_6 새로운 기기로 로그인 B",
+      "status": "verified",
+      "targetNodeId": "1562:12"
+    },
+    {
+      "sourceNodeId": "30812:3252",
+      "name": "2.1 로그인_6 새로운 기기로 로그인 C",
+      "status": "verified",
+      "targetNodeId": "1562:13"
+    },
+    {
+      "sourceNodeId": "8403:60218",
+      "name": "2.1 로그인_6 새로운 기기로 로그인 D",
+      "status": "verified",
+      "targetNodeId": "1562:14"
+    },
+    {
+      "sourceNodeId": "21446:2852",
+      "name": "2.1 로그인_6 새로운 기기로 로그인 E",
+      "status": "verified",
+      "targetNodeId": "1562:15"
+    },
+    {
+      "sourceNodeId": "21505:5461",
+      "name": "2.1 로그인_6 로그아웃 확인",
+      "status": "excluded",
+      "targetNodeId": null
+    }
+  ],
+  "decisions": [
+    "원본의 '휴대전화번호로 로그인'과 '휴대폰 번호로 로그인' 문구 차이는 화면별 원문을 유지한다.",
+    "신규기기 묶음은 기본 로그인 상태 2개와 안내 팝업 상태 3개로 분류하며 모두 매핑 대상에 포함한다.",
+    "사용자가 지정한 Patterns Mobile(준비중) 페이지(173:2431)에 로그인 플로우 Section을 배치한다.",
+    "패턴 명세는 build-components.ts와 생성 모델·토큰·허용키 정본을 우선한다. 현재 Figma 로컬 세트는 정본 구조와 일치할 때만 인스턴스 생성에 사용한다.",
+    "검문소 2에서 로그인 13개 화면을 먼저 제작하고, 정본 허용 아이콘이 부족한 로그아웃 확인 화면은 이번 제작 범위에서 제외하기로 확정했다.",
+    "Fast-safe 회귀시험은 base·editing/keyboard·error·overlay 대표 4개를 시각 확인하고 13개 전체의 기존 독립 PASS trace를 compact count/hash로 재사용하는 방식으로 통과했다.",
+    "사용자 캡처에서 입력 A/B의 키보드가 빈 면으로 확인되어 기존 keyboard PASS와 플레이스홀더 허용편차를 철회했다. 실제 원본 키보드 시각을 360×296 참조 이미지로 보존해 두 화면만 교정한다.",
+    "사용자 승인에 따라 키보드를 별도 컴포넌트로 두지 않고 NavBar 변형에 통합했다. NavBar는 App(1545:6628), Web(1545:6637), App + Keyboard(1628:6740), Web + Keyboard(1628:6872) 4개 변형이며 독립 OS Keyboard 세트는 제거했다.",
+    "NavBar 네 변형과 키보드 내부의 고정 Light Appearance를 제거했다. 세트는 Light 기준으로 보이지만 사용 인스턴스는 상위 화면의 Semantic Color V2 Light/Dark 모드를 상속하며, Dark 상속 시험과 대비 검사를 통과했다.",
+    "모달이 있는 5개 화면은 로컬 Modal 정본의 Break=Mobile 변형으로 교체했다. 360px 딤은 좌우 30px 패딩이며, 메시지는 HEIGHT·모달은 HUG+minHeight 208로 설정해 긴 문구도 잘리지 않는다. 독립 검증에서 5개 화면 모두 PASS했다.",
+    "입력 A/B의 빈 키보드 프레임과 별도 App NavBar를 로컬 NavBar의 Platform=App + Keyboard 인스턴스로 교체했다. 최신 정본을 최종 시각 기준으로 적용했고 독립 검증에서 두 화면 모두 PASS했다."
+  ],
+  "blockers": [],
+  "registration": {
+    "status": "promoted",
+    "patternId": "mobile-login",
+    "note": "로그인 13개 화면의 최종 검증이 완료됐고 mobile-login 패턴 등록 상태와 일치한다."
+  },
+  "handoff": {
+    "lastActor": "codex",
+    "updatedAt": "2026-08-21",
+    "summary": "입력 A/B에 로컬 NavBar의 Platform=App + Keyboard 정본을 적용했다. 두 화면의 입력 상태와 배치를 보존했고, 나머지 11개 화면 무변경·전체 출처·raw 색 검사와 독립 시각 검증을 통과해 워크플로우를 완료했다."
+  },
+  "screenCount": 11,
+  "_screenCountNote": "status=verified(=실제 빌드된 프레임) 기준. removed 2건(2026-08-21 사양 축소) · excluded 1건(로그아웃 확인, 미빌드)은 제외."
+}

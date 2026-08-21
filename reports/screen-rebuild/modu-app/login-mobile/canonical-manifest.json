@@ -1,0 +1,108 @@
+{
+  "schemaVersion": 1,
+  "targetFileKey": "cysG5U1udpQqVagYY1hWHW",
+  "basis": {
+    "git": "b002574",
+    "buildComponentsSha256": "b255474d952ee759e512a8e99381ab212ce580faa673b9537b0502eef311bd31",
+    "componentGuideModelSha256": "0c1cee7b89963fa883c71667480f875d465640ff8f743d874710076cfd348d5d"
+  },
+  "coreComponents": {
+    "StatusBar": {
+      "setId": "1545:6565",
+      "appVariantId": "1545:6510"
+    },
+    "NavBar": {
+      "setId": "1545:6664",
+      "appVariantId": "1545:6628",
+      "webVariantId": "1545:6637",
+      "appKeyboardVariantId": "1628:6740",
+      "webKeyboardVariantId": "1628:6872"
+    },
+    "CI": {
+      "setId": "1545:6723",
+      "blueVariantId": "1545:6711"
+    },
+    "Footer": {
+      "setId": "1545:6826",
+      "mobileVariantId": "1545:6818"
+    },
+    "Button": {
+      "setId": "1545:8242",
+      "primaryDefaultId": "1545:8170",
+      "primaryDisabledId": "1545:8176",
+      "secondaryDefaultId": "1545:8202"
+    },
+    "Input": {
+      "setId": "1546:10988",
+      "defaultId": "1546:10603",
+      "filledId": "1546:10655",
+      "editingId": "1546:10715",
+      "errorId": "1546:10803"
+    },
+    "Modal": {
+      "setId": "1546:17971",
+      "pcSingleId": "1546:17945",
+      "pcDualId": "1546:17957",
+      "mobileSingleId": "1610:6729",
+      "mobileDualId": "1611:6731"
+    }
+  },
+  "internalContracts": {
+    "Input": {
+      "outerWidth": 320,
+      "contentFrameName": "field",
+      "contentFrameWidth": 320,
+      "layoutSizingHorizontal": "FILL",
+      "countInThisFlow": 26
+    },
+    "ModalLongMessage": {
+      "contentWidth": 260,
+      "textAutoResize": "HEIGHT",
+      "layoutSizingHorizontal": "FIXED_OR_FILL",
+      "modalLayoutSizingVertical": "HUG",
+      "modalMinHeight": null,
+      "overlayPaddingHorizontal": 30,
+      "_modalMinHeightNote": "2026-08-21 폐기(전 208). 정본 Modal(Break=Mobile Single/Dual)은 minHeight 없이 HUG 이며 자연 높이가 정확히 208 이다. 긴 문구 잘림 방어의 실제 장치는 message textAutoResize=HEIGHT + 모달 HUG 이고 minHeight 는 무관하다. minHeight 208 을 인스턴스에 걸면 문구가 짧은 모달(자동 로그인 A/B: 자연 187)이 208 로 늘어나 버튼 아래 여백이 20→41px 로 벌어진다. 재현 시 다시 걸지 말 것."
+    },
+    "NavBarKeyboard": {
+      "component": "NavBar",
+      "representation": "navbar-keyboard-variant",
+      "componentSetId": "1545:6664",
+      "appKeyboardVariantId": "1628:6740",
+      "webKeyboardVariantId": "1628:6872",
+      "asset": "reports/screen-rebuild/modu-app/login-mobile/assets/android-keyboard-reference.png",
+      "keyboardSurfaceSize": {
+        "width": 360,
+        "height": 296
+      },
+      "appCombinedSize": {
+        "width": 360,
+        "height": 341
+      },
+      "webCombinedSize": {
+        "width": 360,
+        "height": 391
+      },
+      "appearance": {
+        "collectionId": "VariableCollectionId:8:963",
+        "modes": [
+          "Light",
+          "Dark"
+        ],
+        "policy": "inherit-from-parent",
+        "fixedLightAllowed": false
+      },
+      "sha256": "22e243659e1c5b1f0cdc45f3ae95392e6dda7d740d3d40050c388cf15d85543c",
+      "blankPlaceholderAllowed": false
+    }
+  },
+  "tokens": {
+    "screenBg": "VariableID:687:17884",
+    "keyboardBg": "VariableID:687:17885",
+    "helperText": "VariableID:8:1118",
+    "overlay": "VariableID:8:1087"
+  },
+  "textStyles": {
+    "helper": "S:688caf7c5d281ba8b15ce89feda98adccca04d54,"
+  }
+}

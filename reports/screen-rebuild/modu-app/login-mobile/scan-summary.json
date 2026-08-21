@@ -1,0 +1,96 @@
+{
+  "schemaVersion": 1,
+  "mode": "fast-safe-keyboard-correction-complete",
+  "checkedAt": "2026-08-21",
+  "verdict": "PASS",
+  "evidence": {
+    "currentLiveMetadata": "section 1562:2; 13 direct 360x780 screens; representative anchors and keyboard/overlay presence matched",
+    "deepScanReusedFrom": "final-scan.json + input-helper-fix-result.json",
+    "visualPilot": ["1562:3", "1562:4", "1562:8", "1562:13"],
+    "capturePolicy": "pixel-content required for large visible reference elements; node presence alone is insufficient",
+    "supersededFinding": "The two blank keyboard placeholders and separate App NavBars were replaced by local Platform=App + Keyboard instances.",
+    "keyboardCorrection": "1562:4 and 1562:5 use local main 1628:6740 at x=0, y=439, 360x341; 11 untouched screen fingerprints remained unchanged."
+  },
+  "counts": {
+    "screens": 13,
+    "pilotScreens": 4,
+    "inputFields": 26,
+    "inputFieldsWidth320AndFill": 26,
+    "keyboardHelperSets": 2,
+    "instances": 140,
+    "localInstances": 112,
+    "allowedRemoteInstances": 28
+  },
+  "violations": {
+    "text": [],
+    "state": [],
+    "field": [],
+    "raw": [],
+    "font": [],
+    "provenance": [],
+    "layout": [],
+    "overflow": []
+  },
+  "trace": {
+    "files": [
+      {
+        "path": "reports/screen-rebuild/modu-app/login-mobile/trace-screens-1-7.json",
+        "count": 72,
+        "sha256": "54962f2f20b01de2c9361d7b8a76fd24cfa30c229e34f7d8f8aa1a00e6a4a996"
+      },
+      {
+        "path": "reports/screen-rebuild/modu-app/login-mobile/trace-screens-8-13.json",
+        "count": 73,
+        "sha256": "dfc74ed09219bf082c7d1825eb870ce5bf600ea8439730a6a1c1ddd773953e1c"
+      }
+    ],
+    "totalCount": 145
+  },
+  "modalCorrection": {
+    "checkedAt": "2026-08-21",
+    "verdict": "PASS",
+    "scope": ["1562:9", "1562:10", "1562:11", "1562:12", "1562:13"],
+    "break": "Mobile",
+    "modalWidths": [300, 300, 300, 300, 300],
+    "modalHeights": [208, 208, 229, 208, 250],
+    "overlayPaddingHorizontal": 30,
+    "provenance": { "checked": 62, "local": 52, "allowedRemote": 10, "violations": 0 },
+    "authoredRaw": { "checked": 70, "violations": 0 },
+    "visual": { "screensChecked": 5, "clipping": 0, "overlap": 0, "ambiguous": 0 }
+  },
+  "keyboardCorrection": {
+    "checkedAt": "2026-08-21",
+    "verdict": "PASS",
+    "scope": ["1562:4", "1562:5"],
+    "mainComponentId": "1628:6740",
+    "variant": "Platform=App + Keyboard",
+    "instanceIds": ["1651:1797", "1651:1929"],
+    "geometry": [0, 439, 360, 341],
+    "removedNodeIds": ["1564:141", "1564:142", "1564:214", "1564:215"],
+    "untouchedScreensChecked": 11,
+    "untouchedScreensChanged": 0,
+    "provenance": {
+      "checked": 140,
+      "local": 112,
+      "allowedRemote": 28,
+      "violations": 0
+    },
+    "authoredRaw": {
+      "checked": 172,
+      "violations": 0
+    },
+    "visual": {
+      "screensChecked": 2,
+      "clipping": 0,
+      "overlap": 0,
+      "ambiguous": 0
+    },
+    "verifierClassification": {
+      "codeMistakes": 0,
+      "intentionalDifferences": 1,
+      "ambiguous": 0,
+      "note": "과거 참고 이미지 대신 사용자가 지정한 최신 로컬 정본을 최종 시각 기준으로 적용했다."
+    }
+  },
+  "limitations": []
+}
