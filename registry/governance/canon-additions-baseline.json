@@ -1,8 +1,8 @@
 {
   "_note": "정본(textstyles-data.ts · vars-data.ts)의 항목 이름 전집합. Gate 34 가 여기 없는 신설을 차단한다. ⭐ 는 스스로 이 목록에 추가할 수 없고, 사용자 승인(--approve)만이 편입한다.",
   "_why": "CLAUDE.md §⚖️ 하드룰 H7. 2026-08-03: ⭐ 가 사용자가 거부한 스타일 신설을 자기 규칙을 만들어 강행했는데, 32개 게이트 전부가 \"정본→파생 일치\"만 봐서 아무도 못 잡았다.",
-  "_updated": "2026-08-03",
-  "count": 528,
+  "_updated": "2026-08-20",
+  "count": 529,
   "items": [
     "color:base/black",
     "color:base/white",
@@ -526,6 +526,7 @@
     "textstyle:title/14M",
     "textstyle:title/16B",
     "textstyle:title/16M",
+    "textstyle:title/18B",
     "textstyle:title/18M",
     "textstyle:title/20B",
     "textstyle:title/20R",
@@ -539,6 +540,12 @@
       "by": "river",
       "reason": "표 헤더는 제목 역할인데 title 계열에 Medium 14 가 없어 body/14M 으로 갈 수밖에 없었다. 역할과 계열의 어긋남 해소.",
       "approvedAt": "2026-08-03T01:05:51.933Z"
+    },
+    {
+      "item": "textstyle:title/18B",
+      "by": "river",
+      "reason": "모바일 Modal 정본 추가와 Title/18B 텍스트 스타일 연결을 사용자 승인(2026-08-20~21)",
+      "approvedAt": "2026-08-20T23:14:45.496Z"
     }
   ],
   "extendedTracking": [

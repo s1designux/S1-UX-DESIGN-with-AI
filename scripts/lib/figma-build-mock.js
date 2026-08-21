@@ -137,7 +137,7 @@ async function runBuild(mod, opts) {
   function recNode(type) {
     // geometry 는 props 밖에 둔다. 기존 installer fingerprint 는 props 만 해시하므로
     // 폭·높이 관측을 추가해도 기존 지문/게이트 결과를 흔들지 않는다.
-    const state = { type, props: {}, geometry: {}, boundVariables: {}, paintPayload: {}, asset: null, children: [], parentSet: null };
+    const state = { type, props: {}, geometry: {}, boundVariables: {}, explicitVariableModes: {}, paintPayload: {}, asset: null, children: [], parentSet: null };
     // origin 은 **state 최상위**에 둔다(props 가 아님) — props 만 지문에 들어가므로
     //   여기 두면 installer-fingerprint 해시에 영향이 0 이다.
     if (trackOrigin && type === 'TEXT') state.origin = originFromStack();
@@ -165,6 +165,7 @@ async function runBuild(mod, opts) {
             instanceState.props = Object.assign({}, state.props);
             instanceState.geometry = Object.assign({}, state.geometry);
             instanceState.boundVariables = Object.assign({}, state.boundVariables);
+            instanceState.explicitVariableModes = Object.assign({}, state.explicitVariableModes);
             // 인스턴스의 내부 구조는 생성 시점 컴포넌트 구조의 결정론적 스냅샷이다.
             // 이후 findOne 텍스트 override는 빌더 실행 호환을 위해 stub이 삼키며,
             // 원본 component variant의 정본 구조는 COMPONENT_SET 아래에 별도로 보존된다.
@@ -175,6 +176,7 @@ async function runBuild(mod, opts) {
                 props: Object.assign({}, source.props),
                 geometry: Object.assign({}, source.geometry),
                 boundVariables: Object.assign({}, source.boundVariables),
+                explicitVariableModes: Object.assign({}, source.explicitVariableModes),
                 paintPayload: JSON.parse(JSON.stringify(source.paintPayload || {})),
                 asset: source.asset ? Object.assign({}, source.asset) : null,
                 parentSet: source.parentSet || null,
@@ -212,6 +214,11 @@ async function runBuild(mod, opts) {
             if (typeof field === 'string' && variable && variable.__tokenKey) {
               state.boundVariables[field] = variable.__tokenKey;
             }
+          };
+        }
+        if (prop === 'setExplicitVariableModeForCollection') {
+          return (collectionId, modeId) => {
+            if (collectionId && modeId) state.explicitVariableModes[String(collectionId)] = String(modeId);
           };
         }
         // 텍스트 스타일 바인딩 결과를 기록한다. 종전엔 makeStub() 이 삼켜서

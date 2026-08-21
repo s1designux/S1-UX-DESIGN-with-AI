@@ -683,8 +683,8 @@ export const SEMANTIC_COLOR: Record<string, SemanticColorEntry> = {
   "color/status-card/text/tertiary--sub": { light: "gray/300", dark: "gray-dark/400" },
 
   // ── text ────────────────────────────────
-  "color/text/body/primary": { light: "gray/900", dark: "gray-dark/900" },
-  "color/text/body/secondary": { light: "gray/800", dark: "gray-dark/800" },
+  "color/text/body/primary": { light: "gray/800", dark: "gray-dark/900" },
+  "color/text/body/secondary": { light: "gray/600", dark: "gray-dark/800" },
   "color/text/body/tertiary": { light: "gray/500", dark: "gray-dark/700" },
   "color/text/state/accent": { light: "blue/400", dark: "blue-dark/300" },
   "color/text/state/accent-inverse": { light: "base/white", dark: "base/white" },
@@ -693,7 +693,7 @@ export const SEMANTIC_COLOR: Record<string, SemanticColorEntry> = {
   "color/text/state/correct": { light: "blue/400", dark: "blue-dark/300" },
   "color/text/state/disabled": { light: "gray/300", dark: "gray-dark/400" },
   "color/text/state/helper": { light: "gray/400", dark: "gray-dark/600" },
-  "color/text/title/primary": { light: "gray/900", dark: "gray-dark/900" },
+  "color/text/title/primary": { light: "base/black", dark: "gray-dark/900" },
   "color/text/title/secondary": { light: "gray/800", dark: "gray-dark/800" },
   "color/form-control/icon/default":   { light: "gray/800", dark: "gray-dark/700" },
   "color/form-control/icon/disabled":  { light: "gray/300", dark: "gray-dark/500" },

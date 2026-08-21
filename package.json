@@ -97,6 +97,7 @@
     "map:verify": "node pipeline-status.js --self-check --skip gate:check,components:presentation",
     "harness:audit": "node scripts/harness-audit.js",
     "harness:fix": "node scripts/harness-audit.js --fix",
+    "screen-rebuild:statecheck": "node scripts/screen-rebuild-state-check.js",
     "docs:tokencheck": "node scripts/doc-token-ref-check.js",
     "layout:check": "node scripts/page-layout-check.js",
     "layout:fix": "node scripts/page-layout-check.js --fix",

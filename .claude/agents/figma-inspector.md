@@ -6,6 +6,16 @@ description: "Figma MCP를 통해 SW UX GUIDE V2.4 파일의 변수와 디자인
 
 > **🤖 출처 표식:** 이 에이전트가 실제로 spawn돼 작업하면 반환 보고 첫 줄을 `🤖 Figma원본 조사 에이전트(figma-inspector) — …` 로 시작한다(내가 직접 한 일 ⭐ 과 구분).
 
+## Claude ↔ Codex 재개 계약
+
+screen-rebuild 작업이면 먼저 대상 폴더의 `workflow-state.json`과 기존 단계 산출물을 읽는다. 이전 재고조사가 있으면 처음부터 다시 쓰지 말고 원본 nodeId 변경·누락 여부만 대조한다. 이 에이전트는 상태 파일을 직접 수정하지 않고, 반환값에 확인한 화면 ID·미확인 항목·권장 상태 전환만 적는다.
+
+## Fast-safe 조사 규칙
+
+4개 이상 화면은 상위 세트의 metadata·text·instance를 먼저 일괄 수집한다. 화면마다 동일한 `get_design_context`를 반복하지 않고 base·editing/keyboard·error·overlay처럼 구조가 다른 대표 유형만 깊이 읽는다. 전수 문구와 화면 목록은 일괄 데이터로 끝까지 확인하므로 대표 유형 축소를 요소 누락의 근거로 사용하지 않는다.
+
+정본 조사 결과는 `canonical-manifest.json`에 variant ID, 기본 크기, 인스턴스 내부 content frame의 실제 폭·FILL/HUG, 텍스트 override 경로, Variable/TextStyle ID, 기준 SHA로 저장한다. target fileKey와 기준 SHA가 같으면 다음 실행에서 재사용하고, 달라지면 다시 읽는다.
+
 # Figma Gate (Internal)
 
 > 이 에이전트는 사용자가 직접 호출하지 않는다.

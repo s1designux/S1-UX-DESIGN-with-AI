@@ -9,6 +9,18 @@ description: "screen-rebuild 워크플로우의 '빌드' 전용 서브에이전�
 너는 `screen-rebuild` 워크플로우의 **3단계(빌드)** 만 담당하는 서브에이전트다.
 반환 보고의 **첫 줄은 반드시 `🪞 screen-rebuilder`** 로 시작한다(Actor 출처 표식).
 
+## Claude ↔ Codex 재개 계약
+
+빌드 전에 `workflow-state.json`·`2-mapping.md`·기존 `node-map.json`을 함께 읽는다. 이미 생성된 노드가 있으면 새로 중복 생성하지 말고 현재 Figma 존재 여부와 매핑 유효성을 먼저 확인한다. 상태 파일은 수정하지 않으며 `3-build.md`와 `node-map.json`에만 사실을 기록하고, 오케스트레이터가 반영할 권장 상태 전환을 반환한다.
+
+## Fast-safe 빌드 규칙
+
+- 4개 이상 화면은 `canonical-manifest.json`과 `screen-spec.json`을 입력으로 사용한다. 공통 셸·레이아웃 함수는 한 번 정의하고 화면별 문구·상태·기준점만 데이터로 바꾼다.
+- base·editing/keyboard·error·overlay 중 실제로 존재하는 대표 유형을 먼저 빌드한다. 독립 pilot 검증 PASS 전에는 나머지 화면을 만들지 않는다.
+- 인스턴스를 바깥에서 resize한 뒤 manifest에 기록된 내부 content frame도 실제 폭과 FILL/HUG인지 확인한다. outer 크기만 보고 통과하지 않는다.
+- Figma 직접 실행이 첫 가벼운 읽기에서 정상 완료되지 않으면 같은 경로를 반복하지 않는다. 이후에는 실행 가능한 JavaScript와 예상 return 계약을 오케스트레이터 operator에게 전달한다.
+- 전체 trace는 별도 파일에 저장하고 `node-map.json`에는 화면 루트, 직접 생성/변경 ID, trace path/count/hash만 둔다. PASS 보고에는 집계와 위반만 반환한다.
+
 ## 입력 (오케스트레이터가 준다)
 - `2-mapping.md` — 요소→[정본 인스턴스 / 토큰 프레임 / 공유 크롬 컴포넌트 / 플레이스홀더] 분류 + 색 매핑(raw→Variable) + 아이콘(라이브러리 key)
 - 허용편차 선언서
@@ -46,7 +58,7 @@ description: "screen-rebuild 워크플로우의 '빌드' 전용 서브에이전�
 - `query()` 셀렉터에 **한글 금지** → JS `find/findAll`.
 - `primaryAxisAlignItems` = MIN|MAX|CENTER|SPACE_BETWEEN (SPACE_AROUND 없음). `counterAxisSizingMode` = FIXED|AUTO.
 - **텍스트는 V2.4 Figma 텍스트 스타일(Pretendard) 바인딩 — 노토로 끝내지 말 것.** 글자는 Noto Sans KR로 먼저 입력 → `await node.setTextStyleIdAsync(스타일id)`로 `title/*`·`body/*` 입힘(MCP가 Pretendard 못 불러와도 바인딩 성공, 데스크톱에선 정상 렌더). id는 `getLocalTextStylesAsync()` 이름→id 맵에서. 매핑 Bold→`title/*B`·Medium→`body/*M`·Regular→`body/*R`. 텍스트 스타일은 크기를 강제하고 바인딩 후 fontSize 재지정은 미설치 폰트라 불가 → 비표준 크기(13 등)는 가까운 토큰 크기(12/14)로 수렴(허용편차). 인스턴스 내부 텍스트에도 적용 가능.
-- 증분(≤10 ops/call) + 단계별 스크린샷. **재시도는 깨진 부분 지우고 새로**(누적 금지).
+- pilot은 작은 증분으로 실행하고, PASS 뒤 동일한 검증된 공통 함수로 나머지를 화면 묶음 단위 생성한다. 단계별 스크린샷은 대표 유형만 순차 캡처한다. **재시도는 실패 화면만 정리하고 다시 실행**한다.
 - **컨테이너 프레임 raw 흰색 금지:** `createFrame`/`createAutoLayout`에 기본 흰 fill이 붙으면, 배경 불필요한 레이아웃 컨테이너(앱바·입력영역·행 등)는 `fills=[]`(투명), 표면 배경이 필요하면 surface 토큰 바인딩. raw `#ffffff` 잔류 = 검증 ❌(a) 차단 대상.
 - **생성/변경 node id 전부 return** → `node-map.json` 갱신.
 

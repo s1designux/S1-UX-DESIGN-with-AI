@@ -104,20 +104,21 @@ function setMode(node: SceneNode, maps: BuildMaps, modeId: string): void {
   } catch (e) {
     console.warn("[SW Installer] 모드 연결 실패:", e);
   }
-  // 그림자 변수는 별도 컬렉션(Semantic Shadow V2)에 있어 위 호출로는 안 뒤집힌다.
-  //   Spec Dark 프레임이 다크 그림자를 보여주려면 그 컬렉션 모드도 함께 연결해야 한다.
+}
+
+/**
+ * Semantic Shadow V2 모드는 실제로 모드 전환되는 그림자 변수를 가진 노드에만 연결한다.
+ * 현재 대상은 shadow/raised 변수를 쓰는 Modal과 그 Light/Dark 스펙 경로뿐이다.
+ * Dropdown·Calendar·Bottom Sheet 등의 고정 그림자는 effects 값만 유지하고 Appearance 연결은 만들지 않는다.
+ */
+function setShadowMode(node: SceneNode, maps: BuildMaps, modeId: string | undefined): void {
   const sCid = maps.semanticShadowCollectionId;
-  if (sCid) {
-    const isDark = modeId === maps.semanticDarkModeId;
-    const sMid = isDark ? maps.semanticShadowDarkModeId : maps.semanticShadowLightModeId;
-    if (sMid) {
-      try {
-        (node as unknown as {
-          setExplicitVariableModeForCollection: (cid: string, mid: string) => void;
-        }).setExplicitVariableModeForCollection(sCid, sMid);
-      } catch (e) { /* 컬렉션 미설치·모의 실행 */ }
-    }
-  }
+  if (!sCid || !modeId) return;
+  try {
+    (node as unknown as {
+      setExplicitVariableModeForCollection: (cid: string, mid: string) => void;
+    }).setExplicitVariableModeForCollection(sCid, modeId);
+  } catch (e) { /* 컬렉션 미설치·모의 실행 */ }
 }
 
 // ── 그림자 Effect 생성 (2026-07-29) ──────────────────────────────────────────
@@ -352,6 +353,8 @@ interface GroupedSpecOpts {
   offsetX?: number; // 세트(원본 variant + 띄운 라벨/밴드)를 가로로 이동. 미지정=0(기존 동작).
   /** 다크 스펙을 원본 아래에 배치할 때 사용 (GNB 전용). x/y 를 각각 지정. 미지정=기존 동작(원본 우측 W+80). */
   darkOffset?: { x?: number; y?: number };
+  /** 실제 Light/Dark 그림자 변수를 쓰는 컴포넌트만 켠다. 현재 Modal 전용. */
+  shadowMode?: boolean;
 }
 function specPalette(dark: boolean): Record<string, RGB> {
   return {
@@ -415,12 +418,13 @@ async function renderGrouped(opts: GroupedSpecOpts, dark: boolean, emit: LayoutE
 }
 
 /** 프레임에 그리는 emit (인스턴스). */
-function frameEmit(frame: FrameNode, maps: BuildMaps, modeId: string): LayoutEmit {
+function frameEmit(frame: FrameNode, maps: BuildMaps, modeId: string, shadowModeId?: string): LayoutEmit {
   return {
     text: async (s, x, y, w, al, col, fs, st) => { frame.appendChild(await makeLabel(s, fs, st, x, y, w, al, col)); },
     band: (x, y, w, h, col) => { const b = figma.createRectangle(); b.x = x; b.y = y; b.resize(w, h); b.cornerRadius = 4; b.fills = [{ type: "SOLID", color: col }]; frame.appendChild(b); },
     cell: (comp, x, y) => {
       const inst = comp.createInstance(); frame.appendChild(inst); inst.x = x; inst.y = y; setMode(inst, maps, modeId);
+      setShadowMode(inst, maps, shadowModeId);
       // 중첩 인스턴스(예: Table 푸터의 Checkbox/Pagination/SelectBox)가 컴포넌트 단위 Light 고착으로
       // 부모 다크를 무시하고 라이트로 남는 것 방지 — 다크 스펙에서는 모든 하위 인스턴스에도 동일 모드 강제.
       try { (inst.findAll((n) => n.type === "INSTANCE") as SceneNode[]).forEach((d) => setMode(d, maps, modeId)); } catch (e) { /* */ }
@@ -451,9 +455,11 @@ async function buildGroupedSpec(opts: GroupedSpecOpts, maps: BuildMaps): Promise
   frame.resize(W, 2400);
   frame.x = opts.darkOffset?.x ?? ((opts.offsetX ?? 0) + W + 80); // 기본=원본 우측 밀착; darkOffset 지정 시 GNB처럼 아래 배치
   frame.y = opts.darkOffset?.y ?? opts.originY;
-  const H = await renderGrouped(opts, true, frameEmit(frame, maps, modeId));
+  const shadowModeId = opts.shadowMode ? maps.semanticShadowDarkModeId : undefined;
+  const H = await renderGrouped(opts, true, frameEmit(frame, maps, modeId, shadowModeId));
   frame.resize(W, H);
   setMode(frame, maps, modeId);
+  setShadowMode(frame, maps, shadowModeId);
   return Math.max(opts.originY, frame.y + H);
 }
 
@@ -466,6 +472,7 @@ async function decorateSetGrouped(set: ComponentSetNode, opts: GroupedSpecOpts, 
   const H = await renderGrouped(opts, false, floatingEmit(opts.originY, ox));
   set.resize(W, H);
   setLightMode(set, maps);
+  if (opts.shadowMode) setShadowMode(set, maps, maps.semanticShadowLightModeId);
   return opts.originY + H;
 }
 
@@ -4021,8 +4028,9 @@ async function buildBottomSheet(maps: BuildMaps, originY: number): Promise<{ set
 }
 
 // ── Modal (공통 팝업 셸) — 딤 위 팝업. 헤더+본문+푸터, 코어 Button 재사용. ───────
-//   원본 V2.4 modal_small(6706:4218) 라이트 기준. 그릇 2종 = Footer(Single|Dual) 변형축(river 결정).
-//   테두리 없음. 그림자 = shadow/raised — **라이트·다크 모두 2겹**(2026-07-29 결정).
+//   PC 원본 V2.4 modal_small(6706:4218), Mobile 원본 Mobile V2.32(1102:97650) 기준.
+//   변형축 = Break(PC|Mobile) × Footer(Single|Dual). 시각 차이가 명확한 4개만 정본화한다.
+//   테두리 = color/modal/panel/border. 그림자 = shadow/raised — **라이트·다크 모두 2겹**(2026-07-29 결정).
 //     옛 실측 "라이트 그림자 없음"(P8YvnCdGkQLDNVQhW74ZZW / 8177:264277)은 사실이나 의도가 아닌
 //     '누락'으로 판정돼, 라이트에도 그림자를 부여했다. 겹 수를 양쪽 2겹으로 맞춘 이유는 Figma 가
 //     겹 수를 변수 모드로 못 바꾸기 때문 — 겹 수가 같아야 겹당 속성을 변수에 묶어 모드 전환이 된다.
@@ -4031,14 +4039,28 @@ async function buildBottomSheet(maps: BuildMaps, originY: number): Promise<{ set
 //   글자는 마스터에 직접 구움(makeBoundText) — 문구는 "예시"일 뿐(실제 카피는 UX라이팅 영역, 컴포넌트 아님).
 //   색은 전부 semantic 경유(scv/boundPaint), 아이콘=라이브러리 인스턴스(makeIconInstance), 버튼=코어 재사용.
 async function buildModalShell(maps: BuildMaps, originY: number): Promise<{ set: ComponentSetNode; bottomY: number }> {
-  const PANEL_W = 360;
+  type ModalBreak = "PC" | "Mobile";
+  type ModalFooter = "Single" | "Dual";
 
-  // 헤더(제목+닫기) + 본문(2줄) 콘텐츠 그룹. gap 32(section/lg). 제목·본문 글자는 인자로 주입(예시 문구).
-  const buildContentGroup = async (titleText: string, bodyText: string): Promise<FrameNode> => {
+  // PC = 제목+닫기 헤더 / 14R 본문. Mobile = 닫기 없음 / 18B 제목+16R 본문.
+  const buildContentGroup = async (brk: ModalBreak, titleText: string, bodyText: string): Promise<FrameNode> => {
     const group = figma.createFrame();
     group.name = "content"; group.fills = [];
     group.layoutMode = "VERTICAL"; group.primaryAxisSizingMode = "AUTO"; group.counterAxisSizingMode = "FIXED";
-    group.itemSpacing = 32; // 헤더 ↔ 본문 (section/lg)
+    group.itemSpacing = brk === "PC" ? 32 : 24;
+
+    if (brk === "Mobile") {
+      const title = await makeBoundText(titleText, 18, "Bold", scv(maps, "color/text/title/primary"));
+      title.name = "title"; title.textAutoResize = "HEIGHT";
+      group.appendChild(title);
+      try { title.layoutAlign = "STRETCH"; } catch (e) { /* */ }
+      const bodyNode = await makeBoundText(bodyText, 16, "Regular", scv(maps, "color/text/body/primary"));
+      bodyNode.name = "message"; bodyNode.textAutoResize = "HEIGHT";
+      group.appendChild(bodyNode);
+      try { bodyNode.layoutAlign = "STRETCH"; } catch (e) { /* */ }
+      return group;
+    }
+
     // 헤더: 제목 ↔ 닫기 X (좌우 24, 하단정렬 items-end)
     const header = figma.createFrame();
     header.name = "header"; header.fills = [];
@@ -4064,14 +4086,14 @@ async function buildModalShell(maps: BuildMaps, originY: number): Promise<{ set:
     return group;
   };
 
-  // 푸터 버튼 = 코어 Button(XXSM h28) 인스턴스 재사용. 라벨 교체. 시각 override 금지(Core Reuse Rule).
-  //   h28 = SIZES 의 XXSM(build-components:114). 못 찾으면 즉시 중단(우회·무음 스킵 금지).
-  const makeFooterButton = async (variant: "primary" | "secondary", label: string): Promise<InstanceNode> => {
+  // 푸터 버튼 = 코어 Button 인스턴스 재사용. PC=XXSM h28, Mobile=LG h48.
+  const makeFooterButton = async (brk: ModalBreak, variant: "primary" | "secondary", label: string): Promise<InstanceNode> => {
     const vLabel = variant === "primary" ? "Primary" : "Secondary";
-    const comp = await getReuseComp(`Button:${variant}:XXSM:Default`, "Button",
-      [`Variant=${vLabel}`, "Size=XXSM", "State=Default"]);
+    const size = brk === "PC" ? "XXSM" : "LG";
+    const comp = await getReuseComp(`Button:${variant}:${size}:Default`, "Button",
+      [`Variant=${vLabel}`, `Size=${size}`, "State=Default"]);
     if (!comp) {
-      throw new Error(`[buildModalShell] 코어 Button 인스턴스 미발견: Button:${variant}:XXSM:Default (h28 사이즈 키 불일치 — 빌드 중단, 우회 안 함)`);
+      throw new Error(`[buildModalShell] 코어 Button 인스턴스 미발견: Button:${variant}:${size}:Default (${brk} 사이즈 키 불일치 — 빌드 중단, 우회 안 함)`);
     }
     const inst = comp.createInstance();
     inst.name = variant;
@@ -4079,19 +4101,21 @@ async function buildModalShell(maps: BuildMaps, originY: number): Promise<{ set:
     return inst;
   };
 
-  // ── 그릇 변형 빌더 (Footer=Single|Dual). 글자는 마스터에 직접 구움(예시 문구·UX라이팅 영역). ──
-  //   패널: VERTICAL · w360 · py20(padding/block/md) · gap32(section/lg) · radius8 · surface/raised ·
+  // ── 그릇 변형 빌더. 글자는 마스터에 직접 구움(예시 문구·UX라이팅 영역). ──
+  //   PC: w360 · py20 · gap32 · 닫기 있음. Mobile: w300 · p20 · gap30 · 닫기 없음.
   //         테두리 modal/panel/border(1px INSIDE, 2026-07-29 신설) · 그림자 shadow/raised(라이트·다크 2겹).
-  const buildModalVariant = async (footer: "Single" | "Dual", titleText: string, bodyText: string): Promise<ComponentNode> => {
+  const buildModalVariant = async (brk: ModalBreak, footer: ModalFooter, titleText: string, bodyText: string): Promise<ComponentNode> => {
+    const mobile = brk === "Mobile";
     const comp = figma.createComponent();
-    comp.name = `Footer=${footer}`;
+    comp.name = `Break=${brk}, Footer=${footer}`;
     comp.layoutMode = "VERTICAL"; comp.primaryAxisSizingMode = "AUTO"; comp.counterAxisSizingMode = "FIXED";
-    comp.resize(PANEL_W, 100);
-    comp.itemSpacing = 32; // 콘텐츠 ↔ 푸터 (section/lg)
-    comp.paddingTop = 20; comp.paddingBottom = 20; comp.paddingLeft = 0; comp.paddingRight = 0; // padding/block/md (좌우는 헤더/본문/푸터가 24)
+    comp.resize(mobile ? 300 : 360, 100);
+    comp.itemSpacing = mobile ? 30 : 32;
+    comp.paddingTop = 20; comp.paddingBottom = 20;
+    comp.paddingLeft = mobile ? 20 : 0; comp.paddingRight = mobile ? 20 : 0;
     comp.counterAxisAlignItems = "CENTER";
     comp.fills = [boundPaint(scv(maps, "color/surface/raised"))]; // HD-A: surface/raised 재사용
-    try { comp.cornerRadius = 8; } catch (e) { /* radius/8 전체 모서리 */ }
+    bindRadius(comp, maps, "radius/8");
     comp.strokes = [boundPaint(scv(maps, "color/modal/panel/border"))];
     comp.strokeWeight = 1; comp.strokeAlign = "INSIDE";   // Calendar 패널(buildCalendar)과 동일 방식
     comp.clipsContent = true;
@@ -4102,48 +4126,62 @@ async function buildModalShell(maps: BuildMaps, originY: number): Promise<{ set:
     const modalEffects = boundShadowEffects(maps, "shadow/raised");  // 오류는 여기서 던진다(삼키지 않음)
     try { (comp as any).effects = modalEffects; } catch (e) { /* 환경 미지원 */ }
 
-    const content = await buildContentGroup(titleText, bodyText);
+    const content = await buildContentGroup(brk, titleText, bodyText);
     comp.appendChild(content);
     try { content.layoutAlign = "STRETCH"; } catch (e) { /* */ }
 
-    // 푸터: 우측정렬(END), gap 8, px 24. 버튼은 코어 min-width 유지(FILL 안 함 — 원본이 우측 고정폭).
-    //   Single = primary "확인" 1개 · Dual = secondary "취소" + primary "확인" 2개.
+    // PC 푸터는 우측 고정폭, Mobile 푸터는 260px 안에서 버튼을 동일비율로 채운다.
     const footerFrame = figma.createFrame();
     footerFrame.name = "footer"; footerFrame.fills = [];
-    footerFrame.layoutMode = "HORIZONTAL"; footerFrame.primaryAxisSizingMode = "FIXED"; footerFrame.counterAxisSizingMode = "AUTO";
-    footerFrame.primaryAxisAlignItems = "MAX"; footerFrame.counterAxisAlignItems = "CENTER";
-    footerFrame.paddingLeft = 24; footerFrame.paddingRight = 24; footerFrame.itemSpacing = 8; // spacing/cluster/xxs
+    footerFrame.layoutMode = "HORIZONTAL"; footerFrame.primaryAxisSizingMode = "FIXED";
+    footerFrame.counterAxisSizingMode = mobile ? "FIXED" : "AUTO";
+    footerFrame.primaryAxisAlignItems = mobile ? "MIN" : "MAX";
+    footerFrame.counterAxisAlignItems = "CENTER";
+    footerFrame.paddingLeft = mobile ? 0 : 24; footerFrame.paddingRight = mobile ? 0 : 24;
+    footerFrame.itemSpacing = footer === "Dual" ? 8 : 0;
+    if (mobile) footerFrame.resize(260, 48);
     comp.appendChild(footerFrame);
     try { footerFrame.layoutAlign = "STRETCH"; } catch (e) { /* */ }
+    const appendFooterButton = async (variant: "primary" | "secondary", label: string): Promise<void> => {
+      const button = await makeFooterButton(brk, variant, label);
+      footerFrame.appendChild(button);
+      if (mobile) { try { button.layoutSizingHorizontal = "FILL"; } catch (e) { /* */ } }
+    };
     if (footer === "Dual") {
-      footerFrame.appendChild(await makeFooterButton("secondary", "취소"));
-      footerFrame.appendChild(await makeFooterButton("primary", "확인"));
+      await appendFooterButton("secondary", mobile ? "아니오" : "취소");
+      await appendFooterButton("primary", mobile ? "네" : "확인");
     } else {
-      footerFrame.appendChild(await makeFooterButton("primary", "확인"));
+      await appendFooterButton("primary", mobile ? "업데이트" : "확인");
     }
 
     setLightMode(comp, maps);
+    setShadowMode(comp, maps, maps.semanticShadowLightModeId);
     return comp;
   };
 
-  // 그릇 2종(표시순 Single→Dual). 예시 문구는 말투 예시(Single=알림 평서문 / Dual=확인 의문문).
-  const singleComp = await buildModalVariant("Single", "제목 영역", "요청하신 작업이 정상적으로 처리되었습니다.\n변경된 내용은 목록에서 확인하실 수 있어요.");
-  const dualComp = await buildModalVariant("Dual", "제목 영역", "변경한 내용이 저장되지 않고 사라집니다.\n정말 이 작업을 진행하시겠어요?");
+  const pcSingle = await buildModalVariant("PC", "Single", "제목 영역", "요청하신 작업이 정상적으로 처리되었습니다.\n변경된 내용은 목록에서 확인하실 수 있어요.");
+  const pcDual = await buildModalVariant("PC", "Dual", "제목 영역", "변경한 내용이 저장되지 않고 사라집니다.\n정말 이 작업을 진행하시겠어요?");
+  const mobileSingle = await buildModalVariant("Mobile", "Single", "업데이트 안내", "보다 안정적인 서비스 이용을 위해 최신\n버전으로 업데이트해 주세요.");
+  const mobileDual = await buildModalVariant("Mobile", "Dual", "자동 로그인 설정", "로그인되었어요.\n다음부터 자동으로 로그인할까요?");
 
-  const set = figma.combineAsVariants([singleComp, dualComp], figma.currentPage);
+  const set = figma.combineAsVariants([pcSingle, pcDual, mobileSingle, mobileDual], figma.currentPage);
   set.name = "Modal";
   set.x = 0; set.y = originY;
   BUILT_SETS["Modal"] = set;
 
-  const opts: SpecOpts = {
+  const opts: GroupedSpecOpts = {
     title: "Modal",
+    platforms: [{ name: "PC", sizes: [""] }, { name: "Mobile", sizes: [""] }],
     colHeaders: ["Single", "Dual"],
     rowLabels: [""],
-    cellAt: (_r, c) => (c === 0 ? singleComp : dualComp),
+    cellAt: (platform, _size, _r, c) => platform === "PC"
+      ? (c === 0 ? pcSingle : pcDual)
+      : (c === 0 ? mobileSingle : mobileDual),
     lightX: SPEC_LIGHT_X, darkX: SPEC_DARK_X, originY, cellW: 400, cellH: 260, rowLabelW: 16,
+    shadowMode: true,
   };
-  let bottomY = await decorateSetFlat(set, opts, maps);
-  try { bottomY = Math.max(bottomY, await buildSpec(opts, maps)); } catch (e) { console.warn(e); }
+  let bottomY = await decorateSetGrouped(set, opts, maps);
+  try { bottomY = Math.max(bottomY, await buildGroupedSpec(opts, maps)); } catch (e) { console.warn(e); }
   // 세트 외부(변형 컨테이너) 배경 = bg/level-3 — 패널 surface/raised 가 라이트 흰색이라 흰 섹션에 묻힘 방지.
   //   Bottom Sheet 동일 패턴. decorateSetFlat 이 set.fills 를 덮으므로 반드시 그 이후에 적용.
   set.fills = [boundPaint(scv(maps, "color/bg/level-3"))];
@@ -4543,7 +4581,6 @@ async function buildNavBar(maps: BuildMaps, originY: number): Promise<{ set: Com
   const app = figma.createComponent();
   app.name = "Platform=App";
   populateAndroidNav(app, maps);
-  setLightMode(app, maps);
 
   const web = figma.createComponent();
   web.name = "Platform=Web";
@@ -4554,22 +4591,132 @@ async function buildNavBar(maps: BuildMaps, originY: number): Promise<{ set: Com
   const nav = figma.createFrame(); nav.name = "android-nav";
   populateAndroidNav(nav, maps);
   nav.layoutAlign = "STRETCH"; web.appendChild(nav);
-  setLightMode(web, maps);
 
-  const set = figma.combineAsVariants([app, web], figma.currentPage);
+  const appKeyboard = figma.createComponent();
+  appKeyboard.name = "Platform=App + Keyboard";
+  appKeyboard.layoutMode = "VERTICAL"; appKeyboard.primaryAxisSizingMode = "FIXED"; appKeyboard.counterAxisSizingMode = "FIXED";
+  appKeyboard.resize(360, 341); appKeyboard.itemSpacing = 0; appKeyboard.fills = [];
+  const appKeyboardSurface = await buildKeyboardFrame(maps);
+  appKeyboardSurface.layoutAlign = "STRETCH"; appKeyboard.appendChild(appKeyboardSurface);
+  const appKeyboardNav = figma.createFrame(); appKeyboardNav.name = "android-nav";
+  populateAndroidNav(appKeyboardNav, maps);
+  appKeyboardNav.layoutAlign = "STRETCH"; appKeyboard.appendChild(appKeyboardNav);
+
+  const webKeyboard = figma.createComponent();
+  webKeyboard.name = "Platform=Web + Keyboard";
+  webKeyboard.layoutMode = "VERTICAL"; webKeyboard.primaryAxisSizingMode = "FIXED"; webKeyboard.counterAxisSizingMode = "FIXED";
+  webKeyboard.resize(360, 391); webKeyboard.itemSpacing = 0; webKeyboard.fills = [];
+  const webKeyboardSurface = await buildKeyboardFrame(maps);
+  webKeyboardSurface.layoutAlign = "STRETCH"; webKeyboard.appendChild(webKeyboardSurface);
+  const webKeyboardToolbar = await buildBrowserToolbarRow(maps);
+  webKeyboardToolbar.layoutAlign = "STRETCH"; webKeyboard.appendChild(webKeyboardToolbar);
+  const webKeyboardNav = figma.createFrame(); webKeyboardNav.name = "android-nav";
+  populateAndroidNav(webKeyboardNav, maps);
+  webKeyboardNav.layoutAlign = "STRETCH"; webKeyboard.appendChild(webKeyboardNav);
+
+  const set = figma.combineAsVariants([app, web, appKeyboard, webKeyboard], figma.currentPage);
   set.name = "NavBar";
   set.x = 0; set.y = originY;
-  // App(안드로이드 내비)·Web(브라우저 툴바+내비) 두 variant 를 라벨과 함께 세로 나열(겹침 방지).
+  // 열=App/Web, 행=Default/Keyboard. 기존 App/Web 과 키보드 결합형을 한 세트에서 비교한다.
   const opts: SpecOpts = {
-    title: "NavBar", colHeaders: [""], rowLabels: ["App", "Web"],
-    cellAt: (r, _c) => (r === 0 ? app : web),
-    lightX: SPEC_LIGHT_X, darkX: SPEC_DARK_X, originY, cellW: 400, cellH: 100, rowLabelW: 56,
+    title: "NavBar", colHeaders: ["App", "Web"], rowLabels: ["Default", "Keyboard"],
+    cellAt: (r, c) => r === 0 ? (c === 0 ? app : web) : (c === 0 ? appKeyboard : webKeyboard),
+    lightX: SPEC_LIGHT_X, darkX: SPEC_DARK_X, originY, cellW: 400, cellH: 400, rowLabelW: 56,
+    leftAlignCells: true,
   };
   const lightBottomY = await decorateSetFlat(set, opts, maps);
   // 다크 = 라이트 우측(buildSpec 기본 W+80). 좁은 Platform 컴포넌트(StatusBar·NavBar·CI)는 우측, 넓은 것은 아래 — river 결정 2026-06-25
   let bottomY = lightBottomY;
   try { bottomY = Math.max(bottomY, await buildSpec(opts, maps)); } catch (e) { console.warn(e); }
   return { set, bottomY };
+}
+
+// ── Platform/OS Keyboard (Android · Appearance 대응 영문 QWERTY) ────────────
+// 로그인 화면의 실제 시스템 키보드가 원본 캡처에서 누락된 문제를 보완하는 편집 가능한 플랫폼 셸.
+// 앱 UI가 아니라 OS 크롬이므로 StatusBar/NavBar 와 동일하게 소스 소유 벡터 글리프를 사용한다.
+// 기준 이미지: reports/screen-rebuild/modu-app/login-mobile/assets/android-keyboard-reference.png
+const KEYBOARD_TOOL_SVG = (() => {
+  const s = (body: string) => `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">${body}</svg>`;
+  const p = (d: string) => `<path d="${d}" stroke="#757575" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>`;
+  return {
+    emoji: s(`<circle cx="12" cy="12" r="8" stroke="#757575" stroke-width="1.7"/><circle cx="9" cy="10" r="1" fill="#757575"/><circle cx="15" cy="10" r="1" fill="#757575"/>${p("M8.5 14C9.4 15.3 10.6 16 12 16C13.4 16 14.6 15.3 15.5 14")}`),
+    mic: s(p("M9 6C9 4.34 10.34 3 12 3C13.66 3 15 4.34 15 6V11C15 12.66 13.66 14 12 14C10.34 14 9 12.66 9 11V6Z") + p("M6.5 10.5V11C6.5 14.04 8.96 16.5 12 16.5C15.04 16.5 17.5 14.04 17.5 11V10.5") + p("M12 16.5V20") + p("M9 20H15")),
+    settings: s(`<circle cx="12" cy="12" r="3" stroke="#757575" stroke-width="1.7"/>${p("M12 3V5M12 19V21M3 12H5M19 12H21M5.64 5.64L7.05 7.05M16.95 16.95L18.36 18.36M18.36 5.64L16.95 7.05M7.05 16.95L5.64 18.36")}`),
+    search: s(`<circle cx="10.5" cy="10.5" r="6.5" stroke="#757575" stroke-width="1.7"/>${p("M15.5 15.5L20 20")}`),
+    translate: s(p("M4 5H13M8.5 3V5M6 8C7 10.5 9 12.5 12 14M11.5 8C10 12 7.5 15 4 17") + p("M14 19L17.5 10L21 19M15.2 16H19.8")),
+    more: s(`<circle cx="6" cy="12" r="1.3" fill="#757575"/><circle cx="12" cy="12" r="1.3" fill="#757575"/><circle cx="18" cy="12" r="1.3" fill="#757575"/>`),
+    shift: s(p("M5 12L12 5L19 12H15.5V19H8.5V12H5Z")),
+    backspace: s(p("M9 7H20V17H9L4 12L9 7Z") + p("M12 10L16 14M16 10L12 14")),
+    enter: s(p("M19 6V14H8") + p("M11 10L7 14L11 18")),
+  };
+})();
+
+function keyboardToolIcon(svg: string, maps: BuildMaps, name: string): FrameNode {
+  const icon = makeBoundIcon(svg, scv(maps, "color/icon/gray")); // icon-vector-allow: Android 키보드 OS 크롬
+  icon.name = name;
+  try { icon.resize(24, 24); } catch (e) { /* */ }
+  return icon;
+}
+
+async function buildKeyboardFrame(maps: BuildMaps): Promise<FrameNode> {
+  const keyboard = figma.createFrame();
+  keyboard.name = "keyboard";
+  keyboard.resize(360, 296); keyboard.layoutMode = "NONE";
+  keyboard.fills = [boundPaint(scv(maps, "color/bg/level-1"))];
+
+  const toolbar = figma.createFrame();
+  toolbar.name = "toolbar"; toolbar.resize(360, 42); toolbar.x = 0; toolbar.y = 0;
+  toolbar.layoutMode = "HORIZONTAL"; toolbar.primaryAxisSizingMode = "FIXED"; toolbar.counterAxisSizingMode = "FIXED";
+  toolbar.primaryAxisAlignItems = "SPACE_BETWEEN"; toolbar.counterAxisAlignItems = "CENTER";
+  toolbar.paddingLeft = 18; toolbar.paddingRight = 10; toolbar.fills = [];
+  toolbar.appendChild(keyboardToolIcon(KEYBOARD_TOOL_SVG.emoji, maps, "emoji"));
+  toolbar.appendChild(keyboardToolIcon(KEYBOARD_TOOL_SVG.mic, maps, "microphone"));
+  toolbar.appendChild(keyboardToolIcon(KEYBOARD_TOOL_SVG.settings, maps, "settings"));
+  toolbar.appendChild(keyboardToolIcon(KEYBOARD_TOOL_SVG.search, maps, "search"));
+  toolbar.appendChild(keyboardToolIcon(KEYBOARD_TOOL_SVG.translate, maps, "translate"));
+  toolbar.appendChild(keyboardToolIcon(KEYBOARD_TOOL_SVG.more, maps, "more"));
+  keyboard.appendChild(toolbar);
+
+  const makeKey = async (label: string, width: number, kind: "letter" | "function" = "letter", iconSvg?: string): Promise<FrameNode> => {
+    const key = figma.createFrame();
+    key.name = label || "space"; key.layoutMode = "HORIZONTAL";
+    key.primaryAxisSizingMode = "FIXED"; key.counterAxisSizingMode = "FIXED";
+    key.resize(width, 38); key.primaryAxisAlignItems = "CENTER"; key.counterAxisAlignItems = "CENTER";
+    bindRadius(key, maps, "radius/4");
+    key.fills = [boundPaint(scv(maps, kind === "letter" ? "color/bg/level-0" : "color/bg/level-2"))];
+    if (kind === "letter") {
+      key.strokes = [boundPaint(scv(maps, "color/bg/level-2"))]; key.strokeWeight = 1; key.strokeAlign = "INSIDE";
+    } else key.strokes = [];
+    if (iconSvg) key.appendChild(keyboardToolIcon(iconSvg, maps, label));
+    else if (label) key.appendChild(await makeBoundText(label, label.length > 2 ? 14 : 18, "Medium", scv(maps, "color/text/body/primary")));
+    return key;
+  };
+  const makeRow = (name: string, y: number, gap: number): FrameNode => {
+    const row = figma.createFrame();
+    row.name = name; row.resize(346, 38); row.x = 7; row.y = y;
+    row.layoutMode = "HORIZONTAL"; row.primaryAxisSizingMode = "FIXED"; row.counterAxisSizingMode = "FIXED";
+    row.primaryAxisAlignItems = "CENTER"; row.counterAxisAlignItems = "CENTER"; row.itemSpacing = gap; row.fills = [];
+    keyboard.appendChild(row); return row;
+  };
+  const appendLabels = async (row: FrameNode, labels: string[], width: number): Promise<void> => {
+    for (const label of labels) row.appendChild(await makeKey(label, width));
+  };
+
+  const numbers = makeRow("number-row", 47, 6); await appendLabels(numbers, ["1","2","3","4","5","6","7","8","9","0"], 29);
+  const qwerty = makeRow("qwerty-row", 95, 6); await appendLabels(qwerty, ["q","w","e","r","t","y","u","i","o","p"], 29);
+  const home = makeRow("home-row", 143, 6); await appendLabels(home, ["a","s","d","f","g","h","j","k","l"], 29);
+  const shift = makeRow("shift-row", 191, 6);
+  shift.appendChild(await makeKey("shift", 44, "function", KEYBOARD_TOOL_SVG.shift));
+  await appendLabels(shift, ["z","x","c","v","b","n","m"], 29);
+  shift.appendChild(await makeKey("backspace", 44, "function", KEYBOARD_TOOL_SVG.backspace));
+  const bottom = makeRow("bottom-row", 239, 5);
+  bottom.appendChild(await makeKey("!#1", 44, "function"));
+  bottom.appendChild(await makeKey("한/영", 48, "function"));
+  bottom.appendChild(await makeKey(",", 30));
+  bottom.appendChild(await makeKey("", 119));
+  bottom.appendChild(await makeKey(".", 30));
+  bottom.appendChild(await makeKey("enter", 50, "function", KEYBOARD_TOOL_SVG.enter));
+  return keyboard;
 }
 
 // ── Platform/LoginGNB (PC 전용 1920×56, 단일 variant) ──────────────────────────
@@ -4752,7 +4899,12 @@ async function buildSamsungLogoComponent(maps: BuildMaps, originY: number): Prom
 // ── CI (Brand×Color 로고 변형세트) ────────────────────────────────────────────
 // 에스원 3종: S1_LOGO_SVG 벡터 + Variable 색 바인딩(White/Blue/Dark)
 // 삼성 3종: 이미지 fill(imageHash — V3.0 TEST 파일 내장, 타 파일 미지원)
-// 크기: 에스원=42×16, 삼성=134×36 (Brand별 각자 크기 — 사용자 결정 2026-06-23)
+// 크기: 에스원=78.75×30, 삼성=134×36 (Brand별 각자 크기 — 사용자 결정 2026-06-23)
+//   2026-08-21 river 결정: 에스원 42×16 → **78.75×30** 으로 정정. 원본 CI(≈77.86×30)보다 작게 들어가
+//   있었다(로그인 패턴 신고). 78.75×30 은 42×16 의 정확히 1.875배라 워드마크 비율(2.625)이 보존된다
+//   — 지시값 77.86×30(비율 2.595)을 그대로 쓰면 로고가 세로로 ~1% 눌리므로 높이 30 을 기준으로 맞췄다.
+//   viewBox 는 그대로 두고 svg width/height 만 키워 path 를 비례 확대한다(공유 상수 S1_LOGO_SVG 는
+//   Footer 로고가 42×16 으로 쓰므로 상수 자체를 고치지 않는다). 삼성 134×36 무변경.
 async function buildCI(maps: BuildMaps, originY: number): Promise<{ set: ComponentSetNode; bottomY: number }> {
   // Blue=CI 브랜드색은 Foundation brand/ci 를 직접 바인딩(Semantic 별칭 color/icon/brand-ci 제거, 2026-06-23).
   const S1_COLORS: { color: string; v: Variable }[] = [
@@ -4770,13 +4922,20 @@ async function buildCI(maps: BuildMaps, originY: number): Promise<{ set: Compone
   // (0,0)에 겹친다(CI 는 스펙 프레임이 없어 겹침이 그대로 노출됨). 2행(Brand)×3열(Color)로 분리.
   // (2026-06-24 수정: CI 로고 두 개 겹침 신고)
   const CI_COL = 158, CI_ROW = 60;
+  // 에스원 CI 크기(2026-08-21 정정) — 42×16 의 1.875배. viewBox(0 0 42 16) 는 유지하고 svg 의
+  // width/height 만 바꿔 path 를 비례 확대한다(비율 2.625 보존 = 왜곡 0).
+  const S1_CI_W = 78.75, S1_CI_H = 30;
+  const S1_CI_SVG = S1_LOGO_SVG.replace('width="42" height="16"', `width="${S1_CI_W}" height="${S1_CI_H}"`);
+  // 조용한 결함 차단 — 상수의 속성 표기가 바뀌어 치환이 no-op 되면 로고가 42×16 으로 남고
+  // 프레임만 커져 "왼쪽 위에 작게 박힌 로고"가 된다. 실패를 즉시 드러낸다.
+  if (S1_CI_SVG === S1_LOGO_SVG) throw new Error('buildCI: S1_LOGO_SVG 의 width/height 치환 실패 — svg 속성 표기 변경 확인 필요');
   const s1Comps: ComponentNode[] = [];
   S1_COLORS.forEach(({ color, v }, i) => {
     const comp = figma.createComponent();
     comp.name = `Brand=에스원, Color=${color}`;
-    comp.resize(42, 16); comp.fills = [];
+    comp.resize(S1_CI_W, S1_CI_H); comp.fills = [];
     comp.x = i * CI_COL; comp.y = 0;
-    const logo = figma.createNodeFromSvg(S1_LOGO_SVG); // icon-vector-allow: CI 브랜드 워드마크 벡터 자산
+    const logo = figma.createNodeFromSvg(S1_CI_SVG); // icon-vector-allow: CI 브랜드 워드마크 벡터 자산
     logo.name = "logo";
     rebindIconColor(logo, v);
     comp.appendChild(logo);

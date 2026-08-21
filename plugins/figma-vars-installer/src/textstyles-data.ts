@@ -40,6 +40,9 @@ export const TEXT_STYLES: TextStyleDef[] = [
   { name: "title/24B", fontStyle: "Bold",    fontSize: 24, lineHeightPercent: 130, letterSpacingPercent: 0 },
   { name: "title/20B", fontStyle: "Bold",    fontSize: 20, lineHeightPercent: 130, letterSpacingPercent: 0 },
   { name: "title/20R", fontStyle: "Regular", fontSize: 20, lineHeightPercent: 130, letterSpacingPercent: 0 },
+  // title/18B — 2026-08-20 모바일 Modal 제목 기준으로 정본 편입.
+  //   출처: Mobile S/W UX GUIDE V2.32 Title/18B (18px · Bold · 130% · 0%).
+  { name: "title/18B", fontStyle: "Bold",    fontSize: 18, lineHeightPercent: 130, letterSpacingPercent: 0 },
   { name: "title/18M", fontStyle: "Medium",  fontSize: 18, lineHeightPercent: 130, letterSpacingPercent: -2 },
   { name: "title/16B", fontStyle: "Bold",    fontSize: 16, lineHeightPercent: 130, letterSpacingPercent: 0 },
   { name: "title/16M", fontStyle: "Medium",  fontSize: 16, lineHeightPercent: 130, letterSpacingPercent: -2 },

@@ -1,0 +1,120 @@
+{
+  "task": "CI 에스원 로고 정본 크기 정정 (42x16 -> 78.75x30, rescale 1.875)",
+  "date": "2026-08-21",
+  "builder": "figma-library-builder",
+  "target": {
+    "fileKey": "cysG5U1udpQqVagYY1hWHW",
+    "page": { "id": "5:5706", "name": "Core" },
+    "componentSet": { "id": "1545:6723", "name": "CI", "props": ["Brand", "Color"] }
+  },
+  "structuralChanges": {
+    "combineAsVariants": false,
+    "detach": false,
+    "rename": false,
+    "instanceRemap": false,
+    "componentAddedOrDeleted": false,
+    "emptiedContainers": [],
+    "note": "resize + rescale 만 수행. 구조/네이밍/속성 변경 없음."
+  },
+  "mutatedNodeIds": [
+    "1545:6708", "1545:6709", "1545:6710",
+    "1545:6711", "1545:6712", "1545:6713",
+    "1545:6714", "1545:6715", "1545:6716"
+  ],
+  "createdNodeIds": [],
+  "variants": [
+    {
+      "id": "1545:6708",
+      "name": "Brand=에스원, Color=White",
+      "gridPos": { "x": 0, "y": 0 },
+      "size": { "before": [42, 16], "after": [78.75, 30] },
+      "child": {
+        "id": "1545:6709", "name": "logo", "type": "FRAME",
+        "size": { "before": [42, 16], "after": [78.75, 30] },
+        "pos": { "after": [0, 0] }
+      },
+      "vector": {
+        "id": "1545:6710", "name": "Vector", "type": "VECTOR",
+        "size": { "before": [41.52539825439453, 16], "after": [77.86012268066406, 30] },
+        "pos": { "after": [0, 0] },
+        "constraints": "SCALE/SCALE",
+        "fillVariableId": { "before": "VariableID:8:1072", "after": "VariableID:8:1072", "preserved": true }
+      }
+    },
+    {
+      "id": "1545:6711",
+      "name": "Brand=에스원, Color=Blue",
+      "gridPos": { "x": 158, "y": 0 },
+      "size": { "before": [42, 16], "after": [78.75, 30] },
+      "child": {
+        "id": "1545:6712", "name": "logo", "type": "FRAME",
+        "size": { "before": [42, 16], "after": [78.75, 30] },
+        "pos": { "after": [0, 0] }
+      },
+      "vector": {
+        "id": "1545:6713", "name": "Vector", "type": "VECTOR",
+        "size": { "before": [41.52539825439453, 16], "after": [77.86012268066406, 30] },
+        "pos": { "after": [0, 0] },
+        "constraints": "SCALE/SCALE",
+        "fillVariableId": { "before": "VariableID:8:715", "after": "VariableID:8:715", "preserved": true }
+      }
+    },
+    {
+      "id": "1545:6714",
+      "name": "Brand=에스원, Color=Dark",
+      "gridPos": { "x": 316, "y": 0 },
+      "size": { "before": [42, 16], "after": [78.75, 30] },
+      "child": {
+        "id": "1545:6715", "name": "logo", "type": "FRAME",
+        "size": { "before": [42, 16], "after": [78.75, 30] },
+        "pos": { "after": [0, 0] }
+      },
+      "vector": {
+        "id": "1545:6716", "name": "Vector", "type": "VECTOR",
+        "size": { "before": [41.52539825439453, 16], "after": [77.86012268066406, 30] },
+        "pos": { "after": [0, 0] },
+        "constraints": "SCALE/SCALE",
+        "fillVariableId": { "before": "VariableID:8:1068", "after": "VariableID:8:1068", "preserved": true }
+      }
+    }
+  ],
+  "untouched": [
+    { "id": "1545:6717", "name": "Brand=삼성, Color=White", "size": [134, 36] },
+    { "id": "1545:6719", "name": "Brand=삼성, Color=Blue", "size": [134, 36] },
+    { "id": "1545:6721", "name": "Brand=삼성, Color=Dark", "size": [134, 36] }
+  ],
+  "variantGridAfter": [
+    { "id": "1545:6708", "x": 0, "y": 0, "w": 78.75, "h": 30 },
+    { "id": "1545:6711", "x": 158, "y": 0, "w": 78.75, "h": 30 },
+    { "id": "1545:6714", "x": 316, "y": 0, "w": 78.75, "h": 30 },
+    { "id": "1545:6717", "x": 0, "y": 60, "w": 134, "h": 36 },
+    { "id": "1545:6719", "x": 158, "y": 60, "w": 134, "h": 36 },
+    { "id": "1545:6721", "x": 316, "y": 60, "w": 134, "h": 36 }
+  ],
+  "setBounds": { "before": { "w": 450, "h": 96 }, "after": { "w": 450, "h": 96 }, "overlap": false, "collapsed": false },
+  "colorBindingScan": {
+    "boundSolidFills": [
+      { "node": "1545:6723", "prop": "fills[0]", "varId": "VariableID:8:717" },
+      { "node": "1545:6710", "prop": "fills[0]", "varId": "VariableID:8:1072" },
+      { "node": "1545:6713", "prop": "fills[0]", "varId": "VariableID:8:715" },
+      { "node": "1545:6716", "prop": "fills[0]", "varId": "VariableID:8:1068" }
+    ],
+    "unboundSolidFills": [
+      { "node": "1545:6709", "prop": "fills[0]", "visible": false, "preExisting": true },
+      { "node": "1545:6712", "prop": "fills[0]", "visible": false, "preExisting": true },
+      { "node": "1545:6715", "prop": "fills[0]", "visible": false, "preExisting": true }
+    ],
+    "newHexIntroduced": 0
+  },
+  "instancesReadOnly": {
+    "note": "정본 변경으로 자동 반영됨. 인스턴스는 수정하지 않음(읽기만).",
+    "page": "Patterns Mobile(준비중) (173:2431)",
+    "count": 11,
+    "allSize": [78.75, 30],
+    "allPos": { "x": 120.625, "y": 30 },
+    "parentLogoSlot": { "size": [320, 90], "layoutMode": "HORIZONTAL", "primaryAxisAlignItems": "CENTER", "counterAxisAlignItems": "CENTER" },
+    "ids": ["1564:28", "1564:106", "1564:177", "1566:350", "1566:422", "1566:508", "1566:592", "1566:676", "1567:677", "1567:763", "1567:834"],
+    "mainComponent": "1545:6711 (Brand=에스원, Color=Blue) — 11/11 동일"
+  },
+  "needsDecision": []
+}

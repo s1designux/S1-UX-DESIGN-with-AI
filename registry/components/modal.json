@@ -3,15 +3,15 @@
     "id": "modal",
     "name": "Modal",
     "category": "overlay",
-    "updatedAt": "2026-07-16",
-    "version": "0.2.0",
+    "updatedAt": "2026-08-20",
+    "version": "0.3.0",
     "tokenStatus": "stable",
     "codeStatus": "in-progress",
-    "darkModeStatus": "planned",
+    "darkModeStatus": "stable",
     "a11yStatus": "planned",
     "figmaStatus": "existing",
     "harnessStatus": "not-started",
-    "description": "확인 계열 모달 그릇 2종(Footer Single|Dual). 딤(overlay) 위 공통 팝업 셸 — 헤더(제목+닫기)+본문(텍스트)+푸터(버튼)의 3층 껍데기. 그릇(제목·본문·푸터 3층)만 정본이며, 실제 문구는 예시(UX라이팅 플러그인 영역·컴포넌트 아님). Single=알림/설명체 1버튼, Dual=확인/질문체 2버튼. 제목 항상 존재. 코어 Button·V2.2 라이브러리 아이콘 재사용(신규 보여주기 컴포넌트 아님)."
+    "description": "확인 계열 모달 그릇 4종(Break PC|Mobile × Footer Single|Dual). 딤(overlay) 위 공통 팝업 셸 — 제목+본문+푸터의 3층 껍데기. PC는 제목 옆 닫기 버튼과 컴팩트 푸터를 사용하고, Mobile은 닫기 없이 300px 패널과 LG 버튼을 사용한다. 실제 문구는 예시(UX라이팅 영역·컴포넌트 아님)."
   },
   "usage": {
     "whenToUse": [
@@ -43,7 +43,7 @@
   ],
   "doDont": {
     "do": [
-      "제목은 항상 둔다.",
+      "제목은 항상 둔다. PC는 닫기 버튼을 포함하고 Mobile은 포함하지 않는다.",
       "푸터 버튼은 코어 Button, 아이콘은 V2.2 라이브러리 인스턴스를 재사용한다."
     ],
     "dont": [
@@ -58,31 +58,32 @@
   "origin": {
     "classification": "B",
     "note": "원본 틀 필요. V2.4 레거시 화면에서 편입(루트 A 신규 편입 시험 첫 대상).",
-    "legacySource": { "file": "yE5UCFEbmXJBlYJWB24Lz2", "canonicalSet": "6706:4218", "name": "modal_small (확인 계열 정본)", "example": { "node": "6706:4257", "state": "삭제" } }
+    "legacySource": { "pc": { "file": "yE5UCFEbmXJBlYJWB24Lz2", "canonicalSet": "6706:4218", "name": "modal_small (확인 계열 정본)", "example": { "node": "6706:4257", "state": "삭제" } }, "mobile": { "file": "5lDUgHPUrHaIN4y6vHSAfu", "section": "1102:97650", "name": "Mobile S/W UX GUIDE V2.32 Modal 예시" } }
   },
   "family": {
     "id": "confirm-compact",
     "label": "확인(compact 텍스트-확인)",
     "canonicalNode": "6706:4218",
-    "spec": "제목 16px 항상 존재 · 버튼 h28(코어 Button XXSM 인스턴스) · 닫기 = V2.2 라이브러리 ic_닫기 · 본문 텍스트. 폭 360 고정.",
+    "spec": "PC: 폭360 · 제목16B · 본문14R · Button XXSM h28 · 닫기 있음. Mobile: 폭300 · 제목18B · 본문16R · Button LG h48 · 닫기 없음.",
     "note": "콘텐츠 계열(Modal Content, pc_modal 540:5815 — 제목18·버튼h34·4크기)과 구분된 별개 계열. 상세: reports/modal-content-family-backlog.md"
   },
   "variantAxis": {
-    "property": "Footer",
-    "values": ["Single", "Dual"],
+    "property": ["Break", "Footer"],
+    "values": { "Break": ["PC", "Mobile"], "Footer": ["Single", "Dual"] },
     "titleAlways": true,
-    "sizeAxis": "none (확인 계열은 폭 360 단일)",
-    "note": "변형축은 Footer(Single|Dual)뿐. 제목 고정(항상 존재). 토큰 전부 기존(신설 0)."
+    "sizeAxis": "Break가 패널 폭과 내부 밀도를 결정: PC 360 / Mobile 300",
+    "note": "시각적으로 확실히 다른 Break와 Footer만 변형축으로 둔다. 제목은 항상 존재."
   },
   "guardrail": {
     "rule": "패널 height/width 비율이 임계 초과 시 이 확인 계열 사용 금지 → 콘텐츠 계열(Modal Content)로 전환.",
     "threshold": "TBD",
     "reason": "확인 계열은 짧은 텍스트 확인용 compact. 긴/큰 본문은 콘텐츠 계열(4크기·딤 85% 스크롤)이 담당."
   },
-  "scope": "light",
+  "scope": "light+dark",
   "templates": [
     {
-      "id": "single",
+      "id": "pc-single",
+      "break": "PC",
       "footer": "single",
       "built": true,
       "verify": "none",
@@ -93,10 +94,11 @@
           { "role": "primary", "label": "확인" }
         ]
       },
-      "note": "알림/설명체(평서문) 1버튼. buildModalVariant('Single') 로 생성. example 문구는 말투 예시일 뿐 — 실제 카피는 UX라이팅 영역."
+      "note": "PC 알림/설명체(평서문) 1버튼. example 문구는 말투 예시일 뿐 — 실제 카피는 UX라이팅 영역."
     },
     {
-      "id": "dual",
+      "id": "pc-dual",
+      "break": "PC",
       "footer": "dual",
       "built": true,
       "verify": "none",
@@ -108,7 +110,38 @@
           { "role": "primary", "label": "확인" }
         ]
       },
-      "note": "확인/질문체(의문문) 2버튼. buildModalVariant('Dual') 로 생성. 기존 '삭제' 예시 문구를 범용 예시로 교체. example 문구는 말투 예시일 뿐 — 실제 카피는 UX라이팅 영역."
+      "note": "PC 확인/질문체(의문문) 2버튼. example 문구는 말투 예시일 뿐 — 실제 카피는 UX라이팅 영역."
+    },
+    {
+      "id": "mobile-single",
+      "break": "Mobile",
+      "footer": "single",
+      "built": true,
+      "verify": "none",
+      "example": {
+        "title": "업데이트 안내",
+        "body": "보다 안정적인 서비스 이용을 위해 최신\n버전으로 업데이트해 주세요.",
+        "buttons": [
+          { "role": "primary", "label": "업데이트" }
+        ]
+      },
+      "note": "Mobile 알림/설명체 1버튼. 300px 패널과 LG 풀폭 버튼을 사용한다."
+    },
+    {
+      "id": "mobile-dual",
+      "break": "Mobile",
+      "footer": "dual",
+      "built": true,
+      "verify": "none",
+      "example": {
+        "title": "자동 로그인 설정",
+        "body": "로그인되었어요.\n다음부터 자동으로 로그인할까요?",
+        "buttons": [
+          { "role": "secondary", "label": "아니오" },
+          { "role": "primary", "label": "네" }
+        ]
+      },
+      "note": "Mobile 확인/질문체 2버튼. 두 LG 버튼은 동일 비율로 채운다."
     }
   ],
   "exampleStatesArchive": {
@@ -117,10 +150,10 @@
     "dual": ["삭제", "입력취소", "마감취소"]
   },
   "anatomySpec": {
-    "panel": "VERTICAL · w360 · py20(padding/block/md) · gap32(section/lg) · radius8(radius/8 전체) · border=1px INSIDE color/modal/panel/border(2026-07-29 신설 — 종전 '테두리 없음'에서 변경, 사용자 결정) · shadow=--shadow-raised(라이트·다크 공통 참조. 2026-07-29 이전의 '라이트 shadow 없음'은 Figma 실측이 사실이나 의도가 아닌 누락으로 판정돼 라이트에도 그림자를 부여함)",
-    "header": "HORIZONTAL space-between · items-end · px24(padding/inline/lg) · [title + close]",
-    "body": "VERTICAL · gap8(spacing/8) · px24 · 텍스트 2줄",
-    "footer": "HORIZONTAL 우측정렬(END) · gap8(cluster/xxs) · px24 · [secondary, primary] (코어 Button XXSM, min-width 유지)"
+    "panel": "PC: VERTICAL · w360 · py20 · gap32. Mobile: VERTICAL · w300 · p20 · gap30. 공통 radius/8 · border 1px INSIDE color/modal/panel/border · shadow/raised",
+    "header": "PC: HORIZONTAL space-between · items-end · px24 · [title 16B + close]. Mobile: title 18B만 사용(닫기 없음)",
+    "body": "PC: body/14R · px24. Mobile: body/16R · 패널 내부폭 260. 모두 2줄 예시",
+    "footer": "PC: 우측정렬 · px24 · Button XXSM h28. Mobile: 내부폭 260 · Button LG h48 · Single 풀폭 / Dual 동일비율"
   },
   "tokens": {
     "_note": "색은 예외 없이 Semantic 경유(HEX 직접 금지). 신규 토큰 1 — color/modal/panel/border(2026-07-29 신설). 나머지는 전부 기존 V3.0 슬롯 재사용. (2026-07-29 이전의 '신규 토큰 0' 방침은 패널 보더 신설로 더 이상 참이 아니다.)",
@@ -136,26 +169,26 @@
   "reuses": {
     "coreComponents": ["button"],
     "libraryIcons": ["ic_닫기 (V2.2 아이콘 라이브러리)"],
-    "note": "푸터 버튼 = 코어 Button(Variant=primary/secondary, Size=XXSM h28). 닫기 = V2.2 아이콘 라이브러리 ic_닫기 인스턴스. 시각 override 금지(Core Reuse Rule)."
+    "note": "푸터 버튼 = 코어 Button(PC XXSM h28 / Mobile LG h48). 닫기 아이콘은 PC만 V2.2 ic_닫기 인스턴스를 사용한다. 시각 override 금지."
   },
   "figma": {
     "componentSetKey": "(미발행 — 라이브러리 publish 시 기록)",
     "fileKey": "cysG5U1udpQqVagYY1hWHW",
     "pageNodeId": "5:5706",
     "pageName": "Core",
-    "sectionNodeId": "1278:30834",
+    "sectionNodeId": "1546:18005",
     "sectionName": "Modal",
-    "figmaNodeId": "1278:30800",
-    "masterNodeIds": { "single": "1278:30774", "dual": "1278:30786" },
+    "figmaNodeId": "1546:17971",
+    "masterNodeIds": { "pc-single": "1546:17945", "pc-dual": "1546:17957", "mobile-single": "1610:6729", "mobile-dual": "1611:6731" },
     "targetFile": "SW UX GUIDE V3.0-TEST",
     "builder": "plugins/figma-vars-installer/src/build-components.ts · buildModalShell → buildModalVariant",
-    "propertyMap": { "footer": ["single", "dual"] },
-    "builtThisRound": ["single", "dual"],
-    "note": "변형축 Footer=Single|Dual(2변형), 표시순 Single→Dual. 세트=프레임 \"Modal\"(864×310), 마스터 각 360×192. 2026-07-18 Figma 커넥터로 실물 확인. 구 ID(1256:5453 / 1256:5439 / 1267:8594)는 폐기 — 설치기 리빌드 과정에서 노드가 재발급된 것으로 보임. 노드 ID 는 리빌드마다 또 바뀔 수 있으니, ID 가 안 맞으면 fileKey → pageNodeId(Core) → sectionNodeId(Modal) 순으로 되짚어 찾을 것. componentSetKey 는 라이브러리 발행 전이라 미기록."
+    "propertyMap": { "break": ["pc", "mobile"], "footer": ["single", "dual"] },
+    "builtThisRound": ["pc-single", "pc-dual", "mobile-single", "mobile-dual"],
+    "note": "2026-08-21 검증 완료. 변형축 Break=PC|Mobile × Footer=Single|Dual(4변형). PC 마스터는 360×194, Mobile 마스터는 300×208. Dark는 별도 마스터가 아니라 Semantic Color V2·Semantic Shadow V2 Appearance 모드로 제공한다. 노드 ID는 설치기 리빌드 시 바뀔 수 있으므로 fileKey → Core → Modal 섹션 순으로 다시 찾는다."
   },
   "governance": {
-    "verify": "none",
-    "verifyNote": "빌드 직후 상태. 🤖 component-verifier(D) 독립 검증(원본 V2.4 6706:4218 그릇 구조=제목·본문·푸터 3층 대조, 문구는 대조 대상 아님) 후 verify→new 로 갱신 예정.",
+    "verify": "new",
+    "verifyNote": "2026-08-21 PC·Mobile 4변형, Light·Dark Appearance, 텍스트 스타일, Button 인스턴스 재사용을 Figma 실물과 생성 모델로 대조 완료.",
     "coreReuseRule": "button 은 dependencies.coreComponents 명시. 상태·variant 부족 시 needs-core-update 기록(임의 구현 금지)."
   }
 }

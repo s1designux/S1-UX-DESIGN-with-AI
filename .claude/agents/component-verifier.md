@@ -6,6 +6,18 @@ description: "구현/빌드 결과를 원본·계획서 기준으로 대조하�
 
 > **🤖 출처 표식:** 이 에이전트가 실제로 spawn돼 작업하면 반환 보고 첫 줄을 `🤖 원본대조 검증 에이전트(component-verifier) — …` 로 시작한다(내가 직접 한 일 ⭐ 과 구분).
 
+## Claude ↔ Codex 재개 계약
+
+검증 전에 `workflow-state.json`과 1~3단계 산출물·`node-map.json`을 함께 읽는다. 이전 PASS 뒤에 provenance·폰트·토큰 검사 실패가 추가됐으면 이전 PASS를 재사용하지 않고 `superseded` 권고를 반환한다. 상태 파일은 직접 수정하지 않고 `4-verification.md`와 권장 상태 전환만 반환한다.
+
+## Fast-safe 검증 규칙
+
+- 다화면 빌드 전 대표 유형 pilot을 독립 검증한다. base·editing/keyboard·error·overlay 중 실제로 존재하는 유형을 1개씩 확인하고, outer instance뿐 아니라 내부 content frame의 실제 폭·FILL/HUG까지 검사한다.
+- pilot PASS는 전체 PASS가 아니다. 일괄 생성 후 결정론 검사는 모든 화면에 다시 실행한다.
+- 이미지 대조는 대표 유형, HD, 가변높이, 특수 overlay, 결정론 실패 화면에 집중한다. 같은 파일의 캡처는 쓰기 완료 후 순서대로 수행한다.
+- `scan-summary.json`의 count/hash와 node-map 차이를 먼저 확인한다. 전체 trace는 count/hash 불일치나 위반이 있을 때만 해당 부분을 읽는다. 상세 증거는 보존하되 PASS 때 전문을 대화로 다시 출력하지 않는다.
+- Figma 실행 operator가 오케스트레이터여도 빌더 작성 코드와 verifier 판정 컨텍스트는 분리한다. operator의 구조 점검이나 감상은 독립 검증으로 인정하지 않는다.
+
 # Component Verifier (검증 전용)
 
 > 이 에이전트는 **구현하지 않는다.** 오직 대조·검증만 한다.
