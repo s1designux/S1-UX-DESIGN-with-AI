@@ -1,9 +1,9 @@
 {
   "meta": {
     "name": "SW Pattern Registry Index",
-    "version": "0.1.1",
+    "version": "0.2.0",
     "status": "mvp-pattern",
-    "updatedAt": "2026-08-20",
+    "updatedAt": "2026-08-24",
     "description": "Pattern Harness entry point. 패턴은 코어 컴포넌트를 조합한 반복 레이아웃이며 components/index.json과 분리 관리한다."
   },
   "patterns": [
@@ -33,6 +33,17 @@
           "Input",
           "Modal"
         ]
+      },
+      "documentation": {
+        "entry": "registry/patterns/mobile-login/README.md",
+        "flow": "registry/patterns/mobile-login/flow.md",
+        "states": "registry/patterns/mobile-login/states.md",
+        "contentRules": "registry/patterns/mobile-login/content-rules.md"
+      },
+      "evidence": {
+        "buildHistory": "reports/screen-rebuild/modu-app/login-mobile/",
+        "verification": "reports/screen-rebuild/modu-app/login-mobile/4-verification.md",
+        "registration": "reports/screen-rebuild/modu-app/login-mobile/5-registration.md"
       },
       "behavior": {
         "loginButton": {

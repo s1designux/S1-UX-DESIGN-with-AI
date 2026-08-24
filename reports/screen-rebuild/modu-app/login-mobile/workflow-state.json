@@ -34,7 +34,11 @@
     "fastSafeRegression": "reports/screen-rebuild/modu-app/login-mobile/fast-safe-regression.md",
     "verification": "reports/screen-rebuild/modu-app/login-mobile/4-verification.md",
     "registration": "reports/screen-rebuild/modu-app/login-mobile/5-registration.md",
-    "specChange": "reports/screen-rebuild/modu-app/login-mobile/spec-change-2026-08-21.md"
+    "specChange": "reports/screen-rebuild/modu-app/login-mobile/spec-change-2026-08-21.md",
+    "patternGuide": "registry/patterns/mobile-login/README.md",
+    "patternFlow": "registry/patterns/mobile-login/flow.md",
+    "patternStates": "registry/patterns/mobile-login/states.md",
+    "patternContentRules": "registry/patterns/mobile-login/content-rules.md"
   },
   "screens": [
     {
@@ -143,7 +147,7 @@
   "registration": {
     "status": "promoted",
     "patternId": "mobile-login",
-    "note": "로그인 13개 화면의 최종 검증이 완료됐고 mobile-login 패턴 등록 상태와 일치한다."
+    "note": "13개 화면 시점 검증 후 미입력 오류 2종을 제거해 현재 11개 상태다. mobile-login 패턴 등록 및 완성 패턴 문서와 연결했다."
   },
   "handoff": {
     "lastActor": "codex",

@@ -25,7 +25,8 @@
 
 ## 검증 근거
 
-- 로그인 화면 13개 독립 재검증 PASS
+- 로그인 화면 13개 시점 독립 재검증 PASS
+- 이후 사양 변경으로 미입력 오류 화면 2종을 제거해 현재 패턴은 11개 상태
 - 입력창 내부 필드 26/26: 320px 및 FILL
 - 키보드 상태 보조 링크 2/2 복원
 - 입력 A/B에 NavBar의 `Platform=App + Keyboard` 정본 적용
@@ -41,3 +42,12 @@
 
 - Registry: `registry/patterns/index.json`
 - Figma Section: `1562:2` (`Pattern / Mobile Login / MoDU`)
+
+## 완성 패턴 문서
+
+- 개요: `registry/patterns/mobile-login/README.md`
+- 흐름과 이유: `registry/patterns/mobile-login/flow.md`
+- 상태 목록: `registry/patterns/mobile-login/states.md`
+- 콘텐츠·접근성 규칙: `registry/patterns/mobile-login/content-rules.md`
+
+일반적인 패턴 사용과 구현은 위 문서를 우선한다. 이 폴더의 나머지 파일은 제작·검증 이력으로 보존한다.

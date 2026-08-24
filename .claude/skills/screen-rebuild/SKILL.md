@@ -55,6 +55,8 @@ reports/screen-rebuild/{service}/{flow}/
 
 `{service}` = 서비스명(예: `modu-app`), `{flow}` = 플로우명(예: `signup-under14`).
 
+공통 패턴으로 승격된 뒤의 현재 사용 기준은 제작 기록과 분리해 `registry/patterns/{pattern-id}/`에 둔다. 일반적인 패턴 사용·구현 작업은 Registry 문서를 먼저 읽고, 결함 추적·재빌드 때만 이 보고서 폴더를 읽는다.
+
 ### Claude ↔ Codex 공용 재개 규칙
 
 이 워크플로우의 정본은 이 파일 하나다. Claude와 Codex는 별도 복제 스킬을 만들지 않고 동일한 산출물 폴더를 사용한다.
@@ -240,6 +242,8 @@ reports/screen-rebuild/{service}/{flow}/
 
 - 서비스 전용이면 서비스 페이지에만 유지하고 `5-registration.md`에 `not-promoted`와 이유를 기록한다.
 - 공통 패턴이면 `registry/patterns/index.json`에 패턴 ID·이름·출처·상태를 등록한다.
+- 공통 패턴으로 승격할 때는 [완성 패턴 문서화](references/pattern-documentation.md)를 읽고, 제작 이력과 분리된 목적·흐름·상태·콘텐츠 규칙을 `registry/patterns/{pattern-id}/`에 만든다.
+- Registry 항목의 `documentation`은 완성 패턴 문서를, `evidence.buildHistory`는 제작 기록을 가리켜야 한다.
 - 사용한 코어 컴포넌트는 `dependencies.coreComponents`에 실제 정본 이름으로 기록한다.
 - 패턴이 코어 컴포넌트의 시각 스타일을 재정의하면 등록하지 않고 3단계로 되돌린다.
 - 설치기는 코어 컴포넌트를 생성하는 도구다. 화면 패턴을 설치기 컴포넌트로 자동 승격하지 않는다.
@@ -248,7 +252,7 @@ reports/screen-rebuild/{service}/{flow}/
 
 ### 🚦 검문소 5 — 등록 상태와 근거 일치 (STOP)
 
-> `promoted`면 registry 항목·dependencies·검증 근거가 모두 있어야 한다. `not-promoted`면 서비스 전용인 이유를 남긴다. 이후에만 전체 워크플로우를 `complete`로 표시한다.
+> `promoted`면 registry 항목·dependencies·검증 근거·완성 패턴 문서가 모두 있어야 한다. `not-promoted`면 서비스 전용인 이유를 남긴다. 이후에만 전체 워크플로우를 `complete`로 표시한다.
 
 ---
 

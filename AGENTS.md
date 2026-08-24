@@ -24,3 +24,22 @@
 |---|---|---|---|
 | 2026-08-20 | Claude↔Codex 공용 재개 규칙과 모바일 로그인 원본 등록 | screen-rebuild | 두 도구를 오가며 같은 단계부터 이어서 작업하기 위해 |
 | 2026-08-20 | Fast-safe 대표 상태 선검증·단일 Figma operator·compact trace 규칙 추가 | screen-rebuild | 최종 전수검사 품질을 유지하면서 다화면 작업의 대기·재작업·토큰 사용을 줄이기 위해 |
+
+## 완성 패턴 문서 읽기 규칙
+
+**목표:** 제작 중인 리빌드 기록과 완성된 패턴의 사용 기준을 분리한다. 일반적인 패턴 사용·구현은 “왜 이 흐름이어야 하는가”를 먼저 읽고, 과거 빌드 이력은 결함 추적·재빌드 때만 읽는다.
+
+**기본 읽기 순서:**
+
+1. `registry/patterns/index.json`에서 패턴을 찾는다.
+2. 해당 항목의 `documentation.entry`만 먼저 읽는다.
+3. 작업에 필요한 경우에만 flow·states·content 문서를 선택해서 읽는다.
+4. Figma 수정, 결함 추적, 재빌드가 필요한 경우에만 `evidence.buildHistory`의 `workflow-state.json`과 단계별 기록을 읽는다.
+
+전체 `node-map.json`, trace, 과거 스크린샷을 기본 컨텍스트로 읽지 않는다. 패턴 승격 시 문서 생성 규칙은 `.claude/skills/screen-rebuild/references/pattern-documentation.md`를 따른다.
+
+**변경 이력:**
+
+| 날짜 | 변경 내용 | 대상 | 사유 |
+|---|---|---|---|
+| 2026-08-24 | 제작 기록과 완성 패턴 사용 문서 분리 | pattern registry · screen-rebuild | 다른 AI가 과거 실행 로그보다 현재 흐름의 목적과 이유를 먼저 이해하도록 하기 위해 |
