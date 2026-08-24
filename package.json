@@ -96,6 +96,7 @@
     "gate:check": "node scripts/gate-check.js",
     "shot": "node scripts/render-shot.js",
     "snapdiff": "node scripts/figma-snapshot-diff.js",
+    "screen-rebuild:evidence": "node scripts/screen-rebuild-evidence-check.js",
     "map:verify": "node pipeline-status.js --self-check --skip gate:check,components:presentation",
     "harness:audit": "node scripts/harness-audit.js",
     "harness:fix": "node scripts/harness-audit.js --fix",

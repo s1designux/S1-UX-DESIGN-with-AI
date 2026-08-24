@@ -13,8 +13,21 @@ description: "screen-rebuild 워크플로우의 '빌드' 전용 서브에이전�
 
 빌드 전에 `workflow-state.json`·`2-mapping.md`·기존 `node-map.json`을 함께 읽는다. 이미 생성된 노드가 있으면 새로 중복 생성하지 말고 현재 Figma 존재 여부와 매핑 유효성을 먼저 확인한다. 상태 파일은 수정하지 않으며 `3-build.md`와 `node-map.json`에만 사실을 기록하고, 오케스트레이터가 반영할 권장 상태 전환을 반환한다.
 
+## 🚨 첫 쓰기 전에 — 구조 스냅샷과 배치 실측 (건너뛰기 금지)
+
+**이미 존재하는 노드를 고치는 작업이면(신규 생성만 있는 경우가 아니면) 아래 둘을 첫 `use_figma` 쓰기 *전에* 반드시 한다.** 쓰기를 시작한 뒤에는 그 회차를 증명할 방법이 없다.
+
+1. **변경 전 구조 스냅샷** — `.claude/skills/screen-rebuild/references/snapshot-diff.md` 의 캡처 템플릿(읽기 전용)을 실행해 `snapshot-before.json` 으로 저장한다. 빌드 직후 같은 코드로 `snapshot-after.json` 도 뜬다. 이 둘이 있어야 검증자가 "선언한 데 말고는 안 건드렸다"를 **증명**할 수 있다(없으면 주장만 가능하다).
+
+2. **대상 컨테이너 배치 실측** — 자식을 추가·삭제·이동하기 전에 `layoutMode` · `itemSpacing` · `padding*` · 정렬 · 기존 자식의 `layoutPositioning` 을 **실제로 읽는다.**
+   > 🚨 **`get_metadata` 는 `layoutMode` 를 반환하지 않는다.** 오케스트레이터가 준 명세가 x/y 좌표로 쓰여 있어도, 대상이 오토레이아웃이면 그 좌표는 무시된다. 좌표가 규칙적이라고 절대배치로 단정하지 말 것 — 오토레이아웃의 **계산 결과**일 수 있다.
+   > 실측 결과가 명세의 전제와 다르면 **임의로 구조를 바꾸지 말고 blocker 로 반환한다.** (2026-08-24 이 판단이 옳았다 — 명세가 틀렸음을 빌더가 반증해 파손을 막았다.)
+
+빌드 후 오케스트레이터에게 **`evidence.baseline` 권장값**(`legacy` / `existing-nodes` / `intent-spec`)과 스냅샷 파일 경로를 함께 반환한다. Gate 40 이 이 근거의 존재를 검사한다.
+
 ## Fast-safe 빌드 규칙
 
+- **발동 조건은 "신규 빌드"가 아니라 "같은 변경이 4개 이상 대상에 반복되는가"다.** 기존 화면 여러 개를 같은 방식으로 고치는 일괄 수정에도 그대로 적용한다.
 - 4개 이상 화면은 `canonical-manifest.json`과 `screen-spec.json`을 입력으로 사용한다. 공통 셸·레이아웃 함수는 한 번 정의하고 화면별 문구·상태·기준점만 데이터로 바꾼다.
 - base·editing/keyboard·error·overlay 중 실제로 존재하는 대표 유형을 먼저 빌드한다. 독립 pilot 검증 PASS 전에는 나머지 화면을 만들지 않는다.
 - 인스턴스를 바깥에서 resize한 뒤 manifest에 기록된 내부 content frame도 실제 폭과 FILL/HUG인지 확인한다. outer 크기만 보고 통과하지 않는다.

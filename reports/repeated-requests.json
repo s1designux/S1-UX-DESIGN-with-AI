@@ -447,6 +447,20 @@
         }
       ],
       "automationNote": "get_metadata 는 layoutMode/itemSpacing 을 반환하지 않는다. 좌표만으로 배치 구조를 단정하지 말고, 자식 좌표를 바꾸는 명세를 쓰기 전에는 대상 프레임의 layoutMode 를 반드시 먼저 실측할 것. 3회 도달 시 screen-rebuild 스킬에 '자식 배치 변경 명세 전 layoutMode 실측' 선행 체크를 명문화 검토."
+    },
+    {
+      "id": "rule-written-but-not-enforced",
+      "category": "harness-operations",
+      "label": "규칙을 문서에만 넣어 두고 강제 장치를 안 만들어 그대로 샘",
+      "count": 1,
+      "promotionStatus": "tracking",
+      "occurrences": [
+        {
+          "date": "2026-08-24",
+          "summary": "한 세션에서 3건이 같은 유형이었다. ①fast-safe 규칙은 references 에 이미 있었으나 스킬 미발동으로 안 걸림(검증자 128K) ②상태 검사기는 존재했으나 gate:check 미배선이라 8/21부터 3일간 실패를 아무도 모름 ③스냅샷 캡처 의무를 SKILL.md 에만 넣어 빌더 정의엔 없어, 빌더를 직접 spawn 하면 안 걸리는 구멍이 남았다(사용자 질문으로 발견). 조치: 에이전트 정의에 이식 + 라우팅/트리거 확장 + Gate 40 신설(warn)."
+        }
+      ],
+      "automationNote": "규칙을 새로 만들 때 **어디에 두면 실제로 로드되는가**를 함께 정할 것. 로드 보장 순서: ①코드 자체 > ②Gate/훅 > ③에이전트 정의(spawn 시 항상) > ④CLAUDE.md(매 세션) > ⑤스킬 문서(발동해야 로드). ⑤에만 두면 새는 것이 기본값이다. 3회 도달 시 '새 규칙 추가 시 로드 경로 선언' 체크를 harness 스킬에 명문화 검토."
     }
   ]
 }

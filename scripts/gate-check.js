@@ -962,6 +962,35 @@ try {
   fail(`Gate 39 실행 실패: ${e.message}`);
 }
 
+// ── Gate 40: Screen Rebuild Evidence (화면 재현 근거) ──────────────
+// 이 하네스의 규칙 대부분은 문서(SKILL.md·references)에 있고 문서는 '읽기로 선택'해야 작동한다.
+// 2026-08-24 판독: 그 세션에서 터진 문제 3개 중 2개가 "규칙은 이미 있는데 안 걸림" 유형이었다
+// (fast-safe 미발동·상태검사기 미배선). 게이트는 '잊어버림'을 막는 유일한 층이다.
+// 무엇을 요구할지는 작업이 선언한 기준(legacy / existing-nodes / intent-spec)에 따라 달라진다.
+// **현재 warn 단계** — 스냅샷 흐름이 실전 1~2회 돌아 안정되면 --strict 로 승격(사용자 결정 2026-08-24).
+// 기존 부채는 evidence.exempt 로 동결, 신규만 본다(래칫 — Gate 19/20/29/30 과 동일 방식).
+gateHeader('[Gate 40] 화면 재현 근거 검사기 (Screen Rebuild Evidence)');
+try {
+  const { spawnSync } = require('child_process');
+  const r = spawnSync(process.execPath, [path.join(ROOT, 'scripts/screen-rebuild-evidence-check.js')],
+    { cwd: ROOT, encoding: 'utf8' });
+  const out = (r.stdout || '').trim();
+  const m = out.match(/SREVIDENCE_SUMMARY flows=(\d+) ok=(\d+) missing=(\d+) undeclared=(\d+) exempt=(\d+)/);
+  if (!m) {
+    warn(`Gate 40: 검사기 출력 해석 실패 (기록만)\n${out}`);
+  } else {
+    const [, flows, ok, missing, undeclared, exempt] = m.map(Number.isNaN ? String : (x) => x);
+    const bad = Number(missing) + Number(undeclared);
+    if (bad > 0) {
+      warn(`Gate 40: 재현 근거 미비 ${bad}건(누락 ${missing} · 기준 미선언 ${undeclared}) — 지금은 기록만, 차단 아님. 상세: npm run screen-rebuild:evidence`);
+    } else {
+      pass(`화면 재현 근거 정합 — 플로우 ${flows}개(정합 ${ok} · 동결 ${exempt})`);
+    }
+  }
+} catch (e) {
+  warn(`Gate 40 실행 실패: ${e.message} (기록만)`);
+}
+
 // ── Summary ───────────────────────────────────────────────────────
 if (VERBOSE || errors > 0 || warnings > 0) console.log('\n─────────────────────────────────────────────────────');
 const tally = `게이트 ${gates}개 · ✅ ${passes}건${VERBOSE ? '' : ' (상세: --verbose)'}`;

@@ -159,5 +159,12 @@
     "summary": "11개 화면 HelperLinks 에 정본 Footer 규격 구분선 sep 22개를 추가하고 itemSpacing 을 16→8 로 정정했다. 빌드는 screen-rebuilder, 검증은 component-verifier 가 분리 수행했다."
   },
   "screenCount": 11,
-  "_screenCountNote": "status=verified(=실제 빌드된 프레임) 기준. removed 2건(2026-08-21 사양 축소) · excluded 1건(로그아웃 확인, 미빌드)은 제외."
+  "_screenCountNote": "status=verified(=실제 빌드된 프레임) 기준. removed 2건(2026-08-21 사양 축소) · excluded 1건(로그아웃 확인, 미빌드)은 제외.",
+  "evidence": {
+    "exempt": {
+      "reason": "스냅샷 근거 규약 신설(2026-08-24) 이전 작업. 2026-08-24 보조 링크 구분선 수정은 existing-nodes 성격이었으나 규약보다 먼저 수행돼 변경 전 스냅샷이 없다. 당시 검증은 component-verifier 독립 대조 PASS(4-verification.md·spec-change-2026-08-24-helper-separator.md)로 대신했다. 다음 수정부터 스냅샷 근거를 남긴다.",
+      "at": "2026-08-24",
+      "by": "river"
+    }
+  }
 }
