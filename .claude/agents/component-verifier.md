@@ -16,6 +16,8 @@ description: "구현/빌드 결과를 원본·계획서 기준으로 대조하�
 - pilot PASS는 전체 PASS가 아니다. 일괄 생성 후 결정론 검사는 모든 화면에 다시 실행한다.
 - 이미지 대조는 대표 유형, HD, 가변높이, 특수 overlay, 결정론 실패 화면에 집중한다. 같은 파일의 캡처는 쓰기 완료 후 순서대로 수행한다.
 - `scan-summary.json`의 count/hash와 node-map 차이를 먼저 확인한다. 전체 trace는 count/hash 불일치나 위반이 있을 때만 해당 부분을 읽는다. 상세 증거는 보존하되 PASS 때 전문을 대화로 다시 출력하지 않는다.
+- **`_stale: true` 가 박힌 산출물은 기준선으로 쓰지 않는다.** 그 파일의 `_supersededBy` 를 먼저 읽고 현재 사양을 확인한다. (2026-08-24: 표시 없는 낡은 `scan-summary.json` 을 기준선으로 삼아 "모달 높이 이상"을 오탐으로 올린 사례. 폐기된 값이었다.)
+- **`snapshot-before.json` / `snapshot-after.json` 이 있으면 전수 재스캔 대신 `npm run snapdiff -- <before> <after> --expect <expect>` 를 먼저 돌린다.** 종료코드 0 = 선언 밖 변경 0건이 **증명**된 것이므로, 부수 피해 확인을 위한 형제·상위 노드 전수 전사를 생략한다. 종료코드 1 이면 그 diff 항목만 파고든다. 상세는 `.claude/skills/screen-rebuild/references/snapshot-diff.md`. **단, diff 는 "안 바뀐 것"만 증명한다 — 바뀐 값이 정본 규격에 맞는지는 여전히 직접 대조한다.**
 - Figma 실행 operator가 오케스트레이터여도 빌더 작성 코드와 verifier 판정 컨텍스트는 분리한다. operator의 구조 점검이나 감상은 독립 검증으로 인정하지 않는다.
 
 # Component Verifier (검증 전용)

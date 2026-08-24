@@ -1,4 +1,13 @@
 {
+  "_stale": true,
+  "_staleSince": "2026-08-21",
+  "_supersededBy": [
+    "reports/screen-rebuild/modu-app/login-mobile/spec-change-2026-08-21.md",
+    "reports/screen-rebuild/modu-app/login-mobile/spec-change-2026-08-24-popup-copy.md",
+    "reports/screen-rebuild/modu-app/login-mobile/spec-change-2026-08-24-helper-separator.md"
+  ],
+  "_staleReason": "13화면 시점 기록이다. 이후 ①미입력 오류 2종 삭제(13→11) ②모달 minHeight 208 폐기로 modalHeights 가 [208,208,229,208,250]→[187,187,229,208,250] 로 바뀜 ③보조 링크 구분선 추가. 당시 검증 증거로 보존하며 **현재 상태의 기준선으로 쓰지 말 것.**",
+  "_useInstead": "현재 상태 대조는 이 파일이 아니라 snapshot-before/after.json + npm run snapdiff 를 쓴다.",
   "schemaVersion": 1,
   "mode": "fast-safe-keyboard-correction-complete",
   "checkedAt": "2026-08-21",
@@ -6,7 +15,12 @@
   "evidence": {
     "currentLiveMetadata": "section 1562:2; 13 direct 360x780 screens; representative anchors and keyboard/overlay presence matched",
     "deepScanReusedFrom": "final-scan.json + input-helper-fix-result.json",
-    "visualPilot": ["1562:3", "1562:4", "1562:8", "1562:13"],
+    "visualPilot": [
+      "1562:3",
+      "1562:4",
+      "1562:8",
+      "1562:13"
+    ],
     "capturePolicy": "pixel-content required for large visible reference elements; node presence alone is insufficient",
     "supersededFinding": "The two blank keyboard placeholders and separate App NavBars were replaced by local Platform=App + Keyboard instances.",
     "keyboardCorrection": "1562:4 and 1562:5 use local main 1628:6740 at x=0, y=439, 360x341; 11 untouched screen fingerprints remained unchanged."
@@ -49,24 +63,71 @@
   "modalCorrection": {
     "checkedAt": "2026-08-21",
     "verdict": "PASS",
-    "scope": ["1562:9", "1562:10", "1562:11", "1562:12", "1562:13"],
+    "scope": [
+      "1562:9",
+      "1562:10",
+      "1562:11",
+      "1562:12",
+      "1562:13"
+    ],
     "break": "Mobile",
-    "modalWidths": [300, 300, 300, 300, 300],
-    "modalHeights": [208, 208, 229, 208, 250],
+    "modalWidths": [
+      300,
+      300,
+      300,
+      300,
+      300
+    ],
+    "modalHeights": [
+      208,
+      208,
+      229,
+      208,
+      250
+    ],
     "overlayPaddingHorizontal": 30,
-    "provenance": { "checked": 62, "local": 52, "allowedRemote": 10, "violations": 0 },
-    "authoredRaw": { "checked": 70, "violations": 0 },
-    "visual": { "screensChecked": 5, "clipping": 0, "overlap": 0, "ambiguous": 0 }
+    "provenance": {
+      "checked": 62,
+      "local": 52,
+      "allowedRemote": 10,
+      "violations": 0
+    },
+    "authoredRaw": {
+      "checked": 70,
+      "violations": 0
+    },
+    "visual": {
+      "screensChecked": 5,
+      "clipping": 0,
+      "overlap": 0,
+      "ambiguous": 0
+    }
   },
   "keyboardCorrection": {
     "checkedAt": "2026-08-21",
     "verdict": "PASS",
-    "scope": ["1562:4", "1562:5"],
+    "scope": [
+      "1562:4",
+      "1562:5"
+    ],
     "mainComponentId": "1628:6740",
     "variant": "Platform=App + Keyboard",
-    "instanceIds": ["1651:1797", "1651:1929"],
-    "geometry": [0, 439, 360, 341],
-    "removedNodeIds": ["1564:141", "1564:142", "1564:214", "1564:215"],
+    "instanceIds": [
+      "1651:1797",
+      "1651:1929"
+    ],
+    "geometry": [
+      0,
+      439,
+      360,
+      341
+    ],
+    "removedNodeIds": [
+      "1564:141",
+      "1564:142",
+      "1564:214",
+      "1564:215"
+    ],
     "untouchedScreensChecked": 11,
     "untouchedScreensChanged": 0,
     "provenance": {

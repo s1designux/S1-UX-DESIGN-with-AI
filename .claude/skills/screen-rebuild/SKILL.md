@@ -50,12 +50,31 @@ reports/screen-rebuild/{service}/{flow}/
 ├── node-map.json          # 화면 루트·생성/변경 id와 상세 trace 경로
 ├── screen-spec.json       # 화면별 문구·상태·좌표 차이만 담은 빌드 명세(다화면 권장)
 ├── canonical-manifest.json # 정본 variant·내부 크기·override 경로 캐시(다화면 권장)
-└── scan-summary.json      # 전체 결정론 검사 요약·위반 목록(상세 trace는 별도 파일)
+├── scan-summary.json      # 전체 결정론 검사 요약·위반 목록(상세 trace는 별도 파일)
+├── snapshot-before.json   # 빌드 직전 구조 스냅샷 (기존 노드를 고치는 작업이면 필수)
+├── snapshot-expect.json   # 무엇을 바꿀 것인지 사전 선언 (2단계에서 오케스트레이터가 작성)
+└── snapshot-after.json    # 빌드 직후 구조 스냅샷 → `npm run snapdiff` 로 대조
 ```
 
 `{service}` = 서비스명(예: `modu-app`), `{flow}` = 플로우명(예: `signup-under14`).
 
 공통 패턴으로 승격된 뒤의 현재 사용 기준은 제작 기록과 분리해 `registry/patterns/{pattern-id}/`에 둔다. 일반적인 패턴 사용·구현 작업은 Registry 문서를 먼저 읽고, 결함 추적·재빌드 때만 이 보고서 폴더를 읽는다.
+
+### 낡은 산출물은 파일 안에 stale 을 박는다 (기준선 오용 차단)
+
+사양이 바뀌면 이전 산출물(`scan-summary.json`·`screen-spec.json`·옛 `4-verification.md` 등)은 **당시 증거로 보존**한다. 덮어쓰지 않는다. 대신 **JSON 최상위에 다음 필드를 박아** 다음 실행자가 그것을 현재 기준선으로 착각하지 않게 한다.
+
+```json
+{ "_stale": true,
+  "_staleSince": "2026-08-21",
+  "_supersededBy": ["...spec-change-....md"],
+  "_staleReason": "무엇이 왜 더 이상 현재가 아닌지",
+  "_useInstead": "현재 상태를 보려면 어디를 볼 것" }
+```
+
+> **왜:** 2026-08-24 검증자가 `scan-summary.json`(13화면·옛 모달 높이)을 기준선으로 삼아 "모달 높이가 기록과 다름"을 이상으로 올렸다. 실제로는 8월 21일에 의도적으로 폐기된 값이었고, 정정 사실은 `.md` 에만 있고 JSON 에는 없었다. **오탐의 원인은 검증자가 아니라 표시 없는 낡은 파일이다.**
+
+`_stale: true` 인 파일은 **판정 근거로 인용하지 않는다.** 인용해야 하면 `_supersededBy` 를 먼저 읽는다.
 
 ### Claude ↔ Codex 공용 재개 규칙
 
@@ -70,7 +89,9 @@ reports/screen-rebuild/{service}/{flow}/
 상세 필드와 도구별 실행 차이는 `references/cross-agent-handoff.md`를 따른다. 상태 파일은 `npm run screen-rebuild:statecheck -- <경로>`로 검사한다.
 트리거 경계와 교대 실행 드라이런은 `references/trigger-tests.md`를 사용한다.
 
-### Fast-safe 실행 모드 (4개 이상 화면의 기본값)
+### Fast-safe 실행 모드 (반복 대상 4개 이상이면 기본값)
+
+**발동 조건은 "신규 빌드"가 아니라 "같은 변경이 4개 이상 대상에 반복되는가"다.** 신규 다화면 제작뿐 아니라 **이미 만들어진 화면 여러 개를 같은 방식으로 고치는 일괄 수정**에도 그대로 적용한다. (2026-08-24: 11개 화면에 구분선을 넣는 일괄 수정에서 이 모드가 "신규 빌드가 아니라서" 발동하지 않아, 검증자가 11×5개 자식을 전수 전사하며 128K 토큰을 썼다.)
 
 다화면 플로우는 `references/fast-safe-execution.md`를 따른다. 품질 기준을 줄이지 않고 공통 오류의 확산과 도구 대기를 줄이는 모드다.
 
@@ -165,6 +186,20 @@ reports/screen-rebuild/{service}/{flow}/
 - 색 역매핑은 `foundation/semantic` Variable 값과 대조해 의미 기반으로 한다. confidence: exact 1개 = `high`, 공유 다수 = `needs-review`(HD).
 - 결과를 `2-mapping.md`에 저장한다.
 
+### 🔬 기존 노드를 고치는 매핑이면 — 배치 구조를 먼저 실측한다 (선행 필수)
+
+신규 생성이 아니라 **이미 있는 프레임의 자식을 추가·삭제·이동**하는 매핑을 쓸 때는, 명세에 좌표를 적기 **전에** 대상 컨테이너의 배치 구조를 실측한다.
+
+- [ ] 대상 프레임의 **`layoutMode`** (`NONE` = 절대배치 / `HORIZONTAL`·`VERTICAL` = 오토레이아웃)
+- [ ] 오토레이아웃이면 **`itemSpacing`·`padding*`·`primaryAxisAlignItems`·`counterAxisAlignItems`·사이징 모드**
+- [ ] 기존 자식의 **`layoutPositioning`** (`AUTO` = 흐름 / `ABSOLUTE` = 좌표 고정)
+
+> 🚨 **`get_metadata` 는 `layoutMode` 를 반환하지 않는다.** 자식들의 x 좌표가 규칙적으로 보인다고 절대배치로 단정하지 말 것 — 오토레이아웃의 **계산 결과**일 수 있다. 오토레이아웃 자식에 x/y 를 지정하면 무시된다.
+>
+> 실패 사례(2026-08-24): 자식 x 가 62.5/120.5/191.5 인 것을 보고 절대배치로 단정해 "sep 을 x=112 에 배치" 명세를 썼다. 실제로는 11개 전부 `HORIZONTAL`(itemSpacing 16)이었고 좌표는 흐름 계산값이었다. 빌더가 실측으로 반증해 전량 blocker 반환 → 명세를 다시 쓰느라 한 회차(약 99K 토큰·95초)가 통째로 버려졌다.
+
+실측은 `use_figma` 읽기 1회면 끝난다. 이 체크를 건너뛰고 쓴 좌표 명세는 **검문소 2를 통과시키지 않는다.**
+
 ### 🚦 검문소 2 — 결정 필요 항목 확인
 
 > 모호 색매핑·needs-core-update·없는 아이콘(HD 목록)이 있으면 모아서 사용자에게 1회 확인받는다. HD가 0이면 매핑 근거를 저장하고 자동 통과한다. 메커니즘은 오케스트레이터가 정하지만 애매한 항목을 자동 통과시키지는 않는다.
@@ -189,6 +224,7 @@ reports/screen-rebuild/{service}/{flow}/
 - [ ] 반복 셸은 **컴포넌트 세트로 만든 뒤 인스턴스**. 화면마다 복제 금지.
 - [ ] 🚫 **인스턴스는 로컬 정본 세트(remote=false)에서만 생성.** 레거시 원본 화면의 인스턴스를 `clone()`/mainComponent 재사용으로 끌어오지 말 것(외부 라이브러리 전파 — 절대규칙 3-1). 아이콘은 V2.2(key `yE5UCFEbmXJBlYJWB24Lz2`)에서 `importComponentByKeyAsync`.
 - [ ] **빌드 종료 전 자가 프로비넌스 스캔(필수):** `루트.findAll(n=>n.type==="INSTANCE")` 전부에 대해 `await getMainComponentAsync()` → `remote===false`(로컬) 또는 V2.2 아이콘 key인지 확인. 하나라도 그 외 외부 `remote===true`면 **완료 보고 금지** — 어떤 노드가 어느 외부 라이브러리인지 보고하고 로컬로 교체하거나 needs-core-update.
+- [ ] **기존 노드를 고치는 작업이면 — 첫 쓰기 *전에* 구조 스냅샷을 뜬다.** `references/snapshot-diff.md` 의 캡처 템플릿으로 `snapshot-before.json` 저장. **쓰기를 시작한 뒤에는 그 회차를 diff 로 증명할 수 없다.** 빌드 직후 같은 코드로 `snapshot-after.json` 도 뜬다.
 - [ ] **모든 생성/변경 node id를 return.**
 - [ ] 증분 빌드(≤10 ops/call), 단계별 스크린샷 검증. **재시도 시 깨진 부분은 지우고 새로**(누적 금지).
 
