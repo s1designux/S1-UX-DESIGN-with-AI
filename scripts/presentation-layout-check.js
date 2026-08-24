@@ -22,7 +22,7 @@
 const fs = require('fs');
 const os = require('os');
 const path = require('path');
-const { spawnSync } = require('child_process');
+const { spawn } = require('child_process');
 
 const ROOT = path.resolve(__dirname, '..');
 const HTML = path.join(ROOT, 'pages/components.html');
@@ -43,25 +43,59 @@ function findChrome() {
 }
 
 // 재배치 완료된 DOM 을 헤드리스로 덤프 (일시적 Chrome 크래시에 재시도)
+//
+// ★ 왜 spawnSync 가 아닌가(2026-08-24): --dump-dom 은 DOM 을 stdout 으로 다 뱉은 뒤에도
+//   Chrome 프로세스가 스스로 종료하지 않는다(실측: DOM 완성 2.3초 → 종료 안 함 → 60초
+//   timeout 에 강제 종료). 즉 기존 60초 중 약 58초는 일하는 시간이 아니라 죽은 대기였다.
+//   그래서 stdout 을 스트리밍으로 받아 **문서 끝(</html>)이 도착하는 즉시 프로세스를 종료**한다.
+//   받는 DOM 자체는 종전과 동일하다 — 대기만 없앤 것이므로 판정 로직·결과에 영향이 없다.
+//   (virtual-time-budget 5000 은 페이지 JS 재배치에 주는 시간이라 그대로 둔다. 줄이면
+//    덤프 내용이 달라져 판정이 바뀔 수 있다.)
+const DOM_HARD_TIMEOUT_MS = 60000;   // </html> 가 끝내 안 오는 경우의 안전망(종전 timeout 과 동일)
+const DOM_MAX_BYTES = 64 * 1024 * 1024; // 종전 maxBuffer 와 동일
+
 function dumpOnce(chrome, fileUrl) {
   // 전용 임시 프로필 — 사용자/다른 Chrome 세션의 기본 프로필 잠금과 충돌해 크래시하는 것을 방지
   const profileDir = fs.mkdtempSync(path.join(os.tmpdir(), 'preso-chrome-'));
-  const r = spawnSync(chrome, ['--headless=new', '--dump-dom', '--virtual-time-budget=5000',
+  const child = spawn(chrome, ['--headless=new', '--dump-dom', '--virtual-time-budget=5000',
     '--no-sandbox', '--disable-gpu', `--user-data-dir=${profileDir}`, fileUrl],
-    { encoding: 'utf-8', maxBuffer: 64 * 1024 * 1024, timeout: 60000 });
-  try { fs.rmSync(profileDir, { recursive: true, force: true }); } catch (_) {}
-  const dom = r.stdout || '';
-  // 재배치가 실제로 돌았는지 확인(comp-action-top 은 재배치 후에만 생김)
-  if (dom && /comp-action-top/.test(dom)) return { dom };
-  return { err: r.status !== 0 || !dom ? `렌더 실패 (${r.error ? r.error.message : 'exit ' + r.status})` : '재배치 후 DOM 마커(comp-action-top) 부재' };
+    { stdio: ['ignore', 'pipe', 'ignore'] });
+
+  return new Promise((resolve) => {
+    const chunks = []; let size = 0; let settled = false; let spawnErr = null;
+
+    const cleanup = () => {
+      try { child.kill(); } catch (_) {}
+      try { fs.rmSync(profileDir, { recursive: true, force: true }); } catch (_) {}
+    };
+    const settle = () => {
+      if (settled) return; settled = true;
+      clearTimeout(timer); cleanup();
+      const dom = Buffer.concat(chunks).toString('utf-8');
+      // 재배치가 실제로 돌았는지 확인(comp-action-top 은 재배치 후에만 생김)
+      if (dom && /comp-action-top/.test(dom)) resolve({ dom });
+      else resolve({ err: !dom ? `렌더 실패 (${spawnErr ? spawnErr.message : '출력 없음'})` : '재배치 후 DOM 마커(comp-action-top) 부재' });
+    };
+
+    const timer = setTimeout(settle, DOM_HARD_TIMEOUT_MS);
+    child.stdout.on('data', (b) => {
+      chunks.push(b); size += b.length;
+      // 문서 끝 태그가 보이면 덤프 완료 — 더 기다릴 이유가 없다
+      if (size > DOM_MAX_BYTES || b.includes('</html>')) settle();
+    });
+    child.on('error', (e) => { spawnErr = e; settle(); });
+    // 'exit' 가 아니라 'close' — stdio 가 닫힌 뒤라 마지막 청크 유실 위험이 없다
+    // (크롬이 스스로 죽는 크래시 경로에서만 도달한다. 정상 경로는 위 </html> 에서 끝난다.)
+    child.on('close', settle);
+  });
 }
-function renderDom() {
+async function renderDom() {
   const chrome = findChrome();
   if (!chrome) return { skip: '크롬/엣지 실행파일을 못 찾음 (CHROME_PATH 로 지정 가능)' };
   const fileUrl = 'file:///' + HTML.replace(/\\/g, '/');
   let last = '';
   for (let i = 0; i < 3; i++) { // 일시적 크래시(x86 Chrome) 대비 최대 3회 재시도
-    const r = dumpOnce(chrome, fileUrl);
+    const r = await dumpOnce(chrome, fileUrl);
     if (r.dom) return { dom: r.dom };
     last = r.err;
   }
@@ -93,11 +127,11 @@ function observe(slice) {
   return { labels, actionPresent, sizeBlocks, labelBlocks };
 }
 
-function main() {
+async function main() {
   const policy = JSON.parse(fs.readFileSync(POLICY, 'utf8'));
   const comps = policy.components || {};
 
-  const { dom, skip } = renderDom();
+  const { dom, skip } = await renderDom();
   console.log('🔎 컴포넌트 표출 레이아웃 검수기 (Component Presentation Policy) — Gate 23');
   console.log(`  정본 registry/governance/component-presentation-policy.json · 대상 ${Object.keys(comps).length}개 (PC)`);
   if (skip) {

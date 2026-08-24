@@ -22,7 +22,7 @@ description: "저장소 정본(HTML·CSS·JS·TS·JSON·registry)을 '실제로 
 
 1. **소스 순서 → 렌더 배치 추측 금지.** HTML 마크업 순서를 화면 배치로 단정하지 않는다. 배치는 CSS(grid/flex/order/position)와 **런타임 JS의 DOM 조작**이 최종 결정한다.
 2. **레이아웃·표출 주장은 반드시 확인 방법을 거친다:**
-   - (A) **실제 렌더** — 헤드리스 브라우저로 해당 섹션 스크린샷을 떠서 눈으로 확인. (Windows Chrome 예: `"C:\Program Files\Google\Chrome\Application\chrome.exe" --headless=new --screenshot=... "file://.../pages/components.html"`. 특정 섹션만 보이게 필요 시 쿼리/스크립트로 활성화.) 또는 puppeteer 등 헤드리스 렌더.
+   - (A) **실제 렌더** — 헤드리스 브라우저로 해당 섹션 스크린샷을 떠서 눈으로 확인. (**`npm run shot -- "pages/components.html#섹션" /tmp/out.png`** 를 쓴다 — raw chrome 명령은 쓰지 말 것. `--screenshot` 은 PNG 를 다 쓰고도 종료하지 않아 호출자 타임아웃까지 매달린다. 도구는 파일 완성 즉시 종료한다.)
    - (B) **전체 추적** — 렌더가 어려우면 관련 CSS 규칙 + **DOM을 바꾸는 JS 전부**(reflow/append/insertBefore/style 조작)를 끝까지 읽어 최종 구조를 재구성.
    - 반환 시 **어떤 방법(A/B)으로 확인했는지 반드시 명시.** 확인 안 한 배치 주장 금지.
 3. **모든 사실에 `파일:줄` 인용.** 값·구조·이름 전부 출처를 붙인다.

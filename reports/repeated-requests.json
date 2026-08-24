@@ -9,16 +9,20 @@
     {
       "id": "harness-token-efficiency",
       "category": "harness-operations",
-      "label": "하네스 토큰 소비 절감 정비 (문서·출력·읽기 통제)",
-      "count": 1,
+      "label": "하네스 효율 정비 (토큰 소비 · 실행 시간 · 읽기 통제)",
+      "count": 2,
       "promotionStatus": "tracking",
       "occurrences": [
         {
           "date": "2026-08-12",
           "summary": "토큰 소진 원인 3방향 실측 후 정비: gate:check 출력 172줄→요약 1줄(--verbose 복원), CLAUDE.md 39.8→31.9KB(한눈표 이관·중복 포인터화·하드룰 7→5 재편), 좁혀읽기 원칙 이식+.claudeignore 방어선, component-verifier 21.4→7.6KB(시나리오 references/ 이관)"
+        },
+        {
+          "date": "2026-08-24",
+          "summary": "검수 실행시간 병목을 실측으로 추적: gate:check 69.3초 중 60.2초(87%)가 Gate 23 단일 게이트였고, 그중 58초는 헤드리스 크롬이 출력 완료 후 종료하지 않아 생긴 죽은 대기였다. 스트리밍 종료로 2.3초로 교정(출력 동일 실증). 같은 함정이 CLAUDE.md 가 처방하는 렌더 확인 명령에도 있어 npm run shot 도구로 대체"
         }
       ],
-      "automationNote": "3회 도달 시 '상시 로드 총량(CLAUDE.md+에이전트 정의)·검사기 출력량'을 재는 관측 지표를 Gate 37 확장 또는 별도 검사기로 승격 검토."
+      "automationNote": "3회 도달 시 '상시 로드 총량(CLAUDE.md+에이전트 정의)·검사기 출력량'을 재는 관측 지표를 Gate 37 확장 또는 별도 검사기로 승격 검토. / 2026-08-24 추가: 효율 문제를 '검사 개수'로 추측하지 말고 **구간 실측**부터 할 것 — 이번엔 42개 게이트가 아니라 1개 게이트의 죽은 대기가 원인이었다."
     },
     {
       "id": "canonical-component-size-addition",
