@@ -1,7 +1,7 @@
 {
   "meta": {
     "name": "SW Pattern Registry Index",
-    "version": "0.2.0",
+    "version": "0.2.1",
     "status": "mvp-pattern",
     "updatedAt": "2026-08-24",
     "description": "Pattern Harness entry point. 패턴은 코어 컴포넌트를 조합한 반복 레이아웃이며 components/index.json과 분리 관리한다."
@@ -38,6 +38,7 @@
         "entry": "registry/patterns/mobile-login/README.md",
         "flow": "registry/patterns/mobile-login/flow.md",
         "states": "registry/patterns/mobile-login/states.md",
+        "copy": "registry/patterns/mobile-login/copy.md",
         "contentRules": "registry/patterns/mobile-login/content-rules.md"
       },
       "evidence": {
@@ -72,6 +73,13 @@
           "change": "미입력 오류 화면 2종 삭제 — '아이디 미입력'(1562:6)·'비밀번호 미입력'(1562:7)",
           "reason": "로그인 화면에서 입력 형식·규정 검증은 하지 않고(서버 판정 필요) 빈 칸 안내는 필드 내 안내 문구가 대신한다는 판단. 로그인 실패는 아이디·비밀번호 불일치(1562:8) 한 종으로 유지.",
           "record": "reports/screen-rebuild/modu-app/login-mobile/spec-change-2026-08-21.md"
+        },
+        {
+          "date": "2026-08-24",
+          "by": "river",
+          "change": "팝업 5개 타이틀·본문·버튼 라벨 정정",
+          "reason": "기존 팝업 화면의 내용이 잘못되어 현재 의도에 맞는 문구로 직접 수정.",
+          "record": "reports/screen-rebuild/modu-app/login-mobile/spec-change-2026-08-24-popup-copy.md"
         }
       ],
       "registeredAt": "2026-08-20"

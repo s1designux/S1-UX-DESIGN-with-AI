@@ -52,6 +52,7 @@
 
 - 흐름과 분기 이유: [flow.md](flow.md)
 - 화면 상태 목록: [states.md](states.md)
+- 현재 팝업 문구: [copy.md](copy.md)
 - 문구·오류·접근성 규칙: [content-rules.md](content-rules.md)
 - 제작·검증 근거: `reports/screen-rebuild/modu-app/login-mobile/`
 

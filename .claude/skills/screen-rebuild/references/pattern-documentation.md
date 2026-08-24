@@ -15,6 +15,7 @@
 | `README.md` | 목적, 사용 시점, 해결하는 문제, 필수 규칙, 변경 가능 범위 |
 | `flow.md` | 진입·성공 조건, 상태 전이, 분기, 각 흐름의 이유, 사용하지 않는 흐름 |
 | `states.md` | 대표 상태, 상태별 목적과 표현, 제거·제외 상태 |
+| `copy.md` | 상태별 현재 문구. 문구가 패턴의 중요한 정본일 때만 추가 |
 | `content-rules.md` | 문구, 오류, 보안, 접근성, 컴포넌트 사용 규칙 |
 
 패턴에 해당 주제가 없으면 빈 문서를 만들지 말고 `README.md`에 합친다.
@@ -38,6 +39,7 @@
   "entry": "registry/patterns/{pattern-id}/README.md",
   "flow": "registry/patterns/{pattern-id}/flow.md",
   "states": "registry/patterns/{pattern-id}/states.md",
+  "copy": "registry/patterns/{pattern-id}/copy.md",
   "contentRules": "registry/patterns/{pattern-id}/content-rules.md"
 },
 "evidence": {
@@ -48,7 +50,7 @@
 ## AI 읽기 비용 규칙
 
 - 일반적인 사용·구현은 `documentation.entry`만 먼저 읽는다.
-- 흐름 변경은 `flow`, 화면 상태 변경은 `states`, 문구·접근성 변경은 `contentRules`만 추가로 읽는다.
+- 흐름 변경은 `flow`, 화면 상태 변경은 `states`, 현재 문구 확인은 `copy`, 문구 원칙·접근성 변경은 `contentRules`만 추가로 읽는다.
 - `buildHistory`, `node-map.json`, trace는 결함 추적·재빌드 때만 읽는다.
 - 노드 ID와 실행 로그를 완성 패턴 설명의 중심으로 삼지 않는다.
 

@@ -48,6 +48,7 @@
 - 개요: `registry/patterns/mobile-login/README.md`
 - 흐름과 이유: `registry/patterns/mobile-login/flow.md`
 - 상태 목록: `registry/patterns/mobile-login/states.md`
+- 현재 팝업 문구: `registry/patterns/mobile-login/copy.md`
 - 콘텐츠·접근성 규칙: `registry/patterns/mobile-login/content-rules.md`
 
 일반적인 패턴 사용과 구현은 위 문서를 우선한다. 이 폴더의 나머지 파일은 제작·검증 이력으로 보존한다.

@@ -38,6 +38,7 @@
     "patternGuide": "registry/patterns/mobile-login/README.md",
     "patternFlow": "registry/patterns/mobile-login/flow.md",
     "patternStates": "registry/patterns/mobile-login/states.md",
+    "patternCopy": "registry/patterns/mobile-login/copy.md",
     "patternContentRules": "registry/patterns/mobile-login/content-rules.md"
   },
   "screens": [
@@ -141,7 +142,8 @@
     "사용자 승인에 따라 키보드를 별도 컴포넌트로 두지 않고 NavBar 변형에 통합했다. NavBar는 App(1545:6628), Web(1545:6637), App + Keyboard(1628:6740), Web + Keyboard(1628:6872) 4개 변형이며 독립 OS Keyboard 세트는 제거했다.",
     "NavBar 네 변형과 키보드 내부의 고정 Light Appearance를 제거했다. 세트는 Light 기준으로 보이지만 사용 인스턴스는 상위 화면의 Semantic Color V2 Light/Dark 모드를 상속하며, Dark 상속 시험과 대비 검사를 통과했다.",
     "모달이 있는 5개 화면은 로컬 Modal 정본의 Break=Mobile 변형으로 교체했다. 360px 딤은 좌우 30px 패딩이며, 메시지는 HEIGHT·모달은 HUG+minHeight 208로 설정해 긴 문구도 잘리지 않는다. 독립 검증에서 5개 화면 모두 PASS했다.",
-    "입력 A/B의 빈 키보드 프레임과 별도 App NavBar를 로컬 NavBar의 Platform=App + Keyboard 인스턴스로 교체했다. 최신 정본을 최종 시각 기준으로 적용했고 독립 검증에서 두 화면 모두 PASS했다."
+    "입력 A/B의 빈 키보드 프레임과 별도 App NavBar를 로컬 NavBar의 Platform=App + Keyboard 인스턴스로 교체했다. 최신 정본을 최종 시각 기준으로 적용했고 독립 검증에서 두 화면 모두 PASS했다.",
+    "2026-08-24 river님이 자동 로그인 2개와 새로운 기기 3개 팝업의 타이틀·본문·버튼 라벨을 정정했다. 현재 문구는 registry/patterns/mobile-login/copy.md를 우선한다."
   ],
   "blockers": [],
   "registration": {
