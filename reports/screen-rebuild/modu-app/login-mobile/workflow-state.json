@@ -39,7 +39,8 @@
     "patternFlow": "registry/patterns/mobile-login/flow.md",
     "patternStates": "registry/patterns/mobile-login/states.md",
     "patternCopy": "registry/patterns/mobile-login/copy.md",
-    "patternContentRules": "registry/patterns/mobile-login/content-rules.md"
+    "patternContentRules": "registry/patterns/mobile-login/content-rules.md",
+    "specChangeHelperSeparator": "reports/screen-rebuild/modu-app/login-mobile/spec-change-2026-08-24-helper-separator.md"
   },
   "screens": [
     {
@@ -143,7 +144,8 @@
     "NavBar 네 변형과 키보드 내부의 고정 Light Appearance를 제거했다. 세트는 Light 기준으로 보이지만 사용 인스턴스는 상위 화면의 Semantic Color V2 Light/Dark 모드를 상속하며, Dark 상속 시험과 대비 검사를 통과했다.",
     "모달이 있는 5개 화면은 로컬 Modal 정본의 Break=Mobile 변형으로 교체했다. 360px 딤은 좌우 30px 패딩이며, 메시지는 HEIGHT·모달은 HUG+minHeight 208로 설정해 긴 문구도 잘리지 않는다. 독립 검증에서 5개 화면 모두 PASS했다.",
     "입력 A/B의 빈 키보드 프레임과 별도 App NavBar를 로컬 NavBar의 Platform=App + Keyboard 인스턴스로 교체했다. 최신 정본을 최종 시각 기준으로 적용했고 독립 검증에서 두 화면 모두 PASS했다.",
-    "2026-08-24 river님이 자동 로그인 2개와 새로운 기기 3개 팝업의 타이틀·본문·버튼 라벨을 정정했다. 현재 문구는 registry/patterns/mobile-login/copy.md를 우선한다."
+    "2026-08-24 river님이 자동 로그인 2개와 새로운 기기 3개 팝업의 타이틀·본문·버튼 라벨을 정정했다. 현재 문구는 registry/patterns/mobile-login/copy.md를 우선한다.",
+    "2026-08-24 보조 링크(회원가입·아이디 찾기·비밀번호 찾기) 사이 구분선을 11개 화면 전부에 추가했다. 레거시 규격(1×12)이 아니라 정본 buildFooter 모바일 링크 행 규격(itemSpacing 8 + sep 1×10, color/line/gray/subtle)을 채택했다(river 승인). HelperLinks 는 절대배치가 아니라 오토레이아웃이며, 가운데 정렬이므로 좌우 링크 1px 대칭 재중심화를 승인된 결과로 둔다."
   ],
   "blockers": [],
   "registration": {
@@ -152,9 +154,9 @@
     "note": "13개 화면 시점 검증 후 미입력 오류 2종을 제거해 현재 11개 상태다. mobile-login 패턴 등록 및 완성 패턴 문서와 연결했다."
   },
   "handoff": {
-    "lastActor": "codex",
-    "updatedAt": "2026-08-21",
-    "summary": "입력 A/B에 로컬 NavBar의 Platform=App + Keyboard 정본을 적용했다. 두 화면의 입력 상태와 배치를 보존했고, 나머지 11개 화면 무변경·전체 출처·raw 색 검사와 독립 시각 검증을 통과해 워크플로우를 완료했다."
+    "lastActor": "claude",
+    "updatedAt": "2026-08-24",
+    "summary": "11개 화면 HelperLinks 에 정본 Footer 규격 구분선 sep 22개를 추가하고 itemSpacing 을 16→8 로 정정했다. 빌드는 screen-rebuilder, 검증은 component-verifier 가 분리 수행했다."
   },
   "screenCount": 11,
   "_screenCountNote": "status=verified(=실제 빌드된 프레임) 기준. removed 2건(2026-08-21 사양 축소) · excluded 1건(로그아웃 확인, 미빌드)은 제외."

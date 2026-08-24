@@ -9315,5 +9315,199 @@
       "label": "newDeviceC",
       "nodeId": "1562:13"
     }
-  ]
+  ],
+  "helperLinksSeparator2026-08-24": {
+    "status": "built-pending-verification",
+    "decision": "(B) 정본 규격 채택 — build-components.ts:4436-4446 buildFooter 모바일 링크 행과 동일한 itemSpacing 8 + sep 1x10. 7.5 안은 정본 근거 없어 기각.",
+    "structureFinding": "HelperLinks 11개는 절대배치가 아니라 HORIZONTAL 오토레이아웃(CENTER/CENTER, padding 0, fills []). 최초 명세의 절대좌표 전제는 실측으로 반증됨.",
+    "itemSpacing": {
+      "before": 16,
+      "after": 8
+    },
+    "childOrder": [
+      "Helper / 회원가입",
+      "sep",
+      "Helper / 아이디 찾기",
+      "sep",
+      "Helper / 비밀번호 찾기"
+    ],
+    "sepSpec": {
+      "type": "RECTANGLE",
+      "name": "sep",
+      "width": 1,
+      "height": 10,
+      "cornerRadius": 0,
+      "layoutPositioning": "AUTO",
+      "fillVariable": "color/line/gray/subtle",
+      "fillVariableId": "VariableID:8:1076",
+      "fillVariableKey": "a9a7b1e37890b5486550a0700d489fffba600168",
+      "collection": "Semantic Color V2"
+    },
+    "measuredCoords": {
+      "Helper / 회원가입": [
+        61.5,
+        2,
+        42,
+        16
+      ],
+      "sep1": [
+        111.5,
+        5,
+        1,
+        10
+      ],
+      "Helper / 아이디 찾기": [
+        120.5,
+        2,
+        55,
+        16
+      ],
+      "sep2": [
+        183.5,
+        5,
+        1,
+        10
+      ],
+      "Helper / 비밀번호 찾기": [
+        192.5,
+        2,
+        66,
+        16
+      ]
+    },
+    "textShiftAccepted": "좌우 링크 1px 대칭 재중심화(62.5→61.5 / 191.5→192.5)는 오케스트레이터 승인된 결과. 가운데 링크 120.5 무변경.",
+    "frames": [
+      {
+        "screen": "1562:3",
+        "helperLinks": "1564:57",
+        "sepIds": [
+          "1714:1838",
+          "1714:1839"
+        ]
+      },
+      {
+        "screen": "1562:4",
+        "helperLinks": "1586:4035",
+        "sepIds": [
+          "1714:1840",
+          "1714:1841"
+        ]
+      },
+      {
+        "screen": "1562:5",
+        "helperLinks": "1586:4047",
+        "sepIds": [
+          "1714:1842",
+          "1714:1843"
+        ]
+      },
+      {
+        "screen": "1562:8",
+        "helperLinks": "1566:373",
+        "sepIds": [
+          "1714:1844",
+          "1714:1845"
+        ]
+      },
+      {
+        "screen": "1562:9",
+        "helperLinks": "1566:444",
+        "sepIds": [
+          "1714:1846",
+          "1714:1847"
+        ]
+      },
+      {
+        "screen": "1562:10",
+        "helperLinks": "1566:530",
+        "sepIds": [
+          "1714:1848",
+          "1714:1849"
+        ]
+      },
+      {
+        "screen": "1562:11",
+        "helperLinks": "1566:614",
+        "sepIds": [
+          "1714:1850",
+          "1714:1851"
+        ]
+      },
+      {
+        "screen": "1562:12",
+        "helperLinks": "1566:698",
+        "sepIds": [
+          "1714:1852",
+          "1714:1853"
+        ]
+      },
+      {
+        "screen": "1562:13",
+        "helperLinks": "1567:699",
+        "sepIds": [
+          "1714:1854",
+          "1714:1855"
+        ]
+      },
+      {
+        "screen": "1562:14",
+        "helperLinks": "1567:785",
+        "sepIds": [
+          "1714:1856",
+          "1714:1857"
+        ]
+      },
+      {
+        "screen": "1562:15",
+        "helperLinks": "1567:856",
+        "sepIds": [
+          "1714:1858",
+          "1714:1859"
+        ]
+      }
+    ],
+    "createdNodeIds": [
+      "1714:1838",
+      "1714:1839",
+      "1714:1840",
+      "1714:1841",
+      "1714:1842",
+      "1714:1843",
+      "1714:1844",
+      "1714:1845",
+      "1714:1846",
+      "1714:1847",
+      "1714:1848",
+      "1714:1849",
+      "1714:1850",
+      "1714:1851",
+      "1714:1852",
+      "1714:1853",
+      "1714:1854",
+      "1714:1855",
+      "1714:1856",
+      "1714:1857",
+      "1714:1858",
+      "1714:1859"
+    ],
+    "mutatedNodeIds": [
+      "1564:57",
+      "1586:4035",
+      "1586:4047",
+      "1566:373",
+      "1566:444",
+      "1566:530",
+      "1566:614",
+      "1566:698",
+      "1567:699",
+      "1567:785",
+      "1567:856"
+    ],
+    "authoredRawScan": {
+      "scope": "11개 HelperLinks 자식 55개",
+      "unboundSolidFills": 0
+    },
+    "outOfScopeTouched": "none — HelperLinks 밖 노드 무변경",
+    "verification": "component-verifier 소관. screen-rebuilder 자가 PASS 판정 없음."
+  }
 }

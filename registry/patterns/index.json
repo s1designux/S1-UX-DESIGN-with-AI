@@ -54,8 +54,21 @@
           "rationale": "로그인 화면에서는 입력 형식·규정을 실시간 검증하지 않으므로(서버 판정 필요), 빈 칸 상태는 오류 화면 대신 버튼 비활성으로 막는다. 미입력 오류 화면 2종을 삭제한 결정과 짝을 이룬다.",
           "conformance": {
             "checkedAt": "2026-08-21",
-            "screensDisabled": ["1562:3 최초진입(둘 다 빈칸)", "1562:4 입력 A(비밀번호 빈칸)"],
-            "screensEnabled": ["1562:5 입력 B", "1562:8 잘못된 아이디비번", "1562:9", "1562:10", "1562:11", "1562:12", "1562:13", "1562:14", "1562:15"],
+            "screensDisabled": [
+              "1562:3 최초진입(둘 다 빈칸)",
+              "1562:4 입력 A(비밀번호 빈칸)"
+            ],
+            "screensEnabled": [
+              "1562:5 입력 B",
+              "1562:8 잘못된 아이디비번",
+              "1562:9",
+              "1562:10",
+              "1562:11",
+              "1562:12",
+              "1562:13",
+              "1562:14",
+              "1562:15"
+            ],
             "violations": 0
           }
         }
@@ -80,6 +93,13 @@
           "change": "팝업 5개 타이틀·본문·버튼 라벨 정정",
           "reason": "기존 팝업 화면의 내용이 잘못되어 현재 의도에 맞는 문구로 직접 수정.",
           "record": "reports/screen-rebuild/modu-app/login-mobile/spec-change-2026-08-24-popup-copy.md"
+        },
+        {
+          "date": "2026-08-24",
+          "by": "river",
+          "change": "보조 링크(회원가입·아이디 찾기·비밀번호 찾기) 사이 구분선 추가 — 11개 화면 전부",
+          "reason": "레거시 참고 화면과 같은 화면 하단 Footer 에는 구분선이 있는데 보조 링크 줄에만 누락됐다. 레거시 규격(1×12)이 아니라 정본 buildFooter 모바일 링크 행 규격(itemSpacing 8 + sep 1×10, color/line/gray/subtle)으로 통일했다.",
+          "record": "reports/screen-rebuild/modu-app/login-mobile/spec-change-2026-08-24-helper-separator.md"
         }
       ],
       "registeredAt": "2026-08-20"

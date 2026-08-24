@@ -176,3 +176,30 @@
 - 각 `ModalOverlay`의 좌우 패딩을 30px로 설정했다. 모달 폭 300px, 화면 폭 360px, 중심 오차는 0px다.
 - 모바일 정본의 고정 본문 높이로 긴 문구가 잘리는 문제를 이미지 검사에서 발견했다. 메시지를 `textAutoResize=HEIGHT`, 모달을 `HUG + minHeight 208`로 설정해 기본 모달은 208px, 긴 문구 모달은 229px·250px로 확장했다.
 - 수정 화면 인스턴스 62개 출처 검사와 직접 저작 노드 70개 raw 색 검사를 실행했으며 위반은 각각 0건이다.
+
+---
+
+## 2026-08-24 · HelperLinks 구분선 추가 (11개 화면)
+
+**실측으로 반증된 전제:** HelperLinks 11개는 절대배치가 아니라 **HORIZONTAL 오토레이아웃**(primary/counterAxisAlignItems=CENTER, padding 0, fills [], 자식 3개 전부 layoutPositioning=AUTO)이었다. 최초 지시의 절대좌표(x=112/183) 배치는 이 구조에서 불가능해 중단·보고했고, 오케스트레이터가 **(B) 정본 규격**을 결정했다.
+
+**적용 규격 (정본 `build-components.ts:4436-4446` buildFooter 모바일 링크 행과 동일):**
+- `itemSpacing` 16 → **8**
+- 자식 흐름: 회원가입 → `sep` → 아이디 찾기 → `sep` → 비밀번호 찾기 (`insertChild(1,·)` · `insertChild(3,·)`, 기존 텍스트 삭제·재생성 없음)
+- `sep` = RECTANGLE 1×10, cornerRadius 0, layoutPositioning AUTO, fill = **`color/line/gray/subtle`** (`VariableID:8:1076`, Semantic Color V2) 바인딩. 하드코딩 hex 0건.
+
+**작업 후 재조회 실측 (11개 프레임 전부 동일):**
+
+| 자식 | x | y | w | h |
+|---|---|---|---|---|
+| Helper / 회원가입 | 61.5 | 2 | 42 | 16 |
+| sep | 111.5 | 5 | 1 | 10 |
+| Helper / 아이디 찾기 | 120.5 | 2 | 55 | 16 |
+| sep | 183.5 | 5 | 1 | 10 |
+| Helper / 비밀번호 찾기 | 192.5 | 2 | 66 | 16 |
+
+프레임 320×20·위치·layoutMode·정렬·padding·fills 무변경. 텍스트 문구·textStyleId 무변경. 좌우 링크 1px 대칭 이동은 승인된 결과.
+
+**생성 노드 22개 / 변경 프레임 11개** — ID 전량은 `node-map.json` → `helperLinksSeparator2026-08-24`.
+
+검증은 component-verifier 소관 (screen-rebuilder 자가 PASS 판정 없음).
