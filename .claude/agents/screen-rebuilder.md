@@ -36,6 +36,7 @@ description: "screen-rebuild 워크플로우의 '빌드' 전용 서브에이전�
 
 ## 입력 (오케스트레이터가 준다)
 - `2-mapping.md` — 요소→[정본 인스턴스 / 토큰 프레임 / 공유 크롬 컴포넌트 / 플레이스홀더] 분류 + 색 매핑(raw→Variable) + 아이콘(라이브러리 key)
+- **화면 프레임 이름** — 매핑표가 지정한 이름을 그대로 쓴다. **레거시 원본의 프레임 이름을 복사하지 않는다.** 매핑표에 이름이 없으면 지어내지 말고 needs-decision 으로 반환한다. 서식 정본 `registry/governance/screen-naming-policy.json`
 - 허용편차 선언서
 - 타깃: 파일 key, 페이지 id, Section/화면 배치 좌표, 정본 컴포넌트 세트 id, 아이콘 라이브러리 component key
 - 재개 시: 기존 `node-map.json`

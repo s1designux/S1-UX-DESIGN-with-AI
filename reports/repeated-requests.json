@@ -2,7 +2,7 @@
   "_meta": {
     "description": "사용자가 반복 요청한 패턴 추적 파일. count >= 3 이면 자동 감사 규칙 승격 후보.",
     "promotionThreshold": 3,
-    "updatedAt": "2026-08-21",
+    "updatedAt": "2026-08-25",
     "note": "이 JSON 이 단일 정본이다. CLAUDE.md 에 있던 승격 현황 표는 2026-08-03 에 삭제했다(정본과 드리프트 중이었음)."
   },
   "patterns": [
@@ -258,7 +258,7 @@
       "category": "naming-consistency",
       "label": "표면마다 같은 것을 다른 단어로 적어 어휘가 갈림 (정본↔웹↔registry↔라벨)",
       "description": "크기 표기가 5계보로 갈려 있었다(설치기 축약형·표셀만 MEDIUM/SMALL·웹 CSS 가 44를 lg 로·라벨 medium·registry pc-medium). 과거에 통일 작업을 했으나 일부가 누락됐고, Gate 19 가 대조 전에 소문자로 정규화해 어긋남이 기계에 보이지 않았다. 같은 계열: 은퇴 별칭층 --dropdown-trigger-*(2026-07-10), 아이콘 키 3곳 3숫자(Gate 31), 컬렉션 이름 하드코딩 사본(Phase 3).",
-      "count": 3,
+      "count": 4,
       "promotionStatus": "promoted",
       "promotedRule": "Gate 32(size-naming-check.js) — 정본 어휘 밖 단어·속성명 공백·파생표면 갈림·라벨↔클래스 불일치를 차단. 정본 registry/governance/size-naming-policy.json",
       "automationNote": "새 '이름 축'이 생기면(색·간격·상태 등) 같은 형태의 어휘 게이트를 복제할 것 — 정본 어휘 목록 + 파생표면 대조 + 미계측 정직 보고.",
@@ -274,6 +274,10 @@
         {
           "date": "2026-08-02",
           "what": "크기 표기 5계보 갈림 (river 요청: 전체 검수 후 통일) — Gate 32 신설"
+        },
+        {
+          "date": "2026-08-25",
+          "what": "정본 크롬 컴포넌트 세트가 두 벌로 갈림 — 로컬 Core 에 NavBar 세트 1545:6664 와 1654:37800(variant 동일), StatusBar 도 1545:6565 와 1654:37420 이 공존. 회원가입 20장에 크롬이 들어가므로 확정 전에는 로그인 패턴과 다른 세트를 참조할 위험. Gate 34 는 '이름 신설'을 보지 '같은 이름 세트가 둘'인 것을 보지 않는다."
         }
       ]
     },
@@ -452,15 +456,52 @@
       "id": "rule-written-but-not-enforced",
       "category": "harness-operations",
       "label": "규칙을 문서에만 넣어 두고 강제 장치를 안 만들어 그대로 샘",
-      "count": 1,
+      "count": 2,
       "promotionStatus": "tracking",
       "occurrences": [
         {
           "date": "2026-08-24",
           "summary": "한 세션에서 3건이 같은 유형이었다. ①fast-safe 규칙은 references 에 이미 있었으나 스킬 미발동으로 안 걸림(검증자 128K) ②상태 검사기는 존재했으나 gate:check 미배선이라 8/21부터 3일간 실패를 아무도 모름 ③스냅샷 캡처 의무를 SKILL.md 에만 넣어 빌더 정의엔 없어, 빌더를 직접 spawn 하면 안 걸리는 구멍이 남았다(사용자 질문으로 발견). 조치: 에이전트 정의에 이식 + 라우팅/트리거 확장 + Gate 40 신설(warn)."
+        },
+        {
+          "date": "2026-08-25",
+          "summary": "화면 프레임 네이밍 규칙(screen-naming-policy.json)을 신설했을 때 처음에는 강제 장치가 없었다. river 결정으로 같은 날 **Gate 42(screen-naming-check.js)** 를 만들어 배선했고, 위반 주입 시 gate:check 가 exit 1 로 차단하는 것을 확인했다. 동시에 '존재하나 미연결'이던 screen-rebuild:statecheck 를 --all 모드로 **Gate 41** 에 배선했고, 배선 즉시 아무도 모르던 기존 불일치 1건이 드러났다. 한계: Gate 42 는 기준표(states.md)의 이름만 지키고 Figma 실물 이름은 못 본다(정책 enforcedBy.limitation 에 명시)."
         }
       ],
-      "automationNote": "규칙을 새로 만들 때 **어디에 두면 실제로 로드되는가**를 함께 정할 것. 로드 보장 순서: ①코드 자체 > ②Gate/훅 > ③에이전트 정의(spawn 시 항상) > ④CLAUDE.md(매 세션) > ⑤스킬 문서(발동해야 로드). ⑤에만 두면 새는 것이 기본값이다. 3회 도달 시 '새 규칙 추가 시 로드 경로 선언' 체크를 harness 스킬에 명문화 검토."
+      "automationNote": "규칙을 새로 만들 때 **어디에 두면 실제로 로드되는가**를 함께 정할 것. 로드 보장 순서: ①코드 자체 > ②Gate/훅 > ③에이전트 정의(spawn 시 항상) > ④CLAUDE.md(매 세션) > ⑤스킬 문서(발동해야 로드). ⑤에만 두면 새는 것이 기본값이다. 3회 도달 시 '새 규칙 추가 시 로드 경로 선언' 체크를 harness 스킬에 명문화 검토.",
+      "resolvedNote": "2026-08-25: 이 패턴이 지목한 두 구멍(네이밍 규칙 미집행 · 상태검사기 미배선)을 Gate 42·41 로 메움. 패턴 자체는 계속 추적한다 — '규칙 만들 때 로드/집행 경로를 함께 정한다'가 습관이 되었는지 봐야 한다."
+    },
+    {
+      "id": "legacy-naming-carried-into-artifacts",
+      "category": "naming-consistency",
+      "label": "레거시 원본의 이름·번호 체계가 정리 없이 새 산출물에 그대로 남음",
+      "description": "레거시 화면을 V3.0 으로 재현할 때 값·구조는 정본 기준으로 옮기면서 프레임 이름은 원본 그대로 복사했다. 모바일 로그인 11개 프레임이 없어진 기획서 목차 번호('2.1 로그인_1 최초진입')를 유지했고, 이후 화면 2개가 삭제되며 번호에 구멍이 나 캔버스 순서·흐름 순서 어느 쪽과도 맞지 않게 됐다. 이름과 내용이 어긋난 사례도 있었다('자동 로그인 선택 B' = 실제로는 설정 완료 안내). 결과적으로 이름만으로는 사람도 AI 도 화면 맥락을 알 수 없었다. screen-rebuild 워크플로우가 텍스트·색·구조는 전수 대조하면서 '이름' 은 대조 항목에 없던 것이 원인.",
+      "count": 1,
+      "promotionStatus": "promoted",
+      "automationNote": "3회 도달 시 screen-rebuild 2단계 매핑에 '프레임 이름 매핑' 열을 필수화하고, registry/governance/screen-naming-policy.json 의 nameRegex 로 states.md 프레임 이름을 검사하는 Gate 를 검토할 것.",
+      "occurrences": [
+        {
+          "date": "2026-08-25",
+          "summary": "river: '프레임 이름이 정리가 안되어있고 레거시 그대로다. AI 가 화면 맥락을 이해할 수 있는 패턴 네이밍 체계를 구축해달라' → screen-naming-policy.json 신설, 10개 개명"
+        }
+      ],
+      "promotedRule": "Gate 42 (screen-naming-check.js) — 프레임 이름 서식·흐름코드 문법·중복·화면 수를 커밋 시 차단. 정본 registry/governance/screen-naming-policy.json"
+    },
+    {
+      "id": "occluded-area-unverified",
+      "category": "verification-blindspot",
+      "label": "오버레이에 가려진 영역이 검증에서 통째로 빠짐",
+      "description": "팝업·모달이 덮은 화면의 배경은 스크린샷 대조로 안 보이므로 검증에서 누락된다. 모바일 로그인 팝업 4개 화면의 보조 버튼만 레거시 문구(`휴대폰 번호로 로그인`)로 남아 있었는데 제작·검증·재검증 어디에도 걸리지 않았고, 사용자가 직접 발견했다. 같은 계열: verification-visual-gap(렌더 안 보고 값만 대조) 의 역방향 — 이쪽은 렌더를 봐도 안 보이는 영역이다.",
+      "count": 1,
+      "promotionStatus": "tracking",
+      "promotedRule": "(잠정) component-verifier 검증 원칙 7 + screen-rebuild 4단계 Layer 1 — 오버레이 노드를 제외한 배경을 기준 화면과 전수 비교",
+      "automationNote": "3회 도달 시 결정론 검사기로 승격 검토 — 오버레이를 가진 화면을 자동 식별하고 기준 화면 대비 배경 diff 를 Gate 로 강제.",
+      "occurrences": [
+        {
+          "date": "2026-08-25",
+          "summary": "river: '팝업이 있는 화면 하위 버튼 라벨이 수정이 안됐다. 가려진 부분도 맞춰줘. 앞으로 팝업에 가려진 부분이 있다면 팝업이 없는 화면에 일괄 맞춰줘야 해'"
+        }
+      ]
     }
   ]
 }

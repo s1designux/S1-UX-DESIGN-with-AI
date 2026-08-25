@@ -991,6 +991,53 @@ try {
   warn(`Gate 40 실행 실패: ${e.message} (기록만)`);
 }
 
+// ── Gate 41: Screen Rebuild State (화면 작업 상태 파일) ─────────────
+// 단건 검사기(screen-rebuild:statecheck)는 수동이라 2026-08-21~24 사이 실패를 아무도 몰랐다.
+// (반복 패턴 rule-written-but-not-enforced — 규칙을 만들고 자동 실행에 안 걸면 새는 것이 기본값)
+// **현재 warn 단계** — 진행 중 플로우의 기존 부채가 남아 있어 차단하지 않는다(래칫, Gate 40 과 동일).
+gateHeader('[Gate 41] 화면 작업 상태 검사기 (Screen Rebuild State)');
+try {
+  const { spawnSync } = require('child_process');
+  const r = spawnSync(process.execPath, [path.join(ROOT, 'scripts/screen-rebuild-state-check.js'), '--all'],
+    { cwd: ROOT, encoding: 'utf8' });
+  const out = (r.stdout || '').trim();
+  const m = out.match(/SRSTATE_SUMMARY flows=(\d+) failed=(\d+) warnings=(\d+)/);
+  if (!m) {
+    warn(`Gate 41: 검사기 출력 해석 실패 (기록만)\n${out}`);
+  } else {
+    const [, flows, failed, warnN] = m;
+    if (Number(failed) > 0) {
+      warn(`Gate 41: 상태 파일 불일치 ${failed}/${flows} 플로우 — 지금은 기록만, 차단 아님. 상세: npm run screen-rebuild:statecheck:all`);
+    } else {
+      pass(`화면 작업 상태 정합 — 플로우 ${flows}개${Number(warnN) ? ` (낡음 제외 경고 ${warnN})` : ''}`);
+    }
+  }
+} catch (e) {
+  warn(`Gate 41 실행 실패: ${e.message} (기록만)`);
+}
+
+// ── Gate 42: Screen Naming (화면 프레임 네이밍) ─────────────────────
+// 2026-08-25: 레거시 기획서 목차 번호가 프레임 이름에 그대로 남아 이름만으로 화면 맥락을 알 수 없었다.
+// 대상은 정책 adopted[] 에 등재된 패턴만(래칫). 실물 Figma 이름이 아니라 기준표(states.md)를 지킨다 —
+// 실물↔문서 일치는 화면 작업 시 component-verifier 소관(검사기 헤더에 한계 명시).
+gateHeader('[Gate 42] 화면 네이밍 검사기 (Screen Naming)');
+try {
+  const { spawnSync } = require('child_process');
+  const r = spawnSync(process.execPath, [path.join(ROOT, 'scripts/screen-naming-check.js')],
+    { cwd: ROOT, encoding: 'utf8' });
+  const out = (r.stdout || '').trim();
+  const m = out.match(/SCRNAMING_SUMMARY patterns=(\d+) names=(\d+) bad=(\d+)/);
+  if (!m) {
+    fail(`Gate 42: 검사기 출력 해석 실패\n${out}`);
+  } else {
+    const [, pats, names, bad] = m;
+    if (Number(bad) > 0) fail(`Gate 42: 프레임 이름 규칙 위반 ${bad}건\n${out}`);
+    else pass(`화면 프레임 네이밍 정합 — 패턴 ${pats}개 · 이름 ${names}개 (정본 registry/governance/screen-naming-policy.json)`);
+  }
+} catch (e) {
+  fail(`Gate 42 실행 실패: ${e.message}`);
+}
+
 // ── Summary ───────────────────────────────────────────────────────
 if (VERBOSE || errors > 0 || warnings > 0) console.log('\n─────────────────────────────────────────────────────');
 const tally = `게이트 ${gates}개 · ✅ ${passes}건${VERBOSE ? '' : ' (상세: --verbose)'}`;

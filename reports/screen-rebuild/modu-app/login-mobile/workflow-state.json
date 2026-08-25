@@ -22,7 +22,7 @@
   "currentPhase": "complete",
   "status": "complete",
   "lastCompletedCheckpoint": 5,
-  "nextAction": "완료. 후속 요청이 생기면 이 상태 파일과 최신 Figma 노드 ID를 기준으로 재개한다.",
+  "nextAction": "프레임 이름 규칙을 회원가입(MWEB/SIGNUP)·PC 로그인(PC/LOGIN) 에도 적용할지 결정. 화면 내 '휴대전화번호로 로그인'/'휴대폰 번호로 로그인' 문구 불일치 정리는 별도 건.",
   "artifacts": {
     "inventory": "reports/screen-rebuild/modu-app/login-mobile/1-inventory.md",
     "mapping": "reports/screen-rebuild/modu-app/login-mobile/2-mapping.md",
@@ -45,85 +45,73 @@
   "screens": [
     {
       "sourceNodeId": "8403:60128",
-      "name": "2.1 로그인_1 최초 진입",
+      "name": "APP/LOGIN/1 · 최초 진입",
       "status": "verified",
-      "targetNodeId": "1562:3"
+      "targetNodeId": "1562:3",
+      "legacyName": "2.1 로그인_1 최초 진입"
     },
     {
       "sourceNodeId": "8403:60155",
-      "name": "2.1 로그인_2 입력 A",
+      "name": "APP/LOGIN/2 · 아이디 입력 중 (키보드)",
       "status": "verified",
-      "targetNodeId": "1562:4"
+      "targetNodeId": "1562:4",
+      "legacyName": "2.1 로그인_2 입력 A"
     },
     {
       "sourceNodeId": "30812:3889",
-      "name": "2.1 로그인_2 입력 B",
+      "name": "APP/LOGIN/3 · 비밀번호 입력 중 (키보드)",
       "status": "verified",
-      "targetNodeId": "1562:5"
-    },
-    {
-      "sourceNodeId": "8403:60255",
-      "name": "2.1 로그인_3 아이디 미입력",
-      "status": "removed",
-      "targetNodeId": null,
-      "removedAt": "2026-08-21",
-      "removedReason": "사양 축소(river 결정) — 미입력 오류 화면 폐지. 빈 칸은 로그인 버튼 비활성으로 처리."
-    },
-    {
-      "sourceNodeId": "8403:60287",
-      "name": "2.1 로그인_4 비번 미입력",
-      "status": "removed",
-      "targetNodeId": null,
-      "removedAt": "2026-08-21",
-      "removedReason": "사양 축소(river 결정) — 미입력 오류 화면 폐지. 빈 칸은 로그인 버튼 비활성으로 처리."
-    },
-    {
-      "sourceNodeId": "8403:60315",
-      "name": "2.1 로그인_5 잘못된 아이디비번",
-      "status": "verified",
-      "targetNodeId": "1562:8"
-    },
-    {
-      "sourceNodeId": "8403:60181",
-      "name": "2.1 로그인_7 자동 로그인 선택 A",
-      "status": "verified",
-      "targetNodeId": "1562:9"
-    },
-    {
-      "sourceNodeId": "21446:2889",
-      "name": "2.1 로그인_7 자동 로그인 선택 B",
-      "status": "verified",
-      "targetNodeId": "1562:10"
-    },
-    {
-      "sourceNodeId": "30812:3215",
-      "name": "2.1 로그인_6 새로운 기기로 로그인 A",
-      "status": "verified",
-      "targetNodeId": "1562:11"
-    },
-    {
-      "sourceNodeId": "30812:3288",
-      "name": "2.1 로그인_6 새로운 기기로 로그인 B",
-      "status": "verified",
-      "targetNodeId": "1562:12"
-    },
-    {
-      "sourceNodeId": "30812:3252",
-      "name": "2.1 로그인_6 새로운 기기로 로그인 C",
-      "status": "verified",
-      "targetNodeId": "1562:13"
+      "targetNodeId": "1562:5",
+      "legacyName": "2.1 로그인_2 입력 B"
     },
     {
       "sourceNodeId": "8403:60218",
-      "name": "2.1 로그인_6 새로운 기기로 로그인 D",
+      "name": "APP/LOGIN/4 · 입력 완료·로그인 활성",
       "status": "verified",
-      "targetNodeId": "1562:14"
+      "targetNodeId": "1562:14",
+      "legacyName": "2.1 로그인_6 새로운 기기로 로그인 D"
     },
     {
-      "sourceNodeId": "21446:2852",
-      "name": "2.1 로그인_6 새로운 기기로 로그인 E",
+      "sourceNodeId": "8403:60315",
+      "name": "APP/LOGIN/4a1 · 계정 불일치 오류",
       "status": "verified",
-      "targetNodeId": "1562:15"
+      "targetNodeId": "1562:8",
+      "legacyName": "2.1 로그인_5 잘못된 아이디비번"
+    },
+    {
+      "sourceNodeId": "8403:60181",
+      "name": "APP/LOGIN/4b1 · 자동 로그인 질문 (모달)",
+      "status": "verified",
+      "targetNodeId": "1562:9",
+      "legacyName": "2.1 로그인_7 자동 로그인 선택 A"
+    },
+    {
+      "sourceNodeId": "21446:2889",
+      "name": "APP/LOGIN/4b2 · 자동 로그인 설정 완료 (모달)",
+      "status": "verified",
+      "targetNodeId": "1562:10",
+      "legacyName": "2.1 로그인_7 자동 로그인 선택 B"
+    },
+    {
+      "sourceNodeId": "30812:3215",
+      "name": "APP/LOGIN/4c1 · 본인 인증 안내 (모달)",
+      "status": "verified",
+      "targetNodeId": "1562:11",
+      "legacyName": "2.1 로그인_6 새로운 기기로 로그인 A"
+    },
+    {
+      "sourceNodeId": "30812:3288",
+      "name": "APP/LOGIN/4c2 · 기기 인증 완료 (모달)",
+      "status": "verified",
+      "targetNodeId": "1562:12",
+      "legacyName": "2.1 로그인_6 새로운 기기로 로그인 B"
+    },
+    {
+      "sourceNodeId": "30812:3252",
+      "name": "APP/LOGIN/4c3 · 기기 등록 안내 (모달)",
+      "status": "verified",
+      "targetNodeId": "1562:13",
+      "legacyName": "2.1 로그인_6 새로운 기기로 로그인 C"
     },
     {
       "sourceNodeId": "21505:5461",
@@ -145,7 +133,10 @@
     "모달이 있는 5개 화면은 로컬 Modal 정본의 Break=Mobile 변형으로 교체했다. 360px 딤은 좌우 30px 패딩이며, 메시지는 HEIGHT·모달은 HUG+minHeight 208로 설정해 긴 문구도 잘리지 않는다. 독립 검증에서 5개 화면 모두 PASS했다.",
     "입력 A/B의 빈 키보드 프레임과 별도 App NavBar를 로컬 NavBar의 Platform=App + Keyboard 인스턴스로 교체했다. 최신 정본을 최종 시각 기준으로 적용했고 독립 검증에서 두 화면 모두 PASS했다.",
     "2026-08-24 river님이 자동 로그인 2개와 새로운 기기 3개 팝업의 타이틀·본문·버튼 라벨을 정정했다. 현재 문구는 registry/patterns/mobile-login/copy.md를 우선한다.",
-    "2026-08-24 보조 링크(회원가입·아이디 찾기·비밀번호 찾기) 사이 구분선을 11개 화면 전부에 추가했다. 레거시 규격(1×12)이 아니라 정본 buildFooter 모바일 링크 행 규격(itemSpacing 8 + sep 1×10, color/line/gray/subtle)을 채택했다(river 승인). HelperLinks 는 절대배치가 아니라 오토레이아웃이며, 가운데 정렬이므로 좌우 링크 1px 대칭 재중심화를 승인된 결과로 둔다."
+    "2026-08-24 보조 링크(회원가입·아이디 찾기·비밀번호 찾기) 사이 구분선을 11개 화면 전부에 추가했다. 레거시 규격(1×12)이 아니라 정본 buildFooter 모바일 링크 행 규격(itemSpacing 8 + sep 1×10, color/line/gray/subtle)을 채택했다(river 승인). HelperLinks 는 절대배치가 아니라 오토레이아웃이며, 가운데 정렬이므로 좌우 링크 1px 대칭 재중심화를 승인된 결과로 둔다.",
+    "2026-08-25 프레임 네이밍 체계 확정(river 승인): {PLATFORM}/{PATTERN}/{FLOWCODE} · {한글 상태명}({표현}). 흐름 코드는 유즈케이스 명세 표기(숫자=기본 흐름, 4a1=4단계에서 갈라진 첫 분기의 1번째)를 따르고 프로젝트 고유 약어를 만들지 않는다. 기계 정본 registry/governance/screen-naming-policy.json.",
+    "2026-08-25 1562:15(구 '새로운 기기 E') 삭제(river 승인). 레거시 재고조사상 '팝업 후 기본 로그인 상태'였으나 화면 표현이 1562:14 와 동일해 분기 복귀는 프로토타입 연결로 표현한다.",
+    "2026-08-25 캔버스 2줄 배치 확정: 윗줄=기본 흐름(1~4), 아랫줄=분기(4a·4b·4c). Section 자식 순서도 같은 순서로 맞춘다."
   ],
   "blockers": [],
   "registration": {
@@ -155,16 +146,57 @@
   },
   "handoff": {
     "lastActor": "claude",
-    "updatedAt": "2026-08-24",
-    "summary": "11개 화면 HelperLinks 에 정본 Footer 규격 구분선 sep 22개를 추가하고 itemSpacing 을 16→8 로 정정했다. 빌드는 screen-rebuilder, 검증은 component-verifier 가 분리 수행했다."
+    "updatedAt": "2026-08-25",
+    "summary": "레거시 프레임 이름 11개를 APP/LOGIN/{유즈케이스 표준 흐름코드} 체계로 개명하고, 중복 화면 1562:15 를 삭제(10개), 캔버스를 윗줄 기본흐름·아랫줄 분기 2줄로 재배치했다. 이름·좌표·자식순서·섹션 크기 외 변경 0건을 snapdiff 로 기계 증명했다. 네이밍 규칙은 registry/governance/screen-naming-policy.json 에 기계 정본으로 신설(river 승인)."
   },
-  "screenCount": 11,
-  "_screenCountNote": "status=verified(=실제 빌드된 프레임) 기준. removed 2건(2026-08-21 사양 축소) · excluded 1건(로그아웃 확인, 미빌드)은 제외.",
+  "screenCount": 10,
+  "_screenCountNote": "status=verified(=실제 존재하는 프레임) 기준. removed 3건(2026-08-21 미입력 오류 2종 · 2026-08-25 1562:15) · excluded 1건(로그아웃 확인, 미빌드)은 제외.",
   "evidence": {
-    "exempt": {
+    "baseline": [
+      "existing-nodes"
+    ],
+    "snapdiff": {
+      "ranAt": "2026-08-25",
+      "violations": 0,
+      "by": "orchestrator",
+      "note": "before/after 스냅샷은 섹션+화면 프레임 전 속성 + 화면 내부 전수 순회 다이제스트(hx)·노드 수(c). hx·c 가 changed 에 없다 = 화면 내부 1,132개 노드 무변경. 종료코드 0(선언 밖 변경 0건).",
+      "files": [
+        "snapshot-before.json",
+        "snapshot-expect.json",
+        "snapshot-after.json"
+      ]
+    },
+    "_priorExempt": {
       "reason": "스냅샷 근거 규약 신설(2026-08-24) 이전 작업. 2026-08-24 보조 링크 구분선 수정은 existing-nodes 성격이었으나 규약보다 먼저 수행돼 변경 전 스냅샷이 없다. 당시 검증은 component-verifier 독립 대조 PASS(4-verification.md·spec-change-2026-08-24-helper-separator.md)로 대신했다. 다음 수정부터 스냅샷 근거를 남긴다.",
       "at": "2026-08-24",
       "by": "river"
     }
-  }
+  },
+  "removedScreens": [
+    {
+      "sourceNodeId": "8403:60255",
+      "name": "2.1 로그인_3 아이디 미입력",
+      "status": "removed",
+      "targetNodeId": null,
+      "removedAt": "2026-08-21",
+      "removedReason": "사양 축소(river 결정) — 미입력 오류 화면 폐지. 빈 칸은 로그인 버튼 비활성으로 처리."
+    },
+    {
+      "sourceNodeId": "8403:60287",
+      "name": "2.1 로그인_4 비번 미입력",
+      "status": "removed",
+      "targetNodeId": null,
+      "removedAt": "2026-08-21",
+      "removedReason": "사양 축소(river 결정) — 미입력 오류 화면 폐지. 빈 칸은 로그인 버튼 비활성으로 처리."
+    },
+    {
+      "sourceNodeId": "21446:2852",
+      "name": "2.1 로그인_6 새로운 기기로 로그인 E",
+      "status": "removed",
+      "targetNodeId": "1562:15",
+      "removedAt": "2026-08-25",
+      "removedReason": "새로운 기기 분기의 종착(인증 후 재로그인) 상태이나 화면 표현이 1562:14 와 동일. river 승인 후 삭제."
+    }
+  ],
+  "_removedScreensNote": "제거된 화면 이력. screens[] 는 실제 존재하는 프레임만 담는다(상태 어휘: pending·inventoried·mapped·built·verified·excluded)."
 }

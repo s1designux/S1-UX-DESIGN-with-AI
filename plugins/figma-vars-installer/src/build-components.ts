@@ -2942,15 +2942,17 @@ async function buildMobileBottomNav(maps: BuildMaps, originY: number): Promise<{
 }
 
 // ── Mobile Header — StatusBar(App) + 56px AppBar, 360×99 ────────────────────
-// V2.4 mobile_header(540:6112) 5종 + 회원가입용 No Title 1종.
+// V2.4 mobile_header(540:6112) 원본 5종 기준 + 회원가입용 No Title 계열 2종.
 // StatusBar는 정본 인스턴스만 재사용하고, 아이콘은 등록된 원본 component key import만 허용한다.
+// 2026-08-25 river: "Home / Title + 2 Icons" 는 실제로 쓰지 않는 기준이라 삭제.
+// 2026-08-25 river: 회원가입 약관상세(제목 없음 + 닫기)용으로 "Standard / No Title + Close" 추가.
 const MOBILE_HEADER_TYPES = [
   "Standard / Title",
   "Standard / Title + Close",
-  "Home / Title + 2 Icons",
+  "Standard / No Title",
+  "Standard / No Title + Close",
   "Home / Title + Subtitle + 1 Icon",
   "Home / Title + Alt Title",
-  "Standard / No Title",
 ] as const;
 type MobileHeaderType = typeof MOBILE_HEADER_TYPES[number];
 
@@ -3038,27 +3040,15 @@ async function buildMobileHeaderVariant(type: MobileHeaderType, maps: BuildMaps)
 
   if (!isHome) {
     appBar.itemSpacing = 8;
-    appBar.appendChild(await makeMobileHeaderIconSlot("Back", "mobileHeaderBack", iconLight));
+    appBar.appendChild(await makeMobileHeaderIconSlot("Back", "mobileHeaderBack", iconDark));
     const center = makeMobileHeaderGrowFrame("Title", "CENTER");
-    if (type !== "Standard / No Title") {
+    if (!type.startsWith("Standard / No Title")) {
       center.appendChild(await makeBoundText("스탠다드형 타이틀", 18, "Medium", titleColor, "title/18M"));
     }
     appBar.appendChild(center);
-    appBar.appendChild(type === "Standard / Title + Close"
-      ? await makeMobileHeaderIconSlot("Close", "mobileHeaderClose", iconLight)
+    appBar.appendChild(type.endsWith("+ Close")
+      ? await makeMobileHeaderIconSlot("Close", "mobileHeaderClose", iconDark)
       : makeMobileHeaderSlot("Right spacer"));
-  } else if (type === "Home / Title + 2 Icons") {
-    const title = makeMobileHeaderGrowFrame("Title", "MIN");
-    title.appendChild(await makeBoundText("홈 타이틀", 18, "Bold", titleColor, "title/18B"));
-    appBar.appendChild(title);
-    const actions = figma.createFrame();
-    actions.name = "Actions"; actions.layoutMode = "HORIZONTAL";
-    actions.primaryAxisAlignItems = "CENTER"; actions.counterAxisAlignItems = "CENTER";
-    actions.primaryAxisSizingMode = "FIXED"; actions.counterAxisSizingMode = "FIXED";
-    actions.itemSpacing = 16; actions.fills = []; actions.resize(80, 32);
-    actions.appendChild(await makeMobileHeaderIconSlot("Notification", "mobileHeaderNotification", iconDark, scv(maps, "color/icon/red")));
-    actions.appendChild(await makeMobileHeaderIconSlot("Close", "mobileHeaderClose", iconLight));
-    appBar.appendChild(actions);
   } else if (type === "Home / Title + Subtitle + 1 Icon") {
     const copy = figma.createFrame();
     copy.name = "Title + Subtitle"; copy.layoutMode = "VERTICAL";

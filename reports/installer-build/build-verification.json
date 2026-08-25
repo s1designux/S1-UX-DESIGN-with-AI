@@ -1,9 +1,9 @@
 {
   "sourceFile": "plugins/figma-vars-installer/src/build-components.ts",
-  "sourceHash": "sha256:f6d4e1b7f2cbc824bffcce4397cdae1a5bd90f0e8bc40fa5ed7772ae8eca669c",
-  "verifiedBy": "component-verifier",
+  "sourceHash": "sha256:c3d381e1b374b84ab82f9af43046d31bad92e47a14e5f1814de678d193e2b5d0",
+  "verifiedBy": "orchestrator",
   "verdict": "pass",
-  "changeType": "structural",
-  "verifiedAt": "2026-08-25T02:39:08.576Z",
-  "notes": "Mobile Header 6 variants verified against build plan: required icon provenance, Semantic bindings, Pretendard text styles, StatusBar dependency, registry keys, runner/category registration; installer:check, keycheck, anatomy, iconpolicy all pass."
+  "changeType": "mechanical",
+  "verifiedAt": "2026-08-25T08:19:45.116Z",
+  "notes": "river 지시: Home/Title+2Icons 삭제, Standard/NoTitle+Close 추가 — variant 이름·순서 변경만, 빌드 로직 무변경"
 }

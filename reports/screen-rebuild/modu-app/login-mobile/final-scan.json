@@ -1,1860 +1,1887 @@
 {
-  "generatedAt": "2026-08-21",
-  "status": "PASS — Phase 5 등록 완료",
-  "keyboardCorrection2026-08-21": {
-    "status": "verified",
-    "screenIds": ["1562:4", "1562:5"],
-    "replacementInstanceIds": ["1651:1797", "1651:1929"],
-    "mainComponentId": "1628:6740",
-    "variant": "Platform=App + Keyboard",
-    "geometry": [0, 439, 360, 341],
-    "untouchedScreensChecked": 11,
-    "untouchedScreensChanged": 0,
-    "provenance": { "checked": 140, "local": 112, "allowedRemote": 28, "violations": 0 },
-    "authoredRaw": { "checked": 172, "violations": 0 }
-  },
-  "section": {
-    "id": "1562:2",
-    "name": "Pattern / Mobile Login / MoDU",
-    "geometry": [
-      200,
-      200,
-      5800,
-      980
-    ]
-  },
-  "screens": [
-    {
-      "id": "1562:3",
-      "name": "2.1 로그인_1 최초진입",
-      "source": "8403:60128",
-      "status": "built",
-      "contentRootId": "1564:2",
-      "authoredNodeIds": [
-        "1562:3",
-        "1564:2",
-        "1564:3",
-        "1564:26",
-        "1564:27",
-        "1564:28",
-        "1577:832",
-        "1564:31",
-        "1577:833",
-        "1564:36",
-        "1577:834",
-        "1564:55",
-        "1577:835",
-        "1564:57",
-        "1564:58",
-        "1564:59",
-        "1564:60",
-        "1577:836",
-        "1564:61",
-        "1564:63",
-        "1564:71"
-      ],
-      "rootInstanceIds": [
-        "1564:3",
-        "1564:28",
-        "1564:31",
-        "1564:36",
-        "1564:55",
-        "1564:61",
-        "1564:63",
-        "1564:71"
-      ],
-      "allInstanceCount": 10,
-      "visibleTextCount": 13,
-      "spacers": [
-        {
-          "id": "1577:832",
-          "name": "Spacer / Logo-ID",
-          "height": 10
-        },
-        {
-          "id": "1577:833",
-          "name": "Spacer / ID-Password",
-          "height": 12
-        },
-        {
-          "id": "1577:834",
-          "name": "Spacer / Password-Login",
-          "height": 34
-        },
-        {
-          "id": "1577:835",
-          "name": "Spacer / Login-Helpers",
-          "height": 20
-        },
-        {
-          "id": "1577:836",
-          "name": "Spacer / Helpers-Phone",
-          "height": 23
-        }
-      ],
-      "positions": {
-        "id": {
-          "id": "1564:31",
-          "y": 188,
-          "width": 320,
-          "height": 48
-        },
-        "password": {
-          "id": "1564:36",
-          "y": 248,
-          "width": 320,
-          "height": 48
-        },
-        "login": {
-          "id": "1564:55",
-          "y": 330,
-          "width": 320,
-          "height": 48
-        },
-        "helper": {
-          "id": "1564:57",
-          "y": 398,
-          "width": 320,
-          "height": 20
-        },
-        "phone": {
-          "id": "1564:61",
-          "y": 441,
-          "width": 320,
-          "height": 48
-        },
-        "keyboard": {
-          "id": null,
-          "y": null,
-          "width": null,
-          "height": null
-        },
-        "footer": {
-          "id": "1564:63",
-          "y": 683,
-          "width": 274,
-          "height": 52
-        },
-        "modal": {
-          "id": null,
-          "y": null,
-          "width": null,
-          "height": null
-        }
-      }
-    },
-    {
-      "id": "1562:4",
-      "name": "2.1 로그인_2 입력 A",
-      "source": "8403:60155",
-      "status": "built",
-      "contentRootId": "1564:80",
-      "authoredNodeIds": [
-        "1562:4",
-        "1564:80",
-        "1564:81",
-        "1564:104",
-        "1564:105",
-        "1564:106",
-        "1577:837",
-        "1564:109",
-        "1577:838",
-        "1564:127",
-        "1577:839",
-        "1564:139",
-        "1586:4034",
-        "1586:4035",
-        "1586:4036",
-        "1586:4037",
-        "1586:4038",
-        "1564:141",
-        "1564:142"
-      ],
-      "rootInstanceIds": [
-        "1564:81",
-        "1564:106",
-        "1564:109",
-        "1564:127",
-        "1564:139",
-        "1564:142"
-      ],
-      "allInstanceCount": 9,
-      "visibleTextCount": 8,
-      "spacers": [
-        {
-          "id": "1577:837",
-          "name": "Spacer / Logo-ID",
-          "height": 10
-        },
-        {
-          "id": "1577:838",
-          "name": "Spacer / ID-Password",
-          "height": 12
-        },
-        {
-          "id": "1577:839",
-          "name": "Spacer / Password-Login",
-          "height": 34
-        },
-        {
-          "id": "1586:4034",
-          "name": "Spacer / Login-Helpers",
-          "height": 20
-        }
-      ],
-      "positions": {
-        "id": {
-          "id": "1564:109",
-          "y": 188,
-          "width": 320,
-          "height": 48
-        },
-        "password": {
-          "id": "1564:127",
-          "y": 248,
-          "width": 320,
-          "height": 48
-        },
-        "login": {
-          "id": "1564:139",
-          "y": 330,
-          "width": 320,
-          "height": 48
-        },
-        "helper": {
-          "id": "1586:4035",
-          "y": 398,
-          "width": 320,
-          "height": 20
-        },
-        "phone": {
-          "id": null,
-          "y": null,
-          "width": null,
-          "height": null
-        },
-        "keyboard": {
-          "id": "1564:141",
-          "y": 439,
-          "width": 360,
-          "height": 296
-        },
-        "footer": {
-          "id": null,
-          "y": null,
-          "width": null,
-          "height": null
-        },
-        "modal": {
-          "id": null,
-          "y": null,
-          "width": null,
-          "height": null
-        }
-      }
-    },
-    {
-      "id": "1562:5",
-      "name": "2.1 로그인_2 입력 B",
-      "source": "30812:3889",
-      "status": "built",
-      "contentRootId": "1564:151",
-      "authoredNodeIds": [
-        "1562:5",
-        "1564:151",
-        "1564:152",
-        "1564:175",
-        "1564:176",
-        "1564:177",
-        "1577:840",
-        "1564:180",
-        "1577:841",
-        "1564:185",
-        "1577:842",
-        "1564:212",
-        "1586:4046",
-        "1586:4047",
-        "1586:4048",
-        "1586:4049",
-        "1586:4050",
-        "1564:214",
-        "1564:215"
-      ],
-      "rootInstanceIds": [
-        "1564:152",
-        "1564:177",
-        "1564:180",
-        "1564:185",
-        "1564:212",
-        "1564:215"
-      ],
-      "allInstanceCount": 9,
-      "visibleTextCount": 8,
-      "spacers": [
-        {
-          "id": "1577:840",
-          "name": "Spacer / Logo-ID",
-          "height": 10
-        },
-        {
-          "id": "1577:841",
-          "name": "Spacer / ID-Password",
-          "height": 12
-        },
-        {
-          "id": "1577:842",
-          "name": "Spacer / Password-Login",
-          "height": 34
-        },
-        {
-          "id": "1586:4046",
-          "name": "Spacer / Login-Helpers",
-          "height": 20
-        }
-      ],
-      "positions": {
-        "id": {
-          "id": "1564:180",
-          "y": 188,
-          "width": 320,
-          "height": 48
-        },
-        "password": {
-          "id": "1564:185",
-          "y": 248,
-          "width": 320,
-          "height": 48
-        },
-        "login": {
-          "id": "1564:212",
-          "y": 330,
-          "width": 320,
-          "height": 48
-        },
-        "helper": {
-          "id": "1586:4047",
-          "y": 398,
-          "width": 320,
-          "height": 20
-        },
-        "phone": {
-          "id": null,
-          "y": null,
-          "width": null,
-          "height": null
-        },
-        "keyboard": {
-          "id": "1564:214",
-          "y": 439,
-          "width": 360,
-          "height": 296
-        },
-        "footer": {
-          "id": null,
-          "y": null,
-          "width": null,
-          "height": null
-        },
-        "modal": {
-          "id": null,
-          "y": null,
-          "width": null,
-          "height": null
-        }
-      }
-    },
-    {
-      "id": "1562:6",
-      "name": "2.1 로그인_3 아이디 미입력",
-      "source": "8403:60255",
-      "status": "built",
-      "contentRootId": "1564:224",
-      "authoredNodeIds": [
-        "1562:6",
-        "1564:224",
-        "1564:225",
-        "1564:248",
-        "1564:249",
-        "1564:250",
-        "1577:843",
-        "1564:253",
-        "1577:844",
-        "1564:259",
-        "1577:845",
-        "1564:278",
-        "1577:846",
-        "1564:280",
-        "1564:281",
-        "1564:282",
-        "1564:283",
-        "1577:847",
-        "1564:284",
-        "1564:286",
-        "1564:294"
-      ],
-      "rootInstanceIds": [
-        "1564:225",
-        "1564:250",
-        "1564:253",
-        "1564:259",
-        "1564:278",
-        "1564:284",
-        "1564:286",
-        "1564:294"
-      ],
-      "allInstanceCount": 10,
-      "visibleTextCount": 14,
-      "spacers": [
-        {
-          "id": "1577:843",
-          "name": "Spacer / Logo-ID",
-          "height": 10
-        },
-        {
-          "id": "1577:844",
-          "name": "Spacer / ID-Password",
-          "height": 28
-        },
-        {
-          "id": "1577:845",
-          "name": "Spacer / Password-Login",
-          "height": 34
-        },
-        {
-          "id": "1577:846",
-          "name": "Spacer / Login-Helpers",
-          "height": 20
-        },
-        {
-          "id": "1577:847",
-          "name": "Spacer / Helpers-Phone",
-          "height": 23
-        }
-      ],
-      "positions": {
-        "id": {
-          "id": "1564:253",
-          "y": 188,
-          "width": 320,
-          "height": 70
-        },
-        "password": {
-          "id": "1564:259",
-          "y": 286,
-          "width": 320,
-          "height": 48
-        },
-        "login": {
-          "id": "1564:278",
-          "y": 368,
-          "width": 320,
-          "height": 48
-        },
-        "helper": {
-          "id": "1564:280",
-          "y": 436,
-          "width": 320,
-          "height": 20
-        },
-        "phone": {
-          "id": "1564:284",
-          "y": 479,
-          "width": 320,
-          "height": 48
-        },
-        "keyboard": {
-          "id": null,
-          "y": null,
-          "width": null,
-          "height": null
-        },
-        "footer": {
-          "id": "1564:286",
-          "y": 683,
-          "width": 274,
-          "height": 52
-        },
-        "modal": {
-          "id": null,
-          "y": null,
-          "width": null,
-          "height": null
-        }
-      }
-    },
-    {
-      "id": "1562:7",
-      "name": "2.1 로그인_4 비밀번호 미입력",
-      "source": "8403:60287",
-      "status": "built",
-      "contentRootId": "1564:303",
-      "authoredNodeIds": [
-        "1562:7",
-        "1564:303",
-        "1564:304",
-        "1564:327",
-        "1564:328",
-        "1564:329",
-        "1577:848",
-        "1564:332",
-        "1577:849",
-        "1564:337",
-        "1577:850",
-        "1564:357",
-        "1577:851",
-        "1564:359",
-        "1564:360",
-        "1564:361",
-        "1564:362",
-        "1577:852",
-        "1564:363",
-        "1564:365",
-        "1564:373"
-      ],
-      "rootInstanceIds": [
-        "1564:304",
-        "1564:329",
-        "1564:332",
-        "1564:337",
-        "1564:357",
-        "1564:363",
-        "1564:365",
-        "1564:373"
-      ],
-      "allInstanceCount": 10,
-      "visibleTextCount": 14,
-      "spacers": [
-        {
-          "id": "1577:848",
-          "name": "Spacer / Logo-ID",
-          "height": 10
-        },
-        {
-          "id": "1577:849",
-          "name": "Spacer / ID-Password",
-          "height": 12
-        },
-        {
-          "id": "1577:850",
-          "name": "Spacer / Password-Login",
-          "height": 50
-        },
-        {
-          "id": "1577:851",
-          "name": "Spacer / Login-Helpers",
-          "height": 20
-        },
-        {
-          "id": "1577:852",
-          "name": "Spacer / Helpers-Phone",
-          "height": 23
-        }
-      ],
-      "positions": {
-        "id": {
-          "id": "1564:332",
-          "y": 188,
-          "width": 320,
-          "height": 48
-        },
-        "password": {
-          "id": "1564:337",
-          "y": 248,
-          "width": 320,
-          "height": 70
-        },
-        "login": {
-          "id": "1564:357",
-          "y": 368,
-          "width": 320,
-          "height": 48
-        },
-        "helper": {
-          "id": "1564:359",
-          "y": 436,
-          "width": 320,
-          "height": 20
-        },
-        "phone": {
-          "id": "1564:363",
-          "y": 479,
-          "width": 320,
-          "height": 48
-        },
-        "keyboard": {
-          "id": null,
-          "y": null,
-          "width": null,
-          "height": null
-        },
-        "footer": {
-          "id": "1564:365",
-          "y": 683,
-          "width": 274,
-          "height": 52
-        },
-        "modal": {
-          "id": null,
-          "y": null,
-          "width": null,
-          "height": null
-        }
-      }
-    },
-    {
-      "id": "1562:8",
-      "name": "2.1 로그인_5 잘못된 아이디비번",
-      "source": "8403:60315",
-      "status": "built",
-      "contentRootId": "1566:324",
-      "authoredNodeIds": [
-        "1562:8",
-        "1566:324",
-        "1566:325",
-        "1566:348",
-        "1566:349",
-        "1566:350",
-        "1577:853",
-        "1566:353",
-        "1577:854",
-        "1566:358",
-        "1577:855",
-        "1566:371",
-        "1577:856",
-        "1566:373",
-        "1566:374",
-        "1566:375",
-        "1566:376",
-        "1577:857",
-        "1566:377",
-        "1566:379",
-        "1566:387"
-      ],
-      "rootInstanceIds": [
-        "1566:325",
-        "1566:350",
-        "1566:353",
-        "1566:358",
-        "1566:371",
-        "1566:377",
-        "1566:379",
-        "1566:387"
-      ],
-      "allInstanceCount": 10,
-      "visibleTextCount": 14,
-      "spacers": [
-        {
-          "id": "1577:853",
-          "name": "Spacer / Logo-ID",
-          "height": 10
-        },
-        {
-          "id": "1577:854",
-          "name": "Spacer / ID-Password",
-          "height": 12
-        },
-        {
-          "id": "1577:855",
-          "name": "Spacer / Password-Login",
-          "height": 34
-        },
-        {
-          "id": "1577:856",
-          "name": "Spacer / Login-Helpers",
-          "height": 20
-        },
-        {
-          "id": "1577:857",
-          "name": "Spacer / Helpers-Phone",
-          "height": 23
-        }
-      ],
-      "positions": {
-        "id": {
-          "id": "1566:353",
-          "y": 188,
-          "width": 320,
-          "height": 48
-        },
-        "password": {
-          "id": "1566:358",
-          "y": 248,
-          "width": 320,
-          "height": 86
-        },
-        "login": {
-          "id": "1566:371",
-          "y": 368,
-          "width": 320,
-          "height": 48
-        },
-        "helper": {
-          "id": "1566:373",
-          "y": 436,
-          "width": 320,
-          "height": 20
-        },
-        "phone": {
-          "id": "1566:377",
-          "y": 479,
-          "width": 320,
-          "height": 48
-        },
-        "keyboard": {
-          "id": null,
-          "y": null,
-          "width": null,
-          "height": null
-        },
-        "footer": {
-          "id": "1566:379",
-          "y": 683,
-          "width": 274,
-          "height": 52
-        },
-        "modal": {
-          "id": null,
-          "y": null,
-          "width": null,
-          "height": null
-        }
-      }
-    },
-    {
-      "id": "1562:9",
-      "name": "2.1 로그인_7 자동 로그인 선택 A",
-      "source": "8403:60181",
-      "status": "built",
-      "contentRootId": "1566:396",
-      "authoredNodeIds": [
-        "1562:9",
-        "1566:396",
-        "1566:397",
-        "1566:420",
-        "1566:421",
-        "1566:422",
-        "1577:858",
-        "1566:425",
-        "1577:859",
-        "1566:430",
-        "1577:860",
-        "1566:442",
-        "1577:861",
-        "1566:444",
-        "1566:445",
-        "1566:446",
-        "1566:447",
-        "1577:862",
-        "1566:448",
-        "1566:450",
-        "1566:458",
-        "1566:467",
-        "1566:468"
-      ],
-      "rootInstanceIds": [
-        "1566:397",
-        "1566:422",
-        "1566:425",
-        "1566:430",
-        "1566:442",
-        "1566:448",
-        "1566:450",
-        "1566:458",
-        "1566:468"
-      ],
-      "allInstanceCount": 14,
-      "visibleTextCount": 17,
-      "spacers": [
-        {
-          "id": "1577:858",
-          "name": "Spacer / Logo-ID",
-          "height": 10
-        },
-        {
-          "id": "1577:859",
-          "name": "Spacer / ID-Password",
-          "height": 12
-        },
-        {
-          "id": "1577:860",
-          "name": "Spacer / Password-Login",
-          "height": 34
-        },
-        {
-          "id": "1577:861",
-          "name": "Spacer / Login-Helpers",
-          "height": 20
-        },
-        {
-          "id": "1577:862",
-          "name": "Spacer / Helpers-Phone",
-          "height": 23
-        }
-      ],
-      "positions": {
-        "id": {
-          "id": "1566:425",
-          "y": 188,
-          "width": 320,
-          "height": 48
-        },
-        "password": {
-          "id": "1566:430",
-          "y": 248,
-          "width": 320,
-          "height": 48
-        },
-        "login": {
-          "id": "1566:442",
-          "y": 330,
-          "width": 320,
-          "height": 48
-        },
-        "helper": {
-          "id": "1566:444",
-          "y": 398,
-          "width": 320,
-          "height": 20
-        },
-        "phone": {
-          "id": "1566:448",
-          "y": 441,
-          "width": 320,
-          "height": 48
-        },
-        "keyboard": {
-          "id": null,
-          "y": null,
-          "width": null,
-          "height": null
-        },
-        "footer": {
-          "id": "1566:450",
-          "y": 683,
-          "width": 274,
-          "height": 52
-        },
-        "modal": {
-          "id": "1566:468",
-          "y": 279.5,
-          "width": 360,
-          "height": 176
-        }
-      }
-    },
-    {
-      "id": "1562:10",
-      "name": "2.1 로그인_7 자동 로그인 선택 B",
-      "source": "21446:2889",
-      "status": "built",
-      "contentRootId": "1566:482",
-      "authoredNodeIds": [
-        "1562:10",
-        "1566:482",
-        "1566:483",
-        "1566:506",
-        "1566:507",
-        "1566:508",
-        "1577:863",
-        "1566:511",
-        "1577:864",
-        "1566:516",
-        "1577:865",
-        "1566:528",
-        "1577:866",
-        "1566:530",
-        "1566:531",
-        "1566:532",
-        "1566:533",
-        "1577:867",
-        "1566:534",
-        "1566:536",
-        "1566:544",
-        "1566:553",
-        "1566:554"
-      ],
-      "rootInstanceIds": [
-        "1566:483",
-        "1566:508",
-        "1566:511",
-        "1566:516",
-        "1566:528",
-        "1566:534",
-        "1566:536",
-        "1566:544",
-        "1566:554"
-      ],
-      "allInstanceCount": 13,
-      "visibleTextCount": 16,
-      "spacers": [
-        {
-          "id": "1577:863",
-          "name": "Spacer / Logo-ID",
-          "height": 10
-        },
-        {
-          "id": "1577:864",
-          "name": "Spacer / ID-Password",
-          "height": 12
-        },
-        {
-          "id": "1577:865",
-          "name": "Spacer / Password-Login",
-          "height": 34
-        },
-        {
-          "id": "1577:866",
-          "name": "Spacer / Login-Helpers",
-          "height": 20
-        },
-        {
-          "id": "1577:867",
-          "name": "Spacer / Helpers-Phone",
-          "height": 23
-        }
-      ],
-      "positions": {
-        "id": {
-          "id": "1566:511",
-          "y": 188,
-          "width": 320,
-          "height": 48
-        },
-        "password": {
-          "id": "1566:516",
-          "y": 248,
-          "width": 320,
-          "height": 48
-        },
-        "login": {
-          "id": "1566:528",
-          "y": 330,
-          "width": 320,
-          "height": 48
-        },
-        "helper": {
-          "id": "1566:530",
-          "y": 398,
-          "width": 320,
-          "height": 20
-        },
-        "phone": {
-          "id": "1566:534",
-          "y": 441,
-          "width": 320,
-          "height": 48
-        },
-        "keyboard": {
-          "id": null,
-          "y": null,
-          "width": null,
-          "height": null
-        },
-        "footer": {
-          "id": "1566:536",
-          "y": 683,
-          "width": 274,
-          "height": 52
-        },
-        "modal": {
-          "id": "1566:554",
-          "y": 279.5,
-          "width": 360,
-          "height": 176
-        }
-      }
-    },
-    {
-      "id": "1562:11",
-      "name": "2.1 로그인_6 새로운 기기로 로그인 A",
-      "source": "30812:3215",
-      "status": "built",
-      "contentRootId": "1566:566",
-      "authoredNodeIds": [
-        "1562:11",
-        "1566:566",
-        "1566:567",
-        "1566:590",
-        "1566:591",
-        "1566:592",
-        "1577:868",
-        "1566:595",
-        "1577:869",
-        "1566:600",
-        "1577:870",
-        "1566:612",
-        "1577:871",
-        "1566:614",
-        "1566:615",
-        "1566:616",
-        "1566:617",
-        "1577:872",
-        "1566:618",
-        "1566:620",
-        "1566:628",
-        "1566:637",
-        "1566:638"
-      ],
-      "rootInstanceIds": [
-        "1566:567",
-        "1566:592",
-        "1566:595",
-        "1566:600",
-        "1566:612",
-        "1566:618",
-        "1566:620",
-        "1566:628",
-        "1566:638"
-      ],
-      "allInstanceCount": 13,
-      "visibleTextCount": 16,
-      "spacers": [
-        {
-          "id": "1577:868",
-          "name": "Spacer / Logo-ID",
-          "height": 10
-        },
-        {
-          "id": "1577:869",
-          "name": "Spacer / ID-Password",
-          "height": 12
-        },
-        {
-          "id": "1577:870",
-          "name": "Spacer / Password-Login",
-          "height": 34
-        },
-        {
-          "id": "1577:871",
-          "name": "Spacer / Login-Helpers",
-          "height": 20
-        },
-        {
-          "id": "1577:872",
-          "name": "Spacer / Helpers-Phone",
-          "height": 23
-        }
-      ],
-      "positions": {
-        "id": {
-          "id": "1566:595",
-          "y": 188,
-          "width": 320,
-          "height": 48
-        },
-        "password": {
-          "id": "1566:600",
-          "y": 248,
-          "width": 320,
-          "height": 48
-        },
-        "login": {
-          "id": "1566:612",
-          "y": 330,
-          "width": 320,
-          "height": 48
-        },
-        "helper": {
-          "id": "1566:614",
-          "y": 398,
-          "width": 320,
-          "height": 20
-        },
-        "phone": {
-          "id": "1566:618",
-          "y": 441,
-          "width": 320,
-          "height": 48
-        },
-        "keyboard": {
-          "id": null,
-          "y": null,
-          "width": null,
-          "height": null
-        },
-        "footer": {
-          "id": "1566:620",
-          "y": 683,
-          "width": 274,
-          "height": 52
-        },
-        "modal": {
-          "id": "1566:638",
-          "y": 270.5,
-          "width": 360,
-          "height": 194
-        }
-      }
-    },
-    {
-      "id": "1562:12",
-      "name": "2.1 로그인_6 새로운 기기로 로그인 B",
-      "source": "30812:3288",
-      "status": "built",
-      "contentRootId": "1566:650",
-      "authoredNodeIds": [
-        "1562:12",
-        "1566:650",
-        "1566:651",
-        "1566:674",
-        "1566:675",
-        "1566:676",
-        "1577:873",
-        "1566:679",
-        "1577:874",
-        "1566:684",
-        "1577:875",
-        "1566:696",
-        "1577:876",
-        "1566:698",
-        "1566:699",
-        "1566:700",
-        "1566:701",
-        "1577:877",
-        "1566:702",
-        "1566:704",
-        "1566:712",
-        "1566:721",
-        "1566:722"
-      ],
-      "rootInstanceIds": [
-        "1566:651",
-        "1566:676",
-        "1566:679",
-        "1566:684",
-        "1566:696",
-        "1566:702",
-        "1566:704",
-        "1566:712",
-        "1566:722"
-      ],
-      "allInstanceCount": 13,
-      "visibleTextCount": 16,
-      "spacers": [
-        {
-          "id": "1577:873",
-          "name": "Spacer / Logo-ID",
-          "height": 10
-        },
-        {
-          "id": "1577:874",
-          "name": "Spacer / ID-Password",
-          "height": 12
-        },
-        {
-          "id": "1577:875",
-          "name": "Spacer / Password-Login",
-          "height": 34
-        },
-        {
-          "id": "1577:876",
-          "name": "Spacer / Login-Helpers",
-          "height": 20
-        },
-        {
-          "id": "1577:877",
-          "name": "Spacer / Helpers-Phone",
-          "height": 23
-        }
-      ],
-      "positions": {
-        "id": {
-          "id": "1566:679",
-          "y": 188,
-          "width": 320,
-          "height": 48
-        },
-        "password": {
-          "id": "1566:684",
-          "y": 248,
-          "width": 320,
-          "height": 48
-        },
-        "login": {
-          "id": "1566:696",
-          "y": 330,
-          "width": 320,
-          "height": 48
-        },
-        "helper": {
-          "id": "1566:698",
-          "y": 398,
-          "width": 320,
-          "height": 20
-        },
-        "phone": {
-          "id": "1566:702",
-          "y": 441,
-          "width": 320,
-          "height": 48
-        },
-        "keyboard": {
-          "id": null,
-          "y": null,
-          "width": null,
-          "height": null
-        },
-        "footer": {
-          "id": "1566:704",
-          "y": 683,
-          "width": 274,
-          "height": 52
-        },
-        "modal": {
-          "id": "1566:722",
-          "y": 270.5,
-          "width": 360,
-          "height": 194
-        }
-      }
-    },
-    {
-      "id": "1562:13",
-      "name": "2.1 로그인_6 새로운 기기로 로그인 C",
-      "source": "30812:3252",
-      "status": "built",
-      "contentRootId": "1567:651",
-      "authoredNodeIds": [
-        "1562:13",
-        "1567:651",
-        "1567:652",
-        "1567:675",
-        "1567:676",
-        "1567:677",
-        "1577:878",
-        "1567:680",
-        "1577:879",
-        "1567:685",
-        "1577:880",
-        "1567:697",
-        "1577:881",
-        "1567:699",
-        "1567:700",
-        "1567:701",
-        "1567:702",
-        "1577:882",
-        "1567:703",
-        "1567:705",
-        "1567:713",
-        "1567:722",
-        "1567:723"
-      ],
-      "rootInstanceIds": [
-        "1567:652",
-        "1567:677",
-        "1567:680",
-        "1567:685",
-        "1567:697",
-        "1567:703",
-        "1567:705",
-        "1567:713",
-        "1567:723"
-      ],
-      "allInstanceCount": 14,
-      "visibleTextCount": 17,
-      "spacers": [
-        {
-          "id": "1577:878",
-          "name": "Spacer / Logo-ID",
-          "height": 10
-        },
-        {
-          "id": "1577:879",
-          "name": "Spacer / ID-Password",
-          "height": 12
-        },
-        {
-          "id": "1577:880",
-          "name": "Spacer / Password-Login",
-          "height": 34
-        },
-        {
-          "id": "1577:881",
-          "name": "Spacer / Login-Helpers",
-          "height": 20
-        },
-        {
-          "id": "1577:882",
-          "name": "Spacer / Helpers-Phone",
-          "height": 23
-        }
-      ],
-      "positions": {
-        "id": {
-          "id": "1567:680",
-          "y": 188,
-          "width": 320,
-          "height": 48
-        },
-        "password": {
-          "id": "1567:685",
-          "y": 248,
-          "width": 320,
-          "height": 48
-        },
-        "login": {
-          "id": "1567:697",
-          "y": 330,
-          "width": 320,
-          "height": 48
-        },
-        "helper": {
-          "id": "1567:699",
-          "y": 398,
-          "width": 320,
-          "height": 20
-        },
-        "phone": {
-          "id": "1567:703",
-          "y": 441,
-          "width": 320,
-          "height": 48
-        },
-        "keyboard": {
-          "id": null,
-          "y": null,
-          "width": null,
-          "height": null
-        },
-        "footer": {
-          "id": "1567:705",
-          "y": 683,
-          "width": 274,
-          "height": 52
-        },
-        "modal": {
-          "id": "1567:723",
-          "y": 261.5,
-          "width": 360,
-          "height": 212
-        }
-      }
-    },
-    {
-      "id": "1562:14",
-      "name": "2.1 로그인_6 새로운 기기로 로그인 D",
-      "source": "8403:60218",
-      "status": "built",
-      "contentRootId": "1567:737",
-      "authoredNodeIds": [
-        "1562:14",
-        "1567:737",
-        "1567:738",
-        "1567:761",
-        "1567:762",
-        "1567:763",
-        "1577:883",
-        "1567:766",
-        "1577:884",
-        "1567:771",
-        "1577:885",
-        "1567:783",
-        "1577:886",
-        "1567:785",
-        "1567:786",
-        "1567:787",
-        "1567:788",
-        "1577:887",
-        "1567:789",
-        "1567:791",
-        "1567:799"
-      ],
-      "rootInstanceIds": [
-        "1567:738",
-        "1567:763",
-        "1567:766",
-        "1567:771",
-        "1567:783",
-        "1567:789",
-        "1567:791",
-        "1567:799"
-      ],
-      "allInstanceCount": 10,
-      "visibleTextCount": 13,
-      "spacers": [
-        {
-          "id": "1577:883",
-          "name": "Spacer / Logo-ID",
-          "height": 10
-        },
-        {
-          "id": "1577:884",
-          "name": "Spacer / ID-Password",
-          "height": 12
-        },
-        {
-          "id": "1577:885",
-          "name": "Spacer / Password-Login",
-          "height": 34
-        },
-        {
-          "id": "1577:886",
-          "name": "Spacer / Login-Helpers",
-          "height": 20
-        },
-        {
-          "id": "1577:887",
-          "name": "Spacer / Helpers-Phone",
-          "height": 23
-        }
-      ],
-      "positions": {
-        "id": {
-          "id": "1567:766",
-          "y": 188,
-          "width": 320,
-          "height": 48
-        },
-        "password": {
-          "id": "1567:771",
-          "y": 248,
-          "width": 320,
-          "height": 48
-        },
-        "login": {
-          "id": "1567:783",
-          "y": 330,
-          "width": 320,
-          "height": 48
-        },
-        "helper": {
-          "id": "1567:785",
-          "y": 398,
-          "width": 320,
-          "height": 20
-        },
-        "phone": {
-          "id": "1567:789",
-          "y": 441,
-          "width": 320,
-          "height": 48
-        },
-        "keyboard": {
-          "id": null,
-          "y": null,
-          "width": null,
-          "height": null
-        },
-        "footer": {
-          "id": "1567:791",
-          "y": 683,
-          "width": 274,
-          "height": 52
-        },
-        "modal": {
-          "id": null,
-          "y": null,
-          "width": null,
-          "height": null
-        }
-      }
-    },
-    {
-      "id": "1562:15",
-      "name": "2.1 로그인_6 새로운 기기로 로그인 E",
-      "source": "21446:2852",
-      "status": "built",
-      "contentRootId": "1567:808",
-      "authoredNodeIds": [
-        "1562:15",
-        "1567:808",
-        "1567:809",
-        "1567:832",
-        "1567:833",
-        "1567:834",
-        "1577:888",
-        "1567:837",
-        "1577:889",
-        "1567:842",
-        "1577:890",
-        "1567:854",
-        "1577:891",
-        "1567:856",
-        "1567:857",
-        "1567:858",
-        "1567:859",
-        "1577:892",
-        "1567:860",
-        "1567:862",
-        "1567:870"
-      ],
-      "rootInstanceIds": [
-        "1567:809",
-        "1567:834",
-        "1567:837",
-        "1567:842",
-        "1567:854",
-        "1567:860",
-        "1567:862",
-        "1567:870"
-      ],
-      "allInstanceCount": 10,
-      "visibleTextCount": 13,
-      "spacers": [
-        {
-          "id": "1577:888",
-          "name": "Spacer / Logo-ID",
-          "height": 10
-        },
-        {
-          "id": "1577:889",
-          "name": "Spacer / ID-Password",
-          "height": 12
-        },
-        {
-          "id": "1577:890",
-          "name": "Spacer / Password-Login",
-          "height": 34
-        },
-        {
-          "id": "1577:891",
-          "name": "Spacer / Login-Helpers",
-          "height": 20
-        },
-        {
-          "id": "1577:892",
-          "name": "Spacer / Helpers-Phone",
-          "height": 23
-        }
-      ],
-      "positions": {
-        "id": {
-          "id": "1567:837",
-          "y": 188,
-          "width": 320,
-          "height": 48
-        },
-        "password": {
-          "id": "1567:842",
-          "y": 248,
-          "width": 320,
-          "height": 48
-        },
-        "login": {
-          "id": "1567:854",
-          "y": 330,
-          "width": 320,
-          "height": 48
-        },
-        "helper": {
-          "id": "1567:856",
-          "y": 398,
-          "width": 320,
-          "height": 20
-        },
-        "phone": {
-          "id": "1567:860",
-          "y": 441,
-          "width": 320,
-          "height": 48
-        },
-        "keyboard": {
-          "id": null,
-          "y": null,
-          "width": null,
-          "height": null
-        },
-        "footer": {
-          "id": "1567:862",
-          "y": 683,
-          "width": 274,
-          "height": 52
-        },
-        "modal": {
-          "id": null,
-          "y": null,
-          "width": null,
-          "height": null
-        }
-      }
-    }
+ "_stale": true,
+ "_staleSince": "2026-08-25",
+ "_supersededBy": [
+  "reports/screen-rebuild/modu-app/login-mobile/spec-change-2026-08-25-frame-naming.md",
+  "registry/patterns/mobile-login/states.md"
+ ],
+ "_staleReason": "레거시 프레임 이름(예: '2.1 로그인_1 최초진입')과 13/11화면 시점 구성이 담긴 당시 증거다. 2026-08-25 프레임 개명(APP/LOGIN/… 체계)·1562:15 삭제·2줄 재배치가 반영돼 있지 않다.",
+ "_useInstead": "현재 화면 목록·프레임 이름은 registry/patterns/mobile-login/states.md, 진행 상태는 workflow-state.json, 구조 근거는 snapshot-after.json.",
+ "generatedAt": "2026-08-21",
+ "status": "PASS — Phase 5 등록 완료",
+ "keyboardCorrection2026-08-21": {
+  "status": "verified",
+  "screenIds": [
+   "1562:4",
+   "1562:5"
   ],
-  "p1Fixes": {
-    "spacing": {
-      "screenCount": 13,
-      "normal": {
-        "idY": 188,
-        "passwordY": 248,
-        "loginY": 330,
-        "helperY": 398,
-        "phoneY": 441
-      },
-      "errors": {
-        "1562:6": {
-          "idY": 188,
-          "passwordY": 286,
-          "loginY": 368,
-          "helperY": 436,
-          "phoneY": 479
-        },
-        "1562:7": {
-          "idY": 188,
-          "passwordY": 248,
-          "loginY": 368,
-          "helperY": 436,
-          "phoneY": 479
-        },
-        "1562:8": {
-          "idY": 188,
-          "passwordY": 248,
-          "loginY": 368,
-          "helperY": 436,
-          "phoneY": 479
-        }
-      },
-      "keyboard": {
-        "screenIds": [
-          "1562:4",
-          "1562:5"
-        ],
-        "keyboardY": 439,
-        "loginY": 330
-      }
-    },
-    "modalMessageWrap": [
-      {
-        "screenId": "1562:11",
-        "textNodeId": "I1566:638;1546:17953",
-        "modalInstanceId": "1566:638",
-        "characters": "서비스를 이용하시려면 본인 인증을 해 주세요. 본인 인증 시 기존 기기는 인증이 해제됩니다.",
-        "width": 310,
-        "textAutoResize": "HEIGHT",
-        "layoutSizingHorizontal": "FILL",
-        "overflow": 0
-      },
-      {
-        "screenId": "1562:13",
-        "textNodeId": "I1567:723;1546:17965",
-        "modalInstanceId": "1567:723",
-        "characters": "에스원은 고객님의 소중한 정보를 보호하기 위해 인증 기기 등록 후 서비스를 제공하고 있습니다.\n현재 인증한 기기로 등록 후 로그인 할까요?",
-        "width": 310,
-        "textAutoResize": "HEIGHT",
-        "layoutSizingHorizontal": "FILL",
-        "overflow": 0
-      }
-    ]
-  },
-  "footerFixes": {
-    "count": 11,
-    "footerIds": [
-      "1564:63",
-      "1564:286",
-      "1564:365",
-      "1566:379",
-      "1566:450",
-      "1566:536",
-      "1566:620",
-      "1566:704",
-      "1567:705",
-      "1567:791",
-      "1567:862"
-    ],
-    "mutatedTextIds": [
-      "I1564:63;1545:6820",
-      "I1564:63;1545:6822",
-      "I1564:63;1545:6824",
-      "I1564:286;1545:6820",
-      "I1564:286;1545:6822",
-      "I1564:286;1545:6824",
-      "I1564:365;1545:6820",
-      "I1564:365;1545:6822",
-      "I1564:365;1545:6824",
-      "I1566:379;1545:6820",
-      "I1566:379;1545:6822",
-      "I1566:379;1545:6824",
-      "I1566:450;1545:6820",
-      "I1566:450;1545:6822",
-      "I1566:450;1545:6824",
-      "I1566:536;1545:6820",
-      "I1566:536;1545:6822",
-      "I1566:536;1545:6824",
-      "I1566:620;1545:6820",
-      "I1566:620;1545:6822",
-      "I1566:620;1545:6824",
-      "I1566:704;1545:6820",
-      "I1566:704;1545:6822",
-      "I1566:704;1545:6824",
-      "I1567:705;1545:6820",
-      "I1567:705;1545:6822",
-      "I1567:705;1545:6824",
-      "I1567:791;1545:6820",
-      "I1567:791;1545:6822",
-      "I1567:791;1545:6824",
-      "I1567:862;1545:6820",
-      "I1567:862;1545:6822",
-      "I1567:862;1545:6824"
-    ]
-  },
+  "replacementInstanceIds": [
+   "1651:1797",
+   "1651:1929"
+  ],
+  "mainComponentId": "1628:6740",
+  "variant": "Platform=App + Keyboard",
+  "geometry": [
+   0,
+   439,
+   360,
+   341
+  ],
+  "untouchedScreensChecked": 11,
+  "untouchedScreensChanged": 0,
   "provenance": {
-    "skipInvisibleInstanceChildren": false,
-    "checkedCount": 145,
-    "rootCount": 105,
-    "remoteCount": 33,
-    "localCount": 112,
-    "allowedRemoteCount": 33,
-    "disallowed": [],
-    "partitions": {
-      "screens-1-7": {
-        "checkedCount": 72,
-        "rootCount": 53,
-        "remoteCount": 17,
-        "localCount": 55,
-        "allowedRemoteCount": 17
-      },
-      "screens-8-13": {
-        "checkedCount": 73,
-        "rootCount": 52,
-        "remoteCount": 16,
-        "localCount": 57,
-        "allowedRemoteCount": 16
-      }
-    }
+   "checked": 140,
+   "local": 112,
+   "allowedRemote": 28,
+   "violations": 0
   },
-  "violations": {
-    "structure": [],
-    "raw": [],
-    "disallowed": [],
-    "missingText": [],
-    "popup": [],
-    "keyboard": [],
-    "wrongState": [],
-    "font": [],
-    "overflow": [],
-    "inputField": [],
-    "keyboardHelper": []
-  },
-  "counts": {
-    "screenCount": 13,
-    "builtCount": 13,
-    "footerFixCount": 11,
-    "raw": 0,
-    "disallowed": 0,
-    "missingText": 0,
-    "wrongState": 0,
-    "font": 0,
-    "overflow": 0,
-    "excludedLogoutAbsent": true,
-    "total": 0,
-    "inputFieldFixCount": 26,
-    "keyboardHelperSetCount": 2
-  },
-  "excluded": [
-    {
-      "sourceNodeId": "21505:5461",
-      "name": "2.1 로그인_6 로그아웃 확인",
-      "status": "excluded",
-      "reason": "Required service icons are not yet in canonical ICON_KEYS / allowed remote keys."
-    }
-  ],
-  "traceArtifacts": [
-    "trace-screens-1-7.json",
-    "trace-screens-8-13.json"
-  ],
-  "screenshotTargets": [
-    [
-      "section",
-      "1562:2"
-    ],
-    [
-      "initial",
-      "1562:3"
-    ],
-    [
-      "keyboardA",
-      "1562:4"
-    ],
-    [
-      "error",
-      "1562:8"
-    ],
-    [
-      "autoA",
-      "1562:9"
-    ],
-    [
-      "newDeviceC",
-      "1562:13"
-    ]
-  ],
-  "postReverificationFixes": {
-    "inputFields": {
-      "count": 26,
-      "outerWidth": 320,
-      "fieldWidthBefore": 200,
-      "fieldWidth": 320,
-      "layoutSizingHorizontal": "FILL",
-      "fieldNodeIds": [
-        "I1564:31;1546:10592",
-        "I1564:36;1546:10592",
-        "I1564:109;1546:10696",
-        "I1564:127;1546:10592",
-        "I1564:180;1546:10644",
-        "I1564:185;1546:10696",
-        "I1564:253;1546:10792",
-        "I1564:259;1546:10644",
-        "I1564:332;1546:10644",
-        "I1564:337;1546:10792",
-        "I1566:353;1546:10644",
-        "I1566:358;1546:10792",
-        "I1566:425;1546:10644",
-        "I1566:430;1546:10644",
-        "I1566:511;1546:10644",
-        "I1566:516;1546:10644",
-        "I1566:595;1546:10644",
-        "I1566:600;1546:10644",
-        "I1566:679;1546:10644",
-        "I1566:684;1546:10644",
-        "I1567:680;1546:10644",
-        "I1567:685;1546:10644",
-        "I1567:766;1546:10644",
-        "I1567:771;1546:10644",
-        "I1567:837;1546:10644",
-        "I1567:842;1546:10644"
-      ]
-    },
-    "keyboardHelpers": [
-      {
-        "screenId": "1562:4",
-        "loginBodyId": "1564:104",
-        "spacerId": "1586:4034",
-        "helperFrameId": "1586:4035",
-        "textNodeIds": [
-          "1586:4036",
-          "1586:4037",
-          "1586:4038"
-        ],
-        "texts": [
-          "회원가입",
-          "아이디 찾기",
-          "비밀번호 찾기"
-        ],
-        "helperY": 398,
-        "helperWidth": 320,
-        "helperHeight": 20,
-        "loginY": 330,
-        "keyboardY": 439
-      },
-      {
-        "screenId": "1562:5",
-        "loginBodyId": "1564:175",
-        "spacerId": "1586:4046",
-        "helperFrameId": "1586:4047",
-        "textNodeIds": [
-          "1586:4048",
-          "1586:4049",
-          "1586:4050"
-        ],
-        "texts": [
-          "회원가입",
-          "아이디 찾기",
-          "비밀번호 찾기"
-        ],
-        "helperY": 398,
-        "helperWidth": 320,
-        "helperHeight": 20,
-        "loginY": 330,
-        "keyboardY": 439
-      }
-    ]
+  "authoredRaw": {
+   "checked": 172,
+   "violations": 0
   }
+ },
+ "section": {
+  "id": "1562:2",
+  "name": "Pattern / Mobile Login / MoDU",
+  "geometry": [
+   200,
+   200,
+   5800,
+   980
+  ]
+ },
+ "screens": [
+  {
+   "id": "1562:3",
+   "name": "2.1 로그인_1 최초진입",
+   "source": "8403:60128",
+   "status": "built",
+   "contentRootId": "1564:2",
+   "authoredNodeIds": [
+    "1562:3",
+    "1564:2",
+    "1564:3",
+    "1564:26",
+    "1564:27",
+    "1564:28",
+    "1577:832",
+    "1564:31",
+    "1577:833",
+    "1564:36",
+    "1577:834",
+    "1564:55",
+    "1577:835",
+    "1564:57",
+    "1564:58",
+    "1564:59",
+    "1564:60",
+    "1577:836",
+    "1564:61",
+    "1564:63",
+    "1564:71"
+   ],
+   "rootInstanceIds": [
+    "1564:3",
+    "1564:28",
+    "1564:31",
+    "1564:36",
+    "1564:55",
+    "1564:61",
+    "1564:63",
+    "1564:71"
+   ],
+   "allInstanceCount": 10,
+   "visibleTextCount": 13,
+   "spacers": [
+    {
+     "id": "1577:832",
+     "name": "Spacer / Logo-ID",
+     "height": 10
+    },
+    {
+     "id": "1577:833",
+     "name": "Spacer / ID-Password",
+     "height": 12
+    },
+    {
+     "id": "1577:834",
+     "name": "Spacer / Password-Login",
+     "height": 34
+    },
+    {
+     "id": "1577:835",
+     "name": "Spacer / Login-Helpers",
+     "height": 20
+    },
+    {
+     "id": "1577:836",
+     "name": "Spacer / Helpers-Phone",
+     "height": 23
+    }
+   ],
+   "positions": {
+    "id": {
+     "id": "1564:31",
+     "y": 188,
+     "width": 320,
+     "height": 48
+    },
+    "password": {
+     "id": "1564:36",
+     "y": 248,
+     "width": 320,
+     "height": 48
+    },
+    "login": {
+     "id": "1564:55",
+     "y": 330,
+     "width": 320,
+     "height": 48
+    },
+    "helper": {
+     "id": "1564:57",
+     "y": 398,
+     "width": 320,
+     "height": 20
+    },
+    "phone": {
+     "id": "1564:61",
+     "y": 441,
+     "width": 320,
+     "height": 48
+    },
+    "keyboard": {
+     "id": null,
+     "y": null,
+     "width": null,
+     "height": null
+    },
+    "footer": {
+     "id": "1564:63",
+     "y": 683,
+     "width": 274,
+     "height": 52
+    },
+    "modal": {
+     "id": null,
+     "y": null,
+     "width": null,
+     "height": null
+    }
+   }
+  },
+  {
+   "id": "1562:4",
+   "name": "2.1 로그인_2 입력 A",
+   "source": "8403:60155",
+   "status": "built",
+   "contentRootId": "1564:80",
+   "authoredNodeIds": [
+    "1562:4",
+    "1564:80",
+    "1564:81",
+    "1564:104",
+    "1564:105",
+    "1564:106",
+    "1577:837",
+    "1564:109",
+    "1577:838",
+    "1564:127",
+    "1577:839",
+    "1564:139",
+    "1586:4034",
+    "1586:4035",
+    "1586:4036",
+    "1586:4037",
+    "1586:4038",
+    "1564:141",
+    "1564:142"
+   ],
+   "rootInstanceIds": [
+    "1564:81",
+    "1564:106",
+    "1564:109",
+    "1564:127",
+    "1564:139",
+    "1564:142"
+   ],
+   "allInstanceCount": 9,
+   "visibleTextCount": 8,
+   "spacers": [
+    {
+     "id": "1577:837",
+     "name": "Spacer / Logo-ID",
+     "height": 10
+    },
+    {
+     "id": "1577:838",
+     "name": "Spacer / ID-Password",
+     "height": 12
+    },
+    {
+     "id": "1577:839",
+     "name": "Spacer / Password-Login",
+     "height": 34
+    },
+    {
+     "id": "1586:4034",
+     "name": "Spacer / Login-Helpers",
+     "height": 20
+    }
+   ],
+   "positions": {
+    "id": {
+     "id": "1564:109",
+     "y": 188,
+     "width": 320,
+     "height": 48
+    },
+    "password": {
+     "id": "1564:127",
+     "y": 248,
+     "width": 320,
+     "height": 48
+    },
+    "login": {
+     "id": "1564:139",
+     "y": 330,
+     "width": 320,
+     "height": 48
+    },
+    "helper": {
+     "id": "1586:4035",
+     "y": 398,
+     "width": 320,
+     "height": 20
+    },
+    "phone": {
+     "id": null,
+     "y": null,
+     "width": null,
+     "height": null
+    },
+    "keyboard": {
+     "id": "1564:141",
+     "y": 439,
+     "width": 360,
+     "height": 296
+    },
+    "footer": {
+     "id": null,
+     "y": null,
+     "width": null,
+     "height": null
+    },
+    "modal": {
+     "id": null,
+     "y": null,
+     "width": null,
+     "height": null
+    }
+   }
+  },
+  {
+   "id": "1562:5",
+   "name": "2.1 로그인_2 입력 B",
+   "source": "30812:3889",
+   "status": "built",
+   "contentRootId": "1564:151",
+   "authoredNodeIds": [
+    "1562:5",
+    "1564:151",
+    "1564:152",
+    "1564:175",
+    "1564:176",
+    "1564:177",
+    "1577:840",
+    "1564:180",
+    "1577:841",
+    "1564:185",
+    "1577:842",
+    "1564:212",
+    "1586:4046",
+    "1586:4047",
+    "1586:4048",
+    "1586:4049",
+    "1586:4050",
+    "1564:214",
+    "1564:215"
+   ],
+   "rootInstanceIds": [
+    "1564:152",
+    "1564:177",
+    "1564:180",
+    "1564:185",
+    "1564:212",
+    "1564:215"
+   ],
+   "allInstanceCount": 9,
+   "visibleTextCount": 8,
+   "spacers": [
+    {
+     "id": "1577:840",
+     "name": "Spacer / Logo-ID",
+     "height": 10
+    },
+    {
+     "id": "1577:841",
+     "name": "Spacer / ID-Password",
+     "height": 12
+    },
+    {
+     "id": "1577:842",
+     "name": "Spacer / Password-Login",
+     "height": 34
+    },
+    {
+     "id": "1586:4046",
+     "name": "Spacer / Login-Helpers",
+     "height": 20
+    }
+   ],
+   "positions": {
+    "id": {
+     "id": "1564:180",
+     "y": 188,
+     "width": 320,
+     "height": 48
+    },
+    "password": {
+     "id": "1564:185",
+     "y": 248,
+     "width": 320,
+     "height": 48
+    },
+    "login": {
+     "id": "1564:212",
+     "y": 330,
+     "width": 320,
+     "height": 48
+    },
+    "helper": {
+     "id": "1586:4047",
+     "y": 398,
+     "width": 320,
+     "height": 20
+    },
+    "phone": {
+     "id": null,
+     "y": null,
+     "width": null,
+     "height": null
+    },
+    "keyboard": {
+     "id": "1564:214",
+     "y": 439,
+     "width": 360,
+     "height": 296
+    },
+    "footer": {
+     "id": null,
+     "y": null,
+     "width": null,
+     "height": null
+    },
+    "modal": {
+     "id": null,
+     "y": null,
+     "width": null,
+     "height": null
+    }
+   }
+  },
+  {
+   "id": "1562:6",
+   "name": "2.1 로그인_3 아이디 미입력",
+   "source": "8403:60255",
+   "status": "built",
+   "contentRootId": "1564:224",
+   "authoredNodeIds": [
+    "1562:6",
+    "1564:224",
+    "1564:225",
+    "1564:248",
+    "1564:249",
+    "1564:250",
+    "1577:843",
+    "1564:253",
+    "1577:844",
+    "1564:259",
+    "1577:845",
+    "1564:278",
+    "1577:846",
+    "1564:280",
+    "1564:281",
+    "1564:282",
+    "1564:283",
+    "1577:847",
+    "1564:284",
+    "1564:286",
+    "1564:294"
+   ],
+   "rootInstanceIds": [
+    "1564:225",
+    "1564:250",
+    "1564:253",
+    "1564:259",
+    "1564:278",
+    "1564:284",
+    "1564:286",
+    "1564:294"
+   ],
+   "allInstanceCount": 10,
+   "visibleTextCount": 14,
+   "spacers": [
+    {
+     "id": "1577:843",
+     "name": "Spacer / Logo-ID",
+     "height": 10
+    },
+    {
+     "id": "1577:844",
+     "name": "Spacer / ID-Password",
+     "height": 28
+    },
+    {
+     "id": "1577:845",
+     "name": "Spacer / Password-Login",
+     "height": 34
+    },
+    {
+     "id": "1577:846",
+     "name": "Spacer / Login-Helpers",
+     "height": 20
+    },
+    {
+     "id": "1577:847",
+     "name": "Spacer / Helpers-Phone",
+     "height": 23
+    }
+   ],
+   "positions": {
+    "id": {
+     "id": "1564:253",
+     "y": 188,
+     "width": 320,
+     "height": 70
+    },
+    "password": {
+     "id": "1564:259",
+     "y": 286,
+     "width": 320,
+     "height": 48
+    },
+    "login": {
+     "id": "1564:278",
+     "y": 368,
+     "width": 320,
+     "height": 48
+    },
+    "helper": {
+     "id": "1564:280",
+     "y": 436,
+     "width": 320,
+     "height": 20
+    },
+    "phone": {
+     "id": "1564:284",
+     "y": 479,
+     "width": 320,
+     "height": 48
+    },
+    "keyboard": {
+     "id": null,
+     "y": null,
+     "width": null,
+     "height": null
+    },
+    "footer": {
+     "id": "1564:286",
+     "y": 683,
+     "width": 274,
+     "height": 52
+    },
+    "modal": {
+     "id": null,
+     "y": null,
+     "width": null,
+     "height": null
+    }
+   }
+  },
+  {
+   "id": "1562:7",
+   "name": "2.1 로그인_4 비밀번호 미입력",
+   "source": "8403:60287",
+   "status": "built",
+   "contentRootId": "1564:303",
+   "authoredNodeIds": [
+    "1562:7",
+    "1564:303",
+    "1564:304",
+    "1564:327",
+    "1564:328",
+    "1564:329",
+    "1577:848",
+    "1564:332",
+    "1577:849",
+    "1564:337",
+    "1577:850",
+    "1564:357",
+    "1577:851",
+    "1564:359",
+    "1564:360",
+    "1564:361",
+    "1564:362",
+    "1577:852",
+    "1564:363",
+    "1564:365",
+    "1564:373"
+   ],
+   "rootInstanceIds": [
+    "1564:304",
+    "1564:329",
+    "1564:332",
+    "1564:337",
+    "1564:357",
+    "1564:363",
+    "1564:365",
+    "1564:373"
+   ],
+   "allInstanceCount": 10,
+   "visibleTextCount": 14,
+   "spacers": [
+    {
+     "id": "1577:848",
+     "name": "Spacer / Logo-ID",
+     "height": 10
+    },
+    {
+     "id": "1577:849",
+     "name": "Spacer / ID-Password",
+     "height": 12
+    },
+    {
+     "id": "1577:850",
+     "name": "Spacer / Password-Login",
+     "height": 50
+    },
+    {
+     "id": "1577:851",
+     "name": "Spacer / Login-Helpers",
+     "height": 20
+    },
+    {
+     "id": "1577:852",
+     "name": "Spacer / Helpers-Phone",
+     "height": 23
+    }
+   ],
+   "positions": {
+    "id": {
+     "id": "1564:332",
+     "y": 188,
+     "width": 320,
+     "height": 48
+    },
+    "password": {
+     "id": "1564:337",
+     "y": 248,
+     "width": 320,
+     "height": 70
+    },
+    "login": {
+     "id": "1564:357",
+     "y": 368,
+     "width": 320,
+     "height": 48
+    },
+    "helper": {
+     "id": "1564:359",
+     "y": 436,
+     "width": 320,
+     "height": 20
+    },
+    "phone": {
+     "id": "1564:363",
+     "y": 479,
+     "width": 320,
+     "height": 48
+    },
+    "keyboard": {
+     "id": null,
+     "y": null,
+     "width": null,
+     "height": null
+    },
+    "footer": {
+     "id": "1564:365",
+     "y": 683,
+     "width": 274,
+     "height": 52
+    },
+    "modal": {
+     "id": null,
+     "y": null,
+     "width": null,
+     "height": null
+    }
+   }
+  },
+  {
+   "id": "1562:8",
+   "name": "2.1 로그인_5 잘못된 아이디비번",
+   "source": "8403:60315",
+   "status": "built",
+   "contentRootId": "1566:324",
+   "authoredNodeIds": [
+    "1562:8",
+    "1566:324",
+    "1566:325",
+    "1566:348",
+    "1566:349",
+    "1566:350",
+    "1577:853",
+    "1566:353",
+    "1577:854",
+    "1566:358",
+    "1577:855",
+    "1566:371",
+    "1577:856",
+    "1566:373",
+    "1566:374",
+    "1566:375",
+    "1566:376",
+    "1577:857",
+    "1566:377",
+    "1566:379",
+    "1566:387"
+   ],
+   "rootInstanceIds": [
+    "1566:325",
+    "1566:350",
+    "1566:353",
+    "1566:358",
+    "1566:371",
+    "1566:377",
+    "1566:379",
+    "1566:387"
+   ],
+   "allInstanceCount": 10,
+   "visibleTextCount": 14,
+   "spacers": [
+    {
+     "id": "1577:853",
+     "name": "Spacer / Logo-ID",
+     "height": 10
+    },
+    {
+     "id": "1577:854",
+     "name": "Spacer / ID-Password",
+     "height": 12
+    },
+    {
+     "id": "1577:855",
+     "name": "Spacer / Password-Login",
+     "height": 34
+    },
+    {
+     "id": "1577:856",
+     "name": "Spacer / Login-Helpers",
+     "height": 20
+    },
+    {
+     "id": "1577:857",
+     "name": "Spacer / Helpers-Phone",
+     "height": 23
+    }
+   ],
+   "positions": {
+    "id": {
+     "id": "1566:353",
+     "y": 188,
+     "width": 320,
+     "height": 48
+    },
+    "password": {
+     "id": "1566:358",
+     "y": 248,
+     "width": 320,
+     "height": 86
+    },
+    "login": {
+     "id": "1566:371",
+     "y": 368,
+     "width": 320,
+     "height": 48
+    },
+    "helper": {
+     "id": "1566:373",
+     "y": 436,
+     "width": 320,
+     "height": 20
+    },
+    "phone": {
+     "id": "1566:377",
+     "y": 479,
+     "width": 320,
+     "height": 48
+    },
+    "keyboard": {
+     "id": null,
+     "y": null,
+     "width": null,
+     "height": null
+    },
+    "footer": {
+     "id": "1566:379",
+     "y": 683,
+     "width": 274,
+     "height": 52
+    },
+    "modal": {
+     "id": null,
+     "y": null,
+     "width": null,
+     "height": null
+    }
+   }
+  },
+  {
+   "id": "1562:9",
+   "name": "2.1 로그인_7 자동 로그인 선택 A",
+   "source": "8403:60181",
+   "status": "built",
+   "contentRootId": "1566:396",
+   "authoredNodeIds": [
+    "1562:9",
+    "1566:396",
+    "1566:397",
+    "1566:420",
+    "1566:421",
+    "1566:422",
+    "1577:858",
+    "1566:425",
+    "1577:859",
+    "1566:430",
+    "1577:860",
+    "1566:442",
+    "1577:861",
+    "1566:444",
+    "1566:445",
+    "1566:446",
+    "1566:447",
+    "1577:862",
+    "1566:448",
+    "1566:450",
+    "1566:458",
+    "1566:467",
+    "1566:468"
+   ],
+   "rootInstanceIds": [
+    "1566:397",
+    "1566:422",
+    "1566:425",
+    "1566:430",
+    "1566:442",
+    "1566:448",
+    "1566:450",
+    "1566:458",
+    "1566:468"
+   ],
+   "allInstanceCount": 14,
+   "visibleTextCount": 17,
+   "spacers": [
+    {
+     "id": "1577:858",
+     "name": "Spacer / Logo-ID",
+     "height": 10
+    },
+    {
+     "id": "1577:859",
+     "name": "Spacer / ID-Password",
+     "height": 12
+    },
+    {
+     "id": "1577:860",
+     "name": "Spacer / Password-Login",
+     "height": 34
+    },
+    {
+     "id": "1577:861",
+     "name": "Spacer / Login-Helpers",
+     "height": 20
+    },
+    {
+     "id": "1577:862",
+     "name": "Spacer / Helpers-Phone",
+     "height": 23
+    }
+   ],
+   "positions": {
+    "id": {
+     "id": "1566:425",
+     "y": 188,
+     "width": 320,
+     "height": 48
+    },
+    "password": {
+     "id": "1566:430",
+     "y": 248,
+     "width": 320,
+     "height": 48
+    },
+    "login": {
+     "id": "1566:442",
+     "y": 330,
+     "width": 320,
+     "height": 48
+    },
+    "helper": {
+     "id": "1566:444",
+     "y": 398,
+     "width": 320,
+     "height": 20
+    },
+    "phone": {
+     "id": "1566:448",
+     "y": 441,
+     "width": 320,
+     "height": 48
+    },
+    "keyboard": {
+     "id": null,
+     "y": null,
+     "width": null,
+     "height": null
+    },
+    "footer": {
+     "id": "1566:450",
+     "y": 683,
+     "width": 274,
+     "height": 52
+    },
+    "modal": {
+     "id": "1566:468",
+     "y": 279.5,
+     "width": 360,
+     "height": 176
+    }
+   }
+  },
+  {
+   "id": "1562:10",
+   "name": "2.1 로그인_7 자동 로그인 선택 B",
+   "source": "21446:2889",
+   "status": "built",
+   "contentRootId": "1566:482",
+   "authoredNodeIds": [
+    "1562:10",
+    "1566:482",
+    "1566:483",
+    "1566:506",
+    "1566:507",
+    "1566:508",
+    "1577:863",
+    "1566:511",
+    "1577:864",
+    "1566:516",
+    "1577:865",
+    "1566:528",
+    "1577:866",
+    "1566:530",
+    "1566:531",
+    "1566:532",
+    "1566:533",
+    "1577:867",
+    "1566:534",
+    "1566:536",
+    "1566:544",
+    "1566:553",
+    "1566:554"
+   ],
+   "rootInstanceIds": [
+    "1566:483",
+    "1566:508",
+    "1566:511",
+    "1566:516",
+    "1566:528",
+    "1566:534",
+    "1566:536",
+    "1566:544",
+    "1566:554"
+   ],
+   "allInstanceCount": 13,
+   "visibleTextCount": 16,
+   "spacers": [
+    {
+     "id": "1577:863",
+     "name": "Spacer / Logo-ID",
+     "height": 10
+    },
+    {
+     "id": "1577:864",
+     "name": "Spacer / ID-Password",
+     "height": 12
+    },
+    {
+     "id": "1577:865",
+     "name": "Spacer / Password-Login",
+     "height": 34
+    },
+    {
+     "id": "1577:866",
+     "name": "Spacer / Login-Helpers",
+     "height": 20
+    },
+    {
+     "id": "1577:867",
+     "name": "Spacer / Helpers-Phone",
+     "height": 23
+    }
+   ],
+   "positions": {
+    "id": {
+     "id": "1566:511",
+     "y": 188,
+     "width": 320,
+     "height": 48
+    },
+    "password": {
+     "id": "1566:516",
+     "y": 248,
+     "width": 320,
+     "height": 48
+    },
+    "login": {
+     "id": "1566:528",
+     "y": 330,
+     "width": 320,
+     "height": 48
+    },
+    "helper": {
+     "id": "1566:530",
+     "y": 398,
+     "width": 320,
+     "height": 20
+    },
+    "phone": {
+     "id": "1566:534",
+     "y": 441,
+     "width": 320,
+     "height": 48
+    },
+    "keyboard": {
+     "id": null,
+     "y": null,
+     "width": null,
+     "height": null
+    },
+    "footer": {
+     "id": "1566:536",
+     "y": 683,
+     "width": 274,
+     "height": 52
+    },
+    "modal": {
+     "id": "1566:554",
+     "y": 279.5,
+     "width": 360,
+     "height": 176
+    }
+   }
+  },
+  {
+   "id": "1562:11",
+   "name": "2.1 로그인_6 새로운 기기로 로그인 A",
+   "source": "30812:3215",
+   "status": "built",
+   "contentRootId": "1566:566",
+   "authoredNodeIds": [
+    "1562:11",
+    "1566:566",
+    "1566:567",
+    "1566:590",
+    "1566:591",
+    "1566:592",
+    "1577:868",
+    "1566:595",
+    "1577:869",
+    "1566:600",
+    "1577:870",
+    "1566:612",
+    "1577:871",
+    "1566:614",
+    "1566:615",
+    "1566:616",
+    "1566:617",
+    "1577:872",
+    "1566:618",
+    "1566:620",
+    "1566:628",
+    "1566:637",
+    "1566:638"
+   ],
+   "rootInstanceIds": [
+    "1566:567",
+    "1566:592",
+    "1566:595",
+    "1566:600",
+    "1566:612",
+    "1566:618",
+    "1566:620",
+    "1566:628",
+    "1566:638"
+   ],
+   "allInstanceCount": 13,
+   "visibleTextCount": 16,
+   "spacers": [
+    {
+     "id": "1577:868",
+     "name": "Spacer / Logo-ID",
+     "height": 10
+    },
+    {
+     "id": "1577:869",
+     "name": "Spacer / ID-Password",
+     "height": 12
+    },
+    {
+     "id": "1577:870",
+     "name": "Spacer / Password-Login",
+     "height": 34
+    },
+    {
+     "id": "1577:871",
+     "name": "Spacer / Login-Helpers",
+     "height": 20
+    },
+    {
+     "id": "1577:872",
+     "name": "Spacer / Helpers-Phone",
+     "height": 23
+    }
+   ],
+   "positions": {
+    "id": {
+     "id": "1566:595",
+     "y": 188,
+     "width": 320,
+     "height": 48
+    },
+    "password": {
+     "id": "1566:600",
+     "y": 248,
+     "width": 320,
+     "height": 48
+    },
+    "login": {
+     "id": "1566:612",
+     "y": 330,
+     "width": 320,
+     "height": 48
+    },
+    "helper": {
+     "id": "1566:614",
+     "y": 398,
+     "width": 320,
+     "height": 20
+    },
+    "phone": {
+     "id": "1566:618",
+     "y": 441,
+     "width": 320,
+     "height": 48
+    },
+    "keyboard": {
+     "id": null,
+     "y": null,
+     "width": null,
+     "height": null
+    },
+    "footer": {
+     "id": "1566:620",
+     "y": 683,
+     "width": 274,
+     "height": 52
+    },
+    "modal": {
+     "id": "1566:638",
+     "y": 270.5,
+     "width": 360,
+     "height": 194
+    }
+   }
+  },
+  {
+   "id": "1562:12",
+   "name": "2.1 로그인_6 새로운 기기로 로그인 B",
+   "source": "30812:3288",
+   "status": "built",
+   "contentRootId": "1566:650",
+   "authoredNodeIds": [
+    "1562:12",
+    "1566:650",
+    "1566:651",
+    "1566:674",
+    "1566:675",
+    "1566:676",
+    "1577:873",
+    "1566:679",
+    "1577:874",
+    "1566:684",
+    "1577:875",
+    "1566:696",
+    "1577:876",
+    "1566:698",
+    "1566:699",
+    "1566:700",
+    "1566:701",
+    "1577:877",
+    "1566:702",
+    "1566:704",
+    "1566:712",
+    "1566:721",
+    "1566:722"
+   ],
+   "rootInstanceIds": [
+    "1566:651",
+    "1566:676",
+    "1566:679",
+    "1566:684",
+    "1566:696",
+    "1566:702",
+    "1566:704",
+    "1566:712",
+    "1566:722"
+   ],
+   "allInstanceCount": 13,
+   "visibleTextCount": 16,
+   "spacers": [
+    {
+     "id": "1577:873",
+     "name": "Spacer / Logo-ID",
+     "height": 10
+    },
+    {
+     "id": "1577:874",
+     "name": "Spacer / ID-Password",
+     "height": 12
+    },
+    {
+     "id": "1577:875",
+     "name": "Spacer / Password-Login",
+     "height": 34
+    },
+    {
+     "id": "1577:876",
+     "name": "Spacer / Login-Helpers",
+     "height": 20
+    },
+    {
+     "id": "1577:877",
+     "name": "Spacer / Helpers-Phone",
+     "height": 23
+    }
+   ],
+   "positions": {
+    "id": {
+     "id": "1566:679",
+     "y": 188,
+     "width": 320,
+     "height": 48
+    },
+    "password": {
+     "id": "1566:684",
+     "y": 248,
+     "width": 320,
+     "height": 48
+    },
+    "login": {
+     "id": "1566:696",
+     "y": 330,
+     "width": 320,
+     "height": 48
+    },
+    "helper": {
+     "id": "1566:698",
+     "y": 398,
+     "width": 320,
+     "height": 20
+    },
+    "phone": {
+     "id": "1566:702",
+     "y": 441,
+     "width": 320,
+     "height": 48
+    },
+    "keyboard": {
+     "id": null,
+     "y": null,
+     "width": null,
+     "height": null
+    },
+    "footer": {
+     "id": "1566:704",
+     "y": 683,
+     "width": 274,
+     "height": 52
+    },
+    "modal": {
+     "id": "1566:722",
+     "y": 270.5,
+     "width": 360,
+     "height": 194
+    }
+   }
+  },
+  {
+   "id": "1562:13",
+   "name": "2.1 로그인_6 새로운 기기로 로그인 C",
+   "source": "30812:3252",
+   "status": "built",
+   "contentRootId": "1567:651",
+   "authoredNodeIds": [
+    "1562:13",
+    "1567:651",
+    "1567:652",
+    "1567:675",
+    "1567:676",
+    "1567:677",
+    "1577:878",
+    "1567:680",
+    "1577:879",
+    "1567:685",
+    "1577:880",
+    "1567:697",
+    "1577:881",
+    "1567:699",
+    "1567:700",
+    "1567:701",
+    "1567:702",
+    "1577:882",
+    "1567:703",
+    "1567:705",
+    "1567:713",
+    "1567:722",
+    "1567:723"
+   ],
+   "rootInstanceIds": [
+    "1567:652",
+    "1567:677",
+    "1567:680",
+    "1567:685",
+    "1567:697",
+    "1567:703",
+    "1567:705",
+    "1567:713",
+    "1567:723"
+   ],
+   "allInstanceCount": 14,
+   "visibleTextCount": 17,
+   "spacers": [
+    {
+     "id": "1577:878",
+     "name": "Spacer / Logo-ID",
+     "height": 10
+    },
+    {
+     "id": "1577:879",
+     "name": "Spacer / ID-Password",
+     "height": 12
+    },
+    {
+     "id": "1577:880",
+     "name": "Spacer / Password-Login",
+     "height": 34
+    },
+    {
+     "id": "1577:881",
+     "name": "Spacer / Login-Helpers",
+     "height": 20
+    },
+    {
+     "id": "1577:882",
+     "name": "Spacer / Helpers-Phone",
+     "height": 23
+    }
+   ],
+   "positions": {
+    "id": {
+     "id": "1567:680",
+     "y": 188,
+     "width": 320,
+     "height": 48
+    },
+    "password": {
+     "id": "1567:685",
+     "y": 248,
+     "width": 320,
+     "height": 48
+    },
+    "login": {
+     "id": "1567:697",
+     "y": 330,
+     "width": 320,
+     "height": 48
+    },
+    "helper": {
+     "id": "1567:699",
+     "y": 398,
+     "width": 320,
+     "height": 20
+    },
+    "phone": {
+     "id": "1567:703",
+     "y": 441,
+     "width": 320,
+     "height": 48
+    },
+    "keyboard": {
+     "id": null,
+     "y": null,
+     "width": null,
+     "height": null
+    },
+    "footer": {
+     "id": "1567:705",
+     "y": 683,
+     "width": 274,
+     "height": 52
+    },
+    "modal": {
+     "id": "1567:723",
+     "y": 261.5,
+     "width": 360,
+     "height": 212
+    }
+   }
+  },
+  {
+   "id": "1562:14",
+   "name": "2.1 로그인_6 새로운 기기로 로그인 D",
+   "source": "8403:60218",
+   "status": "built",
+   "contentRootId": "1567:737",
+   "authoredNodeIds": [
+    "1562:14",
+    "1567:737",
+    "1567:738",
+    "1567:761",
+    "1567:762",
+    "1567:763",
+    "1577:883",
+    "1567:766",
+    "1577:884",
+    "1567:771",
+    "1577:885",
+    "1567:783",
+    "1577:886",
+    "1567:785",
+    "1567:786",
+    "1567:787",
+    "1567:788",
+    "1577:887",
+    "1567:789",
+    "1567:791",
+    "1567:799"
+   ],
+   "rootInstanceIds": [
+    "1567:738",
+    "1567:763",
+    "1567:766",
+    "1567:771",
+    "1567:783",
+    "1567:789",
+    "1567:791",
+    "1567:799"
+   ],
+   "allInstanceCount": 10,
+   "visibleTextCount": 13,
+   "spacers": [
+    {
+     "id": "1577:883",
+     "name": "Spacer / Logo-ID",
+     "height": 10
+    },
+    {
+     "id": "1577:884",
+     "name": "Spacer / ID-Password",
+     "height": 12
+    },
+    {
+     "id": "1577:885",
+     "name": "Spacer / Password-Login",
+     "height": 34
+    },
+    {
+     "id": "1577:886",
+     "name": "Spacer / Login-Helpers",
+     "height": 20
+    },
+    {
+     "id": "1577:887",
+     "name": "Spacer / Helpers-Phone",
+     "height": 23
+    }
+   ],
+   "positions": {
+    "id": {
+     "id": "1567:766",
+     "y": 188,
+     "width": 320,
+     "height": 48
+    },
+    "password": {
+     "id": "1567:771",
+     "y": 248,
+     "width": 320,
+     "height": 48
+    },
+    "login": {
+     "id": "1567:783",
+     "y": 330,
+     "width": 320,
+     "height": 48
+    },
+    "helper": {
+     "id": "1567:785",
+     "y": 398,
+     "width": 320,
+     "height": 20
+    },
+    "phone": {
+     "id": "1567:789",
+     "y": 441,
+     "width": 320,
+     "height": 48
+    },
+    "keyboard": {
+     "id": null,
+     "y": null,
+     "width": null,
+     "height": null
+    },
+    "footer": {
+     "id": "1567:791",
+     "y": 683,
+     "width": 274,
+     "height": 52
+    },
+    "modal": {
+     "id": null,
+     "y": null,
+     "width": null,
+     "height": null
+    }
+   }
+  },
+  {
+   "id": "1562:15",
+   "name": "2.1 로그인_6 새로운 기기로 로그인 E",
+   "source": "21446:2852",
+   "status": "built",
+   "contentRootId": "1567:808",
+   "authoredNodeIds": [
+    "1562:15",
+    "1567:808",
+    "1567:809",
+    "1567:832",
+    "1567:833",
+    "1567:834",
+    "1577:888",
+    "1567:837",
+    "1577:889",
+    "1567:842",
+    "1577:890",
+    "1567:854",
+    "1577:891",
+    "1567:856",
+    "1567:857",
+    "1567:858",
+    "1567:859",
+    "1577:892",
+    "1567:860",
+    "1567:862",
+    "1567:870"
+   ],
+   "rootInstanceIds": [
+    "1567:809",
+    "1567:834",
+    "1567:837",
+    "1567:842",
+    "1567:854",
+    "1567:860",
+    "1567:862",
+    "1567:870"
+   ],
+   "allInstanceCount": 10,
+   "visibleTextCount": 13,
+   "spacers": [
+    {
+     "id": "1577:888",
+     "name": "Spacer / Logo-ID",
+     "height": 10
+    },
+    {
+     "id": "1577:889",
+     "name": "Spacer / ID-Password",
+     "height": 12
+    },
+    {
+     "id": "1577:890",
+     "name": "Spacer / Password-Login",
+     "height": 34
+    },
+    {
+     "id": "1577:891",
+     "name": "Spacer / Login-Helpers",
+     "height": 20
+    },
+    {
+     "id": "1577:892",
+     "name": "Spacer / Helpers-Phone",
+     "height": 23
+    }
+   ],
+   "positions": {
+    "id": {
+     "id": "1567:837",
+     "y": 188,
+     "width": 320,
+     "height": 48
+    },
+    "password": {
+     "id": "1567:842",
+     "y": 248,
+     "width": 320,
+     "height": 48
+    },
+    "login": {
+     "id": "1567:854",
+     "y": 330,
+     "width": 320,
+     "height": 48
+    },
+    "helper": {
+     "id": "1567:856",
+     "y": 398,
+     "width": 320,
+     "height": 20
+    },
+    "phone": {
+     "id": "1567:860",
+     "y": 441,
+     "width": 320,
+     "height": 48
+    },
+    "keyboard": {
+     "id": null,
+     "y": null,
+     "width": null,
+     "height": null
+    },
+    "footer": {
+     "id": "1567:862",
+     "y": 683,
+     "width": 274,
+     "height": 52
+    },
+    "modal": {
+     "id": null,
+     "y": null,
+     "width": null,
+     "height": null
+    }
+   }
+  }
+ ],
+ "p1Fixes": {
+  "spacing": {
+   "screenCount": 13,
+   "normal": {
+    "idY": 188,
+    "passwordY": 248,
+    "loginY": 330,
+    "helperY": 398,
+    "phoneY": 441
+   },
+   "errors": {
+    "1562:6": {
+     "idY": 188,
+     "passwordY": 286,
+     "loginY": 368,
+     "helperY": 436,
+     "phoneY": 479
+    },
+    "1562:7": {
+     "idY": 188,
+     "passwordY": 248,
+     "loginY": 368,
+     "helperY": 436,
+     "phoneY": 479
+    },
+    "1562:8": {
+     "idY": 188,
+     "passwordY": 248,
+     "loginY": 368,
+     "helperY": 436,
+     "phoneY": 479
+    }
+   },
+   "keyboard": {
+    "screenIds": [
+     "1562:4",
+     "1562:5"
+    ],
+    "keyboardY": 439,
+    "loginY": 330
+   }
+  },
+  "modalMessageWrap": [
+   {
+    "screenId": "1562:11",
+    "textNodeId": "I1566:638;1546:17953",
+    "modalInstanceId": "1566:638",
+    "characters": "서비스를 이용하시려면 본인 인증을 해 주세요. 본인 인증 시 기존 기기는 인증이 해제됩니다.",
+    "width": 310,
+    "textAutoResize": "HEIGHT",
+    "layoutSizingHorizontal": "FILL",
+    "overflow": 0
+   },
+   {
+    "screenId": "1562:13",
+    "textNodeId": "I1567:723;1546:17965",
+    "modalInstanceId": "1567:723",
+    "characters": "에스원은 고객님의 소중한 정보를 보호하기 위해 인증 기기 등록 후 서비스를 제공하고 있습니다.\n현재 인증한 기기로 등록 후 로그인 할까요?",
+    "width": 310,
+    "textAutoResize": "HEIGHT",
+    "layoutSizingHorizontal": "FILL",
+    "overflow": 0
+   }
+  ]
+ },
+ "footerFixes": {
+  "count": 11,
+  "footerIds": [
+   "1564:63",
+   "1564:286",
+   "1564:365",
+   "1566:379",
+   "1566:450",
+   "1566:536",
+   "1566:620",
+   "1566:704",
+   "1567:705",
+   "1567:791",
+   "1567:862"
+  ],
+  "mutatedTextIds": [
+   "I1564:63;1545:6820",
+   "I1564:63;1545:6822",
+   "I1564:63;1545:6824",
+   "I1564:286;1545:6820",
+   "I1564:286;1545:6822",
+   "I1564:286;1545:6824",
+   "I1564:365;1545:6820",
+   "I1564:365;1545:6822",
+   "I1564:365;1545:6824",
+   "I1566:379;1545:6820",
+   "I1566:379;1545:6822",
+   "I1566:379;1545:6824",
+   "I1566:450;1545:6820",
+   "I1566:450;1545:6822",
+   "I1566:450;1545:6824",
+   "I1566:536;1545:6820",
+   "I1566:536;1545:6822",
+   "I1566:536;1545:6824",
+   "I1566:620;1545:6820",
+   "I1566:620;1545:6822",
+   "I1566:620;1545:6824",
+   "I1566:704;1545:6820",
+   "I1566:704;1545:6822",
+   "I1566:704;1545:6824",
+   "I1567:705;1545:6820",
+   "I1567:705;1545:6822",
+   "I1567:705;1545:6824",
+   "I1567:791;1545:6820",
+   "I1567:791;1545:6822",
+   "I1567:791;1545:6824",
+   "I1567:862;1545:6820",
+   "I1567:862;1545:6822",
+   "I1567:862;1545:6824"
+  ]
+ },
+ "provenance": {
+  "skipInvisibleInstanceChildren": false,
+  "checkedCount": 145,
+  "rootCount": 105,
+  "remoteCount": 33,
+  "localCount": 112,
+  "allowedRemoteCount": 33,
+  "disallowed": [],
+  "partitions": {
+   "screens-1-7": {
+    "checkedCount": 72,
+    "rootCount": 53,
+    "remoteCount": 17,
+    "localCount": 55,
+    "allowedRemoteCount": 17
+   },
+   "screens-8-13": {
+    "checkedCount": 73,
+    "rootCount": 52,
+    "remoteCount": 16,
+    "localCount": 57,
+    "allowedRemoteCount": 16
+   }
+  }
+ },
+ "violations": {
+  "structure": [],
+  "raw": [],
+  "disallowed": [],
+  "missingText": [],
+  "popup": [],
+  "keyboard": [],
+  "wrongState": [],
+  "font": [],
+  "overflow": [],
+  "inputField": [],
+  "keyboardHelper": []
+ },
+ "counts": {
+  "screenCount": 13,
+  "builtCount": 13,
+  "footerFixCount": 11,
+  "raw": 0,
+  "disallowed": 0,
+  "missingText": 0,
+  "wrongState": 0,
+  "font": 0,
+  "overflow": 0,
+  "excludedLogoutAbsent": true,
+  "total": 0,
+  "inputFieldFixCount": 26,
+  "keyboardHelperSetCount": 2
+ },
+ "excluded": [
+  {
+   "sourceNodeId": "21505:5461",
+   "name": "2.1 로그인_6 로그아웃 확인",
+   "status": "excluded",
+   "reason": "Required service icons are not yet in canonical ICON_KEYS / allowed remote keys."
+  }
+ ],
+ "traceArtifacts": [
+  "trace-screens-1-7.json",
+  "trace-screens-8-13.json"
+ ],
+ "screenshotTargets": [
+  [
+   "section",
+   "1562:2"
+  ],
+  [
+   "initial",
+   "1562:3"
+  ],
+  [
+   "keyboardA",
+   "1562:4"
+  ],
+  [
+   "error",
+   "1562:8"
+  ],
+  [
+   "autoA",
+   "1562:9"
+  ],
+  [
+   "newDeviceC",
+   "1562:13"
+  ]
+ ],
+ "postReverificationFixes": {
+  "inputFields": {
+   "count": 26,
+   "outerWidth": 320,
+   "fieldWidthBefore": 200,
+   "fieldWidth": 320,
+   "layoutSizingHorizontal": "FILL",
+   "fieldNodeIds": [
+    "I1564:31;1546:10592",
+    "I1564:36;1546:10592",
+    "I1564:109;1546:10696",
+    "I1564:127;1546:10592",
+    "I1564:180;1546:10644",
+    "I1564:185;1546:10696",
+    "I1564:253;1546:10792",
+    "I1564:259;1546:10644",
+    "I1564:332;1546:10644",
+    "I1564:337;1546:10792",
+    "I1566:353;1546:10644",
+    "I1566:358;1546:10792",
+    "I1566:425;1546:10644",
+    "I1566:430;1546:10644",
+    "I1566:511;1546:10644",
+    "I1566:516;1546:10644",
+    "I1566:595;1546:10644",
+    "I1566:600;1546:10644",
+    "I1566:679;1546:10644",
+    "I1566:684;1546:10644",
+    "I1567:680;1546:10644",
+    "I1567:685;1546:10644",
+    "I1567:766;1546:10644",
+    "I1567:771;1546:10644",
+    "I1567:837;1546:10644",
+    "I1567:842;1546:10644"
+   ]
+  },
+  "keyboardHelpers": [
+   {
+    "screenId": "1562:4",
+    "loginBodyId": "1564:104",
+    "spacerId": "1586:4034",
+    "helperFrameId": "1586:4035",
+    "textNodeIds": [
+     "1586:4036",
+     "1586:4037",
+     "1586:4038"
+    ],
+    "texts": [
+     "회원가입",
+     "아이디 찾기",
+     "비밀번호 찾기"
+    ],
+    "helperY": 398,
+    "helperWidth": 320,
+    "helperHeight": 20,
+    "loginY": 330,
+    "keyboardY": 439
+   },
+   {
+    "screenId": "1562:5",
+    "loginBodyId": "1564:175",
+    "spacerId": "1586:4046",
+    "helperFrameId": "1586:4047",
+    "textNodeIds": [
+     "1586:4048",
+     "1586:4049",
+     "1586:4050"
+    ],
+    "texts": [
+     "회원가입",
+     "아이디 찾기",
+     "비밀번호 찾기"
+    ],
+    "helperY": 398,
+    "helperWidth": 320,
+    "helperHeight": 20,
+    "loginY": 330,
+    "keyboardY": 439
+   }
+  ]
+ }
 }

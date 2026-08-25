@@ -3,7 +3,7 @@
     "name": "SW Pattern Registry Index",
     "version": "0.2.1",
     "status": "mvp-pattern",
-    "updatedAt": "2026-08-24",
+    "updatedAt": "2026-08-25",
     "description": "Pattern Harness entry point. 패턴은 코어 컴포넌트를 조합한 반복 레이아웃이며 components/index.json과 분리 관리한다."
   },
   "patterns": [
@@ -39,7 +39,8 @@
         "flow": "registry/patterns/mobile-login/flow.md",
         "states": "registry/patterns/mobile-login/states.md",
         "copy": "registry/patterns/mobile-login/copy.md",
-        "contentRules": "registry/patterns/mobile-login/content-rules.md"
+        "contentRules": "registry/patterns/mobile-login/content-rules.md",
+        "screenNaming": "registry/governance/screen-naming-policy.json"
       },
       "evidence": {
         "buildHistory": "reports/screen-rebuild/modu-app/login-mobile/",
@@ -102,7 +103,15 @@
           "record": "reports/screen-rebuild/modu-app/login-mobile/spec-change-2026-08-24-helper-separator.md"
         }
       ],
-      "registeredAt": "2026-08-20"
+      "registeredAt": "2026-08-20",
+      "screens": {
+        "total": 10,
+        "main": 4,
+        "branch": 6,
+        "namingPolicy": "registry/governance/screen-naming-policy.json",
+        "namePrefix": "APP/LOGIN/",
+        "note": "프레임 이름은 고정 식별자가 아니다. 화면을 가리킬 때는 states.md 의 Figma 노드 ID 를 쓴다."
+      }
     }
   ]
 }

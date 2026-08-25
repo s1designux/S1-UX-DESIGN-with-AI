@@ -9,7 +9,7 @@
 | 패턴 ID | `mobile-login` |
 | 상태 | promoted |
 | 플랫폼 | Mobile App |
-| 현재 화면 상태 | 11개 |
+| 현재 화면 상태 | 10개 |
 | Figma Section | `1562:2` |
 | 기준 서비스 | MoDU App |
 
@@ -51,6 +51,7 @@
 ## 문서 안내
 
 - 흐름과 분기 이유: [flow.md](flow.md)
+- 프레임 이름 규칙: `registry/governance/screen-naming-policy.json`
 - 화면 상태 목록: [states.md](states.md)
 - 현재 팝업 문구: [copy.md](copy.md)
 - 문구·오류·접근성 규칙: [content-rules.md](content-rules.md)

@@ -1,592 +1,599 @@
 {
-  "section": [
-    "1562:2",
-    "Pattern / Mobile Login / MoDU",
-    5800,
-    980
-  ],
-  "counts": {
-    "screens": 13,
-    "text": 173,
-    "instances": 145,
-    "groups": 18
+ "_stale": true,
+ "_staleSince": "2026-08-25",
+ "_supersededBy": [
+  "reports/screen-rebuild/modu-app/login-mobile/spec-change-2026-08-25-frame-naming.md",
+  "registry/patterns/mobile-login/states.md"
+ ],
+ "_staleReason": "레거시 프레임 이름(예: '2.1 로그인_1 최초진입')과 13/11화면 시점 구성이 담긴 당시 증거다. 2026-08-25 프레임 개명(APP/LOGIN/… 체계)·1562:15 삭제·2줄 재배치가 반영돼 있지 않다.",
+ "_useInstead": "현재 화면 목록·프레임 이름은 registry/patterns/mobile-login/states.md, 진행 상태는 workflow-state.json, 구조 근거는 snapshot-after.json.",
+ "section": [
+  "1562:2",
+  "Pattern / Mobile Login / MoDU",
+  5800,
+  980
+ ],
+ "counts": {
+  "screens": 13,
+  "text": 173,
+  "instances": 145,
+  "groups": 18
+ },
+ "groups": [
+  {
+   "key": "LOCAL_OK|Platform=App|a6f7dac38fb328c3b97c8c4c2e856bd24b31a4c4|false|1545:6510",
+   "count": 13,
+   "names": [
+    "StatusBar / App"
+   ],
+   "samples": [
+    "1564:3",
+    "1564:81"
+   ]
   },
-  "groups": [
-    {
-      "key": "LOCAL_OK|Platform=App|a6f7dac38fb328c3b97c8c4c2e856bd24b31a4c4|false|1545:6510",
-      "count": 13,
-      "names": [
-        "StatusBar / App"
-      ],
-      "samples": [
-        "1564:3",
-        "1564:81"
-      ]
-    },
-    {
-      "key": "LOCAL_OK|Brand=에스원, Color=Blue|d000d48997b715fa5c2a8bf043b27b942058356d|false|1545:6711",
-      "count": 13,
-      "names": [
-        "CI / 에스원 / Blue"
-      ],
-      "samples": [
-        "1564:28",
-        "1564:106"
-      ]
-    },
-    {
-      "key": "LOCAL_OK|Size=MD, State=Default, Label=Off, Message=Off, Break=Mobile|38de0bafe796f912a7d9267ae0cc0dcd3a510ebd|false|1546:10603",
-      "count": 3,
-      "names": [
-        "Input / ID",
-        "Input / Password"
-      ],
-      "samples": [
-        "1564:31",
-        "1564:36"
-      ]
-    },
-    {
-      "key": "ICON_OK|Property 1=Line|d4e9eb5b7e193ee291aa2a7e04396c8de2d2dae7|true|338:4",
-      "count": 26,
-      "names": [
-        "eye"
-      ],
-      "samples": [
-        "I1564:31;1546:10594",
-        "I1564:36;1546:10594"
-      ]
-    },
-    {
-      "key": "LOCAL_OK|Size=LG, State=Disabled, Variant=Primary, Break=Mobile|bf514880dbf7f960b52e1cad07e5519be8daf515|false|1545:8176",
-      "count": 1,
-      "names": [
-        "Button / 로그인"
-      ],
-      "samples": [
-        "1564:55"
-      ]
-    },
-    {
-      "key": "LOCAL_OK|Size=LG, State=Default, Variant=Secondary, Break=Mobile|43b177677a107c56656bb707d1ca95a18f2a4243|false|1545:8202",
-      "count": 11,
-      "names": [
-        "Button / 휴대전화번호로 로그인",
-        "Button / 휴대폰 번호로 로그인"
-      ],
-      "samples": [
-        "1564:61",
-        "1564:284"
-      ]
-    },
-    {
-      "key": "LOCAL_OK|Platform=Mobile|9901c54de3ddf904f64b034faa516e81590930ee|false|1545:6818",
-      "count": 11,
-      "names": [
-        "Footer / Mobile"
-      ],
-      "samples": [
-        "1564:63",
-        "1564:286"
-      ]
-    },
-    {
-      "key": "LOCAL_OK|Platform=App|eb3dad08fe34d26106de3efb5f66ffe3907dbb02|false|1545:6628",
-      "count": 13,
-      "names": [
-        "NavBar / App"
-      ],
-      "samples": [
-        "1564:71",
-        "1564:142"
-      ]
-    },
-    {
-      "key": "LOCAL_OK|Size=MD, State=Editing, Label=Off, Message=Off, Break=Mobile|f86696df3e362e6a94b8b412a37b0f6a7438252e|false|1546:10715",
-      "count": 2,
-      "names": [
-        "Input / ID",
-        "Input / Password"
-      ],
-      "samples": [
-        "1564:109",
-        "1564:185"
-      ]
-    },
-    {
-      "key": "ICON_OK|Property 1=line|24b2df622d341e0af21cd4b23b4a7d23b97a5ea7|true|324:16634",
-      "count": 2,
-      "names": [
-        "remove"
-      ],
-      "samples": [
-        "I1564:109;1546:10700",
-        "I1564:185;1546:10700"
-      ]
-    },
-    {
-      "key": "LOCAL_OK|Size=LG, State=Default, Variant=Primary, Break=Mobile|870b6ded0e4d99aaddb13ff60c91374b26024127|false|1545:8170",
-      "count": 12,
-      "names": [
-        "Button / 로그인"
-      ],
-      "samples": [
-        "1564:139",
-        "1564:212"
-      ]
-    },
-    {
-      "key": "LOCAL_OK|Size=MD, State=Filled, Label=Off, Message=Off, Break=Mobile|97ce124ddbaab64b7a34f1c5506614a68847ad6f|false|1546:10655",
-      "count": 18,
-      "names": [
-        "Input / ID",
-        "Input / Password"
-      ],
-      "samples": [
-        "1564:180",
-        "1564:259"
-      ]
-    },
-    {
-      "key": "LOCAL_OK|Size=MD, State=Error, Label=Off, Message=On, Break=Mobile|4228c1de465823b1999ecf24f517932fbc6fa9e2|false|1546:10803",
-      "count": 3,
-      "names": [
-        "Input / ID",
-        "Input / Password"
-      ],
-      "samples": [
-        "1564:253",
-        "1564:337"
-      ]
-    },
-    {
-      "key": "LOCAL_OK|Footer=Dual|d7dd50fbcb3bc6bd8272047fc1833e00545728b1|false|1546:17957",
-      "count": 2,
-      "names": [
-        "Modal / Login Notice",
-        "Modal / Device Registration"
-      ],
-      "samples": [
-        "1566:468",
-        "1567:723"
-      ]
-    },
-    {
-      "key": "ICON_OK|Property 1=Line|2a1abbd3597b536e34fd9523fb61eade3afe9934|true|593:33520",
-      "count": 5,
-      "names": [
-        "close"
-      ],
-      "samples": [
-        "I1566:468;1546:17961",
-        "I1566:554;1546:17949"
-      ]
-    },
-    {
-      "key": "LOCAL_OK|Size=XXSM, State=Default, Variant=Secondary, Break=PC|44ea0c4139da9abb690538b5aa3b74002a11f7d7|false|1545:8194",
-      "count": 2,
-      "names": [
-        "secondary"
-      ],
-      "samples": [
-        "I1566:468;1546:17967",
-        "I1567:723;1546:17967"
-      ]
-    },
-    {
-      "key": "LOCAL_OK|Size=XXSM, State=Default, Variant=Primary, Break=PC|b06acb2d725f8de39b8a43a0928904fdcb1b9d67|false|1545:8162",
-      "count": 5,
-      "names": [
-        "primary"
-      ],
-      "samples": [
-        "I1566:468;1546:17969",
-        "I1566:554;1546:17955"
-      ]
-    },
-    {
-      "key": "LOCAL_OK|Footer=Single|9eb8a56f6b5118f2efcd3e6a8a71f485f37c2f32|false|1546:17945",
-      "count": 3,
-      "names": [
-        "Modal / Login Notice"
-      ],
-      "samples": [
-        "1566:554",
-        "1566:638"
-      ]
-    }
-  ],
-  "footer": [
-    [
-      "1562:3",
-      "1564:63",
-      [
-        274,
-        52
-      ],
-      [
-        315,
-        52
-      ],
-      [
-        "VERTICAL",
-        "AUTO",
-        "AUTO"
-      ],
-      [
-        "이용약관",
-        "개인정보처리방침",
-        "영상정보처리방침",
-        "© S-1 Corp. All Rights Reserved."
-      ]
-    ],
-    [
-      "1562:6",
-      "1564:286",
-      [
-        274,
-        52
-      ],
-      [
-        315,
-        52
-      ],
-      [
-        "VERTICAL",
-        "AUTO",
-        "AUTO"
-      ],
-      [
-        "이용약관",
-        "개인정보처리방침",
-        "영상정보처리방침",
-        "© S-1 Corp. All Rights Reserved."
-      ]
-    ],
-    [
-      "1562:7",
-      "1564:365",
-      [
-        274,
-        52
-      ],
-      [
-        315,
-        52
-      ],
-      [
-        "VERTICAL",
-        "AUTO",
-        "AUTO"
-      ],
-      [
-        "이용약관",
-        "개인정보처리방침",
-        "영상정보처리방침",
-        "© S-1 Corp. All Rights Reserved."
-      ]
-    ],
-    [
-      "1562:8",
-      "1566:379",
-      [
-        274,
-        52
-      ],
-      [
-        315,
-        52
-      ],
-      [
-        "VERTICAL",
-        "AUTO",
-        "AUTO"
-      ],
-      [
-        "이용약관",
-        "개인정보처리방침",
-        "영상정보처리방침",
-        "© S-1 Corp. All Rights Reserved."
-      ]
-    ],
-    [
-      "1562:9",
-      "1566:450",
-      [
-        274,
-        52
-      ],
-      [
-        315,
-        52
-      ],
-      [
-        "VERTICAL",
-        "AUTO",
-        "AUTO"
-      ],
-      [
-        "이용약관",
-        "개인정보처리방침",
-        "영상정보처리방침",
-        "© S-1 Corp. All Rights Reserved."
-      ]
-    ],
-    [
-      "1562:10",
-      "1566:536",
-      [
-        274,
-        52
-      ],
-      [
-        315,
-        52
-      ],
-      [
-        "VERTICAL",
-        "AUTO",
-        "AUTO"
-      ],
-      [
-        "이용약관",
-        "개인정보처리방침",
-        "영상정보처리방침",
-        "© S-1 Corp. All Rights Reserved."
-      ]
-    ],
-    [
-      "1562:11",
-      "1566:620",
-      [
-        274,
-        52
-      ],
-      [
-        315,
-        52
-      ],
-      [
-        "VERTICAL",
-        "AUTO",
-        "AUTO"
-      ],
-      [
-        "이용약관",
-        "개인정보처리방침",
-        "영상정보처리방침",
-        "© S-1 Corp. All Rights Reserved."
-      ]
-    ],
-    [
-      "1562:12",
-      "1566:704",
-      [
-        274,
-        52
-      ],
-      [
-        315,
-        52
-      ],
-      [
-        "VERTICAL",
-        "AUTO",
-        "AUTO"
-      ],
-      [
-        "이용약관",
-        "개인정보처리방침",
-        "영상정보처리방침",
-        "© S-1 Corp. All Rights Reserved."
-      ]
-    ],
-    [
-      "1562:13",
-      "1567:705",
-      [
-        274,
-        52
-      ],
-      [
-        315,
-        52
-      ],
-      [
-        "VERTICAL",
-        "AUTO",
-        "AUTO"
-      ],
-      [
-        "이용약관",
-        "개인정보처리방침",
-        "영상정보처리방침",
-        "© S-1 Corp. All Rights Reserved."
-      ]
-    ],
-    [
-      "1562:14",
-      "1567:791",
-      [
-        274,
-        52
-      ],
-      [
-        315,
-        52
-      ],
-      [
-        "VERTICAL",
-        "AUTO",
-        "AUTO"
-      ],
-      [
-        "이용약관",
-        "개인정보처리방침",
-        "영상정보처리방침",
-        "© S-1 Corp. All Rights Reserved."
-      ]
-    ],
-    [
-      "1562:15",
-      "1567:862",
-      [
-        274,
-        52
-      ],
-      [
-        315,
-        52
-      ],
-      [
-        "VERTICAL",
-        "AUTO",
-        "AUTO"
-      ],
-      [
-        "이용약관",
-        "개인정보처리방침",
-        "영상정보처리방침",
-        "© S-1 Corp. All Rights Reserved."
-      ]
-    ]
-  ],
-  "bad": {
-    "screen": [],
-    "text": [],
-    "font": [],
-    "style": [],
-    "raw": [],
-    "state": [
-      [
-        "1562:3",
-        "presence",
-        0,
-        0,
-        false,
-        0
-      ],
-      [
-        "1562:4",
-        "presence",
-        1,
-        1,
-        false,
-        0
-      ],
-      [
-        "1562:5",
-        "presence",
-        1,
-        1,
-        false,
-        0
-      ],
-      [
-        "1562:6",
-        "presence",
-        0,
-        0,
-        false,
-        0
-      ],
-      [
-        "1562:7",
-        "presence",
-        0,
-        0,
-        false,
-        0
-      ],
-      [
-        "1562:8",
-        "presence",
-        0,
-        0,
-        false,
-        0
-      ],
-      [
-        "1562:9",
-        "presence",
-        0,
-        0,
-        true,
-        1
-      ],
-      [
-        "1562:10",
-        "presence",
-        0,
-        0,
-        true,
-        1
-      ],
-      [
-        "1562:11",
-        "presence",
-        0,
-        0,
-        true,
-        1
-      ],
-      [
-        "1562:12",
-        "presence",
-        0,
-        0,
-        true,
-        1
-      ],
-      [
-        "1562:13",
-        "presence",
-        0,
-        0,
-        true,
-        1
-      ],
-      [
-        "1562:14",
-        "presence",
-        0,
-        0,
-        false,
-        0
-      ],
-      [
-        "1562:15",
-        "presence",
-        0,
-        0,
-        false,
-        0
-      ]
-    ],
-    "prov": [],
-    "layout": [],
-    "overflow": []
+  {
+   "key": "LOCAL_OK|Brand=에스원, Color=Blue|d000d48997b715fa5c2a8bf043b27b942058356d|false|1545:6711",
+   "count": 13,
+   "names": [
+    "CI / 에스원 / Blue"
+   ],
+   "samples": [
+    "1564:28",
+    "1564:106"
+   ]
   },
-  "verdict": "FAIL"
+  {
+   "key": "LOCAL_OK|Size=MD, State=Default, Label=Off, Message=Off, Break=Mobile|38de0bafe796f912a7d9267ae0cc0dcd3a510ebd|false|1546:10603",
+   "count": 3,
+   "names": [
+    "Input / ID",
+    "Input / Password"
+   ],
+   "samples": [
+    "1564:31",
+    "1564:36"
+   ]
+  },
+  {
+   "key": "ICON_OK|Property 1=Line|d4e9eb5b7e193ee291aa2a7e04396c8de2d2dae7|true|338:4",
+   "count": 26,
+   "names": [
+    "eye"
+   ],
+   "samples": [
+    "I1564:31;1546:10594",
+    "I1564:36;1546:10594"
+   ]
+  },
+  {
+   "key": "LOCAL_OK|Size=LG, State=Disabled, Variant=Primary, Break=Mobile|bf514880dbf7f960b52e1cad07e5519be8daf515|false|1545:8176",
+   "count": 1,
+   "names": [
+    "Button / 로그인"
+   ],
+   "samples": [
+    "1564:55"
+   ]
+  },
+  {
+   "key": "LOCAL_OK|Size=LG, State=Default, Variant=Secondary, Break=Mobile|43b177677a107c56656bb707d1ca95a18f2a4243|false|1545:8202",
+   "count": 11,
+   "names": [
+    "Button / 휴대전화번호로 로그인",
+    "Button / 휴대폰 번호로 로그인"
+   ],
+   "samples": [
+    "1564:61",
+    "1564:284"
+   ]
+  },
+  {
+   "key": "LOCAL_OK|Platform=Mobile|9901c54de3ddf904f64b034faa516e81590930ee|false|1545:6818",
+   "count": 11,
+   "names": [
+    "Footer / Mobile"
+   ],
+   "samples": [
+    "1564:63",
+    "1564:286"
+   ]
+  },
+  {
+   "key": "LOCAL_OK|Platform=App|eb3dad08fe34d26106de3efb5f66ffe3907dbb02|false|1545:6628",
+   "count": 13,
+   "names": [
+    "NavBar / App"
+   ],
+   "samples": [
+    "1564:71",
+    "1564:142"
+   ]
+  },
+  {
+   "key": "LOCAL_OK|Size=MD, State=Editing, Label=Off, Message=Off, Break=Mobile|f86696df3e362e6a94b8b412a37b0f6a7438252e|false|1546:10715",
+   "count": 2,
+   "names": [
+    "Input / ID",
+    "Input / Password"
+   ],
+   "samples": [
+    "1564:109",
+    "1564:185"
+   ]
+  },
+  {
+   "key": "ICON_OK|Property 1=line|24b2df622d341e0af21cd4b23b4a7d23b97a5ea7|true|324:16634",
+   "count": 2,
+   "names": [
+    "remove"
+   ],
+   "samples": [
+    "I1564:109;1546:10700",
+    "I1564:185;1546:10700"
+   ]
+  },
+  {
+   "key": "LOCAL_OK|Size=LG, State=Default, Variant=Primary, Break=Mobile|870b6ded0e4d99aaddb13ff60c91374b26024127|false|1545:8170",
+   "count": 12,
+   "names": [
+    "Button / 로그인"
+   ],
+   "samples": [
+    "1564:139",
+    "1564:212"
+   ]
+  },
+  {
+   "key": "LOCAL_OK|Size=MD, State=Filled, Label=Off, Message=Off, Break=Mobile|97ce124ddbaab64b7a34f1c5506614a68847ad6f|false|1546:10655",
+   "count": 18,
+   "names": [
+    "Input / ID",
+    "Input / Password"
+   ],
+   "samples": [
+    "1564:180",
+    "1564:259"
+   ]
+  },
+  {
+   "key": "LOCAL_OK|Size=MD, State=Error, Label=Off, Message=On, Break=Mobile|4228c1de465823b1999ecf24f517932fbc6fa9e2|false|1546:10803",
+   "count": 3,
+   "names": [
+    "Input / ID",
+    "Input / Password"
+   ],
+   "samples": [
+    "1564:253",
+    "1564:337"
+   ]
+  },
+  {
+   "key": "LOCAL_OK|Footer=Dual|d7dd50fbcb3bc6bd8272047fc1833e00545728b1|false|1546:17957",
+   "count": 2,
+   "names": [
+    "Modal / Login Notice",
+    "Modal / Device Registration"
+   ],
+   "samples": [
+    "1566:468",
+    "1567:723"
+   ]
+  },
+  {
+   "key": "ICON_OK|Property 1=Line|2a1abbd3597b536e34fd9523fb61eade3afe9934|true|593:33520",
+   "count": 5,
+   "names": [
+    "close"
+   ],
+   "samples": [
+    "I1566:468;1546:17961",
+    "I1566:554;1546:17949"
+   ]
+  },
+  {
+   "key": "LOCAL_OK|Size=XXSM, State=Default, Variant=Secondary, Break=PC|44ea0c4139da9abb690538b5aa3b74002a11f7d7|false|1545:8194",
+   "count": 2,
+   "names": [
+    "secondary"
+   ],
+   "samples": [
+    "I1566:468;1546:17967",
+    "I1567:723;1546:17967"
+   ]
+  },
+  {
+   "key": "LOCAL_OK|Size=XXSM, State=Default, Variant=Primary, Break=PC|b06acb2d725f8de39b8a43a0928904fdcb1b9d67|false|1545:8162",
+   "count": 5,
+   "names": [
+    "primary"
+   ],
+   "samples": [
+    "I1566:468;1546:17969",
+    "I1566:554;1546:17955"
+   ]
+  },
+  {
+   "key": "LOCAL_OK|Footer=Single|9eb8a56f6b5118f2efcd3e6a8a71f485f37c2f32|false|1546:17945",
+   "count": 3,
+   "names": [
+    "Modal / Login Notice"
+   ],
+   "samples": [
+    "1566:554",
+    "1566:638"
+   ]
+  }
+ ],
+ "footer": [
+  [
+   "1562:3",
+   "1564:63",
+   [
+    274,
+    52
+   ],
+   [
+    315,
+    52
+   ],
+   [
+    "VERTICAL",
+    "AUTO",
+    "AUTO"
+   ],
+   [
+    "이용약관",
+    "개인정보처리방침",
+    "영상정보처리방침",
+    "© S-1 Corp. All Rights Reserved."
+   ]
+  ],
+  [
+   "1562:6",
+   "1564:286",
+   [
+    274,
+    52
+   ],
+   [
+    315,
+    52
+   ],
+   [
+    "VERTICAL",
+    "AUTO",
+    "AUTO"
+   ],
+   [
+    "이용약관",
+    "개인정보처리방침",
+    "영상정보처리방침",
+    "© S-1 Corp. All Rights Reserved."
+   ]
+  ],
+  [
+   "1562:7",
+   "1564:365",
+   [
+    274,
+    52
+   ],
+   [
+    315,
+    52
+   ],
+   [
+    "VERTICAL",
+    "AUTO",
+    "AUTO"
+   ],
+   [
+    "이용약관",
+    "개인정보처리방침",
+    "영상정보처리방침",
+    "© S-1 Corp. All Rights Reserved."
+   ]
+  ],
+  [
+   "1562:8",
+   "1566:379",
+   [
+    274,
+    52
+   ],
+   [
+    315,
+    52
+   ],
+   [
+    "VERTICAL",
+    "AUTO",
+    "AUTO"
+   ],
+   [
+    "이용약관",
+    "개인정보처리방침",
+    "영상정보처리방침",
+    "© S-1 Corp. All Rights Reserved."
+   ]
+  ],
+  [
+   "1562:9",
+   "1566:450",
+   [
+    274,
+    52
+   ],
+   [
+    315,
+    52
+   ],
+   [
+    "VERTICAL",
+    "AUTO",
+    "AUTO"
+   ],
+   [
+    "이용약관",
+    "개인정보처리방침",
+    "영상정보처리방침",
+    "© S-1 Corp. All Rights Reserved."
+   ]
+  ],
+  [
+   "1562:10",
+   "1566:536",
+   [
+    274,
+    52
+   ],
+   [
+    315,
+    52
+   ],
+   [
+    "VERTICAL",
+    "AUTO",
+    "AUTO"
+   ],
+   [
+    "이용약관",
+    "개인정보처리방침",
+    "영상정보처리방침",
+    "© S-1 Corp. All Rights Reserved."
+   ]
+  ],
+  [
+   "1562:11",
+   "1566:620",
+   [
+    274,
+    52
+   ],
+   [
+    315,
+    52
+   ],
+   [
+    "VERTICAL",
+    "AUTO",
+    "AUTO"
+   ],
+   [
+    "이용약관",
+    "개인정보처리방침",
+    "영상정보처리방침",
+    "© S-1 Corp. All Rights Reserved."
+   ]
+  ],
+  [
+   "1562:12",
+   "1566:704",
+   [
+    274,
+    52
+   ],
+   [
+    315,
+    52
+   ],
+   [
+    "VERTICAL",
+    "AUTO",
+    "AUTO"
+   ],
+   [
+    "이용약관",
+    "개인정보처리방침",
+    "영상정보처리방침",
+    "© S-1 Corp. All Rights Reserved."
+   ]
+  ],
+  [
+   "1562:13",
+   "1567:705",
+   [
+    274,
+    52
+   ],
+   [
+    315,
+    52
+   ],
+   [
+    "VERTICAL",
+    "AUTO",
+    "AUTO"
+   ],
+   [
+    "이용약관",
+    "개인정보처리방침",
+    "영상정보처리방침",
+    "© S-1 Corp. All Rights Reserved."
+   ]
+  ],
+  [
+   "1562:14",
+   "1567:791",
+   [
+    274,
+    52
+   ],
+   [
+    315,
+    52
+   ],
+   [
+    "VERTICAL",
+    "AUTO",
+    "AUTO"
+   ],
+   [
+    "이용약관",
+    "개인정보처리방침",
+    "영상정보처리방침",
+    "© S-1 Corp. All Rights Reserved."
+   ]
+  ],
+  [
+   "1562:15",
+   "1567:862",
+   [
+    274,
+    52
+   ],
+   [
+    315,
+    52
+   ],
+   [
+    "VERTICAL",
+    "AUTO",
+    "AUTO"
+   ],
+   [
+    "이용약관",
+    "개인정보처리방침",
+    "영상정보처리방침",
+    "© S-1 Corp. All Rights Reserved."
+   ]
+  ]
+ ],
+ "bad": {
+  "screen": [],
+  "text": [],
+  "font": [],
+  "style": [],
+  "raw": [],
+  "state": [
+   [
+    "1562:3",
+    "presence",
+    0,
+    0,
+    false,
+    0
+   ],
+   [
+    "1562:4",
+    "presence",
+    1,
+    1,
+    false,
+    0
+   ],
+   [
+    "1562:5",
+    "presence",
+    1,
+    1,
+    false,
+    0
+   ],
+   [
+    "1562:6",
+    "presence",
+    0,
+    0,
+    false,
+    0
+   ],
+   [
+    "1562:7",
+    "presence",
+    0,
+    0,
+    false,
+    0
+   ],
+   [
+    "1562:8",
+    "presence",
+    0,
+    0,
+    false,
+    0
+   ],
+   [
+    "1562:9",
+    "presence",
+    0,
+    0,
+    true,
+    1
+   ],
+   [
+    "1562:10",
+    "presence",
+    0,
+    0,
+    true,
+    1
+   ],
+   [
+    "1562:11",
+    "presence",
+    0,
+    0,
+    true,
+    1
+   ],
+   [
+    "1562:12",
+    "presence",
+    0,
+    0,
+    true,
+    1
+   ],
+   [
+    "1562:13",
+    "presence",
+    0,
+    0,
+    true,
+    1
+   ],
+   [
+    "1562:14",
+    "presence",
+    0,
+    0,
+    false,
+    0
+   ],
+   [
+    "1562:15",
+    "presence",
+    0,
+    0,
+    false,
+    0
+   ]
+  ],
+  "prov": [],
+  "layout": [],
+  "overflow": []
+ },
+ "verdict": "FAIL"
 }
-

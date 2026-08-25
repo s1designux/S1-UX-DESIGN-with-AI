@@ -2113,10 +2113,10 @@ agent:
     Type:
       - "Standard / Title"
       - "Standard / Title + Close"
-      - "Home / Title + 2 Icons"
+      - "Standard / No Title"
+      - "Standard / No Title + Close"
       - "Home / Title + Subtitle + 1 Icon"
       - "Home / Title + Alt Title"
-      - "Standard / No Title"
   states:
     builder: "not-defined"
     metadata:
@@ -4079,4 +4079,4 @@ DESIGN_SYSTEM_GAP:
 - 적용 해석 순서(뒤가 앞을 덮음): core → service(extends core) → role → platform → theme. 기본값: service=core · role=user · platform=web · theme=light.
 - 서비스 분기(예: vms 영상관제)는 core 를 상속하고 차이분만 덮는다.
 
-<!-- generated-stamp: d93186bd147f · 손편집 금지 -->
+<!-- generated-stamp: 28783809256c · 손편집 금지 -->

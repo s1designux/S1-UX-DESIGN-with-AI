@@ -53,6 +53,10 @@
 | 36 | Canon Manifest | **「무엇이 정본인가」** 선언 ↔ 실제 배선 양방향 대조 |
 | 37 | Doc Budget | **CLAUDE.md 재비대화 차단** — 크기 래칫·참조 경로 실존·변경이력 3행 |
 | 38 | Component Guide Generation | `build-components.ts` → guide model 드리프트 차단 (메인 사이트는 손관리) |
+| 39 | Canonical Value → Web Guide | 정본 수치가 웹 가이드에 반영됐나 |
+| 40 | Screen Rebuild Evidence | 화면 재현 근거(기준 선언·스냅샷) 존재 — **warn** |
+| 41 | Screen Rebuild State | 화면 작업 상태 파일 정합, 전 플로우 일괄 — **warn** |
+| 42 | Screen Naming | 화면 프레임 이름이 네이밍 정본 규칙을 지키나 |
 
 ---
 
@@ -369,3 +373,19 @@ DESIGN.md(AI 소비용) 가 정본(tokens.css+registry)보다 낡으면 차단
 ### Gate 38: Component Guide Generation
 
 컴포넌트 정본의 실제 scene graph에서 생성한 `component-guide-model.json`이 최신인지 `--check` byte 대조로 차단한다. 메인 사이트 `components.html`은 기존 손관리 화면을 유지하며 자동 생성·byte 대조 대상이 아니다. Gate 18의 공개·제외 분류, Gate 19의 variant 커버리지, Gate 23의 실제 렌더, Gate 32의 크기 어휘가 사이트를 별도로 검증한다. 모델 재생성은 `npm run components:guide-model:write`, 일괄은 `npm run tokens:reconcile`이다. 단독 `npm run components:guide:check`.
+
+### Gate 41: Screen Rebuild State (화면 작업 상태 파일)
+
+`reports/screen-rebuild/*/*/workflow-state.json` 을 **전 플로우 일괄** 검사한다. 단건 검사기 `screen-rebuild:statecheck` 는 **존재했지만 수동이라** 2026-08-21~24 사이 실패를 아무도 몰랐다(반복 패턴 `rule-written-but-not-enforced` — Gate 35·7b·9b 와 같은 "존재하나 미연결" 유형). 배선하자마자 진행 중 플로우에서 아무도 모르던 불일치 1건이 드러났다.
+
+낡음(`_stale`) 규약을 존중한다: 사양이 축소되면 과거 산출물(`screen-spec.json`·`scan-summary.json`)은 당시 증거로 보존되므로 화면 수를 현재와 비교하면 영원히 실패한다. `_stale: true` **이면서 `_supersededBy`(대체 문서)가 있을 때만** 오류를 경고로 낮추고 제외 사유를 파일명과 함께 출력한다 — 도장만 찍어 검사를 피하는 것은 막는다. **현재 warn 단계**(래칫 — 진행 중 플로우의 기존 부채가 정리되면 승격 검토). 단독 `npm run screen-rebuild:statecheck:all`
+
+### Gate 42: Screen Naming (화면 프레임 네이밍)
+
+화면 패턴 프레임 이름이 `{PLATFORM}/{PATTERN}/{FLOWCODE} · {한글 상태명}{ (표현)}` 규칙을 지키나. 2026-08-25 이전에는 모바일 로그인 11개 프레임이 없어진 기획서 목차 번호(`2.1 로그인_1 최초진입`)를 달고 있었고, 삭제된 상태 때문에 번호에 구멍이 났으며 이름과 내용이 어긋난 것도 있었다 — screen-rebuild 가 문구·색·구조는 전수 대조하면서 **'이름'은 대조 항목에 없던** 것이 원인.
+
+검사 항목: 서식(정규식) · 흐름 코드 문법(숫자=기본 흐름, `4a1`=4단계에서 갈라진 첫 분기) · **분기가 실재하는 기본 흐름 단계에서 갈라지는지** · 이름/흐름 코드 중복 · 선언된 화면 수. 대상은 정책 `adopted[]` 에 등재된 패턴만(래칫).
+
+> **한계(정직 표기):** 지키는 것은 **기준표(`registry/patterns/{id}/states.md`)의 이름**이지 Figma 파일 안의 실물 프레임 이름이 아니다. 커밋 훅은 저장소만 읽으므로 실물 스캔에 필요한 MCP 연결을 쓸 수 없다. 실물↔문서 일치는 화면 작업 시 `component-verifier` 소관이며, `screen-rebuilder` 는 이 표의 이름을 그대로 쓰도록 배선돼 있다.
+
+정본 `registry/governance/screen-naming-policy.json`. 단독 `npm run screens:naming`

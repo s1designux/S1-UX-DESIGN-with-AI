@@ -20,6 +20,7 @@
 | 컴포넌트 정본 → 모델·설치기 자동 동기화 | 🧭 `component-guide-sync` — 생성=`guide-builder`, 검증=`component-verifier` (사이트는 손관리·자동 덮어쓰기 금지) |
 | Figma 원본 조회·비교 | 🤖 `figma-inspector` (읽기 절차 = `.claude/docs/figma-mcp-read.md`) |
 | **Figma 컴포넌트 → 코드** ("Figma ~ 구현/변환해줘") | 🪜 `figma-to-code` 스킬 (5단계 검문소) |
+| **웹 UI 라이브러리 제작·재개·모듈화·패턴 코드화** | 🧩 `ui-library-code` 스킬 — 상태=`reports/ui-library/{work-id}/workflow-state.json`, 구현=`ui-library-builder`, 검증=`component-verifier` 시나리오 F, 검수 화면은 실제 dist 소비 |
 | **화면/패턴 제작·수정** — 레거시 재현("이 화면 그대로 만들어줘") · **기존 패턴 화면 수정·보완**("여기 ~ 추가/고쳐줘") · **레거시 없이 신규 제작** | 🪞 `screen-rebuild` 스킬 — 빌드=`screen-rebuilder`, 검증=`component-verifier`. 착수 시 **기준(baseline)을 선언**한다: `legacy`(원본 재현) · `existing-nodes`(기존 노드 수정 — 변경 전 스냅샷 필수) · `intent-spec`(레거시 없음 — **사람이 쓴 의도 선언서가 기준**). **Gate 40** 이 근거 존재를 검사(현재 경고) |
 | **Figma 라이브러리 컴포넌트/변형세트 빌드·편집** ("Figma에 ~ 만들어줘", "variant 세트로 묶어줘") | 🏗️ `figma-library-build` 스킬 — 빌드=`figma-library-builder`, 검증=`component-verifier`, ⭐는 흐름만 (**하드룰 H1**) |
 | 설치기 생성기(`build-components.ts`) 수정 | ⭐ 또는 코드 에이전트가 빌드, 검증은 🤖 `component-verifier` 분리 (**하드룰 H1②**·Gate 13) |
@@ -29,7 +30,7 @@
 | 대시보드 갱신·Figma 플러그인 재등록 | `.claude/docs/ops-procedures.md` |
 | 다음 작업 계획 | `.claude/docs/project-status.md` (완료 단계·미결 우선순위) |
 
-**에이전트 정본:** `.claude/agents/` — token-validator · guide-builder · figma-inspector · component-verifier · token-sync · screen-rebuilder(🪞) · figma-library-builder(🏗️) · source-reader(📖). 상세 이름표는 `.claude/docs/actors-reference.md`.
+**에이전트 정본:** `.claude/agents/` — token-validator · guide-builder · figma-inspector · component-verifier · token-sync · screen-rebuilder(🪞) · figma-library-builder(🏗️) · ui-library-builder(🧱) · source-reader(📖). 상세 이름표는 `.claude/docs/actors-reference.md`.
 
 **단순 질문**과 **단일 노드 좌표/이름 1건 같은 순수 기계적 미세 편집**은 스킬 없이 직접 응답 가능(구조 변경은 위임).
 
@@ -336,6 +337,6 @@ Claude는 **Main Orchestrator**다. 사용자는 **목표 수준 의도**만 준
 
 | 날짜 | 변경 내용 (한 줄) |
 |------|------------------|
-| 2026-08-24 | **검수 실행시간 병목 제거 — Gate 23(컴포넌트 표출) 60.2초 → 2.3초, `gate:check` 전체 69.3초 → 11.1초(6.2배).** 원인은 검사 부하가 아니라 헤드리스 크롬이 `--dump-dom`/`--screenshot` 출력을 다 뱉고도 종료하지 않아 호출자 타임아웃까지 매달리던 것. stdout 스트리밍으로 문서 끝 도착 즉시 종료하도록 교정(출력 바이트 단위 동일 실증 · 판정 로직·게이트 수 무변경). 같은 함정을 쓰는 렌더 확인용 공용 도구 `npm run shot` 신설하고 CLAUDE.md §⚖️·source-reader 처방을 raw chrome 명령에서 이 도구로 교체. |
+| 2026-08-25 | **화면 프레임 네이밍 체계 신설 + 집행 장치 배선 — Gate 41·42 추가(43→45개).** 레거시 기획서 목차 번호(`2.1 로그인_1 최초진입`)가 프레임 이름에 그대로 남아 이름만으로 플랫폼·패턴·흐름 위치를 알 수 없었다. `{PLATFORM}/{PATTERN}/{FLOWCODE} · {상태명}` 으로 통일(모바일 로그인 10개), 흐름 코드는 고유 약어 대신 유즈케이스 명세 표준 표기(`4a1`=4단계에서 갈라진 첫 분기) 채택. **Gate 42** 가 이름 규칙을, **Gate 41** 이 화면 작업 상태를 커밋 시 검사한다(후자는 배선 즉시 기존 불일치 1건 발견). 팝업에 가려진 배경도 기준 화면과 전수 대조하도록 component-verifier 원칙에 추가 — 가려진 곳의 레거시 문구가 독립 검증 2회를 통과했던 사고 대응. 정본 `registry/governance/screen-naming-policy.json`(river 승인). |
 
 > 이전 전체 상세 이력: **`reports/changelog-archive.md`** 참조.

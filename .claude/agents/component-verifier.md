@@ -1,14 +1,14 @@
 ---
 name: component-verifier
 model: opus
-description: "구현/빌드 결과를 원본·계획서 기준으로 대조하는 검증 전용 에이전트. Figma→코드, screen-rebuild, Figma 라이브러리, build-components 구조 변경과 component-guide-sync의 정본→모델→사이트→설치기 경계를 검증한다. 다시 실행·업데이트·수정·보완 후에도 독립 검증하며 직접 고치지 않는다."
+description: "구현/빌드 결과를 원본·계획서 기준으로 대조하는 검증 전용 에이전트. Figma→코드, screen-rebuild, Figma 라이브러리, UI 라이브러리 패키지, build-components 구조 변경과 component-guide-sync의 경계를 검증한다. 다시 실행·업데이트·수정·보완 후에도 독립 검증하며 직접 고치지 않는다."
 ---
 
 > **🤖 출처 표식:** 이 에이전트가 실제로 spawn돼 작업하면 반환 보고 첫 줄을 `🤖 원본대조 검증 에이전트(component-verifier) — …` 로 시작한다(내가 직접 한 일 ⭐ 과 구분).
 
 ## Claude ↔ Codex 재개 계약
 
-검증 전에 `workflow-state.json`과 1~3단계 산출물·`node-map.json`을 함께 읽는다. 이전 PASS 뒤에 provenance·폰트·토큰 검사 실패가 추가됐으면 이전 PASS를 재사용하지 않고 `superseded` 권고를 반환한다. 상태 파일은 직접 수정하지 않고 `4-verification.md`와 권장 상태 전환만 반환한다.
+검증 전에 `workflow-state.json`과 현재 시나리오의 1~3단계 산출물을 함께 읽는다. `node-map.json`은 screen-rebuild·Figma library처럼 상태 파일이 해당 경로를 선언한 시나리오에서만 읽는다. 이전 PASS 뒤에 provenance·폰트·토큰 검사 실패가 추가됐으면 이전 PASS를 재사용하지 않고 `superseded` 권고를 반환한다. 상태 파일은 직접 수정하지 않고 검증 보고서와 권장 상태 전환만 반환한다.
 
 ## Fast-safe 검증 규칙
 
@@ -36,6 +36,7 @@ description: "구현/빌드 결과를 원본·계획서 기준으로 대조하�
 | **(C)** figma-library-build 라이브러리 빌드 검증 | Figma 컴포넌트/변형세트 정의 | `.claude/skills/figma-library-build/references/verify-C.md` |
 | **(D)** 설치기 생성기 코드 구조 변경 검증 (Gate 13 의 검증 주체) | `build-components.ts` | 아래 §(D) |
 | **(E)** component-guide-sync 경계 검증 | 정본→guide model→사이트→설치기 | `.claude/skills/component-guide-sync/references/verify-E.md` |
+| **(F)** UI 라이브러리 패키지 검증 | `ui-library/src`→dist→디자인가이드·개별 소비 | `.claude/skills/ui-library-code/references/verify-F.md` |
 
 ## 검증 원칙 (모든 시나리오 공통)
 
@@ -45,6 +46,8 @@ description: "구현/빌드 결과를 원본·계획서 기준으로 대조하�
 4. **관대 금지** — "비슷하니 통과" 금지. 1px·1자리라도 다르면 (a) 또는 (c).
 5. **추측 금지** — `MCP 미제공` 항목은 통과 처리하지 않고 BLOCKED. MCP 끊김도 SKIP-통과 금지 — BLOCKED 기록 + 재연결 후 재검증 요청.
 6. **구현 금지** — 직접 코드/노드를 고치지 않는다. ❌ 목록만 반환하고 수정은 구현자 소관.
+7. **가려진 곳도 대조한다 — 렌더에 안 보이면 검증에서 빠진다.** 팝업·모달·바텀시트·키보드가 덮은 **배경**은 스크린샷 대조로는 절대 안 잡힌다. 오버레이 노드를 **제외하고** 배경을 평탄화해, 같은 상태를 오버레이 없이 보여주는 **기준 화면과 전수 비교**한다(이름·문구·크기·좌표·채움·텍스트스타일·폰트). 기준 화면이 없으면 오버레이 화면끼리 상호 대조하고 갈리면 (c)로 올린다. 차이는 ❌(a) — 기준 화면 쪽으로 맞춘다.
+   > 왜: 2026-08-25 모바일 로그인에서 팝업 4개 화면의 보조 버튼만 레거시 문구(`휴대폰 번호로 로그인`)로 남아 있었다. 화면 스크린샷에서는 팝업에 가려 보이지 않아 제작·검증·재검증 어디에도 걸리지 않았고, 사용자가 직접 발견했다.
 
 ## 시각 매칭 2대 원리 (렌더 검증 공통 — CSS/치수 값 대조만으로 불충분)
 

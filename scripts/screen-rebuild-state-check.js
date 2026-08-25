@@ -13,7 +13,64 @@ function fail(messages) {
   process.exit(1);
 }
 
+const warnings = [];
+
+/**
+ * 낡음(_stale) 도장을 존중한다 — 스킬 규약: "_stale: true 인 파일은 판정 근거로 인용하지 않는다".
+ * 사양이 축소·변경되면 과거 산출물은 '당시 증거'로 보존되므로, 그 화면 수를 현재와 비교하면
+ * 영원히 실패한다(2026-08-21~ 실제로 그랬다). 그렇다고 조용히 건너뛰면 도장으로 검사를 피할 수 있으므로,
+ *   · _supersededBy(대체 문서)가 있어야만 경고로 낮추고 제외 사유를 이름과 함께 출력한다
+ *   · _supersededBy 가 없으면 도장을 인정하지 않고 그대로 오류로 둔다
+ * → 검사가 사라지는 게 아니라 '감사 흔적을 남기고 경고로 내려간다'.
+ */
+function staleSkip(obj, label) {
+  if (!obj || obj._stale !== true) return false;
+  const superseded = Array.isArray(obj._supersededBy) ? obj._supersededBy : (obj._supersededBy ? [obj._supersededBy] : []);
+  if (!superseded.length) return false; // 도장만 있고 대체처가 없으면 인정하지 않는다
+  warnings.push(`${label}: _stale 표시로 대조 제외 (대체: ${superseded.join(', ')})${obj._staleSince ? ` · 표시 ${obj._staleSince}` : ''}`);
+  return true;
+}
+
 const input = process.argv[2];
+
+// ── --all : 전 플로우 일괄 검사 (Gate 41 이 이 모드로 부른다) ──────────────
+// 단건 검사기는 수동이라 2026-08-21~24 사이 실패를 아무도 몰랐다(반복 패턴 rule-written-but-not-enforced).
+// 자기 자신을 플로우마다 자식 프로세스로 돌려 결과를 합산한다 — 단건 판정 로직을 복제하지 않는다.
+if (input === '--all') {
+  const { spawnSync } = require('child_process');
+  const BASE = path.resolve(process.cwd(), 'reports/screen-rebuild');
+  const flows = [];
+  if (fs.existsSync(BASE)) {
+    for (const svc of fs.readdirSync(BASE)) {
+      const sp = path.join(BASE, svc);
+      if (!fs.statSync(sp).isDirectory()) continue;
+      for (const flow of fs.readdirSync(sp)) {
+        const fp = path.join(sp, flow);
+        if (!fs.statSync(fp).isDirectory()) continue;
+        const st = path.join(fp, 'workflow-state.json');
+        if (fs.existsSync(st)) flows.push({ rel: `${svc}/${flow}`, state: path.relative(process.cwd(), st) });
+      }
+    }
+  }
+  let bad = 0, warnTotal = 0;
+  for (const f of flows) {
+    const r = spawnSync(process.execPath, [__filename, f.state], { cwd: process.cwd(), encoding: 'utf8' });
+    const out = ((r.stdout || '') + (r.stderr || '')).trim();
+    if (r.status !== 0) {
+      bad++;
+      console.log(`❌ ${f.rel}`);
+      for (const line of out.split('\n')) if (line.trim()) console.log(`     ${line.trim()}`);
+    } else {
+      const m = out.match(/warnings=(\d+)/);
+      const w = m ? Number(m[1]) : 0;
+      warnTotal += w;
+      console.log(`✅ ${f.rel}${w ? ` (경고 ${w})` : ''}`);
+    }
+  }
+  console.log(`SRSTATE_SUMMARY flows=${flows.length} failed=${bad} warnings=${warnTotal}`);
+  process.exit(0);
+}
+
 if (!input) fail(['workflow-state.json 경로가 필요합니다.']);
 
 const statePath = path.resolve(process.cwd(), input);
@@ -75,7 +132,7 @@ if (fastSafe) {
   }
 
   const verifiedScreenCount = (state.screens || []).filter(screen => screen.status === 'verified').length;
-  if (loaded.screenSpec) {
+  if (loaded.screenSpec && !staleSkip(loaded.screenSpec, 'screen-spec')) {
     if (!Array.isArray(loaded.screenSpec.screens) || loaded.screenSpec.screens.length !== verifiedScreenCount) {
       errors.push(`screen-spec 화면 수가 verified 화면 수와 다릅니다: ${loaded.screenSpec.screens?.length || 0}/${verifiedScreenCount}`);
     }
@@ -86,7 +143,7 @@ if (fastSafe) {
   if (loaded.canonicalManifest && loaded.canonicalManifest.targetFileKey !== state.targetFigma?.fileKey) {
     errors.push('canonical-manifest의 targetFileKey가 workflow-state와 다릅니다.');
   }
-  if (loaded.scanSummary) {
+  if (loaded.scanSummary && !staleSkip(loaded.scanSummary, 'scan-summary')) {
     if (loaded.scanSummary.verdict !== 'PASS') errors.push(`scan-summary verdict가 PASS가 아닙니다: ${loaded.scanSummary.verdict}`);
     if (loaded.scanSummary.counts?.screens !== verifiedScreenCount) {
       errors.push(`scan-summary 화면 수가 verified 화면 수와 다릅니다: ${loaded.scanSummary.counts?.screens}/${verifiedScreenCount}`);
@@ -111,5 +168,10 @@ if (fastSafe) {
   }
 }
 
-if (errors.length) fail(errors);
-console.log(`✅ screen-rebuild state PASS — ${state.target.service}/${state.target.flow}, 화면 ${state.screens.length}개, 단계 ${state.currentPhase}`);
+if (errors.length) {
+  for (const w of warnings) console.warn(`⚠️  ${w}`);
+  fail(errors);
+}
+for (const w of warnings) console.warn(`⚠️  ${w}`);
+console.log(`✅ screen-rebuild state PASS — ${state.target.service}/${state.target.flow}, 화면 ${state.screens.length}개, 단계 ${state.currentPhase}${warnings.length ? ` (경고 ${warnings.length})` : ''}`);
+console.log(`SRSTATE_RESULT flow=${state.target.service}/${state.target.flow} errors=0 warnings=${warnings.length}`);
