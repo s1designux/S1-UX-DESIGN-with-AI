@@ -19,7 +19,7 @@ async function main() {
   const model = await buildGuideModel({ buildSource });
   const next = stableJson(model);
 
-  if (model.componentCount !== 42) throw new Error(`정본 grid 항목은 42개여야 합니다. 현재 ${model.componentCount}개`);
+  if (model.componentCount !== 43) throw new Error(`정본 grid 항목은 43개여야 합니다. 현재 ${model.componentCount}개`);
   const invalid = model.componentIndex.filter((item) => !['public', 'internal', 'excluded'].includes(item.visibility));
   if (invalid.length) throw new Error(`공개/내부/제외 미분류: ${invalid.map((item) => item.name).join(', ')}`);
 

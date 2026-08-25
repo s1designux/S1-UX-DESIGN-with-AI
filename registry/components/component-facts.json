@@ -3,7 +3,7 @@
     "generated": true,
     "source": "plugins/figma-vars-installer/src/build-components.ts",
     "method": "mock-execution",
-    "sourceHash": "e23d3b889151",
+    "sourceHash": "f6d4e1b7f2cb",
     "unknownValuePolicy": [
       "unknown",
       "not-defined",
@@ -23,6 +23,10 @@
       "globe",
       "home",
       "menu",
+      "mobileHeaderArrowDown",
+      "mobileHeaderBack",
+      "mobileHeaderClose",
+      "mobileHeaderNotification",
       "remove",
       "search"
     ]
@@ -574,6 +578,48 @@
         "buildDependencies": []
       }
     },
+    "Mobile Header": {
+      "variantAxes": {
+        "Type": [
+          "Standard / Title",
+          "Standard / Title + Close",
+          "Home / Title + 2 Icons",
+          "Home / Title + Subtitle + 1 Icon",
+          "Home / Title + Alt Title",
+          "Standard / No Title"
+        ]
+      },
+      "geometry": [
+        {
+          "when": "all",
+          "target": "root",
+          "width": 360,
+          "height": 99,
+          "layoutMode": "VERTICAL",
+          "primaryAxisSizingMode": "FIXED",
+          "counterAxisSizingMode": "FIXED",
+          "itemSpacing": "16"
+        }
+      ],
+      "anatomy": [
+        "AppBar",
+        "StatusBar / Platform=App"
+      ],
+      "tokenBindings": [
+        "color/bg/level-0",
+        "color/bg/level-2",
+        "color/icon/gray-dark",
+        "color/navigation/bg",
+        "color/text/body/secondary",
+        "color/text/body/tertiary",
+        "color/text/title/primary"
+      ],
+      "composition": {
+        "buildDependencies": [
+          "StatusBar"
+        ]
+      }
+    },
     "Line Tab": {
       "variantAxes": {
         "Size": [
@@ -884,6 +930,7 @@
             "Break": "PC"
           },
           "target": "root",
+          "width": 80,
           "height": 44,
           "layoutMode": "HORIZONTAL",
           "primaryAxisSizingMode": "AUTO",
@@ -908,6 +955,7 @@
             "Break": "PC"
           },
           "target": "root",
+          "width": 64,
           "height": 34,
           "layoutMode": "HORIZONTAL",
           "primaryAxisSizingMode": "AUTO",
@@ -932,6 +980,7 @@
             "Break": "PC"
           },
           "target": "root",
+          "width": 64,
           "height": 28,
           "layoutMode": "HORIZONTAL",
           "primaryAxisSizingMode": "AUTO",
@@ -956,6 +1005,7 @@
             "Break": "Mobile"
           },
           "target": "root",
+          "width": 80,
           "height": 48,
           "layoutMode": "HORIZONTAL",
           "primaryAxisSizingMode": "AUTO",
@@ -975,9 +1025,12 @@
           "strokeAlign": "INSIDE"
         }
       ],
-      "anatomy": [],
+      "anatomy": [
+        "button-focus-ring"
+      ],
       "tokenBindings": [
         "border-width/1",
+        "border-width/2",
         "color/button/bg/blue-line--default",
         "color/button/bg/blue-line--hover",
         "color/button/bg/disabled",
@@ -988,6 +1041,7 @@
         "color/button/border/blue-line--default",
         "color/button/border/blue-line--hover",
         "color/button/border/disabled",
+        "color/button/border/focus",
         "color/button/border/primary--default",
         "color/button/border/primary--hover",
         "color/button/border/secondary--default",
@@ -1000,6 +1054,7 @@
         "color/button/label/secondary--default",
         "color/button/label/secondary--hover",
         "radius/4",
+        "radius/8",
         "spacing/16",
         "spacing/8"
       ],
@@ -1963,6 +2018,8 @@
         "field"
       ],
       "tokenBindings": [
+        "border-width/2",
+        "color/form-control/action/border/focus",
         "color/form-control/bg/default",
         "color/form-control/bg/disabled",
         "color/form-control/bg/selected",
@@ -1982,7 +2039,8 @@
         "color/text/state/caption",
         "color/text/state/caution",
         "color/text/state/correct",
-        "color/text/state/disabled"
+        "color/text/state/disabled",
+        "radius/4"
       ],
       "composition": {
         "buildDependencies": []
@@ -2587,7 +2645,9 @@
       ],
       "tokenBindings": [
         "border-width/1",
+        "border-width/2",
         "color/button/bg/primary--default",
+        "color/button/border/focus",
         "color/button/border/primary--default",
         "color/button/label/primary--default",
         "color/date-picker/cell/bg/selected",
@@ -2602,6 +2662,7 @@
         "color/surface/raised",
         "color/text/title/primary",
         "radius/4",
+        "radius/8",
         "radius/full",
         "spacing/16"
       ],
@@ -2896,7 +2957,9 @@
       ],
       "tokenBindings": [
         "border-width/1",
+        "border-width/2",
         "color/button/bg/primary--default",
+        "color/button/border/focus",
         "color/button/border/primary--default",
         "color/button/label/primary--default",
         "color/navigation/indicator/default",
@@ -2908,6 +2971,7 @@
         "color/text/state/accent",
         "color/text/title/primary",
         "radius/4",
+        "radius/8",
         "spacing/16"
       ],
       "composition": {
@@ -3199,8 +3263,10 @@
       ],
       "tokenBindings": [
         "border-width/1",
+        "border-width/2",
         "color/button/bg/primary--default",
         "color/button/bg/secondary--default",
+        "color/button/border/focus",
         "color/button/border/primary--default",
         "color/button/border/secondary--default",
         "color/button/label/primary--default",
@@ -3210,6 +3276,7 @@
         "color/text/state/accent",
         "color/text/title/primary",
         "radius/4",
+        "radius/8",
         "spacing/16"
       ],
       "composition": {
@@ -3284,8 +3351,10 @@
       ],
       "tokenBindings": [
         "border-width/1",
+        "border-width/2",
         "color/button/bg/primary--default",
         "color/button/bg/secondary--default",
+        "color/button/border/focus",
         "color/button/border/primary--default",
         "color/button/border/secondary--default",
         "color/button/label/primary--default",

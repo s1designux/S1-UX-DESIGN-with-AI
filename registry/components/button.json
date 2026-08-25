@@ -3,12 +3,12 @@
     "id": "button",
     "name": "Button",
     "category": "Core",
-    "updatedAt": "2026-05-27",
-    "version": "0.4.1",
+    "updatedAt": "2026-08-25",
+    "version": "0.5.0-candidate",
     "tokenStatus": "stable",
     "codeStatus": "implemented",
     "darkModeStatus": "stable",
-    "a11yStatus": "pending",
+    "a11yStatus": "candidate",
     "figmaStatus": "existing",
     "harnessStatus": "implemented",
     "description": "Core interactive button component. Primary / Secondary / Blue-line variants with PC 3 sizes and Mobile 1 size.",
@@ -21,7 +21,8 @@
       "MVP3.4 Figma MCP comparison complete: 6 token mismatches corrected (see reports/mvp3-4-button-figma-mcp-comparison.md).",
       "ghost variant tokens exist in tokens.css but harness uses blue-line instead.",
       "secondary hover border removed: Figma confirms hover border = same as default (no change).",
-      "primary disabled-border added: Figma confirms all disabled borders = color-border-default."
+      "primary disabled-border added: Figma confirms all disabled borders = color-border-default.",
+      "2026-08-25 river 승인: focus-visible은 State 축을 늘리지 않고 모든 상태와 공존하는 BOOLEAN 접근성 표현으로 추가. 실제 화면 승인 전 candidate."
     ]
   },
   "usage": {
@@ -38,10 +39,6 @@
     {
       "part": "라벨",
       "role": "버튼 텍스트. 굵기·색은 variant 토큰."
-    },
-    {
-      "part": "아이콘(선택)",
-      "role": "라벨 앞/뒤 보조 아이콘. 라이브러리 인스턴스."
     },
     {
       "part": "컨테이너",
@@ -62,13 +59,14 @@
   },
   "a11y": [
     "아이콘만 있는 버튼은 aria-label 로 용도를 준다.",
-    "disabled 는 실제 비활성 처리하고 클릭을 막는다."
+    "disabled 는 실제 비활성 처리하고 클릭을 막는다.",
+    "키보드 포커스는 :focus-visible에서 2px outline과 2px 바깥 간격으로 표시한다. 마우스 클릭만으로는 강제 표시하지 않는다."
   ],
   "guide": {
     "sampleLabels": ["버튼"],
     "webTag": "button",
     "interactionPattern": "invoke-count",
-    "accessibility": { "keyboard": "native-button", "disabled": "native-disabled" },
+    "accessibility": { "keyboard": "native-button", "disabled": "native-disabled", "focusVisible": "2px outer outline + 2px offset" },
     "classInterface": {
       "base": "s1-btn",
       "variantPrefix": "s1-btn-",
@@ -146,6 +144,18 @@
       ]
     }
   },
+  "focusVisible": {
+    "status": "candidate",
+    "kind": "boolean-accessibility-overlay",
+    "coexistsWithStates": ["default", "hover", "pressed"],
+    "excludedWhen": ["disabled"],
+    "figmaProperty": "Focus Visible",
+    "webSelector": ":focus-visible",
+    "colorToken": "color/button/border/focus",
+    "strokeWidthToken": "border-width/2",
+    "offsetToken": "spacing/2",
+    "note": "Focus Visible은 상호배타 State variant가 아니다. 실제 검수 화면 승인 전 stable로 승격하지 않는다."
+  },
   "tokens": {
     "background": [
       "--button-primary-default-bg",
@@ -185,14 +195,14 @@
   },
   "sizing": {
     "pc": [
-      { "id": "md",       "label": "md",       "height": "h44", "cssClass": "s1-btn-md",     "token": "--sizing-44" },
-      { "id": "xsm",      "label": "xsm",      "height": "h34", "cssClass": "",              "token": "--sizing-34", "note": "기본 사이즈 — 크기 수식어 없음" },
-      { "id": "xxsm",     "label": "xxsm",     "height": "h28", "cssClass": "s1-btn-xxsm",     "token": "--sizing-28", "note": "신규 토큰 — 2026-05-11 tokens.css에 추가됨" }
+      { "id": "md",       "label": "md",       "height": "h44", "cssClass": "s1-btn-md",     "token": "--sizing-44", "minWidth": 80, "minWidthToken": "--sizing-80" },
+      { "id": "xsm",      "label": "xsm",      "height": "h34", "cssClass": "",              "token": "--sizing-34", "minWidth": 64, "minWidthToken": "--sizing-64", "note": "기본 사이즈 — 크기 수식어 없음" },
+      { "id": "xxsm",     "label": "xxsm",     "height": "h28", "cssClass": "s1-btn-xxsm",  "token": "--sizing-28", "minWidth": 64, "minWidthToken": "--sizing-64", "note": "신규 토큰 — 2026-05-11 tokens.css에 추가됨" }
     ],
     "mobile": [
-      { "id": "lg",       "label": "lg",       "height": "h48", "cssClass": "s1-btn-lg", "token": "--sizing-48" }
+      { "id": "lg",       "label": "lg",       "height": "h48", "cssClass": "s1-btn-lg", "token": "--sizing-48", "minWidth": 80, "minWidthToken": "--sizing-80", "labelAlign": "center" }
     ],
-    "minWidth": "--sizing-80",
+    "minWidthRule": "Figma V3.0 Button 실측: MD·LG=80px, XSM·XXSM=64px. 라벨이 길면 좌우 padding을 보존하며 늘어난다.",
     "radius": "--radius-button-md"
   },
   "harness": {
@@ -221,21 +231,22 @@
     "propertyMap": {
       "variant": "Variant",
       "size": "Size",
-      "state": "State"
+      "state": "State",
+      "break": "Break",
+      "focusVisible": "Focus Visible"
     },
     "valueMap": {
       "primary": "Primary",
       "secondary": "Secondary",
-      "blue-line": "Blue Line",
-      "md": "Large",
-      "xsm": "Medium",
-      "xxsm": "XSmall",
-      "lg": "Large",
+      "blue-line": "Blue-Line",
+      "md": "MD",
+      "xsm": "XSM",
+      "xxsm": "XXSM",
+      "lg": "LG",
       "default": "Default",
       "hover": "Hover",
       "pressed": "Pressed",
-      "disabled": "Disabled",
-      "_note": "레거시 Figma V2.4 의 크기 이름은 정본 어휘와 다르다. md(h44)=V2.4 Large, xsm(h34)=V2.4 Medium, xxsm(h28)=V2.4 XSmall, lg(h48)=V2.4 Large."
+      "disabled": "Disabled"
     }
   },
   "governance": {

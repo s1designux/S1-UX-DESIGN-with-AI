@@ -1,0 +1,54 @@
+{
+  "id": "s1-ui",
+  "version": "0.1.0-candidate.1",
+  "status": "candidate",
+  "canonicalFingerprint": "86f1c1feebe8df233834b91dc0606b83e11a1766adf95b6b28dd472d92d811d3",
+  "tokenMapFingerprint": "796fb798dd329910ba6c42a29fb4af9e0fd217446b3fa847e140bc70a0a8f4c7",
+  "commonCssDependencies": [
+    "assets/css/tokens.css",
+    "assets/css/typography.css"
+  ],
+  "fontDependencies": [
+    {
+      "family": "Pretendard",
+      "source": "https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css"
+    }
+  ],
+  "commonCssFingerprints": {
+    "assets/css/tokens.css": "51fc1765674168e66eeffe40deca357af82067669b1067940ae687482f5899a2",
+    "assets/css/typography.css": "d5961f792bec6b8d339c0f4362ae4da15bac829e0bfec5ecb7d4dc732ce232da"
+  },
+  "jsRequired": false,
+  "components": [
+    {
+      "id": "input",
+      "version": "0.1.0-candidate.1",
+      "status": "candidate",
+      "jsRequired": false,
+      "canonicalFingerprint": "411c22189565814003ebf3608ac49715a5c780b6e8a81e57b527382559a6fbcd",
+      "sourceFingerprint": "60bfe16c124def35cf1a2de9ff37f5342ff48f4c362109036af7cd965518a536",
+      "css": "components/input.css",
+      "js": "components/input.js",
+      "example": "examples/input.html"
+    },
+    {
+      "id": "button",
+      "version": "0.1.0-candidate.1",
+      "status": "candidate",
+      "jsRequired": false,
+      "canonicalFingerprint": "d0ff41fb19d81f592bd203a7a0843cccd0d512251e19a033c1abe7fa3cea742c",
+      "sourceFingerprint": "96352b19b34863de5171160ae2983273b38b592e179025c510d111716663393a",
+      "css": "components/button.css",
+      "js": "components/button.js",
+      "example": "examples/button.html"
+    }
+  ],
+  "bundleParity": {
+    "cssOrder": [
+      "input",
+      "button"
+    ],
+    "source": "ui-library/src/components/*",
+    "rule": "Full and individual outputs are generated in this build invocation from identical source strings."
+  }
+}

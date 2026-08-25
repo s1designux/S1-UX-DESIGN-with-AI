@@ -289,6 +289,21 @@
       ]
     },
     {
+      "id": "mobile-header",
+      "name": "Mobile Header",
+      "label": "Mobile Header",
+      "category": "navigation",
+      "path": "registry/components/mobile-header.json",
+      "status": "in-progress",
+      "harnessStatus": "not-started",
+      "priority": 21,
+      "notes": [
+        "2026-08-25 Gate 34 사용자 승인으로 정본 신설: V2.4 원본 5종 + 회원가입용 No Title 1종.",
+        "모바일 전용 shell이라 pages/components.html에는 반영하지 않고 noSectionNeeded + mobileOnly로 분류.",
+        "Figma V3.0 TEST node id·component key는 독립 빌드·검증 후 기록."
+      ]
+    },
+    {
       "id": "modal",
       "name": "Modal",
       "label": "Modal (공통 팝업)",

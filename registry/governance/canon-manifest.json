@@ -1,7 +1,7 @@
 {
   "_role": "정본 목록의 정본(canon manifest) — 무엇이 정본이고, 각 정본의 파생 표면·재생성 명령·감시 게이트가 무엇인지 기계가독으로 선언한다. Gate 36 이 이 선언과 실제 배선을 대조한다.",
   "_why": "정본이 여러 벌인 것은 Figma 구조상 불가피하다(Variables·Text Styles·Components 는 서로 다른 개체·다른 설치 API). 문제는 '무엇이 정본인가'가 산문에만 있어서 문서끼리 어긋났고(CLAUDE.md MVP0 섹션 vs 하드룰 H6), 대시보드는 정본을 휴리스틱으로 추측하다 스크립트를 정본으로 오분류했다. 파일을 합치는 대신 '정본 목록'을 한 곳에 선언하고 기계가 집행한다.",
-  "_updated": "2026-08-11",
+  "_updated": "2026-08-24",
 
   "umbrella": {
     "regen": "tokens:reconcile",
@@ -78,6 +78,14 @@
       "page-layout-policy.json": { "role": "페이지 공통 틀·폭 정책", "gates": ["22"] },
       "registry-drift-baseline.json": { "role": "비정본 registry stale 래칫", "gates": ["20"] },
       "size-naming-policy.json": { "role": "크기 어휘 정본", "gates": ["32"] },
+      "ui-library-code-contract.json": {
+        "role": "퍼블리셔·개발자용 UI 라이브러리 HTML·CSS·JavaScript 제작·조합·배포 계약",
+        "consumers": ["UI 라이브러리 구현", "디자인가이드 검수 화면", "패턴 코드 구현"],
+        "status": "candidate",
+        "effective": "Input·Button 파일럿에만 적용. 현재 metaLedgers를 즉시 대체하지 않음",
+        "verify": "npm run ui:contract",
+        "promotion": "기존 행동 ledger 이행·자동 검사 gate 편입·Input·Button 검증·river UX 승인 후 stable"
+      },
       "token-exceptions.json": { "role": "토큰 예외(rgba 등)", "consumers": ["guard"] },
       "update-management.json": { "role": "컴포넌트 진행 현황", "gates": ["16", "30"] },
       "variant-coverage-baseline.json": { "role": "변형/상태 커버리지 knownGaps", "gates": ["19"] },

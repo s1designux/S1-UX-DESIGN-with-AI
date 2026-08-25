@@ -43,3 +43,17 @@
 | 날짜 | 변경 내용 | 대상 | 사유 |
 |---|---|---|---|
 | 2026-08-24 | 제작 기록과 완성 패턴 사용 문서 분리 | pattern registry · screen-rebuild | 다른 AI가 과거 실행 로그보다 현재 흐름의 목적과 이유를 먼저 이해하도록 하기 위해 |
+
+## 하네스: 정본 → 웹 UI 라이브러리 → 디자인가이드·패턴
+
+**목표:** 정본 컴포넌트를 배포 가능한 HTML·CSS·JavaScript 모듈로 만들고, 디자인가이드 검수 화면과 퍼블리셔·개발자 배포본이 같은 코드를 사용하게 한다. 다른 PC·Claude·Codex에서도 저장소의 진행 상태를 기준으로 이어서 작업한다.
+
+**트리거:** UI 라이브러리 제작·재개·모듈화·배포, 컴포넌트 웹 원본 코드, 디자인가이드 실제 동작 검수, 패턴 코드화 요청에는 `.claude/skills/ui-library-code/SKILL.md`를 사용한다. 시작할 때 `reports/ui-library/{work-id}/workflow-state.json`을 먼저 읽고 `npm run ui:state -- <경로>`로 검사한다. 대화 기억보다 저장된 목표·결정·현재 단계·다음 행동을 우선한다.
+
+**핵심 경계:** 규칙 정본은 `registry/governance/ui-library-code-contract.json`, 웹 원본은 `ui-library/src`, `ui-library/dist`와 디자인가이드 화면은 파생 소비자다. 미등록 코어·variant·flow를 패턴 안에서 임시 생성하지 않는다.
+
+**변경 이력:**
+
+| 날짜 | 변경 내용 | 대상 | 사유 |
+|---|---|---|---|
+| 2026-08-24 | Claude↔Codex 공용 UI 라이브러리 재개 하네스와 Input·Button 파일럿 상태 등록 | ui-library-code | 다른 PC·AI에서도 river의 목표와 현재 단계부터 안전하게 이어가기 위해 |

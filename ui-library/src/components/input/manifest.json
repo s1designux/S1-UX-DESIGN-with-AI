@@ -1,0 +1,47 @@
+{
+  "id": "input",
+  "version": "0.1.0-candidate.1",
+  "status": "candidate",
+  "canonicalFingerprint": "411c22189565814003ebf3608ac49715a5c780b6e8a81e57b527382559a6fbcd",
+  "canonicalSources": [
+    "plugins/figma-vars-installer/src/build-components.ts",
+    "plugins/figma-vars-installer/src/vars-data.ts",
+    "plugins/figma-vars-installer/src/textstyles-data.ts",
+    "registry/components/input.json"
+  ],
+  "rootSelector": "[data-s1-component=\"input\"]",
+  "variants": ["base"],
+  "sizes": ["xxsm", "xsm", "md"],
+  "breaks": { "pc": ["xxsm", "xsm", "md"], "mobile": ["md"] },
+  "states": {
+    "default": "native",
+    "filled": "native value presence; no forced visual state",
+    "focus": ":focus-within",
+    "error": "control[aria-invalid=true]",
+    "correct": "root[data-state=correct]",
+    "readOnly": "control[readonly]",
+    "disabled": "control[disabled]"
+  },
+  "parts": ["label", "field", "control", "message"],
+  "dependencies": {
+    "font": [{ "family": "Pretendard", "source": "https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" }],
+    "css": ["assets/css/tokens.css", "assets/css/typography.css"],
+    "coreComponents": [],
+    "followUpModules": [
+      { "id": "password-field", "status": "not-in-this-build", "requires": ["base-input", "suffix-action"] },
+      { "id": "search-input", "status": "not-in-this-build", "requires": ["base-input", "suffix-action"] }
+    ]
+  },
+  "icons": [],
+  "a11y": {
+    "nativeSemantics": { "status": "required", "value": "input" },
+    "accessibleName": { "status": "required", "value": "associated label or aria-label" },
+    "keyboard": { "status": "required", "value": "native text editing" },
+    "focus": { "status": "required", "value": "native input focus mapped to canonical Editing field state" },
+    "ariaStateSync": { "status": "required", "value": "Service sets aria-invalid when error state is active." },
+    "errorRelation": { "status": "required", "value": "Service gives message an id and references it with aria-describedby." },
+    "reducedMotion": { "status": "not-applicable", "reason": "The canonical Base Input defines no motion." }
+  },
+  "jsRequired": false,
+  "javascript": { "runtime": "none", "reason": "Base Input uses native attributes and CSS; service code owns validation timing." }
+}

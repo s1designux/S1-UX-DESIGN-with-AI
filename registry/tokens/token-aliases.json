@@ -85,7 +85,7 @@
     {
       "alias": "--color-form-control-border-correct",
       "canonical": "--color-form-control-border-selected",
-      "semanticSource": "--color-border-focus",
+      "semanticSource": "color/form-control/border/selected",
       "reason": "correct 테두리는 selected(focus) 테두리 값을 재사용함. 동일한 Figma 변수(color/form-control/border/selected).",
       "status": "alias"
     }

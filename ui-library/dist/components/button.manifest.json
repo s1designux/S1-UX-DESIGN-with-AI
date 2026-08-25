@@ -1,0 +1,100 @@
+{
+  "id": "button",
+  "version": "0.1.0-candidate.1",
+  "status": "candidate",
+  "canonicalFingerprint": "d0ff41fb19d81f592bd203a7a0843cccd0d512251e19a033c1abe7fa3cea742c",
+  "canonicalSources": [
+    "plugins/figma-vars-installer/src/build-components.ts",
+    "plugins/figma-vars-installer/src/vars-data.ts",
+    "plugins/figma-vars-installer/src/textstyles-data.ts",
+    "registry/components/button.json"
+  ],
+  "rootSelector": "[data-s1-component=\"button\"]",
+  "variants": [
+    "primary",
+    "secondary",
+    "blue-line"
+  ],
+  "sizes": [
+    "md",
+    "xsm",
+    "xxsm",
+    "lg"
+  ],
+  "minWidths": {
+    "md": "--sizing-80",
+    "xsm": "--sizing-64",
+    "xxsm": "--sizing-64",
+    "lg": "--sizing-80"
+  },
+  "breaks": {
+    "pc": [
+      "md",
+      "xsm",
+      "xxsm"
+    ],
+    "mobile": [
+      "lg"
+    ]
+  },
+  "states": {
+    "default": "native",
+    "hover": ":hover",
+    "pressed": ":active",
+    "disabled": "disabled",
+    "focusVisible": ":focus-visible:not(:disabled)"
+  },
+  "parts": [
+    "label"
+  ],
+  "dependencies": {
+    "font": [
+      {
+        "family": "Pretendard",
+        "source": "https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css"
+      }
+    ],
+    "css": [
+      "assets/css/tokens.css",
+      "assets/css/typography.css"
+    ],
+    "coreComponents": []
+  },
+  "icons": [],
+  "a11y": {
+    "nativeSemantics": {
+      "status": "required",
+      "value": "button"
+    },
+    "accessibleName": {
+      "status": "required",
+      "value": "visible label or aria-label"
+    },
+    "keyboard": {
+      "status": "required",
+      "value": "native Enter and Space activation"
+    },
+    "focus": {
+      "status": "required",
+      "value": "2px outer outline with 2px offset; excluded while disabled"
+    },
+    "ariaStateSync": {
+      "status": "not-applicable",
+      "reason": "This text-only native button exposes no ARIA state."
+    },
+    "errorRelation": {
+      "status": "not-applicable",
+      "reason": "Button does not own field errors."
+    },
+    "reducedMotion": {
+      "status": "not-applicable",
+      "reason": "The canonical component defines no motion."
+    }
+  },
+  "jsRequired": false,
+  "javascript": {
+    "runtime": "none",
+    "reason": "Native button semantics provide the complete approved behavior."
+  },
+  "sourceFingerprint": "96352b19b34863de5171160ae2983273b38b592e179025c510d111716663393a"
+}

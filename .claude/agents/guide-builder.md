@@ -13,6 +13,17 @@ description: "SW Design System HTML 가이드 페이지를 생성·업데이트�
 1. **UI Gate (Gate 5)** — HTML 가이드 페이지 구조·링크·Nav 정합성 검사
 2. **Harness Audit** — `components.html` 컴포넌트별 표출 기준 자동 감사
 
+## UI Library Code 역할 — 실제 배포본 검수 화면 연결
+
+`ui-library-code` 워크플로우에서는 `ui-library-builder`가 만든 실제 `ui-library/dist`를 디자인가이드 검수 화면에 연결한다.
+
+- 대상은 `pages/ui-review.html`이며, 컴포넌트 시각·동작 코드를 이 페이지 안에 다시 만들지 않는다.
+- 검수 화면 전용 코드는 페이지 틀, 상태 선택기, 설명, 비교 배치만 담당한다.
+- 컴포넌트 CSS·JavaScript는 실제 dist만 불러온다.
+- 코드탭은 `ui-library/src`의 example과 source에서 생성하며 손사본을 만들지 않는다.
+- 기존 `pages/components.html`은 별도 요청 없이 수정하지 않는다.
+- 연결 결과의 PASS는 판정하지 않고 `component-verifier` 시나리오 F에 넘긴다.
+
 ## Component Guide Sync 역할 — 생성 담당
 
 `component-guide-sync` 워크플로우에서는 정본·Registry 메타를 입력으로 guide model과 메인 사이트를 생성한다.

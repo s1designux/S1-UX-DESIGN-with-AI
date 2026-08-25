@@ -81,24 +81,24 @@
     {
       "id": "button.primary.focus-ring",
       "cssVariable": "--button-primary-focus-ring",
-      "replacedBy": null,
-      "reason": "focus-ring 미정의 — 디자인시스템 기준 없음(CLAUDE.md Button #9, is-focus outline 없음). 문서·레지스트리 사본에서 활성 화면으로 되살아나던 잔재. 정본 등재로 Gate 10 Check C 가 재유입을 차단.",
+      "replacedBy": "color/button/border/focus",
+      "reason": "variant별 focus-ring은 계속 폐기한다. 2026-08-25 river 승인으로 variant와 무관한 Button focus-visible semantic candidate가 새로 생겼으며 옛 CSS 변수를 복구하지 않는다.",
       "removedAt": "2026-07-03",
       "status": "removed"
     },
     {
       "id": "button.secondary.focus-ring",
       "cssVariable": "--button-secondary-focus-ring",
-      "replacedBy": null,
-      "reason": "focus-ring 미정의(CLAUDE.md Button #9). focus-ring resurrection 정리 2026-07-03.",
+      "replacedBy": "color/button/border/focus",
+      "reason": "variant별 focus-ring은 계속 폐기한다. 공용 Button focus-visible semantic candidate로 이행하며 옛 CSS 변수는 복구하지 않는다.",
       "removedAt": "2026-07-03",
       "status": "removed"
     },
     {
       "id": "button.blue-line.focus-ring",
       "cssVariable": "--button-blue-line-focus-ring",
-      "replacedBy": null,
-      "reason": "focus-ring 미정의(CLAUDE.md Button #9). focus-ring resurrection 정리 2026-07-03.",
+      "replacedBy": "color/button/border/focus",
+      "reason": "variant별 focus-ring은 계속 폐기한다. 공용 Button focus-visible semantic candidate로 이행하며 옛 CSS 변수는 복구하지 않는다.",
       "removedAt": "2026-07-03",
       "status": "removed"
     },

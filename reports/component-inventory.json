@@ -1,0 +1,1385 @@
+{
+  "scannedAt": "2026-08-24T07:14:27.066Z",
+  "sourceFile": "pages/components.html",
+  "sectionCount": 36,
+  "rows": [
+    {
+      "id": "checkbox",
+      "previewNodes": 13,
+      "tabs": [
+        "HTML",
+        "CSS",
+        "JavaScript",
+        "Token Details"
+      ],
+      "hasHtmlTab": true,
+      "hasCssTab": true,
+      "hasTokenTab": true,
+      "hasJsTab": true,
+      "pc": false,
+      "mobile": false,
+      "classes": [
+        "chk-action-label",
+        "is-checked",
+        "is-disabled",
+        "is-hover",
+        "is-preview",
+        "s1-checkbox",
+        "s1-checkbox-box",
+        "s1-checkbox-label"
+      ],
+      "a11y": {
+        "ariaLabel": 0,
+        "ariaOther": 0,
+        "role": 0,
+        "labelFor": 0
+      },
+      "codeChars": 7021
+    },
+    {
+      "id": "radio",
+      "previewNodes": 42,
+      "tabs": [
+        "HTML",
+        "CSS",
+        "Token Details"
+      ],
+      "hasHtmlTab": true,
+      "hasCssTab": true,
+      "hasTokenTab": true,
+      "hasJsTab": false,
+      "pc": false,
+      "mobile": false,
+      "classes": [
+        "is-disabled",
+        "is-hover",
+        "is-preview",
+        "is-selected",
+        "s1-radio",
+        "s1-radio-circle",
+        "s1-radio-dot",
+        "s1-radio-label"
+      ],
+      "a11y": {
+        "ariaLabel": 0,
+        "ariaOther": 0,
+        "role": 0,
+        "labelFor": 0
+      },
+      "codeChars": 1519
+    },
+    {
+      "id": "toggle",
+      "previewNodes": 15,
+      "tabs": [
+        "HTML",
+        "CSS",
+        "Token Details"
+      ],
+      "hasHtmlTab": true,
+      "hasCssTab": true,
+      "hasTokenTab": true,
+      "hasJsTab": false,
+      "pc": false,
+      "mobile": false,
+      "classes": [
+        "is-disabled",
+        "is-on",
+        "is-preview",
+        "s1-toggle",
+        "s1-toggle-knob",
+        "s1-toggle-track"
+      ],
+      "a11y": {
+        "ariaLabel": 0,
+        "ariaOther": 0,
+        "role": 0,
+        "labelFor": 0
+      },
+      "codeChars": 1861
+    },
+    {
+      "id": "multi-toggle",
+      "previewNodes": 96,
+      "tabs": [
+        "HTML",
+        "CSS",
+        "Token Details"
+      ],
+      "hasHtmlTab": true,
+      "hasCssTab": true,
+      "hasTokenTab": true,
+      "hasJsTab": false,
+      "pc": true,
+      "mobile": false,
+      "classes": [
+        "is-disabled",
+        "is-hover",
+        "is-selected",
+        "s1-multi-toggle",
+        "s1-multi-toggle--sm",
+        "s1-multi-toggle-cell",
+        "s1-multi-toggle-cell--first",
+        "s1-multi-toggle-cell--last",
+        "s1-multi-toggle-cell--middle",
+        "s1-multi-toggle-cell--middle-left",
+        "s1-multi-toggle-cell--middle-right"
+      ],
+      "a11y": {
+        "ariaLabel": 0,
+        "ariaOther": 0,
+        "role": 0,
+        "labelFor": 0
+      },
+      "codeChars": 4480
+    },
+    {
+      "id": "input",
+      "previewNodes": 107,
+      "tabs": [
+        "HTML",
+        "CSS",
+        "Token Details",
+        "JavaScript",
+        "HTML",
+        "CSS",
+        "JavaScript",
+        "Token Details",
+        "HTML",
+        "CSS",
+        "JavaScript",
+        "Token Details"
+      ],
+      "hasHtmlTab": true,
+      "hasCssTab": true,
+      "hasTokenTab": true,
+      "hasJsTab": true,
+      "pc": true,
+      "mobile": true,
+      "classes": [
+        "input-clear-btn",
+        "input-interactive",
+        "input-size-mobile",
+        "input-size-xsm",
+        "input-size-xxsm",
+        "is-correct",
+        "is-disabled",
+        "is-editing",
+        "is-error",
+        "is-focus",
+        "is-preview",
+        "is-readonly",
+        "s1-input-action-btn",
+        "s1-input-field",
+        "s1-input-label",
+        "s1-input-remove",
+        "s1-input-wrap",
+        "s1-suffix-action-group"
+      ],
+      "a11y": {
+        "ariaLabel": 24,
+        "ariaOther": 25,
+        "role": 0,
+        "labelFor": 0
+      },
+      "codeChars": 14409
+    },
+    {
+      "id": "chip",
+      "previewNodes": 22,
+      "tabs": [
+        "HTML",
+        "CSS",
+        "Token Details"
+      ],
+      "hasHtmlTab": true,
+      "hasCssTab": true,
+      "hasTokenTab": true,
+      "hasJsTab": false,
+      "pc": true,
+      "mobile": true,
+      "classes": [
+        "is-disabled",
+        "is-hover",
+        "is-preview",
+        "is-selected",
+        "s1-chip",
+        "s1-chip--mobile",
+        "s1-chip--sm",
+        "s1-chip--solid"
+      ],
+      "a11y": {
+        "ariaLabel": 0,
+        "ariaOther": 0,
+        "role": 0,
+        "labelFor": 0
+      },
+      "codeChars": 1398
+    },
+    {
+      "id": "filter-chip",
+      "previewNodes": 51,
+      "tabs": [
+        "HTML",
+        "Token Details"
+      ],
+      "hasHtmlTab": true,
+      "hasCssTab": false,
+      "hasTokenTab": true,
+      "hasJsTab": false,
+      "pc": true,
+      "mobile": true,
+      "classes": [
+        "is-selected",
+        "s1-dp-state-label",
+        "s1-select-list",
+        "s1-select-option"
+      ],
+      "a11y": {
+        "ariaLabel": 2,
+        "ariaOther": 3,
+        "role": 1,
+        "labelFor": 0
+      },
+      "codeChars": 1851
+    },
+    {
+      "id": "button",
+      "previewNodes": 48,
+      "tabs": [
+        "HTML",
+        "HTML",
+        "CSS Token",
+        "Token Details",
+        "HTML",
+        "HTML",
+        "CSS Token",
+        "Token Details",
+        "HTML",
+        "HTML",
+        "CSS Token",
+        "Token Details"
+      ],
+      "hasHtmlTab": true,
+      "hasCssTab": true,
+      "hasTokenTab": true,
+      "hasJsTab": false,
+      "pc": true,
+      "mobile": true,
+      "classes": [
+        "is-disabled",
+        "is-hover",
+        "is-pressed",
+        "is-preview",
+        "s1-btn",
+        "s1-btn-blue-line",
+        "s1-btn-lg",
+        "s1-btn-md",
+        "s1-btn-primary",
+        "s1-btn-secondary",
+        "s1-btn-xxsm"
+      ],
+      "a11y": {
+        "ariaLabel": 0,
+        "ariaOther": 0,
+        "role": 0,
+        "labelFor": 0
+      },
+      "codeChars": 9566
+    },
+    {
+      "id": "textarea",
+      "previewNodes": 12,
+      "tabs": [
+        "HTML",
+        "CSS Tokens",
+        "JavaScript",
+        "Token Details"
+      ],
+      "hasHtmlTab": true,
+      "hasCssTab": true,
+      "hasTokenTab": true,
+      "hasJsTab": true,
+      "pc": false,
+      "mobile": false,
+      "classes": [
+        "is-disabled",
+        "is-focus",
+        "is-preview",
+        "is-readonly",
+        "s1-input-field",
+        "s1-input-wrap",
+        "s1-input-wrap--textarea"
+      ],
+      "a11y": {
+        "ariaLabel": 0,
+        "ariaOther": 1,
+        "role": 0,
+        "labelFor": 0
+      },
+      "codeChars": 7770
+    },
+    {
+      "id": "tab",
+      "previewNodes": 22,
+      "tabs": [
+        "HTML",
+        "HTML",
+        "CSS",
+        "Token Details"
+      ],
+      "hasHtmlTab": true,
+      "hasCssTab": true,
+      "hasTokenTab": true,
+      "hasJsTab": false,
+      "pc": true,
+      "mobile": true,
+      "classes": [
+        "is-hover",
+        "is-preview",
+        "is-selected",
+        "s1-tab",
+        "s1-tab--mobile",
+        "s1-tab--pc-md",
+        "s1-tab--pc-sm",
+        "s1-tab--pc-xsm",
+        "s1-tab-item"
+      ],
+      "a11y": {
+        "ariaLabel": 0,
+        "ariaOther": 4,
+        "role": 0,
+        "labelFor": 0
+      },
+      "codeChars": 7208
+    },
+    {
+      "id": "gnb",
+      "previewNodes": 92,
+      "tabs": [
+        "HTML",
+        "CSS",
+        "Token Details"
+      ],
+      "hasHtmlTab": true,
+      "hasCssTab": true,
+      "hasTokenTab": true,
+      "hasJsTab": false,
+      "pc": true,
+      "mobile": false,
+      "classes": [
+        "is-hover",
+        "is-preview",
+        "is-selected",
+        "s1-gnb",
+        "s1-gnb--center-between",
+        "s1-gnb--md",
+        "s1-gnb--sm",
+        "s1-gnb--start",
+        "s1-gnb--xsm",
+        "s1-gnb-lang",
+        "s1-gnb-lang-globe",
+        "s1-gnb-lang-label",
+        "s1-gnb-leading",
+        "s1-gnb-logo",
+        "s1-gnb-menu",
+        "s1-gnb-menu--sm",
+        "s1-gnb-menu--xsm",
+        "s1-gnb-menus",
+        "s1-gnb-util",
+        "s1-gnb-util-btn"
+      ],
+      "a11y": {
+        "ariaLabel": 27,
+        "ariaOther": 0,
+        "role": 0,
+        "labelFor": 0
+      },
+      "codeChars": 9393
+    },
+    {
+      "id": "select",
+      "previewNodes": 71,
+      "tabs": [
+        "HTML",
+        "CSS Tokens",
+        "JavaScript",
+        "Token Details"
+      ],
+      "hasHtmlTab": true,
+      "hasCssTab": true,
+      "hasTokenTab": true,
+      "hasJsTab": true,
+      "pc": true,
+      "mobile": true,
+      "classes": [
+        "has-value",
+        "is-disabled",
+        "is-hover",
+        "is-open",
+        "is-preview",
+        "is-selected",
+        "s1-select-chevron",
+        "s1-select-list",
+        "s1-select-option",
+        "s1-select-trigger",
+        "s1-select-wrap",
+        "s1-select-wrap--mobile",
+        "s1-select-wrap--xsm",
+        "s1-select-wrap--xxsm"
+      ],
+      "a11y": {
+        "ariaLabel": 0,
+        "ariaOther": 0,
+        "role": 0,
+        "labelFor": 0
+      },
+      "codeChars": 10578
+    },
+    {
+      "id": "dropdown",
+      "previewNodes": 108,
+      "tabs": [
+        "HTML",
+        "CSS",
+        "Token Details"
+      ],
+      "hasHtmlTab": true,
+      "hasCssTab": true,
+      "hasTokenTab": true,
+      "hasJsTab": false,
+      "pc": false,
+      "mobile": false,
+      "classes": [
+        "is-checked",
+        "is-hover",
+        "is-selected",
+        "s1-checkbox",
+        "s1-checkbox-box",
+        "s1-dropdown-list",
+        "s1-dropdown-list--md",
+        "s1-dropdown-list--xsm",
+        "s1-dropdown-list--xxsm",
+        "s1-dropdown-option",
+        "s1-dropdown-option--all",
+        "s1-dropdown-option--checkbox"
+      ],
+      "a11y": {
+        "ariaLabel": 0,
+        "ariaOther": 33,
+        "role": 12,
+        "labelFor": 0
+      },
+      "codeChars": 6002
+    },
+    {
+      "id": "table",
+      "previewNodes": 280,
+      "tabs": [
+        "HTML",
+        "CSS",
+        "Token Details",
+        "JavaScript"
+      ],
+      "hasHtmlTab": true,
+      "hasCssTab": true,
+      "hasTokenTab": true,
+      "hasJsTab": true,
+      "pc": false,
+      "mobile": false,
+      "classes": [
+        "is-checked",
+        "is-hover",
+        "is-selected",
+        "s1-checkbox",
+        "s1-checkbox-box",
+        "s1-pagination",
+        "s1-pagination-arrow",
+        "s1-pagination-group",
+        "s1-pagination-group--numbers",
+        "s1-pagination-number",
+        "s1-table",
+        "s1-table--md",
+        "s1-table--sm",
+        "s1-table-footer",
+        "s1-table-header-row",
+        "s1-table-perpage-select",
+        "s1-table-row",
+        "s1-table-section",
+        "s1-table-sort-icon",
+        "s1-table-td",
+        "s1-table-td--last",
+        "s1-table-td--selection",
+        "s1-table-th",
+        "s1-table-th--last",
+        "s1-table-th--selection",
+        "s1-table-th-inner",
+        "s1-table-wrap"
+      ],
+      "a11y": {
+        "ariaLabel": 41,
+        "ariaOther": 3,
+        "role": 0,
+        "labelFor": 0
+      },
+      "codeChars": 9124
+    },
+    {
+      "id": "pagination",
+      "previewNodes": 68,
+      "tabs": [
+        "HTML",
+        "CSS",
+        "Token Details",
+        "JavaScript"
+      ],
+      "hasHtmlTab": true,
+      "hasCssTab": true,
+      "hasTokenTab": true,
+      "hasJsTab": true,
+      "pc": false,
+      "mobile": false,
+      "classes": [
+        "is-hover",
+        "is-preview",
+        "is-selected",
+        "s1-pagination",
+        "s1-pagination-arrow",
+        "s1-pagination-group",
+        "s1-pagination-group--numbers",
+        "s1-pagination-number"
+      ],
+      "a11y": {
+        "ariaLabel": 30,
+        "ariaOther": 4,
+        "role": 0,
+        "labelFor": 0
+      },
+      "codeChars": 7128
+    },
+    {
+      "id": "mobile-bottom-nav",
+      "previewNodes": 29,
+      "tabs": [
+        "HTML",
+        "CSS",
+        "Token Details"
+      ],
+      "hasHtmlTab": true,
+      "hasCssTab": true,
+      "hasTokenTab": true,
+      "hasJsTab": false,
+      "pc": false,
+      "mobile": false,
+      "classes": [
+        "is-preview",
+        "is-selected",
+        "s1-bottom-nav",
+        "s1-bottom-nav-icon",
+        "s1-bottom-nav-item",
+        "s1-bottom-nav-label"
+      ],
+      "a11y": {
+        "ariaLabel": 3,
+        "ariaOther": 13,
+        "role": 1,
+        "labelFor": 0
+      },
+      "codeChars": 2755
+    },
+    {
+      "id": "date-picker",
+      "previewNodes": 152,
+      "tabs": [
+        "Trigger 토큰 (form-control)",
+        "Calendar 토큰 (date-picker)"
+      ],
+      "hasHtmlTab": false,
+      "hasCssTab": false,
+      "hasTokenTab": false,
+      "hasJsTab": false,
+      "pc": true,
+      "mobile": true,
+      "classes": [
+        "input-size-mobile",
+        "input-size-xsm",
+        "input-size-xxsm",
+        "is-disabled",
+        "is-focus",
+        "is-hover",
+        "is-other-month",
+        "is-preview",
+        "is-selected",
+        "is-today",
+        "s1-date-picker",
+        "s1-date-picker__day",
+        "s1-date-picker__day--range",
+        "s1-date-picker__day--range-end",
+        "s1-date-picker__day--range-start",
+        "s1-date-picker__grid",
+        "s1-date-picker__header",
+        "s1-date-picker__month-label",
+        "s1-date-picker__nav-btn",
+        "s1-date-picker__panel",
+        "s1-date-picker__selector-btn",
+        "s1-date-picker__selector-grid",
+        "s1-date-picker__weekday",
+        "s1-date-picker__weekdays",
+        "s1-input-action-btn",
+        "s1-input-field",
+        "s1-input-wrap"
+      ],
+      "a11y": {
+        "ariaLabel": 26,
+        "ariaOther": 11,
+        "role": 3,
+        "labelFor": 0
+      },
+      "codeChars": 0
+    },
+    {
+      "id": "time-picker",
+      "previewNodes": 329,
+      "tabs": [
+        "HTML",
+        "CSS",
+        "JavaScript",
+        "HTML",
+        "CSS",
+        "JavaScript",
+        "Token Details"
+      ],
+      "hasHtmlTab": true,
+      "hasCssTab": true,
+      "hasTokenTab": true,
+      "hasJsTab": true,
+      "pc": true,
+      "mobile": true,
+      "classes": [
+        "is-active",
+        "is-disabled",
+        "is-filled",
+        "is-focus",
+        "is-hover",
+        "is-open",
+        "is-preview",
+        "is-selected",
+        "s1-btn",
+        "s1-btn-lg",
+        "s1-btn-primary",
+        "s1-dp-state-label",
+        "s1-tab",
+        "s1-tab--mobile",
+        "s1-tab-item",
+        "s1-timepicker-icon",
+        "s1-timepicker-placeholder",
+        "s1-timepicker-select-arrow",
+        "s1-timepicker-select-field",
+        "s1-timepicker-select-group",
+        "s1-timepicker-select-group--xxsm",
+        "s1-timepicker-select-label",
+        "s1-timepicker-select-unit",
+        "s1-timepicker-value",
+        "s1-timepicker-wrap",
+        "s1-timepicker-wrap--xsm",
+        "s1-timepicker-wrap--xxsm",
+        "s1-tp-col",
+        "s1-tp-col-item",
+        "s1-tp-col-sep",
+        "s1-tp-confirm-btn",
+        "s1-tp-dropdown",
+        "s1-tp-dropdown-cols",
+        "s1-tp-footer",
+        "s1-tp-footer-sep",
+        "s1-tp-sheet",
+        "s1-tp-sheet-stage",
+        "s1-tp-sheet-stage__dim",
+        "s1-tp-sheet__action",
+        "s1-tp-sheet__close",
+        "s1-tp-sheet__fade",
+        "s1-tp-sheet__fade--bottom",
+        "s1-tp-sheet__fade--top",
+        "s1-tp-sheet__header",
+        "s1-tp-sheet__tabs",
+        "s1-tp-sheet__title",
+        "s1-tp-sheet__wheel",
+        "s1-tp-wheel-col",
+        "s1-tp-wheel-col--ampm",
+        "s1-tp-wheel-col--colon",
+        "s1-tp-wheel-col--hour",
+        "s1-tp-wheel-col--minute",
+        "s1-tp-wheel-group",
+        "s1-tp-wheel-item"
+      ],
+      "a11y": {
+        "ariaLabel": 2,
+        "ariaOther": 8,
+        "role": 0,
+        "labelFor": 0
+      },
+      "codeChars": 14703
+    },
+    {
+      "id": "line-tab",
+      "previewNodes": 0,
+      "tabs": [
+        "Token Details"
+      ],
+      "hasHtmlTab": false,
+      "hasCssTab": false,
+      "hasTokenTab": true,
+      "hasJsTab": false,
+      "pc": false,
+      "mobile": false,
+      "classes": [],
+      "a11y": {
+        "ariaLabel": 0,
+        "ariaOther": 0,
+        "role": 0,
+        "labelFor": 0
+      },
+      "codeChars": 0
+    },
+    {
+      "id": "status-bar",
+      "previewNodes": 0,
+      "tabs": [
+        "Token Details"
+      ],
+      "hasHtmlTab": false,
+      "hasCssTab": false,
+      "hasTokenTab": true,
+      "hasJsTab": false,
+      "pc": false,
+      "mobile": false,
+      "classes": [],
+      "a11y": {
+        "ariaLabel": 0,
+        "ariaOther": 0,
+        "role": 0,
+        "labelFor": 0
+      },
+      "codeChars": 0
+    },
+    {
+      "id": "nav-bar",
+      "previewNodes": 0,
+      "tabs": [
+        "Token Details"
+      ],
+      "hasHtmlTab": false,
+      "hasCssTab": false,
+      "hasTokenTab": true,
+      "hasJsTab": false,
+      "pc": false,
+      "mobile": false,
+      "classes": [],
+      "a11y": {
+        "ariaLabel": 0,
+        "ariaOther": 0,
+        "role": 0,
+        "labelFor": 0
+      },
+      "codeChars": 0
+    },
+    {
+      "id": "login-gnb",
+      "previewNodes": 0,
+      "tabs": [
+        "Token Details"
+      ],
+      "hasHtmlTab": false,
+      "hasCssTab": false,
+      "hasTokenTab": true,
+      "hasJsTab": false,
+      "pc": false,
+      "mobile": false,
+      "classes": [],
+      "a11y": {
+        "ariaLabel": 0,
+        "ariaOther": 0,
+        "role": 0,
+        "labelFor": 0
+      },
+      "codeChars": 0
+    },
+    {
+      "id": "web-tab-bar",
+      "previewNodes": 0,
+      "tabs": [
+        "Token Details"
+      ],
+      "hasHtmlTab": false,
+      "hasCssTab": false,
+      "hasTokenTab": true,
+      "hasJsTab": false,
+      "pc": false,
+      "mobile": false,
+      "classes": [],
+      "a11y": {
+        "ariaLabel": 0,
+        "ariaOther": 0,
+        "role": 0,
+        "labelFor": 0
+      },
+      "codeChars": 0
+    },
+    {
+      "id": "ci",
+      "previewNodes": 0,
+      "tabs": [
+        "Token Details"
+      ],
+      "hasHtmlTab": false,
+      "hasCssTab": false,
+      "hasTokenTab": true,
+      "hasJsTab": false,
+      "pc": false,
+      "mobile": false,
+      "classes": [],
+      "a11y": {
+        "ariaLabel": 0,
+        "ariaOther": 0,
+        "role": 0,
+        "labelFor": 0
+      },
+      "codeChars": 0
+    },
+    {
+      "id": "multi-toggle-element",
+      "previewNodes": 0,
+      "tabs": [
+        "Token Details"
+      ],
+      "hasHtmlTab": false,
+      "hasCssTab": false,
+      "hasTokenTab": true,
+      "hasJsTab": false,
+      "pc": false,
+      "mobile": false,
+      "classes": [],
+      "a11y": {
+        "ariaLabel": 0,
+        "ariaOther": 0,
+        "role": 0,
+        "labelFor": 0
+      },
+      "codeChars": 0
+    },
+    {
+      "id": "footer",
+      "previewNodes": 0,
+      "tabs": [
+        "Token Details"
+      ],
+      "hasHtmlTab": false,
+      "hasCssTab": false,
+      "hasTokenTab": true,
+      "hasJsTab": false,
+      "pc": false,
+      "mobile": false,
+      "classes": [],
+      "a11y": {
+        "ariaLabel": 0,
+        "ariaOther": 0,
+        "role": 0,
+        "labelFor": 0
+      },
+      "codeChars": 0
+    },
+    {
+      "id": "gnb-util-icon",
+      "previewNodes": 0,
+      "tabs": [
+        "Token Details"
+      ],
+      "hasHtmlTab": false,
+      "hasCssTab": false,
+      "hasTokenTab": true,
+      "hasJsTab": false,
+      "pc": false,
+      "mobile": false,
+      "classes": [],
+      "a11y": {
+        "ariaLabel": 0,
+        "ariaOther": 0,
+        "role": 0,
+        "labelFor": 0
+      },
+      "codeChars": 0
+    },
+    {
+      "id": "language-icon",
+      "previewNodes": 0,
+      "tabs": [
+        "Token Details"
+      ],
+      "hasHtmlTab": false,
+      "hasCssTab": false,
+      "hasTokenTab": true,
+      "hasJsTab": false,
+      "pc": false,
+      "mobile": false,
+      "classes": [],
+      "a11y": {
+        "ariaLabel": 0,
+        "ariaOther": 0,
+        "role": 0,
+        "labelFor": 0
+      },
+      "codeChars": 0
+    },
+    {
+      "id": "pagination-cell",
+      "previewNodes": 0,
+      "tabs": [
+        "Token Details"
+      ],
+      "hasHtmlTab": false,
+      "hasCssTab": false,
+      "hasTokenTab": true,
+      "hasJsTab": false,
+      "pc": false,
+      "mobile": false,
+      "classes": [],
+      "a11y": {
+        "ariaLabel": 0,
+        "ariaOther": 0,
+        "role": 0,
+        "labelFor": 0
+      },
+      "codeChars": 0
+    },
+    {
+      "id": "calendar",
+      "previewNodes": 0,
+      "tabs": [
+        "Token Details"
+      ],
+      "hasHtmlTab": false,
+      "hasCssTab": false,
+      "hasTokenTab": true,
+      "hasJsTab": false,
+      "pc": false,
+      "mobile": false,
+      "classes": [],
+      "a11y": {
+        "ariaLabel": 0,
+        "ariaOther": 0,
+        "role": 0,
+        "labelFor": 0
+      },
+      "codeChars": 0
+    },
+    {
+      "id": "calendar-cell",
+      "previewNodes": 0,
+      "tabs": [
+        "Token Details"
+      ],
+      "hasHtmlTab": false,
+      "hasCssTab": false,
+      "hasTokenTab": true,
+      "hasJsTab": false,
+      "pc": false,
+      "mobile": false,
+      "classes": [],
+      "a11y": {
+        "ariaLabel": 0,
+        "ariaOther": 0,
+        "role": 0,
+        "labelFor": 0
+      },
+      "codeChars": 0
+    },
+    {
+      "id": "calendar-tile",
+      "previewNodes": 0,
+      "tabs": [
+        "Token Details"
+      ],
+      "hasHtmlTab": false,
+      "hasCssTab": false,
+      "hasTokenTab": true,
+      "hasJsTab": false,
+      "pc": false,
+      "mobile": false,
+      "classes": [],
+      "a11y": {
+        "ariaLabel": 0,
+        "ariaOther": 0,
+        "role": 0,
+        "labelFor": 0
+      },
+      "codeChars": 0
+    },
+    {
+      "id": "date-picker-bottom-sheet",
+      "previewNodes": 0,
+      "tabs": [
+        "Token Details"
+      ],
+      "hasHtmlTab": false,
+      "hasCssTab": false,
+      "hasTokenTab": true,
+      "hasJsTab": false,
+      "pc": false,
+      "mobile": false,
+      "classes": [],
+      "a11y": {
+        "ariaLabel": 0,
+        "ariaOther": 0,
+        "role": 0,
+        "labelFor": 0
+      },
+      "codeChars": 0
+    },
+    {
+      "id": "time-picker-dropdown",
+      "previewNodes": 0,
+      "tabs": [
+        "Token Details"
+      ],
+      "hasHtmlTab": false,
+      "hasCssTab": false,
+      "hasTokenTab": true,
+      "hasJsTab": false,
+      "pc": false,
+      "mobile": false,
+      "classes": [],
+      "a11y": {
+        "ariaLabel": 0,
+        "ariaOther": 0,
+        "role": 0,
+        "labelFor": 0
+      },
+      "codeChars": 0
+    },
+    {
+      "id": "time-picker-cell",
+      "previewNodes": 0,
+      "tabs": [
+        "Token Details"
+      ],
+      "hasHtmlTab": false,
+      "hasCssTab": false,
+      "hasTokenTab": true,
+      "hasJsTab": false,
+      "pc": false,
+      "mobile": false,
+      "classes": [],
+      "a11y": {
+        "ariaLabel": 0,
+        "ariaOther": 0,
+        "role": 0,
+        "labelFor": 0
+      },
+      "codeChars": 0
+    },
+    {
+      "id": "table-cell",
+      "previewNodes": 0,
+      "tabs": [
+        "Token Details"
+      ],
+      "hasHtmlTab": false,
+      "hasCssTab": false,
+      "hasTokenTab": true,
+      "hasJsTab": false,
+      "pc": false,
+      "mobile": false,
+      "classes": [],
+      "a11y": {
+        "ariaLabel": 0,
+        "ariaOther": 0,
+        "role": 0,
+        "labelFor": 0
+      },
+      "codeChars": 0
+    }
+  ],
+  "naming": {
+    "s1- 접두사": [
+      "s1-bottom-nav",
+      "s1-bottom-nav-icon",
+      "s1-bottom-nav-item",
+      "s1-bottom-nav-label",
+      "s1-btn",
+      "s1-btn-blue-line",
+      "s1-btn-lg",
+      "s1-btn-md",
+      "s1-btn-primary",
+      "s1-btn-secondary",
+      "s1-btn-xxsm",
+      "s1-checkbox",
+      "s1-checkbox-box",
+      "s1-checkbox-label",
+      "s1-chip",
+      "s1-date-picker",
+      "s1-date-picker__day",
+      "s1-date-picker__grid",
+      "s1-date-picker__header",
+      "s1-date-picker__month-label",
+      "s1-date-picker__nav-btn",
+      "s1-date-picker__panel",
+      "s1-date-picker__selector-btn",
+      "s1-date-picker__selector-grid",
+      "s1-date-picker__weekday",
+      "s1-date-picker__weekdays",
+      "s1-dp-state-label",
+      "s1-dropdown-list",
+      "s1-dropdown-option",
+      "s1-gnb",
+      "s1-gnb-lang",
+      "s1-gnb-lang-globe",
+      "s1-gnb-lang-label",
+      "s1-gnb-leading",
+      "s1-gnb-logo",
+      "s1-gnb-menu",
+      "s1-gnb-menus",
+      "s1-gnb-util",
+      "s1-gnb-util-btn",
+      "s1-input-action-btn",
+      "s1-input-field",
+      "s1-input-label",
+      "s1-input-remove",
+      "s1-input-wrap",
+      "s1-multi-toggle",
+      "s1-multi-toggle-cell",
+      "s1-pagination",
+      "s1-pagination-arrow",
+      "s1-pagination-group",
+      "s1-pagination-number",
+      "s1-radio",
+      "s1-radio-circle",
+      "s1-radio-dot",
+      "s1-radio-label",
+      "s1-select-chevron",
+      "s1-select-list",
+      "s1-select-option",
+      "s1-select-trigger",
+      "s1-select-wrap",
+      "s1-suffix-action-group",
+      "s1-tab",
+      "s1-tab-item",
+      "s1-table",
+      "s1-table-footer",
+      "s1-table-header-row",
+      "s1-table-perpage-select",
+      "s1-table-row",
+      "s1-table-section",
+      "s1-table-sort-icon",
+      "s1-table-td",
+      "s1-table-th",
+      "s1-table-th-inner",
+      "s1-table-wrap",
+      "s1-timepicker-icon",
+      "s1-timepicker-placeholder",
+      "s1-timepicker-select-arrow",
+      "s1-timepicker-select-field",
+      "s1-timepicker-select-group",
+      "s1-timepicker-select-label",
+      "s1-timepicker-select-unit",
+      "s1-timepicker-value",
+      "s1-timepicker-wrap",
+      "s1-toggle",
+      "s1-toggle-knob",
+      "s1-toggle-track",
+      "s1-tp-col",
+      "s1-tp-col-item",
+      "s1-tp-col-sep",
+      "s1-tp-confirm-btn",
+      "s1-tp-dropdown",
+      "s1-tp-dropdown-cols",
+      "s1-tp-footer",
+      "s1-tp-footer-sep",
+      "s1-tp-sheet",
+      "s1-tp-sheet-stage",
+      "s1-tp-sheet-stage__dim",
+      "s1-tp-sheet__action",
+      "s1-tp-sheet__close",
+      "s1-tp-sheet__fade",
+      "s1-tp-sheet__header",
+      "s1-tp-sheet__tabs",
+      "s1-tp-sheet__title",
+      "s1-tp-sheet__wheel",
+      "s1-tp-wheel-col",
+      "s1-tp-wheel-group",
+      "s1-tp-wheel-item"
+    ],
+    "is- 상태": [
+      "is-active",
+      "is-checked",
+      "is-correct",
+      "is-disabled",
+      "is-editing",
+      "is-error",
+      "is-filled",
+      "is-focus",
+      "is-hover",
+      "is-on",
+      "is-open",
+      "is-other-month",
+      "is-pressed",
+      "is-preview",
+      "is-readonly",
+      "is-selected",
+      "is-today"
+    ],
+    "has- 상태": [
+      "has-value"
+    ],
+    "BEM -- 수식어": [
+      "s1-chip--mobile",
+      "s1-chip--sm",
+      "s1-chip--solid",
+      "s1-date-picker__day--range",
+      "s1-date-picker__day--range-end",
+      "s1-date-picker__day--range-start",
+      "s1-dropdown-list--md",
+      "s1-dropdown-list--xsm",
+      "s1-dropdown-list--xxsm",
+      "s1-dropdown-option--all",
+      "s1-dropdown-option--checkbox",
+      "s1-gnb--center-between",
+      "s1-gnb--md",
+      "s1-gnb--sm",
+      "s1-gnb--start",
+      "s1-gnb--xsm",
+      "s1-gnb-menu--sm",
+      "s1-gnb-menu--xsm",
+      "s1-input-wrap--textarea",
+      "s1-multi-toggle--sm",
+      "s1-multi-toggle-cell--first",
+      "s1-multi-toggle-cell--last",
+      "s1-multi-toggle-cell--middle",
+      "s1-multi-toggle-cell--middle-left",
+      "s1-multi-toggle-cell--middle-right",
+      "s1-pagination-group--numbers",
+      "s1-select-wrap--mobile",
+      "s1-select-wrap--xsm",
+      "s1-select-wrap--xxsm",
+      "s1-tab--mobile",
+      "s1-tab--pc-md",
+      "s1-tab--pc-sm",
+      "s1-tab--pc-xsm",
+      "s1-table--md",
+      "s1-table--sm",
+      "s1-table-td--last",
+      "s1-table-td--selection",
+      "s1-table-th--last",
+      "s1-table-th--selection",
+      "s1-timepicker-select-group--xxsm",
+      "s1-timepicker-wrap--xsm",
+      "s1-timepicker-wrap--xxsm",
+      "s1-tp-sheet__fade--bottom",
+      "s1-tp-sheet__fade--top",
+      "s1-tp-wheel-col--ampm",
+      "s1-tp-wheel-col--colon",
+      "s1-tp-wheel-col--hour",
+      "s1-tp-wheel-col--minute"
+    ],
+    "접두사 없음": [
+      "chk-action-label",
+      "input-clear-btn",
+      "input-interactive",
+      "input-size-mobile",
+      "input-size-xsm",
+      "input-size-xxsm"
+    ]
+  },
+  "sizeIdioms": {
+    "s1-<컴포넌트>-<크기>": [
+      "s1-btn-lg",
+      "s1-btn-md",
+      "s1-btn-xxsm",
+      "s1-chip--sm",
+      "s1-dropdown-list--md",
+      "s1-dropdown-list--xsm",
+      "s1-dropdown-list--xxsm",
+      "s1-gnb--md",
+      "s1-gnb--sm",
+      "s1-gnb--xsm",
+      "s1-gnb-menu--sm",
+      "s1-gnb-menu--xsm",
+      "s1-multi-toggle--sm",
+      "s1-select-wrap--xsm",
+      "s1-select-wrap--xxsm",
+      "s1-tab--pc-md",
+      "s1-tab--pc-sm",
+      "s1-tab--pc-xsm",
+      "s1-table--md",
+      "s1-table--sm",
+      "s1-timepicker-select-group--xxsm",
+      "s1-timepicker-wrap--xsm",
+      "s1-timepicker-wrap--xxsm"
+    ],
+    "<컴포넌트>-size-<값>": [
+      "input-size-mobile",
+      "input-size-xsm",
+      "input-size-xxsm"
+    ],
+    "<컴포넌트>--<플랫폼>": [
+      "s1-chip--mobile",
+      "s1-select-wrap--mobile",
+      "s1-tab--mobile"
+    ]
+  },
+  "css": {
+    "linked": [
+      "../assets/css/style.css",
+      "../assets/css/tokens.css"
+    ],
+    "inlineRules": 437,
+    "files": [
+      {
+        "file": "assets/css/component-tokens.css",
+        "kb": 13.4,
+        "s1Rules": 0,
+        "loaded": false
+      },
+      {
+        "file": "assets/css/components/button.css",
+        "kb": 5.3,
+        "s1Rules": 0,
+        "loaded": false
+      },
+      {
+        "file": "assets/css/components/input.css",
+        "kb": 4.4,
+        "s1Rules": 29,
+        "loaded": false
+      },
+      {
+        "file": "assets/css/legacy-tokens.css",
+        "kb": 1.3,
+        "s1Rules": 0,
+        "loaded": false
+      },
+      {
+        "file": "assets/css/site-base.css",
+        "kb": 7.2,
+        "s1Rules": 0,
+        "loaded": true
+      },
+      {
+        "file": "assets/css/style.css",
+        "kb": 27.7,
+        "s1Rules": 0,
+        "loaded": true
+      },
+      {
+        "file": "assets/css/tokens.css",
+        "kb": 37.6,
+        "s1Rules": 0,
+        "loaded": true
+      },
+      {
+        "file": "assets/css/typography.css",
+        "kb": 4.3,
+        "s1Rules": 0,
+        "loaded": true
+      }
+    ]
+  }
+}

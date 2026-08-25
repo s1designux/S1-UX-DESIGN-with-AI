@@ -1,0 +1,256 @@
+{
+  "schemaVersion": 1,
+  "buildTarget": "Mobile Header",
+  "builtAt": "2026-08-25",
+  "file": {
+    "name": "SW UX GUIDE V3.0 TEST",
+    "fileKey": "cysG5U1udpQqVagYY1hWHW",
+    "page": { "id": "5:5706", "name": "Core" },
+    "section": {
+      "id": "1654:38976",
+      "name": "Navigation",
+      "width": 2296,
+      "oldHeight": 2916,
+      "newHeight": 3934,
+      "contentBottom": 3870,
+      "bottomClearance": 64
+    }
+  },
+  "componentSet": {
+    "id": "1760:7247",
+    "key": "9fd8509a9e73c1279d9efb2088bb591658ce29f5",
+    "name": "Mobile Header",
+    "position": { "x": 64, "y": 3036 },
+    "size": { "width": 820, "height": 417 },
+    "variantAxis": {
+      "name": "Type",
+      "defaultValue": "Standard / Title",
+      "values": [
+        "Standard / Title",
+        "Standard / Title + Close",
+        "Home / Title + 2 Icons",
+        "Home / Title + Subtitle + 1 Icon",
+        "Home / Title + Alt Title",
+        "Standard / No Title"
+      ]
+    },
+    "packing": {
+      "columns": 2,
+      "rows": 3,
+      "padding": 40,
+      "gap": 20,
+      "variantSize": { "width": 360, "height": 99 }
+    },
+    "combineAsVariants": true,
+    "detachedInstances": [],
+    "existingInstanceRemap": "not-applicable-new-component",
+    "emptyContainers": []
+  },
+  "variants": [
+    {
+      "id": "1757:7099",
+      "key": "33bc42c89719c3fa4abff260ef85a337b7230457",
+      "name": "Type=Standard / Title",
+      "properties": { "Type": "Standard / Title" },
+      "positionInSet": { "x": 40, "y": 40 },
+      "previewId": "1760:7250",
+      "nodes": {
+        "statusBar": "1757:7100",
+        "appBar": "1757:7123",
+        "back": "1757:7124",
+        "title": "1757:7127",
+        "endSpacer": "1757:7128"
+      }
+    },
+    {
+      "id": "1757:7129",
+      "key": "88da12f14f6c3535c37429fa8727f90d073d8ff7",
+      "name": "Type=Standard / Title + Close",
+      "properties": { "Type": "Standard / Title + Close" },
+      "positionInSet": { "x": 420, "y": 40 },
+      "previewId": "1760:7280",
+      "nodes": {
+        "statusBar": "1757:7130",
+        "appBar": "1757:7153",
+        "back": "1757:7154",
+        "title": "1757:7157",
+        "close": "1757:7158"
+      }
+    },
+    {
+      "id": "1758:7158",
+      "key": "2349afa479babe02b2224a5631a03bfc8f71b0d0",
+      "name": "Type=Home / Title + 2 Icons",
+      "properties": { "Type": "Home / Title + 2 Icons" },
+      "positionInSet": { "x": 40, "y": 159 },
+      "previewId": "1760:7313",
+      "nodes": {
+        "statusBar": "1758:7159",
+        "appBar": "1758:7182",
+        "title": "1758:7183",
+        "actions": "1758:7184",
+        "notification": "1758:7185",
+        "close": "1758:7190"
+      }
+    },
+    {
+      "id": "1759:7167",
+      "key": "02ad4f75b0d458dc1cf7a5328ae9e1121445d53b",
+      "name": "Type=Home / Title + Subtitle + 1 Icon",
+      "properties": { "Type": "Home / Title + Subtitle + 1 Icon" },
+      "positionInSet": { "x": 420, "y": 159 },
+      "previewId": "1760:7348",
+      "nodes": {
+        "statusBar": "1759:7168",
+        "appBar": "1759:7191",
+        "titleBlock": "1759:7192",
+        "titleRow": "1759:7193",
+        "title": "1759:7194",
+        "menuArrowDown": "1759:7195",
+        "subtitle": "1759:7198",
+        "notification": "1759:7199"
+      }
+    },
+    {
+      "id": "1759:7204",
+      "key": "99caeba6ebbad8aee9fc6144942a503dbe294062",
+      "name": "Type=Home / Title + Alt Title",
+      "properties": { "Type": "Home / Title + Alt Title" },
+      "positionInSet": { "x": 40, "y": 278 },
+      "previewId": "1760:7386",
+      "nodes": {
+        "statusBar": "1759:7205",
+        "appBar": "1759:7228",
+        "title": "1759:7229"
+      }
+    },
+    {
+      "id": "1760:7217",
+      "key": "b7d3dbec8ac32045752390ab0c2ca71a8e06eb6c",
+      "name": "Type=Standard / No Title",
+      "properties": { "Type": "Standard / No Title" },
+      "positionInSet": { "x": 420, "y": 278 },
+      "previewId": "1760:7412",
+      "appBarTextNodeCount": 0,
+      "nodes": {
+        "statusBar": "1760:7218",
+        "appBar": "1760:7241",
+        "back": "1760:7242",
+        "flexibleEmptySpace": "1760:7245",
+        "endSpacer": "1760:7246"
+      }
+    }
+  ],
+  "preview": {
+    "frameId": "1760:7248",
+    "name": "Mobile Header / Preview",
+    "position": { "x": 64, "y": 3533 },
+    "size": { "width": 740, "height": 337 },
+    "rowIds": ["1760:7249", "1760:7312", "1760:7385"],
+    "instanceIds": [
+      "1760:7250",
+      "1760:7280",
+      "1760:7313",
+      "1760:7348",
+      "1760:7386",
+      "1760:7412"
+    ]
+  },
+  "statusBarProvenance": {
+    "sourceNodeId": "1654:37365",
+    "sourceComponentKey": "a9450c5f4f90c4bda3b5cc3be00229f4994b8b56",
+    "sourceSetId": "1654:37420",
+    "sourceSetName": "StatusBar",
+    "sourceVariant": { "Platform": "App" },
+    "sourceSize": { "width": 360, "height": 27 },
+    "instanceIds": [
+      "1757:7100",
+      "1757:7130",
+      "1758:7159",
+      "1759:7168",
+      "1759:7205",
+      "1760:7218"
+    ]
+  },
+  "icons": {
+    "back": {
+      "sourceNode": "540:6130",
+      "name": "ic_이전",
+      "variant": { "Property 1": "Solid" },
+      "componentKey": "7190e284d345ae19a679a16ed7bceafbd54073ca",
+      "semanticColor": "color/icon/gray-light"
+    },
+    "close": {
+      "sourceNode": "540:6156",
+      "name": "ic_닫기",
+      "variant": { "Property 1": "Solid" },
+      "componentKey": "54469d54f16ed38de2d7b420b0e2195e4cf7c118",
+      "semanticColor": "color/icon/gray-light"
+    },
+    "notification": {
+      "sourceNode": "540:6176",
+      "name": "ic_알림(신규)",
+      "variant": { "Property 1": "Line" },
+      "componentKey": "13cf1b580ec982fda488f9318c6821930ddfb26e",
+      "semanticColors": ["color/icon/gray-dark", "color/icon/red"]
+    },
+    "menuArrowDown": {
+      "approvedSourceFileKey": "YcBbW9e0MTR9T3W5Sz0Ukx",
+      "approvedSourceSetNodeId": "419:69",
+      "approvedSourceSetKey": "0127e7176f4fba52d36fe49d5c1f5bc6bba13bbf",
+      "name": "ic_화살표, 더보기, 다음장",
+      "variant": { "Property 1": "Solid" },
+      "componentNodeId": "419:68",
+      "componentKey": "6babc3f493e48be1e7191a7b8a68945833039fe8",
+      "baseDirection": "right",
+      "rotationDegrees": -90,
+      "resultDirection": "down",
+      "semanticColor": "color/icon/gray-light",
+      "legacyUnimportableComponentKey": "e694d94214ea8234e253e65d6d33dce6dde68eac"
+    }
+  },
+  "semanticVariables": {
+    "color/navigation/bg": { "id": "VariableID:477:4415", "key": "b3d90464beb1efcd71e4fba93ee6ad89a5a8baf9" },
+    "color/bg/level-2": { "id": "VariableID:687:17886", "key": "529bc62675da2e2132ad76165d925b34073e1dfd" },
+    "color/text/title/primary": { "id": "VariableID:8:1127", "key": "6fe0064516087189c9936a68c004d9a210594a9f" },
+    "color/text/body/tertiary": { "id": "VariableID:8:1118", "key": "7304d389c39ec1fcebe21c54233ac5570c9355f3" },
+    "color/icon/gray-light": { "id": "VariableID:8:1070", "key": "4537c49ae56bd335f47651dd58c48dcb0d3515e4" },
+    "color/icon/gray-dark": { "id": "VariableID:8:1069", "key": "25cd9e49d5b8bd706b0a779088fe64f2b6388ced" },
+    "color/icon/red": { "id": "VariableID:8:1071", "key": "5a8593f122887004fe0c2d448693a0895d4b3de7" }
+  },
+  "pretendardTextStyles": {
+    "title/18M": { "id": "S:94381c5e4d9aca8038bb6d89797aa494172f8f0b,", "key": "94381c5e4d9aca8038bb6d89797aa494172f8f0b" },
+    "title/18B": { "id": "S:b6d6c9c56e31447617e0a659862acdcbe4d2b812,", "key": "b6d6c9c56e31447617e0a659862acdcbe4d2b812" },
+    "body/14R": { "id": "S:35d6b9f34501f327f4672b8393023695d2f36c5d,", "key": "35d6b9f34501f327f4672b8393023695d2f36c5d" }
+  },
+  "createdNodeIds": [
+    "1757:7099", "1757:7100", "1757:7123", "1757:7124", "1757:7127", "1757:7128",
+    "1757:7129", "1757:7130", "1757:7153", "1757:7154", "1757:7157", "1757:7158",
+    "1758:7158", "1758:7159", "1758:7182", "1758:7183", "1758:7184", "1758:7185", "1758:7190",
+    "1759:7167", "1759:7168", "1759:7191", "1759:7192", "1759:7193", "1759:7194", "1759:7195", "1759:7198", "1759:7199",
+    "1759:7204", "1759:7205", "1759:7228", "1759:7229",
+    "1760:7217", "1760:7218", "1760:7241", "1760:7242", "1760:7245", "1760:7246",
+    "1760:7247",
+    "1760:7248", "1760:7249", "1760:7250", "1760:7280", "1760:7312", "1760:7313", "1760:7348", "1760:7385", "1760:7386", "1760:7412"
+  ],
+  "mutatedExistingNodeIds": [
+    "1654:38976",
+    "I1757:7124;88:2272",
+    "I1757:7154;88:2272",
+    "I1757:7158;88:2278",
+    "I1758:7185;88:2638",
+    "I1758:7185;88:2639",
+    "I1758:7190;88:2278",
+    "I1759:7195;335:34",
+    "I1759:7195;335:35",
+    "I1759:7199;88:2638",
+    "I1759:7199;88:2639",
+    "I1760:7242;88:2272"
+  ],
+  "buildNotes": {
+    "gate34": "river-approved-2026-08-25",
+    "fontEntry": "Noto Sans Regular was used only as a transient writable font; Pretendard text styles were applied as the final text operation. Recorded final fontName values are Pretendard.",
+    "selfCorrection": "No committed geometry correction was needed after the component-set and preview screenshots; no overlap, clipping, or packing collapse was visible.",
+    "needsDecision": []
+  }
+}

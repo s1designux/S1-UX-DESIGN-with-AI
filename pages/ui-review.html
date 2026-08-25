@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>S1 UI Library · Input &amp; Button 검수</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+  <link rel="stylesheet" href="../ui-library/dist/assets/css/tokens.css">
+  <link rel="stylesheet" href="../ui-library/dist/assets/css/typography.css">
+  <link rel="stylesheet" href="../ui-library/dist/s1-ui.css">
+  <style>
+    /* 검수 페이지의 배치·설명 전용 CSS. 컴포넌트 시각 스타일은 s1-ui.css만 담당한다. */
+    :root {
+      color-scheme: light;
+      font-family: "Pretendard", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    body {
+      background: var(--color-bg-level-1);
+      color: var(--color-text-body-primary);
+      margin: 0;
+    }
+
+    .review-page {
+      box-sizing: border-box;
+      margin: 0 auto;
+      max-width: 1440px;
+      padding: var(--spacing-32);
+    }
+
+    .review-header {
+      display: grid;
+      gap: var(--spacing-12);
+      margin-bottom: var(--spacing-32);
+    }
+
+    .review-eyebrow,
+    .review-badge,
+    .review-state-label,
+    .review-live-status {
+      font-size: var(--font-size-12);
+      font-weight: var(--font-weight-medium);
+      letter-spacing: var(--letter-spacing-normal);
+      line-height: var(--line-height-130);
+    }
+
+    .review-eyebrow {
+      color: var(--color-text-state-accent);
+      margin: 0;
+    }
+
+    .review-title {
+      color: var(--color-text-title-primary);
+      font-size: var(--font-size-32);
+      line-height: var(--line-height-130);
+      margin: 0;
+      word-break: keep-all;
+    }
+
+    .review-description,
+    .review-note,
+    .review-panel-description {
+      color: var(--color-text-body-secondary);
+      font-size: var(--font-size-14);
+      line-height: var(--line-height-140);
+      margin: 0;
+    }
+
+    .review-badges,
+    .review-actions,
+    .review-button-row {
+      align-items: center;
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--spacing-8);
+    }
+
+    .review-badge,
+    .review-live-status {
+      background: var(--color-bg-level-2);
+      border: var(--border-width-1) solid var(--color-line-gray-subtle);
+      border-radius: var(--radius-full);
+      color: var(--color-text-body-secondary);
+      padding: var(--spacing-6) var(--spacing-12);
+    }
+
+    .review-guide {
+      background: var(--color-surface-raised);
+      border: var(--border-width-1) solid var(--color-line-gray-subtle);
+      border-radius: var(--radius-12);
+      display: grid;
+      gap: var(--spacing-12);
+      margin-bottom: var(--spacing-32);
+      padding: var(--spacing-20);
+    }
+
+    .review-guide-title,
+    .review-section-title,
+    .review-panel-title,
+    .review-group-title {
+      color: var(--color-text-title-primary);
+      font-weight: var(--font-weight-bold);
+      line-height: var(--line-height-130);
+      margin: 0;
+    }
+
+    .review-guide-title { font-size: var(--font-size-18); }
+    .review-section-title { font-size: var(--font-size-24); }
+    .review-panel-title { font-size: var(--font-size-18); }
+    .review-group-title { font-size: var(--font-size-16); }
+
+    .review-steps {
+      color: var(--color-text-body-secondary);
+      font-size: var(--font-size-14);
+      line-height: var(--line-height-140);
+      margin: 0;
+      padding-left: var(--spacing-20);
+    }
+
+    .review-steps li + li { margin-top: var(--spacing-6); }
+
+    .review-section {
+      display: grid;
+      gap: var(--spacing-16);
+      margin-top: var(--spacing-40);
+    }
+
+    .review-matrix {
+      display: grid;
+      gap: var(--spacing-20);
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .review-panel {
+      align-self: start;
+      background: var(--color-bg-level-0);
+      border: var(--border-width-1) solid var(--color-line-gray-subtle);
+      border-radius: var(--radius-16);
+      color: var(--color-text-body-primary);
+      display: grid;
+      gap: var(--spacing-24);
+      min-width: 0;
+      padding: var(--spacing-24);
+    }
+
+    .review-panel[data-theme="dark"] { color-scheme: dark; }
+
+    .review-panel-heading {
+      display: grid;
+      gap: var(--spacing-4);
+    }
+
+    .review-group {
+      display: grid;
+      gap: var(--spacing-12);
+      min-width: 0;
+    }
+
+    .review-grid {
+      display: grid;
+      gap: var(--spacing-16);
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .review-sample {
+      display: grid;
+      gap: var(--spacing-8);
+      min-width: 0;
+    }
+
+    .review-size-list {
+      align-items: end;
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--spacing-12);
+    }
+
+    .review-size-item {
+      display: grid;
+      gap: var(--spacing-6);
+      justify-items: start;
+    }
+
+    .review-state-label {
+      color: var(--color-text-state-helper);
+      margin: 0;
+    }
+
+    .review-component-slot { min-width: 0; }
+
+    .review-separator {
+      border: 0;
+      border-top: var(--border-width-1) solid var(--color-line-gray-subtle);
+      margin: 0;
+      width: 100%;
+    }
+
+    .review-footer {
+      color: var(--color-text-state-helper);
+      display: grid;
+      font-size: var(--font-size-12);
+      gap: var(--spacing-6);
+      line-height: var(--line-height-140);
+      margin-top: var(--spacing-40);
+      padding-bottom: var(--spacing-32);
+    }
+
+    @media (max-width: 960px) {
+      .review-page { padding: var(--spacing-20); }
+      .review-matrix { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 520px) {
+      .review-page { padding: var(--spacing-16); }
+      .review-panel { padding: var(--spacing-16); }
+      .review-grid { grid-template-columns: 1fr; }
+      .review-title { font-size: var(--font-size-20); }
+    }
+  </style>
+</head>
+<body>
+  <main class="review-page">
+    <header class="review-header">
+      <p class="review-eyebrow">UI LIBRARY · CANDIDATE REVIEW</p>
+      <h1 class="review-title">Base Input · Button 실제 배포본 검수</h1>
+      <p class="review-description">이 화면과 퍼블리셔·개발자가 받는 파일은 같은 <strong>ui-library/dist</strong>를 사용합니다. 아래 UI를 직접 누르고 입력하면서 모양과 사용성을 확인해 주세요.</p>
+      <div class="review-badges" aria-label="검수 범위">
+        <span class="review-badge">PC · Mobile</span>
+        <span class="review-badge">Light · Dark</span>
+        <span class="review-badge">Base Input · Button</span>
+        <span class="review-badge">Password · Search는 다음 단계</span>
+      </div>
+    </header>
+
+    <section class="review-guide" aria-labelledby="review-guide-title">
+      <h2 class="review-guide-title" id="review-guide-title">직접 확인하는 방법</h2>
+      <ol class="review-steps">
+        <li><strong>Tab 키</strong>로 이동해 Button의 파란 포커스 테두리가 잘 보이는지 확인합니다.</li>
+        <li>Button 위에 마우스를 올리고 눌러서 Hover·Pressed 반응을 확인합니다.</li>
+        <li>Input에 직접 입력하고, Error·Correct·Read-only·Disabled 차이가 분명한지 확인합니다.</li>
+        <li>PC와 Mobile, Light와 Dark에서 같은 의미와 우선순위로 보이는지 비교합니다.</li>
+      </ol>
+      <div class="review-actions">
+        <span class="review-live-status" id="review-live-status" aria-live="polite">현재 초점: 없음</span>
+        <span class="review-note">모든 상태는 실제 HTML 속성 또는 승인된 공개 상태를 사용합니다. 검수용 강제 상태는 사용하지 않았습니다.</span>
+      </div>
+    </section>
+
+    <section class="review-section" aria-labelledby="input-review-title">
+      <div>
+        <h2 class="review-section-title" id="input-review-title">1. Base Input</h2>
+        <p class="review-note">라벨·입력 영역·안내 문구로 구성된 기본 입력창입니다. 비밀번호 보기/숨기기와 검색 지우기 동작은 이번 파일럿에 포함하지 않습니다.</p>
+      </div>
+      <div class="review-matrix" id="input-review-matrix"></div>
+    </section>
+
+    <section class="review-section" aria-labelledby="button-review-title">
+      <div>
+        <h2 class="review-section-title" id="button-review-title">2. Button</h2>
+        <p class="review-note">Primary·Secondary·Blue Line의 크기와 상태를 비교합니다. Hover·Pressed·Focus Visible은 실제 마우스와 키보드로 확인합니다.</p>
+      </div>
+      <div class="review-matrix" id="button-review-matrix"></div>
+    </section>
+
+    <footer class="review-footer">
+      <span id="review-runtime-status">배포 모듈 확인 중…</span>
+      <span>후속 범위: Password Field → Search Input. 정본과 Registry가 준비된 뒤 같은 방식으로 이 화면에 추가합니다.</span>
+    </footer>
+  </main>
+
+  <script type="module">
+    import * as S1UI from "../ui-library/dist/s1-ui.js";
+
+    const combinations = [
+      { theme: "light", device: "PC", breakName: "pc", inputSize: "md" },
+      { theme: "light", device: "Mobile", breakName: "mobile", inputSize: "md" },
+      { theme: "dark", device: "PC", breakName: "pc", inputSize: "md" },
+      { theme: "dark", device: "Mobile", breakName: "mobile", inputSize: "md" }
+    ];
+
+    let uniqueId = 0;
+
+    function inputMarkup({ label, value = "", placeholder = "내용을 입력하세요", state = "default", breakName, size }) {
+      uniqueId += 1;
+      const id = `review-input-${uniqueId}`;
+      const messageId = `${id}-message`;
+      const isError = state === "error";
+      const isCorrect = state === "correct";
+      const message = isError ? "입력 내용을 다시 확인해 주세요." : isCorrect ? "사용할 수 있는 내용입니다." : "안내 메시지";
+      const rootState = isCorrect ? ' data-state="correct"' : "";
+      const controlState = [
+        isError ? ' aria-invalid="true"' : "",
+        state === "readonly" ? " readonly" : "",
+        state === "disabled" ? " disabled" : ""
+      ].join("");
+
+      return `
+        <div data-s1-component="input" data-size="${size}" data-break="${breakName}"${rootState}>
+          <label data-s1-part="label" for="${id}">${label}</label>
+          <div data-s1-part="field">
+            <input id="${id}" data-s1-part="control" aria-describedby="${messageId}" placeholder="${placeholder}" value="${value}"${controlState}>
+          </div>
+          <p id="${messageId}" data-s1-part="message">${message}</p>
+        </div>`;
+    }
+
+    function sample(label, content) {
+      return `<div class="review-sample"><p class="review-state-label">${label}</p><div class="review-component-slot">${content}</div></div>`;
+    }
+
+    function panelHeading(combo, component) {
+      const themeLabel = combo.theme === "dark" ? "Dark" : "Light";
+      const sizeNote = combo.device === "Mobile"
+        ? `${component === "button" ? "LG" : "MD"} · 48px 높이`
+        : "PC 허용 크기";
+      return `<div class="review-panel-heading"><h3 class="review-panel-title">${combo.device} · ${themeLabel}</h3><p class="review-panel-description">${sizeNote}</p></div>`;
+    }
+
+    function renderInputPanel(combo) {
+      const stateSamples = [
+        sample("Default · 직접 입력", inputMarkup({ label: "이름", breakName: combo.breakName, size: combo.inputSize })),
+        sample("Filled", inputMarkup({ label: "이름", value: "홍길동", breakName: combo.breakName, size: combo.inputSize })),
+        sample("Error · aria-invalid", inputMarkup({ label: "이름", value: "ㅎ", state: "error", breakName: combo.breakName, size: combo.inputSize })),
+        sample("Correct · 공개 data-state", inputMarkup({ label: "이름", value: "홍길동", state: "correct", breakName: combo.breakName, size: combo.inputSize })),
+        sample("Read-only · 실제 readonly", inputMarkup({ label: "이름", value: "변경할 수 없는 값", state: "readonly", breakName: combo.breakName, size: combo.inputSize })),
+        sample("Disabled · 실제 disabled", inputMarkup({ label: "이름", value: "사용할 수 없음", state: "disabled", breakName: combo.breakName, size: combo.inputSize }))
+      ].join("");
+
+      let sizeSamples = "";
+      if (combo.device === "PC") {
+        sizeSamples = `
+          <hr class="review-separator">
+          <div class="review-group">
+            <h4 class="review-group-title">크기 비교</h4>
+            <div class="review-grid">
+              ${sample("XXSM · 28px", inputMarkup({ label: "XXSM", breakName: "pc", size: "xxsm" }))}
+              ${sample("XSM · 34px", inputMarkup({ label: "XSM", breakName: "pc", size: "xsm" }))}
+              ${sample("MD · 44px", inputMarkup({ label: "MD", breakName: "pc", size: "md" }))}
+            </div>
+          </div>`;
+      }
+
+      return `
+        <article class="review-panel" data-theme="${combo.theme}">
+          ${panelHeading(combo, "input")}
+          <div class="review-group">
+            <h4 class="review-group-title">상태 비교</h4>
+            <div class="review-grid">${stateSamples}</div>
+          </div>
+          ${sizeSamples}
+        </article>`;
+    }
+
+    function buttonMarkup(variant, size, disabled = false, text = "확인") {
+      return `<button type="button" data-s1-component="button" data-variant="${variant}" data-size="${size}"${disabled ? " disabled" : ""}><span data-s1-part="label">${text}</span></button>`;
+    }
+
+    function renderButtonPanel(combo) {
+      const sizes = combo.device === "Mobile" ? ["lg"] : ["xxsm", "xsm", "md"];
+      const sizeLabels = {
+        xxsm: "XXSM · min 64px",
+        xsm: "XSM · min 64px",
+        md: "MD · min 80px",
+        lg: "LG · min 80px"
+      };
+      const variants = [
+        { id: "primary", label: "Primary" },
+        { id: "secondary", label: "Secondary" },
+        { id: "blue-line", label: "Blue Line" }
+      ];
+      const sizeRows = variants.map((variant) => `
+        <div class="review-sample">
+          <p class="review-state-label">${variant.label}</p>
+          <div class="review-size-list">${sizes.map((size) => `<div class="review-size-item"><p class="review-state-label">${sizeLabels[size]}</p>${buttonMarkup(variant.id, size, false, "버튼")}</div>`).join("")}</div>
+        </div>`).join("");
+      const stateRows = variants.map((variant) => `
+        <div class="review-sample">
+          <p class="review-state-label">${variant.label} · Default / Disabled</p>
+          <div class="review-button-row">${buttonMarkup(variant.id, combo.device === "Mobile" ? "lg" : "md", false, "직접 확인")}${buttonMarkup(variant.id, combo.device === "Mobile" ? "lg" : "md", true, "비활성")}</div>
+        </div>`).join("");
+
+      return `
+        <article class="review-panel" data-theme="${combo.theme}">
+          ${panelHeading(combo, "button")}
+          <div class="review-group">
+            <h4 class="review-group-title">Variant · Size</h4>
+            ${sizeRows}
+          </div>
+          <hr class="review-separator">
+          <div class="review-group">
+            <h4 class="review-group-title">실제 상태 체험</h4>
+            <p class="review-panel-description">Tab으로 Focus, 마우스로 Hover, 누르는 동안 Pressed를 확인합니다.</p>
+            ${stateRows}
+          </div>
+        </article>`;
+    }
+
+    document.querySelector("#input-review-matrix").innerHTML = combinations.map(renderInputPanel).join("");
+    document.querySelector("#button-review-matrix").innerHTML = combinations.map(renderButtonPanel).join("");
+
+    const focusStatus = document.querySelector("#review-live-status");
+    document.addEventListener("focusin", (event) => {
+      const component = event.target.closest("[data-s1-component]");
+      if (!component) return;
+      const name = component.dataset.s1Component === "input" ? "Base Input" : "Button";
+      focusStatus.textContent = `현재 초점: ${name} · ${component.dataset.size.toUpperCase()}`;
+    });
+    document.addEventListener("focusout", () => {
+      requestAnimationFrame(() => {
+        if (!document.activeElement.closest?.("[data-s1-component]")) focusStatus.textContent = "현재 초점: 없음";
+      });
+    });
+
+    document.querySelector("#review-runtime-status").textContent =
+      `실제 배포 모듈 로드 완료 · Input ${S1UI.input.componentId} · Button ${S1UI.button.componentId} · JavaScript 동작 불필요(CSS + native HTML)`;
+  </script>
+</body>
+</html>

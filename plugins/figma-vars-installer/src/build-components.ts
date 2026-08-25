@@ -249,12 +249,40 @@ function requireVar(map: Record<string, Variable>, key: string, kind: string): V
  * (알약 모양을 정본은 999·웹은 radius/full=9999 로 적어 Gate 39 가 어긋남으로 잡았다 — 2026-08-13).
  * 색이 Variable 바인딩 필수인 것과 같은 취지를 반경에 적용한다.
  */
-function bindRadius(node: ComponentNode | FrameNode, maps: BuildMaps, token: string): void {
+function bindRadius(node: ComponentNode | FrameNode | RectangleNode, maps: BuildMaps, token: string): void {
   const v = requireVar(maps.foundationNumber, token, "Foundation Number");
   node.setBoundVariable("topLeftRadius", v);
   node.setBoundVariable("topRightRadius", v);
   node.setBoundVariable("bottomLeftRadius", v);
   node.setBoundVariable("bottomRightRadius", v);
+}
+
+/**
+ * 키보드 focus-visible 표시. 색만 공용 semantic을 쓰고 geometry는 소비 컴포넌트가 정한다.
+ * 바깥/안쪽 위치는 auto-layout 부모에 append한 뒤 호출부가 정한다.
+ */
+function makeFocusRing(
+  maps: BuildMaps,
+  name: string,
+  width: number,
+  height: number,
+  radiusToken: string,
+): RectangleNode {
+  const ring = figma.createRectangle();
+  ring.name = name;
+  ring.fills = [];
+  const colorToken = name.startsWith("button-")
+    ? "color/button/border/focus"
+    : "color/form-control/action/border/focus";
+  ring.strokes = [boundPaint(requireVar(maps.semanticColor, colorToken, "Semantic Color"))];
+  ring.strokeAlign = "INSIDE";
+  ring.setBoundVariable("strokeWeight", requireVar(maps.foundationNumber, "border-width/2", "Foundation Number"));
+  bindRadius(ring, maps, radiusToken);
+  ring.resize(width, height);
+  ring.visible = false;
+  // auto-layout 부모에 append된 뒤 호출부가 ABSOLUTE와 좌표를 적용한다.
+  // append 전에 layoutPositioning을 바꾸면 Figma runtime에서 무시될 수 있다.
+  return ring;
 }
 
 function requireStyle(map: Record<string, TextStyle>, key: string): TextStyle {
@@ -304,8 +332,20 @@ async function buildOne(variant: VariantId, size: SizeId, state: StateId, maps: 
 
   bindRadius(comp, maps, "radius/4");
 
-  // 높이 고정 (참고 파일도 height 는 raw — 미바인딩)
-  comp.resize(comp.width, cfg.height);
+  // 높이 고정. 오프라인 guide-model mock에서도 minWidth가 실제 폭으로 직렬화되도록
+  // 현재 hug 폭과 정본 최소 폭 중 큰 값을 명시한다.
+  const rootWidth = Math.max(comp.width, cfg.minWidth);
+  comp.resize(rootWidth, cfg.height);
+
+  // focus-visible은 Default/Hover/Pressed와 공존하므로 State 축이 아닌 BOOLEAN property로 제공한다.
+  // 2px gap + 2px ring: root 바깥 4px까지 확장하며 인스턴스 리사이즈 시 함께 늘어난다.
+  comp.clipsContent = false;
+  const focusRing = makeFocusRing(maps, "button-focus-ring", rootWidth + 8, cfg.height + 8, "radius/8");
+  comp.appendChild(focusRing);
+  focusRing.layoutPositioning = "ABSOLUTE";
+  focusRing.x = -4;
+  focusRing.y = -4;
+  focusRing.constraints = { horizontal: "STRETCH", vertical: "STRETCH" };
 
   // Appearance 에 Semantic Color V2 Light 모드 연결
   setLightMode(comp, maps);
@@ -508,6 +548,11 @@ export async function buildButtonSet(
   const set = figma.combineAsVariants(grid.map((g) => g.comp), figma.currentPage);
   set.name = "Button";
   set.x = 0; set.y = originY;
+  const focusVisiblePropId = set.addComponentProperty("Focus Visible", "BOOLEAN", false);
+  for (const g of grid) {
+    const ring = g.comp.findChild((n: SceneNode) => n.name === "button-focus-ring");
+    if (ring && g.state !== "Disabled") ring.componentPropertyReferences = { visible: focusVisiblePropId };
+  }
   // 다른 컴포넌트(예: Date Picker Mobile Bottom Sheet 의 "적용" 버튼)에서 버튼 인스턴스 재사용.
   BUILT_SETS["Button"] = set;
   grid.forEach((g) => { BUILT_COMPS[`Button:${g.variant}:${g.size}:${g.state}`] = g.comp; });
@@ -546,7 +591,7 @@ function scv(maps: BuildMaps, key: string): Variable {
 }
 
 /** 변수에 바인딩된 채움색을 가진 텍스트 노드. */
-async function makeBoundText(chars: string, fontSize: number, style: string, colorVar: Variable): Promise<TextNode> {
+async function makeBoundText(chars: string, fontSize: number, style: string, colorVar: Variable, requiredStyleKey?: string): Promise<TextNode> {
   await figma.loadFontAsync({ family: "Pretendard", style });
   const t = figma.createText();
   t.fontName = { family: "Pretendard", style };
@@ -554,8 +599,11 @@ async function makeBoundText(chars: string, fontSize: number, style: string, col
   t.characters = chars;
   // V2.4 텍스트 스타일 바인딩 — 타이포(크기·행간·자간·폰트)를 정본 스타일에 연결(Button 과 동일 방식).
   //   스타일이 없으면(예: 설치 누락) raw fontSize 로 폴백해 빌드는 계속한다.
-  const ts = TEXT_STYLES[textStyleKey(fontSize, style)];
-  if (ts) { try { await t.setTextStyleIdAsync(ts.id); } catch (e) { /* 폴백: raw 유지 */ } }
+  const ts = TEXT_STYLES[requiredStyleKey ?? textStyleKey(fontSize, style)];
+  if (requiredStyleKey) {
+    if (!ts) throw new Error(`Text Style 누락: ${requiredStyleKey} — Mobile Header는 raw 타이포 폴백을 허용하지 않습니다.`);
+    await t.setTextStyleIdAsync(ts.id);
+  } else if (ts) { try { await t.setTextStyleIdAsync(ts.id); } catch (e) { /* 기존 컴포넌트 호환: raw 유지 */ } }
   t.fills = [boundPaint(colorVar)];
   return t;
 }
@@ -891,6 +939,26 @@ async function buildInput(maps: BuildMaps, originY: number, originX: number = IN
   const messages = ["Off", "On"];
   const comps: ComponentNode[] = [];
   const cells: { comp: ComponentNode; size: string; brk: string; state: string; label: string; message: string }[] = [];
+  const wrapSuffixAction = (icon: SceneNode, actionName: string, hitSize: number): FrameNode => {
+    const action = figma.createFrame();
+    action.name = actionName;
+    action.layoutMode = "HORIZONTAL";
+    action.primaryAxisAlignItems = "CENTER";
+    action.counterAxisAlignItems = "CENTER";
+    action.primaryAxisSizingMode = "FIXED";
+    action.counterAxisSizingMode = "FIXED";
+    action.fills = [];
+    action.resize(hitSize, hitSize);
+    action.appendChild(icon);
+    // Input 높이 안에서 끝나는 2px 안쪽 ring. Mobile hit area와 field는 모두 최소 48px다.
+    const ring = makeFocusRing(maps, `${actionName}-focus-ring`, hitSize, hitSize, "radius/4");
+    action.appendChild(ring);
+    ring.layoutPositioning = "ABSOLUTE";
+    ring.x = 0;
+    ring.y = 0;
+    ring.constraints = { horizontal: "STRETCH", vertical: "STRETCH" };
+    return action;
+  };
   for (const sc of sizes) {
     for (const st of states) {
       for (const lab of labels) {
@@ -930,16 +998,18 @@ async function buildInput(maps: BuildMaps, originY: number, originX: number = IN
           // 비밀번호 눈(미표시) — 모든 variant field 우측. 기본 visible=false(꺼짐, 공간 미점유).
           // Password Icon BOOLEAN 속성에 바인딩(아래 set 생성 후). 표시 눈은 인스턴스 스왑으로 교체.
           const eye = await makeIconInstance("eye", scv(maps, fc("icon/default")), sc.size === "XXSM" ? 20 : 24, EYE_OFF_SVG);
-          eye.name = "eye";
-          eye.visible = false;
+          eye.name = "eye-icon";
+          const actionHitSize = sc.brk === "Mobile" ? 48 : 28;
+          const passwordAction = wrapSuffixAction(eye, "password-action", actionHitSize);
+          passwordAction.visible = false;
           // 트레일링 클러스터 [눈][×] — 눈↔삭제(×) 간격 = spacing/2(2px). lead↔클러스터는 0(밀착, field 기본 itemSpacing).
           const trail = figma.createFrame();
           trail.name = "trail"; trail.fills = [];
           trail.layoutMode = "HORIZONTAL"; trail.counterAxisAlignItems = "CENTER";
           trail.primaryAxisSizingMode = "AUTO"; trail.counterAxisSizingMode = "AUTO";
           trail.itemSpacing = 2; // spacing/2 — 비밀번호 눈 아이콘과 삭제(×) 아이콘 간격
-          trail.appendChild(eye);
-          if (clearIcon) trail.appendChild(clearIcon); // Editing: × 를 눈 우측에 인접(2px)
+          trail.appendChild(passwordAction);
+          if (clearIcon) trail.appendChild(wrapSuffixAction(clearIcon, "clear-action", actionHitSize)); // Editing: 각 action hit area 독립
           field.appendChild(trail);
           field.resize(200, sc.h); // Input 예외 — 넓은 필드
           const comp = figma.createComponent();
@@ -969,10 +1039,16 @@ async function buildInput(maps: BuildMaps, originY: number, originX: number = IN
   // 모든 variant 의 field>trail>eye 레이어 visible 을 이 속성에 바인딩(레이어명 eye 통일 필수).
   // eye 가 trail 클러스터 하위로 들어가 직계 자식이 아니므로 findOne(재귀)로 탐색.
   const pwIconPropId = set.addComponentProperty("Password Icon", "BOOLEAN", false);
+  const pwFocusPropId = set.addComponentProperty("Password Action Focus Visible", "BOOLEAN", false);
+  const clearFocusPropId = set.addComponentProperty("Clear Action Focus Visible", "BOOLEAN", false);
   for (const c of comps) {
     const f = c.findChild((n: SceneNode) => n.name === "field") as FrameNode | null;
-    const eyeLayer = f ? f.findOne((n: SceneNode) => n.name === "eye") : null;
-    if (eyeLayer) eyeLayer.componentPropertyReferences = { visible: pwIconPropId };
+    const passwordAction = f ? f.findOne((n: SceneNode) => n.name === "password-action") : null;
+    const passwordRing = f ? f.findOne((n: SceneNode) => n.name === "password-action-focus-ring") : null;
+    const clearRing = f ? f.findOne((n: SceneNode) => n.name === "clear-action-focus-ring") : null;
+    if (passwordAction) passwordAction.componentPropertyReferences = { visible: pwIconPropId };
+    if (passwordRing) passwordRing.componentPropertyReferences = { visible: pwFocusPropId };
+    if (clearRing) clearRing.componentPropertyReferences = { visible: clearFocusPropId };
   }
   // Input 은 규모가 커서(7 상태 × 4 사이즈 × 4 그룹) 넓은 시트로 배치. originX 로 좌측정렬(섹션 컬럼 내) 가능.
   const OX = originX;
@@ -1062,6 +1138,10 @@ export const ICON_KEYS: Record<string, string> = {
   globe:    "dee16df7e4ccddbd5dd7aa1d2fbf93f841f5dee2", // 인터넷(지구본) 35:3317 — GNB 언어(사용자 지정)
   eye:      "d4e9eb5b7e193ee291aa2a7e04396c8de2d2dae7", // 비밀번호 미표시(눈+슬래시 ic_비밀번호미표시 Line) — Input Password Icon boolean 기본값. 표시 눈은 인스턴스 스왑으로 교체
   home:     "6bf422c937034ce15f6814e5c430d8f85953ed4e", // 홈(ic_홈 Solid) 97:292 — V2.2 아이콘 라이브러리. Mobile Bottom Nav
+  mobileHeaderBack: "7190e284d345ae19a679a16ed7bceafbd54073ca", // ic_이전 / Solid — Mobile Header
+  mobileHeaderClose: "54469d54f16ed38de2d7b420b0e2195e4cf7c118", // ic_닫기 / Solid — Mobile Header
+  mobileHeaderNotification: "13cf1b580ec982fda488f9318c6821930ddfb26e", // ic_알림(신규) / Line — Mobile Header
+  mobileHeaderArrowDown: "6babc3f493e48be1e7191a7b8a68945833039fe8", // ic_화살표, 더보기, 다음장 / Solid(419:68) — Mobile Header, 아래 방향 -90°
 };
 // 삼성 로고 컴포넌트 — V3.0 파일 로컬 노드 333:165 (134×30 벡터). 파일 동일 시 getNodeByIdAsync 직접 접근.
 const SAMSUNG_LOGO_KEY = "9b32bb9ada9e84cdd18550f641389874858fa6ee";
@@ -1137,6 +1217,38 @@ async function makeIconInstance(role: string, colorVar: Variable, size: number, 
     rebindIconColor(node, colorVar);
     return node;
   }
+}
+
+/** Mobile Header 전용 아이콘 import. 원본 라이브러리 인스턴스가 아니면 빌드를 중단한다.
+ *  raw SVG/hex 폴백을 두지 않아 Semantic-only·원본 provenance 규칙을 지킨다. */
+async function makeRequiredIconInstance(
+  role: string,
+  colorVar: Variable,
+  size: number,
+  accentVar?: Variable,
+  rotation = 0,
+): Promise<SceneNode> {
+  const key = ICON_KEYS[role];
+  if (!key) throw new Error(`Mobile Header 아이콘 키 누락: ${role}`);
+  const remote = await figma.importComponentByKeyAsync(key);
+  const inst = remote.createInstance();
+  inst.name = role;
+  if (size && (inst.width !== size || inst.height !== size)) inst.resize(size, size);
+  rebindIconColor(inst, colorVar);
+  if (rotation) inst.rotation = rotation;
+  if (accentVar) {
+    const SHAPES = ["VECTOR", "ELLIPSE", "RECTANGLE", "LINE", "POLYGON", "STAR", "BOOLEAN_OPERATION"];
+    const visible = (inst.findAll((n) => SHAPES.includes(n.type) && n.visible) as VectorNode[])
+      .filter((n) => !n.isMask);
+    const namedAccent = visible.find((n) => /badge|dot|new|red|알림점/i.test(n.name));
+    const accent = namedAccent ?? visible.slice().sort((a, b) => (a.width * a.height) - (b.width * b.height))[0];
+    if (!accent) throw new Error("Mobile Header 알림 아이콘의 accent 레이어를 찾지 못했습니다.");
+    try {
+      if (Array.isArray(accent.strokes) && accent.strokes.some((p) => p.visible !== false)) accent.strokes = [boundPaint(accentVar)];
+      if (Array.isArray(accent.fills) && accent.fills.some((p) => p.visible !== false)) accent.fills = [boundPaint(accentVar)];
+    } catch (e) { throw new Error("Mobile Header 알림 아이콘 accent Semantic 바인딩에 실패했습니다."); }
+  }
+  return inst;
 }
 // 회전 등으로 로컬 원점이 시각 바운딩박스 코너와 어긋난 노드를 부모(box, sz×sz) 정중앙에 안전 배치.
 // 실제 absoluteBoundingBox 를 측정해 보정하므로 Figma 의 회전 피벗/.x 해석에 의존하지 않는다(어느 해석이든 정중앙).
@@ -2829,6 +2941,176 @@ async function buildMobileBottomNav(maps: BuildMaps, originY: number): Promise<{
   return { set, bottomY };
 }
 
+// ── Mobile Header — StatusBar(App) + 56px AppBar, 360×99 ────────────────────
+// V2.4 mobile_header(540:6112) 5종 + 회원가입용 No Title 1종.
+// StatusBar는 정본 인스턴스만 재사용하고, 아이콘은 등록된 원본 component key import만 허용한다.
+const MOBILE_HEADER_TYPES = [
+  "Standard / Title",
+  "Standard / Title + Close",
+  "Home / Title + 2 Icons",
+  "Home / Title + Subtitle + 1 Icon",
+  "Home / Title + Alt Title",
+  "Standard / No Title",
+] as const;
+type MobileHeaderType = typeof MOBILE_HEADER_TYPES[number];
+
+function makeMobileHeaderSlot(name: string): FrameNode {
+  const slot = figma.createFrame();
+  slot.name = name;
+  slot.layoutMode = "HORIZONTAL";
+  slot.primaryAxisAlignItems = "CENTER";
+  slot.counterAxisAlignItems = "CENTER";
+  slot.primaryAxisSizingMode = "FIXED";
+  slot.counterAxisSizingMode = "FIXED";
+  slot.fills = [];
+  slot.clipsContent = false;
+  slot.resize(32, 32);
+  return slot;
+}
+
+async function makeMobileHeaderIconSlot(
+  name: string,
+  role: string,
+  colorVar: Variable,
+  accentVar?: Variable,
+  iconSize = 24,
+): Promise<FrameNode> {
+  const slot = makeMobileHeaderSlot(name);
+  slot.appendChild(await makeRequiredIconInstance(role, colorVar, iconSize, accentVar));
+  return slot;
+}
+
+function makeMobileHeaderGrowFrame(name: string, align: "MIN" | "CENTER"): FrameNode {
+  const frame = figma.createFrame();
+  frame.name = name;
+  frame.layoutMode = "HORIZONTAL";
+  frame.primaryAxisAlignItems = align;
+  frame.counterAxisAlignItems = "CENTER";
+  frame.primaryAxisSizingMode = "FIXED";
+  frame.counterAxisSizingMode = "FIXED";
+  frame.layoutGrow = 1;
+  frame.fills = [];
+  frame.clipsContent = false;
+  frame.resize(1, 32);
+  return frame;
+}
+
+async function mobileHeaderStatusBarInstance(): Promise<InstanceNode> {
+  const status = BUILT_COMPS["StatusBar:App"]
+    ?? await reuseVariant("StatusBar", "StatusBar:App", ["Platform=App"]);
+  if (!status) throw new Error("Mobile Header는 StatusBar / Platform=App 정본이 먼저 필요합니다.");
+  const inst = status.createInstance();
+  inst.name = "StatusBar / Platform=App";
+  inst.layoutAlign = "STRETCH";
+  return inst;
+}
+
+async function buildMobileHeaderVariant(type: MobileHeaderType, maps: BuildMaps): Promise<ComponentNode> {
+  const isHome = type.startsWith("Home /");
+  const comp = figma.createComponent();
+  comp.name = `Type=${type}`;
+  comp.layoutMode = "VERTICAL";
+  comp.primaryAxisSizingMode = "FIXED";
+  comp.counterAxisSizingMode = "FIXED";
+  comp.itemSpacing = 16;
+  comp.fills = [boundPaint(scv(maps, isHome && type !== "Home / Title + Alt Title" ? "color/bg/level-2" : "color/navigation/bg"))];
+  comp.resize(360, 99);
+  comp.appendChild(await mobileHeaderStatusBarInstance());
+
+  const appBar = figma.createFrame();
+  appBar.name = "AppBar";
+  appBar.layoutMode = "HORIZONTAL";
+  appBar.primaryAxisAlignItems = "CENTER";
+  appBar.counterAxisAlignItems = "CENTER";
+  appBar.primaryAxisSizingMode = "FIXED";
+  appBar.counterAxisSizingMode = "FIXED";
+  appBar.layoutAlign = "STRETCH";
+  appBar.paddingTop = 12; appBar.paddingBottom = 12;
+  appBar.paddingLeft = isHome ? 20 : 16;
+  appBar.paddingRight = 16;
+  appBar.fills = [boundPaint(scv(maps, isHome && type !== "Home / Title + Alt Title" ? "color/bg/level-2" : "color/navigation/bg"))];
+  appBar.resize(360, 56);
+  comp.appendChild(appBar);
+
+  const iconLight = scv(maps, "color/icon/gray-light");
+  const iconDark = scv(maps, "color/icon/gray-dark");
+  const titleColor = scv(maps, "color/text/title/primary");
+
+  if (!isHome) {
+    appBar.itemSpacing = 8;
+    appBar.appendChild(await makeMobileHeaderIconSlot("Back", "mobileHeaderBack", iconLight));
+    const center = makeMobileHeaderGrowFrame("Title", "CENTER");
+    if (type !== "Standard / No Title") {
+      center.appendChild(await makeBoundText("스탠다드형 타이틀", 18, "Medium", titleColor, "title/18M"));
+    }
+    appBar.appendChild(center);
+    appBar.appendChild(type === "Standard / Title + Close"
+      ? await makeMobileHeaderIconSlot("Close", "mobileHeaderClose", iconLight)
+      : makeMobileHeaderSlot("Right spacer"));
+  } else if (type === "Home / Title + 2 Icons") {
+    const title = makeMobileHeaderGrowFrame("Title", "MIN");
+    title.appendChild(await makeBoundText("홈 타이틀", 18, "Bold", titleColor, "title/18B"));
+    appBar.appendChild(title);
+    const actions = figma.createFrame();
+    actions.name = "Actions"; actions.layoutMode = "HORIZONTAL";
+    actions.primaryAxisAlignItems = "CENTER"; actions.counterAxisAlignItems = "CENTER";
+    actions.primaryAxisSizingMode = "FIXED"; actions.counterAxisSizingMode = "FIXED";
+    actions.itemSpacing = 16; actions.fills = []; actions.resize(80, 32);
+    actions.appendChild(await makeMobileHeaderIconSlot("Notification", "mobileHeaderNotification", iconDark, scv(maps, "color/icon/red")));
+    actions.appendChild(await makeMobileHeaderIconSlot("Close", "mobileHeaderClose", iconLight));
+    appBar.appendChild(actions);
+  } else if (type === "Home / Title + Subtitle + 1 Icon") {
+    const copy = figma.createFrame();
+    copy.name = "Title + Subtitle"; copy.layoutMode = "VERTICAL";
+    copy.primaryAxisAlignItems = "CENTER"; copy.counterAxisAlignItems = "MIN";
+    copy.primaryAxisSizingMode = "FIXED"; copy.counterAxisSizingMode = "AUTO";
+    copy.layoutGrow = 1; copy.itemSpacing = 2; copy.fills = []; copy.resize(1, 32);
+    const titleRow = figma.createFrame();
+    titleRow.name = "Title"; titleRow.layoutMode = "HORIZONTAL";
+    titleRow.primaryAxisAlignItems = "MIN"; titleRow.counterAxisAlignItems = "CENTER";
+    titleRow.primaryAxisSizingMode = "AUTO"; titleRow.counterAxisSizingMode = "AUTO";
+    titleRow.itemSpacing = 4; titleRow.fills = [];
+    titleRow.appendChild(await makeBoundText("홈 타이틀", 18, "Bold", titleColor, "title/18B"));
+    titleRow.appendChild(await makeRequiredIconInstance("mobileHeaderArrowDown", iconLight, 16, undefined, -90));
+    copy.appendChild(titleRow);
+    copy.appendChild(await makeBoundText("홈 서브타이틀", 14, "Regular", scv(maps, "color/text/body/tertiary"), "body/14R"));
+    appBar.appendChild(copy);
+    appBar.appendChild(await makeMobileHeaderIconSlot("Notification", "mobileHeaderNotification", iconDark, scv(maps, "color/icon/red")));
+  } else {
+    const title = makeMobileHeaderGrowFrame("Title", "MIN");
+    title.appendChild(await makeBoundText("홈-alt 타이틀", 18, "Bold", titleColor, "title/18B"));
+    appBar.appendChild(title);
+  }
+
+  setLightMode(comp, maps);
+  return comp;
+}
+
+async function buildMobileHeader(maps: BuildMaps, originY: number): Promise<{ set: ComponentSetNode; bottomY: number }> {
+  const comps: ComponentNode[] = [];
+  for (const type of MOBILE_HEADER_TYPES) {
+    const comp = await buildMobileHeaderVariant(type, maps);
+    comps.push(comp);
+    BUILT_COMPS[`MobileHeader:${type}`] = comp;
+  }
+  const set = figma.combineAsVariants(comps, figma.currentPage);
+  set.name = "Mobile Header";
+  set.x = 0; set.y = originY;
+  BUILT_SETS["Mobile Header"] = set;
+  const opts: SpecOpts = {
+    title: "Mobile Header",
+    colHeaders: [""],
+    rowLabels: [...MOBILE_HEADER_TYPES],
+    cellAt: (r, _c) => comps[r] ?? null,
+    lightX: SPEC_LIGHT_X, darkX: SPEC_DARK_X, originY,
+    cellW: 384, cellH: 99, rowLabelW: 232,
+    leftAlignCells: true,
+  };
+  let bottomY = await decorateSetFlat(set, opts, maps);
+  try { bottomY = Math.max(bottomY, await buildSpec(opts, maps)); } catch (e) { console.warn(e); }
+  return { set, bottomY };
+}
+
 async function buildGNB(maps: BuildMaps, originY: number): Promise<{ set: ComponentSetNode; bottomY: number }> {
   const navc = (k: string) => `color/navigation/${k}`;
   const sizeKeys = ["md", "sm", "xsm"];
@@ -4497,6 +4779,9 @@ async function buildStatusBar(maps: BuildMaps, originY: number): Promise<{ set: 
   const set = figma.combineAsVariants([app, web], figma.currentPage);
   set.name = "StatusBar";
   set.x = 0; set.y = originY;
+  BUILT_COMPS["StatusBar:App"] = app;
+  BUILT_COMPS["StatusBar:Web"] = web;
+  BUILT_SETS["StatusBar"] = set;
   // App(상태바)·Web(상태바+브라우저 주소창) 두 variant 를 라벨과 함께 세로 나열(겹침 방지).
   const opts: SpecOpts = {
     title: "StatusBar", colHeaders: [""], rowLabels: ["App", "Web"],
@@ -5208,7 +5493,7 @@ async function buildMultiToggle(maps: BuildMaps, originY: number): Promise<{ set
 export const COMPONENT_CATEGORIES_GRID: { name: string; members: string[] }[][] = [
   [
     { name: "Platform",     members: ["StatusBar", "NavBar", "CI", "LoginGNB", "WebTabBar", "Footer"] },
-    { name: "Navigation",   members: ["GNB", "GNB Utility Icon", "Language Icon", "Mobile Bottom Nav"] },
+    { name: "Navigation",   members: ["GNB", "GNB Utility Icon", "Language Icon", "Mobile Bottom Nav", "Mobile Header"] },
     { name: "Line Tab",     members: ["Line Tab Set", "Line Tab"] },
     { name: "Pagination",   members: ["Pagination", "Pagination Cell"] },
     { name: "Actions",      members: ["Button"] },
@@ -5266,6 +5551,7 @@ export const BUILD_DEPENDENCIES: Record<string, string[]> = {
   "Time Picker": ["Time Picker Dropdown"], // Focus 상태가 Time Picker Dropdown 인스턴스 부착
   "GNB": ["GNB Utility Icon"],        // GNB 바 유틸 영역이 GNB Utility Icon all-on 인스턴스 부착
   "GNB Utility Icon": ["Language Icon"], // language=on 변형이 Language Icon 인스턴스 부착
+  "Mobile Header": ["StatusBar"],  // StatusBar / Platform=App 정본 인스턴스 부착(Platform 카테고리 선빌드)
   "Pagination": ["Pagination Cell"],  // 완성 바가 Pagination Cell(Arrow·Edge·Number) 인스턴스 조합
   "Multi Toggle": ["Multi Toggle Element"], // 조합형태가 Multi Toggle Element 셀 인스턴스 사용 → 요소 먼저 빌드
   "Date Picker": ["Calendar"],        // Open 상태가 Calendar 패널 인스턴스 부착(BUILT_COMPS["Calendar:Date"])
@@ -5305,6 +5591,7 @@ const ATTACH_DEPENDENCIES: { [parent: string]: string[] } = {
   //   이제 BUILD_DEPENDENCIES 에 Table→Table Cell 이 있어 실제로 36/36 부착되므로, 셀이 실패하면
   //   Table 이 정말 껍데기가 된다 → 열화 보고 대상이 맞다.
   "Table": ["Pagination", "Checkbox", "Select Box", "Table Cell"],
+  "Mobile Header": ["StatusBar"],
 };
 
 // 부모가 **부수 생성**하는 컴포넌트 — 자기 runner 가 없는 것이 정상이다(2026-08-01 명시화).
@@ -5425,6 +5712,7 @@ export async function buildAllComponents(
     "GNB Utility Icon":     (oy) => buildGNBUtilIcon(maps, oy),
     "Language Icon":        (oy) => buildLanguageIcon(maps, oy),
     "Mobile Bottom Nav":    (oy) => buildMobileBottomNav(maps, oy),
+    "Mobile Header":        (oy) => buildMobileHeader(maps, oy),
     "GNB":                  (oy) => buildGNB(maps, oy),
     "Pagination":           (oy) => buildPaginationBar(maps, oy),
     "Pagination Cell":      (oy) => buildPaginationCell(maps, oy),

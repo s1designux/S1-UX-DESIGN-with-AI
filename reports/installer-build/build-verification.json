@@ -1,9 +1,9 @@
 {
   "sourceFile": "plugins/figma-vars-installer/src/build-components.ts",
-  "sourceHash": "sha256:e23d3b889151e7dca1111a52eb2dffbd1146ae673c5a0c410318d5c58058c723",
+  "sourceHash": "sha256:f6d4e1b7f2cbc824bffcce4397cdae1a5bd90f0e8bc40fa5ed7772ae8eca669c",
   "verifiedBy": "component-verifier",
   "verdict": "pass",
   "changeType": "structural",
-  "verifiedAt": "2026-08-21T07:58:47.549Z",
-  "notes": "에스원 CI 로고 42×16 → 78.75×30 정정(river 결정 2026-08-21) 독립 검증. buildCI 3 variant resize(78.75,30) + S1_LOGO_SVG 의 width/height 만 치환(viewBox 0 0 42 16 유지)로 path 비례확대 = 1.875배·왜곡 0. 치환 no-op 시 throw 방어선을 속성순서 변조 사본으로 실증. 공유 상수 S1_LOGO_SVG 무변경 확인 → Footer 로고 42×16 회귀 없음(Figma 1654:38237 실측 42×16·41.5254×16·색 8:1068 유지). 삼성 134×36·imageHash 3종 미변경. 검증 범위 봉인: CI 변경만 되돌린 사본 해시가 직전 기록 0174fbc 와 정확히 일치 → 직전 검증 이후 유일한 델타임을 증명(미검증 구조변경 동반승인 없음). Figma 실측: 세트 1545:6723 450×96·에스원 3종 78.75×30·logo 프레임 78.75×30@0,0·Vector 77.8601×30(=41.5254×1.875)·색 바인딩 8:1072/8:715/8:1068 보존·미바인딩 신규 hex 0·TEXT 0(census 16노드 검증)·삼성 3종 미접촉·로그인 인스턴스 11/11 78.75×30 x120.625 y30 main 1545:6711(remote=false) 크기 override 0. 파생: facts(78.75×30)·guide-model 42종·zip 16:44 스탬프 전부 재생성 정합, components.html 무변경. 검사기 installer:check·keycheck·anatomy·iconpolicy·geometry·variantcov49/49·facts·guide-model·freshness 전부 통과. 한계: 코드/노드 데이터 + get_screenshot 렌더 대조까지 수행, Figma 데스크톱 실제 캔버스 육안은 미검증. 🟡(b) logo 프레임 visible:false 미바인딩 흰 fill 3건 = createNodeFromSvg 선재 artifact(미접촉 Footer 로고에 동일 존재로 증명, 렌더영향 0) → O 정본 개선 후보로 별건 이관."
+  "verifiedAt": "2026-08-25T02:39:08.576Z",
+  "notes": "Mobile Header 6 variants verified against build plan: required icon provenance, Semantic bindings, Pretendard text styles, StatusBar dependency, registry keys, runner/category registration; installer:check, keycheck, anatomy, iconpolicy all pass."
 }

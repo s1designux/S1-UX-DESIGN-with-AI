@@ -1,8 +1,8 @@
 {
   "_note": "정본(textstyles-data.ts · vars-data.ts)의 항목 이름 전집합. Gate 34 가 여기 없는 신설을 차단한다. ⭐ 는 스스로 이 목록에 추가할 수 없고, 사용자 승인(--approve)만이 편입한다.",
   "_why": "CLAUDE.md §⚖️ 하드룰 H7. 2026-08-03: ⭐ 가 사용자가 거부한 스타일 신설을 자기 규칙을 만들어 강행했는데, 32개 게이트 전부가 \"정본→파생 일치\"만 봐서 아무도 못 잡았다.",
-  "_updated": "2026-08-20",
-  "count": 529,
+  "_updated": "2026-08-25",
+  "count": 532,
   "items": [
     "color:base/black",
     "color:base/white",
@@ -64,6 +64,7 @@
     "color:color/button/border/blue-line--default",
     "color:color/button/border/blue-line--hover",
     "color:color/button/border/disabled",
+    "color:color/button/border/focus",
     "color:color/button/border/primary--default",
     "color:color/button/border/primary--hover",
     "color:color/button/border/secondary--default",
@@ -142,6 +143,7 @@
     "color:color/dropdown/option/label/default",
     "color:color/dropdown/option/label/hover",
     "color:color/dropdown/option/label/selected",
+    "color:color/form-control/action/border/focus",
     "color:color/form-control/bg/default",
     "color:color/form-control/bg/disabled",
     "color:color/form-control/bg/hover",
@@ -406,6 +408,7 @@
     "component:Line Tab Set",
     "component:LoginGNB",
     "component:Mobile Bottom Nav",
+    "component:Mobile Header",
     "component:Modal",
     "component:Multi Toggle",
     "component:Multi Toggle Element",
@@ -546,6 +549,30 @@
       "by": "river",
       "reason": "모바일 Modal 정본 추가와 Title/18B 텍스트 스타일 연결을 사용자 승인(2026-08-20~21)",
       "approvedAt": "2026-08-20T23:14:45.496Z"
+    },
+    {
+      "item": "color:color/focus-ring",
+      "by": "river",
+      "reason": "HD-UILIB-03 승인: Button과 suffix action의 일관된 키보드 focus-visible 표시",
+      "approvedAt": "2026-08-25T02:11:35.094Z"
+    },
+    {
+      "item": "component:Mobile Header",
+      "by": "river",
+      "reason": "회원가입 모바일 웹 패턴에 필요한 앱바 코어 6종 신설 승인",
+      "approvedAt": "2026-08-25T02:12:14.342Z"
+    },
+    {
+      "item": "color:color/button/border/focus",
+      "by": "river",
+      "reason": "HD-UILIB-03 승인: Button 키보드 focus-visible 정본 후보",
+      "approvedAt": "2026-08-25T02:12:35.069Z"
+    },
+    {
+      "item": "color:color/form-control/action/border/focus",
+      "by": "river",
+      "reason": "HD-UILIB-03 승인: Input suffix action 키보드 focus-visible 정본 후보",
+      "approvedAt": "2026-08-25T02:12:48.837Z"
     }
   ],
   "extendedTracking": [

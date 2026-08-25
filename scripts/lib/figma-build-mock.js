@@ -281,9 +281,21 @@ async function runBuild(mod, opts) {
     },
     loadFontAsync: async () => {},
     // The offline guide build cannot fetch remote library component geometry.
-    // Fail explicitly so build-components.ts follows its canonical, source-owned
-    // SVG fallback path instead of serializing a visually empty INSTANCE.
-    importComponentByKeyAsync: async () => { throw new Error('offline guide model: use canonical source SVG fallback'); },
+    // Mobile Header는 raw SVG fallback 자체를 금지하므로 승인된 remote key만
+    // 결정론적 INSTANCE 껍데기로 기록한다. 그 외 기존 아이콘은 source-owned SVG 경로를 유지한다.
+    importComponentByKeyAsync: async (key) => {
+      const requiredRemoteKeys = new Set([
+        '7190e284d345ae19a679a16ed7bceafbd54073ca',
+        '54469d54f16ed38de2d7b420b0e2195e4cf7c118',
+        '13cf1b580ec982fda488f9318c6821930ddfb26e',
+        '6babc3f493e48be1e7191a7b8a68945833039fe8',
+      ]);
+      if (!requiredRemoteKeys.has(String(key))) throw new Error('offline guide model: use canonical source SVG fallback');
+      const remote = recNode('COMPONENT');
+      remote.name = `remote-icon:${key}`;
+      remote.resize(24, 24);
+      return remote;
+    },
     variables,
     currentPage: recNode('PAGE'),
   };

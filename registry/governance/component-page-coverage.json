@@ -122,10 +122,15 @@
     {
       "name": "Modal",
       "reason": "확인 계열 공통 팝업 셸(overlay) — codeStatus in-progress, 아직 HTML 하네스 데모 없음(harnessStatus not-started). Figma 라이브러리 정본. HTML 섹션 생기면 sectionFor 로 이관."
+    },
+    {
+      "name": "Mobile Header",
+      "reason": "모바일 상단 앱바 shell — Figma·설치기 정본만 신설하며 손관리 components 페이지는 별도 웹 UI 라이브러리 작업 전까지 제외(2026-08-25 사용자 승인)."
     }
   ],
   "mobileOnly": [
-    "mobile-bottom-nav"
+    "mobile-bottom-nav",
+    "mobile-header"
   ],
   "_mobileOnlyNote": "Gate 30 이 component-presentation-policy.json 등재를 요구하지 않는 목록. 그 정책은 스스로 scope 를 \"platform=pc … mobile 및 요소/셸 부품 섹션은 별도(추후)\"로 선언하므로, 모바일 전용 컴포넌트는 부채(baseline)가 아니라 **범위 밖**이다. 모바일 표출 규칙이 정본화되면 이 목록을 비우고 정책에 등재한다.",
   "axisSource": {

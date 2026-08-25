@@ -75,15 +75,15 @@
     <div class="page-content">
       <div class="um-legend">
         <span><b>Ⓐ 정리완료</b> 원본 대조 불필요 (10)</span>
-        <span><b>Ⓑ 원본틀 필요</b> 원본에서 틀 가져와 최신으로 갈이 (7)</span>
-        <span><b>⏳ 미정</b> 분류 결정 필요 (1)</span>
+        <span><b>Ⓑ 원본틀 필요</b> 원본에서 틀 가져와 최신으로 갈이 (9)</span>
+        <span><b>⏳ 미정</b> 분류 결정 필요 (2)</span>
         <span>· 들여쓴 <b>↳ 행</b> = 메인 컴포넌트의 내부 요소</span>
         <span>· 노란 <b>미등록</b> 행 = 설치기엔 있는데 관리표에 아직 안 들어온 것</span>
       </div>
 
       <div class="um-section">
         <div class="um-section-head">
-          <h2>🧩 컴포넌트 — 설치기 순서 (38)</h2>
+          <h2>🧩 컴포넌트 — 설치기 순서 (43)</h2>
           <p>설치기가 까는 순서·묶음 그대로. 섹션(대메뉴)별로 묶여 있고, 내부 요소는 메인 아래로 들여썼습니다. 설치기가 바뀌면 자동으로 따라갑니다.</p>
         </div>
         <div class="um-table-wrap">
@@ -172,19 +172,19 @@
           <td><span class="pill dk-early">–</span></td>
           <td class="c-note">설치기에 있으나 관리표 미등록 — 확인 필요</td>
         </tr>
-        <tr class="cat-row"><td colspan="11"><span class="cat-name">Navigation</span><span class="cat-count">4</span></td></tr>
+        <tr class="cat-row"><td colspan="11"><span class="cat-name">Navigation</span><span class="cat-count">5</span></td></tr>
         <tr class="comp-row">
           <td class="c-name" style="padding-left:12px">GNB<span class="c-id">gnb</span></td>
           <td><span class="pill or-b">Ⓑ 원본틀 필요</span></td>
-          <td><span class="pill st-mid">진행중</span></td>
+          <td><span class="pill st-ok">구현</span></td>
           <td><span class="dt-empty">–</span></td>
-          <td><span class="pill vf-legacy">🟡 옛방식 2026-06-06</span></td>
-          <td><span class="dt-empty">미지정</span></td>
+          <td><span class="pill vf-new">✅ 새방식 2026-07-09</span></td>
+          <td><span class="src">V3.0 956:18233(bar) + 956:18031(menuSlot set)</span></td>
           <td><span class="dt-empty">– 도장 필요</span></td>
           <td><span class="dt-empty">– 도장 필요</span></td>
-          <td><span class="dt-empty">– 도장 필요</span></td>
+          <td><span class="dt">2026-07-09</span></td>
           <td><span class="pill dk-mid">candidate</span></td>
-          <td class="c-note">원본 틀 필요. 옛 방식 검증만 — 원본 재측정 재확인. (PC 전용)</td>
+          <td class="c-note">V3.0 원본(bar 956:18233 + menuSlot 956:18031) 대조 완료 — 15 variant 구조·색·타이포·sizing 정합. HD-GNB-1/2 resolved(로고 #202020·유틸아이콘 #353535 = 코드값). 반영: 기본 라벨색 #434343·xsm 자간 -0.28px(토큰·구현은 이미 V3.0, 설명만 정합). 미확정 백로그(use_figma 미보유): 다크모드 gnb 스펙 존재여부 미확인→darkModeStatus candidate 유지 · 아이콘 provenance·componentSetKey 미확정 · xsm 유틸아이콘 크기(DIFF-2)는 유틸아이콘 세트 소관, gnb 범위 밖.</td>
         </tr>
         <tr class="comp-row is-placeholder is-sub">
           <td class="c-name" style="padding-left:32px"><span class="c-sub-arrow">↳</span>GNB Utility Icon</td>
@@ -225,6 +225,19 @@
           <td><span class="pill dk-early">–</span></td>
           <td class="c-note">설치기에 있으나 관리표 미등록 — 확인 필요</td>
         </tr>
+        <tr class="comp-row is-placeholder">
+          <td class="c-name" style="padding-left:12px">Mobile Header</td>
+          <td><span class="pill or-tbd">⏳ 미정</span></td>
+          <td><span class="pill st-early">미등록</span></td>
+          <td><span class="dt-empty">–</span></td>
+          <td><span class="pill vf-none">🔴 미검증</span></td>
+          <td><span class="dt-empty">미지정</span></td>
+          <td><span class="dt-empty">– 도장 필요</span></td>
+          <td><span class="dt-empty">– 도장 필요</span></td>
+          <td><span class="dt-empty">– 도장 필요</span></td>
+          <td><span class="pill dk-early">–</span></td>
+          <td class="c-note">설치기에 있으나 관리표 미등록 — 확인 필요</td>
+        </tr>
         <tr class="cat-row"><td colspan="11"><span class="cat-name">Line Tab</span><span class="cat-count">2</span></td></tr>
         <tr class="comp-row is-placeholder">
           <td class="c-name" style="padding-left:12px">Line Tab Set</td>
@@ -242,7 +255,7 @@
         <tr class="comp-row is-sub">
           <td class="c-name" style="padding-left:32px"><span class="c-sub-arrow">↳</span>Line Tab<span class="c-id">tab</span></td>
           <td><span class="pill or-b">Ⓑ 원본틀 필요</span></td>
-          <td><span class="pill st-mid">진행중</span></td>
+          <td><span class="pill st-ok">구현</span></td>
           <td><span class="pill st-ok">완료</span></td>
           <td><span class="pill vf-new">✅ 새방식 2026-06-24</span></td>
           <td><span class="src">V2.4 540:6032</span></td>
@@ -256,15 +269,15 @@
         <tr class="comp-row">
           <td class="c-name" style="padding-left:12px">Pagination<span class="c-id">pagination</span></td>
           <td><span class="pill or-b">Ⓑ 원본틀 필요</span></td>
-          <td><span class="pill st-early">골격</span></td>
+          <td><span class="pill st-ok">구현</span></td>
           <td><span class="dt-empty">–</span></td>
-          <td><span class="pill vf-none">🔴 미검증</span></td>
-          <td><span class="dt-empty">미지정</span></td>
+          <td><span class="pill vf-new">✅ 새방식 2026-07-09</span></td>
+          <td><span class="src">V3.0 956:19066</span></td>
           <td><span class="dt-empty">– 도장 필요</span></td>
-          <td><span class="dt-empty">– 도장 필요</span></td>
-          <td><span class="dt-empty">– 도장 필요</span></td>
+          <td><span class="dt">2026-07-09</span></td>
+          <td><span class="dt">2026-07-09</span></td>
           <td><span class="pill dk-early">pending</span></td>
-          <td class="c-note">골격만. 원본 틀 세팅 필요.</td>
+          <td class="c-note">V3.0 원본(956:19066) 대조 완료 — 토큰(라이트/다크)·조립상태(Single/First/Last/Middle)·disabled 전용색·opacity 제거 정합. 미확정(use_figma 미보유 백로그): paginationArrow는 Arrow/Edge 2-Element 분리(Q1 보류)라 단일 필드 미갱신(57:6244 잔존) · 아이콘 provenance(remote/key) 미확정 · componentSetKey 미추출.</td>
         </tr>
         <tr class="comp-row is-placeholder is-sub">
           <td class="c-name" style="padding-left:32px"><span class="c-sub-arrow">↳</span>Pagination Cell</td>
@@ -283,7 +296,7 @@
         <tr class="comp-row">
           <td class="c-name" style="padding-left:12px">Button<span class="c-id">button</span></td>
           <td><span class="pill or-a">Ⓐ 정리완료</span></td>
-          <td><span class="pill st-mid">진행중</span></td>
+          <td><span class="pill st-ok">구현</span></td>
           <td><span class="pill st-ok">완료</span></td>
           <td><span class="pill vf-na">– 불필요</span></td>
           <td><span class="dt-empty">미지정</span></td>
@@ -519,19 +532,19 @@
           <td><span class="pill dk-early">–</span></td>
           <td class="c-note">설치기에 있으나 관리표 미등록 — 확인 필요</td>
         </tr>
-        <tr class="cat-row"><td colspan="11"><span class="cat-name">Time Picker</span><span class="cat-count">3</span></td></tr>
+        <tr class="cat-row"><td colspan="11"><span class="cat-name">Time Picker</span><span class="cat-count">4</span></td></tr>
         <tr class="comp-row">
           <td class="c-name" style="padding-left:12px">Time Picker<span class="c-id">time-picker</span></td>
           <td><span class="pill or-b">Ⓑ 원본틀 필요</span></td>
-          <td><span class="pill st-mid">미리보기</span></td>
-          <td><span class="pill st-mid">진행 필요</span></td>
-          <td><span class="pill vf-legacy">🟡 옛방식</span></td>
-          <td><span class="dt-empty">미지정</span></td>
-          <td><span class="dt-empty">– 도장 필요</span></td>
+          <td><span class="pill st-ok">구현</span></td>
+          <td><span class="pill st-ok">완료</span></td>
+          <td><span class="pill vf-new">✅ 새방식 2026-07-09</span></td>
+          <td><span class="src">V3.0 958:26994(main) + 958:26319(dropdown) + 958:27433(mobile bottom sheet)</span></td>
+          <td><span class="dt">2026-07-09</span></td>
           <td><span class="dt-empty">– 도장 필요</span></td>
           <td><span class="dt-empty">– 도장 필요</span></td>
           <td><span class="pill dk-ok">stable</span></td>
-          <td class="c-note">PC 완료. 모바일 바텀시트 진행 필요. 옛 방식 검증만.</td>
+          <td class="c-note">PC·모바일 구현 완료 (모바일 바텀시트 TimeOnly+DateTime 설치기 정본 기준 완료 — buildTimePickerMobileBottomSheet). V3.0 958 대역 대조 완료: main/select 통합(958:26994)·드롭다운 공유세트(958:26319)·Cell(958:25998)·Mobile Bottom Sheet(958:27433). 미확정 백로그: pc_timepicker_calendar(540:4216)는 date-picker 이관 대기(다음 세션 1순위) · 웹 하네스 DateTime 프리뷰 없음 · 설치기 DateTime 렌더 픽셀 대조 미확인.</td>
         </tr>
         <tr class="comp-row is-placeholder is-sub">
           <td class="c-name" style="padding-left:32px"><span class="c-sub-arrow">↳</span>Time Picker Dropdown</td>
@@ -559,11 +572,24 @@
           <td><span class="pill dk-early">–</span></td>
           <td class="c-note">설치기에 있으나 관리표 미등록 — 확인 필요</td>
         </tr>
+        <tr class="comp-row is-placeholder">
+          <td class="c-name" style="padding-left:12px">Time Picker Mobile Bottom Sheet</td>
+          <td><span class="pill or-tbd">⏳ 미정</span></td>
+          <td><span class="pill st-early">미등록</span></td>
+          <td><span class="dt-empty">–</span></td>
+          <td><span class="pill vf-none">🔴 미검증</span></td>
+          <td><span class="dt-empty">미지정</span></td>
+          <td><span class="dt-empty">– 도장 필요</span></td>
+          <td><span class="dt-empty">– 도장 필요</span></td>
+          <td><span class="dt-empty">– 도장 필요</span></td>
+          <td><span class="pill dk-early">–</span></td>
+          <td class="c-note">설치기에 있으나 관리표 미등록 — 확인 필요</td>
+        </tr>
         <tr class="cat-row"><td colspan="11"><span class="cat-name">Table</span><span class="cat-count">2</span></td></tr>
         <tr class="comp-row">
           <td class="c-name" style="padding-left:12px">Table<span class="c-id">table</span></td>
           <td><span class="pill or-b">Ⓑ 원본틀 필요</span></td>
-          <td><span class="pill st-early">미착수</span></td>
+          <td><span class="pill st-ok">구현</span></td>
           <td><span class="dt-empty">–</span></td>
           <td><span class="pill vf-new">✅ 새방식 2026-06-30</span></td>
           <td><span class="src">V2.4 540:4822</span></td>
@@ -575,6 +601,47 @@
         </tr>
         <tr class="comp-row is-placeholder is-sub">
           <td class="c-name" style="padding-left:32px"><span class="c-sub-arrow">↳</span>Table Cell</td>
+          <td><span class="pill or-tbd">⏳ 미정</span></td>
+          <td><span class="pill st-early">미등록</span></td>
+          <td><span class="dt-empty">–</span></td>
+          <td><span class="pill vf-none">🔴 미검증</span></td>
+          <td><span class="dt-empty">미지정</span></td>
+          <td><span class="dt-empty">– 도장 필요</span></td>
+          <td><span class="dt-empty">– 도장 필요</span></td>
+          <td><span class="dt-empty">– 도장 필요</span></td>
+          <td><span class="pill dk-early">–</span></td>
+          <td class="c-note">설치기에 있으나 관리표 미등록 — 확인 필요</td>
+        </tr>
+        <tr class="cat-row"><td colspan="11"><span class="cat-name">Bottom Sheet</span><span class="cat-count">2</span></td></tr>
+        <tr class="comp-row is-placeholder">
+          <td class="c-name" style="padding-left:12px">Bottom Sheet</td>
+          <td><span class="pill or-tbd">⏳ 미정</span></td>
+          <td><span class="pill st-early">미등록</span></td>
+          <td><span class="dt-empty">–</span></td>
+          <td><span class="pill vf-none">🔴 미검증</span></td>
+          <td><span class="dt-empty">미지정</span></td>
+          <td><span class="dt-empty">– 도장 필요</span></td>
+          <td><span class="dt-empty">– 도장 필요</span></td>
+          <td><span class="dt-empty">– 도장 필요</span></td>
+          <td><span class="pill dk-early">–</span></td>
+          <td class="c-note">설치기에 있으나 관리표 미등록 — 확인 필요</td>
+        </tr>
+        <tr class="comp-row is-placeholder is-sub">
+          <td class="c-name" style="padding-left:32px"><span class="c-sub-arrow">↳</span>Bottom Sheet Option</td>
+          <td><span class="pill or-tbd">⏳ 미정</span></td>
+          <td><span class="pill st-early">미등록</span></td>
+          <td><span class="dt-empty">–</span></td>
+          <td><span class="pill vf-none">🔴 미검증</span></td>
+          <td><span class="dt-empty">미지정</span></td>
+          <td><span class="dt-empty">– 도장 필요</span></td>
+          <td><span class="dt-empty">– 도장 필요</span></td>
+          <td><span class="dt-empty">– 도장 필요</span></td>
+          <td><span class="pill dk-early">–</span></td>
+          <td class="c-note">설치기에 있으나 관리표 미등록 — 확인 필요</td>
+        </tr>
+        <tr class="cat-row"><td colspan="11"><span class="cat-name">Modal</span><span class="cat-count">1</span></td></tr>
+        <tr class="comp-row is-placeholder">
+          <td class="c-name" style="padding-left:12px">Modal</td>
           <td><span class="pill or-tbd">⏳ 미정</span></td>
           <td><span class="pill st-early">미등록</span></td>
           <td><span class="dt-empty">–</span></td>
@@ -600,7 +667,33 @@
           <td><span class="pill dk-early">–</span></td>
           <td class="c-note">설치기에 있으나 관리표 미등록 — 확인 필요</td>
         </tr>
-        <tr class="cat-row"><td colspan="11"><span class="cat-name">설치기 외 (추가 관리 컴포넌트)</span><span class="cat-count">3</span></td></tr>
+        <tr class="cat-row"><td colspan="11"><span class="cat-name">설치기 외 (추가 관리 컴포넌트)</span><span class="cat-count">6</span></td></tr>
+        <tr class="comp-row">
+          <td class="c-name" style="padding-left:12px">mobile-bottom-nav<span class="c-id">mobile-bottom-nav</span></td>
+          <td><span class="pill or-b">Ⓑ 원본틀 필요</span></td>
+          <td><span class="pill st-ok">구현</span></td>
+          <td><span class="pill st-ok">완료</span></td>
+          <td><span class="pill vf-new">✅ 새방식 2026-07-02</span></td>
+          <td><span class="src">V2.4 540:6025 → V3.0 723:6</span></td>
+          <td><span class="dt">2026-07-02</span></td>
+          <td><span class="dt-empty">– 도장 필요</span></td>
+          <td><span class="dt">2026-07-02</span></td>
+          <td><span class="pill dk-ok">stable</span></td>
+          <td class="c-note">모바일 하단 내비 탭 아이템(Navigation). 빌드=figma-library-builder·검증=component-verifier 분리 수행(2026-07-02, 3회 재검증, ❌(a) 0건). V2.4 구본 세트는 2026-07-02 삭제 완료. 2026-08-01 Gate 30 신설로 registry 미등록 적발 → 소급 등록.</td>
+        </tr>
+        <tr class="comp-row">
+          <td class="c-name" style="padding-left:12px">mobile-header<span class="c-id">mobile-header</span></td>
+          <td><span class="pill or-b">Ⓑ 원본틀 필요</span></td>
+          <td><span class="pill st-ok">구현</span></td>
+          <td><span class="pill st-ok">완료</span></td>
+          <td><span class="pill vf-new">✅ 새방식 2026-08-25</span></td>
+          <td><span class="src">V2.4 540:6112 (5종) + Standard / No Title 신규 1종</span></td>
+          <td><span class="dt">2026-08-25</span></td>
+          <td><span class="dt-empty">– 도장 필요</span></td>
+          <td><span class="dt-empty">– 도장 필요</span></td>
+          <td><span class="pill dk-mid">candidate</span></td>
+          <td class="c-note">모바일 상단 앱바 6종. 2026-08-25 Gate 34 사용자 승인으로 설치기 코드 정본과 Registry를 신설. V2.4 원본 재측정·V3.0 TEST Figma 빌드·component-verifier 독립 검증 완료(verify=new). pages/components.html은 손관리 화면이라 미변경.</td>
+        </tr>
         <tr class="comp-row">
           <td class="c-name" style="padding-left:12px">nav<span class="c-id">nav</span></td>
           <td><span class="pill or-b">Ⓑ 원본틀 필요</span></td>
@@ -617,28 +710,41 @@
         <tr class="comp-row">
           <td class="c-name" style="padding-left:12px">multi-toggle<span class="c-id">multi-toggle</span></td>
           <td><span class="pill or-tbd">⏳ 미정</span></td>
-          <td><span class="pill st-na">–</span></td>
+          <td><span class="pill st-ok">구현</span></td>
           <td><span class="dt-empty">–</span></td>
           <td><span class="pill vf-none">🔴 미검증</span></td>
           <td><span class="dt-empty">미지정</span></td>
           <td><span class="dt-empty">– 도장 필요</span></td>
           <td><span class="dt-empty">– 도장 필요</span></td>
           <td><span class="dt">2026-06-30</span></td>
-          <td><span class="pill dk-early">–</span></td>
+          <td><span class="pill dk-ok">stable</span></td>
           <td class="c-note">분절 컨트롤(Selection). 설치기·HTML 섹션 반영(2026-06-30). origin 분류 미정 — 레거시 원본 대조 필요 여부 확인 요.</td>
+        </tr>
+        <tr class="comp-row">
+          <td class="c-name" style="padding-left:12px">filter-chip<span class="c-id">filter-chip</span></td>
+          <td><span class="pill or-tbd">⏳ 미정</span></td>
+          <td><span class="pill st-ok">구현</span></td>
+          <td><span class="pill st-ok">완료</span></td>
+          <td><span class="pill vf-none">🔴 미검증</span></td>
+          <td><span class="dt-empty">미지정</span></td>
+          <td><span class="dt-empty">– 도장 필요</span></td>
+          <td><span class="dt-empty">– 도장 필요</span></td>
+          <td><span class="dt-empty">– 도장 필요</span></td>
+          <td><span class="pill dk-early">pending</span></td>
+          <td class="c-note">필터 칩(Selection). Chip 과 색 토큰 100% 공유하나 별개 세트 — 상태 5개(Complete 추가)·Title 축·화살표·Selected 시 Dropdown 부착. 2026-08-01 Gate 30 신설로 미등록 적발 → 소급 등록. Figma 원본 대조 리포트가 없어 origin 미정(코드 주석의 V2.4 540:3226 이 유일 근거, 미검증).</td>
         </tr>
         <tr class="comp-row">
           <td class="c-name" style="padding-left:12px">modal<span class="c-id">modal</span></td>
           <td><span class="pill or-b">Ⓑ 원본틀 필요</span></td>
-          <td><span class="pill st-early">미착수</span></td>
+          <td><span class="pill st-mid">진행중</span></td>
           <td><span class="dt-empty">–</span></td>
           <td><span class="pill vf-none">🔴 미검증</span></td>
-          <td><span class="src">V2.4 6361:84296 등</span></td>
+          <td><span class="src">V2.4 6706:4257</span></td>
           <td><span class="dt-empty">– 도장 필요</span></td>
           <td><span class="dt-empty">– 도장 필요</span></td>
           <td><span class="dt-empty">– 도장 필요</span></td>
-          <td><span class="pill dk-early">planned</span></td>
-          <td class="c-note">공통 팝업/모달(overlay). 골격(codeStatus=not-started) — 원본 틀 대조·규격 작성 중. registry/patterns/modal.json 과 중복(패턴→컴포넌트 마이그레이션 정리 필요).</td>
+          <td><span class="pill dk-ok">stable</span></td>
+          <td class="c-note">루트 A 신규 편입(2026-07-15). 공통 팝업 셸 — modal_small "삭제" 라이트 기준 Core(shell). buildModalShell Footer=Dual 1변형, 코어 Button(XXSM)+ic_닫기 재사용·신규토큰 0. 빌드 직후 — component-verifier 독립 검증(원본 대조) 대기, 통과 시 verify→new. 다크 그림자·나머지 4 State 미룸.</td>
         </tr>
             </tbody>
           </table>
@@ -647,7 +753,7 @@
 
       <div class="um-section">
         <div class="um-section-head">
-          <h2>📐 패턴 (2)</h2>
+          <h2>📐 패턴 (1)</h2>
           <p>코어 컴포넌트를 조합한 반복 레이아웃. components 와 분리 관리합니다.</p>
         </div>
         <div class="um-table-wrap">
@@ -657,18 +763,6 @@
           <th>설치기</th><th>tokens.css</th><th>HTML</th><th>다크</th><th>비고</th>
         </tr></thead>
             <tbody>
-        <tr>
-          <td class="c-name">Modal<span class="c-id">modal</span></td>
-          <td><span class="pill or-b">Ⓑ 원본틀 필요</span></td>
-          <td><span class="pill st-na">–</span></td>
-          <td><span class="pill vf-legacy">🟡 옛방식 2026-06-08</span></td>
-          <td><span class="dt-empty">미지정</span></td>
-          <td><span class="dt-empty">– 도장 필요</span></td>
-          <td><span class="dt-empty">– 도장 필요</span></td>
-          <td><span class="dt-empty">– 도장 필요</span></td>
-          <td><span class="pill dk-mid">candidate</span></td>
-          <td class="c-note">원본 틀 필요. 코어 조합 패턴(button·table·input). 옛 방식 검증.</td>
-        </tr>
         <tr>
           <td class="c-name">Login (PC Web)<span class="c-id">login</span></td>
           <td><span class="pill or-b">Ⓑ 원본틀 필요</span></td>
@@ -688,7 +782,7 @@
 
       <div class="um-foot">
         이 화면은 손으로 쓴 게 아니라 <b>자동으로 만들어집니다.</b> 컴포넌트 목록·순서·부모자식은 <b>설치기(build-components.ts)</b>에서 자동으로 읽고, 분류·날짜·비고는 <code>registry/governance/update-management.json</code> 을 고친 뒤 <code>npm run update:gen</code> 하면 갱신됩니다.<br>
-        설치기 부품 38개 · 미등록(확인 필요) 23개 · 패턴 2개 · 마지막 생성: 2026-07-03 14:29
+        설치기 부품 43개 · 미등록(확인 필요) 28개 · 패턴 1개 · 마지막 생성: 2026-08-25 11:40
       </div>
     </div>
   </main>

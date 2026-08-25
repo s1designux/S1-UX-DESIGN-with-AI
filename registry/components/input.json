@@ -3,10 +3,12 @@
     "id": "input",
     "name": "Input",
     "category": "Core",
-    "updatedAt": "2026-05-18 (MVP4-token)",
+    "updatedAt": "2026-08-25",
+    "version": "0.5.0-candidate",
     "tokenStatus": "stable",
     "codeStatus": "implemented",
     "darkModeStatus": "pending",
+    "a11yStatus": "candidate",
     "figmaNodeId": "540:3328",
     "figmaNote": "2026-05-20 MVP-F1 플러그인 스캔으로 확인. Figma 내 프레임명이 'Login input'으로 잘못 등록된 상태 — canonical 명칭은 'Input'. 이전 stale nodeId: 6443:4408.",
     "description": "Base text input field. Pure input element without label/helper wrapper. Label/Helper combo = Input Slots pattern.",
@@ -55,7 +57,9 @@
   "a11y": [
     "suffix 액션(지우기·검색·비밀번호 표시전환)에는 각각 aria-label 을 단다(예: 검색어 지우기, 비밀번호 보기/숨기기).",
     "비밀번호 표시전환 토글은 aria-pressed 로 표시·숨김 상태를 노출한다.",
-    "지우기(clear) 버튼은 값이 있을 때만 노출한다(hidden 속성 제어)."
+    "지우기(clear) 버튼은 값이 있을 때만 노출한다(hidden 속성 제어).",
+    "suffix 액션의 실제 누르는 영역은 PC 28×28px, Mobile 48×48px이며 액션마다 독립된 button 영역을 가진다.",
+    "suffix 액션의 키보드 포커스는 각 hit area 안쪽 2px outline으로 표시한다."
   ],
   "platforms": {
     "pc-md": {
@@ -84,7 +88,9 @@
       "heightToken": "--sizing/form-control/height/lg",
       "paddingBlock": "12px",
       "paddingBlockToken": "--spacing/padding/block/xs",
-      "radiusToken": "raw 4px (토큰 미참조 — Figma 원본 기준)"
+      "radiusToken": "raw 4px (토큰 미참조 — Figma 원본 기준)",
+      "suffixActionHitArea": "48×48px",
+      "minHeightWithSuffixAction": "48px"
     }
   },
   "platformDifferences": {
@@ -92,7 +98,7 @@
     "radius": "PC: --radius/control/sm 토큰 / Mobile: raw 4px",
     "iconSlot-success": "PC: pw-hide 아이콘 유지 / Mobile: remove(X) 버튼 노출"
   },
-  "states": ["default", "focus", "filled", "error", "correct", "disabled"],
+  "states": ["default", "focus", "filled", "error", "correct", "read-only", "disabled"],
   "stateNotes": {
     "focus":    "Figma: 'selected'. border → --input-focus-border(blue). bg 변경 없음.",
     "filled":   "Figma: 'complete'. HD-3: 별도 bg/border 없음. default와 동일 시각. text/default 색상으로만 구분(placeholder→typed). canonical: filled (token-aliases.json 확정).",
@@ -113,9 +119,9 @@
         },
         "border": {
           "--color-form-control-border-default":  "var(--color-border-default)",
-          "--color-form-control-border-selected": "var(--color-border-focus)",
+          "--color-form-control-border-selected": "Light blue/400 · Dark blue-dark/350",
           "--color-form-control-border-error":    "var(--color-status-error)",
-          "--color-form-control-border-correct":  "var(--color-border-focus)",
+          "--color-form-control-border-correct":  "Light blue/400 · Dark blue-dark/350",
           "--color-form-control-border-disabled": "var(--color-border-subtle)"
         },
         "text": {
@@ -155,9 +161,9 @@
         },
         "readonly": {
           "--input-readonly-bg":     "var(--color-form-control-bg-disabled)",
-          "--input-readonly-border": "var(--color-form-control-border-disabled)",
+          "--input-readonly-border": "var(--color-form-control-border-default)",
           "--input-readonly-text":   "var(--color-text-readonly)",
-          "note": "Textarea 와 공유. 2026-05-18 MVP4-token 신설. readonly bg/border = disabled와 동일, text는 --color-text-readonly로 한 단계 진함."
+          "note": "Textarea 와 공유. readonly bg는 disabled와 동일하고 border는 default를 유지한다. text는 --color-text-readonly로 한 단계 진하다. build-components.ts Read-Only 정본과 일치."
         }
       },
       "removedTokens": {
@@ -174,6 +180,25 @@
         "color-text-state-correct": "신규 발견. --color/text/state/correct = #1D6CEB (correct helper text 색상)."
       }
     }
+  },
+  "suffixAction": {
+    "status": "candidate",
+    "publicPart": "action",
+    "hitArea": { "pc": "28×28px", "mobile": "48×48px" },
+    "iconSize": { "xxsm": "20px", "default": "24px" },
+    "focusVisible": {
+      "kind": "per-action-boolean-accessibility-overlay",
+      "webSelector": ":focus-visible",
+      "colorToken": "color/form-control/action/border/focus",
+      "strokeWidthToken": "border-width/2",
+      "offset": "2px inset",
+      "figmaProperties": ["Password Action Focus Visible", "Clear Action Focus Visible"]
+    },
+    "rules": [
+      "각 액션은 독립된 native button으로 구현한다.",
+      "Mobile suffix action이 있으면 Input 높이는 최소 48px다.",
+      "focus outline은 field 밖으로 넘치지 않는다."
+    ]
   },
   "relatedComponents": {
     "inputbox-large": "Textarea 컴포넌트로 편입 (HD-6). registry/components/textarea.json 예정.",

@@ -1,0 +1,179 @@
+{
+  "schemaVersion": 1,
+  "workflow": "ui-library-code",
+  "workId": "input-button-pilot",
+  "objective": "Input과 Button을 첫 파일럿으로 삼아 정본 기반의 모듈형 HTML·CSS·JavaScript UI 라이브러리와 실제 배포본 검수 흐름을 확립한다.",
+  "intent": {
+    "approvedBy": "river",
+    "approvedAt": "2026-08-24",
+    "principles": [
+      "정본과 별도인 컴포넌트·패턴 구현을 만들지 않는다.",
+      "정본에 등록되지 않은 컴포넌트·variant·토큰·flow는 먼저 정본에서 정리하고 river 승인 없이 신설하지 않는다.",
+      "이미지로 알 수 없는 동작은 코드를 만들기 전에 질문한다.",
+      "Figma와 생성 결과의 일치는 AI 독립 검증자가 먼저 확인한다.",
+      "river는 독립 검증된 실제 화면에서 UI·UX와 사용 흐름을 승인한다.",
+      "디자인가이드 검수 화면과 퍼블리셔·개발자가 받는 배포본은 같은 코드를 사용한다.",
+      "정본 변경은 UI source·dist·설치 방식·디자인가이드·패턴 소비자에 함께 반영되는 생성 구조로 처리한다.",
+      "패턴은 승인된 코어를 조립하고 코어 내부 HTML·CSS·기본 동작을 복제하지 않는다."
+    ]
+  },
+  "contract": {
+    "path": "registry/governance/ui-library-code-contract.json",
+    "version": "0.1.0",
+    "status": "candidate"
+  },
+  "target": {
+    "kind": "pilot",
+    "components": ["input", "button"]
+  },
+  "figmaSources": {
+    "role": "시각 정본은 build-components.ts다. Figma V3.0은 사람이 보기 쉬운 선택적 시각 참고이며 inventory 통과 조건이 아니다.",
+    "requiredForInventory": false,
+    "fileKey": "cysG5U1udpQqVagYY1hWHW",
+    "fileName": "SW-UX-GUIDE V3.0 TEST",
+    "url": "https://www.figma.com/design/cysG5U1udpQqVagYY1hWHW/SW-UX-GUIDE-V3.0-TEST?node-id=5-5706&m=dev",
+    "overviewNodeId": "5:5706",
+    "components": {
+      "button": {
+        "nodeId": "1545:8242",
+        "source": "user-provided-v3-overview",
+        "status": "verified-visual-reference"
+      },
+      "input": {
+        "nodeId": null,
+        "source": "user-provided-v3-overview",
+        "status": "discover-only-if-visual-reference-is-needed"
+      }
+    }
+  },
+  "currentPhase": "4-verification",
+  "workflowStatus": "in-progress",
+  "uiLibraryStatus": "candidate",
+  "lastCompletedCheckpoint": 3,
+  "nextAction": "river가 검수 화면에서 Button의 크기별 최소 너비와 Mobile 라벨 중앙 정렬을 확인한다. 전체 파일럿 승격 전에는 Input 범위를 포함한 시나리오 F 최종 독립 검증을 완료한다.",
+  "ownership": {
+    "currentActor": "codex",
+    "startedAt": "2026-08-25T11:04:30+09:00"
+  },
+  "canonicalInputs": [
+    {
+      "role": "component-visual",
+      "path": "plugins/figma-vars-installer/src/build-components.ts",
+      "sha256": "f6d4e1b7f2cbc824bffcce4397cdae1a5bd90f0e8bc40fa5ed7772ae8eca669c"
+    },
+    {
+      "role": "token-values",
+      "path": "plugins/figma-vars-installer/src/vars-data.ts",
+      "sha256": "5403b41c6a718d1552f015475b77ee35aa66da8a831f2fcf1d8e7b4173865d07"
+    },
+    {
+      "role": "text-styles",
+      "path": "plugins/figma-vars-installer/src/textstyles-data.ts",
+      "sha256": "dc0db42d87503e80e9da8ad1246090f58e79106593a57815b0568aebcb9d51d3"
+    },
+    {
+      "role": "ui-library-contract",
+      "path": "registry/governance/ui-library-code-contract.json",
+      "sha256": "58e7dedb4c72572292f26f9059bcfde12f89fa10585776433630828c0c98fab7"
+    },
+    {
+      "role": "current-behavior-ledger",
+      "path": "registry/components/component-behavior.pc.json",
+      "sha256": "bbda54c95c48cae09a9c327a8b99f22e6423c9a7c64f5a6cc946fcc1cd75c7e2"
+    },
+    {
+      "role": "allowed-icons",
+      "path": "registry/figma/allowed-remote-keys.json",
+      "sha256": "5b3a99e12316b86a466dc6e64f431dfdc044658441bd467f5f2754d106d815e2"
+    }
+  ],
+  "scopeSnapshot": {
+    "input": {
+      "inventoryStatus": "pending-component-deep-audit",
+      "knownFacts": [
+        "디자인가이드 사이트에 후보 HTML·CSS·JavaScript와 코드탭이 있다.",
+        "사이트 인라인 구현은 현재 동작 후보이며 배포 정본이 아니다.",
+        "외부 input.css는 현재 사이트에 연결되지 않는다."
+      ]
+    },
+    "button": {
+      "inventoryStatus": "pending-component-deep-audit",
+      "knownFacts": [
+        "디자인가이드 사이트에 후보 HTML·CSS와 코드탭이 있다.",
+        "외부 button.css는 현재 사이트에 연결되지 않으며 배포 정본으로 승인되지 않았다."
+      ]
+    }
+  },
+  "artifacts": {
+    "policyContract": "registry/governance/ui-library-code-contract.json",
+    "humanGuide": "registry/governance/ui-library-authoring-guide.md",
+    "componentChecklist": "registry/governance/ui-library-component-checklist.md",
+    "repositoryInventory": "reports/component-inventory-audit.md",
+    "inventory": "reports/ui-library/input-button-pilot/1-inventory.md",
+    "canonReadiness": "reports/ui-library/input-button-pilot/2-canon-readiness.md",
+    "build": "reports/ui-library/input-button-pilot/3-build.md",
+    "verification": "reports/ui-library/input-button-pilot/4-verification.md",
+    "humanReview": null,
+    "promotion": null,
+    "sourceRoot": "ui-library/src",
+    "distManifest": "ui-library/dist/manifest.json",
+    "reviewPage": "pages/ui-review.html",
+    "migrationRecord": null
+  },
+  "decisions": [
+    "코어 컴포넌트부터 정리한 뒤 패턴을 코드화한다.",
+    "UI 라이브러리 원본과 디자인가이드 검수 화면을 분리 구현하지 않는다.",
+    "Input·Button 파일럿으로 계약과 배포 구조를 검증한 뒤 다른 컴포넌트로 확장한다.",
+    "현재 UI library policy는 candidate이며 파일럿과 river UX 승인 전 stable로 보지 않는다.",
+    "UI 라이브러리 inventory와 제작 기준에서 레거시 Figma V2.4를 제외한다. 필요한 시각 참고는 사용자 지정 Figma V3.0 overview를 사용하되 코드 정본보다 우선하지 않는다.",
+    "HD-UILIB-02: suffix action은 시각 아이콘 20/24px를 유지하고 실제 누르는 영역을 PC 28×28px, Mobile 48×48px로 적용한다. Mobile action이 여러 개면 각 hit area를 독립시킨다. (river, 2026-08-25)",
+    "HD-UILIB-01: Base Input + Button을 먼저 제작하고 Password Field, Search Input 순서로 확장한다. (river, 2026-08-25)",
+    "HD-UILIB-03: Button과 suffix action의 focus-visible을 디자인시스템 정본 상태로 추가하고 실제 검수 화면에서 시각 승인한다. (river, 2026-08-25)",
+    "Mobile suffix action이 있는 Input은 action의 48×48px hit area가 field 밖으로 넘치지 않도록 Input 자체도 최소 48px 높이를 유지한다. (river, 2026-08-25)",
+    "Gate 29 검증 결과 Button focus-visible 다크색은 Button 계열과 같은 blue-dark/300으로 통일한다. Input과 suffix action은 기존 form-control selected 계열을 유지한다. (2026-08-25)",
+    "pages/ui-review.html은 실제 dist 검수만 담당하는 standalone 화면으로 레이아웃 정본에 등록한다. (2026-08-25)",
+    "HD-UILIB-04: Button 최소 너비는 Figma V3.0 1545:8242 실측대로 MD·LG 80px, XSM·XXSM 64px을 적용하고 Mobile LG 라벨은 가로·세로 중앙 정렬한다. (river, 2026-08-25)"
+  ],
+  "blockers": [],
+  "pendingDecisions": [],
+  "evidence": {
+    "sourceAudit": {
+      "status": "complete",
+      "actor": "source-reader",
+      "observedAt": "2026-08-24",
+      "basis": "UI 라이브러리 교대 구조 착수 전 감사",
+      "summary": "착수 전 감사에서 UI library source·dist·build·전용 workflow state가 없음을 확인했다. 이 상태 파일과 ui-library-code 하네스가 진행 상태 공백을 보완한다."
+    },
+    "canonVerification": {
+      "status": "PASS",
+      "actor": "component-verifier",
+      "observedAt": "2026-08-25",
+      "summary": "Button Focus Visible BOOLEAN과 48 variants 유지, Input suffix PC28/Mobile48 독립 hit area, Light/Dark token binding, Registry·guide-model 일치를 독립 검증했다.",
+      "gate13": "reports/installer-build/build-verification.json"
+    },
+    "independentVerification": {
+      "verdict": "HOLD",
+      "actor": "component-verifier",
+      "observedAt": "2026-08-25",
+      "summary": "초기 독립 검사에서 검수 행렬·상태 토큰·키보드 초점·fixture parity 결함을 발견해 수정했다. Button 너비·Mobile 라벨 변경 범위는 수정 후 독립 PASS했다. Input을 포함한 전체 시나리오 F 최종 재실행은 아직 완료하지 않아 전체 verdict는 HOLD를 유지한다.",
+      "componentResults": {
+        "button": {
+          "verdict": "PASS",
+          "scope": "Figma V3.0 1545:8242 최소 너비·Mobile label center·Light/Dark·bundle parity·focus-visible",
+          "observedAt": "2026-08-25"
+        },
+        "input": {
+          "verdict": "HOLD",
+          "scope": "이번 Button 수정 후 독립 재검증 범위에 포함하지 않음"
+        }
+      },
+      "report": "reports/ui-library/input-button-pilot/4-verification.md"
+    },
+    "riverApproval": null
+  },
+  "handoff": {
+    "lastActor": "codex",
+    "updatedAt": "2026-08-25",
+    "summary": "Button 수정 완료: Figma V3.0 기준 최소 너비 MD·LG 80px, XSM·XXSM 64px과 Mobile label center를 source·Registry·dist·검수 화면에 동기화했다. Button 변경 범위는 독립 PASS, 전체 파일럿은 Input 최종 독립 재검증 전이라 candidate/HOLD를 유지한다."
+  }
+}

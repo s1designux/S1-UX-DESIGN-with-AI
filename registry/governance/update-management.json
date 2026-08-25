@@ -65,6 +65,20 @@
       "note": "모바일 하단 내비 탭 아이템(Navigation). 빌드=figma-library-builder·검증=component-verifier 분리 수행(2026-07-02, 3회 재검증, ❌(a) 0건). V2.4 구본 세트는 2026-07-02 삭제 완료. 2026-08-01 Gate 30 신설로 registry 미등록 적발 → 소급 등록."
     },
     {
+      "id": "mobile-header",
+      "origin": "B",
+      "sourceNode": "V2.4 540:6112 (5종) + Standard / No Title 신규 1종",
+      "verify": "new",
+      "verifyDate": "2026-08-25",
+      "mobile": "완료",
+      "dates": {
+        "installer": "2026-08-25",
+        "tokens": "",
+        "html": ""
+      },
+      "note": "모바일 상단 앱바 6종. 2026-08-25 Gate 34 사용자 승인으로 설치기 코드 정본과 Registry를 신설. V2.4 원본 재측정·V3.0 TEST Figma 빌드·component-verifier 독립 검증 완료(verify=new). pages/components.html은 손관리 화면이라 미변경."
+    },
+    {
       "id": "pagination",
       "origin": "B",
       "sourceNode": "V3.0 956:19066",
