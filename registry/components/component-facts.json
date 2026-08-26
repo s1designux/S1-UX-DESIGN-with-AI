@@ -3,7 +3,7 @@
     "generated": true,
     "source": "plugins/figma-vars-installer/src/build-components.ts",
     "method": "mock-execution",
-    "sourceHash": "c3d381e1b374",
+    "sourceHash": "cb50972e0107",
     "unknownValuePolicy": [
       "unknown",
       "not-defined",
@@ -581,12 +581,12 @@
     "Mobile Header": {
       "variantAxes": {
         "Type": [
+          "Home / Title",
+          "Home / Title + Subtitle + 1 Icon",
           "Standard / Title",
           "Standard / Title + Close",
           "Standard / No Title",
-          "Standard / No Title + Close",
-          "Home / Title + Subtitle + 1 Icon",
-          "Home / Title + Alt Title"
+          "Standard / No Title + Close"
         ]
       },
       "geometry": [
@@ -606,10 +606,9 @@
         "StatusBar / Platform=App"
       ],
       "tokenBindings": [
+        "color/bg/home",
         "color/bg/level-0",
-        "color/bg/level-2",
         "color/icon/gray-dark",
-        "color/navigation/bg",
         "color/text/body/secondary",
         "color/text/body/tertiary",
         "color/text/title/primary"
@@ -980,7 +979,7 @@
             "Break": "PC"
           },
           "target": "root",
-          "width": 64,
+          "width": 56,
           "height": 28,
           "layoutMode": "HORIZONTAL",
           "primaryAxisSizingMode": "AUTO",
@@ -991,7 +990,7 @@
           "paddingRight": "spacing/8",
           "paddingBottom": "0",
           "paddingLeft": "spacing/8",
-          "minWidth": "64",
+          "minWidth": "56",
           "topLeftRadius": "radius/4",
           "topRightRadius": "radius/4",
           "bottomLeftRadius": "radius/4",
@@ -1915,10 +1914,6 @@
           "Read-Only",
           "Disabled"
         ],
-        "Label": [
-          "Off",
-          "On"
-        ],
         "Message": [
           "Off",
           "On"
@@ -2022,14 +2017,13 @@
         "color/form-control/action/border/focus",
         "color/form-control/bg/default",
         "color/form-control/bg/disabled",
+        "color/form-control/bg/hover",
         "color/form-control/bg/selected",
         "color/form-control/border/correct",
         "color/form-control/border/default",
         "color/form-control/border/disabled",
         "color/form-control/border/error",
         "color/form-control/border/selected",
-        "color/form-control/label/default",
-        "color/form-control/label/disabled",
         "color/form-control/text-cursor",
         "color/form-control/text/default",
         "color/form-control/text/disabled",

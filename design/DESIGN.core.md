@@ -299,11 +299,11 @@ agent:
         when:
           Size: "XXSM"
           Break: "PC"
-        width: 64
+        width: 56
         height: 28
         paddingRight: "spacing/8"
         paddingLeft: "spacing/8"
-        minWidth: "64"
+        minWidth: "56"
       -
         when:
           Size: "LG"
@@ -1766,9 +1766,6 @@ agent:
       - "Correct"
       - "Read-Only"
       - "Disabled"
-    Label:
-      - "Off"
-      - "On"
     Message:
       - "Off"
       - "On"
@@ -1879,14 +1876,13 @@ agent:
       - "color/form-control/action/border/focus"
       - "color/form-control/bg/default"
       - "color/form-control/bg/disabled"
+      - "color/form-control/bg/hover"
       - "color/form-control/bg/selected"
       - "color/form-control/border/correct"
       - "color/form-control/border/default"
       - "color/form-control/border/disabled"
       - "color/form-control/border/error"
       - "color/form-control/border/selected"
-      - "color/form-control/label/default"
-      - "color/form-control/label/disabled"
       - "color/form-control/text-cursor"
       - "color/form-control/text/default"
       - "color/form-control/text/disabled"
@@ -1957,14 +1953,14 @@ _Do_
 - 라벨은 form-control 밖 제목 텍스트 토큰(--color-text-title-secondary)을 쓴다.
 
 _Don't_
-- hover 상태를 새로 만들지 않는다 — Figma 에 정의돼 있지 않아 제거됨(HD-2).
+- Input field 전체에 hover 상태를 만들지 않는다 — HD-2에서 제거됨. suffix action의 독립 Hover 배경은 예외다.
 - filled·error·focus 에 별도 배경색을 넣지 않는다 — 배경은 default 와 동일, 구분은 텍스트·테두리 색으로만.
 - correct(성공) 테두리를 초록으로 칠하지 않는다 — 원본은 파란색(border-selected).
 
 **접근성 (a11y)**
 - suffix 액션(지우기·검색·비밀번호 표시전환)에는 각각 aria-label 을 단다(예: 검색어 지우기, 비밀번호 보기/숨기기).
 - 비밀번호 표시전환 토글은 aria-pressed 로 표시·숨김 상태를 노출한다.
-- 지우기(clear) 버튼은 값이 있을 때만 노출한다(hidden 속성 제어).
+- Editing 상태의 지우기(clear) 버튼은 값이 있고 Input 또는 지우기 버튼에 초점이 있을 때만 노출한다(hidden 속성 제어).
 - suffix 액션의 실제 누르는 영역은 PC 28×28px, Mobile 48×48px이며 액션마다 독립된 button 영역을 가진다.
 - suffix 액션의 키보드 포커스는 각 hit area 안쪽 2px outline으로 표시한다.
 
@@ -2081,7 +2077,7 @@ _Don't_
 
 ### Mobile Header
 
-모바일 화면 상단의 StatusBar와 AppBar를 하나로 묶은 360×99 코어 컴포넌트. 표준형·홈형 5종과 회원가입용 제목 없음 1종을 Type 축으로 제공한다.
+모바일 화면 상단의 StatusBar와 AppBar를 하나로 묶은 360×99 코어 컴포넌트. 홈형 2종·표준형 4종을 Type 축으로 제공한다.
 
 **언제 쓰나**
 - 모바일 앱 또는 모바일 웹 화면에서 상단 전역 크롬과 화면 이동 동작을 제공할 때.
@@ -2095,9 +2091,9 @@ _Don't_
 
 | 요소 | 역할 |
 | --- | --- |
-| StatusBar | Platform=App 정본 인스턴스. 360×27. |
+| StatusBar | Platform=App 정본 인스턴스. 360×27. 배경은 투명이며 헤더 프레임 배경을 상속한다. Appearance 모드도 부모를 따른다. |
 | AppBar | 360×56. StatusBar 아래 16px 간격으로 배치한다. |
-| Title area | 표준형은 중앙 정렬, 홈형은 좌측 정렬한다. No Title에는 텍스트 노드가 없다. |
+| Title area | 표준형은 중앙 정렬(title/18M), 홈형은 좌측 정렬(title/18B). No Title 계열에는 텍스트 노드가 없다. |
 | Action slots | 32×32 이전·닫기·알림 슬롯 또는 같은 폭 spacer. |
 
 | variant |
@@ -2111,12 +2107,12 @@ agent:
   component: "Mobile Header"
   variantAxes:
     Type:
+      - "Home / Title"
+      - "Home / Title + Subtitle + 1 Icon"
       - "Standard / Title"
       - "Standard / Title + Close"
       - "Standard / No Title"
       - "Standard / No Title + Close"
-      - "Home / Title + Subtitle + 1 Icon"
-      - "Home / Title + Alt Title"
   states:
     builder: "not-defined"
     metadata:
@@ -2146,10 +2142,9 @@ agent:
   constraints: "unknown"
   tokens:
     figmaSemanticBindings:
+      - "color/bg/home"
       - "color/bg/level-0"
-      - "color/bg/level-2"
       - "color/icon/gray-dark"
-      - "color/navigation/bg"
       - "color/text/body/secondary"
       - "color/text/body/tertiary"
       - "color/text/title/primary"
@@ -2162,12 +2157,12 @@ agent:
       figmaNodeId: "1760:7247"
     variants:
       Type:
+        - "Home / Title"
+        - "Home / Title + Subtitle + 1 Icon"
         - "Standard / Title"
         - "Standard / Title + Close"
-        - "Home / Title + 2 Icons"
-        - "Home / Title + Subtitle + 1 Icon"
-        - "Home / Title + Alt Title"
         - "Standard / No Title"
+        - "Standard / No Title + Close"
   icons:
     allowed: "figma-unconfirmed"
     slots: "unknown"
@@ -4079,4 +4074,4 @@ DESIGN_SYSTEM_GAP:
 - 적용 해석 순서(뒤가 앞을 덮음): core → service(extends core) → role → platform → theme. 기본값: service=core · role=user · platform=web · theme=light.
 - 서비스 분기(예: vms 영상관제)는 core 를 상속하고 차이분만 덮는다.
 
-<!-- generated-stamp: 28783809256c · 손편집 금지 -->
+<!-- generated-stamp: 9495644eb9a2 · 손편집 금지 -->

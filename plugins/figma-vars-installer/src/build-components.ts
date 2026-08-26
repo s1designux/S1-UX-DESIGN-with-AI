@@ -107,6 +107,21 @@ function setMode(node: SceneNode, maps: BuildMaps, modeId: string): void {
 }
 
 /**
+ * 부모의 Appearance(Light/Dark) 를 그대로 물려받게 모드 핀을 푼다.
+ * 인스턴스가 자기 모드를 명시하면 부모의 Dark 핀을 이겨버려서, 다크 스펙에서 그 부분만
+ * 라이트로 남는다(2026-08-25 Mobile Header 안 StatusBar 가 흰 띠로 남던 원인).
+ */
+function clearMode(node: SceneNode, maps: BuildMaps): void {
+  try {
+    (node as unknown as {
+      clearExplicitVariableModeForCollection: (cid: string) => void;
+    }).clearExplicitVariableModeForCollection(maps.semanticColorCollectionId);
+  } catch (e) {
+    console.warn("[SW Installer] 모드 핀 해제 실패:", e);
+  }
+}
+
+/**
  * Semantic Shadow V2 모드는 실제로 모드 전환되는 그림자 변수를 가진 노드에만 연결한다.
  * 현재 대상은 shadow/raised 변수를 쓰는 Modal과 그 Light/Dark 스펙 경로뿐이다.
  * Dropdown·Calendar·Bottom Sheet 등의 고정 그림자는 effects 값만 유지하고 Appearance 연결은 만들지 않는다.
@@ -629,8 +644,12 @@ interface SpecOpts {
   cellW: number;
   cellH: number;
   rowLabelW?: number;
+  /** 열마다 의미가 달라 공통 컬럼 헤더를 쓸 수 없을 때, 각 셀 위에 유형명을 표시한다. */
+  cellLabelAt?: (row: number, col: number) => string | null;
   /** 다크 스펙을 원본 아래에 배치할 때 사용 (GNB 전용). x/y 를 각각 지정. 미지정=기존 동작(원본 우측 W+80). */
   darkOffset?: { x?: number; y?: number };
+  /** 폭이 긴 스펙은 Dark 를 Light 바로 아래에 쌓는다. 두 스펙의 높이가 같다는 renderFlat 규칙을 사용한다. */
+  stackDarkBelow?: boolean;
   /** 셀을 셀폭 중앙배치 대신 좌측(gridLeft)에 정렬. 폭이 크게 다른 variant(Footer PC1920 vs Mobile360)가
    *  좌측 기준으로 일관 정렬되게 한다(라이트·다크 스펙 양쪽 동일 적용). 미지정=기존 중앙배치. */
   leftAlignCells?: boolean;
@@ -644,20 +663,27 @@ async function renderFlat(opts: SpecOpts, dark: boolean, emit: LayoutEmit): Prom
   let y = PAD;
   await emit.text(`${opts.title} · ${dark ? "Dark" : "Light"}`, PAD, y, 320, "LEFT", c.title, 14, "Bold");
   y += TITLE_H;
-  for (let col = 0; col < opts.colHeaders.length; col++) {
-    if (opts.colHeaders[col]) await emit.text(opts.colHeaders[col], gridLeft + col * opts.cellW, y, opts.cellW, "CENTER", c.label, 11, "Medium"); // 빈 헤더는 빈 텍스트 노드 안 만든다
+  // 셀별 라벨을 쓰는 매트릭스는 공통 컬럼 헤더 행을 만들지 않는다.
+  if (!opts.cellLabelAt) {
+    for (let col = 0; col < opts.colHeaders.length; col++) {
+      if (opts.colHeaders[col]) await emit.text(opts.colHeaders[col], gridLeft + col * opts.cellW, y, opts.cellW, "CENTER", c.label, 11, "Medium"); // 빈 헤더는 빈 텍스트 노드 안 만든다
+    }
+    y += HEADER_H;
   }
-  y += HEADER_H;
   for (let r = 0; r < opts.rowLabels.length; r++) {
     // 행 높이 = 행 내 최대 컴포넌트 높이(+패딩). 고정 cellH 대신 → 라벨-컴포넌트 밀착·빈공간 제거.
     let rowH = 0;
     for (let cc = 0; cc < opts.colHeaders.length; cc++) { const cp = opts.cellAt(r, cc); if (cp && cp.height > rowH) rowH = cp.height; }
-    rowH = (rowH || opts.cellH) + 16;
-    const top = y + 4;
+    // 셀별 유형명 22px + 하단 여유 8px. 두 행이면 기존 수동 스펙과 같은 336px 높이가 된다.
+    const cellLabelH = opts.cellLabelAt ? 22 : 0;
+    rowH = (rowH || opts.cellH) + (cellLabelH ? cellLabelH + 8 : 16);
+    const top = y + (cellLabelH || 4);
     if (opts.rowLabels[r]) await emit.text(opts.rowLabels[r], PAD, top, rowLabelW, "LEFT", c.label, 11, "Medium");
     for (let cc = 0; cc < opts.colHeaders.length; cc++) {
       const comp = opts.cellAt(r, cc);
       if (comp) {
+        const cellLabel = opts.cellLabelAt?.(r, cc);
+        if (cellLabel) await emit.text(cellLabel, gridLeft + cc * opts.cellW, y, opts.cellW, "CENTER", c.label, 11, "Medium");
         const cellX = opts.leftAlignCells ? (gridLeft + cc * opts.cellW) : (gridLeft + cc * opts.cellW + (opts.cellW - comp.width) / 2);
         emit.cell(comp, cellX, top);
       }
@@ -678,10 +704,11 @@ async function buildSpec(opts: SpecOpts, maps: BuildMaps): Promise<number> {
   frame.fills = [{ type: "SOLID", color: specPalette(true).bg }];
   frame.cornerRadius = 8;
   frame.resize(W, 1600);
-  frame.x = opts.darkOffset?.x ?? (W + 80); // 기본=원본 우측 밀착; darkOffset 지정 시 GNB처럼 아래 배치
+  frame.x = opts.darkOffset?.x ?? (opts.stackDarkBelow ? 0 : W + 80); // 폭이 길면 Light 아래, 아니면 기존처럼 우측
   frame.y = opts.darkOffset?.y ?? opts.originY;
   const H = await renderFlat(opts, true, frameEmit(frame, maps, modeId));
   frame.resize(W, H);
+  if (opts.stackDarkBelow && opts.darkOffset?.y === undefined) frame.y = opts.originY + H + 80;
   setMode(frame, maps, modeId);
   return Math.max(opts.originY, frame.y + H);
 }
@@ -2959,13 +2986,17 @@ async function buildMobileBottomNav(maps: BuildMaps, originY: number): Promise<{
 // StatusBar는 정본 인스턴스만 재사용하고, 아이콘은 등록된 원본 component key import만 허용한다.
 // 2026-08-25 river: "Home / Title + 2 Icons" 는 실제로 쓰지 않는 기준이라 삭제.
 // 2026-08-25 river: 회원가입 약관상세(제목 없음 + 닫기)용으로 "Standard / No Title + Close" 추가.
+// 2026-08-25 river: 원본의 "Home titel + alt titel" 은 구조가 아니라 문구만 다른 것이었고
+//   'alt' 는 네이밍 체계상 쓰지 않기로 한 말이라, 실체 그대로 "Home / Title" 로 개명한다.
+//   (삭제한 "Home / Title + 2 Icons" 가 비운 이름 자리를 그대로 쓴다)
+// 2026-08-25 river: 나열 순서는 Home 먼저, 그 다음 Standard.
 const MOBILE_HEADER_TYPES = [
+  "Home / Title",
+  "Home / Title + Subtitle + 1 Icon",
   "Standard / Title",
   "Standard / Title + Close",
   "Standard / No Title",
   "Standard / No Title + Close",
-  "Home / Title + Subtitle + 1 Icon",
-  "Home / Title + Alt Title",
 ] as const;
 type MobileHeaderType = typeof MOBILE_HEADER_TYPES[number];
 
@@ -3028,9 +3059,15 @@ async function buildMobileHeaderVariant(type: MobileHeaderType, maps: BuildMaps)
   comp.primaryAxisSizingMode = "FIXED";
   comp.counterAxisSizingMode = "FIXED";
   comp.itemSpacing = 16;
-  comp.fills = [boundPaint(scv(maps, isHome && type !== "Home / Title + Alt Title" ? "color/bg/level-2" : "color/navigation/bg"))];
+  comp.fills = [boundPaint(scv(maps, isHome ? "color/bg/home" : "color/bg/level-0"))];
   comp.resize(360, 99);
-  comp.appendChild(await mobileHeaderStatusBarInstance());
+  const statusInst = await mobileHeaderStatusBarInstance();
+  comp.appendChild(statusInst);
+  // 상태바도 다크를 따라오게 한다(river 결정 2026-08-25) — 자기 모드 핀을 풀어 부모를 상속.
+  clearMode(statusInst, maps);
+  // 배경도 비운다 — 원본(V2.4)은 프레임 전체가 한 배경색이고 상태바 행이 따로 배경을 갖지 않았다.
+  // 이걸 빼면 상태바 띠만 다른 색으로 갈라진다(2026-08-25 V3-1). StatusBar 정본 세트는 건드리지 않는다.
+  statusInst.fills = [];
 
   const appBar = figma.createFrame();
   appBar.name = "AppBar";
@@ -3043,7 +3080,7 @@ async function buildMobileHeaderVariant(type: MobileHeaderType, maps: BuildMaps)
   appBar.paddingTop = 12; appBar.paddingBottom = 12;
   appBar.paddingLeft = isHome ? 20 : 16;
   appBar.paddingRight = 16;
-  appBar.fills = [boundPaint(scv(maps, isHome && type !== "Home / Title + Alt Title" ? "color/bg/level-2" : "color/navigation/bg"))];
+  appBar.fills = [boundPaint(scv(maps, isHome ? "color/bg/home" : "color/bg/level-0"))];
   appBar.resize(360, 56);
   comp.appendChild(appBar);
 
@@ -3066,22 +3103,28 @@ async function buildMobileHeaderVariant(type: MobileHeaderType, maps: BuildMaps)
     const copy = figma.createFrame();
     copy.name = "Title + Subtitle"; copy.layoutMode = "VERTICAL";
     copy.primaryAxisAlignItems = "CENTER"; copy.counterAxisAlignItems = "MIN";
-    copy.primaryAxisSizingMode = "FIXED"; copy.counterAxisSizingMode = "AUTO";
-    copy.layoutGrow = 1; copy.itemSpacing = 2; copy.fills = []; copy.resize(1, 32);
+    // 2줄 스택(제목 23.4 + gap 2 + 서브 18.2 ≈ 44)이라 다른 유형의 32 로 고정하면 잘린다.
+    // 높이는 내용에 맞춰 hug 하고, AppBar 상하 여백을 12 → 6 으로 줄여 56 에 맞춘다(44+6+6=56).
+    // (2026-08-25 component-verifier ND-3 적발 — 원본 540:6178 도 이 유형만 여백이 좁다)
+    copy.primaryAxisSizingMode = "AUTO"; copy.counterAxisSizingMode = "AUTO";
+    copy.layoutGrow = 1; copy.itemSpacing = 2; copy.fills = [];
+    appBar.paddingTop = 6; appBar.paddingBottom = 6;
     const titleRow = figma.createFrame();
     titleRow.name = "Title"; titleRow.layoutMode = "HORIZONTAL";
     titleRow.primaryAxisAlignItems = "MIN"; titleRow.counterAxisAlignItems = "CENTER";
     titleRow.primaryAxisSizingMode = "AUTO"; titleRow.counterAxisSizingMode = "AUTO";
     titleRow.itemSpacing = 4; titleRow.fills = [];
     titleRow.appendChild(await makeBoundText("홈 타이틀", 18, "Bold", titleColor, "title/18B"));
-    titleRow.appendChild(await makeRequiredIconInstance("mobileHeaderArrowDown", iconLight, 16, undefined, -90));
+    // 원본(540:6198) 실측: fill 은 전부 hidden 이고 실제로 보이는 획은 stroke #353535 = color/icon/gray-dark.
+    // 크기도 원본은 24 다(2026-08-25 component-verifier 적발 — v1 의 gray-light/16 은 오연결).
+    titleRow.appendChild(await makeRequiredIconInstance("mobileHeaderArrowDown", iconDark, 24, undefined, -90));
     copy.appendChild(titleRow);
     copy.appendChild(await makeBoundText("홈 서브타이틀", 14, "Regular", scv(maps, "color/text/body/tertiary"), "body/14R"));
     appBar.appendChild(copy);
     appBar.appendChild(await makeMobileHeaderIconSlot("Notification", "mobileHeaderNotification", iconDark, scv(maps, "color/icon/red")));
   } else {
     const title = makeMobileHeaderGrowFrame("Title", "MIN");
-    title.appendChild(await makeBoundText("홈-alt 타이틀", 18, "Bold", titleColor, "title/18B"));
+    title.appendChild(await makeBoundText("홈 타이틀", 18, "Bold", titleColor, "title/18B"));
     appBar.appendChild(title);
   }
 
@@ -3102,12 +3145,19 @@ async function buildMobileHeader(maps: BuildMaps, originY: number): Promise<{ se
   BUILT_SETS["Mobile Header"] = set;
   const opts: SpecOpts = {
     title: "Mobile Header",
-    colHeaders: [""],
-    rowLabels: [...MOBILE_HEADER_TYPES],
-    cellAt: (r, _c) => comps[r] ?? null,
+    // river 2026-08-26: Home 2종은 첫 행, Standard 4종은 두 번째 행에 한 줄로 잇는다.
+    // 폭이 길어진 스펙은 Dark 를 Light 오른쪽이 아니라 바로 아래에 둔다.
+    colHeaders: ["", "", "", ""],
+    rowLabels: ["Home", "Standard"],
+    cellAt: (r, c) => r === 0 ? (comps[c] ?? null) : (comps[c + 2] ?? null),
+    cellLabelAt: (r, c) => {
+      const comp = r === 0 ? (comps[c] ?? null) : (comps[c + 2] ?? null);
+      return comp ? comp.name.replace(/^Type=/, "") : null;
+    },
     lightX: SPEC_LIGHT_X, darkX: SPEC_DARK_X, originY,
     cellW: 384, cellH: 99, rowLabelW: 232,
     leftAlignCells: true,
+    stackDarkBelow: true,
   };
   let bottomY = await decorateSetFlat(set, opts, maps);
   try { bottomY = Math.max(bottomY, await buildSpec(opts, maps)); } catch (e) { console.warn(e); }

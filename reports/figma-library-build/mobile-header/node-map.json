@@ -1,256 +1,2317 @@
 {
-  "schemaVersion": 1,
+  "schemaVersion": 3,
   "buildTarget": "Mobile Header",
-  "builtAt": "2026-08-25",
+  "builtAt": "2026-08-26",
+  "buildRevision": "v3.5",
+  "builtBy": "figma-library-builder",
+  "verificationStatus": "NOT VERIFIED BY BUILDER - component-verifier owns the pass/fail judgement",
+  "planSource": "river 승인 (2026-08-26): 다른 컴포넌트처럼 Light는 컴포넌트 세트 자체로 정리하고 Dark만 인스턴스 복사 스펙으로 유지",
+  "scope": "Mobile Header 6종을 Light 컴포넌트 세트 보드로 재배치하고 별도 Light 프레임을 제거. Dark는 동일 6종 인스턴스 보드로 유지. 세트 key와 variant ID는 보존",
   "file": {
     "name": "SW UX GUIDE V3.0 TEST",
     "fileKey": "cysG5U1udpQqVagYY1hWHW",
-    "page": { "id": "5:5706", "name": "Core" },
+    "page": {
+      "id": "5:5706",
+      "name": "Core"
+    },
     "section": {
       "id": "1654:38976",
-      "name": "Navigation",
-      "width": 2296,
-      "oldHeight": 2916,
-      "newHeight": 3934,
-      "contentBottom": 3870,
-      "bottomClearance": 64
+      "name": "Navigation"
     }
   },
   "componentSet": {
     "id": "1760:7247",
     "key": "9fd8509a9e73c1279d9efb2088bb591658ce29f5",
     "name": "Mobile Header",
-    "position": { "x": 64, "y": 3036 },
-    "size": { "width": 820, "height": 417 },
-    "variantAxis": {
-      "name": "Type",
-      "defaultValue": "Standard / Title",
-      "values": [
-        "Standard / Title",
-        "Standard / Title + Close",
-        "Home / Title + 2 Icons",
-        "Home / Title + Subtitle + 1 Icon",
-        "Home / Title + Alt Title",
-        "Standard / No Title"
-      ]
+    "size": {
+      "w": 1816,
+      "h": 336,
+      "x": 64,
+      "y": 3036
     },
     "packing": {
-      "columns": 2,
-      "rows": 3,
-      "padding": 40,
-      "gap": 20,
-      "variantSize": { "width": 360, "height": 99 }
+      "cols": 4,
+      "rows": 2,
+      "padding": 24,
+      "gapX": 24,
+      "gapY": 30,
+      "collapse": "none"
     },
-    "combineAsVariants": true,
-    "detachedInstances": [],
-    "existingInstanceRemap": "not-applicable-new-component",
-    "emptyContainers": []
-  },
-  "variants": [
-    {
-      "id": "1757:7099",
-      "key": "33bc42c89719c3fa4abff260ef85a337b7230457",
-      "name": "Type=Standard / Title",
-      "properties": { "Type": "Standard / Title" },
-      "positionInSet": { "x": 40, "y": 40 },
-      "previewId": "1760:7250",
-      "nodes": {
-        "statusBar": "1757:7100",
-        "appBar": "1757:7123",
-        "back": "1757:7124",
-        "title": "1757:7127",
-        "endSpacer": "1757:7128"
+    "orderVerifiedBy": "read-back after mutation (use_figma read-only call), not assumed",
+    "variantOrder": [
+      {
+        "i": 0,
+        "id": "1759:7204",
+        "name": "Type=Home / Title",
+        "x": 256,
+        "y": 76
+      },
+      {
+        "i": 1,
+        "id": "1759:7167",
+        "name": "Type=Home / Title + Subtitle + 1 Icon",
+        "x": 640,
+        "y": 76
+      },
+      {
+        "i": 2,
+        "id": "1757:7099",
+        "name": "Type=Standard / Title",
+        "x": 256,
+        "y": 213
+      },
+      {
+        "i": 3,
+        "id": "1757:7129",
+        "name": "Type=Standard / Title + Close",
+        "x": 640,
+        "y": 213
+      },
+      {
+        "i": 4,
+        "id": "1760:7217",
+        "name": "Type=Standard / No Title",
+        "x": 1024,
+        "y": 213
+      },
+      {
+        "i": 5,
+        "id": "1781:7359",
+        "name": "Type=Standard / No Title + Close",
+        "x": 1408,
+        "y": 213
       }
+    ],
+    "matchesCodeCanon": "MOBILE_HEADER_TYPES 순서와 cellLabelAt 기반 2행 배치가 동일",
+    "defaultVariant": {
+      "name": "Type=Home / Title",
+      "typeValue": "Home / Title",
+      "note": "재정렬 결과 첫 번째 variant 가 default 가 됨 (v3.1 은 Standard / Title 이었음)"
     },
-    {
-      "id": "1757:7129",
-      "key": "88da12f14f6c3535c37429fa8727f90d073d8ff7",
-      "name": "Type=Standard / Title + Close",
-      "properties": { "Type": "Standard / Title + Close" },
-      "positionInSet": { "x": 420, "y": 40 },
-      "previewId": "1760:7280",
-      "nodes": {
-        "statusBar": "1757:7130",
-        "appBar": "1757:7153",
-        "back": "1757:7154",
-        "title": "1757:7157",
-        "close": "1757:7158"
-      }
-    },
-    {
-      "id": "1758:7158",
-      "key": "2349afa479babe02b2224a5631a03bfc8f71b0d0",
-      "name": "Type=Home / Title + 2 Icons",
-      "properties": { "Type": "Home / Title + 2 Icons" },
-      "positionInSet": { "x": 40, "y": 159 },
-      "previewId": "1760:7313",
-      "nodes": {
-        "statusBar": "1758:7159",
-        "appBar": "1758:7182",
-        "title": "1758:7183",
-        "actions": "1758:7184",
-        "notification": "1758:7185",
-        "close": "1758:7190"
-      }
-    },
-    {
-      "id": "1759:7167",
-      "key": "02ad4f75b0d458dc1cf7a5328ae9e1121445d53b",
-      "name": "Type=Home / Title + Subtitle + 1 Icon",
-      "properties": { "Type": "Home / Title + Subtitle + 1 Icon" },
-      "positionInSet": { "x": 420, "y": 159 },
-      "previewId": "1760:7348",
-      "nodes": {
-        "statusBar": "1759:7168",
-        "appBar": "1759:7191",
-        "titleBlock": "1759:7192",
-        "titleRow": "1759:7193",
-        "title": "1759:7194",
-        "menuArrowDown": "1759:7195",
-        "subtitle": "1759:7198",
-        "notification": "1759:7199"
-      }
-    },
-    {
-      "id": "1759:7204",
-      "key": "99caeba6ebbad8aee9fc6144942a503dbe294062",
-      "name": "Type=Home / Title + Alt Title",
-      "properties": { "Type": "Home / Title + Alt Title" },
-      "positionInSet": { "x": 40, "y": 278 },
-      "previewId": "1760:7386",
-      "nodes": {
-        "statusBar": "1759:7205",
-        "appBar": "1759:7228",
-        "title": "1759:7229"
-      }
-    },
-    {
-      "id": "1760:7217",
-      "key": "b7d3dbec8ac32045752390ab0c2ca71a8e06eb6c",
-      "name": "Type=Standard / No Title",
-      "properties": { "Type": "Standard / No Title" },
-      "positionInSet": { "x": 420, "y": 278 },
-      "previewId": "1760:7412",
-      "appBarTextNodeCount": 0,
-      "nodes": {
-        "statusBar": "1760:7218",
-        "appBar": "1760:7241",
-        "back": "1760:7242",
-        "flexibleEmptySpace": "1760:7245",
-        "endSpacer": "1760:7246"
-      }
-    }
-  ],
-  "preview": {
-    "frameId": "1760:7248",
-    "name": "Mobile Header / Preview",
-    "position": { "x": 64, "y": 3533 },
-    "size": { "width": 740, "height": 337 },
-    "rowIds": ["1760:7249", "1760:7312", "1760:7385"],
-    "instanceIds": [
-      "1760:7250",
-      "1760:7280",
-      "1760:7313",
-      "1760:7348",
-      "1760:7386",
-      "1760:7412"
-    ]
-  },
-  "statusBarProvenance": {
-    "sourceNodeId": "1654:37365",
-    "sourceComponentKey": "a9450c5f4f90c4bda3b5cc3be00229f4994b8b56",
-    "sourceSetId": "1654:37420",
-    "sourceSetName": "StatusBar",
-    "sourceVariant": { "Platform": "App" },
-    "sourceSize": { "width": 360, "height": 27 },
-    "instanceIds": [
-      "1757:7100",
-      "1757:7130",
-      "1758:7159",
-      "1759:7168",
-      "1759:7205",
-      "1760:7218"
-    ]
-  },
-  "icons": {
-    "back": {
-      "sourceNode": "540:6130",
-      "name": "ic_이전",
-      "variant": { "Property 1": "Solid" },
-      "componentKey": "7190e284d345ae19a679a16ed7bceafbd54073ca",
-      "semanticColor": "color/icon/gray-light"
-    },
-    "close": {
-      "sourceNode": "540:6156",
-      "name": "ic_닫기",
-      "variant": { "Property 1": "Solid" },
-      "componentKey": "54469d54f16ed38de2d7b420b0e2195e4cf7c118",
-      "semanticColor": "color/icon/gray-light"
-    },
-    "notification": {
-      "sourceNode": "540:6176",
-      "name": "ic_알림(신규)",
-      "variant": { "Property 1": "Line" },
-      "componentKey": "13cf1b580ec982fda488f9318c6821930ddfb26e",
-      "semanticColors": ["color/icon/gray-dark", "color/icon/red"]
-    },
-    "menuArrowDown": {
-      "approvedSourceFileKey": "YcBbW9e0MTR9T3W5Sz0Ukx",
-      "approvedSourceSetNodeId": "419:69",
-      "approvedSourceSetKey": "0127e7176f4fba52d36fe49d5c1f5bc6bba13bbf",
-      "name": "ic_화살표, 더보기, 다음장",
-      "variant": { "Property 1": "Solid" },
-      "componentNodeId": "419:68",
-      "componentKey": "6babc3f493e48be1e7191a7b8a68945833039fe8",
-      "baseDirection": "right",
-      "rotationDegrees": -90,
-      "resultDirection": "down",
-      "semanticColor": "color/icon/gray-light",
-      "legacyUnimportableComponentKey": "e694d94214ea8234e253e65d6d33dce6dde68eac"
+    "variantAxisOptionOrder": {
+      "reportedByApi": [
+        "Standard / Title",
+        "Standard / Title + Close",
+        "Home / Title + Subtitle + 1 Icon",
+        "Home / Title",
+        "Standard / No Title",
+        "Standard / No Title + Close"
+      ],
+      "status": "ACCEPTED - API 제약으로 생성 순서 고정, 수용 결정 (오케스트레이터 2026-08-26, ND-1 (A))",
+      "evidence": "componentPropertyDefinitions.Type.variantOptions 는 노드 id 오름차순(=variant 컴포넌트 생성 순서)으로 고정. 레이어 재정렬·좌표 재배치·Type 값 2-pass 재등록 모두 이 값을 바꾸지 못했다.",
+      "whyAccepted": "바꾸려면 variant 재생성이 필요하고 그러면 세트 key 가 바뀌어 인스턴스 18개와 registry 의 componentSetKey 를 다시 엮어야 한다. 얻는 것은 속성 패널 목록 순서뿐이라 비용이 이익보다 크다.",
+      "doNotTouch": true
     }
   },
-  "semanticVariables": {
-    "color/navigation/bg": { "id": "VariableID:477:4415", "key": "b3d90464beb1efcd71e4fba93ee6ad89a5a8baf9" },
-    "color/bg/level-2": { "id": "VariableID:687:17886", "key": "529bc62675da2e2132ad76165d925b34073e1dfd" },
-    "color/text/title/primary": { "id": "VariableID:8:1127", "key": "6fe0064516087189c9936a68c004d9a210594a9f" },
-    "color/text/body/tertiary": { "id": "VariableID:8:1118", "key": "7304d389c39ec1fcebe21c54233ac5570c9355f3" },
-    "color/icon/gray-light": { "id": "VariableID:8:1070", "key": "4537c49ae56bd335f47651dd58c48dcb0d3515e4" },
-    "color/icon/gray-dark": { "id": "VariableID:8:1069", "key": "25cd9e49d5b8bd706b0a779088fe64f2b6388ced" },
-    "color/icon/red": { "id": "VariableID:8:1071", "key": "5a8593f122887004fe0c2d448693a0895d4b3de7" }
+  "v35_changes": {
+    "canonicalPresentation": {
+      "lightComponentSet": {"id": "1760:7247", "x": 64, "y": 3036, "width": 1816, "height": 336, "mode": "Light"},
+      "removedRedundantLightFrame": {"id": "1790:7354", "name": "Mobile Header — Spec Light"},
+      "darkInstanceBoard": {"id": "1791:7535", "x": 64, "y": 3452, "width": 1816, "height": 336, "mode": "Dark", "instanceCount": 6},
+      "gap": 80,
+      "rowsEach": ["Home (2 cells)", "Standard (4 cells)"],
+      "cellLabels": "6개 Type 이름을 Light 세트 위 캔버스 라벨과 Dark 보드 내부 라벨로 동일하게 표시",
+      "sectionAfter": {"id": "1654:38976", "width": 2296, "height": 3852}
+    },
+    "sourceSync": {
+      "buildComponents": "SpecOpts.cellLabelAt 추가. decorateSetFlat이 실제 Light 세트, buildSpec이 Dark 인스턴스 보드만 생성",
+      "registryVersion": "0.4.0",
+      "registryUsageExample": "1760:7247",
+      "registrySpecSheets": {"light": "1760:7247", "dark": "1791:7535"}
+    },
+    "integrity": {
+      "componentSetKey": "9fd8509a9e73c1279d9efb2088bb591658ce29f5",
+      "variantCount": 6,
+      "lightComponentCount": 6,
+      "darkSpecInstanceCount": 6,
+      "statusBarInheritancePreserved": true
+    }
   },
-  "pretendardTextStyles": {
-    "title/18M": { "id": "S:94381c5e4d9aca8038bb6d89797aa494172f8f0b,", "key": "94381c5e4d9aca8038bb6d89797aa494172f8f0b" },
-    "title/18B": { "id": "S:b6d6c9c56e31447617e0a659862acdcbe4d2b812,", "key": "b6d6c9c56e31447617e0a659862acdcbe4d2b812" },
-    "body/14R": { "id": "S:35d6b9f34501f327f4672b8393023695d2f36c5d,", "key": "35d6b9f34501f327f4672b8393023695d2f36c5d" }
+  "v34_changes": {
+    "colorPolicy": {
+      "home": {
+        "semantic": "color/bg/home",
+        "lightAlias": "base/home-bg (VariableID:1797:2)",
+        "darkAlias": "blue-dark/50 (VariableID:8:748)",
+        "changedVariable": "VariableID:1797:3"
+      },
+      "standard": {
+        "semantic": "color/bg/level-0 (VariableID:687:17884)",
+        "mutatedRoots": ["1757:7099", "1757:7129", "1760:7217", "1781:7359"],
+        "mutatedAppBars": ["1757:7123", "1757:7153", "1760:7241", "1781:7361"]
+      },
+      "statusBars": {
+        "ids": ["1759:7205", "1759:7168", "1757:7100", "1757:7130", "1760:7218", "1781:7360"],
+        "fillCountEach": 0,
+        "explicitVariableModesEach": {},
+        "result": "부모 Home/Standard 배경이 상태표시줄부터 AppBar까지 한 색으로 이어짐"
+      }
+    },
+    "specLayout": {
+      "light": {"id": "1790:7354", "x": 64, "y": 3533, "width": 1816, "height": 336},
+      "dark": {"id": "1791:7535", "x": 64, "y": 3949, "width": 1816, "height": 336},
+      "gap": 80,
+      "rowsEach": ["Home (2 cells)", "Standard (4 cells)"],
+      "removedExtraRows": ["1790:7362", "1791:7543"]
+    },
+    "cleanup": {
+      "removedRoot": {"id": "1760:7248", "name": "Mobile Header / Preview"},
+      "removedDescendantCountIncludingRoot": 194,
+      "registryUsageExampleMovedTo": "1790:7354",
+      "sectionAfter": {"id": "1654:38976", "width": 2296, "height": 4349}
+    },
+    "integrity": {
+      "componentSet": "1760:7247",
+      "componentSetKey": "9fd8509a9e73c1279d9efb2088bb591658ce29f5",
+      "variantCount": 6,
+      "lightSpecInstanceCount": 6,
+      "darkSpecInstanceCount": 6,
+      "previewExistsAfter": false
+    }
   },
-  "createdNodeIds": [
-    "1757:7099", "1757:7100", "1757:7123", "1757:7124", "1757:7127", "1757:7128",
-    "1757:7129", "1757:7130", "1757:7153", "1757:7154", "1757:7157", "1757:7158",
-    "1758:7158", "1758:7159", "1758:7182", "1758:7183", "1758:7184", "1758:7185", "1758:7190",
-    "1759:7167", "1759:7168", "1759:7191", "1759:7192", "1759:7193", "1759:7194", "1759:7195", "1759:7198", "1759:7199",
-    "1759:7204", "1759:7205", "1759:7228", "1759:7229",
-    "1760:7217", "1760:7218", "1760:7241", "1760:7242", "1760:7245", "1760:7246",
-    "1760:7247",
-    "1760:7248", "1760:7249", "1760:7250", "1760:7280", "1760:7312", "1760:7313", "1760:7348", "1760:7385", "1760:7386", "1760:7412"
+  "v33_changes": {
+    "ND-2_titleRowGap": {
+      "node": "1759:7193 (Title, Home / Title + Subtitle + 1 Icon 안의 타이틀 행)",
+      "change": "itemSpacing 0 -> 4",
+      "codeRef": "titleRow.itemSpacing = 4",
+      "visual": "아래화살표가 오른쪽으로 정확히 4px 이동 (rel x 87 -> 91). 의도된 정렬 변경",
+      "decision": "오케스트레이터: 코드에 맞춰 4 로"
+    },
+    "ND-3_subtitleBlockHeight": {
+      "defectOwner": "코드 정본 (오케스트레이터가 build-components.ts 를 먼저 수정함)",
+      "codeNow": "copy.primaryAxisSizingMode/counterAxisSizingMode = AUTO (hug), 이 유형만 appBar.paddingTop/Bottom = 6",
+      "figmaApplied": [
+        {
+          "node": "1759:7192 (Title + Subtitle)",
+          "change": "primaryAxisSizingMode -> AUTO (높이 hug)",
+          "resultHeight": 44
+        },
+        {
+          "node": "1759:7191 (AppBar)",
+          "change": "paddingTop/Bottom 12 -> 6",
+          "result": "44 + 6 + 6 = 56"
+        }
+      ],
+      "scopeGuard": "이 유형에만 적용. 나머지 5종 AppBar 는 12/12 유지 (읽기 재확인: 1759:7228·1757:7123·1757:7153·1760:7241·1781:7361 모두 pad 12/16/12/*)",
+      "clippingCheck": {
+        "barHeight": 56,
+        "compHeight": 99,
+        "blockTop": 49,
+        "blockBottom": 93,
+        "barBottom": 99,
+        "blockInsideBar": true,
+        "subtitleClipped": false,
+        "renderConfirmed": "1759:7167 단독 렌더로 육안 확인 - 타이틀·화살표·서브타이틀·알림 모두 온전, 잘림 없음"
+      },
+      "note": "블록이 이미 세로 중앙 정렬돼 있었기 때문에 여백 12->6 변경은 픽셀 이동을 만들지 않았다. 구조/캔논 정렬이고 시각 효과는 0 이다."
+    },
+    "ND-4_captionNaming": {
+      "change": "Caption / -> Label / 통일 (5개가 이미 Label/)",
+      "renamed": [
+        {
+          "id": "1790:7372",
+          "from": "Caption / Home / Title",
+          "to": "Label / Home / Title",
+          "sheet": "Spec Light"
+        },
+        {
+          "id": "1791:7553",
+          "from": "Caption / Home / Title",
+          "to": "Label / Home / Title",
+          "sheet": "Spec Dark"
+        }
+      ],
+      "sweep": "Navigation 섹션 1654:38976 전체에서 /^Caption\\s*\\// 잔존 0건"
+    },
+    "ND-5_pretendardMissing": {
+      "status": "환경 제약으로 수용",
+      "guidance": "텍스트 편집이 필요하면 일시 폰트 + setTextStyleIdAsync 재바인딩 (H3). 이번 v3.3 은 텍스트 편집 없음 - 레이아웃 속성과 레이어 이름만 변경"
+    }
+  },
+  "visualValidation": {
+    "method": "Figma 최종 렌더 육안 검문 + 구조 read-back",
+    "set": {"file": "mobile-header-set-v34.png", "size": "820x417", "result": "6 variants, clipping/overlap 없음"},
+    "specLight": {"file": "mobile-header-spec-light-v34.png", "size": "1816x336", "result": "Home 2 + Standard 4 한 행, 잘림 없음"},
+    "specDark": {"file": "mobile-header-spec-dark-v34.png", "size": "1816x336", "result": "Home blue-dark/50, Standard bg-level-0, 상태표시줄 이음매 없음"},
+    "conclusion": "요청한 색상·4열·상하 배치 외 시각 결함 없음"
+  },
+  "scans": {
+    "binding": {
+      "homeRootsAndAppBars": "VariableID:1797:3",
+      "standardRootsAndAppBars": "VariableID:687:17884",
+      "statusBarFillCount": 0,
+      "statusBarExplicitModeCount": 0,
+      "verdict": "PASS"
+    },
+    "layout": {
+      "lightRows": 2,
+      "darkRows": 2,
+      "standardCellsPerSheet": 4,
+      "darkBelowLight": true,
+      "gap": 80,
+      "previewExists": false,
+      "verdict": "PASS"
+    }
+  },
+  "screenshots": {
+    "set": "reports/figma-library-build/mobile-header/shots/mobile-header-set-v34.png",
+    "specLight": "reports/figma-library-build/mobile-header/shots/mobile-header-spec-light-v34.png",
+    "specDark": "reports/figma-library-build/mobile-header/shots/mobile-header-spec-dark-v34.png"
+  },
+  "untouched": [
+    "StatusBar 정본 세트 (인스턴스 override 만 사용)",
+    "상태바 투명 배경·모드 핀 해제 (v3.1 유지)",
+    "스펙 시트 행 라벨 body/12M (river 결정 대기)",
+    "variant 드롭다운 축 순서 (ND-1 수용, 무변경)"
   ],
-  "mutatedExistingNodeIds": [
-    "1654:38976",
-    "I1757:7124;88:2272",
-    "I1757:7154;88:2272",
-    "I1757:7158;88:2278",
-    "I1758:7185;88:2638",
-    "I1758:7185;88:2639",
-    "I1758:7190;88:2278",
-    "I1759:7195;335:34",
-    "I1759:7195;335:35",
-    "I1759:7199;88:2638",
-    "I1759:7199;88:2639",
-    "I1760:7242;88:2272"
+  "needsDecision": [
+    {
+      "id": "ND-3b",
+      "topic": "Home 서브타이틀 유형의 AppBar 여백 6 을 원본에서 재확인 필요",
+      "detail": "코드 주석은 원본 540:6178 도 이 유형만 여백이 좁다고 하지만, 이번 빌더는 V2.4 원본을 직접 재실측하지 않았다. 값 근거는 코드 정본과 오케스트레이터 판단이다.",
+      "options": [
+        "(A) component-verifier 가 원본 540:6178 을 재실측해 6/6 확인",
+        "(B) 현 값 수용"
+      ]
+    }
   ],
-  "buildNotes": {
-    "gate34": "river-approved-2026-08-25",
-    "fontEntry": "Noto Sans Regular was used only as a transient writable font; Pretendard text styles were applied as the final text operation. Recorded final fontName values are Pretendard.",
-    "selfCorrection": "No committed geometry correction was needed after the component-set and preview screenshots; no overlap, clipping, or packing collapse was visible.",
-    "needsDecision": []
+  "openItemsCarriedOver": [
+    "❓c2 스펙 시트 행 라벨 11px vs body/12M (river 결정 대기)"
+  ],
+  "v3_2": {
+    "schemaVersion": 3,
+    "buildTarget": "Mobile Header",
+    "builtAt": "2026-08-26",
+    "buildRevision": "v3.2",
+    "builtBy": "figma-library-builder",
+    "verificationStatus": "NOT VERIFIED BY BUILDER - component-verifier owns the pass/fail judgement",
+    "planSource": "reports/figma-library-build/mobile-header/4-verification.md (v3.1 FAIL) + 2-plan-v2.md 「v3.1 이후 추가」",
+    "scope": "v3.1 검증에서 나온 ❌(a) 결함 수정 전용 - a1/a2/a4/a5 + c4/c5. c2/c3 는 river 결정 대기라 손대지 않음",
+    "file": {
+      "name": "SW UX GUIDE V3.0 TEST",
+      "fileKey": "cysG5U1udpQqVagYY1hWHW",
+      "page": {
+        "id": "5:5706",
+        "name": "Core"
+      },
+      "section": {
+        "id": "1654:38976",
+        "name": "Navigation"
+      }
+    },
+    "componentSet": {
+      "id": "1760:7247",
+      "key": "9fd8509a9e73c1279d9efb2088bb591658ce29f5",
+      "name": "Mobile Header",
+      "size": {
+        "w": 820,
+        "h": 417,
+        "x": 64,
+        "y": 3036
+      },
+      "packing": {
+        "cols": 2,
+        "rows": 3,
+        "padding": 40,
+        "gapX": 20,
+        "gapY": 20,
+        "collapse": "none"
+      },
+      "orderVerifiedBy": "read-back after mutation (use_figma read-only call), not assumed",
+      "variantOrder": [
+        {
+          "i": 0,
+          "id": "1759:7204",
+          "name": "Type=Home / Title",
+          "x": 40,
+          "y": 40
+        },
+        {
+          "i": 1,
+          "id": "1759:7167",
+          "name": "Type=Home / Title + Subtitle + 1 Icon",
+          "x": 420,
+          "y": 40
+        },
+        {
+          "i": 2,
+          "id": "1757:7099",
+          "name": "Type=Standard / Title",
+          "x": 40,
+          "y": 159
+        },
+        {
+          "i": 3,
+          "id": "1757:7129",
+          "name": "Type=Standard / Title + Close",
+          "x": 420,
+          "y": 159
+        },
+        {
+          "i": 4,
+          "id": "1760:7217",
+          "name": "Type=Standard / No Title",
+          "x": 40,
+          "y": 278
+        },
+        {
+          "i": 5,
+          "id": "1781:7359",
+          "name": "Type=Standard / No Title + Close",
+          "x": 420,
+          "y": 278
+        }
+      ],
+      "matchesCodeCanon": "MOBILE_HEADER_TYPES (build-components.ts:2968-2975) 와 동일 순서",
+      "defaultVariant": {
+        "name": "Type=Home / Title",
+        "typeValue": "Home / Title",
+        "note": "재정렬 결과 첫 번째 variant 가 default 가 됨 (v3.1 은 Standard / Title 이었음)"
+      },
+      "variantAxisOptionOrder": {
+        "reportedByApi": [
+          "Standard / Title",
+          "Standard / Title + Close",
+          "Home / Title + Subtitle + 1 Icon",
+          "Home / Title",
+          "Standard / No Title",
+          "Standard / No Title + Close"
+        ],
+        "status": "NOT FIXED - Plugin API 로 쓰기 불가",
+        "evidence": "레이어 순서 재정렬·좌표 재배치·Type 값 2-pass 재등록(temp rename -> 복원) 3가지를 모두 시도했으나 componentPropertyDefinitions.Type.variantOptions 는 불변. 보고된 순서는 노드 id 오름차순(1757:7099 < 1757:7129 < 1759:7167 < 1759:7204 < 1760:7217 < 1781:7359) 과 정확히 일치 = variant 컴포넌트 생성 순서로 고정된 값",
+        "wouldRequire": "variant 컴포넌트를 캔논 순서로 재생성 -> 세트 key 변경 + 기존 인스턴스 18개 재연결 필요. 빌더가 임의로 하지 않음 (needs-decision)"
+      }
+    },
+    "chunk1_arrow_icon": {
+      "defect": "a1 아래화살표 색 오연결 / a2 크기",
+      "node": "1759:7195 (Menu Arrow Down, Home / Title + Subtitle + 1 Icon 내부)",
+      "colorRebind": {
+        "from": "color/icon/gray-light",
+        "to": "color/icon/gray-dark",
+        "variableId": "VariableID:8:1069",
+        "appliedTo": [
+          {
+            "id": "I1759:7195;335:34",
+            "name": "Fill 1",
+            "props": [
+              "fills"
+            ],
+            "paintVisible": false
+          },
+          {
+            "id": "I1759:7195;335:35",
+            "name": "Stroke 2",
+            "props": [
+              "fills",
+              "strokes"
+            ],
+            "paintVisible": "fill hidden / stroke visible"
+          }
+        ],
+        "note": "검증자 실측대로 보이는 획은 stroke 다. fill 만이 아니라 stroke 도 재바인딩했고, hidden fill 도 코드(rebindIconColor)와 같게 gray-dark 로 통일",
+        "variableResolvedWithoutLiteral": "Back 아이콘(1757:7124)에 이미 바인딩된 변수를 역참조해 획득 - 스크립트에 hex 리터럴 0개 (H2)"
+      },
+      "size": {
+        "measured": [
+          24,
+          24
+        ],
+        "action": "변경 없음 - 이미 24x24",
+        "rotation": -90
+      }
+    },
+    "chunk2_variant_order": {
+      "defect": "a4 세트 variant 나열 순서",
+      "actions": [
+        "set.insertChild 로 자식 순서를 캔논 순서로 재배치",
+        "좌표 재패킹 (2열 3행, padding 40, gap 20)",
+        "set.resize(820,417) 로 hug 유지 - 붕괴 없음",
+        "Type 값 2-pass 재등록 시도(축 순서 변경 목적, 실패)"
+      ],
+      "instanceIntegrity": {
+        "before": 18,
+        "after": 18,
+        "perVariant": 3,
+        "detached": 0,
+        "note": "temp rename 2-pass 후에도 인스턴스 18개 전부 정상 연결 유지"
+      },
+      "residual": "variantAxisOptionOrder 참조 - 드롭다운 축 순서는 미해결"
+    },
+    "chunk3_alt_naming": {
+      "defect": "a5 폐기된 Alt Title 잔존",
+      "renamed": [
+        {
+          "id": "1790:7373",
+          "from": "Cell / Home / Title + Alt Title",
+          "to": "Cell / Home / Title",
+          "sheet": "Spec Light"
+        },
+        {
+          "id": "1791:7554",
+          "from": "Cell / Home / Title + Alt Title",
+          "to": "Cell / Home / Title",
+          "sheet": "Spec Dark"
+        }
+      ],
+      "sweep": {
+        "scope": "Navigation 섹션 1654:38976 전체 (세트·Spec Light·Spec Dark·Preview 포함)",
+        "regex": "/alt/i",
+        "remainingHits": 0
+      }
+    },
+    "chunk4_code_alignment": {
+      "defect": "c5 코드-Figma 구조 드리프트 / c4 Preview 순서",
+      "canonRef": "plugins/figma-vars-installer/src/build-components.ts buildMobileHeaderVariant (2978-3106)",
+      "visualProof": {
+        "method": "세트 렌더 픽셀 diff (chunk4 직전 vs 직후, 820x417)",
+        "changedPixels": 0,
+        "bbox": null,
+        "files": [
+          "scratchpad/set-before-c4.png",
+          "scratchpad/set-after-c4.png"
+        ],
+        "conclusion": "구조 정렬로 시각이 1픽셀도 바뀌지 않음"
+      },
+      "applied": [
+        {
+          "item": "AppBar itemSpacing 0 -> 8",
+          "scope": "Standard 4종",
+          "codeRef": "appBar.itemSpacing = 8 (isHome 아닐 때만)",
+          "visual": "Back 16 / Title 중심 180 / 우측 312 불변",
+          "nodes": [
+            "1757:7123",
+            "1757:7153",
+            "1760:7241",
+            "1781:7361"
+          ]
+        },
+        {
+          "item": "AppBar fill 없음 -> 컴포넌트와 같은 Variable 바인딩",
+          "scope": "6종 전부",
+          "codeRef": "appBar.fills = [boundPaint(scv(maps, isHome ? 'color/bg/home' : 'color/navigation/bg'))]",
+          "method": "부모 컴포넌트의 기존 bound paint 를 복제 - hex 리터럴 없음 (H2)",
+          "result": "Standard 4종 color/navigation/bg, Home 2종 color/bg/home",
+          "visual": "부모와 동일 색이라 무변화"
+        },
+        {
+          "item": "StatusBar 인스턴스 layoutAlign INHERIT -> STRETCH",
+          "scope": "6종",
+          "codeRef": "inst.layoutAlign = \"STRETCH\"",
+          "visual": "이미 360 폭이라 무변화"
+        },
+        {
+          "item": "End Spacer -> Right spacer 개명",
+          "scope": "Standard / Title, Standard / No Title",
+          "nodes": [
+            "1757:7128",
+            "1760:7246"
+          ],
+          "codeRef": "makeMobileHeaderSlot(\"Right spacer\")"
+        },
+        {
+          "item": "Flexible Empty Space -> Title 개명",
+          "scope": "Standard / No Title, Standard / No Title + Close",
+          "nodes": [
+            "1760:7245",
+            "1781:7363"
+          ],
+          "codeRef": "코드는 No Title 도 같은 grow 프레임을 \"Title\" 로 만든다 (텍스트만 없음)"
+        },
+        {
+          "item": "빈 슬롯 프레임에 auto-layout 부여 (HORIZONTAL/CENTER/CENTER/FIXED)",
+          "scope": "Right spacer·Title 빈 슬롯",
+          "codeRef": "makeMobileHeaderSlot",
+          "visual": "빈 프레임이라 무변화"
+        },
+        {
+          "item": "타이틀 래퍼 프레임 신설 - TEXT 직접 -> grow FRAME \"Title\" 안의 TEXT",
+          "scope": "Standard / Title, Standard / Title + Close, Home / Title",
+          "codeRef": "makeMobileHeaderGrowFrame(\"Title\", \"CENTER\"|\"MIN\")",
+          "createdFrames": [
+            "1809:17467",
+            "1809:17468",
+            "1809:17481"
+          ],
+          "visual": "텍스트 절대좌표 before/after 완전 동일 (56,59.5,248x23 / 20,59.5,71x23)"
+        },
+        {
+          "item": "Home AppBar primaryAxisAlignItems -> CENTER + 타이틀 블록 layoutGrow 1",
+          "scope": "Home 2종",
+          "codeRef": "copy.layoutGrow = 1 / appBar.primaryAxisAlignItems = CENTER",
+          "visual": "SPACE_BETWEEN 을 grow 로 대체 - 알림 아이콘 x=312 불변, 타이틀 블록 x=20 불변"
+        },
+        {
+          "item": "Title Block -> \"Title + Subtitle\", Title Row -> \"Title\" 개명",
+          "scope": "Home / Title + Subtitle + 1 Icon",
+          "nodes": [
+            "1759:7192",
+            "1759:7193"
+          ],
+          "codeRef": "copy.name = \"Title + Subtitle\" / titleRow.name = \"Title\""
+        },
+        {
+          "item": "Preview 순서 재배치 - Home 행을 맨 위로, 행 안에서 Home / Title 을 먼저로, 행 이름 재번호",
+          "scope": "1760:7248",
+          "result": [
+            "Preview Row 1 = Home / Title, Home / Title + Subtitle + 1 Icon",
+            "Preview Row 2 = Standard / Title, Standard / Title + Close",
+            "Preview Row 3 = Standard / No Title, Standard / No Title + Close"
+          ],
+          "nodes": [
+            "1760:7385",
+            "1760:7386",
+            "1760:7249",
+            "1760:7312"
+          ]
+        }
+      ],
+      "notAppliedOnPurpose": [
+        {
+          "item": "Title Row itemSpacing 0 -> 4",
+          "codeRef": "titleRow.itemSpacing = 4",
+          "reason": "적용하면 화살표가 4px 오른쪽으로 밀려 시각이 바뀐다. 지시서 \"구조를 맞추다가 시각이 달라지면 그건 잘못\" 에 따라 보류하고 needs-decision 으로 올림"
+        },
+        {
+          "item": "Title + Subtitle 높이 FIXED 32",
+          "codeRef": "copy.primaryAxisSizingMode = \"FIXED\"; copy.resize(1, 32)",
+          "reason": "실제 콘텐츠 높이는 44 (타이틀 24 + gap 2 + 서브타이틀 18). 코드대로 32 고정하면 서브타이틀이 잘린다 - 코드 쪽 결함 후보라 판단해 Figma 는 AUTO(44) 유지하고 needs-decision 으로 올림"
+        },
+        {
+          "item": "TEXT 노드 hug 전환 및 이름 정렬",
+          "reason": "MCP 환경에 Pretendard 폰트가 설치돼 있지 않아 loadFontAsync 실패 -> textAutoResize/characters 등 폰트 의존 변경 불가. 재부모화(appendChild)만 수행했고 텍스트는 기존 FILL/CENTER 유지 - 렌더 결과는 코드 구조와 동일"
+        },
+        {
+          "item": "스펙 시트 캡션 이름 Caption/ vs Label/ 불일치",
+          "reason": "검증 보고서의 (부수) 항목이고 계획서에 규칙 선언이 없음 - 임의 개명 금지, needs-decision"
+        }
+      ]
+    },
+    "scans": {
+      "font": {
+        "method": "데이터 스캔 (getStyledTextSegments) - 렌더 판정 아님 (H3)",
+        "roots": [
+          "1760:7247",
+          "1790:7354",
+          "1791:7535",
+          "1760:7248"
+        ],
+        "textCount": 88,
+        "offenderCount": 0,
+        "histogram": {
+          "Pretendard Medium": 74,
+          "Pretendard Bold": 10,
+          "Pretendard Regular": 4
+        },
+        "verdict": "PASS (전 텍스트 Pretendard)"
+      },
+      "paintBinding": {
+        "roots": [
+          "1760:7247",
+          "1790:7354",
+          "1791:7535",
+          "1760:7248"
+        ],
+        "solidPaintCount": 492,
+        "unboundCount": 24,
+        "unboundVisibleCount": 0,
+        "unboundLocation": "전부 StatusBar 인스턴스 내부의 숨김 wifi 프레임 fill (visible=false). 이번 빌드가 저작한 노드가 아니며 StatusBar 정본 소관",
+        "verdict": "PASS (보이는 미바인딩 페인트 0건)"
+      }
+    },
+    "screenshots": {
+      "set": "reports/figma-library-build/mobile-header/shots/mobile-header-set-v32.png",
+      "specLight": "reports/figma-library-build/mobile-header/shots/mobile-header-spec-light-v32.png",
+      "specDark": "reports/figma-library-build/mobile-header/shots/mobile-header-spec-dark-v32.png"
+    },
+    "untouched": [
+      "StatusBar 정본 세트 (인스턴스 override 만 사용)",
+      "상태바 인스턴스 투명 배경·모드 핀 해제 상태 (v3.1 유지)",
+      "color/bg/home 다크값 (❓c3 river 결정 대기)",
+      "스펙 시트 행 라벨 크기 body/12M (❓c2 river 결정 대기)"
+    ],
+    "needsDecision": [
+      {
+        "id": "ND-1",
+        "topic": "세트 드롭다운의 variant 축 순서",
+        "detail": "레이어 순서·좌표·기본 variant 는 캔논 순서로 맞췄지만, 속성 패널 드롭다운 순서는 Plugin API 로 쓸 수 없다(노드 생성 순서 고정). 바꾸려면 variant 컴포넌트를 재생성해야 하고 그러면 세트 key 가 바뀌어 기존 인스턴스 18개를 다시 연결해야 한다.",
+        "options": [
+          "(A) 현 상태 수용 - 레이어/캔버스 순서만 캔논",
+          "(B) 세트 재생성 후 인스턴스 18개 재연결"
+        ]
+      },
+      {
+        "id": "ND-2",
+        "topic": "타이틀과 아래화살표 사이 간격",
+        "detail": "코드는 4px, Figma 는 0px. 맞추면 화살표가 4px 이동해 시각이 달라진다.",
+        "options": [
+          "(A) Figma 를 4 로 (시각 변경 허용)",
+          "(B) 코드를 0 으로"
+        ]
+      },
+      {
+        "id": "ND-3",
+        "topic": "Home 서브타이틀 블록 높이",
+        "detail": "코드는 높이를 32 로 고정하는데 실제 콘텐츠는 44 다. 코드대로 재생성하면 서브타이틀이 잘릴 수 있다.",
+        "options": [
+          "(A) 코드를 hug(AUTO) 로 수정",
+          "(B) 의도된 고정값이면 근거 선언"
+        ]
+      },
+      {
+        "id": "ND-4",
+        "topic": "스펙 시트 캡션 레이어 이름",
+        "detail": "Home / Title 만 Caption/ 이고 나머지 5개는 Label/ 이다 (시트 2벌 동일).",
+        "options": [
+          "(A) Label/ 로 통일",
+          "(B) Caption/ 로 통일"
+        ]
+      },
+      {
+        "id": "ND-5",
+        "topic": "MCP 환경에 Pretendard 미설치",
+        "detail": "폰트를 로드해야 하는 텍스트 편집(characters·textAutoResize 등)이 이 환경에서 불가능하다. 이번엔 우회했지만 앞으로 텍스트를 고쳐야 하는 작업은 막힌다.",
+        "options": [
+          "(A) MCP 환경에 Pretendard 설치",
+          "(B) 텍스트 편집이 필요한 작업은 다른 경로로"
+        ]
+      }
+    ],
+    "v3_1": {
+      "schemaVersion": 3,
+      "buildTarget": "Mobile Header",
+      "builtAt": "2026-08-26",
+      "buildRevision": "v3.1",
+      "builtBy": "figma-library-builder",
+      "verificationStatus": "NOT VERIFIED BY BUILDER - component-verifier owns the pass/fail judgement",
+      "planSource": "river 결정 4건 (오케스트레이터 지시서, 2026-08-26)",
+      "file": {
+        "name": "SW UX GUIDE V3.0 TEST",
+        "fileKey": "cysG5U1udpQqVagYY1hWHW",
+        "page": {
+          "id": "5:5706",
+          "name": "Core"
+        },
+        "section": {
+          "id": "1654:38976",
+          "name": "Navigation"
+        }
+      },
+      "chunk1_variables": {
+        "createdInFigma": true,
+        "note": "두 Variable 모두 Figma 파일에 없어서 신규 생성. 정본 vars-data.ts 문자열 그대로.",
+        "variables": [
+          {
+            "name": "base/home-bg",
+            "id": "VariableID:1797:2",
+            "key": "c8dc025a69b20c3f05793179c5017e2f7ea4e8e7",
+            "collection": "Foundation V2 (VariableCollectionId:8:709)",
+            "mode": {
+              "Default": "8:0"
+            },
+            "value": "#F5F6FB (r 245/255, g 246/255, b 251/255) - Foundation 레이어라 raw 값 허용",
+            "scopes": [
+              "ALL_SCOPES"
+            ],
+            "convention": "base/white(VariableID:8:710)와 동일 컬렉션·동일 단일모드·동일 scopes"
+          },
+          {
+            "name": "color/bg/home",
+            "id": "VariableID:1797:3",
+            "key": "b3fc1183be7d25670645c7424395b83507767d8d",
+            "collection": "Semantic Color V2 (VariableCollectionId:8:963)",
+            "light": {
+              "mode": "8:1",
+              "alias": "base/home-bg (VariableID:1797:2)"
+            },
+            "dark": {
+              "mode": "8:2",
+              "alias": "gray-dark/50 (VariableID:8:728)"
+            },
+            "scopes": [
+              "FRAME_FILL",
+              "SHAPE_FILL"
+            ],
+            "convention": "color/bg/level-2(VariableID:687:17886)와 동일 컬렉션·동일 scopes·동일 alias 방식(raw hex 미사용)"
+          }
+        ]
+      },
+      "chunk2_rename": {
+        "variant": {
+          "id": "1759:7204",
+          "from": "Type=Home / Title + Alt Title",
+          "to": "Type=Home / Title"
+        },
+        "text": {
+          "id": "1759:7229",
+          "from": "홈-alt 타이틀",
+          "to": "홈 타이틀",
+          "finalFontName": "Pretendard Bold",
+          "textStyleId": "S:b6d6c9c56e31447617e0a659862acdcbe4d2b812, (title/18B)",
+          "method": "Pretendard 로컬 미설치 → 일시 폰트로 characters 기입 후 setTextStyleIdAsync 로 정본 재바인딩 (H3)"
+        },
+        "instanceRemap": {
+          "result": "자동 remap - 3개 인스턴스 모두 mainComponent 1759:7204 유지, 문구 반영됨",
+          "instances": [
+            "1760:7386",
+            "1790:7535",
+            "1791:7716"
+          ]
+        },
+        "layerRenames": [
+          {
+            "id": "1760:7386",
+            "to": "Preview / Home / Title"
+          },
+          {
+            "id": "1790:7535",
+            "to": "Spec / Home / Title"
+          },
+          {
+            "id": "1791:7716",
+            "to": "Spec / Home / Title"
+          }
+        ]
+      },
+      "chunk3_background_and_statusbar": {
+        "homeBackground": {
+          "boundNow": "color/bg/home (VariableID:1797:3)",
+          "method": "figma.variables.setBoundVariableForPaint (raw hex 없음 - H2)",
+          "componentFills": [
+            {
+              "id": "1759:7167",
+              "was": "color/bg/level-2 (VariableID:687:17886)"
+            },
+            {
+              "id": "1759:7204",
+              "was": "color/navigation/bg (VariableID:477:4415)"
+            }
+          ],
+          "appBarFills": {
+            "finding": "두 Home variant 의 AppBar 프레임(1759:7191, 1759:7228)은 fills 가 빈 배열이라 재바인딩할 대상이 없었다. 배경은 컴포넌트 프레임 fill 하나가 담당한다.",
+            "nodes": [
+              "1759:7191",
+              "1759:7228"
+            ],
+            "action": "변경 없음"
+          }
+        },
+        "standardBackground": {
+          "unchanged": "color/navigation/bg (VariableID:477:4415)",
+          "variants": [
+            "1757:7099",
+            "1757:7129",
+            "1760:7217",
+            "1781:7359"
+          ]
+        },
+        "statusBarModePin": {
+          "action": "clearExplicitVariableModeForCollection(Semantic Color V2)",
+          "was": {
+            "VariableCollectionId:8:963": "8:1 (Light)"
+          },
+          "now": "핀 없음 - 부모 Appearance 상속",
+          "nodes": [
+            "1757:7100",
+            "1757:7130",
+            "1760:7218",
+            "1781:7360",
+            "1759:7168",
+            "1759:7205"
+          ],
+          "statusBarFillVariable": "color/bg/level-0 (VariableID:687:17884)",
+          "canonicalStatusBarSetTouched": false,
+          "renderCheck": "Spec Dark 렌더에서 상태바 띠가 어두워진 것 확인 (spec-dark-v3.png)"
+        },
+        "statusBarTransparency": {
+          "appliedAt": "2026-08-26 (v3.1 - 오케스트레이터 지시로 V3-1 수정)",
+          "reason": "상태바 인스턴스가 자기 배경(color/bg/level-0)을 갖고 있어 헤더 본체 배경과 이음매가 생김. 1-inventory.md 기준 V2.4 원본은 프레임 전체(360x99)가 한 배경색이고 상태바 행은 따로 배경을 갖지 않았다.",
+          "action": "Mobile Header 안 StatusBar 인스턴스 6개의 fills override = [] (투명)",
+          "nodes": [
+            "1757:7100",
+            "1757:7130",
+            "1760:7218",
+            "1781:7360",
+            "1759:7168",
+            "1759:7205"
+          ],
+          "wasBoundTo": "color/bg/level-0 (VariableID:687:17884)",
+          "canonicalStatusBarSetTouched": false,
+          "canonicalCheckAfter": "StatusBar 정본 variant 1654:37365 은 fill 1개 · color/bg/level-0 바인딩 그대로 (미변경 확인)",
+          "statusBarContentUntouched": "시계/신호/와이파이/배터리/78% 텍스트·아이콘은 손대지 않음 - 배경 fill 만 제거",
+          "renderCheck": {
+            "light": "Home 2종이 상태바 영역부터 본체까지 한 색(color/bg/home)으로 이어짐 - 흰 띠 사라짐",
+            "dark": "6종 전부 띠 없이 이어짐 (Standard 4종 = color/navigation/bg 다크, Home 2종 = gray-dark/50)",
+            "legibility": "상태바 글자·아이콘이 Light 는 어두운 색, Dark 는 흰색으로 각각 읽힘 (최종 판정은 component-verifier)"
+          },
+          "screenshotsOverwritten": [
+            "shots/spec-light-v3.png",
+            "shots/spec-dark-v3.png"
+          ]
+        }
+      },
+      "chunk4_spec_sheets": {
+        "newLayout": {
+          "rows": 3,
+          "columnsPerRow": 2,
+          "order": [
+            [
+              "Home",
+              "Home / Title",
+              "Home / Title + Subtitle + 1 Icon"
+            ],
+            [
+              "Standard",
+              "Standard / Title",
+              "Standard / Title + Close"
+            ],
+            [
+              "Standard",
+              "Standard / No Title",
+              "Standard / No Title + Close"
+            ]
+          ]
+        },
+        "structureChange": "기존 6행(행라벨=variant 이름)을 3행 2열로 접었다. 행 라벨은 Home/Standard/Standard 로 새로 만든 TEXT 이고, 기존 6개 라벨 TEXT 는 각 셀 위의 캡션으로 재사용해 variant 이름이 계속 보이게 했다(기존 시트가 이름을 라벨로 보여주던 방식 계승).",
+        "cellGroup": "Cell Group = VERTICAL auto-layout(itemSpacing 6, fills 없음) = 캡션 TEXT(384w) + 기존 셀 프레임(384x99)",
+        "instancesUnchanged": "셀 안의 인스턴스 6개(시트당)는 그대로 - 세트 variant 인스턴스 유지, 재생성 없음",
+        "light": {
+          "id": "1790:7354",
+          "position": {
+            "x": 64,
+            "y": 3950
+          },
+          "size": {
+            "width": 1048,
+            "height": 472
+          },
+          "sizeBefore": {
+            "width": 664,
+            "height": 753
+          },
+          "rows": [
+            {
+              "label": "Home",
+              "rowFrame": "1790:7356",
+              "rowLabelText": "1799:7722",
+              "groups": [
+                {
+                  "group": "1799:7716",
+                  "caption": "1790:7372",
+                  "cell": "1790:7373",
+                  "instance": "1790:7535",
+                  "variant": "1759:7204"
+                },
+                {
+                  "group": "1799:7717",
+                  "caption": "1790:7369",
+                  "cell": "1790:7370",
+                  "instance": "1790:7498",
+                  "variant": "1759:7167"
+                }
+              ]
+            },
+            {
+              "label": "Standard",
+              "rowFrame": "1790:7359",
+              "rowLabelText": "1799:7723",
+              "groups": [
+                {
+                  "group": "1799:7718",
+                  "caption": "1790:7357",
+                  "cell": "1790:7358",
+                  "instance": "1790:7374",
+                  "variant": "1757:7099"
+                },
+                {
+                  "group": "1799:7719",
+                  "caption": "1790:7360",
+                  "cell": "1790:7361",
+                  "instance": "1790:7404",
+                  "variant": "1757:7129"
+                }
+              ]
+            },
+            {
+              "label": "Standard",
+              "rowFrame": "1790:7362",
+              "rowLabelText": "1799:7724",
+              "groups": [
+                {
+                  "group": "1799:7720",
+                  "caption": "1790:7363",
+                  "cell": "1790:7364",
+                  "instance": "1790:7436",
+                  "variant": "1760:7217"
+                },
+                {
+                  "group": "1799:7721",
+                  "caption": "1790:7366",
+                  "cell": "1790:7367",
+                  "instance": "1790:7466",
+                  "variant": "1781:7359"
+                }
+              ]
+            }
+          ],
+          "deletedRowFrames": [
+            "1790:7365",
+            "1790:7368",
+            "1790:7371"
+          ]
+        },
+        "dark": {
+          "id": "1791:7535",
+          "position": {
+            "x": 1192,
+            "y": 3950
+          },
+          "size": {
+            "width": 1048,
+            "height": 472
+          },
+          "sizeBefore": {
+            "width": 664,
+            "height": 753
+          },
+          "movedFrom": {
+            "x": 808
+          },
+          "moveReason": "Light 가 1048 로 넓어져 기존 x 808 이면 겹침 → 관례 간격 80px 유지해 x 1192 로 이동",
+          "rows": [
+            {
+              "label": "Home",
+              "rowFrame": "1791:7537",
+              "rowLabelText": "1799:7731",
+              "groups": [
+                {
+                  "group": "1799:7725",
+                  "caption": "1791:7553",
+                  "cell": "1791:7554",
+                  "instance": "1791:7716",
+                  "variant": "1759:7204"
+                },
+                {
+                  "group": "1799:7726",
+                  "caption": "1791:7550",
+                  "cell": "1791:7551",
+                  "instance": "1791:7679",
+                  "variant": "1759:7167"
+                }
+              ]
+            },
+            {
+              "label": "Standard",
+              "rowFrame": "1791:7540",
+              "rowLabelText": "1799:7732",
+              "groups": [
+                {
+                  "group": "1799:7727",
+                  "caption": "1791:7538",
+                  "cell": "1791:7539",
+                  "instance": "1791:7555",
+                  "variant": "1757:7099"
+                },
+                {
+                  "group": "1799:7728",
+                  "caption": "1791:7541",
+                  "cell": "1791:7542",
+                  "instance": "1791:7585",
+                  "variant": "1757:7129"
+                }
+              ]
+            },
+            {
+              "label": "Standard",
+              "rowFrame": "1791:7543",
+              "rowLabelText": "1799:7733",
+              "groups": [
+                {
+                  "group": "1799:7729",
+                  "caption": "1791:7544",
+                  "cell": "1791:7545",
+                  "instance": "1791:7617",
+                  "variant": "1760:7217"
+                },
+                {
+                  "group": "1799:7730",
+                  "caption": "1791:7547",
+                  "cell": "1791:7548",
+                  "instance": "1791:7647",
+                  "variant": "1781:7359"
+                }
+              ]
+            }
+          ],
+          "deletedRowFrames": [
+            "1791:7546",
+            "1791:7549",
+            "1791:7552"
+          ]
+        },
+        "section": {
+          "id": "1654:38976",
+          "width": 2296,
+          "height": 4790,
+          "resized": false,
+          "note": "Dark 우측 끝 x 2240 < 섹션 폭 2296 → 리사이즈 불필요"
+        }
+      },
+      "componentSet": {
+        "id": "1760:7247",
+        "key": "9fd8509a9e73c1279d9efb2088bb591658ce29f5",
+        "name": "Mobile Header",
+        "size": {
+          "width": 820,
+          "height": 417
+        },
+        "packingUnchanged": true,
+        "variantAxis": {
+          "name": "Type",
+          "values": [
+            "Standard / Title",
+            "Standard / Title + Close",
+            "Standard / No Title",
+            "Standard / No Title + Close",
+            "Home / Title + Subtitle + 1 Icon",
+            "Home / Title"
+          ]
+        }
+      },
+      "v3Changes": {
+        "createdNodeIds": [
+          "1799:7716",
+          "1799:7717",
+          "1799:7718",
+          "1799:7719",
+          "1799:7720",
+          "1799:7721",
+          "1799:7722",
+          "1799:7723",
+          "1799:7724",
+          "1799:7725",
+          "1799:7726",
+          "1799:7727",
+          "1799:7728",
+          "1799:7729",
+          "1799:7730",
+          "1799:7731",
+          "1799:7732",
+          "1799:7733"
+        ],
+        "createdVariableIds": [
+          "VariableID:1797:2",
+          "VariableID:1797:3"
+        ],
+        "removedNodeIds": [
+          "1790:7365",
+          "1790:7368",
+          "1790:7371",
+          "1791:7546",
+          "1791:7549",
+          "1791:7552"
+        ],
+        "mutatedNodeIds": [
+          "1759:7204",
+          "1759:7229",
+          "1759:7167",
+          "1757:7100",
+          "1757:7130",
+          "1760:7218",
+          "1781:7360",
+          "1759:7168",
+          "1759:7205",
+          "1790:7354",
+          "1790:7356",
+          "1790:7359",
+          "1790:7362",
+          "1790:7357",
+          "1790:7360",
+          "1790:7363",
+          "1790:7366",
+          "1790:7369",
+          "1790:7372",
+          "1791:7535",
+          "1791:7537",
+          "1791:7540",
+          "1791:7543",
+          "1791:7538",
+          "1791:7541",
+          "1791:7544",
+          "1791:7547",
+          "1791:7550",
+          "1791:7553",
+          "1760:7386",
+          "1790:7535",
+          "1791:7716"
+        ],
+        "structuralNotes": {
+          "combineAsVariants": "미사용",
+          "detach": "없음",
+          "rename": "variant 1개 + 인스턴스 레이어 3개 + 행 프레임 6개",
+          "instanceRemap": "1759:7204 rename 에 따른 자동 remap, 3개 인스턴스 정상",
+          "emptyContainers": "행 프레임 6개는 자식을 모두 옮긴 뒤 삭제 - 빈 컨테이너 잔존 없음"
+        },
+        "selfCorrection": [
+          {
+            "what": "createAutoLayout 이 남기는 기본 흰색 fill 이 신규 Cell Group 12개에 붙음 (Dark 시트에서 흰 블록·H2 위반)",
+            "fix": "12개 그룹 fills = [] 로 제거 (Light 6개는 사후 제거, Dark 6개는 생성 시점에 제거)"
+          }
+        ],
+        "fontScan": {
+          "method": "findAllWithCriteria TEXT 전수 fontName 스캔",
+          "scope": "1760:7247 + 1790:7354 + 1791:7535 (인스턴스 내부 포함)",
+          "textCount": 71,
+          "nonPretendardCount": 0,
+          "histogram": {
+            "Pretendard Medium": 60,
+            "Pretendard Bold": 8,
+            "Pretendard Regular": 3
+          }
+        },
+        "rawFillScanOnAuthoredNodes": {
+          "count": 0,
+          "scope": "인스턴스 내부를 제외한 프레임/컴포넌트/텍스트 전체"
+        },
+        "screenshots": {
+          "componentSet": "reports/figma-library-build/mobile-header/shots/component-set-v3.png",
+          "specLight": "reports/figma-library-build/mobile-header/shots/spec-light-v3.png",
+          "specDark": "reports/figma-library-build/mobile-header/shots/spec-dark-v3.png"
+        },
+        "needsDecision": [
+          {
+            "id": "V3-2",
+            "what": "Dark 에서 Standard 뒤로가기/닫기 아이콘 대비",
+            "detail": "v2 결정으로 color/icon/gray-dark 에 바인딩되어 있어 다크 배경에서 대비가 낮게 보인다. v3 지시 범위 밖."
+          },
+          {
+            "id": "V3-3",
+            "what": "행 라벨 텍스트 스타일 (v2 SD-1 계속)",
+            "detail": "기존 관례의 Pretendard Medium 11 에 대응하는 11px 정본 스타일이 없어 계속 body/12M 사용."
+          },
+          {
+            "id": "V3-4",
+            "what": "Preview 프레임(1760:7248) 배치",
+            "detail": "river 지시는 스펙 시트 2장만 재배치. Preview 는 v2 순서 그대로 두었다."
+          },
+          {
+            "id": "V3-5",
+            "what": "Dark 시트에서 Home 2종 셀의 경계가 잘 안 보인다",
+            "detail": "Home 다크 배경 gray-dark/50 이 스펙 시트 배경 color/bg/level-1 과 거의 같은 명도라 셀 윤곽이 사라진다. 이음매 문제와는 별개이며, 시트 표현(테두리 추가 등)의 문제인지 토큰 선택의 문제인지 판단 필요. 임의로 손대지 않음."
+          }
+        ],
+        "resolvedDecisions": [
+          {
+            "id": "V3-1",
+            "what": "Home/전체 variant 의 상태바 띠 색이 본체와 갈라지는 문제",
+            "resolution": "오케스트레이터 지시로 v3.1 에서 수정 - StatusBar 인스턴스 6개 배경 투명화. 상세는 chunk3_background_and_statusbar.statusBarTransparency"
+          }
+        ]
+      },
+      "v2": {
+        "schemaVersion": 2,
+        "buildTarget": "Mobile Header",
+        "builtAt": "2026-08-25",
+        "buildRevision": "v2",
+        "planDoc": "reports/figma-library-build/mobile-header/2-plan-v2.md",
+        "file": {
+          "name": "SW UX GUIDE V3.0 TEST",
+          "fileKey": "cysG5U1udpQqVagYY1hWHW",
+          "page": {
+            "id": "5:5706",
+            "name": "Core"
+          },
+          "section": {
+            "id": "1654:38976",
+            "name": "Navigation"
+          }
+        },
+        "componentSet": {
+          "id": "1760:7247",
+          "key": "9fd8509a9e73c1279d9efb2088bb591658ce29f5",
+          "name": "Mobile Header",
+          "keyUnchangedFromV1": true,
+          "position": {
+            "x": 64,
+            "y": 3036
+          },
+          "size": {
+            "width": 820,
+            "height": 417
+          },
+          "sizeUnchangedFromV1": true,
+          "variantAxis": {
+            "name": "Type",
+            "values": [
+              "Standard / Title",
+              "Standard / Title + Close",
+              "Standard / No Title",
+              "Standard / No Title + Close",
+              "Home / Title + Subtitle + 1 Icon",
+              "Home / Title + Alt Title"
+            ],
+            "orderMatchesPlanTable": true
+          },
+          "packing": {
+            "columns": 2,
+            "rows": 3,
+            "padding": 40,
+            "gap": 20,
+            "variantSize": {
+              "width": 360,
+              "height": 99
+            },
+            "repackedInV2": true
+          }
+        },
+        "variants": [
+          {
+            "order": 1,
+            "id": "1757:7099",
+            "key": "33bc42c89719c3fa4abff260ef85a337b7230457",
+            "name": "Type=Standard / Title",
+            "positionInSet": {
+              "x": 40,
+              "y": 40
+            },
+            "changedInV2": [
+              "back icon rebound to color/icon/gray-dark",
+              "repositioned by repack"
+            ],
+            "nodes": {
+              "statusBar": "1757:7100",
+              "appBar": "1757:7123",
+              "back": "1757:7124",
+              "title": "1757:7127",
+              "endSpacer": "1757:7128"
+            }
+          },
+          {
+            "order": 2,
+            "id": "1757:7129",
+            "key": "88da12f14f6c3535c37429fa8727f90d073d8ff7",
+            "name": "Type=Standard / Title + Close",
+            "positionInSet": {
+              "x": 420,
+              "y": 40
+            },
+            "changedInV2": [
+              "back+close icons rebound to color/icon/gray-dark"
+            ],
+            "nodes": {
+              "statusBar": "1757:7130",
+              "appBar": "1757:7153",
+              "back": "1757:7154",
+              "title": "1757:7157",
+              "close": "1757:7158"
+            }
+          },
+          {
+            "order": 3,
+            "id": "1760:7217",
+            "key": "b7d3dbec8ac32045752390ab0c2ca71a8e06eb6c",
+            "name": "Type=Standard / No Title",
+            "positionInSet": {
+              "x": 40,
+              "y": 159
+            },
+            "changedInV2": [
+              "back icon rebound to color/icon/gray-dark",
+              "repositioned by repack (was 420,278)"
+            ],
+            "nodes": {
+              "statusBar": "1760:7218",
+              "appBar": "1760:7241",
+              "back": "1760:7242",
+              "flexibleEmptySpace": "1760:7245",
+              "endSpacer": "1760:7246"
+            }
+          },
+          {
+            "order": 4,
+            "id": "1781:7359",
+            "key": "302b289dacfc8875304c741762e3908258b1ecdf",
+            "name": "Type=Standard / No Title + Close",
+            "positionInSet": {
+              "x": 420,
+              "y": 159
+            },
+            "newInV2": true,
+            "createdBy": "clone of 1760:7217 (Standard / No Title); End Spacer replaced by a Close instance cloned from 1757:7158",
+            "appBarTextNodeCount": 0,
+            "nodes": {
+              "statusBar": "1781:7360",
+              "appBar": "1781:7361",
+              "back": "1781:7362",
+              "flexibleEmptySpace": "1781:7363",
+              "close": "1781:7389"
+            }
+          },
+          {
+            "order": 5,
+            "id": "1759:7167",
+            "key": "02ad4f75b0d458dc1cf7a5328ae9e1121445d53b",
+            "name": "Type=Home / Title + Subtitle + 1 Icon",
+            "positionInSet": {
+              "x": 40,
+              "y": 278
+            },
+            "changedInV2": [
+              "repositioned by repack (was 420,159)"
+            ],
+            "untouchedInV2": [
+              "notification icon",
+              "menu arrow down icon (out of v2 scope - verifier to judge)"
+            ],
+            "nodes": {
+              "statusBar": "1759:7168",
+              "appBar": "1759:7191",
+              "titleBlock": "1759:7192",
+              "titleRow": "1759:7193",
+              "title": "1759:7194",
+              "menuArrowDown": "1759:7195",
+              "subtitle": "1759:7198",
+              "notification": "1759:7199"
+            }
+          },
+          {
+            "order": 6,
+            "id": "1759:7204",
+            "key": "99caeba6ebbad8aee9fc6144942a503dbe294062",
+            "name": "Type=Home / Title + Alt Title",
+            "positionInSet": {
+              "x": 420,
+              "y": 278
+            },
+            "changedInV2": [
+              "repositioned by repack (was 40,278)"
+            ],
+            "nodes": {
+              "statusBar": "1759:7205",
+              "appBar": "1759:7228",
+              "title": "1759:7229"
+            }
+          }
+        ],
+        "removed": {
+          "variant": {
+            "id": "1758:7158",
+            "key": "2349afa479babe02b2224a5631a03bfc8f71b0d0",
+            "name": "Type=Home / Title + 2 Icons",
+            "reason": "river decision #1 in 2-plan-v2.md",
+            "instanceScan": {
+              "scope": "all 11 pages of file cysG5U1udpQqVagYY1hWHW",
+              "method": "findAllWithCriteria INSTANCE + getMainComponentAsync id match",
+              "externalInstancesFound": 0,
+              "internalInstancesFound": 1,
+              "internalInstanceDetail": "1760:7313 inside the v1-authored Mobile Header / Preview frame (1760:7248); NOT deleted - re-pointed via setProperties to the new Standard / No Title + Close variant"
+            },
+            "alsoRemovedDescendantIds": [
+              "1758:7159",
+              "1758:7182",
+              "1758:7183",
+              "1758:7184",
+              "1758:7185",
+              "1758:7190"
+            ]
+          }
+        },
+        "iconRebinding": {
+          "decision": "plan v2 row 2 - Back/Close = color/icon/gray-dark (#353535)",
+          "from": {
+            "name": "color/icon/gray-light",
+            "id": "VariableID:8:1070"
+          },
+          "to": {
+            "name": "color/icon/gray-dark",
+            "id": "VariableID:8:1069"
+          },
+          "method": "figma.variables.setBoundVariableForPaint (no raw hex - H2)",
+          "reboundNodeIds": [
+            "I1757:7124;88:2272",
+            "I1757:7154;88:2272",
+            "I1757:7158;88:2278",
+            "I1760:7242;88:2272",
+            "I1781:7362;88:2272",
+            "I1781:7389;88:2278"
+          ],
+          "verifiedBoundAfter": "all 6 read back as color/icon/gray-dark",
+          "deliberatelyUntouched": [
+            {
+              "node": "I1759:7195;335:34 / I1759:7195;335:35",
+              "what": "Menu Arrow Down (subtitle variant)",
+              "boundNow": "color/icon/gray-light",
+              "why": "out of v2 scope - original color unconfirmed; component-verifier to judge (a)/(b)/(c)"
+            },
+            {
+              "node": "I1759:7199;88:2638 / I1759:7199;88:2639",
+              "what": "Notification icon body + red accent",
+              "boundNow": "color/icon/gray-dark + color/icon/red",
+              "why": "plan says keep"
+            }
+          ]
+        },
+        "backgrounds": {
+          "homeBackground": {
+            "status": "UNCHANGED - river decision pending (HD in plan v2)",
+            "boundNow": "color/bg/level-2 (VariableID:687:17886)",
+            "appliesTo": [
+              "1759:7167"
+            ]
+          },
+          "standardBackground": {
+            "boundNow": "color/navigation/bg (VariableID:477:4415)"
+          }
+        },
+        "preview": {
+          "frameId": "1760:7248",
+          "name": "Mobile Header / Preview",
+          "position": {
+            "x": 64,
+            "y": 3533
+          },
+          "size": {
+            "width": 740,
+            "height": 337
+          },
+          "rowIds": [
+            "1760:7249",
+            "1760:7312",
+            "1760:7385"
+          ],
+          "reorderedInV2": true,
+          "cells": [
+            {
+              "rowId": "1760:7249",
+              "instanceIds": [
+                "1760:7250",
+                "1760:7280"
+              ]
+            },
+            {
+              "rowId": "1760:7312",
+              "instanceIds": [
+                "1760:7412",
+                "1760:7313"
+              ]
+            },
+            {
+              "rowId": "1760:7385",
+              "instanceIds": [
+                "1760:7348",
+                "1760:7386"
+              ]
+            }
+          ],
+          "repointedInstance": {
+            "id": "1760:7313",
+            "wasPointingTo": "Type=Home / Title + 2 Icons",
+            "nowPointsTo": "Type=Standard / No Title + Close (1781:7359)",
+            "renamedTo": "Preview / Standard / No Title + Close"
+          }
+        },
+        "icons": {
+          "back": {
+            "sourceNode": "540:6130",
+            "name": "ic_이전",
+            "variant": {
+              "Property 1": "Solid"
+            },
+            "componentKey": "7190e284d345ae19a679a16ed7bceafbd54073ca",
+            "semanticColor": "color/icon/gray-light"
+          },
+          "close": {
+            "sourceNode": "540:6156",
+            "name": "ic_닫기",
+            "variant": {
+              "Property 1": "Solid"
+            },
+            "componentKey": "54469d54f16ed38de2d7b420b0e2195e4cf7c118",
+            "semanticColor": "color/icon/gray-light"
+          },
+          "notification": {
+            "sourceNode": "540:6176",
+            "name": "ic_알림(신규)",
+            "variant": {
+              "Property 1": "Line"
+            },
+            "componentKey": "13cf1b580ec982fda488f9318c6821930ddfb26e",
+            "semanticColors": [
+              "color/icon/gray-dark",
+              "color/icon/red"
+            ]
+          },
+          "menuArrowDown": {
+            "approvedSourceFileKey": "YcBbW9e0MTR9T3W5Sz0Ukx",
+            "approvedSourceSetNodeId": "419:69",
+            "approvedSourceSetKey": "0127e7176f4fba52d36fe49d5c1f5bc6bba13bbf",
+            "name": "ic_화살표, 더보기, 다음장",
+            "variant": {
+              "Property 1": "Solid"
+            },
+            "componentNodeId": "419:68",
+            "componentKey": "6babc3f493e48be1e7191a7b8a68945833039fe8",
+            "baseDirection": "right",
+            "rotationDegrees": -90,
+            "resultDirection": "down",
+            "semanticColor": "color/icon/gray-light",
+            "legacyUnimportableComponentKey": "e694d94214ea8234e253e65d6d33dce6dde68eac"
+          }
+        },
+        "semanticVariables": {
+          "color/navigation/bg": {
+            "id": "VariableID:477:4415",
+            "key": "b3d90464beb1efcd71e4fba93ee6ad89a5a8baf9"
+          },
+          "color/bg/level-2": {
+            "id": "VariableID:687:17886",
+            "key": "529bc62675da2e2132ad76165d925b34073e1dfd"
+          },
+          "color/text/title/primary": {
+            "id": "VariableID:8:1127",
+            "key": "6fe0064516087189c9936a68c004d9a210594a9f"
+          },
+          "color/text/body/tertiary": {
+            "id": "VariableID:8:1118",
+            "key": "7304d389c39ec1fcebe21c54233ac5570c9355f3"
+          },
+          "color/icon/gray-light": {
+            "id": "VariableID:8:1070",
+            "key": "4537c49ae56bd335f47651dd58c48dcb0d3515e4"
+          },
+          "color/icon/gray-dark": {
+            "id": "VariableID:8:1069",
+            "key": "25cd9e49d5b8bd706b0a779088fe64f2b6388ced"
+          },
+          "color/icon/red": {
+            "id": "VariableID:8:1071",
+            "key": "5a8593f122887004fe0c2d448693a0895d4b3de7"
+          }
+        },
+        "pretendardTextStyles": {
+          "title/18M": {
+            "id": "S:94381c5e4d9aca8038bb6d89797aa494172f8f0b,",
+            "key": "94381c5e4d9aca8038bb6d89797aa494172f8f0b"
+          },
+          "title/18B": {
+            "id": "S:b6d6c9c56e31447617e0a659862acdcbe4d2b812,",
+            "key": "b6d6c9c56e31447617e0a659862acdcbe4d2b812"
+          },
+          "body/14R": {
+            "id": "S:35d6b9f34501f327f4672b8393023695d2f36c5d,",
+            "key": "35d6b9f34501f327f4672b8393023695d2f36c5d"
+          }
+        },
+        "v2Changes": {
+          "createdNodeIds": [
+            "1781:7359",
+            "1781:7360",
+            "1781:7361",
+            "1781:7362",
+            "1781:7363",
+            "1781:7389"
+          ],
+          "removedNodeIds": [
+            "1758:7158"
+          ],
+          "mutatedNodeIds": [
+            "1760:7247",
+            "1757:7099",
+            "1757:7129",
+            "1760:7217",
+            "1759:7167",
+            "1759:7204",
+            "I1757:7124;88:2272",
+            "I1757:7154;88:2272",
+            "I1757:7158;88:2278",
+            "I1760:7242;88:2272",
+            "I1781:7362;88:2272",
+            "I1781:7389;88:2278",
+            "1760:7248",
+            "1760:7249",
+            "1760:7312",
+            "1760:7385",
+            "1760:7250",
+            "1760:7280",
+            "1760:7313",
+            "1760:7348",
+            "1760:7386",
+            "1760:7412"
+          ],
+          "structuralNotes": {
+            "combineAsVariants": "not used in v2 - new variant appended to the existing set with set.appendChild",
+            "detach": "none",
+            "rename": "1760:7313 preview instance renamed only",
+            "instanceRemap": "1760:7313 remapped via setProperties; no other instances of this set exist anywhere in the file",
+            "emptyContainers": "none left behind"
+          },
+          "fontScan": {
+            "tool": "references/figma-font-scan.md",
+            "textCount": 17,
+            "offenderCount": 0,
+            "result": "all Pretendard, all bound to canonical text styles"
+          },
+          "specSheets": "NONE FOUND - the Navigation section has no Mobile Header Spec Light/Spec Dark frames (other components in the section do have Spec Dark frames). Nothing to sync; flagged for the orchestrator.",
+          "selfCorrection": "none required - post-build screenshot showed the 2x3 packing intact at 820x417 with no overlap or clipping",
+          "needsDecision": [
+            "Home background #F5F6FB still unresolved (plan v2 HD) - left as color/bg/level-2 per instruction",
+            "Mobile Header has no Spec Light / Spec Dark sheet, unlike the other Navigation components - should one be authored?"
+          ],
+          "verificationStatus": "NOT VERIFIED BY BUILDER - component-verifier owns the pass/fail judgement"
+        },
+        "specSheets": {
+          "builtAt": "2026-08-26",
+          "builtBy": "figma-library-builder",
+          "measuredAgainst": {
+            "sources": [
+              "Mobile Bottom Nav — Spec Dark (1654:38962)",
+              "GNB — Spec Dark (1654:38681)",
+              "GNB Utility Icon — Spec Dark (1654:38376)",
+              "Language Icon — Spec Dark (1654:38292)"
+            ],
+            "findings": [
+              "기존 관례에서 Light 스펙은 별도 프레임이 아니라 COMPONENT_SET 위에 얹은 캔버스 라벨 텍스트였고, Dark 만 별도 FRAME 이었다.",
+              "Dark 시트 = 별도 FRAME + Semantic Color V2 를 Dark(8:2) 로 explicitVariableModes 핀 + cornerRadius 8 + clipsContent true.",
+              "기존 Dark 시트 배경 raw #131418 == color/bg/level-1 의 Dark 값 → 신규 시트는 그 Variable 에 바인딩(raw 대신).",
+              "기존 시트 좌우 간격 80px (Bottom Nav/GNB Utility/Language 모두 동일) → Dark 를 Light + 664 + 80 = x 808 에 배치.",
+              "기존 시트 내부 padding 24, 제목은 (24,24).",
+              "기존 시트 텍스트는 텍스트 스타일 미바인딩 raw Pretendard Bold14 / Medium11, fill 도 raw hex."
+            ]
+          },
+          "deviationsFromExistingConvention": [
+            "Light 도 별도 FRAME 으로 만들었다 (요청 명세가 Spec Light / Spec Dark 두 장을 지정).",
+            "제목: raw Pretendard Bold 14 대신 텍스트 스타일 title/14B 바인딩 (동일 family/weight/size, 시각 동일). Pretendard 폰트 로드 불가로 raw 재현이 불가능 — H3 우회로.",
+            "행 라벨: 기존 raw Pretendard Medium 11 에 대응하는 11px 텍스트 스타일이 정본에 없어 body/12M(Medium 12) 로 바인딩. → needs-decision.",
+            "텍스트/배경 fill 을 raw hex 대신 Variable 바인딩 (H2)."
+          ],
+          "rowOrder": [
+            "Standard / Title",
+            "Standard / Title + Close",
+            "Standard / No Title",
+            "Standard / No Title + Close",
+            "Home / Title + Subtitle + 1 Icon",
+            "Home / Title + Alt Title"
+          ],
+          "cellGeometry": {
+            "rowLabelWidth": 232,
+            "cellWidth": 384,
+            "cellHeight": 99,
+            "leftAlignCells": true,
+            "note": "build-components.ts buildMobileHeader SpecOpts 값 그대로 (cellW 384, cellH 99, rowLabelW 232, leftAlignCells true, colHeaders [\"\"] → 열 헤더 없음)"
+          },
+          "light": {
+            "id": "1790:7354",
+            "name": "Mobile Header — Spec Light",
+            "titleTextNode": "1790:7355",
+            "titleText": "Mobile Header · Light",
+            "position": {
+              "x": 64,
+              "y": 3950
+            },
+            "size": {
+              "width": 664,
+              "height": 753
+            },
+            "pinnedMode": {
+              "collection": "Semantic Color V2 (VariableCollectionId:8:963)",
+              "mode": "Light (8:1)"
+            },
+            "backgroundVariable": "color/bg/level-1 (VariableID:687:17885)",
+            "layout": "VERTICAL auto-layout, padding 24, itemSpacing 16, cornerRadius 8, clipsContent",
+            "rows": [
+              {
+                "label": "Standard / Title",
+                "rowFrame": "1790:7356",
+                "labelText": "1790:7357",
+                "cellFrame": "1790:7358",
+                "instance": "1790:7374",
+                "instanceOfVariant": "1757:7099"
+              },
+              {
+                "label": "Standard / Title + Close",
+                "rowFrame": "1790:7359",
+                "labelText": "1790:7360",
+                "cellFrame": "1790:7361",
+                "instance": "1790:7404",
+                "instanceOfVariant": "1757:7129"
+              },
+              {
+                "label": "Standard / No Title",
+                "rowFrame": "1790:7362",
+                "labelText": "1790:7363",
+                "cellFrame": "1790:7364",
+                "instance": "1790:7436",
+                "instanceOfVariant": "1760:7217"
+              },
+              {
+                "label": "Standard / No Title + Close",
+                "rowFrame": "1790:7365",
+                "labelText": "1790:7366",
+                "cellFrame": "1790:7367",
+                "instance": "1790:7466",
+                "instanceOfVariant": "1781:7359"
+              },
+              {
+                "label": "Home / Title + Subtitle + 1 Icon",
+                "rowFrame": "1790:7368",
+                "labelText": "1790:7369",
+                "cellFrame": "1790:7370",
+                "instance": "1790:7498",
+                "instanceOfVariant": "1759:7167"
+              },
+              {
+                "label": "Home / Title + Alt Title",
+                "rowFrame": "1790:7371",
+                "labelText": "1790:7372",
+                "cellFrame": "1790:7373",
+                "instance": "1790:7535",
+                "instanceOfVariant": "1759:7204"
+              }
+            ]
+          },
+          "dark": {
+            "id": "1791:7535",
+            "name": "Mobile Header — Spec Dark",
+            "titleTextNode": "1791:7536",
+            "titleText": "Mobile Header · Dark",
+            "position": {
+              "x": 808,
+              "y": 3950
+            },
+            "size": {
+              "width": 664,
+              "height": 753
+            },
+            "pinnedMode": {
+              "collection": "Semantic Color V2 (VariableCollectionId:8:963)",
+              "mode": "Dark (8:2)"
+            },
+            "backgroundVariable": "color/bg/level-1 (VariableID:687:17885)",
+            "layout": "VERTICAL auto-layout, padding 24, itemSpacing 16, cornerRadius 8, clipsContent",
+            "rows": [
+              {
+                "label": "Standard / Title",
+                "rowFrame": "1791:7537",
+                "labelText": "1791:7538",
+                "cellFrame": "1791:7539",
+                "instance": "1791:7555",
+                "instanceOfVariant": "1757:7099"
+              },
+              {
+                "label": "Standard / Title + Close",
+                "rowFrame": "1791:7540",
+                "labelText": "1791:7541",
+                "cellFrame": "1791:7542",
+                "instance": "1791:7585",
+                "instanceOfVariant": "1757:7129"
+              },
+              {
+                "label": "Standard / No Title",
+                "rowFrame": "1791:7543",
+                "labelText": "1791:7544",
+                "cellFrame": "1791:7545",
+                "instance": "1791:7617",
+                "instanceOfVariant": "1760:7217"
+              },
+              {
+                "label": "Standard / No Title + Close",
+                "rowFrame": "1791:7546",
+                "labelText": "1791:7547",
+                "cellFrame": "1791:7548",
+                "instance": "1791:7647",
+                "instanceOfVariant": "1781:7359"
+              },
+              {
+                "label": "Home / Title + Subtitle + 1 Icon",
+                "rowFrame": "1791:7549",
+                "labelText": "1791:7550",
+                "cellFrame": "1791:7551",
+                "instance": "1791:7679",
+                "instanceOfVariant": "1759:7167"
+              },
+              {
+                "label": "Home / Title + Alt Title",
+                "rowFrame": "1791:7552",
+                "labelText": "1791:7553",
+                "cellFrame": "1791:7554",
+                "instance": "1791:7716",
+                "instanceOfVariant": "1759:7204"
+              }
+            ]
+          },
+          "sectionResized": {
+            "section": "1654:38976",
+            "from": {
+              "width": 2296,
+              "height": 3934
+            },
+            "to": {
+              "width": 2296,
+              "height": 4790
+            },
+            "why": "신규 스펙 시트(y 3950~4703)가 섹션 경계 밖으로 나가서 섹션 높이를 늘림. 기존 자식은 이동하지 않음."
+          },
+          "selfCorrection": [
+            {
+              "what": "createAutoLayout 이 남긴 기본 흰색 fill 이 Row 프레임 12개에 붙어 Dark 시트에서 흰 블록으로 드러남 (raw hex = H2 위반)",
+              "fix": "12개 Row 프레임 fills = [] 로 제거",
+              "nodes": [
+                "1790:7356",
+                "1790:7359",
+                "1790:7362",
+                "1790:7365",
+                "1790:7368",
+                "1790:7371",
+                "1791:7537",
+                "1791:7540",
+                "1791:7543",
+                "1791:7546",
+                "1791:7549",
+                "1791:7552"
+              ]
+            }
+          ],
+          "fontScan": {
+            "method": "findAllWithCriteria TEXT 전수 fontName 스캔",
+            "scope": "두 스펙 프레임 전체(인스턴스 내부 포함) 각 24개 TEXT",
+            "nonPretendardCount": 0,
+            "histogram": {
+              "Pretendard Bold": 3,
+              "Pretendard Medium": 20,
+              "Pretendard Regular": 1
+            }
+          },
+          "rawFillScanOnAuthoredNodes": {
+            "count": 0,
+            "note": "내가 만든 프레임/행/셀/텍스트 기준. 인스턴스 내부 상속 fill 은 정본 세트 소관"
+          },
+          "screenshots": {
+            "light": "reports/figma-library-build/mobile-header/shots/spec-light.png",
+            "dark": "reports/figma-library-build/mobile-header/shots/spec-dark.png"
+          },
+          "needsDecision": [
+            {
+              "id": "SD-1",
+              "what": "행 라벨 텍스트 스타일 — 기존 스펙 시트는 Pretendard Medium 11 을 쓰는데 정본 텍스트 스타일에 11px 이 없다.",
+              "chosenForNow": "body/12M (Pretendard Medium 12)",
+              "options": [
+                "A) body/12M 유지(현재)",
+                "B) body/10M 로 낮춤",
+                "C) 정본에 11px 스타일 신설(H6② 승인 필요)"
+              ],
+              "note": "H6② 상 정본 신설은 임의로 못 함 → 기존 스타일 중 가장 가까운 것을 임시 적용하고 올림"
+            },
+            {
+              "id": "SD-2",
+              "what": "Dark 시트에서 상태바(StatusBar)만 흰색으로 남는다.",
+              "cause": "컴포넌트 세트 Mobile Header 의 각 variant 안에 있는 StatusBar 인스턴스(예: 1757:7100)에 explicitVariableModes = Semantic Color V2 → Light(8:1) 가 핀으로 걸려 있다. 스펙 시트가 Dark 로 핀해도 자식 핀이 우선한다.",
+              "scope": "정본 세트(1760:7247) 수정이 필요 — 이번 빌드 범위 밖이라 손대지 않음",
+              "options": [
+                "A) 세트 내부 StatusBar 핀 해제(다크 대응)",
+                "B) 상태바는 항상 라이트가 원본 의도 → 그대로 둠"
+              ]
+            },
+            {
+              "id": "SD-3",
+              "what": "Home 배경(#F5F6FB) 결정 대기 건은 지시대로 손대지 않음 — 현 상태 color/bg/level-2 유지."
+            }
+          ]
+        }
+      },
+      "v1": {
+        "schemaVersion": 1,
+        "buildTarget": "Mobile Header",
+        "builtAt": "2026-08-25",
+        "file": {
+          "name": "SW UX GUIDE V3.0 TEST",
+          "fileKey": "cysG5U1udpQqVagYY1hWHW",
+          "page": {
+            "id": "5:5706",
+            "name": "Core"
+          },
+          "section": {
+            "id": "1654:38976",
+            "name": "Navigation",
+            "width": 2296,
+            "oldHeight": 2916,
+            "newHeight": 3934,
+            "contentBottom": 3870,
+            "bottomClearance": 64
+          }
+        },
+        "componentSet": {
+          "id": "1760:7247",
+          "key": "9fd8509a9e73c1279d9efb2088bb591658ce29f5",
+          "name": "Mobile Header",
+          "position": {
+            "x": 64,
+            "y": 3036
+          },
+          "size": {
+            "width": 820,
+            "height": 417
+          },
+          "variantAxis": {
+            "name": "Type",
+            "defaultValue": "Standard / Title",
+            "values": [
+              "Standard / Title",
+              "Standard / Title + Close",
+              "Home / Title + 2 Icons",
+              "Home / Title + Subtitle + 1 Icon",
+              "Home / Title + Alt Title",
+              "Standard / No Title"
+            ]
+          },
+          "packing": {
+            "columns": 2,
+            "rows": 3,
+            "padding": 40,
+            "gap": 20,
+            "variantSize": {
+              "width": 360,
+              "height": 99
+            }
+          },
+          "combineAsVariants": true,
+          "detachedInstances": [],
+          "existingInstanceRemap": "not-applicable-new-component",
+          "emptyContainers": []
+        },
+        "variants": [
+          {
+            "id": "1757:7099",
+            "key": "33bc42c89719c3fa4abff260ef85a337b7230457",
+            "name": "Type=Standard / Title",
+            "properties": {
+              "Type": "Standard / Title"
+            },
+            "positionInSet": {
+              "x": 40,
+              "y": 40
+            },
+            "previewId": "1760:7250",
+            "nodes": {
+              "statusBar": "1757:7100",
+              "appBar": "1757:7123",
+              "back": "1757:7124",
+              "title": "1757:7127",
+              "endSpacer": "1757:7128"
+            }
+          },
+          {
+            "id": "1757:7129",
+            "key": "88da12f14f6c3535c37429fa8727f90d073d8ff7",
+            "name": "Type=Standard / Title + Close",
+            "properties": {
+              "Type": "Standard / Title + Close"
+            },
+            "positionInSet": {
+              "x": 420,
+              "y": 40
+            },
+            "previewId": "1760:7280",
+            "nodes": {
+              "statusBar": "1757:7130",
+              "appBar": "1757:7153",
+              "back": "1757:7154",
+              "title": "1757:7157",
+              "close": "1757:7158"
+            }
+          },
+          {
+            "id": "1758:7158",
+            "key": "2349afa479babe02b2224a5631a03bfc8f71b0d0",
+            "name": "Type=Home / Title + 2 Icons",
+            "properties": {
+              "Type": "Home / Title + 2 Icons"
+            },
+            "positionInSet": {
+              "x": 40,
+              "y": 159
+            },
+            "previewId": "1760:7313",
+            "nodes": {
+              "statusBar": "1758:7159",
+              "appBar": "1758:7182",
+              "title": "1758:7183",
+              "actions": "1758:7184",
+              "notification": "1758:7185",
+              "close": "1758:7190"
+            }
+          },
+          {
+            "id": "1759:7167",
+            "key": "02ad4f75b0d458dc1cf7a5328ae9e1121445d53b",
+            "name": "Type=Home / Title + Subtitle + 1 Icon",
+            "properties": {
+              "Type": "Home / Title + Subtitle + 1 Icon"
+            },
+            "positionInSet": {
+              "x": 420,
+              "y": 159
+            },
+            "previewId": "1760:7348",
+            "nodes": {
+              "statusBar": "1759:7168",
+              "appBar": "1759:7191",
+              "titleBlock": "1759:7192",
+              "titleRow": "1759:7193",
+              "title": "1759:7194",
+              "menuArrowDown": "1759:7195",
+              "subtitle": "1759:7198",
+              "notification": "1759:7199"
+            }
+          },
+          {
+            "id": "1759:7204",
+            "key": "99caeba6ebbad8aee9fc6144942a503dbe294062",
+            "name": "Type=Home / Title + Alt Title",
+            "properties": {
+              "Type": "Home / Title + Alt Title"
+            },
+            "positionInSet": {
+              "x": 40,
+              "y": 278
+            },
+            "previewId": "1760:7386",
+            "nodes": {
+              "statusBar": "1759:7205",
+              "appBar": "1759:7228",
+              "title": "1759:7229"
+            }
+          },
+          {
+            "id": "1760:7217",
+            "key": "b7d3dbec8ac32045752390ab0c2ca71a8e06eb6c",
+            "name": "Type=Standard / No Title",
+            "properties": {
+              "Type": "Standard / No Title"
+            },
+            "positionInSet": {
+              "x": 420,
+              "y": 278
+            },
+            "previewId": "1760:7412",
+            "appBarTextNodeCount": 0,
+            "nodes": {
+              "statusBar": "1760:7218",
+              "appBar": "1760:7241",
+              "back": "1760:7242",
+              "flexibleEmptySpace": "1760:7245",
+              "endSpacer": "1760:7246"
+            }
+          }
+        ],
+        "preview": {
+          "frameId": "1760:7248",
+          "name": "Mobile Header / Preview",
+          "position": {
+            "x": 64,
+            "y": 3533
+          },
+          "size": {
+            "width": 740,
+            "height": 337
+          },
+          "rowIds": [
+            "1760:7249",
+            "1760:7312",
+            "1760:7385"
+          ],
+          "instanceIds": [
+            "1760:7250",
+            "1760:7280",
+            "1760:7313",
+            "1760:7348",
+            "1760:7386",
+            "1760:7412"
+          ]
+        },
+        "statusBarProvenance": {
+          "sourceNodeId": "1654:37365",
+          "sourceComponentKey": "a9450c5f4f90c4bda3b5cc3be00229f4994b8b56",
+          "sourceSetId": "1654:37420",
+          "sourceSetName": "StatusBar",
+          "sourceVariant": {
+            "Platform": "App"
+          },
+          "sourceSize": {
+            "width": 360,
+            "height": 27
+          },
+          "instanceIds": [
+            "1757:7100",
+            "1757:7130",
+            "1758:7159",
+            "1759:7168",
+            "1759:7205",
+            "1760:7218"
+          ]
+        },
+        "icons": {
+          "back": {
+            "sourceNode": "540:6130",
+            "name": "ic_이전",
+            "variant": {
+              "Property 1": "Solid"
+            },
+            "componentKey": "7190e284d345ae19a679a16ed7bceafbd54073ca",
+            "semanticColor": "color/icon/gray-light"
+          },
+          "close": {
+            "sourceNode": "540:6156",
+            "name": "ic_닫기",
+            "variant": {
+              "Property 1": "Solid"
+            },
+            "componentKey": "54469d54f16ed38de2d7b420b0e2195e4cf7c118",
+            "semanticColor": "color/icon/gray-light"
+          },
+          "notification": {
+            "sourceNode": "540:6176",
+            "name": "ic_알림(신규)",
+            "variant": {
+              "Property 1": "Line"
+            },
+            "componentKey": "13cf1b580ec982fda488f9318c6821930ddfb26e",
+            "semanticColors": [
+              "color/icon/gray-dark",
+              "color/icon/red"
+            ]
+          },
+          "menuArrowDown": {
+            "approvedSourceFileKey": "YcBbW9e0MTR9T3W5Sz0Ukx",
+            "approvedSourceSetNodeId": "419:69",
+            "approvedSourceSetKey": "0127e7176f4fba52d36fe49d5c1f5bc6bba13bbf",
+            "name": "ic_화살표, 더보기, 다음장",
+            "variant": {
+              "Property 1": "Solid"
+            },
+            "componentNodeId": "419:68",
+            "componentKey": "6babc3f493e48be1e7191a7b8a68945833039fe8",
+            "baseDirection": "right",
+            "rotationDegrees": -90,
+            "resultDirection": "down",
+            "semanticColor": "color/icon/gray-light",
+            "legacyUnimportableComponentKey": "e694d94214ea8234e253e65d6d33dce6dde68eac"
+          }
+        },
+        "semanticVariables": {
+          "color/navigation/bg": {
+            "id": "VariableID:477:4415",
+            "key": "b3d90464beb1efcd71e4fba93ee6ad89a5a8baf9"
+          },
+          "color/bg/level-2": {
+            "id": "VariableID:687:17886",
+            "key": "529bc62675da2e2132ad76165d925b34073e1dfd"
+          },
+          "color/text/title/primary": {
+            "id": "VariableID:8:1127",
+            "key": "6fe0064516087189c9936a68c004d9a210594a9f"
+          },
+          "color/text/body/tertiary": {
+            "id": "VariableID:8:1118",
+            "key": "7304d389c39ec1fcebe21c54233ac5570c9355f3"
+          },
+          "color/icon/gray-light": {
+            "id": "VariableID:8:1070",
+            "key": "4537c49ae56bd335f47651dd58c48dcb0d3515e4"
+          },
+          "color/icon/gray-dark": {
+            "id": "VariableID:8:1069",
+            "key": "25cd9e49d5b8bd706b0a779088fe64f2b6388ced"
+          },
+          "color/icon/red": {
+            "id": "VariableID:8:1071",
+            "key": "5a8593f122887004fe0c2d448693a0895d4b3de7"
+          }
+        },
+        "pretendardTextStyles": {
+          "title/18M": {
+            "id": "S:94381c5e4d9aca8038bb6d89797aa494172f8f0b,",
+            "key": "94381c5e4d9aca8038bb6d89797aa494172f8f0b"
+          },
+          "title/18B": {
+            "id": "S:b6d6c9c56e31447617e0a659862acdcbe4d2b812,",
+            "key": "b6d6c9c56e31447617e0a659862acdcbe4d2b812"
+          },
+          "body/14R": {
+            "id": "S:35d6b9f34501f327f4672b8393023695d2f36c5d,",
+            "key": "35d6b9f34501f327f4672b8393023695d2f36c5d"
+          }
+        },
+        "createdNodeIds": [
+          "1757:7099",
+          "1757:7100",
+          "1757:7123",
+          "1757:7124",
+          "1757:7127",
+          "1757:7128",
+          "1757:7129",
+          "1757:7130",
+          "1757:7153",
+          "1757:7154",
+          "1757:7157",
+          "1757:7158",
+          "1758:7158",
+          "1758:7159",
+          "1758:7182",
+          "1758:7183",
+          "1758:7184",
+          "1758:7185",
+          "1758:7190",
+          "1759:7167",
+          "1759:7168",
+          "1759:7191",
+          "1759:7192",
+          "1759:7193",
+          "1759:7194",
+          "1759:7195",
+          "1759:7198",
+          "1759:7199",
+          "1759:7204",
+          "1759:7205",
+          "1759:7228",
+          "1759:7229",
+          "1760:7217",
+          "1760:7218",
+          "1760:7241",
+          "1760:7242",
+          "1760:7245",
+          "1760:7246",
+          "1760:7247",
+          "1760:7248",
+          "1760:7249",
+          "1760:7250",
+          "1760:7280",
+          "1760:7312",
+          "1760:7313",
+          "1760:7348",
+          "1760:7385",
+          "1760:7386",
+          "1760:7412"
+        ],
+        "mutatedExistingNodeIds": [
+          "1654:38976",
+          "I1757:7124;88:2272",
+          "I1757:7154;88:2272",
+          "I1757:7158;88:2278",
+          "I1758:7185;88:2638",
+          "I1758:7185;88:2639",
+          "I1758:7190;88:2278",
+          "I1759:7195;335:34",
+          "I1759:7195;335:35",
+          "I1759:7199;88:2638",
+          "I1759:7199;88:2639",
+          "I1760:7242;88:2272"
+        ],
+        "buildNotes": {
+          "gate34": "river-approved-2026-08-25",
+          "fontEntry": "Noto Sans Regular was used only as a transient writable font; Pretendard text styles were applied as the final text operation. Recorded final fontName values are Pretendard.",
+          "selfCorrection": "No committed geometry correction was needed after the component-set and preview screenshots; no overlap, clipping, or packing collapse was visible.",
+          "needsDecision": []
+        }
+      }
+    }
   }
 }

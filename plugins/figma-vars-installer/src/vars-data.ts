@@ -50,6 +50,10 @@ export const FOUNDATION_COLOR: Record<string, string> = {
   // ── Base ──────────────────────────────────────────
   "base/white": "#FFFFFF",
   "base/black": "#000000",
+  // 모바일 Home 화면 전용 배경. 어느 스케일에도 속하지 않는 단독 색이라 base 에 둔다
+  // (gray 계열이 아니다 — 색상각 230° 남보라빛, visual-gray 210° 청록과 계열이 다름).
+  // 출처: V2.4 mobile_header 원본 surface/base-background/home. river 승인 2026-08-25.
+  "base/home-bg": "#F5F6FB",
 
   // ── Brand ─────────────────────────────────────────
   "brand/blue": "#0072CE",
@@ -481,6 +485,10 @@ export const SEMANTIC_COLOR: Record<string, SemanticColorEntry> = {
   "color/bg/level-1": { light: "gray/0", dark: "gray-dark/50" },
   "color/bg/level-2": { light: "gray/50", dark: "gray-dark/100" },
   "color/bg/level-3": { light: "gray/100", dark: "gray-dark/200" },
+  // home — 모바일 Home 화면 배경. 깊이 스케일(level-*)이 아니라 화면 전용 단일 값이다.
+  // river 결정 2026-08-26: 다크에서도 Home 전용 푸른 배경 성격을 유지하도록 blue-dark/50 을 쓴다.
+  // 그룹(color/home/*)을 새로 만들지 않고 bg 그룹의 이름 있는 멤버로 둔다.
+  "color/bg/home": { light: "base/home-bg", dark: "blue-dark/50" },
 
   // ── surface (딤 위에 떠있는 패널 표면 — 모달·바텀시트·팝오버 공용) ────
   // bg/level 은 라이트/다크가 고정 쌍이라 "라이트=흰색 + 다크=올라온 회색" 조합을 표현 못 한다.

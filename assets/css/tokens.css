@@ -3,12 +3,13 @@
    0. FOUNDATION — Base & Brand
    ══════════════════════════════════════════════════ */
 :root {
-  --color-base-white: #FFFFFF;
-  --color-base-black: #000000;
-  --color-brand-blue: #0072CE;
-  --color-brand-red : #FF312C;
-  --color-brand-gray: #DFDEDE;
-  --color-brand-ci  : #004097; /* CI·로고 전용. UI 직접 사용 금지 */
+  --color-base-white  : #FFFFFF;
+  --color-base-black  : #000000;
+  --color-base-home-bg: #F5F6FB;
+  --color-brand-blue  : #0072CE;
+  --color-brand-red   : #FF312C;
+  --color-brand-gray  : #DFDEDE;
+  --color-brand-ci    : #004097; /* CI·로고 전용. UI 직접 사용 금지 */
 }
 
 
@@ -444,6 +445,7 @@
   --color-bg-level-1: var(--color-gray-0);
   --color-bg-level-2: var(--color-gray-50);
   --color-bg-level-3: var(--color-gray-100);
+  --color-bg-home   : var(--color-base-home-bg);
 
   /* ── surface ── */
   --color-surface-raised: var(--color-base-white);
@@ -637,7 +639,7 @@
   /* ── button ── */
   --color-button-border-focus             : var(--color-blue-dark-300);
   --color-button-bg-blue-line--default    : var(--color-gray-dark-100);
-  --color-button-bg-blue-line--hover      : var(--color-gray-dark-200);
+  --color-button-bg-blue-line--hover      : var(--color-blue-dark-50);
   --color-button-bg-disabled              : var(--color-gray-dark-300);
   --color-button-bg-primary--default      : var(--color-blue-dark-300);
   --color-button-bg-primary--hover        : var(--color-blue-dark-250);
@@ -663,6 +665,7 @@
   --color-bg-level-1: var(--color-gray-dark-50);
   --color-bg-level-2: var(--color-gray-dark-100);
   --color-bg-level-3: var(--color-gray-dark-200);
+  --color-bg-home   : var(--color-blue-dark-50);
 
   /* ── surface ── */
   --color-surface-raised: var(--color-gray-dark-100);

@@ -3,7 +3,7 @@
     "name": "SW Foundation Colors",
     "version": "2.4",
     "status": "stable",
-    "updatedAt": "2026-08-25",
+    "updatedAt": "2026-08-26",
     "source": "plugins/figma-vars-installer/src/vars-data.ts (FOUNDATION_COLOR)",
     "description": "Official SW Design System V2.4 foundation color foundation. Raw HEX values are allowed here only.",
     "generated": true,
@@ -20,6 +20,11 @@
       "black": {
         "value": "#000000",
         "cssVar": "--color-base-black",
+        "status": "stable"
+      },
+      "home-bg": {
+        "value": "#F5F6FB",
+        "cssVar": "--color-base-home-bg",
         "status": "stable"
       }
     },
