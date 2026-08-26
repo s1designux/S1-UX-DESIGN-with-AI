@@ -2,6 +2,7 @@ import { createHash } from "node:crypto";
 import { mkdir, readFile, readdir, rm, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import iconGeometryCheck from "../../scripts/ui-library-icon-geometry-check.js";
 
 const libraryRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const repositoryRoot = path.resolve(libraryRoot, "..");
@@ -30,6 +31,21 @@ async function createOutputs() {
   const tokenMap = await read(path.join(sourceRoot, "component-token-map.json"));
   const tokensCss = await read(path.join(repositoryRoot, "assets/css/tokens.css"));
   const typographyCss = await read(path.join(repositoryRoot, "assets/css/typography.css"));
+  const iconManifest = JSON.parse(await read(path.join(sourceRoot, "assets/icons/manifest.json")));
+  const iconRegistry = await read(path.join(repositoryRoot, iconManifest.sourceRegistry));
+  if (hash(iconRegistry) !== iconManifest.sourceRegistryFingerprint) {
+    throw new Error("icon source registry fingerprint is stale");
+  }
+  const allowedIconKeys = JSON.parse(iconRegistry).allowedRemoteComponentKeys;
+  const iconAssets = [];
+  for (const icon of iconManifest.icons) {
+    if (allowedIconKeys[icon.id] !== icon.sourceKey) throw new Error(`${icon.id} source key differs from the allowed registry`);
+    const asset = await read(path.join(sourceRoot, "assets/icons", icon.file));
+    if (hash(asset) !== icon.webAssetFingerprint) throw new Error(`${icon.id} web asset fingerprint is stale`);
+    const geometryErrors = iconGeometryCheck.validateIconAsset(icon, asset);
+    if (geometryErrors.length) throw new Error(`icon geometry contract failed:\n- ${geometryErrors.join("\n- ")}`);
+    iconAssets.push({ ...icon, asset });
+  }
   const componentOutputs = [];
   const outputs = new Map();
 
@@ -43,7 +59,8 @@ async function createOutputs() {
     const css = await read(path.join(base, `${id}.css`));
     const js = await read(path.join(base, `${id}.js`));
     const example = await read(path.join(base, `${id}.example.html`));
-    const sourceFingerprint = hash([css, js, example, stableJson(manifest)].join("\0"));
+    const componentIconAssets = iconAssets.filter(({ id: iconId }) => manifest.icons.some(({ id: usedId }) => usedId === iconId));
+    const sourceFingerprint = hash([css, js, example, stableJson(manifest), ...componentIconAssets.map(({ asset }) => asset)].join("\0"));
     const outputManifest = { ...manifest, sourceFingerprint };
     componentOutputs.push({ id, css, js, example, manifest: outputManifest });
     outputs.set(`components/${id}.css`, css);
@@ -52,9 +69,9 @@ async function createOutputs() {
     outputs.set(`examples/${id}.html`, example);
   }
 
-  const bundleCss = `${componentOutputs.map(({ id, css }) => `/* component:${id} */\n${css.trimEnd()}`).join("\n\n")}\n`;
+  const bundleCss = `${componentOutputs.map(({ id, css }) => `/* component:${id} */\n${css.trimEnd().replaceAll('url("../assets/icons/', 'url("./assets/icons/')}`).join("\n\n")}\n`;
   const bundleJs = `${componentOutputs.map(({ id }) => `export * as ${id} from "./components/${id}.js";`).join("\n")}\n`;
-  const autoJs = `${bundleJs}\n/** CSS-only pilot: there are no roots to initialize. */\nexport function autoInit() { return Object.freeze([]); }\n`;
+  const autoJs = `import { init as initInput } from "./components/input.js";\n${bundleJs}\nexport function autoInit(scope = document) {\n  const roots = [...scope.querySelectorAll('[data-s1-component="input"]')];\n  return Object.freeze(roots.map((root) => initInput(root)).filter(Boolean));\n}\n`;
   const canonicalFingerprintValue = hash(componentOutputs.map(({ manifest }) => manifest.canonicalFingerprint).join("\0"));
   const distManifest = {
     id: "s1-ui",
@@ -68,7 +85,8 @@ async function createOutputs() {
       "assets/css/tokens.css": hash(tokensCss),
       "assets/css/typography.css": hash(typographyCss)
     },
-    jsRequired: false,
+    jsRequired: componentOutputs.some(({ manifest }) => manifest.jsRequired),
+    icons: iconManifest.icons,
     components: componentOutputs.map(({ id, manifest }) => ({
       id,
       version: manifest.version,
@@ -92,6 +110,8 @@ async function createOutputs() {
   outputs.set("s1-ui.auto.js", autoJs);
   outputs.set("assets/css/tokens.css", tokensCss);
   outputs.set("assets/css/typography.css", typographyCss);
+  outputs.set("assets/icons/manifest.json", stableJson(iconManifest));
+  for (const icon of iconAssets) outputs.set(`assets/icons/${icon.file}`, icon.asset);
   outputs.set("component-token-map.json", tokenMap);
   outputs.set("manifest.json", stableJson(distManifest));
   outputs.set("../verification/empty-consumer.html", await read(path.join(sourceRoot, "verification", "empty-consumer.html")));

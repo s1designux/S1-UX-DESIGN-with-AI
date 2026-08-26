@@ -79,7 +79,7 @@ const legacyRuntimeCanon = /pages\/components\.html|runtime JavaScript/i.test(
 
 if (status === 'candidate') {
   if (!legacyRuntimeCanon) errors.push('candidate에 기록된 기존 runtime-source blocker가 실제 상태와 다름');
-  if (contract._meta.gateIntegration !== 'pending') errors.push('candidate gateIntegration은 pending이어야 함');
+  if (!['pending', 'gate:check-partial'].includes(contract._meta.gateIntegration)) errors.push('candidate gateIntegration은 pending 또는 gate:check-partial이어야 함');
 }
 
 if (status === 'stable') {

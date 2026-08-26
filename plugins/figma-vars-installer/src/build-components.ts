@@ -192,7 +192,7 @@ interface SizeConfig {
 const SIZE_CONFIG: Record<SizeId, SizeConfig> = {
   MD:   { break: "PC",     height: 44, padPath: "spacing/16", textStyle: "body/14M", minWidth: 80 },
   XSM:  { break: "PC",     height: 34, padPath: "spacing/8",  textStyle: "body/14M", minWidth: 64 },
-  XXSM: { break: "PC",     height: 28, padPath: "spacing/8",  textStyle: "body/12M", minWidth: 64 },
+  XXSM: { break: "PC",     height: 28, padPath: "spacing/8",  textStyle: "body/12M", minWidth: 56 },
   LG:   { break: "Mobile", height: 48, padPath: "spacing/16", textStyle: "body/16M", minWidth: 80 },
 };
 
@@ -311,7 +311,7 @@ async function buildOne(variant: VariantId, size: SizeId, state: StateId, maps: 
   comp.paddingBottom = 0;
   comp.setBoundVariable("paddingLeft", padVar);
   comp.setBoundVariable("paddingRight", padVar);
-  comp.minWidth = cfg.minWidth; // 사이즈별 디폴트 최소 너비 (medium/large=80, xsmall/xxsmall=64)
+  comp.minWidth = cfg.minWidth; // 사이즈별 디폴트 최소 너비 (MD/LG=80, XSM=64, XXSM=56)
 
   // ── 텍스트 노드 (V2.4 텍스트 스타일 적용) ──
   await figma.loadFontAsync({ family: "Pretendard", style: "Medium" });
@@ -917,7 +917,7 @@ async function buildChip(maps: BuildMaps, originY: number): Promise<{ set: Compo
 }
 
 // ── Input (form-control 필드) — color/form-control/* 슬롯 ─────────────────────
-// 핵심 매트릭스: Size × State × Break (label/message/icon off). 상태 7개 → 행=State, 열=Size 평면.
+// 핵심 매트릭스: Size × State × Message × Break. Label은 Input Slots 패턴에서 조합한다.
 async function buildInput(maps: BuildMaps, originY: number, originX: number = INPUT_SHEET_X): Promise<{ set: ComponentSetNode; bottomY: number }> {
   const fc = (k: string) => `color/form-control/${k}`;
   const states = [
@@ -935,10 +935,9 @@ async function buildInput(maps: BuildMaps, originY: number, originX: number = IN
     { size: "MD",   brk: "PC",     h: 44, padL: 16, padR: 12, font: 14, head: "MD" },
     { size: "MD",   brk: "Mobile", h: 48, padL: 16, padR: 12, font: 14, head: "MD·M" },
   ];
-  const labels = ["Off", "On"];
   const messages = ["Off", "On"];
   const comps: ComponentNode[] = [];
-  const cells: { comp: ComponentNode; size: string; brk: string; state: string; label: string; message: string }[] = [];
+  const cells: { comp: ComponentNode; size: string; brk: string; state: string; message: string }[] = [];
   const wrapSuffixAction = (icon: SceneNode, actionName: string, hitSize: number): FrameNode => {
     const action = figma.createFrame();
     action.name = actionName;
@@ -949,6 +948,19 @@ async function buildInput(maps: BuildMaps, originY: number, originX: number = IN
     action.counterAxisSizingMode = "FIXED";
     action.fills = [];
     action.resize(hitSize, hitSize);
+    // Input field 자체 Hover(삭제된 상태)와 suffix action Hover를 구분한다.
+    // 마우스가 있는 장치에서만 웹 :hover가 이 28/48px hit area의 배경을 켠다.
+    const hoverBg = figma.createRectangle();
+    hoverBg.name = `${actionName}-hover-bg`;
+    hoverBg.fills = [boundPaint(scv(maps, fc("bg/hover")))];
+    bindRadius(hoverBg, maps, "radius/4");
+    hoverBg.resize(hitSize, hitSize);
+    hoverBg.visible = false;
+    action.appendChild(hoverBg);
+    hoverBg.layoutPositioning = "ABSOLUTE";
+    hoverBg.x = 0;
+    hoverBg.y = 0;
+    hoverBg.constraints = { horizontal: "STRETCH", vertical: "STRETCH" };
     action.appendChild(icon);
     // Input 높이 안에서 끝나는 2px 안쪽 ring. Mobile hit area와 field는 모두 최소 48px다.
     const ring = makeFocusRing(maps, `${actionName}-focus-ring`, hitSize, hitSize, "radius/4");
@@ -961,8 +973,7 @@ async function buildInput(maps: BuildMaps, originY: number, originX: number = IN
   };
   for (const sc of sizes) {
     for (const st of states) {
-      for (const lab of labels) {
-        for (const msg of messages) {
+      for (const msg of messages) {
           const dis = st.name === "Disabled";
           const field = figma.createFrame();
           field.name = "field";
@@ -1013,10 +1024,9 @@ async function buildInput(maps: BuildMaps, originY: number, originX: number = IN
           field.appendChild(trail);
           field.resize(200, sc.h); // Input 예외 — 넓은 필드
           const comp = figma.createComponent();
-          comp.name = `Size=${sc.size}, State=${st.name}, Label=${lab}, Message=${msg}, Break=${sc.brk}`;
+          comp.name = `Size=${sc.size}, State=${st.name}, Message=${msg}, Break=${sc.brk}`;
           comp.layoutMode = "VERTICAL"; comp.primaryAxisSizingMode = "AUTO"; comp.counterAxisSizingMode = "AUTO"; comp.itemSpacing = 6;
           comp.fills = []; // 외곽 컨테이너는 투명 — createComponent 기본 흰색 fill 제거(미사용 FFFFFF, 2026-06-24)
-          if (lab === "On") comp.appendChild(await makeBoundText("라벨", 14, "Medium", scv(maps, fc(dis ? "label/disabled" : "label/default"))));
           comp.appendChild(field);
           if (msg === "On") {
             // 안내메시지 = 글자(text) 역할 토큰. 보더/라벨 토큰 오연결 정정(2026-07-13):
@@ -1028,8 +1038,7 @@ async function buildInput(maps: BuildMaps, originY: number, originX: number = IN
           }
           setLightMode(comp, maps);
           comps.push(comp);
-          cells.push({ comp, size: sc.size, brk: sc.brk, state: st.name, label: lab, message: msg });
-        }
+          cells.push({ comp, size: sc.size, brk: sc.brk, state: st.name, message: msg });
       }
     }
   }
@@ -1039,31 +1048,35 @@ async function buildInput(maps: BuildMaps, originY: number, originX: number = IN
   // 모든 variant 의 field>trail>eye 레이어 visible 을 이 속성에 바인딩(레이어명 eye 통일 필수).
   // eye 가 trail 클러스터 하위로 들어가 직계 자식이 아니므로 findOne(재귀)로 탐색.
   const pwIconPropId = set.addComponentProperty("Password Icon", "BOOLEAN", false);
+  const pwHoverPropId = set.addComponentProperty("Password Action Hover", "BOOLEAN", false);
+  const clearHoverPropId = set.addComponentProperty("Clear Action Hover", "BOOLEAN", false);
   const pwFocusPropId = set.addComponentProperty("Password Action Focus Visible", "BOOLEAN", false);
   const clearFocusPropId = set.addComponentProperty("Clear Action Focus Visible", "BOOLEAN", false);
   for (const c of comps) {
     const f = c.findChild((n: SceneNode) => n.name === "field") as FrameNode | null;
     const passwordAction = f ? f.findOne((n: SceneNode) => n.name === "password-action") : null;
+    const passwordHover = f ? f.findOne((n: SceneNode) => n.name === "password-action-hover-bg") : null;
+    const clearHover = f ? f.findOne((n: SceneNode) => n.name === "clear-action-hover-bg") : null;
     const passwordRing = f ? f.findOne((n: SceneNode) => n.name === "password-action-focus-ring") : null;
     const clearRing = f ? f.findOne((n: SceneNode) => n.name === "clear-action-focus-ring") : null;
     if (passwordAction) passwordAction.componentPropertyReferences = { visible: pwIconPropId };
+    if (passwordHover) passwordHover.componentPropertyReferences = { visible: pwHoverPropId };
+    if (clearHover) clearHover.componentPropertyReferences = { visible: clearHoverPropId };
     if (passwordRing) passwordRing.componentPropertyReferences = { visible: pwFocusPropId };
     if (clearRing) clearRing.componentPropertyReferences = { visible: clearFocusPropId };
   }
-  // Input 은 규모가 커서(7 상태 × 4 사이즈 × 4 그룹) 넓은 시트로 배치. originX 로 좌측정렬(섹션 컬럼 내) 가능.
+  // Input 은 규모가 커서(7 상태 × 4 사이즈 × 2 그룹) 넓은 시트로 배치. originX 로 좌측정렬(섹션 컬럼 내) 가능.
   const OX = originX;
   set.x = OX; set.y = originY;
-  // 그룹핑 규칙: 모디파이어(라벨×메시지) 조합을 상위 그룹(밴드)으로, 그 안에서 사이즈별로 나열.
-  // (사이즈별로 라벨/메시지가 번갈아 나오지 않게.) Input 은 예외적으로 필드·컬럼 폭을 넓게.
+  // 그룹핑 규칙: 안내메시지 유무를 상위 그룹(밴드)으로, 그 안에서 사이즈별로 나열.
+  // Label은 Input의 variant가 아니며 Input Slots 패턴에서 별도로 조합한다.
   const groups = [
-    { name: "라벨 없음",              lab: "Off", msg: "Off" },
-    { name: "라벨 없음 · 안내메시지", lab: "Off", msg: "On" },
-    { name: "라벨 있음",              lab: "On",  msg: "Off" },
-    { name: "라벨 있음 · 안내메시지", lab: "On",  msg: "On" },
+    { name: "기본",         msg: "Off" },
+    { name: "안내메시지",   msg: "On" },
   ];
   const opts: GroupedSpecOpts = {
     title: "Input",
-    // 플랫폼(PC/Mobile) → 사이즈 → 라벨/메시지 그룹(rowLabels)으로 구분 (Button·SelectBox 패턴과 동일)
+    // 플랫폼(PC/Mobile) → 사이즈 → 메시지 그룹(rowLabels)으로 구분 (Button·SelectBox 패턴과 동일)
     platforms: [
       // cellAt 이 sizeName 으로 cells.size 를 직매칭(x.size === sizeName)하므로
       // cells 의 실제 키(XXSM/XSM/MD)와 동일해야 한다. Issue 8 리네임 잔재(XSMALL/SMALL/MEDIUM)였음 — PC·Mobile 스펙 시트 빈칸 유발.
@@ -1075,7 +1088,7 @@ async function buildInput(maps: BuildMaps, originY: number, originX: number = IN
     cellAt: (platName, sizeName, ri, ci) => {
       const g = groups[ri];
       if (!g) return null;
-      return cells.find((x) => x.size === sizeName && x.brk === platName && x.state === states[ci].name && x.label === g.lab && x.message === g.msg)?.comp ?? null;
+      return cells.find((x) => x.size === sizeName && x.brk === platName && x.state === states[ci].name && x.message === g.msg)?.comp ?? null;
     },
     // 세트(원본) → Light → Dark 를 OX 기준 가로로 나란히. specWidth(110,7,224)=1726, 컬럼 간 80 gap.
     offsetX: OX, lightX: OX + 1726 + 80, darkX: OX + (1726 + 80) * 2, originY, cellW: 224, cellH: 100, rowLabelW: 110,

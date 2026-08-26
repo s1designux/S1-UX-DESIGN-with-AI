@@ -1,0 +1,39 @@
+{
+  "_meta": {
+    "id": "ui-library-migration",
+    "updatedAt": "2026-08-26",
+    "purpose": "기존 컴포넌트 상태와 신규 웹 UI 라이브러리 승인·이행 상태를 분리 기록한다."
+  },
+  "records": [
+    {
+      "id": "input",
+      "kind": "core-component",
+      "legacyStatus": "implemented",
+      "uiLibraryStatus": "candidate",
+      "dependencies": ["tokens.css", "typography.css", "remove.svg", "input.js"],
+      "lastVerified": "2026-08-26",
+      "reverifyTrigger": "정본 geometry·state·token·HTML part·CSS selector·JavaScript clear 동작 변경",
+      "evidence": [
+        "reports/ui-library/input-button-pilot/4-verification.md",
+        "ui-library/verification/input.json"
+      ],
+      "riverApproval": "approved 2026-08-26",
+      "promotionBlocker": "독립 검증자의 PC/Mobile × Light/Dark 실제 렌더 재검증"
+    },
+    {
+      "id": "button",
+      "kind": "core-component",
+      "legacyStatus": "implemented",
+      "uiLibraryStatus": "candidate",
+      "dependencies": ["tokens.css", "typography.css"],
+      "lastVerified": "2026-08-26",
+      "reverifyTrigger": "정본 size·variant·state·token·HTML part·CSS selector 변경",
+      "evidence": [
+        "reports/ui-library/input-button-pilot/4-verification.md",
+        "ui-library/verification/button.json"
+      ],
+      "riverApproval": "approved 2026-08-26",
+      "promotionBlocker": "독립 검증자의 PC/Mobile × Light/Dark 실제 렌더 재검증"
+    }
+  ]
+}

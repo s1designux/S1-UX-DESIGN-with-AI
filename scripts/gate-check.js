@@ -1038,6 +1038,18 @@ try {
   fail(`Gate 42 실행 실패: ${e.message}`);
 }
 
+// ── Gate 43: UI Library Icon Geometry (누르는 영역·틀·도형 분리) ──
+// "24px 아이콘"이라는 표현만으로는 action hit area, SVG frame, 실제 glyph 중 무엇인지
+// 구분되지 않아 16px 도형을 24px로 확대하는 오류가 발생했다. manifest 수치와 SVG 구조,
+// source↔dist 일치, 검사기 자체의 적대 테스트를 커밋 전에 함께 강제한다.
+gateHeader('[Gate 43] UI 아이콘 크기 검사기 (UI Icon Geometry)');
+try {
+  const { check: uiIconGeometryCheck } = require('./ui-library-icon-geometry-check');
+  uiIconGeometryCheck({ pass, fail });
+} catch (e) {
+  fail(`Gate 43 실행 실패: ${e.message}`);
+}
+
 // ── Summary ───────────────────────────────────────────────────────
 if (VERBOSE || errors > 0 || warnings > 0) console.log('\n─────────────────────────────────────────────────────');
 const tally = `게이트 ${gates}개 · ✅ ${passes}건${VERBOSE ? '' : ' (상세: --verbose)'}`;

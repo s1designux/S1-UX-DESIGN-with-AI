@@ -1,8 +1,8 @@
 {
   "id": "button",
-  "version": "0.1.0-candidate.1",
+  "version": "0.1.0-candidate.2",
   "status": "candidate",
-  "canonicalFingerprint": "d0ff41fb19d81f592bd203a7a0843cccd0d512251e19a033c1abe7fa3cea742c",
+  "canonicalFingerprint": "4a57c10107debc3caa599211429ba2b2d396733f40da475493e38b37a3d39686",
   "canonicalSources": [
     "plugins/figma-vars-installer/src/build-components.ts",
     "plugins/figma-vars-installer/src/vars-data.ts",
@@ -12,7 +12,7 @@
   "rootSelector": "[data-s1-component=\"button\"]",
   "variants": ["primary", "secondary", "blue-line"],
   "sizes": ["md", "xsm", "xxsm", "lg"],
-  "minWidths": { "md": "--sizing-80", "xsm": "--sizing-64", "xxsm": "--sizing-64", "lg": "--sizing-80" },
+  "minWidths": { "md": "--sizing-80", "xsm": "--sizing-64", "xxsm": "--sizing-56", "lg": "--sizing-80" },
   "breaks": { "pc": ["md", "xsm", "xxsm"], "mobile": ["lg"] },
   "states": {
     "default": "native",
@@ -22,6 +22,21 @@
     "focusVisible": ":focus-visible:not(:disabled)"
   },
   "parts": ["label"],
+  "htmlContract": {
+    "root": "button[data-s1-component=button]",
+    "requiredAttributes": ["type", "data-variant", "data-size"],
+    "requiredParts": ["label"],
+    "variants": ["primary", "secondary", "blue-line"],
+    "sizes": ["xxsm", "xsm", "md", "lg"],
+    "source": "components/button/button.example.html",
+    "distribution": "examples/button.html"
+  },
+  "cssContract": {
+    "entry": "components/button.css",
+    "rootScope": "[data-s1-component=button]",
+    "nativeStates": [":hover", ":active", ":focus-visible", ":disabled"],
+    "customization": "정본 Semantic token만 교체하며 공개 selector의 구조를 override하지 않는다."
+  },
   "dependencies": {
     "font": [{ "family": "Pretendard", "source": "https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" }],
     "css": ["assets/css/tokens.css", "assets/css/typography.css"],

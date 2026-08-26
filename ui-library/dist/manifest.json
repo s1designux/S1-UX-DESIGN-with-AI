@@ -2,7 +2,7 @@
   "id": "s1-ui",
   "version": "0.1.0-candidate.1",
   "status": "candidate",
-  "canonicalFingerprint": "86f1c1feebe8df233834b91dc0606b83e11a1766adf95b6b28dd472d92d811d3",
+  "canonicalFingerprint": "898b90a4342abd2b39d29e924bccc1b607dfd8e2ae1363de78a5772ea7b5dfdb",
   "tokenMapFingerprint": "796fb798dd329910ba6c42a29fb4af9e0fd217446b3fa847e140bc70a0a8f4c7",
   "commonCssDependencies": [
     "assets/css/tokens.css",
@@ -15,29 +15,55 @@
     }
   ],
   "commonCssFingerprints": {
-    "assets/css/tokens.css": "51fc1765674168e66eeffe40deca357af82067669b1067940ae687482f5899a2",
+    "assets/css/tokens.css": "babb33e0005ecc415fcb685439cf523aaa04a1c8c052a009ff6cd0e60129ab82",
     "assets/css/typography.css": "d5961f792bec6b8d339c0f4362ae4da15bac829e0bfec5ecb7d4dc732ce232da"
   },
-  "jsRequired": false,
+  "jsRequired": true,
+  "icons": [
+    {
+      "id": "remove",
+      "sourceKey": "24b2df622d341e0af21cd4b23b4a7d23b97a5ea7",
+      "sourceBuilderSymbol": "REMOVE_ICON_SVG",
+      "file": "remove.svg",
+      "webAssetFingerprint": "4790cbd2a87a20ae684cdd765d2cf27798c321616faceb8271ff5c8e449aec22",
+      "symbolId": "s1-icon-remove",
+      "individualFile": "assets/icons/remove.svg",
+      "accessibleNamePolicy": "decorative inside a named action button",
+      "geometry": {
+        "frame": {
+          "width": 24,
+          "height": 24
+        },
+        "glyph": {
+          "x": 4,
+          "y": 4,
+          "width": 16,
+          "height": 16
+        },
+        "scaling": "proportional"
+      },
+      "dependencies": []
+    }
+  ],
   "components": [
     {
       "id": "input",
-      "version": "0.1.0-candidate.1",
+      "version": "0.1.0-candidate.4",
       "status": "candidate",
-      "jsRequired": false,
-      "canonicalFingerprint": "411c22189565814003ebf3608ac49715a5c780b6e8a81e57b527382559a6fbcd",
-      "sourceFingerprint": "60bfe16c124def35cf1a2de9ff37f5342ff48f4c362109036af7cd965518a536",
+      "jsRequired": true,
+      "canonicalFingerprint": "f40b4067bec17a976a54de1e147ba0281a0ae2bd587d736ab12d740d07964a45",
+      "sourceFingerprint": "b26b2b7b21f87bdf20dbb63cedb24bb67610dd90b5c57b88ed8ef6bf48fdbfc4",
       "css": "components/input.css",
       "js": "components/input.js",
       "example": "examples/input.html"
     },
     {
       "id": "button",
-      "version": "0.1.0-candidate.1",
+      "version": "0.1.0-candidate.2",
       "status": "candidate",
       "jsRequired": false,
-      "canonicalFingerprint": "d0ff41fb19d81f592bd203a7a0843cccd0d512251e19a033c1abe7fa3cea742c",
-      "sourceFingerprint": "96352b19b34863de5171160ae2983273b38b592e179025c510d111716663393a",
+      "canonicalFingerprint": "4a57c10107debc3caa599211429ba2b2d396733f40da475493e38b37a3d39686",
+      "sourceFingerprint": "77f0626d575d867dac497e27f88c299e6fc8851d0059dfa5329cf1d01537f293",
       "css": "components/button.css",
       "js": "components/button.js",
       "example": "examples/button.html"

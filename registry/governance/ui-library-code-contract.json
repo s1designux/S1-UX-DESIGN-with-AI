@@ -2,13 +2,13 @@
   "_meta": {
     "id": "ui-library-code-contract",
     "title": "UI Library Web Code Contract",
-    "version": "0.1.0",
+    "version": "0.1.1",
     "status": "candidate",
-    "updatedAt": "2026-08-24",
+    "updatedAt": "2026-08-26",
     "purpose": "정본 컴포넌트를 퍼블리셔와 개발자가 HTML·CSS·JavaScript 모듈로 조합해도 시각·동작·접근성이 흐트러지지 않게 하는 웹 코드 제작 계약.",
-    "approval": "2026-08-24 river 요청으로 기본 틀 신설. Input·Button 파일럿과 UX 검수 후 stable 승격 예정.",
+    "approval": "2026-08-24 river 요청으로 기본 틀 신설. 2026-08-26 아이콘 크기 재발 방지 계약 추가 승인. Input·Button 파일럿과 UX 검수 후 stable 승격 예정.",
     "effective": "candidate 파일럿에만 적용. 현재 metaLedgers와 기존 배포 상태를 즉시 대체하지 않는다.",
-    "gateIntegration": "pending",
+    "gateIntegration": "gate:check-partial",
     "humanGuide": "registry/governance/ui-library-authoring-guide.md",
     "checklist": "registry/governance/ui-library-component-checklist.md"
   },
@@ -200,9 +200,19 @@
   "webIconDelivery": {
     "sourceManifest": "ui-library/src/assets/icons/manifest.json",
     "requiredManifest": ["sourceRegistry", "sourceRegistryFingerprint", "icons"],
-    "requiredMapping": ["id", "sourceKey", "webAssetFingerprint", "symbolId", "individualFile", "accessibleNamePolicy", "dependencies"],
+    "requiredMapping": ["id", "sourceKey", "webAssetFingerprint", "symbolId", "individualFile", "accessibleNamePolicy", "geometry", "dependencies"],
     "outputs": ["dist/assets/icons/s1-icons.svg", "dist/assets/icons/{icon-id}.svg"],
-    "rule": "전체 bundle은 sprite를, 개별 component import는 필요한 개별 SVG 또는 해당 symbol dependency를 포함한다. source key와 fingerprint가 Figma 허용목록과 다르면 빌드를 실패한다."
+    "geometryContract": {
+      "layers": {
+        "hitArea": "손·마우스로 누르는 컴포넌트 action 영역. 컴포넌트 Registry와 CSS가 소유한다.",
+        "frame": "레이아웃이 차지하는 SVG 바깥 틀. 아이콘 manifest geometry.frame이 소유한다.",
+        "glyph": "틀 안에서 실제로 보이는 도형. 아이콘 manifest geometry.glyph가 소유한다."
+      },
+      "svgRule": "모든 웹 아이콘은 바깥 frame SVG 안에 data-s1-part=glyph인 내부 SVG를 두고 x·y·width·height·viewBox를 manifest와 일치시킨다.",
+      "scalingRule": "크기 variant에서 frame을 줄이면 glyph도 같은 비율로 줄인다. hit area는 별도 기준을 유지하며 glyph나 frame 크기로 추정하지 않는다.",
+      "wordingRule": "문서와 구현 기록에서 '아이콘 24px'만 쓰지 않고 hit area·frame·glyph 중 어느 크기인지 명시한다."
+    },
+    "rule": "전체 bundle은 sprite를, 개별 component import는 필요한 개별 SVG 또는 해당 symbol dependency를 포함한다. source key·fingerprint·geometry가 정본 계약과 다르거나 source와 dist가 다르면 빌드와 Gate 43을 실패한다."
   },
   "distribution": {
     "cssLoadOrder": ["Pretendard font", "tokens.css", "typography.css", "s1-ui.css 또는 개별 component CSS", "pattern CSS"],

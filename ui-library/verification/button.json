@@ -1,0 +1,16 @@
+{
+  "component": "button",
+  "version": "0.1.0-candidate.2",
+  "independentVerification": "BLOCKED",
+  "riverUxApproval": "APPROVED",
+  "approvedAt": "2026-08-26",
+  "approvedScope": "Primary·Secondary·Blue Line, PC XXSM·XSM·MD, Mobile LG의 HTML·CSS.",
+  "passed": [
+    "정본·Registry·source·dist·전체 bundle 코드 정합",
+    "HTML 공개 part와 CSS root scope 정의",
+    "최소 너비·라벨 중앙·hover·pressed·focus·disabled 코드 검사",
+    "river 실제 검수 화면 UI·UX 승인"
+  ],
+  "blocked": ["독립 검증자의 PC/Mobile × Light/Dark 실제 렌더 재실측"],
+  "promotion": "HOLD"
+}

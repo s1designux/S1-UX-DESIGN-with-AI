@@ -1,8 +1,8 @@
 {
   "id": "input",
-  "version": "0.1.0-candidate.1",
+  "version": "0.1.0-candidate.4",
   "status": "candidate",
-  "canonicalFingerprint": "411c22189565814003ebf3608ac49715a5c780b6e8a81e57b527382559a6fbcd",
+  "canonicalFingerprint": "f40b4067bec17a976a54de1e147ba0281a0ae2bd587d736ab12d740d07964a45",
   "canonicalSources": [
     "plugins/figma-vars-installer/src/build-components.ts",
     "plugins/figma-vars-installer/src/vars-data.ts",
@@ -37,12 +37,62 @@
     "readOnly": "control[readonly]",
     "disabled": "control[disabled]"
   },
+  "actionStates": {
+    "hover": "@media (hover: hover)에서 action:hover:not(:disabled); color/form-control/bg/hover 배경을 해당 hit area에만 표시",
+    "focusVisible": "action:focus-visible"
+  },
   "parts": [
     "label",
     "field",
     "control",
+    "action",
+    "action-icon",
     "message"
   ],
+  "htmlContract": {
+    "root": "div[data-s1-component=input]",
+    "requiredAttributes": [
+      "data-size",
+      "data-break"
+    ],
+    "requiredParts": [
+      "field",
+      "control"
+    ],
+    "optionalParts": [
+      "label",
+      "action",
+      "action-icon",
+      "message"
+    ],
+    "relations": [
+      "label[for] ↔ control[id]",
+      "message[id] ↔ control[aria-describedby]",
+      "action[data-action=clear] 안 action-icon"
+    ],
+    "source": "components/input/input.example.html",
+    "distribution": "examples/input.html"
+  },
+  "cssContract": {
+    "entry": "components/input.css",
+    "rootScope": "[data-s1-component=input]",
+    "variantAttributes": [
+      "data-size=xxsm|xsm|md",
+      "data-break=pc|mobile",
+      "data-state=correct"
+    ],
+    "nativeStates": [
+      ":focus-within",
+      "[aria-invalid=true]",
+      "[readonly]",
+      "[disabled]"
+    ],
+    "customization": "정본 Semantic token만 교체하며 공개 selector의 구조를 override하지 않는다."
+  },
+  "contentSlots": {
+    "label": "optional when an accessible name is supplied another way",
+    "message": "optional; omit the element and aria-describedby together when no guidance or state message is needed"
+  },
   "dependencies": {
     "font": [
       {
@@ -74,7 +124,15 @@
       }
     ]
   },
-  "icons": [],
+  "icons": [
+    {
+      "id": "remove",
+      "sourceKey": "24b2df622d341e0af21cd4b23b4a7d23b97a5ea7",
+      "asset": "assets/icons/remove.svg",
+      "use": "Editing clear action",
+      "accessibleNamePolicy": "decorative icon inside a button named 입력 내용 지우기"
+    }
+  ],
   "a11y": {
     "nativeSemantics": {
       "status": "required",
@@ -94,21 +152,39 @@
     },
     "ariaStateSync": {
       "status": "required",
-      "value": "Service sets aria-invalid when error state is active."
+      "value": "Service sets aria-invalid when error state is active; runtime keeps clear visibility in sync with value and focus."
     },
     "errorRelation": {
       "status": "required",
-      "value": "Service gives message an id and references it with aria-describedby."
+      "value": "When a message exists, service gives it an id and references it with aria-describedby. Both may be omitted together."
     },
     "reducedMotion": {
       "status": "not-applicable",
       "reason": "The canonical Base Input defines no motion."
     }
   },
-  "jsRequired": false,
+  "jsRequired": true,
   "javascript": {
-    "runtime": "none",
-    "reason": "Base Input uses native attributes and CSS; service code owns validation timing."
+    "options": {},
+    "events": [
+      "s1:input:clear"
+    ],
+    "eventDetail": {
+      "s1:input:clear": {
+        "value": "string; always empty after clear"
+      }
+    },
+    "methods": [
+      "init(root)",
+      "destroy(root)",
+      "instance.update()"
+    ],
+    "lifecycle": [
+      "init is idempotent",
+      "destroy removes listeners and hides clear action"
+    ],
+    "controlMode": "uncontrolled",
+    "behavior": "Editing에서 값이 있을 때 remove action을 보이고, 실행하면 값 삭제·input event 발생·Input focus 복귀"
   },
-  "sourceFingerprint": "60bfe16c124def35cf1a2de9ff37f5342ff48f4c362109036af7cd965518a536"
+  "sourceFingerprint": "b26b2b7b21f87bdf20dbb63cedb24bb67610dd90b5c57b88ed8ef6bf48fdbfc4"
 }

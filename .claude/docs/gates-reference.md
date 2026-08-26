@@ -56,6 +56,8 @@
 | 39 | Canonical Value → Web Guide | 정본 수치가 웹 가이드에 반영됐나 |
 | 40 | Screen Rebuild Evidence | 화면 재현 근거(기준 선언·스냅샷) 존재 — **warn** |
 | 41 | Screen Rebuild State | 화면 작업 상태 파일 정합, 전 플로우 일괄 — **warn** |
+| 42 | Screen Naming | 화면 프레임 이름과 흐름 코드 규칙 |
+| 43 | UI Icon Geometry | 누르는 영역과 분리된 SVG 틀·실제 도형 크기, source↔dist 일치 |
 | 42 | Screen Naming | 화면 프레임 이름이 네이밍 정본 규칙을 지키나 |
 
 ---
@@ -389,3 +391,9 @@ DESIGN.md(AI 소비용) 가 정본(tokens.css+registry)보다 낡으면 차단
 > **한계(정직 표기):** 지키는 것은 **기준표(`registry/patterns/{id}/states.md`)의 이름**이지 Figma 파일 안의 실물 프레임 이름이 아니다. 커밋 훅은 저장소만 읽으므로 실물 스캔에 필요한 MCP 연결을 쓸 수 없다. 실물↔문서 일치는 화면 작업 시 `component-verifier` 소관이며, `screen-rebuilder` 는 이 표의 이름을 그대로 쓰도록 배선돼 있다.
 
 정본 `registry/governance/screen-naming-policy.json`. 단독 `npm run screens:naming`
+
+### Gate 43: UI Icon Geometry (UI 아이콘 크기)
+
+웹 아이콘 manifest의 `geometry.frame`(SVG가 차지하는 틀)과 `geometry.glyph`(실제 보이는 도형)를 실제 SVG 구조와 전수 대조한다. 실제 도형은 바깥 frame 안의 `data-s1-part="glyph"` SVG에만 두며, 중앙 비율 유지 규칙을 강제한다. 컴포넌트가 쓰는 아이콘 ID의 등록 여부와 source↔dist 동일성도 검사한다.
+
+검사기 자체가 과거 오류 형태(틀과 도형을 같은 24px로 취급)를 실제로 거부하는 적대 테스트를 함께 실행한다. 현재 파일만 우연히 통과하거나 검사 규칙이 약화되는 것도 차단한다. 정본 계약은 `registry/governance/ui-library-code-contract.json`, 단독 실행은 `npm run ui:icons`.

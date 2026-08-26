@@ -491,7 +491,7 @@ export const SEMANTIC_COLOR: Record<string, SemanticColorEntry> = {
 
   // ── button ────────────────────────────────
   "color/button/bg/blue-line--default": { light: "base/white", dark: "gray-dark/100" },
-  "color/button/bg/blue-line--hover": { light: "blue/50", dark: "gray-dark/200" },
+  "color/button/bg/blue-line--hover": { light: "blue/50", dark: "blue-dark/50" },
   "color/button/bg/disabled": { light: "gray/50", dark: "gray-dark/300" },
   "color/button/bg/primary--default": { light: "blue/400", dark: "blue-dark/300" },
   "color/button/bg/primary--hover": { light: "blue/500", dark: "blue-dark/250" },

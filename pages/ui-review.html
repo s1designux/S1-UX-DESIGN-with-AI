@@ -221,13 +221,14 @@
 <body>
   <main class="review-page">
     <header class="review-header">
-      <p class="review-eyebrow">UI LIBRARY · CANDIDATE REVIEW</p>
+      <p class="review-eyebrow">UI LIBRARY · RIVER APPROVED · TECHNICAL PROMOTION PENDING</p>
       <h1 class="review-title">Base Input · Button 실제 배포본 검수</h1>
       <p class="review-description">이 화면과 퍼블리셔·개발자가 받는 파일은 같은 <strong>ui-library/dist</strong>를 사용합니다. 아래 UI를 직접 누르고 입력하면서 모양과 사용성을 확인해 주세요.</p>
       <div class="review-badges" aria-label="검수 범위">
         <span class="review-badge">PC · Mobile</span>
         <span class="review-badge">Light · Dark</span>
         <span class="review-badge">Base Input · Button</span>
+        <span class="review-badge">검수본 2026-08-26 · 04</span>
         <span class="review-badge">Password · Search는 다음 단계</span>
       </div>
     </header>
@@ -237,7 +238,7 @@
       <ol class="review-steps">
         <li><strong>Tab 키</strong>로 이동해 Button의 파란 포커스 테두리가 잘 보이는지 확인합니다.</li>
         <li>Button 위에 마우스를 올리고 눌러서 Hover·Pressed 반응을 확인합니다.</li>
-        <li>Input에 직접 입력하고, Error·Correct·Read-only·Disabled 차이가 분명한지 확인합니다.</li>
+        <li>Input에 직접 입력해 remove 아이콘이 나타나는지, 아이콘 위 Hover 배경과 누른 뒤 값 삭제·초점 복귀를 확인합니다.</li>
         <li>PC와 Mobile, Light와 Dark에서 같은 의미와 우선순위로 보이는지 비교합니다.</li>
       </ol>
       <div class="review-actions">
@@ -249,7 +250,7 @@
     <section class="review-section" aria-labelledby="input-review-title">
       <div>
         <h2 class="review-section-title" id="input-review-title">1. Base Input</h2>
-        <p class="review-note">라벨·입력 영역·안내 문구로 구성된 기본 입력창입니다. 비밀번호 보기/숨기기와 검색 지우기 동작은 이번 파일럿에 포함하지 않습니다.</p>
+        <p class="review-note">안내 문구는 선택 사항입니다. Editing에서는 값이 있을 때 remove 아이콘이 나타나며, PC에서는 아이콘 위에 마우스를 올리면 해당 누르는 영역에만 Hover 배경이 생깁니다. 비밀번호 보기/숨기기와 검색 실행은 다음 단계입니다.</p>
       </div>
       <div class="review-matrix" id="input-review-matrix"></div>
     </section>
@@ -280,7 +281,7 @@
 
     let uniqueId = 0;
 
-    function inputMarkup({ label, value = "", placeholder = "내용을 입력하세요", state = "default", breakName, size }) {
+    function inputMarkup({ label, value = "", placeholder = "내용을 입력하세요", state = "default", breakName, size, messageVisible = true }) {
       uniqueId += 1;
       const id = `review-input-${uniqueId}`;
       const messageId = `${id}-message`;
@@ -298,9 +299,10 @@
         <div data-s1-component="input" data-size="${size}" data-break="${breakName}"${rootState}>
           <label data-s1-part="label" for="${id}">${label}</label>
           <div data-s1-part="field">
-            <input id="${id}" data-s1-part="control" aria-describedby="${messageId}" placeholder="${placeholder}" value="${value}"${controlState}>
+            <input id="${id}" data-s1-part="control"${messageVisible ? ` aria-describedby="${messageId}"` : ""} placeholder="${placeholder}" value="${value}"${controlState}>
+            <button type="button" data-s1-part="action" data-action="clear" aria-label="입력 내용 지우기" hidden><span data-s1-part="action-icon" aria-hidden="true"></span></button>
           </div>
-          <p id="${messageId}" data-s1-part="message">${message}</p>
+          ${messageVisible ? `<p id="${messageId}" data-s1-part="message">${message}</p>` : ""}
         </div>`;
     }
 
@@ -320,6 +322,7 @@
       const stateSamples = [
         sample("Default · 직접 입력", inputMarkup({ label: "이름", breakName: combo.breakName, size: combo.inputSize })),
         sample("Filled", inputMarkup({ label: "이름", value: "홍길동", breakName: combo.breakName, size: combo.inputSize })),
+        sample("안내 메시지 없음", inputMarkup({ label: "이름", value: "홍길동", breakName: combo.breakName, size: combo.inputSize, messageVisible: false })),
         sample("Error · aria-invalid", inputMarkup({ label: "이름", value: "ㅎ", state: "error", breakName: combo.breakName, size: combo.inputSize })),
         sample("Correct · 공개 data-state", inputMarkup({ label: "이름", value: "홍길동", state: "correct", breakName: combo.breakName, size: combo.inputSize })),
         sample("Read-only · 실제 readonly", inputMarkup({ label: "이름", value: "변경할 수 없는 값", state: "readonly", breakName: combo.breakName, size: combo.inputSize })),
@@ -358,7 +361,7 @@
     function renderButtonPanel(combo) {
       const sizes = combo.device === "Mobile" ? ["lg"] : ["xxsm", "xsm", "md"];
       const sizeLabels = {
-        xxsm: "XXSM · min 64px",
+        xxsm: "XXSM · min 56px",
         xsm: "XSM · min 64px",
         md: "MD · min 80px",
         lg: "LG · min 80px"
@@ -397,6 +400,7 @@
 
     document.querySelector("#input-review-matrix").innerHTML = combinations.map(renderInputPanel).join("");
     document.querySelector("#button-review-matrix").innerHTML = combinations.map(renderButtonPanel).join("");
+    document.querySelectorAll('[data-s1-component="input"]').forEach((root) => S1UI.input.init(root));
 
     const focusStatus = document.querySelector("#review-live-status");
     document.addEventListener("focusin", (event) => {
@@ -412,7 +416,7 @@
     });
 
     document.querySelector("#review-runtime-status").textContent =
-      `실제 배포 모듈 로드 완료 · Input ${S1UI.input.componentId} · Button ${S1UI.button.componentId} · JavaScript 동작 불필요(CSS + native HTML)`;
+      `실제 배포 모듈 로드 완료 · Input ${S1UI.input.componentId}(remove 동작 포함) · Button ${S1UI.button.componentId}`;
   </script>
 </body>
 </html>

@@ -73,6 +73,7 @@ description: "정본 컴포넌트를 배포 가능한 HTML·CSS·JavaScript UI �
 ### 3-build — 원본·배포·검수 소비자 구현
 
 - `ui-library-builder`가 `ui-library/src`와 생성 경로를 구현한다.
+- 아이콘은 manifest에 hit area와 분리된 frame·glyph geometry를 기록하고 `npm run ui:icons`를 통과시킨다.
 - 전체 묶음과 개별 모듈은 같은 source에서 생성한다.
 - `guide-builder`가 검수 화면을 실제 dist 소비자로 연결한다.
 - 패턴은 승인된 코어를 조립하며 코어 내부를 복제하지 않는다.
@@ -88,6 +89,7 @@ description: "정본 컴포넌트를 배포 가능한 HTML·CSS·JavaScript UI �
 - 키보드·포커스·ARIA·다중 인스턴스·init/destroy
 - 빈 HTML 소비, 전체 묶음과 개별 설치 동일성
 - 디자인가이드와 실제 dist 동일성
+- 아이콘 hit area·frame·glyph 독립 실측과 source·dist 동일성
 
 **검문소:** FAIL 0, HOLD 0, BLOCKED 0. 실패하면 3-build로 되돌리고 이전 PASS는 `superseded` 처리한다.
 

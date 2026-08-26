@@ -15,13 +15,14 @@
 1. 정본 파일과 상태 파일 지문을 대조한다.
 2. manifest의 variant·size·state·part·dependency를 정본 전수와 대조한다.
 3. source에서 dist를 재생성하고 손편집·드리프트가 없는지 확인한다.
-4. PC·Mobile × Light·Dark를 실제 렌더해 코드 정본의 geometry·token·state와 대조한다. V3.0은 선택적 sanity check이며 레거시는 사용하지 않는다.
+4. PC·Mobile × Light·Dark를 실제 렌더해 코드 정본의 geometry·token·state와 대조한다. 아이콘은 누르는 영역(hit area)·SVG 틀(frame)·실제 도형(glyph)을 각각 실측하며 서로 대신하지 않는다. V3.0은 선택적 sanity check이며 레거시는 사용하지 않는다.
 5. 키보드·포커스·ARIA·오류 연결·reduced motion을 계약과 대조한다.
 6. 다중 인스턴스, 반복 init, destroy 후 정리, 동적 재초기화를 검사한다.
 7. 빈 HTML 소비자에서 전체 묶음과 개별 모듈을 각각 실행한다.
 8. 두 설치 방식의 DOM·픽셀·동작 결과가 같은지 대조한다.
 9. `pages/ui-review.html`이 실제 dist 외 컴포넌트 CSS·JavaScript에 의존하지 않는지 검사한다.
 10. 코드탭이 source/example에서 생성됐는지 확인한다.
+11. `npm run ui:icons`와 검사기 적대 테스트가 통과하고, 아이콘 source·dist가 같은지 확인한다.
 
 ## 반환
 

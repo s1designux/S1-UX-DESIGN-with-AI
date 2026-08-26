@@ -50,6 +50,57 @@
   opacity: var(--opacity-100);
 }
 
+[data-s1-component="input"] [data-s1-part="action"] {
+  align-items: center;
+  appearance: none;
+  background: transparent;
+  border: 0;
+  box-sizing: border-box;
+  color: var(--color-form-control-icon-default);
+  cursor: pointer;
+  display: inline-flex;
+  flex: 0 0 auto;
+  height: var(--sizing-28);
+  justify-content: center;
+  margin: 0;
+  padding: 0;
+  width: var(--sizing-28);
+}
+
+[data-s1-component="input"] [data-s1-part="action"][hidden] {
+  display: none;
+}
+
+@media (hover: hover) {
+  [data-s1-component="input"] [data-s1-part="action"]:hover:not(:disabled) {
+    background: var(--color-form-control-bg-hover);
+    border-radius: var(--radius-control-sm);
+  }
+}
+
+[data-s1-component="input"] [data-s1-part="action-icon"] {
+  background-color: currentColor;
+  display: block;
+  height: var(--sizing-24);
+  mask: url("../assets/icons/remove.svg") center / contain no-repeat;
+  width: var(--sizing-24);
+}
+
+[data-s1-component="input"][data-size="xxsm"] [data-s1-part="action-icon"] {
+  height: var(--sizing-20);
+  width: var(--sizing-20);
+}
+
+[data-s1-component="input"][data-break="mobile"] [data-s1-part="action"] {
+  height: var(--sizing-48);
+  width: var(--sizing-48);
+}
+
+[data-s1-component="input"] [data-s1-part="action"]:focus-visible {
+  outline: var(--border-width-2) solid var(--color-form-control-action-border-focus);
+  outline-offset: calc(var(--spacing-2) * -1);
+}
+
 [data-s1-component="input"] [data-s1-part="message"] {
   color: var(--color-text-state-caption);
   font-family: "Pretendard", sans-serif;

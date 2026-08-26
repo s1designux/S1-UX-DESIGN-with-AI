@@ -19,7 +19,7 @@
   },
   "contract": {
     "path": "registry/governance/ui-library-code-contract.json",
-    "version": "0.1.0",
+    "version": "0.1.1",
     "status": "candidate"
   },
   "target": {
@@ -37,7 +37,7 @@
       "button": {
         "nodeId": "1545:8242",
         "source": "user-provided-v3-overview",
-        "status": "verified-visual-reference"
+        "status": "visual-reference-superseded-for-xxsm-width"
       },
       "input": {
         "nodeId": null,
@@ -50,7 +50,7 @@
   "workflowStatus": "in-progress",
   "uiLibraryStatus": "candidate",
   "lastCompletedCheckpoint": 3,
-  "nextAction": "river가 검수 화면에서 Button의 크기별 최소 너비와 Mobile 라벨 중앙 정렬을 확인한다. 전체 파일럿 승격 전에는 Input 범위를 포함한 시나리오 F 최종 독립 검증을 완료한다.",
+  "nextAction": "river UX 승인은 완료됐다. 독립 검증자가 PC/Mobile × Light/Dark 실제 렌더를 재실측해 PASS하면 Input·Button을 candidate에서 approved로 기술 승격한다.",
   "ownership": {
     "currentActor": "codex",
     "startedAt": "2026-08-25T11:04:30+09:00"
@@ -59,12 +59,12 @@
     {
       "role": "component-visual",
       "path": "plugins/figma-vars-installer/src/build-components.ts",
-      "sha256": "f6d4e1b7f2cbc824bffcce4397cdae1a5bd90f0e8bc40fa5ed7772ae8eca669c"
+      "sha256": "cb50972e010748fd4646bdf52fbc4b9adb0f3fce3adc20301bfd254bf7667742"
     },
     {
       "role": "token-values",
       "path": "plugins/figma-vars-installer/src/vars-data.ts",
-      "sha256": "5403b41c6a718d1552f015475b77ee35aa66da8a831f2fcf1d8e7b4173865d07"
+      "sha256": "87edd42623983fb5e02e820940dbbc3693ecb4b2c79104e781c8307501984cd9"
     },
     {
       "role": "text-styles",
@@ -74,7 +74,7 @@
     {
       "role": "ui-library-contract",
       "path": "registry/governance/ui-library-code-contract.json",
-      "sha256": "58e7dedb4c72572292f26f9059bcfde12f89fa10585776433630828c0c98fab7"
+      "sha256": "e2a8485c5f5c5f64596caee1112eae35e0353747286852e7ccdd139129b4055a"
     },
     {
       "role": "current-behavior-ledger",
@@ -113,7 +113,7 @@
     "canonReadiness": "reports/ui-library/input-button-pilot/2-canon-readiness.md",
     "build": "reports/ui-library/input-button-pilot/3-build.md",
     "verification": "reports/ui-library/input-button-pilot/4-verification.md",
-    "humanReview": null,
+    "humanReview": "reports/ui-library/input-button-pilot/5-human-review.md",
     "promotion": null,
     "sourceRoot": "ui-library/src",
     "distManifest": "ui-library/dist/manifest.json",
@@ -132,9 +132,17 @@
     "Mobile suffix action이 있는 Input은 action의 48×48px hit area가 field 밖으로 넘치지 않도록 Input 자체도 최소 48px 높이를 유지한다. (river, 2026-08-25)",
     "Gate 29 검증 결과 Button focus-visible 다크색은 Button 계열과 같은 blue-dark/300으로 통일한다. Input과 suffix action은 기존 form-control selected 계열을 유지한다. (2026-08-25)",
     "pages/ui-review.html은 실제 dist 검수만 담당하는 standalone 화면으로 레이아웃 정본에 등록한다. (2026-08-25)",
-    "HD-UILIB-04: Button 최소 너비는 Figma V3.0 1545:8242 실측대로 MD·LG 80px, XSM·XXSM 64px을 적용하고 Mobile LG 라벨은 가로·세로 중앙 정렬한다. (river, 2026-08-25)"
+    "HD-UILIB-04: Button 최소 너비는 Figma V3.0 1545:8242 실측대로 MD·LG 80px, XSM·XXSM 64px을 적용하고 Mobile LG 라벨은 가로·세로 중앙 정렬한다. (river, 2026-08-25)",
+    "HD-UILIB-05: Button XXSM 최소 너비는 56px로 변경한다. 이 결정은 Figma V3.0 1545:8242의 기존 64px 참고값보다 최신인 정본 결정이다. (river, 2026-08-26)",
+    "HD-UILIB-06: Input Editing 상태에는 정본대로 remove action을 제공한다. 값과 focus가 있을 때 노출하고, 실행하면 값 삭제·input event·Input focus 복귀를 보장한다. (river 피드백 반영, 2026-08-26)",
+    "HD-UILIB-07: Input 안내 메시지는 선택형이다. 메시지 있는 유형과 없는 유형을 같은 Input의 조합으로 함께 정리하고, 메시지가 없으면 element와 aria-describedby를 함께 생략한다. (river, 2026-08-26)",
+    "HD-UILIB-08: remove 아이콘은 정본의 프레임과 실제 글리프를 구분한다. 기본은 24px 프레임 안 16px 글리프, XXSM은 20px 프레임 안 약 13.33px 글리프다. (river 피드백 반영, 2026-08-26)",
+    "HD-UILIB-09: 모든 웹 아이콘은 누르는 영역·SVG 틀·실제 도형을 분리 기록하고, manifest·SVG·source/dist 자동 검사와 적대 테스트를 빌드·Gate 43에서 강제한다. (river, 2026-08-26)",
+    "HD-UILIB-10: Input field 전체 Hover와 suffix action Hover를 분리한다. remove 등 각 action은 hover 가능한 PC 포인터에서 자기 hit area에 color/form-control/bg/hover 배경을 표시하고 Mobile에는 hover를 강제하지 않는다. (river, 2026-08-26)"
   ],
-  "blockers": [],
+  "blockers": [
+    "코드·생성본은 독립 PASS. 독립 브라우저 실제 렌더와 이번 범위 밖 Mobile Header 구조 검증이 없어 Gate 13 갱신 보류"
+  ],
   "pendingDecisions": [],
   "evidence": {
     "sourceAudit": {
@@ -145,35 +153,42 @@
       "summary": "착수 전 감사에서 UI library source·dist·build·전용 workflow state가 없음을 확인했다. 이 상태 파일과 ui-library-code 하네스가 진행 상태 공백을 보완한다."
     },
     "canonVerification": {
-      "status": "PASS",
+      "status": "BLOCKED",
       "actor": "component-verifier",
-      "observedAt": "2026-08-25",
-      "summary": "Button Focus Visible BOOLEAN과 48 variants 유지, Input suffix PC28/Mobile48 독립 hit area, Light/Dark token binding, Registry·guide-model 일치를 독립 검증했다.",
-      "gate13": "reports/installer-build/build-verification.json"
+      "observedAt": "2026-08-26",
+      "summary": "Button XXSM 56px과 Input remove의 정본·guide model·installer 코드 대조는 PASS. 실제 렌더 미검증으로 Gate 13 기록은 갱신하지 않았다.",
+      "gate13": "stale — actual render verification required before record"
     },
     "independentVerification": {
-      "verdict": "HOLD",
+      "verdict": "BLOCKED",
       "actor": "component-verifier",
       "observedAt": "2026-08-25",
-      "summary": "초기 독립 검사에서 검수 행렬·상태 토큰·키보드 초점·fixture parity 결함을 발견해 수정했다. Button 너비·Mobile 라벨 변경 범위는 수정 후 독립 PASS했다. Input을 포함한 전체 시나리오 F 최종 재실행은 아직 완료하지 않아 전체 verdict는 HOLD를 유지한다.",
+      "summary": "Input suffix action Hover는 정본·Registry·guide model·설치기·UI source/dist·회귀 코드 대조를 독립 PASS했다. 구현자 브라우저에서 PC Light의 28px hit area·#FAFAFA 배경·4px radius·24px 아이콘을 실측했으나, 독립 검증자의 Light/Dark·PC/Mobile 실제 픽셀 재검증은 BLOCKED이며 Gate 13도 갱신하지 않았다.",
       "componentResults": {
         "button": {
-          "verdict": "PASS",
-          "scope": "Figma V3.0 1545:8242 최소 너비·Mobile label center·Light/Dark·bundle parity·focus-visible",
-          "observedAt": "2026-08-25"
+          "verdict": "BLOCKED",
+          "scope": "XXSM 56px source·dist·검수 라벨은 PASS, 실제 Light/Dark·PC/Mobile 픽셀 검증은 브라우저 미연결로 BLOCKED",
+          "observedAt": "2026-08-26"
         },
         "input": {
-          "verdict": "HOLD",
-          "scope": "이번 Button 수정 후 독립 재검증 범위에 포함하지 않음"
+          "verdict": "BLOCKED",
+          "scope": "Editing remove·메시지 선택형·suffix action Hover의 정본↔배포·회귀 코드는 PASS. 구현자 PC Light 실측 PASS, 독립 Light/Dark·PC/Mobile 실제 렌더는 브라우저 미연결로 BLOCKED",
+          "observedAt": "2026-08-26"
         }
       },
       "report": "reports/ui-library/input-button-pilot/4-verification.md"
     },
-    "riverApproval": null
+    "riverApproval": {
+      "status": "approved",
+      "actor": "river",
+      "observedAt": "2026-08-26",
+      "scope": "Base Input과 Button의 검수본 2026-08-26·04 UI·UX 및 공개 HTML/CSS 구조 확정. Password Field·Search Input·패턴은 제외.",
+      "report": "reports/ui-library/input-button-pilot/5-human-review.md"
+    }
   },
   "handoff": {
     "lastActor": "codex",
-    "updatedAt": "2026-08-25",
-    "summary": "Button 수정 완료: Figma V3.0 기준 최소 너비 MD·LG 80px, XSM·XXSM 64px과 Mobile label center를 source·Registry·dist·검수 화면에 동기화했다. Button 변경 범위는 독립 PASS, 전체 파일럿은 Input 최종 독립 재검증 전이라 candidate/HOLD를 유지한다."
+    "updatedAt": "2026-08-26",
+    "summary": "river가 검수본 2026-08-26·04의 Base Input·Button UI·UX와 HTML/CSS 공개 구조를 승인했다. manifest와 package export에 HTML/CSS 계약을 고정하고 승인 기록·이행 장부를 추가했다. 독립 실제 렌더 검증이 BLOCKED라 기술 배포 상태는 candidate/HOLD를 유지한다."
   }
 }

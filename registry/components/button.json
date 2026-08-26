@@ -197,12 +197,12 @@
     "pc": [
       { "id": "md",       "label": "md",       "height": "h44", "cssClass": "s1-btn-md",     "token": "--sizing-44", "minWidth": 80, "minWidthToken": "--sizing-80" },
       { "id": "xsm",      "label": "xsm",      "height": "h34", "cssClass": "",              "token": "--sizing-34", "minWidth": 64, "minWidthToken": "--sizing-64", "note": "기본 사이즈 — 크기 수식어 없음" },
-      { "id": "xxsm",     "label": "xxsm",     "height": "h28", "cssClass": "s1-btn-xxsm",  "token": "--sizing-28", "minWidth": 64, "minWidthToken": "--sizing-64", "note": "신규 토큰 — 2026-05-11 tokens.css에 추가됨" }
+      { "id": "xxsm",     "label": "xxsm",     "height": "h28", "cssClass": "s1-btn-xxsm",  "token": "--sizing-28", "minWidth": 56, "minWidthToken": "--sizing-56", "note": "river 승인으로 최소 너비 56px 적용 — 2026-08-26" }
     ],
     "mobile": [
       { "id": "lg",       "label": "lg",       "height": "h48", "cssClass": "s1-btn-lg", "token": "--sizing-48", "minWidth": 80, "minWidthToken": "--sizing-80", "labelAlign": "center" }
     ],
-    "minWidthRule": "Figma V3.0 Button 실측: MD·LG=80px, XSM·XXSM=64px. 라벨이 길면 좌우 padding을 보존하며 늘어난다.",
+    "minWidthRule": "Button 최소 너비: MD·LG=80px, XSM=64px, XXSM=56px. XXSM은 2026-08-26 river 승인으로 기존 Figma V3.0 참고값 64px을 대체한다. 라벨이 길면 좌우 padding을 보존하며 늘어난다.",
     "radius": "--radius-button-md"
   },
   "harness": {

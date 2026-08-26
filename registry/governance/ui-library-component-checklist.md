@@ -5,7 +5,7 @@
 규칙 정본: [`ui-library-code-contract.json`](ui-library-code-contract.json)  
 설명: [`ui-library-authoring-guide.md`](ui-library-authoring-guide.md)
 
-Contract version: `0.1.0`
+Contract version: `0.1.1`
 
 ## 기본 정보
 
@@ -26,6 +26,7 @@ Contract version: `0.1.0`
 - [ ] variant·size·state 목록이 정본과 일치한다.
 - [ ] 아이콘과 토큰이 모두 정본에 있다.
 - [ ] 공통 문구·패턴 문구·아이콘의 정본 위치가 기록돼 있다.
+- [ ] 아이콘의 누르는 영역·틀·실제 도형 크기가 각각 기록돼 있다.
 - [ ] 기존 코어·모듈과 중복되지 않는다.
 - [ ] 이미지로 알 수 없는 동작을 사전 질문으로 해소했다.
 - [ ] `needs-decision`이 0건이다.
@@ -52,6 +53,7 @@ Contract version: `0.1.0`
 - [ ] 다른 코어 컴포넌트 내부를 override하지 않는다.
 - [ ] 패턴 CSS와 컴포넌트 CSS의 책임이 분리돼 있다.
 - [ ] 검수 전용 스타일이 dist에 포함되지 않는다.
+- [ ] 아이콘 frame과 glyph가 manifest 수치대로 비례 축소되며 hit area와 섞이지 않는다.
 
 ## 4. JavaScript
 
@@ -99,6 +101,7 @@ Contract version: `0.1.0`
 - [ ] 전체 묶음과 선택 설치 결과를 대조했다.
 - [ ] 디자인가이드 검수 화면이 실제 dist를 사용한다.
 - [ ] 코드탭이 source/example에서 생성되고 손사본이 아니다.
+- [ ] `npm run ui:icons`가 통과하고 PC·Mobile에서 hit area·frame·glyph를 각각 실측했다.
 - [ ] 검증하지 못한 항목을 PASS로 표시하지 않았다.
 
 ## 8. river UX 승인

@@ -4,7 +4,7 @@
 
 규칙 정본은 [`ui-library-code-contract.json`](ui-library-code-contract.json)이다. 이 문서는 그 계약을 사람이 쉽게 읽을 수 있게 설명한다. 두 파일이 다르면 JSON 계약을 우선하고, 설명 문서를 함께 고친다.
 
-Contract version: `0.1.0`
+Contract version: `0.1.1`
 
 이 정책의 현재 상태는 `candidate`다. Input·Button 파일럿에서 실제 제작·검수한 뒤 river 승인으로 정책을 `stable`로 승격한다. 개별 컴포넌트의 배포 상태는 별도로 `candidate → verified → approved`를 사용한다.
 
@@ -273,6 +273,16 @@ export function destroy(root) {
 ### 아이콘
 
 Figma 아이콘 키를 그대로 SVG 문자열로 복사하지 않는다. 웹 아이콘 manifest가 Figma source key·fingerprint와 웹 파일·sprite symbol을 연결한다. 전체 설치는 sprite를, 개별 설치는 필요한 SVG dependency를 포함한다. 둘의 시각 결과와 접근성 이름 정책은 같아야 한다.
+
+아이콘 크기는 아래 세 층을 반드시 따로 기록한다. “아이콘 24px”처럼 어느 층인지 알 수 없는 표현은 쓰지 않는다.
+
+| 층 | 뜻 | 정본 위치 |
+|---|---|---|
+| 누르는 영역(hit area) | 손이나 마우스로 누를 수 있는 전체 영역 | 컴포넌트 Registry·CSS |
+| 아이콘 틀(frame) | 레이아웃에서 SVG가 차지하는 영역 | 웹 아이콘 manifest `geometry.frame` |
+| 실제 도형(glyph) | 틀 안에서 눈에 보이는 선·면 | 웹 아이콘 manifest `geometry.glyph` |
+
+SVG는 바깥 frame 안에 `data-s1-part="glyph"`인 내부 SVG를 둔다. 크기 variant가 frame을 줄일 때 실제 도형도 같은 비율로 줄이고, 누르는 영역은 모바일 터치 기준처럼 컴포넌트가 별도로 유지한다. `npm run ui:icons`가 모든 아이콘의 manifest·SVG·배포본 일치를 검사하며, 실패하면 빌드와 커밋을 진행하지 않는다.
 
 ## 11. 디자인가이드 사이트의 역할
 

@@ -44,6 +44,7 @@
     "canon:approve": "node scripts/canon-addition-check.js --approve",
     "canon:manifest": "node scripts/canon-manifest-check.js",
     "ui:contract": "node scripts/ui-library-contract-check.js",
+    "ui:icons": "node scripts/ui-library-icon-geometry-check.js",
     "ui:state": "node scripts/ui-library-state-check.js",
     "ui:handoff": "node scripts/ui-library-state-check.js --handoff",
     "ui:handoff:remote": "node scripts/ui-library-state-check.js --handoff --remote",

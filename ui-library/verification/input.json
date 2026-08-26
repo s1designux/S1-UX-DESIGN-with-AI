@@ -1,0 +1,16 @@
+{
+  "component": "input",
+  "version": "0.1.0-candidate.4",
+  "independentVerification": "BLOCKED",
+  "riverUxApproval": "APPROVED",
+  "approvedAt": "2026-08-26",
+  "approvedScope": "Base Input HTML·CSS와 remove JavaScript 동작. Password Field·Search Input은 제외.",
+  "passed": [
+    "정본·Registry·source·dist·전체 bundle 코드 정합",
+    "HTML 공개 part와 CSS root scope 정의",
+    "remove icon provenance·geometry·hover·focus·clear 회귀 검사",
+    "river 실제 검수 화면 UI·UX 승인"
+  ],
+  "blocked": ["독립 검증자의 PC/Mobile × Light/Dark 실제 렌더 재실측"],
+  "promotion": "HOLD"
+}
