@@ -105,19 +105,47 @@
   },
   "v35_changes": {
     "canonicalPresentation": {
-      "lightComponentSet": {"id": "1760:7247", "x": 64, "y": 3036, "width": 1816, "height": 336, "mode": "Light"},
-      "removedRedundantLightFrame": {"id": "1790:7354", "name": "Mobile Header — Spec Light"},
-      "darkInstanceBoard": {"id": "1791:7535", "x": 64, "y": 3452, "width": 1816, "height": 336, "mode": "Dark", "instanceCount": 6},
+      "lightComponentSet": {
+        "id": "1760:7247",
+        "x": 64,
+        "y": 3036,
+        "width": 1816,
+        "height": 336,
+        "mode": "Light"
+      },
+      "removedRedundantLightFrame": {
+        "id": "1790:7354",
+        "name": "Mobile Header — Spec Light"
+      },
+      "darkInstanceBoard": {
+        "id": "1791:7535",
+        "x": 64,
+        "y": 3452,
+        "width": 1816,
+        "height": 336,
+        "mode": "Dark",
+        "instanceCount": 6
+      },
       "gap": 80,
-      "rowsEach": ["Home (2 cells)", "Standard (4 cells)"],
+      "rowsEach": [
+        "Home (2 cells)",
+        "Standard (4 cells)"
+      ],
       "cellLabels": "6개 Type 이름을 Light 세트 위 캔버스 라벨과 Dark 보드 내부 라벨로 동일하게 표시",
-      "sectionAfter": {"id": "1654:38976", "width": 2296, "height": 3852}
+      "sectionAfter": {
+        "id": "1654:38976",
+        "width": 2296,
+        "height": 3852
+      }
     },
     "sourceSync": {
       "buildComponents": "SpecOpts.cellLabelAt 추가. decorateSetFlat이 실제 Light 세트, buildSpec이 Dark 인스턴스 보드만 생성",
       "registryVersion": "0.4.0",
       "registryUsageExample": "1760:7247",
-      "registrySpecSheets": {"light": "1760:7247", "dark": "1791:7535"}
+      "registrySpecSheets": {
+        "light": "1760:7247",
+        "dark": "1791:7535"
+      }
     },
     "integrity": {
       "componentSetKey": "9fd8509a9e73c1279d9efb2088bb591658ce29f5",
@@ -137,28 +165,70 @@
       },
       "standard": {
         "semantic": "color/bg/level-0 (VariableID:687:17884)",
-        "mutatedRoots": ["1757:7099", "1757:7129", "1760:7217", "1781:7359"],
-        "mutatedAppBars": ["1757:7123", "1757:7153", "1760:7241", "1781:7361"]
+        "mutatedRoots": [
+          "1757:7099",
+          "1757:7129",
+          "1760:7217",
+          "1781:7359"
+        ],
+        "mutatedAppBars": [
+          "1757:7123",
+          "1757:7153",
+          "1760:7241",
+          "1781:7361"
+        ]
       },
       "statusBars": {
-        "ids": ["1759:7205", "1759:7168", "1757:7100", "1757:7130", "1760:7218", "1781:7360"],
+        "ids": [
+          "1759:7205",
+          "1759:7168",
+          "1757:7100",
+          "1757:7130",
+          "1760:7218",
+          "1781:7360"
+        ],
         "fillCountEach": 0,
         "explicitVariableModesEach": {},
         "result": "부모 Home/Standard 배경이 상태표시줄부터 AppBar까지 한 색으로 이어짐"
       }
     },
     "specLayout": {
-      "light": {"id": "1790:7354", "x": 64, "y": 3533, "width": 1816, "height": 336},
-      "dark": {"id": "1791:7535", "x": 64, "y": 3949, "width": 1816, "height": 336},
+      "light": {
+        "id": "1790:7354",
+        "x": 64,
+        "y": 3533,
+        "width": 1816,
+        "height": 336
+      },
+      "dark": {
+        "id": "1791:7535",
+        "x": 64,
+        "y": 3949,
+        "width": 1816,
+        "height": 336
+      },
       "gap": 80,
-      "rowsEach": ["Home (2 cells)", "Standard (4 cells)"],
-      "removedExtraRows": ["1790:7362", "1791:7543"]
+      "rowsEach": [
+        "Home (2 cells)",
+        "Standard (4 cells)"
+      ],
+      "removedExtraRows": [
+        "1790:7362",
+        "1791:7543"
+      ]
     },
     "cleanup": {
-      "removedRoot": {"id": "1760:7248", "name": "Mobile Header / Preview"},
+      "removedRoot": {
+        "id": "1760:7248",
+        "name": "Mobile Header / Preview"
+      },
       "removedDescendantCountIncludingRoot": 194,
       "registryUsageExampleMovedTo": "1790:7354",
-      "sectionAfter": {"id": "1654:38976", "width": 2296, "height": 4349}
+      "sectionAfter": {
+        "id": "1654:38976",
+        "width": 2296,
+        "height": 4349
+      }
     },
     "integrity": {
       "componentSet": "1760:7247",
@@ -230,9 +300,21 @@
   },
   "visualValidation": {
     "method": "Figma 최종 렌더 육안 검문 + 구조 read-back",
-    "set": {"file": "mobile-header-set-v34.png", "size": "820x417", "result": "6 variants, clipping/overlap 없음"},
-    "specLight": {"file": "mobile-header-spec-light-v34.png", "size": "1816x336", "result": "Home 2 + Standard 4 한 행, 잘림 없음"},
-    "specDark": {"file": "mobile-header-spec-dark-v34.png", "size": "1816x336", "result": "Home blue-dark/50, Standard bg-level-0, 상태표시줄 이음매 없음"},
+    "set": {
+      "file": "mobile-header-set-v34.png",
+      "size": "820x417",
+      "result": "6 variants, clipping/overlap 없음"
+    },
+    "specLight": {
+      "file": "mobile-header-spec-light-v34.png",
+      "size": "1816x336",
+      "result": "Home 2 + Standard 4 한 행, 잘림 없음"
+    },
+    "specDark": {
+      "file": "mobile-header-spec-dark-v34.png",
+      "size": "1816x336",
+      "result": "Home blue-dark/50, Standard bg-level-0, 상태표시줄 이음매 없음"
+    },
     "conclusion": "요청한 색상·4열·상하 배치 외 시각 결함 없음"
   },
   "scans": {
@@ -254,9 +336,9 @@
     }
   },
   "screenshots": {
-    "set": "reports/figma-library-build/mobile-header/shots/mobile-header-set-v34.png",
-    "specLight": "reports/figma-library-build/mobile-header/shots/mobile-header-spec-light-v34.png",
-    "specDark": "reports/figma-library-build/mobile-header/shots/mobile-header-spec-dark-v34.png"
+    "lightComponentSet": "reports/figma-library-build/mobile-header/shots/mobile-header-set-light-v35.png",
+    "darkInstanceBoard": "reports/figma-library-build/mobile-header/shots/mobile-header-spec-dark-v35.png",
+    "_note": "v3.4 이전 중간 산출 스크린샷은 river 지시(2026-08-26)로 삭제했다. 최종 v3.5 2장만 남긴다."
   },
   "untouched": [
     "StatusBar 정본 세트 (인스턴스 override 만 사용)",
