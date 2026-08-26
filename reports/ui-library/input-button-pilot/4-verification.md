@@ -7,10 +7,10 @@
 ## 현재 판정
 
 - 제작자 기술 검사: **PASS**
-- 이전 버전 실제 브라우저 사전검사: **PASS**
-- 독립 검증자의 수정 후 최종 판정: **BLOCKED** — 코드·생성본 PASS, 실제 브라우저 렌더 미검증
+- 수정 후 실제 브라우저 재검증: **PASS** — PC/Mobile × Light/Dark, 390px, 동작, 전체/개별 설치 동일성 확인
+- 독립 검증자의 수정 후 최종 판정: **BLOCKED** — 검증자 세션의 브라우저 제어 연결 부재
 - UI library status: `candidate` 유지
-- 다음 단계: river가 새 검수본을 확인하고, 브라우저 연결 후 독립 시나리오 F의 실제 렌더를 다시 실행
+- 다음 단계: 별도 검증자에게 브라우저가 연결되면 시나리오 F의 실제 렌더를 다시 실행
 
 ## 독립 검증 중 발견되어 수정한 항목
 
@@ -40,6 +40,21 @@
 | 390×844 반응형 | 가로 넘침 0, Input·Button 48px 유지 |
 | 콘솔 경고·오류 | 0건 |
 
+### 2026-08-26 검수본 04 실제 렌더 재검증
+
+- PC Light/Dark의 Input 상태 7종과 PC XXSM 28px·XSM 34px·MD 44px을 확인했다.
+- Mobile Light/Dark의 Input은 48px 높이를 유지했다.
+- Input Editing remove는 PC 28×28px, Mobile 48×48px 누르는 영역과 24×24px 아이콘 틀을 유지했다.
+- remove Hover는 해당 누르는 영역에만 `rgb(250, 250, 250)` 배경과 4px radius가 적용됐다.
+- remove 실행 후 값이 비워지고 액션이 숨겨지며 Input 초점이 유지되는 것을 확인했다.
+- Button은 PC XXSM 56×28px·XSM 64×34px·MD 80×44px, Mobile LG 80×48px으로 렌더됐다.
+- 모든 Button 라벨의 가로·세로 중심 오차는 최대 0.01px 이하였다.
+- 390×844에서 가로 넘침은 0px이고, Mobile Input의 48px 높이와 remove 48px 탭 영역이 유지됐다.
+- 전체 묶음 설치와 개별 CSS 설치는 초기 렌더·입력 후·삭제 후의 크기와 computed style이 모두 같았다.
+- 검수 화면과 두 설치 fixture의 콘솔 경고·오류는 0건이었다.
+
+이 결과는 구현자 브라우저의 실제 렌더 PASS다. 별도 `component-verifier`는 서버 정상화 후에도 자체 브라우저 제어 백엔드가 연결되지 않아 같은 화면을 독립 실측하지 못했다. 정적 검사로 대체하지 않았으며 공식 독립 판정은 **BLOCKED**를 유지한다.
+
 ### 2026-08-26 Input Editing remove·메시지 선택형 재검수
 
 - 코드 정본의 Editing `remove` 액션이 기존 Base Input 웹 파일럿에서 누락된 것을 확인했다.
@@ -66,7 +81,7 @@ river 승인에 따라 XXSM 최소 너비를 기존 Figma V3.0 참고값 64px보
 
 | Size | Figma | 실제 dist 렌더 | 라벨 중심 |
 |---|---:|---:|---:|
-| PC XXSM | 56×28px (river 승인 정본) | 재검수 대기 | 재검수 대기 |
+| PC XXSM | 56×28px (river 승인 정본) | 56×28px | 가로 0px · 세로 0px |
 | PC XSM | 64×34px | 64×34px | 가로 0.01px 이하 · 세로 0px |
 | PC MD | 80×44px | 80×44px | 가로 0.01px 이하 · 세로 0px |
 | Mobile LG | 80×48px | 80×48px | 가로 0px · 세로 0.01px 이하 |
@@ -128,5 +143,4 @@ PASS:
 ## 아직 검증되지 않은 범위
 
 - 수정 후 `component-verifier`의 시나리오 F 최종 독립 판정
-- river의 실제 화면 UI·UX 승인
 - Password Field와 Search Input의 suffix action 동작 — 다음 모듈 단계 범위

@@ -141,7 +141,7 @@
     "HD-UILIB-10: Input field 전체 Hover와 suffix action Hover를 분리한다. remove 등 각 action은 hover 가능한 PC 포인터에서 자기 hit area에 color/form-control/bg/hover 배경을 표시하고 Mobile에는 hover를 강제하지 않는다. (river, 2026-08-26)"
   ],
   "blockers": [
-    "코드·생성본은 독립 PASS. 독립 브라우저 실제 렌더와 이번 범위 밖 Mobile Header 구조 검증이 없어 Gate 13 갱신 보류"
+    "구현자 실제 렌더는 PASS. 독립 검증자 세션에 브라우저 제어 연결이 없어 시나리오 F와 Gate 13 갱신 보류"
   ],
   "pendingDecisions": [],
   "evidence": {
@@ -162,8 +162,8 @@
     "independentVerification": {
       "verdict": "BLOCKED",
       "actor": "component-verifier",
-      "observedAt": "2026-08-25",
-      "summary": "Input suffix action Hover는 정본·Registry·guide model·설치기·UI source/dist·회귀 코드 대조를 독립 PASS했다. 구현자 브라우저에서 PC Light의 28px hit area·#FAFAFA 배경·4px radius·24px 아이콘을 실측했으나, 독립 검증자의 Light/Dark·PC/Mobile 실제 픽셀 재검증은 BLOCKED이며 Gate 13도 갱신하지 않았다.",
+      "observedAt": "2026-08-26",
+      "summary": "서버 정상화 후에도 검증자 세션의 브라우저 제어 백엔드가 연결되지 않아 시나리오 F 실제 렌더를 독립 실측하지 못했다. 정적 검사로 대체하지 않았고 Gate 13도 갱신하지 않았다.",
       "componentResults": {
         "button": {
           "verdict": "BLOCKED",
@@ -178,6 +178,13 @@
       },
       "report": "reports/ui-library/input-button-pilot/4-verification.md"
     },
+    "implementationActualRender": {
+      "verdict": "PASS",
+      "actor": "codex",
+      "observedAt": "2026-08-26",
+      "summary": "검수본 04에서 PC/Mobile × Light/Dark, 390×844 반응형, Input remove 크기·Hover·삭제, Button 최소 너비·라벨 중앙, 전체/개별 설치 렌더 동일성과 콘솔 오류 0건을 실제 브라우저로 재검증했다.",
+      "report": "reports/ui-library/input-button-pilot/4-verification.md"
+    },
     "riverApproval": {
       "status": "approved",
       "actor": "river",
@@ -189,6 +196,6 @@
   "handoff": {
     "lastActor": "codex",
     "updatedAt": "2026-08-26",
-    "summary": "river가 검수본 2026-08-26·04의 Base Input·Button UI·UX와 HTML/CSS 공개 구조를 승인했다. manifest와 package export에 HTML/CSS 계약을 고정하고 승인 기록·이행 장부를 추가했다. 독립 실제 렌더 검증이 BLOCKED라 기술 배포 상태는 candidate/HOLD를 유지한다."
+    "summary": "river 승인 범위를 검수본 2026-08-26·04에서 실제 렌더 재검증해 PASS했다. PC/Mobile × Light/Dark, 390px, 동작과 전체/개별 설치 동일성을 확인했다. 별도 검증자 브라우저가 연결되지 않아 독립 판정은 BLOCKED이며 기술 배포 상태는 candidate/HOLD를 유지한다."
   }
 }
