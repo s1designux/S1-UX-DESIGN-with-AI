@@ -1,9 +1,9 @@
 {
   "sourceFile": "plugins/figma-vars-installer/src/build-components.ts",
-  "sourceHash": "sha256:cb50972e010748fd4646bdf52fbc4b9adb0f3fce3adc20301bfd254bf7667742",
+  "sourceHash": "sha256:ab7e574bbd7f301f3d31c41c2c70ceb4353f5341c58cdbce68d6b440ccc234e8",
   "verifiedBy": "component-verifier",
   "verdict": "pass",
   "changeType": "structural",
-  "verifiedAt": "2026-08-26T02:16:07.697Z",
-  "notes": "Mobile Header v3.5 독립 검증 PASS: 별도 Light 프레임을 제거하고 기존 key·6 variant ID를 유지한 실제 세트를 Light 2행 보드로 정리했으며, Dark는 아래 80px 위치의 6-instance 보드로 구성됨을 Figma read-back과 build-components.ts·Registry v0.4.0·node-map v3.5·생성 검사로 교차 확인했다."
+  "verifiedAt": "2026-08-26T04:58:27.577Z",
+  "notes": "Bottom Sheet Option Text Disabled 9변형 검증"
 }
