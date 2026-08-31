@@ -1,0 +1,226 @@
+{
+  "schemaVersion": 1,
+  "workflow": "ui-library-code",
+  "workId": "toggle-chip",
+  "objective": "승인된 Input·Button·Checkbox·Radio 구조 위에서 Toggle 과 Chip 을 정본 기반 웹 UI 라이브러리 모듈로 만들고 실제 dist 소비까지 연결한다.",
+  "intent": {
+    "approvedBy": "river",
+    "approvedAt": "2026-08-31",
+    "principles": [
+      "정본(build-components.ts)에 있는 상태만 만든다. Chip Complete·아이콘·닫기(X), Toggle Hover·모션은 정본에 없어 만들지 않는다.",
+      "칩 범위는 선택 칩(Chip)만이다. 필터 칩(드롭다운)은 이번 범위 밖(river 결정 2026-08-31).",
+      "접근성 계약은 registry 가 이미 선언한 방식(Toggle=role switch·aria-checked, Chip=button·aria-pressed)을 그대로 확정한다(river 승인 2026-08-31).",
+      "새 토큰을 만들지 않는다. focus 표시는 기존 선택 테두리 토큰만 쓴다.",
+      "디자인가이드 검수 화면과 퍼블리셔·개발자 배포본은 같은 dist 를 사용한다."
+    ]
+  },
+  "contract": {
+    "path": "registry/governance/ui-library-code-contract.json",
+    "version": "0.1.2",
+    "status": "candidate"
+  },
+  "target": {
+    "kind": "core-component",
+    "components": [
+      "toggle",
+      "chip"
+    ]
+  },
+  "figmaSources": {
+    "role": "시각 정본은 build-components.ts(buildToggle·buildChip)다. Figma V3.0 은 선택적 시각 참고이며 이번 작업에서 사용하지 않았다.",
+    "requiredForInventory": false,
+    "fileKey": "cysG5U1udpQqVagYY1hWHW",
+    "fileName": "SW-UX-GUIDE V3.0 TEST",
+    "components": {
+      "toggle": {
+        "nodeId": null,
+        "source": "not-consulted",
+        "status": "코드 정본만으로 상태·수치·토큰이 모두 확정돼 시각 참고가 필요 없었다."
+      },
+      "chip": {
+        "nodeId": null,
+        "source": "not-consulted",
+        "status": "코드 정본만으로 상태·수치·토큰이 모두 확정돼 시각 참고가 필요 없었다."
+      }
+    }
+  },
+  "currentPhase": "5-human-review",
+  "workflowStatus": "awaiting-user",
+  "uiLibraryStatus": "verified",
+  "lastCompletedCheckpoint": 4,
+  "nextAction": "river 가 pages/components.html(Toggle·Chip)과 pages/ui-review.html 검수본 06 을 확인하고 HD-1·HD-2 를 결정하면 6-promotion 을 진행한다.",
+  "ownership": {},
+  "canonicalInputs": [
+    {
+      "role": "component-visual",
+      "path": "plugins/figma-vars-installer/src/build-components.ts",
+      "sha256": "28f3f60cea335910ae7191c2d235c8a3b47865f00cb55de9531b64ce28a02272"
+    },
+    {
+      "role": "token-values",
+      "path": "plugins/figma-vars-installer/src/vars-data.ts",
+      "sha256": "87edd42623983fb5e02e820940dbbc3693ecb4b2c79104e781c8307501984cd9"
+    },
+    {
+      "role": "text-styles",
+      "path": "plugins/figma-vars-installer/src/textstyles-data.ts",
+      "sha256": "dc0db42d87503e80e9da8ad1246090f58e79106593a57815b0568aebcb9d51d3"
+    },
+    {
+      "role": "ui-library-contract",
+      "path": "registry/governance/ui-library-code-contract.json",
+      "sha256": "63dc0f64c6ea834218119f8629379ee48cfac6c8df8b36e39d78f51405807c85"
+    },
+    {
+      "role": "component-meaning-toggle",
+      "path": "registry/components/toggle.json",
+      "sha256": "c8e96c510646a065cd36e98833594f9bef88612051cd6e91ee441712661fcaf2"
+    },
+    {
+      "role": "component-meaning-chip",
+      "path": "registry/components/chip.json",
+      "sha256": "bca2c0e6c375acbfde9c2f9ecd7436505b927c082d28cad855f4914cd5383694"
+    }
+  ],
+  "artifacts": {
+    "policyContract": "registry/governance/ui-library-code-contract.json",
+    "humanGuide": "registry/governance/ui-library-authoring-guide.md",
+    "componentChecklist": "registry/governance/ui-library-component-checklist.md",
+    "inventory": "reports/ui-library/toggle-chip/1-inventory.md",
+    "canonReadiness": "reports/ui-library/toggle-chip/2-canon-readiness.md",
+    "build": "reports/ui-library/toggle-chip/3-build.md",
+    "verification": "reports/ui-library/toggle-chip/4-verification.md",
+    "humanReview": "reports/ui-library/toggle-chip/5-human-review.md",
+    "sourceRoot": "ui-library/src",
+    "distManifest": "ui-library/dist/manifest.json",
+    "reviewPage": "pages/ui-review.html",
+    "guidePage": "pages/components.html",
+    "migrationRecord": "registry/governance/ui-library-migration.json",
+    "verificationFixture": "reports/ui-library/toggle-chip/matrix-fixture.html",
+    "screens": [
+      "reports/ui-library/toggle-chip/screens/state-matrix-light-dark.png",
+      "reports/ui-library/toggle-chip/screens/guide-toggle.png",
+      "reports/ui-library/toggle-chip/screens/guide-chip.png",
+      "reports/ui-library/toggle-chip/screens/empty-consumer.png",
+      "reports/ui-library/toggle-chip/screens/empty-consumer-individual.png",
+      "reports/ui-library/toggle-chip/screens/review-toggle-chip.png"
+    ],
+    "repositoryInventory": "reports/component-inventory-audit.md"
+  },
+  "decisions": [
+    {
+      "id": "D1",
+      "topic": "칩 작업 범위",
+      "decidedBy": "river",
+      "decidedAt": "2026-08-31",
+      "decision": "선택 칩(Chip)만 만든다. 필터 칩(드롭다운·완료 상태)은 이번 범위 밖 — 드롭다운 컴포넌트가 아직 웹 배포본으로 없어 중간에 막힐 수 있다."
+    },
+    {
+      "id": "D2",
+      "topic": "접근성 계약 확정",
+      "decidedBy": "river",
+      "decidedAt": "2026-08-31",
+      "decision": "registry 가 이미 선언한 표준안을 그대로 확정했다 — Toggle=role switch·aria-checked, Chip=button·aria-pressed. toggle.json a11yStatus pending→stable, chip.json a11yStatus 신설(stable). 이 확정이 없으면 계약상 approved 배포가 불가능했다."
+    },
+    {
+      "id": "D3",
+      "topic": "정본에 없는 것을 만들지 않음",
+      "decidedBy": "orchestrator",
+      "decidedAt": "2026-08-31",
+      "decision": "Toggle Hover·모션, Chip Complete·아이콘·닫기(X)·Selected+Hover·Mobile MD 를 만들지 않았다. tokens.css 에 있는 --color-chip-solid-bg-selected-hover 도 정본 빌더가 쓰지 않아 사용하지 않았다.",
+      "recordedIn": "ui-library/src/components/*/manifest.json 의 notInCanon"
+    },
+    {
+      "id": "D4",
+      "topic": "auto-init 생성기 일반화",
+      "decidedBy": "orchestrator",
+      "decidedAt": "2026-08-31",
+      "decision": "build.mjs 의 s1-ui.auto.js 생성이 input 만 하드코딩하고 있어 런타임이 있는 새 컴포넌트가 자동 초기화에서 조용히 빠질 구조였다. jsRequired=true 인 컴포넌트를 결정론적으로 모두 넣도록 고쳤고, 빈 HTML 소비자가 autoInit() 경로를 실제로 소비해 검증한다."
+    },
+    {
+      "id": "D5",
+      "topic": "정본 지문",
+      "decidedBy": "orchestrator",
+      "decidedAt": "2026-08-31",
+      "decision": "build-components.ts·vars-data.ts·textstyles-data.ts 지문이 직전 checkbox-radio 작업과 동일해 정본 변경이 없었다. 이전 검증을 superseded 할 사유가 없다."
+    },
+    {
+      "id": "D6",
+      "topic": "river 실사용 피드백 2건 반영",
+      "decidedBy": "river",
+      "decidedAt": "2026-08-31",
+      "decision": "(1) Chip Action 영역을 Button 과 같은 틀(열=크기·행=variant+Disabled)로 교체 — 이전엔 사이즈만 축으로 보이고 유형(Line/Solid)이 뒤섞여 있었다. (2) PC-SM 라벨이 위로 떠 보이는 문제 — line-height 130%(문단용 배수)가 Pretendard ascent:descent 비율을 그대로 배분해 생긴 시각 치우침이었다. line-height: normal 로 교체해 실측상 상하 대칭으로 재확인했다. 새 토큰 신설 없음 — CSS 구현 기법 수정."
+    },
+    {
+      "id": "D7",
+      "topic": "variant 블록 사이 간격 8px → 24px (공유 규칙)",
+      "decidedBy": "river",
+      "decidedAt": "2026-08-31",
+      "decision": "Chip 의 Line/Solid 구분선이 다른 블록 간격(24px)보다 눈에 띄게 좁았다(8px). 컴포넌트별 값이 아니라 assets/css/ui-library-guide.css 의 공유 규칙(.uilg-variant-block + .uilg-separator)에서 고쳐 Button 등 같은 클래스를 쓰는 모든 컴포넌트에 자동 적용되게 했다. component-page-template.md §A-5·A-8 에 24px 기준과 점검 항목을 추가해 앞으로 재발하지 않도록 기록했다."
+    }
+  ],
+  "blockers": [],
+  "evidence": {
+    "automatedChecks": [
+      {
+        "command": "npm run ui:contract",
+        "result": "PASS"
+      },
+      {
+        "command": "npm run ui:icons",
+        "result": "PASS"
+      },
+      {
+        "command": "npm run ui:build",
+        "result": "PASS · 37 files"
+      },
+      {
+        "command": "npm run ui:test",
+        "result": "PASS"
+      },
+      {
+        "command": "npm run gate:check",
+        "result": "FAIL · 4 error — 전부 Gate 6c 설치기 zip 카드 날짜. 이번 작업과 무관한 선재 상태(세션 시작 시점부터 zip 이 수정 상태였고 vars-data·textstyles-data 를 건드리지 않았다)."
+      },
+      {
+        "command": "npm run ui:build && ui:test (river 피드백 반영 후 재검증)",
+        "result": "PASS"
+      }
+    ],
+    "independentVerification": {
+      "verdict": "NOT_RUN",
+      "reason": "계약의 위험 조건 미해당. 다만 Checkbox·Radio 와 달리 JavaScript 런타임이 있어 위험이 한 단계 높다 — river 결정 필요(HD-2).",
+      "riverDecisionRequired": true
+    },
+    "implementationActualRender": {
+      "verdict": "PASS",
+      "actor": "orchestrator",
+      "observedAt": "2026-08-31",
+      "summary": "실제 dist 를 소비하는 상태 매트릭스를 http 로 렌더해 Toggle 4칸·Chip 24칸을 Light·Dark 양쪽에서 전수 대조했다. 가이드 화면 2개, 빈 소비자 2개, 검수 화면 1개도 렌더 확인했다. 전체 묶음 소비자와 개별 설치 소비자의 스크린샷 sha256 이 완전히 일치했다.",
+      "report": "reports/ui-library/toggle-chip/4-verification.md"
+    },
+    "behaviorCheck": {
+      "verdict": "PASS",
+      "observedAt": "2026-08-31",
+      "summary": "브라우저 실행으로 토글 aria-checked·칩 aria-pressed 전환, 비활성 무반응, 트랙 실측 40×20·radius full, 다크 토큰 실제 변화, 중복 id 0개, 콘솔 오류 0건을 확인했다. Gate 23 이 못 보는 Action 영역 실재도 실제 렌더로 확인했다."
+    },
+    "riverApproval": {
+      "status": "pending",
+      "target": "pages/ui-review.html 검수본 06 · pages/components.html Toggle·Chip",
+      "report": "reports/ui-library/toggle-chip/5-human-review.md"
+    },
+    "sourceAudit": {
+      "status": "complete",
+      "actor": "orchestrator",
+      "observedAt": "2026-08-31",
+      "basis": "착수 전 저장소 판독 — 정본 빌더 buildToggle(834~878행)·buildChip(881~940행), color/control 13종·color/chip 20종 토큰의 Light·Dark 실제 값, registry 메타 2건, 기존 ui-library 배선(build·test·exports·소비자·가이드)",
+      "summary": "Toggle·Chip 은 ui-library/src 에 미착수였고 build·test·exports 어디에도 등록돼 있지 않았다. pages/components.html 에는 손관리 마크업이 남아 있었고 내비는 disabled 였다. 정본에 상태·수치·토큰이 모두 있어 새 토큰 신설 없이 구현 가능함을 확인했고, registry 의 a11yStatus 미비(toggle=pending, chip=필드 없음)가 유일한 착수 차단 요인이었다.",
+      "report": "reports/ui-library/toggle-chip/1-inventory.md"
+    }
+  },
+  "handoff": {
+    "lastActor": "orchestrator",
+    "updatedAt": "2026-08-31",
+    "summary": "0~4 단계 완료. Toggle·Chip 을 정본 기준으로 구현해 dist·빈 소비자·검수 화면·디자인가이드까지 배선했고 실제 렌더·동작 검증을 마쳤다. 5-human-review 대기 — river 가 HD-1(칩 아이콘·닫기 취급)과 HD-2(독립 검증 생략 여부)를 결정하면 6-promotion 으로 migration 장부의 riverApproval 을 채운다. gate:check 의 4 error 는 설치기 zip 선재 문제로 이 작업 밖이다. river 가 검수 중 지적한 2건(Chip Action 레이아웃, PC-SM 라벨 수직 치우침)을 즉시 반영하고 재검증했다(D6). 여전히 HD-1·HD-2 결정 대기. 추가로 river 가 지적한 variant 블록 간 간격 문제(D7)를 공유 CSS 규칙 수정으로 해소하고 템플릿 문서에 기준을 남겼다."
+  }
+}

@@ -19,6 +19,18 @@ const componentConfig = {
     approvedScope: "상태 5종 · 라벨 유무 · 크기 축 없음(18px 고정) · JavaScript 불필요",
     runtime: S1UI.checkbox
   },
+  toggle: {
+    title: "Toggle",
+    description: "설정 하나를 즉시 켜고 끌 때 사용합니다. 누르는 순간 바로 반영되며 별도 확인 단계가 없습니다.",
+    approvedScope: "켜짐·꺼짐 × 기본·비활성 4가지 · 크기 축 없음(40×20 고정) · 라벨은 화면낭독기용 이름으로",
+    runtime: S1UI.toggle
+  },
+  chip: {
+    title: "Chip",
+    description: "태그나 조건을 눌러서 고르는 컴포넌트입니다. Line은 외곽선, Solid는 채운 배경 형태입니다.",
+    approvedScope: "Line · Solid × 상태 4종 · PC 2크기(SM 28 · MD 34) · Mobile 1크기(SM 30) · 라벨 전용",
+    runtime: S1UI.chip
+  },
   radio: {
     title: "Radio",
     description: "여러 보기 중 하나만 고를 때 사용합니다. 같은 그룹으로 묶으면 하나만 선택되고 화살표 키로 이동합니다.",
@@ -301,6 +313,156 @@ function controlStateMatrix(kind) {
     </div>`;
 }
 
+/* ── State matrix: Toggle ── */
+
+let toggleId = 0;
+
+function toggleMarkup({ on = false, disabled = false, label = "알림 받기", isPreview = false } = {}) {
+  toggleId += 1;
+  const preview = isPreview ? ' class="is-preview"' : "";
+  return `<button type="button" data-s1-component="toggle" role="switch" aria-checked="${on}" aria-label="${escapeHtml(label)}"${disabled ? " disabled" : ""}${preview} id="guide-toggle-${toggleId}">
+      <span data-s1-part="knob" aria-hidden="true"></span>
+    </button>`;
+}
+
+function toggleStateMatrix() {
+  /* 열 = 정본 상태(Default·Disabled) · 행 = 정본 Pressed 축(Off·On) */
+  const states = [
+    { label: "Default", disabled: false },
+    { label: "Disabled", disabled: true }
+  ];
+  const rows = [
+    { label: "Off", note: "꺼짐", on: false },
+    { label: "On", note: "켜짐", on: true }
+  ];
+
+  function actionSection() {
+    const items = [
+      ["앱 푸시 알림", true],
+      ["야간 방해 금지", false]
+    ];
+    const rowsHtml = items.map(([text, on]) => `<div class="uilg-toggle-row">
+        ${toggleMarkup({ on, label: text })}
+        <span class="uilg-toggle-row-label">${escapeHtml(text)}</span>
+      </div>`).join("");
+    return `<div class="comp-action-top">
+      <div class="matrix-col-header-action">Action</div>
+      <div class="uilg-control-action">
+        <div class="uilg-control-group" role="group" aria-label="알림 설정">
+          <span class="matrix-row-label">알림 설정</span>
+          ${rowsHtml}
+        </div>
+        <p class="uilg-demo-note">누르는 즉시 반영됩니다. 옆의 글자는 화면 설명용이며 토글의 접근 이름은 aria-label로 붙입니다.</p>
+      </div>
+    </div>`;
+  }
+
+  function stateSection() {
+    const header = `<div class="matrix-col-header" style="grid-column:1"></div>` +
+      states.map((state) => `<div class="matrix-col-header">${state.label}</div>`).join("");
+    const body = rows.map((row) => `<div class="matrix-row-label">${row.label}<span>${row.note}</span></div>` +
+      states.map((state) => `<div class="comp-state-cell">${toggleMarkup({
+        on: row.on,
+        disabled: state.disabled,
+        isPreview: true,
+        label: `${row.label} · ${state.label}`
+      })}</div>`).join("")).join("");
+    return `<div class="uilg-demo-group">
+      <div class="comp-state-matrix" style="grid-template-columns: 110px repeat(${states.length}, 140px);">
+        ${header}${body}
+      </div>
+    </div>`;
+  }
+
+  const content = () => `${actionSection()}
+    ${stateSection()}`;
+
+  return `
+    <div class="platform-section platform-section-pc">
+      <div class="preview-area">${content()}</div>
+    </div>
+    <div class="platform-section platform-section-mobile">
+      <div class="preview-area">
+        <p class="uilg-demo-note">정본에 플랫폼·크기 축이 없어 Mobile도 PC와 같습니다(40×20 고정).</p>
+        ${content()}
+      </div>
+    </div>`;
+}
+
+/* ── State matrix: Chip ── */
+
+function chipMarkup({ variant = "line", size = "md", breakName = "pc", label = "라벨", selected = false, disabled = false, forceState = "", isPreview = false } = {}) {
+  const force = forceState ? ` data-force-state="${forceState}"` : "";
+  const preview = isPreview ? ' class="is-preview"' : "";
+  return `<button type="button" data-s1-component="chip" data-variant="${variant}" data-size="${size}" data-break="${breakName}" aria-pressed="${selected}"${disabled ? " disabled" : ""}${force}${preview}><span data-s1-part="label">${escapeHtml(label)}</span></button>`;
+}
+
+function chipStateMatrix() {
+  const variants = [["line", "Line"], ["solid", "Solid"]];
+  const states = [
+    { label: "Default", opts: {} },
+    { label: "Hover", opts: { forceState: "hover" } },
+    { label: "Selected", opts: { selected: true } },
+    { label: "Disabled", opts: { disabled: true } }
+  ];
+
+  /* Action — 실제로 눌러서 고르는 자리. 버튼 Action 과 같은 틀: 열=크기, 행=variant.
+     크기는 여기에만 표출한다(별도 SIZES 블록 금지). */
+  function actionSection(breakName) {
+    const sizes = breakName === "mobile" ? [["sm", "SM", "30px"]] : [["sm", "SM", "28px"], ["md", "MD", "34px"]];
+    const header = `<div class="matrix-col-header" style="grid-column:1"></div>` +
+      sizes.map(([, sLabel, dim]) => `<div class="matrix-col-header">${sLabel}<span class="uilg-size-dim">${dim}</span></div>`).join("");
+    const activeRows = variants.map(([variant, vLabel]) => {
+      const rowLabel = `<div class="matrix-row-label">${vLabel}</div>`;
+      const cells = sizes.map(([size]) =>
+        `<div class="comp-state-cell">${chipMarkup({ variant, size, breakName, label: "라벨" })}</div>`
+      ).join("");
+      return rowLabel + cells;
+    }).join("");
+    const disabledRow = `<div class="matrix-row-label">Disabled<span class="uilg-size-dim">공통</span></div>` +
+      sizes.map(([size]) =>
+        `<div class="comp-state-cell">${chipMarkup({ variant: "line", size, breakName, label: "라벨", disabled: true })}</div>`
+      ).join("");
+    return `<div class="comp-action-top">
+      <div class="matrix-col-header-action">Action</div>
+      <div class="comp-state-matrix" style="grid-template-columns: 100px repeat(${sizes.length}, minmax(80px, 1fr));">${header}${activeRows}${disabledRow}</div>
+      <p class="uilg-demo-note">눌러서 선택하고 다시 눌러 해제합니다. 선택 상태는 aria-pressed로 전달됩니다.</p>
+    </div>`;
+  }
+
+  function variantGrid(variant, breakName, size) {
+    const header = `<div class="matrix-col-header" style="grid-column:1"></div>` +
+      states.map((state) => `<div class="matrix-col-header">${state.label}</div>`).join("");
+    const row = `<div class="matrix-row-label">${size.toUpperCase()}<span>${breakName === "mobile" ? "30px" : size === "sm" ? "28px" : "34px"}</span></div>` +
+      states.map((state) => `<div class="comp-state-cell">${chipMarkup({
+        variant, size, breakName, isPreview: true, ...state.opts
+      })}</div>`).join("");
+    return `<div class="comp-state-matrix" style="grid-template-columns: 110px repeat(${states.length}, minmax(96px, 1fr));">${header}${row}</div>`;
+  }
+
+  function content(breakName) {
+    const size = breakName === "mobile" ? "sm" : "md";
+    const blocks = variants.map(([variant, label]) => `
+      <div class="uilg-variant-block">
+        <div class="variant-label">${label}</div>
+        ${variantGrid(variant, breakName, size)}
+      </div>`).join('<hr class="uilg-separator">');
+    return `${actionSection(breakName)}
+      ${blocks}`;
+  }
+
+  return `
+    <div class="platform-section platform-section-pc">
+      <div class="preview-area">${content("pc")}</div>
+    </div>
+    <div class="platform-section platform-section-mobile">
+      <div class="preview-area">
+        <p class="uilg-demo-note">정본 Mobile은 SM 한 가지(30px)이며 글자 크기 14px, 좌우 여백 12px입니다.</p>
+        ${content("mobile")}
+      </div>
+    </div>`;
+}
+
 /* ── State matrix: Input ── */
 
 function inputStateMatrix() {
@@ -402,6 +564,8 @@ function inputStateMatrix() {
 function stateMatrix(id) {
   if (id === "input") return inputStateMatrix();
   if (id === "button") return buttonStateMatrix();
+  if (id === "toggle") return toggleStateMatrix();
+  if (id === "chip") return chipStateMatrix();
   return controlStateMatrix(id);
 }
 
@@ -587,6 +751,9 @@ async function mountGuide(id) {
 
     section.replaceChildren(fragment);
     wireCodeViewer(section, { html, css, js });
+    if (id === "toggle" || id === "chip") {
+      section.querySelectorAll(`[data-s1-component="${id}"]:not(.is-preview)`).forEach((root) => config.runtime.init(root));
+    }
     if (id === "input") {
       section.querySelectorAll('[data-s1-component="input"]:not(.is-preview)').forEach((root) => config.runtime.init(root));
       /* Wire message toggle chips in Action area */
@@ -630,6 +797,6 @@ async function mountGuide(id) {
   }
 }
 
-const guideComponents = ["input", "button", "checkbox", "radio"];
+const guideComponents = ["input", "button", "checkbox", "radio", "toggle", "chip"];
 await Promise.all(guideComponents.map(mountGuide));
 document.dispatchEvent(new CustomEvent("s1:component-guide:ready", { detail: { components: guideComponents } }));

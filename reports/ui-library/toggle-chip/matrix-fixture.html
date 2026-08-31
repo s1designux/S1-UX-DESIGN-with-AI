@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>Toggle · Chip 상태 전수 대조 (실제 dist 소비)</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+<link rel="stylesheet" href="../../../ui-library/dist/assets/css/tokens.css">
+<link rel="stylesheet" href="../../../ui-library/dist/assets/css/typography.css">
+<link rel="stylesheet" href="../../../ui-library/dist/s1-ui.css">
+<style>
+  body { font-family: Pretendard, sans-serif; margin: 0; }
+  .pane { padding: 20px 24px; }
+  .pane[data-theme="dark"] { background: var(--color-bg-level-1); }
+  h2 { font-size: 15px; margin: 0 0 12px; color: var(--color-text-body-primary); }
+  h3 { font-size: 12px; margin: 16px 0 6px; color: var(--color-text-body-secondary); }
+  table { border-collapse: collapse; }
+  th, td { padding: 8px 12px; text-align: left; font-size: 11px; color: var(--color-text-body-secondary); font-weight: 400; }
+  /* 정본 Hover 셀은 마우스를 올릴 수 없어 가이드와 같은 강제 표시를 쓴다 */
+  [data-s1-component="chip"][data-variant="line"][data-force-state="hover"] { background: var(--color-chip-line-bg-hover); }
+  [data-s1-component="chip"][data-variant="solid"][data-force-state="hover"] { background: var(--color-chip-solid-bg-hover); border-color: var(--color-chip-solid-bg-hover); }
+</style>
+</head>
+<body>
+<div id="out"></div>
+<script type="module">
+const toggle = ({on,dis}) => `<button type="button" data-s1-component="toggle" role="switch" aria-checked="${on}" aria-label="t"${dis?" disabled":""}><span data-s1-part="knob" aria-hidden="true"></span></button>`;
+const chip = ({v,s,b,st}) => `<button type="button" data-s1-component="chip" data-variant="${v}" data-size="${s}" data-break="${b}" aria-pressed="${st==='selected'}"${st==='disabled'?" disabled":""}${st==='hover'?' data-force-state="hover"':''}><span data-s1-part="label">라벨</span></button>`;
+const states = ["default","hover","selected","disabled"];
+const sizes = [["sm","pc","PC SM · 28/12/16"],["md","pc","PC MD · 34/14/16"],["sm","mobile","Mobile SM · 30/14/12"]];
+function pane(theme){
+  const tg = `<table><tr><th></th><th>Default</th><th>Disabled</th></tr>`+
+    [["Off",false],["On",true]].map(([l,on])=>`<tr><th>${l}</th><td>${toggle({on,dis:false})}</td><td>${toggle({on,dis:true})}</td></tr>`).join("")+`</table>`;
+  const ch = ["line","solid"].map(v=>`<h3>Chip · ${v}</h3><table><tr><th></th>${states.map(s=>`<th>${s}</th>`).join("")}</tr>`+
+    sizes.map(([s,b,label])=>`<tr><th>${label}</th>${states.map(st=>`<td>${chip({v,s,b,st})}</td>`).join("")}</tr>`).join("")+`</table>`).join("");
+  return `<div class="pane" data-theme="${theme}"><h2>${theme.toUpperCase()}</h2><h3>Toggle · 40×20</h3>${tg}${ch}</div>`;
+}
+document.querySelector("#out").innerHTML = pane("light")+pane("dark");
+</script>
+</body>
+</html>

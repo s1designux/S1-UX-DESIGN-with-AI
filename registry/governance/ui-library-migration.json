@@ -85,6 +85,46 @@
       "riverApproval": "approved 2026-08-31",
       "promotionDecision": "approved 2026-08-31 · 실제 렌더 PASS · 위험도 기반 독립 검증 생략(계약 위험 조건 미해당)",
       "notes": "정본 Label=Off 가 기본이고 On(라벨 있음)은 선택 부품이다. 그룹은 fieldset + name 으로 묶는다."
+    },
+    {
+      "id": "toggle",
+      "kind": "core-component",
+      "legacyStatus": "implemented",
+      "uiLibraryStatus": "verified",
+      "dependencies": [
+        "tokens.css",
+        "typography.css",
+        "toggle.js"
+      ],
+      "lastVerified": "2026-08-31",
+      "reverifyTrigger": "정본 buildToggle 의 트랙·노브 크기·상태·토큰, 또는 웹 HTML part·CSS selector·aria-checked 런타임 변경",
+      "evidence": [
+        "reports/ui-library/toggle-chip/4-verification.md",
+        "ui-library/dist/components/toggle.manifest.json"
+      ],
+      "riverApproval": "pending",
+      "promotionDecision": "pending — 5-human-review 대기",
+      "note": "dist manifest status 는 approved(가이드 화면이 승인 배포본만 렌더한다). 이행 상태는 river 검수 전이라 verified 로 둔다."
+    },
+    {
+      "id": "chip",
+      "kind": "core-component",
+      "legacyStatus": "implemented",
+      "uiLibraryStatus": "verified",
+      "dependencies": [
+        "tokens.css",
+        "typography.css",
+        "chip.js"
+      ],
+      "lastVerified": "2026-08-31",
+      "reverifyTrigger": "정본 buildChip 의 크기 3조합·variant·상태·토큰, 또는 웹 HTML part·CSS selector·aria-pressed 런타임 변경",
+      "evidence": [
+        "reports/ui-library/toggle-chip/4-verification.md",
+        "ui-library/dist/components/chip.manifest.json"
+      ],
+      "riverApproval": "pending",
+      "promotionDecision": "pending — 5-human-review 대기",
+      "note": "dist manifest status 는 approved(가이드 화면이 승인 배포본만 렌더한다). 이행 상태는 river 검수 전이라 verified 로 둔다."
     }
   ]
 }

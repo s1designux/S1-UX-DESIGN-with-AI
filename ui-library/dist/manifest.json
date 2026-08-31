@@ -2,7 +2,7 @@
   "id": "s1-ui",
   "version": "0.1.0",
   "status": "approved",
-  "canonicalFingerprint": "2ef836cfffc64b5c627739edde9e4cd2e1acc7c2abc2b268918425f796b39407",
+  "canonicalFingerprint": "edc55e934a7e18c79a593fa0b0d624f7c01276a65061db7e98957453c424a375",
   "tokenMapFingerprint": "796fb798dd329910ba6c42a29fb4af9e0fd217446b3fa847e140bc70a0a8f4c7",
   "commonCssDependencies": [
     "assets/css/tokens.css",
@@ -114,6 +114,28 @@
       "css": "components/radio.css",
       "js": "components/radio.js",
       "example": "examples/radio.html"
+    },
+    {
+      "id": "toggle",
+      "version": "0.1.0",
+      "status": "approved",
+      "jsRequired": true,
+      "canonicalFingerprint": "9e7b5b86ae9d9d0b929347f2ac3dca8ea02dd39cd20ac0a65d8762a02b6e2d5d",
+      "sourceFingerprint": "d5f99be5de806afb9b2c0fa2a909d55c1c41a9d95a41fc89697c3658ad1345c4",
+      "css": "components/toggle.css",
+      "js": "components/toggle.js",
+      "example": "examples/toggle.html"
+    },
+    {
+      "id": "chip",
+      "version": "0.1.0",
+      "status": "approved",
+      "jsRequired": true,
+      "canonicalFingerprint": "19c06d63569af813405e326a821fe19023acb5e94c36654412f1e5d199f70576",
+      "sourceFingerprint": "c056f2c0b53d961a329228b793c1513e492d5c53a6fe394bb6520079caa75038",
+      "css": "components/chip.css",
+      "js": "components/chip.js",
+      "example": "examples/chip.html"
     }
   ],
   "bundleParity": {
@@ -121,7 +143,9 @@
       "input",
       "button",
       "checkbox",
-      "radio"
+      "radio",
+      "toggle",
+      "chip"
     ],
     "source": "ui-library/src/components/*",
     "rule": "Full and individual outputs are generated in this build invocation from identical source strings."

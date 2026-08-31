@@ -89,6 +89,7 @@ div.uilg
 - 정본에 없는 상태를 만들지 않는다. 정본에 마우스오버가 있으나 실제로 올릴 수 없는 칸은 **검수 전용 `data-force-state`** 로 표시한다(제품 동작 API 아님).
 - 상태 칸은 `.comp-state-cell` + `is-preview`(클릭 막음), Action 칸만 실제로 동작한다.
 - 크기 축이 정본에 없으면 Mobile 섹션에도 같은 내용을 두고 **"정본에 플랫폼·크기 축이 없어 PC와 같습니다"** 를 명시한다.
+- **variant 블록 사이 구분선(`<hr class="uilg-separator">`) 간격은 24px 다** (`.uilg-variant-block + .uilg-separator { margin-block: var(--spacing-24); }`, `assets/css/ui-library-guide.css`). 8px 로 두면 다른 블록 간격(24px)보다 눈에 띄게 좁아 보인다(river 지적 2026-08-31, Chip Line/Solid 에서 발견). **이 값은 공유 CSS 규칙 1곳에서 정하므로 새 컴포넌트가 같은 클래스를 쓰면 자동으로 상속된다** — 컴포넌트마다 다시 정하지 않는다.
 
 ### A-6. ③ 개발 코드
 
@@ -111,6 +112,7 @@ div.uilg
 - [ ] 헤더 아래 구분선 없음 · Action 아래 구분선 1개
 - [ ] Action 에 실제로 눌러지는 예시가 있다(상태 나열이 아니다)
 - [ ] 상태 열이 정본 상태 전수와 일치
+- [ ] variant 블록이 2개 이상이면 그 사이 구분선 간격이 24px 다(공유 CSS `.uilg-variant-block + .uilg-separator` 값을 임의로 좁히지 않았다)
 - [ ] 개발 코드에 설명문 없음 · 제목과 박스 사이 16px · 탭 HTML→CSS→JavaScript
 - [ ] **실제 렌더로 확인**했다 — 페이지 전체 중복 `id` 0개, 콘솔 오류 0건, Light·Dark 모두 읽힌다
 - [ ] 같은 마크업 문자열을 PC·Mobile 두 곳에 붙여넣지 않았다(`id`·라디오 `name` 이 겹쳐 선택이 조용히 풀린다)

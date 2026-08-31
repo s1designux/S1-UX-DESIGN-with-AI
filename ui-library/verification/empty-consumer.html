@@ -40,11 +40,23 @@
         <input type="radio" name="consumer-option" data-s1-part="control" aria-label="라벨 없는 옵션">
       </div>
     </fieldset>
+    <button type="button" data-s1-component="toggle" role="switch" aria-checked="false" aria-label="알림 받기">
+      <span data-s1-part="knob" aria-hidden="true"></span>
+    </button>
+    <button type="button" data-s1-component="toggle" role="switch" aria-checked="true" aria-label="자동 저장" disabled>
+      <span data-s1-part="knob" aria-hidden="true"></span>
+    </button>
+    <div>
+      <button type="button" data-s1-component="chip" data-variant="line" data-size="md" data-break="pc" aria-pressed="false"><span data-s1-part="label">라인 칩</span></button>
+      <button type="button" data-s1-component="chip" data-variant="solid" data-size="md" data-break="pc" aria-pressed="true"><span data-s1-part="label">솔리드 칩</span></button>
+      <button type="button" data-s1-component="chip" data-variant="line" data-size="sm" data-break="mobile" aria-pressed="false" disabled><span data-s1-part="label">비활성 칩</span></button>
+    </div>
   </main>
   <script type="module">
-    import { input, checkbox, radio } from "../dist/s1-ui.js";
+    import { autoInit } from "../dist/s1-ui.auto.js";
+    import { checkbox, radio } from "../dist/s1-ui.js";
     if (checkbox.jsRequired || radio.jsRequired) throw new Error("checkbox·radio는 런타임 없이 동작해야 합니다.");
-    document.querySelectorAll('[data-s1-component="input"]').forEach((root) => input.init(root));
+    autoInit();
   </script>
 </body>
 </html>

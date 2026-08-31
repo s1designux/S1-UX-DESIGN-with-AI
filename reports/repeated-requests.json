@@ -68,7 +68,7 @@
       "category": "harness-ux",
       "label": "Harness 레이아웃 개선 (spacing · overflow · alignment)",
       "description": "컴포넌트 매트릭스의 간격·정렬·오버플로우가 잘못되어 수동 수정 요청",
-      "count": 3,
+      "count": 4,
       "promotionStatus": "promoted",
       "promotedRule": "RULE-1b CSS_SIZE_SPLIT (harness-audit.js)",
       "occurrences": [
@@ -83,6 +83,10 @@
         {
           "date": "2026-05-27",
           "summary": "버튼 좌측정렬 복원, 우측 빈공간 미사용 수정"
+        },
+        {
+          "date": "2026-08-31",
+          "summary": "Chip 의 Line/Solid variant 블록 사이 구분선 간격이 8px 로 다른 블록(24px)보다 좁아 보였다. 컴포넌트 값이 아니라 assets/css/ui-library-guide.css 공유 규칙(.uilg-variant-block + .uilg-separator)에서 24px 로 고쳐 Button 등 같은 클래스를 쓰는 모든 컴포넌트에 소급 적용되게 했고, component-page-template.md 에 기준을 남겼다."
         }
       ],
       "automationNote": "harness-audit RULE-1(SIZE_SPLIT) + CSS_SIZE_SPLIT으로 일부 커버됨. 간격·정렬 자동 검사는 추가 필요."
@@ -120,7 +124,7 @@
       "category": "registry-sync",
       "label": "구현 완료 후 registry harnessStatus 갱신 누락",
       "description": "components.html에 harness가 구현됐는데 registry JSON의 harnessStatus가 skeleton으로 남아있음",
-      "count": 2,
+      "count": 3,
       "promotionStatus": "candidate",
       "promotedRule": null,
       "occurrences": [
@@ -131,6 +135,10 @@
         {
           "date": "2026-05-27",
           "summary": "Table harnessStatus skeleton → implemented 갱신 — 질문 후 파악"
+        },
+        {
+          "date": "2026-08-31",
+          "summary": "Toggle·Chip 웹 배포 착수 시 registry 의 a11yStatus 가 toggle=pending, chip=필드 자체 없음이라 계약상 approved 배포가 막혔다. 구현 상태(codeStatus=implemented)는 진작 채워져 있었는데 접근성 상태만 방치돼 있었다."
         }
       ],
       "automationNote": "registry JSON harnessStatus vs components.html 섹션 존재 여부 비교 검사 필요. Gate 1(Registry)에 추가 가능."
@@ -574,6 +582,20 @@
           "summary": "Radio 가이드의 원(circle) 이 '선택 가능한 요소' 로 분류됨 → part 기준으로 교정, Input 의 기존 오분류도 함께 해소."
         }
       ]
+    },
+    {
+      "id": "generator-hardcodes-first-case",
+      "category": "build-pipeline",
+      "label": "생성기가 첫 사례를 하드코딩해 뒤에 늘어난 항목이 조용히 빠진다",
+      "count": 1,
+      "promotionStatus": "tracking",
+      "occurrences": [
+        {
+          "date": "2026-08-31",
+          "summary": "ui-library build.mjs 의 s1-ui.auto.js 생성이 input 하나만 하드코딩하고 있었다. 런타임이 있는 Toggle·Chip 을 추가해도 autoInit() 에서 조용히 빠질 구조였고, 검사기는 전부 통과했을 것이다. jsRequired=true 인 컴포넌트를 결정론적으로 모두 넣도록 일반화하고, 빈 HTML 소비자가 autoInit() 경로 자체를 소비하도록 바꿔 회귀를 렌더로 잡게 했다."
+        }
+      ],
+      "automationNote": "3회 도달 시 '생성기 안에 컴포넌트 id 문자열이 하드코딩돼 있는지'를 검사하는 결정론 규칙으로 승격 검토."
     }
   ]
 }

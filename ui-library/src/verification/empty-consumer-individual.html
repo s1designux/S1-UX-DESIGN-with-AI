@@ -11,6 +11,8 @@
   <link rel="stylesheet" href="../dist/components/button.css">
   <link rel="stylesheet" href="../dist/components/checkbox.css">
   <link rel="stylesheet" href="../dist/components/radio.css">
+  <link rel="stylesheet" href="../dist/components/toggle.css">
+  <link rel="stylesheet" href="../dist/components/chip.css">
 </head>
 <body>
   <main>
@@ -43,13 +45,28 @@
         <input type="radio" name="consumer-option" data-s1-part="control" aria-label="라벨 없는 옵션">
       </div>
     </fieldset>
+    <button type="button" data-s1-component="toggle" role="switch" aria-checked="false" aria-label="알림 받기">
+      <span data-s1-part="knob" aria-hidden="true"></span>
+    </button>
+    <button type="button" data-s1-component="toggle" role="switch" aria-checked="true" aria-label="자동 저장" disabled>
+      <span data-s1-part="knob" aria-hidden="true"></span>
+    </button>
+    <div>
+      <button type="button" data-s1-component="chip" data-variant="line" data-size="md" data-break="pc" aria-pressed="false"><span data-s1-part="label">라인 칩</span></button>
+      <button type="button" data-s1-component="chip" data-variant="solid" data-size="md" data-break="pc" aria-pressed="true"><span data-s1-part="label">솔리드 칩</span></button>
+      <button type="button" data-s1-component="chip" data-variant="line" data-size="sm" data-break="mobile" aria-pressed="false" disabled><span data-s1-part="label">비활성 칩</span></button>
+    </div>
   </main>
   <script type="module">
-    import { init } from "../dist/components/input.js";
+    import { init as initInput } from "../dist/components/input.js";
     import "../dist/components/button.js";
     import "../dist/components/checkbox.js";
     import "../dist/components/radio.js";
-    document.querySelectorAll('[data-s1-component="input"]').forEach((root) => init(root));
+    import { init as initToggle } from "../dist/components/toggle.js";
+    import { init as initChip } from "../dist/components/chip.js";
+    document.querySelectorAll('[data-s1-component="input"]').forEach((root) => initInput(root));
+    document.querySelectorAll('[data-s1-component="toggle"]').forEach((root) => initToggle(root));
+    document.querySelectorAll('[data-s1-component="chip"]').forEach((root) => initChip(root));
   </script>
 </body>
 </html>

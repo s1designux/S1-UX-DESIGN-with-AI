@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>S1 UI Library · Input &amp; Button 검수</title>
+  <title>S1 UI Library · 승인 배포본 검수</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
   <link rel="stylesheet" href="../ui-library/dist/assets/css/tokens.css">
   <link rel="stylesheet" href="../ui-library/dist/assets/css/typography.css">
@@ -231,14 +231,14 @@
   <main class="review-page">
     <header class="review-header">
       <p class="review-eyebrow">UI LIBRARY · APPROVED · @S1/UI 0.1.0</p>
-      <h1 class="review-title">Base Input · Button · Checkbox · Radio 실제 배포본 검수</h1>
+      <h1 class="review-title">Base Input · Button · Checkbox · Radio · Toggle · Chip 실제 배포본 검수</h1>
       <p class="review-description">이 화면과 퍼블리셔·개발자가 받는 파일은 같은 <strong>ui-library/dist</strong>를 사용합니다. 아래 UI를 직접 누르고 입력하면서 모양과 사용성을 확인해 주세요.</p>
       <div class="review-badges" aria-label="검수 범위">
         <span class="review-badge">PC · Mobile</span>
         <span class="review-badge">Light · Dark</span>
         <span class="review-badge">Base Input · Button</span>
-        <span class="review-badge">Checkbox · Radio (신규)</span>
-        <span class="review-badge">검수본 2026-08-31 · 05</span>
+        <span class="review-badge">Toggle · Chip (신규)</span>
+        <span class="review-badge">검수본 2026-08-31 · 06</span>
         <span class="review-badge">Password · Search는 다음 단계</span>
       </div>
     </header>
@@ -250,6 +250,8 @@
         <li>Button 위에 마우스를 올리고 눌러서 Hover·Pressed 반응을 확인합니다.</li>
         <li>Input에 직접 입력해 remove 아이콘이 나타나는지, 아이콘 위 Hover 배경과 누른 뒤 값 삭제·초점 복귀를 확인합니다.</li>
         <li>Checkbox·Radio는 <strong>상자만 있는 기본형</strong>과 <strong>라벨이 붙은 형태</strong>를 나란히 놓았습니다. 라벨을 눌러도 선택되는지, 라디오는 화살표 키로 옮겨지는지 확인합니다.</li>
+        <li>Toggle은 눌러서 켜고 끄고, Tab·Space로도 바뀌는지 확인합니다. 비활성은 눌러도 바뀌지 않아야 합니다.</li>
+        <li>Chip은 눌러서 선택하고 다시 눌러 해제되는지, Line·Solid의 선택 표시가 구분되는지 확인합니다.</li>
         <li>PC와 Mobile, Light와 Dark에서 같은 의미와 우선순위로 보이는지 비교합니다.</li>
       </ol>
       <div class="review-actions">
@@ -290,9 +292,25 @@
       <div class="review-matrix" id="radio-review-matrix"></div>
     </section>
 
+    <section class="review-section" aria-labelledby="toggle-review-title">
+      <div>
+        <h2 class="review-section-title" id="toggle-review-title">5. Toggle</h2>
+        <p class="review-note">정본 4가지(켜짐·꺼짐 × 기본·비활성)를 그대로 옮겼습니다. 정본에 마우스오버 변형과 움직임(애니메이션)이 없어 웹에도 넣지 않았습니다. 크기 축이 없어 40×20 고정입니다.</p>
+      </div>
+      <div class="review-matrix" id="toggle-review-matrix"></div>
+    </section>
+
+    <section class="review-section" aria-labelledby="chip-review-title">
+      <div>
+        <h2 class="review-section-title" id="chip-review-title">6. Chip</h2>
+        <p class="review-note">Line·Solid × 상태 4종입니다. 크기는 정본에 있는 조합만 만들었습니다 — PC는 SM 28px·MD 34px, Mobile은 SM 30px. 필터 칩(드롭다운·완료 상태)과 아이콘·닫기(X)는 이번 범위가 아닙니다.</p>
+      </div>
+      <div class="review-matrix" id="chip-review-matrix"></div>
+    </section>
+
     <footer class="review-footer">
       <span id="review-runtime-status">배포 모듈 확인 중…</span>
-      <span>후속 범위: Toggle → Password Field → Search Input. 정본과 Registry가 준비된 뒤 같은 방식으로 이 화면에 추가합니다.</span>
+      <span>후속 범위: Filter Chip → Password Field → Search Input. 정본과 Registry가 준비된 뒤 같은 방식으로 이 화면에 추가합니다.</span>
     </footer>
   </main>
 
@@ -500,17 +518,94 @@
         </article>`;
     }
 
+    /* ── Toggle — 크기·break 축이 정본에 없어 Light·Dark 두 벌만 비교한다 ── */
+    function toggleMarkup({ on = false, disabled = false, label }) {
+      return `<button type="button" data-s1-component="toggle" role="switch" aria-checked="${on}" aria-label="${label}"${disabled ? " disabled" : ""}><span data-s1-part="knob" aria-hidden="true"></span></button>`;
+    }
+
+    function renderTogglePanel(combo) {
+      const cells = [
+        ["Off · 기본", { on: false, disabled: false }],
+        ["On · 기본", { on: true, disabled: false }],
+        ["Off · 비활성", { on: false, disabled: true }],
+        ["On · 비활성", { on: true, disabled: true }]
+      ].map(([label, opts]) => sample(label, toggleMarkup({ ...opts, label }))).join("");
+
+      const live = ["앱 푸시 알림", "야간 방해 금지"].map((text, index) =>
+        `<div class="review-sample"><p class="review-state-label">${text}</p><div class="review-component-slot">${toggleMarkup({ on: index === 0, label: text })}</div></div>`).join("");
+
+      return `
+        <article class="review-panel" data-theme="${combo.theme}">
+          <div class="review-panel-heading"><h3 class="review-panel-title">${combo.label}</h3><p class="review-panel-description">정본 4가지 · 크기 축 없음(40×20 고정)</p></div>
+          <div class="review-group">
+            <h4 class="review-group-title">상태 비교</h4>
+            <div class="review-grid">${cells}</div>
+          </div>
+          <hr class="review-separator">
+          <div class="review-group">
+            <h4 class="review-group-title">실제로 눌러보기</h4>
+            <p class="review-panel-description">누르는 즉시 반영됩니다. Tab으로 이동해 Space로도 바뀝니다.</p>
+            <div class="review-grid">${live}</div>
+          </div>
+        </article>`;
+    }
+
+    /* ── Chip — 정본에 있는 크기 조합만 만든다(PC sm·md, Mobile sm) ── */
+    function chipMarkup({ variant, size, breakName, label, selected = false, disabled = false }) {
+      return `<button type="button" data-s1-component="chip" data-variant="${variant}" data-size="${size}" data-break="${breakName}" aria-pressed="${selected}"${disabled ? " disabled" : ""}><span data-s1-part="label">${label}</span></button>`;
+    }
+
+    function renderChipPanel(combo) {
+      const sizes = combo.device === "Mobile" ? [["sm", "SM · 30px"]] : [["sm", "SM · 28px"], ["md", "MD · 34px"]];
+      const variants = [["line", "Line"], ["solid", "Solid"]];
+      const stateBlocks = variants.map(([variant, variantLabel]) => {
+        const size = combo.device === "Mobile" ? "sm" : "md";
+        const cells = [
+          ["Default", { }],
+          ["Selected", { selected: true }],
+          ["Disabled", { disabled: true }],
+          ["Hover · 마우스를 올려 확인", { }]
+        ].map(([label, opts]) => sample(label, chipMarkup({
+          variant, size, breakName: combo.breakName, label: "라벨", ...opts
+        }))).join("");
+        return `<div class="review-group"><h4 class="review-group-title">${variantLabel}</h4><div class="review-grid">${cells}</div></div>`;
+      }).join('<hr class="review-separator">');
+
+      const sizeBlock = sizes.map(([size, sizeLabel]) => `
+        <div class="review-sample">
+          <p class="review-state-label">${sizeLabel}</p>
+          <div class="review-button-row">${["전체", "진행 중", "완료"].map((text, index) =>
+            chipMarkup({ variant: "line", size, breakName: combo.breakName, label: text, selected: index === 0 })).join("")}</div>
+        </div>`).join("");
+
+      return `
+        <article class="review-panel" data-theme="${combo.theme}">
+          ${panelHeading(combo, "chip")}
+          <div class="review-group">
+            <h4 class="review-group-title">실제로 눌러보기 · 크기</h4>
+            <p class="review-panel-description">눌러서 선택하고 다시 눌러 해제합니다.</p>
+            ${sizeBlock}
+          </div>
+          <hr class="review-separator">
+          ${stateBlocks}
+        </article>`;
+    }
+
     document.querySelector("#input-review-matrix").innerHTML = combinations.map(renderInputPanel).join("");
     document.querySelector("#button-review-matrix").innerHTML = combinations.map(renderButtonPanel).join("");
     document.querySelector("#checkbox-review-matrix").innerHTML = controlThemes.map((combo) => renderControlPanel("checkbox", combo)).join("");
     document.querySelector("#radio-review-matrix").innerHTML = controlThemes.map((combo) => renderControlPanel("radio", combo)).join("");
+    document.querySelector("#toggle-review-matrix").innerHTML = controlThemes.map(renderTogglePanel).join("");
+    document.querySelector("#chip-review-matrix").innerHTML = combinations.map(renderChipPanel).join("");
     document.querySelectorAll('[data-s1-component="input"]').forEach((root) => S1UI.input.init(root));
+    document.querySelectorAll('[data-s1-component="toggle"]').forEach((root) => S1UI.toggle.init(root));
+    document.querySelectorAll('[data-s1-component="chip"]').forEach((root) => S1UI.chip.init(root));
 
     const focusStatus = document.querySelector("#review-live-status");
     document.addEventListener("focusin", (event) => {
       const component = event.target.closest("[data-s1-component]");
       if (!component) return;
-      const names = { input: "Base Input", button: "Button", checkbox: "Checkbox", radio: "Radio" };
+      const names = { input: "Base Input", button: "Button", checkbox: "Checkbox", radio: "Radio", toggle: "Toggle", chip: "Chip" };
       const name = names[component.dataset.s1Component] || component.dataset.s1Component;
       const size = component.dataset.size ? ` · ${component.dataset.size.toUpperCase()}` : "";
       focusStatus.textContent = `현재 초점: ${name}${size}`;
@@ -523,7 +618,8 @@
 
     document.querySelector("#review-runtime-status").textContent =
       `실제 배포 모듈 로드 완료 · Input ${S1UI.input.componentId}(remove 동작 포함) · Button ${S1UI.button.componentId}`
-      + ` · Checkbox ${S1UI.checkbox.componentId} · Radio ${S1UI.radio.componentId} (둘 다 JavaScript 없이 동작)`;
+      + ` · Checkbox ${S1UI.checkbox.componentId} · Radio ${S1UI.radio.componentId} (둘 다 JavaScript 없이 동작)`
+      + ` · Toggle ${S1UI.toggle.componentId} · Chip ${S1UI.chip.componentId} (aria 상태 전환 런타임 포함)`;
   </script>
 </body>
 </html>

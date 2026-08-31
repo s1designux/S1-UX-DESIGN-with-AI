@@ -128,7 +128,9 @@
   gap: var(--spacing-16);
 }
 
-.uilg-variant-block + .uilg-separator { margin-block: var(--spacing-8); }
+/* variant 블록 사이 간격 — 8px 는 다른 블록 간격(24px)에 비해 눈에 띄게 좁아 보였다(river 지적 2026-08-31).
+   앞으로 새 컴포넌트도 이 값을 그대로 물려받도록 공유 규칙에서 24px 로 고정한다. */
+.uilg-variant-block + .uilg-separator { margin-block: var(--spacing-24); }
 
 /* ── Input state matrix — constrained width ── */
 
@@ -230,6 +232,31 @@
 [data-s1-component="checkbox"][data-force-state="hover"] [data-s1-part="control"],
 [data-s1-component="radio"][data-force-state="hover"] [data-s1-part="control"] {
   background: var(--color-control-bg-hover);
+}
+
+/* ── Toggle · Chip 가이드 배치 (배치 전용 — 코어 시각은 dist 가 소유) ── */
+
+.uilg-toggle-row {
+  align-items: center;
+  display: flex;
+  gap: var(--spacing-12);
+}
+
+.uilg-toggle-row-label {
+  color: var(--color-text-body-primary);
+  font-size: var(--font-size-14);
+  line-height: var(--line-height-130);
+}
+
+/* ── Chip forced state CSS (preview only) — 정본 Hover 슬롯과 같은 토큰만 쓴다 ── */
+
+[data-s1-component="chip"][data-variant="line"][data-force-state="hover"] {
+  background: var(--color-chip-line-bg-hover);
+}
+
+[data-s1-component="chip"][data-variant="solid"][data-force-state="hover"] {
+  background: var(--color-chip-solid-bg-hover);
+  border-color: var(--color-chip-solid-bg-hover);
 }
 
 /* ── Button forced state CSS (preview only) ── */
