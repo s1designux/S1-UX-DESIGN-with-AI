@@ -1,7 +1,8 @@
 {
   "component": "button",
-  "version": "0.1.0-candidate.2",
-  "independentVerification": "BLOCKED",
+  "version": "0.1.0",
+  "independentVerification": "WAIVED_BY_RIVER",
+  "implementationActualRender": "PASS",
   "riverUxApproval": "APPROVED",
   "approvedAt": "2026-08-26",
   "approvedScope": "Primary·Secondary·Blue Line, PC XXSM·XSM·MD, Mobile LG의 HTML·CSS.",
@@ -9,8 +10,10 @@
     "정본·Registry·source·dist·전체 bundle 코드 정합",
     "HTML 공개 part와 CSS root scope 정의",
     "최소 너비·라벨 중앙·hover·pressed·focus·disabled 코드 검사",
-    "river 실제 검수 화면 UI·UX 승인"
+    "river 실제 검수 화면 UI·UX 승인",
+    "PC/Mobile × Light/Dark·390px·전체/개별 설치 실제 렌더 재검증"
   ],
-  "blocked": ["독립 검증자의 PC/Mobile × Light/Dark 실제 렌더 재실측"],
-  "promotion": "HOLD"
+  "blocked": [],
+  "waiverReason": "단순 코어 변경에서 정본 대조·실제 렌더·자동 검사·river 승인이 완료돼 중복 독립 렌더 검증을 생략함",
+  "promotion": "APPROVED"
 }

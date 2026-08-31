@@ -1,6 +1,8 @@
 import { init as initInput } from "./components/input.js";
 export * as input from "./components/input.js";
 export * as button from "./components/button.js";
+export * as checkbox from "./components/checkbox.js";
+export * as radio from "./components/radio.js";
 
 export function autoInit(scope = document) {
   const roots = [...scope.querySelectorAll('[data-s1-component="input"]')];

@@ -3,20 +3,20 @@
     "id": "checkbox",
     "name": "Checkbox",
     "category": "Core",
-    "updatedAt": "2026-05-27",
-    "version": "0.1.0",
+    "updatedAt": "2026-08-31",
+    "version": "0.2.0",
     "tokenStatus": "stable",
     "codeStatus": "implemented",
     "darkModeStatus": "stable",
-    "a11yStatus": "pending",
+    "a11yStatus": "stable",
     "figmaStatus": "existing",
     "harnessStatus": "implemented",
-    "description": "체크박스 컨트롤. default·hover·checked·indeterminate·disabled 상태."
+    "description": "체크박스 컨트롤. 정본 상태는 default·hover·checked·disabled·disabled+checked 다섯이며 부분선택(indeterminate)은 아직 정본에 없다."
   },
   "usage": {
     "whenToUse": [
       "여러 항목을 독립적으로 켜고 끌 때(다중 선택).",
-      "목록 전체선택/부분선택(indeterminate) 헤더에."
+      "약관 동의처럼 항목마다 따로 켜고 끌 때."
     ],
     "whenNotToUse": [
       "여러 보기 중 하나만 고를 때는 Radio.",
@@ -30,17 +30,17 @@
     },
     {
       "part": "체크 표시",
-      "role": "checked·indeterminate 인디케이터 아이콘."
+      "role": "checked 인디케이터 아이콘(정본 ic_확인 16px). 색은 control indicator 토큰."
     },
     {
       "part": "라벨(선택)",
-      "role": "항목 텍스트. 박스와 함께 클릭 영역."
+      "role": "선택 부품. 없는 것이 기본이고, 붙이면 라벨 클릭도 선택 영역이 된다(본문 14 Medium, 간격 8)."
     }
   ],
   "doDont": {
     "do": [
-      "전체선택 헤더는 부분선택 시 indeterminate(is-indeterminate)를 쓴다.",
-      "박스는 코어 s1-checkbox 를 재사용한다(모듈 전용 체크박스 금지)."
+      "라벨을 붙일 때는 label[for] 로 control 과 연결해 라벨 클릭도 선택되게 한다.",
+      "박스는 코어 체크박스를 재사용한다(모듈 전용 체크박스 금지)."
     ],
     "dont": [
       "Table·Filter 등 모듈에서 체크박스를 새로 만들지 않는다.",
@@ -48,8 +48,10 @@
     ]
   },
   "a11y": [
+    "native input[type=checkbox] 를 사용해 역할·선택 상태·Space 키 동작을 브라우저가 제공하게 한다.",
     "라벨이 없으면 aria-label 필수.",
-    "indeterminate 는 시각뿐 아니라 aria-checked=\"mixed\" 로 표현한다."
+    "비활성은 disabled 속성으로 표현하고 시각 처리만으로 대체하지 않는다.",
+    "키보드 초점은 선택 테두리 토큰의 2px 외곽선으로 보이게 한다."
   ],
   "states": ["default", "hover", "checked", "disabled"],
   "tokens": [
@@ -72,7 +74,7 @@
   },
   "guide": {
     "sampleLabels": ["선택 항목"],
-    "webTag": "button",
+    "webTag": "input",
     "interactionPattern": "checkbox-toggle",
     "accessibility": { "role": "checkbox", "keyboard": ["Space"], "attributes": ["aria-checked", "aria-label"] }
   },

@@ -12,8 +12,22 @@ const componentConfig = {
     description: "사용자가 저장·확인·취소처럼 명확한 행동을 실행할 때 사용하는 컴포넌트입니다.",
     approvedScope: "Primary · Secondary · Blue Line · PC 3크기 · Mobile 1크기",
     runtime: S1UI.button
+  },
+  checkbox: {
+    title: "Checkbox",
+    description: "여러 항목을 각각 켜고 끌 때 사용합니다. 라벨은 선택 사항이며, 붙이면 라벨을 눌러도 선택됩니다.",
+    approvedScope: "상태 5종 · 라벨 유무 · 크기 축 없음(18px 고정) · JavaScript 불필요",
+    runtime: S1UI.checkbox
+  },
+  radio: {
+    title: "Radio",
+    description: "여러 보기 중 하나만 고를 때 사용합니다. 같은 그룹으로 묶으면 하나만 선택되고 화살표 키로 이동합니다.",
+    approvedScope: "상태 5종 · 라벨 유무 · 크기 축 없음(18px 고정) · JavaScript 불필요",
+    runtime: S1UI.radio
   }
 };
+
+let controlId = 0;
 
 let inputId = 0;
 
@@ -190,6 +204,103 @@ function buttonStateMatrix() {
     </div>`;
 }
 
+/* ── State matrix: Checkbox · Radio ── */
+
+function controlMarkup(kind, { label = "", checked = false, disabled = false, name = "", forceState = "", isPreview = false } = {}) {
+  controlId += 1;
+  const id = `guide-${kind}-${controlId}`;
+  const attrs = [
+    `type="${kind}"`,
+    `id="${id}"`,
+    name ? `name="${name}"` : "",
+    'data-s1-part="control"',
+    checked ? "checked" : "",
+    disabled ? "disabled" : "",
+    label ? "" : `aria-label="${kind === "checkbox" ? "라벨 없는 선택 항목" : "라벨 없는 옵션"}"`
+  ].filter(Boolean).join(" ");
+  const force = forceState ? ` data-force-state="${forceState}"` : "";
+  const previewClass = isPreview ? ' class="is-preview"' : "";
+  const labelHtml = label ? `<label data-s1-part="label" for="${id}">${escapeHtml(label)}</label>` : "";
+  return `<div data-s1-component="${kind}"${force}${previewClass}>
+      <input ${attrs}>
+      ${labelHtml}
+    </div>`;
+}
+
+function controlStateMatrix(kind) {
+  const onWord = kind === "checkbox" ? "Checked" : "Selected";
+  const states = [
+    { label: "Default", opts: {} },
+    { label: "Hover", opts: { forceState: "hover" } },
+    { label: onWord, opts: { checked: true } },
+    { label: "Disabled", opts: { disabled: true } },
+    { label: `Dis+${onWord}`, opts: { checked: true, disabled: true } }
+  ];
+  const sampleLabel = kind === "checkbox" ? "선택 항목" : "옵션";
+
+  /* ── 1) Action: 실제로 눌러보는 예시 — 여러 개를 함께 쓸 때 ── */
+  function actionSection(platform) {
+    const groupName = `guide-${kind}-${platform}-action`;
+    const items = kind === "checkbox"
+      ? ["이메일", "문자", "앱 푸시"]
+      : ["받음", "받지 않음", "나중에 정하기"];
+    const legend = kind === "checkbox" ? "받을 알림" : "알림 받기";
+    const note = kind === "checkbox"
+      ? "항목마다 따로 켜고 끕니다. 라벨을 눌러도 선택됩니다."
+      : "같은 그룹에서 하나만 선택되고, 그룹 안에서는 화살표 키로 이동합니다.";
+    const rows = items.map((text, index) => controlMarkup(kind, {
+      label: text,
+      name: kind === "radio" ? groupName : "",
+      checked: index === 0
+    })).join("");
+    return `<div class="comp-action-top">
+      <div class="matrix-col-header-action">Action</div>
+      <div class="uilg-control-action">
+        <fieldset class="uilg-control-group">
+          <legend class="matrix-row-label">${legend}</legend>
+          ${rows}
+        </fieldset>
+        <p class="uilg-demo-note">${note}</p>
+      </div>
+    </div>`;
+  }
+
+  /* ── 2) 상태: 라벨 없음 1행 + 라벨 있음 1행 ── */
+  function stateSection(platform) {
+    const header = `<div class="matrix-col-header" style="grid-column:1"></div>` +
+      states.map((state) => `<div class="matrix-col-header">${state.label}</div>`).join("");
+    const row = (labelled) => `<div class="matrix-row-label">${labelled ? "라벨 있음" : "라벨 없음"}<span>${labelled ? "선택 부품" : "기본형"}</span></div>` +
+      states.map((state, index) => `<div class="comp-state-cell">${controlMarkup(kind, {
+        ...state.opts,
+        isPreview: true,
+        label: labelled ? sampleLabel : "",
+        name: kind === "radio" ? `guide-${kind}-${platform}-${labelled ? "on" : "off"}-${index}` : ""
+      })}</div>`).join("");
+    return `<div class="uilg-demo-group">
+      <div class="comp-state-matrix" style="grid-template-columns: 110px repeat(${states.length}, minmax(104px, 1fr));">
+        ${header}${row(false)}${row(true)}
+      </div>
+    </div>`;
+  }
+
+  /* PC·Mobile 은 각각 새로 생성한다 — 같은 문자열을 두 번 붙이면 id 와 radio name 이
+     페이지 안에서 충돌해 PC 쪽 선택 상태가 풀린다. */
+  /* .comp-action-top 이 이미 아래 구분선을 그리므로 별도 hr 을 두지 않는다(줄 2개로 보임). */
+  const content = (platform) => `${actionSection(platform)}
+    ${stateSection(platform)}`;
+
+  return `
+    <div class="platform-section platform-section-pc">
+      <div class="preview-area">${content("pc")}</div>
+    </div>
+    <div class="platform-section platform-section-mobile">
+      <div class="preview-area">
+        <p class="uilg-demo-note">정본에 플랫폼·크기 축이 없어 Mobile도 PC와 같습니다(18px 고정).</p>
+        ${content("mobile")}
+      </div>
+    </div>`;
+}
+
 /* ── State matrix: Input ── */
 
 function inputStateMatrix() {
@@ -286,6 +397,18 @@ function inputStateMatrix() {
     </div>`;
 }
 
+/* ── Component documentation (실제 동작 다음에 온다) ── */
+
+function stateMatrix(id) {
+  if (id === "input") return inputStateMatrix();
+  if (id === "button") return buttonStateMatrix();
+  return controlStateMatrix(id);
+}
+
+function componentOverview(id, registry) {
+  return `${implementationRules(id, registry)}\n      ${usageGuide(id, registry)}`;
+}
+
 /* ── Implementation rules ── */
 
 function implementationRules(id, registry) {
@@ -294,8 +417,10 @@ function implementationRules(id, registry) {
   const doDont = registry.doDont || {};
   const donts = doDont.dont || [];
 
-  const required = anatomy.filter((a) => !a.role.includes("선택"));
-  const optional = anatomy.filter((a) => a.role.includes("선택"));
+  /* registry 규약: 선택 부품은 part 이름에 "(선택)" 을 붙인다(role 문장이 아니라). */
+  const isOptional = (a) => a.part.includes("(선택)");
+  const required = anatomy.filter((a) => !isOptional(a));
+  const optional = anatomy.filter(isOptional);
 
   function ruleList(items) {
     if (!items.length) return "";
@@ -427,6 +552,8 @@ async function mountGuide(id) {
 
     if (manifest.status !== "approved") throw new Error(`${id} 배포 상태가 approved가 아닙니다.`);
 
+    // 실제 동작·상태를 먼저 보이고, 설명 문서는 그 뒤에 둔다.
+    const overview = (data) => componentOverview(id, data);
     const fragment = document.createElement("div");
     fragment.className = "uilg";
     fragment.dataset.guideComponent = id;
@@ -443,22 +570,20 @@ async function mountGuide(id) {
           <span class="uilg-badge">실제 dist 사용</span>
         </div>
       </header>
-      <section class="uilg-demo" aria-labelledby="${id}-demo-title">
+      <section class="uilg-demo preview-area" aria-labelledby="${id}-demo-title">
         <div class="uilg-demo-head">
           <div><h2 class="uilg-section-title" id="${id}-demo-title">실제 동작과 상태</h2><p class="uilg-demo-note">${config.approvedScope}</p></div>
           <p class="uilg-status-text">이 설명 화면과 배포 파일은 같은 <strong>ui-library/dist</strong>를 사용합니다.</p>
         </div>
-        ${id === "input" ? inputStateMatrix() : buttonStateMatrix()}
+        ${stateMatrix(id)}
       </section>
       <section aria-labelledby="${id}-code-heading">
         <div class="uilg-title-group">
           <h2 class="uilg-section-title" id="${id}-code-heading">개발 코드</h2>
-          <p class="uilg-description">화면 예시가 아니라 실제 배포되는 HTML·CSS·JavaScript입니다.</p>
         </div>
         ${codeViewer(id)}
       </section>
-      ${implementationRules(id, registry)}
-      ${usageGuide(id, registry)}`;
+      ${overview(registry)}`;
 
     section.replaceChildren(fragment);
     wireCodeViewer(section, { html, css, js });
@@ -505,5 +630,6 @@ async function mountGuide(id) {
   }
 }
 
-await Promise.all([mountGuide("input"), mountGuide("button")]);
-document.dispatchEvent(new CustomEvent("s1:component-guide:ready", { detail: { components: ["input", "button"] } }));
+const guideComponents = ["input", "button", "checkbox", "radio"];
+await Promise.all(guideComponents.map(mountGuide));
+document.dispatchEvent(new CustomEvent("s1:component-guide:ready", { detail: { components: guideComponents } }));

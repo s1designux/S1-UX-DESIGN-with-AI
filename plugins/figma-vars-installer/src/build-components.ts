@@ -2981,7 +2981,7 @@ async function buildMobileBottomNav(maps: BuildMaps, originY: number): Promise<{
   return { set, bottomY };
 }
 
-// ── Mobile Header — StatusBar(App) + 56px AppBar, 360×99 ────────────────────
+// ── Mobile Header — StatusBar(App/Web) + 56px AppBar, 360×99/149 ────────────
 // V2.4 mobile_header(540:6112) 원본 5종 기준 + 회원가입용 No Title 계열 2종.
 // StatusBar는 정본 인스턴스만 재사용하고, 아이콘은 등록된 원본 component key import만 허용한다.
 // 2026-08-25 river: "Home / Title + 2 Icons" 는 실제로 쓰지 않는 기준이라 삭제.
@@ -2999,6 +2999,8 @@ const MOBILE_HEADER_TYPES = [
   "Standard / No Title + Close",
 ] as const;
 type MobileHeaderType = typeof MOBILE_HEADER_TYPES[number];
+const MOBILE_HEADER_PLATFORMS = ["App", "Web"] as const;
+type MobileHeaderPlatform = typeof MOBILE_HEADER_PLATFORMS[number];
 
 function makeMobileHeaderSlot(name: string): FrameNode {
   const slot = figma.createFrame();
@@ -3041,28 +3043,37 @@ function makeMobileHeaderGrowFrame(name: string, align: "MIN" | "CENTER"): Frame
   return frame;
 }
 
-async function mobileHeaderStatusBarInstance(): Promise<InstanceNode> {
-  const status = BUILT_COMPS["StatusBar:App"]
-    ?? await reuseVariant("StatusBar", "StatusBar:App", ["Platform=App"]);
-  if (!status) throw new Error("Mobile Header는 StatusBar / Platform=App 정본이 먼저 필요합니다.");
+async function mobileHeaderStatusBarInstance(platform: MobileHeaderPlatform): Promise<InstanceNode> {
+  const status = BUILT_COMPS[`StatusBar:${platform}`]
+    ?? await reuseVariant("StatusBar", `StatusBar:${platform}`, [`Platform=${platform}`]);
+  if (!status) throw new Error(`Mobile Header는 StatusBar / Platform=${platform} 정본이 먼저 필요합니다.`);
   const inst = status.createInstance();
-  inst.name = "StatusBar / Platform=App";
-  inst.layoutAlign = "STRETCH";
+  inst.name = "StatusBar";
   return inst;
 }
 
-async function buildMobileHeaderVariant(type: MobileHeaderType, maps: BuildMaps): Promise<ComponentNode> {
+async function buildMobileHeaderVariant(
+  type: MobileHeaderType,
+  platform: MobileHeaderPlatform,
+  maps: BuildMaps,
+): Promise<ComponentNode> {
   const isHome = type.startsWith("Home /");
+  const statusBarHeight = platform === "Web" ? 77 : 27;
+  const rootHeight = platform === "Web" ? 149 : 99;
   const comp = figma.createComponent();
-  comp.name = `Type=${type}`;
+  comp.name = `Type=${type}, Platform=${platform}`;
   comp.layoutMode = "VERTICAL";
   comp.primaryAxisSizingMode = "FIXED";
   comp.counterAxisSizingMode = "FIXED";
   comp.itemSpacing = 16;
   comp.fills = [boundPaint(scv(maps, isHome ? "color/bg/home" : "color/bg/level-0"))];
-  comp.resize(360, 99);
-  const statusInst = await mobileHeaderStatusBarInstance();
+  comp.resize(360, rootHeight);
+  const statusInst = await mobileHeaderStatusBarInstance(platform);
   comp.appendChild(statusInst);
+  statusInst.resize(360, statusBarHeight);
+  statusInst.layoutAlign = "STRETCH";
+  statusInst.layoutSizingHorizontal = "FILL";
+  statusInst.layoutSizingVertical = "FIXED";
   // 상태바도 다크를 따라오게 한다(river 결정 2026-08-25) — 자기 모드 핀을 풀어 부모를 상속.
   clearMode(statusInst, maps);
   // 배경도 비운다 — 원본(V2.4)은 프레임 전체가 한 배경색이고 상태바 행이 따로 배경을 갖지 않았다.
@@ -3134,10 +3145,16 @@ async function buildMobileHeaderVariant(type: MobileHeaderType, maps: BuildMaps)
 
 async function buildMobileHeader(maps: BuildMaps, originY: number): Promise<{ set: ComponentSetNode; bottomY: number }> {
   const comps: ComponentNode[] = [];
-  for (const type of MOBILE_HEADER_TYPES) {
-    const comp = await buildMobileHeaderVariant(type, maps);
-    comps.push(comp);
-    BUILT_COMPS[`MobileHeader:${type}`] = comp;
+  const byKey = new Map<string, ComponentNode>();
+  for (const platform of MOBILE_HEADER_PLATFORMS) {
+    for (const type of MOBILE_HEADER_TYPES) {
+      const comp = await buildMobileHeaderVariant(type, platform, maps);
+      comps.push(comp);
+      byKey.set(`${platform}:${type}`, comp);
+      BUILT_COMPS[`MobileHeader:${platform}:${type}`] = comp;
+      // 기존 내부 소비자는 App 정본을 계속 받는다.
+      if (platform === "App") BUILT_COMPS[`MobileHeader:${type}`] = comp;
+    }
   }
   const set = figma.combineAsVariants(comps, figma.currentPage);
   set.name = "Mobile Header";
@@ -3145,17 +3162,23 @@ async function buildMobileHeader(maps: BuildMaps, originY: number): Promise<{ se
   BUILT_SETS["Mobile Header"] = set;
   const opts: SpecOpts = {
     title: "Mobile Header",
-    // river 2026-08-26: Home 2종은 첫 행, Standard 4종은 두 번째 행에 한 줄로 잇는다.
-    // 폭이 길어진 스펙은 Dark 를 Light 오른쪽이 아니라 바로 아래에 둔다.
+    // Platform별로 Home 2종, Standard 4종을 나눠 완전 조합을 한눈에 검수한다.
+    // 폭이 긴 스펙이므로 Dark 는 Light 오른쪽이 아니라 바로 아래에 둔다.
     colHeaders: ["", "", "", ""],
-    rowLabels: ["Home", "Standard"],
-    cellAt: (r, c) => r === 0 ? (comps[c] ?? null) : (comps[c + 2] ?? null),
+    rowLabels: ["App / Home", "App / Standard", "Web / Home", "Web / Standard"],
+    cellAt: (r, c) => {
+      const platform = r < 2 ? "App" : "Web";
+      const type = r % 2 === 0 ? MOBILE_HEADER_TYPES[c] : MOBILE_HEADER_TYPES[c + 2];
+      return type ? (byKey.get(`${platform}:${type}`) ?? null) : null;
+    },
     cellLabelAt: (r, c) => {
-      const comp = r === 0 ? (comps[c] ?? null) : (comps[c + 2] ?? null);
-      return comp ? comp.name.replace(/^Type=/, "") : null;
+      const platform = r < 2 ? "App" : "Web";
+      const type = r % 2 === 0 ? MOBILE_HEADER_TYPES[c] : MOBILE_HEADER_TYPES[c + 2];
+      const comp = type ? byKey.get(`${platform}:${type}`) : null;
+      return comp ? comp.name.replace(/^Type=/, "").replace(/, Platform=(App|Web)$/, "") : null;
     },
     lightX: SPEC_LIGHT_X, darkX: SPEC_DARK_X, originY,
-    cellW: 384, cellH: 99, rowLabelW: 232,
+    cellW: 384, cellH: 149, rowLabelW: 232,
     leftAlignCells: true,
     stackDarkBelow: true,
   };
@@ -4141,6 +4164,14 @@ async function buildBottomSheetOption(maps: BuildMaps, originY: number): Promise
     setLightMode(comp, maps);
     byKey["Text:Default"] = comp;
   }
+  // ── Text/Disabled — 비활성 라벨만, 아이콘 없음 ────────────────
+  {
+    const comp = makeSelectRow("Type=Text, State=Disabled");
+    comp.primaryAxisAlignItems = "MIN";
+    comp.appendChild(await rowLabel("color/text/state/disabled"));
+    setLightMode(comp, maps);
+    byKey["Text:Disabled"] = comp;
+  }
   // ── Text/Selected — accent 라벨 + 우측 ✓ ──────────────────
   {
     const comp = makeSelectRow("Type=Text, State=Selected");
@@ -4218,7 +4249,7 @@ async function buildBottomSheetOption(maps: BuildMaps, originY: number): Promise
     await makeLockIcon(scv(maps, "color/icon/gray"), 24));
 
   // 표시 순서(메인→요소 규칙과 무관, 매트릭스 나열): Text → Checkbox → Radio → List
-  const order = ["Text:Default", "Text:Selected", "Checkbox:Default", "Checkbox:Selected",
+  const order = ["Text:Default", "Text:Selected", "Text:Disabled", "Checkbox:Default", "Checkbox:Selected",
     "Radio:Default", "Radio:Selected", "List:Default", "List:Disabled"];
   const comps = order.map((k) => byKey[k]);
   const set = figma.combineAsVariants(comps, figma.currentPage);
@@ -4228,6 +4259,7 @@ async function buildBottomSheetOption(maps: BuildMaps, originY: number): Promise
   // Bottom Sheet 컨테이너가 리스트에 재사용하는 Text 옵션 등록
   BUILT_COMPS["BottomSheetOption:Text:Default"] = byKey["Text:Default"];
   BUILT_COMPS["BottomSheetOption:Text:Selected"] = byKey["Text:Selected"];
+  BUILT_COMPS["BottomSheetOption:Text:Disabled"] = byKey["Text:Disabled"];
 
   const types = ["Text", "Checkbox", "Radio", "List"];
   const states = ["Default", "Selected", "Disabled"];

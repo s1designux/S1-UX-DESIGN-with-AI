@@ -2,11 +2,24 @@
 
 > 이 문서는 컴포넌트 가이드 사이트(`components.html`)에 새 컴포넌트를 추가할 때
 > **반드시 먼저 읽어야 하는 고정 기준**이다. 추측 금지. 여기 적힌 순서·클래스·GUI 규칙을 그대로 따른다.
-> 기준 원본(golden sample)은 `components.html`의 **comp-state-matrix 컴포넌트(예: Line Tab `#tab`, Checkbox `#checkbox`)**. (Button `#button`은 레거시 `state-size-matrix`를 쓰므로 golden이 아니다 — 신규는 따라하지 말 것)
 
 ---
 
-## 0. 핵심 원칙 — 틀은 고정, 내용은 유연
+## 0-A. 먼저 — 두 갈래 중 어느 틀인가 (2026-08-31 river 확정)
+
+| 갈래 | 대상 | 틀 | 화면을 만드는 주체 |
+|---|---|---|---|
+| **A. 승인 배포본 틀** | UI 라이브러리에서 `status: approved` 로 승격된 컴포넌트 | **§A** | `assets/js/ui-library-guide.js` 가 실제 `ui-library/dist` 를 읽어 생성. `components.html` 에는 빈 mount 만 둔다 |
+| **B. 손관리 틀(레거시)** | 아직 UI 라이브러리로 정리되지 않은 컴포넌트 | §1~§6 | 사람이 `components.html` 에 직접 작성 |
+
+**신규 작업의 기본은 A다.** 컴포넌트를 UI 라이브러리로 정리했으면(=`ui-library-code` 워크플로우 6-promotion 완료) 반드시 A로 옮긴다. B는 아직 정리 못 한 컴포넌트를 위한 과도기 틀이며, 새로 B를 늘리지 않는다.
+
+- A의 기준 원본(golden sample): **Input `#input` · Button `#button` · Checkbox `#checkbox` · Radio `#radio`**
+- B의 기준 원본: **Line Tab `#tab`** (Button 은 A로 이관 완료 — 옛 `state-size-matrix` 를 따라하지 말 것)
+
+---
+
+## 0. 핵심 원칙 — 틀은 고정, 내용은 유연 (두 갈래 공통)
 
 | 고정 (절대 바꾸지 않음) | 유연 (컴포넌트 특성에 맞게 조정) |
 |---|---|
@@ -20,6 +33,93 @@
 **고정 열은 어떤 경우에도 동일**하다. 이게 통일감의 근거다.
 
 ---
+
+## §A. 승인 배포본 컴포넌트 안내 틀 (river 확정 틀)
+
+> **이 틀은 고정이다.** 컴포넌트마다 달라지는 것은 상태 이름·축 이름·예시 내용뿐이고, **블록의 종류와 순서는 항상 같다.**
+> 기계 검사: `ui-library/scripts/test.mjs` 가 mount 형태·dist 링크·"실제 동작이 문서보다 앞" 을 검사한다.
+> 표출 선언: `registry/governance/component-presentation-policy.json` 의 `_meta.uiLibraryGuideLayout`.
+
+### A-1. `components.html` 에 두는 것 — mount 와 내비뿐
+
+```html
+<!-- Approved {Name} guide: ui-library-guide.js renders from ui-library/dist -->
+<section class="comp-section" id="{id}" data-cov-states="…"></section>
+```
+- 손으로 쓴 미리보기 마크업을 **남기지 않는다**(빈 `<section>` 이어야 한다).
+- `data-cov-*` 커버리지 속성은 유지한다(Gate 19·32 가 읽는다).
+- `comp-nav` 버튼의 `disabled` 를 해제한다.
+- `registry/governance/component-presentation-policy.json` 의 해당 컴포넌트에 `"managedBy": "ui-library-guide"` 를 붙인다 — 정적 파서로는 JS 렌더 결과를 볼 수 없으므로 Gate 23 이 거짓 통과 대신 **미계측**으로 정직 보고한다. 대신 **Action 영역 존재를 실제 렌더로 확인**한다.
+
+### A-2. 섹션 내부 순서 (고정)
+
+```
+div.uilg
+├─ ① header.uilg-header              제목 + 한 줄 설명 + 뱃지
+├─ ② section.uilg-demo.preview-area  "실제 동작과 상태"   ← 항상 문서보다 먼저
+│      ├─ div.uilg-demo-head          소제목 + 승인 범위 한 줄 + "같은 dist 사용" 문구
+│      └─ div.platform-section(-pc / -mobile) > div.preview-area
+│           ├─ div.comp-action-top    ★ Action
+│           └─ div.comp-state-matrix  ★ 상태 매트릭스
+├─ ③ section  "개발 코드"             제목 + 코드 탭(HTML·CSS·JavaScript) + 복사
+├─ ④ section.uilg-rules "구현 시 꼭 지킬 것"
+└─ ⑤ details.uilg-usage-details "상세 사용 가이드"  (접힘)
+```
+
+**순서를 바꾸지 않는다.** 사람이 먼저 보는 것은 설명이 아니라 **실제로 움직이는 물건**이다.
+
+### A-3. ① 헤더
+
+- 제목(컴포넌트명) + 한 줄 설명 + 뱃지 `Approved` · `Core` · `v{version}` · `실제 dist 사용`.
+- **제목·설명 아래에 구분선을 두지 않는다**(river 확정 2026-08-31). 간격만 둔다.
+
+### A-4. ② Action — "실제로 눌러보는 자리"
+
+- 라벨은 `ACTION`(`.matrix-col-header-action`), 위치는 상태 매트릭스 **바로 위**.
+- 여기에는 **그 컴포넌트를 실제로 쓰는 모습**을 놓는다. 상태 나열이 아니다.
+  - 여러 개를 함께 쓰는 컴포넌트(Checkbox·Radio 등): **묶음 예시**를 놓는다 — `fieldset` + 그룹 이름 + 항목 2~3개 + 한 줄 설명(river 확정 2026-08-31).
+  - 크기 축이 있는 컴포넌트(Input·Button 등): 대표 크기의 라이브 인스턴스를 놓는다.
+- 그룹 이름(legend)과 첫 항목 사이 **12px**.
+- **Action 아래 구분선은 1개다.** `.comp-action-top` 이 자체 `border-bottom` 을 그리므로 그 뒤에 `<hr>` 을 또 넣지 않는다.
+
+### A-5. ② 상태 매트릭스
+
+- **열 = 정본 상태 전수.** 설치기 정본(`build-components.ts`)에 있는 상태를 하나도 빼지 않는다.
+- **행 = 그 컴포넌트의 두 번째 축.** 예: 라벨 없음/있음(Checkbox·Radio), 메시지 없음/있음(Input), variant(Button).
+- 정본에 없는 상태를 만들지 않는다. 정본에 마우스오버가 있으나 실제로 올릴 수 없는 칸은 **검수 전용 `data-force-state`** 로 표시한다(제품 동작 API 아님).
+- 상태 칸은 `.comp-state-cell` + `is-preview`(클릭 막음), Action 칸만 실제로 동작한다.
+- 크기 축이 정본에 없으면 Mobile 섹션에도 같은 내용을 두고 **"정본에 플랫폼·크기 축이 없어 PC와 같습니다"** 를 명시한다.
+
+### A-6. ③ 개발 코드
+
+- 제목은 `개발 코드` 하나. **설명 문장을 붙이지 않는다**(river 확정 2026-08-31 — 컴포넌트마다 같은 문장이 반복돼 소음이었다).
+- 제목과 코드 박스 사이 **16px**.
+- 탭 순서 고정: **HTML → CSS → JavaScript**. 내용은 실제 `ui-library/dist` 에서 읽어온다(손으로 쓴 예시 금지).
+
+### A-7. ④⑤ 문서
+
+- `구현 시 꼭 지킬 것` = `registry/components/{id}.json` 의 `anatomy`·`doDont.dont`·`a11y` 에서 생성.
+  - **필수/선택 부품 판별은 `part` 이름의 `(선택)` 표시로 한다.** `role` 문장 안의 낱말로 판별하지 않는다.
+- `상세 사용 가이드`(접힘) = `usage.whenToUse`·`whenNotToUse`·`doDont.do`.
+- 이 두 블록은 **항상 실제 동작 다음**에 온다.
+
+### A-8. 자가 점검 (A 갈래)
+
+- [ ] `components.html` 의 해당 섹션이 **빈 mount** 이고 손관리 마크업이 남아 있지 않다
+- [ ] `comp-nav` 버튼 `disabled` 해제, presentation policy 에 `managedBy: ui-library-guide`
+- [ ] 블록 순서가 A-2 와 동일 (실제 동작 → 개발 코드 → 문서)
+- [ ] 헤더 아래 구분선 없음 · Action 아래 구분선 1개
+- [ ] Action 에 실제로 눌러지는 예시가 있다(상태 나열이 아니다)
+- [ ] 상태 열이 정본 상태 전수와 일치
+- [ ] 개발 코드에 설명문 없음 · 제목과 박스 사이 16px · 탭 HTML→CSS→JavaScript
+- [ ] **실제 렌더로 확인**했다 — 페이지 전체 중복 `id` 0개, 콘솔 오류 0건, Light·Dark 모두 읽힌다
+- [ ] 같은 마크업 문자열을 PC·Mobile 두 곳에 붙여넣지 않았다(`id`·라디오 `name` 이 겹쳐 선택이 조용히 풀린다)
+
+---
+
+## §B. 손관리 틀 (레거시 — 아직 UI 라이브러리로 정리되지 않은 컴포넌트)
+
+> 아래 §1~§6 은 **B 갈래 전용**이다. 승인 배포본 컴포넌트에는 적용하지 않는다(§A 를 따른다).
 
 ## 1. 페이지 셸 (네비게이션)
 
@@ -95,7 +195,7 @@ section.comp-section#{id}
 ## 3. comp-state-matrix (가장 중요한 고정 그리드)
 
 미리보기의 핵심. **세로=사이즈, 가로=[Size][Action][상태들]**.
-**표준은 `comp-state-matrix`** (Button 1개만 레거시 `state-size-matrix` — 신규는 절대 따라하지 말 것. 나머지 13개 컴포넌트가 `comp-state-matrix`를 쓴다).
+**표준은 `comp-state-matrix`** 다. 옛 `state-size-matrix` 는 따라하지 않는다.
 
 ```css
 .comp-state-matrix{
@@ -157,7 +257,7 @@ section.comp-section#{id}
 ```
 - 탭 순서 고정: **PC·HTML → Mobile·HTML → CSS Token → Token Details**.
 - 모바일이 없는 컴포넌트는 Mobile·HTML 탭 생략 가능(나머지 순서는 유지).
-- 일부 컴포넌트는 JavaScript 탭을 추가할 수 있음(예: Checkbox) — 추가 시 CSS 앞이 아니라 HTML 다음에 둔다.
+- 일부 컴포넌트는 JavaScript 탭을 추가할 수 있음 — 추가 시 CSS 앞이 아니라 HTML 다음에 둔다.
 - `code-pane`의 `id`는 `code-tab`의 `switchTab` 두 번째 인자와 정확히 일치해야 함.
 
 ---
@@ -177,14 +277,14 @@ section.comp-section#{id}
 
 ---
 
-## 6. 빌드 후 자가 점검 체크리스트
+## 6. 빌드 후 자가 점검 체크리스트 (B 갈래)
 
 새 컴포넌트 섹션을 만든 뒤 **스스로** 확인한다. 하나라도 어긋나면 수정 후 재확인.
 
 - [ ] `comp-nav`에 버튼 추가 + 올바른 `data-category` 부여
 - [ ] 섹션 블록 순서가 §2와 동일 (헤더 → variant-block → code-block)
 - [ ] 헤더에 제목 + 뱃지(분류/개수/사이즈) 존재
-- [ ] 미리보기가 `comp-state-matrix` 그리드 사용 (자체 레이아웃 만들지 않음. Button 레거시 `state-size-matrix` 따라하지 말 것)
+- [ ] 미리보기가 `comp-state-matrix` 그리드 사용 (자체 레이아웃 만들지 않음)
 - [ ] 그리드 1·2열 = 라벨·Action, 상태 헤더 개수 = `repeat()` 수와 일치
 - [ ] Action 셀은 라이브 인스턴스(`.comp-action-cell` + `data-comp-action`), 상태 셀은 `.comp-state-cell` + `.is-preview`(pointer-events:none)
 - [ ] 사이즈 행 순서 = 큰 것 → 작은 것, 보조수치(`h.. · px..`) 표기

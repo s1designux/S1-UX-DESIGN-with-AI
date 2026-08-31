@@ -10,7 +10,7 @@
       "정본과 별도인 컴포넌트·패턴 구현을 만들지 않는다.",
       "정본에 등록되지 않은 컴포넌트·variant·토큰·flow는 먼저 정본에서 정리하고 river 승인 없이 신설하지 않는다.",
       "이미지로 알 수 없는 동작은 코드를 만들기 전에 질문한다.",
-      "Figma와 생성 결과의 일치는 AI 독립 검증자가 먼저 확인한다.",
+      "정본과 생성 결과의 일치는 오케스트레이터가 실제 렌더로 확인하고, 정본 충돌·복합 flow·검사 실패 같은 위험 조건에서는 별도 AI가 재검증한다.",
       "river는 독립 검증된 실제 화면에서 UI·UX와 사용 흐름을 승인한다.",
       "디자인가이드 검수 화면과 퍼블리셔·개발자가 받는 배포본은 같은 코드를 사용한다.",
       "정본 변경은 UI source·dist·설치 방식·디자인가이드·패턴 소비자에 함께 반영되는 생성 구조로 처리한다.",
@@ -19,12 +19,15 @@
   },
   "contract": {
     "path": "registry/governance/ui-library-code-contract.json",
-    "version": "0.1.1",
+    "version": "0.1.2",
     "status": "candidate"
   },
   "target": {
     "kind": "pilot",
-    "components": ["input", "button"]
+    "components": [
+      "input",
+      "button"
+    ]
   },
   "figmaSources": {
     "role": "시각 정본은 build-components.ts다. Figma V3.0은 사람이 보기 쉬운 선택적 시각 참고이며 inventory 통과 조건이 아니다.",
@@ -46,20 +49,17 @@
       }
     }
   },
-  "currentPhase": "4-verification",
-  "workflowStatus": "in-progress",
-  "uiLibraryStatus": "candidate",
-  "lastCompletedCheckpoint": 3,
-  "nextAction": "river UX 승인은 완료됐다. 독립 검증자가 PC/Mobile × Light/Dark 실제 렌더를 재실측해 PASS하면 Input·Button을 candidate에서 approved로 기술 승격한다.",
-  "ownership": {
-    "currentActor": "codex",
-    "startedAt": "2026-08-25T11:04:30+09:00"
-  },
+  "currentPhase": "complete",
+  "workflowStatus": "complete",
+  "uiLibraryStatus": "approved",
+  "lastCompletedCheckpoint": 6,
+  "nextAction": "승인된 Base Input·Button을 dependency로 사용해 다음 코어 컴포넌트를 정리하거나 패턴 코드화를 진행한다.",
+  "ownership": {},
   "canonicalInputs": [
     {
       "role": "component-visual",
       "path": "plugins/figma-vars-installer/src/build-components.ts",
-      "sha256": "cb50972e010748fd4646bdf52fbc4b9adb0f3fce3adc20301bfd254bf7667742"
+      "sha256": "28f3f60cea335910ae7191c2d235c8a3b47865f00cb55de9531b64ce28a02272"
     },
     {
       "role": "token-values",
@@ -74,7 +74,7 @@
     {
       "role": "ui-library-contract",
       "path": "registry/governance/ui-library-code-contract.json",
-      "sha256": "e2a8485c5f5c5f64596caee1112eae35e0353747286852e7ccdd139129b4055a"
+      "sha256": "63dc0f64c6ea834218119f8629379ee48cfac6c8df8b36e39d78f51405807c85"
     },
     {
       "role": "current-behavior-ledger",
@@ -114,17 +114,17 @@
     "build": "reports/ui-library/input-button-pilot/3-build.md",
     "verification": "reports/ui-library/input-button-pilot/4-verification.md",
     "humanReview": "reports/ui-library/input-button-pilot/5-human-review.md",
-    "promotion": null,
+    "promotion": "reports/ui-library/input-button-pilot/6-promotion.md",
     "sourceRoot": "ui-library/src",
     "distManifest": "ui-library/dist/manifest.json",
     "reviewPage": "pages/ui-review.html",
-    "migrationRecord": null
+    "migrationRecord": "registry/governance/ui-library-migration.json"
   },
   "decisions": [
     "코어 컴포넌트부터 정리한 뒤 패턴을 코드화한다.",
     "UI 라이브러리 원본과 디자인가이드 검수 화면을 분리 구현하지 않는다.",
     "Input·Button 파일럿으로 계약과 배포 구조를 검증한 뒤 다른 컴포넌트로 확장한다.",
-    "현재 UI library policy는 candidate이며 파일럿과 river UX 승인 전 stable로 보지 않는다.",
+    "Input·Button 컴포넌트는 approved다. UI library 전체 정책은 기존 runtime ledger 이행 등 남은 조건 때문에 candidate로 유지한다.",
     "UI 라이브러리 inventory와 제작 기준에서 레거시 Figma V2.4를 제외한다. 필요한 시각 참고는 사용자 지정 Figma V3.0 overview를 사용하되 코드 정본보다 우선하지 않는다.",
     "HD-UILIB-02: suffix action은 시각 아이콘 20/24px를 유지하고 실제 누르는 영역을 PC 28×28px, Mobile 48×48px로 적용한다. Mobile action이 여러 개면 각 hit area를 독립시킨다. (river, 2026-08-25)",
     "HD-UILIB-01: Base Input + Button을 먼저 제작하고 Password Field, Search Input 순서로 확장한다. (river, 2026-08-25)",
@@ -138,11 +138,22 @@
     "HD-UILIB-07: Input 안내 메시지는 선택형이다. 메시지 있는 유형과 없는 유형을 같은 Input의 조합으로 함께 정리하고, 메시지가 없으면 element와 aria-describedby를 함께 생략한다. (river, 2026-08-26)",
     "HD-UILIB-08: remove 아이콘은 정본의 프레임과 실제 글리프를 구분한다. 기본은 24px 프레임 안 16px 글리프, XXSM은 20px 프레임 안 약 13.33px 글리프다. (river 피드백 반영, 2026-08-26)",
     "HD-UILIB-09: 모든 웹 아이콘은 누르는 영역·SVG 틀·실제 도형을 분리 기록하고, manifest·SVG·source/dist 자동 검사와 적대 테스트를 빌드·Gate 43에서 강제한다. (river, 2026-08-26)",
-    "HD-UILIB-10: Input field 전체 Hover와 suffix action Hover를 분리한다. remove 등 각 action은 hover 가능한 PC 포인터에서 자기 hit area에 color/form-control/bg/hover 배경을 표시하고 Mobile에는 hover를 강제하지 않는다. (river, 2026-08-26)"
+    "HD-UILIB-10: Input field 전체 Hover와 suffix action Hover를 분리한다. remove 등 각 action은 hover 가능한 PC 포인터에서 자기 hit area에 color/form-control/bg/hover 배경을 표시하고 Mobile에는 hover를 강제하지 않는다. (river, 2026-08-26)",
+    "HD-UILIB-11: 정본 대조·실제 렌더·자동 검사·river UX 승인이 완료된 단순 코어 변경은 별도 AI의 중복 렌더 검증을 생략할 수 있다. 정본 충돌·복합 flow·접근성 동작·검사 실패 등 위험 조건에서는 별도 검증을 유지한다. (river, 2026-08-26)",
+    "HD-UILIB-12: Base Input과 Button을 @s1/ui 0.1.0 approved로 승격한다. Password Field·Search Input·패턴은 제외한다. (river, 2026-08-26)",
+    "정본 build-components.ts의 Bottom Sheet Option 변경을 감지해 영향 범위를 확인했다. Input·Button 구조와 무관하므로 승인 결과를 유지하고 현재 정본 지문만 갱신했다. (2026-08-26)",
+    "승인된 Input·Button 설명 화면을 pages/components.html에 게시한다. 화면과 코드 탭은 ui-library/dist를 직접 사용하고 기존 Input·Button 마크업은 제거한다. (river, 2026-08-26)",
+    {
+      "id": "D-canon-refresh-2026-08-31",
+      "topic": "정본 지문 갱신 — Input·Button 이전 검증 유지 판단",
+      "decidedBy": "orchestrator",
+      "decidedAt": "2026-08-31",
+      "decision": "build-components.ts 지문이 ab7e574bbd7f… → 28f3f60cea33… 로 바뀌었으나, 변경 범위를 전수 확인한 결과 Mobile Header(App/Web 축 신설)와 Bottom Sheet Option(Text/Disabled 추가)뿐이고 Input·Button 빌더는 무변경이라 이전 검증을 superseded 하지 않고 지문만 갱신했다.",
+      "evidence": "git diff -U0 plugins/figma-vars-installer/src/build-components.ts 의 hunk 범위 2984~3181 · 4167~4262",
+      "relatedWork": "reports/ui-library/checkbox-radio/workflow-state.json (D4)"
+    }
   ],
-  "blockers": [
-    "구현자 실제 렌더는 PASS. 독립 검증자 세션에 브라우저 제어 연결이 없어 시나리오 F와 Gate 13 갱신 보류"
-  ],
+  "blockers": [],
   "pendingDecisions": [],
   "evidence": {
     "sourceAudit": {
@@ -160,10 +171,10 @@
       "gate13": "stale — actual render verification required before record"
     },
     "independentVerification": {
-      "verdict": "BLOCKED",
+      "verdict": "WAIVED_BY_RIVER",
       "actor": "component-verifier",
       "observedAt": "2026-08-26",
-      "summary": "서버 정상화 후에도 검증자 세션의 브라우저 제어 백엔드가 연결되지 않아 시나리오 F 실제 렌더를 독립 실측하지 못했다. 정적 검사로 대체하지 않았고 Gate 13도 갱신하지 않았다.",
+      "summary": "검증자 세션의 브라우저 제어 연결 부재로 중복 실측은 실행하지 못했다. river는 이번 단순 코어 변경에서 실제 렌더 PASS·자동 검사·UX 승인을 근거로 별도 검증을 생략하고 승격하도록 결정했다.",
       "componentResults": {
         "button": {
           "verdict": "BLOCKED",
@@ -185,6 +196,26 @@
       "summary": "검수본 04에서 PC/Mobile × Light/Dark, 390×844 반응형, Input remove 크기·Hover·삭제, Button 최소 너비·라벨 중앙, 전체/개별 설치 렌더 동일성과 콘솔 오류 0건을 실제 브라우저로 재검증했다.",
       "report": "reports/ui-library/input-button-pilot/4-verification.md"
     },
+    "guidePublication": {
+      "status": "PASS",
+      "actor": "codex",
+      "observedAt": "2026-08-26",
+      "pages": [
+        "pages/components.html#input",
+        "pages/components.html#button"
+      ],
+      "summary": "승인된 dist 기반 설명·실제 동작·HTML/CSS/JavaScript 코드 탭을 게시했다. PC·Mobile 실제 렌더, 다크 토큰, Input remove, Button 크기·정렬, 390px 가로 넘침 0과 콘솔 오류 0건을 확인했다.",
+      "report": "reports/ui-library/input-button-pilot/6-promotion.md"
+    },
+    "promotionDecision": {
+      "status": "approved",
+      "approvedBy": "river",
+      "observedAt": "2026-08-26",
+      "independentVerification": "waived-by-river",
+      "reason": "정본 대조·실제 렌더·자동 검사·river UX 승인이 완료된 단순 코어 변경에서 같은 화면을 다른 AI가 다시 측정하는 절차는 중복으로 판단했다.",
+      "scope": "Base Input과 Button만 승인. Password Field·Search Input·패턴 제외.",
+      "report": "reports/ui-library/input-button-pilot/6-promotion.md"
+    },
     "riverApproval": {
       "status": "approved",
       "actor": "river",
@@ -194,8 +225,8 @@
     }
   },
   "handoff": {
-    "lastActor": "codex",
-    "updatedAt": "2026-08-26",
-    "summary": "river 승인 범위를 검수본 2026-08-26·04에서 실제 렌더 재검증해 PASS했다. PC/Mobile × Light/Dark, 390px, 동작과 전체/개별 설치 동일성을 확인했다. 별도 검증자 브라우저가 연결되지 않아 독립 판정은 BLOCKED이며 기술 배포 상태는 candidate/HOLD를 유지한다."
+    "lastActor": "orchestrator",
+    "updatedAt": "2026-08-31",
+    "summary": "Base Input·Button approved 배포본을 디자인가이드 Components 설명 화면에 게시했다. 화면과 HTML/CSS/JavaScript 탭은 ui-library/dist를 직접 사용하며 기존 중복 마크업은 제거했다. 다음 작업은 승인된 두 코어를 사용해 다음 컴포넌트 또는 패턴을 진행하는 것이다. · 2026-08-31 checkbox-radio 작업에서 정본 지문 변경 영향을 조사해 Input·Button 지문을 갱신했다(빌더 무변경 확인). 같은 날 가이드의 선택 부품 오분류가 고쳐져 Input 의 필수/선택 요소 표시도 바로잡혔다."
   }
 }

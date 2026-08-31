@@ -1,9 +1,9 @@
 {
   "name": "@s1/ui",
-  "version": "0.1.0-candidate.1",
+  "version": "0.1.0",
   "private": true,
   "type": "module",
-  "description": "S1 canonical web UI library candidate",
+  "description": "S1 canonical web UI library",
   "sideEffects": ["**/*.css"],
   "exports": {
     ".": "./dist/s1-ui.js",
@@ -17,6 +17,12 @@
     "./components/button": "./dist/components/button.js",
     "./components/button/css": "./dist/components/button.css",
     "./components/button/html": "./dist/examples/button.html",
+    "./components/checkbox": "./dist/components/checkbox.js",
+    "./components/checkbox/css": "./dist/components/checkbox.css",
+    "./components/checkbox/html": "./dist/examples/checkbox.html",
+    "./components/radio": "./dist/components/radio.js",
+    "./components/radio/css": "./dist/components/radio.css",
+    "./components/radio/html": "./dist/examples/radio.html",
     "./manifest": "./dist/manifest.json"
   },
   "scripts": {

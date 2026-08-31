@@ -10,7 +10,7 @@ const sourceRoot = path.join(libraryRoot, "src");
 const distRoot = path.join(libraryRoot, "dist");
 const verificationRoot = path.join(libraryRoot, "verification");
 const checkOnly = process.argv.includes("--check");
-const componentIds = ["input", "button"];
+const componentIds = ["input", "button", "checkbox", "radio"];
 
 const read = (file) => readFile(file, "utf8");
 const hash = (value) => createHash("sha256").update(value).digest("hex");
@@ -76,7 +76,7 @@ async function createOutputs() {
   const distManifest = {
     id: "s1-ui",
     version: packageData.version,
-    status: "candidate",
+    status: "approved",
     canonicalFingerprint: canonicalFingerprintValue,
     tokenMapFingerprint: hash(tokenMap),
     commonCssDependencies: ["assets/css/tokens.css", "assets/css/typography.css"],

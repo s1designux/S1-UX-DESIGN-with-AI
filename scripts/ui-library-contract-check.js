@@ -162,7 +162,11 @@ if (status === 'stable') {
     const rel = `ui-library/verification/${id}.json`;
     if (!fs.existsSync(path.join(ROOT, rel))) continue;
     const report = safeJson(rel);
-    if (report && (report.independentVerification !== 'PASS' || report.riverUxApproval !== 'APPROVED')) errors.push(`${id} 독립 검증·river 승인 미완료`);
+    if (report) {
+      const independentComplete = report.independentVerification === 'PASS'
+        || (report.independentVerification === 'WAIVED_BY_RIVER' && report.implementationActualRender === 'PASS');
+      if (!independentComplete || report.riverUxApproval !== 'APPROVED') errors.push(`${id} 기술 검증·river 승인 미완료`);
+    }
   }
   if (fs.existsSync(path.join(ROOT, 'ui-library/verification/bundle-parity.json'))) {
     const parity = safeJson('ui-library/verification/bundle-parity.json');

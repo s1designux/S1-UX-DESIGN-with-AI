@@ -15,4 +15,4 @@ Password Field·Search Input과 패턴 화면은 이번 승인 범위가 아니�
 
 ## 기술 승격 상태
 
-river UI·UX 승인은 완료됐다. 독립 검증자의 PC/Mobile × Light/Dark 실제 렌더 재실측이 브라우저 연결 부재로 BLOCKED이므로 배포 상태는 `candidate`와 `promotion=HOLD`를 유지한다. 이 검증을 통과하면 UI를 다시 설계하지 않고 동일 승인 범위를 `approved`로 승격한다.
+river UI·UX 승인과 실제 렌더 재검증이 완료됐다. 단순 코어 변경에 대한 중복 독립 렌더 검증은 위험도 기반으로 생략한다는 river 결정에 따라 Input·Button을 `approved`로 승격한다.

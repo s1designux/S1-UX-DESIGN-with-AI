@@ -1,0 +1,242 @@
+{
+  "schemaVersion": 1,
+  "workflow": "ui-library-code",
+  "workId": "checkbox-radio",
+  "objective": "승인된 Input·Button 파일럿 구조 위에서 Checkbox와 Radio를 정본 기반 웹 UI 라이브러리 모듈로 만들고 실제 dist 소비까지 연결한다.",
+  "intent": {
+    "approvedBy": "river",
+    "approvedAt": "2026-08-31",
+    "principles": [
+      "정본(build-components.ts)에 있는 상태만 만든다. 부분선택(indeterminate)은 정본에 없어 만들지 않는다(river 결정 2026-08-31).",
+      "Checkbox·Radio 모두 라벨 없는 형태가 기본이고, 라벨은 Input의 안내 메시지처럼 선택 부품으로 둔다(river 결정 2026-08-31).",
+      "native input[type=checkbox|radio]를 써서 역할·상태·키보드를 브라우저가 제공하게 한다. JavaScript 런타임을 만들지 않는다.",
+      "디자인가이드 검수 화면과 퍼블리셔·개발자 배포본은 같은 dist를 사용한다."
+    ]
+  },
+  "contract": {
+    "path": "registry/governance/ui-library-code-contract.json",
+    "version": "0.1.2",
+    "status": "candidate"
+  },
+  "target": {
+    "kind": "core-component",
+    "components": [
+      "checkbox",
+      "radio"
+    ]
+  },
+  "figmaSources": {
+    "role": "시각 정본은 build-components.ts(buildCheckbox·buildRadio)다. Figma V3.0은 선택적 시각 참고이며 이번 작업에서 사용하지 않았다.",
+    "requiredForInventory": false,
+    "fileKey": "cysG5U1udpQqVagYY1hWHW",
+    "fileName": "SW-UX-GUIDE V3.0 TEST",
+    "components": {
+      "checkbox": {
+        "nodeId": null,
+        "source": "not-consulted",
+        "status": "코드 정본만으로 상태·수치·토큰이 모두 확정돼 시각 참고가 필요 없었다."
+      },
+      "radio": {
+        "nodeId": null,
+        "source": "not-consulted",
+        "status": "코드 정본만으로 상태·수치·토큰이 모두 확정돼 시각 참고가 필요 없었다."
+      }
+    }
+  },
+  "currentPhase": "complete",
+  "workflowStatus": "complete",
+  "uiLibraryStatus": "approved",
+  "lastCompletedCheckpoint": 6,
+  "nextAction": "다음 코어 컴포넌트(Toggle)를 같은 방식으로 정리하거나 패턴 코드화를 진행한다.",
+  "ownership": {},
+  "canonicalInputs": [
+    {
+      "role": "component-visual",
+      "path": "plugins/figma-vars-installer/src/build-components.ts",
+      "sha256": "28f3f60cea335910ae7191c2d235c8a3b47865f00cb55de9531b64ce28a02272"
+    },
+    {
+      "role": "token-values",
+      "path": "plugins/figma-vars-installer/src/vars-data.ts",
+      "sha256": "87edd42623983fb5e02e820940dbbc3693ecb4b2c79104e781c8307501984cd9"
+    },
+    {
+      "role": "text-styles",
+      "path": "plugins/figma-vars-installer/src/textstyles-data.ts",
+      "sha256": "dc0db42d87503e80e9da8ad1246090f58e79106593a57815b0568aebcb9d51d3"
+    },
+    {
+      "role": "ui-library-contract",
+      "path": "registry/governance/ui-library-code-contract.json",
+      "sha256": "63dc0f64c6ea834218119f8629379ee48cfac6c8df8b36e39d78f51405807c85"
+    },
+    {
+      "role": "component-meaning-checkbox",
+      "path": "registry/components/checkbox.json",
+      "sha256": "147d9423f0bd21128a2850d266aeaaf7e1bad6b2f179c03dadcaa0f1ba57c006"
+    },
+    {
+      "role": "component-meaning-radio",
+      "path": "registry/components/radio.json",
+      "sha256": "90b5221c863f796ffa95e2ace92343439e19e3e38749f37a7f32c94fa4be1b1b"
+    }
+  ],
+  "artifacts": {
+    "policyContract": "registry/governance/ui-library-code-contract.json",
+    "humanGuide": "registry/governance/ui-library-authoring-guide.md",
+    "componentChecklist": "registry/governance/ui-library-component-checklist.md",
+    "repositoryInventory": "reports/component-inventory-audit.md",
+    "inventory": "reports/ui-library/checkbox-radio/1-inventory.md",
+    "canonReadiness": "reports/ui-library/checkbox-radio/2-canon-readiness.md",
+    "build": "reports/ui-library/checkbox-radio/3-build.md",
+    "verification": "reports/ui-library/checkbox-radio/4-verification.md",
+    "sourceRoot": "ui-library/src",
+    "distManifest": "ui-library/dist/manifest.json",
+    "reviewPage": "pages/ui-review.html",
+    "migrationRecord": "registry/governance/ui-library-migration.json",
+    "screens": [
+      "reports/ui-library/checkbox-radio/screens/state-matrix-light-dark.png",
+      "reports/ui-library/checkbox-radio/screens/icon-mask-check.png",
+      "reports/ui-library/checkbox-radio/screens/empty-consumer.png",
+      "reports/ui-library/checkbox-radio/screens/guide-checkbox.png",
+      "reports/ui-library/checkbox-radio/screens/guide-radio.png"
+    ],
+    "humanReview": "reports/ui-library/checkbox-radio/5-human-review.md",
+    "promotion": "reports/ui-library/checkbox-radio/6-promotion.md",
+    "guidePage": "pages/components.html"
+  },
+  "decisions": [
+    {
+      "id": "D1",
+      "topic": "체크박스 부분선택(indeterminate)",
+      "decidedBy": "river",
+      "decidedAt": "2026-08-31",
+      "decision": "만들지 않는다. registry에 남아 있던 '전체선택 헤더는 부분선택을 쓴다' 문구는 정본에 대응물이 없어 오해를 낳으므로 정리했다.",
+      "followUp": "테이블 전체선택 패턴을 만들 때 정본에 부분선택 변형을 추가할지 다시 판단한다."
+    },
+    {
+      "id": "D2",
+      "topic": "라벨 취급",
+      "decidedBy": "river",
+      "decidedAt": "2026-08-31",
+      "decision": "Checkbox·Radio 모두 라벨 없는 형태가 기본이고 라벨은 선택 부품이다. 정본 Radio의 Label=Off/On 축과 일치하며, Checkbox에도 같은 라벨 규칙(14 Medium·간격 8·비활성 색)을 적용했다."
+    },
+    {
+      "id": "D3",
+      "topic": "정본에 없는 focus 표시",
+      "decidedBy": "orchestrator",
+      "decidedAt": "2026-08-31",
+      "decision": "정본에 focus 변형이 없지만 키보드 접근성상 필수라 새 토큰을 만들지 않고 기존 color/control/border/selected 로 2px 외곽선을 표시했다. Input 파일럿의 focusVisible 선례를 따른다.",
+      "recordedIn": "ui-library/src/components/*/manifest.json 의 notInCanon"
+    },
+    {
+      "id": "D4",
+      "topic": "Input·Button 정본 지문 갱신",
+      "decidedBy": "orchestrator",
+      "decidedAt": "2026-08-31",
+      "decision": "build-components.ts 변경 범위를 전수 확인한 결과 Mobile Header(App/Web 축 신설)와 Bottom Sheet Option(Text/Disabled 추가)뿐이고 Input·Button·Checkbox·Radio 빌더는 무변경이라, 이전 검증을 superseded 하지 않고 지문만 갱신했다.",
+      "evidence": "git diff -U0 plugins/figma-vars-installer/src/build-components.ts 의 hunk 범위 2984~3181 · 4167~4262"
+    },
+    {
+      "id": "D5",
+      "topic": "가이드 화면에서 발견해 고친 결함 2건",
+      "decidedBy": "orchestrator",
+      "decidedAt": "2026-08-31",
+      "decision": "P1 PC·Mobile 에 같은 마크업을 넣어 id·radio name 이 중복돼 Radio 선택이 풀리던 것을 플랫폼별 생성으로 분리. P2 선택 부품 판별을 role 문장이 아니라 registry 규약대로 part 이름의 '(선택)' 으로 교정 — Input 의 오분류도 함께 해소.",
+      "recordedIn": "reports/ui-library/checkbox-radio/6-promotion.md"
+    },
+    {
+      "id": "D6",
+      "topic": "컴포넌트 안내 페이지 레이아웃 틀 고정",
+      "decidedBy": "river",
+      "decidedAt": "2026-08-31",
+      "decision": "승인 배포본 컴포넌트의 안내 페이지 구조(헤더 → 실제 동작[Action + 상태 매트릭스] → 개발 코드 → 문서)를 앞으로 계속 따를 고정 틀로 확정했다. 헤더 아래 구분선 없음, Action 아래 구분선 1개, 그룹 라벨 간격 12px, 개발 코드 설명문 없음·제목과 박스 16px 도 틀에 포함한다.",
+      "recordedIn": [
+        "component-page-template.md §A",
+        "registry/governance/component-presentation-policy.json _meta.uiLibraryGuideLayout",
+        ".claude/skills/ui-library-code/SKILL.md 3-build"
+      ]
+    }
+  ],
+  "blockers": [],
+  "evidence": {
+    "automatedChecks": [
+      {
+        "command": "npm run ui:contract",
+        "result": "PASS"
+      },
+      {
+        "command": "npm run ui:icons",
+        "result": "PASS"
+      },
+      {
+        "command": "npm run ui:build",
+        "result": "PASS · 29 files"
+      },
+      {
+        "command": "npm run ui:test",
+        "result": "PASS"
+      },
+      {
+        "command": "npm run gate:check",
+        "result": "PASS · 46 gates · 0 error · 15 pre-existing warning"
+      }
+    ],
+    "independentVerification": {
+      "verdict": "NOT_RUN",
+      "reason": "계약의 위험 조건(정본 충돌·복합 flow·검사 실패)에 해당하지 않는다. 정본 상태를 그대로 옮긴 단일 컨트롤이며 런타임이 없고, 새로 추가한 결정론 검사가 적대 테스트에서 실제로 실패를 잡는 것을 확인했다.",
+      "riverDecisionRequired": true
+    },
+    "riverApproval": {
+      "status": "approved",
+      "by": "river",
+      "at": "2026-08-31",
+      "target": "pages/ui-review.html 검수본 05 (실제 dist 소비)",
+      "summary": "river 확인 완료. 이어서 PC 컴포넌트 안내 페이지를 Input·Button 과 같은 Action–상태 구조로 구성하고, Action 섹션에 '여러 개를 함께 쓸 때' 예시를 얹으라는 지시를 받아 이행했다.",
+      "report": "reports/ui-library/checkbox-radio/5-human-review.md"
+    },
+    "implementationActualRender": {
+      "verdict": "PASS",
+      "actor": "orchestrator",
+      "observedAt": "2026-08-31",
+      "summary": "실제 dist CSS 를 소비하는 정적 상태 매트릭스를 headless Chrome(http) 으로 렌더해 정본 5상태 × 라벨 유무 × Light·Dark 32칸을 전수 육안 대조했다. 빈 HTML 소비자 렌더도 확인했다.",
+      "report": "reports/ui-library/checkbox-radio/4-verification.md",
+      "screens": [
+        "reports/ui-library/checkbox-radio/screens/state-matrix-light-dark.png"
+      ]
+    },
+    "toolBlindSpot": {
+      "finding": "npm run shot 의 기본 file:// 에서는 CSS mask 로 그리는 아이콘이 렌더되지 않는다. 이미 승인된 Input 의 remove 아이콘도 동일하게 안 보이는 것을 격리 실험으로 확인해 구현 오류가 아니라 도구 한계로 판정했다.",
+      "rule": "아이콘을 mask 로 그리는 컴포넌트의 실제 렌더 검증은 반드시 http 로 한다.",
+      "evidence": "reports/ui-library/checkbox-radio/screens/icon-mask-check.png"
+    },
+    "sourceAudit": {
+      "status": "complete",
+      "actor": "orchestrator",
+      "observedAt": "2026-08-31",
+      "basis": "착수 전 저장소 전수 판독 — 정본 빌더(buildCheckbox·buildRadio), color/control 토큰 13종, 허용 아이콘 키, Registry 메타, 기존 ui-library 배선",
+      "summary": "Checkbox·Radio 는 ui-library/src 에 미착수 상태였고 build·test·exports 어디에도 등록돼 있지 않았다. 정본에 상태·수치·토큰·아이콘 기하가 모두 있어 새 토큰 신설 없이 구현 가능함을 확인했다.",
+      "report": "reports/ui-library/checkbox-radio/1-inventory.md"
+    },
+    "promotionDecision": {
+      "approvedBy": "river",
+      "at": "2026-08-31",
+      "independentVerification": "waived-by-river",
+      "reason": "계약 위험 조건 미해당 · 실제 렌더 PASS · 신규 결정론 검사가 적대 테스트에서 실패를 실제로 잡음"
+    },
+    "guidePublication": {
+      "status": "PASS",
+      "observedAt": "2026-08-31",
+      "summary": "pages/components.html 의 손관리 Checkbox·Radio 마크업을 dist 소비 mount 로 교체하고 내비를 활성화했다. 실제 렌더에서 mount 4/4, Action 영역 4/4, 실제 동작이 문서보다 앞 4/4, 중복 id 0개, 로드 오류 0건을 확인했다.",
+      "screens": [
+        "reports/ui-library/checkbox-radio/screens/guide-checkbox.png",
+        "reports/ui-library/checkbox-radio/screens/guide-radio.png"
+      ]
+    }
+  },
+  "handoff": {
+    "lastActor": "orchestrator",
+    "updatedAt": "2026-08-31",
+    "summary": "river 승인 후 6-promotion 완료. Checkbox·Radio 를 approved 로 승격하고 pages/components.html 을 dist 소비 가이드로 교체했다. 실제 렌더에서 Radio 선택 풀림(id·name 중복)과 선택 부품 오분류를 발견해 고쳤고, 후자는 Input 가이드의 기존 오분류도 함께 해소했다. river 지시로 안내 페이지 레이아웃 틀을 정본(component-page-template.md §A + presentation policy)에 고정 기록해 다음 컴포넌트도 같은 틀로 진행한다."
+  }
+}

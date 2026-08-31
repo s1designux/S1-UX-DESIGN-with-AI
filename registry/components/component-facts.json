@@ -3,7 +3,7 @@
     "generated": true,
     "source": "plugins/figma-vars-installer/src/build-components.ts",
     "method": "mock-execution",
-    "sourceHash": "cb50972e0107",
+    "sourceHash": "28f3f60cea33",
     "unknownValuePolicy": [
       "unknown",
       "not-defined",
@@ -587,14 +587,32 @@
           "Standard / Title + Close",
           "Standard / No Title",
           "Standard / No Title + Close"
+        ],
+        "Platform": [
+          "App",
+          "Web"
         ]
       },
       "geometry": [
         {
-          "when": "all",
+          "when": {
+            "Platform": "App"
+          },
           "target": "root",
           "width": 360,
           "height": 99,
+          "layoutMode": "VERTICAL",
+          "primaryAxisSizingMode": "FIXED",
+          "counterAxisSizingMode": "FIXED",
+          "itemSpacing": "16"
+        },
+        {
+          "when": {
+            "Platform": "Web"
+          },
+          "target": "root",
+          "width": 360,
+          "height": 149,
           "layoutMode": "VERTICAL",
           "primaryAxisSizingMode": "FIXED",
           "counterAxisSizingMode": "FIXED",
@@ -603,11 +621,12 @@
       ],
       "anatomy": [
         "AppBar",
-        "StatusBar / Platform=App"
+        "StatusBar"
       ],
       "tokenBindings": [
         "color/bg/home",
         "color/bg/level-0",
+        "color/bg/level-2",
         "color/icon/gray-dark",
         "color/text/body/secondary",
         "color/text/body/tertiary",
@@ -3112,10 +3131,6 @@
               "Text",
               "Checkbox",
               "Radio"
-            ],
-            "State": [
-              "Default",
-              "Selected"
             ]
           },
           "target": "root",
@@ -3187,7 +3202,8 @@
         "color/surface/raised",
         "color/text/body/primary",
         "color/text/body/secondary",
-        "color/text/state/accent"
+        "color/text/state/accent",
+        "color/text/state/disabled"
       ],
       "composition": {
         "buildDependencies": [

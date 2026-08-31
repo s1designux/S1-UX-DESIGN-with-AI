@@ -2,7 +2,7 @@
   "_meta": {
     "description": "사용자가 반복 요청한 패턴 추적 파일. count >= 3 이면 자동 감사 규칙 승격 후보.",
     "promotionThreshold": 3,
-    "updatedAt": "2026-08-25",
+    "updatedAt": "2026-08-31",
     "note": "이 JSON 이 단일 정본이다. CLAUDE.md 에 있던 승격 현황 표는 2026-08-03 에 삭제했다(정본과 드리프트 중이었음)."
   },
   "patterns": [
@@ -508,6 +508,70 @@
         {
           "date": "2026-08-25",
           "summary": "river: '팝업이 있는 화면 하위 버튼 라벨이 수정이 안됐다. 가려진 부분도 맞춰줘. 앞으로 팝업에 가려진 부분이 있다면 팝업이 없는 화면에 일괄 맞춰줘야 해'"
+        }
+      ]
+    },
+    {
+      "id": "verification-tool-environment-false-result",
+      "category": "verification-blindspot",
+      "label": "검증 도구의 실행 환경 차이가 거짓 결과를 만든다",
+      "description": "npm run shot 의 기본값인 file:// 에서는 CSS mask 로 그리는 아이콘이 렌더되지 않는다. Checkbox 체크 표시가 안 보여 구현 오류로 오진할 뻔했고, 격리 실험에서 이미 승인된 Input 의 remove 아이콘도 똑같이 안 보이는 것을 확인해 도구 한계로 판정했다. http 로 다시 렌더하니 둘 다 정상. 검증 도구가 '없다'고 말할 때 그것이 구현 문제인지 도구 환경 문제인지 먼저 갈라야 한다. 같은 계열: verification-visual-gap(렌더를 안 봐서 놓침) 의 반대 — 이쪽은 렌더를 봤는데 렌더가 거짓말을 한다.",
+      "count": 1,
+      "promotionStatus": "tracking",
+      "promotedRule": "(잠정) 아이콘을 CSS mask 로 그리는 컴포넌트의 실제 렌더 검증은 file:// 이 아니라 http 로 한다",
+      "automationNote": "3회 도달 시 render-shot 에 '마스크/외부 자산을 쓰는 페이지는 http 필요' 사전 경고를 넣거나, file:// 캡처에서 mask 사용을 자동 감지해 경고하도록 승격 검토.",
+      "occurrences": [
+        {
+          "date": "2026-08-31",
+          "summary": "Checkbox 체크 표시가 file:// 캡처에서 통째로 안 보임 → 격리 실험으로 승인된 remove 아이콘도 동일함을 확인, 도구 한계로 판정하고 http 재렌더로 정상 확인."
+        }
+      ]
+    },
+    {
+      "id": "check-strengthened-without-updating-target",
+      "category": "harness-consistency",
+      "label": "검사기만 강화되고 대상 화면·코드는 안 고쳐진 채 남는다",
+      "description": "ui-library/scripts/test.mjs 에 가이드 화면 요구(실제 동작이 설명 문서보다 앞) 가 추가됐는데 assets/js/ui-library-guide.js 는 따라가지 않아, 작업 트리에 실패하는 검사가 그대로 남아 있었다. 다음 작업자가 자기 변경 때문인지 판단할 수 없고, 무관한 작업의 마지막 관문을 막는다. 여러 세션이 같은 작업 폴더를 쓰는 환경에서 특히 잘 생긴다.",
+      "count": 1,
+      "promotionStatus": "tracking",
+      "promotedRule": null,
+      "automationNote": "3회 도달 시 검사기 강화 커밋이 대상 파일 변경을 동반했는지 확인하는 pre-commit 검사로 승격 검토.",
+      "occurrences": [
+        {
+          "date": "2026-08-31",
+          "summary": "Checkbox·Radio 착수 시 npm run ui:test 가 이미 실패 상태였음 — 'actual behavior and states must appear before component documentation'. river 승인으로 함께 해소."
+        }
+      ]
+    },
+    {
+      "id": "duplicated-markup-breaks-page-unique-state",
+      "category": "verification-blindspot",
+      "label": "같은 마크업을 두 곳에 붙여 페이지 단위 고유성(id·radio name)이 깨진다",
+      "description": "가이드 화면에서 PC·Mobile 두 섹션에 동일한 마크업 문자열을 넣자 id 와 radio name 이 페이지 안에서 중복됐다. 같은 name 의 라디오는 하나만 선택될 수 있어 먼저 그려진 PC 쪽 선택이 조용히 풀렸고, 자동 검사는 전부 PASS 였다. 실제 렌더 육안 대조에서만 드러났다. 계약의 '동일 컴포넌트를 한 페이지에 여러 번 배치해도 ID 가 충돌하지 않아야 한다' 가 화면 생성 코드에서 깨진 사례다.",
+      "count": 1,
+      "promotionStatus": "tracking",
+      "promotedRule": "(잠정) 여러 곳에 같은 컴포넌트를 그릴 때는 마크업 문자열을 재사용하지 말고 자리마다 새로 생성한다",
+      "automationNote": "3회 도달 시 가이드 페이지의 중복 id·중복 radio name 을 세는 결정론 검사로 승격 검토.",
+      "occurrences": [
+        {
+          "date": "2026-08-31",
+          "summary": "Radio 가이드에서 SELECTED·DIS+SELECTED 칸과 Action 묶음이 모두 미선택으로 보임 — PC·Mobile 동일 마크업으로 인한 name 중복. 플랫폼별 생성으로 분리."
+        }
+      ]
+    },
+    {
+      "id": "convention-read-from-wrong-field",
+      "category": "derived-surface-quality",
+      "label": "규약이 담긴 자리를 잘못 읽어 화면이 조용히 틀린다",
+      "description": "registry 는 선택 부품을 part 이름의 '(선택)' 으로 표시하는데, 가이드 생성기는 role 문장에 '선택' 이 들어있는지로 판별했다. Radio 의 '원(circle) — 선택 영역' 이 선택 부품으로, Input 의 'suffix 액션 그룹(선택)' 과 'helper 텍스트(선택)' 이 필수 요소로 뒤집혀 나왔다. 승인된 Input 가이드에서도 계속 틀리게 표시되고 있었고 어떤 검사도 잡지 못했다.",
+      "count": 1,
+      "promotionStatus": "tracking",
+      "promotedRule": "(잠정) 파생 생성기는 registry 의 표시 규약이 실제로 담긴 필드를 읽는다 — 문장 안 단어 매칭으로 대체하지 않는다",
+      "automationNote": "3회 도달 시 registry 표시 규약(예: part 의 '(선택)')과 생성기의 판별식을 대조하는 검사로 승격 검토.",
+      "occurrences": [
+        {
+          "date": "2026-08-31",
+          "summary": "Radio 가이드의 원(circle) 이 '선택 가능한 요소' 로 분류됨 → part 기준으로 교정, Input 의 기존 오분류도 함께 해소."
         }
       ]
     }

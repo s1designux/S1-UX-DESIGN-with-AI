@@ -145,6 +145,10 @@ async function main() {
   let pass = 0, checks = 0;
 
   for (const [id, spec] of Object.entries(comps)) {
+    if (spec.managedBy === 'ui-library-guide') {
+      uninstr.push(`${id}: ui-library-guide 관리 — file:// 에서 ES module 미실행, HTTP 서버 렌더 검증 대상`);
+      continue;
+    }
     const slice = sections[id];
     if (!slice) { missingSection.push(id); continue; }
     const o = observe(slice);

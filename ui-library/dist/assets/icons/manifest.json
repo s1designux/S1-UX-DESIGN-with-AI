@@ -25,6 +25,31 @@
         "scaling": "proportional"
       },
       "dependencies": []
+    },
+    {
+      "id": "check",
+      "sourceKey": "5ab251e0d90adb555ee2fa316f84e86041f19916",
+      "sourceBuilderSymbol": "makeCheckIcon inline SVG",
+      "file": "check.svg",
+      "webAssetFingerprint": "98949e132de3ad7f47ca118a2496cfc1e443e6b86a643c16663251a833d3bc1b",
+      "symbolId": "s1-icon-check",
+      "individualFile": "assets/icons/check.svg",
+      "accessibleNamePolicy": "decorative inside a native checkbox",
+      "geometry": {
+        "frame": {
+          "width": 16,
+          "height": 16
+        },
+        "glyph": {
+          "x": 0,
+          "y": 0,
+          "width": 16,
+          "height": 16
+        },
+        "scaling": "proportional"
+      },
+      "geometryEvidence": "정본은 이 아이콘을 16px 로 리사이즈해 18px 상자 (1,1) 에 놓는다(build-components.ts makeCheckIcon·buildCheckbox). 내보낸 원본 assets/icons/ic_확인_line.png(48px=24 기준 2배) 의 잉크 경계는 18×12(24 기준)이고, 정본 인라인 SVG(16 기준)의 잉크 경계는 11.6×8.25 로 같은 비율이다 — 즉 glyph 가 frame 을 그대로 채운다.",
+      "dependencies": []
     }
   ]
 }

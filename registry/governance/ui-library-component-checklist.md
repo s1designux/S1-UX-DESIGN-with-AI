@@ -5,7 +5,7 @@
 규칙 정본: [`ui-library-code-contract.json`](ui-library-code-contract.json)  
 설명: [`ui-library-authoring-guide.md`](ui-library-authoring-guide.md)
 
-Contract version: `0.1.1`
+Contract version: `0.1.2`
 
 ## 기본 정보
 
@@ -16,7 +16,7 @@ Contract version: `0.1.1`
 | 정본 위치 |  |
 | Registry 위치 |  |
 | 담당 구현자 |  |
-| 독립 검증자 |  |
+| 별도 검증자 | 위험 조건일 때 기록 |
 | 상태 | draft / needs-decision / candidate / verified / approved |
 
 ## 1. 제작 전
@@ -89,9 +89,9 @@ Contract version: `0.1.1`
 - [ ] 전체 묶음과 선택 설치에서 같은 결과가 나온다.
 - [ ] React·Vue 래퍼도 같은 DOM·상태·이벤트 계약을 사용한다.
 
-## 7. 독립 검증
+## 7. 기술 검증
 
-- [ ] 구현자와 다른 검증자가 판정했다.
+- [ ] 오케스트레이터가 실제 배포본을 판정했다.
 - [ ] 정본의 variant·state·size를 전수 대조했다.
 - [ ] PC·Mobile 실제 렌더를 코드 정본 geometry·token·state와 대조했다.
 - [ ] Light·Dark 실제 렌더를 코드 정본과 대조했다.
@@ -103,6 +103,9 @@ Contract version: `0.1.1`
 - [ ] 코드탭이 source/example에서 생성되고 손사본이 아니다.
 - [ ] `npm run ui:icons`가 통과하고 PC·Mobile에서 hit area·frame·glyph를 각각 실측했다.
 - [ ] 검증하지 못한 항목을 PASS로 표시하지 않았다.
+- [ ] 정본 충돌·복합 flow·접근성 동작·검사 실패 등 위험 조건 여부를 기록했다.
+- [ ] 위험 조건이면 구현자와 다른 검증자가 판정했다.
+- [ ] 위험 조건이 없어 별도 검증을 생략했다면 river 결정·실제 렌더 PASS·사유를 기록했다.
 
 ## 8. river UX 승인
 
@@ -134,6 +137,7 @@ Contract version: `0.1.1`
 
 | 판정 | 값 |
 |---|---|
-| 독립 검증 | PASS / FAIL / BLOCKED |
+| 기술 검증 | PASS / FAIL / BLOCKED |
+| 별도 검증 | PASS / FAIL / BLOCKED / WAIVED |
 | river UX 승인 | APPROVED / CHANGES NEEDED / HOLD |
 | 배포 가능 | YES / NO |

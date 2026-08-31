@@ -161,16 +161,23 @@ if (!state.contract?.path || !fs.existsSync(contractPath)) {
   }
 }
 
-if (state.uiLibraryStatus === 'verified' && state.evidence?.independentVerification?.verdict !== 'PASS') {
-  errors.push('verified에는 independentVerification PASS가 필요합니다.');
+if (state.uiLibraryStatus === 'verified'
+  && state.evidence?.independentVerification?.verdict !== 'PASS'
+  && state.evidence?.implementationActualRender?.verdict !== 'PASS') {
+  errors.push('verified에는 독립 검증 PASS 또는 실제 배포본 렌더 PASS가 필요합니다.');
 }
 if (state.uiLibraryStatus === 'approved' && state.evidence?.riverApproval?.status !== 'approved') {
   errors.push('approved에는 riverApproval 승인 기록이 필요합니다.');
 }
+const independentWaived = state.evidence?.promotionDecision?.independentVerification === 'waived-by-river'
+  && state.evidence?.promotionDecision?.approvedBy === 'river'
+  && state.evidence?.implementationActualRender?.verdict === 'PASS';
 if (state.workflowStatus === 'complete') {
   if (state.currentPhase !== 'complete' || state.lastCompletedCheckpoint !== 6) errors.push('complete는 currentPhase=complete, checkpoint=6이어야 합니다.');
   if (state.uiLibraryStatus !== 'approved') errors.push('complete는 uiLibraryStatus=approved여야 합니다.');
-  if (state.evidence?.independentVerification?.verdict !== 'PASS') errors.push('complete에는 독립 검증 PASS가 필요합니다.');
+  if (state.evidence?.independentVerification?.verdict !== 'PASS' && !independentWaived) {
+    errors.push('complete에는 독립 검증 PASS 또는 river가 승인한 위험도 기반 생략 기록이 필요합니다.');
+  }
 }
 
 if (handoffMode) {

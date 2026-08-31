@@ -1,16 +1,16 @@
 # 4. Verification — Base Input · Button pilot
 
 > Date: 2026-08-26
-> Candidate: `@s1/ui 0.1.0-candidate.1`  
-> Formal independent verdict: **BLOCKED** — 코드·생성본은 PASS, 실제 브라우저 렌더 연결이 없어 최종 픽셀 검증 보류
+> Release: `@s1/ui 0.1.0`
+> Promotion verdict: **APPROVED** — 실제 렌더·자동 검사·river UX 승인 완료, 위험도 기반 독립 검증 생략 승인
 
 ## 현재 판정
 
 - 제작자 기술 검사: **PASS**
 - 수정 후 실제 브라우저 재검증: **PASS** — PC/Mobile × Light/Dark, 390px, 동작, 전체/개별 설치 동일성 확인
-- 독립 검증자의 수정 후 최종 판정: **BLOCKED** — 검증자 세션의 브라우저 제어 연결 부재
-- UI library status: `candidate` 유지
-- 다음 단계: 별도 검증자에게 브라우저가 연결되면 시나리오 F의 실제 렌더를 다시 실행
+- 별도 검증: **WAIVED BY RIVER** — 단순 코어 변경에 대한 중복 렌더 검증 생략
+- UI library status: `approved`
+- 다음 단계: 승인된 Input·Button을 사용해 다음 코어 또는 패턴 작업 진행
 
 ## 독립 검증 중 발견되어 수정한 항목
 
@@ -53,7 +53,7 @@
 - 전체 묶음 설치와 개별 CSS 설치는 초기 렌더·입력 후·삭제 후의 크기와 computed style이 모두 같았다.
 - 검수 화면과 두 설치 fixture의 콘솔 경고·오류는 0건이었다.
 
-이 결과는 구현자 브라우저의 실제 렌더 PASS다. 별도 `component-verifier`는 서버 정상화 후에도 자체 브라우저 제어 백엔드가 연결되지 않아 같은 화면을 독립 실측하지 못했다. 정적 검사로 대체하지 않았으며 공식 독립 판정은 **BLOCKED**를 유지한다.
+이 결과는 실제 배포본의 브라우저 렌더 PASS다. 별도 `component-verifier`는 서버 정상화 후에도 자체 브라우저 제어 백엔드가 연결되지 않아 같은 화면을 중복 실측하지 못했다. river는 정본 대조·실제 렌더·자동 검사·UX 승인이 완료된 이번 단순 코어 변경에서 별도 검증을 생략하고 승격하는 것을 승인했다.
 
 ### 2026-08-26 Input Editing remove·메시지 선택형 재검수
 
@@ -140,7 +140,6 @@ PASS:
 
 기존 프로젝트 경고(미분류 컴포넌트, 오래된 Registry 정보, 시스템 맵 등)는 이 파일럿의 PASS로 간주하지 않으며 별도 부채로 남긴다.
 
-## 아직 검증되지 않은 범위
+## 이번 승인에 포함되지 않은 범위
 
-- 수정 후 `component-verifier`의 시나리오 F 최종 독립 판정
 - Password Field와 Search Input의 suffix action 동작 — 다음 모듈 단계 범위

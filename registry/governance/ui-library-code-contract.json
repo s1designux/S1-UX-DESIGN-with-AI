@@ -2,11 +2,11 @@
   "_meta": {
     "id": "ui-library-code-contract",
     "title": "UI Library Web Code Contract",
-    "version": "0.1.1",
+    "version": "0.1.2",
     "status": "candidate",
     "updatedAt": "2026-08-26",
     "purpose": "정본 컴포넌트를 퍼블리셔와 개발자가 HTML·CSS·JavaScript 모듈로 조합해도 시각·동작·접근성이 흐트러지지 않게 하는 웹 코드 제작 계약.",
-    "approval": "2026-08-24 river 요청으로 기본 틀 신설. 2026-08-26 아이콘 크기 재발 방지 계약 추가 승인. Input·Button 파일럿과 UX 검수 후 stable 승격 예정.",
+    "approval": "2026-08-24 river 요청으로 기본 틀 신설. 2026-08-26 아이콘 크기 재발 방지 계약과 위험도 기반 독립 검증 예외를 승인. Input·Button 파일럿과 UX 검수 후 stable 승격 예정.",
     "effective": "candidate 파일럿에만 적용. 현재 metaLedgers와 기존 배포 상태를 즉시 대체하지 않는다.",
     "gateIntegration": "gate:check-partial",
     "humanGuide": "registry/governance/ui-library-authoring-guide.md",
@@ -47,15 +47,15 @@
   "boundaryConflictRule": "build-components.ts의 builder anatomy는 시각적 part와 배치를, Registry 웹 구조는 native element·ARIA·공개 API mapping을 소유한다. HTML semantics를 지키며 정본 anatomy를 재현할 수 없으면 임의 wrapper로 해결하지 않고 needs-decision 또는 정본 변경으로 되돌린다. Figma V3.0은 선택적 시각 참고이며 레거시 Figma는 기준으로 사용하지 않는다.",
   "knownBlockers": [
     "현재 registry/components/component-behavior.pc.json은 pages/components.html runtime JavaScript를 sourceOfTruth로 선언한다. stable 승격 전에 Registry 승인 계약 → JavaScript·사이트 파생 방향으로 교정해야 한다.",
-    "현재 UI library source·dist 디렉터리와 build·bundle·exports·독립 소비 테스트가 없다.",
-    "현재 웹 root class와 size modifier 어법이 혼재한다. 기존 component-geometry-map을 보존하면서 새 공개 API와 이행 방식을 파일럿에서 확정해야 한다.",
+    "Input·Button은 source·dist·bundle·exports·독립 소비 테스트를 갖췄지만 나머지 컴포넌트는 아직 이행되지 않았다.",
+    "현재 웹 root class와 size modifier 어법이 혼재한다. 신규 UI 라이브러리 공개 API는 data-s1-component·data-size 계약으로 고정하고 기존 화면은 컴포넌트별로 이행해야 한다.",
     "a11yStatus가 pending·planned·not-defined인 컴포넌트는 approved 배포할 수 없다."
   ],
   "activation": {
     "currentBehaviorLedger": "registry/components/component-behavior.pc.json은 현재 pages/components.html runtime JavaScript를 sourceOfTruth로 사용한다.",
     "targetDirection": "river가 승인한 Registry 행동 계약 → UI JavaScript → 디자인가이드 사이트·코드탭",
     "rule": "이 계약이 candidate인 동안 두 방향을 섞지 않는다. Input·Button 파일럿에서 새 Registry schema·runtime·검사기를 만든 뒤 component-behavior.pc.json과 canon-manifest metaLedgers를 함께 이행하고 stable로 승격한다.",
-    "stableRequirements": ["기존 runtime-source ledger의 대체·마이그레이션 기록", "package build·exports·독립 소비 테스트", "contract validator의 gate:check 실제 편입과 ui:build --check·ui:test --check 성공", "Input·Button 독립 검증과 river UX 승인"]
+    "stableRequirements": ["기존 runtime-source ledger의 대체·마이그레이션 기록", "package build·exports·독립 소비 테스트", "contract validator의 gate:check 실제 편입과 ui:build --check·ui:test --check 성공", "Input·Button 실제 렌더 검증과 river UX 승인"]
   },
   "entryGates": {
     "component": [
@@ -243,13 +243,18 @@
       "디자인가이드 사이트가 dist 외 컴포넌트 CSS·JS를 쓰지 않는지 검사"
     ],
     "humanReview": ["의도한 UI와 UX인가", "실제 사용 흐름이 자연스러운가", "오류에서 회복하기 쉬운가", "정보와 행동의 우선순위가 적절한가"],
-    "promotion": "기계·독립 시각 검증 후 river UX 승인을 받아야 approved 배포 대상이 된다."
+    "riskBasedIndependentVerification": {
+      "requiredWhen": ["정본과 생성 결과가 충돌한다", "새로운 복합 flow·접근성 동작·다중 컴포넌트 상태 연결이 있다", "실제 렌더 측정 또는 자동 검사가 실패·차단됐다", "river가 별도 검증을 요청했다"],
+      "optionalWhen": "정본 대조·실제 렌더 측정·자동 검사·river UX 승인이 모두 완료된 단순 코어 변경",
+      "waiverRecord": "생략할 때는 river 결정, 구현자 실제 렌더 PASS, 생략 사유를 promotion evidence에 기록한다."
+    },
+    "promotion": "정본 대조·실제 렌더 측정·자동 검사와 river UX 승인을 받아야 approved 배포 대상이 된다. 위험 조건에 해당하면 별도 독립 검증도 통과해야 한다."
   },
   "statusModel": {
     "draft": "정본 또는 flow가 미완성. 구현 금지.",
     "needs-decision": "이미지로 알 수 없는 행동·콘텐츠 결정 대기. 구현 금지.",
     "candidate": "정본 기반 후보 구현. 내부 검수만 허용.",
-    "verified": "독립 검증 통과. river UX 승인 대기.",
+    "verified": "기술 검증 통과. river UX 승인 대기.",
     "approved": "공개 가이드·패턴 dependency·배포 허용.",
     "deprecated": "신규 사용 금지. 마이그레이션 안내 필요."
   },

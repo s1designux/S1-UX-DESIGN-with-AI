@@ -20,7 +20,7 @@
 | 컴포넌트 정본 → 모델·설치기 자동 동기화 | 🧭 `component-guide-sync` — 생성=`guide-builder`, 검증=`component-verifier` (사이트는 손관리·자동 덮어쓰기 금지) |
 | Figma 원본 조회·비교 | 🤖 `figma-inspector` (읽기 절차 = `.claude/docs/figma-mcp-read.md`) |
 | **Figma 컴포넌트 → 코드** ("Figma ~ 구현/변환해줘") | 🪜 `figma-to-code` 스킬 (5단계 검문소) |
-| **웹 UI 라이브러리 제작·재개·모듈화·패턴 코드화** | 🧩 `ui-library-code` 스킬 — 상태=`reports/ui-library/{work-id}/workflow-state.json`, 구현=`ui-library-builder`, 검증=`component-verifier` 시나리오 F, 검수 화면은 실제 dist 소비 |
+| **웹 UI 라이브러리 제작·재개·모듈화·패턴 코드화** — river 진입어 **"웹 업데이트 해줘"** | 🧩 `ui-library-code` 스킬 — 상태=`reports/ui-library/{work-id}/workflow-state.json`, 구현=`ui-library-builder`, 검증=`component-verifier` 시나리오 F, 검수 화면은 실제 dist 소비, 배선표·검증함정=`references/wiring-and-traps.md`, 안내 페이지 틀=`component-page-template.md §A` |
 | **화면/패턴 제작·수정** — 레거시 재현("이 화면 그대로 만들어줘") · **기존 패턴 화면 수정·보완**("여기 ~ 추가/고쳐줘") · **레거시 없이 신규 제작** | 🪞 `screen-rebuild` 스킬 — 빌드=`screen-rebuilder`, 검증=`component-verifier`. 착수 시 **기준(baseline)을 선언**한다: `legacy`(원본 재현) · `existing-nodes`(기존 노드 수정 — 변경 전 스냅샷 필수) · `intent-spec`(레거시 없음 — **사람이 쓴 의도 선언서가 기준**). **Gate 40** 이 근거 존재를 검사(현재 경고) |
 | **Figma 라이브러리 컴포넌트/변형세트 빌드·편집** ("Figma에 ~ 만들어줘", "variant 세트로 묶어줘") | 🏗️ `figma-library-build` 스킬 — 빌드=`figma-library-builder`, 검증=`component-verifier`, ⭐는 흐름만 (**하드룰 H1**) |
 | 설치기 생성기(`build-components.ts`) 수정 | ⭐ 또는 코드 에이전트가 빌드, 검증은 🤖 `component-verifier` 분리 (**하드룰 H1②**·Gate 13) |

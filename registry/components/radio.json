@@ -3,15 +3,15 @@
     "id": "radio",
     "name": "Radio",
     "category": "Core",
-    "updatedAt": "2026-05-27",
-    "version": "0.1.0",
+    "updatedAt": "2026-08-31",
+    "version": "0.2.0",
     "tokenStatus": "stable",
     "codeStatus": "implemented",
     "darkModeStatus": "stable",
-    "a11yStatus": "pending",
+    "a11yStatus": "stable",
     "figmaStatus": "existing",
     "harnessStatus": "implemented",
-    "description": "라디오 버튼 컨트롤. default·hover·selected·disabled 상태."
+    "description": "라디오 버튼 컨트롤. 정본 상태는 default·hover·selected·disabled·disabled+selected 다섯이고, 라벨은 정본 Label 축의 선택 부품이다."
   },
   "usage": {
     "whenToUse": [
@@ -33,12 +33,12 @@
     },
     {
       "part": "라벨(선택)",
-      "role": "보기 텍스트."
+      "role": "선택 부품. 정본 Label=Off 가 기본이고 On 이면 보기 텍스트가 붙는다(본문 14 Medium, 간격 8)."
     }
   ],
   "doDont": {
     "do": [
-      "같은 그룹의 라디오는 name 으로 묶어 하나만 선택되게 한다.",
+      "같은 그룹의 라디오는 name 으로 묶어 하나만 선택되게 한다(감싸는 fieldset 에 그룹 이름을 준다).",
       "원/점 색은 control 토큰을 쓴다."
     ],
     "dont": [
@@ -47,8 +47,10 @@
     ]
   },
   "a11y": [
-    "role=radiogroup 으로 묶고 선택에 aria-checked 를 준다.",
-    "키보드 화살표로 그룹 내 이동이 가능하게 한다."
+    "native input[type=radio] 를 같은 name 으로 묶어 역할·선택 상태·화살표 이동을 브라우저가 제공하게 한다.",
+    "그룹은 fieldset·legend 로 묶어 그룹 이름을 읽히게 한다.",
+    "라벨이 없으면 aria-label 필수.",
+    "키보드 초점은 선택 테두리 토큰의 2px 외곽선으로 보이게 한다."
   ],
   "states": ["default", "hover", "selected", "disabled"],
   "tokens": [
@@ -69,7 +71,7 @@
   },
   "guide": {
     "sampleLabels": ["옵션 1", "옵션 2", "옵션 3"],
-    "webTag": "button",
+    "webTag": "input",
     "interactionPattern": "radio-group",
     "accessibility": { "role": "radiogroup", "itemRole": "radio", "keyboard": ["ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown", "Home", "End"], "attributes": ["aria-checked"] }
   },

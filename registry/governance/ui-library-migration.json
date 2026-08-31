@@ -1,7 +1,7 @@
 {
   "_meta": {
     "id": "ui-library-migration",
-    "updatedAt": "2026-08-26",
+    "updatedAt": "2026-08-31",
     "purpose": "기존 컴포넌트 상태와 신규 웹 UI 라이브러리 승인·이행 상태를 분리 기록한다."
   },
   "records": [
@@ -9,8 +9,13 @@
       "id": "input",
       "kind": "core-component",
       "legacyStatus": "implemented",
-      "uiLibraryStatus": "candidate",
-      "dependencies": ["tokens.css", "typography.css", "remove.svg", "input.js"],
+      "uiLibraryStatus": "approved",
+      "dependencies": [
+        "tokens.css",
+        "typography.css",
+        "remove.svg",
+        "input.js"
+      ],
       "lastVerified": "2026-08-26",
       "reverifyTrigger": "정본 geometry·state·token·HTML part·CSS selector·JavaScript clear 동작 변경",
       "evidence": [
@@ -18,14 +23,17 @@
         "ui-library/verification/input.json"
       ],
       "riverApproval": "approved 2026-08-26",
-      "promotionBlocker": "독립 검증자의 PC/Mobile × Light/Dark 실제 렌더 재검증"
+      "promotionDecision": "approved 2026-08-26 · 실제 렌더 PASS · 위험도 기반 독립 검증 생략을 river 승인"
     },
     {
       "id": "button",
       "kind": "core-component",
       "legacyStatus": "implemented",
-      "uiLibraryStatus": "candidate",
-      "dependencies": ["tokens.css", "typography.css"],
+      "uiLibraryStatus": "approved",
+      "dependencies": [
+        "tokens.css",
+        "typography.css"
+      ],
       "lastVerified": "2026-08-26",
       "reverifyTrigger": "정본 size·variant·state·token·HTML part·CSS selector 변경",
       "evidence": [
@@ -33,7 +41,50 @@
         "ui-library/verification/button.json"
       ],
       "riverApproval": "approved 2026-08-26",
-      "promotionBlocker": "독립 검증자의 PC/Mobile × Light/Dark 실제 렌더 재검증"
+      "promotionDecision": "approved 2026-08-26 · 실제 렌더 PASS · 위험도 기반 독립 검증 생략을 river 승인"
+    },
+    {
+      "id": "checkbox",
+      "kind": "core-component",
+      "legacyStatus": "implemented",
+      "uiLibraryStatus": "approved",
+      "dependencies": [
+        "tokens.css",
+        "typography.css",
+        "check.svg"
+      ],
+      "lastVerified": "2026-08-31",
+      "reverifyTrigger": "정본 buildCheckbox 의 크기·상태·토큰·체크 아이콘, 또는 웹 HTML part·CSS selector 변경",
+      "evidence": [
+        "reports/ui-library/checkbox-radio/4-verification.md",
+        "reports/ui-library/checkbox-radio/6-promotion.md",
+        "reports/ui-library/checkbox-radio/screens/state-matrix-light-dark.png",
+        "reports/ui-library/checkbox-radio/screens/guide-checkbox.png"
+      ],
+      "riverApproval": "approved 2026-08-31",
+      "promotionDecision": "approved 2026-08-31 · 실제 렌더 PASS · 위험도 기반 독립 검증 생략(계약 위험 조건 미해당)",
+      "notes": "부분선택(indeterminate)은 정본에 없어 만들지 않았다(river 결정 2026-08-31). 라벨은 선택 부품이다."
+    },
+    {
+      "id": "radio",
+      "kind": "core-component",
+      "legacyStatus": "implemented",
+      "uiLibraryStatus": "approved",
+      "dependencies": [
+        "tokens.css",
+        "typography.css"
+      ],
+      "lastVerified": "2026-08-31",
+      "reverifyTrigger": "정본 buildRadio 의 크기·상태·토큰·라벨 축, 또는 웹 HTML part·CSS selector 변경",
+      "evidence": [
+        "reports/ui-library/checkbox-radio/4-verification.md",
+        "reports/ui-library/checkbox-radio/6-promotion.md",
+        "reports/ui-library/checkbox-radio/screens/state-matrix-light-dark.png",
+        "reports/ui-library/checkbox-radio/screens/guide-radio.png"
+      ],
+      "riverApproval": "approved 2026-08-31",
+      "promotionDecision": "approved 2026-08-31 · 실제 렌더 PASS · 위험도 기반 독립 검증 생략(계약 위험 조건 미해당)",
+      "notes": "정본 Label=Off 가 기본이고 On(라벨 있음)은 선택 부품이다. 그룹은 fieldset + name 으로 묶는다."
     }
   ]
 }

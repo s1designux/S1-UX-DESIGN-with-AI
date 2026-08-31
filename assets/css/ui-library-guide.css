@@ -26,7 +26,6 @@
 
 .uilg-header {
   align-items: flex-start;
-  border-bottom: 1px solid var(--color-line-gray-subtle);
   display: flex;
   flex-wrap: wrap;
   gap: var(--spacing-12);
@@ -203,6 +202,36 @@
   vertical-align: middle;
 }
 
+/* ── Checkbox · Radio 가이드 배치 (배치 전용 — 코어 시각은 dist 가 소유) ── */
+
+.uilg-control-action {
+  display: grid;
+  gap: 8px;
+  justify-items: start;
+}
+
+.uilg-control-group {
+  border: 0;
+  display: grid;
+  gap: 10px;
+  justify-items: start;
+  margin: 0;
+  padding: 0;
+}
+
+/* fieldset 의 legend 는 grid 항목이 아니라 gap 이 적용되지 않는다 — 간격을 직접 준다. */
+.uilg-control-group > .matrix-row-label {
+  margin-bottom: var(--spacing-12);
+  padding: 0;
+}
+
+/* ── Checkbox · Radio forced state CSS (preview only) ── */
+
+[data-s1-component="checkbox"][data-force-state="hover"] [data-s1-part="control"],
+[data-s1-component="radio"][data-force-state="hover"] [data-s1-part="control"] {
+  background: var(--color-control-bg-hover);
+}
+
 /* ── Button forced state CSS (preview only) ── */
 
 [data-s1-component="button"][data-force-state="default"] {
@@ -246,6 +275,11 @@
 }
 
 /* ── Code viewer ── */
+
+/* 제목 바로 아래 코드 박스가 붙지 않게 한다(설명문 제거 후 간격이 사라졌다). */
+.uilg-title-group + .uilg-code {
+  margin-top: var(--spacing-16);
+}
 
 .uilg-code {
   background: var(--color-bg-level-0);

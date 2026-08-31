@@ -1,8 +1,8 @@
 {
   "id": "s1-ui",
-  "version": "0.1.0-candidate.1",
-  "status": "candidate",
-  "canonicalFingerprint": "898b90a4342abd2b39d29e924bccc1b607dfd8e2ae1363de78a5772ea7b5dfdb",
+  "version": "0.1.0",
+  "status": "approved",
+  "canonicalFingerprint": "2ef836cfffc64b5c627739edde9e4cd2e1acc7c2abc2b268918425f796b39407",
   "tokenMapFingerprint": "796fb798dd329910ba6c42a29fb4af9e0fd217446b3fa847e140bc70a0a8f4c7",
   "commonCssDependencies": [
     "assets/css/tokens.css",
@@ -43,36 +43,85 @@
         "scaling": "proportional"
       },
       "dependencies": []
+    },
+    {
+      "id": "check",
+      "sourceKey": "5ab251e0d90adb555ee2fa316f84e86041f19916",
+      "sourceBuilderSymbol": "makeCheckIcon inline SVG",
+      "file": "check.svg",
+      "webAssetFingerprint": "98949e132de3ad7f47ca118a2496cfc1e443e6b86a643c16663251a833d3bc1b",
+      "symbolId": "s1-icon-check",
+      "individualFile": "assets/icons/check.svg",
+      "accessibleNamePolicy": "decorative inside a native checkbox",
+      "geometry": {
+        "frame": {
+          "width": 16,
+          "height": 16
+        },
+        "glyph": {
+          "x": 0,
+          "y": 0,
+          "width": 16,
+          "height": 16
+        },
+        "scaling": "proportional"
+      },
+      "geometryEvidence": "정본은 이 아이콘을 16px 로 리사이즈해 18px 상자 (1,1) 에 놓는다(build-components.ts makeCheckIcon·buildCheckbox). 내보낸 원본 assets/icons/ic_확인_line.png(48px=24 기준 2배) 의 잉크 경계는 18×12(24 기준)이고, 정본 인라인 SVG(16 기준)의 잉크 경계는 11.6×8.25 로 같은 비율이다 — 즉 glyph 가 frame 을 그대로 채운다.",
+      "dependencies": []
     }
   ],
   "components": [
     {
       "id": "input",
-      "version": "0.1.0-candidate.4",
-      "status": "candidate",
+      "version": "0.1.0",
+      "status": "approved",
       "jsRequired": true,
-      "canonicalFingerprint": "f40b4067bec17a976a54de1e147ba0281a0ae2bd587d736ab12d740d07964a45",
-      "sourceFingerprint": "b26b2b7b21f87bdf20dbb63cedb24bb67610dd90b5c57b88ed8ef6bf48fdbfc4",
+      "canonicalFingerprint": "086500114c7169b751ea72ff02dd404fac425f4b4aad9da2ef4d7f081c08f1f1",
+      "sourceFingerprint": "7735aad8f44b903132b745acb7dc69a585711685d6ca552bfc93f7e6b414ab8f",
       "css": "components/input.css",
       "js": "components/input.js",
       "example": "examples/input.html"
     },
     {
       "id": "button",
-      "version": "0.1.0-candidate.2",
-      "status": "candidate",
+      "version": "0.1.0",
+      "status": "approved",
       "jsRequired": false,
-      "canonicalFingerprint": "4a57c10107debc3caa599211429ba2b2d396733f40da475493e38b37a3d39686",
-      "sourceFingerprint": "77f0626d575d867dac497e27f88c299e6fc8851d0059dfa5329cf1d01537f293",
+      "canonicalFingerprint": "658b6058ac8266431fb7ee96c0d68c9daa9a7a92593d36ce4ccce6b731cd8db4",
+      "sourceFingerprint": "fb488dd94958526768963454abca92b15a1d76f48a7e34dc6198c7e62c2790cf",
       "css": "components/button.css",
       "js": "components/button.js",
       "example": "examples/button.html"
+    },
+    {
+      "id": "checkbox",
+      "version": "0.1.0",
+      "status": "approved",
+      "jsRequired": false,
+      "canonicalFingerprint": "b182652c8dbb63dcb93efd0d055582a951c6dc4be624abf08f64a0a767ac5f45",
+      "sourceFingerprint": "ad5179783d5613a7208df1af2b848d9e46a3584d06f06eb657103f4c8b5b866a",
+      "css": "components/checkbox.css",
+      "js": "components/checkbox.js",
+      "example": "examples/checkbox.html"
+    },
+    {
+      "id": "radio",
+      "version": "0.1.0",
+      "status": "approved",
+      "jsRequired": false,
+      "canonicalFingerprint": "83363e1af3ea24498501ac79ce263e1335ad68cc7bae31f5ba01670df70640b8",
+      "sourceFingerprint": "4dd555a516c94a8e0a9ad009373ff081c4c4a1548da4bdf2970969f28a88a219",
+      "css": "components/radio.css",
+      "js": "components/radio.js",
+      "example": "examples/radio.html"
     }
   ],
   "bundleParity": {
     "cssOrder": [
       "input",
-      "button"
+      "button",
+      "checkbox",
+      "radio"
     ],
     "source": "ui-library/src/components/*",
     "rule": "Full and individual outputs are generated in this build invocation from identical source strings."

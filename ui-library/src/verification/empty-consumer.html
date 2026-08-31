@@ -19,9 +19,31 @@
       </div>
     </div>
     <button type="button" data-s1-component="button" data-variant="primary" data-size="md"><span data-s1-part="label">확인</span></button>
+    <div data-s1-component="checkbox">
+      <input type="checkbox" id="consumer-agree" data-s1-part="control">
+      <label data-s1-part="label" for="consumer-agree">선택 항목</label>
+    </div>
+    <div data-s1-component="checkbox">
+      <input type="checkbox" data-s1-part="control" aria-label="라벨 없는 선택 항목">
+    </div>
+    <fieldset>
+      <legend>보기 선택</legend>
+      <div data-s1-component="radio">
+        <input type="radio" id="consumer-option-1" name="consumer-option" data-s1-part="control">
+        <label data-s1-part="label" for="consumer-option-1">옵션 1</label>
+      </div>
+      <div data-s1-component="radio">
+        <input type="radio" id="consumer-option-2" name="consumer-option" data-s1-part="control">
+        <label data-s1-part="label" for="consumer-option-2">옵션 2</label>
+      </div>
+      <div data-s1-component="radio">
+        <input type="radio" name="consumer-option" data-s1-part="control" aria-label="라벨 없는 옵션">
+      </div>
+    </fieldset>
   </main>
   <script type="module">
-    import { input } from "../dist/s1-ui.js";
+    import { input, checkbox, radio } from "../dist/s1-ui.js";
+    if (checkbox.jsRequired || radio.jsRequired) throw new Error("checkbox·radio는 런타임 없이 동작해야 합니다.");
     document.querySelectorAll('[data-s1-component="input"]').forEach((root) => input.init(root));
   </script>
 </body>

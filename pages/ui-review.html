@@ -188,6 +188,15 @@
 
     .review-component-slot { min-width: 0; }
 
+    .review-control-group {
+      border: 0;
+      display: grid;
+      gap: var(--spacing-12);
+      justify-items: start;
+      margin: 0;
+      padding: 0;
+    }
+
     .review-separator {
       border: 0;
       border-top: var(--border-width-1) solid var(--color-line-gray-subtle);
@@ -221,14 +230,15 @@
 <body>
   <main class="review-page">
     <header class="review-header">
-      <p class="review-eyebrow">UI LIBRARY · RIVER APPROVED · TECHNICAL PROMOTION PENDING</p>
-      <h1 class="review-title">Base Input · Button 실제 배포본 검수</h1>
+      <p class="review-eyebrow">UI LIBRARY · APPROVED · @S1/UI 0.1.0</p>
+      <h1 class="review-title">Base Input · Button · Checkbox · Radio 실제 배포본 검수</h1>
       <p class="review-description">이 화면과 퍼블리셔·개발자가 받는 파일은 같은 <strong>ui-library/dist</strong>를 사용합니다. 아래 UI를 직접 누르고 입력하면서 모양과 사용성을 확인해 주세요.</p>
       <div class="review-badges" aria-label="검수 범위">
         <span class="review-badge">PC · Mobile</span>
         <span class="review-badge">Light · Dark</span>
         <span class="review-badge">Base Input · Button</span>
-        <span class="review-badge">검수본 2026-08-26 · 04</span>
+        <span class="review-badge">Checkbox · Radio (신규)</span>
+        <span class="review-badge">검수본 2026-08-31 · 05</span>
         <span class="review-badge">Password · Search는 다음 단계</span>
       </div>
     </header>
@@ -239,6 +249,7 @@
         <li><strong>Tab 키</strong>로 이동해 Button의 파란 포커스 테두리가 잘 보이는지 확인합니다.</li>
         <li>Button 위에 마우스를 올리고 눌러서 Hover·Pressed 반응을 확인합니다.</li>
         <li>Input에 직접 입력해 remove 아이콘이 나타나는지, 아이콘 위 Hover 배경과 누른 뒤 값 삭제·초점 복귀를 확인합니다.</li>
+        <li>Checkbox·Radio는 <strong>상자만 있는 기본형</strong>과 <strong>라벨이 붙은 형태</strong>를 나란히 놓았습니다. 라벨을 눌러도 선택되는지, 라디오는 화살표 키로 옮겨지는지 확인합니다.</li>
         <li>PC와 Mobile, Light와 Dark에서 같은 의미와 우선순위로 보이는지 비교합니다.</li>
       </ol>
       <div class="review-actions">
@@ -263,9 +274,25 @@
       <div class="review-matrix" id="button-review-matrix"></div>
     </section>
 
+    <section class="review-section" aria-labelledby="checkbox-review-title">
+      <div>
+        <h2 class="review-section-title" id="checkbox-review-title">3. Checkbox</h2>
+        <p class="review-note">정본 상태 5종을 그대로 옮겼습니다. 라벨은 <strong>선택 부품</strong>이라 없는 형태가 기본이고, 붙이면 라벨을 눌러도 선택됩니다. 부분선택(중간 상태)은 정본에 없어 이번 배포에 넣지 않았습니다.</p>
+      </div>
+      <div class="review-matrix" id="checkbox-review-matrix"></div>
+    </section>
+
+    <section class="review-section" aria-labelledby="radio-review-title">
+      <div>
+        <h2 class="review-section-title" id="radio-review-title">4. Radio</h2>
+        <p class="review-note">정본 상태 5종 × 라벨 유무를 그대로 옮겼습니다. 같은 그룹은 하나만 선택되고, 그룹 안에서는 화살표 키로 이동합니다.</p>
+      </div>
+      <div class="review-matrix" id="radio-review-matrix"></div>
+    </section>
+
     <footer class="review-footer">
       <span id="review-runtime-status">배포 모듈 확인 중…</span>
-      <span>후속 범위: Password Field → Search Input. 정본과 Registry가 준비된 뒤 같은 방식으로 이 화면에 추가합니다.</span>
+      <span>후속 범위: Toggle → Password Field → Search Input. 정본과 Registry가 준비된 뒤 같은 방식으로 이 화면에 추가합니다.</span>
     </footer>
   </main>
 
@@ -398,16 +425,95 @@
         </article>`;
     }
 
+    /* ── Checkbox · Radio — 크기·break 축이 정본에 없어 Light·Dark 두 벌만 비교한다 ── */
+    const controlThemes = [{ theme: "light", label: "Light" }, { theme: "dark", label: "Dark" }];
+
+    function controlMarkup(kind, { label = "", checked = false, disabled = false, name = "" }) {
+      uniqueId += 1;
+      const id = `review-${kind}-${uniqueId}`;
+      const attrs = [
+        `type="${kind}"`,
+        `id="${id}"`,
+        name ? `name="${name}"` : "",
+        'data-s1-part="control"',
+        checked ? "checked" : "",
+        disabled ? "disabled" : "",
+        label ? "" : `aria-label="${kind === "checkbox" ? "라벨 없는 선택 항목" : "라벨 없는 옵션"}"`
+      ].filter(Boolean).join(" ");
+      return `
+        <div data-s1-component="${kind}">
+          <input ${attrs}>
+          ${label ? `<label data-s1-part="label" for="${id}">${label}</label>` : ""}
+        </div>`;
+    }
+
+    function renderControlPanel(kind, combo) {
+      const onWord = kind === "checkbox" ? "Checked" : "Selected";
+      const states = [
+        { label: "Default", opts: {} },
+        { label: "Hover · 마우스를 올려 확인", opts: {} },
+        { label: onWord, opts: { checked: true } },
+        { label: "Disabled", opts: { disabled: true } },
+        { label: `Disabled + ${onWord}`, opts: { checked: true, disabled: true } }
+      ];
+      const groupName = `review-${kind}-${combo.theme}`;
+      const bare = states.map((state, index) => sample(state.label,
+        controlMarkup(kind, { ...state.opts, name: kind === "radio" ? `${groupName}-bare-${index}` : "" }))).join("");
+      const labelled = states.map((state, index) => sample(state.label,
+        controlMarkup(kind, { ...state.opts, label: kind === "checkbox" ? "선택 항목" : "옵션", name: kind === "radio" ? `${groupName}-labelled-${index}` : "" }))).join("");
+
+      const groupBlock = kind === "radio" ? `
+        <hr class="review-separator">
+        <div class="review-group">
+          <h4 class="review-group-title">실제 그룹 동작</h4>
+          <p class="review-panel-description">하나만 선택되고, 그룹 안에서는 화살표 키로 이동합니다.</p>
+          <fieldset class="review-control-group">
+            <legend class="review-state-label">알림 받기</legend>
+            ${["받음", "받지 않음", "나중에 정하기"].map((text, index) =>
+              controlMarkup("radio", { label: text, name: `${groupName}-live`, checked: index === 0 })).join("")}
+          </fieldset>
+        </div>` : `
+        <hr class="review-separator">
+        <div class="review-group">
+          <h4 class="review-group-title">여러 개를 함께 쓸 때</h4>
+          <p class="review-panel-description">서로 독립적으로 켜고 끕니다.</p>
+          <fieldset class="review-control-group">
+            <legend class="review-state-label">받을 알림</legend>
+            ${["이메일", "문자", "앱 푸시"].map((text, index) =>
+              controlMarkup("checkbox", { label: text, checked: index === 0 })).join("")}
+          </fieldset>
+        </div>`;
+
+      return `
+        <article class="review-panel" data-theme="${combo.theme}">
+          <div class="review-panel-heading"><h3 class="review-panel-title">${combo.label}</h3><p class="review-panel-description">정본 상태 5종 · 크기 축 없음(18px 고정)</p></div>
+          <div class="review-group">
+            <h4 class="review-group-title">라벨 없음 (기본형)</h4>
+            <div class="review-grid">${bare}</div>
+          </div>
+          <hr class="review-separator">
+          <div class="review-group">
+            <h4 class="review-group-title">라벨 있음 (선택 부품)</h4>
+            <div class="review-grid">${labelled}</div>
+          </div>
+          ${groupBlock}
+        </article>`;
+    }
+
     document.querySelector("#input-review-matrix").innerHTML = combinations.map(renderInputPanel).join("");
     document.querySelector("#button-review-matrix").innerHTML = combinations.map(renderButtonPanel).join("");
+    document.querySelector("#checkbox-review-matrix").innerHTML = controlThemes.map((combo) => renderControlPanel("checkbox", combo)).join("");
+    document.querySelector("#radio-review-matrix").innerHTML = controlThemes.map((combo) => renderControlPanel("radio", combo)).join("");
     document.querySelectorAll('[data-s1-component="input"]').forEach((root) => S1UI.input.init(root));
 
     const focusStatus = document.querySelector("#review-live-status");
     document.addEventListener("focusin", (event) => {
       const component = event.target.closest("[data-s1-component]");
       if (!component) return;
-      const name = component.dataset.s1Component === "input" ? "Base Input" : "Button";
-      focusStatus.textContent = `현재 초점: ${name} · ${component.dataset.size.toUpperCase()}`;
+      const names = { input: "Base Input", button: "Button", checkbox: "Checkbox", radio: "Radio" };
+      const name = names[component.dataset.s1Component] || component.dataset.s1Component;
+      const size = component.dataset.size ? ` · ${component.dataset.size.toUpperCase()}` : "";
+      focusStatus.textContent = `현재 초점: ${name}${size}`;
     });
     document.addEventListener("focusout", () => {
       requestAnimationFrame(() => {
@@ -416,7 +522,8 @@
     });
 
     document.querySelector("#review-runtime-status").textContent =
-      `실제 배포 모듈 로드 완료 · Input ${S1UI.input.componentId}(remove 동작 포함) · Button ${S1UI.button.componentId}`;
+      `실제 배포 모듈 로드 완료 · Input ${S1UI.input.componentId}(remove 동작 포함) · Button ${S1UI.button.componentId}`
+      + ` · Checkbox ${S1UI.checkbox.componentId} · Radio ${S1UI.radio.componentId} (둘 다 JavaScript 없이 동작)`;
   </script>
 </body>
 </html>

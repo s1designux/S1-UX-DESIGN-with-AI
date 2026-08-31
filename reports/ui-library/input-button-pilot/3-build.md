@@ -23,7 +23,7 @@
 - 패키지 export에 `./components/input/html`, `./components/input/css`, `./components/button/html`, `./components/button/css`를 고정했다.
 - HTML은 `dist/examples/{id}.html`, CSS는 `dist/components/{id}.css`로 같은 source에서 생성한다.
 - Input의 remove 동작은 CSS만으로 구현할 수 없으므로 `./components/input` JavaScript 모듈을 함께 제공한다.
-- river UX 승인은 완료됐으나 독립 실제 렌더 검증이 BLOCKED라 배포 상태는 candidate/HOLD다.
+- river UX 승인과 실제 렌더 검증을 완료했고, 2026-08-26 위험도 기반 독립 검증 생략 결정에 따라 배포 상태를 approved로 승격했다.
 
 ## 구현된 계약
 

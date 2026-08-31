@@ -3,12 +3,12 @@
     "id": "button",
     "name": "Button",
     "category": "Core",
-    "updatedAt": "2026-08-25",
-    "version": "0.5.0-candidate",
+    "updatedAt": "2026-08-26",
+    "version": "0.5.0",
     "tokenStatus": "stable",
     "codeStatus": "implemented",
     "darkModeStatus": "stable",
-    "a11yStatus": "candidate",
+    "a11yStatus": "stable",
     "figmaStatus": "existing",
     "harnessStatus": "implemented",
     "description": "Core interactive button component. Primary / Secondary / Blue-line variants with PC 3 sizes and Mobile 1 size.",
@@ -22,7 +22,7 @@
       "ghost variant tokens exist in tokens.css but harness uses blue-line instead.",
       "secondary hover border removed: Figma confirms hover border = same as default (no change).",
       "primary disabled-border added: Figma confirms all disabled borders = color-border-default.",
-      "2026-08-25 river 승인: focus-visible은 State 축을 늘리지 않고 모든 상태와 공존하는 BOOLEAN 접근성 표현으로 추가. 실제 화면 승인 전 candidate."
+      "2026-08-25 river 승인: focus-visible은 State 축을 늘리지 않고 모든 상태와 공존하는 BOOLEAN 접근성 표현으로 추가. 2026-08-26 실제 화면 승인 완료."
     ]
   },
   "usage": {
@@ -97,7 +97,7 @@
     "state": ["default", "hover", "pressed", "disabled"],
     "primary": {
       "tokenStatus": "stable",
-      "codeStatus": "in-progress",
+      "codeStatus": "implemented",
       "darkModeStatus": "stable",
       "tokens": [
         "--button-primary-default-bg",
@@ -112,7 +112,7 @@
     },
     "secondary": {
       "tokenStatus": "stable",
-      "codeStatus": "in-progress",
+      "codeStatus": "implemented",
       "darkModeStatus": "stable",
       "tokens": [
         "--button-secondary-default-bg",
@@ -129,7 +129,7 @@
     },
     "blue-line": {
       "tokenStatus": "stable",
-      "codeStatus": "in-progress",
+      "codeStatus": "implemented",
       "darkModeStatus": "stable",
       "tokens": [
         "--button-blue-line-default-bg",
@@ -145,7 +145,7 @@
     }
   },
   "focusVisible": {
-    "status": "candidate",
+    "status": "approved",
     "kind": "boolean-accessibility-overlay",
     "coexistsWithStates": ["default", "hover", "pressed"],
     "excludedWhen": ["disabled"],
@@ -154,7 +154,7 @@
     "colorToken": "color/button/border/focus",
     "strokeWidthToken": "border-width/2",
     "offsetToken": "spacing/2",
-    "note": "Focus Visible은 상호배타 State variant가 아니다. 실제 검수 화면 승인 전 stable로 승격하지 않는다."
+    "note": "Focus Visible은 상호배타 State variant가 아니다. 2026-08-26 실제 검수 화면에서 승인됐다."
   },
   "tokens": {
     "background": [
