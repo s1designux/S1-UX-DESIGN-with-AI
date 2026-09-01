@@ -1,0 +1,242 @@
+{
+  "schemaVersion": 1,
+  "workflow": "ui-library-code",
+  "workId": "platform-code-examples",
+  "objective": "디자인가이드 Mobile 화면의 「개발 코드」가 PC 마크업을 보여주던 문제를 고친다 — 플랫폼별 예제를 배포본에서 갈라 내고, 보고 있는 화면의 마크업만 표시한다. 아울러 Mobile 안내 화면이 PC 와 같은 레이아웃에서 시작하도록 정합을 맞춘다.",
+  "intent": {
+    "approvedBy": "river",
+    "approvedAt": "2026-09-02",
+    "principles": [
+      "보고 있는 화면의 마크업만 보여준다 — Mobile 화면에서 PC 코드를 복사하는 사고를 막는다 (river 결정 2026-09-02, HD-1 A안).",
+      "정본에 이미 있는 Mobile 조합만 예제로 옮겨 적는다. 새 컴포넌트·variant·크기·토큰을 만들지 않는다.",
+      "플랫폼 축이 없는 컴포넌트(checkbox·radio·toggle·dropdown)에는 Mobile 예제를 만들지 않는다.",
+      "dist 는 손편집하지 않는다 — 예제 파일도 build 생성 경로로만 낸다.",
+      "컴포넌트의 CSS·JavaScript·상태는 건드리지 않는다. 바뀌는 것은 '어떤 예제를 보여주는가' 뿐이다.",
+      "Mobile 화면은 PC 와 같은 구조·간격에서 시작한다 — Mobile 전용 선행 안내문과 숨은 형제 여백을 두지 않는다 (river 지적 2026-09-02).",
+      "값이 하나뿐인 축은 표의 축으로 세우지 않는다 (river 확정 2026-09-02)."
+    ]
+  },
+  "contract": {
+    "path": "registry/governance/ui-library-code-contract.json",
+    "version": "0.1.2",
+    "status": "candidate"
+  },
+  "target": {
+    "kind": "core-component",
+    "components": [
+      "input",
+      "button",
+      "chip",
+      "select",
+      "filter-chip"
+    ],
+    "scope": "이미 approved 된 코어 5종의 플랫폼별 코드 예제 배포. 컴포넌트 자체의 재구현이 아니다."
+  },
+  "figmaSources": {
+    "role": "시각 정본은 build-components.ts 이며, 이번 작업은 시각 변경이 없어 Figma 참고가 필요 없었다.",
+    "requiredForInventory": false,
+    "fileKey": "cysG5U1udpQqVagYY1hWHW",
+    "fileName": "SW-UX-GUIDE V3.0 TEST",
+    "components": {
+      "input": {
+        "source": "not-consulted",
+        "status": "시각 변경 없음 — 기존 승인 배포본의 Mobile 조합을 예제 파일로 옮겨 적었을 뿐이다."
+      },
+      "button": {
+        "source": "not-consulted",
+        "status": "시각 변경 없음 — 기존 승인 배포본의 Mobile 조합을 예제 파일로 옮겨 적었을 뿐이다."
+      },
+      "chip": {
+        "source": "not-consulted",
+        "status": "시각 변경 없음 — 기존 승인 배포본의 Mobile 조합을 예제 파일로 옮겨 적었을 뿐이다."
+      },
+      "select": {
+        "source": "not-consulted",
+        "status": "시각 변경 없음 — 기존 승인 배포본의 Mobile 조합을 예제 파일로 옮겨 적었을 뿐이다."
+      },
+      "filter-chip": {
+        "source": "not-consulted",
+        "status": "시각 변경 없음 — 기존 승인 배포본의 Mobile 조합을 예제 파일로 옮겨 적었을 뿐이다."
+      }
+    }
+  },
+  "currentPhase": "complete",
+  "workflowStatus": "complete",
+  "uiLibraryStatus": "approved",
+  "lastCompletedCheckpoint": 6,
+  "nextAction": "없음 — 완료. 이후 안내 화면·플랫폼 예제 변경은 npm run ui:guide:render (ui:test 자동 호출) 가 회귀를 막는다.",
+  "ownership": {},
+  "canonicalInputs": [
+    {
+      "role": "component-visual",
+      "path": "plugins/figma-vars-installer/src/build-components.ts",
+      "sha256": "66823ee5bbef70b312bb11d48b71a23426611edb9b0bf514dd642f1bc2dd8400"
+    },
+    {
+      "role": "tokens",
+      "path": "plugins/figma-vars-installer/src/vars-data.ts",
+      "sha256": "87edd42623983fb5e02e820940dbbc3693ecb4b2c79104e781c8307501984cd9"
+    },
+    {
+      "role": "typography",
+      "path": "plugins/figma-vars-installer/src/textstyles-data.ts",
+      "sha256": "dc0db42d87503e80e9da8ad1246090f58e79106593a57815b0568aebcb9d51d3"
+    }
+  ],
+  "artifacts": {
+    "policyContract": "registry/governance/ui-library-code-contract.json",
+    "humanGuide": "registry/governance/ui-library-authoring-guide.md",
+    "componentChecklist": "registry/governance/ui-library-component-checklist.md",
+    "repositoryInventory": "reports/component-inventory-audit.md",
+    "inventory": "reports/ui-library/platform-code-examples/1-inventory.md",
+    "canonReadiness": "reports/ui-library/platform-code-examples/2-canon-readiness.md",
+    "build": "reports/ui-library/platform-code-examples/3-build.md",
+    "verification": "reports/ui-library/platform-code-examples/4-verification.md",
+    "humanReview": "reports/ui-library/platform-code-examples/5-human-review.md",
+    "sourceRoot": "ui-library/src",
+    "distManifest": "ui-library/dist/manifest.json",
+    "reviewPage": "pages/ui-review.html",
+    "guidePage": "pages/components.html",
+    "screens": [
+      "reports/ui-library/platform-code-examples/screens/guide-mobile-chip-code.png",
+      "reports/ui-library/platform-code-examples/screens/guide-mobile-button-code.png",
+      "reports/ui-library/platform-code-examples/screens/guide-pc-chip-code.png",
+      "reports/ui-library/platform-code-examples/screens/mobile-layout-toggle.png",
+      "reports/ui-library/platform-code-examples/screens/mobile-layout-button.png"
+    ],
+    "promotion": "reports/ui-library/platform-code-examples/6-promotion.md",
+    "migrationRecord": "registry/governance/ui-library-migration.json"
+  },
+  "decisions": [
+    {
+      "id": "HD-1",
+      "date": "2026-09-02",
+      "decidedBy": "river",
+      "question": "Mobile 화면의 개발 코드를 어떻게 보여줄까 — 보고 있는 화면의 코드만(A) vs PC·Mobile 나란히(B)",
+      "decision": "A"
+    },
+    {
+      "id": "HD-3",
+      "date": "2026-09-02",
+      "decidedBy": "river",
+      "question": "Mobile 화면의 제목↔Action 간격과 '정본에 플랫폼~' 안내문",
+      "decision": "PC 레이아웃과 동일하게 맞추고 안내문 삭제. 규칙으로 저장해 재발 방지."
+    },
+    {
+      "id": "HD-2",
+      "date": "2026-09-02",
+      "decidedBy": "river",
+      "question": "이번 변경의 독립 검증을 생략할까",
+      "decision": "생략하지 않고 실행 — component-verifier 시나리오 F 실제 spawn"
+    },
+    {
+      "id": "HD-4",
+      "date": "2026-09-02",
+      "decidedBy": "river",
+      "question": "Mobile 화면 소제목에 남은 크기 문구를 뺄까",
+      "decision": "A — Mobile 화면에서는 크기 문구 제거"
+    },
+    {
+      "id": "HD-5",
+      "date": "2026-09-02",
+      "decidedBy": "river",
+      "question": "개발 코드 위의 '어느 화면의 마크업인지' 안내 문구를 둘까",
+      "decision": "두지 않는다 — 화면 이름으로 이미 알 수 있어 불필요",
+      "recordedVia": "같은 저장소의 다른 Claude 세션이 반영했고 component-page-template.md §A-6 에 기록돼 있다. 이 워크플로 기록에는 3회차 재검증 지적으로 뒤늦게 옮겨 적었다."
+    }
+  ],
+  "blockers": [],
+  "evidence": {
+    "automatedChecks": [
+      {
+        "command": "npm run ui:contract",
+        "result": "PASS · errors=0"
+      },
+      {
+        "command": "npm run ui:build",
+        "result": "PASS · 55 files"
+      },
+      {
+        "command": "npm run ui:test",
+        "result": "PASS"
+      },
+      {
+        "command": "npm run gate:check",
+        "result": "PASS · 게이트 46개 · 경고 11건(작업 전과 동일)"
+      },
+      {
+        "command": "ui:test 유효성 역검사 (chip.mobile.html 일시 제거)",
+        "result": "의도대로 FAIL 후 복구 · PASS"
+      },
+      {
+        "command": "ui:test 유효성 역검사 (platformParity 4종 위반 주입)",
+        "result": "4건 모두 의도대로 FAIL 후 복구 · PASS"
+      },
+      {
+        "command": "npm run ui:guide:render (신설 · ui:test 자동 호출)",
+        "result": "PASS · 9종 × PC·Mobile 실제 렌더 대조 · 4.2초"
+      },
+      {
+        "command": "npm run ui:guide:render (크기 문구 규칙 추가 후 역검사)",
+        "result": "위반 주입 시 발화 확인 · 복구 후 PASS"
+      }
+    ],
+    "independentVerification": {
+      "verdict": "PASS",
+      "actor": "component-verifier",
+      "observedAt": "2026-09-02",
+      "rounds": [
+        {
+          "round": 1,
+          "verdict": "FAIL",
+          "summary": "산출물 ❌0건. 재발 방지 검사기 구멍 2건(G1 chip 인라인 크기 라벨 · G2 플랫폼 분기 무력화)을 적대 테스트로 실증."
+        },
+        {
+          "round": 2,
+          "verdict": "FAIL",
+          "summary": "G2 는 닫힘(5/5 발화). G1 잔여(크기를 행 라벨로 되돌리는 현실적 회귀가 통과) · G3 신규(렌더 검사가 breaks 없는 4종에서 ③④를 건너뜀) · S1_SKIP_RENDER_CHECK 로 건너뛴 사실이 ui:test 출력에 안 보임 · 상태 파일이 검증자가 내지 않은 PASS-AFTER-REWORK 를 검증자 이름으로 기록."
+        },
+        {
+          "round": 3,
+          "verdict": "PASS",
+          "summary": "2회차 지적 4건(G1잔여·G3·건너뜀 가시화·상태 파일)이 모두 닫혔음을 적대 재현으로 실증. 산출물은 3라운드 연속 ❌0건. 차단하지 않는 후속 1건(B2b — 수치 검사 뒤 갈래에 × 누락)만 남겼다."
+        }
+      ],
+      "orchestratorRework": "2026-09-02 — 렌더 검사에서 ②만 건너뛰도록 분리(③④는 전 컴포넌트 적용) · 크기 라벨 검사를 matrix-row-label 까지 확장 · Mobile 유형 사이 가로선 금지 추가 · ui:test 가 건너뛴 사실을 출력. 역검사로 R3b(4건)·R7g(1건) 발화 확인.",
+      "report": "reports/ui-library/platform-code-examples/4-verification.md",
+      "postVerdictFix": "B2b 반영 — 뒤 갈래 정규식을 (px|×) 로 맞추고 × 표기 주입으로 발화 확인(2026-09-02).",
+      "residualRisk": "문자열 매칭의 잔여 한계 2건(가로선 클래스 순서 변경 · 소문자 크기 라벨)은 기록만 한다 — git revert·복붙 같은 '되돌리기' 경로는 전부 잡히고, 새로 다른 모양으로 다시 쓰는 경우에만 빠져나간다."
+    },
+    "implementationActualRender": {
+      "verdict": "PASS",
+      "actor": "orchestrator",
+      "observedAt": "2026-09-02",
+      "summary": "http 로 Mobile·PC 화면을 각각 렌더해 5종의 개발 코드 첫 줄을 전수 확인했다 — Mobile 은 button lg · chip sm+mobile · select/input md+mobile · filter-chip md+mobile, PC 는 종전 그대로. 플랫폼 축이 없는 toggle 은 무변경. 추가로 제목↔Action 간격을 PC·Mobile 실측 대조했다 — 9종 모두 양쪽 49px(종전 Mobile 73px).",
+      "report": "reports/ui-library/platform-code-examples/4-verification.md"
+    },
+    "riverApproval": {
+      "status": "approved",
+      "approvedAt": "2026-09-02",
+      "target": "pages/components.html PC·Mobile 안내 화면 (개발 코드 플랫폼 분기 · Mobile 레이아웃 정합 · 요약 크기 문구 제거)",
+      "note": "river 는 화면을 승인했다. 승격(6-promotion)은 독립 검증 PASS 를 받은 뒤에 닫는다.",
+      "report": "reports/ui-library/platform-code-examples/5-human-review.md"
+    },
+    "sourceAudit": {
+      "status": "complete",
+      "actor": "orchestrator",
+      "observedAt": "2026-09-02",
+      "basis": "착수 전 판독 — 코어 9종 manifest 의 breaks 선언, dist/examples 실제 파일 내용, build.mjs·test.mjs 의 예제 생성·검사 경로, assets/js/ui-library-guide.js 의 예제 fetch 경로를 직접 읽고 확인했다."
+    },
+    "promotionDecision": {
+      "approvedBy": "river",
+      "approvedAt": "2026-09-02",
+      "independentVerification": "executed-3-rounds",
+      "summary": "1·2회차 FAIL 지적을 모두 반영하고 3회차 PASS 를 받은 뒤 승격했다. 생략하지 않았다."
+    }
+  },
+  "handoff": {
+    "lastActor": "orchestrator",
+    "updatedAt": "2026-09-02",
+    "summary": "독립 검증 3라운드(FAIL→FAIL→PASS) 후 승격 완료. 규칙은 presentation policy·페이지 템플릿에, 강제는 렌더 DOM 검사기에 남겼다."
+  }
+}

@@ -102,10 +102,14 @@
       "status": "approved",
       "jsRequired": true,
       "canonicalFingerprint": "31231f86fa36bbac8d93b45958e359ed44ce3e23eb45c5664f4548f422dfa404",
-      "sourceFingerprint": "6ca40164e4a7eb0912ad3711e93eef6d7bca3d0ac17bc8750c7da55b3d1ecd28",
+      "sourceFingerprint": "2ef0faa44374e5c639e9898db4441e5967a68392c208c16b6fab2397135c8941",
       "css": "components/input.css",
       "js": "components/input.js",
-      "example": "examples/input.html"
+      "example": "examples/input.html",
+      "examples": {
+        "pc": "examples/input.html",
+        "mobile": "examples/input.mobile.html"
+      }
     },
     {
       "id": "button",
@@ -113,10 +117,14 @@
       "status": "approved",
       "jsRequired": false,
       "canonicalFingerprint": "50cad28025b133af5b3c5491594af32e35d966fa09ea9c39068ea309407f35a9",
-      "sourceFingerprint": "0077e4b560bda44d3f0afe8861b1f050790908638c543d0a410c31b8e67d8e6b",
+      "sourceFingerprint": "db9ff46810fb660ef49c43285e517a12988d04417f35a55ffeba498f7a928939",
       "css": "components/button.css",
       "js": "components/button.js",
-      "example": "examples/button.html"
+      "example": "examples/button.html",
+      "examples": {
+        "pc": "examples/button.html",
+        "mobile": "examples/button.mobile.html"
+      }
     },
     {
       "id": "checkbox",
@@ -127,7 +135,10 @@
       "sourceFingerprint": "7341417976e07c140ed467801e62ff6362a128f883191b13b86ff67610739606",
       "css": "components/checkbox.css",
       "js": "components/checkbox.js",
-      "example": "examples/checkbox.html"
+      "example": "examples/checkbox.html",
+      "examples": {
+        "pc": "examples/checkbox.html"
+      }
     },
     {
       "id": "radio",
@@ -138,7 +149,10 @@
       "sourceFingerprint": "88e29216c4f80278c11d7dd2a866846996b1300bb4fa3b33f618d5b076df9800",
       "css": "components/radio.css",
       "js": "components/radio.js",
-      "example": "examples/radio.html"
+      "example": "examples/radio.html",
+      "examples": {
+        "pc": "examples/radio.html"
+      }
     },
     {
       "id": "toggle",
@@ -149,7 +163,10 @@
       "sourceFingerprint": "ada279abb3fa847fc401eada59bb842098b8378bce773568dc09bf1c5897a34c",
       "css": "components/toggle.css",
       "js": "components/toggle.js",
-      "example": "examples/toggle.html"
+      "example": "examples/toggle.html",
+      "examples": {
+        "pc": "examples/toggle.html"
+      }
     },
     {
       "id": "chip",
@@ -157,10 +174,14 @@
       "status": "approved",
       "jsRequired": true,
       "canonicalFingerprint": "37ff7720b5f1594d669845080191a5f5a359ea8d00ea18fd4ca04548e6f8ba17",
-      "sourceFingerprint": "3bced34b7a0c67b4879441366ac73c46d94674265e419b00f3692cd6f4802cd1",
+      "sourceFingerprint": "34a8861af8224cf9c880b3ed2120c697240c2b88fe995172fc4cbe65ee86250f",
       "css": "components/chip.css",
       "js": "components/chip.js",
-      "example": "examples/chip.html"
+      "example": "examples/chip.html",
+      "examples": {
+        "pc": "examples/chip.html",
+        "mobile": "examples/chip.mobile.html"
+      }
     },
     {
       "id": "dropdown",
@@ -171,7 +192,10 @@
       "sourceFingerprint": "c20cfa69fb10967a10bfbeb496cb47c06031a465347280c55700cf955210551b",
       "css": "components/dropdown.css",
       "js": "components/dropdown.js",
-      "example": "examples/dropdown.html"
+      "example": "examples/dropdown.html",
+      "examples": {
+        "pc": "examples/dropdown.html"
+      }
     },
     {
       "id": "select",
@@ -179,10 +203,14 @@
       "status": "approved",
       "jsRequired": true,
       "canonicalFingerprint": "0aa318d70e9440723bf5c4cb630361d1c1f87685fdeca9021d3c8b0bd2f58c41",
-      "sourceFingerprint": "9ce91f110566fd15a787fd36796ecd48d5131be6cfdd32337e25e47999d2e44e",
+      "sourceFingerprint": "cca2c08b95f408d5d693f6ebbd488ec598fca3ef3f731788f4996912a7424cf7",
       "css": "components/select.css",
       "js": "components/select.js",
-      "example": "examples/select.html"
+      "example": "examples/select.html",
+      "examples": {
+        "pc": "examples/select.html",
+        "mobile": "examples/select.mobile.html"
+      }
     },
     {
       "id": "filter-chip",
@@ -190,10 +218,14 @@
       "status": "approved",
       "jsRequired": true,
       "canonicalFingerprint": "bb120cb02a40bf9ae423f52c088975d86fe146085c0616c08cd20c36d5502f4c",
-      "sourceFingerprint": "b4622a95933fd8eddff97a3f843551a552faae44d3593bac3fc76ba208be9eea",
+      "sourceFingerprint": "bf0dd2d411e5d46aba2a14cebdc47c1b74dc5f9cf4c51939a3f4883f0e2cfb17",
       "css": "components/filter-chip.css",
       "js": "components/filter-chip.js",
-      "example": "examples/filter-chip.html"
+      "example": "examples/filter-chip.html",
+      "examples": {
+        "pc": "examples/filter-chip.html",
+        "mobile": "examples/filter-chip.mobile.html"
+      }
     }
   ],
   "bundleParity": {

@@ -71,7 +71,17 @@
       "action[data-action=clear] 안 action-icon"
     ],
     "source": "components/input/input.example.html",
-    "distribution": "examples/input.html"
+    "distribution": "examples/input.html",
+    "breakExamples": {
+      "pc": {
+        "source": "components/input/input.example.html",
+        "distribution": "examples/input.html"
+      },
+      "mobile": {
+        "source": "components/input/input.mobile.example.html",
+        "distribution": "examples/input.mobile.html"
+      }
+    }
   },
   "cssContract": {
     "entry": "components/input.css",
@@ -186,5 +196,5 @@
     "controlMode": "uncontrolled",
     "behavior": "Editing에서 값이 있을 때 remove action을 보이고, 실행하면 값 삭제·input event 발생·Input focus 복귀"
   },
-  "sourceFingerprint": "6ca40164e4a7eb0912ad3711e93eef6d7bca3d0ac17bc8750c7da55b3d1ecd28"
+  "sourceFingerprint": "2ef0faa44374e5c639e9898db4441e5967a68392c208c16b6fab2397135c8941"
 }

@@ -59,14 +59,26 @@ async function createOutputs() {
     const css = await read(path.join(base, `${id}.css`));
     const js = await read(path.join(base, `${id}.js`));
     const example = await read(path.join(base, `${id}.example.html`));
+    /* 플랫폼별 예제 — Mobile 크기·break 가 PC 와 다른 컴포넌트는 mobile 예제를 따로 낸다.
+       manifest.htmlContract.breakExamples 가 선언한 것만 읽는다(선언 없으면 PC 1벌). */
+    const breakExamples = manifest.htmlContract.breakExamples ?? {};
+    const extraExamples = [];
+    for (const [breakName, spec] of Object.entries(breakExamples)) {
+      if (spec.distribution === `examples/${id}.html`) continue;
+      const expected = `components/${id}/${id}.${breakName}.example.html`;
+      if (spec.source !== expected) throw new Error(`${id} ${breakName} example source must be ${expected}`);
+      if (spec.distribution !== `examples/${id}.${breakName}.html`) throw new Error(`${id} ${breakName} example distribution must be examples/${id}.${breakName}.html`);
+      extraExamples.push([spec.distribution, await read(path.join(sourceRoot, spec.source))]);
+    }
     const componentIconAssets = iconAssets.filter(({ id: iconId }) => manifest.icons.some(({ id: usedId }) => usedId === iconId));
-    const sourceFingerprint = hash([css, js, example, stableJson(manifest), ...componentIconAssets.map(({ asset }) => asset)].join("\0"));
+    const sourceFingerprint = hash([css, js, example, ...extraExamples.map(([, text]) => text), stableJson(manifest), ...componentIconAssets.map(({ asset }) => asset)].join("\0"));
     const outputManifest = { ...manifest, sourceFingerprint };
     componentOutputs.push({ id, css, js, example, manifest: outputManifest });
     outputs.set(`components/${id}.css`, css);
     outputs.set(`components/${id}.js`, js);
     outputs.set(`components/${id}.manifest.json`, stableJson(outputManifest));
     outputs.set(`examples/${id}.html`, example);
+    for (const [distPath, text] of extraExamples) outputs.set(distPath, text);
   }
 
   const toIdentifier = (id) => id.replace(/-([a-z0-9])/g, (_, c) => c.toUpperCase());
@@ -100,7 +112,9 @@ async function createOutputs() {
       sourceFingerprint: manifest.sourceFingerprint,
       css: `components/${id}.css`,
       js: `components/${id}.js`,
-      example: `examples/${id}.html`
+      example: `examples/${id}.html`,
+      examples: Object.fromEntries(Object.entries(manifest.htmlContract.breakExamples ?? { pc: { distribution: `examples/${id}.html` } })
+        .map(([breakName, spec]) => [breakName, spec.distribution]))
     })),
     bundleParity: {
       cssOrder: componentIds,

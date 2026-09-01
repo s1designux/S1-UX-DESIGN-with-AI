@@ -109,7 +109,17 @@
     ],
     "grouping": "코어는 칩 하나와 패널 하나만 소유한다. 여러 필터 칩을 나열할 때 사이 간격은 패턴이 담당한다.",
     "source": "components/filter-chip/filter-chip.example.html",
-    "distribution": "examples/filter-chip.html"
+    "distribution": "examples/filter-chip.html",
+    "breakExamples": {
+      "pc": {
+        "source": "components/filter-chip/filter-chip.example.html",
+        "distribution": "examples/filter-chip.html"
+      },
+      "mobile": {
+        "source": "components/filter-chip/filter-chip.mobile.example.html",
+        "distribution": "examples/filter-chip.mobile.html"
+      }
+    }
   },
   "cssContract": {
     "entry": "components/filter-chip.css",

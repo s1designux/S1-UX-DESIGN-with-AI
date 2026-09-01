@@ -103,7 +103,17 @@
     ],
     "grouping": "코어는 트리거 하나와 패널 하나만 소유한다. 폼 필드 라벨·도움말은 패턴이 담당한다.",
     "source": "components/select/select.example.html",
-    "distribution": "examples/select.html"
+    "distribution": "examples/select.html",
+    "breakExamples": {
+      "pc": {
+        "source": "components/select/select.example.html",
+        "distribution": "examples/select.html"
+      },
+      "mobile": {
+        "source": "components/select/select.mobile.example.html",
+        "distribution": "examples/select.mobile.html"
+      }
+    }
   },
   "cssContract": {
     "entry": "components/select.css",

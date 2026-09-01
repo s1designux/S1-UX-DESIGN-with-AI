@@ -4,13 +4,13 @@ const componentConfig = {
   input: {
     title: "Input",
     description: "한 줄 정보를 입력받는 기본 컴포넌트입니다. 라벨과 안내 메시지는 필요에 따라 함께 사용합니다.",
-    approvedScope: "Base Input · 상태 7종 · PC 3크기 · Mobile 1크기 · remove 동작",
+    approvedScope: { pc: "Base Input · 상태 7종 · PC 3크기 · Mobile 1크기 · remove 동작", mobile: "Base Input · 상태 7종 · remove 동작" },
     runtime: S1UI.input
   },
   button: {
     title: "Button",
     description: "사용자가 저장·확인·취소처럼 명확한 행동을 실행할 때 사용하는 컴포넌트입니다.",
-    approvedScope: "Primary · Secondary · Blue Line · PC 3크기 · Mobile 1크기",
+    approvedScope: { pc: "Primary · Secondary · Blue Line · PC 3크기 · Mobile 1크기", mobile: "Primary · Secondary · Blue Line · 상태 4종" },
     runtime: S1UI.button
   },
   checkbox: {
@@ -28,13 +28,13 @@ const componentConfig = {
   chip: {
     title: "Chip",
     description: "태그나 조건을 눌러서 고르는 컴포넌트입니다. Line은 외곽선, Solid는 채운 배경 형태입니다.",
-    approvedScope: "Line · Solid × 상태 4종 · PC 2크기(SM 28 · MD 34) · Mobile 1크기(SM 30) · 라벨 전용",
+    approvedScope: { pc: "Line · Solid × 상태 4종 · PC 2크기(SM 28 · MD 34) · Mobile 1크기(SM 30) · 라벨 전용", mobile: "Line · Solid × 상태 4종 · 라벨 전용" },
     runtime: S1UI.chip
   },
   select: {
     title: "Select Box",
     description: "정해진 보기 중 하나를 고를 때 씁니다. 트리거를 누르면 목록(Dropdown)이 열리고, 고르면 닫히면서 값이 남습니다.",
-    approvedScope: "상태 5종 · PC 3크기(XXSM 28 · XSM 34 · MD 44) · Mobile 1크기(MD 48) · 목록은 Dropdown 배포본을 조립",
+    approvedScope: { pc: "상태 5종 · PC 3크기(XXSM 28 · XSM 34 · MD 44) · Mobile 1크기(MD 48) · 목록은 Dropdown 배포본을 조립", mobile: "상태 5종 · 목록은 Dropdown 배포본을 조립" },
     runtime: S1UI.select
   },
   dropdown: {
@@ -46,7 +46,7 @@ const componentConfig = {
   "filter-chip": {
     title: "Filter Chip",
     description: "목록에서 조건을 골라 거는 칩입니다. 눌러서 열고(Selected), 값을 고르면 닫히면서 칩에 값이 남습니다(Complete).",
-    approvedScope: "Line · Solid × 제목 있음/없음 × 상태 5종 · PC 2크기(SM 28 · MD 34) · Mobile 1크기(MD 30) · 목록 크기 SM·MD 모두 XSM(34px)",
+    approvedScope: { pc: "Line · Solid × 제목 있음/없음 × 상태 5종 · PC 2크기(SM 28 · MD 34) · Mobile 1크기(MD 30) · 목록 크기 SM·MD 모두 XSM(34px)", mobile: "Line · Solid × 제목 있음/없음 × 상태 5종 · 목록은 Dropdown XSM(34px)" },
     runtime: S1UI.filterChip
   },
   radio: {
@@ -65,9 +65,17 @@ const urls = (id) => ({
   manifest: new URL(`../../ui-library/dist/components/${id}.manifest.json`, import.meta.url),
   registry: new URL(`../../registry/components/${id}.json`, import.meta.url),
   html: new URL(`../../ui-library/dist/examples/${id}.html`, import.meta.url),
+  htmlMobile: new URL(`../../ui-library/dist/examples/${id}.mobile.html`, import.meta.url),
   css: new URL(`../../ui-library/dist/components/${id}.css`, import.meta.url),
   js: new URL(`../../ui-library/dist/components/${id}.js`, import.meta.url)
 });
+
+/* 지금 보고 있는 화면의 플랫폼. 메뉴가 ?platform=pc|mobile 로 페이지를 갈라 열고
+   pages/components.html 이 <html> 에 view-pc|view-mobile 을 건다(기본 pc). */
+function currentPlatform() {
+  if (document.documentElement.classList.contains("view-mobile")) return "mobile";
+  return new URLSearchParams(location.search).get("platform") === "mobile" ? "mobile" : "pc";
+}
 
 async function fetchText(url) {
   const response = await fetch(url);
@@ -162,7 +170,7 @@ function buttonStateMatrix() {
 
   function unifiedAction(sizes) {
     const header = `<div class="matrix-col-header" style="grid-column:1"></div>` +
-      sizes.map(([, sLabel, dim]) => `<div class="matrix-col-header">${sLabel}<span class="uilg-size-dim">${dim}</span></div>`).join("");
+      sizes.map(([, sLabel, dim]) => `<div class="matrix-col-header">${sLabel || ""}${dim ? `<span class="uilg-size-dim">${dim}</span>` : ""}</div>`).join("");
     const activeRows = variants.map(([variant, vLabel]) => {
       const rowLabel = `<div class="matrix-row-label">${vLabel}</div>`;
       const cells = sizes.map(([size]) =>
@@ -170,7 +178,7 @@ function buttonStateMatrix() {
       ).join("");
       return rowLabel + cells;
     }).join("");
-    const disabledRow = `<div class="matrix-row-label">Disabled<span class="uilg-size-dim">공통</span></div>` +
+    const disabledRow = `<div class="matrix-row-label">Disabled${sizes.length > 1 ? '<span class="uilg-size-dim">공통</span>' : ""}</div>` +
       sizes.map(([size]) =>
         `<div class="comp-state-cell">${buttonMarkup("primary", size, "비활성", true)}</div>`
       ).join("");
@@ -205,25 +213,22 @@ function buttonStateMatrix() {
   const pcContent = `${unifiedAction(pcSizes)}
     ${pcVariantBlocks}`;
 
-  const mobileSizes = [["lg", "LG", "80×48"]];
-  const mobileVariantBlocks = variants.map(([variant, vLabel]) => `
-    <div class="uilg-variant-block">
-      <div class="variant-label">${vLabel}</div>
-      <div class="comp-state-matrix" style="grid-template-columns: 100px minmax(80px, 1fr);">
-        <div class="matrix-col-header" style="grid-column:1"></div>
-        <div class="matrix-col-header">LG</div>
-        ${states.map((state, si) => {
-          const rowLabel = `<div class="matrix-row-label">${stateLabels[si]}</div>`;
-          const cell = state === "disabled"
-            ? `<div class="comp-state-cell">${buttonMarkup(variant, "lg", "버튼", true)}</div>`
-            : `<div class="comp-state-cell">${buttonMarkup(variant, "lg", "버튼", false, state)}</div>`;
-          return rowLabel + cell;
-        }).join("")}
-      </div>
-    </div>`).join('<hr class="uilg-separator">');
+  /* Mobile 은 크기 축이 하나뿐이라 크기 라벨(LG)을 표출하지 않는다.
+     한 표에서 유형(행) × 상태(열)를 한꺼번에 본다. */
+  const mobileSizes = [["lg", ""]];
+  const mobileStateMatrix = `<div class="comp-state-matrix" style="grid-template-columns: 100px repeat(${states.length}, minmax(80px, 1fr));">
+      ${`<div class="matrix-col-header" style="grid-column:1"></div>` +
+        stateLabels.map((label) => `<div class="matrix-col-header">${label}</div>`).join("")}
+      ${variants.map(([variant, vLabel]) =>
+        `<div class="matrix-row-label">${vLabel}</div>` +
+        states.map((state) => `<div class="comp-state-cell">${state === "disabled"
+          ? buttonMarkup(variant, "lg", "버튼", true)
+          : buttonMarkup(variant, "lg", "버튼", false, state)}</div>`).join("")
+      ).join("")}
+    </div>`;
 
   const mobileContent = `${unifiedAction(mobileSizes)}
-    ${mobileVariantBlocks}`;
+    ${mobileStateMatrix}`;
 
   return `
     <div class="platform-section platform-section-pc">
@@ -325,7 +330,6 @@ function controlStateMatrix(kind) {
     </div>
     <div class="platform-section platform-section-mobile">
       <div class="preview-area">
-        <p class="uilg-demo-note">정본에 플랫폼·크기 축이 없어 Mobile도 PC와 같습니다(18px 고정).</p>
         ${content("mobile")}
       </div>
     </div>`;
@@ -401,7 +405,6 @@ function toggleStateMatrix() {
     </div>
     <div class="platform-section platform-section-mobile">
       <div class="preview-area">
-        <p class="uilg-demo-note">정본에 플랫폼·크기 축이 없어 Mobile도 PC와 같습니다(40×20 고정).</p>
         ${content()}
       </div>
     </div>`;
@@ -427,9 +430,10 @@ function chipStateMatrix() {
   /* Action — 실제로 눌러서 고르는 자리. 버튼 Action 과 같은 틀: 열=크기, 행=variant.
      크기는 여기에만 표출한다(별도 SIZES 블록 금지). */
   function actionSection(breakName) {
-    const sizes = breakName === "mobile" ? [["sm", "SM", "30px"]] : [["sm", "SM", "28px"], ["md", "MD", "34px"]];
+    /* Mobile 은 크기 축이 하나뿐이라 크기 라벨(SM)을 표출하지 않는다. */
+    const sizes = breakName === "mobile" ? [["sm", ""]] : [["sm", "SM", "28px"], ["md", "MD", "34px"]];
     const header = `<div class="matrix-col-header" style="grid-column:1"></div>` +
-      sizes.map(([, sLabel, dim]) => `<div class="matrix-col-header">${sLabel}<span class="uilg-size-dim">${dim}</span></div>`).join("");
+      sizes.map(([, sLabel, dim]) => `<div class="matrix-col-header">${sLabel || ""}${dim ? `<span class="uilg-size-dim">${dim}</span>` : ""}</div>`).join("");
     const activeRows = variants.map(([variant, vLabel]) => {
       const rowLabel = `<div class="matrix-row-label">${vLabel}</div>`;
       const cells = sizes.map(([size]) =>
@@ -437,7 +441,7 @@ function chipStateMatrix() {
       ).join("");
       return rowLabel + cells;
     }).join("");
-    const disabledRow = `<div class="matrix-row-label">Disabled<span class="uilg-size-dim">공통</span></div>` +
+    const disabledRow = `<div class="matrix-row-label">Disabled${sizes.length > 1 ? '<span class="uilg-size-dim">공통</span>' : ""}</div>` +
       sizes.map(([size]) =>
         `<div class="comp-state-cell">${chipMarkup({ variant: "line", size, breakName, label: "라벨", disabled: true })}</div>`
       ).join("");
@@ -458,12 +462,28 @@ function chipStateMatrix() {
     return `<div class="comp-state-matrix" style="grid-template-columns: 110px repeat(${states.length}, minmax(96px, 1fr));">${header}${row}</div>`;
   }
 
+  /* Mobile — 크기 축이 하나뿐이라 왼쪽 라벨은 크기(SM) 대신 유형(Line·Solid)을 쓰고,
+     Line·Solid 를 한 표에서 함께 본다(사이 가로선 없음). */
+  function mobileGrid() {
+    const header = `<div class="matrix-col-header" style="grid-column:1"></div>` +
+      states.map((state) => `<div class="matrix-col-header">${state.label}</div>`).join("");
+    const rows = variants.map(([variant, vLabel]) =>
+      `<div class="matrix-row-label">${vLabel}</div>` +
+      states.map((state) => `<div class="comp-state-cell">${chipMarkup({
+        variant, size: "sm", breakName: "mobile", isPreview: true, ...state.opts
+      })}</div>`).join("")).join("");
+    return `<div class="comp-state-matrix" style="grid-template-columns: 110px repeat(${states.length}, minmax(96px, 1fr));">${header}${rows}</div>`;
+  }
+
   function content(breakName) {
-    const size = breakName === "mobile" ? "sm" : "md";
+    if (breakName === "mobile") {
+      return `${actionSection(breakName)}
+      ${mobileGrid()}`;
+    }
     const blocks = variants.map(([variant, label]) => `
       <div class="uilg-variant-block">
         <div class="variant-label">${label}</div>
-        ${variantGrid(variant, breakName, size)}
+        ${variantGrid(variant, breakName, "md")}
       </div>`).join('<hr class="uilg-separator">');
     return `${actionSection(breakName)}
       ${blocks}`;
@@ -475,7 +495,6 @@ function chipStateMatrix() {
     </div>
     <div class="platform-section platform-section-mobile">
       <div class="preview-area">
-        <p class="uilg-demo-note">정본 Mobile은 SM 한 가지(30px)이며 글자 크기 14px, 좌우 여백 12px입니다.</p>
         ${content("mobile")}
       </div>
     </div>`;
@@ -509,6 +528,7 @@ function inputStateMatrix() {
           <span class="uilg-option-chip-text">Message: <strong>off</strong></span>
         </label>
       </div>
+      ${breakName === "mobile" ? `<p class="uilg-demo-note">필드 높이와 remove 누르는 영역은 48px을 유지합니다.</p>` : ""}
     </div>`;
   }
 
@@ -571,7 +591,6 @@ function inputStateMatrix() {
     </div>
     <div class="platform-section platform-section-mobile">
       <div class="preview-area">
-        <p class="uilg-demo-note">필드 높이와 remove 누르는 영역은 48px을 유지합니다.</p>
         ${mobileContent}
       </div>
     </div>`;
@@ -654,6 +673,9 @@ function filterChipMarkup({ variant = "line", size = "md", breakName = "pc", tit
 
 /* 공통 — 열=크기 · 행=상태 그리드 (Button·Chip 과 같은 틀) */
 function sizeStateGrid(sizes, states, cell, { tall = false } = {}) {
+  /* 열이 하나뿐이면(크기 축이 하나인 Mobile) 1fr 로 늘리지 않는다 — 칸 가운데 정렬 탓에
+     실물이 표 오른쪽으로 밀려 Action 영역과 어긋난다. */
+  const colWidth = sizes.length === 1 ? "220px" : "minmax(140px, 1fr)";
   const header = `<div class="matrix-col-header" style="grid-column:1"></div>` +
     sizes.map(([, sLabel, dim]) => `<div class="matrix-col-header">${sLabel}${dim ? `<span class="uilg-size-dim">${dim}</span>` : ""}</div>`).join("");
   const rows = states.map(([stateLabel, state, note]) => {
@@ -661,12 +683,13 @@ function sizeStateGrid(sizes, states, cell, { tall = false } = {}) {
     return rowLabel + sizes.map(([size]) =>
       `<div class="comp-state-cell${tall && state === states[states.length - 1][1] ? " uilg-open-cell" : ""}">${cell(size, state)}</div>`).join("");
   }).join("");
-  return `<div class="comp-state-matrix" style="grid-template-columns: 120px repeat(${sizes.length}, minmax(140px, 1fr));">${header}${rows}</div>`;
+  return `<div class="comp-state-matrix" style="grid-template-columns: 120px repeat(${sizes.length}, ${colWidth});">${header}${rows}</div>`;
 }
 
 function selectStateMatrix() {
   const pcSizes = [["xxsm", "XXSM", "28px"], ["xsm", "XSM", "34px"], ["md", "MD", "44px"]];
-  const mobileSizes = [["md", "MD", "48px"]];
+  /* Mobile 은 크기 축이 하나뿐이라 크기 라벨(MD)을 표출하지 않는다. */
+  const mobileSizes = [["md", ""]];
   /* 열 = 정본 상태 전수(5종). Open 은 목록을 편 채로 보인다(표출 정책 keepInState). */
   const states = [
     ["Default", "default"],
@@ -678,10 +701,10 @@ function selectStateMatrix() {
 
   function actionSection(breakName, sizes) {
     const header = `<div class="matrix-col-header" style="grid-column:1"></div>` +
-      sizes.map(([, sLabel, dim]) => `<div class="matrix-col-header">${sLabel}<span class="uilg-size-dim">${dim}</span></div>`).join("");
+      sizes.map(([, sLabel, dim]) => `<div class="matrix-col-header">${sLabel || ""}${dim ? `<span class="uilg-size-dim">${dim}</span>` : ""}</div>`).join("");
     const liveRow = `<div class="matrix-row-label">Select</div>` +
       sizes.map(([size]) => `<div class="comp-state-cell">${selectMarkup({ size, breakName })}</div>`).join("");
-    const disabledRow = `<div class="matrix-row-label">Disabled<span class="uilg-size-dim">공통</span></div>` +
+    const disabledRow = `<div class="matrix-row-label">Disabled${sizes.length > 1 ? '<span class="uilg-size-dim">공통</span>' : ""}</div>` +
       sizes.map(([size]) => `<div class="comp-state-cell">${selectMarkup({ size, breakName, state: "disabled", isPreview: true })}</div>`).join("");
     return `<div class="comp-action-top">
       <div class="matrix-col-header-action">Action</div>
@@ -699,7 +722,6 @@ function selectStateMatrix() {
     </div>
     <div class="platform-section platform-section-mobile">
       <div class="preview-area">
-        <p class="uilg-demo-note">정본 Mobile은 MD 한 가지(48px)입니다.</p>
         ${content("mobile", mobileSizes)}
       </div>
     </div>`;
@@ -721,7 +743,7 @@ function dropdownStateMatrix() {
 
   function actionSection() {
     const header = `<div class="matrix-col-header" style="grid-column:1"></div>` +
-      sizes.map(([, sLabel, dim]) => `<div class="matrix-col-header">${sLabel}<span class="uilg-size-dim">${dim}</span></div>`).join("");
+      sizes.map(([, sLabel, dim]) => `<div class="matrix-col-header">${sLabel || ""}${dim ? `<span class="uilg-size-dim">${dim}</span>` : ""}</div>`).join("");
     const rows = types.map(([, typeLabel, opts]) => `<div class="matrix-row-label">${typeLabel}</div>` +
       sizes.map(([size]) => `<div class="comp-state-cell">${dropdownMarkup({ ...opts, size, ariaLabel: typeLabel })}</div>`).join("")).join("");
     return `<div class="comp-action-top">
@@ -751,7 +773,6 @@ function dropdownStateMatrix() {
     </div>
     <div class="platform-section platform-section-mobile">
       <div class="preview-area">
-        <p class="uilg-demo-note">정본에 플랫폼 축이 없어 Mobile도 PC와 같습니다.</p>
         ${content()}
       </div>
     </div>`;
@@ -759,7 +780,7 @@ function dropdownStateMatrix() {
 
 function filterChipStateMatrix() {
   const pcSizes = [["sm", "SM", "28px"], ["md", "MD", "34px"]];
-  const mobileSizes = [["md", "MD", "30px"]];
+  const mobileSizes = [["md", ""]];
   const variants = [["line", "Line"], ["solid", "Solid"]];
   const titles = [["on", "제목 있음"], ["off", "제목 없음"]];
   const states = [
@@ -775,7 +796,7 @@ function filterChipStateMatrix() {
      크기는 여기에만 표출한다(별도 SIZES 블록 금지). 모든 칸이 실제로 눌리는 실물이다. */
   function actionSection(breakName, sizes) {
     const header = `<div class="matrix-col-header" style="grid-column:1"></div>` +
-      sizes.map(([, sLabel, dim]) => `<div class="matrix-col-header">${sLabel}<span class="uilg-size-dim">${dim}</span></div>`).join("");
+      sizes.map(([, sLabel, dim]) => `<div class="matrix-col-header">${sLabel || ""}${dim ? `<span class="uilg-size-dim">${dim}</span>` : ""}</div>`).join("");
     const activeRows = variants.map(([variant, vLabel]) =>
       titles.map(([title, titleLabel]) =>
         /* 유형 라벨은 한 줄 글자로 둔다 — .comp-state-matrix .matrix-row-label span 은
@@ -783,7 +804,7 @@ function filterChipStateMatrix() {
         `<div class="matrix-row-label">${vLabel} · ${titleLabel}</div>` +
         sizes.map(([size]) => `<div class="comp-state-cell">${filterChipMarkup({ variant, size, breakName, title })}</div>`).join("")
       ).join("")).join("");
-    const disabledRow = `<div class="matrix-row-label">Disabled<span class="uilg-size-dim">공통</span></div>` +
+    const disabledRow = `<div class="matrix-row-label">Disabled${sizes.length > 1 ? '<span class="uilg-size-dim">공통</span>' : ""}</div>` +
       sizes.map(([size]) => `<div class="comp-state-cell">${filterChipMarkup({ variant: "line", size, breakName, state: "disabled", isPreview: true })}</div>`).join("");
     return `<div class="comp-action-top">
       <div class="matrix-col-header-action">Action</div>
@@ -792,7 +813,27 @@ function filterChipStateMatrix() {
     </div>`;
   }
 
+  /* Mobile — 크기 축이 하나뿐이라 왼쪽 라벨은 크기(MD) 대신 유형(Line·Solid × 제목 유무)을 쓰고,
+     네 조합을 한 표에서 함께 본다(사이 가로선 없음). */
+  function mobileGrid() {
+    /* 열 = 유형 4조합 · 행 = 상태. 열림(Selected) 행만 목록을 펴므로 세로가 짧다. */
+    const columns = variants.flatMap(([variant, vLabel]) =>
+      titles.map(([title, titleLabel]) => [variant, title, `${vLabel} · ${titleLabel}`]));
+    const header = `<div class="matrix-col-header" style="grid-column:1"></div>` +
+      columns.map(([, , colLabel]) => `<div class="matrix-col-header">${colLabel}</div>`).join("");
+    const rows = states.map(([stateLabel, state, note], index) =>
+      `<div class="matrix-row-label">${stateLabel}${note ? `<span>${note}</span>` : ""}</div>` +
+      columns.map(([variant, title]) => `<div class="comp-state-cell${index === states.length - 1 ? " uilg-open-cell" : ""}">${filterChipMarkup({
+        variant, size: "md", breakName: "mobile", title, state, isPreview: true
+      })}</div>`).join("")).join("");
+    return `<div class="comp-state-matrix" style="grid-template-columns: 120px repeat(${columns.length}, minmax(140px, 1fr));">${header}${rows}</div>`;
+  }
+
   function content(breakName, sizes) {
+    if (breakName === "mobile") {
+      return `${actionSection(breakName, sizes)}
+      ${mobileGrid()}`;
+    }
     const blocks = variants.map(([variant, vLabel]) => {
       const grids = titles.map(([title, titleLabel]) => `
         <div class="uilg-demo-group">
@@ -814,7 +855,6 @@ function filterChipStateMatrix() {
     </div>
     <div class="platform-section platform-section-mobile">
       <div class="preview-area">
-        <p class="uilg-demo-note">정본 Mobile은 MD 한 가지(30px)입니다.</p>
         ${content("mobile", mobileSizes)}
       </div>
     </div>`;
@@ -910,6 +950,8 @@ function usageGuide(id, registry) {
 /* ── Code viewer ── */
 
 function codeViewer(id) {
+  /* 보고 있는 화면의 마크업만 보여준다 — Mobile 화면에서 PC 코드를 복사하는 사고를 막는다
+     (river 결정 2026-09-01). 코드 위 안내 문구는 두지 않는다(river 결정 2026-09-02). */
   const tabs = [
     ["html", "HTML"],
     ["css", "CSS"],
@@ -970,7 +1012,7 @@ async function mountGuide(id) {
   const sourceUrls = urls(id);
 
   try {
-    const [manifest, registry, html, css, js] = await Promise.all([
+    const [manifest, registry, htmlPc, css, js] = await Promise.all([
       fetchJson(sourceUrls.manifest),
       fetchJson(sourceUrls.registry),
       fetchText(sourceUrls.html),
@@ -979,6 +1021,19 @@ async function mountGuide(id) {
     ]);
 
     if (manifest.status !== "approved") throw new Error(`${id} 배포 상태가 approved가 아닙니다.`);
+
+    /* 요약 한 줄도 보고 있는 화면 기준이다 — 크기가 한 가지인 화면에서는 크기를 말하지 않는다
+       (river 확정 2026-09-01). 갈래 선언이 없는 컴포넌트는 한 문장을 그대로 쓴다. */
+    const scopeText = typeof config.approvedScope === "string"
+      ? config.approvedScope
+      : config.approvedScope[currentPlatform()] ?? config.approvedScope.pc;
+
+    /* 배포본이 선언한 플랫폼별 예제만 쓴다. 선언이 없으면 PC 1벌(플랫폼 축 없는 컴포넌트). */
+    const platform = currentPlatform();
+    const hasMobileExample = Boolean(manifest.htmlContract?.breakExamples?.mobile);
+    const html = hasMobileExample && platform === "mobile"
+      ? await fetchText(sourceUrls.htmlMobile)
+      : htmlPc;
 
     // 실제 동작·상태를 먼저 보이고, 설명 문서는 그 뒤에 둔다.
     const overview = (data) => componentOverview(id, data);
@@ -1000,7 +1055,7 @@ async function mountGuide(id) {
       </header>
       <section class="uilg-demo preview-area" aria-labelledby="${id}-demo-title">
         <div class="uilg-demo-head">
-          <div><h2 class="uilg-section-title" id="${id}-demo-title">실제 동작과 상태</h2><p class="uilg-demo-note">${config.approvedScope}</p></div>
+          <div><h2 class="uilg-section-title" id="${id}-demo-title">실제 동작과 상태</h2><p class="uilg-demo-note">${scopeText}</p></div>
           <p class="uilg-status-text">이 설명 화면과 배포 파일은 같은 <strong>ui-library/dist</strong>를 사용합니다.</p>
         </div>
         ${stateMatrix(id)}

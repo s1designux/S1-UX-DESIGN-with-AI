@@ -96,7 +96,17 @@
     ],
     "grouping": "여러 개를 묶을 때는 그룹 이름을 가진 컨테이너로 감싼다. 코어는 개별 칩만 소유한다.",
     "source": "components/chip/chip.example.html",
-    "distribution": "examples/chip.html"
+    "distribution": "examples/chip.html",
+    "breakExamples": {
+      "pc": {
+        "source": "components/chip/chip.example.html",
+        "distribution": "examples/chip.html"
+      },
+      "mobile": {
+        "source": "components/chip/chip.mobile.example.html",
+        "distribution": "examples/chip.mobile.html"
+      }
+    }
   },
   "cssContract": {
     "entry": "components/chip.css",

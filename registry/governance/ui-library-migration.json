@@ -16,14 +16,22 @@
         "remove.svg",
         "input.js"
       ],
-      "lastVerified": "2026-08-26",
-      "reverifyTrigger": "정본 geometry·state·token·HTML part·CSS selector·JavaScript clear 동작 변경",
+      "lastVerified": "2026-09-01",
+      "reverifyTrigger": "정본 geometry·state·token·HTML part·CSS selector·JavaScript clear 동작 변경 · 플랫폼별 예제(breakExamples) 변경",
       "evidence": [
         "reports/ui-library/input-button-pilot/4-verification.md",
-        "ui-library/verification/input.json"
+        "ui-library/verification/input.json",
+        "reports/ui-library/platform-code-examples/4-verification.md"
       ],
       "riverApproval": "approved 2026-08-26",
-      "promotionDecision": "approved 2026-08-26 · 실제 렌더 PASS · 위험도 기반 독립 검증 생략을 river 승인"
+      "promotionDecision": "approved 2026-08-26 · 실제 렌더 PASS · 위험도 기반 독립 검증 생략을 river 승인",
+      "platformExamples": {
+        "status": "approved",
+        "approvedAt": "2026-09-01",
+        "distribution": "examples/input.html (PC) · examples/input.mobile.html (Mobile)",
+        "declaredBy": "manifest.htmlContract.breakExamples",
+        "note": "디자인가이드는 보고 있는 화면의 플랫폼 마크업만 표시한다 (river HD-1 A안 2026-09-01)."
+      }
     },
     {
       "id": "button",
@@ -34,14 +42,22 @@
         "tokens.css",
         "typography.css"
       ],
-      "lastVerified": "2026-08-26",
-      "reverifyTrigger": "정본 size·variant·state·token·HTML part·CSS selector 변경",
+      "lastVerified": "2026-09-01",
+      "reverifyTrigger": "정본 size·variant·state·token·HTML part·CSS selector 변경 · 플랫폼별 예제(breakExamples) 변경",
       "evidence": [
         "reports/ui-library/input-button-pilot/4-verification.md",
-        "ui-library/verification/button.json"
+        "ui-library/verification/button.json",
+        "reports/ui-library/platform-code-examples/4-verification.md"
       ],
       "riverApproval": "approved 2026-08-26",
-      "promotionDecision": "approved 2026-08-26 · 실제 렌더 PASS · 위험도 기반 독립 검증 생략을 river 승인"
+      "promotionDecision": "approved 2026-08-26 · 실제 렌더 PASS · 위험도 기반 독립 검증 생략을 river 승인",
+      "platformExamples": {
+        "status": "approved",
+        "approvedAt": "2026-09-01",
+        "distribution": "examples/button.html (PC) · examples/button.mobile.html (Mobile)",
+        "declaredBy": "manifest.htmlContract.breakExamples",
+        "note": "디자인가이드는 보고 있는 화면의 플랫폼 마크업만 표시한다 (river HD-1 A안 2026-09-01)."
+      }
     },
     {
       "id": "checkbox",
@@ -116,15 +132,23 @@
         "typography.css",
         "chip.js"
       ],
-      "lastVerified": "2026-08-31",
-      "reverifyTrigger": "정본 buildChip 의 크기 3조합·variant·상태·토큰, 또는 웹 HTML part·CSS selector·aria-pressed 런타임 변경",
+      "lastVerified": "2026-09-01",
+      "reverifyTrigger": "정본 buildChip 의 크기 3조합·variant·상태·토큰, 또는 웹 HTML part·CSS selector·aria-pressed 런타임 변경 · 플랫폼별 예제(breakExamples) 변경",
       "evidence": [
         "reports/ui-library/toggle-chip/4-verification.md",
         "reports/ui-library/toggle-chip/6-promotion.md",
-        "ui-library/dist/components/chip.manifest.json"
+        "ui-library/dist/components/chip.manifest.json",
+        "reports/ui-library/platform-code-examples/4-verification.md"
       ],
       "riverApproval": "approved 2026-09-01",
-      "promotionDecision": "approved 2026-09-01 · 안내 페이지 실제 렌더 확인 · 배포본은 이미 approved 였고 장부만 밀려 있던 것을 함께 맞춤"
+      "promotionDecision": "approved 2026-09-01 · 안내 페이지 실제 렌더 확인 · 배포본은 이미 approved 였고 장부만 밀려 있던 것을 함께 맞춤",
+      "platformExamples": {
+        "status": "approved",
+        "approvedAt": "2026-09-01",
+        "distribution": "examples/chip.html (PC) · examples/chip.mobile.html (Mobile)",
+        "declaredBy": "manifest.htmlContract.breakExamples",
+        "note": "디자인가이드는 보고 있는 화면의 플랫폼 마크업만 표시한다 (river HD-1 A안 2026-09-01)."
+      }
     },
     {
       "id": "select",
@@ -138,16 +162,24 @@
         "dropdown.js"
       ],
       "lastVerified": "2026-09-01",
-      "reverifyTrigger": "정본 buildSelect 의 상태·크기·토큰·아이콘 크기, 또는 웹 HTML part·CSS selector·aria-expanded/data-filled 런타임 변경",
+      "reverifyTrigger": "정본 buildSelect 의 상태·크기·토큰·아이콘 크기, 또는 웹 HTML part·CSS selector·aria-expanded/data-filled 런타임 변경 · 플랫폼별 예제(breakExamples) 변경",
       "evidence": [
         "reports/ui-library/select-dropdown-filter-chip/4-verification.md",
         "reports/ui-library/select-dropdown-filter-chip/4-verification-independent.md",
         "reports/ui-library/select-dropdown-filter-chip/6-promotion.md",
-        "ui-library/dist/components/select.manifest.json"
+        "ui-library/dist/components/select.manifest.json",
+        "reports/ui-library/platform-code-examples/4-verification.md"
       ],
       "riverApproval": "approved 2026-09-01",
       "promotionDecision": "approved 2026-09-01 · 5-human-review 검수본 07 승인 · 배포본 verified→approved 승격으로 공개",
-      "note": "열림 상태는 dropdown 배포본을 조립한다."
+      "note": "열림 상태는 dropdown 배포본을 조립한다.",
+      "platformExamples": {
+        "status": "approved",
+        "approvedAt": "2026-09-01",
+        "distribution": "examples/select.html (PC) · examples/select.mobile.html (Mobile)",
+        "declaredBy": "manifest.htmlContract.breakExamples",
+        "note": "디자인가이드는 보고 있는 화면의 플랫폼 마크업만 표시한다 (river HD-1 A안 2026-09-01)."
+      }
     },
     {
       "id": "dropdown",
@@ -184,16 +216,45 @@
         "dropdown.js"
       ],
       "lastVerified": "2026-09-01",
-      "reverifyTrigger": "정본 buildFilterChip 의 variant·제목·상태·크기·토큰, 또는 패널 크기 매핑(SM→xxsm·MD→xsm)·aria-expanded/data-complete 런타임 변경",
+      "reverifyTrigger": "정본 buildFilterChip 의 variant·제목·상태·크기·토큰, 또는 패널 크기 매핑(SM→xxsm·MD→xsm)·aria-expanded/data-complete 런타임 변경 · 플랫폼별 예제(breakExamples) 변경",
       "evidence": [
         "reports/ui-library/select-dropdown-filter-chip/4-verification.md",
         "reports/ui-library/select-dropdown-filter-chip/4-verification-independent.md",
         "reports/ui-library/select-dropdown-filter-chip/6-promotion.md",
-        "ui-library/dist/components/filter-chip.manifest.json"
+        "ui-library/dist/components/filter-chip.manifest.json",
+        "reports/ui-library/platform-code-examples/4-verification.md"
       ],
       "riverApproval": "approved 2026-09-01",
       "promotionDecision": "approved 2026-09-01 · 5-human-review 검수본 07 승인 · 배포본 verified→approved 승격으로 공개",
-      "note": "Complete 는 정본에서 Default 와 같은 색 슬롯을 쓴다(값 문구만 다름). 패널 크기 매핑이 Select 와 다르다."
+      "note": "Complete 는 정본에서 Default 와 같은 색 슬롯을 쓴다(값 문구만 다름). 패널 크기 매핑이 Select 와 다르다.",
+      "platformExamples": {
+        "status": "approved",
+        "approvedAt": "2026-09-01",
+        "distribution": "examples/filter-chip.html (PC) · examples/filter-chip.mobile.html (Mobile)",
+        "declaredBy": "manifest.htmlContract.breakExamples",
+        "note": "디자인가이드는 보고 있는 화면의 플랫폼 마크업만 표시한다 (river HD-1 A안 2026-09-01)."
+      }
+    },
+    {
+      "id": "platform-code-examples",
+      "kind": "guide-presentation",
+      "uiLibraryStatus": "approved",
+      "appliesTo": [
+        "button",
+        "chip",
+        "filter-chip",
+        "input",
+        "select"
+      ],
+      "lastVerified": "2026-09-01",
+      "reverifyTrigger": "컴포넌트 안내 화면(assets/js/ui-library-guide.js)·플랫폼 예제 생성 경로(build.mjs)·표출 정책(component-presentation-policy) 변경",
+      "evidence": [
+        "reports/ui-library/platform-code-examples/4-verification.md",
+        "reports/ui-library/platform-code-examples/6-promotion.md"
+      ],
+      "riverApproval": "approved 2026-09-01",
+      "promotionDecision": "approved 2026-09-01 · 독립 검증(component-verifier) 실행 — 산출물 PASS, 검사기 구멍 2건 지적 → scripts/ui-guide-render-check.js 신설로 보완 후 재검증 통과",
+      "machineCheck": "npm run ui:guide:render (ui:test 가 자동 호출)"
     }
   ]
 }

@@ -27,6 +27,27 @@ for (const id of componentIds) {
     if (!(field in manifest)) failures.push(`${id} manifest missing ${field}`);
   }
   if (manifest.htmlContract.distribution !== `examples/${id}.html`) failures.push(`${id} HTML contract distribution path differs from build output`);
+  /* 플랫폼별 예제 — Mobile 크기·break 가 따로 있는 컴포넌트는 mobile 예제를 배포해야 한다.
+     퍼블리셔가 Mobile 화면에서 PC 마크업을 복사하는 사고를 막는다(river 결정 2026-09-02). */
+  if (manifest.breaks?.mobile?.length) {
+    const spec = manifest.htmlContract.breakExamples?.mobile;
+    if (!spec || spec.distribution !== `examples/${id}.mobile.html`) {
+      failures.push(`${id} declares a mobile break but has no mobile example declaration`);
+    } else {
+      const mobileExample = await read(`dist/${spec.distribution}`).catch(() => "");
+      if (!mobileExample) failures.push(`${id} mobile example is missing from the build output`);
+      else {
+        const size = mobileExample.match(/data-s1-component="[^"]+"[^>]*?data-size="([^"]+)"/)?.[1];
+        if (!manifest.breaks.mobile.includes(size)) failures.push(`${id} mobile example size (${size}) is not a canonical mobile size`);
+        if (manifest.htmlContract.requiredAttributes?.includes("data-break") && !mobileExample.includes('data-break="mobile"')) {
+          failures.push(`${id} mobile example must declare data-break="mobile"`);
+        }
+        if (mobileExample === example) failures.push(`${id} mobile example is identical to the PC example`);
+      }
+    }
+    const pcSize = example.match(/data-s1-component="[^"]+"[^>]*?data-size="([^"]+)"/)?.[1];
+    if (!manifest.breaks.pc.includes(pcSize)) failures.push(`${id} PC example size (${pcSize}) is not a canonical PC size`);
+  }
   if (manifest.cssContract.entry !== `components/${id}.css`) failures.push(`${id} CSS contract entry differs from build output`);
   if (id === "input" && manifest.jsRequired !== true) failures.push("input clear action requires the declared runtime");
   if (id === "input") {
@@ -266,11 +287,27 @@ for (const marker of [
 for (const marker of [
   '../../ui-library/dist/s1-ui.js',
   '../../ui-library/dist/examples/${id}.html',
+  '../../ui-library/dist/examples/${id}.mobile.html',
   '../../ui-library/dist/components/${id}.css',
   '../../ui-library/dist/components/${id}.js'
 ]) {
   if (!guideModule.includes(marker)) failures.push(`approved guide module missing source link: ${marker}`);
 }
+/* 플랫폼 화면 정합 — component-presentation-policy _meta.uiLibraryGuideLayout.platformParity
+   (river 확정 2026-09-02). 화면이 아니라 소스에서 잡는 결정론 검사다. */
+if (/platform-section-mobile">\s*<div class="preview-area">\s*(\$\{[^}]*\}\s*)?<p/.test(guideModule)) {
+  failures.push("mobile preview must start like PC — no leading note paragraph (title-to-action gap must match PC)");
+}
+if (/Mobile도 PC와 같습니다/.test(guideModule)) {
+  failures.push("remove the redundant 'Mobile is the same as PC' notes; the screen already shows it");
+}
+for (const match of guideModule.matchAll(/mobileSizes\s*=\s*\[\[\s*"[a-z-]+",\s*"([^"]*)"/g)) {
+  if (match[1]) failures.push(`mobile size label "${match[1]}" must stay empty — a single-value axis is not shown as an axis`);
+}
+if (!/\.view-mobile \.platform-section-pc \+ \.platform-section-mobile[^{]*\{[^}]*margin-top:\s*0/.test(guidePage)) {
+  failures.push("hidden sibling platform section must not leave a 24px top margin on the visible one");
+}
+
 const guideDemoIndex = guideModule.indexOf('<section class="uilg-demo preview-area"');
 const guideOverviewIndex = guideModule.indexOf('${overview(registry)}');
 if (guideDemoIndex < 0 || guideOverviewIndex < 0 || guideDemoIndex >= guideOverviewIndex) {
@@ -283,6 +320,14 @@ for (const id of ["checkbox", "radio", "toggle", "chip"]) {
     failures.push(`${id} guide mount must not retain legacy duplicate markup`);
   }
 }
+
+/* 렌더 검사 — 소스 문자열로는 못 보는 것(화면이 실제로 무엇을 보여주는가)을 실제 DOM 으로 본다.
+   2026-09-02 독립 검증이 실증한 구멍 2개(G1 chip 인라인 크기 라벨 · G2 플랫폼 분기 무력화)를 막는다. */
+const renderCheck = spawnSync(process.execPath, [path.join(repositoryRoot, "scripts/ui-guide-render-check.js"), "--quiet"], { encoding: "utf8" });
+if (renderCheck.status !== 0) failures.push(`guide render check: ${(renderCheck.stderr || renderCheck.stdout || "").trim()}`);
+/* 건너뛴 사실은 반드시 눈에 보여야 한다 — 크롬 없는 환경 + S1_SKIP_RENDER_CHECK 조합에서
+   렌더 검사가 통째로 사라졌는데 "PASS" 로만 보이던 문제(2026-09-02 재검증 지적). */
+else if (renderCheck.stdout.trim()) console.log(`[guide render check] ${renderCheck.stdout.trim()}`);
 
 if (failures.length) {
   console.error(`UI library technical checks found ${failures.length} issue(s):\n- ${failures.join("\n- ")}`);

@@ -306,6 +306,10 @@
 
     /* Button: PC/Mobile matrix layout */
     .platform-section + .platform-section { margin-top: 24px; }
+    /* 한 플랫폼만 보이는 화면에서는 앞 형제(숨겨진 섹션) 때문에 생기는 24px 웃여백을 없앤다 —
+       Mobile 화면이 PC 화면보다 제목과 Action 상자 사이가 벌어져 보이던 원인(river 지적 2026-09-02). */
+    .view-mobile .platform-section-pc + .platform-section-mobile,
+    .view-pc .platform-section-mobile + .platform-section-pc { margin-top: 0; }
     .platform-header {
       font-size: 11px; font-weight: 700; color: #6b7280;
       margin-bottom: 12px; display: flex; align-items: center; gap: 6px;

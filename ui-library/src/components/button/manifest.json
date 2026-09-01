@@ -69,7 +69,17 @@
       "lg"
     ],
     "source": "components/button/button.example.html",
-    "distribution": "examples/button.html"
+    "distribution": "examples/button.html",
+    "breakExamples": {
+      "pc": {
+        "source": "components/button/button.example.html",
+        "distribution": "examples/button.html"
+      },
+      "mobile": {
+        "source": "components/button/button.mobile.example.html",
+        "distribution": "examples/button.mobile.html"
+      }
+    }
   },
   "cssContract": {
     "entry": "components/button.css",

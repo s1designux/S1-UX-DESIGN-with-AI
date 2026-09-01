@@ -88,13 +88,18 @@ div.uilg
 - **행 = 그 컴포넌트의 두 번째 축.** 예: 라벨 없음/있음(Checkbox·Radio), 메시지 없음/있음(Input), variant(Button).
 - 정본에 없는 상태를 만들지 않는다. 정본에 마우스오버가 있으나 실제로 올릴 수 없는 칸은 **검수 전용 `data-force-state`** 로 표시한다(제품 동작 API 아님).
 - 상태 칸은 `.comp-state-cell` + `is-preview`(클릭 막음), Action 칸만 실제로 동작한다.
-- 크기 축이 정본에 없으면 Mobile 섹션에도 같은 내용을 두고 **"정본에 플랫폼·크기 축이 없어 PC와 같습니다"** 를 명시한다.
+- **Mobile 화면 규칙 (river 확정 2026-09-02) — "축이 하나면 축으로 세우지 않는다":**
+  - 크기가 **한 가지뿐이면 크기 라벨(LG·SM·MD)과 크기별 블록 분리를 만들지 않는다.** 대신 그 자리에 유형(Primary·Secondary·Blue Line / Line·Solid / 제목 유무)을 넣어 **한 표에서 함께** 보이게 하고, 유형 사이 가로선(`<hr>`)도 두지 않는다. 「Disabled 공통」 같은 크기 비교용 꼬리표도 함께 뺀다.
+  - 크기·플랫폼 축이 아예 없는 컴포넌트(Checkbox·Radio·Toggle·Dropdown)에 **"정본에 플랫폼·크기 축이 없어 PC와 같습니다" 류의 안내문을 두지 않는다.** 화면이 이미 같아 보이므로 정보 가치가 없고, PC 에 없는 문단이 하나 더 들어가 **제목↔Action 간격이 PC 와 달라진다.**
+  - **Mobile preview-area 는 PC 와 같은 구조로 시작한다** — 선행 안내 문단 금지. 플랫폼별로 꼭 필요한 설명은 Action 상자 **안쪽**에 둔다(PC 와 같은 자리).
+  - 한 플랫폼만 보이는 화면에서 **숨겨진 형제 섹션 때문에 생기는 웃여백을 없앤다** — `.view-mobile .platform-section-pc + .platform-section-mobile { margin-top: 0 }`(`pages/components.html`). 이걸 빼면 Mobile 만 24px 더 벌어진다.
 - **variant 블록 사이 구분선(`<hr class="uilg-separator">`) 간격은 24px 다** (`.uilg-variant-block + .uilg-separator { margin-block: var(--spacing-24); }`, `assets/css/ui-library-guide.css`). 8px 로 두면 다른 블록 간격(24px)보다 눈에 띄게 좁아 보인다(river 지적 2026-08-31, Chip Line/Solid 에서 발견). **이 값은 공유 CSS 규칙 1곳에서 정하므로 새 컴포넌트가 같은 클래스를 쓰면 자동으로 상속된다** — 컴포넌트마다 다시 정하지 않는다.
 
 ### A-6. ③ 개발 코드
 
 - 제목은 `개발 코드` 하나. **설명 문장을 붙이지 않는다**(river 확정 2026-08-31 — 컴포넌트마다 같은 문장이 반복돼 소음이었다).
 - 제목과 코드 박스 사이 **16px**.
+- **플랫폼 축이 있는 컴포넌트는 보고 있는 화면의 마크업만 보여준다** (river 확정 2026-09-02) — Mobile 화면에서 PC 마크업을 복사하는 사고를 막는다. 배포본이 `manifest.htmlContract.breakExamples` 로 플랫폼별 예제를 선언한다. 코드 위 안내 문구는 두지 않는다(river 결정 2026-09-02 — 화면 이름으로 이미 알 수 있어 불필요).
 - 탭 순서 고정: **HTML → CSS → JavaScript**. 내용은 실제 `ui-library/dist` 에서 읽어온다(손으로 쓴 예시 금지).
 
 ### A-7. ④⑤ 문서
@@ -116,6 +121,10 @@ div.uilg
 - [ ] 개발 코드에 설명문 없음 · 제목과 박스 사이 16px · 탭 HTML→CSS→JavaScript
 - [ ] **실제 렌더로 확인**했다 — 페이지 전체 중복 `id` 0개, 콘솔 오류 0건, Light·Dark 모두 읽힌다
 - [ ] 같은 마크업 문자열을 PC·Mobile 두 곳에 붙여넣지 않았다(`id`·라디오 `name` 이 겹쳐 선택이 조용히 풀린다)
+- [ ] **Mobile 화면이 PC 와 같은 자리에서 시작한다** — 제목↔Action 간격이 PC 와 같고(실측 동일), Mobile 에만 있는 선행 안내문이 없다
+- [ ] Mobile 에 크기 라벨·크기별 블록 분리가 없다(크기가 한 가지일 때)
+- [ ] 「개발 코드」가 **보고 있는 화면의 플랫폼 마크업**이다(Mobile 화면에 PC 마크업 금지)
+- [ ] `npm run ui:guide:render` 통과 — 위 세 가지를 **실제 렌더 DOM** 으로 재확인한다(소스 문자열 검사만 믿지 않는다)
 
 ---
 

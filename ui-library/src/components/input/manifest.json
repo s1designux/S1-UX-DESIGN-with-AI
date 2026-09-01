@@ -71,7 +71,17 @@
       "action[data-action=clear] 안 action-icon"
     ],
     "source": "components/input/input.example.html",
-    "distribution": "examples/input.html"
+    "distribution": "examples/input.html",
+    "breakExamples": {
+      "pc": {
+        "source": "components/input/input.example.html",
+        "distribution": "examples/input.html"
+      },
+      "mobile": {
+        "source": "components/input/input.mobile.example.html",
+        "distribution": "examples/input.mobile.html"
+      }
+    }
   },
   "cssContract": {
     "entry": "components/input.css",
