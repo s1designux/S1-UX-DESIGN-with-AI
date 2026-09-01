@@ -220,7 +220,7 @@
       "category": "verification-quality",
       "label": "검수 통과했으나 시각·레이아웃이 Figma와 다름",
       "description": "4단계 자가대조가 CSS 선언값만 비교하고 렌더 레이아웃을 실측하지 않아, 값은 맞지만 시각이 다른 불일치(아이콘 컨테이너 치수 누락 등)를 놓침",
-      "count": 6,
+      "count": 7,
       "promotionStatus": "candidate",
       "promotedRule": null,
       "occurrences": [
@@ -247,6 +247,10 @@
         {
           "date": "2026-08-26",
           "summary": "Mobile Header v1 검증이 PASS 를 줬으나 실제로는 결함 2건(원본 알림×2 를 알림+닫기로 오제작 · Back/Close 색 gray-light/gray-dark 뒤바뀜)을 놓쳤다. v3.1 재검증에서 같은 유형(서브타이틀 화살표 색)이 또 나왔고, 원본이 fill hidden + stroke 로 그려져 있어 fill 만 보면 판정을 틀리는 구조였다. 색 토큰 대조는 fill 뿐 아니라 stroke 까지 봐야 한다는 것이 반복 교훈."
+        },
+        {
+          "date": "2026-09-01",
+          "summary": "Mobile Header 라이트 보드 배경 교체 후 렌더 확인을 했으나, 컴포넌트가 없는 빈 칸 위에 남아 있던 설명 라벨 4개를 놓쳐 river 가 발견 (2292:24032·24033·24042·24043 삭제)"
         }
       ],
       "automationNote": "아이콘은 '프레임 크기'가 아니라 '글리프 렌더 크기'로 검증. 3회 도달(2026-08-14) — 승격 후보: 정본에 '자식 순서·hug/fill 구조'가 선언된 상태(lead/trail 프레임)를 파생 HTML 의 실제 렌더 박스 좌표와 대조하는 검사기. 선언값 비교로는 절대 안 잡히며, 매번 사용자 육안 제보로만 발견됨. | 2026-08-21 보강: 허용편차 선언 시 '원본 대비 크기 비율'을 함께 적고, 일정 비율(예: 면적 70% 미만) 이하로 축소하는 편차는 자동 승인 대상에서 제외해 사용자 확인을 받도록 하는 규칙 승격 검토."
@@ -623,6 +627,21 @@
         }
       ],
       "automationNote": "3회 도달 시 '보조 래퍼는 내용물과 다른 이름을 쓰고, 필요 조건(비정사각·비직각회전·절대좌표 부모)을 만족할 때만 생성한다'를 검사기로 승격 검토. anatomy 기록이 1단계 자식만 수집해 이런 중간 래퍼를 못 잡는 점도 함께 확장 후보."
+    },
+    {
+      "id": "component-set-board-contrast-missing",
+      "category": "figma-library-presentation",
+      "label": "컴포넌트 세트 보드 배경이 컴포넌트 표면색과 같아 항목이 배경과 분리되지 않음",
+      "description": "흰색 표면 컴포넌트(Modal·Bottom Sheet·Mobile Header 등)를 흰색 보드 위에 올려, 라이트 세트에서 항목 경계가 보이지 않는 문제. 정착된 관행은 보드 fill 을 color/bg/level-3 변수에 바인딩하는 것",
+      "count": 1,
+      "promotionStatus": "tracking",
+      "occurrences": [
+        {
+          "date": "2026-09-01",
+          "summary": "Mobile Header 라이트 컴포넌트 세트(2292:24027) 보드 fill 을 흰색 → color/bg/level-3 변수 바인딩으로 교체 (Modal·Bottom Sheet 와 동일 관행)"
+        }
+      ],
+      "automationNote": "3회 도달 시 '컴포넌트 표면색이 흰색이면 세트 보드는 color/bg/level-3' 를 라이브러리 빌드 체크로 승격 검토."
     }
   ]
 }
