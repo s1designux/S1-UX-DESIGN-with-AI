@@ -1,7 +1,7 @@
 {
   "_meta": {
     "id": "ui-library-migration",
-    "updatedAt": "2026-08-31",
+    "updatedAt": "2026-09-01",
     "purpose": "기존 컴포넌트 상태와 신규 웹 UI 라이브러리 승인·이행 상태를 분리 기록한다."
   },
   "records": [
@@ -90,7 +90,7 @@
       "id": "toggle",
       "kind": "core-component",
       "legacyStatus": "implemented",
-      "uiLibraryStatus": "verified",
+      "uiLibraryStatus": "approved",
       "dependencies": [
         "tokens.css",
         "typography.css",
@@ -100,17 +100,17 @@
       "reverifyTrigger": "정본 buildToggle 의 트랙·노브 크기·상태·토큰, 또는 웹 HTML part·CSS selector·aria-checked 런타임 변경",
       "evidence": [
         "reports/ui-library/toggle-chip/4-verification.md",
+        "reports/ui-library/toggle-chip/6-promotion.md",
         "ui-library/dist/components/toggle.manifest.json"
       ],
-      "riverApproval": "pending",
-      "promotionDecision": "pending — 5-human-review 대기",
-      "note": "dist manifest status 는 approved(가이드 화면이 승인 배포본만 렌더한다). 이행 상태는 river 검수 전이라 verified 로 둔다."
+      "riverApproval": "approved 2026-09-01",
+      "promotionDecision": "approved 2026-09-01 · 안내 페이지 실제 렌더 확인 · 배포본은 이미 approved 였고 장부만 밀려 있던 것을 함께 맞춤"
     },
     {
       "id": "chip",
       "kind": "core-component",
       "legacyStatus": "implemented",
-      "uiLibraryStatus": "verified",
+      "uiLibraryStatus": "approved",
       "dependencies": [
         "tokens.css",
         "typography.css",
@@ -120,17 +120,17 @@
       "reverifyTrigger": "정본 buildChip 의 크기 3조합·variant·상태·토큰, 또는 웹 HTML part·CSS selector·aria-pressed 런타임 변경",
       "evidence": [
         "reports/ui-library/toggle-chip/4-verification.md",
+        "reports/ui-library/toggle-chip/6-promotion.md",
         "ui-library/dist/components/chip.manifest.json"
       ],
-      "riverApproval": "pending",
-      "promotionDecision": "pending — 5-human-review 대기",
-      "note": "dist manifest status 는 approved(가이드 화면이 승인 배포본만 렌더한다). 이행 상태는 river 검수 전이라 verified 로 둔다."
+      "riverApproval": "approved 2026-09-01",
+      "promotionDecision": "approved 2026-09-01 · 안내 페이지 실제 렌더 확인 · 배포본은 이미 approved 였고 장부만 밀려 있던 것을 함께 맞춤"
     },
     {
       "id": "select",
       "kind": "core-component",
       "legacyStatus": "implemented",
-      "uiLibraryStatus": "verified",
+      "uiLibraryStatus": "approved",
       "dependencies": [
         "tokens.css",
         "typography.css",
@@ -142,17 +142,18 @@
       "evidence": [
         "reports/ui-library/select-dropdown-filter-chip/4-verification.md",
         "reports/ui-library/select-dropdown-filter-chip/4-verification-independent.md",
+        "reports/ui-library/select-dropdown-filter-chip/6-promotion.md",
         "ui-library/dist/components/select.manifest.json"
       ],
-      "riverApproval": "pending",
-      "promotionDecision": "pending — 5-human-review 대기",
-      "note": "열림 상태는 dropdown 배포본을 조립한다. dist manifest status 는 verified — river 승인 시 approved 로 올리면 공개 안내 페이지가 열린다."
+      "riverApproval": "approved 2026-09-01",
+      "promotionDecision": "approved 2026-09-01 · 5-human-review 검수본 07 승인 · 배포본 verified→approved 승격으로 공개",
+      "note": "열림 상태는 dropdown 배포본을 조립한다."
     },
     {
       "id": "dropdown",
       "kind": "core-component",
       "legacyStatus": "implemented",
-      "uiLibraryStatus": "verified",
+      "uiLibraryStatus": "approved",
       "dependencies": [
         "tokens.css",
         "typography.css",
@@ -164,17 +165,18 @@
       "evidence": [
         "reports/ui-library/select-dropdown-filter-chip/4-verification.md",
         "reports/ui-library/select-dropdown-filter-chip/4-verification-independent.md",
+        "reports/ui-library/select-dropdown-filter-chip/6-promotion.md",
         "ui-library/dist/components/dropdown.manifest.json"
       ],
-      "riverApproval": "pending",
-      "promotionDecision": "pending — 5-human-review 대기",
+      "riverApproval": "approved 2026-09-01",
+      "promotionDecision": "approved 2026-09-01 · 5-human-review 검수본 07 승인 · 배포본 verified→approved 승격으로 공개",
       "note": "체크박스 유형은 승인된 코어 Checkbox 배포본을 조립한다. 「전체 선택」 부분선택(mixed) 은 정본에 없어 만들지 않았다(river 결정 2026-08-31)."
     },
     {
       "id": "filter-chip",
       "kind": "core-component",
       "legacyStatus": "implemented",
-      "uiLibraryStatus": "verified",
+      "uiLibraryStatus": "approved",
       "dependencies": [
         "tokens.css",
         "typography.css",
@@ -186,10 +188,11 @@
       "evidence": [
         "reports/ui-library/select-dropdown-filter-chip/4-verification.md",
         "reports/ui-library/select-dropdown-filter-chip/4-verification-independent.md",
+        "reports/ui-library/select-dropdown-filter-chip/6-promotion.md",
         "ui-library/dist/components/filter-chip.manifest.json"
       ],
-      "riverApproval": "pending",
-      "promotionDecision": "pending — 5-human-review 대기",
+      "riverApproval": "approved 2026-09-01",
+      "promotionDecision": "approved 2026-09-01 · 5-human-review 검수본 07 승인 · 배포본 verified→approved 승격으로 공개",
       "note": "Complete 는 정본에서 Default 와 같은 색 슬롯을 쓴다(값 문구만 다름). 패널 크기 매핑이 Select 와 다르다."
     }
   ]
