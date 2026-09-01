@@ -1,0 +1,28 @@
+{
+  "meta": {
+    "fileKey": "cysG5U1udpQqVagYY1hWHW",
+    "rootId": "1744:1782",
+    "label": "navbarfix-base-before",
+    "capturedAt": "2026-08-31T06:53:09.497Z",
+    "targets": ["1989:356", "1858:1783", "1989:357"],
+    "scope": "target roots + top-level children; instance internals covered by canonical snapshot"
+  },
+  "nodes": {
+    "1744:1782": { "n": "Pattern / Mobile Web Signup", "t": "SECTION", "p": null, "i": 0, "x": 200, "y": 2300, "w": 2520, "h": 1880 },
+    "1989:356": { "n": "MWEB/SIGNUP/3 · 아이디 입력 중 (키보드)", "t": "FRAME", "p": "1744:1782", "i": 2, "x": 880, "y": 100, "w": 360, "h": 780, "f": "var:VariableID:687:17884" },
+    "1989:360": { "n": "Mobile Header", "t": "INSTANCE", "p": "1989:356", "i": 0, "x": 0, "y": 0, "w": 360, "h": 149 },
+    "1989:399": { "n": "NavBar", "t": "INSTANCE", "p": "1989:356", "i": 1, "x": 0, "y": 389, "w": 360, "h": 391, "mc": "local:1654:37651:Platform=Web + Keyboard" },
+    "1989:548": { "n": "Content", "t": "FRAME", "p": "1989:356", "i": 2, "x": 0, "y": 149, "w": 360, "h": 240 },
+    "1989:564": { "n": "CTA", "t": "INSTANCE", "p": "1989:356", "i": 3, "x": 20, "y": 333, "w": 320, "h": 48 },
+    "1858:1783": { "n": "MWEB/SIGNUP/4 · 비밀번호 입력 중 (키보드)", "t": "FRAME", "p": "1744:1782", "i": 3, "x": 1280, "y": 100, "w": 360, "h": 780, "f": "var:VariableID:687:17884" },
+    "1858:17819": { "n": "Mobile Header", "t": "INSTANCE", "p": "1858:1783", "i": 0, "x": 0, "y": 0, "w": 360, "h": 149 },
+    "1858:18029": { "n": "Content", "t": "FRAME", "p": "1858:1783", "i": 1, "x": 0, "y": 149, "w": 360, "h": 294 },
+    "1858:17880": { "n": "NavBar", "t": "INSTANCE", "p": "1858:1783", "i": 2, "x": 0, "y": 389, "w": 360, "h": 391, "mc": "local:1654:37651:Platform=Web + Keyboard" },
+    "1858:18081": { "n": "CTA", "t": "INSTANCE", "p": "1858:1783", "i": 3, "x": 20, "y": 392, "w": 320, "h": 48 },
+    "1989:357": { "n": "MWEB/SIGNUP/5 · 이메일 입력 중 (키보드)", "t": "FRAME", "p": "1744:1782", "i": 4, "x": 1680, "y": 100, "w": 360, "h": 780, "f": "var:VariableID:687:17884" },
+    "1989:18750": { "n": "Mobile Header", "t": "INSTANCE", "p": "1989:357", "i": 0, "x": 0, "y": 0, "w": 360, "h": 149 },
+    "1989:18789": { "n": "NavBar", "t": "INSTANCE", "p": "1989:357", "i": 1, "x": 0, "y": 389, "w": 360, "h": 391, "mc": "local:1654:37651:Platform=Web + Keyboard" },
+    "1989:18938": { "n": "Content", "t": "FRAME", "p": "1989:357", "i": 2, "x": 0, "y": 149, "w": 360, "h": 240 },
+    "1989:18966": { "n": "CTA", "t": "INSTANCE", "p": "1989:357", "i": 3, "x": 20, "y": 333, "w": 320, "h": 48 }
+  }
+}

@@ -1,0 +1,40 @@
+{
+  "meta": {
+    "correctionTargets": [
+      "1858:1782",
+      "1744:1783",
+      "1989:356",
+      "1858:1783",
+      "1989:357",
+      "1989:358",
+      "1989:359",
+      "1858:1784",
+      "1858:1785",
+      "1996:2",
+      "1996:19300"
+    ],
+    "from": {
+      "id": "VariableID:687:17885",
+      "name": "color/bg/level-1"
+    },
+    "to": {
+      "id": "VariableID:687:17884",
+      "name": "color/bg/level-0"
+    },
+    "protectedNodeIds": [
+      "1744:1787",
+      "1744:1789"
+    ],
+    "protectedNestedKeyboardCount": 6
+  },
+  "added": [],
+  "removed": [],
+  "changed": [
+    {
+      "field": "f",
+      "count": 11,
+      "note": "11 screen root fill[0] variable level-1 → level-0; no other fields"
+    }
+  ]
+}
+

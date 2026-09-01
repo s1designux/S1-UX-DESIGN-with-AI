@@ -1,9 +1,9 @@
 {
   "meta": {
     "name": "SW Pattern Registry Index",
-    "version": "0.2.1",
+    "version": "0.3.0",
     "status": "mvp-pattern",
-    "updatedAt": "2026-08-25",
+    "updatedAt": "2026-08-31",
     "description": "Pattern Harness entry point. 패턴은 코어 컴포넌트를 조합한 반복 레이아웃이며 components/index.json과 분리 관리한다."
   },
   "patterns": [
@@ -111,6 +111,64 @@
         "namingPolicy": "registry/governance/screen-naming-policy.json",
         "namePrefix": "APP/LOGIN/",
         "note": "프레임 이름은 고정 식별자가 아니다. 화면을 가리킬 때는 states.md 의 Figma 노드 ID 를 쓴다."
+      }
+    },
+    {
+      "id": "mobile-web-signup",
+      "name": "Mobile Web Signup",
+      "status": "promoted",
+      "platform": "mobile-web",
+      "description": "약관 동의, 외부 본인인증, 기존 아이디 분기, 계정 정보 입력과 앱 설치 안내를 포함한 모바일 웹 회원가입 패턴",
+      "source": {
+        "service": "modu-app",
+        "fileKey": "aLxh458o9BRXklRFM3YYzk",
+        "nodeId": "32443:31901"
+      },
+      "figma": {
+        "fileKey": "cysG5U1udpQqVagYY1hWHW",
+        "pageId": "173:2431",
+        "sectionId": "1744:1782"
+      },
+      "dependencies": {
+        "coreComponents": [
+          "Mobile Header",
+          "StatusBar",
+          "NavBar",
+          "Checkbox",
+          "Input",
+          "Select Box",
+          "Button",
+          "Mobile Modal",
+          "Bottom Sheet",
+          "Bottom Sheet Option"
+        ]
+      },
+      "documentation": {
+        "entry": "registry/patterns/mobile-web-signup/README.md",
+        "flow": "registry/patterns/mobile-web-signup/flow.md",
+        "states": "registry/patterns/mobile-web-signup/states.md",
+        "copy": "registry/patterns/mobile-web-signup/copy.md",
+        "contentRules": "registry/patterns/mobile-web-signup/content-rules.md",
+        "screenNaming": "registry/governance/screen-naming-policy.json"
+      },
+      "evidence": {
+        "buildHistory": "reports/screen-rebuild/modu-app/signup-mobile-web/",
+        "verification": "reports/screen-rebuild/modu-app/signup-mobile-web/4-verification.md",
+        "registration": "reports/screen-rebuild/modu-app/signup-mobile-web/5-registration.md"
+      },
+      "verification": {
+        "status": "PASS",
+        "screenCount": 11,
+        "report": "reports/screen-rebuild/modu-app/signup-mobile-web/4-verification.md"
+      },
+      "registeredAt": "2026-08-31",
+      "screens": {
+        "total": 11,
+        "main": 6,
+        "branch": 5,
+        "namingPolicy": "registry/governance/screen-naming-policy.json",
+        "namePrefix": "MWEB/SIGNUP/",
+        "note": "프레임 이름은 고정 식별자가 아니다. 현재 Figma 노드 ID는 states.md를 따른다."
       }
     }
   ]

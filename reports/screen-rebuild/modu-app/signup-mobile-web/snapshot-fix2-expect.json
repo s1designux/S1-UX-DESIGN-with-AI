@@ -1,0 +1,40 @@
+{
+  "meta": {
+    "purpose": "fix2 predeclared exact structural diff",
+    "beforeNodeCount": 690,
+    "approvedBottomSheet": "canonical Dual 360x378 at y402; header/footer visible; internal list hidden; sibling extension y456-712"
+  },
+  "added": [
+    { "name": "footer", "type": "FRAME", "count": 1 },
+    { "name": "secondary", "type": "INSTANCE", "count": 1 },
+    { "name": "primary", "type": "INSTANCE", "count": 1 },
+    { "name": "버튼", "type": "TEXT", "count": 2 },
+    { "name": "Bottom Sheet Extension", "type": "FRAME", "count": 1 },
+    { "name": "Bottom Sheet Option", "type": "INSTANCE", "count": 4 },
+    { "name": "항목", "type": "TEXT", "count": 4 },
+    { "name": "check", "type": "INSTANCE", "count": 1 },
+    { "name": "원본", "type": "GROUP", "count": 1 },
+    { "name": "Vector", "type": "VECTOR", "count": 1 }
+  ],
+  "removed": [
+    { "name": "title", "type": "TEXT", "count": 1 },
+    { "name": "list", "type": "FRAME", "count": 1 },
+    { "name": "option", "type": "INSTANCE", "count": 4 },
+    { "name": "항목", "type": "TEXT", "count": 4 },
+    { "name": "check", "type": "INSTANCE", "count": 1 },
+    { "name": "원본", "type": "GROUP", "count": 1 },
+    { "name": "Vector", "type": "VECTOR", "count": 1 },
+    { "name": "Bottom Sheet Secondary", "type": "INSTANCE", "count": 1 },
+    { "name": "Bottom Sheet Primary", "type": "INSTANCE", "count": 1 },
+    { "name": "버튼", "type": "TEXT", "count": 2 }
+  ],
+  "changed": [
+    { "field": "h", "count": 12, "note": "StatusBars 4, agreement containers 4, password Content 1, sheet/content/description 3" },
+    { "field": "y", "count": 9, "note": "AppBars 4, password CTA, modal message/close, sheet/description" },
+    { "field": "i", "count": 4, "note": "password Content/Nav swap, hidden modal title compacts message index, description reparent" },
+    { "field": "p", "count": 1, "note": "description moves into extension" },
+    { "field": "lp", "count": 1, "note": "modal message absolute centering inside canonical content" },
+    { "field": "is", "count": 1, "note": "Bottom Sheet canonical content gap 118 to 24" },
+    { "field": "tx", "count": 1, "note": "modal message becomes exact centered two-line body" }
+  ]
+}

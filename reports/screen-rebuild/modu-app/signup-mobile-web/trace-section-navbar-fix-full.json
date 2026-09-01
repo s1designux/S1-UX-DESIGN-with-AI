@@ -1,0 +1,356 @@
+{
+  "checkedAt": "2026-08-31T05:21:47Z",
+  "sectionNavbarFix": {
+    "section": {
+      "id": "1744:1782",
+      "fillsCount": 0,
+      "geometryUnchanged": true,
+      "childrenUnchanged": true
+    },
+    "orders": {
+      "1858:1785": ["1858:18221", "1858:18431", "1858:18447", "1858:18449", "1858:18282", "1858:18450", "1930:581"],
+      "1996:2": ["1996:3", "1996:4", "1996:10", "1996:11", "1996:9", "1996:12", "1996:22"],
+      "1996:19300": ["1996:19301", "1996:19303", "1996:19309", "1996:19310", "1996:19302", "1996:19311", "1996:19330"]
+    },
+    "stacking": {
+      "1858:1785": { "dim": 3, "navbar": 4, "panel": 5, "invariant": true },
+      "1996:2": { "dim": 3, "navbar": 4, "panel": 5, "invariant": true },
+      "1996:19300": { "dim": 3, "navbar": 4, "panel": 5, "invariant": true }
+    },
+    "snapshotRegressionBasis": "Only Section fill and 11 direct-child indices changed; all screen geometry/fill/text/state/component properties remain byte-identical in exact snapdiff. Full deterministic screen scan remains zero-violation and live counts were re-censused."
+  },
+  "screens": [
+    {
+      "key": "1",
+      "id": "1858:1782",
+      "counts": {
+        "nodes": 104,
+        "texts": 11,
+        "instances": 15,
+        "localInstances": 8,
+        "allowedRemoteInstances": 7
+      },
+      "violations": {
+        "text": [],
+        "state": [],
+        "field": [],
+        "raw": [],
+        "font": [],
+        "provenance": [],
+        "layout": [],
+        "overflow": []
+      }
+    },
+    {
+      "key": "2",
+      "id": "1744:1783",
+      "counts": {
+        "nodes": 8,
+        "texts": 3,
+        "instances": 0,
+        "localInstances": 0,
+        "allowedRemoteInstances": 0
+      },
+      "violations": {
+        "text": [],
+        "state": [],
+        "field": [],
+        "raw": [],
+        "font": [],
+        "provenance": [],
+        "layout": [],
+        "overflow": []
+      }
+    },
+    {
+      "key": "3",
+      "id": "1989:356",
+      "counts": {
+        "nodes": 206,
+        "texts": 48,
+        "instances": 7,
+        "localInstances": 5,
+        "allowedRemoteInstances": 2
+      },
+      "violations": {
+        "text": [],
+        "state": [],
+        "field": [],
+        "raw": [],
+        "font": [],
+        "provenance": [],
+        "layout": [],
+        "overflow": []
+      }
+    },
+    {
+      "key": "4",
+      "id": "1858:1783",
+      "counts": {
+        "nodes": 229,
+        "texts": 52,
+        "instances": 10,
+        "localInstances": 6,
+        "allowedRemoteInstances": 4
+      },
+      "violations": {
+        "text": [],
+        "state": [],
+        "field": [],
+        "raw": [],
+        "font": [],
+        "provenance": [],
+        "layout": [],
+        "overflow": []
+      }
+    },
+    {
+      "key": "5",
+      "id": "1989:357",
+      "counts": {
+        "nodes": 217,
+        "texts": 50,
+        "instances": 10,
+        "localInstances": 7,
+        "allowedRemoteInstances": 3
+      },
+      "violations": {
+        "text": [],
+        "state": [],
+        "field": [],
+        "raw": [],
+        "font": [],
+        "provenance": [],
+        "layout": [],
+        "overflow": []
+      }
+    },
+    {
+      "key": "6",
+      "id": "1989:358",
+      "counts": {
+        "nodes": 75,
+        "texts": 9,
+        "instances": 6,
+        "localInstances": 5,
+        "allowedRemoteInstances": 1
+      },
+      "violations": {
+        "text": [],
+        "state": [],
+        "field": [],
+        "raw": [],
+        "font": [],
+        "provenance": [],
+        "layout": [],
+        "overflow": []
+      }
+    },
+    {
+      "key": "1a1",
+      "id": "1989:359",
+      "counts": {
+        "nodes": 75,
+        "texts": 9,
+        "instances": 5,
+        "localInstances": 3,
+        "allowedRemoteInstances": 2
+      },
+      "violations": {
+        "text": [],
+        "state": [],
+        "field": [],
+        "raw": [],
+        "font": [],
+        "provenance": [],
+        "layout": [],
+        "overflow": []
+      }
+    },
+    {
+      "key": "2a1",
+      "id": "1858:1784",
+      "counts": {
+        "nodes": 116,
+        "texts": 14,
+        "instances": 19,
+        "localInstances": 11,
+        "allowedRemoteInstances": 8
+      },
+      "violations": {
+        "text": [],
+        "state": [],
+        "field": [],
+        "raw": [],
+        "font": [],
+        "provenance": [],
+        "layout": [],
+        "overflow": []
+      }
+    },
+    {
+      "key": "2b1",
+      "id": "1858:1785",
+      "counts": {
+        "nodes": 232,
+        "texts": 56,
+        "instances": 16,
+        "localInstances": 12,
+        "allowedRemoteInstances": 4
+      },
+      "violations": {
+        "text": [],
+        "state": [],
+        "field": [],
+        "raw": [],
+        "font": [],
+        "provenance": [],
+        "layout": [],
+        "overflow": []
+      }
+    },
+    {
+      "key": "4a1",
+      "id": "1996:2",
+      "counts": {
+        "nodes": 240,
+        "texts": 55,
+        "instances": 13,
+        "localInstances": 8,
+        "allowedRemoteInstances": 5
+      },
+      "violations": {
+        "text": [],
+        "state": [],
+        "field": [],
+        "raw": [],
+        "font": [],
+        "provenance": [],
+        "layout": [],
+        "overflow": []
+      }
+    },
+    {
+      "key": "5a1",
+      "id": "1996:19300",
+      "counts": {
+        "nodes": 239,
+        "texts": 56,
+        "instances": 18,
+        "localInstances": 13,
+        "allowedRemoteInstances": 5
+      },
+      "violations": {
+        "text": [],
+        "state": [],
+        "field": [],
+        "raw": [],
+        "font": [],
+        "provenance": [],
+        "layout": [],
+        "overflow": []
+      }
+    }
+  ],
+  "pairFingerprints": [
+    {
+      "base": "1858:1782",
+      "overlay": "1858:1784",
+      "identical": true
+    },
+    {
+      "base": "1989:356",
+      "overlay": "1858:1785",
+      "identical": true,
+      "orderInsensitive": true
+    },
+    {
+      "base": "1858:1783",
+      "overlay": "1996:2",
+      "identical": true,
+      "orderInsensitive": true
+    },
+    {
+      "base": "1989:357",
+      "overlay": "1996:19300",
+      "identical": true,
+      "orderInsensitive": true
+    }
+  ],
+  "levelScan": {
+    "level1Count": 8,
+    "level1": [
+      {
+        "id": "1744:1787",
+        "name": "PlaceholderAction / 취소",
+        "type": "FRAME",
+        "parent": "1744:1786"
+      },
+      {
+        "id": "1744:1789",
+        "name": "PlaceholderAction / 다음",
+        "type": "FRAME",
+        "parent": "1744:1786"
+      },
+      {
+        "id": "I1989:399;1654:37652",
+        "name": "keyboard",
+        "type": "FRAME",
+        "parent": "1989:399"
+      },
+      {
+        "id": "I1858:17880;1654:37652",
+        "name": "keyboard",
+        "type": "FRAME",
+        "parent": "1858:17880"
+      },
+      {
+        "id": "I1989:18789;1654:37652",
+        "name": "keyboard",
+        "type": "FRAME",
+        "parent": "1989:18789"
+      },
+      {
+        "id": "I1858:18282;1654:37652",
+        "name": "keyboard",
+        "type": "FRAME",
+        "parent": "1858:18282"
+      },
+      {
+        "id": "I1996:9;1654:37652",
+        "name": "keyboard",
+        "type": "FRAME",
+        "parent": "1996:9"
+      },
+      {
+        "id": "I1996:19302;1654:37652",
+        "name": "keyboard",
+        "type": "FRAME",
+        "parent": "1996:19302"
+      }
+    ],
+    "expectedRemaining8": true,
+    "level0RootCount": 11,
+    "level0Roots": [
+      "1858:1782",
+      "1744:1783",
+      "1989:356",
+      "1858:1783",
+      "1989:357",
+      "1989:358",
+      "1989:359",
+      "1858:1784",
+      "1858:1785",
+      "1996:2",
+      "1996:19300"
+    ]
+  },
+  "totals": {
+    "nodes": 1741,
+    "texts": 363,
+    "instances": 119,
+    "localInstances": 78,
+    "allowedRemoteInstances": 41,
+    "violations": 0
+  }
+}

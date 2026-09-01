@@ -1,0 +1,173 @@
+{
+  "schemaVersion": 1,
+  "targetFileKey": "cysG5U1udpQqVagYY1hWHW",
+  "measuredAt": "2026-08-31",
+  "basis": {
+    "git": "60e9778",
+    "buildComponentsPath": "plugins/figma-vars-installer/src/build-components.ts",
+    "buildComponentsSha256": "9f6b91f40b9ba57d649a359da25a26e456683ebb4a465f6738e4b5493c7672b8",
+    "componentGuideModelPath": "registry/components/component-guide-model.json",
+    "componentGuideModelSha256": "e5e7dd91b1f3bd09cadc7654fd65f5f6ae234e34ad3eda9fc6f365cdae725d99",
+    "allowedRemoteKeysPath": "registry/figma/allowed-remote-keys.json",
+    "allowedRemoteKeysSha256": "5b3a99e12316b86a466dc6e64f431dfdc044658441bd467f5f2754d106d815e2",
+    "allowedRemoteKeyCount": 23
+  },
+  "coreComponents": {
+    "MobileHeader": {
+      "setId": "1760:7247",
+      "setKey": "9fd8509a9e73c1279d9efb2088bb591658ce29f5",
+      "standardNoTitleAppId": "1760:7217",
+      "standardNoTitleCloseAppId": "1781:7359",
+      "standardNoTitleWebId": "1898:12288",
+      "standardNoTitleCloseWebId": "1898:12349",
+      "platforms": ["App", "Web"],
+      "sizes": { "App": { "width": 360, "height": 99 }, "Web": { "width": 360, "height": 149 } },
+      "webContract": {
+        "parentVariantState": "Platform=Web",
+        "statusBarPath": "StatusBar",
+        "nestedStatusBarHeight": 77,
+        "appBarPath": "AppBar",
+        "appBarHeight": 56,
+        "itemSpacing": 16,
+        "resolvedOuterHeight": 149,
+        "outerWidth": 360,
+        "outerSizing": "FIXED/FIXED",
+        "consumerRule": "부모 Mobile Header의 Platform=Web variant를 선택하며 nested StatusBar를 직접 swap/resize하지 않는다."
+      }
+    },
+    "StatusBar": { "setId": "1654:37420", "setKey": "41328ac50843bf00ca85b6182491df3d1244222f", "webVariantId": "1654:37388", "webSize": { "width": 360, "height": 77 } },
+    "NavBar": {
+      "setId": "2238:17407",
+      "setKey": "af476f4697f8009bddfef39a464f620656ebc9ab",
+      "webVariantId": "2238:17099",
+      "webSize": { "width": 360, "height": 95 },
+      "webKeyboardVariantId": "2238:17258",
+      "webKeyboardVariantKey": "f4ceb72ca95b8d6ba211ee3a475b74ad263b3ed8",
+      "webKeyboardSize": { "width": 360, "height": 341 },
+      "webKeyboardChildren": [
+        { "name": "keyboard", "y": 0, "width": 360, "height": 296 },
+        { "name": "android-nav", "y": 296, "width": 360, "height": 45 }
+      ],
+      "webKeyboardForbiddenChild": "browser-toolbar",
+      "keyboardNavScreenY": 439,
+      "androidNavScreenY": 735
+    },
+    "Checkbox": { "setId": "1654:39847", "setKey": "7e3639c43e99c00549580e1beb1e1570ae137001", "checkedVariantId": "1654:39838", "size": { "width": 18, "height": 18 } },
+    "Input": {
+      "setId": "1654:42409",
+      "setKey": "0d9c19968d0c9c0b11775300c040ea697345c653",
+      "passwordBooleanProperty": "Password Icon#1654:226",
+      "variants": {
+        "idEditing": "1654:42156",
+        "passwordEditing": "1654:42198",
+        "passwordConfirmDefault": "1654:42049",
+        "emailEditing": "1654:42136",
+        "domainDefault": "1654:42024"
+      },
+      "internalContracts": {
+        "outerTargetWidth": 320,
+        "outerSizing": "FIXED/HUG",
+        "fieldPath": "field",
+        "fieldSourceWidth": 200,
+        "fieldTargetWidth": 320,
+        "fieldTargetSizingHorizontal": "FILL",
+        "editingTextPath": "field > lead > 텍스트",
+        "defaultTextPath": "field > 입력",
+        "filledTextPath": "field > 텍스트",
+        "labelPath": "라벨",
+        "messagePath": "안내 메세지",
+        "messageTextStyleId": "S:688caf7c5d281ba8b15ce89feda98adccca04d54,"
+      }
+    },
+    "Button": {
+      "setId": "1654:39663",
+      "setKey": "3a919b4c01cb4cfbd9b3331f6a46b97f69a86a0c",
+      "mobileLgPrimaryDefaultId": "1654:39591",
+      "mobileLgPrimaryDisabledId": "1654:39597",
+      "mobileLgSecondaryDefaultId": "1654:39623",
+      "sourceSize": { "width": 80, "height": 48 },
+      "textPath": "버튼",
+      "targetWidthSingle": 320,
+      "targetWidthDual": 156,
+      "targetSizingHorizontal": "FILL"
+    },
+    "SelectBox": {
+      "setId": "1654:44485",
+      "setKey": "8b4f9dd8fdd475f8edf90113f97b86c438ab0e18",
+      "mobileMdDefaultId": "1654:44447",
+      "mobileMdFilledId": "1654:44477",
+      "size": { "width": 140, "height": 48 },
+      "textPath": "trigger > 선택"
+    },
+    "BottomSheet": {
+      "setId": "1654:49290",
+      "setKey": "482987a5c5dbc2f03c10d149c72a62575798c155",
+      "noneId": "1654:49225",
+      "singleId": "1654:49244",
+      "dualId": "1654:49266",
+      "sizes": { "none": { "width": 360, "height": 302 }, "single": { "width": 360, "height": 378 }, "dual": { "width": 360, "height": 378 } },
+      "titlePath": "content > header > title",
+      "closePath": "content > header > close",
+      "optionPaths": ["content > list > option[0]", "content > list > option[1]", "content > list > option[2]", "content > list > option[3]"],
+      "footerPaths": { "single": ["footer > primary"], "dual": ["footer > secondary", "footer > primary"] },
+      "extensionPolicy": "Bottom Sheet Dual 인스턴스는 화면 아래에 붙여 360×378, content gap 24, 정본 header와 Footer Dual visible을 유지한다. source에서 정본에 없는 설명문이 옵션 앞에 필요한 화면은 정본 내부 list만 visibility override하고, 설명문과 전체 local Bottom Sheet Option 목록을 header와 footer 사이의 별도 extension frame으로 조합한다. 정본 header와 footer는 숨기거나 대체하지 않는다. 5a1의 다섯 번째 옵션은 local option instance 확장으로 조합한다."
+    },
+    "BottomSheetOption": {
+      "setId": "1654:49152",
+      "setKey": "356ab6d152f432c45ecdc3bb9324d4d531e7c2d2",
+      "textDefaultId": "1654:49097",
+      "textSelectedId": "1654:49099",
+      "textDisabledId": "1839:1782",
+      "size": { "width": 360, "height": 48 },
+      "textPath": "항목",
+      "selectedCheckPath": "check"
+    },
+    "MobileModal": {
+      "setId": "1546:17971",
+      "setKey": "7a48d896f1602c963f2504e7c42f817a9423077c",
+      "singleId": "1610:6729",
+      "dualId": "1611:6731",
+      "baseSize": { "width": 300, "height": 208 },
+      "titlePath": "content > title",
+      "messagePath": "content > message",
+      "messageWidth": 260,
+      "longMessageContract": "message textAutoResize=HEIGHT, width=260 FIXED; modal vertical=HUG; minHeight 없음",
+      "footerPaths": { "single": ["footer > primary"], "dual": ["footer > secondary", "footer > primary"] },
+      "closeExtension": "닫기 아이콘은 허용 키 mobileHeaderClose의 별도 sibling instance로 배치"
+    }
+  },
+  "variables": {
+    "screenBackground": { "id": "VariableID:687:17884", "name": "color/bg/level-0" },
+    "panelBackground": { "id": "VariableID:687:17884", "name": "color/bg/level-0" },
+    "placeholderBackground": { "id": "VariableID:687:17887", "name": "color/bg/level-3" },
+    "titlePrimary": { "id": "VariableID:8:1127", "name": "color/text/title/primary" },
+    "bodySecondary": { "id": "VariableID:8:1117", "name": "color/text/body/secondary" },
+    "bodyTertiary": { "id": "VariableID:8:1118", "name": "color/text/body/tertiary" },
+    "accent": { "id": "VariableID:8:1119", "name": "color/text/state/accent" },
+    "caution": { "id": "VariableID:8:1122", "name": "color/text/state/caution" },
+    "disabled": { "id": "VariableID:8:1124", "name": "color/text/state/disabled" },
+    "placeholder": { "id": "VariableID:8:1065", "name": "color/form-control/text/placeholder" },
+    "divider": { "id": "VariableID:8:1076", "name": "color/line/gray/subtle" },
+    "overlay": { "id": "VariableID:8:1087", "name": "color/overlay" }
+  },
+  "textStyles": {
+    "title24B": "S:46c53f7871b080cddb7382b109ea6247333b9224,",
+    "title20B": "S:46f6df226b7078240376de6530ae592e02a48416,",
+    "title18B": "S:b6d6c9c56e31447617e0a659862acdcbe4d2b812,",
+    "title16B": "S:d5523fda0acb31b07bba12068ab01be15881584e,",
+    "body16M": "S:886ca7d230530051af94c90c7b7931f98b8b23ae,",
+    "body16R": "S:7bdbf8cf1d5c293eb11efaa3ce6b6ef53e9d21cf,",
+    "body14M": "S:0b8aad8ca7e2cfac03033ed19607a4d2fb76aa2a,",
+    "body14R": "S:35d6b9f34501f327f4672b8393023695d2f36c5d,",
+    "body12M": "S:3d9482ca20d89ee38849e1a9903a16527afe55bd,",
+    "body12R": "S:688caf7c5d281ba8b15ce89feda98adccca04d54,"
+  },
+  "allowedRemoteIcons": {
+    "back": "7190e284d345ae19a679a16ed7bceafbd54073ca",
+    "close": "54469d54f16ed38de2d7b420b0e2195e4cf7c118",
+    "check": "5ab251e0d90adb555ee2fa316f84e86041f19916",
+    "chevron": "e1ac97aa82f4e52f257ac1c0ea77fd09d0e5f581",
+    "eyeHide": "d4e9eb5b7e193ee291aa2a7e04396c8de2d2dae7",
+    "eyeShow": "b130623bad9bf035e273501b404bf7a245af1460"
+  }
+}

@@ -1,0 +1,310 @@
+{
+  "schemaVersion": 1,
+  "mode": "navbar-pattern-fix-complete",
+  "checkedAt": "2026-08-31T07:07:51Z",
+  "verdict": "PASS",
+  "verdictScope": "full-independent-verification",
+  "status": "verified-navbar-pattern-fix",
+  "counts": {
+    "screens": 11,
+    "nodes": 1639,
+    "texts": 357,
+    "instances": 119,
+    "localInstances": 78,
+    "allowedRemoteInstances": 41
+  },
+  "violations": {
+    "text": [],
+    "state": [],
+    "field": [],
+    "raw": [],
+    "font": [],
+    "provenance": [],
+    "layout": [],
+    "overflow": []
+  },
+  "snapshot": {
+    "fullDiff": {
+      "beforeNodes": 690,
+      "afterNodes": 1742,
+      "added": 1052,
+      "removed": 0,
+      "changed": 3,
+      "violations": 0,
+      "before": "snapshot-full-before.json",
+      "after": "snapshot-full-after-final-v3.json",
+      "expect": "snapshot-full-expect.json"
+    },
+    "fix3Diff": {
+      "scopeNodes": 5,
+      "beforeNodes": 5,
+      "afterNodes": 5,
+      "added": 0,
+      "removed": 0,
+      "changed": 11,
+      "violations": 0,
+      "before": "snapshot-fix3-before.json",
+      "after": "snapshot-fix3-after.json",
+      "expect": "snapshot-fix3-expect.json"
+    },
+    "bgLevelFixDiff": {
+      "beforeNodes": 1742,
+      "afterNodes": 1742,
+      "added": 0,
+      "removed": 0,
+      "changed": 11,
+      "violations": 0,
+      "before": "snapshot-bg-level-fix-before.json",
+      "after": "snapshot-bg-level-fix-after.json",
+      "expect": "snapshot-bg-level-fix-expect.json"
+    },
+    "sectionNavbarFixDiff": {
+      "beforeNodes": 1742,
+      "afterNodes": 1742,
+      "added": 0,
+      "removed": 0,
+      "changed": 12,
+      "changedFill": 1,
+      "changedChildIndex": 11,
+      "violations": 0,
+      "before": "snapshot-section-navbar-fix-before.json",
+      "after": "snapshot-section-navbar-fix-after.json",
+      "expect": "snapshot-section-navbar-fix-expect.json"
+    },
+    "navbarPatternBaseDiff": {
+      "beforeNodes": 16,
+      "afterNodes": 16,
+      "added": 0,
+      "removed": 0,
+      "changed": 9,
+      "changedMainComponent": 3,
+      "changedY": 3,
+      "changedHeight": 3,
+      "violations": 0,
+      "before": "snapshot-navbarfix-base-before.json",
+      "after": "snapshot-navbarfix-base-after.json",
+      "expect": "snapshot-navbarfix-base-expect.json"
+    },
+    "navbarPatternOverlayDiff": {
+      "beforeNodes": 41,
+      "afterNodes": 41,
+      "added": 0,
+      "removed": 0,
+      "changed": 12,
+      "changedMainComponent": 3,
+      "changedY": 3,
+      "changedHeight": 6,
+      "violations": 0,
+      "before": "snapshot-navbarfix-before.json",
+      "after": "snapshot-navbarfix-overlay-after.json",
+      "expect": "snapshot-navbarfix-overlay-expect.json"
+    }
+  },
+  "canonicalChecks": {
+    "mobileHeaders": {
+      "newScreenCount": 6,
+      "standardMainId": "1898:12288",
+      "closeMainId": "1898:12349",
+      "remote": false,
+      "size": "360x149",
+      "nestedStatusBarDirectMutation": false
+    },
+    "domainBottomSheet": {
+      "mainId": "1654:49225",
+      "remote": false,
+      "size": "360x302",
+      "y": 394,
+      "optionRowsY": [
+        464,
+        512,
+        560,
+        608,
+        654
+      ],
+      "sourceAnchorRowsY": [
+        462,
+        510,
+        558,
+        606,
+        654
+      ],
+      "allowedDeviation": "AD-6: canonical internal rows +2px",
+      "selectedOption": "naver.com",
+      "fifthOptionExtensionId": "1996:19330"
+    },
+    "appInstall": {
+      "rootId": "1989:358",
+      "icon": {
+        "id": "1989:19034",
+        "x": 140,
+        "y": 269,
+        "w": 80,
+        "h": 80,
+        "radius": 20,
+        "fill": {
+          "id": "VariableID:687:17887",
+          "name": "color/bg/level-3"
+        }
+      },
+      "label": {
+        "id": "1989:19035",
+        "screenX": 150,
+        "screenY": 300,
+        "fill": {
+          "id": "VariableID:8:1118",
+          "name": "color/text/body/tertiary"
+        }
+      },
+      "welcome": {
+        "id": "1989:19036",
+        "y": 373,
+        "fill": {
+          "id": "VariableID:8:1119",
+          "name": "color/text/state/accent"
+        }
+      }
+    },
+    "passwordConditionModal": {
+      "rootId": "1996:2",
+      "modal": {
+        "id": "1996:12",
+        "x": 30,
+        "y": 220,
+        "w": 300,
+        "h": 293
+      },
+      "close": {
+        "id": "1996:22",
+        "x": 282,
+        "y": 244,
+        "w": 24,
+        "h": 24,
+        "insetX": 252,
+        "insetY": 24
+      }
+    },
+    "screenRootBackground": {
+      "count": 11,
+      "id": "VariableID:687:17884",
+      "name": "color/bg/level-0"
+    },
+    "remainingLevel1": {
+      "count": 8,
+      "authoredControls": 2,
+      "componentInternals": 6,
+      "protected": true
+    },
+    "sectionTransparency": {
+      "id": "1744:1782",
+      "fillsCount": 0,
+      "geometryUnchanged": true,
+      "childrenUnchanged": true
+    },
+    "overlayStacking": {
+      "rule": "Dim < NavBar < Panel",
+      "1858:1785": { "dim": 3, "navbar": 4, "panel": 5, "exact": true },
+      "1996:2": { "dim": 3, "navbar": 4, "panel": 5, "exact": true },
+      "1996:19300": { "dim": 3, "navbar": 4, "panel": 5, "exact": true }
+    },
+    "navbarPatternFix": {
+      "setId": "2238:17407",
+      "variantId": "2238:17258",
+      "variantKey": "f4ceb72ca95b8d6ba211ee3a475b74ad263b3ed8",
+      "remote": false,
+      "instances": ["1989:399", "1858:17880", "1989:18789", "1858:18282", "1996:9", "1996:19302"],
+      "instanceBox": { "x": 0, "y": 439, "width": 360, "height": 341 },
+      "children": [
+        { "name": "keyboard", "y": 0, "width": 360, "height": 296, "visible": true },
+        { "name": "android-nav", "y": 296, "width": 360, "height": 45, "visible": true }
+      ],
+      "browserToolbarCount": 0,
+      "nestedOverrideViolationCount": 0,
+      "overlayDims": [
+        { "id": "1858:18449", "x": 0, "y": 0, "width": 360, "height": 735 },
+        { "id": "1996:11", "x": 0, "y": 0, "width": 360, "height": 735 },
+        { "id": "1996:19310", "x": 0, "y": 0, "width": 360, "height": 735 }
+      ]
+    }
+  },
+  "pairFingerprints": [
+    {
+      "base": "1",
+      "overlay": "2a1",
+      "identical": true
+    },
+    {
+      "base": "3",
+      "overlay": "2b1",
+      "identical": true,
+      "orderInsensitive": true,
+      "nodeCount": 188
+    },
+    {
+      "base": "4",
+      "overlay": "4a1",
+      "identical": true,
+      "orderInsensitive": true,
+      "nodeCount": 211
+    },
+    {
+      "base": "5",
+      "overlay": "5a1",
+      "identical": true,
+      "orderInsensitive": true,
+      "nodeCount": 199
+    }
+  ],
+  "screenshots": [
+    "screenshot-fix2-terms.png",
+    "screenshot-fix2-password.png",
+    "screenshot-fix2-modal.png",
+    "screenshot-fix2-bottom-sheet.png",
+    "screenshot-full-3.png",
+    "screenshot-full-5.png",
+    "screenshot-full-6.png",
+    "screenshot-full-1a1.png",
+    "screenshot-full-4a1.png",
+    "screenshot-full-5a1.png",
+    "screenshot-fix3-app-install.png",
+    "screenshot-fix3-password-modal.png",
+    "screenshot-bg-level-fix-base.png",
+    "screenshot-bg-level-fix-overlay.png",
+    "screenshot-section-navbar-fix-overview.png",
+    "screenshot-section-navbar-fix-2b1.png",
+    "screenshot-section-navbar-fix-4a1.png",
+    "screenshot-section-navbar-fix-5a1.png",
+    "screenshot-navbarfix-after-3.png",
+    "screenshot-navbarfix-after-4.png",
+    "screenshot-navbarfix-after-5.png",
+    "screenshot-navbarfix-after-2b1.png",
+    "screenshot-navbarfix-after-4a1.png",
+    "screenshot-navbarfix-after-5a1.png",
+    "screenshot-navbarfix-legacy-2b1.png",
+    "screenshot-navbarfix-legacy-4a1.png",
+    "screenshot-navbarfix-legacy-5a1.png"
+  ],
+  "trace": {
+    "status": "historical-before-navbar-pattern-fix",
+    "staleReason": "NavBar instance internals changed from the former 391px variant to canonical 341px; current verdict uses independent live scan plus compact base/overlay snapshots.",
+    "files": [
+      {
+        "path": "reports/screen-rebuild/modu-app/signup-mobile-web/trace-section-navbar-fix-full.json",
+        "count": 482,
+        "nodeCount": 1741,
+        "sha256": "4e5ead56e0410f7539e68f10d2f9b4c00afd606c47cb543e69ac80e8d5bd1457"
+      }
+    ],
+    "totalCount": 482,
+    "totalNodeCount": 1741,
+    "currentLiveNodeCount": 1639,
+    "currentLiveTextCount": 357,
+    "currentEvidence": [
+      "snapshot-navbarfix-base-before.json",
+      "snapshot-navbarfix-base-expect.json",
+      "snapshot-navbarfix-base-after.json",
+      "snapshot-navbarfix-before.json",
+      "snapshot-navbarfix-overlay-expect.json",
+      "snapshot-navbarfix-overlay-after.json"
+    ]
+  }
+}

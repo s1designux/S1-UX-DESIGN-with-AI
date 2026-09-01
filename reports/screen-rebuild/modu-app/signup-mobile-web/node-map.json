@@ -1,0 +1,428 @@
+{
+  "schemaVersion": 1,
+  "artifact": "screen-rebuild-node-map",
+  "generatedAt": "2026-08-31T07:07:51Z",
+  "service": "modu-app",
+  "flow": "signup-mobile-web",
+  "status": "verified-navbar-pattern-fix",
+  "target": {
+    "fileKey": "cysG5U1udpQqVagYY1hWHW",
+    "pageId": "173:2431",
+    "sectionId": "1744:1782",
+    "sectionSize": {
+      "width": 2520,
+      "height": 1880
+    },
+    "preservedPlaceholder": {
+      "id": "1744:1783",
+      "x": 480,
+      "y": 100,
+      "index": 1
+    }
+  },
+  "latestVerification": {
+    "scope": "navbar-pattern-fix",
+    "verifiedBy": "component-verifier",
+    "verdict": "PASS",
+    "checkedAt": "2026-08-31T07:07:51Z",
+    "canonical": {
+      "setId": "2238:17407",
+      "webKeyboardVariantId": "2238:17258",
+      "webKeyboardVariantKey": "f4ceb72ca95b8d6ba211ee3a475b74ad263b3ed8",
+      "size": { "width": 360, "height": 341 },
+      "children": [
+        { "name": "keyboard", "y": 0, "width": 360, "height": 296 },
+        { "name": "android-nav", "y": 296, "width": 360, "height": 45 }
+      ]
+    },
+    "instanceIds": ["1989:399", "1858:17880", "1989:18789", "1858:18282", "1996:9", "1996:19302"],
+    "overlayDimIds": ["1858:18449", "1996:11", "1996:19310"],
+    "liveCounts": { "nodes": 1639, "texts": 357, "instances": 119, "localInstances": 78, "allowedRemoteInstances": 41 },
+    "violations": { "text": 0, "state": 0, "raw": 0, "font": 0, "provenance": 0, "layout": 0, "overflow": 0 }
+  },
+  "screens": [
+    {
+      "key": "1",
+      "name": "MWEB/SIGNUP/1 · 약관 전체 동의",
+      "rootId": "1858:1782",
+      "position": {
+        "x": 80,
+        "y": 100
+      },
+      "keyNodeIds": [
+        "1858:1786"
+      ],
+      "trace": {
+        "path": "reports/screen-rebuild/modu-app/signup-mobile-web/trace-full-1.json",
+        "count": 26,
+        "nodeCount": 104,
+        "sha256": "280388b07de8ff8f5902e72aee8d6761222e482907e34b9f08d803937d3bb166"
+      }
+    },
+    {
+      "key": "2",
+      "name": "MWEB/SIGNUP/2 · 외부 본인인증 (플레이스홀더)",
+      "rootId": "1744:1783",
+      "position": {
+        "x": 480,
+        "y": 100
+      },
+      "keyNodeIds": [],
+      "trace": {
+        "path": "reports/screen-rebuild/modu-app/signup-mobile-web/trace-full-2.json",
+        "count": 3,
+        "nodeCount": 8,
+        "sha256": "b4a3ad0e6acbd57c0e32ec770459b705027bfa97148cb2bb57e93a5f764410a2"
+      }
+    },
+    {
+      "key": "3",
+      "name": "MWEB/SIGNUP/3 · 아이디 입력 중 (키보드)",
+      "rootId": "1989:356",
+      "position": {
+        "x": 880,
+        "y": 100
+      },
+      "keyNodeIds": [
+        "1989:360",
+        "1989:399",
+        "1989:548",
+        "1989:549",
+        "1989:550",
+        "1989:564"
+      ],
+      "trace": {
+        "path": "reports/screen-rebuild/modu-app/signup-mobile-web/trace-full-final-3.json",
+        "count": 55,
+        "nodeCount": 206,
+        "sha256": "0a6601b3923c76d8e28b25256e8b51ab8a5e7fe7d4ac414e78e190fbf10711f7"
+      }
+    },
+    {
+      "key": "4",
+      "name": "MWEB/SIGNUP/4 · 비밀번호 입력 중 (키보드)",
+      "rootId": "1858:1783",
+      "position": {
+        "x": 1280,
+        "y": 100
+      },
+      "keyNodeIds": [
+        "1858:17819",
+        "1858:18081"
+      ],
+      "trace": {
+        "path": "reports/screen-rebuild/modu-app/signup-mobile-web/trace-full-4.json",
+        "count": 62,
+        "nodeCount": 229,
+        "sha256": "b3b7347819d54d9b4ae1a84e1a57d8abd33ce0fbb66f75ee58e0217bd95a0d95"
+      }
+    },
+    {
+      "key": "5",
+      "name": "MWEB/SIGNUP/5 · 이메일 입력 중 (키보드)",
+      "rootId": "1989:357",
+      "position": {
+        "x": 1680,
+        "y": 100
+      },
+      "keyNodeIds": [
+        "1989:18750",
+        "1989:18789",
+        "1989:18938",
+        "1989:18939",
+        "1989:18940",
+        "1989:18953",
+        "1989:18954",
+        "1989:18961",
+        "1989:18966"
+      ],
+      "trace": {
+        "path": "reports/screen-rebuild/modu-app/signup-mobile-web/trace-full-final-5.json",
+        "count": 60,
+        "nodeCount": 217,
+        "sha256": "7fd8e073deec31cf2bd9f5764975ef952946fdf91f264e2696aba79bd141d323"
+      }
+    },
+    {
+      "key": "6",
+      "name": "MWEB/SIGNUP/6 · 앱 설치 안내",
+      "rootId": "1989:358",
+      "position": {
+        "x": 2080,
+        "y": 100
+      },
+      "keyNodeIds": [
+        "1989:18968",
+        "1989:19007",
+        "1989:19034",
+        "1989:19035",
+        "1989:19036",
+        "1989:19037",
+        "1989:19038",
+        "1989:19040"
+      ],
+      "trace": {
+        "path": "reports/screen-rebuild/modu-app/signup-mobile-web/trace-full-final-6.json",
+        "count": 15,
+        "nodeCount": 75,
+        "sha256": "c3805a785eed25baba6bb0b97b68f4130fe1c8844a2676f902763c0095ea735a"
+      },
+      "fix3": {
+        "iconId": "1989:19034",
+        "labelId": "1989:19035",
+        "welcomeId": "1989:19036"
+      }
+    },
+    {
+      "key": "1a1",
+      "name": "MWEB/SIGNUP/1a1 · 회원 약관 상세",
+      "rootId": "1989:359",
+      "position": {
+        "x": 80,
+        "y": 1000
+      },
+      "keyNodeIds": [
+        "1995:2",
+        "1995:78",
+        "1995:105",
+        "1995:106",
+        "1995:107",
+        "1995:108",
+        "1995:109",
+        "1995:110"
+      ],
+      "trace": {
+        "path": "reports/screen-rebuild/modu-app/signup-mobile-web/trace-full-final-1a1.json",
+        "count": 14,
+        "nodeCount": 75,
+        "sha256": "1dc84e047c057f9babd53544556a8652232d22bebd7dfc87b8c69e6493603533"
+      }
+    },
+    {
+      "key": "2a1",
+      "name": "MWEB/SIGNUP/2a1 · 가입 회원 안내 (모달)",
+      "rootId": "1858:1784",
+      "position": {
+        "x": 480,
+        "y": 1000
+      },
+      "keyNodeIds": [
+        "1858:18209",
+        "1858:18218"
+      ],
+      "trace": {
+        "path": "reports/screen-rebuild/modu-app/signup-mobile-web/trace-full-2a1.json",
+        "count": 33,
+        "nodeCount": 116,
+        "sha256": "f5aa14b16373964533506e89a8c3ac3dfa1e8c7e3e9f50e937a51e107626f093"
+      }
+    },
+    {
+      "key": "2b1",
+      "name": "MWEB/SIGNUP/2b1 · 기존 아이디 선택 (바텀시트)",
+      "rootId": "1858:1785",
+      "position": {
+        "x": 880,
+        "y": 1000
+      },
+      "keyNodeIds": [
+        "1858:18450",
+        "1930:581",
+        "1930:582",
+        "1930:587",
+        "1930:589",
+        "1930:591"
+      ],
+      "trace": {
+        "path": "reports/screen-rebuild/modu-app/signup-mobile-web/trace-full-2b1.json",
+        "count": 72,
+        "nodeCount": 232,
+        "sha256": "c443a3c905d2950a66655b5c91b5bfc6720abb952edfa2d2a9ed9821b45cb972"
+      }
+    },
+    {
+      "key": "4a1",
+      "name": "MWEB/SIGNUP/4a1 · 비밀번호 조건 안내 (다이얼로그)",
+      "rootId": "1996:2",
+      "position": {
+        "x": 1280,
+        "y": 1000
+      },
+      "keyNodeIds": [
+        "1996:3",
+        "1996:9",
+        "1996:11",
+        "1996:12",
+        "1996:22"
+      ],
+      "trace": {
+        "path": "reports/screen-rebuild/modu-app/signup-mobile-web/trace-full-final-4a1.json",
+        "count": 68,
+        "nodeCount": 240,
+        "sha256": "ffda87259a11b1f6d62748d080885dee1d567ae0991e92746d0a019a78865d18"
+      },
+      "fix3": {
+        "modalId": "1996:12",
+        "closeId": "1996:22"
+      }
+    },
+    {
+      "key": "5a1",
+      "name": "MWEB/SIGNUP/5a1 · 이메일 도메인 선택 (바텀시트)",
+      "rootId": "1996:19300",
+      "position": {
+        "x": 1680,
+        "y": 1000
+      },
+      "keyNodeIds": [
+        "1996:19301",
+        "1996:19302",
+        "1996:19310",
+        "1996:19311",
+        "1996:19330"
+      ],
+      "trace": {
+        "path": "reports/screen-rebuild/modu-app/signup-mobile-web/trace-full-final-v4-5a1.json",
+        "count": 74,
+        "nodeCount": 239,
+        "sha256": "3d38fefbdd255d846e3af69de32e7e3dd3295bc157e5f3924dda464934bfbe2f"
+      }
+    }
+  ],
+  "counts": {
+    "screenRoots": 11,
+    "newScreenRoots": 10,
+    "preservedPlaceholders": 1,
+    "snapshotAdded": 1052,
+    "visibleNodes": 1741
+  },
+  "mutatedNodeIds": {
+    "fullOrdering": [
+      "1858:1783",
+      "1858:1784",
+      "1858:1785"
+    ],
+    "finalDomainSelection": [
+      "I1996:19311;1654:49233",
+      "I1996:19311;1654:49235",
+      "I1996:19311;1654:49233;1654:49100",
+      "I1996:19311;1654:49235;1654:49098",
+      "I1996:19311;1654:49242;1654:49098"
+    ],
+    "fix3": [
+      "1989:19034",
+      "1989:19035",
+      "1989:19036",
+      "1996:22"
+    ],
+    "bgLevelFix": [
+      "1858:1782",
+      "1744:1783",
+      "1989:356",
+      "1858:1783",
+      "1989:357",
+      "1989:358",
+      "1989:359",
+      "1858:1784",
+      "1858:1785",
+      "1996:2",
+      "1996:19300"
+    ],
+    "sectionNavbarFix": [
+      "1744:1782",
+      "1858:18282",
+      "1858:18431",
+      "1858:18447",
+      "1858:18449",
+      "1996:9",
+      "1996:10",
+      "1996:11",
+      "1996:19302",
+      "1996:19303",
+      "1996:19309",
+      "1996:19310"
+    ],
+    "sectionNavbarFixTouched": [
+      "1744:1782",
+      "1858:1785", "1858:18221", "1858:18431", "1858:18447", "1858:18449", "1858:18282", "1858:18450", "1930:581",
+      "1996:2", "1996:3", "1996:4", "1996:10", "1996:11", "1996:9", "1996:12", "1996:22",
+      "1996:19300", "1996:19301", "1996:19303", "1996:19309", "1996:19310", "1996:19302", "1996:19311", "1996:19330"
+    ],
+    "navbarPatternFix": [
+      "1989:399", "1858:17880", "1989:18789",
+      "1858:18282", "1996:9", "1996:19302",
+      "1858:18449", "1996:11", "1996:19310"
+    ]
+  },
+  "snapshots": {
+    "fullBefore": "snapshot-full-before.json",
+    "fullAfter": "snapshot-full-after-final-v3.json",
+    "fullExpect": "snapshot-full-expect.json",
+    "fix3Before": "snapshot-fix3-before.json",
+    "fix3Expect": "snapshot-fix3-expect.json",
+    "fix3After": "snapshot-fix3-after.json",
+    "bgLevelFixBefore": "snapshot-bg-level-fix-before.json",
+    "bgLevelFixExpect": "snapshot-bg-level-fix-expect.json",
+    "bgLevelFixAfter": "snapshot-bg-level-fix-after.json",
+    "sectionNavbarFixBefore": "snapshot-section-navbar-fix-before.json",
+    "sectionNavbarFixExpect": "snapshot-section-navbar-fix-expect.json",
+    "sectionNavbarFixAfter": "snapshot-section-navbar-fix-after.json",
+    "navbarPatternBaseBefore": "snapshot-navbarfix-base-before.json",
+    "navbarPatternBaseExpect": "snapshot-navbarfix-base-expect.json",
+    "navbarPatternBaseAfter": "snapshot-navbarfix-base-after.json",
+    "navbarPatternOverlayBefore": "snapshot-navbarfix-before.json",
+    "navbarPatternOverlayExpect": "snapshot-navbarfix-overlay-expect.json",
+    "navbarPatternOverlayAfter": "snapshot-navbarfix-overlay-after.json",
+    "navbarCanonicalBefore": "snapshot-navbarfix-canon-before.json",
+    "navbarCanonicalExpect": "snapshot-navbarfix-canon-expect.json",
+    "navbarCanonicalAfter": "snapshot-navbarfix-canon-after.json"
+  },
+  "screenshots": [
+    "screenshot-fix2-terms.png",
+    "screenshot-fix2-password.png",
+    "screenshot-fix2-modal.png",
+    "screenshot-fix2-bottom-sheet.png",
+    "screenshot-full-3.png",
+    "screenshot-full-5.png",
+    "screenshot-full-6.png",
+    "screenshot-full-1a1.png",
+    "screenshot-full-4a1.png",
+    "screenshot-full-5a1.png",
+    "screenshot-bg-level-fix-base.png",
+    "screenshot-bg-level-fix-overlay.png",
+    "screenshot-section-navbar-fix-overview.png",
+    "screenshot-section-navbar-fix-2b1.png",
+    "screenshot-section-navbar-fix-4a1.png",
+    "screenshot-section-navbar-fix-5a1.png",
+    "screenshot-navbarfix-after-3.png",
+    "screenshot-navbarfix-after-4.png",
+    "screenshot-navbarfix-after-5.png",
+    "screenshot-navbarfix-after-2b1.png",
+    "screenshot-navbarfix-after-4a1.png",
+    "screenshot-navbarfix-after-5a1.png",
+    "screenshot-navbarfix-legacy-2b1.png",
+    "screenshot-navbarfix-legacy-4a1.png",
+    "screenshot-navbarfix-legacy-5a1.png"
+  ],
+  "trace": {
+    "status": "historical-before-navbar-pattern-fix",
+    "staleReason": "Per-screen/full traces predate the new 341px NavBar main component. Current verification evidence is the independent live scan plus compact base/overlay snapshots.",
+    "files": [
+      {
+        "key": "section-navbar-fix-full",
+        "path": "reports/screen-rebuild/modu-app/signup-mobile-web/trace-section-navbar-fix-full.json",
+        "count": 482,
+        "nodeCount": 1741,
+        "sha256": "4e5ead56e0410f7539e68f10d2f9b4c00afd606c47cb543e69ac80e8d5bd1457"
+      }
+    ],
+    "totalCount": 482,
+    "totalNodeCount": 1741,
+    "currentLiveNodeCount": 1639,
+    "currentLiveTextCount": 357
+  },
+  "screenshotsFix3": [
+    "screenshot-fix3-app-install.png",
+    "screenshot-fix3-password-modal.png"
+  ]
+}

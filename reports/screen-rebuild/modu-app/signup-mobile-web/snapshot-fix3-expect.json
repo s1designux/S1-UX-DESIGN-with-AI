@@ -1,0 +1,49 @@
+{
+  "meta": {
+    "scope": "fix3-impact-nodes",
+    "plannedMutatedNodeIds": [
+      "1989:19034",
+      "1989:19035",
+      "1989:19036",
+      "1996:22"
+    ],
+    "unchangedAnchorNodeIds": [
+      "1996:12"
+    ]
+  },
+  "added": [],
+  "removed": [],
+  "changed": [
+    {
+      "field": "x",
+      "count": 2,
+      "note": "App Icon 150→140; nested label 0→10 to preserve source screen x150"
+    },
+    {
+      "field": "y",
+      "count": 3,
+      "note": "App Icon 300→269; nested label 22→31 to preserve source screen y300; Modal Close 199→244"
+    },
+    {
+      "field": "w",
+      "count": 1,
+      "note": "App Icon 60→80"
+    },
+    {
+      "field": "h",
+      "count": 1,
+      "note": "App Icon 60→80"
+    },
+    {
+      "field": "cr",
+      "count": 1,
+      "note": "App Icon radius 12→20"
+    },
+    {
+      "field": "f",
+      "count": 3,
+      "note": "App Icon→bg/level-3; label→body/tertiary; welcome→state/accent"
+    }
+  ]
+}
+

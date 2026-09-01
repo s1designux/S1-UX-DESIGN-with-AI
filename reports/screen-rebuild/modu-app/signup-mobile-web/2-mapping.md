@@ -29,7 +29,7 @@
 
 | 요소 | 분류 | 정본 |
 |---|---|---|
-| 제목 없는 앱바 | 정본 인스턴스 | Mobile Header `1760:7247`, `Type=Standard / No Title` `1760:7217` |
+| 제목 없는 앱바 | 정본 인스턴스 | Mobile Header `1760:7247`, `Type=Standard / No Title, Platform=Web` `1898:12288` |
 | 웹 상단 크롬 | 정본 인스턴스 | StatusBar `1654:37420`, `Platform=Web` `1654:37388` |
 | 웹 하단 크롬 | 정본 인스턴스 | NavBar `1654:37800`, `Platform=Web` `1654:37492` |
 | 키보드 화면 하단 | 정본 인스턴스 | NavBar `Platform=Web+Keyboard` `1654:37651`; URL 바·키보드·하단 내비를 별도 제작하지 않음 |
@@ -66,6 +66,7 @@
 
 ## 색·타이포 매핑
 
+- 화면 루트 배경 → `color/bg/level-0` (2026-08-31 river 교정). `color/bg/level-1`은 화면 배경에 사용하지 않는다. NavBar 정본 내부 키보드 깊이 표현과 외부 인증 placeholder의 작은 action 표면은 이번 교정 대상이 아니다.
 - 화면 제목 → `color/text/title/primary`
 - 입력 라벨·본문값 → `color/text/body/secondary`
 - 설명·헬퍼·안내·불릿 → `color/text/body/tertiary`
@@ -73,6 +74,7 @@
 - disabled → `color/text/state/disabled`
 - accent/link → `color/text/state/accent`
 - error → `color/text/state/caution`
+- 앱 아이콘 placeholder → `color/bg/level-3`, 80×80, radius 20; 내부 라벨 → `color/text/body/tertiary`
 - 모든 화면 저작 색은 Variable 바인딩, 모든 화면 저작 텍스트는 Pretendard 정본 TextStyle 바인딩.
 
 ## Fast-safe pilot
@@ -92,14 +94,26 @@ pilot PASS 후 나머지 6장 신규 화면을 같은 manifest/spec으로 일괄
 3. 원본 raw 색은 동일 역할의 Semantic Variable로 수렴한다.
 4. 외부 본인인증 화면은 river 승인 intent-spec의 placeholder 표현을 그대로 유지한다.
 5. 약관 상세는 현재 Figma 캡처에 존재하는 제1조·제2조까지만 재현하며 제3조 이후를 지어내지 않는다.
+6. 기존 아이디 바텀시트는 화면 아래에 붙여 Dual 정본의 360×378·content gap 24·보이는 header와 Footer Dual을 유지한다. 설명문이 옵션 앞에 필요한 원본 구조는 정본 내부 목록만 숨기고, 설명문과 정본 옵션 4개를 header와 footer 사이의 별도 확장 프레임으로 조합한다. 정본 header와 footer를 숨기거나 대체하지 않는다(2026-08-31 river 승인 원칙과 정본 실측 반영).
+7. 비밀번호 입력 원본은 확인 Input의 라벨만 노출하고 field는 CTA가 47px, OS 키보드가 3px 가리는 상태다. target도 정본 Input·Button을 유지한 채 이 레이어 순서와 의도적 가림을 재현한다. 버튼은 정본 규격 320×48로 수렴한다(2026-08-31 원본 실측).
+8. Mobile Header는 `Type 6종 × Platform App/Web` 정본으로 보완했다. 모바일 웹 화면은 부모 Header에서 `Platform=Web` 변형을 선택하며 내부 StatusBar를 직접 교체하거나 늘리지 않는다. App 6종은 기존 ID와 99px 높이를 보존하고 Web 6종은 주소창을 포함한 149px 높이를 사용한다(2026-08-31 독립 검증·Gate PASS).
+9. Pattern Section `1744:1782` 자체는 fill 없이 투명하게 유지한다. 각 360×780 화면 루트가 `color/bg/level-0` 배경을 소유한다.
+10. `2b1`·`4a1`·`5a1`의 레이어는 기본 콘텐츠 → Dim → NavBar → Bottom Sheet/Modal 순서다. NavBar는 Dim에 가려지지 않고 overlay panel보다 뒤에 있어야 한다. 기본 화면과의 콘텐츠 동일성은 child index를 제외해 비교하고, stacking은 별도 invariant로 검사한다.
 
-## 결정 필요 (HD)
+## 결정 필요 (HD) — 해소
 
-### HD-1 — Bottom Sheet Option `Type=Text, State=Disabled`
+### HD-1 — Bottom Sheet Option `Type=Text, State=Disabled` ✅ 해소
 
 기존 아이디 목록 마지막 행 `s1secom4(이미 사용중인 아이디)`는 단순 텍스트형 비활성 옵션이다. 현재 로컬 정본에는 `Text Default/Selected`와 `List Default/Disabled`만 있고 `Text Disabled`가 없다. `List Disabled`는 360×65와 아바타·서브텍스트 구조라 원본 대체가 불가능하다.
 
 - 권장: Bottom Sheet Option 정본에 `Type=Text, State=Disabled` 1종을 figma-library-build로 신설한 뒤 screen-rebuild 재개.
 - 대안: 원본과 다른 `List Disabled` 사용(비추천).
 
-이 결정 전에는 pilot 중 `2b1` 빌드를 시작하지 않는다.
+2026-08-26 river 승인 후 정본·설치기·Figma에 추가했다.
+
+- Figma 정본 variant: `1839:1782`
+- 세트: Bottom Sheet Option `1654:49152` (8→9종)
+- 구조: 360×48, 아이콘 없음, `color/text/state/disabled`
+- 독립 검증: ❌ 0 · ❓ 0 · Gate 13 갱신 후 전체 Gate PASS
+
+따라서 pilot의 `2b1` 빌드 blocker는 해소됐다.

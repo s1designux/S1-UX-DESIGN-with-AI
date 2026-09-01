@@ -3,15 +3,15 @@
     "id": "mobile-header",
     "name": "Mobile Header",
     "category": "navigation",
-    "updatedAt": "2026-08-26",
-    "version": "0.4.0",
+    "updatedAt": "2026-08-31",
+    "version": "0.5.0",
     "tokenStatus": "stable",
     "codeStatus": "implemented",
     "darkModeStatus": "stable",
     "a11yStatus": "pending",
     "figmaStatus": "confirmed",
     "harnessStatus": "not-started",
-    "description": "모바일 화면 상단의 StatusBar와 AppBar를 하나로 묶은 360×99 코어 컴포넌트. 홈형 2종·표준형 4종을 Type 축으로 제공한다.",
+    "description": "모바일 화면 상단의 StatusBar와 AppBar를 하나로 묶은 코어 컴포넌트. 홈형 2종·표준형 4종을 Type 축으로, 앱(360×99)·모바일 웹(360×149)을 Platform 축으로 제공한다.",
     "notes": [
       "V2.4 mobile_header(540:6112)의 5종을 원본으로 삼는다.",
       "2026-08-25 river: 원본 'Home title_icon 2'(홈 + 알림 2개)는 실제로 쓰지 않는 기준이라 삭제했다.",
@@ -20,10 +20,10 @@
       "2026-08-25 river: Back·Close 아이콘 색은 원본 실측값 color/icon/gray-dark(#353535)다. v1이 gray-light로 잘못 연결했던 것을 교정했다.",
       "2026-08-25 river: 홈 배경 #F5F6FB를 color/bg/home으로 정본화했다(Foundation base/home-bg alias). 그 전까지 쓰던 color/bg/level-2(#F5F5F5)는 푸른기가 없어 원본과 다른 색이었다.",
       "2026-08-26 river: color/bg/home의 다크값은 blue-dark/50으로 확정했다. Standard 4종 배경은 color/bg/level-0을 사용한다.",
-      "2026-08-26 river: 스펙은 Home 2종 첫 행, Standard 4종 둘째 행으로 배치하고, 폭이 길어져 Dark 스펙은 Light 스펙 아래에 둔다.",
-      "2026-08-26 river: 별도 Light 스펙 프레임은 만들지 않는다. Mobile Header 컴포넌트 세트 자체를 Light 보드로 정리하고, Dark 스펙만 6종 인스턴스를 복사해 구성한다.",
+      "2026-08-31 river: Type 6종마다 Platform=App/Web을 제공하는 12개 완전 조합으로 확장했다. 앱은 360×99, 모바일 웹은 브라우저 주소창을 포함해 360×149다.",
+      "2026-08-31 river: 스펙은 Platform별 Home 2종·Standard 4종 행으로 배치하고, 폭이 길어져 Dark 스펙은 Light 스펙 아래에 둔다.",
       "2026-08-25 river: StatusBar 인스턴스의 Light 모드 핀을 해제해 다크를 상속하게 했고, 배경을 투명으로 두어 헤더 전체가 한 색으로 이어지게 했다(원본 구조). StatusBar 정본 세트는 변경하지 않았다.",
-      "StatusBar는 Platform=App 정본 인스턴스를 재사용하며, 색은 Semantic 변수·텍스트는 Pretendard 정본 스타일에만 바인딩한다.",
+      "StatusBar는 선택한 Platform과 같은 정본 인스턴스를 재사용하며, 색은 Semantic 변수·텍스트는 Pretendard 정본 스타일에만 바인딩한다.",
       "원본 아래화살표 legacy key는 V3 import가 불가능해 river 승인(2026-08-25)에 따라 아이콘 라이브러리 V2.2 419:68의 오른쪽 화살표를 -90° 회전해 사용한다."
     ]
   },
@@ -34,13 +34,13 @@
     ],
     "whenNotToUse": [
       "PC 화면의 전역 내비게이션에는 GNB를 쓴다.",
-      "브라우저 주소창까지 포함해야 하는 모바일 웹 크롬에는 StatusBar의 Platform=Web 조합을 별도 패턴에서 사용한다."
+      "모바일 화면이 아닌 PC 전용 헤더에는 사용하지 않는다."
     ]
   },
   "anatomy": [
     {
       "part": "StatusBar",
-      "role": "Platform=App 정본 인스턴스. 360×27. 배경은 투명이며 헤더 프레임 배경을 상속한다. Appearance 모드도 부모를 따른다."
+      "role": "선택한 Platform의 StatusBar 정본 인스턴스. App은 360×27, Web은 주소창을 포함한 360×77이다. 배경은 투명이며 헤더 프레임 배경과 Appearance 모드를 상속한다."
     },
     {
       "part": "AppBar",
@@ -81,16 +81,20 @@
       "Standard / Title + Close",
       "Standard / No Title",
       "Standard / No Title + Close"
+    ],
+    "Platform": [
+      "App",
+      "Web"
     ]
   },
   "sizing": {
     "root": {
-      "width": 360,
-      "height": 99
+      "App": { "width": 360, "height": 99 },
+      "Web": { "width": 360, "height": 149 }
     },
     "statusBar": {
-      "width": 360,
-      "height": 27
+      "App": { "width": 360, "height": 27 },
+      "Web": { "width": 360, "height": 77 }
     },
     "statusToAppBarGap": 16,
     "appBar": {
@@ -143,12 +147,18 @@
     "figmaNodeId": "1760:7247",
     "fileKey": "cysG5U1udpQqVagYY1hWHW",
     "variantNodes": {
-      "Type=Home / Title": "1759:7204",
-      "Type=Home / Title + Subtitle + 1 Icon": "1759:7167",
-      "Type=Standard / Title": "1757:7099",
-      "Type=Standard / Title + Close": "1757:7129",
-      "Type=Standard / No Title": "1760:7217",
-      "Type=Standard / No Title + Close": "1781:7359"
+      "Type=Home / Title, Platform=App": "1759:7204",
+      "Type=Home / Title + Subtitle + 1 Icon, Platform=App": "1759:7167",
+      "Type=Standard / Title, Platform=App": "1757:7099",
+      "Type=Standard / Title + Close, Platform=App": "1757:7129",
+      "Type=Standard / No Title, Platform=App": "1760:7217",
+      "Type=Standard / No Title + Close, Platform=App": "1781:7359",
+      "Type=Home / Title, Platform=Web": "1898:12036",
+      "Type=Home / Title + Subtitle + 1 Icon, Platform=Web": "1898:12094",
+      "Type=Standard / Title, Platform=Web": "1898:12162",
+      "Type=Standard / Title + Close, Platform=Web": "1898:12224",
+      "Type=Standard / No Title, Platform=Web": "1898:12288",
+      "Type=Standard / No Title + Close, Platform=Web": "1898:12349"
     },
     "usageExample": "1760:7247",
     "propertyMap": {
@@ -159,6 +169,10 @@
         "Standard / Title + Close",
         "Standard / No Title",
         "Standard / No Title + Close"
+      ],
+      "Platform": [
+        "App",
+        "Web"
       ]
     },
     "_note": "node id·component key 는 reports/figma-library-build/mobile-header/node-map.json (buildRevision v3.5) 의 실측값이다. 세트 key 는 v1 이후 변하지 않았다.",

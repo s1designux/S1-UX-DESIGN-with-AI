@@ -45,7 +45,7 @@ river 가 준 세 항목은 모두 **대괄호 표기**(`[외부 본인인증 �
 
 | 용도 | 토큰 |
 |---|---|
-| 화면 배경 | `color/bg/level-1` |
+| 화면 배경 | `color/bg/level-1` (당시 기록; 2026-08-31 river 결정으로 현재 정본은 `color/bg/level-0`) |
 | 카드 배경 | `color/bg/level-0` |
 | 카드·상자 테두리(점선) | `color/line/gray/subtle` |
 | 안내 문구 | `color/text/body/secondary` |
