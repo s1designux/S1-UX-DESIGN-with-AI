@@ -1,9 +1,9 @@
 {
-  "date": "2026-08-26",
+  "date": "2026-09-01",
   "summary": {
     "errors": 0,
-    "warns": 1,
-    "passes": 16
+    "warns": 3,
+    "passes": 12
   },
   "findings": [
     {
@@ -15,9 +15,9 @@
     },
     {
       "rule": "SIZE_SPLIT",
-      "severity": "pass",
+      "severity": "warn",
       "compId": "chip",
-      "message": "[chip] 모든 사이즈 분기 존재 (md/default / sm (h28) / mobile)",
+      "message": "HTML 코드탭 pane \"chip-html\" 을 찾을 수 없음",
       "autoFix": false
     },
     {
@@ -71,9 +71,9 @@
     },
     {
       "rule": "SIZE_SPLIT",
-      "severity": "pass",
+      "severity": "warn",
       "compId": "dropdown",
-      "message": "[dropdown] 모든 사이즈 분기 존재 (md (h44) / xsm (h34) / xxsm (h28))",
+      "message": "HTML 코드탭 pane \"ddl-html\" 을 찾을 수 없음",
       "autoFix": false
     },
     {
@@ -86,22 +86,8 @@
     {
       "rule": "CSS_SIZE_SPLIT",
       "severity": "pass",
-      "compId": "chip",
-      "message": "[chip] CSS 사이즈 modifier 분기 존재",
-      "autoFix": false
-    },
-    {
-      "rule": "CSS_SIZE_SPLIT",
-      "severity": "pass",
       "compId": "multi-toggle",
       "message": "[multi-toggle] CSS 사이즈 modifier 분기 존재",
-      "autoFix": false
-    },
-    {
-      "rule": "CSS_SIZE_SPLIT",
-      "severity": "pass",
-      "compId": "dropdown",
-      "message": "[dropdown] CSS 사이즈 modifier 분기 존재",
       "autoFix": false
     },
     {

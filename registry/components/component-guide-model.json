@@ -265124,11 +265124,11 @@
                     ]
                   },
                   {
-                    "type": "FRAME",
-                    "name": "list",
+                    "type": "SLOT",
+                    "name": "Content",
                     "dimensions": {
-                      "width": null,
-                      "height": null
+                      "width": 360,
+                      "height": 192
                     },
                     "position": {
                       "x": null,
@@ -265743,6 +265743,13 @@
                   }
                 ]
               }
+            ],
+            "componentProperties": [
+              {
+                "name": "Content",
+                "type": "SLOT",
+                "description": "바텀시트 본문 슬롯. 기본값은 Bottom Sheet Option 4행이며 헤더와 푸터는 슬롯 밖의 정본 구조로 유지합니다."
+              }
             ]
           }
         },
@@ -266053,11 +266060,11 @@
                     ]
                   },
                   {
-                    "type": "FRAME",
-                    "name": "list",
+                    "type": "SLOT",
+                    "name": "Content",
                     "dimensions": {
-                      "width": null,
-                      "height": null
+                      "width": 360,
+                      "height": 192
                     },
                     "position": {
                       "x": null,
@@ -266931,6 +266938,13 @@
                   }
                 ]
               }
+            ],
+            "componentProperties": [
+              {
+                "name": "Content",
+                "type": "SLOT",
+                "description": "바텀시트 본문 슬롯. 기본값은 Bottom Sheet Option 4행이며 헤더와 푸터는 슬롯 밖의 정본 구조로 유지합니다."
+              }
             ]
           }
         },
@@ -267241,11 +267255,11 @@
                     ]
                   },
                   {
-                    "type": "FRAME",
-                    "name": "list",
+                    "type": "SLOT",
+                    "name": "Content",
                     "dimensions": {
-                      "width": null,
-                      "height": null
+                      "width": 360,
+                      "height": 192
                     },
                     "position": {
                       "x": null,
@@ -268322,6 +268336,13 @@
                     ]
                   }
                 ]
+              }
+            ],
+            "componentProperties": [
+              {
+                "name": "Content",
+                "type": "SLOT",
+                "description": "바텀시트 본문 슬롯. 기본값은 Bottom Sheet Option 4행이며 헤더와 푸터는 슬롯 밖의 정본 구조로 유지합니다."
               }
             ]
           }

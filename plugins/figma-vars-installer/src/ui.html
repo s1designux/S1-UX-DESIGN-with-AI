@@ -104,7 +104,7 @@
   /* 설치 탭만 flex 컬럼 셸 — 검수 탭(#audit-root)의 자체 레이아웃은 건드리지 않는다 */
   #tab-install.tab-panel.active { display: flex; flex-direction: column; flex: 1 1 auto; min-height: 0; }
   /* 문서 스크롤러가 없어졌으므로 검수 탭을 자체 스크롤러로 승격(내부 .list 스크롤은 그대로) */
-  #tab-audit.tab-panel.active { flex: 1 1 auto; min-height: 0; overflow-y: auto; }
+  #tab-audit.tab-panel.active { display:flex; flex-direction:column; flex:1 1 auto; min-height:0; overflow:hidden; }
 
   /* ── info tooltip (사용 방법 ⓘ 호버) ── */
   .info-ic { display: inline-flex; align-items: center; justify-content: center; margin-left: 8px; width: 18px; height: 18px; border-radius: 50%; color: var(--muted); cursor: help; position: relative; font-size: 13px; outline: none; }
@@ -154,6 +154,7 @@
     --code-bg: #f5f5f5;
     font:13px/1.45 -apple-system, "SF Pro Text", Pretendard, sans-serif;
     color:var(--fg); background:var(--bg);
+    flex:1 1 auto; min-height:0; overflow-y:auto;
   }
   @media (prefers-color-scheme: dark) {
     #audit-root { --bg:#2c2c2c; --fg:#fff; --muted:#a0a0a0; --line:#3a3a3a; --code-bg:#1c1d23; }
@@ -233,6 +234,48 @@
   #audit-root .mode-tabs button.active { color:var(--fg); border-bottom-color:var(--btn-bg); font-weight:600; }
   #audit-root .view { display:none; }
   #audit-root .view.active { display:block; }
+  #audit-root .audit-screen { display:none; min-height:100%; }
+  #audit-root .audit-screen.active { display:flex; flex-direction:column; }
+  #audit-root .audit-intro { padding:18px 16px 10px; }
+  #audit-root .audit-intro h2 { margin:0 0 5px; font-size:15px; line-height:1.4; }
+  #audit-root .audit-intro p { margin:0; color:var(--muted); font-size:11.5px; }
+  #audit-root .selection-card { margin:0 16px 12px; padding:10px 12px; border:1px solid var(--line); border-radius:8px; background:var(--code-bg); }
+  #audit-root .selection-card .selection-label { font-weight:600; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  #audit-root .selection-card .selection-hint { margin-top:3px; color:var(--muted); font-size:10.5px; }
+  #audit-root .install-required { display:none; margin:0 16px 12px; padding:12px; border:1px solid #f0c36a; border-radius:8px; background:#fff8e7; color:#6f4d00; }
+  #audit-root .install-required.visible { display:block; }
+  #audit-root .install-required b { display:block; margin-bottom:3px; font-size:12px; }
+  #audit-root .install-required p { margin:0 0 9px; font-size:10.5px; line-height:1.55; }
+  #audit-root .install-required button { width:100%; background:#8a6100; border-color:#8a6100; color:#fff; font-weight:600; }
+  #audit-root .tabs button:disabled { opacity:.42; cursor:not-allowed; filter:none; }
+  #audit-root .rollback-note { padding:7px 16px; color:var(--muted); font-size:10px; line-height:1.5; border-top:1px solid var(--line); }
+  #audit-root .audit-checklist { margin:0 16px 14px; border:1px solid var(--line); border-radius:8px; overflow:hidden; }
+  #audit-root .audit-checklist-title { padding:9px 12px; font-size:11px; color:var(--muted); background:var(--code-bg); border-bottom:1px solid var(--line); }
+  #audit-root .check-row { display:flex; align-items:center; gap:8px; padding:7px 11px; border-bottom:1px solid var(--line); min-height:34px; }
+  #audit-root .check-row:last-child { border-bottom:0; }
+  #audit-root .check-icon { width:17px; height:17px; display:inline-flex; align-items:center; justify-content:center; border:1px solid var(--line); border-radius:50%; color:var(--muted); font-size:10px; flex:0 0 auto; }
+  #audit-root .check-row.running .check-icon { border-color:var(--btn-bg); color:var(--btn-bg); animation:audit-spin .8s linear infinite; }
+  #audit-root .check-row.done .check-icon { border-color:var(--btn-bg); background:var(--btn-bg); color:#fff; animation:none; }
+  #audit-root .check-row.unjudged .check-icon { border-radius:4px; background:var(--code-bg); }
+  #audit-root .check-name { flex:1; font-size:11.5px; }
+  #audit-root .check-result { color:var(--muted); font-size:10.5px; white-space:nowrap; }
+  #audit-root .check-result.fail { color:#d14343; font-weight:600; }
+  #audit-root .check-result.warning, #audit-root .check-result.choice { color:var(--med); font-weight:600; }
+  #audit-root .progress-wrap { padding:0 16px 14px; }
+  #audit-root .progress-meta { display:flex; justify-content:space-between; color:var(--muted); font-size:11px; margin-bottom:6px; }
+  #audit-root .progress-track { height:6px; background:var(--code-bg); border-radius:999px; overflow:hidden; }
+  #audit-root .progress-fill { width:0; height:100%; background:var(--btn-bg); border-radius:inherit; transition:width .18s ease; }
+  #audit-root .audit-actions { margin-top:auto; padding:10px 16px 18px; border-top:1px solid var(--line); background:var(--bg); }
+  #audit-root .audit-actions button { width:100%; padding:10px 12px; font-weight:600; }
+  #audit-root .result-head { padding:13px 16px 3px; }
+  #audit-root .result-head h2 { margin:0; font-size:15px; }
+  #audit-root .result-head p { margin:4px 0 0; color:var(--muted); font-size:11px; }
+  #audit-root .detail-list { padding:8px 0; overflow-y:auto; max-height:calc(100vh - 230px); }
+  #audit-root .detail-item { padding:10px 16px; border-bottom:1px solid var(--line); cursor:pointer; }
+  #audit-root .detail-item:hover { background:var(--code-bg); }
+  #audit-root .detail-item b { display:block; font-size:11.5px; margin-bottom:2px; }
+  #audit-root .detail-item span { color:var(--muted); font-size:10.5px; }
+  @keyframes audit-spin { to { transform:rotate(360deg); } }
   #audit-root .ref-info { padding:8px 16px; background:var(--code-bg); border-bottom:1px solid var(--line); font-size:11px; color:var(--muted); }
   #audit-root .ref-info b { color:var(--fg); font-weight:600; }
   #audit-root .swap-card { padding:10px 16px; border-bottom:1px solid var(--line); cursor:pointer; }
@@ -245,7 +288,7 @@
   #audit-root .swap-card-meta .to { padding:2px 6px; background:var(--code-bg); border-radius:3px; color:var(--high); }
   #audit-root .swap-card .apply-row { margin-top:6px; display:flex; gap:6px; }
   #audit-root .swap-card .apply-row button { font:inherit; padding:3px 10px; font-size:11px; border-radius:4px; border:1px solid var(--line); background:transparent; color:var(--fg); cursor:pointer; }
-  #audit-root .swap-card.applied { opacity:0.5; pointer-events:none; }
+  #audit-root .swap-card.applied { opacity:0.72; }
   #audit-root .swap-card.applied .apply-row button { background:var(--high); color:#fff; border-color:var(--high); }
   #audit-root .resize-handle { position:fixed; right:0; bottom:0; width:18px; height:18px; cursor:se-resize; z-index:100; }
   #audit-root .resize-handle::before { content:''; position:absolute; right:3px; bottom:3px; width:11px; height:11px; border-right:2px solid var(--muted); border-bottom:2px solid var(--muted); opacity:0.5; }
@@ -425,30 +468,79 @@
 <div class="tab-panel" id="tab-audit">
 <div id="audit-root">
 
-  <!-- 단일 흐름: 프레임 선택 → 검수 → [컴포넌트][그 외] 칩으로 결과 분류 -->
-  <div class="toolbar">
-    <button class="primary" id="btn-audit">선택 프레임 검수</button>
-    <span class="info-ic" tabindex="0" aria-label="사용 방법">ⓘ<span class="info-tip">개선안 만들 <b>프레임 하나</b>를 선택하고 <b>검수</b>를 누르면, <b>원본은 그대로 두고</b> 옆에 <b>“— 개선안”</b> 복제본을 만들어: 정본으로 <b>교체 가능한 것</b>은 <b>[컴포넌트]</b>에서 교체 제안하고, 그 외 <b>HEX 색상</b>은 <b>[그 외]</b>에서 유사 시멘틱 토큰을 제안합니다.</span></span>
-    <span id="improved-summary" class="audit-summary"></span>
-  </div>
-  <div class="tabs" id="result-chips" style="display:none;">
-    <button data-bucket="component" class="active">컴포넌트 <span class="count" id="cnt-component">0</span></button>
-    <button data-bucket="color">그 외 <span class="count" id="cnt-color">0</span></button>
+  <!-- 시작: 캔버스 선택 상태 + 10개 검사 항목 -->
+  <section class="audit-screen active" id="audit-screen-start">
+    <div class="audit-intro">
+      <h2>Figma에서 검사할 화면을 선택하세요</h2>
+      <p>부분 선택과 전체 선택을 그대로 검사합니다. 원본은 바뀌지 않습니다.</p>
+    </div>
+    <div class="install-required" id="audit-install-required">
+      <b>검수 전에 가이드 설치가 필요합니다</b>
+      <p id="audit-install-missing">컴포넌트와 색·글자 기준을 모두 설치한 뒤 검수를 시작할 수 있습니다.</p>
+      <button id="btn-go-install">전체 항목 설치하기</button>
+    </div>
+    <div class="selection-card">
+      <div class="selection-label" id="audit-selection-label">선택 없음</div>
+      <div class="selection-hint" id="audit-selection-hint">캔버스에서 검사할 요소를 하나 이상 선택하세요.</div>
+    </div>
+    <div class="audit-checklist" data-checklist="start">
+      <div class="audit-checklist-title">검사 항목 10개</div>
+      <div class="check-row" data-item="0"><span class="check-icon">○</span><span class="check-name">최신 컴포넌트 사용</span><span class="check-result"></span></div>
+      <div class="check-row" data-item="1"><span class="check-icon">○</span><span class="check-name">가이드에 등록된 색상 사용</span><span class="check-result"></span></div>
+      <div class="check-row" data-item="2"><span class="check-icon">○</span><span class="check-name">용도에 맞는 가이드 색상 사용</span><span class="check-result"></span></div>
+      <div class="check-row" data-item="3"><span class="check-icon">○</span><span class="check-name">가이드 색상·글자 스타일 사용</span><span class="check-result"></span></div>
+      <div class="check-row" data-item="4"><span class="check-icon">○</span><span class="check-name">가이드에 정의된 투명도 사용</span><span class="check-result"></span></div>
+      <div class="check-row" data-item="5"><span class="check-icon">○</span><span class="check-name">가이드 글자 스타일 사용</span><span class="check-result"></span></div>
+      <div class="check-row" data-item="6"><span class="check-icon">○</span><span class="check-name">가이드에 정의된 글자 크기 사용</span><span class="check-result"></span></div>
+      <div class="check-row" data-item="7"><span class="check-icon">○</span><span class="check-name">가이드 글자 스타일 값 그대로 사용</span><span class="check-result"></span></div>
+      <div class="check-row" data-item="8"><span class="check-icon">○</span><span class="check-name">Pretendard 글꼴 사용</span><span class="check-result"></span></div>
+      <div class="check-row" data-item="9"><span class="check-icon">○</span><span class="check-name">가이드 그림자 사용</span><span class="check-result"></span></div>
+    </div>
+    <div class="audit-actions"><button class="primary" id="btn-audit" disabled>검사 시작</button></div>
+  </section>
+
+  <!-- 진행: 같은 체크리스트가 순서대로 완료됨 -->
+  <section class="audit-screen" id="audit-screen-running">
+    <div class="audit-intro"><h2>검사 중입니다</h2><p id="audit-running-selection">선택 영역을 확인하고 있습니다.</p></div>
+    <div class="progress-wrap">
+      <div class="progress-meta"><span id="audit-progress-label">검사 준비 중…</span><b id="audit-progress-pct">0%</b></div>
+      <div class="progress-track"><div class="progress-fill" id="audit-progress-fill"></div></div>
+    </div>
+    <div class="audit-checklist" data-checklist="running"></div>
+  </section>
+
+  <!-- 결과: 전체·컴포넌트·색·텍스트·그림자 칩 -->
+  <section class="audit-screen" id="audit-screen-result">
+    <div class="result-head"><h2>검사 결과</h2><p id="audit-result-summary"></p><span id="improved-summary" class="audit-summary"></span></div>
+    <div class="tabs" id="result-chips">
+      <button data-bucket="all" class="active">전체 <span class="count" id="cnt-all">0</span></button>
+      <button data-bucket="component">컴포넌트 <span class="count" id="cnt-component">0</span></button>
+      <button data-bucket="color">색 <span class="count" id="cnt-color">0</span></button>
+      <button data-bucket="text">텍스트 <span class="count" id="cnt-text">0</span></button>
+      <button data-bucket="shadow">그림자 <span class="count" id="cnt-shadow">0</span></button>
+    </div>
+
+  <div class="view active" id="bucket-all">
+    <div class="audit-checklist" id="checklist-result"></div>
+    <div class="audit-actions"><button id="btn-audit-again">다시 검사</button></div>
   </div>
 
   <!-- 컴포넌트 버킷: 교체 가능한 항목 (모듈은 최하단) -->
-  <div class="view active" id="bucket-component">
+  <div class="view" id="bucket-component">
     <div class="list" id="swap-list">
       <div class="empty" style="text-align:center;padding:28px 16px;color:var(--muted);font-size:12px;line-height:1.6;">
-        개선안 만들 프레임 하나를 선택하고 <b>검수</b>를 누르세요. <span class="info-hint">(ⓘ 사용 방법)</span>
+        교체 가능한 컴포넌트가 여기 표시됩니다.
       </div>
     </div>
+    <div id="recent-swaps" style="display:none;"></div>
     <div id="improved-manual" style="display:none;"></div>
     <div id="improved-failed" style="display:none;"></div>
     <div id="improved-modules" style="display:none;"></div>
+    <div class="rollback-note">교체가 맞지 않으면 카드의 <b>되돌리기</b>를 누르세요. 플러그인을 닫은 뒤에는 Figma 실행 취소를 사용합니다.</div>
     <div class="footer">
       <div class="selected-info"><b id="swap-count">0</b>건의 교체 후보</div>
       <button class="primary" id="btn-apply-swap-all" disabled>전체 교체</button>
+      <button class="primary" id="btn-component-reinspect">교체·구조 확인 후 다시 검사</button>
     </div>
   </div>
 
@@ -464,6 +556,16 @@
       <button class="primary" id="btn-apply-selected" disabled>선택 항목 적용</button>
     </div>
   </div>
+
+  <div class="view" id="bucket-text">
+    <div class="detail-list" id="text-list"><div class="empty">텍스트 위반 없음</div></div>
+  </div>
+
+  <div class="view" id="bucket-shadow">
+    <div class="detail-list" id="shadow-list"><div class="empty">그림자 위반 없음</div></div>
+  </div>
+
+  </section>
 
   <div class="resize-handle" id="resize-handle" title="드래그하여 크기 조절"></div>
   <div class="toast" id="toast"></div>
@@ -533,6 +635,9 @@
     document.querySelectorAll('.tab-panel').forEach((p) => {
       p.classList.toggle('active', p.id === 'tab-' + name);
     });
+    if (name === 'audit') {
+      parent.postMessage({ pluginMessage: { type: 'audit:selection-state', payload: {} } }, '*');
+    }
   }
 
   // ── 설치 탭 ──
@@ -694,6 +799,9 @@ let activeMode = "color"; // color | swap
 let referencePool = []; // [{id, name, type}]
 let referenceRoots = [];
 let swapCandidates = [];
+let swapCandidateHistory = {};
+let recentSwapHistory = {};
+let pendingSwapUi = {};
 
 const CATEGORY_LABEL = {
   foundation: "Foundation 유사색",
@@ -728,25 +836,143 @@ function send(type, payload) {
   parent.postMessage({ pluginMessage: { type: 'audit:' + type, payload } }, "*");
 }
 
-// ─── 단일 검수: 프레임 선택 → 개선안(복제본) + 통합 결과 ────────────────────
-$("#btn-audit").addEventListener("click", () => {
+const CHECK_LABELS = [
+  "최신 컴포넌트 사용", "가이드 색상 사용", "용도별 색상 사용", "가이드 스타일 사용", "투명도 사용",
+  "글자 스타일 사용", "글자 크기 사용", "글자 스타일 값 사용", "Pretendard 글꼴 사용", "가이드 그림자 사용",
+];
+let auditSelectionCount = 0;
+let auditInspecting = false;
+let auditInstalled = false;
+let auditPhase = "component";
+
+// 시작 화면의 동일한 10개 항목을 진행 화면에도 복제한다.
+const startChecklist = document.querySelector('[data-checklist="start"]');
+const runningChecklist = document.querySelector('[data-checklist="running"]');
+if (startChecklist && runningChecklist) runningChecklist.innerHTML = startChecklist.innerHTML;
+
+function showAuditScreen(name) {
+  document.querySelectorAll('#audit-root .audit-screen').forEach((screen) => {
+    screen.classList.toggle('active', screen.id === 'audit-screen-' + name);
+  });
+}
+
+function resetAuditChecklist(scope) {
+  document.querySelectorAll(`[data-checklist="${scope}"] .check-row`).forEach((row) => {
+    row.className = 'check-row';
+    row.querySelector('.check-icon').textContent = '○';
+    const result = row.querySelector('.check-result');
+    result.textContent = '';
+    result.className = 'check-result';
+  });
+}
+
+function updateProgress(payload) {
+  const completed = payload.completed || [];
+  const current = payload.current;
+  document.querySelectorAll('[data-checklist="running"] .check-row').forEach((row) => {
+    const id = Number(row.dataset.item);
+    row.className = 'check-row';
+    const icon = row.querySelector('.check-icon');
+    if (completed.indexOf(id) >= 0) {
+      row.classList.add('done'); icon.textContent = '✓';
+    } else if (id === current) {
+      row.classList.add('running'); icon.textContent = '◌';
+    } else icon.textContent = '○';
+  });
+  const pct = Math.max(0, Math.min(100, Number(payload.pct) || 0));
+  $('#audit-progress-pct').textContent = pct + '%';
+  $('#audit-progress-fill').style.width = pct + '%';
+  $('#audit-progress-label').textContent = current == null ? '검사 완료' : CHECK_LABELS[current] + ' 검사 중…';
+}
+
+function renderChecklistResults(items) {
+  const target = $('#checklist-result');
+  target.innerHTML = startChecklist.innerHTML;
+  target.querySelector('.audit-checklist-title').textContent = '항목별 결과';
+  const byId = {};
+  (items || []).forEach((item) => { byId[item.id] = item; });
+  target.querySelectorAll('.check-row').forEach((row) => {
+    const item = byId[Number(row.dataset.item)];
+    const icon = row.querySelector('.check-icon');
+    const result = row.querySelector('.check-result');
+    if (!item || item.status === 'unjudged') {
+      row.classList.add('unjudged'); icon.textContent = '—'; result.textContent = '미판정'; return;
+    }
+    row.classList.add('done'); icon.textContent = '✓';
+    if (item.count > 0) {
+      result.textContent = item.count + '건';
+      result.classList.add(item.status);
+    } else {
+      result.textContent = item.coverage === 'partial' ? '0건 · 일부 판정' : '통과';
+    }
+  });
+}
+
+function renderDetailList(selector, issues, emptyText) {
+  const target = $(selector);
+  if (!issues || issues.length === 0) {
+    target.innerHTML = '<div class="empty">' + emptyText + '</div>';
+    return;
+  }
+  target.innerHTML = issues.map((issue) =>
+    '<div class="detail-item" data-node-id="' + escape(issue.nodeId) + '"><b>' + escape(issue.nodeName) + '</b><span>' + escape(issue.detail) + '</span></div>'
+  ).join('');
+  target.querySelectorAll('[data-node-id]').forEach((row) => row.addEventListener('click', () => send('select-node', { nodeId: row.dataset.nodeId })));
+}
+
+function startAuditInspection(phase) {
+  if ((phase !== 'details' && auditSelectionCount < 1) || auditInspecting || !auditInstalled) return;
+  if (phase !== 'details') {
+    recentSwapHistory = {};
+    pendingSwapUi = {};
+    renderRecentSwaps();
+  }
+  auditInspecting = true;
   const btn = $("#btn-audit");
   btn.disabled = true;
-  btn.textContent = "검수 중…";
+  btn.textContent = "검사 중…";
   $("#improved-summary").innerHTML = "";
   picks = {};
   activeCat = {};
   updatePickedCount();
-  send("build-improved");
+  resetAuditChecklist('running');
+  $('#audit-running-selection').textContent = $('#audit-selection-label').textContent;
+  updateProgress({ current: 0, completed: [], pct: 0 });
+  showAuditScreen('running');
+  send("inspect-selection", { phase: phase || 'component' });
+}
+
+// 선택 영역을 변경하지 않고 검사한다. 변경·복제는 결과 확인 뒤의 별도 동작이다.
+$("#btn-audit").addEventListener("click", () => {
+  startAuditInspection('component');
 });
 
-// 결과 칩 전환 (컴포넌트 / 그 외)
+$('#btn-component-reinspect').addEventListener('click', () => {
+  startAuditInspection('details');
+});
+
+$('#btn-go-install').addEventListener('click', () => {
+  switchTab('install');
+  backToSelect();
+  ['opt-foundation', 'opt-semantic', 'opt-textstyles', 'opt-components'].forEach((id) => {
+    const cb = document.getElementById(id);
+    cb.checked = true;
+    cb.closest('.select-row').classList.add('checked');
+  });
+});
+
+$('#btn-audit-again').addEventListener('click', () => {
+  auditInspecting = false;
+  showAuditScreen('start');
+  send('selection-state');
+});
+
+// 결과 칩 전환 (전체 / 컴포넌트 / 색 / 텍스트 / 그림자)
 document.querySelectorAll("#result-chips button").forEach((btn) => {
   btn.addEventListener("click", () => {
     const bucket = btn.dataset.bucket;
     document.querySelectorAll("#result-chips button").forEach((b) => b.classList.toggle("active", b === btn));
-    $("#bucket-component").classList.toggle("active", bucket === "component");
-    $("#bucket-color").classList.toggle("active", bucket === "color");
+    document.querySelectorAll('#audit-screen-result .view').forEach((view) => view.classList.toggle('active', view.id === 'bucket-' + bucket));
   });
 });
 
@@ -780,6 +1006,45 @@ function renderImprovedSummary(payload) {
 // 수동 매핑 — 이름이 정본과 안 맞아 자동 선정 못 한 컴포넌트. 가장 비슷한 정본을 상위 제안(드롭다운),
 // 사용자가 고른 정본으로 교체(+텍스트 보존). 최종 선택은 사용자 몫(추측 자동교체 아님).
 let manualMap = {};
+
+function rememberRecentSwap(id, data) {
+  if (!data) return;
+  recentSwapHistory[id] = { ...data, id };
+  renderRecentSwaps();
+}
+
+function renderRecentSwaps() {
+  const box = $("#recent-swaps");
+  const entries = Object.values(recentSwapHistory).filter((item) =>
+    !$("#swap-list").querySelector(`[data-id="${item.id}"]`) &&
+    !$("#improved-manual").querySelector(`[data-manual-id="${item.id}"]`)
+  );
+  if (entries.length === 0) { box.style.display = "none"; box.innerHTML = ""; return; }
+  box.style.display = "block";
+  box.innerHTML = '<div style="font-size:11px;color:var(--fg);font-weight:600;margin:10px 16px 4px;">최근 교체 · 되돌릴 수 있음</div>' + entries.map((item) =>
+    '<div class="swap-card applied" data-recent-id="' + escape(item.id) + '">' +
+      '<div class="swap-card-head"><div class="iname">' + escape(item.instanceName) + '</div><span style="font-size:10px;color:var(--high);font-weight:600;">교체됨</span></div>' +
+      '<div class="swap-card-meta"><span class="from">이전: ' + escape(item.currentName || '') + '</span><span class="swap-arrow">→</span><span class="to">현재: ' + escape(item.suggestedName || '') + '</span></div>' +
+      '<div class="apply-row"><button data-action="undo-swap">되돌리기</button></div>' +
+    '</div>'
+  ).join('');
+  box.querySelectorAll('[data-recent-id]').forEach((card) => {
+    const id = card.dataset.recentId;
+    card.addEventListener('click', (event) => {
+      const item = recentSwapHistory[id];
+      if (!item) return;
+      const action = event.target.dataset && event.target.dataset.action;
+      if (action === 'undo-swap') {
+        event.target.disabled = true; event.target.textContent = '…';
+        send('undo-swap', { id });
+        event.stopPropagation();
+      } else if (item.instanceId) {
+        send('select-node', { nodeId: item.instanceId });
+      }
+    });
+  });
+}
+
 function renderManualList(list) {
   const box = $("#improved-manual");
   manualMap = {};
@@ -805,13 +1070,29 @@ function renderManualList(list) {
   box.innerHTML = html;
   box.querySelectorAll('[data-manual-id]').forEach((card) => {
     const id = card.dataset.manualId;
-    card.querySelector('[data-action="manual-select"]').addEventListener("click", () => {
-      const c = manualMap[id];
-      if (c) send("select-node", { nodeId: c.instanceId });
-    });
-    card.querySelector('[data-action="manual-swap"]').addEventListener("click", () => {
+    card.addEventListener("click", (event) => {
       const c = manualMap[id];
       if (!c) return;
+      const target = event.target;
+      const action = target.dataset && target.dataset.action;
+      if (action === "manual-select") {
+        send("select-node", { nodeId: c.instanceId });
+        event.stopPropagation();
+        return;
+      }
+      if (action === "undo-swap") {
+        target.disabled = true; target.textContent = "…";
+        send("undo-swap", { id });
+        event.stopPropagation();
+        return;
+      }
+      if (action !== "manual-swap") {
+        // 드롭다운은 먼저 열리게 두고, 값이 바뀌는 순간 아래 change 핸들러가 선택한다.
+        if (target.closest && target.closest('[data-role="manual-pick"]')) return;
+        // 제목·현재 정보 등 카드의 나머지 영역을 누르면 캔버스에서 함께 찾는다.
+        send("select-node", { nodeId: c.instanceId });
+        return;
+      }
       const sel = card.querySelector('[data-role="manual-pick"]');
       const sug = c.suggestions[parseInt(sel.value, 10) || 0];
       if (!sug) return;
@@ -824,7 +1105,13 @@ function renderManualList(list) {
         suggestedId: sug.id, suggestedKey: sug.key, suggestedType: sug.type,
         suggestedName: sug.name, suggestedSource: sug.source, confidence: "ambiguous"
       };
+      pendingSwapUi[id] = { instanceId: c.instanceId, instanceName: c.instanceName, currentName: c.currentMainName, suggestedName: sug.name, kind: 'manual' };
       send("apply-swap", { candidate });
+      event.stopPropagation();
+    });
+    card.querySelector('[data-role="manual-pick"]').addEventListener("change", () => {
+      const c = manualMap[id];
+      if (c) send("select-node", { nodeId: c.instanceId });
     });
   });
 }
@@ -837,12 +1124,15 @@ function renderModuleList(list) {
   if (!list || list.length === 0) { box.style.display = "none"; box.innerHTML = ""; return; }
   box.style.display = "block";
   let html = '<div style="font-size:11px;color:var(--fg);font-weight:600;margin:10px 2px 4px;">여러 부품이 뭉친 모듈 ' + list.length + '건 — 최신 컴포넌트로 재구성 필요</div>';
-  html += '<div style="font-size:10px;color:var(--muted);margin:0 2px 8px;">이런 모듈은 통째 교체가 부적절해 제외했습니다. 재구성이 필요하면 해당 모듈을 알려주세요(별도 작업).</div>';
+  html += '<div style="font-size:10px;color:var(--muted);margin:0 2px 8px;">여러 최신 부품이 들어 있는 묶음은 하나의 컴포넌트로 줄이지 않습니다. 묶음 구조를 유지한 채 내부 부품 단위로 재구성해야 합니다.</div>';
   for (const c of list) {
     moduleMap[c.id] = c;
     html += '<div class="module-card" data-module-id="' + escape(c.id) + '">';
     html += '<div class="swap-card-head"><div class="iname">' + escape(c.instanceName) + '</div><span class="module-badge">모듈 · 부품 ' + (c.nestedCount || 0) + '개</span></div>';
     html += '<div class="swap-card-meta"><span class="from">현재: ' + escape(c.currentMainName) + '</span></div>';
+    if (c.repeatedPartName && c.repeatedPartCount) {
+      html += '<div style="font-size:10px;color:var(--muted);margin-top:4px;">' + escape(c.repeatedPartName) + '로 교체 가능한 부품 ' + c.repeatedPartCount + '개가 들어 있어 통째 교체하지 않음</div>';
+    }
     html += '<div class="apply-row"><button data-action="module-select">Figma에서 선택</button></div>';
     html += '</div>';
   }
@@ -874,6 +1164,9 @@ function renderFailedList(list) {
 // ─── 컴포넌트 교체 모드 핸들러 ────────────────────────────
 $("#btn-apply-swap-all").addEventListener("click", () => {
   if (swapCandidates.length === 0) return;
+  swapCandidates.forEach((c) => {
+    pendingSwapUi[c.id] = { instanceId: c.instanceId, instanceName: c.instanceName, currentName: c.currentMainName, suggestedName: c.suggestedName, kind: 'auto' };
+  });
   $("#btn-apply-swap-all").disabled = true;
   $("#btn-apply-swap-all").textContent = "교체 중…";
   send("apply-swap-multi", { candidates: swapCandidates });
@@ -881,6 +1174,7 @@ $("#btn-apply-swap-all").addEventListener("click", () => {
 
 function renderSwapList(diag) {
   const listEl = $("#swap-list");
+  swapCandidates.forEach((candidate) => { swapCandidateHistory[candidate.id] = candidate; });
   $("#swap-count").textContent = swapCandidates.length;
   $("#btn-apply-swap-all").disabled = swapCandidates.length === 0;
   if (swapCandidates.length === 0) {
@@ -957,7 +1251,15 @@ function renderSwapList(diag) {
       if (action === "apply-swap") {
         t.disabled = true;
         t.textContent = "…";
+        pendingSwapUi[c.id] = { instanceId: c.instanceId, instanceName: c.instanceName, currentName: c.currentMainName, suggestedName: c.suggestedName, kind: 'auto' };
         send("apply-swap", { candidate: c });
+        e.stopPropagation();
+        return;
+      }
+      if (action === "undo-swap") {
+        t.disabled = true;
+        t.textContent = "…";
+        send("undo-swap", { id: c.id });
         e.stopPropagation();
         return;
       }
@@ -1165,8 +1467,99 @@ function escape(s) {
   return String(s).replace(/[<>&"]/g, (c) => ({"<":"&lt;",">":"&gt;","&":"&amp;",'"':"&quot;"}[c]));
 }
 
+function renderInspectionResult(payload) {
+  auditInspecting = false;
+  auditPhase = payload.phase || 'details';
+  const checklist = payload.checklist || [];
+  renderChecklistResults(checklist);
+
+  const component = payload.component || {};
+  swapCandidates = component.candidates || [];
+  swapCandidateHistory = {};
+  const manual = component.manualCandidates || [];
+  const modules = component.modules || [];
+  renderSwapList(component.diagnostics || null);
+  renderModuleList(modules);
+  renderManualList(manual);
+  renderFailedList([]);
+  renderRecentSwaps();
+
+  lastIssues = payload.colorIssues || [];
+  picks = {}; activeCat = {}; updatePickedCount();
+  rerenderTab();
+  const extraColor = (payload.colorDetails || []).filter((issue) => issue.checklistId !== 1);
+  if (extraColor.length) {
+    const block = document.createElement('div');
+    block.innerHTML = extraColor.map((issue) =>
+      '<div class="detail-item" data-node-id="' + escape(issue.nodeId) + '"><b>' + escape(issue.nodeName) + '</b><span>' + escape(issue.detail) + '</span></div>'
+    ).join('');
+    block.querySelectorAll('[data-node-id]').forEach((row) => row.addEventListener('click', () => send('select-node', { nodeId: row.dataset.nodeId })));
+    list.appendChild(block);
+  }
+  renderDetailList('#text-list', payload.textIssues || [], '텍스트 위반 없음');
+  renderDetailList('#shadow-list', payload.shadowIssues || [], '그림자 위반 없음');
+
+  const componentCount = swapCandidates.length + manual.length + modules.length;
+  const colorCount = lastIssues.length + extraColor.length;
+  const textCount = (payload.textIssues || []).length;
+  const shadowCount = (payload.shadowIssues || []).length;
+  const total = componentCount + colorCount + textCount + shadowCount;
+  $('#cnt-all').textContent = total;
+  $('#cnt-component').textContent = componentCount;
+  $('#cnt-color').textContent = colorCount;
+  $('#cnt-text').textContent = textCount;
+  $('#cnt-shadow').textContent = shadowCount;
+
+  const passCount = checklist.filter((item) => item.status === 'pass' && item.count === 0).length;
+  const partialCount = checklist.filter((item) => item.coverage === 'partial').length;
+  const selection = payload.selection || {};
+  const componentOnly = auditPhase === 'component';
+  $('#audit-result-summary').textContent = componentOnly
+    ? `${selection.label || '선택 영역'} · 컴포넌트를 먼저 교체한 뒤 다시 검사하세요.`
+    : `${selection.label || '선택 영역'} · 10개 중 ${passCount}개 통과${partialCount ? ` · 일부 판정 ${partialCount}개` : ''}`;
+  document.querySelectorAll('#result-chips button').forEach((btn) => {
+    const enabled = !componentOnly || btn.dataset.bucket === 'component';
+    btn.disabled = !enabled;
+    btn.classList.toggle('active', componentOnly ? btn.dataset.bucket === 'component' : btn.dataset.bucket === 'all');
+  });
+  document.querySelectorAll('#audit-screen-result .view').forEach((view) => {
+    view.classList.toggle('active', view.id === (componentOnly ? 'bucket-component' : 'bucket-all'));
+  });
+  showAuditScreen('result');
+}
+
 function handleAuditUiMessage(msg) {
-  if (msg.type === "scan-result") {
+  if (msg.type === "selection-state") {
+    const p = msg.payload || {};
+    auditInstalled = p.installed === true;
+    auditSelectionCount = Number(p.count) || 0;
+    $('#audit-install-required').classList.toggle('visible', !auditInstalled);
+    $('#audit-install-missing').textContent = !auditInstalled && p.missing && p.missing.length
+      ? `필요한 항목: ${p.missing.join(' · ')}. 전체 항목을 설치해주세요.`
+      : '컴포넌트와 색·글자 기준을 모두 설치한 뒤 검수를 시작할 수 있습니다.';
+    $('#audit-selection-label').textContent = p.label || '선택 없음';
+    $('#audit-selection-hint').textContent = auditSelectionCount > 0
+      ? `${auditSelectionCount}개 선택됨 · 이 범위만 검사합니다.`
+      : '캔버스에서 검사할 요소를 하나 이상 선택하세요.';
+    const btn = $('#btn-audit');
+    btn.disabled = auditInspecting || auditSelectionCount < 1 || !auditInstalled;
+    btn.textContent = auditInspecting ? '검사 중…' : '검사 시작';
+  } else if (msg.type === "inspection-progress") {
+    updateProgress(msg.payload || {});
+  } else if (msg.type === "inspection-result") {
+    if (!msg.payload || !msg.payload.ok) {
+      auditInspecting = false;
+      showAuditScreen('start');
+      if (msg.payload && msg.payload.code === 'need-install') {
+        auditInstalled = false;
+        $('#audit-install-required').classList.add('visible');
+      }
+      send('selection-state');
+      showToast('⚠ ' + ((msg.payload && msg.payload.message) || '검사를 완료하지 못했습니다.'));
+    } else {
+      renderInspectionResult(msg.payload);
+    }
+  } else if (msg.type === "scan-result") {
     lastIssues = msg.payload.issues;
     rerenderTab();
   } else if (msg.type === "apply-result") {
@@ -1225,12 +1618,14 @@ function handleAuditUiMessage(msg) {
     if (msg.payload.ok) {
       // ── 컴포넌트 버킷: 교체 가능한 항목 ──
       swapCandidates = msg.payload.candidates || [];
+      swapCandidateHistory = {};
       const manual = msg.payload.manual || [];
       const modules = msg.payload.modules || [];
       renderSwapList(null);
       renderModuleList(modules);
       renderManualList(manual);
       renderFailedList(msg.payload.failed || []);
+      renderRecentSwaps();
       // ── 그 외 버킷: HEX 색상 → 시멘틱 토큰 제안 ──
       lastIssues = msg.payload.colorIssues || [];
       picks = {}; activeCat = {}; updatePickedCount();
@@ -1246,6 +1641,8 @@ function handleAuditUiMessage(msg) {
     renderSwapList(msg.payload.diagnostics);
   } else if (msg.type === "apply-swap-result") {
     const { id, ok, variantReset, unpreservedCount } = msg.payload;
+    if (ok) rememberRecentSwap(id, pendingSwapUi[id]);
+    delete pendingSwapUi[id];
     // 수동 매핑 카드(#improved-manual)에서 온 교체면 그 카드를 갱신
     const manualCard = $("#improved-manual").querySelector(`[data-manual-id="${id}"]`);
     if (manualCard) {
@@ -1253,9 +1650,8 @@ function handleAuditUiMessage(msg) {
       const sel = manualCard.querySelector('[data-role="manual-pick"]');
       if (ok) {
         manualCard.classList.add("applied");
-        if (btn) { btn.textContent = variantReset ? "교체됨 · 상태 리셋" : "교체됨"; btn.disabled = true; }
+        if (btn) { btn.textContent = "되돌리기"; btn.disabled = false; btn.dataset.action = "undo-swap"; }
         if (sel) sel.disabled = true;
-        delete manualMap[id];
       } else {
         if (btn) { btn.textContent = "교체"; btn.disabled = false; }
       }
@@ -1268,7 +1664,7 @@ function handleAuditUiMessage(msg) {
       if (ok) {
         card.classList.add("applied");
         const btn = card.querySelector('[data-action="apply-swap"]');
-        if (btn) { btn.textContent = variantReset ? "교체됨 · 상태 리셋" : "교체됨"; btn.disabled = true; }
+        if (btn) { btn.textContent = "되돌리기"; btn.disabled = false; btn.dataset.action = "undo-swap"; }
         // 후보 리스트에서 제거 (상태 관리)
         swapCandidates = swapCandidates.filter((c) => c.id !== id);
         $("#swap-count").textContent = swapCandidates.length;
@@ -1283,19 +1679,63 @@ function handleAuditUiMessage(msg) {
   } else if (msg.type === "apply-swap-multi-result") {
     const p = msg.payload;
     for (const id of p.applied) {
+      rememberRecentSwap(id, pendingSwapUi[id]);
+      delete pendingSwapUi[id];
       const card = $("#swap-list").querySelector(`[data-id="${id}"]`);
       if (card) {
         card.classList.add("applied");
         const btn = card.querySelector('[data-action="apply-swap"]');
-        if (btn) { btn.textContent = "교체됨"; btn.disabled = true; }
+        if (btn) { btn.textContent = "되돌리기"; btn.disabled = false; btn.dataset.action = "undo-swap"; }
       }
     }
+    (p.failures || []).forEach((failure) => { delete pendingSwapUi[failure.id]; });
     swapCandidates = swapCandidates.filter((c) => p.applied.indexOf(c.id) === -1);
     $("#swap-count").textContent = swapCandidates.length;
     $("#btn-apply-swap-all").disabled = swapCandidates.length === 0;
     $("#btn-apply-swap-all").textContent = "전체 교체";
     showToast(`${p.applied.length}건 교체 완료${p.variantResetCount ? ` · ${p.variantResetCount}건 상태 리셋` : ""}${p.unpreservedTotal ? ` · 텍스트 ${p.unpreservedTotal}건 보존안됨` : ""}${p.fail ? ` · ${p.fail}건 실패` : ""}`);
+  } else if (msg.type === "undo-swap-result") {
+    const { id, ok, reason, instanceId } = msg.payload;
+    const manualCard = $("#improved-manual").querySelector(`[data-manual-id="${id}"]`);
+    const autoCard = $("#swap-list").querySelector(`[data-id="${id}"]`);
+    const recentCard = $("#recent-swaps").querySelector(`[data-recent-id="${id}"]`);
+    const card = manualCard || autoCard || recentCard;
+    if (card) {
+      const btn = card.querySelector('[data-action="undo-swap"]');
+      if (ok) {
+        if (instanceId) {
+          if (manualMap[id]) manualMap[id].instanceId = instanceId;
+          if (swapCandidateHistory[id]) swapCandidateHistory[id].instanceId = instanceId;
+          swapCandidates.forEach((candidate) => { if (candidate.id === id) candidate.instanceId = instanceId; });
+        }
+        card.classList.remove("applied");
+        if (btn) {
+          btn.textContent = "교체";
+          btn.disabled = false;
+          btn.dataset.action = manualCard ? "manual-swap" : "apply-swap";
+        }
+        const sel = manualCard && manualCard.querySelector('[data-role="manual-pick"]');
+        if (sel) sel.disabled = false;
+        if (autoCard) {
+          const candidate = swapCandidateHistory[id];
+          if (candidate && !swapCandidates.some((item) => item.id === id)) swapCandidates.push(candidate);
+          $("#swap-count").textContent = swapCandidates.length;
+          $("#btn-apply-swap-all").disabled = swapCandidates.length === 0;
+        }
+        delete recentSwapHistory[id];
+        renderRecentSwaps();
+      } else if (btn) {
+        btn.textContent = "되돌리기";
+        btn.disabled = false;
+      }
+    }
+    showToast(ok ? "되돌리기 완료" : `되돌리기 실패 · ${reason || "다시 시도해주세요"}`);
   } else if (msg.type === "error") {
+    if (auditInspecting) {
+      auditInspecting = false;
+      showAuditScreen('start');
+      send('selection-state');
+    }
     // 개선안 생성 중 예외가 나도 버튼이 잠긴 채로 굳지 않도록 복구
     const bi = $("#btn-build-improved");
     if (bi && bi.disabled) { bi.disabled = false; bi.textContent = "설치기 기준으로 개선안 만들기"; }

@@ -1,0 +1,47 @@
+{
+  "schemaVersion": 1,
+  "workflow": "gui-inspector-v1",
+  "workId": "inspector-v1",
+  "objective": "설치/검수기의 검수 탭을 10개 체크항목 중심의 선택 기반 비파괴 검사 흐름으로 개편한다.",
+  "approvedBy": "river",
+  "approvedAt": "2026-08-31",
+  "currentPhase": "figma-runtime-verification",
+  "workflowStatus": "built-awaiting-figma-runtime-verification",
+  "lastCompletedCheckpoint": 5,
+  "nextAction": "Figma에 plugins/figma-vars-installer/dist/manifest.json을 다시 불러오고 이름 불일치 카드 클릭 선택, 교체 후 되돌리기, 상세 재검사 뒤 최근 교체 되돌리기를 실행 확인한다.",
+  "decisions": [
+    "검수 탭 첫 화면에 10개 체크항목을 모두 표시한다.",
+    "플러그인 안에서 프레임/페이지 범위를 고르지 않고 Figma 캔버스의 현재 선택을 검사 범위로 사용한다.",
+    "선택이 1개 이상일 때만 검사 시작 버튼을 활성화한다.",
+    "검사 중 현재 항목·완료 항목·전체 진행률을 체크리스트로 표시한다.",
+    "완료 결과는 전체·컴포넌트·색·텍스트·그림자 칩으로 구분한다.",
+    "검사는 원본을 변경하거나 복제하지 않는 비파괴 동작으로 시작한다.",
+    "아직 판정 규칙이 구현되지 않은 항목은 통과가 아니라 미판정으로 표시한다.",
+    "체크리스트는 기술 용어와 부정형 표현을 피하고 최신 컴포넌트 사용·가이드 색상 사용·가이드 글자 스타일 사용처럼 긍정형 사용 표현으로 통일한다.",
+    "검수 전에 Foundation·Semantic·Text Styles·Component Set의 정본 이름 전체가 설치됐는지 확인하고 일부 설치 상태에서는 검사를 잠근다.",
+    "컴포넌트 교체 후보가 남아 있으면 색·텍스트·그림자 검사를 잠그고, 교체 후 최초 선택 범위를 다시 검사한다.",
+    "아이콘·버튼 내부의 같은 위반은 의미 단위 한 건으로 묶되 적용은 실제 내부 paint 전체에 원자적으로 수행한다.",
+    "m_button 같은 이름 예외 대신 같은 정본 부품이 2개 이상 포함된 구조와 바깥 이름 매칭 위험을 함께 사용해 모듈을 판정한다.",
+    "이름 불일치 항목은 배치된 인스턴스별로 표시하고 카드를 누르면 해당 Figma 항목을 선택한다.",
+    "컴포넌트 교체 뒤 버튼은 되돌리기로 바뀌며 숨은 원본 복사본을 이용해 해당 항목 전체 상태를 복원한다.",
+    "상세 재검사 뒤에도 최근 교체 기록을 유지하고 실제 instance ID 기반 키로 다른 항목의 되돌리기 기록과 충돌하지 않게 한다."
+  ],
+  "canonicalInputs": [
+    "reports/gui-inspector/inspector-v1-spec.md",
+    "plugins/figma-vars-installer/src/audit-engine.ts",
+    "plugins/figma-vars-installer/src/code.ts",
+    "plugins/figma-vars-installer/src/ui.html"
+  ],
+  "protectedFiles": [
+    "plugins/figma-vars-installer/src/build-components.ts",
+    "pages/components.html"
+  ],
+  "verification": {
+    "installerTypecheck": "pass",
+    "installerBuild": "pass-2026-09-01-12:52-KST",
+    "independentReview": "pass-card-select-exact-undo-and-rescan-history",
+    "localRender440x800": "blocked-by-browser-file-url-policy; previous-version-pass",
+    "figmaRuntime": "pending"
+  },
+  "blockers": []
+}

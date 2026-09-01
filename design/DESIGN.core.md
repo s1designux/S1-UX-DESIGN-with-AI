@@ -464,11 +464,11 @@ _Don't_
 
 ### Checkbox
 
-체크박스 컨트롤. default·hover·checked·indeterminate·disabled 상태.
+체크박스 컨트롤. 정본 상태는 default·hover·checked·disabled·disabled+checked 다섯이며 부분선택(indeterminate)은 아직 정본에 없다.
 
 **언제 쓰나**
 - 여러 항목을 독립적으로 켜고 끌 때(다중 선택).
-- 목록 전체선택/부분선택(indeterminate) 헤더에.
+- 약관 동의처럼 항목마다 따로 켜고 끌 때.
 
 **쓰지 말아야 할 때**
 - 여러 보기 중 하나만 고를 때는 Radio.
@@ -479,8 +479,8 @@ _Don't_
 | 요소 | 역할 |
 | --- | --- |
 | 박스 | 체크 영역. 배경·테두리는 control 토큰. |
-| 체크 표시 | checked·indeterminate 인디케이터 아이콘. |
-| 라벨(선택) | 항목 텍스트. 박스와 함께 클릭 영역. |
+| 체크 표시 | checked 인디케이터 아이콘(정본 ic_확인 16px). 색은 control indicator 토큰. |
+| 라벨(선택) | 선택 부품. 없는 것이 기본이고, 붙이면 라벨 클릭도 선택 영역이 된다(본문 14 Medium, 간격 8). |
 
 | variant | default | hover | checked | disabled |
 | --- | --- | --- | --- | --- |
@@ -595,16 +595,18 @@ agent:
 ```
 
 _Do_
-- 전체선택 헤더는 부분선택 시 indeterminate(is-indeterminate)를 쓴다.
-- 박스는 코어 s1-checkbox 를 재사용한다(모듈 전용 체크박스 금지).
+- 라벨을 붙일 때는 label[for] 로 control 과 연결해 라벨 클릭도 선택되게 한다.
+- 박스는 코어 체크박스를 재사용한다(모듈 전용 체크박스 금지).
 
 _Don't_
 - Table·Filter 등 모듈에서 체크박스를 새로 만들지 않는다.
 - 라벨 없이 쓸 때 aria-label 을 빠뜨리지 않는다.
 
 **접근성 (a11y)**
+- native input[type=checkbox] 를 사용해 역할·선택 상태·Space 키 동작을 브라우저가 제공하게 한다.
 - 라벨이 없으면 aria-label 필수.
-- indeterminate 는 시각뿐 아니라 aria-checked="mixed" 로 표현한다.
+- 비활성은 disabled 속성으로 표현하고 시각 처리만으로 대체하지 않는다.
+- 키보드 초점은 선택 테두리 토큰의 2px 외곽선으로 보이게 한다.
 
 ### Chip
 
@@ -1166,11 +1168,15 @@ agent:
         on: "click"
         target: "option"
         result: "select the clicked option and unselect every sibling"
+      -
+        on: "keydown"
+        target: "option"
+        result: "ArrowUp/ArrowDown move, Home/End jump, Enter/Space select"
     selection: "single"
     openClose: "owned by the composing trigger component"
-    keyboard: "not-defined"
-    focus: "not-defined"
-    accessibility: "not-defined"
+    keyboard: "ArrowUp · ArrowDown · Home · End · Enter/Space (role=listbox pattern)"
+    focus: "roving tabindex — only the active option is in the tab order"
+    accessibility: "role=listbox on the list, role=option with aria-selected on each row"
   geometry:
     common:
       target: "root"
@@ -1296,7 +1302,7 @@ _Don't_
 - 트리거는 aria-expanded 로 열림 상태를 노출한다.
 - 단일 선택은 선택 옵션에 aria-selected, 목록은 role=listbox 패턴을 따른다.
 - 다중 선택 옵션은 role=checkbox + aria-checked 로 켜짐/꺼짐을 노출한다.
-- 「전체 선택」은 일부만 켜진 상태를 aria-checked=mixed 로 노출하는 것이 바람직하다(현재 미구현 — needs-decision).
+- 「전체 선택」은 정본에 켜짐/꺼짐 2단계만 있어 aria-checked 도 true/false 만 쓴다. 부분 선택(mixed) 표시는 정본에 해당 모양이 없어 만들지 않는다(river 결정 2026-08-31).
 
 ### Filter Chip
 
@@ -1373,11 +1379,15 @@ agent:
         on: "click"
         target: "trigger"
         guard: "disabled=false"
-        result: "toggle closed ↔ open"
+        result: "toggle closed ↔ open and keep aria-expanded in sync"
       -
         on: "click"
         target: "option"
-        result: "select one option, update the trigger label, and close"
+        result: "select one option, update the trigger label, mark complete, and close"
+      -
+        on: "keydown"
+        target: "filter chip"
+        result: "close on Escape and return focus to the trigger"
       -
         on: "click"
         target: "outside"
@@ -1387,9 +1397,9 @@ agent:
         target: "filter chip"
         result: "close and block trigger clicks"
     selection: "single"
-    keyboard: "not-defined"
-    focus: "not-defined"
-    accessibility: "not-defined"
+    keyboard: "native button on the trigger (Enter/Space); Escape closes; option movement is owned by the Dropdown contract"
+    focus: "move focus into the panel on open and return it to the trigger on close"
+    accessibility: "aria-haspopup=listbox and aria-expanded on the trigger; the accessible name joins the title and the value (e.g. '정렬, 최신순'); complete is exposed as data-complete=true because no ARIA state matches"
   geometry:
     common:
       target: "chip"
@@ -2077,7 +2087,7 @@ _Don't_
 
 ### Mobile Header
 
-모바일 화면 상단의 StatusBar와 AppBar를 하나로 묶은 360×99 코어 컴포넌트. 홈형 2종·표준형 4종을 Type 축으로 제공한다.
+모바일 화면 상단의 StatusBar와 AppBar를 하나로 묶은 코어 컴포넌트. 홈형 2종·표준형 4종을 Type 축으로, 앱(360×99)·모바일 웹(360×149)을 Platform 축으로 제공한다.
 
 **언제 쓰나**
 - 모바일 앱 또는 모바일 웹 화면에서 상단 전역 크롬과 화면 이동 동작을 제공할 때.
@@ -2085,13 +2095,13 @@ _Don't_
 
 **쓰지 말아야 할 때**
 - PC 화면의 전역 내비게이션에는 GNB를 쓴다.
-- 브라우저 주소창까지 포함해야 하는 모바일 웹 크롬에는 StatusBar의 Platform=Web 조합을 별도 패턴에서 사용한다.
+- 모바일 화면이 아닌 PC 전용 헤더에는 사용하지 않는다.
 
 **구성 (Anatomy)**
 
 | 요소 | 역할 |
 | --- | --- |
-| StatusBar | Platform=App 정본 인스턴스. 360×27. 배경은 투명이며 헤더 프레임 배경을 상속한다. Appearance 모드도 부모를 따른다. |
+| StatusBar | 선택한 Platform의 StatusBar 정본 인스턴스. App은 360×27, Web은 주소창을 포함한 360×77이다. 배경은 투명이며 헤더 프레임 배경과 Appearance 모드를 상속한다. |
 | AppBar | 360×56. StatusBar 아래 16px 간격으로 배치한다. |
 | Title area | 표준형은 중앙 정렬(title/18M), 홈형은 좌측 정렬(title/18B). No Title 계열에는 텍스트 노드가 없다. |
 | Action slots | 32×32 이전·닫기·알림 슬롯 또는 같은 폭 spacer. |
@@ -2099,6 +2109,7 @@ _Don't_
 | variant |
 | --- |
 | Type |
+| Platform |
 
 #### Agent-readable contract
 
@@ -2113,6 +2124,9 @@ agent:
       - "Standard / Title + Close"
       - "Standard / No Title"
       - "Standard / No Title + Close"
+    Platform:
+      - "App"
+      - "Web"
   states:
     builder: "not-defined"
     metadata:
@@ -2124,26 +2138,32 @@ agent:
     common:
       target: "root"
       width: 360
-      height: 99
       layoutMode: "VERTICAL"
       primaryAxisSizingMode: "FIXED"
       counterAxisSizingMode: "FIXED"
       itemSpacing: "16"
     variants:
       -
-        when: "all"
+        when:
+          Platform: "App"
+        height: 99
+      -
+        when:
+          Platform: "Web"
+        height: 149
   composition:
     mustReuse:
       - "StatusBar"
     mustNotCreate: "not-defined"
     declaredParts:
       - "AppBar"
-      - "StatusBar / Platform=App"
+      - "StatusBar"
   constraints: "unknown"
   tokens:
     figmaSemanticBindings:
       - "color/bg/home"
       - "color/bg/level-0"
+      - "color/bg/level-2"
       - "color/icon/gray-dark"
       - "color/text/body/secondary"
       - "color/text/body/tertiary"
@@ -2163,6 +2183,9 @@ agent:
         - "Standard / Title + Close"
         - "Standard / No Title"
         - "Standard / No Title + Close"
+      Platform:
+        - "App"
+        - "Web"
   icons:
     allowed: "figma-unconfirmed"
     slots: "unknown"
@@ -2806,7 +2829,7 @@ _Don't_
 
 ### Radio
 
-라디오 버튼 컨트롤. default·hover·selected·disabled 상태.
+라디오 버튼 컨트롤. 정본 상태는 default·hover·selected·disabled·disabled+selected 다섯이고, 라벨은 정본 Label 축의 선택 부품이다.
 
 **언제 쓰나**
 - 여러 보기 중 하나만 고를 때(상호배타).
@@ -2821,7 +2844,7 @@ _Don't_
 | --- | --- |
 | 원(circle) | 선택 영역. 테두리는 control 토큰. |
 | 점(dot) | selected 인디케이터. |
-| 라벨(선택) | 보기 텍스트. |
+| 라벨(선택) | 선택 부품. 정본 Label=Off 가 기본이고 On 이면 보기 텍스트가 붙는다(본문 14 Medium, 간격 8). |
 
 | variant | default | hover | selected | disabled |
 | --- | --- | --- | --- | --- |
@@ -2937,7 +2960,7 @@ agent:
 ```
 
 _Do_
-- 같은 그룹의 라디오는 name 으로 묶어 하나만 선택되게 한다.
+- 같은 그룹의 라디오는 name 으로 묶어 하나만 선택되게 한다(감싸는 fieldset 에 그룹 이름을 준다).
 - 원/점 색은 control 토큰을 쓴다.
 
 _Don't_
@@ -2945,8 +2968,10 @@ _Don't_
 - 라벨 없이 aria-label 을 빠뜨리지 않는다.
 
 **접근성 (a11y)**
-- role=radiogroup 으로 묶고 선택에 aria-checked 를 준다.
-- 키보드 화살표로 그룹 내 이동이 가능하게 한다.
+- native input[type=radio] 를 같은 name 으로 묶어 역할·선택 상태·화살표 이동을 브라우저가 제공하게 한다.
+- 그룹은 fieldset·legend 로 묶어 그룹 이름을 읽히게 한다.
+- 라벨이 없으면 aria-label 필수.
+- 키보드 초점은 선택 테두리 토큰의 2px 외곽선으로 보이게 한다.
 
 ### Select
 
@@ -3013,11 +3038,15 @@ agent:
         on: "click"
         target: "trigger"
         guard: "disabled=false"
-        result: "toggle closed ↔ open"
+        result: "toggle closed ↔ open and keep aria-expanded in sync"
       -
         on: "click"
         target: "option"
         result: "select one option, update the trigger text, mark filled, and close"
+      -
+        on: "keydown"
+        target: "select"
+        result: "close on Escape and return focus to the trigger"
       -
         on: "click"
         target: "outside"
@@ -3027,9 +3056,9 @@ agent:
         target: "select"
         result: "close and block trigger clicks"
     selection: "single"
-    keyboard: "not-defined"
-    focus: "not-defined"
-    accessibility: "not-defined"
+    keyboard: "native button on the trigger (Enter/Space); option movement is owned by the Dropdown contract; Escape closes"
+    focus: "move focus into the panel on open and return it to the trigger on close"
+    accessibility: "aria-haspopup=listbox and aria-expanded on the trigger; aria-selected on the chosen option; filled is exposed as data-filled=true because no ARIA state matches"
   geometry:
     common:
       target: "trigger"
@@ -4074,4 +4103,4 @@ DESIGN_SYSTEM_GAP:
 - 적용 해석 순서(뒤가 앞을 덮음): core → service(extends core) → role → platform → theme. 기본값: service=core · role=user · platform=web · theme=light.
 - 서비스 분기(예: vms 영상관제)는 core 를 상속하고 차이분만 덮는다.
 
-<!-- generated-stamp: 9495644eb9a2 · 손편집 금지 -->
+<!-- generated-stamp: 6281b84738b6 · 손편집 금지 -->

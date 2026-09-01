@@ -48,6 +48,8 @@ const ANATOMY = [
   { set: "Filter Chip",  variant: /(^|,\s*)State=Selected(,|$)/, require: [],                forbid: ["list"],           label: "Filter Chip / State=Selected" },
   // Date Picker Open 은 Calendar 인스턴스 사용 — raw "calendar-panel" 프레임 금지(2026-06-23).
   { set: "Date Picker",  variant: /(^|,\s*)State=Open(,|$)/,     require: [],                forbid: ["calendar-panel"], label: "Date Picker / State=Open" },
+  // Bottom Sheet 본문은 네이티브 Content Slot이어야 하며, 구 raw list 프레임으로 돌아가면 안 된다.
+  { set: "Bottom Sheet", variant: /(^|,\s*)Footer=(None|Single|Dual)(,|$)/, require: ["Content"], forbid: ["list"], label: "Bottom Sheet / Content Slot" },
 ];
 
 // ── 만능 auto-stub (콜러블 + 모든 prop) — 미목 API 호출이 throw 하지 않게 ─────
@@ -70,7 +72,7 @@ function makeStub() {
 // ── 노드 트리를 기록하는 recording 노드 ─────────────────────────────────
 // { type, name, children:[state...] } 를 보유. 알 수 없는 prop/method 는 makeStub 로 폴백.
 function recNode(type) {
-  const state = { type, name: undefined, children: [] };
+  const state = { type, name: undefined, children: [], componentPropertyDefinitions: {} };
   const pushChild = (c) => {
     state.children.push(c && c.__state ? c.__state : { type: "?", name: undefined, children: [] });
     return c;
@@ -81,8 +83,16 @@ function recNode(type) {
       if (prop === "type") return state.type;
       if (prop === "name") return state.name;
       if (prop === "children") return state.children;
+      if (prop === "componentPropertyDefinitions") return state.componentPropertyDefinitions;
       if (prop === "appendChild") return pushChild;
       if (prop === "insertChild") return (_i, c) => pushChild(c);
+      if (prop === "createSlot" && state.type === "COMPONENT") {
+        return () => {
+          state.componentPropertyDefinitions["Slot#mock"] = { type: "SLOT", defaultValue: "" };
+          return recNode("SLOT");
+        };
+      }
+      if (prop === "editComponentProperty") return (propertyName) => propertyName;
       if (prop === "then") return undefined;
       if (prop === Symbol.toPrimitive) return () => 0;
       if (prop === Symbol.iterator) return undefined;

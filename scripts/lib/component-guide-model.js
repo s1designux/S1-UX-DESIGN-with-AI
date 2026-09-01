@@ -103,6 +103,13 @@ function serializeNode(node) {
     boundVariables: Object.fromEntries(Object.entries(node.boundVariables || {}).sort(([a], [b]) => a.localeCompare(b))),
     children: (node.children || []).map(serializeNode),
   };
+  const componentProperties = Object.entries(node.componentPropertyDefinitions || {})
+    .map(([name, definition]) => ({
+      name: String(name).split('#')[0],
+      type: definition.type,
+      description: definition.description || null,
+    }));
+  if (componentProperties.length) result.componentProperties = componentProperties;
   return result;
 }
 

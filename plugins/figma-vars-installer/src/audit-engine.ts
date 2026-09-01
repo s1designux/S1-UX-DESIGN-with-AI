@@ -18,7 +18,10 @@ import {
   SEMANTIC_COLOR_COLLECTION,
   SEMANTIC_NUMBER_COLLECTION,
   SEMANTIC_SHADOW_COLLECTION,
+  SEMANTIC_SHADOW,
 } from "./vars-data";
+import { TEXT_STYLES, TEXT_STYLE_FONT_FAMILY } from "./textstyles-data";
+import { parseCssShadow } from "./shadow-parse";
 
 // 검수 대상 컬렉션 = 설치기가 만드는 V2 컬렉션 전부.
 //   2026-08-01: 종전에는 이 목록이 문자열 하드코딩 사본이었고, 2026-07-29 신설된
@@ -85,6 +88,32 @@ type Issue = {
   suggestions: Suggestion[];
   offGuide: boolean;                // 가이드(팔레트)에 없는 색 — 정확일치 0 & 최근접 Foundation 거리 > 임계값
   nearestDistance: number;          // 가장 가까운 Foundation 색과의 거리(ΔRGB)
+  // 화면에는 아이콘·버튼 같은 의미 단위로 한 건만 보여주되, 적용할 때는
+  // 그 안에서 같은 위반을 가진 실제 paint를 모두 고친다.
+  targets?: { nodeId: string; property: "fills" | "strokes"; paintIndex: number }[];
+};
+
+type ChecklistItemResult = {
+  id: number;
+  count: number;
+  status: "pass" | "fail" | "warning" | "choice" | "unjudged";
+  coverage: "full" | "partial";
+};
+
+type ChecklistDetailIssue = {
+  id: string;
+  checklistId: number;
+  category: "color" | "text" | "shadow";
+  nodeId: string;
+  nodeName: string;
+  detail: string;
+};
+
+type ChecklistFacts = {
+  items: ChecklistItemResult[];
+  colorDetails: ChecklistDetailIssue[];
+  textIssues: ChecklistDetailIssue[];
+  shadowIssues: ChecklistDetailIssue[];
 };
 
 // "가이드에 없는 색" 판정 임계값(ΔRGB 유클리드). 12 미만은 반올림 오차 수준으로 흡수.
@@ -178,6 +207,63 @@ function walk(node: BaseNode, acc: SceneNode[] = []): SceneNode[] {
     for (const c of (node as any).children) walk(c, acc);
   }
   return acc;
+}
+
+// 선택한 부모와 그 안의 자식이 함께 선택돼도 한 번만 검사한다.
+// Cmd/Ctrl+A처럼 여러 최상위 노드를 선택한 경우에는 각 root를 그대로 포함한다.
+function normalizeSelectionRoots(selection: readonly SceneNode[]): SceneNode[] {
+  const selected = Array.from(selection);
+  const ids = new Set(selected.map((n) => n.id));
+  return selected.filter((node) => {
+    let parent: BaseNode | null = node.parent;
+    while (parent && parent.id !== figma.currentPage.id) {
+      if (ids.has(parent.id)) return false;
+      parent = parent.parent;
+    }
+    return true;
+  });
+}
+
+function selectedRoots(): SceneNode[] {
+  return normalizeSelectionRoots(figma.currentPage.selection);
+}
+
+function collectUniqueSelectedNodes(rootsOverride?: readonly SceneNode[]): SceneNode[] {
+  const roots = rootsOverride ? Array.from(rootsOverride) : selectedRoots();
+  const byId = new Map<string, SceneNode>();
+  for (const root of roots) {
+    const branch: SceneNode[] = [];
+    walk(root, branch);
+    for (const node of branch) byId.set(node.id, node);
+  }
+  return Array.from(byId.values());
+}
+
+const AUDIT_UNIT_NAME = /(^|[\s_\-/])(icon|ic|button|btn|아이콘|버튼)(?=$|[\s_\-/])/i;
+
+function isVectorOnlyBranch(node: BaseNode): boolean {
+  if (node.type === "VECTOR" || node.type === "BOOLEAN_OPERATION") return true;
+  if (!("children" in node)) return false;
+  const children = Array.from((node as ChildrenMixin).children);
+  return children.length > 0 && children.every((child) => isVectorOnlyBranch(child));
+}
+
+// 최하위 path가 아니라 사용자가 알아볼 수 있는 조작 단위로 결과를 묶는다.
+// 우선순위: 가장 가까운 INSTANCE → 이름이 있는 icon/button 묶음 → vector-only 묶음 → 원래 노드.
+function resolveAuditUnit(node: SceneNode): SceneNode {
+  let cur: BaseNode | null = node;
+  let vectorContainer: SceneNode | null = null;
+  while (cur && cur.type !== "PAGE" && cur.type !== "DOCUMENT") {
+    if (cur.type === "INSTANCE") return vectorContainer || cur as InstanceNode;
+    if ("id" in cur && AUDIT_UNIT_NAME.test(cur.name || "")) return cur as SceneNode;
+    if (
+      "id" in cur &&
+      (cur.type === "GROUP" || cur.type === "FRAME" || cur.type === "BOOLEAN_OPERATION") &&
+      isVectorOnlyBranch(cur)
+    ) vectorContainer = cur as SceneNode;
+    cur = cur.parent;
+  }
+  return vectorContainer || node;
 }
 
 function scopeFromProperty(property: "fills" | "strokes"): "fill" | "stroke" {
@@ -399,9 +485,11 @@ function pickSuggestions(
   return result;
 }
 
-async function audit(rootOverride?: SceneNode): Promise<{ issues: Issue[]; stats: { scanned: number; issuesCount: number; highCount: number } }> {
-  // rootOverride 를 주면 그 노드(예: 개선안 복제본)를 대상으로, 없으면 현재 선택 영역.
-  const sel: readonly SceneNode[] = rootOverride ? [rootOverride] : figma.currentPage.selection;
+async function audit(rootOverride?: SceneNode | readonly SceneNode[]): Promise<{ issues: Issue[]; stats: { scanned: number; issuesCount: number; highCount: number } }> {
+  // rootOverride 를 주면 해당 노드들(예: 검사 시작 시점 선택 스냅샷)을 대상으로, 없으면 현재 선택 영역.
+  const sel: readonly SceneNode[] = rootOverride
+    ? (Array.isArray(rootOverride) ? rootOverride : [rootOverride as SceneNode])
+    : selectedRoots();
   if (sel.length === 0) {
     return { issues: [], stats: { scanned: 0, issuesCount: 0, highCount: 0 } };
   }
@@ -409,14 +497,34 @@ async function audit(rootOverride?: SceneNode): Promise<{ issues: Issue[]; stats
   const { v2, v2CollectionIds, byHex } = await loadV2Vars();
 
   // 모든 자손 수집
-  const allNodes: SceneNode[] = [];
-  for (const root of sel) {
-    allNodes.push(root);
-    walk(root, allNodes);
-  }
+  const allNodes = collectUniqueSelectedNodes(sel);
 
   const issues: Issue[] = [];
+  const groupedIssues = new Map<string, Issue>();
   let issueCounter = 0;
+
+  const pushGroupedIssue = (leaf: SceneNode, issue: Omit<Issue, "id" | "nodeId" | "nodeName" | "targets">) => {
+    const unit = resolveAuditUnit(leaf);
+    const key = [unit.id, issue.property, issue.reasonKind, issue.hex, issue.sourceLabel].join("|");
+    const target = { nodeId: leaf.id, property: issue.property, paintIndex: issue.paintIndex };
+    const existing = groupedIssues.get(key);
+    if (existing) {
+      if (!existing.targets) existing.targets = [];
+      if (!existing.targets.some((item) => item.nodeId === target.nodeId && item.property === target.property && item.paintIndex === target.paintIndex)) {
+        existing.targets.push(target);
+      }
+      return;
+    }
+    const created: Issue = {
+      ...issue,
+      id: "i" + (++issueCounter),
+      nodeId: unit.id,
+      nodeName: unit.name,
+      targets: [target],
+    };
+    groupedIssues.set(key, created);
+    issues.push(created);
+  };
 
   for (const n of allNodes) {
     const ctx = getComponentContext(n);
@@ -450,10 +558,7 @@ async function audit(rootOverride?: SceneNode): Promise<{ issues: Issue[]; stats
           const v = await figma.variables.getVariableByIdAsync(bound.id);
           if (!v) continue;
           if (v2CollectionIds.has(v.variableCollectionId)) continue;
-          issues.push({
-            id: "i" + (++issueCounter),
-            nodeId: n.id,
-            nodeName: n.name,
+          pushGroupedIssue(n, {
             nodeKind: kind,
             property: prop,
             paintIndex: i,
@@ -467,10 +572,7 @@ async function audit(rootOverride?: SceneNode): Promise<{ issues: Issue[]; stats
             nearestDistance,
           });
         } else {
-          issues.push({
-            id: "i" + (++issueCounter),
-            nodeId: n.id,
-            nodeName: n.name,
+          pushGroupedIssue(n, {
             nodeKind: kind,
             property: prop,
             paintIndex: i,
@@ -492,20 +594,201 @@ async function audit(rootOverride?: SceneNode): Promise<{ issues: Issue[]; stats
   return { issues, stats: { scanned: allNodes.length, issuesCount: issues.length, highCount } };
 }
 
+// 1차 체크리스트의 토큰·텍스트·그림자 사실을 읽기 전용으로 수집한다.
+// 컴포넌트 항목은 별도 교체 후보 스캐너가 담당하므로 여기서는 1~9번만 반환한다.
+async function auditChecklistFacts(colorIssues: Issue[], rootsOverride?: readonly SceneNode[]): Promise<ChecklistFacts> {
+  const nodes = collectUniqueSelectedNodes(rootsOverride);
+  const collections = await figma.variables.getLocalVariableCollectionsAsync();
+  const collectionById = new Map(collections.map((c) => [c.id, c.name]));
+  const variableCache = new Map<string, Variable | null>();
+  const styleCache = new Map<string, BaseStyle | null>();
+  const getVariable = async (id: string) => {
+    if (!variableCache.has(id)) variableCache.set(id, await figma.variables.getVariableByIdAsync(id));
+    return variableCache.get(id) || null;
+  };
+  const getStyle = async (id: string) => {
+    if (!styleCache.has(id)) styleCache.set(id, await figma.getStyleByIdAsync(id));
+    return styleCache.get(id) || null;
+  };
+  const colorDetails: ChecklistDetailIssue[] = [];
+  const textIssues: ChecklistDetailIssue[] = [];
+  const shadowIssues: ChecklistDetailIssue[] = [];
+  const canonicalTextStyleNames = new Set(TEXT_STYLES.map((style) => style.name));
+  const canonicalShadowGroups: Array<ReturnType<typeof parseCssShadow>> = [];
+  for (const entry of Object.values(SEMANTIC_SHADOW)) {
+    canonicalShadowGroups.push(parseCssShadow(entry.light), parseCssShadow(entry.dark));
+  }
+  const near = (a: number, b: number) => Math.abs(a - b) < 0.001;
+  const shadowGroupMatchesCanon = (effects: any[]) => canonicalShadowGroups.some((group) => {
+    if (group.length !== effects.length) return false;
+    return group.every((layer, index) => {
+      const effect = effects[index];
+      if (!effect || effect.type !== "DROP_SHADOW") return false;
+      return near(effect.offset.x, layer.offsetX) && near(effect.offset.y, layer.offsetY) &&
+        near(effect.radius, layer.blur) && near(effect.spread || 0, layer.spread) &&
+        near(effect.color.r, layer.color.r) && near(effect.color.g, layer.color.g) &&
+        near(effect.color.b, layer.color.b) && near(effect.color.a, layer.color.a);
+    });
+  });
+  let detailSeq = 0;
+  const detailSeen = new Set<string>();
+  const add = (
+    target: ChecklistDetailIssue[], checklistId: number, category: ChecklistDetailIssue["category"],
+    node: SceneNode, detail: string,
+  ) => {
+    const unit = resolveAuditUnit(node);
+    const key = `${checklistId}|${unit.id}`;
+    if (detailSeen.has(key)) return;
+    detailSeen.add(key);
+    target.push({ id: `c${checklistId}-${++detailSeq}`, checklistId, category, nodeId: unit.id, nodeName: unit.name, detail });
+  };
+
+  // 1. 색 변수 바인딩 — 기존 색 엔진의 미바인딩 결과만 사용한다.
+  for (const issue of colorIssues) {
+    if (issue.reasonKind !== "unbound-hex") continue;
+    const node = await figma.getNodeByIdAsync(issue.nodeId);
+    if (node && "type" in node) add(colorDetails, 1, "color", node as SceneNode, `${issue.property} ${issue.hex}가 변수에 연결되지 않음`);
+  }
+
+  // 2~4. 색 계층, 로컬 스타일, opacity 변형.
+  for (const node of nodes) {
+    for (const prop of ["fills", "strokes"] as const) {
+      if (!(prop in node)) continue;
+      const paints = (node as any)[prop];
+      if (!Array.isArray(paints)) continue;
+      for (const paint of paints) {
+        if (!paint || paint.type !== "SOLID") continue;
+        const bound = paint.boundVariables && paint.boundVariables.color;
+        if (bound) {
+          const variable = await getVariable(bound.id);
+          const colName = variable ? collectionById.get(variable.variableCollectionId) : undefined;
+          if (colName === FOUNDATION_COLLECTION) {
+            add(colorDetails, 2, "color", node, `Foundation 변수 ${variable!.name} 직접 사용`);
+          }
+          if (typeof paint.opacity === "number" && paint.opacity < 0.999) {
+            add(colorDetails, 4, "color", node, `변수 색에 불투명도 ${Math.round(paint.opacity * 100)}% 적용`);
+          }
+        }
+      }
+    }
+
+    for (const prop of ["fillStyleId", "strokeStyleId", "textStyleId"] as const) {
+      if (!(prop in node)) continue;
+      const styleId = (node as any)[prop];
+      if (typeof styleId !== "string" || !styleId) continue;
+      const style = await getStyle(styleId);
+      const isCanonicalLocalTextStyle = prop === "textStyleId" && style && style.type === "TEXT" && canonicalTextStyleNames.has(style.name);
+      if (style && !style.remote && !isCanonicalLocalTextStyle) {
+        const category = prop === "textStyleId" ? "text" : "color";
+        add(category === "text" ? textIssues : colorDetails, 3, category, node, `라이브러리가 아닌 로컬 스타일 ${style.name} 사용`);
+      }
+    }
+
+    if (node.type === "TEXT") {
+      const textNode = node as TextNode;
+      const textStyleId = textNode.textStyleId;
+      if (typeof textStyleId !== "string" || !textStyleId) {
+        add(textIssues, 5, "text", node, "text style 미적용 또는 혼합 적용");
+      }
+
+      const fontSize = textNode.fontSize;
+      const allowedSizes = new Set(TEXT_STYLES.map((s) => s.fontSize));
+      if (typeof fontSize === "number" && !allowedSizes.has(fontSize)) {
+        add(textIssues, 6, "text", node, `정의 밖 폰트 크기 ${fontSize}px`);
+      }
+
+      if (typeof textStyleId === "string" && textStyleId) {
+        const style = await getStyle(textStyleId);
+        if (style && style.type === "TEXT") {
+          const textStyle = style as TextStyle;
+          const overridden =
+            (typeof textNode.fontSize === "number" && textNode.fontSize !== textStyle.fontSize) ||
+            (textNode.fontName !== figma.mixed && JSON.stringify(textNode.fontName) !== JSON.stringify(textStyle.fontName)) ||
+            (textNode.lineHeight !== figma.mixed && JSON.stringify(textNode.lineHeight) !== JSON.stringify(textStyle.lineHeight)) ||
+            (textNode.letterSpacing !== figma.mixed && JSON.stringify(textNode.letterSpacing) !== JSON.stringify(textStyle.letterSpacing));
+          if (overridden) add(textIssues, 7, "text", node, `text style ${textStyle.name} 값 덮어쓰기`);
+        }
+      }
+
+      const fontName = textNode.fontName;
+      if (fontName === figma.mixed) {
+        const families = textNode.getRangeAllFontNames(0, textNode.characters.length).map((font) => font.family);
+        const nonPretendard = families.find((family) => family !== TEXT_STYLE_FONT_FAMILY);
+        if (nonPretendard) add(textIssues, 8, "text", node, `${nonPretendard} 등 Pretendard가 아닌 글꼴이 섞여 있음`);
+      } else if (fontName.family !== TEXT_STYLE_FONT_FAMILY) {
+        add(textIssues, 8, "text", node, `${fontName.family} 사용`);
+      }
+    }
+
+    if ("effects" in node && Array.isArray((node as any).effects)) {
+      const shadows = (node as any).effects.filter((effect: any) =>
+        effect && effect.visible !== false && (effect.type === "DROP_SHADOW" || effect.type === "INNER_SHADOW")
+      );
+      if (shadows.length > 0 && !shadowGroupMatchesCanon(shadows)) {
+        add(shadowIssues, 9, "shadow", node, "가이드에 등록되지 않은 그림자 사용");
+      }
+    }
+  }
+
+  const allDetails = [...colorDetails, ...textIssues, ...shadowIssues];
+  const count = (id: number) => allDetails.filter((issue) => issue.checklistId === id).length;
+  const items: ChecklistItemResult[] = [
+    { id: 1, count: count(1), status: count(1) ? "fail" : "pass", coverage: "full" },
+    { id: 2, count: count(2), status: count(2) ? "warning" : "pass", coverage: "full" },
+    { id: 3, count: count(3), status: count(3) ? "fail" : "pass", coverage: "full" },
+    { id: 4, count: count(4), status: count(4) ? "warning" : "pass", coverage: "partial" },
+    { id: 5, count: count(5), status: count(5) ? "fail" : "pass", coverage: "full" },
+    { id: 6, count: count(6), status: count(6) ? "choice" : "pass", coverage: "partial" },
+    { id: 7, count: count(7), status: count(7) ? "fail" : "pass", coverage: "partial" },
+    { id: 8, count: count(8), status: count(8) ? "fail" : "pass", coverage: "full" },
+    { id: 9, count: count(9), status: count(9) ? "fail" : "pass", coverage: "partial" },
+  ];
+  return { items, colorDetails, textIssues, shadowIssues };
+}
+
 async function applyOne(issue: Issue, suggestionIndex: number): Promise<boolean> {
   const sug = issue.suggestions[suggestionIndex];
   if (!sug) return false;
-  const node = await figma.getNodeByIdAsync(issue.nodeId);
-  if (!node) return false;
   const v2 = await figma.variables.getVariableByIdAsync(sug.variableId);
   if (!v2) return false;
-  const arr = (node as any)[issue.property];
-  if (!Array.isArray(arr)) return false;
-  const copy = JSON.parse(JSON.stringify(arr));
-  const paint = copy[issue.paintIndex];
-  if (!paint || paint.type !== "SOLID") return false;
-  copy[issue.paintIndex] = figma.variables.setBoundVariableForPaint(paint, "color", v2);
-  (node as any)[issue.property] = copy;
+  const targets = issue.targets && issue.targets.length
+    ? issue.targets
+    : [{ nodeId: issue.nodeId, property: issue.property, paintIndex: issue.paintIndex }];
+  const grouped = new Map<string, { node: BaseNode; property: "fills" | "strokes"; original: any[]; next: any[] }>();
+  for (const target of targets) {
+    const node = await figma.getNodeByIdAsync(target.nodeId);
+    if (!node) return false;
+    const key = `${target.nodeId}|${target.property}`;
+    let group = grouped.get(key);
+    if (!group) {
+      const arr = (node as any)[target.property];
+      if (!Array.isArray(arr)) return false;
+      group = {
+        node,
+        property: target.property,
+        original: JSON.parse(JSON.stringify(arr)),
+        next: JSON.parse(JSON.stringify(arr)),
+      };
+      grouped.set(key, group);
+    }
+    const paint = group.next[target.paintIndex];
+    if (!paint || paint.type !== "SOLID") return false;
+    group.next[target.paintIndex] = figma.variables.setBoundVariableForPaint(paint, "color", v2);
+  }
+
+  const applied: Array<{ node: BaseNode; property: "fills" | "strokes"; original: any[] }> = [];
+  for (const group of grouped.values()) {
+    try {
+      (group.node as any)[group.property] = group.next;
+      applied.push({ node: group.node, property: group.property, original: group.original });
+    } catch {
+      // 한 단위 안에서 일부만 바뀐 상태를 남기지 않는다.
+      for (const prior of applied.reverse()) {
+        try { (prior.node as any)[prior.property] = prior.original; } catch {}
+      }
+      return false;
+    }
+  }
   return true;
 }
 
@@ -754,9 +1037,10 @@ function scoreNameSimilarity(legacy: string, canon: string): number {
   return score;
 }
 type MappingSuggestion = { id: string; key: string; type: "COMPONENT" | "COMPONENT_SET"; name: string; source?: string; score: number };
-// 여러 부품이 뭉친 "모듈"(예: 테이블) 판정 임계 — 후손 인스턴스가 이 수 이상이면 통째/leaf 교체 대신 "재구성 필요"로 플래그.
+// 여러 부품이 뭉친 큰 모듈의 보조 판정 임계. 핵심 판정은 아래의
+// "같은 최신 부품이 2개 이상 들어 있는가"이며, 이름(m_button 등)은 예외로 쓰지 않는다.
 const MODULE_NESTED_THRESHOLD = 5;
-type ModuleFlag = { id: string; instanceId: string; instanceName: string; currentMainName: string; currentMainPath: string; nestedCount: number };
+type ModuleFlag = { id: string; instanceId: string; instanceName: string; currentMainName: string; currentMainPath: string; nestedCount: number; repeatedPartName?: string; repeatedPartCount?: number };
 // 미매칭 레거시 인스턴스 1건 + 유사도 내림차순 정본 제안 목록(최상위=가장 유사)
 type ManualMapCandidate = {
   id: string;
@@ -848,7 +1132,9 @@ async function scanSwapCandidates(
   roots?: readonly BaseNode[]
 ): Promise<{ candidates: SwapCandidate[]; diagnostics: SwapDiagnostics; manualCandidates: ManualMapCandidate[]; modules: ModuleFlag[] }> {
   // roots 를 주면 그 노드들을 대상으로(개선안 복제본 스캔용), 없으면 기존대로 현재 선택 영역
-  const sel: readonly BaseNode[] = roots && roots.length ? roots : figma.currentPage.selection;
+  const sel: readonly BaseNode[] = roots && roots.length
+    ? normalizeSelectionRoots(roots.filter((root): root is SceneNode => "id" in root && root.type !== "PAGE" && root.type !== "DOCUMENT") as SceneNode[])
+    : selectedRoots();
   const diag: SwapDiagnostics = {
     selectionCount: sel.length,
     instanceCount: 0,
@@ -866,7 +1152,7 @@ async function scanSwapCandidates(
   const modules: ModuleFlag[] = [];
   const manualSeen = new Set<string>();
   const seen = new Set<string>();
-  let counter = 0;
+  const candidateId = (prefix: string, instanceId: string) => `${prefix}-${instanceId.replace(/[^a-zA-Z0-9]/g, "_")}`;
   for (const root of sel) {
     const insts = collectInstances(root);
     diag.instanceCount += insts.length;
@@ -893,6 +1179,44 @@ async function scanSwapCandidates(
       const confidence: "high" | "ambiguous" = found.matchType === "partial" ? "ambiguous" : "high";
       const matched = !!target;
       const sameAsTarget = !!target && target.id === currentTopId;
+
+      // 바깥 묶음을 최신 부품 하나로 축소하기 전에 내부 구조부터 본다.
+      // 같은 정본 부품으로 해석되는 자식이 2개 이상이면 "여러 부품의 묶음"이다.
+      // 예: m_button 안의 버튼 2개. 이름에 관계없이 구조로 판정한다.
+      const nestedInstances = collectInstances(inst).slice(1);
+      const nestedTargetCount = new Map<string, { target: ReferenceComponent; count: number }>();
+      for (const nested of nestedInstances) {
+        const nestedMain = await nested.getMainComponentAsync();
+        if (!nestedMain) continue;
+        const nestedName = nestedMain.parent && nestedMain.parent.type === "COMPONENT_SET"
+          ? nestedMain.parent.name
+          : nestedMain.name;
+        let nestedFound = findReferenceMatch(nestedName, pool);
+        if (!nestedFound.match && nested.name && nested.name !== nestedName) nestedFound = findReferenceMatch(nested.name, pool);
+        if (!nestedFound.match) continue;
+        const prev = nestedTargetCount.get(nestedFound.match.id);
+        nestedTargetCount.set(nestedFound.match.id, { target: nestedFound.match, count: (prev ? prev.count : 0) + 1 });
+      }
+      const repeatedPart = Array.from(nestedTargetCount.values()).sort((a, b) => b.count - a.count)[0];
+      const isRepeatedPartModule = !!repeatedPart && repeatedPart.count >= 2 && !sameAsTarget && (
+        !target || repeatedPart.target.id === target.id
+      );
+      if (isRepeatedPartModule) {
+        if (!manualSeen.has(inst.id)) {
+          manualSeen.add(inst.id);
+          modules.push({
+            id: candidateId("g", inst.id),
+            instanceId: inst.id,
+            instanceName: inst.name,
+            currentMainName: compareName,
+            currentMainPath: await describeComponentLocation(main),
+            nestedCount: nestedInstances.length,
+            repeatedPartName: repeatedPart!.target.name,
+            repeatedPartCount: repeatedPart!.count,
+          });
+        }
+        continue;
+      }
       if (matched) diag.matchedNameCount++;
       if (sameAsTarget) diag.sameIdSkippedCount++;
       if (diag.instancesPreview.length < 8) {
@@ -900,15 +1224,16 @@ async function scanSwapCandidates(
       }
       if (!matched) {
         diag.noMatchCount++;
-        // 이름이 정본과 안 맞는 top-level 인스턴스(중첩은 이미 위에서 제외). 같은 컴포넌트는 대표 1건만.
-        if (pool.length > 0 && !manualSeen.has(currentTopId)) {
-          manualSeen.add(currentTopId);
+        // 이름이 정본과 안 맞는 top-level 인스턴스(중첩은 이미 위에서 제외)를 배치된 항목별로 보여준다.
+        // 같은 레거시 원본을 여러 번 썼더라도 각 항목을 따로 선택·교체할 수 있어야 한다.
+        if (pool.length > 0 && !manualSeen.has(inst.id)) {
+          manualSeen.add(inst.id);
           // 내부에 부품이 많이 뭉친 "모듈"(예: 테이블)은 통째/leaf 교체가 부적절 → 재구성 필요로만 플래그.
           // (내부 중첩 인스턴스는 Figma 가 개별 교체를 막고, 이름도 정본과 달라 leaf 자동매칭도 불가.)
-          const nestedCount = collectInstances(inst).length - 1; // 자신 제외 후손 인스턴스 수
+          const nestedCount = nestedInstances.length; // 자신 제외 후손 인스턴스 수
           if (nestedCount >= MODULE_NESTED_THRESHOLD) {
             modules.push({
-              id: "g" + (++counter),
+              id: candidateId("g", inst.id),
               instanceId: inst.id,
               instanceName: inst.name,
               currentMainName: compareName,
@@ -918,7 +1243,7 @@ async function scanSwapCandidates(
           } else {
             // 단순(부품 적은) 미매칭 → "가장 비슷한 정본"을 상위 제안하는 수동 매핑 후보(최종 선택은 사용자).
             manualCandidates.push({
-              id: "m" + (++counter),
+              id: candidateId("m", inst.id),
               instanceId: inst.id,
               instanceName: inst.name,
               currentMainName: compareName,
@@ -935,7 +1260,7 @@ async function scanSwapCandidates(
       seen.add(key);
       const path = await describeComponentLocation(main);
       candidates.push({
-        id: "s" + (++counter),
+        id: candidateId("s", inst.id),
         instanceId: inst.id,
         instanceName: inst.name,
         currentMainId: currentTopId,
@@ -1024,6 +1349,76 @@ async function resolveSwapTarget(
 // 스타일(폰트·색)은 정본 것을 유지하고 "내용"만 이식한다(적용 시 대상 노드의 현재 폰트 로드).
 type CapturedText = { key: string; chars: string };
 
+type SwapRollback = {
+  instanceId: string;
+  backupNodeId: string;
+  originalParentId: string;
+  originalIndex: number;
+  originalX: number;
+  originalY: number;
+  originalVisible: boolean;
+};
+
+const ROLLBACK_FRAME_MARK = "s1-inspector-swap-backup";
+let rollbackFrameId = "";
+let rollbackFrameNode: FrameNode | null = null;
+
+async function getRollbackFrame(): Promise<FrameNode> {
+  if (rollbackFrameId) {
+    const existing = await figma.getNodeByIdAsync(rollbackFrameId);
+    if (existing && existing.type === "FRAME") {
+      rollbackFrameNode = existing as FrameNode;
+      return rollbackFrameNode;
+    }
+  }
+  for (const node of figma.currentPage.children) {
+    if (node.type === "FRAME" && node.getPluginData(ROLLBACK_FRAME_MARK) === "1") {
+      rollbackFrameId = node.id;
+      rollbackFrameNode = node as FrameNode;
+      return rollbackFrameNode;
+    }
+  }
+  const frame = figma.createFrame();
+  frame.name = "검수기 되돌리기 백업";
+  frame.visible = false;
+  frame.setPluginData(ROLLBACK_FRAME_MARK, "1");
+  rollbackFrameId = frame.id;
+  rollbackFrameNode = frame;
+  return frame;
+}
+
+async function discardSwapRollback(rollback: SwapRollback): Promise<void> {
+  const backup = await figma.getNodeByIdAsync(rollback.backupNodeId);
+  if (backup) backup.remove();
+  if (rollbackFrameId) {
+    const frame = await figma.getNodeByIdAsync(rollbackFrameId);
+    if (frame && frame.type === "FRAME" && frame.children.length === 0) {
+      frame.remove();
+      rollbackFrameId = "";
+      rollbackFrameNode = null;
+    }
+  }
+}
+
+async function cleanupSwapBackups(): Promise<void> {
+  if (rollbackFrameNode && !rollbackFrameNode.removed) {
+    rollbackFrameNode.remove();
+  } else if (rollbackFrameId) {
+    const frame = await figma.getNodeByIdAsync(rollbackFrameId);
+    if (frame) frame.remove();
+  }
+  rollbackFrameNode = null;
+  rollbackFrameId = "";
+  // 이전 실행이 비정상 종료돼 메모리 ID가 사라졌더라도 marker로 숨은 백업을 회수한다.
+  for (const page of figma.root.children) {
+    try {
+      for (const node of Array.from(page.children)) {
+        if (node.type === "FRAME" && node.getPluginData(ROLLBACK_FRAME_MARK) === "1") node.remove();
+      }
+    } catch {}
+  }
+}
+
 // 인스턴스 하위(중첩 인스턴스 내부 포함)의 모든 TEXT 를 경로 키와 함께 수집.
 // 경로 키 = 루트→leaf 각 단계 `이름#동일이름형제인덱스` 를 '/' 로 이은 것(반복 행·셀도 인덱스로 구분).
 function collectTextsWithPath(root: BaseNode): { key: string; node: TextNode }[] {
@@ -1095,7 +1490,7 @@ async function restoreTextOverrides(inst: InstanceNode, captured: Map<string, st
 async function applySwap(
   candidate: SwapCandidate,
   mode: SwapMode = "lenient"
-): Promise<{ ok: boolean; result: SwapOutcome; reason?: string; variantReset?: boolean; axisLoss?: number; unpreserved?: string[] }> {
+): Promise<{ ok: boolean; result: SwapOutcome; reason?: string; variantReset?: boolean; axisLoss?: number; unpreserved?: string[]; rollback?: SwapRollback }> {
   const inst = await figma.getNodeByIdAsync(candidate.instanceId);
   if (!inst || inst.type !== "INSTANCE") {
     return { ok: false, result: "failed", reason: "인스턴스를 찾을 수 없음" };
@@ -1112,11 +1507,32 @@ async function applySwap(
     }
     return { ok: false, result: "failed", reason: "기준 컴포넌트를 import할 수 없습니다. 기준 파일에서 컴포넌트가 publish되었는지 확인해주세요." };
   }
-  // 교체 직전 시안 입력 텍스트 캡처 → 교체 → 대응 위치에 복원(내용만, 스타일은 정본 유지)
+  const parent = inst.parent;
+  if (!parent || !("children" in parent)) return { ok: false, result: "failed", reason: "교체 전 위치를 저장할 수 없습니다." };
+  const backup = (inst as InstanceNode).clone();
+  const rollback: SwapRollback = {
+    instanceId: inst.id,
+    backupNodeId: backup.id,
+    originalParentId: parent.id,
+    originalIndex: Array.from(parent.children).findIndex((child) => child.id === inst.id),
+    originalX: inst.x,
+    originalY: inst.y,
+    originalVisible: inst.visible,
+  };
   const captured = captureTextOverrides(inst as InstanceNode);
+  try {
+    const backupFrame = await getRollbackFrame();
+    backup.visible = false;
+    backupFrame.appendChild(backup);
+  } catch (e: any) {
+    try { backup.remove(); } catch {}
+    return { ok: false, result: "failed", reason: `교체 전 상태를 저장하지 못했습니다: ${String(e && e.message || e)}` };
+  }
+  // 교체 직전 시안 입력 텍스트 캡처 → 교체 → 대응 위치에 복원(내용만, 스타일은 정본 유지)
   try {
     (inst as InstanceNode).swapComponent(res.target);
   } catch (e: any) {
+    await discardSwapRollback(rollback);
     return { ok: false, result: "failed", reason: String(e && e.message || e) };
   }
   let unpreserved: string[] = [];
@@ -1124,7 +1540,35 @@ async function applySwap(
     const pres = await restoreTextOverrides(inst as InstanceNode, captured);
     unpreserved = pres.unpreserved;
   } catch (e) { /* 복원 실패해도 교체 자체는 성공 — 보존만 부분적 */ }
-  return { ok: true, result: "swapped", variantReset: res.variantReset, axisLoss: res.axisLoss, unpreserved };
+  return { ok: true, result: "swapped", variantReset: res.variantReset, axisLoss: res.axisLoss, unpreserved, rollback };
+}
+
+async function rollbackSwap(rollback: SwapRollback): Promise<{ ok: boolean; reason?: string; instanceId?: string }> {
+  const node = await figma.getNodeByIdAsync(rollback.instanceId);
+  if (!node || node.type !== "INSTANCE") return { ok: false, reason: "되돌릴 항목을 찾을 수 없습니다." };
+  const backup = await figma.getNodeByIdAsync(rollback.backupNodeId);
+  if (!backup || backup.type !== "INSTANCE") return { ok: false, reason: "교체 전 백업을 찾을 수 없습니다." };
+  const originalParent = await figma.getNodeByIdAsync(rollback.originalParentId);
+  const parent = originalParent && "children" in originalParent ? originalParent : node.parent;
+  if (!parent || !("children" in parent)) return { ok: false, reason: "원래 위치를 찾을 수 없습니다." };
+  try {
+    const index = Math.max(0, Math.min(rollback.originalIndex, parent.children.length));
+    backup.visible = rollback.originalVisible;
+    (parent as BaseNode & ChildrenMixin).insertChild(index, backup as InstanceNode);
+    try { backup.x = rollback.originalX; backup.y = rollback.originalY; } catch {}
+    node.remove();
+    if (rollbackFrameId) {
+      const frame = await figma.getNodeByIdAsync(rollbackFrameId);
+      if (frame && frame.type === "FRAME" && frame.children.length === 0) {
+        frame.remove();
+        rollbackFrameId = "";
+        rollbackFrameNode = null;
+      }
+    }
+    return { ok: true, instanceId: backup.id };
+  } catch (e: any) {
+    return { ok: false, reason: String(e && e.message || e) };
+  }
 }
 
 // ─── 설치기 기준 자동수집 + 개선안(복제본) 생성 ───────────────
@@ -1310,10 +1754,14 @@ export {
   clearReference,
   scanSwapCandidates,
   applySwap,
+  rollbackSwap,
+  discardSwapRollback,
+  cleanupSwapBackups,
   collectPageReference,
   buildImprovedCopy,
+  auditChecklistFacts,
 };
 export type {
   Issue, Suggestion, ReferenceComponent, SwapCandidate, SwapDiagnostics, SavedReference, NodeKind,
-  SwapMode, SwapOutcome, ImprovedSummary, BuildImprovedResult,
+  SwapMode, SwapOutcome, SwapRollback, ImprovedSummary, BuildImprovedResult, ChecklistItemResult, ChecklistDetailIssue, ChecklistFacts,
 };

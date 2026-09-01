@@ -138,6 +138,16 @@ function anatomy(children) {
   return [...names].sort();
 }
 
+function slots(children) {
+  const names = new Set();
+  const visit = (node) => {
+    if (node.type === 'SLOT' && node.props && typeof node.props.name === 'string' && node.props.name) names.add(node.props.name);
+    for (const child of (node.children || [])) visit(child);
+  };
+  for (const child of children) visit(child);
+  return [...names].sort();
+}
+
 async function buildDocument() {
   const mod = bundleRequire();
   const result = await runBuild(mod);
@@ -147,7 +157,7 @@ async function buildDocument() {
   const components = {};
   for (const set of result.nodes.filter((n) => n.type === 'COMPONENT_SET' && n.props.name)) {
     const axes = axesOf(set.children);
-    components[set.props.name] = {
+    const component = {
       variantAxes: Object.keys(axes).length ? axes : 'not-defined',
       geometry: geometryProfiles(set.children, axes),
       anatomy: anatomy(set.children),
@@ -156,6 +166,9 @@ async function buildDocument() {
         buildDependencies: (mod.BUILD_DEPENDENCIES && mod.BUILD_DEPENDENCIES[set.props.name]) || [],
       },
     };
+    const componentSlots = slots(set.children);
+    if (componentSlots.length) component.slots = componentSlots;
+    components[set.props.name] = component;
   }
   const sourceHash = crypto.createHash('sha256').update(fs.readFileSync(SOURCE)).digest('hex').slice(0, 12);
   return {

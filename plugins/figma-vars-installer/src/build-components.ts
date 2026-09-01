@@ -1174,7 +1174,7 @@ export const ICON_KEYS: Record<string, string> = {
   calendar: "ea0ffc118c38048f2cdfb5620be31c120426bb7a", // 날짜,달력 70:664
   menu:     "5157e9edc76358e2e6bc1a5ebc1539ccf5f2e787", // 메뉴(햄버거) 97:227
   account:  "a423e2e05cfff2f93062d6a83d6f3bdf79ca9647", // 계정/사용자 86:58
-  chevron:  "e1ac97aa82f4e52f257ac1c0ea77fd09d0e5f581", // 화살표,더보기(쉐브론 › 우향 기준) 419:69 — 방향은 rotation 으로(우0·하90·좌180·상270)
+  chevron:  "e1ac97aa82f4e52f257ac1c0ea77fd09d0e5f581", // 화살표,더보기(쉐브론 › 우향 기준) 419:69 — 방향은 rotation 으로(우0·상90·좌180·하270 — Figma 회전은 반시계)
   globe:    "dee16df7e4ccddbd5dd7aa1d2fbf93f841f5dee2", // 인터넷(지구본) 35:3317 — GNB 언어(사용자 지정)
   eye:      "d4e9eb5b7e193ee291aa2a7e04396c8de2d2dae7", // 비밀번호 미표시(눈+슬래시 ic_비밀번호미표시 Line) — Input Password Icon boolean 기본값. 표시 눈은 인스턴스 스왑으로 교체
   home:     "6bf422c937034ce15f6814e5c430d8f85953ed4e", // 홈(ic_홈 Solid) 97:292 — V2.2 아이콘 라이브러리. Mobile Bottom Nav
@@ -1478,7 +1478,9 @@ async function buildSelect(maps: BuildMaps, originY: number): Promise<{ set: Com
       trigger.strokes = [boundPaint(scv(maps, fc(st.border)))];
       trigger.strokeWeight = 1; trigger.strokeAlign = "INSIDE";
       trigger.appendChild(await makeBoundText("선택", sc.font, "Regular", scv(maps, fc(st.tc))));
-      trigger.appendChild(await makeIconInstance("chevron", scv(maps, fc(st.icon)), fcIconPx(sc.h, 0), (st.up ? chevUp : chevDown)("#000"), st.up ? 90 : 270));
+      // 정사각 chevron + 직각 회전(90/270)은 바운딩박스가 불변이고 부모가 오토레이아웃이라
+      //   중앙정렬용 래퍼 프레임이 불필요하다(래퍼는 동일 이름 "chevron" 이 2겹으로 보이는 원인). wrap:false 로 인스턴스 1레이어만 둔다.
+      trigger.appendChild(await makeIconInstance("chevron", scv(maps, fc(st.icon)), fcIconPx(sc.h, 0), (st.up ? chevUp : chevDown)("#000"), st.up ? 90 : 270, { wrap: false }));
       trigger.resize(140, sc.h);
 
       const comp = figma.createComponent();
@@ -2258,7 +2260,8 @@ async function buildFilterChip(maps: BuildMaps, originY: number): Promise<{ set:
           chip.appendChild(await makeBoundText(valText, sc.font, "Medium", scv(maps, `color/chip/${v}/label/${valLbSlot}`)));
           // arrow: 펼침(open)=위↑(90°), 기본=아래↓(270°). 색 = 라벨색 정합.
           const arrowSlot = ss.lb;
-          chip.appendChild(await makeIconInstance("chevron", scv(maps, `color/chip/${v}/label/${arrowSlot}`), 20, ss.open ? arrowUp : arrowDown, ss.open ? 90 : 270));
+          // 20px 정사각 + 직각 회전 → 래퍼 프레임 불필요(Select Box 와 동일 근거). wrap:false.
+          chip.appendChild(await makeIconInstance("chevron", scv(maps, `color/chip/${v}/label/${arrowSlot}`), 20, ss.open ? arrowUp : arrowDown, ss.open ? 90 : 270, { wrap: false }));
           chip.resize(chip.width, sc.h);
 
           // 컴포넌트(세로): chip + (Selected 면 드롭다운 패널)
@@ -4280,12 +4283,17 @@ async function buildBottomSheetOption(maps: BuildMaps, originY: number): Promise
 
 async function buildBottomSheet(maps: BuildMaps, originY: number): Promise<{ set: ComponentSetNode; bottomY: number }> {
   const SHEET_W = 360;
-  // 헤더+리스트 콘텐츠 블록 조립(변형 공통).
-  const buildContent = async (): Promise<FrameNode> => {
+  // 헤더+Content Slot 조립(변형 공통).
+  // 슬롯은 헤더·푸터의 정본 구조를 잠그고, 화면별 본문만 자유롭게 교체하기 위한 Figma 공식 SlotNode다.
+  // 기본 콘텐츠는 기존과 동일한 Bottom Sheet Option 4행이며, 슬롯을 비우거나 다른 콘텐츠로 교체하면
+  // 시트와 content가 AUTO 높이로 함께 늘고 줄어든다.
+  const buildContent = async (owner: ComponentNode): Promise<FrameNode> => {
     const content = figma.createFrame();
     content.name = "content"; content.fills = [];
     content.layoutMode = "VERTICAL"; content.primaryAxisSizingMode = "AUTO"; content.counterAxisSizingMode = "FIXED";
-    content.itemSpacing = 24; // 헤더 ↔ 리스트 (spacing/section/md)
+    content.itemSpacing = 24; // 헤더 ↔ Content Slot (spacing/section/md)
+    // createSlot()으로 생긴 SlotNode가 항상 owner 안에 머물도록 content를 먼저 부착한다.
+    owner.appendChild(content);
     // 헤더: 제목 ↔ 닫기 X (좌우 패딩 20)
     const header = figma.createFrame();
     header.name = "header"; header.fills = [];
@@ -4298,10 +4306,16 @@ async function buildBottomSheet(maps: BuildMaps, originY: number): Promise<{ set
     closeIcon.name = "close"; header.appendChild(closeIcon);
     content.appendChild(header);
     try { header.layoutAlign = "STRETCH"; } catch (e) { /* */ }
-    // 리스트: Bottom Sheet Option(Text) 인스턴스 4개(2번째=Selected)
-    const list = figma.createFrame();
-    list.name = "list"; list.fills = [];
-    list.layoutMode = "VERTICAL"; list.primaryAxisSizingMode = "AUTO"; list.counterAxisSizingMode = "FIXED"; list.itemSpacing = 0;
+    // Content Slot: 기본값은 Bottom Sheet Option(Text) 4개(2번째=Selected).
+    // createSlot()이 owner에 SLOT component property를 함께 만들며, 이후 content 안으로 옮겨도
+    // owner component의 속성으로 유지된다.
+    const existingSlotProperties = new Set(Object.entries(owner.componentPropertyDefinitions)
+      .filter(([, definition]) => definition.type === "SLOT")
+      .map(([propertyName]) => propertyName));
+    const slot = owner.createSlot();
+    slot.name = "Content"; slot.fills = [];
+    slot.layoutMode = "VERTICAL"; slot.primaryAxisSizingMode = "AUTO"; slot.counterAxisSizingMode = "FIXED"; slot.itemSpacing = 0;
+    slot.resize(SHEET_W, 48 * 4);
     const optDefault = BUILT_COMPS["BottomSheetOption:Text:Default"];
     const optSelected = BUILT_COMPS["BottomSheetOption:Text:Selected"];
     for (let i = 0; i < 4; i++) {
@@ -4309,11 +4323,28 @@ async function buildBottomSheet(maps: BuildMaps, originY: number): Promise<{ set
       if (!src) continue;
       const inst = src.createInstance();
       inst.name = "option";
-      list.appendChild(inst);
+      slot.appendChild(inst);
       try { inst.layoutSizingHorizontal = "FILL"; } catch (e) { /* */ }
     }
-    content.appendChild(list);
-    try { list.layoutAlign = "STRETCH"; } catch (e) { /* */ }
+    content.appendChild(slot);
+    try { slot.layoutAlign = "STRETCH"; } catch (e) { /* */ }
+
+    const slotDefinitions = Object.entries(owner.componentPropertyDefinitions || {});
+    const slotProperty = slotDefinitions
+      .find(([propertyName, definition]) => definition.type === "SLOT" && !existingSlotProperties.has(propertyName))?.[0];
+    // 구형 검증 mock은 componentPropertyDefinitions를 기록하지 않는다. 실제 Figma에서는 createSlot()
+    // 직후 SLOT 정의가 반드시 생기므로, 정의를 제공하는 환경에서만 누락을 오류로 처리하고 메타를 붙인다.
+    if (slotDefinitions.length && !slotProperty) {
+      throw new Error("[buildBottomSheet] Content Slot component property를 찾지 못했습니다.");
+    }
+    if (slotProperty) {
+      const optionSet = BUILT_SETS["Bottom Sheet Option"];
+      owner.editComponentProperty(slotProperty, {
+        name: "Content",
+        description: "바텀시트 본문 슬롯. 기본값은 Bottom Sheet Option 4행이며 헤더와 푸터는 슬롯 밖의 정본 구조로 유지합니다.",
+        preferredValues: optionSet ? [{ type: "COMPONENT_SET", key: optionSet.key }] : [],
+      });
+    }
     return content;
   };
 
@@ -4348,8 +4379,7 @@ async function buildBottomSheet(maps: BuildMaps, originY: number): Promise<{ set
     const sheetEffects = shadowEffects("shadow/raised-up");   // 오류는 여기서 던진다(삼키지 않음)
     try { (comp as any).effects = sheetEffects; } catch (e) { /* 환경 미지원 */ }
 
-    const content = await buildContent();
-    comp.appendChild(content);
+    const content = await buildContent(comp);
     try { content.layoutAlign = "STRETCH"; } catch (e) { /* */ }
 
     if (v.footer !== "None") {

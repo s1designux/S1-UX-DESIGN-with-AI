@@ -119,6 +119,7 @@ async function runBuild(mod, opts) {
   const NODES = [];
   const seenProps = new Set();
   const trackOrigin = !!(opts && opts.trackOrigin);
+  let slotPropertyCounter = 0;
 
   // 이 TEXT 노드를 만든 함수 이름(makeBoundText / buildOne / makeLabel).
   //   Gate 33 이 "컴포넌트 글자"와 "스펙 프레임 설명 라벨"을 구분하는 데 쓴다.
@@ -137,7 +138,7 @@ async function runBuild(mod, opts) {
   function recNode(type) {
     // geometry 는 props 밖에 둔다. 기존 installer fingerprint 는 props 만 해시하므로
     // 폭·높이 관측을 추가해도 기존 지문/게이트 결과를 흔들지 않는다.
-    const state = { type, props: {}, geometry: {}, boundVariables: {}, explicitVariableModes: {}, paintPayload: {}, asset: null, children: [], parentSet: null };
+    const state = { type, props: {}, geometry: {}, boundVariables: {}, explicitVariableModes: {}, componentPropertyDefinitions: {}, paintPayload: {}, asset: null, children: [], parentSet: null };
     // origin 은 **state 최상위**에 둔다(props 가 아님) — props 만 지문에 들어가므로
     //   여기 두면 installer-fingerprint 해시에 영향이 0 이다.
     if (trackOrigin && type === 'TEXT') state.origin = originFromStack();
@@ -156,8 +157,29 @@ async function runBuild(mod, opts) {
         if (prop === 'name') return state.props.name;
         if (prop === 'characters') return state.props.characters;
         if (prop === 'children') return state.children;
+        if (prop === 'componentPropertyDefinitions') return state.componentPropertyDefinitions;
         if (prop === 'appendChild') return attach;
         if (prop === 'insertChild') return (_i, c) => attach(c);
+        if (prop === 'createSlot' && state.type === 'COMPONENT') {
+          return () => {
+            const slot = recNode('SLOT');
+            const propertyName = `Slot#mock:${++slotPropertyCounter}`;
+            state.componentPropertyDefinitions[propertyName] = { type: 'SLOT', defaultValue: '' };
+            return slot;
+          };
+        }
+        if (prop === 'editComponentProperty') {
+          return (propertyName, next) => {
+            const current = state.componentPropertyDefinitions[propertyName];
+            if (!current) return propertyName;
+            const suffixAt = String(propertyName).indexOf('#');
+            const suffix = suffixAt >= 0 ? String(propertyName).slice(suffixAt) : '';
+            const nextName = next && next.name ? `${next.name}${suffix}` : propertyName;
+            state.componentPropertyDefinitions[nextName] = Object.assign({}, current, next || {});
+            if (nextName !== propertyName) delete state.componentPropertyDefinitions[propertyName];
+            return nextName;
+          };
+        }
         if (prop === 'createInstance') {
           return () => {
             const instance = recNode('INSTANCE');
@@ -177,6 +199,7 @@ async function runBuild(mod, opts) {
                 geometry: Object.assign({}, source.geometry),
                 boundVariables: Object.assign({}, source.boundVariables),
                 explicitVariableModes: Object.assign({}, source.explicitVariableModes),
+                componentPropertyDefinitions: Object.assign({}, source.componentPropertyDefinitions),
                 paintPayload: JSON.parse(JSON.stringify(source.paintPayload || {})),
                 asset: source.asset ? Object.assign({}, source.asset) : null,
                 parentSet: source.parentSet || null,

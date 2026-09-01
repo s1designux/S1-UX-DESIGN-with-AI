@@ -37,17 +37,23 @@ import {
 } from "./vars-data";
 import { parseCssShadow, shadowVarName } from "./shadow-parse";
 import { installTextStyles } from "./install-textstyles";
+import { TEXT_STYLES } from "./textstyles-data";
 import { buildAllComponents, COMPONENT_CATEGORIES } from "./build-components";
 import {
   audit, applyOne, applyHighConfidence, applyMulti, setVariablesMode,
   collectComponents, saveReference, loadReference, clearReference,
-  scanSwapCandidates, applySwap, buildImprovedCopy,
+  scanSwapCandidates, applySwap, rollbackSwap, cleanupSwapBackups, buildImprovedCopy, collectPageReference, auditChecklistFacts,
 } from "./audit-engine";
-import type { ReferenceComponent, SwapCandidate } from "./audit-engine";
+import type { ReferenceComponent, SwapCandidate, SwapRollback } from "./audit-engine";
 
 // height 800: 설치 탭 첫 화면(항목 4개 + 의존성 안내 + 푸터)이 스크롤 없이 들어가는 높이.
 //   ui.html 은 앱셸(내부 .iscroll 만 스크롤)이라 더 작은 창에서도 깨지지 않는다. resize 클램프는 480~1200.
 figma.showUI(__html__, { width: 440, height: 800, title: "S-1 S/W UX Guide 설치/검수기 0.2Ver" });
+
+// 카드 선택으로 Figma selection이 바뀌어도 "교체 후 다시 검사"는 처음 검사한 범위를 유지한다.
+let auditSessionRootIds: string[] = [];
+const swapRollbackById = new Map<string, SwapRollback>();
+void cleanupSwapBackups();
 
 interface InstallSelection {
   foundation: boolean;
@@ -85,7 +91,96 @@ figma.ui.onmessage = async (msg: { type: string; payload?: any } & Partial<Insta
 // 설치 계열(평면 {type,...})과 격리하기 위해 검수 계열은 모두 `audit:` 접두사 + {type,payload} 래핑.
 async function handleAuditMessage(type: string, payload: any): Promise<void> {
   try {
-    if (type === "scan") {
+    if (type === "selection-state") {
+      await postAuditSelectionState();
+    } else if (type === "inspect-selection") {
+      const requestedPhase = payload && payload.phase === "details" ? "details" : "component";
+      if (requestedPhase === "component") {
+        await cleanupSwapBackups();
+        swapRollbackById.clear();
+      }
+      let selected: SceneNode[] = [];
+      if (requestedPhase === "details" && auditSessionRootIds.length > 0) {
+        for (const id of auditSessionRootIds) {
+          const node = await figma.getNodeByIdAsync(id);
+          if (node && "type" in node && node.type !== "PAGE" && node.type !== "DOCUMENT") selected.push(node as SceneNode);
+        }
+      }
+      if (selected.length === 0) selected = Array.from(figma.currentPage.selection);
+      if (selected.length === 0) {
+        figma.ui.postMessage({ type: "audit:inspection-result", payload: { ok: false, message: "Figma에서 검사할 영역을 먼저 선택하세요." } });
+        return;
+      }
+      if (requestedPhase === "component") auditSessionRootIds = selected.map((node) => node.id);
+
+      await figma.ui.postMessage({ type: "audit:inspection-progress", payload: { current: 0, completed: [], total: 10, pct: 4 } });
+      const installState = await getAuditInstallState();
+      const pool = collectPageReference();
+      if (!installState.installed) {
+        figma.ui.postMessage({ type: "audit:inspection-result", payload: { ok: false, code: "need-install", message: `검수 기준 설치가 필요합니다: ${installState.missing.join(" · ")}` } });
+        return;
+      }
+      const componentScan = await scanSwapCandidates(pool, selected);
+      const componentBlockers = componentScan.candidates.length + componentScan.manualCandidates.length;
+      const componentCount = componentBlockers + componentScan.modules.length;
+      const componentItem = {
+        id: 0,
+        count: componentCount,
+        status: componentCount ? "warning" : "pass",
+        coverage: "partial",
+      };
+
+      // 교체 가능한 컴포넌트가 남아 있으면 다른 검사는 잠근다.
+      // 사용자가 교체한 뒤 재검사하면 구조를 다시 읽고, 모두 정리된 경우에만 상세 검사로 넘어간다.
+      if (componentBlockers > 0 || (requestedPhase === "component" && componentScan.modules.length > 0)) {
+        await figma.ui.postMessage({ type: "audit:inspection-progress", payload: { current: null, completed: [0], total: 10, pct: 100 } });
+        figma.ui.postMessage({
+          type: "audit:inspection-result",
+          payload: {
+            ok: true,
+            phase: "component",
+            selection: auditSelectionSummary(selected),
+            checklist: [componentItem, ...Array.from({ length: 9 }, (_, index) => ({ id: index + 1, count: 0, status: "unjudged", coverage: "partial" }))],
+            component: componentScan,
+            colorIssues: [], colorDetails: [], textIssues: [], shadowIssues: [],
+            stats: { scanned: 0, issuesCount: 0, highCount: 0 },
+          },
+        });
+        return;
+      }
+
+      await figma.ui.postMessage({ type: "audit:inspection-progress", payload: { current: 1, completed: [0], total: 10, pct: 18 } });
+      const color = await audit(selected);
+      await figma.ui.postMessage({ type: "audit:inspection-progress", payload: { current: 2, completed: [0, 1], total: 10, pct: 34, scanned: color.stats.scanned } });
+      const facts = await auditChecklistFacts(color.issues, selected);
+
+      // 사실 수집은 한 번에 하지만 UI에는 체크리스트 순서대로 완료 상태를 전달한다.
+      for (let current = 3; current < 10; current++) {
+        const completed = Array.from({ length: current }, (_, i) => i);
+        await figma.ui.postMessage({
+          type: "audit:inspection-progress",
+          payload: { current, completed, total: 10, pct: Math.min(96, 34 + current * 7), scanned: color.stats.scanned },
+        });
+        await new Promise<void>((resolve) => setTimeout(resolve, 60));
+      }
+
+      await figma.ui.postMessage({ type: "audit:inspection-progress", payload: { current: null, completed: [0,1,2,3,4,5,6,7,8,9], total: 10, pct: 100, scanned: color.stats.scanned } });
+      figma.ui.postMessage({
+        type: "audit:inspection-result",
+        payload: {
+          ok: true,
+          phase: "details",
+          selection: auditSelectionSummary(selected),
+          checklist: [componentItem, ...facts.items],
+          component: componentScan,
+          colorIssues: color.issues,
+          colorDetails: facts.colorDetails,
+          textIssues: facts.textIssues,
+          shadowIssues: facts.shadowIssues,
+          stats: color.stats,
+        },
+      });
+    } else if (type === "scan") {
       const res = await audit();
       figma.ui.postMessage({ type: "audit:scan-result", payload: res });
     } else if (type === "select-node") {
@@ -162,8 +257,21 @@ async function handleAuditMessage(type: string, payload: any): Promise<void> {
     } else if (type === "apply-swap") {
       // 수동 교체 = lenient (변형 조합이 없으면 기본값으로 교체하고 "상태 리셋됨" 표시)
       const res = await applySwap(payload.candidate, "lenient");
+      if (res.ok && res.rollback) swapRollbackById.set(payload.candidate.id, res.rollback);
       const unpreservedCount = res.unpreserved ? res.unpreserved.length : 0;
       figma.ui.postMessage({ type: "audit:apply-swap-result", payload: { id: payload.candidate.id, ok: res.ok, result: res.result, reason: res.reason, variantReset: res.variantReset, axisLoss: res.axisLoss, unpreservedCount } });
+    } else if (type === "undo-swap") {
+      const saved = swapRollbackById.get(payload.id);
+      if (!saved) {
+        figma.ui.postMessage({ type: "audit:undo-swap-result", payload: { id: payload.id, ok: false, reason: "되돌릴 기록이 없습니다." } });
+      } else {
+        const res = await rollbackSwap(saved);
+        if (res.ok) {
+          swapRollbackById.delete(payload.id);
+          if (res.instanceId) auditSessionRootIds = auditSessionRootIds.map((id) => id === saved.instanceId ? res.instanceId! : id);
+        }
+        figma.ui.postMessage({ type: "audit:undo-swap-result", payload: { id: payload.id, ok: res.ok, reason: res.reason, instanceId: res.instanceId } });
+      }
     } else if (type === "apply-swap-multi") {
       const list: SwapCandidate[] = payload.candidates;
       const applied: string[] = [];
@@ -172,7 +280,12 @@ async function handleAuditMessage(type: string, payload: any): Promise<void> {
       let unpreservedTotal = 0;
       for (const c of list) {
         const r = await applySwap(c, "lenient");
-        if (r.ok) { applied.push(c.id); if (r.variantReset) resetCount++; if (r.unpreserved) unpreservedTotal += r.unpreserved.length; }
+        if (r.ok) {
+          applied.push(c.id);
+          if (r.rollback) swapRollbackById.set(c.id, r.rollback);
+          if (r.variantReset) resetCount++;
+          if (r.unpreserved) unpreservedTotal += r.unpreserved.length;
+        }
         else failures.push({ id: c.id, reason: r.reason || "unknown" });
       }
       figma.notify(`${applied.length}건 교체 완료${resetCount ? ` · ${resetCount}건 상태 리셋` : ""}${unpreservedTotal ? ` · 텍스트 ${unpreservedTotal}건 보존안됨` : ""}${failures.length ? ` · ${failures.length}건 실패` : ""}`);
@@ -188,9 +301,90 @@ async function handleAuditMessage(type: string, payload: any): Promise<void> {
     if (type === "build-improved") {
       figma.ui.postMessage({ type: "audit:build-improved-result", payload: { ok: false, message } });
     }
+    if (type === "inspect-selection") {
+      figma.ui.postMessage({ type: "audit:inspection-result", payload: { ok: false, message } });
+    }
     figma.ui.postMessage({ type: "audit:error", payload: { message } });
   }
 }
+
+function auditSelectionSummary(selectionOverride?: readonly SceneNode[]) {
+  const selected = selectionOverride ? Array.from(selectionOverride) : Array.from(figma.currentPage.selection);
+  const names = selected.slice(0, 2).map((node) => node.name);
+  const label = selected.length === 0
+    ? "선택 없음"
+    : selected.length === 1
+      ? names[0]
+      : `${names[0]} 외 ${selected.length - 1}개`;
+  return { count: selected.length, names, label };
+}
+
+async function postAuditSelectionState(): Promise<void> {
+  const installState = await getAuditInstallState();
+  await figma.ui.postMessage({
+    type: "audit:selection-state",
+    payload: { ...auditSelectionSummary(), ...installState },
+  });
+}
+
+async function getAuditInstallState(): Promise<{ installed: boolean; missing: string[] }> {
+  const missing: string[] = [];
+  const collections = await figma.variables.getLocalVariableCollectionsAsync();
+  const collectionByName = new Map(collections.map((collection) => [collection.name, collection]));
+  const shadowVariableNames: string[] = [];
+  const raisedLayers = parseCssShadow(SEMANTIC_SHADOW["shadow/raised"].light);
+  for (let index = 0; index < raisedLayers.length; index++) {
+    for (const field of ["color", "offset-y", "blur", "spread"] as const) {
+      shadowVariableNames.push(shadowVarName("shadow/raised", index, field));
+    }
+  }
+  const expectedVariableNames = new Map<string, string[]>([
+    [FOUNDATION_COLLECTION, [...Object.keys(FOUNDATION_COLOR), ...Object.keys(FOUNDATION_NUMBER)]],
+    [SEMANTIC_COLOR_COLLECTION, Object.keys(SEMANTIC_COLOR)],
+    [SEMANTIC_NUMBER_COLLECTION, Object.keys(SEMANTIC_NUMBER)],
+    [SEMANTIC_SHADOW_COLLECTION, shadowVariableNames],
+  ]);
+  let incompleteVariables = false;
+  for (const [name, expectedNames] of expectedVariableNames) {
+    const collection = collectionByName.get(name);
+    if (!collection) { incompleteVariables = true; break; }
+    const installedNames = new Set<string>();
+    for (const id of collection.variableIds) {
+      const variable = await figma.variables.getVariableByIdAsync(id);
+      if (variable) installedNames.add(variable.name);
+    }
+    if (expectedNames.some((expectedName) => !installedNames.has(expectedName))) { incompleteVariables = true; break; }
+    if ((name === SEMANTIC_COLOR_COLLECTION || name === SEMANTIC_SHADOW_COLLECTION) &&
+        (!collection.modes.some((mode) => mode.name === LIGHT_MODE) || !collection.modes.some((mode) => mode.name === DARK_MODE))) {
+      incompleteVariables = true;
+      break;
+    }
+  }
+  if (incompleteVariables) missing.push("색·수치 기준");
+  const localTextStyleNames = new Set((await figma.getLocalTextStylesAsync()).map((style) => style.name));
+  if (TEXT_STYLES.some((style) => !localTextStyleNames.has(style.name))) missing.push("글자 스타일");
+  const expectedComponentNames = new Set<string>();
+  for (const category of COMPONENT_CATEGORIES) {
+    for (const name of category.members) expectedComponentNames.add(normalizeAuditName(name));
+  }
+  const installedComponentNames = new Set(collectPageReference().map((component) => normalizeAuditName(component.name)));
+  if (Array.from(expectedComponentNames).some((name) => !installedComponentNames.has(name))) missing.push("컴포넌트");
+  return { installed: missing.length === 0, missing };
+}
+
+function normalizeAuditName(name: string): string {
+  return (name || "").toLowerCase().replace(/[\s_\-\/]+/g, "");
+}
+
+figma.on("selectionchange", () => {
+  void postAuditSelectionState();
+});
+
+void postAuditSelectionState();
+
+figma.on("close", () => {
+  void cleanupSwapBackups();
+});
 
 // 플러그인 시작 시 저장된 검수 기준 자동 로드 (검수 탭 첫 진입 시 UI가 반영)
 (async () => {

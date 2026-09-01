@@ -3,7 +3,7 @@
     "generated": true,
     "source": "plugins/figma-vars-installer/src/build-components.ts",
     "method": "mock-execution",
-    "sourceHash": "28f3f60cea33",
+    "sourceHash": "66823ee5bbef",
     "unknownValuePolicy": [
       "unknown",
       "not-defined",
@@ -3294,7 +3294,10 @@
           "Bottom Sheet Option",
           "Button"
         ]
-      }
+      },
+      "slots": [
+        "Content"
+      ]
     },
     "Modal": {
       "variantAxes": {
