@@ -70,7 +70,8 @@
           "HTML",
           "CSS",
           "JavaScript"
-        ]
+        ],
+        "platformNote": "코드 위에 '어느 화면의 마크업인지' 안내 문구를 두지 않는다 — 화면 이름으로 이미 알 수 있다 (river 결정 2026-09-02). 렌더 검사 ④가 막는다."
       },
       "documentation": {
         "optionalPartRule": "필수/선택 부품 판별은 registry anatomy 의 part 이름에 붙은 '(선택)' 으로 한다. role 문장 안의 낱말로 판별하지 않는다.",
@@ -85,7 +86,7 @@
         "ui-library/scripts/test.mjs — mount 형태 · dist 링크 마커 · 실제 동작이 문서보다 앞",
         "ui-library/scripts/test.mjs — 소스 검사: Mobile 선행 안내문 금지 · '같습니다' 류 문구 금지 · 숨은 형제 여백 리셋 CSS 존재",
         "ui-library/scripts/test.mjs — 플랫폼별 예제 선언·배포·크기 일치",
-        "scripts/ui-guide-render-check.js (npm run ui:guide:render · ui:test 가 자동 호출) — **실제 렌더 DOM** 검사: ①개발 코드가 그 플랫폼의 dist 예제와 글자 그대로 같은가 ②Mobile 표에 크기 라벨·수치 꼬리표가 없는가(크기 1종일 때) ③Mobile preview 가 Action 으로 시작하는가. 소스 문자열 검사가 못 보는 구멍을 막는다(2026-09-02 독립 검증 지적)",
+        "scripts/ui-guide-render-check.js (npm run ui:guide:render · ui:test 가 자동 호출) — **실제 렌더 DOM** 검사: ①개발 코드가 그 플랫폼의 dist 예제와 글자 그대로 같은가 ②Mobile 표에 크기 라벨·수치·유형 사이 가로선이 없는가(크기 1종일 때) ③Mobile 요약에 크기 문구가 없는가 ④개발 코드 위에 안내 문구가 없는가 ⑤Mobile preview 가 Action 으로 시작하는가. 소스 문자열 검사가 못 보는 구멍을 막는다(2026-09-02 독립 검증 3라운드)",
         "npm run components:presentation (Gate 23) — managedBy 선언"
       ],
       "platformParity": {
@@ -94,8 +95,9 @@
         "sameStartingPoint": "Mobile preview-area 는 PC 와 같은 구조로 시작한다 — Mobile 에만 있는 선행 안내 문단을 두지 않는다(제목↔Action 간격이 PC 와 달라진다). 플랫폼별 설명이 꼭 필요하면 Action 상자 안쪽에 둔다.",
         "noRedundantSameAsPcNote": "플랫폼·크기 축이 없는 컴포넌트에 '정본에 플랫폼·크기 축이 없어 Mobile도 PC와 같습니다' 류 안내문을 두지 않는다 — 화면이 이미 같아 정보 가치가 없다.",
         "hiddenSiblingMargin": ".view-mobile .platform-section-pc + .platform-section-mobile { margin-top: 0 } (pages/components.html) — 숨겨진 형제 섹션이 남기는 24px 웃여백을 없앤다.",
-        "codeByPlatform": "「개발 코드」는 보고 있는 화면의 플랫폼 마크업만 보여준다. 배포본이 manifest.htmlContract.breakExamples 로 플랫폼별 예제를 선언한다.",
-        "measure": "제목(.uilg-demo-head) 아래끝 ↔ 첫 Action 상자(.comp-action-top) 위끝 간격이 PC 와 Mobile 에서 같아야 한다(실측 2026-09-02: 양쪽 49px)."
+        "codeByPlatform": "「개발 코드」는 보고 있는 화면의 플랫폼 마크업만 보여준다. 배포본이 manifest.htmlContract.breakExamples 로 플랫폼별 예제를 선언한다. 코드 위 안내 문구는 두지 않는다.",
+        "measure": "제목(.uilg-demo-head) 아래끝 ↔ 첫 Action 상자(.comp-action-top) 위끝 간격이 PC 와 Mobile 에서 같아야 한다(실측 2026-09-02: 양쪽 49px).",
+        "childSizeInSummary": "요약에서 빼는 것은 '그 컴포넌트 자신의 크기'다. 자식 부품 크기도 숫자로 적지 않고 조립 사실만 적는다 — Select·Filter Chip 모두 '목록은 Dropdown 배포본을 조립' 으로 통일 (river 결정 2026-09-02)."
       }
     },
     "updatedAt": "2026-08-31"

@@ -189,7 +189,14 @@ async function main() {
           failures.push(`${id} Mobile 요약에 크기 문구("${scope[1].trim()}")가 있습니다 — 크기가 한 가지면 언급하지 않습니다`);
         }
 
-        /* 4) Mobile preview 는 PC 처럼 Action 상자로 시작한다(선행 안내 문단 금지). */
+        /* 4) 「개발 코드」 위에 안내 문구를 두지 않는다 (river 결정 2026-09-02) —
+              어느 화면인지는 화면 이름으로 이미 알 수 있다. */
+        const codeSection = section.match(/<section class="uilg-code"[\s\S]*?<div class="uilg-code-toolbar"/);
+        if (codeSection && /<p class="uilg-demo-note"/.test(codeSection[0])) {
+          failures.push(`${id} 개발 코드 위에 안내 문구가 있습니다 — 두지 않습니다`);
+        }
+
+        /* 5) Mobile preview 는 PC 처럼 Action 상자로 시작한다(선행 안내 문단 금지). */
         const preview = mobile.match(/<div class="preview-area">([\s\S]{0,400})/);
         if (preview && /^\s*<p\b/.test(preview[1])) {
           failures.push(`${id} Mobile preview 가 안내 문단으로 시작합니다 — PC 와 시작 지점이 달라집니다`);
