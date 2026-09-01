@@ -2,7 +2,7 @@
   "id": "s1-ui",
   "version": "0.1.0",
   "status": "approved",
-  "canonicalFingerprint": "edc55e934a7e18c79a593fa0b0d624f7c01276a65061db7e98957453c424a375",
+  "canonicalFingerprint": "2a77081c497ec6d1e3d7c5a6058d3fd199c3b7049157f9b5019ce4c77bf86018",
   "tokenMapFingerprint": "796fb798dd329910ba6c42a29fb4af9e0fd217446b3fa847e140bc70a0a8f4c7",
   "commonCssDependencies": [
     "assets/css/tokens.css",
@@ -68,6 +68,31 @@
       },
       "geometryEvidence": "정본은 이 아이콘을 16px 로 리사이즈해 18px 상자 (1,1) 에 놓는다(build-components.ts makeCheckIcon·buildCheckbox). 내보낸 원본 assets/icons/ic_확인_line.png(48px=24 기준 2배) 의 잉크 경계는 18×12(24 기준)이고, 정본 인라인 SVG(16 기준)의 잉크 경계는 11.6×8.25 로 같은 비율이다 — 즉 glyph 가 frame 을 그대로 채운다.",
       "dependencies": []
+    },
+    {
+      "id": "chevron",
+      "sourceKey": "e1ac97aa82f4e52f257ac1c0ea77fd09d0e5f581",
+      "sourceBuilderSymbol": "Figma 아이콘 라이브러리 V2.2 419:67 (Property 1=Line) 실물 내보내기 — 이전 대체용 인라인 SVG 폐기(river 지적 2026-09-01)",
+      "file": "chevron.svg",
+      "webAssetFingerprint": "818bd5f7ee1a6ab7cd5c5ef293267197f66136e48b31ca0a7e314a4df1833dc6",
+      "symbolId": "s1-icon-chevron",
+      "individualFile": "assets/icons/chevron.svg",
+      "accessibleNamePolicy": "decorative; the accessible name comes from aria-haspopup/aria-expanded on the trigger, not from the arrow glyph",
+      "geometry": {
+        "frame": {
+          "width": 24,
+          "height": 24
+        },
+        "glyph": {
+          "x": 0,
+          "y": 0,
+          "width": 24,
+          "height": 24
+        },
+        "scaling": "proportional"
+      },
+      "geometryEvidence": "정본 chevDown 인라인 SVG(build-components.ts:1450)는 16x16 viewBox 에 화살표가 꽉 차게 그려진다(glyph=frame). 웹 아이콘은 정본과 동일하게 아래(닫힘) 방향 하나만 자산으로 두고, 열림(위) 방향은 정본과 같은 철학(회전)으로 CSS transform: rotate(180deg) 로 표현한다 — chevUp(build-components.ts:1451)은 chevDown 을 180° 돌린 모양과 같다. 렌더 크기(Select XXSM 20px·그 외 24px, Filter Chip 20px 고정)는 컴포넌트 CSS 가 mask-size:contain 으로 이 16px 원본을 비율 유지 확대해 만든다(fcIconPx, build-components.ts:1310·1481, 2252).",
+      "dependencies": []
     }
   ],
   "components": [
@@ -76,8 +101,8 @@
       "version": "0.1.0",
       "status": "approved",
       "jsRequired": true,
-      "canonicalFingerprint": "086500114c7169b751ea72ff02dd404fac425f4b4aad9da2ef4d7f081c08f1f1",
-      "sourceFingerprint": "7735aad8f44b903132b745acb7dc69a585711685d6ca552bfc93f7e6b414ab8f",
+      "canonicalFingerprint": "31231f86fa36bbac8d93b45958e359ed44ce3e23eb45c5664f4548f422dfa404",
+      "sourceFingerprint": "6ca40164e4a7eb0912ad3711e93eef6d7bca3d0ac17bc8750c7da55b3d1ecd28",
       "css": "components/input.css",
       "js": "components/input.js",
       "example": "examples/input.html"
@@ -87,8 +112,8 @@
       "version": "0.1.0",
       "status": "approved",
       "jsRequired": false,
-      "canonicalFingerprint": "658b6058ac8266431fb7ee96c0d68c9daa9a7a92593d36ce4ccce6b731cd8db4",
-      "sourceFingerprint": "fb488dd94958526768963454abca92b15a1d76f48a7e34dc6198c7e62c2790cf",
+      "canonicalFingerprint": "50cad28025b133af5b3c5491594af32e35d966fa09ea9c39068ea309407f35a9",
+      "sourceFingerprint": "0077e4b560bda44d3f0afe8861b1f050790908638c543d0a410c31b8e67d8e6b",
       "css": "components/button.css",
       "js": "components/button.js",
       "example": "examples/button.html"
@@ -98,8 +123,8 @@
       "version": "0.1.0",
       "status": "approved",
       "jsRequired": false,
-      "canonicalFingerprint": "b182652c8dbb63dcb93efd0d055582a951c6dc4be624abf08f64a0a767ac5f45",
-      "sourceFingerprint": "ad5179783d5613a7208df1af2b848d9e46a3584d06f06eb657103f4c8b5b866a",
+      "canonicalFingerprint": "5a982eaf8f05e9cd941ac83b33c3b1c27ca9cc4f4a87fdd42ae8ecbf96889472",
+      "sourceFingerprint": "7341417976e07c140ed467801e62ff6362a128f883191b13b86ff67610739606",
       "css": "components/checkbox.css",
       "js": "components/checkbox.js",
       "example": "examples/checkbox.html"
@@ -109,8 +134,8 @@
       "version": "0.1.0",
       "status": "approved",
       "jsRequired": false,
-      "canonicalFingerprint": "83363e1af3ea24498501ac79ce263e1335ad68cc7bae31f5ba01670df70640b8",
-      "sourceFingerprint": "4dd555a516c94a8e0a9ad009373ff081c4c4a1548da4bdf2970969f28a88a219",
+      "canonicalFingerprint": "ed480f859a8ea62adf2d09c10e15d85e781282a680b78763a484ae5b7eb459bb",
+      "sourceFingerprint": "88e29216c4f80278c11d7dd2a866846996b1300bb4fa3b33f618d5b076df9800",
       "css": "components/radio.css",
       "js": "components/radio.js",
       "example": "examples/radio.html"
@@ -120,8 +145,8 @@
       "version": "0.1.0",
       "status": "approved",
       "jsRequired": true,
-      "canonicalFingerprint": "9e7b5b86ae9d9d0b929347f2ac3dca8ea02dd39cd20ac0a65d8762a02b6e2d5d",
-      "sourceFingerprint": "d5f99be5de806afb9b2c0fa2a909d55c1c41a9d95a41fc89697c3658ad1345c4",
+      "canonicalFingerprint": "d5ca50386409baf3bfb8101e1827c77d0be1209ce6d3e5b956dcf46f23b406b6",
+      "sourceFingerprint": "ada279abb3fa847fc401eada59bb842098b8378bce773568dc09bf1c5897a34c",
       "css": "components/toggle.css",
       "js": "components/toggle.js",
       "example": "examples/toggle.html"
@@ -131,11 +156,44 @@
       "version": "0.1.0",
       "status": "approved",
       "jsRequired": true,
-      "canonicalFingerprint": "19c06d63569af813405e326a821fe19023acb5e94c36654412f1e5d199f70576",
-      "sourceFingerprint": "c056f2c0b53d961a329228b793c1513e492d5c53a6fe394bb6520079caa75038",
+      "canonicalFingerprint": "37ff7720b5f1594d669845080191a5f5a359ea8d00ea18fd4ca04548e6f8ba17",
+      "sourceFingerprint": "3bced34b7a0c67b4879441366ac73c46d94674265e419b00f3692cd6f4802cd1",
       "css": "components/chip.css",
       "js": "components/chip.js",
       "example": "examples/chip.html"
+    },
+    {
+      "id": "dropdown",
+      "version": "0.1.0",
+      "status": "verified",
+      "jsRequired": true,
+      "canonicalFingerprint": "dfc6c7e62426471c19f3e09b166bd482b3b5be4910ad2c2a0ce6bf54c4bf7059",
+      "sourceFingerprint": "d5ed294c33e1e8330f221c99473392c202a5c4aa3f1253316f77d56de1859f7b",
+      "css": "components/dropdown.css",
+      "js": "components/dropdown.js",
+      "example": "examples/dropdown.html"
+    },
+    {
+      "id": "select",
+      "version": "0.1.0",
+      "status": "verified",
+      "jsRequired": true,
+      "canonicalFingerprint": "0aa318d70e9440723bf5c4cb630361d1c1f87685fdeca9021d3c8b0bd2f58c41",
+      "sourceFingerprint": "cb90a67c00dea096a1883482e07a785094415080326be2bafb2a2870ee07081f",
+      "css": "components/select.css",
+      "js": "components/select.js",
+      "example": "examples/select.html"
+    },
+    {
+      "id": "filter-chip",
+      "version": "0.1.0",
+      "status": "verified",
+      "jsRequired": true,
+      "canonicalFingerprint": "bb120cb02a40bf9ae423f52c088975d86fe146085c0616c08cd20c36d5502f4c",
+      "sourceFingerprint": "1cbace4c1be91b02059b0d450d017d28c151f20416539bd3f57645f72b1a2898",
+      "css": "components/filter-chip.css",
+      "js": "components/filter-chip.js",
+      "example": "examples/filter-chip.html"
     }
   ],
   "bundleParity": {
@@ -145,7 +203,10 @@
       "checkbox",
       "radio",
       "toggle",
-      "chip"
+      "chip",
+      "dropdown",
+      "select",
+      "filter-chip"
     ],
     "source": "ui-library/src/components/*",
     "rule": "Full and individual outputs are generated in this build invocation from identical source strings."

@@ -13,6 +13,9 @@
   <link rel="stylesheet" href="../dist/components/radio.css">
   <link rel="stylesheet" href="../dist/components/toggle.css">
   <link rel="stylesheet" href="../dist/components/chip.css">
+  <link rel="stylesheet" href="../dist/components/dropdown.css">
+  <link rel="stylesheet" href="../dist/components/select.css">
+  <link rel="stylesheet" href="../dist/components/filter-chip.css">
 </head>
 <body>
   <main>
@@ -56,6 +59,35 @@
       <button type="button" data-s1-component="chip" data-variant="solid" data-size="md" data-break="pc" aria-pressed="true"><span data-s1-part="label">솔리드 칩</span></button>
       <button type="button" data-s1-component="chip" data-variant="line" data-size="sm" data-break="mobile" aria-pressed="false" disabled><span data-s1-part="label">비활성 칩</span></button>
     </div>
+    <div data-s1-component="dropdown" data-type="text" data-size="md" role="listbox" aria-label="정렬">
+      <div data-s1-part="option" role="option" aria-selected="true" tabindex="0" data-value="latest"><span data-s1-part="option-label">최신순</span></div>
+      <div data-s1-part="option" role="option" aria-selected="false" tabindex="-1" data-value="popular"><span data-s1-part="option-label">인기순</span></div>
+    </div>
+    <div data-s1-component="select" data-size="md" data-break="pc">
+      <button type="button" data-s1-part="trigger" aria-haspopup="listbox" aria-expanded="false">
+        <span data-s1-part="value">선택</span>
+        <span data-s1-part="icon" aria-hidden="true"></span>
+      </button>
+      <div data-s1-part="panel" hidden>
+        <div data-s1-component="dropdown" data-type="text" data-size="md" role="listbox" aria-label="선택">
+          <div data-s1-part="option" role="option" aria-selected="false" tabindex="0" data-value="seoul"><span data-s1-part="option-label">서울</span></div>
+          <div data-s1-part="option" role="option" aria-selected="false" tabindex="-1" data-value="busan"><span data-s1-part="option-label">부산</span></div>
+        </div>
+      </div>
+    </div>
+    <div data-s1-component="filter-chip" data-variant="line" data-size="sm" data-break="pc" data-title="on">
+      <button type="button" data-s1-part="trigger" aria-haspopup="listbox" aria-expanded="false">
+        <span data-s1-part="title">정렬</span>
+        <span data-s1-part="value">최신순</span>
+        <span data-s1-part="icon" aria-hidden="true"></span>
+      </button>
+      <div data-s1-part="panel" hidden>
+        <div data-s1-component="dropdown" data-type="text" data-size="xxsm" role="listbox" aria-label="정렬">
+          <div data-s1-part="option" role="option" aria-selected="true" tabindex="0" data-value="latest"><span data-s1-part="option-label">최신순</span></div>
+          <div data-s1-part="option" role="option" aria-selected="false" tabindex="-1" data-value="past"><span data-s1-part="option-label">과거순</span></div>
+        </div>
+      </div>
+    </div>
   </main>
   <script type="module">
     import { init as initInput } from "../dist/components/input.js";
@@ -64,9 +96,15 @@
     import "../dist/components/radio.js";
     import { init as initToggle } from "../dist/components/toggle.js";
     import { init as initChip } from "../dist/components/chip.js";
+    import { init as initDropdown } from "../dist/components/dropdown.js";
+    import { init as initSelect } from "../dist/components/select.js";
+    import { init as initFilterChip } from "../dist/components/filter-chip.js";
     document.querySelectorAll('[data-s1-component="input"]').forEach((root) => initInput(root));
     document.querySelectorAll('[data-s1-component="toggle"]').forEach((root) => initToggle(root));
     document.querySelectorAll('[data-s1-component="chip"]').forEach((root) => initChip(root));
+    document.querySelectorAll('[data-s1-component="dropdown"]').forEach((root) => initDropdown(root));
+    document.querySelectorAll('[data-s1-component="select"]').forEach((root) => initSelect(root));
+    document.querySelectorAll('[data-s1-component="filter-chip"]').forEach((root) => initFilterChip(root));
   </script>
 </body>
 </html>

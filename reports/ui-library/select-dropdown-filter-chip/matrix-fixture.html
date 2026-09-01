@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>Select · Dropdown · Filter Chip 상태 전수 대조 (실제 dist 소비)</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+<link rel="stylesheet" href="../../../ui-library/dist/assets/css/tokens.css">
+<link rel="stylesheet" href="../../../ui-library/dist/assets/css/typography.css">
+<link rel="stylesheet" href="../../../ui-library/dist/s1-ui.css">
+<style>
+  body { font-family: Pretendard, sans-serif; margin: 0; }
+  .pane { padding: 20px 24px; }
+  .pane[data-theme="dark"] { background: var(--color-bg-level-1); }
+  h2 { font-size: 15px; margin: 0 0 12px; color: var(--color-text-body-primary); }
+  h3 { font-size: 12px; margin: 18px 0 6px; color: var(--color-text-body-secondary); }
+  table { border-collapse: collapse; }
+  th, td { padding: 8px 12px; text-align: left; font-size: 11px; color: var(--color-text-body-secondary); font-weight: 400; vertical-align: top; }
+  /* 열린 목록이 아래 행을 덮지 않도록 칸 높이를 확보한다(검수용 배치일 뿐 컴포넌트 규칙 아님) */
+  td.open-cell { min-height: 200px; height: 220px; }
+  /* 정본 Hover 셀은 마우스를 올릴 수 없어 가이드와 같은 강제 표시를 쓴다 — dist 의 Hover 규칙과 같은 토큰만 사용 */
+  [data-s1-component="select"] [data-s1-part="trigger"][data-force-state="hover"] { background: var(--color-form-control-bg-hover); }
+  [data-s1-component="dropdown"] [data-s1-part="option"][data-force-state="hover"] { background: var(--color-dropdown-option-bg-hover); color: var(--color-dropdown-option-label-hover); }
+  [data-s1-component="filter-chip"][data-variant="line"] [data-s1-part="trigger"][data-force-state="hover"] { background: var(--color-chip-line-bg-hover); }
+  [data-s1-component="filter-chip"][data-variant="solid"] [data-s1-part="trigger"][data-force-state="hover"] { background: var(--color-chip-solid-bg-hover); border-color: var(--color-chip-solid-bg-hover); }
+</style>
+</head>
+<body>
+<div id="out"></div>
+<script type="module">
+const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;" }[c]));
+
+// ── 옵션 행 (Dropdown List) — 정본 buildDropdownList 27조합 축: 유형 3 × 크기 3 × 상태 3
+const option = ({ type, label, value, selected = false, force = "", selectAll = false }) => {
+  const f = force ? ` data-force-state="${force}"` : "";
+  const a = selectAll ? ' data-select-all="true"' : "";
+  if (type === "text") return `<div data-s1-part="option" role="option" aria-selected="${selected}" tabindex="-1" data-value="${value}"${f}><span data-s1-part="option-label">${esc(label)}</span></div>`;
+  return `<div data-s1-part="option" role="checkbox" aria-checked="${selected}" tabindex="-1" data-value="${value}"${f}${a}>
+      <div data-s1-component="checkbox" aria-hidden="true"><input type="checkbox" data-s1-part="control" tabindex="-1"${selected ? " checked" : ""}></div>
+      <span data-s1-part="option-label">${esc(label)}</span>
+    </div>`;
+};
+
+// ── Dropdown 패널 — 정본 buildDropdown 6조합(유형 2 × 크기 3)
+const dropdown = ({ type = "text", size = "md", withAll = false, label = "지역", rows = null }) => {
+  const body = (rows || [
+    { label: "서울", value: "seoul", selected: type !== "text" ? false : true },
+    { label: "부산", value: "busan", selected: false },
+    { label: "제주", value: "jeju", selected: false }
+  ]).map((r) => option({ type, ...r })).join("");
+  const all = withAll ? option({ type, label: "전체 선택", value: "all", selectAll: true }) + '<div data-s1-part="divider"></div>' : "";
+  const role = type === "text" ? ' role="listbox"' : "";
+  return `<div data-s1-component="dropdown" data-type="${type}" data-size="${size}"${role} aria-label="${esc(label)}">${all}${body}</div>`;
+};
+
+// ── Select Box — 정본 buildSelect 20조합(상태 5 × 크기·브레이크 4)
+const select = ({ size, brk, state }) => {
+  const open = state === "open", filled = state === "filled", dis = state === "disabled";
+  const force = state === "hover" ? ' data-force-state="hover"' : "";
+  return `<div data-s1-component="select" data-size="${size}" data-break="${brk}">
+    <button type="button" data-s1-part="trigger" aria-haspopup="listbox" aria-expanded="${open}"${filled ? ' data-filled="true"' : ""}${dis ? " disabled" : ""}${force}>
+      <span data-s1-part="value">${filled ? "서울" : "선택"}</span><span data-s1-part="icon" aria-hidden="true"></span>
+    </button>
+    <div data-s1-part="panel"${open ? "" : " hidden"}>${dropdown({ type: "text", size, label: "지역" })}</div>
+  </div>`;
+};
+
+// ── Filter Chip — 정본 buildFilterChip 60조합(variant 2 × 제목 2 × 상태 5 × 크기·브레이크 3)
+// 패널 크기 매핑은 정본 그대로 SM→xsm · MD→xsm (river 결정 2026-09-01)
+const chipPanelSize = (s) => (s === "sm" ? "xsm" : "xsm");
+const filterChip = ({ v, size, brk, title, state }) => {
+  const open = state === "selected", complete = state === "complete", dis = state === "disabled";
+  const force = state === "hover" ? ' data-force-state="hover"' : "";
+  return `<div data-s1-component="filter-chip" data-variant="${v}" data-size="${size}" data-break="${brk}" data-title="${title}">
+    <button type="button" data-s1-part="trigger" aria-haspopup="listbox" aria-expanded="${open}"${complete ? ' data-complete="true"' : ""}${dis ? " disabled" : ""}${force}>
+      ${title === "on" ? '<span data-s1-part="title">정렬</span>' : ""}
+      <span data-s1-part="value">${complete ? "과거순" : "최신순"}</span><span data-s1-part="icon" aria-hidden="true"></span>
+    </button>
+    <div data-s1-part="panel"${open ? "" : " hidden"}>${dropdown({ type: "text", size: chipPanelSize(size), label: "정렬", rows: [
+      { label: "최신순", value: "latest", selected: true }, { label: "인기순", value: "popular" }, { label: "과거순", value: "past" }] })}</div>
+  </div>`;
+};
+
+const selStates = ["default", "hover", "open", "filled", "disabled"];
+const selSizes = [["xxsm","pc","XXSM/PC · 28"],["xsm","pc","XSM/PC · 34"],["md","pc","MD/PC · 44"],["md","mobile","MD/Mobile · 48"]];
+const ddSizes = [["xxsm","XXSM · 28"],["xsm","XSM · 34"],["md","MD · 44"]];
+const optStates = [["default",false,""],["hover",false,"hover"],["selected",true,""]];
+const fcStates = ["default","hover","selected","complete","disabled"];
+const fcSizes = [["sm","pc","SM/PC · 28"],["md","pc","MD/PC · 34"],["md","mobile","MD/Mobile · 30"]];
+
+function pane(theme, only) {
+  const selTable = `<table><tr><th></th>${selStates.map(s=>`<th>${s}</th>`).join("")}</tr>` +
+    selSizes.map(([s,b,l])=>`<tr><th>${l}</th>${selStates.map(st=>`<td class="${st==='open'?'open-cell':''}">${select({size:s,brk:b,state:st})}</td>`).join("")}</tr>`).join("") + `</table>`;
+
+  const optTable = ["text","checkbox"].map(type=>`<h3>옵션 행 · ${type==="text"?"글자":"체크박스"}</h3><table><tr><th></th>${optStates.map(([n])=>`<th>${n}</th>`).join("")}</tr>` +
+    ddSizes.map(([s,l])=>`<tr><th>${l}</th>${optStates.map(([n,sel,f])=>`<td><div data-s1-component="dropdown" data-type="${type}" data-size="${s}"${type==="text"?' role="listbox"':""} aria-label="행">${option({type,label:"서울",value:"seoul",selected:sel,force:f})}</div></td>`).join("")}</tr>`).join("") + `</table>`).join("");
+
+  const panelTable = `<h3>패널 · 유형 2 × 크기 3</h3><table><tr><th></th>${ddSizes.map(([,l])=>`<th>${l}</th>`).join("")}</tr>` +
+    [["글자",{type:"text"}],["체크박스",{type:"checkbox"}],["체크박스+전체선택",{type:"checkbox",withAll:true}]]
+      .map(([l,o])=>`<tr><th>${l}</th>${ddSizes.map(([s])=>`<td>${dropdown({...o,size:s})}</td>`).join("")}</tr>`).join("") + `</table>`;
+
+  const fcTable = ["line","solid"].map(v=>["off","on"].map(t=>`<h3>Filter Chip · ${v} · 제목 ${t==="on"?"있음":"없음"}</h3><table><tr><th></th>${fcStates.map(s=>`<th>${s}</th>`).join("")}</tr>` +
+    fcSizes.map(([s,b,l])=>`<tr><th>${l}</th>${fcStates.map(st=>`<td class="${st==='selected'?'open-cell':''}">${filterChip({v,size:s,brk:b,title:t,state:st})}</td>`).join("")}</tr>`).join("") + `</table>`).join("")).join("");
+
+  const parts = [];
+  if (!only || only === "select") parts.push(`<h3>Select Box · 상태 5 × 크기 4 = 20</h3>${selTable}`);
+  if (!only || only === "dropdown") parts.push(`<h2 style="margin-top:24px">Dropdown</h2>${panelTable}${optTable}`);
+  if (!only || only === "filterchip") parts.push(`<h2 style="margin-top:24px">Filter Chip · variant 2 × 제목 2 × 상태 5 × 크기 3 = 60</h2>${fcTable}`);
+  return `<div class="pane" data-theme="${theme}"><h2>${theme.toUpperCase()}</h2>${parts.join("")}</div>`;
+}
+// ?only=select|dropdown|filterchip · ?theme=light|dark 로 구간을 나눠 촬영한다(검증 편의).
+const q = new URLSearchParams(location.search);
+const only = q.get("only"), theme = q.get("theme");
+const themes = theme ? [theme] : ["light", "dark"];
+document.querySelector("#out").innerHTML = themes.map((t) => pane(t, only)).join("");
+</script>
+</body>
+</html>

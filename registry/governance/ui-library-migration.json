@@ -125,6 +125,72 @@
       "riverApproval": "pending",
       "promotionDecision": "pending — 5-human-review 대기",
       "note": "dist manifest status 는 approved(가이드 화면이 승인 배포본만 렌더한다). 이행 상태는 river 검수 전이라 verified 로 둔다."
+    },
+    {
+      "id": "select",
+      "kind": "core-component",
+      "legacyStatus": "implemented",
+      "uiLibraryStatus": "verified",
+      "dependencies": [
+        "tokens.css",
+        "typography.css",
+        "select.js",
+        "dropdown.js"
+      ],
+      "lastVerified": "2026-09-01",
+      "reverifyTrigger": "정본 buildSelect 의 상태·크기·토큰·아이콘 크기, 또는 웹 HTML part·CSS selector·aria-expanded/data-filled 런타임 변경",
+      "evidence": [
+        "reports/ui-library/select-dropdown-filter-chip/4-verification.md",
+        "reports/ui-library/select-dropdown-filter-chip/4-verification-independent.md",
+        "ui-library/dist/components/select.manifest.json"
+      ],
+      "riverApproval": "pending",
+      "promotionDecision": "pending — 5-human-review 대기",
+      "note": "열림 상태는 dropdown 배포본을 조립한다. dist manifest status 는 verified — river 승인 시 approved 로 올리면 공개 안내 페이지가 열린다."
+    },
+    {
+      "id": "dropdown",
+      "kind": "core-component",
+      "legacyStatus": "implemented",
+      "uiLibraryStatus": "verified",
+      "dependencies": [
+        "tokens.css",
+        "typography.css",
+        "dropdown.js",
+        "checkbox.css"
+      ],
+      "lastVerified": "2026-09-01",
+      "reverifyTrigger": "정본 buildDropdownList·buildDropdown 의 유형·크기·상태·토큰, 또는 웹 option part·data-select-all 계약·aria-selected/aria-checked 런타임 변경",
+      "evidence": [
+        "reports/ui-library/select-dropdown-filter-chip/4-verification.md",
+        "reports/ui-library/select-dropdown-filter-chip/4-verification-independent.md",
+        "ui-library/dist/components/dropdown.manifest.json"
+      ],
+      "riverApproval": "pending",
+      "promotionDecision": "pending — 5-human-review 대기",
+      "note": "체크박스 유형은 승인된 코어 Checkbox 배포본을 조립한다. 「전체 선택」 부분선택(mixed) 은 정본에 없어 만들지 않았다(river 결정 2026-08-31)."
+    },
+    {
+      "id": "filter-chip",
+      "kind": "core-component",
+      "legacyStatus": "implemented",
+      "uiLibraryStatus": "verified",
+      "dependencies": [
+        "tokens.css",
+        "typography.css",
+        "filter-chip.js",
+        "dropdown.js"
+      ],
+      "lastVerified": "2026-09-01",
+      "reverifyTrigger": "정본 buildFilterChip 의 variant·제목·상태·크기·토큰, 또는 패널 크기 매핑(SM→xxsm·MD→xsm)·aria-expanded/data-complete 런타임 변경",
+      "evidence": [
+        "reports/ui-library/select-dropdown-filter-chip/4-verification.md",
+        "reports/ui-library/select-dropdown-filter-chip/4-verification-independent.md",
+        "ui-library/dist/components/filter-chip.manifest.json"
+      ],
+      "riverApproval": "pending",
+      "promotionDecision": "pending — 5-human-review 대기",
+      "note": "Complete 는 정본에서 Default 와 같은 색 슬롯을 쓴다(값 문구만 다름). 패널 크기 매핑이 Select 와 다르다."
     }
   ]
 }

@@ -163,6 +163,7 @@
     }
 
     .review-sample {
+      align-content: start;
       display: grid;
       gap: var(--spacing-8);
       min-width: 0;
@@ -187,6 +188,10 @@
     }
 
     .review-component-slot { min-width: 0; }
+
+    /* 검수 배치용(컴포넌트 시각 아님) — 정적 표본은 눌리지 않게, 열린 패널은 겹치지 않게 자리를 준다. */
+    .review-static { pointer-events: none; }
+    .review-overlay-slot { min-height: 190px; }
 
     .review-control-group {
       border: 0;
@@ -214,6 +219,146 @@
       padding-bottom: var(--spacing-32);
     }
 
+    /* ── 검수 페이지 전용 크롬: 안내 박스 · 탭. 컴포넌트 시각에는 관여하지 않는다. ── */
+    .review-notice {
+      background: var(--color-bg-level-2);
+      border: var(--border-width-1) solid var(--color-line-gray-strong, var(--color-line-gray-subtle));
+      border-left: var(--spacing-4) solid var(--color-text-state-accent);
+      border-radius: var(--radius-12);
+      display: grid;
+      gap: var(--spacing-12);
+      margin-bottom: var(--spacing-24);
+      padding: var(--spacing-20);
+    }
+
+    .review-notice[hidden] { display: none; }
+
+    .review-notice-title {
+      color: var(--color-text-title-primary);
+      font-size: var(--font-size-18);
+      font-weight: var(--font-weight-bold);
+      line-height: var(--line-height-130);
+      margin: 0;
+    }
+
+    .review-notice-body,
+    .review-notice-steps {
+      color: var(--color-text-body-primary);
+      font-size: var(--font-size-14);
+      line-height: var(--line-height-140);
+      margin: 0;
+    }
+
+    .review-notice-steps { padding-left: var(--spacing-20); }
+    .review-notice-steps li + li { margin-top: var(--spacing-6); }
+
+    .review-notice-command {
+      align-items: center;
+      background: var(--color-bg-level-0);
+      border: var(--border-width-1) solid var(--color-line-gray-subtle);
+      border-radius: var(--radius-8);
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--spacing-8);
+      justify-content: space-between;
+      padding: var(--spacing-12);
+    }
+
+    .review-notice-command code {
+      color: var(--color-text-title-primary);
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: var(--font-size-14);
+      word-break: break-all;
+    }
+
+    .review-notice-copy {
+      background: var(--color-bg-level-2);
+      border: var(--border-width-1) solid var(--color-line-gray-subtle);
+      border-radius: var(--radius-8);
+      color: var(--color-text-body-primary);
+      cursor: pointer;
+      font: inherit;
+      font-size: var(--font-size-12);
+      padding: var(--spacing-6) var(--spacing-12);
+    }
+
+    .review-notice-detail {
+      color: var(--color-text-state-helper);
+      font-size: var(--font-size-12);
+      line-height: var(--line-height-140);
+    }
+
+    .review-notice-detail pre {
+      margin: var(--spacing-6) 0 0;
+      white-space: pre-wrap;
+      word-break: break-all;
+    }
+
+    .review-tabs {
+      border-bottom: var(--border-width-1) solid var(--color-line-gray-subtle);
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--spacing-8);
+      margin-bottom: var(--spacing-8);
+    }
+
+    .review-tab {
+      background: transparent;
+      border: 0;
+      border-bottom: var(--border-width-2, 2px) solid transparent;
+      color: var(--color-text-body-secondary);
+      cursor: pointer;
+      font: inherit;
+      font-size: var(--font-size-16);
+      font-weight: var(--font-weight-medium);
+      padding: var(--spacing-12) var(--spacing-4);
+    }
+
+    .review-tab[aria-selected="true"] {
+      border-bottom-color: var(--color-text-state-accent);
+      color: var(--color-text-state-accent);
+      font-weight: var(--font-weight-bold);
+    }
+
+    .review-tab-count {
+      color: var(--color-text-state-helper);
+      font-size: var(--font-size-12);
+      font-weight: var(--font-weight-medium);
+      margin-left: var(--spacing-4);
+    }
+
+    .review-tabpanel[hidden] { display: none; }
+
+    .review-tabpanel-note {
+      color: var(--color-text-state-helper);
+      font-size: var(--font-size-12);
+      line-height: var(--line-height-140);
+      margin: var(--spacing-12) 0 0;
+    }
+
+    .review-status-badge {
+      border: var(--border-width-1) solid var(--color-line-gray-subtle);
+      border-radius: var(--radius-full);
+      display: inline-block;
+      font-size: var(--font-size-12);
+      font-weight: var(--font-weight-medium);
+      line-height: var(--line-height-130);
+      margin-left: var(--spacing-8);
+      padding: var(--spacing-4) var(--spacing-8);
+      vertical-align: middle;
+    }
+
+    .review-status-badge[data-status="approved"] {
+      background: var(--color-bg-level-2);
+      color: var(--color-text-body-secondary);
+    }
+
+    .review-status-badge[data-status="pending"] {
+      background: var(--color-bg-level-2);
+      border-color: var(--color-text-state-accent);
+      color: var(--color-text-state-accent);
+    }
+
     @media (max-width: 960px) {
       .review-page { padding: var(--spacing-20); }
       .review-matrix { grid-template-columns: 1fr; }
@@ -229,16 +374,36 @@
 </head>
 <body>
   <main class="review-page">
+    <div class="review-notice" id="review-fallback-notice" role="alert" hidden>
+      <p class="review-notice-title">화면이 비어 있습니다 — 파일을 두 번 눌러 연 상태라서 그렇습니다</p>
+      <p class="review-notice-body">이 검수 화면은 실제 배포 파일(모듈)을 불러와서 그리는데, 파일을 바로 열면(주소가 <code>file://</code>로 시작) 브라우저가 보안 때문에 그 파일을 막습니다. 그래서 제목과 설명만 보이고 컴포넌트가 하나도 그려지지 않습니다. <strong>화면이 잘못 만들어진 것이 아닙니다.</strong></p>
+      <p class="review-notice-body"><strong>이렇게 하면 바로 보입니다.</strong></p>
+      <ol class="review-notice-steps">
+        <li>터미널(명령 입력 창)에서 프로젝트 폴더로 이동합니다.</li>
+        <li>아래 명령을 한 번 실행합니다. 작은 서버가 켜지고 이 화면이 자동으로 열립니다.</li>
+        <li>주소가 <code>http://localhost:4173/…</code> 로 바뀌어 있으면 정상입니다. 이 안내 박스도 사라집니다.</li>
+      </ol>
+      <div class="review-notice-command">
+        <code id="review-notice-command-text">npm run review</code>
+        <button type="button" class="review-notice-copy" id="review-notice-copy">명령 복사</button>
+      </div>
+      <details class="review-notice-detail">
+        <summary>기술적인 원인 (개발자용)</summary>
+        <pre id="review-notice-reason">-</pre>
+      </details>
+    </div>
+
     <header class="review-header">
       <p class="review-eyebrow">UI LIBRARY · APPROVED · @S1/UI 0.1.0</p>
-      <h1 class="review-title">Base Input · Button · Checkbox · Radio · Toggle · Chip 실제 배포본 검수</h1>
+      <h1 class="review-title">Base Input · Button · Checkbox · Radio · Toggle · Chip · Select · Dropdown · Filter Chip 실제 배포본 검수</h1>
       <p class="review-description">이 화면과 퍼블리셔·개발자가 받는 파일은 같은 <strong>ui-library/dist</strong>를 사용합니다. 아래 UI를 직접 누르고 입력하면서 모양과 사용성을 확인해 주세요.</p>
       <div class="review-badges" aria-label="검수 범위">
         <span class="review-badge">PC · Mobile</span>
         <span class="review-badge">Light · Dark</span>
         <span class="review-badge">Base Input · Button</span>
-        <span class="review-badge">Toggle · Chip (신규)</span>
-        <span class="review-badge">검수본 2026-08-31 · 06</span>
+        <span class="review-badge">Toggle · Chip</span>
+        <span class="review-badge">Select · Dropdown · Filter Chip (신규)</span>
+        <span class="review-badge">검수본 2026-09-01 · 07</span>
         <span class="review-badge">Password · Search는 다음 단계</span>
       </div>
     </header>
@@ -252,6 +417,9 @@
         <li>Checkbox·Radio는 <strong>상자만 있는 기본형</strong>과 <strong>라벨이 붙은 형태</strong>를 나란히 놓았습니다. 라벨을 눌러도 선택되는지, 라디오는 화살표 키로 옮겨지는지 확인합니다.</li>
         <li>Toggle은 눌러서 켜고 끄고, Tab·Space로도 바뀌는지 확인합니다. 비활성은 눌러도 바뀌지 않아야 합니다.</li>
         <li>Chip은 눌러서 선택하고 다시 눌러 해제되는지, Line·Solid의 선택 표시가 구분되는지 확인합니다.</li>
+        <li>Select는 트리거를 눌러 목록을 열고, 화살표 키·Enter로 고른 뒤 값이 트리거에 들어오는지 확인합니다. 바깥을 누르면 닫힙니다.</li>
+        <li>Dropdown 목록은 글자 유형과 체크박스 유형 두 가지입니다. 체크박스 유형은 여러 개를 함께 고를 수 있고, 「전체 선택」 아래에는 구분선이 있습니다.</li>
+        <li>Filter Chip은 눌러서 열고(Selected), 값을 고르면 닫히며 값이 칩에 남습니다(Complete). <strong>Esc</strong>로도 닫히는지 확인합니다.</li>
         <li>PC와 Mobile, Light와 Dark에서 같은 의미와 우선순위로 보이는지 비교합니다.</li>
       </ol>
       <div class="review-actions">
@@ -260,7 +428,14 @@
       </div>
     </section>
 
-    <section class="review-section" aria-labelledby="input-review-title">
+    <div class="review-tabs" role="tablist" aria-label="검수 항목 묶음">
+      <button type="button" class="review-tab" id="review-tab-pending" role="tab" aria-controls="review-panel-pending" aria-selected="true">이번에 볼 것<span class="review-tab-count" id="review-count-pending"></span></button>
+      <button type="button" class="review-tab" id="review-tab-approved" role="tab" aria-controls="review-panel-approved" aria-selected="false" tabindex="-1">승인 완료(참고)<span class="review-tab-count" id="review-count-approved"></span></button>
+    </div>
+
+    <div class="review-tabpanel" id="review-panel-pending" role="tabpanel" aria-labelledby="review-tab-pending">
+      <p class="review-tabpanel-note" id="review-note-pending">아직 river 승인 전인 항목입니다. 이번 검수에서 봐 주세요.</p>
+    <section class="review-section" aria-labelledby="input-review-title" data-component-id="input">
       <div>
         <h2 class="review-section-title" id="input-review-title">1. Base Input</h2>
         <p class="review-note">안내 문구는 선택 사항입니다. Editing에서는 값이 있을 때 remove 아이콘이 나타나며, PC에서는 아이콘 위에 마우스를 올리면 해당 누르는 영역에만 Hover 배경이 생깁니다. 비밀번호 보기/숨기기와 검색 실행은 다음 단계입니다.</p>
@@ -268,7 +443,7 @@
       <div class="review-matrix" id="input-review-matrix"></div>
     </section>
 
-    <section class="review-section" aria-labelledby="button-review-title">
+    <section class="review-section" aria-labelledby="button-review-title" data-component-id="button">
       <div>
         <h2 class="review-section-title" id="button-review-title">2. Button</h2>
         <p class="review-note">Primary·Secondary·Blue Line의 크기와 상태를 비교합니다. Hover·Pressed·Focus Visible은 실제 마우스와 키보드로 확인합니다.</p>
@@ -276,7 +451,7 @@
       <div class="review-matrix" id="button-review-matrix"></div>
     </section>
 
-    <section class="review-section" aria-labelledby="checkbox-review-title">
+    <section class="review-section" aria-labelledby="checkbox-review-title" data-component-id="checkbox">
       <div>
         <h2 class="review-section-title" id="checkbox-review-title">3. Checkbox</h2>
         <p class="review-note">정본 상태 5종을 그대로 옮겼습니다. 라벨은 <strong>선택 부품</strong>이라 없는 형태가 기본이고, 붙이면 라벨을 눌러도 선택됩니다. 부분선택(중간 상태)은 정본에 없어 이번 배포에 넣지 않았습니다.</p>
@@ -284,7 +459,7 @@
       <div class="review-matrix" id="checkbox-review-matrix"></div>
     </section>
 
-    <section class="review-section" aria-labelledby="radio-review-title">
+    <section class="review-section" aria-labelledby="radio-review-title" data-component-id="radio">
       <div>
         <h2 class="review-section-title" id="radio-review-title">4. Radio</h2>
         <p class="review-note">정본 상태 5종 × 라벨 유무를 그대로 옮겼습니다. 같은 그룹은 하나만 선택되고, 그룹 안에서는 화살표 키로 이동합니다.</p>
@@ -292,7 +467,7 @@
       <div class="review-matrix" id="radio-review-matrix"></div>
     </section>
 
-    <section class="review-section" aria-labelledby="toggle-review-title">
+    <section class="review-section" aria-labelledby="toggle-review-title" data-component-id="toggle">
       <div>
         <h2 class="review-section-title" id="toggle-review-title">5. Toggle</h2>
         <p class="review-note">정본 4가지(켜짐·꺼짐 × 기본·비활성)를 그대로 옮겼습니다. 정본에 마우스오버 변형과 움직임(애니메이션)이 없어 웹에도 넣지 않았습니다. 크기 축이 없어 40×20 고정입니다.</p>
@@ -300,7 +475,7 @@
       <div class="review-matrix" id="toggle-review-matrix"></div>
     </section>
 
-    <section class="review-section" aria-labelledby="chip-review-title">
+    <section class="review-section" aria-labelledby="chip-review-title" data-component-id="chip">
       <div>
         <h2 class="review-section-title" id="chip-review-title">6. Chip</h2>
         <p class="review-note">Line·Solid × 상태 4종입니다. 크기는 정본에 있는 조합만 만들었습니다 — PC는 SM 28px·MD 34px, Mobile은 SM 30px. 필터 칩(드롭다운·완료 상태)과 아이콘·닫기(X)는 이번 범위가 아닙니다.</p>
@@ -308,9 +483,39 @@
       <div class="review-matrix" id="chip-review-matrix"></div>
     </section>
 
+
+    <section class="review-section" aria-labelledby="select-review-title" data-component-id="select">
+      <div>
+        <h2 class="review-section-title" id="select-review-title">7. Select Box</h2>
+        <p class="review-note">정본 상태 5종(Default·Hover·Open·Filled·Disabled) × 크기 4종(PC XXSM 28 · XSM 34 · MD 44 / Mobile MD 48)입니다. Hover는 마우스를 올려 확인합니다. 열린 목록은 Dropdown 배포본을 그대로 조립한 것이라 목록 자체의 모양은 8번에서 봅니다. 정본에 Open과 별개인 Focus 축과 Error 상태가 없어 만들지 않았습니다.</p>
+      </div>
+      <div class="review-matrix" id="select-review-matrix"></div>
+    </section>
+
+    <section class="review-section" aria-labelledby="dropdown-review-title" data-component-id="dropdown">
+      <div>
+        <h2 class="review-section-title" id="dropdown-review-title">8. Dropdown (목록 패널 + 옵션 행)</h2>
+        <p class="review-note">Select·Filter Chip이 열었을 때 나오는 목록입니다. 유형 3가지(글자 · 체크박스 · 체크박스+전체 선택) × 크기 3종(XXSM 28 · XSM 34 · MD 44)이고 옵션 행 상태는 Default·Hover·Selected입니다. 패널 자체에는 상태 축이 없습니다(항상 Default). 「전체 선택」의 <strong>부분선택(중간 상태)</strong>은 정본에 없어 만들지 않았습니다.</p>
+      </div>
+      <div class="review-matrix" id="dropdown-review-matrix"></div>
+    </section>
+
+    <section class="review-section" aria-labelledby="filter-chip-review-title" data-component-id="filter-chip">
+      <div>
+        <h2 class="review-section-title" id="filter-chip-review-title">9. Filter Chip</h2>
+        <p class="review-note">Line·Solid × 제목 있음/없음 × 상태 5종(Default·Hover·Selected(열림)·Complete(값 확정)·Disabled) × 크기 3종(PC SM 28 · MD 34 / Mobile MD 30)입니다. Hover는 마우스로 확인합니다. <strong>Complete는 정본에서 Default와 같은 색을 씁니다</strong> — 값 문구만 달라집니다. 열었을 때 목록 크기는 Select와 다르게 SM·MD 모두 XSM(34px)으로 붙습니다. 다중 선택과 Error는 정본에 없어 만들지 않았습니다.</p>
+      </div>
+      <div class="review-matrix" id="filter-chip-review-matrix"></div>
+    </section>
+    </div>
+
+    <div class="review-tabpanel" id="review-panel-approved" role="tabpanel" aria-labelledby="review-tab-approved" hidden>
+      <p class="review-tabpanel-note" id="review-note-approved">이미 승인이 끝난 항목입니다. 비교용으로 남겨 두었고, 새로 볼 필요는 없습니다.</p>
+    </div>
+
     <footer class="review-footer">
       <span id="review-runtime-status">배포 모듈 확인 중…</span>
-      <span>후속 범위: Filter Chip → Password Field → Search Input. 정본과 Registry가 준비된 뒤 같은 방식으로 이 화면에 추가합니다.</span>
+      <span>후속 범위: Password Field → Search Input. 정본과 Registry가 준비된 뒤 같은 방식으로 이 화면에 추가합니다.</span>
     </footer>
   </main>
 
@@ -591,21 +796,231 @@
         </article>`;
     }
 
+
+    /* ── Dropdown — 목록 패널 + 옵션 행. Select·Filter Chip 이 조립하는 코어다.
+       유형 3가지(글자 · 체크박스 · 체크박스+전체선택) × 크기 3종. 패널 자체에는 상태 축이 없다. ── */
+    const dropdownSizes = [["xxsm", "XXSM · 28px"], ["xsm", "XSM · 34px"], ["md", "MD · 44px"]];
+
+    function dropdownOption({ type, label, selected = false, value, selectAll = false }) {
+      uniqueId += 1;
+      // 「전체 선택」 행은 배포본이 data-select-all 로 식별한다(dropdown.example.html 계약과 동일).
+      const all = selectAll ? ' data-select-all="true"' : "";
+      if (type === "text") {
+        return `<div data-s1-part="option" role="option" aria-selected="${selected}" tabindex="${selected ? 0 : -1}" data-value="${value}"><span data-s1-part="option-label">${label}</span></div>`;
+      }
+      return `<div data-s1-part="option" role="checkbox" aria-checked="${selected}" tabindex="${selected ? 0 : -1}" data-value="${value}"${all}>
+          <div data-s1-component="checkbox" aria-hidden="true"><input type="checkbox" data-s1-part="control" tabindex="-1"${selected ? " checked" : ""}></div>
+          <span data-s1-part="option-label">${label}</span>
+        </div>`;
+    }
+
+    /* rows 를 넘기지 않으면 지역 예시(서울·부산·제주)를 쓴다. 정렬 맥락(필터칩)처럼 다른
+       도메인의 값을 트리거에 띄우는 호출부는 반드시 자기 rows 를 함께 넘긴다 —
+       트리거에 보이는 값이 그 목록 안에 실제로 있어야 한다(river 지적 2026-09-01). */
+    const dropdownRegionRows = [
+      { label: "서울", value: "seoul", selected: true },
+      { label: "부산", value: "busan", selected: false },
+      { label: "제주", value: "jeju", selected: false }
+    ];
+    const dropdownSortRows = [
+      { label: "최신순", value: "latest", selected: true },
+      { label: "인기순", value: "popular", selected: false },
+      { label: "과거순", value: "past", selected: false }
+    ];
+
+    function dropdownMarkup({ type = "text", size = "md", withAll = false, ariaLabel = "지역", statik = false, allowHover = false, rows = dropdownRegionRows }) {
+      const allRow = withAll
+        ? dropdownOption({ type, label: "전체 선택", value: "all", selected: false, selectAll: true }) + `<div data-s1-part="divider"></div>`
+        : "";
+      const listRole = type === "text" ? ' role="listbox"' : "";
+      const staticAttrs = statik ? ` data-review-static="true"${allowHover ? "" : ' class="review-static"'}` : "";
+      return `<div data-s1-component="dropdown" data-type="${type}" data-size="${size}"${listRole} aria-label="${ariaLabel}"${staticAttrs}>
+          ${allRow}${rows.map((row) => dropdownOption({ type, ...row })).join("")}
+        </div>`;
+    }
+
+    function renderDropdownPanel(combo) {
+      const types = [
+        ["text", "글자 유형", { type: "text" }],
+        ["checkbox", "체크박스 유형", { type: "checkbox" }],
+        ["checkbox-all", "체크박스 + 전체 선택", { type: "checkbox", withAll: true }]
+      ];
+      const sizeBlocks = types.map(([, typeLabel, opts]) => {
+        const cells = dropdownSizes.map(([size, sizeLabel]) =>
+          sample(sizeLabel, dropdownMarkup({ ...opts, size, ariaLabel: typeLabel, statik: true, allowHover: true }))).join("");
+        return `<div class="review-group"><h4 class="review-group-title">${typeLabel}</h4><div class="review-grid">${cells}</div></div>`;
+      }).join('<hr class="review-separator">');
+
+      const live = `<div class="review-sample">
+          <p class="review-state-label">글자 유형 · MD — 눌러서 고르고 화살표 키로 이동</p>
+          <div class="review-component-slot">${dropdownMarkup({ type: "text", size: "md", ariaLabel: "지역" })}</div>
+        </div>
+        <div class="review-sample">
+          <p class="review-state-label">체크박스 + 전체 선택 · MD — 여러 개를 함께 고름</p>
+          <div class="review-component-slot">${dropdownMarkup({ type: "checkbox", size: "md", withAll: true, ariaLabel: "지역" })}</div>
+        </div>`;
+
+      return `
+        <article class="review-panel" data-theme="${combo.theme}">
+          <div class="review-panel-heading"><h3 class="review-panel-title">${combo.label}</h3><p class="review-panel-description">유형 3가지 × 크기 3종 · 옵션 행 Default·Hover·Selected (패널 자체는 상태 축 없음)</p></div>
+          <div class="review-group">
+            <h4 class="review-group-title">실제로 눌러보기</h4>
+            <p class="review-panel-description">첫 줄이 이미 선택된 상태입니다. 마우스를 올리면 Hover, 고르면 Selected로 바뀝니다.</p>
+            <div class="review-grid">${live}</div>
+          </div>
+          <hr class="review-separator">
+          ${sizeBlocks}
+        </article>`;
+    }
+
+    /* ── Select Box — 정본 5상태 × 4 size/break. Open 은 dropdown 인스턴스를 자식으로 붙인다. ── */
+    function selectMarkup({ size, breakName, state = "default", statik = false, allowHover = false, panelSize = null }) {
+      const open = state === "open";
+      const filled = state === "filled";
+      const disabled = state === "disabled";
+      const label = filled ? "서울" : "선택";
+      /* 정적 표본은 init 하지 않으므로 panel 의 hidden 을 마크업이 직접 들고 있다.
+         Open 셀만 hidden 을 떼어 실제 목록이 보이게 한다. */
+      const panelHidden = statik ? (open ? "" : " hidden") : " hidden";
+      const staticAttrs = statik ? ` data-review-static="true"${allowHover ? "" : ' class="review-static"'}` : "";
+      return `<div data-s1-component="select" data-size="${size}" data-break="${breakName}"${staticAttrs}>
+          <button type="button" data-s1-part="trigger" aria-haspopup="listbox" aria-expanded="${open}"${filled ? ' data-filled="true"' : ""}${disabled ? " disabled" : ""}>
+            <span data-s1-part="value">${label}</span>
+            <span data-s1-part="icon" aria-hidden="true"></span>
+          </button>
+          <div data-s1-part="panel"${panelHidden}>
+            ${dropdownMarkup({ type: "text", size: panelSize || size, ariaLabel: "지역" })}
+          </div>
+        </div>`;
+    }
+
+    function renderSelectPanel(combo) {
+      const sizes = combo.device === "Mobile"
+        ? [["md", "MD · 48px"]]
+        : [["xxsm", "XXSM · 28px"], ["xsm", "XSM · 34px"], ["md", "MD · 44px"]];
+      const states = [
+        ["Default", "default"],
+        ["Filled · 값 선택됨", "filled"],
+        ["Hover · 마우스를 올려 확인", "default", true],
+        ["Disabled", "disabled"],
+        ["Open · 목록 열림", "open"]
+      ];
+
+      const stateBlocks = sizes.map(([size, sizeLabel]) => {
+        const cells = states.map(([stateLabel, state, allowHover = false]) => {
+          const markup = selectMarkup({ size, breakName: combo.breakName, state, statik: true, allowHover });
+          const slot = state === "open"
+            ? `<div class="review-component-slot review-overlay-slot">${markup}</div>`
+            : `<div class="review-component-slot">${markup}</div>`;
+          return `<div class="review-sample"><p class="review-state-label">${stateLabel}</p>${slot}</div>`;
+        }).join("");
+        return `<div class="review-group"><h4 class="review-group-title">${sizeLabel}</h4><div class="review-grid">${cells}</div></div>`;
+      }).join('<hr class="review-separator">');
+
+      const liveSize = combo.device === "Mobile" ? "md" : "md";
+      return `
+        <article class="review-panel" data-theme="${combo.theme}">
+          ${panelHeading(combo, "select")}
+          <div class="review-group">
+            <h4 class="review-group-title">실제로 눌러보기</h4>
+            <p class="review-panel-description">트리거를 눌러 열고 화살표 키·Enter로 고릅니다. 고르면 닫히고 값이 트리거에 남습니다(Filled). 바깥을 눌러도 닫힙니다.</p>
+            <div class="review-component-slot review-overlay-slot">${selectMarkup({ size: liveSize, breakName: combo.breakName })}</div>
+          </div>
+          <hr class="review-separator">
+          ${stateBlocks}
+        </article>`;
+    }
+
+    /* ── Filter Chip — Line·Solid × 제목 유무 × 5상태 × 3 size/break.
+       패널 사이즈 매핑이 Select 와 다르다: SM→XSM · MD→XSM (river 결정 2026-09-01). ── */
+    const filterChipPanelSize = { sm: "xsm", md: "xsm" };
+
+    function filterChipMarkup({ variant, size, breakName, title = "on", state = "default", statik = false, allowHover = false }) {
+      const open = state === "selected";
+      const complete = state === "complete";
+      const disabled = state === "disabled";
+      /* 값은 목록(dropdownSortRows) 안에 실제로 있는 항목만 쓴다. */
+      const valueText = complete ? "인기순" : "최신순";
+      const panelHidden = statik ? (open ? "" : " hidden") : " hidden";
+      const staticAttrs = statik ? ` data-review-static="true"${allowHover ? "" : ' class="review-static"'}` : "";
+      const titleHtml = title === "on" ? `<span data-s1-part="title">정렬</span>` : "";
+      return `<div data-s1-component="filter-chip" data-variant="${variant}" data-size="${size}" data-break="${breakName}" data-title="${title}"${staticAttrs}>
+          <button type="button" data-s1-part="trigger" aria-haspopup="listbox" aria-expanded="${open}"${complete ? ' data-complete="true"' : ""}${disabled ? " disabled" : ""}>
+            ${titleHtml}
+            <span data-s1-part="value">${valueText}</span>
+            <span data-s1-part="icon" aria-hidden="true"></span>
+          </button>
+          <div data-s1-part="panel"${panelHidden}>
+            ${dropdownMarkup({ type: "text", size: filterChipPanelSize[size], ariaLabel: "정렬", rows: dropdownSortRows })}
+          </div>
+        </div>`;
+    }
+
+    function renderFilterChipPanel(combo) {
+      const sizes = combo.device === "Mobile"
+        ? [["md", "MD · 30px"]]
+        : [["sm", "SM · 28px"], ["md", "MD · 34px"]];
+      const variants = [["line", "Line"], ["solid", "Solid"]];
+      const titles = [["on", "제목 있음"], ["off", "제목 없음"]];
+      const states = [
+        ["Default", "default"],
+        ["Complete · 값 확정", "complete"],
+        ["Hover · 마우스를 올려 확인", "default", true],
+        ["Disabled", "disabled"],
+        ["Selected · 열림", "selected"]
+      ];
+
+      const blocks = variants.map(([variant, variantLabel]) => {
+        const inner = titles.map(([title, titleLabel]) => sizes.map(([size, sizeLabel]) => {
+          const cells = states.map(([stateLabel, state, allowHover = false]) => {
+            const markup = filterChipMarkup({ variant, size, breakName: combo.breakName, title, state, statik: true, allowHover });
+            const slot = state === "selected"
+              ? `<div class="review-component-slot review-overlay-slot">${markup}</div>`
+              : `<div class="review-component-slot">${markup}</div>`;
+            return `<div class="review-sample"><p class="review-state-label">${stateLabel}</p>${slot}</div>`;
+          }).join("");
+          return `<div class="review-group"><p class="review-state-label">${titleLabel} · ${sizeLabel}</p><div class="review-grid">${cells}</div></div>`;
+        }).join("")).join("");
+        return `<div class="review-group"><h4 class="review-group-title">${variantLabel}</h4>${inner}</div>`;
+      }).join('<hr class="review-separator">');
+
+      const liveSize = combo.device === "Mobile" ? "md" : "md";
+      return `
+        <article class="review-panel" data-theme="${combo.theme}">
+          <div class="review-panel-heading"><h3 class="review-panel-title">${combo.device} · ${combo.theme === "dark" ? "Dark" : "Light"}</h3><p class="review-panel-description">${combo.device === "Mobile" ? "MD · 30px 높이" : "PC 허용 크기(SM 28 · MD 34)"}</p></div>
+          <div class="review-group">
+            <h4 class="review-group-title">실제로 눌러보기</h4>
+            <p class="review-panel-description">눌러서 열고(Selected), 값을 고르면 닫히면서 칩에 값이 남습니다(Complete). Esc·바깥 클릭으로도 닫힙니다.</p>
+            <div class="review-component-slot review-overlay-slot">${filterChipMarkup({ variant: "line", size: liveSize, breakName: combo.breakName, title: "on" })}</div>
+          </div>
+          <hr class="review-separator">
+          ${blocks}
+        </article>`;
+    }
+
     document.querySelector("#input-review-matrix").innerHTML = combinations.map(renderInputPanel).join("");
     document.querySelector("#button-review-matrix").innerHTML = combinations.map(renderButtonPanel).join("");
     document.querySelector("#checkbox-review-matrix").innerHTML = controlThemes.map((combo) => renderControlPanel("checkbox", combo)).join("");
     document.querySelector("#radio-review-matrix").innerHTML = controlThemes.map((combo) => renderControlPanel("radio", combo)).join("");
     document.querySelector("#toggle-review-matrix").innerHTML = controlThemes.map(renderTogglePanel).join("");
     document.querySelector("#chip-review-matrix").innerHTML = combinations.map(renderChipPanel).join("");
+    document.querySelector("#select-review-matrix").innerHTML = combinations.map(renderSelectPanel).join("");
+    document.querySelector("#dropdown-review-matrix").innerHTML = controlThemes.map(renderDropdownPanel).join("");
+    document.querySelector("#filter-chip-review-matrix").innerHTML = combinations.map(renderFilterChipPanel).join("");
     document.querySelectorAll('[data-s1-component="input"]').forEach((root) => S1UI.input.init(root));
     document.querySelectorAll('[data-s1-component="toggle"]').forEach((root) => S1UI.toggle.init(root));
     document.querySelectorAll('[data-s1-component="chip"]').forEach((root) => S1UI.chip.init(root));
+    /* 정적 표본(data-review-static)은 초기화하지 않는다 — 초기화하면 런타임이 패널을 다시 닫아
+       Open/Selected 표본이 사라진다. 실제로 눌러보는 인스턴스만 init 한다. */
+    document.querySelectorAll('[data-s1-component="select"]:not([data-review-static])').forEach((root) => S1UI.select.init(root));
+    document.querySelectorAll('[data-s1-component="filter-chip"]:not([data-review-static])').forEach((root) => S1UI.filterChip.init(root));
+    document.querySelectorAll('[data-s1-component="dropdown"]:not([data-review-static])').forEach((root) => S1UI.dropdown.init(root));
 
     const focusStatus = document.querySelector("#review-live-status");
     document.addEventListener("focusin", (event) => {
       const component = event.target.closest("[data-s1-component]");
       if (!component) return;
-      const names = { input: "Base Input", button: "Button", checkbox: "Checkbox", radio: "Radio", toggle: "Toggle", chip: "Chip" };
+      const names = { input: "Base Input", button: "Button", checkbox: "Checkbox", radio: "Radio", toggle: "Toggle", chip: "Chip", select: "Select Box", dropdown: "Dropdown", "filter-chip": "Filter Chip" };
       const name = names[component.dataset.s1Component] || component.dataset.s1Component;
       const size = component.dataset.size ? ` · ${component.dataset.size.toUpperCase()}` : "";
       focusStatus.textContent = `현재 초점: ${name}${size}`;
@@ -619,7 +1034,164 @@
     document.querySelector("#review-runtime-status").textContent =
       `실제 배포 모듈 로드 완료 · Input ${S1UI.input.componentId}(remove 동작 포함) · Button ${S1UI.button.componentId}`
       + ` · Checkbox ${S1UI.checkbox.componentId} · Radio ${S1UI.radio.componentId} (둘 다 JavaScript 없이 동작)`
-      + ` · Toggle ${S1UI.toggle.componentId} · Chip ${S1UI.chip.componentId} (aria 상태 전환 런타임 포함)`;
+      + ` · Toggle ${S1UI.toggle.componentId} · Chip ${S1UI.chip.componentId} (aria 상태 전환 런타임 포함)`
+      + ` · Select ${S1UI.select.componentId} · Dropdown ${S1UI.dropdown.componentId} · Filter Chip ${S1UI.filterChip.componentId} (열림·키보드·바깥클릭 런타임 포함)`;
+
+    /* 배포 모듈이 끝까지 실행됐다는 신호. 아래 안내 스크립트가 이 값으로 성공/실패를 판단한다. */
+    document.documentElement.dataset.reviewMounted = "1";
+  </script>
+
+  <!-- 검수 페이지 전용 크롬 스크립트(모듈 아님). file:// 에서도 반드시 실행돼야 하므로 type="module" 을 쓰지 않는다. -->
+  <script type="application/json" id="review-migration-snapshot">
+    {
+          "input": "approved",
+          "button": "approved",
+          "checkbox": "approved",
+          "radio": "approved",
+          "toggle": "verified",
+          "chip": "verified"
+    }
+  </script>
+  <script>
+  (function () {
+    /* ─────────────────────────────────────────────────────────────
+       (A) 배포 모듈 로드 실패 안내
+       ───────────────────────────────────────────────────────────── */
+    var notice = document.getElementById("review-fallback-notice");
+    var reasonEl = document.getElementById("review-notice-reason");
+    var lastError = "";
+
+    function showNotice(reason) {
+      if (!notice || !notice.hidden) return;
+      if (document.documentElement.dataset.reviewMounted === "1") return;
+      notice.hidden = false;
+      if (reasonEl) reasonEl.textContent = reason || lastError || "원인을 확인하지 못했습니다.";
+      notice.scrollIntoView({ block: "start" });
+    }
+
+    window.addEventListener("error", function (event) {
+      lastError = String((event && (event.message || event.error)) || "");
+      if (lastError) showNotice(lastError);
+    }, true);
+
+    if (location.protocol === "file:") {
+      showNotice(
+        'location.protocol === "file:" — <script type="module"> 의 상대 경로 import'
+        + '(../ui-library/dist/s1-ui.js)가 file 스킴에서 해석되지 않아 실행 자체가 중단됩니다.'
+        + " (TypeError: Failed to resolve module specifier / relative url or base scheme isn't hierarchical)"
+      );
+    } else {
+      window.setTimeout(function () {
+        showNotice(
+          "3초 안에 배포 모듈(../ui-library/dist/s1-ui.js) 초기화가 끝나지 않았습니다."
+          + (lastError ? " 마지막 오류: " + lastError : " 파일 경로 또는 서버 응답을 확인하세요.")
+        );
+      }, 3000);
+    }
+
+    var copyBtn = document.getElementById("review-notice-copy");
+    if (copyBtn) {
+      copyBtn.addEventListener("click", function () {
+        var text = document.getElementById("review-notice-command-text").textContent;
+        var done = function () { copyBtn.textContent = "복사됨"; window.setTimeout(function () { copyBtn.textContent = "명령 복사"; }, 1500); };
+        if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(text).then(done, done);
+        else done();
+      });
+    }
+
+    /* ─────────────────────────────────────────────────────────────
+       (B) 승인/검수대기 분류 — registry/governance/ui-library-migration.json 의
+           records[].uiLibraryStatus 를 읽어서 정한다. 페이지에 목록을 적어 두지 않는다.
+           http 로 열면 장부를 직접 fetch 하고, 장부를 못 읽는 환경(file://)에서는
+           같은 장부에서 뽑아 둔 스냅샷으로 되돌아간다.
+       ───────────────────────────────────────────────────────────── */
+    var APPROVED = "approved";
+    var sections = Array.prototype.slice.call(document.querySelectorAll(".review-section[data-component-id]"));
+    var panelPending = document.getElementById("review-panel-pending");
+    var panelApproved = document.getElementById("review-panel-approved");
+    var tabPending = document.getElementById("review-tab-pending");
+    var tabApproved = document.getElementById("review-tab-approved");
+
+    function readSnapshot() {
+      try { return JSON.parse(document.getElementById("review-migration-snapshot").textContent); }
+      catch (err) { return {}; }
+    }
+
+    function statusMapFromLedger(json) {
+      var map = {};
+      (json && json.records ? json.records : []).forEach(function (record) {
+        if (record && record.id) map[record.id] = record.uiLibraryStatus;
+      });
+      return map;
+    }
+
+    function badge(status) {
+      var el = document.createElement("span");
+      el.className = "review-status-badge";
+      if (status === APPROVED) { el.dataset.status = "approved"; el.textContent = "승인 완료"; }
+      else { el.dataset.status = "pending"; el.textContent = "검수 대기"; }
+      return el;
+    }
+
+    function apply(statusMap, source) {
+      var counts = { approved: 0, pending: 0 };
+      sections.forEach(function (section) {
+        /* 장부에 아직 등재되지 않은 컴포넌트는 승인된 적이 없으므로 검수 대기로 본다. */
+        var status = statusMap[section.dataset.componentId];
+        var isApproved = status === APPROVED;
+        section.dataset.uiLibraryStatus = status || "unlisted";
+        var title = section.querySelector(".review-section-title");
+        if (title && !title.querySelector(".review-status-badge")) title.appendChild(badge(status));
+        (isApproved ? panelApproved : panelPending).appendChild(section);
+        counts[isApproved ? "approved" : "pending"] += 1;
+      });
+      document.getElementById("review-count-pending").textContent = " " + counts.pending + "개";
+      document.getElementById("review-count-approved").textContent = " " + counts.approved + "개";
+      document.getElementById("review-note-approved").textContent =
+        "이미 승인이 끝난 항목 " + counts.approved + "개입니다. 비교용으로 남겨 두었고, 이번에 새로 볼 필요는 없습니다. (분류 출처: " + source + ")";
+      document.getElementById("review-note-pending").textContent =
+        "아직 승인 전인 항목 " + counts.pending + "개입니다. 이번 검수에서 봐 주세요. (분류 출처: " + source + ")";
+    }
+
+    function selectTab(which) {
+      var pending = which === "pending";
+      tabPending.setAttribute("aria-selected", String(pending));
+      tabApproved.setAttribute("aria-selected", String(!pending));
+      tabPending.tabIndex = pending ? 0 : -1;
+      tabApproved.tabIndex = pending ? -1 : 0;
+      panelPending.hidden = !pending;
+      panelApproved.hidden = pending;
+    }
+
+    function selectAndRemember(which) {
+      selectTab(which);
+      /* 어느 탭을 보고 있었는지 주소에 남긴다 — 새로고침·링크 공유·스크린샷 촬영에 쓴다. */
+      if (history.replaceState) history.replaceState(null, "", which === "approved" ? "#approved" : "#pending");
+    }
+
+    tabPending.addEventListener("click", function () { selectAndRemember("pending"); });
+    tabApproved.addEventListener("click", function () { selectAndRemember("approved"); });
+    [tabPending, tabApproved].forEach(function (tab) {
+      tab.addEventListener("keydown", function (event) {
+        if (event.key !== "ArrowRight" && event.key !== "ArrowLeft") return;
+        event.preventDefault();
+        var next = tab === tabPending ? tabApproved : tabPending;
+        selectAndRemember(next === tabPending ? "pending" : "approved");
+        next.focus();
+      });
+    });
+    selectTab(location.hash === "#approved" ? "approved" : "pending");
+
+    var ledgerUrl = "../registry/governance/ui-library-migration.json";
+    if (location.protocol === "file:" || !window.fetch) {
+      apply(readSnapshot(), "장부 스냅샷(파일로 직접 열어 장부를 읽지 못함)");
+    } else {
+      fetch(ledgerUrl)
+        .then(function (res) { if (!res.ok) throw new Error(res.status); return res.json(); })
+        .then(function (json) { apply(statusMapFromLedger(json), "ui-library-migration.json 직접 읽음"); })
+        .catch(function () { apply(readSnapshot(), "장부 스냅샷(장부 파일을 읽지 못함)"); });
+    }
+  })();
   </script>
 </body>
 </html>

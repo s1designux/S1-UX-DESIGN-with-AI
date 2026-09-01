@@ -8,7 +8,7 @@
     "tokenStatus": "stable",
     "codeStatus": "implemented",
     "darkModeStatus": "pending",
-    "a11yStatus": "pending",
+    "a11yStatus": "stable",
     "figmaStatus": "existing",
     "harnessStatus": "implemented",
     "description": "Select Box와 Filter Chip이 재사용하는 옵션 패널 컴포넌트. 옵션 줄은 글자만(단일 선택)과 체크박스(다중 선택) 두 유형이며, 체크박스 유형은 「전체 선택」 줄을 기본 포함한다. 트리거 상태는 Select Box가 담당한다.",
@@ -67,7 +67,7 @@
     "트리거는 aria-expanded 로 열림 상태를 노출한다.",
     "단일 선택은 선택 옵션에 aria-selected, 목록은 role=listbox 패턴을 따른다.",
     "다중 선택 옵션은 role=checkbox + aria-checked 로 켜짐/꺼짐을 노출한다.",
-    "「전체 선택」은 일부만 켜진 상태를 aria-checked=mixed 로 노출하는 것이 바람직하다(현재 미구현 — needs-decision)."
+    "「전체 선택」은 정본에 켜짐/꺼짐 2단계만 있어 aria-checked 도 true/false 만 쓴다. 부분 선택(mixed) 표시는 정본에 해당 모양이 없어 만들지 않는다(river 결정 2026-08-31)."
   ],
   "states": { "panel": ["default"] },
   "tokens": [

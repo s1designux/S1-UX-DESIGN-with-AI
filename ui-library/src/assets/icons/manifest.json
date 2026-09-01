@@ -50,6 +50,31 @@
       },
       "geometryEvidence": "정본은 이 아이콘을 16px 로 리사이즈해 18px 상자 (1,1) 에 놓는다(build-components.ts makeCheckIcon·buildCheckbox). 내보낸 원본 assets/icons/ic_확인_line.png(48px=24 기준 2배) 의 잉크 경계는 18×12(24 기준)이고, 정본 인라인 SVG(16 기준)의 잉크 경계는 11.6×8.25 로 같은 비율이다 — 즉 glyph 가 frame 을 그대로 채운다.",
       "dependencies": []
+    },
+    {
+      "id": "chevron",
+      "sourceKey": "e1ac97aa82f4e52f257ac1c0ea77fd09d0e5f581",
+      "sourceBuilderSymbol": "Figma 아이콘 라이브러리 V2.2 419:67 (Property 1=Line) 실물 내보내기 — 이전 대체용 인라인 SVG 폐기(river 지적 2026-09-01)",
+      "file": "chevron.svg",
+      "webAssetFingerprint": "818bd5f7ee1a6ab7cd5c5ef293267197f66136e48b31ca0a7e314a4df1833dc6",
+      "symbolId": "s1-icon-chevron",
+      "individualFile": "assets/icons/chevron.svg",
+      "accessibleNamePolicy": "decorative; the accessible name comes from aria-haspopup/aria-expanded on the trigger, not from the arrow glyph",
+      "geometry": {
+        "frame": {
+          "width": 24,
+          "height": 24
+        },
+        "glyph": {
+          "x": 0,
+          "y": 0,
+          "width": 24,
+          "height": 24
+        },
+        "scaling": "proportional"
+      },
+      "geometryEvidence": "정본 chevDown 인라인 SVG(build-components.ts:1450)는 16x16 viewBox 에 화살표가 꽉 차게 그려진다(glyph=frame). 웹 아이콘은 정본과 동일하게 아래(닫힘) 방향 하나만 자산으로 두고, 열림(위) 방향은 정본과 같은 철학(회전)으로 CSS transform: rotate(180deg) 로 표현한다 — chevUp(build-components.ts:1451)은 chevDown 을 180° 돌린 모양과 같다. 렌더 크기(Select XXSM 20px·그 외 24px, Filter Chip 20px 고정)는 컴포넌트 CSS 가 mask-size:contain 으로 이 16px 원본을 비율 유지 확대해 만든다(fcIconPx, build-components.ts:1310·1481, 2252).",
+      "dependencies": []
     }
   ]
 }

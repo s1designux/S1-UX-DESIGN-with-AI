@@ -1,0 +1,112 @@
+/* Dropdown — 정본 buildDropdown(패널)·buildDropdownList(옵션 행) 기준.
+   패널 자체는 State 축이 없다(항상 Default) — 상태는 옵션 행이 담당한다.
+   체크박스 유형 옵션은 코어 checkbox 배포본을 그대로 내부에 배치한다(복제 금지).
+   폭 — 정본 build-components.ts 는 트리거·패널·옵션 행을 전부 resize(140, …) 로 만든다(별도 최소 규정이
+   없을 때는 설치기 기본값이 최소 크기 — river 결정 2026-09-01). 최대 320px 는 river 결정(넓어지되 긴 글은
+   줄바꿈, 말줄임 아님) — 정본에 대응 토큰이 없어 리터럴 px 로 둔다(정본도 140 을 토큰이 아닌 리터럴로 쓴다). */
+
+[data-s1-component="dropdown"] {
+  background: var(--color-dropdown-list-bg);
+  border: var(--border-width-1) solid var(--color-dropdown-list-border);
+  border-radius: var(--radius-4);
+  box-shadow: var(--shadow-dropdown);
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  max-width: 320px;
+  min-width: 140px;
+  padding-block: var(--spacing-4);
+  width: max-content; /* river 2차 지시(2026-09-01): "넓어지되" 긴 글은 줄바꿈 — width:auto 는 블록 요소라 부모 폭을
+     채우기로 동작해 내용을 따라 커지지 않았다(1차 수정의 결함). max-content + min/max-width 조합으로
+     내용만큼 커지되 140~320 사이로 clamp 되고, 320 을 넘으면 option-label 의 줄바꿈이 담당한다.
+     select 는 트리거 폭에 맞추는 기존 동작을 유지해야 해서 select.css 가 이 값을 100% 로 되돌린다(배치 담당 범위). */
+}
+
+/* 사이즈 축 — Size=XXSM/XSM/MD (build-components.ts buildDropdownList 1570-1574).
+   height→min-height: 한 줄일 때는 정본 그대로 28/34/44 를 유지하되, river 결정(②)으로 긴 옵션 글자가
+   줄바꿈되면 이 값을 바닥으로 두고 행이 함께 늘어난다(내용을 자르지 않는다). */
+[data-s1-component="dropdown"][data-size="xxsm"] [data-s1-part="option"] {
+  font-size: var(--font-size-12);
+  min-height: var(--sizing-28);
+}
+
+[data-s1-component="dropdown"][data-size="xsm"] [data-s1-part="option"] {
+  font-size: var(--font-size-14);
+  min-height: var(--sizing-34);
+}
+
+[data-s1-component="dropdown"][data-size="md"] [data-s1-part="option"] {
+  font-size: var(--font-size-14);
+  min-height: var(--sizing-44);
+}
+
+/* 전체 선택 줄만 내용 행을 1px 낮춰 아래 구분선(1px)과 합쳐 다른 줄과 같은 총높이를 만든다.
+   정본 주석 "총높이는 다른 줄과 같게 유지(내용 = h-1)"(build-components.ts:1633-1645) 그대로.
+   height→min-height: 줄바꿈 시에도 이 바닥값 규칙이 깨지지 않게 한다(river 결정 ② 확인 지시). */
+[data-s1-component="dropdown"][data-size="xxsm"] [data-s1-part="option"][data-select-all="true"] {
+  min-height: calc(var(--sizing-28) - var(--border-width-1));
+}
+[data-s1-component="dropdown"][data-size="xsm"] [data-s1-part="option"][data-select-all="true"] {
+  min-height: calc(var(--sizing-34) - var(--border-width-1));
+}
+[data-s1-component="dropdown"][data-size="md"] [data-s1-part="option"][data-select-all="true"] {
+  min-height: calc(var(--sizing-44) - var(--border-width-1));
+}
+
+[data-s1-component="dropdown"] [data-s1-part="option"] {
+  align-items: center;
+  background: var(--color-dropdown-option-bg-default);
+  box-sizing: border-box;
+  color: var(--color-dropdown-option-label-default);
+  cursor: pointer;
+  display: flex;
+  flex: 0 0 auto;
+  font-family: "Pretendard", sans-serif;
+  font-weight: var(--font-weight-regular);
+  padding-block: var(--spacing-4);
+  padding-inline: var(--spacing-12);
+}
+
+/* 체크박스 유형만 체크박스↔글자 간격(8px)을 갖는다 — 글자 유형은 itemSpacing 0(build-components.ts:1576-1583) */
+[data-s1-component="dropdown"][data-type="checkbox"] [data-s1-part="option"] {
+  gap: var(--spacing-8);
+}
+
+/* 정본 주석: Selected 배경은 default 재사용 — 강조는 글자색만(hover 색과 다른 계열) */
+@media (hover: hover) {
+  [data-s1-component="dropdown"] [data-s1-part="option"]:hover {
+    background: var(--color-dropdown-option-bg-hover);
+    color: var(--color-dropdown-option-label-hover);
+  }
+}
+
+/* 단일 선택(Text 유형)만 선택된 옵션의 글자를 강조한다.
+   체크박스 유형은 선택돼도 라벨을 강조하지 않는다 — 체크 표시가 이미 선택을 표현한다(정본 2026-08-14 결정). */
+[data-s1-component="dropdown"][data-type="text"] [data-s1-part="option"][aria-selected="true"] {
+  color: var(--color-dropdown-option-label-selected);
+}
+
+[data-s1-component="dropdown"] [data-s1-part="option"]:focus-visible {
+  outline: var(--border-width-2) solid var(--color-form-control-border-selected);
+  outline-offset: calc(-1 * var(--border-width-2));
+}
+
+/* river 결정(②): 320px 넘는 긴 글은 말줄임이 아니라 줄바꿈한다.
+   min-width:0 은 flex item 기본값(auto)이 줄바꿈을 막는 것을 해제하기 위함. */
+[data-s1-component="dropdown"] [data-s1-part="option"] [data-s1-part="option-label"] {
+  min-width: 0;
+  overflow-wrap: break-word;
+  white-space: normal;
+}
+
+/* 전체 선택 줄 아래 1px 구분선 — 패널이 아니라 이 줄이 들고 있다(build-components.ts:1637-1645) */
+[data-s1-component="dropdown"] [data-s1-part="divider"] {
+  background: var(--color-dropdown-list-border);
+  flex: 0 0 auto;
+  height: var(--border-width-1);
+}
+
+/* 체크박스 유형 옵션에 얹는 코어 checkbox 인스턴스는 장식(aria-hidden) — 접근성 이름·상태는 option 자신이 role=checkbox로 낸다. */
+[data-s1-component="dropdown"] [data-s1-part="option"] [data-s1-component="checkbox"] {
+  pointer-events: none;
+}

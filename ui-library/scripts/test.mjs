@@ -13,7 +13,7 @@ const read = (relative) => readFile(path.join(libraryRoot, relative), "utf8");
 const build = spawnSync(process.execPath, [path.join(libraryRoot, "scripts/build.mjs"), "--check"], { encoding: "utf8" });
 if (build.status !== 0) failures.push(`build freshness: ${build.stderr || build.stdout}`);
 
-const componentIds = ["input", "button", "checkbox", "radio", "toggle", "chip"];
+const componentIds = ["input", "button", "checkbox", "radio", "toggle", "chip", "dropdown", "select", "filter-chip"];
 const individualCss = [];
 for (const id of componentIds) {
   const css = await read(`dist/components/${id}.css`);
@@ -149,13 +149,60 @@ for (const id of componentIds) {
     if (!css.includes(":focus-visible")) failures.push("chip keyboard focus is not visible");
     if (!example.includes('aria-pressed=')) failures.push("chip example must expose the selected state through aria-pressed");
   }
+  if (id === "dropdown") {
+    if (manifest.jsRequired !== true) failures.push("dropdown option selection requires the declared runtime");
+    if (JSON.stringify(manifest.variants) !== JSON.stringify(["text", "checkbox"])) failures.push("dropdown variants differ from canon");
+    if (JSON.stringify(manifest.sizes) !== JSON.stringify(["xxsm", "xsm", "md"])) failures.push("dropdown sizes differ from canon");
+    const expectedOptionSizes = [
+      ["xxsm", "--sizing-28", "--font-size-12"],
+      ["xsm", "--sizing-34", "--font-size-14"],
+      ["md", "--sizing-44", "--font-size-14"]
+    ];
+    for (const [size, height, fontSize] of expectedOptionSizes) {
+      const rule = css.match(new RegExp(`\\[data-s1-component="dropdown"\\]\\[data-size="${size}"\\] \\[data-s1-part="option"\\]\\s*\\{([^}]*)\\}`));
+      if (!rule || !rule[1].includes(`height: var(${height});`) || !rule[1].includes(`font-size: var(${fontSize});`)) {
+        failures.push(`dropdown ${size} option geometry differs from canon`);
+      }
+    }
+    if (!css.includes("--color-dropdown-option-bg-hover") || !css.includes("--color-dropdown-option-label-hover")) {
+      failures.push("dropdown hover is not bound to the canonical tokens");
+    }
+    if (!css.includes("--color-dropdown-option-label-selected")) failures.push("dropdown text-type selected is not bound to the canonical token");
+    if (!css.includes(":focus-visible")) failures.push("dropdown keyboard focus is not visible");
+    if (!example.includes('role="listbox"') || !example.includes('role="option"') || !example.includes('role="checkbox"')) {
+      failures.push("dropdown example must demonstrate both text (listbox/option) and checkbox option roles");
+    }
+    if (!example.includes('data-s1-component="checkbox"')) failures.push("dropdown checkbox-type option must compose the core checkbox deployment, not duplicate it");
+    if (/mixed/i.test(css) || /mixed/i.test(example)) failures.push("dropdown must not implement a mixed (indeterminate) select-all state; canon has none");
+  }
+  if (id === "select") {
+    if (manifest.jsRequired !== true) failures.push("select open/close requires the declared runtime");
+    if (JSON.stringify(manifest.sizes) !== JSON.stringify(["xxsm", "xsm", "md"])) failures.push("select sizes differ from canon");
+    if (JSON.stringify(manifest.breaks) !== JSON.stringify({ pc: ["xxsm", "xsm", "md"], mobile: ["md"] })) failures.push("select break-size mapping differs from canon");
+    if (!css.includes("var(--sizing-48)")) failures.push("select mobile md height is missing");
+    if (!example.includes('aria-haspopup="listbox"')) failures.push("select example must expose aria-haspopup=listbox on the trigger");
+    if (!example.includes('data-s1-component="dropdown"')) failures.push("select must compose the dropdown core panel, not duplicate its markup");
+    if (!manifest.dependencies?.coreComponents?.includes("dropdown")) failures.push("select manifest must declare dropdown as a core dependency");
+  }
+  if (id === "filter-chip") {
+    if (manifest.jsRequired !== true) failures.push("filter-chip open/close requires the declared runtime");
+    if (JSON.stringify(manifest.variants) !== JSON.stringify(["line", "solid"])) failures.push("filter-chip variants differ from canon");
+    if (JSON.stringify(manifest.breaks) !== JSON.stringify({ pc: ["sm", "md"], mobile: ["md"] })) failures.push("filter-chip break-size mapping differs from canon");
+    if (!css.includes("var(--radius-full)")) failures.push("filter-chip radius differs from canon");
+    if (!example.includes('aria-haspopup="listbox"')) failures.push("filter-chip example must expose aria-haspopup=listbox on the trigger");
+    if (!example.includes('data-s1-component="dropdown"')) failures.push("filter-chip must compose the dropdown core panel, not duplicate its markup");
+    if (!manifest.dependencies?.coreComponents?.includes("dropdown")) failures.push("filter-chip manifest must declare dropdown as a core dependency");
+    if (example.includes('data-s1-component="filter-chip" data-variant="line" data-size="sm"') && !/data-s1-component="dropdown"[^>]*data-size="xsm"/.test(example)) {
+      failures.push("filter-chip SM example must map its panel to dropdown size=xsm (SM→XSM, MD→XSM — river 결정 2026-09-01)");
+    }
+  }
   const module = await import(`${pathToFileURL(path.join(libraryRoot, `dist/components/${id}.js`)).href}?check=${Date.now()}`);
   if (id === "input" && (module.jsRequired !== true || typeof module.init !== "function" || typeof module.destroy !== "function")) {
     failures.push("input runtime lifecycle is incomplete");
   }
   if (id === "button" && (module.jsRequired !== false || module.runtime !== null)) failures.push("button module unexpectedly requires runtime");
   if ((id === "checkbox" || id === "radio") && (module.jsRequired !== false || module.runtime !== null)) failures.push(`${id} module unexpectedly requires runtime`);
-  if ((id === "toggle" || id === "chip") && (module.jsRequired !== true || typeof module.init !== "function" || typeof module.destroy !== "function")) {
+  if ((id === "toggle" || id === "chip" || id === "dropdown" || id === "select" || id === "filter-chip") && (module.jsRequired !== true || typeof module.init !== "function" || typeof module.destroy !== "function")) {
     failures.push(`${id} runtime lifecycle is incomplete`);
   }
 }

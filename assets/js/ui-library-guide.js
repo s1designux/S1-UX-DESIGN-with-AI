@@ -31,6 +31,24 @@ const componentConfig = {
     approvedScope: "Line · Solid × 상태 4종 · PC 2크기(SM 28 · MD 34) · Mobile 1크기(SM 30) · 라벨 전용",
     runtime: S1UI.chip
   },
+  select: {
+    title: "Select Box",
+    description: "정해진 보기 중 하나를 고를 때 씁니다. 트리거를 누르면 목록(Dropdown)이 열리고, 고르면 닫히면서 값이 남습니다.",
+    approvedScope: "상태 5종 · PC 3크기(XXSM 28 · XSM 34 · MD 44) · Mobile 1크기(MD 48) · 목록은 Dropdown 배포본을 조립",
+    runtime: S1UI.select
+  },
+  dropdown: {
+    title: "Dropdown",
+    description: "Select·Filter Chip이 열었을 때 나오는 목록입니다. 글자 유형과 체크박스 유형이 있고, 체크박스 유형은 승인된 Checkbox 배포본을 그대로 조립합니다.",
+    approvedScope: "유형 3가지(글자 · 체크박스 · 체크박스+전체 선택) · 3크기(XXSM 28 · XSM 34 · MD 44) · 옵션 행 상태 3종 · 패널 자체는 상태 축 없음",
+    runtime: S1UI.dropdown
+  },
+  "filter-chip": {
+    title: "Filter Chip",
+    description: "목록에서 조건을 골라 거는 칩입니다. 눌러서 열고(Selected), 값을 고르면 닫히면서 칩에 값이 남습니다(Complete).",
+    approvedScope: "Line · Solid × 제목 있음/없음 × 상태 5종 · PC 2크기(SM 28 · MD 34) · Mobile 1크기(MD 30) · 목록 크기 SM·MD 모두 XSM(34px)",
+    runtime: S1UI.filterChip
+  },
   radio: {
     title: "Radio",
     description: "여러 보기 중 하나만 고를 때 사용합니다. 같은 그룹으로 묶으면 하나만 선택되고 화살표 키로 이동합니다.",
@@ -559,6 +577,249 @@ function inputStateMatrix() {
     </div>`;
 }
 
+
+/* ── State matrix: Select · Dropdown · Filter Chip ──
+   세 모듈은 사슬로 조립된다 — filter-chip / select → dropdown → checkbox.
+   미리보기 칸(.is-preview)은 런타임을 붙이지 않으므로 panel 의 hidden 을 마크업이 직접 들고 있고,
+   Open/Selected 칸만 hidden 을 떼어 실제 목록이 보이게 한다. */
+
+function dropdownOptionMarkup(type, { label, selected = false, forceState = "", selectAll = false, value = "" }) {
+  const force = forceState ? ` data-force-state="${forceState}"` : "";
+  // 「전체 선택」 행은 배포본이 data-select-all 로 식별한다(dropdown.example.html 계약과 동일).
+  const all = selectAll ? ' data-select-all="true"' : "";
+  const val = value ? ` data-value="${escapeHtml(value)}"` : "";
+  if (type === "text") {
+    return `<div data-s1-part="option" role="option" aria-selected="${selected}" tabindex="-1"${force}${val}><span data-s1-part="option-label">${escapeHtml(label)}</span></div>`;
+  }
+  return `<div data-s1-part="option" role="checkbox" aria-checked="${selected}" tabindex="-1"${force}${all}${val}>
+      <div data-s1-component="checkbox" aria-hidden="true"><input type="checkbox" data-s1-part="control" tabindex="-1"${selected ? " checked" : ""}></div>
+      <span data-s1-part="option-label">${escapeHtml(label)}</span>
+    </div>`;
+}
+
+function dropdownMarkup({ type = "text", size = "md", withAll = false, ariaLabel = "목록", rows = null, isPreview = false } = {}) {
+  const body = rows
+    ? rows.map((row) => dropdownOptionMarkup(type, row)).join("")
+    : [
+        { label: "서울", selected: true },
+        { label: "부산", selected: false },
+        { label: "제주", selected: false }
+      ].map((row) => dropdownOptionMarkup(type, row)).join("");
+  const allRow = withAll
+    ? dropdownOptionMarkup(type, { label: "전체 선택", selected: false, selectAll: true, value: "all" }) + '<div data-s1-part="divider"></div>'
+    : "";
+  const listRole = type === "text" ? ' role="listbox"' : "";
+  const preview = isPreview ? " is-preview" : "";
+  return `<div data-s1-component="dropdown" data-type="${type}" data-size="${size}"${listRole} aria-label="${escapeHtml(ariaLabel)}" class="${preview}">${allRow}${body}</div>`;
+}
+
+function selectMarkup({ size = "md", breakName = "pc", state = "default", isPreview = false } = {}) {
+  const open = state === "open";
+  const filled = state === "filled";
+  const disabled = state === "disabled";
+  const force = state === "hover" ? ' data-force-state="hover"' : "";
+  const preview = isPreview ? " is-preview" : "";
+  /* 미리보기는 init 하지 않으므로 hidden 을 마크업이 든다. Open 칸만 목록을 편다
+     (표출 정책 select.keepInState.open = optionList). */
+  const panelHidden = isPreview ? (open ? "" : " hidden") : " hidden";
+  return `<div data-s1-component="select" data-size="${size}" data-break="${breakName}" class="${preview}">
+      <button type="button" data-s1-part="trigger" aria-haspopup="listbox" aria-expanded="${open}"${filled ? ' data-filled="true"' : ""}${disabled ? " disabled" : ""}${force}>
+        <span data-s1-part="value">${filled ? "서울" : "선택"}</span>
+        <span data-s1-part="icon" aria-hidden="true"></span>
+      </button>
+      <div data-s1-part="panel"${panelHidden}>${dropdownMarkup({ type: "text", size, ariaLabel: "지역", isPreview })}</div>
+    </div>`;
+}
+
+const filterChipPanelSize = { sm: "xsm", md: "xsm" };
+
+function filterChipMarkup({ variant = "line", size = "md", breakName = "pc", title = "on", state = "default", isPreview = false } = {}) {
+  const open = state === "selected";
+  const complete = state === "complete";
+  const disabled = state === "disabled";
+  const force = state === "hover" ? ' data-force-state="hover"' : "";
+  const preview = isPreview ? " is-preview" : "";
+  const panelHidden = isPreview ? (open ? "" : " hidden") : " hidden";
+  return `<div data-s1-component="filter-chip" data-variant="${variant}" data-size="${size}" data-break="${breakName}" data-title="${title}" class="${preview}">
+      <button type="button" data-s1-part="trigger" aria-haspopup="listbox" aria-expanded="${open}"${complete ? ' data-complete="true"' : ""}${disabled ? " disabled" : ""}${force}>
+        ${title === "on" ? '<span data-s1-part="title">정렬</span>' : ""}
+        <span data-s1-part="value">${complete ? "인기순" : "최신순"}</span>
+        <span data-s1-part="icon" aria-hidden="true"></span>
+      </button>
+      <div data-s1-part="panel"${panelHidden}>${dropdownMarkup({ type: "text", size: filterChipPanelSize[size], ariaLabel: "정렬", isPreview, rows: [
+        { label: "최신순", selected: true }, { label: "인기순", selected: false }, { label: "과거순", selected: false }
+      ] })}</div>
+    </div>`;
+}
+
+/* 공통 — 열=크기 · 행=상태 그리드 (Button·Chip 과 같은 틀) */
+function sizeStateGrid(sizes, states, cell, { tall = false } = {}) {
+  const header = `<div class="matrix-col-header" style="grid-column:1"></div>` +
+    sizes.map(([, sLabel, dim]) => `<div class="matrix-col-header">${sLabel}${dim ? `<span class="uilg-size-dim">${dim}</span>` : ""}</div>`).join("");
+  const rows = states.map(([stateLabel, state, note]) => {
+    const rowLabel = `<div class="matrix-row-label">${stateLabel}${note ? `<span>${note}</span>` : ""}</div>`;
+    return rowLabel + sizes.map(([size]) =>
+      `<div class="comp-state-cell${tall && state === states[states.length - 1][1] ? " uilg-open-cell" : ""}">${cell(size, state)}</div>`).join("");
+  }).join("");
+  return `<div class="comp-state-matrix" style="grid-template-columns: 120px repeat(${sizes.length}, minmax(140px, 1fr));">${header}${rows}</div>`;
+}
+
+function selectStateMatrix() {
+  const pcSizes = [["xxsm", "XXSM", "28px"], ["xsm", "XSM", "34px"], ["md", "MD", "44px"]];
+  const mobileSizes = [["md", "MD", "48px"]];
+  /* 열 = 정본 상태 전수(5종). Open 은 목록을 편 채로 보인다(표출 정책 keepInState). */
+  const states = [
+    ["Default", "default"],
+    ["Hover", "hover", "검수 표시"],
+    ["Filled", "filled", "값 선택됨"],
+    ["Disabled", "disabled"],
+    ["Open", "open", "목록 열림"]
+  ];
+
+  function actionSection(breakName, sizes) {
+    const header = `<div class="matrix-col-header" style="grid-column:1"></div>` +
+      sizes.map(([, sLabel, dim]) => `<div class="matrix-col-header">${sLabel}<span class="uilg-size-dim">${dim}</span></div>`).join("");
+    const liveRow = `<div class="matrix-row-label">Select</div>` +
+      sizes.map(([size]) => `<div class="comp-state-cell">${selectMarkup({ size, breakName })}</div>`).join("");
+    const disabledRow = `<div class="matrix-row-label">Disabled<span class="uilg-size-dim">공통</span></div>` +
+      sizes.map(([size]) => `<div class="comp-state-cell">${selectMarkup({ size, breakName, state: "disabled", isPreview: true })}</div>`).join("");
+    return `<div class="comp-action-top">
+      <div class="matrix-col-header-action">Action</div>
+      <div class="comp-state-matrix" style="grid-template-columns: 120px repeat(${sizes.length}, minmax(140px, 1fr));">${header}${liveRow}${disabledRow}</div>
+      <p class="uilg-demo-note">눌러서 목록을 열고 화살표 키·Enter로 고릅니다. 고르면 닫히고 값이 남습니다. 바깥을 눌러도 닫힙니다.</p>
+    </div>`;
+  }
+
+  const content = (breakName, sizes) => `${actionSection(breakName, sizes)}
+    ${sizeStateGrid(sizes, states, (size, state) => selectMarkup({ size, breakName, state, isPreview: true }), { tall: true })}`;
+
+  return `
+    <div class="platform-section platform-section-pc">
+      <div class="preview-area">${content("pc", pcSizes)}</div>
+    </div>
+    <div class="platform-section platform-section-mobile">
+      <div class="preview-area">
+        <p class="uilg-demo-note">정본 Mobile은 MD 한 가지(48px)입니다.</p>
+        ${content("mobile", mobileSizes)}
+      </div>
+    </div>`;
+}
+
+function dropdownStateMatrix() {
+  const sizes = [["xxsm", "XXSM", "28px"], ["xsm", "XSM", "34px"], ["md", "MD", "44px"]];
+  const types = [
+    ["text", "글자 유형", { type: "text" }],
+    ["checkbox", "체크박스 유형", { type: "checkbox" }],
+    ["checkbox-all", "체크박스 + 전체 선택", { type: "checkbox", withAll: true }]
+  ];
+  /* 열 = 크기 · 행 = 옵션 행 상태(정본 3종). 패널 자체에는 상태 축이 없다. */
+  const optionStates = [
+    ["Default", "default"],
+    ["Hover", "hover", "검수 표시"],
+    ["Selected", "selected"]
+  ];
+
+  function actionSection() {
+    const header = `<div class="matrix-col-header" style="grid-column:1"></div>` +
+      sizes.map(([, sLabel, dim]) => `<div class="matrix-col-header">${sLabel}<span class="uilg-size-dim">${dim}</span></div>`).join("");
+    const rows = types.map(([, typeLabel, opts]) => `<div class="matrix-row-label">${typeLabel}</div>` +
+      sizes.map(([size]) => `<div class="comp-state-cell">${dropdownMarkup({ ...opts, size, ariaLabel: typeLabel })}</div>`).join("")).join("");
+    return `<div class="comp-action-top">
+      <div class="matrix-col-header-action">Action</div>
+      <div class="comp-state-matrix" style="grid-template-columns: 120px repeat(${sizes.length}, minmax(160px, 1fr));">${header}${rows}</div>
+      <p class="uilg-demo-note">눌러서 고르고 화살표 키·Home·End로 이동합니다. 체크박스 유형은 여러 개를 함께 고릅니다.</p>
+    </div>`;
+  }
+
+  const optionCell = (type, size, state) => dropdownMarkup({
+    type, size, isPreview: true, ariaLabel: "옵션 상태",
+    rows: [{ label: type === "text" ? "서울" : "서울", selected: state === "selected", forceState: state === "hover" ? "hover" : "" }]
+  });
+
+  const blocks = [["text", "글자 유형"], ["checkbox", "체크박스 유형"]].map(([type, typeLabel]) => `
+    <div class="uilg-variant-block">
+      <div class="variant-label">${typeLabel} · 옵션 행 상태</div>
+      ${sizeStateGrid(sizes, optionStates, (size, state) => optionCell(type, size, state))}
+    </div>`).join('<hr class="uilg-separator">');
+
+  const content = () => `${actionSection()}
+    ${blocks}`;
+
+  return `
+    <div class="platform-section platform-section-pc">
+      <div class="preview-area">${content()}</div>
+    </div>
+    <div class="platform-section platform-section-mobile">
+      <div class="preview-area">
+        <p class="uilg-demo-note">정본에 플랫폼 축이 없어 Mobile도 PC와 같습니다.</p>
+        ${content()}
+      </div>
+    </div>`;
+}
+
+function filterChipStateMatrix() {
+  const pcSizes = [["sm", "SM", "28px"], ["md", "MD", "34px"]];
+  const mobileSizes = [["md", "MD", "30px"]];
+  const variants = [["line", "Line"], ["solid", "Solid"]];
+  const titles = [["on", "제목 있음"], ["off", "제목 없음"]];
+  const states = [
+    ["Default", "default"],
+    ["Hover", "hover", "검수 표시"],
+    ["Complete", "complete", "값 확정"],
+    ["Disabled", "disabled"],
+    ["Selected", "selected", "열림"]
+  ];
+
+  /* Action — Button·Chip Action 과 같은 틀: 열=크기 · 행=유형(+Disabled).
+     Filter Chip 은 유형 축이 variant(Line·Solid) × 제목 유무 2겹이라 행을 그 조합으로 편다.
+     크기는 여기에만 표출한다(별도 SIZES 블록 금지). 모든 칸이 실제로 눌리는 실물이다. */
+  function actionSection(breakName, sizes) {
+    const header = `<div class="matrix-col-header" style="grid-column:1"></div>` +
+      sizes.map(([, sLabel, dim]) => `<div class="matrix-col-header">${sLabel}<span class="uilg-size-dim">${dim}</span></div>`).join("");
+    const activeRows = variants.map(([variant, vLabel]) =>
+      titles.map(([title, titleLabel]) =>
+        /* 유형 라벨은 한 줄 글자로 둔다 — .comp-state-matrix .matrix-row-label span 은
+           페이지 규칙(2026-07-06)에 따라 display:none 이라 span 으로 넣으면 보이지 않는다. */
+        `<div class="matrix-row-label">${vLabel} · ${titleLabel}</div>` +
+        sizes.map(([size]) => `<div class="comp-state-cell">${filterChipMarkup({ variant, size, breakName, title })}</div>`).join("")
+      ).join("")).join("");
+    const disabledRow = `<div class="matrix-row-label">Disabled<span class="uilg-size-dim">공통</span></div>` +
+      sizes.map(([size]) => `<div class="comp-state-cell">${filterChipMarkup({ variant: "line", size, breakName, state: "disabled", isPreview: true })}</div>`).join("");
+    return `<div class="comp-action-top">
+      <div class="matrix-col-header-action">Action</div>
+      <div class="comp-state-matrix" style="grid-template-columns: 120px repeat(${sizes.length}, minmax(140px, 1fr));">${header}${activeRows}${disabledRow}</div>
+      <p class="uilg-demo-note">눌러서 열고 값을 고르면 닫히면서 값이 남습니다. Esc·바깥 클릭으로도 닫힙니다.</p>
+    </div>`;
+  }
+
+  function content(breakName, sizes) {
+    const blocks = variants.map(([variant, vLabel]) => {
+      const grids = titles.map(([title, titleLabel]) => `
+        <div class="uilg-demo-group">
+          <div class="matrix-row-label">${titleLabel}</div>
+          ${sizeStateGrid(sizes, states, (size, state) => filterChipMarkup({ variant, size, breakName, title, state, isPreview: true }), { tall: true })}
+        </div>`).join("");
+      return `<div class="uilg-variant-block">
+        <div class="variant-label">${vLabel}</div>
+        ${grids}
+      </div>`;
+    }).join('<hr class="uilg-separator">');
+    return `${actionSection(breakName, sizes)}
+      ${blocks}`;
+  }
+
+  return `
+    <div class="platform-section platform-section-pc">
+      <div class="preview-area">${content("pc", pcSizes)}</div>
+    </div>
+    <div class="platform-section platform-section-mobile">
+      <div class="preview-area">
+        <p class="uilg-demo-note">정본 Mobile은 MD 한 가지(30px)입니다.</p>
+        ${content("mobile", mobileSizes)}
+      </div>
+    </div>`;
+}
+
 /* ── Component documentation (실제 동작 다음에 온다) ── */
 
 function stateMatrix(id) {
@@ -566,6 +827,9 @@ function stateMatrix(id) {
   if (id === "button") return buttonStateMatrix();
   if (id === "toggle") return toggleStateMatrix();
   if (id === "chip") return chipStateMatrix();
+  if (id === "select") return selectStateMatrix();
+  if (id === "dropdown") return dropdownStateMatrix();
+  if (id === "filter-chip") return filterChipStateMatrix();
   return controlStateMatrix(id);
 }
 
@@ -751,7 +1015,9 @@ async function mountGuide(id) {
 
     section.replaceChildren(fragment);
     wireCodeViewer(section, { html, css, js });
-    if (id === "toggle" || id === "chip") {
+    if (id === "toggle" || id === "chip" || id === "select" || id === "dropdown" || id === "filter-chip") {
+      /* 미리보기 칸(.is-preview)은 init 하지 않는다 — 런타임이 패널을 다시 닫아
+         Open/Selected 칸이 사라진다. Action 영역의 실물만 살린다. */
       section.querySelectorAll(`[data-s1-component="${id}"]:not(.is-preview)`).forEach((root) => config.runtime.init(root));
     }
     if (id === "input") {
@@ -797,6 +1063,6 @@ async function mountGuide(id) {
   }
 }
 
-const guideComponents = ["input", "button", "checkbox", "radio", "toggle", "chip"];
+const guideComponents = ["input", "button", "checkbox", "radio", "toggle", "chip", "select", "dropdown", "filter-chip"];
 await Promise.all(guideComponents.map(mountGuide));
 document.dispatchEvent(new CustomEvent("s1:component-guide:ready", { detail: { components: guideComponents } }));

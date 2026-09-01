@@ -4,3 +4,6 @@ export * as checkbox from "./components/checkbox.js";
 export * as radio from "./components/radio.js";
 export * as toggle from "./components/toggle.js";
 export * as chip from "./components/chip.js";
+export * as dropdown from "./components/dropdown.js";
+export * as select from "./components/select.js";
+export * as filterChip from "./components/filter-chip.js";

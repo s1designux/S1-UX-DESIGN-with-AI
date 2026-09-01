@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<title>filter-chip narrow width verify (source, not dist)</title>
+<link rel="stylesheet" href="/assets/css/tokens.css" />
+<link rel="stylesheet" href="/assets/css/component-tokens.css" />
+<link rel="stylesheet" href="/assets/css/typography.css" />
+<link rel="stylesheet" href="verify-src/checkbox.css" />
+<link rel="stylesheet" href="verify-src/dropdown.css" />
+<link rel="stylesheet" href="verify-src/filter-chip.css" />
+<link rel="stylesheet" href="verify-src/select.css" />
+<style>
+  body { font-family: "Pretendard", sans-serif; padding: 40px; display: flex; flex-direction: column; gap: 32px; background: #fff; }
+  .row { display: flex; gap: 24px; align-items: flex-start; }
+  .box { outline: 1px dashed #f00; display: inline-flex; }
+  .label { font-size: 12px; color: #555; margin-bottom: 4px; }
+  .col { display: flex; flex-direction: column; gap: 8px; }
+</style>
+</head>
+<body>
+  <h2>① 필터칩 폭 &lt; 140px → 목록 폭 = 칩 폭 검증 (source 직접 로드, dist 아님 — ui:build 가 사전 이슈로 막혀 있음)</h2>
+
+  <div class="row">
+    <div class="col">
+      <div class="label">80px 폭 강제 (긴 라벨을 자르지 않고 실측)</div>
+      <div class="box" style="width:80px;">
+        <div data-s1-component="filter-chip" data-variant="line" data-size="sm" data-break="pc" data-title="off" style="width:100%;">
+          <button type="button" data-s1-part="trigger" aria-haspopup="listbox" aria-expanded="false" style="width:100%; justify-content:space-between;">
+            <span data-s1-part="value">가</span>
+            <span data-s1-part="icon" aria-hidden="true"></span>
+          </button>
+          <div data-s1-part="panel" hidden>
+            <div data-s1-component="dropdown" data-type="text" data-size="xsm" role="listbox" aria-label="정렬">
+              <div data-s1-part="option" role="option" aria-selected="true" tabindex="0" data-value="latest"><span data-s1-part="option-label">최신순</span></div>
+              <div data-s1-part="option" role="option" aria-selected="false" tabindex="-1" data-value="popular"><span data-s1-part="option-label">인기순</span></div>
+              <div data-s1-part="option" role="option" aria-selected="false" tabindex="-1" data-value="past"><span data-s1-part="option-label">과거순</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col">
+      <div class="label">86px 폭 강제</div>
+      <div class="box" style="width:86px;">
+        <div data-s1-component="filter-chip" data-variant="line" data-size="sm" data-break="pc" data-title="off" style="width:100%;">
+          <button type="button" data-s1-part="trigger" aria-haspopup="listbox" aria-expanded="false" style="width:100%; justify-content:space-between;">
+            <span data-s1-part="value">나</span>
+            <span data-s1-part="icon" aria-hidden="true"></span>
+          </button>
+          <div data-s1-part="panel" hidden>
+            <div data-s1-component="dropdown" data-type="text" data-size="xsm" role="listbox" aria-label="정렬">
+              <div data-s1-part="option" role="option" aria-selected="true" tabindex="0" data-value="latest"><span data-s1-part="option-label">최신순</span></div>
+              <div data-s1-part="option" role="option" aria-selected="false" tabindex="-1" data-value="popular"><span data-s1-part="option-label">인기순</span></div>
+              <div data-s1-part="option" role="option" aria-selected="false" tabindex="-1" data-value="past"><span data-s1-part="option-label">과거순</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col">
+      <div class="label">98px 폭 강제</div>
+      <div class="box" style="width:98px;">
+        <div data-s1-component="filter-chip" data-variant="line" data-size="sm" data-break="pc" data-title="off" style="width:100%;">
+          <button type="button" data-s1-part="trigger" aria-haspopup="listbox" aria-expanded="false" style="width:100%; justify-content:space-between;">
+            <span data-s1-part="value">다</span>
+            <span data-s1-part="icon" aria-hidden="true"></span>
+          </button>
+          <div data-s1-part="panel" hidden>
+            <div data-s1-component="dropdown" data-type="text" data-size="xsm" role="listbox" aria-label="정렬">
+              <div data-s1-part="option" role="option" aria-selected="true" tabindex="0" data-value="latest"><span data-s1-part="option-label">최신순</span></div>
+              <div data-s1-part="option" role="option" aria-selected="false" tabindex="-1" data-value="popular"><span data-s1-part="option-label">인기순</span></div>
+              <div data-s1-part="option" role="option" aria-selected="false" tabindex="-1" data-value="past"><span data-s1-part="option-label">과거순</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col">
+      <div class="label">정본대로 자연폭 (제목+값, ≥140px 예상)</div>
+      <div class="box">
+        <div data-s1-component="filter-chip" data-variant="line" data-size="sm" data-break="pc" data-title="on">
+          <button type="button" data-s1-part="trigger" aria-haspopup="listbox" aria-expanded="false">
+            <span data-s1-part="title">정렬</span>
+            <span data-s1-part="value">최신순</span>
+            <span data-s1-part="icon" aria-hidden="true"></span>
+          </button>
+          <div data-s1-part="panel" hidden>
+            <div data-s1-component="dropdown" data-type="text" data-size="xsm" role="listbox" aria-label="정렬">
+              <div data-s1-part="option" role="option" aria-selected="true" tabindex="0" data-value="latest"><span data-s1-part="option-label">최신순</span></div>
+              <div data-s1-part="option" role="option" aria-selected="false" tabindex="-1" data-value="popular"><span data-s1-part="option-label">인기순</span></div>
+              <div data-s1-part="option" role="option" aria-selected="false" tabindex="-1" data-value="past"><span data-s1-part="option-label">과거순</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col">
+      <div class="label">셀렉트박스 (영향 없어야 함 — filter-chip.js 미개입)</div>
+      <div class="box" style="width:80px;">
+        <div data-s1-component="select" data-size="md" style="width:100%;">
+          <button type="button" data-s1-part="trigger" style="width:100%;">
+            <span data-s1-part="value">라</span>
+            <span data-s1-part="icon" aria-hidden="true"></span>
+          </button>
+          <div data-s1-part="panel" hidden>
+            <div data-s1-component="dropdown" data-type="text" data-size="md" role="listbox" aria-label="셀렉트 예시">
+              <div data-s1-part="option" role="option" aria-selected="true" tabindex="0" data-value="a"><span data-s1-part="option-label">옵션A</span></div>
+              <div data-s1-part="option" role="option" aria-selected="false" tabindex="-1" data-value="b"><span data-s1-part="option-label">옵션B</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="log" style="font-family: monospace; white-space: pre; font-size: 12px; background:#f6f6f6; padding:12px; border-radius:8px;"></div>
+
+<script type="module">
+  import { init as initFilterChip } from "./verify-src/filter-chip.js";
+
+  const chips = [...document.querySelectorAll('[data-s1-component="filter-chip"]')];
+  const apis = chips.map((root) => initFilterChip(root));
+
+  function report() {
+    const lines = [];
+    chips.forEach((root, i) => {
+      const trigger = root.querySelector('[data-s1-part="trigger"]');
+      const dropdown = root.querySelector('[data-s1-component="dropdown"]');
+      apis[i].openPanel();
+      const tw = trigger.getBoundingClientRect().width;
+      const dw = dropdown.getBoundingClientRect().width;
+      lines.push(`chip[${i}] trigger=${tw.toFixed(1)}px  dropdown=${dw.toFixed(1)}px  match(<=0.5px 오차)=${Math.abs(tw - dw) <= 0.5 || tw >= 140}`);
+    });
+    document.getElementById("log").textContent = lines.join("\n");
+  }
+  // 레이아웃 완전 반영 후 측정
+  requestAnimationFrame(() => requestAnimationFrame(report));
+</script>
+</body>
+</html>

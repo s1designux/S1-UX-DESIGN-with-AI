@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>가이드 Action 영역 대조 (Button · Chip · Filter Chip) — 실제 guide 생성기 소비</title>
+<link rel="stylesheet" href="../../../assets/css/style.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+<link rel="stylesheet" href="../../../ui-library/dist/assets/css/tokens.css">
+<link rel="stylesheet" href="../../../ui-library/dist/assets/css/typography.css">
+<link rel="stylesheet" href="../../../ui-library/dist/s1-ui.css">
+<link rel="stylesheet" href="../../../assets/css/ui-library-guide.css">
+<style>
+  body { font-family: Pretendard, sans-serif; margin: 0; padding: 24px; background: var(--color-bg-level-0, #fff); }
+  .probe-h { font: 600 13px/1.4 Pretendard; margin: 28px 0 10px; color: #666; }
+</style>
+</head>
+<body class="view-pc">
+<div id="out"></div>
+<script type="module">
+/* components.html 의 인라인 <style> 을 그대로 가져와 주입한다(손사본 금지 — 실제 페이지 CSS 소비) */
+const pageHtml = await (await fetch('../../../pages/components.html')).text();
+const doc = new DOMParser().parseFromString(pageHtml, 'text/html');
+doc.querySelectorAll('style').forEach((s) => {
+  const el = document.createElement('style');
+  el.textContent = s.textContent;
+  document.head.append(el);
+});
+
+const { stateMatrix } = await import('./guide-matrix.probe.mjs');
+const S1UI = await import('../../../ui-library/dist/s1-ui.js');
+
+const out = document.getElementById('out');
+const params = new URLSearchParams(location.search);
+const only = params.get('only');
+document.body.className = params.get('view') === 'mobile' ? 'view-mobile' : 'view-pc';
+const ids = only ? only.split(',') : ['button', 'chip', 'filter-chip'];
+for (const id of ids) {
+  const h = document.createElement('div');
+  h.className = 'probe-h';
+  h.textContent = `── ${id} ──`;
+  out.append(h);
+  const sec = document.createElement('section');
+  sec.className = "comp-section is-active";
+  sec.innerHTML = `<div class="uilg"><section class="uilg-demo preview-area">${stateMatrix(id)}</section></div>`;
+  out.append(sec);
+}
+const rt = { button: null, chip: S1UI.chip, 'filter-chip': S1UI.filterChip };
+for (const [id, runtime] of Object.entries(rt)) {
+  if (!runtime) continue;
+  document.querySelectorAll(`[data-s1-component="${id}"]:not(.is-preview)`).forEach((root) => runtime.init(root));
+}
+if (params.get('open')) {
+  const t = document.querySelectorAll('.comp-action-top [data-s1-component="filter-chip"]:not(.is-preview) [data-s1-part="trigger"]')[params.get('open') === '1' ? 0 : Number(params.get('open'))];
+  if (t) t.click();
+}
+document.title = 'probe-ready';
+</script>
+</body>
+</html>

@@ -2,7 +2,7 @@
   "id": "toggle",
   "version": "0.1.0",
   "status": "approved",
-  "canonicalFingerprint": "9e7b5b86ae9d9d0b929347f2ac3dca8ea02dd39cd20ac0a65d8762a02b6e2d5d",
+  "canonicalFingerprint": "d5ca50386409baf3bfb8101e1827c77d0be1209ce6d3e5b956dcf46f23b406b6",
   "canonicalSources": [
     "plugins/figma-vars-installer/src/build-components.ts",
     "plugins/figma-vars-installer/src/vars-data.ts",
@@ -10,11 +10,22 @@
     "registry/components/toggle.json"
   ],
   "rootSelector": "[data-s1-component=\"toggle\"]",
-  "variants": ["base"],
+  "variants": [
+    "base"
+  ],
   "sizes": [],
   "geometry": {
-    "track": { "width": "--sizing-40", "height": "--sizing-20", "radius": "--radius-full" },
-    "knob": { "width": "--sizing-16", "height": "--sizing-16", "offset": "--spacing-2", "placement": "Off = 왼쪽에서 2px, On = 오른쪽에서 2px. 정본 knob.x 2 / 22 와 같다." },
+    "track": {
+      "width": "--sizing-40",
+      "height": "--sizing-20",
+      "radius": "--radius-full"
+    },
+    "knob": {
+      "width": "--sizing-16",
+      "height": "--sizing-16",
+      "offset": "--spacing-2",
+      "placement": "Off = 왼쪽에서 2px, On = 오른쪽에서 2px. 정본 knob.x 2 / 22 와 같다."
+    },
     "source": "build-components.ts buildToggle"
   },
   "states": {
@@ -36,39 +47,87 @@
     "focusVisible": "정본에 focus 변형이 없다. 키보드 접근성 때문에 웹에서만 선택 테두리 토큰으로 표시하며 새 토큰을 만들지 않았다.",
     "label": "정본 트랙에 라벨 부품이 없다. 접근 이름은 aria-label 또는 aria-labelledby 로 붙인다."
   },
-  "parts": ["knob"],
+  "parts": [
+    "knob"
+  ],
   "htmlContract": {
     "root": "button[data-s1-component=toggle][role=switch]",
-    "requiredAttributes": ["type", "role", "aria-checked"],
-    "requiredParts": ["knob"],
+    "requiredAttributes": [
+      "type",
+      "role",
+      "aria-checked"
+    ],
+    "requiredParts": [
+      "knob"
+    ],
     "optionalParts": [],
-    "relations": ["루트 button 이 곧 정본 트랙이다", "접근 이름은 aria-label 또는 aria-labelledby"],
+    "relations": [
+      "루트 button 이 곧 정본 트랙이다",
+      "접근 이름은 aria-label 또는 aria-labelledby"
+    ],
     "source": "components/toggle/toggle.example.html",
     "distribution": "examples/toggle.html"
   },
   "cssContract": {
     "entry": "components/toggle.css",
     "rootScope": "[data-s1-component=toggle]",
-    "nativeStates": [":disabled", ":focus-visible"],
-    "ariaStates": ["[aria-checked=\"true\"]"],
+    "nativeStates": [
+      ":disabled",
+      ":focus-visible"
+    ],
+    "ariaStates": [
+      "[aria-checked=\"true\"]"
+    ],
     "customization": "정본 Semantic token만 교체하며 공개 selector의 구조를 override하지 않는다."
   },
   "contentSlots": {},
   "dependencies": {
-    "font": [{ "family": "Pretendard", "source": "https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" }],
-    "css": ["assets/css/tokens.css", "assets/css/typography.css"],
+    "font": [
+      {
+        "family": "Pretendard",
+        "source": "https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css"
+      }
+    ],
+    "css": [
+      "assets/css/tokens.css",
+      "assets/css/typography.css"
+    ],
     "coreComponents": []
   },
   "icons": [],
   "a11y": {
-    "nativeSemantics": { "status": "required", "value": "button[role=switch]" },
-    "accessibleName": { "status": "required", "value": "aria-label or aria-labelledby" },
-    "keyboard": { "status": "required", "value": "native Space and Enter activation with Tab order" },
-    "focus": { "status": "required", "value": "2px outline in the canonical selected border token, 2px offset; excluded while disabled" },
-    "ariaStateSync": { "status": "required", "value": "runtime keeps aria-checked in sync with the pressed state and emits s1:toggle:change" },
-    "errorRelation": { "status": "not-applicable", "reason": "Toggle does not own field errors." },
-    "reducedMotion": { "status": "not-applicable", "reason": "The canonical component defines no motion." }
+    "nativeSemantics": {
+      "status": "required",
+      "value": "button[role=switch]"
+    },
+    "accessibleName": {
+      "status": "required",
+      "value": "aria-label or aria-labelledby"
+    },
+    "keyboard": {
+      "status": "required",
+      "value": "native Space and Enter activation with Tab order"
+    },
+    "focus": {
+      "status": "required",
+      "value": "2px outline in the canonical selected border token, 2px offset; excluded while disabled"
+    },
+    "ariaStateSync": {
+      "status": "required",
+      "value": "runtime keeps aria-checked in sync with the pressed state and emits s1:toggle:change"
+    },
+    "errorRelation": {
+      "status": "not-applicable",
+      "reason": "Toggle does not own field errors."
+    },
+    "reducedMotion": {
+      "status": "not-applicable",
+      "reason": "The canonical component defines no motion."
+    }
   },
   "jsRequired": true,
-  "javascript": { "runtime": "components/toggle.js", "reason": "role=switch 는 native checked 가 없어 aria-checked 상태 전환을 런타임이 담당한다." }
+  "javascript": {
+    "runtime": "components/toggle.js",
+    "reason": "role=switch 는 native checked 가 없어 aria-checked 상태 전환을 런타임이 담당한다."
+  }
 }

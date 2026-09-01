@@ -10,7 +10,7 @@ const sourceRoot = path.join(libraryRoot, "src");
 const distRoot = path.join(libraryRoot, "dist");
 const verificationRoot = path.join(libraryRoot, "verification");
 const checkOnly = process.argv.includes("--check");
-const componentIds = ["input", "button", "checkbox", "radio", "toggle", "chip"];
+const componentIds = ["input", "button", "checkbox", "radio", "toggle", "chip", "dropdown", "select", "filter-chip"];
 
 const read = (file) => readFile(file, "utf8");
 const hash = (value) => createHash("sha256").update(value).digest("hex");
@@ -69,11 +69,12 @@ async function createOutputs() {
     outputs.set(`examples/${id}.html`, example);
   }
 
+  const toIdentifier = (id) => id.replace(/-([a-z0-9])/g, (_, c) => c.toUpperCase());
   const bundleCss = `${componentOutputs.map(({ id, css }) => `/* component:${id} */\n${css.trimEnd().replaceAll('url("../assets/icons/', 'url("./assets/icons/')}`).join("\n\n")}\n`;
-  const bundleJs = `${componentOutputs.map(({ id }) => `export * as ${id} from "./components/${id}.js";`).join("\n")}\n`;
+  const bundleJs = `${componentOutputs.map(({ id }) => `export * as ${toIdentifier(id)} from "./components/${id}.js";`).join("\n")}\n`;
   const runtimeIds = componentOutputs.filter(({ manifest }) => manifest.jsRequired).map(({ id }) => id);
-  const autoImports = runtimeIds.map((id) => `import { init as init_${id} } from "./components/${id}.js";`).join("\n");
-  const autoCalls = runtimeIds.map((id) => `    ...[...scope.querySelectorAll('[data-s1-component="${id}"]')].map((root) => init_${id}(root))`).join(",\n");
+  const autoImports = runtimeIds.map((id) => `import { init as init_${toIdentifier(id)} } from "./components/${id}.js";`).join("\n");
+  const autoCalls = runtimeIds.map((id) => `    ...[...scope.querySelectorAll('[data-s1-component="${id}"]')].map((root) => init_${toIdentifier(id)}(root))`).join(",\n");
   const autoJs = `${autoImports}\n${bundleJs}\nexport function autoInit(scope = document) {\n  const instances = [\n${autoCalls}\n  ];\n  return Object.freeze(instances.filter(Boolean));\n}\n`;
   const canonicalFingerprintValue = hash(componentOutputs.map(({ manifest }) => manifest.canonicalFingerprint).join("\0"));
   const distManifest = {

@@ -2,7 +2,7 @@
   "id": "input",
   "version": "0.1.0",
   "status": "approved",
-  "canonicalFingerprint": "086500114c7169b751ea72ff02dd404fac425f4b4aad9da2ef4d7f081c08f1f1",
+  "canonicalFingerprint": "31231f86fa36bbac8d93b45958e359ed44ce3e23eb45c5664f4548f422dfa404",
   "canonicalSources": [
     "plugins/figma-vars-installer/src/build-components.ts",
     "plugins/figma-vars-installer/src/vars-data.ts",
@@ -10,9 +10,24 @@
     "registry/components/input.json"
   ],
   "rootSelector": "[data-s1-component=\"input\"]",
-  "variants": ["base"],
-  "sizes": ["xxsm", "xsm", "md"],
-  "breaks": { "pc": ["xxsm", "xsm", "md"], "mobile": ["md"] },
+  "variants": [
+    "base"
+  ],
+  "sizes": [
+    "xxsm",
+    "xsm",
+    "md"
+  ],
+  "breaks": {
+    "pc": [
+      "xxsm",
+      "xsm",
+      "md"
+    ],
+    "mobile": [
+      "md"
+    ]
+  },
   "states": {
     "default": "native",
     "filled": "native value presence; no forced visual state",
@@ -26,21 +41,52 @@
     "hover": "@media (hover: hover)에서 action:hover:not(:disabled); color/form-control/bg/hover 배경을 해당 hit area에만 표시",
     "focusVisible": "action:focus-visible"
   },
-  "parts": ["label", "field", "control", "action", "action-icon", "message"],
+  "parts": [
+    "label",
+    "field",
+    "control",
+    "action",
+    "action-icon",
+    "message"
+  ],
   "htmlContract": {
     "root": "div[data-s1-component=input]",
-    "requiredAttributes": ["data-size", "data-break"],
-    "requiredParts": ["field", "control"],
-    "optionalParts": ["label", "action", "action-icon", "message"],
-    "relations": ["label[for] ↔ control[id]", "message[id] ↔ control[aria-describedby]", "action[data-action=clear] 안 action-icon"],
+    "requiredAttributes": [
+      "data-size",
+      "data-break"
+    ],
+    "requiredParts": [
+      "field",
+      "control"
+    ],
+    "optionalParts": [
+      "label",
+      "action",
+      "action-icon",
+      "message"
+    ],
+    "relations": [
+      "label[for] ↔ control[id]",
+      "message[id] ↔ control[aria-describedby]",
+      "action[data-action=clear] 안 action-icon"
+    ],
     "source": "components/input/input.example.html",
     "distribution": "examples/input.html"
   },
   "cssContract": {
     "entry": "components/input.css",
     "rootScope": "[data-s1-component=input]",
-    "variantAttributes": ["data-size=xxsm|xsm|md", "data-break=pc|mobile", "data-state=correct"],
-    "nativeStates": [":focus-within", "[aria-invalid=true]", "[readonly]", "[disabled]"],
+    "variantAttributes": [
+      "data-size=xxsm|xsm|md",
+      "data-break=pc|mobile",
+      "data-state=correct"
+    ],
+    "nativeStates": [
+      ":focus-within",
+      "[aria-invalid=true]",
+      "[readonly]",
+      "[disabled]"
+    ],
     "customization": "정본 Semantic token만 교체하며 공개 selector의 구조를 override하지 않는다."
   },
   "contentSlots": {
@@ -48,12 +94,34 @@
     "message": "optional; omit the element and aria-describedby together when no guidance or state message is needed"
   },
   "dependencies": {
-    "font": [{ "family": "Pretendard", "source": "https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" }],
-    "css": ["assets/css/tokens.css", "assets/css/typography.css"],
+    "font": [
+      {
+        "family": "Pretendard",
+        "source": "https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css"
+      }
+    ],
+    "css": [
+      "assets/css/tokens.css",
+      "assets/css/typography.css"
+    ],
     "coreComponents": [],
     "followUpModules": [
-      { "id": "password-field", "status": "not-in-this-build", "requires": ["base-input", "suffix-action"] },
-      { "id": "search-input", "status": "not-in-this-build", "requires": ["base-input", "suffix-action"] }
+      {
+        "id": "password-field",
+        "status": "not-in-this-build",
+        "requires": [
+          "base-input",
+          "suffix-action"
+        ]
+      },
+      {
+        "id": "search-input",
+        "status": "not-in-this-build",
+        "requires": [
+          "base-input",
+          "suffix-action"
+        ]
+      }
     ]
   },
   "icons": [
@@ -66,21 +134,55 @@
     }
   ],
   "a11y": {
-    "nativeSemantics": { "status": "required", "value": "input" },
-    "accessibleName": { "status": "required", "value": "associated label or aria-label" },
-    "keyboard": { "status": "required", "value": "native text editing" },
-    "focus": { "status": "required", "value": "native input focus mapped to canonical Editing field state" },
-    "ariaStateSync": { "status": "required", "value": "Service sets aria-invalid when error state is active; runtime keeps clear visibility in sync with value and focus." },
-    "errorRelation": { "status": "required", "value": "When a message exists, service gives it an id and references it with aria-describedby. Both may be omitted together." },
-    "reducedMotion": { "status": "not-applicable", "reason": "The canonical Base Input defines no motion." }
+    "nativeSemantics": {
+      "status": "required",
+      "value": "input"
+    },
+    "accessibleName": {
+      "status": "required",
+      "value": "associated label or aria-label"
+    },
+    "keyboard": {
+      "status": "required",
+      "value": "native text editing"
+    },
+    "focus": {
+      "status": "required",
+      "value": "native input focus mapped to canonical Editing field state"
+    },
+    "ariaStateSync": {
+      "status": "required",
+      "value": "Service sets aria-invalid when error state is active; runtime keeps clear visibility in sync with value and focus."
+    },
+    "errorRelation": {
+      "status": "required",
+      "value": "When a message exists, service gives it an id and references it with aria-describedby. Both may be omitted together."
+    },
+    "reducedMotion": {
+      "status": "not-applicable",
+      "reason": "The canonical Base Input defines no motion."
+    }
   },
   "jsRequired": true,
   "javascript": {
     "options": {},
-    "events": ["s1:input:clear"],
-    "eventDetail": { "s1:input:clear": { "value": "string; always empty after clear" } },
-    "methods": ["init(root)", "destroy(root)", "instance.update()"],
-    "lifecycle": ["init is idempotent", "destroy removes listeners and hides clear action"],
+    "events": [
+      "s1:input:clear"
+    ],
+    "eventDetail": {
+      "s1:input:clear": {
+        "value": "string; always empty after clear"
+      }
+    },
+    "methods": [
+      "init(root)",
+      "destroy(root)",
+      "instance.update()"
+    ],
+    "lifecycle": [
+      "init is idempotent",
+      "destroy removes listeners and hides clear action"
+    ],
     "controlMode": "uncontrolled",
     "behavior": "Editing에서 값이 있을 때 remove action을 보이고, 실행하면 값 삭제·input event 발생·Input focus 복귀"
   }

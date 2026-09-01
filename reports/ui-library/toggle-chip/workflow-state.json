@@ -54,7 +54,7 @@
     {
       "role": "component-visual",
       "path": "plugins/figma-vars-installer/src/build-components.ts",
-      "sha256": "28f3f60cea335910ae7191c2d235c8a3b47865f00cb55de9531b64ce28a02272"
+      "sha256": "9f6b91f40b9ba57d649a359da25a26e456683ebb4a465f6738e4b5493c7672b8"
     },
     {
       "role": "token-values",
@@ -157,6 +157,13 @@
       "decidedBy": "river",
       "decidedAt": "2026-08-31",
       "decision": "Chip 의 Line/Solid 구분선이 다른 블록 간격(24px)보다 눈에 띄게 좁았다(8px). 컴포넌트별 값이 아니라 assets/css/ui-library-guide.css 의 공유 규칙(.uilg-variant-block + .uilg-separator)에서 고쳐 Button 등 같은 클래스를 쓰는 모든 컴포넌트에 자동 적용되게 했다. component-page-template.md §A-5·A-8 에 24px 기준과 점검 항목을 추가해 앞으로 재발하지 않도록 기록했다."
+    },
+    {
+      "id": "D8",
+      "topic": "정본 지문 변경 영향 조사(재개 시)",
+      "decidedBy": "orchestrator",
+      "decidedAt": "2026-08-31",
+      "decision": "build-components.ts 지문이 바뀌어 ui:state 가 막았다. 실제 diff 를 확인한 결과 buildNavBar(모바일 크롬 내비바) 1곳 3줄뿐이고 buildToggle·buildChip 을 건드리지 않았다. 이전 검증을 superseded 하지 않고 지문만 갱신했다."
     }
   ],
   "blockers": [],
@@ -221,6 +228,6 @@
   "handoff": {
     "lastActor": "orchestrator",
     "updatedAt": "2026-08-31",
-    "summary": "0~4 단계 완료. Toggle·Chip 을 정본 기준으로 구현해 dist·빈 소비자·검수 화면·디자인가이드까지 배선했고 실제 렌더·동작 검증을 마쳤다. 5-human-review 대기 — river 가 HD-1(칩 아이콘·닫기 취급)과 HD-2(독립 검증 생략 여부)를 결정하면 6-promotion 으로 migration 장부의 riverApproval 을 채운다. gate:check 의 4 error 는 설치기 zip 선재 문제로 이 작업 밖이다. river 가 검수 중 지적한 2건(Chip Action 레이아웃, PC-SM 라벨 수직 치우침)을 즉시 반영하고 재검증했다(D6). 여전히 HD-1·HD-2 결정 대기. 추가로 river 가 지적한 variant 블록 간 간격 문제(D7)를 공유 CSS 규칙 수정으로 해소하고 템플릿 문서에 기준을 남겼다."
+    "summary": "0~4 단계 완료. Toggle·Chip 을 정본 기준으로 구현해 dist·빈 소비자·검수 화면·디자인가이드까지 배선했고 실제 렌더·동작 검증을 마쳤다. 5-human-review 대기 — river 가 HD-1(칩 아이콘·닫기 취급)과 HD-2(독립 검증 생략 여부)를 결정하면 6-promotion 으로 migration 장부의 riverApproval 을 채운다. gate:check 의 4 error 는 설치기 zip 선재 문제로 이 작업 밖이다. river 가 검수 중 지적한 2건(Chip Action 레이아웃, PC-SM 라벨 수직 치우침)을 즉시 반영하고 재검증했다(D6). 여전히 HD-1·HD-2 결정 대기. 추가로 river 가 지적한 variant 블록 간 간격 문제(D7)를 공유 CSS 규칙 수정으로 해소하고 템플릿 문서에 기준을 남겼다. 2026-08-31 재개 시 정본 지문 변경을 조사해 buildNavBar 무관 변경임을 확인하고 지문을 갱신했다(D8). HD-2(독립 검증)는 river 가 '별도 검증자 한 번 더'로 확정 — select-dropdown-filter-chip 작업의 component-verifier 범위에 Toggle·Chip 을 포함해 정리한다."
   }
 }

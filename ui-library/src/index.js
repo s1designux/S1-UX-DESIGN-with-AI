@@ -1,2 +1,9 @@
 export * as input from "./components/input/input.js";
 export * as button from "./components/button/button.js";
+export * as checkbox from "./components/checkbox/checkbox.js";
+export * as radio from "./components/radio/radio.js";
+export * as toggle from "./components/toggle/toggle.js";
+export * as chip from "./components/chip/chip.js";
+export * as dropdown from "./components/dropdown/dropdown.js";
+export * as select from "./components/select/select.js";
+export * as filterChip from "./components/filter-chip/filter-chip.js";
