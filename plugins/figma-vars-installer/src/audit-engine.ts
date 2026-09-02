@@ -1040,7 +1040,60 @@ type MappingSuggestion = { id: string; key: string; type: "COMPONENT" | "COMPONE
 // 여러 부품이 뭉친 큰 모듈의 보조 판정 임계. 핵심 판정은 아래의
 // "같은 최신 부품이 2개 이상 들어 있는가"이며, 이름(m_button 등)은 예외로 쓰지 않는다.
 const MODULE_NESTED_THRESHOLD = 5;
-type ModuleFlag = { id: string; instanceId: string; instanceName: string; currentMainName: string; currentMainPath: string; nestedCount: number; repeatedPartName?: string; repeatedPartCount?: number };
+type ModuleFlag = { id: string; instanceId: string; instanceName: string; currentMainName: string; currentMainPath: string; nestedCount: number; repeatedPartName?: string; repeatedPartCount?: number; multiPartNote?: string };
+
+// ─── 다중 부품 구조 감지 (이름 매칭과 무관) ───────────────────────────
+// 레거시 세트(예: m_button)에는 버튼 1개짜리·2개짜리 변형이 섞여 있다.
+// 2개짜리를 정본 부품 "하나"로 교체하면 버튼 하나가 통째로 사라진다.
+// 내부 조각이 인스턴스가 아니거나(원시 프레임) 이름이 정본과 달라
+// 위의 "같은 최신 부품 2개" 판정을 통과 못 하는 경우가 있으므로,
+// 구조로도 판정한다: "채움/테두리 + 텍스트"를 가진 부품 모양 가지가
+// 비슷한 높이로 2개 이상 나란히 있으면 통째 교체 후보에서 제외한다.
+function hasVisiblePaint(n: SceneNode): boolean {
+  const visiblePaint = (ps: unknown) =>
+    Array.isArray(ps) && ps.some((p) => p && (p as Paint).visible !== false && ((p as SolidPaint).opacity === undefined || ((p as SolidPaint).opacity as number) > 0));
+  const g = n as Partial<GeometryMixin>;
+  return visiblePaint(g.fills) || visiblePaint(g.strokes);
+}
+function containsVisibleText(n: SceneNode): boolean {
+  if (n.visible === false) return false;
+  if (n.type === "TEXT") return true;
+  if ("children" in n) {
+    for (const c of (n as SceneNode & ChildrenMixin).children) if (containsVisibleText(c)) return true;
+  }
+  return false;
+}
+// 최상위 "부품 모양" 가지를 모은다. 단, 채움 있는 컨테이너 안에 다시
+// 부품 모양이 2개 이상 들어 있으면 컨테이너 대신 그 안쪽 가지들을 센다.
+function collectPartLikeBranches(n: SceneNode, acc: SceneNode[]): void {
+  if (n.visible === false) return;
+  const frameLike = n.type === "FRAME" || n.type === "COMPONENT" || n.type === "INSTANCE" || n.type === "GROUP";
+  if (frameLike && hasVisiblePaint(n) && containsVisibleText(n)) {
+    const inner: SceneNode[] = [];
+    if ("children" in n) for (const c of (n as SceneNode & ChildrenMixin).children) collectPartLikeBranches(c, inner);
+    if (inner.length >= 2) { for (const b of inner) acc.push(b); } else acc.push(n);
+    return;
+  }
+  if ("children" in n) for (const c of (n as SceneNode & ChildrenMixin).children) collectPartLikeBranches(c, acc);
+}
+// 비슷한 높이(오차 max(4px, 15%))로 묶었을 때 가장 큰 묶음의 크기.
+// 2 이상이면 "같은 부품이 여러 개"(버튼 두 개짜리 등)로 본다.
+// 높이가 다른 조각들(카드의 제목줄+본문 등)은 반복 부품으로 치지 않는다.
+function countSimilarSizedParts(inst: InstanceNode): number {
+  const acc: SceneNode[] = [];
+  for (const c of inst.children) collectPartLikeBranches(c, acc);
+  if (acc.length < 2) return acc.length;
+  const hs = acc
+    .map((b) => (b as SceneNode & LayoutMixin).height)
+    .filter((h) => typeof h === "number" && h > 0)
+    .sort((a, b) => a - b);
+  let best = hs.length > 0 ? 1 : 0, run = 1;
+  for (let i = 1; i < hs.length; i++) {
+    if (hs[i] - hs[i - 1] <= Math.max(4, hs[i] * 0.15)) { run++; if (run > best) best = run; }
+    else run = 1;
+  }
+  return best;
+}
 // 미매칭 레거시 인스턴스 1건 + 유사도 내림차순 정본 제안 목록(최상위=가장 유사)
 type ManualMapCandidate = {
   id: string;
@@ -1201,7 +1254,11 @@ async function scanSwapCandidates(
       const isRepeatedPartModule = !!repeatedPart && repeatedPart.count >= 2 && !sameAsTarget && (
         !target || repeatedPart.target.id === target.id
       );
-      if (isRepeatedPartModule) {
+      // 이름으로 못 걸러도 구조로 거른다 — 레거시 두개짜리 버튼 변형 등.
+      // (내부 조각이 인스턴스가 아니거나 이름이 정본과 다르면 위 판정을 통과하므로)
+      const similarParts = (!isRepeatedPartModule && !sameAsTarget) ? countSimilarSizedParts(inst) : 0;
+      const isStructuralModule = similarParts >= 2;
+      if (isRepeatedPartModule || isStructuralModule) {
         if (!manualSeen.has(inst.id)) {
           manualSeen.add(inst.id);
           modules.push({
@@ -1210,9 +1267,12 @@ async function scanSwapCandidates(
             instanceName: inst.name,
             currentMainName: compareName,
             currentMainPath: await describeComponentLocation(main),
-            nestedCount: nestedInstances.length,
-            repeatedPartName: repeatedPart!.target.name,
-            repeatedPartCount: repeatedPart!.count,
+            nestedCount: Math.max(nestedInstances.length, similarParts),
+            repeatedPartName: isRepeatedPartModule ? repeatedPart!.target.name : undefined,
+            repeatedPartCount: isRepeatedPartModule ? repeatedPart!.count : undefined,
+            multiPartNote: isStructuralModule
+              ? `채움·텍스트를 가진 부품 모양 ${similarParts}개가 나란히 들어 있어 하나의 컴포넌트로 교체하지 않습니다. 내부 부품 단위로 재구성하세요.`
+              : undefined,
           });
         }
         continue;

@@ -1133,6 +1133,9 @@ function renderModuleList(list) {
     if (c.repeatedPartName && c.repeatedPartCount) {
       html += '<div style="font-size:10px;color:var(--muted);margin-top:4px;">' + escape(c.repeatedPartName) + '로 교체 가능한 부품 ' + c.repeatedPartCount + '개가 들어 있어 통째 교체하지 않음</div>';
     }
+    if (c.multiPartNote) {
+      html += '<div style="font-size:10px;color:var(--muted);margin-top:4px;">' + escape(c.multiPartNote) + '</div>';
+    }
     html += '<div class="apply-row"><button data-action="module-select">Figma에서 선택</button></div>';
     html += '</div>';
   }
