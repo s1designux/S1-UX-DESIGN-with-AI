@@ -1324,7 +1324,7 @@ function mobileBottomNavStateMatrix() {
       <div class="uilg-phone-card"></div>
       <div class="uilg-phone-card"></div>
     </div>
-    <nav data-guide-sample="set" role="tablist" aria-label="하단 내비게이션" style="display:flex;background:var(--color-navigation-bg);">${bar}</nav>`);
+    <nav data-guide-sample="set" role="tablist" aria-label="하단 내비게이션" style="display:flex;justify-content:space-between;background:var(--color-navigation-bg);">${bar}</nav>`);
 
   const header = `<div class="matrix-col-header" style="grid-column:1"></div>` +
     `<div class="matrix-col-header">Unselected</div><div class="matrix-col-header">Selected</div>`;
@@ -1370,39 +1370,56 @@ function mobileHeaderMarkup(variant) {
   </header>`;
 }
 
-function mobileHeaderStateMatrix() {
-  const types = [
-    ["Home / Title", "home-title"],
-    ["Home / Title + Subtitle + 1 Icon", "home-title-subtitle"],
-    ["Standard / Title", "standard-title"],
-    ["Standard / Title + Close", "standard-title-close"],
-    ["Standard / No Title", "standard-no-title"],
-    ["Standard / No Title + Close", "standard-no-title-close"]
-  ];
+const MOBILE_HEADER_TYPES = [
+  ["Home / Title", "home-title"],
+  ["Home / Title + Subtitle + 1 Icon", "home-title-subtitle"],
+  ["Standard / Title", "standard-title"],
+  ["Standard / Title + Close", "standard-title-close"],
+  ["Standard / No Title", "standard-no-title"],
+  ["Standard / No Title + Close", "standard-no-title-close"]
+];
+const MOBILE_HEADER_DEFAULT_TYPE = "standard-title";
 
+/* Action 영역 — 유형을 옵션칩으로 골라 목업 위에 얹어 본다(river 지시 2026-09-02).
+   칩은 PC·Mobile 두 섹션에 같은 내용이 두 번 그려지므로 name·id 를 break 별로 나눈다
+   — 같은 name 의 라디오는 하나만 선택될 수 있어 먼저 그려진 쪽 선택이 조용히 풀린다(함정 T5). */
+function mobileHeaderActionBlock(breakName) {
   const mock = phoneMockup(`
-    <div class="uilg-phone-header-slot">${mobileHeaderMarkup("standard-title")}</div>
+    <div class="uilg-phone-header-slot">${mobileHeaderMarkup(MOBILE_HEADER_DEFAULT_TYPE)}</div>
     <div class="uilg-phone-content" aria-hidden="true">
       <div class="uilg-phone-skeleton uilg-phone-skeleton--title"></div>
       <div class="uilg-phone-skeleton uilg-phone-skeleton--line"></div>
       <div class="uilg-phone-card"></div>
     </div>`);
 
-  const rows = types.map(([label, variant]) => `
+  const chips = MOBILE_HEADER_TYPES.map(([label, variant]) => {
+    const inputId = `mh-type-${breakName}-${variant}`;
+    const on = variant === MOBILE_HEADER_DEFAULT_TYPE;
+    return `<label class="uilg-option-chip${on ? " is-on" : ""}" for="${inputId}">
+      <input id="${inputId}" type="radio" name="mh-type-${breakName}" value="${variant}" data-mobile-header-type${on ? " checked" : ""} hidden>
+      <span class="uilg-option-chip-text">${label}</span>
+    </label>`;
+  }).join("");
+
+  return `<div class="comp-action-top">
+      <div class="matrix-col-header-action">Action</div>
+      <div class="uilg-mobile-action">${mock}</div>
+      <div class="uilg-option-chips" role="group" aria-label="헤더 유형 선택">${chips}</div>
+      <p class="uilg-demo-note">유형을 고르면 위 목업의 헤더가 바뀝니다. 상태바(시간·배터리)는 그림일 뿐 배포 부품이 아닙니다 — 실제 서비스에서는 OS·브라우저가 그립니다.</p>
+    </div>`;
+}
+
+function mobileHeaderStateMatrix() {
+  const rows = MOBILE_HEADER_TYPES.map(([label, variant]) => `
     <div class="review-sample" style="width:100%;">
       <p class="review-state-label">${label}</p>
       <div class="uilg-mobile-header-row">${mobileHeaderMarkup(variant)}</div>
     </div>`).join("");
 
-  const content = `<div class="comp-action-top">
-      <div class="matrix-col-header-action">Action</div>
-      <div class="uilg-mobile-action">${mock}</div>
-      <p class="uilg-demo-note">위 목업은 Standard / Title 예시입니다. 상태바(시간·배터리)는 그림일 뿐 배포 부품이 아닙니다 — 실제 서비스에서는 OS·브라우저가 그립니다.</p>
-    </div>
-    <div class="uilg-mobile-header-list">${rows}</div>`;
+  const list = `<div class="uilg-mobile-header-list">${rows}</div>`;
 
-  return `<div class="platform-section platform-section-pc"><div class="preview-area">${content}</div></div>
-    <div class="platform-section platform-section-mobile"><div class="preview-area">${content}</div></div>`;
+  return `<div class="platform-section platform-section-pc"><div class="preview-area">${mobileHeaderActionBlock("pc")}${list}</div></div>
+    <div class="platform-section platform-section-mobile"><div class="preview-area">${mobileHeaderActionBlock("mobile")}${list}</div></div>`;
 }
 
 /* ── Component documentation (실제 동작 다음에 온다) ── */
@@ -1649,6 +1666,21 @@ async function mountGuide(id) {
         root.querySelectorAll("[data-modal-close]").forEach((button) => {
           if (button.dataset.s1Part === "close") return;   /* 닫기(X)는 런타임이 이미 배선한다 */
           button.addEventListener("click", () => api?.close({ reason: "footer-button" }));
+        });
+      });
+    }
+    if (id === "mobile-header") {
+      /* 옵션칩으로 고른 유형을 목업 헤더 슬롯에 다시 그린다. 배포본은 런타임이 없는 정적 크롬이라
+         init 은 필요 없고, 화면이 마크업만 갈아끼운다(부품 경계 그대로). */
+      section.querySelectorAll("[data-mobile-header-type]").forEach((radio) => {
+        radio.addEventListener("change", () => {
+          const action = radio.closest(".comp-action-top");
+          const slot = action?.querySelector(".uilg-phone-header-slot");
+          if (!slot) return;
+          slot.innerHTML = mobileHeaderMarkup(radio.value);
+          action.querySelectorAll("[data-mobile-header-type]").forEach((other) => {
+            other.closest(".uilg-option-chip")?.classList.toggle("is-on", other.checked);
+          });
         });
       });
     }

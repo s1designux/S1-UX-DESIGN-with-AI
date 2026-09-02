@@ -208,7 +208,9 @@
       "reports/ui-library/mobile-nav-header/screens/4v-zoom-notification-arrow.png",
       "reports/ui-library/mobile-nav-header/screens/5-fix-icon-zoom.png",
       "reports/ui-library/mobile-nav-header/screens/5-guide-mobile-header.png",
-      "reports/ui-library/mobile-nav-header/screens/5-guide-bottom-nav.png"
+      "reports/ui-library/mobile-nav-header/screens/5-guide-bottom-nav.png",
+      "reports/ui-library/mobile-nav-header/screens/6-guide-header-chips.png",
+      "reports/ui-library/mobile-nav-header/screens/6-guide-bottom-nav.png"
     ],
     "build": "reports/ui-library/mobile-nav-header/3-build.md",
     "rawFigmaIcons": "reports/ui-library/mobile-nav-header/raw-figma-icons/",
@@ -270,6 +272,13 @@
       "decidedBy": "river",
       "decidedAt": "2026-09-02",
       "decision": "조각을 새로 그리지 않는다. 등록된 원본(ic_알림(신규) 97:259 세트의 Line 변형)에서 규칙대로 떼어낸 파생 레이어로 선언하고, 검사기가 부모에서 재현해 바이트 일치를 증명한다. 원본 픽셀 대조는 결합형(본체+점) 1건을 유지한다. 아이콘 장부에서 면제·예외로 빼지 않는다 — 더 값싼 다른 증명으로 바꾼 것이다."
+    },
+    {
+      "id": "D9",
+      "topic": "안내 화면 Action 영역 표출 방식(river 검수 중 지시)",
+      "decidedBy": "river",
+      "decidedAt": "2026-09-02",
+      "decision": "①모바일 헤더 — Action 목업 아래에 옵션칩을 두어 Type 6종을 골라 목업 위에 얹어 본다(정적 예시 1종 대신 선택형). ②하단 탭 — 4탭 바가 왼쪽에 몰려 있어 justify-content: space-between 으로 고르게 벌린다. 둘 다 안내 화면(조립 예시) 소유 영역이며 배포 부품은 그대로다."
     }
   ],
   "blockers": [
@@ -334,7 +343,7 @@
   "handoff": {
     "lastActor": "orchestrator",
     "updatedAt": "2026-09-02",
-    "summary": "4-verification 통과. FAIL 4건(F-1~F-4)을 ⭐ 가 고치고 🤖 component-verifier 가 2·3회차로 독립 확인했다 — 수정자와 검증자를 끝까지 분리했다. 사각지대 2곳을 검사기로 메웠고(파생 조각 재현 증명 · dist CSS url() 해석) 둘 다 적대 테스트를 통과했다. 배선표에 함정 T8(회전 부호 반대)·T9(미배포 자산 404)를 등재했다. 컴포넌트 상태를 verified 로 올려 안내 화면이 열렸고, 남은 것은 river UX 검수다. 커밋은 이 작업 파일만 골라서 했다 — 다른 세션이 설치기·패턴 작업 중이다(B11)."
+    "summary": "5-human-review 진행 중 river 지시 2건을 반영했다(D9) — 헤더 Action 에 유형 선택 옵션칩 추가, 하단 탭 4칸 space-between. 안내 화면 코드(assets/js/ui-library-guide.js)만 바뀌었고 배포 부품(dist)은 무변경이다. ⭐ 가 실제 렌더 + 브라우저 DOM 조작으로 동작을 확인했다(칩 클릭 → 목업 헤더 교체, 칩 하나만 선택, 페이지 전체 중복 id 0건, 라디오 name 을 PC/Mobile 로 분리해 함정 T5 회피). 이 변경분은 아직 🤖 독립 검증을 거치지 않았다 — river 검수 결과에 따라 6-promotion 전에 함께 재검증한다."
   },
   "checkpointLog": [
     {
