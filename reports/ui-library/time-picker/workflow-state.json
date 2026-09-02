@@ -53,12 +53,12 @@
     {
       "role": "component-visual",
       "path": "plugins/figma-vars-installer/src/build-components.ts",
-      "sha256": "368714264e235320404ba0d42b837d9f50c84c51fa6a24faa0c33f9293da57de"
+      "sha256": "2beb813ff18d9f7670bd11baa876950fee0d7a715ba6994162c9ccfe56c6a27e"
     },
     {
       "role": "token-values",
       "path": "plugins/figma-vars-installer/src/vars-data.ts",
-      "sha256": "87edd42623983fb5e02e820940dbbc3693ecb4b2c79104e781c8307501984cd9"
+      "sha256": "81eb31cfbd5b1b7041f31967a9592d2181088cf386a9ccb26058a7625ec3c15a"
     },
     {
       "role": "text-styles",
@@ -121,6 +121,18 @@
       "decidedBy": "orchestrator",
       "decidedAt": "2026-09-02",
       "decision": "registry time-picker.json 이 이미 선언한 방향(트리거에 접근 가능한 이름, aria-expanded + listbox)을 이미 승인된 Select 구현과 같은 규격으로 확정하고 a11yStatus 를 pending → stable 로 올린다. 이 확정이 없으면 계약상 approved 배포가 불가능하다."
+    },
+    {
+      "id": "D5",
+      "topic": "focus-visible 전량 철회에 따른 정본 지문 갱신",
+      "decidedBy": "orchestrator",
+      "decidedAt": "2026-09-02",
+      "decision": "2026-09-02 river 지시로 승인 없이 만들어졌던 focus-visible 을 정본에서 제거했다. build-components.ts 변경 hunk 는 makeFocusRing 삭제(275~)·buildOne(355~)·buildButtonSet(566~)·buildInput(992~1092) 뿐이고, vars-data.ts 는 토큰 2개(color/button/border/focus · color/form-control/action/border/focus) 삭제뿐이다. 이 작업의 컴포넌트 빌더는 hunk 범위 밖이라 이전 검증을 유지하고 정본 지문만 갱신했다.",
+      "recordedIn": [
+        "registry/governance/canon-additions-baseline.json revocations",
+        "reports/ui-library/input-button-pilot/2-canon-readiness.md HD-UILIB-03",
+        "CLAUDE.md 변경 이력 2026-09-02"
+      ]
     }
   ],
   "blockers": [

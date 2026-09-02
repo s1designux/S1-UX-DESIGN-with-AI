@@ -272,34 +272,6 @@ function bindRadius(node: ComponentNode | FrameNode | RectangleNode, maps: Build
   node.setBoundVariable("bottomRightRadius", v);
 }
 
-/**
- * 키보드 focus-visible 표시. 색만 공용 semantic을 쓰고 geometry는 소비 컴포넌트가 정한다.
- * 바깥/안쪽 위치는 auto-layout 부모에 append한 뒤 호출부가 정한다.
- */
-function makeFocusRing(
-  maps: BuildMaps,
-  name: string,
-  width: number,
-  height: number,
-  radiusToken: string,
-): RectangleNode {
-  const ring = figma.createRectangle();
-  ring.name = name;
-  ring.fills = [];
-  const colorToken = name.startsWith("button-")
-    ? "color/button/border/focus"
-    : "color/form-control/action/border/focus";
-  ring.strokes = [boundPaint(requireVar(maps.semanticColor, colorToken, "Semantic Color"))];
-  ring.strokeAlign = "INSIDE";
-  ring.setBoundVariable("strokeWeight", requireVar(maps.foundationNumber, "border-width/2", "Foundation Number"));
-  bindRadius(ring, maps, radiusToken);
-  ring.resize(width, height);
-  ring.visible = false;
-  // auto-layout 부모에 append된 뒤 호출부가 ABSOLUTE와 좌표를 적용한다.
-  // append 전에 layoutPositioning을 바꾸면 Figma runtime에서 무시될 수 있다.
-  return ring;
-}
-
 function requireStyle(map: Record<string, TextStyle>, key: string): TextStyle {
   const s = map[key];
   if (!s) throw new Error(`Text Style 누락: ${key} — 먼저 Text Styles 설치가 필요합니다.`);
@@ -351,16 +323,6 @@ async function buildOne(variant: VariantId, size: SizeId, state: StateId, maps: 
   // 현재 hug 폭과 정본 최소 폭 중 큰 값을 명시한다.
   const rootWidth = Math.max(comp.width, cfg.minWidth);
   comp.resize(rootWidth, cfg.height);
-
-  // focus-visible은 Default/Hover/Pressed와 공존하므로 State 축이 아닌 BOOLEAN property로 제공한다.
-  // 2px gap + 2px ring: root 바깥 4px까지 확장하며 인스턴스 리사이즈 시 함께 늘어난다.
-  comp.clipsContent = false;
-  const focusRing = makeFocusRing(maps, "button-focus-ring", rootWidth + 8, cfg.height + 8, "radius/8");
-  comp.appendChild(focusRing);
-  focusRing.layoutPositioning = "ABSOLUTE";
-  focusRing.x = -4;
-  focusRing.y = -4;
-  focusRing.constraints = { horizontal: "STRETCH", vertical: "STRETCH" };
 
   // Appearance 에 Semantic Color V2 Light 모드 연결
   setLightMode(comp, maps);
@@ -563,11 +525,6 @@ export async function buildButtonSet(
   const set = figma.combineAsVariants(grid.map((g) => g.comp), figma.currentPage);
   set.name = "Button";
   set.x = 0; set.y = originY;
-  const focusVisiblePropId = set.addComponentProperty("Focus Visible", "BOOLEAN", false);
-  for (const g of grid) {
-    const ring = g.comp.findChild((n: SceneNode) => n.name === "button-focus-ring");
-    if (ring && g.state !== "Disabled") ring.componentPropertyReferences = { visible: focusVisiblePropId };
-  }
   // 다른 컴포넌트(예: Date Picker Mobile Bottom Sheet 의 "적용" 버튼)에서 버튼 인스턴스 재사용.
   BUILT_SETS["Button"] = set;
   grid.forEach((g) => { BUILT_COMPS[`Button:${g.variant}:${g.size}:${g.state}`] = g.comp; });
@@ -989,13 +946,6 @@ async function buildInput(maps: BuildMaps, originY: number, originX: number = IN
     hoverBg.y = 0;
     hoverBg.constraints = { horizontal: "STRETCH", vertical: "STRETCH" };
     action.appendChild(icon);
-    // Input 높이 안에서 끝나는 2px 안쪽 ring. Mobile hit area와 field는 모두 최소 48px다.
-    const ring = makeFocusRing(maps, `${actionName}-focus-ring`, hitSize, hitSize, "radius/4");
-    action.appendChild(ring);
-    ring.layoutPositioning = "ABSOLUTE";
-    ring.x = 0;
-    ring.y = 0;
-    ring.constraints = { horizontal: "STRETCH", vertical: "STRETCH" };
     return action;
   };
   for (const sc of sizes) {
@@ -1077,20 +1027,14 @@ async function buildInput(maps: BuildMaps, originY: number, originX: number = IN
   const pwIconPropId = set.addComponentProperty("Password Icon", "BOOLEAN", false);
   const pwHoverPropId = set.addComponentProperty("Password Action Hover", "BOOLEAN", false);
   const clearHoverPropId = set.addComponentProperty("Clear Action Hover", "BOOLEAN", false);
-  const pwFocusPropId = set.addComponentProperty("Password Action Focus Visible", "BOOLEAN", false);
-  const clearFocusPropId = set.addComponentProperty("Clear Action Focus Visible", "BOOLEAN", false);
   for (const c of comps) {
     const f = c.findChild((n: SceneNode) => n.name === "field") as FrameNode | null;
     const passwordAction = f ? f.findOne((n: SceneNode) => n.name === "password-action") : null;
     const passwordHover = f ? f.findOne((n: SceneNode) => n.name === "password-action-hover-bg") : null;
     const clearHover = f ? f.findOne((n: SceneNode) => n.name === "clear-action-hover-bg") : null;
-    const passwordRing = f ? f.findOne((n: SceneNode) => n.name === "password-action-focus-ring") : null;
-    const clearRing = f ? f.findOne((n: SceneNode) => n.name === "clear-action-focus-ring") : null;
     if (passwordAction) passwordAction.componentPropertyReferences = { visible: pwIconPropId };
     if (passwordHover) passwordHover.componentPropertyReferences = { visible: pwHoverPropId };
     if (clearHover) clearHover.componentPropertyReferences = { visible: clearHoverPropId };
-    if (passwordRing) passwordRing.componentPropertyReferences = { visible: pwFocusPropId };
-    if (clearRing) clearRing.componentPropertyReferences = { visible: clearFocusPropId };
   }
   // Input 은 규모가 커서(7 상태 × 4 사이즈 × 2 그룹) 넓은 시트로 배치. originX 로 좌측정렬(섹션 컬럼 내) 가능.
   const OX = originX;

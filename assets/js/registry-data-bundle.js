@@ -61,6 +61,7 @@ window.REGISTRY_BUNDLE = {
       "input": "registry/components/input.json",
       "checkbox": "registry/components/checkbox.json",
       "mobile-bottom-nav": "registry/components/mobile-bottom-nav.json",
+      "mobile-header": "registry/components/mobile-header.json",
       "modal": "registry/components/modal.json",
       "multi-toggle": "registry/components/multi-toggle.json",
       "radio": "registry/components/radio.json",
@@ -93,7 +94,7 @@ window.REGISTRY_BUNDLE = {
           "name": "SW Foundation Colors",
           "version": "2.4",
           "status": "stable",
-          "updatedAt": "2026-08-03",
+          "updatedAt": "2026-09-02",
           "source": "plugins/figma-vars-installer/src/vars-data.ts (FOUNDATION_COLOR)",
           "description": "Official SW Design System V2.4 foundation color foundation. Raw HEX values are allowed here only.",
           "generated": true,
@@ -110,6 +111,11 @@ window.REGISTRY_BUNDLE = {
             "black": {
               "value": "#000000",
               "cssVar": "--color-base-black",
+              "status": "stable"
+            },
+            "home-bg": {
+              "value": "#F5F6FB",
+              "cssVar": "--color-base-home-bg",
               "status": "stable"
             }
           },
@@ -4993,7 +4999,7 @@ window.REGISTRY_BUNDLE = {
         {
           "alias": "--color-form-control-border-correct",
           "canonical": "--color-form-control-border-selected",
-          "semanticSource": "--color-border-focus",
+          "semanticSource": "color/form-control/border/selected",
           "reason": "correct 테두리는 selected(focus) 테두리 값을 재사용함. 동일한 Figma 변수(color/form-control/border/selected).",
           "status": "alias"
         }
@@ -5120,7 +5126,7 @@ window.REGISTRY_BUNDLE = {
           "id": "button.primary.focus-ring",
           "cssVariable": "--button-primary-focus-ring",
           "replacedBy": null,
-          "reason": "focus-ring 미정의 — 디자인시스템 기준 없음(CLAUDE.md Button #9, is-focus outline 없음). 문서·레지스트리 사본에서 활성 화면으로 되살아나던 잔재. 정본 등재로 Gate 10 Check C 가 재유입을 차단.",
+          "reason": "variant별 focus-ring은 폐기 상태를 유지한다. 2026-08-25 에 대체 토큰(color/button/border/focus)이 생겼다고 기록돼 있었으나 river 확인 결과 승인한 적 없는 신설이어서 2026-09-02 정본에서 제거했다. 대체 토큰은 없으며 키보드 초점은 브라우저 기본 표시에 맡긴다.",
           "removedAt": "2026-07-03",
           "status": "removed"
         },
@@ -5128,7 +5134,7 @@ window.REGISTRY_BUNDLE = {
           "id": "button.secondary.focus-ring",
           "cssVariable": "--button-secondary-focus-ring",
           "replacedBy": null,
-          "reason": "focus-ring 미정의(CLAUDE.md Button #9). focus-ring resurrection 정리 2026-07-03.",
+          "reason": "variant별 focus-ring은 폐기 상태를 유지한다. 2026-08-25 에 대체 토큰(color/button/border/focus)이 생겼다고 기록돼 있었으나 river 확인 결과 승인한 적 없는 신설이어서 2026-09-02 정본에서 제거했다. 대체 토큰은 없으며 키보드 초점은 브라우저 기본 표시에 맡긴다.",
           "removedAt": "2026-07-03",
           "status": "removed"
         },
@@ -5136,7 +5142,7 @@ window.REGISTRY_BUNDLE = {
           "id": "button.blue-line.focus-ring",
           "cssVariable": "--button-blue-line-focus-ring",
           "replacedBy": null,
-          "reason": "focus-ring 미정의(CLAUDE.md Button #9). focus-ring resurrection 정리 2026-07-03.",
+          "reason": "variant별 focus-ring은 폐기 상태를 유지한다. 2026-08-25 에 대체 토큰(color/button/border/focus)이 생겼다고 기록돼 있었으나 river 확인 결과 승인한 적 없는 신설이어서 2026-09-02 정본에서 제거했다. 대체 토큰은 없으며 키보드 초점은 브라우저 기본 표시에 맡긴다.",
           "removedAt": "2026-07-03",
           "status": "removed"
         },
@@ -9712,6 +9718,21 @@ window.REGISTRY_BUNDLE = {
         ]
       },
       {
+        "id": "mobile-header",
+        "name": "Mobile Header",
+        "label": "Mobile Header",
+        "category": "navigation",
+        "path": "registry/components/mobile-header.json",
+        "status": "in-progress",
+        "harnessStatus": "not-started",
+        "priority": 21,
+        "notes": [
+          "2026-08-25 Gate 34 사용자 승인으로 정본 신설: V2.4 원본 5종 + 회원가입용 No Title 1종.",
+          "모바일 전용 shell이라 pages/components.html에는 반영하지 않고 noSectionNeeded + mobileOnly로 분류.",
+          "Figma V3.0 TEST node id·component key는 독립 빌드·검증 후 기록."
+        ]
+      },
+      {
         "id": "modal",
         "name": "Modal",
         "label": "Modal (공통 팝업)",
@@ -9734,12 +9755,12 @@ window.REGISTRY_BUNDLE = {
         "id": "button",
         "name": "Button",
         "category": "Core",
-        "updatedAt": "2026-05-27",
-        "version": "0.4.1",
+        "updatedAt": "2026-08-26",
+        "version": "0.5.0",
         "tokenStatus": "stable",
         "codeStatus": "implemented",
         "darkModeStatus": "stable",
-        "a11yStatus": "pending",
+        "a11yStatus": "stable",
         "figmaStatus": "existing",
         "harnessStatus": "implemented",
         "description": "Core interactive button component. Primary / Secondary / Blue-line variants with PC 3 sizes and Mobile 1 size.",
@@ -9771,10 +9792,6 @@ window.REGISTRY_BUNDLE = {
           "role": "버튼 텍스트. 굵기·색은 variant 토큰."
         },
         {
-          "part": "아이콘(선택)",
-          "role": "라벨 앞/뒤 보조 아이콘. 라이브러리 인스턴스."
-        },
-        {
           "part": "컨테이너",
           "role": "배경·테두리·반경. variant×state 토큰."
         }
@@ -9795,6 +9812,33 @@ window.REGISTRY_BUNDLE = {
         "아이콘만 있는 버튼은 aria-label 로 용도를 준다.",
         "disabled 는 실제 비활성 처리하고 클릭을 막는다."
       ],
+      "guide": {
+        "sampleLabels": [
+          "버튼"
+        ],
+        "webTag": "button",
+        "interactionPattern": "invoke-count",
+        "accessibility": {
+          "keyboard": "native-button",
+          "disabled": "native-disabled"
+        },
+        "classInterface": {
+          "base": "s1-btn",
+          "variantPrefix": "s1-btn-",
+          "sizePrefix": "s1-btn-",
+          "sizeAliases": {
+            "XSM": "",
+            "MD": "md",
+            "XXSM": "xxsm",
+            "LG": "lg"
+          },
+          "paneAliases": {
+            "Primary": "pri",
+            "Secondary": "sec",
+            "Blue-Line": "bl"
+          }
+        }
+      },
       "summary": {
         "badge": "Core",
         "variantCount": 3,
@@ -9832,7 +9876,7 @@ window.REGISTRY_BUNDLE = {
         ],
         "primary": {
           "tokenStatus": "stable",
-          "codeStatus": "in-progress",
+          "codeStatus": "implemented",
           "darkModeStatus": "stable",
           "tokens": [
             "--button-primary-default-bg",
@@ -9847,7 +9891,7 @@ window.REGISTRY_BUNDLE = {
         },
         "secondary": {
           "tokenStatus": "stable",
-          "codeStatus": "in-progress",
+          "codeStatus": "implemented",
           "darkModeStatus": "stable",
           "tokens": [
             "--button-secondary-default-bg",
@@ -9864,7 +9908,7 @@ window.REGISTRY_BUNDLE = {
         },
         "blue-line": {
           "tokenStatus": "stable",
-          "codeStatus": "in-progress",
+          "codeStatus": "implemented",
           "darkModeStatus": "stable",
           "tokens": [
             "--button-blue-line-default-bg",
@@ -9923,7 +9967,9 @@ window.REGISTRY_BUNDLE = {
             "label": "md",
             "height": "h44",
             "cssClass": "s1-btn-md",
-            "token": "--sizing-44"
+            "token": "--sizing-44",
+            "minWidth": 80,
+            "minWidthToken": "--sizing-80"
           },
           {
             "id": "xsm",
@@ -9931,6 +9977,8 @@ window.REGISTRY_BUNDLE = {
             "height": "h34",
             "cssClass": "",
             "token": "--sizing-34",
+            "minWidth": 64,
+            "minWidthToken": "--sizing-64",
             "note": "기본 사이즈 — 크기 수식어 없음"
           },
           {
@@ -9939,7 +9987,9 @@ window.REGISTRY_BUNDLE = {
             "height": "h28",
             "cssClass": "s1-btn-xxsm",
             "token": "--sizing-28",
-            "note": "신규 토큰 — 2026-05-11 tokens.css에 추가됨"
+            "minWidth": 56,
+            "minWidthToken": "--sizing-56",
+            "note": "river 승인으로 최소 너비 56px 적용 — 2026-08-26"
           }
         ],
         "mobile": [
@@ -9948,10 +9998,13 @@ window.REGISTRY_BUNDLE = {
             "label": "lg",
             "height": "h48",
             "cssClass": "s1-btn-lg",
-            "token": "--sizing-48"
+            "token": "--sizing-48",
+            "minWidth": 80,
+            "minWidthToken": "--sizing-80",
+            "labelAlign": "center"
           }
         ],
-        "minWidth": "--sizing-80",
+        "minWidthRule": "Button 최소 너비: MD·LG=80px, XSM=64px, XXSM=56px. XXSM은 2026-08-26 river 승인으로 기존 Figma V3.0 참고값 64px을 대체한다. 라벨이 길면 좌우 padding을 보존하며 늘어난다.",
         "radius": "--radius-button-md"
       },
       "harness": {
@@ -10002,21 +10055,21 @@ window.REGISTRY_BUNDLE = {
         "propertyMap": {
           "variant": "Variant",
           "size": "Size",
-          "state": "State"
+          "state": "State",
+          "break": "Break"
         },
         "valueMap": {
           "primary": "Primary",
           "secondary": "Secondary",
-          "blue-line": "Blue Line",
-          "md": "Large",
-          "xsm": "Medium",
-          "xxsm": "XSmall",
-          "lg": "Large",
+          "blue-line": "Blue-Line",
+          "md": "MD",
+          "xsm": "XSM",
+          "xxsm": "XXSM",
+          "lg": "LG",
           "default": "Default",
           "hover": "Hover",
           "pressed": "Pressed",
-          "disabled": "Disabled",
-          "_note": "레거시 Figma V2.4 의 크기 이름은 정본 어휘와 다르다. md(h44)=V2.4 Large, xsm(h34)=V2.4 Medium, xxsm(h28)=V2.4 XSmall, lg(h48)=V2.4 Large."
+          "disabled": "Disabled"
         }
       },
       "governance": {
@@ -10031,10 +10084,11 @@ window.REGISTRY_BUNDLE = {
         "id": "chip",
         "name": "Chip",
         "category": "Core",
-        "updatedAt": "2026-05-19",
+        "updatedAt": "2026-08-31",
         "tokenStatus": "stable",
         "codeStatus": "implemented",
         "darkModeStatus": "pending",
+        "a11yStatus": "stable",
         "description": "Selection and filter chip component. Line type (outlined) and Solid type (filled background). Filter chip extends Line with a dropdown.",
         "figmaNodeId": "",
         "figmaFileKey": "yE5UCFEbmXJBlYJWB24Lz2",
@@ -10351,6 +10405,23 @@ window.REGISTRY_BUNDLE = {
         "with-icon",
         "with-close"
       ],
+      "guide": {
+        "sampleLabels": [
+          "라벨"
+        ],
+        "webTag": "button",
+        "interactionPattern": "press-toggle",
+        "accessibility": {
+          "role": "button",
+          "keyboard": [
+            "Enter",
+            "Space"
+          ],
+          "attributes": [
+            "aria-pressed"
+          ]
+        }
+      },
       "filterSubVariants": [
         "label-only",
         "with-title"
@@ -10628,76 +10699,99 @@ window.REGISTRY_BUNDLE = {
         "HD-6": "확정 — Core는 인터페이스만 제공. data-disabled-dates=\"YYYY-MM-DD,...\" 속성으로 날짜 주입. 비활성 기준은 서비스 레벨 결정.",
         "HD-7": "확정 — 이전달/다음달 날짜 항상 클릭 허용. 클릭 시 해당 월로 이동 후 날짜 선택."
       },
-      "updatedAt": "2026-05-26"
+      "updatedAt": "2026-05-26",
+      "guide": {
+        "sampleLabel": "날짜",
+        "samplePlaceholder": "YY.MM.DD",
+        "sampleValue": "26.08.11",
+        "sampleDates": [
+          "9",
+          "10",
+          "11",
+          "12",
+          "13",
+          "14",
+          "15"
+        ],
+        "webTag": "button",
+        "interactionPattern": "calendar-grid",
+        "mobileDependency": "Date Picker Mobile Bottom Sheet"
+      }
     },
     "dropdown": {
       "_meta": {
         "id": "dropdown",
         "name": "Dropdown",
         "category": "Core",
-        "updatedAt": "2026-05-19",
+        "updatedAt": "2026-08-14",
         "version": "0.1.0",
         "tokenStatus": "stable",
         "codeStatus": "implemented",
         "darkModeStatus": "pending",
-        "a11yStatus": "pending",
+        "a11yStatus": "stable",
         "figmaStatus": "existing",
         "harnessStatus": "implemented",
-        "description": "드롭다운 트리거 + 옵션 목록 컴포넌트. trigger 상태(default·hover·open·disabled)와 option 상태(hover·selected) 포함.",
+        "description": "Select Box와 Filter Chip이 재사용하는 옵션 패널 컴포넌트. 옵션 줄은 글자만(단일 선택)과 체크박스(다중 선택) 두 유형이며, 체크박스 유형은 「전체 선택」 줄을 기본 포함한다. 트리거 상태는 Select Box가 담당한다.",
         "notes": [
           "--dropdown-list-bg: D002(2026-05-19) 결정 — var(--color-surface-raised)로 확정. surface-default 아님.",
-          "trigger placeholder text / selected text / list border / option selected text는 D001(2026-05-19) 추가 4개 candidate 토큰."
+          "trigger placeholder text / selected text / list border / option selected text는 D001(2026-05-19) 추가 4개 candidate 토큰.",
+          "다중 선택(체크박스) 유형 신설 2026-08-14 — 정본 buildDropdownList Type=Text/Checkbox/Checkbox+All(9→27), buildDropdown Type=Text/Checkbox(3→6). 새 토큰 0건(color/dropdown/* · color/control/* 재사용). 트리거(Select Box)는 갈래를 늘리지 않는다 — 다중 선택 표시는 글자 override."
         ]
       },
       "usage": {
         "whenToUse": [
-          "트리거를 눌러 옵션 목록에서 하나를 고를 때.",
+          "트리거를 눌러 옵션 목록에서 하나를 고를 때(글자 유형).",
+          "한 목록에서 여러 항목을 동시에 고를 때(체크박스 유형) — 필터·대상 선택 등.",
           "Select 의 기반 컴포넌트."
         ],
         "whenNotToUse": [
           "즉시 실행 액션 그룹은 Button.",
-          "적은 수의 상호배타 선택은 Radio."
+          "적은 수의 상호배타 선택은 Radio.",
+          "항목이 3~4개 이하로 적고 항상 보여도 되는 다중 선택은 목록을 접지 말고 Checkbox 를 펼쳐 쓴다."
         ]
       },
       "anatomy": [
         {
           "part": "트리거",
-          "role": "현재 값·placeholder 표시. default·hover·open·disabled."
+          "role": "현재 값·placeholder 표시. default·hover·open·disabled. 다중 선택은 고른 이름을 쉼표로 나열하고 넘치면 말줄임."
         },
         {
           "part": "옵션 목록",
-          "role": "surface-raised 위에 떠 있는 패널."
+          "role": "surface-raised 위에 떠 있는 패널. 글자 유형·체크박스 유형 두 벌."
         },
         {
           "part": "옵션",
-          "role": "hover·selected 상태 항목."
+          "role": "hover·selected 상태 항목. 체크박스 유형은 코어 Checkbox 를 왼쪽에 배치(간격 8px)."
+        },
+        {
+          "part": "전체 선택 줄",
+          "role": "체크박스 유형 최상단. 아래에 1px 구분선으로 목록과 분리. 필요 없는 화면에서는 이 줄만 뺀다."
         }
       ],
       "doDont": {
         "do": [
           "목록 배경은 surface-raised(떠 있는 표면)를 쓴다.",
-          "트리거 테두리는 form-control 토큰을 참조한다."
+          "트리거 테두리는 form-control 토큰을 참조한다.",
+          "체크박스 유형의 체크박스는 코어 Checkbox 컴포넌트를 그대로 배치한다(Figma=인스턴스, 코드=.s1-checkbox).",
+          "다중 선택은 고르는 즉시 적용하고 목록을 열어 둔다."
         ],
         "dont": [
           "목록 배경에 surface-default 를 쓰지 않는다(D002 결정: raised).",
-          "옵션 hover/selected 색을 raw 로 칠하지 않는다."
+          "옵션 hover/selected 색을 raw 로 칠하지 않는다.",
+          "드롭다운 전용 체크박스를 새로 만들지 않는다(코어 재사용 규칙).",
+          "체크박스 유형에서 선택된 줄의 글자를 강조하지 않는다 — 체크 표시가 이미 선택을 표현한다(2026-08-14 결정).",
+          "다중 선택에서 옵션을 고를 때 목록을 닫지 않는다."
         ]
       },
       "a11y": [
         "트리거는 aria-expanded 로 열림 상태를 노출한다.",
-        "선택 옵션에 aria-selected, 목록은 role=listbox 패턴을 따른다."
+        "단일 선택은 선택 옵션에 aria-selected, 목록은 role=listbox 패턴을 따른다.",
+        "다중 선택 옵션은 role=checkbox + aria-checked 로 켜짐/꺼짐을 노출한다.",
+        "「전체 선택」은 정본에 켜짐/꺼짐 2단계만 있어 aria-checked 도 true/false 만 쓴다. 부분 선택(mixed) 표시는 정본에 해당 모양이 없어 만들지 않는다(river 결정 2026-08-31)."
       ],
       "states": {
-        "trigger": [
-          "default",
-          "hover",
-          "open",
-          "disabled"
-        ],
-        "option": [
-          "default",
-          "hover",
-          "selected"
+        "panel": [
+          "default"
         ]
       },
       "tokens": [
@@ -10843,6 +10937,17 @@ window.REGISTRY_BUNDLE = {
         "figmaNodeId": "",
         "propertyMap": {}
       },
+      "guide": {
+        "sampleOptions": [
+          "서울",
+          "부산",
+          "제주",
+          "전체"
+        ],
+        "webTag": "div",
+        "interactionPattern": "listbox-panel",
+        "boundaryNote": "트리거와 expanded 상태는 Select Box가 담당한다."
+      },
       "governance": {
         "owner": "Design System Team",
         "deprecated": false,
@@ -10859,7 +10964,7 @@ window.REGISTRY_BUNDLE = {
         "tokenStatus": "stable",
         "codeStatus": "implemented",
         "darkModeStatus": "pending",
-        "a11yStatus": "pending",
+        "a11yStatus": "stable",
         "figmaStatus": "existing",
         "harnessStatus": "implemented",
         "figmaNodeId": "540:3226",
@@ -11140,6 +11245,32 @@ window.REGISTRY_BUNDLE = {
           "_note": "코드 주석 기반. 미검증."
         }
       },
+      "guide": {
+        "sampleLabels": [
+          "최신순",
+          "과거순",
+          "인기순"
+        ],
+        "sampleTitle": "정렬",
+        "webTag": "button",
+        "interactionPattern": "disclosure-listbox",
+        "mobileInteractionPattern": "dialog-single-select",
+        "accessibility": {
+          "role": "button",
+          "popupRole": "listbox",
+          "keyboard": [
+            "Enter",
+            "Space",
+            "Escape",
+            "ArrowDown",
+            "ArrowUp"
+          ],
+          "attributes": [
+            "aria-haspopup",
+            "aria-expanded"
+          ]
+        }
+      },
       "governance": {
         "owner": "design-system",
         "deprecated": false,
@@ -11394,6 +11525,21 @@ window.REGISTRY_BUNDLE = {
           "status": "resolved"
         }
       ],
+      "guide": {
+        "sampleLogo": "SAMPLE LOGO",
+        "sampleMenus": [
+          "홈",
+          "서비스",
+          "통계"
+        ],
+        "utilityLabels": {
+          "language": "언어 선택",
+          "account": "계정",
+          "menu": "전체 메뉴"
+        },
+        "interactionPattern": "global-current-menu",
+        "webTag": "header"
+      },
       "governance": {
         "owner": "Design System Team",
         "deprecated": false,
@@ -11405,10 +11551,12 @@ window.REGISTRY_BUNDLE = {
         "id": "input",
         "name": "Input",
         "category": "Core",
-        "updatedAt": "2026-05-18 (MVP4-token)",
+        "updatedAt": "2026-08-26",
+        "version": "0.5.1",
         "tokenStatus": "stable",
         "codeStatus": "implemented",
-        "darkModeStatus": "pending",
+        "darkModeStatus": "stable",
+        "a11yStatus": "stable",
         "figmaNodeId": "540:3328",
         "figmaNote": "2026-05-20 MVP-F1 플러그인 스캔으로 확인. Figma 내 프레임명이 'Login input'으로 잘못 등록된 상태 — canonical 명칭은 'Input'. 이전 stale nodeId: 6443:4408.",
         "description": "Base text input field. Pure input element without label/helper wrapper. Label/Helper combo = Input Slots pattern.",
@@ -11449,7 +11597,7 @@ window.REGISTRY_BUNDLE = {
           "라벨은 form-control 밖 제목 텍스트 토큰(--color-text-title-secondary)을 쓴다."
         ],
         "dont": [
-          "hover 상태를 새로 만들지 않는다 — Figma 에 정의돼 있지 않아 제거됨(HD-2).",
+          "Input field 전체에 hover 상태를 만들지 않는다 — HD-2에서 제거됨. suffix action의 독립 Hover 배경은 예외다.",
           "filled·error·focus 에 별도 배경색을 넣지 않는다 — 배경은 default 와 동일, 구분은 텍스트·테두리 색으로만.",
           "correct(성공) 테두리를 초록으로 칠하지 않는다 — 원본은 파란색(border-selected)."
         ]
@@ -11457,7 +11605,9 @@ window.REGISTRY_BUNDLE = {
       "a11y": [
         "suffix 액션(지우기·검색·비밀번호 표시전환)에는 각각 aria-label 을 단다(예: 검색어 지우기, 비밀번호 보기/숨기기).",
         "비밀번호 표시전환 토글은 aria-pressed 로 표시·숨김 상태를 노출한다.",
-        "지우기(clear) 버튼은 값이 있을 때만 노출한다(hidden 속성 제어)."
+        "Editing 상태의 지우기(clear) 버튼은 값이 있고 Input 또는 지우기 버튼에 초점이 있을 때만 노출한다(hidden 속성 제어).",
+        "suffix 액션의 실제 누르는 영역은 PC 28×28px, Mobile 48×48px이며 액션마다 독립된 button 영역을 가진다.",
+        "suffix 액션의 키보드 포커스는 각 hit area 안쪽 2px outline으로 표시한다."
       ],
       "platforms": {
         "pc-md": {
@@ -11486,7 +11636,9 @@ window.REGISTRY_BUNDLE = {
           "heightToken": "--sizing/form-control/height/lg",
           "paddingBlock": "12px",
           "paddingBlockToken": "--spacing/padding/block/xs",
-          "radiusToken": "raw 4px (토큰 미참조 — Figma 원본 기준)"
+          "radiusToken": "raw 4px (토큰 미참조 — Figma 원본 기준)",
+          "suffixActionHitArea": "48×48px",
+          "minHeightWithSuffixAction": "48px"
         }
       },
       "platformDifferences": {
@@ -11500,6 +11652,7 @@ window.REGISTRY_BUNDLE = {
         "filled",
         "error",
         "correct",
+        "read-only",
         "disabled"
       ],
       "stateNotes": {
@@ -11507,7 +11660,7 @@ window.REGISTRY_BUNDLE = {
         "filled": "Figma: 'complete'. HD-3: 별도 bg/border 없음. default와 동일 시각. text/default 색상으로만 구분(placeholder→typed). canonical: filled (token-aliases.json 확정).",
         "correct": "HD-4: correct로 통일(Figma: success). border = focus와 동일(blue, --color/form-control/border/selected). helper text = --color/text/state/correct(#1D6CEB).",
         "error": "border → --input-error-border(#FF4554). helper text → error 메시지.",
-        "hover": "삭제(HD-2). Figma 미정의."
+        "hover": "Input field Hover는 삭제(HD-2). suffix action Hover는 suffixAction.hover에서 별도 관리."
       },
       "iconSlots": [
         "off",
@@ -11529,9 +11682,9 @@ window.REGISTRY_BUNDLE = {
             },
             "border": {
               "--color-form-control-border-default": "var(--color-border-default)",
-              "--color-form-control-border-selected": "var(--color-border-focus)",
+              "--color-form-control-border-selected": "Light blue/400 · Dark blue-dark/350",
               "--color-form-control-border-error": "var(--color-status-error)",
-              "--color-form-control-border-correct": "var(--color-border-focus)",
+              "--color-form-control-border-correct": "Light blue/400 · Dark blue-dark/350",
               "--color-form-control-border-disabled": "var(--color-border-subtle)"
             },
             "text": {
@@ -11571,9 +11724,9 @@ window.REGISTRY_BUNDLE = {
             },
             "readonly": {
               "--input-readonly-bg": "var(--color-form-control-bg-disabled)",
-              "--input-readonly-border": "var(--color-form-control-border-disabled)",
+              "--input-readonly-border": "var(--color-form-control-border-default)",
               "--input-readonly-text": "var(--color-text-readonly)",
-              "note": "Textarea 와 공유. 2026-05-18 MVP4-token 신설. readonly bg/border = disabled와 동일, text는 --color-text-readonly로 한 단계 진함."
+              "note": "Textarea 와 공유. readonly bg는 disabled와 동일하고 border는 default를 유지한다. text는 --color-text-readonly로 한 단계 진하다. build-components.ts Read-Only 정본과 일치."
             }
           },
           "removedTokens": {
@@ -11589,6 +11742,46 @@ window.REGISTRY_BUNDLE = {
             "label-token": "초기 분류 오류 수정. Label token = --color/text/title/secondary, form-control 네임스페이스 외부.",
             "color-text-state-correct": "신규 발견. --color/text/state/correct = #1D6CEB (correct helper text 색상)."
           }
+        }
+      },
+      "suffixAction": {
+        "status": "approved",
+        "publicPart": "action",
+        "hitArea": {
+          "pc": "28×28px",
+          "mobile": "48×48px"
+        },
+        "iconSize": {
+          "xxsm": "20px",
+          "default": "24px"
+        },
+        "glyphSize": {
+          "xxsm": "13.33px",
+          "default": "16px"
+        },
+        "glyphSizeRule": "정본 remove 인스턴스는 24px 프레임 안 16px 글리프이며 XXSM은 프레임 전체를 20px로 비례 축소한다.",
+        "hover": {
+          "target": "각 suffix action의 독립 hit area",
+          "inputMethod": "hover를 지원하는 마우스·트랙패드",
+          "backgroundToken": "color/form-control/bg/hover",
+          "radiusToken": "radius/4",
+          "figmaProperties": [
+            "Password Action Hover",
+            "Clear Action Hover"
+          ],
+          "webSelector": "@media (hover: hover) 안의 :hover:not(:disabled)"
+        },
+        "rules": [
+          "각 액션은 독립된 native button으로 구현한다.",
+          "Hover 배경은 Input field 전체가 아니라 현재 가리키는 action의 hit area에만 표시한다.",
+          "Mobile suffix action이 있으면 Input 높이는 최소 48px다."
+        ],
+        "baseClearAction": {
+          "state": "Editing",
+          "icon": "remove",
+          "visibility": "값이 있고 Input 또는 clear action에 focus가 있을 때 노출",
+          "interaction": "누르면 값을 지우고 input event를 발생시킨 뒤 Input으로 focus를 돌려준다.",
+          "event": "s1:input:clear"
         }
       },
       "relatedComponents": {
@@ -11722,27 +11915,43 @@ window.REGISTRY_BUNDLE = {
         "Search Module",
         "Address Search",
         "Date Range Selection"
-      ]
+      ],
+      "guide": {
+        "sampleLabel": "이름",
+        "samplePlaceholder": "내용을 입력하세요",
+        "sampleValue": "홍길동",
+        "sampleMessage": "입력 내용을 확인하세요",
+        "messageOptional": true,
+        "webTag": "input",
+        "interactionPattern": "text-entry",
+        "searchInput": {
+          "name": "Search Input",
+          "samplePlaceholder": "검색어를 입력하세요",
+          "sampleValue": "디자인 시스템",
+          "clearLabel": "검색어 지우기",
+          "submitLabel": "검색"
+        }
+      }
     },
     "checkbox": {
       "_meta": {
         "id": "checkbox",
         "name": "Checkbox",
         "category": "Core",
-        "updatedAt": "2026-05-27",
-        "version": "0.1.0",
+        "updatedAt": "2026-08-31",
+        "version": "0.2.0",
         "tokenStatus": "stable",
         "codeStatus": "implemented",
         "darkModeStatus": "stable",
-        "a11yStatus": "pending",
+        "a11yStatus": "stable",
         "figmaStatus": "existing",
         "harnessStatus": "implemented",
-        "description": "체크박스 컨트롤. default·hover·checked·indeterminate·disabled 상태."
+        "description": "체크박스 컨트롤. 정본 상태는 default·hover·checked·disabled·disabled+checked 다섯이며 부분선택(indeterminate)은 아직 정본에 없다."
       },
       "usage": {
         "whenToUse": [
           "여러 항목을 독립적으로 켜고 끌 때(다중 선택).",
-          "목록 전체선택/부분선택(indeterminate) 헤더에."
+          "약관 동의처럼 항목마다 따로 켜고 끌 때."
         ],
         "whenNotToUse": [
           "여러 보기 중 하나만 고를 때는 Radio.",
@@ -11756,17 +11965,17 @@ window.REGISTRY_BUNDLE = {
         },
         {
           "part": "체크 표시",
-          "role": "checked·indeterminate 인디케이터 아이콘."
+          "role": "checked 인디케이터 아이콘(정본 ic_확인 16px). 색은 control indicator 토큰."
         },
         {
           "part": "라벨(선택)",
-          "role": "항목 텍스트. 박스와 함께 클릭 영역."
+          "role": "선택 부품. 없는 것이 기본이고, 붙이면 라벨 클릭도 선택 영역이 된다(본문 14 Medium, 간격 8)."
         }
       ],
       "doDont": {
         "do": [
-          "전체선택 헤더는 부분선택 시 indeterminate(is-indeterminate)를 쓴다.",
-          "박스는 코어 s1-checkbox 를 재사용한다(모듈 전용 체크박스 금지)."
+          "라벨을 붙일 때는 label[for] 로 control 과 연결해 라벨 클릭도 선택되게 한다.",
+          "박스는 코어 체크박스를 재사용한다(모듈 전용 체크박스 금지)."
         ],
         "dont": [
           "Table·Filter 등 모듈에서 체크박스를 새로 만들지 않는다.",
@@ -11774,8 +11983,10 @@ window.REGISTRY_BUNDLE = {
         ]
       },
       "a11y": [
+        "native input[type=checkbox] 를 사용해 역할·선택 상태·Space 키 동작을 브라우저가 제공하게 한다.",
         "라벨이 없으면 aria-label 필수.",
-        "indeterminate 는 시각뿐 아니라 aria-checked=\"mixed\" 로 표현한다."
+        "비활성은 disabled 속성으로 표현하고 시각 처리만으로 대체하지 않는다.",
+        "키보드 초점은 선택 테두리 토큰의 2px 외곽선으로 보이게 한다."
       ],
       "states": [
         "default",
@@ -11861,6 +12072,23 @@ window.REGISTRY_BUNDLE = {
         "fileKey": "Tnihi6lixRR47N4RSAwUbF",
         "propertyMap": {}
       },
+      "guide": {
+        "sampleLabels": [
+          "선택 항목"
+        ],
+        "webTag": "input",
+        "interactionPattern": "checkbox-toggle",
+        "accessibility": {
+          "role": "checkbox",
+          "keyboard": [
+            "Space"
+          ],
+          "attributes": [
+            "aria-checked",
+            "aria-label"
+          ]
+        }
+      },
       "governance": {
         "owner": "Design System Team",
         "deprecated": false,
@@ -11877,7 +12105,7 @@ window.REGISTRY_BUNDLE = {
         "tokenStatus": "stable",
         "codeStatus": "implemented",
         "darkModeStatus": "stable",
-        "a11yStatus": "pending",
+        "a11yStatus": "implemented",
         "figmaStatus": "confirmed",
         "harnessStatus": "implemented",
         "figmaNodeId": "723:6",
@@ -12010,6 +12238,238 @@ window.REGISTRY_BUNDLE = {
           "retired": "2026-07-02 삭제 완료(0 survivors)"
         }
       },
+      "guide": {
+        "sampleLabels": [
+          "홈",
+          "검색",
+          "알림",
+          "내 정보"
+        ],
+        "interactionPattern": "tab-item-composition",
+        "webTag": "button",
+        "boundaryNote": "정본은 Tab Item 1칸이며 Action 예시는 아이템 인스턴스를 최소 조합한 탭 목록이다."
+      },
+      "governance": {
+        "owner": "design-system",
+        "deprecated": false,
+        "replacement": null
+      }
+    },
+    "mobile-header": {
+      "_meta": {
+        "id": "mobile-header",
+        "name": "Mobile Header",
+        "category": "navigation",
+        "updatedAt": "2026-08-31",
+        "version": "0.5.0",
+        "tokenStatus": "stable",
+        "codeStatus": "implemented",
+        "darkModeStatus": "stable",
+        "a11yStatus": "implemented",
+        "figmaStatus": "confirmed",
+        "harnessStatus": "implemented",
+        "description": "모바일 화면 상단의 StatusBar와 AppBar를 하나로 묶은 코어 컴포넌트. 홈형 2종·표준형 4종을 Type 축으로, 앱(360×99)·모바일 웹(360×149)을 Platform 축으로 제공한다.",
+        "notes": [
+          "V2.4 mobile_header(540:6112)의 5종을 원본으로 삼는다.",
+          "2026-08-25 river: 원본 'Home title_icon 2'(홈 + 알림 2개)는 실제로 쓰지 않는 기준이라 삭제했다.",
+          "2026-08-25 river: 원본 'Home titel + alt titel'은 구조가 아니라 문구만 다른 것이었고 'alt'는 네이밍 체계상 쓰지 않기로 해 'Home / Title'로 개명했다. 배경도 홈 배경으로 통일했다(원본의 흰 배경은 레거시 불일치로 판단).",
+          "2026-08-25 river: 회원가입 화면용으로 'Standard / No Title'(제목 없음)과 'Standard / No Title + Close'(약관 상세 = 제목 없음 + 닫기)를 신설했다. 레거시가 제목을 흰 글자로 숨기던 처리를 정식 유형으로 대체한다.",
+          "2026-08-25 river: Back·Close 아이콘 색은 원본 실측값 color/icon/gray-dark(#353535)다. v1이 gray-light로 잘못 연결했던 것을 교정했다.",
+          "2026-08-25 river: 홈 배경 #F5F6FB를 color/bg/home으로 정본화했다(Foundation base/home-bg alias). 그 전까지 쓰던 color/bg/level-2(#F5F5F5)는 푸른기가 없어 원본과 다른 색이었다.",
+          "2026-08-26 river: color/bg/home의 다크값은 blue-dark/50으로 확정했다. Standard 4종 배경은 color/bg/level-0을 사용한다.",
+          "2026-08-31 river: Type 6종마다 Platform=App/Web을 제공하는 12개 완전 조합으로 확장했다. 앱은 360×99, 모바일 웹은 브라우저 주소창을 포함해 360×149다.",
+          "2026-08-31 river: 스펙은 Platform별 Home 2종·Standard 4종 행으로 배치하고, 폭이 길어져 Dark 스펙은 Light 스펙 아래에 둔다.",
+          "2026-08-25 river: StatusBar 인스턴스의 Light 모드 핀을 해제해 다크를 상속하게 했고, 배경을 투명으로 두어 헤더 전체가 한 색으로 이어지게 했다(원본 구조). StatusBar 정본 세트는 변경하지 않았다.",
+          "StatusBar는 선택한 Platform과 같은 정본 인스턴스를 재사용하며, 색은 Semantic 변수·텍스트는 Pretendard 정본 스타일에만 바인딩한다.",
+          "원본 아래화살표 legacy key는 V3 import가 불가능해 river 승인(2026-08-25)에 따라 아이콘 라이브러리 V2.2 419:68의 오른쪽 화살표를 -90° 회전해 사용한다."
+        ]
+      },
+      "usage": {
+        "whenToUse": [
+          "모바일 앱 또는 모바일 웹 화면에서 상단 전역 크롬과 화면 이동 동작을 제공할 때.",
+          "회원가입처럼 앱바 안 제목을 비우고 본문 큰 제목을 사용하는 화면에는 Standard / No Title을 쓴다."
+        ],
+        "whenNotToUse": [
+          "PC 화면의 전역 내비게이션에는 GNB를 쓴다.",
+          "모바일 화면이 아닌 PC 전용 헤더에는 사용하지 않는다."
+        ]
+      },
+      "anatomy": [
+        {
+          "part": "StatusBar",
+          "role": "선택한 Platform의 StatusBar 정본 인스턴스. App은 360×27, Web은 주소창을 포함한 360×77이다. 배경은 투명이며 헤더 프레임 배경과 Appearance 모드를 상속한다."
+        },
+        {
+          "part": "AppBar",
+          "role": "360×56. StatusBar 아래 16px 간격으로 배치한다."
+        },
+        {
+          "part": "Title area",
+          "role": "표준형은 중앙 정렬(title/18M), 홈형은 좌측 정렬(title/18B). No Title 계열에는 텍스트 노드가 없다."
+        },
+        {
+          "part": "Action slots",
+          "role": "32×32 이전·닫기·알림 슬롯 또는 같은 폭 spacer."
+        }
+      ],
+      "doDont": {
+        "do": [
+          "앱바 안 제목과 본문 큰 제목이 중복되면 Standard / No Title을 쓴다.",
+          "아이콘은 등록된 원본 라이브러리 인스턴스를 사용한다.",
+          "배경·텍스트·아이콘 색은 역할에 맞는 Semantic 변수로 바인딩한다."
+        ],
+        "dont": [
+          "제목을 흰색으로 숨겨 제목 없음처럼 만들지 않는다.",
+          "StatusBar를 벡터나 텍스트로 다시 그리지 않는다.",
+          "raw hex 색이나 Noto 계열 글꼴을 넣지 않는다."
+        ]
+      },
+      "a11y": [
+        "이전·닫기·알림 버튼은 화면 맥락에 맞는 접근성 이름을 제공한다.",
+        "제목 없는 유형에서는 본문의 큰 제목이 화면의 주 제목 역할을 하도록 heading 구조를 유지한다.",
+        "아이콘 버튼의 실제 터치 영역은 화면 구현에서 최소 44×44를 확보한다."
+      ],
+      "states": [],
+      "variants": {
+        "Type": [
+          "Home / Title",
+          "Home / Title + Subtitle + 1 Icon",
+          "Standard / Title",
+          "Standard / Title + Close",
+          "Standard / No Title",
+          "Standard / No Title + Close"
+        ],
+        "Platform": [
+          "App",
+          "Web"
+        ]
+      },
+      "sizing": {
+        "root": {
+          "App": {
+            "width": 360,
+            "height": 99
+          },
+          "Web": {
+            "width": 360,
+            "height": 149
+          }
+        },
+        "statusBar": {
+          "App": {
+            "width": 360,
+            "height": 27
+          },
+          "Web": {
+            "width": 360,
+            "height": 77
+          }
+        },
+        "statusToAppBarGap": 16,
+        "appBar": {
+          "width": 360,
+          "height": 56
+        },
+        "actionSlot": {
+          "width": 32,
+          "height": 32
+        }
+      },
+      "tokens": [
+        {
+          "semanticRef": "color/bg/level-0",
+          "property": "standard-background"
+        },
+        {
+          "semanticRef": "color/bg/home",
+          "property": "home-background",
+          "note": "원본 #F5F6FB. 2026-08-25 정본화(Foundation base/home-bg alias). 그 전 근접 대체값 color/bg/level-2 는 폐기."
+        },
+        {
+          "semanticRef": "color/text/title/primary",
+          "property": "title-color"
+        },
+        {
+          "semanticRef": "color/text/body/tertiary",
+          "property": "subtitle-color"
+        },
+        {
+          "semanticRef": "color/icon/gray-dark",
+          "property": "back-close-color"
+        },
+        {
+          "semanticRef": "color/icon/gray-dark",
+          "property": "notification-color"
+        },
+        {
+          "semanticRef": "color/icon/red",
+          "property": "notification-accent-color"
+        },
+        {
+          "semanticRef": "color/icon/gray-dark",
+          "property": "subtitle-arrow-color",
+          "note": "서브타이틀 유형의 아래화살표. 원본 실측값 #353535에 맞춘다."
+        }
+      ],
+      "figma": {
+        "componentSetKey": "9fd8509a9e73c1279d9efb2088bb591658ce29f5",
+        "figmaNodeId": "1760:7247",
+        "fileKey": "cysG5U1udpQqVagYY1hWHW",
+        "variantNodes": {
+          "Type=Home / Title, Platform=App": "1759:7204",
+          "Type=Home / Title + Subtitle + 1 Icon, Platform=App": "1759:7167",
+          "Type=Standard / Title, Platform=App": "1757:7099",
+          "Type=Standard / Title + Close, Platform=App": "1757:7129",
+          "Type=Standard / No Title, Platform=App": "1760:7217",
+          "Type=Standard / No Title + Close, Platform=App": "1781:7359",
+          "Type=Home / Title, Platform=Web": "1898:12036",
+          "Type=Home / Title + Subtitle + 1 Icon, Platform=Web": "1898:12094",
+          "Type=Standard / Title, Platform=Web": "1898:12162",
+          "Type=Standard / Title + Close, Platform=Web": "1898:12224",
+          "Type=Standard / No Title, Platform=Web": "1898:12288",
+          "Type=Standard / No Title + Close, Platform=Web": "1898:12349"
+        },
+        "usageExample": "1760:7247",
+        "propertyMap": {
+          "Type": [
+            "Home / Title",
+            "Home / Title + Subtitle + 1 Icon",
+            "Standard / Title",
+            "Standard / Title + Close",
+            "Standard / No Title",
+            "Standard / No Title + Close"
+          ],
+          "Platform": [
+            "App",
+            "Web"
+          ]
+        },
+        "_note": "node id·component key 는 reports/figma-library-build/mobile-header/node-map.json (buildRevision v3.5) 의 실측값이다. 세트 key 는 v1 이후 변하지 않았다.",
+        "specSheets": {
+          "light": "1760:7247",
+          "dark": "1791:7535"
+        }
+      },
+      "origin": {
+        "classification": "B",
+        "note": "원본 틀 필요 — V2.4 5종을 재측정하고 회원가입용 No Title 1종을 승인받아 추가했다.",
+        "legacySource": {
+          "file": "yE5UCFEbmXJBlYJWB24Lz2",
+          "canonicalSet": "540:6112",
+          "name": "mobile_header"
+        }
+      },
+      "guide": {
+        "sampleLabels": [
+          "스탠다드형 타이틀",
+          "홈 타이틀",
+          "홈 서브타이틀",
+          "홈-alt 타이틀"
+        ],
+        "interactionPattern": "mobile-appbar",
+        "webTag": "header",
+        "boundaryNote": "2026-09-02 ui-library-code 워크플로우로 웹 배포본을 만들었다 — components.html 섹션은 손관리가 아니라 ui-library-guide.js 가 dist 로 렌더한다(managedBy: ui-library-guide). StatusBar·Platform 축은 river 결정(D5)으로 배포본에서 뺐다 — AppBar 56px·Type 6종만 배포한다."
+      },
       "governance": {
         "owner": "design-system",
         "deprecated": false,
@@ -12021,15 +12481,17 @@ window.REGISTRY_BUNDLE = {
         "id": "modal",
         "name": "Modal",
         "category": "overlay",
-        "updatedAt": "2026-07-16",
-        "version": "0.2.0",
+        "updatedAt": "2026-09-02",
+        "version": "0.4.0",
         "tokenStatus": "stable",
         "codeStatus": "in-progress",
-        "darkModeStatus": "planned",
-        "a11yStatus": "planned",
+        "darkModeStatus": "stable",
+        "a11yStatus": "stable",
         "figmaStatus": "existing",
-        "harnessStatus": "not-started",
-        "description": "확인 계열 모달 그릇 2종(Footer Single|Dual). 딤(overlay) 위 공통 팝업 셸 — 헤더(제목+닫기)+본문(텍스트)+푸터(버튼)의 3층 껍데기. 그릇(제목·본문·푸터 3층)만 정본이며, 실제 문구는 예시(UX라이팅 플러그인 영역·컴포넌트 아님). Single=알림/설명체 1버튼, Dual=확인/질문체 2버튼. 제목 항상 존재. 코어 Button·V2.2 라이브러리 아이콘 재사용(신규 보여주기 컴포넌트 아님)."
+        "harnessStatus": "implemented",
+        "description": "확인 계열 모달 그릇 4종(Break PC|Mobile × Footer Single|Dual). 딤(overlay) 위 공통 팝업 셸 — 제목+본문+푸터의 3층 껍데기. PC는 제목 옆 닫기 버튼과 컴팩트 푸터를 사용하고, Mobile은 닫기 없이 300px 패널과 LG 버튼을 사용한다. 실제 문구는 예시(UX라이팅 영역·컴포넌트 아님).",
+        "a11yApproval": "river 표준안 승인 2026-09-02 — role=dialog·aria-modal·제목 연결·초점 가둠·Esc 닫기·초점 복귀·배경 스크롤 잠금. 딤 클릭 닫기·모션·중첩 모달은 이번 범위 밖(B안 미채택).",
+        "codeStatusNote": "설치기 정본(buildModalShell)은 빌드됐지만 update-management.json 이 'component-verifier 독립 검증(원본 대조) 대기'로 기록하고 있어 완료 표시를 하지 않는다. 웹 배포본 상태는 webDistribution 과 ui-library-migration.json 이 따로 가진다(2026-09-02)."
       },
       "usage": {
         "whenToUse": [
@@ -12057,12 +12519,17 @@ window.REGISTRY_BUNDLE = {
         {
           "part": "푸터",
           "role": "코어 Button 1개(Single) 또는 2개(Dual)."
+        },
+        {
+          "part": "닫기(선택)",
+          "role": "PC 헤더의 닫기(X) 버튼. 정본 Mobile 변형에는 없다."
         }
       ],
       "doDont": {
         "do": [
-          "제목은 항상 둔다.",
-          "푸터 버튼은 코어 Button, 아이콘은 V2.2 라이브러리 인스턴스를 재사용한다."
+          "제목은 항상 둔다. PC는 닫기 버튼을 포함하고 Mobile은 포함하지 않는다.",
+          "푸터 버튼은 코어 Button, 아이콘은 V2.2 라이브러리 인스턴스를 재사용한다.",
+          "모달은 화면(body) 바로 아래에 둔다. 카드·패널 같은 상자 안에 넣으면 상단 고정바 등 일부 요소가 모달 위에 남는다."
         ],
         "dont": [
           "모달 문구(실제 카피)를 컴포넌트 정본으로 넣지 않는다 — 예시일 뿐(UX라이팅 영역).",
@@ -12070,19 +12537,29 @@ window.REGISTRY_BUNDLE = {
         ]
       },
       "a11y": [
-        "role=dialog·aria-modal 로 표시하고 포커스를 모달 안에 가둔다.",
-        "열릴 때 제목으로 포커스, 닫기는 Esc 로도 가능하게 한다."
+        "패널을 role=dialog · aria-modal=true 로 표시하고, aria-labelledby 로 제목을, aria-describedby 로 본문을 연결한다.",
+        "열릴 때 패널 안 첫 초점 요소로 초점을 옮기고, 닫힐 때 열기 전 초점 자리로 되돌린다.",
+        "열려 있는 동안 Tab·Shift+Tab 은 패널 안에서만 순환한다(초점 가둠). 초점이 밖으로 나가면 패널로 되돌린다.",
+        "Esc 로 닫을 수 있게 한다. PC 는 헤더의 닫기(X) 버튼에 '닫기' 이름을 준다.",
+        "열려 있는 동안 배경 스크롤을 잠근다. 모달이 여럿이면 마지막 하나가 닫힐 때 되돌린다."
       ],
       "origin": {
         "classification": "B",
         "note": "원본 틀 필요. V2.4 레거시 화면에서 편입(루트 A 신규 편입 시험 첫 대상).",
         "legacySource": {
-          "file": "yE5UCFEbmXJBlYJWB24Lz2",
-          "canonicalSet": "6706:4218",
-          "name": "modal_small (확인 계열 정본)",
-          "example": {
-            "node": "6706:4257",
-            "state": "삭제"
+          "pc": {
+            "file": "yE5UCFEbmXJBlYJWB24Lz2",
+            "canonicalSet": "6706:4218",
+            "name": "modal_small (확인 계열 정본)",
+            "example": {
+              "node": "6706:4257",
+              "state": "삭제"
+            }
+          },
+          "mobile": {
+            "file": "5lDUgHPUrHaIN4y6vHSAfu",
+            "section": "1102:97650",
+            "name": "Mobile S/W UX GUIDE V2.32 Modal 예시"
           }
         }
       },
@@ -12090,28 +12567,38 @@ window.REGISTRY_BUNDLE = {
         "id": "confirm-compact",
         "label": "확인(compact 텍스트-확인)",
         "canonicalNode": "6706:4218",
-        "spec": "제목 16px 항상 존재 · 버튼 h28(코어 Button XXSM 인스턴스) · 닫기 = V2.2 라이브러리 ic_닫기 · 본문 텍스트. 폭 360 고정.",
+        "spec": "PC: 폭360 · 제목16B · 본문14R · Button XXSM h28 · 닫기 있음. Mobile: 폭300 · 제목18B · 본문16R · Button LG h48 · 닫기 없음.",
         "note": "콘텐츠 계열(Modal Content, pc_modal 540:5815 — 제목18·버튼h34·4크기)과 구분된 별개 계열. 상세: reports/modal-content-family-backlog.md"
       },
       "variantAxis": {
-        "property": "Footer",
-        "values": [
-          "Single",
-          "Dual"
+        "property": [
+          "Break",
+          "Footer"
         ],
+        "values": {
+          "Break": [
+            "PC",
+            "Mobile"
+          ],
+          "Footer": [
+            "Single",
+            "Dual"
+          ]
+        },
         "titleAlways": true,
-        "sizeAxis": "none (확인 계열은 폭 360 단일)",
-        "note": "변형축은 Footer(Single|Dual)뿐. 제목 고정(항상 존재). 토큰 전부 기존(신설 0)."
+        "sizeAxis": "Break가 패널 폭과 내부 밀도를 결정: PC 360 / Mobile 300",
+        "note": "시각적으로 확실히 다른 Break와 Footer만 변형축으로 둔다. 제목은 항상 존재."
       },
       "guardrail": {
         "rule": "패널 height/width 비율이 임계 초과 시 이 확인 계열 사용 금지 → 콘텐츠 계열(Modal Content)로 전환.",
         "threshold": "TBD",
         "reason": "확인 계열은 짧은 텍스트 확인용 compact. 긴/큰 본문은 콘텐츠 계열(4크기·딤 85% 스크롤)이 담당."
       },
-      "scope": "light",
+      "scope": "light+dark",
       "templates": [
         {
-          "id": "single",
+          "id": "pc-single",
+          "break": "PC",
           "footer": "single",
           "built": true,
           "verify": "none",
@@ -12125,10 +12612,11 @@ window.REGISTRY_BUNDLE = {
               }
             ]
           },
-          "note": "알림/설명체(평서문) 1버튼. buildModalVariant('Single') 로 생성. example 문구는 말투 예시일 뿐 — 실제 카피는 UX라이팅 영역."
+          "note": "PC 알림/설명체(평서문) 1버튼. example 문구는 말투 예시일 뿐 — 실제 카피는 UX라이팅 영역."
         },
         {
-          "id": "dual",
+          "id": "pc-dual",
+          "break": "PC",
           "footer": "dual",
           "built": true,
           "verify": "none",
@@ -12146,7 +12634,47 @@ window.REGISTRY_BUNDLE = {
               }
             ]
           },
-          "note": "확인/질문체(의문문) 2버튼. buildModalVariant('Dual') 로 생성. 기존 '삭제' 예시 문구를 범용 예시로 교체. example 문구는 말투 예시일 뿐 — 실제 카피는 UX라이팅 영역."
+          "note": "PC 확인/질문체(의문문) 2버튼. example 문구는 말투 예시일 뿐 — 실제 카피는 UX라이팅 영역."
+        },
+        {
+          "id": "mobile-single",
+          "break": "Mobile",
+          "footer": "single",
+          "built": true,
+          "verify": "none",
+          "example": {
+            "title": "업데이트 안내",
+            "body": "보다 안정적인 서비스 이용을 위해 최신\n버전으로 업데이트해 주세요.",
+            "buttons": [
+              {
+                "role": "primary",
+                "label": "업데이트"
+              }
+            ]
+          },
+          "note": "Mobile 알림/설명체 1버튼. 300px 패널과 LG 풀폭 버튼을 사용한다."
+        },
+        {
+          "id": "mobile-dual",
+          "break": "Mobile",
+          "footer": "dual",
+          "built": true,
+          "verify": "none",
+          "example": {
+            "title": "자동 로그인 설정",
+            "body": "로그인되었어요.\n다음부터 자동으로 로그인할까요?",
+            "buttons": [
+              {
+                "role": "secondary",
+                "label": "아니오"
+              },
+              {
+                "role": "primary",
+                "label": "네"
+              }
+            ]
+          },
+          "note": "Mobile 확인/질문체 2버튼. 두 LG 버튼은 동일 비율로 채운다."
         }
       ],
       "exampleStatesArchive": {
@@ -12162,10 +12690,10 @@ window.REGISTRY_BUNDLE = {
         ]
       },
       "anatomySpec": {
-        "panel": "VERTICAL · w360 · py20(padding/block/md) · gap32(section/lg) · radius8(radius/8 전체) · border=1px INSIDE color/modal/panel/border(2026-07-29 신설 — 종전 '테두리 없음'에서 변경, 사용자 결정) · shadow=--shadow-raised(라이트·다크 공통 참조. 2026-07-29 이전의 '라이트 shadow 없음'은 Figma 실측이 사실이나 의도가 아닌 누락으로 판정돼 라이트에도 그림자를 부여함)",
-        "header": "HORIZONTAL space-between · items-end · px24(padding/inline/lg) · [title + close]",
-        "body": "VERTICAL · gap8(spacing/8) · px24 · 텍스트 2줄",
-        "footer": "HORIZONTAL 우측정렬(END) · gap8(cluster/xxs) · px24 · [secondary, primary] (코어 Button XXSM, min-width 유지)"
+        "panel": "PC: VERTICAL · w360 · py20 · gap32. Mobile: VERTICAL · w300 · p20 · gap30. 공통 radius/8 · border 1px INSIDE color/modal/panel/border · shadow/raised",
+        "header": "PC: HORIZONTAL space-between · items-end · px24 · [title 16B + close]. Mobile: title 18B만 사용(닫기 없음)",
+        "body": "PC: body/14R · px24. Mobile: body/16R · 패널 내부폭 260. 모두 2줄 예시",
+        "footer": "PC: 우측정렬 · px24 · Button XXSM h28. Mobile: 내부폭 260 · Button LG h48 · Single 풀폭 / Dual 동일비율"
       },
       "tokens": {
         "_note": "색은 예외 없이 Semantic 경유(HEX 직접 금지). 신규 토큰 1 — color/modal/panel/border(2026-07-29 신설). 나머지는 전부 기존 V3.0 슬롯 재사용. (2026-07-29 이전의 '신규 토큰 0' 방침은 패널 보더 신설로 더 이상 참이 아니다.)",
@@ -12185,38 +12713,53 @@ window.REGISTRY_BUNDLE = {
         "libraryIcons": [
           "ic_닫기 (V2.2 아이콘 라이브러리)"
         ],
-        "note": "푸터 버튼 = 코어 Button(Variant=primary/secondary, Size=XXSM h28). 닫기 = V2.2 아이콘 라이브러리 ic_닫기 인스턴스. 시각 override 금지(Core Reuse Rule)."
+        "note": "푸터 버튼 = 코어 Button(PC XXSM h28 / Mobile LG h48). 닫기 아이콘은 PC만 V2.2 ic_닫기 인스턴스를 사용한다. 시각 override 금지."
       },
       "figma": {
         "componentSetKey": "(미발행 — 라이브러리 publish 시 기록)",
         "fileKey": "cysG5U1udpQqVagYY1hWHW",
         "pageNodeId": "5:5706",
         "pageName": "Core",
-        "sectionNodeId": "1278:30834",
+        "sectionNodeId": "1546:18005",
         "sectionName": "Modal",
-        "figmaNodeId": "1278:30800",
+        "figmaNodeId": "1546:17971",
         "masterNodeIds": {
-          "single": "1278:30774",
-          "dual": "1278:30786"
+          "pc-single": "1546:17945",
+          "pc-dual": "1546:17957",
+          "mobile-single": "1610:6729",
+          "mobile-dual": "1611:6731"
         },
         "targetFile": "SW UX GUIDE V3.0-TEST",
         "builder": "plugins/figma-vars-installer/src/build-components.ts · buildModalShell → buildModalVariant",
         "propertyMap": {
+          "break": [
+            "pc",
+            "mobile"
+          ],
           "footer": [
             "single",
             "dual"
           ]
         },
         "builtThisRound": [
-          "single",
-          "dual"
+          "pc-single",
+          "pc-dual",
+          "mobile-single",
+          "mobile-dual"
         ],
-        "note": "변형축 Footer=Single|Dual(2변형), 표시순 Single→Dual. 세트=프레임 \"Modal\"(864×310), 마스터 각 360×192. 2026-07-18 Figma 커넥터로 실물 확인. 구 ID(1256:5453 / 1256:5439 / 1267:8594)는 폐기 — 설치기 리빌드 과정에서 노드가 재발급된 것으로 보임. 노드 ID 는 리빌드마다 또 바뀔 수 있으니, ID 가 안 맞으면 fileKey → pageNodeId(Core) → sectionNodeId(Modal) 순으로 되짚어 찾을 것. componentSetKey 는 라이브러리 발행 전이라 미기록."
+        "note": "2026-08-21 검증 완료. 변형축 Break=PC|Mobile × Footer=Single|Dual(4변형). PC 마스터는 360×194, Mobile 마스터는 300×208. Dark는 별도 마스터가 아니라 Semantic Color V2·Semantic Shadow V2 Appearance 모드로 제공한다. 노드 ID는 설치기 리빌드 시 바뀔 수 있으므로 fileKey → Core → Modal 섹션 순으로 다시 찾는다."
       },
       "governance": {
-        "verify": "none",
-        "verifyNote": "빌드 직후 상태. 🤖 component-verifier(D) 독립 검증(원본 V2.4 6706:4218 그릇 구조=제목·본문·푸터 3층 대조, 문구는 대조 대상 아님) 후 verify→new 로 갱신 예정.",
+        "verify": "new",
+        "verifyNote": "2026-08-21 PC·Mobile 4변형, Light·Dark Appearance, 텍스트 스타일, Button 인스턴스 재사용을 Figma 실물과 생성 모델로 대조 완료.",
         "coreReuseRule": "button 은 dependencies.coreComponents 명시. 상태·variant 부족 시 needs-core-update 기록(임의 구현 금지)."
+      },
+      "webDistribution": {
+        "status": "approved",
+        "manifest": "ui-library/src/components/modal/manifest.json",
+        "runtime": "components/modal.js",
+        "note": "웹 배포본은 딤+패널 그릇과 여닫기 런타임을 제공한다. 푸터 버튼은 코어 Button 배포본을 조립한다.",
+        "approvedAt": "2026-09-02"
       }
     },
     "multi-toggle": {
@@ -12229,7 +12772,7 @@ window.REGISTRY_BUNDLE = {
         "tokenStatus": "stable",
         "codeStatus": "implemented",
         "darkModeStatus": "stable",
-        "a11yStatus": "pending",
+        "a11yStatus": "stable",
         "figmaStatus": "confirmed",
         "harnessStatus": "implemented",
         "figmaNodeId": "587:8029",
@@ -12526,6 +13069,28 @@ window.REGISTRY_BUNDLE = {
           "_note": "reports/figma-library-build/multi-toggle/4-verification.md:9 기재. 같은 줄의 fileKey 표기가 V2.4 정본 키와 글자 수가 달라(오타 의심) 여기 옮기지 않았다 — 확인 후 보완."
         }
       },
+      "guide": {
+        "sampleLabels": [
+          "왼쪽",
+          "가운데",
+          "오른쪽"
+        ],
+        "webTag": "button",
+        "interactionPattern": "segmented-radio",
+        "accessibility": {
+          "role": "radiogroup",
+          "itemRole": "radio",
+          "keyboard": [
+            "ArrowLeft",
+            "ArrowRight",
+            "Home",
+            "End"
+          ],
+          "attributes": [
+            "aria-checked"
+          ]
+        }
+      },
       "governance": {
         "owner": "design-system",
         "deprecated": false,
@@ -12537,15 +13102,15 @@ window.REGISTRY_BUNDLE = {
         "id": "radio",
         "name": "Radio",
         "category": "Core",
-        "updatedAt": "2026-05-27",
-        "version": "0.1.0",
+        "updatedAt": "2026-08-31",
+        "version": "0.2.0",
         "tokenStatus": "stable",
         "codeStatus": "implemented",
         "darkModeStatus": "stable",
-        "a11yStatus": "pending",
+        "a11yStatus": "stable",
         "figmaStatus": "existing",
         "harnessStatus": "implemented",
-        "description": "라디오 버튼 컨트롤. default·hover·selected·disabled 상태."
+        "description": "라디오 버튼 컨트롤. 정본 상태는 default·hover·selected·disabled·disabled+selected 다섯이고, 라벨은 정본 Label 축의 선택 부품이다."
       },
       "usage": {
         "whenToUse": [
@@ -12567,12 +13132,12 @@ window.REGISTRY_BUNDLE = {
         },
         {
           "part": "라벨(선택)",
-          "role": "보기 텍스트."
+          "role": "선택 부품. 정본 Label=Off 가 기본이고 On 이면 보기 텍스트가 붙는다(본문 14 Medium, 간격 8)."
         }
       ],
       "doDont": {
         "do": [
-          "같은 그룹의 라디오는 name 으로 묶어 하나만 선택되게 한다.",
+          "같은 그룹의 라디오는 name 으로 묶어 하나만 선택되게 한다(감싸는 fieldset 에 그룹 이름을 준다).",
           "원/점 색은 control 토큰을 쓴다."
         ],
         "dont": [
@@ -12581,8 +13146,10 @@ window.REGISTRY_BUNDLE = {
         ]
       },
       "a11y": [
-        "role=radiogroup 으로 묶고 선택에 aria-checked 를 준다.",
-        "키보드 화살표로 그룹 내 이동이 가능하게 한다."
+        "native input[type=radio] 를 같은 name 으로 묶어 역할·선택 상태·화살표 이동을 브라우저가 제공하게 한다.",
+        "그룹은 fieldset·legend 로 묶어 그룹 이름을 읽히게 한다.",
+        "라벨이 없으면 aria-label 필수.",
+        "키보드 초점은 선택 테두리 토큰의 2px 외곽선으로 보이게 한다."
       ],
       "states": [
         "default",
@@ -12660,6 +13227,30 @@ window.REGISTRY_BUNDLE = {
         "figmaNodeId": "",
         "propertyMap": {}
       },
+      "guide": {
+        "sampleLabels": [
+          "옵션 1",
+          "옵션 2",
+          "옵션 3"
+        ],
+        "webTag": "input",
+        "interactionPattern": "radio-group",
+        "accessibility": {
+          "role": "radiogroup",
+          "itemRole": "radio",
+          "keyboard": [
+            "ArrowLeft",
+            "ArrowRight",
+            "ArrowUp",
+            "ArrowDown",
+            "Home",
+            "End"
+          ],
+          "attributes": [
+            "aria-checked"
+          ]
+        }
+      },
       "governance": {
         "owner": "Design System Team",
         "deprecated": false,
@@ -12671,20 +13262,20 @@ window.REGISTRY_BUNDLE = {
         "id": "tab",
         "name": "Line Tab",
         "category": "navigation",
-        "updatedAt": "2026-05-28",
-        "version": "0.1.0",
+        "updatedAt": "2026-08-11",
+        "version": "0.2.0",
         "tokenStatus": "stable",
         "codeStatus": "implemented",
         "darkModeStatus": "candidate",
-        "a11yStatus": "pending",
+        "a11yStatus": "implemented",
         "figmaStatus": "confirmed",
         "harnessStatus": "implemented",
-        "description": "라인탭 컴포넌트. 탭 하단에 인디케이터(밑줄)로 선택 상태를 표시. PC MD / PC SM / Mobile 3가지 variant."
+        "description": "라인탭 컴포넌트. 탭 하단 인디케이터로 선택 상태를 표시한다. 크기·상태·시각 수치는 component-guide-model.json에서 자동으로 가져온다."
       },
       "usage": {
         "whenToUse": [
           "같은 화면에서 콘텐츠 영역을 전환할 때.",
-          "PC MD/SM, Mobile 크기 중 맥락에 맞게 고른다."
+          "정본에 등록된 플랫폼과 크기 중 사용 맥락에 맞는 항목을 고른다."
         ],
         "whenNotToUse": [
           "페이지 이동은 Navigation.",
@@ -12715,40 +13306,27 @@ window.REGISTRY_BUNDLE = {
         "role=tablist/tab/tabpanel 패턴, 선택에 aria-selected 를 준다.",
         "키보드 화살표로 탭을 이동할 수 있게 한다."
       ],
-      "variants": {
-        "size": [
-          "pc-md",
-          "pc-sm",
-          "mobile"
+      "guide": {
+        "sampleLabels": [
+          "메뉴1",
+          "메뉴2",
+          "메뉴3"
         ],
-        "state": [
-          "unselected",
-          "selected",
-          "hover",
-          "pressed"
-        ]
-      },
-      "sizing": {
-        "pcMdContentHeight": "40px",
-        "pcSmContentHeight": "40px",
-        "mobileContentHeight": "30px",
-        "mobileTotalHeight": "32px",
-        "_heightNote": "ContentHeight 는 밑줄(인디케이터)을 뺀 값이다. 모바일 총높이 = 내용 30 + 밑줄 2 = 32 로 정본(build-components.ts buildLineTab Mobile/SM)·V2.4 원본과 일치한다. 이 구분이 없어 2026-08-02 에 '원본 30 vs 정본 32' 라는 헛된 모순 기록이 생겼다. PC 값(40)은 프로토타입 잔재로 정본(SM 42·MD 44)과 다르며 후속 전수 검수에서 정정한다.",
-        "pcMdIndicatorSelected": "2px",
-        "pcSmIndicatorSelected": "2px",
-        "mobileIndicatorSelected": "2px",
-        "indicatorDefault": "1px",
-        "pcPaddingInline": "var(--spacing-16)",
-        "mobilePaddingInline": "var(--spacing-16)",
-        "_paddingNote": "정본 buildLineTab 의 PAD_X=16 (PC·모바일 공통). 종전 값 --spacing-padding-inline-lg/sm 은 실존하지 않는 토큰이었다."
-      },
-      "typography": {
-        "pcMdSelected": "Pretendard Bold 20px / line-height 1.3",
-        "pcMdUnselected": "Pretendard Medium 20px / line-height 1.3",
-        "pcSmSelected": "Pretendard Bold 16px / line-height 1.3 / letter-spacing 0",
-        "pcSmUnselected": "Pretendard Medium 16px / line-height 1.3 / letter-spacing -0.32px",
-        "mobileSelected": "Pretendard Bold 16px / line-height 1.3",
-        "mobileUnselected": "Pretendard Medium 16px / line-height 1.3 / letter-spacing -0.32px"
+        "interactionPattern": "selection-follows-focus",
+        "accessibility": {
+          "label": "콘텐츠 보기 선택",
+          "roles": [
+            "tablist",
+            "tab",
+            "tabpanel"
+          ],
+          "keyboard": [
+            "ArrowLeft",
+            "ArrowRight",
+            "Home",
+            "End"
+          ]
+        }
       },
       "tokens": [
         {
@@ -12824,7 +13402,7 @@ window.REGISTRY_BUNDLE = {
         "tokenStatus": "stable",
         "codeStatus": "implemented",
         "darkModeStatus": "pending",
-        "a11yStatus": "pending",
+        "a11yStatus": "stable",
         "figmaStatus": "existing",
         "harnessStatus": "implemented",
         "description": "멀티라인 텍스트 입력 컴포넌트. HD-6(2026-05-12)에서 Inputbox_large → Textarea로 분리 확정. --input-* 토큰 공유 결정(2026-05-20).",
@@ -12833,7 +13411,8 @@ window.REGISTRY_BUNDLE = {
           "--textarea-* 별도 정의 없음 — --input-* 토큰 공유 확정(2026-05-20). Input과 시각 동일, 추가 divergence 없음.",
           "Figma Inputbox_large 노드 확인 후 figmaNodeId 등록 예정.",
           "resize 속성(none/vertical/both) 정책 미확정.",
-          "구조 불일치(2026-07-14): 웹 Textarea 에는 안내(helper) 텍스트가 있으나(이 tokens 표 --input-helper-text), Figma 설치기 빌더는 Text Area 안내문을 생성하지 않는다(build-components.ts:1144 '1차는 필드 상태만'). 색이 아니라 '요소 존재'가 다름 — 별도 작업으로 Figma 빌더에 helper 요소 추가 필요(needs-core-update). 기본 안내색은 Input 과 동일 기준 text/state/caption(gray/500)."
+          "구조 불일치(2026-07-14): 웹 Textarea 에는 안내(helper) 텍스트가 있으나(이 tokens 표 --input-helper-text), Figma 설치기 빌더는 Text Area 안내문을 생성하지 않는다(build-components.ts:1144 '1차는 필드 상태만'). 색이 아니라 '요소 존재'가 다름 — 별도 작업으로 Figma 빌더에 helper 요소 추가 필요(needs-core-update). 기본 안내색은 Input 과 동일 기준 text/state/caption(gray/500).",
+          "resize 정책 확정(2026-09-02, river 결정): 세로로만 늘릴 수 있다(resize: vertical). 가로 확장은 옆 요소를 밀어 레이아웃이 깨져 금지."
         ]
       },
       "usage": {
@@ -12850,10 +13429,6 @@ window.REGISTRY_BUNDLE = {
         {
           "part": "입력 영역",
           "role": "멀티라인 텍스트. --input-* 토큰."
-        },
-        {
-          "part": "helper 텍스트(선택)",
-          "role": "필드 아래 도움말·오류·성공. text/state/caption 기본."
         }
       ],
       "doDont": {
@@ -12867,20 +13442,18 @@ window.REGISTRY_BUNDLE = {
         ]
       },
       "a11y": [
-        "라벨과 연결(for/id)하고, 오류 시 aria-invalid·aria-describedby 로 helper 를 연결한다."
+        "라벨과 연결(for/id)하거나 aria-label 로 이름을 준다. 안내·오류 문구는 정본에 아직 없어 이번 웹 배포본에 없다 — 정본에 추가된 뒤 aria-invalid·aria-describedby 로 연결한다."
       ],
       "states": [
         "default",
         "focus",
-        "error",
-        "correct",
+        "filled",
         "disabled",
         "readonly"
       ],
       "stateNotes": {
         "focus": "border → --input-focus-border (--color-form-control-border-selected)",
-        "correct": "HD-4 기준: correct로 통일. border → --input-correct-border. helper → --input-correct-text",
-        "error": "border → --input-error-border. helper → --input-error-text",
+        "filled": "입력이 완료된 상태. 정본 Text Area의 Filled variant를 따른다.",
         "disabled": "bg → --input-disabled-bg. border → --input-disabled-border. text → --input-disabled-text",
         "readonly": "bg → --input-readonly-bg. border → --input-readonly-border. text → --input-readonly-text",
         "hover": "삭제(HD-2). Figma 미정의."
@@ -12914,18 +13487,6 @@ window.REGISTRY_BUNDLE = {
           "name": "--input-focus-border",
           "value": "var(--color-form-control-border-selected)",
           "state": "focus",
-          "property": "border"
-        },
-        {
-          "name": "--input-error-border",
-          "value": "var(--color-form-control-border-error)",
-          "state": "error",
-          "property": "border"
-        },
-        {
-          "name": "--input-correct-border",
-          "value": "var(--color-form-control-border-correct)",
-          "state": "correct",
           "property": "border"
         },
         {
@@ -12963,18 +13524,6 @@ window.REGISTRY_BUNDLE = {
           "value": "var(--color-text-state-caption)",
           "state": "default",
           "property": "helper"
-        },
-        {
-          "name": "--input-error-text",
-          "value": "var(--color-text-state-error)",
-          "state": "error",
-          "property": "helper"
-        },
-        {
-          "name": "--input-correct-text",
-          "value": "var(--color-text-state-correct)",
-          "state": "correct",
-          "property": "helper"
         }
       ],
       "plannedTokens": [],
@@ -12995,44 +13544,48 @@ window.REGISTRY_BUNDLE = {
         "platform": "mobile",
         "propertyMap": {}
       },
+      "guide": {
+        "sampleLabel": "설명",
+        "samplePlaceholder": "여러 줄 내용을 입력하세요",
+        "sampleValue": "디자인 시스템 적용 내용을 작성합니다.",
+        "webTag": "textarea",
+        "interactionPattern": "multiline-text-entry"
+      },
       "governance": {
         "owner": "Design System Team",
         "deprecated": false,
         "replacement": null
-      }
+      },
+      "notes": []
     },
     "time-picker": {
       "_meta": {
         "id": "time-picker",
         "name": "TimePicker",
         "category": "Core",
-        "updatedAt": "2026-06-05",
+        "updatedAt": "2026-09-02",
         "version": "0.3.0",
         "tokenStatus": "stable",
         "codeStatus": "implemented",
         "darkModeStatus": "stable",
-        "a11yStatus": "pending",
+        "a11yStatus": "stable",
         "figmaStatus": "confirmed",
         "harnessStatus": "implemented",
-        "description": "시간 선택 컴포넌트. input 방식(클릭 → 드롭다운 패널)과 select 방식(시/분 분리 셀렉트) 2가지 variant.",
+        "description": "시간 입력 트리거를 눌러 드롭다운 목록에서 시간을 고르는 Time Picker Input 컴포넌트.",
         "notes": [
           "색상 토큰 100% -- color-form-control-* semantic 재사용. 전용 색상 토큰 없음.",
-          "신규 semantic 2개: --color-form-control-label-default/disabled (timepicker_select '시'/'분' 라벨용).",
           "HD-Time-1: 확정 — ic_시계 아이콘 통일. disabled color 처리로 시각 구분.",
           "HD-Time-2: token-aliases.json에 editing→focus alias 추가 완료 (2026-05-20).",
-          "HD-Time-3: --color-form-control-label-default = var(--color-text-secondary)(#353535). Figma 원본 일치.",
           "HD-Time-4: Mobile 인터랙션 미정의 — timepicker_input mobile variant 있으나 bottom sheet 여부 미확정.",
           "HD-Time-5: 드롭다운 패널 전용 토큰(shadow, column divider) — dropdown semantic 재사용으로 처리.",
           "pc-xxsm (h28) size만 font-size 12px. 나머지는 모두 14px.",
-          "select형 harness md/sm 2사이즈 완성 (2026-06-05, figma-to-code 워크플로우). Figma timepicker_select 540:3636 실측: md(h44, 라벨16px, 값ls0, min-w78) / sm(h28, 라벨14px, 값ls-0.28px, pad 4/4/4/12, group gap 12). state=default/focus(editing)/disabled, filled 없음.",
           "HD-TPS-1 확정: --color-form-control-border-disabled를 border-subtle(#E9E9E9)→control-border-default(#D9D9D9)로 변경. Figma form-control/border/disabled 기준 통일. Input·Select·DatePicker 공유 영향.",
-          "HD-TPS-2 확정: select 화살표 = 원본 ic_화살표,더보기(563:3158) 벡터 사용. 우향 chevron path M0.707107 0.707107L4.95711 4.95711L0.707107 9.20711, CSS 90° 회전(아래)·focus -90°(위). 기존 손그림 chevron 교체.",
-          "산출물: reports/figma-to-code/time-picker-select/ (1-inventory·2-extraction·4-verification)."
+          "Time Picker Input 정본 20종만 이 가이드의 상위 구성으로 표출한다."
         ]
       },
       "usage": {
         "whenToUse": [
-          "시간(시/분)을 고를 때. input 방식(클릭→드롭다운) 또는 select 방식(시·분 분리)."
+          "시간(시/분)을 드롭다운 목록에서 고를 때."
         ],
         "whenNotToUse": [
           "날짜는 DatePicker.",
@@ -13043,10 +13596,6 @@ window.REGISTRY_BUNDLE = {
         {
           "part": "트리거/필드",
           "role": "시간 표시 + ic_시계 아이콘."
-        },
-        {
-          "part": "시/분 라벨",
-          "role": "select 방식 시/분 라벨. form-control-label 토큰."
         },
         {
           "part": "드롭다운 패널",
@@ -13064,8 +13613,11 @@ window.REGISTRY_BUNDLE = {
         ]
       },
       "a11y": [
-        "시/분 입력에 라벨을 연결한다.",
-        "드롭다운은 aria-expanded/listbox 패턴을 따른다."
+        "트리거는 button 이며 aria-haspopup=listbox·aria-expanded 를 가지고, 접근 가능한 이름(aria-label 또는 연결된 label)을 반드시 제공한다.",
+        "드롭다운의 각 열은 role=listbox 와 접근 이름(시·분·오전오후)을 가지고, 각 칸은 role=option 과 aria-selected 를 가진다.",
+        "키보드: 트리거에서 Enter·Space·아래화살표로 열고, Esc 로 닫으며 포커스는 트리거로 돌아온다. 위아래 화살표는 같은 열 이동, 좌우 화살표는 열 이동, Enter 는 선택, Tab 으로 확인 버튼에 도달한다.",
+        "열릴 때 포커스는 현재 선택값(없으면 첫 칸)으로 이동한다.",
+        "disabled 트리거는 열리지 않는다."
       ],
       "variants": {
         "input": {
@@ -13086,22 +13638,8 @@ window.REGISTRY_BUNDLE = {
             "12h"
           ]
         },
-        "select": {
-          "size": [
-            "md",
-            "sm"
-          ],
-          "state": [
-            "default",
-            "focus",
-            "disabled"
-          ]
-        },
         "dropdown_panel": {
-          "type": [
-            "24h",
-            "12h"
-          ]
+          "dependency": "Time Picker Dropdown"
         }
       },
       "sizing": {
@@ -13192,24 +13730,6 @@ window.REGISTRY_BUNDLE = {
           "figmaVariable": "color/form-control/text/disabled",
           "status": "stable",
           "description": "disabled 텍스트"
-        },
-        {
-          "name": "--color-form-control-label-default",
-          "type": "semantic-new",
-          "value": "var(--color-text-secondary)",
-          "resolvedLight": "#353535",
-          "figmaVariable": "color/form-control/label/default",
-          "status": "stable",
-          "description": "timepicker_select '시'/'분' 라벨 텍스트 — 2026-05-20 신설"
-        },
-        {
-          "name": "--color-form-control-label-disabled",
-          "type": "semantic-new",
-          "value": "var(--color-text-disabled)",
-          "resolvedLight": "#C4C4C4",
-          "figmaVariable": "color/form-control/label/disabled",
-          "status": "stable",
-          "description": "timepicker_select disabled 라벨 텍스트 — 2026-05-20 신설"
         }
       ],
       "figma": {
@@ -13217,8 +13737,6 @@ window.REGISTRY_BUNDLE = {
         "figmaNodeId": "958:26994",
         "nodes": {
           "timepicker_input": "958:26994",
-          "timepicker_select": "958:26994",
-          "timepicker_select_dropdown": "958:26319",
           "pc_timepicker_input_dropdown": "958:26319",
           "timepicker_cell": "958:25998",
           "timepicker_mobile_bottom_sheet": "958:27433",
@@ -13240,25 +13758,40 @@ window.REGISTRY_BUNDLE = {
       "humanDecisions": {
         "HD-Time-1": "확정 — ic_시계 아이콘 통일. disabled 상태도 동일 아이콘, color: var(--color-form-control-text-disabled)로 시각 처리",
         "HD-Time-4": "결정 — Mobile bottom sheet 채택 (DatePicker HD-4와 동일 기준). harness 구현 완료 (2026-05-26)",
-        "HD-Time-5": "결정 — 드롭다운 패널 shadow rgba(0,0,0,0.15) 예외 허용 (DatePicker panel shadow 예외와 동일 정책)"
+        "HD-Time-5": "결정 — 드롭다운 패널 shadow rgba(0,0,0,0.15) 예외 허용 (DatePicker panel shadow 예외와 동일 정책)",
+        "HD-Time-6": "확정(2026-09-02) — 접근성 계약을 이미 승인된 Select 의 목록상자 방식과 같은 규격으로 확정. a11yStatus pending→stable."
+      },
+      "guide": {
+        "sampleLabel": "시간",
+        "samplePlaceholder": "시간을 선택하세요",
+        "sampleValue": "09:30",
+        "sampleOptions": [
+          "09:00",
+          "09:30",
+          "10:00",
+          "10:30"
+        ],
+        "webTag": "button",
+        "interactionPattern": "single-select-listbox"
       },
       "governance": {
         "owner": "Design System Team",
         "deprecated": false,
         "replacement": null
-      }
+      },
+      "updatedAt": "2026-09-02"
     },
     "toggle": {
       "_meta": {
         "id": "toggle",
         "name": "Toggle",
         "category": "Core",
-        "updatedAt": "2026-05-27",
+        "updatedAt": "2026-08-31",
         "version": "0.1.0",
         "tokenStatus": "stable",
         "codeStatus": "implemented",
         "darkModeStatus": "stable",
-        "a11yStatus": "pending",
+        "a11yStatus": "stable",
         "figmaStatus": "existing",
         "harnessStatus": "implemented",
         "description": "토글 스위치 컨트롤. on·off·disabled 상태.",
@@ -13339,6 +13872,23 @@ window.REGISTRY_BUNDLE = {
         "figmaNodeId": "",
         "propertyMap": {}
       },
+      "guide": {
+        "sampleLabels": [
+          "설정"
+        ],
+        "webTag": "button",
+        "interactionPattern": "switch-toggle",
+        "accessibility": {
+          "role": "switch",
+          "keyboard": [
+            "Space"
+          ],
+          "attributes": [
+            "aria-checked",
+            "aria-label"
+          ]
+        }
+      },
       "governance": {
         "owner": "Design System Team",
         "deprecated": false,
@@ -13350,12 +13900,12 @@ window.REGISTRY_BUNDLE = {
         "id": "pagination",
         "name": "Pagination",
         "category": "navigation",
-        "updatedAt": "2026-08-01",
+        "updatedAt": "2026-09-02",
         "version": "0.2.0",
         "tokenStatus": "stable",
         "codeStatus": "implemented",
         "darkModeStatus": "pending",
-        "a11yStatus": "pending",
+        "a11yStatus": "implemented",
         "figmaStatus": "confirmed",
         "harnessStatus": "implemented",
         "description": "페이지네이션 컨트롤. 화살표(first/prev/next/last) + 페이지 번호. 선택 페이지는 텍스트 색으로만 구분.",
@@ -13364,6 +13914,7 @@ window.REGISTRY_BUNDLE = {
           "Disabled 화살표 = 전용 토큰 사용(bg gray/50 · border gray/100 · icon gray/300). V3.0 재실측(2026-07-08, node 956:19066)으로 확정 — 종전 '옵션 없이 opacity:0.9만 적용' 서술은 폐기(2026-08-01 교정).",
           "hover 는 전용 토큰이 V3.0 원본에 정의됨(color/pagination/control/bg·border·icon/hover) — 종전 'Figma 미정의 · assumed' 상태 해소(2026-07-08 재실측).",
           "dark mode: 미확인 — candidate 상태.",
+          "2026-09-02: 웹 배포 계약에 native button·현재 페이지 aria-current·화살표 한국어 이름을 확정했다. focus-visible 은 승인 없는 신설이어서 같은 날 철회했다 — 키보드 초점은 브라우저 기본 표시에 맡긴다.",
           "2026-08-01: 위 2건은 tokens/component-tokens-extracted.md 에만 있던 V3.0 재실측 기록을 registry 정본으로 옮긴 것이다(그 문서는 아카이브됨). 정본 토큰 실재는 vars-data 로 확인함."
         ]
       },
@@ -13487,6 +14038,23 @@ window.REGISTRY_BUNDLE = {
           "property1": "property1",
           "selected": "selected",
           "hover": "hover"
+        }
+      },
+      "guide": {
+        "samplePages": [
+          "1",
+          "2",
+          "3",
+          "4",
+          "5"
+        ],
+        "interactionPattern": "paged-navigation",
+        "webTag": "nav",
+        "labels": {
+          "first": "첫 페이지",
+          "previous": "이전 페이지",
+          "next": "다음 페이지",
+          "last": "마지막 페이지"
         }
       },
       "governance": {
@@ -13644,18 +14212,19 @@ window.REGISTRY_BUNDLE = {
         "id": "table",
         "name": "Table",
         "category": "table",
-        "updatedAt": "2026-05-27",
+        "updatedAt": "2026-09-02",
         "version": "0.4.0",
         "tokenStatus": "stable",
         "codeStatus": "implemented",
         "darkModeStatus": "stable",
-        "a11yStatus": "pending",
+        "a11yStatus": "stable",
         "figmaStatus": "confirmed",
         "harnessStatus": "implemented",
         "description": "데이터 그리드/테이블 컴포넌트. 헤더(정렬 아이콘·체크박스 포함), 행 hover·selected, 셀 스타일 포함.",
         "notes": [
           "정렬 아이콘: combobox_arrow SVG, 18×18px (icon=on 헤더 variant).",
-          "Checkbox: 선택 컬럼은 s1-checkbox 코어 컴포넌트 재사용. Table에서 별도 체크박스 구현 금지."
+          "Checkbox: 선택 컬럼은 s1-checkbox 코어 컴포넌트 재사용. Table에서 별도 체크박스 구현 금지.",
+          "크기 사다리 md(44/14) · sm(38/14) · xsm(34/12) — river 승인 2026-09-02. 구 정본의 sm 13px 표기는 텍스트 스타일에 13 이 없어 늘 14 로 치환돼 온 죽은 값이라 정정했다."
         ]
       },
       "usage": {
@@ -13692,8 +14261,10 @@ window.REGISTRY_BUNDLE = {
         ]
       },
       "a11y": [
-        "헤더는 th·scope 로 표시한다.",
-        "정렬 상태는 aria-sort 로 노출한다."
+        "열 제목은 th·scope=\"col\" 로 표시해 화면낭독기가 값과 짝지어 읽게 한다.",
+        "전체 선택 체크박스에는 '전체 선택', 각 행 체크박스에는 그 행을 가리키는 이름을 준다.",
+        "선택은 native checkbox 의 Tab 이동·Space 조작을 그대로 쓴다. 방향키 격자 이동은 채택하지 않는다(river 결정 2026-09-02).",
+        "정렬 기능이 범위 밖이라 aria-sort 는 쓰지 않는다(river 결정 2026-09-02)."
       ],
       "dependencies": {
         "coreComponents": [
@@ -13725,7 +14296,8 @@ window.REGISTRY_BUNDLE = {
         "header": {
           "size": [
             "md",
-            "sm"
+            "sm",
+            "xsm"
           ],
           "position": [
             "middle",
@@ -13751,7 +14323,8 @@ window.REGISTRY_BUNDLE = {
         "body": {
           "size": [
             "md",
-            "sm"
+            "sm",
+            "xsm"
           ],
           "position": [
             "middle",
@@ -13775,7 +14348,11 @@ window.REGISTRY_BUNDLE = {
         "paddingInlineEnd": "var(--spacing-padding-inline-sm)",
         "selectionCellWidth": "48px",
         "headerFont": "Pretendard Medium 14px",
-        "bodyFont": "Pretendard Regular 14px"
+        "bodyFont": "Pretendard Regular 14px",
+        "rowHeightXsm": "var(--sizing-34)",
+        "fontSizeMd": "var(--font-size-14)",
+        "fontSizeSm": "var(--font-size-14)",
+        "fontSizeXsm": "var(--font-size-12)"
       },
       "states": [
         "default",
@@ -13881,6 +14458,73 @@ window.REGISTRY_BUNDLE = {
           "checkBox": "check box"
         }
       },
+      "guide": {
+        "sampleColumns": [
+          "선택",
+          "이름",
+          "상태",
+          "담당자",
+          "수정일"
+        ],
+        "sampleRows": [
+          [
+            "홍길동",
+            "진행 중",
+            "김담당",
+            "08.11"
+          ],
+          [
+            "김영희",
+            "완료",
+            "이담당",
+            "08.10"
+          ],
+          [
+            "박민수",
+            "대기",
+            "최담당",
+            "08.09"
+          ],
+          [
+            "정수진",
+            "진행 중",
+            "한담당",
+            "08.08"
+          ],
+          [
+            "이도윤",
+            "검토 중",
+            "윤담당",
+            "08.07"
+          ],
+          [
+            "최서연",
+            "완료",
+            "오담당",
+            "08.06"
+          ],
+          [
+            "강민준",
+            "대기",
+            "임담당",
+            "08.05"
+          ],
+          [
+            "윤지우",
+            "진행 중",
+            "서담당",
+            "08.04"
+          ]
+        ],
+        "interactionPattern": "sortable-selectable-grid",
+        "webTag": "table",
+        "dependencies": [
+          "Table Cell",
+          "Checkbox",
+          "Pagination",
+          "Select Box"
+        ]
+      },
       "governance": {
         "owner": "Design System Team",
         "deprecated": false,
@@ -13897,7 +14541,7 @@ window.REGISTRY_BUNDLE = {
         "tokenStatus": "stable",
         "codeStatus": "implemented",
         "darkModeStatus": "pending",
-        "a11yStatus": "pending",
+        "a11yStatus": "stable",
         "figmaStatus": "existing",
         "harnessStatus": "implemented",
         "description": "셀렉트 컴포넌트. 단일 선택 드롭다운. --dropdown-* 토큰 재사용 (trigger + list + option).",
@@ -14000,6 +14644,17 @@ window.REGISTRY_BUNDLE = {
         "libraryName": "S/W UX GUIDE V2.4(컴포넌트 정리중)",
         "componentKey": "2b522174bf5ff44a437a5d706ee15ff3f1c2b787",
         "propertyMap": {}
+      },
+      "guide": {
+        "sampleLabel": "지역",
+        "samplePlaceholder": "지역을 선택하세요",
+        "sampleOptions": [
+          "서울",
+          "부산",
+          "제주"
+        ],
+        "webTag": "button",
+        "interactionPattern": "single-select-listbox"
       },
       "governance": {
         "owner": "Design System Team",
@@ -14438,8 +15093,8 @@ window.REGISTRY_BUNDLE = {
     }
   },
   "reportsIndex": {
-    "generatedAt": "2026-08-10T03:57:40.810Z",
-    "totalCount": 70,
+    "generatedAt": "2026-09-01T07:10:36.915Z",
+    "totalCount": 81,
     "reports": [
       {
         "id": "button-sync-check",
@@ -14449,9 +15104,141 @@ window.REGISTRY_BUNDLE = {
         "category": "audit",
         "status": "archive",
         "sourcePath": "reports/button-sync-check.md",
-        "updatedAt": "2026-08-10",
+        "updatedAt": "2026-09-01",
         "summary": "- **Variants:** primary, secondary, blue-line",
         "fileSizeKB": 3.2
+      },
+      {
+        "id": "harness-audit-2026-09-01",
+        "filename": "harness-audit-2026-09-01.md",
+        "title": "Harness Audit Report — 2026-09-01",
+        "stage": "Audit",
+        "category": "audit",
+        "status": "archive",
+        "sourcePath": "reports/harness-audit-2026-09-01.md",
+        "updatedAt": "2026-09-01",
+        "summary": "- 🟡 HTML 코드탭 pane \"btn-pri-pc\" 을 찾을 수 없음",
+        "fileSizeKB": 2.1
+      },
+      {
+        "id": "harness-audit-2026-08-31",
+        "filename": "harness-audit-2026-08-31.md",
+        "title": "Harness Audit Report — 2026-08-31",
+        "stage": "Audit",
+        "category": "audit",
+        "status": "archive",
+        "sourcePath": "reports/harness-audit-2026-08-31.md",
+        "updatedAt": "2026-08-31",
+        "summary": "- 🟡 HTML 코드탭 pane \"btn-pri-pc\" 을 찾을 수 없음",
+        "fileSizeKB": 2.1
+      },
+      {
+        "id": "harness-audit-2026-08-26",
+        "filename": "harness-audit-2026-08-26.md",
+        "title": "Harness Audit Report — 2026-08-26",
+        "stage": "Audit",
+        "category": "audit",
+        "status": "archive",
+        "sourcePath": "reports/harness-audit-2026-08-26.md",
+        "updatedAt": "2026-08-26",
+        "summary": "- 🟡 HTML 코드탭 pane \"btn-pri-pc\" 을 찾을 수 없음",
+        "fileSizeKB": 2.1
+      },
+      {
+        "id": "harness-audit-2026-08-25",
+        "filename": "harness-audit-2026-08-25.md",
+        "title": "Harness Audit Report — 2026-08-25",
+        "stage": "Audit",
+        "category": "audit",
+        "status": "archive",
+        "sourcePath": "reports/harness-audit-2026-08-25.md",
+        "updatedAt": "2026-08-25",
+        "summary": "- ✅ [button] 모든 사이즈 분기 존재 (md (h44) / xsm (h34) / xxsm (h28) / lg (h48))",
+        "fileSizeKB": 2
+      },
+      {
+        "id": "component-inventory-audit",
+        "filename": "component-inventory-audit.md",
+        "title": "컴포넌트 제공 수준 재고조사",
+        "stage": "Audit",
+        "category": "audit",
+        "status": "archive",
+        "sourcePath": "reports/component-inventory-audit.md",
+        "updatedAt": "2026-08-24",
+        "summary": "범위: Figma 설치기 정본 → Registry 문서 → `pages/components.html` → 퍼블리셔용 CSS",
+        "fileSizeKB": 11.6
+      },
+      {
+        "id": "harness-audit-2026-08-24",
+        "filename": "harness-audit-2026-08-24.md",
+        "title": "Harness Audit Report — 2026-08-24",
+        "stage": "Audit",
+        "category": "audit",
+        "status": "archive",
+        "sourcePath": "reports/harness-audit-2026-08-24.md",
+        "updatedAt": "2026-08-24",
+        "summary": "- ✅ [button] 모든 사이즈 분기 존재 (md (h44) / xsm (h34) / xxsm (h28) / lg (h48))",
+        "fileSizeKB": 2
+      },
+      {
+        "id": "harness-audit-2026-08-21",
+        "filename": "harness-audit-2026-08-21.md",
+        "title": "Harness Audit Report — 2026-08-21",
+        "stage": "Audit",
+        "category": "audit",
+        "status": "archive",
+        "sourcePath": "reports/harness-audit-2026-08-21.md",
+        "updatedAt": "2026-08-21",
+        "summary": "- ✅ [button] 모든 사이즈 분기 존재 (md (h44) / xsm (h34) / xxsm (h28) / lg (h48))",
+        "fileSizeKB": 2
+      },
+      {
+        "id": "harness-audit-2026-08-20",
+        "filename": "harness-audit-2026-08-20.md",
+        "title": "Harness Audit Report — 2026-08-20",
+        "stage": "Audit",
+        "category": "audit",
+        "status": "archive",
+        "sourcePath": "reports/harness-audit-2026-08-20.md",
+        "updatedAt": "2026-08-20",
+        "summary": "- ✅ [button] 모든 사이즈 분기 존재 (md (h44) / xsm (h34) / xxsm (h28) / lg (h48))",
+        "fileSizeKB": 2
+      },
+      {
+        "id": "harness-audit-2026-08-14",
+        "filename": "harness-audit-2026-08-14.md",
+        "title": "Harness Audit Report — 2026-08-14",
+        "stage": "Audit",
+        "category": "audit",
+        "status": "archive",
+        "sourcePath": "reports/harness-audit-2026-08-14.md",
+        "updatedAt": "2026-08-14",
+        "summary": "- ✅ [button] 모든 사이즈 분기 존재 (md (h44) / xsm (h34) / xxsm (h28) / lg (h48))",
+        "fileSizeKB": 2
+      },
+      {
+        "id": "harness-audit-2026-08-12",
+        "filename": "harness-audit-2026-08-12.md",
+        "title": "Harness Audit Report — 2026-08-12",
+        "stage": "Audit",
+        "category": "audit",
+        "status": "archive",
+        "sourcePath": "reports/harness-audit-2026-08-12.md",
+        "updatedAt": "2026-08-12",
+        "summary": "- ✅ [button] 모든 사이즈 분기 존재 (md (h44) / xsm (h34) / xxsm (h28) / lg (h48))",
+        "fileSizeKB": 2
+      },
+      {
+        "id": "harness-audit-2026-08-11",
+        "filename": "harness-audit-2026-08-11.md",
+        "title": "Harness Audit Report — 2026-08-11",
+        "stage": "Audit",
+        "category": "audit",
+        "status": "archive",
+        "sourcePath": "reports/harness-audit-2026-08-11.md",
+        "updatedAt": "2026-08-11",
+        "summary": "- ✅ [button] 모든 사이즈 분기 존재 (md (h44) / xsm (h34) / xxsm (h28) / lg (h48))",
+        "fileSizeKB": 2
       },
       {
         "id": "handoff-canon-consolidation",
@@ -14643,7 +15430,7 @@ window.REGISTRY_BUNDLE = {
         "sourcePath": "reports/changelog-archive.md",
         "updatedAt": "2026-06-17",
         "summary": "이 파일은 CLAUDE.md `변경 이력` 표의 **상세 보존본**이다. 컨텍스트 비용을 줄이기 위해 CLAUDE.md 본문에서 분리했다.",
-        "fileSizeKB": 70.4
+        "fileSizeKB": 72.1
       },
       {
         "id": "harness-audit-2026-06-17",

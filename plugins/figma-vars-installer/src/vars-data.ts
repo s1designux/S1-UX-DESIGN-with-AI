@@ -473,11 +473,6 @@ export const SEMANTIC_SHADOW: Record<string, SemanticShadowEntry> = {
 // ──────────────────────────────────────────────────────────────────────────
 
 export const SEMANTIC_COLOR: Record<string, SemanticColorEntry> = {
-  // ── button focus-visible ────
-  // 과거 variant별 button focus-ring 토큰을 되살리지 않는다.
-  // 키보드 포커스는 variant와 무관한 하나의 Button 의미 토큰을 사용한다.
-  "color/button/border/focus": { light: "blue/400", dark: "blue-dark/300" },
-
   // ── bg (페이지·레이아웃 배경 — 깊이 스케일) ────
   // level-0(가장 위, 흰/카드) → level-3(가장 깊은 배경). 라이트는 기존 값 보존, 다크는 깊이 위계로 재정렬.
   // (옛 default/subtle/muted/selected, surface/* 는 깊이 스케일로 통합·드롭. bg/selected→테이블 자체 토큰, surface→드롭)
@@ -588,8 +583,6 @@ export const SEMANTIC_COLOR: Record<string, SemanticColorEntry> = {
   "color/form-control/border/disabled": { light: "gray/100", dark: "gray-dark/200" },
   "color/form-control/border/error": { light: "red/300", dark: "red-dark/350" },
   "color/form-control/border/selected": { light: "blue/400", dark: "blue-dark/350" },
-  // suffix action의 키보드 focus-visible. field 자체 focus(selected)와 의미·geometry를 분리한다.
-  "color/form-control/action/border/focus": { light: "blue/400", dark: "blue-dark/350" },
   "color/form-control/label/default": { light: "gray/800", dark: "gray-dark/800" },
   "color/form-control/label/disabled": { light: "gray/300", dark: "gray-dark/600" },
   "color/form-control/text/default": { light: "gray/800", dark: "gray-dark/800" },

@@ -2,7 +2,7 @@
   "id": "tab",
   "version": "0.1.0",
   "status": "approved",
-  "canonicalFingerprint": "bc46eb3318d82ebf05f8222fe7249f980647945b7a0e7b2634f292e0edadd244",
+  "canonicalFingerprint": "859fd669d8d8763fab752a9f26a01e818a343bc3ded37fd813557ddea6d2777d",
   "canonicalSources": [
     "plugins/figma-vars-installer/src/build-components.ts",
     "plugins/figma-vars-installer/src/vars-data.ts",
@@ -32,8 +32,7 @@
   "states": {
     "default": "aria-selected=false",
     "hover": "hover-capable pointer over unselected tab",
-    "selected": "aria-selected=true",
-    "focusVisible": ":focus-visible"
+    "selected": "aria-selected=true"
   },
   "canonicalStateMap": {
     "Unselected": "default",
@@ -72,8 +71,7 @@
     "entry": "components/tab.css",
     "rootScope": "[data-s1-component=tab]",
     "nativeStates": [
-      ":hover",
-      ":focus-visible"
+      ":hover"
     ],
     "ariaStates": [
       "[aria-selected=true]"
@@ -109,7 +107,7 @@
     },
     "focus": {
       "status": "required",
-      "value": "roving tabindex and visible 2px outline"
+      "value": "roving tabindex; 초점 표시는 브라우저 기본을 그대로 쓴다 — 정본에 focus 표현이 없다(2026-09-02 river 결정)."
     },
     "ariaStateSync": {
       "status": "required",

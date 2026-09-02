@@ -2,7 +2,7 @@
   "id": "mobile-bottom-nav",
   "version": "0.1.0",
   "status": "approved",
-  "canonicalFingerprint": "40d88e15f0bbb22a89ce6ac200b45b30db591c4fb1146f29de3ccfbe56fdd996",
+  "canonicalFingerprint": "bb52eac3e68464b3d7c4f11f44ddfacb648bf55a7b541d13cc07317f8def7ff9",
   "canonicalSources": [
     "plugins/figma-vars-installer/src/build-components.ts",
     "plugins/figma-vars-installer/src/vars-data.ts",
@@ -47,9 +47,7 @@
   "cssContract": {
     "entry": "components/mobile-bottom-nav.css",
     "rootScope": "[data-s1-component=mobile-bottom-nav]",
-    "nativeStates": [
-      ":focus-visible"
-    ],
+    "nativeStates": [],
     "ariaStates": [
       "[aria-selected=\"true\"]"
     ],
@@ -97,7 +95,7 @@
     },
     "focus": {
       "status": "required",
-      "value": "2px outline, 2px offset (:focus-visible)"
+      "value": "브라우저 기본 포커스 표시를 그대로 쓴다 — 정본에 focus 표현이 없어 웹에서 만들지 않는다(2026-09-02 river 결정)."
     },
     "ariaStateSync": {
       "status": "required",
@@ -121,5 +119,5 @@
     "runtime": "none",
     "reason": "선택 상태는 호스트 화면의 현재 경로가 정하는 정적 ARIA 상태다. 로컬 클릭 토글·키보드 이동을 이번 범위에 넣지 않아(HD-1 선택지 A) 네이티브 button 시맨틱만으로 충분하다."
   },
-  "sourceFingerprint": "a7e40b9a31bbf09d2fc4b0bb11df30d0617a8b5ff0078c299490bb37a4fb6335"
+  "sourceFingerprint": "0d324ecc47ee2ac18b0b6d3ae9dffce1ad681ed2d4f6129c9d20ced55c96fc82"
 }

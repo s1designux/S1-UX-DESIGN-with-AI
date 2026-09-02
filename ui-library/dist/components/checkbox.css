@@ -58,12 +58,6 @@
   color: var(--color-control-indicator-disabled);
 }
 
-/* 정본에 focus 변형이 없어 키보드 초점은 선택 테두리 토큰으로만 표시한다(웹 접근성 계약). */
-[data-s1-component="checkbox"] [data-s1-part="control"]:focus-visible {
-  outline: var(--border-width-2) solid var(--color-control-border-selected);
-  outline-offset: var(--spacing-2);
-}
-
 [data-s1-component="checkbox"] [data-s1-part="label"] {
   color: var(--color-control-label-default);
   cursor: pointer;

@@ -2,7 +2,7 @@
   "id": "filter-chip",
   "version": "0.1.0",
   "status": "approved",
-  "canonicalFingerprint": "5232593f342624f3bb80bb24b6fcfdc0a2806108a3217ed23366cadeec7b1dea",
+  "canonicalFingerprint": "cb49e5db6e7e0db15e23096a206de5b8b35e8aa15444e10e8c6169c35d055556",
   "canonicalSources": [
     "plugins/figma-vars-installer/src/build-components.ts",
     "plugins/figma-vars-installer/src/vars-data.ts",
@@ -126,8 +126,7 @@
     "rootScope": "[data-s1-component=filter-chip]",
     "nativeStates": [
       ":hover",
-      ":disabled",
-      ":focus-visible"
+      ":disabled"
     ],
     "ariaStates": [
       "[aria-expanded=\"true\"]"

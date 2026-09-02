@@ -97,11 +97,6 @@
   width: var(--sizing-48);
 }
 
-[data-s1-component="input"] [data-s1-part="action"]:focus-visible {
-  outline: var(--border-width-2) solid var(--color-form-control-action-border-focus);
-  outline-offset: calc(var(--spacing-2) * -1);
-}
-
 [data-s1-component="input"] [data-s1-part="message"] {
   color: var(--color-text-state-caption);
   font-family: "Pretendard", sans-serif;
@@ -215,11 +210,6 @@
   color: var(--color-form-control-text-disabled);
 }
 
-/* Error·Correct·Read-only 의미는 유지하되 키보드 초점은 selected border로 구분한다. */
-[data-s1-component="input"]:has([data-s1-part="control"]:focus-visible) [data-s1-part="field"] {
-  border-color: var(--color-form-control-border-selected);
-}
-
 /* component:button */
 /* Generated-token consumer. Load assets/css/tokens.css and typography.css first. */
 [data-s1-component="button"] {
@@ -324,11 +314,6 @@
   color: var(--color-button-label-blue-line--hover);
 }
 
-[data-s1-component="button"]:focus-visible:not(:disabled) {
-  outline: var(--border-width-2) solid var(--color-button-border-focus);
-  outline-offset: var(--spacing-2);
-}
-
 [data-s1-component="button"]:disabled {
   background: var(--color-button-bg-disabled);
   border-color: var(--color-button-border-disabled);
@@ -395,12 +380,6 @@
 
 [data-s1-component="checkbox"] [data-s1-part="control"]:disabled:checked {
   color: var(--color-control-indicator-disabled);
-}
-
-/* 정본에 focus 변형이 없어 키보드 초점은 선택 테두리 토큰으로만 표시한다(웹 접근성 계약). */
-[data-s1-component="checkbox"] [data-s1-part="control"]:focus-visible {
-  outline: var(--border-width-2) solid var(--color-control-border-selected);
-  outline-offset: var(--spacing-2);
 }
 
 [data-s1-component="checkbox"] [data-s1-part="label"] {
@@ -478,12 +457,6 @@
   color: var(--color-control-indicator-disabled);
 }
 
-/* 정본에 focus 변형이 없어 키보드 초점은 선택 테두리 토큰으로만 표시한다(웹 접근성 계약). */
-[data-s1-component="radio"] [data-s1-part="control"]:focus-visible {
-  outline: var(--border-width-2) solid var(--color-control-border-selected);
-  outline-offset: var(--spacing-2);
-}
-
 [data-s1-component="radio"] [data-s1-part="label"] {
   color: var(--color-control-label-default);
   cursor: pointer;
@@ -547,12 +520,6 @@
 
 [data-s1-component="toggle"]:disabled [data-s1-part="knob"] {
   background: var(--color-control-indicator-disabled);
-}
-
-/* 정본에 focus 변형이 없어 새 토큰을 만들지 않고 선택 테두리 토큰으로만 표시한다(웹 접근성 계약). */
-[data-s1-component="toggle"]:focus-visible:not(:disabled) {
-  outline: var(--border-width-2) solid var(--color-control-border-selected);
-  outline-offset: var(--spacing-2);
 }
 
 /* component:chip */
@@ -635,11 +602,6 @@
   color: var(--color-chip-line-label-disabled);
 }
 
-[data-s1-component="chip"][data-variant="line"]:focus-visible:not(:disabled) {
-  outline: var(--border-width-2) solid var(--color-chip-line-border-selected);
-  outline-offset: var(--spacing-2);
-}
-
 /* ── Solid ── */
 [data-s1-component="chip"][data-variant="solid"] {
   background: var(--color-chip-solid-bg-default);
@@ -665,11 +627,6 @@
   background: var(--color-chip-solid-bg-disabled);
   border-color: var(--color-chip-solid-border-disabled);
   color: var(--color-chip-solid-label-disabled);
-}
-
-[data-s1-component="chip"][data-variant="solid"]:focus-visible:not(:disabled) {
-  outline: var(--border-width-2) solid var(--color-chip-solid-border-selected);
-  outline-offset: var(--spacing-2);
 }
 
 [data-s1-component="chip"]:disabled {
@@ -763,11 +720,6 @@
    체크박스 유형은 선택돼도 라벨을 강조하지 않는다 — 체크 표시가 이미 선택을 표현한다(정본 2026-08-14 결정). */
 [data-s1-component="dropdown"][data-type="text"] [data-s1-part="option"][aria-selected="true"] {
   color: var(--color-dropdown-option-label-selected);
-}
-
-[data-s1-component="dropdown"] [data-s1-part="option"]:focus-visible {
-  outline: var(--border-width-2) solid var(--color-form-control-border-selected);
-  outline-offset: calc(-1 * var(--border-width-2));
 }
 
 /* river 결정(②): 320px 넘는 긴 글은 말줄임이 아니라 줄바꿈한다.
@@ -877,11 +829,6 @@
 }
 [data-s1-component="select"] [data-s1-part="trigger"]:disabled [data-s1-part="icon"] {
   background-color: var(--color-form-control-icon-disabled);
-}
-
-[data-s1-component="select"] [data-s1-part="trigger"]:focus-visible {
-  outline: var(--border-width-2) solid var(--color-form-control-border-selected);
-  outline-offset: var(--spacing-2);
 }
 
 /* 패널 배치 — dropdown(자식 코어)의 형태·상태는 dropdown.css 가 소유하고, select 는 배치·간격만 담당한다.
@@ -1023,11 +970,6 @@
   color: var(--color-chip-line-label-disabled);
 }
 
-[data-s1-component="filter-chip"] [data-s1-part="trigger"]:focus-visible {
-  outline: var(--border-width-2) solid var(--color-form-control-border-selected);
-  outline-offset: var(--spacing-2);
-}
-
 /* 패널 배치 — dropdown(자식 코어)의 형태·상태는 dropdown.css 가 소유하고, filter-chip 은 배치·간격만 담당한다. */
 [data-s1-component="filter-chip"] [data-s1-part="panel"] {
   left: 0;
@@ -1109,7 +1051,6 @@
 [data-s1-component="tab"] [data-s1-part="tab"][data-force-state="hover"]:not([aria-selected="true"])::after { background: var(--color-navigation-indicator-hover); }
 [data-s1-component="tab"] [data-s1-part="tab"][aria-selected="true"] { color: var(--color-navigation-label-selected); }
 [data-s1-component="tab"] [data-s1-part="tab"][aria-selected="true"]::after { background: var(--color-navigation-indicator-selected); }
-[data-s1-component="tab"] [data-s1-part="tab"]:focus-visible { outline: var(--border-width-2) solid var(--color-navigation-indicator-selected); outline-offset: calc(-1 * var(--border-width-2)); }
 [data-s1-component="tab"] [role="tabpanel"][hidden] { display: none; }
 
 /* component:pagination */
@@ -1125,7 +1066,6 @@
 @media (hover: hover) { [data-s1-component="pagination"] button:hover:not(:disabled) { background: var(--color-pagination-control-bg-hover); color: var(--color-pagination-control-icon-hover); } [data-s1-component="pagination"] [data-s1-part="page"]:hover:not(:disabled) { color: var(--color-pagination-number-hover); } }
 [data-s1-component="pagination"] [data-s1-part="page"][aria-current="page"] { color: var(--color-pagination-number-selected); }
 [data-s1-component="pagination"] button:disabled { background: var(--color-pagination-control-bg-disabled); border-color: var(--color-pagination-control-border-disabled); color: var(--color-pagination-control-icon-disabled); cursor: not-allowed; }
-[data-s1-component="pagination"] button:focus-visible { outline: var(--border-width-2) solid var(--color-pagination-control-icon-default); outline-offset: var(--spacing-2); }
 
 /* component:textarea */
 /* Textarea — 정본 buildTextarea(build-components.ts:1388) 기준.
@@ -1189,12 +1129,6 @@
 
 [data-s1-component="textarea"] [data-s1-part="control"]:disabled::placeholder {
   color: var(--color-form-control-text-disabled);
-}
-
-/* 정본에 focus 변형 색이 이미 있어 별도 키보드 전용 토큰을 만들지 않는다 — 선택 테두리 토큰을 그대로 쓴다. */
-[data-s1-component="textarea"] [data-s1-part="control"]:focus-visible {
-  outline: var(--border-width-2) solid var(--color-form-control-border-selected);
-  outline-offset: var(--spacing-2);
 }
 
 /* component:multi-toggle */
@@ -1276,12 +1210,6 @@
   border-color: var(--color-button-border-disabled);
   color: var(--color-button-label-disabled);
   cursor: not-allowed;
-}
-
-[data-s1-component="multi-toggle"] [data-s1-part="cell"]:focus-visible {
-  outline: var(--border-width-2) solid var(--color-button-border-primary--default);
-  outline-offset: calc(-1 * var(--border-width-2));
-  z-index: 2;
 }
 
 /* component:modal */
@@ -1372,11 +1300,6 @@
   mask: url("./assets/icons/close.svg") center / contain no-repeat;
   padding: 0;
   width: var(--sizing-24);
-}
-
-[data-s1-component="modal"] [data-s1-part="close"]:focus-visible {
-  outline: var(--border-width-2) solid var(--color-form-control-border-selected);
-  outline-offset: var(--spacing-2);
 }
 
 /* ── Break=PC — 폭 360 · 좌우 여백은 패널이 아니라 내부 블록이 24씩 가진다(정본 paddingLeft/Right=0) ── */
@@ -1544,11 +1467,6 @@
   justify-content: center;
   padding: 0;
   width: var(--sizing-60);
-}
-
-[data-s1-component="mobile-bottom-nav"]:focus-visible {
-  outline: var(--border-width-2) solid var(--color-form-control-border-selected);
-  outline-offset: var(--spacing-2);
 }
 
 /* 아이콘 32×32 — 정본이 홈 아이콘 인스턴스를 32 로 리사이즈한다(:2973). */
@@ -1725,13 +1643,6 @@
   position: absolute;
 }
 
-[data-s1-component="mobile-header"] [data-s1-part="back"]:focus-visible,
-[data-s1-component="mobile-header"] [data-s1-part="close"]:focus-visible,
-[data-s1-component="mobile-header"] [data-s1-part="notification"]:focus-visible {
-  outline: var(--border-width-2) solid var(--color-form-control-border-selected);
-  outline-offset: var(--spacing-2);
-}
-
 [data-s1-component="mobile-header"] [data-s1-part="spacer"] {
   flex: none;
   height: var(--sizing-32);
@@ -1877,11 +1788,6 @@
   background-color: var(--color-form-control-icon-disabled);
 }
 
-[data-s1-component="time-picker"] [data-s1-part="trigger"]:focus-visible {
-  outline: var(--border-width-2) solid var(--color-form-control-border-selected);
-  outline-offset: var(--spacing-2);
-}
-
 /* ── 드롭다운 패널 — build-components.ts buildTimePickerDropdown 2477-2624 ── */
 [data-s1-component="time-picker"] [data-s1-part="panel"] {
   left: 0;
@@ -1958,11 +1864,6 @@
   color: var(--color-dropdown-option-label-selected);
 }
 
-[data-s1-component="time-picker"] [data-s1-part="cell"]:focus-visible {
-  outline: var(--border-width-2) solid var(--color-form-control-border-selected);
-  outline-offset: calc(-1 * var(--border-width-2));
-}
-
 /* ── 확인 줄 — 위 가로 1px 구분선 + 좌우16·위아래12, 우측 정렬(build-components.ts 2549-2565) ── */
 [data-s1-component="time-picker"] [data-s1-part="footer"] {
   border-bottom: var(--border-width-1) solid var(--color-dropdown-list-border);
@@ -1990,8 +1891,4 @@
 [data-s1-component="time-picker"] [data-s1-part="confirm"]:disabled {
   color: var(--color-text-state-disabled);
   cursor: not-allowed;
-}
-[data-s1-component="time-picker"] [data-s1-part="confirm"]:focus-visible {
-  outline: var(--border-width-2) solid var(--color-form-control-border-selected);
-  outline-offset: var(--spacing-2);
 }

@@ -2,7 +2,7 @@
   "id": "button",
   "version": "0.1.0",
   "status": "approved",
-  "canonicalFingerprint": "7f1babaf14850d733581a7cfe0cdca6a4151dcd5ec45eb633e30cf55ee305a2c",
+  "canonicalFingerprint": "a90e6d0fb3a28ed1b83a2f3788ca081489b9fc9c2ef0b3f7d11d3260bdb3a3ed",
   "canonicalSources": [
     "plugins/figma-vars-installer/src/build-components.ts",
     "plugins/figma-vars-installer/src/vars-data.ts",
@@ -41,8 +41,7 @@
     "default": "native",
     "hover": ":hover",
     "pressed": ":active",
-    "disabled": "disabled",
-    "focusVisible": ":focus-visible:not(:disabled)"
+    "disabled": "disabled"
   },
   "parts": [
     "label"
@@ -87,7 +86,6 @@
     "nativeStates": [
       ":hover",
       ":active",
-      ":focus-visible",
       ":disabled"
     ],
     "customization": "정본 Semantic token만 교체하며 공개 selector의 구조를 override하지 않는다."
@@ -121,7 +119,7 @@
     },
     "focus": {
       "status": "required",
-      "value": "2px outer outline with 2px offset; excluded while disabled"
+      "value": "브라우저 기본 포커스 표시를 그대로 쓴다 — 정본에 focus 표현이 없어 웹에서 만들지 않는다(2026-09-02 river 결정)."
     },
     "ariaStateSync": {
       "status": "not-applicable",

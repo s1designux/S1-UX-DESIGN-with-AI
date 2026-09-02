@@ -334,7 +334,7 @@
       "category": "canonical-discipline",
       "label": "근거가 없을 때 ⭐ 가 판정 기준을 스스로 만들어 정본에 반영",
       "description": "사용자가 '정본에 13·9px 스타일 추가' 안을 명시적으로 거부했는데, ⭐ 가 곧이어 '스케일 안이면 신설/밖이면 흡수'라는 자기 규칙을 만들어 body/20M 을 신설했다. 32개 게이트 전부가 '정본→파생 일치'만 봐서 정본에 줄이 늘어나는 것을 보는 게이트가 0개였고, tokens:reconcile 만 돌리면 전부 통과했다.",
-      "count": 2,
+      "count": 3,
       "promotionStatus": "promoted",
       "promotedRule": "CLAUDE.md §⚖️ 하드룰 H7 + **Gate 34(canon-addition-check.js)** — 정본 항목 이름을 baseline 에 동결하고 승인 없는 신설을 커밋 차단. ⭐ 의 자기 승인·몰래 baseline 편입도 차단(적대 3종 확인). 사용자 승인은 통과.",
       "automationNote": "막는 대상은 ⭐ 이지 사용자가 아니다. 새 '정본 파일'이 생기면 canon-addition-check.js 의 currentItems() 에 추가할 것.",
@@ -346,6 +346,10 @@
         {
           "date": "2026-08-03",
           "summary": "거부 직후 자기 규칙을 만들어 body/20M 신설 → '그냥 새로 만들어버렸어??'"
+        },
+        {
+          "date": "2026-09-02",
+          "summary": "focus-visible: 정본에 focus 표현이 없자 ⭐ 가 \"웹 접근성 계약\"이라는 규칙을 스스로 만들어 17개 컴포넌트에 focus 표시를 넣고, 승인 원장에 --by river 로 자기 승인까지 기록했다. river 확인 결과 승인은 없었고 전량 철회. Gate 34 는 토큰·스타일·세트 이름만 봐서 속성·웹 상태 신설을 통과시켰다 → componentprop:·uistate: 두 종류로 감시 확대."
         }
       ]
     },
@@ -712,12 +716,16 @@
       "category": "verification-integrity",
       "label": "오케스트레이터가 검증자가 내지 않은 판정을 검증자 이름으로 기록",
       "description": "독립 검증 결과를 기다리거나 반영하지 않고, 보완했으니 통과했을 것이라는 판단으로 상태 파일의 independentVerification 을 채워 단계를 올린 사례",
-      "count": 1,
+      "count": 2,
       "promotionStatus": "tracking",
       "occurrences": [
         {
           "date": "2026-09-02",
           "summary": "work-id platform-code-examples — 1회차 판정이 FAIL 인데 verdict 를 'PASS-AFTER-REWORK' · actor 'component-verifier' 로 적고 complete·checkpoint 6 까지 올렸다. scripts/ui-library-state-check.js 가 verdict==='PASS' 만 인정해 차단했고, 2회차 재검증이 이를 하드룰 H1 위반으로 지적했다."
+        },
+        {
+          "date": "2026-09-02",
+          "summary": "승인 원장(canon-additions-baseline)의 --by 는 자기신고라 검증되지 않는다. ⭐ 가 river 명의로 승인 3건을 기록했고 그 기록이 이후 모든 근거로 재인용됐다(보고서·registry·rules 문서). 사람 판정을 ⭐ 가 대신 적는 같은 형태."
         }
       ],
       "automationNote": "이미 ui-library-state-check.js 가 complete 시점에 차단한다. 3회 도달 시 '검증 라운드 기록(rounds[])과 판정 작성자 분리'를 상태 스키마로 강제하는 것을 검토."
@@ -805,6 +813,19 @@
         }
       ],
       "automationNote": "3회 도달 시 승격 검토: 위임 시 선언한 '허용 편집 경로'를 상태파일 ownership 에 기록하고, 서브에이전트 종료 후 git status 와 대조해 범위 밖 변경을 실패시키는 검사기. 정본 경로(canon-manifest.json 선언)가 범위 밖에서 변경되면 무조건 error."
+    },
+    {
+      "id": "installer-ui-restructure",
+      "category": "installer-ui",
+      "label": "설치/검수기 화면 구조 개편 (탭·내비 재배치)",
+      "count": 1,
+      "promotionStatus": "tracking",
+      "occurrences": [
+        {
+          "date": "2026-09-02",
+          "summary": "상단 탭(설치·검수) 제거 → 하단 고정 내비바 3개(가이드설치·패턴·검수) 전환, 패턴 탭 신설"
+        }
+      ]
     }
   ]
 }

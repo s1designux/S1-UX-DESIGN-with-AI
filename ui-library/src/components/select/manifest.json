@@ -2,7 +2,7 @@
   "id": "select",
   "version": "0.1.0",
   "status": "approved",
-  "canonicalFingerprint": "92c83253ab967be892949e35d4d7acd036a9d10b334e6ae8dbe6ba2925150620",
+  "canonicalFingerprint": "1547670feca07bc4fda37dd4dd0482dfc90f1c7abcb658317ca40e4c66cdd6bf",
   "canonicalSources": [
     "plugins/figma-vars-installer/src/build-components.ts",
     "plugins/figma-vars-installer/src/vars-data.ts",
@@ -70,7 +70,7 @@
     "Disabled": "disabled"
   },
   "notInCanon": {
-    "focusAxis": "정본에 Open 과 별개인 Focus 축이 없다 — Open 이 겸한다(1-inventory A절). 키보드 접근성 때문에 웹에서만 트리거에 focus-visible 테두리를 추가했으며 새 토큰을 만들지 않았다(선택 테두리 토큰 재사용, cssContract.nativeStates 에 :focus-visible 로 정직하게 선언).",
+    "focusAxis": "정본에 focus 변형이 없다. 2026-09-02 river 결정으로 웹에서도 만들지 않으며, 키보드 초점은 브라우저 기본 표시에 맡긴다.",
     "errorAxis": "정본에 Error 상태가 없다.",
     "multiSelect": "정본에 다중 선택 트리거 표시가 없다(2026-08-14 검토에서 철회 — 옵션 행만 갈래를 가진다).",
     "openFilledCross": "정본은 5개 이산 상태만 정의하고 Open×Filled 교차 셀이 없다. 웹 CSS 는 열렸을 때 항상 Open 시각(placeholder 색)을 보여주고, Filled 시각은 닫힌 뒤에만 적용한다(source order 로 처리, 새 상태 신설 아님)."
@@ -120,8 +120,7 @@
     "rootScope": "[data-s1-component=select]",
     "nativeStates": [
       ":hover",
-      ":disabled",
-      ":focus-visible"
+      ":disabled"
     ],
     "ariaStates": [
       "[aria-expanded=\"true\"]"

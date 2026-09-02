@@ -57,7 +57,7 @@ Button을 편집하거나 검토할 때 아래 기준을 단일 참조점으로 
 6. **Size** — PC: md(h44) / xsm(h34) / xxsm(h28), Mobile: lg(h48). **크기 어휘는 정본(설치기) 표기를 따른다** — 웹은 소문자, 설치기(Figma)는 대문자(MD·XSM·XXSM·LG)로 같은 단어를 쓴다.
 7. **CSS class** — `s1-btn-md`=md(44), 무수식어=xsm(34), `s1-btn-xxsm`=xxsm(28), `s1-btn-lg`=lg(48). **s1-btn이 공식 CSS 시스템. sw-button(button.css)은 deprecated.** (2026-08-02 개명: 종전 `s1-btn-lg`가 44를, `s1-btn-sm`이 28을 가리켜 정본과 어긋나고 `lg`가 44·48 두 값을 가리키던 충돌을 해소.)
 8. **Token policy** — 색상은 반드시 Semantic 경유. raw HEX 금지. Foundation 직접 참조 금지.
-9. **focus-visible candidate** — `Focus Visible`은 State 축이 아니라 모든 활성 상태와 공존하는 BOOLEAN 접근성 표현이다. 색은 `color/button/border/focus`, 두께 2px·바깥 간격 2px. 과거 `--button-*-focus-ring` variant별 토큰과 `is-focus` 제품 API는 계속 금지하며, 실제 검수 화면 승인 전 stable로 보지 않는다. (2026-08-25 river 방향 승인)
+9. **focus 표현 금지** — 정본에 Button focus 표현이 없다. 키보드 초점은 **브라우저 기본 표시에 맡기고**, focus 전용 토큰·`Focus Visible` 속성·`--button-*-focus-ring` variant별 토큰·`is-focus` 제품 API를 만들지 않는다. (2026-08-25~26 에 승인 기록이 남아 있었으나 river 확인 결과 승인한 적 없는 ⭐ 의 임의 신설이어서 2026-09-02 전량 철회. 필요해지면 needs-decision 으로 올린다.)
 10. **Sync** — Button 기준 변경 시 registry / HTML / md / reports를 함께 수정. `npm run sync:button`으로 정합성 검사.
 11. **불일치 발견 시** — 임의 결정 금지. `reports/button-sync-check.md`에 기록 후 사용자 확인.
 

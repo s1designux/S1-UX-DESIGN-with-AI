@@ -3,7 +3,7 @@
     "generated": true,
     "source": "plugins/figma-vars-installer/src/build-components.ts",
     "method": "mock-execution",
-    "sourceHash": "368714264e23",
+    "sourceHash": "2beb813ff18d",
     "unknownValuePolicy": [
       "unknown",
       "not-defined",
@@ -1043,12 +1043,9 @@
           "strokeAlign": "INSIDE"
         }
       ],
-      "anatomy": [
-        "button-focus-ring"
-      ],
+      "anatomy": [],
       "tokenBindings": [
         "border-width/1",
-        "border-width/2",
         "color/button/bg/blue-line--default",
         "color/button/bg/blue-line--hover",
         "color/button/bg/disabled",
@@ -1059,7 +1056,6 @@
         "color/button/border/blue-line--default",
         "color/button/border/blue-line--hover",
         "color/button/border/disabled",
-        "color/button/border/focus",
         "color/button/border/primary--default",
         "color/button/border/primary--hover",
         "color/button/border/secondary--default",
@@ -1072,7 +1068,6 @@
         "color/button/label/secondary--default",
         "color/button/label/secondary--hover",
         "radius/4",
-        "radius/8",
         "spacing/16",
         "spacing/8"
       ],
@@ -2032,8 +2027,6 @@
         "field"
       ],
       "tokenBindings": [
-        "border-width/2",
-        "color/form-control/action/border/focus",
         "color/form-control/bg/default",
         "color/form-control/bg/disabled",
         "color/form-control/bg/hover",
@@ -2658,9 +2651,7 @@
       ],
       "tokenBindings": [
         "border-width/1",
-        "border-width/2",
         "color/button/bg/primary--default",
-        "color/button/border/focus",
         "color/button/border/primary--default",
         "color/button/label/primary--default",
         "color/date-picker/cell/bg/selected",
@@ -2675,7 +2666,6 @@
         "color/surface/raised",
         "color/text/title/primary",
         "radius/4",
-        "radius/8",
         "radius/full",
         "spacing/16"
       ],
@@ -2970,9 +2960,7 @@
       ],
       "tokenBindings": [
         "border-width/1",
-        "border-width/2",
         "color/button/bg/primary--default",
-        "color/button/border/focus",
         "color/button/border/primary--default",
         "color/button/label/primary--default",
         "color/navigation/indicator/default",
@@ -2984,7 +2972,6 @@
         "color/text/state/accent",
         "color/text/title/primary",
         "radius/4",
-        "radius/8",
         "spacing/16"
       ],
       "composition": {
@@ -3295,10 +3282,8 @@
       ],
       "tokenBindings": [
         "border-width/1",
-        "border-width/2",
         "color/button/bg/primary--default",
         "color/button/bg/secondary--default",
-        "color/button/border/focus",
         "color/button/border/primary--default",
         "color/button/border/secondary--default",
         "color/button/label/primary--default",
@@ -3308,7 +3293,6 @@
         "color/text/state/accent",
         "color/text/title/primary",
         "radius/4",
-        "radius/8",
         "spacing/16"
       ],
       "composition": {
@@ -3386,10 +3370,8 @@
       ],
       "tokenBindings": [
         "border-width/1",
-        "border-width/2",
         "color/button/bg/primary--default",
         "color/button/bg/secondary--default",
-        "color/button/border/focus",
         "color/button/border/primary--default",
         "color/button/border/secondary--default",
         "color/button/label/primary--default",

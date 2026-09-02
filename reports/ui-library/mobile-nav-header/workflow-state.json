@@ -145,12 +145,12 @@
     {
       "role": "component-visual",
       "path": "plugins/figma-vars-installer/src/build-components.ts",
-      "sha256": "368714264e235320404ba0d42b837d9f50c84c51fa6a24faa0c33f9293da57de"
+      "sha256": "2beb813ff18d9f7670bd11baa876950fee0d7a715ba6994162c9ccfe56c6a27e"
     },
     {
       "role": "token-values",
       "path": "plugins/figma-vars-installer/src/vars-data.ts",
-      "sha256": "87edd42623983fb5e02e820940dbbc3693ecb4b2c79104e781c8307501984cd9"
+      "sha256": "81eb31cfbd5b1b7041f31967a9592d2181088cf386a9ccb26058a7625ec3c15a"
     },
     {
       "role": "text-styles",
@@ -291,6 +291,35 @@
       "decision": "목업 상태바를 임의 더미(\"9:41\" + 빈 아이콘 자리)로 두지 않고 정본 StatusBar(App 360×27, build-components.ts populateStatusRow :4738-4767)를 그대로 옮긴 그림으로 바꾼다. 배경도 정본 기제를 따른다 — 정본은 헤더 안 상태바 인스턴스의 fills 를 비워(:3117-3119) 헤더 프레임 배경이 그대로 비치게 하므로, Home 유형에서는 상태바도 color/bg/home 이다. river 지적: \"홈에서 상태바와 헤더 색상이 안 맞는다.\" 추가(river 2차 지시): 홈 유형은 본문 영역 배경도 같은 color/bg/home 으로 이어 붙인다 — 홈 화면은 상단부터 본문까지 한 배경이다. Standard 유형 본문은 그대로 목업 회색을 쓴다(정본에 화면 본문 규정이 없어 안내 화면 크롬으로 남긴다).",
       "canonFacts": "📖 source-reader 판독(실제 spawn) — 시간 \"12:30\"(12 Medium, text/body/secondary) · 좌우 SPACE_BETWEEN · 패딩 20/16 · 오른쪽 묶음 간격 6(신호 17×12 4개 막대 · wifi 16×12 · 배터리 24×12 · \"78%\") · 아이콘색 icon/gray-dark · 상태바와 AppBar 사이 간격 16(comp.itemSpacing) · AppBar 배경 isHome ? bg/home : bg/level-0.",
       "notInScope": "Web 변형(상태행 27 + 주소창 50 = 77)은 목업이 App 폰이라 옮기지 않았다. StatusBar 는 여전히 웹 배포본에 없다(D5) — 안내 화면 그림일 뿐이다."
+    },
+    {
+      "id": "D11",
+      "topic": "focus-visible 전량 철회에 따른 정본 지문 갱신",
+      "decidedBy": "orchestrator",
+      "decidedAt": "2026-09-02",
+      "decision": "2026-09-02 river 지시로 승인 없이 만들어졌던 focus-visible 을 정본에서 제거했다. build-components.ts 변경 hunk 는 makeFocusRing 삭제(275~)·buildOne(355~)·buildButtonSet(566~)·buildInput(992~1092) 뿐이고, vars-data.ts 는 토큰 2개(color/button/border/focus · color/form-control/action/border/focus) 삭제뿐이다. 이 작업의 컴포넌트 빌더는 hunk 범위 밖이라 이전 검증을 유지하고 정본 지문만 갱신했다.",
+      "recordedIn": [
+        "registry/governance/canon-additions-baseline.json revocations",
+        "reports/ui-library/input-button-pilot/2-canon-readiness.md HD-UILIB-03",
+        "CLAUDE.md 변경 이력 2026-09-02"
+      ]
+    },
+    {
+      "id": "D12",
+      "topic": "focus-visible 철회 후 기존 승인 유지 여부(HD-1)",
+      "decidedBy": "river",
+      "decidedAt": "2026-09-03",
+      "decision": "river 승인 당시 화면에는 focus-visible 표시가 있었고 지금 배포본에는 없다(2026-09-02 전량 철회). Figma 정본 빌더·시각 사양은 무변경이다. river 결정: **기존 승인을 그대로 유지한다** — 재검수하지 않는다.",
+      "evidence": {
+        "quote": "hd-1 승인유지\nhd-2 알아서 볼게\nhd-3 문제 손봐줘",
+        "transcript": "cadfd24d-26fc-4140-8f97-f4a290a0052f.jsonl",
+        "at": "2026-09-02T23:07:40.297Z"
+      },
+      "recordedBy": "orchestrator",
+      "recordedIn": [
+        "registry/governance/canon-additions-baseline.json revocations",
+        "CLAUDE.md 변경 이력 2026-09-02"
+      ]
     }
   ],
   "blockers": [

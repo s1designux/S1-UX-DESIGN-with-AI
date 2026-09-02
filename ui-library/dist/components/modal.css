@@ -87,11 +87,6 @@
   width: var(--sizing-24);
 }
 
-[data-s1-component="modal"] [data-s1-part="close"]:focus-visible {
-  outline: var(--border-width-2) solid var(--color-form-control-border-selected);
-  outline-offset: var(--spacing-2);
-}
-
 /* ── Break=PC — 폭 360 · 좌우 여백은 패널이 아니라 내부 블록이 24씩 가진다(정본 paddingLeft/Right=0) ── */
 [data-s1-component="modal"][data-break="pc"] [data-s1-part="panel"] {
   gap: var(--spacing-32);

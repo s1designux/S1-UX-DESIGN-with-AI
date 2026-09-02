@@ -140,13 +140,6 @@
   position: absolute;
 }
 
-[data-s1-component="mobile-header"] [data-s1-part="back"]:focus-visible,
-[data-s1-component="mobile-header"] [data-s1-part="close"]:focus-visible,
-[data-s1-component="mobile-header"] [data-s1-part="notification"]:focus-visible {
-  outline: var(--border-width-2) solid var(--color-form-control-border-selected);
-  outline-offset: var(--spacing-2);
-}
-
 [data-s1-component="mobile-header"] [data-s1-part="spacer"] {
   flex: none;
   height: var(--sizing-32);

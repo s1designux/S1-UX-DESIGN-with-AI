@@ -21,6 +21,9 @@
  *
  * 보는 것 / 안 보는 것:
  *   · 본다   : 정본 항목 **이름의 신설** — 텍스트 스타일명 · 토큰 키 · **컴포넌트 세트 이름**
+ *              · **컴포넌트 속성 이름**(addComponentProperty) · **웹 UI 라이브러리 상태 이름**
+ *                (2026-09-02 확장 — focus-visible 사태: 승인 없이 만든 "Focus Visible" 속성과
+ *                 ui-library 15개 컴포넌트의 focus 상태를 이 게이트가 전부 통과시켰다.)
  *              (컴포넌트는 2026-08-03 추적 확장. H7 이 "컴포넌트·variant"를 명시하는데
  *               이 게이트가 토큰·스타일만 봐서 생긴 선언↔집행 괴리를 메움. Gate 30 은
  *               커버리지지 승인이 아니라 신설+성실등록이면 전 게이트를 통과했다.)
@@ -29,7 +32,8 @@
  *
  * 사용:
  *   node scripts/canon-addition-check.js                    # 검사 (gate:check 가 호출)
- *   node scripts/canon-addition-check.js --approve --by river --reason "표 헤더용 title/14M"
+ *   node scripts/canon-addition-check.js --approve --by river --reason "표 헤더용 title/14M" \\
+ *        --quote "<river 가 실제로 한 말 그대로>"   # 세션 기록의 사람 발화와 대조해 검증한다
  *   node scripts/canon-addition-check.js --update-baseline   # 삭제분만 반영(축소 전용)
  *   node scripts/canon-addition-check.js --extend-tracking component --reason "..."
  *                                                           # 새 종류 감시 시작(1회만·정본 불변)
@@ -102,7 +106,37 @@ function currentItems() {
     throw new Error('build-components.ts 에서 컴포넌트 이름을 0건 추출 — 정본 export 구조 변경 의심(추출 0건=안 됨).');
   }
   for (const m of compNames) items.push(`component:${m}`);
+
+  // 컴포넌트 **속성**(component property) 이름 (2026-09-02 추적 확장)
+  //   왜: focus-visible 사태 — ⭐ 가 승인 없이 Button 세트에 "Focus Visible" BOOLEAN
+  //   property 를 만들었는데, 이 게이트는 토큰·스타일·세트 이름만 봐서 통과시켰다.
+  //   property 는 세트 이름과 달리 "상태를 하나 늘리는" 행위라 승인 대상이다.
+  //   variant 축은 여전히 제외한다(세트 내부 리팩터마다 마찰 → --no-verify 유인).
+  //   property 는 addComponentProperty 호출로만 생기고 런타임 API 라 export 로 못 읽는다 —
+  //   여기서만 소스 텍스트를 읽는다(값이 아니라 **이름**만 세므로 스크래핑 금지 취지에 반하지 않는다).
+  const bcSrc = fs.readFileSync(BC, 'utf8');
+  const propRe = /addComponentProperty\(\s*["'`]([^"'`]+)["'`]/g;
+  for (let m; (m = propRe.exec(bcSrc)) !== null;) items.push(`componentprop:${m[1]}`);
+
+  // 웹 UI 라이브러리의 **상태 이름** (2026-09-02 추적 확장)
+  //   왜: focus-visible 17건 중 15건은 Figma 정본이 아니라 ui-library CSS 에만 있었다.
+  //   Gate 34 가 정본만 봐서 "웹에서만 상태를 하나 더 만드는 것"을 보는 게이트가 0개였다.
+  for (const mf of listUiManifests()) {
+    let d; try { d = JSON.parse(fs.readFileSync(mf, 'utf8')); } catch (_) { continue; }
+    const id = path.basename(path.dirname(mf));
+    for (const st of Object.keys((d && d.states) || {})) items.push(`uistate:${id}.${st}`);
+  }
   return [...new Set(items)].sort();
+}
+
+/** ui-library 컴포넌트 manifest 목록 (없으면 빈 배열 — 저장소 구조 변화에 죽지 않게) */
+function listUiManifests() {
+  const dir = path.join(ROOT, 'ui-library/src/components');
+  if (!fs.existsSync(dir)) return [];
+  return fs.readdirSync(dir)
+    .map((d) => path.join(dir, d, 'manifest.json'))
+    .filter((p) => fs.existsSync(p))
+    .sort();
 }
 
 /** 항목의 종류(prefix) — 추적 확장 시 종류 단위로만 편입하기 위해. */
@@ -141,7 +175,23 @@ function check({ pass, warn, fail }) {
   }
   for (const k of withApproval) {
     const a = approved.get(k);
-    pass(`정본 신설 승인됨 — ${k} (by ${a.by}${a.reason ? ' · ' + a.reason : ''})`);
+    // 근거(사용자 실제 발화 인용)가 붙어 있는 승인만 "검증됨"이다. 2026-09-03 이전 승인은
+    // 그 장치가 없던 시절 것이라 차단하지 않되 **매번 보이게** 한다 — 조용히 신뢰받지 않도록.
+    if (a.evidence && a.quote) {
+      pass(`정본 신설 승인됨(근거 검증) — ${k} (by ${a.by} · 세션기록 ${a.evidence.transcript})`);
+    } else {
+      warn(`Gate 34: 승인 근거 미검증 — ${k} (by ${a.by}, 2026-09-03 근거검증 도입 이전 기록)\n` +
+        '       이 줄은 `--by` 자기신고만으로 남았습니다. 사용자 실제 발화 인용이 없어 "승인이 있었다"를 증명하지 못합니다.\n' +
+        `       재확인하려면: node scripts/canon-addition-check.js --reapprove --item ${k} --by <사용자> --quote "<실제 발화>"`);
+    }
+  }
+  // 신설이 0건이어도 **승인 원장 자체를 매번 감사한다** — 근거 없는 승인 줄은 조용히
+  // 신뢰받으면 안 된다(2026-08-25 사태의 그 줄들이 정확히 그렇게 재인용됐다).
+  const noEvidence = (base.approvals || []).filter((x) => !(x.quote && x.evidence));
+  if (noEvidence.length) {
+    warn(`Gate 34: 승인 원장에 근거 미검증 ${noEvidence.length}건 — \`--by\` 자기신고만 남은 줄입니다(2026-09-03 근거검증 도입 이전).\n` +
+      noEvidence.map((x) => `       · ${x.item} (by ${x.by})`).join('\n') + '\n' +
+      '       "기록이 있다 = 승인이 있었다" 가 아닙니다. 재확인: --reapprove --item <항목> --by <사용자> --quote "<실제 발화>"');
   }
   if (removed.length) warn(`Gate 34: 정본에서 사라진 항목 ${removed.length}건 — 의도한 삭제면 --update-baseline 으로 축소하세요: ${removed.slice(0, 5).join(', ')}${removed.length > 5 ? ' …' : ''}`);
   if (added.length === 0 && removed.length === 0) {
@@ -151,6 +201,63 @@ function check({ pass, warn, fail }) {
   }
 
   console.log(`CANONADD_SUMMARY tracked=${cur.length} added=${added.length} removed=${removed.length} approved=${withApproval.length}`);
+}
+
+/**
+ * 승인 근거 검증 — "river 가 실제로 그렇게 말했는가"를 기계로 확인한다.
+ * ─────────────────────────────────────────────────────────────────────────
+ * 왜 (2026-09-03, river 지시 HD-3):
+ *   2026-08-25 focus-visible 사태에서 ⭐ 가 `--by river` 라고 타이핑해 **자기가 자기를
+ *   승인**했고, 그 줄이 이후 모든 근거로 재인용됐다(보고서·registry·rules 문서).
+ *   `--by` 는 자기신고라 검증되지 않는다 — **기록이 있다고 승인이 있었던 것이 아니다.**
+ *
+ * 무엇을 근거로 삼나:
+ *   Claude Code 세션 기록(~/.claude/projects/<repo>/ *.jsonl)에서 `origin.kind === "human"`
+ *   인 항목만이 **사람이 실제로 입력한 말**이다. 이 표식은 하네스가 붙이며 ⭐ 의 출력·
+ *   도구 결과·시스템 알림에는 붙지 않는다(같은 파일에서 origin=null / task-notification 로 구분).
+ *   따라서 승인하려면 river 의 **실제 발화 일부를 그대로 인용**해야 하고, 그 인용문이
+ *   사람 발화에 실재해야 통과한다.
+ *
+ * 한계(정직하게):
+ *   완벽한 위조 방지가 아니다 — 기록 파일 자체를 고치면 뚫린다. 목적은 그것이 아니라
+ *   **"근거 없이 승인 줄을 만드는 일"을 한 단계의 명시적 위조로 바꾸는 것**이다.
+ *   기록을 찾을 수 없으면 통과시키지 않고 막는다(모르면 승인 아님).
+ */
+function findHumanQuote(quote) {
+  const norm = (t) => String(t).replace(/\s+/g, ' ').trim();
+  const needle = norm(quote);
+  if (needle.length < 8) return { ok: false, why: '인용문이 너무 짧습니다(8자 이상) — 누구 말인지 특정되지 않습니다.' };
+
+  const home = os.homedir();
+  // 하네스가 쓰는 폴더 이름 규칙: 경로 구분자·점·밑줄을 모두 '-' 로 바꾼다
+  //   /Users/designgroup_02/S1-UX-DESIGN-with-AI → -Users-designgroup-02-S1-UX-DESIGN-with-AI
+  const slug = ROOT.replace(/[/\\._]/g, '-');
+  const dir = path.join(home, '.claude', 'projects', slug);
+  if (!fs.existsSync(dir)) {
+    return { ok: false, why: `세션 기록 폴더를 찾을 수 없습니다: ${dir}\n       근거를 확인할 수 없으므로 승인하지 않습니다(모르면 승인 아님).` };
+  }
+  const files = fs.readdirSync(dir).filter((n) => n.endsWith('.jsonl'));
+  for (const name of files) {
+    let lines;
+    try { lines = fs.readFileSync(path.join(dir, name), 'utf8').split('\n'); } catch (_) { continue; }
+    for (const line of lines) {
+      if (!line || line.indexOf('"human"') === -1) continue;   // 빠른 사전 거르기
+      let rec; try { rec = JSON.parse(line); } catch (_) { continue; }
+      if (rec.type !== 'user') continue;
+      if (!rec.origin || rec.origin.kind !== 'human') continue; // ★ 사람이 직접 입력한 것만
+      const c = rec.message && rec.message.content;
+      let text = '';
+      if (typeof c === 'string') text = c;
+      else if (Array.isArray(c)) text = c.filter((p) => p && p.type === 'text').map((p) => p.text).join(' ');
+      if (!text) continue;
+      if (norm(text).includes(needle)) {
+        // transcript 파일 이름이 곧 sessionId 라 따로 담지 않는다(중복·환경 종속 키).
+        return { ok: true, evidence: { transcript: name, at: rec.timestamp || null } };
+      }
+    }
+  }
+  return { ok: false, why: '이 저장소의 세션 기록에서 그 말을 한 사람 발화를 찾지 못했습니다.\n' +
+    '       ⭐ 가 요약·의역한 문장이 아니라 **river 가 실제로 친 말 그대로**를 인용해야 합니다.' };
 }
 
 function approve(argv) {
@@ -165,6 +272,20 @@ function approve(argv) {
   }
   if (!reason) { console.error('❌ --reason 이 필요합니다(왜 추가하는지). 나중에 이 줄이 유일한 근거가 됩니다.'); process.exit(1); }
 
+  // ★ 근거 검증 — `--by` 자기신고를 믿지 않는다(2026-09-03 river 지시 HD-3).
+  const quote = arg('quote', '');
+  if (!quote) {
+    console.error('❌ --quote 가 필요합니다 — 승인의 근거가 될 **사용자의 실제 발화**를 그대로 인용하세요.');
+    console.error('   예: --quote "focus-visible 승인한 적 없어. 15개 전부 제거하고"');
+    console.error('   ⭐ 가 `--by river` 라고 적는 것만으로는 승인이 되지 않습니다(2026-08-25 사태).');
+    process.exit(1);
+  }
+  const ev = findHumanQuote(quote);
+  if (!ev.ok) {
+    console.error(`❌ 승인 근거를 확인하지 못했습니다 — ${ev.why}`);
+    process.exit(1);
+  }
+
   const cur = currentItems();
   const base = loadBaseline() || { items: [], approvals: [] };
   const known = new Set(base.items || []);
@@ -177,7 +298,13 @@ function approve(argv) {
   base.approvals = base.approvals || [];
   for (const t of targets) {
     base.approvals = base.approvals.filter((a) => a.item !== t);
-    base.approvals.push({ item: t, by, reason, approvedAt: new Date().toISOString() });
+    base.approvals.push({
+      item: t, by, reason, approvedAt: new Date().toISOString(),
+      // 근거 — 사용자가 실제로 한 말과 그 말이 남아 있는 세션 기록.
+      quote, evidence: ev.evidence,
+      // 누가 이 줄을 타이핑했나. `by`(누가 결정했나)와 다르며 기계가 정한다 — 손으로 못 바꾼다.
+      recordedBy: 'orchestrator',
+    });
   }
   base.items = cur;   // 승인과 동시에 동결 목록에 편입
   base._updated = new Date().toISOString().slice(0, 10);
@@ -198,11 +325,41 @@ function approve(argv) {
  *
  * 사용: node scripts/canon-addition-check.js --extend-tracking component --reason "..."
  */
+/**
+ * 이미 baseline 에 편입된 승인에 **근거를 뒤늦게 붙인다**(2026-09-03).
+ * approve() 는 "새로 생긴 항목"만 다루므로 과거 승인은 그 경로로 못 고친다.
+ * 근거 검증은 approve() 와 똑같이 사람 발화 대조를 통과해야 한다 — 뒷문이 아니다.
+ */
+function reapprove(argv) {
+  const arg = (n, d) => { const i = argv.indexOf(`--${n}`); return i >= 0 && argv[i + 1] && !argv[i + 1].startsWith('--') ? argv[i + 1] : d; };
+  const item = arg('item', '');
+  const by = arg('by', '');
+  const quote = arg('quote', '');
+  const reason = arg('reason', '');
+  if (!item || !by || !quote) { console.error('❌ --item · --by · --quote 가 모두 필요합니다.'); process.exit(1); }
+  if (by === 'orchestrator' || by === '⭐') { console.error('❌ ⭐ 는 정본 신설을 스스로 승인할 수 없습니다 — 하드룰 H6②.'); process.exit(1); }
+  const ev = findHumanQuote(quote);
+  if (!ev.ok) { console.error(`❌ 승인 근거를 확인하지 못했습니다 — ${ev.why}`); process.exit(1); }
+  const base = loadBaseline();
+  if (!base) { console.error('❌ baseline 이 없습니다.'); process.exit(1); }
+  const a = (base.approvals || []).find((x) => x.item === item);
+  if (!a) { console.error(`❌ 승인 기록에 없는 항목입니다: ${item}`); process.exit(1); }
+  a.by = by; a.quote = quote; a.evidence = ev.evidence; a.recordedBy = 'orchestrator';
+  if (reason) a.reason = reason;
+  a.reapprovedAt = new Date().toISOString();
+  base._updated = new Date().toISOString().slice(0, 10);
+  fs.writeFileSync(BASELINE, JSON.stringify(base, null, 2) + '\n');
+  console.log(`✅ 승인 근거 부착 — ${item} (by ${by} · 세션기록 ${ev.evidence.transcript})`);
+}
+
 function extendTracking(argv) {
   const arg = (n, d) => { const i = argv.indexOf(`--${n}`); return i >= 0 && argv[i + 1] && !argv[i + 1].startsWith('--') ? argv[i + 1] : d; };
-  const kind = arg('extend-tracking', '');
+  // 여러 종류를 동시에 감시 시작할 수 있다(쉼표 구분) — 한 사건이 두 종류를 동시에
+  // 드러내는 경우(2026-09-02 focus-visible: componentprop + uistate)가 있고,
+  // 하나씩 돌리면 나머지가 "종류 밖 미승인 신설"로 서로를 막는다. 기록은 종류별로 남는다.
+  const kinds = arg('extend-tracking', '').split(',').map((k) => k.trim()).filter(Boolean);
   const reason = arg('reason', '');
-  if (!kind) { console.error('❌ 확장할 종류가 필요합니다. 예: --extend-tracking component'); process.exit(1); }
+  if (kinds.length === 0) { console.error('❌ 확장할 종류가 필요합니다. 예: --extend-tracking component'); process.exit(1); }
   if (!reason) { console.error('❌ --reason 이 필요합니다(왜 이 종류를 감시하기 시작하는지).'); process.exit(1); }
 
   const cur = currentItems();
@@ -215,21 +372,23 @@ function extendTracking(argv) {
   // **1회성** — 이미 확장된 종류는 다시 확장할 수 없다.
   //   (적대 테스트에서 발견한 우회로: 컴포넌트를 신설한 뒤 --extend-tracking 을 다시 돌리면
   //    승인 없이 편입됐다. 확장은 "감시 시작" 1회의 행위이고, 그 뒤의 신설은 승인 대상이다.)
-  const alreadyExtended = (base.extendedTracking || []).some((e) => e.kind === kind);
-  if (alreadyExtended) {
-    console.error(`❌ 종류 "${kind}" 는 이미 추적 중입니다 — 확장은 1회만 가능합니다.`);
+  const already = (base.extendedTracking || []).map((e) => e.kind);
+  const dup = kinds.filter((k) => already.includes(k));
+  if (dup.length) {
+    console.error(`❌ 종류 "${dup.join(', ')}" 는 이미 추적 중입니다 — 확장은 종류마다 1회만 가능합니다.`);
     console.error('   이후의 신설은 사용자 승인이 필요합니다: --approve --by <사용자> --reason "..." --item <항목>');
     process.exit(1);
   }
 
-  const inKind = added.filter((k) => kindOf(k) === kind);
-  const outOfKind = added.filter((k) => kindOf(k) !== kind && !approved.has(k));
+  const kindSet = new Set(kinds);
+  const inKind = added.filter((k) => kindSet.has(kindOf(k)));
+  const outOfKind = added.filter((k) => !kindSet.has(kindOf(k)) && !approved.has(k));
   if (inKind.length === 0) {
-    console.error(`❌ 종류 "${kind}" 에 새로 편입할 항목이 없습니다(이미 추적 중이거나 종류 이름이 틀렸습니다).`);
+    console.error(`❌ 종류 "${kinds.join(', ')}" 에 새로 편입할 항목이 없습니다(이미 추적 중이거나 종류 이름이 틀렸습니다).`);
     process.exit(1);
   }
   if (outOfKind.length) {
-    console.error(`❌ 지정한 종류(${kind}) 밖의 미승인 신설이 ${outOfKind.length}건 섞여 있어 거부합니다 — 확장으로 끼워넣을 수 없습니다:`);
+    console.error(`❌ 지정한 종류(${kinds.join(', ')}) 밖의 미승인 신설이 ${outOfKind.length}건 섞여 있어 거부합니다 — 확장으로 끼워넣을 수 없습니다:`);
     outOfKind.forEach((k) => console.error(`   ❌ ${k}`));
     console.error('   그 항목들은 사용자 승인(--approve)을 받아야 합니다.');
     process.exit(1);
@@ -239,12 +398,14 @@ function extendTracking(argv) {
   base.count = cur.length;
   base._updated = new Date().toISOString().slice(0, 10);
   base.extendedTracking = base.extendedTracking || [];
-  base.extendedTracking.push({
-    kind, reason, frozen: inKind.length, at: new Date().toISOString(),
-    _note: '추적 종류 확장(정본 신설이 아님) — 이 종류의 현존 항목을 현상 동결하고, 이후 신설만 차단한다.',
-  });
+  for (const kind of kinds) {
+    base.extendedTracking.push({
+      kind, reason, frozen: inKind.filter((k) => kindOf(k) === kind).length, at: new Date().toISOString(),
+      _note: '추적 종류 확장(정본 신설이 아님) — 이 종류의 현존 항목을 현상 동결하고, 이후 신설만 차단한다.',
+    });
+  }
   fs.writeFileSync(BASELINE, JSON.stringify(base, null, 2) + '\n');
-  console.log(`✅ 추적 종류 확장 — "${kind}" ${inKind.length}건 현상 동결 (총 ${cur.length}항목)`);
+  console.log(`✅ 추적 종류 확장 — "${kinds.join(', ')}" ${inKind.length}건 현상 동결 (총 ${cur.length}항목)`);
   inKind.slice(0, 8).forEach((k) => console.log(`   ${k}`));
   if (inKind.length > 8) console.log(`   … 외 ${inKind.length - 8}건`);
 }
@@ -270,6 +431,8 @@ function updateBaseline() {
     count: cur.length,
     items: cur,
     approvals: (base && base.approvals) || [],
+    // 확장 이력은 반드시 보존한다 — 지워지면 "1회만" 이 무력화돼 재확장으로 승인을 우회할 수 있다.
+    extendedTracking: (base && base.extendedTracking) || [],
   };
   fs.mkdirSync(path.dirname(BASELINE), { recursive: true });
   fs.writeFileSync(BASELINE, JSON.stringify(next, null, 2) + '\n');
@@ -281,6 +444,7 @@ module.exports = { check };
 if (require.main === module) {
   const argv = process.argv.slice(2);
   if (argv.includes('--approve')) { approve(argv); process.exit(0); }
+  if (argv.includes('--reapprove')) { reapprove(argv); process.exit(0); }
   if (argv.includes('--extend-tracking')) { extendTracking(argv); process.exit(0); }
   if (argv.includes('--update-baseline')) { updateBaseline(); process.exit(0); }
   let bad = 0;

@@ -2,7 +2,7 @@
   "id": "pagination",
   "version": "0.1.0",
   "status": "approved",
-  "canonicalFingerprint": "56058fae56bee7e7812426192221fa89865297aeb83396c2c4313914574d08d8",
+  "canonicalFingerprint": "45660e6732a60ebd0051b9fd7c30768bc3862fa30e7ee3462aae87ab464542d8",
   "canonicalSources": [
     "plugins/figma-vars-installer/src/build-components.ts",
     "plugins/figma-vars-installer/src/vars-data.ts",
@@ -50,8 +50,7 @@
     "rootScope": "[data-s1-component=pagination]",
     "nativeStates": [
       ":hover",
-      ":disabled",
-      ":focus-visible"
+      ":disabled"
     ],
     "ariaStates": [
       "[aria-current=page]"
@@ -96,7 +95,7 @@
     },
     "focus": {
       "status": "required",
-      "value": "2px visible outline on focused enabled button"
+      "value": "브라우저 기본 포커스 표시를 그대로 쓴다 — 정본에 focus 표현이 없어 웹에서 만들지 않는다(2026-09-02 river 결정)."
     },
     "ariaStateSync": {
       "status": "required",
@@ -116,5 +115,5 @@
     "runtime": "components/pagination/pagination.js",
     "reason": "현재 페이지와 양 끝 비활성 상태를 동기화한다."
   },
-  "sourceFingerprint": "847af46cba0f0c4aa8e7190fd06d6d547a01af8b279ac914bb66fc4b3ba53749"
+  "sourceFingerprint": "0fd63db190a2ae370f04504d2b6f44e16e38502fb04f9d4aafce8d4202082657"
 }

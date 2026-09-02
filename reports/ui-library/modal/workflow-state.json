@@ -48,12 +48,12 @@
     {
       "role": "component-visual",
       "path": "plugins/figma-vars-installer/src/build-components.ts",
-      "sha256": "942791479ffb0f953c58e7dc745eaf33180cca5f57a1b3b056e517c496e80c25"
+      "sha256": "2beb813ff18d9f7670bd11baa876950fee0d7a715ba6994162c9ccfe56c6a27e"
     },
     {
       "role": "token-values",
       "path": "plugins/figma-vars-installer/src/vars-data.ts",
-      "sha256": "87edd42623983fb5e02e820940dbbc3693ecb4b2c79104e781c8307501984cd9"
+      "sha256": "81eb31cfbd5b1b7041f31967a9592d2181088cf386a9ccb26058a7625ec3c15a"
     },
     {
       "role": "text-styles",
@@ -73,7 +73,7 @@
     {
       "role": "component-meaning-button",
       "path": "registry/components/button.json",
-      "sha256": "2bbe37df4ea029c9b26eeb479676777c2d0c5b152de4c945ad399dad58316a68"
+      "sha256": "c335538eac579310647af448893a385cc458a1ce6866a64362d08ca586f642ff"
     }
   ],
   "artifacts": {
@@ -200,6 +200,46 @@
       "decidedBy": "river",
       "decidedAt": "2026-09-02",
       "decision": "HTML 은 보고 있는 화면의 플랫폼 마크업만 보여주고(PC=닫기 있음·xxsm / Mobile=닫기 없음·lg), CSS·JavaScript 는 배포 파일이 한 벌이라 공용으로 유지한다. 갈라 보여주려면 배포 파일 자체를 플랫폼별로 나눠야 해 13개 컴포넌트 전체에 영향이 가므로 이번 범위 밖."
+    },
+    {
+      "id": "D15",
+      "topic": "focus-visible 전량 철회에 따른 정본 지문 갱신",
+      "decidedBy": "orchestrator",
+      "decidedAt": "2026-09-02",
+      "decision": "2026-09-02 river 지시로 승인 없이 만들어졌던 focus-visible 을 정본에서 제거했다. build-components.ts 변경 hunk 는 makeFocusRing 삭제(275~)·buildOne(355~)·buildButtonSet(566~)·buildInput(992~1092) 뿐이고, vars-data.ts 는 토큰 2개(color/button/border/focus · color/form-control/action/border/focus) 삭제뿐이다. 이 작업의 컴포넌트 빌더는 hunk 범위 밖이라 이전 검증을 유지하고 정본 지문만 갱신했다.",
+      "recordedIn": [
+        "registry/governance/canon-additions-baseline.json revocations",
+        "reports/ui-library/input-button-pilot/2-canon-readiness.md HD-UILIB-03",
+        "CLAUDE.md 변경 이력 2026-09-02"
+      ]
+    },
+    {
+      "id": "D16",
+      "topic": "focus-visible 철회로 바뀐 registry 정본 지문 갱신",
+      "decidedBy": "orchestrator",
+      "decidedAt": "2026-09-02",
+      "decision": "focus-visible 철회로 registry/components/button.json 의 기록 문구를 정정했다(승인 없는 신설이었다는 사실 반영). 컴포넌트 빌더·시각 사양은 무변경이라 이전 검증을 유지하고 지문만 갱신했다.",
+      "recordedIn": [
+        "registry/governance/canon-additions-baseline.json revocations",
+        "CLAUDE.md 변경 이력 2026-09-02"
+      ]
+    },
+    {
+      "id": "D17",
+      "topic": "focus-visible 철회 후 기존 승인 유지 여부(HD-1)",
+      "decidedBy": "river",
+      "decidedAt": "2026-09-03",
+      "decision": "river 승인 당시 화면에는 focus-visible 표시가 있었고 지금 배포본에는 없다(2026-09-02 전량 철회). Figma 정본 빌더·시각 사양은 무변경이다. river 결정: **기존 승인을 그대로 유지한다** — 재검수하지 않는다.",
+      "evidence": {
+        "quote": "hd-1 승인유지\nhd-2 알아서 볼게\nhd-3 문제 손봐줘",
+        "transcript": "cadfd24d-26fc-4140-8f97-f4a290a0052f.jsonl",
+        "at": "2026-09-02T23:07:40.297Z"
+      },
+      "recordedBy": "orchestrator",
+      "recordedIn": [
+        "registry/governance/canon-additions-baseline.json revocations",
+        "CLAUDE.md 변경 이력 2026-09-02"
+      ]
     }
   ],
   "blockers": [],

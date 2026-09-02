@@ -196,19 +196,10 @@
       "figmaProperties": ["Password Action Hover", "Clear Action Hover"],
       "webSelector": "@media (hover: hover) 안의 :hover:not(:disabled)"
     },
-    "focusVisible": {
-      "kind": "per-action-boolean-accessibility-overlay",
-      "webSelector": ":focus-visible",
-      "colorToken": "color/form-control/action/border/focus",
-      "strokeWidthToken": "border-width/2",
-      "offset": "2px inset",
-      "figmaProperties": ["Password Action Focus Visible", "Clear Action Focus Visible"]
-    },
     "rules": [
       "각 액션은 독립된 native button으로 구현한다.",
       "Hover 배경은 Input field 전체가 아니라 현재 가리키는 action의 hit area에만 표시한다.",
-      "Mobile suffix action이 있으면 Input 높이는 최소 48px다.",
-      "focus outline은 field 밖으로 넘치지 않는다."
+      "Mobile suffix action이 있으면 Input 높이는 최소 48px다."
     ],
     "baseClearAction": {
       "state": "Editing",

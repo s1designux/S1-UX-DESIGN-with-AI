@@ -2,7 +2,7 @@
   "id": "dropdown",
   "version": "0.1.0",
   "status": "approved",
-  "canonicalFingerprint": "164ad34684831cc3471d05455a8906ff566e8ecae94a29d13c8e7b9fc2aa90bb",
+  "canonicalFingerprint": "31e5bc26538c126f5049e6491c6384fb5359803494a08ad6e6702f64699ae64a",
   "canonicalSources": [
     "plugins/figma-vars-installer/src/build-components.ts",
     "plugins/figma-vars-installer/src/vars-data.ts",
@@ -55,8 +55,7 @@
     "default": "option default paint",
     "hover": "@media (hover: hover) [data-s1-part=\"option\"]:hover",
     "selectedText": "[data-type=\"text\"] [data-s1-part=\"option\"][aria-selected=\"true\"]",
-    "selectedCheckbox": "[data-type=\"checkbox\"] [data-s1-part=\"option\"][aria-checked=\"true\"]",
-    "focusVisible": "[data-s1-part=\"option\"]:focus-visible"
+    "selectedCheckbox": "[data-type=\"checkbox\"] [data-s1-part=\"option\"][aria-checked=\"true\"]"
   },
   "canonicalStateMap": {
     "Default": "default",
@@ -66,7 +65,7 @@
   },
   "notInCanon": {
     "panelStateAxis": "정본 buildDropdown 은 패널 자체의 state 축이 없다(항상 State=Default) — 상태는 옵션 행이 담당한다. 패널에 별도 open/closed 시각 변형을 만들지 않았다.",
-    "optionFocus": "정본 buildDropdownList 는 Hover 와 별개인 Focus 상태가 없다. 키보드 접근성 때문에 웹에서만 옵션에 focus-visible 테두리를 추가했으며 새 토큰을 만들지 않았다(선택 테두리 토큰 재사용).",
+    "optionFocus": "정본에 focus 변형이 없다. 2026-09-02 river 결정으로 웹에서도 만들지 않으며, 키보드 초점은 브라우저 기본 표시에 맡긴다.",
     "mixed": "「전체 선택」의 aria-checked 는 true/false 만 쓴다. 정본에 부분선택(mixed) 모양이 없다(river 결정 2026-08-31, D2).",
     "widthClamp": "패널·옵션 폭의 min/max(140px/320px)는 정본에 이름 붙은 sizing 토큰이 없어 리터럴 px 로 뒀다 — 정본 build-components.ts 자체도 140 을 토큰이 아닌 resize() 리터럴로 쓴다(river 결정 2026-09-01)."
   },
@@ -110,9 +109,7 @@
   "cssContract": {
     "entry": "components/dropdown.css",
     "rootScope": "[data-s1-component=dropdown]",
-    "nativeStates": [
-      ":focus-visible"
-    ],
+    "nativeStates": [],
     "ariaStates": [
       "[aria-selected=\"true\"]",
       "[aria-checked=\"true\"]"
@@ -156,7 +153,7 @@
     },
     "focus": {
       "status": "required",
-      "value": "옵션 focus-visible 은 선택 테두리 토큰(정본에 없는 웹 전용 접근성 보강)"
+      "value": "브라우저 기본 포커스 표시를 그대로 쓴다 — 정본에 focus 표현이 없어 웹에서 만들지 않는다(2026-09-02 river 결정)."
     },
     "ariaStateSync": {
       "status": "required",
@@ -199,5 +196,5 @@
     "controlMode": "uncontrolled",
     "behaviorContract": "registry/components/component-behavior.pc.json 의 \"Dropdown (Checkbox)\" 장부(status=verified)를 그대로 구현한다 — 옵션 개별 토글은 형제에 영향 없음, select-all 은 전체를 자신의 반대 상태로 맞춤, 모든 옵션이 켜지면 select-all 이 스스로 켜짐, 선택은 패널을 닫지 않음."
   },
-  "sourceFingerprint": "43e76c0ed584cf24f2e2e8a9345a25919cd3061cf72e54fafe96e5ea0444a04e"
+  "sourceFingerprint": "df226b4cbfead065663a7f099a7a9d8ea3b025309b18662f5cb83a2655e93860"
 }

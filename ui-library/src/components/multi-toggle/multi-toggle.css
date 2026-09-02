@@ -77,9 +77,3 @@
   color: var(--color-button-label-disabled);
   cursor: not-allowed;
 }
-
-[data-s1-component="multi-toggle"] [data-s1-part="cell"]:focus-visible {
-  outline: var(--border-width-2) solid var(--color-button-border-primary--default);
-  outline-offset: calc(-1 * var(--border-width-2));
-  z-index: 2;
-}

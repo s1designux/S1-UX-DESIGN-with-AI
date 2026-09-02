@@ -96,11 +96,6 @@
   width: var(--sizing-48);
 }
 
-[data-s1-component="input"] [data-s1-part="action"]:focus-visible {
-  outline: var(--border-width-2) solid var(--color-form-control-action-border-focus);
-  outline-offset: calc(var(--spacing-2) * -1);
-}
-
 [data-s1-component="input"] [data-s1-part="message"] {
   color: var(--color-text-state-caption);
   font-family: "Pretendard", sans-serif;
@@ -212,9 +207,4 @@
 
 [data-s1-component="input"] [data-s1-part="control"]:disabled::placeholder {
   color: var(--color-form-control-text-disabled);
-}
-
-/* Error·Correct·Read-only 의미는 유지하되 키보드 초점은 selected border로 구분한다. */
-[data-s1-component="input"]:has([data-s1-part="control"]:focus-visible) [data-s1-part="field"] {
-  border-color: var(--color-form-control-border-selected);
 }

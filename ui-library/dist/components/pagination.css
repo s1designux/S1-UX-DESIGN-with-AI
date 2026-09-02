@@ -10,4 +10,3 @@
 @media (hover: hover) { [data-s1-component="pagination"] button:hover:not(:disabled) { background: var(--color-pagination-control-bg-hover); color: var(--color-pagination-control-icon-hover); } [data-s1-component="pagination"] [data-s1-part="page"]:hover:not(:disabled) { color: var(--color-pagination-number-hover); } }
 [data-s1-component="pagination"] [data-s1-part="page"][aria-current="page"] { color: var(--color-pagination-number-selected); }
 [data-s1-component="pagination"] button:disabled { background: var(--color-pagination-control-bg-disabled); border-color: var(--color-pagination-control-border-disabled); color: var(--color-pagination-control-icon-disabled); cursor: not-allowed; }
-[data-s1-component="pagination"] button:focus-visible { outline: var(--border-width-2) solid var(--color-pagination-control-icon-default); outline-offset: var(--spacing-2); }

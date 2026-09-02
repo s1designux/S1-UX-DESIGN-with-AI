@@ -113,11 +113,6 @@
   color: var(--color-chip-line-label-disabled);
 }
 
-[data-s1-component="filter-chip"] [data-s1-part="trigger"]:focus-visible {
-  outline: var(--border-width-2) solid var(--color-form-control-border-selected);
-  outline-offset: var(--spacing-2);
-}
-
 /* 패널 배치 — dropdown(자식 코어)의 형태·상태는 dropdown.css 가 소유하고, filter-chip 은 배치·간격만 담당한다. */
 [data-s1-component="filter-chip"] [data-s1-part="panel"] {
   left: 0;

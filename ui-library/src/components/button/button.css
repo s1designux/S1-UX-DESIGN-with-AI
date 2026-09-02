@@ -101,11 +101,6 @@
   color: var(--color-button-label-blue-line--hover);
 }
 
-[data-s1-component="button"]:focus-visible:not(:disabled) {
-  outline: var(--border-width-2) solid var(--color-button-border-focus);
-  outline-offset: var(--spacing-2);
-}
-
 [data-s1-component="button"]:disabled {
   background: var(--color-button-bg-disabled);
   border-color: var(--color-button-border-disabled);

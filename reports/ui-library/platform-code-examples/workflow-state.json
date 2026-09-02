@@ -70,12 +70,12 @@
     {
       "role": "component-visual",
       "path": "plugins/figma-vars-installer/src/build-components.ts",
-      "sha256": "66823ee5bbef70b312bb11d48b71a23426611edb9b0bf514dd642f1bc2dd8400"
+      "sha256": "2beb813ff18d9f7670bd11baa876950fee0d7a715ba6994162c9ccfe56c6a27e"
     },
     {
       "role": "tokens",
       "path": "plugins/figma-vars-installer/src/vars-data.ts",
-      "sha256": "87edd42623983fb5e02e820940dbbc3693ecb4b2c79104e781c8307501984cd9"
+      "sha256": "81eb31cfbd5b1b7041f31967a9592d2181088cf386a9ccb26058a7625ec3c15a"
     },
     {
       "role": "typography",
@@ -143,6 +143,18 @@
       "question": "개발 코드 위의 '어느 화면의 마크업인지' 안내 문구를 둘까",
       "decision": "두지 않는다 — 화면 이름으로 이미 알 수 있어 불필요",
       "recordedVia": "같은 저장소의 다른 Claude 세션이 반영했고 component-page-template.md §A-6 에 기록돼 있다. 이 워크플로 기록에는 3회차 재검증 지적으로 뒤늦게 옮겨 적었다."
+    },
+    {
+      "id": "D6",
+      "topic": "focus-visible 전량 철회에 따른 정본 지문 갱신",
+      "decidedBy": "orchestrator",
+      "decidedAt": "2026-09-02",
+      "decision": "2026-09-02 river 지시로 승인 없이 만들어졌던 focus-visible 을 정본에서 제거했다. build-components.ts 변경 hunk 는 makeFocusRing 삭제(275~)·buildOne(355~)·buildButtonSet(566~)·buildInput(992~1092) 뿐이고, vars-data.ts 는 토큰 2개(color/button/border/focus · color/form-control/action/border/focus) 삭제뿐이다. 이 작업의 컴포넌트 빌더는 hunk 범위 밖이라 이전 검증을 유지하고 정본 지문만 갱신했다.",
+      "recordedIn": [
+        "registry/governance/canon-additions-baseline.json revocations",
+        "reports/ui-library/input-button-pilot/2-canon-readiness.md HD-UILIB-03",
+        "CLAUDE.md 변경 이력 2026-09-02"
+      ]
     }
   ],
   "blockers": [],

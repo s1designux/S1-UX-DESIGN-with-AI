@@ -74,13 +74,13 @@
     {
       "role": "component-visual",
       "path": "plugins/figma-vars-installer/src/build-components.ts",
-      "sha256": "66823ee5bbef70b312bb11d48b71a23426611edb9b0bf514dd642f1bc2dd8400",
+      "sha256": "2beb813ff18d9f7670bd11baa876950fee0d7a715ba6994162c9ccfe56c6a27e",
       "note": "2026-09-01 갱신 — 변경 두 갈래: 이번 작업의 buildFilterChip 매핑 1줄(river 결정 D12⑤) + 이번 작업과 무관한 buildNavBar 구조 변경(다른 세션). 후자는 Toggle·Chip·Select·Dropdown·Filter Chip 어느 빌더도 건드리지 않아 이전 검증을 superseded 하지 않는다."
     },
     {
       "role": "token-values",
       "path": "plugins/figma-vars-installer/src/vars-data.ts",
-      "sha256": "87edd42623983fb5e02e820940dbbc3693ecb4b2c79104e781c8307501984cd9"
+      "sha256": "81eb31cfbd5b1b7041f31967a9592d2181088cf386a9ccb26058a7625ec3c15a"
     },
     {
       "role": "text-styles",
@@ -266,6 +266,18 @@
       "decidedBy": "river",
       "decidedAt": "2026-09-01",
       "decision": "river 확정 정의: '필터칩이 드롭다운 최소값보다 작은 경우 필터칩 width 에 맞추되, 옵션 텍스트 길이가 이 width 보다 긴 경우 텍스트 길이에 맞춰 드롭다운 width 를 적용한다.' 2차 구현(filter-chip.js 가 열 때 칩 폭으로 min/max 를 못박음)은 두 가지로 틀렸다 — ①클릭해서 열 때만 실행돼 미리 열린 예시 칸에는 적용되지 않았고(river 가 본 화면) ②폭을 고정해 긴 글이 늘어나지 못했다. CSS 로 재구현: 패널을 width:100%(칩 폭)로 두고 목록 하한을 min-width:100%(=칩 폭)로 재정의 — dropdown.css 의 width:max-content 가 글자에 맞춰 키우고 max-width:320px 이 상한을 잡는다. JS 폭 조작은 제거했다. 부수 효과로 칩이 140 보다 넓을 때도 목록 하한이 칩 폭이 되어 목록이 칩과 항상 정렬된다."
+    },
+    {
+      "id": "D18",
+      "topic": "focus-visible 전량 철회에 따른 정본 지문 갱신",
+      "decidedBy": "orchestrator",
+      "decidedAt": "2026-09-02",
+      "decision": "2026-09-02 river 지시로 승인 없이 만들어졌던 focus-visible 을 정본에서 제거했다. build-components.ts 변경 hunk 는 makeFocusRing 삭제(275~)·buildOne(355~)·buildButtonSet(566~)·buildInput(992~1092) 뿐이고, vars-data.ts 는 토큰 2개(color/button/border/focus · color/form-control/action/border/focus) 삭제뿐이다. 이 작업의 컴포넌트 빌더는 hunk 범위 밖이라 이전 검증을 유지하고 정본 지문만 갱신했다.",
+      "recordedIn": [
+        "registry/governance/canon-additions-baseline.json revocations",
+        "reports/ui-library/input-button-pilot/2-canon-readiness.md HD-UILIB-03",
+        "CLAUDE.md 변경 이력 2026-09-02"
+      ]
     }
   ],
   "blockers": [

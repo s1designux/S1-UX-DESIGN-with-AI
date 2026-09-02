@@ -21,8 +21,7 @@
       "MVP3.4 Figma MCP comparison complete: 6 token mismatches corrected (see reports/mvp3-4-button-figma-mcp-comparison.md).",
       "ghost variant tokens exist in tokens.css but harness uses blue-line instead.",
       "secondary hover border removed: Figma confirms hover border = same as default (no change).",
-      "primary disabled-border added: Figma confirms all disabled borders = color-border-default.",
-      "2026-08-25 river 승인: focus-visible은 State 축을 늘리지 않고 모든 상태와 공존하는 BOOLEAN 접근성 표현으로 추가. 2026-08-26 실제 화면 승인 완료."
+      "primary disabled-border added: Figma confirms all disabled borders = color-border-default."
     ]
   },
   "usage": {
@@ -59,14 +58,13 @@
   },
   "a11y": [
     "아이콘만 있는 버튼은 aria-label 로 용도를 준다.",
-    "disabled 는 실제 비활성 처리하고 클릭을 막는다.",
-    "키보드 포커스는 :focus-visible에서 2px outline과 2px 바깥 간격으로 표시한다. 마우스 클릭만으로는 강제 표시하지 않는다."
+    "disabled 는 실제 비활성 처리하고 클릭을 막는다."
   ],
   "guide": {
     "sampleLabels": ["버튼"],
     "webTag": "button",
     "interactionPattern": "invoke-count",
-    "accessibility": { "keyboard": "native-button", "disabled": "native-disabled", "focusVisible": "2px outer outline + 2px offset" },
+    "accessibility": { "keyboard": "native-button", "disabled": "native-disabled" },
     "classInterface": {
       "base": "s1-btn",
       "variantPrefix": "s1-btn-",
@@ -144,18 +142,6 @@
       ]
     }
   },
-  "focusVisible": {
-    "status": "approved",
-    "kind": "boolean-accessibility-overlay",
-    "coexistsWithStates": ["default", "hover", "pressed"],
-    "excludedWhen": ["disabled"],
-    "figmaProperty": "Focus Visible",
-    "webSelector": ":focus-visible",
-    "colorToken": "color/button/border/focus",
-    "strokeWidthToken": "border-width/2",
-    "offsetToken": "spacing/2",
-    "note": "Focus Visible은 상호배타 State variant가 아니다. 2026-08-26 실제 검수 화면에서 승인됐다."
-  },
   "tokens": {
     "background": [
       "--button-primary-default-bg",
@@ -232,8 +218,7 @@
       "variant": "Variant",
       "size": "Size",
       "state": "State",
-      "break": "Break",
-      "focusVisible": "Focus Visible"
+      "break": "Break"
     },
     "valueMap": {
       "primary": "Primary",

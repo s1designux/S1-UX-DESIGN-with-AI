@@ -2,7 +2,7 @@
   "id": "chip",
   "version": "0.1.0",
   "status": "approved",
-  "canonicalFingerprint": "eb3838fe90035b34183c412fff1c1568d331fd765b77ed2279084f65e384ddd9",
+  "canonicalFingerprint": "27c2c553043a557edae273b4887076ac5912ece72ae693320c65a9f035cc0655",
   "canonicalSources": [
     "plugins/figma-vars-installer/src/build-components.ts",
     "plugins/figma-vars-installer/src/vars-data.ts",
@@ -51,8 +51,7 @@
     "default": "aria-pressed=false",
     "hover": "@media (hover: hover) :hover:not(:disabled):not([aria-pressed=\"true\"])",
     "selected": "[aria-pressed=\"true\"]:not(:disabled)",
-    "disabled": "disabled",
-    "focusVisible": ":focus-visible:not(:disabled)"
+    "disabled": "disabled"
   },
   "canonicalStateMap": {
     "Default": "default",
@@ -65,7 +64,7 @@
     "icon": "정본 buildChip 은 라벨만 그린다. registry anatomy 의 아이콘·닫기(X)는 이 배포 범위 밖이며 임의 SVG 로 확정하지 않았다.",
     "selectedHover": "정본에 Selected+Hover 셀이 없다. tokens.css 의 --color-chip-solid-bg-selected-hover 는 정본 빌더가 쓰지 않아 웹에서도 쓰지 않았다.",
     "md-mobile": "정본에 Mobile MD 조합이 없다. CSS 는 정본 3조합만 정의한다.",
-    "focusVisible": "정본에 focus 변형이 없다. 키보드 접근성 때문에 웹에서만 variant 별 선택 테두리 토큰으로 표시하며 새 토큰을 만들지 않았다."
+    "focusVisible": "정본에 focus 변형이 없다. 2026-09-02 river 결정으로 웹에서도 만들지 않으며, 키보드 초점은 브라우저 기본 표시에 맡긴다."
   },
   "parts": [
     "label"
@@ -113,8 +112,7 @@
     "rootScope": "[data-s1-component=chip]",
     "nativeStates": [
       ":hover",
-      ":disabled",
-      ":focus-visible"
+      ":disabled"
     ],
     "ariaStates": [
       "[aria-pressed=\"true\"]"
@@ -153,7 +151,7 @@
     },
     "focus": {
       "status": "required",
-      "value": "2px outline in the canonical variant selected border token, 2px offset; excluded while disabled"
+      "value": "브라우저 기본 포커스 표시를 그대로 쓴다 — 정본에 focus 표현이 없어 웹에서 만들지 않는다(2026-09-02 river 결정)."
     },
     "ariaStateSync": {
       "status": "required",
@@ -173,5 +171,5 @@
     "runtime": "components/chip.js",
     "reason": "registry 가 선언한 aria-pressed 선택 상태 전환을 런타임이 담당한다."
   },
-  "sourceFingerprint": "41947abc3a8e34df667fae19b91b26d60cd17f75e71d5a604f4048e7e536b29b"
+  "sourceFingerprint": "d2ce463d72793383fcb7c1e449231bdf66da51ee6165632829edd098cd537450"
 }

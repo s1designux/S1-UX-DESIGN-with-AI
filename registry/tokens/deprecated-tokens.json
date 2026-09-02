@@ -81,24 +81,24 @@
     {
       "id": "button.primary.focus-ring",
       "cssVariable": "--button-primary-focus-ring",
-      "replacedBy": "color/button/border/focus",
-      "reason": "variant별 focus-ring은 계속 폐기한다. 2026-08-25 river 승인으로 variant와 무관한 Button focus-visible semantic candidate가 새로 생겼으며 옛 CSS 변수를 복구하지 않는다.",
+      "replacedBy": null,
+      "reason": "variant별 focus-ring은 폐기 상태를 유지한다. 2026-08-25 에 대체 토큰(color/button/border/focus)이 생겼다고 기록돼 있었으나 river 확인 결과 승인한 적 없는 신설이어서 2026-09-02 정본에서 제거했다. 대체 토큰은 없으며 키보드 초점은 브라우저 기본 표시에 맡긴다.",
       "removedAt": "2026-07-03",
       "status": "removed"
     },
     {
       "id": "button.secondary.focus-ring",
       "cssVariable": "--button-secondary-focus-ring",
-      "replacedBy": "color/button/border/focus",
-      "reason": "variant별 focus-ring은 계속 폐기한다. 공용 Button focus-visible semantic candidate로 이행하며 옛 CSS 변수는 복구하지 않는다.",
+      "replacedBy": null,
+      "reason": "variant별 focus-ring은 폐기 상태를 유지한다. 2026-08-25 에 대체 토큰(color/button/border/focus)이 생겼다고 기록돼 있었으나 river 확인 결과 승인한 적 없는 신설이어서 2026-09-02 정본에서 제거했다. 대체 토큰은 없으며 키보드 초점은 브라우저 기본 표시에 맡긴다.",
       "removedAt": "2026-07-03",
       "status": "removed"
     },
     {
       "id": "button.blue-line.focus-ring",
       "cssVariable": "--button-blue-line-focus-ring",
-      "replacedBy": "color/button/border/focus",
-      "reason": "variant별 focus-ring은 계속 폐기한다. 공용 Button focus-visible semantic candidate로 이행하며 옛 CSS 변수는 복구하지 않는다.",
+      "replacedBy": null,
+      "reason": "variant별 focus-ring은 폐기 상태를 유지한다. 2026-08-25 에 대체 토큰(color/button/border/focus)이 생겼다고 기록돼 있었으나 river 확인 결과 승인한 적 없는 신설이어서 2026-09-02 정본에서 제거했다. 대체 토큰은 없으며 키보드 초점은 브라우저 기본 표시에 맡긴다.",
       "removedAt": "2026-07-03",
       "status": "removed"
     },

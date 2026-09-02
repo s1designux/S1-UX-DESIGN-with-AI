@@ -2,7 +2,7 @@
   "id": "toggle",
   "version": "0.1.0",
   "status": "approved",
-  "canonicalFingerprint": "2b0b7b40b7b93b66187fef2f30b7d445e90c836b9407273d9ff46efd3ceae602",
+  "canonicalFingerprint": "95faf10e9e0d5d874db23e2d01e549c9418cc78771c4f4675f41316dc94fe63e",
   "canonicalSources": [
     "plugins/figma-vars-installer/src/build-components.ts",
     "plugins/figma-vars-installer/src/vars-data.ts",
@@ -32,8 +32,7 @@
     "off": "aria-checked=false",
     "on": "[aria-checked=\"true\"]",
     "disabled": "disabled",
-    "disabledOn": "disabled[aria-checked=\"true\"]",
-    "focusVisible": ":focus-visible:not(:disabled)"
+    "disabledOn": "disabled[aria-checked=\"true\"]"
   },
   "canonicalStateMap": {
     "Pressed=Off, State=Default": "off",
@@ -44,7 +43,7 @@
   "notInCanon": {
     "hover": "정본 buildToggle 에 Hover 변형이 없다. 웹에서도 만들지 않았다.",
     "motion": "정본에 노브 이동 모션 선언이 없다. transition 을 임의로 넣지 않았다.",
-    "focusVisible": "정본에 focus 변형이 없다. 키보드 접근성 때문에 웹에서만 선택 테두리 토큰으로 표시하며 새 토큰을 만들지 않았다.",
+    "focusVisible": "정본에 focus 변형이 없다. 2026-09-02 river 결정으로 웹에서도 만들지 않으며, 키보드 초점은 브라우저 기본 표시에 맡긴다.",
     "label": "정본 트랙에 라벨 부품이 없다. 접근 이름은 aria-label 또는 aria-labelledby 로 붙인다."
   },
   "parts": [
@@ -72,8 +71,7 @@
     "entry": "components/toggle.css",
     "rootScope": "[data-s1-component=toggle]",
     "nativeStates": [
-      ":disabled",
-      ":focus-visible"
+      ":disabled"
     ],
     "ariaStates": [
       "[aria-checked=\"true\"]"
@@ -110,7 +108,7 @@
     },
     "focus": {
       "status": "required",
-      "value": "2px outline in the canonical selected border token, 2px offset; excluded while disabled"
+      "value": "브라우저 기본 포커스 표시를 그대로 쓴다 — 정본에 focus 표현이 없어 웹에서 만들지 않는다(2026-09-02 river 결정)."
     },
     "ariaStateSync": {
       "status": "required",

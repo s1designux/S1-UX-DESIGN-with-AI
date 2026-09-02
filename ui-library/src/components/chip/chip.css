@@ -77,11 +77,6 @@
   color: var(--color-chip-line-label-disabled);
 }
 
-[data-s1-component="chip"][data-variant="line"]:focus-visible:not(:disabled) {
-  outline: var(--border-width-2) solid var(--color-chip-line-border-selected);
-  outline-offset: var(--spacing-2);
-}
-
 /* ── Solid ── */
 [data-s1-component="chip"][data-variant="solid"] {
   background: var(--color-chip-solid-bg-default);
@@ -107,11 +102,6 @@
   background: var(--color-chip-solid-bg-disabled);
   border-color: var(--color-chip-solid-border-disabled);
   color: var(--color-chip-solid-label-disabled);
-}
-
-[data-s1-component="chip"][data-variant="solid"]:focus-visible:not(:disabled) {
-  outline: var(--border-width-2) solid var(--color-chip-solid-border-selected);
-  outline-offset: var(--spacing-2);
 }
 
 [data-s1-component="chip"]:disabled {

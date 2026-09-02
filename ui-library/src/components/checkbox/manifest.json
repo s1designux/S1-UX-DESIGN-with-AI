@@ -2,7 +2,7 @@
   "id": "checkbox",
   "version": "0.1.0",
   "status": "approved",
-  "canonicalFingerprint": "1aa290527c39c08a1537644c9b561550e5840c5a097554ee000303ed0eab794d",
+  "canonicalFingerprint": "d2bd399c33a0a694af6bd9ebe213e477eb6e8973ea9b8b0d209f05866df47abe",
   "canonicalSources": [
     "plugins/figma-vars-installer/src/build-components.ts",
     "plugins/figma-vars-installer/src/vars-data.ts",
@@ -34,8 +34,7 @@
     "hover": "@media (hover: hover) control:hover:not(:disabled):not(:checked)",
     "checked": "control:checked",
     "disabled": "control:disabled",
-    "disabledChecked": "control:disabled:checked",
-    "focusVisible": "control:focus-visible"
+    "disabledChecked": "control:disabled:checked"
   },
   "canonicalStateMap": {
     "Default": "default",
@@ -46,7 +45,7 @@
   },
   "notInCanon": {
     "indeterminate": "정본에 부분선택 변형이 없다. 2026-08-31 river 결정으로 이번 배포에서 만들지 않는다.",
-    "focusVisible": "정본에 focus 변형이 없다. 키보드 접근성 때문에 웹에서만 선택 테두리 토큰으로 표시하며 새 토큰을 만들지 않았다."
+    "focusVisible": "정본에 focus 변형이 없다. 2026-09-02 river 결정으로 웹에서도 만들지 않으며, 키보드 초점은 브라우저 기본 표시에 맡긴다."
   },
   "parts": [
     "control",
@@ -76,8 +75,7 @@
     "nativeStates": [
       ":checked",
       ":disabled",
-      ":hover",
-      ":focus-visible"
+      ":hover"
     ],
     "customization": "정본 Semantic token만 교체하며 공개 selector의 구조를 override하지 않는다."
   },
@@ -121,7 +119,7 @@
     },
     "focus": {
       "status": "required",
-      "value": "2px outline in the canonical selected border token, 2px offset"
+      "value": "브라우저 기본 포커스 표시를 그대로 쓴다 — 정본에 focus 표현이 없어 웹에서 만들지 않는다(2026-09-02 river 결정)."
     },
     "ariaStateSync": {
       "status": "not-applicable",

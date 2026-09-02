@@ -97,11 +97,6 @@
   background-color: var(--color-form-control-icon-disabled);
 }
 
-[data-s1-component="time-picker"] [data-s1-part="trigger"]:focus-visible {
-  outline: var(--border-width-2) solid var(--color-form-control-border-selected);
-  outline-offset: var(--spacing-2);
-}
-
 /* ── 드롭다운 패널 — build-components.ts buildTimePickerDropdown 2477-2624 ── */
 [data-s1-component="time-picker"] [data-s1-part="panel"] {
   left: 0;
@@ -178,11 +173,6 @@
   color: var(--color-dropdown-option-label-selected);
 }
 
-[data-s1-component="time-picker"] [data-s1-part="cell"]:focus-visible {
-  outline: var(--border-width-2) solid var(--color-form-control-border-selected);
-  outline-offset: calc(-1 * var(--border-width-2));
-}
-
 /* ── 확인 줄 — 위 가로 1px 구분선 + 좌우16·위아래12, 우측 정렬(build-components.ts 2549-2565) ── */
 [data-s1-component="time-picker"] [data-s1-part="footer"] {
   border-bottom: var(--border-width-1) solid var(--color-dropdown-list-border);
@@ -210,8 +200,4 @@
 [data-s1-component="time-picker"] [data-s1-part="confirm"]:disabled {
   color: var(--color-text-state-disabled);
   cursor: not-allowed;
-}
-[data-s1-component="time-picker"] [data-s1-part="confirm"]:focus-visible {
-  outline: var(--border-width-2) solid var(--color-form-control-border-selected);
-  outline-offset: var(--spacing-2);
 }

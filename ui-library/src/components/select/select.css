@@ -86,11 +86,6 @@
   background-color: var(--color-form-control-icon-disabled);
 }
 
-[data-s1-component="select"] [data-s1-part="trigger"]:focus-visible {
-  outline: var(--border-width-2) solid var(--color-form-control-border-selected);
-  outline-offset: var(--spacing-2);
-}
-
 /* 패널 배치 — dropdown(자식 코어)의 형태·상태는 dropdown.css 가 소유하고, select 는 배치·간격만 담당한다.
    정본 itemSpacing 8px(build-components.ts:1461 comp.itemSpacing) 유지, 웹에서는 겹쳐 뜨는 오버레이로 배치한다. */
 [data-s1-component="select"] [data-s1-part="panel"] {

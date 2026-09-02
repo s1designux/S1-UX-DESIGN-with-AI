@@ -2,7 +2,7 @@
   "id": "modal",
   "version": "0.1.0",
   "status": "approved",
-  "canonicalFingerprint": "652e019ddb7910ed674b12640a3ecaa61352b63fb4696639747fb8978a22d8a6",
+  "canonicalFingerprint": "7abbe32c781af3e16c5b60f696c9bfd269bcc4a40e963c4c1e1bc2bbe22957f7",
   "canonicalSources": [
     "plugins/figma-vars-installer/src/build-components.ts",
     "plugins/figma-vars-installer/src/vars-data.ts",
@@ -125,7 +125,6 @@
     "entry": "components/modal.css",
     "rootScope": "[data-s1-component=modal]",
     "nativeStates": [
-      ":focus-visible"
     ],
     "ariaStates": [],
     "documentedDataStates": [

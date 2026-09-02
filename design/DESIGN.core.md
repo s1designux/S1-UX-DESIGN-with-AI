@@ -316,13 +316,11 @@ agent:
   composition:
     mustReuse: "not-defined"
     mustNotCreate: "not-defined"
-    declaredParts:
-      - "button-focus-ring"
+    declaredParts: "not-defined"
   constraints: "unknown"
   tokens:
     figmaSemanticBindings:
       - "border-width/1"
-      - "border-width/2"
       - "color/button/bg/blue-line--default"
       - "color/button/bg/blue-line--hover"
       - "color/button/bg/disabled"
@@ -333,7 +331,6 @@ agent:
       - "color/button/border/blue-line--default"
       - "color/button/border/blue-line--hover"
       - "color/button/border/disabled"
-      - "color/button/border/focus"
       - "color/button/border/primary--default"
       - "color/button/border/primary--hover"
       - "color/button/border/secondary--default"
@@ -346,7 +343,6 @@ agent:
       - "color/button/label/secondary--default"
       - "color/button/label/secondary--hover"
       - "radius/4"
-      - "radius/8"
       - "spacing/16"
       - "spacing/8"
     aliasChains:
@@ -441,7 +437,6 @@ agent:
       size: "Size"
       state: "State"
       break: "Break"
-      focusVisible: "Focus Visible"
   icons:
     allowed: "figma-unconfirmed"
     slots: "unknown"
@@ -460,7 +455,6 @@ _Don't_
 **접근성 (a11y)**
 - 아이콘만 있는 버튼은 aria-label 로 용도를 준다.
 - disabled 는 실제 비활성 처리하고 클릭을 막는다.
-- 키보드 포커스는 :focus-visible에서 2px outline과 2px 바깥 간격으로 표시한다. 마우스 클릭만으로는 강제 표시하지 않는다.
 
 ### Checkbox
 
@@ -1882,8 +1876,6 @@ agent:
   constraints: "unknown"
   tokens:
     figmaSemanticBindings:
-      - "border-width/2"
-      - "color/form-control/action/border/focus"
       - "color/form-control/bg/default"
       - "color/form-control/bg/disabled"
       - "color/form-control/bg/hover"
@@ -2345,10 +2337,8 @@ agent:
   tokens:
     figmaSemanticBindings:
       - "border-width/1"
-      - "border-width/2"
       - "color/button/bg/primary--default"
       - "color/button/bg/secondary--default"
-      - "color/button/border/focus"
       - "color/button/border/primary--default"
       - "color/button/border/secondary--default"
       - "color/button/label/primary--default"
@@ -4171,4 +4161,4 @@ DESIGN_SYSTEM_GAP:
 - 적용 해석 순서(뒤가 앞을 덮음): core → service(extends core) → role → platform → theme. 기본값: service=core · role=user · platform=web · theme=light.
 - 서비스 분기(예: vms 영상관제)는 core 를 상속하고 차이분만 덮는다.
 
-<!-- generated-stamp: c65bf2f6f2b0 · 손편집 금지 -->
+<!-- generated-stamp: ad6770a22a43 · 손편집 금지 -->

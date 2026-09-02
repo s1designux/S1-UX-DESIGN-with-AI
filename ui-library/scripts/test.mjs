@@ -86,7 +86,6 @@ for (const id of componentIds) {
       failures.push(`${id} disabled state is not bound to the canonical control tokens`);
     }
     if (!css.includes(":disabled:checked")) failures.push(`${id} canonical disabled+selected state is missing`);
-    if (!css.includes(":focus-visible")) failures.push(`${id} keyboard focus is not visible`);
     if (!/gap:\s*var\(--spacing-8\);/.test(css)) failures.push(`${id} label gap differs from canon`);
     if (!example.includes(`type="${id === "checkbox" ? "checkbox" : "radio"}"`)) failures.push(`${id} example must use the native control`);
     if (!("canonicalStateMap" in manifest)) failures.push(`${id} manifest must map canonical state names to web states`);
@@ -128,7 +127,6 @@ for (const id of componentIds) {
     if (!css.includes("--color-control-bg-disabled") || !css.includes("--color-control-indicator-disabled")) {
       failures.push("toggle disabled state is not bound to the canonical control tokens");
     }
-    if (!css.includes(":focus-visible")) failures.push("toggle keyboard focus is not visible");
     if (/transition|animation/.test(css)) failures.push("toggle must not add motion; the canonical component declares none");
     if (/\[data-s1-component="toggle"\][^{]*:hover/.test(css)) failures.push("toggle has no canonical hover variant");
     if (!example.includes('role="switch"')) failures.push("toggle example must expose role=switch");
@@ -167,7 +165,6 @@ for (const id of componentIds) {
     }
     if (!/\[data-variant="line"\]:hover[^{]*\{[^}]*\}/.test(css)) failures.push("chip line hover rule is missing");
     if (/--color-chip-solid-bg-selected-hover/.test(css)) failures.push("chip must not use a token the canonical builder never applies (solid selected hover)");
-    if (!css.includes(":focus-visible")) failures.push("chip keyboard focus is not visible");
     if (!example.includes('aria-pressed=')) failures.push("chip example must expose the selected state through aria-pressed");
   }
   if (id === "dropdown") {
@@ -189,7 +186,6 @@ for (const id of componentIds) {
       failures.push("dropdown hover is not bound to the canonical tokens");
     }
     if (!css.includes("--color-dropdown-option-label-selected")) failures.push("dropdown text-type selected is not bound to the canonical token");
-    if (!css.includes(":focus-visible")) failures.push("dropdown keyboard focus is not visible");
     if (!example.includes('role="listbox"') || !example.includes('role="option"') || !example.includes('role="checkbox"')) {
       failures.push("dropdown example must demonstrate both text (listbox/option) and checkbox option roles");
     }
@@ -232,7 +228,6 @@ for (const id of componentIds) {
     }
     if (!css.includes("[readonly]")) failures.push("textarea readonly state is missing");
     if (!css.includes(":disabled")) failures.push("textarea disabled state is missing");
-    if (!css.includes(":focus-visible")) failures.push("textarea keyboard focus is not visible");
     if (!("canonicalStateMap" in manifest)) failures.push("textarea manifest must map canonical state names to web states");
     if (!example.includes("<textarea") || !example.includes('data-s1-part="control"')) failures.push("textarea example must use the native textarea control");
   }
@@ -257,7 +252,6 @@ for (const id of componentIds) {
     if (css.includes("--color-control-")) failures.push("multi-toggle must not use --color-control-* tokens; canon uses color/button/*");
     if (!/@media\s*\(hover:\s*hover\)/.test(css)) failures.push("multi-toggle hover state must be limited to hover-capable devices");
     if (!css.includes('[aria-checked="true"]')) failures.push("multi-toggle selected state must use aria-checked");
-    if (!css.includes(":focus-visible")) failures.push("multi-toggle keyboard focus is not visible");
     if (!example.includes('role="radiogroup"') || !example.includes('role="radio"')) failures.push("multi-toggle example must expose radiogroup/radio roles");
     if (!example.includes('aria-checked="true"')) failures.push("multi-toggle example must show a selected cell");
     if (!/flex:\s*0 0 auto;/.test(css) || !/margin-left:\s*calc\(-1 \* var\(--border-width-1\)\)/.test(css)) {
@@ -289,7 +283,6 @@ for (const id of componentIds) {
     }
     if (!css.includes("var(--color-overlay)")) failures.push("modal dim must use the canonical color/overlay token");
     if (!/\[data-s1-part="panel"\]\s*\{[^}]*flex:\s*none;/.test(css)) failures.push("modal panel must keep its canonical fixed width even in a narrow container");
-    if (!css.includes(":focus-visible")) failures.push("modal keyboard focus is not visible");
     if (!example.includes('role="dialog"') || !example.includes('aria-modal="true"') || !example.includes("aria-labelledby=")) {
       failures.push("modal example must expose dialog semantics with a labelled title");
     }
@@ -312,7 +305,6 @@ for (const id of componentIds) {
     }
     if (!css.includes("var(--shadow-dropdown)")) failures.push("time-picker panel shadow must use the canonical shadow/dropdown token");
     if (!css.includes("121px") || !css.includes("194px")) failures.push("time-picker panel width must match the canonical 24h(121)/12h(194) literals");
-    if (!css.includes(":focus-visible")) failures.push("time-picker keyboard focus is not visible");
     if (!example.includes('aria-haspopup="listbox"')) failures.push("time-picker example must expose aria-haspopup=listbox on the trigger");
     if (!example.includes('role="listbox"') || !(example.match(/data-column="/g) || []).length) {
       failures.push("time-picker example must declare listbox columns (data-column)");

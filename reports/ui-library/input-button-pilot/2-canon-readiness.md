@@ -122,7 +122,10 @@ Mobile에서 suffix action이 있는 Input은 hit area가 field 밖으로 넘치
 
 ### HD-UILIB-03 — 키보드 focus-visible
 
-**결정 완료 · 2026-08-25 river:** Button과 suffix action에 디자인시스템용 focus-visible 상태를 정본으로 추가하고, 실제 검수 화면에서 river 승인 후 확정한다.
+> ⛔ **2026-09-02 철회** — river 확인 결과 이 승인은 **실제로 없었다.** ⭐ 가 스스로 기록한 것이며,
+> 이에 근거해 만든 focus-visible 은 정본·웹 배포본 17건 전부 제거했다. 아래 원문은 사건 기록으로 남긴다.
+
+~~**결정 완료 · 2026-08-25 river:** Button과 suffix action에 디자인시스템용 focus-visible 상태를 정본으로 추가하고, 실제 검수 화면에서 river 승인 후 확정한다.~~
 
 이유: 현재는 과거 focus-ring 토큰이 폐기돼 승인된 표현이 없다. 브라우저 기본 outline을 그대로 두면 접근성은 확보되지만 브라우저마다 모양이 달라 UI 라이브러리의 일관성이 떨어진다.
 

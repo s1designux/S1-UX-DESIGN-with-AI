@@ -46,9 +46,3 @@
 [data-s1-component="toggle"]:disabled [data-s1-part="knob"] {
   background: var(--color-control-indicator-disabled);
 }
-
-/* 정본에 focus 변형이 없어 새 토큰을 만들지 않고 선택 테두리 토큰으로만 표시한다(웹 접근성 계약). */
-[data-s1-component="toggle"]:focus-visible:not(:disabled) {
-  outline: var(--border-width-2) solid var(--color-control-border-selected);
-  outline-offset: var(--spacing-2);
-}

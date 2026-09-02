@@ -2,7 +2,7 @@
   "id": "mobile-bottom-nav",
   "version": "0.1.0",
   "status": "approved",
-  "canonicalFingerprint": "40d88e15f0bbb22a89ce6ac200b45b30db591c4fb1146f29de3ccfbe56fdd996",
+  "canonicalFingerprint": "bb52eac3e68464b3d7c4f11f44ddfacb648bf55a7b541d13cc07317f8def7ff9",
   "canonicalSources": [
     "plugins/figma-vars-installer/src/build-components.ts",
     "plugins/figma-vars-installer/src/vars-data.ts",
@@ -48,7 +48,6 @@
     "entry": "components/mobile-bottom-nav.css",
     "rootScope": "[data-s1-component=mobile-bottom-nav]",
     "nativeStates": [
-      ":focus-visible"
     ],
     "ariaStates": [
       "[aria-selected=\"true\"]"
@@ -97,7 +96,7 @@
     },
     "focus": {
       "status": "required",
-      "value": "2px outline, 2px offset (:focus-visible)"
+      "value": "브라우저 기본 포커스 표시를 그대로 쓴다 — 정본에 focus 표현이 없어 웹에서 만들지 않는다(2026-09-02 river 결정)."
     },
     "ariaStateSync": {
       "status": "required",

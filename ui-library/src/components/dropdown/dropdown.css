@@ -86,11 +86,6 @@
   color: var(--color-dropdown-option-label-selected);
 }
 
-[data-s1-component="dropdown"] [data-s1-part="option"]:focus-visible {
-  outline: var(--border-width-2) solid var(--color-form-control-border-selected);
-  outline-offset: calc(-1 * var(--border-width-2));
-}
-
 /* river 결정(②): 320px 넘는 긴 글은 말줄임이 아니라 줄바꿈한다.
    min-width:0 은 flex item 기본값(auto)이 줄바꿈을 막는 것을 해제하기 위함. */
 [data-s1-component="dropdown"] [data-s1-part="option"] [data-s1-part="option-label"] {

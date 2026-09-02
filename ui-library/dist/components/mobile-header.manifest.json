@@ -2,7 +2,7 @@
   "id": "mobile-header",
   "version": "0.1.0",
   "status": "approved",
-  "canonicalFingerprint": "8d2bea4c0ccb501eb75737eb2d336f1f7112dbc7d1e0b1ef31d7aa441234eaea",
+  "canonicalFingerprint": "b5a5f4d44d7832aeebae0ecaee99a048d85bbeacb5b38315013d329a025789e0",
   "canonicalSources": [
     "plugins/figma-vars-installer/src/build-components.ts",
     "plugins/figma-vars-installer/src/vars-data.ts",
@@ -102,9 +102,7 @@
   "cssContract": {
     "entry": "components/mobile-header.css",
     "rootScope": "[data-s1-component=mobile-header]",
-    "nativeStates": [
-      ":focus-visible"
-    ],
+    "nativeStates": [],
     "ariaStates": [],
     "documentedDataStates": [
       "[data-variant]"
@@ -185,7 +183,7 @@
     },
     "focus": {
       "status": "required",
-      "value": "2px outline, 2px offset (:focus-visible) — back·close·notification 버튼."
+      "value": "브라우저 기본 포커스 표시를 그대로 쓴다 — 정본에 focus 표현이 없어 웹에서 만들지 않는다(2026-09-02 river 결정)."
     },
     "ariaStateSync": {
       "status": "not-applicable",
@@ -209,5 +207,5 @@
     "runtime": "none",
     "reason": "정적 크롬이다 — 열림/닫힘 등 로컬 상태가 없어 native 시맨틱만으로 충분하다."
   },
-  "sourceFingerprint": "9f8916d262ce613eb86979195a88a84e65418aea2493450d07d11c1b91948a4b"
+  "sourceFingerprint": "18e9dd1c031caaa65c19ed4b9cbb8ac6acd331b31e4c94f732f5046b9fc7575a"
 }

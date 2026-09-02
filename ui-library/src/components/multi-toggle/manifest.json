@@ -2,7 +2,7 @@
   "id": "multi-toggle",
   "version": "0.1.0",
   "status": "approved",
-  "canonicalFingerprint": "03dc97cc3a2ead18386f684a70fd18d13708667a0ef04960dec8923ba325c8cb",
+  "canonicalFingerprint": "edf4dc1f30d9db942b64b251b7fcd38911a94ed02cfb916d1cc14c1d3429161b",
   "canonicalSources": [
     "plugins/figma-vars-installer/src/build-components.ts",
     "plugins/figma-vars-installer/src/vars-data.ts",
@@ -51,7 +51,7 @@
     "Disabled": "disabled"
   },
   "notInCanon": {
-    "focus": "정본 state 목록에 focus 변형이 없다. 키보드 접근성 표시는 기존 selected border 토큰(--color-button-border-primary--default)만 사용하며 새 토큰을 만들지 않는다(Chip 선례).",
+    "focus": "정본에 focus 변형이 없다. 2026-09-02 river 결정으로 웹에서도 만들지 않으며, 키보드 초점은 브라우저 기본 표시에 맡긴다.",
     "mobileSize": "정본은 md/sm 뿐이다. PC 전용 컴포넌트로 유지한다.",
     "ownColorToken": "묶음·셀 모두 자체 색 토큰이 없다. color/button/* 을 그대로 쓰며 --color-control-* 은 쓰지 않는다."
   },
@@ -117,7 +117,7 @@
     },
     "focus": {
       "status": "required",
-      "value": "roving tabindex and 2px outline in the canonical selected border token"
+      "value": "roving tabindex; 초점 표시는 브라우저 기본을 그대로 쓴다 — 정본에 focus 표현이 없다(2026-09-02 river 결정)."
     },
     "ariaStateSync": {
       "status": "required",

@@ -49,22 +49,26 @@
       }
     }
   },
-  "currentPhase": "complete",
-  "workflowStatus": "complete",
-  "uiLibraryStatus": "approved",
-  "lastCompletedCheckpoint": 6,
-  "nextAction": "승인된 Base Input·Button을 dependency로 사용해 다음 코어 컴포넌트를 정리하거나 패턴 코드화를 진행한다.",
-  "ownership": {},
+  "currentPhase": "3-build",
+  "workflowStatus": "in-progress",
+  "uiLibraryStatus": "draft",
+  "lastCompletedCheckpoint": 2,
+  "nextAction": "focus-visible 제거본으로 3-build 부터 다시 진행한다. 4단계 component-verifier 시나리오 F 재검증을 거친 뒤에야 river 화면 검수(5-human-review)를 요청한다. 이전 6단계 승인은 superseded.",
+  "ownership": {
+    "currentActor": "orchestrator",
+    "startedAt": "2026-09-02",
+    "owner": "orchestrator"
+  },
   "canonicalInputs": [
     {
       "role": "component-visual",
       "path": "plugins/figma-vars-installer/src/build-components.ts",
-      "sha256": "28f3f60cea335910ae7191c2d235c8a3b47865f00cb55de9531b64ce28a02272"
+      "sha256": "2beb813ff18d9f7670bd11baa876950fee0d7a715ba6994162c9ccfe56c6a27e"
     },
     {
       "role": "token-values",
       "path": "plugins/figma-vars-installer/src/vars-data.ts",
-      "sha256": "87edd42623983fb5e02e820940dbbc3693ecb4b2c79104e781c8307501984cd9"
+      "sha256": "81eb31cfbd5b1b7041f31967a9592d2181088cf386a9ccb26058a7625ec3c15a"
     },
     {
       "role": "text-styles",
@@ -151,6 +155,18 @@
       "decision": "build-components.ts 지문이 ab7e574bbd7f… → 28f3f60cea33… 로 바뀌었으나, 변경 범위를 전수 확인한 결과 Mobile Header(App/Web 축 신설)와 Bottom Sheet Option(Text/Disabled 추가)뿐이고 Input·Button 빌더는 무변경이라 이전 검증을 superseded 하지 않고 지문만 갱신했다.",
       "evidence": "git diff -U0 plugins/figma-vars-installer/src/build-components.ts 의 hunk 범위 2984~3181 · 4167~4262",
       "relatedWork": "reports/ui-library/checkbox-radio/workflow-state.json (D4)"
+    },
+    {
+      "id": "D24",
+      "topic": "focus-visible 전량 철회에 따른 정본 지문 갱신",
+      "decidedBy": "orchestrator",
+      "decidedAt": "2026-09-02",
+      "decision": "2026-09-02 river 지시로 승인 없이 만들어졌던 focus-visible 을 정본에서 제거했다. build-components.ts 변경 hunk 는 makeFocusRing 삭제(275~)·buildOne(355~)·buildButtonSet(566~)·buildInput(992~1092) 뿐이고, vars-data.ts 는 토큰 2개(color/button/border/focus · color/form-control/action/border/focus) 삭제뿐이다. 이 작업의 컴포넌트 빌더(buildOne·buildButtonSet·buildInput)가 직접 바뀌었다. 웹 CSS·매니페스트도 같은 날 focus 제거로 맞췄으나 **3-build 로 되돌린다** — focus 제거본에 대한 4단계 시나리오 F 검증을 아무도 하지 않았으므로 verified 로 둘 수 없다(🤖 component-verifier 재검증 지적). 그 뒤에 river 화면 검수를 다시 받는다 — 이전 5-human-review 승인은 superseded 다.",
+      "recordedIn": [
+        "registry/governance/canon-additions-baseline.json revocations",
+        "reports/ui-library/input-button-pilot/2-canon-readiness.md HD-UILIB-03",
+        "CLAUDE.md 변경 이력 2026-09-02"
+      ]
     }
   ],
   "blockers": [],

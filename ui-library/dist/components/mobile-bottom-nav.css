@@ -19,11 +19,6 @@
   width: var(--sizing-60);
 }
 
-[data-s1-component="mobile-bottom-nav"]:focus-visible {
-  outline: var(--border-width-2) solid var(--color-form-control-border-selected);
-  outline-offset: var(--spacing-2);
-}
-
 /* 아이콘 32×32 — 정본이 홈 아이콘 인스턴스를 32 로 리사이즈한다(:2973). */
 [data-s1-component="mobile-bottom-nav"] [data-s1-part="icon"] {
   background-color: var(--color-icon-gray);

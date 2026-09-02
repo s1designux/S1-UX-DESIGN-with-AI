@@ -58,5 +58,4 @@
 [data-s1-component="tab"] [data-s1-part="tab"][data-force-state="hover"]:not([aria-selected="true"])::after { background: var(--color-navigation-indicator-hover); }
 [data-s1-component="tab"] [data-s1-part="tab"][aria-selected="true"] { color: var(--color-navigation-label-selected); }
 [data-s1-component="tab"] [data-s1-part="tab"][aria-selected="true"]::after { background: var(--color-navigation-indicator-selected); }
-[data-s1-component="tab"] [data-s1-part="tab"]:focus-visible { outline: var(--border-width-2) solid var(--color-navigation-indicator-selected); outline-offset: calc(-1 * var(--border-width-2)); }
 [data-s1-component="tab"] [role="tabpanel"][hidden] { display: none; }
