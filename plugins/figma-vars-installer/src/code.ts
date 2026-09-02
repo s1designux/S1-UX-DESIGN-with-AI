@@ -39,6 +39,9 @@ import { parseCssShadow, shadowVarName } from "./shadow-parse";
 import { installTextStyles } from "./install-textstyles";
 import { TEXT_STYLES } from "./textstyles-data";
 import { buildAllComponents, COMPONENT_CATEGORIES } from "./build-components";
+import { PATTERNS } from "./pattern-data";
+import { buildPattern } from "./build-patterns";
+import type { PatternMaps } from "./build-patterns";
 import {
   audit, applyOne, applyHighConfidence, applyMulti, setVariablesMode,
   collectComponents, saveReference, loadReference, clearReference,
@@ -88,6 +91,8 @@ figma.ui.onmessage = async (msg: { type: string; payload?: any } & Partial<Insta
     await selectInstancesByIds((msg as { nodeIds?: string[] }).nodeIds ?? []);
   } else if (msg.type === "swap-components") {
     await swapLegacyComponents(msg.mappings ?? []);
+  } else if (msg.type.indexOf("pattern:") === 0) {
+    await handlePatternMessage(msg.type.slice(8), msg.payload);
   } else if (msg.type.indexOf("audit:") === 0) {
     await handleAuditMessage(msg.type.slice(6), msg.payload);
   } else if (msg.type === "cancel") {
@@ -1036,6 +1041,136 @@ async function installLatestGuideOnNewPage(): Promise<void> {
     return;
   }
   figma.ui.postMessage({ type: "audit:guide-update-done", payload: { pageName: page.name } });
+}
+
+// ── 패턴 탭 ──────────────────────────────────────────────────────────────────
+//   '가이드설치'가 부품을 심는 일이라면, '패턴'은 그 부품으로 이미 만들어 검증까지 끝낸
+//   화면 묶음을 **저장된 값 그대로** 다시 펼치는 일이다(pattern-data.ts).
+//   새로 조립하지 않으므로 언제 눌러도 같은 결과가 나온다.
+const PATTERN_PAGE_NAME = "S-1 S/W UX Pattern";
+
+/** 파일 전체에서 컴포넌트 세트를 이름으로 찾는다. 가이드 페이지를 먼저 보고, 없으면 나머지 페이지를 훑는다. */
+async function collectComponentSets(names: string[]): Promise<Record<string, ComponentSetNode>> {
+  const want = new Set(names);
+  const found: Record<string, ComponentSetNode> = {};
+
+  const scan = async (page: PageNode): Promise<void> => {
+    await page.loadAsync();
+    for (const node of page.findAllWithCriteria({ types: ["COMPONENT_SET"] })) {
+      if (want.has(node.name) && !found[node.name]) found[node.name] = node as ComponentSetNode;
+    }
+  };
+
+  const stamped = await getStampedGuidePage();
+  if (stamped) await scan(stamped);
+  for (const page of figma.root.children) {
+    if (Object.keys(found).length === want.size) break;
+    if (stamped && page.id === stamped.id) continue;
+    await scan(page);
+  }
+  return found;
+}
+
+/** 패턴 목록 + '지금 만들 수 있는지'를 UI 로 보낸다. */
+async function postPatternList(): Promise<void> {
+  const needed = new Set<string>();
+  for (const p of PATTERNS) for (const r of p.requires) needed.add(r);
+  const sets = await collectComponentSets(Array.from(needed));
+
+  const items = PATTERNS.map((p) => {
+    const missing = p.requires.filter((r) => !sets[r]);
+    return {
+      id: p.id,
+      label: p.label,
+      desc: p.desc,
+      screenCount: p.screens.length,
+      section: p.section,
+      ready: missing.length === 0,
+      missing,
+    };
+  });
+  post("pattern:list", { payload: { items, pageName: PATTERN_PAGE_NAME } });
+}
+
+/** 패턴 페이지를 찾거나 새로 만든다. 같은 이름이 있으면 그 페이지에 이어서 넣는다. */
+async function getOrCreatePatternPage(): Promise<PageNode> {
+  const existing = figma.root.children.find((p) => p.name === PATTERN_PAGE_NAME);
+  if (existing) { await existing.loadAsync(); return existing; }
+  const page = figma.createPage();
+  page.name = PATTERN_PAGE_NAME;
+  await page.loadAsync();
+  return page;
+}
+
+async function runPatternBuild(ids: string[]): Promise<void> {
+  const chosen = PATTERNS.filter((p) => ids.indexOf(p.id) >= 0);
+  if (chosen.length === 0) {
+    post("pattern:error", { payload: { message: "만들 패턴을 하나 이상 선택해 주세요." } });
+    return;
+  }
+
+  try {
+    post("pattern:progress", { payload: { step: "필요한 부품을 확인하는 중…", pct: 4 } });
+
+    const needed = new Set<string>();
+    for (const p of chosen) for (const r of p.requires) needed.add(r);
+    const sets = await collectComponentSets(Array.from(needed));
+
+    const [foundationColor, semanticColor] = await Promise.all([
+      loadExistingVarMap(FOUNDATION_COLLECTION, "COLOR"),
+      loadExistingVarMap(SEMANTIC_COLOR_COLLECTION, "COLOR"),
+    ]);
+    const textStyleList = await figma.getLocalTextStylesAsync();
+    const textStyles: Record<string, TextStyle> = {};
+    for (const s of textStyleList) textStyles[s.name] = s;
+
+    const maps: PatternMaps = {
+      // Semantic 을 나중에 펼쳐 같은 이름이면 Semantic 이 이긴다(색은 Semantic 경유가 원칙).
+      colorVars: { ...foundationColor, ...semanticColor },
+      textStyles,
+      sets,
+    };
+
+    const page = await getOrCreatePatternPage();
+    await figma.setCurrentPageAsync(page);
+
+    const results: { label: string; screens: number; sectionId: string }[] = [];
+    const warnings: string[] = [];
+
+    let unitBase = 8;
+    const unitSpan = 88 / chosen.length;
+    for (const def of chosen) {
+      const built = await buildPattern(def, page, maps, (done, total, label) => {
+        const pct = Math.round(unitBase + (unitSpan * done) / Math.max(total, 1));
+        post("pattern:progress", {
+          payload: { step: label ? `${def.label} — ${label}` : `${def.label} 정리 중…`, pct },
+        });
+      });
+      results.push({ label: def.label, screens: built.screenCount, sectionId: built.sectionId });
+      warnings.push(...built.warnings.map((w) => `${def.label}: ${w}`));
+      unitBase += unitSpan;
+    }
+
+    // 만든 결과를 화면에 보여 준다 — 어디에 생겼는지 사용자가 바로 알 수 있게.
+    const first = await figma.getNodeByIdAsync(results[0].sectionId);
+    if (first && first.type === "SECTION") {
+      figma.currentPage.selection = [first as SceneNode];
+      figma.viewport.scrollAndZoomIntoView([first as SceneNode]);
+    }
+
+    post("pattern:done", { payload: { pageName: page.name, results, warnings } });
+  } catch (err: unknown) {
+    const message = err instanceof Error ? err.message : String(err);
+    post("pattern:error", { payload: { message } });
+  }
+}
+
+async function handlePatternMessage(type: string, payload: any): Promise<void> {
+  if (type === "list") {
+    await postPatternList();
+  } else if (type === "build") {
+    await runPatternBuild((payload && payload.ids) || []);
+  }
 }
 
 // ── 재설치: 설치된 컴포넌트 제거 ──────────────────────────────────────────────

@@ -13,7 +13,8 @@
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
     font-size: 13px; color: #111827;
     background: #fff;
-    padding: 20px 20px 0;          /* 하단 20px 은 .install-footer 가 자기 padding 으로 가진다 */
+    /* 하단 60px = 고정 내비바 자리. 그 위 20px 은 .install-footer 가 자기 padding 으로 가진다. */
+    padding: 20px 20px 60px;
     display: flex; flex-direction: column;
     overflow: hidden;
   }
@@ -89,8 +90,6 @@
     padding: 12px 14px; font-size: 11.5px; color: #92400e; line-height: 1.75;
   }
   .warn-note b { color: #7c2d12; }
-  /* 설치 중 탭 이동 금지 */
-  .tab-bar.locked { opacity: 0.45; pointer-events: none; }
 
   /* ── result ── */
   .result-success { background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 10px; padding: 16px; margin-bottom: 16px; }
@@ -99,16 +98,55 @@
   .result-error { background: #fef2f2; border: 1px solid #fecaca; border-radius: 10px; padding: 16px; margin-bottom: 16px; }
   .result-error-title { font-size: 14px; font-weight: 700; color: #991b1b; margin-bottom: 6px; }
 
-  /* ── tabs ── */
-  .tab-bar { display: flex; gap: 2px; margin-bottom: 16px; background: #f3f4f6; border-radius: 10px; padding: 3px; flex: 0 0 auto; }
-  .tab-btn { flex: 1; padding: 7px 10px; border: none; background: transparent; border-radius: 8px; font-size: 12px; font-weight: 600; color: #6b7280; cursor: pointer; transition: all 0.15s; }
-  .tab-btn.active { background: #fff; color: #111827; box-shadow: 0 1px 3px rgba(0,0,0,0.08); }
+  /* ── 하단 내비게이션 바 (2026-09-02 — 상단 탭에서 이전) ──
+     상단 탭이 헤더와 붙어 어느 화면인지 잘 드러나지 않아, 라이팅 도우미 플러그인과 같은
+     하단 고정 내비로 옮겼다. 아이콘 + 라벨 · 선택 시 파랑(#1d6ceb) · 햄버거 메뉴 없음. */
+  .tab-bar {
+    position: fixed; left: 0; right: 0; bottom: 0; height: 60px; z-index: 900;
+    display: flex; align-items: stretch;
+    background: #fff; border-top: 1px solid #e5e7eb;
+  }
+  /* 설치 중에는 이동 금지 — 눌리지 않는다는 것이 보이게 흐리게 처리한다. */
+  .tab-bar.locked { opacity: 0.45; pointer-events: none; }
+  .tab-btn {
+    flex: 1; min-width: 0;
+    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px;
+    padding: 6px 2px; border: none; background: none; border-radius: 0;
+    font-size: 11px; font-weight: 500; line-height: 1; color: #7f7f7f; cursor: pointer;
+    transition: color 0.12s;
+  }
+  .tab-btn .tab-ico { display: flex; align-items: center; justify-content: center; color: #c4c4c4; transition: color 0.12s; }
+  .tab-btn .tab-ico svg { display: block; }
+  .tab-btn:hover { color: #353535; }
+  .tab-btn:hover .tab-ico { color: #9a9a9a; }
+  .tab-btn.active { color: #1d6ceb; font-weight: 600; }
+  .tab-btn.active .tab-ico { color: #1d6ceb; }
   .tab-panel { display: none; }
   .tab-panel.active { display: block; }
   /* 설치 탭만 flex 컬럼 셸 — 검수 탭(#audit-root)의 자체 레이아웃은 건드리지 않는다 */
   #tab-install.tab-panel.active { display: flex; flex-direction: column; flex: 1 1 auto; min-height: 0; }
   /* 문서 스크롤러가 없어졌으므로 검수 탭을 자체 스크롤러로 승격(내부 .list 스크롤은 그대로) */
   #tab-audit.tab-panel.active { display:flex; flex-direction:column; flex:1 1 auto; min-height:0; overflow:hidden; }
+  /* 패턴 탭도 설치 탭과 같은 flex 컬럼 셸 — 하단 버튼 줄이 스크롤 밖에 고정된다. */
+  #tab-pattern.tab-panel.active { display: flex; flex-direction: column; flex: 1 1 auto; min-height: 0; }
+  #tab-pattern { --muted: #9ca3af; }
+  #pattern-pct { text-align: center; font-size: 30px; font-weight: 700; color: #111827; letter-spacing: -0.5px; line-height: 1.1; }
+  #pattern-heading { text-align: center; font-size: 13px; font-weight: 600; color: #374151; margin-top: 6px; }
+  #pattern-label { font-size: 11px; color: #6b7280; margin: 8px 0 12px; word-break: break-all; text-align: center; min-height: 15px; }
+  #pattern-bar-track { height: 6px; background: #e5e7eb; border-radius: 3px; overflow: hidden; }
+  #pattern-bar-fill { height: 100%; background: #1d6ceb; border-radius: 3px; width: 0%; transition: width 0.2s ease; }
+  .pattern-empty { font-size: 12px; color: #9ca3af; padding: 24px 4px; text-align: center; }
+  /* 설치 카드의 .select-date 와 같은 모양이지만 클래스는 따로 둔다 —
+     Gate 6c 가 .select-date 개수로 '설치 카드 4장'을 세기 때문. */
+  .pattern-where { font-size: 10px; color: #9ca3af; margin-top: 4px; }
+  .pattern-where b { color: #6b7280; font-weight: 600; }
+  /* 필요한 부품이 아직 없는 패턴 — 고를 수 없다는 것이 눈에 보이게. */
+  .select-row.blocked { opacity: 0.55; cursor: not-allowed; border-style: dashed; }
+  .select-row.blocked input { cursor: not-allowed; }
+  .pattern-missing { margin-top: 5px; font-size: 10.5px; color: #b45309; line-height: 1.6; }
+  .pattern-count { display: inline-block; margin-left: 6px; padding: 1px 7px; border-radius: 10px; font-size: 10px; font-weight: 600; background: #eef4ff; color: #1d4ed8; vertical-align: middle; }
+  .pattern-warn { background: #fffbeb; border: 1px solid #fde68a; border-radius: 10px; padding: 12px 14px; font-size: 11.5px; color: #92400e; line-height: 1.7; }
+  .pattern-warn ul { margin: 6px 0 0 16px; }
 
   /* ── info tooltip (사용 방법 ⓘ 호버) ── */
   .info-ic { display: inline-flex; align-items: center; justify-content: center; margin-left: 8px; width: 18px; height: 18px; border-radius: 50%; color: var(--muted); cursor: help; position: relative; font-size: 13px; outline: none; }
@@ -332,12 +370,7 @@
   <div class="header-build" title="이 설치 패키지가 빌드된 시각">업데이트<strong>{{BUILD_TIME}}</strong></div>
 </div>
 
-<div class="tab-bar">
-  <button class="tab-btn active" onclick="switchTab('install')">설치</button>
-  <button class="tab-btn" onclick="switchTab('audit')">검수</button>
-</div>
-
-<!-- ── 설치 탭 ── -->
+<!-- ── 가이드설치 탭 (옛 '설치' 탭 — 내용 그대로) ── -->
 <div class="tab-panel active" id="tab-install">
 
 <!-- ═══ 화면 1 : 설치 항목 선택 ═══ -->
@@ -483,6 +516,60 @@
 
 </div><!-- /tab-install -->
 
+<!-- ── 패턴 탭 (2026-09-02 신설) ──
+     이미 만들어 검증까지 끝낸 화면 묶음을 '저장된 값 그대로' 다시 펼친다.
+     설치 탭과 같은 모양(선택 목록 + 하단 버튼)이라 쓰는 법을 새로 배울 필요가 없다. -->
+<div class="tab-panel" id="tab-pattern">
+
+<!-- ═══ 화면 1 : 패턴 선택 ═══ -->
+<div class="iscreen active" id="pscreen-select">
+<div class="iscroll">
+  <div class="select-list" id="pattern-list">
+    <div class="pattern-empty">패턴 목록을 불러오는 중…</div>
+  </div>
+  <div class="dep-note" id="pattern-note">
+    선택한 패턴은 <strong id="pattern-page-name">S-1 S/W UX Pattern</strong> 페이지에 새로 만들어집니다.
+    이미 있는 페이지면 그 아래에 이어서 넣고, <strong>기존 화면은 지우지 않습니다.</strong>
+  </div>
+</div>
+<div class="btn-row install-footer">
+  <button class="btn btn-secondary" onclick="cancel()">닫기</button>
+  <button class="btn btn-primary" id="btn-pattern-build" onclick="buildPatterns()">화면 만들기</button>
+</div>
+</div><!-- /pscreen-select -->
+
+<!-- ═══ 화면 2 : 만드는 중 (푸터 없음 — 중간에 누를 것이 없다) ═══ -->
+<div class="iscreen" id="pscreen-building">
+<div class="iscroll">
+<div class="istack">
+  <div class="spinner"></div>
+  <div id="pattern-pct">0%</div>
+  <div id="pattern-heading">화면을 만드는 중입니다</div>
+  <div id="pattern-label">준비 중…</div>
+  <div id="pattern-bar-track"><div id="pattern-bar-fill"></div></div>
+
+  <div class="warn-note">
+    ⚠️ <b>화면을 만드는 중입니다. 완료될 때까지 잠시만 기다려 주세요.</b><br>
+    만드는 동안 <b>캔버스를 이동·확대/축소하거나 다른 레이어를 선택·편집하면</b>
+    화면이 잘못 배치될 수 있습니다.
+  </div>
+</div><!-- /.istack -->
+</div>
+</div><!-- /pscreen-building -->
+
+<!-- ═══ 화면 3 : 완료 / 오류 ═══ -->
+<div class="iscreen" id="pscreen-done">
+<div class="iscroll">
+  <div id="pattern-result"></div>
+</div>
+<div class="btn-row install-footer">
+  <button class="btn btn-secondary" onclick="cancel()">닫기</button>
+  <button class="btn btn-primary" onclick="backToPatternSelect()">처음으로</button>
+</div>
+</div><!-- /pscreen-done -->
+
+</div><!-- /tab-pattern -->
+
 <!-- ── 검수 탭 ── -->
 <div class="tab-panel" id="tab-audit">
 <div id="audit-root">
@@ -605,6 +692,22 @@
 </div><!-- /audit-root -->
 </div><!-- /tab-audit -->
 
+<!-- ── 하단 내비게이션 (햄버거 메뉴 없음 · 3개) ── -->
+<div class="tab-bar">
+  <button class="tab-btn active" data-tab="install" onclick="switchTab('install')">
+    <span class="tab-ico"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 3v11" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/><path d="M8 10.5l4 4 4-4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/><path d="M4 17v3h16v-3" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+    <span>가이드설치</span>
+  </button>
+  <button class="tab-btn" data-tab="pattern" onclick="switchTab('pattern')">
+    <span class="tab-ico"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="3.5" y="3.5" width="7" height="7" rx="1.5" stroke="currentColor" stroke-width="1.6"/><rect x="13.5" y="3.5" width="7" height="7" rx="1.5" stroke="currentColor" stroke-width="1.6"/><rect x="3.5" y="13.5" width="7" height="7" rx="1.5" stroke="currentColor" stroke-width="1.6"/><rect x="13.5" y="13.5" width="7" height="7" rx="1.5" stroke="currentColor" stroke-width="1.6"/></svg></span>
+    <span>패턴</span>
+  </button>
+  <button class="tab-btn" data-tab="audit" onclick="switchTab('audit')">
+    <span class="tab-ico"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M6 3h8l4 4v14H6z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M14 3v4h4" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M9 13.5l2 2 4-4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+    <span>검수</span>
+  </button>
+</div>
+
 <script>
   // ══════════ 설치 탭 화면 전환 (선택 → 설치중 → 완료) ══════════
   let INSTALLING = false;   // 설치/삭제 진행 중 — 탭 이동 잠금에 사용
@@ -615,7 +718,7 @@
     document.querySelectorAll('#tab-install .iscreen').forEach((s) => {
       s.classList.toggle('active', s.id === 'iscreen-' + name);
     });
-    document.querySelector('.tab-bar').classList.toggle('locked', INSTALLING);
+    document.querySelector('.tab-bar').classList.toggle('locked', INSTALLING || PATTERN_BUSY);
     const sc = document.querySelector('#iscreen-' + name + ' .iscroll');
     if (sc) sc.scrollTop = 0;
   }
@@ -658,18 +761,18 @@
       .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
   }
 
-  // ── 탭 전환 ──
+  // ── 탭 전환 (하단 내비바) ──
   function switchTab(name) {
-    if (INSTALLING) return;   // 설치 중 이동 금지(.tab-bar.locked 의 pointer-events 우회 대비)
-    document.querySelectorAll('.tab-btn').forEach((b, i) => {
-      b.classList.toggle('active', ['install','audit'][i] === name);
+    // 설치·패턴 생성 중에는 이동 금지 (.tab-bar.locked 의 pointer-events 우회 대비)
+    if (INSTALLING || PATTERN_BUSY) return;
+    document.querySelectorAll('.tab-btn').forEach((b) => {
+      b.classList.toggle('active', b.dataset.tab === name);
     });
     document.querySelectorAll('.tab-panel').forEach((p) => {
       p.classList.toggle('active', p.id === 'tab-' + name);
     });
-    if (name === 'audit') {
-      beginAuditGuideCheck();
-    }
+    if (name === 'audit') beginAuditGuideCheck();
+    if (name === 'pattern') requestPatternList();
   }
 
   // ── 설치 탭 ──
@@ -730,6 +833,12 @@
     // 검수(audit) 메시지 분기 — 접두사 벗겨 검수 핸들러로 위임
     if (msg.type && msg.type.indexOf('audit:') === 0) {
       handleAuditUiMessage({ type: msg.type.slice(6), payload: msg.payload });
+      return;
+    }
+
+    // 패턴 메시지 분기 — 설치 메시지와 이름이 겹치지 않게 pattern: 접두사를 쓴다
+    if (msg.type && msg.type.indexOf('pattern:') === 0) {
+      handlePatternUiMessage(msg.type.slice(8), msg.payload || {});
       return;
     }
 
@@ -817,6 +926,136 @@
       showInstallScreen('done');
     }
   };
+
+  // ══════════ 패턴 탭 ══════════
+  // 만드는 것이 아니라 '저장해 둔 값을 펼치는' 화면이다.
+  // 부품(컴포넌트)이 없으면 만들 수 없으므로, 고르기 전에 먼저 확인해서 알려 준다.
+  let PATTERN_BUSY = false;   // 생성 중 — 탭 이동 잠금
+  let _ppct = 0;              // 진행률(단조 증가)
+  let PATTERN_ITEMS = [];
+
+  function showPatternScreen(name) {          // 'select' | 'building' | 'done'
+    PATTERN_BUSY = (name === 'building');
+    document.querySelectorAll('#tab-pattern .iscreen').forEach((el) => {
+      el.classList.toggle('active', el.id === 'pscreen-' + name);
+    });
+    document.querySelector('.tab-bar').classList.toggle('locked', INSTALLING || PATTERN_BUSY);
+    const sc = document.querySelector('#pscreen-' + name + ' .iscroll');
+    if (sc) sc.scrollTop = 0;
+  }
+
+  function requestPatternList() {
+    parent.postMessage({ pluginMessage: { type: 'pattern:list' } }, '*');
+  }
+
+  function renderPatternList(items, pageName) {
+    PATTERN_ITEMS = items || [];
+    const host = document.getElementById('pattern-list');
+    const nameEl = document.getElementById('pattern-page-name');
+    if (nameEl && pageName) nameEl.textContent = pageName;
+
+    if (!PATTERN_ITEMS.length) {
+      host.innerHTML = '<div class="pattern-empty">아직 저장된 패턴이 없습니다.</div>';
+      syncPatternButton();
+      return;
+    }
+
+    host.innerHTML = PATTERN_ITEMS.map((it) => {
+      const id = 'pat-' + it.id;
+      const blocked = it.ready ? '' : ' blocked';
+      const missing = it.ready ? '' :
+        '<div class="pattern-missing">먼저 <b>가이드설치</b> 탭에서 컴포넌트를 설치해 주세요. ' +
+        '(없는 부품: ' + esc(it.missing.join(', ')) + ')</div>';
+      return '' +
+        '<label class="select-row' + blocked + '" data-opt="' + id + '">' +
+          '<input type="checkbox" id="' + id + '" value="' + esc(it.id) + '"' + (it.ready ? '' : ' disabled') + '>' +
+          '<div class="select-body">' +
+            '<div class="select-name">' + esc(it.label) +
+              '<span class="pattern-count">' + it.screenCount + '개 화면</span>' +
+            '</div>' +
+            '<div class="select-desc">' + esc(it.desc) + '</div>' +
+            '<div class="pattern-where">만들어질 자리 · <b>' + esc(it.section) + '</b></div>' +
+            missing +
+          '</div>' +
+        '</label>';
+    }).join('');
+
+    host.querySelectorAll('input[type=checkbox]').forEach((cb) => {
+      cb.addEventListener('change', () => {
+        cb.closest('.select-row').classList.toggle('checked', cb.checked);
+        syncPatternButton();
+      });
+    });
+    syncPatternButton();
+  }
+
+  function selectedPatternIds() {
+    return Array.prototype.slice
+      .call(document.querySelectorAll('#pattern-list input[type=checkbox]:checked'))
+      .map((cb) => cb.value);
+  }
+
+  function syncPatternButton() {
+    const btn = document.getElementById('btn-pattern-build');
+    if (btn) btn.disabled = selectedPatternIds().length === 0;
+  }
+
+  function buildPatterns() {
+    const ids = selectedPatternIds();
+    if (!ids.length) { alert('만들 패턴을 하나 이상 선택하세요.'); return; }
+    _ppct = 0;
+    document.getElementById('pattern-pct').textContent = '0%';
+    document.getElementById('pattern-heading').textContent = '화면을 만드는 중입니다';
+    document.getElementById('pattern-label').textContent = '준비 중…';
+    document.getElementById('pattern-bar-fill').style.width = '0%';
+    showPatternScreen('building');
+    parent.postMessage({ pluginMessage: { type: 'pattern:build', payload: { ids } } }, '*');
+  }
+
+  function backToPatternSelect() {
+    showPatternScreen('select');
+    requestPatternList();
+  }
+
+  function handlePatternUiMessage(type, payload) {
+    if (type === 'list') {
+      renderPatternList(payload.items, payload.pageName);
+      return;
+    }
+    if (type === 'progress') {
+      if (!PATTERN_BUSY) showPatternScreen('building');
+      const raw = Math.max(0, Math.min(100, Number(payload.pct) || 0));
+      _ppct = Math.max(_ppct, raw);
+      document.getElementById('pattern-pct').textContent = _ppct + '%';
+      document.getElementById('pattern-label').textContent = payload.step || '';
+      document.getElementById('pattern-bar-fill').style.width = _ppct + '%';
+      return;
+    }
+    if (type === 'done') {
+      const rows = (payload.results || [])
+        .map((r) => '<li>' + esc(r.label) + ' — 화면 ' + r.screens + '개</li>').join('');
+      const warn = (payload.warnings || []).length
+        ? '<div class="pattern-warn">⚠️ <b>확인이 필요한 부분이 있습니다.</b><ul>' +
+          payload.warnings.map((w) => '<li>' + esc(w) + '</li>').join('') + '</ul></div>'
+        : '';
+      document.getElementById('pattern-result').innerHTML =
+        '<div class="result-success">' +
+          '<div class="result-title">✅ 화면을 만들었습니다</div>' +
+          '<div class="result-sub"><b>' + esc(payload.pageName) + '</b> 페이지에 만들었습니다.' +
+            '<ul style="margin:6px 0 0 16px;">' + rows + '</ul></div>' +
+        '</div>' + warn;
+      showPatternScreen('done');
+      return;
+    }
+    if (type === 'error') {
+      document.getElementById('pattern-result').innerHTML =
+        '<div class="result-error">' +
+          '<div class="result-error-title">❌ 만들지 못했습니다</div>' +
+          '<div class="result-sub">' + esc(payload.message).replace(/\n/g, '<br>') + '</div>' +
+        '</div>';
+      showPatternScreen('done');
+    }
+  }
 </script>
 
 <!-- ══════════ 검수(audit) 스크립트 — figma-component-audit 이식. 송신은 audit: 접두사, 수신은 handleAuditUiMessage 로 위임 ══════════ -->
