@@ -32,6 +32,17 @@
 > **정리(2026-06-19):** 완료 항목(구 1·4·7·8·10·15)은 「변경 이력」 표·git 히스토리·각 reports에 보존돼 본 목록에서 제거했다. 아래는 **활성 미결만** 남긴 것이다.
 
 ```
+0. **개발자 배포 탭 공개 — UI 라이브러리 dist 연동을 다 끝낸 뒤에 연다 (river 결정 2026-09-02)**
+   - 진입점: pages/install-prompt.html 의 「개발자」 탭 (현재 "준비 중", 2026-08-12 부터 의도적으로 비움)
+   - 여는 조건: 아래 미배포 컴포넌트의 dist 연동 완료. 부분 공개하지 않는다 —
+     "다 있겠지" 하고 화면을 짜다 중간에 막히는 것이 탭을 닫았던 원래 이유다.
+   - 배포 완료 9종: input · button · checkbox · radio · toggle · chip · dropdown · select · filter-chip
+   - 미배포 12종: textarea · tab(Line Tab) · multi-toggle · pagination · table ·
+     date-picker · time-picker · gnb · modal · nav · mobile-bottom-nav · mobile-header
+   - 다 끝나면 탭에 넣을 것(이미 준비된 것): 설치 파일 한 벌(tokens/typography/s1-ui.css/js) ·
+     컴포넌트별 복붙 마크업(PC·Mobile 갈래) · 빈 HTML 시작 예제 2종 · 범위 고지
+   - 배포 통로(zip vs GitHub 저장소)는 공개 직전에 river 결정 — 아직 미정
+
 1. Figma Button componentSetKey 등록 (figmaNodeId 는 완료)
    - figmaNodeId = "6440:4032" 등록됨 (registry/figma/figma-map.json)
    - componentSetKey 는 빈 문자열 — figma-map.json _meta.note 에 따라
