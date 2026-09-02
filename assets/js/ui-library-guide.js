@@ -1401,11 +1401,14 @@ function mobileHeaderActionBlock(breakName) {
     </label>`;
   }).join("");
 
+  /* 칩은 목업 왼쪽에 세로 6행으로 세운다 — 목업이 길어서 아래에 두면 모니터에서 잘린다(river 지시). */
   return `<div class="comp-action-top">
       <div class="matrix-col-header-action">Action</div>
-      <div class="uilg-mobile-action">${mock}</div>
-      <div class="uilg-option-chips" role="group" aria-label="헤더 유형 선택">${chips}</div>
-      <p class="uilg-demo-note">유형을 고르면 위 목업의 헤더가 바뀝니다. 상태바(시간·배터리)는 그림일 뿐 배포 부품이 아닙니다 — 실제 서비스에서는 OS·브라우저가 그립니다.</p>
+      <div class="uilg-mobile-action uilg-mobile-action--with-picker">
+        <div class="uilg-option-chips uilg-option-chips--stacked" role="group" aria-label="헤더 유형 선택">${chips}</div>
+        ${mock}
+      </div>
+      <p class="uilg-demo-note">왼쪽에서 유형을 고르면 목업의 헤더가 바뀝니다. 상태바(시간·배터리)는 그림일 뿐 배포 부품이 아닙니다 — 실제 서비스에서는 OS·브라우저가 그립니다.</p>
     </div>`;
 }
 

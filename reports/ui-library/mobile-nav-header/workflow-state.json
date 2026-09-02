@@ -210,7 +210,8 @@
       "reports/ui-library/mobile-nav-header/screens/5-guide-mobile-header.png",
       "reports/ui-library/mobile-nav-header/screens/5-guide-bottom-nav.png",
       "reports/ui-library/mobile-nav-header/screens/6-guide-header-chips.png",
-      "reports/ui-library/mobile-nav-header/screens/6-guide-bottom-nav.png"
+      "reports/ui-library/mobile-nav-header/screens/6-guide-bottom-nav.png",
+      "reports/ui-library/mobile-nav-header/screens/7-guide-header-chips-left.png"
     ],
     "build": "reports/ui-library/mobile-nav-header/3-build.md",
     "rawFigmaIcons": "reports/ui-library/mobile-nav-header/raw-figma-icons/",
@@ -278,7 +279,7 @@
       "topic": "안내 화면 Action 영역 표출 방식(river 검수 중 지시)",
       "decidedBy": "river",
       "decidedAt": "2026-09-02",
-      "decision": "①모바일 헤더 — Action 목업 아래에 옵션칩을 두어 Type 6종을 골라 목업 위에 얹어 본다(정적 예시 1종 대신 선택형). ②하단 탭 — 4탭 바가 왼쪽에 몰려 있어 justify-content: space-between 으로 고르게 벌린다. 둘 다 안내 화면(조립 예시) 소유 영역이며 배포 부품은 그대로다."
+      "decision": "①모바일 헤더 — Type 6종을 고르는 옵션칩을 두어 목업 위에 얹어 본다(정적 예시 1종 대신 선택형). 칩 위치는 목업 왼쪽 세로 6행이다 — 처음에 목업 아래에 뒀더니 목업이 길어 모니터에서 잘려 보였다(river 2차 지시). 좁은 화면(860px 이하)에서는 목업 위로 접힌다. ②하단 탭 — 4탭 바가 왼쪽에 몰려 있어 justify-content: space-between 으로 고르게 벌린다. 둘 다 안내 화면(조립 예시) 소유 영역이며 배포 부품은 그대로다."
     }
   ],
   "blockers": [
@@ -343,7 +344,7 @@
   "handoff": {
     "lastActor": "orchestrator",
     "updatedAt": "2026-09-02",
-    "summary": "5-human-review 진행 중 river 지시 2건을 반영했다(D9) — 헤더 Action 에 유형 선택 옵션칩 추가, 하단 탭 4칸 space-between. 안내 화면 코드(assets/js/ui-library-guide.js)만 바뀌었고 배포 부품(dist)은 무변경이다. ⭐ 가 실제 렌더 + 브라우저 DOM 조작으로 동작을 확인했다(칩 클릭 → 목업 헤더 교체, 칩 하나만 선택, 페이지 전체 중복 id 0건, 라디오 name 을 PC/Mobile 로 분리해 함정 T5 회피). 이 변경분은 아직 🤖 독립 검증을 거치지 않았다 — river 검수 결과에 따라 6-promotion 전에 함께 재검증한다."
+    "summary": "5-human-review 진행 중 river 지시 2건을 반영했다(D9) — 헤더 Action 에 유형 선택 옵션칩 추가(목업 왼쪽 세로 6행), 하단 탭 4칸 space-between. 안내 화면 코드(assets/js/ui-library-guide.js)만 바뀌었고 배포 부품(dist)은 무변경이다. ⭐ 가 실제 렌더 + 브라우저 DOM 조작으로 동작을 확인했다(칩 클릭 → 목업 헤더 교체, 칩 하나만 선택, 페이지 전체 중복 id 0건, 라디오 name 을 PC/Mobile 로 분리해 함정 T5 회피). 이 변경분은 아직 🤖 독립 검증을 거치지 않았다 — river 검수 결과에 따라 6-promotion 전에 함께 재검증한다."
   },
   "checkpointLog": [
     {

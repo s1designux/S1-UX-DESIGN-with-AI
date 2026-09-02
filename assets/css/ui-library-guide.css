@@ -593,6 +593,32 @@
   height: 76px;
 }
 
+/* 유형 선택칩을 목업 왼쪽에 세로로 세운 Action 배치 — 목업이 길어 아래에 두면 화면에서 잘린다(river 지시 2026-09-02).
+   좁은 화면에서는 다시 위아래로 접힌다. */
+.uilg-mobile-action--with-picker {
+  align-items: flex-start;
+  gap: var(--spacing-24);
+  justify-content: center;
+}
+
+.uilg-option-chips--stacked {
+  flex-direction: column;
+  flex-wrap: nowrap;
+  flex: none;
+  gap: var(--spacing-8);
+  padding-top: var(--spacing-8);
+}
+
+.uilg-option-chips--stacked .uilg-option-chip {
+  justify-content: flex-start;
+  white-space: nowrap;
+}
+
+@media (max-width: 860px) {
+  .uilg-mobile-action--with-picker { flex-direction: column; align-items: center; }
+  .uilg-option-chips--stacked { flex-direction: row; flex-wrap: wrap; justify-content: center; }
+}
+
 .uilg-mobile-header-row { display: flex; justify-content: center; width: 100%; }
 .uilg-mobile-header-row [data-s1-component="mobile-header"] { max-width: 360px; width: 100%; }
 .uilg-mobile-header-list { display: flex; flex-direction: column; gap: var(--spacing-16); }
