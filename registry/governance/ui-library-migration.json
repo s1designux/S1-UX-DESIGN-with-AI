@@ -404,7 +404,7 @@
       "id": "mobile-bottom-nav",
       "kind": "core-component",
       "legacyStatus": "implemented",
-      "uiLibraryStatus": "verified",
+      "uiLibraryStatus": "approved",
       "dependencies": [
         "tokens.css",
         "typography.css",
@@ -414,15 +414,18 @@
       "reverifyTrigger": "정본 geometry·state·token·HTML part·CSS selector 변경 · 아이콘 원본 대조 기록 변경",
       "evidence": [
         "reports/ui-library/mobile-nav-header/3-build.md",
-        "reports/ui-library/mobile-nav-header/4-verification.md"
+        "reports/ui-library/mobile-nav-header/4-verification.md",
+        "reports/ui-library/mobile-nav-header/workflow-state.json"
       ],
-      "note": "4-verification 통과(🤖 component-verifier 시나리오 F, 2·3회차 실제 spawn — 1회차 FAIL 3건은 아이콘 결함으로 해소, 3회차 부분 재검증 PASS). river UX 검수(5-human-review) 전이라 approved 가 아니라 verified 다."
+      "note": "4-verification 통과 후 river UX 검수에서 안내 화면 4건(유형 선택칩·칩 위치·정본 상태바·홈 배경 잇기)을 반영하고 승격했다. 배포 부품은 그 4건으로 바뀌지 않았다 — 안내 화면 코드만 바뀌었다.",
+      "riverApproval": "approved 2026-09-02",
+      "promotionDecision": "approved 2026-09-02 · 독립 검증 PASS(🤖 component-verifier 시나리오 F 2·3회차) · river UX 검수 통과(안내 화면 수정 4건 반영 후)"
     },
     {
       "id": "mobile-header",
       "kind": "core-component",
       "legacyStatus": "not-started",
-      "uiLibraryStatus": "verified",
+      "uiLibraryStatus": "approved",
       "dependencies": [
         "tokens.css",
         "typography.css",
@@ -436,9 +439,12 @@
       "reverifyTrigger": "정본 geometry·variant·token·HTML part·CSS selector 변경 · 아이콘 원본 대조 기록 변경 · D5(StatusBar 제외) 결정 변경",
       "evidence": [
         "reports/ui-library/mobile-nav-header/3-build.md",
-        "reports/ui-library/mobile-nav-header/4-verification.md"
+        "reports/ui-library/mobile-nav-header/4-verification.md",
+        "reports/ui-library/mobile-nav-header/workflow-state.json"
       ],
-      "note": "4-verification 통과(🤖 component-verifier 시나리오 F, 2·3회차 실제 spawn — 1회차 FAIL 3건은 아이콘 결함으로 해소, 3회차 부분 재검증 PASS). river UX 검수(5-human-review) 전이라 approved 가 아니라 verified 다."
+      "note": "4-verification 통과 후 river UX 검수에서 안내 화면 4건(유형 선택칩·칩 위치·정본 상태바·홈 배경 잇기)을 반영하고 승격했다. 배포 부품은 그 4건으로 바뀌지 않았다 — 안내 화면 코드만 바뀌었다.",
+      "riverApproval": "approved 2026-09-02",
+      "promotionDecision": "approved 2026-09-02 · 독립 검증 PASS(🤖 component-verifier 시나리오 F 2·3회차) · river UX 검수 통과(안내 화면 수정 4건 반영 후)"
     }
   ]
 }

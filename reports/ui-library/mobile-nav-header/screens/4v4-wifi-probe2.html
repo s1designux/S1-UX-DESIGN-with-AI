@@ -1,0 +1,18 @@
+<!doctype html><meta charset="utf-8"><title>wifi mask id resolution</title>
+<style>body{margin:0;background:#fff;font:12px system-ui;color:#111}
+ .z{transform:scale(8);transform-origin:left top;color:#353535;height:12px;width:16px}
+ .case{height:130px;padding:8px 0 0 8px}</style>
+<div class="case"><p>A 같은 svg 안 고유 마스크(정상 기준)</p><div class="z" id="A"></div></div>
+<div class="case"><p>B 마스크가 <b>보이는</b> 다른 svg 안에 있을 때(교차 참조만)</p><div class="z" id="B"></div><div id="bdef"></div></div>
+<div class="case"><p>C 마스크가 <b>display:none</b> 다른 svg 안에 있을 때(= 실제 페이지의 모바일 뷰 조건)</p><div class="z" id="C"></div><div id="cdef" style="display:none"></div></div>
+<script>
+fetch('/assets/js/ui-library-guide.js').then(r=>r.text()).then(src=>{
+  const raw = src.match(/const PHONE_WIFI_SVG = `([^`]*)`/)[1];
+  const strip = s => s.replace(/<mask[\s\S]*?<\/mask>/g,'');
+  A.innerHTML = raw.replace(/uilg-sw/g,'a-sw');
+  bdef.innerHTML = raw.replace(/uilg-sw/g,'b-sw');           // 보이는 정의부
+  B.innerHTML = strip(raw.replace(/uilg-sw/g,'b-sw'));       // 정의 없이 참조만
+  cdef.innerHTML = raw.replace(/uilg-sw/g,'c-sw');           // display:none 정의부
+  C.innerHTML = strip(raw.replace(/uilg-sw/g,'c-sw'));
+});
+</script>

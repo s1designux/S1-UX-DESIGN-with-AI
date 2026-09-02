@@ -135,16 +135,12 @@
       }
     }
   },
-  "currentPhase": "5-human-review",
-  "workflowStatus": "in-progress",
-  "uiLibraryStatus": "verified",
-  "lastCompletedCheckpoint": 4,
-  "nextAction": "river 가 안내 화면(Mobile Components → Bottom Nav · Mobile Header)에서 UX 검수한다. 승인되면 6-promotion 에서 status 를 approved 로 올리고 Gate 44·Gate 19 를 실제 승격 상태로 재실행한다.",
-  "ownership": {
-    "currentActor": "river",
-    "startedAt": "2026-09-02T21:40:00+09:00",
-    "note": "기술 검증 완료. 남은 것은 UI·UX 판단이라 소유자는 river 다."
-  },
+  "currentPhase": "complete",
+  "workflowStatus": "complete",
+  "uiLibraryStatus": "approved",
+  "lastCompletedCheckpoint": 6,
+  "nextAction": "없음 — 승격 완료. 후속은 HD-3(아이콘 대조 희석) 결정과 B11(다른 세션 미커밋 변경) 정리다.",
+  "ownership": {},
   "canonicalInputs": [
     {
       "role": "component-visual",
@@ -219,7 +215,9 @@
     ],
     "build": "reports/ui-library/mobile-nav-header/3-build.md",
     "rawFigmaIcons": "reports/ui-library/mobile-nav-header/raw-figma-icons/",
-    "verification": "reports/ui-library/mobile-nav-header/4-verification.md"
+    "verification": "reports/ui-library/mobile-nav-header/4-verification.md",
+    "humanReview": "reports/ui-library/mobile-nav-header/5-human-review.md",
+    "promotion": "reports/ui-library/mobile-nav-header/6-promotion.md"
   },
   "decisions": [
     {
@@ -352,12 +350,31 @@
         "reports/ui-library/mobile-nav-header/screens/5-guide-bottom-nav.png"
       ],
       "note": "아래화살표 아래 방향·알림 빨간 점을 라이트/다크 둘 다 육안 확인. 안내 화면 2종이 실제 dist 로 렌더되는 것도 확인."
+    },
+    "riverApproval": {
+      "status": "approved",
+      "approvedBy": "river",
+      "approvedAt": "2026-09-02",
+      "target": "pages/components.html → Mobile Components → Bottom Nav · Mobile Header (실제 dist 소비)",
+      "version": "mobile-bottom-nav v0.1.0 · mobile-header v0.1.0",
+      "scope": "UI·UX 검수. 검수 중 지시 4건을 반영한 뒤 승인했다 — 유형 선택칩 추가 · 칩을 목업 왼쪽 세로 6행으로 · 목업 상태바를 정본 StatusBar 대로 · 홈 유형 배경을 본문까지 잇기.",
+      "screens": [
+        "reports/ui-library/mobile-nav-header/screens/9-home-bg-full.png",
+        "reports/ui-library/mobile-nav-header/screens/8-statusbar-canon.png",
+        "reports/ui-library/mobile-nav-header/screens/6-guide-bottom-nav.png"
+      ]
+    },
+    "promotionDecision": {
+      "approvedBy": "river",
+      "approvedAt": "2026-09-02",
+      "independentVerification": "performed",
+      "basis": "🤖 component-verifier 시나리오 F 2·3회차 PASS(배포 부품) + river UX 승인. 승격 시점에 Gate 19(49/49 · 공백 0)·Gate 44(17종 × PC·Mobile 실제 렌더)를 실제 approved 상태로 재실행해 통과."
     }
   },
   "handoff": {
     "lastActor": "orchestrator",
     "updatedAt": "2026-09-02",
-    "summary": "5-human-review 진행 중 river 지시 3건을 반영했다(D9·D10) — 헤더 Action 에 유형 선택 옵션칩(목업 왼쪽 세로 6행), 하단 탭 4칸 space-between, 목업 상태바를 정본 StatusBar 대로 교체(홈 유형은 상태바까지 bg/home 으로 이어짐). 안내 화면 코드(assets/js/ui-library-guide.js·assets/css/ui-library-guide.css)만 바뀌었고 배포 부품(dist)은 무변경이다. 정본 사실은 📖 source-reader 로 판독했고 색·수치는 브라우저 계산값으로 실측했다. 이 화면 변경분은 아직 🤖 독립 검증 전이다 — 6-promotion 전에 함께 재검증한다."
+    "summary": "승격 완료. 배포 부품 2종(mobile-bottom-nav·mobile-header)이 approved 로 공개된다. 경로: 4-verification FAIL 4건(아이콘 3 + 선언 1) → ⭐ 수정 · 🤖 독립 검증 2·3회차 PASS → river UX 검수에서 안내 화면 4건 반영 → 승격. 이번 작업에서 검사기 2종을 신설했다(파생 색 레이어 재현 증명 · dist CSS url() 해석) — 둘 다 적대 테스트 통과. 승격 직전 4회차 독립 검증이 안내 화면 결함 F-5(wifi 마스크 id 중복으로 그림 뭉개짐)를 잡아 고쳤다 — 배포 부품은 무결이라 승격은 유지했다. 남은 것: HD-3(아이콘 원본 대조가 24프레임 평균이라 작은 글리프의 큰 손상이 희석된다) · B11(다른 세션이 설치기·패턴 작업 중이라 커밋 범위를 계속 분리해야 한다)."
   },
   "checkpointLog": [
     {
@@ -394,12 +411,20 @@
     {
       "checkpoint": 5,
       "name": "5-human-review",
-      "status": "in-progress"
+      "status": "passed",
+      "by": "river",
+      "verifiedAt": "2026-09-02",
+      "result": "승인 — 검수 중 안내 화면 지시 4건 반영 후",
+      "evidence": "workflow-state.evidence.riverApproval"
     },
     {
       "checkpoint": 6,
       "name": "6-promotion",
-      "status": "not-started"
+      "status": "passed",
+      "by": "⭐ orchestrator",
+      "verifiedAt": "2026-09-02",
+      "result": "컴포넌트 status·이행 장부 approved · Gate 19 49/49 공백 0 · Gate 44 17종 실제 렌더 통과 · gate:check 오류 0 · ui:contract/build/test/icons 전부 PASS",
+      "note": "계약(ui-library-code-contract) 은 candidate 그대로 둔다 — 정책 승격은 별건이라 제안하지 않았다."
     }
   ],
   "gateSnapshot": {
@@ -416,14 +441,9 @@
     "note": "신설 검사기 2종은 둘 다 적대 테스트로 실효성을 확인했다 — ①파생 조각을 1px 손대면 실패 ②CSS 가 미배포 자산을 부르면 실패(F-3 재현)."
   },
   "registrationStatus": {
-    "ui-library/src/index.js": "등재됨 — mobileBottomNav(:15)·mobileHeader(:16)",
-    "ui-library/src/auto-init.js": "해당 없음 — 두 부품 모두 jsRequired=false 로 런타임이 없다",
-    "assets/js/ui-library-guide.js": "등재됨 — guideComponents 배열(:1698)에 두 부품 모두 포함, 즉 dist 를 실제로 fetch 하는 동적 경로를 탄다",
-    "pages/components.html": "섹션 셸은 있으나 지금은 표출되지 않는다 — 렌더 게이트(assets/js/ui-library-guide.js:1576)가 dist manifest.status 를 검사해 verified·approved 가 아니면 \"승인 배포본을 불러오지 못했습니다\" 안내를 대신 그린다. 현재 status=candidate 이므로 의도된 차단이며 결함이 아니다. 6-promotion 에서 approved 로 올라가면 표출된다. (nav 버튼 :1866·:1867 / 빈 셸 섹션 :2877·:2880)",
-    "pages/ui-review.html": "등재됨 + 실제 렌더 성공 — 검수 화면은 candidate 를 \"검수 대기\" 로 보여주는 것이 목적이라 게이트가 없고, dist/s1-ui.css 를 소비한 미리보기가 Light·Dark 로 정상 표출된다(:557 하단탭 · :565 헤더)",
-    "registry/governance/ui-library-migration.json": "등재됨 — 두 건 모두 uiLibraryStatus='candidate'",
-    "registry/components/component-guide-model.json": "불일치 1건 = B3 — Mobile Bottom Nav 는 visibility='public'·sectionId='mobile-bottom-nav' 로 갱신됐으나, Mobile Header 는 visibility='internal'·sectionId=null 로 남아 있다",
-    "verifiedBy": "📖 source-reader 판독 2026-09-02 — 로컬 HTTP 서버로 실제 렌더 스크린샷 + 렌더 스크립트 전체 추적(components.html 은 file:// 에서 dist fetch 가 CORS 로 막혀 빈 화면이 나오므로 http 로 재확인). ⭐ 의 최초 문자열 대조는 \"안내 페이지 등재됨\" 으로 잘못 판단했고 이 판독이 정정했다."
+    "mobile-bottom-nav": "approved",
+    "mobile-header": "approved",
+    "updatedAt": "2026-09-02"
   },
   "fingerprintRefreshes": [
     {
@@ -524,6 +544,20 @@
       "resolvedAt": "2026-09-02",
       "resolvedBy": "⭐ orchestrator",
       "fixApplied": "실제 기제(derivedFrom·derivationRule)로 문장을 정정하고 ui:build 로 dist 재생성. 검증자가 저장소 전수 점검으로 같은 종류의 유령 필드 0건을 확인했다. 함께 지적된 component-presentation-policy.json 의 mobile-header statesLayout 도 실제 렌더(세로 목록)에 맞춰 matrix → vertical 로 정정했다 — 검증자 확인 결과 이 값은 managedBy=ui-library-guide 항목에서는 읽히지 않아 검사 강도에는 영향이 없다(관찰 O-8)."
+    },
+    {
+      "id": "F-5",
+      "severity": "error",
+      "source": "4-verification 4회차(승격 검증)",
+      "what": "안내 화면 목업의 wifi 아이콘이 호 2겹이 아니라 속 찬 부채꼴로 그려졌다.",
+      "detail": "wifi SVG 의 마스크 id 가 고정 문자열이라 한 페이지에 4번 그려지며 중복됐고, url(#...) 이 문서 순서상 첫 번째(숨겨진 PC 블록 안)를 가리켜 마스크가 적용되지 않았다. 검증자가 격리 실험(A 자기 svg / B 보이는 다른 svg / C 숨겨진 svg)으로 원인을 실증했다.",
+      "impact": "안내 화면만. 배포 부품(dist)은 무결 — 검증자가 git diff 로 dist 변경 0파일을 확인했다.",
+      "status": "resolved",
+      "resolvedAt": "2026-09-02",
+      "resolvedBy": "⭐ orchestrator",
+      "fixApplied": "마스크 id 를 인스턴스마다 새로 만들고(카운터), 하단 탭 목업도 PC·Mobile 블록마다 새로 생성하도록 바꿨다(같은 문자열 재사용이 중복의 뿌리였다). 확인: 페이지 전체 중복 id 0건 · wifi 4개 모두 자기 SVG 안 마스크 참조 · 실제 화면 SVG 를 캔버스로 재현해 픽셀 확인(호 사이 alpha 0, 바깥·안쪽 호와 점 채워짐).",
+      "alsoFixed": "5-human-review.md 의 거짓 서술 2개 정정 — \"페이지 전체 중복 id 0건\"(실제로는 라디오만 0건) · \"정본 상태바 대로\"(수치는 참, 렌더는 거짓이었다). 배선표 함정 T5 를 SVG 내부 id 까지 포함하도록 확장(검증자 관찰 O-12).",
+      "lesson": "수치·DOM 검사를 전부 통과하면서 그림만 틀릴 수 있다. 화면 수정도 ⭐ 자가인증만으로 닫으면 안 된다 — 이 건은 승격 직전 독립 검증이 아니었으면 그대로 나갔다."
     }
   ],
   "humanDecisions": [

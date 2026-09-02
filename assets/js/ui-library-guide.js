@@ -1315,7 +1315,16 @@ function mobileBottomNavItemMarkup({ selected = false, label = "라벨" } = {}) 
    배경: 정본은 상태바 인스턴스의 fills 를 비워(build-components.ts:3117-3119) 헤더 프레임의
    배경이 그대로 비쳐 보이게 한다 — 그래서 Home 유형에서는 상태바도 bg/home 이다. 이 그림도
    같은 기제를 쓴다(headerBg 로 위쪽 크롬 전체를 한 색으로 칠한다). */
-const PHONE_WIFI_SVG = `<svg width="16" height="12" viewBox="0 0 16 12" fill="none" xmlns="http://www.w3.org/2000/svg"><mask id="uilg-sw1" fill="white"><path d="M2.34315 4.34315C3.84344 2.84286 5.87827 2 8 2C10.1217 2 12.1566 2.84285 13.6569 4.34314L8 10L2.34315 4.34315Z"/></mask><path d="M2.34315 4.34315C3.84344 2.84286 5.87827 2 8 2C10.1217 2 12.1566 2.84285 13.6569 4.34314L8 10L2.34315 4.34315Z" stroke="currentColor" stroke-width="3.2" mask="url(#uilg-sw1)"/><mask id="uilg-sw2" fill="white"><path d="M4.46447 6.46447C5.40215 5.52678 6.67392 5 8 5C9.32608 5 10.5979 5.52678 11.5355 6.46447L8 10L4.46447 6.46447Z"/></mask><path d="M4.46447 6.46447C5.40215 5.52678 6.67392 5 8 5C9.32608 5 10.5979 5.52678 11.5355 6.46447L8 10L4.46447 6.46447Z" stroke="currentColor" stroke-width="3.2" mask="url(#uilg-sw2)"/><circle cx="7.9998" cy="10.2" r="1.2" fill="currentColor"/></svg>`;
+/* wifi — 정본 SHELL_WIFI_SVG 그대로(색만 hex → currentColor). 마스크 id 는 인스턴스마다 새로 만든다:
+   이 그림은 한 페이지에 여러 번(부품 2종 × PC/Mobile 블록) 그려지는데 id 가 같으면 문서 안에서 중복되고,
+   url(#...) 은 문서 순서상 첫 번째를 가리킨다. 그 첫 번째가 숨겨진(display:none) 블록 안이면 마스크가
+   적용되지 않아 호 2겹이 속 찬 부채꼴로 뭉개진다(2026-09-02 F-5, 검증자가 격리 실험으로 실증).
+   ※ 함정 T5 의 확장판이다 — 중복은 라디오 name·id 만이 아니라 SVG 내부 id 에서도 난다. */
+let phoneWifiSeq = 0;
+function phoneWifiSvg() {
+  const uid = `uilg-sw${++phoneWifiSeq}`;
+  return `<svg width="16" height="12" viewBox="0 0 16 12" fill="none" xmlns="http://www.w3.org/2000/svg"><mask id="${uid}a" fill="white"><path d="M2.34315 4.34315C3.84344 2.84286 5.87827 2 8 2C10.1217 2 12.1566 2.84285 13.6569 4.34314L8 10L2.34315 4.34315Z"/></mask><path d="M2.34315 4.34315C3.84344 2.84286 5.87827 2 8 2C10.1217 2 12.1566 2.84285 13.6569 4.34314L8 10L2.34315 4.34315Z" stroke="currentColor" stroke-width="3.2" mask="url(#${uid}a)"/><mask id="${uid}b" fill="white"><path d="M4.46447 6.46447C5.40215 5.52678 6.67392 5 8 5C9.32608 5 10.5979 5.52678 11.5355 6.46447L8 10L4.46447 6.46447Z"/></mask><path d="M4.46447 6.46447C5.40215 5.52678 6.67392 5 8 5C9.32608 5 10.5979 5.52678 11.5355 6.46447L8 10L4.46447 6.46447Z" stroke="currentColor" stroke-width="3.2" mask="url(#${uid}b)"/><circle cx="7.9998" cy="10.2" r="1.2" fill="currentColor"/></svg>`;
+}
 
 function phoneStatusBar() {
   const bars = [[0, 8, 3, 4], [4.5, 6, 3, 6], [9, 4, 3, 8], [13.5, 1, 3, 11]]
@@ -1324,7 +1333,7 @@ function phoneStatusBar() {
     <span class="uilg-phone-status-time">12:30</span>
     <span class="uilg-phone-status-right">
       <span class="uilg-phone-signal">${bars}</span>
-      <span class="uilg-phone-wifi">${PHONE_WIFI_SVG}</span>
+      <span class="uilg-phone-wifi">${phoneWifiSvg()}</span>
       <span class="uilg-phone-battery"><i class="uilg-phone-battery-shell"></i><i class="uilg-phone-battery-tip"></i><i class="uilg-phone-battery-fill"></i></span>
       <span class="uilg-phone-status-pct">78%</span>
     </span>
@@ -1345,32 +1354,35 @@ function mobileHeaderBg(variant) {
 }
 
 function mobileBottomNavStateMatrix() {
-  const bar = ["홈", "검색", "알림", "내 정보"]
-    .map((label, index) => mobileBottomNavItemMarkup({ selected: index === 0, label })).join("");
-  const mock = phoneMockup(`
-    <div class="uilg-phone-content" aria-hidden="true">
-      <div class="uilg-phone-skeleton uilg-phone-skeleton--title"></div>
-      <div class="uilg-phone-skeleton uilg-phone-skeleton--line"></div>
-      <div class="uilg-phone-card"></div>
-      <div class="uilg-phone-card"></div>
-    </div>
-    <nav data-guide-sample="set" role="tablist" aria-label="하단 내비게이션" style="display:flex;justify-content:space-between;background:var(--color-navigation-bg);">${bar}</nav>`);
-
   const header = `<div class="matrix-col-header" style="grid-column:1"></div>` +
     `<div class="matrix-col-header">Unselected</div><div class="matrix-col-header">Selected</div>`;
   const row = `<div class="matrix-row-label">Tab Item<span>60×60</span></div>` +
     `<div class="comp-state-cell"><span data-guide-sample="part">${mobileBottomNavItemMarkup({ selected: false })}</span></div>` +
     `<div class="comp-state-cell"><span data-guide-sample="part">${mobileBottomNavItemMarkup({ selected: true })}</span></div>`;
 
-  const content = `<div class="comp-action-top">
+  /* PC·Mobile 두 블록에 같은 문자열을 넣지 않고 블록마다 새로 만든다 — 목업 안 SVG 의 마스크 id 가
+     문서 안에서 중복되면 url(#...) 이 숨겨진 블록의 것을 가리켜 그림이 뭉개진다(2026-09-02 F-5). */
+  const block = () => {
+    const bar = ["홈", "검색", "알림", "내 정보"]
+      .map((label, index) => mobileBottomNavItemMarkup({ selected: index === 0, label })).join("");
+    const mock = phoneMockup(`
+      <div class="uilg-phone-content" aria-hidden="true">
+        <div class="uilg-phone-skeleton uilg-phone-skeleton--title"></div>
+        <div class="uilg-phone-skeleton uilg-phone-skeleton--line"></div>
+        <div class="uilg-phone-card"></div>
+        <div class="uilg-phone-card"></div>
+      </div>
+      <nav data-guide-sample="set" role="tablist" aria-label="하단 내비게이션" style="display:flex;justify-content:space-between;background:var(--color-navigation-bg);">${bar}</nav>`);
+    return `<div class="comp-action-top">
       <div class="matrix-col-header-action">Action</div>
       <div class="uilg-mobile-action">${mock}</div>
       <p class="uilg-demo-note">배포 부품은 아이템 1칸뿐입니다. 위 4탭 바는 화면이 조립한 예시이고, 배경은 --color-navigation-bg 입니다.</p>
     </div>
     <div class="comp-state-matrix" style="grid-template-columns: 110px repeat(2, minmax(120px,1fr));">${header}${row}</div>`;
+  };
 
-  return `<div class="platform-section platform-section-pc"><div class="preview-area">${content}</div></div>
-    <div class="platform-section platform-section-mobile"><div class="preview-area">${content}</div></div>`;
+  return `<div class="platform-section platform-section-pc"><div class="preview-area">${block()}</div></div>
+    <div class="platform-section platform-section-mobile"><div class="preview-area">${block()}</div></div>`;
 }
 
 /* ── Mobile Header — Type 6종. StatusBar·Platform 축은 river 결정(D5)으로 배포본에서 뺐다.
