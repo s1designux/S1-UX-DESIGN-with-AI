@@ -1,0 +1,288 @@
+{
+  "schemaVersion": 1,
+  "workflow": "ui-library-code",
+  "workId": "modal",
+  "objective": "정본 buildModalShell 의 확인 계열 모달 4변형(PC·Mobile × Single·Dual)을 웹 UI 라이브러리 배포본으로 만들고, 사이트에 없는 Modal 안내 페이지를 새로 등재한다.",
+  "intent": {
+    "approvedBy": "river",
+    "approvedAt": "2026-09-02",
+    "principles": [
+      "정본(build-components.ts buildModalShell)에 있는 것만 만든다. 크기 축·상태 축·중첩 모달·콘텐츠 계열은 정본에 없다.",
+      "새 토큰을 만들지 않는다 — 패널·딤·그림자·글자 토큰이 모두 이미 존재한다.",
+      "푸터 버튼은 승인된 코어 Button 배포본을 조립한다. 시각 override 금지.",
+      "같은 작업트리에서 다른 세션이 Table 을 진행 중이다. table 관련 파일을 건드리지 않고 커밋도 내 변경만 고른다.",
+      "디자인가이드 안내 화면과 퍼블리셔·개발자 배포본은 같은 dist 를 사용한다."
+    ]
+  },
+  "contract": {
+    "path": "registry/governance/ui-library-code-contract.json",
+    "version": "0.1.2",
+    "status": "candidate"
+  },
+  "target": {
+    "kind": "core-component",
+    "components": [
+      "modal"
+    ]
+  },
+  "figmaSources": {
+    "role": "시각 정본은 build-components.ts(buildModalShell·buildModalVariant·buildContentGroup)다. Figma V3.0 은 선택적 시각 참고이며 이번 작업에서 조회하지 않았다.",
+    "requiredForInventory": false,
+    "fileKey": "cysG5U1udpQqVagYY1hWHW",
+    "fileName": "SW-UX-GUIDE V3.0 TEST",
+    "components": {
+      "modal": {
+        "nodeId": "1546:17971",
+        "source": "not-consulted",
+        "status": "코드 정본만으로 4변형 축·수치·토큰이 모두 확정돼 조회하지 않았다."
+      }
+    }
+  },
+  "currentPhase": "complete",
+  "workflowStatus": "complete",
+  "uiLibraryStatus": "approved",
+  "lastCompletedCheckpoint": 6,
+  "nextAction": "없음 — 완료. 이후 정본·상태·예제·아이콘 원본 변경 시 재검증한다.",
+  "ownership": {},
+  "canonicalInputs": [
+    {
+      "role": "component-visual",
+      "path": "plugins/figma-vars-installer/src/build-components.ts",
+      "sha256": "942791479ffb0f953c58e7dc745eaf33180cca5f57a1b3b056e517c496e80c25"
+    },
+    {
+      "role": "token-values",
+      "path": "plugins/figma-vars-installer/src/vars-data.ts",
+      "sha256": "87edd42623983fb5e02e820940dbbc3693ecb4b2c79104e781c8307501984cd9"
+    },
+    {
+      "role": "text-styles",
+      "path": "plugins/figma-vars-installer/src/textstyles-data.ts",
+      "sha256": "dc0db42d87503e80e9da8ad1246090f58e79106593a57815b0568aebcb9d51d3"
+    },
+    {
+      "role": "ui-library-contract",
+      "path": "registry/governance/ui-library-code-contract.json",
+      "sha256": "63dc0f64c6ea834218119f8629379ee48cfac6c8df8b36e39d78f51405807c85"
+    },
+    {
+      "role": "component-meaning-modal",
+      "path": "registry/components/modal.json",
+      "sha256": "73134543df6d2453d69976cf55244ece3a10e9286a44d5e12acbd0e8693caa25"
+    },
+    {
+      "role": "component-meaning-button",
+      "path": "registry/components/button.json",
+      "sha256": "2bbe37df4ea029c9b26eeb479676777c2d0c5b152de4c945ad399dad58316a68"
+    }
+  ],
+  "artifacts": {
+    "policyContract": "registry/governance/ui-library-code-contract.json",
+    "humanGuide": "registry/governance/ui-library-authoring-guide.md",
+    "componentChecklist": "registry/governance/ui-library-component-checklist.md",
+    "inventory": "reports/ui-library/modal/1-inventory.md",
+    "canonReadiness": "reports/ui-library/modal/2-canon-readiness.md",
+    "sourceRoot": "ui-library/src",
+    "distManifest": "ui-library/dist/manifest.json",
+    "reviewPage": "pages/ui-review.html",
+    "guidePage": "pages/components.html",
+    "migrationRecord": "registry/governance/ui-library-migration.json",
+    "screens": [
+      "reports/ui-library/modal/screens/guide-modal-pc.png",
+      "reports/ui-library/modal/screens/guide-modal-mobile.png",
+      "reports/ui-library/modal/screens/review-modal.png",
+      "reports/ui-library/modal/screens/empty-consumer.png",
+      "reports/ui-library/modal/screens/empty-consumer-individual.png",
+      "reports/ui-library/modal/screens/icon-close-compare.png",
+      "reports/ui-library/modal/screens/icon-close-after.png"
+    ],
+    "repositoryInventory": "reports/component-inventory-audit.md",
+    "build": "reports/ui-library/modal/3-build.md",
+    "verification": "reports/ui-library/modal/4-verification.md",
+    "humanReview": "reports/ui-library/modal/5-human-review.md",
+    "promotion": "reports/ui-library/modal/6-promotion.md"
+  },
+  "decisions": [
+    {
+      "id": "D1",
+      "topic": "정본에 없는 것을 만들지 않음",
+      "decidedBy": "orchestrator",
+      "decidedAt": "2026-09-02",
+      "decision": "변형은 Break(PC·Mobile) × Footer(Single·Dual) 4가지뿐이다. 크기 축·hover 등 상태 축·중첩 모달·콘텐츠 계열(4크기 스크롤 모달)을 만들지 않는다. PC 닫기(X)는 PC 에만 둔다(정본 그대로)."
+    },
+    {
+      "id": "D2",
+      "topic": "딤(overlay) 포함",
+      "decidedBy": "orchestrator",
+      "decidedAt": "2026-09-02",
+      "decision": "정본 빌더는 패널만 그리지만 registry anatomy 첫 부품이 딤이고 color/overlay 토큰이 존재하므로 배포본에 딤을 포함한다. registry 가 의미의 정본인 영역이다."
+    },
+    {
+      "id": "D3",
+      "topic": "안내 페이지 분류",
+      "decidedBy": "orchestrator",
+      "decidedAt": "2026-09-02",
+      "decision": "registry _meta.category='overlay' 를 따라 사이트 상단 분류에 Overlay 를 신설하고 Modal 을 그 안에 둔다. 임의 분류 신설이 아니라 등록부 값을 내리는 파생이다."
+    },
+    {
+      "id": "D4",
+      "topic": "예시 문구",
+      "decidedBy": "orchestrator",
+      "decidedAt": "2026-09-02",
+      "decision": "정본에 구워진 4개 문구는 안내 페이지 예시로만 싣고 컴포넌트 API 로 고정하지 않는다(UX라이팅 영역, registry doDont 명시)."
+    },
+    {
+      "id": "D5",
+      "topic": "접근성 규칙 확정 범위",
+      "decidedBy": "river",
+      "decidedAt": "2026-09-02",
+      "decision": "표준 수준(A)으로 확정. role=dialog·aria-modal·제목 연결·초점 가둠·Esc 닫기·초점 복귀·배경 스크롤 잠금. 딤 클릭 닫기·모션·중첩 모달(B안)은 이번 범위 밖. registry a11yStatus 를 planned→stable 로 올렸다."
+    },
+    {
+      "id": "D6",
+      "topic": "여닫기 동작 포함 여부",
+      "decidedBy": "river",
+      "decidedAt": "2026-09-02",
+      "decision": "동작 포함(A). 배포본이 open()·close()·초점 가둠·Esc·스크롤 잠금을 제공한다. component-behavior.pc.json 에 Modal 항목을 신설하고 근거 파일을 ui-library/src/components/modal/modal.js 로 선언했다."
+    },
+    {
+      "id": "D7",
+      "topic": "모달의 자리(placement)",
+      "decidedBy": "orchestrator",
+      "decidedAt": "2026-09-02",
+      "decision": "모달 root 는 body 직계여야 한다. 실제 렌더에서 안내 화면 안에 두니 상단 고정바가 모달 위에 남았다 — 조상 쌓임 맥락에 갇히기 때문이다. 계약 htmlContract.placement 와 등록부 권장사항에 명시하고, 안내·검수 화면은 mount 시 body 로 옮긴다(페이지 코드, dist 아님)."
+    },
+    {
+      "id": "D8",
+      "topic": "정본 지문 갱신 범위(다른 세션 충돌)",
+      "decidedBy": "orchestrator",
+      "decidedAt": "2026-09-02",
+      "decision": "다른 세션의 build-components.ts 변경 hunk 는 buildLineTab(1810·1815)·buildTableCell(1969·1975)·buildTable(2076·2150)·buildAllComponents(5754) 뿐이고 buildModalShell 은 무변경이다. 그래서 빌더가 안 바뀐 13개와 modal 의 지문만 갱신했다. tab 은 정본이 실제로 바뀌었고 tab.css:44 가 아직 --font-size-20 이라 드리프트가 있어 지문을 갱신하지 않았다 — 그 세션의 범위다."
+    },
+    {
+      "id": "D9",
+      "topic": "패널 고정 폭",
+      "decidedBy": "orchestrator",
+      "decidedAt": "2026-09-02",
+      "decision": "패널에 flex:none 을 준다. 정본은 FIXED 폭(PC 360 · Mobile 300)인데 좁은 칸에 놓이면 flex 축소로 줄어들어 글자가 다르게 접혔다. 검사기에도 고정 폭 규칙을 넣어 재발을 막는다."
+    },
+    {
+      "id": "D10",
+      "topic": "Figma 원본 대조는 이번 범위 밖",
+      "decidedBy": "orchestrator",
+      "decidedAt": "2026-09-02",
+      "decision": "update-management.json 이 modal 을 'component-verifier 독립 검증(원본 대조) 대기(verify=none)' 로 기록하고 있어 그대로 두고, registry codeStatus 도 완료 표시로 올리지 않았다. 웹 배포본 상태는 webDistribution·ui-library-migration.json 이 따로 가진다. 만드는 자가 자기 원본 대조를 선언하지 않는다(H1)."
+    },
+    {
+      "id": "D11",
+      "topic": "범위 밖 정리 — 행동 장부 근거 재배선",
+      "decidedBy": "orchestrator",
+      "decidedAt": "2026-09-02",
+      "decision": "Multi Toggle·Text Area 의 sourceEvidence 6건이 이미 지워진 pages/components.html 인라인 JS 를 가리켜 gate:check 가 실패하고 있었다(내 작업 이전 상태). Modal 과 같은 방식으로 근거를 ui-library/src 배포본 원본으로 옮겨 해소했다."
+    },
+    {
+      "id": "D12",
+      "topic": "아이콘 출처 자가점검 실패",
+      "decidedBy": "orchestrator",
+      "decidedAt": "2026-09-02",
+      "decision": "river 지적으로 재확인한 결과, close 아이콘을 '허용목록에 키가 있으니 정본'이라고 판단한 것이 틀렸다. 허용목록 키 존재는 원본 사용을 뜻하지 않으며, makeIconInstance 는 import 실패 시 폴백 도형을 쓴다. 앞으로 아이콘은 키 존재가 아니라 '실제 내보낸 원본 자산과의 대조'로 판정한다."
+    },
+    {
+      "id": "D13",
+      "topic": "닫기 아이콘 원본 교체 + 재발 방지 3겹",
+      "decidedBy": "river",
+      "decidedAt": "2026-09-02",
+      "decision": "close.svg 를 Figma V2.2 ic_닫기(97:79 · Property 1=Line 97:77) 실물 벡터로 교체했다(원본 대조 오차 0.03466→0.00349). 함께 river 승인으로 재발 방지 3겹을 신설했다 — ①아이콘 manifest sourceExport 선언 의무화 ②scripts/ui-library-icon-origin-check.js 픽셀 대조(임계 0.015, ui:icons·gate:check 편입) ③build-components.ts 폴백 상수 // icon-fallback-not-canon 표식과 폴백 유래 차단. 기존 부채 check·edge_set 은 registry/governance/icon-origin-baseline.json 로 분리(경고)."
+    },
+    {
+      "id": "D14",
+      "topic": "개발 코드 플랫폼별 표출 범위",
+      "decidedBy": "river",
+      "decidedAt": "2026-09-02",
+      "decision": "HTML 은 보고 있는 화면의 플랫폼 마크업만 보여주고(PC=닫기 있음·xxsm / Mobile=닫기 없음·lg), CSS·JavaScript 는 배포 파일이 한 벌이라 공용으로 유지한다. 갈라 보여주려면 배포 파일 자체를 플랫폼별로 나눠야 해 13개 컴포넌트 전체에 영향이 가므로 이번 범위 밖."
+    }
+  ],
+  "blockers": [],
+  "evidence": {
+    "automatedChecks": [
+      {
+        "command": "npm run ui:contract",
+        "result": "PASS"
+      },
+      {
+        "command": "npm run ui:icons",
+        "result": "PASS · errors=0 (원본 모양 대조 포함)"
+      },
+      {
+        "command": "npm run ui:icons:origin",
+        "result": "PASS · close 0.00349 · chevron 0.00089 · remove 0.0051 · 기존 부채 경고 2건"
+      },
+      {
+        "command": "npm run ui:build",
+        "result": "PASS · 84 files"
+      },
+      {
+        "command": "npm run ui:test",
+        "result": "PASS"
+      },
+      {
+        "command": "npm run components:behavior:check",
+        "result": "PASS · PC 20개"
+      },
+      {
+        "command": "npm run gate:check",
+        "result": "PASSED · 게이트 46개 · error 0 · warning 14"
+      }
+    ],
+    "sourceAudit": {
+      "status": "complete",
+      "actor": "orchestrator",
+      "observedAt": "2026-09-02",
+      "basis": "buildModalShell(:4438-4590) 전문, registry/components/modal.json 전문, vars-data.ts 토큰 4종, tokens.css 라이트·다크 배선, allowed-remote-keys.json close 키, ui-library build/test/exports 및 pages/components.html·ui-review.html·presentation-policy·behavior ledger 등록 현황",
+      "selfCertified": true,
+      "selfCertifiedNote": "⭐ 총괄 자가판독이다(별도 판독 에이전트 미투입). 값·축·토큰은 정본 인용으로 확인했고, 렌더·레이아웃 주장은 이 단계에 포함하지 않았다.",
+      "summary": "Modal 은 ui-library·사이트·행동 장부 어디에도 없다. 지금까지의 13종과 달리 사이트 화면 자체가 없어 안내 페이지를 새로 만든다. 정본에 4변형 수치·토큰이 모두 있고 신규 토큰 0건, 아이콘도 허용목록 안이라 구현 자체는 막힘이 없다. 막는 것은 접근성 등급 planned 와 행동 계약 부재 2건이며 둘 다 river 결정이 필요하다.",
+      "report": "reports/ui-library/modal/1-inventory.md"
+    },
+    "implementationActualRender": {
+      "verdict": "PASS",
+      "actor": "orchestrator",
+      "observedAt": "2026-09-02",
+      "selfCertified": true,
+      "summary": "실제 dist 로 안내 화면 PC·Mobile, 검수 화면 4벌(Light·Dark × PC·Mobile), 빈 소비자 2개를 http 로 렌더했다. 정본 수치 12항목·다크 5항목을 computed style 로 실측 대조해 전부 일치. 전체 묶음과 개별 설치 스크린샷 sha256 완전 일치. 검증 중 4건(자리·초점 보강·고정 폭·검수 레이아웃)을 찾아 고쳤다. 닫기 아이콘은 river 지적으로 라이브러리 원본이 아님이 드러나 Figma V2.2 실물 벡터로 교체했고, 재대조 오차 0.00349 로 일치를 확인했다.",
+      "report": "reports/ui-library/modal/4-verification.md"
+    },
+    "behaviorCheck": {
+      "verdict": "PASS",
+      "observedAt": "2026-09-02",
+      "summary": "열기·Esc·닫기(X)·초점 가둠 양방향 순환·초점 복귀·배경 스크롤 잠금·이벤트 detail 을 실제 브라우저에서 확인했다. 중복 id 0건·콘솔 오류 0건.",
+      "toolLimitation": "이 자동화 환경은 document.hasFocus()=false 라 브라우저가 focus 계열 이벤트를 쏘지 않는다. 초점 되돌리기는 focusin/focusout 을 직접 발생시켜 핸들러 경로를 확인했고, Tab 키 경로는 합성 키 이벤트로 확인했다. 첫 실패 관측은 도구 한계였고 구현 문제가 아니다."
+    },
+    "independentVerification": {
+      "verdict": "waived-by-river",
+      "reason": "별도 component-verifier spawn 없이 승격. 계약의 위험 조건(정본 구조 변경·역방향 생성기 수정)에 해당하지 않고, 구현자 실제 렌더 PASS·동작 검증·아이콘 원본 기계 대조 PASS·river 검수를 마쳤다. river 는 '독립 검증과 Figma 원본 대조를 하지 않았다'는 보고를 받은 뒤 승인했다(2026-09-02).",
+      "riverDecisionRequired": false,
+      "stillOpen": "Figma 원본 대조는 update-management.json 의 modal verify=none 별도 대기 항목으로 남는다 — 만드는 자가 자기 원본 대조를 선언하지 않는다(H1)."
+    },
+    "riverApproval": {
+      "status": "approved",
+      "by": "river",
+      "at": "2026-09-02",
+      "target": "pages/components.html Overlay→Modal (PC·Mobile) · pages/ui-review.html 검수본 12번",
+      "report": "reports/ui-library/modal/5-human-review.md",
+      "summary": "버튼 dist 재활용·아이콘 원본·개발 코드 플랫폼별 표출 3가지를 확인한 뒤 승인했다. 아이콘은 지적으로 원본 교체를 거쳤다."
+    },
+    "promotionDecision": {
+      "status": "approved",
+      "approvedBy": "river",
+      "approvedAt": "2026-09-02",
+      "independentVerification": "waived-by-river",
+      "report": "reports/ui-library/modal/6-promotion.md"
+    }
+  },
+  "handoff": {
+    "lastActor": "orchestrator",
+    "updatedAt": "2026-09-02",
+    "summary": "river 승인으로 Modal 을 approved 로 승격하고 dist·공개 안내 화면·이행 장부를 동기화했다. 아이콘 원본 대조 3겹 장치도 함께 남겼다."
+  }
+}

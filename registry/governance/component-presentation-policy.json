@@ -98,6 +98,14 @@
         "codeByPlatform": "「개발 코드」는 보고 있는 화면의 플랫폼 마크업만 보여준다. 배포본이 manifest.htmlContract.breakExamples 로 플랫폼별 예제를 선언한다. 코드 위 안내 문구는 두지 않는다.",
         "measure": "제목(.uilg-demo-head) 아래끝 ↔ 첫 Action 상자(.comp-action-top) 위끝 간격이 PC 와 Mobile 에서 같아야 한다(실측 2026-09-02: 양쪽 49px).",
         "childSizeInSummary": "요약에서 빼는 것은 '그 컴포넌트 자신의 크기'다. 자식 부품 크기도 숫자로 적지 않고 조립 사실만 적는다 — Select·Filter Chip 모두 '목록은 Dropdown 배포본을 조립' 으로 통일 (river 결정 2026-09-02)."
+      },
+      "partSampleIsolation": {
+        "rule": "부품(part) 표본은 그 부품이 소유한 것만 보여준다. 상위 세트(컴포넌트 루트)가 소유한 테두리·그림자 같은 장식을 부품 표본에 함께 그리지 않는다.",
+        "why": "Table 셀 표본을 컴포넌트 루트로 감싸 표 외곽선(위 2px·아래 1px)이 낱개 셀마다 그려졌고, 정본에 없는 모습이 안내 화면에 나갔다. 배포본 CSS 는 정확했고 표본 조립만 틀려서 계약·파리티·수치 검사기가 전부 통과했다.",
+        "declaredBy": "river 지시 2026-09-02",
+        "howToMark": "안내 화면에서 부품 낱개 표본에 data-guide-sample=\"part\" 를 붙인다. 세트 전체 표본은 data-guide-sample=\"set\".",
+        "exception": "의도적으로 세트 장식을 남겨야 하면 표본에 data-guide-sample-keeps=\"border-top,…\" 로 선언한다. 숨겨지지 않고 경고로 보인다.",
+        "enforcedBy": "scripts/ui-guide-part-sample-check.js (Gate 44 · ui-guide-render-check.js 가 렌더한 DOM 으로 판정)"
       }
     },
     "updatedAt": "2026-08-31"
@@ -135,7 +143,8 @@
         "readonly"
       ],
       "statesLayout": "row",
-      "note": "단일크기 기본형."
+      "note": "단일크기 기본형.",
+      "managedBy": "ui-library-guide"
     },
     "checkbox": {
       "platform": "pc",
@@ -374,7 +383,8 @@
       ],
       "statesLayout": "row",
       "changeFromCurrent": "사이즈×상태 매트릭스 → Input식 표준(사이즈=Action에만, 상태=분리 스트립).",
-      "note": "Input식 표준(사이즈=액션 통합, 상태=분리 스트립)으로 통일. PC XSM(h40·14M)은 2026-08-11 추가."
+      "note": "Input식 표준(사이즈=액션 통합, 상태=분리 스트립)으로 통일. PC XSM(h40·14M)은 2026-08-11 추가.",
+      "managedBy": "ui-library-guide"
     },
     "dropdown": {
       "platform": "pc",
@@ -421,7 +431,8 @@
       },
       "statesLayout": "matrix",
       "changeFromCurrent": "세트조합에 Action만 추가.",
-      "note": "현재 표출 잘 되어있음."
+      "note": "현재 표출 잘 되어있음.",
+      "managedBy": "ui-library-guide"
     },
     "gnb": {
       "platform": "pc",
@@ -453,14 +464,16 @@
       "sizePlacement": "merged-section",
       "sizes": [
         "md",
-        "sm"
+        "sm",
+        "xsm"
       ],
       "statesLayout": "matrix",
       "changeFromCurrent": "Action 추가 + 사이즈 섹션 분리 말고 한 섹션에 함께.",
       "contentAdditions": [
         "셀에 테이블 감싸는 상하단 라인 정보"
       ],
-      "note": "완성형 프리뷰 유지."
+      "note": "완성형 프리뷰 유지. 2026-09-02 UI 라이브러리 배포본으로 이관 — Action 영역은 표 + 페이지네이션 + 보기 셀렉박스를 함께 보여주되 뒤 둘은 각자의 승인 배포본을 조립한다(river 결정).",
+      "managedBy": "ui-library-guide"
     },
     "pagination": {
       "platform": "pc",
@@ -481,7 +494,28 @@
       },
       "statesLayout": "vertical",
       "changeFromCurrent": "상태값을 가로 열 → 아래로(세로) 배치.",
-      "note": ""
+      "note": "",
+      "managedBy": "ui-library-guide"
+    },
+    "modal": {
+      "platform": "pc+mobile",
+      "archetype": "current-plus-action",
+      "actionRequired": true,
+      "sizePlacement": "none",
+      "sizes": [],
+      "states": [
+        "open"
+      ],
+      "extraAxes": {
+        "footer": [
+          "single",
+          "dual"
+        ]
+      },
+      "statesLayout": "matrix",
+      "changeFromCurrent": "신규 화면 — 사이트에 Modal 섹션이 없었다. Overlay 분류를 신설해 그 안에 둔다.",
+      "note": "정본에 상태 축이 없어 변형축(Footer Single·Dual)을 상태 자리에 놓는다. Action 은 실제로 열리는 모달이고, 상태 칸은 지면에 눕혀 보여주는 검수 표시다(페이지 전용 CSS).",
+      "managedBy": "ui-library-guide"
     }
   }
 }

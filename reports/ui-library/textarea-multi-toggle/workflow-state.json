@@ -1,0 +1,241 @@
+{
+  "schemaVersion": 1,
+  "workflow": "ui-library-code",
+  "workId": "textarea-multi-toggle",
+  "objective": "승인된 9개 코어 컴포넌트 구조 위에서 Textarea 와 Multi Toggle 을 정본 기반 웹 UI 라이브러리 모듈로 만들고 실제 dist 소비까지 연결한다.",
+  "intent": {
+    "approvedBy": "river",
+    "approvedAt": "2026-09-02",
+    "principles": [
+      "정본(build-components.ts)에 있는 상태만 만든다. Textarea 라벨·안내문구·글자수 카운터, Multi Toggle focus 상태·모바일 크기는 정본에 없다.",
+      "Textarea 안내문구(helper)는 이번 배포 범위 밖 — 정본(설치기)에 먼저 추가한 뒤 다음 차례에 반영한다(river 결정 2026-09-02).",
+      "Textarea 크기 조절은 세로로만 허용한다(river 결정 2026-09-02 — registry 의 미확정 정책을 이번에 확정).",
+      "새 토큰을 만들지 않는다. Textarea 는 color/form-control/*, Multi Toggle 은 color/button/* 을 그대로 쓴다.",
+      "디자인가이드 검수 화면과 퍼블리셔·개발자 배포본은 같은 dist 를 사용한다."
+    ]
+  },
+  "contract": {
+    "path": "registry/governance/ui-library-code-contract.json",
+    "version": "0.1.2",
+    "status": "candidate"
+  },
+  "target": {
+    "kind": "core-component",
+    "components": [
+      "textarea",
+      "multi-toggle"
+    ]
+  },
+  "figmaSources": {
+    "role": "시각 정본은 build-components.ts(buildTextarea·buildMultiToggleElement·buildMultiToggle)다. Figma V3.0 은 선택적 시각 참고이며 이번 작업에서 사용하지 않았다.",
+    "requiredForInventory": false,
+    "fileKey": "cysG5U1udpQqVagYY1hWHW",
+    "fileName": "SW-UX-GUIDE V3.0 TEST",
+    "components": {
+      "textarea": {
+        "nodeId": null,
+        "source": "not-consulted",
+        "status": "코드 정본만으로 상태·수치·토큰이 모두 확정돼 시각 참고가 필요 없었다."
+      },
+      "multi-toggle": {
+        "nodeId": "587:8029",
+        "source": "not-consulted",
+        "status": "registry 에 노드가 등록돼 있으나 코드 정본만으로 축·수치·토큰이 모두 확정돼 조회하지 않았다."
+      }
+    }
+  },
+  "currentPhase": "complete",
+  "workflowStatus": "complete",
+  "uiLibraryStatus": "approved",
+  "lastCompletedCheckpoint": 6,
+  "nextAction": "없음 — 완료. 이후 정본·상태·예제 변경 시 재검증한다.",
+  "ownership": {},
+  "canonicalInputs": [
+    {
+      "role": "component-visual",
+      "path": "plugins/figma-vars-installer/src/build-components.ts",
+      "sha256": "30e2ffa6b3a49b03c9bd36e3cf578fe676a95d61550e999c38952a95cb569aab"
+    },
+    {
+      "role": "token-values",
+      "path": "plugins/figma-vars-installer/src/vars-data.ts",
+      "sha256": "87edd42623983fb5e02e820940dbbc3693ecb4b2c79104e781c8307501984cd9"
+    },
+    {
+      "role": "text-styles",
+      "path": "plugins/figma-vars-installer/src/textstyles-data.ts",
+      "sha256": "dc0db42d87503e80e9da8ad1246090f58e79106593a57815b0568aebcb9d51d3"
+    },
+    {
+      "role": "ui-library-contract",
+      "path": "registry/governance/ui-library-code-contract.json",
+      "sha256": "63dc0f64c6ea834218119f8629379ee48cfac6c8df8b36e39d78f51405807c85"
+    },
+    {
+      "role": "component-meaning-textarea",
+      "path": "registry/components/textarea.json",
+      "sha256": "ff5d6246d25895dab6955b2ee9f7c535ef390526827091017387044816b9fb7b"
+    },
+    {
+      "role": "component-meaning-multi-toggle",
+      "path": "registry/components/multi-toggle.json",
+      "sha256": "82a4037e98700a55b37949cf876e008f1c61232dacbae02c441d2979ba1fe9fa"
+    }
+  ],
+  "artifacts": {
+    "policyContract": "registry/governance/ui-library-code-contract.json",
+    "humanGuide": "registry/governance/ui-library-authoring-guide.md",
+    "componentChecklist": "registry/governance/ui-library-component-checklist.md",
+    "inventory": "reports/ui-library/textarea-multi-toggle/1-inventory.md",
+    "canonReadiness": "reports/ui-library/textarea-multi-toggle/2-canon-readiness.md",
+    "build": "reports/ui-library/textarea-multi-toggle/3-build.md",
+    "verification": "reports/ui-library/textarea-multi-toggle/4-verification.md",
+    "humanReview": "reports/ui-library/textarea-multi-toggle/5-human-review.md",
+    "promotion": "reports/ui-library/textarea-multi-toggle/6-promotion.md",
+    "sourceRoot": "ui-library/src",
+    "distManifest": "ui-library/dist/manifest.json",
+    "reviewPage": "pages/ui-review.html",
+    "guidePage": "pages/components.html",
+    "migrationRecord": "registry/governance/ui-library-migration.json",
+    "verificationFixture": "reports/ui-library/textarea-multi-toggle/matrix-fixture.html",
+    "screens": [
+      "reports/ui-library/textarea-multi-toggle/screens/state-matrix-light-dark.png",
+      "reports/ui-library/textarea-multi-toggle/screens/state-matrix-dark-focus.png",
+      "reports/ui-library/textarea-multi-toggle/screens/guide-textarea.png",
+      "reports/ui-library/textarea-multi-toggle/screens/guide-multi-toggle.png",
+      "reports/ui-library/textarea-multi-toggle/screens/review-textarea.png",
+      "reports/ui-library/textarea-multi-toggle/screens/review-multi-toggle.png",
+      "reports/ui-library/textarea-multi-toggle/screens/review-textarea-multi-toggle.png",
+      "reports/ui-library/textarea-multi-toggle/screens/empty-consumer.png",
+      "reports/ui-library/textarea-multi-toggle/screens/empty-consumer-individual.png",
+      "reports/ui-library/textarea-multi-toggle/screens/regression-date-picker.png"
+    ],
+    "repositoryInventory": "reports/component-inventory-audit.md",
+    "buildGuide": "reports/ui-library/textarea-multi-toggle/3-build-guide.md"
+  },
+  "decisions": [
+    {
+      "id": "D1",
+      "topic": "Textarea 안내문구(helper) 범위",
+      "decidedBy": "river",
+      "decidedAt": "2026-09-02",
+      "decision": "이번 배포본은 입력칸만 만든다. 정본 buildTextarea 는 안내문구를 그리지 않으며(주석 '1차는 필드 상태만'), 사이트 손관리 마크업에만 있던 요소다. 정본에 먼저 추가한 뒤 다음 차례에 웹으로 내린다(needs-core-update 유지)."
+    },
+    {
+      "id": "D2",
+      "topic": "Textarea 크기 조절(resize) 정책 확정",
+      "decidedBy": "river",
+      "decidedAt": "2026-09-02",
+      "decision": "세로로만 늘릴 수 있게 한다(resize: vertical). registry textarea.json 의 '정책 미확정' 항목을 이 결정으로 확정한다. 가로 확장은 옆 요소를 밀어 레이아웃이 깨져 금지."
+    },
+    {
+      "id": "D3",
+      "topic": "Multi Toggle 칸 수",
+      "decidedBy": "orchestrator",
+      "decidedAt": "2026-09-02",
+      "decision": "정본 조합형 세트는 3칸 고정이다. 웹 CSS 는 위치(first/middle/last) 규칙으로 쓰므로 구조상 N칸도 동작하지만, 안내 페이지·예시·검증은 정본과 같은 3칸만 문서화한다. 정본에 없는 칸 수를 공식 지원으로 선언하지 않는다."
+    },
+    {
+      "id": "D4",
+      "topic": "정본에 없는 것을 만들지 않음",
+      "decidedBy": "orchestrator",
+      "decidedAt": "2026-09-02",
+      "decision": "Textarea 라벨·안내문구·글자수 카운터·크기 축, Multi Toggle focus 변형·모바일 전용 크기·3칸 외 구성을 만들지 않는다. 키보드 접근성을 위한 focus 표시는 기존 선택 테두리 토큰만 쓰고 새 토큰을 만들지 않는다(Chip 선례)."
+    },
+    {
+      "id": "D5",
+      "topic": "안내 페이지의 helper 안내 제거",
+      "decidedBy": "orchestrator",
+      "decidedAt": "2026-09-02",
+      "decision": "registry textarea.json 의 anatomy 에서 helper 행을 빼고 접근성 문장을 교정했다. river 결정 D1 로 이번 배포본에 helper 가 없는데 안내 페이지는 여전히 선택 부품으로 안내하고 있어 화면이 사실과 달랐다. 정본에 helper 가 추가되면 되돌린다."
+    },
+    {
+      "id": "D6",
+      "topic": "배포 상태 승격",
+      "decidedBy": "orchestrator",
+      "decidedAt": "2026-09-02",
+      "decision": "기술 검증 통과 후 두 manifest 의 status 를 candidate 에서 verified 로 올리고 재빌드했다. 안내 페이지가 verified/approved 가 아닌 배포본은 mount 하지 않기 때문이다. approved 승격은 river 검수 후 6-promotion 에서 한다."
+    },
+    {
+      "id": "D7",
+      "topic": "신규 안내 화면 공통 Action 제목·여백",
+      "decidedBy": "river",
+      "decidedAt": "2026-09-02",
+      "decision": "Text Area·Multi Toggle을 포함한 신규 안내 화면 전체는 기존 Action 기준인 초록색·10px·700 굵은 제목 글자 스타일을 유지하고, Action 구분선의 안쪽 24px·상태 전 48px 간격을 공통 적용한다."
+    }
+  ],
+  "blockers": [],
+  "evidence": {
+    "automatedChecks": [
+      {
+        "command": "npm run ui:contract",
+        "result": "PASS"
+      },
+      {
+        "command": "npm run ui:icons",
+        "result": "PASS"
+      },
+      {
+        "command": "npm run ui:build",
+        "result": "PASS · 73 files"
+      },
+      {
+        "command": "npm run ui:test",
+        "result": "이번 두 컴포넌트 PASS · tab(mobile) 1건 FAIL — 다른 세션의 미완성 작업(범위 밖)"
+      },
+      {
+        "command": "npm run components:facts:check",
+        "result": "PASS"
+      },
+      {
+        "command": "npm run gate:check",
+        "result": "error 2 — 전부 registry/components/pagination.json JSON 파싱 실패(다른 세션 편집 중, 범위 밖)"
+      }
+    ],
+    "sourceAudit": {
+      "status": "complete",
+      "actor": "source-reader",
+      "observedAt": "2026-09-02",
+      "basis": "정본 빌더 buildTextarea(1388~)·buildInput(948~)·buildMultiToggleElement(5376~)·buildMultiToggle(5513~), vars-data.ts 토큰 존재 전수, pages/components.html 손관리 마크업·CSS·JS, ui-library 배선 현황",
+      "summary": "Textarea·Multi Toggle 은 ui-library/src 에 미착수였고 build·test·exports 어디에도 등록돼 있지 않았다. 사이트 두 섹션은 인라인 손관리이며 dist 를 소비하지 않는다. 정본에 상태·수치·토큰이 모두 있고 신규 토큰 0건으로 구현 가능하다. 착수 차단 요인은 registry a11yStatus 가 둘 다 pending 인 것과 Textarea 의 helper·resize 미확정 2건이었고, 후자는 river 결정으로 해소했다.",
+      "report": "reports/ui-library/textarea-multi-toggle/1-inventory.md"
+    },
+    "implementationActualRender": {
+      "verdict": "PASS",
+      "actor": "orchestrator",
+      "observedAt": "2026-09-02",
+      "summary": "실제 dist 를 소비하는 상태 매트릭스를 http 로 렌더해 Textarea 9칸·Multi Toggle 20묶음을 Light·Dark 전수 대조했다. computed style 로 정본 geometry·토큰을 실측 대조하고, 안내 페이지 2개·검수 화면·빈 소비자 2개를 렌더했다. 전체 묶음과 개별 설치 스크린샷 sha256 이 완전히 일치했다.",
+      "report": "reports/ui-library/textarea-multi-toggle/4-verification.md"
+    },
+    "behaviorCheck": {
+      "verdict": "PASS",
+      "observedAt": "2026-09-02",
+      "summary": "Multi Toggle 클릭·화살표·Home 이동, roving tabindex, 비활성 칸 포커스 제외, s1:multi-toggle:change 이벤트, destroy 후 재init 을 실제 브라우저에서 확인했다. Textarea 는 런타임 없이 5상태가 성립함을 확인했다. 콘솔 오류 0건·중복 id 0건."
+    },
+    "independentVerification": {
+      "verdict": "waived-by-river",
+      "reason": "river가 실제 검수 완료 후 최근 제작 웹사이트 전체를 승인했다. 구현자 실제 브라우저 동작 검증과 13종×PC·Mobile 독립 렌더 대조를 완료했고, 별도 재검증은 중복으로 생략한다.",
+      "riverDecisionRequired": false
+    },
+    "riverApproval": {
+      "status": "approved",
+      "by": "river",
+      "at": "2026-09-02",
+      "target": "pages/components.html Textarea·Multi Toggle · pages/ui-review.html 검수본 10·11",
+      "report": "reports/ui-library/textarea-multi-toggle/5-human-review.md",
+      "summary": "river가 최근 제작한 웹사이트 내용을 검토 완료 후 승인했다."
+    },
+    "promotionDecision": {
+      "status": "approved",
+      "approvedBy": "river",
+      "approvedAt": "2026-09-02",
+      "independentVerification": "waived-by-river",
+      "report": "reports/ui-library/textarea-multi-toggle/6-promotion.md"
+    }
+  },
+  "handoff": {
+    "lastActor": "orchestrator",
+    "updatedAt": "2026-09-02",
+    "summary": "river UX 승인 후 Textarea·Multi Toggle manifest를 approved로 승격하고, dist·공개 안내 화면·이행 장부를 동기화했다."
+  }
+}

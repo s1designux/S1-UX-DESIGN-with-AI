@@ -1050,6 +1050,26 @@ try {
   fail(`Gate 43 실행 실패: ${e.message}`);
 }
 
+// ── Gate 44: UI Guide Render (안내 화면 실제 렌더) ──
+// 안내 화면은 JavaScript 가 dist 로 그린다 — 소스 문자열 검사로는 "화면이 실제로 무엇을 보여주는지"를
+// 못 본다. 실증된 사고 2건: ① Mobile 화면에 PC 마크업 ② Table 셀 표본이 세트 외곽선을 함께 표출
+// (river 지적 2026-09-02 — 배포본 CSS 는 정확했고 표본 조립만 틀려 기존 검사기가 전부 통과했다).
+// 판정: 개발 코드 플랫폼 일치 · 크기 라벨 규칙 · 시작 지점 · **부품 표본 격리**(ui-guide-part-sample-check.js).
+gateHeader('[Gate 44] 안내 화면 렌더 검사기 (UI Guide Render)');
+try {
+  const { spawnSync } = require('child_process');
+  const result = spawnSync(process.execPath, [path.join(__dirname, 'ui-guide-render-check.js'), '--quiet'], { encoding: 'utf8' });
+  const output = `${result.stdout || ''}${result.stderr || ''}`.trim();
+  if (result.status === 0) pass('안내 화면 실제 렌더 통과 — 개발 코드 플랫폼 일치 · 부품 표본 격리 (상세: npm run ui:guide:render)');
+  else if (result.status === 2) warn(`Gate 44: 크롬을 찾지 못해 건너뜁니다 — ${output.split('\n').slice(-1)[0]}`);
+  else {
+    fail('안내 화면 렌더 검사 실패 — npm run ui:guide:render 로 상세 확인');
+    for (const line of output.split('\n').filter((l) => l.trim().startsWith('-')).slice(0, 6)) fail(`  ${line.trim()}`);
+  }
+} catch (e) {
+  fail(`Gate 44 실행 실패: ${e.message}`);
+}
+
 // ── Summary ───────────────────────────────────────────────────────
 if (VERBOSE || errors > 0 || warnings > 0) console.log('\n─────────────────────────────────────────────────────');
 const tally = `게이트 ${gates}개 · ✅ ${passes}건${VERBOSE ? '' : ' (상세: --verbose)'}`;

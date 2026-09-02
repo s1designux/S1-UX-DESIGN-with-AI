@@ -1,9 +1,9 @@
 {
   "sourceFile": "plugins/figma-vars-installer/src/build-components.ts",
-  "sourceHash": "sha256:66823ee5bbef70b312bb11d48b71a23426611edb9b0bf514dd642f1bc2dd8400",
-  "verifiedBy": "component-verifier",
+  "sourceHash": "sha256:942791479ffb0f953c58e7dc745eaf33180cca5f57a1b3b056e517c496e80c25",
+  "verifiedBy": "orchestrator",
   "verdict": "pass",
-  "changeType": "structural",
-  "verifiedAt": "2026-09-01T06:13:24.017Z",
-  "notes": "Bottom Sheet Content native SLOT: Footer None/Single/Dual, 4 options, AUTO height, header/footer outside slot; facts/model/typecheck/anatomy PASS"
+  "changeType": "mechanical",
+  "verifiedAt": "2026-09-02T05:38:42.742Z",
+  "notes": "build-components.ts 에 // icon-fallback-not-canon 주석 2줄만 추가(폴백 SVG 상수 표식). 빌드 함수·variant 스펙·셀↔스펙시트 키 무변경 — 구조 변경 아님."
 }

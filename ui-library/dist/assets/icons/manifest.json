@@ -24,7 +24,8 @@
         },
         "scaling": "proportional"
       },
-      "dependencies": []
+      "dependencies": [],
+      "sourceExport": "assets/icons/ic_remove_line.png"
     },
     {
       "id": "check",
@@ -49,7 +50,10 @@
         "scaling": "proportional"
       },
       "geometryEvidence": "정본은 이 아이콘을 16px 로 리사이즈해 18px 상자 (1,1) 에 놓는다(build-components.ts makeCheckIcon·buildCheckbox). 내보낸 원본 assets/icons/ic_확인_line.png(48px=24 기준 2배) 의 잉크 경계는 18×12(24 기준)이고, 정본 인라인 SVG(16 기준)의 잉크 경계는 11.6×8.25 로 같은 비율이다 — 즉 glyph 가 frame 을 그대로 채운다.",
-      "dependencies": []
+      "dependencies": [],
+      "sourceExport": "assets/icons/ic_확인_line.png",
+      "originComparable": false,
+      "originComparableNote": "웹 자산 프레임 16 ↔ 원본 내보내기 프레임 24. 정본이 이 아이콘을 18 상자 안 16px 로 놓는데(build-components.ts buildCheckbox) 원본 24 프레임 안 위치 대응이 선언돼 있지 않아 픽셀 대조 불가."
     },
     {
       "id": "chevron",
@@ -74,7 +78,61 @@
         "scaling": "proportional"
       },
       "geometryEvidence": "정본 chevDown 인라인 SVG(build-components.ts:1450)는 16x16 viewBox 에 화살표가 꽉 차게 그려진다(glyph=frame). 웹 아이콘은 정본과 동일하게 아래(닫힘) 방향 하나만 자산으로 두고, 열림(위) 방향은 정본과 같은 철학(회전)으로 CSS transform: rotate(180deg) 로 표현한다 — chevUp(build-components.ts:1451)은 chevDown 을 180° 돌린 모양과 같다. 렌더 크기(Select XXSM 20px·그 외 24px, Filter Chip 20px 고정)는 컴포넌트 CSS 가 mask-size:contain 으로 이 16px 원본을 비율 유지 확대해 만든다(fcIconPx, build-components.ts:1310·1481, 2252).",
-      "dependencies": []
+      "dependencies": [],
+      "sourceExport": "assets/icons/ic_화살표더보기_line.png"
+    },
+    {
+      "id": "edge_set",
+      "sourceKey": "606d0de897175059f133427bf62bb3635d18a860",
+      "sourceBuilderSymbol": "Figma 아이콘 라이브러리 V2.2 edge_set (ic_마지막장) — build-components.ts CHEV_EDGE 정본 폴백 경로를 그대로 사용",
+      "file": "pagination-edge.svg",
+      "webAssetFingerprint": "da84b989a1acc26de0e386334a72ab525bc2feff786a37226cfd1c561c85a1fb",
+      "individualFile": "assets/icons/pagination-edge.svg",
+      "accessibleNamePolicy": "decorative inside a named pagination action button",
+      "geometry": {
+        "frame": {
+          "width": 24,
+          "height": 24
+        },
+        "glyph": {
+          "x": 5,
+          "y": 5,
+          "width": 14,
+          "height": 14
+        },
+        "scaling": "proportional"
+      },
+      "geometryEvidence": "Figma edge_set을 설치기에 불러올 수 없을 때 정본 설치기가 쓰는 CHEV_EDGE 경로를 글자·좌표·선속성까지 그대로 사용한다. 첫 페이지는 기본 |<, 마지막 페이지는 180도 회전한 >|이다.",
+      "dependencies": [],
+      "sourceExport": "assets/icons/ic_화살표더보기_line.png",
+      "originComparable": false,
+      "originComparableNote": "페이지네이션 처음/마지막은 쉐브론 2개를 겹친 componentSet(edge_set)이라 단일 line 내보내기와 1:1 대응하지 않는다. 대응 원본 파일을 확정해야 한다."
+    },
+    {
+      "id": "close",
+      "sourceKey": "2a1abbd3597b536e34fd9523fb61eade3afe9934",
+      "sourceBuilderSymbol": "Figma 아이콘 라이브러리 V2.2 ic_닫기 97:79 (Property 1=Line, 97:77) 실물 벡터 내보내기 — 이전에 쓰던 설치기 폴백 CLOSE_ICON_SVG 는 근사치라 폐기(river 지적 2026-09-02, chevron 과 같은 사례).",
+      "file": "close.svg",
+      "webAssetFingerprint": "deed51641826b50d21ec8a4bc8dfe57ad6681e462f9857821081d455c6c5ac97",
+      "symbolId": "s1-icon-close",
+      "individualFile": "assets/icons/close.svg",
+      "accessibleNamePolicy": "decorative inside a named close button (버튼이 '닫기' 이름을 가진다)",
+      "geometry": {
+        "frame": {
+          "width": 24,
+          "height": 24
+        },
+        "glyph": {
+          "x": 4,
+          "y": 4,
+          "width": 16,
+          "height": 16
+        },
+        "scaling": "proportional"
+      },
+      "geometryEvidence": "원본은 24 프레임 안 (4,4) 에 놓인 16×16 채움(fill) 도형이다(Figma 내보내기 실측). 저장소 내보내기 assets/icons/ic_닫기_line.png 의 잉크 경계 4~20 과 일치한다. 폐기한 폴백은 6~18 스트로크 도형이라 더 짧고 굵었다.",
+      "dependencies": [],
+      "sourceExport": "assets/icons/ic_닫기_line.png"
     }
   ]
 }

@@ -24,6 +24,7 @@ const http = require('http');
 const os = require('os');
 const path = require('path');
 const { spawn } = require('child_process');
+const { StringDecoder } = require('string_decoder');
 
 const ROOT = path.resolve(__dirname, '..');
 const quiet = process.argv.includes('--quiet');
@@ -78,6 +79,7 @@ function dumpDom(chrome, url) {
       '--no-sandbox', '--disable-gpu', `--user-data-dir=${profileDir}`, url
     ], { stdio: ['ignore', 'pipe', 'ignore'] });
     let out = '';
+    const decoder = new StringDecoder('utf8');
     let settled = false;
     /* 안전망 타이머를 그대로 두면 이미 끝났는데도 이벤트 루프가 60초 더 살아 있다
        (실측: 검사 자체는 1.7초인데 전체가 62초였다). 끝나면 반드시 해제한다. */
@@ -86,11 +88,12 @@ function dumpDom(chrome, url) {
       if (settled) return;
       settled = true;
       clearTimeout(guard);
+      out += decoder.end();
       try { child.kill('SIGKILL'); } catch (_) {}
       try { fs.rmSync(profileDir, { recursive: true, force: true }); } catch (_) {}
       out.includes('</html>') ? resolve(out) : reject(new Error(`DOM 을 받지 못했습니다: ${url}`));
     };
-    child.stdout.on('data', (chunk) => { out += chunk; if (out.includes('</html>')) finish(); });
+    child.stdout.on('data', (chunk) => { out += decoder.write(chunk); if (out.includes('</html>')) finish(); });
     child.on('exit', finish);
     guard = setTimeout(finish, 60000);
   });
@@ -128,7 +131,7 @@ async function main() {
   }
 
   const distManifest = JSON.parse(fs.readFileSync(path.join(DIST, 'manifest.json'), 'utf8'));
-  const components = distManifest.components.filter(({ status }) => status === 'approved');
+  const components = distManifest.components.filter(({ status }) => ['approved', 'verified'].includes(status));
   const failures = [];
   const server = await serve();
   const base = `http://127.0.0.1:${server.address().port}/pages/components.html`;
@@ -139,6 +142,12 @@ async function main() {
       const dom = await dumpDom(chrome, `${base}?platform=${platform}`);
       if (process.env.S1_DEBUG) console.error(`[debug] ${platform} dump ${Date.now() - t0}ms len=${dom.length}`);
 
+      /* 부품 표본 격리 — 부품 표본이 세트 소유 장식을 함께 보여주는지(Gate 44).
+         같은 DOM 을 재사용해 크롬을 한 번만 띄운다. */
+      const partSample = require('./ui-guide-part-sample-check.js').checkDom(dom, { label: platform });
+      failures.push(...partSample.failures);
+      for (const warning of partSample.warnings) if (!quiet) console.warn(`⚠️  ${warning}`);
+
       for (const component of components) {
         const { id, examples = {} } = component;
         const section = sectionOf(dom, id);
@@ -148,9 +157,24 @@ async function main() {
         const expectedPath = examples[platform] || examples.pc || `examples/${id}.html`;
         const expected = fs.readFileSync(path.join(DIST, expectedPath), 'utf8').trim();
         const pane = section.match(/<pre data-guide-code="html">([\s\S]*?)<\/pre>/);
-        if (!pane) failures.push(`${id} 개발 코드 HTML 칸이 없습니다 (${platform})`);
+        if (!pane) {
+          if (process.env.S1_DEBUG) console.error(`[debug] ${id}/${platform}: ${stripTags(section).slice(0, 500)}`);
+          failures.push(`${id} 개발 코드 HTML 칸이 없습니다 (${platform})`);
+        }
         else if (unescapeHtml(pane[1]).trim() !== expected) {
           failures.push(`${id} (${platform}) 개발 코드가 ${expectedPath} 와 다릅니다 — 보고 있는 화면의 마크업만 보여야 합니다`);
+        }
+
+        /* Line Tab은 PC·Mobile이 서로 다른 size/break 예제를 쓴다. 실제 동작 영역에
+           반대 플랫폼 마크업이나 요약이 섞이면 코드 탭만 맞아도 화면은 틀린 것이다. */
+        if (id === 'tab') {
+          const visibleGuide = section.slice(0, section.indexOf('<section aria-labelledby="tab-code-heading"'));
+          if (platform === 'pc' && (/data-break="mobile"/.test(visibleGuide) || /Mobile SM 32/.test(visibleGuide))) {
+            failures.push('tab PC 화면에 Mobile 내용이 함께 표시됩니다');
+          }
+          if (platform === 'mobile' && (/data-break="pc"/.test(visibleGuide) || /PC 3크기/.test(visibleGuide))) {
+            failures.push('tab Mobile 화면에 PC 내용이 함께 표시됩니다');
+          }
         }
 
         if (platform !== 'mobile') continue;

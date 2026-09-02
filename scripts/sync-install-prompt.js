@@ -108,12 +108,18 @@ function lastUpdatedDate(relPath) {
 
 function injectUpdateStamps(html) {
   const cache = new Map();
+  // 속성 순서·부가 속성(style 등)에 관계없이 잡고, 원래 속성은 그대로 보존한다.
+  //   종전 정규식은 `class="update-stamp" data-update-file=` 인접만 잡아
+  //   중간에 style 이 낀 설치기 다운로드 스탬프가 조용히 갱신에서 빠져 있었다(2026-07-21 고착).
   return html.replace(
-    /<span class="update-stamp" data-update-file="([^"]+)">[\s\S]*?<\/span>/g,
-    (m, relPath) => {
+    /<span class="update-stamp"([^>]*)>[\s\S]*?<\/span>/g,
+    (m, attrs) => {
+      const found = /data-update-file="([^"]+)"/.exec(attrs);
+      if (!found) return m;
+      const relPath = found[1];
       if (!cache.has(relPath)) cache.set(relPath, formatStamp(lastUpdatedDate(relPath)));
       const stamp = cache.get(relPath);
-      return `<span class="update-stamp" data-update-file="${relPath}">${STAMP_CLOCK_SVG} 업데이트 ${stamp}</span>`;
+      return `<span class="update-stamp"${attrs}>${STAMP_CLOCK_SVG} 업데이트 ${stamp}</span>`;
     }
   );
 }

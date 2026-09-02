@@ -1,0 +1,133 @@
+{
+  "id": "tab",
+  "version": "0.1.0",
+  "status": "approved",
+  "canonicalFingerprint": "0494a0e5f1224b5d2e26c81e2fa8fbaaf81399006d98a5b619f682ffa75d768c",
+  "canonicalSources": [
+    "plugins/figma-vars-installer/src/build-components.ts",
+    "plugins/figma-vars-installer/src/vars-data.ts",
+    "plugins/figma-vars-installer/src/textstyles-data.ts",
+    "registry/components/tab.json",
+    "registry/components/component-behavior.pc.json"
+  ],
+  "rootSelector": "[data-s1-component=\"tab\"]",
+  "variants": [
+    "line"
+  ],
+  "sizes": [
+    "md",
+    "sm",
+    "xsm"
+  ],
+  "breaks": {
+    "pc": [
+      "md",
+      "sm",
+      "xsm"
+    ],
+    "mobile": [
+      "sm"
+    ]
+  },
+  "states": {
+    "default": "aria-selected=false",
+    "hover": "hover-capable pointer over unselected tab",
+    "selected": "aria-selected=true",
+    "focusVisible": ":focus-visible"
+  },
+  "canonicalStateMap": {
+    "Unselected": "default",
+    "Hover": "hover",
+    "Selected": "selected"
+  },
+  "parts": [
+    "tab",
+    "tabpanel (optional)"
+  ],
+  "htmlContract": {
+    "root": "div[data-s1-component=tab][role=tablist]",
+    "requiredAttributes": [
+      "data-size",
+      "data-break",
+      "role",
+      "aria-label"
+    ],
+    "requiredParts": [
+      "tab"
+    ],
+    "source": "components/tab/tab.example.html",
+    "distribution": "examples/tab.html",
+    "breakExamples": {
+      "pc": {
+        "source": "components/tab/tab.example.html",
+        "distribution": "examples/tab.html"
+      },
+      "mobile": {
+        "source": "components/tab/tab.mobile.example.html",
+        "distribution": "examples/tab.mobile.html"
+      }
+    }
+  },
+  "cssContract": {
+    "entry": "components/tab.css",
+    "rootScope": "[data-s1-component=tab]",
+    "nativeStates": [
+      ":hover",
+      ":focus-visible"
+    ],
+    "ariaStates": [
+      "[aria-selected=true]"
+    ],
+    "customization": "정본 navigation semantic token만 사용한다."
+  },
+  "dependencies": {
+    "font": [
+      {
+        "family": "Pretendard",
+        "source": "https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css"
+      }
+    ],
+    "css": [
+      "assets/css/tokens.css",
+      "assets/css/typography.css"
+    ],
+    "coreComponents": []
+  },
+  "icons": [],
+  "a11y": {
+    "nativeSemantics": {
+      "status": "required",
+      "value": "role=tablist with button[role=tab] and optional role=tabpanel"
+    },
+    "accessibleName": {
+      "status": "required",
+      "value": "tablist aria-label; each tab has visible label"
+    },
+    "keyboard": {
+      "status": "required",
+      "value": "ArrowLeft/ArrowRight move and select; Home/End jump"
+    },
+    "focus": {
+      "status": "required",
+      "value": "roving tabindex and visible 2px outline"
+    },
+    "ariaStateSync": {
+      "status": "required",
+      "value": "runtime synchronizes aria-selected, tabindex, and an optional controlled panel"
+    },
+    "errorRelation": {
+      "status": "not-applicable",
+      "reason": "Tab does not own field errors."
+    },
+    "reducedMotion": {
+      "status": "not-applicable",
+      "reason": "The canonical component declares no motion."
+    }
+  },
+  "jsRequired": true,
+  "javascript": {
+    "runtime": "components/tab/tab.js",
+    "reason": "선택 상태와 화살표 키 이동을 동기화한다."
+  },
+  "sourceFingerprint": "96275c23616d15e9e1e73d9220efe9831ade2fcbf9866afcc1e791da872da1f2"
+}

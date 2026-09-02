@@ -49,11 +49,51 @@ const componentConfig = {
     approvedScope: { pc: "Line · Solid × 제목 있음/없음 × 상태 5종 · PC 2크기(SM 28 · MD 34) · Mobile 1크기(MD 30) · 목록 크기 SM·MD 모두 XSM(34px)", mobile: "Line · Solid × 제목 있음/없음 × 상태 5종 · 목록은 Dropdown 배포본을 조립" },
     runtime: S1UI.filterChip
   },
+  tab: {
+    title: "Line Tab",
+    description: "같은 화면 안에서 콘텐츠를 바꿔 볼 때 사용합니다. 선택된 탭은 파란 글자와 하단 선으로 표시됩니다.",
+    approvedScope: { pc: "기본 · Hover · 선택 · PC 3크기(MD 44 · SM 42 · XSM 40) · 화살표 키 이동", mobile: "기본 · Hover · 선택 · 화살표 키 이동" },
+    runtime: S1UI.tab
+  },
+  pagination: {
+    title: "Pagination",
+    description: "긴 목록을 페이지 단위로 나눠 이동할 때 사용합니다. 현재 페이지와 양 끝 이동 가능 여부를 바로 보여줍니다.",
+    approvedScope: "화살표 4종 · 페이지 번호 · 28px 컨트롤 · 첫·마지막에서 이동 버튼 비활성",
+    runtime: S1UI.pagination
+  },
   radio: {
     title: "Radio",
     description: "여러 보기 중 하나만 고를 때 사용합니다. 같은 그룹으로 묶으면 하나만 선택되고 화살표 키로 이동합니다.",
     approvedScope: "상태 5종 · 라벨 유무 · 크기 축 없음(18px 고정) · JavaScript 불필요",
     runtime: S1UI.radio
+  },
+  textarea: {
+    title: "Textarea",
+    description: "여러 줄 내용을 입력받을 때 사용합니다. 라벨과 안내 문구는 정본에 없어 화면에서 따로 연결합니다.",
+    approvedScope: "상태 5종(Default · Focus · Filled · Disabled · Read-only) · 크기 축 없음 · 세로 방향으로만 크기 조절 · JavaScript 불필요",
+    runtime: S1UI.textarea
+  },
+  "multi-toggle": {
+    title: "Multi Toggle",
+    description: "붙어 있는 칸 중 하나를 골라 화면 내용을 바꿀 때 사용합니다. 한 번에 하나만 선택됩니다.",
+    approvedScope: "상태 4종 · 두 크기(MD 44 · SM 34) · 3칸 구성 · 화살표 키 이동 · PC 전용",
+    runtime: S1UI.multiToggle
+  }
+,
+  table: {
+    title: "Table",
+    description: "행과 열로 정리된 데이터를 보여줍니다. 행을 고를 수 있고, 표 아래 페이지 이동과 '몇 개씩 보기'는 승인된 배포본을 조립해 씁니다.",
+    approvedScope: "상태 3종(기본 · Hover · 선택) · 3크기(MD 44 · SM 38 · XSM 34) · 선택 컬럼은 Checkbox 배포본 재사용 · 정렬 기능 없음 · PC 전용",
+    runtime: S1UI.table
+  },
+  modal: {
+    title: "Modal",
+    description: "흐름을 멈추고 결정을 받을 때 쓰는 팝업입니다. 어두운 배경 위에 제목·본문·버튼 세 층으로 뜹니다.",
+    approvedScope: {
+      pc: "버튼 1개(Single) · 2개(Dual) · 패널 360 · 제목 옆 닫기 있음 · Esc 닫기 · 초점 가둠",
+      mobile: "버튼 1개(Single) · 2개(Dual) · 패널 300 · 닫기 없음 · Esc 닫기 · 초점 가둠"
+    },
+    runtime: S1UI.modal
   }
 };
 
@@ -632,7 +672,7 @@ function dropdownMarkup({ type = "text", size = "md", withAll = false, ariaLabel
   return `<div data-s1-component="dropdown" data-type="${type}" data-size="${size}"${listRole} aria-label="${escapeHtml(ariaLabel)}" class="${preview}">${allRow}${body}</div>`;
 }
 
-function selectMarkup({ size = "md", breakName = "pc", state = "default", isPreview = false } = {}) {
+function selectMarkup({ size = "md", breakName = "pc", state = "default", isPreview = false, valueText = null, placeholder = "선택", ariaLabel = "지역", rows = null } = {}) {
   const open = state === "open";
   const filled = state === "filled";
   const disabled = state === "disabled";
@@ -643,10 +683,10 @@ function selectMarkup({ size = "md", breakName = "pc", state = "default", isPrev
   const panelHidden = isPreview ? (open ? "" : " hidden") : " hidden";
   return `<div data-s1-component="select" data-size="${size}" data-break="${breakName}" class="${preview}">
       <button type="button" data-s1-part="trigger" aria-haspopup="listbox" aria-expanded="${open}"${filled ? ' data-filled="true"' : ""}${disabled ? " disabled" : ""}${force}>
-        <span data-s1-part="value">${filled ? "서울" : "선택"}</span>
+        <span data-s1-part="value">${valueText ?? (filled ? "서울" : placeholder)}</span>
         <span data-s1-part="icon" aria-hidden="true"></span>
       </button>
-      <div data-s1-part="panel"${panelHidden}>${dropdownMarkup({ type: "text", size, ariaLabel: "지역", isPreview })}</div>
+      <div data-s1-part="panel"${panelHidden}>${dropdownMarkup({ type: "text", size, ariaLabel, rows, isPreview })}</div>
     </div>`;
 }
 
@@ -860,6 +900,376 @@ function filterChipStateMatrix() {
     </div>`;
 }
 
+/* ── Line Tab · Pagination ── */
+
+function tabMarkup({ size = "md", breakName = "pc", selected = 0, hover = -1, preview = false } = {}) {
+  const labels = ["탭 메뉴 1", "탭 메뉴 2", "탭 메뉴 3"];
+  return `<div data-s1-component="tab" data-size="${size}" data-break="${breakName}" role="tablist" aria-label="콘텐츠 보기 선택"${preview ? ' class="is-preview"' : ""}>${labels.map((label, index) => `<button type="button" data-s1-part="tab" role="tab" aria-selected="${index === selected}"${index === hover ? ' data-force-state="hover"' : ""}>${label}</button>`).join("")}</div>`;
+}
+
+function tabStateItemMarkup({ size = "md", breakName = "pc", selected = false, hover = false } = {}) {
+  return `<div data-s1-component="tab" data-size="${size}" data-break="${breakName}" role="tablist" aria-label="탭 상태 미리보기" class="is-preview"><button type="button" data-s1-part="tab" role="tab" aria-selected="${selected}"${hover ? ' data-force-state="hover"' : ""}>탭 메뉴</button></div>`;
+}
+
+function tabStateMatrix() {
+  const sizes = currentPlatform() === "mobile" ? [["sm", "SM", "32px"]] : [["md", "MD", "44px"], ["sm", "SM", "42px"], ["xsm", "XSM", "40px"]];
+  const breakName = currentPlatform() === "mobile" ? "mobile" : "pc";
+  const action = `<div class="comp-action-top uilg-tab-action-top"><div class="matrix-col-header-action">Action</div><div class="uilg-tab-action-row">${sizes.map(([size, label, height]) => `<div class="uilg-tab-action-item"><div class="matrix-col-header">${label}<span class="uilg-size-dim">${height}</span></div>${tabMarkup({ size, breakName })}</div>`).join("")}</div></div>`;
+  const states = [["기본", {}], ["선택", { selected: true }], ["Hover", { hover: true }]];
+  return `<div class="platform-section"><div class="preview-area">${action}<div class="comp-state-matrix" style="grid-template-columns:repeat(3,minmax(120px,1fr));">${states.map(([label]) => `<div class="matrix-col-header">${label}</div>`).join("")}${states.map(([, options]) => `<div class="comp-state-cell">${tabStateItemMarkup({ size: sizes[0][0], breakName, ...options })}</div>`).join("")}</div></div></div>`;
+}
+
+function paginationMarkup({ page = 1, total = 6, preview = false } = {}) {
+  const beforeDisabled = page <= 1;
+  const afterDisabled = page >= total;
+  return `<nav data-s1-component="pagination" data-total-pages="${total}" data-page="${page}" aria-label="페이지 탐색"${preview ? ' class="is-preview"' : ""}><span data-s1-part="arrow-group"><button type="button" data-s1-action="first" aria-label="첫 페이지"${beforeDisabled ? " disabled" : ""}><span data-s1-part="icon" data-icon="edge" aria-hidden="true"></span></button><button type="button" data-s1-action="previous" aria-label="이전 페이지"${beforeDisabled ? " disabled" : ""}><span data-s1-part="icon" data-icon="chevron" aria-hidden="true"></span></button></span><span data-s1-part="pages">${Array.from({ length: total }, (_, index) => { const number = index + 1; return `<button type="button" data-s1-part="page" data-page="${number}"${number === page ? ' aria-current="page"' : ""}>${number}</button>`; }).join("")}</span><span data-s1-part="arrow-group"><button type="button" data-s1-action="next" aria-label="다음 페이지"${afterDisabled ? " disabled" : ""}><span data-s1-part="icon" data-icon="chevron" aria-hidden="true"></span></button><button type="button" data-s1-action="last" aria-label="마지막 페이지"${afterDisabled ? " disabled" : ""}><span data-s1-part="icon" data-icon="edge" aria-hidden="true"></span></button></span></nav>`;
+}
+
+/* ── State matrix: Table ──
+   정본 buildTableCell(Size 3 × Type 2 × Variant 3) · buildTable(Size 3).
+   상태는 정본과 같이 '셀'이 소유하고 행은 그 조합으로 표현한다.
+   Action 영역은 river 결정(2026-09-02)대로 표 + 페이지네이션 + 보기 셀렉박스를 함께 보여주되,
+   뒤 둘은 승인된 배포본을 조립해 쓴다 — Table 안에 다시 구현하지 않는다. */
+
+let tableRowId = 0;
+
+function tableSelectionCell({ tag = "td", label = "", checked = false, isPreview = false } = {}) {
+  tableRowId += 1;
+  const attrs = [
+    'type="checkbox"',
+    'data-s1-part="control"',
+    `aria-label="${escapeHtml(label)}"`,
+    checked ? "checked" : "",
+    isPreview ? 'tabindex="-1"' : ""
+  ].filter(Boolean).join(" ");
+  const part = tag === "th" ? 'data-s1-part="header-cell" scope="col"' : 'data-s1-part="cell"';
+  return `<${tag} ${part} data-selection><div data-s1-component="checkbox"><input ${attrs}></div></${tag}>`;
+}
+
+function tableMarkup({ size = "md", rows = null, isPreview = false } = {}) {
+  const data = rows ?? [
+    { name: "항목 1", category: "카테고리 A", count: 10, state: "활성" },
+    { name: "항목 2", category: "카테고리 B", count: 20, state: "검토중" },
+    { name: "항목 3", category: "카테고리 C", count: 30, state: "완료" },
+    { name: "항목 4", category: "카테고리 A", count: 40, state: "활성" }
+  ];
+  const preview = isPreview ? " is-preview" : "";
+  const body = data.map((row, index) => `<tr data-s1-part="row"${row.selected ? ' data-selected="true"' : ""}>
+        ${tableSelectionCell({ label: `${row.name} 선택`, checked: Boolean(row.selected), isPreview })}
+        <td data-s1-part="cell"${row.forceState ? ` data-state="${row.forceState}"` : ""}>${escapeHtml(row.name)}</td>
+        <td data-s1-part="cell"${row.forceState ? ` data-state="${row.forceState}"` : ""}>${escapeHtml(row.category)}</td>
+        <td data-s1-part="cell" data-align="center"${row.forceState ? ` data-state="${row.forceState}"` : ""}>${row.count}</td>
+        <td data-s1-part="cell" data-align="center"${row.forceState ? ` data-state="${row.forceState}"` : ""}>${escapeHtml(row.state)}</td>
+      </tr>`).join("");
+  return `<div data-guide-sample="set" data-s1-component="table" data-size="${size}" class="${preview.trim()}">
+      <table data-s1-part="table">
+        <thead>
+          <tr>
+            ${tableSelectionCell({ tag: "th", label: "전체 선택", isPreview })}
+            <th data-s1-part="header-cell" scope="col">항목명</th>
+            <th data-s1-part="header-cell" scope="col">카테고리</th>
+            <th data-s1-part="header-cell" data-align="center" scope="col">수량</th>
+            <th data-s1-part="header-cell" data-align="center" scope="col">상태</th>
+          </tr>
+        </thead>
+        <tbody>${body}</tbody>
+      </table>
+    </div>`;
+}
+
+/* 셀 한 칸짜리 표본 — 정본 Table Cell 세트의 낱개 변형만 보여준다.
+   정본에서 셀이 가진 선은 **아래 1px(color/table/border/default) 하나뿐**이다.
+   위·아래의 진한 선(위 2px · 아래 1px, border/strong)은 셀이 아니라 **표 세트**가 그리는 외곽선이라
+   낱개 셀 표본에서는 꺼 둔다 — 켜 두면 정본에 없는 모습이 된다(river 지적 2026-09-02). */
+function tableCellSample({ size = "md", type = "cell", state = "default" } = {}) {
+  const forced = state === "default" ? "" : ` data-state="${state}"`;
+  const inner = type === "header"
+    ? `<thead><tr><th data-s1-part="header-cell" scope="col">헤더</th></tr></thead>`
+    : `<tbody><tr data-s1-part="row"><td data-s1-part="cell"${forced}>셀 내용</td></tr></tbody>`;
+  return `<div data-guide-sample="part" data-s1-component="table" data-size="${size}" class="is-preview" style="width:auto;border-top:0;border-bottom:0;">
+      <table data-s1-part="table" style="width:auto;">${inner}</table>
+    </div>`;
+}
+
+function tableStateMatrix() {
+  /* Action — 표 + 페이지네이션 + 보기 셀렉박스(정본 푸터 구성). 뒤 둘은 각자의 배포본이다. */
+  const action = `<div class="comp-action-top"><div class="matrix-col-header-action">Action</div>
+      <div class="uilg-table-action" style="display:flex;flex-direction:column;gap:12px;width:100%;">
+        ${tableMarkup()}
+        <div style="display:flex;align-items:center;justify-content:center;position:relative;">
+          ${paginationMarkup({ page: 1, total: 5 })}
+          <div style="position:absolute;right:0;">${selectMarkup({
+            size: "xxsm",
+            ariaLabel: "한 페이지에 보여줄 행 수",
+            valueText: "15개씩 보기",
+            rows: [
+              { label: "10개씩 보기", selected: false },
+              { label: "15개씩 보기", selected: true },
+              { label: "20개씩 보기", selected: false },
+              { label: "50개씩 보기", selected: false }
+            ]
+          })}</div>
+        </div>
+      </div></div>`;
+
+  /* 크기 3종 — 정본 사다리(MD 44 · SM 38 · XSM 34, XSM 만 글자 12) */
+  const sizes = [["MD", "md", "행 44 · 글자 14"], ["SM", "sm", "행 38 · 글자 14"], ["XSM", "xsm", "행 34 · 글자 12"]];
+  const sizeRows = sizes.map(([label, size, note]) => `<div class="matrix-row-label">${label} · ${note}</div><div class="comp-state-cell">${tableMarkup({
+    size,
+    isPreview: true,
+    rows: [
+      { name: "기본 행", category: "카테고리 A", count: 10, state: "활성" },
+      { name: "Hover 행", category: "카테고리 B", count: 20, state: "검토중", forceState: "hover" },
+      { name: "선택된 행", category: "카테고리 C", count: 30, state: "완료", selected: true }
+    ]
+  })}</div>`).join("");
+
+  /* 셀 단위 — 정본 Table Cell 세트(Size × Type × Variant).
+     부품(바디 셀 / 헤더 셀)으로 먼저 묶고 그 안에서 크기를 비교한다(river 지시 2026-09-02).
+     헤더는 정본에 Default 변형만 있어 상태 열이 하나뿐이다. */
+  /* 두 표는 같은 열 격자를 쓴다 — 헤더 셀의 Default 가 아래 바디 셀의 Default 와 같은 세로선에
+     놓이게 하기 위함이다(river 지시 2026-09-02). 헤더에 없는 Hover·Selected 칸은 비워 둔다. */
+  const CELL_GRID_COLUMNS = "150px repeat(3, minmax(120px, 1fr))";
+  const cellGrid = (type) => {
+    const states = type === "header" ? ["default", null, null] : ["default", "hover", "selected"];
+    const headers = type === "header"
+      ? '<div class="matrix-col-header">Default</div><div class="matrix-col-header"></div><div class="matrix-col-header"></div>'
+      : '<div class="matrix-col-header">Default</div><div class="matrix-col-header">Hover</div><div class="matrix-col-header">Selected</div>';
+    const rows = sizes.map(([label, size, note]) =>
+      `<div class="matrix-row-label">${label} · ${note}</div>${states.map((state) => `<div class="comp-state-cell">${state ? tableCellSample({ size, type, state }) : ""}</div>`).join("")}`
+    ).join("");
+    return `<div class="comp-state-matrix" style="grid-template-columns:${CELL_GRID_COLUMNS};">
+        <div class="matrix-col-header">크기</div>${headers}
+        ${rows}
+      </div>`;
+  };
+
+  return `<div class="platform-section"><div class="preview-area">${action}
+    <div class="uilg-variant-block">
+      <div class="variant-label">세트 — 크기별 표 전체</div>
+      <div class="comp-state-matrix" style="grid-template-columns:150px minmax(0,1fr);">
+        <div class="matrix-col-header">크기</div>
+        <div class="matrix-col-header">기본 · Hover · 선택</div>
+        ${sizeRows}
+      </div>
+    </div>
+    <hr class="uilg-separator">
+    <div class="uilg-variant-block">
+      <div class="variant-label">셀 단위 — 헤더 셀 <span style="font-weight:400;font-size:11px;color:#9ca3af;text-transform:none;letter-spacing:0;">— 정본에 Default 변형만 있습니다 · 셀이 가진 선은 아래 1px 하나뿐입니다(표 위·아래 진한 선은 표 세트 몫)</span></div>
+      ${cellGrid("header")}
+    </div>
+    <hr class="uilg-separator">
+    <div class="uilg-variant-block">
+      <div class="variant-label">셀 단위 — 바디 셀</div>
+      ${cellGrid("cell")}
+    </div></div></div>`;
+}
+
+function paginationStateMatrix() {
+  const states = [["한 페이지", 1, 1], ["첫 페이지", 1, 6], ["마지막 페이지", 6, 6], ["중간 페이지", 4, 6]];
+  const action = `<div class="comp-action-top"><div class="matrix-col-header-action">Action</div>${paginationMarkup()}</div>`;
+  return `<div class="platform-section"><div class="preview-area">${action}<div class="comp-state-matrix" style="grid-template-columns:120px minmax(0,1fr);"><div class="matrix-col-header">상태</div><div class="matrix-col-header"></div>${states.map(([label, page, total]) => `<div class="matrix-row-label">${label}</div><div class="comp-state-cell">${paginationMarkup({ page, total, preview: true })}</div>`).join("")}</div></div></div>`;
+}
+
+/* ── State matrix: Textarea ──
+   정본 buildTextarea 는 State 축 하나뿐이다(크기·라벨·안내문구 부품 없음).
+   Focus 는 미리보기 칸에 초점을 줄 수 없어 검수 전용 data-force-state 로만 표시한다. */
+
+let textareaId = 0;
+
+function textareaMarkup({ breakName = "pc", value = "", state = "default", isPreview = false } = {}) {
+  textareaId += 1;
+  const id = `guide-textarea-${breakName}-${textareaId}`;
+  const force = state === "focus" ? ' data-force-state="focus"' : "";
+  const preview = isPreview ? ' class="is-preview"' : "";
+  const attrs = [
+    `id="${id}"`,
+    'data-s1-part="control"',
+    'rows="3"',
+    'aria-label="설명"',
+    'placeholder="여러 줄 내용을 입력하세요"',
+    state === "disabled" ? "disabled" : "",
+    state === "readonly" ? "readonly" : "",
+    isPreview ? 'tabindex="-1"' : ""
+  ].filter(Boolean).join(" ");
+  return `<div data-s1-component="textarea" data-break="${breakName}"${force}${preview}>
+      <textarea ${attrs}>${escapeHtml(value)}</textarea>
+    </div>`;
+}
+
+function textareaStateMatrix() {
+  const states = [
+    { label: "Default", opts: {} },
+    { label: "Focus", opts: { state: "focus" }, note: "검수 표시" },
+    { label: "Filled", opts: { value: "회의 내용을 정리했습니다." } },
+    { label: "Disabled", opts: { state: "disabled" } },
+    { label: "Read-only", opts: { state: "readonly", value: "읽기 전용 내용입니다." } }
+  ];
+
+  function actionSection(breakName) {
+    return `<div class="comp-action-top">
+      <div class="matrix-col-header-action">Action</div>
+      <div class="uilg-textarea-action">${textareaMarkup({ breakName })}</div>
+      <p class="uilg-demo-note">직접 입력해 보세요. 오른쪽 아래를 끌면 세로 방향으로만 커집니다. 라벨은 화면에서 따로 연결합니다.</p>
+    </div>`;
+  }
+
+  function stateSection(breakName) {
+    const header = `<div class="matrix-col-header" style="grid-column:1"></div>` +
+      states.map((state) => `<div class="matrix-col-header">${state.label}${state.note ? `<span class="uilg-size-dim">${state.note}</span>` : ""}</div>`).join("");
+    const row = `<div class="matrix-row-label">Text Area</div>` +
+      states.map((state) => `<div class="comp-state-cell">${textareaMarkup({
+        breakName, isPreview: true, ...state.opts
+      })}</div>`).join("");
+    return `<div class="comp-state-matrix" style="grid-template-columns: 110px repeat(${states.length}, minmax(150px, 1fr));">${header}${row}</div>`;
+  }
+
+  const content = (breakName) => `${actionSection(breakName)}
+    ${stateSection(breakName)}`;
+
+  return `
+    <div class="platform-section platform-section-pc">
+      <div class="preview-area">${content("pc")}</div>
+    </div>
+    <div class="platform-section platform-section-mobile">
+      <div class="preview-area">
+        ${content("mobile")}
+      </div>
+    </div>`;
+}
+
+/* ── State matrix: Multi Toggle ──
+   정본은 md·sm 두 크기와 상태 4종만 가진다. 모바일 크기가 없어 PC 전용으로 한 벌만 둔다.
+   Hover 는 미리보기 칸에 마우스를 올릴 수 없어 검수 전용 data-force-state 로만 표시한다. */
+
+let multiToggleId = 0;
+
+function multiToggleMarkup({ size = "md", selected = 0, disabled = false, forceState = "", isPreview = false } = {}) {
+  multiToggleId += 1;
+  const cells = [["left", "왼쪽"], ["center", "가운데"], ["right", "오른쪽"]];
+  const preview = isPreview ? ' class="is-preview"' : "";
+  const body = cells.map(([value, label], index) => {
+    const checked = index === selected;
+    const force = forceState && index === 1 && !checked ? ` data-force-state="${forceState}"` : "";
+    return `<button type="button" data-s1-part="cell" role="radio" aria-checked="${checked}" data-value="${value}"${disabled ? ' aria-disabled="true"' : ""}${force}>${label}</button>`;
+  }).join("");
+  return `<div data-s1-component="multi-toggle" data-size="${size}" role="radiogroup" aria-label="정렬 기준 ${multiToggleId}"${preview}>${body}</div>`;
+}
+
+function multiToggleStateMatrix() {
+  const sizes = [["md", "MD", "44px"], ["sm", "SM", "34px"]];
+  const states = [
+    { label: "Default", opts: { selected: -1 } },
+    { label: "Hover", opts: { selected: -1, forceState: "hover" }, note: "검수 표시" },
+    { label: "Selected", opts: { selected: 1 } },
+    { label: "Disabled", opts: { selected: -1, disabled: true } }
+  ];
+
+  const actionHeader = `<div class="matrix-col-header" style="grid-column:1"></div>` +
+    sizes.map(([, sLabel, dim]) => `<div class="matrix-col-header">${sLabel}<span class="uilg-size-dim">${dim}</span></div>`).join("");
+  const liveRow = `<div class="matrix-row-label">Multi Toggle</div>` +
+    sizes.map(([size]) => `<div class="comp-state-cell">${multiToggleMarkup({ size })}</div>`).join("");
+  const action = `<div class="comp-action-top">
+      <div class="matrix-col-header-action">Action</div>
+      <div class="comp-state-matrix" style="grid-template-columns: 110px repeat(${sizes.length}, minmax(200px, 1fr));">${actionHeader}${liveRow}</div>
+      <p class="uilg-demo-note">칸을 누르면 선택이 옮겨집니다. 키보드에서는 화살표 키로 이동하며 이동과 동시에 선택됩니다.</p>
+    </div>`;
+
+  const header = `<div class="matrix-col-header" style="grid-column:1"></div>` +
+    states.map((state) => `<div class="matrix-col-header">${state.label}${state.note ? `<span class="uilg-size-dim">${state.note}</span>` : ""}</div>`).join("");
+  const rows = sizes.map(([size, sLabel, dim]) =>
+    `<div class="matrix-row-label">${sLabel}<span>${dim}</span></div>` +
+    states.map((state) => `<div class="comp-state-cell">${multiToggleMarkup({ size, isPreview: true, ...state.opts })}</div>`).join("")).join("");
+  const grid = `<div class="comp-state-matrix" style="grid-template-columns: 110px repeat(${states.length}, minmax(200px, 1fr));">${header}${rows}</div>`;
+
+  return `
+    <div class="platform-section">
+      <div class="preview-area">${action}
+      ${grid}</div>
+    </div>`;
+}
+
+/* ── State matrix: Modal ──
+   정본 buildModalShell 의 변형은 Break(PC·Mobile) × Footer(Single·Dual) 4가지뿐이고 상태 축이 없다.
+   Action 은 실제로 열리는 진짜 모달(딤이 화면을 덮는다)이고, 아래 칸은 지면에 눕혀 보여주는 검수 표시다. */
+
+let modalId = 0;
+
+function modalMarkup({ breakName = "pc", footer = "dual", isPreview = false } = {}) {
+  modalId += 1;
+  const titleId = `guide-modal-title-${modalId}`;
+  const messageId = `guide-modal-message-${modalId}`;
+  const preview = isPreview ? ' class="is-preview"' : "";
+  const mobile = breakName === "mobile";
+  const buttonSize = mobile ? "lg" : "xxsm";
+  const title = mobile
+    ? (footer === "dual" ? "자동 로그인 설정" : "업데이트 안내")
+    : "제목 영역";
+  const message = mobile
+    ? (footer === "dual" ? "로그인되었어요.\n다음부터 자동으로 로그인할까요?" : "보다 안정적인 서비스 이용을 위해 최신\n버전으로 업데이트해 주세요.")
+    : (footer === "dual" ? "변경한 내용이 저장되지 않고 사라집니다.\n정말 이 작업을 진행하시겠어요?" : "요청하신 작업이 정상적으로 처리되었습니다.\n변경된 내용은 목록에서 확인하실 수 있어요.");
+  const labels = footer === "dual"
+    ? (mobile ? ["아니오", "네"] : ["취소", "확인"])
+    : (mobile ? ["업데이트"] : ["확인"]);
+  const buttons = footer === "dual"
+    ? `<button type="button" data-s1-component="button" data-variant="secondary" data-size="${buttonSize}" data-modal-close${isPreview ? ' tabindex="-1"' : ""}><span data-s1-part="label">${labels[0]}</span></button>` +
+      `<button type="button" data-s1-component="button" data-variant="primary" data-size="${buttonSize}" data-modal-close${isPreview ? ' tabindex="-1"' : ""}><span data-s1-part="label">${labels[1]}</span></button>`
+    : `<button type="button" data-s1-component="button" data-variant="primary" data-size="${buttonSize}" data-modal-close${isPreview ? ' tabindex="-1"' : ""}><span data-s1-part="label">${labels[0]}</span></button>`;
+  /* 정본은 PC 에만 닫기(X)를 둔다. Mobile 변형에는 없다. */
+  const close = mobile ? "" : `<button type="button" data-s1-part="close" aria-label="닫기" data-modal-close${isPreview ? ' tabindex="-1"' : ""}></button>`;
+  return `<div data-s1-component="modal" data-break="${breakName}" data-footer="${footer}"${preview}${isPreview ? "" : " hidden"}>
+      <div data-s1-part="overlay"></div>
+      <div data-s1-part="panel" role="dialog" aria-modal="true" aria-labelledby="${titleId}" aria-describedby="${messageId}" tabindex="-1">
+        <div data-s1-part="content">
+          <div data-s1-part="header">
+            <h2 data-s1-part="title" id="${titleId}">${title}</h2>
+            ${close}
+          </div>
+          <div data-s1-part="body">
+            <p data-s1-part="message" id="${messageId}">${escapeHtml(message)}</p>
+          </div>
+        </div>
+        <div data-s1-part="footer">${buttons}</div>
+      </div>
+    </div>`;
+}
+
+function modalStateMatrix() {
+  const footers = [["single", "Single", "버튼 1개"], ["dual", "Dual", "버튼 2개"]];
+
+  function actionSection(breakName) {
+    return `<div class="comp-action-top">
+      <div class="matrix-col-header-action">Action</div>
+      <div class="uilg-modal-action">
+        <button type="button" data-s1-component="button" data-variant="secondary" data-size="${breakName === "mobile" ? "lg" : "md"}" data-modal-open><span data-s1-part="label">모달 열기</span></button>
+        ${modalMarkup({ breakName, footer: "dual" })}
+      </div>
+      <p class="uilg-demo-note">눌러서 열어 보세요. Esc 키로 닫히고, Tab 키는 팝업 안에서만 돕니다. 닫으면 열기 전 자리로 초점이 돌아옵니다.</p>
+    </div>`;
+  }
+
+  function stateSection(breakName) {
+    const header = `<div class="matrix-col-header" style="grid-column:1"></div>` +
+      footers.map(([, label, dim]) => `<div class="matrix-col-header">${label}<span class="uilg-size-dim">${dim}</span></div>`).join("");
+    const row = `<div class="matrix-row-label">Modal<span>${breakName === "mobile" ? "300px" : "360px"}</span></div>` +
+      footers.map(([footer]) => `<div class="comp-state-cell">${modalMarkup({ breakName, footer, isPreview: true })}</div>`).join("");
+    return `<div class="comp-state-matrix" style="grid-template-columns: 110px repeat(${footers.length}, minmax(420px, 1fr));">${header}${row}</div>`;
+  }
+
+  const content = (breakName) => `${actionSection(breakName)}
+    ${stateSection(breakName)}`;
+
+  return `
+    <div class="platform-section platform-section-pc">
+      <div class="preview-area">${content("pc")}</div>
+    </div>
+    <div class="platform-section platform-section-mobile">
+      <div class="preview-area">
+        ${content("mobile")}
+      </div>
+    </div>`;
+}
+
 /* ── Component documentation (실제 동작 다음에 온다) ── */
 
 function stateMatrix(id) {
@@ -870,6 +1280,12 @@ function stateMatrix(id) {
   if (id === "select") return selectStateMatrix();
   if (id === "dropdown") return dropdownStateMatrix();
   if (id === "filter-chip") return filterChipStateMatrix();
+  if (id === "tab") return tabStateMatrix();
+  if (id === "pagination") return paginationStateMatrix();
+  if (id === "textarea") return textareaStateMatrix();
+  if (id === "multi-toggle") return multiToggleStateMatrix();
+  if (id === "table") return tableStateMatrix();
+  if (id === "modal") return modalStateMatrix();
   return controlStateMatrix(id);
 }
 
@@ -1020,7 +1436,7 @@ async function mountGuide(id) {
       fetchText(sourceUrls.js)
     ]);
 
-    if (manifest.status !== "approved") throw new Error(`${id} 배포 상태가 approved가 아닙니다.`);
+    if (!["approved", "verified"].includes(manifest.status)) throw new Error(`${id} 배포 상태가 verified 또는 approved가 아닙니다.`);
 
     /* 요약 한 줄도 보고 있는 화면 기준이다 — 크기가 한 가지인 화면에서는 크기를 말하지 않는다
        (river 확정 2026-09-01). 갈래 선언이 없는 컴포넌트는 한 문장을 그대로 쓴다. */
@@ -1047,7 +1463,7 @@ async function mountGuide(id) {
           <p class="uilg-description">${config.description}</p>
         </div>
         <div class="uilg-badges" aria-label="배포 상태">
-          <span class="uilg-badge uilg-badge-approved">Approved</span>
+          <span class="uilg-badge uilg-badge-approved">${manifest.status === "approved" ? "Approved" : "검수 준비"}</span>
           <span class="uilg-badge">Core</span>
           <span class="uilg-badge">v${escapeHtml(manifest.version)}</span>
           <span class="uilg-badge">실제 dist 사용</span>
@@ -1070,10 +1486,34 @@ async function mountGuide(id) {
 
     section.replaceChildren(fragment);
     wireCodeViewer(section, { html, css, js });
-    if (id === "toggle" || id === "chip" || id === "select" || id === "dropdown" || id === "filter-chip") {
+    if (id === "toggle" || id === "chip" || id === "select" || id === "dropdown" || id === "filter-chip" || id === "tab" || id === "pagination" || id === "multi-toggle" || id === "table") {
       /* 미리보기 칸(.is-preview)은 init 하지 않는다 — 런타임이 패널을 다시 닫아
          Open/Selected 칸이 사라진다. Action 영역의 실물만 살린다. */
       section.querySelectorAll(`[data-s1-component="${id}"]:not(.is-preview)`).forEach((root) => config.runtime.init(root));
+    }
+    if (id === "table") {
+      /* Action 영역에 조립한 페이지네이션·보기 셀렉박스는 각자의 배포본 런타임으로 살린다.
+         (Table 은 이 둘을 소유하지 않는다 — river 결정 2026-09-02) */
+      section.querySelectorAll('.uilg-table-action [data-s1-component="pagination"]').forEach((root) => S1UI.pagination.init(root));
+      section.querySelectorAll('.uilg-table-action [data-s1-component="select"]').forEach((root) => S1UI.select.init(root));
+    }
+    if (id === "modal") {
+      /* Action 영역의 진짜 모달만 배선한다. 미리보기 칸(.is-preview)은 지면에 눕혀 둔 표시라
+         init 하지 않는다 — init 하면 배경 스크롤이 잠긴 채로 남는다. */
+      section.querySelectorAll(".uilg-modal-action").forEach((area) => {
+        const root = area.querySelector('[data-s1-component="modal"]');
+        const trigger = area.querySelector("[data-modal-open]");
+        if (!root || !trigger) return;
+        /* 배포본 계약대로 모달은 body 바로 아래에 둔다(manifest.htmlContract.placement).
+           안내 화면 안에 두면 상단 고정바가 모달 위에 남는다 — 쌓임 맥락에 갇히기 때문이다. */
+        document.body.append(root);
+        const api = config.runtime.init(root);
+        trigger.addEventListener("click", () => api?.open());
+        root.querySelectorAll("[data-modal-close]").forEach((button) => {
+          if (button.dataset.s1Part === "close") return;   /* 닫기(X)는 런타임이 이미 배선한다 */
+          button.addEventListener("click", () => api?.close({ reason: "footer-button" }));
+        });
+      });
     }
     if (id === "input") {
       section.querySelectorAll('[data-s1-component="input"]:not(.is-preview)').forEach((root) => config.runtime.init(root));
@@ -1118,6 +1558,6 @@ async function mountGuide(id) {
   }
 }
 
-const guideComponents = ["input", "button", "checkbox", "radio", "toggle", "chip", "select", "dropdown", "filter-chip"];
+const guideComponents = ["input", "button", "checkbox", "radio", "toggle", "chip", "select", "dropdown", "filter-chip", "tab", "pagination", "textarea", "multi-toggle", "modal", "table"];
 await Promise.all(guideComponents.map(mountGuide));
 document.dispatchEvent(new CustomEvent("s1:component-guide:ready", { detail: { components: guideComponents } }));

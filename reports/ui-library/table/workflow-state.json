@@ -1,0 +1,247 @@
+{
+  "schemaVersion": 1,
+  "workflow": "ui-library-code",
+  "workId": "table",
+  "objective": "승인된 코어 컴포넌트 위에서 Table 을 정본 기반 웹 UI 라이브러리 모듈로 만들고 실제 dist 소비까지 연결한다.",
+  "intent": {
+    "approvedBy": "orchestrator",
+    "approvedAt": "2026-09-02",
+    "principles": [
+      "정본(build-components.ts buildTableCell·buildTable)에 있는 축·상태만 만든다. 정렬 아이콘·열 정렬 축은 정본에 없다.",
+      "선택 컬럼은 코어 checkbox 를 재사용한다. Table 전용 체크박스를 만들지 않는다.",
+      "새 토큰을 만들지 않는다. color/table/* 6개는 이미 stable 이다.",
+      "사이트 인라인 코드(pages/components.html)를 원본으로 복사하지 않는다.",
+      "다른 세션이 진행 중인 textarea·multi-toggle·tab·pagination 의 공유 파일(dist·pages·s1-ui.*)을 이 작업이 먼저 건드리지 않는다."
+    ],
+    "riverApproval": "pending — 착수 원칙은 river 확인 대기 상태다."
+  },
+  "contract": {
+    "path": "registry/governance/ui-library-code-contract.json",
+    "version": "0.1.2",
+    "status": "candidate"
+  },
+  "target": {
+    "kind": "core-component",
+    "components": [
+      "table"
+    ]
+  },
+  "figmaSources": {
+    "role": "시각 정본은 build-components.ts(buildTableCell·buildTable)다. Figma V3.0 은 선택적 시각 참고이며 이번 재고조사에서 조회하지 않았다.",
+    "requiredForInventory": false,
+    "fileKey": "cysG5U1udpQqVagYY1hWHW",
+    "fileName": "SW-UX-GUIDE V3.0 TEST",
+    "components": {
+      "table": {
+        "nodeId": "169:76",
+        "source": "not-consulted",
+        "status": "코드 정본만으로 축·수치·토큰이 모두 확정돼 조회하지 않았다."
+      }
+    }
+  },
+  "currentPhase": "complete",
+  "workflowStatus": "complete",
+  "uiLibraryStatus": "approved",
+  "lastCompletedCheckpoint": 6,
+  "nextAction": "없음 — 완료. 이후 정본 크기·상태·토큰·선택 동작 변경 시 재검증한다. 후속 과제 NCU-1(정본 열 정렬 축)은 별건.",
+  "ownership": {},
+  "canonicalInputs": [
+    {
+      "role": "component-visual",
+      "path": "plugins/figma-vars-installer/src/build-components.ts",
+      "sha256": "942791479ffb0f953c58e7dc745eaf33180cca5f57a1b3b056e517c496e80c25"
+    },
+    {
+      "role": "token-values",
+      "path": "plugins/figma-vars-installer/src/vars-data.ts",
+      "sha256": "87edd42623983fb5e02e820940dbbc3693ecb4b2c79104e781c8307501984cd9"
+    },
+    {
+      "role": "text-styles",
+      "path": "plugins/figma-vars-installer/src/textstyles-data.ts",
+      "sha256": "dc0db42d87503e80e9da8ad1246090f58e79106593a57815b0568aebcb9d51d3"
+    },
+    {
+      "role": "ui-library-contract",
+      "path": "registry/governance/ui-library-code-contract.json",
+      "sha256": "63dc0f64c6ea834218119f8629379ee48cfac6c8df8b36e39d78f51405807c85"
+    },
+    {
+      "role": "component-meaning",
+      "path": "registry/components/table.json",
+      "sha256": "94a4fc5ccef3b14e59596a19a92930b34e15d680938cdd0492a2a0ed2f55f2e5"
+    }
+  ],
+  "dependencies": [
+    {
+      "id": "checkbox",
+      "status": "approved",
+      "why": "선택 컬럼 재사용"
+    },
+    {
+      "id": "select",
+      "status": "approved",
+      "why": "푸터 '몇 개씩 보기'(HD-2 가 B 일 때)"
+    },
+    {
+      "id": "pagination",
+      "status": "in-progress-other-session",
+      "why": "푸터 페이지네이션(HD-2) · 안내 페이지 조립 예시"
+    }
+  ],
+  "blockers": [
+    {
+      "id": "NCU-1",
+      "kind": "needs-core-update",
+      "summary": "열 가운데 정렬을 정본 build-components.ts 에 반영 — 생성기 구조 변경이라 별건으로 진행(Gate 13 검증 분리 필요)."
+    }
+  ],
+  "artifacts": {
+    "policyContract": "registry/governance/ui-library-code-contract.json",
+    "humanGuide": "registry/governance/ui-library-authoring-guide.md",
+    "componentChecklist": "registry/governance/ui-library-component-checklist.md",
+    "repositoryInventory": "reports/component-inventory-audit.md",
+    "inventory": "reports/ui-library/table/1-inventory.md",
+    "canonReadiness": "reports/ui-library/table/2-canon-readiness.md",
+    "build": "reports/ui-library/table/3-build.md",
+    "sourceRoot": "ui-library/src",
+    "verificationFixture": "reports/ui-library/table/matrix-fixture.html",
+    "screens": [
+      "reports/ui-library/table/screens/state-matrix.png",
+      "reports/ui-library/table/screens/guide-table.png",
+      "reports/ui-library/table/screens/review-table.png",
+      "reports/ui-library/table/screens/site-line-tab-18.png"
+    ],
+    "typographyAudit": "reports/ui-library/table/typography-canon-audit.md",
+    "verification": "reports/ui-library/table/4-verification.md",
+    "distManifest": "ui-library/dist/manifest.json",
+    "reviewPage": "pages/ui-review.html",
+    "guidePage": "pages/components.html",
+    "migrationRecord": "registry/governance/ui-library-migration.json",
+    "humanReview": "reports/ui-library/table/5-human-review.md",
+    "promotion": "reports/ui-library/table/6-promotion.md"
+  },
+  "handoff": {
+    "lastActor": "orchestrator",
+    "updatedAt": "2026-09-02",
+    "summary": "river UX 승인으로 Table 을 approved 로 승격하고 dist·이행 장부를 동기화했다. Modal 과 함께 커밋."
+  },
+  "decisions": [
+    {
+      "id": "D1",
+      "topic": "표 헤더 정렬(소트) 기능",
+      "decidedBy": "river",
+      "decidedAt": "2026-09-02",
+      "decision": "이번 배포에서 뺀다(HD-1 A). 정본(build-components.ts)에 정렬 아이콘이 없고, 사이트에만 있던 자체 SVG 는 원본으로 쓰지 않는다. registry 의 aria-sort 항목도 이번 범위 밖."
+    },
+    {
+      "id": "D2",
+      "topic": "페이지네이션·'몇 개씩 보기' 셀렉트 포함 범위",
+      "decidedBy": "river",
+      "decidedAt": "2026-09-02",
+      "decision": "안내 페이지의 Action(시연) 영역에는 표 + 페이지네이션 + 보기 셀렉박스를 함께 표출한다. 단 페이지네이션·셀렉박스는 이미 dist 로 나간 배포본을 그대로 재사용하며 Table 안에 다시 구현하지 않는다. Action 아래 설명·코드 영역은 Table 소스만 안내한다."
+    },
+    {
+      "id": "D3",
+      "topic": "열 가운데 정렬 옵션",
+      "decidedBy": "river",
+      "decidedAt": "2026-09-02",
+      "decision": "공식 옵션으로 연다(HD-3 B). 웹 공개 API 에 정렬 옵션을 추가한다. 정본(build-components.ts) 반영은 설치기 생성기 구조 변경이라 별건으로 분리하고 needs-core-update 로 남긴다."
+    },
+    {
+      "id": "D4",
+      "topic": "표 접근성 범위",
+      "decidedBy": "river",
+      "decidedAt": "2026-09-02",
+      "decision": "A안 — 기본 수준으로 확정한다. ①열 제목을 th·scope 로 표시 ②전체선택 체크박스에 '전체 선택' 이름, 각 행 체크박스에 그 행을 가리키는 이름 ③탭·스페이스 브라우저 기본 조작. 방향키 격자 이동(B안)은 채택하지 않는다. 정렬이 이번 범위 밖이라 aria-sort 도 제외."
+    },
+    {
+      "id": "D5",
+      "topic": "표 크기 사다리와 sm 글자 크기",
+      "decidedBy": "river",
+      "decidedAt": "2026-09-02",
+      "decision": "sm 글자는 14 다(정본의 13 표기는 텍스트 스타일에 13 이 없어 늘 14 로 치환돼 온 죽은 값 — 정본 표기 정정). XSM(높이 34 · 글자 12)을 표 전용 기준으로 신설한다. 다른 컴포넌트의 XSM(34/14)과 다른 예외임을 명시한다."
+    },
+    {
+      "id": "D6",
+      "topic": "라인탭 MD 탭 글자 크기",
+      "decidedBy": "river",
+      "decidedAt": "2026-09-02",
+      "decision": "18px 이 정답이다. 레거시 20px 이 너무 커서 줄인 값이고, 정본 코드의 20 표기만 낡아 있었다. buildLineTab 을 18 로 정정했고 웹 tab.css 도 18 로 맞춰야 한다(다른 세션 파일)."
+    },
+    {
+      "id": "D7",
+      "topic": "정본 변경의 검증·공유 화면 반영 주체",
+      "decidedBy": "river",
+      "decidedAt": "2026-09-02",
+      "decision": "HD-6 A — 🤖 component-verifier 를 붙여 독립 검증하고 Gate 13 을 기록한다(PASS 완료). HD-7 B — 공유 화면 3건(가이드 표 xsm 표출 · 웹 라인탭 18px · 설치기 zip 재빌드)은 오케스트레이터가 직접 수정한다(완료)."
+    },
+    {
+      "id": "D8",
+      "topic": "안내 화면 표출 보완",
+      "decidedBy": "river",
+      "decidedAt": "2026-09-02",
+      "decision": "크기별 표 아래에 최하위 부품 상태 표시를 추가한다. 부품(바디 셀 / 헤더 셀)으로 먼저 묶고 그 안에서 크기를 비교하며, 위 '세트 — 크기별 표 전체' 와 제목·구분선으로 영역을 나눈다. 매트릭스 열 제목의 '(실제 배포본)' 표기는 Table·Pagination 등 모든 컴포넌트 화면에서 제거한다."
+    },
+    {
+      "id": "D9",
+      "topic": "Table 승인",
+      "decidedBy": "river",
+      "decidedAt": "2026-09-02",
+      "decision": "Table 배포본을 승인한다. Modal 과 함께 커밋·푸시한다."
+    }
+  ],
+  "evidence": {
+    "sourceAudit": {
+      "observedAt": "2026-09-02",
+      "basis": "plugins/figma-vars-installer/src/build-components.ts 의 buildTableCell(1960-2022)·buildTable(2027-2195) 전문 인용, vars-data.ts:562-569 토큰, registry/components/table.json, registry/components/component-behavior.pc.json > Table, pages/components.html 의 Table 섹션(파생 대조용).",
+      "actor": "orchestrator",
+      "note": "렌더·레이아웃 판정은 하지 않았다. 시각 판정은 4-verification 에서 실제 dist 렌더로 한다."
+    },
+    "installerVerification": {
+      "gate": 13,
+      "verifiedBy": "component-verifier",
+      "verdict": "pass",
+      "changeType": "structural",
+      "verifiedAt": "2026-09-02",
+      "scope": "Table XSM(34/12) 신설 · 13→14 · 20→18 표기 정정"
+    },
+    "implementationActualRender": {
+      "verdict": "PASS",
+      "by": "orchestrator",
+      "at": "2026-09-02",
+      "scope": "실제 dist 로 안내 화면·검수 화면 렌더 + 선택 동작 실행 확인(전체선택/해제/단일선택 및 헤더 동기화). md·sm·xsm × Light·Dark.",
+      "screens": [
+        "reports/ui-library/table/screens/guide-table.png",
+        "reports/ui-library/table/screens/review-table.png",
+        "reports/ui-library/table/screens/state-matrix.png"
+      ],
+      "checks": [
+        "ui:build",
+        "ui:test",
+        "ui:guide:render",
+        "gate:check PASSED"
+      ],
+      "notVerified": [
+        "모바일 표출(정본에 규칙 없음 — PC 전용 선언)",
+        "열이 많아 가로로 넘칠 때의 실사용 감각",
+        "Figma 캔버스 실물"
+      ]
+    },
+    "independentVerification": {
+      "verdict": "PASS",
+      "by": "component-verifier",
+      "at": "2026-09-02",
+      "scope": "설치기 정본(build-components.ts) 변경분 — Table XSM(34/12) 신설 · 13→14 · 20→18 표기 정정. Gate 13 기록.",
+      "note": "웹 배포본 자체의 독립 재검증은 위험도 기반으로 생략했고 실제 렌더·동작 PASS 로 갈음했다."
+    },
+    "riverApproval": {
+      "verdict": "approved",
+      "by": "river",
+      "at": "2026-09-02",
+      "target": "pages/components.html#table · pages/ui-review.html 13. Table",
+      "note": "검수 중 지적 6건 반영 후 승인.",
+      "status": "approved"
+    }
+  }
+}

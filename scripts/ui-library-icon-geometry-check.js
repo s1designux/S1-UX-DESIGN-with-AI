@@ -40,6 +40,8 @@ function validateIconAsset(icon, asset, label = icon?.id || 'unknown') {
     errors.push(`${label}: glyph가 frame 영역을 벗어납니다.`);
   }
 
+  asset = Buffer.isBuffer(asset) ? asset.toString('utf8') : asset;
+
   const openings = [...asset.matchAll(/<svg\b([^>]*)>/gi)];
   const closings = [...asset.matchAll(/<\/svg\s*>/gi)];
   if (openings.length !== 2 || closings.length !== 2) {
@@ -134,12 +136,25 @@ function runSelfTest() {
   return validateIconAsset(icon, valid).length === 0 && validateIconAsset(icon, oldBug).length > 0 && validateIconAsset(icon, wrongGlyph).length > 0;
 }
 
+/** ① 원본 선언 의무화 · ② 원본 대조 기록 확인 — 상세 판정은 ui-library-icon-origin-check.js 가 한다.
+ *  여기서는 게이트가 느려지지 않게 "선언이 있고 기록이 최신인가"만 본다. */
+function originResult() {
+  try {
+    const { errors, warnings } = require('./ui-library-icon-origin-check.js').run({ record: false });
+    return { errors, warnings };
+  } catch (e) {
+    return { errors: [`아이콘 원본 대조 실행 실패: ${e.message}`], warnings: [] };
+  }
+}
+
 function check({ pass = () => {}, fail = () => {} } = {}) {
   if (runSelfTest()) pass('아이콘 검사기 적대 테스트 통과(틀/도형 혼동 탐지)');
   else fail('아이콘 검사기 자체 적대 테스트 실패');
-  const errors = collectErrors();
+  const origin = originResult();
+  for (const warning of origin.warnings) console.warn(`⚠️  ${warning}`);
+  const errors = [...collectErrors(), ...origin.errors];
   for (const error of errors) fail(error);
-  if (!errors.length) pass('모든 웹 아이콘의 frame·glyph 계약과 source/dist가 일치');
+  if (!errors.length) pass('모든 웹 아이콘의 frame·glyph 계약·source/dist 일치·라이브러리 원본 모양 대조 통과');
   return { icons: fs.existsSync(path.join(SOURCE_DIR, 'manifest.json')) ? (loadJson(path.join(SOURCE_DIR, 'manifest.json')).icons || []).length : 0, errors };
 }
 

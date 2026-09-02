@@ -7,3 +7,8 @@ export * as chip from "./components/chip/chip.js";
 export * as dropdown from "./components/dropdown/dropdown.js";
 export * as select from "./components/select/select.js";
 export * as filterChip from "./components/filter-chip/filter-chip.js";
+export * as tab from "./components/tab/tab.js";
+export * as pagination from "./components/pagination/pagination.js";
+export * as textarea from "./components/textarea/textarea.js";
+export * as multiToggle from "./components/multi-toggle/multi-toggle.js";
+export * as modal from "./components/modal/modal.js";

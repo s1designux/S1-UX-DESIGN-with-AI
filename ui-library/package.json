@@ -4,7 +4,9 @@
   "private": true,
   "type": "module",
   "description": "S1 canonical web UI library",
-  "sideEffects": ["**/*.css"],
+  "sideEffects": [
+    "**/*.css"
+  ],
   "exports": {
     ".": "./dist/s1-ui.js",
     "./css": "./dist/s1-ui.css",
@@ -43,7 +45,28 @@
     "./components/filter-chip/css": "./dist/components/filter-chip.css",
     "./components/filter-chip/html": "./dist/examples/filter-chip.html",
     "./components/filter-chip/html/mobile": "./dist/examples/filter-chip.mobile.html",
-    "./manifest": "./dist/manifest.json"
+    "./components/tab": "./dist/components/tab.js",
+    "./components/tab/css": "./dist/components/tab.css",
+    "./components/tab/html": "./dist/examples/tab.html",
+    "./components/tab/html/mobile": "./dist/examples/tab.mobile.html",
+    "./components/pagination": "./dist/components/pagination.js",
+    "./components/pagination/css": "./dist/components/pagination.css",
+    "./components/pagination/html": "./dist/examples/pagination.html",
+    "./components/textarea": "./dist/components/textarea.js",
+    "./components/textarea/css": "./dist/components/textarea.css",
+    "./components/textarea/html": "./dist/examples/textarea.html",
+    "./components/textarea/html/mobile": "./dist/examples/textarea.mobile.html",
+    "./components/multi-toggle": "./dist/components/multi-toggle.js",
+    "./components/multi-toggle/css": "./dist/components/multi-toggle.css",
+    "./components/multi-toggle/html": "./dist/examples/multi-toggle.html",
+    "./components/modal": "./dist/components/modal.js",
+    "./components/modal/css": "./dist/components/modal.css",
+    "./components/modal/html": "./dist/examples/modal.html",
+    "./components/modal/html/mobile": "./dist/examples/modal.mobile.html",
+    "./manifest": "./dist/manifest.json",
+    "./components/table": "./dist/components/table.js",
+    "./components/table/css": "./dist/components/table.css",
+    "./components/table/html": "./dist/examples/table.html"
   },
   "scripts": {
     "build": "node scripts/build.mjs",

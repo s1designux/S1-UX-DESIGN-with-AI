@@ -13,6 +13,7 @@ const path = require("path");
 const zlib = require("zlib");
 const { execFileSync } = require("child_process");
 const esbuild = require("esbuild");
+const { fingerprint } = require("./lib/installer-fingerprint");
 
 const ROOT = path.resolve(__dirname, "..");
 const SRC_DIR = path.join(ROOT, "plugins/figma-vars-installer/src");
@@ -24,7 +25,7 @@ const PKG_NAME = "s1-ux-design-guide-installer";
 const OUT_DIR = DIST_ROOT;
 const ZIP_PATH = path.join(ROOT, "assets/downloads", `${PKG_NAME}.zip`);
 
-function run() {
+async function run() {
   console.log("[installer] audit-bindings 검사…");
   execFileSync(process.execPath, [path.join(ROOT, "scripts/audit-bindings.js")], { stdio: "inherit" });
 
@@ -33,12 +34,16 @@ function run() {
   fs.mkdirSync(OUT_DIR, { recursive: true });
 
   console.log("[installer] esbuild 번들…");
+  const guideFingerprint = await fingerprint(SRC_DIR);
   esbuild.buildSync({
     entryPoints: [path.join(SRC_DIR, "code.ts")],
     bundle: true,
     outfile: path.join(OUT_DIR, "code.js"),
     target: "es2017",
     platform: "browser",
+    define: {
+      __CURRENT_GUIDE_FINGERPRINT__: JSON.stringify(guideFingerprint.hash),
+    },
   });
 
   fs.copyFileSync(path.join(SRC_DIR, "manifest.json"), path.join(OUT_DIR, "manifest.json"));
@@ -155,4 +160,7 @@ function writeZip(zipPath, srcDir, topFolderName) {
   fs.writeFileSync(zipPath, Buffer.concat([...chunks, centralDir, eocd]));
 }
 
-run();
+run().catch((error) => {
+  console.error(error && error.stack ? error.stack : error);
+  process.exitCode = 1;
+});

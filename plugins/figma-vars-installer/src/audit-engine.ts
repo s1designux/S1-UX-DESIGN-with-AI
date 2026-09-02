@@ -680,7 +680,7 @@ async function auditChecklistFacts(colorIssues: Issue[], rootsOverride?: readonl
       const isCanonicalLocalTextStyle = prop === "textStyleId" && style && style.type === "TEXT" && canonicalTextStyleNames.has(style.name);
       if (style && !style.remote && !isCanonicalLocalTextStyle) {
         const category = prop === "textStyleId" ? "text" : "color";
-        add(category === "text" ? textIssues : colorDetails, 3, category, node, `라이브러리가 아닌 로컬 스타일 ${style.name} 사용`);
+        add(category === "text" ? textIssues : colorDetails, category === "text" ? 5 : 3, category, node, `라이브러리가 아닌 로컬 스타일 ${style.name} 사용`);
       }
     }
 
@@ -1639,7 +1639,7 @@ async function rollbackSwap(rollback: SwapRollback): Promise<{ ok: boolean; reas
 // 단, 문서 전체를 훑으면 파일 내 레거시 세트가 섞일 수 있어 — 설치기 정본 이름 목록
 // (CANONICAL_NAME_SET)에 있는 것만 남긴다. 이것이 "설치기 기준"의 실체다.
 // 현재 페이지를 먼저 담아 같은 이름이 여러 곳에 있으면 현재 페이지 것이 이긴다.
-function collectPageReference(): ReferenceComponent[] {
+function collectPageReference(preferredPage?: PageNode): ReferenceComponent[] {
   const fileName = figma.root.name;
   const seen: { [k: string]: boolean } = {};
   const out: ReferenceComponent[] = [];
@@ -1650,9 +1650,10 @@ function collectPageReference(): ReferenceComponent[] {
       if (!seen[norm]) { seen[norm] = true; out.push(c); }
     }
   };
-  try { push(collectComponents(figma.currentPage, fileName)); } catch {}
+  const firstPage = preferredPage || figma.currentPage;
+  try { push(collectComponents(firstPage, fileName)); } catch {}
   for (const page of figma.root.children) {
-    if (page.id === figma.currentPage.id) continue;
+    if (page.id === firstPage.id) continue;
     try { push(collectComponents(page, fileName)); } catch {}
   }
   return out;

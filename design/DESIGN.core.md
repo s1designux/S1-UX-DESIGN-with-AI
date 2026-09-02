@@ -2226,6 +2226,7 @@ _Don't_
 | 헤더 | 제목 + 닫기(X). 제목 항상 존재. |
 | 본문 | 텍스트 내용. |
 | 푸터 | 코어 Button 1개(Single) 또는 2개(Dual). |
+| 닫기(선택) | PC 헤더의 닫기(X) 버튼. 정본 Mobile 변형에는 없다. |
 
 | variant | default | hover | pressed | disabled |
 | --- | --- | --- | --- | --- |
@@ -2248,7 +2249,38 @@ agent:
     metadata: "unknown"
   behavior:
     platform: "PC"
-    status: "not-defined"
+    source: "registry/components/component-behavior.pc.json ← pages/components.html#modal"
+    status: "verified"
+    initialState: "closed — root[hidden]"
+    events:
+      -
+        on: "open()"
+        target: "modal"
+        result: "remove root[hidden], lock background scroll, move focus into the panel, and emit s1:modal:open"
+      -
+        on: "close()"
+        target: "modal"
+        result: "set root[hidden], unlock background scroll, restore focus to the element focused before opening, and emit s1:modal:close"
+      -
+        on: "click"
+        target: "close button"
+        guard: "PC only — Mobile has no close button in canon"
+        result: "close with detail.reason=\"close-button\""
+      -
+        on: "keydown Escape"
+        target: "document while open"
+        result: "close with detail.reason=\"escape\""
+      -
+        on: "keydown Tab"
+        target: "document while open"
+        result: "cycle focus inside the panel only (focus trap)"
+    selection: "not-applicable"
+    keyboard: "Escape closes; Tab/Shift+Tab cycle inside the panel and never leave it"
+    focus: "focus moves to the first focusable element in the panel on open and returns to the previously focused element on close; focus escaping the panel is pulled back"
+    accessibility:
+      dialog: "panel carries role=dialog and aria-modal=true"
+      name: "aria-labelledby points at [data-s1-part=title]; aria-describedby points at [data-s1-part=message]"
+      background: "body scroll is locked while any modal is open and restored when the last one closes"
   geometry:
     common:
       target: "root"
@@ -2333,14 +2365,18 @@ agent:
 _Do_
 - 제목은 항상 둔다. PC는 닫기 버튼을 포함하고 Mobile은 포함하지 않는다.
 - 푸터 버튼은 코어 Button, 아이콘은 V2.2 라이브러리 인스턴스를 재사용한다.
+- 모달은 화면(body) 바로 아래에 둔다. 카드·패널 같은 상자 안에 넣으면 상단 고정바 등 일부 요소가 모달 위에 남는다.
 
 _Don't_
 - 모달 문구(실제 카피)를 컴포넌트 정본으로 넣지 않는다 — 예시일 뿐(UX라이팅 영역).
 - 그릇(제목·본문·푸터 3층) 외 임의 레이아웃을 만들지 않는다.
 
 **접근성 (a11y)**
-- role=dialog·aria-modal 로 표시하고 포커스를 모달 안에 가둔다.
-- 열릴 때 제목으로 포커스, 닫기는 Esc 로도 가능하게 한다.
+- 패널을 role=dialog · aria-modal=true 로 표시하고, aria-labelledby 로 제목을, aria-describedby 로 본문을 연결한다.
+- 열릴 때 패널 안 첫 초점 요소로 초점을 옮기고, 닫힐 때 열기 전 초점 자리로 되돌린다.
+- 열려 있는 동안 Tab·Shift+Tab 은 패널 안에서만 순환한다(초점 가둠). 초점이 밖으로 나가면 패널로 되돌린다.
+- Esc 로 닫을 수 있게 한다. PC 는 헤더의 닫기(X) 버튼에 '닫기' 이름을 준다.
+- 열려 있는 동안 배경 스크롤을 잠근다. 모달이 여럿이면 마지막 하나가 닫힐 때 되돌린다.
 
 ### Multi Toggle
 
@@ -2405,9 +2441,12 @@ agent:
         guard: "disabled=true"
         result: "keep the current selection"
     selection: "single"
-    keyboard: "not-defined"
-    focus: "not-defined"
-    accessibility: "not-defined"
+    keyboard: "ArrowLeft/ArrowRight·ArrowUp/ArrowDown move and select among enabled cells; Home/End jump; Enter/Space selects the focused cell"
+    focus: "roving tabindex — only the selected cell is in the tab order; disabled cells are skipped"
+    accessibility:
+      group: "role=radiogroup on the root, role=radio on each cell"
+      selectedCell: "aria-checked=true on the selected cell and false on siblings"
+      disabledCell: "aria-disabled=true is not selectable and is skipped by arrow keys"
   geometry:
     common:
       layoutMode: "HORIZONTAL"
@@ -3255,8 +3294,8 @@ agent:
         target: "tab"
         result: "select the clicked tab, unselect siblings, and move the indicator"
     selection: "single"
-    keyboard: "native-button-click-only"
-    focus: "native-button"
+    keyboard: "ArrowLeft/ArrowRight move and select; Home/End jump; Enter/Space native-button activation"
+    focus: "roving tabindex — only the selected tab is in the tab order"
     accessibility:
       selectedTab: "set aria-selected=true and remove aria-selected from siblings"
   geometry:
@@ -3382,6 +3421,7 @@ agent:
     Size:
       - "MD"
       - "SM"
+      - "XSM"
   states:
     builder: "not-defined"
     metadata:
@@ -3419,6 +3459,10 @@ agent:
         when:
           Size: "SM"
         height: 386
+      -
+        when:
+          Size: "XSM"
+        height: 350
   composition:
     mustReuse:
       - "Pagination"
@@ -3520,8 +3564,10 @@ _Don't_
 - 행 hover/selected 색을 raw 로 칠하지 않는다(table-cell 토큰).
 
 **접근성 (a11y)**
-- 헤더는 th·scope 로 표시한다.
-- 정렬 상태는 aria-sort 로 노출한다.
+- 열 제목은 th·scope="col" 로 표시해 화면낭독기가 값과 짝지어 읽게 한다.
+- 전체 선택 체크박스에는 '전체 선택', 각 행 체크박스에는 그 행을 가리키는 이름을 준다.
+- 선택은 native checkbox 의 Tab 이동·Space 조작을 그대로 쓴다. 방향키 격자 이동은 채택하지 않는다(river 결정 2026-09-02).
+- 정렬 기능이 범위 밖이라 aria-sort 는 쓰지 않는다(river 결정 2026-09-02).
 
 ### Textarea
 
@@ -3540,7 +3586,6 @@ _Don't_
 | 요소 | 역할 |
 | --- | --- |
 | 입력 영역 | 멀티라인 텍스트. --input-* 토큰. |
-| helper 텍스트(선택) | 필드 아래 도움말·오류·성공. text/state/caption 기본. |
 
 | variant | default | focus | filled | disabled | readonly |
 | --- | --- | --- | --- | --- | --- |
@@ -3579,20 +3624,19 @@ agent:
     events:
       -
         on: "focus"
-        target: "textarea"
-        result: "enter focus state"
+        target: "control"
+        result: "native :focus-within styling; no runtime involved"
       -
-        on: "blur"
-        target: "textarea"
-        result: "leave focus state"
-      -
-        on: "readonly"
-        target: "textarea"
-        result: "prevent value editing while preserving readable content"
-    keyboard: "native-textarea"
-    focus: "native-textarea"
+        on: "input"
+        target: "control"
+        result: "native value change; no runtime involved"
+    keyboard: "native textarea"
+    focus: "native textarea"
     accessibility:
-      readonly: "use the native readonly attribute"
+      name: "a label element or aria-label on the control"
+      readOnly: "the readonly attribute"
+      disabled: "the disabled attribute"
+    runtimeNote: "런타임 없음(jsRequired=false). 상태는 전부 네이티브 속성과 CSS 로 성립한다 — 2026-09-02 배포본 이관 후 사이트 인라인 JS 가 사라져 근거를 배포본 원본으로 옮겼다."
   geometry:
     common:
       target: "root"
@@ -3685,7 +3729,7 @@ _Don't_
 - hover 상태를 만들지 않는다(HD-2, Figma 미정의).
 
 **접근성 (a11y)**
-- 라벨과 연결(for/id)하고, 오류 시 aria-invalid·aria-describedby 로 helper 를 연결한다.
+- 라벨과 연결(for/id)하거나 aria-label 로 이름을 준다. 안내·오류 문구는 정본에 아직 없어 이번 웹 배포본에 없다 — 정본에 추가된 뒤 aria-invalid·aria-describedby 로 연결한다.
 
 ### TimePicker
 
@@ -4103,4 +4147,4 @@ DESIGN_SYSTEM_GAP:
 - 적용 해석 순서(뒤가 앞을 덮음): core → service(extends core) → role → platform → theme. 기본값: service=core · role=user · platform=web · theme=light.
 - 서비스 분기(예: vms 영상관제)는 core 를 상속하고 차이분만 덮는다.
 
-<!-- generated-stamp: 6281b84738b6 · 손편집 금지 -->
+<!-- generated-stamp: 67bd7fe5ad7f · 손편집 금지 -->

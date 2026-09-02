@@ -3,12 +3,12 @@
     "id": "pagination",
     "name": "Pagination",
     "category": "navigation",
-    "updatedAt": "2026-08-01",
+    "updatedAt": "2026-09-02",
     "version": "0.2.0",
     "tokenStatus": "stable",
     "codeStatus": "implemented",
     "darkModeStatus": "pending",
-    "a11yStatus": "pending",
+    "a11yStatus": "implemented",
     "figmaStatus": "confirmed",
     "harnessStatus": "implemented",
     "description": "페이지네이션 컨트롤. 화살표(first/prev/next/last) + 페이지 번호. 선택 페이지는 텍스트 색으로만 구분.",
@@ -17,6 +17,7 @@
       "Disabled 화살표 = 전용 토큰 사용(bg gray/50 · border gray/100 · icon gray/300). V3.0 재실측(2026-07-08, node 956:19066)으로 확정 — 종전 '옵션 없이 opacity:0.9만 적용' 서술은 폐기(2026-08-01 교정).",
       "hover 는 전용 토큰이 V3.0 원본에 정의됨(color/pagination/control/bg·border·icon/hover) — 종전 'Figma 미정의 · assumed' 상태 해소(2026-07-08 재실측).",
       "dark mode: 미확인 — candidate 상태.",
+      "2026-09-02: 웹 배포 계약에 native button·현재 페이지 aria-current·화살표 한국어 이름·focus-visible을 확정했다.",
       "2026-08-01: 위 2건은 tokens/component-tokens-extracted.md 에만 있던 V3.0 재실측 기록을 registry 정본으로 옮긴 것이다(그 문서는 아카이브됨). 정본 토큰 실재는 vars-data 로 확인함."
     ]
   },

@@ -13,7 +13,7 @@ const read = (relative) => readFile(path.join(libraryRoot, relative), "utf8");
 const build = spawnSync(process.execPath, [path.join(libraryRoot, "scripts/build.mjs"), "--check"], { encoding: "utf8" });
 if (build.status !== 0) failures.push(`build freshness: ${build.stderr || build.stdout}`);
 
-const componentIds = ["input", "button", "checkbox", "radio", "toggle", "chip", "dropdown", "select", "filter-chip"];
+const componentIds = ["input", "button", "checkbox", "radio", "toggle", "chip", "dropdown", "select", "filter-chip", "tab", "pagination", "textarea", "multi-toggle", "modal", "table"];
 const individualCss = [];
 for (const id of componentIds) {
   const css = await read(`dist/components/${id}.css`);
@@ -217,13 +217,96 @@ for (const id of componentIds) {
       failures.push("filter-chip SM example must map its panel to dropdown size=xsm (SM→XSM, MD→XSM — river 결정 2026-09-01)");
     }
   }
+  if (id === "textarea") {
+    if (manifest.jsRequired !== false) failures.push("textarea must remain jsRequired=false; native field states carry the behavior");
+    if (manifest.sizes.length) failures.push("textarea has no canonical size axis; sizes must stay empty");
+    const control = css.match(/\[data-s1-component="textarea"\] \[data-s1-part="control"\]\s*\{([^}]*)\}/);
+    if (!control || !control[1].includes("min-height: var(--sizing-80);")) failures.push("textarea control does not use the canonical 80px minimum height");
+    if (!control || !control[1].includes("resize: vertical;")) failures.push("textarea must resize vertically only (river 결정 2026-09-02)");
+    if (!control || !control[1].includes("padding: var(--spacing-12) var(--spacing-12) var(--spacing-10) var(--spacing-10);")) {
+      failures.push("textarea control padding differs from canon");
+    }
+    if (!css.includes(":focus-within")) failures.push("textarea focus state is not bound via :focus-within");
+    if (!css.includes("--color-form-control-bg-selected") || !css.includes("--color-form-control-border-selected")) {
+      failures.push("textarea focus state is not bound to the canonical form-control tokens");
+    }
+    if (!css.includes("[readonly]")) failures.push("textarea readonly state is missing");
+    if (!css.includes(":disabled")) failures.push("textarea disabled state is missing");
+    if (!css.includes(":focus-visible")) failures.push("textarea keyboard focus is not visible");
+    if (!("canonicalStateMap" in manifest)) failures.push("textarea manifest must map canonical state names to web states");
+    if (!example.includes("<textarea") || !example.includes('data-s1-part="control"')) failures.push("textarea example must use the native textarea control");
+  }
+  if (id === "multi-toggle") {
+    if (manifest.jsRequired !== true) failures.push("multi-toggle roving tabindex and selection require the declared runtime");
+    if (JSON.stringify(manifest.sizes) !== JSON.stringify(["md", "sm"])) failures.push("multi-toggle sizes differ from canon");
+    if (!("canonicalStateMap" in manifest)) failures.push("multi-toggle manifest must map canonical state names to web states");
+    const expectedSizes = [
+      ["md", "--sizing-44", "--spacing-12", "--sizing-64"],
+      ["sm", "--sizing-34", "--spacing-8", "--sizing-56"]
+    ];
+    for (const [size, height, padding, minWidth] of expectedSizes) {
+      const rule = css.match(new RegExp(`\\[data-s1-component="multi-toggle"\\]\\[data-size="${size}"\\] \\[data-s1-part="cell"\\]\\s*\\{([^}]*)\\}`));
+      if (!rule) { failures.push(`multi-toggle ${size} size rule is missing`); continue; }
+      if (!rule[1].includes(`height: var(${height});`)) failures.push(`multi-toggle ${size} height differs from canon`);
+      if (!rule[1].includes(`padding-inline: var(${padding});`)) failures.push(`multi-toggle ${size} padding differs from canon`);
+      if (!rule[1].includes(`min-width: var(${minWidth});`)) failures.push(`multi-toggle ${size} minimum width differs from canon`);
+    }
+    if (!css.includes("--color-button-bg-secondary--default") || !css.includes("--color-button-bg-primary--default") || !css.includes("--color-button-bg-disabled")) {
+      failures.push("multi-toggle is not bound to the canonical color/button tokens");
+    }
+    if (css.includes("--color-control-")) failures.push("multi-toggle must not use --color-control-* tokens; canon uses color/button/*");
+    if (!/@media\s*\(hover:\s*hover\)/.test(css)) failures.push("multi-toggle hover state must be limited to hover-capable devices");
+    if (!css.includes('[aria-checked="true"]')) failures.push("multi-toggle selected state must use aria-checked");
+    if (!css.includes(":focus-visible")) failures.push("multi-toggle keyboard focus is not visible");
+    if (!example.includes('role="radiogroup"') || !example.includes('role="radio"')) failures.push("multi-toggle example must expose radiogroup/radio roles");
+    if (!example.includes('aria-checked="true"')) failures.push("multi-toggle example must show a selected cell");
+    if (!/flex:\s*0 0 auto;/.test(css) || !/margin-left:\s*calc\(-1 \* var\(--border-width-1\)\)/.test(css)) {
+      failures.push("multi-toggle cells must keep a fixed outer width and overlap shared borders without removing them");
+    }
+    if (/border-(?:left|right):\s*0;/.test(css)) failures.push("multi-toggle must not remove a shared border because selection would change a sibling width");
+  }
+  if (id === "tab") {
+    if (!/\[data-s1-component="tab"\]::before[\s\S]*?bottom:\s*0[\s\S]*?height:\s*var\(--border-width-1\)/.test(css) || !/\[data-s1-part="tab"\][\s\S]*?padding:\s*0 var\(--spacing-16\) var\(--border-width-2\)/.test(css) || !/aria-selected="true"\]\s*::after/.test(css)) {
+      failures.push("tab must draw the gray baseline and blue indicator from the same bottom edge while reserving indicator space");
+    }
+    if (/box-shadow:\s*inset 0 calc\(-1 \* var\(--border-width-1\)\)/.test(css) || /border-bottom:\s*var\(--border-width-2\)/.test(css)) failures.push("tab must not draw its baseline inside the reserved indicator space");
+  }
+  /* Modal — 정본 buildModalShell(4438). 변형은 Break × Footer 4가지뿐이고 크기·상태 축이 없다.
+     PC 만 닫기(X)를 갖고 Mobile 은 갖지 않는다. 접근성은 river 표준안(2026-09-02) 범위를 계약으로 못박는다. */
+  if (id === "modal") {
+    if (manifest.jsRequired !== true) failures.push("modal open/close, focus trap and scroll lock require the declared runtime");
+    if (manifest.sizes.length !== 0) failures.push("modal has no size axis in canon");
+    if (JSON.stringify(manifest.variants) !== JSON.stringify(["single", "dual"])) failures.push("modal variants differ from canon Footer axis");
+    for (const [breakName, width, gap] of [["pc", "360px", "--spacing-32"], ["mobile", "300px", "30px"]]) {
+      const rule = css.match(new RegExp(`\\[data-s1-component="modal"\\]\\[data-break="${breakName}"\\] \\[data-s1-part="panel"\\]\\s*\\{([^}]*)\\}`));
+      if (!rule) { failures.push(`modal ${breakName} panel rule is missing`); continue; }
+      if (!rule[1].includes(`width: ${width};`)) failures.push(`modal ${breakName} panel width differs from canon`);
+      const gapValue = gap.startsWith("--") ? `gap: var(${gap});` : `gap: ${gap};`;
+      if (!rule[1].includes(gapValue)) failures.push(`modal ${breakName} panel gap differs from canon`);
+    }
+    if (!css.includes("var(--color-modal-panel-border)") || !css.includes("var(--shadow-raised)") || !css.includes("var(--color-surface-raised)")) {
+      failures.push("modal panel is not bound to the canonical surface/border/shadow tokens");
+    }
+    if (!css.includes("var(--color-overlay)")) failures.push("modal dim must use the canonical color/overlay token");
+    if (!/\[data-s1-part="panel"\]\s*\{[^}]*flex:\s*none;/.test(css)) failures.push("modal panel must keep its canonical fixed width even in a narrow container");
+    if (!css.includes(":focus-visible")) failures.push("modal keyboard focus is not visible");
+    if (!example.includes('role="dialog"') || !example.includes('aria-modal="true"') || !example.includes("aria-labelledby=")) {
+      failures.push("modal example must expose dialog semantics with a labelled title");
+    }
+    if (!example.includes('data-s1-part="close"')) failures.push("modal PC example must include the canonical close button");
+    const mobileExample = await read("src/components/modal/modal.mobile.example.html");
+    if (mobileExample.includes('data-s1-part="close"')) failures.push("modal Mobile has no close button in canon");
+    if (!mobileExample.includes('data-size="lg"')) failures.push("modal Mobile footer must reuse core Button LG");
+    if (!example.includes('data-size="xxsm"')) failures.push("modal PC footer must reuse core Button XXSM");
+  }
+
   const module = await import(`${pathToFileURL(path.join(libraryRoot, `dist/components/${id}.js`)).href}?check=${Date.now()}`);
   if (id === "input" && (module.jsRequired !== true || typeof module.init !== "function" || typeof module.destroy !== "function")) {
     failures.push("input runtime lifecycle is incomplete");
   }
   if (id === "button" && (module.jsRequired !== false || module.runtime !== null)) failures.push("button module unexpectedly requires runtime");
-  if ((id === "checkbox" || id === "radio") && (module.jsRequired !== false || module.runtime !== null)) failures.push(`${id} module unexpectedly requires runtime`);
-  if ((id === "toggle" || id === "chip" || id === "dropdown" || id === "select" || id === "filter-chip") && (module.jsRequired !== true || typeof module.init !== "function" || typeof module.destroy !== "function")) {
+  if ((id === "checkbox" || id === "radio" || id === "textarea") && (module.jsRequired !== false || module.runtime !== null)) failures.push(`${id} module unexpectedly requires runtime`);
+  if ((id === "toggle" || id === "chip" || id === "dropdown" || id === "select" || id === "filter-chip" || id === "tab" || id === "pagination" || id === "multi-toggle" || id === "modal" || id === "table") && (module.jsRequired !== true || typeof module.init !== "function" || typeof module.destroy !== "function")) {
     failures.push(`${id} runtime lifecycle is incomplete`);
   }
 }
@@ -235,6 +318,18 @@ if (fullCss !== expectedFullCss) failures.push("full and individual CSS source p
 const iconManifest = JSON.parse(await read("dist/assets/icons/manifest.json"));
 const removeIcon = iconManifest.icons.find(({ id }) => id === "remove");
 if (!removeIcon || removeIcon.sourceKey !== "24b2df622d341e0af21cd4b23b4a7d23b97a5ea7") failures.push("remove icon provenance is missing");
+const paginationEdgeIcon = iconManifest.icons.find(({ id }) => id === "edge_set");
+if (!paginationEdgeIcon || paginationEdgeIcon.sourceKey !== "606d0de897175059f133427bf62bb3635d18a860" || !paginationEdgeIcon.sourceBuilderSymbol.includes("CHEV_EDGE")) {
+  failures.push("pagination first/last must use the registered Figma edge_set original asset");
+}
+const paginationExample = await read("src/components/pagination/pagination.example.html");
+if (/[«‹›»]/.test(paginationExample) || !paginationExample.includes('data-icon="edge"') || !paginationExample.includes('data-icon="chevron"')) {
+  failures.push("pagination examples must use original icon assets, not substitute text glyphs");
+}
+const paginationCss = await read("src/components/pagination/pagination.css");
+if (!/data-s1-action="previous"[\s\S]*?data-s1-action="last"[\s\S]*?rotate\(180deg\)/.test(paginationCss) || /data-s1-action="first"[\s\S]*?rotate\(180deg\)/.test(paginationCss)) {
+  failures.push("pagination must keep the canonical |< first-page icon and rotate only the last-page icon");
+}
 try { await access(path.join(libraryRoot, "dist/assets/icons/remove.svg")); } catch { failures.push("remove icon web asset is missing"); }
 for (const icon of iconManifest.icons) {
   const iconSvg = await read(`dist/assets/icons/${icon.file}`);
@@ -243,7 +338,7 @@ for (const icon of iconManifest.icons) {
 if (!iconGeometryCheck.runSelfTest()) failures.push("icon geometry checker adversarial self-test failed");
 
 const fullModule = await import(`${pathToFileURL(path.join(libraryRoot, "dist/s1-ui.js")).href}?check=${Date.now()}`);
-if (!fullModule.input || !fullModule.button) failures.push("full JS metadata bundle omits a component export");
+if (!fullModule.input || !fullModule.button || !fullModule.tab || !fullModule.pagination || !fullModule.textarea || !fullModule["multiToggle"]) failures.push("full JS metadata bundle omits a component export");
 
 for (const relative of ["verification/empty-consumer.html", "verification/empty-consumer-individual.html"]) {
   const html = await read(relative);
@@ -306,6 +401,41 @@ for (const match of guideModule.matchAll(/mobileSizes\s*=\s*\[\[\s*"[a-z-]+",\s*
 }
 if (!/\.view-mobile \.platform-section-pc \+ \.platform-section-mobile[^{]*\{[^}]*margin-top:\s*0/.test(guidePage)) {
   failures.push("hidden sibling platform section must not leave a 24px top margin on the visible one");
+}
+if (!/function tabStateMatrix\(\)[\s\S]*?comp-action-top[\s\S]*?matrix-col-header-action/.test(guideModule)) {
+  failures.push("Line Tab guide must use the standard Action title and separator block");
+}
+if (!/\.matrix-col-header-action\s*\{[^}]*font-size:\s*16px[^}]*font-weight:\s*700[^}]*color:\s*#16a34a/.test(guidePage)) {
+  failures.push("all guide Action titles must use the prominent green title typography");
+}
+if (!/\.variant-label\s*\{[^}]*color:\s*#111827[^}]*font-size:\s*16px[^}]*font-weight:\s*700/.test(guidePage)) {
+  failures.push("component type labels such as Line and Solid must use the prominent type title typography");
+}
+if (!/\.comp-action-top\s*\{[^}]*gap:\s*12px[^}]*margin-bottom:\s*48px[^}]*padding-bottom:\s*24px/.test(guidePage)) {
+  failures.push("all guide Action blocks must retain the shared generous separation before states");
+}
+if (!/\.uilg-tab-action-top\s*\{[^}]*gap:\s*24px[^}]*margin-bottom:\s*64px[^}]*padding-bottom:\s*40px/.test(guidePage)) {
+  failures.push("Line Tab Action must use the expanded title-to-content, content-to-line, and Action-to-state separation");
+}
+const tabGuideSource = guideModule.match(/function tabStateMatrix\(\)[\s\S]*?function paginationMarkup/)?.[0] || "";
+if (tabGuideSource.includes('matrix-row-label">상태')) {
+  failures.push("Line Tab state matrix must not repeat the left-side 상태 label");
+}
+if (!tabGuideSource.includes('grid-template-columns:repeat(3,minmax(120px,1fr))') || !tabGuideSource.includes('tabStateItemMarkup')) {
+  failures.push("Line Tab state matrix must align three single-tab states without a leading blank column");
+}
+if (!/function tabStateMatrix\(\)[\s\S]*?matrix-col-header[\s\S]*?uilg-size-dim/.test(guideModule)) {
+  failures.push("Line Tab size labels must use the shared guide heading typography");
+}
+if (!/function paginationStateMatrix\(\)[\s\S]*?comp-action-top[\s\S]*?matrix-col-header-action/.test(guideModule)) {
+  failures.push("Pagination guide must use the shared Action title and separator block");
+}
+const paginationGuideSource = guideModule.match(/function paginationMarkup\([\s\S]*?function paginationStateMatrix/)?.[0] || "";
+if (!paginationGuideSource.includes("const beforeDisabled = page <= 1") || !paginationGuideSource.includes("const afterDisabled = page >= total") || (paginationGuideSource.match(/beforeDisabled \? \" disabled\"/g) || []).length !== 2 || (paginationGuideSource.match(/afterDisabled \? \" disabled\"/g) || []).length !== 2) {
+  failures.push("Pagination guide must disable both leading or trailing controls at its page boundaries");
+}
+if (/PC 3크기\(MD 44 · SM 42 · XSM 40\) · Mobile SM 32/.test(guideModule)) {
+  failures.push("Line Tab PC scope must not describe the Mobile content");
 }
 
 const guideDemoIndex = guideModule.indexOf('<section class="uilg-demo preview-area"');

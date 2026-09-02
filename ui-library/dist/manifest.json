@@ -2,7 +2,7 @@
   "id": "s1-ui",
   "version": "0.1.0",
   "status": "approved",
-  "canonicalFingerprint": "2a77081c497ec6d1e3d7c5a6058d3fd199c3b7049157f9b5019ce4c77bf86018",
+  "canonicalFingerprint": "81fd04e1ce539701c6872ded01c1b7d0ffd6f8bc58ef2ccdcbf4d06ec384f3d4",
   "tokenMapFingerprint": "796fb798dd329910ba6c42a29fb4af9e0fd217446b3fa847e140bc70a0a8f4c7",
   "commonCssDependencies": [
     "assets/css/tokens.css",
@@ -42,7 +42,8 @@
         },
         "scaling": "proportional"
       },
-      "dependencies": []
+      "dependencies": [],
+      "sourceExport": "assets/icons/ic_remove_line.png"
     },
     {
       "id": "check",
@@ -67,7 +68,10 @@
         "scaling": "proportional"
       },
       "geometryEvidence": "정본은 이 아이콘을 16px 로 리사이즈해 18px 상자 (1,1) 에 놓는다(build-components.ts makeCheckIcon·buildCheckbox). 내보낸 원본 assets/icons/ic_확인_line.png(48px=24 기준 2배) 의 잉크 경계는 18×12(24 기준)이고, 정본 인라인 SVG(16 기준)의 잉크 경계는 11.6×8.25 로 같은 비율이다 — 즉 glyph 가 frame 을 그대로 채운다.",
-      "dependencies": []
+      "dependencies": [],
+      "sourceExport": "assets/icons/ic_확인_line.png",
+      "originComparable": false,
+      "originComparableNote": "웹 자산 프레임 16 ↔ 원본 내보내기 프레임 24. 정본이 이 아이콘을 18 상자 안 16px 로 놓는데(build-components.ts buildCheckbox) 원본 24 프레임 안 위치 대응이 선언돼 있지 않아 픽셀 대조 불가."
     },
     {
       "id": "chevron",
@@ -92,7 +96,61 @@
         "scaling": "proportional"
       },
       "geometryEvidence": "정본 chevDown 인라인 SVG(build-components.ts:1450)는 16x16 viewBox 에 화살표가 꽉 차게 그려진다(glyph=frame). 웹 아이콘은 정본과 동일하게 아래(닫힘) 방향 하나만 자산으로 두고, 열림(위) 방향은 정본과 같은 철학(회전)으로 CSS transform: rotate(180deg) 로 표현한다 — chevUp(build-components.ts:1451)은 chevDown 을 180° 돌린 모양과 같다. 렌더 크기(Select XXSM 20px·그 외 24px, Filter Chip 20px 고정)는 컴포넌트 CSS 가 mask-size:contain 으로 이 16px 원본을 비율 유지 확대해 만든다(fcIconPx, build-components.ts:1310·1481, 2252).",
-      "dependencies": []
+      "dependencies": [],
+      "sourceExport": "assets/icons/ic_화살표더보기_line.png"
+    },
+    {
+      "id": "edge_set",
+      "sourceKey": "606d0de897175059f133427bf62bb3635d18a860",
+      "sourceBuilderSymbol": "Figma 아이콘 라이브러리 V2.2 edge_set (ic_마지막장) — build-components.ts CHEV_EDGE 정본 폴백 경로를 그대로 사용",
+      "file": "pagination-edge.svg",
+      "webAssetFingerprint": "da84b989a1acc26de0e386334a72ab525bc2feff786a37226cfd1c561c85a1fb",
+      "individualFile": "assets/icons/pagination-edge.svg",
+      "accessibleNamePolicy": "decorative inside a named pagination action button",
+      "geometry": {
+        "frame": {
+          "width": 24,
+          "height": 24
+        },
+        "glyph": {
+          "x": 5,
+          "y": 5,
+          "width": 14,
+          "height": 14
+        },
+        "scaling": "proportional"
+      },
+      "geometryEvidence": "Figma edge_set을 설치기에 불러올 수 없을 때 정본 설치기가 쓰는 CHEV_EDGE 경로를 글자·좌표·선속성까지 그대로 사용한다. 첫 페이지는 기본 |<, 마지막 페이지는 180도 회전한 >|이다.",
+      "dependencies": [],
+      "sourceExport": "assets/icons/ic_화살표더보기_line.png",
+      "originComparable": false,
+      "originComparableNote": "페이지네이션 처음/마지막은 쉐브론 2개를 겹친 componentSet(edge_set)이라 단일 line 내보내기와 1:1 대응하지 않는다. 대응 원본 파일을 확정해야 한다."
+    },
+    {
+      "id": "close",
+      "sourceKey": "2a1abbd3597b536e34fd9523fb61eade3afe9934",
+      "sourceBuilderSymbol": "Figma 아이콘 라이브러리 V2.2 ic_닫기 97:79 (Property 1=Line, 97:77) 실물 벡터 내보내기 — 이전에 쓰던 설치기 폴백 CLOSE_ICON_SVG 는 근사치라 폐기(river 지적 2026-09-02, chevron 과 같은 사례).",
+      "file": "close.svg",
+      "webAssetFingerprint": "deed51641826b50d21ec8a4bc8dfe57ad6681e462f9857821081d455c6c5ac97",
+      "symbolId": "s1-icon-close",
+      "individualFile": "assets/icons/close.svg",
+      "accessibleNamePolicy": "decorative inside a named close button (버튼이 '닫기' 이름을 가진다)",
+      "geometry": {
+        "frame": {
+          "width": 24,
+          "height": 24
+        },
+        "glyph": {
+          "x": 4,
+          "y": 4,
+          "width": 16,
+          "height": 16
+        },
+        "scaling": "proportional"
+      },
+      "geometryEvidence": "원본은 24 프레임 안 (4,4) 에 놓인 16×16 채움(fill) 도형이다(Figma 내보내기 실측). 저장소 내보내기 assets/icons/ic_닫기_line.png 의 잉크 경계 4~20 과 일치한다. 폐기한 폴백은 6~18 스트로크 도형이라 더 짧고 굵었다.",
+      "dependencies": [],
+      "sourceExport": "assets/icons/ic_닫기_line.png"
     }
   ],
   "components": [
@@ -101,8 +159,8 @@
       "version": "0.1.0",
       "status": "approved",
       "jsRequired": true,
-      "canonicalFingerprint": "31231f86fa36bbac8d93b45958e359ed44ce3e23eb45c5664f4548f422dfa404",
-      "sourceFingerprint": "2ef0faa44374e5c639e9898db4441e5967a68392c208c16b6fab2397135c8941",
+      "canonicalFingerprint": "4b318d6e1efd11f3e4c0ef528e3ebd752aed96fff17389318b4f5648ece40752",
+      "sourceFingerprint": "17bd58461e0c3470168273a6842c215042ae114c43e2eb55ffcce18f7c233991",
       "css": "components/input.css",
       "js": "components/input.js",
       "example": "examples/input.html",
@@ -116,8 +174,8 @@
       "version": "0.1.0",
       "status": "approved",
       "jsRequired": false,
-      "canonicalFingerprint": "50cad28025b133af5b3c5491594af32e35d966fa09ea9c39068ea309407f35a9",
-      "sourceFingerprint": "db9ff46810fb660ef49c43285e517a12988d04417f35a55ffeba498f7a928939",
+      "canonicalFingerprint": "da9ad37b31b0aa8aed74936c71591956b80d6ba6e4166a24dec17f557a99ac1f",
+      "sourceFingerprint": "6cd074f91c2b7c59d6782e2e39b0b288e4281c079b802ec451096c5841b66583",
       "css": "components/button.css",
       "js": "components/button.js",
       "example": "examples/button.html",
@@ -131,8 +189,8 @@
       "version": "0.1.0",
       "status": "approved",
       "jsRequired": false,
-      "canonicalFingerprint": "5a982eaf8f05e9cd941ac83b33c3b1c27ca9cc4f4a87fdd42ae8ecbf96889472",
-      "sourceFingerprint": "7341417976e07c140ed467801e62ff6362a128f883191b13b86ff67610739606",
+      "canonicalFingerprint": "bfc0fb3387b6e90fc0356fa67a18b28dfdfea961ea1429424f0c2b83aa1f6c78",
+      "sourceFingerprint": "25f05a4c4ab13fbf0bf3e4613018df59ede56f37421ff93d488a469378b25b2f",
       "css": "components/checkbox.css",
       "js": "components/checkbox.js",
       "example": "examples/checkbox.html",
@@ -145,8 +203,8 @@
       "version": "0.1.0",
       "status": "approved",
       "jsRequired": false,
-      "canonicalFingerprint": "ed480f859a8ea62adf2d09c10e15d85e781282a680b78763a484ae5b7eb459bb",
-      "sourceFingerprint": "88e29216c4f80278c11d7dd2a866846996b1300bb4fa3b33f618d5b076df9800",
+      "canonicalFingerprint": "0301cb07dec7a14c0c9401f4b6f004ae36f810d8a2cdf3c67b3b6830f24520e8",
+      "sourceFingerprint": "54f3a6d5f9fd31d53237be5b518e0579c12a2143e568ccb42c8c6affd9204b4f",
       "css": "components/radio.css",
       "js": "components/radio.js",
       "example": "examples/radio.html",
@@ -159,8 +217,8 @@
       "version": "0.1.0",
       "status": "approved",
       "jsRequired": true,
-      "canonicalFingerprint": "d5ca50386409baf3bfb8101e1827c77d0be1209ce6d3e5b956dcf46f23b406b6",
-      "sourceFingerprint": "ada279abb3fa847fc401eada59bb842098b8378bce773568dc09bf1c5897a34c",
+      "canonicalFingerprint": "3b039deaf8c6e838f77573164065880d4e7c40d84d6a95d7ffd38fd6d8ede2f1",
+      "sourceFingerprint": "99e2f44054387fcfa34085ad14769e26cc9eb10349c5e3c376f16a588deb2570",
       "css": "components/toggle.css",
       "js": "components/toggle.js",
       "example": "examples/toggle.html",
@@ -173,8 +231,8 @@
       "version": "0.1.0",
       "status": "approved",
       "jsRequired": true,
-      "canonicalFingerprint": "37ff7720b5f1594d669845080191a5f5a359ea8d00ea18fd4ca04548e6f8ba17",
-      "sourceFingerprint": "34a8861af8224cf9c880b3ed2120c697240c2b88fe995172fc4cbe65ee86250f",
+      "canonicalFingerprint": "581dcf58fdffed8d86bcec535110c75812afb9782ce8073c61ef92bb6f6905e3",
+      "sourceFingerprint": "500516f688ba059dc9a1f7fc18efaceeecb0b679bdaf6d2f9809a7f63bb6cef4",
       "css": "components/chip.css",
       "js": "components/chip.js",
       "example": "examples/chip.html",
@@ -188,8 +246,8 @@
       "version": "0.1.0",
       "status": "approved",
       "jsRequired": true,
-      "canonicalFingerprint": "dfc6c7e62426471c19f3e09b166bd482b3b5be4910ad2c2a0ce6bf54c4bf7059",
-      "sourceFingerprint": "c20cfa69fb10967a10bfbeb496cb47c06031a465347280c55700cf955210551b",
+      "canonicalFingerprint": "e1a991650c0ded08701bd7d10975d4707b71020e9c72d70eb67e75af221fb41d",
+      "sourceFingerprint": "a5141d63c5421e1252b6211424edcde5463fb6630338ad094b9ab080148586a8",
       "css": "components/dropdown.css",
       "js": "components/dropdown.js",
       "example": "examples/dropdown.html",
@@ -202,8 +260,8 @@
       "version": "0.1.0",
       "status": "approved",
       "jsRequired": true,
-      "canonicalFingerprint": "0aa318d70e9440723bf5c4cb630361d1c1f87685fdeca9021d3c8b0bd2f58c41",
-      "sourceFingerprint": "cca2c08b95f408d5d693f6ebbd488ec598fca3ef3f731788f4996912a7424cf7",
+      "canonicalFingerprint": "4a36416f699e0bb1669b1a0baa84fa4801736a796fdb4fd32f96ca67be96346b",
+      "sourceFingerprint": "70bf9ea865243a427c1538cd82f7443ec4b7abcd8c62e1bdd7f17b5a0aafec4c",
       "css": "components/select.css",
       "js": "components/select.js",
       "example": "examples/select.html",
@@ -217,14 +275,101 @@
       "version": "0.1.0",
       "status": "approved",
       "jsRequired": true,
-      "canonicalFingerprint": "bb120cb02a40bf9ae423f52c088975d86fe146085c0616c08cd20c36d5502f4c",
-      "sourceFingerprint": "bf0dd2d411e5d46aba2a14cebdc47c1b74dc5f9cf4c51939a3f4883f0e2cfb17",
+      "canonicalFingerprint": "bbefa0457fd37eb08ca7b03613a7c853e58872ce80ee9531c9599b189334e1f6",
+      "sourceFingerprint": "e0f141bcc7dd99e6c19c8771c6fc2860fe32b8fcdb5c1e9ee0dafba97629ab68",
       "css": "components/filter-chip.css",
       "js": "components/filter-chip.js",
       "example": "examples/filter-chip.html",
       "examples": {
         "pc": "examples/filter-chip.html",
         "mobile": "examples/filter-chip.mobile.html"
+      }
+    },
+    {
+      "id": "tab",
+      "version": "0.1.0",
+      "status": "approved",
+      "jsRequired": true,
+      "canonicalFingerprint": "0494a0e5f1224b5d2e26c81e2fa8fbaaf81399006d98a5b619f682ffa75d768c",
+      "sourceFingerprint": "96275c23616d15e9e1e73d9220efe9831ade2fcbf9866afcc1e791da872da1f2",
+      "css": "components/tab.css",
+      "js": "components/tab.js",
+      "example": "examples/tab.html",
+      "examples": {
+        "pc": "examples/tab.html",
+        "mobile": "examples/tab.mobile.html"
+      }
+    },
+    {
+      "id": "pagination",
+      "version": "0.1.0",
+      "status": "approved",
+      "jsRequired": true,
+      "canonicalFingerprint": "5d3380d579fff986fc374b64fd26b34052d4b5a364af09c4cf079d8a01228d81",
+      "sourceFingerprint": "911227ddd969ac5c161676f7fd68dd206076a468279af06a7fc2a0650c4c5d84",
+      "css": "components/pagination.css",
+      "js": "components/pagination.js",
+      "example": "examples/pagination.html",
+      "examples": {
+        "pc": "examples/pagination.html"
+      }
+    },
+    {
+      "id": "textarea",
+      "version": "0.1.0",
+      "status": "approved",
+      "jsRequired": false,
+      "canonicalFingerprint": "63e8f3b3b024e2b2dd62744ca415aa29fb12fdbe59a986dbae242612947f184d",
+      "sourceFingerprint": "cf59b6cbc8127da5fdd106609b1ebd5aaa03185d9af11e78936dcb83d9392294",
+      "css": "components/textarea.css",
+      "js": "components/textarea.js",
+      "example": "examples/textarea.html",
+      "examples": {
+        "pc": "examples/textarea.html",
+        "mobile": "examples/textarea.mobile.html"
+      }
+    },
+    {
+      "id": "multi-toggle",
+      "version": "0.1.0",
+      "status": "approved",
+      "jsRequired": true,
+      "canonicalFingerprint": "31d1db85170431751bdd3edf5a116f46e45dd44a825fa39d36bf14867ae427a4",
+      "sourceFingerprint": "38d41d7d06015daf931198c4a6d766ce3e88b875ae1c790b58dde666109febb2",
+      "css": "components/multi-toggle.css",
+      "js": "components/multi-toggle.js",
+      "example": "examples/multi-toggle.html",
+      "examples": {
+        "pc": "examples/multi-toggle.html"
+      }
+    },
+    {
+      "id": "modal",
+      "version": "0.1.0",
+      "status": "approved",
+      "jsRequired": true,
+      "canonicalFingerprint": "d4bbc8b575353cec2f56a43cce17cf897b61b237fa5ec403152b6b9f41a6ca6a",
+      "sourceFingerprint": "0b150b5c06259fc5f30ff1be75519522c4eff74f22877001b01df9799762ed39",
+      "css": "components/modal.css",
+      "js": "components/modal.js",
+      "example": "examples/modal.html",
+      "examples": {
+        "pc": "examples/modal.html",
+        "mobile": "examples/modal.mobile.html"
+      }
+    },
+    {
+      "id": "table",
+      "version": "0.1.0",
+      "status": "approved",
+      "jsRequired": true,
+      "canonicalFingerprint": "50af0bd4ab3dab2c888ef3d3acb39b8b146969976afb9413651871ae872c90b4",
+      "sourceFingerprint": "98ee8925b5163d1204d3b140cf4fddd9001a962d478cc76ea00c12e283552f24",
+      "css": "components/table.css",
+      "js": "components/table.js",
+      "example": "examples/table.html",
+      "examples": {
+        "pc": "examples/table.html"
       }
     }
   ],
@@ -238,7 +383,13 @@
       "chip",
       "dropdown",
       "select",
-      "filter-chip"
+      "filter-chip",
+      "tab",
+      "pagination",
+      "textarea",
+      "multi-toggle",
+      "modal",
+      "table"
     ],
     "source": "ui-library/src/components/*",
     "rule": "Full and individual outputs are generated in this build invocation from identical source strings."

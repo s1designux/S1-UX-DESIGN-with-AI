@@ -226,6 +226,21 @@
       vertical-align:middle;
     }
 
+    /* ── 설치기 버전 배지 · 업데이트 내역 ──
+       설치기 화면 헤더의 손버전 배지(.header-ver)와 같은 표기를 다운로드 카드에도 둔다. */
+    .ver-badge {
+      display:inline-block; padding:2px 8px; border-radius:999px;
+      background:#eff6ff; color:#1d6ceb; font-size:11px; font-weight:700;
+      vertical-align:middle;
+    }
+    .release-notes { margin-top:22px; border:1px solid #e5e7eb; border-radius:12px; background:#fff; }
+    .release-notes > summary {
+      cursor:pointer; padding:14px 16px; font-size:13px; font-weight:700; color:#111827;
+    }
+    .release-notes-body { padding:0 18px 18px; }
+    .release-notes-body ul { margin:0; padding-left:18px; font-size:13px; color:#374151; line-height:2.2; }
+    .release-notes-body ul strong { color:#111827; }
+
     .optional-tag {
       display:inline-block; margin-left:6px; padding:2px 8px; border-radius:999px;
       background:#f3f4f6; color:#9ca3af; font-size:10.5px; font-weight:600;
@@ -283,7 +298,7 @@
                 <div class="step-title">디자인가이드 저장소 받기</div>
                 <div class="step-desc">토큰 CSS · 컴포넌트 실측 사양 · PC 동작 계약 · 참고 화면이 한 벌로 묶여 있습니다</div>
               </div>
-              <span class="update-stamp" data-update-file="design/DESIGN.core.md"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> 업데이트 2026-09-01 14:45</span>
+              <span class="update-stamp" data-update-file="design/DESIGN.core.md"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> 업데이트 2026-09-02 14:13</span>
             </div>
             <div class="step-body">
               <div class="file-card">
@@ -444,8 +459,8 @@
             <div class="step-header">
               <div>
                 <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
-                  <div class="step-title">S-1 S/W UX Guide 설치/검수기</div>
-                  <span class="update-stamp" style="margin-left:0;" data-update-file="assets/downloads/s1-ux-design-guide-installer.zip"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> 업데이트 2026-07-21 10:43</span>
+                  <div class="step-title">S-1 S/W UX Guide 설치/검수기 <span class="ver-badge">0.2Ver</span></div>
+                  <span class="update-stamp" style="margin-left:0;" data-update-file="assets/downloads/s1-ux-design-guide-installer.zip"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> 업데이트 2026-09-02 14:26</span>
                 </div>
                 <div class="step-desc">Figma Desktop에서 실행하는 플러그인 — 토큰·텍스트 스타일·컴포넌트 세트를 파일에 설치하고, 선택한 프레임의 색·컴포넌트를 정본 기준으로 검수합니다</div>
               </div>
@@ -466,9 +481,24 @@
                 <div style="flex:1 1 260px;min-width:240px;">
                   <div style="font-size:13px;font-weight:700;color:#111827;">② GUI 검수</div>
                   <div style="margin-top:4px;font-size:12px;color:#6b7280;line-height:1.75;">선택한 프레임을 검수해 <strong>원본은 그대로 두고 "— 개선안" 복제본</strong>을 만듭니다. 정본으로 교체 가능한 요소는 컴포넌트 교체를, 그 외 직접 지정된 HEX 색은 유사 시멘틱 토큰을 제안합니다.</div>
-                  <img src="../assets/img/agent-audit.png" alt="S-1 S/W UX Guide 설치/검수기 검수 탭 화면(검수 결과)" style="width:100%;height:auto;display:block;margin-top:12px;border:1px solid #e5e7eb;border-radius:12px;">
+                  <img src="../assets/img/agent-audit.png" alt="S-1 S/W UX Guide 설치/검수기 검수 탭 화면(검사 항목 10개)" style="width:100%;height:auto;display:block;margin-top:12px;border:1px solid #e5e7eb;border-radius:12px;">
                 </div>
               </div>
+
+              <!-- 0.2 업데이트 내역 (접이식·기본 펼침) -->
+              <details class="release-notes" open>
+                <summary>0.2 업데이트 내역 <span style="font-weight:500;color:#9ca3af;font-size:12px;">— 이번 버전에서 달라진 점</span></summary>
+                <div class="release-notes-body">
+                  <ul>
+                    <li><strong>최신 가이드인지 자동으로 확인</strong> — 파일에 설치된 기준이 최신인지 확인하고, 옛 버전이면 <em>[최신 가이드로 업데이트]</em>로 새 페이지에 최신 기준을 설치합니다</li>
+                    <li><strong>설치 화면이 단계별로 분리</strong> — 설치 중 · 완료 · 오류 화면이 따로 있고, 진행 중에는 화면 이동이 잠깁니다</li>
+                    <li><strong>재설치 기능 추가</strong> — 설치한 컴포넌트만 지우고 다시 설치합니다 (변수 · 텍스트 스타일은 그대로 보존)</li>
+                    <li><strong>검수 항목을 4가지로 묶음</strong> — 컴포넌트 · 색상 · 텍스트 · 그림자 그룹으로 정리하고 항목 이름을 알기 쉽게 바꿨습니다</li>
+                    <li><strong>검수 정확도 보완</strong> — 여러 부품이 조합된 모듈은 통째 교체 대상에서 빼고, 교체 후보에 옛 컴포넌트가 섞이지 않도록 막았습니다</li>
+                    <li><strong>화면 잘림 · 스크롤 정리</strong> — 버튼 영역이 밀려 올라가던 문제를 없애고, 제목 줄이 창 밖으로 밀려 오른쪽이 잘리던 문제를 고쳤습니다</li>
+                  </ul>
+                </div>
+              </details>
 
               <!-- 설치 방법 (접이식) -->
               <details style="margin-top:22px;border:1px solid #e5e7eb;border-radius:12px;background:#fff;">

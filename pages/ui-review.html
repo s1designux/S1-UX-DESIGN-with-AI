@@ -192,6 +192,15 @@
     /* 검수 배치용(컴포넌트 시각 아님) — 정적 표본은 눌리지 않게, 열린 패널은 겹치지 않게 자리를 준다. */
     .review-static { pointer-events: none; }
     .review-overlay-slot { min-height: 190px; }
+    /* 모달 정적 표본 — 배포본은 화면 전체를 덮는 팝업이라(position: fixed) 검수 지면에 눕혀 둔다.
+       이 CSS 는 이 페이지 것이고 dist 에 넣지 않는다. 색·크기·간격은 그대로 dist 가 그린다. */
+    /* 모달 표본은 정본 고정 폭(PC 360 · Mobile 300)이라 2열 칸에 안 들어간다 — 한 줄에 하나씩 놓는다. */
+    [data-component-id="modal"] .review-grid { grid-template-columns: 1fr; }
+    [data-s1-component="modal"].is-review-inline {
+      inset: auto;
+      padding: 24px;
+      position: relative;
+    }
 
     .review-control-group {
       border: 0;
@@ -395,7 +404,7 @@
 
     <header class="review-header">
       <p class="review-eyebrow">UI LIBRARY · APPROVED · @S1/UI 0.1.0</p>
-      <h1 class="review-title">Base Input · Button · Checkbox · Radio · Toggle · Chip · Select · Dropdown · Filter Chip 실제 배포본 검수</h1>
+      <h1 class="review-title">Base Input · Button · Checkbox · Radio · Toggle · Chip · Select · Dropdown · Filter Chip · Textarea · Multi Toggle 실제 배포본 검수</h1>
       <p class="review-description">이 화면과 퍼블리셔·개발자가 받는 파일은 같은 <strong>ui-library/dist</strong>를 사용합니다. 아래 UI를 직접 누르고 입력하면서 모양과 사용성을 확인해 주세요.</p>
       <div class="review-badges" aria-label="검수 범위">
         <span class="review-badge">PC · Mobile</span>
@@ -403,7 +412,10 @@
         <span class="review-badge">Base Input · Button</span>
         <span class="review-badge">Toggle · Chip</span>
         <span class="review-badge">Select · Dropdown · Filter Chip (신규)</span>
-        <span class="review-badge">검수본 2026-09-01 · 07</span>
+        <span class="review-badge">Textarea · Multi Toggle (신규)</span>
+        <span class="review-badge">Modal (신규)</span>
+        <span class="review-badge">Table (신규)</span>
+        <span class="review-badge">검수본 2026-09-02 · 09</span>
         <span class="review-badge">Password · Search는 다음 단계</span>
       </div>
     </header>
@@ -420,6 +432,8 @@
         <li>Select는 트리거를 눌러 목록을 열고, 화살표 키·Enter로 고른 뒤 값이 트리거에 들어오는지 확인합니다. 바깥을 누르면 닫힙니다.</li>
         <li>Dropdown 목록은 글자 유형과 체크박스 유형 두 가지입니다. 체크박스 유형은 여러 개를 함께 고를 수 있고, 「전체 선택」 아래에는 구분선이 있습니다.</li>
         <li>Filter Chip은 눌러서 열고(Selected), 값을 고르면 닫히며 값이 칩에 남습니다(Complete). <strong>Esc</strong>로도 닫히는지 확인합니다.</li>
+        <li>Textarea는 직접 입력해 Focus 색과 세로 크기 조절(오른쪽 아래 끌기)을 확인합니다. 가로로는 늘어나지 않아야 합니다.</li>
+        <li>Multi Toggle은 칸을 눌러 선택이 옮겨지는지, 화살표 키로도 이동하는지 확인합니다. 선택된 칸의 양옆 경계가 겹쳐 보이지 않아야 합니다.</li>
         <li>PC와 Mobile, Light와 Dark에서 같은 의미와 우선순위로 보이는지 비교합니다.</li>
       </ol>
       <div class="review-actions">
@@ -506,6 +520,38 @@
         <p class="review-note">Line·Solid × 제목 있음/없음 × 상태 5종(Default·Hover·Selected(열림)·Complete(값 확정)·Disabled) × 크기 3종(PC SM 28 · MD 34 / Mobile MD 30)입니다. Hover는 마우스로 확인합니다. <strong>Complete는 정본에서 Default와 같은 색을 씁니다</strong> — 값 문구만 달라집니다. 열었을 때 목록 크기는 Select와 다르게 SM·MD 모두 XSM(34px)으로 붙습니다. 다중 선택과 Error는 정본에 없어 만들지 않았습니다.</p>
       </div>
       <div class="review-matrix" id="filter-chip-review-matrix"></div>
+    </section>
+
+    <section class="review-section" aria-labelledby="textarea-review-title" data-component-id="textarea">
+      <div>
+        <h2 class="review-section-title" id="textarea-review-title">10. Textarea</h2>
+        <p class="review-note">정본 상태 5종(Default·Focus·Filled·Disabled·Read-only)을 그대로 옮겼습니다. Focus는 직접 눌러 입력해 확인합니다. 크기 축이 없어 PC·Mobile 모양이 같고, 폭은 놓인 자리를 채우며 <strong>세로 방향으로만</strong> 크기를 조절할 수 있습니다(river 결정 2026-09-02). 라벨·안내 문구·글자수 세기는 정본에 없어 만들지 않았습니다 — 이름은 화면에서 label 또는 aria-label로 연결합니다.</p>
+      </div>
+      <div class="review-matrix" id="textarea-review-matrix"></div>
+    </section>
+
+    <section class="review-section" aria-labelledby="multi-toggle-review-title" data-component-id="multi-toggle">
+      <div>
+        <h2 class="review-section-title" id="multi-toggle-review-title">11. Multi Toggle</h2>
+        <p class="review-note">정본 상태 4종(Default·Hover·Selected·Disabled) × 두 크기(MD 44px · SM 34px)입니다. Hover는 마우스를 올려 확인합니다. 한 번에 하나만 선택되고 화살표 키로 이동합니다. 정본에 모바일 크기가 없어 <strong>PC 전용</strong>이며, 예시는 정본과 같은 3칸입니다.</p>
+      </div>
+      <div class="review-matrix" id="multi-toggle-review-matrix"></div>
+    </section>
+
+    <section class="review-section" aria-labelledby="modal-review-title" data-component-id="modal">
+      <div>
+        <h2 class="review-section-title" id="modal-review-title">12. Modal</h2>
+        <p class="review-note">정본 변형 4가지(PC·Mobile × 버튼 1개(Single)·2개(Dual))를 그대로 옮겼습니다. 정본에 hover·비활성 같은 상태 축이 없어 상태 표본 대신 변형 표본을 봅니다. <strong>PC만 제목 옆 닫기(X)가 있고 Mobile에는 없습니다</strong>(정본 그대로). 어두운 배경(딤)은 등록부가 가진 부품이라 함께 넣었습니다. 아래 표본은 지면에 눕혀 보여주는 검수 표시이고, "실제로 열어보기"가 진짜 팝업입니다 — Esc로 닫히고 Tab은 팝업 안에서만 돕니다.</p>
+      </div>
+      <div class="review-matrix" id="modal-review-matrix"></div>
+    </section>
+
+    <section class="review-section" aria-labelledby="table-review-title" data-component-id="table">
+      <div>
+        <h2 class="review-section-title" id="table-review-title">13. Table</h2>
+        <p class="review-note">정본 상태 3종(기본·Hover·선택) × 세 크기(MD 44 · SM 38 · XSM 34, XSM만 글자 12)입니다. 상태는 정본과 같이 <strong>셀</strong>이 가지고 행은 그 조합으로 보여집니다. 선택 컬럼은 승인된 Checkbox 배포본을 그대로 쓰고, 표 아래 페이지 이동과 '몇 개씩 보기'도 각각 Pagination·Select Box 배포본을 조립한 것입니다(river 결정 2026-09-02) — Table은 표만 가집니다. 정렬(소트) 기능은 정본에 없어 만들지 않았습니다. 정본에 모바일 표출 규칙이 없어 <strong>PC 전용</strong>입니다.</p>
+      </div>
+      <div class="review-matrix" id="table-review-matrix"></div>
     </section>
     </div>
 
@@ -998,6 +1044,187 @@
         </article>`;
     }
 
+    /* ── Textarea — 정본에 크기 축이 없어 PC·Mobile 은 data-break 만 다르다. ── */
+    function textareaMarkup({ breakName, state = "default", value = "" }) {
+      uniqueId += 1;
+      const id = `review-textarea-${uniqueId}`;
+      const attrs = [
+        `id="${id}"`,
+        'data-s1-part="control"',
+        'rows="3"',
+        'aria-label="설명"',
+        'placeholder="여러 줄 내용을 입력하세요"',
+        state === "readonly" ? "readonly" : "",
+        state === "disabled" ? "disabled" : ""
+      ].filter(Boolean).join(" ");
+      return `<div data-s1-component="textarea" data-break="${breakName}"><textarea ${attrs}>${value}</textarea></div>`;
+    }
+
+    function renderTextareaPanel(combo) {
+      const cells = [
+        ["Default · 직접 입력", { }],
+        ["Focus · 눌러서 확인", { }],
+        ["Filled", { value: "회의 내용을 정리했습니다." }],
+        ["Read-only · 실제 readonly", { state: "readonly", value: "읽기 전용 내용입니다." }],
+        ["Disabled · 실제 disabled", { state: "disabled" }]
+      ].map(([label, opts]) => sample(label, textareaMarkup({ breakName: combo.breakName, ...opts }))).join("");
+
+      return `
+        <article class="review-panel" data-theme="${combo.theme}">
+          <div class="review-panel-heading"><h3 class="review-panel-title">${combo.device} · ${combo.theme === "dark" ? "Dark" : "Light"}</h3><p class="review-panel-description">정본 상태 5종 · 크기 축 없음 · 세로 크기 조절만</p></div>
+          <div class="review-group">
+            <h4 class="review-group-title">상태 비교</h4>
+            <div class="review-grid">${cells}</div>
+          </div>
+          <hr class="review-separator">
+          <div class="review-group">
+            <h4 class="review-group-title">실제로 입력해보기</h4>
+            <p class="review-panel-description">입력하면 Focus 색으로 바뀝니다. 오른쪽 아래를 끌면 세로로만 커집니다.</p>
+            <div class="review-component-slot">${textareaMarkup({ breakName: combo.breakName })}</div>
+          </div>
+        </article>`;
+    }
+
+    /* ── Multi Toggle — 정본에 모바일 크기가 없어 PC 전용. Light·Dark 두 벌만 비교한다. ── */
+    function multiToggleMarkup({ size, selected = 0, disabled = false, label = "정렬 기준", statik = false }) {
+      uniqueId += 1;
+      const cells = [["left", "왼쪽"], ["center", "가운데"], ["right", "오른쪽"]];
+      const body = cells.map(([value, text], index) =>
+        `<button type="button" data-s1-part="cell" role="radio" aria-checked="${index === selected}" data-value="${value}"${disabled ? ' aria-disabled="true"' : ""}${statik ? ' tabindex="-1"' : ""}>${text}</button>`).join("");
+      /* 정적 표본은 초기화하지 않는다 — 런타임은 선택이 없으면 첫 칸을 자동 선택하므로
+         Default(선택 없음) 표본이 사라진다. 실제로 눌러보는 인스턴스만 init 한다. */
+      const staticAttrs = statik ? ' data-review-static="true"' : "";
+      return `<div data-s1-component="multi-toggle" data-size="${size}" role="radiogroup" aria-label="${label} ${uniqueId}"${staticAttrs}>${body}</div>`;
+    }
+
+    let reviewTableId = 0;
+    function tableReviewMarkup({ size = "md", statik = false } = {}) {
+      const rows = [
+        { name: "기본 행", category: "카테고리 A", count: 10, state: "활성", force: "" },
+        { name: "Hover 행", category: "카테고리 B", count: 20, state: "검토중", force: ' data-state="hover"' },
+        { name: "선택된 행", category: "카테고리 C", count: 30, state: "완료", force: ' data-state="selected"', checked: true }
+      ];
+      const body = rows.map((row) => {
+        reviewTableId += 1;
+        return `<tr data-s1-part="row"${row.checked ? ' data-selected="true"' : ""}>
+          <td data-s1-part="cell" data-selection${row.force}><div data-s1-component="checkbox"><input type="checkbox" data-s1-part="control" aria-label="${row.name} 선택"${row.checked ? " checked" : ""}${statik ? ' tabindex="-1"' : ""}></div></td>
+          <td data-s1-part="cell"${row.force}>${row.name}</td>
+          <td data-s1-part="cell"${row.force}>${row.category}</td>
+          <td data-s1-part="cell" data-align="center"${row.force}>${row.count}</td>
+          <td data-s1-part="cell" data-align="center"${row.force}>${row.state}</td>
+        </tr>`;
+      }).join("");
+      reviewTableId += 1;
+      return `<div data-s1-component="table" data-size="${size}"${statik ? ' data-review-static' : ""}>
+        <table data-s1-part="table">
+          <thead><tr>
+            <th data-s1-part="header-cell" data-selection scope="col"><div data-s1-component="checkbox"><input type="checkbox" data-s1-part="control" aria-label="전체 선택"${statik ? ' tabindex="-1"' : ""}></div></th>
+            <th data-s1-part="header-cell" scope="col">항목명</th>
+            <th data-s1-part="header-cell" scope="col">카테고리</th>
+            <th data-s1-part="header-cell" data-align="center" scope="col">수량</th>
+            <th data-s1-part="header-cell" data-align="center" scope="col">상태</th>
+          </tr></thead>
+          <tbody>${body}</tbody>
+        </table>
+      </div>`;
+    }
+
+    function renderTablePanel(combo) {
+      const sizes = [["md", "MD · 행 44 · 글자 14"], ["sm", "SM · 행 38 · 글자 14"], ["xsm", "XSM · 행 34 · 글자 12"]];
+      const blocks = sizes.map(([size, sizeLabel]) =>
+        `<div class="review-group"><h4 class="review-group-title">${sizeLabel}</h4><div class="review-component-slot">${tableReviewMarkup({ size, statik: true })}</div></div>`
+      ).join('<hr class="review-separator">');
+      return `
+        <article class="review-panel" data-theme="${combo.theme}">
+          <div class="review-panel-heading"><h3 class="review-panel-title">${combo.label}</h3><p class="review-panel-description">정본 상태 3종 × 세 크기 · 선택 컬럼은 Checkbox 배포본 · PC 전용</p></div>
+          <div class="review-group">
+            <h4 class="review-group-title">실제로 눌러보기</h4>
+            <p class="review-panel-description">행 체크박스를 누르면 그 행이 선택되고, 맨 위 체크박스로 전체를 켜고 끕니다. Tab·Space로도 됩니다.</p>
+            <div class="review-component-slot">${tableReviewMarkup({ size: "md" })}</div>
+          </div>
+          <hr class="review-separator">
+          ${blocks}
+        </article>`;
+    }
+
+    function renderMultiTogglePanel(combo) {
+      const sizes = [["md", "MD · 44px"], ["sm", "SM · 34px"]];
+      const blocks = sizes.map(([size, sizeLabel]) => {
+        const cells = [
+          ["Default · 선택 없음", { selected: -1 }],
+          ["Selected", { selected: 1 }],
+          ["Hover · 마우스를 올려 확인", { selected: -1 }],
+          ["Disabled", { selected: -1, disabled: true }]
+        ].map(([label, opts]) => sample(label, multiToggleMarkup({ size, statik: true, ...opts }))).join("");
+        return `<div class="review-group"><h4 class="review-group-title">${sizeLabel}</h4><div class="review-grid">${cells}</div></div>`;
+      }).join('<hr class="review-separator">');
+
+      return `
+        <article class="review-panel" data-theme="${combo.theme}">
+          <div class="review-panel-heading"><h3 class="review-panel-title">${combo.label}</h3><p class="review-panel-description">정본 상태 4종 × 두 크기(MD 44 · SM 34) · PC 전용</p></div>
+          <div class="review-group">
+            <h4 class="review-group-title">실제로 눌러보기</h4>
+            <p class="review-panel-description">칸을 누르면 선택이 옮겨집니다. Tab으로 들어와 화살표 키로도 이동합니다.</p>
+            <div class="review-component-slot">${multiToggleMarkup({ size: "md", label: "정렬 기준 실물" })}</div>
+          </div>
+          <hr class="review-separator">
+          ${blocks}
+        </article>`;
+    }
+
+    /* ── Modal — 정본 변형 4가지(Break × Footer). 상태 축이 없어 변형을 표본으로 본다. ── */
+    function modalMarkup({ breakName, footer, statik = false }) {
+      uniqueId += 1;
+      const titleId = `review-modal-title-${uniqueId}`;
+      const messageId = `review-modal-message-${uniqueId}`;
+      const mobile = breakName === "mobile";
+      const buttonSize = mobile ? "lg" : "xxsm";
+      const title = mobile ? (footer === "dual" ? "자동 로그인 설정" : "업데이트 안내") : "제목 영역";
+      const message = mobile
+        ? (footer === "dual" ? "로그인되었어요.\n다음부터 자동으로 로그인할까요?" : "보다 안정적인 서비스 이용을 위해 최신\n버전으로 업데이트해 주세요.")
+        : (footer === "dual" ? "변경한 내용이 저장되지 않고 사라집니다.\n정말 이 작업을 진행하시겠어요?" : "요청하신 작업이 정상적으로 처리되었습니다.\n변경된 내용은 목록에서 확인하실 수 있어요.");
+      const labels = footer === "dual" ? (mobile ? ["아니오", "네"] : ["취소", "확인"]) : (mobile ? ["업데이트"] : ["확인"]);
+      const tab = statik ? ' tabindex="-1"' : "";
+      const buttons = labels.map((label, index) => {
+        const variant = labels.length === 2 && index === 0 ? "secondary" : "primary";
+        return `<button type="button" data-s1-component="button" data-variant="${variant}" data-size="${buttonSize}" data-modal-close${tab}><span data-s1-part="label">${label}</span></button>`;
+      }).join("");
+      /* 정본은 PC 에만 닫기(X)를 둔다. */
+      const close = mobile ? "" : `<button type="button" data-s1-part="close" aria-label="닫기"${tab}></button>`;
+      /* 정적 표본은 초기화하지 않는다 — init 하면 배경 스크롤이 잠긴 채 남는다. */
+      const staticAttrs = statik ? ' data-review-static="true" class="is-review-inline"' : "";
+      return `<div data-s1-component="modal" data-break="${breakName}" data-footer="${footer}"${staticAttrs}${statik ? "" : " hidden"}>
+          <div data-s1-part="overlay"></div>
+          <div data-s1-part="panel" role="dialog" aria-modal="true" aria-labelledby="${titleId}" aria-describedby="${messageId}" tabindex="-1">
+            <div data-s1-part="content">
+              <div data-s1-part="header"><h2 data-s1-part="title" id="${titleId}">${title}</h2>${close}</div>
+              <div data-s1-part="body"><p data-s1-part="message" id="${messageId}">${message}</p></div>
+            </div>
+            <div data-s1-part="footer">${buttons}</div>
+          </div>
+        </div>`;
+    }
+
+    function renderModalPanel(combo) {
+      const cells = [["Single · 버튼 1개", "single"], ["Dual · 버튼 2개", "dual"]]
+        .map(([label, footer]) => sample(label, modalMarkup({ breakName: combo.breakName, footer, statik: true }))).join("");
+      const width = combo.device === "Mobile" ? "300px · 닫기 없음" : "360px · 닫기 있음";
+      return `
+        <article class="review-panel" data-theme="${combo.theme}">
+          <div class="review-panel-heading"><h3 class="review-panel-title">${combo.theme === "dark" ? "Dark" : "Light"} · ${combo.device}</h3><p class="review-panel-description">정본 변형 2가지 · 패널 ${width}</p></div>
+          <div class="review-group">
+            <h4 class="review-group-title">실제로 열어보기</h4>
+            <p class="review-panel-description">누르면 화면 전체를 덮는 진짜 팝업이 뜹니다. Esc로 닫히고 닫으면 초점이 이 버튼으로 돌아옵니다.</p>
+            <div class="review-component-slot">
+              <button type="button" data-s1-component="button" data-variant="secondary" data-size="${combo.device === "Mobile" ? "lg" : "md"}" data-modal-open><span data-s1-part="label">모달 열기</span></button>
+              ${modalMarkup({ breakName: combo.breakName, footer: "dual" })}
+            </div>
+          </div>
+          <hr class="review-separator">
+          <div class="review-grid">${cells}</div>
+        </article>`;
+    }
+
     document.querySelector("#input-review-matrix").innerHTML = combinations.map(renderInputPanel).join("");
     document.querySelector("#button-review-matrix").innerHTML = combinations.map(renderButtonPanel).join("");
     document.querySelector("#checkbox-review-matrix").innerHTML = controlThemes.map((combo) => renderControlPanel("checkbox", combo)).join("");
@@ -1007,6 +1234,10 @@
     document.querySelector("#select-review-matrix").innerHTML = combinations.map(renderSelectPanel).join("");
     document.querySelector("#dropdown-review-matrix").innerHTML = controlThemes.map(renderDropdownPanel).join("");
     document.querySelector("#filter-chip-review-matrix").innerHTML = combinations.map(renderFilterChipPanel).join("");
+    document.querySelector("#textarea-review-matrix").innerHTML = combinations.map(renderTextareaPanel).join("");
+    document.querySelector("#multi-toggle-review-matrix").innerHTML = controlThemes.map(renderMultiTogglePanel).join("");
+    document.querySelector("#modal-review-matrix").innerHTML = combinations.map(renderModalPanel).join("");
+    document.querySelector("#table-review-matrix").innerHTML = controlThemes.map(renderTablePanel).join("");
     document.querySelectorAll('[data-s1-component="input"]').forEach((root) => S1UI.input.init(root));
     document.querySelectorAll('[data-s1-component="toggle"]').forEach((root) => S1UI.toggle.init(root));
     document.querySelectorAll('[data-s1-component="chip"]').forEach((root) => S1UI.chip.init(root));
@@ -1015,12 +1246,25 @@
     document.querySelectorAll('[data-s1-component="select"]:not([data-review-static])').forEach((root) => S1UI.select.init(root));
     document.querySelectorAll('[data-s1-component="filter-chip"]:not([data-review-static])').forEach((root) => S1UI.filterChip.init(root));
     document.querySelectorAll('[data-s1-component="dropdown"]:not([data-review-static])').forEach((root) => S1UI.dropdown.init(root));
+    /* Textarea 는 런타임이 없다(jsRequired:false) — CSS 와 네이티브 동작만으로 상태가 바뀐다. */
+    document.querySelectorAll('[data-s1-component="multi-toggle"]:not([data-review-static])').forEach((root) => S1UI.multiToggle.init(root));
+    /* 표도 정적 표본(data-review-static)은 초기화하지 않는다 — 초기화하면 강제 표시한 Hover·선택 칸이 풀린다. */
+    document.querySelectorAll('[data-s1-component="table"]:not([data-review-static])').forEach((root) => S1UI.table.init(root));
+    /* 모달도 정적 표본(data-review-static)은 초기화하지 않는다 — 초기화하면 배경 스크롤이 잠긴 채 남는다. */
+    document.querySelectorAll('[data-s1-component="modal"]:not([data-review-static])').forEach((root) => {
+      const opener = root.parentElement?.querySelector("[data-modal-open]");
+      /* 배포본 계약대로 body 바로 아래로 옮긴다 — 검수 지면 안에 두면 위 요소가 모달을 덮는다. */
+      document.body.append(root);
+      const api = S1UI.modal.init(root);
+      opener?.addEventListener("click", () => api?.open());
+      root.querySelectorAll("[data-modal-close]").forEach((button) => button.addEventListener("click", () => api?.close({ reason: "footer-button" })));
+    });
 
     const focusStatus = document.querySelector("#review-live-status");
     document.addEventListener("focusin", (event) => {
       const component = event.target.closest("[data-s1-component]");
       if (!component) return;
-      const names = { input: "Base Input", button: "Button", checkbox: "Checkbox", radio: "Radio", toggle: "Toggle", chip: "Chip", select: "Select Box", dropdown: "Dropdown", "filter-chip": "Filter Chip" };
+      const names = { input: "Base Input", button: "Button", checkbox: "Checkbox", radio: "Radio", toggle: "Toggle", chip: "Chip", select: "Select Box", dropdown: "Dropdown", "filter-chip": "Filter Chip", textarea: "Textarea", "multi-toggle": "Multi Toggle", modal: "Modal", table: "Table" };
       const name = names[component.dataset.s1Component] || component.dataset.s1Component;
       const size = component.dataset.size ? ` · ${component.dataset.size.toUpperCase()}` : "";
       focusStatus.textContent = `현재 초점: ${name}${size}`;
@@ -1035,7 +1279,8 @@
       `실제 배포 모듈 로드 완료 · Input ${S1UI.input.componentId}(remove 동작 포함) · Button ${S1UI.button.componentId}`
       + ` · Checkbox ${S1UI.checkbox.componentId} · Radio ${S1UI.radio.componentId} (둘 다 JavaScript 없이 동작)`
       + ` · Toggle ${S1UI.toggle.componentId} · Chip ${S1UI.chip.componentId} (aria 상태 전환 런타임 포함)`
-      + ` · Select ${S1UI.select.componentId} · Dropdown ${S1UI.dropdown.componentId} · Filter Chip ${S1UI.filterChip.componentId} (열림·키보드·바깥클릭 런타임 포함)`;
+      + ` · Select ${S1UI.select.componentId} · Dropdown ${S1UI.dropdown.componentId} · Filter Chip ${S1UI.filterChip.componentId} (열림·키보드·바깥클릭 런타임 포함)`
+      + ` · Textarea ${S1UI.textarea.componentId} (JavaScript 없이 동작) · Multi Toggle ${S1UI.multiToggle.componentId} (선택 이동·화살표 키 런타임 포함) · Table ${S1UI.table.componentId} (행 선택·전체 선택 런타임 포함)`;
 
     /* 배포 모듈이 끝까지 실행됐다는 신호. 아래 안내 스크립트가 이 값으로 성공/실패를 판단한다. */
     document.documentElement.dataset.reviewMounted = "1";

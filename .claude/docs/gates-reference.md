@@ -58,6 +58,7 @@
 | 41 | Screen Rebuild State | 화면 작업 상태 파일 정합, 전 플로우 일괄 — **warn** |
 | 42 | Screen Naming | 화면 프레임 이름과 흐름 코드 규칙 |
 | 43 | UI Icon Geometry | 누르는 영역과 분리된 SVG 틀·실제 도형 크기, source↔dist 일치 |
+| 44 | UI Guide Render | 안내 화면을 실제로 그려서 검사 — 개발 코드 플랫폼 일치 · 부품 표본이 세트 장식을 함께 보여주지 않는지 |
 | 42 | Screen Naming | 화면 프레임 이름이 네이밍 정본 규칙을 지키나 |
 
 ---
@@ -397,3 +398,13 @@ DESIGN.md(AI 소비용) 가 정본(tokens.css+registry)보다 낡으면 차단
 웹 아이콘 manifest의 `geometry.frame`(SVG가 차지하는 틀)과 `geometry.glyph`(실제 보이는 도형)를 실제 SVG 구조와 전수 대조한다. 실제 도형은 바깥 frame 안의 `data-s1-part="glyph"` SVG에만 두며, 중앙 비율 유지 규칙을 강제한다. 컴포넌트가 쓰는 아이콘 ID의 등록 여부와 source↔dist 동일성도 검사한다.
 
 검사기 자체가 과거 오류 형태(틀과 도형을 같은 24px로 취급)를 실제로 거부하는 적대 테스트를 함께 실행한다. 현재 파일만 우연히 통과하거나 검사 규칙이 약화되는 것도 차단한다. 정본 계약은 `registry/governance/ui-library-code-contract.json`, 단독 실행은 `npm run ui:icons`.
+
+### Gate 44: UI Guide Render (안내 화면 실제 렌더)
+
+안내 화면(`pages/components.html`)은 JavaScript 가 실제 dist 로 그린다. 소스 문자열 검사로는 **화면이 실제로 무엇을 보여주는지** 를 못 본다. 그래서 이 게이트는 PC·Mobile 두 화면을 헤드리스로 렌더한 DOM 을 본다.
+
+판정 항목: ①「개발 코드」HTML 이 그 플랫폼의 dist 예제와 글자 그대로 같은가 ② Mobile 상태 표에 크기 라벨이 없는가 ③ Mobile preview 가 Action 상자로 시작하는가 ④ **부품 표본 격리** — 부품 낱개 표본(`data-guide-sample="part"`)이 상위 세트가 소유한 테두리·그림자를 함께 보여주지 않는가.
+
+④ 는 2026-09-02 river 지적으로 신설했다. Table 셀 표본을 컴포넌트 루트로 감싸는 바람에 표 외곽선(위 2px·아래 1px)이 낱개 셀마다 그려져 **정본에 없는 모습**이 안내 화면에 나갔는데, 배포본 CSS 는 정확했고 표본 조립만 틀려서 계약·파리티·수치 대조 검사기가 전부 통과했다. 규칙 정본은 `registry/governance/component-presentation-policy.json` 의 `_meta.uiLibraryGuideLayout.partSampleIsolation`, 판정부는 `scripts/ui-guide-part-sample-check.js`(적대 테스트 `--selftest` 포함), 의도적 예외는 표본에 `data-guide-sample-keeps` 로 선언하면 숨겨지지 않고 경고로 보인다.
+
+단독 실행 `npm run ui:guide:render`. 크롬이 없으면 경고로 건너뛴다(`S1_SKIP_RENDER_CHECK=1`).

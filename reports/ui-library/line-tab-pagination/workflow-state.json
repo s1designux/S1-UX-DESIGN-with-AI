@@ -1,0 +1,80 @@
+{
+  "schemaVersion": 1,
+  "workflow": "ui-library-code",
+  "workId": "line-tab-pagination",
+  "objective": "정본 Line Tab과 Pagination을 실제 배포 가능한 HTML·CSS·JavaScript 모듈과 dist 기반 안내·검수 화면으로 만든다.",
+  "intent": {
+    "approvedBy": "river",
+    "approvedAt": "2026-09-02",
+    "principles": [
+      "정본에 없는 탭 아이콘·닫기·페이지당 개수 선택·생략 표기는 만들지 않는다.",
+      "Line Tab은 탭 클릭과 좌우 화살표 키로 선택을 옮긴다.",
+      "Pagination은 페이지 클릭과 양 끝의 화살표 비활성만 제공한다.",
+      "안내 화면과 검수 화면은 ui-library/dist를 직접 사용한다."
+    ]
+  },
+  "contract": { "path": "registry/governance/ui-library-code-contract.json", "version": "0.1.2", "status": "candidate" },
+  "target": { "kind": "core-components", "components": ["tab", "pagination"] },
+  "figmaSources": {
+    "role": "시각 정본은 build-components.ts이며 Figma V3.0은 선택적 사람 확인용이다.",
+    "fileKey": "cysG5U1udpQqVagYY1hWHW",
+    "requiredForInventory": false,
+    "components": {
+      "tab": { "nodeId": "540:6032", "source": "registry/components/tab.json", "sourceType": "repository", "status": "confirmed" },
+      "pagination": { "nodeId": "956:19066", "source": "registry/components/pagination.json", "sourceType": "repository", "status": "confirmed" }
+    }
+  },
+  "currentPhase": "complete",
+  "workflowStatus": "complete",
+  "uiLibraryStatus": "approved",
+  "lastCompletedCheckpoint": 6,
+  "nextAction": "없음 — 완료. 이후 정본·상태·예제 변경 시 재검증한다.",
+  "blockers": [],
+  "pendingDecisions": [],
+  "canonicalInputs": [
+    { "role": "component-visual", "path": "plugins/figma-vars-installer/src/build-components.ts", "sha256": "30e2ffa6b3a49b03c9bd36e3cf578fe676a95d61550e999c38952a95cb569aab" },
+    { "role": "token-values", "path": "plugins/figma-vars-installer/src/vars-data.ts", "sha256": "87edd42623983fb5e02e820940dbbc3693ecb4b2c79104e781c8307501984cd9" },
+    { "role": "text-styles", "path": "plugins/figma-vars-installer/src/textstyles-data.ts", "sha256": "dc0db42d87503e80e9da8ad1246090f58e79106593a57815b0568aebcb9d51d3" },
+    { "role": "tab-registry", "path": "registry/components/tab.json", "sha256": "a20f031896bf60ed582d96aad877eedd164316b94b32b2b45a46a7d54dcab808" },
+    { "role": "pagination-registry", "path": "registry/components/pagination.json", "sha256": "f73e142787d136251e208e879ff6208b7c13a1ea4368e08aa4400b22408a406f" },
+    { "role": "behavior", "path": "registry/components/component-behavior.pc.json", "sha256": "3be3f18da541bf6218952a1196c1fee356d8a778c00f36368e7a146e81f3b0fd" }
+  ],
+  "artifacts": {
+    "policyContract": "registry/governance/ui-library-code-contract.json",
+    "humanGuide": "registry/governance/ui-library-authoring-guide.md",
+    "componentChecklist": "registry/governance/ui-library-component-checklist.md",
+    "repositoryInventory": "reports/component-inventory-audit.md",
+    "inventory": "reports/ui-library/line-tab-pagination/1-inventory.md",
+    "canonReadiness": "reports/ui-library/line-tab-pagination/2-canon-readiness.md",
+    "build": "reports/ui-library/line-tab-pagination/3-build.md",
+    "verification": "reports/ui-library/line-tab-pagination/4-verification.md",
+    "humanReview": "reports/ui-library/line-tab-pagination/5-human-review.md",
+    "promotion": "reports/ui-library/line-tab-pagination/6-promotion.md",
+    "migrationRecord": "registry/governance/ui-library-migration.json",
+    "sourceRoot": "ui-library/src",
+    "distManifest": "ui-library/dist/manifest.json",
+    "reviewPage": "pages/components.html",
+    "screens": ["reports/ui-library/line-tab-pagination/screens/guide-line-tab-pc-final.png", "reports/ui-library/line-tab-pagination/screens/guide-line-tab-mobile-final.png", "reports/ui-library/line-tab-pagination/screens/guide-pagination-pc-final.png", "reports/ui-library/line-tab-pagination/screens/guide-multi-toggle-pc-fixed.png"]
+  },
+  "decisions": [
+    "registry의 기존 Line Tab 행동 기록(native-button-click-only)은 river가 지정한 좌우 화살표 이동과 충돌해 이를 최신 행동 계약으로 교정했다.",
+    "Pagination 화살표는 별도 신규 SVG·토큰을 만들지 않고 정본이 지정한 네 가지 이동 역할과 기존 pagination 색 토큰으로 표현했다.",
+    "Pagination 접근성 상태 표기는 pending에서 implemented로 갱신했다. native button, aria-current, 한국어 접근 이름, focus-visible 계약을 manifest로 명시했다.",
+    "2026-09-02 river 피드백: Line Tab의 기본·Hover·선택 상태가 같은 2px 인디케이터 공간을 사용하도록 바꿔 XSM 라벨이 움직이지 않게 했다. Action 제목·구분선은 공통 comp-action-top 틀로 복구했고, 각 플랫폼 화면과 개발 코드는 현재 플랫폼 예제만 쓰도록 실제 렌더 검사로 고정했다.",
+    "2026-09-02 river 추가 피드백: Line Tab Action 블록은 상태와 40px 여백·24px 구분선 안쪽 여백으로 분리하고, 크기 표기는 다른 안내 화면과 같은 matrix-col-header 글자 체계를 사용한다. Pagination은 문자 기호를 제거하고 Figma V2.2 chevron·edge_set의 정본 설치기 벡터 경로를 사용한다.",
+    "2026-09-02 river 재피드백: Line Tab만의 예외가 아니라 신규 안내 화면 전체가 같은 Action 제목 글자 체계(12px·600)와 Action–상태 간격(구분선 안쪽 24px·이후 48px)을 사용하도록 공통 CSS로 승격했다. Pagination도 같은 Action 블록 구조로 바꿨다.",
+    "2026-09-02 river 정정: 공통화는 간격만 적용한다. Action 제목은 기존 기준의 초록색·10px·700 굵은 글자 스타일을 신규 안내 화면 전체에 유지한다.",
+    "2026-09-02 Line Tab 기준선 수정: 기본 회색선과 선택·Hover 2px 선을 각각 버튼 내부와 바깥 border로 그려 생긴 수직 어긋남을 없앴다. 두 선은 이제 tablist의 같은 bottom:0 기준을 공유하고, 선택선은 pseudo-element로 겹쳐 그린다."
+  ],
+  "evidence": {
+    "sourceAudit": { "status": "PASS", "actor": "source-reader", "observedAt": "2026-09-02", "basis": "build-components.ts · Registry · source/dist build wiring", "summary": "정본 buildLineTab/buildLineTabSet 및 buildPaginationCell/buildPaginationBar, Registry, 토큰과 기존 배선 자리를 대조했다. 미결정 기능 0건." },
+    "build": { "status": "PASS", "summary": "source 2종·개별 dist 2종·bundle·자동 초기화·개별 설치·안내 페이지를 같은 source에서 생성했다." },
+    "technicalVerification": { "status": "PASS", "checks": ["npm run ui:contract", "npm run ui:icons", "npm run ui:build", "npm run ui:test", "npm run ui:build -- --check"], "actualRender": "PC·Mobile Line Tab, PC Multi Toggle·Pagination 실제 브라우저 렌더 캡처와 ui-guide-render-check 통과" },
+    "implementationActualRender": { "verdict": "PASS", "actor": "codex", "observedAt": "2026-09-02", "summary": "실제 dist 기반 PC 검수 캡처와 PC·Mobile 안내 화면 렌더 검사를 통과했다." },
+    "independentVerification": { "verdict": "PASS", "actor": "component-verifier scenario F", "summary": "실제 dist 기반 안내 화면 렌더 검사가 PC·Mobile에 대해 통과했다. 별도 검사기가 Pagination 정본 JSON 문법 오류를 찾아 수정 후 재검증했다." }
+    ,"riverApproval": { "status": "approved", "by": "river", "at": "2026-09-02", "scope": "Line Tab·Pagination 실제 디자인가이드와 배포본", "summary": "river가 최근 제작한 웹사이트 내용을 검토 완료 후 승인했다." }
+    ,"promotionDecision": { "status": "approved", "by": "river", "at": "2026-09-02", "report": "reports/ui-library/line-tab-pagination/6-promotion.md" }
+  },
+  "ownership": {},
+  "handoff": { "lastActor": "codex", "updatedAt": "2026-09-02", "summary": "river UX 승인 후 Line Tab·Pagination manifest를 approved로 승격하고, dist·공개 안내 화면·이행 장부를 동기화했다." }
+}

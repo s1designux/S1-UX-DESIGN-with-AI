@@ -493,6 +493,24 @@
   padding-left: var(--spacing-20);
 }
 
+/* ── Textarea · Multi Toggle 가이드 배치 + forced state (preview only) ──
+   forced state 는 dist 의 Focus·Hover 규칙과 같은 토큰만 쓴다(새 값 신설 없음).
+   미리보기 칸은 초점·마우스를 받지 않아(.is-preview) native :focus-within/:hover 가 걸리지 않는다. */
+
+.uilg-textarea-action { max-width: 480px; }
+
+[data-s1-component="textarea"][data-force-state="focus"] [data-s1-part="control"] {
+  background: var(--color-form-control-bg-selected);
+  border-color: var(--color-form-control-border-selected);
+  color: var(--color-form-control-text-selected);
+}
+
+[data-s1-component="multi-toggle"] [data-s1-part="cell"][data-force-state="hover"] {
+  background: var(--color-button-bg-secondary--hover);
+  border-color: var(--color-button-border-secondary--hover);
+  color: var(--color-button-label-secondary--hover);
+}
+
 /* ── Error state ── */
 
 .uilg-load-error {
@@ -503,6 +521,18 @@
   font-size: var(--font-size-14);
   padding: var(--spacing-16);
 }
+
+/* ── Modal 안내 화면 전용 ──
+   배포본의 모달은 화면 전체를 덮는 팝업이다(position: fixed). 안내·검수 화면에서는
+   상태 칸 안에 눕혀 보여줘야 해서 이 페이지가 자리만 바꾼다. 이 CSS 는 dist 에 넣지 않는다
+   (배포본 계약 cssContract.previewNote). 색·크기·간격은 그대로 dist 가 그린다. */
+.uilg [data-s1-component="modal"].is-preview {
+  inset: auto;
+  padding: var(--spacing-24);
+  position: relative;
+}
+
+.uilg-modal-action { display: flex; }
 
 /* ── Responsive ── */
 

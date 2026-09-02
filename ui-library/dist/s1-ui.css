@@ -1047,3 +1047,479 @@
 [data-s1-component="filter-chip"] [data-s1-part="panel"][hidden] {
   display: none;
 }
+
+/* component:tab */
+/* Line Tab — buildLineTab / buildLineTabSet 기준. 탭 자체에는 여백을 넣지 않아
+   인디케이터가 묶음 전체에서 끊기지 않고 이어진다. */
+[data-s1-component="tab"] {
+  align-items: stretch;
+  background: var(--color-navigation-bg);
+  display: inline-flex;
+  position: relative;
+}
+
+/* 기본선과 선택선 모두 탭 묶음의 같은 바닥선에서 시작한다.
+   버튼 안쪽 shadow를 기준선으로 쓰면 투명 2px 공간 위에 그려져 선택선보다 올라가 보인다. */
+[data-s1-component="tab"]::before {
+  background: var(--color-navigation-indicator-default);
+  bottom: 0;
+  content: "";
+  height: var(--border-width-1);
+  left: 0;
+  position: absolute;
+  right: 0;
+}
+
+[data-s1-component="tab"] [data-s1-part="tab"] {
+  align-items: center;
+  appearance: none;
+  background: transparent;
+  /* 선택선 공간은 padding으로 미리 확보한다. pseudo-element는 레이아웃을 바꾸지 않는다. */
+  border: 0;
+  box-sizing: border-box;
+  color: var(--color-navigation-label-default);
+  cursor: pointer;
+  display: inline-flex;
+  flex: 1 1 0;
+  font-family: "Pretendard", sans-serif;
+  font-weight: var(--font-weight-medium);
+  justify-content: center;
+  margin: 0;
+  min-width: 76px;
+  padding: 0 var(--spacing-16) var(--border-width-2);
+  position: relative;
+  white-space: nowrap;
+  z-index: 1;
+}
+
+[data-s1-component="tab"][data-size="md"][data-break="pc"] [data-s1-part="tab"] { height: var(--sizing-44); font-size: var(--font-size-18); }
+[data-s1-component="tab"][data-size="sm"][data-break="pc"] [data-s1-part="tab"] { height: 42px; font-size: var(--font-size-16); }
+[data-s1-component="tab"][data-size="xsm"][data-break="pc"] [data-s1-part="tab"] { height: var(--sizing-40); font-size: var(--font-size-14); }
+[data-s1-component="tab"][data-size="sm"][data-break="mobile"] [data-s1-part="tab"] { height: var(--sizing-32); font-size: var(--font-size-16); }
+
+@media (hover: hover) {
+  [data-s1-component="tab"] [data-s1-part="tab"]:hover:not([aria-selected="true"]),
+  [data-s1-component="tab"] [data-s1-part="tab"][data-force-state="hover"]:not([aria-selected="true"]) { color: var(--color-navigation-label-hover); }
+}
+
+[data-s1-component="tab"] [data-s1-part="tab"]:hover:not([aria-selected="true"])::after,
+[data-s1-component="tab"] [data-s1-part="tab"][data-force-state="hover"]:not([aria-selected="true"])::after,
+[data-s1-component="tab"] [data-s1-part="tab"][aria-selected="true"]::after { bottom: 0; content: ""; height: var(--border-width-2); left: 0; position: absolute; right: 0; }
+[data-s1-component="tab"] [data-s1-part="tab"]:hover:not([aria-selected="true"])::after,
+[data-s1-component="tab"] [data-s1-part="tab"][data-force-state="hover"]:not([aria-selected="true"])::after { background: var(--color-navigation-indicator-hover); }
+[data-s1-component="tab"] [data-s1-part="tab"][aria-selected="true"] { color: var(--color-navigation-label-selected); }
+[data-s1-component="tab"] [data-s1-part="tab"][aria-selected="true"]::after { background: var(--color-navigation-indicator-selected); }
+[data-s1-component="tab"] [data-s1-part="tab"]:focus-visible { outline: var(--border-width-2) solid var(--color-navigation-indicator-selected); outline-offset: calc(-1 * var(--border-width-2)); }
+[data-s1-component="tab"] [role="tabpanel"][hidden] { display: none; }
+
+/* component:pagination */
+/* Pagination — 28px control, 화살표 그룹 4px · 페이지 그룹과 8px 간격. */
+[data-s1-component="pagination"] { align-items: center; display: inline-flex; font-family: "Pretendard", sans-serif; gap: var(--spacing-8); }
+[data-s1-component="pagination"] [data-s1-part="arrow-group"], [data-s1-component="pagination"] [data-s1-part="pages"] { align-items: center; display: inline-flex; gap: var(--spacing-4); }
+[data-s1-component="pagination"] [data-s1-part="pages"] { gap: 0; }
+[data-s1-component="pagination"] button { align-items: center; appearance: none; background: var(--color-pagination-control-bg-default); border: var(--border-width-1) solid var(--color-pagination-control-border-default); border-radius: var(--radius-control-xs); box-sizing: border-box; color: var(--color-pagination-control-icon-default); cursor: pointer; display: inline-flex; font: inherit; font-size: var(--font-size-14); font-weight: var(--font-weight-medium); height: var(--sizing-28); justify-content: center; margin: 0; min-width: var(--sizing-28); padding: 0; }
+[data-s1-component="pagination"] [data-s1-part="page"] { background: transparent; border-color: transparent; color: var(--color-pagination-number-default); }
+[data-s1-component="pagination"] [data-s1-part="icon"] { background-color: currentColor; display: block; height: var(--sizing-24); -webkit-mask: url("./assets/icons/chevron.svg") center / contain no-repeat; mask: url("./assets/icons/chevron.svg") center / contain no-repeat; width: var(--sizing-24); }
+[data-s1-component="pagination"] [data-s1-part="icon"][data-icon="edge"] { -webkit-mask-image: url("./assets/icons/pagination-edge.svg"); mask-image: url("./assets/icons/pagination-edge.svg"); }
+[data-s1-component="pagination"] [data-s1-action="previous"] [data-s1-part="icon"], [data-s1-component="pagination"] [data-s1-action="last"] [data-s1-part="icon"] { transform: rotate(180deg); }
+@media (hover: hover) { [data-s1-component="pagination"] button:hover:not(:disabled) { background: var(--color-pagination-control-bg-hover); color: var(--color-pagination-control-icon-hover); } [data-s1-component="pagination"] [data-s1-part="page"]:hover:not(:disabled) { color: var(--color-pagination-number-hover); } }
+[data-s1-component="pagination"] [data-s1-part="page"][aria-current="page"] { color: var(--color-pagination-number-selected); }
+[data-s1-component="pagination"] button:disabled { background: var(--color-pagination-control-bg-disabled); border-color: var(--color-pagination-control-border-disabled); color: var(--color-pagination-control-icon-disabled); cursor: not-allowed; }
+[data-s1-component="pagination"] button:focus-visible { outline: var(--border-width-2) solid var(--color-pagination-control-icon-default); outline-offset: var(--spacing-2); }
+
+/* component:textarea */
+/* Textarea — 정본 buildTextarea(build-components.ts:1388) 기준.
+   축은 State 1개뿐(default·focus·filled·disabled·readonly) — size 축·helper·counter·label 부품 없음(1-inventory.md A).
+   색은 color/form-control/* 을 Input 과 그대로 공유한다(registry textarea.json doDont). */
+[data-s1-component="textarea"] {
+  box-sizing: border-box;
+  display: block;
+  width: 100%;
+}
+
+[data-s1-component="textarea"] [data-s1-part="control"] {
+  appearance: none;
+  background: var(--color-form-control-bg-default);
+  border: var(--border-width-1) solid var(--color-form-control-border-default);
+  border-radius: var(--radius-control-sm);
+  box-sizing: border-box;
+  caret-color: var(--color-form-control-text-cursor);
+  color: var(--color-form-control-text-default);
+  display: block;
+  font-family: "Pretendard", sans-serif;
+  font-size: var(--font-size-14);
+  font-weight: var(--font-weight-regular);
+  letter-spacing: var(--letter-spacing-tight);
+  line-height: var(--line-height-130);
+  margin: 0;
+  min-height: var(--sizing-80);
+  outline: 0;
+  padding: var(--spacing-12) var(--spacing-12) var(--spacing-10) var(--spacing-10);
+  resize: vertical;
+  width: 100%;
+}
+
+[data-s1-component="textarea"] [data-s1-part="control"]::placeholder {
+  color: var(--color-form-control-text-placeholder);
+  opacity: var(--opacity-100);
+}
+
+/* Focus — 정본은 텍스트+커서를 lead 프레임으로 묶어 표시하지만 웹은 네이티브 :focus-within 으로 동일 토큰을 적용한다. */
+[data-s1-component="textarea"]:focus-within [data-s1-part="control"] {
+  background: var(--color-form-control-bg-selected);
+  border-color: var(--color-form-control-border-selected);
+  color: var(--color-form-control-text-selected);
+}
+
+/* Filled — 정본 Filled variant 는 값이 있을 때의 문서 상태다. 웹은 강제 시각 상태를 만들지 않고 네이티브 값 존재로 다룬다(2-canon-readiness.md B). */
+
+[data-s1-component="textarea"] [data-s1-part="control"][readonly] {
+  background: var(--color-form-control-bg-disabled);
+  border-color: var(--color-form-control-border-default);
+  color: var(--color-form-control-text-read-only);
+  cursor: default;
+}
+
+[data-s1-component="textarea"] [data-s1-part="control"]:disabled {
+  background: var(--color-form-control-bg-disabled);
+  border-color: var(--color-form-control-border-disabled);
+  color: var(--color-form-control-text-disabled);
+  cursor: not-allowed;
+}
+
+[data-s1-component="textarea"] [data-s1-part="control"]:disabled::placeholder {
+  color: var(--color-form-control-text-disabled);
+}
+
+/* 정본에 focus 변형 색이 이미 있어 별도 키보드 전용 토큰을 만들지 않는다 — 선택 테두리 토큰을 그대로 쓴다. */
+[data-s1-component="textarea"] [data-s1-part="control"]:focus-visible {
+  outline: var(--border-width-2) solid var(--color-form-control-border-selected);
+  outline-offset: var(--spacing-2);
+}
+
+/* component:multi-toggle */
+/* Multi Toggle — 정본 buildMultiToggleElement(:5376) · buildMultiToggle(:5513) 기준.
+   셀 색은 자체 토큰 없이 color/button/* 을 그대로 쓴다(선택=primary, 비선택=secondary, 비활성=disabled).
+   위치(모서리·인접 보더)는 :first-child/:last-child + 선택 칸 기준 인접 규칙으로 구현한다(2-canon-readiness.md C). */
+[data-s1-component="multi-toggle"] {
+  box-sizing: border-box;
+  display: inline-flex;
+}
+
+[data-s1-component="multi-toggle"] [data-s1-part="cell"] {
+  align-items: center;
+  appearance: none;
+  background: var(--color-button-bg-secondary--default);
+  border: var(--border-width-1) solid var(--color-button-border-secondary--default);
+  box-sizing: border-box;
+  color: var(--color-button-label-secondary--default);
+  cursor: pointer;
+  display: inline-flex;
+  /* 선택 위치와 무관하게 각 칸의 외곽 폭을 고정한다. */
+  flex: 0 0 auto;
+  font-family: "Pretendard", sans-serif;
+  font-size: var(--font-size-14);
+  font-weight: var(--font-weight-medium);
+  justify-content: center;
+  margin: 0;
+  padding: 0;
+  white-space: nowrap;
+}
+
+[data-s1-component="multi-toggle"][data-size="md"] [data-s1-part="cell"] {
+  height: var(--sizing-44);
+  min-width: var(--sizing-64);
+  padding-inline: var(--spacing-12);
+}
+
+[data-s1-component="multi-toggle"][data-size="sm"] [data-s1-part="cell"] {
+  height: var(--sizing-34);
+  min-width: var(--sizing-56);
+  padding-inline: var(--spacing-8);
+}
+
+/* 첫/마지막 칸만 바깥 모서리를 둥글린다(정본 first·last cornerRadius). */
+[data-s1-component="multi-toggle"] [data-s1-part="cell"]:first-child {
+  border-bottom-left-radius: var(--radius-control-sm);
+  border-top-left-radius: var(--radius-control-sm);
+}
+
+[data-s1-component="multi-toggle"] [data-s1-part="cell"]:last-child {
+  border-bottom-right-radius: var(--radius-control-sm);
+  border-top-right-radius: var(--radius-control-sm);
+}
+
+/* 칸 사이 이중선은 음수 여백으로 겹친다. border를 없애면 오른쪽 선택 시
+   왼쪽 칸의 실제 폭이 1px 줄어드는 문제가 생긴다. */
+[data-s1-component="multi-toggle"] [data-s1-part="cell"]:not(:first-child) {
+  margin-left: calc(-1 * var(--border-width-1));
+}
+
+@media (hover: hover) {
+  [data-s1-component="multi-toggle"] [data-s1-part="cell"]:hover:not([aria-checked="true"]):not([aria-disabled="true"]) {
+    background: var(--color-button-bg-secondary--hover);
+    border-color: var(--color-button-border-secondary--hover);
+    color: var(--color-button-label-secondary--hover);
+  }
+}
+
+[data-s1-component="multi-toggle"] [data-s1-part="cell"][aria-checked="true"] {
+  background: var(--color-button-bg-primary--default);
+  border-color: var(--color-button-border-primary--default);
+  color: var(--color-button-label-primary--default);
+  position: relative;
+  z-index: 1;
+}
+
+[data-s1-component="multi-toggle"] [data-s1-part="cell"][aria-disabled="true"] {
+  background: var(--color-button-bg-disabled);
+  border-color: var(--color-button-border-disabled);
+  color: var(--color-button-label-disabled);
+  cursor: not-allowed;
+}
+
+[data-s1-component="multi-toggle"] [data-s1-part="cell"]:focus-visible {
+  outline: var(--border-width-2) solid var(--color-button-border-primary--default);
+  outline-offset: calc(-1 * var(--border-width-2));
+  z-index: 2;
+}
+
+/* component:modal */
+/* Modal — 정본 buildModalShell(build-components.ts:4438) 기준.
+   변형축은 Break(PC·Mobile) × Footer(Single·Dual) 4가지뿐이다. 크기 축·상태 축은 정본에 없다.
+   딤(overlay)은 정본 빌더에 없고 registry modal.json anatomy·tokens 가 소유한다(의미의 정본). */
+[data-s1-component="modal"] {
+  align-items: center;
+  display: flex;
+  inset: 0;
+  justify-content: center;
+  position: fixed;
+  z-index: 1000;
+}
+
+[data-s1-component="modal"][hidden] { display: none; }
+
+/* 딤 — color/overlay (라이트 rgba(0,0,0,0.5) · 다크 0.75, EX03 rgba 예외) */
+[data-s1-component="modal"] [data-s1-part="overlay"] {
+  background: var(--color-overlay);
+  inset: 0;
+  position: absolute;
+}
+
+/* 패널 — surface/raised · radius/8 · 1px modal/panel/border(INSIDE) · shadow/raised.
+   정본 clipsContent=true 라 넘치는 내용을 자른다(긴 본문은 콘텐츠 계열 담당 — registry guardrail). */
+[data-s1-component="modal"] [data-s1-part="panel"] {
+  background: var(--color-surface-raised);
+  border: var(--border-width-1) solid var(--color-modal-panel-border);
+  border-radius: var(--radius-8);
+  box-shadow: var(--shadow-raised);
+  box-sizing: border-box;
+  display: flex;
+  /* 정본 패널은 고정 폭이다(PC 360 · Mobile 300). 좁은 자리에 놓여도 줄어들면 안 된다. */
+  flex: none;
+  flex-direction: column;
+  overflow: hidden;
+  padding-block: var(--spacing-20);
+  position: relative;
+}
+
+[data-s1-component="modal"] [data-s1-part="content"] {
+  display: flex;
+  flex-direction: column;
+}
+
+[data-s1-component="modal"] [data-s1-part="header"] {
+  align-items: flex-end;          /* 정본 counterAxisAlignItems="MAX" */
+  display: flex;
+  gap: var(--spacing-8);
+  justify-content: space-between;
+}
+
+[data-s1-component="modal"] [data-s1-part="title"] {
+  color: var(--color-text-title-primary);
+  letter-spacing: var(--letter-spacing-normal);
+  line-height: var(--line-height-130);
+  margin: 0;
+}
+
+[data-s1-component="modal"] [data-s1-part="body"] {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-8);          /* 정본 body.itemSpacing = 8 */
+}
+
+[data-s1-component="modal"] [data-s1-part="message"] {
+  color: var(--color-text-body-primary);
+  letter-spacing: var(--letter-spacing-tight);
+  line-height: var(--line-height-130);
+  margin: 0;
+  white-space: pre-line;          /* 정본 예시 문구가 줄바꿈을 포함한다 */
+}
+
+[data-s1-component="modal"] [data-s1-part="footer"] {
+  display: flex;
+  gap: var(--spacing-8);          /* 정본 Dual itemSpacing = 8 */
+}
+
+/* 닫기 — 정본은 PC 헤더에만 close 아이콘 24px(color/icon/gray-dark)을 둔다. */
+[data-s1-component="modal"] [data-s1-part="close"] {
+  appearance: none;
+  background: var(--color-icon-gray-dark);
+  border: 0;
+  cursor: pointer;
+  flex: none;
+  height: var(--sizing-24);
+  mask: url("./assets/icons/close.svg") center / contain no-repeat;
+  padding: 0;
+  width: var(--sizing-24);
+}
+
+[data-s1-component="modal"] [data-s1-part="close"]:focus-visible {
+  outline: var(--border-width-2) solid var(--color-form-control-border-selected);
+  outline-offset: var(--spacing-2);
+}
+
+/* ── Break=PC — 폭 360 · 좌우 여백은 패널이 아니라 내부 블록이 24씩 가진다(정본 paddingLeft/Right=0) ── */
+[data-s1-component="modal"][data-break="pc"] [data-s1-part="panel"] {
+  gap: var(--spacing-32);
+  width: 360px;                   /* 정본 comp.resize(360, …) build-components.ts:4512 — 대응 sizing 토큰 없음 */
+}
+
+[data-s1-component="modal"][data-break="pc"] [data-s1-part="content"] { gap: var(--spacing-32); }
+
+[data-s1-component="modal"][data-break="pc"] [data-s1-part="header"],
+[data-s1-component="modal"][data-break="pc"] [data-s1-part="body"],
+[data-s1-component="modal"][data-break="pc"] [data-s1-part="footer"] {
+  padding-inline: var(--spacing-24);
+}
+
+[data-s1-component="modal"][data-break="pc"] [data-s1-part="title"] {
+  font-size: var(--font-size-16);
+  font-weight: var(--font-weight-bold);
+}
+
+[data-s1-component="modal"][data-break="pc"] [data-s1-part="message"] {
+  font-size: var(--font-size-14);
+  font-weight: var(--font-weight-regular);
+}
+
+[data-s1-component="modal"][data-break="pc"] [data-s1-part="footer"] { justify-content: flex-end; }
+
+/* ── Break=Mobile — 폭 300 · 패널이 좌우 20 여백을 갖고 닫기 버튼이 없다 ── */
+[data-s1-component="modal"][data-break="mobile"] [data-s1-part="panel"] {
+  gap: 30px;                      /* 정본 comp.itemSpacing = 30 build-components.ts:4513 — 대응 spacing 토큰 없음 */
+  padding-inline: var(--spacing-20);
+  width: 300px;                   /* 정본 comp.resize(300, …) build-components.ts:4512 */
+}
+
+[data-s1-component="modal"][data-break="mobile"] [data-s1-part="content"] { gap: var(--spacing-24); }
+
+[data-s1-component="modal"][data-break="mobile"] [data-s1-part="title"] {
+  font-size: var(--font-size-18);
+  font-weight: var(--font-weight-bold);
+}
+
+[data-s1-component="modal"][data-break="mobile"] [data-s1-part="message"] {
+  font-size: var(--font-size-16);
+  font-weight: var(--font-weight-regular);
+}
+
+/* 정본은 모바일 푸터를 내부폭 260 에 두고 버튼을 FILL 로 채운다 — Single 은 풀폭, Dual 은 반반. */
+[data-s1-component="modal"][data-break="mobile"] [data-s1-part="footer"] > * { flex: 1 1 0; }
+
+/* component:table */
+/* Table — 정본 buildTableCell(38/44 높이, 글자 좌측 16, 하단 1px 구분선) ·
+   buildTable(외곽 상단 2px·하단 1px strong, 선택 컬럼 48px) 기준.
+   상태(Default·Hover·Selected)는 정본과 같이 '셀'이 소유하고, 행은 그 조합으로 표현한다.
+   푸터(페이지네이션·보기 셀렉트)는 이 모듈이 소유하지 않는다 — 승인된 pagination·select 배포본을 화면에서 조립한다. */
+[data-s1-component="table"] {
+  border-bottom: var(--border-width-1) solid var(--color-table-border-strong);
+  border-top: var(--border-width-2) solid var(--color-table-border-strong);
+  box-sizing: border-box;
+  display: block;
+  overflow-x: auto;
+  width: 100%;
+}
+
+[data-s1-component="table"] [data-s1-part="table"] {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+/* 셀 공통 — 높이·글자는 size 축(md 44/14, sm 38/13)을 따른다. */
+[data-s1-component="table"] [data-s1-part="header-cell"],
+[data-s1-component="table"] [data-s1-part="cell"] {
+  border-bottom: var(--border-width-1) solid var(--color-table-border-default);
+  box-sizing: border-box;
+  font-family: "Pretendard", sans-serif;
+  font-size: var(--font-size-14);
+  height: var(--sizing-44);
+  letter-spacing: var(--letter-spacing-tight);
+  padding: 0 var(--spacing-16);
+  text-align: left;
+  vertical-align: middle;
+  white-space: nowrap;
+}
+
+/* sm 은 높이만 38 로 줄인다. 글자는 md 와 같은 14 — 정본의 13 표기는 텍스트 스타일에 없어
+   줄곧 14 로 치환돼 왔고 2026-09-02 river 결정으로 정본 표기도 14 로 정정됐다. */
+[data-s1-component="table"][data-size="sm"] [data-s1-part="header-cell"],
+[data-s1-component="table"][data-size="sm"] [data-s1-part="cell"] {
+  height: var(--sizing-38);
+}
+
+/* xsm — 표 전용 기준(river 승인 2026-09-02): 높이 34 · 글자 12.
+   다른 컴포넌트의 xsm(34/14)과 달리 표는 데이터가 빽빽해 글자를 한 단계 줄인다. */
+[data-s1-component="table"][data-size="xsm"] [data-s1-part="header-cell"],
+[data-s1-component="table"][data-size="xsm"] [data-s1-part="cell"] {
+  font-size: var(--font-size-12);
+  height: var(--sizing-34);
+}
+
+[data-s1-component="table"] [data-s1-part="header-cell"] {
+  background: var(--color-table-header-bg);
+  color: var(--color-text-body-secondary);
+  font-weight: var(--font-weight-medium);
+}
+
+[data-s1-component="table"] [data-s1-part="cell"] {
+  background: var(--color-table-cell-default);
+  color: var(--color-text-body-primary);
+  font-weight: var(--font-weight-regular);
+}
+
+/* 열 정렬 — river 결정(2026-09-02, HD-3 B)으로 공식 옵션. 기본은 정본과 같은 왼쪽 정렬. */
+[data-s1-component="table"] [data-s1-part="header-cell"][data-align="center"],
+[data-s1-component="table"] [data-s1-part="cell"][data-align="center"] {
+  text-align: center;
+}
+
+/* 선택 컬럼 — 정본 48px 전용 컬럼(체크박스만). 체크박스 시각은 코어 s1 checkbox 가 소유한다. */
+[data-s1-component="table"] [data-s1-part="header-cell"][data-selection],
+[data-s1-component="table"] [data-s1-part="cell"][data-selection] {
+  padding: 0 var(--spacing-8);
+  text-align: center;
+  width: var(--sizing-48);
+}
+
+[data-s1-component="table"] [data-s1-part="cell"][data-selection] > [data-s1-component="checkbox"],
+[data-s1-component="table"] [data-s1-part="header-cell"][data-selection] > [data-s1-component="checkbox"] {
+  vertical-align: middle;
+}
+
+/* 상태 — 정본 Cell 변형과 1:1. Hover 는 마우스가 있는 환경에서만. */
+@media (hover: hover) {
+  [data-s1-component="table"] [data-s1-part="row"]:hover > [data-s1-part="cell"] {
+    background: var(--color-table-cell-hover);
+  }
+}
+
+[data-s1-component="table"] [data-s1-part="row"][data-state="hover"] > [data-s1-part="cell"],
+[data-s1-component="table"] [data-s1-part="cell"][data-state="hover"] {
+  background: var(--color-table-cell-hover);
+}
+
+[data-s1-component="table"] [data-s1-part="row"][data-selected="true"] > [data-s1-part="cell"],
+[data-s1-component="table"] [data-s1-part="cell"][data-state="selected"] {
+  background: var(--color-table-cell-selected);
+}

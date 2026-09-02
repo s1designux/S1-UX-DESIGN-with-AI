@@ -27,12 +27,16 @@
     background: #111827; display: flex; align-items: center;
     justify-content: center; font-size: 18px; flex-shrink: 0;
   }
-  /* 제목 + 버전이 한 줄에 들어가야 한다(폭 440 · 우측 빌드 스탬프와 경쟁) → 14px + nowrap */
-  .header-title { font-size: 14px; font-weight: 700; color: #111827; white-space: nowrap; }
+  /* 제목 + 버전이 한 줄에 들어가야 한다(폭 440 · 우측 빌드 스탬프와 경쟁) → 13px + nowrap.
+     2026-09-02: 이름이 길어지고 0.2Ver 배지가 붙으면서 min-content 가 460px 이 돼 창(440)을
+     가로로 밀어냈다(플러그인 전체가 가로 스크롤). 글자를 줄이고, 그래도 모자라면 말줄임으로
+     끊어 창 밖으로 밀지 않는다. */
+  .header > div { min-width: 0; }
+  .header-title { font-size: 12.5px; font-weight: 700; color: #111827; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   /* 버전 배지 — 손으로 올린다(빌드 스탬프 .header-build 와 별개) */
-  .header-ver { font-size: 10.5px; font-weight: 600; color: #1d6ceb; margin-left: 5px; vertical-align: 1px; }
+  .header-ver { font-size: 10px; font-weight: 600; color: #1d6ceb; margin-left: 5px; vertical-align: 1px; }
   .header-sub   { font-size: 11px; color: #9ca3af; margin-top: 2px; }
-  .header-build { margin-left: auto; text-align: right; font-size: 10px; color: #9ca3af; line-height: 1.5; white-space: nowrap; }
+  .header-build { margin-left: auto; flex-shrink: 0; text-align: right; font-size: 9.5px; color: #9ca3af; line-height: 1.5; white-space: nowrap; }
   .header-build strong { display: block; color: #2563eb; font-weight: 700; font-size: 11px; }
 
   /* ── 선택 리스트 ── */
@@ -247,10 +251,25 @@
   #audit-root .install-required b { display:block; margin-bottom:3px; font-size:12px; }
   #audit-root .install-required p { margin:0 0 9px; font-size:10.5px; line-height:1.55; }
   #audit-root .install-required button { width:100%; background:#8a6100; border-color:#8a6100; color:#fff; font-weight:600; }
+  #audit-root .guide-state-card { display:none; margin:0 16px 12px; padding:12px; border:1px solid var(--line); border-radius:8px; background:var(--code-bg); }
+  #audit-root .guide-state-card.visible { display:block; }
+  #audit-root .guide-state-card b { display:block; margin-bottom:3px; font-size:12px; }
+  #audit-root .guide-state-card p { margin:0; color:var(--muted); font-size:10.5px; line-height:1.55; }
+  #audit-root .guide-state-card button { width:100%; margin-top:9px; font-weight:600; }
+  #audit-root #audit-screen-start.guide-checking .selection-card,
+  #audit-root #audit-screen-start.guide-checking .audit-checklist,
+  #audit-root #audit-screen-start.guide-checking .audit-actions,
+  #audit-root #audit-screen-start.guide-error .selection-card,
+  #audit-root #audit-screen-start.guide-error .audit-checklist,
+  #audit-root #audit-screen-start.guide-error .audit-actions,
+  #audit-root #audit-screen-start.guide-outdated .selection-card,
+  #audit-root #audit-screen-start.guide-outdated .audit-checklist,
+  #audit-root #audit-screen-start.guide-outdated .audit-actions { display:none; }
   #audit-root .tabs button:disabled { opacity:.42; cursor:not-allowed; filter:none; }
   #audit-root .rollback-note { padding:7px 16px; color:var(--muted); font-size:10px; line-height:1.5; border-top:1px solid var(--line); }
   #audit-root .audit-checklist { margin:0 16px 14px; border:1px solid var(--line); border-radius:8px; overflow:hidden; }
   #audit-root .audit-checklist-title { padding:9px 12px; font-size:11px; color:var(--muted); background:var(--code-bg); border-bottom:1px solid var(--line); }
+  #audit-root .check-group { padding:6px 11px; font-size:10px; font-weight:700; color:var(--muted); background:var(--code-bg); border-bottom:1px solid var(--line); }
   #audit-root .check-row { display:flex; align-items:center; gap:8px; padding:7px 11px; border-bottom:1px solid var(--line); min-height:34px; }
   #audit-root .check-row:last-child { border-bottom:0; }
   #audit-root .check-icon { width:17px; height:17px; display:inline-flex; align-items:center; justify-content:center; border:1px solid var(--line); border-radius:50%; color:var(--muted); font-size:10px; flex:0 0 auto; }
@@ -469,15 +488,24 @@
 <div id="audit-root">
 
   <!-- 시작: 캔버스 선택 상태 + 10개 검사 항목 -->
-  <section class="audit-screen active" id="audit-screen-start">
+  <section class="audit-screen active guide-checking" id="audit-screen-start">
     <div class="audit-intro">
       <h2>Figma에서 검사할 화면을 선택하세요</h2>
       <p>부분 선택과 전체 선택을 그대로 검사합니다. 원본은 바뀌지 않습니다.</p>
     </div>
+    <div class="guide-state-card visible" id="audit-guide-checking" role="status">
+      <b>가이드 현황을 확인하고 있습니다…</b>
+      <p>현재 파일에 설치된 기준을 확인한 뒤 검수 항목을 보여드립니다.</p>
+    </div>
+    <div class="guide-state-card" id="audit-guide-error" role="alert">
+      <b>가이드 현황을 확인하지 못했습니다</b>
+      <p>잠시 후 다시 확인해 주세요.</p>
+      <button id="btn-guide-retry">다시 확인</button>
+    </div>
     <div class="install-required" id="audit-install-required">
-      <b>검수 전에 가이드 설치가 필요합니다</b>
-      <p id="audit-install-missing">컴포넌트와 색·글자 기준을 모두 설치한 뒤 검수를 시작할 수 있습니다.</p>
-      <button id="btn-go-install">전체 항목 설치하기</button>
+      <b>최신 가이드가 아닙니다</b>
+      <p id="audit-install-missing">최신 기준을 새 페이지에 함께 설치한 뒤 검수할 수 있습니다.</p>
+      <button id="btn-go-install">최신 가이드로 업데이트</button>
     </div>
     <div class="selection-card">
       <div class="selection-label" id="audit-selection-label">선택 없음</div>
@@ -485,16 +513,20 @@
     </div>
     <div class="audit-checklist" data-checklist="start">
       <div class="audit-checklist-title">검사 항목 10개</div>
-      <div class="check-row" data-item="0"><span class="check-icon">○</span><span class="check-name">최신 컴포넌트 사용</span><span class="check-result"></span></div>
-      <div class="check-row" data-item="1"><span class="check-icon">○</span><span class="check-name">가이드에 등록된 색상 사용</span><span class="check-result"></span></div>
-      <div class="check-row" data-item="2"><span class="check-icon">○</span><span class="check-name">용도에 맞는 가이드 색상 사용</span><span class="check-result"></span></div>
-      <div class="check-row" data-item="3"><span class="check-icon">○</span><span class="check-name">가이드 색상·글자 스타일 사용</span><span class="check-result"></span></div>
-      <div class="check-row" data-item="4"><span class="check-icon">○</span><span class="check-name">가이드에 정의된 투명도 사용</span><span class="check-result"></span></div>
-      <div class="check-row" data-item="5"><span class="check-icon">○</span><span class="check-name">가이드 글자 스타일 사용</span><span class="check-result"></span></div>
-      <div class="check-row" data-item="6"><span class="check-icon">○</span><span class="check-name">가이드에 정의된 글자 크기 사용</span><span class="check-result"></span></div>
-      <div class="check-row" data-item="7"><span class="check-icon">○</span><span class="check-name">가이드 글자 스타일 값 그대로 사용</span><span class="check-result"></span></div>
-      <div class="check-row" data-item="8"><span class="check-icon">○</span><span class="check-name">Pretendard 글꼴 사용</span><span class="check-result"></span></div>
-      <div class="check-row" data-item="9"><span class="check-icon">○</span><span class="check-name">가이드 그림자 사용</span><span class="check-result"></span></div>
+      <div class="check-group">컴포넌트</div>
+      <div class="check-row" data-item="0"><span class="check-icon">○</span><span class="check-name">최신 컴포넌트 매칭</span><span class="check-result"></span></div>
+      <div class="check-group">색상</div>
+      <div class="check-row" data-item="1"><span class="check-icon">○</span><span class="check-name">색상 토큰 연결</span><span class="check-result"></span></div>
+      <div class="check-row" data-item="2"><span class="check-icon">○</span><span class="check-name">시맨틱 색상 용도 준수</span><span class="check-result"></span></div>
+      <div class="check-row" data-item="3"><span class="check-icon">○</span><span class="check-name">가이드 색상 스타일 준수</span><span class="check-result"></span></div>
+      <div class="check-row" data-item="4"><span class="check-icon">○</span><span class="check-name">투명도 가이드 준수</span><span class="check-result"></span></div>
+      <div class="check-group">텍스트</div>
+      <div class="check-row" data-item="5"><span class="check-icon">○</span><span class="check-name">텍스트 스타일 매칭</span><span class="check-result"></span></div>
+      <div class="check-row" data-item="6"><span class="check-icon">○</span><span class="check-name">글자 크기 가이드 준수</span><span class="check-result"></span></div>
+      <div class="check-row" data-item="7"><span class="check-icon">○</span><span class="check-name">텍스트 스타일 값 준수</span><span class="check-result"></span></div>
+      <div class="check-row" data-item="8"><span class="check-icon">○</span><span class="check-name">가이드 글꼴 준수</span><span class="check-result"></span></div>
+      <div class="check-group">그림자</div>
+      <div class="check-row" data-item="9"><span class="check-icon">○</span><span class="check-name">가이드 그림자 매칭</span><span class="check-result"></span></div>
     </div>
     <div class="audit-actions"><button class="primary" id="btn-audit" disabled>검사 시작</button></div>
   </section>
@@ -636,7 +668,7 @@
       p.classList.toggle('active', p.id === 'tab-' + name);
     });
     if (name === 'audit') {
-      parent.postMessage({ pluginMessage: { type: 'audit:selection-state', payload: {} } }, '*');
+      beginAuditGuideCheck();
     }
   }
 
@@ -837,13 +869,39 @@ function send(type, payload) {
 }
 
 const CHECK_LABELS = [
-  "최신 컴포넌트 사용", "가이드 색상 사용", "용도별 색상 사용", "가이드 스타일 사용", "투명도 사용",
-  "글자 스타일 사용", "글자 크기 사용", "글자 스타일 값 사용", "Pretendard 글꼴 사용", "가이드 그림자 사용",
+  "최신 컴포넌트 매칭", "색상 토큰 연결", "시맨틱 색상 용도 준수", "가이드 색상 스타일 준수", "투명도 가이드 준수",
+  "텍스트 스타일 매칭", "글자 크기 가이드 준수", "텍스트 스타일 값 준수", "가이드 글꼴 준수", "가이드 그림자 매칭",
 ];
 let auditSelectionCount = 0;
 let auditInspecting = false;
 let auditInstalled = false;
 let auditPhase = "component";
+let auditGuideRequestId = 0;
+
+function applyAuditSelectionSummary(p) {
+  auditSelectionCount = Number(p && p.count) || 0;
+  $('#audit-selection-label').textContent = (p && p.label) || '선택 없음';
+  $('#audit-selection-hint').textContent = auditSelectionCount > 0
+    ? `${auditSelectionCount}개 선택됨 · 이 범위만 검사합니다.`
+    : '캔버스에서 검사할 요소를 하나 이상 선택하세요.';
+  const btn = $('#btn-audit');
+  btn.disabled = auditInspecting || auditSelectionCount < 1 || !auditInstalled;
+  btn.textContent = auditInspecting ? '검사 중…' : '검사 시작';
+}
+
+function beginAuditGuideCheck() {
+  const start = $('#audit-screen-start');
+  auditGuideRequestId += 1;
+  auditInstalled = false;
+  showAuditScreen('start');
+  start.classList.remove('guide-outdated', 'guide-error');
+  start.classList.add('guide-checking');
+  $('#audit-guide-checking').classList.add('visible');
+  $('#audit-guide-error').classList.remove('visible');
+  $('#audit-install-required').classList.remove('visible');
+  $('#btn-audit').disabled = true;
+  send('selection-state', { requestId: auditGuideRequestId });
+}
 
 // 시작 화면의 동일한 10개 항목을 진행 화면에도 복제한다.
 const startChecklist = document.querySelector('[data-checklist="start"]');
@@ -952,19 +1010,18 @@ $('#btn-component-reinspect').addEventListener('click', () => {
 });
 
 $('#btn-go-install').addEventListener('click', () => {
-  switchTab('install');
-  backToSelect();
-  ['opt-foundation', 'opt-semantic', 'opt-textstyles', 'opt-components'].forEach((id) => {
-    const cb = document.getElementById(id);
-    cb.checked = true;
-    cb.closest('.select-row').classList.add('checked');
-  });
+  const btn = $('#btn-go-install');
+  btn.disabled = true;
+  btn.textContent = '최신 가이드 설치 중…';
+  parent.postMessage({ pluginMessage: { type: 'update-guide' } }, '*');
 });
+
+$('#btn-guide-retry').addEventListener('click', beginAuditGuideCheck);
 
 $('#btn-audit-again').addEventListener('click', () => {
   auditInspecting = false;
   showAuditScreen('start');
-  send('selection-state');
+  send('selection-summary');
 });
 
 // 결과 칩 전환 (전체 / 컴포넌트 / 색 / 텍스트 / 그림자)
@@ -1534,19 +1591,41 @@ function renderInspectionResult(payload) {
 function handleAuditUiMessage(msg) {
   if (msg.type === "selection-state") {
     const p = msg.payload || {};
+    if (p.requestId !== auditGuideRequestId) return;
     auditInstalled = p.installed === true;
-    auditSelectionCount = Number(p.count) || 0;
+    $('#audit-screen-start').classList.remove('guide-checking', 'guide-error');
+    $('#audit-screen-start').classList.toggle('guide-outdated', !auditInstalled);
+    $('#audit-guide-checking').classList.remove('visible');
+    $('#audit-guide-error').classList.remove('visible');
     $('#audit-install-required').classList.toggle('visible', !auditInstalled);
     $('#audit-install-missing').textContent = !auditInstalled && p.missing && p.missing.length
-      ? `필요한 항목: ${p.missing.join(' · ')}. 전체 항목을 설치해주세요.`
-      : '컴포넌트와 색·글자 기준을 모두 설치한 뒤 검수를 시작할 수 있습니다.';
-    $('#audit-selection-label').textContent = p.label || '선택 없음';
-    $('#audit-selection-hint').textContent = auditSelectionCount > 0
-      ? `${auditSelectionCount}개 선택됨 · 이 범위만 검사합니다.`
-      : '캔버스에서 검사할 요소를 하나 이상 선택하세요.';
-    const btn = $('#btn-audit');
-    btn.disabled = auditInspecting || auditSelectionCount < 1 || !auditInstalled;
-    btn.textContent = auditInspecting ? '검사 중…' : '검사 시작';
+      ? `현재 파일에 필요한 최신 기준: ${p.missing.join(' · ')}. 새 가이드 페이지에 함께 설치합니다.`
+      : '최신 기준을 새 페이지에 함께 설치한 뒤 검수할 수 있습니다.';
+    applyAuditSelectionSummary(p);
+  } else if (msg.type === "selection-summary") {
+    applyAuditSelectionSummary(msg.payload || {});
+  } else if (msg.type === "selection-state-error") {
+    const p = msg.payload || {};
+    if (p.requestId !== auditGuideRequestId) return;
+    auditInstalled = false;
+    $('#audit-screen-start').classList.remove('guide-checking', 'guide-outdated');
+    $('#audit-screen-start').classList.add('guide-error');
+    $('#audit-guide-checking').classList.remove('visible');
+    $('#audit-install-required').classList.remove('visible');
+    $('#audit-guide-error').classList.add('visible');
+    $('#btn-audit').disabled = true;
+  } else if (msg.type === "guide-update-done") {
+    const btn = $('#btn-go-install');
+    btn.disabled = false;
+    btn.textContent = '최신 가이드로 업데이트';
+    auditInstalled = true;
+    switchTab('audit');
+    showToast(`✅ ${msg.payload && msg.payload.pageName ? msg.payload.pageName : '새 가이드 페이지'} 설치 완료`);
+  } else if (msg.type === "guide-update-failed") {
+    const btn = $('#btn-go-install');
+    btn.disabled = false;
+    btn.textContent = '최신 가이드로 업데이트';
+    showToast('⚠ 업데이트에 실패했습니다. 최신 가이드 표식은 기록되지 않았습니다.');
   } else if (msg.type === "inspection-progress") {
     updateProgress(msg.payload || {});
   } else if (msg.type === "inspection-result") {
@@ -1557,7 +1636,7 @@ function handleAuditUiMessage(msg) {
         auditInstalled = false;
         $('#audit-install-required').classList.add('visible');
       }
-      send('selection-state');
+      send('selection-summary');
       showToast('⚠ ' + ((msg.payload && msg.payload.message) || '검사를 완료하지 못했습니다.'));
     } else {
       renderInspectionResult(msg.payload);
@@ -1737,7 +1816,7 @@ function handleAuditUiMessage(msg) {
     if (auditInspecting) {
       auditInspecting = false;
       showAuditScreen('start');
-      send('selection-state');
+      send('selection-summary');
     }
     // 개선안 생성 중 예외가 나도 버튼이 잠긴 채로 굳지 않도록 복구
     const bi = $("#btn-build-improved");

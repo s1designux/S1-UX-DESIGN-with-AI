@@ -540,7 +540,7 @@
       "category": "verification-blindspot",
       "label": "검증 도구의 실행 환경 차이가 거짓 결과를 만든다",
       "description": "npm run shot 의 기본값인 file:// 에서는 CSS mask 로 그리는 아이콘이 렌더되지 않는다. Checkbox 체크 표시가 안 보여 구현 오류로 오진할 뻔했고, 격리 실험에서 이미 승인된 Input 의 remove 아이콘도 똑같이 안 보이는 것을 확인해 도구 한계로 판정했다. http 로 다시 렌더하니 둘 다 정상. 검증 도구가 '없다'고 말할 때 그것이 구현 문제인지 도구 환경 문제인지 먼저 갈라야 한다. 같은 계열: verification-visual-gap(렌더를 안 봐서 놓침) 의 반대 — 이쪽은 렌더를 봤는데 렌더가 거짓말을 한다.",
-      "count": 3,
+      "count": 4,
       "promotionStatus": "promotion-candidate",
       "promotedRule": "(잠정) 아이콘을 CSS mask 로 그리는 컴포넌트의 실제 렌더 검증은 file:// 이 아니라 http 로 한다",
       "automationNote": "3회 도달 시 render-shot 에 '마스크/외부 자산을 쓰는 페이지는 http 필요' 사전 경고를 넣거나, file:// 캡처에서 mask 사용을 자동 감지해 경고하도록 승격 검토. · 2026-09-01 count=3 도달 — 승격 검토 대상.",
@@ -556,6 +556,11 @@
         {
           "date": "2026-09-01",
           "summary": "river 가 검수 화면을 파일 더블클릭(file://)으로 열자 <script type=\"module\"> 이 실행조차 안 돼 9개 섹션이 전부 빈 채로 보였다. ⭐ 는 서버(http)로만 확인해서 정상으로 알고 있었다 — '검증자와 사용자의 실행 환경이 달라서' 생긴 사각지대다. 도구 환경 차이가 검증자를 속인 것에 더해, 이번엔 사용자가 먼저 깨진 화면을 봤다. 조치: 실패를 조용히 두지 않는 안내 박스 + npm run review 한 줄 명령."
+        },
+        {
+          "date": "2026-09-02",
+          "work": "textarea-multi-toggle",
+          "note": "브라우저 캐시가 옛 s1-ui.css/JS 를 붙잡아 스타일 미적용·런타임 미동작으로 두 번 오인. 호스트 전환으로 해소."
         }
       ]
     },
@@ -580,7 +585,7 @@
       "category": "verification-blindspot",
       "label": "같은 마크업을 두 곳에 붙여 페이지 단위 고유성(id·radio name)이 깨진다",
       "description": "가이드 화면에서 PC·Mobile 두 섹션에 동일한 마크업 문자열을 넣자 id 와 radio name 이 페이지 안에서 중복됐다. 같은 name 의 라디오는 하나만 선택될 수 있어 먼저 그려진 PC 쪽 선택이 조용히 풀렸고, 자동 검사는 전부 PASS 였다. 실제 렌더 육안 대조에서만 드러났다. 계약의 '동일 컴포넌트를 한 페이지에 여러 번 배치해도 ID 가 충돌하지 않아야 한다' 가 화면 생성 코드에서 깨진 사례다.",
-      "count": 2,
+      "count": 3,
       "promotionStatus": "tracking",
       "promotedRule": "(잠정) 여러 곳에 같은 컴포넌트를 그릴 때는 마크업 문자열을 재사용하지 말고 자리마다 새로 생성한다",
       "automationNote": "3회 도달 시 가이드 페이지의 중복 id·중복 radio name 을 세는 결정론 검사로 승격 검토.",
@@ -592,6 +597,11 @@
         {
           "date": "2026-09-01",
           "summary": "안내 페이지(assets/js/ui-library-guide.js)와 검수 화면(pages/ui-review.html)이 드롭다운 마크업 생성 함수를 각자 한 벌씩 들고 있었다. 배포본에 「전체 선택」 식별자(data-select-all)를 추가했는데 두 화면 모두 옛 마크업을 뿜어 동작 검증이 '전체선택 행 0개'로 FAIL. 두 곳을 각각 고쳐야 했다 — 배포본이 바뀌어도 화면 마크업이 자동으로 따라오지 않는 구조."
+        },
+        {
+          "date": "2026-09-02",
+          "work": "textarea-multi-toggle",
+          "note": "검증 지그가 Light·Dark 두 벌에 같은 textarea id 를 써 중복 id 9건. 지그를 theme 별 고유 id 로 수정."
         }
       ]
     },
@@ -615,12 +625,16 @@
       "id": "generator-hardcodes-first-case",
       "category": "build-pipeline",
       "label": "생성기가 첫 사례를 하드코딩해 뒤에 늘어난 항목이 조용히 빠진다",
-      "count": 1,
+      "count": 2,
       "promotionStatus": "tracking",
       "occurrences": [
         {
           "date": "2026-08-31",
           "summary": "ui-library build.mjs 의 s1-ui.auto.js 생성이 input 하나만 하드코딩하고 있었다. 런타임이 있는 Toggle·Chip 을 추가해도 autoInit() 에서 조용히 빠질 구조였고, 검사기는 전부 통과했을 것이다. jsRequired=true 인 컴포넌트를 결정론적으로 모두 넣도록 일반화하고, 빈 HTML 소비자가 autoInit() 경로 자체를 소비하도록 바꿔 회귀를 렌더로 잡게 했다."
+        },
+        {
+          "date": "2026-09-02",
+          "summary": "sync-install-prompt.js 의 업데이트 시각 스탬프 치환 정규식이 `class=\"update-stamp\" data-update-file=` 인접 형태만 잡아, 중간에 style 속성이 낀 설치기 다운로드 스탬프가 자동 갱신에서 조용히 빠져 2026-07-21 값이 고착돼 있었다. 속성 순서·부가 속성과 무관하게 잡고 원래 속성을 보존하도록 일반화."
         }
       ],
       "automationNote": "3회 도달 시 '생성기 안에 컴포넌트 id 문자열이 하드코딩돼 있는지'를 검사하는 결정론 규칙으로 승격 검토."
@@ -703,6 +717,30 @@
         }
       ],
       "automationNote": "이미 ui-library-state-check.js 가 complete 시점에 차단한다. 3회 도달 시 '검증 라운드 기록(rounds[])과 판정 작성자 분리'를 상태 스키마로 강제하는 것을 검토."
+    },
+    {
+      "id": "concurrent-session-shared-worktree",
+      "count": 2,
+      "title": "같은 작업트리를 두 세션이 동시에 편집",
+      "detail": "다른 세션이 Line Tab·Pagination 을 진행하며 pages/components.html·ui-library-guide.js·registry/components/pagination.json 을 편집 중이라, 공용 검사(gate:check·ui:test)가 내 작업과 무관한 error 를 내고 커밋이 남의 미완성 변경을 삼킬 위험이 생겼다.",
+      "occurrences": [
+        {
+          "date": "2026-09-02",
+          "work": "textarea-multi-toggle"
+        },
+        "2026-09-02 modal — Table 세션의 build-components.ts 편집(buildLineTab MD 20→18)으로 모든 컴포넌트 지문이 stale 이 되어 ui:build 가 저장소 전체에서 막힘. tab.css 는 아직 20 이라 지문을 갱신하면 드리프트를 조용히 승인하게 됨."
+      ]
+    },
+    {
+      "id": "icon-origin-substituted-by-fallback",
+      "pattern": "웹 아이콘 자산을 라이브러리 원본이 아니라 설치기의 import 실패용 폴백 도형에서 만들어, 원본과 모양이 다른 채로 배포됨. 두 번 다 사람이 눈으로 잡았다(chevron 2026-09-01 · close 2026-09-02).",
+      "count": 2,
+      "occurrences": [
+        "2026-09-01 chevron — 대체용 인라인 SVG 로 만들어 배포했다가 river 지적, V2.2 419:67 실물 내보내기로 교체.",
+        "2026-09-02 close — CLOSE_ICON_SVG(폴백)로 만들었고 river 지적. 원본 잉크 4~20 vs 폴백 6~18."
+      ],
+      "resolution": "2026-09-02 river 지시로 3겹 방지 장치 신설 — ①아이콘 manifest 에 sourceExport(원본 내보내기) 선언 의무화 ②scripts/ui-library-icon-origin-check.js 가 웹 SVG 를 원본 PNG 와 픽셀 대조(임계 0.015, ui:icons·gate:check 편입) ③build-components.ts 폴백 상수에 // icon-fallback-not-canon 표식 + 폴백 유래 자산 차단. 기존 부채는 registry/governance/icon-origin-baseline.json 로 분리.",
+      "status": "해소 — 2026-09-02 3겹 방지 장치 신설 후 재발 시 gate:check 가 자동 차단"
     }
   ]
 }

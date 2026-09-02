@@ -4,6 +4,11 @@ import { init as init_chip } from "./components/chip.js";
 import { init as init_dropdown } from "./components/dropdown.js";
 import { init as init_select } from "./components/select.js";
 import { init as init_filterChip } from "./components/filter-chip.js";
+import { init as init_tab } from "./components/tab.js";
+import { init as init_pagination } from "./components/pagination.js";
+import { init as init_multiToggle } from "./components/multi-toggle.js";
+import { init as init_modal } from "./components/modal.js";
+import { init as init_table } from "./components/table.js";
 export * as input from "./components/input.js";
 export * as button from "./components/button.js";
 export * as checkbox from "./components/checkbox.js";
@@ -13,6 +18,12 @@ export * as chip from "./components/chip.js";
 export * as dropdown from "./components/dropdown.js";
 export * as select from "./components/select.js";
 export * as filterChip from "./components/filter-chip.js";
+export * as tab from "./components/tab.js";
+export * as pagination from "./components/pagination.js";
+export * as textarea from "./components/textarea.js";
+export * as multiToggle from "./components/multi-toggle.js";
+export * as modal from "./components/modal.js";
+export * as table from "./components/table.js";
 
 export function autoInit(scope = document) {
   const instances = [
@@ -21,7 +32,12 @@ export function autoInit(scope = document) {
     ...[...scope.querySelectorAll('[data-s1-component="chip"]')].map((root) => init_chip(root)),
     ...[...scope.querySelectorAll('[data-s1-component="dropdown"]')].map((root) => init_dropdown(root)),
     ...[...scope.querySelectorAll('[data-s1-component="select"]')].map((root) => init_select(root)),
-    ...[...scope.querySelectorAll('[data-s1-component="filter-chip"]')].map((root) => init_filterChip(root))
+    ...[...scope.querySelectorAll('[data-s1-component="filter-chip"]')].map((root) => init_filterChip(root)),
+    ...[...scope.querySelectorAll('[data-s1-component="tab"]')].map((root) => init_tab(root)),
+    ...[...scope.querySelectorAll('[data-s1-component="pagination"]')].map((root) => init_pagination(root)),
+    ...[...scope.querySelectorAll('[data-s1-component="multi-toggle"]')].map((root) => init_multiToggle(root)),
+    ...[...scope.querySelectorAll('[data-s1-component="modal"]')].map((root) => init_modal(root)),
+    ...[...scope.querySelectorAll('[data-s1-component="table"]')].map((root) => init_table(root))
   ];
   return Object.freeze(instances.filter(Boolean));
 }

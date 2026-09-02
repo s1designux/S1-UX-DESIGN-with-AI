@@ -1,0 +1,184 @@
+{
+  "schemaVersion": 1,
+  "workflow": "ui-library-code",
+  "workId": "mobile-nav-header",
+  "objective": "모바일 하단 탭(Mobile Bottom Nav)과 모바일 헤더(Mobile Header)를 정본 기반 웹 UI 라이브러리 모듈로 만들고 안내 페이지·검수 화면까지 연결한다.",
+  "intent": {
+    "approvedBy": "river",
+    "approvedAt": "2026-09-02",
+    "principles": [
+      "정본(build-components.ts buildMobileBottomNav·buildMobileHeader)에 있는 것만 만든다. 하단 탭 '바'는 정본·등록부 둘 다 '컴포넌트 아님'으로 명시돼 있다.",
+      "새 토큰을 만들지 않는다 — 필요한 토큰이 전부 이미 있다.",
+      "아이콘 5종은 반드시 Figma V2.2 라이브러리 원본 벡터를 받아 쓴다. 헤더 아이콘 4종은 정본에 폴백 도형조차 없다(makeRequiredIconInstance).",
+      "2026-09-02 신설한 아이콘 원본 대조 게이트를 통과해야 배포할 수 있다 — sourceExport 선언 + 픽셀 대조 PASS.",
+      "디자인가이드 검수 화면과 퍼블리셔·개발자 배포본은 같은 dist 를 사용한다."
+    ]
+  },
+  "contract": {
+    "path": "registry/governance/ui-library-code-contract.json",
+    "version": "0.1.2",
+    "status": "candidate"
+  },
+  "target": {
+    "kind": "core-component",
+    "components": [
+      "mobile-bottom-nav",
+      "mobile-header"
+    ]
+  },
+  "figmaSources": {
+    "role": "시각 정본은 build-components.ts 다. 다만 아이콘 5종은 Figma 아이콘 라이브러리 V2.2 원본 벡터가 반드시 필요하다.",
+    "requiredForInventory": false,
+    "iconLibraryFileKey": "YcBbW9e0MTR9T3W5Sz0Ukx",
+    "iconLibraryName": "아이콘 라이브러리 V2.2",
+    "components": {
+      "mobile-bottom-nav": {
+        "nodeId": "540:6025",
+        "source": "not-consulted",
+        "status": "코드 정본으로 충분"
+      },
+      "mobile-header": {
+        "nodeId": "540:6112",
+        "source": "not-consulted",
+        "status": "코드 정본으로 충분"
+      }
+    },
+    "fileKey": "cysG5U1udpQqVagYY1hWHW",
+    "fileName": "SW-UX-GUIDE V3.0 TEST"
+  },
+  "currentPhase": "2-canon-readiness",
+  "workflowStatus": "awaiting-user",
+  "uiLibraryStatus": "needs-decision",
+  "lastCompletedCheckpoint": 1,
+  "nextAction": "river 가 HD-1(접근성 확정 범위)·HD-2(상태바 포함 여부)를 정하고 Figma 아이콘 라이브러리 V2.2 를 데스크톱 앱에 열어주면, 아이콘 5종 원본을 받아 3-build 로 넘어간다.",
+  "ownership": {},
+  "canonicalInputs": [
+    {
+      "role": "component-visual",
+      "path": "plugins/figma-vars-installer/src/build-components.ts",
+      "sha256": "942791479ffb0f953c58e7dc745eaf33180cca5f57a1b3b056e517c496e80c25"
+    },
+    {
+      "role": "token-values",
+      "path": "plugins/figma-vars-installer/src/vars-data.ts",
+      "sha256": "87edd42623983fb5e02e820940dbbc3693ecb4b2c79104e781c8307501984cd9"
+    },
+    {
+      "role": "text-styles",
+      "path": "plugins/figma-vars-installer/src/textstyles-data.ts",
+      "sha256": "dc0db42d87503e80e9da8ad1246090f58e79106593a57815b0568aebcb9d51d3"
+    },
+    {
+      "role": "ui-library-contract",
+      "path": "registry/governance/ui-library-code-contract.json",
+      "sha256": "63dc0f64c6ea834218119f8629379ee48cfac6c8df8b36e39d78f51405807c85"
+    },
+    {
+      "role": "component-meaning-mobile-bottom-nav",
+      "path": "registry/components/mobile-bottom-nav.json",
+      "sha256": "3b91b3607e4b7d629f0496b7043ba76decab96a361b62e6ea8864ee85d4d6d8d"
+    },
+    {
+      "role": "component-meaning-mobile-header",
+      "path": "registry/components/mobile-header.json",
+      "sha256": "5ac2c88de70175b710f536617f9450cc39585e4834f2b28039369799ecc0e7e4"
+    },
+    {
+      "role": "icon-keys-and-origin-gate",
+      "path": "ui-library/src/assets/icons/manifest.json",
+      "sha256": "aac846b71cae21e8857a6008d213a978d1058fa2dd6a2aa4ea883d09335cb873"
+    }
+  ],
+  "artifacts": {
+    "policyContract": "registry/governance/ui-library-code-contract.json",
+    "humanGuide": "registry/governance/ui-library-authoring-guide.md",
+    "componentChecklist": "registry/governance/ui-library-component-checklist.md",
+    "repositoryInventory": "reports/component-inventory-audit.md",
+    "inventory": "reports/ui-library/mobile-nav-header/1-inventory.md",
+    "canonReadiness": "reports/ui-library/mobile-nav-header/2-canon-readiness.md",
+    "handoffNote": "reports/ui-library/mobile-nav-header/0-handoff.md",
+    "sourceRoot": "ui-library/src",
+    "distManifest": "ui-library/dist/manifest.json",
+    "reviewPage": "pages/ui-review.html",
+    "guidePage": "pages/components.html",
+    "migrationRecord": "registry/governance/ui-library-migration.json",
+    "screens": []
+  },
+  "decisions": [
+    {
+      "id": "D1",
+      "topic": "하단 탭 '바' 범위",
+      "decidedBy": "orchestrator",
+      "decidedAt": "2026-09-02",
+      "decision": "아이템 1칸(60×60)만 배포한다. 정본 주석(:2956)과 registry anatomy 가 둘 다 '바는 컴포넌트가 아니다'라고 명시한다. 안내 화면에는 4칸 조립 예시와 배경색(--color-navigation-bg) 안내를 함께 싣는다."
+    },
+    {
+      "id": "D2",
+      "topic": "정본에 없는 것을 만들지 않음",
+      "decidedBy": "orchestrator",
+      "decidedAt": "2026-09-02",
+      "decision": "하단 탭 hover·disabled 상태, 헤더의 삭제된 'Home / Title + 2 Icons' 유형, 임의 크기 축을 만들지 않는다. 헤더 Home/Title+Subtitle+1 Icon 만 상하 여백 6 인 것은 정본 그대로 따른다."
+    },
+    {
+      "id": "D3",
+      "topic": "안내 페이지 분류",
+      "decidedBy": "orchestrator",
+      "decidedAt": "2026-09-02",
+      "decision": "등록부대로 Navigation 분류에 둔다. 헤더는 사이트에 화면이 없어 새로 만든다(registry boundaryNote 의 '손관리 섹션은 만들지 않는다'는 웹 배포본 이전 시점 기준이라 이번 작업으로 대체된다)."
+    }
+  ],
+  "blockers": [
+    {
+      "id": "HD-1",
+      "kind": "needs-decision",
+      "topic": "두 컴포넌트의 접근성 확정 범위",
+      "detail": "registry a11yStatus 가 둘 다 pending. 계약상 접근성 미정 컴포넌트는 approved 배포 불가. 규칙 신설은 river 승인 사항(H6②).",
+      "options": {
+        "A": "모달과 같은 표준 수준 — 탭 목록 표시(role=tablist/tab/aria-selected) · 아이콘 버튼 접근성 이름 · 제목 없는 헤더의 heading 구조 · 터치 영역 최소 44",
+        "B": "확장 — 탭 화살표 키 이동 · 헤더 landmark 선언까지"
+      },
+      "ifUndecided": "만들어도 승인 배포가 막힌다.",
+      "askedAt": "2026-09-02",
+      "status": "river 가 신규 세션에서 결정하기로 보류"
+    },
+    {
+      "id": "HD-2",
+      "kind": "needs-decision",
+      "topic": "헤더 상태바를 웹 배포본에 포함할지",
+      "detail": "정본 헤더는 StatusBar(App 27 / Web 77 주소창 포함)를 안고 있어 전체 높이가 99/149 다. 실제 서비스에서는 OS·브라우저가 그리는 영역이다.",
+      "options": {
+        "A": "상태바 빼고 AppBar 56px 만 배포 — Type 6변형. 안내 화면에서만 상태바를 그림으로 보여준다(권장)",
+        "B": "정본대로 상태바 포함 12변형 배포"
+      },
+      "ifUndecided": "A 로 진행한다.",
+      "askedAt": "2026-09-02",
+      "status": "river 무의견 — 신규 세션에서 확정"
+    },
+    {
+      "id": "P-1",
+      "kind": "needs-asset",
+      "topic": "Figma 아이콘 원본 5종",
+      "detail": "home(ic_홈 Solid) · mobileHeaderBack(ic_이전 Solid) · mobileHeaderClose(ic_닫기 Solid = 97:76 확인됨) · mobileHeaderNotification(ic_알림 Line) · mobileHeaderArrowDown(ic_화살표더보기 Solid, 419:68 프레임). 헤더 4종은 정본에 폴백이 없어 코드에서 베낄 수 없다.",
+      "howTo": "river 가 Figma 데스크톱 앱에서 '아이콘 라이브러리 V2.2'(fileKey YcBbW9e0MTR9T3W5Sz0Ukx)를 활성 탭으로 열면 get_metadata 로 variant 노드 번호를 찾고, download_assets(fileKey+nodeId, defaultFormat=svg)로 벡터를 받는다. download_assets 는 파일이 활성 탭이 아니어도 동작하므로 노드 번호만 확보하면 그 뒤는 파일을 닫아도 된다.",
+      "ifUndecided": "아이콘 원본 대조 게이트를 통과할 수 없어 배포 불가."
+    }
+  ],
+  "evidence": {
+    "automatedChecks": [],
+    "sourceAudit": {
+      "status": "complete",
+      "actor": "orchestrator",
+      "observedAt": "2026-09-02",
+      "selfCertified": true,
+      "basis": "buildMobileBottomNav(:2957) · buildMobileHeader(:3149) · buildMobileHeaderVariant(:3069) · buildStatusBar(:4886) · ICON_KEYS · registry 2건 전문 · pages/components.html 현황",
+      "selfCertifiedNote": "⭐ 총괄 자가판독이다(별도 판독 에이전트 미투입). 값·축·토큰은 정본 인용으로 확인했고 렌더 주장은 포함하지 않았다.",
+      "summary": "두 컴포넌트 모두 ui-library 미착수. 하단 탭은 사이트에 손관리 섹션이 있고 헤더는 화면 자체가 없다. 정본에 축·수치·토큰이 모두 있고 신규 토큰 0건. 막는 것은 접근성 등급 pending 2건, 상태바 포함 여부, 그리고 아이콘 5종 원본 미확보다.",
+      "report": "reports/ui-library/mobile-nav-header/1-inventory.md"
+    }
+  },
+  "handoff": {
+    "lastActor": "orchestrator",
+    "updatedAt": "2026-09-02",
+    "summary": "river 요청으로 신규 세션 인계용 세팅만 하고 멈췄다. 1-inventory·2-canon-readiness 완료, 결정 2건과 아이콘 원본 확보가 남았다. 이어받는 방법은 0-handoff.md 참조."
+  }
+}

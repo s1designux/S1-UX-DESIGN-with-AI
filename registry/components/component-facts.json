@@ -3,7 +3,7 @@
     "generated": true,
     "source": "plugins/figma-vars-installer/src/build-components.ts",
     "method": "mock-execution",
-    "sourceHash": "66823ee5bbef",
+    "sourceHash": "942791479ffb",
     "unknownValuePolicy": [
       "unknown",
       "not-defined",
@@ -2997,6 +2997,7 @@
     "Table Cell": {
       "variantAxes": {
         "Size": [
+          "XSM",
           "SM",
           "MD"
         ],
@@ -3011,6 +3012,14 @@
         ]
       },
       "geometry": [
+        {
+          "when": {
+            "Size": "XSM"
+          },
+          "target": "root",
+          "width": 130,
+          "height": 34
+        },
         {
           "when": {
             "Size": "SM"
@@ -3046,7 +3055,8 @@
       "variantAxes": {
         "Size": [
           "MD",
-          "SM"
+          "SM",
+          "XSM"
         ]
       },
       "geometry": [
@@ -3065,6 +3075,14 @@
           "target": "root",
           "width": 828,
           "height": 386
+        },
+        {
+          "when": {
+            "Size": "XSM"
+          },
+          "target": "root",
+          "width": 828,
+          "height": 350
         }
       ],
       "anatomy": [

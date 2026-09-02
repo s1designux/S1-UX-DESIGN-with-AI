@@ -1,7 +1,7 @@
 {
   "_meta": {
     "id": "ui-library-migration",
-    "updatedAt": "2026-09-01",
+    "updatedAt": "2026-09-02",
     "purpose": "기존 컴포넌트 상태와 신규 웹 UI 라이브러리 승인·이행 상태를 분리 기록한다."
   },
   "records": [
@@ -236,6 +236,92 @@
       }
     },
     {
+      "id": "tab",
+      "kind": "core-component",
+      "legacyStatus": "implemented",
+      "uiLibraryStatus": "approved",
+      "dependencies": [
+        "tokens.css",
+        "typography.css",
+        "tab.js"
+      ],
+      "lastVerified": "2026-09-02",
+      "reverifyTrigger": "정본 Line Tab의 크기·상태·기준선·키보드 동작, 또는 웹 예제·aria-selected 런타임 변경",
+      "evidence": [
+        "reports/ui-library/line-tab-pagination/4-verification.md",
+        "reports/ui-library/line-tab-pagination/6-promotion.md",
+        "ui-library/dist/components/tab.manifest.json"
+      ],
+      "riverApproval": "approved 2026-09-02",
+      "promotionDecision": "approved 2026-09-02 · 실제 디자인가이드 검토 완료 · 독립 렌더 검증 PASS",
+      "platformExamples": {
+        "status": "approved",
+        "approvedAt": "2026-09-02",
+        "distribution": "examples/tab.html (PC) · examples/tab.mobile.html (Mobile)",
+        "declaredBy": "manifest.htmlContract.breakExamples"
+      }
+    },
+    {
+      "id": "pagination",
+      "kind": "core-component",
+      "legacyStatus": "implemented",
+      "uiLibraryStatus": "approved",
+      "dependencies": [
+        "tokens.css",
+        "typography.css",
+        "pagination-edge.svg",
+        "pagination.js"
+      ],
+      "lastVerified": "2026-09-02",
+      "reverifyTrigger": "정본 Pagination의 페이지·양끝 비활성 상태·화살표 아이콘·aria-current 런타임 변경",
+      "evidence": [
+        "reports/ui-library/line-tab-pagination/4-verification.md",
+        "reports/ui-library/line-tab-pagination/6-promotion.md",
+        "ui-library/dist/components/pagination.manifest.json"
+      ],
+      "riverApproval": "approved 2026-09-02",
+      "promotionDecision": "approved 2026-09-02 · 한 페이지·첫·마지막·중간 상태 실제 화면 확인 · 독립 렌더 검증 PASS"
+    },
+    {
+      "id": "textarea",
+      "kind": "core-component",
+      "legacyStatus": "implemented",
+      "uiLibraryStatus": "approved",
+      "dependencies": [
+        "tokens.css",
+        "typography.css"
+      ],
+      "lastVerified": "2026-09-02",
+      "reverifyTrigger": "정본 Textarea의 5상태·세로 크기 조절·토큰·예제 변경",
+      "evidence": [
+        "reports/ui-library/textarea-multi-toggle/4-verification.md",
+        "reports/ui-library/textarea-multi-toggle/6-promotion.md",
+        "ui-library/dist/components/textarea.manifest.json"
+      ],
+      "riverApproval": "approved 2026-09-02",
+      "promotionDecision": "approved 2026-09-02 · 실제 디자인가이드 검토 완료"
+    },
+    {
+      "id": "multi-toggle",
+      "kind": "core-component",
+      "legacyStatus": "implemented",
+      "uiLibraryStatus": "approved",
+      "dependencies": [
+        "tokens.css",
+        "typography.css",
+        "multi-toggle.js"
+      ],
+      "lastVerified": "2026-09-02",
+      "reverifyTrigger": "정본 Multi Toggle의 MD·SM 크기·선택·키보드 이동·aria-checked 런타임 변경",
+      "evidence": [
+        "reports/ui-library/textarea-multi-toggle/4-verification.md",
+        "reports/ui-library/textarea-multi-toggle/6-promotion.md",
+        "ui-library/dist/components/multi-toggle.manifest.json"
+      ],
+      "riverApproval": "approved 2026-09-02",
+      "promotionDecision": "approved 2026-09-02 · 실제 디자인가이드 검토 완료 · 별도 재검증은 river 승인으로 생략"
+    },
+    {
       "id": "platform-code-examples",
       "kind": "guide-presentation",
       "uiLibraryStatus": "approved",
@@ -255,6 +341,64 @@
       "riverApproval": "approved 2026-09-01",
       "promotionDecision": "approved 2026-09-01 · 독립 검증(component-verifier) 실행 — 산출물 PASS, 검사기 구멍 2건 지적 → scripts/ui-guide-render-check.js 신설로 보완 후 재검증 통과",
       "machineCheck": "npm run ui:guide:render (ui:test 가 자동 호출)"
+    },
+    {
+      "id": "modal",
+      "kind": "core-component",
+      "legacyStatus": "not-implemented",
+      "uiLibraryStatus": "approved",
+      "dependencies": [
+        "tokens.css",
+        "typography.css",
+        "button.css",
+        "close.svg(V2.2 ic_닫기 97:77 원본)",
+        "modal.js"
+      ],
+      "lastVerified": "2026-09-02",
+      "reverifyTrigger": "정본 buildModalShell 의 Break·Footer·패널 수치·토큰·닫기 아이콘 변경 · 웹 HTML part·CSS selector·여닫기 런타임(초점 가둠·Esc·스크롤 잠금) 변경 · 플랫폼별 예제(breakExamples) 변경",
+      "evidence": [
+        "reports/ui-library/modal/1-inventory.md",
+        "reports/ui-library/modal/2-canon-readiness.md",
+        "reports/ui-library/modal/3-build.md",
+        "reports/ui-library/modal/4-verification.md",
+        "reports/ui-library/modal/5-human-review.md",
+        "reports/ui-library/modal/6-promotion.md",
+        "ui-library/dist/components/modal.manifest.json",
+        "reports/ui-library/icon-origin-verification.json"
+      ],
+      "riverApproval": "approved 2026-09-02",
+      "promotionDecision": "approved 2026-09-02 · 실제 렌더 PASS · 닫기 아이콘 V2.2 원본 벡터 교체 후 원본 대조 PASS(0.00349) · 위험도 기반 독립 검증 생략(계약 위험 조건 미해당)",
+      "notes": "사이트에 Modal 화면이 없어 안내 페이지를 새로 만들었다(Overlay 분류 신설). 접근성 표준안·여닫기 동작 포함은 river 결정 2026-09-02.",
+      "platformExamples": {
+        "status": "approved",
+        "distribution": "examples/modal.html (PC) · examples/modal.mobile.html (Mobile)",
+        "declaredBy": "manifest.htmlContract.breakExamples",
+        "note": "디자인가이드는 보고 있는 화면의 플랫폼 마크업만 표시한다(river HD-1 A안 2026-09-01). CSS·JavaScript 는 배포 파일이 한 벌이라 공용으로 표출한다(river 확정 2026-09-02).",
+        "approvedAt": "2026-09-02"
+      }
+    },
+    {
+      "id": "table",
+      "kind": "core-component",
+      "legacyStatus": "implemented",
+      "uiLibraryStatus": "approved",
+      "dependencies": [
+        "tokens.css",
+        "typography.css",
+        "checkbox.css",
+        "table.js"
+      ],
+      "lastVerified": "2026-09-02",
+      "reverifyTrigger": "정본 buildTableCell·buildTable 의 크기·상태·토큰 변경 · 선택 동작(component-behavior.pc.json Table) 변경 · 조립해 쓰는 pagination·select 배포본 변경",
+      "evidence": [
+        "reports/ui-library/table/3-build.md",
+        "reports/ui-library/table/typography-canon-audit.md",
+        "reports/installer-build/build-verification.json"
+      ],
+      "riverApproval": "approved 2026-09-02",
+      "promotionDecision": "approved 2026-09-02 · 실제 렌더·동작 PASS · 설치기 정본 변경분은 component-verifier 독립 검증 PASS(Gate 13 기록) · 위험도 기반 웹 배포본 독립 재검증 생략을 river 승인",
+      "notes": "Table 은 표만 소유한다. 표 아래 페이지 이동과 '몇 개씩 보기' 는 승인된 pagination·select 배포본을 화면에서 조립한다(river 결정 2026-09-02, HD-2). 정렬 기능은 정본에 없어 범위 밖(HD-1 A). 열 가운데 정렬은 웹 공개 옵션으로 열었고 정본 반영은 NCU-1 로 분리(HD-3 B). 접근성은 기본 수준 확정(HD-4 A).",
+      "platform": "pc-only"
     }
   ]
 }

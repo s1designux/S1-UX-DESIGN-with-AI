@@ -1300,8 +1300,10 @@ function centerIconInBox(node: SceneNode, box: SceneNode, sz: number): void {
   node.y += (pb.y + (sz - bb.height) / 2) - bb.y;
 }
 // 입력값 삭제(close) 아이콘 — remove(원+X) 인스턴스. 24px 네이티브(글리프 16) 유지. 이름 "remove" 은 Anatomy Gate(11) 검증.
+// icon-fallback-not-canon: 라이브러리 import 실패용 폴백. 웹 자산으로 쓰려면 ui:icons:origin 원본 대조 PASS 가 있어야 한다.
 const REMOVE_ICON_SVG = `<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M16 8C16 3.58588 12.4141 0 8 0C3.58588 0 0 3.58588 0 8C0 12.4141 3.58588 16 8 16C12.4141 16 16 12.4141 16 8ZM8 15.0588C4.10353 15.0588 0.941176 11.8965 0.941176 8C0.941176 4.10353 4.10353 0.941176 8 0.941176C11.8965 0.941176 15.0588 4.10353 15.0588 8C15.0588 11.8965 11.8965 15.0588 8 15.0588Z" fill="#353535"/><path d="M5.5 5.5L10.8333 10.8333" stroke="#353535" stroke-width="1.5" stroke-linejoin="round"/><path d="M10.8333 5.5L5.5 10.8333" stroke="#353535" stroke-width="1.5" stroke-linejoin="round"/></svg>`;
 // plain-X 닫기 폴백 SVG(원 없음, ✕ 2선) — 라이브러리 close(ic_닫기 89:4927) import 실패 시만. 색은 rebindIconColor 가 변수 바인딩.
+// icon-fallback-not-canon: 라이브러리 import 실패용 폴백. 웹 자산으로 쓰려면 ui:icons:origin 원본 대조 PASS 가 있어야 한다.
 const CLOSE_ICON_SVG = `<svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M6 6L18 18" stroke="#353535" stroke-width="1.5" stroke-linecap="round"/><path d="M18 6L6 18" stroke="#353535" stroke-width="1.5" stroke-linecap="round"/></svg>`;
 async function makeClearIcon(colorVar: Variable, size = 0): Promise<SceneNode> {
   return makeIconInstance("remove", colorVar, size, REMOVE_ICON_SVG); // size 0 = 리사이즈 안 함(네이티브 24)
@@ -1807,10 +1809,12 @@ async function buildLineTab(maps: BuildMaps, originY: number): Promise<{ set: Co
     { name: "Selected",   label: "label/selected",  ind: "indicator/selected" },
   ];
   // V2.4 원본 실측(540:6032): pc-md 44h/font20 · pc-sm 42h/font16 · mobile 32h/font16.
+  // MD 라벨은 레거시 20 이 너무 커서 18 로 줄인다(river 결정 2026-09-02). 정본 텍스트 스타일에 20 Medium 이
+  //   없어 textStyleKey 가 이미 18M 으로 치환해 왔으므로 Figma 결과물(18px)은 그대로이고 표기만 실제와 맞춘다.
   // PC XSM 은 river 승인 신규 기준(2026-08-11): 40h/body 14M · SM 과 같은 좌우 padding 16. (높이=인디케이터 포함 총 심볼 높이)
   const sizes = [
     { size: "SM", brk: "PC",     h: 42, font: 16 },
-    { size: "MD", brk: "PC",     h: 44, font: 20 },
+    { size: "MD", brk: "PC",     h: 44, font: 18 },
     { size: "XSM", brk: "PC",    h: 40, font: 14 },
     { size: "SM", brk: "Mobile", h: 32, font: 16 },
   ];
@@ -1964,8 +1968,14 @@ async function buildTableCell(maps: BuildMaps, originY: number): Promise<{ set: 
     { type: "Cell",   state: "Selected", bg: "color/table/cell/selected", border: "color/table/border/default",  text: "color/text/body/primary",   head: "Cell · Selected" },
     { type: "Header", state: "Default",  bg: "color/table/header/bg",      border: "color/table/border/default", text: "color/text/body/secondary", head: "Header" },
   ];
+  // 크기 사다리 — river 결정 2026-09-02:
+  //   · SM 글자는 13 이 아니라 14 다. 정본 텍스트 스타일에 13 이 없어 textStyleKey 가 계속 14 로 치환해 왔고,
+  //     Figma 결과물은 처음부터 body/14 였다. 코드의 13 표기만 오해를 부르던 죽은 값이라 정정.
+  //   · XSM(34/12) 신설 — 표는 데이터가 빽빽해 34 행에서 글자를 12 로 줄인다.
+  //     다른 컴포넌트의 XSM(34/14)과 다른 표 전용 기준(river 승인 2026-09-02).
   const sizes = [
-    { size: "SM", h: 38, font: 13 },
+    { size: "XSM", h: 34, font: 12 },
+    { size: "SM", h: 38, font: 14 },
     { size: "MD", h: 44, font: 14 },
   ];
   const W = 130;
@@ -2065,7 +2075,7 @@ async function buildTable(maps: BuildMaps, originY: number): Promise<{ set: Comp
     row.appendChild(chkFrame); chkFrame.x = 0; chkFrame.y = 0;
 
     // ── COL[1..4] 텍스트 컬럼 — Table Cell 인스턴스 재사용 ──────────────────
-    const font = sizeKey === "MD" ? 14 : 13;  // fallback 전용
+    const font = sizeKey === "XSM" ? 12 : 14;  // fallback 전용 (SM·MD 는 14, XSM 만 12)
     let xOff = COL[0];
     for (let k = 0; k < 4; k++) {
       const colW   = COL[k + 1];
@@ -2139,6 +2149,7 @@ async function buildTable(maps: BuildMaps, originY: number): Promise<{ set: Comp
   const sizes = [
     { size: "MD", sizeKey: "MD", h: 44 },
     { size: "SM", sizeKey: "SM", h: 38 },
+    { size: "XSM", sizeKey: "XSM", h: 34 },   // river 승인 2026-09-02 — 표 전용 34/12
   ];
   // 8개 바디 행: Default·Hover·Selected·Default×5
   const ROW_STATES = ["Default", "Hover", "Selected", "Default", "Default", "Default", "Default", "Default"];
@@ -5742,6 +5753,9 @@ export async function buildAllComponents(
   maps: BuildMaps,
   onProgress?: (step: string, pct: number) => void
 ): Promise<{ created: number; added: string[]; skipped: string[]; noRunner: string[]; failed: { name: string; reason: string }[]; degraded: { name: string; missing: string[] }[] }> {
+  // 플러그인을 닫지 않고 새 가이드 페이지를 설치해도 이전 페이지 노드를 재사용하지 않는다.
+  for (const key of Object.keys(BUILT_SETS)) delete BUILT_SETS[key];
+  for (const key of Object.keys(BUILT_COMPS)) delete BUILT_COMPS[key];
   TEXT_STYLES = maps.textStyles || {};  // makeBoundText 가 텍스트 스타일 바인딩에 사용
   const page = figma.currentPage;
 

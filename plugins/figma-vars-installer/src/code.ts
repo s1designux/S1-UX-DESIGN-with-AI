@@ -46,6 +46,12 @@ import {
 } from "./audit-engine";
 import type { ReferenceComponent, SwapCandidate, SwapRollback } from "./audit-engine";
 
+declare const __CURRENT_GUIDE_FINGERPRINT__: string;
+const CURRENT_GUIDE_FINGERPRINT = __CURRENT_GUIDE_FINGERPRINT__;
+const GUIDE_VERSION_KEY = "s1-guide-fingerprint";
+const GUIDE_PAGE_KEY = "s1-guide-page-id";
+const GUIDE_PAGE_NAME = "S-1 UX Guide";
+
 // height 800: 설치 탭 첫 화면(항목 4개 + 의존성 안내 + 푸터)이 스크롤 없이 들어가는 높이.
 //   ui.html 은 앱셸(내부 .iscroll 만 스크롤)이라 더 작은 창에서도 깨지지 않는다. resize 클램프는 480~1200.
 figma.showUI(__html__, { width: 440, height: 800, title: "S-1 S/W UX Guide 설치/검수기 0.2Ver" });
@@ -69,7 +75,9 @@ figma.ui.onmessage = async (msg: { type: string; payload?: any } & Partial<Insta
       semantic: msg.semantic === true,
       textStyles: msg.textStyles === true,
       components: msg.components === true,
-    });
+    }, { stampCompleteGuide: true });
+  } else if (msg.type === "update-guide") {
+    await installLatestGuideOnNewPage();
   } else if (msg.type === "reinstall-clean") {
     await removeInstalledComponents();
     // ↓ 아래 3케이스(scan-legacy·select-instances·swap-components)는 레거시 교체 탭 잔재로
@@ -92,7 +100,9 @@ figma.ui.onmessage = async (msg: { type: string; payload?: any } & Partial<Insta
 async function handleAuditMessage(type: string, payload: any): Promise<void> {
   try {
     if (type === "selection-state") {
-      await postAuditSelectionState();
+      await postAuditSelectionState(payload && payload.requestId);
+    } else if (type === "selection-summary") {
+      postAuditSelectionSummary();
     } else if (type === "inspect-selection") {
       const requestedPhase = payload && payload.phase === "details" ? "details" : "component";
       if (requestedPhase === "component") {
@@ -115,7 +125,8 @@ async function handleAuditMessage(type: string, payload: any): Promise<void> {
 
       await figma.ui.postMessage({ type: "audit:inspection-progress", payload: { current: 0, completed: [], total: 10, pct: 4 } });
       const installState = await getAuditInstallState();
-      const pool = collectPageReference();
+      const guidePage = await getStampedGuidePage();
+      const pool = collectPageReference(guidePage || undefined);
       if (!installState.installed) {
         figma.ui.postMessage({ type: "audit:inspection-result", payload: { ok: false, code: "need-install", message: `검수 기준 설치가 필요합니다: ${installState.missing.join(" · ")}` } });
         return;
@@ -297,6 +308,10 @@ async function handleAuditMessage(type: string, payload: any): Promise<void> {
     }
   } catch (e: any) {
     const message = String(e && e.message || e);
+    if (type === "selection-state") {
+      figma.ui.postMessage({ type: "audit:selection-state-error", payload: { requestId: payload && payload.requestId, message } });
+      return;
+    }
     // 개선안 생성 중 예외면 UI 버튼이 잠긴 채 굳지 않도록 전용 실패 응답도 함께 보낸다
     if (type === "build-improved") {
       figma.ui.postMessage({ type: "audit:build-improved-result", payload: { ok: false, message } });
@@ -319,15 +334,37 @@ function auditSelectionSummary(selectionOverride?: readonly SceneNode[]) {
   return { count: selected.length, names, label };
 }
 
-async function postAuditSelectionState(): Promise<void> {
+function postAuditSelectionSummary(): void {
+  figma.ui.postMessage({ type: "audit:selection-summary", payload: auditSelectionSummary() });
+}
+
+async function postAuditSelectionState(requestId?: number): Promise<void> {
   const installState = await getAuditInstallState();
   await figma.ui.postMessage({
     type: "audit:selection-state",
-    payload: { ...auditSelectionSummary(), ...installState },
+    payload: { requestId, ...auditSelectionSummary(), ...installState },
   });
 }
 
-async function getAuditInstallState(): Promise<{ installed: boolean; missing: string[] }> {
+async function getStampedGuidePage(): Promise<PageNode | null> {
+  if (figma.root.getPluginData(GUIDE_VERSION_KEY) !== CURRENT_GUIDE_FINGERPRINT) return null;
+  const pageId = figma.root.getPluginData(GUIDE_PAGE_KEY);
+  if (!pageId) return null;
+  const node = await figma.getNodeByIdAsync(pageId);
+  if (!node || node.type !== "PAGE") return null;
+  if (node.getPluginData(GUIDE_VERSION_KEY) !== CURRENT_GUIDE_FINGERPRINT) return null;
+  return node as PageNode;
+}
+
+async function getAuditInstallState(): Promise<{ installed: boolean; missing: string[]; currentGuide: boolean }> {
+  const missing: string[] = [];
+  const guidePage = await getStampedGuidePage();
+  if (!guidePage) missing.push("최신 가이드 버전");
+  missing.push(...await getGuideContentMissing(guidePage));
+  return { installed: missing.length === 0, missing, currentGuide: missing.length === 0 };
+}
+
+async function getGuideContentMissing(guidePage: PageNode | null): Promise<string[]> {
   const missing: string[] = [];
   const collections = await figma.variables.getLocalVariableCollectionsAsync();
   const collectionByName = new Map(collections.map((collection) => [collection.name, collection]));
@@ -367,9 +404,12 @@ async function getAuditInstallState(): Promise<{ installed: boolean; missing: st
   for (const category of COMPONENT_CATEGORIES) {
     for (const name of category.members) expectedComponentNames.add(normalizeAuditName(name));
   }
-  const installedComponentNames = new Set(collectPageReference().map((component) => normalizeAuditName(component.name)));
+  const installedComponentNames = new Set(
+    (guidePage ? collectComponents(guidePage, figma.root.name) : [])
+      .map((component) => normalizeAuditName(component.name))
+  );
   if (Array.from(expectedComponentNames).some((name) => !installedComponentNames.has(name))) missing.push("컴포넌트");
-  return { installed: missing.length === 0, missing };
+  return missing;
 }
 
 function normalizeAuditName(name: string): string {
@@ -377,10 +417,8 @@ function normalizeAuditName(name: string): string {
 }
 
 figma.on("selectionchange", () => {
-  void postAuditSelectionState();
+  postAuditSelectionSummary();
 });
-
-void postAuditSelectionState();
 
 figma.on("close", () => {
   void cleanupSwapBackups();
@@ -800,7 +838,10 @@ async function loadExistingSemantic(): Promise<{
   return { semanticColorMap, scc, lightModeId, darkModeId };
 }
 
-async function runInstall(sel: InstallSelection) {
+async function runInstall(
+  sel: InstallSelection,
+  options: { stampCompleteGuide?: boolean; updateFlow?: boolean } = {},
+): Promise<boolean> {
   try {
     if (!sel.foundation && !sel.semantic && !sel.textStyles && !sel.components) {
       throw new Error("설치할 항목을 하나 이상 선택하세요.");
@@ -931,6 +972,22 @@ async function runInstall(sel: InstallSelection) {
       componentDegraded = compResult.degraded;    // 부품 누락으로 불완전하게 완성된 것
     }
 
+    const componentProblems = componentFailed.length + componentNoRunner.length + componentDegraded.length;
+    const completeSelection = sel.foundation && sel.semantic && sel.textStyles && sel.components;
+    if (options.updateFlow && componentProblems > 0) {
+      throw new Error(`최신 가이드 컴포넌트 설치가 완료되지 않았습니다: ${componentProblems}개 실패 또는 누락`);
+    }
+    if (options.stampCompleteGuide && completeSelection && componentProblems === 0) {
+      const contentMissing = await getGuideContentMissing(figma.currentPage);
+      if (contentMissing.length) {
+        throw new Error(`최신 가이드 설치가 완료되지 않았습니다: ${contentMissing.join(" · ")}`);
+      }
+      // 페이지 표식을 먼저, 문서 포인터를 마지막에 쓴다. 중간 실패는 최신 상태로 인식되지 않는다.
+      figma.currentPage.setPluginData(GUIDE_VERSION_KEY, CURRENT_GUIDE_FINGERPRINT);
+      figma.root.setPluginData(GUIDE_VERSION_KEY, CURRENT_GUIDE_FINGERPRINT);
+      figma.root.setPluginData(GUIDE_PAGE_KEY, figma.currentPage.id);
+    }
+
     post("progress", { step: "완료", pct: 100 });
     post("done", {
       foundationCount,
@@ -944,11 +1001,41 @@ async function runInstall(sel: InstallSelection) {
       componentDegraded,
       removedCount: removedAll.length,
       removedNames: removedAll,
+      guideUpdated: options.updateFlow === true,
     });
+    return true;
   } catch (err: unknown) {
     const msg = err instanceof Error ? err.message : String(err);
     post("error", { message: msg });
+    return false;
   }
+}
+
+function uniqueGuidePageName(): string {
+  const used = new Set(figma.root.children.map((page) => page.name));
+  if (!used.has(GUIDE_PAGE_NAME)) return GUIDE_PAGE_NAME;
+  let index = 2;
+  while (used.has(`${GUIDE_PAGE_NAME} ${index}`)) index++;
+  return `${GUIDE_PAGE_NAME} ${index}`;
+}
+
+async function installLatestGuideOnNewPage(): Promise<void> {
+  const previousPage = figma.currentPage;
+  const page = figma.createPage();
+  page.name = uniqueGuidePageName();
+  await page.loadAsync();
+  figma.currentPage = page;
+  const ok = await runInstall(
+    { foundation: true, semantic: true, textStyles: true, components: true },
+    { stampCompleteGuide: true, updateFlow: true },
+  );
+  if (!ok) {
+    try { figma.currentPage = previousPage; } catch (e) { /* best-effort */ }
+    try { page.remove(); } catch (e) { /* best-effort */ }
+    figma.ui.postMessage({ type: "audit:guide-update-failed", payload: {} });
+    return;
+  }
+  figma.ui.postMessage({ type: "audit:guide-update-done", payload: { pageName: page.name } });
 }
 
 // ── 재설치: 설치된 컴포넌트 제거 ──────────────────────────────────────────────

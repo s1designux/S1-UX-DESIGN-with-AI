@@ -126,10 +126,11 @@
     "Multi Toggle": {
       "source": {
         "sectionId": "multi-toggle",
+        "sourceFile": "ui-library/src/components/multi-toggle/multi-toggle.js",
         "sourceEvidence": [
-          "function wireMultiToggle(el)",
-          "cell.classList.add('is-selected')",
-          "el.classList.contains('is-disabled')"
+          "export function init(root)",
+          "cell.setAttribute(\"aria-checked\", String(checked));",
+          "cell.getAttribute(\"aria-disabled\") !== \"true\""
         ]
       },
       "status": "verified",
@@ -149,9 +150,13 @@
         }
       ],
       "selection": "single",
-      "keyboard": "not-defined",
-      "focus": "not-defined",
-      "accessibility": "not-defined"
+      "keyboard": "ArrowLeft/ArrowRight·ArrowUp/ArrowDown move and select among enabled cells; Home/End jump; Enter/Space selects the focused cell",
+      "focus": "roving tabindex — only the selected cell is in the tab order; disabled cells are skipped",
+      "accessibility": {
+        "group": "role=radiogroup on the root, role=radio on each cell",
+        "selectedCell": "aria-checked=true on the selected cell and false on siblings",
+        "disabledCell": "aria-disabled=true is not selectable and is skipped by arrow keys"
+      }
     },
     "Chip": {
       "source": {
@@ -281,10 +286,11 @@
     "Text Area": {
       "source": {
         "sectionId": "textarea",
+        "sourceFile": "ui-library/src/components/textarea/textarea.js",
         "sourceEvidence": [
-          "textareaInput.addEventListener('focus'",
-          "textareaInput.addEventListener('blur'",
-          "textareaInput.setAttribute('readonly', '')"
+          "export const componentId = \"textarea\";",
+          "export const jsRequired = false;",
+          "export const runtime = null;"
         ]
       },
       "status": "verified",
@@ -292,25 +298,23 @@
       "events": [
         {
           "on": "focus",
-          "target": "textarea",
-          "result": "enter focus state"
+          "target": "control",
+          "result": "native :focus-within styling; no runtime involved"
         },
         {
-          "on": "blur",
-          "target": "textarea",
-          "result": "leave focus state"
-        },
-        {
-          "on": "readonly",
-          "target": "textarea",
-          "result": "prevent value editing while preserving readable content"
+          "on": "input",
+          "target": "control",
+          "result": "native value change; no runtime involved"
         }
       ],
-      "keyboard": "native-textarea",
-      "focus": "native-textarea",
+      "keyboard": "native textarea",
+      "focus": "native textarea",
       "accessibility": {
-        "readonly": "use the native readonly attribute"
-      }
+        "name": "a label element or aria-label on the control",
+        "readOnly": "the readonly attribute",
+        "disabled": "the disabled attribute"
+      },
+      "runtimeNote": "런타임 없음(jsRequired=false). 상태는 전부 네이티브 속성과 CSS 로 성립한다 — 2026-09-02 배포본 이관 후 사이트 인라인 JS 가 사라져 근거를 배포본 원본으로 옮겼다."
     },
     "Select Box": {
       "source": {
@@ -408,8 +412,8 @@
         }
       ],
       "selection": "single",
-      "keyboard": "native-button-click-only",
-      "focus": "native-button",
+      "keyboard": "ArrowLeft/ArrowRight move and select; Home/End jump; Enter/Space native-button activation",
+      "focus": "roving tabindex — only the selected tab is in the tab order",
       "accessibility": {
         "selectedTab": "set aria-selected=true and remove aria-selected from siblings"
       }
@@ -697,6 +701,56 @@
       "keyboard": "ArrowUp · ArrowDown · Home · End · Enter/Space toggles the focused row",
       "focus": "roving tabindex — only the active option is in the tab order",
       "accessibility": "role=checkbox + aria-checked on each option row; the select-all row uses true/false only — the mixed state is not implemented because the canonical component has no such visual (river decision 2026-08-31)"
+    },
+    "Modal": {
+      "source": {
+        "sectionId": "modal",
+        "sourceFile": "ui-library/src/components/modal/modal.js",
+        "sourceEvidence": [
+          "export function init(root)",
+          "function open(detail = {})",
+          "function close(detail = {})",
+          "const trapFocus = (event) =>"
+        ]
+      },
+      "status": "verified",
+      "initialState": "closed — root[hidden]",
+      "events": [
+        {
+          "on": "open()",
+          "target": "modal",
+          "result": "remove root[hidden], lock background scroll, move focus into the panel, and emit s1:modal:open"
+        },
+        {
+          "on": "close()",
+          "target": "modal",
+          "result": "set root[hidden], unlock background scroll, restore focus to the element focused before opening, and emit s1:modal:close"
+        },
+        {
+          "on": "click",
+          "target": "close button",
+          "guard": "PC only — Mobile has no close button in canon",
+          "result": "close with detail.reason=\"close-button\""
+        },
+        {
+          "on": "keydown Escape",
+          "target": "document while open",
+          "result": "close with detail.reason=\"escape\""
+        },
+        {
+          "on": "keydown Tab",
+          "target": "document while open",
+          "result": "cycle focus inside the panel only (focus trap)"
+        }
+      ],
+      "selection": "not-applicable",
+      "keyboard": "Escape closes; Tab/Shift+Tab cycle inside the panel and never leave it",
+      "focus": "focus moves to the first focusable element in the panel on open and returns to the previously focused element on close; focus escaping the panel is pulled back",
+      "accessibility": {
+        "dialog": "panel carries role=dialog and aria-modal=true",
+        "name": "aria-labelledby points at [data-s1-part=title]; aria-describedby points at [data-s1-part=message]",
+        "background": "body scroll is locked while any modal is open and restored when the last one closes"
+      }
     }
   }
 }
