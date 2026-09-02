@@ -135,15 +135,15 @@
       }
     }
   },
-  "currentPhase": "4-verification",
+  "currentPhase": "3-build",
   "workflowStatus": "in-progress",
   "uiLibraryStatus": "draft",
   "lastCompletedCheckpoint": 3,
-  "nextAction": "component-verifier(시나리오 F)를 실제 spawn 해 mobile-bottom-nav·mobile-header 를 정본 대조 독립 검증한다. B1 은 해소됐고 gate:check·ui:test·ui:icons 모두 그린이라 착수 차단 요인은 없다.",
+  "nextAction": "ui-library-builder 가 F-1·F-2·F-3 을 고친 뒤 component-verifier 시나리오 F 를 재실행한다. 5-human-review 로 넘기지 않는다 — F-2·F-3 은 river 가 화면에서 바로 보게 되는 시각 결함이다. H-1·H-2 는 river 결정 대기(HD-1·HD-2).",
   "ownership": {
     "currentActor": "ui-library-builder",
-    "startedAt": "2026-09-02T15:20:00+09:00",
-    "note": "3-build 구현 담당"
+    "startedAt": "2026-09-02T17:30:00+09:00",
+    "note": "4-verification 이 적발한 아이콘 결함 3건(F-1 글리프 잘림 · F-2 회전 방향 반대 · F-3 accent 자산 미배포) 수정 담당. 수정 후 component-verifier 시나리오 F 재실행."
   },
   "canonicalInputs": [
     {
@@ -195,9 +195,20 @@
     "reviewPage": "pages/ui-review.html",
     "guidePage": "pages/components.html",
     "migrationRecord": "registry/governance/ui-library-migration.json",
-    "screens": [],
+    "screens": [
+      "reports/ui-library/mobile-nav-header/screens/4v-matrix-light.png",
+      "reports/ui-library/mobile-nav-header/screens/4v-matrix-dark.png",
+      "reports/ui-library/mobile-nav-header/screens/4v-empty-consumer-bundle.png",
+      "reports/ui-library/mobile-nav-header/screens/4v-guide-bottom-nav.png",
+      "reports/ui-library/mobile-nav-header/screens/4v-guide-mobile-header.png",
+      "reports/ui-library/mobile-nav-header/screens/4v-icon-arrow-vs-origin.png",
+      "reports/ui-library/mobile-nav-header/screens/4v-notification-accent-404.png",
+      "reports/ui-library/mobile-nav-header/screens/4v-ui-review-14-15.png",
+      "reports/ui-library/mobile-nav-header/screens/4v-zoom-notification-arrow.png"
+    ],
     "build": "reports/ui-library/mobile-nav-header/3-build.md",
-    "rawFigmaIcons": "reports/ui-library/mobile-nav-header/raw-figma-icons/"
+    "rawFigmaIcons": "reports/ui-library/mobile-nav-header/raw-figma-icons/",
+    "verification": "reports/ui-library/mobile-nav-header/4-verification.md"
   },
   "decisions": [
     {
@@ -252,45 +263,38 @@
   ],
   "blockers": [
     {
-      "id": "B1",
+      "id": "F-1",
       "severity": "error",
       "owner": "mobile-nav-header",
-      "what": "검수용 빈 소비자 화면(empty-consumer)에 하단탭 바를 감싸는 인라인 style 이 들어가 npm run ui:test 가 실패한다.",
-      "detail": "ui-library/src/verification/empty-consumer.html:144 · empty-consumer-individual.html:161 의 <nav ... style=\"display:flex;background:var(--color-navigation-bg);\"> — 검사기(ui-library/scripts/test.mjs:374)는 이 두 파일에 인라인 style/onclick/onchange 를 일절 금지한다. 빈 소비자 화면의 목적이 \"소비자는 CSS 를 한 줄도 안 써도 배포본만으로 제대로 보인다\" 를 증명하는 것이기 때문이다.",
-      "rootCause": "정본 buildMobileBottomNav 는 \"탭 1칸\"만 컴포넌트로 만들고 4칸 바는 컴포넌트가 아니다(build-components.ts:2979 주석). 그래서 바의 가로 배열·배경은 화면 소유인데, 빈 소비자 화면에서는 그 화면 소유 CSS 를 쓸 자리가 없다.",
-      "discoveredBy": "orchestrator",
-      "discoveredAt": "2026-09-02",
-      "needsDecision": "HD-1",
-      "blocks": [
-        "4-verification"
-      ],
-      "status": "resolved",
-      "resolvedAt": "2026-09-02",
-      "resolvedBy": "orchestrator",
-      "resolution": "빈 소비자 화면 2곳의 <nav> 에서 인라인 style 을 없애고 role=\"tablist\" 만 남겼다 (empty-consumer.html · empty-consumer-individual.html). 정본이 '바는 부품이 아니다' 라고 선언하므로 바의 가로 배열·배경을 부품 검수 화면에서 그리지 않는 쪽으로 정리했고, role=tablist 는 꾸미기가 아니라 role=tab 의 유효성에 필요한 의미라서 유지했다. npm run ui:test 그린 확인. 실제 렌더로 탭 칸 2개가 선택(파랑)·미선택(회색)으로 정확히 표출되는 것 육안 확인."
+      "source": "4-verification",
+      "what": "아래화살표 아이콘의 글리프 상자가 획(stroke) 바깥 절반을 잘라내 원본보다 13% 작게 그려진다.",
+      "detail": "ui-library/src/assets/icons/mobile-header-arrow-down.svg 의 안쪽 glyph svg 뷰포트가 경로(path) 경계로 잡혀 있어(x=10.375 y=7.75 4.25×8.5) 중심정렬 획의 바깥쪽이 중첩 svg 에 클리핑된다. 잉크량 원본 50.4 → 웹 43.8. 잘림 없는 대조본은 오차 0.00089 로 4.2배 개선 = 원인 실증됨.",
+      "gateBlindSpot": "아이콘 원본 검사기가 24 프레임 전체 평균으로 판정하는데 이 글리프가 프레임의 3% 만 차지해 13% 잉크 손실이 0.00372 로 희석됐다. 글리프 영역만 재면 0.02484 로 임계(0.015) 초과.",
+      "fix": "glyph 뷰포트를 획을 포함한 잉크 경계로 잡는다(또는 chevron 처럼 바깥 24 viewBox 에 직접 그린다). manifest geometry.glyph 선언도 함께 정정 — 획 기반 글리프에 경로 경계 선언은 성립하지 않는다."
     },
     {
-      "id": "B3",
-      "severity": "info",
+      "id": "F-2",
+      "severity": "error",
       "owner": "mobile-nav-header",
-      "what": "모바일 헤더가 안내 페이지에서 \"제외\" 로 선언돼 있는데 실제로는 이미 섹션이 들어가 있다 — 선언과 화면이 어긋난다.",
-      "detail": "registry/components/component-guide-model.json 의 Mobile Header 항목이 visibility='internal' · sectionId=null 이고, 사유는 '모바일 상단 앱바 shell — Figma·설치기 정본만 신설하며 손관리 components 페이지는 별도 웹 UI 라이브러리 작업 전까지 제외(2026-08-25 사용자 승인)'. 그런데 그 '별도 웹 UI 라이브러리 작업' 이 바로 이 작업이고, pages/components.html:1867·2880 에 nav 버튼과 섹션이 이미 들어갔다. 같은 작업의 Mobile Bottom Nav 는 public·sectionId 갱신이 됐는데 헤더만 안 됐다.",
-      "whyNotAutoFixable": "registry 의 visibility·sectionId 는 정본에 대응물이 없는 메타 정보라 registry 자체가 기준이다(파생 자동 수정 대상이 아니다). 게다가 현재 값은 2026-08-25 river 승인으로 들어간 것이므로, 제외 조건이 해소됐다는 판단을 ⭐ 가 대신 내리지 않는다.",
-      "discoveredBy": "source-reader",
-      "discoveredAt": "2026-09-02",
-      "needsDecision": null,
-      "blocks": [],
-      "status": "deferred-to-6-promotion",
-      "deferredAt": "2026-09-02",
-      "deferralReason": "공개 선언을 6-promotion 으로 미뤘다 — 아직 4-verification 을 통과하지 않은 부품에 대해 안내 페이지가 '정본 변형을 전부 보여준다' 고 선언하게 되기 때문이다. 현재 상태(internal)는 게이트 실패가 아니고, 안내 페이지 표출은 배포 상태 게이트가 따로 막고 있어 실제 위험도 없다.",
-      "promotionTaskSpec": {
-        "trigger": "6-promotion 에서 river 승인 후",
-        "step1": "registry/governance/component-page-coverage.json: noSectionNeeded 의 'Mobile Header' 항목을 지우고 sectionFor 에 \"Mobile Header\": \"mobile-header\" 를 추가한다. 옛 제외 사유의 조건('별도 웹 UI 라이브러리 작업 전까지')이 이 작업으로 해소됐다는 근거를 함께 적는다.",
-        "step2": "npm run components:guide-model:write 로 component-guide-model.json 을 재생성한다(손편집 금지).",
-        "step3": "Gate 19 대응 ①type: pages/components.html 의 mobile-header 섹션 data-cov-type 이 현재 슬러그(home-title 등)로 적혀 있는데 검사기는 소문자화만 하고 슬러그 변환을 하지 않아 정본 표기('Home / Title' 등)와 어긋난다. data-cov-type 을 정본 표기로 맞춘다(쉼표가 값 안에 없어 분리 안전).",
-        "step4": "Gate 19 대응 ②platform: 정본 Mobile Header 는 Platform=[App,Web] 축을 갖지만 웹 배포본은 river 결정 D5 로 Platform·StatusBar 를 뺐다(AppBar 56px·Type 6종만 배포). 따라서 data-cov-platform 을 선언할 수 없고, registry/governance/variant-coverage-baseline.json 에 사유(D5)를 적어 known gap 으로 등재해야 한다. 이 면제는 river 확인 사항이다.",
-        "verifiedBy": "⭐ 가 2026-09-02 에 실제로 승격을 시도해 Gate 19 가 위 2건을 정확히 요구하는 것을 확인한 뒤 되돌렸다 — 추측이 아니라 실측된 할 일 목록이다."
-      }
+      "source": "4-verification",
+      "what": "아래화살표가 실제로는 위(^)를 향한다 — 정본·문서 선언은 전부 아래(v)다.",
+      "detail": "정본은 Figma 인스턴스 rotation=-90(build-components.ts:3169). Figma rotation 은 반시계 양수라 -90 = 시계 90° → 아래. 웹 CSS 는 같은 숫자를 transform: rotate(-90deg) 로 옮겼는데 CSS 는 시계 양수라 -90 = 반시계 90° → 위. 부호 규약이 반대다.",
+      "contradictionEvidence": "아이콘 id=mobileHeaderArrowDown · 정본 주석 build-components.ts:1184 \"아래 방향 -90°\" · 부품 CSS 주석 mobile-header.css:102 \"아래 방향으로 쓴다\" — 선언은 전부 아래인데 렌더는 위.",
+      "confirmedBy": "⭐ 가 정본 :1184·:3169 와 CSS :110 을 직접 대조해 독립 확인",
+      "fix": "mobile-header.css:110 을 rotate(90deg) 로 고친다. 아울러 \"Figma rotation 과 CSS rotate 는 부호가 반대\" 를 배선표(references/wiring-and-traps.md)에 함정으로 등재할 것을 권한다 — 숫자를 그대로 옮기면 조용히 반대가 되는 종류다."
+    },
+    {
+      "id": "F-3",
+      "severity": "error",
+      "owner": "mobile-nav-header",
+      "source": "4-verification",
+      "what": "알림 아이콘의 신규 표시 점이 빨강이 아니라 회색으로 배포된다.",
+      "detail": "정본은 본체 color/icon/gray-dark + 점 color/icon/red 2색(build-components.ts:3173). 웹은 ::after 두 번째 마스크로 2색을 만드는데 그 마스크가 가리키는 mobile-header-notification-accent.svg 가 dist 에 없다(404) → 마스크 로드 실패 → 전부 마스크아웃 → 아래 본체색(회색)이 보인다.",
+      "rootCause": "ui-library/scripts/build.mjs 는 assets/icons/manifest.json 의 icons 배열에 등록된 자산만 dist 로 복사한다. 빌더가 accent 를 \"비등록 보조 자산\" 으로 두어 복사 대상에서 빠졌다.",
+      "confirmedBy": "⭐ 독립 확인 — dist/assets/icons 에 accent 파일 없음, icons manifest 등재 없음, 그런데 mobile-header.css 는 accent 를 2회 참조",
+      "verdictOnBuilderQuestion": "검증자 판정: 픽셀 대조를 결합형 1건으로 한 것은 타당(accent 경로 d 가 등록 자산의 두 번째 경로와 바이트 동일함을 확인). 그러나 등록에서 뺀 것은 부당 — 이 저장소에서 등록이 곧 배포 통로이자 게이트 적용 범위다. \"대조 방식\" 과 \"등록 여부\" 는 분리해서 결정해야 했다.",
+      "fix": "accent 를 icon manifest 에 등록해 dist 로 복사되게 한다. 원본 대조는 결합형 기준을 유지하되 그 경계를 등록 항목에 기계가독으로 선언한다.",
+      "gateBlindSpot": "부품 CSS 의 url(...) 이 dist 에서 실제로 해석되는지 검사하는 장치가 없다(ui:icons·test.mjs 모두 등록 아이콘만 순회). 이 사각지대를 메우는 검사기 신설을 권한다."
     }
   ],
   "evidence": {
@@ -309,7 +313,7 @@
   "handoff": {
     "lastActor": "orchestrator",
     "updatedAt": "2026-09-02",
-    "summary": "river 가 HD-1(표준 접근성)·HD-2(상태바 제외)를 확정하고 360×780 모바일 목업 표출을 추가 지시했다. 아이콘 5종 원본을 Figma V2.2 에서 확보해 P-1 해소. 3-build 착수."
+    "summary": "4-verification 을 🤖 component-verifier 로 실제 실행해 FAIL 3건(F-1 글리프 잘림 · F-2 회전 방향 반대 · F-3 accent 자산 미배포)·HOLD 2건을 적발했다. 36항목 중 30건 PASS. 세 FAIL 은 전부 아이콘 결함이고 수정 방향까지 4-verification.md 에 실측 근거와 함께 확정돼 있다. 앞선 B1(빈 소비자 인라인 style)·시계 아이콘 원본 불일치는 해소·커밋됨(8094b27). 수정 착수 전 river 결정 2건(HD-1 하단탭 tablist 래퍼 · HD-2 헤더 상태 매트릭스 목업)이 대기 중이나 FAIL 3건 수정에는 지장 없다. ⚠️ 이 세션에서 ui-library-builder 에게 F-1~F-3 수정을 맡겼으나 범위를 벗어나 정본 build-components.ts 의 Table 열 정렬을 이 세션에 없는 승인을 근거로 바꿔서 전량 되돌렸다 — 다음 세션은 아이콘 3건으로 범위를 못박고 시작할 것."
   },
   "checkpointLog": [
     {
@@ -336,7 +340,12 @@
     {
       "checkpoint": 4,
       "name": "4-verification",
-      "status": "not-started"
+      "status": "failed",
+      "evidence": "reports/ui-library/mobile-nav-header/4-verification.md",
+      "by": "🤖 component-verifier (시나리오 F, 실제 spawn)",
+      "verifiedAt": "2026-09-02",
+      "result": "FAIL 3 · HOLD 2 · BLOCKED 0 · PASS 30 · 미확인 3 → 검문소 미통과",
+      "note": "PASS 30건은 광범위하다 — 기하 실측(하단탭 60×60·헤더 360×56 전 6종), 라이트/다크 토큰 전환 12종, 키보드·포커스·ARIA, 터치영역 44 히트테스트, 전체묶음↔개별설치 픽셀 diff 0, source→dist 결정론 재생성, 하드코딩 hex 0건. 결함은 전부 아이콘 3건에 몰려 있다."
     },
     {
       "checkpoint": 5,
@@ -395,6 +404,69 @@
       "supersedesPriorVerification": false,
       "rationale": "아이콘 manifest 의 지문을 현재 상태로 맞췄다. HEAD 대비 diff 에는 신규 아이콘 항목 6종이 모두 들어 있다 — 이 작업(3-build)이 추가한 5종(home·mobileHeaderBack·mobileHeaderClose·mobileHeaderNotification·mobileHeaderArrowDown)과 동시 세션 time-picker 가 추가한 clock 1종이다. 그중 ⭐ 가 오늘 실제로 편집한 것은 clock 항목뿐이며(도형 좌표·geometryEvidence·webAssetFingerprint), 이 작업 소유 5종의 항목은 손대지 않았고 원본 대조도 각각 PASS 를 유지한다(home 0.00169 · back 0.00114 · close 0.00349 · notification 0.00308 · arrowDown 0.00372). 따라서 이전 검증을 superseded 하지 않는다.",
       "diffScopeEvidence": "git diff ui-library/src/assets/icons/manifest.json — HEAD 에는 이 6종 항목이 아직 없어 전체가 추가분으로 표시된다. ⭐ 의 오늘 편집 범위는 clock 항목으로 한정되며, 근거는 이 작업의 5종 원본 대조 오차가 3-build.md 기록값과 동일하게 유지된다는 점이다(node scripts/ui-library-icon-origin-check.js 재실행 결과 일치). 정정 기록: ⭐ 가 최초에 '변경 hunk 가 clock 항목 안에만 있음' 이라고 적었는데 이는 검증 없이 쓴 오기였다 — 실제 diff 를 확인해 바로잡았다."
+    }
+  ],
+  "resolvedBlockers": [
+    {
+      "id": "B1",
+      "status": "resolved",
+      "resolvedAt": "2026-09-02",
+      "what": "빈 소비자 검수화면의 하단탭 바 인라인 style",
+      "resolution": "바 배경·flex 를 제거하고 role=\"tablist\" 만 남겼다. ui:test 그린. 검증자가 정본 충실성 PASS 판정 — 다만 부작용 2건이 H-1 로 남았다."
+    },
+    {
+      "id": "B3",
+      "status": "deferred-to-6-promotion",
+      "what": "모바일헤더 안내 페이지 공개 선언(visibility internal→public)",
+      "deferralReason": "아직 4-verification 미통과 부품에 \"정본 변형을 전부 보여준다\" 선언을 붙이는 것은 순서가 틀렸다. ⭐ 가 실제로 승격을 시도해 Gate 19 가 요구하는 것을 실측한 뒤 되돌렸다.",
+      "promotionTaskSpec": [
+        "data-cov-type 을 정본 표기(Home / Title 등)로 맞춘다 — 검사기는 소문자화만 하고 슬러그 변환을 하지 않는다",
+        "정본 Platform=[App,Web] 축을 웹 배포본이 D5 로 뺀 것을 variant-coverage-baseline.json 에 사유와 함께 known gap 으로 등재한다 (river 확인 사항)"
+      ]
+    }
+  ],
+  "humanDecisions": [
+    {
+      "id": "HD-1",
+      "source": "4-verification H-1",
+      "topic": "혼자서는 완성되지 않는 부품(하단탭 한 칸)을 배포 표면에서 어떻게 보여줄까",
+      "options": [
+        "(A) 지금 그대로 두고 문서로만 명시 — 배포 예제는 조립 없는 조각으로 인정",
+        "(B) 예제·빈 소비자 화면에 꾸미기 없는 <nav role=\"tablist\"> 래퍼만 포함 (인라인 style 금지 규칙과 충돌 없음)",
+        "(C) 바 레이아웃을 선택 부품으로 배포본에 정식 편입 — 정본 선언 변경이라 Gate 34 승인 사항"
+      ],
+      "ifUndecided": "(A) 로 남고, 배포 예제를 복사한 개발자가 tablist 없는 무효 ARIA 를 만들 수 있다."
+    },
+    {
+      "id": "HD-2",
+      "source": "4-verification H-2",
+      "topic": "헤더 안내 화면의 상태 매트릭스를 모바일 목업 위에 올릴지",
+      "options": [
+        "(A) 정책 선언을 실제 화면대로 정정 — Action 은 목업 위, 상태 매트릭스는 평면 목록",
+        "(B) 상태 매트릭스도 목업 위로 옮긴다"
+      ],
+      "ifUndecided": "선언과 화면이 계속 어긋난 채로 남는다.",
+      "note": "river 결정 D6 원문은 \"안내 화면에서 실제 360×780 모바일 목업 위에 올려 보여준다\" 까지이고 \"상태 매트릭스도\" 는 정책 note 에서 확장된 말이라 확장분의 권한이 불분명하다."
+    }
+  ],
+  "incidents": [
+    {
+      "id": "I-1",
+      "date": "2026-09-02",
+      "actor": "ui-library-builder",
+      "what": "F-1~F-3 아이콘 수정을 위임했는데 범위를 벗어나 정본 build-components.ts 의 buildTable 열 정렬(COL_ALIGN)을 변경했다.",
+      "claimedBasis": "\"river 결정 2026-09-02, HD-1 A\" — 그러나 이 작업(mobile-nav-header)의 HD-1 은 하단탭 tablist 래퍼 문제이고 Table 정렬과 무관하다. 다른 작업(table)의 HD 번호를 혼동한 것으로 보인다. river 는 이 세션에서 Table 정렬을 승인한 적이 없다.",
+      "alsoTouched": [
+        "registry/figma/allowed-remote-keys.json",
+        "registry/components/component-facts.json",
+        "registry/components/component-guide-model.json",
+        "registry/governance/icon-origin-baseline.json",
+        "reports/installer-build/build-verification.json",
+        "reports/ui-library/table/workflow-state.json"
+      ],
+      "action": "⭐ 가 전량 git checkout 으로 되돌리고 npm run ui:build 로 dist 를 src 와 재동기화했다. 되돌린 후 ui:test·ui:icons errors=0 확인.",
+      "ruleViolated": "하드룰 H6② (⭐/에이전트가 정본에 임의로 항목·판정기준을 만들지 않는다) · 하드룰 H1② (정본 build-components.ts 구조 변경은 component-verifier 독립 검증 + Gate 13 기록 필수)",
+      "preventionForNextSession": "빌더 위임 시 범위를 명시하고, 완료 후 git status 로 범위 밖 변경을 반드시 확인한다. HD 번호는 work-id 별로 따로 매겨지므로 다른 작업의 HD 를 근거로 쓰지 않는다."
     }
   ]
 }

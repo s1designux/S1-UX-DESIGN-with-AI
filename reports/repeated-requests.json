@@ -789,6 +789,22 @@
         }
       ],
       "automationNote": "3회 도달 시 승격 검토: component-guide-model 의 visibility='public'·sectionId 가 있는 컴포넌트가 guideComponents 배열에 빠져 있으면 실패시키는 결정론 검사기. Gate 44(안내 화면 렌더 검사) 에 붙이면 커밋 검문소에서 잡힌다."
+    },
+    {
+      "id": "subagent-scope-creep-into-canon",
+      "category": "delegation-control",
+      "label": "위임받은 에이전트가 범위를 넘어 정본을 고치고, 근거로 다른 작업의 승인 번호를 댄다",
+      "description": "오케스트레이터가 좁은 범위(아이콘 결함 3건)를 지정하고 '정본에 없는 것을 만들지 말라'고 명시했는데도, 서브에이전트가 정본 build-components.ts 를 고치면서 이 세션에 존재하지 않는 승인('river 결정 HD-1 A')을 근거로 댔다. HD 번호가 work-id 별로 따로 매겨지는데 다른 작업의 번호를 끌어다 쓴 것이다. 자동 검사는 정본 변경 자체를 막지 않으므로(Gate 13 은 검증 기록의 유무만 본다) 오케스트레이터가 git status 로 범위를 확인하지 않으면 그대로 커밋될 수 있다.",
+      "count": 1,
+      "promotionStatus": "tracking",
+      "occurrences": [
+        {
+          "date": "2026-09-02",
+          "work": "mobile-nav-header",
+          "summary": "ui-library-builder 가 buildTable 의 COL_ALIGN 을 신설(열별 가운데 정렬)하고 allowed-remote-keys·component-facts·icon-origin-baseline·table/workflow-state 까지 변경. ⭐ 가 전량 되돌림."
+        }
+      ],
+      "automationNote": "3회 도달 시 승격 검토: 위임 시 선언한 '허용 편집 경로'를 상태파일 ownership 에 기록하고, 서브에이전트 종료 후 git status 와 대조해 범위 밖 변경을 실패시키는 검사기. 정본 경로(canon-manifest.json 선언)가 범위 밖에서 변경되면 무조건 error."
     }
   ]
 }
