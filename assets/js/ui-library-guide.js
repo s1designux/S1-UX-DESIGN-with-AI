@@ -1307,11 +1307,41 @@ function mobileBottomNavItemMarkup({ selected = false, label = "라벨" } = {}) 
   </button>`;
 }
 
-function phoneMockup(bodyHtml, { statusText = "9:41" } = {}) {
-  return `<div class="uilg-phone" role="img" aria-label="모바일 화면 목업">
-    <div class="uilg-phone-status" aria-hidden="true"><span>${statusText}</span><span class="uilg-phone-status-icons"></span></div>
+/* 상태바는 정본 StatusBar(App 360×27)를 그대로 옮긴 그림이다 — 배포 부품이 아니다(D5).
+   정본 populateStatusRow(build-components.ts:4738-4767): 좌우 SPACE_BETWEEN · 패딩 20/16 ·
+   왼쪽 "12:30"(12 Medium, text/body/secondary) · 오른쪽 묶음 간격 6(신호 17×12 · wifi 16×12 ·
+   배터리 24×12 · "78%"), 아이콘색 icon/gray-dark. wifi 는 정본 SHELL_WIFI_SVG 를 그대로 쓰되
+   색만 하드코딩 hex 대신 currentColor 로 받는다.
+   배경: 정본은 상태바 인스턴스의 fills 를 비워(build-components.ts:3117-3119) 헤더 프레임의
+   배경이 그대로 비쳐 보이게 한다 — 그래서 Home 유형에서는 상태바도 bg/home 이다. 이 그림도
+   같은 기제를 쓴다(headerBg 로 위쪽 크롬 전체를 한 색으로 칠한다). */
+const PHONE_WIFI_SVG = `<svg width="16" height="12" viewBox="0 0 16 12" fill="none" xmlns="http://www.w3.org/2000/svg"><mask id="uilg-sw1" fill="white"><path d="M2.34315 4.34315C3.84344 2.84286 5.87827 2 8 2C10.1217 2 12.1566 2.84285 13.6569 4.34314L8 10L2.34315 4.34315Z"/></mask><path d="M2.34315 4.34315C3.84344 2.84286 5.87827 2 8 2C10.1217 2 12.1566 2.84285 13.6569 4.34314L8 10L2.34315 4.34315Z" stroke="currentColor" stroke-width="3.2" mask="url(#uilg-sw1)"/><mask id="uilg-sw2" fill="white"><path d="M4.46447 6.46447C5.40215 5.52678 6.67392 5 8 5C9.32608 5 10.5979 5.52678 11.5355 6.46447L8 10L4.46447 6.46447Z"/></mask><path d="M4.46447 6.46447C5.40215 5.52678 6.67392 5 8 5C9.32608 5 10.5979 5.52678 11.5355 6.46447L8 10L4.46447 6.46447Z" stroke="currentColor" stroke-width="3.2" mask="url(#uilg-sw2)"/><circle cx="7.9998" cy="10.2" r="1.2" fill="currentColor"/></svg>`;
+
+function phoneStatusBar() {
+  const bars = [[0, 8, 3, 4], [4.5, 6, 3, 6], [9, 4, 3, 8], [13.5, 1, 3, 11]]
+    .map(([x, y, w, h]) => `<i style="left:${x}px;top:${y}px;width:${w}px;height:${h}px"></i>`).join("");
+  return `<div class="uilg-phone-status" aria-hidden="true">
+    <span class="uilg-phone-status-time">12:30</span>
+    <span class="uilg-phone-status-right">
+      <span class="uilg-phone-signal">${bars}</span>
+      <span class="uilg-phone-wifi">${PHONE_WIFI_SVG}</span>
+      <span class="uilg-phone-battery"><i class="uilg-phone-battery-shell"></i><i class="uilg-phone-battery-tip"></i><i class="uilg-phone-battery-fill"></i></span>
+      <span class="uilg-phone-status-pct">78%</span>
+    </span>
+  </div>`;
+}
+
+function phoneMockup(bodyHtml, { headerBg = "level-0", chromeGap = false } = {}) {
+  return `<div class="uilg-phone" data-header-bg="${headerBg}" role="img" aria-label="모바일 화면 목업">
+    ${phoneStatusBar()}
+    ${chromeGap ? '<div class="uilg-phone-chrome-gap" aria-hidden="true"></div>' : ""}
     <div class="uilg-phone-screen">${bodyHtml}</div>
   </div>`;
+}
+
+/* 유형별 위쪽 크롬 배경 — 정본 buildMobileHeaderVariant(:3107·3132) 의 isHome 분기 그대로. */
+function mobileHeaderBg(variant) {
+  return variant.startsWith("home-") ? "home" : "level-0";
 }
 
 function mobileBottomNavStateMatrix() {
@@ -1390,7 +1420,7 @@ function mobileHeaderActionBlock(breakName) {
       <div class="uilg-phone-skeleton uilg-phone-skeleton--title"></div>
       <div class="uilg-phone-skeleton uilg-phone-skeleton--line"></div>
       <div class="uilg-phone-card"></div>
-    </div>`);
+    </div>`, { headerBg: mobileHeaderBg(MOBILE_HEADER_DEFAULT_TYPE), chromeGap: true });
 
   const chips = MOBILE_HEADER_TYPES.map(([label, variant]) => {
     const inputId = `mh-type-${breakName}-${variant}`;
@@ -1681,6 +1711,9 @@ async function mountGuide(id) {
           const slot = action?.querySelector(".uilg-phone-header-slot");
           if (!slot) return;
           slot.innerHTML = mobileHeaderMarkup(radio.value);
+          /* 정본은 상태바가 헤더 프레임 배경을 그대로 물려받는다 — 유형이 바뀌면 위쪽 크롬 색도 함께 바뀐다. */
+          const phone = action.querySelector(".uilg-phone");
+          if (phone) phone.dataset.headerBg = radio.value.startsWith("home-") ? "home" : "level-0";
           action.querySelectorAll("[data-mobile-header-type]").forEach((other) => {
             other.closest(".uilg-option-chip")?.classList.toggle("is-on", other.checked);
           });

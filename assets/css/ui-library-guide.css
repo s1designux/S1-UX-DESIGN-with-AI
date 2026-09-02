@@ -554,16 +554,61 @@
 
 [data-theme="dark"] .uilg-phone { border-color: var(--color-gray-dark-100); }
 
+/* ── 상태바 — 정본 StatusBar(App) 를 옮긴 그림. 수치는 build-components.ts populateStatusRow(:4738-4767) 그대로.
+   배경은 정본과 같은 기제로 헤더 배경을 물려받는다(정본 :3117-3119 는 상태바 인스턴스 fills 를 비운다). ── */
 .uilg-phone-status {
   align-items: center;
-  color: var(--color-text-primary);
+  background: var(--color-bg-level-0);
+  color: var(--color-text-body-secondary);
   display: flex;
   flex: none;
-  font-size: 11px;
-  font-weight: 700;
+  font-size: var(--font-size-12);
+  font-weight: var(--font-weight-medium);
   height: 27px;
   justify-content: space-between;
-  padding-inline: var(--spacing-16);
+  padding-left: var(--spacing-20);
+  padding-right: var(--spacing-16);
+}
+
+/* 상태바와 헤더 사이 16 간격 — 정본 comp.itemSpacing = 16 (build-components.ts:3106). */
+.uilg-phone-chrome-gap { background: var(--color-bg-level-0); flex: none; height: var(--spacing-16); }
+
+/* Home 유형은 헤더 배경이 bg/home 이라 위쪽 크롬도 같은 색이 된다(정본 :3107·3132 isHome 분기). */
+.uilg-phone[data-header-bg="home"] .uilg-phone-status,
+.uilg-phone[data-header-bg="home"] .uilg-phone-chrome-gap { background: var(--color-bg-home); }
+
+.uilg-phone-status-right { align-items: center; display: flex; gap: 6px; }
+
+.uilg-phone-signal { display: block; height: 12px; position: relative; width: 17px; }
+.uilg-phone-signal i { background: var(--color-icon-gray-dark); border-radius: 0.5px; position: absolute; }
+
+.uilg-phone-wifi { align-items: center; color: var(--color-icon-gray-dark); display: flex; height: 12px; width: 16px; }
+
+.uilg-phone-battery { display: block; height: 12px; position: relative; width: 24px; }
+.uilg-phone-battery i { position: absolute; }
+.uilg-phone-battery-shell {
+  border: 1px solid var(--color-icon-gray-dark);
+  border-radius: 2.5px;
+  height: 11px;
+  left: 0;
+  top: 0.5px;
+  width: 20px;
+}
+.uilg-phone-battery-tip {
+  background: var(--color-icon-gray-dark);
+  border-radius: 1px;
+  height: 4px;
+  left: 20.4px;
+  top: 4px;
+  width: 1.6px;
+}
+.uilg-phone-battery-fill {
+  background: var(--color-icon-gray-dark);
+  border-radius: 1px;
+  height: 7px;
+  left: 2px;
+  top: 2.5px;
+  width: 14.5px;
 }
 
 .uilg-phone-screen { display: flex; flex: 1 1 auto; flex-direction: column; min-height: 0; }

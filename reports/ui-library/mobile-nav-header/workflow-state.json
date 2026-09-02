@@ -211,7 +211,10 @@
       "reports/ui-library/mobile-nav-header/screens/5-guide-bottom-nav.png",
       "reports/ui-library/mobile-nav-header/screens/6-guide-header-chips.png",
       "reports/ui-library/mobile-nav-header/screens/6-guide-bottom-nav.png",
-      "reports/ui-library/mobile-nav-header/screens/7-guide-header-chips-left.png"
+      "reports/ui-library/mobile-nav-header/screens/7-guide-header-chips-left.png",
+      "reports/ui-library/mobile-nav-header/screens/8-statusbar-canon.png",
+      "reports/ui-library/mobile-nav-header/screens/8-statusbar-home.png",
+      "reports/ui-library/mobile-nav-header/screens/8-statusbar-bottomnav.png"
     ],
     "build": "reports/ui-library/mobile-nav-header/3-build.md",
     "rawFigmaIcons": "reports/ui-library/mobile-nav-header/raw-figma-icons/",
@@ -280,6 +283,15 @@
       "decidedBy": "river",
       "decidedAt": "2026-09-02",
       "decision": "①모바일 헤더 — Type 6종을 고르는 옵션칩을 두어 목업 위에 얹어 본다(정적 예시 1종 대신 선택형). 칩 위치는 목업 왼쪽 세로 6행이다 — 처음에 목업 아래에 뒀더니 목업이 길어 모니터에서 잘려 보였다(river 2차 지시). 좁은 화면(860px 이하)에서는 목업 위로 접힌다. ②하단 탭 — 4탭 바가 왼쪽에 몰려 있어 justify-content: space-between 으로 고르게 벌린다. 둘 다 안내 화면(조립 예시) 소유 영역이며 배포 부품은 그대로다."
+    },
+    {
+      "id": "D10",
+      "topic": "안내 화면 목업의 상태바를 정본대로",
+      "decidedBy": "river",
+      "decidedAt": "2026-09-02",
+      "decision": "목업 상태바를 임의 더미(\"9:41\" + 빈 아이콘 자리)로 두지 않고 정본 StatusBar(App 360×27, build-components.ts populateStatusRow :4738-4767)를 그대로 옮긴 그림으로 바꾼다. 배경도 정본 기제를 따른다 — 정본은 헤더 안 상태바 인스턴스의 fills 를 비워(:3117-3119) 헤더 프레임 배경이 그대로 비치게 하므로, Home 유형에서는 상태바도 color/bg/home 이다. river 지적: \"홈에서 상태바와 헤더 색상이 안 맞는다.\"",
+      "canonFacts": "📖 source-reader 판독(실제 spawn) — 시간 \"12:30\"(12 Medium, text/body/secondary) · 좌우 SPACE_BETWEEN · 패딩 20/16 · 오른쪽 묶음 간격 6(신호 17×12 4개 막대 · wifi 16×12 · 배터리 24×12 · \"78%\") · 아이콘색 icon/gray-dark · 상태바와 AppBar 사이 간격 16(comp.itemSpacing) · AppBar 배경 isHome ? bg/home : bg/level-0.",
+      "notInScope": "Web 변형(상태행 27 + 주소창 50 = 77)은 목업이 App 폰이라 옮기지 않았다. StatusBar 는 여전히 웹 배포본에 없다(D5) — 안내 화면 그림일 뿐이다."
     }
   ],
   "blockers": [
@@ -344,7 +356,7 @@
   "handoff": {
     "lastActor": "orchestrator",
     "updatedAt": "2026-09-02",
-    "summary": "5-human-review 진행 중 river 지시 2건을 반영했다(D9) — 헤더 Action 에 유형 선택 옵션칩 추가(목업 왼쪽 세로 6행), 하단 탭 4칸 space-between. 안내 화면 코드(assets/js/ui-library-guide.js)만 바뀌었고 배포 부품(dist)은 무변경이다. ⭐ 가 실제 렌더 + 브라우저 DOM 조작으로 동작을 확인했다(칩 클릭 → 목업 헤더 교체, 칩 하나만 선택, 페이지 전체 중복 id 0건, 라디오 name 을 PC/Mobile 로 분리해 함정 T5 회피). 이 변경분은 아직 🤖 독립 검증을 거치지 않았다 — river 검수 결과에 따라 6-promotion 전에 함께 재검증한다."
+    "summary": "5-human-review 진행 중 river 지시 3건을 반영했다(D9·D10) — 헤더 Action 에 유형 선택 옵션칩(목업 왼쪽 세로 6행), 하단 탭 4칸 space-between, 목업 상태바를 정본 StatusBar 대로 교체(홈 유형은 상태바까지 bg/home 으로 이어짐). 안내 화면 코드(assets/js/ui-library-guide.js·assets/css/ui-library-guide.css)만 바뀌었고 배포 부품(dist)은 무변경이다. 정본 사실은 📖 source-reader 로 판독했고 색·수치는 브라우저 계산값으로 실측했다. 이 화면 변경분은 아직 🤖 독립 검증 전이다 — 6-promotion 전에 함께 재검증한다."
   },
   "checkpointLog": [
     {
