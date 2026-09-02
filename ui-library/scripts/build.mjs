@@ -39,7 +39,9 @@ async function createOutputs() {
   const allowedIconKeys = JSON.parse(iconRegistry).allowedRemoteComponentKeys;
   const iconAssets = [];
   for (const icon of iconManifest.icons) {
-    if (allowedIconKeys[icon.id] !== icon.sourceKey) throw new Error(`${icon.id} source key differs from the allowed registry`);
+    // 파생 색 레이어는 자기 이름의 허용 key 를 갖지 않는다 — 부모 원본의 key 를 그대로 쓴다.
+    const allowedKeyOwner = icon.derivedFrom ?? icon.id;
+    if (allowedIconKeys[allowedKeyOwner] !== icon.sourceKey) throw new Error(`${icon.id} source key differs from the allowed registry`);
     const asset = await read(path.join(sourceRoot, "assets/icons", icon.file));
     if (hash(asset) !== icon.webAssetFingerprint) throw new Error(`${icon.id} web asset fingerprint is stale`);
     const geometryErrors = iconGeometryCheck.validateIconAsset(icon, asset);

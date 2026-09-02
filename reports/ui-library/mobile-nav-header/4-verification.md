@@ -1,4 +1,303 @@
-# 4-verification — Mobile Bottom Nav · Mobile Header (시나리오 F 독립 검증)
+# 【3회차(부분) · 2026-09-02 · PASS】 4-verification — F-4 수정분 부분 재검증
+
+- 범위: **F-4(헤더 manifest 유령 필드 선언) 1건 + 함께 정정된 `statesLayout` 1건**만. 오케스트레이터 요청대로 다른 항목은 재실행하지 않았고,
+  대신 **dist 를 다시 생성했으므로 무효화 위험이 있는 3가지**(결정론 · 전체묶음↔개별설치 동일성 · 정본 지문)는 재측정했다.
+- 검증자는 **아무 파일도 고치지 않았다.** `workflow-state.json` 도 건드리지 않았다.
+- 오케스트레이터가 돌린 검사 결과를 그대로 믿지 않고 전부 다시 실행했으며, 판정 근거는 아래 실측값이다.
+
+## 판정: **PASS (F-4 해소)** · 다만 오케스트레이터의 설명 1건이 사실과 다르다(아래 §2)
+
+| # | 확인 요청 | 판정 | 실측 근거 |
+|---|---|---|---|
+| 1 | note 가 실제 존재하는 필드만 가리키는가 (src) | **PASS** | `derivedFrom·derivationRule` 로 교체됨. 두 필드 모두 icon manifest 에 실재하고 검사기가 읽는다(refs 6·5건) |
+| 2 | note 가 실제 존재하는 필드만 가리키는가 (dist) | **PASS** | `dist/components/mobile-header.manifest.json` 도 동일 문장으로 재생성됨 — src↔dist 문장 완전 일치 |
+| 3 | 유령 필드가 저장소에 남아 있는가 | **PASS(0건)** | `combinedOriginComparisonWith` 저장소 전체 **0건**(이 보고서 제외) |
+| 4 | 같은 종류의 유령 선언이 더 있는가 | **PASS(0건)** | 두 컴포넌트 manifest·icon manifest·표출 정책의 **서술 필드에서 기계가독 이름처럼 보이는 토큰을 전부 뽑아 실재 여부를 대조**했다. 미해결 0건 (§3) |
+| 5 | `statesLayout` 변경이 검사를 느슨하게 했는가 | **아니오 — 느슨해지지 않았다** | `matrix`/`vertical` 두 값으로 각각 돌린 결과가 **완전히 동일**: `checks=4 pass=4 fail=0 uninstrumented=23` |
+| 6 | 오케스트레이터가 말한 "미계측 22 → 23" | **사실과 다름** | 이 컴포넌트는 `managedBy: ui-library-guide` 라 `presentation-layout-check.js:148` 에서 **`continue` 로 먼저 빠져나간다** — `statesLayout` 줄(:184)에 도달조차 하지 않는다 |
+| 7 | source→dist 결정론 (재생성했으므로 재확인) | **PASS 유지** | `ui:build` 재실행 후 `diff -r` 차이 0 |
+| 8 | 전체묶음 ↔ 개별설치 동일성 | **PASS 유지** | 두 소비자 화면 재촬영 sha256 동일(`ba739a03…`), **2회차 증거 파일과도 동일** = 픽셀 변화 0 |
+| 9 | 정본 지문(canonicalFingerprint) | **PASS 유지** | 재산출값이 선언값과 일치하고 **2회차와 같은 값**(`8d2bea4c…` / `40d88e15…`) — 정본은 건드려지지 않았다 |
+| 10 | 재생성이 바꾼 것의 전수 | **note 문장 + 그 해시뿐** | 2회차 dist 스냅샷과 `diff -rq` → 달라진 파일 **2개**: `components/mobile-header.manifest.json`(note 1문장 + `sourceFingerprint`) · `manifest.json`(같은 `sourceFingerprint` 1줄). **CSS·SVG·예제·번들 전부 무변화** |
+| 11 | 검사기 재실행 | **PASS** | `ui:contract` errors=0 · `ui:icons` errors=0 · `ui:icons:origin` errors=0(경고 2 = 등재된 기존 부채) · `ui:test` 통과 · `ui:state` PASS |
+
+## 1. 왜 2회차 PASS 들이 무효화되지 않는가
+
+dist 를 다시 생성했지만 **바뀐 바이트가 문서 문장 하나와 그 해시 2곳뿐**이다. 렌더에 쓰이는 CSS·SVG·번들·예제는
+2회차 검증 시점과 **바이트 동일**하고, 소비자 화면 스크린샷 해시가 2회차 증거와 **완전히 같다**.
+따라서 2회차의 렌더·기하·색·설치 동일성 판정은 그대로 유효하다. (재측정으로 확인한 것이지 추론으로 넘긴 것이 아니다.)
+
+## 2. `statesLayout` 정정에 대한 정확한 판정
+
+**결론부터: 통과로 둔갑시킨 것이 아니다. 그러나 "미계측이 1건 늘었다" 도 사실이 아니다 — 아무 것도 늘지 않았다.**
+
+`scripts/presentation-layout-check.js` 의 흐름은 이렇다.
+
+```js
+for (const [id, spec] of Object.entries(comps)) {
+  if (spec.managedBy === 'ui-library-guide') {          // :148
+    uninstr.push(`${id}: ui-library-guide 관리 — …`);
+    continue;                                           // ← 여기서 끝난다
+  }
+  … // 검사 1·2·3
+  if (spec.statesLayout === 'vertical') uninstr.push(`${id}.상태 세로배치`);   // :184  ← 도달하지 않음
+}
+```
+
+`mobile-header` 는 `managedBy: "ui-library-guide"` 라 **:148 에서 빠져나가므로 `statesLayout` 값이 무엇이든 읽히지 않는다.**
+실제로 저장소 파일을 고치지 않고 값만 메모리에서 되돌려 두 번 돌려 보았다.
+
+| 돌린 값 | 결과 |
+|---|---|
+| `statesLayout: "matrix"` (수정 전) | `checks=4 pass=4 fail=0 uninstrumented=23` |
+| `statesLayout: "vertical"` (수정 후) | `checks=4 pass=4 fail=0 uninstrumented=23` |
+
+**완전히 동일하다.** 미계측 목록에도 `mobile-header.상태 세로배치` 항목은 **나타나지 않는다**(`mobile-header: ui-library-guide 관리` 한 줄뿐).
+`statesLayout` 은 저장소 전체에서 이 한 줄(:184)에서만 읽히므로, 다른 검사기에 미치는 영향도 없다(전수 grep 확인).
+
+정리하면:
+- **위험(느슨해짐): 없음.** 검사 수·통과 수·위반 수가 모두 그대로다. 없던 면제가 생기지도 않았다.
+- **효과(정직해짐): 서술 정확도에 한정.** 실제 렌더가 세로 행 목록이므로 `vertical` 이 사실에 맞다. 다만 **이 값은 이 컴포넌트에 대해 기계가 읽지 않는 죽은 데이터**다.
+- 따라서 수정 자체는 옳지만, 근거로 제시된 "미계측 22 → 23" 은 **일어나지 않은 일**이다. 앞으로 이 필드를 근거로 검사 강도를 논하지 않는 편이 안전하다(→ O-8).
+
+## 3. 유령 필드 전수 점검
+
+두 컴포넌트 manifest·icon manifest·표출 정책의 **서술 필드**(`note`·`why`·`rule`·`geometryEvidence`·`changeFromCurrent`·`sourceBuilderSymbol`·`approvedScope` 등)에서
+기계가독 이름처럼 보이는 토큰을 자동 추출해 실재 여부를 대조했다.
+
+| 결과 | 항목 |
+|---|---|
+| 실재 확인 | `derivedFrom`(6건) · `derivationRule`(5건) · `sourceKey`(23건) · `originComparable` 계열 등 |
+| 정본 TS 심볼로 실재 | `fcIconPx`(8건) · `makeCheckIcon`(3건) · `makeMobileHeaderIconSlot`(4건) — 모두 `build-components.ts` 에 존재 |
+| 오탐(평범한 단어) | `heading` · `sample`(= `data-guide-sample`) · `started`(= `not-started`) |
+| **미해결 유령** | **0건** |
+
+## 4. 관찰 추가
+
+| id | 무엇 | 왜 남기나 |
+|---|---|---|
+| **O-8** | `component-presentation-policy.json` 의 `statesLayout` 은 `managedBy: ui-library-guide` 인 항목(현재 13개)에 대해 **어떤 검사기도 읽지 않는 죽은 데이터**다. | 값이 틀려도 아무도 못 잡는다 — 이번에 사람 눈으로 잡았을 뿐이다. 서술 정확도만 갖는 필드임을 알고 쓰면 되고, 검사 강도의 근거로는 삼지 않는다. |
+
+## 5. 권장 상태 전환 (3회차)
+
+```json
+{
+  "workflowStatus": "in-progress",
+  "uiLibraryStatus": "draft",
+  "lastCompletedCheckpoint": 4,
+  "checkpointLog[4]": { "status": "passed", "by": "component-verifier (시나리오 F · 2회차 + 3회차 부분 재검증)" },
+  "nextAction": "5-human-review(river) 로 넘긴다. 승격(6-promotion) 시 Gate 44·Gate 19 를 실제 status 로 재실행할 것."
+}
+```
+
+blocker 갱신 권고: **B9(=F-4) resolved 확인.** B10(아이콘 검사기 희석 취약성)·B11(다른 세션 미커밋 변경/Gate 6c)은 그대로 open —
+B10 은 river 후속 결정으로, B11 은 커밋 분리로 처리한다는 오케스트레이터 계획을 확인했다.
+
+
+---
+
+# 【2회차 · 2026-09-02 · FAIL(1건, 문서선언) → 3회차에서 해소】 4-verification — Mobile Bottom Nav · Mobile Header (시나리오 F 독립 검증)
+
+- 작업: `mobile-nav-header` · 검증자: 🤖 `component-verifier`(시나리오 F) · 날짜: 2026-09-02(2회차)
+- 규격: `.claude/skills/ui-library-code/references/verify-F.md` · 함정목록 `references/wiring-and-traps.md §2`
+- 시각 정본: `plugins/figma-vars-installer/src/build-components.ts` `buildMobileBottomNav`(:2959) · `buildMobileHeaderVariant`(:3069) · `buildMobileHeader`(:3184)
+- **검증자는 아무 파일도 고치지 않았다.** `workflow-state.json` 도 수정하지 않았다. 이 보고서와 `screens/4v2-*` 증거만 추가했다.
+  적대 테스트에서 자산·CSS·manifest 를 잠시 훼손했다가 **바이트 단위로 복원했음을 sha256 로 확인**했고, `diff -r` 로 dist 전체 무드리프트를 재확인했다.
+- 1회차 PASS 30건을 재사용하지 않았다. 기하 실측·토큰 전환·설치 동일성·결정론을 **전부 다시 측정**했다.
+
+## 검문소 결과
+
+> **FAIL 1건(F-4, 문서 선언) · HOLD 0건 · BLOCKED 0건 · 범위밖 실패 1건(Gate 6c) → 검문소 미통과.**
+> 1회차 FAIL 3건(F-1·F-2·F-3)은 **전부 독립 실측으로 해소 확인**했다. 남은 FAIL 은 새로 발견한 것 하나뿐이며
+> **렌더·동작에 영향이 없는 한 문장짜리 선언 오류**다 — 자산 재작업 없이 `manifest.json` 1줄 수정 + `ui:build` 로 끝난다.
+> 권고: `workflowStatus: in-progress` 유지 · `lastCompletedCheckpoint: 3` 유지 · F-4 수정 후 **부분 재검증(F-4 + `ui:build`/`ui:test` 재실행)** 으로 4단계 통과 처리.
+
+---
+
+## 0. 판정 요약표 (2회차)
+
+| # | 항목 | 판정 | 한 줄 근거 |
+|---|---|---|---|
+| 1 | 1회차 F-1 (화살표 글리프 잘림) 해소 | **해소 PASS** | 잉크 경계상자가 원본과 **완전 일치**(48px 기준 (19,14) 12×20) · 잉크비 0.87 → **1.036** · 전프레임 오차 0.00372 → **0.00089** |
+| 2 | F-1 재발 시 검사기가 잡는가(희석 문제) | **미해소(관찰 O-1)** | 옛 잘린 자산을 재현해 재측정 → 전프레임 오차 0.00372 로 **임계 0.015 를 여전히 통과**. 검사기는 아직 글리프영역 측정을 하지 않는다 |
+| 3 | 1회차 F-2 (화살표 방향 반대) 해소 | **해소 PASS** | 계산 transform = `matrix(0, 1, -1, 0, 0, 0)`(시계 90°) · 렌더에서 `v`(아래) 확인 · ×6 확대 증거 |
+| 4 | F-2 의 정본 의미 대조 | **PASS** | 정본 `rotation = -90`(Figma 반시계 양수) = 아래 ↔ CSS `rotate(90deg)`(시계 양수) = 아래. **부호만 뒤집고 방향은 동일** |
+| 5 | 1회차 F-3 (빨간 점 미배포) 해소 | **해소 PASS** | dist 에 accent SVG 존재(HTTP 200) · 마스크 URL 해석됨 · **Light `rgb(255,69,84)` / Dark `rgb(240,96,112)`** = `--color-icon-red` 실측 |
+| 6 | F-3 파생 선언이 "검사 우회"로 기능하는가 | **PASS(적대 테스트 3종 통과)** | 점 1px 이동 → ❌ · 부모의 다른 경로로 바꿔치기 → ❌ · 재현 규칙 적용 불가 → ❌. 손으로 그린 조각은 통과 못 한다 |
+| 7 | 신설 검사기 ①(`ui-library-icon-origin-check.js` derivedFrom 분기) 실효성 | **PASS(1개 잠복 약점 = O-2)** | 위 적대 테스트로 실증. 다만 부모 기록이 낡았을 때 자식이 낡은 PASS 를 읽는다(단독으로 초록 만들지는 못함) |
+| 8 | 신설 검사기 ②(dist CSS `url()` 해석 검사) 실효성 | **PASS** | F-3 형태(배포 안 된 자산을 CSS 가 가리킴)를 **실제로 재현해 적발**. 무력화 방지 가드(`url()` 0건이면 실패)도 있다 |
+| 9 | 검사기 ② 의 우회 구멍 | **현재 없음 · 미래 1곳(O-3)** | 스캔 대상 18개 = dist 컴포넌트 CSS 전량과 정확히 일치. `assets/css/*.css`·예제 HTML 은 미스캔이나 현재 `url()` 0건 |
+| 10 | 아이콘 기하 실측 재측정(hit area·frame·glyph 분리) | **PASS** | 프레임 24 · 글리프 24 · 렌더 24×24 · 액션버튼 32×32 · 히트영역 32+6×2 = **44** (`::before` inset 실측 −6px 4변) |
+| 11 | Light·Dark 토큰 전환 재측정 | **PASS** | 아이콘 red/gray-dark, 헤더 배경, 탭 라벨·아이콘 선택/비선택 전부 다크에서 다른 값으로 전환 |
+| 12 | source → dist 결정론 재측정 | **PASS** | `ui:build` 재실행 후 `diff -r` 차이 0 (적대 테스트 복원 뒤에도 재확인) |
+| 13 | 전체묶음 ↔ 개별설치 동일성 재측정 | **PASS** | 두 소비자 화면 스크린샷이 **sha256 완전 동일**(`ba739a03…`) |
+| 14 | 변형 전수(헤더 6종 · 탭 2상태) 재대조 | **PASS** | 6종 전부 렌더 · 정본에 없는 축 신설 0건 · 하단탭 60×60 고정 |
+| 15 | HD-1(B) 코어 경계 침범 여부 | **PASS** | `mobile-bottom-nav.css` 에 `nav`/`tablist`/`:has` 를 건드리는 selector **0건** — 껍데기는 순수 마크업 |
+| 16 | HD-1(B) ↔ 부품 표본 격리(Gate 44) 충돌 | **PASS** | 안내 화면 부품 표본은 여전히 버튼 1칸(`data-guide-sample="part"` 14개), 조립 예시만 `"set"` — 예제의 `nav` 는 코드탭에만 나온다 |
+| 17 | HD-2(A) 선언 ↔ 실제 화면 | **PASS(잔여 1건 O-4)** | 실제 화면 = Action 목업 + 평면 목록. 고친 note 와 일치. 다만 같은 항목의 `statesLayout` 은 여전히 `"matrix"` |
+| 18 | 안내 화면(승격 후) 실제 렌더 | **PASS(모의 승격으로 실측)** | status 를 임시로 approved 로 두고 렌더 → 오류 0 · 6종 전부 표출 · 화살표 아래 · 점 빨강. 측정 후 원상복구 확인 |
+| 19 | Gate 44(안내화면 렌더 검사) 커버리지 | **PASS(모의 승격 조건부)** | 임시 승격 상태에서 재실행하니 **17종**으로 늘고 통과. 실제 승격 뒤 6-promotion 에서 재실행 필요 |
+| 20 | 실제 검수 화면(`pages/ui-review.html`) 렌더 | **PASS** | 14·15번 섹션 Light·Dark 모두 화살표 아래·빨간 점 정상 (`4v2-ui-review-14-15.png`) |
+| 21 | 콘솔 오류 | **PASS** | 렌더 화면 콘솔 오류 0건 |
+| 22 | `ui:contract`·`ui:icons`·`ui:icons:origin`·`ui:test`·`ui:state` | **PASS** | 전부 errors=0 (실측 재실행). 경고 2건은 등재된 기존 부채(check·edge_set) |
+| 23 | 아이콘 source ↔ dist 동일성 | **PASS** | `diff -r` 차이 0 (accent 포함 13개 전량) |
+| 24 | 컴포넌트 manifest 선언 ↔ 실제 기계가독 필드 | **FAIL (F-4)** | 헤더 manifest 가 "`originComparable=false`·`combinedOriginComparisonWith` 로 선언한다"고 쓰는데 **둘 다 존재하지 않는다** |
+| 25 | 화살표 자산이 chevron 과 바이트 동일한 점 | **PASS(해명됨 · O-5)** | 두 원본 내보내기 PNG(`_solid`/`_line`)가 **픽셀 완전 동일**(평균차 0.000000)임을 실측 — 베껴 쓴 것이 아니라 원본이 같다 |
+| 26 | `gate:check` 전체 | **범위 밖 실패 1건** | Gate 6c 1 error. 원인은 **다른 세션이 지금 편집 중인** `plugins/figma-vars-installer/src/ui.html`(패턴 탭 카드 추가) — 이 작업 소유 아님 |
+| 27 | 빈 소비자 화면에서 하단탭이 세로로 쌓이는 것 | **알려진 한계(설계상)** | HD-1(B)는 무효 ARIA 만 해소한다. 바 배치는 여전히 화면 소유 — 예제 주석이 그렇게 명시 |
+
+---
+
+## 1. ❌ FAIL — 반드시 고칠 것
+
+### F-4. 헤더 manifest 가 **존재하지 않는 기계가독 필드**로 대조 제외 경계를 선언한다고 쓴다
+
+**무엇:** `ui-library/src/components/mobile-header/manifest.json` 의 `mobileHeaderNotification` 항목 note 마지막 문장이
+
+> "대조 제외 경계는 icon manifest 의 `originComparable=false`·`combinedOriginComparisonWith` 로 기계가독 선언한다."
+
+라고 말한다. 그런데 실제 icon manifest 의 `mobileHeaderNotificationAccent` 항목에는
+
+- `originComparable` 필드가 **없고**(그 필드는 `check`·`edge_set` 두 기존 부채에만 있다),
+- `combinedOriginComparisonWith` 라는 이름은 **저장소 전체에 한 번도 등장하지 않는다.**
+
+실제로 쓰인 기계가독 선언은 **`derivedFrom` + `derivationRule`**(river 지시 2026-09-02)이고, 검사기도 그 두 필드만 읽는다(`scripts/ui-library-icon-origin-check.js:227~`).
+
+**왜 FAIL 인가:** 이 note 는 dist 로 그대로 복사돼 퍼블리셔·개발자가 받는 배포 산출물의 일부다. 다음 사람이 "어디에 선언돼 있나" 를 찾으면 **없는 필드를 찾게 된다.** 정본↔파생 관계이므로 두갈래 분류 대상이 아니고(하드룰 H6), 애매하지도 않다 — 폐기된 설계의 문장이 남은 것이다.
+
+**분류:** ❌(a). **영향 범위: 문서 문장 1개.** 자산·CSS·렌더에는 영향 없다.
+**수정 방향(구현자 소관):** note 의 마지막 문장을 실제 기제(`derivedFrom` + `derivationRule` = path-subset #1, 검사기가 매번 재현 증명)로 고치고 `npm run ui:build` 로 dist 반영.
+
+**근거:** `ui-library/src/components/mobile-header/manifest.json:122` · `ui-library/src/assets/icons/manifest.json`(accent 항목에 해당 필드 없음) · `grep -rn "combinedOriginComparisonWith"` = 0건.
+
+---
+
+## 2. 1회차 FAIL 3건 — 독립 재측정 결과
+
+### F-1 (글리프 잘림) → 해소 확인
+
+원본 `assets/icons/ic_화살표더보기_solid.png`(48px) ↔ 현재 웹 자산을 검증자가 **직접 래스터화해 재측정**했다(검사기 기록을 신뢰하지 않고 새로 렌더).
+
+| 대상 | 잉크 경계상자(48px) | 24 좌표 환산 | 잉크 총량 | 전프레임 평균오차 | 글리프영역 평균오차 |
+|---|---|---|---|---|---|
+| Figma 원본 내보내기 | (19,14) **12×20** | (9.5,7.0) 6×10 | 50.44 | — | — |
+| **현재 웹 자산** | (19,14) **12×20** | (9.5,7.0) 6×10 | 52.24 (**×1.036**) | **0.00089** | **0.00669** |
+| (참고) 1회차의 잘린 자산 | (20,15) 10×18 | (10,7.5) 5×9 | 43.61 (×0.865) | 0.00372 | 0.02484 |
+
+- 경계상자가 **원본과 정확히 일치**한다. 1회차의 13% 잉크 손실이 사라졌고 오히려 3.6% 많은데, 이는 중심정렬 획을 24 좌표계에 직접 그릴 때 안티에일리어싱이 원본 래스터보다 살짝 두껍게 잡히는 정상 범위다(같은 규칙을 쓰는 chevron 도 동일).
+- **1회차가 지적한 "24 프레임 평균은 희석된다" 는 문제가 이번 형상에서는 결과를 바꾸지 않는다** — 글리프 영역만 재도 0.00669 로 임계(0.015)의 절반 이하다. 즉 이번 자산은 어느 잣대로 재도 통과한다.
+- 다만 **검사기 자체의 희석 취약성은 그대로 남았다** → O-1.
+
+### F-2 (방향 반대) → 해소 확인
+
+- 계산된 transform: `matrix(0, 1, -1, 0, 0, 0)` = CSS 시계 90°.
+- 렌더 육안: `screens/4v2-matrix-light.png` 의 ×6 확대에서 **명백한 `v`(아래)**. 실제 검수 화면(`4v2-ui-review-14-15.png`)의 "홈 타이틀" 옆에서도 `v`.
+- 정본 의미 대조: `build-components.ts:3169` 는 Figma 인스턴스 `rotation = -90`. Figma 는 **반시계 양수**라 −90 = 시계 90° = 아래. CSS 는 **시계 양수**라 같은 "아래" 가 `+90deg`. **숫자는 부호가 반대이고 의미는 같다** — 올바른 이식이다.
+- 부품 CSS 주석·아이콘 manifest·컴포넌트 manifest 세 곳 모두 이 부호 반전을 명시적으로 적어 두었다(재발 방지 서술). 배선표 함정 T8 등재도 확인.
+
+### F-3 (빨간 점 미배포) → 해소 확인
+
+| 확인 항목 | 결과 |
+|---|---|
+| dist 에 accent SVG 존재 | ✅ `ui-library/dist/assets/icons/mobile-header-notification-accent.svg` · HTTP **200** |
+| src ↔ dist 바이트 동일 | ✅ `diff -r` 차이 0 |
+| CSS 마스크 URL 해석 | ✅ 개별 CSS·번들 CSS 양쪽 모두 정상 경로(번들은 `./assets/...` 로 재작성됨) |
+| **Light** 점 색 | ✅ `rgb(255, 69, 84)` = `--color-icon-red` (#FF4554) |
+| **Dark** 점 색 | ✅ `rgb(240, 96, 112)` = 다크 `--color-icon-red` (#F06070) |
+| 본체 색 | ✅ Light `rgb(53,53,53)` / Dark `rgb(184,186,191)` = `--color-icon-gray-dark` |
+| 정본 대조 | ✅ `build-components.ts:3173` 본체 `color/icon/gray-dark` + 점 `color/icon/red` 와 1:1 |
+| 실제 소비 화면 | ✅ `pages/ui-review.html` 15번 섹션 Light·Dark 모두 빨간 점 |
+
+---
+
+## 3. 적대 테스트 기록 (검사기가 자기 몫을 실제로 잡는가)
+
+모든 테스트는 파일을 잠시 훼손 → 검사 실행 → **sha256 대조로 원상복구 확인** 순으로 했다.
+
+| # | 조작 | 기대 | 실제 |
+|---|---|---|---|
+| A1 | 점 조각의 좌표를 1px 이동 | 실패 | ✅ `❌ … 규칙대로 떼어낸 모양과 다릅니다 — 손으로 그린 조각을 쓰면 안 됩니다` |
+| A2 | 점 조각을 부모의 **본체(pathIndex 0)** 도형으로 바꿔치기 | 실패 | ✅ 같은 오류로 차단 |
+| A3 | 부모 자산 훼손(기록 stale) | 실패 | ✅ 전체 실패(부모 오류). **단 자식은 낡은 PASS 기록을 읽어 ✅ 로 표시된다 → O-2** |
+| A4 | dist 에서 accent 파일 삭제 | 실패 | ✅ 차단됨. **다만 잡은 주체는 신설 `url()` 검사가 아니라 기존 아이콘 source/dist 대조**(등록됐기 때문에 먼저 걸림) |
+| A5 | dist CSS 의 accent 경로를 배포 안 된 이름으로 변경(**1회차 F-3 과 같은 모양**) | 실패 | ✅ `dist CSS references a file that is not deployed: assets/icons/…-NOTDEPLOYED.svg (components/mobile-header.css → …)` — **신설 검사가 정확히 이 형태를 잡는다** |
+| A6 | 부품 표본 격리 검사기 자체 적대 테스트 | 통과 | ✅ `--selftest` 4항목 전부 통과 |
+
+**결론:** 신설 검사기 2종은 **자기가 잡아야 할 것을 실제로 잡는다.** 파생(`derivedFrom`) 선언은 "예외"가 아니라 더 값싼 다른 증명으로 작동한다 — 손으로 그린 조각은 통과하지 못한다.
+
+---
+
+## 4. 관찰(Observation) — 지금 막지는 않지만 기록해 둔다
+
+| id | 무엇 | 왜 남기나 |
+|---|---|---|
+| **O-1** | **아이콘 원본 검사기의 희석 취약성이 그대로다.** 1회차 F-1 의 잘린 자산을 재현해 재측정하니 전프레임 오차 0.00372 로 **여전히 임계 0.015 를 통과**한다. | 이번 자산은 문제없지만, **같은 종류의 결함이 다시 들어오면 검사기는 또 못 잡는다.** 글리프 잉크 영역 기준 오차를 함께 재는 보강을 권한다(임계는 별도 보정 필요). |
+| **O-2** | 파생 검사에서 **부모 기록이 낡았을 때 자식이 그 낡은 PASS 를 읽는다**(비기록 모드). | 단독으로 초록을 만들지는 못한다(부모가 error 를 낸다). 다만 "부모 PASS 확인" 이라는 방어선이 실제로는 한 겹 얇다. 자식 판정 전에 부모의 신선도(지문 일치)까지 확인하면 완결된다. |
+| **O-3** | 신설 `url()` 검사의 스캔 대상은 `dist/s1-ui.css` + 컴포넌트 CSS 18개다. `dist/assets/css/tokens.css`·`typography.css` 와 예제 HTML 은 스캔하지 않는다. | **현재는 구멍이 아니다**(그 파일들의 `url()` 은 0건, 컴포넌트 목록은 dist 실물과 정확히 일치). 다만 나중에 `@font-face url()` 같은 것이 들어오면 검사 밖이다. |
+| **O-4** | HD-2 로 note 는 고쳤지만 같은 항목의 `statesLayout` 은 여전히 `"matrix"` 다(실제 화면은 평면 목록). | 이 필드는 `vertical` 일 때만 기계가 읽으므로 지금 아무 것도 깨지지 않는다. 선언 위생 차원의 정리 대상. |
+| **O-5** | `mobile-header-arrow-down.svg` 가 `chevron.svg` 와 **바이트 완전 동일**하다(sha `818bd5f7…`). Figma 노드·sourceKey·sourceExport 는 서로 다르다. | 처음에는 "chevron 을 복사한 것 아닌가" 를 의심했으나, 두 원본 내보내기 PNG(`ic_화살표더보기_solid.png` / `_line.png`)를 알파 채널로 대조하니 **평균차 0.000000 = 픽셀 완전 동일**이었다. 파일 바이트만 다르고 그림은 같다. **의심은 해소됐고, 이 사실을 남겨 다음 검증자가 같은 의심을 반복하지 않게 한다.** |
+| **O-6** | 작업 트리에 **다른 세션의 미커밋 변경**이 섞여 있다(`plugins/figma-vars-installer/src/code.ts`·`src/ui.html`·신규 `build-patterns.ts`·`pattern-data.ts` = 설치기 '패턴' 탭). 검증 중에도 파일이 늘었다. | `gate:check` 의 유일한 error(Gate 6c "카드 날짜 4개여야 하는데 5개")가 **그 변경 때문**이다 — 이 작업 소유가 아니다. 또한 지금 커밋하면 남의 작업을 함께 삼킨다(알려진 멀티세션 함정). 커밋 전 분리 필요. |
+| **O-7** | 빈 소비자 화면의 하단탭 2칸이 여전히 **세로로 쌓인다**. | HD-1(B)는 무효 ARIA 만 해소했고 바 배치는 화면 소유라는 정본 선언 그대로다. 예제 주석이 "스타일은 호스트 화면이 정한다" 로 명시하므로 **설계상 한계이지 결함이 아니다.** river 가 이미 알고 (B)를 골랐다. |
+
+---
+
+## 5. 검증하지 못한 범위 (정직 보고 — PASS 로 올리지 않는다)
+
+| 범위 | 왜 |
+|---|---|
+| **실제 승격 상태에서의 Gate 44** | 두 부품이 `candidate` 라 검사기가 제외한다. **모의 승격(status 임시 approved)으로 17종 통과를 실측**했으나, 실제 승격 뒤 6-promotion 에서 반드시 재실행해야 한다. |
+| **포인터 히트테스트(±21/±23 적중)** | 이번 회차 브라우저 창이 숨김 상태(viewport 0×0)라 `elementFromPoint` 가 동작하지 않았다. 대신 `::before` inset 이 4변 모두 **−6px**, 호스트 32×32·`position:relative` 임을 계산값으로 확인해 **44×44** 를 도출했다. 해당 CSS 는 이번 회차에 **한 줄도 바뀌지 않았다**(diff 확인). 1회차의 실제 히트테스트 결과가 여전히 유효하다고 본다. |
+| **Figma V3.0 캔버스 시각 대조** | 상태파일이 `source: "not-consulted"` 로 선언 — verify-F 규격상 참고 대상 아님. 아이콘 5종만 Figma 원본 내보내기 PNG 로 실제 대조했다. |
+| **Gate 19 커버리지(`data-cov-type` 표기·Platform 축 면제 등재)** | B3 `promotionTaskSpec` 이 이미 잡아 둔 승격 전 과제. 이번 범위 밖. |
+| **Gate 6c 실패의 해소** | 다른 세션 소유. 원인 파일이 이 작업 밖임을 확인하는 데서 멈췄다. |
+| **실제 기기·보조기기(스크린리더) 검증** | 헤드리스 브라우저 실측(ARIA 속성·포커스 규칙·계산 스타일)까지만. |
+| **사람의 UX 판단** | 5-human-review(river) 소관. |
+
+---
+
+## 6. 증거 파일
+
+| 파일 | 내용 |
+|---|---|
+| `screens/4v2-matrix-light.png` | 실제 dist 만 물린 정적 매트릭스 · 헤더 6종 + 하단탭 4칸 + 화살표 ×6 확대 (Light) |
+| `screens/4v2-matrix-dark.png` | 같은 화면 Dark — 빨간 점·아래화살표·토큰 전환 확인 |
+| `screens/4v2-ui-review-14-15.png` | 실제 검수 화면 `pages/ui-review.html` 14·15번 섹션(Light·Dark 패널) |
+| `screens/4v2-empty-bundle.png` / `4v2-empty-individual.png` | 전체묶음 ↔ 개별설치 소비 결과 — **sha256 동일** |
+| `screens/4v2-matrix.html` | 위 매트릭스를 만든 검증용 페이지(재현 가능하도록 보존) |
+
+---
+
+## 7. 권장 상태 전환
+
+```json
+{
+  "workflowStatus": "in-progress",
+  "uiLibraryStatus": "draft",
+  "lastCompletedCheckpoint": 3,
+  "checkpointLog[4]": { "status": "failed-minor", "by": "component-verifier (시나리오 F · 2회차)" },
+  "nextAction": "F-4(헤더 manifest note 가 없는 필드를 선언 기제로 지목) 한 줄을 실제 기제(derivedFrom·derivationRule)로 고치고 npm run ui:build 후, 그 항목만 부분 재검증한다. 1회차 F-1·F-2·F-3 은 2회차에서 독립 실측으로 해소 확인됐다."
+}
+```
+
+blocker 갱신 권고(오케스트레이터가 등재):
+
+| id | severity | 상태 | what |
+|---|---|---|---|
+| B4 (=F-1) | error | **resolved 확인** | 화살표 글리프 잘림 — 경계상자·잉크량·오차 전부 원본과 일치 |
+| B5 (=F-2) | error | **resolved 확인** | 회전 방향 — 렌더에서 아래(`v`) 확인, 정본 의미와 일치 |
+| B6 (=F-3) | error | **resolved 확인** | 빨간 점 — dist 배포·Light/Dark 색 실측 일치 |
+| B7 (=H-1) | question | **resolved (river HD-1 B)** | 코어 경계·부품 표본 격리와 충돌 없음 확인. 세로 쌓임은 설계상 한계로 남음(O-7) |
+| B8 (=H-2) | question | **resolved (river HD-2 A)** | 선언 note ↔ 실제 화면 일치 확인. `statesLayout` 필드만 정리 대상(O-4) |
+| **B9 (=F-4)** | **error** | **신규 open** | 헤더 manifest note 가 존재하지 않는 필드(`combinedOriginComparisonWith` 등)를 선언 기제로 지목한다 — 실제는 `derivedFrom`·`derivationRule` |
+| B10 (=O-1) | warning | 신규 open | 아이콘 원본 검사기가 프레임 전체 평균만 재서, 작은 글리프의 형상 손실을 여전히 희석한다(옛 결함 재현 시 통과) |
+| B11 (=O-6) | warning | 신규 open | 작업 트리에 다른 세션의 미커밋 설치기 변경이 섞여 있고 그 때문에 Gate 6c 가 실패한다 — 커밋 전 분리 필요 |
+
+
+---
+
+# 【1회차 · 2026-09-02 · FAIL 3 · HOLD 2】 4-verification — Mobile Bottom Nav · Mobile Header (시나리오 F 독립 검증)
+
+> 아래는 **1회차 기록(보존)** 이다. 현재 유효한 판정은 이 파일 위쪽의 **2회차** 다.
 
 - 작업: `mobile-nav-header` · 검증자: 🤖 `component-verifier`(시나리오 F) · 날짜: 2026-09-02
 - 규격: `.claude/skills/ui-library-code/references/verify-F.md` · 함정목록 `references/wiring-and-traps.md §2`

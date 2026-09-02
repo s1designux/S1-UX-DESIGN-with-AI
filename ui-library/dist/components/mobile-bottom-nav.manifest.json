@@ -1,7 +1,7 @@
 {
   "id": "mobile-bottom-nav",
   "version": "0.1.0",
-  "status": "candidate",
+  "status": "verified",
   "canonicalFingerprint": "40d88e15f0bbb22a89ce6ac200b45b30db591c4fb1146f29de3ccfbe56fdd996",
   "canonicalSources": [
     "plugins/figma-vars-installer/src/build-components.ts",
@@ -36,7 +36,7 @@
       "label"
     ],
     "relations": [
-      "root 자체가 role=tab 이며, 여러 아이템을 담는 role=tablist 컨테이너(화면 소유)가 바깥에 있어야 완전한 탭 구조가 된다.",
+      "root 자체가 role=tab 이며, 여러 아이템을 담는 role=tablist 컨테이너(화면 소유)가 바깥에 있어야 완전한 탭 구조가 된다. 배포 예시는 복사만으로 무효 ARIA 가 생기지 않도록 꾸미기 없는 <nav role=\"tablist\"> 껍데기를 포함한다(river 결정 2026-09-02 HD-1 선택지 B) — 껍데기의 배치·배경은 여전히 화면 소유다.",
       "aria-selected 는 호스트 화면이 현재 경로에 맞춰 정적으로 설정한다 — 이 컴포넌트는 로컬 클릭 토글 로직을 갖지 않는다(jsRequired=false).",
       "라벨 텍스트가 곧 접근성 이름이다 — 아이콘은 항상 aria-hidden=\"true\" 로 장식 처리한다."
     ],
@@ -85,7 +85,7 @@
   "a11y": {
     "nativeSemantics": {
       "status": "required",
-      "value": "button[role=tab][aria-selected] — 여러 아이템을 담는 role=tablist 컨테이너는 화면이 소유한다(river 표준안 승인 2026-09-02)"
+      "value": "button[role=tab][aria-selected] — 여러 아이템을 담는 role=tablist 컨테이너는 화면이 소유하되, 배포 예시에는 꾸미기 없는 껍데기를 함께 싣는다(river 결정 2026-09-02 HD-1 B)"
     },
     "accessibleName": {
       "status": "required",
@@ -121,5 +121,5 @@
     "runtime": "none",
     "reason": "선택 상태는 호스트 화면의 현재 경로가 정하는 정적 ARIA 상태다. 로컬 클릭 토글·키보드 이동을 이번 범위에 넣지 않아(HD-1 선택지 A) 네이티브 button 시맨틱만으로 충분하다."
   },
-  "sourceFingerprint": "557c8342a8a41be1113eb063cf496c998dc704e24b641e94d102ec2754670aa0"
+  "sourceFingerprint": "be847976360eafdd8e282b755c2a658c26c8a39f1b21855430c0bf859d6cba43"
 }

@@ -549,9 +549,9 @@
           "standard-no-title-close"
         ]
       },
-      "statesLayout": "matrix",
+      "statesLayout": "vertical",
       "changeFromCurrent": "신규 화면 — 사이트에 Mobile Header 섹션이 없었다(harnessStatus not-started). Navigation 분류에 새로 둔다.",
-      "note": "river 결정(D5)으로 StatusBar·Platform 축을 배포본에서 뺐다 — AppBar 56px 만, Type 6종. Action·상태 매트릭스 모두 360×780 모바일 목업 위에서 보여준다(D6). 목업은 안내 화면 전용 크롬이며 dist 부품이 아니다.",
+      "note": "river 결정(D5)으로 StatusBar·Platform 축을 배포본에서 뺐다 — AppBar 56px 만, Type 6종. Action(사용 예시)은 360×780 모바일 목업 위에서 보여주고, Type 6종 상태 매트릭스는 나란히 비교해야 해서 평면 목록으로 둔다(river 결정 2026-09-02 HD-2 선택지 A — D6 의 \"목업 위\"는 사용 예시를 가리킨다). 목업은 안내 화면 전용 크롬이며 dist 부품이 아니다.",
       "managedBy": "ui-library-guide"
     }
   }

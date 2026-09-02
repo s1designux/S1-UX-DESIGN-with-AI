@@ -21,6 +21,13 @@
  * 프레임이 다른 아이콘(예: 24 프레임 원본 ↔ 16 프레임 웹 자산)은 대응 관계를 선언하지 않으면
  * **미확인으로 남기고 통과시키지 않는다.** 미계측을 통과로 보고하지 않는다는 저장소 원칙 그대로다.
  *
+ * 파생 색 레이어(derivedFrom): 정본이 아이콘 1개에 2색을 입히는 경우(알림 = 본체 회색 + 신규 점 빨강)
+ * 웹은 CSS 마스크 1겹으로 2색을 낼 수 없어 같은 원본을 두 번 쓴다. 이때 조각 자산은 새로 그린 것이
+ * 아니라 **등록된 원본에서 기계적으로 떼어낸 것**이어야 한다(river 지시 2026-09-02: "원본을 쓰면 된다").
+ * 조각은 독립 픽셀 대조 대상이 아니지만 통과로 봐주지도 않는다 — derivationRule 대로 부모 자산에서
+ * 실제로 떼어내 **바이트가 같은지** 매번 재현하고, 부모 자신이 원본 대조 PASS 인지도 함께 확인한다.
+ * 재현이 어긋나면 실패다. 즉 "예외"가 아니라 더 값싼 다른 증명이다.
+ *
  * 사용:
  *   node scripts/ui-library-icon-origin-check.js            # 기록과 현재 파일 대조(빠름, 렌더 없음)
  *   node scripts/ui-library-icon-origin-check.js --record   # 실제 렌더해서 기록 갱신
@@ -162,6 +169,22 @@ function fallbackPathData() {
   return found;
 }
 
+// 파생 색 레이어 재현 — 부모 자산에서 pathIndex 번째 <path> 하나만 남긴다(frame·glyph·viewBox 유지).
+function derive(parentSvg, rule) {
+  if (!rule || rule.type !== 'path-subset' || !Number.isInteger(rule.pathIndex)) return null;
+  const paths = parentSvg.match(/<path\b[^>]*\/>/g) || [];
+  if (rule.pathIndex < 0 || rule.pathIndex >= paths.length) return null;
+  const kept = paths[rule.pathIndex];
+  let seen = -1;
+  return parentSvg.replace(/<path\b[^>]*\/>\n?\s*/g, (match) => {
+    seen += 1;
+    return seen === rule.pathIndex ? kept : '';
+  });
+}
+
+// 들여쓰기·줄바꿈 차이는 모양이 아니다 — 태그 사이 공백만 정규화해서 비교한다.
+const normalize = (svg) => svg.replace(/>\s+</g, '><').trim();
+
 function fingerprints(icon) {
   return {
     svgSha256: sha(fs.readFileSync(path.join(SOURCE_DIR, icon.file))),
@@ -191,6 +214,41 @@ function run({ record = false } = {}) {
     }
     if (!fs.existsSync(path.join(ROOT, icon.sourceExport))) {
       errors.push(`${label}: 선언한 원본 ${icon.sourceExport} 가 저장소에 없습니다.`);
+      continue;
+    }
+
+    // 파생 색 레이어: 등록된 원본에서 규칙대로 떼어낸 조각인지 재현해서 증명한다(픽셀 대조 대신).
+    if (icon.derivedFrom) {
+      const parent = (manifest.icons || []).find(({ id }) => id === icon.derivedFrom);
+      if (!parent) {
+        errors.push(`${label}: derivedFrom 이 가리키는 원본 아이콘 ${icon.derivedFrom} 가 manifest 에 없습니다.`);
+        continue;
+      }
+      const parentSvg = fs.readFileSync(path.join(SOURCE_DIR, parent.file), 'utf8');
+      const childSvg = fs.readFileSync(path.join(SOURCE_DIR, icon.file), 'utf8');
+      const expected = derive(parentSvg, icon.derivationRule);
+      if (expected === null) {
+        errors.push(`${label}: derivationRule 을 적용할 수 없습니다(${JSON.stringify(icon.derivationRule)}). 원본 ${parent.file} 의 경로 수를 확인하세요.`);
+        continue;
+      }
+      if (normalize(expected) !== normalize(childSvg)) {
+        errors.push(`${label}: 등록된 원본 ${parent.file} 에서 규칙대로 떼어낸 모양과 다릅니다 — 손으로 그린 조각을 쓰면 안 됩니다. 규칙: ${icon.derivationRule && icon.derivationRule.type} #${icon.derivationRule && icon.derivationRule.pathIndex}.`);
+        continue;
+      }
+      const parentVerdict = (record ? results[parent.id] : previous.icons?.[parent.id])?.verdict;
+      if (parentVerdict !== 'PASS') {
+        errors.push(`${label}: 원본 ${parent.id} 의 대조 결과가 PASS 가 아니라(${parentVerdict || '기록 없음'}) 파생 조각도 인정할 수 없습니다.`);
+        continue;
+      }
+      results[label] = {
+        svgSha256: sha(fs.readFileSync(path.join(SOURCE_DIR, icon.file))),
+        derivedFrom: parent.id,
+        derivationRule: icon.derivationRule,
+        verdict: 'PASS',
+        verdictBasis: 'derived-reproduction',
+        observedAt: new Date().toISOString().slice(0, 10),
+      };
+      notes.push(`${label}: 등록된 원본 ${parent.id} 에서 규칙대로 재현됨 (독립 픽셀 대조 대상 아님 — 원본 대조는 ${parent.id} 1건으로 수행)`);
       continue;
     }
 

@@ -404,24 +404,25 @@
       "id": "mobile-bottom-nav",
       "kind": "core-component",
       "legacyStatus": "implemented",
-      "uiLibraryStatus": "candidate",
+      "uiLibraryStatus": "verified",
       "dependencies": [
         "tokens.css",
         "typography.css",
         "mobile-nav-home.svg"
       ],
-      "lastVerified": null,
+      "lastVerified": "2026-09-02",
       "reverifyTrigger": "정본 geometry·state·token·HTML part·CSS selector 변경 · 아이콘 원본 대조 기록 변경",
       "evidence": [
-        "reports/ui-library/mobile-nav-header/3-build.md"
+        "reports/ui-library/mobile-nav-header/3-build.md",
+        "reports/ui-library/mobile-nav-header/4-verification.md"
       ],
-      "note": "3-build 완료(⭐ 자가 기술 점검만). 독립 검증(4-verification)·river UX 승인(6-promotion) 전이라 uiLibraryStatus 는 candidate 로 둔다."
+      "note": "4-verification 통과(🤖 component-verifier 시나리오 F, 2·3회차 실제 spawn — 1회차 FAIL 3건은 아이콘 결함으로 해소, 3회차 부분 재검증 PASS). river UX 검수(5-human-review) 전이라 approved 가 아니라 verified 다."
     },
     {
       "id": "mobile-header",
       "kind": "core-component",
       "legacyStatus": "not-started",
-      "uiLibraryStatus": "candidate",
+      "uiLibraryStatus": "verified",
       "dependencies": [
         "tokens.css",
         "typography.css",
@@ -431,12 +432,13 @@
         "mobile-header-notification-accent.svg",
         "mobile-header-arrow-down.svg"
       ],
-      "lastVerified": null,
+      "lastVerified": "2026-09-02",
       "reverifyTrigger": "정본 geometry·variant·token·HTML part·CSS selector 변경 · 아이콘 원본 대조 기록 변경 · D5(StatusBar 제외) 결정 변경",
       "evidence": [
-        "reports/ui-library/mobile-nav-header/3-build.md"
+        "reports/ui-library/mobile-nav-header/3-build.md",
+        "reports/ui-library/mobile-nav-header/4-verification.md"
       ],
-      "note": "3-build 완료(⭐ 자가 기술 점검만). 독립 검증(4-verification)·river UX 승인(6-promotion) 전이라 uiLibraryStatus 는 candidate 로 둔다."
+      "note": "4-verification 통과(🤖 component-verifier 시나리오 F, 2·3회차 실제 spawn — 1회차 FAIL 3건은 아이콘 결함으로 해소, 3회차 부분 재검증 PASS). river UX 검수(5-human-review) 전이라 approved 가 아니라 verified 다."
     }
   ]
 }

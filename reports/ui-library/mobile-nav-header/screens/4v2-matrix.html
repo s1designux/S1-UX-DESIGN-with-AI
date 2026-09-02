@@ -1,0 +1,32 @@
+<!doctype html><html lang="ko" id="root"><head><meta charset="utf-8">
+<title>4v2 render matrix — mobile-nav-header (verifier evidence)</title>
+<link rel="stylesheet" href="/ui-library/dist/assets/css/tokens.css">
+<link rel="stylesheet" href="/ui-library/dist/assets/css/typography.css">
+<link rel="stylesheet" href="/ui-library/dist/s1-ui.css">
+<style>
+ body{margin:0;font-family:Pretendard,system-ui,sans-serif;background:var(--color-bg-level-1,#f4f5f7);color:var(--color-text-body-primary,#222)}
+ .wrap{padding:16px;display:flex;flex-direction:column;gap:14px}
+ .lbl{font-size:12px;opacity:.7;margin:0 0 4px}
+ .card{width:360px;outline:1px dashed rgba(128,128,128,.5)}
+ .bar{display:flex;width:360px;outline:1px dashed rgba(128,128,128,.5)}
+</style></head><body><div class="wrap" id="w"></div>
+<script>
+const back='<button type="button" data-s1-part="back" aria-label="이전"><span data-s1-part="back-icon" aria-hidden="true"></span></button>';
+const close='<button type="button" data-s1-part="close" aria-label="닫기"><span data-s1-part="close-icon" aria-hidden="true"></span></button>';
+const spacer='<span data-s1-part="spacer" aria-hidden="true"></span>';
+function hdr(v){
+ if(v==='home-title')return '<header data-s1-component="mobile-header" data-variant="home-title"><h1 data-s1-part="title">홈 타이틀</h1></header>';
+ if(v==='home-title-subtitle')return '<header data-s1-component="mobile-header" data-variant="home-title-subtitle"><div data-s1-part="stack"><div data-s1-part="title-row"><h1 data-s1-part="title">홈 타이틀</h1><span data-s1-part="arrow-icon" aria-hidden="true"></span></div><p data-s1-part="subtitle">홈 서브타이틀</p></div><button type="button" data-s1-part="notification" aria-label="알림"><span data-s1-part="notification-icon" aria-hidden="true"></span></button></header>';
+ const hasClose=v.endsWith('-close'), hasTitle=!v.includes('no-title');
+ return '<header data-s1-component="mobile-header" data-variant="'+v+'">'+back+(hasTitle?'<h1 data-s1-part="title">스탠다드형 타이틀</h1>':'<span data-s1-part="title" aria-hidden="true"></span>')+(hasClose?close:spacer)+'</header>';
+}
+function tab(sel,label){return '<button type="button" data-s1-component="mobile-bottom-nav" role="tab" aria-selected="'+sel+'"><span data-s1-part="icon" aria-hidden="true"></span><span data-s1-part="label">'+label+'</span></button>';}
+const types=['home-title','home-title-subtitle','standard-title','standard-title-close','standard-no-title','standard-no-title-close'];
+let h='';
+for(const t of types) h+='<div><p class="lbl">'+t+'</p><div class="card">'+hdr(t)+'</div></div>';
+h+='<div><p class="lbl">mobile-bottom-nav (selected / unselected ×4)</p><nav role="tablist" class="bar">'+tab(true,'홈')+tab(false,'검색')+tab(false,'알림')+tab(false,'전체')+'</nav></div>';
+h+='<div><p class="lbl">arrow ×6 zoom (아래 v 방향 확인)</p><div style="display:flex;gap:20px;align-items:flex-start;height:170px"><span data-zoom style="display:inline-block;transform:scale(6);transform-origin:left top;width:24px;height:24px"></span></div></div>';
+document.getElementById('w').innerHTML=h;if(location.search.includes('dark'))document.documentElement.setAttribute('data-theme','dark');
+const z=document.querySelector('[data-zoom]');
+z.innerHTML='<span data-s1-component="mobile-header" data-variant="home-title-subtitle" style="display:block"><span data-s1-part="arrow-icon"></span></span>';
+</script></body></html>

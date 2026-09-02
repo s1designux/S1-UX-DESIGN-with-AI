@@ -479,6 +479,28 @@ for (const id of ["checkbox", "radio", "toggle", "chip"]) {
   }
 }
 
+/* 배포본 CSS 가 가리키는 자산이 실제로 dist 에 있는가 —
+   2026-09-02 F-3 의 사각지대다. 알림 아이콘의 빨간 점 자산이 dist 에 복사되지 않아 마스크가 404 로
+   실패했는데, 아이콘 검사기도 계약 검사기도 "등록된 아이콘"만 돌아서 아무도 못 잡았다.
+   여기서는 반대로 **CSS 가 실제로 요구하는 것**에서 출발해 파일 존재를 확인한다. */
+const cssUrlTargets = new Map();
+for (const [relative, css] of [["s1-ui.css", await read("dist/s1-ui.css")], ...await Promise.all(componentIds.map(async (id) => [`components/${id}.css`, await read(`dist/components/${id}.css`)]))]) {
+  for (const [, reference] of css.matchAll(/url\(\s*["']?([^"')]+)["']?\s*\)/g)) {
+    if (/^(data:|https?:|#)/.test(reference)) continue;
+    const resolved = path.normalize(path.join(path.dirname(path.join(libraryRoot, "dist", relative)), reference));
+    if (!cssUrlTargets.has(resolved)) cssUrlTargets.set(resolved, []);
+    cssUrlTargets.get(resolved).push(`${relative} → ${reference}`);
+  }
+}
+if (!cssUrlTargets.size) failures.push("dist CSS asset reference check found no url() references — 검사기가 무력화된 상태입니다");
+for (const [target, referrers] of cssUrlTargets) {
+  try {
+    await access(target);
+  } catch {
+    failures.push(`dist CSS references a file that is not deployed: ${path.relative(path.join(libraryRoot, "dist"), target)} (${referrers.join(", ")})`);
+  }
+}
+
 /* 렌더 검사 — 소스 문자열로는 못 보는 것(화면이 실제로 무엇을 보여주는가)을 실제 DOM 으로 본다.
    2026-09-02 독립 검증이 실증한 구멍 2개(G1 chip 인라인 크기 라벨 · G2 플랫폼 분기 무력화)를 막는다. */
 const renderCheck = spawnSync(process.execPath, [path.join(repositoryRoot, "scripts/ui-guide-render-check.js"), "--quiet"], { encoding: "utf8" });

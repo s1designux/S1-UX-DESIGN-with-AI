@@ -1,7 +1,7 @@
 {
   "id": "mobile-header",
   "version": "0.1.0",
-  "status": "candidate",
+  "status": "verified",
   "canonicalFingerprint": "8d2bea4c0ccb501eb75737eb2d336f1f7112dbc7d1e0b1ef31d7aa441234eaea",
   "canonicalSources": [
     "plugins/figma-vars-installer/src/build-components.ts",
@@ -119,15 +119,23 @@
       "asset": "assets/icons/mobile-header-notification.svg",
       "use": "홈 서브타이틀 유형 우측 알림 버튼(24px, 32×32 슬롯) — 본체 레이어(gray-dark)",
       "accessibleNamePolicy": "decorative; 버튼이 aria-label(기본값 \"알림\")로 이름을 갖는다",
-      "note": "Figma V2.2 아이콘 라이브러리 ic_알림(신규)(97:258 · Property 1=Line) 실물 벡터 — 원본 대조는 본체+점 결합 형상 전체로 수행해 PASS(오차 0.00308). 점(신규 표시)은 같은 원본의 부분 도형인 mobile-header-notification-accent.svg 를 별색(icon/red) 레이어로 CSS ::after 에 겹쳐 2색을 표현한다 — 마스크 1겹은 2색을 표현할 수 없어(river 결정 2026-09-02) 결합형 1건으로 원본 대조를 마치고 점 레이어는 별도 대조 대상으로 등록하지 않았다(같은 원본의 부분 형상이라 독립 대조 시 극소 영역 때문에 오차율이 왜곡된다). 이 경계는 3-build 보고서에 명시해 검증자가 확인할 수 있게 했다."
+      "note": "Figma V2.2 아이콘 라이브러리 ic_알림(신규)(97:258 · Property 1=Line) 실물 벡터 — 원본 대조는 본체+점 결합 형상 전체로 수행해 PASS(오차 0.00308). 점(신규 표시)은 같은 원본의 부분 도형인 mobile-header-notification-accent.svg 를 별색(icon/red) 레이어로 CSS ::after 에 겹쳐 2색을 표현한다 — 마스크 1겹은 2색을 표현할 수 없어(river 결정 2026-09-02) 결합형 1건으로 원본 대조를 마치고 점 레이어는 대조 대상에서 제외하되(같은 원본의 부분 형상이라 독립 대조 시 극소 영역 때문에 오차율이 왜곡된다) 배포를 위해 icon manifest 에 mobileHeaderNotificationAccent 로 등록한다 — 등록이 곧 dist 복사 통로라 미등록 시 마스크가 404 로 실패해 점이 회색으로 나간다(2026-09-02 F-3). 대조 제외 경계는 icon manifest 의 derivedFrom·derivationRule 로 기계가독 선언한다 — 검사기가 부모 원본에서 규칙대로 재현해 바이트 일치를 매번 증명한다."
+    },
+    {
+      "id": "mobileHeaderNotificationAccent",
+      "sourceKey": "13cf1b580ec982fda488f9318c6821930ddfb26e",
+      "asset": "assets/icons/mobile-header-notification-accent.svg",
+      "use": "홈 서브타이틀 유형 알림 버튼의 \"신규 표시\" 빨간 점 레이어 — 본체 위 ::after 에 별색(icon/red) 마스크로 겹친다",
+      "accessibleNamePolicy": "decorative; 버튼의 aria-label 이 이름을 갖는다",
+      "note": "새로 그린 자산이 아니라 등록된 원본 mobileHeaderNotification(97:258)에서 떼어낸 색 레이어다(derivedFrom · derivationRule path-subset #1, river 지시 2026-09-02). 원본 모양 대조는 부모 1건으로 하고, 이 항목은 \"정말 부모의 일부인가\"를 검사기가 매번 기계로 증명한다."
     },
     {
       "id": "mobileHeaderArrowDown",
       "sourceKey": "6babc3f493e48be1e7191a7b8a68945833039fe8",
       "asset": "assets/icons/mobile-header-arrow-down.svg",
-      "use": "홈 서브타이틀 유형 제목 옆 아래화살표(24px) — CSS 로 -90° 회전",
+      "use": "홈 서브타이틀 유형 제목 옆 아래화살표(24px) — CSS transform: rotate(90deg) 로 아래를 향하게 한다(정본 Figma rotation -90 과 부호가 반대다)",
       "accessibleNamePolicy": "decorative; 제목 텍스트에 종속된 장식 아이콘",
-      "note": "Figma V2.2 아이콘 라이브러리 ic_화살표,더보기,다음장(419:68 · Property 1=Solid) 실물 벡터. 보이는 것은 Stroke 2 획뿐(Fill 1 은 hidden, 정본 주석 build-components.ts:3143-3144) — 원본 대조 PASS(오차 0.00372)."
+      "note": "Figma V2.2 아이콘 라이브러리 ic_화살표,더보기,다음장(419:68 · Property 1=Solid) 실물 벡터. 보이는 것은 Stroke 2 획뿐(Fill 1 은 hidden, 정본 주석 build-components.ts:3143-3144) — 원본 대조 PASS. 획(stroke) 기반이라 glyph 뷰포트는 24 프레임 전체다 — 경로 경계로 잡으면 획 바깥 절반이 잘린다(2026-09-02 F-1)."
     }
   ],
   "a11y": {
