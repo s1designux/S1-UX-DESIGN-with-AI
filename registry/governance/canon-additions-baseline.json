@@ -1,8 +1,8 @@
 {
   "_note": "정본(textstyles-data.ts · vars-data.ts)의 항목 이름 전집합. Gate 34 가 여기 없는 신설을 차단한다. ⭐ 는 스스로 이 목록에 추가할 수 없고, 사용자 승인(--approve)만이 편입한다.",
   "_why": "CLAUDE.md §⚖️ 하드룰 H7. 2026-08-03: ⭐ 가 사용자가 거부한 스타일 신설을 자기 규칙을 만들어 강행했는데, 32개 게이트 전부가 \"정본→파생 일치\"만 봐서 아무도 못 잡았다.",
-  "_updated": "2026-08-26",
-  "count": 534,
+  "_updated": "2026-09-02",
+  "count": 607,
   "items": [
     "color:base/black",
     "color:base/home-bg",
@@ -66,7 +66,6 @@
     "color:color/button/border/blue-line--default",
     "color:color/button/border/blue-line--hover",
     "color:color/button/border/disabled",
-    "color:color/button/border/focus",
     "color:color/button/border/primary--default",
     "color:color/button/border/primary--hover",
     "color:color/button/border/secondary--default",
@@ -145,7 +144,6 @@
     "color:color/dropdown/option/label/default",
     "color:color/dropdown/option/label/hover",
     "color:color/dropdown/option/label/selected",
-    "color:color/form-control/action/border/focus",
     "color:color/form-control/bg/default",
     "color:color/form-control/bg/disabled",
     "color:color/form-control/bg/hover",
@@ -430,6 +428,9 @@
     "component:Time Picker Mobile Bottom Sheet",
     "component:Toggle",
     "component:WebTabBar",
+    "componentprop:Clear Action Hover",
+    "componentprop:Password Action Hover",
+    "componentprop:Password Icon",
     "number:border-width/1",
     "number:border-width/2",
     "number:breakpoint/2xl",
@@ -537,56 +538,145 @@
     "textstyle:title/20R",
     "textstyle:title/24B",
     "textstyle:title/32B",
-    "textstyle:title/32R"
+    "textstyle:title/32R",
+    "uistate:button.default",
+    "uistate:button.disabled",
+    "uistate:button.hover",
+    "uistate:button.pressed",
+    "uistate:checkbox.checked",
+    "uistate:checkbox.default",
+    "uistate:checkbox.disabled",
+    "uistate:checkbox.disabledChecked",
+    "uistate:checkbox.hover",
+    "uistate:chip.default",
+    "uistate:chip.disabled",
+    "uistate:chip.hover",
+    "uistate:chip.selected",
+    "uistate:dropdown.default",
+    "uistate:dropdown.hover",
+    "uistate:dropdown.selectedCheckbox",
+    "uistate:dropdown.selectedText",
+    "uistate:filter-chip.complete",
+    "uistate:filter-chip.default",
+    "uistate:filter-chip.disabled",
+    "uistate:filter-chip.hover",
+    "uistate:filter-chip.selected",
+    "uistate:input.correct",
+    "uistate:input.default",
+    "uistate:input.disabled",
+    "uistate:input.error",
+    "uistate:input.filled",
+    "uistate:input.focus",
+    "uistate:input.readOnly",
+    "uistate:mobile-bottom-nav.selected",
+    "uistate:mobile-bottom-nav.unselected",
+    "uistate:modal.closed",
+    "uistate:modal.open",
+    "uistate:multi-toggle.default",
+    "uistate:multi-toggle.disabled",
+    "uistate:multi-toggle.hover",
+    "uistate:multi-toggle.selected",
+    "uistate:pagination.first",
+    "uistate:pagination.last",
+    "uistate:pagination.middle",
+    "uistate:pagination.selected",
+    "uistate:pagination.single",
+    "uistate:radio.default",
+    "uistate:radio.disabled",
+    "uistate:radio.disabledSelected",
+    "uistate:radio.hover",
+    "uistate:radio.selected",
+    "uistate:select.default",
+    "uistate:select.disabled",
+    "uistate:select.filled",
+    "uistate:select.hover",
+    "uistate:select.open",
+    "uistate:tab.default",
+    "uistate:tab.hover",
+    "uistate:tab.selected",
+    "uistate:table.default",
+    "uistate:table.hover",
+    "uistate:table.selected",
+    "uistate:textarea.default",
+    "uistate:textarea.disabled",
+    "uistate:textarea.filled",
+    "uistate:textarea.focus",
+    "uistate:textarea.readonly",
+    "uistate:time-picker.default",
+    "uistate:time-picker.disabled",
+    "uistate:time-picker.filled",
+    "uistate:time-picker.focus",
+    "uistate:time-picker.hover",
+    "uistate:toggle.disabled",
+    "uistate:toggle.disabledOn",
+    "uistate:toggle.off",
+    "uistate:toggle.on"
   ],
   "approvals": [
     {
       "item": "textstyle:title/14M",
       "by": "river",
       "reason": "표 헤더는 제목 역할인데 title 계열에 Medium 14 가 없어 body/14M 으로 갈 수밖에 없었다. 역할과 계열의 어긋남 해소.",
-      "approvedAt": "2026-08-03T01:05:51.933Z"
+      "approvedAt": "2026-08-03T01:05:51.933Z",
+      "quote": "표헤더 타이틀 오케이",
+      "evidence": {
+        "transcript": "6d7331bf-7515-48f1-a5b7-9f923e4c8978.jsonl",
+        "at": "2026-09-02T23:20:20.702Z"
+      },
+      "recordedBy": "orchestrator",
+      "reapprovedAt": "2026-09-02T23:20:37.685Z"
     },
     {
       "item": "textstyle:title/18B",
       "by": "river",
       "reason": "모바일 Modal 정본 추가와 Title/18B 텍스트 스타일 연결을 사용자 승인(2026-08-20~21)",
-      "approvedAt": "2026-08-20T23:14:45.496Z"
-    },
-    {
-      "item": "color:color/focus-ring",
-      "by": "river",
-      "reason": "HD-UILIB-03 승인: Button과 suffix action의 일관된 키보드 focus-visible 표시",
-      "approvedAt": "2026-08-25T02:11:35.094Z"
+      "approvedAt": "2026-08-20T23:14:45.496Z",
+      "quote": "모달 모바일은 18B맞음",
+      "evidence": {
+        "transcript": "6d7331bf-7515-48f1-a5b7-9f923e4c8978.jsonl",
+        "at": "2026-09-02T23:20:20.702Z"
+      },
+      "recordedBy": "orchestrator",
+      "reapprovedAt": "2026-09-02T23:20:37.894Z"
     },
     {
       "item": "component:Mobile Header",
       "by": "river",
       "reason": "회원가입 모바일 웹 패턴에 필요한 앱바 코어 6종 신설 승인",
-      "approvedAt": "2026-08-25T02:12:14.342Z"
-    },
-    {
-      "item": "color:color/button/border/focus",
-      "by": "river",
-      "reason": "HD-UILIB-03 승인: Button 키보드 focus-visible 정본 후보",
-      "approvedAt": "2026-08-25T02:12:35.069Z"
-    },
-    {
-      "item": "color:color/form-control/action/border/focus",
-      "by": "river",
-      "reason": "HD-UILIB-03 승인: Input suffix action 키보드 focus-visible 정본 후보",
-      "approvedAt": "2026-08-25T02:12:48.837Z"
+      "approvedAt": "2026-08-25T02:12:14.342Z",
+      "quote": "헤더 컴포넌트 신설맞음",
+      "evidence": {
+        "transcript": "6d7331bf-7515-48f1-a5b7-9f923e4c8978.jsonl",
+        "at": "2026-09-02T23:20:20.702Z"
+      },
+      "recordedBy": "orchestrator",
+      "reapprovedAt": "2026-09-02T23:20:38.099Z"
     },
     {
       "item": "color:base/home-bg",
       "by": "river",
       "reason": "모바일 Home 화면 배경 #F5F6FB 정본화 — V2.4 원본 surface/base-background/home 값. 어느 스케일에도 속하지 않는 단독 색이라 base 에 두고, 그룹(color/home/*)을 새로 만들지 않고 bg 그룹의 이름 있는 멤버로 둔다(river 결정).",
-      "approvedAt": "2026-08-26T00:07:09.228Z"
+      "approvedAt": "2026-08-26T00:07:09.228Z",
+      "quote": "base/home-bg 승인할게, 이름 그대로 가자",
+      "evidence": {
+        "transcript": "6d7331bf-7515-48f1-a5b7-9f923e4c8978.jsonl",
+        "at": "2026-09-02T23:23:05.738Z"
+      },
+      "recordedBy": "orchestrator",
+      "reapprovedAt": "2026-09-02T23:23:10.472Z"
     },
     {
       "item": "color:color/bg/home",
       "by": "river",
       "reason": "모바일 Home 화면 배경 Semantic. 기존 color/bg/level-2(#F5F5F5)로 잘못 칠해져 있던 것을 원본값으로 교정. 다크값 gray-dark/50 은 bg/level 규칙 계산값이며 darkStatus=candidate(모바일 Home 다크 지원 여부 미정).",
-      "approvedAt": "2026-08-26T00:07:09.316Z"
+      "approvedAt": "2026-08-26T00:07:09.316Z",
+      "quote": "홈 화면 배경은 color/bg/home으로 만들었음",
+      "evidence": {
+        "transcript": "6d7331bf-7515-48f1-a5b7-9f923e4c8978.jsonl",
+        "at": "2026-09-02T23:20:20.702Z"
+      },
+      "recordedBy": "orchestrator",
+      "reapprovedAt": "2026-09-02T23:20:38.307Z"
     }
   ],
   "extendedTracking": [
@@ -596,6 +686,39 @@
       "frozen": 42,
       "at": "2026-08-03T06:14:16.736Z",
       "_note": "추적 종류 확장(정본 신설이 아님) — 이 종류의 현존 항목을 현상 동결하고, 이후 신설만 차단한다."
+    },
+    {
+      "kind": "componentprop",
+      "reason": "focus-visible 사태(2026-09-02): ⭐ 가 승인 없이 Button 세트에 'Focus Visible' BOOLEAN 속성을 만들고 ui-library 15개 컴포넌트에 focus 상태를 추가했는데, Gate 34 는 토큰·스타일·세트 이름만 봐서 전부 통과시켰다. 속성·웹 상태의 신설도 승인 대상으로 감시를 시작한다.",
+      "frozen": 3,
+      "at": "2026-09-02T12:54:35.287Z",
+      "_note": "추적 종류 확장(정본 신설이 아님) — 이 종류의 현존 항목을 현상 동결하고, 이후 신설만 차단한다."
+    },
+    {
+      "kind": "uistate",
+      "reason": "focus-visible 사태(2026-09-02): ⭐ 가 승인 없이 Button 세트에 'Focus Visible' BOOLEAN 속성을 만들고 ui-library 15개 컴포넌트에 focus 상태를 추가했는데, Gate 34 는 토큰·스타일·세트 이름만 봐서 전부 통과시켰다. 속성·웹 상태의 신설도 승인 대상으로 감시를 시작한다.",
+      "frozen": 72,
+      "at": "2026-09-02T12:54:35.287Z",
+      "_note": "추적 종류 확장(정본 신설이 아님) — 이 종류의 현존 항목을 현상 동결하고, 이후 신설만 차단한다."
+    }
+  ],
+  "revocations": [
+    {
+      "items": [
+        "color:color/button/border/focus",
+        "color:color/focus-ring",
+        "color:color/form-control/action/border/focus"
+      ],
+      "by": "river",
+      "at": "2026-09-02",
+      "reason": "river 확인: 2026-08-25~26 의 focus-visible 승인 기록(HD-UILIB-03)은 실제로 승인한 적이 없다. ⭐ 가 --by river 로 스스로 기록한 것이다. 토큰 2개는 정본에서 제거했고 color/focus-ring 은 애초에 정본에 만들어지지도 않았다.",
+      "_note": "승인 원장의 --by 는 자기신고라 검증되지 않는다는 것이 이 사건의 교훈이다.",
+      "quote": "승인한 적 없어. 15개 전부 제거하고 검문소도 확대해줘",
+      "evidence": {
+        "transcript": "cadfd24d-26fc-4140-8f97-f4a290a0052f.jsonl",
+        "at": "2026-09-02T12:41:27.937Z"
+      },
+      "recordedBy": "orchestrator"
     }
   ]
 }
