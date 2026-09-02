@@ -22,6 +22,9 @@
   <link rel="stylesheet" href="../dist/components/multi-toggle.css">
   <link rel="stylesheet" href="../dist/components/table.css">
   <link rel="stylesheet" href="../dist/components/modal.css">
+  <link rel="stylesheet" href="../dist/components/mobile-bottom-nav.css">
+  <link rel="stylesheet" href="../dist/components/mobile-header.css">
+  <link rel="stylesheet" href="../dist/components/time-picker.css">
 </head>
 <body>
   <main>
@@ -155,8 +158,48 @@
         </div>
       </div>
     </div>
+    <!-- 정본은 "탭 한 칸"만 부품으로 만들고 4칸 바는 부품이 아니다(build-components.ts:2979).
+         바의 가로 배열·배경은 화면 소유라 이 빈 소비자 화면에서는 일부러 칠하지 않는다 —
+         여기서 증명할 것은 "배포본만으로 탭 한 칸이 제대로 보이나"이고, 부품이 아닌 것을
+         부품 검수 화면에 그리지 않는다. role=tablist 는 꾸미기가 아니라 role=tab 의 유효성에
+         필요한 의미라서 남긴다(부품 매니페스트 a11y: tablist 컨테이너는 호스트 소유). -->
+    <nav aria-label="주요 메뉴" role="tablist">
+      <button type="button" data-s1-component="mobile-bottom-nav" role="tab" aria-selected="true">
+        <span data-s1-part="icon" aria-hidden="true"></span>
+        <span data-s1-part="label">홈</span>
+      </button>
+      <button type="button" data-s1-component="mobile-bottom-nav" role="tab" aria-selected="false">
+        <span data-s1-part="icon" aria-hidden="true"></span>
+        <span data-s1-part="label">검색</span>
+      </button>
+    </nav>
+    <header data-s1-component="mobile-header" data-variant="standard-title">
+      <button type="button" data-s1-part="back" aria-label="이전">
+        <span data-s1-part="back-icon" aria-hidden="true"></span>
+      </button>
+      <h1 data-s1-part="title">스탠다드형 타이틀</h1>
+      <span data-s1-part="spacer" aria-hidden="true"></span>
+    </header>
+    <div data-s1-component="time-picker" data-size="md" data-break="pc" data-type="24h" data-minute-step="1">
+      <button type="button" data-s1-part="trigger" aria-haspopup="listbox" aria-expanded="false" aria-label="시간">
+        <span data-s1-part="value">시간 선택</span>
+        <span data-s1-part="icon" aria-hidden="true"></span>
+      </button>
+      <div data-s1-part="panel" hidden>
+        <div data-s1-part="columns">
+          <div data-s1-part="column" data-column="hour" role="listbox" aria-label="시"></div>
+          <div data-s1-part="divider"></div>
+          <div data-s1-part="column" data-column="minute" role="listbox" aria-label="분"></div>
+        </div>
+        <div data-s1-part="footer">
+          <button type="button" data-s1-part="confirm" disabled>확인</button>
+        </div>
+      </div>
+    </div>
   </main>
   <script type="module">
+    import "../dist/components/mobile-bottom-nav.js";
+    import "../dist/components/mobile-header.js";
     import { init as initInput } from "../dist/components/input.js";
     import "../dist/components/button.js";
     import "../dist/components/checkbox.js";
@@ -172,6 +215,7 @@
     import { init as initMultiToggle } from "../dist/components/multi-toggle.js";
     import { init as initTable } from "../dist/components/table.js";
     import { init as initModal } from "../dist/components/modal.js";
+    import { init as initTimePicker } from "../dist/components/time-picker.js";
     document.querySelectorAll('[data-s1-component="input"]').forEach((root) => initInput(root));
     document.querySelectorAll('[data-s1-component="toggle"]').forEach((root) => initToggle(root));
     document.querySelectorAll('[data-s1-component="chip"]').forEach((root) => initChip(root));
@@ -182,6 +226,7 @@
     document.querySelectorAll('[data-s1-component="pagination"]').forEach((root) => initPagination(root));
     document.querySelectorAll('[data-s1-component="multi-toggle"]').forEach((root) => initMultiToggle(root));
     document.querySelectorAll('[data-s1-component="table"]').forEach((root) => initTable(root));
+    document.querySelectorAll('[data-s1-component="time-picker"]').forEach((root) => initTimePicker(root));
     const consumerModal = document.querySelector('[data-s1-component="modal"]');
     const consumerModalApi = initModal(consumerModal);
     document.querySelector("[data-consumer-open-modal]")?.addEventListener("click", () => consumerModalApi?.open());

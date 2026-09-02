@@ -1,0 +1,254 @@
+{
+  "schemaVersion": 1,
+  "workflow": "ui-library-code",
+  "workId": "time-picker",
+  "objective": "정본(build-components.ts)의 Time Picker 트리거·드롭다운 패널·목록 칸을 웹 UI 라이브러리 모듈로 만들고 실제 dist 소비까지 연결한다.",
+  "intent": {
+    "approvedBy": "river",
+    "approvedAt": "2026-09-02",
+    "principles": [
+      "정본에 있는 상태만 만든다. 정본 빌더에 없는 TimePicker Select(옛 사이트 화면 전용 형태)는 만들지 않는다.",
+      "모바일 바텀시트(휠)는 이번 범위 밖 — 모바일도 PC와 같은 목록 드롭다운을 쓰고 트리거 크기(48px)만 모바일용으로 제공한다(river 결정 2026-09-02). 휠 시트는 Date Picker 작업과 구조를 공유하므로 그때 함께 만든다.",
+      "새 색 토큰을 만들지 않는다. 트리거는 form-control, 패널·칸은 dropdown semantic 을 100% 재사용한다.",
+      "분 간격은 1분 단위를 기본으로 하고 소비자가 조절할 수 있게 연다(river 결정 2026-09-02).",
+      "접근성 계약은 이미 승인된 Select 의 목록상자(listbox) 방식을 그대로 확정한다.",
+      "디자인가이드 검수 화면과 퍼블리셔·개발자 배포본은 같은 dist 를 사용한다."
+    ]
+  },
+  "contract": {
+    "path": "registry/governance/ui-library-code-contract.json",
+    "version": "0.1.2",
+    "status": "candidate"
+  },
+  "target": {
+    "kind": "core-component",
+    "components": [
+      "time-picker"
+    ]
+  },
+  "figmaSources": {
+    "role": "시각 정본은 build-components.ts(buildTimePicker·buildTimePickerCell·buildTimePickerDropdown)다. Figma V3.0 은 선택적 시각 참고다.",
+    "requiredForInventory": false,
+    "fileKey": "cysG5U1udpQqVagYY1hWHW",
+    "fileName": "SW-UX-GUIDE V3.0 TEST",
+    "components": {
+      "time-picker": {
+        "nodeId": null,
+        "source": "not-consulted",
+        "status": "코드 정본에 상태·수치·토큰이 모두 있어 시각 참고가 필요하지 않았다. 정본 주석의 V2.4 원본 노드: timepicker_input 540:3690 · timepicker_input_component 540:3469 · pc_timepicker_input_dropdown 540:3506."
+      }
+    }
+  },
+  "currentPhase": "3-build",
+  "workflowStatus": "in-progress",
+  "uiLibraryStatus": "draft",
+  "lastCompletedCheckpoint": 2,
+  "nextAction": "3-build 를 끝낸다: (1) B2 clock 아이콘 원본 대조 실패 해소 (2) B4 안내 페이지를 dist 소비 경로로 전환(guideComponents 등재 + 정적 마크업 제거) (3) 3-build.md 작성 (4) pages/ui-review.html 검수 화면과 ui-library-migration.json 등재. 그 뒤 4-verification.",
+  "ownership": {
+    "currentActor": "orchestrator",
+    "startedAt": "2026-09-02",
+    "owner": "orchestrator"
+  },
+  "canonicalInputs": [
+    {
+      "role": "component-visual",
+      "path": "plugins/figma-vars-installer/src/build-components.ts",
+      "sha256": "368714264e235320404ba0d42b837d9f50c84c51fa6a24faa0c33f9293da57de"
+    },
+    {
+      "role": "token-values",
+      "path": "plugins/figma-vars-installer/src/vars-data.ts",
+      "sha256": "87edd42623983fb5e02e820940dbbc3693ecb4b2c79104e781c8307501984cd9"
+    },
+    {
+      "role": "text-styles",
+      "path": "plugins/figma-vars-installer/src/textstyles-data.ts",
+      "sha256": "dc0db42d87503e80e9da8ad1246090f58e79106593a57815b0568aebcb9d51d3"
+    },
+    {
+      "role": "ui-library-contract",
+      "path": "registry/governance/ui-library-code-contract.json",
+      "sha256": "63dc0f64c6ea834218119f8629379ee48cfac6c8df8b36e39d78f51405807c85"
+    },
+    {
+      "role": "component-meaning-time-picker",
+      "path": "registry/components/time-picker.json",
+      "sha256": "4690e89f1bde6e9aa064b8f9bd3d4b906654edd7dc63b1ae3aaf467fd4223888"
+    }
+  ],
+  "artifacts": {
+    "policyContract": "registry/governance/ui-library-code-contract.json",
+    "humanGuide": "registry/governance/ui-library-authoring-guide.md",
+    "componentChecklist": "registry/governance/ui-library-component-checklist.md",
+    "inventory": "reports/ui-library/time-picker/1-inventory.md",
+    "canonReadiness": "reports/ui-library/time-picker/2-canon-readiness.md",
+    "build": "reports/ui-library/time-picker/3-build.md",
+    "verification": "reports/ui-library/time-picker/4-verification.md",
+    "humanReview": "reports/ui-library/time-picker/5-human-review.md",
+    "sourceRoot": "ui-library/src",
+    "distManifest": "ui-library/dist/manifest.json",
+    "reviewPage": "pages/ui-review.html",
+    "guidePage": "pages/components.html",
+    "migrationRecord": "registry/governance/ui-library-migration.json",
+    "screens": [],
+    "repositoryInventory": "reports/component-inventory-audit.md"
+  },
+  "decisions": [
+    {
+      "id": "D1",
+      "topic": "모바일 범위",
+      "decidedBy": "river",
+      "decidedAt": "2026-09-02",
+      "decision": "모바일 바텀시트(휠 4열·흐림 오버레이·날짜/시간 탭 변형, 정본 buildTimePickerMobileBottomSheet)는 이번 범위 밖이다. 모바일에서도 PC와 같은 목록 드롭다운을 쓰고, 트리거는 정본의 Mobile break(48px)를 제공한다. 휠 시트는 Date Picker 바텀시트와 구조를 공유하므로 Date Picker 작업 때 함께 만든다."
+    },
+    {
+      "id": "D2",
+      "topic": "분 간격 기본값",
+      "decidedBy": "river",
+      "decidedAt": "2026-09-02",
+      "decision": "분 목록 기본은 1분 단위(00~59)이고, 소비자가 간격을 조절할 수 있게 공개 설정으로 연다. 정본 빌더에는 데모용 7칸 샘플만 있어 실제 목록 범위·간격에 대한 정본 규정이 없다 — 그래서 가장 제약이 적은 쪽을 river 가 선택했다."
+    },
+    {
+      "id": "D3",
+      "topic": "정본에 없는 것을 만들지 않음",
+      "decidedBy": "orchestrator",
+      "decidedAt": "2026-09-02",
+      "decision": "지금 pages/components.html 에만 있는 'TimePicker Select'(시·분 각각 화살표 필드, 옛 timepicker_select 540:3636)는 정본 빌더에 없어 웹 배포본으로 만들지 않는다. 정본 셀에는 테두리가 없다(2026-06-30 제거) — 테두리를 되살리지 않는다."
+    },
+    {
+      "id": "D4",
+      "topic": "접근성 계약 확정",
+      "decidedBy": "orchestrator",
+      "decidedAt": "2026-09-02",
+      "decision": "registry time-picker.json 이 이미 선언한 방향(트리거에 접근 가능한 이름, aria-expanded + listbox)을 이미 승인된 Select 구현과 같은 규격으로 확정하고 a11yStatus 를 pending → stable 로 올린다. 이 확정이 없으면 계약상 approved 배포가 불가능하다."
+    }
+  ],
+  "blockers": [
+    {
+      "id": "B2",
+      "severity": "error",
+      "owner": "time-picker",
+      "what": "시계(clock) 아이콘이 저장소 원본과 모양이 달라 Gate 43 이 커밋을 막는다.",
+      "detail": "평균 알파 오차 0.04941 > 허용 0.015 — assets/icons/ic_시간시계_line.png 대조. 검사기: node scripts/ui-library-icon-origin-check.js",
+      "rootCause": "ui-library/src/assets/icons/clock.svg 를 Figma 원본(97:271) 내보내기가 아니라 PNG 를 픽셀 측정해 손으로 벡터화한 재구성물이다(manifest geometryEvidence 에 그렇게 기록돼 있다). 재구성 도형이 원본과 허용오차 안에서 맞지 않는다.",
+      "discoveredBy": "orchestrator",
+      "discoveredAt": "2026-09-02",
+      "blocks": [
+        "3-build",
+        "gate:check",
+        "commit"
+      ]
+    },
+    {
+      "id": "B4",
+      "severity": "error",
+      "owner": "time-picker",
+      "what": "안내 페이지의 시간 선택 섹션이 실제 배포본이 아니라 손으로 쓴 HTML 을 보여주고 있다.",
+      "detail": "assets/js/ui-library-guide.js:1698 의 guideComponents 배열에 time-picker 가 없어서 dist 를 fetch 하는 동적 경로를 타지 않는다. 그래서 pages/components.html:3294 이하의 정적 마크업이 그대로 표출되고, 배포본이 바뀌어도 안내 화면이 따라오지 않는다. 같은 candidate 상태인 mobile-bottom-nav·mobile-header 가 게이트에 막혀 안내 문구를 보여주는 것과 달리 이 섹션은 게이트를 아예 통과하지 않는다 — 승인 전 배포본을 승인된 것처럼 보여줄 위험이 있다.",
+      "rootCause": "손관리 시절의 정적 섹션이 남아 있는데 웹 배포본 작업이 그 위에 올라오면서 배열 등재를 빠뜨렸다.",
+      "fix": "guideComponents 배열에 time-picker 를 추가하고 정적 마크업을 셸로 비운다 — mobile-bottom-nav·mobile-header 와 같은 구조로 맞춘다.",
+      "discoveredBy": "source-reader",
+      "discoveredAt": "2026-09-02",
+      "blocks": [
+        "3-build"
+      ]
+    }
+  ],
+  "evidence": {
+    "automatedChecks": [],
+    "independentVerification": {
+      "verdict": "REQUIRED",
+      "reason": "계약 riskBasedIndependentVerification.requiredWhen 해당 — 트리거·패널·열 선택·확인 버튼이 엮인 복합 flow 와 새 접근성 동작(listbox)이 있다. component-verifier 시나리오 F 로 별도 검증한다."
+    },
+    "implementationActualRender": {
+      "verdict": "NOT_RUN"
+    },
+    "riverApproval": {
+      "status": "pending"
+    },
+    "sourceAudit": {
+      "status": "complete",
+      "actor": "source-reader",
+      "observedAt": "2026-09-02",
+      "basis": "build-components.ts buildTimePicker(2357-2422)·buildTimePickerCell(2437-2476)·buildTimePickerDropdown(2477-2624)·buildTimePickerMobileBottomSheet(3894-4113), ICON_KEYS(1173), fcIconPx(1312), vars-data.ts shadow/dropdown(455), registry/components/time-picker.json 전체, ui-library/src/components/select·dropdown 배선",
+      "summary": "정본에 트리거 20조합(크기 4 × 상태 5)·패널(24h 121px / 12h 194px)·칸(44×32, 3상태)이 모두 있고 전용 색 토큰은 0개다. ui-library/src 에는 time-picker 가 없고 build·test·exports 어디에도 등록돼 있지 않다. 유일한 착수 차단 요인은 registry a11yStatus=pending 이었다.",
+      "report": "reports/ui-library/time-picker/1-inventory.md"
+    }
+  },
+  "handoff": {
+    "lastActor": "orchestrator",
+    "updatedAt": "2026-09-02",
+    "summary": "0~1 단계 완료, 2-canon-readiness 진행 중. river 가 모바일 범위(D1)와 분 간격(D2)을 결정해 needs-decision 은 없다. 남은 착수 조건은 a11yStatus 승격(D4) 하나이며 3-build 착수 전에 처리한다."
+  },
+  "checkpointLog": [
+    {
+      "checkpoint": 1,
+      "name": "1-inventory",
+      "status": "passed",
+      "evidence": "reports/ui-library/time-picker/1-inventory.md"
+    },
+    {
+      "checkpoint": 2,
+      "name": "2-canon-readiness",
+      "status": "passed",
+      "evidence": "reports/ui-library/time-picker/2-canon-readiness.md",
+      "note": "needs-decision 0건 · 새 토큰 0건 · a11yStatus=pending 해소. 보고서 결론 '✅ 통과 — 3-build 진행 가능'."
+    },
+    {
+      "checkpoint": 3,
+      "name": "3-build",
+      "status": "in-progress",
+      "evidence": null,
+      "note": "구현물(css·js·manifest·example 2종)은 디스크에 있고 index.js·auto-init.js·pages/components.html 등재까지 됐으나, 3-build.md 보고서가 없고 B2 가 열려 있고 ui-review·migration 등재가 빠졌다."
+    },
+    {
+      "checkpoint": 4,
+      "name": "4-verification",
+      "status": "not-started"
+    },
+    {
+      "checkpoint": 5,
+      "name": "5-human-review",
+      "status": "not-started"
+    },
+    {
+      "checkpoint": 6,
+      "name": "6-promotion",
+      "status": "not-started"
+    }
+  ],
+  "gateSnapshot": {
+    "takenAt": "2026-09-02",
+    "takenBy": "orchestrator",
+    "checks": {
+      "npm run ui:contract": "PASS",
+      "npm run ui:build": "PASS (103 files)",
+      "npm run ui:test": "FAIL 2건 — 원인은 mobile-nav-header 작업의 B1 이며 time-picker 와 무관",
+      "node scripts/ui-library-icon-origin-check.js": "FAIL 1건 = B2 (clock)",
+      "npm run gate:check": "FAILED 1 error — Gate 43 = B2"
+    }
+  },
+  "registrationStatus": {
+    "ui-library/src/index.js": "등재됨 — timePicker(:17)",
+    "ui-library/src/auto-init.js": "등재됨 — initTimePicker import(:14) 와 [data-s1-component=\"time-picker\"] 호출 연결(:29)",
+    "assets/js/ui-library-guide.js": "미등재 = B4 — guideComponents 배열(:1698)에 time-picker 가 없다",
+    "pages/components.html": "섹션이 표출되기는 하나 배포본을 소비하지 않는다 = B4 — dist fetch 경로를 타지 않아 :3294 이하의 손편집 정적 마크업이 그대로 보인다. nav 버튼(:1858)에 disabled 가 걸려 클릭으로는 못 가지만 #time-picker 해시로 직접 들어오면 표출된다.",
+    "pages/ui-review.html": "미등재 — 남은 일",
+    "registry/governance/ui-library-migration.json": "미등재 — 남은 일",
+    "registry/components/component-guide-model.json": "등재됨 — visibility='public' · sectionId='time-picker'",
+    "verifiedBy": "📖 source-reader 판독 2026-09-02 — 실제 렌더 스크린샷 + 렌더 스크립트 전체 추적"
+  },
+  "fingerprintRefreshes": [
+    {
+      "refreshedAt": "2026-09-02",
+      "refreshedBy": "orchestrator",
+      "paths": [
+        "plugins/figma-vars-installer/src/build-components.ts",
+        "registry/components/time-picker.json"
+      ],
+      "supersedesPriorVerification": false,
+      "rationale": "정본 build-components.ts 변경분은 buildTableCell·buildTable 안에만 있고 buildTimePicker 는 무변경이다. registry/components/time-picker.json 은 이 작업이 2-canon-readiness 에서 직접 갱신한 산출물이라 지문을 현재 상태로 맞춘다.",
+      "diffScopeEvidence": "git diff plugins/figma-vars-installer/src/build-components.ts — hunk 전체가 buildTableCell(1978~2048)·buildTable(2062~2106) 내부"
+    }
+  ]
+}

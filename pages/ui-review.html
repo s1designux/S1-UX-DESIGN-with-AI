@@ -553,6 +553,22 @@
       </div>
       <div class="review-matrix" id="table-review-matrix"></div>
     </section>
+
+    <section class="review-section" aria-labelledby="mobile-bottom-nav-review-title" data-component-id="mobile-bottom-nav">
+      <div>
+        <h2 class="review-section-title" id="mobile-bottom-nav-review-title">14. Mobile Bottom Nav</h2>
+        <p class="review-note">배포 부품은 <strong>탭 아이템 1칸(60×60)</strong>뿐입니다 — 4탭 바는 정본·등록부 둘 다 컴포넌트가 아니라고 명시합니다(river 결정). 상태는 unselected·selected 2가지뿐이고 hover·disabled는 정본에 없어 만들지 않았습니다. root 자체가 role=tab이며 role=tablist 컨테이너는 화면이 조립합니다. 크기 축·JavaScript는 필요 없습니다(jsRequired=false).</p>
+      </div>
+      <div class="review-matrix" id="mobile-bottom-nav-review-matrix"></div>
+    </section>
+
+    <section class="review-section" aria-labelledby="mobile-header-review-title" data-component-id="mobile-header">
+      <div>
+        <h2 class="review-section-title" id="mobile-header-review-title">15. Mobile Header</h2>
+        <p class="review-note">river 결정(D5)으로 <strong>상태바(StatusBar)·Platform 축을 뺐습니다</strong> — AppBar 56px만 배포합니다. Type 6종(Home/Title · Home/Title+Subtitle+1Icon · Standard/Title · Standard/Title+Close · Standard/No Title · Standard/No Title+Close)이 유일한 축입니다. 삭제된 'Home / Title + 2 Icons'는 만들지 않았습니다. No Title 계열은 제목 텍스트가 없어 본문의 h1이 화면의 주 제목 역할을 합니다. 알림 아이콘은 2색(본체 gray-dark + 신규 점 red)이라 CSS 마스크 2겹으로 표현합니다. 크기 축·JavaScript는 필요 없습니다(jsRequired=false).</p>
+      </div>
+      <div class="review-matrix" id="mobile-header-review-matrix"></div>
+    </section>
     </div>
 
     <div class="review-tabpanel" id="review-panel-approved" role="tabpanel" aria-labelledby="review-tab-approved" hidden>
@@ -1224,6 +1240,78 @@
           <div class="review-grid">${cells}</div>
         </article>`;
     }
+
+    /* ── Mobile Bottom Nav — 탭 아이템 1칸(60×60). 상태 축(unselected·selected)만 있다. ── */
+    function mobileBottomNavItemMarkup({ selected = false, label = "라벨" } = {}) {
+      return `<button type="button" data-s1-component="mobile-bottom-nav" role="tab" aria-selected="${selected}">
+        <span data-s1-part="icon" aria-hidden="true"></span>
+        <span data-s1-part="label">${label}</span>
+      </button>`;
+    }
+
+    function renderMobileBottomNavPanel(combo) {
+      const states = [["Unselected", false], ["Selected", true]]
+        .map(([label, selected]) => sample(label, mobileBottomNavItemMarkup({ selected, label: "라벨" }))).join("");
+      const bar = ["홈", "검색", "알림", "내 정보"]
+        .map((label, index) => mobileBottomNavItemMarkup({ selected: index === 0, label })).join("");
+      return `
+        <article class="review-panel" data-theme="${combo.theme}">
+          <div class="review-panel-heading"><h3 class="review-panel-title">${combo.label}</h3><p class="review-panel-description">정본 상태 2종 · 60×60 고정 · 크기 축 없음</p></div>
+          <div class="review-group">
+            <h4 class="review-group-title">화면 조립 예시 (4칸)</h4>
+            <p class="review-panel-description">배포 부품은 아이템 1칸뿐입니다 — 화면이 role=tablist 컨테이너에 조립하고 배경을 --color-navigation-bg로 칠합니다.</p>
+            <div class="review-component-slot" style="background:var(--color-navigation-bg);display:flex;" role="tablist" aria-label="하단 내비게이션 검수">${bar}</div>
+          </div>
+          <hr class="review-separator">
+          <div class="review-grid">${states}</div>
+        </article>`;
+    }
+
+    /* ── Mobile Header — Type 6종. StatusBar·Platform 축은 river 결정(D5)으로 배포본에서 뺐다. ── */
+    function mobileHeaderMarkup(variant) {
+      const back = `<button type="button" data-s1-part="back" aria-label="이전"><span data-s1-part="back-icon" aria-hidden="true"></span></button>`;
+      const close = `<button type="button" data-s1-part="close" aria-label="닫기"><span data-s1-part="close-icon" aria-hidden="true"></span></button>`;
+      const spacer = `<span data-s1-part="spacer" aria-hidden="true"></span>`;
+      if (variant === "home-title") {
+        return `<header data-s1-component="mobile-header" data-variant="home-title"><h1 data-s1-part="title">홈 타이틀</h1></header>`;
+      }
+      if (variant === "home-title-subtitle") {
+        return `<header data-s1-component="mobile-header" data-variant="home-title-subtitle">
+          <div data-s1-part="stack">
+            <div data-s1-part="title-row"><h1 data-s1-part="title">홈 타이틀</h1><span data-s1-part="arrow-icon" aria-hidden="true"></span></div>
+            <p data-s1-part="subtitle">홈 서브타이틀</p>
+          </div>
+          <button type="button" data-s1-part="notification" aria-label="알림"><span data-s1-part="notification-icon" aria-hidden="true"></span></button>
+        </header>`;
+      }
+      const hasClose = variant.endsWith("-close");
+      const hasTitle = variant.includes("no-title") === false;
+      return `<header data-s1-component="mobile-header" data-variant="${variant}">
+        ${back}
+        ${hasTitle ? '<h1 data-s1-part="title">스탠다드형 타이틀</h1>' : '<span data-s1-part="title" aria-hidden="true"></span>'}
+        ${hasClose ? close : spacer}
+      </header>`;
+    }
+
+    function renderMobileHeaderPanel(combo) {
+      const types = [
+        ["Home / Title", "home-title"],
+        ["Home / Title + Subtitle + 1 Icon", "home-title-subtitle"],
+        ["Standard / Title", "standard-title"],
+        ["Standard / Title + Close", "standard-title-close"],
+        ["Standard / No Title", "standard-no-title"],
+        ["Standard / No Title + Close", "standard-no-title-close"]
+      ].map(([label, variant]) => sample(label, mobileHeaderMarkup(variant))).join("");
+      return `
+        <article class="review-panel" data-theme="${combo.theme}">
+          <div class="review-panel-heading"><h3 class="review-panel-title">${combo.label}</h3><p class="review-panel-description">Type 6종 · AppBar 56px 고정(StatusBar·Platform 축 제외, D5) · 크기 축 없음</p></div>
+          <div class="review-grid">${types}</div>
+        </article>`;
+    }
+
+    document.querySelector("#mobile-bottom-nav-review-matrix").innerHTML = controlThemes.map(renderMobileBottomNavPanel).join("");
+    document.querySelector("#mobile-header-review-matrix").innerHTML = controlThemes.map(renderMobileHeaderPanel).join("");
+    /* Mobile Bottom Nav · Mobile Header 는 런타임이 없다(jsRequired:false) — CSS·네이티브 ARIA만으로 상태가 반영된다. */
 
     document.querySelector("#input-review-matrix").innerHTML = combinations.map(renderInputPanel).join("");
     document.querySelector("#button-review-matrix").innerHTML = combinations.map(renderButtonPanel).join("");

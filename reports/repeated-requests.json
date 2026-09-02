@@ -29,8 +29,8 @@
       "category": "component-canonical-expansion",
       "label": "기존 컴포넌트 정본에 새 축(사이즈·유형) 기준 추가",
       "description": "기존 컴포넌트의 variant 축(크기·유형)에 없던 값을 사용자 승인 기준으로 신설하고, 세트·웹 가이드·registry·검사기까지 함께 동기화하는 요청",
-      "count": 2,
-      "promotionStatus": "tracking",
+      "count": 3,
+      "promotionStatus": "promotion-candidate",
       "occurrences": [
         {
           "date": "2026-08-11",
@@ -39,6 +39,10 @@
         {
           "date": "2026-08-14",
           "summary": "Dropdown List·Dropdown 에 Type 축 신설(체크박스 다중 선택 + 전체선택 줄). Checkbox 인스턴스 재사용·새 토큰 0건. 웹 가이드 섹션·behavior 계약·Gate 39 baseline 까지 동기화"
+        },
+        {
+          "date": "2026-09-02",
+          "summary": "NCU-1 — Table Cell 에 열 정렬 축(Align=Left|Center) 신설(12→24 변형). river 결정 D3/HD-3 B. 웹 배포본이 먼저 열려 있던 옵션을 정본이 뒤따라간 경우로, 정본 수정 → 파생(component-facts·guide-model·안내 화면 data-cov·manifest·거버넌스 기록) 동기화 + 컴포넌트 15개 canonicalFingerprint 재기록까지 한 세트였다"
         }
       ],
       "automationNote": "3회 도달 시 컴포넌트별 축(사이즈·유형) 신설을 정본→세트→facts→웹→registry→behavior→검사 규칙까지 대조하는 전용 체크리스트 또는 Gate 승격 검토."
@@ -720,7 +724,7 @@
     },
     {
       "id": "concurrent-session-shared-worktree",
-      "count": 2,
+      "count": 3,
       "title": "같은 작업트리를 두 세션이 동시에 편집",
       "detail": "다른 세션이 Line Tab·Pagination 을 진행하며 pages/components.html·ui-library-guide.js·registry/components/pagination.json 을 편집 중이라, 공용 검사(gate:check·ui:test)가 내 작업과 무관한 error 를 내고 커밋이 남의 미완성 변경을 삼킬 위험이 생겼다.",
       "occurrences": [
@@ -728,8 +732,15 @@
           "date": "2026-09-02",
           "work": "textarea-multi-toggle"
         },
-        "2026-09-02 modal — Table 세션의 build-components.ts 편집(buildLineTab MD 20→18)으로 모든 컴포넌트 지문이 stale 이 되어 ui:build 가 저장소 전체에서 막힘. tab.css 는 아직 20 이라 지문을 갱신하면 드리프트를 조용히 승인하게 됨."
-      ]
+        "2026-09-02 modal — Table 세션의 build-components.ts 편집(buildLineTab MD 20→18)으로 모든 컴포넌트 지문이 stale 이 되어 ui:build 가 저장소 전체에서 막힘. tab.css 는 아직 20 이라 지문을 갱신하면 드리프트를 조용히 승인하게 됨.",
+        {
+          "date": "2026-09-02",
+          "work": "mobile-nav-header + time-picker",
+          "note": "두 세션이 같은 폴더에서 병행해 ui-library/package.json·src/index.js·auto-init.js·empty-consumer 2종을 번갈아 편집했다. mobile-nav-header 는 3-build 보고서에 'ui:build 가 tab 지문 stale 로 막힘'을 자기 결함이 아닌 것으로 기록했고, 실제로 나중에 저절로 해소됐다. 남은 상호오염: time-picker 의 clock 아이콘 실패(Gate 43)가 mobile-nav-header 의 커밋을 막고, mobile-nav-header 의 empty-consumer 인라인 style 이 time-picker 의 ui:test 를 막는다 — 서로의 게이트를 볼모로 잡은 상태."
+        }
+      ],
+      "promotionStatus": "promotion-candidate",
+      "automationNote": "3회 도달 — 승격 검토: (1) 작업 착수 시 workflow-state 에 '내가 소유한 파일 목록'을 선언하고, 공용 검사 실패를 소유자별로 갈라 보여주는 검사기 (2) 세션별 git worktree 분리를 기본값으로."
     },
     {
       "id": "icon-origin-substituted-by-fallback",
@@ -741,6 +752,43 @@
       ],
       "resolution": "2026-09-02 river 지시로 3겹 방지 장치 신설 — ①아이콘 manifest 에 sourceExport(원본 내보내기) 선언 의무화 ②scripts/ui-library-icon-origin-check.js 가 웹 SVG 를 원본 PNG 와 픽셀 대조(임계 0.015, ui:icons·gate:check 편입) ③build-components.ts 폴백 상수에 // icon-fallback-not-canon 표식 + 폴백 유래 자산 차단. 기존 부채는 registry/governance/icon-origin-baseline.json 로 분리.",
       "status": "해소 — 2026-09-02 3겹 방지 장치 신설 후 재발 시 gate:check 가 자동 차단"
+    },
+    {
+      "id": "workflow-state-lags-disk",
+      "category": "pipeline-bookkeeping",
+      "label": "구현은 끝났는데 작업 상태 파일이 옛 단계에 멈춰 있다",
+      "description": "빌드 담당(ui-library-builder)은 규칙대로 workflow-state.json 을 건드리지 않고 '오케스트레이터 소관'으로 남긴다. 그런데 오케스트레이터가 그 인계를 받아 갱신하는 시점이 정해져 있지 않아, 디스크에는 구현물·보고서가 다 있는데 상태 파일은 두 단계 전을 가리키는 구간이 생긴다. 그 구간에서는 '어디까지 됐나'를 사람이 물어봐야만 알 수 있고, 재개 시 이미 한 일을 다시 시킬 위험이 있다.",
+      "count": 2,
+      "promotionStatus": "tracking",
+      "occurrences": [
+        {
+          "date": "2026-09-02",
+          "work": "mobile-nav-header + time-picker",
+          "summary": "river 가 '파이프라인 상태 업데이트'를 요청해서야 갱신됐다. mobile-nav-header 는 3-build.md·구현물·아이콘 검증 PASS 가 모두 있는데 상태는 checkpoint 2·nextAction='builder 가 구현하라'였고, time-picker 는 2-canon-readiness 가 '통과'로 끝났고 구현물까지 있는데 상태는 checkpoint 1 이었다."
+        },
+        {
+          "date": "2026-09-02",
+          "work": "mobile-nav-header · ⭐ 자기 훑기 오판",
+          "summary": "상태 파일을 갱신하면서 ⭐ 가 문자열 grep 만으로 '안내 페이지 등재됨' 이라고 적었다. 실제로는 렌더 게이트가 candidate 상태를 막아 안내 문구만 나오는 상태였다. 📖 source-reader 가 실제 렌더로 정정했다 — 하드룰 H5(정본 읽기 위임) 를 상태 기록에도 적용해야 한다는 사례."
+        }
+      ],
+      "automationNote": "3회 도달 시 승격 검토: 3-build.md 등 단계 보고서 파일의 존재와 workflow-state 의 lastCompletedCheckpoint 가 어긋나면 경고하는 결정론 검사기(단계 산출물 ↔ 선언 단계 대조). ui:state 검사기에 붙이면 커밋 검문소에서 자동으로 잡힌다."
+    },
+    {
+      "id": "guide-section-bypasses-dist-gate",
+      "category": "verification-blindspot",
+      "label": "안내 화면의 어떤 섹션은 배포본 게이트를 아예 타지 않아 승인 전 코드가 승인된 것처럼 보인다",
+      "description": "안내 페이지는 컴포넌트마다 dist 를 fetch 해 배포 상태(verified·approved)를 검사하고 미승인이면 안내 문구로 대체한다. 그런데 그 검사 대상 목록(guideComponents 배열)에 등재되지 않은 컴포넌트는 손편집 정적 마크업이 그대로 표출된다 — 게이트에 '막히는' 게 아니라 '통과하지 않는다'. 결과적으로 미승인 컴포넌트가 승인된 것과 똑같은 모습으로 보이고, 배포본이 바뀌어도 화면이 따라오지 않는다. 자동 검사는 섹션이 존재하므로 전부 PASS 한다.",
+      "count": 1,
+      "promotionStatus": "tracking",
+      "occurrences": [
+        {
+          "date": "2026-09-02",
+          "work": "time-picker",
+          "summary": "time-picker 섹션이 guideComponents(assets/js/ui-library-guide.js:1698) 에 없어 정적 마크업으로 표출됨. 같은 candidate 인 mobile-bottom-nav·mobile-header 는 게이트가 막아 안내 문구가 나오는데 time-picker 만 그냥 보였다. 📖 source-reader 렌더 추적으로 발견."
+        }
+      ],
+      "automationNote": "3회 도달 시 승격 검토: component-guide-model 의 visibility='public'·sectionId 가 있는 컴포넌트가 guideComponents 배열에 빠져 있으면 실패시키는 결정론 검사기. Gate 44(안내 화면 렌더 검사) 에 붙이면 커밋 검문소에서 잡힌다."
     }
   ]
 }

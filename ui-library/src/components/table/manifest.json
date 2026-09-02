@@ -2,7 +2,7 @@
   "id": "table",
   "version": "0.1.0",
   "status": "approved",
-  "canonicalFingerprint": "50af0bd4ab3dab2c888ef3d3acb39b8b146969976afb9413651871ae872c90b4",
+  "canonicalFingerprint": "466d4a0cd3d9451699bb837d573a2371ebabc4906c1dbc2cc782053eee10cc80",
   "canonicalSources": [
     "plugins/figma-vars-installer/src/build-components.ts",
     "plugins/figma-vars-installer/src/vars-data.ts",
@@ -58,8 +58,11 @@
     "Hover": "hover",
     "Selected": "selected"
   },
+  "canonicalAlignMap": {
+    "Left": "기본 — 글자 좌측, data-align 속성 없음",
+    "Center": "data-align=\"center\" — 좌우 여백 16 유지, 글자만 가운데"
+  },
   "notInCanon": {
-    "align": "정본 셀은 왼쪽 정렬 하나뿐이다. river 결정(2026-09-02, HD-3 B)으로 data-align=\"center\" 를 공식 옵션으로 열었고, 정본 반영은 별건(NCU-1)으로 남겼다.",
     "sortIcon": "정본에 정렬 아이콘이 없다. river 결정(2026-09-02, HD-1 A)으로 이번 배포에서 만들지 않는다.",
     "footer": "정본 Table 은 페이지네이션·보기 셀렉트를 포함하지만, 이 모듈은 표만 소유한다. 안내 페이지의 시연 영역에서 승인된 pagination·select 배포본을 조립한다(river 결정 2026-09-02, HD-2).",
     "indeterminate": "정본 체크박스에 부분선택 변형이 없어 헤더 체크박스도 사용하지 않는다.",

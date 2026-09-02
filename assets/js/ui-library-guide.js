@@ -83,7 +83,7 @@ const componentConfig = {
   table: {
     title: "Table",
     description: "행과 열로 정리된 데이터를 보여줍니다. 행을 고를 수 있고, 표 아래 페이지 이동과 '몇 개씩 보기'는 승인된 배포본을 조립해 씁니다.",
-    approvedScope: "상태 3종(기본 · Hover · 선택) · 3크기(MD 44 · SM 38 · XSM 34) · 선택 컬럼은 Checkbox 배포본 재사용 · 정렬 기능 없음 · PC 전용",
+    approvedScope: "상태 3종(기본 · Hover · 선택) · 3크기(MD 44 · SM 38 · XSM 34) · 선택 컬럼은 Checkbox 배포본 재사용 · 열 정렬 2종(왼쪽·가운데) · 행 정렬(sort) 기능 없음 · PC 전용",
     runtime: S1UI.table
   },
   modal: {
@@ -94,6 +94,18 @@ const componentConfig = {
       mobile: "버튼 1개(Single) · 2개(Dual) · 패널 300 · 닫기 없음 · Esc 닫기 · 초점 가둠"
     },
     runtime: S1UI.modal
+  },
+  "mobile-bottom-nav": {
+    title: "Bottom Nav",
+    description: "모바일 화면 최하단에 고정하는 내비게이션의 탭 아이템입니다. 배포 부품은 아이템 1칸뿐이며, 4탭 바는 화면이 조립합니다.",
+    approvedScope: "탭 아이템 1칸(60×60) · 상태 2종(unselected·selected) · 크기 축 없음 · JavaScript 불필요",
+    runtime: S1UI.mobileBottomNav
+  },
+  "mobile-header": {
+    title: "Mobile Header",
+    description: "모바일 화면 상단 AppBar입니다. 상태바(StatusBar)는 OS·브라우저가 그리는 영역이라 배포본에 넣지 않습니다.",
+    approvedScope: "Type 6종(Home 2 · Standard 4) · AppBar 56px 고정 · 크기 축 없음 · JavaScript 불필요",
+    runtime: S1UI.mobileHeader
   }
 };
 
@@ -981,13 +993,17 @@ function tableMarkup({ size = "md", rows = null, isPreview = false } = {}) {
    정본에서 셀이 가진 선은 **아래 1px(color/table/border/default) 하나뿐**이다.
    위·아래의 진한 선(위 2px · 아래 1px, border/strong)은 셀이 아니라 **표 세트**가 그리는 외곽선이라
    낱개 셀 표본에서는 꺼 둔다 — 켜 두면 정본에 없는 모습이 된다(river 지적 2026-09-02). */
-function tableCellSample({ size = "md", type = "cell", state = "default" } = {}) {
+function tableCellSample({ size = "md", type = "cell", state = "default", align = "left", width = null } = {}) {
   const forced = state === "default" ? "" : ` data-state="${state}"`;
+  /* 열 정렬 — 정본 Table Cell 의 Align 축(Left·Center)과 1:1. 기본(왼쪽)은 속성을 붙이지 않는다. */
+  const aligned = align === "center" ? ` data-align="center"` : "";
   const inner = type === "header"
-    ? `<thead><tr><th data-s1-part="header-cell" scope="col">헤더</th></tr></thead>`
-    : `<tbody><tr data-s1-part="row"><td data-s1-part="cell"${forced}>셀 내용</td></tr></tbody>`;
-  return `<div data-guide-sample="part" data-s1-component="table" data-size="${size}" class="is-preview" style="width:auto;border-top:0;border-bottom:0;">
-      <table data-s1-part="table" style="width:auto;">${inner}</table>
+    ? `<thead><tr><th data-s1-part="header-cell" scope="col"${aligned}>헤더</th></tr></thead>`
+    : `<tbody><tr data-s1-part="row"><td data-s1-part="cell"${forced}${aligned}>셀 내용</td></tr></tbody>`;
+  /* 정렬은 열 폭이 있어야 눈에 보인다 — 정렬 표본만 폭을 고정한다(그 외는 종전대로 내용 폭). */
+  const boxW = width ? `${width}px` : "auto";
+  return `<div data-guide-sample="part" data-s1-component="table" data-size="${size}" class="is-preview" style="width:${boxW};border-top:0;border-bottom:0;">
+      <table data-s1-part="table" style="width:${boxW};">${inner}</table>
     </div>`;
 }
 
@@ -1062,6 +1078,17 @@ function tableStateMatrix() {
     <div class="uilg-variant-block">
       <div class="variant-label">셀 단위 — 바디 셀</div>
       ${cellGrid("cell")}
+    </div>
+    <hr class="uilg-separator">
+    <div class="uilg-variant-block">
+      <div class="variant-label">열 정렬 — 왼쪽 · 가운데 <span style="font-weight:400;font-size:11px;color:#9ca3af;text-transform:none;letter-spacing:0;">— 기본은 왼쪽입니다. 수량·상태처럼 짧은 값만 열 단위로 가운데를 씁니다 · 좌우 여백 16은 그대로입니다</span></div>
+      <div class="comp-state-matrix" style="grid-template-columns:150px repeat(2, minmax(120px, 1fr));">
+        <div class="matrix-col-header">부품</div>
+        <div class="matrix-col-header">왼쪽 (기본)</div>
+        <div class="matrix-col-header">가운데</div>
+        ${["header", "cell"].map((type) => `<div class="matrix-row-label">${type === "header" ? "헤더 셀" : "바디 셀"}</div>` +
+          ["left", "center"].map((align) => `<div class="comp-state-cell">${tableCellSample({ type, align, width: 180 })}</div>`).join("")).join("")}
+      </div>
     </div></div></div>`;
 }
 
@@ -1270,6 +1297,114 @@ function modalStateMatrix() {
     </div>`;
 }
 
+/* ── Mobile Bottom Nav — 탭 아이템 1칸(60×60). 360×780 모바일 목업은 안내 화면 전용 크롬이다(D6).
+   목업 크롬(휴대폰 테두리·상태바 그림·화면 내용 스켈레톤)은 dist 부품이 아니므로 data-s1-component 을
+   갖지 않는다 — 부품 표본에는 data-guide-sample="part", 조립 표본에는 "set" 을 붙인다(부품 표본 격리). */
+function mobileBottomNavItemMarkup({ selected = false, label = "라벨" } = {}) {
+  return `<button type="button" data-s1-component="mobile-bottom-nav" role="tab" aria-selected="${selected}">
+    <span data-s1-part="icon" aria-hidden="true"></span>
+    <span data-s1-part="label">${label}</span>
+  </button>`;
+}
+
+function phoneMockup(bodyHtml, { statusText = "9:41" } = {}) {
+  return `<div class="uilg-phone" role="img" aria-label="모바일 화면 목업">
+    <div class="uilg-phone-status" aria-hidden="true"><span>${statusText}</span><span class="uilg-phone-status-icons"></span></div>
+    <div class="uilg-phone-screen">${bodyHtml}</div>
+  </div>`;
+}
+
+function mobileBottomNavStateMatrix() {
+  const bar = ["홈", "검색", "알림", "내 정보"]
+    .map((label, index) => mobileBottomNavItemMarkup({ selected: index === 0, label })).join("");
+  const mock = phoneMockup(`
+    <div class="uilg-phone-content" aria-hidden="true">
+      <div class="uilg-phone-skeleton uilg-phone-skeleton--title"></div>
+      <div class="uilg-phone-skeleton uilg-phone-skeleton--line"></div>
+      <div class="uilg-phone-card"></div>
+      <div class="uilg-phone-card"></div>
+    </div>
+    <nav data-guide-sample="set" role="tablist" aria-label="하단 내비게이션" style="display:flex;background:var(--color-navigation-bg);">${bar}</nav>`);
+
+  const header = `<div class="matrix-col-header" style="grid-column:1"></div>` +
+    `<div class="matrix-col-header">Unselected</div><div class="matrix-col-header">Selected</div>`;
+  const row = `<div class="matrix-row-label">Tab Item<span>60×60</span></div>` +
+    `<div class="comp-state-cell"><span data-guide-sample="part">${mobileBottomNavItemMarkup({ selected: false })}</span></div>` +
+    `<div class="comp-state-cell"><span data-guide-sample="part">${mobileBottomNavItemMarkup({ selected: true })}</span></div>`;
+
+  const content = `<div class="comp-action-top">
+      <div class="matrix-col-header-action">Action</div>
+      <div class="uilg-mobile-action">${mock}</div>
+      <p class="uilg-demo-note">배포 부품은 아이템 1칸뿐입니다. 위 4탭 바는 화면이 조립한 예시이고, 배경은 --color-navigation-bg 입니다.</p>
+    </div>
+    <div class="comp-state-matrix" style="grid-template-columns: 110px repeat(2, minmax(120px,1fr));">${header}${row}</div>`;
+
+  return `<div class="platform-section platform-section-pc"><div class="preview-area">${content}</div></div>
+    <div class="platform-section platform-section-mobile"><div class="preview-area">${content}</div></div>`;
+}
+
+/* ── Mobile Header — Type 6종. StatusBar·Platform 축은 river 결정(D5)으로 배포본에서 뺐다.
+   안내 화면 목업 안에서만 상태바를 그림으로 보여준다(D6). */
+function mobileHeaderMarkup(variant) {
+  const back = `<button type="button" data-s1-part="back" aria-label="이전"><span data-s1-part="back-icon" aria-hidden="true"></span></button>`;
+  const close = `<button type="button" data-s1-part="close" aria-label="닫기"><span data-s1-part="close-icon" aria-hidden="true"></span></button>`;
+  const spacer = `<span data-s1-part="spacer" aria-hidden="true"></span>`;
+  if (variant === "home-title") {
+    return `<header data-guide-sample="part" data-s1-component="mobile-header" data-variant="home-title"><h1 data-s1-part="title">홈 타이틀</h1></header>`;
+  }
+  if (variant === "home-title-subtitle") {
+    return `<header data-guide-sample="part" data-s1-component="mobile-header" data-variant="home-title-subtitle">
+      <div data-s1-part="stack">
+        <div data-s1-part="title-row"><h1 data-s1-part="title">홈 타이틀</h1><span data-s1-part="arrow-icon" aria-hidden="true"></span></div>
+        <p data-s1-part="subtitle">홈 서브타이틀</p>
+      </div>
+      <button type="button" data-s1-part="notification" aria-label="알림"><span data-s1-part="notification-icon" aria-hidden="true"></span></button>
+    </header>`;
+  }
+  const hasClose = variant.endsWith("-close");
+  const hasTitle = !variant.includes("no-title");
+  return `<header data-guide-sample="part" data-s1-component="mobile-header" data-variant="${variant}">
+    ${back}
+    ${hasTitle ? '<h1 data-s1-part="title">스탠다드형 타이틀</h1>' : '<span data-s1-part="title" aria-hidden="true"></span>'}
+    ${hasClose ? close : spacer}
+  </header>`;
+}
+
+function mobileHeaderStateMatrix() {
+  const types = [
+    ["Home / Title", "home-title"],
+    ["Home / Title + Subtitle + 1 Icon", "home-title-subtitle"],
+    ["Standard / Title", "standard-title"],
+    ["Standard / Title + Close", "standard-title-close"],
+    ["Standard / No Title", "standard-no-title"],
+    ["Standard / No Title + Close", "standard-no-title-close"]
+  ];
+
+  const mock = phoneMockup(`
+    <div class="uilg-phone-header-slot">${mobileHeaderMarkup("standard-title")}</div>
+    <div class="uilg-phone-content" aria-hidden="true">
+      <div class="uilg-phone-skeleton uilg-phone-skeleton--title"></div>
+      <div class="uilg-phone-skeleton uilg-phone-skeleton--line"></div>
+      <div class="uilg-phone-card"></div>
+    </div>`);
+
+  const rows = types.map(([label, variant]) => `
+    <div class="review-sample" style="width:100%;">
+      <p class="review-state-label">${label}</p>
+      <div class="uilg-mobile-header-row">${mobileHeaderMarkup(variant)}</div>
+    </div>`).join("");
+
+  const content = `<div class="comp-action-top">
+      <div class="matrix-col-header-action">Action</div>
+      <div class="uilg-mobile-action">${mock}</div>
+      <p class="uilg-demo-note">위 목업은 Standard / Title 예시입니다. 상태바(시간·배터리)는 그림일 뿐 배포 부품이 아닙니다 — 실제 서비스에서는 OS·브라우저가 그립니다.</p>
+    </div>
+    <div class="uilg-mobile-header-list">${rows}</div>`;
+
+  return `<div class="platform-section platform-section-pc"><div class="preview-area">${content}</div></div>
+    <div class="platform-section platform-section-mobile"><div class="preview-area">${content}</div></div>`;
+}
+
 /* ── Component documentation (실제 동작 다음에 온다) ── */
 
 function stateMatrix(id) {
@@ -1286,6 +1421,8 @@ function stateMatrix(id) {
   if (id === "multi-toggle") return multiToggleStateMatrix();
   if (id === "table") return tableStateMatrix();
   if (id === "modal") return modalStateMatrix();
+  if (id === "mobile-bottom-nav") return mobileBottomNavStateMatrix();
+  if (id === "mobile-header") return mobileHeaderStateMatrix();
   return controlStateMatrix(id);
 }
 
@@ -1558,6 +1695,6 @@ async function mountGuide(id) {
   }
 }
 
-const guideComponents = ["input", "button", "checkbox", "radio", "toggle", "chip", "select", "dropdown", "filter-chip", "tab", "pagination", "textarea", "multi-toggle", "modal", "table"];
+const guideComponents = ["input", "button", "checkbox", "radio", "toggle", "chip", "select", "dropdown", "filter-chip", "tab", "pagination", "textarea", "multi-toggle", "modal", "table", "mobile-bottom-nav", "mobile-header"];
 await Promise.all(guideComponents.map(mountGuide));
 document.dispatchEvent(new CustomEvent("s1:component-guide:ready", { detail: { components: guideComponents } }));

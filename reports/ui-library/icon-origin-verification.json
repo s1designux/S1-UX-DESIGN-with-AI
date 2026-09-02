@@ -3,6 +3,15 @@
   "_threshold": 0.015,
   "_regen": "node scripts/ui-library-icon-origin-check.js --record",
   "icons": {
+    "clock": {
+      "svgSha256": "8727a44073d1db71ab926c4bb9f2db170bddc3c1a44b29d76c306c05ab7cc648",
+      "exportSha256": "e2a6f84bb3b4350a99944841e6f040494d1b727081fa488fe52febb620e69990",
+      "sourceExport": "assets/icons/ic_시간시계_line.png",
+      "size": 48,
+      "meanAlphaError": 0.00988,
+      "verdict": "PASS",
+      "observedAt": "2026-09-02"
+    },
     "remove": {
       "svgSha256": "4790cbd2a87a20ae684cdd765d2cf27798c321616faceb8271ff5c8e449aec22",
       "exportSha256": "4f6775e3568a39f7b58ab87bd0695c8287ce935b842ef4bb67dd2aa23bd891ee",
@@ -27,6 +36,51 @@
       "sourceExport": "assets/icons/ic_닫기_line.png",
       "size": 48,
       "meanAlphaError": 0.00349,
+      "verdict": "PASS",
+      "observedAt": "2026-09-02"
+    },
+    "home": {
+      "svgSha256": "168a936a6b7c4f4543437aec357979710de8a7f189abb5d739633a2b903fdf60",
+      "exportSha256": "017a8fb41eabe74c185043b509f8f3d9ada8775796efe6cc7599cac68ab54351",
+      "sourceExport": "assets/icons/ic_홈_solid.png",
+      "size": 48,
+      "meanAlphaError": 0.00169,
+      "verdict": "PASS",
+      "observedAt": "2026-09-02"
+    },
+    "mobileHeaderBack": {
+      "svgSha256": "47df1aca6acf41bbc7d168d57ce1d745ad8d8e7972447dc7edaaeabd3255512a",
+      "exportSha256": "df4e1b560cedc260571835172ec2e571b92748251cd52fa8e80fd0d2a3063996",
+      "sourceExport": "assets/icons/ic_이전_solid.png",
+      "size": 48,
+      "meanAlphaError": 0.00114,
+      "verdict": "PASS",
+      "observedAt": "2026-09-02"
+    },
+    "mobileHeaderClose": {
+      "svgSha256": "deed51641826b50d21ec8a4bc8dfe57ad6681e462f9857821081d455c6c5ac97",
+      "exportSha256": "b308eb132c55a1dad2ebf01cb2e147ebc5866e452f3062507842501fed82beb0",
+      "sourceExport": "assets/icons/ic_닫기_solid.png",
+      "size": 48,
+      "meanAlphaError": 0.00349,
+      "verdict": "PASS",
+      "observedAt": "2026-09-02"
+    },
+    "mobileHeaderNotification": {
+      "svgSha256": "bda6a5059a4e37a9557743763bc78f2761ac080438f7c77fbbbc14e0dc0b2d33",
+      "exportSha256": "c09eee6eb8e5b061231e5253b0b5a91307b84020d683ba36b8dbda37aebb5502",
+      "sourceExport": "assets/icons/ic_알림신규_line.png",
+      "size": 48,
+      "meanAlphaError": 0.00308,
+      "verdict": "PASS",
+      "observedAt": "2026-09-02"
+    },
+    "mobileHeaderArrowDown": {
+      "svgSha256": "244b63efc1172eb617daeadc2e40d89891f5e7b78eba80084978c7acfda070c6",
+      "exportSha256": "2dce7737df8fdfa1f8c7f12a324c11f45939e63091f300c74f0d649b7368ace8",
+      "sourceExport": "assets/icons/ic_화살표더보기_solid.png",
+      "size": 48,
+      "meanAlphaError": 0.00372,
       "verdict": "PASS",
       "observedAt": "2026-09-02"
     }

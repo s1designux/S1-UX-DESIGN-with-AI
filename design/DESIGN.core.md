@@ -2015,7 +2015,18 @@ agent:
       - "selected"
   behavior:
     platform: "PC"
-    status: "not-defined"
+    source: "registry/components/component-behavior.pc.json ← pages/components.html#mobile-bottom-nav"
+    status: "verified"
+    initialState: "unselected (aria-selected=false) unless the host page renders it selected"
+    events:
+      []
+    keyboard: "native button Enter/Space activation"
+    focus: "native button focus with a 2px visible outline"
+    accessibility:
+      role: "tab (root); a surrounding role=tablist container is owned by the host screen"
+      name: "the visible label text"
+      selected: "aria-selected reflects the host page's current route; no local toggle logic"
+    runtimeNote: "런타임 없음(jsRequired=false). 선택 상태는 호스트 화면이 정적으로 설정한 aria-selected 를 CSS 가 그대로 반영한다(HD-1 선택지 A — 화살표 키 이동·로컬 클릭 토글은 범위 밖)."
   geometry:
     common:
       target: "root"
@@ -2133,7 +2144,17 @@ agent:
       []
   behavior:
     platform: "PC"
-    status: "not-defined"
+    source: "registry/components/component-behavior.pc.json ← pages/components.html#mobile-header"
+    status: "verified"
+    initialState: "static chrome; no open/closed local state"
+    events:
+      []
+    keyboard: "native button Enter/Space activation for back/close/notification"
+    focus: "native button focus with a 2px visible outline on back/close/notification"
+    accessibility:
+      name: "back/close/notification carry a context-appropriate aria-label; title-bearing variants render an h1"
+      headingRole: "variants without title text render an empty non-heading span; the page body's own h1 acts as the primary heading"
+    runtimeNote: "런타임 없음(jsRequired=false). StatusBar·Platform 축은 river 결정(D5)으로 배포본에서 뺐다 — AppBar 56px·Type 6종만 배포한다."
   geometry:
     common:
       target: "root"
@@ -3934,8 +3955,11 @@ _Don't_
 - 드롭다운 패널에 전용 shadow 토큰을 가정하지 않는다(dropdown semantic 재사용).
 
 **접근성 (a11y)**
-- 시간 트리거에 접근 가능한 이름을 제공한다.
-- 드롭다운은 aria-expanded/listbox 패턴을 따른다.
+- 트리거는 button 이며 aria-haspopup=listbox·aria-expanded 를 가지고, 접근 가능한 이름(aria-label 또는 연결된 label)을 반드시 제공한다.
+- 드롭다운의 각 열은 role=listbox 와 접근 이름(시·분·오전오후)을 가지고, 각 칸은 role=option 과 aria-selected 를 가진다.
+- 키보드: 트리거에서 Enter·Space·아래화살표로 열고, Esc 로 닫으며 포커스는 트리거로 돌아온다. 위아래 화살표는 같은 열 이동, 좌우 화살표는 열 이동, Enter 는 선택, Tab 으로 확인 버튼에 도달한다.
+- 열릴 때 포커스는 현재 선택값(없으면 첫 칸)으로 이동한다.
+- disabled 트리거는 열리지 않는다.
 
 ### Toggle
 
@@ -4147,4 +4171,4 @@ DESIGN_SYSTEM_GAP:
 - 적용 해석 순서(뒤가 앞을 덮음): core → service(extends core) → role → platform → theme. 기본값: service=core · role=user · platform=web · theme=light.
 - 서비스 분기(예: vms 영상관제)는 core 를 상속하고 차이분만 덮는다.
 
-<!-- generated-stamp: 67bd7fe5ad7f · 손편집 금지 -->
+<!-- generated-stamp: c65bf2f6f2b0 · 손편집 금지 -->

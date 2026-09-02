@@ -53,7 +53,7 @@
     {
       "role": "component-visual",
       "path": "plugins/figma-vars-installer/src/build-components.ts",
-      "sha256": "28f3f60cea335910ae7191c2d235c8a3b47865f00cb55de9531b64ce28a02272"
+      "sha256": "368714264e235320404ba0d42b837d9f50c84c51fa6a24faa0c33f9293da57de"
     },
     {
       "role": "token-values",
@@ -238,5 +238,17 @@
     "lastActor": "orchestrator",
     "updatedAt": "2026-08-31",
     "summary": "river 승인 후 6-promotion 완료. Checkbox·Radio 를 approved 로 승격하고 pages/components.html 을 dist 소비 가이드로 교체했다. 실제 렌더에서 Radio 선택 풀림(id·name 중복)과 선택 부품 오분류를 발견해 고쳤고, 후자는 Input 가이드의 기존 오분류도 함께 해소했다. river 지시로 안내 페이지 레이아웃 틀을 정본(component-page-template.md §A + presentation policy)에 고정 기록해 다음 컴포넌트도 같은 틀로 진행한다."
-  }
+  },
+  "fingerprintRefreshes": [
+    {
+      "refreshedAt": "2026-09-02",
+      "refreshedBy": "orchestrator",
+      "paths": [
+        "plugins/figma-vars-installer/src/build-components.ts"
+      ],
+      "supersedesPriorVerification": false,
+      "rationale": "정본 build-components.ts 변경분은 buildTableCell·buildTable 안에만 있고(hunk 범위 1978~2106) buildCheckbox·buildRadio 는 무변경이다. checkbox-radio D4 선례와 같은 처리 — 이전 검증을 superseded 하지 않고 지문만 갱신한다.",
+      "diffScopeEvidence": "git diff plugins/figma-vars-installer/src/build-components.ts — hunk 전체가 buildTableCell(1978~2048)·buildTable(2062~2106) 내부"
+    }
+  ]
 }

@@ -516,6 +516,43 @@
       "changeFromCurrent": "신규 화면 — 사이트에 Modal 섹션이 없었다. Overlay 분류를 신설해 그 안에 둔다.",
       "note": "정본에 상태 축이 없어 변형축(Footer Single·Dual)을 상태 자리에 놓는다. Action 은 실제로 열리는 모달이고, 상태 칸은 지면에 눕혀 보여주는 검수 표시다(페이지 전용 CSS).",
       "managedBy": "ui-library-guide"
+    },
+    "mobile-bottom-nav": {
+      "platform": "mobile",
+      "archetype": "current-plus-action",
+      "actionRequired": true,
+      "sizePlacement": "none",
+      "sizes": [],
+      "states": [
+        "unselected",
+        "selected"
+      ],
+      "statesLayout": "row",
+      "changeFromCurrent": "손관리 폰 목업 섹션(components.html:2940)을 ui-library dist 배포본 소비로 교체.",
+      "note": "배포 부품은 아이템 1칸(60×60)뿐이다(D1). Action 은 360×780 모바일 목업 안에 4칸으로 조립한 실제 dist 인스턴스를 보여준다 — 목업 크롬은 안내 화면 전용이며 data-guide-sample=\"part\" 로 부품 표본과 분리한다.",
+      "managedBy": "ui-library-guide"
+    },
+    "mobile-header": {
+      "platform": "mobile",
+      "archetype": "current-plus-action",
+      "actionRequired": true,
+      "sizePlacement": "none",
+      "sizes": [],
+      "states": [],
+      "extraAxes": {
+        "type": [
+          "home-title",
+          "home-title-subtitle",
+          "standard-title",
+          "standard-title-close",
+          "standard-no-title",
+          "standard-no-title-close"
+        ]
+      },
+      "statesLayout": "matrix",
+      "changeFromCurrent": "신규 화면 — 사이트에 Mobile Header 섹션이 없었다(harnessStatus not-started). Navigation 분류에 새로 둔다.",
+      "note": "river 결정(D5)으로 StatusBar·Platform 축을 배포본에서 뺐다 — AppBar 56px 만, Type 6종. Action·상태 매트릭스 모두 360×780 모바일 목업 위에서 보여준다(D6). 목업은 안내 화면 전용 크롬이며 dist 부품이 아니다.",
+      "managedBy": "ui-library-guide"
     }
   }
 }

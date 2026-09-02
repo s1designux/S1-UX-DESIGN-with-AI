@@ -1,0 +1,125 @@
+{
+  "id": "mobile-bottom-nav",
+  "version": "0.1.0",
+  "status": "candidate",
+  "canonicalFingerprint": "40d88e15f0bbb22a89ce6ac200b45b30db591c4fb1146f29de3ccfbe56fdd996",
+  "canonicalSources": [
+    "plugins/figma-vars-installer/src/build-components.ts",
+    "plugins/figma-vars-installer/src/vars-data.ts",
+    "plugins/figma-vars-installer/src/textstyles-data.ts",
+    "registry/components/mobile-bottom-nav.json"
+  ],
+  "rootSelector": "[data-s1-component=\"mobile-bottom-nav\"]",
+  "variants": [],
+  "sizes": [],
+  "states": {
+    "unselected": "aria-selected=\"false\" (기본값)",
+    "selected": "aria-selected=\"true\""
+  },
+  "canonicalStateMap": {
+    "state=unselected": "unselected",
+    "state=selected": "selected"
+  },
+  "notInCanon": {
+    "stateAxis": "정본에 hover·disabled 상태가 없다(D2). unselected·selected 2가지만 만든다.",
+    "bar": "4탭 '바'는 정본·registry 둘 다 컴포넌트가 아니라고 명시한다(D1). 이 컴포넌트는 아이템 1칸(60×60)만 배포하며, 바는 화면이 role=tablist 컨테이너로 조립하고 배경은 --color-navigation-bg 로 칠한다.",
+    "size": "60×60 고정 크기다. 임의 크기 축을 만들지 않는다(D2)."
+  },
+  "parts": [
+    "icon",
+    "label"
+  ],
+  "htmlContract": {
+    "root": "button[type=button][data-s1-component=mobile-bottom-nav][role=tab][aria-selected]",
+    "requiredParts": [
+      "icon",
+      "label"
+    ],
+    "relations": [
+      "root 자체가 role=tab 이며, 여러 아이템을 담는 role=tablist 컨테이너(화면 소유)가 바깥에 있어야 완전한 탭 구조가 된다.",
+      "aria-selected 는 호스트 화면이 현재 경로에 맞춰 정적으로 설정한다 — 이 컴포넌트는 로컬 클릭 토글 로직을 갖지 않는다(jsRequired=false).",
+      "라벨 텍스트가 곧 접근성 이름이다 — 아이콘은 항상 aria-hidden=\"true\" 로 장식 처리한다."
+    ],
+    "grouping": "코어는 아이템 1칸만 소유한다. 4탭 바 조립·배경·role=tablist 컨테이너는 화면(패턴)이 소유한다.",
+    "source": "components/mobile-bottom-nav/mobile-bottom-nav.example.html",
+    "distribution": "examples/mobile-bottom-nav.html"
+  },
+  "cssContract": {
+    "entry": "components/mobile-bottom-nav.css",
+    "rootScope": "[data-s1-component=mobile-bottom-nav]",
+    "nativeStates": [
+      ":focus-visible"
+    ],
+    "ariaStates": [
+      "[aria-selected=\"true\"]"
+    ],
+    "documentedDataStates": [],
+    "customization": "정본 Semantic token만 교체하며 공개 selector의 구조를 override하지 않는다."
+  },
+  "contentSlots": {
+    "label": "required; 탭 라벨 텍스트(접근성 이름 겸용). 정본 예시 라벨은 registry guide.sampleLabels 를 따른다."
+  },
+  "dependencies": {
+    "font": [
+      {
+        "family": "Pretendard",
+        "source": "https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css"
+      }
+    ],
+    "css": [
+      "assets/css/tokens.css",
+      "assets/css/typography.css"
+    ],
+    "coreComponents": []
+  },
+  "icons": [
+    {
+      "id": "home",
+      "sourceKey": "6bf422c937034ce15f6814e5c430d8f85953ed4e",
+      "asset": "assets/icons/mobile-nav-home.svg",
+      "use": "탭 아이템 아이콘(32×32) — 정본은 홈 아이콘 인스턴스만 만들지만 다른 아이콘으로 교체할 때도 같은 mask 구조를 따른다.",
+      "accessibleNamePolicy": "decorative; 라벨 텍스트가 접근성 이름을 제공한다",
+      "note": "Figma V2.2 아이콘 라이브러리 ic_홈(97:292 · Property 1=Solid) 실물 벡터. 24 프레임 안 (3,3.9983) 18×16.0034 채움 도형 — 원본 대조 PASS(오차 0.00169)."
+    }
+  ],
+  "a11y": {
+    "nativeSemantics": {
+      "status": "required",
+      "value": "button[role=tab][aria-selected] — 여러 아이템을 담는 role=tablist 컨테이너는 화면이 소유한다(river 표준안 승인 2026-09-02)"
+    },
+    "accessibleName": {
+      "status": "required",
+      "value": "라벨 텍스트가 접근성 이름이다. 아이콘만으로 의미를 전달하지 않는다(registry a11y)."
+    },
+    "keyboard": {
+      "status": "required",
+      "value": "native button Enter·Space 활성화. 여러 탭 사이 화살표 키 이동은 이번 범위 밖(HD-1 선택지 A)."
+    },
+    "focus": {
+      "status": "required",
+      "value": "2px outline, 2px offset (:focus-visible)"
+    },
+    "ariaStateSync": {
+      "status": "required",
+      "value": "호스트 화면이 현재 경로에 맞춰 aria-selected 를 정적으로 설정한다. CSS 가 [aria-selected=\"true\"] 로 색을 반영하며 별도 런타임은 필요 없다."
+    },
+    "errorRelation": {
+      "status": "not-applicable",
+      "reason": "정본에 Error 상태가 없다."
+    },
+    "reducedMotion": {
+      "status": "not-applicable",
+      "reason": "정본이 모션을 정의하지 않는다."
+    },
+    "touchTarget": {
+      "status": "required",
+      "value": "60×60 고정 크기라 최소 44px 권장치를 이미 만족한다(D4)."
+    }
+  },
+  "jsRequired": false,
+  "javascript": {
+    "runtime": "none",
+    "reason": "선택 상태는 호스트 화면의 현재 경로가 정하는 정적 ARIA 상태다. 로컬 클릭 토글·키보드 이동을 이번 범위에 넣지 않아(HD-1 선택지 A) 네이티브 button 시맨틱만으로 충분하다."
+  },
+  "sourceFingerprint": "557c8342a8a41be1113eb063cf496c998dc704e24b641e94d102ec2754670aa0"
+}

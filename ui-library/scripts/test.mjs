@@ -13,7 +13,7 @@ const read = (relative) => readFile(path.join(libraryRoot, relative), "utf8");
 const build = spawnSync(process.execPath, [path.join(libraryRoot, "scripts/build.mjs"), "--check"], { encoding: "utf8" });
 if (build.status !== 0) failures.push(`build freshness: ${build.stderr || build.stdout}`);
 
-const componentIds = ["input", "button", "checkbox", "radio", "toggle", "chip", "dropdown", "select", "filter-chip", "tab", "pagination", "textarea", "multi-toggle", "modal", "table"];
+const componentIds = ["input", "button", "checkbox", "radio", "toggle", "chip", "dropdown", "select", "filter-chip", "tab", "pagination", "textarea", "multi-toggle", "modal", "table", "mobile-bottom-nav", "mobile-header", "time-picker"];
 const individualCss = [];
 for (const id of componentIds) {
   const css = await read(`dist/components/${id}.css`);
@@ -299,6 +299,34 @@ for (const id of componentIds) {
     if (!mobileExample.includes('data-size="lg"')) failures.push("modal Mobile footer must reuse core Button LG");
     if (!example.includes('data-size="xxsm"')) failures.push("modal PC footer must reuse core Button XXSM");
   }
+  /* Time Picker — 정본 buildTimePicker(트리거)·buildTimePickerDropdown(패널)·buildTimePickerCell(칸).
+     전용 색 토큰 0개(form-control·dropdown semantic 재사용) — select 와 달리 dropdown 코어를 자식으로 조립하지 않는다. */
+  if (id === "time-picker") {
+    if (manifest.jsRequired !== true) failures.push("time-picker open/close, column list and confirm gating require the declared runtime");
+    if (JSON.stringify(manifest.sizes) !== JSON.stringify(["xxsm", "xsm", "md"])) failures.push("time-picker sizes differ from canon");
+    if (JSON.stringify(manifest.breaks) !== JSON.stringify({ pc: ["xxsm", "xsm", "md"], mobile: ["md"] })) failures.push("time-picker break-size mapping differs from canon");
+    if (JSON.stringify(manifest.types) !== JSON.stringify(["24h", "12h"])) failures.push("time-picker types differ from canon");
+    if (manifest.dependencies?.coreComponents?.length) failures.push("time-picker must not compose the dropdown core as a child — it owns its own column structure (workflow-state.json public contract)");
+    if (!css.includes("var(--color-dropdown-list-bg)") || !css.includes("var(--color-dropdown-option-bg-default)") || !css.includes("var(--color-dropdown-option-bg-selected)")) {
+      failures.push("time-picker panel/cell must reuse the canonical dropdown semantic tokens");
+    }
+    if (!css.includes("var(--shadow-dropdown)")) failures.push("time-picker panel shadow must use the canonical shadow/dropdown token");
+    if (!css.includes("121px") || !css.includes("194px")) failures.push("time-picker panel width must match the canonical 24h(121)/12h(194) literals");
+    if (!css.includes(":focus-visible")) failures.push("time-picker keyboard focus is not visible");
+    if (!example.includes('aria-haspopup="listbox"')) failures.push("time-picker example must expose aria-haspopup=listbox on the trigger");
+    if (!example.includes('role="listbox"') || !(example.match(/data-column="/g) || []).length) {
+      failures.push("time-picker example must declare listbox columns (data-column)");
+    }
+    if (!example.includes('data-type="24h"') || !example.includes('data-type="12h"')) {
+      failures.push("time-picker example must demonstrate both 24h and 12h types");
+    }
+    if (!example.includes('data-s1-part="confirm"') || !example.includes("disabled")) {
+      failures.push("time-picker example confirm button must start disabled until hour and minute are both selected");
+    }
+    if (css.includes("border:") && /\[data-s1-part="cell"\]\s*\{[^}]*border(?!-radius):/.test(css)) {
+      failures.push("time-picker cell must not have a border — canon removed it 2026-06-30");
+    }
+  }
 
   const module = await import(`${pathToFileURL(path.join(libraryRoot, `dist/components/${id}.js`)).href}?check=${Date.now()}`);
   if (id === "input" && (module.jsRequired !== true || typeof module.init !== "function" || typeof module.destroy !== "function")) {
@@ -306,7 +334,7 @@ for (const id of componentIds) {
   }
   if (id === "button" && (module.jsRequired !== false || module.runtime !== null)) failures.push("button module unexpectedly requires runtime");
   if ((id === "checkbox" || id === "radio" || id === "textarea") && (module.jsRequired !== false || module.runtime !== null)) failures.push(`${id} module unexpectedly requires runtime`);
-  if ((id === "toggle" || id === "chip" || id === "dropdown" || id === "select" || id === "filter-chip" || id === "tab" || id === "pagination" || id === "multi-toggle" || id === "modal" || id === "table") && (module.jsRequired !== true || typeof module.init !== "function" || typeof module.destroy !== "function")) {
+  if ((id === "toggle" || id === "chip" || id === "dropdown" || id === "select" || id === "filter-chip" || id === "tab" || id === "pagination" || id === "multi-toggle" || id === "modal" || id === "table" || id === "time-picker") && (module.jsRequired !== true || typeof module.init !== "function" || typeof module.destroy !== "function")) {
     failures.push(`${id} runtime lifecycle is incomplete`);
   }
 }

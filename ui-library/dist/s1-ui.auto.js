@@ -9,6 +9,7 @@ import { init as init_pagination } from "./components/pagination.js";
 import { init as init_multiToggle } from "./components/multi-toggle.js";
 import { init as init_modal } from "./components/modal.js";
 import { init as init_table } from "./components/table.js";
+import { init as init_timePicker } from "./components/time-picker.js";
 export * as input from "./components/input.js";
 export * as button from "./components/button.js";
 export * as checkbox from "./components/checkbox.js";
@@ -24,6 +25,9 @@ export * as textarea from "./components/textarea.js";
 export * as multiToggle from "./components/multi-toggle.js";
 export * as modal from "./components/modal.js";
 export * as table from "./components/table.js";
+export * as mobileBottomNav from "./components/mobile-bottom-nav.js";
+export * as mobileHeader from "./components/mobile-header.js";
+export * as timePicker from "./components/time-picker.js";
 
 export function autoInit(scope = document) {
   const instances = [
@@ -37,7 +41,8 @@ export function autoInit(scope = document) {
     ...[...scope.querySelectorAll('[data-s1-component="pagination"]')].map((root) => init_pagination(root)),
     ...[...scope.querySelectorAll('[data-s1-component="multi-toggle"]')].map((root) => init_multiToggle(root)),
     ...[...scope.querySelectorAll('[data-s1-component="modal"]')].map((root) => init_modal(root)),
-    ...[...scope.querySelectorAll('[data-s1-component="table"]')].map((root) => init_table(root))
+    ...[...scope.querySelectorAll('[data-s1-component="table"]')].map((root) => init_table(root)),
+    ...[...scope.querySelectorAll('[data-s1-component="time-picker"]')].map((root) => init_timePicker(root))
   ];
   return Object.freeze(instances.filter(Boolean));
 }

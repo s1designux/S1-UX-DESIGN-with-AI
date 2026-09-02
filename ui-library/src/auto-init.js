@@ -11,6 +11,7 @@ import { init as initPagination } from "./components/pagination/pagination.js";
 import { init as initMultiToggle } from "./components/multi-toggle/multi-toggle.js";
 import { init as initTable } from "./components/table/table.js";
 import { init as initModal } from "./components/modal/modal.js";
+import { init as initTimePicker } from "./components/time-picker/time-picker.js";
 
 export function autoInit(scope = document) {
   const instances = [
@@ -24,7 +25,8 @@ export function autoInit(scope = document) {
     ...[...scope.querySelectorAll('[data-s1-component="pagination"]')].map((root) => initPagination(root)),
     ...[...scope.querySelectorAll('[data-s1-component="multi-toggle"]')].map((root) => initMultiToggle(root)),
     ...[...scope.querySelectorAll('[data-s1-component="table"]')].map((root) => initTable(root)),
-    ...[...scope.querySelectorAll('[data-s1-component="modal"]')].map((root) => initModal(root))
+    ...[...scope.querySelectorAll('[data-s1-component="modal"]')].map((root) => initModal(root)),
+    ...[...scope.querySelectorAll('[data-s1-component="time-picker"]')].map((root) => initTimePicker(root))
   ];
   return Object.freeze(instances.filter(Boolean));
 }

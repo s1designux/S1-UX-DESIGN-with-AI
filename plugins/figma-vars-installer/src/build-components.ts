@@ -1978,14 +1978,24 @@ async function buildTableCell(maps: BuildMaps, originY: number): Promise<{ set: 
     { size: "SM", h: 38, font: 14 },
     { size: "MD", h: 44, font: 14 },
   ];
+  // 열 정렬 축 — river 결정 2026-09-02(D3/HD-3 B). 웹 배포본의 `data-align="center"` 와 1:1.
+  //   기본(Left)은 종전 그대로 글자 좌측 16px. Center 는 좌우 패딩 16 을 유지한 채 글자만 가운데로,
+  //   텍스트 박스를 셀폭-32 로 고정+STRETCH 해서 Table 이 컬럼 폭(360/200/110)으로 resize 해도 가운데를 지킨다.
+  const aligns = [
+    { key: "Left",   label: "왼쪽",   center: false },
+    { key: "Center", label: "가운데", center: true  },
+  ];
+  const PAD = 16;
   const W = 130;
   const comps: ComponentNode[] = [];
   const cells: { comp: ComponentNode; row: number; col: number }[] = [];
-  for (let row = 0; row < sizes.length; row++) {
+  for (let row = 0; row < sizes.length * aligns.length; row++) {
+    const sc = sizes[Math.floor(row / aligns.length)];
+    const al = aligns[row % aligns.length];
     for (let col = 0; col < variants.length; col++) {
-      const sc = sizes[row], v = variants[col];
+      const v = variants[col];
       const comp = figma.createComponent();
-      comp.name = `Size=${sc.size}, Type=${v.type}, Variant=${v.state}`;
+      comp.name = `Size=${sc.size}, Type=${v.type}, Variant=${v.state}, Align=${al.key}`;
       comp.resize(W, sc.h);
       comp.fills = [boundPaint(scv(maps, v.bg))];
       // 헤더 글자는 Medium — 웹 정본 `.s1-table-th { font-weight:500 }`(components.html) 과 정합.
@@ -1993,7 +2003,19 @@ async function buildTableCell(maps: BuildMaps, originY: number): Promise<{ set: 
       //   그리던 시절이라 이 어긋남이 표에 드러나지 않았다(2026-08-02 🤖 검증에서 적발).
       const t = await makeBoundText("1층 정문", sc.font, v.type === "Header" ? "Medium" : "Regular", scv(maps, v.text));
       comp.appendChild(t);
-      t.x = 16; t.y = (sc.h - 1 - t.height) / 2;
+      t.x = PAD; t.y = (sc.h - 1 - t.height) / 2;
+      if (al.center) {
+        // 정렬 자체는 try 밖에 둔다 — 아래 폭 고정이 실패해도 가운데 정렬이 조용히 왼쪽으로
+        //   되돌아가지 않게 한다(🤖 검증 지적 2026-09-02).
+        t.textAlignHorizontal = "CENTER";
+        t.constraints = { horizontal: "STRETCH", vertical: "MIN" };
+        try {
+          // 텍스트 상자를 셀폭-32 로 고정해야 STRETCH 가 컬럼 폭 변화를 따라간다.
+          t.textAutoResize = "HEIGHT";
+          t.resize(W - PAD * 2, t.height);
+        } catch (_) { /* mock 환경 no-op */ }
+        t.y = (sc.h - 1 - t.height) / 2;
+      }
       const border = figma.createRectangle();
       border.resize(W, 1);
       border.fills = [boundPaint(scv(maps, v.border))];
@@ -2014,15 +2036,16 @@ async function buildTableCell(maps: BuildMaps, originY: number): Promise<{ set: 
   set.x = 0; set.y = originY;
   // Table 에서 인스턴스 재사용 — BUILT_COMPS 등록 (Table.makeTableRow 가 이 키로 조회)
   for (const { comp, row, col } of cells) {
-    const size = sizes[row].size;        // "SM" | "MD"
-    const v    = variants[col];           // { type, state, … }
-    BUILT_COMPS[`TableCell:${size}:${v.type}:${v.state}`] = comp;
+    const size  = sizes[Math.floor(row / aligns.length)].size;  // "XSM" | "SM" | "MD"
+    const align = aligns[row % aligns.length].key;              // "Left" | "Center"
+    const v     = variants[col];                                // { type, state, … }
+    BUILT_COMPS[`TableCell:${size}:${v.type}:${v.state}:${align}`] = comp;
   }
   BUILT_SETS["Table Cell"] = set;
   const opts: SpecOpts = {
     title: "Table Cell",
     colHeaders: variants.map((v) => v.head),
-    rowLabels: sizes.map((s) => s.size),
+    rowLabels: ([] as string[]).concat(...sizes.map((sz) => aligns.map((a) => `${sz.size} · ${a.label}`))),
     cellAt: (r, c) => cells.find((x) => x.row === r && x.col === c)?.comp ?? null,
     lightX: SPEC_LIGHT_X, darkX: SPEC_DARK_X, originY, cellW: 152, cellH: 60, rowLabelW: 80,
   };
@@ -2039,7 +2062,8 @@ async function buildTable(maps: BuildMaps, originY: number): Promise<{ set: Comp
   const W = 828;
   const FOOTER_H = 44;
 
-  // sizeKey: "MD" | "SM" — BUILT_COMPS["TableCell:SIZE:TYPE:STATE"] 조회키 (Table 과 동일 어휘)
+  // sizeKey: "MD" | "SM" — BUILT_COMPS["TableCell:SIZE:TYPE:STATE:ALIGN"] 조회키 (Table 과 동일 어휘).
+  //   Table 합성본은 정본 기본값인 왼쪽 정렬(Align=Left)만 쓴다 — 가운데 정렬은 셀 단위 선택 옵션이다.
   async function makeTableRow(h: number, sizeKey: string, isHeader: boolean, state: string, ri: number): Promise<FrameNode> {
     const row = figma.createFrame();
     row.name = isHeader ? "header" : `row-${ri + 1}`;
@@ -2079,7 +2103,7 @@ async function buildTable(maps: BuildMaps, originY: number): Promise<{ set: Comp
     let xOff = COL[0];
     for (let k = 0; k < 4; k++) {
       const colW   = COL[k + 1];
-      const cellComp = BUILT_COMPS[`TableCell:${sizeKey}:${cellType}:${cellState}`];
+      const cellComp = BUILT_COMPS[`TableCell:${sizeKey}:${cellType}:${cellState}:Left`];
       if (cellComp) {
         const cellInst = cellComp.createInstance();
         cellInst.resize(colW, h);

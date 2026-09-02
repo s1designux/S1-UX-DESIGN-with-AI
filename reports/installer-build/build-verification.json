@@ -1,9 +1,9 @@
 {
   "sourceFile": "plugins/figma-vars-installer/src/build-components.ts",
-  "sourceHash": "sha256:942791479ffb0f953c58e7dc745eaf33180cca5f57a1b3b056e517c496e80c25",
-  "verifiedBy": "orchestrator",
+  "sourceHash": "sha256:368714264e235320404ba0d42b837d9f50c84c51fa6a24faa0c33f9293da57de",
+  "verifiedBy": "component-verifier",
   "verdict": "pass",
-  "changeType": "mechanical",
-  "verifiedAt": "2026-09-02T05:38:42.742Z",
-  "notes": "build-components.ts 에 // icon-fallback-not-canon 주석 2줄만 추가(폴백 SVG 상수 표식). 빌드 함수·variant 스펙·셀↔스펙시트 키 무변경 — 구조 변경 아님."
+  "changeType": "structural",
+  "verifiedAt": "2026-09-02T06:33:47.447Z",
+  "notes": "NCU-1 Table Cell Align 축 신설(river 결정 D3/HD-3 B, 변형 축 방식) 독립 검증 PASS. (A) 웹 배포본 dist/components/table.css 의 data-align=center 와 1:1 — 좌우 패딩 16 유지·text-align center·헤더/바디 양쪽, Figma 는 텍스트 x=16 폭 130-32=98 + STRETCH 로 컬럼 폭 360/200/110 resize 시에도 중앙 유지. (B) 회귀 0 — guide-model 전수 대조 결과 기존 Left 12변형 차이는 Align 축값 추가와 스펙시트 y 이동뿐, 치수/텍스트/폰트/토큰 바이트 동일. buildTable 합성본 diff 는 인스턴스 이름 접미사뿐(비이름 diff 0줄). (C) 키 참조 끊김 0 — 쓰기 :2039 / 읽기 :2103 모두 갱신, Table 자식이 fallback frame 이 아닌 Align=Left 인스턴스로 해석됨을 실증. 스펙시트 6행 rowLabels 와 cellAt 순서 일치. (D) Gate 44 통과 — 낱개 셀 표본 외곽선 미표출(border-top/bottom 0), 실제 dist CSS 렌더 육안 대조 완료. (E) 하드코딩 hex 0 · 비-Pretendard 0(24변형 전 TEXT body/12R|12M|14R|14M). 검사기: installer:check·anatomy·keycheck·iconpolicy·variantcov(49/49 newGaps 0)·ui:guide:render·ui-library-contract 전부 PASS. 지적 3건 조치 재확인: src manifest 15개 fingerprint 재계산 일치(잔여 stale 2건은 동시 세션의 mobile-header/mobile-bottom-nav 신규분), migration·workflow-state 기록 정본과 일치, textAlignHorizontal/constraints 를 try 밖으로 이동(출력물 무변화 확인). 미결: dist 재빌드는 동시 세션의 아이콘 작업 종료 후로 미룸(⭐ 결정, 사유 기록됨) — ui-library/dist/components/table.manifest.json 이 옛 문구·옛 canonicalFingerprint 를 유지 중. 검증 범위 밖: Figma 캔버스 실제 렌더 육안 미검증(코드 레벨 검증), textAlignHorizontal/constraints 를 지키는 결정론 검사기 부재."
 }

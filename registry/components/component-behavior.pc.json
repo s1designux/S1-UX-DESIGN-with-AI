@@ -751,6 +751,49 @@
         "name": "aria-labelledby points at [data-s1-part=title]; aria-describedby points at [data-s1-part=message]",
         "background": "body scroll is locked while any modal is open and restored when the last one closes"
       }
+    },
+    "Mobile Bottom Nav": {
+      "source": {
+        "sectionId": "mobile-bottom-nav",
+        "sourceFile": "ui-library/src/components/mobile-bottom-nav/mobile-bottom-nav.js",
+        "sourceEvidence": [
+          "export const componentId = \"mobile-bottom-nav\";",
+          "export const jsRequired = false;",
+          "export const runtime = null;"
+        ]
+      },
+      "status": "verified",
+      "initialState": "unselected (aria-selected=false) unless the host page renders it selected",
+      "events": [],
+      "keyboard": "native button Enter/Space activation",
+      "focus": "native button focus with a 2px visible outline",
+      "accessibility": {
+        "role": "tab (root); a surrounding role=tablist container is owned by the host screen",
+        "name": "the visible label text",
+        "selected": "aria-selected reflects the host page's current route; no local toggle logic"
+      },
+      "runtimeNote": "런타임 없음(jsRequired=false). 선택 상태는 호스트 화면이 정적으로 설정한 aria-selected 를 CSS 가 그대로 반영한다(HD-1 선택지 A — 화살표 키 이동·로컬 클릭 토글은 범위 밖)."
+    },
+    "Mobile Header": {
+      "source": {
+        "sectionId": "mobile-header",
+        "sourceFile": "ui-library/src/components/mobile-header/mobile-header.js",
+        "sourceEvidence": [
+          "export const componentId = \"mobile-header\";",
+          "export const jsRequired = false;",
+          "export const runtime = null;"
+        ]
+      },
+      "status": "verified",
+      "initialState": "static chrome; no open/closed local state",
+      "events": [],
+      "keyboard": "native button Enter/Space activation for back/close/notification",
+      "focus": "native button focus with a 2px visible outline on back/close/notification",
+      "accessibility": {
+        "name": "back/close/notification carry a context-appropriate aria-label; title-bearing variants render an h1",
+        "headingRole": "variants without title text render an empty non-heading span; the page body's own h1 acts as the primary heading"
+      },
+      "runtimeNote": "런타임 없음(jsRequired=false). StatusBar·Platform 축은 river 결정(D5)으로 배포본에서 뺐다 — AppBar 56px·Type 6종만 배포한다."
     }
   }
 }

@@ -1,0 +1,56 @@
+/* Mobile Bottom Nav — 정본 buildMobileBottomNav(build-components.ts:2959) 기준.
+   변형축은 state(unselected·selected) 1개뿐이다. 정본은 "탭 1칸"만 만들고 4칸 바는
+   컴포넌트가 아니다(주석 :2979) — 화면이 아이템 인스턴스를 role=tablist 컨테이너 안에
+   가로로 배열해 조립하고, 바 배경은 화면이 --color-navigation-bg 로 칠한다(D1). */
+[data-s1-component="mobile-bottom-nav"] {
+  align-items: center;
+  appearance: none;
+  background: none;
+  border: 0;
+  box-sizing: border-box;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  font: inherit;
+  gap: var(--spacing-4);
+  height: var(--sizing-60);
+  justify-content: center;
+  padding: 0;
+  width: var(--sizing-60);
+}
+
+[data-s1-component="mobile-bottom-nav"]:focus-visible {
+  outline: var(--border-width-2) solid var(--color-form-control-border-selected);
+  outline-offset: var(--spacing-2);
+}
+
+/* 아이콘 32×32 — 정본이 홈 아이콘 인스턴스를 32 로 리사이즈한다(:2973). */
+[data-s1-component="mobile-bottom-nav"] [data-s1-part="icon"] {
+  background-color: var(--color-icon-gray);
+  display: block;
+  flex: none;
+  height: var(--sizing-32);
+  -webkit-mask: url("../assets/icons/mobile-nav-home.svg") center / contain no-repeat;
+  mask: url("../assets/icons/mobile-nav-home.svg") center / contain no-repeat;
+  width: var(--sizing-32);
+}
+
+/* 라벨 12/Medium (body/12M) — 아이콘과 간격 4(정본 itemSpacing). */
+[data-s1-component="mobile-bottom-nav"] [data-s1-part="label"] {
+  color: var(--color-navigation-label-default);
+  font-size: var(--font-size-12);
+  font-weight: var(--font-weight-medium);
+  letter-spacing: var(--letter-spacing-normal);
+  line-height: var(--line-height-130);
+  margin: 0;
+}
+
+/* selected — aria-selected 는 네이티브 ARIA 상태다. 호스트(화면)가 현재 경로에 맞춰
+   설정하며 이 컴포넌트는 런타임 없이 그 값을 CSS 로만 반영한다(jsRequired=false). */
+[data-s1-component="mobile-bottom-nav"][aria-selected="true"] [data-s1-part="icon"] {
+  background-color: var(--color-icon-blue);
+}
+
+[data-s1-component="mobile-bottom-nav"][aria-selected="true"] [data-s1-part="label"] {
+  color: var(--color-navigation-label-selected);
+}

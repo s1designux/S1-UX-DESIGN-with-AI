@@ -7,7 +7,7 @@
     "approvedBy": "orchestrator",
     "approvedAt": "2026-09-02",
     "principles": [
-      "정본(build-components.ts buildTableCell·buildTable)에 있는 축·상태만 만든다. 정렬 아이콘·열 정렬 축은 정본에 없다.",
+      "정본(build-components.ts buildTableCell·buildTable)에 있는 축·상태만 만든다. 정렬(sort) 아이콘은 정본에 없다. 열 정렬 축(Align=Left|Center)은 2026-09-02 정본에 신설됐다(NCU-1).",
       "선택 컬럼은 코어 checkbox 를 재사용한다. Table 전용 체크박스를 만들지 않는다.",
       "새 토큰을 만들지 않는다. color/table/* 6개는 이미 stable 이다.",
       "사이트 인라인 코드(pages/components.html)를 원본으로 복사하지 않는다.",
@@ -43,13 +43,13 @@
   "workflowStatus": "complete",
   "uiLibraryStatus": "approved",
   "lastCompletedCheckpoint": 6,
-  "nextAction": "없음 — 완료. 이후 정본 크기·상태·토큰·선택 동작 변경 시 재검증한다. 후속 과제 NCU-1(정본 열 정렬 축)은 별건.",
+  "nextAction": "없음 — 완료. 이후 정본 크기·상태·토큰·선택 동작 변경 시 재검증한다. 후속 과제 NCU-1(정본 열 정렬 축)은 2026-09-02 완료·닫힘.",
   "ownership": {},
   "canonicalInputs": [
     {
       "role": "component-visual",
       "path": "plugins/figma-vars-installer/src/build-components.ts",
-      "sha256": "942791479ffb0f953c58e7dc745eaf33180cca5f57a1b3b056e517c496e80c25"
+      "sha256": "368714264e235320404ba0d42b837d9f50c84c51fa6a24faa0c33f9293da57de"
     },
     {
       "role": "token-values",
@@ -93,7 +93,9 @@
     {
       "id": "NCU-1",
       "kind": "needs-core-update",
-      "summary": "열 가운데 정렬을 정본 build-components.ts 에 반영 — 생성기 구조 변경이라 별건으로 진행(Gate 13 검증 분리 필요)."
+      "status": "resolved",
+      "resolvedOn": "2026-09-02",
+      "summary": "열 가운데 정렬을 정본 build-components.ts 에 반영 — 완료. Table Cell 에 Align=Left|Center 축 신설(12→24 변형), Table 합성본은 Left 사용. river 결정: 변형 축으로 추가(2026-09-02). 🤖 component-verifier 독립 검증 통과 · Gate 13 기록."
     }
   ],
   "artifacts": {
@@ -243,5 +245,17 @@
       "note": "검수 중 지적 6건 반영 후 승인.",
       "status": "approved"
     }
-  }
+  },
+  "fingerprintRefreshes": [
+    {
+      "refreshedAt": "2026-09-02",
+      "refreshedBy": "orchestrator",
+      "paths": [
+        "plugins/figma-vars-installer/src/build-components.ts"
+      ],
+      "supersedesPriorVerification": false,
+      "rationale": "정본 build-components.ts 변경분은 NCU-1 'Table Cell 열 정렬축(Align=Left/Center)' 신설이며, 이 작업이 스스로 연 후속 과제다(river 결정 D3/HD-3 B). 🤖 component-verifier 가 structural 로 독립 검증해 verdict=pass 를 기록했고 Gate 13 이 해시로 통과 확인한다(reports/installer-build/build-verification.json). 따라서 이전 승인을 superseded 하지 않고 지문만 갱신한다.",
+      "diffScopeEvidence": "git diff plugins/figma-vars-installer/src/build-components.ts — hunk 전체가 buildTableCell(1978~2048)·buildTable(2062~2106) 내부"
+    }
+  ]
 }

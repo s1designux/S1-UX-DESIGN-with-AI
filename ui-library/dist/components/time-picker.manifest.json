@@ -1,0 +1,265 @@
+{
+  "id": "time-picker",
+  "version": "0.1.0",
+  "status": "candidate",
+  "canonicalFingerprint": "39db68b559d102bed632e1521b2ff8a13cd32870b8617ee37f3d07c604cab90f",
+  "canonicalSources": [
+    "plugins/figma-vars-installer/src/build-components.ts",
+    "plugins/figma-vars-installer/src/vars-data.ts",
+    "plugins/figma-vars-installer/src/textstyles-data.ts",
+    "registry/components/time-picker.json"
+  ],
+  "rootSelector": "[data-s1-component=\"time-picker\"]",
+  "variants": [
+    "base"
+  ],
+  "sizes": [
+    "xxsm",
+    "xsm",
+    "md"
+  ],
+  "types": [
+    "24h",
+    "12h"
+  ],
+  "breaks": {
+    "pc": [
+      "xxsm",
+      "xsm",
+      "md"
+    ],
+    "mobile": [
+      "md"
+    ]
+  },
+  "geometry": {
+    "xxsm-pc": {
+      "height": "--sizing-28",
+      "fontSize": "--font-size-12",
+      "icon": "--sizing-20",
+      "paddingLeft": "--spacing-10",
+      "paddingRight": "--spacing-6"
+    },
+    "xsm-pc": {
+      "height": "--sizing-34",
+      "fontSize": "--font-size-14",
+      "icon": "--sizing-24",
+      "paddingLeft": "--spacing-12",
+      "paddingRight": "--spacing-8"
+    },
+    "md-pc": {
+      "height": "--sizing-44",
+      "fontSize": "--font-size-14",
+      "icon": "--sizing-24",
+      "paddingLeft": "--spacing-16",
+      "paddingRight": "--spacing-8"
+    },
+    "md-mobile": {
+      "height": "--sizing-48",
+      "fontSize": "--font-size-14",
+      "icon": "--sizing-24",
+      "paddingLeft": "--spacing-16",
+      "paddingRight": "--spacing-8"
+    },
+    "radius": "--radius-4",
+    "border": "--border-width-1",
+    "panel": {
+      "widthByType": {
+        "24h": "121px (literal — build-components.ts TPD_PANEL_W)",
+        "12h": "194px (literal — TPD_PANEL_W)"
+      },
+      "columnsHeight": "192px (literal — TPD_COLS_H)",
+      "paddingTop": "--spacing-12",
+      "columnsPaddingInline": "--spacing-8",
+      "columnGap": "--spacing-8",
+      "shadow": "--shadow-dropdown",
+      "columnDivider": "--border-width-1 solid --color-line-gray-subtle"
+    },
+    "cell": {
+      "height": "32px (literal — TPC_H)",
+      "paddingInline": "--spacing-12",
+      "radius": "--radius-4"
+    },
+    "footer": {
+      "paddingInline": "--spacing-16",
+      "paddingBlock": "--spacing-12",
+      "dividerTop": "--border-width-1 solid --color-line-gray-subtle"
+    },
+    "source": "build-components.ts buildTimePicker 2357-2422 · buildTimePickerDropdown 2477-2624 · buildTimePickerCell 2437-2476"
+  },
+  "states": {
+    "default": "native; unopened, placeholder \"시간 선택\"",
+    "hover": "@media (hover: hover) [data-s1-part=\"trigger\"]:hover:not(:disabled):not([aria-expanded=\"true\"]):not([data-filled=\"true\"])",
+    "focus": "[data-s1-part=\"trigger\"][aria-expanded=\"true\"] (정본 Focus = 드롭다운 열림 상태)",
+    "filled": "[data-s1-part=\"trigger\"][data-filled=\"true\"] (documented data-state; no ARIA equivalent)",
+    "disabled": "[data-s1-part=\"trigger\"]:disabled"
+  },
+  "canonicalStateMap": {
+    "Default": "default",
+    "Hover": "hover",
+    "Focus": "focus",
+    "Filled": "filled",
+    "Disabled": "disabled"
+  },
+  "notInCanon": {
+    "focusVisibleAxis": "정본에 Open/Focus 과 별개인 키보드 focus-visible 축이 없다. 키보드 접근성 때문에 웹에서만 트리거·칸에 focus-visible 테두리를 추가했으며 새 토큰을 만들지 않았다(선택 테두리 토큰 재사용, select 와 동일 철학).",
+    "widthFixed": "정본은 트리거 폭 150px 고정(스펙시트 표현). 웹은 소비자가 폭을 정한다 — 기본 width:100% + min-width:78px(registry sizing.minWidth). 1-inventory 근거.",
+    "listRangeAndStep": "정본 빌더의 시·분 샘플은 데모용 7칸뿐이라 실제 목록 범위·간격에 대한 정본 규정이 없다(1-inventory §E) — river 결정(D2, workflow-state.json decisions): 분은 기본 1분 단위(00~59), data-minute-step 으로 소비자가 조절 가능.",
+    "columnScroll": "정본은 스펙시트라 목록이 clip 될 뿐 스크롤 동작 규정이 없다 — 웹은 표준 세로 스크롤로 구현(1-inventory §E).",
+    "mobileBottomSheet": "정본 buildTimePickerMobileBottomSheet(휠 4열)은 이번 범위 밖(river 결정 D1, workflow-state.json). 모바일도 PC와 같은 목록 드롭다운을 쓰고 트리거만 48px."
+  },
+  "parts": [
+    "trigger",
+    "value",
+    "icon",
+    "panel",
+    "column",
+    "cell",
+    "divider",
+    "footer",
+    "confirm"
+  ],
+  "htmlContract": {
+    "root": "div[data-s1-component=time-picker]",
+    "requiredAttributes": [
+      "data-size",
+      "data-break",
+      "data-type"
+    ],
+    "optionalAttributes": [
+      "data-minute-step (기본 1, 1~59)"
+    ],
+    "requiredParts": [
+      "trigger",
+      "value",
+      "icon",
+      "panel",
+      "column",
+      "divider",
+      "footer",
+      "confirm"
+    ],
+    "trigger": "button[type=button][data-s1-part=trigger]",
+    "panel": "div[data-s1-part=panel] 안에 div[data-s1-part=columns](24h: hour·minute 2열 / 12h: ampm·hour·minute 3열, 열 사이 divider)과 div[data-s1-part=footer] > button[data-s1-part=confirm]을 조립한다. cell 은 런타임이 채운다(정적 마크업으로 미리 채워도 된다).",
+    "relations": [
+      "trigger aria-haspopup=listbox",
+      "trigger aria-expanded 는 panel 표시와 동기화",
+      "각 column 은 role=listbox + aria-label(시/분/오전오후), cell 은 role=option + aria-selected",
+      "Esc 키로 패널을 닫고 트리거로 포커스 복귀(Select 와 동일 표준 패턴)",
+      "confirm 은 필수 column(24h: hour·minute / 12h: ampm·hour·minute) 이 모두 선택돼야 disabled 가 풀린다"
+    ],
+    "grouping": "코어는 트리거 하나와 패널 하나만 소유한다. 폼 필드 라벨·도움말은 패턴이 담당한다.",
+    "source": "components/time-picker/time-picker.example.html",
+    "distribution": "examples/time-picker.html",
+    "breakExamples": {
+      "pc": {
+        "source": "components/time-picker/time-picker.example.html",
+        "distribution": "examples/time-picker.html"
+      },
+      "mobile": {
+        "source": "components/time-picker/time-picker.mobile.example.html",
+        "distribution": "examples/time-picker.mobile.html"
+      }
+    }
+  },
+  "cssContract": {
+    "entry": "components/time-picker.css",
+    "rootScope": "[data-s1-component=time-picker]",
+    "nativeStates": [
+      ":hover",
+      ":disabled",
+      ":focus-visible"
+    ],
+    "ariaStates": [
+      "[aria-expanded=\"true\"]",
+      "[aria-selected=\"true\"]"
+    ],
+    "documentedDataStates": [
+      "[data-filled=\"true\"]"
+    ],
+    "customization": "정본 Semantic token만 교체하며 공개 selector의 구조를 override하지 않는다. dropdown(형제 코어)의 CSS를 override하지 않는다 — 이 컴포넌트는 dropdown 을 자식으로 조립하지 않고 semantic token 만 재사용한다."
+  },
+  "contentSlots": {
+    "value": "required; 현재 값 또는 placeholder 문구(\"시간 선택\")"
+  },
+  "dependencies": {
+    "font": [
+      {
+        "family": "Pretendard",
+        "source": "https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css"
+      }
+    ],
+    "css": [
+      "assets/css/tokens.css",
+      "assets/css/typography.css"
+    ],
+    "coreComponents": [],
+    "coreComponentsNote": "패널·칸은 dropdown semantic token 만 재사용하고 dropdown 코어 인스턴스를 조립하지 않는다(workflow-state.json 공개 계약 — Time Picker 는 자체 열 구조)."
+  },
+  "icons": [
+    {
+      "id": "clock",
+      "sourceKey": "ca1d043ac09be07f827e939be3d8c3c7af8a8dd9",
+      "asset": "assets/icons/clock.svg",
+      "use": "trigger 시계 아이콘",
+      "accessibleNamePolicy": "decorative; 트리거의 접근 가능한 이름(aria-label 또는 연결된 label)이 이미 이름을 제공한다"
+    }
+  ],
+  "a11y": {
+    "nativeSemantics": {
+      "status": "required",
+      "value": "button[aria-haspopup=listbox][aria-expanded] driving role=listbox column들 (registry time-picker.json a11y 확정, HD-Time-6)"
+    },
+    "accessibleName": {
+      "status": "required",
+      "value": "visible label associated with the trigger or aria-label; 각 column 은 aria-label(시/분/오전오후)"
+    },
+    "keyboard": {
+      "status": "required",
+      "value": "trigger: Enter/Space(native click)·ArrowDown 로 열기; root: Escape 로 닫고 트리거로 포커스 복귀; column 안: ArrowUp/Down 같은 열 이동, ArrowLeft/Right 열 이동, Enter/Space 선택; confirm 은 Tab 으로 도달"
+    },
+    "focus": {
+      "status": "required",
+      "value": "열릴 때 첫 column 의 현재 선택값(없으면 첫 칸)으로 포커스 이동, 닫힐 때 트리거로 복귀"
+    },
+    "ariaStateSync": {
+      "status": "required",
+      "value": "런타임이 aria-expanded·aria-selected·data-filled·confirm 의 disabled 를 갱신하고 s1:time-picker:open·close·change 를 낸다"
+    },
+    "errorRelation": {
+      "status": "not-applicable",
+      "reason": "정본에 Error 상태가 없다."
+    },
+    "reducedMotion": {
+      "status": "not-applicable",
+      "reason": "정본이 모션을 정의하지 않는다."
+    }
+  },
+  "jsRequired": true,
+  "javascript": {
+    "runtime": "components/time-picker.js",
+    "reason": "열림/닫힘·aria-expanded 전환, 열 목록 생성(data-minute-step 반영)·선택·확인 활성화, 포커스 이동/복귀를 런타임이 담당한다.",
+    "options": {},
+    "events": [
+      "s1:time-picker:open",
+      "s1:time-picker:close",
+      "s1:time-picker:change"
+    ],
+    "eventDetail": {
+      "open": "{}",
+      "close": "{}",
+      "change": "{ value, hour, minute, ampm, type }"
+    },
+    "methods": [
+      "openPanel()",
+      "closePanel()"
+    ],
+    "lifecycle": [
+      "init(root)",
+      "destroy(root)"
+    ],
+    "controlMode": "uncontrolled",
+    "progressiveEnhancementNote": "JavaScript 없이는 목록 칸이 생성되지 않아 선택할 수 없다 — 복합 Picker(정본 계약)라 native fallback이 없다. 트리거는 native button 이라 포커스·이름은 유지된다(계약 progressiveEnhancement 조항에 따른 명시적 unsupported 상태)."
+  },
+  "sourceFingerprint": "f3ebcd9536b1401a6c58b2b4936eda12044f3ad2ae33509f860193ec17457c8e"
+}

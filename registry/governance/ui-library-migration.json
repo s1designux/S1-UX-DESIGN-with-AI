@@ -397,8 +397,46 @@
       ],
       "riverApproval": "approved 2026-09-02",
       "promotionDecision": "approved 2026-09-02 · 실제 렌더·동작 PASS · 설치기 정본 변경분은 component-verifier 독립 검증 PASS(Gate 13 기록) · 위험도 기반 웹 배포본 독립 재검증 생략을 river 승인",
-      "notes": "Table 은 표만 소유한다. 표 아래 페이지 이동과 '몇 개씩 보기' 는 승인된 pagination·select 배포본을 화면에서 조립한다(river 결정 2026-09-02, HD-2). 정렬 기능은 정본에 없어 범위 밖(HD-1 A). 열 가운데 정렬은 웹 공개 옵션으로 열었고 정본 반영은 NCU-1 로 분리(HD-3 B). 접근성은 기본 수준 확정(HD-4 A).",
+      "notes": "Table 은 표만 소유한다. 표 아래 페이지 이동과 '몇 개씩 보기' 는 승인된 pagination·select 배포본을 화면에서 조립한다(river 결정 2026-09-02, HD-2). 정렬 기능은 정본에 없어 범위 밖(HD-1 A). 열 가운데 정렬은 웹 공개 옵션으로 열었고, 설치기 정본 반영(Table Cell 의 Align=Left|Center 축)도 2026-09-02 완료했다(NCU-1 닫힘, HD-3 B). 접근성은 기본 수준 확정(HD-4 A).",
       "platform": "pc-only"
+    },
+    {
+      "id": "mobile-bottom-nav",
+      "kind": "core-component",
+      "legacyStatus": "implemented",
+      "uiLibraryStatus": "candidate",
+      "dependencies": [
+        "tokens.css",
+        "typography.css",
+        "mobile-nav-home.svg"
+      ],
+      "lastVerified": null,
+      "reverifyTrigger": "정본 geometry·state·token·HTML part·CSS selector 변경 · 아이콘 원본 대조 기록 변경",
+      "evidence": [
+        "reports/ui-library/mobile-nav-header/3-build.md"
+      ],
+      "note": "3-build 완료(⭐ 자가 기술 점검만). 독립 검증(4-verification)·river UX 승인(6-promotion) 전이라 uiLibraryStatus 는 candidate 로 둔다."
+    },
+    {
+      "id": "mobile-header",
+      "kind": "core-component",
+      "legacyStatus": "not-started",
+      "uiLibraryStatus": "candidate",
+      "dependencies": [
+        "tokens.css",
+        "typography.css",
+        "mobile-header-back.svg",
+        "mobile-header-close.svg",
+        "mobile-header-notification.svg",
+        "mobile-header-notification-accent.svg",
+        "mobile-header-arrow-down.svg"
+      ],
+      "lastVerified": null,
+      "reverifyTrigger": "정본 geometry·variant·token·HTML part·CSS selector 변경 · 아이콘 원본 대조 기록 변경 · D5(StatusBar 제외) 결정 변경",
+      "evidence": [
+        "reports/ui-library/mobile-nav-header/3-build.md"
+      ],
+      "note": "3-build 완료(⭐ 자가 기술 점검만). 독립 검증(4-verification)·river UX 승인(6-promotion) 전이라 uiLibraryStatus 는 candidate 로 둔다."
     }
   ]
 }

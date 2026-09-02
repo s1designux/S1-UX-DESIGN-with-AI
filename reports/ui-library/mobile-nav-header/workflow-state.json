@@ -44,19 +44,112 @@
       }
     },
     "fileKey": "cysG5U1udpQqVagYY1hWHW",
-    "fileName": "SW-UX-GUIDE V3.0 TEST"
+    "fileName": "SW-UX-GUIDE V3.0 TEST",
+    "iconNodes": {
+      "home": {
+        "nodeId": "97:292",
+        "set": "ic_홈",
+        "variant": "Solid",
+        "frame": {
+          "w": 24,
+          "h": 24
+        },
+        "glyph": {
+          "x": 3,
+          "y": 3.9983,
+          "w": 18,
+          "h": 16.0034
+        },
+        "sourceExport": "assets/icons/ic_홈_solid.png",
+        "raw": "reports/ui-library/mobile-nav-header/raw-figma-icons/home.svg"
+      },
+      "mobileHeaderBack": {
+        "nodeId": "97:88",
+        "set": "ic_이전",
+        "variant": "Solid",
+        "frame": {
+          "w": 24,
+          "h": 24
+        },
+        "glyph": {
+          "x": 3,
+          "y": 4.2137,
+          "w": 18,
+          "h": 15.5726
+        },
+        "sourceExport": "assets/icons/ic_이전_solid.png",
+        "raw": "reports/ui-library/mobile-nav-header/raw-figma-icons/back.svg"
+      },
+      "mobileHeaderClose": {
+        "nodeId": "97:76",
+        "set": "ic_닫기",
+        "variant": "Solid",
+        "frame": {
+          "w": 24,
+          "h": 24
+        },
+        "glyph": {
+          "x": 4,
+          "y": 4,
+          "w": 16,
+          "h": 16
+        },
+        "sourceExport": "assets/icons/ic_닫기_solid.png",
+        "raw": "reports/ui-library/mobile-nav-header/raw-figma-icons/close.svg"
+      },
+      "mobileHeaderNotification": {
+        "nodeId": "97:258",
+        "set": "ic_알림(신규)",
+        "variant": "Line",
+        "frame": {
+          "w": 24,
+          "h": 24
+        },
+        "glyph": {
+          "x": 3,
+          "y": 3.0024,
+          "w": 18,
+          "h": 17.9953
+        },
+        "sourceExport": "assets/icons/ic_알림신규_line.png",
+        "raw": "reports/ui-library/mobile-nav-header/raw-figma-icons/notification.svg",
+        "note": "2색 — 본체는 color/icon/gray-dark, 신규 점은 color/icon/red 별색"
+      },
+      "mobileHeaderArrowDown": {
+        "nodeId": "419:68",
+        "set": "ic_화살표, 더보기, 다음장",
+        "variant": "Solid",
+        "frame": {
+          "w": 24,
+          "h": 24
+        },
+        "glyph": {
+          "x": 10.375,
+          "y": 7.75,
+          "w": 4.25,
+          "h": 8.5
+        },
+        "sourceExport": "assets/icons/ic_화살표더보기_solid.png",
+        "raw": "reports/ui-library/mobile-nav-header/raw-figma-icons/arrow-down.svg",
+        "note": "보이는 것은 Stroke 2 획뿐. 헤더에서는 -90° 회전해 아래 방향"
+      }
+    }
   },
-  "currentPhase": "2-canon-readiness",
-  "workflowStatus": "awaiting-user",
-  "uiLibraryStatus": "needs-decision",
-  "lastCompletedCheckpoint": 1,
-  "nextAction": "river 가 HD-1(접근성 확정 범위)·HD-2(상태바 포함 여부)를 정하고 Figma 아이콘 라이브러리 V2.2 를 데스크톱 앱에 열어주면, 아이콘 5종 원본을 받아 3-build 로 넘어간다.",
-  "ownership": {},
+  "currentPhase": "4-verification",
+  "workflowStatus": "in-progress",
+  "uiLibraryStatus": "draft",
+  "lastCompletedCheckpoint": 3,
+  "nextAction": "component-verifier(시나리오 F)를 실제 spawn 해 mobile-bottom-nav·mobile-header 를 정본 대조 독립 검증한다. B1 은 해소됐고 gate:check·ui:test·ui:icons 모두 그린이라 착수 차단 요인은 없다.",
+  "ownership": {
+    "currentActor": "ui-library-builder",
+    "startedAt": "2026-09-02T15:20:00+09:00",
+    "note": "3-build 구현 담당"
+  },
   "canonicalInputs": [
     {
       "role": "component-visual",
       "path": "plugins/figma-vars-installer/src/build-components.ts",
-      "sha256": "942791479ffb0f953c58e7dc745eaf33180cca5f57a1b3b056e517c496e80c25"
+      "sha256": "368714264e235320404ba0d42b837d9f50c84c51fa6a24faa0c33f9293da57de"
     },
     {
       "role": "token-values",
@@ -76,17 +169,17 @@
     {
       "role": "component-meaning-mobile-bottom-nav",
       "path": "registry/components/mobile-bottom-nav.json",
-      "sha256": "3b91b3607e4b7d629f0496b7043ba76decab96a361b62e6ea8864ee85d4d6d8d"
+      "sha256": "110c27661393a4baad9f64775835b55462a792696b645176773a4f67214fddb8"
     },
     {
       "role": "component-meaning-mobile-header",
       "path": "registry/components/mobile-header.json",
-      "sha256": "5ac2c88de70175b710f536617f9450cc39585e4834f2b28039369799ecc0e7e4"
+      "sha256": "850479dbe589e4c10a21e6dd132ee0a3f9d64c7654828e456f08a42a146439c0"
     },
     {
       "role": "icon-keys-and-origin-gate",
       "path": "ui-library/src/assets/icons/manifest.json",
-      "sha256": "aac846b71cae21e8857a6008d213a978d1058fa2dd6a2aa4ea883d09335cb873"
+      "sha256": "4e22335e49ce946e247f1684010a0416d0fc2eda3edbfc9a0d10c1783133c701"
     }
   ],
   "artifacts": {
@@ -102,7 +195,9 @@
     "reviewPage": "pages/ui-review.html",
     "guidePage": "pages/components.html",
     "migrationRecord": "registry/governance/ui-library-migration.json",
-    "screens": []
+    "screens": [],
+    "build": "reports/ui-library/mobile-nav-header/3-build.md",
+    "rawFigmaIcons": "reports/ui-library/mobile-nav-header/raw-figma-icons/"
   },
   "decisions": [
     {
@@ -125,42 +220,77 @@
       "decidedBy": "orchestrator",
       "decidedAt": "2026-09-02",
       "decision": "등록부대로 Navigation 분류에 둔다. 헤더는 사이트에 화면이 없어 새로 만든다(registry boundaryNote 의 '손관리 섹션은 만들지 않는다'는 웹 배포본 이전 시점 기준이라 이번 작업으로 대체된다)."
+    },
+    {
+      "id": "D4",
+      "topic": "접근성 확정 범위",
+      "decidedBy": "river",
+      "decidedAt": "2026-09-02",
+      "decision": "모달과 같은 표준 수준으로 확정한다. 하단 탭은 탭 목록 구조(role=tablist/tab/aria-selected), 아이콘 버튼 접근성 이름, 제목 없는 헤더의 heading 구조, 터치 영역 최소 44px 를 보장한다. 화살표 키 이동·landmark 선언은 이번 범위 밖(HD-1 선택지 A)."
+    },
+    {
+      "id": "D5",
+      "topic": "헤더 상태바 포함 여부",
+      "decidedBy": "river",
+      "decidedAt": "2026-09-02",
+      "decision": "상태바를 웹 배포본에서 제외하고 AppBar 56px 만 배포한다. Type 6변형(App/Web 구분 없음). 상태바는 안내 화면의 모바일 목업 안에서 그림으로만 보여준다(HD-2 선택지 A)."
+    },
+    {
+      "id": "D6",
+      "topic": "안내 화면 표출 방식",
+      "decidedBy": "river",
+      "decidedAt": "2026-09-02",
+      "decision": "하단 탭과 모바일 헤더는 안내 화면에서 실제 360×780 모바일 목업 위에 올려 보여준다(river 추가 지시). 목업은 안내 화면 전용 크롬이며 배포본 부품이 아니다 — 부품 표본 격리 규칙(data-guide-sample=\"part\")을 지킨다."
+    },
+    {
+      "id": "D7",
+      "topic": "아이콘 원본 5종 확보",
+      "decidedBy": "orchestrator",
+      "decidedAt": "2026-09-02",
+      "decision": "Figma 아이콘 라이브러리 V2.2 에서 정본 component key 로 노드를 찾아 SVG 를 내려받았다. home=97:292 · mobileHeaderBack=97:88 · mobileHeaderClose=97:76 · mobileHeaderNotification=97:258(ic_알림(신규) Line, 빨간 신규 점 별색) · mobileHeaderArrowDown=419:68(보이는 획은 Stroke 2 만, Fill 1 은 hidden). 원본 SVG 는 reports/ui-library/mobile-nav-header/raw-figma-icons/ 에 보관."
     }
   ],
   "blockers": [
     {
-      "id": "HD-1",
-      "kind": "needs-decision",
-      "topic": "두 컴포넌트의 접근성 확정 범위",
-      "detail": "registry a11yStatus 가 둘 다 pending. 계약상 접근성 미정 컴포넌트는 approved 배포 불가. 규칙 신설은 river 승인 사항(H6②).",
-      "options": {
-        "A": "모달과 같은 표준 수준 — 탭 목록 표시(role=tablist/tab/aria-selected) · 아이콘 버튼 접근성 이름 · 제목 없는 헤더의 heading 구조 · 터치 영역 최소 44",
-        "B": "확장 — 탭 화살표 키 이동 · 헤더 landmark 선언까지"
-      },
-      "ifUndecided": "만들어도 승인 배포가 막힌다.",
-      "askedAt": "2026-09-02",
-      "status": "river 가 신규 세션에서 결정하기로 보류"
+      "id": "B1",
+      "severity": "error",
+      "owner": "mobile-nav-header",
+      "what": "검수용 빈 소비자 화면(empty-consumer)에 하단탭 바를 감싸는 인라인 style 이 들어가 npm run ui:test 가 실패한다.",
+      "detail": "ui-library/src/verification/empty-consumer.html:144 · empty-consumer-individual.html:161 의 <nav ... style=\"display:flex;background:var(--color-navigation-bg);\"> — 검사기(ui-library/scripts/test.mjs:374)는 이 두 파일에 인라인 style/onclick/onchange 를 일절 금지한다. 빈 소비자 화면의 목적이 \"소비자는 CSS 를 한 줄도 안 써도 배포본만으로 제대로 보인다\" 를 증명하는 것이기 때문이다.",
+      "rootCause": "정본 buildMobileBottomNav 는 \"탭 1칸\"만 컴포넌트로 만들고 4칸 바는 컴포넌트가 아니다(build-components.ts:2979 주석). 그래서 바의 가로 배열·배경은 화면 소유인데, 빈 소비자 화면에서는 그 화면 소유 CSS 를 쓸 자리가 없다.",
+      "discoveredBy": "orchestrator",
+      "discoveredAt": "2026-09-02",
+      "needsDecision": "HD-1",
+      "blocks": [
+        "4-verification"
+      ],
+      "status": "resolved",
+      "resolvedAt": "2026-09-02",
+      "resolvedBy": "orchestrator",
+      "resolution": "빈 소비자 화면 2곳의 <nav> 에서 인라인 style 을 없애고 role=\"tablist\" 만 남겼다 (empty-consumer.html · empty-consumer-individual.html). 정본이 '바는 부품이 아니다' 라고 선언하므로 바의 가로 배열·배경을 부품 검수 화면에서 그리지 않는 쪽으로 정리했고, role=tablist 는 꾸미기가 아니라 role=tab 의 유효성에 필요한 의미라서 유지했다. npm run ui:test 그린 확인. 실제 렌더로 탭 칸 2개가 선택(파랑)·미선택(회색)으로 정확히 표출되는 것 육안 확인."
     },
     {
-      "id": "HD-2",
-      "kind": "needs-decision",
-      "topic": "헤더 상태바를 웹 배포본에 포함할지",
-      "detail": "정본 헤더는 StatusBar(App 27 / Web 77 주소창 포함)를 안고 있어 전체 높이가 99/149 다. 실제 서비스에서는 OS·브라우저가 그리는 영역이다.",
-      "options": {
-        "A": "상태바 빼고 AppBar 56px 만 배포 — Type 6변형. 안내 화면에서만 상태바를 그림으로 보여준다(권장)",
-        "B": "정본대로 상태바 포함 12변형 배포"
-      },
-      "ifUndecided": "A 로 진행한다.",
-      "askedAt": "2026-09-02",
-      "status": "river 무의견 — 신규 세션에서 확정"
-    },
-    {
-      "id": "P-1",
-      "kind": "needs-asset",
-      "topic": "Figma 아이콘 원본 5종",
-      "detail": "home(ic_홈 Solid) · mobileHeaderBack(ic_이전 Solid) · mobileHeaderClose(ic_닫기 Solid = 97:76 확인됨) · mobileHeaderNotification(ic_알림 Line) · mobileHeaderArrowDown(ic_화살표더보기 Solid, 419:68 프레임). 헤더 4종은 정본에 폴백이 없어 코드에서 베낄 수 없다.",
-      "howTo": "river 가 Figma 데스크톱 앱에서 '아이콘 라이브러리 V2.2'(fileKey YcBbW9e0MTR9T3W5Sz0Ukx)를 활성 탭으로 열면 get_metadata 로 variant 노드 번호를 찾고, download_assets(fileKey+nodeId, defaultFormat=svg)로 벡터를 받는다. download_assets 는 파일이 활성 탭이 아니어도 동작하므로 노드 번호만 확보하면 그 뒤는 파일을 닫아도 된다.",
-      "ifUndecided": "아이콘 원본 대조 게이트를 통과할 수 없어 배포 불가."
+      "id": "B3",
+      "severity": "info",
+      "owner": "mobile-nav-header",
+      "what": "모바일 헤더가 안내 페이지에서 \"제외\" 로 선언돼 있는데 실제로는 이미 섹션이 들어가 있다 — 선언과 화면이 어긋난다.",
+      "detail": "registry/components/component-guide-model.json 의 Mobile Header 항목이 visibility='internal' · sectionId=null 이고, 사유는 '모바일 상단 앱바 shell — Figma·설치기 정본만 신설하며 손관리 components 페이지는 별도 웹 UI 라이브러리 작업 전까지 제외(2026-08-25 사용자 승인)'. 그런데 그 '별도 웹 UI 라이브러리 작업' 이 바로 이 작업이고, pages/components.html:1867·2880 에 nav 버튼과 섹션이 이미 들어갔다. 같은 작업의 Mobile Bottom Nav 는 public·sectionId 갱신이 됐는데 헤더만 안 됐다.",
+      "whyNotAutoFixable": "registry 의 visibility·sectionId 는 정본에 대응물이 없는 메타 정보라 registry 자체가 기준이다(파생 자동 수정 대상이 아니다). 게다가 현재 값은 2026-08-25 river 승인으로 들어간 것이므로, 제외 조건이 해소됐다는 판단을 ⭐ 가 대신 내리지 않는다.",
+      "discoveredBy": "source-reader",
+      "discoveredAt": "2026-09-02",
+      "needsDecision": null,
+      "blocks": [],
+      "status": "deferred-to-6-promotion",
+      "deferredAt": "2026-09-02",
+      "deferralReason": "공개 선언을 6-promotion 으로 미뤘다 — 아직 4-verification 을 통과하지 않은 부품에 대해 안내 페이지가 '정본 변형을 전부 보여준다' 고 선언하게 되기 때문이다. 현재 상태(internal)는 게이트 실패가 아니고, 안내 페이지 표출은 배포 상태 게이트가 따로 막고 있어 실제 위험도 없다.",
+      "promotionTaskSpec": {
+        "trigger": "6-promotion 에서 river 승인 후",
+        "step1": "registry/governance/component-page-coverage.json: noSectionNeeded 의 'Mobile Header' 항목을 지우고 sectionFor 에 \"Mobile Header\": \"mobile-header\" 를 추가한다. 옛 제외 사유의 조건('별도 웹 UI 라이브러리 작업 전까지')이 이 작업으로 해소됐다는 근거를 함께 적는다.",
+        "step2": "npm run components:guide-model:write 로 component-guide-model.json 을 재생성한다(손편집 금지).",
+        "step3": "Gate 19 대응 ①type: pages/components.html 의 mobile-header 섹션 data-cov-type 이 현재 슬러그(home-title 등)로 적혀 있는데 검사기는 소문자화만 하고 슬러그 변환을 하지 않아 정본 표기('Home / Title' 등)와 어긋난다. data-cov-type 을 정본 표기로 맞춘다(쉼표가 값 안에 없어 분리 안전).",
+        "step4": "Gate 19 대응 ②platform: 정본 Mobile Header 는 Platform=[App,Web] 축을 갖지만 웹 배포본은 river 결정 D5 로 Platform·StatusBar 를 뺐다(AppBar 56px·Type 6종만 배포). 따라서 data-cov-platform 을 선언할 수 없고, registry/governance/variant-coverage-baseline.json 에 사유(D5)를 적어 known gap 으로 등재해야 한다. 이 면제는 river 확인 사항이다.",
+        "verifiedBy": "⭐ 가 2026-09-02 에 실제로 승격을 시도해 Gate 19 가 위 2건을 정확히 요구하는 것을 확인한 뒤 되돌렸다 — 추측이 아니라 실측된 할 일 목록이다."
+      }
     }
   ],
   "evidence": {
@@ -179,6 +309,92 @@
   "handoff": {
     "lastActor": "orchestrator",
     "updatedAt": "2026-09-02",
-    "summary": "river 요청으로 신규 세션 인계용 세팅만 하고 멈췄다. 1-inventory·2-canon-readiness 완료, 결정 2건과 아이콘 원본 확보가 남았다. 이어받는 방법은 0-handoff.md 참조."
-  }
+    "summary": "river 가 HD-1(표준 접근성)·HD-2(상태바 제외)를 확정하고 360×780 모바일 목업 표출을 추가 지시했다. 아이콘 5종 원본을 Figma V2.2 에서 확보해 P-1 해소. 3-build 착수."
+  },
+  "checkpointLog": [
+    {
+      "checkpoint": 1,
+      "name": "1-inventory",
+      "status": "passed",
+      "evidence": "reports/ui-library/mobile-nav-header/1-inventory.md"
+    },
+    {
+      "checkpoint": 2,
+      "name": "2-canon-readiness",
+      "status": "passed",
+      "evidence": "reports/ui-library/mobile-nav-header/2-canon-readiness.md"
+    },
+    {
+      "checkpoint": 3,
+      "name": "3-build",
+      "status": "passed-with-blocker",
+      "evidence": "reports/ui-library/mobile-nav-header/3-build.md",
+      "by": "ui-library-builder (⭐ 자가 기술 점검만 — 정본 대조·렌더·키보드 검증은 4-verification 소관)",
+      "verifiedAt": "2026-09-02",
+      "note": "구현물은 디스크에 존재하고 아이콘 5종 원본 대조 PASS·ui:contract PASS·ui:build PASS. 다만 B1 으로 ui:test 는 아직 실패."
+    },
+    {
+      "checkpoint": 4,
+      "name": "4-verification",
+      "status": "not-started"
+    },
+    {
+      "checkpoint": 5,
+      "name": "5-human-review",
+      "status": "not-started"
+    },
+    {
+      "checkpoint": 6,
+      "name": "6-promotion",
+      "status": "not-started"
+    }
+  ],
+  "gateSnapshot": {
+    "takenAt": "2026-09-02 (B1 해소 후 재측정)",
+    "takenBy": "orchestrator",
+    "checks": {
+      "npm run gate:check": "PASSED · 게이트 47개 · 통과 77건 · 오류 0 · 경고 13(전부 기존 부채)",
+      "npm run ui:contract": "PASS",
+      "npm run ui:build": "PASS",
+      "npm run ui:test": "PASS — B1 해소로 그린",
+      "npm run ui:icons": "PASS errors=0 — 이 작업 아이콘 5종 + 동시 세션의 clock 까지 전부 통과",
+      "node scripts/ui-library-icon-origin-check.js": "이 작업 아이콘 5종 PASS(home 0.00169 · back 0.00114 · close 0.00349 · notification 0.00308 · arrowDown 0.00372)"
+    },
+    "note": "3-build.md D 절이 보고한 동시 세션 차단(tab 지문 stale · clock 아이콘 FAIL)은 둘 다 해소됐다. clock 은 ⭐ 가 원본 PNG 재측정으로 교정(0.04941 → 0.00988)."
+  },
+  "registrationStatus": {
+    "ui-library/src/index.js": "등재됨 — mobileBottomNav(:15)·mobileHeader(:16)",
+    "ui-library/src/auto-init.js": "해당 없음 — 두 부품 모두 jsRequired=false 로 런타임이 없다",
+    "assets/js/ui-library-guide.js": "등재됨 — guideComponents 배열(:1698)에 두 부품 모두 포함, 즉 dist 를 실제로 fetch 하는 동적 경로를 탄다",
+    "pages/components.html": "섹션 셸은 있으나 지금은 표출되지 않는다 — 렌더 게이트(assets/js/ui-library-guide.js:1576)가 dist manifest.status 를 검사해 verified·approved 가 아니면 \"승인 배포본을 불러오지 못했습니다\" 안내를 대신 그린다. 현재 status=candidate 이므로 의도된 차단이며 결함이 아니다. 6-promotion 에서 approved 로 올라가면 표출된다. (nav 버튼 :1866·:1867 / 빈 셸 섹션 :2877·:2880)",
+    "pages/ui-review.html": "등재됨 + 실제 렌더 성공 — 검수 화면은 candidate 를 \"검수 대기\" 로 보여주는 것이 목적이라 게이트가 없고, dist/s1-ui.css 를 소비한 미리보기가 Light·Dark 로 정상 표출된다(:557 하단탭 · :565 헤더)",
+    "registry/governance/ui-library-migration.json": "등재됨 — 두 건 모두 uiLibraryStatus='candidate'",
+    "registry/components/component-guide-model.json": "불일치 1건 = B3 — Mobile Bottom Nav 는 visibility='public'·sectionId='mobile-bottom-nav' 로 갱신됐으나, Mobile Header 는 visibility='internal'·sectionId=null 로 남아 있다",
+    "verifiedBy": "📖 source-reader 판독 2026-09-02 — 로컬 HTTP 서버로 실제 렌더 스크린샷 + 렌더 스크립트 전체 추적(components.html 은 file:// 에서 dist fetch 가 CORS 로 막혀 빈 화면이 나오므로 http 로 재확인). ⭐ 의 최초 문자열 대조는 \"안내 페이지 등재됨\" 으로 잘못 판단했고 이 판독이 정정했다."
+  },
+  "fingerprintRefreshes": [
+    {
+      "refreshedAt": "2026-09-02",
+      "refreshedBy": "orchestrator",
+      "paths": [
+        "plugins/figma-vars-installer/src/build-components.ts",
+        "registry/components/mobile-bottom-nav.json",
+        "registry/components/mobile-header.json",
+        "ui-library/src/assets/icons/manifest.json"
+      ],
+      "supersedesPriorVerification": false,
+      "rationale": "정본 build-components.ts 변경분은 buildTableCell·buildTable 안에만 있고 buildMobileBottomNav·buildMobileHeader 는 무변경이다. registry/components/mobile-*.json 과 아이콘 manifest 는 이 작업이 3-build 에서 직접 만든 산출물이라 지문을 현재 상태로 맞춘다.",
+      "diffScopeEvidence": "git diff plugins/figma-vars-installer/src/build-components.ts — hunk 전체가 buildTableCell(1978~2048)·buildTable(2062~2106) 내부"
+    },
+    {
+      "refreshedAt": "2026-09-02",
+      "refreshedBy": "orchestrator",
+      "paths": [
+        "manifest.json"
+      ],
+      "supersedesPriorVerification": false,
+      "rationale": "아이콘 manifest 의 지문을 현재 상태로 맞췄다. HEAD 대비 diff 에는 신규 아이콘 항목 6종이 모두 들어 있다 — 이 작업(3-build)이 추가한 5종(home·mobileHeaderBack·mobileHeaderClose·mobileHeaderNotification·mobileHeaderArrowDown)과 동시 세션 time-picker 가 추가한 clock 1종이다. 그중 ⭐ 가 오늘 실제로 편집한 것은 clock 항목뿐이며(도형 좌표·geometryEvidence·webAssetFingerprint), 이 작업 소유 5종의 항목은 손대지 않았고 원본 대조도 각각 PASS 를 유지한다(home 0.00169 · back 0.00114 · close 0.00349 · notification 0.00308 · arrowDown 0.00372). 따라서 이전 검증을 superseded 하지 않는다.",
+      "diffScopeEvidence": "git diff ui-library/src/assets/icons/manifest.json — HEAD 에는 이 6종 항목이 아직 없어 전체가 추가분으로 표시된다. ⭐ 의 오늘 편집 범위는 clock 항목으로 한정되며, 근거는 이 작업의 5종 원본 대조 오차가 3-build.md 기록값과 동일하게 유지된다는 점이다(node scripts/ui-library-icon-origin-check.js 재실행 결과 일치). 정정 기록: ⭐ 가 최초에 '변경 hunk 가 clock 항목 안에만 있음' 이라고 적었는데 이는 검증 없이 쓴 오기였다 — 실제 diff 를 확인해 바로잡았다."
+    }
+  ]
 }

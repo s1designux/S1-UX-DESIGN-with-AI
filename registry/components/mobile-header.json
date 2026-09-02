@@ -8,9 +8,9 @@
     "tokenStatus": "stable",
     "codeStatus": "implemented",
     "darkModeStatus": "stable",
-    "a11yStatus": "pending",
+    "a11yStatus": "implemented",
     "figmaStatus": "confirmed",
-    "harnessStatus": "not-started",
+    "harnessStatus": "implemented",
     "description": "모바일 화면 상단의 StatusBar와 AppBar를 하나로 묶은 코어 컴포넌트. 홈형 2종·표준형 4종을 Type 축으로, 앱(360×99)·모바일 웹(360×149)을 Platform 축으로 제공한다.",
     "notes": [
       "V2.4 mobile_header(540:6112)의 5종을 원본으로 삼는다.",
@@ -199,7 +199,7 @@
     ],
     "interactionPattern": "mobile-appbar",
     "webTag": "header",
-    "boundaryNote": "이번 범위는 Figma·설치기 정본 신설이며 손관리 components.html 섹션은 만들지 않는다."
+    "boundaryNote": "2026-09-02 ui-library-code 워크플로우로 웹 배포본을 만들었다 — components.html 섹션은 손관리가 아니라 ui-library-guide.js 가 dist 로 렌더한다(managedBy: ui-library-guide). StatusBar·Platform 축은 river 결정(D5)으로 배포본에서 뺐다 — AppBar 56px·Type 6종만 배포한다."
   },
   "governance": {
     "owner": "design-system",

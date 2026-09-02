@@ -66,7 +66,17 @@
     "./manifest": "./dist/manifest.json",
     "./components/table": "./dist/components/table.js",
     "./components/table/css": "./dist/components/table.css",
-    "./components/table/html": "./dist/examples/table.html"
+    "./components/table/html": "./dist/examples/table.html",
+    "./components/mobile-bottom-nav": "./dist/components/mobile-bottom-nav.js",
+    "./components/mobile-bottom-nav/css": "./dist/components/mobile-bottom-nav.css",
+    "./components/mobile-bottom-nav/html": "./dist/examples/mobile-bottom-nav.html",
+    "./components/mobile-header": "./dist/components/mobile-header.js",
+    "./components/mobile-header/css": "./dist/components/mobile-header.css",
+    "./components/mobile-header/html": "./dist/examples/mobile-header.html",
+    "./components/time-picker": "./dist/components/time-picker.js",
+    "./components/time-picker/css": "./dist/components/time-picker.css",
+    "./components/time-picker/html": "./dist/examples/time-picker.html",
+    "./components/time-picker/html/mobile": "./dist/examples/time-picker.mobile.html"
   },
   "scripts": {
     "build": "node scripts/build.mjs",
