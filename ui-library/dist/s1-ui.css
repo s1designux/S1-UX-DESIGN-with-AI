@@ -1715,7 +1715,12 @@
   font-weight: var(--font-weight-regular);
   gap: var(--spacing-8);
   justify-content: space-between;
-  min-width: 78px; /* registry sizing.minWidth — 정본은 스펙시트용 150px 고정, 웹은 소비자가 폭을 정한다(1-inventory 근거) */
+  /* 정본 trigger.resize(150, sc.h) (build-components.ts:2359). river 지시(2026-09-03):
+     ①기본 폭이 너무 좁고 ②값이 들어오면(Filled) 글자가 짧아져 입력칸이 줄어들었다 — 둘 다
+     내용에 따라 폭이 정해지던 탓이다. 정본 폭을 최소 폭으로 두면 상태가 바뀌어도 크기가 그대로다.
+     Select 가 정본 140 을 같은 방식으로 쓰는 선례와 동일(river 지시 2026-09-01, select.css:23).
+     width:100% 는 그대로라 소비자가 더 넓게 쓸 수 있다. */
+  min-width: 150px;
   width: 100%;
 }
 
@@ -1789,9 +1794,27 @@
 }
 
 /* ── 드롭다운 패널 — build-components.ts buildTimePickerDropdown 2477-2624 ── */
+/* 패널 한 프레임이 테두리·모서리·그림자·위여백을 소유한다 — 정본 fillPanel(build-components.ts 2475-2519).
+   테두리를 border 가 아니라 inset 그림자로 그리는 이유: 정본 stroke 는 strokeAlign="INSIDE" 라
+   바깥 폭(121/194)을 유지한 채 안쪽 내용 위에 겹쳐 그려진다. CSS border 로 옮기면 내용 폭이
+   2px 줄어 열 폭이 44→43 으로 어긋난다(독립 검증 F-2 실측). inset 그림자가 그 동작의 정확한 대응이다.
+   트리거와의 간격은 정본 Time Picker 컴포넌트의 itemSpacing=4(build-components.ts:2363). */
 [data-s1-component="time-picker"] [data-s1-part="panel"] {
+  background: var(--color-dropdown-list-bg);
+  border-radius: var(--radius-4);
+  box-shadow: inset 0 0 0 var(--border-width-1) var(--color-dropdown-list-border), var(--shadow-dropdown);
+  box-sizing: border-box;
   left: 0;
-  margin-top: var(--spacing-8);
+  margin-top: var(--spacing-4);
+  /* 목록이 입력칸보다 좁아 보이지 않게 한다 — river 지시 2026-09-03 「24시간만 인풋에 맞춰줘,
+     12시간제는 현재 유지」. 정본 고정폭(24h=121 · 12h=194)은 width 로 그대로 두고 최소 폭만
+     트리거를 따르게 해서, 24h 는 121→트리거 폭(기본 150)으로 넓어지고 12h 는 194 를 유지한다
+     (194 > 150 이라 min-width 가 이기지 못한다). 소비자가 트리거를 더 넓히면 목록도 함께 따라간다.
+     같은 규칙을 Select 이 먼저 쓰고 있다(select.css:105, river 2차 지시 2026-09-01
+     「트리거보다 목록이 좁아 보이거나 어긋나 보이면 안 된다」). */
+  min-width: 100%;
+  overflow: hidden;                 /* 정본 clipsContent = true */
+  padding-top: var(--spacing-12);   /* 정본 TPD_PAD_TOP — 목록 192 '바깥' 위여백이다 */
   position: absolute;
   top: 100%;
   z-index: 10;
@@ -1803,21 +1826,14 @@
 [data-s1-component="time-picker"][data-type="24h"] [data-s1-part="panel"] { width: 121px; }
 [data-s1-component="time-picker"][data-type="12h"] [data-s1-part="panel"] { width: 194px; }
 
-[data-s1-component="time-picker"] [data-s1-part="columns"],
-[data-s1-component="time-picker"] [data-s1-part="footer"] {
-  background: var(--color-dropdown-list-bg);
-  border-left: var(--border-width-1) solid var(--color-dropdown-list-border);
-  border-right: var(--border-width-1) solid var(--color-dropdown-list-border);
-  box-sizing: border-box;
-}
+/* 목록 영역 — 정본 TPD_COLS_H=192 은 '열이 차지하는 높이' 자체다. 위여백 12 는 패널 몫이라
+   여기 padding 으로 넣지 않는다(넣으면 실제 열 높이가 179 로 줄어든다 — 독립 검증 F-2). */
 [data-s1-component="time-picker"] [data-s1-part="columns"] {
-  border-top: var(--border-width-1) solid var(--color-dropdown-list-border);
-  border-radius: var(--radius-4) var(--radius-4) 0 0;
-  box-shadow: var(--shadow-dropdown);
+  box-sizing: border-box;
   display: flex;
   gap: var(--spacing-8);
   height: 192px;
-  padding: var(--spacing-12) var(--spacing-8) 0;
+  padding-inline: var(--spacing-8);
 }
 
 [data-s1-component="time-picker"] [data-s1-part="column"] {
@@ -1850,6 +1866,9 @@
   height: 32px;
   justify-content: center;
   padding-inline: var(--spacing-12);
+  /* 정본 셀은 폭 44(컬럼 폭으로 STRETCH)에 텍스트가 auto-width 라 줄바꿈이 없다.
+     12h 오전/오후 열은 컬럼 폭 48 에서 글자가 칸보다 넓어 가운데로 넘치며, 줄바꿈은 정본에 없다. */
+  white-space: nowrap;
 }
 
 @media (hover: hover) {
@@ -1866,15 +1885,18 @@
 
 /* ── 확인 줄 — 위 가로 1px 구분선 + 좌우16·위아래12, 우측 정렬(build-components.ts 2549-2565) ── */
 [data-s1-component="time-picker"] [data-s1-part="footer"] {
-  border-bottom: var(--border-width-1) solid var(--color-dropdown-list-border);
-  border-radius: 0 0 var(--radius-4) var(--radius-4);
-  box-shadow: var(--shadow-dropdown);
+  box-sizing: border-box;
   display: flex;
   justify-content: flex-end;
   padding: var(--spacing-12) var(--spacing-16);
 }
+/* 구분선은 패널 폭 전체가 아니라 좌우 8px 안쪽이다 — 정본은 padding 8 짜리 wrapper 안에
+   panelW-16 길이의 1px 선을 둔다(build-components.ts 2540-2547). 투명 border 로 정본의
+   1px 행 높이를 유지하고, 실제 선은 그 자리에 안쪽으로만 그린다. */
 [data-s1-component="time-picker"] [data-s1-part="columns"] + [data-s1-part="footer"] {
-  border-top: var(--border-width-1) solid var(--color-line-gray-subtle);
+  background: linear-gradient(var(--color-line-gray-subtle), var(--color-line-gray-subtle)) no-repeat 50% 0 / calc(100% - var(--spacing-16)) var(--border-width-1);
+  background-origin: border-box;
+  border-top: var(--border-width-1) solid transparent;
 }
 
 [data-s1-component="time-picker"] [data-s1-part="confirm"] {

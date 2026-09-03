@@ -333,13 +333,11 @@
       "keepInState": {
         "focus": "dropdown"
       },
-      "subComponents": [
-        "input",
-        "select"
-      ],
+      "subComponents": [],
       "statesLayout": "row",
       "changeFromCurrent": "사이즈 별도 블록 → Action에만.",
-      "note": "hover/focus 상태에 드롭다운 유지."
+      "note": "hover/focus 상태에 드롭다운 유지. subComponents 를 2026-09-03 에 [input, select] → [] 로 정정했다 — 웹 배포본은 Input·Select·Dropdown 을 조립하지 않고 자체 열 구조를 가지며 dropdown/* semantic 토큰만 재사용한다(time-picker.css 머리주석 · 독립 검증 2회차 🟡). platform 은 'pc' 그대로 둔다 — 이 필드는 '어느 컴포넌트 페이지에 실리나'를 뜻하며, 모바일 화면을 함께 갖는 Select·Input·Chip 도 모두 'pc' 다(Gate 23 은 PC 표출 규칙만 본다).",
+      "managedBy": "ui-library-guide"
     },
     "select": {
       "platform": "pc",

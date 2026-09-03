@@ -2,7 +2,7 @@
   "_meta": {
     "description": "사용자가 반복 요청한 패턴 추적 파일. count >= 3 이면 자동 감사 규칙 승격 후보.",
     "promotionThreshold": 3,
-    "updatedAt": "2026-09-02",
+    "updatedAt": "2026-09-03",
     "note": "이 JSON 이 단일 정본이다. CLAUDE.md 에 있던 승격 현황 표는 2026-08-03 에 삭제했다(정본과 드리프트 중이었음)."
   },
   "patterns": [
@@ -267,12 +267,16 @@
       "id": "installer-ui-flow-layout",
       "label": "설치기 플러그인 UI 레이아웃·화면흐름 개선 (스크롤·진행표시·완료안내)",
       "description": "설치기 UI 가 단일 화면에 선택·진행·완료를 모두 얹어 스크롤바가 버튼 영역을 관통하고 완료 안내가 첫 화면에 끼어들었다. 앱셸 레이아웃 + 3화면 상태기계(선택→진행→완료)로 재구성.",
-      "count": 1,
+      "count": 2,
       "promotionStatus": "tracking",
       "occurrences": [
         {
           "date": "2026-07-30",
           "summary": "0.2Ver — 버튼영역 스크롤 제거(앱셸·창높이 800)·이름/버전 배지·설치중 화면(스피너+퍼센트+화면이동 경고)·완료 화면+[재설치](섹션 삭제 후 첫화면)"
+        },
+        {
+          "date": "2026-09-03",
+          "summary": "막힌 상태가 '왜 막혔는지'만 알리고 다음 행동을 주지 않던 두 화면 교정 — 패턴 탭: 부품 미설치로 항목이 잠기면 목록 위에 '먼저 가이드를 설치해 주세요' 안내 + 가이드설치 탭으로 보내는 파란 버튼을 먼저 배치(항목별 중복 문구는 '아직 없는 부품' 나열로 축소). 검수 탭: '최신 가이드가 아닙니다' 노란 경고 박스를 없애고 안내+파란 버튼만 화면 중앙에 배치(제목줄도 그 상태에서는 숨김)"
         }
       ],
       "automationNote": "설치기 ui.html 은 게이트 사각지대(Gate 6b 는 zip 의 code.js 토큰키만, Gate 13 은 build-components.ts 해시만 본다). 3회 도달 시 440×800 iframe 렌더 프로브(문서스크롤 0·푸터 가시성·화면전환 4종)를 게이트로 승격 검토."
@@ -577,7 +581,7 @@
       "category": "harness-consistency",
       "label": "검사기만 강화되고 대상 화면·코드는 안 고쳐진 채 남는다",
       "description": "ui-library/scripts/test.mjs 에 가이드 화면 요구(실제 동작이 설명 문서보다 앞) 가 추가됐는데 assets/js/ui-library-guide.js 는 따라가지 않아, 작업 트리에 실패하는 검사가 그대로 남아 있었다. 다음 작업자가 자기 변경 때문인지 판단할 수 없고, 무관한 작업의 마지막 관문을 막는다. 여러 세션이 같은 작업 폴더를 쓰는 환경에서 특히 잘 생긴다.",
-      "count": 1,
+      "count": 2,
       "promotionStatus": "tracking",
       "promotedRule": null,
       "automationNote": "3회 도달 시 검사기 강화 커밋이 대상 파일 변경을 동반했는지 확인하는 pre-commit 검사로 승격 검토.",
@@ -585,7 +589,8 @@
         {
           "date": "2026-08-31",
           "summary": "Checkbox·Radio 착수 시 npm run ui:test 가 이미 실패 상태였음 — 'actual behavior and states must appear before component documentation'. river 승인으로 함께 해소."
-        }
+        },
+        "2026-09-03 time-picker — ui-library/scripts/test.mjs 가 .variant-label 의 하드코딩 #111827 을 정규식으로 못박고 있어, R01(HEX 금지) 위반이 검사기에 의해 보존되고 있었다. 다크에서 글자가 안 읽히는 결함의 직접 원인."
       ]
     },
     {
@@ -826,6 +831,26 @@
           "summary": "상단 탭(설치·검수) 제거 → 하단 고정 내비바 3개(가이드설치·패턴·검수) 전환, 패턴 탭 신설"
         }
       ]
+    },
+    {
+      "id": "canonical-name-invented-not-verified",
+      "pattern": "정본에 실재하는지 확인하지 않고 그럴듯한 이름(토큰·속성)을 지어 쓰고, 검사기까지 그 이름으로 맞춰 보증을 무력화함. 선언이 무효라 상속으로 화면이 우연히 맞아 보여 사람 눈으로는 안 잡힌다.",
+      "count": 1,
+      "occurrences": [
+        "2026-09-03 time-picker — 안내 화면 .variant-label 의 하드코딩 #111827 을 'R01 HEX 금지에 맞춘다'며 var(--color-text-default) 로 바꿨는데 그 토큰은 정본에도 파생에도 없었다. ui-library/scripts/test.mjs 정규식까지 그 없는 이름으로 고쳐 색 보증이 사라졌다. 🤖 component-verifier 가 렌더 실측(getPropertyValue = 빈 문자열)으로 적발. 실존 토큰 --color-text-title-primary 로 교정."
+      ],
+      "resolution": "2026-09-03 해소 — Gate 45(CSS 변수 참조 검사기) 신설. scripts/css-var-reference-check.js 가 폴백 없는 var(--x) 참조가 tokens.css·typography.css 정의에 닿는지 커밋 시점에 대조한다. 적대 테스트 6종 포함, 실전 시험에서 배포본에 심은 가짜 토큰을 그 줄에서 차단함을 확인했다. 기존 부채 6건은 baseline 동결(전부 안내 화면 CSS, 배포본 0건).",
+      "status": "해소 — Gate 45 가 재발 시 커밋 차단"
+    },
+    {
+      "id": "static-sample-drops-runtime-contract-attr",
+      "pattern": "안내·검수 화면이 컴포넌트 내부를 정적 마크업으로 미리 채우면서 런타임이 실제로 읽는 필수 속성을 빠뜨려, 화면 문구는 동작을 약속하는데 눌러도 조용히 아무 일도 안 하는 상태가 됨. 계약(manifest)이 '정적으로 채워도 된다'만 적고 '무엇이 필수인지'를 안 적은 것이 뿌리.",
+      "count": 1,
+      "occurrences": [
+        "2026-09-03 time-picker — 목록 칸에 data-value 누락. 안내 화면·검수 화면 양쪽 모두 '확인을 눌러야 값이 남습니다'라고 써 놓고 확인이 무동작(formatValue 가 undefined 로 early return). 배포본 자체는 빈 HTML 소비에서 정상이라 계약·파리티·렌더 검사기가 전부 통과했다. 🤖 component-verifier 가 실제 클릭으로 적발."
+      ],
+      "resolution": "이번 회차 조치 — ①두 화면에 data-value 부여 ②런타임이 값 없는 칸을 textContent 로 폴백 ③manifest htmlContract 에 필수 속성 명시. 미해결: 「안내 화면의 Action 영역이 실제로 동작하는가」를 기계로 확인하는 검사가 없다. 2026-09-03 추가 조치: 계약(riskBasedIndependentVerification)에 batching·scopeRule·mechanicalFirst 를 넣어 검증 시점을 정리했다. 다만 「안내 화면 Action 이 실제로 동작하는가」를 기계로 확인하는 검사는 여전히 없다.",
+      "status": "열림"
     }
   ]
 }

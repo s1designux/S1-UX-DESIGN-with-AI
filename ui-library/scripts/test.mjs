@@ -428,8 +428,11 @@ if (!/function tabStateMatrix\(\)[\s\S]*?comp-action-top[\s\S]*?matrix-col-heade
 if (!/\.matrix-col-header-action\s*\{[^}]*font-size:\s*16px[^}]*font-weight:\s*700[^}]*color:\s*#16a34a/.test(guidePage)) {
   failures.push("all guide Action titles must use the prominent green title typography");
 }
-if (!/\.variant-label\s*\{[^}]*color:\s*#111827[^}]*font-size:\s*16px[^}]*font-weight:\s*700/.test(guidePage)) {
-  failures.push("component type labels such as Line and Solid must use the prominent type title typography");
+/* 색은 semantic 토큰이어야 한다 — 하드코딩 #111827 은 Preview Theme=dark 에서 어두운 카드에
+   묻혀 블록 제목이 안 읽혔다(2026-09-03 Time Picker 다크 렌더에서 발견). 검사의 목적인
+   "제목 강조"(16px·700)는 그대로 두고, 색만 토큰 경유로 못박는다(CLAUDE.md R01 HEX 금지와도 일치). */
+if (!/\.variant-label\s*\{[^}]*color:\s*var\(--color-text-title-primary\)[^}]*font-size:\s*16px[^}]*font-weight:\s*700/.test(guidePage)) {
+  failures.push("component type labels such as Line and Solid must use the prominent type title typography with a semantic color token (no hardcoded hex — unreadable in dark)");
 }
 if (!/\.comp-action-top\s*\{[^}]*gap:\s*12px[^}]*margin-bottom:\s*48px[^}]*padding-bottom:\s*24px/.test(guidePage)) {
   failures.push("all guide Action blocks must retain the shared generous separation before states");

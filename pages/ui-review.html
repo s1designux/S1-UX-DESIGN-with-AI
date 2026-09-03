@@ -192,6 +192,9 @@
     /* 검수 배치용(컴포넌트 시각 아님) — 정적 표본은 눌리지 않게, 열린 패널은 겹치지 않게 자리를 준다. */
     .review-static { pointer-events: none; }
     .review-overlay-slot { min-height: 190px; }
+    /* Time Picker 패널은 목록 192 + 위여백 12 + 확인줄 ≈ 248px 라 Select 목록보다 높다.
+       190px 로 두면 열린 패널이 아래 표본을 덮는다. */
+    [data-component-id="time-picker"] .review-overlay-slot { min-height: 300px; }
     /* 모달 정적 표본 — 배포본은 화면 전체를 덮는 팝업이라(position: fixed) 검수 지면에 눕혀 둔다.
        이 CSS 는 이 페이지 것이고 dist 에 넣지 않는다. 색·크기·간격은 그대로 dist 가 그린다. */
     /* 모달 표본은 정본 고정 폭(PC 360 · Mobile 300)이라 2열 칸에 안 들어간다 — 한 줄에 하나씩 놓는다. */
@@ -568,6 +571,14 @@
         <p class="review-note">river 결정(D5)으로 <strong>상태바(StatusBar)·Platform 축을 뺐습니다</strong> — AppBar 56px만 배포합니다. Type 6종(Home/Title · Home/Title+Subtitle+1Icon · Standard/Title · Standard/Title+Close · Standard/No Title · Standard/No Title+Close)이 유일한 축입니다. 삭제된 'Home / Title + 2 Icons'는 만들지 않았습니다. No Title 계열은 제목 텍스트가 없어 본문의 h1이 화면의 주 제목 역할을 합니다. 알림 아이콘은 2색(본체 gray-dark + 신규 점 red)이라 CSS 마스크 2겹으로 표현합니다. 크기 축·JavaScript는 필요 없습니다(jsRequired=false).</p>
       </div>
       <div class="review-matrix" id="mobile-header-review-matrix"></div>
+    </section>
+
+    <section class="review-section" aria-labelledby="time-picker-review-title" data-component-id="time-picker">
+      <div>
+        <h2 class="review-section-title" id="time-picker-review-title">16. Time Picker</h2>
+        <p class="review-note">정본 상태 5종(Default · Hover · Focus · Filled · Disabled)이며 <strong>Focus = 목록이 열린 상태</strong>입니다(정본 buildTimePicker). 값은 <strong>확인을 눌러야</strong> 트리거에 남습니다. 유형은 24시간제(시·분 2열) · 오전오후(오전오후·시·분 3열) 2가지입니다. river 결정(D1)으로 <strong>모바일 휠 바텀시트는 이번 범위 밖</strong>이라 모바일도 같은 목록 드롭다운을 쓰고 트리거만 48px입니다 — 휠 시트는 Date Picker 작업에서 함께 만듭니다. 분 목록 기본은 1분 단위이고 <code>data-minute-step</code>으로 조절합니다(D2). 정본에 Error 상태는 없습니다.</p>
+      </div>
+      <div class="review-matrix" id="time-picker-review-matrix"></div>
     </section>
     </div>
 
@@ -1309,6 +1320,104 @@
         </article>`;
     }
 
+    /* ── Time Picker — 정본 buildTimePicker(트리거)·buildTimePickerDropdown(패널)·buildTimePickerCell(칸).
+       정적 표본은 init 하지 않으므로 목록을 마크업이 직접 든다. Focus 칸만 패널을 편다. ── */
+    const tpSample = { hour: ["08", "09", "10", "11"], minute: ["00", "15", "30", "45"], ampm: ["오전", "오후"] };
+
+    /* 칸에는 반드시 data-value 를 준다 — 확인 버튼이 이 값으로 트리거 문구와 change 이벤트를
+       만든다. 빠뜨리면 확인을 눌러도 조용히 아무 일도 안 한다(독립 검증 F-1). */
+    function timePickerColumn(column, label, items, { selected = null, hover = null } = {}) {
+      const cells = items.map((text) =>
+        `<div data-s1-part="cell" role="option" data-value="${text}" aria-selected="${text === selected}"${text === hover ? ' data-force-state="hover"' : ""}>${text}</div>`).join("");
+      return `<div data-s1-part="column" data-column="${column}" role="listbox" aria-label="${label}">${cells}</div>`;
+    }
+
+    /* 정본 Time Picker Dropdown 의 State 축 전수(4종). 확인 활성 여부도 정본을 따른다
+       — 분 Selected 만 활성이다(build-components.ts 2533-2538). */
+    const tpPanelStates = {
+      "시 Hover":    { hourHover: "09" },
+      "시 Selected": { hour: "09" },
+      "분 Hover":    { hour: "09", minuteHover: "30" },
+      "분 Selected": { hour: "09", minute: "30" }
+    };
+
+    function timePickerMarkup({ size = "md", breakName = "pc", type = "24h", state = "default", statik = false, allowHover = false, panelState = "시 Selected" }) {
+      const open = state === "focus";
+      const filled = state === "filled";
+      const disabled = state === "disabled";
+      /* 정본 Focus 변형의 트리거 문구는 값이 아니라 placeholder 다 — 값은 Filled 에서만 보인다
+         (build-components.ts:2333 · 독립 검증 F-8). */
+      const value = filled ? (type === "12h" ? "오전 09:30" : "09:30") : "시간 선택";
+      const pick = tpPanelStates[panelState];
+      const div = '<div data-s1-part="divider"></div>';
+      const hour = timePickerColumn("hour", "시", tpSample.hour, { selected: pick.hour, hover: pick.hourHover });
+      const minute = timePickerColumn("minute", "분", tpSample.minute, { selected: pick.minute, hover: pick.minuteHover });
+      const ampm = timePickerColumn("ampm", "오전오후", tpSample.ampm, { selected: type === "12h" ? "오전" : null });
+      const columns = type === "12h" ? [ampm, hour, minute].join(div) : [hour, minute].join(div);
+      const complete = Boolean(pick.hour && pick.minute);
+      const panelHidden = statik ? (open ? "" : " hidden") : " hidden";
+      const staticAttrs = statik ? ` data-review-static="true"${allowHover ? "" : ' class="review-static"'}` : "";
+      return `<div data-s1-component="time-picker" data-size="${size}" data-break="${breakName}" data-type="${type}" data-minute-step="${type === "12h" ? "5" : "1"}"${staticAttrs}>
+          <button type="button" data-s1-part="trigger" aria-haspopup="listbox" aria-expanded="${open}"${filled ? ' data-filled="true"' : ""}${disabled ? " disabled" : ""} aria-label="시간">
+            <span data-s1-part="value">${value}</span>
+            <span data-s1-part="icon" aria-hidden="true"></span>
+          </button>
+          <div data-s1-part="panel"${panelHidden}>
+            <div data-s1-part="columns">${columns}</div>
+            <div data-s1-part="footer"><button type="button" data-s1-part="confirm"${complete ? "" : " disabled"}>확인</button></div>
+          </div>
+        </div>`;
+    }
+
+    function renderTimePickerPanel(combo) {
+      const sizes = combo.device === "Mobile"
+        ? [["md", "MD · 48px"]]
+        : [["xxsm", "XXSM · 28px"], ["xsm", "XSM · 34px"], ["md", "MD · 44px"]];
+      const states = [
+        ["Default", "default"],
+        ["Filled · 값 선택됨", "filled"],
+        ["Hover · 마우스를 올려 확인", "default", true],
+        ["Disabled", "disabled"],
+        ["Focus · 목록 열림", "focus"]
+      ];
+
+      const stateBlocks = sizes.map(([size, sizeLabel]) => {
+        const cells = states.map(([stateLabel, state, allowHover = false]) => {
+          const markup = timePickerMarkup({ size, breakName: combo.breakName, state, statik: true, allowHover });
+          const slot = state === "focus"
+            ? `<div class="review-component-slot review-overlay-slot">${markup}</div>`
+            : `<div class="review-component-slot">${markup}</div>`;
+          return `<div class="review-sample"><p class="review-state-label">${stateLabel}</p>${slot}</div>`;
+        }).join("");
+        return `<div class="review-group"><h4 class="review-group-title">${sizeLabel}</h4><div class="review-grid">${cells}</div></div>`;
+      }).join('<hr class="review-separator">');
+
+      const panelStates = [["시 Hover", "확인 비활성"], ["시 Selected", "확인 비활성"], ["분 Hover", "확인 비활성"], ["분 Selected", "확인 활성"]];
+      const panelBlock = (type) => `<div class="review-group">
+          <h4 class="review-group-title">패널 상태 — ${type === "12h" ? "오전·오후(12시간제) · 3열" : "24시간제 · 2열"}</h4>
+          <p class="review-panel-description">정본 Time Picker Dropdown 세트의 State 축 전수입니다. 시·분을 다 고르기 전까지 <strong>확인</strong>은 비활성입니다.</p>
+          <div class="review-grid">${panelStates.map(([label, note]) =>
+            `<div class="review-sample"><p class="review-state-label">${label} · ${note}</p><div class="review-component-slot review-overlay-slot">${timePickerMarkup({ size: "md", breakName: combo.breakName, type, state: "focus", statik: true, panelState: label })}</div></div>`).join("")}</div>
+        </div>`;
+      const typeBlock = `${panelBlock("24h")}<hr class="review-separator">${panelBlock("12h")}`;
+
+      return `
+        <article class="review-panel" data-theme="${combo.theme}">
+          ${panelHeading(combo, "time-picker")}
+          <div class="review-group">
+            <h4 class="review-group-title">실제로 눌러보기</h4>
+            <p class="review-panel-description">트리거를 눌러 열고 화살표 키·Enter로 시·분을 고른 뒤 <strong>확인</strong>을 눌러야 값이 남습니다. Esc·바깥 클릭으로 닫힙니다.</p>
+            <div class="review-component-slot review-overlay-slot">${timePickerMarkup({ size: "md", breakName: combo.breakName })}</div>
+          </div>
+          <hr class="review-separator">
+          ${stateBlocks}
+          <hr class="review-separator">
+          ${typeBlock}
+        </article>`;
+    }
+
+    document.querySelector("#time-picker-review-matrix").innerHTML = combinations.map(renderTimePickerPanel).join("");
+
     document.querySelector("#mobile-bottom-nav-review-matrix").innerHTML = controlThemes.map(renderMobileBottomNavPanel).join("");
     document.querySelector("#mobile-header-review-matrix").innerHTML = controlThemes.map(renderMobileHeaderPanel).join("");
     /* Mobile Bottom Nav · Mobile Header 는 런타임이 없다(jsRequired:false) — CSS·네이티브 ARIA만으로 상태가 반영된다. */
@@ -1332,6 +1441,7 @@
     /* 정적 표본(data-review-static)은 초기화하지 않는다 — 초기화하면 런타임이 패널을 다시 닫아
        Open/Selected 표본이 사라진다. 실제로 눌러보는 인스턴스만 init 한다. */
     document.querySelectorAll('[data-s1-component="select"]:not([data-review-static])').forEach((root) => S1UI.select.init(root));
+    document.querySelectorAll('[data-s1-component="time-picker"]:not([data-review-static])').forEach((root) => S1UI.timePicker.init(root));
     document.querySelectorAll('[data-s1-component="filter-chip"]:not([data-review-static])').forEach((root) => S1UI.filterChip.init(root));
     document.querySelectorAll('[data-s1-component="dropdown"]:not([data-review-static])').forEach((root) => S1UI.dropdown.init(root));
     /* Textarea 는 런타임이 없다(jsRequired:false) — CSS 와 네이티브 동작만으로 상태가 바뀐다. */

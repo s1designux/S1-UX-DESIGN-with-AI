@@ -1,7 +1,7 @@
 {
   "_meta": {
     "id": "ui-library-migration",
-    "updatedAt": "2026-09-02",
+    "updatedAt": "2026-09-03",
     "purpose": "기존 컴포넌트 상태와 신규 웹 UI 라이브러리 승인·이행 상태를 분리 기록한다."
   },
   "records": [
@@ -120,7 +120,8 @@
         "ui-library/dist/components/toggle.manifest.json"
       ],
       "riverApproval": "approved 2026-09-01",
-      "promotionDecision": "approved 2026-09-01 · 안내 페이지 실제 렌더 확인 · 배포본은 이미 approved 였고 장부만 밀려 있던 것을 함께 맞춤"
+      "promotionDecision": "approved 2026-09-01 · 안내 페이지 실제 렌더 확인 · 배포본은 이미 approved 였고 장부만 밀려 있던 것을 함께 맞춤",
+      "riverReconfirmed": "2026-09-03 river 재확인: 기존 'river 승인' 날짜의 실제 승인 여부를 river 본인이 기억하지 못한다고 답해, 이 세션에서 pages/ui-review.html 을 직접 보여주고 다시 승인받았다(reports/ui-library/toggle-chip/workflow-state.json 참조)."
     },
     {
       "id": "chip",
@@ -148,7 +149,8 @@
         "distribution": "examples/chip.html (PC) · examples/chip.mobile.html (Mobile)",
         "declaredBy": "manifest.htmlContract.breakExamples",
         "note": "디자인가이드는 보고 있는 화면의 플랫폼 마크업만 표시한다 (river HD-1 A안 2026-09-01)."
-      }
+      },
+      "riverReconfirmed": "2026-09-03 river 재확인: 기존 'river 승인' 날짜의 실제 승인 여부를 river 본인이 기억하지 못한다고 답해, 이 세션에서 pages/ui-review.html 을 직접 보여주고 다시 승인받았다(reports/ui-library/toggle-chip/workflow-state.json 참조)."
     },
     {
       "id": "select",
@@ -179,7 +181,8 @@
         "distribution": "examples/select.html (PC) · examples/select.mobile.html (Mobile)",
         "declaredBy": "manifest.htmlContract.breakExamples",
         "note": "디자인가이드는 보고 있는 화면의 플랫폼 마크업만 표시한다 (river HD-1 A안 2026-09-01)."
-      }
+      },
+      "riverReconfirmed": "2026-09-03 river 재확인: 기존 'river 승인' 날짜의 실제 승인 여부를 river 본인이 기억하지 못한다고 답해, 이 세션에서 pages/ui-review.html 을 직접 보여주고 다시 승인받았다(reports/ui-library/select-dropdown-filter-chip/workflow-state.json 참조)."
     },
     {
       "id": "dropdown",
@@ -202,7 +205,8 @@
       ],
       "riverApproval": "approved 2026-09-01",
       "promotionDecision": "approved 2026-09-01 · 5-human-review 검수본 07 승인 · 배포본 verified→approved 승격으로 공개",
-      "note": "체크박스 유형은 승인된 코어 Checkbox 배포본을 조립한다. 「전체 선택」 부분선택(mixed) 은 정본에 없어 만들지 않았다(river 결정 2026-08-31)."
+      "note": "체크박스 유형은 승인된 코어 Checkbox 배포본을 조립한다. 「전체 선택」 부분선택(mixed) 은 정본에 없어 만들지 않았다(river 결정 2026-08-31).",
+      "riverReconfirmed": "2026-09-03 river 재확인: 기존 'river 승인' 날짜의 실제 승인 여부를 river 본인이 기억하지 못한다고 답해, 이 세션에서 pages/ui-review.html 을 직접 보여주고 다시 승인받았다(reports/ui-library/select-dropdown-filter-chip/workflow-state.json 참조)."
     },
     {
       "id": "filter-chip",
@@ -233,7 +237,8 @@
         "distribution": "examples/filter-chip.html (PC) · examples/filter-chip.mobile.html (Mobile)",
         "declaredBy": "manifest.htmlContract.breakExamples",
         "note": "디자인가이드는 보고 있는 화면의 플랫폼 마크업만 표시한다 (river HD-1 A안 2026-09-01)."
-      }
+      },
+      "riverReconfirmed": "2026-09-03 river 재확인: 기존 'river 승인' 날짜의 실제 승인 여부를 river 본인이 기억하지 못한다고 답해, 이 세션에서 pages/ui-review.html 을 직접 보여주고 다시 승인받았다(reports/ui-library/select-dropdown-filter-chip/workflow-state.json 참조)."
     },
     {
       "id": "tab",
@@ -445,6 +450,48 @@
       "note": "4-verification 통과 후 river UX 검수에서 안내 화면 4건(유형 선택칩·칩 위치·정본 상태바·홈 배경 잇기)을 반영하고 승격했다. 배포 부품은 그 4건으로 바뀌지 않았다 — 안내 화면 코드만 바뀌었다.",
       "riverApproval": "approved 2026-09-02",
       "promotionDecision": "approved 2026-09-02 · 독립 검증 PASS(🤖 component-verifier 시나리오 F 2·3회차) · river UX 검수 통과(안내 화면 수정 4건 반영 후)"
+    },
+    {
+      "id": "time-picker",
+      "kind": "core-component",
+      "legacyStatus": "implemented",
+      "uiLibraryStatus": "approved",
+      "dependencies": [
+        "tokens.css",
+        "typography.css",
+        "clock.svg"
+      ],
+      "lastVerified": "2026-09-03",
+      "reverifyTrigger": "정본 buildTimePicker·buildTimePickerDropdown·buildTimePickerCell 의 geometry·variant·token 변경 · clock 아이콘 원본 대조 기록 변경 · D1(모바일 휠 바텀시트 범위 밖)·D2(분 간격)·D6(목록 폭) 결정 변경",
+      "evidence": [
+        "reports/ui-library/time-picker/1-inventory.md",
+        "reports/ui-library/time-picker/2-canon-readiness.md",
+        "reports/ui-library/time-picker/3-build.md",
+        "reports/ui-library/time-picker/4-verification.md",
+        "reports/ui-library/time-picker/5-human-review.md",
+        "reports/ui-library/time-picker/6-promotion.md",
+        "reports/ui-library/time-picker/workflow-state.json"
+      ],
+      "note": "독립 검증 4회차까지 갔다. 1회차에서 「확인」 버튼이 안내·검수 화면 양쪽에서 무동작(정적 칸 data-value 누락)인 것을 포함해 8건이 잡혔고, 3회차에서 registry sizing.minWidth 78px 이 정본 어디에도 없는 값(레거시 손관리 CSS 유래)임이 드러나 river 의 「입력칸이 좁다·Filled 에서 줄어든다」 지적의 뿌리로 확인됐다. 배포본 자체는 1회차부터 빈 HTML 소비에서 정상이었고, 잡힌 결함 상당수는 안내·검수 화면의 표본 조립 문제였다.",
+      "canonDeviations": [
+        {
+          "what": "모바일 휠 바텀시트(정본 buildTimePickerMobileBottomSheet, Content=TimeOnly/DateTime) 미구현",
+          "why": "river 결정 D1(2026-09-02) — Date Picker 바텀시트와 구조를 공유해 Date Picker 작업에서 함께 만든다",
+          "recordedIn": "registry/governance/variant-coverage-baseline.json knownGaps[time-picker.content] (Gate 19 동결)"
+        },
+        {
+          "what": "패널이 트리거보다 좁아지지 않는다(min-width:100%) — 24h 는 정본 121 대신 트리거 폭(기본 150), 열 폭 44→58.5",
+          "why": "river 지시 D6(2026-09-03) \"24시간만 인풋에 맞춰줘  12시간제는 현재 유지\". 12h(194)는 정본 그대로 유지",
+          "recordedIn": "ui-library/src/components/time-picker/manifest.json notInCanon.panelWidthFollowsTrigger"
+        },
+        {
+          "what": "트리거 최소 폭 150px 고정(정본 값) — 웹은 width:100% 로 더 넓게도 쓸 수 있다",
+          "why": "river 지시 2026-09-03 — 기본 폭이 좁고 Filled 에서 입력칸이 줄어들었다. Select 이 정본 140 을 같은 방식으로 쓰는 선례",
+          "recordedIn": "manifest notInCanon.widthFixed · registry/components/time-picker.json sizing.minWidth"
+        }
+      ],
+      "riverApproval": "approved 2026-09-03",
+      "promotionDecision": "approved 2026-09-03 · 독립 검증 🤖 component-verifier 시나리오 F 4회차 PASS · river UX 검수 2회(1차 지시 3건 반영 → 2차 목록 폭 지시 반영 후 승인)"
     }
   ]
 }

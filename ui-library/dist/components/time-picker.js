@@ -88,8 +88,21 @@ export function init(root) {
     if (sel) setActive(column, sel);
   }
 
+  /* 정적 마크업으로 미리 채운 칸에 data-value 가 없으면 보이는 글자를 값으로 삼는다.
+     htmlContract 가 "정적 마크업으로 미리 채워도 된다"를 허용하므로, 값 없는 칸 때문에
+     확인이 조용히 아무 일도 안 하는 상태를 런타임이 막는다(독립 검증 F-1). */
+  for (const column of columns) {
+    for (const cell of getCells(column)) {
+      if (cell.dataset.value == null) cell.dataset.value = cell.textContent.trim();
+      if (!cell.hasAttribute("tabindex")) cell.tabIndex = -1;
+    }
+  }
+
   if (!trigger.hasAttribute("aria-haspopup")) trigger.setAttribute("aria-haspopup", "listbox");
-  if (!trigger.hasAttribute("aria-expanded")) trigger.setAttribute("aria-expanded", "false");
+  /* panel 을 무조건 닫고 시작하므로 aria-expanded 도 무조건 false 로 맞춘다.
+     열린 채 destroy → init 하면 aria-expanded="true" 가 남아 닫힌 트리거가
+     열림(정본 Focus) 테두리로 그려졌다(독립 검증 F-6). */
+  trigger.setAttribute("aria-expanded", "false");
   panel.hidden = true;
 
   const requiredKinds = type === "12h" ? ["ampm", "hour", "minute"] : ["hour", "minute"];
@@ -240,6 +253,9 @@ export function init(root) {
     openPanel: open,
     closePanel: close,
     destroy() {
+      /* 열린 채로 나가지 않는다 — 리스너를 뗀 뒤에는 Esc·바깥클릭으로도 닫을 수 없어
+         패널이 조작 불가 상태로 남는다(독립 검증 2회차 🟡). */
+      close({ returnFocus: false });
       trigger.removeEventListener("click", handleTriggerClick);
       trigger.removeEventListener("keydown", handleTriggerKeydown);
       root.removeEventListener("keydown", handleRootKeydown);

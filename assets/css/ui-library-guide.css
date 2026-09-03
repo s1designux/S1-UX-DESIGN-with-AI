@@ -266,9 +266,22 @@
 /* 목록이 펼쳐진 칸(Open · Selected)이 아랫줄을 덮지 않도록 자리를 준다 — 패널은 오버레이다. */
 .uilg-open-cell { min-height: 200px; }
 
+/* Time Picker 패널은 목록 192 + 위여백 12 + 확인줄 ≈ 248px 라 Select 목록보다 높다.
+   같은 200px 를 쓰면 아래 블록(유형·목록 칸)을 덮는다. */
+[data-guide-component="time-picker"] .uilg-open-cell { min-height: 300px; }
+
 [data-s1-component="select"] [data-s1-part="trigger"][data-force-state="hover"] {
   background: var(--color-form-control-bg-hover);
   color: var(--color-form-control-text-placeholder);
+}
+
+[data-s1-component="time-picker"] [data-s1-part="trigger"][data-force-state="hover"] {
+  background: var(--color-form-control-bg-hover);
+}
+
+[data-s1-component="time-picker"] [data-s1-part="cell"][data-force-state="hover"] {
+  background: var(--color-dropdown-option-bg-hover);
+  color: var(--color-dropdown-option-label-hover);
 }
 
 [data-s1-component="dropdown"] [data-s1-part="option"][data-force-state="hover"] {

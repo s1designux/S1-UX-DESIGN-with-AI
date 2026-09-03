@@ -106,6 +106,15 @@ const componentConfig = {
     description: "모바일 화면 상단 AppBar입니다. 상태바(StatusBar)는 OS·브라우저가 그리는 영역이라 배포본에 넣지 않습니다.",
     approvedScope: "Type 6종(Home 2 · Standard 4) · AppBar 56px 고정 · 크기 축 없음 · JavaScript 불필요",
     runtime: S1UI.mobileHeader
+  },
+  "time-picker": {
+    title: "Time Picker",
+    description: "시각을 고를 때 사용합니다. 트리거를 누르면 시·분 목록이 열리고, 확인을 눌러야 값이 트리거에 남습니다.",
+    approvedScope: {
+      pc: "상태 5종 · PC 3크기(XXSM 28 · XSM 34 · MD 44) · 24시간제 · 오전오후 2유형 · 확인을 눌러야 값이 적용",
+      mobile: "상태 5종 · 24시간제 · 오전오후 2유형 · 확인을 눌러야 값이 적용"
+    },
+    runtime: S1UI.timePicker
   }
 };
 
@@ -1469,6 +1478,162 @@ function mobileHeaderStateMatrix() {
 
 /* ── Component documentation (실제 동작 다음에 온다) ── */
 
+/* ── Time Picker ──
+   정본: buildTimePicker(트리거) · buildTimePickerDropdown(패널 8변형) · buildTimePickerCell(칸 3변형).
+   미리보기 칸은 init 하지 않으므로 목록을 마크업이 직접 든다 — 이때 배포본 계약대로 각 칸에
+   data-value 를 준다(없으면 확인이 값을 못 읽는다 · 독립 검증 F-1).
+   Focus 칸은 정본 Focus 변형 그대로다: 트리거 문구는 placeholder "시간 선택" 이고
+   패널은 TPD:focus-default(=24h/시 Selected, 확인 비활성)다(build-components.ts 2333·2559). */
+
+const timePickerSample = {
+  hour: ["08", "09", "10", "11"],
+  minute: ["00", "15", "30", "45"],
+  ampm: ["오전", "오후"]
+};
+
+function timePickerCell(text, { selected = false, hover = false } = {}) {
+  return `<div data-s1-part="cell" role="option" data-value="${text}" aria-selected="${selected}"${hover ? ' data-force-state="hover"' : ""}>${text}</div>`;
+}
+
+function timePickerColumn(column, label, items, { selected = null, hover = null } = {}) {
+  const cells = items.map((text) => timePickerCell(text, { selected: text === selected, hover: text === hover })).join("");
+  return `<div data-s1-part="column" data-column="${column}" role="listbox" aria-label="${label}">${cells}</div>`;
+}
+
+const timePickerDivider = '<div data-s1-part="divider"></div>';
+
+/* pick = 정본 Time Picker Dropdown 의 한 변형. 확인 활성 여부도 정본을 따른다
+   — 시 Hover·시 Selected·분 Hover 는 비활성, 분 Selected 만 활성(build-components.ts 2533-2538). */
+const timePickerPanelStates = {
+  "시 Hover":    { hourHover: "09" },
+  "시 Selected": { hour: "09" },
+  "분 Hover":    { hour: "09", minuteHover: "30" },
+  "분 Selected": { hour: "09", minute: "30" }
+};
+
+function timePickerPanel(type, pick) {
+  const hour = timePickerColumn("hour", "시", timePickerSample.hour, { selected: pick.hour, hover: pick.hourHover });
+  const minute = timePickerColumn("minute", "분", timePickerSample.minute, { selected: pick.minute, hover: pick.minuteHover });
+  const ampm = timePickerColumn("ampm", "오전오후", timePickerSample.ampm, { selected: type === "12h" ? "오전" : null });
+  const columns = type === "12h" ? [ampm, hour, minute].join(timePickerDivider) : [hour, minute].join(timePickerDivider);
+  const complete = Boolean(pick.hour && pick.minute);
+  return `<div data-s1-part="columns">${columns}</div>
+      <div data-s1-part="footer"><button type="button" data-s1-part="confirm"${complete ? "" : " disabled"}>확인</button></div>`;
+}
+
+function timePickerMarkup({ size = "md", breakName = "pc", type = "24h", state = "default", isPreview = false, panelState = "시 Selected" } = {}) {
+  /* 정본 Focus = 드롭다운이 열린 상태(manifest states.focus). */
+  const open = state === "focus";
+  const filled = state === "filled";
+  const disabled = state === "disabled";
+  const force = state === "hover" ? ' data-force-state="hover"' : "";
+  const preview = isPreview ? " is-preview" : "";
+  const panelHidden = isPreview ? (open ? "" : " hidden") : " hidden";
+  /* 정본 Focus 변형의 트리거 문구는 값이 아니라 placeholder 다 — 값이 보이는 것은 Filled 뿐이다. */
+  const value = filled ? (type === "12h" ? "오전 09:30" : "09:30") : "시간 선택";
+  const step = type === "12h" ? "5" : "1";
+  return `<div data-guide-sample="set" data-s1-component="time-picker" data-size="${size}" data-break="${breakName}" data-type="${type}" data-minute-step="${step}" class="${preview}">
+      <button type="button" data-s1-part="trigger" aria-haspopup="listbox" aria-expanded="${open}"${filled ? ' data-filled="true"' : ""}${disabled ? " disabled" : ""}${force} aria-label="시간">
+        <span data-s1-part="value">${value}</span>
+        <span data-s1-part="icon" aria-hidden="true"></span>
+      </button>
+      <div data-s1-part="panel"${panelHidden}>${timePickerPanel(type, timePickerPanelStates[panelState])}</div>
+    </div>`;
+}
+
+function timePickerStateMatrix() {
+  const pcSizes = [["xxsm", "XXSM", "28px"], ["xsm", "XSM", "34px"], ["md", "MD", "44px"]];
+  /* Mobile 은 크기가 하나뿐이라 크기를 축으로 세우지 않는다 — 그 자리에 유형(24h·12h)을 넣는다
+     (표출 정책 _meta.uiLibraryGuideLayout.stateMatrix.singleValueAxis, river 확정 2026-09-02). */
+  const mobileCols = [["24h", "24시간제"], ["12h", "오전·오후"]];
+  /* 열 = 정본 트리거 상태 전수(5종 — manifest canonicalStateMap). */
+  const states = [
+    ["Default", "default"],
+    ["Hover", "hover", "검수 표시"],
+    ["Filled", "filled", "값 선택됨"],
+    ["Disabled", "disabled"],
+    ["Focus", "focus", "목록 열림"]
+  ];
+
+  /* PC 는 열=크기(유형은 24h 고정), Mobile 은 열=유형(크기는 md 고정). */
+  const cellFor = (breakName, axis) => (key, state) => axis === "size"
+    ? timePickerMarkup({ size: key, breakName, type: "24h", state, isPreview: true })
+    : timePickerMarkup({ size: "md", breakName, type: key, state, isPreview: true });
+
+  function actionSection(breakName, cols, axis) {
+    const live = (key) => axis === "size"
+      ? timePickerMarkup({ size: key, breakName, type: "24h" })
+      : timePickerMarkup({ size: "md", breakName, type: key });
+    const header = `<div class="matrix-col-header" style="grid-column:1"></div>` +
+      cols.map(([, label, dim]) => `<div class="matrix-col-header">${label || ""}${dim ? `<span class="uilg-size-dim">${dim}</span>` : ""}</div>`).join("");
+    /* PC 는 열이 크기라 유형(24h·12h)이 표에 드러나지 않는다 — Action 에서 두 줄로 나눠 보인다
+       (river 지시 2026-09-03). Mobile 은 이미 열이 유형이라 한 줄이면 된다. */
+    const liveRows = axis === "size"
+      ? [["24시간제", "24h"], ["오전·오후", "12h"]].map(([label, type]) =>
+          `<div class="matrix-row-label">${label}</div>` +
+          cols.map(([size]) => `<div class="comp-state-cell">${timePickerMarkup({ size, breakName, type })}</div>`).join("")).join("")
+      : `<div class="matrix-row-label">Time Picker</div>` +
+        cols.map(([key]) => `<div class="comp-state-cell">${live(key)}</div>`).join("");
+    const disabledRow = `<div class="matrix-row-label">Disabled${axis === "size" ? '<span class="uilg-size-dim">공통</span>' : ""}</div>` +
+      cols.map(([key]) => `<div class="comp-state-cell">${cellFor(breakName, axis)(key, "disabled")}</div>`).join("");
+    return `<div class="comp-action-top">
+      <div class="matrix-col-header-action">Action</div>
+      <div class="comp-state-matrix" style="grid-template-columns: 120px repeat(${cols.length}, minmax(150px, 1fr));">${header}${liveRows}${disabledRow}</div>
+      <p class="uilg-demo-note">눌러서 시·분을 고르고 <strong>확인</strong>을 눌러야 값이 남습니다. 화살표 키로 칸과 열을 옮기고 Esc로 닫습니다.</p>
+    </div>`;
+  }
+
+  /* 패널 상태 — 정본 Time Picker Dropdown 세트의 State 축 전수(4종).
+     시·분을 차례로 고르는 동안 확인이 언제 풀리는지가 이 표의 핵심이다. */
+  const panelStates = [
+    ["시 Hover", "확인 비활성"],
+    ["시 Selected", "확인 비활성"],
+    ["분 Hover", "확인 비활성"],
+    ["분 Selected", "확인 활성"]
+  ];
+  const panelBlock = (type) => `<div class="uilg-variant-block">
+      <div class="variant-label">패널 상태 — ${type === "12h" ? "오전·오후(12시간제)" : "24시간제"}</div>
+      <div class="comp-state-matrix" style="grid-template-columns: 120px repeat(${panelStates.length}, minmax(150px, 1fr));">
+        <div class="matrix-col-header" style="grid-column:1"></div>${panelStates.map(([label, note]) => `<div class="matrix-col-header">${label}<span class="uilg-size-dim">${note}</span></div>`).join("")}
+        <div class="matrix-row-label">${type === "12h" ? "12h · 3열" : "24h · 2열"}</div>${panelStates.map(([label]) => `<div class="comp-state-cell uilg-open-cell">${timePickerMarkup({ size: "md", breakName: "pc", type, state: "focus", isPreview: true, panelState: label })}</div>`).join("")}
+      </div>
+    </div>`;
+
+  /* 목록 칸은 정본 Time Picker Cell 세트(Default·Hover·Selected 3변형)다.
+     시·분 열에 같은 셀 컴포넌트가 쓰이므로 표본은 한 줄이면 충분하다. */
+  const cellSamples = [["Default", {}], ["Hover", { hover: true }], ["Selected", { selected: true }]];
+  const cellBlock = `<div class="uilg-variant-block">
+      <div class="variant-label">목록 칸 상태</div>
+      <div class="comp-state-matrix" style="grid-template-columns: 120px repeat(${cellSamples.length}, minmax(120px, 1fr));">
+        <div class="matrix-col-header" style="grid-column:1"></div>${cellSamples.map(([label]) => `<div class="matrix-col-header">${label}</div>`).join("")}
+        <div class="matrix-row-label">Cell</div>${cellSamples.map(([, opts]) => `<div class="comp-state-cell"><div data-guide-sample="part" data-s1-component="time-picker" class="is-preview">${timePickerCell("09", opts)}</div></div>`).join("")}
+      </div>
+    </div>`;
+
+  const pcContent = `${actionSection("pc", pcSizes, "size")}
+    ${sizeStateGrid(pcSizes, states, cellFor("pc", "size"), { tall: true })}
+    <hr class="uilg-separator">
+    ${panelBlock("24h")}
+    <hr class="uilg-separator">
+    ${panelBlock("12h")}
+    <hr class="uilg-separator">
+    ${cellBlock}`;
+
+  /* Mobile 은 유형을 표 안에서 함께 보이므로 유형 사이 가로선을 두지 않는다
+     (표출 정책 singleValueAxis · 렌더 검사 ②). */
+  const mobileContent = `${actionSection("mobile", mobileCols, "type")}
+    ${sizeStateGrid(mobileCols, states, cellFor("mobile", "type"), { tall: true })}
+    ${cellBlock}`;
+
+  return `
+    <div class="platform-section platform-section-pc">
+      <div class="preview-area">${pcContent}</div>
+    </div>
+    <div class="platform-section platform-section-mobile">
+      <div class="preview-area">${mobileContent}</div>
+    </div>`;
+}
+
 function stateMatrix(id) {
   if (id === "input") return inputStateMatrix();
   if (id === "button") return buttonStateMatrix();
@@ -1485,6 +1650,7 @@ function stateMatrix(id) {
   if (id === "modal") return modalStateMatrix();
   if (id === "mobile-bottom-nav") return mobileBottomNavStateMatrix();
   if (id === "mobile-header") return mobileHeaderStateMatrix();
+  if (id === "time-picker") return timePickerStateMatrix();
   return controlStateMatrix(id);
 }
 
@@ -1685,7 +1851,7 @@ async function mountGuide(id) {
 
     section.replaceChildren(fragment);
     wireCodeViewer(section, { html, css, js });
-    if (id === "toggle" || id === "chip" || id === "select" || id === "dropdown" || id === "filter-chip" || id === "tab" || id === "pagination" || id === "multi-toggle" || id === "table") {
+    if (id === "toggle" || id === "chip" || id === "select" || id === "dropdown" || id === "filter-chip" || id === "tab" || id === "pagination" || id === "multi-toggle" || id === "table" || id === "time-picker") {
       /* 미리보기 칸(.is-preview)은 init 하지 않는다 — 런타임이 패널을 다시 닫아
          Open/Selected 칸이 사라진다. Action 영역의 실물만 살린다. */
       section.querySelectorAll(`[data-s1-component="${id}"]:not(.is-preview)`).forEach((root) => config.runtime.init(root));
@@ -1775,6 +1941,6 @@ async function mountGuide(id) {
   }
 }
 
-const guideComponents = ["input", "button", "checkbox", "radio", "toggle", "chip", "select", "dropdown", "filter-chip", "tab", "pagination", "textarea", "multi-toggle", "modal", "table", "mobile-bottom-nav", "mobile-header"];
+const guideComponents = ["input", "button", "checkbox", "radio", "toggle", "chip", "select", "dropdown", "filter-chip", "tab", "pagination", "textarea", "multi-toggle", "modal", "table", "mobile-bottom-nav", "mobile-header", "time-picker"];
 await Promise.all(guideComponents.map(mountGuide));
 document.dispatchEvent(new CustomEvent("s1:component-guide:ready", { detail: { components: guideComponents } }));
