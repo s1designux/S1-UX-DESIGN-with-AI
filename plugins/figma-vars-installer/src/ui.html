@@ -155,6 +155,13 @@
   .pattern-need .need-desc { margin-top: 6px; font-size: 11.5px; color: #6b7280; line-height: 1.7; }
   .pattern-need .btn-need { margin-top: 14px; padding: 9px 18px; border: 1px solid #1d6ceb; border-radius: 8px; background: #1d6ceb; color: #fff; font: inherit; font-size: 12px; font-weight: 600; cursor: pointer; }
   .pattern-need .btn-need:hover { filter: brightness(0.95); }
+  /* 만들 수 있는 패턴이 하나도 없을 때 — 지금 할 일은 설치뿐이므로 목록·설명·버튼줄을 모두 감추고
+     안내와 버튼만 화면 가운데 둔다 (검수 탭의 '최신 가이드가 아닙니다' 화면과 같은 모양). */
+  #pscreen-select.need-only #pattern-list,
+  #pscreen-select.need-only #pattern-note,
+  #pscreen-select.need-only .install-footer { display: none; }
+  #pscreen-select.need-only .iscroll { display: flex; align-items: center; justify-content: center; }
+  #pscreen-select.need-only .pattern-need { margin: 0; padding: 0 20px; border-bottom: 0; }
 
   /* ── info tooltip (사용 방법 ⓘ 호버) ── */
   .info-ic { display: inline-flex; align-items: center; justify-content: center; margin-left: 8px; width: 18px; height: 18px; border-radius: 50%; color: var(--muted); cursor: help; position: relative; font-size: 13px; outline: none; }
@@ -195,6 +202,7 @@
   .btn-primary:disabled { background: #d1d5db; color: #9ca3af; cursor: not-allowed; }
   .btn-secondary { background: #f3f4f6; color: #374151; }
   .btn-secondary:hover { background: #e5e7eb; }
+  .btn-secondary:disabled { opacity: 0.5; cursor: not-allowed; background: #f3f4f6; }
 
   /* ══════════ 검수(audit) UI — 모든 규칙 #audit-root 스코프(설치 탭 불침범) ══════════ */
   #audit-root {
@@ -488,6 +496,10 @@
   </div>
 </div><!-- /.istack -->
 </div>
+<!-- 중단 — 만들던 부품 하나는 마저 끝내고 멈추므로 누른 즉시 멈추지는 않는다. -->
+<div class="btn-row install-footer">
+  <button class="btn btn-secondary" id="btn-install-cancel" onclick="cancelInstall()">중단하기</button>
+</div>
 </div><!-- /iscreen-installing -->
 
 <!-- ═══ 화면 3 : 설치 완료 / 오류 ═══ -->
@@ -738,8 +750,19 @@
     if (sc) sc.scrollTop = 0;
   }
 
+  // [중단하기] — 플러그인 쪽에 신호만 보낸다. 실제 멈춤은 다음 부품 직전이라 시간이 조금 걸린다.
+  function cancelInstall() {
+    const btn = document.getElementById('btn-install-cancel');
+    if (btn) { btn.disabled = true; btn.textContent = '중단하는 중…'; }
+    document.getElementById('progress-heading').textContent = '설치를 중단하는 중입니다';
+    document.getElementById('progress-label').textContent = '만들던 부품 하나를 마친 뒤 멈춥니다…';
+    parent.postMessage({ pluginMessage: { type: 'install-cancel' } }, '*');
+  }
+
   function resetProgress(heading) {
     _pct = 0;
+    const cb = document.getElementById('btn-install-cancel');
+    if (cb) { cb.disabled = false; cb.textContent = '중단하기'; }
     document.getElementById('progress-pct').textContent = '0%';
     document.getElementById('progress-heading').textContent = heading || '설치 중입니다';
     document.getElementById('progress-label').textContent = '준비 중…';
@@ -918,6 +941,25 @@
       showInstallScreen('done');
     }
 
+    // 설치 중단 — 실패가 아니므로 빨간 오류 대신 '무엇이 남았는지'를 그대로 알린다.
+    if (msg.type === 'cancelled') {
+      document.getElementById('result').innerHTML = `
+        <div class="result-error">
+          <div class="result-error-title">설치를 중단했습니다</div>
+          <div class="result-sub">
+            ${msg.newPage
+              ? '이번에 만들던 <b>가이드 페이지는 지웠습니다.</b><br><br>'
+              : '<b>중단 시점까지 만들어진 컴포넌트는 이 페이지에 그대로 남아 있습니다.</b><br><br>'}
+            · 이미 만들어진 <b>Variables · Text Styles 는 지우지 않습니다</b>(기존 바인딩 유지).<br>
+            · 처음부터 다시 하려면 <b>[처음으로]</b> 를 눌러 다시 설치하세요.<br>
+            · 되돌리려면 Figma 에서 <b>Undo(⌘Z)</b> 하세요.
+          </div>
+        </div>`;
+      document.getElementById('reinstall-confirm').style.display = 'none';
+      setDoneFooter('error');
+      showInstallScreen('done');
+    }
+
     // 재설치 삭제 완료 → 처음 화면으로
     if (msg.type === 'clean-done') {
       const sections = msg.removedSections || 0;
@@ -1012,23 +1054,29 @@
     const desc = document.getElementById('pattern-need-desc');
     if (!box) return;
     const blocked = PATTERN_ITEMS.filter((it) => !it.ready);
+    const all = PATTERN_ITEMS.length > 0 && blocked.length === PATTERN_ITEMS.length;
     box.classList.toggle('visible', blocked.length > 0);
+    document.getElementById('pscreen-select').classList.toggle('need-only', all);
     if (!blocked.length || !desc) return;
-    const parts = [];
-    blocked.forEach((it) => (it.missing || []).forEach((m) => {
-      if (parts.indexOf(m) < 0) parts.push(m);
-    }));
-    const all = blocked.length === PATTERN_ITEMS.length;
-    desc.innerHTML =
-      (all
-        ? '패턴 화면은 설치된 컴포넌트를 조립해 만듭니다. 이 파일에는 아직 부품이 없어 <b>지금은 만들 수 있는 패턴이 없습니다.</b>'
-        : '일부 패턴에 필요한 부품이 이 파일에 아직 없습니다.') +
-      (parts.length ? '<br>필요한 부품 · ' + esc(parts.join(', ')) : '');
+    desc.textContent = all
+      ? '패턴 화면은 설치된 컴포넌트를 조립해 만듭니다. 이 파일에는 아직 부품이 없어 지금은 만들 수 있는 패턴이 없습니다.'
+      : '일부 패턴에 필요한 부품이 이 파일에 아직 없습니다.';
   }
 
-  // 안내 버튼 — 가이드설치 탭으로 옮겨 준다.
+  // 안내 버튼 — 검수 탭의 [최신 가이드로 업데이트] 와 같은 동작.
+  //   탭만 옮겨 주고 끝내지 않고, 최신 가이드 설치를 바로 시작한 뒤
+  //   가이드설치 탭의 진행 화면(로딩·안내·중단하기)을 그대로 보여준다.
   function goInstallFromPattern() {
+    GUIDE_UPDATE_ORIGIN = 'pattern';
+    startGuideUpdate('최신 가이드를 설치하고 있습니다');
+  }
+
+  // 검수·패턴 두 곳이 함께 쓰는 '최신 가이드 설치' 시작 절차.
+  function startGuideUpdate(heading) {
     switchTab('install');
+    resetProgress(heading);
+    showInstallScreen('installing');
+    parent.postMessage({ pluginMessage: { type: 'update-guide' } }, '*');
   }
 
   function selectedPatternIds() {
@@ -1156,6 +1204,8 @@ const CHECK_LABELS = [
 let auditSelectionCount = 0;
 let auditInspecting = false;
 let auditInstalled = false;
+// '최신 가이드 설치'를 어느 탭에서 시작했는지 — 끝나면 그 자리로 돌려보낸다.
+let GUIDE_UPDATE_ORIGIN = 'audit';
 let auditPhase = "component";
 let auditGuideRequestId = 0;
 
@@ -1294,7 +1344,9 @@ $('#btn-go-install').addEventListener('click', () => {
   const btn = $('#btn-go-install');
   btn.disabled = true;
   btn.textContent = '최신 가이드 설치 중…';
-  parent.postMessage({ pluginMessage: { type: 'update-guide' } }, '*');
+  GUIDE_UPDATE_ORIGIN = 'audit';
+  // 설치 탭의 진행 화면(로딩·안내·중단하기)을 그대로 쓴다 — 버튼만 바뀐 채 기다리게 두지 않는다.
+  startGuideUpdate('최신 가이드를 설치하고 있습니다');
 });
 
 $('#btn-guide-retry').addEventListener('click', beginAuditGuideCheck);
@@ -1869,6 +1921,12 @@ function renderInspectionResult(payload) {
   showAuditScreen('result');
 }
 
+function resetGuideUpdateButton() {
+  const btn = $('#btn-go-install');
+  btn.disabled = false;
+  btn.textContent = '최신 가이드로 업데이트';
+}
+
 function handleAuditUiMessage(msg) {
   if (msg.type === "selection-state") {
     const p = msg.payload || {};
@@ -1896,17 +1954,18 @@ function handleAuditUiMessage(msg) {
     $('#audit-guide-error').classList.add('visible');
     $('#btn-audit').disabled = true;
   } else if (msg.type === "guide-update-done") {
-    const btn = $('#btn-go-install');
-    btn.disabled = false;
-    btn.textContent = '최신 가이드로 업데이트';
+    resetGuideUpdateButton();
     auditInstalled = true;
-    switchTab('audit');
+    // 시작한 자리로 돌려보낸다 — 패턴에서 시작했으면 패턴 목록을 새로 읽어 잠금이 풀린 채 보여 준다.
+    switchTab(GUIDE_UPDATE_ORIGIN === 'pattern' ? 'pattern' : 'audit');
     showToast(`✅ ${msg.payload && msg.payload.pageName ? msg.payload.pageName : '새 가이드 페이지'} 설치 완료`);
   } else if (msg.type === "guide-update-failed") {
-    const btn = $('#btn-go-install');
-    btn.disabled = false;
-    btn.textContent = '최신 가이드로 업데이트';
+    // 설치 탭에 이미 오류 화면이 떠 있다 — 탭을 옮기지 않고 사유만 덧붙인다.
+    resetGuideUpdateButton();
     showToast('⚠ 업데이트에 실패했습니다. 최신 가이드 표식은 기록되지 않았습니다.');
+  } else if (msg.type === "guide-update-cancelled") {
+    // 중단 안내 화면은 설치 탭이 이미 띄웠다. 여기서는 버튼 상태만 되돌린다.
+    resetGuideUpdateButton();
   } else if (msg.type === "inspection-progress") {
     updateProgress(msg.payload || {});
   } else if (msg.type === "inspection-result") {

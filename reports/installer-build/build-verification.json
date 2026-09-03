@@ -1,9 +1,9 @@
 {
   "sourceFile": "plugins/figma-vars-installer/src/build-components.ts",
-  "sourceHash": "sha256:2beb813ff18d9f7670bd11baa876950fee0d7a715ba6994162c9ccfe56c6a27e",
-  "verifiedBy": "component-verifier",
+  "sourceHash": "sha256:6253ecac8d94a0250f0d0c9e0d9eabd895956ad6ac98382932a53ac4bbbbc408",
+  "verifiedBy": "orchestrator",
   "verdict": "pass",
-  "changeType": "structural",
-  "verifiedAt": "2026-09-02T13:13:08.940Z",
-  "notes": "focus-visible 전량 철회(2026-09-02 river 지시). build-components.ts 구조 제거 4곳 검증: makeFocusRing 함수·Button focus ring 생성/배치+clipsContent=false·Button 세트 'Focus Visible' BOOLEAN 속성과 참조 루프·Input suffix action ring 생성/배치·Input 세트 focus 속성 2개와 passwordRing/clearRing 참조. 잔재 0건(makeFocusRing/focusRing/ring/pwFocusPropId/clearFocusPropId/focusVisiblePropId 전 소스 grep 0 — tsconfig 에 noUnusedLocals 가 없어 tsc 통과는 근거로 쓰지 않음). 과잉 제거 없음: comp.clipsContent=false 는 git show 3997f18^ 로 buildOne 에 원래 없었음을 확인, 링과 같은 커밋에서 함께 들어온 줄이라 삭제는 링 이전 정본 동작으로의 복원. Input hoverBg 경로(생성·bg/hover 바인딩·radius/4·ABSOLUTE/STRETCH·pwHoverPropId/clearHoverPropId 참조) 무손상. makeFocusRing 호출부 0. 제거 토큰 2개(color/button/border/focus·color/form-control/action/border/focus)의 소스 참조 끊김 0. 결정론 검사: installer:check exit 0·keycheck 누락 0·anatomy 8규칙·iconpolicy 위반 0·ui:build:check 104 files·ui:test 통과. 파생 표면 재빌드 확인(루트↔dist tokens.css 해시 일치 9d4ac504, dist 내 focus 잔재 0). ui:state 11개 중 9개 클린, 2개는 component-behavior.pc.json 기존 부채(별건). 한계: Figma 캔버스 실제 렌더 미검증(코드 레벨 범위 밖·본 세션 Figma MCP 미인증). 3차 반려 후 통과 — 반려 사유였던 dist stale·ui-review 문구·workflow-state 지문/단계·river 오귀속 13건 모두 해소 확인."
+  "changeType": "mechanical",
+  "verifiedAt": "2026-09-03T04:00:19.684Z",
+  "notes": "설치 중단 신호 배선만: 선택적 shouldCancel 파라미터 추가 + 컴포넌트 루프 상단 가드 1줄(건별 try/catch 바깥). 컴포넌트 생성 로직·variant 스펙·토큰 바인딩·레이아웃 무변경."
 }

@@ -64,6 +64,14 @@ let auditSessionRootIds: string[] = [];
 const swapRollbackById = new Map<string, SwapRollback>();
 void cleanupSwapBackups();
 
+// ── 설치 중단 ────────────────────────────────────────────────────────────────
+//   UI 의 [중단하기] 가 보내는 신호. 설치 루프는 '단계 경계'와 '컴포넌트 1개 경계'에서만
+//   이 값을 확인한다 — 만들다 만 노드를 남기지 않기 위해, 한 부품을 만들던 중에는 끊지 않는다.
+//   (Figma 플러그인은 단일 스레드지만 await 마다 이벤트 루프가 열려 이 신호가 도착한다.)
+let CANCEL_INSTALL = false;
+const CANCELLED = "__INSTALL_CANCELLED__";
+function throwIfCancelled(): void { if (CANCEL_INSTALL) throw new Error(CANCELLED); }
+
 interface InstallSelection {
   foundation: boolean;
   semantic: boolean;
@@ -79,6 +87,9 @@ figma.ui.onmessage = async (msg: { type: string; payload?: any } & Partial<Insta
       textStyles: msg.textStyles === true,
       components: msg.components === true,
     }, { stampCompleteGuide: true });
+  } else if (msg.type === "install-cancel") {
+    // 플래그만 세운다 — 진행 중인 설치가 다음 경계에서 스스로 멈춘다.
+    CANCEL_INSTALL = true;
   } else if (msg.type === "update-guide") {
     await installLatestGuideOnNewPage();
   } else if (msg.type === "reinstall-clean") {
@@ -846,7 +857,8 @@ async function loadExistingSemantic(): Promise<{
 async function runInstall(
   sel: InstallSelection,
   options: { stampCompleteGuide?: boolean; updateFlow?: boolean } = {},
-): Promise<boolean> {
+): Promise<"ok" | "error" | "cancelled"> {
+  CANCEL_INSTALL = false;   // 새 설치 시작 — 지난 중단 신호를 물려받지 않는다
   try {
     if (!sel.foundation && !sel.semantic && !sel.textStyles && !sel.components) {
       throw new Error("설치할 항목을 하나 이상 선택하세요.");
@@ -880,6 +892,7 @@ async function runInstall(
       foundationNumberMap = await loadExistingVarMap(FOUNDATION_COLLECTION, "FLOAT");
     }
 
+    throwIfCancelled();
     // ── Semantic (또는 컴포넌트 위해 기존 로드) ──
     let semanticColorMap: Record<string, Variable> = {};
     let scc: VariableCollection | null = null;
@@ -906,6 +919,7 @@ async function runInstall(
       }
     }
 
+    throwIfCancelled();
     // ── Semantic Shadow (또는 컴포넌트 위해 기존 로드) ──
     //   Semantic 과 같은 스위치를 쓴다(둘 다 Semantic 층 토큰). 컴포넌트만 설치할 땐 기존 것을 읽어 온다.
     let shadowVarMap: Record<string, Variable> = {};
@@ -936,6 +950,7 @@ async function runInstall(
       }
     }
 
+    throwIfCancelled();
     // ── Text Styles (또는 컴포넌트 위해 동반 설치) ──
     let textStyleMap: Record<string, TextStyle> = {};
     if (sel.textStyles || sel.components) {
@@ -944,6 +959,7 @@ async function runInstall(
       textStyleCount = Object.keys(textStyleMap).length;
     }
 
+    throwIfCancelled();
     // ── Component Set (Button primary 16-variant) ──
     if (sel.components) {
       if (!scc || !lightModeId) {
@@ -967,7 +983,8 @@ async function runInstall(
           semanticShadowLightModeId: shadowLightModeId || undefined,
           semanticShadowDarkModeId: shadowDarkModeId || undefined,
         },
-        (step, pct) => post("progress", { step, pct })
+        (step, pct) => post("progress", { step, pct }),
+        () => CANCEL_INSTALL
       );
       componentCount = compResult.created;       // 새로 추가된 variant 수 (기존 보존분 제외)
       componentAdded = compResult.added;          // 새로 추가한 세트 이름
@@ -1008,11 +1025,16 @@ async function runInstall(
       removedNames: removedAll,
       guideUpdated: options.updateFlow === true,
     });
-    return true;
+    return "ok";
   } catch (err: unknown) {
     const msg = err instanceof Error ? err.message : String(err);
+    if (msg === CANCELLED) {
+      // 중단은 '실패'가 아니다 — 빨간 오류 화면 대신 전용 안내 화면으로 보낸다.
+      post("cancelled", { newPage: options.updateFlow === true });
+      return "cancelled";
+    }
     post("error", { message: msg });
-    return false;
+    return "error";
   }
 }
 
@@ -1030,14 +1052,19 @@ async function installLatestGuideOnNewPage(): Promise<void> {
   page.name = uniqueGuidePageName();
   await page.loadAsync();
   figma.currentPage = page;
-  const ok = await runInstall(
+  const result = await runInstall(
     { foundation: true, semantic: true, textStyles: true, components: true },
     { stampCompleteGuide: true, updateFlow: true },
   );
-  if (!ok) {
+  if (result !== "ok") {
+    // 실패든 중단이든 이번에 만든 '가이드 페이지'는 되돌린다.
+    // (Variables·Text Styles 는 문서 단위라 남는다 — UI 가 그 사실을 그대로 알린다.)
     try { figma.currentPage = previousPage; } catch (e) { /* best-effort */ }
     try { page.remove(); } catch (e) { /* best-effort */ }
-    figma.ui.postMessage({ type: "audit:guide-update-failed", payload: {} });
+    figma.ui.postMessage({
+      type: result === "cancelled" ? "audit:guide-update-cancelled" : "audit:guide-update-failed",
+      payload: {},
+    });
     return;
   }
   figma.ui.postMessage({ type: "audit:guide-update-done", payload: { pageName: page.name } });

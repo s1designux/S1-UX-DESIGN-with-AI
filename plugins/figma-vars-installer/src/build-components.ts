@@ -5719,7 +5719,10 @@ export function buildOrderFor(members: string[]): string[] {
 
 export async function buildAllComponents(
   maps: BuildMaps,
-  onProgress?: (step: string, pct: number) => void
+  onProgress?: (step: string, pct: number) => void,
+  // [중단하기] 신호. 컴포넌트 1개를 만들던 중에는 끊지 않고 **다음 부품 직전**에서만 멈춘다
+  //   — 만들다 만 반쪽 세트를 캔버스에 남기지 않기 위해서다.
+  shouldCancel?: () => boolean
 ): Promise<{ created: number; added: string[]; skipped: string[]; noRunner: string[]; failed: { name: string; reason: string }[]; degraded: { name: string; missing: string[] }[] }> {
   // 플러그인을 닫지 않고 새 가이드 페이지를 설치해도 이전 페이지 노드를 재사용하지 않는다.
   for (const key of Object.keys(BUILT_SETS)) delete BUILT_SETS[key];
@@ -5840,6 +5843,8 @@ export async function buildAllComponents(
     // ── 빌드 패스: 의존성(요소 먼저) 순서로 생성 — 표시순서 ≠ 빌드순서 규칙(BUILD_DEPENDENCIES) ──
     //   빌드 시점 Y(catY)는 임시(겹치지 않게 세로로 쌓음). 최종 세로 위치는 아래 layout 패스가 정한다.
     for (const name of buildOrderFor(cat.members)) {
+      // 건별 try/catch 바깥에서 던져야 '중단'이 failed 로 삼켜지지 않고 위로 전파된다.
+      if (shouldCancel && shouldCancel()) throw new Error("__INSTALL_CANCELLED__");
       const run = runners[name];
       // 조용한 스킵 금지 — 부모가 부수 생성한다고 **선언된** 것만 면제, 나머지는 집계·보고(Gate 30)
       // hasOwnProperty 로 조회한다 — 객체 리터럴은 Object.prototype 을 상속하므로 컴포넌트 이름이
