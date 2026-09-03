@@ -1,0 +1,49 @@
+{
+  "_role": "Gate 45 CSS 변수 참조 — 기존 부채 동결 목록. 여기 있는 참조는 차단하지 않고 목록으로만 보인다.",
+  "_policy": [
+    "새 참조는 차단된다 — 여기 넣으려면 왜 지금 못 고치는지 사유를 반드시 적는다.",
+    "줄이는 방향으로만 갱신한다. 항목이 늘어나는 갱신은 그 자체가 검토 대상이다.",
+    "해소된 항목은 --update-baseline 으로 빼면 다시 생겼을 때 회귀가 차단된다."
+  ],
+  "_updated": "2026-09-03",
+  "knownGaps": [
+    {
+      "key": "assets/css/ui-library-guide.css::--color-line-gray-default",
+      "file": "assets/css/ui-library-guide.css",
+      "name": "--color-line-gray-default",
+      "reason": "삭제된 토큰의 잔존 참조. 현행은 --color-line-gray-subtle 계열이다. 2026-09-03 Gate 45 신설 시점의 기존 부채로 동결한다 — 안내 화면 공용 CSS 라 승인된 여러 컴포넌트 화면에 함께 걸려 있어, 치환 대상을 하나씩 확정해야 안전하다. 지금은 선언이 무효라 상속값으로 그려지고 있다(잘못 보이지는 않지만 의도한 색이 아니다)."
+    },
+    {
+      "key": "assets/css/ui-library-guide.css::--font-size-13",
+      "file": "assets/css/ui-library-guide.css",
+      "name": "--font-size-13",
+      "reason": "타이포 스케일에 13 이 없다(정본에 13·9px 추가는 river 가 명시적으로 거부한 건 — reports/repeated-requests.json self-invented-criteria). 인접 스텝으로 흡수하거나 폴백을 붙여야 한다. 2026-09-03 Gate 45 신설 시점의 기존 부채로 동결한다 — 안내 화면 공용 CSS 라 승인된 여러 컴포넌트 화면에 함께 걸려 있어, 치환 대상을 하나씩 확정해야 안전하다. 지금은 선언이 무효라 상속값으로 그려지고 있다(잘못 보이지는 않지만 의도한 색이 아니다)."
+    },
+    {
+      "key": "assets/css/ui-library-guide.css::--color-status-error",
+      "file": "assets/css/ui-library-guide.css",
+      "name": "--color-status-error",
+      "reason": "삭제된 토큰. 현행은 --color-text-state-caution 계열이다(site-base 정리 판정에서 caution 치환 확정). 2026-09-03 Gate 45 신설 시점의 기존 부채로 동결한다 — 안내 화면 공용 CSS 라 승인된 여러 컴포넌트 화면에 함께 걸려 있어, 치환 대상을 하나씩 확정해야 안전하다. 지금은 선언이 무효라 상속값으로 그려지고 있다(잘못 보이지는 않지만 의도한 색이 아니다)."
+    },
+    {
+      "key": "assets/css/ui-library-guide.css::--color-bg-subtle",
+      "file": "assets/css/ui-library-guide.css",
+      "name": "--color-bg-subtle",
+      "reason": "registry-drift-baseline 에 removed 로 기록된 옛 토큰. 2026-09-03 Gate 45 신설 시점의 기존 부채로 동결한다 — 안내 화면 공용 CSS 라 승인된 여러 컴포넌트 화면에 함께 걸려 있어, 치환 대상을 하나씩 확정해야 안전하다. 지금은 선언이 무효라 상속값으로 그려지고 있다(잘못 보이지는 않지만 의도한 색이 아니다)."
+    },
+    {
+      "key": "assets/css/ui-library-guide.css::--color-surface-default",
+      "file": "assets/css/ui-library-guide.css",
+      "name": "--color-surface-default",
+      "reason": "registry-drift-baseline 에 removed 로 기록된 옛 토큰. 2026-09-03 Gate 45 신설 시점의 기존 부채로 동결한다 — 안내 화면 공용 CSS 라 승인된 여러 컴포넌트 화면에 함께 걸려 있어, 치환 대상을 하나씩 확정해야 안전하다. 지금은 선언이 무효라 상속값으로 그려지고 있다(잘못 보이지는 않지만 의도한 색이 아니다)."
+    },
+    {
+      "key": "assets/css/ui-library-guide.css::--color-border-subtle",
+      "file": "assets/css/ui-library-guide.css",
+      "name": "--color-border-subtle",
+      "reason": "registry-drift-baseline 에 removed 로 기록된 옛 토큰. 2026-09-03 Gate 45 신설 시점의 기존 부채로 동결한다 — 안내 화면 공용 CSS 라 승인된 여러 컴포넌트 화면에 함께 걸려 있어, 치환 대상을 하나씩 확정해야 안전하다. 지금은 선언이 무효라 상속값으로 그려지고 있다(잘못 보이지는 않지만 의도한 색이 아니다)."
+    }
+  ],
+  "_note": "배포본(ui-library/src) CSS 의 미정의 참조는 0건이다 — 이 목록은 전부 안내 화면 공용 CSS(assets/css/ui-library-guide.css)다.",
+  "_createdBy": "river 지시 2026-09-03 — 「검증을 줄이는 대신 기계가 잡을 수 있는 것은 기계로 옮긴다」"
+}

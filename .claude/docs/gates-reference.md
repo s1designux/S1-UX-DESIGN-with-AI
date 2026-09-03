@@ -59,6 +59,7 @@
 | 42 | Screen Naming | 화면 프레임 이름과 흐름 코드 규칙 |
 | 43 | UI Icon Geometry | 누르는 영역과 분리된 SVG 틀·실제 도형 크기, source↔dist 일치 |
 | 44 | UI Guide Render | 안내 화면을 실제로 그려서 검사 — 개발 코드 플랫폼 일치 · 부품 표본이 세트 장식을 함께 보여주지 않는지 |
+| 45 | CSS Var Reference | 실재하지 않는 CSS 변수를 참조하는 죽은 선언 차단 — 「없는 이름을 지어내는」 실수를 커밋 시점에 막는다 |
 | 42 | Screen Naming | 화면 프레임 이름이 네이밍 정본 규칙을 지키나 |
 
 ---
@@ -411,3 +412,15 @@ DESIGN.md(AI 소비용) 가 정본(tokens.css+registry)보다 낡으면 차단
 ④ 는 2026-09-02 river 지적으로 신설했다. Table 셀 표본을 컴포넌트 루트로 감싸는 바람에 표 외곽선(위 2px·아래 1px)이 낱개 셀마다 그려져 **정본에 없는 모습**이 안내 화면에 나갔는데, 배포본 CSS 는 정확했고 표본 조립만 틀려서 계약·파리티·수치 대조 검사기가 전부 통과했다. 규칙 정본은 `registry/governance/component-presentation-policy.json` 의 `_meta.uiLibraryGuideLayout.partSampleIsolation`, 판정부는 `scripts/ui-guide-part-sample-check.js`(적대 테스트 `--selftest` 포함), 의도적 예외는 표본에 `data-guide-sample-keeps` 로 선언하면 숨겨지지 않고 경고로 보인다.
 
 단독 실행 `npm run ui:guide:render`. 크롬이 없으면 경고로 건너뛴다(`S1_SKIP_RENDER_CHECK=1`).
+
+### Gate 45: CSS Var Reference (CSS 변수 참조)
+
+CSS 가 참조하는 `var(--이름)` 이 **실제로 정의된 토큰인지** 대조한다. Gate 7(토큰 값)·Gate 17(미사용 토큰)은 *정의된* 토큰만 보므로 반대 방향 — **참조가 정의에 닿는가** — 은 아무도 안 보고 있었다.
+
+**왜 만들었나 (river 지시 2026-09-03):** Time Picker 안내 화면에서 ⭐ 가 하드코딩 `#111827` 을 「R01(HEX 금지)에 맞춘다」며 `var(--color-text-default)` 로 바꿨는데 **그 토큰은 정본에도 파생에도 없었다.** 선언이 통째로 무효가 되어 색이 상속으로 떨어졌고, 다크에서 글자가 읽힌 것은 상속값이 우연히 맞았기 때문이다. 사람 눈으로는 「잘 보이니까 됐다」로 통과한다. 🤖 독립 검증이 렌더 실측으로 겨우 잡았다. river 는 **「검증을 줄이는 대신 기계가 잡을 수 있는 것은 기계로 옮긴다」** 로 정리했다.
+
+판정: 폴백이 있으면(`var(--x, 11px)`) 값이 정해지므로 통과. 같은 파일에서 스스로 정의한 지역 변수도 통과. 남은 것 = 값이 정해지지 않는 죽은 선언 → 실패. 대상은 배포본 CSS 전부(`ui-library/src/**/*.css`)와 안내 화면 공용 CSS.
+
+기존 부채는 `registry/governance/css-var-reference-baseline.json` 에 사유와 함께 동결하고 **새 참조만 차단**한다(래칫). 신설 시점 동결 6건은 전부 안내 화면 공용 CSS 의 삭제된 옛 토큰 참조이고, **배포본 CSS 는 0건**이다.
+
+판정부 `scripts/css-var-reference-check.js` — 적대 테스트 `--selftest` 6종(지어낸 이름 차단 · 실존 토큰 통과 · 폴백 통과 · 지역 정의 통과 · 중첩 `var()` 콤마 오독 방지 · 주석 제외)을 함께 싣는다. 단독 실행 `npm run css:varcheck`.

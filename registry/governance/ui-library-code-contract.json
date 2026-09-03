@@ -4,7 +4,7 @@
     "title": "UI Library Web Code Contract",
     "version": "0.1.2",
     "status": "candidate",
-    "updatedAt": "2026-08-26",
+    "updatedAt": "2026-09-03",
     "purpose": "정본 컴포넌트를 퍼블리셔와 개발자가 HTML·CSS·JavaScript 모듈로 조합해도 시각·동작·접근성이 흐트러지지 않게 하는 웹 코드 제작 계약.",
     "approval": "2026-08-24 river 요청으로 기본 틀 신설. 2026-08-26 아이콘 크기 재발 방지 계약과 위험도 기반 독립 검증 예외를 승인. Input·Button 파일럿과 UX 검수 후 stable 승격 예정.",
     "effective": "candidate 파일럿에만 적용. 현재 metaLedgers와 기존 배포 상태를 즉시 대체하지 않는다.",
@@ -14,35 +14,81 @@
   },
   "scope": {
     "target": "프레임워크에 종속되지 않는 HTML·CSS·ES Module JavaScript",
-    "consumers": ["퍼블리셔", "웹 개발자", "AI 코드 에이전트", "디자인가이드 사이트", "패턴 구현"],
+    "consumers": [
+      "퍼블리셔",
+      "웹 개발자",
+      "AI 코드 에이전트",
+      "디자인가이드 사이트",
+      "패턴 구현"
+    ],
     "frameworkWrappers": "React·Vue 등 래퍼는 이 계약의 DOM·상태·이벤트를 소비한다. 별도 시각 구현을 만들지 않는다.",
-    "outOfScope": ["서비스별 데이터 통신", "라우팅", "비즈니스 규칙", "패턴 전용 문구 결정"]
+    "outOfScope": [
+      "서비스별 데이터 통신",
+      "라우팅",
+      "비즈니스 규칙",
+      "패턴 전용 문구 결정"
+    ]
   },
   "canonicalBoundaries": {
     "visual": {
       "source": "plugins/figma-vars-installer/src/build-components.ts",
-      "owns": ["Figma scene graph anatomy·geometry", "크기", "간격", "variant", "state의 시각 표현", "토큰 바인딩", "타이포"]
+      "owns": [
+        "Figma scene graph anatomy·geometry",
+        "크기",
+        "간격",
+        "variant",
+        "state의 시각 표현",
+        "토큰 바인딩",
+        "타이포"
+      ]
     },
     "tokens": {
-      "sources": ["plugins/figma-vars-installer/src/vars-data.ts", "plugins/figma-vars-installer/src/textstyles-data.ts"]
+      "sources": [
+        "plugins/figma-vars-installer/src/vars-data.ts",
+        "plugins/figma-vars-installer/src/textstyles-data.ts"
+      ]
     },
     "componentMeaning": {
       "source": "registry/components/*.json",
-      "owns": ["사용 맥락", "HTML native semantics·ARIA·공개 part", "접근성", "행동 계약", "컴포넌트 예시 문구"]
+      "owns": [
+        "사용 맥락",
+        "HTML native semantics·ARIA·공개 part",
+        "접근성",
+        "행동 계약",
+        "컴포넌트 예시 문구"
+      ]
     },
     "content": {
-      "sources": ["registry/content/*.json", "registry/patterns/{pattern-id}/copy.md", "registry/patterns/{pattern-id}/content-rules.md"],
+      "sources": [
+        "registry/content/*.json",
+        "registry/patterns/{pattern-id}/copy.md",
+        "registry/patterns/{pattern-id}/content-rules.md"
+      ],
       "rule": "공통 콘텐츠는 registry/content, 패턴 상태별 문구는 pattern 문서를 따른다. 컴포넌트 예시 문구를 실제 서비스 문구 정본으로 쓰지 않는다."
     },
     "icons": {
-      "sources": ["plugins/figma-vars-installer/src/build-components.ts ICON_KEYS", "registry/figma/allowed-remote-keys.json"],
+      "sources": [
+        "plugins/figma-vars-installer/src/build-components.ts ICON_KEYS",
+        "registry/figma/allowed-remote-keys.json"
+      ],
       "rule": "허용 키·웹 전달 asset·접근성 이름을 manifest에 기록한다. 허용목록 밖 아이콘은 임의 SVG로 확정하지 않는다."
     },
     "patternFlow": {
       "source": "registry/patterns/{pattern-id}/",
-      "owns": ["flow", "states", "content rules", "core dependencies"]
+      "owns": [
+        "flow",
+        "states",
+        "content rules",
+        "core dependencies"
+      ]
     },
-    "outputsAreNotCanon": ["UI 라이브러리 dist 파일", "디자인가이드 사이트 DOM", "코드탭 스니펫", "패턴 화면의 컴포넌트 인스턴스", "스크린샷"]
+    "outputsAreNotCanon": [
+      "UI 라이브러리 dist 파일",
+      "디자인가이드 사이트 DOM",
+      "코드탭 스니펫",
+      "패턴 화면의 컴포넌트 인스턴스",
+      "스크린샷"
+    ]
   },
   "boundaryConflictRule": "build-components.ts의 builder anatomy는 시각적 part와 배치를, Registry 웹 구조는 native element·ARIA·공개 API mapping을 소유한다. HTML semantics를 지키며 정본 anatomy를 재현할 수 없으면 임의 wrapper로 해결하지 않고 needs-decision 또는 정본 변경으로 되돌린다. Figma V3.0은 선택적 시각 참고이며 레거시 Figma는 기준으로 사용하지 않는다.",
   "knownBlockers": [
@@ -55,7 +101,12 @@
     "currentBehaviorLedger": "registry/components/component-behavior.pc.json은 현재 pages/components.html runtime JavaScript를 sourceOfTruth로 사용한다.",
     "targetDirection": "river가 승인한 Registry 행동 계약 → UI JavaScript → 디자인가이드 사이트·코드탭",
     "rule": "이 계약이 candidate인 동안 두 방향을 섞지 않는다. Input·Button 파일럿에서 새 Registry schema·runtime·검사기를 만든 뒤 component-behavior.pc.json과 canon-manifest metaLedgers를 함께 이행하고 stable로 승격한다.",
-    "stableRequirements": ["기존 runtime-source ledger의 대체·마이그레이션 기록", "package build·exports·독립 소비 테스트", "contract validator의 gate:check 실제 편입과 ui:build --check·ui:test --check 성공", "Input·Button 실제 렌더 검증과 river UX 승인"]
+    "stableRequirements": [
+      "기존 runtime-source ledger의 대체·마이그레이션 기록",
+      "package build·exports·독립 소비 테스트",
+      "contract validator의 gate:check 실제 편입과 ui:build --check·ui:test --check 성공",
+      "Input·Button 실제 렌더 검증과 river UX 승인"
+    ]
   },
   "entryGates": {
     "component": [
@@ -73,7 +124,10 @@
   },
   "publicApi": {
     "root": {
-      "required": ["Registry에 선언된 안정된 공개 root selector", "data-s1-component 속성"],
+      "required": [
+        "Registry에 선언된 안정된 공개 root selector",
+        "data-s1-component 속성"
+      ],
       "rule": "초기화·상태 탐색·검수는 root에서 시작한다. 페이지 전역 ID 목록으로 컴포넌트를 연결하지 않는다."
     },
     "parts": {
@@ -90,7 +144,12 @@
       "rule": "컴포넌트별 임의 size 단어를 만들지 않는다."
     },
     "states": {
-      "priority": ["native HTML state", "ARIA state", "documented data-state", "검수 전용 강제 state"],
+      "priority": [
+        "native HTML state",
+        "ARIA state",
+        "documented data-state",
+        "검수 전용 강제 state"
+      ],
       "rule": "실제 사용 상태와 검수용 강제 상태를 구분한다. 검수용 class를 제품 동작 API로 쓰지 않는다."
     },
     "events": {
@@ -99,9 +158,34 @@
     }
   },
   "componentManifestSchema": {
-    "required": ["id", "version", "status", "canonicalFingerprint", "rootSelector", "variants", "sizes", "states", "parts", "dependencies", "icons", "a11y", "jsRequired"],
-    "javascriptWhenRequired": ["options", "events", "eventDetail", "methods", "lifecycle", "controlMode"],
-    "controlMode": ["uncontrolled", "controlled", "both"],
+    "required": [
+      "id",
+      "version",
+      "status",
+      "canonicalFingerprint",
+      "rootSelector",
+      "variants",
+      "sizes",
+      "states",
+      "parts",
+      "dependencies",
+      "icons",
+      "a11y",
+      "jsRequired"
+    ],
+    "javascriptWhenRequired": [
+      "options",
+      "events",
+      "eventDetail",
+      "methods",
+      "lifecycle",
+      "controlMode"
+    ],
+    "controlMode": [
+      "uncontrolled",
+      "controlled",
+      "both"
+    ],
     "versioning": "공개 root·part·option·event·method 제거 또는 의미 변경은 breaking change다. 추가는 호환성 검증 후 minor change로 기록한다."
   },
   "html": {
@@ -134,8 +218,13 @@
   },
   "javascript": {
     "module": "ES Module",
-    "requiredLifecycle": ["init(root, options)", "destroy(root)"],
-    "optionalLifecycle": ["update(root, options)"],
+    "requiredLifecycle": [
+      "init(root, options)",
+      "destroy(root)"
+    ],
+    "optionalLifecycle": [
+      "update(root, options)"
+    ],
     "rules": [
       "수동 init이 기본이며 auto-init은 별도 entry에서 data-s1-component root를 탐색한다.",
       "init은 같은 root에 여러 번 호출해도 이벤트가 중복 등록되지 않아야 한다.",
@@ -150,12 +239,23 @@
     "progressiveEnhancement": "JavaScript가 로드되지 않아도 기본 콘텐츠와 native control은 읽고 조작할 수 있어야 한다. 복합 Picker처럼 native fallback이 없으면 not-applicable로 넘기지 말고 fallback UI 또는 명시적 unsupported 상태와 근거를 manifest에 기록한다."
   },
   "accessibility": {
-    "requiredContract": ["native semantics", "accessible name", "keyboard matrix", "focus entry·return·trap", "ARIA state sync", "error relation", "reduced motion"],
+    "requiredContract": [
+      "native semantics",
+      "accessible name",
+      "keyboard matrix",
+      "focus entry·return·trap",
+      "ARIA state sync",
+      "error relation",
+      "reduced motion"
+    ],
     "applicability": "각 항목은 required 또는 not-applicable이어야 하며, not-applicable에는 근거를 기록한다.",
     "rule": "필요 항목의 a11y 계약이 pending·planned·not-defined이면 verified·approved로 승격하지 않는다."
   },
   "composition": {
-    "core": ["다른 화면에서도 동일한 형태와 동작을 유지한다.", "공개 API 밖의 내부 DOM은 언제든 바뀔 수 있다."],
+    "core": [
+      "다른 화면에서도 동일한 형태와 동작을 유지한다.",
+      "공개 API 밖의 내부 DOM은 언제든 바뀔 수 있다."
+    ],
     "module": [
       "코어 컴포넌트를 배치하고 상태·이벤트를 연결한다.",
       "사용한 코어를 dependencies.coreComponents에 기록한다.",
@@ -199,9 +299,25 @@
   },
   "webIconDelivery": {
     "sourceManifest": "ui-library/src/assets/icons/manifest.json",
-    "requiredManifest": ["sourceRegistry", "sourceRegistryFingerprint", "icons"],
-    "requiredMapping": ["id", "sourceKey", "webAssetFingerprint", "symbolId", "individualFile", "accessibleNamePolicy", "geometry", "dependencies"],
-    "outputs": ["dist/assets/icons/s1-icons.svg", "dist/assets/icons/{icon-id}.svg"],
+    "requiredManifest": [
+      "sourceRegistry",
+      "sourceRegistryFingerprint",
+      "icons"
+    ],
+    "requiredMapping": [
+      "id",
+      "sourceKey",
+      "webAssetFingerprint",
+      "symbolId",
+      "individualFile",
+      "accessibleNamePolicy",
+      "geometry",
+      "dependencies"
+    ],
+    "outputs": [
+      "dist/assets/icons/s1-icons.svg",
+      "dist/assets/icons/{icon-id}.svg"
+    ],
     "geometryContract": {
       "layers": {
         "hitArea": "손·마우스로 누르는 컴포넌트 action 영역. 컴포넌트 Registry와 CSS가 소유한다.",
@@ -215,10 +331,25 @@
     "rule": "전체 bundle은 sprite를, 개별 component import는 필요한 개별 SVG 또는 해당 symbol dependency를 포함한다. source key·fingerprint·geometry가 정본 계약과 다르거나 source와 dist가 다르면 빌드와 Gate 43을 실패한다."
   },
   "distribution": {
-    "cssLoadOrder": ["Pretendard font", "tokens.css", "typography.css", "s1-ui.css 또는 개별 component CSS", "pattern CSS"],
-    "requiredModes": ["전체 수동 초기화: 공통 의존 CSS + s1-ui.css + s1-ui.js", "전체 자동 초기화: 공통 의존 CSS + s1-ui.css + s1-ui.auto.js", "선택 설치: 공통 의존 CSS + 개별 component CSS·JS"],
+    "cssLoadOrder": [
+      "Pretendard font",
+      "tokens.css",
+      "typography.css",
+      "s1-ui.css 또는 개별 component CSS",
+      "pattern CSS"
+    ],
+    "requiredModes": [
+      "전체 수동 초기화: 공통 의존 CSS + s1-ui.css + s1-ui.js",
+      "전체 자동 초기화: 공통 의존 CSS + s1-ui.css + s1-ui.auto.js",
+      "선택 설치: 공통 의존 CSS + 개별 component CSS·JS"
+    ],
     "packageContract": {
-      "exports": [".", "./auto-init", "./components/{id}", "./components/{id}/css"],
+      "exports": [
+        ".",
+        "./auto-init",
+        "./components/{id}",
+        "./components/{id}/css"
+      ],
       "cssSideEffects": true,
       "dependencyRule": "개별 import는 manifest dependencies를 빌드에서 자동 포함하거나 설치 오류로 명확히 차단한다.",
       "cssOnly": "jsRequired=false 컴포넌트는 JavaScript export 없이 CSS·HTML 계약만 제공할 수 있다."
@@ -242,11 +373,25 @@
       "전체 묶음과 선택 설치 결과 동일성",
       "디자인가이드 사이트가 dist 외 컴포넌트 CSS·JS를 쓰지 않는지 검사"
     ],
-    "humanReview": ["의도한 UI와 UX인가", "실제 사용 흐름이 자연스러운가", "오류에서 회복하기 쉬운가", "정보와 행동의 우선순위가 적절한가"],
+    "humanReview": [
+      "의도한 UI와 UX인가",
+      "실제 사용 흐름이 자연스러운가",
+      "오류에서 회복하기 쉬운가",
+      "정보와 행동의 우선순위가 적절한가"
+    ],
     "riskBasedIndependentVerification": {
-      "requiredWhen": ["정본과 생성 결과가 충돌한다", "새로운 복합 flow·접근성 동작·다중 컴포넌트 상태 연결이 있다", "실제 렌더 측정 또는 자동 검사가 실패·차단됐다", "river가 별도 검증을 요청했다"],
+      "requiredWhen": [
+        "정본과 생성 결과가 충돌한다",
+        "새로운 복합 flow·접근성 동작·다중 컴포넌트 상태 연결이 있다",
+        "실제 렌더 측정 또는 자동 검사가 실패·차단됐다",
+        "river가 별도 검증을 요청했다"
+      ],
       "optionalWhen": "정본 대조·실제 렌더 측정·자동 검사·river UX 승인이 모두 완료된 단순 코어 변경",
-      "waiverRecord": "생략할 때는 river 결정, 구현자 실제 렌더 PASS, 생략 사유를 promotion evidence에 기록한다."
+      "waiverRecord": "생략할 때는 river 결정, 구현자 실제 렌더 PASS, 생략 사유를 promotion evidence에 기록한다.",
+      "batching": "river 검수 피드백은 **모아서 한 번에 고치고 그 뒤 한 번만** 독립 검증한다. 지시 하나를 고칠 때마다 검증을 돌리지 않는다 — 2026-09-03 Time Picker 실측: 4회차 중 코드 결함을 찾은 것은 ①처음 만든 것 전체(8건)와 ②새로 바꾼 부분만 본 회차(1건) 두 번이고, '고친 뒤 전체 재검증'은 신규 결함 0건이었다.",
+      "scopeRule": "재검증은 **바뀐 것과 그 영향 범위만** 본다. 이전 회차가 PASS 한 범위는 그 변경이 실제로 건드린 경우에만 다시 본다 — 재검증 요청서에 「확인 불필요(이번에 안 건드림)」를 명시한다.",
+      "mechanicalFirst": "기계가 결정론으로 잡을 수 있는 것은 독립 검증이 아니라 검사기로 옮긴다. 2026-09-03 신설: Gate 45(CSS 변수 참조) — 실재하지 않는 토큰 이름을 지어내는 실수를 커밋 시점에 차단한다. AI 독립 검증은 기계가 못 보는 것(구조·의미·원본 충실성·실제 조작)에 쓴다.",
+      "approval": "river 지시 2026-09-03 — \"기존에 잘 만들어져있던 항목을 일부 수정했을때도 검증을 많이 돌리는거같아. 이걸 좀더 경량화 해도 퀄리티 문제는 없지 않아?\" 에 대해 batching·scopeRule·mechanicalFirst 3가지를 제안하고 승인받았다."
     },
     "promotion": "정본 대조·실제 렌더 측정·자동 검사와 river UX 승인을 받아야 approved 배포 대상이 된다. 위험 조건에 해당하면 별도 독립 검증도 통과해야 한다."
   },
@@ -269,7 +414,16 @@
     "shellRule": "StatusBar·NavBar·CI·Footer처럼 개별 Registry가 없는 공개 셸은 Registry 정리와 행동·접근성 계약을 먼저 완료한 뒤 웹 코드화한다.",
     "patternRule": "기존 promoted 패턴은 즉시 실패 처리하지 않고 dependency 이행 상태를 표시한다. 신규 패턴은 approved dependency만 사용한다.",
     "recordPath": "registry/governance/ui-library-migration.json",
-    "recordSchema": ["id", "kind", "legacyStatus", "uiLibraryStatus", "dependencies", "lastVerified", "reverifyTrigger", "evidence"],
+    "recordSchema": [
+      "id",
+      "kind",
+      "legacyStatus",
+      "uiLibraryStatus",
+      "dependencies",
+      "lastVerified",
+      "reverifyTrigger",
+      "evidence"
+    ],
     "legacyUiLibraryStatus": "legacy-approved"
   },
   "forbidden": [

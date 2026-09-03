@@ -120,7 +120,8 @@
     "layout:fix": "node scripts/page-layout-check.js --fix",
     "components:presentation": "node scripts/presentation-layout-check.js",
     "components:geometry": "node scripts/component-geometry-check.js",
-    "components:geometry:check": "node scripts/component-geometry-check.js --check"
+    "components:geometry:check": "node scripts/component-geometry-check.js --check",
+    "css:varcheck": "node scripts/css-var-reference-check.js"
   },
   "devDependencies": {
     "@figma/plugin-typings": "^1.97.0",

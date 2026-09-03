@@ -1070,6 +1070,30 @@ try {
   fail(`Gate 44 실행 실패: ${e.message}`);
 }
 
+// ── Gate 45: CSS Variable Reference (실재하지 않는 변수 참조) ─────
+// 「없는 이름을 지어내고, 화면이 우연히 멀쩡해 보여서 넘어가는 것」을 막는다.
+// Gate 7(토큰 값)·Gate 17(미사용 토큰)은 정의된 토큰만 본다 — 이 게이트는 반대 방향(참조→정의).
+// 폴백이 있는 var(--x, 기본값)은 값이 정해지므로 통과. 기존 부채는 baseline 동결·새 참조만 차단.
+// river 지시 2026-09-03 — 「검증을 줄이는 대신 기계가 잡을 수 있는 것은 기계로 옮긴다」.
+gateHeader('[Gate 45] CSS 변수 참조 검사기 (CSS Var Reference)');
+try {
+  const { spawnSync } = require('child_process');
+  const r = spawnSync(process.execPath, [path.join(__dirname, 'css-var-reference-check.js')], { encoding: 'utf8' });
+  const out = `${r.stdout || ''}${r.stderr || ''}`;
+  const m = out.match(/CSSVARREF_SUMMARY refs=(\d+) undefined=(\d+) baselined=(\d+) newGaps=(\d+) resolved=(\d+)/);
+  if (m && r.status === 0) {
+    pass(`CSS 변수 참조 ${m[1]}건 전부 정의에 닿음 (동결 ${m[3]}건)`);
+    if (Number(m[5]) > 0) warn(`Gate 45: baseline 중 ${m[5]}건 해소됨 — 축소 갱신 권장: node scripts/css-var-reference-check.js --update-baseline`);
+  } else if (m) {
+    for (const line of out.split('\n').filter((l) => l.includes('NEWREF')).slice(0, 6)) fail(`Gate 45: ${line.replace(/^\s*❌\s*NEWREF\s*/, '').trim()}`);
+    if (Number(m[4]) > 6) fail(`Gate 45: 그 외 ${Number(m[4]) - 6}건 더 — npm run css:varcheck`);
+  } else {
+    fail(`css-var-reference-check 출력 파싱 실패 (exit ${r.status})`);
+  }
+} catch (e) {
+  fail(`Gate 45 실행 실패: ${e.message}`);
+}
+
 // ── Summary ───────────────────────────────────────────────────────
 if (VERBOSE || errors > 0 || warnings > 0) console.log('\n─────────────────────────────────────────────────────');
 const tally = `게이트 ${gates}개 · ✅ ${passes}건${VERBOSE ? '' : ' (상세: --verbose)'}`;
