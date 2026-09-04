@@ -742,10 +742,22 @@ function filterChipMarkup({ variant = "line", size = "md", breakName = "pc", tit
 }
 
 /* 공통 — 열=크기 · 행=상태 그리드 (Button·Chip 과 같은 틀) */
-function sizeStateGrid(sizes, states, cell, { tall = false } = {}) {
+function sizeStateGrid(sizes, states, cell, { tall = false, columns = null } = {}) {
   /* 열이 하나뿐이면(크기 축이 하나인 Mobile) 1fr 로 늘리지 않는다 — 칸 가운데 정렬 탓에
      실물이 표 오른쪽으로 밀려 Action 영역과 어긋난다. */
   const colWidth = sizes.length === 1 ? "220px" : "minmax(140px, 1fr)";
+  /* columns 를 준 컴포넌트는 그 값을 그대로 쓴다 — 열린 패널이 칸보다 넓어 오른쪽으로 삐져나가는
+     경우(Date Picker 달력)에 칸 너비를 패널 실제 폭에 맞추기 위한 것이다. */
+  if (columns) return `<div class="comp-state-matrix" style="grid-template-columns: ${columns};">${(() => {
+    const header = `<div class="matrix-col-header" style="grid-column:1"></div>` +
+      sizes.map(([, sLabel, dim]) => `<div class="matrix-col-header">${sLabel}${dim ? `<span class="uilg-size-dim">${dim}</span>` : ""}</div>`).join("");
+    const rows = states.map(([stateLabel, state, note]) => {
+      const rowLabel = `<div class="matrix-row-label">${stateLabel}${note ? `<span>${note}</span>` : ""}</div>`;
+      return rowLabel + sizes.map(([size]) =>
+        `<div class="comp-state-cell${tall && state === states[states.length - 1][1] ? " uilg-open-cell" : ""}">${cell(size, state)}</div>`).join("");
+    }).join("");
+    return header + rows;
+  })()}</div>`;
   const header = `<div class="matrix-col-header" style="grid-column:1"></div>` +
     sizes.map(([, sLabel, dim]) => `<div class="matrix-col-header">${sLabel}${dim ? `<span class="uilg-size-dim">${dim}</span>` : ""}</div>`).join("");
   const rows = states.map(([stateLabel, state, note]) => {
@@ -1885,7 +1897,9 @@ function datePickerStateMatrix() {
   /* 달력 크기 비교 — 입력창 크기를 따라간다(river 결정 2026-09-04). 새 속성은 없다: data-size 하나로 결정된다. */
   const calSizeBlock = `<div class="uilg-variant-block">
       <div class="variant-label">달력 크기 — 입력창을 따라갑니다 (MD 356 · SM 267)</div>
-      <div class="comp-state-matrix" style="grid-template-columns: repeat(2, minmax(280px, max-content));">
+      <!-- 열 너비 = 각 칸에서 열리는 달력의 실제 폭(MD 356 · SM 267). 균등 280px 로 두면
+           왼쪽 큰 달력이 오른쪽 칸을 파고들어 두 달력이 겹쳐 보인다(river 제보 2026-09-04). -->
+      <div class="comp-state-matrix" style="grid-template-columns: 368px 280px;">
         <div class="matrix-col-header">MD 입력창 (44) → 큰 달력<span class="uilg-size-dim">356 × 352</span></div>
         <div class="matrix-col-header">XSM·XXSM 입력창 (34·28) → 작은 달력<span class="uilg-size-dim">267 × 266</span></div>
         <div class="comp-state-cell uilg-open-cell">${datePickerMarkup({ size: "md", breakName: "pc", mode: "single", state: "open", isPreview: true })}</div>
@@ -1895,7 +1909,10 @@ function datePickerStateMatrix() {
     </div>`;
 
   const pcContent = `${actionSection()}
-    ${sizeStateGrid(pcSizes, states, cellFor("pc", "size"), { tall: true })}
+    ${/* 열 너비 = 열리는 달력의 실제 폭. XXSM·XSM 은 작은 달력(267), MD 는 큰 달력(356)이라
+          균등 분할(minmax(140px,1fr))로 두면 MD 칸의 달력만 카드 밖으로 삐져나가 옆·아래 내용과 겹친다
+          (river 제보 2026-09-04). 폭을 달력 실제 폭에 맞춘다. */""}
+    ${sizeStateGrid(pcSizes, states, cellFor("pc", "size"), { tall: true, columns: "100px 276px 276px 368px" })}
     <hr class="uilg-separator">
     ${calSizeBlock}
     <hr class="uilg-separator">

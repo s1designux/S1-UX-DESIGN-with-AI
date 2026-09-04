@@ -270,6 +270,17 @@
    같은 200px 를 쓰면 아래 블록(유형·목록 칸)을 덮는다. */
 [data-guide-component="time-picker"] .uilg-open-cell { min-height: 300px; }
 
+/* Date Picker 달력은 트리거(MD 44) + 간격 8 + 패널 352 ≈ 404px 로 이 화면에서 가장 높다.
+   200·300px 를 쓰면 달력이 아랫줄과 다음 블록을 덮어 글자와 겹친다(river 제보 2026-09-04).
+   승인된 검수 화면(pages/ui-review.html)이 같은 자리에 쓰는 420px 와 같은 값을 쓴다.
+   작은 달력(입력창 xxsm·xsm → 28+8+266 = 302)도 이 안에 들어온다. */
+[data-guide-component="date-picker"] .uilg-open-cell { min-height: 420px; }
+
+/* 달력은 트리거의 왼쪽 끝에 붙어 아래로 펼쳐진다. 칸이 가운데 정렬(.comp-state-cell)이면
+   트리거가 칸 한가운데 놓여 달력 오른쪽 끝이 칸 밖으로 (칸너비-180)/2 만큼 더 나가고,
+   MD(356) 열에서는 카드 밖까지 삐져나간다. Date Picker 만 칸을 왼쪽 정렬해 달력이 칸 안에서 시작하게 한다. */
+[data-guide-component="date-picker"] .comp-state-cell { justify-content: flex-start; }
+
 [data-s1-component="select"] [data-s1-part="trigger"][data-force-state="hover"] {
   background: var(--color-form-control-bg-hover);
   color: var(--color-form-control-text-placeholder);
