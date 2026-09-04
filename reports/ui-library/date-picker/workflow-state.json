@@ -165,6 +165,15 @@
       "decision": "헤더의 연도·월 글자를 각각 누르는 현재 방식을 유지한다. 정본에 없는 버튼 부품을 새로 만들지 않는다.",
       "quote": "2번 유지",
       "quoteVerified": true
+    },
+    {
+      "id": "D9",
+      "topic": "river UX 승인 (5-human-review 통과)",
+      "decidedBy": "river",
+      "decidedAt": "2026-09-04",
+      "decision": "river 가 승인 배포본으로의 승인 의사를 밝혔다. 다만 승격 절차(6-promotion)는 이 워크플로를 처음부터 끌고 온 세션이 마무리하도록 river 가 정했다 — 그 세션이 검증 맥락을 다 갖고 있어서다. 따라서 다른 세션이 상태를 임의로 approved 로 바꾸지 않는다.",
+      "quote": "승인배포본은 승인할게.",
+      "recordedBy": "orchestrator (달력 SM 세션)"
     }
   ],
   "blockers": [
@@ -482,5 +491,26 @@
       "basis": "정본 textstyles-data.ts 20종 표를 직접 읽어 확인(body/14·16 계열과 title/16M·18M 이 -2%). 승인된 button·input 도 같은 방식으로 갈라 쓴다. 실측: 요일·날짜 숫자 -0.32px(=16×-0.02)·20.8px, 트리거 -0.28px(=14×-0.02)·18.2px, 기하는 패널 356×352·달력 308×312·칸 44×44 로 불변.",
       "correction": "7차 검증 Z-1: 이 메모의 「20종 중 8종이 -2%」는 서술 오류이고 실제로는 7종(title/18M·16M · body/18M·16M·16R·14M·14R)이다. 값 판정에는 영향 없다. 또 tight 로 정정한 자리 목록에 든 grid[data-tile-grid] 는 타이포 선언이 없는 규칙이라 실제 변경 대상이 아니었다 — 글자는 자식 tile 이 갖고 그쪽은 맞게 적용됐다."
     }
-  ]
+  ],
+  "scopeAdditionsFromOtherSession": {
+    "note": "이 워크플로가 5단계에서 대기하는 동안, 별도 세션이 river 지시로 date-picker 웹 모듈에 두 가지를 더 넣었다. 승격 전에 이 두 건이 포함된 상태임을 알고 진행할 것.",
+    "items": [
+      {
+        "what": "달력 작은 크기(SM) 신설 — 입력창이 작으면(xsm·xxsm) 달력도 SM(267×266)이 열린다",
+        "commit": "c075dd9",
+        "record": "reports/ui-library/date-picker/7-calendar-sm.md",
+        "verified": "🤖 component-verifier 시나리오 D · 2회 반려 후 PASS · Gate 13 기록됨"
+      },
+      {
+        "what": "달력 화살표 hover 모양을 원 → 살짝 둥근 사각형(radius/control/sm=4)으로 정정 — river 지시 \"아이콘 호버는 기본적으로 사각형에 r값이 살짝 들어간 형태여야해\"",
+        "commit": "6704d1a",
+        "verified": "⭐ 실제 렌더 계산값 확인(상자 24×24 · radius 4px · margin -4 로 발자국 16 유지). 독립 검증은 아직 안 받았다 — CSS 한 줄 값 변경이라 기계적 수정으로 봤다"
+      }
+    ],
+    "openDecisions": [
+      "작은 달력 연·월 화면 폭 267 통일 유지 여부(원본은 266) — 안 정하면 지금대로",
+      "달력 화살표 좌우 대칭 유지 여부(원본은 비대칭) — MD 에서 이미 나간 기존 정규화, 안 정하면 지금대로",
+      "Pagination 아이콘 hover 모서리만 2 이고 Input·Date Picker 는 4 — 통일 여부"
+    ]
+  }
 }
