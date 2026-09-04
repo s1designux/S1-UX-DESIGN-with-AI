@@ -508,7 +508,7 @@
       "id": "date-picker",
       "kind": "core-component",
       "legacyStatus": "implemented",
-      "uiLibraryStatus": "draft",
+      "uiLibraryStatus": "verified",
       "dependencies": [
         "tokens.css",
         "typography.css",
@@ -517,15 +517,19 @@
         "close.svg",
         "components/button.css"
       ],
-      "lastVerified": null,
+      "lastVerified": "2026-09-04",
       "reverifyTrigger": "정본 buildDatePicker·buildCalendar·buildCalendarCell·buildCalendarTile·buildDatePickerBottomSheet 의 geometry·variant·token 변경 · calendar 아이콘 원본 대조 기록 변경 · D3(주 시작 요일)·D4(기간 역순)·D5(연/월 버튼)·D6(기간 hover) 결정 변경 · CU-1(주 시작 요일)·CU-2(연/월 헤더 버튼) 정본 반영 시",
       "evidence": [
         "reports/ui-library/date-picker/1-inventory.md",
         "reports/ui-library/date-picker/2-canon-readiness.md",
         "reports/ui-library/date-picker/3-build.md",
-        "reports/ui-library/date-picker/workflow-state.json"
+        "reports/ui-library/date-picker/workflow-state.json",
+        "reports/ui-library/date-picker/4-verification.md",
+        "reports/ui-library/date-picker/4-verification-independent.md",
+        "reports/ui-library/date-picker/5-human-review.md",
+        "reports/installer-build/build-verification.json"
       ],
-      "note": "🧱 ui-library-builder 가 3-build 에서 구현했다. 자가 PASS 판정 없음 — 4-verification(🤖 component-verifier)·river UX 검수 전이라 uiLibraryStatus=draft 로 둔다. 정본 이탈 2건(CU-1·CU-2)이 있고 Gate 34 승인 인용이 아직 미수령이다(workflow-state.json blockers B5).",
+      "note": "독립 검증 7차 PASS(4-verification-independent.md) 로 기술 검증을 통과해 verified 로 올렸다. Gate 34 상태 5건(default·filled·open·hover·disabled)은 river 승인 문장으로 원장에 기록됐다(2026-09-04). 2026-09-04 정본에 SM 달력이 신설돼(c075dd9) 웹도 같은 값으로 따라갔고, 그 정본 변경은 🤖 component-verifier 가 Figma 원본 재실측으로 독립 확인했다(패널 267×266·셀 33·헤더 24 전 필드 일치). **approved 로 올리려면 river UX 검수 승인 기록이 필요하다** — 그 전까지는 verified 로 두며, 안내 페이지는 verified 부터 표시된다. 재설치 한계: 캔버스에 Calendar 세트가 이미 있으면 설치기가 건너뛰어 SM 이 MD 로 조용히 퇴화한다(세트 삭제 후 재설치 필요).",
       "canonDeviations": [
         {
           "what": "주 시작 요일 — 웹은 일요일 시작, 시각 정본 buildCalendar(3591)는 월요일 시작",

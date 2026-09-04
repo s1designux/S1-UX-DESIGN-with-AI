@@ -45,7 +45,7 @@
   "workflowStatus": "awaiting-user",
   "uiLibraryStatus": "verified",
   "lastCompletedCheckpoint": 4,
-  "nextAction": "5-human-review — river 가 검수 화면을 보고 UX 판단을 준다. 이어 Gate 34 승인 문장을 river 가 직접 타이핑하면 6-promotion 으로 넘어간다.",
+  "nextAction": "5-human-review — river 가 안내 페이지(pages/components.html Date Picker)를 보고 UX 승인 문장을 주면 6-promotion 에서 uiLibraryStatus 를 approved 로 올린다.",
   "ownership": {
     "currentActor": null,
     "owner": null,
@@ -56,7 +56,7 @@
     {
       "role": "component-visual",
       "path": "plugins/figma-vars-installer/src/build-components.ts",
-      "sha256": "d4365bb30ddfaf9ce039e57b98ea0693dcda20773937facf84260c9411b2df60"
+      "sha256": "6e9f4e829bf948e26ade8b808fc4e85129487e8c087defa5adb40f24d1003bc1"
     },
     {
       "role": "token-values",
@@ -76,7 +76,7 @@
     {
       "role": "component-meta",
       "path": "registry/components/date-picker.json",
-      "sha256": "3e65b405813089ac36171aa408cf54d4d995e42e08dad88421446a7b4bc388ba"
+      "sha256": "2ef12bc1cbffb14b118a1b53332a727a6b7d03235e873b55ab77df9387f9c285"
     }
   ],
   "artifacts": {
@@ -178,16 +178,10 @@
   ],
   "blockers": [
     {
-      "id": "B5",
-      "severity": "blocking-promotion",
-      "topic": "Gate 34 승인 문장 대기",
-      "detail": "uistate:date-picker.default/filled/open/hover/disabled 5건. river 가 승인 문장을 직접 타이핑해야 통과한다. 7차 검증 판정: 이것이 승격의 유일한 차단 조건이다."
-    },
-    {
       "id": "B8",
-      "severity": "informational",
+      "severity": "resolved",
       "topic": "다른 세션이 정본을 편집 중",
-      "detail": "build-components.ts 지문이 반복 stale. date-picker 빌더 6개+헬퍼 2개는 바이트 동일(5·6차 검증자 재확인)."
+      "detail": "해소(2026-09-04). 다른 세션이 SM 달력 작업을 커밋(c075dd9·6704d1a)해 작업트리가 깨끗해졌고, 🤖 component-verifier 가 현재 해시 기준으로 재확인해 Gate 13 통과. canonicalInputs 지문을 현재 값으로 갱신했다."
     },
     {
       "id": "B11",
@@ -281,8 +275,8 @@
   },
   "handoff": {
     "lastActor": "orchestrator",
-    "updatedAt": "2026-09-03",
-    "summary": "독립 검증 7차 PASS 로 4-verification 통과. uiLibraryStatus=verified. 남은 것은 river UX 검수와 Gate 34 승인 문장 하나뿐이다."
+    "updatedAt": "2026-09-04",
+    "summary": "Gate 34 승인 완료 · 정본 SM 달력 반영 및 독립 재확인 완료 · uiLibraryStatus draft→verified 로 올려 안내 페이지에 Date Picker 를 노출했다. 남은 것은 river UX 승인 하나(→approved)."
   },
   "checkpointLog": [
     {
