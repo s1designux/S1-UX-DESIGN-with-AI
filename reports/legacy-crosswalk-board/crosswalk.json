@@ -1,0 +1,33 @@
+{
+  "_meta": {
+    "목적": "레거시 가이드(A: SW UX GUIDE V2.4 · B: S-1 Component Set) ↔ 정본 대응표. 검수판에서 river 가 확정한 것만 여기 남긴다 — 화면 검수를 자동 대조할 때의 근거가 된다.",
+    "검수판": "https://claude.ai/code/artifact/1d9843c0-fd38-48d5-9605-6ce8400e61a5",
+    "주의": "검수판 화면의 선택은 아티팩트 자체 저장소(collection 'decisions')에 남는다. 이 파일은 그중 확정된 것을 저장소에 옮겨 적은 사본이며, 아티팩트가 사라져도 남게 하려는 것이다."
+  },
+  "confirmed": [
+    {
+      "id": "D-01",
+      "무엇": "칩의 모바일 크기",
+      "레거시": { "파일": "A", "컴포넌트": "chip", "값": "platform = mobile" },
+      "정본": { "컴포넌트": "chip", "값": "Size=SM, Break=Mobile", "높이": 30, "글자": 14 },
+      "결정": "정본대로 확정 — mobile = SM·Mobile",
+      "by": "river",
+      "date": "2026-09-04",
+      "quote": "정본대로 확정",
+      "근거": "정본 build-components.ts buildChip 크기 표 — SM/PC 28·12, SM/Mobile 30·14, MD/PC 34·14. 모바일에는 SM 만 있고 배포본 매니페스트가 'Mobile MD 조합은 정본에 없다'고 명시한다.",
+      "참고": "이 카드는 원래 'mobile 이 md 냐 sm 이냐'고 물었으나, 정본의 화면 축을 빠뜨린 잘못된 질문이었다(2026-09-04 river 지적으로 교정)."
+    },
+    {
+      "id": "D-12",
+      "무엇": "모바일 버튼 크기",
+      "레거시": { "파일": "A", "컴포넌트": "mobile_button", "값": "크기 축 없음" },
+      "정본": { "컴포넌트": "button", "값": "Size=LG, Break=Mobile", "높이": 48, "글자": 16 },
+      "결정": "정본대로 확정 — 모바일 버튼 = LG·Mobile",
+      "by": "river",
+      "date": "2026-09-04",
+      "quote": "정본대로 확정",
+      "근거": "정본 build-components.ts SIZE_CONFIG — LG = { break: Mobile, height: 48, textStyle: body/16M }. PC 는 MD 44 · XSM 34 · XXSM 28.",
+      "참고": "river 가 2026-09-03 검수판에서 이미 같은 답('모바일 버튼 = lg')을 골랐었다. 선택지 문구가 바뀌어 표시만 안 되던 것을 새 문구로 다시 기록했다."
+    }
+  ]
+}
