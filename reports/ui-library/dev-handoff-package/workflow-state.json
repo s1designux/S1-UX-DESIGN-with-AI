@@ -41,9 +41,10 @@
       "table",
       "mobile-bottom-nav",
       "mobile-header",
-      "time-picker"
+      "time-picker",
+      "date-picker"
     ],
-    "scope": "승인된 코어 18종의 전달 계층(배포 패키지·툴별 생성물·다운로드 화면·검사기). 컴포넌트 자체의 재구현이 아니다."
+    "scope": "승인된 코어 19종의 전달 계층(배포 패키지·툴별 생성물·다운로드 화면·검사기). 컴포넌트 자체의 재구현이 아니다."
   },
   "figmaSources": {
     "role": "시각 정본은 build-components.ts 이며, 이번 작업은 시각 변경이 없어 Figma 참고가 필요 없다.",
@@ -122,20 +123,24 @@
       "time-picker": {
         "source": "not-consulted",
         "status": "시각 변경 없음 — 이미 승인된 배포본을 다른 형식으로 내보내는 작업이라 Figma 참고가 필요 없다."
+      },
+      "date-picker": {
+        "source": "not-consulted",
+        "status": "시각 변경 없음 — 이미 승인된 배포본을 다른 형식으로 내보내는 작업이라 Figma 참고가 필요 없다."
       }
     }
   },
-  "currentPhase": "3-build",
+  "currentPhase": "4-verification",
   "workflowStatus": "blocked",
   "uiLibraryStatus": "draft",
-  "lastCompletedCheckpoint": 2,
-  "nextAction": "river 결정 대기 — 같은 폴더의 다른 세션이 시각 정본(build-components.ts)을 지금 고치고 있다. 누구 작업을 먼저 끝낼지 정해야 3-build 를 시작할 수 있다.",
+  "lastCompletedCheckpoint": 3,
+  "nextAction": "river 지시로 보류 — 화면만 공개하고 받기(ZIP·저장소)는 막아 뒀다. 재개 시 5차 독립 검증(중단됨)부터 이어가고, 승인 후 다운로드 버튼을 되살린다.",
   "ownership": {},
   "canonicalInputs": [
     {
       "role": "component-visual",
       "path": "plugins/figma-vars-installer/src/build-components.ts",
-      "sha256": "ff8a3938c247af4d4b3e51f565043ff6187bade582c59862e1f0d72349d327a8"
+      "sha256": "6e9f4e829bf948e26ade8b808fc4e85129487e8c087defa5adb40f24d1003bc1"
     },
     {
       "role": "token-values",
@@ -150,7 +155,7 @@
     {
       "role": "dist-manifest",
       "path": "ui-library/dist/manifest.json",
-      "sha256": "cdadc1d94cb66902d7dd60a09379cbe610a6c7b42e5d5a0e892876eef1b9a8de"
+      "sha256": "478197d9ceb4fecaec7dce954c875848fafa8949703aaafba3b88a535d0fbb4d"
     }
   ],
   "decisions": [
@@ -188,6 +193,27 @@
       "decision": "판단이 끼지 않는 1:1 기계 변환(camelCase / 대문자 SNAKE)으로 정하고 JSON 은 원본 이름을 유지한다. ⭐ 자가인증, river 재정의 가능.",
       "by": "orchestrator",
       "at": "2026-09-04"
+    },
+    {
+      "id": "D-6",
+      "question": "date-picker 를 포함하나",
+      "decision": "포함한다. 대기 중 다른 세션이 approved 로 승격(커밋 0e0093a)해 대상이 19종이 됐다. 생성기는 목록을 하드코딩하지 않고 승인 상태에서 읽는다.",
+      "by": "orchestrator",
+      "at": "2026-09-04"
+    },
+    {
+      "id": "D-7",
+      "question": "토큰 값이 바뀌면 배포본이 자동으로 따라가나",
+      "decision": "따라가지 않는다. ui:build 가 기존 안전장치(canonicalFingerprint stale)로 멈춘다 — 컴포넌트 재확인이 먼저다. 그래서 reconcile 에서 UI 라이브러리 단계를 맨 뒤로 옮기고, 값만 대조하는 platform-tokens-check 를 Gate 46 에 물려 낡은 전달본이 커밋되지 않게 했다.",
+      "by": "orchestrator",
+      "at": "2026-09-04"
+    },
+    {
+      "id": "D-8",
+      "question": "개발자 탭을 지금 어디까지 여나",
+      "decision": "화면 구성만 공개하고 ZIP 다운로드 버튼과 저장소 링크는 비활성으로 둔다. 실제 데이터 배포는 다음 차례.",
+      "by": "river",
+      "at": "2026-09-04"
     }
   ],
   "blockers": [
@@ -200,16 +226,23 @@
     },
     {
       "id": "HD-CONCURRENT-1",
-      "summary": "다른 세션이 시각 정본 build-components.ts 를 실시간으로 수정 중(HEAD 대비 +281/-78행). 내 세션 안에서도 지문이 d4365bb→7fdcab7 로 바뀌었다.",
-      "impact": "이 상태에서 ui:build 를 돌리면 절반만 쓰인 정본으로 dist 전체와 18종 지문이 다시 만들어지고, 커밋하면 상대 세션의 변경을 삼킨다.",
-      "status": "awaiting-river",
+      "summary": "[해소] 다른 세션의 date-picker 작업이 커밋 0e0093a 로 마무리됨. 작업트리 깨끗, 정본 지문 재기록.",
+      "impact": "없음",
+      "status": "resolved",
+      "at": "2026-09-04"
+    },
+    {
+      "id": "HD-PAUSE-1",
+      "summary": "river 지시로 작업 보류(2026-09-04) — 컴포넌트 정리 작업을 먼저 마무리하기 위해 일을 분리했다.",
+      "impact": "생성기·검사기·Gate 46 은 모두 살아 있고 전 검사 통과 상태다. 화면에서 받기만 막혀 있다.",
+      "status": "paused-by-river",
       "at": "2026-09-04"
     }
   ],
   "handoff": {
     "lastActor": "orchestrator",
-    "updatedAt": "2026-09-04T00:19:57.955Z",
-    "summary": "1-inventory·2-canon-readiness 통과(정본 신설 0건, needs-decision 0건). 3-build 착수 직전에 동시 편집 충돌을 감지해 중단. 지금까지 저장소에 쓴 것은 reports/ui-library/dev-handoff-package/ 안의 보고서 3개뿐이며 공용 파일은 건드리지 않았다."
+    "updatedAt": "2026-09-04T03:43:04.754Z",
+    "summary": "독립 검증 4차까지 완료(차단 결함 6건 발견·전부 수정). 5차 회귀 검증 도중 river 지시로 중단. 다운로드 버튼·저장소 링크를 비활성으로 바꿔 화면만 공개. 전 검사 통과 상태에서 정지."
   },
   "evidence": {
     "sourceAudit": {
@@ -227,8 +260,11 @@
     "reviewPage": "pages/ui-review.html",
     "guidePage": "pages/components.html",
     "migrationRecord": "registry/governance/ui-library-migration.json",
-    "screens": [],
+    "screens": [
+      "reports/ui-library/dev-handoff-package/screens/dev-panel.png"
+    ],
     "inventory": "reports/ui-library/dev-handoff-package/1-inventory.md",
-    "canonReadiness": "reports/ui-library/dev-handoff-package/2-canon-readiness.md"
+    "canonReadiness": "reports/ui-library/dev-handoff-package/2-canon-readiness.md",
+    "build": "reports/ui-library/dev-handoff-package/3-build.md"
   }
 }

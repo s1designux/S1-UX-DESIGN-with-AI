@@ -60,6 +60,7 @@
 | 43 | UI Icon Geometry | 누르는 영역과 분리된 SVG 틀·실제 도형 크기, source↔dist 일치 |
 | 44 | UI Guide Render | 안내 화면을 실제로 그려서 검사 — 개발 코드 플랫폼 일치 · 부품 표본이 세트 장식을 함께 보여주지 않는지 |
 | 45 | CSS Var Reference | 실재하지 않는 CSS 변수를 참조하는 죽은 선언 차단 — 「없는 이름을 지어내는」 실수를 커밋 시점에 막는다 |
+| 46 | Developer Handoff | 개발자가 받아 가는 전달본(ZIP·다운로드 화면·색/크기 값)이 현재 배포본보다 낡지 않았나 |
 | 42 | Screen Naming | 화면 프레임 이름이 네이밍 정본 규칙을 지키나 |
 
 ---
@@ -424,6 +425,23 @@ CSS 가 참조하는 `var(--이름)` 이 **실제로 정의된 토큰인지** �
 기존 부채는 `registry/governance/css-var-reference-baseline.json` 에 사유와 함께 동결하고 **새 참조만 차단**한다(래칫). 신설 시점 동결 6건은 전부 안내 화면 공용 CSS 의 삭제된 옛 토큰 참조이고, **배포본 CSS 는 0건**이다.
 
 판정부 `scripts/css-var-reference-check.js` — 적대 테스트 `--selftest` 6종(지어낸 이름 차단 · 실존 토큰 통과 · 폴백 통과 · 지역 정의 통과 · 중첩 `var()` 콤마 오독 방지 · 주석 제외)을 함께 싣는다. 단독 실행 `npm run css:varcheck`.
+
+### Gate 46: Developer Handoff (개발자 전달본)
+
+개발자·퍼블리셔가 받아 가는 것이 **현재 배포본보다 낡으면**, 옛 색·옛 마크업이 그대로 서비스로 나간다. 그런데 그 상태를 보던 게이트가 없었다. 전달 계층 3곳의 지문이 한 줄로 이어져 있는지 본다.
+
+| 검사 | 실패 시 |
+|---|---|
+| 배포 ZIP 이 현재 dist 에서 나왔나 (ZIP 파일 자체 해시 포함) | `npm run ui:zip` |
+| 다운로드 화면이 현재 dist 를 말하고 있나 | `npm run devpanel:gen` |
+| 색·크기 값 전달본(Kotlin·Swift·C++·JSON)이 현재 `tokens.css` 와 같나 | `npm run ui:build` |
+| 승인 컴포넌트인데 툴별 전달본이 없는 것 | 목록 표시 |
+
+**왜 세 번째가 따로 있나 (2026-09-04):** 토큰 '값'이 바뀌면 `ui:build` 는 일부러 멈춘다(`canonicalFingerprint is stale` — 컴포넌트 재확인이 먼저다). 그때 배포본은 옛 값을 든 채 남는데 **그 상태가 아무 게이트에도 안 걸렸다.** 컴포넌트와 무관하게 값만 대조하는 `scripts/platform-tokens-check.mjs` 가 그 자리를 막는다.
+
+전달본이 **그 언어에서 실제로 컴파일되는지**는 `ui:test` 가 본다(C++ `-fsyntax-only` · React esbuild 번들 · Vue `@vue/compiler-sfc`). 도구가 없는 환경에서는 그 검사가 조용히 사라지므로, 이 게이트가 **도구 부재를 경고로 드러낸다.** 껍데기가 prop 을 실제로 반영하는지(컴파일은 되는데 값을 버리는 실패)는 `npm run ui:runtime` 이 브라우저에서 본다.
+
+판정부 `scripts/gate-check.js` Gate 46 · 재생성 `npm run ui:zip` · `npm run devpanel:gen` · 값 대조 단독 실행 `npm run platform:tokens:check`.
 
 ### Gate 47: Review Board Freshness (검수판 신선도)
 

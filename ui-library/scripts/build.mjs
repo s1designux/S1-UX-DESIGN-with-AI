@@ -3,6 +3,7 @@ import { mkdir, readFile, readdir, rm, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import iconGeometryCheck from "../../scripts/ui-library-icon-geometry-check.js";
+import { buildPlatformOutputs } from "./platform.mjs";
 
 const libraryRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const repositoryRoot = path.resolve(libraryRoot, "..");
@@ -75,7 +76,12 @@ async function createOutputs() {
     const componentIconAssets = iconAssets.filter(({ id: iconId }) => manifest.icons.some(({ id: usedId }) => usedId === iconId));
     const sourceFingerprint = hash([css, js, example, ...extraExamples.map(([, text]) => text), stableJson(manifest), ...componentIconAssets.map(({ asset }) => asset)].join("\0"));
     const outputManifest = { ...manifest, sourceFingerprint };
-    componentOutputs.push({ id, css, js, example, manifest: outputManifest });
+    const exampleByBreak = { pc: example };
+    for (const [breakName, spec] of Object.entries(breakExamples)) {
+      const match = extraExamples.find(([distPath]) => distPath === spec.distribution);
+      exampleByBreak[breakName] = match ? match[1] : example;
+    }
+    componentOutputs.push({ id, css, js, example, exampleByBreak, manifest: outputManifest });
     outputs.set(`components/${id}.css`, css);
     outputs.set(`components/${id}.js`, js);
     outputs.set(`components/${id}.manifest.json`, stableJson(outputManifest));
@@ -143,6 +149,44 @@ async function createOutputs() {
     individualCssSha256: hash(componentOutputs.map(({ css }) => css).join("\0")),
     note: "Independent verification must render and judge parity; this file only records deterministic build inputs."
   }));
+
+  /* 툴별 전달 산출물 — 같은 빌드·같은 지문에서 생성한다.
+     dist 를 매번 통째로 지우므로 여기서 함께 만들지 않으면 조용히 낡는다. */
+  const behaviorLedger = JSON.parse(await read(path.join(repositoryRoot, "registry/components/component-behavior.pc.json")));
+  const platformOutputs = buildPlatformOutputs({
+    componentOutputs,
+    tokensCss,
+    typographyCss,
+    distManifest,
+    behaviorLedger,
+    fingerprints: {
+      "assets/css/tokens.css": hash(tokensCss),
+      "assets/css/typography.css": hash(typographyCss)
+    }
+  });
+  for (const [relative, content] of platformOutputs) outputs.set(relative, content);
+
+  /* 자가 검사기 — 판정 근거(HEX·rgba 금지)는 거버넌스 정본에서 뽑아 함께 배포한다.
+     개발자 PC 에는 registry/ 가 없으므로, 규칙을 여기서 발췌해 넣지 않으면 검사기가 근거 없이 돌게 된다. */
+  const auditRules = JSON.parse(await read(path.join(repositoryRoot, "registry/governance/audit-rules.json")));
+  const ruleById = (ruleId) => {
+    const found = auditRules.rules.find(({ id }) => id === ruleId);
+    if (!found) throw new Error(`audit-rules.json does not declare ${ruleId}; the linter must not invent one`);
+    return { id: found.id, name: found.name, severity: found.severity, description: found.description };
+  };
+  outputs.set("tools/lint-rules.json", stableJson({
+    _meta: {
+      note: "자동 생성물 — 손으로 고치지 마세요.",
+      source: "registry/governance/audit-rules.json",
+      sourceVersion: auditRules._meta.version,
+      rule: "검사기는 여기 있는 규칙만 집행한다. 새 판정 기준을 검사기가 만들지 않는다."
+    },
+    hex: ruleById("R02"),
+    rgba: ruleById("R07"),
+    exception: "EX03 — color-overlay 만 rgba 를 허용한다."
+  }));
+  outputs.set("tools/s1-ui-lint.mjs", await read(path.join(sourceRoot, "tools", "s1-ui-lint.mjs")));
+
   return outputs;
 }
 

@@ -53,6 +53,12 @@
     "ui:build:check": "npm --prefix ui-library run build:check",
     "ui:test": "npm --prefix ui-library run test --",
     "ui:test:check": "npm --prefix ui-library run test:check",
+    "ui:runtime": "node ui-library/scripts/runtime-check.mjs",
+    "ui:zip": "node scripts/build-ui-package-zip.js",
+    "ui:zip:check": "node scripts/build-ui-package-zip.js --check",
+    "devpanel:gen": "node scripts/gen-dev-download-panel.js",
+    "devpanel:check": "node scripts/gen-dev-download-panel.js --check",
+    "platform:tokens:check": "node scripts/platform-tokens-check.mjs",
     "ui:guide:render": "node scripts/ui-guide-render-check.js",
     "components:buildverify": "node scripts/installer-build-verify-check.js",
     "tokens:namingcheck": "node scripts/token-naming-check.js",
@@ -127,7 +133,9 @@
   },
   "devDependencies": {
     "@figma/plugin-typings": "^1.97.0",
+    "@vue/compiler-sfc": "^3.5.42",
     "esbuild": "^0.21.5",
-    "typescript": "^5.4.5"
+    "typescript": "^5.4.5",
+    "vue": "^3.5.42"
   }
 }

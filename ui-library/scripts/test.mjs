@@ -4,6 +4,8 @@ import { fileURLToPath, pathToFileURL } from "node:url";
 import { spawnSync } from "node:child_process";
 import iconGeometryCheck from "../../scripts/ui-library-icon-geometry-check.js";
 
+import { extractInstance } from "./platform.mjs";
+
 const libraryRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const repositoryRoot = path.resolve(libraryRoot, "..");
 const checkOnly = process.argv.includes("--check");
@@ -498,6 +500,151 @@ for (const [target, referrers] of cssUrlTargets) {
     failures.push(`dist CSS references a file that is not deployed: ${path.relative(path.join(libraryRoot, "dist"), target)} (${referrers.join(", ")})`);
   }
 }
+
+/* 플랫폼 전달 산출물 검사 — 툴별 생성물이 승인된 배포본과 어긋나면 개발자는 그걸 모른다.
+   "생성물이 있다"가 아니라 "배포본과 같다"를 본다. */
+const platformTokens = JSON.parse(await read("dist/platform/tokens.json"));
+const platformContract = JSON.parse(await read("dist/platform/contract.json"));
+const platformManifest = JSON.parse(await read("dist/platform/manifest.json"));
+const distManifestJson = JSON.parse(await read("dist/manifest.json"));
+
+if (platformManifest.canonicalFingerprint !== distManifestJson.canonicalFingerprint) {
+  failures.push("platform/manifest.json canonicalFingerprint differs from dist manifest — 전달본이 배포본과 다른 정본에서 나왔습니다");
+}
+
+const tokenNames = new Set(platformTokens.tokens.map(({ name }) => name));
+const bundleCssText = await read("dist/s1-ui.css");
+const referencedVars = new Set([...bundleCssText.matchAll(/var\(\s*(--[a-z0-9-]+)/g)].map((match) => match[1]));
+for (const reference of referencedVars) {
+  if (!tokenNames.has(reference)) failures.push(`platform/tokens.json is missing ${reference}, which dist CSS actually uses`);
+}
+if (!referencedVars.size) failures.push("platform token coverage check found no var() references — 검사기가 무력화된 상태입니다");
+for (const token of platformTokens.tokens) {
+  if (/var\(/.test(token.value) || (token.darkValue && /var\(/.test(token.darkValue))) {
+    failures.push(`platform/tokens.json ${token.name} still holds an unresolved var() — 네이티브가 쓸 수 없는 값입니다`);
+  }
+}
+
+const kotlinText = await read("dist/platform/kotlin/S1Tokens.kt");
+const swiftText = await read("dist/platform/swift/S1Tokens.swift");
+const cppText = await read("dist/platform/cpp/s1_tokens.h");
+for (const token of platformTokens.tokens) {
+  if (token.type !== "color" && token.type !== "dimension") continue;
+  if (!kotlinText.includes(` ${token.kotlin}:`)) failures.push(`Kotlin token file is missing ${token.name}`);
+  if (!swiftText.includes(` ${token.swift}:`)) failures.push(`Swift token file is missing ${token.name}`);
+  if (!cppText.includes(` ${token.cpp} =`)) failures.push(`C++ token file is missing ${token.name}`);
+}
+
+const approvedIds = [];
+for (const id of componentIds) {
+  if (JSON.parse(await read(`dist/components/${id}.manifest.json`)).status === "approved") approvedIds.push(id);
+}
+for (const id of approvedIds) {
+  const manifest = JSON.parse(await read(`dist/components/${id}.manifest.json`));
+  const entry = platformContract.components.find((component) => component.id === id);
+  if (!entry) { failures.push(`platform/contract.json is missing ${id}`); continue; }
+  if (JSON.stringify(entry.variants) !== JSON.stringify(manifest.variants ?? [])) failures.push(`${id} contract variants differ from the manifest`);
+  if (JSON.stringify(entry.sizes) !== JSON.stringify(manifest.sizes ?? [])) failures.push(`${id} contract sizes differ from the manifest`);
+  if (JSON.stringify(entry.requiredParts) !== JSON.stringify(manifest.htmlContract.requiredParts ?? [])) failures.push(`${id} contract required parts differ from the manifest`);
+  if (entry.canonicalFingerprint !== manifest.canonicalFingerprint) failures.push(`${id} contract fingerprint differs from the manifest`);
+
+  /* 껍데기가 들고 있는 마크업이 실제 배포 예제와 글자 단위로 같아야 한다.
+     여기가 어긋나면 React·Vue 개발자만 다른 화면을 보게 된다. */
+  const reactText = await read(`dist/platform/react/${id}.jsx`);
+  const vueName = id.split("-").map((part) => part[0].toUpperCase() + part.slice(1)).join("");
+  const vueText = await read(`dist/platform/vue/${vueName}.vue`);
+  const markupBlock = /export const MARKUPS = (\{[\s\S]*?\n\});/.exec(reactText);
+  const vueMarkupBlock = /const MARKUPS = (\{[\s\S]*?\n\});/.exec(vueText);
+  if (!markupBlock || !vueMarkupBlock) { failures.push(`${id} wrapper does not expose MARKUPS`); continue; }
+  const reactMarkups = JSON.parse(markupBlock[1]);
+  const vueMarkups = JSON.parse(vueMarkupBlock[1]);
+  if (JSON.stringify(reactMarkups) !== JSON.stringify(vueMarkups)) failures.push(`${id} React and Vue wrappers carry different markup`);
+  const declaredExamples = Object.entries(manifest.htmlContract.breakExamples ?? { pc: { distribution: `examples/${id}.html` } });
+  for (const [breakName, spec] of declaredExamples) {
+    /* 예제 파일은 인스턴스 1개가 아닐 수 있다(변형 나열·화면 소유 껍데기).
+       껍데기는 그 안의 승인된 인스턴스 하나와 글자 단위로 같아야 한다. */
+    const deployed = extractInstance(await read(`dist/${spec.distribution}`), id).trim();
+    if (reactMarkups[breakName] !== deployed) failures.push(`${id} ${breakName} wrapper markup differs from the approved instance in ${spec.distribution}`);
+    if (!/^<[a-zA-Z][^>]*data-s1-component\s*=\s*["']/.test(reactMarkups[breakName])) {
+      failures.push(`${id} ${breakName} wrapper markup does not start at the component root`);
+    }
+  }
+  if (Object.keys(reactMarkups).length !== declaredExamples.length) failures.push(`${id} wrapper markup set differs from the declared examples`);
+  if (manifest.jsRequired && !reactText.includes("init(root)")) failures.push(`${id} React wrapper does not run the approved runtime`);
+  if (manifest.jsRequired && !vueText.includes("init(element)")) failures.push(`${id} Vue wrapper does not run the approved runtime`);
+}
+for (const entry of platformContract.components) {
+  if (!approvedIds.includes(entry.id) && entry.status === "approved") failures.push(`platform/contract.json lists ${entry.id} as approved but the build does not`);
+}
+
+/* 생성한 코드를 **그 언어의 도구에 실제로 넣어 본다.**
+   2026-09-04 독립 검증이 두 번 연속으로 같은 종류를 잡았다 — C++ 헤더가 컴파일되지 않았고(83 errors),
+   Vue SFC 19종이 전부 컴파일되지 않았다. 둘 다 문자열 대조는 전부 통과했다.
+   "문법이 맞는가"는 문자열로 알 수 없다. 도구가 없으면 건너뛰되, 건너뛴 사실을 반드시 출력한다. */
+{
+  const skipped = [];
+
+  // ① C++ 헤더
+  const cppProbe = spawnSync("c++", ["--version"], { encoding: "utf8" });
+  if (cppProbe.status !== 0) skipped.push("C++ (컴파일러 없음)");
+  else {
+    const cpp = spawnSync("c++", ["-std=c++17", "-fsyntax-only", "-x", "c++", path.join(libraryRoot, "dist/platform/cpp/s1_tokens.h")], { encoding: "utf8" });
+    if (cpp.status !== 0) failures.push(`C++ 전달본이 컴파일되지 않습니다:\n${(cpp.stderr || "").split("\n").slice(0, 8).join("\n")}`);
+  }
+
+  // ② React 껍데기 (JSX 문법)
+  let esbuild = null;
+  try { esbuild = (await import("esbuild")).default ?? await import("esbuild"); } catch { skipped.push("React JSX (esbuild 없음)"); }
+  if (esbuild) {
+    /* transform 은 문법만 본다 — import 를 풀지 않아 없는 파일·없는 심볼을 통과시킨다.
+       bundle 로 올려 실제 해석까지 시킨다(react 는 소비자 몫이라 external). */
+    try {
+      await esbuild.build({
+        entryPoints: [path.join(libraryRoot, "dist/platform/react/index.js")],
+        bundle: true,
+        write: false,
+        format: "esm",
+        jsx: "automatic",
+        external: ["react", "react-dom", "react/jsx-runtime"],
+        logLevel: "silent"
+      });
+    } catch (error) {
+      const detail = (error.errors ?? []).slice(0, 5).map((item) => `${item.location?.file ?? "?"}: ${item.text}`).join("\n");
+      failures.push(`React 껍데기가 번들되지 않습니다:\n${detail || error.message}`);
+    }
+  }
+
+  // ③ Vue 껍데기 (SFC 컴파일)
+  let compileScript = null;
+  let parseSfc = null;
+  try {
+    const sfc = await import("@vue/compiler-sfc");
+    compileScript = sfc.compileScript;
+    parseSfc = sfc.parse;
+  } catch { skipped.push("Vue SFC (@vue/compiler-sfc 없음)"); }
+  if (compileScript) {
+    for (const id of approvedIds) {
+      const vueName = id.split("-").map((part) => part[0].toUpperCase() + part.slice(1)).join("");
+      const source = await read(`dist/platform/vue/${vueName}.vue`);
+      try {
+        const { descriptor, errors } = parseSfc(source, { filename: `${vueName}.vue` });
+        if (errors.length) throw new Error(errors[0].message);
+        compileScript(descriptor, { id: vueName });
+      } catch (error) {
+        failures.push(`Vue 껍데기가 컴파일되지 않습니다 (${vueName}): ${String(error.message).split("\n")[0]}`);
+      }
+    }
+  }
+
+  if (skipped.length) console.log(`[platform compile check] 건너뜀: ${skipped.join(" · ")} — 이 항목은 이번 실행에서 검증되지 않았습니다.`);
+}
+
+/* 동작 검사 — 컴파일은 "열리는가"까지만 증명한다.
+   2026-09-04 독립 검증 3차: Vue 19종이 컴파일도 마운트도 됐는데 prop 을 조용히 버렸다.
+   사다리의 마지막 칸 — 실제로 값을 주입하고 DOM 을 읽는다. */
+const runtimeCheck = spawnSync(process.execPath, [path.join(libraryRoot, "scripts/runtime-check.mjs"), "--quiet"], { encoding: "utf8" });
+if (runtimeCheck.status === 1) failures.push(`platform runtime check: ${(runtimeCheck.stderr || runtimeCheck.stdout || "").trim()}`);
+else if (runtimeCheck.status === 2) console.log(`[platform runtime check] ${(runtimeCheck.stdout || "").trim().split("\n").pop()}`);
 
 /* 렌더 검사 — 소스 문자열로는 못 보는 것(화면이 실제로 무엇을 보여주는가)을 실제 DOM 으로 본다.
    2026-09-02 독립 검증이 실증한 구멍 2개(G1 chip 인라인 크기 라벨 · G2 플랫폼 분기 무력화)를 막는다. */

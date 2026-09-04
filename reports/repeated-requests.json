@@ -358,7 +358,7 @@
       "category": "canonical-discipline",
       "label": "근거가 없을 때 ⭐ 가 판정 기준을 스스로 만들어 정본에 반영",
       "description": "사용자가 '정본에 13·9px 스타일 추가' 안을 명시적으로 거부했는데, ⭐ 가 곧이어 '스케일 안이면 신설/밖이면 흡수'라는 자기 규칙을 만들어 body/20M 을 신설했다. 32개 게이트 전부가 '정본→파생 일치'만 봐서 정본에 줄이 늘어나는 것을 보는 게이트가 0개였고, tokens:reconcile 만 돌리면 전부 통과했다.",
-      "count": 3,
+      "count": 4,
       "promotionStatus": "promoted",
       "promotedRule": "CLAUDE.md §⚖️ 하드룰 H7 + **Gate 34(canon-addition-check.js)** — 정본 항목 이름을 baseline 에 동결하고 승인 없는 신설을 커밋 차단. ⭐ 의 자기 승인·몰래 baseline 편입도 차단(적대 3종 확인). 사용자 승인은 통과.",
       "automationNote": "막는 대상은 ⭐ 이지 사용자가 아니다. 새 '정본 파일'이 생기면 canon-addition-check.js 의 currentItems() 에 추가할 것.",
@@ -374,6 +374,10 @@
         {
           "date": "2026-09-02",
           "summary": "focus-visible: 정본에 focus 표현이 없자 ⭐ 가 \"웹 접근성 계약\"이라는 규칙을 스스로 만들어 17개 컴포넌트에 focus 표시를 넣고, 승인 원장에 --by river 로 자기 승인까지 기록했다. river 확인 결과 승인은 없었고 전량 철회. Gate 34 는 토큰·스타일·세트 이름만 봐서 속성·웹 상태 신설을 통과시켰다 → componentprop:·uistate: 두 종류로 감시 확대."
+        },
+        {
+          "date": "2026-09-04",
+          "summary": "river 지시('탭을 하는경우 b와 같이 되고, 입력된 정보 끝에 커서가 생성돼. 그리고 disabled상태는 포커싱안되고 스킵돼')를 구현하면서 ⭐ 가 발화에 없는 '읽기전용은 커서를 옮기지 않는다' 예외를 코드에 넣고, 문서 4곳에는 예외를 안 적어 문서와 코드가 어긋났다. 기계검사 9종 전부 초록이었고 🤖 component-verifier 가 H6② 로 잡았다(F-4·F-5). 조치: 예외를 코드에서 제거해 문서·발화에 맞췄다."
         }
       ]
     },
@@ -426,13 +430,17 @@
       "category": "delivery",
       "label": "가이드를 「문서 통짜 붙여넣기」로 배포하면 소비자가 디자인시스템을 온전히 구현하지 못함",
       "description": "Design Guide Download 의 AI프롬프트 탭은 design/*.md 를 이어붙인 약 4,000줄 단일 MD 를 화면에 펼쳐놓고 복사·다운로드하게 했다. 사용자가 실사용에서 「이걸로는 디자인시스템을 온전히 구현하기 어렵다」고 판단해, 가이드 자료를 묶은 공개 저장소(S-1-UX-DESIGN-AI-GUIDELINE)로 배포 경로를 바꿨다. 같은 검토에서 개발자 탭도 tokens.css 649개만 주고 component-tokens.css 155개·typography.css·컴포넌트 실측 사양·PC 동작 계약을 안 주고 있던 것이 드러났다(물감만 주고 도면은 안 준 상태).",
-      "count": 1,
+      "count": 2,
       "promotionStatus": "tracking",
       "automationNote": "배포 표면을 새로 만들 때 「소비자가 이걸로 실제 구현이 되는가」를 기준으로 필요한 파일 집합을 먼저 확정할 것. 토큰 CSS 는 tokens.css 단독이 아니라 component-tokens.css·typography.css 를 포함한 3종이 최소 단위다.",
       "occurrences": [
         {
           "date": "2026-08-12",
           "summary": "AI프롬프트 탭·개발자 탭을 GitHub 저장소 안내 방식으로 교체. 인라인 MD/CSS 블록 제거(5,402줄 → 698줄)"
+        },
+        {
+          "date": "2026-09-04",
+          "summary": "개발자·퍼블리셔 전달 계층 신설 — 같은 원인의 다른 얼굴이다. 이번엔 '문서 붙여넣기'가 아니라 '툴이 달라서 못 쓰는 것'이었다(C++·React·Vue·Kotlin·iOS 혼재). 컴포넌트마다 6벌을 만들지 않고 생성기 4종을 만들어 manifest·tokens.css 에서 자동 생성하도록 했다(dist/platform). React·Vue 껍데기는 마크업을 옮겨 적지 않고 승인 예제 HTML 문자열을 그대로 마운트해 '옮겨 적기 오류'를 구조적으로 0으로 만들었다. 네이티브는 컴포넌트를 줄 수 없다는 한계를 화면에 명시했다. 자가 검사기(s1-ui-lint)와 Gate 46 신설. 부수 발견: 토큰 값이 바뀌면 ui:build 가 멈추는데(기존 안전장치) 그 상태가 아무 게이트에도 안 걸려 낡은 배포본이 커밋될 수 있었다 — platform-tokens-check 로 막았다."
         }
       ]
     },
@@ -939,6 +947,21 @@
         {
           "date": "2026-09-04",
           "summary": "Date Picker 색·정렬 3건 작업 중 설치기 zip 날짜를 고치려 installer:build 실행 → 미커밋 슬롯 작업(build-components.ts +281행)이 설치기에 함께 구워져 Gate 13·19·24 가 새로 실패. 복구하려 component-guide-model.json 에 git checkout 을 써서 다른 세션의 미커밋 상태를 지웠다(재생성으로 메움). 커밋은 보류."
+        }
+      ]
+    },
+    {
+      "id": "revocation-sweeps-adjacent-legitimate-code",
+      "category": "governance",
+      "label": "철회가 승인 범위를 넘어 옆에 있던 정당한 구현까지 걷어감",
+      "description": "승인 없이 만들어진 것을 되돌릴 때, 같은 파일·같은 블록에 있던 '정본 토큰으로 만들어진 정당한 구현'까지 문자열·키워드로 함께 지운다. 검사기는 지워진 쪽이 정본 토큰을 쓰던 것인지 구분하지 못해 전부 초록으로 통과하고, 결함은 특정 상태에서만 드러난다. 되돌릴 때는 '무엇을 승인 없이 만들었나'가 아니라 '이 줄이 어느 토큰을 쓰나'로 가려야 한다.",
+      "count": 1,
+      "promotionStatus": "watching",
+      "promotedRule": null,
+      "occurrences": [
+        {
+          "date": "2026-09-04",
+          "summary": "focus-visible 17건 철회(2026-09-02)가 input.css 의 :has(control:focus-visible) → field border-color: --color-form-control-border-selected 규칙까지 함께 지웠다. 이 규칙은 승인 없이 만든 focus 토큰이 아니라 정본 Selected 토큰을 쓰고 있었고 최초 커밋 3997f18 부터 있었다. 결과로 error·correct·read-only 상태에서 키보드 초점이 전혀 보이지 않게 됐다(Dark·Error 와 Read-only 는 초점 전후 계산 스타일 차이 0). 기계검사 9종은 전량 초록이었고 🤖 component-verifier 델타 재검증에서만 잡혔다."
         }
       ]
     },

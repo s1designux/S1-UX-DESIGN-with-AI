@@ -1094,6 +1094,47 @@ try {
   fail(`Gate 45 실행 실패: ${e.message}`);
 }
 
+// ── Gate 46: Developer Handoff (툴별 전달본 · 배포 ZIP · 다운로드 화면) ─────
+// 개발자가 받아 가는 것이 현재 배포본보다 낡으면, 그 사실을 아무도 모른 채
+// 옛 색·옛 마크업이 서비스로 나간다. 지문 3곳(배포본·ZIP·화면)이 한 줄로 이어져 있어야 한다.
+// 2026-09-04 신설 — river 승인 「개발자/퍼블리셔 전달 계층」.
+gateHeader('[Gate 46] 개발자 전달본 검사기 (Developer Handoff)');
+try {
+  const { spawnSync } = require('child_process');
+  const steps = [
+    ['배포 ZIP', ['build-ui-package-zip.js', '--check'], 'npm run ui:zip'],
+    ['다운로드 화면', ['gen-dev-download-panel.js', '--check'], 'npm run devpanel:gen'],
+    ['색·크기 값 전달본', ['platform-tokens-check.mjs'], 'npm run ui:build']
+  ];
+  let handoffFailed = false;
+  for (const [label, args, fix] of steps) {
+    const r = spawnSync(process.execPath, [path.join(__dirname, args[0]), ...args.slice(1)], { encoding: 'utf8' });
+    if (r.status !== 0) {
+      handoffFailed = true;
+      fail(`Gate 46: ${label}이(가) 현재 배포본보다 낡았습니다 — \`${fix}\` 실행 필요`);
+    }
+  }
+  if (!handoffFailed) {
+    const distManifest = JSON.parse(fs.readFileSync(path.join(ROOT, 'ui-library/dist/manifest.json'), 'utf8'));
+    const platformManifest = JSON.parse(fs.readFileSync(path.join(ROOT, 'ui-library/dist/platform/manifest.json'), 'utf8'));
+    const approved = distManifest.components.filter((c) => c.status === 'approved').map((c) => c.id);
+    const missing = approved.filter((id) => !platformManifest.components.includes(id));
+    if (missing.length) fail(`Gate 46: 승인 컴포넌트인데 툴별 전달본이 없습니다 — ${missing.join(', ')}`);
+    else pass(`전달본 동기화 (컴포넌트 ${approved.length}종 · 툴 ${Object.keys(platformManifest.platforms).length}개 · 지문 ${distManifest.canonicalFingerprint.slice(0, 12)}…)`);
+    /* 생성물이 "그 언어에서 서는가"를 보는 검사는 도구가 있어야 돈다.
+       도구가 없으면 조용히 사라진 채 PASSED 로만 보이므로, 게이트에서 그 사실을 드러낸다. */
+    const missingTools = [];
+    if (spawnSync('c++', ['--version'], { encoding: 'utf8' }).status !== 0) missingTools.push('C++ 컴파일러');
+    for (const [label, moduleName] of [['@vue/compiler-sfc', '@vue/compiler-sfc'], ['esbuild', 'esbuild']]) {
+      const probe = spawnSync(process.execPath, ['-e', `require.resolve(${JSON.stringify(moduleName)})`], { cwd: ROOT, encoding: 'utf8' });
+      if (probe.status !== 0) missingTools.push(label);
+    }
+    if (missingTools.length) warn(`Gate 46: 전달본 컴파일 검사가 이번 환경에서 건너뛰어졌습니다(${missingTools.join(' · ')} 없음) — 그 언어에서 실제로 컴파일되는지는 확인되지 않았습니다.`);
+  }
+} catch (e) {
+  fail(`Gate 46 실행 실패: ${e.message}`);
+}
+
 // ── Gate 47: Review Board Freshness (검수판 신선도) ────────────────
 // 검수판은 정본 화면을 이미지로 박아 둔다 — 정본이 바뀌어도 아무도 그 화면을 보지 않아
 // 조용히 낡는다(2026-09-04 date-picker 승인 다음날 '초안·화면 없음' 으로 표시됨).

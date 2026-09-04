@@ -1,0 +1,960 @@
+{
+  "_meta": {
+    "note": "자동 생성물 — 손으로 고치지 마세요. 정본을 고치고 `npm run tokens:reconcile` 또는 `npm run ui:build` 를 실행하세요.",
+    "purpose": "개발 툴과 검사기가 함께 읽는 허용목록. 여기 없는 variant·size·속성은 승인된 적이 없는 것이다.",
+    "canonicalFingerprint": "9b2b7d681bcd6f9bb34deacc88ff52e6c535696c8c6a76580e24b77a93f3051c"
+  },
+  "components": [
+    {
+      "id": "input",
+      "status": "approved",
+      "rootSelector": "[data-s1-component=\"input\"]",
+      "root": "div[data-s1-component=input]",
+      "variants": [
+        "base"
+      ],
+      "sizes": [
+        "xxsm",
+        "xsm",
+        "md"
+      ],
+      "breaks": {
+        "pc": [
+          "xxsm",
+          "xsm",
+          "md"
+        ],
+        "mobile": [
+          "md"
+        ]
+      },
+      "states": [
+        "default",
+        "filled",
+        "focus",
+        "error",
+        "correct",
+        "readOnly",
+        "disabled"
+      ],
+      "parts": [
+        "label",
+        "field",
+        "control",
+        "action",
+        "action-icon",
+        "message"
+      ],
+      "variantAttribute": null,
+      "sizeAttribute": "data-size",
+      "requiredAttributes": [
+        "data-size",
+        "data-break"
+      ],
+      "requiredParts": [
+        "field",
+        "control"
+      ],
+      "jsRequired": true,
+      "events": [
+        "s1:input:clear"
+      ],
+      "lifecycle": [
+        "init is idempotent",
+        "destroy removes listeners and hides clear action"
+      ],
+      "canonicalFingerprint": "99e88cd5ed5a16be145ab4fca00e30c17ca4ff852bf039ab97958a0c12523e32",
+      "sourceFingerprint": "088268d0d78903095d15c4f953114ecca11f4b7b09effee3e1c7a15d27b24223"
+    },
+    {
+      "id": "button",
+      "status": "approved",
+      "rootSelector": "[data-s1-component=\"button\"]",
+      "root": "button[data-s1-component=button]",
+      "variants": [
+        "primary",
+        "secondary",
+        "blue-line"
+      ],
+      "sizes": [
+        "md",
+        "xsm",
+        "xxsm",
+        "lg"
+      ],
+      "breaks": {
+        "pc": [
+          "md",
+          "xsm",
+          "xxsm"
+        ],
+        "mobile": [
+          "lg"
+        ]
+      },
+      "states": [
+        "default",
+        "hover",
+        "pressed",
+        "disabled"
+      ],
+      "parts": [
+        "label"
+      ],
+      "variantAttribute": "data-variant",
+      "sizeAttribute": "data-size",
+      "requiredAttributes": [
+        "type",
+        "data-variant",
+        "data-size"
+      ],
+      "requiredParts": [
+        "label"
+      ],
+      "jsRequired": false,
+      "events": [],
+      "lifecycle": [],
+      "canonicalFingerprint": "b4ca3caa3666fcb0c7afad786d0211c3d9a894aaff6c8cddb4c80341e1295441",
+      "sourceFingerprint": "6288663cd26b8ee01bd3a910fb15d4e59e29bcb84bddacd085f44fd7078dec46"
+    },
+    {
+      "id": "checkbox",
+      "status": "approved",
+      "rootSelector": "[data-s1-component=\"checkbox\"]",
+      "root": "div[data-s1-component=checkbox]",
+      "variants": [
+        "base"
+      ],
+      "sizes": [],
+      "breaks": null,
+      "states": [
+        "default",
+        "hover",
+        "checked",
+        "disabled",
+        "disabledChecked"
+      ],
+      "parts": [
+        "control",
+        "label"
+      ],
+      "variantAttribute": null,
+      "sizeAttribute": null,
+      "requiredAttributes": [],
+      "requiredParts": [
+        "control"
+      ],
+      "jsRequired": false,
+      "events": [],
+      "lifecycle": [],
+      "canonicalFingerprint": "066c6fbcd484b03d6b2a840c408b918b0e960bf041703195114fbd950a20bd06",
+      "sourceFingerprint": "971d5b19ce5bff56973aef011f58021bc5ebb1ced25691aa66e6398b43d7a991"
+    },
+    {
+      "id": "radio",
+      "status": "approved",
+      "rootSelector": "[data-s1-component=\"radio\"]",
+      "root": "div[data-s1-component=radio]",
+      "variants": [
+        "base"
+      ],
+      "sizes": [],
+      "breaks": null,
+      "states": [
+        "default",
+        "hover",
+        "selected",
+        "disabled",
+        "disabledSelected"
+      ],
+      "parts": [
+        "control",
+        "label"
+      ],
+      "variantAttribute": null,
+      "sizeAttribute": null,
+      "requiredAttributes": [],
+      "requiredParts": [
+        "control"
+      ],
+      "jsRequired": false,
+      "events": [],
+      "lifecycle": [],
+      "canonicalFingerprint": "7cbf522b8044287d9cae0a1d3c8c974a5b03b47173cb3ce4faa74cfe9d99e6c6",
+      "sourceFingerprint": "01f036e3492fed1b35b0e012fd06a5d2947470f6a29bf6e0ba52d319e12829f5"
+    },
+    {
+      "id": "toggle",
+      "status": "approved",
+      "rootSelector": "[data-s1-component=\"toggle\"]",
+      "root": "button[data-s1-component=toggle][role=switch]",
+      "variants": [
+        "base"
+      ],
+      "sizes": [],
+      "breaks": null,
+      "states": [
+        "off",
+        "on",
+        "disabled",
+        "disabledOn"
+      ],
+      "parts": [
+        "knob"
+      ],
+      "variantAttribute": null,
+      "sizeAttribute": null,
+      "requiredAttributes": [
+        "type",
+        "role",
+        "aria-checked"
+      ],
+      "requiredParts": [
+        "knob"
+      ],
+      "jsRequired": true,
+      "events": [],
+      "lifecycle": [],
+      "canonicalFingerprint": "ecd8101e1c3423e1a7ed517ab5ce50dabb967385344f0bc6d8764ae15b01612e",
+      "sourceFingerprint": "f003fb686e13d585612f7331b74326abb80039b243da025ae053802ca85832e2"
+    },
+    {
+      "id": "chip",
+      "status": "approved",
+      "rootSelector": "[data-s1-component=\"chip\"]",
+      "root": "button[data-s1-component=chip]",
+      "variants": [
+        "line",
+        "solid"
+      ],
+      "sizes": [
+        "sm",
+        "md"
+      ],
+      "breaks": {
+        "pc": [
+          "sm",
+          "md"
+        ],
+        "mobile": [
+          "sm"
+        ]
+      },
+      "states": [
+        "default",
+        "hover",
+        "selected",
+        "disabled"
+      ],
+      "parts": [
+        "label"
+      ],
+      "variantAttribute": "data-variant",
+      "sizeAttribute": "data-size",
+      "requiredAttributes": [
+        "type",
+        "data-variant",
+        "data-size",
+        "data-break",
+        "aria-pressed"
+      ],
+      "requiredParts": [
+        "label"
+      ],
+      "jsRequired": true,
+      "events": [],
+      "lifecycle": [],
+      "canonicalFingerprint": "93bb2aee812896989ff1164fbb57fd7f1d2dc11164eb695d26167b1f51a9615b",
+      "sourceFingerprint": "14f2d277070cf4b9be28249cd1fc597b146341481dc6921572de8f61ef98bf47"
+    },
+    {
+      "id": "dropdown",
+      "status": "approved",
+      "rootSelector": "[data-s1-component=\"dropdown\"]",
+      "root": "div[data-s1-component=dropdown]",
+      "variants": [
+        "text",
+        "checkbox"
+      ],
+      "sizes": [
+        "xxsm",
+        "xsm",
+        "md"
+      ],
+      "breaks": null,
+      "states": [
+        "default",
+        "hover",
+        "selectedText",
+        "selectedCheckbox"
+      ],
+      "parts": [
+        "option",
+        "option-label",
+        "option-check",
+        "divider"
+      ],
+      "variantAttribute": "data-type",
+      "sizeAttribute": "data-size",
+      "requiredAttributes": [
+        "data-type",
+        "data-size"
+      ],
+      "requiredParts": [
+        "option",
+        "option-label"
+      ],
+      "jsRequired": true,
+      "events": [
+        "s1:dropdown:change"
+      ],
+      "lifecycle": [
+        "init(root)",
+        "destroy(root)"
+      ],
+      "canonicalFingerprint": "1e14f3eb6aed75a1e86f59741e3010a8c09e03aebc25ed50fed3eef890a22df0",
+      "sourceFingerprint": "5d6d77b5896a7606697a5893224dec470eb9628dbb50743e2b1bf2866157f6ef"
+    },
+    {
+      "id": "select",
+      "status": "approved",
+      "rootSelector": "[data-s1-component=\"select\"]",
+      "root": "div[data-s1-component=select]",
+      "variants": [
+        "base"
+      ],
+      "sizes": [
+        "xxsm",
+        "xsm",
+        "md"
+      ],
+      "breaks": {
+        "pc": [
+          "xxsm",
+          "xsm",
+          "md"
+        ],
+        "mobile": [
+          "md"
+        ]
+      },
+      "states": [
+        "default",
+        "hover",
+        "open",
+        "filled",
+        "disabled"
+      ],
+      "parts": [
+        "trigger",
+        "value",
+        "icon",
+        "panel"
+      ],
+      "variantAttribute": null,
+      "sizeAttribute": "data-size",
+      "requiredAttributes": [
+        "data-size",
+        "data-break"
+      ],
+      "requiredParts": [
+        "trigger",
+        "value",
+        "icon",
+        "panel"
+      ],
+      "jsRequired": true,
+      "events": [
+        "s1:select:change",
+        "s1:select:open",
+        "s1:select:close"
+      ],
+      "lifecycle": [
+        "init(root)",
+        "destroy(root)"
+      ],
+      "canonicalFingerprint": "4921c534da0eecc6c4a4c375003327de63d0f8298227d37d7e83e4abe7084322",
+      "sourceFingerprint": "34fea07d4f4166c83e166f945762dadc6311a3dd4278125b03b127035873ac74"
+    },
+    {
+      "id": "filter-chip",
+      "status": "approved",
+      "rootSelector": "[data-s1-component=\"filter-chip\"]",
+      "root": "div[data-s1-component=filter-chip]",
+      "variants": [
+        "line",
+        "solid"
+      ],
+      "sizes": [
+        "sm",
+        "md"
+      ],
+      "breaks": {
+        "pc": [
+          "sm",
+          "md"
+        ],
+        "mobile": [
+          "md"
+        ]
+      },
+      "states": [
+        "default",
+        "hover",
+        "selected",
+        "complete",
+        "disabled"
+      ],
+      "parts": [
+        "trigger",
+        "title",
+        "value",
+        "icon",
+        "panel"
+      ],
+      "variantAttribute": "data-variant",
+      "sizeAttribute": "data-size",
+      "requiredAttributes": [
+        "data-variant",
+        "data-size",
+        "data-break",
+        "data-title"
+      ],
+      "requiredParts": [
+        "trigger",
+        "value",
+        "icon",
+        "panel"
+      ],
+      "jsRequired": true,
+      "events": [
+        "s1:filter-chip:change",
+        "s1:filter-chip:open",
+        "s1:filter-chip:close"
+      ],
+      "lifecycle": [
+        "init(root)",
+        "destroy(root)"
+      ],
+      "canonicalFingerprint": "cc7d7c375fc1bd9d2d7c028e0e0bbebbc5253ec27d042225e5f4cc97417c4102",
+      "sourceFingerprint": "c10ce887d97d0ecabfc027554ee7488f29c6f8ce121028e446311b9413be3fe9"
+    },
+    {
+      "id": "tab",
+      "status": "approved",
+      "rootSelector": "[data-s1-component=\"tab\"]",
+      "root": "div[data-s1-component=tab][role=tablist]",
+      "variants": [
+        "line"
+      ],
+      "sizes": [
+        "md",
+        "sm",
+        "xsm"
+      ],
+      "breaks": {
+        "pc": [
+          "md",
+          "sm",
+          "xsm"
+        ],
+        "mobile": [
+          "sm"
+        ]
+      },
+      "states": [
+        "default",
+        "hover",
+        "selected"
+      ],
+      "parts": [
+        "tab",
+        "tabpanel (optional)"
+      ],
+      "variantAttribute": null,
+      "sizeAttribute": "data-size",
+      "requiredAttributes": [
+        "data-size",
+        "data-break",
+        "role",
+        "aria-label"
+      ],
+      "requiredParts": [
+        "tab"
+      ],
+      "jsRequired": true,
+      "events": [],
+      "lifecycle": [],
+      "canonicalFingerprint": "f3608b8b56686836684337b06e929ce1e8f0f564e1e3952d1f7ec3457128f61f",
+      "sourceFingerprint": "afb13096268e35b4e698660af49cc106607c0769f8c7261114bb79fc7a7f88e6"
+    },
+    {
+      "id": "pagination",
+      "status": "approved",
+      "rootSelector": "[data-s1-component=\"pagination\"]",
+      "root": "nav[data-s1-component=pagination]",
+      "variants": [
+        "bar"
+      ],
+      "sizes": [
+        "28"
+      ],
+      "breaks": null,
+      "states": [
+        "single",
+        "first",
+        "last",
+        "middle",
+        "selected"
+      ],
+      "parts": [
+        "arrow-group",
+        "pages",
+        "page",
+        "icon"
+      ],
+      "variantAttribute": null,
+      "sizeAttribute": null,
+      "requiredAttributes": [
+        "data-total-pages",
+        "data-page",
+        "aria-label"
+      ],
+      "requiredParts": [
+        "arrow-group",
+        "pages",
+        "page"
+      ],
+      "jsRequired": true,
+      "events": [],
+      "lifecycle": [],
+      "canonicalFingerprint": "95ad9bd7351218e7a912cdfb02da1e3b053a07c64af6df9d2bd5cd3b5d1b0e8d",
+      "sourceFingerprint": "e6b63ffae872abfdb045b7674d97b43842b6ef3e5e6ea304d3e322a5853f4bd0"
+    },
+    {
+      "id": "textarea",
+      "status": "approved",
+      "rootSelector": "[data-s1-component=\"textarea\"]",
+      "root": "div[data-s1-component=textarea]",
+      "variants": [
+        "base"
+      ],
+      "sizes": [],
+      "breaks": null,
+      "states": [
+        "default",
+        "focus",
+        "filled",
+        "disabled",
+        "readonly"
+      ],
+      "parts": [
+        "control"
+      ],
+      "variantAttribute": null,
+      "sizeAttribute": null,
+      "requiredAttributes": [
+        "data-break"
+      ],
+      "requiredParts": [
+        "control"
+      ],
+      "jsRequired": false,
+      "events": [],
+      "lifecycle": [],
+      "canonicalFingerprint": "1aef3c37fd73f719e459750def6c73bdecb42858b43fc6a3dc7d7cf7f43f5a6f",
+      "sourceFingerprint": "24981aeeb2216868972a5a4aceed45f8d839b577e3bb1644078f052dabd683f2"
+    },
+    {
+      "id": "multi-toggle",
+      "status": "approved",
+      "rootSelector": "[data-s1-component=\"multi-toggle\"]",
+      "root": "div[data-s1-component=multi-toggle][role=radiogroup]",
+      "variants": [
+        "base"
+      ],
+      "sizes": [
+        "md",
+        "sm"
+      ],
+      "breaks": null,
+      "states": [
+        "default",
+        "hover",
+        "selected",
+        "disabled"
+      ],
+      "parts": [
+        "cell"
+      ],
+      "variantAttribute": null,
+      "sizeAttribute": "data-size",
+      "requiredAttributes": [
+        "data-size"
+      ],
+      "requiredParts": [
+        "cell"
+      ],
+      "jsRequired": true,
+      "events": [
+        "s1:multi-toggle:change"
+      ],
+      "lifecycle": [
+        "init is idempotent",
+        "destroy removes listeners"
+      ],
+      "canonicalFingerprint": "cd84ea10b180336cccde30f307488488def16e4361cd7f255c836ffbe99f018c",
+      "sourceFingerprint": "01de59eb5d91d92a362524fb7740a98c623a1c444dd70b72a09509d6e7d0d12e"
+    },
+    {
+      "id": "modal",
+      "status": "approved",
+      "rootSelector": "[data-s1-component=\"modal\"]",
+      "root": "div[data-s1-component=modal][hidden]",
+      "variants": [
+        "single",
+        "dual"
+      ],
+      "sizes": [],
+      "breaks": {
+        "pc": [],
+        "mobile": []
+      },
+      "states": [
+        "closed",
+        "open"
+      ],
+      "parts": [
+        "overlay",
+        "panel",
+        "content",
+        "header",
+        "title",
+        "body",
+        "message",
+        "footer",
+        "close"
+      ],
+      "variantAttribute": "data-footer",
+      "sizeAttribute": null,
+      "requiredAttributes": [
+        "data-break",
+        "data-footer"
+      ],
+      "requiredParts": [
+        "overlay",
+        "panel",
+        "content",
+        "header",
+        "title",
+        "body",
+        "message",
+        "footer"
+      ],
+      "jsRequired": true,
+      "events": [
+        "s1:modal:open",
+        "s1:modal:close"
+      ],
+      "lifecycle": [
+        "init(root)",
+        "destroy(root)"
+      ],
+      "canonicalFingerprint": "082b045a2096c13e522e304a51cd35e1ca419a8a847b9a5860a86a84d5a866a3",
+      "sourceFingerprint": "5ff5ac97204469abf9f51cb93727f4af32ec2d36a9a9f2d5ffd9a377a0ffa3d5"
+    },
+    {
+      "id": "table",
+      "status": "approved",
+      "rootSelector": "[data-s1-component=\"table\"]",
+      "root": "div[data-s1-component=table]",
+      "variants": [
+        "base"
+      ],
+      "sizes": [
+        "md",
+        "sm",
+        "xsm"
+      ],
+      "breaks": {
+        "pc": [
+          "md",
+          "sm",
+          "xsm"
+        ]
+      },
+      "states": [
+        "default",
+        "hover",
+        "selected"
+      ],
+      "parts": [
+        "table",
+        "header-cell",
+        "row",
+        "cell"
+      ],
+      "variantAttribute": null,
+      "sizeAttribute": "data-size",
+      "requiredAttributes": [
+        "data-size"
+      ],
+      "requiredParts": [
+        "table",
+        "header-cell",
+        "row",
+        "cell"
+      ],
+      "jsRequired": true,
+      "events": [
+        "s1:table:selectionchange"
+      ],
+      "lifecycle": [],
+      "canonicalFingerprint": "e99f34de1ab36d18f6e498131eb2b47bfbf1859533234f0c6d194ad31300e43c",
+      "sourceFingerprint": "84f4bf6b408ad8fec1206a6fa8cc914544b3b0bd4967f3703050ba0a82bba985"
+    },
+    {
+      "id": "mobile-bottom-nav",
+      "status": "approved",
+      "rootSelector": "[data-s1-component=\"mobile-bottom-nav\"]",
+      "root": "button[type=button][data-s1-component=mobile-bottom-nav][role=tab][aria-selected]",
+      "variants": [],
+      "sizes": [],
+      "breaks": null,
+      "states": [
+        "unselected",
+        "selected"
+      ],
+      "parts": [
+        "icon",
+        "label"
+      ],
+      "variantAttribute": null,
+      "sizeAttribute": null,
+      "requiredAttributes": [],
+      "requiredParts": [
+        "icon",
+        "label"
+      ],
+      "jsRequired": false,
+      "events": [],
+      "lifecycle": [],
+      "canonicalFingerprint": "390259e0902014da3067dc490266f8096d7b19ee538c342b65e9748057e35139",
+      "sourceFingerprint": "3c4996f16889e714aed691159d54ae40bdf62b352f5fe591a2adec645b034931"
+    },
+    {
+      "id": "mobile-header",
+      "status": "approved",
+      "rootSelector": "[data-s1-component=\"mobile-header\"]",
+      "root": "header[data-s1-component=mobile-header][data-variant]",
+      "variants": [
+        "home-title",
+        "home-title-subtitle",
+        "standard-title",
+        "standard-title-close",
+        "standard-no-title",
+        "standard-no-title-close"
+      ],
+      "sizes": [],
+      "breaks": null,
+      "states": [],
+      "parts": [
+        "title",
+        "title-row",
+        "arrow-icon",
+        "stack",
+        "subtitle",
+        "back",
+        "back-icon",
+        "close",
+        "close-icon",
+        "spacer",
+        "notification",
+        "notification-icon"
+      ],
+      "variantAttribute": "data-variant",
+      "sizeAttribute": null,
+      "requiredAttributes": [],
+      "requiredParts": [],
+      "jsRequired": false,
+      "events": [],
+      "lifecycle": [],
+      "canonicalFingerprint": "e10248a20a707472610fda50a840e84a143b63f9e403e416f12ed0973bc71c59",
+      "sourceFingerprint": "fe5cf7a9903c35da6f2b57832516e1b2f9cb0c787101c1aa4d4cb3edfd6849af"
+    },
+    {
+      "id": "time-picker",
+      "status": "approved",
+      "rootSelector": "[data-s1-component=\"time-picker\"]",
+      "root": "div[data-s1-component=time-picker]",
+      "variants": [
+        "base"
+      ],
+      "sizes": [
+        "xxsm",
+        "xsm",
+        "md"
+      ],
+      "breaks": {
+        "pc": [
+          "xxsm",
+          "xsm",
+          "md"
+        ],
+        "mobile": [
+          "md"
+        ]
+      },
+      "states": [
+        "default",
+        "hover",
+        "focus",
+        "filled",
+        "disabled"
+      ],
+      "parts": [
+        "trigger",
+        "value",
+        "icon",
+        "panel",
+        "column",
+        "cell",
+        "divider",
+        "footer",
+        "confirm",
+        "sheet",
+        "sheet-backdrop",
+        "sheet-panel",
+        "sheet-header",
+        "sheet-title",
+        "sheet-close",
+        "tabs",
+        "date-panel",
+        "wheel",
+        "wheel-col",
+        "wheel-cell",
+        "fade-top",
+        "fade-bottom",
+        "sheet-footer",
+        "apply"
+      ],
+      "variantAttribute": null,
+      "sizeAttribute": "data-size",
+      "requiredAttributes": [
+        "data-size",
+        "data-break",
+        "data-type"
+      ],
+      "requiredParts": [
+        "trigger",
+        "value",
+        "icon",
+        "panel",
+        "column",
+        "divider",
+        "footer",
+        "confirm"
+      ],
+      "jsRequired": true,
+      "events": [
+        "s1:time-picker:open",
+        "s1:time-picker:close",
+        "s1:time-picker:change"
+      ],
+      "lifecycle": [
+        "init(root)",
+        "destroy(root)"
+      ],
+      "canonicalFingerprint": "02869854f8bcfd14846b2ea5f04f4caff7b8af25bdce6be26b73992b1ff821b5",
+      "sourceFingerprint": "dd5c820597c456e2be4bfde0b04cbf50173873c93697f5464c73ddeceb16908b"
+    },
+    {
+      "id": "date-picker",
+      "status": "approved",
+      "rootSelector": "[data-s1-component=\"date-picker\"]",
+      "root": "div[data-s1-component=date-picker]",
+      "variants": [
+        "single",
+        "range"
+      ],
+      "sizes": [
+        "xxsm",
+        "xsm",
+        "md"
+      ],
+      "breaks": {
+        "pc": [
+          "xxsm",
+          "xsm",
+          "md"
+        ],
+        "mobile": [
+          "md"
+        ]
+      },
+      "states": [
+        "default",
+        "hover",
+        "filled",
+        "open",
+        "disabled"
+      ],
+      "parts": [
+        "trigger",
+        "value",
+        "icon",
+        "panel",
+        "calendar",
+        "header",
+        "prev",
+        "next",
+        "chevron-icon",
+        "header-label",
+        "year-label",
+        "month-label",
+        "weekdays",
+        "weekday",
+        "view",
+        "grid",
+        "week",
+        "cell",
+        "cell-inner",
+        "cell-num",
+        "tile",
+        "sheet",
+        "sheet-backdrop",
+        "sheet-panel",
+        "sheet-header",
+        "sheet-title",
+        "sheet-close",
+        "calendar-wrap",
+        "sheet-footer",
+        "apply"
+      ],
+      "variantAttribute": "data-mode",
+      "sizeAttribute": "data-size",
+      "requiredAttributes": [
+        "data-size",
+        "data-break",
+        "data-mode"
+      ],
+      "requiredParts": [
+        "trigger",
+        "value",
+        "icon"
+      ],
+      "jsRequired": true,
+      "events": [
+        "s1:date-picker:open",
+        "s1:date-picker:close",
+        "s1:date-picker:change"
+      ],
+      "lifecycle": [
+        "init(root)",
+        "destroy(root)"
+      ],
+      "canonicalFingerprint": "3857bf4abf9686c5ddd1d15e7d13aa510fd51f654a23819b88e0acae5edcffc9",
+      "sourceFingerprint": "bfce9e76a3c82d2932121d6a6af6b36100925230b234041d8f56345d1eb061d5"
+    }
+  ]
+}
