@@ -454,3 +454,5 @@ CSS 가 참조하는 `var(--이름)` 이 **실제로 정의된 토큰인지** �
 해소: `npm run board:refresh` — 선언대로 가이드 섹션을 다시 캡처해 `board.html` 의 이미지를 갈아끼우고 기록을 갱신한다. **게시(아티팩트 업로드)는 스크립트가 못 한다** — 그 뒤 Claude 가 같은 링크로 다시 올린다.
 
 판정부 `scripts/board-freshness-check.js` · 재캡처 `scripts/board-refresh.js` · 단독 실행 `npm run board:check`.
+
+**보강 (river 지적 2026-09-04):** Gate 47 은 화면이 낡았는지에 더해 **카드에 박힌 「정본 사실표」가 낡았는지**도 본다. 검수판을 만들 때 사람이 정본을 「크기 이름 목록」이라는 평면으로 요약하면서 **화면 축(Break=PC/Mobile)을 통째로 빠뜨려** 23장 중 10장이 틀린 전제 위에 서 있었다(반복 패턴 `canon-axis-flattened-in-summary`). 그래서 요약 단계를 없앴다 — `scripts/board-canon-facts.js` 가 정본에서 크기×화면 격자·상태·변형·「정본이 없다고 못박은 조합」을 뽑아 `canon-facts.json` 으로 만들고, 조립 때 카드마다 그대로 렌더한다. Gate 47 은 그 표의 `sourceFingerprint` 를 현재 배포본과 대조한다. 단독 실행 `npm run board:facts`.

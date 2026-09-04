@@ -38,6 +38,7 @@ const DIR = path.join(ROOT, 'reports/legacy-crosswalk-board');
 const MANIFEST = path.join(DIR, 'board-manifest.json');
 const TEMPLATE = path.join(DIR, 'board.template.html');   // 뼈대 — 그림은 {{IMG:...}} 자리표시자
 const SCREENS = path.join(DIR, 'screens');                 // 그림 원본(정본 canon/ · 레거시 legacy/)
+const FACTS = path.join(DIR, 'canon-facts.json');            // 정본 사실 — 기계가 뽑는다
 const BOARD = path.join(DIR, 'board.html');                // 조립 결과 = 게시용. git 에 담지 않는다
 const PAGE = path.join(ROOT, 'pages/components.html');
 const TMP_PAGE = path.join(ROOT, 'pages', '__board-shot.html');
@@ -105,11 +106,51 @@ function shoot(cfg, section, platform, scrollY, out) {
 // 빈 화면(렌더 실패) 판별 — 색이 거의 없는 PNG 는 용량이 급격히 작다
 function looksBlank(png) { return fs.statSync(png).size < 20 * 1024; }
 
+
+// 카드에 박을 「지금 정본」 표 — 사람이 요약하지 않고 canon-facts.json 을 그대로 렌더한다
+function factsBlock(comp, facts) {
+  const f = facts.components[comp];
+  if (!f) return `<div class="facts"><h4>지금 정본</h4><p class="fsrc">${comp} 은(는) 웹 배포본 컴포넌트가 아니라 가이드 화면입니다 — 기계가 읽을 정본 사실표가 없습니다.</p></div>`;
+  const esc = (t) => String(t).replace(/&/g, '&amp;').replace(/</g, '&lt;');
+  const rows = [];
+  if (f.sizeBreakGrid.length) {
+    const cells = f.sizeBreakGrid.map((g) => {
+      const brk = g.break === 'mobile' ? 'Mobile' : 'PC';
+      const dim = g.height ? ` <i>${g.height}${g.fontSize ? '/' + g.fontSize : ''}</i>` : '';
+      return `<span class="fg${g.break === 'mobile' ? ' fm' : ''}">${g.size.toUpperCase()}·${brk}${dim}</span>`;
+    }).join('');
+    rows.push(['크기 × 화면', cells + '<em>높이/글자크기</em>']);
+  } else if (f.sizes.length) {
+    rows.push(['크기', f.sizes.map((x) => `<span class="fg">${esc(x)}</span>`).join('')]);
+  } else {
+    rows.push(['크기', '<em>크기 축 없음</em>']);
+  }
+  if (f.variants.length) rows.push(['변형', f.variants.map((v) => `<span class="fg">${esc(v)}</span>`).join('')]);
+  if (f.types) rows.push(['유형', f.types.map((v) => `<span class="fg">${esc(v)}</span>`).join('')]);
+  if (f.states.length) rows.push(['상태', f.states.map((v) => `<span class="fg">${esc(v)}</span>`).join('')]);
+  if (f.canonicalStateMap) {
+    const pairs = Object.entries(f.canonicalStateMap).map(([a, b]) => `${esc(a)} → ${esc(b)}`).join(' · ');
+    rows.push(['정본이 선언한 상태 대응', `<span class="fmap">${pairs}</span>`]);
+  }
+  if (f.absentCombinations.length) {
+    rows.push(['정본에 <b>없다</b>고 못박은 것',
+      f.absentCombinations.map((a) => `<span class="fno">${esc(a.key)}</span>`).join('')]);
+  }
+  return `<div class="facts">
+  <h4>지금 정본 <span>기계가 읽은 것 — 사람이 요약하지 않았습니다</span></h4>
+  <table class="ftab">${rows.map(([k, v]) => `<tr><th>${k}</th><td>${v}</td></tr>`).join('')}</table>
+  <p class="fsrc">${esc(f.id)} v${esc(f.version)} · ${esc(f.status)} · 크기 값 출처 = 정본 build-components.ts</p>
+</div>`;
+}
+
 // 뼈대 + 그림 파일 → 게시용 board.html 조립
 function assemble() {
   const tpl = fs.readFileSync(TEMPLATE, 'utf8');
+  const facts = JSON.parse(fs.readFileSync(FACTS, 'utf8'));
   const missing = [];
-  const out = tpl.replace(/\{\{IMG:([^}]+)\}\}/g, (_, rel) => {
+  const out = tpl
+    .replace(/\{\{FACTS:([^}]+)\}\}/g, (_, comp) => factsBlock(comp, facts))
+    .replace(/\{\{IMG:([^}]+)\}\}/g, (_, rel) => {
     const f = path.join(SCREENS, rel);
     if (!fs.existsSync(f)) { missing.push(rel); return ''; }
     return `data:image/png;base64,${fs.readFileSync(f).toString('base64')}`;
@@ -127,6 +168,9 @@ function componentProvenance(component) {
 }
 
 async function main() {
+  // 정본 사실표를 먼저 다시 뽑는다 — 카드에 박히는 값이 항상 지금 정본이어야 한다
+  execFileSync('node', [path.join(ROOT, 'scripts/board-canon-facts.js')], { cwd: ROOT, stdio: 'inherit' });
+
   const man = JSON.parse(fs.readFileSync(MANIFEST, 'utf8'));
   const cfg = man.capture;
   const tpl = fs.readFileSync(TEMPLATE, 'utf8');

@@ -130,6 +130,24 @@ footer{margin-top:56px;padding-top:20px;border-top:1px solid var(--line);font-si
 footer code{font-family:"IBM Plex Mono",monospace;font-size:12px;color:var(--ink-2)}
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
 @media (max-width:640px){.wrap{padding:28px 14px 80px}h1{font-size:26px}.dec{padding:16px 14px}.pane{min-width:200px}}
+
+/* 정본 사실표 — board-refresh 가 canon-facts.json 에서 렌더한다 (사람이 요약하지 않는다) */
+.facts{border:1px solid var(--accent);background:var(--accent-soft);padding:12px 14px;margin:0 0 14px}
+.facts h4{margin:0 0 8px;font-size:13px;color:var(--ink)}
+.facts h4 span{font-weight:400;font-size:11px;color:var(--ink-3);margin-left:6px}
+.ftab{border-collapse:collapse;width:100%}
+.ftab th{text-align:left;vertical-align:top;white-space:nowrap;padding:3px 12px 3px 0;
+ font-size:12px;font-weight:600;color:var(--ink-2);width:1%}
+.ftab td{padding:3px 0;font-size:12px;color:var(--ink)}
+.fg{display:inline-block;border:1px solid var(--line-2);background:var(--surface);
+ border-radius:3px;padding:1px 6px;margin:2px 4px 2px 0;font-family:"IBM Plex Mono",monospace;font-size:11px}
+.fg.fm{border-color:var(--hold);background:var(--hold-soft)}
+.fg i{font-style:normal;color:var(--ink-3)}
+.fno{display:inline-block;border:1px dashed var(--warn);border-radius:3px;padding:1px 6px;
+ margin:2px 4px 2px 0;font-family:"IBM Plex Mono",monospace;font-size:11px;color:var(--warn)}
+.fmap{font-family:"IBM Plex Mono",monospace;font-size:11px;color:var(--ink-2)}
+.ftab em{font-style:normal;color:var(--ink-3);font-size:11px;margin-left:4px}
+.fsrc{margin:8px 0 0;font-size:11px;color:var(--ink-3);font-family:"IBM Plex Mono",monospace}
 </style>
 
 <div class="bar">
@@ -160,10 +178,10 @@ footer code{font-family:"IBM Plex Mono",monospace;font-size:12px;color:var(--ink
 
 <section class="grp"><div class="grp-h"><h2>크기 이름이 안 맞는 것</h2><span class="cnt">4건</span></div>
 <p class="grp-d">레거시가 쓰던 크기 이름이 지금 정본 크기와 짝이 없는 경우입니다. 짝만 정해지면 바로 자동 대조가 됩니다.</p><article class="dec" id="D-01">
-  <header class="dec-h"><span class="did">D-01</span><h3>칩의 모바일 크기가 지금 어느 크기인가</h3>
+  <header class="dec-h"><span class="did">D-01</span><h3>칩의 모바일 크기 — 정본에 이미 답이 있습니다</h3>
     <span class="badge" data-badge="D-01">미결정</span></header>
-  <p class="why">레거시 칩은 크기를 mobile · pc-md · pc-sm 세 가지로 나눴는데, 지금 정본은 md · sm 두 가지입니다. pc는 이름이 그대로 붙지만 mobile 이 둘 중 어디에 해당하는지 이름만으로는 알 수 없습니다.</p>
-  <div class="compare"><figure class="pane">
+  <p class="why">레거시 칩은 크기를 mobile · pc-md · pc-sm 세 가지로 나눴습니다. 정본은 <b>크기(SM·MD) × 화면(PC·Mobile) 두 축</b>이고 <b>모바일은 SM 하나뿐</b>입니다. 그래서 mobile → SM·Mobile(높이 30·글자 14), pc-md → MD·PC(34), pc-sm → SM·PC(28) 로 곧장 대응됩니다. 정본은 「Mobile MD 조합은 없다」고 못박아 두기까지 했습니다. 이전 판에서 「mobile 이 md 냐 sm 이냐」고 여쭌 것은 <b>정본의 화면 축을 빠뜨린 제 잘못</b>입니다.</p>
+  {{FACTS:chip}}<div class="compare"><figure class="pane">
   <figcaption><span class="src src-A">A</span><b>chip</b>
     <span class="vc">30변형</span>
     <a href="https://www.figma.com/design/yE5UCFEbmXJBlYJWB24Lz2/SW-UX-GUIDE-V2.4?node-id=540-3189&m=dev" target="_blank" rel="noopener">피그마 ↗</a></figcaption>
@@ -176,37 +194,45 @@ footer code{font-family:"IBM Plex Mono",monospace;font-size:12px;color:var(--ink
   <div class="shotbox"><img class="shot" src="{{IMG:legacy/m-chips--1a746ff0.png}}" alt="m_chips" loading="lazy"></div>
   <p class="props">solid: off/on · checked: off/on · disabled: off/on</p>
 </figure><figure class="pane canon" data-canon="D-01">
-  <figcaption><span class="src src-C">정본</span><b>chip</b><span class="vc">현재 배포본</span></figcaption>
+  <figcaption><span class="src src-C">정본</span><b>chip</b><span class="vc">현재 배포본 · PC</span></figcaption>
   <div class="shotbox"><img class="shot" src="{{IMG:canon/chip--pc--0.png}}" alt="chip" loading="lazy"></div>
   <p class="props">지금 웹에 배포된 실제 모습입니다. 상태·크기가 모두 펼쳐져 있습니다.</p>
+</figure><figure class="pane canon" data-canon="D-01m">
+  <figcaption><span class="src src-C">정본</span><b>chip</b><span class="vc">현재 배포본 · Mobile</span></figcaption>
+  <div class="shotbox"><img class="shot" src="{{IMG:canon/chip--mobile--0.png}}" alt="chip mobile" loading="lazy"></div>
+  <p class="props">모바일 화면의 정본입니다. 같은 컴포넌트라도 PC 와 크기·구성이 다릅니다.</p>
 </figure></div>
   <div class="choose">
     <h4>결정</h4>
-    <div class="opts"><button class="opt" data-d="D-01" data-v="mobile = md (큰 쪽)"><span class="dot"></span>mobile = md (큰 쪽)</button><button class="opt" data-d="D-01" data-v="mobile = sm (작은 쪽)"><span class="dot"></span>mobile = sm (작은 쪽)</button></div>
+    <div class="opts"><button class="opt" data-d="D-01" data-v="정본대로 확정 — mobile = SM·Mobile"><span class="dot"></span>정본대로 확정 — mobile = SM·Mobile</button><button class="opt" data-d="D-01" data-v="아니다 — 다르게 정하겠습니다"><span class="dot"></span>아니다 — 다르게 정하겠습니다</button></div>
     <div class="freerow">
       <input class="free" data-d="D-01" type="text" placeholder="다르게 정하시려면 여기에 직접 적어주세요" aria-label="D-01 직접 입력">
       <button class="freebtn" data-d="D-01">저장</button>
     </div>
-    <p class="idle"><span>안 정하면</span>레거시 화면의 모바일 칩을 옮길 때마다 크기를 매번 다시 판단하게 됩니다.</p>
+    <p class="idle"><span>안 정하면</span>확정 표시만 안 남습니다. 정본 사실 자체는 위 표대로입니다.</p>
   </div>
 </article><article class="dec" id="D-04">
   <header class="dec-h"><span class="did">D-04</span><h3>큰 입력창(large)이 지금 어느 크기인가</h3>
     <span class="badge" data-badge="D-04">미결정</span></header>
-  <p class="why">레거시에 Inputbox_large 라는 큰 입력창이 있는데, 지금 정본 크기는 xxsm · xsm · md 세 가지뿐이고 그보다 큰 크기가 없습니다.</p>
-  <div class="compare"><figure class="pane">
+  <p class="why">레거시에 Inputbox_large 라는 큰 입력창이 있습니다. 정본 입력창은 크기 × 화면 두 축이라 <b>PC 는 XXSM(28)·XSM(34)·MD(44)</b>, <b>모바일은 MD(48)</b> 입니다. PC 안에서는 MD(44)가 가장 크지만 <b>정본 전체에서 가장 큰 것은 모바일 MD(48)</b> 입니다. 이전 판에서 「정본에 그보다 큰 크기가 없다」고 적은 것은 <b>사실 오류</b>였습니다.</p>
+  {{FACTS:input}}<div class="compare"><figure class="pane">
   <figcaption><span class="src src-A">A</span><b>Inputbox_large</b>
     <span class="vc">4변형</span>
     <a href="https://www.figma.com/design/yE5UCFEbmXJBlYJWB24Lz2/SW-UX-GUIDE-V2.4?node-id=641-4060&m=dev" target="_blank" rel="noopener">피그마 ↗</a></figcaption>
   <div class="shotbox"><img class="shot" src="{{IMG:legacy/inputbox-large--a8e48267.png}}" alt="Inputbox_large" loading="lazy"></div>
   <p class="props">type: complete_long/default/disabled/selected</p>
 </figure><figure class="pane canon" data-canon="D-04">
-  <figcaption><span class="src src-C">정본</span><b>input</b><span class="vc">현재 배포본</span></figcaption>
+  <figcaption><span class="src src-C">정본</span><b>input</b><span class="vc">현재 배포본 · PC</span></figcaption>
   <div class="shotbox"><img class="shot" src="{{IMG:canon/input--pc--0.png}}" alt="input" loading="lazy"></div>
   <p class="props">지금 웹에 배포된 실제 모습입니다. 상태·크기가 모두 펼쳐져 있습니다.</p>
+</figure><figure class="pane canon" data-canon="D-04m">
+  <figcaption><span class="src src-C">정본</span><b>input</b><span class="vc">현재 배포본 · Mobile</span></figcaption>
+  <div class="shotbox"><img class="shot" src="{{IMG:canon/input--mobile--0.png}}" alt="input mobile" loading="lazy"></div>
+  <p class="props">모바일 화면의 정본입니다. 같은 컴포넌트라도 PC 와 크기·구성이 다릅니다.</p>
 </figure></div>
   <div class="choose">
     <h4>결정</h4>
-    <div class="opts"><button class="opt" data-d="D-04" data-v="md 로 흡수됨 (가장 큰 크기)"><span class="dot"></span>md 로 흡수됨 (가장 큰 크기)</button><button class="opt" data-d="D-04" data-v="정본에 없는 크기 — 대응 없음으로 기록"><span class="dot"></span>정본에 없는 크기 — 대응 없음으로 기록</button></div>
+    <div class="opts"><button class="opt" data-d="D-04" data-v="모바일 MD (48) — 정본에서 가장 큰 크기"><span class="dot"></span>모바일 MD (48) — 정본에서 가장 큰 크기</button><button class="opt" data-d="D-04" data-v="PC MD (44) 로 흡수됨"><span class="dot"></span>PC MD (44) 로 흡수됨</button><button class="opt" data-d="D-04" data-v="정본에 없는 크기 — 대응 없음으로 기록"><span class="dot"></span>정본에 없는 크기 — 대응 없음으로 기록</button></div>
     <div class="freerow">
       <input class="free" data-d="D-04" type="text" placeholder="다르게 정하시려면 여기에 직접 적어주세요" aria-label="D-04 직접 입력">
       <button class="freebtn" data-d="D-04">저장</button>
@@ -216,8 +242,8 @@ footer code{font-family:"IBM Plex Mono",monospace;font-size:12px;color:var(--ink
 </article><article class="dec" id="D-06">
   <header class="dec-h"><span class="did">D-06</span><h3>로그인 입력창의 pc-sm 크기</h3>
     <span class="badge" data-badge="D-06">미결정</span></header>
-  <p class="why">로그인 입력창만 크기를 pc-md · pc-sm · pc-xsm 으로 나눠 놨습니다. 정본 크기는 md · xsm · xxsm 이라 pc-sm 에 짝이 없습니다.</p>
-  <div class="compare"><figure class="pane">
+  <p class="why">로그인 입력창만 크기를 pc-md · pc-sm · pc-xsm 으로 나눠 놨습니다. 정본의 <b>PC 크기는 XXSM(28)·XSM(34)·MD(44)</b> 라 pc-sm 에 짝이 없습니다. (모바일 MD 48 은 화면이 다른 별도 축이라 pc-* 의 대응 후보가 아닙니다.)</p>
+  {{FACTS:input}}<div class="compare"><figure class="pane">
   <figcaption><span class="src src-A">A</span><b>Login input</b>
     <span class="vc">52변형</span>
     <a href="https://www.figma.com/design/yE5UCFEbmXJBlYJWB24Lz2/SW-UX-GUIDE-V2.4?node-id=540-3328&m=dev" target="_blank" rel="noopener">피그마 ↗</a></figcaption>
@@ -238,35 +264,39 @@ footer code{font-family:"IBM Plex Mono",monospace;font-size:12px;color:var(--ink
     <p class="idle"><span>안 정하면</span>로그인 화면(레거시에서 52변형으로 가장 공들인 컴포넌트)의 크기 대조가 막힙니다.</p>
   </div>
 </article><article class="dec" id="D-12">
-  <header class="dec-h"><span class="did">D-12</span><h3>모바일 버튼 크기</h3>
+  <header class="dec-h"><span class="did">D-12</span><h3>모바일 버튼 크기 — 정본에 이미 답이 있습니다</h3>
     <span class="badge" data-badge="D-12">미결정</span></header>
-  <p class="why">레거시는 PC 버튼과 모바일 버튼을 아예 다른 컴포넌트로 만들었습니다. PC 쪽은 크기 이름이 정본과 그대로 맞는데, 모바일 버튼에는 크기 축이 아예 없습니다. 정본에는 lg 라는 큰 크기가 따로 있습니다.</p>
-  <div class="compare"><figure class="pane">
+  <p class="why">레거시는 PC 버튼과 모바일 버튼을 아예 다른 컴포넌트로 만들었고, 모바일 버튼에는 크기 축이 없습니다. 정본 버튼도 <b>화면 축이 있어 모바일 = LG(높이 48) 하나</b>로 선언돼 있습니다(PC 는 MD 44 · XSM 34 · XXSM 28). 즉 모바일 버튼 → LG·Mobile 로 곧장 대응됩니다. 이전 판에서 고르라고 여쭌 것은 <b>정본 선언을 못 본 제 잘못</b>입니다.</p>
+  {{FACTS:button}}<div class="compare"><figure class="pane">
   <figcaption><span class="src src-A">A</span><b>mobile_button</b>
     <span class="vc">9변형</span>
     <a href="https://www.figma.com/design/yE5UCFEbmXJBlYJWB24Lz2/SW-UX-GUIDE-V2.4?node-id=540-4626&m=dev" target="_blank" rel="noopener">피그마 ↗</a></figcaption>
   <div class="shotbox"><img class="shot" src="{{IMG:legacy/mobile-button--c796cedd.png}}" alt="mobile_button" loading="lazy"></div>
   <p class="props">variant: blue-line/primary/secondary · state: default/disabled/pressed</p>
 </figure><figure class="pane canon" data-canon="D-12">
-  <figcaption><span class="src src-C">정본</span><b>button</b><span class="vc">현재 배포본</span></figcaption>
+  <figcaption><span class="src src-C">정본</span><b>button</b><span class="vc">현재 배포본 · PC</span></figcaption>
   <div class="shotbox"><img class="shot" src="{{IMG:canon/button--pc--0.png}}" alt="button" loading="lazy"></div>
   <p class="props">지금 웹에 배포된 실제 모습입니다. 상태·크기가 모두 펼쳐져 있습니다.</p>
+</figure><figure class="pane canon" data-canon="D-12m">
+  <figcaption><span class="src src-C">정본</span><b>button</b><span class="vc">현재 배포본 · Mobile</span></figcaption>
+  <div class="shotbox"><img class="shot" src="{{IMG:canon/button--mobile--0.png}}" alt="button mobile" loading="lazy"></div>
+  <p class="props">모바일 화면의 정본입니다. 같은 컴포넌트라도 PC 와 크기·구성이 다릅니다.</p>
 </figure></div>
   <div class="choose">
     <h4>결정</h4>
-    <div class="opts"><button class="opt" data-d="D-12" data-v="모바일 버튼 = lg (정본의 큰 크기)"><span class="dot"></span>모바일 버튼 = lg (정본의 큰 크기)</button><button class="opt" data-d="D-12" data-v="모바일 버튼 = md (PC 기본과 같음)"><span class="dot"></span>모바일 버튼 = md (PC 기본과 같음)</button></div>
+    <div class="opts"><button class="opt" data-d="D-12" data-v="정본대로 확정 — 모바일 버튼 = LG·Mobile"><span class="dot"></span>정본대로 확정 — 모바일 버튼 = LG·Mobile</button><button class="opt" data-d="D-12" data-v="아니다 — 다르게 정하겠습니다"><span class="dot"></span>아니다 — 다르게 정하겠습니다</button></div>
     <div class="freerow">
       <input class="free" data-d="D-12" type="text" placeholder="다르게 정하시려면 여기에 직접 적어주세요" aria-label="D-12 직접 입력">
       <button class="freebtn" data-d="D-12">저장</button>
     </div>
-    <p class="idle"><span>안 정하면</span>모바일 화면의 버튼 크기를 검수할 기준이 없습니다.</p>
+    <p class="idle"><span>안 정하면</span>확정 표시만 안 남습니다. 정본 사실 자체는 위 표대로입니다.</p>
   </div>
 </article></section><section class="grp"><div class="grp-h"><h2>상태 이름이 안 맞는 것</h2><span class="cnt">6건</span></div>
 <p class="grp-d">같은 상태를 다른 이름으로 불렀거나, 정본이 하나를 둘로 나눈 경우입니다. 검수가 틀어지는 지점이 대부분 여기입니다.</p><article class="dec" id="D-07">
   <header class="dec-h"><span class="did">D-07</span><h3>선택창의 &#x27;selected&#x27; 가 무슨 상태인가</h3>
     <span class="badge" data-badge="D-07">미결정</span></header>
   <p class="why">레거시 select 의 상태는 default · selected · disabled 셋뿐입니다. 정본에는 open(목록이 펼쳐진 상태)과 filled(값이 골라져 들어간 상태)가 따로 있어서, selected 가 둘 중 어느 쪽인지 갈립니다.</p>
-  <div class="compare"><figure class="pane">
+  {{FACTS:select}}<div class="compare"><figure class="pane">
   <figcaption><span class="src src-A">A</span><b>select</b>
     <span class="vc">12변형</span>
     <a href="https://www.figma.com/design/yE5UCFEbmXJBlYJWB24Lz2/SW-UX-GUIDE-V2.4?node-id=540-3397&m=dev" target="_blank" rel="noopener">피그마 ↗</a></figcaption>
@@ -290,7 +320,7 @@ footer code{font-family:"IBM Plex Mono",monospace;font-size:12px;color:var(--ink
   <header class="dec-h"><span class="did">D-08</span><h3>드롭다운 한 줄의 &#x27;selected&#x27;</h3>
     <span class="badge" data-badge="D-08">미결정</span></header>
   <p class="why">정본 dropdown 은 고른 항목 표시를 글자형(selectedText)과 체크박스형(selectedCheckbox) 둘로 나눠 놨습니다. 레거시는 그냥 selected 하나입니다.</p>
-  <div class="compare"><figure class="pane">
+  {{FACTS:dropdown}}<div class="compare"><figure class="pane">
   <figcaption><span class="src src-A">A</span><b>dropdown_option</b>
     <span class="vc">8변형</span>
     <a href="https://www.figma.com/design/yE5UCFEbmXJBlYJWB24Lz2/SW-UX-GUIDE-V2.4?node-id=540-3425&m=dev" target="_blank" rel="noopener">피그마 ↗</a></figcaption>
@@ -320,7 +350,7 @@ footer code{font-family:"IBM Plex Mono",monospace;font-size:12px;color:var(--ink
   <header class="dec-h"><span class="did">D-09</span><h3>시간 선택의 selected · editing</h3>
     <span class="badge" data-badge="D-09">미결정</span></header>
   <p class="why">레거시 시간 선택은 세트가 7개로 흩어져 있고, 상태 이름도 selected · editing · completed 로 제각각입니다. 정본은 focus(입력 중) · filled(값 있음) 로 정리돼 있습니다.</p>
-  <div class="compare"><figure class="pane">
+  {{FACTS:time-picker}}<div class="compare"><figure class="pane">
   <figcaption><span class="src src-A">A</span><b>timepicker_input_component</b>
     <span class="vc">3변형</span>
     <a href="https://www.figma.com/design/yE5UCFEbmXJBlYJWB24Lz2/SW-UX-GUIDE-V2.4?node-id=540-3469&m=dev" target="_blank" rel="noopener">피그마 ↗</a></figcaption>
@@ -373,8 +403,8 @@ footer code{font-family:"IBM Plex Mono",monospace;font-size:12px;color:var(--ink
 </article><article class="dec" id="D-10">
   <header class="dec-h"><span class="did">D-10</span><h3>날짜 선택의 selected · editing</h3>
     <span class="badge" data-badge="D-10">미결정</span></header>
-  <p class="why">레거시 날짜 선택은 selected · completed · editing(day) · editing(month) · editing(year) 를 씁니다. 정본은 open(달력 열림) · focus · filled 입니다. 특히 editing 이 day/month/year 셋으로 쪼개져 있는데 정본엔 하나뿐입니다.</p>
-  <div class="compare"><figure class="pane">
+  <p class="why">레거시 날짜 선택은 selected · completed · editing(day) · editing(month) · editing(year) 를 씁니다. 정본 날짜 선택의 상태는 <b>default · hover · filled · open · disabled</b> 이고 <b>focus 상태가 없습니다</b>(정본이 만든 것은 Default·Filled·Open·Disabled 넷이며 hover 는 웹이 더한 것입니다). 이전 판에서 「정본은 open · focus · filled」라고 적고 선택지에도 focus 를 넣은 것은 <b>사실 오류</b>입니다 — 정본에 없는 상태였습니다.</p>
+  {{FACTS:date-picker}}<div class="compare"><figure class="pane">
   <figcaption><span class="src src-A">A</span><b>datepicker_input</b>
     <span class="vc">16변형</span>
     <a href="https://www.figma.com/design/yE5UCFEbmXJBlYJWB24Lz2/SW-UX-GUIDE-V2.4?node-id=540-3794&m=dev" target="_blank" rel="noopener">피그마 ↗</a></figcaption>
@@ -399,7 +429,7 @@ footer code{font-family:"IBM Plex Mono",monospace;font-size:12px;color:var(--ink
 </figure></div>
   <div class="choose">
     <h4>결정</h4>
-    <div class="opts"><button class="opt" data-d="D-10" data-v="selected = open, editing(3종) = 모두 focus, completed = filled"><span class="dot"></span>selected = open, editing(3종) = 모두 focus, completed = filled</button><button class="opt" data-d="D-10" data-v="selected = focus, editing(3종) = open, completed = filled"><span class="dot"></span>selected = focus, editing(3종) = open, completed = filled</button></div>
+    <div class="opts"><button class="opt" data-d="D-10" data-v="selected = open(달력 열림) · editing 3종 = 모두 open · completed = filled"><span class="dot"></span>selected = open(달력 열림) · editing 3종 = 모두 open · completed = filled</button><button class="opt" data-d="D-10" data-v="selected = filled · editing 3종 = open · completed = filled"><span class="dot"></span>selected = filled · editing 3종 = open · completed = filled</button><button class="opt" data-d="D-10" data-v="editing 3종은 정본에 대응 없음 — 정본 보강 대상으로 올림"><span class="dot"></span>editing 3종은 정본에 대응 없음 — 정본 보강 대상으로 올림</button></div>
     <div class="freerow">
       <input class="free" data-d="D-10" type="text" placeholder="다르게 정하시려면 여기에 직접 적어주세요" aria-label="D-10 직접 입력">
       <button class="freebtn" data-d="D-10">저장</button>
@@ -410,7 +440,7 @@ footer code{font-family:"IBM Plex Mono",monospace;font-size:12px;color:var(--ink
   <header class="dec-h"><span class="did">D-22</span><h3>B파일 라디오의 &#x27;pressed&#x27; 가 선택됨인가</h3>
     <span class="badge" data-badge="D-22">미결정</span></header>
   <p class="why">B파일 라디오 버튼에는 &#x27;선택됨&#x27; 상태가 아예 없고 pressed(눌림) 와 disabled 만 있습니다. 정본에는 selected(선택됨) 가 있습니다. pressed 가 선택된 상태를 뜻한 것인지, 진짜 누르는 순간을 뜻한 것인지 이름만으로는 모릅니다.</p>
-  <div class="compare"><figure class="pane">
+  {{FACTS:radio}}<div class="compare"><figure class="pane">
   <figcaption><span class="src src-B">B</span><b>radiobutton</b>
     <span class="vc">4변형</span>
     <a href="https://www.figma.com/design/vHg5UOMMYI77RHH6vVVppu/S-1-Component-Set-latest-?node-id=42-3283&m=dev" target="_blank" rel="noopener">피그마 ↗</a></figcaption>
@@ -439,8 +469,8 @@ footer code{font-family:"IBM Plex Mono",monospace;font-size:12px;color:var(--ink
 </article><article class="dec" id="D-23">
   <header class="dec-h"><span class="did">D-23</span><h3>페이지 이동 바에 &#x27;마지막 페이지&#x27; 상태가 없음</h3>
     <span class="badge" data-badge="D-23">미결정</span></header>
-  <p class="why">정본은 페이지 이동 바 상태를 single · first · last · middle 넷으로 봅니다. B파일에는 single page · 1st page · normal 셋만 있고 마지막 페이지에 해당하는 값이 없습니다.</p>
-  <div class="compare"><figure class="pane">
+  <p class="why">정본은 페이지 이동 바 상태를 <b>single · first · last · middle 에 selected 를 더해 다섯</b>으로 봅니다. B파일에는 single page · 1st page · normal 셋만 있고 마지막 페이지에 해당하는 값이 없습니다.</p>
+  {{FACTS:pagination}}<div class="compare"><figure class="pane">
   <figcaption><span class="src src-B">B</span><b>pagenation</b>
     <span class="vc">3변형</span>
     <a href="https://www.figma.com/design/vHg5UOMMYI77RHH6vVVppu/S-1-Component-Set-latest-?node-id=2504-15164&m=dev" target="_blank" rel="noopener">피그마 ↗</a></figcaption>
@@ -465,7 +495,7 @@ footer code{font-family:"IBM Plex Mono",monospace;font-size:12px;color:var(--ink
   <header class="dec-h"><span class="did">D-02</span><h3>필터칩의 &#x27;라벨만&#x27;과 &#x27;제목 붙은&#x27; 형태 구분</h3>
     <span class="badge" data-badge="D-02">미결정</span></header>
   <p class="why">레거시는 필터칩을 라벨만 있는 것과 제목이 붙은 것, 두 개의 별도 컴포넌트로 만들어 뒀습니다. 지금 정본에는 filter-chip 하나뿐이고 그 구분 축이 없습니다.</p>
-  <div class="compare"><figure class="pane">
+  {{FACTS:filter-chip}}<div class="compare"><figure class="pane">
   <figcaption><span class="src src-A">A</span><b>filter-chip label only</b>
     <span class="vc">30변형</span>
     <a href="https://www.figma.com/design/yE5UCFEbmXJBlYJWB24Lz2/SW-UX-GUIDE-V2.4?node-id=540-3226&m=dev" target="_blank" rel="noopener">피그마 ↗</a></figcaption>
@@ -495,7 +525,7 @@ footer code{font-family:"IBM Plex Mono",monospace;font-size:12px;color:var(--ink
   <header class="dec-h"><span class="did">D-03</span><h3>입력창+버튼 조합이 하나의 컴포넌트인가</h3>
     <span class="badge" data-badge="D-03">미결정</span></header>
   <p class="why">레거시에는 입력창 오른쪽에 버튼이 붙은 형태가 별도 컴포넌트로 있습니다. 지금 정본에서 이게 input 의 한 형태인지, input 과 button 을 나란히 놓은 조합(패턴)인지 정해져 있지 않습니다.</p>
-  <div class="compare"><figure class="pane">
+  {{FACTS:input}}<div class="compare"><figure class="pane">
   <figcaption><span class="src src-A">A</span><b>input+btn</b>
     <span class="vc">7변형</span>
     <a href="https://www.figma.com/design/yE5UCFEbmXJBlYJWB24Lz2/SW-UX-GUIDE-V2.4?node-id=641-4055&m=dev" target="_blank" rel="noopener">피그마 ↗</a></figcaption>
@@ -518,8 +548,8 @@ footer code{font-family:"IBM Plex Mono",monospace;font-size:12px;color:var(--ink
 </article><article class="dec" id="D-11">
   <header class="dec-h"><span class="did">D-11</span><h3>달력 안쪽 부품들</h3>
     <span class="badge" data-badge="D-11">미결정</span></header>
-  <p class="why">레거시는 달력을 칸(Cell)·타일(Tile)·화살표·연월 선택 화면까지 4개 컴포넌트로 쪼개 놨습니다. 그리고 칸에는 start · end · today 같은 상태가, 연월 선택에는 month select · year select 같은 화면 상태가 있는데 정본 date-picker 상태 목록에는 이 이름들이 없습니다.</p>
-  <div class="compare"><figure class="pane">
+  <p class="why">레거시는 달력을 칸(Cell)·타일(Tile)·화살표·연월 선택 화면까지 4개 컴포넌트로 쪼개 놨습니다. 정본에도 <b>칸·타일·헤더가 부품으로 있습니다</b>(작은 크기용 부품까지 따로). 정본에 없는 것은 <b>부품이 아니라 상호작용 규정</b>입니다 — 기간 선택의 start·end 를 어떻게 오가는지, 오늘 칸에 마우스를 올리면 어떻게 되는지 같은 규정이 없어 웹이 따로 정했습니다. 이전 판에서 「이 이름들이 정본에 없다」고 적은 것은 <b>부정확</b>했습니다.</p>
+  {{FACTS:date-picker}}<div class="compare"><figure class="pane">
   <figcaption><span class="src src-A">A</span><b>DatePicker/Calendar Cell</b>
     <span class="vc">8변형</span>
     <a href="https://www.figma.com/design/yE5UCFEbmXJBlYJWB24Lz2/SW-UX-GUIDE-V2.4?node-id=540-4167&m=dev" target="_blank" rel="noopener">피그마 ↗</a></figcaption>
@@ -550,7 +580,7 @@ footer code{font-family:"IBM Plex Mono",monospace;font-size:12px;color:var(--ink
 </figure></div>
   <div class="choose">
     <h4>결정</h4>
-    <div class="opts"><button class="opt" data-d="D-11" data-v="정본 date-picker 안의 부품으로 흡수됨 — 부품 단위로 따로 기록"><span class="dot"></span>정본 date-picker 안의 부품으로 흡수됨 — 부품 단위로 따로 기록</button><button class="opt" data-d="D-11" data-v="정본에 없는 것 — 대응 없음으로 기록하고 정본 보강 대상으로 올림"><span class="dot"></span>정본에 없는 것 — 대응 없음으로 기록하고 정본 보강 대상으로 올림</button></div>
+    <div class="opts"><button class="opt" data-d="D-11" data-v="부품은 정본에 있음 — 부품 단위로 대응 기록"><span class="dot"></span>부품은 정본에 있음 — 부품 단위로 대응 기록</button><button class="opt" data-d="D-11" data-v="화살표·연월 선택 화면은 별개로 기록"><span class="dot"></span>화살표·연월 선택 화면은 별개로 기록</button><button class="opt" data-d="D-11" data-v="상호작용 규정이 없는 것만 정본 보강 대상으로 올림"><span class="dot"></span>상호작용 규정이 없는 것만 정본 보강 대상으로 올림</button></div>
     <div class="freerow">
       <input class="free" data-d="D-11" type="text" placeholder="다르게 정하시려면 여기에 직접 적어주세요" aria-label="D-11 직접 입력">
       <button class="freebtn" data-d="D-11">저장</button>
@@ -561,7 +591,7 @@ footer code{font-family:"IBM Plex Mono",monospace;font-size:12px;color:var(--ink
   <header class="dec-h"><span class="did">D-14</span><h3>그리드 표·삽입형 표 구분</h3>
     <span class="badge" data-badge="D-14">미결정</span></header>
   <p class="why">레거시 A는 표를 일반표·그리드표·삽입형표 세 종류로 나누고 각각 머리글/본문을 따로 뒀습니다(6개 세트, 146변형). 정본 table 은 변형이 base 하나뿐입니다.</p>
-  <div class="compare"><figure class="pane">
+  {{FACTS:table}}<div class="compare"><figure class="pane">
   <figcaption><span class="src src-A">A</span><b>pc_grid-table_header</b>
     <span class="vc">48변형</span>
     <a href="https://www.figma.com/design/yE5UCFEbmXJBlYJWB24Lz2/SW-UX-GUIDE-V2.4?node-id=540-5309&m=dev" target="_blank" rel="noopener">피그마 ↗</a></figcaption>
@@ -608,8 +638,8 @@ footer code{font-family:"IBM Plex Mono",monospace;font-size:12px;color:var(--ink
 </article><article class="dec" id="D-15">
   <header class="dec-h"><span class="did">D-15</span><h3>모달 크기와 용도별 모달</h3>
     <span class="badge" data-badge="D-15">미결정</span></header>
-  <p class="why">레거시 A의 PC 모달은 크기를 sm·md·lg·xl 넷으로 나눴고, 별도로 &#x27;삭제&#x27; &#x27;입력취소&#x27; 같은 용도별 모달도 있습니다. 정본 modal 은 크기 축 없이 변형이 single(버튼 1개) · dual(버튼 2개) 뿐입니다.</p>
-  <div class="compare"><figure class="pane">
+  <p class="why">레거시 A의 PC 모달은 크기를 sm·md·lg·xl 넷으로 나눴고, 별도로 「삭제」「입력취소」 같은 용도별 모달도 있습니다. 정본 modal 은 <b>크기 축이 없는 대신 화면 축(PC·Mobile)이 있고, 그 화면 축이 패널 폭과 밀도를 정합니다.</b> 변형은 single(버튼 1개) · dual(버튼 2개) 뿐입니다.</p>
+  {{FACTS:modal}}<div class="compare"><figure class="pane">
   <figcaption><span class="src src-A">A</span><b>pc_modal</b>
     <span class="vc">4변형</span>
     <a href="https://www.figma.com/design/yE5UCFEbmXJBlYJWB24Lz2/SW-UX-GUIDE-V2.4?node-id=540-5815&m=dev" target="_blank" rel="noopener">피그마 ↗</a></figcaption>
@@ -662,8 +692,8 @@ footer code{font-family:"IBM Plex Mono",monospace;font-size:12px;color:var(--ink
 </article><article class="dec" id="D-16">
   <header class="dec-h"><span class="did">D-16</span><h3>탭의 pressed 상태와 모바일 탭</h3>
     <span class="badge" data-badge="D-16">미결정</span></header>
-  <p class="why">레거시 탭은 두 파일 합쳐 6세트인데 상태 이름이 unselected · pressed · hover · selected 로 제각각이고, 정본 tab 상태는 default · hover · selected 셋입니다. pressed 에 짝이 없습니다.</p>
-  <div class="compare"><figure class="pane">
+  <p class="why">레거시 탭은 두 파일 합쳐 6세트인데 상태 이름이 unselected · pressed · hover · selected 로 제각각입니다. 정본 탭 상태는 default · hover · selected 셋인데 <b>unselected → default 는 정본이 이미 대응을 선언</b>해 뒀습니다. 남은 것은 pressed 뿐입니다. 그리고 정본 탭에도 화면 축이 있어 <b>모바일은 SM 하나(높이 32)</b>, PC 는 MD(44)·SM(42)·XSM(40) 입니다 — 같은 SM 이라도 모바일과 PC 의 높이가 다릅니다.</p>
+  {{FACTS:tab}}<div class="compare"><figure class="pane">
   <figcaption><span class="src src-A">A</span><b>tab</b>
     <span class="vc">9변형</span>
     <a href="https://www.figma.com/design/yE5UCFEbmXJBlYJWB24Lz2/SW-UX-GUIDE-V2.4?node-id=540-6032&m=dev" target="_blank" rel="noopener">피그마 ↗</a></figcaption>
@@ -700,9 +730,13 @@ footer code{font-family:"IBM Plex Mono",monospace;font-size:12px;color:var(--ink
   <div class="shotbox"><img class="shot" src="{{IMG:legacy/tab--dc59817c.png}}" alt="tab" loading="lazy"></div>
   <p class="props">속성 없음</p>
 </figure><figure class="pane canon" data-canon="D-16">
-  <figcaption><span class="src src-C">정본</span><b>tab</b><span class="vc">현재 배포본</span></figcaption>
+  <figcaption><span class="src src-C">정본</span><b>tab</b><span class="vc">현재 배포본 · PC</span></figcaption>
   <div class="shotbox"><img class="shot" src="{{IMG:canon/tab--pc--0.png}}" alt="tab" loading="lazy"></div>
   <p class="props">지금 웹에 배포된 실제 모습입니다. 상태·크기가 모두 펼쳐져 있습니다.</p>
+</figure><figure class="pane canon" data-canon="D-16m">
+  <figcaption><span class="src src-C">정본</span><b>tab</b><span class="vc">현재 배포본 · Mobile</span></figcaption>
+  <div class="shotbox"><img class="shot" src="{{IMG:canon/tab--mobile--0.png}}" alt="tab mobile" loading="lazy"></div>
+  <p class="props">모바일 화면의 정본입니다. 같은 컴포넌트라도 PC 와 크기·구성이 다릅니다.</p>
 </figure></div>
   <div class="choose">
     <h4>결정</h4>
@@ -717,7 +751,7 @@ footer code{font-family:"IBM Plex Mono",monospace;font-size:12px;color:var(--ink
   <header class="dec-h"><span class="did">D-17</span><h3>모바일 상단바가 정본 6종 중 어디에 붙는가</h3>
     <span class="badge" data-badge="D-17">미결정</span></header>
   <p class="why">레거시 A의 모바일 상단바는 5종인데 값 이름이 &#x27;Home titel + alt titel&#x27;(오타 포함) 같은 식이고, 정본은 home-title · standard-title-close 등 6종입니다. B파일에는 appbar_main · appbar_sub 라는 다른 이름의 상단바가 또 있습니다.</p>
-  <div class="compare"><figure class="pane">
+  {{FACTS:mobile-header}}<div class="compare"><figure class="pane">
   <figcaption><span class="src src-A">A</span><b>mobile_header</b>
     <span class="vc">5변형</span>
     <a href="https://www.figma.com/design/yE5UCFEbmXJBlYJWB24Lz2/SW-UX-GUIDE-V2.4?node-id=540-6112&m=dev" target="_blank" rel="noopener">피그마 ↗</a></figcaption>
@@ -753,7 +787,7 @@ footer code{font-family:"IBM Plex Mono",monospace;font-size:12px;color:var(--ink
   <header class="dec-h"><span class="did">D-18</span><h3>상단바 메뉴 목록·하위메뉴 깊이</h3>
     <span class="badge" data-badge="D-18">미결정</span></header>
   <p class="why">A파일에는 &#x27;gnb list&#x27;(메뉴 목록), B파일 gnb 에는 하위메뉴 깊이(1depth/2depth) 축이 있습니다. 정본 gnb 에는 이 축이 없습니다.</p>
-  <div class="compare"><figure class="pane">
+  {{FACTS:gnb}}<div class="compare"><figure class="pane">
   <figcaption><span class="src src-A">A</span><b>gnb list</b>
     <span class="vc">3변형</span>
     <a href="https://www.figma.com/design/yE5UCFEbmXJBlYJWB24Lz2/SW-UX-GUIDE-V2.4?node-id=540-6398&m=dev" target="_blank" rel="noopener">피그마 ↗</a></figcaption>
@@ -783,7 +817,7 @@ footer code{font-family:"IBM Plex Mono",monospace;font-size:12px;color:var(--ink
   <header class="dec-h"><span class="did">D-20</span><h3>콤보박스가 select 인가 dropdown 인가</h3>
     <span class="badge" data-badge="D-20">미결정</span></header>
   <p class="why">B파일에는 combobox · m_combobox · m_combobox_time 세 세트(53변형)가 있습니다. 정본에는 select(고르는 입력창)와 dropdown(펼쳐지는 목록)이 따로 있어서 콤보박스가 어느 쪽인지 정해야 합니다.</p>
-  <div class="compare"><figure class="pane">
+  {{FACTS:select}}<div class="compare"><figure class="pane">
   <figcaption><span class="src src-B">B</span><b>combobox</b>
     <span class="vc">18변형</span>
     <a href="https://www.figma.com/design/vHg5UOMMYI77RHH6vVVppu/S-1-Component-Set-latest-?node-id=73-3247&m=dev" target="_blank" rel="noopener">피그마 ↗</a></figcaption>
@@ -819,7 +853,7 @@ footer code{font-family:"IBM Plex Mono",monospace;font-size:12px;color:var(--ink
   <header class="dec-h"><span class="did">D-21</span><h3>B파일 버튼 색 이름 대응</h3>
     <span class="badge" data-badge="D-21">미결정</span></header>
   <p class="why">B파일 버튼은 종류를 색 이름(blue · white · red · mix2)으로 부릅니다. 정본은 primary · secondary · blue-line 입니다. 특히 red 는 정본에서 삭제 확정된 danger 계열로 보이고, mix2 는 뜻을 알 수 없습니다.</p>
-  <div class="compare"><figure class="pane">
+  {{FACTS:button}}<div class="compare"><figure class="pane">
   <figcaption><span class="src src-B">B</span><b>default</b>
     <span class="vc">18변형</span>
     <a href="https://www.figma.com/design/vHg5UOMMYI77RHH6vVVppu/S-1-Component-Set-latest-?node-id=16-1880&m=dev" target="_blank" rel="noopener">피그마 ↗</a></figcaption>
@@ -855,8 +889,8 @@ footer code{font-family:"IBM Plex Mono",monospace;font-size:12px;color:var(--ink
 <p class="grp-d">레거시에는 있는데 지금 정본에 대응이 없습니다. &#x27;없어진 것&#x27;인지 &#x27;아직 안 만든 것&#x27;인지가 갈립니다.</p><article class="dec" id="D-05">
   <header class="dec-h"><span class="did">D-05</span><h3>바텀시트(아래에서 올라오는 창)</h3>
     <span class="badge" data-badge="D-05">미결정</span></header>
-  <p class="why">레거시 A에는 바텀시트가 5세트나 있습니다(모달용·시간선택용·날짜선택용·항목). 정본에는 바텀시트라는 컴포넌트가 없습니다.</p>
-  <div class="compare"><figure class="pane">
+  <p class="why">레거시 A에는 바텀시트가 5세트나 있습니다(모달용·시간선택용·날짜선택용·항목). 정본에도 <b>바텀시트가 있습니다</b> — 날짜 선택 모바일 시트와 시간 선택 모바일 시트가 정본에 있고 웹에도 배포돼 있습니다. 정본에 없는 것은 <b>아무 내용이나 담는 범용 바텀시트</b> 쪽입니다. 정본 modal 은 크기 축 없이 <b>화면 축(PC·Mobile)</b>과 변형 single·dual 을 씁니다. 이전 판에서 「정본에는 바텀시트가 없다」고 적은 것은 <b>사실 오류</b>입니다.</p>
+  {{FACTS:modal}}<div class="compare"><figure class="pane">
   <figcaption><span class="src src-A">A</span><b>mobile_bottomsheet</b>
     <span class="vc">3변형</span>
     <a href="https://www.figma.com/design/yE5UCFEbmXJBlYJWB24Lz2/SW-UX-GUIDE-V2.4?node-id=670-4386&m=dev" target="_blank" rel="noopener">피그마 ↗</a></figcaption>
@@ -887,13 +921,17 @@ footer code{font-family:"IBM Plex Mono",monospace;font-size:12px;color:var(--ink
   <div class="shotbox"><img class="shot" src="{{IMG:legacy/mobile-bottomsheet--33319895.png}}" alt="mobile_bottomsheet" loading="lazy"></div>
   <p class="props">footer button: dual/off/single</p>
 </figure><figure class="pane canon" data-canon="D-05">
-  <figcaption><span class="src src-C">정본</span><b>modal</b><span class="vc">현재 배포본</span></figcaption>
+  <figcaption><span class="src src-C">정본</span><b>modal</b><span class="vc">현재 배포본 · PC</span></figcaption>
   <div class="shotbox"><img class="shot" src="{{IMG:canon/modal--pc--0.png}}" alt="modal" loading="lazy"></div>
   <p class="props">지금 웹에 배포된 실제 모습입니다. 상태·크기가 모두 펼쳐져 있습니다.</p>
+</figure><figure class="pane canon" data-canon="D-05m">
+  <figcaption><span class="src src-C">정본</span><b>modal</b><span class="vc">현재 배포본 · Mobile</span></figcaption>
+  <div class="shotbox"><img class="shot" src="{{IMG:canon/modal--mobile--0.png}}" alt="modal mobile" loading="lazy"></div>
+  <p class="props">모바일 화면의 정본입니다. 같은 컴포넌트라도 PC 와 크기·구성이 다릅니다.</p>
 </figure></div>
   <div class="choose">
     <h4>결정</h4>
-    <div class="opts"><button class="opt" data-d="D-05" data-v="정본 modal 로 흡수됨"><span class="dot"></span>정본 modal 로 흡수됨</button><button class="opt" data-d="D-05" data-v="정본에 아직 없는 것 — 보강 대상으로 올림"><span class="dot"></span>정본에 아직 없는 것 — 보강 대상으로 올림</button></div>
+    <div class="opts"><button class="opt" data-d="D-05" data-v="날짜·시간 시트는 정본에 대응됨 / 나머지는 정본 modal 의 Mobile 로"><span class="dot"></span>날짜·시간 시트는 정본에 대응됨 / 나머지는 정본 modal 의 Mobile 로</button><button class="opt" data-d="D-05" data-v="범용 바텀시트는 정본에 없는 것 — 보강 대상으로 올림"><span class="dot"></span>범용 바텀시트는 정본에 없는 것 — 보강 대상으로 올림</button><button class="opt" data-d="D-05" data-v="전부 정본 modal 로 흡수됨"><span class="dot"></span>전부 정본 modal 로 흡수됨</button></div>
     <div class="freerow">
       <input class="free" data-d="D-05" type="text" placeholder="다르게 정하시려면 여기에 직접 적어주세요" aria-label="D-05 직접 입력">
       <button class="freebtn" data-d="D-05">저장</button>
@@ -904,7 +942,7 @@ footer code{font-family:"IBM Plex Mono",monospace;font-size:12px;color:var(--ink
   <header class="dec-h"><span class="did">D-13</span><h3>보조 버튼·텍스트 버튼</h3>
     <span class="badge" data-badge="D-13">미결정</span></header>
   <p class="why">레거시에 pc_assist_button(보조 버튼) · pc_text_button(글자만 있는 버튼) · m_subbutton 이 있는데 정본 button 변형(primary/secondary/blue-line) 어디에도 대응이 없습니다.</p>
-  <div class="compare"><figure class="pane">
+  {{FACTS:button}}<div class="compare"><figure class="pane">
   <figcaption><span class="src src-A">A</span><b>pc_assist_button</b>
     <span class="vc">9변형</span>
     <a href="https://www.figma.com/design/yE5UCFEbmXJBlYJWB24Lz2/SW-UX-GUIDE-V2.4?node-id=540-4650&m=dev" target="_blank" rel="noopener">피그마 ↗</a></figcaption>

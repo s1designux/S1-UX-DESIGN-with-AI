@@ -27,6 +27,22 @@ const man = JSON.parse(fs.readFileSync(MANIFEST, 'utf8'));
 const errors = [];
 const warns = [];
 
+// 카드에 박은 정본 사실표가 지금 정본과 같은가 — 표가 낡으면 카드의 전제가 낡는다
+const FACTS = path.join(DIR, 'canon-facts.json');
+if (!fs.existsSync(FACTS)) {
+  warns.push('정본 사실표(canon-facts.json)가 없습니다 — npm run board:facts');
+} else {
+  const facts = JSON.parse(fs.readFileSync(FACTS, 'utf8')).components || {};
+  for (const [id, f] of Object.entries(facts)) {
+    const mf = path.join(ROOT, 'ui-library/dist/components', `${id}.manifest.json`);
+    if (!fs.existsSync(mf)) continue;
+    const now = JSON.parse(fs.readFileSync(mf, 'utf8'));
+    if ((now.sourceFingerprint || null) !== f.sourceFingerprint) {
+      errors.push(`정본 사실표의 ${id} 가 낡았습니다 — 카드에 박힌 크기·상태가 지금 정본과 다릅니다`);
+    }
+  }
+}
+
 const untracked = [];
 for (const p of man.panes) {
   if (p.tracked === false) { untracked.push(`${p.decision}(${p.component})`); continue; }

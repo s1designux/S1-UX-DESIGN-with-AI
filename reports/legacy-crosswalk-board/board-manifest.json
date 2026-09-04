@@ -169,6 +169,41 @@
       "section": "button",
       "platform": "pc",
       "scrollY": 0
+    },
+    {
+      "decision": "D-01m",
+      "component": "chip",
+      "section": "chip",
+      "platform": "mobile",
+      "scrollY": 0
+    },
+    {
+      "decision": "D-12m",
+      "component": "button",
+      "section": "button",
+      "platform": "mobile",
+      "scrollY": 0
+    },
+    {
+      "decision": "D-16m",
+      "component": "tab",
+      "section": "tab",
+      "platform": "mobile",
+      "scrollY": 0
+    },
+    {
+      "decision": "D-04m",
+      "component": "input",
+      "section": "input",
+      "platform": "mobile",
+      "scrollY": 0
+    },
+    {
+      "decision": "D-05m",
+      "component": "modal",
+      "section": "modal",
+      "platform": "mobile",
+      "scrollY": 0
     }
   ],
   "provenance": {
@@ -177,119 +212,119 @@
       "screen": "canon/chip--pc--0.png",
       "capturedAt": "2026-09-04",
       "status": "approved",
-      "sourceFingerprint": "14f2d277070cf4b9be28249cd1fc597b146341481dc6921572de8f61ef98bf47"
+      "sourceFingerprint": "0339092e8c9c3ca27b319b3d5d194b77a056b4286ac7099a37da36893c3f8837"
     },
     "D-04": {
       "component": "input",
       "screen": "canon/input--pc--0.png",
       "capturedAt": "2026-09-04",
       "status": "approved",
-      "sourceFingerprint": "088268d0d78903095d15c4f953114ecca11f4b7b09effee3e1c7a15d27b24223"
+      "sourceFingerprint": "e84151b03b7730184ea71246b7039dd25aea4c1673f3cd161b580e6cc5c898b5"
     },
     "D-06": {
       "component": "input",
       "screen": "canon/input--pc--0.png",
       "capturedAt": "2026-09-04",
       "status": "approved",
-      "sourceFingerprint": "088268d0d78903095d15c4f953114ecca11f4b7b09effee3e1c7a15d27b24223"
+      "sourceFingerprint": "e84151b03b7730184ea71246b7039dd25aea4c1673f3cd161b580e6cc5c898b5"
     },
     "D-12": {
       "component": "button",
       "screen": "canon/button--pc--0.png",
       "capturedAt": "2026-09-04",
       "status": "approved",
-      "sourceFingerprint": "6288663cd26b8ee01bd3a910fb15d4e59e29bcb84bddacd085f44fd7078dec46"
+      "sourceFingerprint": "fb2067ecba6d3ff42f2d16c6ceca0cb9fc26f9846df50d65f84e564f452dd64a"
     },
     "D-07": {
       "component": "select",
       "screen": "canon/select--pc--0.png",
       "capturedAt": "2026-09-04",
       "status": "approved",
-      "sourceFingerprint": "34fea07d4f4166c83e166f945762dadc6311a3dd4278125b03b127035873ac74"
+      "sourceFingerprint": "18c8e50ecdf6d50c89d97ed9f65ebb927efbbb41942153fb0b9734d0df92f429"
     },
     "D-08": {
       "component": "dropdown",
       "screen": "canon/dropdown--pc--0.png",
       "capturedAt": "2026-09-04",
       "status": "approved",
-      "sourceFingerprint": "5d6d77b5896a7606697a5893224dec470eb9628dbb50743e2b1bf2866157f6ef"
+      "sourceFingerprint": "dcfd70055e4994c3830312c8b0e21fe91b0e812d031f8ef721ddebb8298644bf"
     },
     "D-09": {
       "component": "time-picker",
       "screen": "canon/time-picker--pc--0.png",
       "capturedAt": "2026-09-04",
       "status": "approved",
-      "sourceFingerprint": "dd5c820597c456e2be4bfde0b04cbf50173873c93697f5464c73ddeceb16908b"
+      "sourceFingerprint": "5e8269039c397b75ed97c0e2aadb479bf1c83b6d2993e21370141046e6455acc"
     },
     "D-10": {
       "component": "date-picker",
       "screen": "canon/date-picker--pc--0.png",
       "capturedAt": "2026-09-04",
       "status": "approved",
-      "sourceFingerprint": "bfce9e76a3c82d2932121d6a6af6b36100925230b234041d8f56345d1eb061d5"
+      "sourceFingerprint": "ec9650ca50133cb8855744fd55d547ce6b4628d1ed119980fb2d0bc7d9c15b73"
     },
     "D-22": {
       "component": "radio",
       "screen": "canon/radio--pc--0.png",
       "capturedAt": "2026-09-04",
       "status": "approved",
-      "sourceFingerprint": "01f036e3492fed1b35b0e012fd06a5d2947470f6a29bf6e0ba52d319e12829f5"
+      "sourceFingerprint": "7e29a161cb48fe6632830667adf890f810fbfd6234a796462a1043a46b45b592"
     },
     "D-23": {
       "component": "pagination",
       "screen": "canon/pagination--pc--0.png",
       "capturedAt": "2026-09-04",
       "status": "approved",
-      "sourceFingerprint": "e6b63ffae872abfdb045b7674d97b43842b6ef3e5e6ea304d3e322a5853f4bd0"
+      "sourceFingerprint": "a06019cf6d71c4749f1a864b7bc9ac5ae53346c38213765893e89b8b5ac8bea1"
     },
     "D-02": {
       "component": "filter-chip",
       "screen": "canon/filter-chip--pc--0.png",
       "capturedAt": "2026-09-04",
       "status": "approved",
-      "sourceFingerprint": "c10ce887d97d0ecabfc027554ee7488f29c6f8ce121028e446311b9413be3fe9"
+      "sourceFingerprint": "5fd92b14ddbfd5044c69769910683e0b45ef0ba704ac4bc8ae1062a29f0c7fe5"
     },
     "D-03": {
       "component": "input",
       "screen": "canon/input--pc--0.png",
       "capturedAt": "2026-09-04",
       "status": "approved",
-      "sourceFingerprint": "088268d0d78903095d15c4f953114ecca11f4b7b09effee3e1c7a15d27b24223"
+      "sourceFingerprint": "e84151b03b7730184ea71246b7039dd25aea4c1673f3cd161b580e6cc5c898b5"
     },
     "D-11": {
       "component": "date-picker",
       "screen": "canon/date-picker--pc--1140.png",
       "capturedAt": "2026-09-04",
       "status": "approved",
-      "sourceFingerprint": "bfce9e76a3c82d2932121d6a6af6b36100925230b234041d8f56345d1eb061d5"
+      "sourceFingerprint": "ec9650ca50133cb8855744fd55d547ce6b4628d1ed119980fb2d0bc7d9c15b73"
     },
     "D-14": {
       "component": "table",
       "screen": "canon/table--pc--0.png",
       "capturedAt": "2026-09-04",
       "status": "approved",
-      "sourceFingerprint": "84f4bf6b408ad8fec1206a6fa8cc914544b3b0bd4967f3703050ba0a82bba985"
+      "sourceFingerprint": "99559b1b4ac74f07739665c76bb4ebbaf67932b8a0d1ded55e373403fb22531a"
     },
     "D-15": {
       "component": "modal",
       "screen": "canon/modal--pc--0.png",
       "capturedAt": "2026-09-04",
       "status": "approved",
-      "sourceFingerprint": "5ff5ac97204469abf9f51cb93727f4af32ec2d36a9a9f2d5ffd9a377a0ffa3d5"
+      "sourceFingerprint": "fb23f6b1ffde4d0eb3384cfea418173695cb8c2462529249802d50310683603e"
     },
     "D-16": {
       "component": "tab",
       "screen": "canon/tab--pc--0.png",
       "capturedAt": "2026-09-04",
       "status": "approved",
-      "sourceFingerprint": "afb13096268e35b4e698660af49cc106607c0769f8c7261114bb79fc7a7f88e6"
+      "sourceFingerprint": "5229a5099665cc15c9bf0d7cecb8953d43123f3328b1c8b980615285eb3af58c"
     },
     "D-17": {
       "component": "mobile-header",
       "screen": "canon/mobile-header--mobile--0.png",
       "capturedAt": "2026-09-04",
       "status": "approved",
-      "sourceFingerprint": "fe5cf7a9903c35da6f2b57832516e1b2f9cb0c787101c1aa4d4cb3edfd6849af"
+      "sourceFingerprint": "13a2b6bfaacdf112d29d64cedab10f8873a04d5181a95e69bd9f3ff77a020303"
     },
     "D-18": {
       "component": "gnb",
@@ -303,28 +338,63 @@
       "screen": "canon/select--pc--0.png",
       "capturedAt": "2026-09-04",
       "status": "approved",
-      "sourceFingerprint": "34fea07d4f4166c83e166f945762dadc6311a3dd4278125b03b127035873ac74"
+      "sourceFingerprint": "18c8e50ecdf6d50c89d97ed9f65ebb927efbbb41942153fb0b9734d0df92f429"
     },
     "D-21": {
       "component": "button",
       "screen": "canon/button--pc--0.png",
       "capturedAt": "2026-09-04",
       "status": "approved",
-      "sourceFingerprint": "6288663cd26b8ee01bd3a910fb15d4e59e29bcb84bddacd085f44fd7078dec46"
+      "sourceFingerprint": "fb2067ecba6d3ff42f2d16c6ceca0cb9fc26f9846df50d65f84e564f452dd64a"
     },
     "D-05": {
       "component": "modal",
       "screen": "canon/modal--pc--0.png",
       "capturedAt": "2026-09-04",
       "status": "approved",
-      "sourceFingerprint": "5ff5ac97204469abf9f51cb93727f4af32ec2d36a9a9f2d5ffd9a377a0ffa3d5"
+      "sourceFingerprint": "fb23f6b1ffde4d0eb3384cfea418173695cb8c2462529249802d50310683603e"
     },
     "D-13": {
       "component": "button",
       "screen": "canon/button--pc--0.png",
       "capturedAt": "2026-09-04",
       "status": "approved",
-      "sourceFingerprint": "6288663cd26b8ee01bd3a910fb15d4e59e29bcb84bddacd085f44fd7078dec46"
+      "sourceFingerprint": "fb2067ecba6d3ff42f2d16c6ceca0cb9fc26f9846df50d65f84e564f452dd64a"
+    },
+    "D-01m": {
+      "component": "chip",
+      "screen": "canon/chip--mobile--0.png",
+      "capturedAt": "2026-09-04",
+      "status": "approved",
+      "sourceFingerprint": "0339092e8c9c3ca27b319b3d5d194b77a056b4286ac7099a37da36893c3f8837"
+    },
+    "D-12m": {
+      "component": "button",
+      "screen": "canon/button--mobile--0.png",
+      "capturedAt": "2026-09-04",
+      "status": "approved",
+      "sourceFingerprint": "fb2067ecba6d3ff42f2d16c6ceca0cb9fc26f9846df50d65f84e564f452dd64a"
+    },
+    "D-16m": {
+      "component": "tab",
+      "screen": "canon/tab--mobile--0.png",
+      "capturedAt": "2026-09-04",
+      "status": "approved",
+      "sourceFingerprint": "5229a5099665cc15c9bf0d7cecb8953d43123f3328b1c8b980615285eb3af58c"
+    },
+    "D-04m": {
+      "component": "input",
+      "screen": "canon/input--mobile--0.png",
+      "capturedAt": "2026-09-04",
+      "status": "approved",
+      "sourceFingerprint": "e84151b03b7730184ea71246b7039dd25aea4c1673f3cd161b580e6cc5c898b5"
+    },
+    "D-05m": {
+      "component": "modal",
+      "screen": "canon/modal--mobile--0.png",
+      "capturedAt": "2026-09-04",
+      "status": "approved",
+      "sourceFingerprint": "fb23f6b1ffde4d0eb3384cfea418173695cb8c2462529249802d50310683603e"
     }
   }
 }

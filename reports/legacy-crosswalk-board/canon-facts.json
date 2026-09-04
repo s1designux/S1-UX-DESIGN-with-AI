@@ -1,0 +1,917 @@
+{
+  "_meta": {
+    "목적": "검수판 카드에 박는 정본 사실 — 사람이 요약하지 않고 기계가 뽑는다",
+    "출처": "ui-library/dist/components/*.manifest.json (정본 build-components.ts 에서 생성)",
+    "재생성": "npm run board:facts",
+    "생성일": "2026-09-04"
+  },
+  "components": {
+    "button": {
+      "id": "button",
+      "status": "approved",
+      "version": "0.1.0",
+      "sizes": [
+        "md",
+        "xsm",
+        "xxsm",
+        "lg"
+      ],
+      "breaks": {
+        "pc": [
+          "md",
+          "xsm",
+          "xxsm"
+        ],
+        "mobile": [
+          "lg"
+        ]
+      },
+      "sizeBreakGrid": [
+        {
+          "size": "md",
+          "break": "pc",
+          "height": 44,
+          "fontSize": 14,
+          "valueSource": "정본 build-components.ts"
+        },
+        {
+          "size": "xsm",
+          "break": "pc",
+          "height": 34,
+          "fontSize": 14,
+          "valueSource": "정본 build-components.ts"
+        },
+        {
+          "size": "xxsm",
+          "break": "pc",
+          "height": 28,
+          "fontSize": 12,
+          "valueSource": "정본 build-components.ts"
+        },
+        {
+          "size": "lg",
+          "break": "mobile",
+          "height": 48,
+          "fontSize": 16,
+          "valueSource": "정본 build-components.ts"
+        }
+      ],
+      "variants": [
+        "primary",
+        "secondary",
+        "blue-line"
+      ],
+      "types": null,
+      "states": [
+        "default",
+        "hover",
+        "pressed",
+        "disabled"
+      ],
+      "canonicalStateMap": null,
+      "absentCombinations": [],
+      "sourceFingerprint": "fb2067ecba6d3ff42f2d16c6ceca0cb9fc26f9846df50d65f84e564f452dd64a"
+    },
+    "checkbox": {
+      "id": "checkbox",
+      "status": "approved",
+      "version": "0.1.0",
+      "sizes": [],
+      "breaks": {},
+      "sizeBreakGrid": [],
+      "variants": [
+        "base"
+      ],
+      "types": null,
+      "states": [
+        "default",
+        "hover",
+        "checked",
+        "disabled",
+        "disabledChecked"
+      ],
+      "canonicalStateMap": {
+        "Default": "default",
+        "Hover": "hover",
+        "Checked": "checked",
+        "Disabled": "disabled",
+        "Dis+Checked": "disabledChecked"
+      },
+      "absentCombinations": [],
+      "sourceFingerprint": "af00d2bd1543515b5531cd411d222ce8f9ddf3e0611204c03b4f6b95b28e3933"
+    },
+    "chip": {
+      "id": "chip",
+      "status": "approved",
+      "version": "0.1.0",
+      "sizes": [
+        "sm",
+        "md"
+      ],
+      "breaks": {
+        "pc": [
+          "sm",
+          "md"
+        ],
+        "mobile": [
+          "sm"
+        ]
+      },
+      "sizeBreakGrid": [
+        {
+          "size": "sm",
+          "break": "pc",
+          "height": 28,
+          "fontSize": 12,
+          "valueSource": "정본 build-components.ts"
+        },
+        {
+          "size": "md",
+          "break": "pc",
+          "height": 34,
+          "fontSize": 14,
+          "valueSource": "정본 build-components.ts"
+        },
+        {
+          "size": "sm",
+          "break": "mobile",
+          "height": 30,
+          "fontSize": 14,
+          "valueSource": "정본 build-components.ts"
+        }
+      ],
+      "variants": [
+        "line",
+        "solid"
+      ],
+      "types": null,
+      "states": [
+        "default",
+        "hover",
+        "selected",
+        "disabled"
+      ],
+      "canonicalStateMap": {
+        "Default": "default",
+        "Hover": "hover",
+        "Selected": "selected",
+        "Disabled": "disabled"
+      },
+      "absentCombinations": [
+        {
+          "key": "md-mobile",
+          "reason": "정본에 Mobile MD 조합이 없다. CSS 는 정본 3조합만 정의한다."
+        }
+      ],
+      "sourceFingerprint": "0339092e8c9c3ca27b319b3d5d194b77a056b4286ac7099a37da36893c3f8837"
+    },
+    "date-picker": {
+      "id": "date-picker",
+      "status": "approved",
+      "version": "0.1.0",
+      "sizes": [
+        "xxsm",
+        "xsm",
+        "md"
+      ],
+      "breaks": {
+        "pc": [
+          "xxsm",
+          "xsm",
+          "md"
+        ],
+        "mobile": [
+          "md"
+        ]
+      },
+      "sizeBreakGrid": [
+        {
+          "size": "xxsm",
+          "break": "pc",
+          "height": 28,
+          "fontSize": 12,
+          "valueSource": "정본 build-components.ts"
+        },
+        {
+          "size": "xsm",
+          "break": "pc",
+          "height": 34,
+          "fontSize": 14,
+          "valueSource": "정본 build-components.ts"
+        },
+        {
+          "size": "md",
+          "break": "pc",
+          "height": 44,
+          "fontSize": 14,
+          "valueSource": "정본 build-components.ts"
+        },
+        {
+          "size": "md",
+          "break": "mobile",
+          "height": 48,
+          "fontSize": 14,
+          "valueSource": "정본 build-components.ts"
+        }
+      ],
+      "variants": [
+        "single",
+        "range"
+      ],
+      "types": null,
+      "states": [
+        "default",
+        "hover",
+        "filled",
+        "open",
+        "disabled"
+      ],
+      "canonicalStateMap": {
+        "Default": "default",
+        "Filled": "filled",
+        "Open": "open",
+        "Disabled": "disabled"
+      },
+      "absentCombinations": [],
+      "sourceFingerprint": "ec9650ca50133cb8855744fd55d547ce6b4628d1ed119980fb2d0bc7d9c15b73"
+    },
+    "dropdown": {
+      "id": "dropdown",
+      "status": "approved",
+      "version": "0.1.0",
+      "sizes": [
+        "xxsm",
+        "xsm",
+        "md"
+      ],
+      "breaks": {},
+      "sizeBreakGrid": [],
+      "variants": [
+        "text",
+        "checkbox"
+      ],
+      "types": null,
+      "states": [
+        "default",
+        "hover",
+        "selectedText",
+        "selectedCheckbox"
+      ],
+      "canonicalStateMap": {
+        "Default": "default",
+        "Hover": "hover",
+        "Selected (Type=Text)": "selectedText",
+        "Selected (Type=Checkbox)": "selectedCheckbox"
+      },
+      "absentCombinations": [
+        {
+          "key": "panelStateAxis",
+          "reason": "정본 buildDropdown 은 패널 자체의 state 축이 없다(항상 State=Default) — 상태는 옵션 행이 담당한다. 패널에 별도 open/closed 시각 변형을 만들지 않았다."
+        }
+      ],
+      "sourceFingerprint": "dcfd70055e4994c3830312c8b0e21fe91b0e812d031f8ef721ddebb8298644bf"
+    },
+    "filter-chip": {
+      "id": "filter-chip",
+      "status": "approved",
+      "version": "0.1.0",
+      "sizes": [
+        "sm",
+        "md"
+      ],
+      "breaks": {
+        "pc": [
+          "sm",
+          "md"
+        ],
+        "mobile": [
+          "md"
+        ]
+      },
+      "sizeBreakGrid": [
+        {
+          "size": "sm",
+          "break": "pc",
+          "height": 28,
+          "fontSize": 14,
+          "valueSource": "정본 build-components.ts"
+        },
+        {
+          "size": "md",
+          "break": "pc",
+          "height": 34,
+          "fontSize": 14,
+          "valueSource": "정본 build-components.ts"
+        },
+        {
+          "size": "md",
+          "break": "mobile",
+          "height": 30,
+          "fontSize": 14,
+          "valueSource": "정본 build-components.ts"
+        }
+      ],
+      "variants": [
+        "line",
+        "solid"
+      ],
+      "types": null,
+      "states": [
+        "default",
+        "hover",
+        "selected",
+        "complete",
+        "disabled"
+      ],
+      "canonicalStateMap": {
+        "Default": "default",
+        "Hover": "hover",
+        "Selected": "selected",
+        "Complete": "complete",
+        "Disabled": "disabled"
+      },
+      "absentCombinations": [
+        {
+          "key": "errorAxis",
+          "reason": "정본에 Error 상태가 없다."
+        }
+      ],
+      "sourceFingerprint": "5fd92b14ddbfd5044c69769910683e0b45ef0ba704ac4bc8ae1062a29f0c7fe5"
+    },
+    "input": {
+      "id": "input",
+      "status": "approved",
+      "version": "0.1.0",
+      "sizes": [
+        "xxsm",
+        "xsm",
+        "md"
+      ],
+      "breaks": {
+        "pc": [
+          "xxsm",
+          "xsm",
+          "md"
+        ],
+        "mobile": [
+          "md"
+        ]
+      },
+      "sizeBreakGrid": [
+        {
+          "size": "xxsm",
+          "break": "pc",
+          "height": 28,
+          "fontSize": 12,
+          "valueSource": "정본 build-components.ts"
+        },
+        {
+          "size": "xsm",
+          "break": "pc",
+          "height": 34,
+          "fontSize": 14,
+          "valueSource": "정본 build-components.ts"
+        },
+        {
+          "size": "md",
+          "break": "pc",
+          "height": 44,
+          "fontSize": 14,
+          "valueSource": "정본 build-components.ts"
+        },
+        {
+          "size": "md",
+          "break": "mobile",
+          "height": 48,
+          "fontSize": 14,
+          "valueSource": "정본 build-components.ts"
+        }
+      ],
+      "variants": [
+        "base"
+      ],
+      "types": null,
+      "states": [
+        "default",
+        "filled",
+        "focus",
+        "error",
+        "correct",
+        "readOnly",
+        "disabled"
+      ],
+      "canonicalStateMap": null,
+      "absentCombinations": [],
+      "sourceFingerprint": "e84151b03b7730184ea71246b7039dd25aea4c1673f3cd161b580e6cc5c898b5"
+    },
+    "mobile-bottom-nav": {
+      "id": "mobile-bottom-nav",
+      "status": "approved",
+      "version": "0.1.0",
+      "sizes": [],
+      "breaks": {},
+      "sizeBreakGrid": [],
+      "variants": [],
+      "types": null,
+      "states": [
+        "unselected",
+        "selected"
+      ],
+      "canonicalStateMap": {
+        "state=unselected": "unselected",
+        "state=selected": "selected"
+      },
+      "absentCombinations": [
+        {
+          "key": "stateAxis",
+          "reason": "정본에 hover·disabled 상태가 없다(D2). unselected·selected 2가지만 만든다."
+        }
+      ],
+      "sourceFingerprint": "c8da40f1c07035ce560c1bdc247ff7f0724be40e3cac6576990601079810df08"
+    },
+    "mobile-header": {
+      "id": "mobile-header",
+      "status": "approved",
+      "version": "0.1.0",
+      "sizes": [],
+      "breaks": {},
+      "sizeBreakGrid": [],
+      "variants": [
+        "home-title",
+        "home-title-subtitle",
+        "standard-title",
+        "standard-title-close",
+        "standard-no-title",
+        "standard-no-title-close"
+      ],
+      "types": null,
+      "states": [],
+      "canonicalStateMap": null,
+      "absentCombinations": [
+        {
+          "key": "platform",
+          "reason": "StatusBar 제외로 App/Web 차이(상태바 높이만 다름)가 사라져 Platform 축도 함께 뺀다 — Type 6종 1축만 배포한다."
+        }
+      ],
+      "sourceFingerprint": "13a2b6bfaacdf112d29d64cedab10f8873a04d5181a95e69bd9f3ff77a020303"
+    },
+    "modal": {
+      "id": "modal",
+      "status": "approved",
+      "version": "0.1.0",
+      "sizes": [],
+      "breaks": {
+        "pc": [],
+        "mobile": []
+      },
+      "sizeBreakGrid": [],
+      "variants": [
+        "single",
+        "dual"
+      ],
+      "types": null,
+      "states": [
+        "closed",
+        "open"
+      ],
+      "canonicalStateMap": {
+        "Default": "open"
+      },
+      "absentCombinations": [
+        {
+          "key": "stateAxis",
+          "reason": "정본에 hover·disabled 같은 상태 축이 없다. 열림·닫힘만 있다."
+        },
+        {
+          "key": "sizeAxis",
+          "reason": "정본에 크기 축이 없다 — Break(PC·Mobile)가 패널 폭과 밀도를 결정한다."
+        }
+      ],
+      "sourceFingerprint": "fb23f6b1ffde4d0eb3384cfea418173695cb8c2462529249802d50310683603e"
+    },
+    "multi-toggle": {
+      "id": "multi-toggle",
+      "status": "approved",
+      "version": "0.1.0",
+      "sizes": [
+        "md",
+        "sm"
+      ],
+      "breaks": {},
+      "sizeBreakGrid": [],
+      "variants": [
+        "base"
+      ],
+      "types": null,
+      "states": [
+        "default",
+        "hover",
+        "selected",
+        "disabled"
+      ],
+      "canonicalStateMap": {
+        "Default": "default",
+        "Hover": "hover",
+        "Selected": "selected",
+        "Disabled": "disabled"
+      },
+      "absentCombinations": [],
+      "sourceFingerprint": "7b28ae241eea4829d0d87874dd8f5cc6450827e75d77fbea78c47d72dadd78ca"
+    },
+    "pagination": {
+      "id": "pagination",
+      "status": "approved",
+      "version": "0.1.0",
+      "sizes": [
+        "28"
+      ],
+      "breaks": {},
+      "sizeBreakGrid": [],
+      "variants": [
+        "bar"
+      ],
+      "types": null,
+      "states": [
+        "single",
+        "first",
+        "last",
+        "middle",
+        "selected"
+      ],
+      "canonicalStateMap": null,
+      "absentCombinations": [],
+      "sourceFingerprint": "a06019cf6d71c4749f1a864b7bc9ac5ae53346c38213765893e89b8b5ac8bea1"
+    },
+    "radio": {
+      "id": "radio",
+      "status": "approved",
+      "version": "0.1.0",
+      "sizes": [],
+      "breaks": {},
+      "sizeBreakGrid": [],
+      "variants": [
+        "base"
+      ],
+      "types": null,
+      "states": [
+        "default",
+        "hover",
+        "selected",
+        "disabled",
+        "disabledSelected"
+      ],
+      "canonicalStateMap": {
+        "Default": "default",
+        "Hover": "hover",
+        "Selected": "selected",
+        "Disabled": "disabled",
+        "Dis+Selected": "disabledSelected"
+      },
+      "absentCombinations": [],
+      "sourceFingerprint": "7e29a161cb48fe6632830667adf890f810fbfd6234a796462a1043a46b45b592"
+    },
+    "select": {
+      "id": "select",
+      "status": "approved",
+      "version": "0.1.0",
+      "sizes": [
+        "xxsm",
+        "xsm",
+        "md"
+      ],
+      "breaks": {
+        "pc": [
+          "xxsm",
+          "xsm",
+          "md"
+        ],
+        "mobile": [
+          "md"
+        ]
+      },
+      "sizeBreakGrid": [
+        {
+          "size": "xxsm",
+          "break": "pc",
+          "height": 28,
+          "fontSize": 12,
+          "valueSource": "정본 build-components.ts"
+        },
+        {
+          "size": "xsm",
+          "break": "pc",
+          "height": 34,
+          "fontSize": 14,
+          "valueSource": "정본 build-components.ts"
+        },
+        {
+          "size": "md",
+          "break": "pc",
+          "height": 44,
+          "fontSize": 14,
+          "valueSource": "정본 build-components.ts"
+        },
+        {
+          "size": "md",
+          "break": "mobile",
+          "height": 48,
+          "fontSize": 14,
+          "valueSource": "정본 build-components.ts"
+        }
+      ],
+      "variants": [
+        "base"
+      ],
+      "types": null,
+      "states": [
+        "default",
+        "hover",
+        "open",
+        "filled",
+        "disabled"
+      ],
+      "canonicalStateMap": {
+        "Default": "default",
+        "Hover": "hover",
+        "Open": "open",
+        "Filled": "filled",
+        "Disabled": "disabled"
+      },
+      "absentCombinations": [
+        {
+          "key": "focusAxis",
+          "reason": "정본에 focus 변형이 없다. 2026-09-02 river 결정으로 웹에서도 만들지 않으며, 키보드 초점은 브라우저 기본 표시에 맡긴다."
+        },
+        {
+          "key": "errorAxis",
+          "reason": "정본에 Error 상태가 없다."
+        }
+      ],
+      "sourceFingerprint": "18c8e50ecdf6d50c89d97ed9f65ebb927efbbb41942153fb0b9734d0df92f429"
+    },
+    "tab": {
+      "id": "tab",
+      "status": "approved",
+      "version": "0.1.0",
+      "sizes": [
+        "md",
+        "sm",
+        "xsm"
+      ],
+      "breaks": {
+        "pc": [
+          "md",
+          "sm",
+          "xsm"
+        ],
+        "mobile": [
+          "sm"
+        ]
+      },
+      "sizeBreakGrid": [
+        {
+          "size": "md",
+          "break": "pc",
+          "height": 44,
+          "fontSize": 18,
+          "valueSource": "정본 build-components.ts"
+        },
+        {
+          "size": "sm",
+          "break": "pc",
+          "height": 42,
+          "fontSize": 16,
+          "valueSource": "정본 build-components.ts"
+        },
+        {
+          "size": "xsm",
+          "break": "pc",
+          "height": 40,
+          "fontSize": 14,
+          "valueSource": "정본 build-components.ts"
+        },
+        {
+          "size": "sm",
+          "break": "mobile",
+          "height": 32,
+          "fontSize": 16,
+          "valueSource": "정본 build-components.ts"
+        }
+      ],
+      "variants": [
+        "line"
+      ],
+      "types": null,
+      "states": [
+        "default",
+        "hover",
+        "selected"
+      ],
+      "canonicalStateMap": {
+        "Unselected": "default",
+        "Hover": "hover",
+        "Selected": "selected"
+      },
+      "absentCombinations": [],
+      "sourceFingerprint": "5229a5099665cc15c9bf0d7cecb8953d43123f3328b1c8b980615285eb3af58c"
+    },
+    "table": {
+      "id": "table",
+      "status": "approved",
+      "version": "0.1.0",
+      "sizes": [
+        "md",
+        "sm",
+        "xsm"
+      ],
+      "breaks": {
+        "pc": [
+          "md",
+          "sm",
+          "xsm"
+        ]
+      },
+      "sizeBreakGrid": [
+        {
+          "size": "md",
+          "break": "pc",
+          "height": null,
+          "fontSize": 14,
+          "valueSource": "미확인"
+        },
+        {
+          "size": "sm",
+          "break": "pc",
+          "height": null,
+          "fontSize": 14,
+          "valueSource": "미확인"
+        },
+        {
+          "size": "xsm",
+          "break": "pc",
+          "height": null,
+          "fontSize": 12,
+          "valueSource": "미확인"
+        }
+      ],
+      "variants": [
+        "base"
+      ],
+      "types": null,
+      "states": [
+        "default",
+        "hover",
+        "selected"
+      ],
+      "canonicalStateMap": {
+        "Default": "default",
+        "Hover": "hover",
+        "Selected": "selected"
+      },
+      "absentCombinations": [
+        {
+          "key": "mobile",
+          "reason": "정본·Registry 모두 모바일 표 표출 규칙이 없다. 이번 배포는 PC 만 선언한다."
+        }
+      ],
+      "sourceFingerprint": "99559b1b4ac74f07739665c76bb4ebbaf67932b8a0d1ded55e373403fb22531a"
+    },
+    "textarea": {
+      "id": "textarea",
+      "status": "approved",
+      "version": "0.1.0",
+      "sizes": [],
+      "breaks": {},
+      "sizeBreakGrid": [],
+      "variants": [
+        "base"
+      ],
+      "types": null,
+      "states": [
+        "default",
+        "focus",
+        "filled",
+        "disabled",
+        "readonly"
+      ],
+      "canonicalStateMap": {
+        "Default": "default",
+        "Focus": "focus",
+        "Filled": "filled",
+        "Disabled": "disabled",
+        "Readonly": "readonly"
+      },
+      "absentCombinations": [
+        {
+          "key": "sizeAxis",
+          "reason": "정본은 State 축만 있고 sm/md/lg 같은 크기 축이 없다."
+        }
+      ],
+      "sourceFingerprint": "e510176b4b93fe3f2621449d3d5b267ced7352e3e41343dd2367a7c2e05ae688"
+    },
+    "time-picker": {
+      "id": "time-picker",
+      "status": "approved",
+      "version": "0.2.0",
+      "sizes": [
+        "xxsm",
+        "xsm",
+        "md"
+      ],
+      "breaks": {
+        "pc": [
+          "xxsm",
+          "xsm",
+          "md"
+        ],
+        "mobile": [
+          "md"
+        ]
+      },
+      "sizeBreakGrid": [
+        {
+          "size": "xxsm",
+          "break": "pc",
+          "height": 28,
+          "fontSize": 12,
+          "valueSource": "정본 build-components.ts"
+        },
+        {
+          "size": "xsm",
+          "break": "pc",
+          "height": 34,
+          "fontSize": 14,
+          "valueSource": "정본 build-components.ts"
+        },
+        {
+          "size": "md",
+          "break": "pc",
+          "height": 44,
+          "fontSize": 14,
+          "valueSource": "정본 build-components.ts"
+        },
+        {
+          "size": "md",
+          "break": "mobile",
+          "height": 48,
+          "fontSize": 14,
+          "valueSource": "정본 build-components.ts"
+        }
+      ],
+      "variants": [
+        "base"
+      ],
+      "types": [
+        "24h",
+        "12h"
+      ],
+      "states": [
+        "default",
+        "hover",
+        "focus",
+        "filled",
+        "disabled"
+      ],
+      "canonicalStateMap": {
+        "Default": "default",
+        "Hover": "hover",
+        "Focus": "focus",
+        "Filled": "filled",
+        "Disabled": "disabled"
+      },
+      "absentCombinations": [
+        {
+          "key": "focusVisibleAxis",
+          "reason": "정본에 focus 변형이 없다. 2026-09-02 river 결정으로 웹에서도 만들지 않으며, 키보드 초점은 브라우저 기본 표시에 맡긴다."
+        }
+      ],
+      "sourceFingerprint": "5e8269039c397b75ed97c0e2aadb479bf1c83b6d2993e21370141046e6455acc"
+    },
+    "toggle": {
+      "id": "toggle",
+      "status": "approved",
+      "version": "0.1.0",
+      "sizes": [],
+      "breaks": {},
+      "sizeBreakGrid": [],
+      "variants": [
+        "base"
+      ],
+      "types": null,
+      "states": [
+        "off",
+        "on",
+        "disabled",
+        "disabledOn"
+      ],
+      "canonicalStateMap": {
+        "Pressed=Off, State=Default": "off",
+        "Pressed=On, State=Default": "on",
+        "Pressed=Off, State=Disabled": "disabled",
+        "Pressed=On, State=Disabled": "disabledOn"
+      },
+      "absentCombinations": [],
+      "sourceFingerprint": "95155c6862d39c63ec5b0a009ae3437964ccb0bad1254d66fd1daf6d6e0b8324"
+    }
+  }
+}
