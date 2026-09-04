@@ -45,7 +45,7 @@
   "workflowStatus": "awaiting-user",
   "uiLibraryStatus": "verified",
   "lastCompletedCheckpoint": 4,
-  "nextAction": "5-human-review — river 가 안내 페이지(pages/components.html Date Picker)를 보고 UX 승인 문장을 주면 6-promotion 에서 uiLibraryStatus 를 approved 로 올린다.",
+  "nextAction": "6-promotion 완료. 후속은 B11·B12(자간·줄높이 부채) 정리와 SM 재설치 안내뿐이다.",
   "ownership": {
     "currentActor": null,
     "owner": null,
@@ -271,12 +271,21 @@
       "by": "orchestrator",
       "at": "2026-09-03",
       "note": "PC·Mobile × Light·Dark 실제 dist 소비 렌더 확인. 기간 선택·연월 화면·모바일 날짜 시트·시간 휠 시트 2종."
+    },
+    "riverApproval": {
+      "date": "2026-09-04",
+      "target": "ui-library/dist date-picker v0.1.0 · pages/components.html Date Picker 안내 페이지",
+      "result": "approved",
+      "quote": "데이트피커 개발코드가 pc, 모바일에 맞게 분리되어 표출되고있는지도 재확인후에 문제없으면 승인",
+      "condition": "개발코드가 PC·모바일에 맞게 분리 표출되는지 재확인",
+      "conditionCheck": "충족 — PC 코드탭 data-break=\"pc\"+panel(role=dialog) / 모바일 코드탭 data-break=\"mobile\"+sheet(aria-modal, 적용 버튼). 실제 화면에서 확인.",
+      "priorFixes": "같은 검수에서 river 가 지적한 5건(선택 셀 hover 테두리 · 오늘 셀 hover · 숫자 중앙정렬 · 연월 타일 중앙정렬 · 달력 화살표 색/hover 배경)과 화면 겹침 3건을 모두 반영한 뒤의 승인이다."
     }
   },
   "handoff": {
     "lastActor": "orchestrator",
     "updatedAt": "2026-09-04",
-    "summary": "Gate 34 승인 완료 · 정본 SM 달력 반영 및 독립 재확인 완료 · uiLibraryStatus draft→verified 로 올려 안내 페이지에 Date Picker 를 노출했다. 남은 것은 river UX 승인 하나(→approved)."
+    "summary": "river UX 승인(조건 충족 확인)으로 uiLibraryStatus=approved. 안내 페이지·검수 화면 모두 실제 dist 소비."
   },
   "checkpointLog": [
     {

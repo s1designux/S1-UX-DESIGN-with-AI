@@ -508,7 +508,7 @@
       "id": "date-picker",
       "kind": "core-component",
       "legacyStatus": "implemented",
-      "uiLibraryStatus": "verified",
+      "uiLibraryStatus": "approved",
       "dependencies": [
         "tokens.css",
         "typography.css",
@@ -542,8 +542,8 @@
           "recordedIn": "ui-library/src/components/date-picker/manifest.json notInCanon.yearMonthHeaderButtons · 2-canon-readiness.md CU-2"
         }
       ],
-      "riverApproval": null,
-      "promotionDecision": null
+      "riverApproval": "approved 2026-09-04",
+      "promotionDecision": "approved 2026-09-04 · river 조건부 승인(\"데이트피커 개발코드가 pc, 모바일에 맞게 분리되어 표출되고있는지도 재확인후에 문제없으면 승인\")의 조건 = \"개발코드가 PC·모바일로 나뉘어 나오는가\" 를 실제 화면에서 확인해 충족: PC 화면 코드탭은 data-break=\"pc\" + panel(role=dialog), 모바일 화면 코드탭은 data-break=\"mobile\" + sheet(aria-modal=true, 적용 버튼) 로 서로 다른 배포 예제가 나온다(manifest.htmlContract.breakExamples 선언 → dist/examples/date-picker.html · date-picker.mobile.html). 기술 검증은 독립 검증 7차 PASS, 정본 SM 달력 변경분은 🤖 component-verifier 가 Figma 원본 재실측으로 확인."
     }
   ]
 }

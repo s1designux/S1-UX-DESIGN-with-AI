@@ -1,7 +1,7 @@
 {
   "id": "date-picker",
   "version": "0.1.0",
-  "status": "verified",
+  "status": "approved",
   "canonicalFingerprint": "3857bf4abf9686c5ddd1d15e7d13aa510fd51f654a23819b88e0acae5edcffc9",
   "canonicalSources": [
     "plugins/figma-vars-installer/src/build-components.ts",
@@ -344,5 +344,5 @@
     "controlMode": "uncontrolled",
     "progressiveEnhancementNote": "JavaScript 없이는 캘린더가 렌더되지 않아 날짜를 고를 수 없다 — 복합 Picker(정본 계약)라 native fallback이 없다. 트리거는 native button 이라 포커스·이름은 유지된다."
   },
-  "sourceFingerprint": "fcab42771413c031a9c73b37b394f6458f12a9b880dcba8ceef1c140cec8cb4f"
+  "sourceFingerprint": "bfce9e76a3c82d2932121d6a6af6b36100925230b234041d8f56345d1eb061d5"
 }
