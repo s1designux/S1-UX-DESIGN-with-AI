@@ -148,6 +148,15 @@ footer code{font-family:"IBM Plex Mono",monospace;font-size:12px;color:var(--ink
 .fmap{font-family:"IBM Plex Mono",monospace;font-size:11px;color:var(--ink-2)}
 .ftab em{font-style:normal;color:var(--ink-3);font-size:11px;margin-left:4px}
 .fsrc{margin:8px 0 0;font-size:11px;color:var(--ink-3);font-family:"IBM Plex Mono",monospace}
+
+/* 층 대응표 (D-09) */
+.lay{margin:10px 0 12px;border:1px solid var(--line-2);background:var(--surface)}
+.lay th,.lay td{border-bottom:1px solid var(--line);padding:6px 10px;vertical-align:top;font-size:12px;white-space:normal}
+.lay tr:first-child th{background:var(--raise);font-weight:700;color:var(--ink)}
+.lay td:first-child{white-space:nowrap;font-weight:600;color:var(--ink-2)}
+.lay td.none{color:var(--warn);font-weight:600}
+.lay i{font-style:normal;color:var(--ink-3);font-size:11px}
+.why em{font-style:normal;color:var(--ink-3);font-size:12px}
 </style>
 
 <div class="bar">
@@ -347,9 +356,13 @@ footer code{font-family:"IBM Plex Mono",monospace;font-size:12px;color:var(--ink
     <p class="idle"><span>안 정하면</span>드롭다운 목록 검수 시 어느 쪽으로 봐야 할지 근거가 없습니다.</p>
   </div>
 </article><article class="dec" id="D-09">
-  <header class="dec-h"><span class="did">D-09</span><h3>시간 선택의 selected · editing</h3>
+  <header class="dec-h"><span class="did">D-09</span><h3>시간 선택 — 층을 맞춰 다시 정리했습니다</h3>
     <span class="badge" data-badge="D-09">미결정</span></header>
-  <p class="why">레거시 시간 선택은 세트가 7개로 흩어져 있고, 상태 이름도 selected · editing · completed 로 제각각입니다. 정본은 focus(입력 중) · filled(값 있음) 로 정리돼 있습니다.</p>
+  <p class="why">river 지적대로 <b>비교하는 층이 안 맞아</b> 카드를 다시 짰습니다. 레거시는 목록·칸까지 한 덩어리로 묶어 놓았고, 정본은 트리거·목록 패널·칸을 각각 별도 컴포넌트로 나눠 놓았습니다. 실제 화면과 변형 축을 하나씩 확인해 층을 맞추면 이렇습니다.<table class="ftab lay"><tr><th>층</th><th>레거시</th><th>정본</th></tr>
+<tr><td>트리거 — 입력창형</td><td><span class="mono">timepicker_input</span> 16변형<br><i>platform 4 · state: default·selected·completed·disabled</i></td><td><span class="mono">Time Picker</span><br><i>크기×화면 4조합 · default·hover·focus·filled·disabled</i></td></tr>
+<tr><td>트리거 — 셀렉트형</td><td><span class="mono">timepicker_select</span> 6변형<br><i>「00∨ 시 00∨ 분」 · state: default·editing·disabled</i></td><td class="none">정본에 대응 없음<br><i>정본은 트리거 하나에서 목록을 펼치는 방식뿐</i></td></tr>
+<tr><td>펼친 목록 패널</td><td><span class="mono">pc_timepicker_input_dropdown</span>(12h/24h·확인 버튼)<br><span class="mono">timepicker_select_dropdown</span>(md/sm)</td><td><span class="mono">Time Picker Dropdown</span><br><i>24h/12h · 확인 버튼 있음</i></td></tr>
+<tr><td>목록 한 칸</td><td><span class="mono">timepicker_input_component</span> 3변형<br><span class="mono">timepicker_select_number</span> 6변형<br><i>state: default·hover·selected</i></td><td><span class="mono">Time Picker Cell</span><br><i>Dropdown 이 만드는 자식 — 설치기에 따로 등록되지 않음</i></td></tr></table><b>남은 결정은 두 가지</b>입니다. ①트리거의 <span class="mono">selected</span>·<span class="mono">completed</span> 가 정본의 무엇인지 ②정본에 대응이 없는 <b>셀렉트형 트리거</b>를 어떻게 할지. <em>(층 대응은 ⭐ 가 레거시 화면과 변형 축 이름을 보고 정리한 것입니다 — Figma 원본의 구조 데이터까지 읽어 확인하지는 않았습니다.)</em></p>
   {{FACTS:time-picker}}<div class="compare"><figure class="pane">
   <figcaption><span class="src src-A">A</span><b>timepicker_input_component</b>
     <span class="vc">3변형</span>
@@ -393,12 +406,12 @@ footer code{font-family:"IBM Plex Mono",monospace;font-size:12px;color:var(--ink
 </figure></div>
   <div class="choose">
     <h4>결정</h4>
-    <div class="opts"><button class="opt" data-d="D-09" data-v="selected = focus, editing = focus, completed = filled"><span class="dot"></span>selected = focus, editing = focus, completed = filled</button><button class="opt" data-d="D-09" data-v="selected = filled, editing = focus, completed = filled"><span class="dot"></span>selected = filled, editing = focus, completed = filled</button></div>
+    <div class="opts"><button class="opt" data-d="D-09" data-v="트리거 selected = focus · completed = filled / 셀렉트형은 정본에 없는 것으로 기록"><span class="dot"></span>트리거 selected = focus · completed = filled / 셀렉트형은 정본에 없는 것으로 기록</button><button class="opt" data-d="D-09" data-v="트리거 selected = focus · completed = filled / 셀렉트형은 정본 보강 대상으로 올림"><span class="dot"></span>트리거 selected = focus · completed = filled / 셀렉트형은 정본 보강 대상으로 올림</button><button class="opt" data-d="D-09" data-v="트리거 selected = filled · completed = filled / 셀렉트형은 정본 보강 대상으로 올림"><span class="dot"></span>트리거 selected = filled · completed = filled / 셀렉트형은 정본 보강 대상으로 올림</button></div>
     <div class="freerow">
       <input class="free" data-d="D-09" type="text" placeholder="다르게 정하시려면 여기에 직접 적어주세요" aria-label="D-09 직접 입력">
       <button class="freebtn" data-d="D-09">저장</button>
     </div>
-    <p class="idle"><span>안 정하면</span>시간 선택은 레거시 세트가 가장 많이 흩어진 컴포넌트라, 여기가 비면 검수 정확도가 가장 크게 떨어집니다.</p>
+    <p class="idle"><span>안 정하면</span>층 대응은 위 표대로 쓰되, 트리거 상태와 셀렉트형 처리는 매번 다시 판단하게 됩니다.</p>
   </div>
 </article><article class="dec" id="D-10">
   <header class="dec-h"><span class="did">D-10</span><h3>날짜 선택의 selected · editing</h3>
@@ -546,9 +559,9 @@ footer code{font-family:"IBM Plex Mono",monospace;font-size:12px;color:var(--ink
     <p class="idle"><span>안 정하면</span>이 형태를 검수할 때 input 하나로 볼지 두 개로 볼지가 매번 달라집니다.</p>
   </div>
 </article><article class="dec" id="D-11">
-  <header class="dec-h"><span class="did">D-11</span><h3>달력 안쪽 부품들</h3>
+  <header class="dec-h"><span class="did">D-11</span><h3>달력 안쪽 부품들 — 정본·설치기에 있습니다 (화살표만 형태가 다름)</h3>
     <span class="badge" data-badge="D-11">미결정</span></header>
-  <p class="why">레거시는 달력을 칸(Cell)·타일(Tile)·화살표·연월 선택 화면까지 4개 컴포넌트로 쪼개 놨습니다. 정본에도 <b>칸·타일·헤더가 부품으로 있습니다</b>(작은 크기용 부품까지 따로). 정본에 없는 것은 <b>부품이 아니라 상호작용 규정</b>입니다 — 기간 선택의 start·end 를 어떻게 오가는지, 오늘 칸에 마우스를 올리면 어떻게 되는지 같은 규정이 없어 웹이 따로 정했습니다. 이전 판에서 「이 이름들이 정본에 없다」고 적은 것은 <b>부정확</b>했습니다.</p>
+  <p class="why">레거시가 쪼개 놓은 4개를 정본에서 찾아봤습니다(river 지시 2026-09-04). <b>칸 → <span class="mono">Calendar Cell</span> · 타일 → <span class="mono">Calendar Tile</span> · 연월 선택 화면 → <span class="mono">Calendar</span> 의 State=Date/Year/Month 변형</b>으로 있고 셋 다 설치기에 등록돼 있습니다. <b>화살표만 다릅니다</b> — 레거시는 <span class="mono">calendar_arrow</span> 라는 별도 컴포넌트였는데, 정본은 달력 헤더 안에 chevron 아이콘 인스턴스를 좌우로 넣는 방식이라 별도 컴포넌트가 없습니다.</p>
   {{FACTS:date-picker}}<div class="compare"><figure class="pane">
   <figcaption><span class="src src-A">A</span><b>DatePicker/Calendar Cell</b>
     <span class="vc">8변형</span>
@@ -580,12 +593,12 @@ footer code{font-family:"IBM Plex Mono",monospace;font-size:12px;color:var(--ink
 </figure></div>
   <div class="choose">
     <h4>결정</h4>
-    <div class="opts"><button class="opt" data-d="D-11" data-v="부품은 정본에 있음 — 부품 단위로 대응 기록"><span class="dot"></span>부품은 정본에 있음 — 부품 단위로 대응 기록</button><button class="opt" data-d="D-11" data-v="화살표·연월 선택 화면은 별개로 기록"><span class="dot"></span>화살표·연월 선택 화면은 별개로 기록</button><button class="opt" data-d="D-11" data-v="상호작용 규정이 없는 것만 정본 보강 대상으로 올림"><span class="dot"></span>상호작용 규정이 없는 것만 정본 보강 대상으로 올림</button></div>
+    <div class="opts"><button class="opt" data-d="D-11" data-v="화살표는 아이콘 인스턴스로 충분 — 별도 컴포넌트 만들지 않음"><span class="dot"></span>화살표는 아이콘 인스턴스로 충분 — 별도 컴포넌트 만들지 않음</button><button class="opt" data-d="D-11" data-v="레거시처럼 화살표도 별도 컴포넌트로 만들 것 — 정본 보강 대상"><span class="dot"></span>레거시처럼 화살표도 별도 컴포넌트로 만들 것 — 정본 보강 대상</button></div>
     <div class="freerow">
       <input class="free" data-d="D-11" type="text" placeholder="다르게 정하시려면 여기에 직접 적어주세요" aria-label="D-11 직접 입력">
       <button class="freebtn" data-d="D-11">저장</button>
     </div>
-    <p class="idle"><span>안 정하면</span>달력 내부 검수는 대응표 없이 매번 눈으로 판단하게 됩니다.</p>
+    <p class="idle"><span>안 정하면</span>화살표는 지금처럼 달력 헤더 안 아이콘으로만 있습니다.</p>
   </div>
 </article><article class="dec" id="D-14">
   <header class="dec-h"><span class="did">D-14</span><h3>그리드 표·삽입형 표 구분</h3>
@@ -887,9 +900,9 @@ footer code{font-family:"IBM Plex Mono",monospace;font-size:12px;color:var(--ink
   </div>
 </article></section><section class="grp"><div class="grp-h"><h2>정본에 아직 없는 것</h2><span class="cnt">3건</span></div>
 <p class="grp-d">레거시에는 있는데 지금 정본에 대응이 없습니다. &#x27;없어진 것&#x27;인지 &#x27;아직 안 만든 것&#x27;인지가 갈립니다.</p><article class="dec" id="D-05">
-  <header class="dec-h"><span class="did">D-05</span><h3>바텀시트(아래에서 올라오는 창)</h3>
+  <header class="dec-h"><span class="did">D-05</span><h3>바텀시트(아래에서 올라오는 창) — 정본·설치기에 전부 있습니다</h3>
     <span class="badge" data-badge="D-05">미결정</span></header>
-  <p class="why">레거시 A에는 바텀시트가 5세트나 있습니다(모달용·시간선택용·날짜선택용·항목). 정본에도 <b>바텀시트가 있습니다</b> — 날짜 선택 모바일 시트와 시간 선택 모바일 시트가 정본에 있고 웹에도 배포돼 있습니다. 정본에 없는 것은 <b>아무 내용이나 담는 범용 바텀시트</b> 쪽입니다. 정본 modal 은 크기 축 없이 <b>화면 축(PC·Mobile)</b>과 변형 single·dual 을 씁니다. 이전 판에서 「정본에는 바텀시트가 없다」고 적은 것은 <b>사실 오류</b>입니다.</p>
+  <p class="why">레거시 A의 바텀시트 5세트를 정본에서 찾아봤습니다(river 지시 2026-09-04). <b>네 종류가 전부 정본에 있고 설치기에도 등록돼 있습니다</b> — 범용 <span class="mono">Bottom Sheet</span> · 항목 <span class="mono">Bottom Sheet Option</span> · 날짜 <span class="mono">Date Picker Mobile Bottom Sheet</span> · 시간 <span class="mono">Time Picker Mobile Bottom Sheet</span>. 이전 판에서 「정본에 바텀시트가 없다」고 했다가 「범용은 없다」고 고쳤는데, <b>둘 다 틀렸습니다</b>. 다만 <b>웹 배포본(dist)에는 아직 없습니다</b> — 날짜·시간 시트는 각 컴포넌트 안에 들어가 있고, 범용 시트와 항목은 웹으로 만들지 않았습니다.</p>
   {{FACTS:modal}}<div class="compare"><figure class="pane">
   <figcaption><span class="src src-A">A</span><b>mobile_bottomsheet</b>
     <span class="vc">3변형</span>
@@ -931,12 +944,12 @@ footer code{font-family:"IBM Plex Mono",monospace;font-size:12px;color:var(--ink
 </figure></div>
   <div class="choose">
     <h4>결정</h4>
-    <div class="opts"><button class="opt" data-d="D-05" data-v="날짜·시간 시트는 정본에 대응됨 / 나머지는 정본 modal 의 Mobile 로"><span class="dot"></span>날짜·시간 시트는 정본에 대응됨 / 나머지는 정본 modal 의 Mobile 로</button><button class="opt" data-d="D-05" data-v="범용 바텀시트는 정본에 없는 것 — 보강 대상으로 올림"><span class="dot"></span>범용 바텀시트는 정본에 없는 것 — 보강 대상으로 올림</button><button class="opt" data-d="D-05" data-v="전부 정본 modal 로 흡수됨"><span class="dot"></span>전부 정본 modal 로 흡수됨</button></div>
+    <div class="opts"><button class="opt" data-d="D-05" data-v="Figma 정본 대응은 확정 — 웹 배포는 별건으로 관리"><span class="dot"></span>Figma 정본 대응은 확정 — 웹 배포는 별건으로 관리</button><button class="opt" data-d="D-05" data-v="범용 바텀시트·항목도 웹 배포본으로 만들 것 — 작업 대상으로 올림"><span class="dot"></span>범용 바텀시트·항목도 웹 배포본으로 만들 것 — 작업 대상으로 올림</button></div>
     <div class="freerow">
       <input class="free" data-d="D-05" type="text" placeholder="다르게 정하시려면 여기에 직접 적어주세요" aria-label="D-05 직접 입력">
       <button class="freebtn" data-d="D-05">저장</button>
     </div>
-    <p class="idle"><span>안 정하면</span>모바일 레거시 화면의 상당 부분이 대응 없이 남습니다.</p>
+    <p class="idle"><span>안 정하면</span>Figma 쪽 대응표는 위 사실대로 쓰고, 웹 배포 여부만 미정으로 남습니다.</p>
   </div>
 </article><article class="dec" id="D-13">
   <header class="dec-h"><span class="did">D-13</span><h3>보조 버튼·텍스트 버튼</h3>
