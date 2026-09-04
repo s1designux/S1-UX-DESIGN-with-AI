@@ -917,7 +917,9 @@ async function buildInput(maps: BuildMaps, originY: number, originX: number = IN
     { size: "XXSM", brk: "PC",     h: 28, padL: 12, padR: 8,  font: 12, head: "XXSM" },
     { size: "XSM",  brk: "PC",     h: 34, padL: 12, padR: 8,  font: 14, head: "XSM" },
     { size: "MD",   brk: "PC",     h: 44, padL: 16, padR: 12, font: 14, head: "MD" },
-    { size: "MD",   brk: "Mobile", h: 48, padL: 16, padR: 12, font: 14, head: "MD·M" },
+    // Mobile 은 누르는 영역이 48×48 이라 padR 을 두면 아이콘이 안쪽으로 밀린다.
+    // padR 0 으로 누르는 영역을 칸 끝에 붙인다. (river 지시 2026-09-04)
+    { size: "MD",   brk: "Mobile", h: 48, padL: 16, padR: 0,  font: 14, head: "MD·M" },
   ];
   const messages = ["Off", "On"];
   const comps: ComponentNode[] = [];

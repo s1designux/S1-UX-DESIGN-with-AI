@@ -2,7 +2,7 @@
   "id": "mobile-bottom-nav",
   "version": "0.1.0",
   "status": "approved",
-  "canonicalFingerprint": "390259e0902014da3067dc490266f8096d7b19ee538c342b65e9748057e35139",
+  "canonicalFingerprint": "15798f266ce7663526d995595eba225a1ac4792937a93da93ff366d03ff177f6",
   "canonicalSources": [
     "plugins/figma-vars-installer/src/build-components.ts",
     "plugins/figma-vars-installer/src/vars-data.ts",
@@ -119,5 +119,5 @@
     "runtime": "none",
     "reason": "선택 상태는 호스트 화면의 현재 경로가 정하는 정적 ARIA 상태다. 로컬 클릭 토글·키보드 이동을 이번 범위에 넣지 않아(HD-1 선택지 A) 네이티브 button 시맨틱만으로 충분하다."
   },
-  "sourceFingerprint": "3c4996f16889e714aed691159d54ae40bdf62b352f5fe591a2adec645b034931"
+  "sourceFingerprint": "c8da40f1c07035ce560c1bdc247ff7f0724be40e3cac6576990601079810df08"
 }

@@ -2,7 +2,7 @@
   "id": "mobile-header",
   "version": "0.1.0",
   "status": "approved",
-  "canonicalFingerprint": "e10248a20a707472610fda50a840e84a143b63f9e403e416f12ed0973bc71c59",
+  "canonicalFingerprint": "50157bd0166e60c0b22dedff99ebb4d7c72ab03d7806f207cf8fa9b84def1163",
   "canonicalSources": [
     "plugins/figma-vars-installer/src/build-components.ts",
     "plugins/figma-vars-installer/src/vars-data.ts",
@@ -50,12 +50,44 @@
   "htmlContract": {
     "root": "header[data-s1-component=mobile-header][data-variant]",
     "perVariantParts": {
-      "home-title": ["title"],
-      "home-title-subtitle": ["stack", "title-row", "title", "arrow-icon", "subtitle", "notification", "notification-icon"],
-      "standard-title": ["back", "back-icon", "title", "spacer"],
-      "standard-title-close": ["back", "back-icon", "title", "close", "close-icon"],
-      "standard-no-title": ["back", "back-icon", "title", "spacer"],
-      "standard-no-title-close": ["back", "back-icon", "title", "close", "close-icon"]
+      "home-title": [
+        "title"
+      ],
+      "home-title-subtitle": [
+        "stack",
+        "title-row",
+        "title",
+        "arrow-icon",
+        "subtitle",
+        "notification",
+        "notification-icon"
+      ],
+      "standard-title": [
+        "back",
+        "back-icon",
+        "title",
+        "spacer"
+      ],
+      "standard-title-close": [
+        "back",
+        "back-icon",
+        "title",
+        "close",
+        "close-icon"
+      ],
+      "standard-no-title": [
+        "back",
+        "back-icon",
+        "title",
+        "spacer"
+      ],
+      "standard-no-title-close": [
+        "back",
+        "back-icon",
+        "title",
+        "close",
+        "close-icon"
+      ]
     },
     "relations": [
       "home-title 는 back·close·spacer 슬롯이 아예 없다 — title 하나가 전체 폭을 채운다(정본 :3151-3153, appBar 가 title 한 자식만 갖는다).",
@@ -70,8 +102,7 @@
   "cssContract": {
     "entry": "components/mobile-header.css",
     "rootScope": "[data-s1-component=mobile-header]",
-    "nativeStates": [
-    ],
+    "nativeStates": [],
     "ariaStates": [],
     "documentedDataStates": [
       "[data-variant]"

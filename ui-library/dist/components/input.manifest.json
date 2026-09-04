@@ -2,7 +2,7 @@
   "id": "input",
   "version": "0.1.0",
   "status": "approved",
-  "canonicalFingerprint": "451162564af61971d1840f467e2edf141420ee584824b0f53e627f3111aefed4",
+  "canonicalFingerprint": "d73b02c561d9627f8eec5df187c6f51f5f2f3d80ef1109b2cad3c1bc13586308",
   "canonicalSources": [
     "plugins/figma-vars-installer/src/build-components.ts",
     "plugins/figma-vars-installer/src/vars-data.ts",
@@ -157,7 +157,7 @@
     },
     "focus": {
       "status": "required",
-      "value": "native input focus mapped to canonical Editing field state"
+      "value": "Keyboard focus turns the field border to the canonical Selected color and places the caret at the end of the value; pointer focus keeps the caret where the user clicked. Disabled inputs are skipped by native tab order."
     },
     "ariaStateSync": {
       "status": "required",
@@ -195,5 +195,5 @@
     "controlMode": "uncontrolled",
     "behavior": "Editing에서 값이 있을 때 remove action을 보이고, 실행하면 값 삭제·input event 발생·Input focus 복귀"
   },
-  "sourceFingerprint": "b99dd9eefae451604207385c0821927ba885ee413a0d9fcd2f2b02b6c0d491c3"
+  "sourceFingerprint": "e84151b03b7730184ea71246b7039dd25aea4c1673f3cd161b580e6cc5c898b5"
 }

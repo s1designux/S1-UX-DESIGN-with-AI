@@ -49,21 +49,17 @@
       }
     }
   },
-  "currentPhase": "3-build",
-  "workflowStatus": "in-progress",
-  "uiLibraryStatus": "draft",
-  "lastCompletedCheckpoint": 2,
-  "nextAction": "focus-visible 제거본으로 3-build 부터 다시 진행한다. 4단계 component-verifier 시나리오 F 재검증을 거친 뒤에야 river 화면 검수(5-human-review)를 요청한다. 이전 6단계 승인은 superseded.",
-  "ownership": {
-    "currentActor": "orchestrator",
-    "startedAt": "2026-09-02",
-    "owner": "orchestrator"
-  },
+  "currentPhase": "complete",
+  "workflowStatus": "complete",
+  "uiLibraryStatus": "approved",
+  "lastCompletedCheckpoint": 6,
+  "nextAction": "파일럿 완료. 다음은 승인된 Input·Button 을 사용하는 다음 코어 또는 패턴 작업.",
+  "ownership": {},
   "canonicalInputs": [
     {
       "role": "component-visual",
       "path": "plugins/figma-vars-installer/src/build-components.ts",
-      "sha256": "2beb813ff18d9f7670bd11baa876950fee0d7a715ba6994162c9ccfe56c6a27e"
+      "sha256": "f55f850131a7c355ac7fa086cb71e3581e9e43357addc3f77d90d579549c2c30"
     },
     {
       "role": "token-values",
@@ -78,12 +74,12 @@
     {
       "role": "ui-library-contract",
       "path": "registry/governance/ui-library-code-contract.json",
-      "sha256": "63dc0f64c6ea834218119f8629379ee48cfac6c8df8b36e39d78f51405807c85"
+      "sha256": "2e13ba2efab71036f9d8c2d740f7da24343e0bbeff655f35ae5b6631c9ca0c27"
     },
     {
       "role": "current-behavior-ledger",
       "path": "registry/components/component-behavior.pc.json",
-      "sha256": "bbda54c95c48cae09a9c327a8b99f22e6423c9a7c64f5a6cc946fcc1cd75c7e2"
+      "sha256": "c9466840e24b6f93e69319a86617e0fcfc9cf35dde3461efb08f12a72c7510ea"
     },
     {
       "role": "allowed-icons",
@@ -167,6 +163,76 @@
         "reports/ui-library/input-button-pilot/2-canon-readiness.md HD-UILIB-03",
         "CLAUDE.md 변경 이력 2026-09-02"
       ]
+    },
+    {
+      "id": "D25",
+      "topic": "재개 시 정본 지문 갱신 — Input·Button 빌더 무변경 확인",
+      "decidedBy": "orchestrator",
+      "decidedAt": "2026-09-04",
+      "decision": "2026-09-02 기록 이후 정본 3건의 지문이 바뀌어 ui:state 가 막혔다. 영향 범위를 전수 확인한 결과 Input·Button 과 무관해 지문만 갱신하고 이전 판단(D24: focus 제거본은 3-build 로 되돌림)을 그대로 유지한다.",
+      "evidence": [
+        "build-components.ts: 476f1cd..HEAD 의 모든 hunk 시작 줄이 1659 이상. Input 빌더 buildInput=905~1258, Button 빌더 buildOne=281~, buildButtonSet=497~ 은 변경 hunk 밖이다(git diff -U0 ... | grep ^@@).",
+        "component-behavior.pc.json: Input·Button 항목 JSON 이 fbaba83 시점과 바이트 동일. 변경분은 Modal·Mobile Bottom Nav·Mobile Header 추가와 Multi Toggle·Filter Chip·Text Area·Select Box·Dropdown·Line Tab 수정뿐.",
+        "ui-library-code-contract.json: b44cd08 변경분은 검증 경량화 3규칙(batching·scopeRule·mechanicalFirst)과 Gate 45 신설 등 절차 규칙이며 Input·Button 시각·공개 계약 조항은 무변경."
+      ]
+    },
+    {
+      "id": "D26",
+      "topic": "HD-A / HD-B — river 결정과 그에 따른 구현",
+      "decidedBy": "river",
+      "decidedAt": "2026-09-04",
+      "quote": "탭을 하는경우 b와 같이 되고, 입력된 정보 끝에 커서가 생성돼. 그리고 disabled상태는 포커싱안되고 스킵돼",
+      "recordedBy": "orchestrator",
+      "decision": "HD-A = B안. 키보드 초점이 들어오면 field 테두리를 정본 Selected 색으로 칠하는 규칙(2026-09-02 철회 때 함께 지워진 것)을 복원한다. 더해 Tab 으로 들어온 초점은 커서를 값 끝에 두고, 마우스로 누른 초점은 누른 자리를 유지하며, disabled 는 native 로 tab 순서에서 건너뛴다. HD-B = 선택지 B — 개발자 전달본에서 빼지 않고 '재승인 대기 중'이라고 표시만 한다.",
+      "implementation": [
+        "ui-library/src/components/input/input.css — :has(control:focus-visible) → field border-color: var(--color-form-control-border-selected) 복원",
+        "ui-library/src/components/input/input.js — pointerdown 으로 마우스 진입을 구분하고, 키보드 진입일 때만 setSelectionRange(끝,끝)",
+        "registry/components/input.json · input/manifest.json · component-behavior.pc.json · pages/ui-review.html 안내 문구 동기화"
+      ],
+      "verifiedBy": "orchestrator 실제 렌더 실측(2026-09-04): Tab 진입 시 테두리 rgb(29,108,235)=Selected·커서 [6,6]/[5,5]=값 끝, 마우스 클릭 시 커서 [1,1]=누른 자리, disabled 초점 불가",
+      "sideEffect": "component-behavior.pc.json 이 pagination·tab manifest 의 canonicalSources 에 들어 있어 두 컴포넌트 지문이 함께 stale 이 됐다. 변경분은 Input 항목뿐이라 지문만 갱신했다."
+    },
+    {
+      "id": "D27",
+      "topic": "HD-B — 재승인 전까지 개발자 전달본 표시",
+      "decidedBy": "river",
+      "decidedAt": "2026-09-04",
+      "quote": "'재승인 대기 중'이라고 표시만 한다",
+      "recordedBy": "orchestrator",
+      "decision": "Input·Button 을 개발자 전달 묶음에서 빼지 않는다. manifest status 도 approved 로 둔다. 대신 전달본 안내에 '재승인 대기 중'을 명시한다.",
+      "status": "표시 반영 대기 — 전달본(dev-handoff-package)은 다른 세션이 작업 중이라 이 세션에서 건드리지 않았다."
+    },
+    {
+      "id": "D28",
+      "topic": "모바일 탭에서 커서가 튀지 않게 판정 방식 교체",
+      "decidedBy": "orchestrator",
+      "decidedAt": "2026-09-04",
+      "decision": "키보드/포인터 판정을 '표식이 켜져 있나'(타이머로 해제)에서 '직전 포인터 조작이 500ms 안이었나'(event.timeStamp 비교)로 바꿨다. pointerdown 과 pointerup 둘 다 시각을 갱신한다. 검증자가 남긴 터치 위험 — 모바일은 손을 뗀 뒤 초점을 주므로 타이머 방식에서는 글 중간 탭이 '키보드'로 오인돼 커서가 끝으로 튀는 것 — 을 구조적으로 없앤다.",
+      "evidence": "🤖 component-verifier 4차 PASS. 경계 실측 480ms=포인터·520ms=키보드, 모바일 탭 흉내(pointerdown/up touch → 다른 task 초점) 커서 [1,1] 유지(3차 방식에서는 [6,6] 으로 튐).",
+      "openItem": "실제 기기 미확인 — river 가 휴대폰 1대에서 글자 중간 탭 확인 필요"
+    },
+    {
+      "id": "D29",
+      "topic": "모바일 Input 오른쪽 안쪽 여백 0 — 지우기 아이콘이 안쪽으로 밀리던 것 해소",
+      "decidedBy": "river",
+      "decidedAt": "2026-09-04",
+      "quote": "아 터치영역때문에 그렇구나. 그럼 모바일에서는 인풋 내부 우측 패딩을 0px로 하면 딱 맞춰진다.",
+      "recordedBy": "orchestrator",
+      "decision": "정본 build-components.ts 의 buildInput sizes 표에서 Mobile MD 의 padR 을 12 → 0 으로 바꾸고, 웹 input.css 의 mobile md padding-inline 을 16px 0 으로 맞춘다. 누르는 영역 48×48 은 유지한다.",
+      "cause": "웹 구현 오류가 아니라 정본 값이었다. 모바일은 누르는 영역이 48×48 이라 그 안에 가운데 정렬된 24px 아이콘이 저절로 10px 안쪽으로 밀렸다(padR 12 + (48-24)/2 = 24px vs PC 14px). source-reader 판독으로 확인.",
+      "result": "아이콘 오른쪽 끝 ~ 칸 끝: 모바일 25px → 12px, 누르는 영역은 칸 끝에 0px. PC 는 무변경(14px / 12px).",
+      "sideEffect": "지우기 버튼이 없는 모바일 입력칸은 글자가 오른쪽 테두리까지 닿는다(전 12px 여유). river 에게 보고함.",
+      "verification": "⭐ 자가인증 — 실제 렌더 실측 + Gate 13 --by orchestrator --change mechanical 기록. 🤖 component-verifier 4차 PASS 이후의 변경이라 독립 재검증은 돌리지 않았다(H1② 기계적 수정 예외)."
+    },
+    {
+      "id": "D30",
+      "topic": "실기기 검수 — 커서 위치·지우기 버튼 노출 확인",
+      "decidedBy": "river",
+      "decidedAt": "2026-09-04",
+      "quote": "커서가 누른 자리에 잘 서네 / 이제는 잘되고있어",
+      "recordedBy": "orchestrator",
+      "decision": "안드로이드 삼성 인터넷 실기기에서 ①글자 중간 탭 시 커서가 누른 자리에 서고 ②커서가 들어간 칸에서 지우기 버튼이 정상 노출되는 것을 확인했다. HD-C 해소.",
+      "evidence": "폰 진단 화면 pages/_tmp/phone-check.html 결과 — 다크·모바일: 런타임 O · 커서 O · hidden false · 48×48 · 칸 끝 1px."
     }
   ],
   "blockers": [],
@@ -187,22 +253,14 @@
       "gate13": "stale — actual render verification required before record"
     },
     "independentVerification": {
-      "verdict": "WAIVED_BY_RIVER",
+      "verdict": "PASS",
       "actor": "component-verifier",
-      "observedAt": "2026-08-26",
-      "summary": "검증자 세션의 브라우저 제어 연결 부재로 중복 실측은 실행하지 못했다. river는 이번 단순 코어 변경에서 실제 렌더 PASS·자동 검사·UX 승인을 근거로 별도 검증을 생략하고 승격하도록 결정했다.",
-      "componentResults": {
-        "button": {
-          "verdict": "BLOCKED",
-          "scope": "XXSM 56px source·dist·검수 라벨은 PASS, 실제 Light/Dark·PC/Mobile 픽셀 검증은 브라우저 미연결로 BLOCKED",
-          "observedAt": "2026-08-26"
-        },
-        "input": {
-          "verdict": "BLOCKED",
-          "scope": "Editing remove·메시지 선택형·suffix action Hover의 정본↔배포·회귀 코드는 PASS. 구현자 PC Light 실측 PASS, 독립 Light/Dark·PC/Mobile 실제 렌더는 브라우저 미연결로 BLOCKED",
-          "observedAt": "2026-08-26"
-        }
-      },
+      "observedAt": "2026-09-04",
+      "rounds": 4,
+      "scope": "델타 재검증(계약 scopeRule) — focus-visible 철회분과 river 결정(B안 + 커서 끝 + disabled 스킵) 구현분",
+      "summary": "1차 FAIL(F-1 초점 비가시·F-2 문서 불일치) → 2차 FAIL(F-3 표식이 굳는 경로·F-4/F-5 근거 없는 읽기전용 예외) → 3차 PASS(터치 위험 남김) → 4차 PASS. 500ms 경계 실측·모바일 탭 흉내·드래그 선택·인스턴스 격리·destroy·문서 4곳 일치 전부 확인.",
+      "residualRisk": "실제 휴대폰·태블릿 미확인 — 글자 중간 탭 시 커서가 누른 자리에 서는지. 모바일 에뮬레이션에서 클릭 도구가 타임아웃해 두 세션 모두 재현 실패.",
+      "knownMinorPath": "입력 상자 안쪽 가장자리를 눌러 초점이 안 잡힌 상태에서 0.5초 안에 Tab 을 누르면 커서가 값 끝으로 가지 않는다. 0.5초 뒤 자연 해소되며 ❌ 아님.",
       "report": "reports/ui-library/input-button-pilot/4-verification.md"
     },
     "implementationActualRender": {
@@ -223,26 +281,45 @@
       "summary": "승인된 dist 기반 설명·실제 동작·HTML/CSS/JavaScript 코드 탭을 게시했다. PC·Mobile 실제 렌더, 다크 토큰, Input remove, Button 크기·정렬, 390px 가로 넘침 0과 콘솔 오류 0건을 확인했다.",
       "report": "reports/ui-library/input-button-pilot/6-promotion.md"
     },
-    "promotionDecision": {
-      "status": "approved",
-      "approvedBy": "river",
-      "observedAt": "2026-08-26",
-      "independentVerification": "waived-by-river",
-      "reason": "정본 대조·실제 렌더·자동 검사·river UX 승인이 완료된 단순 코어 변경에서 같은 화면을 다른 AI가 다시 측정하는 절차는 중복으로 판단했다.",
-      "scope": "Base Input과 Button만 승인. Password Field·Search Input·패턴 제외.",
-      "report": "reports/ui-library/input-button-pilot/6-promotion.md"
+    "realDeviceCheck": {
+      "status": "PASS",
+      "actor": "river",
+      "observedAt": "2026-09-04",
+      "device": "Android 10 · 삼성 인터넷 · 폰 라이트모드",
+      "items": [
+        "글자 중간 탭 시 커서가 누른 자리에 섬(4차 검증 NOT_VERIFIED 해소)",
+        "커서가 들어간 칸에서 지우기 버튼 정상 노출(48×48)",
+        "모바일 지우기 아이콘 위치 수정이 실기기에 반영됨(칸 끝 1px)"
+      ],
+      "report": "reports/ui-library/input-button-pilot/4-verification.md"
     },
     "riverApproval": {
       "status": "approved",
       "actor": "river",
-      "observedAt": "2026-08-26",
-      "scope": "Base Input과 Button의 검수본 2026-08-26·04 UI·UX 및 공개 HTML/CSS 구조 확정. Password Field·Search Input·패턴은 제외.",
+      "observedAt": "2026-09-04",
+      "quote": "승인.커밋",
+      "scope": "Base Input 과 Button 의 UI·UX 및 공개 HTML/CSS/JavaScript 구조. Password Field·Search Input·패턴 제외.",
+      "how": "PC 검수 화면 pages/ui-review.html 「이번에 볼 것」 + 안드로이드·삼성 인터넷 실기기 조작",
+      "supersedes": "2026-08-26 승인 — focus-visible 철회(2026-09-02)로 superseded",
+      "reportedAtApproval": [
+        "모바일 아이콘 위치 수정은 🤖 독립 검증 이후의 ⭐ 자가인증 변경(H1② 기계적·Gate 13 기록)",
+        "지우기 버튼이 없는 모바일 입력칸은 글자가 오른쪽 테두리까지 닿음(D29 부작용)"
+      ],
       "report": "reports/ui-library/input-button-pilot/5-human-review.md"
+    },
+    "promotionDecision": {
+      "status": "approved",
+      "approvedBy": "river",
+      "observedAt": "2026-09-04",
+      "independentVerification": "component-verifier 시나리오 F 4회차 PASS",
+      "scope": "Base Input 과 Button 만. Password Field·Search Input·패턴 제외.",
+      "gate": "npm run gate:check PASSED · 게이트 50개 · 오류 0",
+      "report": "reports/ui-library/input-button-pilot/6-promotion.md"
     }
   },
   "handoff": {
     "lastActor": "orchestrator",
-    "updatedAt": "2026-08-31",
-    "summary": "Base Input·Button approved 배포본을 디자인가이드 Components 설명 화면에 게시했다. 화면과 HTML/CSS/JavaScript 탭은 ui-library/dist를 직접 사용하며 기존 중복 마크업은 제거했다. 다음 작업은 승인된 두 코어를 사용해 다음 컴포넌트 또는 패턴을 진행하는 것이다. · 2026-08-31 checkbox-radio 작업에서 정본 지문 변경 영향을 조사해 Input·Button 지문을 갱신했다(빌더 무변경 확인). 같은 날 가이드의 선택 부품 오분류가 고쳐져 Input 의 필수/선택 요소 표시도 바로잡혔다."
+    "updatedAt": "2026-09-04",
+    "summary": "input-button-pilot 완료. focus-visible 철회본을 재검증(🤖 4회차 PASS)하고 river 결정 3건(초점 테두리 복원·Tab 진입 커서 값 끝·모바일 지우기 아이콘 위치)을 반영해 2026-09-04 재승인·재승격했다. 2026-08-26 승인은 superseded 로 이력에 보존. 실기기(안드로이드·삼성 인터넷) 확인까지 마쳤고 gate:check 오류 0."
   }
 }

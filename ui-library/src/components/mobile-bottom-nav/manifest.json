@@ -2,7 +2,7 @@
   "id": "mobile-bottom-nav",
   "version": "0.1.0",
   "status": "approved",
-  "canonicalFingerprint": "390259e0902014da3067dc490266f8096d7b19ee538c342b65e9748057e35139",
+  "canonicalFingerprint": "15798f266ce7663526d995595eba225a1ac4792937a93da93ff366d03ff177f6",
   "canonicalSources": [
     "plugins/figma-vars-installer/src/build-components.ts",
     "plugins/figma-vars-installer/src/vars-data.ts",
@@ -47,8 +47,7 @@
   "cssContract": {
     "entry": "components/mobile-bottom-nav.css",
     "rootScope": "[data-s1-component=mobile-bottom-nav]",
-    "nativeStates": [
-    ],
+    "nativeStates": [],
     "ariaStates": [
       "[aria-selected=\"true\"]"
     ],

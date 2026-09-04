@@ -140,10 +140,12 @@
   padding-inline: 0;
 }
 
+/* Mobile 오른쪽 안쪽 여백은 0 — 누르는 영역 48×48 을 칸 끝에 붙여
+   아이콘이 안쪽으로 밀리지 않게 한다. (river 지시 2026-09-04) */
 [data-s1-component="input"][data-break="mobile"][data-size="md"] [data-s1-part="field"] {
   height: var(--sizing-48);
   min-height: var(--sizing-48);
-  padding-inline: var(--spacing-16) var(--spacing-12);
+  padding-inline: var(--spacing-16) 0;
 }
 
 [data-s1-component="input"][data-break="mobile"][data-size="md"] [data-s1-part="control"] {
@@ -208,6 +210,12 @@
 
 [data-s1-component="input"] [data-s1-part="control"]:disabled::placeholder {
   color: var(--color-form-control-text-disabled);
+}
+
+/* Error·Correct·Read-only 의미는 유지하되 키보드 초점은 정본 Selected border로 구분한다.
+   (2026-09-02 focus-visible 철회 때 함께 지워졌던 규칙 — 2026-09-04 river 지시로 복원) */
+[data-s1-component="input"]:has([data-s1-part="control"]:focus-visible) [data-s1-part="field"] {
+  border-color: var(--color-form-control-border-selected);
 }
 
 /* component:button */

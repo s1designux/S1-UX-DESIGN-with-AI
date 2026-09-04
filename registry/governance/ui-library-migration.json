@@ -16,22 +16,30 @@
         "remove.svg",
         "input.js"
       ],
-      "lastVerified": "2026-09-01",
+      "lastVerified": "2026-09-04",
       "reverifyTrigger": "정본 geometry·state·token·HTML part·CSS selector·JavaScript clear 동작 변경 · 플랫폼별 예제(breakExamples) 변경",
       "evidence": [
         "reports/ui-library/input-button-pilot/4-verification.md",
         "ui-library/verification/input.json",
         "reports/ui-library/platform-code-examples/4-verification.md"
       ],
-      "riverApproval": "approved 2026-08-26",
-      "promotionDecision": "approved 2026-08-26 · 실제 렌더 PASS · 위험도 기반 독립 검증 생략을 river 승인",
       "platformExamples": {
         "status": "approved",
         "approvedAt": "2026-09-01",
         "distribution": "examples/input.html (PC) · examples/input.mobile.html (Mobile)",
         "declaredBy": "manifest.htmlContract.breakExamples",
         "note": "디자인가이드는 보고 있는 화면의 플랫폼 마크업만 표시한다 (river HD-1 A안 2026-09-01)."
-      }
+      },
+      "riverApproval": "approved 2026-09-04",
+      "promotionDecision": "approved 2026-09-04 · focus-visible 철회본 재검증(🤖 component-verifier 4회차 PASS) · river 실기기(안드로이드) 검수 통과",
+      "approvalHistory": [
+        {
+          "uiLibraryStatus": "approved",
+          "riverApproval": "approved 2026-08-26",
+          "supersededAt": "2026-09-02",
+          "reason": "승인 없이 만들어졌던 focus-visible 을 전량 철회해 승인본과 코드가 달라졌다."
+        }
+      ]
     },
     {
       "id": "button",
@@ -42,22 +50,30 @@
         "tokens.css",
         "typography.css"
       ],
-      "lastVerified": "2026-09-01",
+      "lastVerified": "2026-09-04",
       "reverifyTrigger": "정본 size·variant·state·token·HTML part·CSS selector 변경 · 플랫폼별 예제(breakExamples) 변경",
       "evidence": [
         "reports/ui-library/input-button-pilot/4-verification.md",
         "ui-library/verification/button.json",
         "reports/ui-library/platform-code-examples/4-verification.md"
       ],
-      "riverApproval": "approved 2026-08-26",
-      "promotionDecision": "approved 2026-08-26 · 실제 렌더 PASS · 위험도 기반 독립 검증 생략을 river 승인",
       "platformExamples": {
         "status": "approved",
         "approvedAt": "2026-09-01",
         "distribution": "examples/button.html (PC) · examples/button.mobile.html (Mobile)",
         "declaredBy": "manifest.htmlContract.breakExamples",
         "note": "디자인가이드는 보고 있는 화면의 플랫폼 마크업만 표시한다 (river HD-1 A안 2026-09-01)."
-      }
+      },
+      "riverApproval": "approved 2026-09-04",
+      "promotionDecision": "approved 2026-09-04 · focus-visible 철회본 재검증(🤖 component-verifier 4회차 PASS) · river 실기기(안드로이드) 검수 통과",
+      "approvalHistory": [
+        {
+          "uiLibraryStatus": "approved",
+          "riverApproval": "approved 2026-08-26",
+          "supersededAt": "2026-09-02",
+          "reason": "승인 없이 만들어졌던 focus-visible 을 전량 철회해 승인본과 코드가 달라졌다."
+        }
+      ]
     },
     {
       "id": "checkbox",

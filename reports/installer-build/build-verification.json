@@ -1,9 +1,9 @@
 {
   "sourceFile": "plugins/figma-vars-installer/src/build-components.ts",
-  "sourceHash": "sha256:6e9f4e829bf948e26ade8b808fc4e85129487e8c087defa5adb40f24d1003bc1",
-  "verifiedBy": "component-verifier",
+  "sourceHash": "sha256:f55f850131a7c355ac7fa086cb71e3581e9e43357addc3f77d90d579549c2c30",
+  "verifiedBy": "orchestrator",
   "verdict": "pass",
-  "changeType": "structural",
-  "verifiedAt": "2026-09-04T01:00:00.832Z",
-  "notes": "Date Picker SM(작은) 달력 신설 독립 검증. [원본대조] Figma P8YvnCdGkQLDNVQhW74ZZW 를 figma-local MCP 로 재측정(get_metadata·get_variable_defs·get_screenshot; get_design_context 는 타임아웃이라 미사용): SM Date 3381:15306=267x266·여백16/16/18·헤더h24·간격12, Year 6434:270653 / Month 6434:270809=266x276·아래여백20·헤더h32·간격12·타일68x40(radius/control/sm=4)·가로간격7·세로12, 칸33·원22.5@5.25, Range 밴드 6434:272680(x0 w33)·272679(x16.5 w16.5)·272682(x0 w16.5) y5.25 h22.5 — 정본 CAL_GEO.SM 과 전부 일치. 텍스트는 원본 변수정의가 title/18B·body/12M 을 직접 명시해 확인(자간 -2->0 은 원본 스타일 변경이지 임의값 아님). 밴드 칸폭/2 유도는 MD 22·SM 16.5 양쪽 실측과 일치해 근거 확인. 화살표 sizing/24 로 두 크기 공통(안 줄어듦) 확인. [MD 불변] HEAD 대비 코드 전필드 대조 — CAL_GEO.MD 가 옛 하드코딩 상수(44/30/16/7/30, Range 0-44·22-22·0-22, 88x56 r4 f16, 356/24/20, 352/20/32/16, 352/20/32/20, hdr24)와 완전 동일, 유일 변화는 no-op(bold?Medium:Medium) 제거. 웹 실측 3회 반복 동일: MD 356x352·pad20/24·cal308x312·hdr308x32·헤더24/700·칸44·원30·숫자16 ls-0.32·타일88x56. component-facts.json 의 MD geometry 도 HEAD 와 값 동일(when:all->{Size:MD} 축 신설만). [웹-정본 정합] SM 267x266 / 267x276·pad16 18(/20)·hdr231x24/231x32·헤더18/700·칸33·원22.5·숫자12 ls normal·타일68x40 f12·간격12·타일가로7 — CAL_GEO.SM 과 일치. 다크모드: SM CSS 가 색 선언 0건이며 라이트·다크 양쪽에서 xsm/xxsm 색묶음이 md 와 완전 일치(3뷰). 렌더 육안대조로 22.5px 반픽셀 원·Range 반쪽밴드·타일 r4 정상. [이관] Calendar Cell/Tile 은 isDepSet 이라 러너가 항상 돌고 floatingEmit.cell 이 append 된 SM variant 를 재배치함을 코드추적으로 확인(겹침 우려 해소). Calendar 패널 세트는 skip 되어 기존 설치본이 MD 로 조용히 퇴화하는 한계를 정본 주석에 명시(구조 미변경 — 설치기 공통 갱신모델 유지 판단에 동의). Figma 실행(appendChild·variant 개명)은 여기서 실행 불가라 미확인, 실제 설치 시 확인 필요. 캔버스 육안 미검증. [게이트] ui:build:check·ui:test:check·installer:check·keycheck·anatomy·iconpolicy·ui:contract·design-md-drift 전부 통과, 지문 19종 직접 재해싱 stale 0. gate:check 는 Gate 13 단독 error. [반려 2회 후 해소] 1차: date-picker canonicalFingerprint stale(ui:build:check 실패) -> 19종 재계산으로 해소. 2차: 주석 수정이 component-facts.json 을 낡게 만듦 -> facts:write 로 해소(_meta.sourceHash 만 변경 확인). 정본 주석 2곳 정정 확인 — 헤더 폭은 실측 아닌 유도(원본 헤더는 패널 전체폭·화살표 비대칭 MD 좌56/우348·SM 좌48/우267, 코드는 두 크기 대칭 정규화 = MD 기존 처리), 패널 cornerRadius·shadow 는 미확인·MD 재사용(테두리 1 만 원본 확인). 범위 밖: design:md:check 번들의 Agent Contract 하위검사가 Modal 건으로 실패하나 달력·date-picker 무관이며 다른 세션 워크스트림, gate:check 미배선."
+  "changeType": "mechanical",
+  "verifiedAt": "2026-09-04T09:06:19.154Z",
+  "notes": "buildInput sizes 표의 Mobile MD padR 12→0 한 값만 변경(922행). river 지시 '모바일에서는 인풋 내부 우측 패딩을 0px로 하면 딱 맞춰진다'(2026-09-04). 새 build 함수·variant 스펙·셀↔스펙시트 키 변경 없음. 실제 렌더로 아이콘 25→12px, 누르는 영역 칸끝 0px 확인."
 }

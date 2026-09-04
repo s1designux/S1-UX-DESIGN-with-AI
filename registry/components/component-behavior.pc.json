@@ -272,10 +272,18 @@
           "on": "click",
           "target": "password visibility action",
           "result": "toggle password ↔ text and return focus to the input"
+        },
+        {
+          "on": "focusin",
+          "target": "input",
+          "result": "paint Selected border; move caret to the end only when focus did not come from a pointer"
         }
       ],
       "keyboard": "native-input",
       "focus": {
+        "field": "keyboard focus paints the field border with the canonical Selected color (error·correct·read-only included)",
+        "caret": "keyboard (Tab) focus places the caret at the end of the value; pointer focus keeps the clicked position. A focus arriving within 500ms of the last pointerdown/pointerup on the component counts as pointer focus — do not change that window without re-verifying mobile tap, where focus arrives after the finger lifts.",
+        "disabled": "native disabled inputs are not focusable and are skipped in tab order",
         "clear": "return to input",
         "passwordVisibility": "return to input"
       },

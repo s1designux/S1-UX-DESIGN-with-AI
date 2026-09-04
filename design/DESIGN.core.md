@@ -1819,8 +1819,15 @@ agent:
         on: "click"
         target: "password visibility action"
         result: "toggle password ↔ text and return focus to the input"
+      -
+        on: "focusin"
+        target: "input"
+        result: "paint Selected border; move caret to the end only when focus did not come from a pointer"
     keyboard: "native-input"
     focus:
+      field: "keyboard focus paints the field border with the canonical Selected color (error·correct·read-only included)"
+      caret: "keyboard (Tab) focus places the caret at the end of the value; pointer focus keeps the clicked position. A focus arriving within 500ms of the last pointerdown/pointerup on the component counts as pointer focus — do not change that window without re-verifying mobile tap, where focus arrives after the finger lifts."
+      disabled: "native disabled inputs are not focusable and are skipped in tab order"
       clear: "return to input"
       passwordVisibility: "return to input"
     accessibility:
@@ -1866,7 +1873,7 @@ agent:
           Size: "MD"
           Break: "Mobile"
         height: 48
-        paddingRight: "12"
+        paddingRight: "0"
         paddingLeft: "16"
   composition:
     mustReuse: "not-defined"
@@ -1964,7 +1971,10 @@ _Don't_
 - 비밀번호 표시전환 토글은 aria-pressed 로 표시·숨김 상태를 노출한다.
 - Editing 상태의 지우기(clear) 버튼은 값이 있고 Input 또는 지우기 버튼에 초점이 있을 때만 노출한다(hidden 속성 제어).
 - suffix 액션의 실제 누르는 영역은 PC 28×28px, Mobile 48×48px이며 액션마다 독립된 button 영역을 가진다.
-- suffix 액션의 키보드 포커스는 각 hit area 안쪽 2px outline으로 표시한다.
+- suffix 액션의 키보드 초점 표시는 브라우저 기본 표시에 맡긴다 — 정본에 focus 표현이 없어 웹에서 따로 만들지 않는다(2026-09-02 river 결정).
+- 입력칸에 키보드 초점이 들어오면 field 테두리를 정본 Selected 색으로 바꾼다. error·correct·read-only 에서도 같다(2026-09-04 river 지시).
+- Tab 으로 들어온 초점은 커서를 값 끝에 둔다. 마우스로 눌러 들어온 초점은 누른 자리를 유지한다(2026-09-04 river 지시).
+- disabled 입력칸은 초점을 받지 않고 tab 순서에서 건너뛴다(native disabled).
 
 ### Mobile Bottom Nav
 
@@ -4148,4 +4158,4 @@ DESIGN_SYSTEM_GAP:
 - 적용 해석 순서(뒤가 앞을 덮음): core → service(extends core) → role → platform → theme. 기본값: service=core · role=user · platform=web · theme=light.
 - 서비스 분기(예: vms 영상관제)는 core 를 상속하고 차이분만 덮는다.
 
-<!-- generated-stamp: 871258b8829a · 손편집 금지 -->
+<!-- generated-stamp: 6274fb7d0f71 · 손편집 금지 -->
