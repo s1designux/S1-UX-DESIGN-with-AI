@@ -2251,14 +2251,18 @@
   appearance: none;
   background: none;
   border: none;
-  border-radius: var(--radius-full);
+  border-radius: var(--radius-control-sm);
   cursor: pointer;
   display: flex;
   justify-content: center;
   padding: 0;
   /* 정본 화살표는 16×16 이고 hover 배경 규정이 없다. river 지시(2026-09-04)로 hover 배경을 넣되,
-     16px 원은 화살표에 붙어 답답해 24px 로 키우고 margin -4px 로 되돌려 **레이아웃 발자국은 정본 16px 그대로**
-     둔다(헤더 좌우 끝 위치·라벨 위치 불변, 누를 수 있는 넓이만 커진다). 새 토큰 0건. */
+     16px 면은 화살표에 붙어 답답해 24px 로 키우고 margin -4px 로 되돌려 **레이아웃 발자국은 정본 16px 그대로**
+     둔다(헤더 좌우 끝 위치·라벨 위치 불변, 누를 수 있는 넓이만 커진다). 새 토큰 0건.
+     모양은 **살짝 둥근 사각형**(radius/control/sm = 4) — 원(radius/full)이 아니다.
+     "아이콘 호버는 기본적으로 사각형에 r값이 살짝 들어간 형태"(river 지시 2026-09-04)이며,
+     저장소의 기존 아이콘 hover 관례와도 같다: Input 지우기 아이콘(input.css 28 상자 + radius-control-sm)·
+     Pagination 컨트롤(28 상자 + radius-control-xs). 달력 자신의 패널·타일 반경도 4 라 안에서도 어긋나지 않는다. */
   height: var(--sizing-24);
   margin: -4px;
   width: var(--sizing-24);

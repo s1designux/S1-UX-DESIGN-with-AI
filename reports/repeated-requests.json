@@ -10,8 +10,8 @@
       "id": "harness-token-efficiency",
       "category": "harness-operations",
       "label": "하네스 효율 정비 (토큰 소비 · 실행 시간 · 읽기 통제)",
-      "count": 2,
-      "promotionStatus": "tracking",
+      "count": 3,
+      "promotionStatus": "promotion-candidate",
       "occurrences": [
         {
           "date": "2026-08-12",
@@ -20,6 +20,10 @@
         {
           "date": "2026-08-24",
           "summary": "검수 실행시간 병목을 실측으로 추적: gate:check 69.3초 중 60.2초(87%)가 Gate 23 단일 게이트였고, 그중 58초는 헤드리스 크롬이 출력 완료 후 종료하지 않아 생긴 죽은 대기였다. 스트리밍 종료로 2.3초로 교정(출력 동일 실증). 같은 함정이 CLAUDE.md 가 처방하는 렌더 확인 명령에도 있어 npm run shot 도구로 대체"
+        },
+        {
+          "date": "2026-09-04",
+          "summary": "독립검증 소요시간 단축 요청(river 선택 A). ⚠️ 구간 실측 없이 계약문서 분석으로만 진단했다 — 원인 3가지: ①기계가 증명 가능한 항목을 opus 검증자가 다시 판단(verify-F 11단계 중 6단계가 이미 결정론 검사기로 커버됨) ②기계로 잡히는 실수를 spawn 후에 발견해 반려 왕복 반복(직전 UI 라이브러리 작업 4회 반려) ③재검증도 항상 전수. 조치: component-verifier 에 §검증 입력 계약(①기계검사 선행·②델타 재검증·③렌더 선캡처) 신설, HOLD 사유·금지행동 2건 추가, verify-A/C/E/F 와 ui-library-code·screen-rebuild 스킬에 호출자(⭐) 준비 의무 배선. 검사 범위는 줄이지 않고 '증명 주체'만 재배치. Figma 계열(B·C)의 provenance·폰트 스캔은 하드룰상 검증자 재실행 의무 유지 — 줄어드는 건 왕복뿐"
         }
       ],
       "automationNote": "3회 도달 시 '상시 로드 총량(CLAUDE.md+에이전트 정의)·검사기 출력량'을 재는 관측 지표를 Gate 37 확장 또는 별도 검사기로 승격 검토. / 2026-08-24 추가: 효율 문제를 '검사 개수'로 추측하지 말고 **구간 실측**부터 할 것 — 이번엔 42개 게이트가 아니라 1개 게이트의 죽은 대기가 원인이었다."

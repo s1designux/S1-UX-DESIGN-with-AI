@@ -86,7 +86,13 @@ description: "정본 컴포넌트를 배포 가능한 HTML·CSS·JavaScript UI �
 
 **검증 전에 `references/wiring-and-traps.md` §2 함정 목록을 읽는다** — `file://` 마스크 아이콘 미표시·브라우저 캐시·앵커 빈 화면·중복 id 는 도구 문제이지 구현 문제가 아니다. "안 보인다"를 구현 오류로 단정하지 않는다.
 
-오케스트레이터가 실제 배포본으로 다음을 검증한다. 계약의 위험 조건에 해당하면 `component-verifier`가 `references/verify-F.md`를 읽고 같은 범위를 별도로 재검증한다.
+**독립 검증을 spawn 하기 전에 오케스트레이터가 먼저 끝낸다 (2026-09-04 river 승인 — 반려 왕복 제거):**
+
+1. **기계검사 전량 초록** — `ui:contract` · `ui:build:check` · `ui:test:check` · `ui:icons` · `ui:icons:origin` · `ui:guide:render` · `ui:state` 를 전부 실행해 종료코드 0 을 만든 뒤, 명령·종료코드 표를 검증 요청문에 넣는다. **하나라도 빨간 채로 spawn 하면 검증자는 HOLD 로 즉시 돌려보낸다.**
+2. **렌더 선캡처** — PC·Mobile × Light·Dark 스크린샷을 미리 찍어 파일 경로와 캡처 조건(URL·뷰포트·테마·시각)을 함께 넘긴다.
+3. **재검증이면 델타 입력** — 직전 검증 보고서 + 그 이후 변경된 파일 목록·지문을 넘긴다(없으면 검증자는 전수로 돈다).
+
+오케스트레이터가 실제 배포본으로 다음을 검증한다. 계약의 위험 조건에 해당하면 `component-verifier`가 `references/verify-F.md`를 읽고 **기계가 못 잡는 범위**(시각·원본 충실성·가려진 배경·애매 판정)를 별도로 재검증한다.
 
 - 정본 variant·state·size 전수
 - PC·Mobile × Light·Dark 실제 렌더와 코드 정본 geometry·token·state 대조. V3.0은 필요할 때만 시각 sanity check
