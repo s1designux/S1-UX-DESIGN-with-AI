@@ -18,7 +18,12 @@
  *   섹션 안에서 아래쪽을 담아야 할 때는 scrollTo 대신 음수 margin 으로 밀어 올린다
  *   (scrollTo 는 렌더 타이밍에 따라 빈 화면이 나온다 — 실측).
  *
+ * 구조: board.template.html(뼈대 87KB, 그림은 {{IMG:...}} 자리표시자)
+ *       + screens/**.png(그림 원본) → board.html(조립 결과 5MB, git 에 담지 않음)
+ *       그림을 파일로 빼 두어야 재캡처할 때마다 5MB 통짜가 새로 쌓이지 않는다.
+ *
  * 사용: npm run board:refresh            전체 다시 찍기
+ *       npm run board:build              다시 찍지 않고 조립만
  *       npm run board:refresh -- D-10    특정 칸만
  *
  * 게시는 사람/Claude 몫이다. 이 스크립트는 board.html 까지만 만든다.
@@ -31,7 +36,9 @@ const { spawn, execFileSync } = require('child_process');
 const ROOT = path.resolve(__dirname, '..');
 const DIR = path.join(ROOT, 'reports/legacy-crosswalk-board');
 const MANIFEST = path.join(DIR, 'board-manifest.json');
-const BOARD = path.join(DIR, 'board.html');
+const TEMPLATE = path.join(DIR, 'board.template.html');   // 뼈대 — 그림은 {{IMG:...}} 자리표시자
+const SCREENS = path.join(DIR, 'screens');                 // 그림 원본(정본 canon/ · 레거시 legacy/)
+const BOARD = path.join(DIR, 'board.html');                // 조립 결과 = 게시용. git 에 담지 않는다
 const PAGE = path.join(ROOT, 'pages/components.html');
 const TMP_PAGE = path.join(ROOT, 'pages', '__board-shot.html');
 const WORK = fs.mkdtempSync(path.join(require('os').tmpdir(), 'board-refresh-'));
@@ -98,6 +105,20 @@ function shoot(cfg, section, platform, scrollY, out) {
 // 빈 화면(렌더 실패) 판별 — 색이 거의 없는 PNG 는 용량이 급격히 작다
 function looksBlank(png) { return fs.statSync(png).size < 20 * 1024; }
 
+// 뼈대 + 그림 파일 → 게시용 board.html 조립
+function assemble() {
+  const tpl = fs.readFileSync(TEMPLATE, 'utf8');
+  const missing = [];
+  const out = tpl.replace(/\{\{IMG:([^}]+)\}\}/g, (_, rel) => {
+    const f = path.join(SCREENS, rel);
+    if (!fs.existsSync(f)) { missing.push(rel); return ''; }
+    return `data:image/png;base64,${fs.readFileSync(f).toString('base64')}`;
+  });
+  if (missing.length) throw new Error(`그림 파일이 없습니다 — ${missing.slice(0, 5).join(' · ')}`);
+  fs.writeFileSync(BOARD, out);
+  return out.length;
+}
+
 function componentProvenance(component) {
   const f = path.join(ROOT, 'ui-library/dist/components', `${component}.manifest.json`);
   if (!fs.existsSync(f)) return { status: '미확인', sourceFingerprint: null };
@@ -108,28 +129,35 @@ function componentProvenance(component) {
 async function main() {
   const man = JSON.parse(fs.readFileSync(MANIFEST, 'utf8'));
   const cfg = man.capture;
-  let board = fs.readFileSync(BOARD, 'utf8');
+  const tpl = fs.readFileSync(TEMPLATE, 'utf8');
+
+  if (process.argv.includes('--assemble-only')) {          // 다시 찍지 않고 조립만
+    const size = assemble();
+    console.log(`✅ 조립 완료 · 게시용 검수판 ${(size / 1048576).toFixed(2)}MB`);
+    return;
+  }
+
   const server = await ensureServer(cfg.port);
-  const cache = new Map();
   const done = [];
   const failed = [];
+  const shotFor = (p) => `canon/${p.section}--${p.platform}--${p.scrollY}.png`;
   try {
+    const seen = new Set();
     for (const p of man.panes) {
       if (only.length && !only.includes(p.decision)) continue;
-      const key = `${p.section}|${p.platform}|${p.scrollY}`;
-      let png = cache.get(key);
-      if (!png) {
-        png = shoot(cfg, p.section, p.platform, p.scrollY, path.join(WORK, `${key.replace(/\|/g, '_')}.png`));
-        if (looksBlank(png)) { failed.push(`${p.decision} (${p.component}) — 캡처가 빈 화면입니다`); continue; }
-        cache.set(key, png);
+      const rel = shotFor(p);
+      if (!tpl.includes(`{{IMG:${rel}}}`)) { failed.push(`${p.decision} — 뼈대에서 그 칸(${rel})을 못 찾았습니다`); continue; }
+      if (!seen.has(rel)) {                                 // 같은 그림을 쓰는 칸은 한 번만 찍는다
+        const tmp = path.join(WORK, 'shot.png');
+        shoot(cfg, p.section, p.platform, p.scrollY, tmp);
+        if (looksBlank(tmp)) { failed.push(`${p.decision} (${p.component}) — 캡처가 빈 화면입니다`); continue; }
+        fs.mkdirSync(path.join(SCREENS, 'canon'), { recursive: true });
+        fs.copyFileSync(tmp, path.join(SCREENS, rel));
+        seen.add(rel);
       }
-      const b64 = fs.readFileSync(png).toString('base64');
-      const re = new RegExp(
-        `(<figure class="pane canon" data-canon="${p.decision}">[\\s\\S]*?<img class="shot" src="data:image/png;base64,)[^"]*`);
-      if (!re.test(board)) { failed.push(`${p.decision} — 검수판에서 그 칸을 못 찾았습니다`); continue; }
-      board = board.replace(re, `$1${b64}`);
       man.provenance[p.decision] = {
         component: p.component,
+        screen: rel,
         capturedAt: new Date().toISOString().slice(0, 10),
         ...componentProvenance(p.component),
       };
@@ -139,11 +167,9 @@ async function main() {
     if (server) { try { server.kill(); } catch (_) {} }
     try { fs.rmSync(WORK, { recursive: true, force: true }); } catch (_) {}
   }
-  if (done.length) {
-    fs.writeFileSync(BOARD, board);
-    fs.writeFileSync(MANIFEST, JSON.stringify(man, null, 2) + '\n');
-  }
-  console.log(`✅ 다시 찍은 칸 ${done.length}개 · 검수판 ${(fs.statSync(BOARD).size / 1048576).toFixed(2)}MB`);
+  if (done.length) fs.writeFileSync(MANIFEST, JSON.stringify(man, null, 2) + '\n');
+  const size = assemble();
+  console.log(`✅ 다시 찍은 칸 ${done.length}개 · 게시용 검수판 ${(size / 1048576).toFixed(2)}MB`);
   for (const d of done) console.log(`   · ${d}`);
   if (failed.length) {
     console.error(`\n❌ 실패 ${failed.length}건`);

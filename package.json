@@ -129,7 +129,8 @@
     "components:geometry:check": "node scripts/component-geometry-check.js --check",
     "css:varcheck": "node scripts/css-var-reference-check.js",
     "board:refresh": "node scripts/board-refresh.js",
-    "board:check": "node scripts/board-freshness-check.js"
+    "board:check": "node scripts/board-freshness-check.js",
+    "board:build": "node scripts/board-refresh.js --assemble-only"
   },
   "devDependencies": {
     "@figma/plugin-typings": "^1.97.0",

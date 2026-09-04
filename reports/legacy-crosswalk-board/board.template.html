@@ -1,0 +1,1032 @@
+
+<title>레거시 대응 검수판</title>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans+KR:wght@400;500;600;700&display=swap">
+<style>
+:root{
+ --ground:#FAFBFC;--surface:#FFFFFF;--raise:#F1F4F8;--sunk:#E9EEF4;
+ --ink:#15181E;--ink-2:#4A5260;--ink-3:#7A8494;
+ --line:#E2E6EC;--line-2:#CBD3DE;
+ --accent:#1B5FD9;--accent-soft:#E8F0FD;
+ --hold:#A9680A;--hold-soft:#FBF1DF;
+ --ok:#17754E;--ok-soft:#E2F1EA;
+ --warn:#B3341F;
+ --shadow:0 1px 2px rgba(21,24,30,.06);
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+ --ground:#0F1115;--surface:#161A20;--raise:#1D222A;--sunk:#0B0D11;
+ --ink:#E9EDF3;--ink-2:#A7B1C0;--ink-3:#727D8D;
+ --line:#252A33;--line-2:#39414D;
+ --accent:#7BA6F0;--accent-soft:#182436;
+ --hold:#DFA850;--hold-soft:#2A2216;
+ --ok:#6DC69C;--ok-soft:#132720;
+ --warn:#E88C77;--shadow:0 1px 2px rgba(0,0,0,.35);
+}}
+:root[data-theme="dark"]{
+ --ground:#0F1115;--surface:#161A20;--raise:#1D222A;--sunk:#0B0D11;
+ --ink:#E9EDF3;--ink-2:#A7B1C0;--ink-3:#727D8D;
+ --line:#252A33;--line-2:#39414D;
+ --accent:#7BA6F0;--accent-soft:#182436;
+ --hold:#DFA850;--hold-soft:#2A2216;
+ --ok:#6DC69C;--ok-soft:#132720;
+ --warn:#E88C77;--shadow:0 1px 2px rgba(0,0,0,.35);
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--ground);color:var(--ink);
+ font-family:"IBM Plex Sans KR",-apple-system,BlinkMacSystemFont,sans-serif;font-size:15px;line-height:1.65}
+.mono{font-family:"IBM Plex Mono",Menlo,monospace}
+.wrap{max-width:1180px;margin:0 auto;padding:44px 24px 110px}
+
+.bar{position:sticky;top:0;z-index:40;background:var(--surface);border-bottom:1px solid var(--line);
+ padding:11px 24px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.bar b{font-size:14px;font-weight:600}
+.track{flex:1;min-width:160px;height:6px;background:var(--sunk);border-radius:3px;overflow:hidden}
+.fill{height:100%;width:0;background:var(--ok);transition:width .3s}
+.barnum{font-size:13px;color:var(--ink-2);font-variant-numeric:tabular-nums;white-space:nowrap}
+.save-note{font-size:12px;color:var(--ink-3)}
+
+header.top{border-bottom:2px solid var(--ink);padding-bottom:24px;margin-bottom:36px}
+.eyebrow{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3);font-weight:600;margin:0 0 9px}
+h1{font-size:32px;line-height:1.25;font-weight:700;margin:0 0 12px;letter-spacing:-.01em;text-wrap:balance}
+.lede{font-size:15.5px;color:var(--ink-2);margin:0;max-width:64ch}
+.srcnote{font-size:13px;color:var(--ink-3);margin:20px 0 0}
+
+.callout{border-left:3px solid var(--accent);background:var(--accent-soft);padding:15px 19px;margin:0 0 40px}
+.callout h2{font-size:15px;margin:0 0 5px;font-weight:600}
+.callout p{margin:0;font-size:14px;color:var(--ink-2)}
+
+.grp{margin:0 0 52px}
+.grp-h{display:flex;align-items:baseline;gap:11px;border-bottom:1px solid var(--line-2);padding-bottom:8px}
+.grp-h h2{font-size:20px;font-weight:600;margin:0;letter-spacing:-.01em}
+.cnt{font-size:12px;color:var(--ink-3);font-variant-numeric:tabular-nums}
+.grp-d{font-size:14px;color:var(--ink-2);margin:10px 0 20px;max-width:64ch}
+
+.dec{background:var(--surface);border:1px solid var(--line);box-shadow:var(--shadow);padding:22px 22px 20px;margin:0 0 16px;scroll-margin-top:60px}
+.dec.done{border-color:var(--ok)}
+.dec-h{display:flex;align-items:center;gap:10px;margin-bottom:9px;flex-wrap:wrap}
+.did{font-family:"IBM Plex Mono",monospace;font-size:11.5px;font-weight:500;color:var(--accent);
+ background:var(--accent-soft);padding:2px 7px;border-radius:3px}
+.dec-h h3{font-size:17px;font-weight:600;margin:0;flex:1;min-width:200px;letter-spacing:-.005em}
+.badge{font-size:11.5px;font-weight:600;padding:2px 9px;border-radius:11px;background:var(--hold-soft);color:var(--hold);white-space:nowrap}
+.badge.set{background:var(--ok-soft);color:var(--ok)}
+.why{font-size:14px;color:var(--ink-2);margin:0 0 16px;max-width:70ch}
+
+.compare{display:flex;flex-wrap:wrap;gap:12px;padding-bottom:6px;margin-bottom:18px;align-items:flex-start}
+.pane.canon{flex:0 0 420px}
+.pane.canon .shotbox{max-height:none}
+.pane{margin:0;flex:0 0 auto;max-width:420px;min-width:230px;border:1px solid var(--line);background:var(--raise)}
+.pane.canon{border-color:var(--accent);background:var(--accent-soft)}
+figcaption{display:flex;align-items:center;gap:7px;padding:7px 10px;border-bottom:1px solid var(--line);
+ font-size:12px;flex-wrap:wrap;background:var(--surface)}
+.pane.canon figcaption{background:var(--accent-soft);border-bottom-color:var(--accent)}
+figcaption b{font-weight:600;font-size:12.5px}
+.vc{color:var(--ink-3);font-size:11px;font-variant-numeric:tabular-nums}
+figcaption a{margin-left:auto;color:var(--accent);text-decoration:none;font-size:11.5px;white-space:nowrap}
+figcaption a:hover{text-decoration:underline}
+.shotbox{background:#fff;max-height:270px;overflow:auto;display:flex;justify-content:center;align-items:flex-start;padding:8px}
+.shot{max-width:100%;height:auto;display:block;cursor:zoom-in}
+.noimg{padding:26px 14px;font-size:12.5px;color:var(--ink-3);text-align:center;line-height:1.6;background:var(--raise)}
+.noimg span{font-size:11.5px}
+.props{margin:0;padding:7px 10px;font-family:"IBM Plex Mono",monospace;font-size:11px;color:var(--ink-3);
+ line-height:1.55;border-top:1px solid var(--line);background:var(--surface)}
+.pane.canon .props{background:var(--accent-soft);border-top-color:var(--accent);color:var(--ink-2);font-family:"IBM Plex Sans KR",sans-serif;font-size:12px}
+
+.choose{background:var(--raise);padding:15px 17px}
+.choose h4{font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);margin:0 0 9px;font-weight:600}
+.opts{display:flex;flex-direction:column;gap:6px;margin-bottom:11px}
+.opt{display:flex;align-items:center;gap:9px;text-align:left;font:inherit;font-size:14px;color:var(--ink);
+ background:var(--surface);border:1px solid var(--line-2);padding:9px 13px;cursor:pointer;transition:border-color .15s,background .15s}
+.opt:hover{border-color:var(--accent)}
+.opt:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.opt .dot{width:13px;height:13px;border-radius:50%;border:2px solid var(--line-2);flex:none}
+.opt.sel{border-color:var(--ok);background:var(--ok-soft)}
+.opt.sel .dot{border-color:var(--ok);background:var(--ok);box-shadow:inset 0 0 0 2.5px var(--ok-soft)}
+.freerow{display:flex;gap:7px}
+.free{flex:1;font:inherit;font-size:13.5px;padding:8px 11px;border:1px solid var(--line-2);
+ background:var(--surface);color:var(--ink)}
+.free:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
+.freebtn{font:inherit;font-size:13.5px;padding:8px 15px;border:1px solid var(--line-2);background:var(--surface);
+ color:var(--ink-2);cursor:pointer}
+.freebtn:hover{border-color:var(--accent);color:var(--accent)}
+.idle{font-size:12.5px;color:var(--ink-2);margin:12px 0 0;padding-top:10px;border-top:1px dashed var(--line-2)}
+.idle span{font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--warn);font-weight:600;margin-right:7px}
+
+.src{display:inline-block;font-family:"IBM Plex Mono",monospace;font-size:10.5px;font-weight:500;
+ padding:0 5px;height:18px;line-height:18px;border-radius:3px}
+.src-A{background:var(--hold-soft);color:var(--hold)}
+.src-B{background:var(--ok-soft);color:var(--ok)}
+.src-C{background:var(--accent);color:#fff}
+
+table{border-collapse:collapse;width:100%;font-size:13px}
+th{text-align:left;font-size:11.5px;letter-spacing:.05em;color:var(--ink-3);background:var(--raise);
+ padding:7px 11px;border-bottom:1px solid var(--line);font-weight:600}
+td{padding:8px 11px;border-bottom:1px solid var(--line);vertical-align:top}
+tr:last-child td{border-bottom:none}
+
+#lb{position:fixed;inset:0;background:rgba(10,12,16,.88);z-index:90;display:flex;padding:24px;
+ overflow:auto;cursor:zoom-out}
+#lb img{margin:auto;max-width:none;background:#fff}
+footer{margin-top:56px;padding-top:20px;border-top:1px solid var(--line);font-size:13px;color:var(--ink-3)}
+footer code{font-family:"IBM Plex Mono",monospace;font-size:12px;color:var(--ink-2)}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+@media (max-width:640px){.wrap{padding:28px 14px 80px}h1{font-size:26px}.dec{padding:16px 14px}.pane{min-width:200px}}
+</style>
+
+<div class="bar">
+  <b>결정 진행</b>
+  <div class="track"><div class="fill" id="fill"></div></div>
+  <span class="barnum" id="barnum">0 / 23</span>
+  <span class="save-note" id="savenote">저장 준비 중…</span>
+</div>
+
+<div class="wrap">
+<header class="top">
+  <p class="eyebrow">레거시 → 정본 이름 대응 · 검수판</p>
+  <h1>이름이 안 맞아 자동으로 못 붙인 23건</h1>
+  <p class="lede">레거시 가이드 두 파일에서 컴포넌트 126묶음·1,296변형을 읽어 지금 정본과 대조했습니다.
+  확실한 것은 붙였고, 이름만으로 판단할 수 없는 것을 여기 모았습니다.
+  <strong>레거시 실물과 지금 배포본을 나란히 놓았으니 보고 고르시면 됩니다.</strong> 고른 즉시 저장되고, 제가 그대로 대응표에 반영합니다.</p>
+  <p class="srcnote"><span class="src src-A">A</span> SW UX GUIDE V2.4 — 64묶음·704변형 &nbsp;
+  <span class="src src-B">B</span> S-1 Component Set (latest) — 62묶음·592변형 &nbsp;
+  <span class="src src-C">정본</span> 현재 웹 배포본</p>
+</header>
+
+<div class="callout">
+  <h2>먼저 알아두실 것 — 두 레거시 파일이 서로 다릅니다</h2>
+  <p>입력창의 '정상 입력됨' 상태를 A는 <span class="mono">success</span>, B는 <span class="mono">correct</span> 라고 부릅니다.
+  지금 정본은 <span class="mono">correct</span> — <strong>B가 정본과 같고 A만 다릅니다.</strong>
+  한 파일만 보고 만들었다면 반대편에서 전부 틀렸을 것입니다.</p>
+</div>
+
+<section class="grp"><div class="grp-h"><h2>크기 이름이 안 맞는 것</h2><span class="cnt">4건</span></div>
+<p class="grp-d">레거시가 쓰던 크기 이름이 지금 정본 크기와 짝이 없는 경우입니다. 짝만 정해지면 바로 자동 대조가 됩니다.</p><article class="dec" id="D-01">
+  <header class="dec-h"><span class="did">D-01</span><h3>칩의 모바일 크기가 지금 어느 크기인가</h3>
+    <span class="badge" data-badge="D-01">미결정</span></header>
+  <p class="why">레거시 칩은 크기를 mobile · pc-md · pc-sm 세 가지로 나눴는데, 지금 정본은 md · sm 두 가지입니다. pc는 이름이 그대로 붙지만 mobile 이 둘 중 어디에 해당하는지 이름만으로는 알 수 없습니다.</p>
+  <div class="compare"><figure class="pane">
+  <figcaption><span class="src src-A">A</span><b>chip</b>
+    <span class="vc">30변형</span>
+    <a href="https://www.figma.com/design/yE5UCFEbmXJBlYJWB24Lz2/SW-UX-GUIDE-V2.4?node-id=540-3189&m=dev" target="_blank" rel="noopener">피그마 ↗</a></figcaption>
+  <div class="shotbox"><img class="shot" src="{{IMG:legacy/chip--fc040ac8.png}}" alt="chip" loading="lazy"></div>
+  <p class="props">platform: mobile/pc-md/pc-sm · state: default/disabled/pressed/selected/selected_pressed · type: line/solid</p>
+</figure><figure class="pane">
+  <figcaption><span class="src src-B">B</span><b>m_chips</b>
+    <span class="vc">6변형</span>
+    <a href="https://www.figma.com/design/vHg5UOMMYI77RHH6vVVppu/S-1-Component-Set-latest-?node-id=1747-9127&m=dev" target="_blank" rel="noopener">피그마 ↗</a></figcaption>
+  <div class="shotbox"><img class="shot" src="{{IMG:legacy/m-chips--1a746ff0.png}}" alt="m_chips" loading="lazy"></div>
+  <p class="props">solid: off/on · checked: off/on · disabled: off/on</p>
+</figure><figure class="pane canon" data-canon="D-01">
+  <figcaption><span class="src src-C">정본</span><b>chip</b><span class="vc">현재 배포본</span></figcaption>
+  <div class="shotbox"><img class="shot" src="{{IMG:canon/chip--pc--0.png}}" alt="chip" loading="lazy"></div>
+  <p class="props">지금 웹에 배포된 실제 모습입니다. 상태·크기가 모두 펼쳐져 있습니다.</p>
+</figure></div>
+  <div class="choose">
+    <h4>결정</h4>
+    <div class="opts"><button class="opt" data-d="D-01" data-v="mobile = md (큰 쪽)"><span class="dot"></span>mobile = md (큰 쪽)</button><button class="opt" data-d="D-01" data-v="mobile = sm (작은 쪽)"><span class="dot"></span>mobile = sm (작은 쪽)</button></div>
+    <div class="freerow">
+      <input class="free" data-d="D-01" type="text" placeholder="다르게 정하시려면 여기에 직접 적어주세요" aria-label="D-01 직접 입력">
+      <button class="freebtn" data-d="D-01">저장</button>
+    </div>
+    <p class="idle"><span>안 정하면</span>레거시 화면의 모바일 칩을 옮길 때마다 크기를 매번 다시 판단하게 됩니다.</p>
+  </div>
+</article><article class="dec" id="D-04">
+  <header class="dec-h"><span class="did">D-04</span><h3>큰 입력창(large)이 지금 어느 크기인가</h3>
+    <span class="badge" data-badge="D-04">미결정</span></header>
+  <p class="why">레거시에 Inputbox_large 라는 큰 입력창이 있는데, 지금 정본 크기는 xxsm · xsm · md 세 가지뿐이고 그보다 큰 크기가 없습니다.</p>
+  <div class="compare"><figure class="pane">
+  <figcaption><span class="src src-A">A</span><b>Inputbox_large</b>
+    <span class="vc">4변형</span>
+    <a href="https://www.figma.com/design/yE5UCFEbmXJBlYJWB24Lz2/SW-UX-GUIDE-V2.4?node-id=641-4060&m=dev" target="_blank" rel="noopener">피그마 ↗</a></figcaption>
+  <div class="shotbox"><img class="shot" src="{{IMG:legacy/inputbox-large--a8e48267.png}}" alt="Inputbox_large" loading="lazy"></div>
+  <p class="props">type: complete_long/default/disabled/selected</p>
+</figure><figure class="pane canon" data-canon="D-04">
+  <figcaption><span class="src src-C">정본</span><b>input</b><span class="vc">현재 배포본</span></figcaption>
+  <div class="shotbox"><img class="shot" src="{{IMG:canon/input--pc--0.png}}" alt="input" loading="lazy"></div>
+  <p class="props">지금 웹에 배포된 실제 모습입니다. 상태·크기가 모두 펼쳐져 있습니다.</p>
+</figure></div>
+  <div class="choose">
+    <h4>결정</h4>
+    <div class="opts"><button class="opt" data-d="D-04" data-v="md 로 흡수됨 (가장 큰 크기)"><span class="dot"></span>md 로 흡수됨 (가장 큰 크기)</button><button class="opt" data-d="D-04" data-v="정본에 없는 크기 — 대응 없음으로 기록"><span class="dot"></span>정본에 없는 크기 — 대응 없음으로 기록</button></div>
+    <div class="freerow">
+      <input class="free" data-d="D-04" type="text" placeholder="다르게 정하시려면 여기에 직접 적어주세요" aria-label="D-04 직접 입력">
+      <button class="freebtn" data-d="D-04">저장</button>
+    </div>
+    <p class="idle"><span>안 정하면</span>큰 입력창이 쓰인 레거시 화면은 크기 대조를 못 합니다.</p>
+  </div>
+</article><article class="dec" id="D-06">
+  <header class="dec-h"><span class="did">D-06</span><h3>로그인 입력창의 pc-sm 크기</h3>
+    <span class="badge" data-badge="D-06">미결정</span></header>
+  <p class="why">로그인 입력창만 크기를 pc-md · pc-sm · pc-xsm 으로 나눠 놨습니다. 정본 크기는 md · xsm · xxsm 이라 pc-sm 에 짝이 없습니다.</p>
+  <div class="compare"><figure class="pane">
+  <figcaption><span class="src src-A">A</span><b>Login input</b>
+    <span class="vc">52변형</span>
+    <a href="https://www.figma.com/design/yE5UCFEbmXJBlYJWB24Lz2/SW-UX-GUIDE-V2.4?node-id=540-3328&m=dev" target="_blank" rel="noopener">피그마 ↗</a></figcaption>
+  <div class="shotbox"><img class="shot" src="{{IMG:legacy/login-input--00f5e10c.png}}" alt="Login input" loading="lazy"></div>
+  <p class="props">platform: mobile/pc-md/pc-sm/pc-xsm · state: complete/default/disabled/error/selected · icon: 1/2+/off/on</p>
+</figure><figure class="pane canon" data-canon="D-06">
+  <figcaption><span class="src src-C">정본</span><b>input</b><span class="vc">현재 배포본</span></figcaption>
+  <div class="shotbox"><img class="shot" src="{{IMG:canon/input--pc--0.png}}" alt="input" loading="lazy"></div>
+  <p class="props">지금 웹에 배포된 실제 모습입니다. 상태·크기가 모두 펼쳐져 있습니다.</p>
+</figure></div>
+  <div class="choose">
+    <h4>결정</h4>
+    <div class="opts"><button class="opt" data-d="D-06" data-v="pc-sm = xsm"><span class="dot"></span>pc-sm = xsm</button><button class="opt" data-d="D-06" data-v="pc-sm = md"><span class="dot"></span>pc-sm = md</button><button class="opt" data-d="D-06" data-v="로그인 전용 크기였고 지금은 없어짐"><span class="dot"></span>로그인 전용 크기였고 지금은 없어짐</button></div>
+    <div class="freerow">
+      <input class="free" data-d="D-06" type="text" placeholder="다르게 정하시려면 여기에 직접 적어주세요" aria-label="D-06 직접 입력">
+      <button class="freebtn" data-d="D-06">저장</button>
+    </div>
+    <p class="idle"><span>안 정하면</span>로그인 화면(레거시에서 52변형으로 가장 공들인 컴포넌트)의 크기 대조가 막힙니다.</p>
+  </div>
+</article><article class="dec" id="D-12">
+  <header class="dec-h"><span class="did">D-12</span><h3>모바일 버튼 크기</h3>
+    <span class="badge" data-badge="D-12">미결정</span></header>
+  <p class="why">레거시는 PC 버튼과 모바일 버튼을 아예 다른 컴포넌트로 만들었습니다. PC 쪽은 크기 이름이 정본과 그대로 맞는데, 모바일 버튼에는 크기 축이 아예 없습니다. 정본에는 lg 라는 큰 크기가 따로 있습니다.</p>
+  <div class="compare"><figure class="pane">
+  <figcaption><span class="src src-A">A</span><b>mobile_button</b>
+    <span class="vc">9변형</span>
+    <a href="https://www.figma.com/design/yE5UCFEbmXJBlYJWB24Lz2/SW-UX-GUIDE-V2.4?node-id=540-4626&m=dev" target="_blank" rel="noopener">피그마 ↗</a></figcaption>
+  <div class="shotbox"><img class="shot" src="{{IMG:legacy/mobile-button--c796cedd.png}}" alt="mobile_button" loading="lazy"></div>
+  <p class="props">variant: blue-line/primary/secondary · state: default/disabled/pressed</p>
+</figure><figure class="pane canon" data-canon="D-12">
+  <figcaption><span class="src src-C">정본</span><b>button</b><span class="vc">현재 배포본</span></figcaption>
+  <div class="shotbox"><img class="shot" src="{{IMG:canon/button--pc--0.png}}" alt="button" loading="lazy"></div>
+  <p class="props">지금 웹에 배포된 실제 모습입니다. 상태·크기가 모두 펼쳐져 있습니다.</p>
+</figure></div>
+  <div class="choose">
+    <h4>결정</h4>
+    <div class="opts"><button class="opt" data-d="D-12" data-v="모바일 버튼 = lg (정본의 큰 크기)"><span class="dot"></span>모바일 버튼 = lg (정본의 큰 크기)</button><button class="opt" data-d="D-12" data-v="모바일 버튼 = md (PC 기본과 같음)"><span class="dot"></span>모바일 버튼 = md (PC 기본과 같음)</button></div>
+    <div class="freerow">
+      <input class="free" data-d="D-12" type="text" placeholder="다르게 정하시려면 여기에 직접 적어주세요" aria-label="D-12 직접 입력">
+      <button class="freebtn" data-d="D-12">저장</button>
+    </div>
+    <p class="idle"><span>안 정하면</span>모바일 화면의 버튼 크기를 검수할 기준이 없습니다.</p>
+  </div>
+</article></section><section class="grp"><div class="grp-h"><h2>상태 이름이 안 맞는 것</h2><span class="cnt">6건</span></div>
+<p class="grp-d">같은 상태를 다른 이름으로 불렀거나, 정본이 하나를 둘로 나눈 경우입니다. 검수가 틀어지는 지점이 대부분 여기입니다.</p><article class="dec" id="D-07">
+  <header class="dec-h"><span class="did">D-07</span><h3>선택창의 &#x27;selected&#x27; 가 무슨 상태인가</h3>
+    <span class="badge" data-badge="D-07">미결정</span></header>
+  <p class="why">레거시 select 의 상태는 default · selected · disabled 셋뿐입니다. 정본에는 open(목록이 펼쳐진 상태)과 filled(값이 골라져 들어간 상태)가 따로 있어서, selected 가 둘 중 어느 쪽인지 갈립니다.</p>
+  <div class="compare"><figure class="pane">
+  <figcaption><span class="src src-A">A</span><b>select</b>
+    <span class="vc">12변형</span>
+    <a href="https://www.figma.com/design/yE5UCFEbmXJBlYJWB24Lz2/SW-UX-GUIDE-V2.4?node-id=540-3397&m=dev" target="_blank" rel="noopener">피그마 ↗</a></figcaption>
+  <div class="shotbox"><img class="shot" src="{{IMG:legacy/select--3a58a6f1.png}}" alt="select" loading="lazy"></div>
+  <p class="props">platform: mobile/pc-md/pc-xsm/pc-xxsm · state: default/disabled/selected</p>
+</figure><figure class="pane canon" data-canon="D-07">
+  <figcaption><span class="src src-C">정본</span><b>select</b><span class="vc">현재 배포본</span></figcaption>
+  <div class="shotbox"><img class="shot" src="{{IMG:canon/select--pc--0.png}}" alt="select" loading="lazy"></div>
+  <p class="props">지금 웹에 배포된 실제 모습입니다. 상태·크기가 모두 펼쳐져 있습니다.</p>
+</figure></div>
+  <div class="choose">
+    <h4>결정</h4>
+    <div class="opts"><button class="opt" data-d="D-07" data-v="selected = open (펼쳐진 모습)"><span class="dot"></span>selected = open (펼쳐진 모습)</button><button class="opt" data-d="D-07" data-v="selected = filled (값이 채워진 모습)"><span class="dot"></span>selected = filled (값이 채워진 모습)</button></div>
+    <div class="freerow">
+      <input class="free" data-d="D-07" type="text" placeholder="다르게 정하시려면 여기에 직접 적어주세요" aria-label="D-07 직접 입력">
+      <button class="freebtn" data-d="D-07">저장</button>
+    </div>
+    <p class="idle"><span>안 정하면</span>선택창이 들어간 모든 레거시 화면에서 상태 대조가 틀릴 수 있습니다.</p>
+  </div>
+</article><article class="dec" id="D-08">
+  <header class="dec-h"><span class="did">D-08</span><h3>드롭다운 한 줄의 &#x27;selected&#x27;</h3>
+    <span class="badge" data-badge="D-08">미결정</span></header>
+  <p class="why">정본 dropdown 은 고른 항목 표시를 글자형(selectedText)과 체크박스형(selectedCheckbox) 둘로 나눠 놨습니다. 레거시는 그냥 selected 하나입니다.</p>
+  <div class="compare"><figure class="pane">
+  <figcaption><span class="src src-A">A</span><b>dropdown_option</b>
+    <span class="vc">8변형</span>
+    <a href="https://www.figma.com/design/yE5UCFEbmXJBlYJWB24Lz2/SW-UX-GUIDE-V2.4?node-id=540-3425&m=dev" target="_blank" rel="noopener">피그마 ↗</a></figcaption>
+  <div class="shotbox"><img class="shot" src="{{IMG:legacy/dropdown-option--5bf3d86e.png}}" alt="dropdown_option" loading="lazy"></div>
+  <p class="props">state: default/disabled/hover/selected · size: md/sm</p>
+</figure><figure class="pane">
+  <figcaption><span class="src src-A">A</span><b>pc_dropdown</b>
+    <span class="vc">2변형</span>
+    <a href="https://www.figma.com/design/yE5UCFEbmXJBlYJWB24Lz2/SW-UX-GUIDE-V2.4?node-id=540-3442&m=dev" target="_blank" rel="noopener">피그마 ↗</a></figcaption>
+  <div class="shotbox"><img class="shot" src="{{IMG:legacy/pc-dropdown--9fe19602.png}}" alt="pc_dropdown" loading="lazy"></div>
+  <p class="props">size: md/sm</p>
+</figure><figure class="pane canon" data-canon="D-08">
+  <figcaption><span class="src src-C">정본</span><b>dropdown</b><span class="vc">현재 배포본</span></figcaption>
+  <div class="shotbox"><img class="shot" src="{{IMG:canon/dropdown--pc--0.png}}" alt="dropdown" loading="lazy"></div>
+  <p class="props">지금 웹에 배포된 실제 모습입니다. 상태·크기가 모두 펼쳐져 있습니다.</p>
+</figure></div>
+  <div class="choose">
+    <h4>결정</h4>
+    <div class="opts"><button class="opt" data-d="D-08" data-v="selected = selectedText (글자로 표시)"><span class="dot"></span>selected = selectedText (글자로 표시)</button><button class="opt" data-d="D-08" data-v="selected = selectedCheckbox (체크로 표시)"><span class="dot"></span>selected = selectedCheckbox (체크로 표시)</button><button class="opt" data-d="D-08" data-v="둘 다 — 레거시는 구분이 없었음"><span class="dot"></span>둘 다 — 레거시는 구분이 없었음</button></div>
+    <div class="freerow">
+      <input class="free" data-d="D-08" type="text" placeholder="다르게 정하시려면 여기에 직접 적어주세요" aria-label="D-08 직접 입력">
+      <button class="freebtn" data-d="D-08">저장</button>
+    </div>
+    <p class="idle"><span>안 정하면</span>드롭다운 목록 검수 시 어느 쪽으로 봐야 할지 근거가 없습니다.</p>
+  </div>
+</article><article class="dec" id="D-09">
+  <header class="dec-h"><span class="did">D-09</span><h3>시간 선택의 selected · editing</h3>
+    <span class="badge" data-badge="D-09">미결정</span></header>
+  <p class="why">레거시 시간 선택은 세트가 7개로 흩어져 있고, 상태 이름도 selected · editing · completed 로 제각각입니다. 정본은 focus(입력 중) · filled(값 있음) 로 정리돼 있습니다.</p>
+  <div class="compare"><figure class="pane">
+  <figcaption><span class="src src-A">A</span><b>timepicker_input_component</b>
+    <span class="vc">3변형</span>
+    <a href="https://www.figma.com/design/yE5UCFEbmXJBlYJWB24Lz2/SW-UX-GUIDE-V2.4?node-id=540-3469&m=dev" target="_blank" rel="noopener">피그마 ↗</a></figcaption>
+  <div class="shotbox"><img class="shot" src="{{IMG:legacy/timepicker-input-component--7fcac931.png}}" alt="timepicker_input_component" loading="lazy"></div>
+  <p class="props">state: default/hover/selected</p>
+</figure><figure class="pane">
+  <figcaption><span class="src src-A">A</span><b>timepicker_select_number</b>
+    <span class="vc">6변형</span>
+    <a href="https://www.figma.com/design/yE5UCFEbmXJBlYJWB24Lz2/SW-UX-GUIDE-V2.4?node-id=540-3476&m=dev" target="_blank" rel="noopener">피그마 ↗</a></figcaption>
+  <div class="shotbox"><img class="shot" src="{{IMG:legacy/timepicker-select-number--d097cf69.png}}" alt="timepicker_select_number" loading="lazy"></div>
+  <p class="props">state: default/hover/selected · size: md/sm</p>
+</figure><figure class="pane">
+  <figcaption><span class="src src-A">A</span><b>timepicker_select_dropdown</b>
+    <span class="vc">2변형</span>
+    <a href="https://www.figma.com/design/yE5UCFEbmXJBlYJWB24Lz2/SW-UX-GUIDE-V2.4?node-id=540-3489&m=dev" target="_blank" rel="noopener">피그마 ↗</a></figcaption>
+  <div class="shotbox"><img class="shot" src="{{IMG:legacy/timepicker-select-dropdown--91038680.png}}" alt="timepicker_select_dropdown" loading="lazy"></div>
+  <p class="props">size: md/sm</p>
+</figure><figure class="pane">
+  <figcaption><span class="src src-A">A</span><b>pc_timepicker_input_dropdown</b>
+    <span class="vc">2변형</span>
+    <a href="https://www.figma.com/design/yE5UCFEbmXJBlYJWB24Lz2/SW-UX-GUIDE-V2.4?node-id=540-3506&m=dev" target="_blank" rel="noopener">피그마 ↗</a></figcaption>
+  <div class="shotbox"><img class="shot" src="{{IMG:legacy/pc-timepicker-input-dropdown--11f2f814.png}}" alt="pc_timepicker_input_dropdown" loading="lazy"></div>
+  <p class="props">type: 12h/24h</p>
+</figure><figure class="pane">
+  <figcaption><span class="src src-A">A</span><b>timepicker_select</b>
+    <span class="vc">6변형</span>
+    <a href="https://www.figma.com/design/yE5UCFEbmXJBlYJWB24Lz2/SW-UX-GUIDE-V2.4?node-id=540-3636&m=dev" target="_blank" rel="noopener">피그마 ↗</a></figcaption>
+  <div class="shotbox"><img class="shot" src="{{IMG:legacy/timepicker-select--ba0cde68.png}}" alt="timepicker_select" loading="lazy"></div>
+  <p class="props">size: md/sm · state: default/disabled/editing</p>
+</figure><figure class="pane">
+  <figcaption><span class="src src-A">A</span><b>timepicker_input</b>
+    <span class="vc">16변형</span>
+    <a href="https://www.figma.com/design/yE5UCFEbmXJBlYJWB24Lz2/SW-UX-GUIDE-V2.4?node-id=540-3690&m=dev" target="_blank" rel="noopener">피그마 ↗</a></figcaption>
+  <div class="shotbox"><img class="shot" src="{{IMG:legacy/timepicker-input--ab69f7d5.png}}" alt="timepicker_input" loading="lazy"></div>
+  <p class="props">platform: mobile/pc-md/pc-xsm/pc-xxsm · state: completed/default/disabled/selected</p>
+</figure><figure class="pane canon" data-canon="D-09">
+  <figcaption><span class="src src-C">정본</span><b>time-picker</b><span class="vc">현재 배포본</span></figcaption>
+  <div class="shotbox"><img class="shot" src="{{IMG:canon/time-picker--pc--0.png}}" alt="time-picker" loading="lazy"></div>
+  <p class="props">지금 웹에 배포된 실제 모습입니다. 상태·크기가 모두 펼쳐져 있습니다.</p>
+</figure></div>
+  <div class="choose">
+    <h4>결정</h4>
+    <div class="opts"><button class="opt" data-d="D-09" data-v="selected = focus, editing = focus, completed = filled"><span class="dot"></span>selected = focus, editing = focus, completed = filled</button><button class="opt" data-d="D-09" data-v="selected = filled, editing = focus, completed = filled"><span class="dot"></span>selected = filled, editing = focus, completed = filled</button></div>
+    <div class="freerow">
+      <input class="free" data-d="D-09" type="text" placeholder="다르게 정하시려면 여기에 직접 적어주세요" aria-label="D-09 직접 입력">
+      <button class="freebtn" data-d="D-09">저장</button>
+    </div>
+    <p class="idle"><span>안 정하면</span>시간 선택은 레거시 세트가 가장 많이 흩어진 컴포넌트라, 여기가 비면 검수 정확도가 가장 크게 떨어집니다.</p>
+  </div>
+</article><article class="dec" id="D-10">
+  <header class="dec-h"><span class="did">D-10</span><h3>날짜 선택의 selected · editing</h3>
+    <span class="badge" data-badge="D-10">미결정</span></header>
+  <p class="why">레거시 날짜 선택은 selected · completed · editing(day) · editing(month) · editing(year) 를 씁니다. 정본은 open(달력 열림) · focus · filled 입니다. 특히 editing 이 day/month/year 셋으로 쪼개져 있는데 정본엔 하나뿐입니다.</p>
+  <div class="compare"><figure class="pane">
+  <figcaption><span class="src src-A">A</span><b>datepicker_input</b>
+    <span class="vc">16변형</span>
+    <a href="https://www.figma.com/design/yE5UCFEbmXJBlYJWB24Lz2/SW-UX-GUIDE-V2.4?node-id=540-3794&m=dev" target="_blank" rel="noopener">피그마 ↗</a></figcaption>
+  <div class="shotbox"><img class="shot" src="{{IMG:legacy/datepicker-input--ca3facf2.png}}" alt="datepicker_input" loading="lazy"></div>
+  <p class="props">platform: mobile/pc-md/pc-xsm/pc-xxsm · state: completed/default/disabled/selected</p>
+</figure><figure class="pane">
+  <figcaption><span class="src src-B">B</span><b>calendar</b>
+    <span class="vc">12변형</span>
+    <a href="https://www.figma.com/design/vHg5UOMMYI77RHH6vVVppu/S-1-Component-Set-latest-?node-id=73-4022&m=dev" target="_blank" rel="noopener">피그마 ↗</a></figcaption>
+  <div class="shotbox"><img class="shot" src="{{IMG:legacy/calendar--4d9c5cd2.png}}" alt="calendar" loading="lazy"></div>
+  <p class="props">option: completed/default/disabled/editing(day)/editing(month)/editing(year) · label: off/on</p>
+</figure><figure class="pane">
+  <figcaption><span class="src src-B">B</span><b>m_calendar_input</b>
+    <span class="vc">9변형</span>
+    <a href="https://www.figma.com/design/vHg5UOMMYI77RHH6vVVppu/S-1-Component-Set-latest-?node-id=159-5733&m=dev" target="_blank" rel="noopener">피그마 ↗</a></figcaption>
+  <div class="shotbox"><img class="shot" src="{{IMG:legacy/m-calendar-input--3abdd7b4.png}}" alt="m_calendar_input" loading="lazy"></div>
+  <p class="props">label: left/off/top · option: Default/disabled/editing</p>
+</figure><figure class="pane canon" data-canon="D-10">
+  <figcaption><span class="src src-C">정본</span><b>date-picker</b><span class="vc">현재 배포본</span></figcaption>
+  <div class="shotbox"><img class="shot" src="{{IMG:canon/date-picker--pc--0.png}}" alt="date-picker" loading="lazy"></div>
+  <p class="props">지금 웹에 배포된 실제 모습입니다. 상태·크기가 모두 펼쳐져 있습니다.</p>
+</figure></div>
+  <div class="choose">
+    <h4>결정</h4>
+    <div class="opts"><button class="opt" data-d="D-10" data-v="selected = open, editing(3종) = 모두 focus, completed = filled"><span class="dot"></span>selected = open, editing(3종) = 모두 focus, completed = filled</button><button class="opt" data-d="D-10" data-v="selected = focus, editing(3종) = open, completed = filled"><span class="dot"></span>selected = focus, editing(3종) = open, completed = filled</button></div>
+    <div class="freerow">
+      <input class="free" data-d="D-10" type="text" placeholder="다르게 정하시려면 여기에 직접 적어주세요" aria-label="D-10 직접 입력">
+      <button class="freebtn" data-d="D-10">저장</button>
+    </div>
+    <p class="idle"><span>안 정하면</span>날짜 선택이 들어간 화면 검수에서 상태를 자동 대조할 수 없습니다.</p>
+  </div>
+</article><article class="dec" id="D-22">
+  <header class="dec-h"><span class="did">D-22</span><h3>B파일 라디오의 &#x27;pressed&#x27; 가 선택됨인가</h3>
+    <span class="badge" data-badge="D-22">미결정</span></header>
+  <p class="why">B파일 라디오 버튼에는 &#x27;선택됨&#x27; 상태가 아예 없고 pressed(눌림) 와 disabled 만 있습니다. 정본에는 selected(선택됨) 가 있습니다. pressed 가 선택된 상태를 뜻한 것인지, 진짜 누르는 순간을 뜻한 것인지 이름만으로는 모릅니다.</p>
+  <div class="compare"><figure class="pane">
+  <figcaption><span class="src src-B">B</span><b>radiobutton</b>
+    <span class="vc">4변형</span>
+    <a href="https://www.figma.com/design/vHg5UOMMYI77RHH6vVVppu/S-1-Component-Set-latest-?node-id=42-3283&m=dev" target="_blank" rel="noopener">피그마 ↗</a></figcaption>
+  <div class="shotbox"><img class="shot" src="{{IMG:legacy/radiobutton--314d4b9c.png}}" alt="radiobutton" loading="lazy"></div>
+  <p class="props">pressed: off/on · disabled: off/on</p>
+</figure><figure class="pane">
+  <figcaption><span class="src src-B">B</span><b>m_radiobutton</b>
+    <span class="vc">8변형</span>
+    <a href="https://www.figma.com/design/vHg5UOMMYI77RHH6vVVppu/S-1-Component-Set-latest-?node-id=109-24654&m=dev" target="_blank" rel="noopener">피그마 ↗</a></figcaption>
+  <div class="shotbox"><img class="shot" src="{{IMG:legacy/m-radiobutton--7957b498.png}}" alt="m_radiobutton" loading="lazy"></div>
+  <p class="props">pressed: off/on · disabled: off/on · label: off/on</p>
+</figure><figure class="pane canon" data-canon="D-22">
+  <figcaption><span class="src src-C">정본</span><b>radio</b><span class="vc">현재 배포본</span></figcaption>
+  <div class="shotbox"><img class="shot" src="{{IMG:canon/radio--pc--0.png}}" alt="radio" loading="lazy"></div>
+  <p class="props">지금 웹에 배포된 실제 모습입니다. 상태·크기가 모두 펼쳐져 있습니다.</p>
+</figure></div>
+  <div class="choose">
+    <h4>결정</h4>
+    <div class="opts"><button class="opt" data-d="D-22" data-v="pressed = selected (선택된 상태를 그렇게 부른 것)"><span class="dot"></span>pressed = selected (선택된 상태를 그렇게 부른 것)</button><button class="opt" data-d="D-22" data-v="pressed = 누르는 순간 (정본 selected 는 레거시에 없음)"><span class="dot"></span>pressed = 누르는 순간 (정본 selected 는 레거시에 없음)</button></div>
+    <div class="freerow">
+      <input class="free" data-d="D-22" type="text" placeholder="다르게 정하시려면 여기에 직접 적어주세요" aria-label="D-22 직접 입력">
+      <button class="freebtn" data-d="D-22">저장</button>
+    </div>
+    <p class="idle"><span>안 정하면</span>B파일 라디오는 상태 대조가 전부 막힙니다. 라디오는 폼마다 들어가는 부품입니다.</p>
+  </div>
+</article><article class="dec" id="D-23">
+  <header class="dec-h"><span class="did">D-23</span><h3>페이지 이동 바에 &#x27;마지막 페이지&#x27; 상태가 없음</h3>
+    <span class="badge" data-badge="D-23">미결정</span></header>
+  <p class="why">정본은 페이지 이동 바 상태를 single · first · last · middle 넷으로 봅니다. B파일에는 single page · 1st page · normal 셋만 있고 마지막 페이지에 해당하는 값이 없습니다.</p>
+  <div class="compare"><figure class="pane">
+  <figcaption><span class="src src-B">B</span><b>pagenation</b>
+    <span class="vc">3변형</span>
+    <a href="https://www.figma.com/design/vHg5UOMMYI77RHH6vVVppu/S-1-Component-Set-latest-?node-id=2504-15164&m=dev" target="_blank" rel="noopener">피그마 ↗</a></figcaption>
+  <div class="shotbox"><img class="shot" src="{{IMG:legacy/pagenation--8ebdbdf1.png}}" alt="pagenation" loading="lazy"></div>
+  <p class="props">option: 1st page/normal/single page</p>
+</figure><figure class="pane canon" data-canon="D-23">
+  <figcaption><span class="src src-C">정본</span><b>pagination</b><span class="vc">현재 배포본</span></figcaption>
+  <div class="shotbox"><img class="shot" src="{{IMG:canon/pagination--pc--0.png}}" alt="pagination" loading="lazy"></div>
+  <p class="props">지금 웹에 배포된 실제 모습입니다. 상태·크기가 모두 펼쳐져 있습니다.</p>
+</figure></div>
+  <div class="choose">
+    <h4>결정</h4>
+    <div class="opts"><button class="opt" data-d="D-23" data-v="레거시 누락 — 정본이 맞고 레거시에 빠진 것"><span class="dot"></span>레거시 누락 — 정본이 맞고 레거시에 빠진 것</button><button class="opt" data-d="D-23" data-v="normal 이 middle 과 last 를 겸했음"><span class="dot"></span>normal 이 middle 과 last 를 겸했음</button></div>
+    <div class="freerow">
+      <input class="free" data-d="D-23" type="text" placeholder="다르게 정하시려면 여기에 직접 적어주세요" aria-label="D-23 직접 입력">
+      <button class="freebtn" data-d="D-23">저장</button>
+    </div>
+    <p class="idle"><span>안 정하면</span>마지막 페이지 상태는 대조 대상에서 조용히 빠집니다.</p>
+  </div>
+</article></section><section class="grp"><div class="grp-h"><h2>구조가 달라진 것</h2><span class="cnt">10건</span></div>
+<p class="grp-d">레거시에서 여러 개였던 것이 정본에서 하나로 합쳐졌거나, 축 자체가 없어진 경우입니다.</p><article class="dec" id="D-02">
+  <header class="dec-h"><span class="did">D-02</span><h3>필터칩의 &#x27;라벨만&#x27;과 &#x27;제목 붙은&#x27; 형태 구분</h3>
+    <span class="badge" data-badge="D-02">미결정</span></header>
+  <p class="why">레거시는 필터칩을 라벨만 있는 것과 제목이 붙은 것, 두 개의 별도 컴포넌트로 만들어 뒀습니다. 지금 정본에는 filter-chip 하나뿐이고 그 구분 축이 없습니다.</p>
+  <div class="compare"><figure class="pane">
+  <figcaption><span class="src src-A">A</span><b>filter-chip label only</b>
+    <span class="vc">30변형</span>
+    <a href="https://www.figma.com/design/yE5UCFEbmXJBlYJWB24Lz2/SW-UX-GUIDE-V2.4?node-id=540-3226&m=dev" target="_blank" rel="noopener">피그마 ↗</a></figcaption>
+  <div class="shotbox"><img class="shot" src="{{IMG:legacy/filter-chip-label-only--6980c864.png}}" alt="filter-chip label only" loading="lazy"></div>
+  <p class="props">platform: mobile/pc-md/pc-sm · type: line/solid · state: default/disabled/pressed/selected/selected_pressed</p>
+</figure><figure class="pane">
+  <figcaption><span class="src src-A">A</span><b>filter-chip with title</b>
+    <span class="vc">30변형</span>
+    <a href="https://www.figma.com/design/yE5UCFEbmXJBlYJWB24Lz2/SW-UX-GUIDE-V2.4?node-id=574-3520&m=dev" target="_blank" rel="noopener">피그마 ↗</a></figcaption>
+  <div class="shotbox"><img class="shot" src="{{IMG:legacy/filter-chip-with-title--9b173c37.png}}" alt="filter-chip with title" loading="lazy"></div>
+  <p class="props">platform: filter-chip/mobile/pc-md/pc-sm · type: line/solid · state: default/disabled/pressed/selected/selected_pressed</p>
+</figure><figure class="pane canon" data-canon="D-02">
+  <figcaption><span class="src src-C">정본</span><b>filter-chip</b><span class="vc">현재 배포본</span></figcaption>
+  <div class="shotbox"><img class="shot" src="{{IMG:canon/filter-chip--pc--0.png}}" alt="filter-chip" loading="lazy"></div>
+  <p class="props">지금 웹에 배포된 실제 모습입니다. 상태·크기가 모두 펼쳐져 있습니다.</p>
+</figure></div>
+  <div class="choose">
+    <h4>결정</h4>
+    <div class="opts"><button class="opt" data-d="D-02" data-v="제목 붙은 형태는 정본에 흡수됨 (제목은 부품 유무로 처리)"><span class="dot"></span>제목 붙은 형태는 정본에 흡수됨 (제목은 부품 유무로 처리)</button><button class="opt" data-d="D-02" data-v="제목 붙은 형태는 없어진 것 — 대응 없음으로 기록"><span class="dot"></span>제목 붙은 형태는 없어진 것 — 대응 없음으로 기록</button></div>
+    <div class="freerow">
+      <input class="free" data-d="D-02" type="text" placeholder="다르게 정하시려면 여기에 직접 적어주세요" aria-label="D-02 직접 입력">
+      <button class="freebtn" data-d="D-02">저장</button>
+    </div>
+    <p class="idle"><span>안 정하면</span>필터칩 두 종류가 모두 filter-chip 하나로 뭉뚱그려져, 제목 있는 쪽을 검수할 때 근거가 없습니다.</p>
+  </div>
+</article><article class="dec" id="D-03">
+  <header class="dec-h"><span class="did">D-03</span><h3>입력창+버튼 조합이 하나의 컴포넌트인가</h3>
+    <span class="badge" data-badge="D-03">미결정</span></header>
+  <p class="why">레거시에는 입력창 오른쪽에 버튼이 붙은 형태가 별도 컴포넌트로 있습니다. 지금 정본에서 이게 input 의 한 형태인지, input 과 button 을 나란히 놓은 조합(패턴)인지 정해져 있지 않습니다.</p>
+  <div class="compare"><figure class="pane">
+  <figcaption><span class="src src-A">A</span><b>input+btn</b>
+    <span class="vc">7변형</span>
+    <a href="https://www.figma.com/design/yE5UCFEbmXJBlYJWB24Lz2/SW-UX-GUIDE-V2.4?node-id=641-4055&m=dev" target="_blank" rel="noopener">피그마 ↗</a></figcaption>
+  <div class="shotbox"><img class="shot" src="{{IMG:legacy/input-btn--eebd923b.png}}" alt="input+btn" loading="lazy"></div>
+  <p class="props">type: complete/default/disabled/error/helper/selected/success</p>
+</figure><figure class="pane canon" data-canon="D-03">
+  <figcaption><span class="src src-C">정본</span><b>input</b><span class="vc">현재 배포본</span></figcaption>
+  <div class="shotbox"><img class="shot" src="{{IMG:canon/input--pc--0.png}}" alt="input" loading="lazy"></div>
+  <p class="props">지금 웹에 배포된 실제 모습입니다. 상태·크기가 모두 펼쳐져 있습니다.</p>
+</figure></div>
+  <div class="choose">
+    <h4>결정</h4>
+    <div class="opts"><button class="opt" data-d="D-03" data-v="input 의 한 형태 (부품으로 버튼 포함)"><span class="dot"></span>input 의 한 형태 (부품으로 버튼 포함)</button><button class="opt" data-d="D-03" data-v="input + button 조합 — 컴포넌트가 아니라 패턴"><span class="dot"></span>input + button 조합 — 컴포넌트가 아니라 패턴</button></div>
+    <div class="freerow">
+      <input class="free" data-d="D-03" type="text" placeholder="다르게 정하시려면 여기에 직접 적어주세요" aria-label="D-03 직접 입력">
+      <button class="freebtn" data-d="D-03">저장</button>
+    </div>
+    <p class="idle"><span>안 정하면</span>이 형태를 검수할 때 input 하나로 볼지 두 개로 볼지가 매번 달라집니다.</p>
+  </div>
+</article><article class="dec" id="D-11">
+  <header class="dec-h"><span class="did">D-11</span><h3>달력 안쪽 부품들</h3>
+    <span class="badge" data-badge="D-11">미결정</span></header>
+  <p class="why">레거시는 달력을 칸(Cell)·타일(Tile)·화살표·연월 선택 화면까지 4개 컴포넌트로 쪼개 놨습니다. 그리고 칸에는 start · end · today 같은 상태가, 연월 선택에는 month select · year select 같은 화면 상태가 있는데 정본 date-picker 상태 목록에는 이 이름들이 없습니다.</p>
+  <div class="compare"><figure class="pane">
+  <figcaption><span class="src src-A">A</span><b>DatePicker/Calendar Cell</b>
+    <span class="vc">8변형</span>
+    <a href="https://www.figma.com/design/yE5UCFEbmXJBlYJWB24Lz2/SW-UX-GUIDE-V2.4?node-id=540-4167&m=dev" target="_blank" rel="noopener">피그마 ↗</a></figcaption>
+  <div class="shotbox"><img class="shot" src="{{IMG:legacy/datepicker-calendar-cell--804b061d.png}}" alt="DatePicker/Calendar Cell" loading="lazy"></div>
+  <p class="props">type: range/standard · state: default/disabled/end/selected/start/today</p>
+</figure><figure class="pane">
+  <figcaption><span class="src src-A">A</span><b>calendar_arrow</b>
+    <span class="vc">4변형</span>
+    <a href="https://www.figma.com/design/yE5UCFEbmXJBlYJWB24Lz2/SW-UX-GUIDE-V2.4?node-id=540-4196&m=dev" target="_blank" rel="noopener">피그마 ↗</a></figcaption>
+  <div class="shotbox"><img class="shot" src="{{IMG:legacy/calendar-arrow--ed433857.png}}" alt="calendar_arrow" loading="lazy"></div>
+  <p class="props">type: next/prev · state: default/disabled</p>
+</figure><figure class="pane">
+  <figcaption><span class="src src-A">A</span><b>DatePicker/Calendar Tile</b>
+    <span class="vc">3변형</span>
+    <a href="https://www.figma.com/design/yE5UCFEbmXJBlYJWB24Lz2/SW-UX-GUIDE-V2.4?node-id=540-4209&m=dev" target="_blank" rel="noopener">피그마 ↗</a></figcaption>
+  <div class="shotbox"><img class="shot" src="{{IMG:legacy/datepicker-calendar-tile--df5db5f8.png}}" alt="DatePicker/Calendar Tile" loading="lazy"></div>
+  <p class="props">state: default/disabled/selected</p>
+</figure><figure class="pane">
+  <figcaption><span class="src src-A">A</span><b>pc_datepicker_calendar</b>
+    <span class="vc">5변형</span>
+    <a href="https://www.figma.com/design/yE5UCFEbmXJBlYJWB24Lz2/SW-UX-GUIDE-V2.4?node-id=540-4216&m=dev" target="_blank" rel="noopener">피그마 ↗</a></figcaption>
+  <div class="shotbox"><img class="shot" src="{{IMG:legacy/pc-datepicker-calendar--14288445.png}}" alt="pc_datepicker_calendar" loading="lazy"></div>
+  <p class="props">state: default/default_button/month select/year range select/year select</p>
+</figure><figure class="pane canon" data-canon="D-11">
+  <figcaption><span class="src src-C">정본</span><b>date-picker</b><span class="vc">현재 배포본</span></figcaption>
+  <div class="shotbox"><img class="shot" src="{{IMG:canon/date-picker--pc--1140.png}}" alt="date-picker calendar" loading="lazy"></div>
+  <p class="props">지금 웹에 배포된 달력입니다. 헤더 화살표·요일·날짜 칸과 큰(MD 356)·작은(SM 267) 달력이 보입니다.</p>
+</figure></div>
+  <div class="choose">
+    <h4>결정</h4>
+    <div class="opts"><button class="opt" data-d="D-11" data-v="정본 date-picker 안의 부품으로 흡수됨 — 부품 단위로 따로 기록"><span class="dot"></span>정본 date-picker 안의 부품으로 흡수됨 — 부품 단위로 따로 기록</button><button class="opt" data-d="D-11" data-v="정본에 없는 것 — 대응 없음으로 기록하고 정본 보강 대상으로 올림"><span class="dot"></span>정본에 없는 것 — 대응 없음으로 기록하고 정본 보강 대상으로 올림</button></div>
+    <div class="freerow">
+      <input class="free" data-d="D-11" type="text" placeholder="다르게 정하시려면 여기에 직접 적어주세요" aria-label="D-11 직접 입력">
+      <button class="freebtn" data-d="D-11">저장</button>
+    </div>
+    <p class="idle"><span>안 정하면</span>달력 내부 검수는 대응표 없이 매번 눈으로 판단하게 됩니다.</p>
+  </div>
+</article><article class="dec" id="D-14">
+  <header class="dec-h"><span class="did">D-14</span><h3>그리드 표·삽입형 표 구분</h3>
+    <span class="badge" data-badge="D-14">미결정</span></header>
+  <p class="why">레거시 A는 표를 일반표·그리드표·삽입형표 세 종류로 나누고 각각 머리글/본문을 따로 뒀습니다(6개 세트, 146변형). 정본 table 은 변형이 base 하나뿐입니다.</p>
+  <div class="compare"><figure class="pane">
+  <figcaption><span class="src src-A">A</span><b>pc_grid-table_header</b>
+    <span class="vc">48변형</span>
+    <a href="https://www.figma.com/design/yE5UCFEbmXJBlYJWB24Lz2/SW-UX-GUIDE-V2.4?node-id=540-5309&m=dev" target="_blank" rel="noopener">피그마 ↗</a></figcaption>
+  <div class="shotbox"><img class="shot" src="{{IMG:legacy/pc-grid-table-header--e71ce7c7.png}}" alt="pc_grid-table_header" loading="lazy"></div>
+  <p class="props">size: md/sm · position: first/last/middle · align: center/left · state: default/hover · icon: off/on</p>
+</figure><figure class="pane">
+  <figcaption><span class="src src-A">A</span><b>pc_grid-table_body</b>
+    <span class="vc">24변형</span>
+    <a href="https://www.figma.com/design/yE5UCFEbmXJBlYJWB24Lz2/SW-UX-GUIDE-V2.4?node-id=540-5502&m=dev" target="_blank" rel="noopener">피그마 ↗</a></figcaption>
+  <div class="shotbox"><img class="shot" src="{{IMG:legacy/pc-grid-table-body--fe82bad3.png}}" alt="pc_grid-table_body" loading="lazy"></div>
+  <p class="props">size: md/sm · position: first/last/middle · state: default/hover · align: center/left</p>
+</figure><figure class="pane">
+  <figcaption><span class="src src-A">A</span><b>pc_embeded-table_header</b>
+    <span class="vc">6변형</span>
+    <a href="https://www.figma.com/design/yE5UCFEbmXJBlYJWB24Lz2/SW-UX-GUIDE-V2.4?node-id=540-5593&m=dev" target="_blank" rel="noopener">피그마 ↗</a></figcaption>
+  <div class="shotbox"><img class="shot" src="{{IMG:legacy/pc-embeded-table-header--e030d6d9.png}}" alt="pc_embeded-table_header" loading="lazy"></div>
+  <p class="props">align: center/left · position: first/last/middle</p>
+</figure><figure class="pane">
+  <figcaption><span class="src src-A">A</span><b>pc_embeded-table_body</b>
+    <span class="vc">12변형</span>
+    <a href="https://www.figma.com/design/yE5UCFEbmXJBlYJWB24Lz2/SW-UX-GUIDE-V2.4?node-id=540-5618&m=dev" target="_blank" rel="noopener">피그마 ↗</a></figcaption>
+  <div class="shotbox"><img class="shot" src="{{IMG:legacy/pc-embeded-table-body--d33f9487.png}}" alt="pc_embeded-table_body" loading="lazy"></div>
+  <p class="props">state: default/hover · position: first/last/middle · align: center/left</p>
+</figure><figure class="pane">
+  <figcaption><span class="src src-B">B</span><b>table</b>
+    <span class="vc">5변형</span>
+    <a href="https://www.figma.com/design/vHg5UOMMYI77RHH6vVVppu/S-1-Component-Set-latest-?node-id=2504-15255&m=dev" target="_blank" rel="noopener">피그마 ↗</a></figcaption>
+  <div class="shotbox"><img class="shot" src="{{IMG:legacy/table--f50d761f.png}}" alt="table" loading="lazy"></div>
+  <p class="props">option: column/content · content option: Default/bottom/default/hover/selected</p>
+</figure><figure class="pane canon" data-canon="D-14">
+  <figcaption><span class="src src-C">정본</span><b>table</b><span class="vc">현재 배포본</span></figcaption>
+  <div class="shotbox"><img class="shot" src="{{IMG:canon/table--pc--0.png}}" alt="table" loading="lazy"></div>
+  <p class="props">지금 웹에 배포된 실제 모습입니다. 상태·크기가 모두 펼쳐져 있습니다.</p>
+</figure></div>
+  <div class="choose">
+    <h4>결정</h4>
+    <div class="opts"><button class="opt" data-d="D-14" data-v="셋 다 정본 table 하나로 통합됨"><span class="dot"></span>셋 다 정본 table 하나로 통합됨</button><button class="opt" data-d="D-14" data-v="그리드·삽입형은 별개 — 정본에 아직 없는 것으로 기록"><span class="dot"></span>그리드·삽입형은 별개 — 정본에 아직 없는 것으로 기록</button></div>
+    <div class="freerow">
+      <input class="free" data-d="D-14" type="text" placeholder="다르게 정하시려면 여기에 직접 적어주세요" aria-label="D-14 직접 입력">
+      <button class="freebtn" data-d="D-14">저장</button>
+    </div>
+    <p class="idle"><span>안 정하면</span>표는 레거시에서 두 번째로 큰 덩어리인데, 통째로 자동 대조가 안 됩니다.</p>
+  </div>
+</article><article class="dec" id="D-15">
+  <header class="dec-h"><span class="did">D-15</span><h3>모달 크기와 용도별 모달</h3>
+    <span class="badge" data-badge="D-15">미결정</span></header>
+  <p class="why">레거시 A의 PC 모달은 크기를 sm·md·lg·xl 넷으로 나눴고, 별도로 &#x27;삭제&#x27; &#x27;입력취소&#x27; 같은 용도별 모달도 있습니다. 정본 modal 은 크기 축 없이 변형이 single(버튼 1개) · dual(버튼 2개) 뿐입니다.</p>
+  <div class="compare"><figure class="pane">
+  <figcaption><span class="src src-A">A</span><b>pc_modal</b>
+    <span class="vc">4변형</span>
+    <a href="https://www.figma.com/design/yE5UCFEbmXJBlYJWB24Lz2/SW-UX-GUIDE-V2.4?node-id=540-5815&m=dev" target="_blank" rel="noopener">피그마 ↗</a></figcaption>
+  <div class="shotbox"><img class="shot" src="{{IMG:legacy/pc-modal--8051b5de.png}}" alt="pc_modal" loading="lazy"></div>
+  <p class="props">size: lg/md/sm/xl</p>
+</figure><figure class="pane">
+  <figcaption><span class="src src-A">A</span><b>mobile_modal component</b>
+    <span class="vc">6변형</span>
+    <a href="https://www.figma.com/design/yE5UCFEbmXJBlYJWB24Lz2/SW-UX-GUIDE-V2.4?node-id=682-5938&m=dev" target="_blank" rel="noopener">피그마 ↗</a></figcaption>
+  <div class="shotbox"><img class="shot" src="{{IMG:legacy/mobile-modal-component--4dd5e2bd.png}}" alt="mobile_modal component" loading="lazy"></div>
+  <p class="props">type: default/list/single string · btn: 1 btn/2 btn</p>
+</figure><figure class="pane">
+  <figcaption><span class="src src-A">A</span><b>modal_small</b>
+    <span class="vc">5변형</span>
+    <a href="https://www.figma.com/design/yE5UCFEbmXJBlYJWB24Lz2/SW-UX-GUIDE-V2.4?node-id=6706-4218&m=dev" target="_blank" rel="noopener">피그마 ↗</a></figcaption>
+  <div class="shotbox"><img class="shot" src="{{IMG:legacy/modal-small--c5d4d822.png}}" alt="modal_small" loading="lazy"></div>
+  <p class="props">state: 마감취소/삭제/입력취소/중복 안내/필수 항목 미입력</p>
+</figure><figure class="pane">
+  <figcaption><span class="src src-B">B</span><b>dialog</b>
+    <span class="vc">3변형</span>
+    <a href="https://www.figma.com/design/vHg5UOMMYI77RHH6vVVppu/S-1-Component-Set-latest-?node-id=53-1814&m=dev" target="_blank" rel="noopener">피그마 ↗</a></figcaption>
+  <div class="shotbox"><img class="shot" src="{{IMG:legacy/dialog--8f7bd672.png}}" alt="dialog" loading="lazy"></div>
+  <p class="props">double button: off/on · input box: off/on</p>
+</figure><figure class="pane">
+  <figcaption><span class="src src-B">B</span><b>popup</b>
+    <span class="vc">3변형</span>
+    <a href="https://www.figma.com/design/vHg5UOMMYI77RHH6vVVppu/S-1-Component-Set-latest-?node-id=78-3071&m=dev" target="_blank" rel="noopener">피그마 ↗</a></figcaption>
+  <div class="shotbox"><img class="shot" src="{{IMG:legacy/popup--3b26d990.png}}" alt="popup" loading="lazy"></div>
+  <p class="props">button: off/on · searchbox: off/on</p>
+</figure><figure class="pane">
+  <figcaption><span class="src src-B">B</span><b>dialog</b>
+    <span class="vc">6변형</span>
+    <a href="https://www.figma.com/design/vHg5UOMMYI77RHH6vVVppu/S-1-Component-Set-latest-?node-id=151-4106&m=dev" target="_blank" rel="noopener">피그마 ↗</a></figcaption>
+  <div class="shotbox"><img class="shot" src="{{IMG:legacy/dialog--51ca6a30.png}}" alt="dialog" loading="lazy"></div>
+  <p class="props">title: off/on · pair button: off/on · contents: off/otp/text box</p>
+</figure><figure class="pane canon" data-canon="D-15">
+  <figcaption><span class="src src-C">정본</span><b>modal</b><span class="vc">현재 배포본</span></figcaption>
+  <div class="shotbox"><img class="shot" src="{{IMG:canon/modal--pc--0.png}}" alt="modal" loading="lazy"></div>
+  <p class="props">지금 웹에 배포된 실제 모습입니다. 상태·크기가 모두 펼쳐져 있습니다.</p>
+</figure></div>
+  <div class="choose">
+    <h4>결정</h4>
+    <div class="opts"><button class="opt" data-d="D-15" data-v="크기 축은 없어짐 — 버튼 개수만 남음"><span class="dot"></span>크기 축은 없어짐 — 버튼 개수만 남음</button><button class="opt" data-d="D-15" data-v="크기는 지금도 있어야 함 — 정본 보강 대상"><span class="dot"></span>크기는 지금도 있어야 함 — 정본 보강 대상</button></div>
+    <div class="freerow">
+      <input class="free" data-d="D-15" type="text" placeholder="다르게 정하시려면 여기에 직접 적어주세요" aria-label="D-15 직접 입력">
+      <button class="freebtn" data-d="D-15">저장</button>
+    </div>
+    <p class="idle"><span>안 정하면</span>모달 관련 레거시 6세트가 전부 보류로 남습니다.</p>
+  </div>
+</article><article class="dec" id="D-16">
+  <header class="dec-h"><span class="did">D-16</span><h3>탭의 pressed 상태와 모바일 탭</h3>
+    <span class="badge" data-badge="D-16">미결정</span></header>
+  <p class="why">레거시 탭은 두 파일 합쳐 6세트인데 상태 이름이 unselected · pressed · hover · selected 로 제각각이고, 정본 tab 상태는 default · hover · selected 셋입니다. pressed 에 짝이 없습니다.</p>
+  <div class="compare"><figure class="pane">
+  <figcaption><span class="src src-A">A</span><b>tab</b>
+    <span class="vc">9변형</span>
+    <a href="https://www.figma.com/design/yE5UCFEbmXJBlYJWB24Lz2/SW-UX-GUIDE-V2.4?node-id=540-6032&m=dev" target="_blank" rel="noopener">피그마 ↗</a></figcaption>
+  <div class="shotbox"><img class="shot" src="{{IMG:legacy/tab--0c2a0e96.png}}" alt="tab" loading="lazy"></div>
+  <p class="props">variant: mobile/pc-md/pc-sm · state: hover/pressed/selected/unselected</p>
+</figure><figure class="pane">
+  <figcaption><span class="src src-B">B</span><b>elements_tab1</b>
+    <span class="vc">4변형</span>
+    <a href="https://www.figma.com/design/vHg5UOMMYI77RHH6vVVppu/S-1-Component-Set-latest-?node-id=5-10574&m=dev" target="_blank" rel="noopener">피그마 ↗</a></figcaption>
+  <div class="shotbox"><img class="shot" src="{{IMG:legacy/elements-tab1--c83257d6.png}}" alt="elements_tab1" loading="lazy"></div>
+  <p class="props">selected: off/on · hover: off/on</p>
+</figure><figure class="pane">
+  <figcaption><span class="src src-B">B</span><b>elements_tab2</b>
+    <span class="vc">9변형</span>
+    <a href="https://www.figma.com/design/vHg5UOMMYI77RHH6vVVppu/S-1-Component-Set-latest-?node-id=5-10603&m=dev" target="_blank" rel="noopener">피그마 ↗</a></figcaption>
+  <div class="shotbox"><img class="shot" src="{{IMG:legacy/elements-tab2--00324582.png}}" alt="elements_tab2" loading="lazy"></div>
+  <p class="props">option: center/left/right · selected: off/on · hover: off/on</p>
+</figure><figure class="pane">
+  <figcaption><span class="src src-B">B</span><b>tab</b>
+    <span class="vc">4변형</span>
+    <a href="https://www.figma.com/design/vHg5UOMMYI77RHH6vVVppu/S-1-Component-Set-latest-?node-id=1008-10175&m=dev" target="_blank" rel="noopener">피그마 ↗</a></figcaption>
+  <div class="shotbox"><img class="shot" src="{{IMG:legacy/tab--a4c4ab99.png}}" alt="tab" loading="lazy"></div>
+  <p class="props">속성 없음</p>
+</figure><figure class="pane">
+  <figcaption><span class="src src-B">B</span><b>m_tab_title</b>
+    <span class="vc">12변형</span>
+    <a href="https://www.figma.com/design/vHg5UOMMYI77RHH6vVVppu/S-1-Component-Set-latest-?node-id=42-2381&m=dev" target="_blank" rel="noopener">피그마 ↗</a></figcaption>
+  <div class="shotbox"><img class="shot" src="{{IMG:legacy/m-tab-title--c63eabb3.png}}" alt="m_tab_title" loading="lazy"></div>
+  <p class="props">selected: off/on · new: off/on · count: bottom/off/right</p>
+</figure><figure class="pane">
+  <figcaption><span class="src src-B">B</span><b>tab</b>
+    <span class="vc">3변형</span>
+    <a href="https://www.figma.com/design/vHg5UOMMYI77RHH6vVVppu/S-1-Component-Set-latest-?node-id=1008-10723&m=dev" target="_blank" rel="noopener">피그마 ↗</a></figcaption>
+  <div class="shotbox"><img class="shot" src="{{IMG:legacy/tab--dc59817c.png}}" alt="tab" loading="lazy"></div>
+  <p class="props">속성 없음</p>
+</figure><figure class="pane canon" data-canon="D-16">
+  <figcaption><span class="src src-C">정본</span><b>tab</b><span class="vc">현재 배포본</span></figcaption>
+  <div class="shotbox"><img class="shot" src="{{IMG:canon/tab--pc--0.png}}" alt="tab" loading="lazy"></div>
+  <p class="props">지금 웹에 배포된 실제 모습입니다. 상태·크기가 모두 펼쳐져 있습니다.</p>
+</figure></div>
+  <div class="choose">
+    <h4>결정</h4>
+    <div class="opts"><button class="opt" data-d="D-16" data-v="pressed 는 없어진 상태 — 대응 없음"><span class="dot"></span>pressed 는 없어진 상태 — 대응 없음</button><button class="opt" data-d="D-16" data-v="pressed = selected 를 그렇게 부른 것"><span class="dot"></span>pressed = selected 를 그렇게 부른 것</button></div>
+    <div class="freerow">
+      <input class="free" data-d="D-16" type="text" placeholder="다르게 정하시려면 여기에 직접 적어주세요" aria-label="D-16 직접 입력">
+      <button class="freebtn" data-d="D-16">저장</button>
+    </div>
+    <p class="idle"><span>안 정하면</span>탭은 두 파일 모두에서 이름이 다 달라, 지금 자동 대조가 사실상 0입니다.</p>
+  </div>
+</article><article class="dec" id="D-17">
+  <header class="dec-h"><span class="did">D-17</span><h3>모바일 상단바가 정본 6종 중 어디에 붙는가</h3>
+    <span class="badge" data-badge="D-17">미결정</span></header>
+  <p class="why">레거시 A의 모바일 상단바는 5종인데 값 이름이 &#x27;Home titel + alt titel&#x27;(오타 포함) 같은 식이고, 정본은 home-title · standard-title-close 등 6종입니다. B파일에는 appbar_main · appbar_sub 라는 다른 이름의 상단바가 또 있습니다.</p>
+  <div class="compare"><figure class="pane">
+  <figcaption><span class="src src-A">A</span><b>mobile_header</b>
+    <span class="vc">5변형</span>
+    <a href="https://www.figma.com/design/yE5UCFEbmXJBlYJWB24Lz2/SW-UX-GUIDE-V2.4?node-id=540-6112&m=dev" target="_blank" rel="noopener">피그마 ↗</a></figcaption>
+  <div class="shotbox"><img class="shot" src="{{IMG:legacy/mobile-header--60841267.png}}" alt="mobile_header" loading="lazy"></div>
+  <p class="props">Property 1: Home titel + alt titel/Home title_icon 2/Home title_sub title_icon 1/standard_title/standard_title + close btn</p>
+</figure><figure class="pane">
+  <figcaption><span class="src src-B">B</span><b>appbar_sub</b>
+    <span class="vc">4변형</span>
+    <a href="https://www.figma.com/design/vHg5UOMMYI77RHH6vVVppu/S-1-Component-Set-latest-?node-id=42-1974&m=dev" target="_blank" rel="noopener">피그마 ↗</a></figcaption>
+  <div class="shotbox"><img class="shot" src="{{IMG:legacy/appbar-sub--4b17c836.png}}" alt="appbar_sub" loading="lazy"></div>
+  <p class="props">arrow: off/on · right side: close/icon/name icon/none</p>
+</figure><figure class="pane">
+  <figcaption><span class="src src-B">B</span><b>appbar_main</b>
+    <span class="vc">12변형</span>
+    <a href="https://www.figma.com/design/vHg5UOMMYI77RHH6vVVppu/S-1-Component-Set-latest-?node-id=42-3100&m=dev" target="_blank" rel="noopener">피그마 ↗</a></figcaption>
+  <div class="shotbox"><img class="shot" src="{{IMG:legacy/appbar-main--d78d2ff7.png}}" alt="appbar_main" loading="lazy"></div>
+  <p class="props">logo: off/on · right side: 1 icon/2 icon/name icon/none/on · gradient: off/on</p>
+</figure><figure class="pane canon" data-canon="D-17">
+  <figcaption><span class="src src-C">정본</span><b>mobile-header</b><span class="vc">현재 배포본</span></figcaption>
+  <div class="shotbox"><img class="shot" src="{{IMG:canon/mobile-header--mobile--0.png}}" alt="mobile-header" loading="lazy"></div>
+  <p class="props">지금 웹에 배포된 실제 모습입니다. 상태·크기가 모두 펼쳐져 있습니다.</p>
+</figure></div>
+  <div class="choose">
+    <h4>결정</h4>
+    <div class="opts"><button class="opt" data-d="D-17" data-v="A 5종을 정본 6종에 하나씩 짝지어 주세요 (제가 후보를 뽑아 드림)"><span class="dot"></span>A 5종을 정본 6종에 하나씩 짝지어 주세요 (제가 후보를 뽑아 드림)</button><button class="opt" data-d="D-17" data-v="B의 appbar 는 별개 — 대응 없음으로 기록"><span class="dot"></span>B의 appbar 는 별개 — 대응 없음으로 기록</button></div>
+    <div class="freerow">
+      <input class="free" data-d="D-17" type="text" placeholder="다르게 정하시려면 여기에 직접 적어주세요" aria-label="D-17 직접 입력">
+      <button class="freebtn" data-d="D-17">저장</button>
+    </div>
+    <p class="idle"><span>안 정하면</span>모바일 화면 상단은 거의 모든 화면에 들어가는데 대조가 안 됩니다.</p>
+  </div>
+</article><article class="dec" id="D-18">
+  <header class="dec-h"><span class="did">D-18</span><h3>상단바 메뉴 목록·하위메뉴 깊이</h3>
+    <span class="badge" data-badge="D-18">미결정</span></header>
+  <p class="why">A파일에는 &#x27;gnb list&#x27;(메뉴 목록), B파일 gnb 에는 하위메뉴 깊이(1depth/2depth) 축이 있습니다. 정본 gnb 에는 이 축이 없습니다.</p>
+  <div class="compare"><figure class="pane">
+  <figcaption><span class="src src-A">A</span><b>gnb list</b>
+    <span class="vc">3변형</span>
+    <a href="https://www.figma.com/design/yE5UCFEbmXJBlYJWB24Lz2/SW-UX-GUIDE-V2.4?node-id=540-6398&m=dev" target="_blank" rel="noopener">피그마 ↗</a></figcaption>
+  <div class="shotbox"><img class="shot" src="{{IMG:legacy/gnb-list--03e58409.png}}" alt="gnb list" loading="lazy"></div>
+  <p class="props">type: compact-1/compact-2/regular</p>
+</figure><figure class="pane">
+  <figcaption><span class="src src-B">B</span><b>gnb</b>
+    <span class="vc">3변형</span>
+    <a href="https://www.figma.com/design/vHg5UOMMYI77RHH6vVVppu/S-1-Component-Set-latest-?node-id=5-10245&m=dev" target="_blank" rel="noopener">피그마 ↗</a></figcaption>
+  <div class="shotbox"><img class="shot" src="{{IMG:legacy/gnb--5cc936b8.png}}" alt="gnb" loading="lazy"></div>
+  <p class="props">sub menu: 1depth/2depth/off</p>
+</figure><figure class="pane canon" data-canon="D-18">
+  <figcaption><span class="src src-C">정본</span><b>gnb</b><span class="vc">현재 배포본</span></figcaption>
+  <div class="shotbox"><img class="shot" src="{{IMG:canon/gnb--pc--0.png}}" alt="gnb" loading="lazy"></div>
+  <p class="props">지금 웹에 배포된 실제 모습입니다. 상태·크기가 모두 펼쳐져 있습니다.</p>
+</figure></div>
+  <div class="choose">
+    <h4>결정</h4>
+    <div class="opts"><button class="opt" data-d="D-18" data-v="정본 gnb 안에 흡수됨"><span class="dot"></span>정본 gnb 안에 흡수됨</button><button class="opt" data-d="D-18" data-v="별개 컴포넌트 — 대응 없음으로 기록"><span class="dot"></span>별개 컴포넌트 — 대응 없음으로 기록</button></div>
+    <div class="freerow">
+      <input class="free" data-d="D-18" type="text" placeholder="다르게 정하시려면 여기에 직접 적어주세요" aria-label="D-18 직접 입력">
+      <button class="freebtn" data-d="D-18">저장</button>
+    </div>
+    <p class="idle"><span>안 정하면</span>상단바 관련 레거시 3세트 중 2개가 보류로 남습니다.</p>
+  </div>
+</article><article class="dec" id="D-20">
+  <header class="dec-h"><span class="did">D-20</span><h3>콤보박스가 select 인가 dropdown 인가</h3>
+    <span class="badge" data-badge="D-20">미결정</span></header>
+  <p class="why">B파일에는 combobox · m_combobox · m_combobox_time 세 세트(53변형)가 있습니다. 정본에는 select(고르는 입력창)와 dropdown(펼쳐지는 목록)이 따로 있어서 콤보박스가 어느 쪽인지 정해야 합니다.</p>
+  <div class="compare"><figure class="pane">
+  <figcaption><span class="src src-B">B</span><b>combobox</b>
+    <span class="vc">18변형</span>
+    <a href="https://www.figma.com/design/vHg5UOMMYI77RHH6vVVppu/S-1-Component-Set-latest-?node-id=73-3247&m=dev" target="_blank" rel="noopener">피그마 ↗</a></figcaption>
+  <div class="shotbox"><img class="shot" src="{{IMG:legacy/combobox--6a2d0ee1.png}}" alt="combobox" loading="lazy"></div>
+  <p class="props">option: Default/completed/disabled/editing · button: off/on · label: off/on · time: off/on</p>
+</figure><figure class="pane">
+  <figcaption><span class="src src-B">B</span><b>m_combobox</b>
+    <span class="vc">26변형</span>
+    <a href="https://www.figma.com/design/vHg5UOMMYI77RHH6vVVppu/S-1-Component-Set-latest-?node-id=109-26455&m=dev" target="_blank" rel="noopener">피그마 ↗</a></figcaption>
+  <div class="shotbox"><img class="shot" src="{{IMG:legacy/m-combobox--530f9444.png}}" alt="m_combobox" loading="lazy"></div>
+  <p class="props">label: left/off/top · label *: off/on · label * + icon: off/on · button: off/on · time: off · option: Default/completed/disabled/editing</p>
+</figure><figure class="pane">
+  <figcaption><span class="src src-B">B</span><b>m_combobox_time</b>
+    <span class="vc">9변형</span>
+    <a href="https://www.figma.com/design/vHg5UOMMYI77RHH6vVVppu/S-1-Component-Set-latest-?node-id=230-4052&m=dev" target="_blank" rel="noopener">피그마 ↗</a></figcaption>
+  <div class="shotbox"><img class="shot" src="{{IMG:legacy/m-combobox-time--3f70edc0.png}}" alt="m_combobox_time" loading="lazy"></div>
+  <p class="props">label: left/off/top · option: Default/disabled/editing</p>
+</figure><figure class="pane canon" data-canon="D-20">
+  <figcaption><span class="src src-C">정본</span><b>select</b><span class="vc">현재 배포본</span></figcaption>
+  <div class="shotbox"><img class="shot" src="{{IMG:canon/select--pc--0.png}}" alt="select" loading="lazy"></div>
+  <p class="props">지금 웹에 배포된 실제 모습입니다. 상태·크기가 모두 펼쳐져 있습니다.</p>
+</figure></div>
+  <div class="choose">
+    <h4>결정</h4>
+    <div class="opts"><button class="opt" data-d="D-20" data-v="combobox = select"><span class="dot"></span>combobox = select</button><button class="opt" data-d="D-20" data-v="combobox = select + dropdown 조합 (둘 다 참조)"><span class="dot"></span>combobox = select + dropdown 조합 (둘 다 참조)</button></div>
+    <div class="freerow">
+      <input class="free" data-d="D-20" type="text" placeholder="다르게 정하시려면 여기에 직접 적어주세요" aria-label="D-20 직접 입력">
+      <button class="freebtn" data-d="D-20">저장</button>
+    </div>
+    <p class="idle"><span>안 정하면</span>B파일에서 세 번째로 큰 덩어리가 통째로 보류입니다.</p>
+  </div>
+</article><article class="dec" id="D-21">
+  <header class="dec-h"><span class="did">D-21</span><h3>B파일 버튼 색 이름 대응</h3>
+    <span class="badge" data-badge="D-21">미결정</span></header>
+  <p class="why">B파일 버튼은 종류를 색 이름(blue · white · red · mix2)으로 부릅니다. 정본은 primary · secondary · blue-line 입니다. 특히 red 는 정본에서 삭제 확정된 danger 계열로 보이고, mix2 는 뜻을 알 수 없습니다.</p>
+  <div class="compare"><figure class="pane">
+  <figcaption><span class="src src-B">B</span><b>default</b>
+    <span class="vc">18변형</span>
+    <a href="https://www.figma.com/design/vHg5UOMMYI77RHH6vVVppu/S-1-Component-Set-latest-?node-id=16-1880&m=dev" target="_blank" rel="noopener">피그마 ↗</a></figcaption>
+  <div class="shotbox"><img class="shot" src="{{IMG:legacy/default--c555b336.png}}" alt="default" loading="lazy"></div>
+  <p class="props">color: blue/red/white · pressed: off/on · disabled: off/on · long ver: off/on · big ver: off/on</p>
+</figure><figure class="pane">
+  <figcaption><span class="src src-B">B</span><b>popup_button</b>
+    <span class="vc">2변형</span>
+    <a href="https://www.figma.com/design/vHg5UOMMYI77RHH6vVVppu/S-1-Component-Set-latest-?node-id=49-1870&m=dev" target="_blank" rel="noopener">피그마 ↗</a></figcaption>
+  <div class="shotbox"><img class="shot" src="{{IMG:legacy/popup-button--b31f4e9e.png}}" alt="popup_button" loading="lazy"></div>
+  <p class="props">double: off/on · long: off/on</p>
+</figure><figure class="pane">
+  <figcaption><span class="src src-B">B</span><b>m_button</b>
+    <span class="vc">20변형</span>
+    <a href="https://www.figma.com/design/vHg5UOMMYI77RHH6vVVppu/S-1-Component-Set-latest-?node-id=307-8861&m=dev" target="_blank" rel="noopener">피그마 ↗</a></figcaption>
+  <div class="shotbox"><img class="shot" src="{{IMG:legacy/m-button--aba4a60e.png}}" alt="m_button" loading="lazy"></div>
+  <p class="props">color: blue/mix2/red/white · long: off/on · pressed: off/on · disabled: off/on · pair button: off/on</p>
+</figure><figure class="pane canon" data-canon="D-21">
+  <figcaption><span class="src src-C">정본</span><b>button</b><span class="vc">현재 배포본</span></figcaption>
+  <div class="shotbox"><img class="shot" src="{{IMG:canon/button--pc--0.png}}" alt="button" loading="lazy"></div>
+  <p class="props">지금 웹에 배포된 실제 모습입니다. 상태·크기가 모두 펼쳐져 있습니다.</p>
+</figure></div>
+  <div class="choose">
+    <h4>결정</h4>
+    <div class="opts"><button class="opt" data-d="D-21" data-v="blue=primary, white=secondary, red=대응 없음(삭제됨), mix2=확인 필요"><span class="dot"></span>blue=primary, white=secondary, red=대응 없음(삭제됨), mix2=확인 필요</button><button class="opt" data-d="D-21" data-v="다르게 대응 — river님이 지정"><span class="dot"></span>다르게 대응 — river님이 지정</button></div>
+    <div class="freerow">
+      <input class="free" data-d="D-21" type="text" placeholder="다르게 정하시려면 여기에 직접 적어주세요" aria-label="D-21 직접 입력">
+      <button class="freebtn" data-d="D-21">저장</button>
+    </div>
+    <p class="idle"><span>안 정하면</span>B파일 버튼 3세트(40변형)가 보류로 남습니다. 버튼은 가장 많이 쓰이는 컴포넌트입니다.</p>
+  </div>
+</article></section><section class="grp"><div class="grp-h"><h2>정본에 아직 없는 것</h2><span class="cnt">3건</span></div>
+<p class="grp-d">레거시에는 있는데 지금 정본에 대응이 없습니다. &#x27;없어진 것&#x27;인지 &#x27;아직 안 만든 것&#x27;인지가 갈립니다.</p><article class="dec" id="D-05">
+  <header class="dec-h"><span class="did">D-05</span><h3>바텀시트(아래에서 올라오는 창)</h3>
+    <span class="badge" data-badge="D-05">미결정</span></header>
+  <p class="why">레거시 A에는 바텀시트가 5세트나 있습니다(모달용·시간선택용·날짜선택용·항목). 정본에는 바텀시트라는 컴포넌트가 없습니다.</p>
+  <div class="compare"><figure class="pane">
+  <figcaption><span class="src src-A">A</span><b>mobile_bottomsheet</b>
+    <span class="vc">3변형</span>
+    <a href="https://www.figma.com/design/yE5UCFEbmXJBlYJWB24Lz2/SW-UX-GUIDE-V2.4?node-id=670-4386&m=dev" target="_blank" rel="noopener">피그마 ↗</a></figcaption>
+  <div class="shotbox"><img class="shot" src="{{IMG:legacy/mobile-bottomsheet--10d7b4c6.png}}" alt="mobile_bottomsheet" loading="lazy"></div>
+  <p class="props">type: 1 btn/2 btn/default</p>
+</figure><figure class="pane">
+  <figcaption><span class="src src-A">A</span><b>mobile_timepicker_bottomsheet</b>
+    <span class="vc">2변형</span>
+    <a href="https://www.figma.com/design/yE5UCFEbmXJBlYJWB24Lz2/SW-UX-GUIDE-V2.4?node-id=540-3729&m=dev" target="_blank" rel="noopener">피그마 ↗</a></figcaption>
+  <div class="shotbox"><img class="shot" src="{{IMG:legacy/mobile-timepicker-bottomsheet--a95a7a32.png}}" alt="mobile_timepicker_bottomsheet" loading="lazy"></div>
+  <p class="props">Property 1: date_time/default</p>
+</figure><figure class="pane">
+  <figcaption><span class="src src-A">A</span><b>mobile_datepicker_bottomsheet</b>
+    <span class="vc">8변형</span>
+    <a href="https://www.figma.com/design/yE5UCFEbmXJBlYJWB24Lz2/SW-UX-GUIDE-V2.4?node-id=540-3835&m=dev" target="_blank" rel="noopener">피그마 ↗</a></figcaption>
+  <div class="shotbox"><img class="shot" src="{{IMG:legacy/mobile-datepicker-bottomsheet--b175cac0.png}}" alt="mobile_datepicker_bottomsheet" loading="lazy"></div>
+  <p class="props">type: date_time/default · state: default/month select/year range select/year select</p>
+</figure><figure class="pane">
+  <figcaption><span class="src src-A">A</span><b>bottomsheet_option</b>
+    <span class="vc">8변형</span>
+    <a href="https://www.figma.com/design/yE5UCFEbmXJBlYJWB24Lz2/SW-UX-GUIDE-V2.4?node-id=540-5862&m=dev" target="_blank" rel="noopener">피그마 ↗</a></figcaption>
+  <div class="shotbox"><img class="shot" src="{{IMG:legacy/bottomsheet-option--eebe447d.png}}" alt="bottomsheet_option" loading="lazy"></div>
+  <p class="props">type: checkbox/radio/text/text_more/text_state · state: checked/default</p>
+</figure><figure class="pane">
+  <figcaption><span class="src src-A">A</span><b>mobile_bottomsheet</b>
+    <span class="vc">3변형</span>
+    <a href="https://www.figma.com/design/yE5UCFEbmXJBlYJWB24Lz2/SW-UX-GUIDE-V2.4?node-id=540-5903&m=dev" target="_blank" rel="noopener">피그마 ↗</a></figcaption>
+  <div class="shotbox"><img class="shot" src="{{IMG:legacy/mobile-bottomsheet--33319895.png}}" alt="mobile_bottomsheet" loading="lazy"></div>
+  <p class="props">footer button: dual/off/single</p>
+</figure><figure class="pane canon" data-canon="D-05">
+  <figcaption><span class="src src-C">정본</span><b>modal</b><span class="vc">현재 배포본</span></figcaption>
+  <div class="shotbox"><img class="shot" src="{{IMG:canon/modal--pc--0.png}}" alt="modal" loading="lazy"></div>
+  <p class="props">지금 웹에 배포된 실제 모습입니다. 상태·크기가 모두 펼쳐져 있습니다.</p>
+</figure></div>
+  <div class="choose">
+    <h4>결정</h4>
+    <div class="opts"><button class="opt" data-d="D-05" data-v="정본 modal 로 흡수됨"><span class="dot"></span>정본 modal 로 흡수됨</button><button class="opt" data-d="D-05" data-v="정본에 아직 없는 것 — 보강 대상으로 올림"><span class="dot"></span>정본에 아직 없는 것 — 보강 대상으로 올림</button></div>
+    <div class="freerow">
+      <input class="free" data-d="D-05" type="text" placeholder="다르게 정하시려면 여기에 직접 적어주세요" aria-label="D-05 직접 입력">
+      <button class="freebtn" data-d="D-05">저장</button>
+    </div>
+    <p class="idle"><span>안 정하면</span>모바일 레거시 화면의 상당 부분이 대응 없이 남습니다.</p>
+  </div>
+</article><article class="dec" id="D-13">
+  <header class="dec-h"><span class="did">D-13</span><h3>보조 버튼·텍스트 버튼</h3>
+    <span class="badge" data-badge="D-13">미결정</span></header>
+  <p class="why">레거시에 pc_assist_button(보조 버튼) · pc_text_button(글자만 있는 버튼) · m_subbutton 이 있는데 정본 button 변형(primary/secondary/blue-line) 어디에도 대응이 없습니다.</p>
+  <div class="compare"><figure class="pane">
+  <figcaption><span class="src src-A">A</span><b>pc_assist_button</b>
+    <span class="vc">9변형</span>
+    <a href="https://www.figma.com/design/yE5UCFEbmXJBlYJWB24Lz2/SW-UX-GUIDE-V2.4?node-id=540-4650&m=dev" target="_blank" rel="noopener">피그마 ↗</a></figcaption>
+  <div class="shotbox"><img class="shot" src="{{IMG:legacy/pc-assist-button--e879db89.png}}" alt="pc_assist_button" loading="lazy"></div>
+  <p class="props">variants: default/icon_lead/icon_trail · state: default/disabled/hover · icon: off/on</p>
+</figure><figure class="pane">
+  <figcaption><span class="src src-A">A</span><b>pc_text_button</b>
+    <span class="vc">6변형</span>
+    <a href="https://www.figma.com/design/yE5UCFEbmXJBlYJWB24Lz2/SW-UX-GUIDE-V2.4?node-id=540-4705&m=dev" target="_blank" rel="noopener">피그마 ↗</a></figcaption>
+  <div class="shotbox"><img class="shot" src="{{IMG:legacy/pc-text-button--6a72f920.png}}" alt="pc_text_button" loading="lazy"></div>
+  <p class="props">variant: primary/secondary · state: default/disabled/hover</p>
+</figure><figure class="pane">
+  <figcaption><span class="src src-B">B</span><b>m_subbutton</b>
+    <span class="vc">6변형</span>
+    <a href="https://www.figma.com/design/vHg5UOMMYI77RHH6vVVppu/S-1-Component-Set-latest-?node-id=1744-8493&m=dev" target="_blank" rel="noopener">피그마 ↗</a></figcaption>
+  <div class="shotbox"><img class="shot" src="{{IMG:legacy/m-subbutton--5e0ed042.png}}" alt="m_subbutton" loading="lazy"></div>
+  <p class="props">type: Big(Black)/Big(Gray)/Small · disabled: off/on</p>
+</figure><figure class="pane canon" data-canon="D-13">
+  <figcaption><span class="src src-C">정본</span><b>button</b><span class="vc">현재 배포본</span></figcaption>
+  <div class="shotbox"><img class="shot" src="{{IMG:canon/button--pc--0.png}}" alt="button" loading="lazy"></div>
+  <p class="props">지금 웹에 배포된 실제 모습입니다. 상태·크기가 모두 펼쳐져 있습니다.</p>
+</figure></div>
+  <div class="choose">
+    <h4>결정</h4>
+    <div class="opts"><button class="opt" data-d="D-13" data-v="정본 button 에 흡수됨 (변형 중 하나로)"><span class="dot"></span>정본 button 에 흡수됨 (변형 중 하나로)</button><button class="opt" data-d="D-13" data-v="없어진 것 — 대응 없음으로 기록"><span class="dot"></span>없어진 것 — 대응 없음으로 기록</button></div>
+    <div class="freerow">
+      <input class="free" data-d="D-13" type="text" placeholder="다르게 정하시려면 여기에 직접 적어주세요" aria-label="D-13 직접 입력">
+      <button class="freebtn" data-d="D-13">저장</button>
+    </div>
+    <p class="idle"><span>안 정하면</span>이 버튼들이 쓰인 화면은 버튼 검수가 안 됩니다.</p>
+  </div>
+</article><article class="dec" id="D-19">
+  <header class="dec-h"><span class="did">D-19</span><h3>폼 묶음(form)이 컴포넌트인가 패턴인가</h3>
+    <span class="badge" data-badge="D-19">미결정</span></header>
+  <p class="why">B파일의 form_elements 는 입력창·콤보박스·달력·라디오를 한 덩어리로 묶어 놓은 것입니다. 정본 관점에서는 컴포넌트가 아니라 패턴에 가깝습니다.</p>
+  <div class="compare"><figure class="pane">
+  <figcaption><span class="src src-B">B</span><b>form_elements</b>
+    <span class="vc">16변형</span>
+    <a href="https://www.figma.com/design/vHg5UOMMYI77RHH6vVVppu/S-1-Component-Set-latest-?node-id=78-5977&m=dev" target="_blank" rel="noopener">피그마 ↗</a></figcaption>
+  <div class="shotbox"><img class="shot" src="{{IMG:legacy/form-elements--542fc32c.png}}" alt="form_elements" loading="lazy"></div>
+  <p class="props">option: default/disabled/edit-completed/editing/off · button: off/on · combo box: double combo/off/single combo · radio button: off/on · calendar: off/on · text box: off/on</p>
+</figure></div>
+  <div class="choose">
+    <h4>결정</h4>
+    <div class="opts"><button class="opt" data-d="D-19" data-v="패턴으로 분류 — 컴포넌트 대응표에서 제외"><span class="dot"></span>패턴으로 분류 — 컴포넌트 대응표에서 제외</button><button class="opt" data-d="D-19" data-v="컴포넌트로 취급 — 정본 보강 대상"><span class="dot"></span>컴포넌트로 취급 — 정본 보강 대상</button></div>
+    <div class="freerow">
+      <input class="free" data-d="D-19" type="text" placeholder="다르게 정하시려면 여기에 직접 적어주세요" aria-label="D-19 직접 입력">
+      <button class="freebtn" data-d="D-19">저장</button>
+    </div>
+    <p class="idle"><span>안 정하면</span>폼 틀이 컴포넌트 대응표에 계속 &#x27;미매칭&#x27;으로 남아 숫자를 흐립니다.</p>
+  </div>
+</article></section>
+
+<section class="grp">
+  <div class="grp-h"><h2>덤으로 찾은 레거시 파일의 실수</h2><span class="cnt">5건</span></div>
+  <p class="grp-d">대조하는 김에 기계가 발견한 것들입니다. 결정할 사항은 아니지만 고쳐 두시면 좋습니다.</p>
+  <div class="dec"><table>
+    <thead><tr><th>파일</th><th>종류</th><th>어디</th><th>왜 문제인가</th></tr></thead>
+    <tbody><tr><td><span class="src src-B">B</span></td><td>세트 이름 오타</td><td class="mono">pagenation</td><td>pagination 의 오타. 이름으로 찾는 검사는 이걸 영영 못 찾습니다.</td></tr><tr><td><span class="src src-B">B</span></td><td>같은 값 두 번 정의</td><td class="mono">page_num 의 option = Default 가 2개</td><td>같은 이름의 변형이 중복돼 있습니다.</td></tr><tr><td><span class="src src-B">B</span></td><td>대소문자 중복</td><td class="mono">table 의 Default 와 default 가 동시에 존재</td><td>사람 눈에는 같은 값, 기계에는 다른 값입니다.</td></tr><tr><td><span class="src src-A">A</span></td><td>엉뚱한 값 섞임</td><td class="mono">filter-chip with title 의 platform 에 &#x27;filter-chip&#x27; 값</td><td>플랫폼 자리에 컴포넌트 이름이 들어가 있습니다.</td></tr><tr><td><span class="src src-A">A</span></td><td>값 이름 오타</td><td class="mono">mobile_header 의 &#x27;Home titel + alt titel&#x27;</td><td>title 이 titel 로 잘못 적혀 있습니다.</td></tr></tbody></table></div>
+</section>
+
+<footer>
+  <p>대응표 원본: <code>registry/governance/legacy-component-map.json</code> · 결정하신 내용은 제가 읽어서 그대로 반영합니다.</p>
+  <p>레거시 이미지는 두 파일에서 직접 내보낸 것(A 38 · B 26)이고, 정본은 가이드 화면의 상태 격자를 찍은 것입니다. 이미지를 누르면 원본 크기로 열립니다.</p>
+</footer>
+</div>
+
+<script>
+const IDS=["D-01", "D-02", "D-03", "D-04", "D-05", "D-06", "D-07", "D-08", "D-09", "D-10", "D-11", "D-12", "D-13", "D-14", "D-15", "D-16", "D-17", "D-18", "D-19", "D-20", "D-21", "D-22", "D-23"];
+let db=null;
+const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
+
+function paint(id,val){
+  const card=document.getElementById(id); if(!card) return;
+  $$('.opt[data-d="'+id+'"]').forEach(b=>b.classList.toggle('sel',b.dataset.v===val));
+  const badge=document.querySelector('.badge[data-badge="'+id+'"]');
+  const on=!!val;
+  card.classList.toggle('done',on);
+  badge.classList.toggle('set',on);
+  badge.textContent=on?'결정됨':'미결정';
+  const free=card.querySelector('.free');
+  if(val && !$$('.opt[data-d="'+id+'"]').some(b=>b.dataset.v===val)) free.value=val;
+}
+function progress(state){
+  const n=IDS.filter(i=>state[i]).length;
+  $('#barnum').textContent=n+' / '+IDS.length;
+  $('#fill').style.width=(n/IDS.length*100)+'%';
+}
+const state={};
+async function save(id,val){
+  state[id]=val; paint(id,val); progress(state);
+  if(!db) return;
+  try{ await db.doc('decisions/'+id).set({choice:val,at:new Date().toISOString()}); }
+  catch(e){ $('#savenote').textContent='저장 실패: '+(e&&e.code||'알 수 없음')+' — 선택은 화면에만 남습니다.'; }
+}
+$$('.opt').forEach(b=>b.addEventListener('click',()=>save(b.dataset.d,b.dataset.v)));
+$$('.freebtn').forEach(b=>b.addEventListener('click',()=>{
+  const inp=document.querySelector('.free[data-d="'+b.dataset.d+'"]');
+  if(inp.value.trim()) save(b.dataset.d,inp.value.trim());
+}));
+$$('.free').forEach(i=>i.addEventListener('keydown',e=>{
+  if(e.key==='Enter'&&i.value.trim()) save(i.dataset.d,i.value.trim());
+}));
+
+document.addEventListener('click',e=>{
+  const im=e.target.closest('.shot'); if(!im) return;
+  const lb=document.createElement('div'); lb.id='lb';
+  const big=document.createElement('img'); big.src=im.src; lb.appendChild(big);
+  lb.addEventListener('click',()=>lb.remove());
+  document.body.appendChild(lb);
+});
+document.addEventListener('keydown',e=>{ if(e.key==='Escape'){const l=$('#lb'); if(l) l.remove();} });
+
+progress(state);
+(async()=>{
+  try{ db=await claude.use('db'); }catch(_){ db=null; }
+  if(!db){ $('#savenote').textContent='이 화면에서는 저장이 안 됩니다 — 선택은 표시만 됩니다.'; return; }
+  $('#savenote').textContent='선택하면 자동 저장됩니다';
+  db.collection('decisions').onSnapshot(snap=>{
+    snap.docs.forEach(d=>{ const v=d.data()&&d.data().choice; if(v){ state[d.id]=v; paint(d.id,v); } });
+    progress(state);
+  }, err=>{ $('#savenote').textContent='저장 연결이 끊겼습니다 ('+err.code+') — 새로고침해 주세요.'; });
+})();
+</script>
+

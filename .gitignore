@@ -44,3 +44,6 @@ reports/component-preview/
 
 # Figma MCP raw metadata dump (스냅샷 재생성용 원천 캐시, 비커밋)
 data/.figma-raw-metadata.json
+
+# 검수판 게시본 — 뼈대(board.template.html) + screens/**.png 에서 조립한다 (npm run board:build)
+reports/legacy-crosswalk-board/board.html

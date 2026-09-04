@@ -16,9 +16,9 @@ const path = require('path');
 const ROOT = path.resolve(__dirname, '..');
 const DIR = path.join(ROOT, 'reports/legacy-crosswalk-board');
 const MANIFEST = path.join(DIR, 'board-manifest.json');
-const BOARD = path.join(DIR, 'board.html');
+const TEMPLATE = path.join(DIR, 'board.template.html');  // 게시본(board.html)은 조립 결과라 저장소에 없다
 
-if (!fs.existsSync(MANIFEST) || !fs.existsSync(BOARD)) {
+if (!fs.existsSync(MANIFEST) || !fs.existsSync(TEMPLATE)) {
   console.log('Gate 47: 검수판이 없습니다 — 검사 생략(SKIP)');
   process.exit(0);
 }
