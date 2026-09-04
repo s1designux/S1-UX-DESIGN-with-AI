@@ -184,21 +184,75 @@
        #audit-root 는 자기 --muted 를 재선언하므로(#audit-root 가 더 가까운 조상) 검수 탭은 무영향. */
   #tab-install { --muted: #9ca3af; }
   .update-row { display: flex; align-items: center; margin-bottom: 14px; font-size: 11px; color: #6b7280; flex: 0 0 auto; }
-  .update-row .info-ic { margin-left: auto; }   /* 우측 정렬 — 기본 margin-left:8px 를 이 행에서만 덮음 */
-  .update-label { font-weight: 600; }
+  /* 라벨 자체가 툴팁 트리거 — 우측 ⓘ 아이콘은 두지 않는다 */
+  .update-label { position: relative; font-weight: 600; cursor: help; outline: none; }
+  .update-label:hover, .update-label:focus { color: #1d6ceb; }
+  .update-label:hover .info-tip, .update-label:focus .info-tip { display: block; }
+  /* 스크롤 영역 맨 아래 행이라 아래로 열면 잘린다 → 위로, 라벨 왼쪽에 맞춰 편다 */
+  .update-label .info-tip--up { left: 0; right: auto; }
   .update-tip { line-height: 1.7; }
   .update-legend { display: block; margin-top: 6px; padding-top: 6px; border-top: 1px solid #3a4050; color: #9ca3af; font-size: 10px; }
   /* ── 모듈(재구성 필요) 카드 ── */
   .module-card { border: 1px dashed #d1a54a; border-radius: 8px; padding: 10px 12px; margin-bottom: 6px; background: #fffdf6; }
+  .part-row { border-top: 1px solid #eadfc4; padding: 7px 0 8px; }
+  .part-head { display: flex; align-items: center; gap: 6px; }
+  .part-name { font-size: 11.5px; font-weight: 600; color: #2b2b2b; }
+  .part-badge { font-size: 10px; font-weight: 600; margin-left: auto; }
+  .part-meta { font-size: 10px; color: #7a6a45; margin-top: 2px; line-height: 1.5; }
+  /* 부품 선택 인풋 — 정본 Select XXSM(PC) 규격: 높이 28 · 12px · radius 4 · border 1 · 좌16/우8 · 최소폭 140(build-components.ts buildSelect).
+     플러그인 UI 는 tokens.css 를 못 쓰므로 토큰이 가리키는 실제 값을 그대로 적는다:
+     bg=base/white #FFFFFF · border=gray/200 #D9D9D9 · text=gray/900 #202020 (다크: gray-dark/100·500·800) */
+  .ds-select {
+    flex: 0 0 140px; width: 140px; height: 28px;
+    font: 400 12px/1 -apple-system, "SF Pro Text", Pretendard, sans-serif;
+    padding: 0 28px 0 16px; margin: 0;
+    border: 1px solid #D9D9D9; border-radius: 4px;
+    background-color: #FFFFFF; color: #202020;
+    -webkit-appearance: none; appearance: none;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 20 20' fill='none'><path d='M6.5 8.25L10 11.75L13.5 8.25' stroke='%23414141' stroke-width='1.4' stroke-linecap='round' stroke-linejoin='round'/></svg>");
+    background-repeat: no-repeat; background-position: right 8px center;
+    text-overflow: ellipsis; cursor: pointer;
+  }
+  @media (prefers-color-scheme: dark) {
+    .ds-select { background-color: #1C1D23; border-color: #3E4049; color: #B8BABF; }
+  }
+  .part-selects { display: flex; align-items: center; gap: 6px; margin-top: 6px; }
+  .part-selects .grow { flex: 1 1 auto; width: auto; min-width: 0; }
+  .part-actions { display: flex; align-items: center; gap: 6px; justify-content: flex-end; margin-top: 6px; }
+  /* 버튼 — 정본 Button XXSM 규격: 높이 28 · 12px/500 · radius 4 · border 1 · 좌우 8 · 최소폭 56.
+     기본(secondary): bg base/white · border gray/200 · label gray/800 — 정본 color/button/*-secondary--default */
+  .module-card button, #audit-root .swap-card button {
+    height: 28px; min-width: 56px; padding: 0 8px; border-radius: 4px;
+    border: 1px solid #D9D9D9; background: #FFFFFF; color: #353535;
+    font: 500 12px/1.3 -apple-system, "SF Pro Text", Pretendard, sans-serif;
+    white-space: nowrap;
+  }
+  .module-card button.primary, #audit-root .swap-card button.primary { background: #1D6CEB; border-color: #1D6CEB; color: #FFFFFF; }
+  @media (prefers-color-scheme: dark) {
+    .module-card button, #audit-root .swap-card button { background: #1C1D23; border-color: #3E4049; color: #B8BABF; }
+    .module-card button.primary, #audit-root .swap-card button.primary { background: #1D6CEB; border-color: #1D6CEB; color: #FFFFFF; }
+  }
+  /* 미리보기 — 이름을 몰라도 그림으로 무엇인지 알 수 있게 (지금 모습 → 바뀔 모습) */
+  .part-preview { display: flex; align-items: center; gap: 8px; margin-top: 6px; }
+  .part-thumb {
+    height: 34px; max-width: 150px; min-width: 34px; object-fit: contain; object-position: left center;
+    border: 1px solid #D9D9D9; border-radius: 4px; background: #FFFFFF; padding: 2px; box-sizing: border-box;
+  }
+  .part-thumb.empty { display: none; }
+  .part-preview:not(.ready) { display: none; }
+  .part-arrow { color: #757575; font-size: 12px; }
+  @media (prefers-color-scheme: dark) { .part-thumb { background: #1C1D23; border-color: #3E4049; } }
   .module-badge { display: inline-block; font-size: 10px; font-weight: 600; color: #8a6100; background: #fff3d6; border-radius: 4px; padding: 1px 6px; margin-left: 6px; }
 
   /* ── buttons ── */
   .btn-row { display: flex; gap: 8px; }
   /* 설치 탭 하단 버튼: sticky 대신 앱셸의 고정 푸터 — 스크롤바가 버튼 영역을 지나가지 않는다 */
   .install-footer { flex: 0 0 auto; background: #fff; padding: 10px 0 20px; margin-top: 2px; border-top: 1px solid #f3f4f6; }
+  /* 선택 화면 푸터는 구분선 없이 — river 지시(2026-09-03) */
+  #iscreen-select .install-footer { border-top: 0; }
   .btn { flex: 1; padding: 10px; border-radius: 8px; border: none; font-size: 13px; font-weight: 600; cursor: pointer; transition: background 0.15s; }
-  .btn-primary { background: #111827; color: #fff; }
-  .btn-primary:hover { background: #374151; }
+  .btn-primary { background: #1d6ceb; color: #fff; }
+  .btn-primary:hover { background: #155ac4; }
   .btn-primary:disabled { background: #d1d5db; color: #9ca3af; cursor: not-allowed; }
   .btn-secondary { background: #f3f4f6; color: #374151; }
   .btn-secondary:hover { background: #e5e7eb; }
@@ -297,6 +351,14 @@
   #audit-root .audit-intro { padding:18px 16px 10px; }
   #audit-root .audit-intro h2 { margin:0 0 5px; font-size:15px; line-height:1.4; }
   #audit-root .audit-intro p { margin:0; color:var(--muted); font-size:11.5px; }
+  /* 시작 화면 — 큰 안내 한 줄이 주인공, 검사 항목은 보조 텍스트로만 (2026-09-03 river 지시) */
+  #audit-root .audit-hero { flex:1 1 auto; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:32px 24px 12px; text-align:center; }
+  #audit-root .audit-hero-ico { color:var(--muted); opacity:.65; margin-bottom:14px; line-height:0; }
+  #audit-root .audit-hero h2 { margin:0; font-size:20px; font-weight:700; line-height:1.45; color:var(--fg); }
+  #audit-root .audit-hero .selection-card { margin:18px 0 0; max-width:280px; text-align:center; }
+  #audit-root .audit-scope { padding:0 24px 16px; text-align:center; }
+  #audit-root .audit-scope-title { font-size:11px; font-weight:700; color:var(--muted); margin-bottom:4px; }
+  #audit-root .audit-scope-body { margin:0 auto; max-width:290px; font-size:11px; line-height:1.65; color:var(--muted); }
   #audit-root .selection-card { margin:0 16px 12px; padding:10px 12px; border:1px solid var(--line); border-radius:8px; background:var(--code-bg); }
   #audit-root .selection-card .selection-label { font-weight:600; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
   #audit-root .selection-card .selection-hint { margin-top:3px; color:var(--muted); font-size:10.5px; }
@@ -312,15 +374,15 @@
   #audit-root .guide-state-card p { margin:0; color:var(--muted); font-size:10.5px; line-height:1.55; }
   #audit-root .guide-state-card button { width:100%; margin-top:9px; font-weight:600; }
   #audit-root #audit-screen-start.guide-checking .selection-card,
-  #audit-root #audit-screen-start.guide-checking .audit-checklist,
+  #audit-root #audit-screen-start.guide-checking .audit-scope,
   #audit-root #audit-screen-start.guide-checking .audit-actions,
   #audit-root #audit-screen-start.guide-error .selection-card,
-  #audit-root #audit-screen-start.guide-error .audit-checklist,
+  #audit-root #audit-screen-start.guide-error .audit-scope,
   #audit-root #audit-screen-start.guide-error .audit-actions,
   #audit-root #audit-screen-start.guide-outdated .selection-card,
-  #audit-root #audit-screen-start.guide-outdated .audit-checklist,
+  #audit-root #audit-screen-start.guide-outdated .audit-scope,
   #audit-root #audit-screen-start.guide-outdated .audit-actions,
-  #audit-root #audit-screen-start.guide-outdated .audit-intro { display:none; }
+  #audit-root #audit-screen-start.guide-outdated .audit-hero { display:none; }
   #audit-root .tabs button:disabled { opacity:.42; cursor:not-allowed; filter:none; }
   #audit-root .rollback-note { padding:7px 16px; color:var(--muted); font-size:10px; line-height:1.5; border-top:1px solid var(--line); }
   #audit-root .audit-checklist { margin:0 16px 14px; border:1px solid var(--line); border-radius:8px; overflow:hidden; }
@@ -336,6 +398,15 @@
   #audit-root .check-result { color:var(--muted); font-size:10.5px; white-space:nowrap; }
   #audit-root .check-result.fail { color:#d14343; font-weight:600; }
   #audit-root .check-result.warning, #audit-root .check-result.choice { color:var(--med); font-weight:600; }
+  /* 검사 중 화면 = 설치·패턴 탭 로딩 화면과 같은 모양으로 통일(river 지시 2026-09-03).
+     .spinner 는 설치 탭과 같은 것을 그대로 쓴다(무스코프 클래스) — 한 곳만 고치면 셋이 함께 바뀐다. */
+  #audit-root .audit-loading { flex:1 1 auto; display:flex; flex-direction:column; justify-content:center; padding:0 16px 28px; }
+  #audit-root .audit-loading-pct { text-align:center; font-size:30px; font-weight:700; color:var(--fg); letter-spacing:-0.5px; line-height:1.1; }
+  #audit-root .audit-loading-heading { text-align:center; font-size:13px; font-weight:600; color:var(--fg); margin-top:6px; }
+  #audit-root .audit-loading-label { margin:8px 0 12px; text-align:center; font-size:11px; color:var(--muted); min-height:15px; word-break:break-all; }
+  #audit-root .audit-loading-track { height:6px; background:var(--code-bg); border-radius:3px; overflow:hidden; }
+  #audit-root .audit-loading-fill { width:0; height:100%; background:var(--btn-bg); border-radius:3px; transition:width .2s ease; }
+  #audit-root .audit-loading-sub { margin:14px 0 0; text-align:center; font-size:11px; color:var(--muted); line-height:1.6; }
   #audit-root .progress-wrap { padding:0 16px 14px; }
   #audit-root .progress-meta { display:flex; justify-content:space-between; color:var(--muted); font-size:11px; margin-bottom:6px; }
   #audit-root .progress-track { height:6px; background:var(--code-bg); border-radius:999px; overflow:hidden; }
@@ -443,8 +514,6 @@
   같은 이름의 컬렉션이 있으면 값만 업데이트되며 기존 바인딩은 유지됩니다.
 </div>
 
-</div><!-- /.iscroll — 스크롤은 여기까지. 아래 .update-row 는 툴팁이 잘리지 않게 스크롤 영역 밖에 둔다 -->
-
 <!-- ══════════════════════════════════════════════════════════════════════════
      이번 업데이트 — 과거 이력은 쌓지 않는다. 항상 "이번 것"만 보여준다.
 
@@ -461,15 +530,17 @@
         확인: node scripts/installer-update-notes.js
      ══════════════════════════════════════════════════════════════════════ -->
 <div class="update-row">
-  <span class="update-label">📋 이번 업데이트</span>
-  <span class="info-ic" tabindex="0" aria-label="이번 업데이트 내용"
-    >ⓘ<span class="info-tip info-tip--up info-tip--wrap update-tip"
+  <span class="update-label" tabindex="0" aria-label="이번 업데이트 내용"
+    >📋 이번 업데이트<span class="info-tip info-tip--up info-tip--wrap update-tip"
       ><b>{{UPDATE_DATE}}</b><br>
       {{UPDATE_NOTES}}
       <span class="update-legend">+ 신설 · ~ 값 변경 · - 폐기</span
     ></span
   ></span>
 </div>
+
+</div><!-- /.iscroll — 스크롤은 여기까지 (이번 업데이트 행은 의존성 안내 바로 아래, 스크롤 영역 안) -->
+
 
 <div class="btn-row install-footer" id="btn-row">
   <button class="btn btn-secondary" id="btn-cancel" onclick="cancel()">취소</button>
@@ -601,11 +672,15 @@
 <div class="tab-panel" id="tab-audit">
 <div id="audit-root">
 
-  <!-- 시작: 캔버스 선택 상태 + 10개 검사 항목 -->
+  <!-- 시작: 큰 안내 한 줄 + 선택 배지 + 검사 항목 보조 텍스트 -->
   <section class="audit-screen active guide-checking" id="audit-screen-start">
-    <div class="audit-intro">
-      <h2>Figma에서 검사할 화면을 선택하세요</h2>
-      <p>부분 선택과 전체 선택을 그대로 검사합니다. 원본은 바뀌지 않습니다.</p>
+    <div class="audit-hero">
+      <div class="audit-hero-ico" aria-hidden="true"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="4" width="18" height="14" rx="2" stroke="currentColor" stroke-width="1.4"/><path d="M8 21h8" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/><path d="M9.4 11.4l1.9 1.9 3.3-3.7" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <h2>검수할 항목을 선택해 주세요.</h2>
+      <div class="selection-card" id="audit-selection-card" hidden>
+        <div class="selection-label" id="audit-selection-label">선택 없음</div>
+        <div class="selection-hint" id="audit-selection-hint"></div>
+      </div>
     </div>
     <div class="guide-state-card visible" id="audit-guide-checking" role="status">
       <b>가이드 현황을 확인하고 있습니다…</b>
@@ -621,11 +696,16 @@
       <p id="audit-install-missing">최신 기준을 새 페이지에 함께 설치한 뒤 검수할 수 있습니다.</p>
       <button id="btn-go-install">최신 가이드로 업데이트</button>
     </div>
-    <div class="selection-card">
-      <div class="selection-label" id="audit-selection-label">선택 없음</div>
-      <div class="selection-hint" id="audit-selection-hint">캔버스에서 검사할 요소를 하나 이상 선택하세요.</div>
+    <div class="audit-scope">
+      <div class="audit-scope-title">검사 항목</div>
+      <p class="audit-scope-body">컴포넌트 매칭, 색상 토큰·시맨틱 용도·색상 스타일·투명도, 텍스트 스타일·크기·값·글꼴, 그림자 총 10가지</p>
     </div>
-    <div class="audit-checklist" data-checklist="start">
+    <div class="audit-actions"><button class="primary" id="btn-audit" disabled>검사 시작</button></div>
+  </section>
+
+
+  <!-- 진행·결과 화면이 복제해 쓰는 10개 항목 원본 (시작 화면에는 표시하지 않는다) -->
+  <template id="audit-checklist-template">
       <div class="audit-checklist-title">검사 항목 10개</div>
       <div class="check-group">컴포넌트</div>
       <div class="check-row" data-item="0"><span class="check-icon">○</span><span class="check-name">최신 컴포넌트 매칭</span><span class="check-result"></span></div>
@@ -641,18 +721,19 @@
       <div class="check-row" data-item="8"><span class="check-icon">○</span><span class="check-name">가이드 글꼴 준수</span><span class="check-result"></span></div>
       <div class="check-group">그림자</div>
       <div class="check-row" data-item="9"><span class="check-icon">○</span><span class="check-name">가이드 그림자 매칭</span><span class="check-result"></span></div>
-    </div>
-    <div class="audit-actions"><button class="primary" id="btn-audit" disabled>검사 시작</button></div>
-  </section>
+  </template>
 
   <!-- 진행: 같은 체크리스트가 순서대로 완료됨 -->
   <section class="audit-screen" id="audit-screen-running">
-    <div class="audit-intro"><h2>검사 중입니다</h2><p id="audit-running-selection">선택 영역을 확인하고 있습니다.</p></div>
-    <div class="progress-wrap">
-      <div class="progress-meta"><span id="audit-progress-label">검사 준비 중…</span><b id="audit-progress-pct">0%</b></div>
-      <div class="progress-track"><div class="progress-fill" id="audit-progress-fill"></div></div>
+    <div class="audit-loading">
+      <div class="spinner"></div>
+      <div class="audit-loading-pct" id="audit-progress-pct">0%</div>
+      <div class="audit-loading-heading">검사 중입니다</div>
+      <div class="audit-loading-label" id="audit-progress-label">검사 준비 중…</div>
+      <div class="audit-loading-track"><div class="audit-loading-fill" id="audit-progress-fill"></div></div>
+      <p class="audit-loading-sub" id="audit-running-selection">선택 영역을 확인하고 있습니다.</p>
     </div>
-    <div class="audit-checklist" data-checklist="running"></div>
+    <!-- 검사 중에는 진행 표시만 둔다 — 10개 항목표는 결과 화면에서만 보여준다(river 지시 2026-09-03) -->
   </section>
 
   <!-- 결과: 전체·컴포넌트·색·텍스트·그림자 칩 -->
@@ -1214,7 +1295,9 @@ function applyAuditSelectionSummary(p) {
   $('#audit-selection-label').textContent = (p && p.label) || '선택 없음';
   $('#audit-selection-hint').textContent = auditSelectionCount > 0
     ? `${auditSelectionCount}개 선택됨 · 이 범위만 검사합니다.`
-    : '캔버스에서 검사할 요소를 하나 이상 선택하세요.';
+    : '';
+  // 선택 전에는 배지를 숨겨 큰 안내 한 줄만 남긴다.
+  $('#audit-selection-card').hidden = auditSelectionCount < 1;
   const btn = $('#btn-audit');
   btn.disabled = auditInspecting || auditSelectionCount < 1 || !auditInstalled;
   btn.textContent = auditInspecting ? '검사 중…' : '검사 시작';
@@ -1234,10 +1317,10 @@ function beginAuditGuideCheck() {
   send('selection-state', { requestId: auditGuideRequestId });
 }
 
-// 시작 화면의 동일한 10개 항목을 진행 화면에도 복제한다.
-const startChecklist = document.querySelector('[data-checklist="start"]');
-const runningChecklist = document.querySelector('[data-checklist="running"]');
-if (startChecklist && runningChecklist) runningChecklist.innerHTML = startChecklist.innerHTML;
+// 10개 항목 원본은 숨은 템플릿 1곳 — 진행·결과 화면이 그것을 복제해 쓴다.
+const checklistTemplate = document.querySelector('#audit-checklist-template');
+const CHECKLIST_HTML = checklistTemplate ? checklistTemplate.innerHTML : '';
+// 진행 화면에는 체크리스트를 두지 않는다(로딩만) — 결과 화면만 CHECKLIST_HTML 을 복제해 쓴다.
 
 function showAuditScreen(name) {
   document.querySelectorAll('#audit-root .audit-screen').forEach((screen) => {
@@ -1276,7 +1359,7 @@ function updateProgress(payload) {
 
 function renderChecklistResults(items) {
   const target = $('#checklist-result');
-  target.innerHTML = startChecklist.innerHTML;
+  target.innerHTML = CHECKLIST_HTML;
   target.querySelector('.audit-checklist-title').textContent = '항목별 결과';
   const byId = {};
   (items || []).forEach((item) => { byId[item.id] = item; });
@@ -1435,6 +1518,19 @@ function renderRecentSwaps() {
   });
 }
 
+function manualCandidate(c, sug) {
+  const chosen = chosenVariant(c.id);
+  if (!chosen) return null;
+  const st = variantState[c.id];
+  const label = st && st.info && st.info.hasVariants ? (sug.name + ' · ' + chosen.label) : sug.name;
+  return {
+    id: c.id, instanceId: c.instanceId, instanceName: c.instanceName,
+    currentMainId: "", currentMainName: c.currentMainName, currentMainPath: c.currentMainPath,
+    suggestedId: chosen.id, suggestedKey: chosen.key, suggestedType: "COMPONENT",
+    suggestedName: label, suggestedSource: sug.source, confidence: "ambiguous"
+  };
+}
+
 function renderManualList(list) {
   const box = $("#improved-manual");
   manualMap = {};
@@ -1451,13 +1547,29 @@ function renderManualList(list) {
     html += '<div class="swap-card" data-manual-id="' + escape(c.id) + '">';
     html += '<div class="swap-card-head"><div class="iname">' + escape(c.instanceName) + '</div><span style="font-size:10px;color:var(--med);font-weight:600;">이름 다름</span></div>';
     html += '<div class="swap-card-meta"><span class="from">현재: ' + escape(c.currentMainName) + ' · ' + escape(c.currentMainPath) + '</span></div>';
-    html += '<select data-role="manual-pick" style="width:100%;margin-top:6px;font-size:11px;padding:5px;">' + opts + '</select>';
+    html += '<div class="part-preview">';
+    html += '<img class="part-thumb empty" data-role="thumb-now" alt="">';
+    html += '<span class="part-arrow" data-role="thumb-arrow" hidden>→</span>';
+    html += '<img class="part-thumb empty" data-role="thumb-next" alt="">';
+    html += '</div>';
+    html += '<div class="part-selects">';
+    html += '<select class="ds-select" data-role="manual-pick">' + opts + '</select>';
+    html += '<select class="ds-select grow" data-role="variant-pick" data-part-id="' + escape(c.id) + '" disabled><option>변형 읽는 중…</option></select>';
+    html += '</div>';
     html += '<div class="apply-row">';
-    html += '<button data-action="manual-select">Figma에서 선택</button>';
+    html += '<button data-action="import-component">컴포넌트 가져오기</button>';
     html += '<button data-action="manual-swap" class="primary">교체</button>';
     html += '</div></div>';
   }
   box.innerHTML = html;
+  list.forEach((c) => {
+    const row = rowEl(c.id);
+    if (!row) return;
+    lazyHydrate(row, function () {
+      setThumb(row.querySelector('[data-role="thumb-now"]'), { nodeId: c.instanceId });
+      loadVariantsFor(c.id, c.instanceId, c.suggestions[0]);
+    });
+  });
   box.querySelectorAll('[data-manual-id]').forEach((card) => {
     const id = card.dataset.manualId;
     card.addEventListener("click", (event) => {
@@ -1465,8 +1577,14 @@ function renderManualList(list) {
       if (!c) return;
       const target = event.target;
       const action = target.dataset && target.dataset.action;
-      if (action === "manual-select") {
-        send("select-node", { nodeId: c.instanceId });
+      if (action === "import-component") {
+        // 고른 정본을 교체하지 않고 캔버스로만 가져온다 (입력값이 있어 교체하면 안 되는 경우)
+        const pick = card.querySelector('[data-role="manual-pick"]');
+        const sug = c.suggestions[parseInt(pick.value, 10) || 0];
+        const candidate = sug && manualCandidate(c, sug);
+        if (!candidate) { showToast('바꿀 변형을 먼저 고르세요'); event.stopPropagation(); return; }
+        target.disabled = true; target.textContent = "가져오는 중…";
+        send("import-component", { candidate: candidate });
         event.stopPropagation();
         return;
       }
@@ -1485,58 +1603,414 @@ function renderManualList(list) {
       }
       const sel = card.querySelector('[data-role="manual-pick"]');
       const sug = c.suggestions[parseInt(sel.value, 10) || 0];
-      if (!sug) return;
+      // 사용자가 화면에서 보고 고른 **변형 하나**를 대상으로 한다(세트를 넘기면 기본 변형으로 떨어질 수 있다)
+      const candidate = sug && manualCandidate(c, sug);
+      if (!candidate) { showToast('바꿀 변형을 먼저 고르세요'); event.stopPropagation(); return; }
       const btn = card.querySelector('[data-action="manual-swap"]');
       btn.disabled = true; btn.textContent = "…";
-      // 사용자가 고른 정본을 대상으로 하는 교체 후보를 구성 → 기존 apply-swap(lenient) 재사용
-      const candidate = {
-        id: c.id, instanceId: c.instanceId, instanceName: c.instanceName,
-        currentMainId: "", currentMainName: c.currentMainName, currentMainPath: c.currentMainPath,
-        suggestedId: sug.id, suggestedKey: sug.key, suggestedType: sug.type,
-        suggestedName: sug.name, suggestedSource: sug.source, confidence: "ambiguous"
-      };
-      pendingSwapUi[id] = { instanceId: c.instanceId, instanceName: c.instanceName, currentName: c.currentMainName, suggestedName: sug.name, kind: 'manual' };
+      pendingSwapUi[id] = { instanceId: c.instanceId, instanceName: c.instanceName, currentName: c.currentMainName, suggestedName: candidate.suggestedName, kind: 'manual' };
       send("apply-swap", { candidate });
       event.stopPropagation();
     });
-    card.querySelector('[data-role="manual-pick"]').addEventListener("change", () => {
+    card.addEventListener("change", (event) => {
       const c = manualMap[id];
-      if (c) send("select-node", { nodeId: c.instanceId });
+      if (!c) return;
+      const t = event.target;
+      if (t.closest && t.closest('[data-role="manual-pick"]')) {
+        send("select-node", { nodeId: c.instanceId });
+        const sug = c.suggestions[parseInt(t.value, 10) || 0];
+        loadVariantsFor(id, c.instanceId, sug);
+        return;
+      }
+      if (t.closest && t.closest('[data-role="variant-pick"]')) {
+        const st = variantState[id];
+        if (st) st.chosenId = t.value || null;
+        const row = rowEl(id);
+        const thumb = row && row.querySelector('[data-role="thumb-next"]');
+        const chosen = chosenVariant(id);
+        if (thumb) {
+          if (chosen) setThumb(thumb, { ref: { id: chosen.id, key: chosen.key, type: 'COMPONENT' } });
+          else { thumb.removeAttribute('src'); thumb.classList.add('empty'); syncPreviewRow(thumb); }
+        }
+        updateSwapEnabled(id);
+      }
     });
   });
 }
 
-// 모듈(여러 부품이 뭉친 것) — 통째/leaf 교체 부적절. "재구성 필요"로 표시만, Figma 선택은 제공.
+// 모듈(여러 부품이 뭉친 것) — 묶음 통째로는 교체하지 않지만, **안쪽 부품은 검수하고 교체한다.**
+// Figma 는 묶음 안 부품의 교체를 막는 경우가 있어, 먼저 그대로 시도하고 막히면 [묶음 풀고 교체]를 제안한다.
 let moduleMap = {};
+let blockedParts = {};     // partId → true (그대로는 교체가 막힌 부품)
+let moduleQueue = null;    // { moduleId, allowDetach } — "부품 전체 교체" 진행 중
+
+const PART_BADGE = {
+  canonical: ['이미 최신', 'var(--high)'],
+  auto: ['교체 가능', 'var(--high)'],
+  manual: ['이름 다름', 'var(--med)'],
+  raw: ['컴포넌트 아님', 'var(--muted)'],
+};
+
+function modulePartsHtml(c) {
+  const parts = c.parts || [];
+  if (parts.length === 0) {
+    return '<div style="font-size:10px;color:var(--muted);margin-top:6px;">안쪽에서 검수할 부품을 찾지 못했습니다.</div>';
+  }
+  let html = '';
+  for (const p of parts) {
+    const badge = PART_BADGE[p.kind] || PART_BADGE.raw;
+    html += '<div class="part-row" data-part-row="' + escape(p.id) + '">';
+    html += '<div class="part-head"><span class="part-name">' + escape(p.nodeName) + '</span>';
+    html += '<span class="part-badge" style="color:' + badge[1] + ';">' + badge[0] + '</span></div>';
+    html += '<div class="part-meta">현재: ' + escape(p.currentMainName) + '</div>';
+    if (p.kind === 'canonical') { html += '</div>'; continue; }
+    if (p.suggestions && p.suggestions.length) {
+      // 지금 모습 → 바뀔 모습 (이름을 몰라도 그림으로 고를 수 있게)
+      html += '<div class="part-preview">';
+      html += '<img class="part-thumb empty" data-role="thumb-now" alt="">';
+      html += '<span class="part-arrow" data-role="thumb-arrow" hidden>→</span>';
+      html += '<img class="part-thumb empty" data-role="thumb-next" alt="">';
+      html += '</div>';
+      html += '<div class="part-selects">';
+      html += '<select class="ds-select" data-role="part-pick" data-part-id="' + escape(p.id) + '">' + p.suggestions.map((s, i) =>
+        '<option value="' + i + '">' + escape(s.name) + (s.score > 0 ? ' · ' + Math.round(s.score * 100) + '%' : '') + '</option>'
+      ).join('') + '</select>';
+      html += '<select class="ds-select grow" data-role="variant-pick" data-part-id="' + escape(p.id) + '" disabled><option>변형 읽는 중…</option></select>';
+      html += '</div><div class="part-actions">';
+      if (p.kind !== 'raw' && blockedParts[p.id]) {
+        // 묶음을 먼저 풀어야 하는 상태 — 가져오기·교체는 감추고 [묶음 풀기] 하나만 낸다.
+        html += '<button class="primary" data-action="module-detach">묶음 풀기</button>';
+      } else {
+        html += '<button data-action="part-import" data-part-id="' + escape(p.id) + '">컴포넌트 가져오기</button>';
+        if (p.kind !== 'raw') {
+          html += '<button class="primary" data-action="part-swap" data-part-id="' + escape(p.id) + '">교체</button>';
+        }
+      }
+      html += '</div>';
+    } else {
+      html += '<div class="part-meta">대응할 정본 부품을 찾지 못했습니다.</div>';
+    }
+    html += '</div>';
+  }
+  return html;
+}
+
+function moduleCardHtml(c) {
+  const parts = c.parts || [];
+  const swappable = parts.filter((p) => p.kind === 'auto' || p.kind === 'manual').length;
+  let html = '<div class="swap-card-head"><div class="iname">' + escape(c.instanceName) + '</div><span class="module-badge">모듈 · 부품 ' + (parts.length || c.nestedCount || 0) + '개</span></div>';
+  html += '<div class="swap-card-meta"><span class="from">현재: ' + escape(c.currentMainName) + '</span></div>';
+  html += modulePartsHtml(c);
+  const anyBlocked = parts.some((p) => blockedParts[p.id]);
+  html += '<div class="part-actions" style="margin-top:8px;">';
+  if (c.detached) html += '<button data-action="module-undo">되돌리기</button>';
+  if (swappable > 0) {
+    if (!anyBlocked) html += '<button class="primary" data-action="module-swap-all">부품 ' + swappable + '개 모두 교체</button>';
+  }
+  html += '</div>';
+  return html;
+}
+
+function rerenderModuleCard(moduleId) {
+  const c = moduleMap[moduleId];
+  const card = $("#improved-modules").querySelector('[data-module-id="' + moduleId + '"]');
+  if (!c || !card) return;
+  card.innerHTML = moduleCardHtml(c);
+  hydrateModuleCard(moduleId);
+}
+
+// ─── 미리보기(그림) · 변형(크기·유형·상태) 읽기 ─────────────────────────────
+// 이름만으로 교체하면 secondary 가 primary 로, 글자 헤더가 체크박스 헤더로 바뀐다.
+// 그래서 ①어느 변형으로 바꿀지를 화면에 내보이고 ②지금 모습과 바뀔 모습을 그림으로 보여준다.
+let previewCache = {};     // 키 → blob URL
+let asyncReplies = {};     // requestId → 콜백
+let asyncSeq = 0;
+let variantState = {};     // partId → { info, chosenId }
+
+// 미리보기·변형 읽기는 Figma 왕복이라 비싸다 — 화면에 들어온 카드부터 채운다.
+let hydrateObserver = null;
+const hydrateJobs = new WeakMap();
+function lazyHydrate(el, fn) {
+  if (!el) return;
+  if (typeof IntersectionObserver === 'undefined') { fn(); return; }
+  if (!hydrateObserver) {
+    hydrateObserver = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) {
+        if (!en.isIntersecting) return;
+        const job = hydrateJobs.get(en.target);
+        hydrateObserver.unobserve(en.target);
+        hydrateJobs.delete(en.target);
+        if (job) job();
+      });
+    }, { root: document.getElementById('audit-root'), rootMargin: '300px' });
+  }
+  hydrateJobs.set(el, fn);
+  hydrateObserver.observe(el);
+}
+
+function ask(type, payload, cb) {
+  const requestId = 'r' + (++asyncSeq);
+  asyncReplies[requestId] = cb;
+  send(type, Object.assign({ requestId: requestId }, payload));
+}
+
+function syncPreviewRow(img) {
+  const box = img && img.closest ? img.closest('.part-preview') : null;
+  if (!box) return;
+  const now = box.querySelector('[data-role="thumb-now"]');
+  const next = box.querySelector('[data-role="thumb-next"]');
+  const arrow = box.querySelector('[data-role="thumb-arrow"]');
+  const hasNow = now && !now.classList.contains('empty');
+  const hasNext = next && !next.classList.contains('empty');
+  if (arrow) arrow.hidden = !(hasNow && hasNext);
+  box.classList.toggle('ready', !!(hasNow || hasNext));
+}
+
+function setThumb(img, spec) {
+  if (!img) return;
+  const key = spec.nodeId ? ('n:' + spec.nodeId) : ('c:' + spec.ref.id + ':' + (spec.ref.key || ''));
+  if (previewCache[key]) { img.src = previewCache[key]; img.classList.remove('empty'); syncPreviewRow(img); return; }
+  ask('preview', spec, function (p) {
+    if (!p || !p.ok || !p.bytes) return;
+    const url = URL.createObjectURL(new Blob([p.bytes], { type: 'image/png' }));
+    previewCache[key] = url;
+    img.src = url;
+    img.classList.remove('empty');
+    syncPreviewRow(img);
+  });
+}
+
+// 부품 행(모듈 안) 과 수동 매핑 카드는 같은 배선을 쓴다 — id 로 찾는다.
+function rowEl(id) {
+  return document.querySelector('[data-part-row="' + id + '"]')
+    || document.querySelector('[data-manual-id="' + id + '"]')
+    || document.querySelector('#swap-list [data-id="' + id + '"]');
+}
+function partRowEl(moduleId, partId) { return rowEl(partId); }
+
+function chosenVariant(partId) {
+  const st = variantState[partId];
+  if (!st || !st.info || !st.info.options || !st.chosenId) return null;
+  return st.info.options.filter(function (o) { return o.id === st.chosenId; })[0] || null;
+}
+
+function updateSwapEnabled(id) {
+  const row = rowEl(id);
+  if (!row) return;
+  const ok = !!chosenVariant(id);
+  ['part-swap', 'part-import', 'manual-swap', 'apply-swap', 'import-component'].forEach(function (act) {
+    const btn = row.querySelector('[data-action="' + act + '"]');
+    if (btn) { btn.disabled = !ok; btn.title = ok ? '' : '바꿀 변형을 먼저 고르세요'; }
+  });
+}
+function updatePartSwapEnabled(moduleId, partId) { updateSwapEnabled(partId); }
+
+function loadVariantsFor(id, instanceId, sug) {
+  const row = rowEl(id);
+  if (!row || !sug) return;
+  const vsel = row.querySelector('[data-role="variant-pick"]');
+  if (vsel) { vsel.disabled = true; vsel.innerHTML = '<option>변형 읽는 중…</option>'; }
+  variantState[id] = { info: null, chosenId: null };
+  updateSwapEnabled(id);
+  ask('variant-options', { ref: { id: sug.id, key: sug.key, type: sug.type }, instanceId: instanceId }, function (info) {
+    applyVariantInfo(id, info);
+  });
+}
+
+function loadVariants(moduleId, partId) {
+  const c = moduleMap[moduleId];
+  const part = c && (c.parts || []).filter(function (p) { return p.id === partId; })[0];
+  const row = rowEl(partId);
+  if (!part || !row) return;
+  const sel = row.querySelector('[data-role="part-pick"]');
+  loadVariantsFor(partId, part.nodeId, part.suggestions[(sel && parseInt(sel.value, 10)) || 0]);
+}
+
+function applyVariantInfo(id, info) {
+  const partId = id;
+  variantState[partId] = { info: info, chosenId: (info && info.pickedId) || null };
+  const row = rowEl(partId);
+  if (!row) return;
+  const vsel = row.querySelector('[data-role="variant-pick"]');
+  if (vsel) {
+    if (!info || !info.ok || !info.options || info.options.length === 0) {
+      vsel.innerHTML = '<option>변형 없음</option>'; vsel.disabled = true;
+    } else if (!info.hasVariants) {
+      vsel.innerHTML = '<option>' + escape(info.setName) + '</option>'; vsel.disabled = true;
+    } else {
+      let html = info.pickedId ? '' : '<option value="">변형을 고르세요</option>';
+      html += info.options.map(function (o) {
+        return '<option value="' + escape(o.id) + '"' + (o.id === info.pickedId ? ' selected' : '') + '>' + escape(o.label) + '</option>';
+      }).join('');
+      vsel.innerHTML = html;
+      vsel.disabled = false;
+    }
+  }
+  const thumb = row.querySelector('[data-role="thumb-next"]');
+  const chosen = chosenVariant(partId);
+  if (thumb) {
+    if (chosen) setThumb(thumb, { ref: { id: chosen.id, key: chosen.key, type: 'COMPONENT' } });
+    else { thumb.removeAttribute('src'); thumb.classList.add('empty'); syncPreviewRow(thumb); }
+  }
+  updateSwapEnabled(partId);
+}
+
+function hydrateModuleCard(moduleId) {
+  const c = moduleMap[moduleId];
+  const card = $("#improved-modules").querySelector('[data-module-id="' + moduleId + '"]');
+  if (!c || !card) return;
+  (c.parts || []).forEach(function (part) {
+    const row = card.querySelector('[data-part-row="' + part.id + '"]');
+    if (!row) return;
+    lazyHydrate(row, function () {
+      setThumb(row.querySelector('[data-role="thumb-now"]'), { nodeId: part.nodeId });
+      if (part.suggestions && part.suggestions.length) loadVariants(moduleId, part.id);
+    });
+  });
+}
+
 function renderModuleList(list) {
   const box = $("#improved-modules");
   moduleMap = {};
+  blockedParts = {};
+  moduleQueue = null;
   if (!list || list.length === 0) { box.style.display = "none"; box.innerHTML = ""; return; }
   box.style.display = "block";
-  let html = '<div style="font-size:11px;color:var(--fg);font-weight:600;margin:10px 2px 4px;">여러 부품이 뭉친 모듈 ' + list.length + '건 — 최신 컴포넌트로 재구성 필요</div>';
-  html += '<div style="font-size:10px;color:var(--muted);margin:0 2px 8px;">여러 최신 부품이 들어 있는 묶음은 하나의 컴포넌트로 줄이지 않습니다. 묶음 구조를 유지한 채 내부 부품 단위로 재구성해야 합니다.</div>';
+  let html = '<div style="font-size:11px;color:var(--fg);font-weight:600;margin:10px 2px 4px;">여러 부품이 뭉친 모듈 ' + list.length + '건 — 부품 단위로 교체</div>';
   for (const c of list) {
     moduleMap[c.id] = c;
-    html += '<div class="module-card" data-module-id="' + escape(c.id) + '">';
-    html += '<div class="swap-card-head"><div class="iname">' + escape(c.instanceName) + '</div><span class="module-badge">모듈 · 부품 ' + (c.nestedCount || 0) + '개</span></div>';
-    html += '<div class="swap-card-meta"><span class="from">현재: ' + escape(c.currentMainName) + '</span></div>';
-    if (c.repeatedPartName && c.repeatedPartCount) {
-      html += '<div style="font-size:10px;color:var(--muted);margin-top:4px;">' + escape(c.repeatedPartName) + '로 교체 가능한 부품 ' + c.repeatedPartCount + '개가 들어 있어 통째 교체하지 않음</div>';
-    }
-    if (c.multiPartNote) {
-      html += '<div style="font-size:10px;color:var(--muted);margin-top:4px;">' + escape(c.multiPartNote) + '</div>';
-    }
-    html += '<div class="apply-row"><button data-action="module-select">Figma에서 선택</button></div>';
-    html += '</div>';
+    html += '<div class="module-card" data-module-id="' + escape(c.id) + '">' + moduleCardHtml(c) + '</div>';
   }
   box.innerHTML = html;
+  list.forEach((c) => hydrateModuleCard(c.id));
   box.querySelectorAll('[data-module-id]').forEach((card) => {
     const id = card.dataset.moduleId;
-    card.querySelector('[data-action="module-select"]').addEventListener("click", () => {
+    card.addEventListener("change", (event) => {
+      const t = event.target;
+      const pick = t.closest && t.closest('[data-role="part-pick"]');
+      if (pick) {
+        // 정본을 바꾸면 그 정본의 변형 목록·미리보기를 새로 읽고, 캔버스에서도 함께 찾아 준다
+        const c = moduleMap[id];
+        const part = c && (c.parts || []).find((p) => p.id === pick.dataset.partId);
+        if (part) send("select-node", { nodeId: part.nodeId });
+        loadVariants(id, pick.dataset.partId);
+        return;
+      }
+      const vpick = t.closest && t.closest('[data-role="variant-pick"]');
+      if (vpick) {
+        const partId = vpick.dataset.partId;
+        const st = variantState[partId];
+        if (st) st.chosenId = vpick.value || null;
+        const row = partRowEl(id, partId);
+        const thumb = row && row.querySelector('[data-role="thumb-next"]');
+        const chosen = chosenVariant(partId);
+        if (thumb) {
+          if (chosen) setThumb(thumb, { ref: { id: chosen.id, key: chosen.key, type: 'COMPONENT' } });
+          else { thumb.removeAttribute('src'); thumb.classList.add('empty'); syncPreviewRow(thumb); }
+        }
+        updateSwapEnabled(partId);
+      }
+    });
+    card.addEventListener("click", (event) => {
       const c = moduleMap[id];
-      if (c) send("select-node", { nodeId: c.instanceId });
+      if (!c) return;
+      const target = event.target;
+      const action = target.dataset && target.dataset.action;
+      if (action === "part-swap") {
+        target.disabled = true; target.textContent = "…";
+        sendPartSwap(id, target.dataset.partId, false);
+        event.stopPropagation();
+        return;
+      }
+      if (action === "part-import") {
+        const part = (c.parts || []).find((p) => p.id === target.dataset.partId);
+        if (!part) return;
+        const sel = card.querySelector('[data-role="part-pick"][data-part-id="' + target.dataset.partId + '"]');
+        const sug = part.suggestions[(sel && parseInt(sel.value, 10)) || 0];
+        const candidate = sug && partCandidate(part, sug);
+        if (!candidate) { showToast('바꿀 변형을 먼저 고르세요'); event.stopPropagation(); return; }
+        target.disabled = true; target.textContent = "가져오는 중…";
+        send("import-component", { candidate: candidate });
+        event.stopPropagation();
+        return;
+      }
+      if (action === "module-swap-all") {
+        target.disabled = true; target.textContent = "교체 중…";
+        startModuleQueue(id, false);
+        event.stopPropagation();
+        return;
+      }
+      if (action === "module-detach") {
+        target.disabled = true; target.textContent = "푸는 중…";
+        send("detach-module", { moduleId: id, moduleInstanceId: c.instanceId });
+        event.stopPropagation();
+        return;
+      }
+      if (action === "module-undo") {
+        target.disabled = true; target.textContent = "…";
+        send("undo-swap", { id });
+        event.stopPropagation();
+        return;
+      }
+      if (target.closest && (target.closest('[data-role="part-pick"]') || target.closest('.part-row'))) {
+        const row = target.closest('.part-row');
+        const part = row && (c.parts || []).find((p) => p.id === row.dataset.partRow);
+        if (part) { send("select-node", { nodeId: part.nodeId }); return; }
+      }
+      send("select-node", { nodeId: c.instanceId });
     });
   });
+}
+
+// 교체·가져오기 대상 = 사용자가 화면에서 보고 고른 **변형 하나**.
+// 세트를 넘기면 플러그인이 기본 변형으로 떨어뜨릴 수 있어(=secondary 가 primary 로) 변형을 못 고른 상태면 만들지 않는다.
+function partCandidate(part, sug) {
+  const chosen = chosenVariant(part.id);
+  if (!chosen) return null;
+  const st = variantState[part.id];
+  const label = st && st.info && st.info.hasVariants ? (sug.name + ' · ' + chosen.label) : sug.name;
+  return {
+    id: part.id, instanceId: part.nodeId, instanceName: part.nodeName,
+    currentMainId: "", currentMainName: part.currentMainName, currentMainPath: "",
+    suggestedId: chosen.id, suggestedKey: chosen.key, suggestedType: "COMPONENT",
+    suggestedName: label, suggestedSource: sug.source, confidence: "ambiguous"
+  };
+}
+
+function sendPartSwap(moduleId, partId, allowDetach) {
+  const c = moduleMap[moduleId];
+  if (!c) return;
+  const part = (c.parts || []).find((p) => p.id === partId);
+  if (!part || !part.suggestions || part.suggestions.length === 0) return;
+  const sel = $("#improved-modules").querySelector('[data-module-id="' + moduleId + '"] [data-role="part-pick"][data-part-id="' + partId + '"]');
+  const sug = part.suggestions[(sel && parseInt(sel.value, 10)) || 0];
+  const candidate = sug && partCandidate(part, sug);
+  if (!candidate) { showToast('바꿀 변형을 먼저 고르세요'); moduleQueue = null; return; }
+  send("apply-part-swap", {
+    candidate: candidate,
+    moduleId: moduleId,
+    moduleInstanceId: c.instanceId,
+    partPath: part.path || [],
+    allowDetach: !!allowDetach,
+  });
+}
+
+// "부품 모두 교체" — 한 건씩 순서대로. 묶음을 푸는 순간 안쪽 부품의 id 가 바뀌므로,
+// 매 결과마다 새로 받은 부품 목록을 기준으로 다음 대상을 고른다.
+function startModuleQueue(moduleId, allowDetach) {
+  moduleQueue = { moduleId: moduleId, allowDetach: allowDetach };
+  advanceModuleQueue();
+}
+function nextQueuePart(c) {
+  // 변형이 정해진 것만 자동으로 돈다 — 못 고른 건 사용자가 직접 고르도록 남긴다
+  return (c.parts || []).find((p) => (p.kind === 'auto' || p.kind === 'manual') && !blockedParts[p.id] && chosenVariant(p.id));
+}
+function advanceModuleQueue() {
+  if (!moduleQueue) return;
+  const c = moduleMap[moduleQueue.moduleId];
+  const part = c && nextQueuePart(c);
+  if (!part) { moduleQueue = null; return; }
+  sendPartSwap(moduleQueue.moduleId, part.id, moduleQueue.allowDetach);
 }
 
 // 실패 건 — 재시도해도 같은 결과라 교체 버튼 없이 사유만 보여준다
@@ -1557,13 +2031,30 @@ function renderFailedList(list) {
 // ─── 컴포넌트 교체 모드 핸들러 ────────────────────────────
 $("#btn-apply-swap-all").addEventListener("click", () => {
   if (swapCandidates.length === 0) return;
+  // 변형(크기·유형·상태)이 정해진 것만 자동으로 돈다 — 못 정한 건 카드에서 직접 고르게 남긴다
+  const ready = [];
+  let skipped = 0;
   swapCandidates.forEach((c) => {
-    pendingSwapUi[c.id] = { instanceId: c.instanceId, instanceName: c.instanceName, currentName: c.currentMainName, suggestedName: c.suggestedName, kind: 'auto' };
+    const cand = autoCandidate(c);
+    if (!cand) { skipped++; return; }
+    ready.push(cand);
+    pendingSwapUi[c.id] = { instanceId: c.instanceId, instanceName: c.instanceName, currentName: c.currentMainName, suggestedName: cand.suggestedName, kind: 'auto' };
   });
+  if (ready.length === 0) { showToast('바꿀 변형이 정해진 항목이 없습니다 · 카드에서 변형을 골라주세요'); return; }
+  if (skipped) showToast(skipped + '건은 변형이 정해지지 않아 건너뜁니다 · 카드에서 직접 골라주세요');
   $("#btn-apply-swap-all").disabled = true;
   $("#btn-apply-swap-all").textContent = "교체 중…";
-  send("apply-swap-multi", { candidates: swapCandidates });
+  send("apply-swap-multi", { candidates: ready });
 });
+
+// 자동 후보도 "어느 변형으로" 를 화면에서 정한 뒤 교체한다(이름만 맞추면 secondary 가 primary 로 바뀐다).
+function autoCandidate(c) {
+  const chosen = chosenVariant(c.id);
+  if (!chosen) return null;
+  const st = variantState[c.id];
+  const label = st && st.info && st.info.hasVariants ? (c.suggestedName + ' · ' + chosen.label) : c.suggestedName;
+  return Object.assign({}, c, { suggestedId: chosen.id, suggestedKey: chosen.key, suggestedType: "COMPONENT", suggestedName: label });
+}
 
 function renderSwapList(diag) {
   const listEl = $("#swap-list");
@@ -1628,11 +2119,31 @@ function renderSwapList(diag) {
         <span class="to">교체: ${escape(c.suggestedName)} (기준)</span>
       </div>
       ${c.demoteReason ? `<div style="font-size:10px;color:var(--muted);margin-top:2px;">사유: ${escape(c.demoteReason)}</div>` : ""}
+      <div class="part-preview">
+        <img class="part-thumb empty" data-role="thumb-now" alt="">
+        <span class="part-arrow" data-role="thumb-arrow" hidden>→</span>
+        <img class="part-thumb empty" data-role="thumb-next" alt="">
+      </div>
+      <div class="part-selects">
+        <select class="ds-select grow" data-role="variant-pick" data-part-id="${escape(c.id)}" disabled><option>변형 읽는 중…</option></select>
+      </div>
       <div class="apply-row">
-        <button data-action="select">Figma에서 선택</button>
+        <button data-action="import-component">컴포넌트 가져오기</button>
         <button data-action="apply-swap" class="primary">교체</button>
       </div>
     `;
+    div.addEventListener("change", (e) => {
+      if (!(e.target.closest && e.target.closest('[data-role="variant-pick"]'))) return;
+      const st = variantState[c.id];
+      if (st) st.chosenId = e.target.value || null;
+      const thumb = div.querySelector('[data-role="thumb-next"]');
+      const chosen = chosenVariant(c.id);
+      if (thumb) {
+        if (chosen) setThumb(thumb, { ref: { id: chosen.id, key: chosen.key, type: 'COMPONENT' } });
+        else { thumb.removeAttribute('src'); thumb.classList.add('empty'); syncPreviewRow(thumb); }
+      }
+      updateSwapEnabled(c.id);
+    });
     div.addEventListener("click", (e) => {
       const t = e.target;
       const action = t.dataset && t.dataset.action;
@@ -1641,11 +2152,22 @@ function renderSwapList(diag) {
         e.stopPropagation();
         return;
       }
+      if (action === "import-component") {
+        const cand = autoCandidate(c);
+        if (!cand) { showToast('바꿀 변형을 먼저 고르세요'); e.stopPropagation(); return; }
+        t.disabled = true;
+        t.textContent = "가져오는 중…";
+        send("import-component", { candidate: cand });
+        e.stopPropagation();
+        return;
+      }
       if (action === "apply-swap") {
+        const cand = autoCandidate(c);
+        if (!cand) { showToast('바꿀 변형을 먼저 고르세요'); e.stopPropagation(); return; }
         t.disabled = true;
         t.textContent = "…";
-        pendingSwapUi[c.id] = { instanceId: c.instanceId, instanceName: c.instanceName, currentName: c.currentMainName, suggestedName: c.suggestedName, kind: 'auto' };
-        send("apply-swap", { candidate: c });
+        pendingSwapUi[c.id] = { instanceId: c.instanceId, instanceName: c.instanceName, currentName: c.currentMainName, suggestedName: cand.suggestedName, kind: 'auto' };
+        send("apply-swap", { candidate: cand });
         e.stopPropagation();
         return;
       }
@@ -1659,6 +2181,10 @@ function renderSwapList(diag) {
       send("select-node", { nodeId: c.instanceId });
     });
     listEl.appendChild(div);
+    lazyHydrate(div, function () {
+      setThumb(div.querySelector('[data-role="thumb-now"]'), { nodeId: c.instanceId });
+      loadVariantsFor(c.id, c.instanceId, { id: c.suggestedId, key: c.suggestedKey, type: c.suggestedType });
+    });
   }
 }
 
@@ -1906,17 +2432,15 @@ function renderInspectionResult(payload) {
   const passCount = checklist.filter((item) => item.status === 'pass' && item.count === 0).length;
   const partialCount = checklist.filter((item) => item.coverage === 'partial').length;
   const selection = payload.selection || {};
-  const componentOnly = auditPhase === 'component';
-  $('#audit-result-summary').textContent = componentOnly
-    ? `${selection.label || '선택 영역'} · 컴포넌트를 먼저 교체한 뒤 다시 검사하세요.`
-    : `${selection.label || '선택 영역'} · 10개 중 ${passCount}개 통과${partialCount ? ` · 일부 판정 ${partialCount}개` : ''}`;
+  // 검수가 끝나면 모든 항목을 연다 — 컴포넌트를 먼저 교체해야 나머지가 열리던 잠금은 없앴다(river 지시 2026-09-03).
+  $('#audit-result-summary').textContent =
+    `${selection.label || '선택 영역'} · 10개 중 ${passCount}개 통과${partialCount ? ` · 일부 판정 ${partialCount}개` : ''}`;
   document.querySelectorAll('#result-chips button').forEach((btn) => {
-    const enabled = !componentOnly || btn.dataset.bucket === 'component';
-    btn.disabled = !enabled;
-    btn.classList.toggle('active', componentOnly ? btn.dataset.bucket === 'component' : btn.dataset.bucket === 'all');
+    btn.disabled = false;
+    btn.classList.toggle('active', btn.dataset.bucket === 'all');
   });
   document.querySelectorAll('#audit-screen-result .view').forEach((view) => {
-    view.classList.toggle('active', view.id === (componentOnly ? 'bucket-component' : 'bucket-all'));
+    view.classList.toggle('active', view.id === 'bucket-all');
   });
   showAuditScreen('result');
 }
@@ -1937,8 +2461,13 @@ function handleAuditUiMessage(msg) {
     $('#audit-guide-checking').classList.remove('visible');
     $('#audit-guide-error').classList.remove('visible');
     $('#audit-install-required').classList.toggle('visible', !auditInstalled);
-    $('#audit-install-missing').textContent = !auditInstalled && p.missing && p.missing.length
-      ? `현재 파일에 필요한 최신 기준: ${p.missing.join(' · ')}. 새 가이드 페이지에 함께 설치합니다.`
+    // '최신 가이드 버전' 은 내용이 아니라 **설치 기록(표식)** 이 없다는 뜻이다 —
+    //   내용 부족과 뒤섞어 나열하면 있는 것도 없다고 읽힌다(river 보고 2026-09-03).
+    const missingContents = (p.missing || []).filter((m) => m !== '최신 가이드 버전');
+    $('#audit-install-missing').textContent = !auditInstalled
+      ? (missingContents.length
+          ? `이 파일에 부족한 최신 기준: ${missingContents.join(' · ')}. 새 가이드 페이지에 함께 설치합니다.`
+          : '이 파일에는 최신 가이드를 설치한 기록이 없습니다. 아래 버튼을 누르면 새 가이드 페이지에 최신 기준을 설치합니다.')
       : '최신 기준을 새 페이지에 함께 설치한 뒤 검수할 수 있습니다.';
     applyAuditSelectionSummary(p);
   } else if (msg.type === "selection-summary") {
@@ -2061,6 +2590,52 @@ function handleAuditUiMessage(msg) {
   } else if (msg.type === "scan-swap-result") {
     swapCandidates = msg.payload.candidates || [];
     renderSwapList(msg.payload.diagnostics);
+  } else if (msg.type === "apply-part-swap-result") {
+    const p = msg.payload || {};
+    const c = moduleMap[p.moduleId];
+    if (c) {
+      if (p.detached) { c.detached = true; if (p.moduleNodeId) c.instanceId = p.moduleNodeId; }
+      if (p.parts) c.parts = p.parts;
+      if (p.result === 'blocked') (c.parts || []).forEach(function (part) { if (part.kind === 'auto' || part.kind === 'manual') blockedParts[part.id] = true; });
+      else delete blockedParts[p.id];
+      rerenderModuleCard(p.moduleId);
+    }
+    if (p.result === 'blocked') {
+      // 큐로 돌던 중이면 여기서 멈추고 "묶음 풀고 모두 교체"를 제안한다(전부 막힌 채로 훑지 않는다)
+      moduleQueue = null;
+      showToast('묶음 안에 있어 그대로는 교체되지 않습니다 · [묶음 풀고 교체]를 눌러주세요');
+    } else if (p.ok) {
+      const extra = (p.variantReset ? ' · 상태는 기본값' : '') + (p.unpreservedCount ? ` · 텍스트 ${p.unpreservedCount}건 보존안됨` : '') + (p.detached ? ' · 묶음 풀림' : '');
+      showToast('✅ 부품 교체 완료' + extra);
+      advanceModuleQueue();
+    } else {
+      moduleQueue = null;
+      showToast('⚠ 교체하지 못했습니다: ' + (p.reason || '알 수 없음'));
+    }
+  } else if (msg.type === "variant-options-result" || msg.type === "preview-result") {
+    const p = msg.payload || {};
+    const cb = asyncReplies[p.requestId];
+    if (cb) { delete asyncReplies[p.requestId]; cb(p); }
+  } else if (msg.type === "detach-module-result") {
+    const p = msg.payload || {};
+    const c = moduleMap[p.moduleId];
+    if (c && p.ok) {
+      // 이 묶음의 옛 부품 표시만 지운다(다른 묶음의 상태는 건드리지 않는다)
+      (c.parts || []).forEach(function (part) { delete blockedParts[part.id]; });
+      c.detached = true;
+      if (p.moduleNodeId) c.instanceId = p.moduleNodeId;
+      if (p.parts) c.parts = p.parts;
+    }
+    if (c) rerenderModuleCard(p.moduleId);
+    showToast(p.ok ? '✅ 묶음을 풀었습니다 · 이제 부품별로 교체할 수 있습니다' : '⚠ 묶음을 풀지 못했습니다: ' + (p.reason || '알 수 없음'));
+  } else if (msg.type === "import-component-result") {
+    // 캔버스로 가져오기 — 원본은 그대로 두고 최신 부품만 위에 놓는다.
+    const { id, ok, name, reason, variantReset } = msg.payload || {};
+    document.querySelectorAll(`[data-id="${id}"] [data-action="import-component"], [data-manual-id="${id}"] [data-action="import-component"]`)
+      .forEach((btn) => { btn.disabled = false; btn.textContent = "컴포넌트 가져오기"; });
+    showToast(ok
+      ? `✅ ${name || "컴포넌트"}를 캔버스 위쪽에 가져왔습니다${variantReset ? " · 상태는 기본값" : ""}`
+      : `⚠ 가져오지 못했습니다: ${reason || "알 수 없음"}`);
   } else if (msg.type === "apply-swap-result") {
     const { id, ok, variantReset, unpreservedCount } = msg.payload;
     if (ok) rememberRecentSwap(id, pendingSwapUi[id]);
@@ -2118,6 +2693,19 @@ function handleAuditUiMessage(msg) {
     showToast(`${p.applied.length}건 교체 완료${p.variantResetCount ? ` · ${p.variantResetCount}건 상태 리셋` : ""}${p.unpreservedTotal ? ` · 텍스트 ${p.unpreservedTotal}건 보존안됨` : ""}${p.fail ? ` · ${p.fail}건 실패` : ""}`);
   } else if (msg.type === "undo-swap-result") {
     const { id, ok, reason, instanceId } = msg.payload;
+    if (moduleMap[id]) {
+      const c = moduleMap[id];
+      if (ok) {
+        if (instanceId) c.instanceId = instanceId;
+        c.detached = false;
+        c.parts = [];   // 되돌린 뒤의 안쪽 부품은 새로 읽어야 한다 — 짐작으로 목록을 남기지 않는다
+        blockedParts = {};
+        moduleQueue = null;
+      }
+      rerenderModuleCard(id);
+      showToast(ok ? '되돌리기 완료 · 부품 목록은 [다시 검사]에서 새로 읽습니다' : `되돌리기 실패 · ${reason || '다시 시도해주세요'}`);
+      return;
+    }
     const manualCard = $("#improved-manual").querySelector(`[data-manual-id="${id}"]`);
     const autoCard = $("#swap-list").querySelector(`[data-id="${id}"]`);
     const recentCard = $("#recent-swaps").querySelector(`[data-recent-id="${id}"]`);

@@ -25,6 +25,7 @@
   <link rel="stylesheet" href="../dist/components/mobile-bottom-nav.css">
   <link rel="stylesheet" href="../dist/components/mobile-header.css">
   <link rel="stylesheet" href="../dist/components/time-picker.css">
+  <link rel="stylesheet" href="../dist/components/date-picker.css">
 </head>
 <body>
   <main>
@@ -196,6 +197,15 @@
         </div>
       </div>
     </div>
+    <div data-s1-component="date-picker" data-size="md" data-break="pc" data-mode="single">
+      <button type="button" data-s1-part="trigger" aria-haspopup="dialog" aria-expanded="false">
+        <span data-s1-part="value">YY.MM.DD</span>
+        <span data-s1-part="icon" aria-hidden="true"></span>
+      </button>
+      <div data-s1-part="panel" role="dialog" hidden>
+        <div data-s1-part="calendar"></div>
+      </div>
+    </div>
   </main>
   <script type="module">
     import "../dist/components/mobile-bottom-nav.js";
@@ -216,6 +226,7 @@
     import { init as initTable } from "../dist/components/table.js";
     import { init as initModal } from "../dist/components/modal.js";
     import { init as initTimePicker } from "../dist/components/time-picker.js";
+    import { init as initDatePicker } from "../dist/components/date-picker.js";
     document.querySelectorAll('[data-s1-component="input"]').forEach((root) => initInput(root));
     document.querySelectorAll('[data-s1-component="toggle"]').forEach((root) => initToggle(root));
     document.querySelectorAll('[data-s1-component="chip"]').forEach((root) => initChip(root));
@@ -227,6 +238,7 @@
     document.querySelectorAll('[data-s1-component="multi-toggle"]').forEach((root) => initMultiToggle(root));
     document.querySelectorAll('[data-s1-component="table"]').forEach((root) => initTable(root));
     document.querySelectorAll('[data-s1-component="time-picker"]').forEach((root) => initTimePicker(root));
+    document.querySelectorAll('[data-s1-component="date-picker"]').forEach((root) => initDatePicker(root));
     const consumerModal = document.querySelector('[data-s1-component="modal"]');
     const consumerModalApi = initModal(consumerModal);
     document.querySelector("[data-consumer-open-modal]")?.addEventListener("click", () => consumerModalApi?.open());

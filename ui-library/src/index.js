@@ -15,3 +15,4 @@ export * as modal from "./components/modal/modal.js";
 export * as mobileBottomNav from "./components/mobile-bottom-nav/mobile-bottom-nav.js";
 export * as mobileHeader from "./components/mobile-header/mobile-header.js";
 export * as timePicker from "./components/time-picker/time-picker.js";
+export * as datePicker from "./components/date-picker/date-picker.js";

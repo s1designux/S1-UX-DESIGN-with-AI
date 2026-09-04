@@ -117,6 +117,11 @@ function currentItems() {
   const bcSrc = fs.readFileSync(BC, 'utf8');
   const propRe = /addComponentProperty\(\s*["'`]([^"'`]+)["'`]/g;
   for (let m; (m = propRe.exec(bcSrc)) !== null;) items.push(`componentprop:${m[1]}`);
+  //   슬롯 속성(2026-09-03 추적 확장) — Figma 슬롯은 createSlot() 이 속성을 만들고
+  //   editComponentProperty 로 개명하므로 위 정규식에 안 걸린다. 실제 속성 이름은
+  //   makeSlot(comp, "<이름>", …) 의 두 번째 인자다. 이것도 "상태/자리를 하나 늘리는" 신설이라 승인 대상.
+  const slotRe = /makeSlot\(\s*[A-Za-z0-9_.]+\s*,\s*["'`]([^"'`]+)["'`]/g;
+  for (let m; (m = slotRe.exec(bcSrc)) !== null;) items.push(`componentprop:${m[1]}`);
 
   // 웹 UI 라이브러리의 **상태 이름** (2026-09-02 추적 확장)
   //   왜: focus-visible 17건 중 15건은 Figma 정본이 아니라 ui-library CSS 에만 있었다.
@@ -306,9 +311,12 @@ function approve(argv) {
       recordedBy: 'orchestrator',
     });
   }
-  base.items = cur;   // 승인과 동시에 동결 목록에 편입
+  // ★ 승인한 항목만 편입한다(2026-09-03 수정). 예전에는 `base.items = cur` 로 **현재 신설 전부**를
+  //   동결해서, `--item A` 하나를 승인하면 승인받지 않은 B·C 까지 조용히 목록에 들어갔다.
+  //   (다른 세션이 만든 미승인 신설까지 river 승인처럼 편입되던 구멍 — 실제로 재현됨.)
+  base.items = [...new Set([...(base.items || []), ...targets])].sort();
   base._updated = new Date().toISOString().slice(0, 10);
-  base.count = cur.length;
+  base.count = base.items.length;
   fs.mkdirSync(path.dirname(BASELINE), { recursive: true });
   fs.writeFileSync(BASELINE, JSON.stringify(base, null, 2) + '\n');
   console.log(`✅ 정본 신설 승인 기록 — ${targets.length}건 (by ${by})`);

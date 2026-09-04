@@ -1,8 +1,8 @@
 {
   "_note": "정본(textstyles-data.ts · vars-data.ts)의 항목 이름 전집합. Gate 34 가 여기 없는 신설을 차단한다. ⭐ 는 스스로 이 목록에 추가할 수 없고, 사용자 승인(--approve)만이 편입한다.",
   "_why": "CLAUDE.md §⚖️ 하드룰 H7. 2026-08-03: ⭐ 가 사용자가 거부한 스타일 신설을 자기 규칙을 만들어 강행했는데, 32개 게이트 전부가 \"정본→파생 일치\"만 봐서 아무도 못 잡았다.",
-  "_updated": "2026-09-02",
-  "count": 607,
+  "_updated": "2026-09-04",
+  "count": 618,
   "items": [
     "color:base/black",
     "color:base/home-bg",
@@ -429,8 +429,14 @@
     "component:Toggle",
     "component:WebTabBar",
     "componentprop:Clear Action Hover",
+    "componentprop:Content",
+    "componentprop:Items",
+    "componentprop:Menu",
+    "componentprop:Menus",
+    "componentprop:Options",
     "componentprop:Password Action Hover",
     "componentprop:Password Icon",
+    "componentprop:Tabs",
     "number:border-width/1",
     "number:border-width/2",
     "number:breakpoint/2xl",
@@ -552,6 +558,11 @@
     "uistate:chip.disabled",
     "uistate:chip.hover",
     "uistate:chip.selected",
+    "uistate:date-picker.default",
+    "uistate:date-picker.disabled",
+    "uistate:date-picker.filled",
+    "uistate:date-picker.hover",
+    "uistate:date-picker.open",
     "uistate:dropdown.default",
     "uistate:dropdown.hover",
     "uistate:dropdown.selectedCheckbox",
@@ -677,6 +688,138 @@
       },
       "recordedBy": "orchestrator",
       "reapprovedAt": "2026-09-02T23:20:38.307Z"
+    },
+    {
+      "item": "componentprop:Menu",
+      "by": "river",
+      "reason": "GNB 메뉴타이틀 자리를 Figma 슬롯으로 교체(기본 내용=기존 예시 텍스트 유지)",
+      "approvedAt": "2026-09-03T05:53:08.849Z",
+      "quote": "gnb메뉴의 메뉴타이틀 부분을 슬롯 기능으로 교체하고싶어",
+      "evidence": {
+        "transcript": "a25e1cff-3579-4537-8f73-d2d938a553a2.jsonl",
+        "at": "2026-09-03T05:40:44.756Z"
+      },
+      "recordedBy": "orchestrator"
+    },
+    {
+      "item": "componentprop:Menus",
+      "by": "river",
+      "reason": "GNB 바에서 메뉴가 놓이는 자리 전체를 슬롯화 — 메뉴 개수 증감 대응(기본 내용=기존 메뉴 3개)",
+      "approvedAt": "2026-09-03T06:48:45.159Z",
+      "quote": "메뉴타이틀 이 있는 자리 자체에 슬롯을 적용해서 메뉴가 늘어들고 줄어드는걸 대응할 수 있어야해",
+      "evidence": {
+        "transcript": "a25e1cff-3579-4537-8f73-d2d938a553a2.jsonl",
+        "at": "2026-09-03T06:46:35.898Z"
+      },
+      "recordedBy": "orchestrator"
+    },
+    {
+      "item": "componentprop:Tabs",
+      "by": "river",
+      "reason": "라인탭 세트·드롭다운·멀티토글의 하위 항목을 시안 작업 중 자유롭게 추가/삭제하기 위한 Figma 슬롯 속성 (river 지시 2026-09-03)",
+      "approvedAt": "2026-09-03T06:59:43.185Z",
+      "quote": "각 요소를 슬롯 형태로 넣어서 자유롭게 내부 항목을 추가/삭제 할 수 있도록 해줘",
+      "evidence": {
+        "transcript": "e0ab3cdf-5776-4296-b084-5bafe1617c13.jsonl",
+        "at": "2026-09-03T06:53:23.873Z"
+      },
+      "recordedBy": "orchestrator"
+    },
+    {
+      "item": "componentprop:Options",
+      "by": "river",
+      "reason": "라인탭 세트·드롭다운·멀티토글의 하위 항목을 시안 작업 중 자유롭게 추가/삭제하기 위한 Figma 슬롯 속성 (river 지시 2026-09-03)",
+      "approvedAt": "2026-09-03T06:59:43.961Z",
+      "quote": "각 요소를 슬롯 형태로 넣어서 자유롭게 내부 항목을 추가/삭제 할 수 있도록 해줘",
+      "evidence": {
+        "transcript": "e0ab3cdf-5776-4296-b084-5bafe1617c13.jsonl",
+        "at": "2026-09-03T06:53:23.873Z"
+      },
+      "recordedBy": "orchestrator"
+    },
+    {
+      "item": "componentprop:Items",
+      "by": "river",
+      "reason": "라인탭 세트·드롭다운·멀티토글의 하위 항목을 시안 작업 중 자유롭게 추가/삭제하기 위한 Figma 슬롯 속성 (river 지시 2026-09-03)",
+      "approvedAt": "2026-09-03T06:59:44.741Z",
+      "quote": "각 요소를 슬롯 형태로 넣어서 자유롭게 내부 항목을 추가/삭제 할 수 있도록 해줘",
+      "evidence": {
+        "transcript": "e0ab3cdf-5776-4296-b084-5bafe1617c13.jsonl",
+        "at": "2026-09-03T06:53:23.873Z"
+      },
+      "recordedBy": "orchestrator"
+    },
+    {
+      "item": "componentprop:Content",
+      "by": "river",
+      "reason": "모달 본문에 텍스트 외 이미지·텍스트에리어 등을 넣기 위한 Figma 슬롯 속성. 제목·닫기(X)는 슬롯 밖 고정 (river 지시·범위 결정 2026-09-03)",
+      "approvedAt": "2026-09-03T06:59:45.512Z",
+      "quote": "모달에서는 내부 컨텐츠가 텍스트 뿐만아니라 다른 이미지, 텍스트에리어 등이 들어갈 수 있어서 이 영역을 슬롯으로 교체해야해",
+      "evidence": {
+        "transcript": "e0ab3cdf-5776-4296-b084-5bafe1617c13.jsonl",
+        "at": "2026-09-03T06:53:23.873Z"
+      },
+      "recordedBy": "orchestrator"
+    },
+    {
+      "item": "uistate:date-picker.default",
+      "by": "river",
+      "reason": "Date Picker 웹 배포본의 트리거 상태. default·filled·open·disabled 는 정본 Date Picker 세트(build-components.ts buildDatePicker)의 State 축 4종을 그대로 옮긴 것이고, hover 는 정본 세트에 없는 웹 추가분으로 색은 기존 정본 토큰 color/form-control/bg/hover 만 쓴다(새 토큰 0건). 검수 화면에 Hover 표본을 붙여 river 가 실제 화면을 보고 승인.",
+      "approvedAt": "2026-09-04T00:31:19.033Z",
+      "quote": "Date Picker 상태 5개(default·filled·open·hover·disabled) 승인합니다.",
+      "evidence": {
+        "transcript": "0f17309f-7886-4dab-9762-809b832cefe8.jsonl",
+        "at": "2026-09-04T00:31:06.140Z"
+      },
+      "recordedBy": "orchestrator"
+    },
+    {
+      "item": "uistate:date-picker.filled",
+      "by": "river",
+      "reason": "Date Picker 웹 배포본의 트리거 상태. default·filled·open·disabled 는 정본 Date Picker 세트(build-components.ts buildDatePicker)의 State 축 4종을 그대로 옮긴 것이고, hover 는 정본 세트에 없는 웹 추가분으로 색은 기존 정본 토큰 color/form-control/bg/hover 만 쓴다(새 토큰 0건). 검수 화면에 Hover 표본을 붙여 river 가 실제 화면을 보고 승인.",
+      "approvedAt": "2026-09-04T00:31:19.187Z",
+      "quote": "Date Picker 상태 5개(default·filled·open·hover·disabled) 승인합니다.",
+      "evidence": {
+        "transcript": "0f17309f-7886-4dab-9762-809b832cefe8.jsonl",
+        "at": "2026-09-04T00:31:06.140Z"
+      },
+      "recordedBy": "orchestrator"
+    },
+    {
+      "item": "uistate:date-picker.open",
+      "by": "river",
+      "reason": "Date Picker 웹 배포본의 트리거 상태. default·filled·open·disabled 는 정본 Date Picker 세트(build-components.ts buildDatePicker)의 State 축 4종을 그대로 옮긴 것이고, hover 는 정본 세트에 없는 웹 추가분으로 색은 기존 정본 토큰 color/form-control/bg/hover 만 쓴다(새 토큰 0건). 검수 화면에 Hover 표본을 붙여 river 가 실제 화면을 보고 승인.",
+      "approvedAt": "2026-09-04T00:31:19.339Z",
+      "quote": "Date Picker 상태 5개(default·filled·open·hover·disabled) 승인합니다.",
+      "evidence": {
+        "transcript": "0f17309f-7886-4dab-9762-809b832cefe8.jsonl",
+        "at": "2026-09-04T00:31:06.140Z"
+      },
+      "recordedBy": "orchestrator"
+    },
+    {
+      "item": "uistate:date-picker.hover",
+      "by": "river",
+      "reason": "Date Picker 웹 배포본의 트리거 상태. default·filled·open·disabled 는 정본 Date Picker 세트(build-components.ts buildDatePicker)의 State 축 4종을 그대로 옮긴 것이고, hover 는 정본 세트에 없는 웹 추가분으로 색은 기존 정본 토큰 color/form-control/bg/hover 만 쓴다(새 토큰 0건). 검수 화면에 Hover 표본을 붙여 river 가 실제 화면을 보고 승인.",
+      "approvedAt": "2026-09-04T00:31:19.490Z",
+      "quote": "Date Picker 상태 5개(default·filled·open·hover·disabled) 승인합니다.",
+      "evidence": {
+        "transcript": "0f17309f-7886-4dab-9762-809b832cefe8.jsonl",
+        "at": "2026-09-04T00:31:06.140Z"
+      },
+      "recordedBy": "orchestrator"
+    },
+    {
+      "item": "uistate:date-picker.disabled",
+      "by": "river",
+      "reason": "Date Picker 웹 배포본의 트리거 상태. default·filled·open·disabled 는 정본 Date Picker 세트(build-components.ts buildDatePicker)의 State 축 4종을 그대로 옮긴 것이고, hover 는 정본 세트에 없는 웹 추가분으로 색은 기존 정본 토큰 color/form-control/bg/hover 만 쓴다(새 토큰 0건). 검수 화면에 Hover 표본을 붙여 river 가 실제 화면을 보고 승인.",
+      "approvedAt": "2026-09-04T00:31:19.644Z",
+      "quote": "Date Picker 상태 5개(default·filled·open·hover·disabled) 승인합니다.",
+      "evidence": {
+        "transcript": "0f17309f-7886-4dab-9762-809b832cefe8.jsonl",
+        "at": "2026-09-04T00:31:06.140Z"
+      },
+      "recordedBy": "orchestrator"
     }
   ],
   "extendedTracking": [

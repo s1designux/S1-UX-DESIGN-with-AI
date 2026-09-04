@@ -6,17 +6,5 @@
     "해소된 항목은 --update-baseline 으로 빼면 다시 채워졌을 때 회귀가 차단된다."
   ],
   "_updated": "2026-09-03",
-  "knownGaps": [
-    {
-      "key": "time-picker.content",
-      "kind": "uninstrumented",
-      "detail": "정본 [timeonly,datetime] — data-cov-content 미선언",
-      "reason": "모바일 휠 바텀시트(정본 buildTimePickerMobileBottomSheet, Content=TimeOnly/DateTime)는 Date Picker 바텀시트와 구조를 공유해 Date Picker 작업에서 함께 만든다 — river 결정 D1(2026-09-02). 2026-09-03 Time Picker 웹 배포본 전환으로 손관리 휠 시트 마크업이 사이트에서 빠지는 것을 river 가 확인하고 동결을 승인했다.",
-      "approvedBy": "river",
-      "approvedAt": "2026-09-03",
-      "quote": "네, Date Picker 때 함께 다시 넣는다",
-      "resolveWhen": "date-picker 작업에서 휠 바텀시트를 배포본으로 만들고 data-cov-content 를 선언하면 이 항목을 뺀다(node scripts/variant-coverage-check.js --update-baseline).",
-      "recordedBy": "orchestrator"
-    }
-  ]
+  "knownGaps": []
 }

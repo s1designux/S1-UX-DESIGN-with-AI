@@ -1,0 +1,234 @@
+{
+  "schemaVersion": 1,
+  "workflow": "ui-library-code",
+  "workId": "dev-handoff-package",
+  "objective": "이미 승인된 코어 18종의 배포본을 퍼블리셔·개발자가 툴별로 받아 그대로 쓰게 하는 전달 계층을 만든다. 값은 정본에서 자동 생성하고, 프레임워크 껍데기는 manifest 에서 자동 생성하며, 임의 컬러·컴포넌트 제작을 검사기로 차단한다.",
+  "intent": {
+    "approvedBy": "river",
+    "approvedAt": "2026-09-04",
+    "principles": [
+      "컴포넌트마다 6벌을 손으로 만들지 않는다. 생성기를 만들고 컴포넌트는 데이터(manifest·토큰)로 늘린다 (river 승인 2026-09-04).",
+      "React·Vue 에는 값만 주지 않고 승인된 배포본 자체를 준다. 값만 주면 개발자가 자기 컴포넌트를 만들게 되어 역효과다 (river 승인 2026-09-04).",
+      "네이티브(C++·Kotlin·iOS)는 컴포넌트를 줄 수 없으므로 값과 동작 명세를 기계가독으로 못 박는 데까지만 한다. 한계를 숨기지 않는다.",
+      "언어별 값 파일은 손편집하지 않는다. 정본에서 tokens:reconcile 경로로 자동 생성한다 (하드룰 H6).",
+      "검사기는 새 판정 기준을 만들지 않는다. manifest·audit-rules.json·tokens.css 에 이미 있는 것만 근거로 쓴다 (하드룰 H6②).",
+      "화면은 탭으로 사람을 가르지 않고 한 화면에서 툴별 카드로 고른다 (river 결정 2026-09-04).",
+      "date-picker 는 아직 draft 라 이번 배포 대상에서 제외한다."
+    ]
+  },
+  "contract": {
+    "path": "registry/governance/ui-library-code-contract.json",
+    "version": "0.1.2",
+    "status": "candidate"
+  },
+  "target": {
+    "kind": "core-component",
+    "components": [
+      "input",
+      "button",
+      "checkbox",
+      "radio",
+      "toggle",
+      "chip",
+      "select",
+      "dropdown",
+      "filter-chip",
+      "tab",
+      "pagination",
+      "textarea",
+      "multi-toggle",
+      "modal",
+      "table",
+      "mobile-bottom-nav",
+      "mobile-header",
+      "time-picker"
+    ],
+    "scope": "승인된 코어 18종의 전달 계층(배포 패키지·툴별 생성물·다운로드 화면·검사기). 컴포넌트 자체의 재구현이 아니다."
+  },
+  "figmaSources": {
+    "role": "시각 정본은 build-components.ts 이며, 이번 작업은 시각 변경이 없어 Figma 참고가 필요 없다.",
+    "requiredForInventory": false,
+    "fileKey": "cysG5U1udpQqVagYY1hWHW",
+    "fileName": "SW-UX-GUIDE V3.0 TEST",
+    "components": {
+      "input": {
+        "source": "not-consulted",
+        "status": "시각 변경 없음 — 이미 승인된 배포본을 다른 형식으로 내보내는 작업이라 Figma 참고가 필요 없다."
+      },
+      "button": {
+        "source": "not-consulted",
+        "status": "시각 변경 없음 — 이미 승인된 배포본을 다른 형식으로 내보내는 작업이라 Figma 참고가 필요 없다."
+      },
+      "checkbox": {
+        "source": "not-consulted",
+        "status": "시각 변경 없음 — 이미 승인된 배포본을 다른 형식으로 내보내는 작업이라 Figma 참고가 필요 없다."
+      },
+      "radio": {
+        "source": "not-consulted",
+        "status": "시각 변경 없음 — 이미 승인된 배포본을 다른 형식으로 내보내는 작업이라 Figma 참고가 필요 없다."
+      },
+      "toggle": {
+        "source": "not-consulted",
+        "status": "시각 변경 없음 — 이미 승인된 배포본을 다른 형식으로 내보내는 작업이라 Figma 참고가 필요 없다."
+      },
+      "chip": {
+        "source": "not-consulted",
+        "status": "시각 변경 없음 — 이미 승인된 배포본을 다른 형식으로 내보내는 작업이라 Figma 참고가 필요 없다."
+      },
+      "select": {
+        "source": "not-consulted",
+        "status": "시각 변경 없음 — 이미 승인된 배포본을 다른 형식으로 내보내는 작업이라 Figma 참고가 필요 없다."
+      },
+      "dropdown": {
+        "source": "not-consulted",
+        "status": "시각 변경 없음 — 이미 승인된 배포본을 다른 형식으로 내보내는 작업이라 Figma 참고가 필요 없다."
+      },
+      "filter-chip": {
+        "source": "not-consulted",
+        "status": "시각 변경 없음 — 이미 승인된 배포본을 다른 형식으로 내보내는 작업이라 Figma 참고가 필요 없다."
+      },
+      "tab": {
+        "source": "not-consulted",
+        "status": "시각 변경 없음 — 이미 승인된 배포본을 다른 형식으로 내보내는 작업이라 Figma 참고가 필요 없다."
+      },
+      "pagination": {
+        "source": "not-consulted",
+        "status": "시각 변경 없음 — 이미 승인된 배포본을 다른 형식으로 내보내는 작업이라 Figma 참고가 필요 없다."
+      },
+      "textarea": {
+        "source": "not-consulted",
+        "status": "시각 변경 없음 — 이미 승인된 배포본을 다른 형식으로 내보내는 작업이라 Figma 참고가 필요 없다."
+      },
+      "multi-toggle": {
+        "source": "not-consulted",
+        "status": "시각 변경 없음 — 이미 승인된 배포본을 다른 형식으로 내보내는 작업이라 Figma 참고가 필요 없다."
+      },
+      "modal": {
+        "source": "not-consulted",
+        "status": "시각 변경 없음 — 이미 승인된 배포본을 다른 형식으로 내보내는 작업이라 Figma 참고가 필요 없다."
+      },
+      "table": {
+        "source": "not-consulted",
+        "status": "시각 변경 없음 — 이미 승인된 배포본을 다른 형식으로 내보내는 작업이라 Figma 참고가 필요 없다."
+      },
+      "mobile-bottom-nav": {
+        "source": "not-consulted",
+        "status": "시각 변경 없음 — 이미 승인된 배포본을 다른 형식으로 내보내는 작업이라 Figma 참고가 필요 없다."
+      },
+      "mobile-header": {
+        "source": "not-consulted",
+        "status": "시각 변경 없음 — 이미 승인된 배포본을 다른 형식으로 내보내는 작업이라 Figma 참고가 필요 없다."
+      },
+      "time-picker": {
+        "source": "not-consulted",
+        "status": "시각 변경 없음 — 이미 승인된 배포본을 다른 형식으로 내보내는 작업이라 Figma 참고가 필요 없다."
+      }
+    }
+  },
+  "currentPhase": "3-build",
+  "workflowStatus": "blocked",
+  "uiLibraryStatus": "draft",
+  "lastCompletedCheckpoint": 2,
+  "nextAction": "river 결정 대기 — 같은 폴더의 다른 세션이 시각 정본(build-components.ts)을 지금 고치고 있다. 누구 작업을 먼저 끝낼지 정해야 3-build 를 시작할 수 있다.",
+  "ownership": {},
+  "canonicalInputs": [
+    {
+      "role": "component-visual",
+      "path": "plugins/figma-vars-installer/src/build-components.ts",
+      "sha256": "ff8a3938c247af4d4b3e51f565043ff6187bade582c59862e1f0d72349d327a8"
+    },
+    {
+      "role": "token-values",
+      "path": "plugins/figma-vars-installer/src/vars-data.ts",
+      "sha256": "81eb31cfbd5b1b7041f31967a9592d2181088cf386a9ccb26058a7625ec3c15a"
+    },
+    {
+      "role": "text-styles",
+      "path": "plugins/figma-vars-installer/src/textstyles-data.ts",
+      "sha256": "dc0db42d87503e80e9da8ad1246090f58e79106593a57815b0568aebcb9d51d3"
+    },
+    {
+      "role": "dist-manifest",
+      "path": "ui-library/dist/manifest.json",
+      "sha256": "cdadc1d94cb66902d7dd60a09379cbe610a6c7b42e5d5a0e892876eef1b9a8de"
+    }
+  ],
+  "decisions": [
+    {
+      "id": "D-1",
+      "question": "개발자가 배포본을 어떻게 받나",
+      "decision": "ZIP 다운로드와 저장소 링크를 둘 다 제공하고, 버전 지문 확인을 필수로 안내한다",
+      "by": "river",
+      "at": "2026-09-04"
+    },
+    {
+      "id": "D-2",
+      "question": "임의 제작을 잡는 자가 검사기를 이번에 만드나",
+      "decision": "같이 만든다 (웹 계열만 — 네이티브는 값 대조까지)",
+      "by": "river",
+      "at": "2026-09-04"
+    },
+    {
+      "id": "D-3",
+      "question": "화면을 퍼블리셔/개발자 탭으로 나누나",
+      "decision": "나누지 않는다. 한 화면에서 툴별(HTML·React·Vue·Kotlin·iOS·C++) 카드로 받는다",
+      "by": "river",
+      "at": "2026-09-04"
+    },
+    {
+      "id": "D-4",
+      "question": "툴별 산출물을 어디에서 생성하나",
+      "decision": "ui-library/scripts/build.mjs 안에서 dist/platform/ 으로 생성한다. ui:build 가 dist 를 매번 지우기 때문에 밖에 두면 낡는다.",
+      "by": "orchestrator",
+      "at": "2026-09-04"
+    },
+    {
+      "id": "D-5",
+      "question": "CSS 변수 → 언어별 상수 이름 규칙",
+      "decision": "판단이 끼지 않는 1:1 기계 변환(camelCase / 대문자 SNAKE)으로 정하고 JSON 은 원본 이름을 유지한다. ⭐ 자가인증, river 재정의 가능.",
+      "by": "orchestrator",
+      "at": "2026-09-04"
+    }
+  ],
+  "blockers": [
+    {
+      "id": "HD-CPP-1",
+      "summary": "C++ 가 화면을 무엇으로 그리는지(Qt·MFC·자체 엔진) 미확인 — river 가 개발자에게 확인 후 알려주기로 함",
+      "impact": "확인 전까지 C++ 산출물은 어디서나 읽히는 상수 헤더(.h)와 JSON 까지만 만든다. 진행을 막지 않는다.",
+      "status": "deferred-by-river",
+      "at": "2026-09-04"
+    },
+    {
+      "id": "HD-CONCURRENT-1",
+      "summary": "다른 세션이 시각 정본 build-components.ts 를 실시간으로 수정 중(HEAD 대비 +281/-78행). 내 세션 안에서도 지문이 d4365bb→7fdcab7 로 바뀌었다.",
+      "impact": "이 상태에서 ui:build 를 돌리면 절반만 쓰인 정본으로 dist 전체와 18종 지문이 다시 만들어지고, 커밋하면 상대 세션의 변경을 삼킨다.",
+      "status": "awaiting-river",
+      "at": "2026-09-04"
+    }
+  ],
+  "handoff": {
+    "lastActor": "orchestrator",
+    "updatedAt": "2026-09-04T00:19:57.955Z",
+    "summary": "1-inventory·2-canon-readiness 통과(정본 신설 0건, needs-decision 0건). 3-build 착수 직전에 동시 편집 충돌을 감지해 중단. 지금까지 저장소에 쓴 것은 reports/ui-library/dev-handoff-package/ 안의 보고서 3개뿐이며 공용 파일은 건드리지 않았다."
+  },
+  "evidence": {
+    "sourceAudit": {
+      "observedAt": "2026-09-04",
+      "basis": "저장소 실측 — ui-library/dist(18종 승인 배포본·manifest·examples), ui-library/src, package.json exports, registry/governance/ui-library-migration.json, npm scripts 전수, pages/install-prompt.html 개발자 탭 준비중 상태"
+    }
+  },
+  "artifacts": {
+    "policyContract": "registry/governance/ui-library-code-contract.json",
+    "humanGuide": "registry/governance/ui-library-authoring-guide.md",
+    "componentChecklist": "registry/governance/ui-library-component-checklist.md",
+    "repositoryInventory": "reports/component-inventory-audit.md",
+    "sourceRoot": "ui-library/src",
+    "distManifest": "ui-library/dist/manifest.json",
+    "reviewPage": "pages/ui-review.html",
+    "guidePage": "pages/components.html",
+    "migrationRecord": "registry/governance/ui-library-migration.json",
+    "screens": [],
+    "inventory": "reports/ui-library/dev-handoff-package/1-inventory.md",
+    "canonReadiness": "reports/ui-library/dev-handoff-package/2-canon-readiness.md"
+  }
+}

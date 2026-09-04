@@ -1,0 +1,486 @@
+{
+  "schemaVersion": 1,
+  "workflow": "ui-library-code",
+  "workId": "date-picker",
+  "objective": "정본(build-components.ts)의 Date Picker 트리거·캘린더 패널(Date/Year/Month)·날짜칸·월칸·모바일 바텀시트를 웹 UI 라이브러리 모듈로 만들고, time-picker 에서 미뤄둔 모바일 휠 바텀시트까지 함께 완성해 실제 dist 소비로 연결한다.",
+  "intent": {
+    "approvedBy": "river",
+    "approvedAt": "2026-09-03",
+    "principles": [
+      "정본에 있는 상태만 만든다. 정본 빌더에 없는 형태는 만들지 않는다.",
+      "기간 선택(Range)을 이번 범위에 포함한다 — 정본 Calendar Cell 의 Type=Range variant 를 웹으로 옮긴다(river 결정 2026-09-03). 다만 두 날짜를 고르는 '동작 규칙'은 정본에 없으므로 ⭐가 임의로 만들지 않고 2-canon-readiness 에서 river 결정을 받는다.",
+      "모바일은 날짜 선택 바텀시트(buildDatePickerBottomSheet)와 시간 휠 바텀시트(buildTimePickerMobileBottomSheet)를 모두 만든다 — time-picker D1 로 미뤄둔 숙제를 여기서 해소한다(river 결정 2026-09-03).",
+      "새 색 토큰을 만들지 않는다. 트리거는 form-control, 패널·칸은 color/date-picker/* 를 정본 그대로 경유한다.",
+      "디자인가이드 검수 화면과 퍼블리셔·개발자 배포본은 같은 dist 를 사용한다."
+    ]
+  },
+  "contract": {
+    "path": "registry/governance/ui-library-code-contract.json",
+    "version": "0.1.2",
+    "status": "candidate"
+  },
+  "target": {
+    "kind": "core-component",
+    "components": [
+      "date-picker"
+    ],
+    "relatedDeferred": [
+      "time-picker mobile wheel bottom sheet (time-picker D1)"
+    ]
+  },
+  "figmaSources": {
+    "role": "시각 정본은 build-components.ts(buildDatePicker·buildCalendar·buildCalendarCell·buildCalendarTile·buildDatePickerBottomSheet·buildTimePickerMobileBottomSheet)다. Figma V3.0 은 선택적 시각 참고다.",
+    "requiredForInventory": false,
+    "fileKey": "cysG5U1udpQqVagYY1hWHW",
+    "fileName": "SW-UX-GUIDE V3.0 TEST",
+    "components": {
+      "date-picker": {
+        "nodeId": null,
+        "source": "not-consulted",
+        "status": "미확인 — 1-inventory 에서 코드 정본만으로 충분한지 판단한다. 정본 주석의 V2.4 원본 노드: input 540:3794 · PC calendar 540:4216 · calendar_cell 540:4167 · calendar_tile 540:4209 · mobile sheet 540:3836."
+      }
+    }
+  },
+  "currentPhase": "5-human-review",
+  "workflowStatus": "awaiting-user",
+  "uiLibraryStatus": "verified",
+  "lastCompletedCheckpoint": 4,
+  "nextAction": "5-human-review — river 가 검수 화면을 보고 UX 판단을 준다. 이어 Gate 34 승인 문장을 river 가 직접 타이핑하면 6-promotion 으로 넘어간다.",
+  "ownership": {
+    "currentActor": null,
+    "owner": null,
+    "startedAt": null,
+    "completedAt": null
+  },
+  "canonicalInputs": [
+    {
+      "role": "component-visual",
+      "path": "plugins/figma-vars-installer/src/build-components.ts",
+      "sha256": "d4365bb30ddfaf9ce039e57b98ea0693dcda20773937facf84260c9411b2df60"
+    },
+    {
+      "role": "token-values",
+      "path": "plugins/figma-vars-installer/src/vars-data.ts",
+      "sha256": "81eb31cfbd5b1b7041f31967a9592d2181088cf386a9ccb26058a7625ec3c15a"
+    },
+    {
+      "role": "text-styles",
+      "path": "plugins/figma-vars-installer/src/textstyles-data.ts",
+      "sha256": "dc0db42d87503e80e9da8ad1246090f58e79106593a57815b0568aebcb9d51d3"
+    },
+    {
+      "role": "ui-library-contract",
+      "path": "registry/governance/ui-library-code-contract.json",
+      "sha256": "2e13ba2efab71036f9d8c2d740f7da24343e0bbeff655f35ae5b6631c9ca0c27"
+    },
+    {
+      "role": "component-meta",
+      "path": "registry/components/date-picker.json",
+      "sha256": "3e65b405813089ac36171aa408cf54d4d995e42e08dad88421446a7b4bc388ba"
+    }
+  ],
+  "artifacts": {
+    "policyContract": "registry/governance/ui-library-code-contract.json",
+    "humanGuide": "registry/governance/ui-library-authoring-guide.md",
+    "componentChecklist": "registry/governance/ui-library-component-checklist.md",
+    "inventory": "reports/ui-library/date-picker/1-inventory.md",
+    "canonReadiness": "reports/ui-library/date-picker/2-canon-readiness.md",
+    "build": "reports/ui-library/date-picker/3-build.md",
+    "verification": "reports/ui-library/date-picker/4-verification.md",
+    "humanReview": "reports/ui-library/date-picker/5-human-review.md",
+    "sourceRoot": "ui-library/src",
+    "distManifest": "ui-library/dist/manifest.json",
+    "reviewPage": "pages/ui-review.html",
+    "guidePage": "pages/components.html",
+    "repositoryInventory": "reports/component-inventory-audit.md",
+    "verificationIndependent": "reports/ui-library/date-picker/4-verification-independent.md"
+  },
+  "decisions": [
+    {
+      "id": "D1",
+      "topic": "기간 선택 포함 여부",
+      "decidedBy": "river",
+      "decidedAt": "2026-09-03",
+      "decision": "기간 선택(시작일~종료일)을 이번 작업에 포함한다.",
+      "quote": "기간 선택까지 함께"
+    },
+    {
+      "id": "D2",
+      "topic": "모바일 범위",
+      "decidedBy": "river",
+      "decidedAt": "2026-09-03",
+      "decision": "모바일 날짜 선택 바텀시트와 time-picker 에서 미뤄둔 시간 휠 바텀시트를 모두 이번 작업에서 만든다.",
+      "quote": "날짜 시트 + 미뤄둔 시간 휠"
+    },
+    {
+      "id": "D3",
+      "topic": "주 시작 요일",
+      "decidedBy": "river",
+      "decidedAt": "2026-09-03",
+      "decision": "달력의 한 주는 일요일부터 시작한다. 메타 정본 HD-9 와 일치하며 시각 정본(buildCalendar 월요일 시작)과는 갈라지므로 CU-1 로 등록한다.",
+      "quote": "일요일 시작",
+      "quoteVerified": false
+    },
+    {
+      "id": "D4",
+      "topic": "기간 역순 입력",
+      "decidedBy": "river",
+      "decidedAt": "2026-09-03",
+      "decision": "기간 선택에서 시작일보다 앞선 날짜를 두 번째로 누르면 그 날짜를 새 시작일로 삼고 종료일을 다시 고른다. 자동으로 뒤집지 않는다.",
+      "quote": "그 날짜로 다시 시작",
+      "quoteVerified": false
+    },
+    {
+      "id": "D5",
+      "topic": "연/월 화면 진입",
+      "decidedBy": "river",
+      "decidedAt": "2026-09-03",
+      "decision": "헤더에 연도 버튼과 월 버튼을 따로 둔다. 정본에 없는 시각 부품을 새로 만들지 않기 위해 기존 헤더 라벨(24px Bold)을 연도·월 둘로 쪼개 각각 누를 수 있게 한다(CU-2).",
+      "quote": "연도·월 버튼을 따로 둘 다",
+      "quoteVerified": false
+    },
+    {
+      "id": "D6",
+      "topic": "기간 미리보기 hover",
+      "decidedBy": "river",
+      "decidedAt": "2026-09-03",
+      "decision": "시작일만 고른 상태에서 커서 위치까지 기간 밴드를 미리 칠한다. 정본 기존 토큰 cell/bg/range 만 쓰고 새 색을 만들지 않는다.",
+      "quote": "기간 미리보기 보여줌",
+      "quoteVerified": false
+    },
+    {
+      "id": "D7",
+      "topic": "주말 색(일요일 빨강·토요일 파랑)",
+      "decidedBy": "river",
+      "decidedAt": "2026-09-03",
+      "decision": "유지한다. 기본값은 주말 색이 있는 것으로 하고, 경비업처럼 주말 특별색을 없애는 경우가 별도로 존재한다. 과거 주석 「주말 특별색 없음(사용자 결정 D — 경비업)」은 그 경우에 대한 결정이었고 기본값을 바꾸는 결정이 아니다.",
+      "quote": "주말색 유지하는것으로 하자. 경비업에 따라 주말 특별색을 없애는 경우도 있지만 디폴트는 주말색이 있는것으로 하겠음.",
+      "quoteVerified": true
+    },
+    {
+      "id": "D8",
+      "topic": "연/월 진입 방법",
+      "decidedBy": "river",
+      "decidedAt": "2026-09-03",
+      "decision": "헤더의 연도·월 글자를 각각 누르는 현재 방식을 유지한다. 정본에 없는 버튼 부품을 새로 만들지 않는다.",
+      "quote": "2번 유지",
+      "quoteVerified": true
+    }
+  ],
+  "blockers": [
+    {
+      "id": "B5",
+      "severity": "blocking-promotion",
+      "topic": "Gate 34 승인 문장 대기",
+      "detail": "uistate:date-picker.default/filled/open/hover/disabled 5건. river 가 승인 문장을 직접 타이핑해야 통과한다. 7차 검증 판정: 이것이 승격의 유일한 차단 조건이다."
+    },
+    {
+      "id": "B8",
+      "severity": "informational",
+      "topic": "다른 세션이 정본을 편집 중",
+      "detail": "build-components.ts 지문이 반복 stale. date-picker 빌더 6개+헬퍼 2개는 바이트 동일(5·6차 검증자 재확인)."
+    },
+    {
+      "id": "B11",
+      "severity": "follow-up",
+      "topic": "라이브러리 전반 자간·줄높이 부채 (7차 Z-2 로 재정의)",
+      "detail": "select·dropdown·filter-chip·multi-toggle·tab 은 letter-spacing 선언이 0개라 실측 normal 인데 정본은 -2% 이고, table 은 반대로 12px 에 tight 를 걸어 정본(0%)과 어긋난다. 전부 이미 승인·배포된 컴포넌트다. 특히 tab 은 이번 DateTime 휠 시트 안에서 쓰인다. 이번 범위 밖 — 별도 작업으로 다룬다."
+    },
+    {
+      "id": "B12",
+      "severity": "follow-up",
+      "topic": "sheet-footer 줄높이 미선언 (7차 Z-3)",
+      "detail": "호스트 줄높이 3.0 이상에서만 48→59.19px 로 자란다. 현재 두 화면(normal·1.6)에서는 둘 다 48 로 동일해 결함 아님. W-2 계약을 완전히 닫으려면 마지막 자리 — B11 정리와 함께 처리한다."
+    }
+  ],
+  "evidence": {
+    "automatedChecks": [
+      {
+        "name": "ui:contract",
+        "verdict": "PASS",
+        "at": "2026-09-03"
+      },
+      {
+        "name": "ui:icons",
+        "verdict": "PASS",
+        "at": "2026-09-03",
+        "note": "icons=13 errors=0"
+      },
+      {
+        "name": "ui:build",
+        "verdict": "PASS",
+        "at": "2026-09-03",
+        "note": "110 files · 재빌드 결정론 확인"
+      },
+      {
+        "name": "ui:test",
+        "verdict": "PASS",
+        "at": "2026-09-03"
+      },
+      {
+        "name": "ui:guide:render",
+        "verdict": "PASS",
+        "at": "2026-09-03",
+        "note": "18종 — date-picker 는 승격 후 19종"
+      },
+      {
+        "name": "variant-coverage-check (Gate 19)",
+        "verdict": "PASS",
+        "at": "2026-09-03",
+        "note": "pairs=49 newGaps=0"
+      },
+      {
+        "name": "canon:check (Gate 34)",
+        "verdict": "FAIL",
+        "at": "2026-09-03",
+        "note": "tracked=617 added=5 — 전부 B5(river 승인 대기). 이번 작업의 수정발 증가 0"
+      },
+      {
+        "name": "독립 검증 7차 (component-verifier 시나리오 F)",
+        "verdict": "PASS",
+        "at": "2026-09-03",
+        "note": "❌ 0 · ❓ 0 · BLOCKED 0"
+      }
+    ],
+    "sourceAudit": {
+      "status": "complete",
+      "actor": "source-reader",
+      "observedAt": "2026-09-03",
+      "basis": "착수 전 저장소 판독 — 정본 빌더 6종(buildDatePicker 3670~·buildCalendar 3512~·buildCalendarCell 3319~·buildCalendarTile 3396~·buildDatePickerBottomSheet 3751~·buildTimePickerMobileBottomSheet 3862~), color/date-picker/* 24개 토큰 Light·Dark 실제 값, registry/components/date-picker.json 메타, 기존 ui-library 배선(build·test·exports·소비자·가이드), time-picker·select 선례 manifest 스키마",
+      "summary": "ui-library/src 에 date-picker 는 미착수이고 index.js·auto-init.js·ui-review·migration·guideComponents 어디에도 등재돼 있지 않다. 반면 pages/components.html 에는 방대한 손편집 정적 date-picker 섹션(마크업 2887~3298·CSS 810~1030대·전용 JS setupDatePicker 4419~4680)이 이미 있고 dist 를 소비하지 않으며 nav 는 disabled 다. 정본에 상태·수치·토큰은 모두 있으나 상호작용 규칙(기간 선택 동작·연월 화면 전환·키보드 이동)이 없고, 주 시작 요일이 문서(일요일)와 빌더 코드(월요일)에서 불일치한다.",
+      "report": "reports/ui-library/date-picker/1-inventory.md"
+    },
+    "independentVerification": {
+      "verdict": "PASS",
+      "by": "component-verifier",
+      "scenario": "F",
+      "at": "2026-09-03",
+      "rounds": 7,
+      "report": "reports/ui-library/date-picker/4-verification-independent.md",
+      "summary": "7차에 걸친 독립 검증 끝에 ❌ 0 · ❓ 0 · BLOCKED 0. 1차 FAIL(4건)→2차 FAIL(새 3건)→3차 FAIL(형제 표면 2건)→4차 FAIL(2건)→5차 FAIL(1건)→6차 FAIL(자간 1건)→7차 PASS. 정본 매핑을 검증자가 직접 재유도해 대조했고, 줄바꿈·잘림 0·기하 전량 불변·검수↔배포 동일·Light↔Dark 동일·적대 테스트 방어를 확인했다.",
+      "screenshots": [
+        "reports/ui-library/date-picker/screens/verify7-review-datepicker-full.png",
+        "reports/ui-library/date-picker/screens/verify7-review-timepicker.png"
+      ]
+    },
+    "implementationActualRender": {
+      "verdict": "PASS",
+      "by": "orchestrator",
+      "at": "2026-09-03",
+      "note": "PC·Mobile × Light·Dark 실제 dist 소비 렌더 확인. 기간 선택·연월 화면·모바일 날짜 시트·시간 휠 시트 2종."
+    }
+  },
+  "handoff": {
+    "lastActor": "orchestrator",
+    "updatedAt": "2026-09-03",
+    "summary": "독립 검증 7차 PASS 로 4-verification 통과. uiLibraryStatus=verified. 남은 것은 river UX 검수와 Gate 34 승인 문장 하나뿐이다."
+  },
+  "checkpointLog": [
+    {
+      "checkpoint": 0,
+      "name": "0-governance",
+      "status": "passed",
+      "evidence": "reports/ui-library/date-picker/workflow-state.json",
+      "note": "ui:contract PASS · 범위 결정 D1·D2 기록"
+    },
+    {
+      "checkpoint": 1,
+      "name": "1-inventory",
+      "status": "passed",
+      "evidence": "reports/ui-library/date-picker/1-inventory.md",
+      "note": "📖 source-reader 판독. 정본에 없는 것 11건·미확인 6건 목록화. 누락 0."
+    },
+    {
+      "checkpoint": 2,
+      "name": "2-canon-readiness",
+      "status": "passed",
+      "evidence": "reports/ui-library/date-picker/2-canon-readiness.md",
+      "note": "river 결정 4건 확정 · 새 토큰 0건 · 정본 이탈 2건 기록 후 진행. 결론 \"✅ 통과 — 3-build 진행 가능\"."
+    },
+    {
+      "checkpoint": 3,
+      "name": "3-build",
+      "status": "superseded",
+      "evidence": "reports/ui-library/date-picker/3-build.md",
+      "note": "date-picker 신규 + time-picker 모바일 휠 시트(D1 숙제 해소). 배선표 전 항목 등재. 렌더 결함 3건은 ⭐ 가 수정. · 독립 검증 FAIL 로 무효화(2026-09-03)."
+    },
+    {
+      "checkpoint": 4,
+      "name": "4-verification",
+      "status": "failed",
+      "evidence": "reports/ui-library/date-picker/4-verification-independent.md",
+      "note": "🤖 component-verifier 시나리오 F 판정 FAIL — ❌(a) 4건(아이콘 크기·검수화면 Mobile 표본 무동작·시트 포커스 미이동/미가둠·destroy 리스너 누수) · ❓(c) 4건. 기하·토큰 전수 일치, HEX 0, D4·D6 실측 통과, 배포 동일성 통과는 확인됨."
+    },
+    {
+      "checkpoint": 4,
+      "name": "4-verification (2차)",
+      "status": "failed",
+      "evidence": "reports/ui-library/date-picker/4-verification-independent.md",
+      "note": "지시한 수정 5건은 전부 실측 PASS. 그러나 그 수정이 새 결함 3건을 만들었다 — R-1(차단급: 검수화면 정적 표본이 hidden 없는 고정 오버레이 4장을 깔아 페이지 클릭 불가) · R-2(패널 바깥 352↔내용 312 를 동시에 못 맞춤, INSIDE stroke 를 border 로 옮긴 탓) · R-3(검수화면 시트 aria-labelledby 누락). ❓ C-5(열린 채 destroy 시 스크롤 잠금 잔존) · C-6(새 휠 시트가 검수 대상에서 빠짐). 회귀는 없음(D4·D6·배포 동일성·time-picker 휠 시트 정상)."
+    },
+    {
+      "checkpoint": 4,
+      "name": "4-verification (3차)",
+      "status": "failed",
+      "evidence": "reports/ui-library/date-picker/4-verification-independent.md",
+      "note": "지시한 수정 4건(R-1·R-2·R-3·C-5) 전부 PASS, 회귀 0건. date-picker 자체(소스·dist·검수 화면)는 깨끗하다는 판정. 그러나 같은 결함이 형제 표면에 남아 새 지적 2건 — V-1(time-picker 휠 시트 접근 이름 없음, 검수·안내 화면 6곳 · 이미 배포된 상태) · V-2(안내 페이지 렌더러의 date-picker 모바일 표본이 1차 F-2 와 같은 이유로 죽어 있음 · 승격 시 배포됨). 검증자 의견: V-1 은 먼저 고칠 것, V-2 는 승격 전 필수이며 river 검수를 막지는 않음."
+    },
+    {
+      "checkpoint": 4,
+      "name": "4-verification (4차·최종)",
+      "status": "failed",
+      "evidence": "reports/ui-library/date-picker/4-verification-independent.md",
+      "note": "V-1·V-2 둘 다 PASS, 회귀 0건, 형제 표면 훑기 주장도 사실 확인. 검증자가 V-2 를 구현자와 다른 방법으로 교차 검증했다(진짜 렌더러+진짜 dist 를 iframe 으로 구동). 새 지적 2건은 모두 이미 배포된 time-picker 휠 시트 쪽 — W-1(manifest a11y.focus 선언이 구현과 불일치) · W-2(시트 제목 line-height 미선언으로 호스트 상속 → 같은 배포본이 검수 448 / 배포 456 / 정본 450 으로 화면마다 다름). 검증자 의견: river 검수(5)는 넘겨도 되고, 승격(6)은 W-1·W-2·B5·O-2 해소 후."
+    },
+    {
+      "checkpoint": 4,
+      "name": "4-verification (5차)",
+      "status": "failed",
+      "evidence": "reports/ui-library/date-picker/4-verification-independent.md",
+      "note": "W-1·W-2 둘 다 PASS(다크·크기별 미검증분도 채움 — 검수/배포 양쪽 TimeOnly 450·DateTime 514·제목 26px 일치). 지시 회귀 0건. 새 지적 X-1 — W-2 를 시트 제목에만 적용해 같은 증상이 휠 숫자에 남았다(검수 44 vs 배포 51.2). 이번 작업이 쓴 코드라 기존 부채 아님."
+    },
+    {
+      "checkpoint": 4,
+      "name": "4-verification (6차)",
+      "status": "failed",
+      "evidence": "reports/ui-library/date-picker/4-verification-independent.md",
+      "note": "X-1 완전 해소 확인(검수·배포 양쪽 휠 칸 44.00·scrollHeight 1284·초기 scrollTop 0·스냅 오차 0px, 적대 테스트 host line-height 3.7 에도 불변). 기하 회귀 0건 — date-picker 52개 인스턴스 전수·다크 포함. 새 지적 Y-1 — ⭐ 가 X-1 을 고치며 자간을 「정본은 전부 기본값」이라 단정하고 normal 로 못 박았는데, 정본 20종 중 8종이 -2% 였다(6곳 오적용)."
+    },
+    {
+      "checkpoint": 4,
+      "name": "4-verification (7차·최종)",
+      "status": "passed",
+      "evidence": "reports/ui-library/date-picker/4-verification-independent.md",
+      "note": "✅ PASS — ❌ 0 · ❓ 0 · BLOCKED 0. 검증자가 정본 매핑(makeBoundText → textStyleKey)을 직접 다시 유도해 자간을 전 자리 대조했고, 줄바꿈·잘림 0건·기하 전량 불변·검수↔배포 값 동일·Light↔Dark 동일·적대 테스트(host letter-spacing 3px + line-height 3.7) 방어를 확인했다. 자동 검사 전부 PASS, canon:check 이번 수정발 증가 0. 승격의 유일한 차단 조건은 B5(river 승인 문장)."
+    }
+  ],
+  "gateSnapshot": null,
+  "registrationStatus": {},
+  "fingerprintRefreshes": [
+    {
+      "refreshedAt": "2026-09-03",
+      "refreshedBy": "orchestrator",
+      "paths": [
+        "ui-library/src/components/*/manifest.json (19건)"
+      ],
+      "supersedesPriorVerification": false,
+      "rationale": "커밋 dc5ac98(설치기 화면 개선)이 정본 build-components.ts 를 바꾸고 모듈 지문 갱신을 빠뜨려 그 뒤로 npm run ui:build 가 input 에서 즉시 실패하고 있었다(date-picker 착수 이전부터의 저장소 차단). 변경 hunk 가 buildOrderFor(5719)·buildAllComponents(5843) 뿐으로 컴포넌트 시각 빌더 밖임을 확인하고 19개 지문을 재계산했다. 시각·토큰 변화가 없으므로 기존 승인 컴포넌트의 검증을 무효화하지 않는다.",
+      "diffScopeEvidence": "git show dc5ac98 -- plugins/figma-vars-installer/src/build-components.ts — hunk 2개가 buildOrderFor·buildAllComponents 내부"
+    },
+    {
+      "refreshedAt": "2026-09-03",
+      "refreshedBy": "orchestrator",
+      "paths": [
+        "plugins/figma-vars-installer/src/build-components.ts",
+        "registry/components/date-picker.json"
+      ],
+      "supersedesPriorVerification": false,
+      "rationale": "build-components.ts: 0-governance 때 기록한 지문(2beb813f)이 작업 중 6253ecac 로 달라졌다. 현재 파일은 HEAD(dc5ac98)와 동일해 워킹트리에 미커밋 변경이 없으며, 같은 폴더를 쓰는 다른 세션의 미커밋 상태가 정리된 것으로 보인다. date-picker 관련 범위는 무변경임을 직접 확인했다 — 6개 빌더가 모두 판독 당시와 같은 줄(3319·3396·3512·3670·3751·3862)에 있고, 요일 배열(월 시작)과 트리거 4크기 표도 동일하다. 따라서 1-inventory 판독과 구현을 무효화하지 않는다. registry/components/date-picker.json: 이 작업이 2-canon-readiness·3-build 에서 직접 갱신한 산출물이라 현재 상태로 맞춘다.",
+      "diffScopeEvidence": "grep 으로 6개 빌더 시작 줄·weekdays 배열(3591)·sizes 표(3679~3684) 재확인"
+    },
+    {
+      "refreshedAt": "2026-09-03",
+      "refreshedBy": "orchestrator",
+      "paths": [
+        "plugins/figma-vars-installer/src/build-components.ts"
+      ],
+      "supersedesPriorVerification": false,
+      "rationale": "같은 폴더를 쓰는 다른 세션이 GNB 작업으로 워킹트리의 build-components.ts 를 편집 중이다(6253ecac → db6d2283, +62/-9). date-picker·calendar·모바일 시트 빌더 전 구간(buildCalendarCell~buildCalendarCellLayout 직전)을 잘라 해시 대조한 결과 HEAD 와 바이트 동일(57b7fbe0fb499dcc…)이고, 변경 hunk 3개는 전부 GNB_UTIL_SVGS(2806)·buildGNB(3273·3307) 안이다. 따라서 이 작업의 판독·구현·검증을 무효화하지 않는다. 줄번호만 +53 이동했다(buildCalendarCell 3319→3372 등) — 보고서의 옛 줄번호를 읽을 때 참고.",
+      "diffScopeEvidence": "awk 로 buildCalendarCell~buildCalendarCellLayout 구간 추출 후 현재본·HEAD 본 sha256 일치 확인 · git diff --@@ 3개 모두 GNB 구간"
+    },
+    {
+      "refreshedAt": "2026-09-03",
+      "refreshedBy": "orchestrator",
+      "paths": [
+        "plugins/figma-vars-installer/src/build-components.ts"
+      ],
+      "supersedesPriorVerification": false,
+      "rationale": "다른 세션의 GNB 편집이 계속되어 지문이 반복적으로 바뀐다. date-picker 관련 빌더 구간(buildCalendarCell~buildCalendarCellLayout 직전)은 매번 57b7fbe0fb499dcc… 로 동일하며 3차 검증자가 독립적으로 재확인했다.",
+      "diffScopeEvidence": "awk 구간 추출 sha256 = 57b7fbe0fb499dcc…(HEAD 와 동일)"
+    },
+    {
+      "refreshedAt": "2026-09-03",
+      "refreshedBy": "orchestrator",
+      "paths": [
+        "plugins/figma-vars-installer/src/build-components.ts"
+      ],
+      "supersedesPriorVerification": false,
+      "rationale": "다른 세션의 편집이 GNB 를 넘어 buildDropdown·buildLineTabSet·buildModalShell·buildMultiToggle 까지 번졌다. 그 결과 내가 쓰던 넓은 구간 대조(buildCalendarCell~buildCalendarCellLayout)가 사이에 낀 buildModalShell 변경 때문에 달라졌고, 한때 date-picker 구간이 바뀐 것처럼 보였다. **대조 범위를 함수 단위로 좁혀 다시 확인한 결과 date-picker 관련 빌더 6개(buildCalendarCell·buildCalendarTile·buildCalendar·buildDatePicker·buildDatePickerBottomSheet·buildTimePickerMobileBottomSheet)는 전부 HEAD 와 바이트 동일**하다. 앞선 refresh 들의 근거(구간 동일)는 결론은 맞았으나 대조 범위가 넓어 부정확했다 — 이 항목이 그 정정이다.",
+      "diffScopeEvidence": "6개 함수 각각을 현재본·HEAD 본에서 추출해 sha256 대조, 전부 일치. git diff --@@ hunk 는 buildDropdown(1657·1679·1703·1715)·buildLineTabSet(1860·1884)·GNB_UTIL_SVGS(2828)·buildGNB(3310·3342)·buildModalShell(4506·4530·4550·4603)·buildMultiToggle(5621·5639) 로 date-picker 빌더 밖"
+    }
+  ],
+  "coreUpdates": [
+    {
+      "id": "CU-1",
+      "topic": "주 시작 요일",
+      "web": "일요일",
+      "canon": "월요일(build-components.ts buildCalendar:3591)",
+      "action": "buildCalendar 요일 배열과 데모 그리드 오프셋을 일요일 시작으로 수정 — 별도 작업(H1② 검증 분리 필요)"
+    },
+    {
+      "id": "CU-2",
+      "topic": "연/월 진입 버튼",
+      "web": "헤더 라벨을 연도·월 두 개의 클릭 가능 라벨로 분리",
+      "canon": "단일 라벨 1개(makeCalHdr:3550~3562)",
+      "action": "makeCalHdr 라벨 분리 — 별도 작업"
+    },
+    {
+      "id": "CU-3",
+      "topic": "일요일 빨강 · 토요일 파랑",
+      "web": "요일 헤더와 날짜에 color/date-picker/text/sunday(빨강)·text/saturday(파랑) 적용",
+      "canon": "시각 정본 buildCalendar 는 요일 헤더를 전부 text/primary, 날짜를 text/secondary 로 칠한다",
+      "action": "river 결정 D7(2026-09-03)로 유지 확정. 기본값은 주말 색 있음이며, 주말 특별색을 없애는 것은 경비업 같은 개별 경우다. 시각 정본(buildCalendar)이 요일을 전부 같은 색으로 칠하는 것은 이 기본값과 어긋나므로 Figma 반영이 필요하다 — CU-1·CU-2 와 함께 후속 작업."
+    }
+  ],
+  "orchestratorFixes": [
+    {
+      "at": "2026-09-03",
+      "file": "pages/ui-review.html",
+      "what": "연/월 정적 표본의 모든 타일에 무조건 붙던 disabled 제거(칸이 전부 비활성으로 보였다) · 죽은 코드 제거 · 칸 폭 minmax(380px)로 패널 침범 해소 · 자리 확보(min-height 420)를 정적 표본에만 적용해 큰 빈 칸 제거",
+      "basis": "실제 렌더 대조"
+    },
+    {
+      "at": "2026-09-03",
+      "file": "ui-library/src/components/date-picker/date-picker.css",
+      "what": "모바일 시트 폭 360px 고정 → width:100% + max-width:360px",
+      "basis": "정본 SHEET_W=360 은 Figma 모바일 프레임의 화면 폭(3757)이라 웹에서는 화면 폭을 따르는 것이 같은 뜻이다. 고정하면 좁은 기기에서 넘친다."
+    },
+    {
+      "at": "2026-09-03",
+      "file": "pages/components.html",
+      "what": "draft 상태인데 Date Picker 메뉴가 열려 있어 누르면 빨간 오류만 뜨던 것을 disabled 로 되돌림(C-3). 승격 시 해제한다.",
+      "basis": "독립 검증 C-3 · time-picker 선례는 승인 시점에 전환"
+    },
+    {
+      "at": "2026-09-03",
+      "file": "pages/components.html",
+      "what": "data-cov-type 에서 정본 Type 축에 없는 single 제거 → standard,range (C-4)",
+      "basis": "독립 검증 C-4 · 정본 Calendar Cell Type 축 = Standard|Range"
+    },
+    {
+      "at": "2026-09-03",
+      "file": "registry/governance/ui-library-migration.json",
+      "what": "time-picker 레코드에 pendingAddition(모바일 휠 시트, river 검수 대기)을 기록하고 reverifyTrigger 의 D1 문구를 현행화(C-6). 검수 화면이 컴포넌트 단위로 승인 상태를 읽어 이 시트를 검수 대상에서 빠뜨리므로, 5-human-review 요청에 명시적으로 포함시킨다.",
+      "basis": "독립 검증 C-6"
+    },
+    {
+      "at": "2026-09-03",
+      "file": "ui-library/src/components/{time-picker,date-picker}/*.css",
+      "what": "X-1 해소 — font-size 를 선언하고 line-height 가 없던 규칙 11곳(time-picker 6·date-picker 5)에 line-height: var(--line-height-130) 과 letter-spacing: var(--letter-spacing-normal) 을 명시했다. 빌더가 실측 중 정지해 ⭐ 가 직접 수행.",
+      "basis": "정본 textstyles-data.ts 의 텍스트 스타일 20종이 전부 lineHeightPercent=130 이고 예외는 body/10M·10R(140) 뿐인데 두 컴포넌트는 10px 를 쓰지 않는다. 실측: 휠 칸 검수·배포 양쪽 44.00px · line-height 41.6px(=32×1.3, 정본 title/32R) · 열 scrollHeight 1284 · 시트 450 으로 일치. 날짜 숫자 20.8px(=16×1.3)."
+    },
+    {
+      "at": "2026-09-03",
+      "file": "pages/_*_tmp.html · tmp-dp-check*.html",
+      "what": "검증 과정에서 남은 임시 파일 5개 삭제(O-2·O-2b)",
+      "basis": "독립 검증 지적"
+    },
+    {
+      "at": "2026-09-03",
+      "file": "ui-library/src/components/{time-picker,date-picker}/*.css",
+      "what": "Y-1·Y-2 해소 — 자간을 정본 스타일별로 갈라 넣었다(14·16 계열 8곳 tight=-0.02em, 12·20B·24B·32R 은 normal 유지). 미선언으로 남아 있던 date-picker 트리거 3줄에도 줄높이·자간을 명시했다. 주석의 「전부 기본 자간」 문구도 정정.",
+      "basis": "정본 textstyles-data.ts 20종 표를 직접 읽어 확인(body/14·16 계열과 title/16M·18M 이 -2%). 승인된 button·input 도 같은 방식으로 갈라 쓴다. 실측: 요일·날짜 숫자 -0.32px(=16×-0.02)·20.8px, 트리거 -0.28px(=14×-0.02)·18.2px, 기하는 패널 356×352·달력 308×312·칸 44×44 로 불변.",
+      "correction": "7차 검증 Z-1: 이 메모의 「20종 중 8종이 -2%」는 서술 오류이고 실제로는 7종(title/18M·16M · body/18M·16M·16R·14M·14R)이다. 값 판정에는 영향 없다. 또 tight 로 정정한 자리 목록에 든 grid[data-tile-grid] 는 타이포 선언이 없는 규칙이라 실제 변경 대상이 아니었다 — 글자는 자식 tile 이 갖고 그쪽은 맞게 적용됐다."
+    }
+  ]
+}

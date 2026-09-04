@@ -195,6 +195,19 @@
     /* Time Picker 패널은 목록 192 + 위여백 12 + 확인줄 ≈ 248px 라 Select 목록보다 높다.
        190px 로 두면 열린 패널이 아래 표본을 덮는다. */
     [data-component-id="time-picker"] .review-overlay-slot { min-height: 300px; }
+    /* Date Picker 캘린더 패널은 356×352 고정이라 Time Picker 목록보다 더 크게 자리를 준다. */
+    /* 자리 확보는 '정적 열린 표본'에만 준다 — 실제로 눌러보는 칸은 팝오버가 떠서 자리를 안 먹는다.
+       전체에 주면 검수 화면에 큰 빈 칸이 남아 고장처럼 보인다. */
+    [data-component-id="date-picker"] .review-overlay-slot:has([data-review-static]) { min-height: 420px; }
+    /* 패널 폭이 356px 고정이라 2열(1fr)에서는 옆 칸을 침범한다 — 칸을 패널보다 넓게 잡는다. */
+    [data-component-id="date-picker"] .review-grid { grid-template-columns: repeat(auto-fit, minmax(380px, 1fr)); }
+    /* R-1: date-picker 모바일 시트 정적 "Open" 표본 — 승인된 modal.is-review-inline 과 같은 처리.
+       배포본 sheet 는 position:fixed;inset:0 이라 정적 표본을 그대로 열어두면 화면 전체를 덮는다.
+       relative 로 눕혀 지면 안에서만 "열린 모습"을 보여주고 클릭을 막지 않는다. */
+    [data-s1-component="date-picker"] [data-s1-part="sheet"].is-review-inline {
+      inset: auto;
+      position: relative;
+    }
     /* 모달 정적 표본 — 배포본은 화면 전체를 덮는 팝업이라(position: fixed) 검수 지면에 눕혀 둔다.
        이 CSS 는 이 페이지 것이고 dist 에 넣지 않는다. 색·크기·간격은 그대로 dist 가 그린다. */
     /* 모달 표본은 정본 고정 폭(PC 360 · Mobile 300)이라 2열 칸에 안 들어간다 — 한 줄에 하나씩 놓는다. */
@@ -579,6 +592,14 @@
         <p class="review-note">정본 상태 5종(Default · Hover · Focus · Filled · Disabled)이며 <strong>Focus = 목록이 열린 상태</strong>입니다(정본 buildTimePicker). 값은 <strong>확인을 눌러야</strong> 트리거에 남습니다. 유형은 24시간제(시·분 2열) · 오전오후(오전오후·시·분 3열) 2가지입니다. river 결정(D1)으로 <strong>모바일 휠 바텀시트는 이번 범위 밖</strong>이라 모바일도 같은 목록 드롭다운을 쓰고 트리거만 48px입니다 — 휠 시트는 Date Picker 작업에서 함께 만듭니다. 분 목록 기본은 1분 단위이고 <code>data-minute-step</code>으로 조절합니다(D2). 정본에 Error 상태는 없습니다.</p>
       </div>
       <div class="review-matrix" id="time-picker-review-matrix"></div>
+    </section>
+
+    <section class="review-section" aria-labelledby="date-picker-review-title" data-component-id="date-picker">
+      <div>
+        <h2 class="review-section-title" id="date-picker-review-title">17. Date Picker</h2>
+        <p class="review-note">정본 상태 4종(Default·Filled·Open·Disabled) + <strong>웹에서만 더한 Hover 1종</strong>(정본 Date Picker 세트에 마우스오버 상태가 없습니다 — river 승인 대기) × PC 3크기(XXSM 28·XSM 34·MD 44). Hover는 마우스를 올려 확인합니다. 패널은 Date·Year·Month 3화면(build-components.ts buildCalendar)이고, <strong>달력 크기는 입력창을 따라갑니다</strong> — MD 입력창은 큰 달력(356×352), XSM·XXSM 입력창은 <strong>작은 달력(267×266)</strong>이 열립니다(river 지시 2026-09-04로 신설, 아래 크기별 Open 표본에서 확인). 헤더 라벨은 연도·월을 각각 누를 수 있게 <strong>둘로 나눴습니다</strong>(D5). 요일은 <strong>일요일 시작</strong>입니다(D3 — 시각 정본은 월요일 시작이라 갈라진 지점, CU-1로 기록). 기간 선택은 시작일만 고른 상태에서 커서까지 미리 칠해집니다(D6). Mobile은 팝오버 대신 하단 시트가 열립니다(M7).</p>
+      </div>
+      <div class="review-matrix" id="date-picker-review-matrix"></div>
     </section>
     </div>
 
@@ -1369,6 +1390,52 @@
         </div>`;
     }
 
+    function timePickerWheelMarkup({ content = "time-only" } = {}) {
+      uniqueId += 1;
+      const sheetTitleId = `time-picker-wheel-title-${uniqueId}`;
+      const title = content === "date-time" ? "시작 일시" : "시간 선택";
+      const triggerLabel = content === "date-time" ? "시작 일시 선택" : "시간 선택";
+      const type = content === "date-time" ? "12h" : "24h";
+      const tabs = content === "date-time" ? `
+          <div data-s1-part="tabs" data-s1-component="tab" data-size="sm" data-break="mobile" role="tablist" aria-label="날짜·시간 선택">
+            <button type="button" data-s1-part="tab" role="tab" aria-selected="false" data-value="date">날짜</button>
+            <button type="button" data-s1-part="tab" role="tab" aria-selected="true" data-value="time">시간</button>
+          </div>
+          <div data-s1-part="date-panel" hidden>
+            <p data-s1-part="date-panel-note">날짜 선택 화면은 Date Picker 코어가 별도로 제공합니다(이 컴포넌트 범위 밖).</p>
+          </div>` : "";
+      const wheelCols = content === "date-time"
+        ? `<div data-s1-part="wheel-col" data-column="ampm" role="listbox" aria-label="오전오후"></div>
+          <div data-s1-part="wheel-col" data-column="hour" role="listbox" aria-label="시"></div>
+          <div data-s1-part="wheel-col" data-column="colon" aria-hidden="true"></div>
+          <div data-s1-part="wheel-col" data-column="minute" role="listbox" aria-label="분"></div>`
+        : `<div data-s1-part="wheel-col" data-column="hour" role="listbox" aria-label="시"></div>
+          <div data-s1-part="wheel-col" data-column="colon" aria-hidden="true"></div>
+          <div data-s1-part="wheel-col" data-column="minute" role="listbox" aria-label="분"></div>`;
+      return `<div data-s1-component="time-picker" data-size="md" data-break="mobile" data-type="${type}" data-minute-step="1" data-mobile-ui="wheel" data-mobile-content="${content}">
+          <button type="button" data-s1-part="trigger" aria-haspopup="dialog" aria-expanded="false" aria-label="${title}">
+            <span data-s1-part="value">${triggerLabel}</span>
+            <span data-s1-part="icon" aria-hidden="true"></span>
+          </button>
+          <div data-s1-part="sheet" hidden>
+            <div data-s1-part="sheet-backdrop"></div>
+            <div data-s1-part="sheet-panel" role="dialog" aria-modal="true" aria-labelledby="${sheetTitleId}" tabindex="-1">
+              <div data-s1-part="sheet-header">
+                <span data-s1-part="sheet-title" id="${sheetTitleId}">${title}</span>
+                <button type="button" data-s1-part="sheet-close" aria-label="닫기"></button>
+              </div>${tabs}
+              <div data-s1-part="wheel">${wheelCols}
+                <div data-s1-part="fade-top" aria-hidden="true"></div>
+                <div data-s1-part="fade-bottom" aria-hidden="true"></div>
+              </div>
+              <div data-s1-part="sheet-footer">
+                <button type="button" data-s1-part="apply" data-s1-component="button" data-variant="primary" data-size="lg"><span data-s1-part="label">적용</span></button>
+              </div>
+            </div>
+          </div>
+        </div>`;
+    }
+
     function renderTimePickerPanel(combo) {
       const sizes = combo.device === "Mobile"
         ? [["md", "MD · 48px"]]
@@ -1413,9 +1480,175 @@
           ${stateBlocks}
           <hr class="review-separator">
           ${typeBlock}
+          ${combo.device === "Mobile" ? `
+          <hr class="review-separator">
+          <div class="review-group">
+            <h4 class="review-group-title">모바일 휠 바텀시트 — 시간만(TimeOnly)</h4>
+            <p class="review-panel-description">data-mobile-ui="wheel" 옵션입니다(기본 목록 드롭다운과 별개). 화살표 키·스크롤로 시·분을 고르고 적용을 누릅니다.</p>
+            <div class="review-component-slot review-overlay-slot">${timePickerWheelMarkup({ content: "time-only" })}</div>
+          </div>
+          <div class="review-group">
+            <h4 class="review-group-title">모바일 휠 바텀시트 — 시작 일시(DateTime)</h4>
+            <p class="review-panel-description">날짜·시간 탭(승인된 Line Tab 재사용)으로 전환됩니다. 날짜 화면 자체는 범위 밖입니다.</p>
+            <div class="review-component-slot review-overlay-slot">${timePickerWheelMarkup({ content: "date-time" })}</div>
+          </div>` : ""}
         </article>`;
     }
 
+    /* ── Date Picker — 정본 buildDatePicker·buildCalendar 기준 검수 표본. 캘린더 내부는 런타임이 그리므로
+       정적 표본은 data-review-static 을 달아 hand-set 마크업을 재계산하지 않게 한다. ── */
+    const DP_WEEKDAYS_REVIEW = ["일", "월", "화", "수", "목", "금", "토"];
+    function dpReviewCell(num, other, state, opts = {}) {
+      const band = opts.band ? ` data-range-band="${opts.band}"` : "";
+      return `<button type="button" data-s1-part="cell" data-state="${state}" data-other-month="${other}" data-weekday="${opts.weekday ?? 0}"${band} aria-selected="${!!opts.selected}" tabindex="-1" disabled>
+        <span data-s1-part="cell-inner"><span data-s1-part="cell-num">${num}</span></span>
+      </button>`;
+    }
+    function dpReviewDateView({ selected = 17, today = 10, disabledDay = 25, range = null } = {}) {
+      const leading = 3;
+      const cells = [];
+      for (let i = leading; i > 0; i -= 1) cells.push({ num: 31 - i + 1, other: true, weekday: leading - i });
+      for (let d = 1; d <= 31; d += 1) cells.push({ num: d, other: false, weekday: (leading + d - 1) % 7 });
+      let next = 1;
+      while (cells.length % 7 !== 0 || cells.length < 35) { cells.push({ num: next, other: true, weekday: cells.length % 7 }); next += 1; }
+      const rows = [];
+      for (let r = 0; r < cells.length / 7; r += 1) {
+        const rowCells = cells.slice(r * 7, r * 7 + 7).map((day) => {
+          if (day.other) return dpReviewCell(day.num, true, "default", { weekday: day.weekday });
+          if (range) {
+            const { start, end } = range;
+            if (day.num === start && end && end !== start) return dpReviewCell(day.num, false, "today", { band: "start", selected: true, weekday: day.weekday });
+            if (end && day.num === end && end !== start) return dpReviewCell(day.num, false, "selected", { band: "end", selected: true, weekday: day.weekday });
+            if (end && day.num > start && day.num < end) return dpReviewCell(day.num, false, "range-mid", { band: "mid", selected: true, weekday: day.weekday });
+            return dpReviewCell(day.num, false, "default", { weekday: day.weekday });
+          }
+          if (day.num === selected) return dpReviewCell(day.num, false, "selected", { selected: true, weekday: day.weekday });
+          if (day.num === today) return dpReviewCell(day.num, false, "today", { weekday: day.weekday });
+          if (day.num === disabledDay) return dpReviewCell(day.num, false, "disabled", { weekday: day.weekday });
+          return dpReviewCell(day.num, false, "default", { weekday: day.weekday });
+        }).join("");
+        rows.push(`<div data-s1-part="week" role="row">${rowCells}</div>`);
+      }
+      const weekdays = DP_WEEKDAYS_REVIEW.map((label, i) => `<span data-s1-part="weekday" data-weekday="${i}">${label}</span>`).join("");
+      return `<div data-s1-part="view" data-view="date"><div data-s1-part="weekdays">${weekdays}</div><div data-s1-part="grid" role="grid">${rows.join("")}</div></div>`;
+    }
+    function dpReviewHeader(view) {
+      /* 정적 표본의 헤더 버튼은 disabled 로 두지 않는다 — disabled 로 두면 이전/다음 화살표가
+         icon/disabled(gray/300) 로 칠해져 "Open(정상)" 이라고 이름 붙은 표본이 비활성 색을 보여주고
+         hover 도 죽는다(river 지적 2026-09-04). 정적 표본에는 런타임이 붙지 않아(:not([data-review-static]))
+         눌러도 아무 일도 일어나지 않으므로, 초점만 tabindex="-1" 로 빼고 색·hover 는 정상 상태를 보여준다.
+         가이드 페이지(assets/js/ui-library-guide.js)도 disabled 없이 같은 방식이다. */
+      const label = view === "date"
+        ? `<button type="button" data-s1-part="year-label" tabindex="-1">2025년</button><button type="button" data-s1-part="month-label" tabindex="-1">1월</button>`
+        : `<button type="button" data-s1-part="year-label" tabindex="-1">2025년</button>`;
+      return `<div data-s1-part="header">
+          <button type="button" data-s1-part="prev" aria-label="이전" tabindex="-1"><span data-s1-part="chevron-icon" aria-hidden="true"></span></button>
+          <div data-s1-part="header-label">${label}</div>
+          <button type="button" data-s1-part="next" aria-label="다음" tabindex="-1"><span data-s1-part="chevron-icon" aria-hidden="true"></span></button>
+        </div>`;
+    }
+    function datePickerMarkup({ size = "md", breakName = "pc", mode = "single", state = "default", statik = false, range = null } = {}) {
+      const open = state === "open";
+      const filled = state === "filled";
+      const disabled = state === "disabled";
+      const staticAttrs = statik ? " data-review-static" : "";
+      const value = mode === "range" && range?.start
+        ? (range.end ? `26.01.${String(range.start).padStart(2, "0")} - 26.01.${String(range.end).padStart(2, "0")}` : `26.01.${String(range.start).padStart(2, "0")} - `)
+        : (filled || open ? "26.01.17" : "YY.MM.DD");
+      const calendarOpenInner = `<div data-s1-part="calendar" data-view="date">${dpReviewHeader("date")}${dpReviewDateView(mode === "range" ? { range: range || { start: 17, end: 22 } } : {})}</div>`;
+      /* R-3: 페이지 안 date-picker 인스턴스가 여러 벌 찍히므로(배선표 §2 T5), sheet-title id 는
+         modalMarkup() 과 같은 방식으로 매 호출마다 uniqueId 를 새로 발급해 고유하게 만든다. */
+      uniqueId += 1;
+      const sheetTitleId = `date-picker-sheet-title-${uniqueId}`;
+      const tab = statik ? ' tabindex="-1"' : "";
+      /* F-2: Mobile 은 dist/examples/date-picker.mobile.html 과 같은 sheet 마크업을 내야 date-picker.js 의
+         init() 이 sheetCalendar 컨테이너를 찾는다(panel 만 있으면 null 반환 — 죽은 컨트롤).
+         R-1: 정적 "Open" 표본은 sheet 를 hidden 없이 내되(열린 모습을 보여줘야 하므로), 승인된 modal 정적 표본과
+         같은 `.is-review-inline` 처리(position:fixed→relative)로 화면을 덮지 않게 눕힌다 — 실제로 눌러보는
+         라이브 인스턴스(statik=false)는 그대로 hidden 상태로 시작해 진짜 fixed 오버레이로 동작한다. */
+      const body = breakName === "mobile"
+        ? `<div data-s1-part="sheet"${open ? "" : " hidden"}${statik && open ? ' class="is-review-inline"' : ""}>
+            <div data-s1-part="sheet-backdrop"></div>
+            <div data-s1-part="sheet-panel" role="dialog" aria-modal="true" aria-labelledby="${sheetTitleId}" tabindex="-1">
+              <div data-s1-part="sheet-header">
+                <span data-s1-part="sheet-title" id="${sheetTitleId}">날짜 선택</span>
+                <button type="button" data-s1-part="sheet-close" aria-label="닫기"${tab}></button>
+              </div>
+              <div data-s1-part="calendar-wrap">${open ? calendarOpenInner : '<div data-s1-part="calendar"></div>'}</div>
+              <div data-s1-part="sheet-footer">
+                <button type="button" data-s1-part="apply" data-s1-component="button" data-variant="primary" data-size="lg"${tab}><span data-s1-part="label">적용</span></button>
+              </div>
+            </div>
+          </div>`
+        : (open
+            ? `<div data-s1-part="panel" role="dialog" data-view="date">${calendarOpenInner}</div>`
+            : `<div data-s1-part="panel" role="dialog" hidden><div data-s1-part="calendar"></div></div>`);
+      return `<div data-s1-component="date-picker" data-size="${size}" data-break="${breakName}" data-mode="${mode}"${staticAttrs}>
+          <button type="button" data-s1-part="trigger" aria-haspopup="dialog" aria-expanded="${open}"${filled ? ' data-filled="true"' : ""}${disabled ? " disabled" : ""}>
+            <span data-s1-part="value">${value}</span>
+            <span data-s1-part="icon" aria-hidden="true"></span>
+          </button>
+          ${body}
+        </div>`;
+    }
+    function renderDatePickerPanel(combo) {
+      const sizes = combo.device === "Mobile" ? [["md", "MD · 48px"]] : [["xxsm", "XXSM · 28px"], ["xsm", "XSM · 34px"], ["md", "MD · 44px"]];
+      /* Hover 는 강제 상태가 아니라 Default 와 같은 마크업이다 — 검수자가 실제로 마우스를 올려 본다
+         (승인된 Select·Filter Chip 검수 표본과 같은 방식). 정본에 없는 웹 추가분이라 라벨에 그대로 밝힌다. */
+      const states = [["Default", "default"], ["Hover · 마우스를 올려 확인 (정본에 없음)", "default"], ["Filled · 값 선택됨", "filled"], ["Disabled", "disabled"], ["Open · 패널 열림", "open"]];
+      const stateBlocks = sizes.map(([size, sizeLabel]) => {
+        const cells = states.map(([stateLabel, state]) => {
+          const markup = datePickerMarkup({ size, breakName: combo.breakName, state, statik: true });
+          const slot = state === "open" ? `<div class="review-component-slot review-overlay-slot">${markup}</div>` : `<div class="review-component-slot">${markup}</div>`;
+          return `<div class="review-sample"><p class="review-state-label">${stateLabel}</p>${slot}</div>`;
+        }).join("");
+        return `<div class="review-group"><h4 class="review-group-title">${sizeLabel}</h4><div class="review-grid">${cells}</div></div>`;
+      }).join('<hr class="review-separator">');
+
+      /* 달력 크기(MD·SM)별로 세 화면을 모두 보인다 — SM 은 river 지시 2026-09-04 로 신설된 크기다.
+         size 는 트리거 크기이며 달력 크기는 여기서 자동으로 따라간다(md → 356 · xsm → 267). */
+      const viewBlock = (view, label, size = "md") => `<div class="review-sample"><p class="review-state-label">${label}</p><div class="review-component-slot review-overlay-slot">
+          <div data-s1-component="date-picker" data-size="${size}" data-break="pc" data-mode="single" data-review-static>
+            <button type="button" data-s1-part="trigger" aria-haspopup="dialog" aria-expanded="true">
+              <span data-s1-part="value">26.01.17</span><span data-s1-part="icon" aria-hidden="true"></span>
+            </button>
+            <div data-s1-part="panel" role="dialog" data-view="${view}">
+              <div data-s1-part="calendar" data-view="${view}">${dpReviewHeader(view)}${view === "date" ? dpReviewDateView() :
+                `<div data-s1-part="grid" data-tile-grid="${view}">${
+                  Array.from({ length: 4 }, (_, r) => `<div data-s1-part="tile-row">${Array.from({ length: 3 }, (_, c) => {
+                    const idx = r * 3 + c;
+                    const label2 = view === "year" ? String(2021 + idx) : `${idx + 1}월`;
+                    const st = view === "year" ? (idx < 3 || idx >= 9 ? "disabled" : (idx === 4 ? "selected" : "default")) : (idx === 0 ? "selected" : "default");
+                    return `<button type="button" data-s1-part="tile" aria-selected="${st === "selected"}"${st === "disabled" ? " disabled" : ""}>${label2}</button>`;
+                  }).join("")}</div>`).join("")
+                }</div>`}
+              </div>
+            </div>
+          </div>
+        </div></div>`;
+
+      const rangeBlock = `<div class="review-group"><h4 class="review-group-title">기간 선택 — 완료(17~22일)</h4><div class="review-grid">
+          <div class="review-sample"><p class="review-state-label">Range · Open</p><div class="review-component-slot review-overlay-slot">${datePickerMarkup({ size: "md", breakName: combo.breakName, mode: "range", state: "open", statik: true, range: { start: 17, end: 22 } })}</div></div>
+        </div></div>`;
+
+      return `
+        <article class="review-panel" data-theme="${combo.theme}">
+          ${panelHeading(combo, "date-picker")}
+          <div class="review-group">
+            <h4 class="review-group-title">실제로 눌러보기</h4>
+            <p class="review-panel-description">${combo.device === "Mobile" ? "트리거를 누르면 하단 시트가 열립니다(M7). 배경 클릭·닫기·Esc로 닫힙니다." : "트리거를 눌러 팝오버를 열고 화살표 키·Enter로 날짜를 고릅니다. 연도·월 라벨을 누르면 Year·Month 화면으로 이동합니다."}</p>
+            <div class="review-component-slot review-overlay-slot">${datePickerMarkup({ size: "md", breakName: combo.breakName })}</div>
+          </div>
+          <hr class="review-separator">
+          ${stateBlocks}
+          <hr class="review-separator">
+          <div class="review-group"><h4 class="review-group-title">캘린더 화면</h4><p class="review-panel-description">달력 칸에도 마우스를 올려 확인합니다 — 일반 칸은 회색으로 채워지고, <strong>오늘</strong>(파란 테두리)은 파란 테두리를 유지한 채 같은 회색으로 채워지며, <strong>선택된 칸</strong>은 더 진한 파랑으로 채워지고 테두리도 같은 색이 됩니다(river 지시 2026-09-04). 칸 hover 는 정본 Standard 셀에만 있어 오늘·선택 칸 규칙은 웹 추가분입니다.</p><div class="review-grid">${viewBlock("date", "MD · Date")}${viewBlock("year", "MD · Year")}${viewBlock("month", "MD · Month")}${viewBlock("date", "SM · Date", "xsm")}${viewBlock("year", "SM · Year", "xsm")}${viewBlock("month", "SM · Month", "xsm")}</div></div>
+          <hr class="review-separator">
+          ${rangeBlock}
+        </article>`;
+    }
+
+    document.querySelector("#date-picker-review-matrix").innerHTML = combinations.map(renderDatePickerPanel).join("");
     document.querySelector("#time-picker-review-matrix").innerHTML = combinations.map(renderTimePickerPanel).join("");
 
     document.querySelector("#mobile-bottom-nav-review-matrix").innerHTML = controlThemes.map(renderMobileBottomNavPanel).join("");
@@ -1442,6 +1675,7 @@
        Open/Selected 표본이 사라진다. 실제로 눌러보는 인스턴스만 init 한다. */
     document.querySelectorAll('[data-s1-component="select"]:not([data-review-static])').forEach((root) => S1UI.select.init(root));
     document.querySelectorAll('[data-s1-component="time-picker"]:not([data-review-static])').forEach((root) => S1UI.timePicker.init(root));
+    document.querySelectorAll('[data-s1-component="date-picker"]:not([data-review-static])').forEach((root) => S1UI.datePicker.init(root));
     document.querySelectorAll('[data-s1-component="filter-chip"]:not([data-review-static])').forEach((root) => S1UI.filterChip.init(root));
     document.querySelectorAll('[data-s1-component="dropdown"]:not([data-review-static])').forEach((root) => S1UI.dropdown.init(root));
     /* Textarea 는 런타임이 없다(jsRequired:false) — CSS 와 네이티브 동작만으로 상태가 바뀐다. */

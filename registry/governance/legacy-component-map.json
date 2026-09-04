@@ -1,0 +1,3919 @@
+{
+  "_meta": {
+    "id": "legacy-component-map",
+    "version": "0.1.0",
+    "status": "draft",
+    "updatedAt": "2026-09-03",
+    "purpose": "레거시 Figma 가이드 파일의 컴포넌트·속성·상태 이름을 현재 정본 이름에 대응시킨다. 검수 시 자동 대조에 사용한다.",
+    "authoredBy": "orchestrator (⭐) — 자동 추출 + 사람 판단 필요분은 decisions 로 분리",
+    "rules": [
+      "이름만 기록한다. 색·크기 등 값은 담지 않는다(레거시 값이 정본을 흔드는 통로가 되지 않게).",
+      "confidence=decide 항목은 자동 매칭에 사용하지 않는다. river 결정 후 high 로 승격한다.",
+      "두 레거시 파일은 서로 다르므로 반드시 source(A/B)를 구분해 기록한다.",
+      "canonical 값은 이미 존재하는 정본 이름만 쓴다. 새 이름을 만들지 않는다."
+    ]
+  },
+  "sources": {
+    "A": {
+      "name": "SW UX GUIDE V2.4",
+      "fileKey": "yE5UCFEbmXJBlYJWB24Lz2",
+      "page": "S1 Design Component (540:3090)",
+      "sets": 64,
+      "variants": 704
+    },
+    "B": {
+      "name": "S-1 Component Set (latest)",
+      "fileKey": "vHg5UOMMYI77RHH6vVVppu",
+      "page": "• 기본 컴포넌트 (611:8608)",
+      "sets": 62,
+      "variants": 592,
+      "note": "river 확인: 컴포넌트는 이 페이지에만 존재한다 (2026-09-03)"
+    }
+  },
+  "components": {
+    "button": [
+      {
+        "source": "A",
+        "set": "pc_button",
+        "setId": "540:4440",
+        "section": "button",
+        "variantCount": 54,
+        "legacyProps": {
+          "variant": [
+            "blue-line",
+            "primary",
+            "secondary"
+          ],
+          "size": [
+            "medium",
+            "xsmall",
+            "xxsmall"
+          ],
+          "state": [
+            "default",
+            "disabled",
+            "hover"
+          ],
+          "icon": [
+            "off",
+            "on"
+          ]
+        },
+        "role": "PC 버튼",
+        "confidence": "high",
+        "stateMap": {
+          "default": "default",
+          "hover": "hover",
+          "disabled": "disabled"
+        },
+        "sizeMap": {
+          "medium": "md",
+          "xsmall": "xsm",
+          "xxsmall": "xxsm"
+        },
+        "variantMap": {
+          "primary": "primary",
+          "secondary": "secondary",
+          "blue-line": "blue-line"
+        },
+        "notes": [
+          "icon=on/off 는 정본에서 아이콘 부품 유무",
+          "정본 pressed 상태·lg 크기는 이 세트에 없음"
+        ]
+      },
+      {
+        "source": "A",
+        "set": "mobile_button",
+        "setId": "540:4626",
+        "section": "button",
+        "variantCount": 9,
+        "legacyProps": {
+          "variant": [
+            "blue-line",
+            "primary",
+            "secondary"
+          ],
+          "state": [
+            "default",
+            "disabled",
+            "pressed"
+          ]
+        },
+        "role": "모바일 버튼",
+        "confidence": "decide",
+        "stateMap": {
+          "default": "default",
+          "pressed": "pressed",
+          "disabled": "disabled"
+        },
+        "sizeMap": {},
+        "variantMap": {
+          "primary": "primary",
+          "secondary": "secondary",
+          "blue-line": "blue-line"
+        },
+        "notes": [
+          "모바일 크기가 정본 lg 인지 md 인지 불명"
+        ],
+        "decision": "D-12"
+      },
+      {
+        "source": "B",
+        "set": "default",
+        "setId": "16:1880",
+        "section": null,
+        "variantCount": 18,
+        "legacyProps": {
+          "color": [
+            "blue",
+            "red",
+            "white"
+          ],
+          "pressed": [
+            "off",
+            "on"
+          ],
+          "disabled": [
+            "off",
+            "on"
+          ],
+          "long ver": [
+            "off",
+            "on"
+          ],
+          "big ver": [
+            "off",
+            "on"
+          ]
+        },
+        "role": "PC 버튼",
+        "confidence": "decide",
+        "stateMap": {
+          "pressed=on": "pressed",
+          "disabled=on": "disabled"
+        },
+        "sizeMap": {},
+        "variantMap": {},
+        "notes": [
+          "color=blue/white/red 가 정본 변형(primary/secondary/blue-line)과 이름 체계가 다름",
+          "red 는 정본에서 삭제 확정된 danger 계열일 가능성",
+          "long ver / big ver 가 정본 크기 중 무엇인지 불명"
+        ],
+        "decision": "D-21"
+      },
+      {
+        "source": "B",
+        "set": "m_button",
+        "setId": "307:8861",
+        "section": null,
+        "variantCount": 20,
+        "legacyProps": {
+          "color": [
+            "blue",
+            "mix2",
+            "red",
+            "white"
+          ],
+          "long": [
+            "off",
+            "on"
+          ],
+          "pressed": [
+            "off",
+            "on"
+          ],
+          "disabled": [
+            "off",
+            "on"
+          ],
+          "pair button": [
+            "off",
+            "on"
+          ]
+        },
+        "role": "모바일 버튼",
+        "confidence": "decide",
+        "stateMap": {
+          "pressed=on": "pressed",
+          "disabled=on": "disabled"
+        },
+        "sizeMap": {},
+        "variantMap": {},
+        "notes": [
+          "color 에 mix2 라는 뜻을 알 수 없는 값이 있음"
+        ],
+        "decision": "D-21"
+      },
+      {
+        "source": "B",
+        "set": "m_subbutton",
+        "setId": "1744:8493",
+        "section": null,
+        "variantCount": 6,
+        "legacyProps": {
+          "type": [
+            "Big(Black)",
+            "Big(Gray)",
+            "Small"
+          ],
+          "disabled": [
+            "off",
+            "on"
+          ]
+        },
+        "role": "모바일 보조 버튼",
+        "confidence": "decide",
+        "stateMap": {},
+        "sizeMap": {},
+        "variantMap": {},
+        "notes": [
+          "type=Big(Black)/Big(Gray)/Small 이 정본 변형·크기 어디에도 대응 없음"
+        ],
+        "decision": "D-13"
+      }
+    ],
+    "checkbox": [
+      {
+        "source": "A",
+        "set": "checkbox",
+        "setId": "540:3134",
+        "section": "controls",
+        "variantCount": 8,
+        "legacyProps": {
+          "state": [
+            "checked",
+            "default",
+            "disabled",
+            "disabled_checked"
+          ],
+          "label": [
+            "off",
+            "on"
+          ]
+        },
+        "role": "컴포넌트 전체",
+        "confidence": "high",
+        "stateMap": {
+          "default": "default",
+          "checked": "checked",
+          "disabled": "disabled",
+          "disabled_checked": "disabledChecked"
+        },
+        "sizeMap": {},
+        "variantMap": {},
+        "notes": [
+          "label=on/off 는 정본의 선택 부품(라벨) 유무",
+          "정본 hover 는 레거시에 없음"
+        ]
+      },
+      {
+        "source": "B",
+        "set": "checkbox",
+        "setId": "42:3313",
+        "section": null,
+        "variantCount": 8,
+        "legacyProps": {
+          "checked": [
+            "off",
+            "on"
+          ],
+          "disabled": [
+            "off",
+            "on"
+          ],
+          "label": [
+            "off",
+            "on"
+          ]
+        },
+        "role": "체크박스",
+        "confidence": "high",
+        "stateMap": {
+          "checked=on,disabled=off": "checked",
+          "checked=off,disabled=on": "disabled",
+          "checked=on,disabled=on": "disabledChecked",
+          "checked=off,disabled=off": "default"
+        },
+        "sizeMap": {},
+        "variantMap": {},
+        "notes": [
+          "스위치 2개 조합 → 정본은 상태 하나로 통합"
+        ]
+      },
+      {
+        "source": "B",
+        "set": "m_checkbox",
+        "setId": "109:24686",
+        "section": null,
+        "variantCount": 8,
+        "legacyProps": {
+          "checked": [
+            "off",
+            "on"
+          ],
+          "disabled": [
+            "off",
+            "on"
+          ],
+          "label": [
+            "off",
+            "on"
+          ]
+        },
+        "role": "모바일 체크박스",
+        "confidence": "high",
+        "stateMap": {
+          "checked=on,disabled=off": "checked",
+          "checked=off,disabled=on": "disabled",
+          "checked=on,disabled=on": "disabledChecked",
+          "checked=off,disabled=off": "default"
+        },
+        "sizeMap": {},
+        "variantMap": {},
+        "notes": [
+          "정본은 PC/모바일 구분 없이 checkbox 하나"
+        ]
+      }
+    ],
+    "chip": [
+      {
+        "source": "A",
+        "set": "chip",
+        "setId": "540:3189",
+        "section": "controls",
+        "variantCount": 30,
+        "legacyProps": {
+          "platform": [
+            "mobile",
+            "pc-md",
+            "pc-sm"
+          ],
+          "state": [
+            "default",
+            "disabled",
+            "pressed",
+            "selected",
+            "selected_pressed"
+          ],
+          "type": [
+            "line",
+            "solid"
+          ]
+        },
+        "role": "컴포넌트 전체",
+        "confidence": "decide",
+        "stateMap": {
+          "default": "default",
+          "selected": "selected",
+          "disabled": "disabled"
+        },
+        "sizeMap": {
+          "pc-md": "md",
+          "pc-sm": "sm"
+        },
+        "variantMap": {
+          "line": "line",
+          "solid": "solid"
+        },
+        "notes": [
+          "platform=mobile 이 정본 md/sm 중 무엇인지 불명"
+        ],
+        "decision": "D-01"
+      },
+      {
+        "source": "B",
+        "set": "m_chips",
+        "setId": "1747:9127",
+        "section": null,
+        "variantCount": 6,
+        "legacyProps": {
+          "solid": [
+            "off",
+            "on"
+          ],
+          "checked": [
+            "off",
+            "on"
+          ],
+          "disabled": [
+            "off",
+            "on"
+          ]
+        },
+        "role": "모바일 칩",
+        "confidence": "decide",
+        "stateMap": {
+          "checked=on": "selected",
+          "disabled=on": "disabled"
+        },
+        "sizeMap": {},
+        "variantMap": {
+          "solid=on": "solid",
+          "solid=off": "line"
+        },
+        "notes": [
+          "solid on/off 스위치 → 정본은 변형 line/solid"
+        ],
+        "decision": "D-01"
+      }
+    ],
+    "date-picker": [
+      {
+        "source": "A",
+        "set": "datepicker_input",
+        "setId": "540:3794",
+        "section": "form-control",
+        "variantCount": 16,
+        "legacyProps": {
+          "platform": [
+            "mobile",
+            "pc-md",
+            "pc-xsm",
+            "pc-xxsm"
+          ],
+          "state": [
+            "completed",
+            "default",
+            "disabled",
+            "selected"
+          ]
+        },
+        "role": "날짜 입력창",
+        "confidence": "decide",
+        "stateMap": {
+          "default": "default",
+          "completed": "filled",
+          "disabled": "disabled"
+        },
+        "sizeMap": {
+          "pc-md": "md",
+          "pc-xsm": "xsm",
+          "pc-xxsm": "xxsm"
+        },
+        "variantMap": {},
+        "notes": [
+          "state=selected 가 정본 open(달력 열림) 인지 불명"
+        ],
+        "decision": "D-10"
+      },
+      {
+        "source": "A",
+        "set": "mobile_datepicker_bottomsheet",
+        "setId": "540:3835",
+        "section": "form-control",
+        "variantCount": 8,
+        "legacyProps": {
+          "type": [
+            "date_time",
+            "default"
+          ],
+          "state": [
+            "default",
+            "month select",
+            "year range select",
+            "year select"
+          ]
+        },
+        "role": "모바일 날짜 바텀시트",
+        "confidence": "decide",
+        "stateMap": {},
+        "sizeMap": {},
+        "variantMap": {},
+        "notes": [],
+        "decision": "D-05"
+      },
+      {
+        "source": "A",
+        "set": "DatePicker/Calendar Cell",
+        "setId": "540:4167",
+        "section": "form-control",
+        "variantCount": 8,
+        "legacyProps": {
+          "type": [
+            "range",
+            "standard"
+          ],
+          "state": [
+            "default",
+            "disabled",
+            "end",
+            "selected",
+            "start",
+            "today"
+          ]
+        },
+        "role": "달력 날짜 칸",
+        "confidence": "decide",
+        "stateMap": {
+          "default": "default",
+          "disabled": "disabled"
+        },
+        "sizeMap": {},
+        "variantMap": {
+          "range": "range",
+          "standard": "single"
+        },
+        "notes": [
+          "state=start/end/today 가 정본 상태 목록에 없음"
+        ],
+        "decision": "D-11"
+      },
+      {
+        "source": "A",
+        "set": "calendar_arrow",
+        "setId": "540:4196",
+        "section": "form-control",
+        "variantCount": 4,
+        "legacyProps": {
+          "type": [
+            "next",
+            "prev"
+          ],
+          "state": [
+            "default",
+            "disabled"
+          ]
+        },
+        "role": "달력 이전/다음 화살표",
+        "confidence": "decide",
+        "stateMap": {
+          "default": "default",
+          "disabled": "disabled"
+        },
+        "sizeMap": {},
+        "variantMap": {},
+        "notes": [],
+        "decision": "D-11"
+      },
+      {
+        "source": "A",
+        "set": "DatePicker/Calendar Tile",
+        "setId": "540:4209",
+        "section": "form-control",
+        "variantCount": 3,
+        "legacyProps": {
+          "state": [
+            "default",
+            "disabled",
+            "selected"
+          ]
+        },
+        "role": "달력 타일",
+        "confidence": "decide",
+        "stateMap": {
+          "default": "default",
+          "disabled": "disabled",
+          "selected": "selected"
+        },
+        "sizeMap": {},
+        "variantMap": {},
+        "notes": [],
+        "decision": "D-11"
+      },
+      {
+        "source": "A",
+        "set": "pc_datepicker_calendar",
+        "setId": "540:4216",
+        "section": "form-control",
+        "variantCount": 5,
+        "legacyProps": {
+          "state": [
+            "default",
+            "default_button",
+            "month select",
+            "year range select",
+            "year select"
+          ]
+        },
+        "role": "PC 달력 전체",
+        "confidence": "decide",
+        "stateMap": {
+          "default": "default"
+        },
+        "sizeMap": {},
+        "variantMap": {},
+        "notes": [
+          "state=default_button / month select / year select / year range select 가 정본에 없음"
+        ],
+        "decision": "D-11"
+      },
+      {
+        "source": "B",
+        "set": "calendar",
+        "setId": "73:4022",
+        "section": null,
+        "variantCount": 12,
+        "legacyProps": {
+          "option": [
+            "completed",
+            "default",
+            "disabled",
+            "editing(day)",
+            "editing(month)",
+            "editing(year)"
+          ],
+          "label": [
+            "off",
+            "on"
+          ]
+        },
+        "role": "달력 입력창",
+        "confidence": "decide",
+        "stateMap": {
+          "default": "default",
+          "completed": "filled",
+          "disabled": "disabled"
+        },
+        "sizeMap": {},
+        "variantMap": {},
+        "notes": [
+          "editing(day)/(month)/(year) 3종이 정본 상태에 없음(정본은 focus 하나)"
+        ],
+        "decision": "D-10"
+      },
+      {
+        "source": "B",
+        "set": "m_calendar_input",
+        "setId": "159:5733",
+        "section": null,
+        "variantCount": 9,
+        "legacyProps": {
+          "label": [
+            "left",
+            "off",
+            "top"
+          ],
+          "option": [
+            "Default",
+            "disabled",
+            "editing"
+          ]
+        },
+        "role": "모바일 달력 입력창",
+        "confidence": "decide",
+        "stateMap": {
+          "Default": "default",
+          "editing": "focus",
+          "disabled": "disabled"
+        },
+        "sizeMap": {},
+        "variantMap": {},
+        "notes": [],
+        "decision": "D-10"
+      }
+    ],
+    "dropdown": [
+      {
+        "source": "A",
+        "set": "dropdown_option",
+        "setId": "540:3425",
+        "section": "form-control",
+        "variantCount": 8,
+        "legacyProps": {
+          "state": [
+            "default",
+            "disabled",
+            "hover",
+            "selected"
+          ],
+          "size": [
+            "md",
+            "sm"
+          ]
+        },
+        "role": "선택 목록의 한 줄",
+        "confidence": "decide",
+        "stateMap": {
+          "default": "default",
+          "hover": "hover",
+          "disabled": null
+        },
+        "sizeMap": {
+          "md": "md"
+        },
+        "variantMap": {},
+        "notes": [
+          "state=selected 가 정본 selectedText / selectedCheckbox 중 무엇인지 불명",
+          "size=sm 이 정본 xsm 인지 불명",
+          "정본 dropdown 에 disabled 상태 없음"
+        ],
+        "decision": "D-08"
+      },
+      {
+        "source": "A",
+        "set": "pc_dropdown",
+        "setId": "540:3442",
+        "section": "form-control",
+        "variantCount": 2,
+        "legacyProps": {
+          "size": [
+            "md",
+            "sm"
+          ]
+        },
+        "role": "펼쳐진 목록 전체",
+        "confidence": "decide",
+        "stateMap": {},
+        "sizeMap": {
+          "md": "md"
+        },
+        "variantMap": {},
+        "notes": [
+          "size=sm 대응 불명"
+        ],
+        "decision": "D-08"
+      }
+    ],
+    "filter-chip": [
+      {
+        "source": "A",
+        "set": "filter-chip label only",
+        "setId": "540:3226",
+        "section": "controls",
+        "variantCount": 30,
+        "legacyProps": {
+          "platform": [
+            "mobile",
+            "pc-md",
+            "pc-sm"
+          ],
+          "type": [
+            "line",
+            "solid"
+          ],
+          "state": [
+            "default",
+            "disabled",
+            "pressed",
+            "selected",
+            "selected_pressed"
+          ]
+        },
+        "role": "라벨만 있는 형태",
+        "confidence": "decide",
+        "stateMap": {
+          "default": "default",
+          "selected": "selected",
+          "disabled": "disabled"
+        },
+        "sizeMap": {
+          "pc-md": "md",
+          "pc-sm": "sm"
+        },
+        "variantMap": {
+          "line": "line",
+          "solid": "solid"
+        },
+        "notes": [],
+        "decision": "D-02"
+      },
+      {
+        "source": "A",
+        "set": "filter-chip with title",
+        "setId": "574:3520",
+        "section": "controls",
+        "variantCount": 30,
+        "legacyProps": {
+          "platform": [
+            "filter-chip",
+            "mobile",
+            "pc-md",
+            "pc-sm"
+          ],
+          "type": [
+            "line",
+            "solid"
+          ],
+          "state": [
+            "default",
+            "disabled",
+            "pressed",
+            "selected",
+            "selected_pressed"
+          ]
+        },
+        "role": "제목이 붙은 형태",
+        "confidence": "decide",
+        "stateMap": {
+          "default": "default",
+          "selected": "selected",
+          "disabled": "disabled"
+        },
+        "sizeMap": {
+          "pc-md": "md",
+          "pc-sm": "sm"
+        },
+        "variantMap": {
+          "line": "line",
+          "solid": "solid"
+        },
+        "notes": [
+          "⚠️ platform 속성에 \"filter-chip\" 이라는 잘못된 값이 섞여 있음(레거시 데이터 오류)"
+        ],
+        "decision": "D-02"
+      }
+    ],
+    "gnb": [
+      {
+        "source": "A",
+        "set": "pc_gnb",
+        "setId": "540:5942",
+        "section": "pc_navigation",
+        "variantCount": 12,
+        "legacyProps": {
+          "size": [
+            "md",
+            "sm",
+            "xsm"
+          ],
+          "viewport": [
+            "1280",
+            "1440",
+            "1920"
+          ],
+          "align": [
+            "center-between",
+            "start"
+          ]
+        },
+        "role": "상단 바",
+        "confidence": "high",
+        "stateMap": {},
+        "sizeMap": {
+          "md": "md",
+          "sm": "sm",
+          "xsm": "xsm"
+        },
+        "variantMap": {
+          "center-between": "center-between",
+          "start": "start"
+        },
+        "notes": [
+          "정본 gnb 의 bar 변형과 크기·정렬 값이 정확히 일치",
+          "viewport=1280/1440/1920 은 정본에 축 없음"
+        ]
+      },
+      {
+        "source": "A",
+        "set": "slots_menu",
+        "setId": "540:6069",
+        "section": "pc_navigation",
+        "variantCount": 9,
+        "legacyProps": {
+          "size": [
+            "md",
+            "sm",
+            "xsm"
+          ],
+          "state": [
+            "default",
+            "hover",
+            "selected"
+          ]
+        },
+        "role": "상단 바 메뉴 한 칸",
+        "confidence": "high",
+        "stateMap": {
+          "default": "default",
+          "hover": "hover",
+          "selected": "selected"
+        },
+        "sizeMap": {
+          "md": "md",
+          "sm": "sm",
+          "xsm": "xsm"
+        },
+        "variantMap": {},
+        "notes": [
+          "정본 gnb 의 menuSlot 변형과 크기·상태가 정확히 일치"
+        ]
+      },
+      {
+        "source": "B",
+        "set": "gnb",
+        "setId": "5:10245",
+        "section": null,
+        "variantCount": 3,
+        "legacyProps": {
+          "sub menu": [
+            "1depth",
+            "2depth",
+            "off"
+          ]
+        },
+        "role": "상단 바",
+        "confidence": "decide",
+        "stateMap": {},
+        "sizeMap": {},
+        "variantMap": {},
+        "notes": [
+          "sub menu=1depth/2depth/off 축이 정본 gnb 에 없음"
+        ],
+        "decision": "D-18"
+      }
+    ],
+    "input": [
+      {
+        "source": "A",
+        "set": "input+btn",
+        "setId": "641:4055",
+        "section": "controls",
+        "variantCount": 7,
+        "legacyProps": {
+          "type": [
+            "complete",
+            "default",
+            "disabled",
+            "error",
+            "helper",
+            "selected",
+            "success"
+          ]
+        },
+        "role": "입력창+버튼 조합",
+        "confidence": "decide",
+        "stateMap": {
+          "default": "default",
+          "complete": "filled",
+          "selected": "focus",
+          "success": "correct",
+          "error": "error",
+          "disabled": "disabled"
+        },
+        "sizeMap": {},
+        "variantMap": {},
+        "notes": [
+          "helper 는 상태가 아니라 도움말 표시 여부"
+        ],
+        "decision": "D-03"
+      },
+      {
+        "source": "A",
+        "set": "Inputbox_large",
+        "setId": "641:4060",
+        "section": "controls",
+        "variantCount": 4,
+        "legacyProps": {
+          "type": [
+            "complete_long",
+            "default",
+            "disabled",
+            "selected"
+          ]
+        },
+        "role": "큰 입력창",
+        "confidence": "decide",
+        "stateMap": {
+          "default": "default",
+          "complete_long": "filled",
+          "selected": "focus",
+          "disabled": "disabled"
+        },
+        "sizeMap": {},
+        "variantMap": {},
+        "notes": [
+          "\"large\" 크기가 정본 크기(xxsm/xsm/md)에 없음"
+        ],
+        "decision": "D-04"
+      },
+      {
+        "source": "A",
+        "set": "mobile_input field with helper text",
+        "setId": "641:4075",
+        "section": "controls",
+        "variantCount": 12,
+        "legacyProps": {
+          "type": [
+            "input field_normal",
+            "input field_password"
+          ],
+          "status": [
+            "complete",
+            "default",
+            "disabled",
+            "error",
+            "selected",
+            "success"
+          ]
+        },
+        "role": "모바일 입력창(도움말 포함)",
+        "confidence": "high",
+        "stateMap": {
+          "default": "default",
+          "complete": "filled",
+          "selected": "focus",
+          "success": "correct",
+          "error": "error",
+          "disabled": "disabled"
+        },
+        "sizeMap": {},
+        "variantMap": {},
+        "notes": [
+          "type=normal/password 는 정본에서 HTML 입력 종류로 처리(변형 아님)"
+        ]
+      },
+      {
+        "source": "A",
+        "set": "pc_input field with helper text",
+        "setId": "659:5066",
+        "section": "controls",
+        "variantCount": 36,
+        "legacyProps": {
+          "size": [
+            "medium",
+            "xsmall",
+            "xxsmall"
+          ],
+          "type": [
+            "normal",
+            "password"
+          ],
+          "status": [
+            "complete",
+            "default",
+            "disabled",
+            "error",
+            "selected",
+            "success"
+          ]
+        },
+        "role": "PC 입력창(도움말 포함)",
+        "confidence": "high",
+        "stateMap": {
+          "default": "default",
+          "complete": "filled",
+          "selected": "focus",
+          "success": "correct",
+          "error": "error",
+          "disabled": "disabled"
+        },
+        "sizeMap": {
+          "medium": "md",
+          "xsmall": "xsm",
+          "xxsmall": "xxsm"
+        },
+        "variantMap": {},
+        "notes": []
+      },
+      {
+        "source": "A",
+        "set": "Login input",
+        "setId": "540:3328",
+        "section": "form-control",
+        "variantCount": 52,
+        "legacyProps": {
+          "platform": [
+            "mobile",
+            "pc-md",
+            "pc-sm",
+            "pc-xsm"
+          ],
+          "state": [
+            "complete",
+            "default",
+            "disabled",
+            "error",
+            "selected"
+          ],
+          "icon": [
+            "1",
+            "2+",
+            "off",
+            "on"
+          ]
+        },
+        "role": "로그인 입력창",
+        "confidence": "decide",
+        "stateMap": {
+          "default": "default",
+          "complete": "filled",
+          "selected": "focus",
+          "error": "error",
+          "disabled": "disabled"
+        },
+        "sizeMap": {
+          "pc-md": "md",
+          "pc-xsm": "xsm"
+        },
+        "variantMap": {},
+        "notes": [
+          "platform=pc-sm 이 정본에 없음(정본은 xxsm/xsm/md)",
+          "icon=1/2+/off/on 은 정본에 축 없음"
+        ],
+        "decision": "D-06"
+      },
+      {
+        "source": "B",
+        "set": "login_Input box",
+        "setId": "269:4116",
+        "section": null,
+        "variantCount": 11,
+        "legacyProps": {
+          "button": [
+            "1 btn",
+            "2 btn",
+            "off"
+          ],
+          "option": [
+            "Default",
+            "completed",
+            "correct",
+            "disabled",
+            "editing",
+            "error"
+          ]
+        },
+        "role": "로그인 입력창",
+        "confidence": "high",
+        "stateMap": {
+          "Default": "default",
+          "completed": "filled",
+          "correct": "correct",
+          "editing": "focus",
+          "error": "error",
+          "disabled": "disabled"
+        },
+        "sizeMap": {},
+        "variantMap": {},
+        "notes": [
+          "option=correct 가 정본 이름과 그대로 일치",
+          "\"completed\" 와 다른 세트의 \"edit-completed\" 가 같은 뜻으로 혼용됨"
+        ]
+      },
+      {
+        "source": "B",
+        "set": "Input box",
+        "setId": "269:3675",
+        "section": null,
+        "variantCount": 31,
+        "legacyProps": {
+          "label": [
+            "left",
+            "off",
+            "top"
+          ],
+          "option": [
+            "Default",
+            "correct",
+            "disabled",
+            "edit-completed",
+            "editing",
+            "error"
+          ],
+          "button": [
+            "off",
+            "on"
+          ],
+          "icon": [
+            "off",
+            "on"
+          ]
+        },
+        "role": "PC 입력창",
+        "confidence": "high",
+        "stateMap": {
+          "Default": "default",
+          "edit-completed": "filled",
+          "correct": "correct",
+          "editing": "focus",
+          "error": "error",
+          "disabled": "disabled"
+        },
+        "sizeMap": {},
+        "variantMap": {},
+        "notes": [
+          "label=left/top/off 는 정본에서 라벨 배치(정본 축 아님)",
+          "button/icon 은 부품 유무"
+        ]
+      },
+      {
+        "source": "B",
+        "set": "m_certification_inputbox",
+        "setId": "307:6051",
+        "section": null,
+        "variantCount": 4,
+        "legacyProps": {
+          "option": [
+            "completed",
+            "default",
+            "editing",
+            "error"
+          ]
+        },
+        "role": "모바일 인증번호 입력창",
+        "confidence": "high",
+        "stateMap": {
+          "default": "default",
+          "completed": "filled",
+          "editing": "focus",
+          "error": "error"
+        },
+        "sizeMap": {},
+        "variantMap": {},
+        "notes": []
+      },
+      {
+        "source": "B",
+        "set": "m_macrocheck_Input box",
+        "setId": "351:7086",
+        "section": null,
+        "variantCount": 3,
+        "legacyProps": {
+          "option": [
+            "Default",
+            "edit-completed",
+            "error"
+          ]
+        },
+        "role": "모바일 매크로확인 입력창",
+        "confidence": "high",
+        "stateMap": {
+          "Default": "default",
+          "edit-completed": "filled",
+          "error": "error"
+        },
+        "sizeMap": {},
+        "variantMap": {},
+        "notes": []
+      },
+      {
+        "source": "B",
+        "set": "m_Input box",
+        "setId": "307:9313",
+        "section": null,
+        "variantCount": 168,
+        "legacyProps": {
+          "label": [
+            "left",
+            "off",
+            "top"
+          ],
+          "label *": [
+            "off",
+            "on"
+          ],
+          "label * + icon": [
+            "off",
+            "on"
+          ],
+          "option": [
+            "correct",
+            "default",
+            "default + guide",
+            "disabled",
+            "edit-completed",
+            "editing",
+            "error"
+          ],
+          "button": [
+            "off",
+            "on"
+          ],
+          "icon": [
+            "off",
+            "on"
+          ]
+        },
+        "role": "모바일 입력창",
+        "confidence": "high",
+        "stateMap": {
+          "default": "default",
+          "edit-completed": "filled",
+          "correct": "correct",
+          "editing": "focus",
+          "error": "error",
+          "disabled": "disabled"
+        },
+        "sizeMap": {},
+        "variantMap": {},
+        "notes": [
+          "\"default + guide\" 는 상태가 아니라 도움말 표시 여부",
+          "168변형으로 두 파일 통틀어 가장 큰 세트"
+        ]
+      }
+    ],
+    "mobile-bottom-nav": [
+      {
+        "source": "A",
+        "set": "mobile_bottom-nav",
+        "setId": "540:6025",
+        "section": "pc_navigation",
+        "variantCount": 2,
+        "legacyProps": {
+          "state": [
+            "selected",
+            "unselected"
+          ]
+        },
+        "role": "컴포넌트 전체",
+        "confidence": "high",
+        "stateMap": {
+          "selected": "selected",
+          "unselected": "unselected"
+        },
+        "sizeMap": {},
+        "variantMap": {},
+        "notes": []
+      }
+    ],
+    "mobile-header": [
+      {
+        "source": "A",
+        "set": "mobile_header",
+        "setId": "540:6112",
+        "section": "pc_navigation",
+        "variantCount": 5,
+        "legacyProps": {
+          "Property 1": [
+            "Home titel + alt titel",
+            "Home title_icon 2",
+            "Home title_sub title_icon 1",
+            "standard_title",
+            "standard_title + close btn"
+          ]
+        },
+        "role": "컴포넌트 전체",
+        "confidence": "decide",
+        "stateMap": {},
+        "sizeMap": {},
+        "variantMap": {},
+        "notes": [
+          "레거시 5종 ↔ 정본 6종. 레거시 값에 오타(titel) 있음"
+        ],
+        "decision": "D-17"
+      }
+    ],
+    "modal": [
+      {
+        "source": "A",
+        "set": "mobile_modal",
+        "setId": "540:5731",
+        "section": "modal",
+        "variantCount": 4,
+        "legacyProps": {
+          "title line": [
+            "1",
+            "2"
+          ],
+          "button type": [
+            "dual",
+            "single"
+          ]
+        },
+        "role": "모바일 모달",
+        "confidence": "high",
+        "stateMap": {},
+        "sizeMap": {},
+        "variantMap": {
+          "single": "single",
+          "dual": "dual"
+        },
+        "notes": [
+          "button type=single/dual 이 정본 변형과 정확히 일치",
+          "title line=1/2 는 정본에 축 없음"
+        ]
+      },
+      {
+        "source": "A",
+        "set": "pc_modal",
+        "setId": "540:5815",
+        "section": "modal",
+        "variantCount": 4,
+        "legacyProps": {
+          "size": [
+            "lg",
+            "md",
+            "sm",
+            "xl"
+          ]
+        },
+        "role": "PC 모달",
+        "confidence": "decide",
+        "stateMap": {},
+        "sizeMap": {},
+        "variantMap": {},
+        "notes": [
+          "size=sm/md/lg/xl 이 정본 modal 에 없음(정본은 변형 single/dual 만)"
+        ],
+        "decision": "D-15"
+      },
+      {
+        "source": "A",
+        "set": "mobile_modal component",
+        "setId": "682:5938",
+        "section": "modal",
+        "variantCount": 6,
+        "legacyProps": {
+          "type": [
+            "default",
+            "list",
+            "single string"
+          ],
+          "btn": [
+            "1 btn",
+            "2 btn"
+          ]
+        },
+        "role": "모바일 모달(부품)",
+        "confidence": "decide",
+        "stateMap": {},
+        "sizeMap": {},
+        "variantMap": {},
+        "notes": [
+          "btn=1 btn/2 btn 이 정본 single/dual 로 보이나 위 mobile_modal 과 중복"
+        ],
+        "decision": "D-15"
+      },
+      {
+        "source": "A",
+        "set": "modal_small",
+        "setId": "6706:4218",
+        "section": null,
+        "variantCount": 5,
+        "legacyProps": {
+          "state": [
+            "마감취소",
+            "삭제",
+            "입력취소",
+            "중복 안내",
+            "필수 항목 미입력"
+          ]
+        },
+        "role": "작은 모달(용도별)",
+        "confidence": "decide",
+        "stateMap": {},
+        "sizeMap": {},
+        "variantMap": {},
+        "notes": [
+          "state 값이 상태가 아니라 용도(삭제/입력취소/…) — 정본과 축이 다름"
+        ],
+        "decision": "D-15"
+      },
+      {
+        "source": "B",
+        "set": "dialog",
+        "setId": "53:1814",
+        "section": null,
+        "variantCount": 3,
+        "legacyProps": {
+          "double button": [
+            "off",
+            "on"
+          ],
+          "input box": [
+            "off",
+            "on"
+          ]
+        },
+        "role": "다이얼로그",
+        "confidence": "decide",
+        "stateMap": {},
+        "sizeMap": {},
+        "variantMap": {},
+        "notes": [
+          "double button=on/off 가 정본 dual/single 로 보이나 확정 필요"
+        ],
+        "decision": "D-15"
+      },
+      {
+        "source": "B",
+        "set": "popup",
+        "setId": "78:3071",
+        "section": null,
+        "variantCount": 3,
+        "legacyProps": {
+          "button": [
+            "off",
+            "on"
+          ],
+          "searchbox": [
+            "off",
+            "on"
+          ]
+        },
+        "role": "팝업",
+        "confidence": "decide",
+        "stateMap": {},
+        "sizeMap": {},
+        "variantMap": {},
+        "notes": [],
+        "decision": "D-15"
+      },
+      {
+        "source": "B",
+        "set": "dialog",
+        "setId": "151:4106",
+        "section": null,
+        "variantCount": 6,
+        "legacyProps": {
+          "title": [
+            "off",
+            "on"
+          ],
+          "pair button": [
+            "off",
+            "on"
+          ],
+          "contents": [
+            "off",
+            "otp",
+            "text box"
+          ]
+        },
+        "role": "모바일 다이얼로그",
+        "confidence": "decide",
+        "stateMap": {},
+        "sizeMap": {},
+        "variantMap": {},
+        "notes": [
+          "pair button=on/off 가 정본 dual/single 로 보임"
+        ],
+        "decision": "D-15"
+      }
+    ],
+    "multi-toggle": [
+      {
+        "source": "A",
+        "set": "pc_multi-toggle",
+        "setId": "540:4733",
+        "section": "button",
+        "variantCount": 32,
+        "legacyProps": {
+          "position": [
+            "first",
+            "last",
+            "middle-left",
+            "middle-right"
+          ],
+          "state": [
+            "default",
+            "disabled",
+            "hover",
+            "selected"
+          ],
+          "size": [
+            "md",
+            "sm"
+          ]
+        },
+        "role": "컴포넌트 전체",
+        "confidence": "high",
+        "stateMap": {
+          "default": "default",
+          "hover": "hover",
+          "selected": "selected",
+          "disabled": "disabled"
+        },
+        "sizeMap": {
+          "md": "md",
+          "sm": "sm"
+        },
+        "variantMap": {},
+        "notes": [
+          "position=first/middle-left/middle-right/last 는 정본에서 위치 자동 처리"
+        ]
+      }
+    ],
+    "pagination": [
+      {
+        "source": "A",
+        "set": "pagination_number",
+        "setId": "540:6302",
+        "section": "pc_navigation",
+        "variantCount": 4,
+        "legacyProps": {
+          "hover": [
+            "off",
+            "on"
+          ],
+          "selected": [
+            "off",
+            "on"
+          ]
+        },
+        "role": "페이지 번호",
+        "confidence": "high",
+        "stateMap": {
+          "selected=on": "selected",
+          "hover=on": "hover(정본 pagination 상태 목록에는 없음)"
+        },
+        "sizeMap": {},
+        "variantMap": {},
+        "notes": [
+          "hover/selected 를 각각 on/off 스위치로 쪼갠 구조 → 정본은 상태 하나로 통합"
+        ]
+      },
+      {
+        "source": "A",
+        "set": "pagination_arrow",
+        "setId": "540:6311",
+        "section": "pc_navigation",
+        "variantCount": 12,
+        "legacyProps": {
+          "Property 1": [
+            "default",
+            "disabled",
+            "hover"
+          ],
+          "direction": [
+            "<",
+            "<<",
+            ">",
+            ">>"
+          ]
+        },
+        "role": "페이지 화살표",
+        "confidence": "high",
+        "stateMap": {
+          "default": "default",
+          "hover": "hover",
+          "disabled": "disabled"
+        },
+        "sizeMap": {},
+        "variantMap": {},
+        "notes": [
+          "direction 값 <<,<,>,>> 이 정본 arrow 변형과 정확히 일치",
+          "속성 이름이 \"Property 1\"(이름 없음) — 정본은 state"
+        ]
+      },
+      {
+        "source": "A",
+        "set": "pc_pagination",
+        "setId": "540:6382",
+        "section": "pc_navigation",
+        "variantCount": 1,
+        "legacyProps": {
+          "Property 1": [
+            "Default"
+          ]
+        },
+        "role": "페이지 이동 바 전체",
+        "confidence": "high",
+        "stateMap": {},
+        "sizeMap": {},
+        "variantMap": {},
+        "notes": [
+          "정본 pagination 의 bar 변형",
+          "정본 상태 single/first/last/middle 이 레거시에 없음"
+        ]
+      },
+      {
+        "source": "B",
+        "set": "page_arrow",
+        "setId": "2504:15084",
+        "section": null,
+        "variantCount": 12,
+        "legacyProps": {
+          "option": [
+            "<",
+            "<<",
+            ">",
+            ">>"
+          ],
+          "condition": [
+            "disabled",
+            "hover",
+            "normal"
+          ]
+        },
+        "role": "페이지 화살표",
+        "confidence": "high",
+        "stateMap": {
+          "normal": "default",
+          "hover": "hover",
+          "disabled": "disabled"
+        },
+        "sizeMap": {},
+        "variantMap": {},
+        "notes": [
+          "option 값 <<,<,>,>> 이 정본 arrow 변형과 일치",
+          "속성 이름이 A(direction)와 B(option)로 서로 다름"
+        ]
+      },
+      {
+        "source": "B",
+        "set": "page_num",
+        "setId": "2504:15156",
+        "section": null,
+        "variantCount": 4,
+        "legacyProps": {
+          "option": [
+            "Default",
+            "disabled",
+            "selected"
+          ]
+        },
+        "role": "페이지 번호",
+        "confidence": "high",
+        "stateMap": {
+          "Default": "default",
+          "selected": "selected",
+          "disabled": "disabled"
+        },
+        "sizeMap": {},
+        "variantMap": {},
+        "notes": [
+          "⚠️ \"Default\" 값이 두 번 중복 정의돼 있음(레거시 데이터 오류)"
+        ]
+      },
+      {
+        "source": "B",
+        "set": "pagenation",
+        "setId": "2504:15164",
+        "section": null,
+        "variantCount": 3,
+        "legacyProps": {
+          "option": [
+            "1st page",
+            "normal",
+            "single page"
+          ]
+        },
+        "role": "페이지 이동 바 전체",
+        "confidence": "decide",
+        "stateMap": {
+          "single page": "single",
+          "1st page": "first",
+          "normal": "middle"
+        },
+        "sizeMap": {},
+        "variantMap": {},
+        "notes": [
+          "⚠️ 세트 이름이 \"pagenation\" 오타",
+          "정본 last 상태에 대응하는 값이 없음"
+        ],
+        "decision": "D-23"
+      }
+    ],
+    "radio": [
+      {
+        "source": "A",
+        "set": "radio",
+        "setId": "540:3113",
+        "section": "controls",
+        "variantCount": 8,
+        "legacyProps": {
+          "state": [
+            "checked",
+            "default",
+            "disabled",
+            "disabled-checked"
+          ],
+          "label": [
+            "off",
+            "on"
+          ]
+        },
+        "role": "컴포넌트 전체",
+        "confidence": "high",
+        "stateMap": {
+          "default": "default",
+          "checked": "selected",
+          "disabled": "disabled",
+          "disabled-checked": "disabledSelected"
+        },
+        "sizeMap": {},
+        "variantMap": {},
+        "notes": [
+          "label=on/off 는 정본의 선택 부품(라벨) 유무",
+          "정본 hover 는 레거시에 없음(레거시 누락)"
+        ]
+      },
+      {
+        "source": "B",
+        "set": "radiobutton",
+        "setId": "42:3283",
+        "section": null,
+        "variantCount": 4,
+        "legacyProps": {
+          "pressed": [
+            "off",
+            "on"
+          ],
+          "disabled": [
+            "off",
+            "on"
+          ]
+        },
+        "role": "라디오 버튼",
+        "confidence": "decide",
+        "stateMap": {
+          "disabled=on": "disabled"
+        },
+        "sizeMap": {},
+        "variantMap": {},
+        "notes": [
+          "⚠️ \"선택됨\" 상태가 없고 pressed(누름)만 있음 — pressed 가 정본 selected 인지 불명"
+        ],
+        "decision": "D-22"
+      },
+      {
+        "source": "B",
+        "set": "m_radiobutton",
+        "setId": "109:24654",
+        "section": null,
+        "variantCount": 8,
+        "legacyProps": {
+          "pressed": [
+            "off",
+            "on"
+          ],
+          "disabled": [
+            "off",
+            "on"
+          ],
+          "label": [
+            "off",
+            "on"
+          ]
+        },
+        "role": "모바일 라디오",
+        "confidence": "decide",
+        "stateMap": {
+          "disabled=on": "disabled"
+        },
+        "sizeMap": {},
+        "variantMap": {},
+        "notes": [],
+        "decision": "D-22"
+      }
+    ],
+    "select": [
+      {
+        "source": "A",
+        "set": "select",
+        "setId": "540:3397",
+        "section": "form-control",
+        "variantCount": 12,
+        "legacyProps": {
+          "platform": [
+            "mobile",
+            "pc-md",
+            "pc-xsm",
+            "pc-xxsm"
+          ],
+          "state": [
+            "default",
+            "disabled",
+            "selected"
+          ]
+        },
+        "role": "컴포넌트 전체",
+        "confidence": "decide",
+        "stateMap": {
+          "default": "default",
+          "disabled": "disabled"
+        },
+        "sizeMap": {
+          "pc-md": "md",
+          "pc-xsm": "xsm",
+          "pc-xxsm": "xxsm"
+        },
+        "variantMap": {},
+        "notes": [
+          "state=selected 가 정본 open(펼침) 인지 filled(값 채워짐) 인지 불명"
+        ],
+        "decision": "D-07"
+      },
+      {
+        "source": "B",
+        "set": "combobox",
+        "setId": "73:3247",
+        "section": null,
+        "variantCount": 18,
+        "legacyProps": {
+          "option": [
+            "Default",
+            "completed",
+            "disabled",
+            "editing"
+          ],
+          "button": [
+            "off",
+            "on"
+          ],
+          "label": [
+            "off",
+            "on"
+          ],
+          "time": [
+            "off",
+            "on"
+          ]
+        },
+        "role": "콤보박스",
+        "confidence": "decide",
+        "stateMap": {
+          "Default": "default",
+          "completed": "filled",
+          "editing": "open",
+          "disabled": "disabled"
+        },
+        "sizeMap": {},
+        "variantMap": {},
+        "notes": [
+          "콤보박스가 정본 select 인지 dropdown 인지 확정 필요",
+          "time=on/off 축은 time-picker 쪽일 수 있음"
+        ],
+        "decision": "D-20"
+      },
+      {
+        "source": "B",
+        "set": "m_combobox",
+        "setId": "109:26455",
+        "section": null,
+        "variantCount": 26,
+        "legacyProps": {
+          "label": [
+            "left",
+            "off",
+            "top"
+          ],
+          "label *": [
+            "off",
+            "on"
+          ],
+          "label * + icon": [
+            "off",
+            "on"
+          ],
+          "button": [
+            "off",
+            "on"
+          ],
+          "time": [
+            "off"
+          ],
+          "option": [
+            "Default",
+            "completed",
+            "disabled",
+            "editing"
+          ]
+        },
+        "role": "모바일 콤보박스",
+        "confidence": "decide",
+        "stateMap": {
+          "Default": "default",
+          "completed": "filled",
+          "editing": "open",
+          "disabled": "disabled"
+        },
+        "sizeMap": {},
+        "variantMap": {},
+        "notes": [],
+        "decision": "D-20"
+      }
+    ],
+    "tab": [
+      {
+        "source": "A",
+        "set": "tab",
+        "setId": "540:6032",
+        "section": "pc_navigation",
+        "variantCount": 9,
+        "legacyProps": {
+          "variant": [
+            "mobile",
+            "pc-md",
+            "pc-sm"
+          ],
+          "state": [
+            "hover",
+            "pressed",
+            "selected",
+            "unselected"
+          ]
+        },
+        "role": "컴포넌트 전체",
+        "confidence": "decide",
+        "stateMap": {
+          "unselected": "default",
+          "hover": "hover",
+          "selected": "selected"
+        },
+        "sizeMap": {
+          "pc-md": "md",
+          "pc-sm": "sm"
+        },
+        "variantMap": {},
+        "notes": [
+          "state=pressed 가 정본에 없음",
+          "variant=mobile 이 정본 크기 중 무엇인지 불명"
+        ],
+        "decision": "D-16"
+      },
+      {
+        "source": "B",
+        "set": "elements_tab1",
+        "setId": "5:10574",
+        "section": null,
+        "variantCount": 4,
+        "legacyProps": {
+          "selected": [
+            "off",
+            "on"
+          ],
+          "hover": [
+            "off",
+            "on"
+          ]
+        },
+        "role": "탭 1형",
+        "confidence": "decide",
+        "stateMap": {
+          "selected=on": "selected",
+          "hover=on": "hover",
+          "selected=off": "default"
+        },
+        "sizeMap": {},
+        "variantMap": {},
+        "notes": [],
+        "decision": "D-16"
+      },
+      {
+        "source": "B",
+        "set": "elements_tab2",
+        "setId": "5:10603",
+        "section": null,
+        "variantCount": 9,
+        "legacyProps": {
+          "option": [
+            "center",
+            "left",
+            "right"
+          ],
+          "selected": [
+            "off",
+            "on"
+          ],
+          "hover": [
+            "off",
+            "on"
+          ]
+        },
+        "role": "탭 2형",
+        "confidence": "decide",
+        "stateMap": {
+          "selected=on": "selected",
+          "hover=on": "hover",
+          "selected=off": "default"
+        },
+        "sizeMap": {},
+        "variantMap": {},
+        "notes": [
+          "option=left/center/right 는 정렬 — 정본 tab 에 축 없음"
+        ],
+        "decision": "D-16"
+      },
+      {
+        "source": "B",
+        "set": "tab",
+        "setId": "1008:10175",
+        "section": null,
+        "variantCount": 4,
+        "legacyProps": {},
+        "role": "탭",
+        "confidence": "decide",
+        "stateMap": {},
+        "sizeMap": {},
+        "variantMap": {},
+        "notes": [
+          "변형 속성이 없어 대응 판단 근거 부족"
+        ],
+        "decision": "D-16"
+      },
+      {
+        "source": "B",
+        "set": "m_tab_title",
+        "setId": "42:2381",
+        "section": null,
+        "variantCount": 12,
+        "legacyProps": {
+          "selected": [
+            "off",
+            "on"
+          ],
+          "new": [
+            "off",
+            "on"
+          ],
+          "count": [
+            "bottom",
+            "off",
+            "right"
+          ]
+        },
+        "role": "모바일 탭 제목",
+        "confidence": "decide",
+        "stateMap": {
+          "selected=on": "selected"
+        },
+        "sizeMap": {},
+        "variantMap": {},
+        "notes": [
+          "count/new 배지 축은 정본 tab 에 없음"
+        ],
+        "decision": "D-16"
+      },
+      {
+        "source": "B",
+        "set": "tab",
+        "setId": "1008:10723",
+        "section": null,
+        "variantCount": 3,
+        "legacyProps": {},
+        "role": "탭",
+        "confidence": "decide",
+        "stateMap": {},
+        "sizeMap": {},
+        "variantMap": {},
+        "notes": [
+          "변형 속성 없음"
+        ],
+        "decision": "D-16"
+      }
+    ],
+    "table": [
+      {
+        "source": "A",
+        "set": "pc_table_body",
+        "setId": "540:4851",
+        "section": "table",
+        "variantCount": 16,
+        "legacyProps": {
+          "size": [
+            "md",
+            "sm"
+          ],
+          "position": [
+            "last",
+            "middle"
+          ],
+          "state": [
+            "default",
+            "hover"
+          ],
+          "align": [
+            "center",
+            "left"
+          ]
+        },
+        "role": "일반 표 본문",
+        "confidence": "high",
+        "stateMap": {
+          "default": "default",
+          "hover": "hover"
+        },
+        "sizeMap": {
+          "md": "md",
+          "sm": "sm"
+        },
+        "variantMap": {},
+        "notes": []
+      },
+      {
+        "source": "A",
+        "set": "pc_table_header",
+        "setId": "540:4940",
+        "section": "table",
+        "variantCount": 36,
+        "legacyProps": {
+          "size": [
+            "md",
+            "sm"
+          ],
+          "position": [
+            "last",
+            "middle"
+          ],
+          "align": [
+            "center",
+            "left"
+          ],
+          "state": [
+            "default",
+            "hover"
+          ],
+          "icon": [
+            "off",
+            "on"
+          ],
+          "check box": [
+            "off",
+            "on"
+          ]
+        },
+        "role": "일반 표 머리글",
+        "confidence": "high",
+        "stateMap": {
+          "default": "default",
+          "hover": "hover"
+        },
+        "sizeMap": {
+          "md": "md",
+          "sm": "sm"
+        },
+        "variantMap": {},
+        "notes": [
+          "check box / icon / align / position 은 정본에서 셀 속성으로 처리"
+        ]
+      },
+      {
+        "source": "A",
+        "set": "pc_grid-table_header",
+        "setId": "540:5309",
+        "section": "table",
+        "variantCount": 48,
+        "legacyProps": {
+          "size": [
+            "md",
+            "sm"
+          ],
+          "position": [
+            "first",
+            "last",
+            "middle"
+          ],
+          "align": [
+            "center",
+            "left"
+          ],
+          "state": [
+            "default",
+            "hover"
+          ],
+          "icon": [
+            "off",
+            "on"
+          ]
+        },
+        "role": "그리드 표 머리글",
+        "confidence": "decide",
+        "stateMap": {
+          "default": "default",
+          "hover": "hover"
+        },
+        "sizeMap": {
+          "md": "md",
+          "sm": "sm"
+        },
+        "variantMap": {},
+        "notes": [
+          "정본 table 변형이 base 하나뿐 — grid 형태 구분이 사라졌는지 불명"
+        ],
+        "decision": "D-14"
+      },
+      {
+        "source": "A",
+        "set": "pc_grid-table_body",
+        "setId": "540:5502",
+        "section": "table",
+        "variantCount": 24,
+        "legacyProps": {
+          "size": [
+            "md",
+            "sm"
+          ],
+          "position": [
+            "first",
+            "last",
+            "middle"
+          ],
+          "state": [
+            "default",
+            "hover"
+          ],
+          "align": [
+            "center",
+            "left"
+          ]
+        },
+        "role": "그리드 표 본문",
+        "confidence": "decide",
+        "stateMap": {
+          "default": "default",
+          "hover": "hover"
+        },
+        "sizeMap": {
+          "md": "md",
+          "sm": "sm"
+        },
+        "variantMap": {},
+        "notes": [],
+        "decision": "D-14"
+      },
+      {
+        "source": "A",
+        "set": "pc_embeded-table_header",
+        "setId": "540:5593",
+        "section": "table",
+        "variantCount": 6,
+        "legacyProps": {
+          "align": [
+            "center",
+            "left"
+          ],
+          "position": [
+            "first",
+            "last",
+            "middle"
+          ]
+        },
+        "role": "삽입형 표 머리글",
+        "confidence": "decide",
+        "stateMap": {},
+        "sizeMap": {},
+        "variantMap": {},
+        "notes": [],
+        "decision": "D-14"
+      },
+      {
+        "source": "A",
+        "set": "pc_embeded-table_body",
+        "setId": "540:5618",
+        "section": "table",
+        "variantCount": 12,
+        "legacyProps": {
+          "state": [
+            "default",
+            "hover"
+          ],
+          "position": [
+            "first",
+            "last",
+            "middle"
+          ],
+          "align": [
+            "center",
+            "left"
+          ]
+        },
+        "role": "삽입형 표 본문",
+        "confidence": "decide",
+        "stateMap": {
+          "default": "default",
+          "hover": "hover"
+        },
+        "sizeMap": {},
+        "variantMap": {},
+        "notes": [],
+        "decision": "D-14"
+      },
+      {
+        "source": "B",
+        "set": "table",
+        "setId": "2504:15196",
+        "section": null,
+        "variantCount": 1,
+        "legacyProps": {},
+        "role": "표(속성 없음)",
+        "confidence": "none",
+        "stateMap": {},
+        "sizeMap": {},
+        "variantMap": {},
+        "notes": [
+          "변형 속성이 없어 판단 근거 부족"
+        ]
+      },
+      {
+        "source": "B",
+        "set": "table",
+        "setId": "2504:15255",
+        "section": null,
+        "variantCount": 5,
+        "legacyProps": {
+          "option": [
+            "column",
+            "content"
+          ],
+          "content option": [
+            "Default",
+            "bottom",
+            "default",
+            "hover",
+            "selected"
+          ]
+        },
+        "role": "표",
+        "confidence": "decide",
+        "stateMap": {
+          "hover": "hover",
+          "selected": "selected"
+        },
+        "sizeMap": {},
+        "variantMap": {},
+        "notes": [
+          "⚠️ content option 에 \"Default\" 와 \"default\" 가 동시에 존재(대소문자 중복 오류)",
+          "option=column/content 가 정본에서 머리글/본문 구분인지 불명"
+        ],
+        "decision": "D-14"
+      }
+    ],
+    "time-picker": [
+      {
+        "source": "A",
+        "set": "timepicker_input_component",
+        "setId": "540:3469",
+        "section": "form-control",
+        "variantCount": 3,
+        "legacyProps": {
+          "state": [
+            "default",
+            "hover",
+            "selected"
+          ]
+        },
+        "role": "시간 입력창 부품",
+        "confidence": "decide",
+        "stateMap": {
+          "default": "default",
+          "hover": "hover"
+        },
+        "sizeMap": {},
+        "variantMap": {},
+        "notes": [
+          "state=selected 가 focus 인지 filled 인지 불명"
+        ],
+        "decision": "D-09"
+      },
+      {
+        "source": "A",
+        "set": "timepicker_select_number",
+        "setId": "540:3476",
+        "section": "form-control",
+        "variantCount": 6,
+        "legacyProps": {
+          "state": [
+            "default",
+            "hover",
+            "selected"
+          ],
+          "size": [
+            "md",
+            "sm"
+          ]
+        },
+        "role": "시/분 숫자 목록",
+        "confidence": "decide",
+        "stateMap": {
+          "default": "default",
+          "hover": "hover"
+        },
+        "sizeMap": {
+          "md": "md"
+        },
+        "variantMap": {},
+        "notes": [],
+        "decision": "D-09"
+      },
+      {
+        "source": "A",
+        "set": "timepicker_select_dropdown",
+        "setId": "540:3489",
+        "section": "form-control",
+        "variantCount": 2,
+        "legacyProps": {
+          "size": [
+            "md",
+            "sm"
+          ]
+        },
+        "role": "시간 선택 펼침",
+        "confidence": "decide",
+        "stateMap": {},
+        "sizeMap": {
+          "md": "md"
+        },
+        "variantMap": {},
+        "notes": [],
+        "decision": "D-09"
+      },
+      {
+        "source": "A",
+        "set": "pc_timepicker_input_dropdown",
+        "setId": "540:3506",
+        "section": "form-control",
+        "variantCount": 2,
+        "legacyProps": {
+          "type": [
+            "12h",
+            "24h"
+          ]
+        },
+        "role": "PC 시간 입력 펼침",
+        "confidence": "decide",
+        "stateMap": {},
+        "sizeMap": {},
+        "variantMap": {},
+        "notes": [
+          "type=12h/24h 축이 정본에 없음"
+        ],
+        "decision": "D-09"
+      },
+      {
+        "source": "A",
+        "set": "timepicker_select",
+        "setId": "540:3636",
+        "section": "form-control",
+        "variantCount": 6,
+        "legacyProps": {
+          "size": [
+            "md",
+            "sm"
+          ],
+          "state": [
+            "default",
+            "disabled",
+            "editing"
+          ]
+        },
+        "role": "시간 선택",
+        "confidence": "decide",
+        "stateMap": {
+          "default": "default",
+          "disabled": "disabled"
+        },
+        "sizeMap": {
+          "md": "md"
+        },
+        "variantMap": {},
+        "notes": [
+          "state=editing 이 정본 focus 인지 불명"
+        ],
+        "decision": "D-09"
+      },
+      {
+        "source": "A",
+        "set": "timepicker_input",
+        "setId": "540:3690",
+        "section": "form-control",
+        "variantCount": 16,
+        "legacyProps": {
+          "platform": [
+            "mobile",
+            "pc-md",
+            "pc-xsm",
+            "pc-xxsm"
+          ],
+          "state": [
+            "completed",
+            "default",
+            "disabled",
+            "selected"
+          ]
+        },
+        "role": "시간 입력창",
+        "confidence": "decide",
+        "stateMap": {
+          "default": "default",
+          "completed": "filled",
+          "disabled": "disabled"
+        },
+        "sizeMap": {
+          "pc-md": "md",
+          "pc-xsm": "xsm",
+          "pc-xxsm": "xxsm"
+        },
+        "variantMap": {},
+        "notes": [
+          "state=selected 가 focus 인지 불명"
+        ],
+        "decision": "D-09"
+      },
+      {
+        "source": "A",
+        "set": "mobile_timepicker_bottomsheet",
+        "setId": "540:3729",
+        "section": "form-control",
+        "variantCount": 2,
+        "legacyProps": {
+          "Property 1": [
+            "date_time",
+            "default"
+          ]
+        },
+        "role": "모바일 시간 바텀시트",
+        "confidence": "decide",
+        "stateMap": {},
+        "sizeMap": {},
+        "variantMap": {},
+        "notes": [],
+        "decision": "D-05"
+      },
+      {
+        "source": "B",
+        "set": "m_combobox_time",
+        "setId": "230:4052",
+        "section": null,
+        "variantCount": 9,
+        "legacyProps": {
+          "label": [
+            "left",
+            "off",
+            "top"
+          ],
+          "option": [
+            "Default",
+            "disabled",
+            "editing"
+          ]
+        },
+        "role": "모바일 시간 콤보",
+        "confidence": "decide",
+        "stateMap": {
+          "Default": "default",
+          "editing": "focus",
+          "disabled": "disabled"
+        },
+        "sizeMap": {},
+        "variantMap": {},
+        "notes": [],
+        "decision": "D-20"
+      }
+    ],
+    "toggle": [
+      {
+        "source": "A",
+        "set": "toggle",
+        "setId": "540:3159",
+        "section": "controls",
+        "variantCount": 6,
+        "legacyProps": {
+          "state": [
+            "disabled",
+            "off",
+            "on"
+          ],
+          "platform": [
+            "mobile",
+            "pc"
+          ]
+        },
+        "role": "컴포넌트 전체",
+        "confidence": "high",
+        "stateMap": {
+          "off": "off",
+          "on": "on",
+          "disabled": "disabled"
+        },
+        "sizeMap": {},
+        "variantMap": {},
+        "notes": [
+          "platform=mobile/pc 축은 정본에서 사라짐(크기 단일화)",
+          "정본 disabledOn 은 레거시에 없음"
+        ]
+      },
+      {
+        "source": "B",
+        "set": "toggle",
+        "setId": "42:3328",
+        "section": null,
+        "variantCount": 4,
+        "legacyProps": {
+          "on/off": [
+            "off",
+            "on"
+          ],
+          "disabled": [
+            "off",
+            "on"
+          ]
+        },
+        "role": "토글",
+        "confidence": "high",
+        "stateMap": {
+          "on/off=on,disabled=off": "on",
+          "on/off=off,disabled=off": "off",
+          "on/off=off,disabled=on": "disabled",
+          "on/off=on,disabled=on": "disabledOn"
+        },
+        "sizeMap": {},
+        "variantMap": {},
+        "notes": [
+          "정본 disabledOn 까지 대응됨(레거시 A 에는 없던 상태)"
+        ]
+      },
+      {
+        "source": "B",
+        "set": "m_toggle",
+        "setId": "109:24703",
+        "section": null,
+        "variantCount": 4,
+        "legacyProps": {
+          "on/off": [
+            "off",
+            "on"
+          ],
+          "disabled": [
+            "off",
+            "on"
+          ]
+        },
+        "role": "모바일 토글",
+        "confidence": "high",
+        "stateMap": {
+          "on/off=on": "on",
+          "on/off=off": "off",
+          "disabled=on": "disabled"
+        },
+        "sizeMap": {},
+        "variantMap": {},
+        "notes": [
+          "정본은 PC/모바일 구분 없이 toggle 하나"
+        ]
+      }
+    ]
+  },
+  "unmatched": [
+    {
+      "source": "A",
+      "set": "mobile_bottomsheet",
+      "setId": "670:4386",
+      "section": "controls",
+      "variantCount": 3,
+      "legacyProps": {
+        "type": [
+          "1 btn",
+          "2 btn",
+          "default"
+        ]
+      },
+      "role": "모바일 바텀시트",
+      "confidence": "decide",
+      "stateMap": {},
+      "sizeMap": {},
+      "variantMap": {},
+      "notes": [
+        "정본에 바텀시트 단독 컴포넌트 없음. modal 로 흡수됐는지 불명"
+      ],
+      "decision": "D-05"
+    },
+    {
+      "source": "A",
+      "set": "pc_assist_button",
+      "setId": "540:4650",
+      "section": "button",
+      "variantCount": 9,
+      "legacyProps": {
+        "variants": [
+          "default",
+          "icon_lead",
+          "icon_trail"
+        ],
+        "state": [
+          "default",
+          "disabled",
+          "hover"
+        ],
+        "icon": [
+          "off",
+          "on"
+        ]
+      },
+      "role": "보조 버튼",
+      "confidence": "decide",
+      "stateMap": {},
+      "sizeMap": {},
+      "variantMap": {},
+      "notes": [
+        "정본 button 변형(primary/secondary/blue-line)에 assist 없음"
+      ],
+      "decision": "D-13"
+    },
+    {
+      "source": "A",
+      "set": "pc_text_button",
+      "setId": "540:4705",
+      "section": "button",
+      "variantCount": 6,
+      "legacyProps": {
+        "variant": [
+          "primary",
+          "secondary"
+        ],
+        "state": [
+          "default",
+          "disabled",
+          "hover"
+        ]
+      },
+      "role": "텍스트 버튼",
+      "confidence": "decide",
+      "stateMap": {},
+      "sizeMap": {},
+      "variantMap": {},
+      "notes": [
+        "정본에 텍스트 전용 버튼 없음"
+      ],
+      "decision": "D-13"
+    },
+    {
+      "source": "A",
+      "set": "dataview",
+      "setId": "540:5681",
+      "section": "dataview",
+      "variantCount": 4,
+      "legacyProps": {
+        "state": [
+          "edit",
+          "state3",
+          "state4",
+          "view"
+        ]
+      },
+      "role": "데이터 보기",
+      "confidence": "none",
+      "stateMap": {},
+      "sizeMap": {},
+      "variantMap": {},
+      "notes": [
+        "정본에 대응 컴포넌트 없음. state 이름이 state3/state4 로 미완성"
+      ]
+    },
+    {
+      "source": "A",
+      "set": "bottomsheet_option",
+      "setId": "540:5862",
+      "section": "modal",
+      "variantCount": 8,
+      "legacyProps": {
+        "type": [
+          "checkbox",
+          "radio",
+          "text",
+          "text_more",
+          "text_state"
+        ],
+        "state": [
+          "checked",
+          "default"
+        ]
+      },
+      "role": "바텀시트 항목",
+      "confidence": "decide",
+      "stateMap": {},
+      "sizeMap": {},
+      "variantMap": {},
+      "notes": [],
+      "decision": "D-05"
+    },
+    {
+      "source": "A",
+      "set": "mobile_bottomsheet",
+      "setId": "540:5903",
+      "section": "modal",
+      "variantCount": 3,
+      "legacyProps": {
+        "footer button": [
+          "dual",
+          "off",
+          "single"
+        ]
+      },
+      "role": "모바일 바텀시트",
+      "confidence": "decide",
+      "stateMap": {},
+      "sizeMap": {},
+      "variantMap": {},
+      "notes": [],
+      "decision": "D-05"
+    },
+    {
+      "source": "A",
+      "set": "toolbar_link",
+      "setId": "540:6101",
+      "section": "pc_navigation",
+      "variantCount": 4,
+      "legacyProps": {
+        "state": [
+          "default",
+          "hover"
+        ],
+        "icon": [
+          "off",
+          "on"
+        ]
+      },
+      "role": "툴바 링크",
+      "confidence": "none",
+      "stateMap": {},
+      "sizeMap": {},
+      "variantMap": {},
+      "notes": []
+    },
+    {
+      "source": "A",
+      "set": "slot_utility",
+      "setId": "540:6219",
+      "section": "pc_navigation",
+      "variantCount": 4,
+      "legacyProps": {
+        "language": [
+          "off",
+          "on"
+        ],
+        "full menu": [
+          "off",
+          "on"
+        ]
+      },
+      "role": "상단 바 유틸리티 슬롯",
+      "confidence": "none",
+      "stateMap": {},
+      "sizeMap": {},
+      "variantMap": {},
+      "notes": []
+    },
+    {
+      "source": "A",
+      "set": "language_set",
+      "setId": "540:6238",
+      "section": "pc_navigation",
+      "variantCount": 5,
+      "legacyProps": {
+        "type": [
+          "globe",
+          "japan",
+          "korea",
+          "usa",
+          "vietnam"
+        ]
+      },
+      "role": "언어 선택",
+      "confidence": "none",
+      "stateMap": {},
+      "sizeMap": {},
+      "variantMap": {},
+      "notes": []
+    },
+    {
+      "source": "A",
+      "set": "breadcrumb_element",
+      "setId": "540:6273",
+      "section": "pc_navigation",
+      "variantCount": 4,
+      "legacyProps": {
+        "type": [
+          "active-default",
+          "active-dropdown",
+          "inactive--default",
+          "inactive--hover"
+        ]
+      },
+      "role": "경로 표시 조각",
+      "confidence": "none",
+      "stateMap": {},
+      "sizeMap": {},
+      "variantMap": {},
+      "notes": []
+    },
+    {
+      "source": "A",
+      "set": "toolbar_text",
+      "setId": "540:6288",
+      "section": "pc_navigation",
+      "variantCount": 2,
+      "legacyProps": {
+        "type": [
+          "default",
+          "dropdown"
+        ]
+      },
+      "role": "툴바 텍스트",
+      "confidence": "none",
+      "stateMap": {},
+      "sizeMap": {},
+      "variantMap": {},
+      "notes": []
+    },
+    {
+      "source": "A",
+      "set": "mobile_dot-nav",
+      "setId": "540:6360",
+      "section": "pc_navigation",
+      "variantCount": 2,
+      "legacyProps": {
+        "type": [
+          "default",
+          "upper5"
+        ]
+      },
+      "role": "모바일 점 네비",
+      "confidence": "none",
+      "stateMap": {},
+      "sizeMap": {},
+      "variantMap": {},
+      "notes": []
+    },
+    {
+      "source": "A",
+      "set": "gnb list",
+      "setId": "540:6398",
+      "section": "pc_navigation",
+      "variantCount": 3,
+      "legacyProps": {
+        "type": [
+          "compact-1",
+          "compact-2",
+          "regular"
+        ]
+      },
+      "role": "상단 바 메뉴 목록",
+      "confidence": "decide",
+      "stateMap": {},
+      "sizeMap": {},
+      "variantMap": {},
+      "notes": [
+        "정본 gnb 안에 흡수됐는지 불명"
+      ],
+      "decision": "D-18"
+    },
+    {
+      "source": "A",
+      "set": "breadcrumb",
+      "setId": "540:6470",
+      "section": "pc_navigation",
+      "variantCount": 3,
+      "legacyProps": {
+        "viewport": [
+          "1280",
+          "1440",
+          "1920"
+        ]
+      },
+      "role": "경로 표시 전체",
+      "confidence": "none",
+      "stateMap": {},
+      "sizeMap": {},
+      "variantMap": {},
+      "notes": []
+    },
+    {
+      "source": "A",
+      "set": "toobar",
+      "setId": "540:6501",
+      "section": "pc_navigation",
+      "variantCount": 3,
+      "legacyProps": {
+        "viewport": [
+          "1280",
+          "1440",
+          "1920"
+        ]
+      },
+      "role": "툴바 전체",
+      "confidence": "none",
+      "stateMap": {},
+      "sizeMap": {},
+      "variantMap": {},
+      "notes": []
+    },
+    {
+      "source": "A",
+      "set": "state_emoji",
+      "setId": "540:7291",
+      "section": null,
+      "variantCount": 5,
+      "legacyProps": {
+        "state": [
+          "error",
+          "sad",
+          "smile",
+          "wink",
+          "worry"
+        ]
+      },
+      "role": "표정 아이콘",
+      "confidence": "none",
+      "stateMap": {},
+      "sizeMap": {},
+      "variantMap": {},
+      "notes": []
+    },
+    {
+      "source": "B",
+      "set": "form_label",
+      "setId": "78:5137",
+      "section": null,
+      "variantCount": 2,
+      "legacyProps": {
+        "*": [
+          "off",
+          "on"
+        ]
+      },
+      "role": "폼 라벨",
+      "confidence": "none",
+      "stateMap": {},
+      "sizeMap": {},
+      "variantMap": {},
+      "notes": []
+    },
+    {
+      "source": "B",
+      "set": "form_elements",
+      "setId": "78:5977",
+      "section": null,
+      "variantCount": 16,
+      "legacyProps": {
+        "option": [
+          "default",
+          "disabled",
+          "edit-completed",
+          "editing",
+          "off"
+        ],
+        "button": [
+          "off",
+          "on"
+        ],
+        "combo box": [
+          "double combo",
+          "off",
+          "single combo"
+        ],
+        "radio button": [
+          "off",
+          "on"
+        ],
+        "calendar": [
+          "off",
+          "on"
+        ],
+        "text box": [
+          "off",
+          "on"
+        ]
+      },
+      "role": "폼 묶음(여러 컴포넌트 조합)",
+      "confidence": "decide",
+      "stateMap": {},
+      "sizeMap": {},
+      "variantMap": {},
+      "notes": [
+        "단일 컴포넌트가 아니라 입력창·콤보·달력·라디오를 묶은 폼 틀 → 정본에서는 패턴에 해당"
+      ],
+      "decision": "D-19"
+    },
+    {
+      "source": "B",
+      "set": "form",
+      "setId": "611:8618",
+      "section": null,
+      "variantCount": 1,
+      "legacyProps": {},
+      "role": "폼 틀",
+      "confidence": "none",
+      "stateMap": {},
+      "sizeMap": {},
+      "variantMap": {},
+      "notes": []
+    },
+    {
+      "source": "B",
+      "set": "elements_category_v1",
+      "setId": "89:2614",
+      "section": null,
+      "variantCount": 8,
+      "legacyProps": {
+        "depth": [
+          "1",
+          "1-1",
+          "1-1-1",
+          "1-1-1-1"
+        ],
+        "fold": [
+          "off",
+          "on"
+        ]
+      },
+      "role": "카테고리 트리 v1",
+      "confidence": "none",
+      "stateMap": {},
+      "sizeMap": {},
+      "variantMap": {},
+      "notes": []
+    },
+    {
+      "source": "B",
+      "set": "elements_category_v1_sub",
+      "setId": "89:2874",
+      "section": null,
+      "variantCount": 3,
+      "legacyProps": {
+        "depth": [
+          "1-1",
+          "1-1-1",
+          "1-1-1-1"
+        ]
+      },
+      "role": "카테고리 트리 v1 하위",
+      "confidence": "none",
+      "stateMap": {},
+      "sizeMap": {},
+      "variantMap": {},
+      "notes": []
+    },
+    {
+      "source": "B",
+      "set": "elements_category_v2",
+      "setId": "89:3036",
+      "section": null,
+      "variantCount": 4,
+      "legacyProps": {
+        "depth": [
+          "1",
+          "1-1"
+        ],
+        "blue icon": [
+          "off",
+          "on"
+        ]
+      },
+      "role": "카테고리 트리 v2",
+      "confidence": "none",
+      "stateMap": {},
+      "sizeMap": {},
+      "variantMap": {},
+      "notes": []
+    },
+    {
+      "source": "B",
+      "set": "elements_category_v2_sub",
+      "setId": "101:2050",
+      "section": null,
+      "variantCount": 2,
+      "legacyProps": {
+        "depth": [
+          "1",
+          "1-1"
+        ]
+      },
+      "role": "카테고리 트리 v2 하위",
+      "confidence": "none",
+      "stateMap": {},
+      "sizeMap": {},
+      "variantMap": {},
+      "notes": []
+    },
+    {
+      "source": "B",
+      "set": "search",
+      "setId": "16:1975",
+      "section": null,
+      "variantCount": 3,
+      "legacyProps": {
+        "double": [
+          "off",
+          "on"
+        ],
+        "search icon": [
+          "off",
+          "on"
+        ]
+      },
+      "role": "검색창",
+      "confidence": "none",
+      "stateMap": {},
+      "sizeMap": {},
+      "variantMap": {},
+      "notes": []
+    },
+    {
+      "source": "B",
+      "set": "popup_button",
+      "setId": "49:1870",
+      "section": null,
+      "variantCount": 2,
+      "legacyProps": {
+        "double": [
+          "off",
+          "on"
+        ],
+        "long": [
+          "off",
+          "on"
+        ]
+      },
+      "role": "팝업 버튼",
+      "confidence": "decide",
+      "stateMap": {},
+      "sizeMap": {},
+      "variantMap": {},
+      "notes": [
+        "정본 button 으로 흡수됐는지 불명"
+      ],
+      "decision": "D-21"
+    },
+    {
+      "source": "B",
+      "set": "m_list",
+      "setId": "205:4399",
+      "section": null,
+      "variantCount": 43,
+      "legacyProps": {
+        "thumbnail": [
+          "off",
+          "on"
+        ],
+        "toggle": [
+          "off",
+          "on"
+        ],
+        "badge": [
+          "1badge_left",
+          "1badge_top",
+          "2badge_left",
+          "off"
+        ],
+        "right_section": [
+          "1sub",
+          "1sub >",
+          "2sub >",
+          "4sub",
+          ">",
+          "red 2sub >",
+          "redsub >",
+          "toggle"
+        ],
+        "time": [
+          "off",
+          "on"
+        ]
+      },
+      "role": "모바일 목록",
+      "confidence": "none",
+      "stateMap": {},
+      "sizeMap": {},
+      "variantMap": {},
+      "notes": []
+    },
+    {
+      "source": "B",
+      "set": "m_tooltip",
+      "setId": "611:17145",
+      "section": null,
+      "variantCount": 1,
+      "legacyProps": {},
+      "role": "모바일 툴팁",
+      "confidence": "none",
+      "stateMap": {},
+      "sizeMap": {},
+      "variantMap": {},
+      "notes": []
+    },
+    {
+      "source": "B",
+      "set": "slider",
+      "setId": "168:4453",
+      "section": null,
+      "variantCount": 2,
+      "legacyProps": {
+        "BG": [
+          "off",
+          "on"
+        ]
+      },
+      "role": "슬라이더",
+      "confidence": "none",
+      "stateMap": {},
+      "sizeMap": {},
+      "variantMap": {},
+      "notes": []
+    },
+    {
+      "source": "B",
+      "set": "window",
+      "setId": "1008:10146",
+      "section": null,
+      "variantCount": 3,
+      "legacyProps": {},
+      "role": "창 틀",
+      "confidence": "none",
+      "stateMap": {},
+      "sizeMap": {},
+      "variantMap": {},
+      "notes": []
+    },
+    {
+      "source": "B",
+      "set": "login",
+      "setId": "1008:10149",
+      "section": null,
+      "variantCount": 1,
+      "legacyProps": {},
+      "role": "로그인 화면",
+      "confidence": "none",
+      "stateMap": {},
+      "sizeMap": {},
+      "variantMap": {},
+      "notes": []
+    },
+    {
+      "source": "B",
+      "set": "footer",
+      "setId": "288:4456",
+      "section": null,
+      "variantCount": 3,
+      "legacyProps": {
+        "option": [
+          "Default",
+          "detail_1",
+          "detail_2"
+        ]
+      },
+      "role": "푸터",
+      "confidence": "none",
+      "stateMap": {},
+      "sizeMap": {},
+      "variantMap": {},
+      "notes": []
+    },
+    {
+      "source": "B",
+      "set": "serch tab",
+      "setId": "78:2971",
+      "section": null,
+      "variantCount": 4,
+      "legacyProps": {
+        "line": [
+          "1",
+          "2"
+        ],
+        "radio button": [
+          "off",
+          "on"
+        ]
+      },
+      "role": "검색 탭",
+      "confidence": "none",
+      "stateMap": {},
+      "sizeMap": {},
+      "variantMap": {},
+      "notes": []
+    },
+    {
+      "source": "B",
+      "set": "lnb",
+      "setId": "281:6829",
+      "section": null,
+      "variantCount": 4,
+      "legacyProps": {
+        "logo": [
+          "off",
+          "on"
+        ],
+        "sub menu": [
+          "off",
+          "on"
+        ],
+        "menu title": [
+          "off",
+          "on"
+        ]
+      },
+      "role": "좌측 메뉴(LNB)",
+      "confidence": "none",
+      "stateMap": {},
+      "sizeMap": {},
+      "variantMap": {},
+      "notes": []
+    },
+    {
+      "source": "B",
+      "set": "menutree",
+      "setId": "114:4602",
+      "section": null,
+      "variantCount": 4,
+      "legacyProps": {
+        "icon type": [
+          "plus_minus",
+          "triangle"
+        ],
+        "title": [
+          "off",
+          "on"
+        ]
+      },
+      "role": "메뉴 트리",
+      "confidence": "none",
+      "stateMap": {},
+      "sizeMap": {},
+      "variantMap": {},
+      "notes": []
+    },
+    {
+      "source": "B",
+      "set": "appbar_sub",
+      "setId": "42:1974",
+      "section": null,
+      "variantCount": 4,
+      "legacyProps": {
+        "arrow": [
+          "off",
+          "on"
+        ],
+        "right side": [
+          "close",
+          "icon",
+          "name icon",
+          "none"
+        ]
+      },
+      "role": "모바일 하위 상단바",
+      "confidence": "decide",
+      "stateMap": {},
+      "sizeMap": {},
+      "variantMap": {},
+      "notes": [
+        "정본 mobile-header 로 흡수됐는지 불명"
+      ],
+      "decision": "D-17"
+    },
+    {
+      "source": "B",
+      "set": "appbar_main",
+      "setId": "42:3100",
+      "section": null,
+      "variantCount": 12,
+      "legacyProps": {
+        "logo": [
+          "off",
+          "on"
+        ],
+        "right side": [
+          "1 icon",
+          "2 icon",
+          "name icon",
+          "none",
+          "on"
+        ],
+        "gradient": [
+          "off",
+          "on"
+        ]
+      },
+      "role": "모바일 메인 상단바",
+      "confidence": "decide",
+      "stateMap": {},
+      "sizeMap": {},
+      "variantMap": {},
+      "notes": [
+        "정본 mobile-header 로 흡수됐는지 불명"
+      ],
+      "decision": "D-17"
+    },
+    {
+      "source": "B",
+      "set": "m_base",
+      "setId": "1008:10639",
+      "section": null,
+      "variantCount": 3,
+      "legacyProps": {},
+      "role": "모바일 기본 틀",
+      "confidence": "none",
+      "stateMap": {},
+      "sizeMap": {},
+      "variantMap": {},
+      "notes": []
+    },
+    {
+      "source": "B",
+      "set": "m_footer",
+      "setId": "203:4854",
+      "section": null,
+      "variantCount": 2,
+      "legacyProps": {
+        "simple": [
+          "off",
+          "on"
+        ]
+      },
+      "role": "모바일 푸터",
+      "confidence": "none",
+      "stateMap": {},
+      "sizeMap": {},
+      "variantMap": {},
+      "notes": []
+    },
+    {
+      "source": "B",
+      "set": "m_bar",
+      "setId": "204:4428",
+      "section": null,
+      "variantCount": 2,
+      "legacyProps": {
+        "option": [
+          "mid",
+          "top"
+        ]
+      },
+      "role": "모바일 바",
+      "confidence": "none",
+      "stateMap": {},
+      "sizeMap": {},
+      "variantMap": {},
+      "notes": []
+    },
+    {
+      "source": "B",
+      "set": "keyboard",
+      "setId": "813:8566",
+      "section": null,
+      "variantCount": 3,
+      "legacyProps": {
+        "option": [
+          "en",
+          "kr",
+          "num"
+        ]
+      },
+      "role": "키보드",
+      "confidence": "none",
+      "stateMap": {},
+      "sizeMap": {},
+      "variantMap": {},
+      "notes": []
+    },
+    {
+      "source": "B",
+      "set": "phone_navi",
+      "setId": "2362:12251",
+      "section": null,
+      "variantCount": 3,
+      "legacyProps": {
+        "option": [
+          "Default",
+          "Keypad",
+          "mWeb"
+        ]
+      },
+      "role": "폰 네비게이션",
+      "confidence": "none",
+      "stateMap": {},
+      "sizeMap": {},
+      "variantMap": {},
+      "notes": []
+    },
+    {
+      "source": "B",
+      "set": "m_card",
+      "setId": "1008:10726",
+      "section": null,
+      "variantCount": 1,
+      "legacyProps": {},
+      "role": "모바일 카드",
+      "confidence": "none",
+      "stateMap": {},
+      "sizeMap": {},
+      "variantMap": {},
+      "notes": []
+    },
+    {
+      "source": "B",
+      "set": "m_dashboard",
+      "setId": "1008:10729",
+      "section": null,
+      "variantCount": 1,
+      "legacyProps": {},
+      "role": "모바일 대시보드",
+      "confidence": "none",
+      "stateMap": {},
+      "sizeMap": {},
+      "variantMap": {},
+      "notes": []
+    },
+    {
+      "source": "B",
+      "set": "m_slider",
+      "setId": "1796:13956",
+      "section": null,
+      "variantCount": 6,
+      "legacyProps": {
+        "color": [
+          "black",
+          "white"
+        ],
+        "disabled": [
+          "off",
+          "on"
+        ],
+        "thumbnail": [
+          "off",
+          "on"
+        ]
+      },
+      "role": "모바일 슬라이더",
+      "confidence": "none",
+      "stateMap": {},
+      "sizeMap": {},
+      "variantMap": {},
+      "notes": []
+    }
+  ],
+  "decisions": [
+    {
+      "id": "D-01",
+      "question": "칩(chip)의 모바일용 크기가 지금 정본의 md·sm 중 무엇인가",
+      "affects": [
+        "A:chip(540:3189)",
+        "B:m_chips(1747:9127)"
+      ]
+    },
+    {
+      "id": "D-02",
+      "question": "필터칩의 \"라벨만\" 형태와 \"제목 붙은\" 형태가 지금 정본에서 어떻게 됐는가",
+      "affects": [
+        "A:filter-chip label only(540:3226)",
+        "A:filter-chip with title(574:3520)"
+      ]
+    },
+    {
+      "id": "D-03",
+      "question": "입력창+버튼 조합이 지금 정본에서 하나의 컴포넌트인가 조합인가",
+      "affects": [
+        "A:input+btn(641:4055)"
+      ]
+    },
+    {
+      "id": "D-04",
+      "question": "큰 입력창(large)이 지금 정본 크기 중 무엇인가",
+      "affects": [
+        "A:Inputbox_large(641:4060)"
+      ]
+    },
+    {
+      "id": "D-05",
+      "question": "바텀시트(아래에서 올라오는 창)가 지금 정본에서 무엇이 됐는가",
+      "affects": [
+        "A:mobile_bottomsheet(670:4386)",
+        "A:mobile_timepicker_bottomsheet(540:3729)",
+        "A:mobile_datepicker_bottomsheet(540:3835)",
+        "A:bottomsheet_option(540:5862)",
+        "A:mobile_bottomsheet(540:5903)"
+      ]
+    },
+    {
+      "id": "D-06",
+      "question": "로그인 입력창의 pc-sm 크기가 지금 정본 어디에 해당하는가",
+      "affects": [
+        "A:Login input(540:3328)"
+      ]
+    },
+    {
+      "id": "D-07",
+      "question": "선택창(select)의 \"selected\" 가 펼쳐진 상태인가 값이 채워진 상태인가",
+      "affects": [
+        "A:select(540:3397)"
+      ]
+    },
+    {
+      "id": "D-08",
+      "question": "드롭다운 목록 한 줄의 \"selected\" 가 글자형인가 체크박스형인가",
+      "affects": [
+        "A:dropdown_option(540:3425)",
+        "A:pc_dropdown(540:3442)"
+      ]
+    },
+    {
+      "id": "D-09",
+      "question": "시간 선택(time-picker)의 selected·editing 이 지금 정본 focus 인가",
+      "affects": [
+        "A:timepicker_input_component(540:3469)",
+        "A:timepicker_select_number(540:3476)",
+        "A:timepicker_select_dropdown(540:3489)",
+        "A:pc_timepicker_input_dropdown(540:3506)",
+        "A:timepicker_select(540:3636)",
+        "A:timepicker_input(540:3690)"
+      ]
+    },
+    {
+      "id": "D-10",
+      "question": "날짜 선택(date-picker)의 selected·editing 이 지금 정본 open 인가 focus 인가",
+      "affects": [
+        "A:datepicker_input(540:3794)",
+        "B:calendar(73:4022)",
+        "B:m_calendar_input(159:5733)"
+      ]
+    },
+    {
+      "id": "D-11",
+      "question": "달력 안쪽 부품(칸·타일·화살표·연월 선택)이 지금 정본에서 어떻게 다뤄지는가",
+      "affects": [
+        "A:DatePicker/Calendar Cell(540:4167)",
+        "A:calendar_arrow(540:4196)",
+        "A:DatePicker/Calendar Tile(540:4209)",
+        "A:pc_datepicker_calendar(540:4216)"
+      ]
+    },
+    {
+      "id": "D-12",
+      "question": "모바일 버튼 크기가 지금 정본 lg 인가 md 인가",
+      "affects": [
+        "A:mobile_button(540:4626)"
+      ]
+    },
+    {
+      "id": "D-13",
+      "question": "보조 버튼·텍스트 버튼이 지금 정본에 흡수됐는가 없어졌는가",
+      "affects": [
+        "A:pc_assist_button(540:4650)",
+        "A:pc_text_button(540:4705)",
+        "B:m_subbutton(1744:8493)"
+      ]
+    },
+    {
+      "id": "D-14",
+      "question": "그리드 표·삽입형 표 구분이 지금 정본에서 어떻게 됐는가",
+      "affects": [
+        "A:pc_grid-table_header(540:5309)",
+        "A:pc_grid-table_body(540:5502)",
+        "A:pc_embeded-table_header(540:5593)",
+        "A:pc_embeded-table_body(540:5618)",
+        "B:table(2504:15255)"
+      ]
+    },
+    {
+      "id": "D-15",
+      "question": "모달 크기(sm/md/lg/xl)와 용도별 모달이 지금 정본에서 어떻게 됐는가",
+      "affects": [
+        "A:pc_modal(540:5815)",
+        "A:mobile_modal component(682:5938)",
+        "A:modal_small(6706:4218)",
+        "B:dialog(53:1814)",
+        "B:popup(78:3071)",
+        "B:dialog(151:4106)"
+      ]
+    },
+    {
+      "id": "D-16",
+      "question": "탭의 pressed 상태와 모바일 탭이 지금 정본에서 어떻게 됐는가",
+      "affects": [
+        "A:tab(540:6032)",
+        "B:elements_tab1(5:10574)",
+        "B:elements_tab2(5:10603)",
+        "B:tab(1008:10175)",
+        "B:m_tab_title(42:2381)",
+        "B:tab(1008:10723)"
+      ]
+    },
+    {
+      "id": "D-17",
+      "question": "모바일 상단바(mobile-header) 레거시 5종·B파일 상단바가 정본 6종 중 어디에 붙는가",
+      "affects": [
+        "A:mobile_header(540:6112)",
+        "B:appbar_sub(42:1974)",
+        "B:appbar_main(42:3100)"
+      ]
+    },
+    {
+      "id": "D-18",
+      "question": "상단바 메뉴 목록·하위메뉴 깊이가 정본 gnb 에 흡수됐는가",
+      "affects": [
+        "A:gnb list(540:6398)",
+        "B:gnb(5:10245)"
+      ]
+    },
+    {
+      "id": "D-19",
+      "question": "폼 묶음(form)이 컴포넌트인가 패턴인가",
+      "affects": [
+        "B:form_elements(78:5977)"
+      ]
+    },
+    {
+      "id": "D-20",
+      "question": "콤보박스가 지금 정본 select 인가 dropdown 인가",
+      "affects": [
+        "B:combobox(73:3247)",
+        "B:m_combobox(109:26455)",
+        "B:m_combobox_time(230:4052)"
+      ]
+    },
+    {
+      "id": "D-21",
+      "question": "B파일 버튼 색이름(blue/white/red/mix2)이 정본 변형과 어떻게 대응되는가",
+      "affects": [
+        "B:default(16:1880)",
+        "B:popup_button(49:1870)",
+        "B:m_button(307:8861)"
+      ]
+    },
+    {
+      "id": "D-22",
+      "question": "B파일 라디오의 \"pressed\" 가 선택됨(selected)인가 누르는 중인가",
+      "affects": [
+        "B:radiobutton(42:3283)",
+        "B:m_radiobutton(109:24654)"
+      ]
+    },
+    {
+      "id": "D-23",
+      "question": "페이지 이동 바에 \"마지막 페이지\" 상태가 레거시에 없는데 정본엔 있다",
+      "affects": [
+        "B:pagenation(2504:15164)"
+      ]
+    }
+  ]
+}

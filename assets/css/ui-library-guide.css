@@ -545,6 +545,14 @@
   position: relative;
 }
 
+/* ── Date Picker 모바일 바텀시트 안내 화면 전용 ── (V-2, 위 Modal 과 같은 이유·같은 방식)
+   배포본 sheet 는 position:fixed;inset:0 이라 정적 "Open" 상태 표본을 그대로 두면 화면 전체를
+   덮는다. root 의 .is-preview 를 그대로 선택자로 써서 sheet 만 눕힌다 — 새 클래스를 만들지 않는다. */
+.uilg [data-s1-component="date-picker"].is-preview [data-s1-part="sheet"] {
+  inset: auto;
+  position: relative;
+}
+
 .uilg-modal-action { display: flex; }
 
 /* ── Mobile Bottom Nav · Mobile Header 안내 화면 전용 모바일 목업(D6) ──

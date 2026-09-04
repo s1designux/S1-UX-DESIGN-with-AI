@@ -40,3 +40,12 @@
 - 컴포넌트 코드·토큰·정본은 손대지 않았다. 상태 표시만 올렸다.
 - 다크모드는 이번 승격 범위 밖이다(라이트 기준으로만 확인).
 - 계약(`ui-library-code-contract.json`)은 `candidate` 그대로 둔다 — stable 승격 조건 판단은 별건.
+
+## 2026-09-03 재확인 (추가)
+
+river 본인에게 위 2026-09-01 승인 사실을 재확인한 결과 "기억 안 남"으로 답했다.
+같은 세션에서 pages/ui-review.html 을 http 로 열어 Select 목록 열기·값 선택, Dropdown 체크박스·전체 선택,
+Filter Chip 제목+값 표시를 직접 보여주고 다시 승인받았다(D21).
+B1(Gate 13)은 2026-09-02 🤖 component-verifier 재검증으로 이미 해소돼 있었음을 gate:check 재실행으로 확인(D19).
+B3(chevron 오토레이아웃)는 별도 작업으로 미룬다(D20).
+상세: `workflow-state.json` D19·D20·D21.

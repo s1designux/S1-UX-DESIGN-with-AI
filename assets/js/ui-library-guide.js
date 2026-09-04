@@ -112,9 +112,18 @@ const componentConfig = {
     description: "시각을 고를 때 사용합니다. 트리거를 누르면 시·분 목록이 열리고, 확인을 눌러야 값이 트리거에 남습니다.",
     approvedScope: {
       pc: "상태 5종 · PC 3크기(XXSM 28 · XSM 34 · MD 44) · 24시간제 · 오전오후 2유형 · 확인을 눌러야 값이 적용",
-      mobile: "상태 5종 · 24시간제 · 오전오후 2유형 · 확인을 눌러야 값이 적용"
+      mobile: "상태 5종 · 24시간제 · 오전오후 2유형 · 확인을 눌러야 값이 적용 · 휠 바텀시트 옵션(data-mobile-ui=wheel, TimeOnly·DateTime)"
     },
     runtime: S1UI.timePicker
+  },
+  "date-picker": {
+    title: "Date Picker",
+    description: "날짜(단일·기간)를 고를 때 사용합니다. PC는 트리거 아래 팝오버 캘린더, Mobile은 하단 시트로 열립니다.",
+    approvedScope: {
+      pc: "상태 5종 · PC 3크기(XXSM 28 · XSM 34 · MD 44) · 단일/기간 선택 · Date·Year·Month 3화면 · 일요일 시작",
+      mobile: "바텀시트(캘린더 + 적용 버튼) · 단일/기간 선택"
+    },
+    runtime: S1UI.datePicker
   }
 };
 
@@ -1541,6 +1550,54 @@ function timePickerMarkup({ size = "md", breakName = "pc", type = "24h", state =
     </div>`;
 }
 
+let timePickerWheelId = 0;
+
+function timePickerWheelMarkup({ content = "time-only" } = {}) {
+  timePickerWheelId += 1;
+  const sheetTitleId = `guide-time-picker-wheel-title-${timePickerWheelId}`;
+  const title = content === "date-time" ? "시작 일시" : "시간 선택";
+  const triggerLabel = content === "date-time" ? "시작 일시 선택" : "시간 선택";
+  const type = content === "date-time" ? "12h" : "24h";
+  const tabs = content === "date-time" ? `
+      <div data-s1-part="tabs" data-s1-component="tab" data-size="sm" data-break="mobile" role="tablist" aria-label="날짜·시간 선택">
+        <button type="button" data-s1-part="tab" role="tab" aria-selected="false" data-value="date">날짜</button>
+        <button type="button" data-s1-part="tab" role="tab" aria-selected="true" data-value="time">시간</button>
+      </div>
+      <div data-s1-part="date-panel" hidden>
+        <p data-s1-part="date-panel-note">날짜 선택 화면은 Date Picker 코어가 별도로 제공합니다(이 컴포넌트 범위 밖).</p>
+      </div>` : "";
+  const wheelCols = content === "date-time"
+    ? `<div data-s1-part="wheel-col" data-column="ampm" role="listbox" aria-label="오전오후"></div>
+      <div data-s1-part="wheel-col" data-column="hour" role="listbox" aria-label="시"></div>
+      <div data-s1-part="wheel-col" data-column="colon" aria-hidden="true"></div>
+      <div data-s1-part="wheel-col" data-column="minute" role="listbox" aria-label="분"></div>`
+    : `<div data-s1-part="wheel-col" data-column="hour" role="listbox" aria-label="시"></div>
+      <div data-s1-part="wheel-col" data-column="colon" aria-hidden="true"></div>
+      <div data-s1-part="wheel-col" data-column="minute" role="listbox" aria-label="분"></div>`;
+  return `<div data-guide-sample="set" data-s1-component="time-picker" data-size="md" data-break="mobile" data-type="${type}" data-minute-step="1" data-mobile-ui="wheel" data-mobile-content="${content}">
+      <button type="button" data-s1-part="trigger" aria-haspopup="dialog" aria-expanded="false" aria-label="${title}">
+        <span data-s1-part="value">${triggerLabel}</span>
+        <span data-s1-part="icon" aria-hidden="true"></span>
+      </button>
+      <div data-s1-part="sheet" hidden>
+        <div data-s1-part="sheet-backdrop"></div>
+        <div data-s1-part="sheet-panel" role="dialog" aria-modal="true" aria-labelledby="${sheetTitleId}" tabindex="-1">
+          <div data-s1-part="sheet-header">
+            <span data-s1-part="sheet-title" id="${sheetTitleId}">${title}</span>
+            <button type="button" data-s1-part="sheet-close" aria-label="닫기"></button>
+          </div>${tabs}
+          <div data-s1-part="wheel">${wheelCols}
+            <div data-s1-part="fade-top" aria-hidden="true"></div>
+            <div data-s1-part="fade-bottom" aria-hidden="true"></div>
+          </div>
+          <div data-s1-part="sheet-footer">
+            <button type="button" data-s1-part="apply" data-s1-component="button" data-variant="primary" data-size="lg"><span data-s1-part="label">적용</span></button>
+          </div>
+        </div>
+      </div>
+    </div>`;
+}
+
 function timePickerStateMatrix() {
   const pcSizes = [["xxsm", "XXSM", "28px"], ["xsm", "XSM", "34px"], ["md", "MD", "44px"]];
   /* Mobile 은 크기가 하나뿐이라 크기를 축으로 세우지 않는다 — 그 자리에 유형(24h·12h)을 넣는다
@@ -1621,9 +1678,241 @@ function timePickerStateMatrix() {
 
   /* Mobile 은 유형을 표 안에서 함께 보이므로 유형 사이 가로선을 두지 않는다
      (표출 정책 singleValueAxis · 렌더 검사 ②). */
+  /* 모바일 휠 바텀시트 — 정본 buildTimePickerMobileBottomSheet(D1 해소, 2026-09-03). data-mobile-ui="wheel"
+     옵션이며 기본 목록 드롭다운(위 표)과 별개로 열린다. Content=TimeOnly/DateTime 두 변형 모두 실제로 눌러본다. */
+  const wheelBlock = `<div class="uilg-variant-block">
+      <div class="variant-label">모바일 휠 바텀시트 — 시간만(TimeOnly)</div>
+      <p class="uilg-demo-note">트리거를 누르면 실제로 열립니다. 화살표 키 또는 스크롤로 시·분을 고르고 적용을 누릅니다. 위/아래는 흐림 마스크로 자연스럽게 사라집니다.</p>
+      <div class="comp-state-cell">${timePickerWheelMarkup({ content: "time-only" })}</div>
+    </div>
+    <div class="uilg-variant-block">
+      <div class="variant-label">모바일 휠 바텀시트 — 시작 일시(DateTime)</div>
+      <p class="uilg-demo-note">날짜·시간 탭(승인된 Line Tab 재사용)으로 전환됩니다. 날짜 화면 자체는 이 컴포넌트 범위 밖입니다.</p>
+      <div class="comp-state-cell">${timePickerWheelMarkup({ content: "date-time" })}</div>
+    </div>`;
+
   const mobileContent = `${actionSection("mobile", mobileCols, "type")}
     ${sizeStateGrid(mobileCols, states, cellFor("mobile", "type"), { tall: true })}
-    ${cellBlock}`;
+    ${cellBlock}
+    ${wheelBlock}`;
+
+  return `
+    <div class="platform-section platform-section-pc">
+      <div class="preview-area">${pcContent}</div>
+    </div>
+    <div class="platform-section platform-section-mobile">
+      <div class="preview-area">${mobileContent}</div>
+    </div>`;
+}
+
+/* ── Date Picker — 정본 buildDatePicker(트리거)·buildCalendar(Date/Year/Month)·buildCalendarCell·buildCalendarTile
+   기준 정적 미리보기. 실 상호작용은 ui-library/dist 런타임(date-picker.js)이 담당하고, 여기는 표를 위한 스냅샷이다. */
+const DP_WEEKDAYS = ["일", "월", "화", "수", "목", "금", "토"]; // D3: 일요일 시작
+
+function dpCell(day, otherMonth, state, opts = {}) {
+  const rangeBand = opts.band ? ` data-range-band="${opts.band}"` : "";
+  const weekday = day.weekday;
+  return `<button type="button" data-s1-part="cell" data-state="${state}" data-other-month="${otherMonth}" data-weekday="${weekday}"${rangeBand} aria-selected="${!!opts.selected}" tabindex="-1">
+      <span data-s1-part="cell-inner"><span data-s1-part="cell-num">${day.num}</span></span>
+    </button>`;
+}
+
+/* 2025년 1월 고정 표본 — 정본 buildCalendar 데모(3591-3600)와 동일 달. 1일=수요일. */
+function dpDateView({ today = 10, selected = 17, disabledDay = 25, range = null, hoverEnd = null } = {}) {
+  const daysInMonth = 31;
+  const leading = 3; // 1월 1일 = 수요일 → 일요일 시작 그리드에서 앞 칸 3개(일·월·화=12/29·30·31)
+  const cells = [];
+  for (let i = leading; i > 0; i -= 1) cells.push({ num: 31 - i + 1, other: true, weekday: (leading - i) });
+  for (let d = 1; d <= daysInMonth; d += 1) cells.push({ num: d, other: false, weekday: (leading + d - 1) % 7 });
+  let next = 1;
+  while (cells.length % 7 !== 0 || cells.length < 35) { cells.push({ num: next, other: true, weekday: cells.length % 7 }); next += 1; }
+
+  const rows = [];
+  for (let r = 0; r < cells.length / 7; r += 1) {
+    const rowCells = cells.slice(r * 7, r * 7 + 7).map((day) => {
+      if (day.other) return dpCell(day, true, "default");
+      if (range) {
+        const { start, end } = range;
+        const effectiveEnd = end ?? hoverEnd;
+        if (day.num === start && effectiveEnd && effectiveEnd !== start) return dpCell(day, false, "today", { band: "start", selected: true });
+        if (effectiveEnd && day.num === effectiveEnd && effectiveEnd !== start) return dpCell(day, false, "selected", { band: "end", selected: true });
+        if (effectiveEnd && day.num > start && day.num < effectiveEnd) return dpCell(day, false, "range-mid", { band: "mid", selected: true });
+        if (day.num === start) return dpCell(day, false, "today", { selected: true });
+        return dpCell(day, false, "default");
+      }
+      if (day.num === selected) return dpCell(day, false, "selected", { selected: true });
+      if (day.num === today) return dpCell(day, false, "today");
+      if (day.num === disabledDay) return dpCell(day, false, "disabled");
+      return dpCell(day, false, "default");
+    }).join("");
+    rows.push(`<div data-s1-part="week" role="row">${rowCells}</div>`);
+  }
+  const weekdays = DP_WEEKDAYS.map((label, i) => `<span data-s1-part="weekday" data-weekday="${i}">${label}</span>`).join("");
+  return `<div data-s1-part="view" data-view="date">
+      <div data-s1-part="weekdays">${weekdays}</div>
+      <div data-s1-part="grid" role="grid">${rows.join("")}</div>
+    </div>`;
+}
+
+function dpTile(label, state) {
+  const disabled = state === "disabled" ? " disabled" : "";
+  const selected = state === "selected";
+  return `<button type="button" data-s1-part="tile" aria-selected="${selected}"${disabled}>${label}</button>`;
+}
+
+function dpYearView() {
+  const rows = [
+    [["2021", "disabled"], ["2022", "disabled"], ["2023", "disabled"]],
+    [["2024", "default"], ["2025", "selected"], ["2026", "default"]],
+    [["2027", "default"], ["2028", "default"], ["2029", "default"]],
+    [["2030", "disabled"], ["2031", "disabled"], ["2032", "disabled"]]
+  ];
+  const grid = rows.map((row) => `<div data-s1-part="tile-row">${row.map(([label, state]) => dpTile(label, state)).join("")}</div>`).join("");
+  return `<div data-s1-part="view" data-view="year"><div data-s1-part="grid" data-tile-grid="year">${grid}</div></div>`;
+}
+
+function dpMonthView() {
+  const months = ["1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월", "9월", "10월", "11월", "12월"];
+  const rows = [];
+  for (let r = 0; r < 4; r += 1) {
+    rows.push(`<div data-s1-part="tile-row">${months.slice(r * 3, r * 3 + 3).map((m) => dpTile(m, m === "1월" ? "selected" : "default")).join("")}</div>`);
+  }
+  return `<div data-s1-part="view" data-view="month"><div data-s1-part="grid" data-tile-grid="month">${rows.join("")}</div></div>`;
+}
+
+function dpHeader(view) {
+  const label = view === "date"
+    ? `<button type="button" data-s1-part="year-label">2025년</button><button type="button" data-s1-part="month-label">1월</button>`
+    : `<button type="button" data-s1-part="year-label">2025년</button>`;
+  return `<div data-s1-part="header">
+      <button type="button" data-s1-part="prev" aria-label="이전"><span data-s1-part="chevron-icon" aria-hidden="true"></span></button>
+      <div data-s1-part="header-label">${label}</div>
+      <button type="button" data-s1-part="next" aria-label="다음"><span data-s1-part="chevron-icon" aria-hidden="true"></span></button>
+    </div>`;
+}
+
+function dpCalendar(view, opts = {}) {
+  const body = view === "date" ? dpDateView({ range: opts.range, hoverEnd: opts.hoverEnd }) : view === "year" ? dpYearView() : dpMonthView();
+  return `<div data-s1-part="calendar" data-view="${view}">${dpHeader(view)}${body}</div>`;
+}
+
+let datePickerSheetId = 0;
+
+function datePickerMarkup({ size = "md", breakName = "pc", mode = "single", state = "default", isPreview = false, view = "date", rangeOpts = null } = {}) {
+  const open = state === "open";
+  const filled = state === "filled";
+  const disabled = state === "disabled";
+  const force = state === "hover" ? ' data-force-state="hover"' : "";
+  const preview = isPreview ? " is-preview" : "";
+  const panelHidden = isPreview ? (open ? "" : " hidden") : " hidden";
+  const value = mode === "range"
+    ? (filled || open ? "26.01.17 - 26.01.22" : "YY.MM.DD")
+    : (filled || open ? "26.01.17" : "YY.MM.DD");
+  const calendarOpenInner = dpCalendar(view, mode === "range" ? { range: rangeOpts || { start: 17, end: 22 }, hoverEnd: (rangeOpts && rangeOpts.hoverEnd) || null } : {});
+  /* V-2: pages/ui-review.html 의 F-2 수정과 같은 분기를 여기에도 넣는다 — mobile 은 panel 이 아니라
+     dist/examples/date-picker.mobile.html 과 같은 sheet 구조를 내야 date-picker.js 의 init() 이
+     sheetCalendar 컨테이너를 찾는다(panel 만 있으면 null 반환 — 죽은 컨트롤). */
+  datePickerSheetId += 1;
+  const sheetTitleId = `guide-date-picker-sheet-title-${datePickerSheetId}`;
+  // R-1 과 같은 방식(modal.is-preview 선례, ui-library-guide.css) — sheet 는 root 의 .is-preview 를
+  // CSS 선택자로 잡아 position:fixed→relative 로 눕힌다. 여기서 별도 클래스를 추가하지 않는다.
+  const body = breakName === "mobile"
+    ? `<div data-s1-part="sheet"${panelHidden}>
+        <div data-s1-part="sheet-backdrop"></div>
+        <div data-s1-part="sheet-panel" role="dialog" aria-modal="true" aria-labelledby="${sheetTitleId}" tabindex="-1">
+          <div data-s1-part="sheet-header">
+            <span data-s1-part="sheet-title" id="${sheetTitleId}">날짜 선택</span>
+            <button type="button" data-s1-part="sheet-close" aria-label="닫기"${isPreview ? ' tabindex="-1"' : ""}></button>
+          </div>
+          <div data-s1-part="calendar-wrap">${open ? calendarOpenInner : '<div data-s1-part="calendar"></div>'}</div>
+          <div data-s1-part="sheet-footer">
+            <button type="button" data-s1-part="apply" data-s1-component="button" data-variant="primary" data-size="lg"${isPreview ? ' tabindex="-1"' : ""}><span data-s1-part="label">적용</span></button>
+          </div>
+        </div>
+      </div>`
+    : `<div data-s1-part="panel"${panelHidden} data-view="${view}">${calendarOpenInner}</div>`;
+  return `<div data-guide-sample="set" data-s1-component="date-picker" data-size="${size}" data-break="${breakName}" data-mode="${mode}" class="${preview}">
+      <button type="button" data-s1-part="trigger" aria-haspopup="dialog" aria-expanded="${open}"${filled ? ' data-filled="true"' : ""}${disabled ? " disabled" : ""}${force}>
+        <span data-s1-part="value">${value}</span>
+        <span data-s1-part="icon" aria-hidden="true"></span>
+      </button>
+      ${body}
+    </div>`;
+}
+
+function datePickerStateMatrix() {
+  const pcSizes = [["xxsm", "XXSM", "28px"], ["xsm", "XSM", "34px"], ["md", "MD", "44px"]];
+  const mobileCols = [["single", "단일 선택"], ["range", "기간 선택"]];
+  const states = [
+    ["Default", "default"],
+    ["Hover", "hover", "검수 표시"],
+    ["Filled", "filled", "값 선택됨"],
+    ["Disabled", "disabled"],
+    ["Open", "open", "패널 열림"]
+  ];
+  const cellFor = (breakName, axis) => (key, state) => axis === "size"
+    ? datePickerMarkup({ size: key, breakName, mode: "single", state, isPreview: true })
+    : datePickerMarkup({ size: "md", breakName, mode: key, state, isPreview: true });
+
+  function actionSection() {
+    const header = `<div class="matrix-col-header" style="grid-column:1"></div>` +
+      pcSizes.map(([, label, dim]) => `<div class="matrix-col-header">${label}<span class="uilg-size-dim">${dim}</span></div>`).join("");
+    const liveRow = `<div class="matrix-row-label">Date Picker</div>` +
+      pcSizes.map(([size]) => `<div class="comp-state-cell">${datePickerMarkup({ size, breakName: "pc", mode: "single" })}</div>`).join("");
+    const disabledRow = `<div class="matrix-row-label">Disabled</div>` +
+      pcSizes.map(([size]) => `<div class="comp-state-cell">${cellFor("pc", "size")(size, "disabled")}</div>`).join("");
+    return `<div class="comp-action-top">
+      <div class="matrix-col-header-action">Action</div>
+      <div class="comp-state-matrix" style="grid-template-columns: 120px repeat(${pcSizes.length}, minmax(150px, 1fr));">${header}${liveRow}${disabledRow}</div>
+      <p class="uilg-demo-note">눌러서 날짜를 고릅니다. 단일 선택은 고르면 바로 닫히고, 기간 선택은 시작·종료 두 번 눌러야 닫힙니다. 화살표 키로 날짜를 옮기고 Esc로 닫습니다.</p>
+    </div>`;
+  }
+
+  const viewBlock = (view, label) => `<div class="uilg-variant-block">
+      <div class="variant-label">캘린더 — ${label}</div>
+      <div class="comp-state-cell uilg-open-cell">${datePickerMarkup({ size: "md", breakName: "pc", mode: "single", state: "open", isPreview: true, view })}</div>
+    </div>`;
+
+  const rangeBlock = `<div class="uilg-variant-block">
+      <div class="variant-label">기간 선택 — 완료(17~22일)</div>
+      <div class="comp-state-cell uilg-open-cell">${datePickerMarkup({ size: "md", breakName: "pc", mode: "range", state: "open", isPreview: true, rangeOpts: { start: 17, end: 22 } })}</div>
+    </div>
+    <div class="uilg-variant-block">
+      <div class="variant-label">기간 선택 — hover 미리보기(D6, 시작일만 고른 상태)</div>
+      <div class="comp-state-cell uilg-open-cell">${datePickerMarkup({ size: "md", breakName: "pc", mode: "range", state: "open", isPreview: true, rangeOpts: { start: 17, end: null, hoverEnd: 22 } })}</div>
+    </div>`;
+
+  /* 달력 크기 비교 — 입력창 크기를 따라간다(river 결정 2026-09-04). 새 속성은 없다: data-size 하나로 결정된다. */
+  const calSizeBlock = `<div class="uilg-variant-block">
+      <div class="variant-label">달력 크기 — 입력창을 따라갑니다 (MD 356 · SM 267)</div>
+      <div class="comp-state-matrix" style="grid-template-columns: repeat(2, minmax(280px, max-content));">
+        <div class="matrix-col-header">MD 입력창 (44) → 큰 달력<span class="uilg-size-dim">356 × 352</span></div>
+        <div class="matrix-col-header">XSM·XXSM 입력창 (34·28) → 작은 달력<span class="uilg-size-dim">267 × 266</span></div>
+        <div class="comp-state-cell uilg-open-cell">${datePickerMarkup({ size: "md", breakName: "pc", mode: "single", state: "open", isPreview: true })}</div>
+        <div class="comp-state-cell uilg-open-cell">${datePickerMarkup({ size: "xsm", breakName: "pc", mode: "single", state: "open", isPreview: true })}</div>
+      </div>
+      <p class="uilg-demo-note">작은 달력은 날짜칸 33·글자 12·헤더 18로 줄어듭니다. 고르는 값이 따로 있지는 않고, 입력창 크기가 그대로 달력 크기가 됩니다.</p>
+    </div>`;
+
+  const pcContent = `${actionSection()}
+    ${sizeStateGrid(pcSizes, states, cellFor("pc", "size"), { tall: true })}
+    <hr class="uilg-separator">
+    ${calSizeBlock}
+    <hr class="uilg-separator">
+    ${viewBlock("date", "Date")}
+    ${viewBlock("year", "Year")}
+    ${viewBlock("month", "Month")}
+    <hr class="uilg-separator">
+    ${rangeBlock}`;
+
+  const mobileContent = `<div class="uilg-variant-block">
+      <div class="variant-label">모바일 트리거 — 누르면 바텀시트가 열립니다(M7)</div>
+      <div class="comp-state-matrix" style="grid-template-columns: 120px repeat(${mobileCols.length}, minmax(150px, 1fr));">
+        <div class="matrix-col-header" style="grid-column:1"></div>${mobileCols.map(([, label]) => `<div class="matrix-col-header">${label}</div>`).join("")}
+        <div class="matrix-row-label">Date Picker</div>${mobileCols.map(([mode]) => `<div class="comp-state-cell">${datePickerMarkup({ size: "md", breakName: "mobile", mode })}</div>`).join("")}
+      </div>
+      <p class="uilg-demo-note">모바일은 팝오버 대신 하단 시트가 열리고, 같은 캘린더 + &quot;적용&quot; 버튼으로 구성됩니다.</p>
+    </div>`;
 
   return `
     <div class="platform-section platform-section-pc">
@@ -1635,6 +1924,7 @@ function timePickerStateMatrix() {
 }
 
 function stateMatrix(id) {
+  if (id === "date-picker") return datePickerStateMatrix();
   if (id === "input") return inputStateMatrix();
   if (id === "button") return buttonStateMatrix();
   if (id === "toggle") return toggleStateMatrix();
@@ -1851,7 +2141,7 @@ async function mountGuide(id) {
 
     section.replaceChildren(fragment);
     wireCodeViewer(section, { html, css, js });
-    if (id === "toggle" || id === "chip" || id === "select" || id === "dropdown" || id === "filter-chip" || id === "tab" || id === "pagination" || id === "multi-toggle" || id === "table" || id === "time-picker") {
+    if (id === "toggle" || id === "chip" || id === "select" || id === "dropdown" || id === "filter-chip" || id === "tab" || id === "pagination" || id === "multi-toggle" || id === "table" || id === "time-picker" || id === "date-picker") {
       /* 미리보기 칸(.is-preview)은 init 하지 않는다 — 런타임이 패널을 다시 닫아
          Open/Selected 칸이 사라진다. Action 영역의 실물만 살린다. */
       section.querySelectorAll(`[data-s1-component="${id}"]:not(.is-preview)`).forEach((root) => config.runtime.init(root));
@@ -1941,6 +2231,6 @@ async function mountGuide(id) {
   }
 }
 
-const guideComponents = ["input", "button", "checkbox", "radio", "toggle", "chip", "select", "dropdown", "filter-chip", "tab", "pagination", "textarea", "multi-toggle", "modal", "table", "mobile-bottom-nav", "mobile-header", "time-picker"];
+const guideComponents = ["input", "button", "checkbox", "radio", "toggle", "chip", "select", "dropdown", "filter-chip", "tab", "pagination", "textarea", "multi-toggle", "modal", "table", "mobile-bottom-nav", "mobile-header", "time-picker", "date-picker"];
 await Promise.all(guideComponents.map(mountGuide));
 document.dispatchEvent(new CustomEvent("s1:component-guide:ready", { detail: { components: guideComponents } }));

@@ -1657,6 +1657,8 @@ async function buildDropdown(maps: BuildMaps, originY: number): Promise<{ set: C
   ];
   const comps: ComponentNode[] = [];
   const cells: { comp: ComponentNode; size: string; typeIdx: number }[] = [];
+  // 슬롯에 끼울 수 있는 컴포넌트 추천값 — Figma 에서 옵션을 추가할 때 Dropdown List 세트가 먼저 뜬다.
+  const ddlSet = await getBuiltSet("Dropdown List");
 
   for (const sz of sizes) {
   for (let ti = 0; ti < panelTypes.length; ti++) {
@@ -1677,6 +1679,7 @@ async function buildDropdown(maps: BuildMaps, originY: number): Promise<{ set: C
     try { (comp as any).effects = ddEffects; } catch (e) { /* 환경 미지원 */ }
     comp.resize(140, 4 * sz.h + 8);
 
+    const optionRows: SceneNode[] = [];
     // 4행 — Text: Default·Hover·Selected·Default / Checkbox: 전체선택·Selected·Default·Hover
     for (const [rowType, stateName] of pt.rows) {
       // BUILT_COMPS → 캔버스(재설치로 Dropdown List 가 skip 된 경우) 순으로 찾는다.
@@ -1700,8 +1703,7 @@ async function buildDropdown(maps: BuildMaps, originY: number): Promise<{ set: C
       if (ddComp) {
         const inst = ddComp.createInstance();
         inst.name = "ddl-row";
-        comp.appendChild(inst);
-        (inst as any).layoutAlign = "STRETCH";
+        optionRows.push(inst);
       } else {
         // Fallback — 글자 줄만 그린다(여기까지 오면 rowType 은 항상 Text: 위에서 체크박스 줄은 continue).
         const sn = stateName.toLowerCase();
@@ -1713,9 +1715,19 @@ async function buildDropdown(maps: BuildMaps, originY: number): Promise<{ set: C
         row.paddingTop = 0; row.paddingBottom = 0;
         row.fills = [boundPaint(scv(maps, dd(`option/bg/${sn}`)))];
         row.appendChild(await makeBoundText("옵션", sz.h <= 28 ? 12 : 14, "Regular", scv(maps, dd(`option/label/${sn}`))));
-        comp.appendChild(row);
+        optionRows.push(row);
       }
     }
+    // 옵션 줄이 쌓이는 **패널 안쪽 전체**가 Figma 슬롯("Options") — 옵션 개수를 늘리고 줄일 수 있게 한다. (river 지시 2026-09-03)
+    //   옵션 한 줄을 슬롯으로 만드는 것이 아니다. 기본 내용은 기존과 같은 4줄이다.
+    //   패널의 세로 스택 설정(VERTICAL · itemSpacing 0)을 슬롯이 그대로 이어받고, 슬롯과 각 줄을
+    //   STRETCH 로 늘려 종전처럼 줄이 패널 폭을 꽉 채우게 한다(패널 padding 4/4 는 comp 에 그대로 남는다).
+    await makeSlot(comp, "Options",
+      "옵션 줄이 놓이는 자리. 기본은 4줄이며, Dropdown List 인스턴스를 넣고 빼서 옵션 수를 늘리고 줄인다. 줄 수를 바꾸면 패널 높이는 자동으로 따라간다.",
+      optionRows, ddlSet ? [{ type: "COMPONENT_SET", key: ddlSet.key }] : [],
+      { layoutMode: "VERTICAL", primaryAxisSizingMode: "AUTO", counterAxisSizingMode: "FIXED",
+        primaryAxisAlignItems: "MIN", counterAxisAlignItems: "MIN", itemSpacing: 0,
+        stretch: true, stretchContents: true });
     comps.push(comp);
     cells.push({ comp, size: sz.size, typeIdx: ti });
     // 기존 키(=Text 패널)를 그대로 유지 — Select Box Open·Filter Chip Selected 가 이 키로 붙는다.
@@ -1848,6 +1860,9 @@ async function buildLineTabSet(maps: BuildMaps, originY: number): Promise<{ set:
     return c;
   };
 
+  // 슬롯에 끼울 수 있는 컴포넌트 추천값 — Figma 에서 탭을 추가할 때 Line Tab 세트가 먼저 뜬다.
+  const lineTabSet = await getBuiltSet("Line Tab");
+
   const comps: ComponentNode[] = [];
   const cellByKey = new Map<string, ComponentNode>();
   for (const sd of sizeDefs) {
@@ -1869,10 +1884,17 @@ async function buildLineTabSet(maps: BuildMaps, originY: number): Promise<{ set:
         // 인스턴스 라벨 override (셀 내부 TEXT). 색·스타일은 셀(Variable 바인딩) 그대로 유지.
         const txt = inst.findOne((n) => n.type === "TEXT") as TextNode | null;
         if (txt) { try { txt.characters = TAB_LABELS[i]; } catch (e) { /* */ } }
-        comp.appendChild(inst);
         tabInsts.push(inst);
       }
     }
+    // 탭이 놓이는 **줄 전체**가 Figma 슬롯("Tabs") — 탭 개수를 늘리고 줄일 수 있게 한다. (river 지시 2026-09-03)
+    //   탭 한 칸을 슬롯으로 만드는 것이 아니다. 기본 내용은 기존과 같은 탭 3개(첫 칸 Selected)다.
+    //   슬롯은 comp 직계 자식이며 auto-layout 설정(itemSpacing 0 · counterAxis MIN)을 comp 에서 그대로 가져와,
+    //   하단 회색선이 끊기지 않고 이어지는 원본 V2.4 6947:4621 모양을 유지한다.
+    await makeSlot(comp, "Tabs",
+      "탭이 놓이는 자리. 기본은 탭 3개이며, Line Tab 인스턴스를 넣고 빼서 탭 수를 늘리고 줄인다. 새로 넣은 탭은 폭을 기존 탭과 같게 맞춘다.",
+      tabInsts, lineTabSet ? [{ type: "COMPONENT_SET", key: lineTabSet.key }] : [],
+      { counterAxisAlignItems: "MIN", itemSpacing: 0 });
     // 동일 폭 적용 — 각 인스턴스의 hug 자연폭 중 최댓값으로 전부 FIXED (가장 긴 라벨 기준).
     if (tabInsts.length) {
       const maxW = Math.max(...tabInsts.map((n) => { try { return n.width; } catch (e) { return 0; } }));
@@ -2806,6 +2828,66 @@ const GNB_UTIL_SVGS = {
   menu: `<svg width="24" height="16.93" viewBox="0 0 24 16.9274" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M0 1.41176H24V0.705882V0H0V1.41176Z" fill="currentColor"/><path d="M0 9.17647H24V8.47059V7.76471H0V9.17647Z" fill="currentColor"/><path d="M0 16.9274H24V16.2215V15.5156H0V16.9274Z" fill="currentColor"/></svg>`,
 };
 
+/**
+ * Figma 슬롯 노드 생성 — 컴포넌트 안에 "끼워 넣는 자리"를 만들고 기본 내용을 채운다. (river 결정 2026-09-03)
+ * 배선은 Bottom Sheet Content 슬롯(buildBottomSheet)과 같은 방식이다:
+ *   `createSlot()` 이 owner 에 SLOT 속성을 함께 만들고, 그 속성을 propName 으로 개명한다.
+ *   슬롯 노드를 중첩 프레임 안으로 옮겨도 owner 컴포넌트의 속성으로 유지된다.
+ * 폴백을 두지 않는다 — 슬롯이 안 만들어졌는데 겉모습만 같은 프레임으로 조용히 빌드되면
+ * "슬롯인 줄 알았는데 아니었다"를 아무도 모른다. Bottom Sheet 와 동일하게 크게 실패시킨다.
+ */
+interface SlotLayout {
+  layoutMode?: "HORIZONTAL" | "VERTICAL";
+  primaryAxisSizingMode?: "FIXED" | "AUTO";
+  counterAxisSizingMode?: "FIXED" | "AUTO";
+  primaryAxisAlignItems?: "MIN" | "CENTER" | "MAX" | "SPACE_BETWEEN";
+  counterAxisAlignItems?: "MIN" | "CENTER" | "MAX";
+  itemSpacing?: number;
+  paddingLeft?: number; paddingRight?: number; paddingTop?: number; paddingBottom?: number;
+  /** 슬롯 자신을 부모 auto-layout 안에서 가로로 늘린다(세로 목록형 슬롯에 필요). */
+  stretch?: boolean;
+  /** 슬롯 안의 기본 내용물도 STRETCH 로 늘린다(옵션 줄·본문처럼 폭을 꽉 채우는 내용). */
+  stretchContents?: boolean;
+  /**
+   * 슬롯을 붙일 부모. 기본은 owner 컴포넌트 직계.
+   * owner 안쪽 프레임에 넣을 때는 **그 프레임을 여기에 넘긴다** — owner 에 먼저 붙였다 옮기면
+   * 파생 사실(component-facts anatomy)에 "루트 직계 부품"으로도 함께 남아 유령 부품이 생긴다
+   * (🤖 component-verifier 적발 2026-09-03). Bottom Sheet 도 처음부터 안쪽 프레임에 직접 붙인다.
+   * 넘기는 프레임은 owner 서브트리 안에 **미리 붙어 있어야** 한다.
+   */
+  parent?: FrameNode;
+}
+
+async function makeSlot(comp: ComponentNode, propName: string, description: string, contents: SceneNode[],
+                        preferredValues: InstanceSwapPreferredValue[] = [],
+                        layout: SlotLayout = {}): Promise<FrameNode> {
+  const before = new Set(Object.entries(comp.componentPropertyDefinitions || {})
+    .filter(([, d]) => d.type === "SLOT").map(([n]) => n));
+  const slot = comp.createSlot();
+  slot.name = propName;
+  slot.fills = [];
+  slot.layoutMode = layout.layoutMode ?? "HORIZONTAL";
+  slot.primaryAxisSizingMode = layout.primaryAxisSizingMode ?? "AUTO";
+  slot.counterAxisSizingMode = layout.counterAxisSizingMode ?? "AUTO";
+  slot.primaryAxisAlignItems = layout.primaryAxisAlignItems ?? "CENTER";
+  slot.counterAxisAlignItems = layout.counterAxisAlignItems ?? "CENTER";
+  slot.itemSpacing = layout.itemSpacing ?? 0; slot.clipsContent = false;
+  slot.paddingLeft = layout.paddingLeft ?? 0; slot.paddingRight = layout.paddingRight ?? 0;
+  slot.paddingTop = layout.paddingTop ?? 0; slot.paddingBottom = layout.paddingBottom ?? 0;
+  for (const c of contents) slot.appendChild(c);
+  (layout.parent ?? comp).appendChild(slot);
+  if (layout.stretch) { try { slot.layoutAlign = "STRETCH"; } catch (e) { /* */ } }
+  if (layout.stretchContents) {
+    for (const c of contents) { try { (c as any).layoutAlign = "STRETCH"; } catch (e) { /* */ } }
+  }
+  // 구형 검증 mock 은 componentPropertyDefinitions 를 기록하지 않는다 — 정의를 주는 환경에서만 누락을 오류로 본다.
+  const defs = Object.entries(comp.componentPropertyDefinitions || {});
+  const added = defs.find(([n, d]) => d.type === "SLOT" && !before.has(n))?.[0];
+  if (defs.length && !added) throw new Error(`[makeSlot] ${propName} 슬롯 속성을 찾지 못했습니다.`);
+  if (added) comp.editComponentProperty(added, { name: propName, description, preferredValues });
+  return slot as unknown as FrameNode;
+}
+
 /** GNB 메뉴 슬롯 콘텐츠를 node(컴포넌트/프레임)에 채우고 폭을 반환. */
 async function fillGnbMenu(node: ComponentNode | FrameNode, maps: BuildMaps, sizeKey: string, state: string): Promise<number> {
   const navc = (k: string) => `color/navigation/${k}`;
@@ -3228,18 +3310,20 @@ async function buildGNB(maps: BuildMaps, originY: number): Promise<{ set: Compon
       // 로고
       const logo = await makeBoundText("SAMPLE LOGO", 20, "Bold", scv(maps, "color/text/title/primary"));
 
-      // 메뉴 묶음 (3 슬롯, 인접 gap0)
-      const menus = figma.createFrame(); menus.name = "menus"; menus.fills = [];
-      menus.layoutMode = "HORIZONTAL"; menus.itemSpacing = 0;
-      menus.counterAxisAlignItems = "CENTER"; menus.primaryAxisSizingMode = "AUTO"; menus.counterAxisSizingMode = "AUTO";
-      // GNB Menu 컴포넌트 인스턴스 사용 — GNB 바 사이즈(sk)와 같은 GNB Menu 사이즈 매칭.
-      //   첫 슬롯=Selected(밑줄), 나머지=Default. (#4 사용자 결정: raw menu 프레임 대신 GNB Menu 인스턴스)
+      // 메뉴가 놓이는 **자리 전체**가 Figma 슬롯("Menus") — 메뉴 개수를 늘리고 줄일 수 있게 한다. (river 지시 2026-09-03)
+      //   메뉴 하나하나의 글자를 슬롯으로 만드는 것이 아니다. 기본 내용은 기존과 같은 메뉴 3개다.
+      //   GNB Menu 컴포넌트 인스턴스 사용 — GNB 바 사이즈(sk)와 같은 GNB Menu 사이즈 매칭.
+      //   첫 칸=Selected(밑줄), 나머지=Default. (#4 사용자 결정: raw menu 프레임 대신 GNB Menu 인스턴스)
+      const menuItems: SceneNode[] = [];
       for (let mi = 0; mi < 3; mi++) {
         const state = mi === 0 ? "Selected" : "Default";
         const menuComp = menuCellByKey.get(`${sk}/${state}`);
-        if (menuComp) { menus.appendChild(menuComp.createInstance()); }
-        else { const slot = figma.createFrame(); slot.name = "menu"; menus.appendChild(slot); await fillGnbMenu(slot, maps, sk, state); }
+        if (menuComp) { menuItems.push(menuComp.createInstance()); }
+        else { const f = figma.createFrame(); f.name = "menu"; await fillGnbMenu(f, maps, sk, state); menuItems.push(f); }
       }
+      const menus = await makeSlot(comp, "Menus",
+        "메뉴가 놓이는 자리. 기본은 메뉴 3개이며, GNB Menu 인스턴스를 넣고 빼서 메뉴 수를 늘리고 줄인다.",
+        menuItems, menuSet ? [{ type: "COMPONENT_SET", key: menuSet.key }] : []);
 
       // 유틸 영역 = GNB Utility Icon 세트 all-on 변형(언어·계정·메뉴) 인스턴스 1개. (#3 사용자 결정)
       //   불필요한 "util" 래퍼 프레임 제거 — GNB Utility Icon 인스턴스를 바 레이아웃에 직접 붙인다(#2 사용자 지적 2026-06-25).
@@ -3258,8 +3342,12 @@ async function buildGNB(maps: BuildMaps, originY: number): Promise<{ set: Compon
         const leading = figma.createFrame(); leading.name = "leading"; leading.fills = [];
         leading.layoutMode = "HORIZONTAL"; leading.itemSpacing = 64;
         leading.counterAxisAlignItems = "CENTER"; leading.primaryAxisSizingMode = "AUTO"; leading.counterAxisSizingMode = "AUTO";
+        // ★ leading 을 comp 에 **먼저** 붙인다 — Menus 슬롯이 owner 컴포넌트 밖으로 한 번도 나가지 않게 한다.
+        //   (Bottom Sheet 도 같은 이유로 컨테이너를 owner 에 먼저 부착한다.) 슬롯은 owner 서브트리 안이면
+        //   직계 자식이 아니어도 owner 의 속성으로 유지된다.
+        comp.appendChild(leading);
         leading.appendChild(logo); leading.appendChild(menus);
-        comp.appendChild(leading); if (util) comp.appendChild(util);
+        if (util) comp.appendChild(util);
       }
 
       // 하단 1px 보더 (auto-layout 흐름에서 제외 = 절대 배치)
@@ -3314,13 +3402,63 @@ async function buildGNB(maps: BuildMaps, originY: number): Promise<{ set: Compon
 // lazy-build: 소비자가 먼저 호출해도 1회만 빌드(BUILT_SETS 캐시). CATEGORIES 는 위치만 결정.
 const DP = (k: string) => `color/date-picker/${k}`;
 
-// Calendar Cell — 44×44 outer, axes Type={Standard,Range} × State. Standard=5(Hover 포함)·Range=4(비대칭). 숫자 텍스트 layer 이름 = "num".
-// V2.4 구조: 44×44(center, p5) > [Range: 밴드 Rectangle(absolute)] + inner 30×30 원(센터) > 숫자.
-async function buildCalendarCell(maps: BuildMaps): Promise<{ set: ComponentSetNode; variants: Record<string, ComponentNode> }> {
+// ── 달력 크기 정본 (MD·SM) ──────────────────────────────────────────────────
+// Figma 원본 pc_timepicker_calendar(파일 P8YvnCdGkQLDNVQhW74ZZW) 실측 — 2026-09-04.
+//   MD: Date 1980:49729 · Year 1980:49792 / SM: Date 3381:15306 · Year 6434:270653
+//   Range 밴드 SM 실측: 6434:272680(풀폭 x0 w33) · 272679(시작 x16.5 w16.5) · 272682(끝 x0 w16.5), 둘 다 y5.25 h22.5
+// SM 은 river 지시로 신설(2026-09-04): "데이트피커 캘린더 크기가 두가지인데 현재는 md밖에 없어. sm도 구성해줘".
+//   같은 지시에서 "입력창이 작으면 달력도 자동으로 작게"가 결정돼, XXSM·XSM 트리거는 SM 달력을 연다
+//   (종전 주석 "캘린더 패널은 사이즈 불변(356px 단일)" 2026-06-25 결정을 대체한다).
+// ⚠️ 원본 그대로 옮긴 값이다 — 정규화·반올림하지 않았다. SM 의 소수(22.5·16.5·5.25)와
+//   Date 뷰/타일 뷰의 서로 다른 헤더 높이(24 vs 32)·하단 여백(16 vs 20)은 원본의 실제 모습이다.
+// ⚠️ MD 값은 종전과 완전히 동일하다 — 이번 변경으로 MD 는 1px 도 움직이지 않는다.
+// ⚠️ **원본에서 읽지 못한 것**(🤖 component-verifier 2026-09-04 확인): 패널의 cornerRadius(4)와
+//   shadow 는 두 크기 원본 어디에도 토큰이 없어 확인 불가라, MD 것을 그대로 재사용했다 — "원본 그대로"가
+//   아니라 **미확인·MD 재사용**이다. 테두리 두께 1(border-width/default)만 두 크기 원본에 실재해 확인됐다.
+// ⚠️ 헤더 폭(MD 308 · SM 231)은 실측이 아니라 **패널폭 − 좌우 여백에서 유도**한 값이다. 원본 헤더 프레임은
+//   패널 전체 폭(MD 356 · SM 267)이고 화살표가 좌우 비대칭으로 놓여 있는데(MD 좌56/우348 · SM 좌48/우267),
+//   코드는 두 크기 모두 좌우 대칭으로 정규화한다. 이는 MD 에서 이미 승인돼 나간 기존 처리이며 SM 도 같게 맞췄다.
+type CalSize = "MD" | "SM";
+interface CalGeo {
+  cell: number; inner: number; cellFont: number;      // 날짜칸 outer · 안쪽 원 · 숫자 크기
+  bandY: number; bandH: number;                       // Range 밴드 세로(가로는 칸 폭에서 유도)
+  tileW: number; tileH: number; tileFont: number; tileGapX: number; tileGapY: number;
+  panelW: number; padX: number; padTop: number;
+  panelHDate: number; padBottomDate: number; hdrHDate: number; gapDate: number;
+  panelHTile: number; padBottomTile: number; hdrHTile: number; gapTile: number;
+  hdrFont: number;
+}
+const CAL_GEO: Record<CalSize, CalGeo> = {
+  // MD — 종전 값 그대로. 패널 352 는 원본(Date 356 · Tile 364)을 단일 높이로 정규화한 기존 정본 값이며
+  //   이번 작업에서 손대지 않는다(원본과의 차이는 별도 보고 — 이 작업의 범위가 아니다).
+  MD: {
+    cell: 44, inner: 30, cellFont: 16, bandY: 7, bandH: 30,
+    tileW: 88, tileH: 56, tileFont: 16, tileGapX: 12, tileGapY: 12,
+    panelW: 356, padX: 24, padTop: 20,
+    panelHDate: 352, padBottomDate: 20, hdrHDate: 32, gapDate: 16,
+    panelHTile: 352, padBottomTile: 20, hdrHTile: 32, gapTile: 20,
+    hdrFont: 24,
+  },
+  // SM — 원본 실측. 폭 267 = 좌우 18 + 7×33. Date 높이 266 = 16+24+12+33+(5×33)+16.
+  //   타일 뷰 높이 276 = 16+32+12+(4×40+3×12)+20. 타일 그리드(218)는 MD 와 같은 중앙 정렬이라
+  //   좌우 안쪽 여백이 24.5 가 되는데, 원본(폭 266·여백 24)과 0.5px 차이다.
+  SM: {
+    cell: 33, inner: 22.5, cellFont: 12, bandY: 5.25, bandH: 22.5,
+    tileW: 68, tileH: 40, tileFont: 12, tileGapX: 7, tileGapY: 12,
+    panelW: 267, padX: 18, padTop: 16,
+    panelHDate: 266, padBottomDate: 16, hdrHDate: 24, gapDate: 12,
+    panelHTile: 276, padBottomTile: 20, hdrHTile: 32, gapTile: 12,
+    hdrFont: 18,
+  },
+};
+const CAL_SIZES: CalSize[] = ["MD", "SM"];
+
+// Calendar Cell — axes Size={MD,SM} × Type={Standard,Range} × State. Standard=5(Hover 포함)·Range=4(비대칭).
+// 숫자 텍스트 layer 이름 = "num". 구조: outer(center) > [Range: 밴드 Rectangle(absolute)] + inner 원(센터) > 숫자.
+async function calCellCompsForSize(maps: BuildMaps, size: CalSize): Promise<Record<string, ComponentNode>> {
   // [innerFill, innerStroke, textKey] (V2.4 실측 — selected stroke = border/today)
   // Hover = Default 와 동일하되 inner 배경만 cell/bg/hover(gray/50) — Calendar Tile Hover(tile/bg/hover) 패턴 미러링.
-  //   웹 정본(components.html 980–981) `.s1-date-picker__day:hover > .day-inner { background: cell/bg/hover }` 과 일치.
-  //   Standard 에만 추가 — selected/range 는 (B)유형(파란 배경)이라 회색 hover 로 덮지 않는다(별도 selected-hover 토큰 필요, BACKLOG ③).
+  //   Standard 에만 추가 — selected/range 는 (B)유형(파란 배경)이라 회색 hover 로 덮지 않는다.
   const STD: Record<string, [string, string, string]> = {
     Default:  ["cell/bg/today",    "cell/bg/today",     "text/secondary"],
     Hover:    ["cell/bg/hover",    "cell/bg/hover",     "text/secondary"],
@@ -3328,22 +3466,29 @@ async function buildCalendarCell(maps: BuildMaps): Promise<{ set: ComponentSetNo
     Selected: ["cell/bg/selected", "cell/border/today", "text/selected"],
     Disabled: ["cell/bg/today",    "cell/bg/today",     "text/disabled"],
   };
-  // Range: [bandX, bandW, innerFill, innerStroke, textKey] (밴드는 absolute, h30 top7)
-  const RNG: Record<string, [number, number, string, string, string]> = {
-    Default:  [0,  44, "cell/bg/range",    "cell/bg/range",     "text/secondary"],
-    Start:    [22, 22, "cell/bg/today",    "cell/border/today", "text/today"],
-    End:      [0,  22, "cell/bg/selected", "cell/border/today", "text/selected"],
-    Disabled: [0,  44, "cell/bg/range",    "cell/bg/range",     "text/disabled"],
+  // Range: [innerFill, innerStroke, textKey] — 밴드는 absolute, 세로는 CalGeo(bandY·bandH)
+  const RNG: Record<string, [string, string, string]> = {
+    Default:  ["cell/bg/range",    "cell/bg/range",     "text/secondary"],
+    Start:    ["cell/bg/today",    "cell/border/today", "text/today"],
+    End:      ["cell/bg/selected", "cell/border/today", "text/selected"],
+    Disabled: ["cell/bg/range",    "cell/bg/range",     "text/disabled"],
   };
+  // 밴드 가로 기하 = 칸 폭에서 유도. MD(44): 풀폭 44 · 시작 x22 w22 · 끝 x0 w22 (종전 값 그대로).
+  //   SM(33): 풀폭 33 · 시작 x16.5 w16.5 · 끝 x0 w16.5 — 원본 실측과 일치.
+  function bandGeo(state: string, cw: number): [number, number] {
+    if (state === "Start") return [cw / 2, cw / 2];
+    if (state === "End") return [0, cw / 2];
+    return [0, cw];
+  }
 
-  // inner 30×30 원 + 숫자("num") 생성
-  async function makeInner(fillKey: string, strokeKey: string, textKey: string, bold: boolean): Promise<FrameNode> {
+  // inner 원 + 숫자("num") 생성
+  async function makeInner(g: CalGeo, fillKey: string, strokeKey: string, textKey: string): Promise<FrameNode> {
     const inner = figma.createFrame(); inner.name = "inner"; bindRadius(inner, maps, "radius/full");
     inner.layoutMode = "HORIZONTAL"; inner.primaryAxisAlignItems = "CENTER"; inner.counterAxisAlignItems = "CENTER";
-    inner.primaryAxisSizingMode = "FIXED"; inner.counterAxisSizingMode = "FIXED"; inner.resize(30, 30);
+    inner.primaryAxisSizingMode = "FIXED"; inner.counterAxisSizingMode = "FIXED"; inner.resize(g.inner, g.inner);
     inner.fills = [boundPaint(scv(maps, DP(fillKey)))];
     inner.strokes = [boundPaint(scv(maps, DP(strokeKey)))]; inner.strokeWeight = 1; inner.strokeAlign = "INSIDE";
-    const t = await makeBoundText("1", 16, bold ? "Medium" : "Medium", scv(maps, DP(textKey)));
+    const t = await makeBoundText("1", g.cellFont, "Medium", scv(maps, DP(textKey)));
     t.name = "num";
     inner.appendChild(t);
     return inner;
@@ -3352,48 +3497,62 @@ async function buildCalendarCell(maps: BuildMaps): Promise<{ set: ComponentSetNo
   const comps: ComponentNode[] = [];
   const variants: Record<string, ComponentNode> = {};
 
-  // outer 컴포넌트 — auto-layout(center) 44×44. Range 밴드는 absolute 자식.
-  function makeOuter(name: string): ComponentNode {
+  // outer 컴포넌트 — auto-layout(center). Range 밴드는 absolute 자식.
+  function makeOuter(g: CalGeo, name: string): ComponentNode {
     const comp = figma.createComponent();
     comp.name = name;
     comp.layoutMode = "HORIZONTAL"; comp.primaryAxisAlignItems = "CENTER"; comp.counterAxisAlignItems = "CENTER";
-    comp.primaryAxisSizingMode = "FIXED"; comp.counterAxisSizingMode = "FIXED"; comp.resize(44, 44);
+    comp.primaryAxisSizingMode = "FIXED"; comp.counterAxisSizingMode = "FIXED"; comp.resize(g.cell, g.cell);
     comp.fills = []; comp.clipsContent = true;
     return comp;
   }
 
-  // Type=Standard (Hover 는 Default 뒤 = 상호작용 순서). Range 는 아래에서 4상태 유지(불변).
+  const g = CAL_GEO[size];
+  // Type=Standard (Hover 는 Default 뒤 = 상호작용 순서)
   for (const state of ["Default", "Hover", "Today", "Selected", "Disabled"]) {
-    const [f, s, txt] = STD[state];
-    const comp = makeOuter(`Type=Standard, State=${state}`);
-    comp.appendChild(await makeInner(f, s, txt, state === "Selected"));
-    comps.push(comp); variants[`Standard:${state}`] = comp;
+    const [f, st, txt] = STD[state];
+    const comp = makeOuter(g, `Size=${size}, Type=Standard, State=${state}`);
+    comp.appendChild(await makeInner(g, f, st, txt));
+    comps.push(comp); variants[`${size}:Standard:${state}`] = comp;
   }
   // Type=Range — 밴드(absolute) + inner 원
   for (const state of ["Default", "Start", "End", "Disabled"]) {
-    const [bx, bw, f, s, txt] = RNG[state];
-    const comp = makeOuter(`Type=Range, State=${state}`);
-    // 밴드 Rectangle — absolute(z-below inner). h30, top7(=(44-30)/2), 좌표 V2.4 실측.
+    const [f, st, txt] = RNG[state];
+    const [bx, bw] = bandGeo(state, g.cell);
+    const comp = makeOuter(g, `Size=${size}, Type=Range, State=${state}`);
     const band = figma.createRectangle();
-    band.name = "band"; band.resize(bw, 30);
+    band.name = "band"; band.resize(bw, g.bandH);
     band.fills = [boundPaint(scv(maps, DP("cell/bg/range")))]; band.strokes = [];
     comp.appendChild(band);
-    // 밴드는 absolute(원 아래 z) — 좌표 V2.4 실측(top7=(44-30)/2). mock/구버전 대비 try.
+    // 밴드는 absolute(원 아래 z) — mock/구버전 대비 try.
     try { (band as unknown as { layoutPositioning: string }).layoutPositioning = "ABSOLUTE"; } catch (e) { /* skip */ }
-    try { band.x = bx; band.y = 7; } catch (e) { /* skip */ }
-    comp.appendChild(await makeInner(f, s, txt, state === "End"));
-    comps.push(comp); variants[`Range:${state}`] = comp;
+    try { band.x = bx; band.y = g.bandY; } catch (e) { /* skip */ }
+    comp.appendChild(await makeInner(g, f, st, txt));
+    comps.push(comp); variants[`${size}:Range:${state}`] = comp;
   }
+  return variants;
+}
 
-  const set = figma.combineAsVariants(comps, figma.currentPage);
+// ⚠️ 재설치 이관 한계(🤖 component-verifier 2026-09-04): Calendar Cell·Tile 은 isDepSet 이라 재설치 때
+//   항상 러너가 돌아 빠진 크기가 채워지지만, **Calendar 패널 세트는 이미 있으면 통째로 skip** 된다
+//   (설치기 공통 갱신 모델 — 기존 인스턴스 보호). 그 상태에서는 Calendar 가 Size 축 없는 3 variant 로 남고,
+//   buildDatePicker 폴백이 Size=SM 을 못 찾아 State=Date(=MD 356)로 조용히 떨어진다 → XSM·XXSM 이
+//   계속 큰 달력을 연다. 오류 없이 종전 동작으로 퇴화하는 것이라 파괴적이지는 않지만,
+//   **기존 설치본에서 SM 을 보려면 캔버스의 Calendar 세트를 지우고 다시 설치해야 한다.**
+// Calendar Cell 세트 — 두 크기를 한 세트로 묶는다(축 Size × Type × State = 18 variant).
+async function buildCalendarCell(maps: BuildMaps): Promise<{ set: ComponentSetNode; variants: Record<string, ComponentNode> }> {
+  const variants: Record<string, ComponentNode> = {};
+  for (const size of CAL_SIZES) Object.assign(variants, await calCellCompsForSize(maps, size));
+  const set = figma.combineAsVariants(Object.values(variants), figma.currentPage);
   set.name = "Calendar Cell";
   // ⚠️ 셀 마스터에 모드를 핀하지 않는다(setLightMode 금지) — 인스턴스가 부모(패널/스펙) 모드 상속.
   return { set, variants };
 }
 
-// Calendar Tile — 88×56 cornerRadius4, axis State={Default,Selected,Disabled}. 라벨 layer 이름 = "label".
+// Calendar Tile — axes Size={MD,SM} × State={Default,Hover,Selected,Disabled}. 라벨 layer 이름 = "label".
 // V2.4 실측(540:4209): root frame 의 fill+stroke(둘 다), selected border = color/date-picker/cell/border/today.
-async function buildCalendarTile(maps: BuildMaps): Promise<{ set: ComponentSetNode; variants: Record<string, ComponentNode> }> {
+// 크기: MD 88×56 · SM 68×40 (Figma 6434:270661 실측), cornerRadius 는 두 크기 공통 4(radius/control/sm).
+async function calTileCompsForSize(maps: BuildMaps, size: CalSize): Promise<Record<string, ComponentNode>> {
   // [bgKey, borderKey, textKey, sampleLabel]
   const TILE: Record<string, [string, string, string, string]> = {
     Default:  ["tile/bg/default",  "tile/border/default",  "text/primary",  "2022"],
@@ -3402,23 +3561,30 @@ async function buildCalendarTile(maps: BuildMaps): Promise<{ set: ComponentSetNo
     Selected: ["tile/bg/selected", "cell/border/today",    "text/today",    "2025"],
     Disabled: ["tile/bg/disabled", "tile/border/disabled", "text/disabled", "2021"],
   };
-  const comps: ComponentNode[] = [];
   const variants: Record<string, ComponentNode> = {};
+  const g = CAL_GEO[size];
   for (const state of ["Default", "Hover", "Selected", "Disabled"]) {
     const [bg, bd, txt, label] = TILE[state];
     const comp = figma.createComponent();
-    comp.name = `State=${state}`;
+    comp.name = `Size=${size}, State=${state}`;
     comp.layoutMode = "HORIZONTAL"; comp.primaryAxisAlignItems = "CENTER"; comp.counterAxisAlignItems = "CENTER";
-    comp.primaryAxisSizingMode = "FIXED"; comp.counterAxisSizingMode = "FIXED"; comp.resize(88, 56);
+    comp.primaryAxisSizingMode = "FIXED"; comp.counterAxisSizingMode = "FIXED"; comp.resize(g.tileW, g.tileH);
     comp.cornerRadius = 4; comp.clipsContent = true;
     comp.fills = [boundPaint(scv(maps, DP(bg)))];
     comp.strokes = [boundPaint(scv(maps, DP(bd)))]; comp.strokeWeight = 1; comp.strokeAlign = "INSIDE";
-    const t = await makeBoundText(label, 16, "Medium", scv(maps, DP(txt)));
+    const t = await makeBoundText(label, g.tileFont, "Medium", scv(maps, DP(txt)));
     t.name = "label";
     comp.appendChild(t);
-    comps.push(comp); variants[state] = comp;
+    variants[`${size}:${state}`] = comp;
   }
-  const set = figma.combineAsVariants(comps, figma.currentPage);
+  return variants;
+}
+
+// Calendar Tile 세트 — 두 크기를 한 세트로(축 Size × State = 8 variant).
+async function buildCalendarTile(maps: BuildMaps): Promise<{ set: ComponentSetNode; variants: Record<string, ComponentNode> }> {
+  const variants: Record<string, ComponentNode> = {};
+  for (const size of CAL_SIZES) Object.assign(variants, await calTileCompsForSize(maps, size));
+  const set = figma.combineAsVariants(Object.values(variants), figma.currentPage);
   set.name = "Calendar Tile";
   return { set, variants };
 }
@@ -3432,23 +3598,46 @@ function variantProp(comp: ComponentNode, prop: string): string | null {
   return m ? m[1].trim() : null;
 }
 // 캔버스에 이미 있는 Calendar Cell 세트를 재사용하기 위해 자식에서 variants 맵을 복원.
-//   key 형식 = `${Type}:${State}` (buildCalendarCell 과 동일).
+//   key 형식 = `${Size}:${Type}:${State}` (buildCalendarCell 과 동일).
+// ★ Size 축 신설(2026-09-04) 이전에 설치된 세트는 variant 이름에 `Size=` 가 없다.
+//   그 경우 **이름만 `Size=MD, …` 로 고쳐** MD 로 편입한다 — 컴포넌트 노드 자체는 그대로라
+//   기존 인스턴스가 끊기지 않는다(제거/재빌드하면 skip 된 소비자의 인스턴스가 detach 된다).
 function reconstructCalCellVariants(set: ComponentSetNode): Record<string, ComponentNode> {
   const variants: Record<string, ComponentNode> = {};
   for (const ch of set.children) {
     if (ch.type !== "COMPONENT") continue;
-    const t = variantProp(ch, "Type"), s = variantProp(ch, "State");
-    if (t && s) variants[`${t}:${s}`] = ch;
+    const t = variantProp(ch, "Type"), st = variantProp(ch, "State");
+    if (!t || !st) continue;
+    let sz = variantProp(ch, "Size");
+    if (!sz) { sz = "MD"; ch.name = `Size=MD, ${ch.name}`; }
+    variants[`${sz}:${t}:${st}`] = ch;
   }
   return variants;
 }
-// Calendar Tile 세트(축 State 만) variants 복원. key = State 값.
+// Calendar Tile 세트 variants 복원. key = `${Size}:${State}`. Size 없는 구버전은 MD 로 개명 편입.
 function reconstructCalTileVariants(set: ComponentSetNode): Record<string, ComponentNode> {
   const variants: Record<string, ComponentNode> = {};
   for (const ch of set.children) {
     if (ch.type !== "COMPONENT") continue;
-    const s = variantProp(ch, "State");
-    if (s) variants[s] = ch;
+    const st = variantProp(ch, "State");
+    if (!st) continue;
+    let sz = variantProp(ch, "Size");
+    if (!sz) { sz = "MD"; ch.name = `Size=MD, ${ch.name}`; }
+    variants[`${sz}:${st}`] = ch;
+  }
+  return variants;
+}
+/** 기존 세트에 빠진 크기를 **덧붙여** 채운다(세트 통째 재빌드 금지 — 기존 인스턴스 보존). */
+async function fillMissingCalSizes(
+  set: ComponentSetNode,
+  variants: Record<string, ComponentNode>,
+  make: (size: CalSize) => Promise<Record<string, ComponentNode>>,
+): Promise<Record<string, ComponentNode>> {
+  for (const size of CAL_SIZES) {
+    if (Object.keys(variants).some((k) => k.startsWith(`${size}:`))) continue;
+    const added = await make(size);
+    for (const comp of Object.values(added)) set.appendChild(comp);
+    Object.assign(variants, added);
   }
   return variants;
 }
@@ -3458,7 +3647,8 @@ async function getOrBuildCalendarCell(maps: BuildMaps): Promise<{ set: Component
   //   (재빌드+제거하면 skip 된 Calendar/Date Picker 인스턴스가 가리키던 옛 세트가 사라져 detach/깨짐 — Figma 자동 remap 없음.)
   const existing = await getBuiltSet("Calendar Cell");
   if (existing && !existing.removed && existing.children.some((c) => c.type === "COMPONENT")) {
-    _calCell = { set: existing, variants: reconstructCalCellVariants(existing) };
+    const variants = await fillMissingCalSizes(existing, reconstructCalCellVariants(existing), (sz) => calCellCompsForSize(maps, sz));
+    _calCell = { set: existing, variants };
   } else {
     _calCell = await buildCalendarCell(maps);
   }
@@ -3470,7 +3660,8 @@ async function getOrBuildCalendarTile(maps: BuildMaps): Promise<{ set: Component
   if (_calTile && !_calTile.set.removed) return _calTile;
   const existing = await getBuiltSet("Calendar Tile");
   if (existing && !existing.removed && existing.children.some((c) => c.type === "COMPONENT")) {
-    _calTile = { set: existing, variants: reconstructCalTileVariants(existing) };
+    const variants = await fillMissingCalSizes(existing, reconstructCalTileVariants(existing), (sz) => calTileCompsForSize(maps, sz));
+    _calTile = { set: existing, variants };
   } else {
     _calTile = await buildCalendarTile(maps);
   }
@@ -3481,7 +3672,7 @@ async function getOrBuildCalendarTile(maps: BuildMaps): Promise<{ set: Component
 
 // Calendar Cell 인스턴스 — Type/State 선택 후 숫자("num") override.
 async function calCellInstance(cell: { variants: Record<string, ComponentNode> }, key: string, day: number): Promise<InstanceNode> {
-  const master = cell.variants[key] ?? cell.variants["Standard:Default"];
+  const master = cell.variants[key] ?? cell.variants["MD:Standard:Default"];
   const inst = master.createInstance();
   const t = (inst.findOne((n) => n.name === "num" && n.type === "TEXT") ?? inst.findOne((n) => n.type === "TEXT")) as TextNode | null;
   if (t) { await figma.loadFontAsync(t.fontName as FontName); t.characters = String(day); }
@@ -3489,8 +3680,8 @@ async function calCellInstance(cell: { variants: Record<string, ComponentNode> }
 }
 
 // Calendar Tile 인스턴스 — State 선택 후 라벨("label") override.
-async function calTileInstance(tile: { variants: Record<string, ComponentNode> }, state: string, label: string): Promise<InstanceNode> {
-  const master = tile.variants[state] ?? tile.variants["Default"];
+async function calTileInstance(tile: { variants: Record<string, ComponentNode> }, key: string, label: string): Promise<InstanceNode> {
+  const master = tile.variants[key] ?? tile.variants["MD:Default"];
   const inst = master.createInstance();
   const t = (inst.findOne((n) => n.name === "label" && n.type === "TEXT") ?? inst.findOne((n) => n.type === "TEXT")) as TextNode | null;
   if (t) { await figma.loadFontAsync(t.fontName as FontName); t.characters = label; }
@@ -3516,19 +3707,18 @@ async function buildCalendar(maps: BuildMaps, originY: number): Promise<{ set: C
   const calTile = await getOrBuildCalendarTile(maps);
   const CHEV_L = `<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M10 12L6 8l4-4" stroke="#000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
   const CHEV_R = `<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M6 4l4 4-4 4" stroke="#000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
-  const PANEL_W = 356, PANEL_H = 352;
-  const CW = 308 / 7; // 콘텐츠폭(356-24*2)÷7 = 44
 
-  // 패널 컴포넌트 초기화 + 내부 content-frame(gap 있음) 반환
-  function initComp(compName: string, vGap: number): [ComponentNode, FrameNode] {
+  // 패널 컴포넌트 초기화 + 내부 content-frame(gap 있음) 반환.
+  //   패널 높이·하단 여백·뷰 간격은 크기(CalGeo)와 뷰(Date/타일)마다 다르다 — 원본 그대로.
+  function initComp(g: CalGeo, compName: string, panelH: number, padBottom: number, vGap: number): [ComponentNode, FrameNode] {
     const comp = figma.createComponent();
     comp.name = compName;
     comp.layoutMode = "VERTICAL";
     comp.primaryAxisSizingMode = "FIXED"; comp.counterAxisSizingMode = "FIXED";
     comp.primaryAxisAlignItems = "CENTER"; comp.counterAxisAlignItems = "CENTER";
-    comp.resize(PANEL_W, PANEL_H);
-    comp.paddingLeft = 24; comp.paddingRight = 24;
-    comp.paddingTop = 20; comp.paddingBottom = 20; comp.itemSpacing = 0;
+    comp.resize(g.panelW, panelH);
+    comp.paddingLeft = g.padX; comp.paddingRight = g.padX;
+    comp.paddingTop = g.padTop; comp.paddingBottom = padBottom; comp.itemSpacing = 0;
     comp.cornerRadius = 4;
     comp.fills = [boundPaint(scv(maps, dp("panel/bg")))];
     comp.strokes = [boundPaint(scv(maps, dp("panel/border")))];
@@ -3545,121 +3735,135 @@ async function buildCalendar(maps: BuildMaps, originY: number): Promise<{ set: C
     return [comp, inner];
   }
 
-  // 공용 헤더 (이전·라벨·다음)
-  async function makeCalHdr(label: string): Promise<FrameNode> {
+  // 공용 헤더 (이전·라벨·다음) — 폭 = 패널폭 - 좌우 여백, 높이·글자 크기는 CalGeo.
+  async function makeCalHdr(g: CalGeo, hdrH: number, label: string): Promise<FrameNode> {
     const hdr = figma.createFrame(); hdr.name = "header"; hdr.fills = [];
     hdr.layoutMode = "HORIZONTAL"; hdr.primaryAxisSizingMode = "FIXED"; hdr.counterAxisSizingMode = "FIXED";
     hdr.primaryAxisAlignItems = "SPACE_BETWEEN"; hdr.counterAxisAlignItems = "CENTER";
-    hdr.resize(308, 32); // 308 = PANEL_W - paddingLeft(24) - paddingRight(24)
+    hdr.resize(g.panelW - g.padX * 2, hdrH);
     // 좌측 화살표: 불필요한 래퍼 프레임 해제(wrap:false) — 우측(rotation 0, 래퍼 없음)과 동일 구조.
-    //   정사각 chevron + 180° 회전은 x/y 중앙정렬이 정상이라 래퍼 불필요(makeIconInstance L986 동일 근거).
     // 헤더 이전/다음 < > = 전용 date-picker/icon/* (default). 라벨 텍스트는 text/primary 유지.
+    // 화살표 아이콘은 두 크기 공통 24×24 — 원본에서 SM 도 줄지 않았다(실측 3381:15310).
     hdr.appendChild(await makeIconInstance("chevron", scv(maps, dp("icon/default")), 0, CHEV_L, 180, { wrap: false }));
-    hdr.appendChild(await makeBoundText(label, 24, "Bold", scv(maps, dp("text/primary"))));
+    hdr.appendChild(await makeBoundText(label, g.hdrFont, "Bold", scv(maps, dp("text/primary"))));
     hdr.appendChild(await makeIconInstance("chevron", scv(maps, dp("icon/default")), 0, CHEV_R, 0));
     return hdr;
   }
 
   // 연도/월 타일 — Calendar Tile 인스턴스(라벨 override). disabled=Disabled, 그 외=Default.
-  async function makeYMTile(label: string, disabled: boolean): Promise<SceneNode> {
-    return calTileInstance(calTile, disabled ? "Disabled" : "Default", label);
+  async function makeYMTile(size: CalSize, label: string, disabled: boolean): Promise<SceneNode> {
+    return calTileInstance(calTile, `${size}:${disabled ? "Disabled" : "Default"}`, label);
   }
 
-  // 타일 행 3개 (가로 gap=12)
-  async function makeYMRow(labels: string[], dis: boolean[]): Promise<FrameNode> {
+  // 타일 행 3개 (가로 gap = CalGeo.tileGapX — MD 12 · SM 7)
+  async function makeYMRow(g: CalGeo, size: CalSize, labels: string[], dis: boolean[]): Promise<FrameNode> {
     const row = figma.createFrame(); row.name = "tile-row"; row.fills = [];
     row.layoutMode = "HORIZONTAL"; row.primaryAxisSizingMode = "AUTO"; row.counterAxisSizingMode = "AUTO";
-    row.counterAxisAlignItems = "CENTER"; row.itemSpacing = 12;
-    for (let i = 0; i < labels.length; i++) row.appendChild(await makeYMTile(labels[i], dis[i] ?? false));
+    row.counterAxisAlignItems = "CENTER"; row.itemSpacing = g.tileGapX;
+    for (let i = 0; i < labels.length; i++) row.appendChild(await makeYMTile(size, labels[i], dis[i] ?? false));
     return row;
   }
 
-  // ── State=Date (달력 그리드 — 2025.01 샘플) ────────────────────────────────
-  const [dateComp, dateInner] = initComp("State=Date", 16);
-  dateInner.appendChild(await makeCalHdr("2025.01"));
-
-  const calBody = figma.createFrame(); calBody.name = "cal-body"; calBody.fills = [];
-  calBody.layoutMode = "VERTICAL"; calBody.primaryAxisSizingMode = "AUTO"; calBody.counterAxisSizingMode = "AUTO";
-  calBody.counterAxisAlignItems = "MIN"; calBody.itemSpacing = 0;
-  dateInner.appendChild(calBody);
-
-  // 요일 헤더 (월~일)
-  const wkRow = figma.createFrame(); wkRow.name = "weekdays"; wkRow.fills = [];
-  wkRow.layoutMode = "HORIZONTAL"; wkRow.itemSpacing = 0;
-  wkRow.primaryAxisSizingMode = "AUTO"; wkRow.counterAxisSizingMode = "AUTO";
-  calBody.appendChild(wkRow);
-  for (const ch of ["월", "화", "수", "목", "금", "토", "일"]) {
-    const cell = figma.createFrame(); cell.name = "wk"; cell.fills = [];
-    cell.layoutMode = "HORIZONTAL"; cell.primaryAxisAlignItems = "CENTER"; cell.counterAxisAlignItems = "CENTER";
-    cell.primaryAxisSizingMode = "FIXED"; cell.counterAxisSizingMode = "FIXED"; cell.resize(CW, 44);
-    cell.appendChild(await makeBoundText(ch, 16, "Medium", scv(maps, dp("text/primary"))));
-    wkRow.appendChild(cell);
-  }
-
-  // 5주×7일 그리드 (2025.01 기준: 1일=수요일, 월요일 시작)
   type CalCell = { day: number; kind: "normal" | "other" | "today" | "selected" | "disabled" };
-  const calGrid: CalCell[] = [{ day: 30, kind: "other" }, { day: 31, kind: "other" }];
-  for (let d = 1; d <= 31; d++) {
-    calGrid.push({ day: d, kind: d === 10 ? "today" : d === 17 ? "selected" : d === 25 ? "disabled" : "normal" });
-  }
-  let nm = 1; while (calGrid.length < 35) calGrid.push({ day: nm++, kind: "other" });
+  const comps: ComponentNode[] = [];
+  const cells: { comp: ComponentNode; size: CalSize; state: string }[] = [];
 
-  for (let r = 0; r < 5; r++) {
-    const weekRow = figma.createFrame(); weekRow.name = "week"; weekRow.fills = [];
-    weekRow.layoutMode = "HORIZONTAL"; weekRow.itemSpacing = 0;
-    weekRow.primaryAxisSizingMode = "AUTO"; weekRow.counterAxisSizingMode = "AUTO";
-    calBody.appendChild(weekRow);
-    for (let c = 0; c < 7; c++) {
-      const g = calGrid[r * 7 + c];
-      // day = Calendar Cell 인스턴스(Standard). other-month = Standard:Disabled 매핑(V2.4 미존재 — 보고).
-      const inst = await calCellInstance(calCell, dayKindToCellKey(g.kind), g.day);
-      weekRow.appendChild(inst);
+  for (const size of CAL_SIZES) {
+    const g = CAL_GEO[size];
+    const CW = (g.panelW - g.padX * 2) / 7; // 요일/날짜 칸 폭 — MD 44 · SM 33
+
+    // ── State=Date (달력 그리드 — 2025.01 샘플) ────────────────────────────
+    const [dateComp, dateInner] = initComp(g, `Size=${size}, State=Date`, g.panelHDate, g.padBottomDate, g.gapDate);
+    dateInner.appendChild(await makeCalHdr(g, g.hdrHDate, "2025.01"));
+
+    const calBody = figma.createFrame(); calBody.name = "cal-body"; calBody.fills = [];
+    calBody.layoutMode = "VERTICAL"; calBody.primaryAxisSizingMode = "AUTO"; calBody.counterAxisSizingMode = "AUTO";
+    calBody.counterAxisAlignItems = "MIN"; calBody.itemSpacing = 0;
+    dateInner.appendChild(calBody);
+
+    // 요일 헤더 (월~일)
+    const wkRow = figma.createFrame(); wkRow.name = "weekdays"; wkRow.fills = [];
+    wkRow.layoutMode = "HORIZONTAL"; wkRow.itemSpacing = 0;
+    wkRow.primaryAxisSizingMode = "AUTO"; wkRow.counterAxisSizingMode = "AUTO";
+    calBody.appendChild(wkRow);
+    for (const ch of ["월", "화", "수", "목", "금", "토", "일"]) {
+      const cell = figma.createFrame(); cell.name = "wk"; cell.fills = [];
+      cell.layoutMode = "HORIZONTAL"; cell.primaryAxisAlignItems = "CENTER"; cell.counterAxisAlignItems = "CENTER";
+      cell.primaryAxisSizingMode = "FIXED"; cell.counterAxisSizingMode = "FIXED"; cell.resize(CW, g.cell);
+      cell.appendChild(await makeBoundText(ch, g.cellFont, "Medium", scv(maps, dp("text/primary"))));
+      wkRow.appendChild(cell);
+    }
+
+    // 5주×7일 그리드 (2025.01 기준: 1일=수요일, 월요일 시작)
+    const calGrid: CalCell[] = [{ day: 30, kind: "other" }, { day: 31, kind: "other" }];
+    for (let d = 1; d <= 31; d++) {
+      calGrid.push({ day: d, kind: d === 10 ? "today" : d === 17 ? "selected" : d === 25 ? "disabled" : "normal" });
+    }
+    let nm = 1; while (calGrid.length < 35) calGrid.push({ day: nm++, kind: "other" });
+
+    for (let r = 0; r < 5; r++) {
+      const weekRow = figma.createFrame(); weekRow.name = "week"; weekRow.fills = [];
+      weekRow.layoutMode = "HORIZONTAL"; weekRow.itemSpacing = 0;
+      weekRow.primaryAxisSizingMode = "AUTO"; weekRow.counterAxisSizingMode = "AUTO";
+      calBody.appendChild(weekRow);
+      for (let c = 0; c < 7; c++) {
+        const gcell = calGrid[r * 7 + c];
+        // day = Calendar Cell 인스턴스(Standard). other-month = Standard:Disabled 매핑(V2.4 미존재 — 보고).
+        const inst = await calCellInstance(calCell, `${size}:${dayKindToCellKey(gcell.kind)}`, gcell.day);
+        weekRow.appendChild(inst);
+      }
+    }
+    setLightMode(dateComp, maps);
+
+    // ── State=Year (연도 선택 — 4×3 타일, 2021~2032 샘플) ────────────────
+    const [yearComp, yearInner] = initComp(g, `Size=${size}, State=Year`, g.panelHTile, g.padBottomTile, g.gapTile);
+    yearInner.appendChild(await makeCalHdr(g, g.hdrHTile, "2025"));
+    const yearGrid = figma.createFrame(); yearGrid.name = "year-grid"; yearGrid.fills = [];
+    yearGrid.layoutMode = "VERTICAL"; yearGrid.primaryAxisSizingMode = "AUTO"; yearGrid.counterAxisSizingMode = "AUTO";
+    yearGrid.counterAxisAlignItems = "CENTER"; yearGrid.itemSpacing = g.tileGapY;
+    for (const [ls, ds] of [
+      [["2021", "2022", "2023"], [true,  false, false]],
+      [["2024", "2025", "2026"], [false, false, false]],
+      [["2027", "2028", "2029"], [false, false, false]],
+      [["2030", "2031", "2032"], [true,  true,  true ]],
+    ] as [string[], boolean[]][]) yearGrid.appendChild(await makeYMRow(g, size, ls, ds));
+    yearInner.appendChild(yearGrid);
+    setLightMode(yearComp, maps);
+
+    // ── State=Month (월 선택 — 4×3 타일, 1월~12월) ───────────────────────
+    const [monthComp, monthInner] = initComp(g, `Size=${size}, State=Month`, g.panelHTile, g.padBottomTile, g.gapTile);
+    monthInner.appendChild(await makeCalHdr(g, g.hdrHTile, "2025"));
+    const monthGrid = figma.createFrame(); monthGrid.name = "month-grid"; monthGrid.fills = [];
+    monthGrid.layoutMode = "VERTICAL"; monthGrid.primaryAxisSizingMode = "AUTO"; monthGrid.counterAxisSizingMode = "AUTO";
+    monthGrid.counterAxisAlignItems = "CENTER"; monthGrid.itemSpacing = g.tileGapY;
+    for (const ls of [["1월","2월","3월"],["4월","5월","6월"],["7월","8월","9월"],["10월","11월","12월"]]) {
+      monthGrid.appendChild(await makeYMRow(g, size, ls, [false, false, false]));
+    }
+    monthInner.appendChild(monthGrid);
+    setLightMode(monthComp, maps);
+
+    for (const [state, comp] of [["Date", dateComp], ["Year", yearComp], ["Month", monthComp]] as [string, ComponentNode][]) {
+      comps.push(comp);
+      cells.push({ comp, size, state });
+      BUILT_COMPS[`Calendar:${size}:${state}`] = comp;
     }
   }
-  setLightMode(dateComp, maps);
 
-  // ── State=Year (연도 선택 — 4×3 타일, 2021~2032 샘플) ─────────────────────
-  const [yearComp, yearInner] = initComp("State=Year", 20);
-  yearInner.appendChild(await makeCalHdr("2025"));
-  const yearGrid = figma.createFrame(); yearGrid.name = "year-grid"; yearGrid.fills = [];
-  yearGrid.layoutMode = "VERTICAL"; yearGrid.primaryAxisSizingMode = "AUTO"; yearGrid.counterAxisSizingMode = "AUTO";
-  yearGrid.counterAxisAlignItems = "CENTER"; yearGrid.itemSpacing = 12;
-  for (const [ls, ds] of [
-    [["2021", "2022", "2023"], [true,  false, false]],
-    [["2024", "2025", "2026"], [false, false, false]],
-    [["2027", "2028", "2029"], [false, false, false]],
-    [["2030", "2031", "2032"], [true,  true,  true ]],
-  ] as [string[], boolean[]][]) yearGrid.appendChild(await makeYMRow(ls, ds));
-  yearInner.appendChild(yearGrid);
-  setLightMode(yearComp, maps);
-
-  // ── State=Month (월 선택 — 4×3 타일, 1월~12월) ────────────────────────────
-  const [monthComp, monthInner] = initComp("State=Month", 20);
-  monthInner.appendChild(await makeCalHdr("2025"));
-  const monthGrid = figma.createFrame(); monthGrid.name = "month-grid"; monthGrid.fills = [];
-  monthGrid.layoutMode = "VERTICAL"; monthGrid.primaryAxisSizingMode = "AUTO"; monthGrid.counterAxisSizingMode = "AUTO";
-  monthGrid.counterAxisAlignItems = "CENTER"; monthGrid.itemSpacing = 12;
-  for (const ls of [["1월","2월","3월"],["4월","5월","6월"],["7월","8월","9월"],["10월","11월","12월"]]) {
-    monthGrid.appendChild(await makeYMRow(ls, [false, false, false]));
-  }
-  monthInner.appendChild(monthGrid);
-  setLightMode(monthComp, maps);
-
-  // ── combineAsVariants + 스펙 ──────────────────────────────────────────────
-  const set = figma.combineAsVariants([dateComp, yearComp, monthComp], figma.currentPage);
+  // ── combineAsVariants + 스펙 ────────────────────────────────────────────
+  const set = figma.combineAsVariants(comps, figma.currentPage);
   set.name = "Calendar";
   set.x = 0; set.y = originY;
-  // Date Picker Open 상태가 인스턴스로 참조 — anatomy gate: "calendar-panel" raw 프레임 금지
-  BUILT_COMPS["Calendar:Date"]  = dateComp;
-  BUILT_COMPS["Calendar:Year"]  = yearComp;
-  BUILT_COMPS["Calendar:Month"] = monthComp;
+  // 하위호환 키 — 종전 `Calendar:Date` 등은 MD 를 가리킨다(모바일 바텀시트 등 기존 소비자 보존).
+  BUILT_COMPS["Calendar:Date"]  = BUILT_COMPS["Calendar:MD:Date"];
+  BUILT_COMPS["Calendar:Year"]  = BUILT_COMPS["Calendar:MD:Year"];
+  BUILT_COMPS["Calendar:Month"] = BUILT_COMPS["Calendar:MD:Month"];
   BUILT_SETS["Calendar"] = set;
 
   const opts: SpecOpts = {
     title: "Calendar",
     colHeaders: ["Date", "Year", "Month"],
-    rowLabels: [""],
-    cellAt: (_r, c) => [dateComp, yearComp, monthComp][c] ?? null,
+    rowLabels: CAL_SIZES.map((sz) => sz),
+    cellAt: (r, c) => cells.find((x) => x.size === CAL_SIZES[r] && x.state === ["Date", "Year", "Month"][c])?.comp ?? null,
     lightX: SPEC_LIGHT_X, darkX: SPEC_DARK_X, originY, cellW: 380, cellH: 380,
   };
   let bottomY = await decorateSetFlat(set, opts, maps);
@@ -3703,15 +3907,19 @@ async function buildDatePicker(maps: BuildMaps, originY: number): Promise<{ set:
       comp.layoutMode = "VERTICAL"; comp.primaryAxisSizingMode = "AUTO"; comp.counterAxisSizingMode = "AUTO"; comp.itemSpacing = 8;
       comp.fills = []; // 외곽 컨테이너는 투명 — createComponent 기본 흰색 fill 제거(미사용 FFFFFF, 2026-06-24)
       comp.appendChild(trigger);
-      // 캘린더 패널은 사이즈 불변(356px 단일) — PC 의 모든 사이즈(XXSM·XSM·MD) Open variant 에 부착(#6 사용자 지적 2026-06-25).
-      //   모바일은 #7 별도 바텀시트 컴포넌트로 처리(여기서는 제외).
+      // 캘린더 패널 크기는 **트리거 크기를 따라간다** — MD 트리거는 MD 달력(356), XSM·XXSM 트리거는 SM 달력(267).
+      //   river 결정 2026-09-04("입력창이 작으면 달력도 자동으로 작게"). 이 결정이 종전의
+      //   "캘린더 패널은 사이즈 불변(356px 단일)"(2026-06-25)을 대체한다.
+      //   모바일은 별도 바텀시트 컴포넌트로 처리(여기서는 제외).
       // Calendar 컴포넌트 인스턴스 재사용 (anatomy gate: "calendar-panel" raw 프레임 금지)
       if (st.open && sc.brk === "PC") {
-        let calComp: ComponentNode | undefined = BUILT_COMPS["Calendar:Date"];
+        const calSize: CalSize = sc.size === "MD" ? "MD" : "SM";
+        let calComp: ComponentNode | undefined = BUILT_COMPS[`Calendar:${calSize}:Date`];
         if (!calComp) {
           const calSet = await getBuiltSet("Calendar");
           if (calSet) {
-            calComp = (calSet.children as ComponentNode[]).find(c => c.type === "COMPONENT" && c.name.includes("State=Date"))
+            calComp = (calSet.children as ComponentNode[]).find(c => c.type === "COMPONENT" && c.name.includes(`Size=${calSize}`) && c.name.includes("State=Date"))
+              ?? (calSet.children as ComponentNode[]).find(c => c.type === "COMPONENT" && c.name.includes("State=Date"))
               ?? (calSet.children as ComponentNode[]).find(c => c.type === "COMPONENT");
           }
         }
@@ -3790,11 +3998,13 @@ async function buildDatePickerBottomSheet(maps: BuildMaps, originY: number): Pro
   calWrap.paddingLeft = 24; calWrap.paddingRight = 24; // 캘린더 좌우 패딩 — spacing/padding-inline/lg
   comp.appendChild(calWrap);
   try { calWrap.layoutAlign = "STRETCH"; } catch (e) { /* */ }
-  let calComp: ComponentNode | undefined = BUILT_COMPS["Calendar:Date"];
+  // 모바일 시트의 달력은 MD — 모바일 트리거가 MD(h48)라 PC 와 같은 "트리거 크기를 따라간다" 규칙의 결과다.
+  let calComp: ComponentNode | undefined = BUILT_COMPS["Calendar:MD:Date"] ?? BUILT_COMPS["Calendar:Date"];
   if (!calComp) {
     const calSet = await getBuiltSet("Calendar");
     if (calSet) {
-      calComp = (calSet.children as ComponentNode[]).find(c => c.type === "COMPONENT" && c.name.includes("State=Date"))
+      calComp = (calSet.children as ComponentNode[]).find(c => c.type === "COMPONENT" && c.name.includes("Size=MD") && c.name.includes("State=Date"))
+        ?? (calSet.children as ComponentNode[]).find(c => c.type === "COMPONENT" && c.name.includes("State=Date"))
         ?? (calSet.children as ComponentNode[]).find(c => c.type === "COMPONENT");
     }
   }
@@ -4418,12 +4628,22 @@ async function buildModalShell(maps: BuildMaps, originY: number): Promise<{ set:
   type ModalBreak = "PC" | "Mobile";
   type ModalFooter = "Single" | "Dual";
 
+  // 본문이 놓이는 자리를 Figma 슬롯("Content")으로 만든다 — 글자뿐 아니라 이미지·텍스트에리어 등
+  //   무엇이든 넣을 수 있게 한다. (river 지시·결정 2026-09-03: 제목과 닫기(X)는 슬롯에 넣지 않고 고정)
+  //   PC 는 본문 프레임(padding 24/24 · gap 8) 자리가 그대로 슬롯이 되고,
+  //   Mobile 은 제목 아래 문구 자리가 슬롯이 된다. 슬롯은 owner 컴포넌트에서 만들어 content 프레임 안으로
+  //   옮긴다 — owner 서브트리 안이면 직계 자식이 아니어도 owner 의 속성으로 유지된다(GNB·Bottom Sheet 와 동일).
+  const CONTENT_SLOT_DESC = "모달 본문이 놓이는 자리. 기본은 안내 문구 한 덩어리이며, 문구 대신 이미지·텍스트에리어·입력 폼 등 무엇이든 넣을 수 있다. 제목과 닫기(X)는 슬롯 밖 고정 영역이다.";
+
   // PC = 제목+닫기 헤더 / 14R 본문. Mobile = 닫기 없음 / 18B 제목+16R 본문.
-  const buildContentGroup = async (brk: ModalBreak, titleText: string, bodyText: string): Promise<FrameNode> => {
+  const buildContentGroup = async (owner: ComponentNode, brk: ModalBreak, titleText: string, bodyText: string): Promise<FrameNode> => {
     const group = figma.createFrame();
     group.name = "content"; group.fills = [];
     group.layoutMode = "VERTICAL"; group.primaryAxisSizingMode = "AUTO"; group.counterAxisSizingMode = "FIXED";
     group.itemSpacing = brk === "PC" ? 32 : 24;
+    // ★ group 을 owner 에 **먼저** 붙인다 — Content 슬롯이 owner 밖으로 한 번도 나가지 않게 한다.
+    owner.appendChild(group);
+    try { group.layoutAlign = "STRETCH"; } catch (e) { /* */ }
 
     if (brk === "Mobile") {
       const title = await makeBoundText(titleText, 18, "Bold", scv(maps, "color/text/title/primary"));
@@ -4432,8 +4652,11 @@ async function buildModalShell(maps: BuildMaps, originY: number): Promise<{ set:
       try { title.layoutAlign = "STRETCH"; } catch (e) { /* */ }
       const bodyNode = await makeBoundText(bodyText, 16, "Regular", scv(maps, "color/text/body/primary"));
       bodyNode.name = "message"; bodyNode.textAutoResize = "HEIGHT";
-      group.appendChild(bodyNode);
-      try { bodyNode.layoutAlign = "STRETCH"; } catch (e) { /* */ }
+      const mSlot = await makeSlot(owner, "Content", CONTENT_SLOT_DESC, [bodyNode], [],
+        { layoutMode: "VERTICAL", primaryAxisSizingMode: "AUTO", counterAxisSizingMode: "FIXED",
+          primaryAxisAlignItems: "MIN", counterAxisAlignItems: "MIN", itemSpacing: 8,
+          stretchContents: true, parent: group });
+      try { mSlot.layoutAlign = "STRETCH"; } catch (e) { /* */ }
       return group;
     }
 
@@ -4449,15 +4672,15 @@ async function buildModalShell(maps: BuildMaps, originY: number): Promise<{ set:
     closeIcon.name = "close"; header.appendChild(closeIcon);
     group.appendChild(header);
     try { header.layoutAlign = "STRETCH"; } catch (e) { /* */ }
-    // 본문: 2줄 (body/14R, color/text/body/primary)
-    const body = figma.createFrame();
-    body.name = "body"; body.fills = [];
-    body.layoutMode = "VERTICAL"; body.primaryAxisSizingMode = "AUTO"; body.counterAxisSizingMode = "FIXED"; body.itemSpacing = 8; // spacing/8
-    body.paddingLeft = 24; body.paddingRight = 24;
+    // 본문: 슬롯("Content") — 종전 body 프레임(VERTICAL · gap 8 · padding 24/24)과 같은 설정을 슬롯이 그대로 갖는다.
     const bodyNode = await makeBoundText(bodyText, 14, "Regular", scv(maps, "color/text/body/primary"));
     bodyNode.name = "message";
-    body.appendChild(bodyNode);
-    group.appendChild(body);
+    //   PC 본문 글자는 종전과 같이 hug 로 둔다(stretchContents 안 씀) — Mobile 과 달리 원래
+    //   STRETCH 가 걸려 있지 않았고, 늘리면 줄바꿈 지점이 달라져 겉모습이 바뀐다.
+    const body = await makeSlot(owner, "Content", CONTENT_SLOT_DESC, [bodyNode], [],
+      { layoutMode: "VERTICAL", primaryAxisSizingMode: "AUTO", counterAxisSizingMode: "FIXED",
+        primaryAxisAlignItems: "MIN", counterAxisAlignItems: "MIN", itemSpacing: 8, // spacing/8
+        paddingLeft: 24, paddingRight: 24, parent: group });
     try { body.layoutAlign = "STRETCH"; } catch (e) { /* */ }
     return group;
   };
@@ -4502,9 +4725,7 @@ async function buildModalShell(maps: BuildMaps, originY: number): Promise<{ set:
     const modalEffects = boundShadowEffects(maps, "shadow/raised");  // 오류는 여기서 던진다(삼키지 않음)
     try { (comp as any).effects = modalEffects; } catch (e) { /* 환경 미지원 */ }
 
-    const content = await buildContentGroup(brk, titleText, bodyText);
-    comp.appendChild(content);
-    try { content.layoutAlign = "STRETCH"; } catch (e) { /* */ }
+    await buildContentGroup(comp, brk, titleText, bodyText);
 
     // PC 푸터는 우측 고정폭, Mobile 푸터는 260px 안에서 버튼을 동일비율로 채운다.
     const footerFrame = figma.createFrame();
@@ -4583,8 +4804,8 @@ async function buildCalendarCellLayout(maps: BuildMaps, originY: number): Promis
   const mkOpts = (title: string, states: string[], type: "Standard" | "Range"): SpecOpts => ({
     title,
     colHeaders: states,
-    rowLabels: [""], // 표 제목이 Standard/Range 를 알리므로 행 라벨은 비움(좌측 gutter 만 유지)
-    cellAt: (_r, c) => variants[`${type}:${states[c]}`] ?? null,
+    rowLabels: CAL_SIZES.map((sz) => sz), // 행 = 크기(MD·SM), 열 = 상태. 표 제목이 Standard/Range 를 알린다.
+    cellAt: (r, c) => variants[`${CAL_SIZES[r]}:${type}:${states[c]}`] ?? null,
     lightX: SPEC_LIGHT_X, darkX: SPEC_DARK_X, originY, cellW, cellH, rowLabelW,
   });
   const stdOpts = mkOpts("Calendar Cell — Standard", stdStates, "Standard");
@@ -4637,8 +4858,8 @@ async function buildCalendarTileLayout(maps: BuildMaps, originY: number): Promis
   const opts: SpecOpts = {
     title: "Calendar Tile",
     colHeaders: states,
-    rowLabels: [""],
-    cellAt: (_r, c) => variants[states[c]] ?? null,
+    rowLabels: CAL_SIZES.map((sz) => sz), // 행 = 크기(MD 88×56 · SM 68×40)
+    cellAt: (r, c) => variants[`${CAL_SIZES[r]}:${states[c]}`] ?? null,
     lightX: SPEC_LIGHT_X, darkX: SPEC_DARK_X, originY, cellW: 120, cellH: 72,
   };
   let bottomY = await decorateSetFlat(set, opts, maps);
@@ -5522,6 +5743,8 @@ async function buildMultiToggle(maps: BuildMaps, originY: number): Promise<{ set
 
   const comps: ComponentNode[] = [];
   const specCells: { comp: ComponentNode; selIdx: number; szIdx: number }[] = [];
+  // 슬롯에 끼울 수 있는 컴포넌트 추천값 — Figma 에서 칸을 추가할 때 Multi Toggle Element 세트가 먼저 뜬다.
+  const mtElementSet = await getBuiltSet("Multi Toggle Element");
 
   for (let szIdx = 0; szIdx < sizes.length; szIdx++) {
     const sz = sizes[szIdx];
@@ -5538,14 +5761,25 @@ async function buildMultiToggle(maps: BuildMaps, originY: number): Promise<{ set
       comp.itemSpacing = 0;
       comp.fills = [];
 
+      const cellInsts: SceneNode[] = [];
       for (let j = 0; j < 3; j++) {
         const { pos, st } = cellSpec(j, selIdx);
         const cellComp = await pickCell(pos, st, sz);
         if (cellComp) {
+          // 인스턴스 이름은 바꾸지 않는다 — 변형 이름(position=…, state=…, size=…)이 그대로 남아야
+          //   component-facts 의 칸별 기하 사실(Gate 24)이 Selected 별로 구분된 채 유지된다.
           const inst = cellComp.createInstance();
-          comp.appendChild(inst);
+          cellInsts.push(inst);
         }
       }
+      // 칸이 놓이는 **줄 전체**가 Figma 슬롯("Items") — 칸 개수를 늘리고 줄일 수 있게 한다. (river 지시 2026-09-03)
+      //   칸 하나를 슬롯으로 만드는 것이 아니다. 기본 내용은 기존과 같은 3칸이다.
+      //   칸 모서리 둥글기는 Multi Toggle Element 의 position(first/middle-left/middle-right/last) 변형이
+      //   결정하므로, 칸을 늘리거나 줄이면 맨 앞은 first · 맨 뒤는 last 로 맞춰야 모양이 어긋나지 않는다.
+      await makeSlot(comp, "Items",
+        "토글 칸이 놓이는 자리. 기본은 3칸이며, Multi Toggle Element 인스턴스를 넣고 빼서 칸 수를 늘리고 줄인다. 칸을 바꾼 뒤에는 맨 앞 칸을 position=first, 맨 뒤 칸을 position=last 로 맞춘다.",
+        cellInsts, mtElementSet ? [{ type: "COMPONENT_SET", key: mtElementSet.key }] : [],
+        { itemSpacing: 0, counterAxisAlignItems: "CENTER" });
 
       setLightMode(comp, maps);
       comps.push(comp);

@@ -29,7 +29,7 @@
       "category": "component-canonical-expansion",
       "label": "기존 컴포넌트 정본에 새 축(사이즈·유형) 기준 추가",
       "description": "기존 컴포넌트의 variant 축(크기·유형)에 없던 값을 사용자 승인 기준으로 신설하고, 세트·웹 가이드·registry·검사기까지 함께 동기화하는 요청",
-      "count": 3,
+      "count": 4,
       "promotionStatus": "promotion-candidate",
       "occurrences": [
         {
@@ -43,6 +43,10 @@
         {
           "date": "2026-09-02",
           "summary": "NCU-1 — Table Cell 에 열 정렬 축(Align=Left|Center) 신설(12→24 변형). river 결정 D3/HD-3 B. 웹 배포본이 먼저 열려 있던 옵션을 정본이 뒤따라간 경우로, 정본 수정 → 파생(component-facts·guide-model·안내 화면 data-cov·manifest·거버넌스 기록) 동기화 + 컴포넌트 15개 canonicalFingerprint 재기록까지 한 세트였다"
+        },
+        {
+          "date": "2026-09-04",
+          "summary": "Date Picker 달력에 SM(267×266) 크기 신설 — 정본에 Size 축이 아예 없던 컴포넌트(Calendar·Calendar Cell·Calendar Tile 3세트)에 축을 새로 얹은 사례. 표출 규칙은 river 결정으로 '입력창 크기를 따라간다'(MD→MD · XSM·XXSM→SM)라 종전 '캘린더 패널은 사이즈 불변' 주석을 대체했다. 축 신설이 만든 파급: 캐시·variant 복원 함수·소비자 조회 키·스펙시트 행·재설치 이관(옛 세트를 제거하지 않고 이름만 Size=MD 로 고쳐 편입 후 빠진 크기 append)까지 10곳, 그리고 build-components.ts 를 건드리는 순간 19개 컴포넌트 manifest 의 canonicalFingerprint 가 전부 stale 이 됐다."
         }
       ],
       "automationNote": "3회 도달 시 컴포넌트별 축(사이즈·유형) 신설을 정본→세트→facts→웹→registry→behavior→검사 규칙까지 대조하는 전용 체크리스트 또는 Gate 승격 검토."
@@ -228,7 +232,7 @@
       "category": "verification-quality",
       "label": "검수 통과했으나 시각·레이아웃이 Figma와 다름",
       "description": "4단계 자가대조가 CSS 선언값만 비교하고 렌더 레이아웃을 실측하지 않아, 값은 맞지만 시각이 다른 불일치(아이콘 컨테이너 치수 누락 등)를 놓침",
-      "count": 7,
+      "count": 8,
       "promotionStatus": "candidate",
       "promotedRule": null,
       "occurrences": [
@@ -259,6 +263,10 @@
         {
           "date": "2026-09-01",
           "summary": "Mobile Header 라이트 보드 배경 교체 후 렌더 확인을 했으나, 컴포넌트가 없는 빈 칸 위에 남아 있던 설명 라벨 4개를 놓쳐 river 가 발견 (2292:24032·24033·24042·24043 삭제)"
+        },
+        {
+          "date": "2026-09-04",
+          "summary": "Date Picker 달력 숫자가 원 중앙보다 0.75px 위로 렌더 — river 육안 제보. 검사기·테스트는 전부 통과였다(선언값만 보고 잉크 위치를 실측하지 않음). 원인은 폰트 위/아래 여백 비대칭이라 line-height 로는 못 고치고 text-box:trim-both cap alphabetic 으로 해소. 같은 어긋남이 연/월 타일에도 있었다."
         }
       ],
       "automationNote": "아이콘은 '프레임 크기'가 아니라 '글리프 렌더 크기'로 검증. 3회 도달(2026-08-14) — 승격 후보: 정본에 '자식 순서·hug/fill 구조'가 선언된 상태(lead/trail 프레임)를 파생 HTML 의 실제 렌더 박스 좌표와 대조하는 검사기. 선언값 비교로는 절대 안 잡히며, 매번 사용자 육안 제보로만 발견됨. | 2026-08-21 보강: 허용편차 선언 시 '원본 대비 크기 비율'을 함께 적고, 일정 비율(예: 면적 70% 미만) 이하로 축소하는 편차는 자동 승인 대상에서 제외해 사용자 확인을 받도록 하는 규칙 승격 검토."
@@ -267,7 +275,7 @@
       "id": "installer-ui-flow-layout",
       "label": "설치기 플러그인 UI 레이아웃·화면흐름 개선 (스크롤·진행표시·완료안내)",
       "description": "설치기 UI 가 단일 화면에 선택·진행·완료를 모두 얹어 스크롤바가 버튼 영역을 관통하고 완료 안내가 첫 화면에 끼어들었다. 앱셸 레이아웃 + 3화면 상태기계(선택→진행→완료)로 재구성.",
-      "count": 3,
+      "count": 4,
       "promotionStatus": "promotion-candidate",
       "occurrences": [
         {
@@ -281,6 +289,10 @@
         {
           "date": "2026-09-03",
           "summary": "막다른 화면에 '다음 행동'을 붙였다 — 패턴 탭의 [가이드 설치하러 가기]가 탭만 옮기는 대신 검수 탭과 같은 최신 가이드 설치를 바로 시작하고, 설치 탭의 진행 화면(로딩·퍼센트·주의 안내)을 두 경로가 공유한다. 시작한 탭을 기억해 끝나면 그 자리로 돌려보낸다. 진행 화면에 [중단하기] 신설 — 플러그인은 '단계 경계·컴포넌트 1개 경계'에서만 신호를 확인해 만들다 만 부품을 남기지 않고, 중단 시 새로 만든 가이드 페이지는 지우되 Variables·Text Styles 는 남는다는 사실을 결과 화면에 그대로 적는다"
+        },
+        {
+          "date": "2026-09-03",
+          "summary": "검수 결과 화면의 두 막다른 지점 교정 — ①여러 부품이 뭉친 모듈을 '재구성 필요'라고 안내만 하고 끝내던 카드를 열어, 안쪽 부품을 하나씩 검수(이미 최신/교체 가능/이름 다름/컴포넌트 아님)하고 그 자리에서 교체하게 했다. 묶음 안 부품은 Figma 가 교체를 막을 수 있어 먼저 그대로 시도하고, 막히면 [묶음 풀고 교체]를 제안하며 묶음 전체를 백업해 [되돌리기]로 되돌린다. ②컴포넌트를 다 교체해야 색·텍스트·그림자 탭이 열리던 잠금(2단계 검수)을 없애고 검수 직후 모든 항목을 연다"
         }
       ],
       "automationNote": "설치기 ui.html 은 게이트 사각지대(Gate 6b 는 zip 의 code.js 토큰키만, Gate 13 은 build-components.ts 해시만 본다). 3회 도달 시 440×800 iframe 렌더 프로브(문서스크롤 0·푸터 가시성·화면전환 4종)를 게이트로 승격 검토."
@@ -425,7 +437,7 @@
       "category": "canonical-discipline",
       "label": "선언(canon-manifest)이 있는데도 도구가 파일명 글자 맞추기로 분류·묶음",
       "description": "파이프라인 지도 왼쪽 칸이 typeLabel(파일명 정규식)로 묶여서 ①registry 의 서로 다른 index.json 3개가 한 덩어리가 되고 ②알파벳 순서 때문에 진짜 값 정본(vars-data)이 잡동사니 아래로 밀리고 ③canon-manifest 가 build-components 의 생성 표면이라고 선언한 component-facts.json·component-guide-model.json 이 장부 글롭에 먼저 걸려 '손편집 장부'로 표시됐다. 같은 파일군의 scan-system-map.js 는 이미 '이름으로 억지 매칭 금지, 판정은 생성기 write 유무로만' 원칙을 명시하고 있었는데 지도 본체는 그 원칙을 안 따르고 있었다. 교정: 층 구분은 canon-manifest 의 선언 구획으로, 상하는 실측 배선(import·정의한 이름 사용·색인 경로 참조)으로만. [2026-08-13 재발] 새로 만든 Gate 39 에서도 같은 실수를 반복했다 — 클래스 접두사를 s1- 로 가정해 ds-filter-chip·s1-timepicker 를 놓쳤고, var() 를 건너뛰어 토큰 경유 값을 못 봤다. 교훈: 손편집 화면을 기계로 읽을 때 이름 규칙이 하나라고 가정하지 말고, 선언으로 두고 매 실행 자가검증한다.",
-      "count": 3,
+      "count": 4,
       "promotionStatus": "promotion-candidate",
       "occurrences": [
         {
@@ -439,6 +451,10 @@
         {
           "date": "2026-08-13",
           "summary": "정본 반경을 토큰 바인딩으로 바꾸자 미리보기 렌더러가 boundVariables.cornerRadius 라는 단일 모양만 가정해 반경이 통째로 사라짐 — Button 은 이전부터 깨져 있었고 아무도 몰랐다. 🤖 component-verifier 가 적발"
+        },
+        {
+          "date": "2026-09-03",
+          "summary": "검수기 컴포넌트 교체가 '이름 글자 맞추기'만으로 대상을 정해, secondary 버튼이 primary 로·글자 테이블 헤더가 체크박스 헤더로 바뀌었다(river 보고). 이름으로 세트를 찾은 뒤 어느 변형인지는 정하지 않고 lenient 로 기본 변형에 떨어뜨린 것이 원인. 교체 대상을 '세트'가 아니라 '사용자가 화면에서 보고 고른 변형 하나'로 바꾸고, 변형 추정은 ①레거시 variantProperties ②레거시 이름에 적힌 값 두 근거로만 하며 못 좁히면 조용히 기본값을 쓰지 않고 '변형을 고르세요'로 세워 교체 버튼을 잠근다. 이름을 모르는 작업자를 위해 지금 모습→바뀔 모습 PNG 미리보기를 붙였다(자동·수동·모듈 세 목록 공통)"
         }
       ]
     },
@@ -855,6 +871,72 @@
       ],
       "resolution": "이번 회차 조치 — ①두 화면에 data-value 부여 ②런타임이 값 없는 칸을 textContent 로 폴백 ③manifest htmlContract 에 필수 속성 명시. 미해결: 「안내 화면의 Action 영역이 실제로 동작하는가」를 기계로 확인하는 검사가 없다. 2026-09-03 추가 조치: 계약(riskBasedIndependentVerification)에 batching·scopeRule·mechanicalFirst 를 넣어 검증 시점을 정리했다. 다만 「안내 화면 Action 이 실제로 동작하는가」를 기계로 확인하는 검사는 여전히 없다.",
       "status": "열림"
+    },
+    {
+      "id": "approval-tool-absorbs-unapproved-items",
+      "pattern": "승인 도구(--approve)가 '승인한 항목'만이 아니라 그 시점의 **미승인 신설 전부**를 동결 목록에 함께 편입해, 승인받지 않은 항목(다른 세션이 만든 것 포함)이 조용히 승인된 것처럼 남는다. 게이트는 통과하고 원장에는 근거가 없어, 나중에 보면 '기록은 있는데 승인은 없었던' 상태가 된다 — 2026-08-25 focus-visible 사태와 같은 모양.",
+      "count": 1,
+      "occurrences": [
+        "2026-09-03 GNB 슬롯 전환 — componentprop:Menu 1건만 승인했는데 baseline 이 607→614 로 뛰며 componentprop:Logo(근거 인용 검증 실패로 거부된 항목)와 다른 세션의 uistate:date-picker.* 5건까지 함께 편입됐다. ⭐ 가 baseline diff 를 직접 열어보고 적발, 손으로 608(승인 1건)로 복구. 원인은 approve() 의 `base.items = cur`(현재 전부 동결). 승인 항목만 편입하도록 고치고 적대 테스트로 확인."
+      ],
+      "resolution": "이번 회차 조치 — approve() 가 --item 으로 승인한 항목만 baseline 에 편입하도록 수정(scripts/canon-addition-check.js), count 도 편입 결과로 계산. 미해결: 승인 1건당 baseline 증가량이 1을 넘으면 경고하는 방어선은 아직 없다.",
+      "status": "열림"
+    },
+    {
+      "id": "clarified-how-not-where",
+      "pattern": "⭐ 가 요청을 받고 '어떤 방식으로'만 되묻고 '어디에 적용할지'는 스스로 단정해, 방식은 맞는데 적용 위치가 틀린 결과를 만든다. 되묻기를 했다는 사실이 오히려 '확인받았다'는 착각을 준다.",
+      "count": 1,
+      "occurrences": [
+        "2026-09-03 GNB 슬롯 — river 요청 'gnb메뉴의 메뉴타이틀 부분을 슬롯 기능으로 교체'. ⭐ 는 '진짜 슬롯이냐 텍스트 속성이냐'(방식)와 '메뉴만이냐 로고까지냐'(범위)를 물었지만 '메뉴 글자에 붙일지, 메뉴들이 놓이는 줄에 붙일지'(위치)는 묻지 않고 글자 쪽으로 단정했다. 3차 검증까지 통과시킨 뒤 river 반려 — 실제 요구는 '메뉴 개수 증감 대응'이었고, 글자 슬롯으로는 원리상 불가능했다. 검증 3회(🤖)가 코드 결함 4건은 잡았지만 '요구를 잘못 읽었다'는 못 잡았다 — 검증자에게 준 브리핑 자체가 ⭐ 의 잘못된 전제 위에 있었기 때문."
+      ],
+      "resolution": "이번 회차 조치 — 재설계 후 글자 슬롯·로고 슬롯 전량 철회, 메뉴 자리(줄) 슬롯으로 재구현. 미해결: 되묻기에서 '무엇을 할 수 있게 되길 원하는가'(목적)를 먼저 확인하는 절차가 없다. 방식·범위만 묻고 목적을 안 물으면 같은 실수가 반복된다.",
+      "status": "열림"
+    },
+    {
+      "id": "legacy-canon-name-crosswalk",
+      "category": "verification-accuracy",
+      "label": "레거시 가이드 ↔ 정본 이름 대응표 (검수 자동 대조 근거)",
+      "count": 1,
+      "promotionStatus": "tracking",
+      "occurrences": [
+        {
+          "date": "2026-09-03",
+          "summary": "레거시 Figma 가이드 2벌(V2.4 64세트·704변형 / S-1 Component Set latest 62세트·592변형)을 읽어 정본 21컴포넌트와 이름·속성·상태 단위로 대조. 확정 27 · 판단필요 64 · 정본없음 35. 두 레거시 파일이 서로 달랐다(A=success / B=correct, 정본=correct) — 한 파일만으로 만들었으면 반대편에서 전량 오답. 규칙 기반 자동 정규화는 스스로 2건 오답(mobile_header·mobile_bottom-nav)을 냈다. 정본 registry/governance/legacy-component-map.json, river 결정 23건은 판단 페이지로 분리."
+        }
+      ]
+    },
+    {
+      "id": "slot-for-variable-child-count",
+      "category": "canon-structure",
+      "label": "하위 항목 개수를 바꿔야 하는 컴포넌트 → Figma 슬롯 전환 요청",
+      "count": 2,
+      "promotionStatus": "tracking",
+      "occurrences": [
+        {
+          "date": "2026-09-03",
+          "summary": "river 요청 'GNB 메뉴 부분을 슬롯으로' — 메뉴 개수 증감이 목적. 메뉴가 놓이는 줄 전체를 슬롯(Menus)으로 전환."
+        },
+        {
+          "date": "2026-09-03",
+          "summary": "river 요청 '라인탭 세트·드롭다운·멀티토글의 하위 요소를 추가/삭제할 수 있게, 모달 본문은 이미지·텍스트에리어도 들어가게' — 시안 제작 편의가 목적. 항목이 놓이는 자리 전체를 슬롯(Tabs·Options·Items·Content)으로 전환. GNB 회차 교훈(항목 자체가 아니라 항목이 놓이는 '자리'에 슬롯)을 처음부터 적용해 재작업 없음."
+        }
+      ],
+      "note": "반복 신호: '하위 항목 수가 시안마다 달라지는' 컴포넌트는 처음 만들 때부터 항목 컨테이너를 슬롯으로 두는 편이 낫다. 남은 후보 = Pagination(페이지 수)·Table(행/열)·GNB Utility(아이콘 수)·Bottom Sheet 는 이미 슬롯."
+    },
+    {
+      "id": "cross-session-uncommitted-canon-blocks-pipeline",
+      "category": "workflow",
+      "label": "같은 폴더의 다른 작업이 미커밋 상태라 파생 재생성이 서로 물고 돎",
+      "description": "한 작업(예: UI 라이브러리)만 손봤는데 설치기·guide model·DESIGN.md 재생성이 아직 커밋되지 않은 다른 작업(정본 편집)까지 함께 굽는다. 결과로 내 변경과 무관한 Gate 실패가 남고, 되돌리려 git checkout 을 쓰면 남의 미커밋 변경을 지운다.",
+      "count": 1,
+      "promotionStatus": "watching",
+      "promotedRule": null,
+      "occurrences": [
+        {
+          "date": "2026-09-04",
+          "summary": "Date Picker 색·정렬 3건 작업 중 설치기 zip 날짜를 고치려 installer:build 실행 → 미커밋 슬롯 작업(build-components.ts +281행)이 설치기에 함께 구워져 Gate 13·19·24 가 새로 실패. 복구하려 component-guide-model.json 에 git checkout 을 써서 다른 세션의 미커밋 상태를 지웠다(재생성으로 메움). 커밋은 보류."
+        }
+      ]
     }
   ]
 }

@@ -45,7 +45,7 @@ import type { PatternMaps } from "./build-patterns";
 import {
   audit, applyOne, applyHighConfidence, applyMulti, setVariablesMode,
   collectComponents, saveReference, loadReference, clearReference,
-  scanSwapCandidates, applySwap, rollbackSwap, cleanupSwapBackups, buildImprovedCopy, collectPageReference, auditChecklistFacts,
+  scanSwapCandidates, applySwap, applyModulePartSwap, detachModule, getVariantOptions, exportNodePreview, exportReferencePreview, importComponentCopy, rollbackSwap, cleanupSwapBackups, buildImprovedCopy, collectPageReference, auditChecklistFacts,
 } from "./audit-engine";
 import type { ReferenceComponent, SwapCandidate, SwapRollback } from "./audit-engine";
 
@@ -148,8 +148,7 @@ async function handleAuditMessage(type: string, payload: any): Promise<void> {
         return;
       }
       const componentScan = await scanSwapCandidates(pool, selected);
-      const componentBlockers = componentScan.candidates.length + componentScan.manualCandidates.length;
-      const componentCount = componentBlockers + componentScan.modules.length;
+      const componentCount = componentScan.candidates.length + componentScan.manualCandidates.length + componentScan.modules.length;
       const componentItem = {
         id: 0,
         count: componentCount,
@@ -157,24 +156,8 @@ async function handleAuditMessage(type: string, payload: any): Promise<void> {
         coverage: "partial",
       };
 
-      // 교체 가능한 컴포넌트가 남아 있으면 다른 검사는 잠근다.
-      // 사용자가 교체한 뒤 재검사하면 구조를 다시 읽고, 모두 정리된 경우에만 상세 검사로 넘어간다.
-      if (componentBlockers > 0 || (requestedPhase === "component" && componentScan.modules.length > 0)) {
-        await figma.ui.postMessage({ type: "audit:inspection-progress", payload: { current: null, completed: [0], total: 10, pct: 100 } });
-        figma.ui.postMessage({
-          type: "audit:inspection-result",
-          payload: {
-            ok: true,
-            phase: "component",
-            selection: auditSelectionSummary(selected),
-            checklist: [componentItem, ...Array.from({ length: 9 }, (_, index) => ({ id: index + 1, count: 0, status: "unjudged", coverage: "partial" }))],
-            component: componentScan,
-            colorIssues: [], colorDetails: [], textIssues: [], shadowIssues: [],
-            stats: { scanned: 0, issuesCount: 0, highCount: 0 },
-          },
-        });
-        return;
-      }
+      // 컴포넌트 교체가 남아 있어도 다른 검사를 잠그지 않는다 —
+      // 검수 직후 색·텍스트·그림자까지 모두 열어 두고, 무엇부터 손댈지는 사용자가 고른다(river 지시 2026-09-03).
 
       await figma.ui.postMessage({ type: "audit:inspection-progress", payload: { current: 1, completed: [0], total: 10, pct: 18 } });
       const color = await audit(selected);
@@ -287,6 +270,65 @@ async function handleAuditMessage(type: string, payload: any): Promise<void> {
       if (res.ok && res.rollback) swapRollbackById.set(payload.candidate.id, res.rollback);
       const unpreservedCount = res.unpreserved ? res.unpreserved.length : 0;
       figma.ui.postMessage({ type: "audit:apply-swap-result", payload: { id: payload.candidate.id, ok: res.ok, result: res.result, reason: res.reason, variantReset: res.variantReset, axisLoss: res.axisLoss, unpreservedCount } });
+    } else if (type === "apply-part-swap") {
+      // 묶음(모듈) 안 부품 1건 교체. 먼저 그대로 시도하고, Figma 가 막으면 blocked 로 돌려준다.
+      // 사용자가 [묶음 풀고 교체]를 누르면 allowDetach=true 로 다시 들어온다.
+      const guidePage = await getStampedGuidePage();
+      const pool = collectPageReference(guidePage || undefined);
+      const res = await applyModulePartSwap({
+        candidate: payload.candidate,
+        moduleInstanceId: payload.moduleInstanceId,
+        partPath: payload.partPath || [],
+        allowDetach: payload.allowDetach === true,
+        pool,
+      });
+      // 묶음을 푼 경우 되돌리기는 "모듈 통째"가 단위다 — 모듈 id 로 기록한다.
+      if (res.rollback) swapRollbackById.set(res.detached ? payload.moduleId : payload.candidate.id, res.rollback);
+      if (res.detached && res.moduleNodeId) {
+        auditSessionRootIds = auditSessionRootIds.map((id) => (id === payload.moduleInstanceId ? res.moduleNodeId! : id));
+      }
+      figma.ui.postMessage({
+        type: "audit:apply-part-swap-result",
+        payload: {
+          id: payload.candidate.id,
+          moduleId: payload.moduleId,
+          ok: res.ok,
+          result: res.result,
+          reason: res.reason,
+          variantReset: res.variantReset,
+          unpreservedCount: res.unpreserved ? res.unpreserved.length : 0,
+          detached: res.detached === true,
+          moduleNodeId: res.moduleNodeId,
+          parts: res.parts,
+        },
+      });
+    } else if (type === "detach-module") {
+      // 묶음 풀기만 — 교체는 하지 않는다. 풀고 나면 안쪽 부품이 각자 교체 가능해진다.
+      const guidePage = await getStampedGuidePage();
+      const pool = collectPageReference(guidePage || undefined);
+      const res = await detachModule(payload.moduleInstanceId, pool);
+      if (res.ok && res.rollback) swapRollbackById.set(payload.moduleId, res.rollback);
+      if (res.ok && res.moduleNodeId) {
+        auditSessionRootIds = auditSessionRootIds.map((id) => (id === payload.moduleInstanceId ? res.moduleNodeId! : id));
+      }
+      figma.ui.postMessage({
+        type: "audit:detach-module-result",
+        payload: { moduleId: payload.moduleId, ok: res.ok, reason: res.reason, moduleNodeId: res.moduleNodeId, parts: res.parts },
+      });
+    } else if (type === "variant-options") {
+      // 이름이 맞는 정본을 찾은 다음 "어느 변형(크기·유형·상태)으로 바꿀지"를 돌려준다.
+      const info = await getVariantOptions(payload.ref, payload.instanceId);
+      figma.ui.postMessage({ type: "audit:variant-options-result", payload: { requestId: payload.requestId, ...info } });
+    } else if (type === "preview") {
+      // 지금 모습(node) 또는 바뀔 모습(ref) 을 PNG 로 내보낸다 — UI 가 blob 으로 그린다.
+      const bytes = payload.ref
+        ? await exportReferencePreview(payload.ref)
+        : await exportNodePreview(payload.nodeId);
+      figma.ui.postMessage({ type: "audit:preview-result", payload: { requestId: payload.requestId, ok: !!bytes, bytes } });
+    } else if (type === "import-component") {
+      // 교체하지 않고 정본 부품만 캔버스로 가져온다 (입력된 정보가 있어 교체하면 안 되는 경우)
+      const res = await importComponentCopy(payload.candidate);
+      figma.ui.postMessage({ type: "audit:import-component-result", payload: { id: payload.candidate.id, ...res } });
     } else if (type === "undo-swap") {
       const saved = swapRollbackById.get(payload.id);
       if (!saved) {
@@ -376,11 +418,11 @@ async function getAuditInstallState(): Promise<{ installed: boolean; missing: st
   const missing: string[] = [];
   const guidePage = await getStampedGuidePage();
   if (!guidePage) missing.push("최신 가이드 버전");
-  missing.push(...await getGuideContentMissing(guidePage));
+  missing.push(...await getGuideContentMissing());
   return { installed: missing.length === 0, missing, currentGuide: missing.length === 0 };
 }
 
-async function getGuideContentMissing(guidePage: PageNode | null): Promise<string[]> {
+async function getGuideContentMissing(): Promise<string[]> {
   const missing: string[] = [];
   const collections = await figma.variables.getLocalVariableCollectionsAsync();
   const collectionByName = new Map(collections.map((collection) => [collection.name, collection]));
@@ -420,8 +462,12 @@ async function getGuideContentMissing(guidePage: PageNode | null): Promise<strin
   for (const category of COMPONENT_CATEGORIES) {
     for (const name of category.members) expectedComponentNames.add(normalizeAuditName(name));
   }
+  // 컴포넌트는 **파일 전체**에서 찾는다. 종전에는 '도장 찍힌 가이드 페이지 안'만 봐서,
+  //   도장이 없으면 파일에 43종이 다 있어도 '컴포넌트 없음'으로 적혔다(river 보고 2026-09-03).
+  //   표식 문제와 내용 문제를 분리한다 — 페이지 위치는 검수에 쓰이지 않고(패턴 탭도 파일 전체를 훑는다),
+  //   도장은 "어느 페이지에 최신 가이드를 설치했나"의 포인터일 뿐이다.
   const installedComponentNames = new Set(
-    (guidePage ? collectComponents(guidePage, figma.root.name) : [])
+    collectComponents(figma.root, figma.root.name)
       .map((component) => normalizeAuditName(component.name))
   );
   if (Array.from(expectedComponentNames).some((name) => !installedComponentNames.has(name))) missing.push("컴포넌트");
@@ -995,19 +1041,25 @@ async function runInstall(
     }
 
     const componentProblems = componentFailed.length + componentNoRunner.length + componentDegraded.length;
-    const completeSelection = sel.foundation && sel.semantic && sel.textStyles && sel.components;
     if (options.updateFlow && componentProblems > 0) {
       throw new Error(`최신 가이드 컴포넌트 설치가 완료되지 않았습니다: ${componentProblems}개 실패 또는 누락`);
     }
-    if (options.stampCompleteGuide && completeSelection && componentProblems === 0) {
-      const contentMissing = await getGuideContentMissing(figma.currentPage);
-      if (contentMissing.length) {
+    // 도장(설치 표식) 조건 = **이번에 무엇을 체크했는가가 아니라, 끝난 뒤 이 페이지 내용이 완전한가**.
+    //   종전 조건(4개 전부 선택)에서는 이미 토큰이 깔린 파일에 컴포넌트만 다시 설치하면 도장이
+    //   안 찍혀 검수 탭이 영원히 "최신 가이드가 아닙니다"였다(river 결정 2026-09-03 — 부분 설치도 인정).
+    if (options.stampCompleteGuide && componentProblems === 0) {
+      const contentMissing = await getGuideContentMissing();
+      // 새 가이드 페이지를 만드는 흐름은 반드시 완전해야 한다 — 모자라면 실패로 되돌린다.
+      if (contentMissing.length && options.updateFlow) {
         throw new Error(`최신 가이드 설치가 완료되지 않았습니다: ${contentMissing.join(" · ")}`);
       }
-      // 페이지 표식을 먼저, 문서 포인터를 마지막에 쓴다. 중간 실패는 최신 상태로 인식되지 않는다.
-      figma.currentPage.setPluginData(GUIDE_VERSION_KEY, CURRENT_GUIDE_FINGERPRINT);
-      figma.root.setPluginData(GUIDE_VERSION_KEY, CURRENT_GUIDE_FINGERPRINT);
-      figma.root.setPluginData(GUIDE_PAGE_KEY, figma.currentPage.id);
+      // 부분 설치라 아직 내용이 모자라면 도장만 건너뛴다(설치 자체는 성공으로 끝낸다).
+      if (contentMissing.length === 0) {
+        // 페이지 표식을 먼저, 문서 포인터를 마지막에 쓴다. 중간 실패는 최신 상태로 인식되지 않는다.
+        figma.currentPage.setPluginData(GUIDE_VERSION_KEY, CURRENT_GUIDE_FINGERPRINT);
+        figma.root.setPluginData(GUIDE_VERSION_KEY, CURRENT_GUIDE_FINGERPRINT);
+        figma.root.setPluginData(GUIDE_PAGE_KEY, figma.currentPage.id);
+      }
     }
 
     post("progress", { step: "완료", pct: 100 });

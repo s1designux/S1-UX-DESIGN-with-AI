@@ -64,11 +64,11 @@
       }
     }
   },
-  "currentPhase": "5-human-review",
-  "workflowStatus": "awaiting-user",
-  "uiLibraryStatus": "verified",
-  "lastCompletedCheckpoint": 4,
-  "nextAction": "river 가 (1) Gate 13 기록 명령 실행 (2) 설치기 chevron 래퍼 제거 착수 시점 결정 (3) 검수본 07 승인 을 주면 커밋·6-promotion 을 진행한다.",
+  "currentPhase": "complete",
+  "workflowStatus": "complete",
+  "uiLibraryStatus": "approved",
+  "lastCompletedCheckpoint": 6,
+  "nextAction": "없음 — 6-promotion 완료. chevron 오토레이아웃 정리(B3)는 river 결정에 따라 별도 작업으로 미룬다.",
   "ownership": {},
   "canonicalInputs": [
     {
@@ -278,6 +278,34 @@
         "reports/ui-library/input-button-pilot/2-canon-readiness.md HD-UILIB-03",
         "CLAUDE.md 변경 이력 2026-09-02"
       ]
+    },
+    {
+      "id": "D19",
+      "topic": "B1(Gate 13 막힘) 해소 확인 — river 실제 확정",
+      "decidedBy": "river",
+      "decidedAt": "2026-09-03",
+      "quote": "NavBar 작업이 끝난 다음 같이 기록 (추천)",
+      "decision": "NavBar 작업(다른 세션)이 끝난 뒤 함께 기록하기로 결정. 실제로 2026-09-02 🤖 component-verifier 의 structural 재검증(Gate 13 기록: 'build-components.ts 독립 검증 완료 · 2026-09-02')이 이미 이루어져 있어, 2026-09-03 현재 npm run gate:check 재실행 결과 Gate 13 은 ✅ PASS — B1 은 해소됐다.",
+      "verifiedBy": "orchestrator",
+      "verifiedAt": "2026-09-03",
+      "evidence": "npm run gate:check --verbose → [Gate 13] ✅ build-components.ts 독립 검증 완료 (🤖 component-verifier · structural · 2026-09-02)"
+    },
+    {
+      "id": "D20",
+      "topic": "B3(chevron 오토레이아웃 래퍼) 착수 시점 — river 실제 확정",
+      "decidedBy": "river",
+      "decidedAt": "2026-09-03",
+      "quote": "Gate 13 해소된 뒤로 미루기 (추천)",
+      "decision": "Gate 13 은 이미 해소됐지만(D19), chevron 래퍼 제거는 회전 아이콘 전반(셀렉트·페이지네이션·캘린더·칩 등) 영향 검증이 필요한 별도 작업이라 이번 작업 범위에 포함하지 않고 뒤로 미룬다. B3 는 blockers 에 backlog 항목으로 남긴다."
+    },
+    {
+      "id": "D21",
+      "topic": "검수본 07(Select·Dropdown·Filter Chip) 화면 승인 — river 실제 확정",
+      "decidedBy": "river",
+      "decidedAt": "2026-09-03",
+      "quote": "승인",
+      "decision": "오케스트레이터가 pages/ui-review.html 을 실제로 열어 Select 목록 열기·값 선택, Dropdown 체크박스·전체 선택, Filter Chip 제목+값 표시 동작을 화면으로 보여주고 승인받았다.",
+      "integrityNote": "6-promotion.md·migration.json 에 이미 'river 승인 2026-09-01' 로 기록돼 있었으나, river 본인에게 재확인한 결과 '기억 안 남'으로 답해 그 근거를 인정하지 않고 이번 세션의 실제 확인을 유효 승인으로 기록한다."
     }
   ],
   "blockers": [
@@ -285,13 +313,20 @@
       "id": "B1",
       "topic": "Gate 13 (설치기 빌드 검증) 재검증 막힘",
       "detail": "build-components.ts 가 마지막 검증 이후 변경돼 Gate 13 이 error 다. 변경은 두 갈래다 — (a) 이번 작업의 buildFilterChip 매핑 1줄(기계적, river 결정), (b) buildNavBar 39/42줄 구조 변경(이번 작업과 무관, 다른 세션이 같은 작업트리에서 진행 중). Gate 13 은 파일 해시 기준이라 (a)만 따로 자가인증할 수 없고, (b)를 함께 덮게 된다. (b)는 구조 변경이라 하드룰 H1② 상 component-verifier 검증이 필요하므로 ⭐ 가 --by orchestrator --change mechanical 로 기록하지 않았다.",
-      "needs": "river 결정 또는 NavBar 작업 세션의 검증 완료"
+      "needs": "river 결정 또는 NavBar 작업 세션의 검증 완료",
+      "status": "resolved",
+      "resolvedAt": "2026-09-03",
+      "resolution": "2026-09-02 🤖 component-verifier 의 structural 재검증으로 Gate 13 이 이미 통과 상태였다. 2026-09-03 npm run gate:check 재실행으로 확인(D19)."
     },
     {
       "id": "B3",
       "topic": "Figma 설치기 chevron 바깥 오토레이아웃 검토",
-      "detail": "river 지적 — 설치기로 설치한 셀렉트박스에서 chevron 아이콘 뭉치 바깥에 같은 이름의 오토레이아웃이 한 겹 더 있다. 정본 makeIconInstance 가 '회전 시 center 오토레이아웃 래핑'을 하기 때문으로 보인다(build-components.ts 주석). 불필요하면 일괄 제거 요청. build-components.ts 구조 변경이라 Gate 13 이 이미 막힌 상태에서 착수하면 얽힌다. ⭐ 확인(2026-09-01): 다른 세션에서 진행하지 않았다 — makeIconInstance(build-components.ts:1244-1250)의 래핑이 그대로 있고 최근 커밋·작업트리에도 관련 변경이 없다. 래퍼는 rotation!==0 이고 opts.wrap!==false 일 때만 생기며, 페이지네이션은 이미 wrap:false 로 빠져 있다(정사각 180° 회전은 래퍼 없이도 중앙정렬 정상). 셀렉트·필터칩 chevron 도 정사각(20·24) 직각 회전이라 같은 이유로 wrap:false 가 가능해 보이나, 회전 아이콘 전체 영향 검증이 필요하다.",
-      "needs": "Gate 13 해소 후 착수 · 제거 시 회전 아이콘 전체(셀렉트·페이지네이션·캘린더·칩 등) 영향 검증 필요"
+      "detail": "river 지적 — 설치기로 설치한 셀렉트박스에서 chevron 아이콘 뭉치 바깥에 같은 이름의 오토레이아웃이 한 겹 더 있다. 정본 makeIconInstance 가 '회전 시 center 오토레이아웃 래핑'을 하기 때문으로 보인다(build-components.ts 주석). 불필요하면 일괄 제거 요청. ⭐ 확인(2026-09-01): 다른 세션에서 진행하지 않았다 — makeIconInstance(build-components.ts:1244-1250)의 래핑이 그대로 있고 최근 커밋·작업트리에도 관련 변경이 없다. 래퍼는 rotation!==0 이고 opts.wrap!==false 일 때만 생기며, 페이지네이션은 이미 wrap:false 로 빠져 있다(정사각 180° 회전은 래퍼 없이도 중앙정렬 정상). 셀렉트·필터칩 chevron 도 정사각(20·24) 직각 회전이라 같은 이유로 wrap:false 가 가능해 보이나, 회전 아이콘 전체 영향 검증이 필요하다.",
+      "needs": "제거 시 회전 아이콘 전체(셀렉트·페이지네이션·캘린더·칩 등) 영향 검증 필요",
+      "status": "deferred",
+      "deferredBy": "river",
+      "deferredAt": "2026-09-03",
+      "deferredNote": "Gate 13(B1)은 이미 해소됐지만(D19), river 결정(D20)으로 이 작업의 범위에는 포함하지 않고 별도 작업으로 미룬다. this-work 의 완료를 막지 않는다."
     }
   ],
   "evidence": {
@@ -378,15 +413,16 @@
       "report": "reports/ui-library/select-dropdown-filter-chip/4-verification-independent.md"
     },
     "riverApproval": {
-      "status": "pending",
+      "status": "approved",
+      "decidedAt": "2026-09-03",
       "target": "pages/ui-review.html 검수본 07 · Select · Dropdown · Filter Chip",
-      "report": "reports/ui-library/select-dropdown-filter-chip/5-human-review.md",
-      "note": "river 가 검수 화면을 열지 못해(빈 화면) 1차 검수가 성립하지 않았다. D10·D11 반영 후 다시 요청."
+      "basis": "오케스트레이터가 pages/ui-review.html 을 http 서버로 열어 Select 목록 열기·값 선택, Dropdown 체크박스·전체 선택, Filter Chip 제목+값 표시를 실제로 보여주고 river 가 그 자리에서 승인(D21)·B1 처리(D19)·B3 처리(D20)를 확정했다.",
+      "report": "reports/ui-library/select-dropdown-filter-chip/5-human-review.md"
     }
   },
   "handoff": {
     "lastActor": "orchestrator",
-    "updatedAt": "2026-09-01",
-    "summary": "0~4 단계 완료·독립 검증 PASS. 5-human-review 1차에서 river 가 파일 더블클릭으로 열어 화면이 비어 보이는 문제가 드러나 안내 박스와 `npm run review` 를 넣었고(D10), 요청대로 승인 완료 4개를 별도 탭으로 분리했다(D11). 그 과정에서 migration 장부에 select·dropdown·filter-chip 레코드가 없던 것을 채웠다. 다시 river 검수 대기."
+    "updatedAt": "2026-09-03",
+    "summary": "0~6 단계 전부 완료. 2026-09-03 river 가 pages/ui-review.html 실물 화면(Select 목록 열기·값 선택, Dropdown 체크박스·전체 선택, Filter Chip 제목+값 표시)을 직접 보고 검수본 07 을 승인했다(D21). 남아 있던 두 막힘도 그 자리에서 정리했다 — B1(Gate 13)은 2026-09-02 🤖 component-verifier 재검증으로 이미 해소돼 있었고 2026-09-03 gate:check 재실행으로 확인만 했다(D19). B3(chevron 오토레이아웃 래퍼)는 회전 아이콘 전반 영향 검증이 필요한 별도 작업이라 river 결정으로 이번 범위에서 제외하고 뒤로 미뤘다(D20) — 커밋·완료를 막지 않는 backlog 로 남는다. 과거 6-promotion.md·migration.json 에 있던 'river 승인 2026-09-01' 서술은 river 본인 확인 결과 근거가 없어(기억 안 남) 무효 처리하고 이번 결정으로 대체했다(D21 integrityNote)."
   }
 }

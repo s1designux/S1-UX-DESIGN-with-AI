@@ -13,7 +13,7 @@ const read = (relative) => readFile(path.join(libraryRoot, relative), "utf8");
 const build = spawnSync(process.execPath, [path.join(libraryRoot, "scripts/build.mjs"), "--check"], { encoding: "utf8" });
 if (build.status !== 0) failures.push(`build freshness: ${build.stderr || build.stdout}`);
 
-const componentIds = ["input", "button", "checkbox", "radio", "toggle", "chip", "dropdown", "select", "filter-chip", "tab", "pagination", "textarea", "multi-toggle", "modal", "table", "mobile-bottom-nav", "mobile-header", "time-picker"];
+const componentIds = ["input", "button", "checkbox", "radio", "toggle", "chip", "dropdown", "select", "filter-chip", "tab", "pagination", "textarea", "multi-toggle", "modal", "table", "mobile-bottom-nav", "mobile-header", "time-picker", "date-picker"];
 const individualCss = [];
 for (const id of componentIds) {
   const css = await read(`dist/components/${id}.css`);
@@ -299,7 +299,10 @@ for (const id of componentIds) {
     if (JSON.stringify(manifest.sizes) !== JSON.stringify(["xxsm", "xsm", "md"])) failures.push("time-picker sizes differ from canon");
     if (JSON.stringify(manifest.breaks) !== JSON.stringify({ pc: ["xxsm", "xsm", "md"], mobile: ["md"] })) failures.push("time-picker break-size mapping differs from canon");
     if (JSON.stringify(manifest.types) !== JSON.stringify(["24h", "12h"])) failures.push("time-picker types differ from canon");
-    if (manifest.dependencies?.coreComponents?.length) failures.push("time-picker must not compose the dropdown core as a child — it owns its own column structure (workflow-state.json public contract)");
+    /* 목록 모드(패널·칸)는 여전히 dropdown 을 자식으로 조립하지 않는다 — 자체 열 구조를 소유한다는
+       원래 계약(workflow-state.json public contract)은 유지한다. 모바일 휠 바텀시트가 button·tab 을
+       조립하는 것은 다른 계약이라 여기서 막지 않는다(date-picker 모바일 시트와 동일 패턴, 2026-09-03 추가). */
+    if (manifest.dependencies?.coreComponents?.includes("dropdown")) failures.push("time-picker must not compose the dropdown core as a child — it owns its own column structure (workflow-state.json public contract)");
     if (!css.includes("var(--color-dropdown-list-bg)") || !css.includes("var(--color-dropdown-option-bg-default)") || !css.includes("var(--color-dropdown-option-bg-selected)")) {
       failures.push("time-picker panel/cell must reuse the canonical dropdown semantic tokens");
     }

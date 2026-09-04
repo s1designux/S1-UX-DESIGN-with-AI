@@ -3,7 +3,7 @@
     "generated": true,
     "source": "plugins/figma-vars-installer/src/build-components.ts",
     "method": "mock-execution",
-    "sourceHash": "6253ecac8d94",
+    "sourceHash": "6e9f4e829bf9",
     "unknownValuePolicy": [
       "unknown",
       "not-defined",
@@ -526,10 +526,10 @@
         }
       ],
       "anatomy": [
+        "Menus",
         "border",
         "language=on, menu=on, user=on",
-        "leading",
-        "menus"
+        "leading"
       ],
       "tokenBindings": [
         "color/line/gray/subtle",
@@ -544,7 +544,10 @@
         "buildDependencies": [
           "GNB Utility Icon"
         ]
-      }
+      },
+      "slots": [
+        "Menus"
+      ]
     },
     "Mobile Bottom Nav": {
       "variantAxes": {
@@ -773,9 +776,7 @@
         }
       ],
       "anatomy": [
-        "tab-1",
-        "tab-2",
-        "tab-3"
+        "Tabs"
       ],
       "tokenBindings": [
         "color/navigation/indicator/default",
@@ -787,7 +788,10 @@
         "buildDependencies": [
           "Line Tab"
         ]
-      }
+      },
+      "slots": [
+        "Tabs"
+      ]
     },
     "Pagination Cell": {
       "variantAxes": {
@@ -1475,20 +1479,7 @@
         }
       ],
       "anatomy": [
-        "position=first, state=default, size=md",
-        "position=first, state=default, size=sm",
-        "position=first, state=selected, size=md",
-        "position=first, state=selected, size=sm",
-        "position=last, state=default, size=md",
-        "position=last, state=default, size=sm",
-        "position=last, state=selected, size=md",
-        "position=last, state=selected, size=sm",
-        "position=middle-left, state=default, size=md",
-        "position=middle-left, state=default, size=sm",
-        "position=middle-left, state=selected, size=md",
-        "position=middle-left, state=selected, size=sm",
-        "position=middle-right, state=default, size=md",
-        "position=middle-right, state=default, size=sm"
+        "Items"
       ],
       "tokenBindings": [
         "color/button/bg/primary--default",
@@ -1502,7 +1493,10 @@
         "buildDependencies": [
           "Multi Toggle Element"
         ]
-      }
+      },
+      "slots": [
+        "Items"
+      ]
     },
     "Dropdown List": {
       "variantAxes": {
@@ -1776,7 +1770,7 @@
         }
       ],
       "anatomy": [
-        "ddl-row"
+        "Options"
       ],
       "tokenBindings": [
         "color/control/bg/default",
@@ -1796,7 +1790,10 @@
         "buildDependencies": [
           "Dropdown List"
         ]
-      }
+      },
+      "slots": [
+        "Options"
+      ]
     },
     "Chip": {
       "variantAxes": {
@@ -2332,10 +2329,17 @@
         "buildDependencies": [
           "Dropdown"
         ]
-      }
+      },
+      "slots": [
+        "Options"
+      ]
     },
     "Calendar Cell": {
       "variantAxes": {
+        "Size": [
+          "MD",
+          "SM"
+        ],
         "Type": [
           "Standard",
           "Range"
@@ -2352,10 +2356,25 @@
       },
       "geometry": [
         {
-          "when": "all",
+          "when": {
+            "Size": "MD"
+          },
           "target": "root",
           "width": 44,
           "height": 44,
+          "layoutMode": "HORIZONTAL",
+          "primaryAxisSizingMode": "FIXED",
+          "counterAxisSizingMode": "FIXED",
+          "primaryAxisAlignItems": "CENTER",
+          "counterAxisAlignItems": "CENTER"
+        },
+        {
+          "when": {
+            "Size": "SM"
+          },
+          "target": "root",
+          "width": 33,
+          "height": 33,
           "layoutMode": "HORIZONTAL",
           "primaryAxisSizingMode": "FIXED",
           "counterAxisSizingMode": "FIXED",
@@ -2385,6 +2404,10 @@
     },
     "Calendar Tile": {
       "variantAxes": {
+        "Size": [
+          "MD",
+          "SM"
+        ],
         "State": [
           "Default",
           "Hover",
@@ -2394,10 +2417,28 @@
       },
       "geometry": [
         {
-          "when": "all",
+          "when": {
+            "Size": "MD"
+          },
           "target": "root",
           "width": 88,
           "height": 56,
+          "layoutMode": "HORIZONTAL",
+          "primaryAxisSizingMode": "FIXED",
+          "counterAxisSizingMode": "FIXED",
+          "primaryAxisAlignItems": "CENTER",
+          "counterAxisAlignItems": "CENTER",
+          "cornerRadius": "4",
+          "strokeWeight": "1",
+          "strokeAlign": "INSIDE"
+        },
+        {
+          "when": {
+            "Size": "SM"
+          },
+          "target": "root",
+          "width": 68,
+          "height": 40,
           "layoutMode": "HORIZONTAL",
           "primaryAxisSizingMode": "FIXED",
           "counterAxisSizingMode": "FIXED",
@@ -2429,6 +2470,10 @@
     },
     "Calendar": {
       "variantAxes": {
+        "Size": [
+          "MD",
+          "SM"
+        ],
         "State": [
           "Date",
           "Year",
@@ -2437,7 +2482,9 @@
       },
       "geometry": [
         {
-          "when": "all",
+          "when": {
+            "Size": "MD"
+          },
           "target": "root",
           "width": 356,
           "height": 352,
@@ -2451,6 +2498,53 @@
           "paddingRight": "24",
           "paddingBottom": "20",
           "paddingLeft": "24",
+          "cornerRadius": "4",
+          "strokeWeight": "1",
+          "strokeAlign": "INSIDE"
+        },
+        {
+          "when": {
+            "Size": "SM",
+            "State": "Date"
+          },
+          "target": "root",
+          "width": 267,
+          "height": 266,
+          "layoutMode": "VERTICAL",
+          "primaryAxisSizingMode": "FIXED",
+          "counterAxisSizingMode": "FIXED",
+          "primaryAxisAlignItems": "CENTER",
+          "counterAxisAlignItems": "CENTER",
+          "itemSpacing": "0",
+          "paddingTop": "16",
+          "paddingRight": "18",
+          "paddingBottom": "16",
+          "paddingLeft": "18",
+          "cornerRadius": "4",
+          "strokeWeight": "1",
+          "strokeAlign": "INSIDE"
+        },
+        {
+          "when": {
+            "Size": "SM",
+            "State": [
+              "Year",
+              "Month"
+            ]
+          },
+          "target": "root",
+          "width": 267,
+          "height": 276,
+          "layoutMode": "VERTICAL",
+          "primaryAxisSizingMode": "FIXED",
+          "counterAxisSizingMode": "FIXED",
+          "primaryAxisAlignItems": "CENTER",
+          "counterAxisAlignItems": "CENTER",
+          "itemSpacing": "0",
+          "paddingTop": "16",
+          "paddingRight": "18",
+          "paddingBottom": "20",
+          "paddingLeft": "18",
           "cornerRadius": "4",
           "strokeWeight": "1",
           "strokeAlign": "INSIDE"
@@ -3389,7 +3483,10 @@
         "buildDependencies": [
           "Button"
         ]
-      }
+      },
+      "slots": [
+        "Content"
+      ]
     },
     "Filter Chip": {
       "variantAxes": {
@@ -3520,7 +3617,10 @@
         "buildDependencies": [
           "Dropdown"
         ]
-      }
+      },
+      "slots": [
+        "Options"
+      ]
     }
   }
 }

@@ -1040,7 +1040,23 @@ type MappingSuggestion = { id: string; key: string; type: "COMPONENT" | "COMPONE
 // 여러 부품이 뭉친 큰 모듈의 보조 판정 임계. 핵심 판정은 아래의
 // "같은 최신 부품이 2개 이상 들어 있는가"이며, 이름(m_button 등)은 예외로 쓰지 않는다.
 const MODULE_NESTED_THRESHOLD = 5;
-type ModuleFlag = { id: string; instanceId: string; instanceName: string; currentMainName: string; currentMainPath: string; nestedCount: number; repeatedPartName?: string; repeatedPartCount?: number; multiPartNote?: string };
+// 모듈 안에 들어 있는 부품 1개. 묶음은 통째로 교체하지 않지만, **부품 단위로는 검수·교체한다.**
+//   · canonical = 이미 정본 부품 (할 일 없음)
+//   · auto      = 대응 정본을 찾음 → 교체 가능
+//   · manual    = 이름이 달라 자동 선정 불가 → 사용자가 정본을 골라 교체
+//   · raw       = 인스턴스가 아닌 그림/프레임 → 교체 불가, 정본 부품을 옆에 가져와 재구성
+type ModulePartKind = "canonical" | "auto" | "manual" | "raw";
+type ModulePart = {
+  id: string;
+  nodeId: string;
+  nodeName: string;
+  currentMainName: string;
+  kind: ModulePartKind;
+  path: number[];                    // 모듈 루트 기준 자식 순번 — 묶음을 푼 뒤 같은 부품을 다시 찾는 길
+  suggestions: MappingSuggestion[];  // auto 면 [0] 이 자동 선정된 정본
+  note?: string;
+};
+type ModuleFlag = { id: string; instanceId: string; instanceName: string; currentMainName: string; currentMainPath: string; nestedCount: number; repeatedPartName?: string; repeatedPartCount?: number; multiPartNote?: string; parts: ModulePart[]; detached?: boolean };
 
 // ─── 다중 부품 구조 감지 (이름 매칭과 무관) ───────────────────────────
 // 레거시 세트(예: m_button)에는 버튼 1개짜리·2개짜리 변형이 섞여 있다.
@@ -1107,6 +1123,83 @@ function rankSuggestions(legacyName: string, pool: ReferenceComponent[]): Mappin
   return pool
     .map((p) => ({ id: p.id, key: p.key, type: p.type, name: p.name, source: p.sourceFileName, score: Math.round(scoreNameSimilarity(legacyName, p.name) * 100) / 100 }))
     .sort((a, b) => (b.score - a.score) || a.name.localeCompare(b.name));
+}
+
+// ─── 모듈 하위 부품 검수 ────────────────────────────────────────────────
+// 묶음(모듈)은 통째로 하나의 정본 부품으로 줄이지 않는다. 그렇다고 안내만 하고 끝내지도 않는다 —
+// 안쪽을 한 겹 열어 "부품 하나하나가 무엇이고, 무엇으로 바꿀 수 있는지"까지 검수한다(river 지시 2026-09-03).
+function containsInstanceNode(n: SceneNode): boolean {
+  if (n.type === "INSTANCE") return true;
+  if ("children" in n) {
+    for (const c of (n as SceneNode & ChildrenMixin).children) if (containsInstanceNode(c)) return true;
+  }
+  return false;
+}
+
+// 부품 목록을 만든다. 인스턴스를 만나면 그 부품 자체를 1건으로 기록하고 **안쪽으로는 들어가지 않는다**
+// (그 안은 그 컴포넌트의 내부 구조이지 이 모듈의 부품이 아니다).
+// 인스턴스가 아닌데 채움·텍스트를 가진 가지는 "교체 불가 조각(raw)"으로 1건 기록한다.
+async function collectModuleParts(root: SceneNode, pool: ReferenceComponent[]): Promise<ModulePart[]> {
+  const parts: ModulePart[] = [];
+  const partId = (nodeId: string) => `p-${nodeId.replace(/[^a-zA-Z0-9]/g, "_")}`;
+  const walk = async (node: SceneNode, path: number[]): Promise<void> => {
+    if (node.visible === false) return;
+    if (node.type === "INSTANCE") {
+      const inst = node as InstanceNode;
+      const main = await inst.getMainComponentAsync();
+      const compareName = main
+        ? (main.parent && main.parent.type === "COMPONENT_SET" ? main.parent.name : main.name)
+        : inst.name;
+      const currentTopId = main
+        ? (main.parent && main.parent.type === "COMPONENT_SET" ? main.parent.id : main.id)
+        : "";
+      let found = findReferenceMatch(compareName, pool);
+      if (!found.match && inst.name && inst.name !== compareName) found = findReferenceMatch(inst.name, pool);
+      const ranked = rankSuggestions(inst.name && inst.name !== compareName ? `${compareName} ${inst.name}` : compareName, pool);
+      if (found.match && found.match.id === currentTopId) {
+        parts.push({ id: partId(inst.id), nodeId: inst.id, nodeName: inst.name, currentMainName: compareName, kind: "canonical", path, suggestions: [] });
+      } else if (found.match) {
+        // 자동 선정된 정본을 목록 맨 앞으로 올린다(사용자가 다른 것으로 바꿀 수도 있게 목록은 그대로 둔다)
+        const picked = found.match;
+        const rest = ranked.filter((r) => r.id !== picked.id);
+        const head: MappingSuggestion = { id: picked.id, key: picked.key, type: picked.type, name: picked.name, source: picked.sourceFileName, score: 1 };
+        parts.push({ id: partId(inst.id), nodeId: inst.id, nodeName: inst.name, currentMainName: compareName, kind: "auto", path, suggestions: [head].concat(rest) });
+      } else {
+        parts.push({ id: partId(inst.id), nodeId: inst.id, nodeName: inst.name, currentMainName: compareName, kind: "manual", path, suggestions: ranked });
+      }
+      return;
+    }
+    const frameLike = node.type === "FRAME" || node.type === "COMPONENT" || node.type === "GROUP";
+    if (frameLike && !containsInstanceNode(node) && hasVisiblePaint(node) && containsVisibleText(node)) {
+      parts.push({
+        id: partId(node.id), nodeId: node.id, nodeName: node.name, currentMainName: "(컴포넌트 아님)",
+        kind: "raw", path, suggestions: rankSuggestions(node.name, pool),
+        note: "컴포넌트가 아니라 직접 그린 조각이라 교체할 수 없습니다. 정본 부품을 옆에 가져와 바꿔 그리세요.",
+      });
+      return;
+    }
+    if ("children" in node) {
+      const kids = (node as SceneNode & ChildrenMixin).children;
+      for (let i = 0; i < kids.length; i++) await walk(kids[i], path.concat(i));
+    }
+  };
+  if ("children" in root) {
+    const kids = (root as SceneNode & ChildrenMixin).children;
+    for (let i = 0; i < kids.length; i++) await walk(kids[i], [i]);
+  }
+  return parts;
+}
+
+// 묶음을 푼 뒤 같은 자리의 노드를 다시 찾는다(노드 id 가 유지되지 않는 경우 대비).
+function resolveByPath(root: SceneNode, path: number[]): SceneNode | null {
+  let cur: SceneNode = root;
+  for (const idx of path) {
+    if (!("children" in cur)) return null;
+    const kids = (cur as SceneNode & ChildrenMixin).children;
+    if (idx < 0 || idx >= kids.length) return null;
+    cur = kids[idx];
+  }
+  return cur;
 }
 
 // ─── variant(변형) 정규화 — 딱 두 가지만: ①대소문자 무시 ②값 동의어 사전 ───
@@ -1273,6 +1366,7 @@ async function scanSwapCandidates(
             multiPartNote: isStructuralModule
               ? `채움·텍스트를 가진 부품 모양 ${similarParts}개가 나란히 들어 있어 하나의 컴포넌트로 교체하지 않습니다. 내부 부품 단위로 재구성하세요.`
               : undefined,
+            parts: await collectModuleParts(inst, pool),
           });
         }
         continue;
@@ -1299,6 +1393,7 @@ async function scanSwapCandidates(
               currentMainName: compareName,
               currentMainPath: await describeComponentLocation(main),
               nestedCount,
+              parts: await collectModuleParts(inst, pool),
             });
           } else {
             // 단순(부품 적은) 미매칭 → "가장 비슷한 정본"을 상위 제안하는 수동 매핑 후보(최종 선택은 사용자).
@@ -1357,20 +1452,149 @@ type ResolveResult = {
 };
 
 // 정본 세트/컴포넌트 노드 확보 — 현재 파일이면 직접, 아니면 라이브러리에서 import
-async function loadSuggestedNode(candidate: SwapCandidate): Promise<BaseNode | null> {
+async function loadReferenceNode(ref: { id: string; key?: string; type: "COMPONENT" | "COMPONENT_SET" }): Promise<BaseNode | null> {
   try {
-    const n = await figma.getNodeByIdAsync(candidate.suggestedId);
+    const n = await figma.getNodeByIdAsync(ref.id);
     if (n && (n.type === "COMPONENT" || n.type === "COMPONENT_SET")) return n;
   } catch {}
-  if (candidate.suggestedKey) {
+  if (ref.key) {
     try {
-      if (candidate.suggestedType === "COMPONENT_SET") {
-        return await figma.importComponentSetByKeyAsync(candidate.suggestedKey);
-      }
-      return await figma.importComponentByKeyAsync(candidate.suggestedKey);
+      if (ref.type === "COMPONENT_SET") return await figma.importComponentSetByKeyAsync(ref.key);
+      return await figma.importComponentByKeyAsync(ref.key);
     } catch { return null; }
   }
   return null;
+}
+
+async function loadSuggestedNode(candidate: SwapCandidate): Promise<BaseNode | null> {
+  return loadReferenceNode({ id: candidate.suggestedId, key: candidate.suggestedKey, type: candidate.suggestedType });
+}
+
+// ─── 변형(variant) 고르기 — 이름만 맞추고 끝내지 않는다 ───────────────────────
+// 이름이 같은 정본을 찾아도 **어느 변형으로 바꿀지**를 정하지 않으면
+// secondary 버튼이 primary 로, 글자 헤더가 체크박스 헤더로 바뀐다(river 보고 2026-09-03).
+// 그래서 ①레거시가 가진 변형값 ②레거시 이름에 적힌 값 두 가지로만 후보를 좁히고,
+// **못 좁히면 조용히 기본값을 쓰지 않고 "모름"으로 돌려준다** — 최종 선택은 사용자가 화면에서 한다.
+type VariantOption = { id: string; key: string; label: string; values: { [axis: string]: string } };
+type VariantInfo = {
+  ok: boolean;
+  reason?: string;
+  setId: string;
+  setName: string;
+  hasVariants: boolean;
+  options: VariantOption[];
+  pickedId: string | null;      // null = 자동으로 못 정함(사용자가 골라야 함)
+  matchedAxes: string[];
+  unmatchedAxes: string[];
+};
+
+function variantLabel(vp: { [k: string]: string } | null): string {
+  if (!vp) return "";
+  return Object.keys(vp).map((k) => `${k}=${vp[k]}`).join(" · ");
+}
+
+async function getVariantOptions(
+  ref: { id: string; key?: string; type: "COMPONENT" | "COMPONENT_SET" },
+  legacyInstanceId: string
+): Promise<VariantInfo> {
+  const node = await loadReferenceNode(ref);
+  if (!node) {
+    return { ok: false, reason: "정본 컴포넌트를 불러오지 못했습니다.", setId: ref.id, setName: "", hasVariants: false, options: [], pickedId: null, matchedAxes: [], unmatchedAxes: [] };
+  }
+  if (node.type === "COMPONENT") {
+    const c = node as ComponentNode;
+    return { ok: true, setId: c.id, setName: c.name, hasVariants: false, options: [{ id: c.id, key: c.key, label: c.name, values: {} }], pickedId: c.id, matchedAxes: [], unmatchedAxes: [] };
+  }
+  const set = node as ComponentSetNode;
+  const variants = set.children.filter((c) => c.type === "COMPONENT") as ComponentNode[];
+  const options: VariantOption[] = variants.map((v) => ({ id: v.id, key: v.key, label: variantLabel(v.variantProperties) || v.name, values: v.variantProperties || {} }));
+  if (variants.length === 0) {
+    return { ok: false, reason: "정본 세트에 변형이 없습니다.", setId: set.id, setName: set.name, hasVariants: false, options: [], pickedId: null, matchedAxes: [], unmatchedAxes: [] };
+  }
+
+  const inst = await figma.getNodeByIdAsync(legacyInstanceId);
+  const legacyVP = inst && inst.type === "INSTANCE" ? (inst as InstanceNode).variantProperties || {} : {};
+  let legacyNames = inst && "name" in inst ? String((inst as SceneNode).name) : "";
+  if (inst && inst.type === "INSTANCE") {
+    const main = await (inst as InstanceNode).getMainComponentAsync();
+    if (main) legacyNames += " " + main.name + " " + (main.parent && main.parent.type === "COMPONENT_SET" ? main.parent.name : "");
+  }
+  const nameTokens = tokenizeName(legacyNames.replace(/=/g, " ")).map(normVariantValue);
+
+  const def = (set.defaultVariant || variants[0]) as ComponentNode;
+  const axes = Object.keys(def.variantProperties || {});
+  const legacyByNorm: { [norm: string]: string } = {};
+  for (const k of Object.keys(legacyVP)) legacyByNorm[normAxisName(k)] = legacyVP[k];
+
+  const want: { [axis: string]: string } = {};
+  const matchedAxes: string[] = [];
+  const unmatchedAxes: string[] = [];
+  for (const axis of axes) {
+    const values = Array.from(new Set(variants.map((v) => (v.variantProperties || {})[axis]).filter(Boolean)));
+    const fromVP = legacyByNorm[normAxisName(axis)];
+    // ① 레거시가 같은 축을 가지고 있으면 그 값
+    if (fromVP) {
+      const hit = values.find((v) => normVariantValue(v) === normVariantValue(fromVP));
+      if (hit) { want[axis] = hit; matchedAxes.push(axis); continue; }
+    }
+    // ② 레거시 이름에 그 축의 값이 적혀 있으면 그 값 (예: "btn_secondary_xsm")
+    const byName = values.filter((v) => nameTokens.indexOf(normVariantValue(v)) >= 0);
+    if (byName.length === 1) { want[axis] = byName[0]; matchedAxes.push(axis); continue; }
+    unmatchedAxes.push(axis);
+  }
+
+  let picked: ComponentNode | null = null;
+  if (variants.length === 1) {
+    picked = variants[0];
+  } else if (matchedAxes.length > 0) {
+    const narrowed = variants.filter((v) => matchedAxes.every((a) => (v.variantProperties || {})[a] === want[a]));
+    if (narrowed.length === 1) picked = narrowed[0];
+    else if (narrowed.length > 1) {
+      // 남은 축은 정본 기본값으로만 좁힌다. 그래도 하나로 안 좁혀지면 "모름"으로 둔다.
+      const byDefault = narrowed.filter((v) => unmatchedAxes.every((a) => (v.variantProperties || {})[a] === (def.variantProperties || {})[a]));
+      picked = byDefault.length === 1 ? byDefault[0] : null;
+    }
+  }
+  return {
+    ok: true,
+    setId: set.id,
+    setName: set.name,
+    hasVariants: true,
+    options,
+    pickedId: picked ? picked.id : null,
+    matchedAxes,
+    unmatchedAxes,
+  };
+}
+
+// ─── 미리보기 이미지 ───────────────────────────────────────────────────────
+// 작업자가 최신 컴포넌트 "이름"을 모를 수 있으므로, 지금 모습과 바뀔 모습을 그림으로 보여준다.
+async function exportPreviewBytes(node: SceneNode | ComponentNode): Promise<Uint8Array | null> {
+  try {
+    const w = "width" in node ? (node as SceneNode & LayoutMixin).width : 0;
+    const h = "height" in node ? (node as SceneNode & LayoutMixin).height : 0;
+    const longest = Math.max(w, h, 1);
+    const scale = Math.max(0.25, Math.min(2, 320 / longest));
+    return await (node as SceneNode).exportAsync({ format: "PNG", constraint: { type: "SCALE", value: scale } });
+  } catch {
+    return null;
+  }
+}
+
+async function exportNodePreview(nodeId: string): Promise<Uint8Array | null> {
+  const n = await figma.getNodeByIdAsync(nodeId);
+  if (!n || !("exportAsync" in n)) return null;
+  return exportPreviewBytes(n as SceneNode);
+}
+
+async function exportReferencePreview(ref: { id: string; key?: string; type: "COMPONENT" | "COMPONENT_SET" }): Promise<Uint8Array | null> {
+  const node = await loadReferenceNode(ref);
+  if (!node) return null;
+  if (node.type === "COMPONENT_SET") {
+    const first = (node as ComponentSetNode).children.filter((c) => c.type === "COMPONENT")[0] as ComponentNode | undefined;
+    return first ? exportPreviewBytes(first) : null;
+  }
+  return exportPreviewBytes(node as ComponentNode);
 }
 
 // swap 대상 ComponentNode 결정 — 원본 인스턴스의 변형(State/Size 등)을 보존한다.
@@ -1603,9 +1827,200 @@ async function applySwap(
   return { ok: true, result: "swapped", variantReset: res.variantReset, axisLoss: res.axisLoss, unpreserved, rollback };
 }
 
+// ─── 모듈 하위 부품 교체 ────────────────────────────────────────────────
+// 백업 없이 "그 자리에서" 교체만 한다(백업·되돌리기는 호출부 담당).
+// 변형(State/Size)과 입력 텍스트 보존은 통째 교체와 같은 규칙을 쓴다.
+async function swapInstanceTo(
+  inst: InstanceNode,
+  candidate: SwapCandidate,
+  mode: SwapMode
+): Promise<{ ok: boolean; result: SwapOutcome; reason?: string; variantReset?: boolean; axisLoss?: number; unpreserved?: string[] }> {
+  const res = await resolveSwapTarget(candidate, mode, inst.variantProperties || null);
+  if (!res.target) {
+    if (res.reason === "no-variant-match") {
+      return { ok: false, result: "demoted", reason: "정본에 같은 상태(변형) 조합이 없어 자동 교체하지 않았습니다.", axisLoss: res.axisLoss };
+    }
+    return { ok: false, result: "failed", reason: "기준 컴포넌트를 import할 수 없습니다. 기준 파일에서 컴포넌트가 publish되었는지 확인해주세요." };
+  }
+  const captured = captureTextOverrides(inst);
+  try {
+    inst.swapComponent(res.target);
+  } catch (e: any) {
+    return { ok: false, result: "failed", reason: String((e && e.message) || e) };
+  }
+  let unpreserved: string[] = [];
+  try { unpreserved = (await restoreTextOverrides(inst, captured)).unpreserved; } catch {}
+  return { ok: true, result: "swapped", variantReset: res.variantReset, axisLoss: res.axisLoss, unpreserved };
+}
+
+/**
+ * 묶음 풀기만 한다(교체는 하지 않는다).
+ *   묶음 안 부품은 Figma 가 교체를 막을 수 있다. 그때 사용자가 [묶음 풀기]를 누르면 여기로 온다 —
+ *   묶음 전체를 백업해 두고([되돌리기] 가능) 바깥 묶음을 풀어, 안쪽 부품이 각자 교체 가능한 상태가 되게 한다.
+ */
+async function detachModule(
+  moduleInstanceId: string,
+  pool: ReferenceComponent[]
+): Promise<{ ok: boolean; reason?: string; frame?: FrameNode; moduleNodeId?: string; parts?: ModulePart[]; rollback?: SwapRollback }> {
+  const moduleNode = await figma.getNodeByIdAsync(moduleInstanceId);
+  if (!moduleNode || moduleNode.type !== "INSTANCE") {
+    return { ok: false, reason: "묶음을 찾을 수 없습니다. 다시 검사해주세요." };
+  }
+  const moduleInst = moduleNode as InstanceNode;
+  const parent = moduleInst.parent;
+  if (!parent || !("children" in parent)) return { ok: false, reason: "묶음의 위치를 저장할 수 없습니다." };
+
+  // 풀기 전에 통째로 백업 — [되돌리기] 한 번으로 풀기 이전 상태로 돌아간다.
+  const backup = moduleInst.clone();
+  const rollback: SwapRollback = {
+    instanceId: moduleInst.id,
+    backupNodeId: backup.id,
+    originalParentId: parent.id,
+    originalIndex: Array.from(parent.children).findIndex((child) => child.id === moduleInst.id),
+    originalX: moduleInst.x,
+    originalY: moduleInst.y,
+    originalVisible: moduleInst.visible,
+  };
+  try {
+    const backupFrame = await getRollbackFrame();
+    backup.visible = false;
+    backupFrame.appendChild(backup);
+  } catch (e: any) {
+    try { backup.remove(); } catch {}
+    return { ok: false, reason: `묶음을 풀기 전 상태를 저장하지 못했습니다: ${String((e && e.message) || e)}` };
+  }
+  let frame: FrameNode;
+  try {
+    frame = moduleInst.detachInstance();
+  } catch (e: any) {
+    await discardSwapRollback(rollback);
+    return { ok: false, reason: `묶음을 풀지 못했습니다: ${String((e && e.message) || e)}` };
+  }
+  return { ok: true, frame, moduleNodeId: frame.id, parts: await collectModuleParts(frame, pool), rollback: { ...rollback, instanceId: frame.id } };
+}
+
+type ModulePartSwapResult = {
+  ok: boolean;
+  result: SwapOutcome | "blocked";
+  reason?: string;
+  variantReset?: boolean;
+  axisLoss?: number;
+  unpreserved?: string[];
+  rollback?: SwapRollback;
+  detached?: boolean;
+  moduleNodeId?: string;
+  parts?: ModulePart[];
+};
+
+/**
+ * 묶음 안의 부품 1건 교체.
+ *  1) 묶음 밖(=이미 풀린 상태)이면 통째 교체와 같은 경로(백업 포함).
+ *  2) 묶음 안이면 **먼저 그대로 교체를 시도한다.** Figma 가 허용하면 묶음을 풀 필요가 없다.
+ *  3) 막히면 result="blocked" 로 돌려주고, 사용자가 [묶음 풀고 교체]를 누르면 allowDetach=true 로 다시 온다.
+ *     그때는 묶음 전체를 백업해 두고(→ 되돌리기 가능) 바깥 묶음을 푼 뒤 그 자리에서 교체한다.
+ */
+async function applyModulePartSwap(args: {
+  candidate: SwapCandidate;
+  moduleInstanceId: string;
+  partPath: number[];
+  allowDetach: boolean;
+  pool: ReferenceComponent[];
+}): Promise<ModulePartSwapResult> {
+  const part = await figma.getNodeByIdAsync(args.candidate.instanceId);
+  if (!part || part.type !== "INSTANCE") {
+    return { ok: false, result: "failed", reason: "컴포넌트가 아니라 교체할 수 없는 조각입니다." };
+  }
+  if (!hasInstanceAncestor(part)) {
+    const r = await applySwap(args.candidate, "lenient");
+    return { ok: r.ok, result: r.result, reason: r.reason, variantReset: r.variantReset, axisLoss: r.axisLoss, unpreserved: r.unpreserved, rollback: r.rollback };
+  }
+
+  if (!args.allowDetach) {
+    const attempt = await swapInstanceTo(part as InstanceNode, args.candidate, "lenient");
+    if (attempt.ok) return { ok: true, result: "swapped", variantReset: attempt.variantReset, axisLoss: attempt.axisLoss, unpreserved: attempt.unpreserved };
+    if (attempt.result === "demoted") return { ok: false, result: "demoted", reason: attempt.reason };
+    return { ok: false, result: "blocked", reason: attempt.reason || "묶음 안에 있는 부품이라 그대로는 교체되지 않습니다." };
+  }
+
+  const detached = await detachModule(args.moduleInstanceId, args.pool);
+  if (!detached.ok || !detached.frame) {
+    return { ok: false, result: "failed", reason: detached.reason };
+  }
+  const frame = detached.frame;
+  const rollback = detached.rollback!;
+
+  // 푼 뒤에는 노드 id 가 바뀔 수 있으므로 같은 자리(자식 순번)로 부품을 다시 찾는다.
+  let target = resolveByPath(frame, args.partPath);
+  if (!target || target.type !== "INSTANCE") {
+    const byId = await figma.getNodeByIdAsync(args.candidate.instanceId);
+    target = byId && "type" in byId && byId.type === "INSTANCE" ? (byId as SceneNode) : null;
+  }
+  const rollbackAfterDetach: SwapRollback = rollback;
+  if (!target) {
+    return { ok: false, result: "failed", reason: "묶음은 풀었지만 교체할 부품을 다시 찾지 못했습니다.", detached: true, moduleNodeId: frame.id, rollback: rollbackAfterDetach, parts: await collectModuleParts(frame, args.pool) };
+  }
+  const swapped = await swapInstanceTo(target as InstanceNode, args.candidate, "lenient");
+  return {
+    ok: swapped.ok,
+    result: swapped.ok ? "swapped" : swapped.result,
+    reason: swapped.reason,
+    variantReset: swapped.variantReset,
+    axisLoss: swapped.axisLoss,
+    unpreserved: swapped.unpreserved,
+    detached: true,
+    moduleNodeId: frame.id,
+    rollback: rollbackAfterDetach,
+    parts: await collectModuleParts(frame, args.pool),
+  };
+}
+
+/**
+ * 컴포넌트 가져오기 — 원본은 손대지 않고, **정본 컴포넌트의 새 인스턴스를 캔버스 위쪽에 놓는다.**
+ *   왜 필요한가: 이미 입력된 정보(텍스트·수치)가 들어 있어 단순 교체하면 안 되는 시안이 있다.
+ *   그럴 때 작업자가 옆에 놓인 최신 부품을 보고 직접 다시 만들 수 있게 한다(river 지시 2026-09-03).
+ *   변형(State/Size 등)은 원본 인스턴스와 같은 조합을 우선 고르고, 없으면 기본 변형을 쓴다.
+ */
+async function importComponentCopy(
+  candidate: SwapCandidate
+): Promise<{ ok: boolean; reason?: string; nodeId?: string; name?: string; variantReset?: boolean }> {
+  const inst = await figma.getNodeByIdAsync(candidate.instanceId);
+  const legacyVP = inst && inst.type === "INSTANCE" ? (inst as InstanceNode).variantProperties || null : null;
+  const res = await resolveSwapTarget(candidate, "lenient", legacyVP);
+  if (!res.target) {
+    return { ok: false, reason: "기준 컴포넌트를 찾지 못했습니다. 기준 파일에서 publish 되었는지 확인해주세요." };
+  }
+  let copy: InstanceNode;
+  try {
+    copy = res.target.createInstance();
+  } catch (e: any) {
+    return { ok: false, reason: String((e && e.message) || e) };
+  }
+  const page = figma.currentPage;
+  page.appendChild(copy);   // 다른 프레임 안이 아니라 캔버스에 직접 — 원본 레이아웃을 건드리지 않는다
+  const box = inst && "absoluteBoundingBox" in inst ? (inst as SceneNode).absoluteBoundingBox : null;
+  const GAP = 40;
+  if (box) {
+    copy.x = box.x;
+    copy.y = box.y - copy.height - GAP;   // 원본 바로 위
+  } else {
+    copy.x = figma.viewport.center.x;
+    copy.y = figma.viewport.center.y;
+  }
+  const setName = res.target.parent && res.target.parent.type === "COMPONENT_SET"
+    ? res.target.parent.name
+    : res.target.name;
+  copy.name = `${setName} (가져옴)`;
+  page.selection = [copy];
+  figma.viewport.scrollAndZoomIntoView([copy]);
+  return { ok: true, nodeId: copy.id, name: copy.name, variantReset: res.variantReset };
+}
+
 async function rollbackSwap(rollback: SwapRollback): Promise<{ ok: boolean; reason?: string; instanceId?: string }> {
   const node = await figma.getNodeByIdAsync(rollback.instanceId);
-  if (!node || node.type !== "INSTANCE") return { ok: false, reason: "되돌릴 항목을 찾을 수 없습니다." };
+  // 묶음을 풀고 교체한 경우 그 자리는 INSTANCE 가 아니라 FRAME 이다 — 둘 다 되돌릴 수 있어야 한다.
+  if (!node || !("parent" in node) || node.type === "PAGE" || node.type === "DOCUMENT") {
+    return { ok: false, reason: "되돌릴 항목을 찾을 수 없습니다." };
+  }
   const backup = await figma.getNodeByIdAsync(rollback.backupNodeId);
   if (!backup || backup.type !== "INSTANCE") return { ok: false, reason: "교체 전 백업을 찾을 수 없습니다." };
   const originalParent = await figma.getNodeByIdAsync(rollback.originalParentId);
@@ -1815,6 +2230,13 @@ export {
   clearReference,
   scanSwapCandidates,
   applySwap,
+  applyModulePartSwap,
+  detachModule,
+  collectModuleParts,
+  getVariantOptions,
+  exportNodePreview,
+  exportReferencePreview,
+  importComponentCopy,
   rollbackSwap,
   discardSwapRollback,
   cleanupSwapBackups,
@@ -1824,5 +2246,5 @@ export {
 };
 export type {
   Issue, Suggestion, ReferenceComponent, SwapCandidate, SwapDiagnostics, SavedReference, NodeKind,
-  SwapMode, SwapOutcome, SwapRollback, ImprovedSummary, BuildImprovedResult, ChecklistItemResult, ChecklistDetailIssue, ChecklistFacts,
+  SwapMode, SwapOutcome, SwapRollback, ModulePart, ModuleFlag, ModulePartSwapResult, VariantOption, VariantInfo, ImprovedSummary, BuildImprovedResult, ChecklistItemResult, ChecklistDetailIssue, ChecklistFacts,
 };

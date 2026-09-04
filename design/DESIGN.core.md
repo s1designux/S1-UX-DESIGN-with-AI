@@ -1202,7 +1202,7 @@ agent:
       - "Dropdown List"
     mustNotCreate: "not-defined"
     declaredParts:
-      - "ddl-row"
+      - "Options"
   constraints: "unknown"
   tokens:
     figmaSemanticBindings:
@@ -1589,7 +1589,7 @@ Global Navigation Bar. 로고 + 메뉴 슬롯(slots_menu) + 유틸리티(아이�
 | 요소 | 역할 |
 | --- | --- |
 | 로고 | 좌측 브랜드. |
-| 메뉴 슬롯 | size md/sm/xsm × default/hover/selected. |
+| 메뉴 슬롯 | size md/sm/xsm × default/hover/selected. 메뉴들이 놓이는 자리 전체가 GNB 바의 Figma 슬롯 'Menus' — 기본은 메뉴 3개이고, 인스턴스를 넣고 빼서 메뉴 수를 늘리고 줄인다 (river 지시 2026-09-03). |
 | 유틸리티 | 우측 아이콘 3종. |
 
 | variant | default | hover | pressed | disabled |
@@ -1663,10 +1663,10 @@ agent:
       - "GNB Utility Icon"
     mustNotCreate: "not-defined"
     declaredParts:
+      - "Menus"
       - "border"
       - "language=on, menu=on, user=on"
       - "leading"
-      - "menus"
   constraints: "unknown"
   tokens:
     figmaSemanticBindings:
@@ -2517,20 +2517,7 @@ agent:
       - "Multi Toggle Element"
     mustNotCreate: "not-defined"
     declaredParts:
-      - "position=first, state=default, size=md"
-      - "position=first, state=default, size=sm"
-      - "position=first, state=selected, size=md"
-      - "position=first, state=selected, size=sm"
-      - "position=last, state=default, size=md"
-      - "position=last, state=default, size=sm"
-      - "position=last, state=selected, size=md"
-      - "position=last, state=selected, size=sm"
-      - "position=middle-left, state=default, size=md"
-      - "position=middle-left, state=default, size=sm"
-      - "position=middle-left, state=selected, size=md"
-      - "position=middle-left, state=selected, size=sm"
-      - "position=middle-right, state=default, size=md"
-      - "position=middle-right, state=default, size=sm"
+      - "Items"
   constraints: "unknown"
   tokens:
     figmaSemanticBindings:
@@ -4161,4 +4148,4 @@ DESIGN_SYSTEM_GAP:
 - 적용 해석 순서(뒤가 앞을 덮음): core → service(extends core) → role → platform → theme. 기본값: service=core · role=user · platform=web · theme=light.
 - 서비스 분기(예: vms 영상관제)는 core 를 상속하고 차이분만 덮는다.
 
-<!-- generated-stamp: ad6770a22a43 · 손편집 금지 -->
+<!-- generated-stamp: 871258b8829a · 손편집 금지 -->

@@ -323,6 +323,32 @@
       "geometryEvidence": "정본이 24px 그대로 -90° 회전해 쓴다(build-components.ts:3166 makeRequiredIconInstance(\"mobileHeaderArrowDown\", iconDark, 24, undefined, -90)). 이 아이콘은 채움(fill)이 아니라 중심정렬 획(stroke)으로 그려지므로 glyph 를 경로(path) 경계로 잡으면 획의 바깥 절반이 중첩 SVG 뷰포트에 잘린다 — 2026-09-02 4-verification F-1 이 실측으로 적발했다(잉크량 원본 50.4 → 웹 43.8, 글리프 영역 기준 오차 0.02484 > 임계 0.015). 따라서 chevron.svg 와 동일하게 24 프레임 전체를 glyph 뷰포트로 두고 경로를 24 좌표계에 직접 그린다(경로 좌표는 같은 형상: M10.375 7.75L14.625 12L10.375 16.25). 획 기반 글리프에는 경로 경계 선언이 성립하지 않는다 — 같은 아이콘 패밀리의 chevron(419:67)이 같은 규칙을 쓴다. 원본 대조 기준은 저장소 내보내기 assets/icons/ic_화살표더보기_solid.png(24 프레임) 그대로다.",
       "dependencies": [],
       "sourceExport": "assets/icons/ic_화살표더보기_solid.png"
+    },
+    {
+      "id": "calendar",
+      "sourceKey": "ea0ffc118c38048f2cdfb5620be31c120426bb7a",
+      "sourceBuilderSymbol": "CAL_ICON (build-components.ts:3672, buildDatePicker)",
+      "file": "calendar.svg",
+      "webAssetFingerprint": "71c7c065292c532754bc0ecb19b0b1b061cec8a3247bbcd12aafb89532c06581",
+      "symbolId": "s1-icon-calendar",
+      "individualFile": "assets/icons/calendar.svg",
+      "accessibleNamePolicy": "decorative; 트리거의 접근 가능한 이름(연결된 값 텍스트)이 이미 이름을 제공한다",
+      "geometry": {
+        "frame": {
+          "width": 24,
+          "height": 24
+        },
+        "glyph": {
+          "x": 3.87095,
+          "y": 3.6,
+          "width": 16.2581,
+          "height": 16.8
+        },
+        "scaling": "proportional"
+      },
+      "geometryEvidence": "정본 build-components.ts CAL_ICON 상수(3672줄)의 path·viewBox(16.2581×16.8)를 그대로 옮겼다 — 재구성·재측정 없음. frame=24 관례(close·remove와 동일)에 원본 비율 그대로 중앙 배치, 재단·리사이즈 없음.",
+      "dependencies": [],
+      "sourceExport": "assets/icons/ic_날짜근태달력_line.png"
     }
   ]
 }

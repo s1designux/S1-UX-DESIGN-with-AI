@@ -462,7 +462,7 @@
         "clock.svg"
       ],
       "lastVerified": "2026-09-03",
-      "reverifyTrigger": "정본 buildTimePicker·buildTimePickerDropdown·buildTimePickerCell 의 geometry·variant·token 변경 · clock 아이콘 원본 대조 기록 변경 · D1(모바일 휠 바텀시트 범위 밖)·D2(분 간격)·D6(목록 폭) 결정 변경",
+      "reverifyTrigger": "정본 buildTimePicker·buildTimePickerDropdown·buildTimePickerCell 의 geometry·variant·token 변경 · clock 아이콘 원본 대조 기록 변경 · D1(모바일 휠 바텀시트 — 2026-09-03 date-picker 작업에서 구현, river 검수 대기)·D2(분 간격)·D6(목록 폭) 결정 변경",
       "evidence": [
         "reports/ui-library/time-picker/1-inventory.md",
         "reports/ui-library/time-picker/2-canon-readiness.md",
@@ -491,7 +491,55 @@
         }
       ],
       "riverApproval": "approved 2026-09-03",
-      "promotionDecision": "approved 2026-09-03 · 독립 검증 🤖 component-verifier 시나리오 F 4회차 PASS · river UX 검수 2회(1차 지시 3건 반영 → 2차 목록 폭 지시 반영 후 승인)"
+      "promotionDecision": "approved 2026-09-03 · 독립 검증 🤖 component-verifier 시나리오 F 4회차 PASS · river UX 검수 2회(1차 지시 3건 반영 → 2차 목록 폭 지시 반영 후 승인)",
+      "pendingAddition": {
+        "what": "모바일 시간 휠 바텀시트(Content=TimeOnly/DateTime) — 정본 buildTimePickerMobileBottomSheet",
+        "builtIn": "date-picker work-id (2026-09-03)",
+        "status": "awaiting-river-review",
+        "why": "time-picker 의 approved 승격(2026-09-03)은 목록형 드롭다운까지만 검수한 결과다. 이 시트는 그 뒤에 추가됐으므로 river 검수를 받지 않았다. 검수 화면이 컴포넌트 단위로 승인 상태를 읽어 time-picker 를 「승인 완료(참고)」 탭에 놓기 때문에, 이 시트는 river 검수 대상에서 자동으로 빠진다(독립 검증 C-6 지적). 그래서 오케스트레이터가 5-human-review 요청에 이 시트를 명시적으로 포함시킨다.",
+        "evidence": [
+          "reports/ui-library/date-picker/3-build.md",
+          "reports/ui-library/date-picker/screens/mobile-wheel-timeonly.png",
+          "reports/ui-library/date-picker/screens/mobile-wheel-datetime.png"
+        ]
+      }
+    },
+    {
+      "id": "date-picker",
+      "kind": "core-component",
+      "legacyStatus": "implemented",
+      "uiLibraryStatus": "draft",
+      "dependencies": [
+        "tokens.css",
+        "typography.css",
+        "calendar.svg",
+        "chevron.svg",
+        "close.svg",
+        "components/button.css"
+      ],
+      "lastVerified": null,
+      "reverifyTrigger": "정본 buildDatePicker·buildCalendar·buildCalendarCell·buildCalendarTile·buildDatePickerBottomSheet 의 geometry·variant·token 변경 · calendar 아이콘 원본 대조 기록 변경 · D3(주 시작 요일)·D4(기간 역순)·D5(연/월 버튼)·D6(기간 hover) 결정 변경 · CU-1(주 시작 요일)·CU-2(연/월 헤더 버튼) 정본 반영 시",
+      "evidence": [
+        "reports/ui-library/date-picker/1-inventory.md",
+        "reports/ui-library/date-picker/2-canon-readiness.md",
+        "reports/ui-library/date-picker/3-build.md",
+        "reports/ui-library/date-picker/workflow-state.json"
+      ],
+      "note": "🧱 ui-library-builder 가 3-build 에서 구현했다. 자가 PASS 판정 없음 — 4-verification(🤖 component-verifier)·river UX 검수 전이라 uiLibraryStatus=draft 로 둔다. 정본 이탈 2건(CU-1·CU-2)이 있고 Gate 34 승인 인용이 아직 미수령이다(workflow-state.json blockers B5).",
+      "canonDeviations": [
+        {
+          "what": "주 시작 요일 — 웹은 일요일 시작, 시각 정본 buildCalendar(3591)는 월요일 시작",
+          "why": "river 결정 D3(2026-09-03) — 메타 정본 registry/components/date-picker.json HD-9 와 일치시킴",
+          "recordedIn": "ui-library/src/components/date-picker/manifest.json notInCanon.weekStart · 2-canon-readiness.md CU-1"
+        },
+        {
+          "what": "캘린더 헤더 — 정본 단일 라벨 1개를 연도·월 두 개의 누를 수 있는 버튼으로 분리",
+          "why": "river 결정 D5(2026-09-03) — 연/월 화면 진입 트리거가 정본에 없어 최소 신설(새 시각 부품 없음)",
+          "recordedIn": "ui-library/src/components/date-picker/manifest.json notInCanon.yearMonthHeaderButtons · 2-canon-readiness.md CU-2"
+        }
+      ],
+      "riverApproval": null,
+      "promotionDecision": null
     }
   ]
 }

@@ -76,7 +76,11 @@
     "./components/time-picker": "./dist/components/time-picker.js",
     "./components/time-picker/css": "./dist/components/time-picker.css",
     "./components/time-picker/html": "./dist/examples/time-picker.html",
-    "./components/time-picker/html/mobile": "./dist/examples/time-picker.mobile.html"
+    "./components/time-picker/html/mobile": "./dist/examples/time-picker.mobile.html",
+    "./components/date-picker": "./dist/components/date-picker.js",
+    "./components/date-picker/css": "./dist/components/date-picker.css",
+    "./components/date-picker/html": "./dist/examples/date-picker.html",
+    "./components/date-picker/html/mobile": "./dist/examples/date-picker.mobile.html"
   },
   "scripts": {
     "build": "node scripts/build.mjs",
