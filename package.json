@@ -121,7 +121,9 @@
     "components:presentation": "node scripts/presentation-layout-check.js",
     "components:geometry": "node scripts/component-geometry-check.js",
     "components:geometry:check": "node scripts/component-geometry-check.js --check",
-    "css:varcheck": "node scripts/css-var-reference-check.js"
+    "css:varcheck": "node scripts/css-var-reference-check.js",
+    "board:refresh": "node scripts/board-refresh.js",
+    "board:check": "node scripts/board-freshness-check.js"
   },
   "devDependencies": {
     "@figma/plugin-typings": "^1.97.0",

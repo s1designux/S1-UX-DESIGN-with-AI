@@ -1094,6 +1094,22 @@ try {
   fail(`Gate 45 실행 실패: ${e.message}`);
 }
 
+// ── Gate 47: Review Board Freshness (검수판 신선도) ────────────────
+// 검수판은 정본 화면을 이미지로 박아 둔다 — 정본이 바뀌어도 아무도 그 화면을 보지 않아
+// 조용히 낡는다(2026-09-04 date-picker 승인 다음날 '초안·화면 없음' 으로 표시됨).
+// 찍을 때 기록한 status·sourceFingerprint 를 지금 값과 대조한다.
+gateHeader('[Gate 47] 검수판신선도 검사기 (Review Board Freshness)');
+try {
+  const { spawnSync } = require('child_process');
+  const r = spawnSync(process.execPath, [path.join(__dirname, 'board-freshness-check.js')], { encoding: 'utf8' });
+  const out = `${r.stdout || ''}${r.stderr || ''}`;
+  for (const l of out.split('\n').filter((l) => l.includes('⚠️'))) warn(l.replace(/^\s*⚠️\s*/, '').trim());
+  if (r.status === 0) pass(out.match(/✅ Gate 47: (.*)/)?.[1] || '검수판이 현재 배포본과 같습니다');
+  else for (const l of out.split('\n').filter((l) => l.trim() && !l.includes('⚠️'))) fail(l.trim());
+} catch (e) {
+  fail(`Gate 47 실행 실패: ${e.message}`);
+}
+
 // ── Summary ───────────────────────────────────────────────────────
 if (VERBOSE || errors > 0 || warnings > 0) console.log('\n─────────────────────────────────────────────────────');
 const tally = `게이트 ${gates}개 · ✅ ${passes}건${VERBOSE ? '' : ' (상세: --verbose)'}`;

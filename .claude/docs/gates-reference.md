@@ -424,3 +424,15 @@ CSS 가 참조하는 `var(--이름)` 이 **실제로 정의된 토큰인지** �
 기존 부채는 `registry/governance/css-var-reference-baseline.json` 에 사유와 함께 동결하고 **새 참조만 차단**한다(래칫). 신설 시점 동결 6건은 전부 안내 화면 공용 CSS 의 삭제된 옛 토큰 참조이고, **배포본 CSS 는 0건**이다.
 
 판정부 `scripts/css-var-reference-check.js` — 적대 테스트 `--selftest` 6종(지어낸 이름 차단 · 실존 토큰 통과 · 폴백 통과 · 지역 정의 통과 · 중첩 `var()` 콤마 오독 방지 · 주석 제외)을 함께 싣는다. 단독 실행 `npm run css:varcheck`.
+
+### Gate 47: Review Board Freshness (검수판 신선도)
+
+저장소 밖(아티팩트)에 만든 **레거시 대응 검수판**은 정본 화면을 이미지로 박아 둔다. 정본이 바뀌어도 어떤 Gate·훅도 그 이미지를 보지 않아 **조용히 낡는다.** 찍을 때 기록해 둔 정본의 `status`·`sourceFingerprint`(`ui-library/dist/components/*.manifest.json`)를 지금 값과 대조한다.
+
+**왜 만들었나 (river 제보 2026-09-04):** 9/3에 만든 검수판이 date-picker 를 「초안(draft) — 보여드릴 화면 없음」으로 표시하고 있었다. 그런데 date-picker 는 **9/4에 approved 로 승격**됐다. 하루 만에 낡았고, river 가 눈으로 발견할 때까지 아무도 몰랐다. 같은 점검에서 「정본」 칸이 가로 스크롤 맨 오른쪽에 밀려 안 보이던 것도 드러났다(반복 패턴 `external-review-artifact-goes-stale`).
+
+판정: 선언서 `reports/legacy-crosswalk-board/board-manifest.json` 의 칸별 기록과 현재 배포본을 대조 — 승인 상태가 바뀌었거나 배포본 내용(지문)이 바뀌었으면 **error**. 기록이 아예 없으면 warn. `tracked:false` 로 선언한 칸(gnb 처럼 배포본 컴포넌트가 아닌 가이드 화면)은 감지 대상에서 빼고 warn 1줄로 남긴다.
+
+해소: `npm run board:refresh` — 선언대로 가이드 섹션을 다시 캡처해 `board.html` 의 이미지를 갈아끼우고 기록을 갱신한다. **게시(아티팩트 업로드)는 스크립트가 못 한다** — 그 뒤 Claude 가 같은 링크로 다시 올린다.
+
+판정부 `scripts/board-freshness-check.js` · 재캡처 `scripts/board-refresh.js` · 단독 실행 `npm run board:check`.

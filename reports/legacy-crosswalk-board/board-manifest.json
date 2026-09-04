@@ -1,0 +1,307 @@
+{
+  "_meta": {
+    "목적": "레거시 대응 검수판의 '정본(현재 배포본)' 칸을 어디서 찍어 오는지 선언한다. board:refresh 가 이 선언대로 다시 찍고, board:check 가 찍은 뒤 정본이 바뀌었는지 감시한다.",
+    "게시대상": "https://claude.ai/code/artifact/1d9843c0-fd38-48d5-9605-6ce8400e61a5",
+    "소스": "reports/legacy-crosswalk-board/board.html",
+    "주의": "게시(아티팩트 업로드)는 스크립트가 못 한다 — board.html 을 만든 뒤 Claude 가 같은 URL 로 다시 올린다."
+  },
+  "capture": {
+    "windowSize": "1240,821",
+    "outWidth": 1000,
+    "outHeight": 662,
+    "waitMs": 2600,
+    "port": 4173
+  },
+  "panes": [
+    {
+      "decision": "D-01",
+      "component": "chip",
+      "section": "chip",
+      "platform": "pc",
+      "scrollY": 0
+    },
+    {
+      "decision": "D-04",
+      "component": "input",
+      "section": "input",
+      "platform": "pc",
+      "scrollY": 0
+    },
+    {
+      "decision": "D-06",
+      "component": "input",
+      "section": "input",
+      "platform": "pc",
+      "scrollY": 0
+    },
+    {
+      "decision": "D-12",
+      "component": "button",
+      "section": "button",
+      "platform": "pc",
+      "scrollY": 0
+    },
+    {
+      "decision": "D-07",
+      "component": "select",
+      "section": "select",
+      "platform": "pc",
+      "scrollY": 0
+    },
+    {
+      "decision": "D-08",
+      "component": "dropdown",
+      "section": "dropdown",
+      "platform": "pc",
+      "scrollY": 0
+    },
+    {
+      "decision": "D-09",
+      "component": "time-picker",
+      "section": "time-picker",
+      "platform": "pc",
+      "scrollY": 0
+    },
+    {
+      "decision": "D-10",
+      "component": "date-picker",
+      "section": "date-picker",
+      "platform": "pc",
+      "scrollY": 0
+    },
+    {
+      "decision": "D-22",
+      "component": "radio",
+      "section": "radio",
+      "platform": "pc",
+      "scrollY": 0
+    },
+    {
+      "decision": "D-23",
+      "component": "pagination",
+      "section": "pagination",
+      "platform": "pc",
+      "scrollY": 0
+    },
+    {
+      "decision": "D-02",
+      "component": "filter-chip",
+      "section": "filter-chip",
+      "platform": "pc",
+      "scrollY": 0
+    },
+    {
+      "decision": "D-03",
+      "component": "input",
+      "section": "input",
+      "platform": "pc",
+      "scrollY": 0
+    },
+    {
+      "decision": "D-11",
+      "component": "date-picker",
+      "section": "date-picker",
+      "platform": "pc",
+      "scrollY": 1140
+    },
+    {
+      "decision": "D-14",
+      "component": "table",
+      "section": "table",
+      "platform": "pc",
+      "scrollY": 0
+    },
+    {
+      "decision": "D-15",
+      "component": "modal",
+      "section": "modal",
+      "platform": "pc",
+      "scrollY": 0
+    },
+    {
+      "decision": "D-16",
+      "component": "tab",
+      "section": "tab",
+      "platform": "pc",
+      "scrollY": 0
+    },
+    {
+      "decision": "D-17",
+      "component": "mobile-header",
+      "section": "mobile-header",
+      "platform": "mobile",
+      "scrollY": 0
+    },
+    {
+      "decision": "D-18",
+      "component": "gnb",
+      "section": "gnb",
+      "platform": "pc",
+      "scrollY": 0,
+      "tracked": false,
+      "trackedNote": "gnb 는 웹 배포본(dist) 컴포넌트가 아니라 가이드 사이트에만 있는 화면입니다 — 낡음 자동 감지 대상이 아니라 사람이 봅니다"
+    },
+    {
+      "decision": "D-20",
+      "component": "select",
+      "section": "select",
+      "platform": "pc",
+      "scrollY": 0
+    },
+    {
+      "decision": "D-21",
+      "component": "button",
+      "section": "button",
+      "platform": "pc",
+      "scrollY": 0
+    },
+    {
+      "decision": "D-05",
+      "component": "modal",
+      "section": "modal",
+      "platform": "pc",
+      "scrollY": 0
+    },
+    {
+      "decision": "D-13",
+      "component": "button",
+      "section": "button",
+      "platform": "pc",
+      "scrollY": 0
+    }
+  ],
+  "provenance": {
+    "D-01": {
+      "component": "chip",
+      "capturedAt": "2026-09-04",
+      "status": "approved",
+      "sourceFingerprint": "14f2d277070cf4b9be28249cd1fc597b146341481dc6921572de8f61ef98bf47"
+    },
+    "D-04": {
+      "component": "input",
+      "capturedAt": "2026-09-04",
+      "status": "approved",
+      "sourceFingerprint": "088268d0d78903095d15c4f953114ecca11f4b7b09effee3e1c7a15d27b24223"
+    },
+    "D-06": {
+      "component": "input",
+      "capturedAt": "2026-09-04",
+      "status": "approved",
+      "sourceFingerprint": "088268d0d78903095d15c4f953114ecca11f4b7b09effee3e1c7a15d27b24223"
+    },
+    "D-12": {
+      "component": "button",
+      "capturedAt": "2026-09-04",
+      "status": "approved",
+      "sourceFingerprint": "6288663cd26b8ee01bd3a910fb15d4e59e29bcb84bddacd085f44fd7078dec46"
+    },
+    "D-07": {
+      "component": "select",
+      "capturedAt": "2026-09-04",
+      "status": "approved",
+      "sourceFingerprint": "34fea07d4f4166c83e166f945762dadc6311a3dd4278125b03b127035873ac74"
+    },
+    "D-08": {
+      "component": "dropdown",
+      "capturedAt": "2026-09-04",
+      "status": "approved",
+      "sourceFingerprint": "5d6d77b5896a7606697a5893224dec470eb9628dbb50743e2b1bf2866157f6ef"
+    },
+    "D-09": {
+      "component": "time-picker",
+      "capturedAt": "2026-09-04",
+      "status": "approved",
+      "sourceFingerprint": "dd5c820597c456e2be4bfde0b04cbf50173873c93697f5464c73ddeceb16908b"
+    },
+    "D-10": {
+      "component": "date-picker",
+      "capturedAt": "2026-09-04",
+      "status": "approved",
+      "sourceFingerprint": "bfce9e76a3c82d2932121d6a6af6b36100925230b234041d8f56345d1eb061d5"
+    },
+    "D-22": {
+      "component": "radio",
+      "capturedAt": "2026-09-04",
+      "status": "approved",
+      "sourceFingerprint": "01f036e3492fed1b35b0e012fd06a5d2947470f6a29bf6e0ba52d319e12829f5"
+    },
+    "D-23": {
+      "component": "pagination",
+      "capturedAt": "2026-09-04",
+      "status": "approved",
+      "sourceFingerprint": "e6b63ffae872abfdb045b7674d97b43842b6ef3e5e6ea304d3e322a5853f4bd0"
+    },
+    "D-02": {
+      "component": "filter-chip",
+      "capturedAt": "2026-09-04",
+      "status": "approved",
+      "sourceFingerprint": "c10ce887d97d0ecabfc027554ee7488f29c6f8ce121028e446311b9413be3fe9"
+    },
+    "D-03": {
+      "component": "input",
+      "capturedAt": "2026-09-04",
+      "status": "approved",
+      "sourceFingerprint": "088268d0d78903095d15c4f953114ecca11f4b7b09effee3e1c7a15d27b24223"
+    },
+    "D-11": {
+      "component": "date-picker",
+      "capturedAt": "2026-09-04",
+      "status": "approved",
+      "sourceFingerprint": "bfce9e76a3c82d2932121d6a6af6b36100925230b234041d8f56345d1eb061d5"
+    },
+    "D-14": {
+      "component": "table",
+      "capturedAt": "2026-09-04",
+      "status": "approved",
+      "sourceFingerprint": "84f4bf6b408ad8fec1206a6fa8cc914544b3b0bd4967f3703050ba0a82bba985"
+    },
+    "D-15": {
+      "component": "modal",
+      "capturedAt": "2026-09-04",
+      "status": "approved",
+      "sourceFingerprint": "5ff5ac97204469abf9f51cb93727f4af32ec2d36a9a9f2d5ffd9a377a0ffa3d5"
+    },
+    "D-16": {
+      "component": "tab",
+      "capturedAt": "2026-09-04",
+      "status": "approved",
+      "sourceFingerprint": "afb13096268e35b4e698660af49cc106607c0769f8c7261114bb79fc7a7f88e6"
+    },
+    "D-17": {
+      "component": "mobile-header",
+      "capturedAt": "2026-09-04",
+      "status": "approved",
+      "sourceFingerprint": "fe5cf7a9903c35da6f2b57832516e1b2f9cb0c787101c1aa4d4cb3edfd6849af"
+    },
+    "D-18": {
+      "component": "gnb",
+      "capturedAt": "2026-09-04",
+      "status": "미확인",
+      "sourceFingerprint": null
+    },
+    "D-20": {
+      "component": "select",
+      "capturedAt": "2026-09-04",
+      "status": "approved",
+      "sourceFingerprint": "34fea07d4f4166c83e166f945762dadc6311a3dd4278125b03b127035873ac74"
+    },
+    "D-21": {
+      "component": "button",
+      "capturedAt": "2026-09-04",
+      "status": "approved",
+      "sourceFingerprint": "6288663cd26b8ee01bd3a910fb15d4e59e29bcb84bddacd085f44fd7078dec46"
+    },
+    "D-05": {
+      "component": "modal",
+      "capturedAt": "2026-09-04",
+      "status": "approved",
+      "sourceFingerprint": "5ff5ac97204469abf9f51cb93727f4af32ec2d36a9a9f2d5ffd9a377a0ffa3d5"
+    },
+    "D-13": {
+      "component": "button",
+      "capturedAt": "2026-09-04",
+      "status": "approved",
+      "sourceFingerprint": "6288663cd26b8ee01bd3a910fb15d4e59e29bcb84bddacd085f44fd7078dec46"
+    }
+  }
+}
