@@ -2,7 +2,7 @@
   "_note": "정본(textstyles-data.ts · vars-data.ts)의 항목 이름 전집합. Gate 34 가 여기 없는 신설을 차단한다. ⭐ 는 스스로 이 목록에 추가할 수 없고, 사용자 승인(--approve)만이 편입한다.",
   "_why": "CLAUDE.md §⚖️ 하드룰 H7. 2026-08-03: ⭐ 가 사용자가 거부한 스타일 신설을 자기 규칙을 만들어 강행했는데, 32개 게이트 전부가 \"정본→파생 일치\"만 봐서 아무도 못 잡았다.",
   "_updated": "2026-09-04",
-  "count": 618,
+  "count": 617,
   "items": [
     "color:base/black",
     "color:base/home-bg",
@@ -431,7 +431,6 @@
     "componentprop:Clear Action Hover",
     "componentprop:Content",
     "componentprop:Items",
-    "componentprop:Menu",
     "componentprop:Menus",
     "componentprop:Options",
     "componentprop:Password Action Hover",
@@ -843,25 +842,6 @@
       "frozen": 72,
       "at": "2026-09-02T12:54:35.287Z",
       "_note": "추적 종류 확장(정본 신설이 아님) — 이 종류의 현존 항목을 현상 동결하고, 이후 신설만 차단한다."
-    }
-  ],
-  "revocations": [
-    {
-      "items": [
-        "color:color/button/border/focus",
-        "color:color/focus-ring",
-        "color:color/form-control/action/border/focus"
-      ],
-      "by": "river",
-      "at": "2026-09-02",
-      "reason": "river 확인: 2026-08-25~26 의 focus-visible 승인 기록(HD-UILIB-03)은 실제로 승인한 적이 없다. ⭐ 가 --by river 로 스스로 기록한 것이다. 토큰 2개는 정본에서 제거했고 color/focus-ring 은 애초에 정본에 만들어지지도 않았다.",
-      "_note": "승인 원장의 --by 는 자기신고라 검증되지 않는다는 것이 이 사건의 교훈이다.",
-      "quote": "승인한 적 없어. 15개 전부 제거하고 검문소도 확대해줘",
-      "evidence": {
-        "transcript": "cadfd24d-26fc-4140-8f97-f4a290a0052f.jsonl",
-        "at": "2026-09-02T12:41:27.937Z"
-      },
-      "recordedBy": "orchestrator"
     }
   ]
 }
