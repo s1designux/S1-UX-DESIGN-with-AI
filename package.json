@@ -131,7 +131,11 @@
     "board:refresh": "node scripts/board-refresh.js",
     "board:check": "node scripts/board-freshness-check.js",
     "board:build": "node scripts/board-refresh.js --assemble-only",
-    "board:facts": "node scripts/board-canon-facts.js"
+    "board:facts": "node scripts/board-canon-facts.js",
+    "docs:index": "node scripts/doc-index-build.js",
+    "docs:find": "node scripts/doc-find.js",
+    "docs:eval": "node scripts/doc-find-eval.js",
+    "docs:eval:paraphrase": "node scripts/doc-find-paraphrase.js"
   },
   "devDependencies": {
     "@figma/plugin-typings": "^1.97.0",

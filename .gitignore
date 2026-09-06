@@ -47,3 +47,6 @@ data/.figma-raw-metadata.json
 
 # 검수판 게시본 — 뼈대(board.template.html) + screens/**.png 에서 조립한다 (npm run board:build)
 reports/legacy-crosswalk-board/board.html
+
+# 로컬 임베딩 색인 캐시 (지우고 npm run docs:index 로 재생성)
+.claude/cache/
