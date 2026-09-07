@@ -29,6 +29,8 @@ const { StringDecoder } = require('string_decoder');
 const ROOT = path.resolve(__dirname, '..');
 const quiet = process.argv.includes('--quiet');
 const DIST = path.join(ROOT, 'ui-library/dist');
+/* 「한 표로 합쳐야 할 유형」의 정본 선언 — 검사기가 §A-5 를 조준하는 데 쓴다(새 기준을 만들지 않는다). */
+const presentationPolicy = JSON.parse(fs.readFileSync(path.join(ROOT, 'registry/governance/component-presentation-policy.json'), 'utf8'));
 const MIME = {
   '.html': 'text/html; charset=utf-8', '.js': 'text/javascript; charset=utf-8',
   '.mjs': 'text/javascript; charset=utf-8', '.css': 'text/css; charset=utf-8',
@@ -201,9 +203,26 @@ async function main() {
           if (/uilg-size-dim[^>]*>\s*(\d+\s*(px|×))/i.test(mobile) || /<span>\s*\d+\s*(px|×)/i.test(mobile)) {
             failures.push(`${id} Mobile 표에 크기 수치 꼬리표가 있습니다 — 크기가 한 가지면 표기하지 않습니다`);
           }
-          /* 유형(variant)은 한 표에서 함께 본다 — 사이 가로선으로 가르지 않는다. */
-          if (/<hr class="uilg-separator"/.test(mobile)) {
-            failures.push(`${id} Mobile 에 유형 사이 가로선이 있습니다 — 크기가 한 가지면 유형을 한 표에서 함께 봅니다`);
+          /* 유형(variant)은 한 표에서 함께 본다 — 사이 가로선으로 가르지 않는다.
+             §A-5 가 막는 것은 「한 표로 합쳐야 할 유형」을 선으로 가르는 것이지 모든 선이 아니다.
+             무엇이 「합쳐야 할 유형」인지는 이미 정본급 선언이 있다 —
+             `registry/governance/component-presentation-policy.json` 의 `variants`
+             (button=primary/secondary/blue-line · chip·filter-chip=line/solid). 새 기준을 만들지 않고 그것을 쓴다.
+               · `variants` 를 선언한 컴포넌트 → 그 유형들은 한 표에 합쳐야 하므로 Mobile 가로선 0개.
+                 (블록으로 갈라 그 사이에 선을 넣는 형태도 이 조건에 걸린다 — 개수 비교만으로는 새어나갔다.
+                  🤖 component-verifier 2026-09-07 4회차 A-2 가 그 구멍을 찾았다.)
+               · `variants` 가 없는 컴포넌트 → Mobile 에 남는 블록은 합칠 수 없는 별개 섹션이므로
+                 PC 와 같이 가로선으로 구분한다(river 결정 HD-7, 2026-09-07). 다만 선이 블록보다 많으면
+                 표 안을 가른 것이므로 실패. */
+          const mobileBlocks = (mobile.match(/class="uilg-variant-block"/g) || []).length;
+          const mobileRules = (mobile.match(/<hr class="uilg-separator"/g) || []).length;
+          const declaredVariants = presentationPolicy.components?.[id]?.variants;
+          if (Array.isArray(declaredVariants) && declaredVariants.length > 0) {
+            if (mobileRules > 0) {
+              failures.push(`${id} Mobile 에 유형 사이 가로선이 ${mobileRules}개 있습니다 — 유형(${declaredVariants.join('·')})은 크기가 한 가지면 한 표에서 함께 봅니다`);
+            }
+          } else if (mobileRules > mobileBlocks) {
+            failures.push(`${id} Mobile 가로선이 ${mobileRules}개로 섹션 블록 ${mobileBlocks}개보다 많습니다 — 표 안 유형을 선으로 가른 것입니다`);
           }
         }
 

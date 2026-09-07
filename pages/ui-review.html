@@ -420,7 +420,7 @@
 
     <header class="review-header">
       <p class="review-eyebrow">UI LIBRARY · @S1/UI 0.1.0</p>
-      <h1 class="review-title">Base Input · Button · Checkbox · Radio · Toggle · Chip · Select · Dropdown · Filter Chip · Textarea · Multi Toggle 실제 배포본 검수</h1>
+      <h1 class="review-title">Base Input(+Password·Search) · Button · Checkbox · Radio · Toggle · Chip · Select · Dropdown · Filter Chip · Textarea · Multi Toggle 실제 배포본 검수</h1>
       <p class="review-description">이 화면과 퍼블리셔·개발자가 받는 파일은 같은 <strong>ui-library/dist</strong>를 사용합니다. 아래 UI를 직접 누르고 입력하면서 모양과 사용성을 확인해 주세요.</p>
       <div class="review-badges" aria-label="검수 범위">
         <span class="review-badge">PC · Mobile</span>
@@ -431,8 +431,8 @@
         <span class="review-badge">Textarea · Multi Toggle (신규)</span>
         <span class="review-badge">Modal (신규)</span>
         <span class="review-badge">Table (신규)</span>
-        <span class="review-badge">검수본 2026-09-04 · 10</span>
-        <span class="review-badge">Password · Search는 다음 단계</span>
+        <span class="review-badge">Password Field · Search Input (신규 — Input 옵션)</span>
+        <span class="review-badge">검수본 2026-09-04 · 11</span>
       </div>
     </header>
 
@@ -442,6 +442,8 @@
         <li><strong>Tab 키</strong>로 입력칸에 들어가면 테두리가 파랗게 바뀌고 커서가 <strong>값 끝</strong>에 놓이는지 확인합니다(오류·정상확인·읽기전용에서도 같습니다). 마우스로 누르면 누른 자리에 커서가 놓이고, 비활성 칸은 건너뜁니다. Button의 초점 표시는 브라우저 기본 표시를 그대로 씁니다.</li>
         <li>Button 위에 마우스를 올리고 눌러서 Hover·Pressed 반응을 확인합니다.</li>
         <li>Input에 직접 입력해 remove 아이콘이 나타나는지, 아이콘 위 Hover 배경과 누른 뒤 값 삭제·초점 복귀를 확인합니다.</li>
+        <li>Password Field는 눈 아이콘을 눌러 표시/숨김이 바뀌고 아이콘(감김↔뜬눈)·이름(보기↔숨기기)이 함께 바뀌는지, 누른 뒤 초점이 입력칸으로 돌아오는지 확인합니다.</li>
+        <li>Search Input은 값을 입력한 뒤 <strong>Enter</strong> 와 <strong>돋보기 클릭</strong> 둘 다 검색 실행 문구가 뜨는지, 값이 있을 때만 지우기가 나타나고(초점과 무관) 돋보기는 항상 보이는지 확인합니다.</li>
         <li>Checkbox·Radio는 <strong>상자만 있는 기본형</strong>과 <strong>라벨이 붙은 형태</strong>를 나란히 놓았습니다. 라벨을 눌러도 선택되는지, 라디오는 화살표 키로 옮겨지는지 확인합니다.</li>
         <li>Toggle은 눌러서 켜고 끄고, Tab·Space로도 바뀌는지 확인합니다. 비활성은 눌러도 바뀌지 않아야 합니다.</li>
         <li>Chip은 눌러서 선택하고 다시 눌러 해제되는지, Line·Solid의 선택 표시가 구분되는지 확인합니다.</li>
@@ -468,9 +470,25 @@
     <section class="review-section" aria-labelledby="input-review-title" data-component-id="input">
       <div>
         <h2 class="review-section-title" id="input-review-title">1. Base Input</h2>
-        <p class="review-note">안내 문구는 선택 사항입니다. Editing에서는 값이 있을 때 remove 아이콘이 나타나며, PC에서는 아이콘 위에 마우스를 올리면 해당 누르는 영역에만 Hover 배경이 생깁니다. 비밀번호 보기/숨기기와 검색 실행은 다음 단계입니다.</p>
+        <p class="review-note">안내 문구는 선택 사항입니다. Editing에서는 값이 있을 때 remove 아이콘이 나타나며, PC에서는 아이콘 위에 마우스를 올리면 해당 누르는 영역에만 Hover 배경이 생깁니다.</p>
       </div>
       <div class="review-matrix" id="input-review-matrix"></div>
+    </section>
+
+    <section class="review-section" aria-labelledby="password-review-title" data-component-id="password-field">
+      <div>
+        <h2 class="review-section-title" id="password-review-title">1b. Password Field (Input 옵션)</h2>
+        <p class="review-note">별도 컴포넌트가 아니라 Base Input 조립입니다 — type=password + 눈 액션. 누르면 표시/숨김이 전환되고 Input으로 초점이 돌아옵니다. 트레일 순서는 [눈][지우기](2px 간격)입니다. 크기·상태·break는 Base Input과 동일합니다.</p>
+      </div>
+      <div class="review-matrix" id="password-review-matrix"></div>
+    </section>
+
+    <section class="review-section" aria-labelledby="search-review-title" data-component-id="search-input">
+      <div>
+        <h2 class="review-section-title" id="search-review-title">1c. Search Input (Input 옵션)</h2>
+        <p class="review-note">별도 컴포넌트가 아니라 Base Input 조립입니다 — data-mode="search" + 돋보기 액션(항상 표시). 상태는 Default·값 있음(지우기+돋보기)·Disabled 3종뿐입니다. 돋보기 클릭 또는 Enter 키 둘 다 s1:input:search 이벤트를 냅니다 — 아래에서 직접 입력하고 Enter를 눌러 확인하세요.</p>
+      </div>
+      <div class="review-matrix" id="search-review-matrix"></div>
     </section>
 
     <section class="review-section" aria-labelledby="button-review-title" data-component-id="button">
@@ -609,7 +627,7 @@
 
     <footer class="review-footer">
       <span id="review-runtime-status">배포 모듈 확인 중…</span>
-      <span>후속 범위: Password Field → Search Input. 정본과 Registry가 준비된 뒤 같은 방식으로 이 화면에 추가합니다.</span>
+      <span>Password Field · Search Input 은 이번 검수본부터 Base Input 옵션으로 포함됩니다(별도 컴포넌트 아님).</span>
     </footer>
   </main>
 
@@ -695,6 +713,70 @@
             <div class="review-grid">${stateSamples}</div>
           </div>
           ${sizeSamples}
+        </article>`;
+    }
+
+    /* ── Password Field — Base Input 옵션(별도 컴포넌트 아님). trail = [눈][지우기]. ── */
+    function passwordMarkup({ label, value = "", breakName, size, visible = false, disabled = false }) {
+      uniqueId += 1;
+      const id = `review-password-${uniqueId}`;
+      return `
+        <div data-s1-component="input" data-size="${size}" data-break="${breakName}">
+          <label data-s1-part="label" for="${id}">${label}</label>
+          <div data-s1-part="field">
+            <input id="${id}" data-s1-part="control" type="${visible ? "text" : "password"}" placeholder="비밀번호를 입력하세요" value="${value}"${disabled ? " disabled" : ""}>
+            <button type="button" data-s1-part="action" data-action="password" aria-pressed="${visible}" aria-label="${visible ? "비밀번호 숨기기" : "비밀번호 보기"}"><span data-s1-part="action-icon" aria-hidden="true"></span></button>
+            <button type="button" data-s1-part="action" data-action="clear" aria-label="비밀번호 지우기" hidden><span data-s1-part="action-icon" aria-hidden="true"></span></button>
+          </div>
+        </div>`;
+    }
+
+    function renderPasswordFieldPanel(combo) {
+      const stateSamples = [
+        sample("숨김(기본) · 직접 입력", passwordMarkup({ label: "비밀번호", breakName: combo.breakName, size: combo.inputSize })),
+        sample("값 있음 · 초점을 주면 지우기 등장", passwordMarkup({ label: "비밀번호", value: "1234abcd", breakName: combo.breakName, size: combo.inputSize })),
+        sample("표시 중 · type=text", passwordMarkup({ label: "비밀번호", value: "1234abcd", visible: true, breakName: combo.breakName, size: combo.inputSize })),
+        sample("Disabled · 실제 disabled", passwordMarkup({ label: "비밀번호", value: "1234abcd", disabled: true, breakName: combo.breakName, size: combo.inputSize }))
+      ].join("");
+      return `
+        <article class="review-panel" data-theme="${combo.theme}">
+          ${panelHeading(combo, "input")}
+          <div class="review-group">
+            <h4 class="review-group-title">직접 눌러보기 — 눈 아이콘으로 표시/숨김 전환</h4>
+            <div class="review-grid">${stateSamples}</div>
+          </div>
+        </article>`;
+    }
+
+    /* ── Search Input — Base Input 옵션(별도 컴포넌트 아님). trail = [지우기][돋보기], 돋보기 항상 표시. ── */
+    function searchMarkup({ label, value = "", breakName, size, disabled = false }) {
+      uniqueId += 1;
+      const id = `review-search-${uniqueId}`;
+      return `
+        <div data-s1-component="input" data-size="${size}" data-break="${breakName}" data-mode="search">
+          <label data-s1-part="label" for="${id}">${label}</label>
+          <div data-s1-part="field">
+            <input id="${id}" data-s1-part="control" placeholder="검색어를 입력하세요" value="${value}"${disabled ? " disabled" : ""}>
+            <button type="button" data-s1-part="action" data-action="clear" aria-label="검색어 지우기"${value ? "" : " hidden"}><span data-s1-part="action-icon" aria-hidden="true"></span></button>
+            <button type="button" data-s1-part="action" data-action="search" aria-label="검색"${disabled ? " disabled" : ""}><span data-s1-part="action-icon" aria-hidden="true"></span></button>
+          </div>
+        </div>`;
+    }
+
+    function renderSearchInputPanel(combo) {
+      const stateSamples = [
+        sample("Default · 직접 입력 후 Enter", searchMarkup({ label: "검색", breakName: combo.breakName, size: combo.inputSize })),
+        sample("값 있음 · 지우기+돋보기", searchMarkup({ label: "검색", value: "디자인 시스템", breakName: combo.breakName, size: combo.inputSize })),
+        sample("Disabled · 실제 disabled", searchMarkup({ label: "검색", disabled: true, breakName: combo.breakName, size: combo.inputSize }))
+      ].join("");
+      return `
+        <article class="review-panel" data-theme="${combo.theme}">
+          ${panelHeading(combo, "input")}
+          <div class="review-group">
+            <h4 class="review-group-title">직접 눌러보기 — 값을 입력하고 Enter 또는 돋보기 클릭</h4>
+            <p class="review-panel-description" data-search-live-status>검색을 실행하면 여기에 결과가 표시됩니다.</p>
+            <div class="review-grid">${stateSamples}</div>
+          </div>
         </article>`;
     }
 
@@ -1656,6 +1738,8 @@
     /* Mobile Bottom Nav · Mobile Header 는 런타임이 없다(jsRequired:false) — CSS·네이티브 ARIA만으로 상태가 반영된다. */
 
     document.querySelector("#input-review-matrix").innerHTML = combinations.map(renderInputPanel).join("");
+    document.querySelector("#password-review-matrix").innerHTML = combinations.map(renderPasswordFieldPanel).join("");
+    document.querySelector("#search-review-matrix").innerHTML = combinations.map(renderSearchInputPanel).join("");
     document.querySelector("#button-review-matrix").innerHTML = combinations.map(renderButtonPanel).join("");
     document.querySelector("#checkbox-review-matrix").innerHTML = controlThemes.map((combo) => renderControlPanel("checkbox", combo)).join("");
     document.querySelector("#radio-review-matrix").innerHTML = controlThemes.map((combo) => renderControlPanel("radio", combo)).join("");
@@ -1690,6 +1774,12 @@
       const api = S1UI.modal.init(root);
       opener?.addEventListener("click", () => api?.open());
       root.querySelectorAll("[data-modal-close]").forEach((button) => button.addEventListener("click", () => api?.close({ reason: "footer-button" })));
+    });
+
+    /* Search Input — Enter·돋보기 클릭 둘 다 s1:input:search 를 낸다(river D2). 실제로 눈으로 확인. */
+    document.addEventListener("s1:input:search", (event) => {
+      const status = event.target.closest("article.review-panel")?.querySelector("[data-search-live-status]");
+      if (status) status.textContent = `검색 실행됨 — 값: "${event.detail.value}"`;
     });
 
     const focusStatus = document.querySelector("#review-live-status");

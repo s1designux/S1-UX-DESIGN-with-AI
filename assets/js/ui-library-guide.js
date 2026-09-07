@@ -4,7 +4,7 @@ const componentConfig = {
   input: {
     title: "Input",
     description: "한 줄 정보를 입력받는 기본 컴포넌트입니다. 라벨과 안내 메시지는 필요에 따라 함께 사용합니다.",
-    approvedScope: { pc: "Base Input · 상태 7종 · PC 3크기 · Mobile 1크기 · remove 동작", mobile: "Base Input · 상태 7종 · remove 동작" },
+    approvedScope: { pc: "Base Input · 상태 7종 · PC 3크기 · Mobile 1크기 · remove 동작 · Password Field(눈 액션) · Search Input(3상태, 데스크탑용 XSM 대표)", mobile: "Base Input · 상태 7종 · remove 동작 · Password Field(눈 액션) · Search Input(3상태)" },
     runtime: S1UI.input
   },
   button: {
@@ -213,6 +213,64 @@ function inputMarkup({
         </button>
       </div>
       ${message ? `<p id="${messageId}" data-s1-part="message">${messageText}</p>` : ""}
+    </div>`;
+}
+
+/* Password Field — Base Input 옵션(별도 컴포넌트 아님, river D1). trail = [눈][지우기]. */
+function passwordMarkup({
+  value = "",
+  size = "md",
+  breakName = "pc",
+  visible = false,
+  hasClear = false,
+  disabled = false,
+  isPreview = false,
+  forceState = ""
+}) {
+  inputId += 1;
+  const id = `guide-password-${inputId}`;
+  const previewClass = isPreview ? " is-preview" : "";
+  const force = forceState ? ` data-force-state="${forceState}"` : "";
+  const showClear = hasClear && value.length > 0;
+  return `
+    <div data-s1-component="input" data-size="${size}" data-break="${breakName}"${force} class="${previewClass}">
+      <div data-s1-part="field">
+        <input id="${id}" data-s1-part="control" type="${visible ? "text" : "password"}" aria-label="비밀번호" placeholder="비밀번호를 입력하세요" value="${escapeHtml(value)}"${disabled ? " disabled" : ""}>
+        <button type="button" data-s1-part="action" data-action="password" aria-pressed="${visible}" aria-label="${visible ? "비밀번호 숨기기" : "비밀번호 보기"}"${disabled ? " disabled" : ""}>
+          <span data-s1-part="action-icon" aria-hidden="true"></span>
+        </button>
+        <button type="button" data-s1-part="action" data-action="clear" aria-label="비밀번호 지우기"${showClear ? "" : " hidden"}>
+          <span data-s1-part="action-icon" aria-hidden="true"></span>
+        </button>
+      </div>
+    </div>`;
+}
+
+/* Search Input — Base Input 옵션(별도 컴포넌트 아님, river D1). trail = [지우기][돋보기], 돋보기 항상 표시. */
+function searchMarkup({
+  value = "",
+  size = "md",
+  breakName = "pc",
+  disabled = false,
+  isPreview = false,
+  forceState = ""
+}) {
+  inputId += 1;
+  const id = `guide-search-${inputId}`;
+  const previewClass = isPreview ? " is-preview" : "";
+  const force = forceState ? ` data-force-state="${forceState}"` : "";
+  const showClear = !disabled && value.length > 0;
+  return `
+    <div data-s1-component="input" data-size="${size}" data-break="${breakName}" data-mode="search"${force} class="${previewClass}">
+      <div data-s1-part="field">
+        <input id="${id}" data-s1-part="control" aria-label="검색" placeholder="검색어를 입력하세요" value="${escapeHtml(value)}"${disabled ? " disabled" : ""}>
+        <button type="button" data-s1-part="action" data-action="clear" aria-label="검색어 지우기"${showClear ? "" : " hidden"}>
+          <span data-s1-part="action-icon" aria-hidden="true"></span>
+        </button>
+        <button type="button" data-s1-part="action" data-action="search" aria-label="검색"${disabled ? " disabled" : ""}>
+          <span data-s1-part="action-icon" aria-hidden="true"></span>
+        </button>
+      </div>
     </div>`;
 }
 
@@ -645,15 +703,77 @@ function inputStateMatrix() {
     </div>`;
   }
 
+  /* ── 4) Password Field · Search Input — Input 의 옵션 조립(river D1, 별도 컴포넌트 아님) ── */
+  function passwordSection(breakName) {
+    const size = breakName === "mobile" ? "md" : "xsm";
+    const cells = [
+      ["숨김(기본)", { breakName, size, value: "" }],
+      ["값 있음 · 지우기 표시", { breakName, size, value: "1234abcd", hasClear: true }],
+      ["표시 중", { breakName, size, value: "1234abcd", visible: true, hasClear: true }],
+      ["Disabled", { breakName, size, value: "1234abcd", disabled: true }]
+    ];
+    const header = cells.map(([label]) => `<div class="matrix-col-header">${label}</div>`).join("");
+    const row = cells.map(([, opts]) =>
+      `<div class="comp-state-cell">${passwordMarkup({ isPreview: true, ...opts })}</div>`
+    ).join("");
+    return `<div class="uilg-variant-block">
+      <div class="variant-label">Password Field</div>
+      <p class="uilg-demo-note">Base Input 조립 — type=password + 눈 액션. 크기·상태·break는 Base Input과 동일합니다. 트레일 순서는 [눈][지우기](2px 간격)입니다.</p>
+      <div class="comp-action-top">
+        <div class="matrix-col-header-action">Action</div>
+        <div class="uilg-input-action">${passwordMarkup({ breakName, size, isPreview: false })}</div>
+      </div>
+      <div class="comp-state-matrix uilg-input-constrained" style="grid-template-columns: repeat(${cells.length}, 180px);">
+        ${header}${row}
+      </div>
+    </div>`;
+  }
+
+  function searchSection(breakName) {
+    const size = breakName === "mobile" ? "md" : "xsm";
+    const cells = [
+      ["Default", { breakName, size, value: "" }],
+      ["값 있음 · 지우기+돋보기", { breakName, size, value: "디자인 시스템" }],
+      ["Disabled", { breakName, size, value: "", disabled: true }]
+    ];
+    const header = cells.map(([label]) => `<div class="matrix-col-header">${label}</div>`).join("");
+    const row = cells.map(([, opts]) =>
+      `<div class="comp-state-cell">${searchMarkup({ isPreview: true, ...opts })}</div>`
+    ).join("");
+    return `<div class="uilg-variant-block">
+      <div class="variant-label">Search Input</div>
+      <p class="uilg-demo-note">Base Input 조립 — data-mode="search" + 돋보기 액션. 상태는 Default·값 있음·Disabled 3종뿐입니다(river 결정). 돋보기 클릭 또는 Enter로 s1:input:search 이벤트가 발생합니다 — 아래 실제로 눌러보기에서 확인하세요.</p>
+      <div class="comp-action-top">
+        <div class="matrix-col-header-action">Action</div>
+        <div class="uilg-input-action">${searchMarkup({ breakName, size, isPreview: false })}</div>
+        <p class="uilg-demo-note" data-search-live-note>검색을 실행하면 여기에 값이 표시됩니다.</p>
+      </div>
+      <div class="comp-state-matrix uilg-input-constrained" style="grid-template-columns: repeat(${cells.length}, 180px);">
+        ${header}${row}
+      </div>
+    </div>`;
+  }
+
   const pcContent = `
     ${actionSection("pc")}
     ${sizeSection()}
     <hr class="uilg-separator" style="margin-block: 12px 16px;">
-    ${stateSection("pc")}`;
+    ${stateSection("pc")}
+    <hr class="uilg-separator">
+    ${passwordSection("pc")}
+    <hr class="uilg-separator">
+    ${searchSection("pc")}`;
 
+  /* §A-5 가 막는 것은 「한 표로 합쳐야 할 유형」을 가로선으로 가르는 것이다.
+     Password·Search 는 서로 모양이 달라 한 표로 합칠 수 없는 별개 섹션이므로 PC 와 같이 가로선으로 구분한다
+     (river 결정 HD-7, 2026-09-07 — 모바일에만 선이 없어 제목이 앞 표에 붙어 보였다). */
   const mobileContent = `
     ${actionSection("mobile")}
-    ${stateSection("mobile")}`;
+    ${stateSection("mobile")}
+    <hr class="uilg-separator">
+    ${passwordSection("mobile")}
+    <hr class="uilg-separator">
+    ${searchSection("mobile")}`;
 
   return `
     <div class="platform-section platform-section-pc">
@@ -1688,8 +1808,9 @@ function timePickerStateMatrix() {
     <hr class="uilg-separator">
     ${cellBlock}`;
 
-  /* Mobile 은 유형을 표 안에서 함께 보이므로 유형 사이 가로선을 두지 않는다
-     (표출 정책 singleValueAxis · 렌더 검사 ②). */
+  /* 유형(표 안 열)은 그대로 표에서 함께 본다 — 그 사이를 가로선으로 가르지 않는다(§A-5).
+     아래 cellBlock·휠 바텀시트는 합칠 수 없는 별개 섹션이라 PC 와 같이 가로선으로 구분한다
+     (river 결정 HD-7, 2026-09-07). */
   /* 모바일 휠 바텀시트 — 정본 buildTimePickerMobileBottomSheet(D1 해소, 2026-09-03). data-mobile-ui="wheel"
      옵션이며 기본 목록 드롭다운(위 표)과 별개로 열린다. Content=TimeOnly/DateTime 두 변형 모두 실제로 눌러본다. */
   const wheelBlock = `<div class="uilg-variant-block">
@@ -1697,6 +1818,7 @@ function timePickerStateMatrix() {
       <p class="uilg-demo-note">트리거를 누르면 실제로 열립니다. 화살표 키 또는 스크롤로 시·분을 고르고 적용을 누릅니다. 위/아래는 흐림 마스크로 자연스럽게 사라집니다.</p>
       <div class="comp-state-cell">${timePickerWheelMarkup({ content: "time-only" })}</div>
     </div>
+    <hr class="uilg-separator">
     <div class="uilg-variant-block">
       <div class="variant-label">모바일 휠 바텀시트 — 시작 일시(DateTime)</div>
       <p class="uilg-demo-note">날짜·시간 탭(승인된 Line Tab 재사용)으로 전환됩니다. 날짜 화면 자체는 이 컴포넌트 범위 밖입니다.</p>
@@ -1705,7 +1827,9 @@ function timePickerStateMatrix() {
 
   const mobileContent = `${actionSection("mobile", mobileCols, "type")}
     ${sizeStateGrid(mobileCols, states, cellFor("mobile", "type"), { tall: true })}
+    <hr class="uilg-separator">
     ${cellBlock}
+    <hr class="uilg-separator">
     ${wheelBlock}`;
 
   return `
@@ -2236,6 +2360,11 @@ async function mountGuide(id) {
           if (!toggle.checked && chipText) chipText.innerHTML = 'Message: <strong>off</strong>';
           toggle.closest(".uilg-option-chip")?.classList.toggle("is-on", toggle.checked);
         });
+      });
+      /* Search Input Action — s1:input:search 를 눈으로 확인 (river D2: Enter·클릭 둘 다 낸다). */
+      section.addEventListener("s1:input:search", (event) => {
+        const note = event.target.closest(".comp-action-top")?.querySelector("[data-search-live-note]");
+        if (note) note.textContent = `검색 실행됨 — 값: "${event.detail.value}"`;
       });
     }
   } catch (error) {

@@ -3,10 +3,20 @@ export const jsRequired = true;
 
 const instances = new WeakMap();
 
-function refresh(root, control, clearAction) {
+function refresh(root, control, clearAction, isSearch) {
   const editable = !control.disabled && !control.readOnly;
-  const editing = root.matches(":focus-within");
-  clearAction.hidden = !(editable && editing && control.value.length > 0);
+  /* Search 는 값이 있으면 초점 여부와 무관하게 지우기를 보인다("값 있음" 상태, river D4).
+     Base·Password 는 기존 그대로 focus-within(Editing) 일 때만 보인다. */
+  const show = isSearch
+    ? editable && control.value.length > 0
+    : editable && root.matches(":focus-within") && control.value.length > 0;
+  clearAction.hidden = !show;
+}
+
+function refreshPassword(passwordAction, control) {
+  const visible = control.type === "text";
+  passwordAction.setAttribute("aria-pressed", String(visible));
+  passwordAction.setAttribute("aria-label", visible ? "비밀번호 숨기기" : "비밀번호 보기");
 }
 
 export function init(root) {
@@ -17,7 +27,12 @@ export function init(root) {
   const clearAction = root.querySelector('[data-s1-part="action"][data-action="clear"]');
   if (!(control instanceof HTMLInputElement) || !(clearAction instanceof HTMLButtonElement)) return null;
 
-  const update = () => refresh(root, control, clearAction);
+  /* Password·Search 는 Input 의 옵션이다 — 액션이 마크업에 없으면 그 경로 자체가 없다. */
+  const passwordAction = root.querySelector('[data-s1-part="action"][data-action="password"]');
+  const searchAction = root.querySelector('[data-s1-part="action"][data-action="search"]');
+  const isSearch = searchAction instanceof HTMLButtonElement;
+
+  const update = () => refresh(root, control, clearAction, isSearch);
 
   /* 마우스·손가락으로 눌러 들어온 초점은 누른 자리에 커서를 둔다(드래그 선택도 그대로).
      키보드(Tab)로 들어온 초점만 값 끝으로 커서를 옮긴다. (river 지시 2026-09-04)
@@ -49,12 +64,34 @@ export function init(root) {
     root.dispatchEvent(new CustomEvent("s1:input:clear", { bubbles: true, detail: { value: "" } }));
   };
 
+  /* Password — type 을 password↔text 로 바꾸고 Input 으로 초점을 되돌린다(river 결정). */
+  const handlePasswordToggle = passwordAction instanceof HTMLButtonElement
+    ? () => {
+        control.type = control.type === "password" ? "text" : "password";
+        refreshPassword(passwordAction, control);
+        control.focus();
+      }
+    : null;
+
+  /* Search — Enter 키와 돋보기 클릭 둘 다 같은 이벤트를 낸다(river D2).
+     IME 조합 중(isComposing)의 Enter 는 문자 확정용이라 제외한다. */
+  const dispatchSearch = () => {
+    root.dispatchEvent(new CustomEvent("s1:input:search", { bubbles: true, detail: { value: control.value } }));
+  };
+  const handleSearchClick = isSearch ? () => dispatchSearch() : null;
+  const handleSearchKeydown = isSearch
+    ? (event) => { if (event.key === "Enter" && !event.isComposing) dispatchSearch(); }
+    : null;
+
   control.addEventListener("input", update);
   root.addEventListener("pointerdown", markPointer);
   root.addEventListener("pointerup", markPointer);
   root.addEventListener("focusin", handleFocusIn);
   root.addEventListener("focusout", handleFocusOut);
   clearAction.addEventListener("click", handleClear);
+  if (handlePasswordToggle) passwordAction.addEventListener("click", handlePasswordToggle);
+  if (handleSearchClick) searchAction.addEventListener("click", handleSearchClick);
+  if (handleSearchKeydown) control.addEventListener("keydown", handleSearchKeydown);
 
   const api = Object.freeze({
     destroy() {
@@ -64,12 +101,16 @@ export function init(root) {
       root.removeEventListener("focusin", handleFocusIn);
       root.removeEventListener("focusout", handleFocusOut);
       clearAction.removeEventListener("click", handleClear);
+      if (handlePasswordToggle) passwordAction.removeEventListener("click", handlePasswordToggle);
+      if (handleSearchClick) searchAction.removeEventListener("click", handleSearchClick);
+      if (handleSearchKeydown) control.removeEventListener("keydown", handleSearchKeydown);
       clearAction.hidden = true;
       instances.delete(root);
     },
     update
   });
   instances.set(root, api);
+  if (passwordAction instanceof HTMLButtonElement) refreshPassword(passwordAction, control);
   update();
   return api;
 }

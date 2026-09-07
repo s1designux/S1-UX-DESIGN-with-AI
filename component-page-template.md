@@ -89,7 +89,7 @@ div.uilg
 - 정본에 없는 상태를 만들지 않는다. 정본에 마우스오버가 있으나 실제로 올릴 수 없는 칸은 **검수 전용 `data-force-state`** 로 표시한다(제품 동작 API 아님).
 - 상태 칸은 `.comp-state-cell` + `is-preview`(클릭 막음), Action 칸만 실제로 동작한다.
 - **Mobile 화면 규칙 (river 확정 2026-09-02) — "축이 하나면 축으로 세우지 않는다":**
-  - 크기가 **한 가지뿐이면 크기 라벨(LG·SM·MD)과 크기별 블록 분리를 만들지 않는다.** 대신 그 자리에 유형(Primary·Secondary·Blue Line / Line·Solid / 제목 유무)을 넣어 **한 표에서 함께** 보이게 하고, 유형 사이 가로선(`<hr>`)도 두지 않는다. 「Disabled 공통」 같은 크기 비교용 꼬리표도 함께 뺀다.
+  - 크기가 **한 가지뿐이면 크기 라벨(LG·SM·MD)과 크기별 블록 분리를 만들지 않는다.** 대신 그 자리에 유형(Primary·Secondary·Blue Line / Line·Solid / 제목 유무)을 넣어 **한 표에서 함께** 보이게 하고, 유형 사이 가로선(`<hr>`)도 두지 않는다. **막는 것은 「한 표로 합쳐야 할 유형」을 선으로 가르는 것이지 모든 선이 아니다** — 합칠 수 없는 별개 섹션(Input 의 Password·Search, Time Picker 의 목록 칸·휠 바텀시트)은 **PC 와 같이 가로선으로 구분한다**(river 결정 HD-7, 2026-09-07 — 모바일에만 선이 없어 제목이 앞 표에 붙어 보였다). 검사기는 **`registry/governance/component-presentation-policy.json` 의 `variants` 선언**으로 조준한다 — 유형을 선언한 컴포넌트(button·chip·filter-chip)는 **Mobile 가로선 0개**(블록으로 갈라 사이에 넣는 형태도 막는다), 선언이 없는 컴포넌트는 선을 허용하되 **선 개수가 블록 개수를 넘지 않는다**. 개수 비교만 두면 「유형마다 블록 하나 + 사이에 선」이 영구히 통과한다(🤖 component-verifier 2026-09-07 4회차 A-2 가 찾은 구멍). 「Disabled 공통」 같은 크기 비교용 꼬리표도 함께 뺀다.
   - 크기·플랫폼 축이 아예 없는 컴포넌트(Checkbox·Radio·Toggle·Dropdown)에 **"정본에 플랫폼·크기 축이 없어 PC와 같습니다" 류의 안내문을 두지 않는다.** 화면이 이미 같아 보이므로 정보 가치가 없고, PC 에 없는 문단이 하나 더 들어가 **제목↔Action 간격이 PC 와 달라진다.**
   - **Mobile preview-area 는 PC 와 같은 구조로 시작한다** — 선행 안내 문단 금지. 플랫폼별로 꼭 필요한 설명은 Action 상자 **안쪽**에 둔다(PC 와 같은 자리).
   - 한 플랫폼만 보이는 화면에서 **숨겨진 형제 섹션 때문에 생기는 웃여백을 없앤다** — `.view-mobile .platform-section-pc + .platform-section-mobile { margin-top: 0 }`(`pages/components.html`). 이걸 빼면 Mobile 만 24px 더 벌어진다.

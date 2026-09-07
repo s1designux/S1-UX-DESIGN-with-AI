@@ -1,6 +1,6 @@
 {
   "sourceRegistry": "registry/figma/allowed-remote-keys.json",
-  "sourceRegistryFingerprint": "5b3a99e12316b86a466dc6e64f431dfdc044658441bd467f5f2754d106d815e2",
+  "sourceRegistryFingerprint": "d8eea72d0f1f6d078acdf457938e2d04eac8b0c8c301c885bf9cbedd0bec8e27",
   "icons": [
     {
       "id": "clock",
@@ -349,6 +349,84 @@
       "geometryEvidence": "정본 build-components.ts CAL_ICON 상수(3672줄)의 path·viewBox(16.2581×16.8)를 그대로 옮겼다 — 재구성·재측정 없음. frame=24 관례(close·remove와 동일)에 원본 비율 그대로 중앙 배치, 재단·리사이즈 없음.",
       "dependencies": [],
       "sourceExport": "assets/icons/ic_날짜근태달력_line.png"
+    },
+    {
+      "id": "eye_show",
+      "sourceKey": "b130623bad9bf035e273501b404bf7a245af1460",
+      "sourceBuilderSymbol": "Figma 아이콘 라이브러리 V2.2 ic_비밀번호표시 97:275 (Property 1=Line, 97:274) 실물 벡터 내보내기 — figma-local 로컬 연결로 2026-09-04 확보. 설치기 폴백 도형은 쓰지 않았다(close·chevron 과 같은 절차). 잉크색은 선례(close·remove·clock)와 같이 black 으로 정규화 — 웹은 CSS 마스크(알파)만 쓰므로 색은 무의미하고, 원본 대조기가 웹 래스터를 RGB 로 읽어 어두운 정도를 알파로 환산하기 때문.",
+      "file": "eye_show.svg",
+      "webAssetFingerprint": "1e5a0b9e4a24181c298e691f34fb6cbfe4d496e3ed1d351a0e46e23d6f659dc4",
+      "symbolId": "s1-icon-eye-show",
+      "individualFile": "assets/icons/eye_show.svg",
+      "accessibleNamePolicy": "decorative inside a named password-visibility button (버튼이 '비밀번호 숨기기' 이름을 가진다 — 표시 중일 때)",
+      "geometry": {
+        "frame": {
+          "width": 24,
+          "height": 24
+        },
+        "glyph": {
+          "x": 3,
+          "y": 6.636,
+          "width": 18,
+          "height": 10.727
+        },
+        "scaling": "proportional"
+      },
+      "geometryEvidence": "Figma 노드 97:274 실측 — 24 프레임 안 (3, 6.636) 에 18×10.727 도형. 저장소 내보내기 assets/icons/ic_비밀번호표시_line.png 와 픽셀 대조.",
+      "dependencies": [],
+      "sourceExport": "assets/icons/ic_비밀번호표시_line.png"
+    },
+    {
+      "id": "eye_hide",
+      "sourceKey": "d4e9eb5b7e193ee291aa2a7e04396c8de2d2dae7",
+      "sourceBuilderSymbol": "Figma 아이콘 라이브러리 V2.2 ic_비밀번호미표시 97:299 (Property 1=Line, 97:298) 실물 벡터 내보내기 — figma-local 로컬 연결로 2026-09-04 확보. 설치기 폴백 도형은 쓰지 않았다(close·chevron 과 같은 절차). 잉크색은 선례(close·remove·clock)와 같이 black 으로 정규화 — 웹은 CSS 마스크(알파)만 쓰므로 색은 무의미하고, 원본 대조기가 웹 래스터를 RGB 로 읽어 어두운 정도를 알파로 환산하기 때문.",
+      "file": "eye_hide.svg",
+      "webAssetFingerprint": "350683493c3ed070e65d0fcb1802da4a8ec1f5eb92da8b3efda6bcfe122ab005",
+      "symbolId": "s1-icon-eye-hide",
+      "individualFile": "assets/icons/eye_hide.svg",
+      "accessibleNamePolicy": "decorative inside a named password-visibility button (버튼이 '비밀번호 보기' 이름을 가진다 — 숨김 중일 때)",
+      "geometry": {
+        "frame": {
+          "width": 24,
+          "height": 24
+        },
+        "glyph": {
+          "x": 3,
+          "y": 4.651,
+          "width": 18,
+          "height": 14.698
+        },
+        "scaling": "proportional"
+      },
+      "geometryEvidence": "Figma 노드 97:298 실측 — 24 프레임 안 (3, 4.651) 에 18×14.698 도형. 저장소 내보내기 assets/icons/ic_비밀번호미표시_line.png 와 픽셀 대조.",
+      "dependencies": [],
+      "sourceExport": "assets/icons/ic_비밀번호미표시_line.png"
+    },
+    {
+      "id": "search",
+      "sourceKey": "6b764af642b8883e892754281950da0e971224d7",
+      "sourceBuilderSymbol": "Figma 아이콘 라이브러리 V2.2 ic_찾기/조회 97:127 (Property 1=Line, 97:125) 실물 벡터 내보내기 — figma-local 로컬 연결로 2026-09-04 확보. 설치기 폴백 도형은 쓰지 않았다(close·chevron 과 같은 절차). 잉크색은 선례(close·remove·clock)와 같이 black 으로 정규화 — 웹은 CSS 마스크(알파)만 쓰므로 색은 무의미하고, 원본 대조기가 웹 래스터를 RGB 로 읽어 어두운 정도를 알파로 환산하기 때문.",
+      "file": "search.svg",
+      "webAssetFingerprint": "db00f0a05aeffad9a042194369b38f95a493eb3de8471444f0462266504f63ee",
+      "symbolId": "s1-icon-search",
+      "individualFile": "assets/icons/search.svg",
+      "accessibleNamePolicy": "decorative inside a named search button (버튼이 '검색' 이름을 가진다)",
+      "geometry": {
+        "frame": {
+          "width": 24,
+          "height": 24
+        },
+        "glyph": {
+          "x": 0,
+          "y": 0,
+          "width": 24,
+          "height": 24
+        },
+        "scaling": "proportional"
+      },
+      "geometryEvidence": "Figma 노드 97:125 실측 — 24 프레임 안 (0, 0) 에 24×24 도형. 저장소 내보내기 assets/icons/ic_찾기조회_line.png 와 픽셀 대조.",
+      "dependencies": [],
+      "sourceExport": "assets/icons/ic_찾기조회_line.png"
     }
   ]
 }

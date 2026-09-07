@@ -7,10 +7,14 @@ import { init, destroy } from "../../components/input.js";
 
 export const MARKUPS = {
   "pc": "<div data-s1-component=\"input\" data-size=\"md\" data-break=\"pc\">\n  <div data-s1-part=\"field\">\n    <input id=\"profile-name\" data-s1-part=\"control\" aria-label=\"이름\" placeholder=\"내용을 입력하세요\">\n    <button type=\"button\" data-s1-part=\"action\" data-action=\"clear\" aria-label=\"입력 내용 지우기\" hidden>\n      <span data-s1-part=\"action-icon\" aria-hidden=\"true\"></span>\n    </button>\n  </div>\n</div>",
-  "mobile": "<div data-s1-component=\"input\" data-size=\"md\" data-break=\"mobile\">\n  <div data-s1-part=\"field\">\n    <input id=\"profile-name\" data-s1-part=\"control\" aria-label=\"이름\" placeholder=\"내용을 입력하세요\">\n    <button type=\"button\" data-s1-part=\"action\" data-action=\"clear\" aria-label=\"입력 내용 지우기\" hidden>\n      <span data-s1-part=\"action-icon\" aria-hidden=\"true\"></span>\n    </button>\n  </div>\n</div>"
+  "mobile": "<div data-s1-component=\"input\" data-size=\"md\" data-break=\"mobile\">\n  <div data-s1-part=\"field\">\n    <input id=\"profile-name\" data-s1-part=\"control\" aria-label=\"이름\" placeholder=\"내용을 입력하세요\">\n    <button type=\"button\" data-s1-part=\"action\" data-action=\"clear\" aria-label=\"입력 내용 지우기\" hidden>\n      <span data-s1-part=\"action-icon\" aria-hidden=\"true\"></span>\n    </button>\n  </div>\n</div>",
+  "password": "<div data-s1-component=\"input\" data-size=\"md\" data-break=\"pc\">\n  <div data-s1-part=\"field\">\n    <input id=\"profile-password\" data-s1-part=\"control\" type=\"password\" aria-label=\"비밀번호\" placeholder=\"비밀번호를 입력하세요\">\n    <button type=\"button\" data-s1-part=\"action\" data-action=\"password\" aria-pressed=\"false\" aria-label=\"비밀번호 보기\">\n      <span data-s1-part=\"action-icon\" aria-hidden=\"true\"></span>\n    </button>\n    <button type=\"button\" data-s1-part=\"action\" data-action=\"clear\" aria-label=\"비밀번호 지우기\" hidden>\n      <span data-s1-part=\"action-icon\" aria-hidden=\"true\"></span>\n    </button>\n  </div>\n</div>",
+  "password-mobile": "<div data-s1-component=\"input\" data-size=\"md\" data-break=\"mobile\">\n  <div data-s1-part=\"field\">\n    <input id=\"profile-password-mobile\" data-s1-part=\"control\" type=\"password\" aria-label=\"비밀번호\" placeholder=\"비밀번호를 입력하세요\">\n    <button type=\"button\" data-s1-part=\"action\" data-action=\"password\" aria-pressed=\"false\" aria-label=\"비밀번호 보기\">\n      <span data-s1-part=\"action-icon\" aria-hidden=\"true\"></span>\n    </button>\n    <button type=\"button\" data-s1-part=\"action\" data-action=\"clear\" aria-label=\"비밀번호 지우기\" hidden>\n      <span data-s1-part=\"action-icon\" aria-hidden=\"true\"></span>\n    </button>\n  </div>\n</div>",
+  "search": "<div data-s1-component=\"input\" data-size=\"md\" data-break=\"pc\" data-mode=\"search\">\n  <div data-s1-part=\"field\">\n    <input id=\"profile-search\" data-s1-part=\"control\" aria-label=\"검색\" placeholder=\"검색어를 입력하세요\">\n    <button type=\"button\" data-s1-part=\"action\" data-action=\"clear\" aria-label=\"검색어 지우기\" hidden>\n      <span data-s1-part=\"action-icon\" aria-hidden=\"true\"></span>\n    </button>\n    <button type=\"button\" data-s1-part=\"action\" data-action=\"search\" aria-label=\"검색\">\n      <span data-s1-part=\"action-icon\" aria-hidden=\"true\"></span>\n    </button>\n  </div>\n</div>",
+  "search-mobile": "<div data-s1-component=\"input\" data-size=\"md\" data-break=\"mobile\" data-mode=\"search\">\n  <div data-s1-part=\"field\">\n    <input id=\"profile-search-mobile\" data-s1-part=\"control\" aria-label=\"검색\" placeholder=\"검색어를 입력하세요\">\n    <button type=\"button\" data-s1-part=\"action\" data-action=\"clear\" aria-label=\"검색어 지우기\" hidden>\n      <span data-s1-part=\"action-icon\" aria-hidden=\"true\"></span>\n    </button>\n    <button type=\"button\" data-s1-part=\"action\" data-action=\"search\" aria-label=\"검색\">\n      <span data-s1-part=\"action-icon\" aria-hidden=\"true\"></span>\n    </button>\n  </div>\n</div>"
 };
 export const DEFAULT_BREAK = "pc";
-export const BREAKS = ["pc","mobile"];
+export const BREAKS = ["pc","mobile","password","password-mobile","search","search-mobile"];
 export const VARIANTS = ["base"];
 export const SIZES = ["xxsm","xsm","md"];
 export const PARTS = ["label","field","control","action","action-icon","message"];
@@ -24,7 +28,7 @@ function assertAllowed(label, value, allowed) {
   throw new Error(`[s1-ui] input: 승인되지 않은 ${label} "${value}". 쓸 수 있는 값: ${allowed.join(", ")}`);
 }
 
-export default function S1Input({ variant, size, breakName = DEFAULT_BREAK, parts, className, style, onClear, ...rest }) {
+export default function S1Input({ variant, size, breakName = DEFAULT_BREAK, parts, className, style, onClear, onSearch, ...rest }) {
   const hostRef = useRef(null);
   const rootRef = useRef(null);
   assertAllowed("variant", variant, VARIANTS);
@@ -64,8 +68,8 @@ export default function S1Input({ variant, size, breakName = DEFAULT_BREAK, part
   useEffect(() => {
     const root = rootRef.current;
     if (!root) return undefined;
-    const props = { onClear };
-    const bound = [["s1:input:clear","onClear"]]
+    const props = { onClear, onSearch };
+    const bound = [["s1:input:clear","onClear"],["s1:input:search","onSearch"]]
       .map(([eventName, propName]) => [eventName, props[propName]])
       .filter(([, handler]) => typeof handler === "function");
     for (const [eventName, handler] of bound) root.addEventListener(eventName, handler);

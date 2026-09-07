@@ -757,75 +757,13 @@
     .input-interactive .input-clear-btn { display: none; }
     .input-interactive.has-value .input-clear-btn { display: flex; }
 
-    /* Related Composed Fields */
-    .related-composed-header {
-      border-top: 1px solid var(--color-border-subtle);
-      padding-top: 24px; margin-bottom: 16px;
-      display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap;
-    }
-    .related-composed-title {
-      font-size: 13px; font-weight: 700; color: var(--color-text-primary);
-    }
-    .related-composed-subtitle {
-      font-size: 11px; color: var(--color-text-secondary); line-height: 1.5;
-    }
-    .related-composed-grid {
-      display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px;
-    }
-    @media (max-width: 700px) { .related-composed-grid { grid-template-columns: 1fr; } }
-    .related-composed-card {
-      border: 1px solid var(--color-border-subtle);
-      border-radius: 8px; padding: 18px 16px;
-      background: var(--color-bg-level-0); /* preview-area 동일 — light: level-0(흰색) */
-    }
-    [data-theme="dark"] .related-composed-card { background: var(--color-bg-level-2); } /* preview-area 동일 — dark: level-2=gray-dark-100=#1C1D23 */
-    .related-composed-card-name {
-      font-size: 13px; font-weight: 600; color: var(--color-text-primary); margin-bottom: 4px;
-    }
-    .related-composed-card-desc {
-      font-size: 11px; color: var(--color-text-secondary); line-height: 1.5; margin-bottom: 14px;
-    }
-    .related-composed-badge {
-      display: inline-block; font-size: 10px; font-weight: 600;
-      padding: 2px 8px; border-radius: 4px; margin-bottom: 14px;
-      background: #eff6ff; color: #1d4ed8; border: 1px solid #bfdbfe;
-    }
-    [data-theme="dark"] .related-composed-badge {
-      background: rgba(29,108,235,0.12); color: #6FA5F8; border-color: rgba(29,108,235,0.3);
-    }
-    .s1-input-unit {
-      flex-shrink: 0; font-size: 13px; color: var(--color-text-secondary);
-      padding: 0 8px 0 4px; white-space: nowrap;
-    }
-    .s1-input-action-btn {
-      display: flex; align-items: center; justify-content: center;
-      flex-shrink: 0; width: 28px; height: 28px;
-      padding: 0; border: none; background: transparent;
-      cursor: pointer; color: var(--color-form-control-icon-default); border-radius: 4px;
-      transition: color 0.15s, background 0.15s;
-    }
-    .s1-input-action-btn:hover { background: var(--color-bg-subtle); }
-    .s1-input-wrap.is-disabled .s1-input-action-btn,
+    /* related-composed-* · s1-input-unit · s1-input-action-btn · s1-suffix-action-group ·
+       [data-related-field] 는 대상 마크업이 0건이던 죽은 CSS라 제거했다(2026-09-04, 1-inventory).
+       Password Field · Search Input 은 이제 ui-library-guide.js 가 dist 로 그린다.
+       s1-input-icon(달력·시계 등 다른 legacy 아이콘에 재사용) · DatePicker 패딩 규칙은 아직 쓰이므로 남긴다. */
     .s1-input-wrap.is-disabled .s1-input-icon { color: var(--color-form-control-icon-disabled); cursor: default; pointer-events: none; }
     /* DatePicker 인풋 오른쪽 패딩 — 아이콘 자체 여백 있으므로 TimePicker(8px) 기준 */
     .s1-input-field:has([aria-label="달력 열기"]) { padding-right: 8px; }
-    .s1-suffix-action-group {
-      display: flex; align-items: center; gap: 2px; flex-shrink: 0;
-    }
-    .related-composed-meta {
-      font-size: 10px; font-family: monospace; color: var(--color-text-secondary);
-      background: var(--color-bg-subtle); border-radius: 4px;
-      padding: 3px 8px; margin-bottom: 12px; display: inline-block;
-    }
-    .related-composed-preview-label {
-      font-size: 10px; font-weight: 600; color: var(--color-text-secondary);
-      text-transform: uppercase; letter-spacing: 0.05em; margin-top: 8px; margin-bottom: 4px;
-    }
-    .related-composed-states { display: flex; flex-direction: column; }
-    /* Related Composed Fields — interactive 보정 */
-    [data-related-field] .s1-input-wrap { width: 100%; }
-    [data-related-field] .input-clear-btn[hidden] { display: none !important; }
-    [data-related-field] .input-clear-btn { display: flex; }
 
     /* Date Picker — PC Calendar (Figma 540:4216 확인) */
     .s1-date-picker { position: relative; display: inline-block; width: 100%; max-width: 280px; }
@@ -3880,79 +3818,9 @@ update(); // 초기화</pre>
   }
   setupCompActionTests();
 
-  // ── Related Composed Fields: interactive setup ──
-  function setupRelatedComposedFields(root) {
-    root = root || document;
-    setupSearchInputField(root);
-    setupPasswordFieldInput(root);
-  }
-
-  function setupSearchInputField(root) {
-    root.querySelectorAll('[data-related-field="search-input"]').forEach(function(field) {
-      var input = field.querySelector('[data-search-input]');
-      var clearBtn = field.querySelector('[data-clear-action]');
-      if (!input || !clearBtn) return;
-      function syncClear() {
-        clearBtn.hidden = input.value.length === 0;
-      }
-      input.addEventListener('input', syncClear);
-      input.addEventListener('focus', function() {
-        field.querySelector('.s1-input-wrap').classList.add('is-focus');
-      });
-      input.addEventListener('blur', function() {
-        field.querySelector('.s1-input-wrap').classList.remove('is-focus');
-      });
-      clearBtn.addEventListener('click', function() {
-        input.value = '';
-        syncClear();
-        input.focus();
-      });
-      syncClear();
-    });
-  }
-
-  function setupPasswordFieldInput(root) {
-    root.querySelectorAll('[data-related-field="password-field"]').forEach(function(field) {
-      var input = field.querySelector('[data-password-input]');
-      var toggleBtn = field.querySelector('[data-visibility-toggle]');
-      var clearBtn = field.querySelector('[data-clear-action]');
-      if (!input || !toggleBtn) return;
-      function syncClear() {
-        if (clearBtn) clearBtn.hidden = input.value.length === 0;
-      }
-      function syncToggle() {
-        var isVisible = input.type === 'text';
-        toggleBtn.setAttribute('aria-label', isVisible ? '비밀번호 숨기기' : '비밀번호 보기');
-        toggleBtn.setAttribute('aria-pressed', isVisible ? 'true' : 'false');
-        var iconHidden = toggleBtn.querySelector('[data-icon-hidden]');
-        var iconVisible = toggleBtn.querySelector('[data-icon-visible]');
-        if (iconHidden) iconHidden.style.display = isVisible ? 'none' : '';
-        if (iconVisible) iconVisible.style.display = isVisible ? '' : 'none';
-      }
-      input.addEventListener('input', syncClear);
-      input.addEventListener('focus', function() {
-        field.querySelector('.s1-input-wrap').classList.add('is-focus');
-      });
-      input.addEventListener('blur', function(e) {
-        if (e.relatedTarget === toggleBtn || e.relatedTarget === clearBtn) return;
-        field.querySelector('.s1-input-wrap').classList.remove('is-focus');
-      });
-      toggleBtn.addEventListener('click', function() {
-        input.type = input.type === 'password' ? 'text' : 'password';
-        syncToggle();
-        input.focus();
-      });
-      if (clearBtn) {
-        clearBtn.addEventListener('click', function() {
-          input.value = '';
-          syncClear();
-          input.focus();
-        });
-      }
-      syncClear();
-      syncToggle();
-    });
-  }
+  // Search Input · Password Field 는 이제 ui-library-guide.js 가 승인 배포본(dist)에서
+  // 실제로 조립해 그린다 — 대상 마크업이 0건이던 죽은 setupSearchInputField·setupPasswordFieldInput
+  // (data-related-field 등 8개 selector) 을 여기서 제거했다(2026-09-04, 1-inventory 죽은 코드 재고).
 
   /* ── Password Field error/correct state toggle ── */
   (function() {
@@ -4262,8 +4130,6 @@ update(); // 초기화</pre>
   }
 
   setupDatePicker(document);
-
-  setupRelatedComposedFields(document);
 
   // ── Pagination interactive ──
   (function setupPagination() {

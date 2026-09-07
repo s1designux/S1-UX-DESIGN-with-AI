@@ -57,6 +57,60 @@ for (const id of componentIds) {
     if (!/@media\s*\(hover:\s*hover\)[\s\S]*?\[data-s1-part="action"\]:hover:not\(:disabled\)[\s\S]*?background:\s*var\(--color-form-control-bg-hover\)/.test(css)) {
       failures.push("input suffix action hover background is missing or not limited to hover-capable devices");
     }
+
+    /* ── Password 옵션 회귀(river 2026-09-04) ── */
+    const inputJs = await read(`dist/components/input.js`);
+    if (!/control\.type\s*=\s*control\.type\s*===\s*"password"\s*\?\s*"text"\s*:\s*"password"/.test(inputJs)) {
+      failures.push("input password toggle must flip control.type between password and text");
+    }
+    if (!/aria-pressed/.test(inputJs) || !/aria-label/.test(inputJs)) {
+      failures.push("input password toggle must synchronize aria-pressed and aria-label");
+    }
+    if (!css.includes('eye_hide.svg')) failures.push("input password icon (hidden) must mask eye_hide.svg");
+    if (!css.includes('eye_show.svg') || !css.includes('[aria-pressed="true"]')) {
+      failures.push("input password icon (visible) must mask eye_show.svg when aria-pressed=true");
+    }
+
+    /* ── Search 옵션 회귀(river D2·D4, 2026-09-04) ── */
+    if (!inputJs.includes('s1:input:search')) failures.push("input search action/Enter must dispatch s1:input:search");
+    if (!/event\.key\s*===\s*"Enter"/.test(inputJs) || !/isComposing/.test(inputJs)) {
+      failures.push("input search Enter handling must exclude IME composition (isComposing)");
+    }
+    if (!css.includes('search.svg')) failures.push("input search action icon must mask search.svg");
+    if (!css.includes('[data-mode="search"]')) failures.push("input CSS must scope search-only rules with [data-mode=search]");
+    if (!/\[data-s1-part="action"\]\s*\+\s*\[data-s1-part="action"\][\s\S]*?margin-inline-start:\s*var\(--spacing-2\)/.test(css)) {
+      failures.push("input trailing action gap (Password [eye][clear]) must be 2px (--spacing-2)");
+    }
+    if (!/\[data-mode="search"\][^{]*\[data-s1-part="action"\]\s*\+\s*\[data-s1-part="action"\][\s\S]*?margin-inline-start:\s*var\(--spacing-4\)/.test(css)) {
+      failures.push("input trailing action gap (Search [clear][search]) must be 4px (--spacing-4)");
+    }
+
+    /* ── 예시 마크업 — trail 순서와 액션 존재 ── */
+    const passwordExample = await read(`dist/examples/input.password.html`);
+    if (!/data-action="password"[\s\S]*?data-action="clear"/.test(passwordExample)) {
+      failures.push("input.password example must order actions as [password][clear]");
+    }
+    if (!passwordExample.includes('type="password"')) failures.push("input.password example must start as type=password");
+
+    const searchExample = await read(`dist/examples/input.search.html`);
+    if (!searchExample.includes('data-mode="search"')) failures.push("input.search example must declare data-mode=search");
+    if (!/data-action="clear"[\s\S]*?data-action="search"/.test(searchExample)) {
+      failures.push("input.search example must order actions as [clear][search]");
+    }
+    if (!/data-action="search"[^>]*>[\s\S]*?<\/button>/.test(searchExample) || searchExample.match(/data-action="search"[^>]*hidden/)) {
+      failures.push("input.search example search action must always be visible (no hidden attribute)");
+    }
+
+    const passwordMobileExample = await read(`dist/examples/input.password-mobile.html`);
+    if (!passwordMobileExample.includes('data-break="mobile"')) failures.push("input.password-mobile example must declare data-break=mobile");
+    const searchMobileExample = await read(`dist/examples/input.search-mobile.html`);
+    if (!searchMobileExample.includes('data-break="mobile"') || !searchMobileExample.includes('data-mode="search"')) {
+      failures.push("input.search-mobile example must declare data-break=mobile and data-mode=search");
+    }
+
+    for (const iconId of ["eye_hide", "eye_show", "search"]) {
+      if (!manifest.icons.some((icon) => icon.id === iconId)) failures.push(`input manifest icons must declare ${iconId}`);
+    }
   }
   if (id === "button" && manifest.jsRequired !== false) failures.push("button must remain jsRequired=false");
   if (id === "button") {

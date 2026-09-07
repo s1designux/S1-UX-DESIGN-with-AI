@@ -7,10 +7,14 @@ import { init, destroy } from "../../components/input.js";
 
 const MARKUPS = {
   "pc": "<div data-s1-component=\"input\" data-size=\"md\" data-break=\"pc\">\n  <div data-s1-part=\"field\">\n    <input id=\"profile-name\" data-s1-part=\"control\" aria-label=\"이름\" placeholder=\"내용을 입력하세요\">\n    <button type=\"button\" data-s1-part=\"action\" data-action=\"clear\" aria-label=\"입력 내용 지우기\" hidden>\n      <span data-s1-part=\"action-icon\" aria-hidden=\"true\"></span>\n    </button>\n  </div>\n</div>",
-  "mobile": "<div data-s1-component=\"input\" data-size=\"md\" data-break=\"mobile\">\n  <div data-s1-part=\"field\">\n    <input id=\"profile-name\" data-s1-part=\"control\" aria-label=\"이름\" placeholder=\"내용을 입력하세요\">\n    <button type=\"button\" data-s1-part=\"action\" data-action=\"clear\" aria-label=\"입력 내용 지우기\" hidden>\n      <span data-s1-part=\"action-icon\" aria-hidden=\"true\"></span>\n    </button>\n  </div>\n</div>"
+  "mobile": "<div data-s1-component=\"input\" data-size=\"md\" data-break=\"mobile\">\n  <div data-s1-part=\"field\">\n    <input id=\"profile-name\" data-s1-part=\"control\" aria-label=\"이름\" placeholder=\"내용을 입력하세요\">\n    <button type=\"button\" data-s1-part=\"action\" data-action=\"clear\" aria-label=\"입력 내용 지우기\" hidden>\n      <span data-s1-part=\"action-icon\" aria-hidden=\"true\"></span>\n    </button>\n  </div>\n</div>",
+  "password": "<div data-s1-component=\"input\" data-size=\"md\" data-break=\"pc\">\n  <div data-s1-part=\"field\">\n    <input id=\"profile-password\" data-s1-part=\"control\" type=\"password\" aria-label=\"비밀번호\" placeholder=\"비밀번호를 입력하세요\">\n    <button type=\"button\" data-s1-part=\"action\" data-action=\"password\" aria-pressed=\"false\" aria-label=\"비밀번호 보기\">\n      <span data-s1-part=\"action-icon\" aria-hidden=\"true\"></span>\n    </button>\n    <button type=\"button\" data-s1-part=\"action\" data-action=\"clear\" aria-label=\"비밀번호 지우기\" hidden>\n      <span data-s1-part=\"action-icon\" aria-hidden=\"true\"></span>\n    </button>\n  </div>\n</div>",
+  "password-mobile": "<div data-s1-component=\"input\" data-size=\"md\" data-break=\"mobile\">\n  <div data-s1-part=\"field\">\n    <input id=\"profile-password-mobile\" data-s1-part=\"control\" type=\"password\" aria-label=\"비밀번호\" placeholder=\"비밀번호를 입력하세요\">\n    <button type=\"button\" data-s1-part=\"action\" data-action=\"password\" aria-pressed=\"false\" aria-label=\"비밀번호 보기\">\n      <span data-s1-part=\"action-icon\" aria-hidden=\"true\"></span>\n    </button>\n    <button type=\"button\" data-s1-part=\"action\" data-action=\"clear\" aria-label=\"비밀번호 지우기\" hidden>\n      <span data-s1-part=\"action-icon\" aria-hidden=\"true\"></span>\n    </button>\n  </div>\n</div>",
+  "search": "<div data-s1-component=\"input\" data-size=\"md\" data-break=\"pc\" data-mode=\"search\">\n  <div data-s1-part=\"field\">\n    <input id=\"profile-search\" data-s1-part=\"control\" aria-label=\"검색\" placeholder=\"검색어를 입력하세요\">\n    <button type=\"button\" data-s1-part=\"action\" data-action=\"clear\" aria-label=\"검색어 지우기\" hidden>\n      <span data-s1-part=\"action-icon\" aria-hidden=\"true\"></span>\n    </button>\n    <button type=\"button\" data-s1-part=\"action\" data-action=\"search\" aria-label=\"검색\">\n      <span data-s1-part=\"action-icon\" aria-hidden=\"true\"></span>\n    </button>\n  </div>\n</div>",
+  "search-mobile": "<div data-s1-component=\"input\" data-size=\"md\" data-break=\"mobile\" data-mode=\"search\">\n  <div data-s1-part=\"field\">\n    <input id=\"profile-search-mobile\" data-s1-part=\"control\" aria-label=\"검색\" placeholder=\"검색어를 입력하세요\">\n    <button type=\"button\" data-s1-part=\"action\" data-action=\"clear\" aria-label=\"검색어 지우기\" hidden>\n      <span data-s1-part=\"action-icon\" aria-hidden=\"true\"></span>\n    </button>\n    <button type=\"button\" data-s1-part=\"action\" data-action=\"search\" aria-label=\"검색\">\n      <span data-s1-part=\"action-icon\" aria-hidden=\"true\"></span>\n    </button>\n  </div>\n</div>"
 };
 const DEFAULT_BREAK = "pc";
-const BREAKS = ["pc","mobile"];
+const BREAKS = ["pc","mobile","password","password-mobile","search","search-mobile"];
 const VARIANTS = ["base"];
 const SIZES = ["xxsm","xsm","md"];
 /* variant·size 속성 이름은 컴포넌트마다 다르다 — 승인된 마크업에서 읽어 온 것이다. */
@@ -24,11 +28,11 @@ const SIZE_ATTRIBUTE = "data-size";
 const props = defineProps({
   variant: { type: String, default: undefined, validator: (value) => ["base"].includes(value) },
   size: { type: String, default: undefined, validator: (value) => ["xxsm","xsm","md"].includes(value) },
-  breakName: { type: String, default: "pc", validator: (value) => ["pc","mobile"].includes(value) },
+  breakName: { type: String, default: "pc", validator: (value) => ["pc","mobile","password","password-mobile","search","search-mobile"].includes(value) },
   parts: { type: Object, default: () => ({}) },
   attrs: { type: Object, default: () => ({}) }
 });
-const emit = defineEmits(["clear"]);
+const emit = defineEmits(["clear","search"]);
 
 /* root 는 반드시 ref 여야 한다 — 보통 변수로 두면 watchEffect 가 setup 중 한 번 돌 때
    root 가 아직 없어 그대로 끝나고, 의존성이 하나도 등록되지 않아 **영원히 다시 돌지 않는다.**
@@ -48,7 +52,7 @@ function mount() {
   host.value.innerHTML = MARKUPS[props.breakName] ?? MARKUPS[DEFAULT_BREAK];
   const element = host.value.firstElementChild;
   init(element);
-  for (const [eventName, emitName] of [["s1:input:clear","clear"]]) {
+  for (const [eventName, emitName] of [["s1:input:clear","clear"],["s1:input:search","search"]]) {
     const handler = (event) => emit(emitName, event.detail ?? event);
     element.addEventListener(eventName, handler);
     listeners.push([eventName, handler]);

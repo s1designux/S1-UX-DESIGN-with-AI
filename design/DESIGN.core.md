@@ -165,6 +165,7 @@ agentContractDefaults:
       - "clock"
       - "close"
       - "eye"
+      - "eye_show"
       - "globe"
       - "home"
       - "menu"
@@ -1734,10 +1735,12 @@ Base text input field. Pure input element without label/helper wrapper. Label/He
 **언제 쓰나**
 - 한 줄 텍스트·숫자를 입력받을 때 — 로그인·검색·필터·설정 폼 등.
 - 라벨·도움말과 함께 쓰려면 Input Slots(라벨/헬퍼 조합) 패턴으로 감싼다.
+- 안내메시지(helper)는 필요한 화면에서만 켠다 — 계정 관련 화면(로그인·비밀번호 변경·회원가입)처럼 입력 규칙을 미리 알려야 하는 곳이 대표적이다. 일반 입력·검색에는 넣지 않는다(river 결정 2026-09-07).
 
 **쓰지 말아야 할 때**
 - 여러 줄 입력은 Textarea 를 쓴다.
 - 선택지 중 하나를 고르는 입력은 Select·Dropdown, 날짜·시간은 DatePicker·TimePicker 를 쓴다.
+- 안내메시지가 필요하다는 이유로 '계정용 인풋' 같은 별도 컴포넌트를 만들지 않는다 — 안내메시지는 켜고 끄는 선택 슬롯이다. 업계 관행도 검색만 별도 컴포넌트로 가르고, 쓰이는 화면으로는 가르지 않는다(river 결정 2026-09-07).
 
 **구성 (Anatomy)**
 
@@ -1809,8 +1812,8 @@ agent:
         result: "leave editing/focus state unless focus moves to a suffix action"
       -
         on: "input"
-        target: "search or password input"
-        result: "show clear action only when a value exists"
+        target: "control"
+        result: "refresh clear-action visibility (Base·Password: focus-within && value; Search: value only)"
       -
         on: "click"
         target: "clear action"
@@ -1818,7 +1821,15 @@ agent:
       -
         on: "click"
         target: "password visibility action"
-        result: "toggle password ↔ text and return focus to the input"
+        result: "toggle password ↔ text, sync aria-pressed/aria-label, and return focus to the input"
+      -
+        on: "click"
+        target: "search action"
+        result: "dispatch s1:input:search with the current value"
+      -
+        on: "keydown Enter (control, data-mode=search only)"
+        target: "search control"
+        result: "dispatch s1:input:search unless the Enter is part of IME composition (isComposing)"
       -
         on: "focusin"
         target: "input"
@@ -1830,8 +1841,10 @@ agent:
       disabled: "native disabled inputs are not focusable and are skipped in tab order"
       clear: "return to input"
       passwordVisibility: "return to input"
+      search: "no focus change on search execute"
     accessibility:
       passwordVisibility: "synchronize aria-label and aria-pressed"
+      search: "search action is always visible; clear action visibility follows value presence only (not focus)"
   geometry:
     common:
       target: "field"
@@ -1960,17 +1973,20 @@ _Do_
 - 색·테두리는 form-control 역할 토큰(--color-form-control-*)을 통해 참조한다.
 - focus 는 파란 테두리(--input-focus-border)로만 표시하고 배경은 바꾸지 않는다.
 - 라벨은 form-control 밖 제목 텍스트 토큰(--color-text-title-secondary)을 쓴다.
+- 안내메시지는 규칙을 알려야 하는 화면에서만 켠다. 끌 때는 message 요소와 aria-describedby 를 함께 뺀다.
 
 _Don't_
-- Input field 전체에 hover 상태를 만들지 않는다 — HD-2에서 제거됨. suffix action의 독립 Hover 배경은 예외다.
+- Input field 전체에 hover 상태를 만들지 않는다 — HD-2에서 제거됨. suffix action의 독립 Hover 배경은 예외이며, 그마저도 PC 에서만 낸다(Mobile 제외, river 지시 2026-09-07).
 - filled·error·focus 에 별도 배경색을 넣지 않는다 — 배경은 default 와 동일, 구분은 텍스트·테두리 색으로만.
 - correct(성공) 테두리를 초록으로 칠하지 않는다 — 원본은 파란색(border-selected).
+- 모든 입력칸에 안내메시지를 기본으로 깔지 않는다 — 읽을 것이 늘어 정작 필요한 곳의 규칙 안내가 묻힌다.
 
 **접근성 (a11y)**
 - suffix 액션(지우기·검색·비밀번호 표시전환)에는 각각 aria-label 을 단다(예: 검색어 지우기, 비밀번호 보기/숨기기).
 - 비밀번호 표시전환 토글은 aria-pressed 로 표시·숨김 상태를 노출한다.
 - Editing 상태의 지우기(clear) 버튼은 값이 있고 Input 또는 지우기 버튼에 초점이 있을 때만 노출한다(hidden 속성 제어).
-- suffix 액션의 실제 누르는 영역은 PC 28×28px, Mobile 48×48px이며 액션마다 독립된 button 영역을 가진다.
+- suffix 액션의 실제 누르는 영역은 PC 28×28px, Mobile 48×48px이며 액션마다 독립된 button 영역을 가진다. Mobile 에서 액션이 둘 보일 때는 누르는 영역을 맞붙이고(간격 0) 왼쪽 아이콘 그림만 자기 영역 안쪽 끝으로 당겨 보이는 간격을 좁힌다 — 영역 48×48 과 겹치지 않음은 그대로다(river 결정 2026-09-07, 실측 28px→12px).
+- Mobile break 에서는 suffix 액션에 hover 배경을 내지 않는다 — 손가락에는 hover 가 없고, PC 브라우저로 모바일 화면을 볼 때 48×48 영역이 통째로 칠해져 혼란을 준다(river 지시 2026-09-07).
 - suffix 액션의 키보드 초점 표시는 브라우저 기본 표시에 맡긴다 — 정본에 focus 표현이 없어 웹에서 따로 만들지 않는다(2026-09-02 river 결정).
 - 입력칸에 키보드 초점이 들어오면 field 테두리를 정본 Selected 색으로 바꾼다. error·correct·read-only 에서도 같다(2026-09-04 river 지시).
 - Tab 으로 들어온 초점은 커서를 값 끝에 둔다. 마우스로 눌러 들어온 초점은 누른 자리를 유지한다(2026-09-04 river 지시).
@@ -4158,4 +4174,4 @@ DESIGN_SYSTEM_GAP:
 - 적용 해석 순서(뒤가 앞을 덮음): core → service(extends core) → role → platform → theme. 기본값: service=core · role=user · platform=web · theme=light.
 - 서비스 분기(예: vms 영상관제)는 core 를 상속하고 차이분만 덮는다.
 
-<!-- generated-stamp: 6274fb7d0f71 · 손편집 금지 -->
+<!-- generated-stamp: a51636a26a47 · 손편집 금지 -->

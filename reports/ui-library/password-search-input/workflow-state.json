@@ -1,0 +1,504 @@
+{
+  "schemaVersion": 1,
+  "workflow": "ui-library-code",
+  "workId": "password-search-input",
+  "objective": "승인된 Base Input 을 조립해 Password Field 와 Search Input 을 웹 배포본으로 만든다. 코어 내부를 복제하지 않는다.",
+  "intent": {
+    "approvedBy": "river",
+    "approvedAt": "2026-09-04",
+    "principles": [
+      "Search 는 Base Input 을 베이스로 만들고 표출되는 아이콘 사양만 다르게 한다.",
+      "정본에 없는 것은 river 승인 없이 신설하지 않는다.",
+      "아이콘은 폴백 도형으로 만들지 않는다 — 반드시 Figma 원본에서 가져온다.",
+      "패턴은 승인된 코어를 조립하고 코어 내부 HTML·CSS·기본 동작을 복제하지 않는다."
+    ]
+  },
+  "contract": {
+    "path": "registry/governance/ui-library-code-contract.json",
+    "version": "0.1.2",
+    "status": "candidate"
+  },
+  "target": {
+    "kind": "core-component",
+    "components": [
+      "password-field",
+      "search-input"
+    ],
+    "base": "input"
+  },
+  "currentPhase": "complete",
+  "workflowStatus": "complete",
+  "uiLibraryStatus": "approved",
+  "lastCompletedCheckpoint": 6,
+  "nextAction": "완료. 다음 작업은 .claude/docs/project-status.md 참조.",
+  "ownership": {},
+  "canonicalInputs": [
+    {
+      "role": "component-visual",
+      "path": "plugins/figma-vars-installer/src/build-components.ts",
+      "sha256": "67e126ffb53f27266831b1897e821956e6fed04096e42c662fff398b3e9a617b"
+    },
+    {
+      "role": "token-values",
+      "path": "plugins/figma-vars-installer/src/vars-data.ts",
+      "sha256": "81eb31cfbd5b1b7041f31967a9592d2181088cf386a9ccb26058a7625ec3c15a"
+    },
+    {
+      "role": "text-styles",
+      "path": "plugins/figma-vars-installer/src/textstyles-data.ts",
+      "sha256": "dc0db42d87503e80e9da8ad1246090f58e79106593a57815b0568aebcb9d51d3"
+    },
+    {
+      "role": "ui-library-contract",
+      "path": "registry/governance/ui-library-code-contract.json",
+      "sha256": "2e13ba2efab71036f9d8c2d740f7da24343e0bbeff655f35ae5b6631c9ca0c27"
+    },
+    {
+      "role": "current-behavior-ledger",
+      "path": "registry/components/component-behavior.pc.json",
+      "sha256": "7579c1cf8cc91110c36829af6ef17da80919e4a9456cde22cff260e4d06b9a7e"
+    },
+    {
+      "role": "allowed-icons",
+      "path": "registry/figma/allowed-remote-keys.json",
+      "sha256": "d8eea72d0f1f6d078acdf457938e2d04eac8b0c8c301c885bf9cbedd0bec8e27"
+    }
+  ],
+  "artifacts": {
+    "policyContract": "registry/governance/ui-library-code-contract.json",
+    "inventory": "reports/ui-library/password-search-input/1-inventory.md",
+    "sourceRoot": "ui-library/src",
+    "distManifest": "ui-library/dist/manifest.json",
+    "reviewPage": "pages/ui-review.html",
+    "migrationRecord": "registry/governance/ui-library-migration.json",
+    "humanGuide": "registry/governance/ui-library-authoring-guide.md",
+    "componentChecklist": "registry/governance/ui-library-component-checklist.md",
+    "repositoryInventory": "reports/component-inventory-audit.md",
+    "canonReadiness": "reports/ui-library/password-search-input/2-canon-readiness.md",
+    "build": "reports/ui-library/password-search-input/3-build.md",
+    "verification": "reports/ui-library/password-search-input/4-verification.md",
+    "humanReview": "reports/ui-library/password-search-input/5-human-review.md",
+    "promotion": "reports/ui-library/password-search-input/6-promotion.md",
+    "handoff": "reports/ui-library/password-search-input/HANDOFF.md"
+  },
+  "decisions": [
+    {
+      "id": "D1",
+      "topic": "Search 는 Base Input 을 베이스로",
+      "decidedBy": "river",
+      "decidedAt": "2026-09-04",
+      "quote": "왜 서치는 인풋을 베이스로 만들지 않은거지? 베이스로 해서 표출되는 아이콘 사양만  좀 다르면되는데",
+      "recordedBy": "orchestrator",
+      "decision": "웹 배포본에서 Search Input 은 승인된 input 컴포넌트를 조립해 만든다. Search 전용 CSS 를 새로 쓰지 않고 아이콘 구성만 다르게 한다.",
+      "basis": "정본 buildSearch 는 buildInput 을 부르지 않고 독립적으로 그리지만, 높이(28/34/44)와 좌우 안쪽 여백(12/8·12/8·16/12)이 Input PC 와 동일하다는 것을 📖 source-reader 가 확인했다(build-components.ts:917-919 vs 1270-1274)."
+    },
+    {
+      "id": "D2",
+      "topic": "검색 실행 시점",
+      "decidedBy": "river",
+      "decidedAt": "2026-09-04",
+      "quote": "Enter 키 + 돋보기 클릭 둘 다",
+      "recordedBy": "orchestrator",
+      "decision": "Enter 키와 돋보기 클릭 둘 다 검색을 실행한다. 서비스가 받을 이벤트를 하나 내보낸다.",
+      "basis": "정본에 없어 river 결정. 자동완성 목록은 정본에 없으므로 만들지 않는다."
+    },
+    {
+      "id": "D3",
+      "topic": "Search Input 모바일 지원",
+      "decidedBy": "river",
+      "decidedAt": "2026-09-04",
+      "quote": "모바일도 만든다",
+      "recordedBy": "orchestrator",
+      "decision": "정본 buildSearch 에 Mobile break 를 신설한다. Base Input 모바일 규칙(48px 높이·48×48 누르는 영역·오른쪽 안쪽 여백 0)을 그대로 따른다.",
+      "basis": "정본에는 PC 3사이즈만 있었다(build-components.ts:1270-1274). 정본 신설이므로 river 승인 기록."
+    },
+    {
+      "id": "D4",
+      "topic": "Search Input 상태 집합",
+      "decidedBy": "river",
+      "decidedAt": "2026-09-04",
+      "quote": "서치 인풋은 디폴트(검색아이콘), 값 다 쓰여진것(삭제,검색아이콘), 비활성화만 있으면됨",
+      "recordedBy": "orchestrator",
+      "decision": "디폴트(돋보기) · 값 있음(지우기+돋보기) · 비활성 3상태로 한다. 정본의 Focus 는 별도 상태로 두지 않고 Base Input 과 같은 초점 표시로 처리한다. Error·Correct·Read-only 는 넣지 않는다.",
+      "basis": "정본은 Default·Focus·Filled·Disabled 4상태였다(build-components.ts:1264-1269). 상태 집합 변경이므로 river 승인 기록."
+    },
+    {
+      "id": "D5",
+      "topic": "아이콘 조달 경로",
+      "decidedBy": "river",
+      "decidedAt": "2026-09-04",
+      "quote": "Figma 연결을 살려주신다 (추천)",
+      "recordedBy": "orchestrator",
+      "decision": "눈(감김·뜨기)·돋보기 SVG 는 river 가 Figma MCP 인증을 복구한 뒤 원본에서 직접 가져온다. 폴백 도형으로 만들지 않는다.",
+      "basis": "reports/repeated-requests.json 의 icon-origin-substituted-by-fallback (2회) — 폴백으로 만든 아이콘이 원본과 달라 사고가 났던 이력.",
+      "note": "2026-09-04 재확인 — 저장소에 원본 48×48 PNG(assets/icons/)가 있어 픽셀 대조(ui:icons:origin, 임계 1.5%)만으로도 진행 가능함을 river 에게 보고했으나, river 는 Figma 인증 경로를 선택했다(\"Figma 인증하고 하겠다\").",
+      "resolution": "2026-09-04 해소 — river 가 아이콘 라이브러리 V2.2 링크를 주었고, OAuth 없이 Figma 데스크톱 앱의 로컬 연결(figma-local)로 파일을 열어 노드 97:274(비밀번호표시)·97:298(비밀번호미표시)·97:125(찾기/조회) 의 실물 벡터를 내려받았다. close·chevron 선례와 같은 절차. ui:icons 구조 검사 통과, ui:icons:origin 원본 픽셀 대조 통과(0.00393 / 0.00652 / 0.00426, 임계 0.015)."
+    },
+    {
+      "id": "D6",
+      "topic": "3-build 후 정본 지문 갱신",
+      "decidedBy": "orchestrator",
+      "decidedAt": "2026-09-04",
+      "decision": "빌더가 C1~C4(river 승인)를 build-components.ts 에 반영하고 behavior ledger·allowed-remote-keys 주석을 고쳐 지문이 바뀌었다. 이 작업 자체가 만든 변경이므로 지문만 갱신한다. 구조 변경 검증은 🤖 component-verifier 가 Gate 13 에 기록한다(H1②).",
+      "changed": [
+        "plugins/figma-vars-installer/src/build-components.ts",
+        "registry/components/component-behavior.pc.json",
+        "registry/figma/allowed-remote-keys.json"
+      ]
+    },
+    {
+      "id": "D7",
+      "topic": "Mobile 에서 suffix 액션 hover 제거",
+      "decidedBy": "river",
+      "decidedAt": "2026-09-07",
+      "quote": "모바일에서는 호버 기능이 표출되지 않도록 해줘. 모바일은 호버가 의미가 없잖아? 그런데 웹사이트에서 모바일화면 아이콘에 호버를 하면 48*48영역이 호버되어서 사용자에게 혼란을 줘.",
+      "recordedBy": "orchestrator",
+      "decision": "Mobile break 에서는 suffix 액션에 hover 배경을 내지 않는다. 웹은 :not([data-break=mobile]) 로 제외하고, 정본 wrapSuffixAction 은 Mobile 에서 hover-bg 사각형 자체를 만들지 않는다. PC 는 그대로.",
+      "basis": "정본에는 Mobile 도 hover-bg 를 두고 있었다(wrapSuffixAction 이 무조건 생성). 정본 구조 변경이므로 river 승인 기록."
+    },
+    {
+      "id": "D8",
+      "topic": "Mobile 아이콘 두 개일 때 보이는 간격",
+      "decidedBy": "river",
+      "decidedAt": "2026-09-07",
+      "quote": "48*48로 하다보니 탭에 대한 대응은 겹치지않고 좋은데, 디자인 원본과 달리 아이콘이 두개 있는 경우 간격이 너무 멀어져. 이것을 헷징할 수 있는 방안 줘. / A로 진행",
+      "recordedBy": "orchestrator",
+      "decision": "누르는 영역 48x48 은 유지하고, 칸 사이 간격을 0 으로 맞붙인 뒤 왼쪽 아이콘 그림만 자기 칸 안쪽 끝으로 당긴다. 보이는 간격 28px 에서 12px 로. 칸은 겹치지 않는다. 오른쪽 아이콘 위치(칸 끝 12px)는 건드리지 않는다.",
+      "basis": "실측 근거: PC 8px 대 Mobile 28px. 오른쪽 그림 위치가 river 승인값으로 고정이고 왼쪽 그림이 자기 48px 칸을 벗어날 수 없어, 칸을 겹치지 않는 한 12px 이 기하학적 하한이다. 8px 은 4px 겹침이 필요해 채택하지 않았다.",
+      "measured": {
+        "beforeGlyphGap": 28,
+        "afterGlyphGap": 12,
+        "pcGlyphGap": 8,
+        "hitSize": "48x48",
+        "hitOverlap": false
+      }
+    },
+    {
+      "id": "D9",
+      "topic": "안내메시지(helper)를 컴포넌트로 가르지 않는다",
+      "decidedBy": "river",
+      "decidedAt": "2026-09-07",
+      "quote": "인풋 관련 -> A로 반영",
+      "recordedBy": "orchestrator",
+      "decision": "컴포넌트는 인풋과 서치인풋 2종을 유지하고, 안내메시지는 필요한 화면에서만 켜는 선택 슬롯으로 문서에 명시한다. 계정인풋을 신설하지 않는다.",
+      "basis": "업계 관행 조사 — 검색은 별도 컴포넌트로 가르는 것이 표준(Carbon Search 대 Text input, Material 3 Search bar)이나, 비밀번호는 인풋의 하위 변형이고 안내메시지는 선택 슬롯이다. 쓰이는 화면(계정) 기준으로 컴포넌트를 가르는 선례는 확인되지 않았다. 웹 계약은 이미 message 를 optional 로 선언하고 있어 코드 변경 없이 문서와 지침만 정리했다."
+    },
+    {
+      "id": "D10",
+      "topic": "HD-1 — 승인 코어가 배포에서 빠진 문제",
+      "decidedBy": "river",
+      "decidedAt": "2026-09-07",
+      "quote": "HD-1 -> b",
+      "recordedBy": "orchestrator",
+      "decision": "배포 기준(status===approved 필터)을 지금 고치지 않는다. Password/Search 가 river 승인을 받으면 input manifest 가 approved 로 올라가면서 자연히 풀린다. 그때까지 React/Vue 포장 파일과 지원 목록에서 input 이 빠진 상태를 감수한다.",
+      "basis": "실제 확인 — 빠지는 것은 platform/react/input.jsx, platform/vue/Input.vue, platform manifest 및 ZIP README 의 지원 목록(19->18), 사이트 뱃지 표기다. input.css/input.js/예시 6개는 ZIP 에 그대로 들어 있어 HTML/CSS 사용자는 영향이 없다. 거르는 곳은 ui-library/scripts/platform.mjs 의 approved 필터와 scripts/build-ui-package-zip.js 의 componentList 필터 두 곳."
+    },
+    {
+      "id": "D11",
+      "topic": "HD-2 — Figma 정본 Search 액션에 hover 면 추가",
+      "decidedBy": "river",
+      "decidedAt": "2026-09-07",
+      "quote": "HD-2 -> 넣자",
+      "recordedBy": "orchestrator",
+      "decision": "buildSearch.wrapAction 에도 Base Input 의 wrapSuffixAction 과 같은 hover-bg 사각형(bg/hover 바인딩, radius/4, visible=false)을 넣는다. PC 만 — Mobile 은 D7 로 제외한다.",
+      "basis": "정본 신설(항목 추가)이라 river 승인 필요. 근거: Base Input 은 이미 같은 자리에 hover 면을 갖고 있어 검색창에만 없는 것이 어긋남이었고(component-verifier 2026-09-07 C2), 웹에는 이미 hover 배경이 있어 정본이 웹보다 뒤처져 있었다."
+    },
+    {
+      "id": "D12",
+      "topic": "HD-5 — 안내 페이지 여백 규칙의 Input 밖 파급",
+      "decidedBy": "river",
+      "decidedAt": "2026-09-07",
+      "quote": "HD-5 -> A",
+      "recordedBy": "orchestrator",
+      "decision": "공유 규칙을 그대로 둔다. Date Picker·Time Picker 안내 페이지에서 함께 넓어진 5곳은 같은 증상(0px 로 붙음)이 함께 고쳐진 것으로 인정한다.",
+      "basis": "component-verifier 2026-09-07 2회차 (c) 항목. 그 자리들도 Input 과 동일하게 0px 였고 24px 이 일관된다."
+    },
+    {
+      "id": "D13",
+      "topic": "구분선 여백을 앞 요소로 판별하지 않는다",
+      "decidedBy": "river",
+      "decidedAt": "2026-09-07",
+      "quote": "달력크기 섹션이 타이틀과 그 위 라인이 붙어있는 문제 그대로 있음. 수정할것.",
+      "recordedBy": "orchestrator",
+      "decision": "구분선(.uilg-separator)에 언제나 위아래 24px 을 준다. 앞 요소 종류로 여백을 주던 규칙(.uilg-variant-block + .uilg-separator, .uilg-demo-group + .uilg-separator)은 없앤다. 예외가 필요한 자리는 인라인 style 로 덮는다.",
+      "basis": "river 지적 — Date Picker 달력 크기 제목이 여전히 위 가로선에 0px 로 붙어 있었다. 그 구분선의 앞 요소가 comp-state-matrix 라 열거된 두 규칙 어디에도 걸리지 않았다. 앞 요소를 열거하는 방식은 새 경우가 나올 때마다 조용히 0px 로 새어나간다 — 같은 뿌리로 A1(2026-09-07)이 발생했다. 값이 겹쳐 커지는 일은 없다: 인접 형제 여백은 최대값으로 합쳐지고 양쪽 다 24px 이다.",
+      "measured": {
+        "datePicker": {
+          "달력 크기": "0px→24px",
+          "캘린더 — Date": "0px→24px",
+          "기간 선택": "0px→24px"
+        },
+        "위아래": "전부 24/24"
+      }
+    },
+    {
+      "id": "D14",
+      "topic": "블록 여백도 앞 요소로 판별하지 않는다 (D13 의 나머지 절반)",
+      "decidedBy": "orchestrator",
+      "decidedAt": "2026-09-07",
+      "decision": "`.uilg-variant-block + .uilg-variant-block` · `.uilg-demo-group + .uilg-variant-block` 열거를 `.uilg-variant-block:not(:first-child)` 하나로 바꾼다. 구분선(D13)과 같은 원리를 블록에도 적용한다.",
+      "basis": "🤖 component-verifier 2026-09-07 3회차 C-2 — D13 이 구분선 쪽 열거만 없애고 블록 쪽은 그대로 둬서, Mobile Time Picker 「목록 칸 상태」 제목이 river 가 지적한 「달력 크기」와 똑같은 증상(앞 상태표에 0px)으로 남아 있었다. 앞 요소가 comp-state-matrix 라 어느 열거에도 안 걸리는 같은 경로다. river 지시 「타이틀과 그 위 라인이 붙어있는 문제 … 수정할것」의 같은 증상 범위이며, HD-5=A(D12)로 같은 증상의 파급을 인정한 선례를 따랐다.",
+      "measured": {
+        "방법": "이전 열거 규칙을 임시 스타일시트로 재현해 새 규칙과 전후 직접 대조(규칙을 통째로 끄는 방식이 아님)",
+        "Mobile 바뀐곳": "1건 — time-picker 목록 칸 상태 0px→24px",
+        "PC 바뀐곳": "0건",
+        "훑은범위": "components.html 컴포넌트 칩 PC 17개·Mobile 12개 × 표출된 variant-block 전수"
+      },
+      "note": "river 확인 필요 — 아래 pendingDecisions HD-6."
+    },
+    {
+      "id": "D15",
+      "topic": "HD-7 — 모바일 섹션 제목 위 가로선 복원 + §A-5 검사기 조준",
+      "decidedBy": "river",
+      "decidedAt": "2026-09-07",
+      "quote": "HD-7 -> A",
+      "recordedBy": "orchestrator",
+      "decision": "§A-5 가 막는 것은 '한 표로 합쳐야 할 유형'을 가로선으로 가르는 것이지 모든 선이 아니다. 합칠 수 없는 별개 섹션(Input 의 Password·Search, Time Picker 의 목록 칸·휠 바텀시트)은 PC 와 같이 가로선으로 구분한다. 검사기는 component-presentation-policy.json 의 variants 선언으로 조준한다 — 유형 선언이 있으면 Mobile 가로선 0개, 없으면 선 개수가 블록 개수를 넘지 않는다. 규칙 문서 component-page-template.md §A-5 도 같이 고쳤다.",
+      "basis": "river 지적 — 모바일 목록 칸 상태 제목 위 라인 누락, 그 아래 섹션들도 누락. 실측 확인: PC 는 Input·Date Picker·Time Picker 모두 블록 제목 위에 가로선이 있는데 모바일만 0개였다. 원인은 검사기가 §A-5(river 확정 2026-09-02)를 '모바일 가로선 전면 금지'로 넓게 구현한 것. 유형이 실제로 한 표에 합쳐진 화면(Chip·Button)은 모바일에 variant 블록이 0개라 그을 선 자체가 없다 — 조준 후에도 그 금지는 그대로 산다.",
+      "verified": "검사기를 다시 조준했다 — 새 기준을 만들지 않고 이미 있는 정본급 선언(component-presentation-policy.json 의 variants)을 쓴다. variants 를 선언한 컴포넌트(button·chip·filter-chip)는 Mobile 가로선 0개, 선언이 없는 컴포넌트는 선을 허용하되 블록 개수를 넘지 않는다. 위반 3형태(블록0+선1 · 유형별블록3+선2 · 블록1+선1)를 전부 주입해 모두 실패함을 확인했고, 되돌린 뒤 통과했다.",
+      "measured": {
+        "Input mobile": "블록 2 · 가로선 2 (이전 0)",
+        "Time Picker mobile": "블록 3 · 가로선 3 (이전 0)",
+        "Date Picker mobile": "블록 1 · 가로선 0 — 그 블록이 화면 첫 요소라 위에 그을 자리가 없다",
+        "Dropdown mobile": "블록 2 · 가로선 1 — 이번 변경 전과 동일"
+      },
+      "verifiedCorrection": "⚠️ 앞서 적은 'Chip·Button 계열에 가로선을 주입하니 실패했다 → 약화 아님' 은 틀린 결론이었다. 시험한 것은 「블록 0개 + 선」 한 형태뿐이고, 🤖 component-verifier 4회차 A-2 가 「유형별 블록 3개 + 사이 선 2개」(§A-5 가 글자 그대로 금지한 형태)가 통과함을 반증했다. 개수 비교(선>블록)만으로는 유형마다 블록을 하나씩 만들면 선이 항상 블록보다 적어 영구 통과한다."
+    },
+    {
+      "id": "D16",
+      "topic": "HD-8 — 복원한 모바일 가로선의 기계 강제",
+      "decidedBy": "river",
+      "decidedAt": "2026-09-07",
+      "quote": "HD-8 -> A  내가 직접 볼게",
+      "recordedBy": "orchestrator",
+      "decision": "모바일 가로선 5개(Input 2 · Time Picker 3)를 기계 검사로 강제하지 않는다. 선언을 새로 만들지 않고 사람 검수에 맡긴다. river 가 직접 확인한다.",
+      "basis": "🤖 component-verifier 4회차 개선목록 2 — 복원한 선을 지워도 어떤 검사도 실패하지 않는다. 강제하려면 '어느 컴포넌트의 모바일 블록이 별개 섹션인지'를 선언에 추가해야 하고 그것은 새 기준이라 ⭐ 가 정할 수 없었다. river 가 (A)를 택했다."
+    },
+    {
+      "id": "D17",
+      "topic": "river 최종 검수 승인",
+      "decidedBy": "river",
+      "decidedAt": "2026-09-07",
+      "quote": "확인했어, 승인. 커밋해줘",
+      "recordedBy": "orchestrator",
+      "decision": "Password Field·Search Input 웹 배포본을 승인한다. migration 장부와 input manifest 를 approved 로 올리고 파생을 재생성한 뒤 커밋한다.",
+      "basis": "5-human-review — river 가 ui-review.html 1b·1c 를 직접 확인했다."
+    }
+  ],
+  "blockers": [],
+  "pendingDecisions": [],
+  "evidence": {
+    "sourceAudit": {
+      "status": "complete",
+      "actor": "source-reader",
+      "observedAt": "2026-09-04",
+      "summary": "Password 는 별도 컴포넌트가 아니라 Input 컴포넌트셋의 BOOLEAN 속성 3개(Password Icon·Password Action Hover·Clear Action Hover)다. Search 는 독립 컴포넌트이나 높이·여백이 Input PC 와 동일하다. 웹 아이콘 자산(eye/search)은 ui-library manifest 에 미등재이고, Figma 키는 allowed-remote-keys 에 이미 있다. 표시(뜬 눈) 아이콘은 정본 코드에 키만 있고 도형이 없다. pages/components.html 에 setupPasswordFieldInput·setupSearchInputField 함수가 있으나 대상 마크업이 0건인 죽은 코드다.",
+      "report": "reports/ui-library/password-search-input/1-inventory.md",
+      "basis": "Password·Search 착수 전 정본 재고조사 — buildInput(905-1074)·아이콘 헬퍼(1075-1260)·buildSearch(1261-1332)·ICON_KEYS(1112-1129), ui-library 아이콘 manifest, allowed-remote-keys, component-behavior.pc.json, input.json relatedComposedFields, pages/components.html 손관리 코드"
+    },
+    "iconOrigin": {
+      "status": "PASS",
+      "actor": "orchestrator",
+      "observedAt": "2026-09-04",
+      "icons": {
+        "eye_show": {
+          "node": "97:274",
+          "meanAlphaError": 0.00393
+        },
+        "eye_hide": {
+          "node": "97:298",
+          "meanAlphaError": 0.00652
+        },
+        "search": {
+          "node": "97:125",
+          "meanAlphaError": 0.00426
+        }
+      },
+      "note": "잉크색은 선례대로 black 으로 정규화(원본 #353535). 원본 대조기가 웹 래스터를 RGB 로 읽어 어두운 정도를 알파로 환산하므로 색을 맞추지 않으면 잉크 픽셀마다 21% 오차가 난다 — 첫 대조 FAIL(0.019~0.028)의 원인이었다.",
+      "record": "reports/ui-library/icon-origin-verification.json"
+    },
+    "verification": {
+      "status": "PARTIALLY-SUPERSEDED",
+      "actor": "component-verifier",
+      "observedAt": "2026-09-07",
+      "round": 2,
+      "report": "reports/ui-library/password-search-input/4-verification.md",
+      "gate13Recorded": true,
+      "gate13Record": "--by component-verifier --verdict pass --change structural (2026-09-07 2회차)",
+      "summary": "결함 0건. river 결정 5건(D7~D11) 전부 정확 반영 확인 — Mobile hover 제거가 PC 를 건드리지 않았고(모바일 액션 33개 중 hover 적격 0 · PC 36개 중 34), 아이콘 간격 12px·hit 48×48·겹침 0 을 직접 재실측, 지우기 숨김 시 왼쪽 아이콘 center 복귀 확인, D9 는 문구만 변경(코드·계약 무변경을 git show 로 대조), D10 배포 필터 diff 0바이트, D11 hover 면이 Base Input 과 동일 사양. A2 오탐 판정은 독립 검토 후 NOT-A-DEFECT 확정(position 필드를 읽는 소비 코드 0건). 파생 전파 전 항목 PASS. 미결은 A1 공유 규칙 확장의 Input 밖 파급 1건뿐이며 코드 오류가 아니라 river 확인 사항.",
+      "unverified": [
+        "Figma 캔버스에 실제로 그려진 Search Input 세트의 육안 배치(코드 레벨만 — 웹 렌더에서는 12px 확인)",
+        "실제 마우스 hover 스크린샷(브라우저 패널 미렌더 — CSSOM 규칙 전수 + 셀렉터 적격 계측으로 대체)",
+        "Dark 픽셀 캡처(헤드리스에서 테마 주입 불가 — 계산값 대조로 대체, 이번 델타에 색 변경 0건)"
+      ],
+      "supersededScope": "assets/css/ui-library-guide.css 델타만. 2회차에서 PASS 한 나머지(정본 D7~D11·웹 계약·아이콘·파생 전파·A2 판정)와 Gate 13 기록은 유효하다 — 이번 변경은 안내 페이지 CSS 한 파일뿐이고 정본·웹 컴포넌트·dist 를 건드리지 않는다.",
+      "notIndependentlyVerified": [
+        "4회차 FAIL(A-2 검사기 약화) 수정분 — 재조준된 scripts/ui-guide-render-check.js 와 component-page-template.md 는 ⭐ 자가 적대적 시험(위반 3형태 주입·전부 차단 확인)만 거쳤고 🤖 독립 검증을 받지 않았다. river 가 '내가 직접 볼게' 로 진행을 택했다(2026-09-07).",
+        "모바일 가로선 5개는 기계가 지키지 않는다(D16 = HD-8 A)."
+      ]
+    },
+    "remediation": {
+      "actor": "orchestrator",
+      "observedAt": "2026-09-07",
+      "items": [
+        {
+          "id": "A1",
+          "status": "FIXED",
+          "summary": "안내 페이지에서 Password/Search 제목이 앞 블록에 0px 로 붙던 문제. 공유 규칙을 확장해 (1) 가로선이 demo-group 뒤에 와도 24px 여백을 받게 하고 (2) 가로선이 없는 Mobile 에서는 블록 자체에 24px 을 준다.",
+          "where": [
+            "assets/css/ui-library-guide.css"
+          ],
+          "measured": {
+            "pcPassword": "0px->24px",
+            "pcSearch": "24px 유지",
+            "mobilePassword": "0px->24px",
+            "mobileSearch": "0px->24px"
+          },
+          "sideEffectScan": "안내 사이트 전 컴포넌트 인접쌍 20건 실측 — 음수·과도(60px 초과) 0건. ui:guide:render 19종 x PC/Mobile 통과."
+        },
+        {
+          "id": "A2",
+          "status": "NOT-A-DEFECT",
+          "summary": "registry/components/input.json 의 password-field visibilityToggle.position=left 는 '필드 왼쪽' 이 아니라 '액션 그룹 안에서 왼쪽' 을 뜻하며, 실제 배치([눈][지우기])와 일치한다. 형제 슬롯이 right-of-visibilityToggle / rightmost / left-of-searchAction 처럼 모두 그룹 기준 표기다. 값을 바꾸지 않았고, 같은 오독이 재발하지 않도록 표기만 leftmost-in-group 으로 명확히 했다.",
+          "where": [
+            "registry/components/input.json"
+          ],
+          "note": "component-verifier 2026-09-07 A2 는 오탐이다 — 검증자가 다시 판정해야 한다."
+        },
+        {
+          "id": "A3",
+          "status": "FIXED",
+          "summary": "Date Picker 「달력 크기」 제목이 위 가로선에 0px 로 붙어 있던 문제(river 지적). 구분선 여백을 앞 요소 종류로 판별하던 방식을 버리고 구분선 기본값으로 24px 을 준다.",
+          "where": [
+            "assets/css/ui-library-guide.css"
+          ],
+          "measured": {
+            "date-picker 구분선 3곳": "위 24 / 아래 24 (이전 0/0)",
+            "filter-chip 구분선": "24/24 유지"
+          },
+          "sideEffectScan": "규칙을 브라우저에서 껐다 켜 before/after 를 직접 대조(이상치 스캔 아님) — date-picker 에서 0→24 로 바뀐 곳 5건 확인, 24 를 넘거나 줄어든 곳 0건. 구조상 값이 겹쳐 커질 수 없다(인접 형제 여백은 최대값 합산, 양쪽 24). ui:guide:render 19종 × PC/Mobile 통과, gate:check PASSED. ⚠️ 전 컴포넌트 화면별 실측 순회는 브라우저 부하로 완주하지 못했다 — 검증자가 적대적으로 훑어야 한다."
+        },
+        {
+          "id": "A4",
+          "status": "FIXED",
+          "summary": "Mobile Time Picker 「목록 칸 상태」 제목이 앞 상태표에 0px 로 붙어 있던 문제. D13 이 구분선 쪽만 고쳐 남아 있던 나머지 절반을 같은 원리로 정리했다.",
+          "where": [
+            "assets/css/ui-library-guide.css"
+          ],
+          "measured": {
+            "time-picker 목록 칸 상태(Mobile)": "0px→24px",
+            "그 외 Mobile": "변경 0건",
+            "PC 전체": "변경 0건"
+          },
+          "sideEffectScan": "이전 열거 규칙을 임시 스타일시트로 재현해 새 규칙과 1:1 대조(규칙을 통째로 끄면 원래 규칙이 주던 여백까지 사라져 오판한다 — 3회차 초반에 실제로 그렇게 오측정했다가 기준을 바로잡았다). PC 17칩·Mobile 12칩 순회 완료 — 이번엔 완주했다.",
+          "checks": "ui:guide:render·ui:build:check·ui:test:check·ui:contract 전부 0, gate:check PASSED"
+        },
+        {
+          "id": "A5",
+          "status": "FIXED",
+          "summary": "모바일 섹션 제목 위 가로선 누락(river 지적). Input·Time Picker 모바일에 PC 와 같은 위치로 가로선을 넣고, 검사기와 규칙 문서를 §A-5 의 원래 뜻에 맞게 조준했다.",
+          "where": [
+            "assets/js/ui-library-guide.js",
+            "scripts/ui-guide-render-check.js",
+            "component-page-template.md"
+          ],
+          "measured": {
+            "Input mobile": "가로선 0→2",
+            "Time Picker mobile": "가로선 0→3",
+            "그 외 컴포넌트": "변경 0건"
+          },
+          "sideEffectScan": "헤드리스 DOM 덤프(캐시 무관)로 모바일 전 섹션의 블록·가로선 개수를 세어 대조. 검사기 약화 여부는 위반 3형태를 주입해 확인 — 1차 시도는 한 형태만 시험해 틀린 결론을 냈고(🤖 4회차 A-2 가 반증), 재조준 후 3형태 모두 실패 재현.",
+          "checks": "ui:guide:render·ui:build:check·ui:test:check·ui:contract·components:guide-model:check 전부 0, gate:check PASSED"
+        },
+        {
+          "id": "A6",
+          "status": "FIXED",
+          "summary": "검사기 조준이 실제로는 약화였던 것(🤖 component-verifier 4회차 A-2). 개수 비교 대신 이미 있는 variants 선언으로 조준을 바꿔 「유형별 블록 + 사이 선」 형태까지 막는다. 죽은 가지(중복 발화)도 제거했다.",
+          "where": [
+            "scripts/ui-guide-render-check.js",
+            "component-page-template.md"
+          ],
+          "adversarialTest": {
+            "블록0+선1": "❌ 실패(정상)",
+            "유형별블록3+선2": "❌ 실패(정상 — 종전 새 검사기는 통과시켰다)",
+            "블록1+선1": "❌ 실패(정상)",
+            "현재 정상 상태": "✅ 통과"
+          },
+          "note": "새 기준을 만들지 않았다 — component-presentation-policy.json 의 variants 는 이미 button=primary/secondary/blue-line, chip·filter-chip=line/solid 로 '합쳐야 할 유형'을 선언하고 있었다."
+        }
+      ]
+    },
+    "promotion": {
+      "actor": "orchestrator",
+      "observedAt": "2026-09-07",
+      "report": "reports/ui-library/password-search-input/6-promotion.md",
+      "summary": "migration password-field·search-input → approved, input manifest → approved. 재생성 5종(ui build·installer:build·ui:zip·devpanel:gen·board:refresh) 전부 0. HD-1 자연 해소 확인 — react/vue 포장 파일 복귀, 플랫폼 배포 19종(input 포함), 개발자 ZIP 177 files. gate:check PASSED."
+    },
+    "riverApproval": {
+      "status": "approved",
+      "by": "river",
+      "at": "2026-09-07",
+      "quote": "확인했어, 승인. 커밋해줘",
+      "how": "5-human-review — ui-review.html 「이번에 볼 것」 1b·1c 를 river 가 직접 확인했다.",
+      "priorDecisions": "D1~D16 (모바일 hover 제거·아이콘 간격·안내메시지·배포기준·Figma hover 면·안내 페이지 여백/가로선 포함)"
+    },
+    "implementationActualRender": {
+      "verdict": "PASS",
+      "actor": "component-verifier + orchestrator",
+      "observedAt": "2026-09-07",
+      "how": "🤖 component-verifier 가 PC·Mobile × Light·Dark 4벌을 직접 렌더로 확인(눈 감김/뜬눈·돋보기 실제 그려짐, 마스크 404 아님, Disabled 색 정본 일치). 아이콘 간격 12px·hit 48×48·겹침 0, 지우기 숨김 시 왼쪽 아이콘 center 복귀를 브라우저 실측. 모바일 hover 미발생·PC 발생을 CSSOM 전수 열거로 확인. 안내 페이지 가로선·여백은 캐시 없는 헤드리스 덤프로 대조.",
+      "screens": "reports/ui-library/password-search-input/screens/"
+    },
+    "promotionDecision": {
+      "independentVerification": "waived-by-river",
+      "approvedBy": "river",
+      "at": "2026-09-07",
+      "quote": "HD-8 -> A  내가 직접 볼게",
+      "scope": "생략은 마지막 델타 1건에만 적용된다 — 재조준한 scripts/ui-guide-render-check.js 와 component-page-template.md §A-5. 그 앞의 모든 범위(정본 C1~C4·D7~D11·웹 계약·아이콘 원본 대조·파생 전파·A2 판정·Gate 13)는 🤖 component-verifier 가 실제로 검증해 PASS 했다.",
+      "riskBasis": "안내 페이지 검사기 조준 1파일 + 규칙 문서 1파일. 배포되는 컴포넌트 코드·정본·dist 를 건드리지 않는다. ⭐ 가 위반 3형태(블록0+선1 · 유형별블록3+선2 · 블록1+선1)를 주입해 전부 차단됨을 확인했고, 되돌린 뒤 통과했다. 다만 이 확인은 ⭐ 자가인증이다 — 같은 자리에서 ⭐ 가 한 번 틀렸던 이력이 있다(4회차 A-2).",
+      "residualRisk": "모바일 가로선 5개(Input 2·Time Picker 3)는 지워도 검사가 통과한다(D16 = HD-8 A). 사람 검수에 맡긴 상태."
+    }
+  },
+  "handoff": {
+    "lastActor": "orchestrator",
+    "updatedAt": "2026-09-07",
+    "summary": "완료 — river 승인 후 승격·커밋. 검사기 재조준분(ui-guide-render-check.js·component-page-template.md)은 ⭐ 자가인증 상태로 남았고 6-promotion.md 에 명시했다."
+  },
+  "figmaSources": {
+    "role": "시각 정본은 build-components.ts 다. Figma V3.0 은 사람이 보기 쉬운 선택적 시각 참고이며 inventory 통과 조건이 아니다. 다만 이번 작업은 아이콘 원본(SVG)을 Figma 에서 가져와야 하므로 인증 복구가 필요하다(B1).",
+    "requiredForInventory": false,
+    "fileKey": "cysG5U1udpQqVagYY1hWHW",
+    "fileName": "SW-UX-GUIDE V3.0 TEST",
+    "url": "https://www.figma.com/design/cysG5U1udpQqVagYY1hWHW/SW-UX-GUIDE-V3.0-TEST?node-id=5-5706&m=dev",
+    "overviewNodeId": "5:5706",
+    "components": {
+      "password-field": {
+        "nodeId": null,
+        "source": "Input 컴포넌트셋의 Password Icon BOOLEAN — 별도 노드 아님",
+        "status": "icon-assets-needed"
+      },
+      "search-input": {
+        "nodeId": null,
+        "source": "buildSearch 가 만드는 독립 컴포넌트셋",
+        "status": "icon-assets-needed"
+      }
+    },
+    "neededIcons": [
+      {
+        "id": "eye_hide",
+        "key": "d4e9eb5b",
+        "note": "비밀번호 미표시(감긴 눈). 정본 ICON_KEYS.eye 와 같은 키."
+      },
+      {
+        "id": "eye_show",
+        "key": "b130623bad9bf035e273501b404bf7a245af1460",
+        "note": "비밀번호 표시(뜬 눈). allowed-remote-keys 에는 있으나 정본 ICON_KEYS 에 없고 도형도 없다."
+      },
+      {
+        "id": "search",
+        "key": "6b764af6",
+        "note": "돋보기."
+      }
+    ]
+  }
+}

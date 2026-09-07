@@ -560,6 +560,55 @@
       ],
       "riverApproval": "approved 2026-09-04",
       "promotionDecision": "approved 2026-09-04 · river 조건부 승인(\"데이트피커 개발코드가 pc, 모바일에 맞게 분리되어 표출되고있는지도 재확인후에 문제없으면 승인\")의 조건 = \"개발코드가 PC·모바일로 나뉘어 나오는가\" 를 실제 화면에서 확인해 충족: PC 화면 코드탭은 data-break=\"pc\" + panel(role=dialog), 모바일 화면 코드탭은 data-break=\"mobile\" + sheet(aria-modal=true, 적용 버튼) 로 서로 다른 배포 예제가 나온다(manifest.htmlContract.breakExamples 선언 → dist/examples/date-picker.html · date-picker.mobile.html). 기술 검증은 독립 검증 7차 PASS, 정본 SM 달력 변경분은 🤖 component-verifier 가 Figma 원본 재실측으로 확인."
+    },
+    {
+      "id": "password-field",
+      "kind": "core-component",
+      "base": "input",
+      "legacyStatus": "implemented",
+      "uiLibraryStatus": "approved",
+      "dependencies": [
+        "tokens.css",
+        "typography.css",
+        "eye_hide.svg",
+        "eye_show.svg",
+        "remove.svg",
+        "input.js"
+      ],
+      "lastVerified": "2026-09-07",
+      "reverifyTrigger": "Password 는 별도 컴포넌트가 아니라 Input 의 옵션(type=password + action[data-action=password]) 이다 — Base Input 정본·registry input.json relatedComposedFields 변경 시 함께 재검증.",
+      "evidence": [
+        "reports/ui-library/password-search-input/1-inventory.md",
+        "reports/ui-library/password-search-input/2-canon-readiness.md",
+        "reports/ui-library/password-search-input/3-build.md"
+      ],
+      "note": "3-build 완료, 4-verification·river 승인 대기. uiLibraryStatus 는 draft 로 시작하고 verified/approved 는 검증자·river 가 판정한다(빌더 자가인증 금지).",
+      "approvedBy": "river",
+      "approvedAt": "2026-09-07"
+    },
+    {
+      "id": "search-input",
+      "kind": "core-component",
+      "base": "input",
+      "legacyStatus": "implemented",
+      "uiLibraryStatus": "approved",
+      "dependencies": [
+        "tokens.css",
+        "typography.css",
+        "search.svg",
+        "remove.svg",
+        "input.js"
+      ],
+      "lastVerified": "2026-09-07",
+      "reverifyTrigger": "Search 는 별도 컴포넌트가 아니라 Input 의 옵션(root[data-mode=search] + action[data-action=search]) 이다 — Base Input 정본·정본 buildSearch(states·sizes)·registry input.json relatedComposedFields 변경 시 함께 재검증.",
+      "evidence": [
+        "reports/ui-library/password-search-input/1-inventory.md",
+        "reports/ui-library/password-search-input/2-canon-readiness.md",
+        "reports/ui-library/password-search-input/3-build.md"
+      ],
+      "note": "3-build 완료, 4-verification·river 승인 대기. 정본 buildSearch 구조 변경(상태 4→3·Mobile 신설·hit area) 포함 — 하드룰 H1② 에 따라 🤖 component-verifier 검증이 필요하다. uiLibraryStatus 는 draft 로 시작.",
+      "approvedBy": "river",
+      "approvedAt": "2026-09-07"
     }
   ]
 }

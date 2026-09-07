@@ -114,10 +114,14 @@
 .uilg-section-title { font-size: var(--font-size-20); }
 .uilg-demo-title { font-size: var(--font-size-16); }
 
+/* 구분선은 언제나 위아래 24px 을 갖는다 — 「앞에 무엇이 오는가」로 여백을 주면
+   새로운 앞 요소가 나올 때마다 조용히 0px 로 새어나간다. 실제로 그렇게 새어
+   Password/Search 제목(2026-09-07 A1)과 Date Picker 「달력 크기」 제목(river 지적 2026-09-07)이
+   각각 앞 블록에 붙었다. 예외가 필요한 자리는 인라인 style 로 덮는다(우선순위가 높다). */
 .uilg-separator {
   border: 0;
   border-top: 1px solid var(--color-line-gray-subtle);
-  margin: 0;
+  margin: var(--spacing-24) 0;
   width: 100%;
 }
 
@@ -128,9 +132,13 @@
   gap: var(--spacing-16);
 }
 
-/* variant 블록 사이 간격 — 8px 는 다른 블록 간격(24px)에 비해 눈에 띄게 좁아 보였다(river 지적 2026-08-31).
-   앞으로 새 컴포넌트도 이 값을 그대로 물려받도록 공유 규칙에서 24px 로 고정한다. */
-.uilg-variant-block + .uilg-separator { margin-block: var(--spacing-24); }
+/* 가로선이 없는 자리(Mobile — 크기가 한 가지라 §A-5 로 가로선 금지)에서도 블록은 같은 24px 로 떨어진다.
+   구분선과 마찬가지로 「앞에 무엇이 오는가」를 열거하지 않는다 — 열거하면 새로운 앞 요소가 나올 때마다
+   조용히 0px 로 새어나간다. 실제로 그렇게 새어 Password/Search 제목(A1)·Date Picker 「달력 크기」·
+   Mobile Time Picker 「목록 칸 상태」가 차례로 앞 표에 붙었다(🤖 component-verifier 2026-09-07 C-2).
+   블록 사이 24px 은 river 지적(2026-08-31)으로 고정된 값이다 — 8px 은 눈에 띄게 좁아 보였다.
+   구분선이 앞에 오는 경우에도 두 여백은 맞닿아 큰 값 하나로 합쳐지므로 48px 이 되지 않는다. */
+.uilg-variant-block:not(:first-child) { margin-block-start: var(--spacing-24); }
 
 /* ── Input state matrix — constrained width ── */
 

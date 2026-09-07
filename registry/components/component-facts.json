@@ -3,7 +3,7 @@
     "generated": true,
     "source": "plugins/figma-vars-installer/src/build-components.ts",
     "method": "mock-execution",
-    "sourceHash": "f55f850131a7",
+    "sourceHash": "67e126ffb53f",
     "unknownValuePolicy": [
       "unknown",
       "not-defined",
@@ -20,6 +20,7 @@
       "clock",
       "close",
       "eye",
+      "eye_show",
       "globe",
       "home",
       "menu",
@@ -2051,22 +2052,26 @@
     },
     "Search Input": {
       "variantAxes": {
-        "State": [
-          "Default",
-          "Focus",
-          "Filled",
-          "Disabled"
-        ],
         "Size": [
           "XXSM",
           "XSM",
           "MD"
+        ],
+        "State": [
+          "Default",
+          "Filled",
+          "Disabled"
+        ],
+        "Break": [
+          "PC",
+          "Mobile"
         ]
       },
       "geometry": [
         {
           "when": {
-            "Size": "XXSM"
+            "Size": "XXSM",
+            "Break": "PC"
           },
           "target": "root",
           "width": 160,
@@ -2086,7 +2091,8 @@
         },
         {
           "when": {
-            "Size": "XSM"
+            "Size": "XSM",
+            "Break": "PC"
           },
           "target": "root",
           "width": 160,
@@ -2106,7 +2112,8 @@
         },
         {
           "when": {
-            "Size": "MD"
+            "Size": "MD",
+            "Break": "PC"
           },
           "target": "root",
           "width": 160,
@@ -2123,25 +2130,43 @@
           "cornerRadius": "4",
           "strokeWeight": "1",
           "strokeAlign": "INSIDE"
+        },
+        {
+          "when": {
+            "Size": "MD",
+            "Break": "Mobile"
+          },
+          "target": "root",
+          "width": 160,
+          "height": 48,
+          "layoutMode": "HORIZONTAL",
+          "primaryAxisSizingMode": "FIXED",
+          "counterAxisSizingMode": "FIXED",
+          "primaryAxisAlignItems": "SPACE_BETWEEN",
+          "counterAxisAlignItems": "CENTER",
+          "paddingTop": "0",
+          "paddingRight": "0",
+          "paddingBottom": "0",
+          "paddingLeft": "16",
+          "cornerRadius": "4",
+          "strokeWeight": "1",
+          "strokeAlign": "INSIDE"
         }
       ],
       "anatomy": [
-        "lead",
-        "search",
+        "search-action",
         "trail"
       ],
       "tokenBindings": [
         "color/form-control/bg/default",
         "color/form-control/bg/disabled",
-        "color/form-control/bg/selected",
+        "color/form-control/bg/hover",
         "color/form-control/border/default",
         "color/form-control/border/disabled",
-        "color/form-control/border/selected",
-        "color/form-control/text-cursor",
         "color/form-control/text/default",
         "color/form-control/text/disabled",
         "color/form-control/text/placeholder",
-        "color/form-control/text/selected"
+        "radius/4"
       ],
       "composition": {
         "buildDependencies": []

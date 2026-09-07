@@ -1,5 +1,6 @@
 /* component:input */
-/* Base Input only. Password Field and Search Input are separate follow-up modules. */
+/* Base Input + Password Field (type=password 옵션) + Search Input (data-mode=search 옵션).
+   둘 다 별도 컴포넌트가 아니라 이 Input을 조립한다(river D1, 2026-09-04). */
 [data-s1-component="input"] {
   box-sizing: border-box;
   display: flex;
@@ -72,8 +73,33 @@
   display: none;
 }
 
+/* 트레일링 액션 사이 간격. Password = [눈][지우기] 2px(정본 trail itemSpacing:2, build-components.ts:990).
+   Search = [지우기][돋보기] 4px(정본 trail itemSpacing:4, build-components.ts:1298·1306) — data-mode=search 로 override. */
+[data-s1-component="input"] [data-s1-part="action"] + [data-s1-part="action"] {
+  margin-inline-start: var(--spacing-2);
+}
+
+[data-s1-component="input"][data-mode="search"] [data-s1-part="action"] + [data-s1-part="action"] {
+  margin-inline-start: var(--spacing-4);
+}
+
+/* Mobile 에서 아이콘이 두 개 보일 때 — 누르는 영역 48×48 은 그대로 두고 그림만 안쪽으로 당긴다.
+   48 칸 정중앙에 24 그림을 두면 양쪽 12px 씩이 비어 보이는 간격이 PC 8px 대비 28px 까지 벌어진다.
+   칸 사이 간격을 0 으로 맞붙이고 왼쪽 그림을 자기 칸 오른쪽 끝에 붙여 좁힌다(river HD-3 A, 2026-09-07).
+   오른쪽 그림 위치(칸 끝에서 12px)는 river 승인값이라 건드리지 않는다. 칸은 겹치지 않는다. */
+[data-s1-component="input"][data-break="mobile"] [data-s1-part="action"] + [data-s1-part="action"] {
+  margin-inline-start: 0;
+}
+
+[data-s1-component="input"][data-break="mobile"] [data-s1-part="action"]:has(+ [data-s1-part="action"]:not([hidden])) {
+  justify-content: flex-end;
+}
+
+/* Mobile break 는 hover 를 내지 않는다 — 손가락에는 hover 가 없고,
+   PC 브라우저에서 Mobile 화면을 볼 때 48×48 누르는 영역이 통째로 칠해져
+   실제 아이콘보다 훨씬 큰 면이 반응하는 것처럼 보이기 때문이다(river 지시 2026-09-07). */
 @media (hover: hover) {
-  [data-s1-component="input"] [data-s1-part="action"]:hover:not(:disabled) {
+  [data-s1-component="input"]:not([data-break="mobile"]) [data-s1-part="action"]:hover:not(:disabled) {
     background: var(--color-form-control-bg-hover);
     border-radius: var(--radius-control-sm);
   }
@@ -85,6 +111,27 @@
   height: var(--sizing-24);
   mask: url("./assets/icons/remove.svg") center / contain no-repeat;
   width: var(--sizing-24);
+}
+
+/* 비밀번호 표시 전환 — 숨김 중(aria-pressed=false)은 eye_hide, 표시 중(aria-pressed=true)은 eye_show.
+   눈 아이콘 색은 정본이 모든 상태에서 icon/default 하나만 쓴다(build-components.ts:986 — 상태별 분기 없음). */
+[data-s1-component="input"] [data-s1-part="action"][data-action="password"] [data-s1-part="action-icon"] {
+  mask: url("./assets/icons/eye_hide.svg") center / contain no-repeat;
+}
+
+[data-s1-component="input"] [data-s1-part="action"][data-action="password"][aria-pressed="true"] [data-s1-part="action-icon"] {
+  mask: url("./assets/icons/eye_show.svg") center / contain no-repeat;
+}
+
+/* 검색 실행(돋보기) — 항상 표시, 값 유무와 무관(river D4). */
+[data-s1-component="input"] [data-s1-part="action"][data-action="search"] [data-s1-part="action-icon"] {
+  mask: url("./assets/icons/search.svg") center / contain no-repeat;
+}
+
+/* Search 돋보기만 Disabled 에서 색을 낮춘다 — 정본 buildSearch 의 Disabled state 만 icon/disabled 를 쓴다
+   (build-components.ts:1266). Password 눈·clear 는 정본에 disabled 전용 아이콘 색이 없어 그대로 둔다. */
+[data-s1-component="input"][data-mode="search"]:has([data-s1-part="control"]:disabled) [data-s1-part="action"][data-action="search"] {
+  color: var(--color-form-control-icon-disabled);
 }
 
 [data-s1-component="input"][data-size="xxsm"] [data-s1-part="action-icon"] {

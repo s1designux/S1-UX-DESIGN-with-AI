@@ -37,7 +37,9 @@ const BC = path.join(ROOT, "plugins/figma-vars-installer/src/build-components.ts
 // 아이콘 노드는 role 이름으로 기록됨(makeIconInstance): 삭제 아이콘 = "remove", 돋보기 = "search" 등.
 const ANATOMY = [
   { set: "Input",        variant: /(^|,\s*)State=Editing(,|$)/, require: ["caret", "remove"], label: "Input / State=Editing" },
-  { set: "Search Input", variant: /(^|,\s*)State=Focus(,|$)/,   require: ["caret", "remove", "search"], label: "Search Input / State=Focus" },
+  // Search Input 상태 4→3(Default/Filled/Disabled) 로 축소(river D4, 2026-09-04) — Focus 행을 뺐고
+  // 검색창 caret 도 함께 뺐다(웹 :focus-within 로만 표시). 값 있음(Filled) 이 이제 지우기+돋보기를 낸다.
+  { set: "Search Input", variant: /(^|,\s*)State=Filled(,|$)/,  require: ["remove", "search"], label: "Search Input / State=Filled" },
   // 텍스트에리어 Focus 는 커서만 — 삭제(remove) 아이콘 미포함(사용자 결정 2026-06-19).
   { set: "Text Area",    variant: /(^|,\s*)State=Focus(,|$)/,   require: ["caret"],          forbid: ["remove"], label: "Text Area / State=Focus" },
   // Select Box Open 은 Dropdown 컴포넌트 인스턴스 사용 — raw "list" 프레임 금지(2026-06-19).

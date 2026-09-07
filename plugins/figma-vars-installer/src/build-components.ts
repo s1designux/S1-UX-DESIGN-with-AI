@@ -924,29 +924,40 @@ async function buildInput(maps: BuildMaps, originY: number, originX: number = IN
   const messages = ["Off", "On"];
   const comps: ComponentNode[] = [];
   const cells: { comp: ComponentNode; size: string; brk: string; state: string; message: string }[] = [];
-  const wrapSuffixAction = (icon: SceneNode, actionName: string, hitSize: number): FrameNode => {
+  // hover: Mobile 은 false — 손가락에는 hover 가 없고, PC 브라우저로 Mobile 화면을 볼 때
+  //   48×48 누르는 영역이 통째로 칠해져 실제 아이콘보다 훨씬 큰 면이 반응하는 것처럼 보인다(river 지시 2026-09-07).
+  // pullInward: Mobile 에서 아이콘이 두 개 나란히 설 때 왼쪽 그림을 자기 칸 안쪽 끝으로 붙여
+  //   보이는 간격을 좁힌다. 누르는 영역 48×48 은 그대로라 탭 정확도는 잃지 않는다(river HD-3 A, 2026-09-07).
+  const wrapSuffixAction = (
+    icon: SceneNode,
+    actionName: string,
+    hitSize: number,
+    opts?: { hover?: boolean; pullInward?: boolean },
+  ): FrameNode => {
     const action = figma.createFrame();
     action.name = actionName;
     action.layoutMode = "HORIZONTAL";
-    action.primaryAxisAlignItems = "CENTER";
+    action.primaryAxisAlignItems = opts?.pullInward ? "MAX" : "CENTER";
     action.counterAxisAlignItems = "CENTER";
     action.primaryAxisSizingMode = "FIXED";
     action.counterAxisSizingMode = "FIXED";
     action.fills = [];
     action.resize(hitSize, hitSize);
     // Input field 자체 Hover(삭제된 상태)와 suffix action Hover를 구분한다.
-    // 마우스가 있는 장치에서만 웹 :hover가 이 28/48px hit area의 배경을 켠다.
-    const hoverBg = figma.createRectangle();
-    hoverBg.name = `${actionName}-hover-bg`;
-    hoverBg.fills = [boundPaint(scv(maps, fc("bg/hover")))];
-    bindRadius(hoverBg, maps, "radius/4");
-    hoverBg.resize(hitSize, hitSize);
-    hoverBg.visible = false;
-    action.appendChild(hoverBg);
-    hoverBg.layoutPositioning = "ABSOLUTE";
-    hoverBg.x = 0;
-    hoverBg.y = 0;
-    hoverBg.constraints = { horizontal: "STRETCH", vertical: "STRETCH" };
+    // 마우스가 있는 장치에서만 웹 :hover가 이 28px hit area의 배경을 켠다.
+    if (opts?.hover !== false) {
+      const hoverBg = figma.createRectangle();
+      hoverBg.name = `${actionName}-hover-bg`;
+      hoverBg.fills = [boundPaint(scv(maps, fc("bg/hover")))];
+      bindRadius(hoverBg, maps, "radius/4");
+      hoverBg.resize(hitSize, hitSize);
+      hoverBg.visible = false;
+      action.appendChild(hoverBg);
+      hoverBg.layoutPositioning = "ABSOLUTE";
+      hoverBg.x = 0;
+      hoverBg.y = 0;
+      hoverBg.constraints = { horizontal: "STRETCH", vertical: "STRETCH" };
+    }
     action.appendChild(icon);
     return action;
   };
@@ -990,16 +1001,23 @@ async function buildInput(maps: BuildMaps, originY: number, originX: number = IN
           const eye = await makeIconInstance("eye", scv(maps, fc("icon/default")), sc.size === "XXSM" ? 20 : 24, EYE_OFF_SVG);
           eye.name = "eye-icon";
           const actionHitSize = sc.brk === "Mobile" ? 48 : 28;
-          const passwordAction = wrapSuffixAction(eye, "password-action", actionHitSize);
+          const isMobile = sc.brk === "Mobile";
+          // Mobile: 눈은 왼쪽 칸이라 그림을 안쪽(오른쪽) 끝으로 당긴다. hover 면은 두지 않는다.
+          const passwordAction = wrapSuffixAction(eye, "password-action", actionHitSize, {
+            hover: !isMobile,
+            pullInward: isMobile,
+          });
           passwordAction.visible = false;
           // 트레일링 클러스터 [눈][×] — 눈↔삭제(×) 간격 = spacing/2(2px). lead↔클러스터는 0(밀착, field 기본 itemSpacing).
           const trail = figma.createFrame();
           trail.name = "trail"; trail.fills = [];
           trail.layoutMode = "HORIZONTAL"; trail.counterAxisAlignItems = "CENTER";
           trail.primaryAxisSizingMode = "AUTO"; trail.counterAxisSizingMode = "AUTO";
-          trail.itemSpacing = 2; // spacing/2 — 비밀번호 눈 아이콘과 삭제(×) 아이콘 간격
+          // PC 2px(spacing/2). Mobile 은 0 — 48×48 칸을 맞붙이고 왼쪽 그림만 안쪽으로 당겨
+          // 보이는 간격을 좁힌다(river HD-3 A). 칸은 겹치지 않는다.
+          trail.itemSpacing = isMobile ? 0 : 2;
           trail.appendChild(passwordAction);
-          if (clearIcon) trail.appendChild(wrapSuffixAction(clearIcon, "clear-action", actionHitSize)); // Editing: 각 action hit area 독립
+          if (clearIcon) trail.appendChild(wrapSuffixAction(clearIcon, "clear-action", actionHitSize, { hover: !isMobile })); // Editing: 각 action hit area 독립
           field.appendChild(trail);
           field.resize(200, sc.h); // Input 예외 — 넓은 필드
           const comp = figma.createComponent();
@@ -1123,6 +1141,7 @@ export const ICON_KEYS: Record<string, string> = {
   chevron:  "e1ac97aa82f4e52f257ac1c0ea77fd09d0e5f581", // 화살표,더보기(쉐브론 › 우향 기준) 419:69 — 방향은 rotation 으로(우0·상90·좌180·하270 — Figma 회전은 반시계)
   globe:    "dee16df7e4ccddbd5dd7aa1d2fbf93f841f5dee2", // 인터넷(지구본) 35:3317 — GNB 언어(사용자 지정)
   eye:      "d4e9eb5b7e193ee291aa2a7e04396c8de2d2dae7", // 비밀번호 미표시(눈+슬래시 ic_비밀번호미표시 Line) — Input Password Icon boolean 기본값. 표시 눈은 인스턴스 스왑으로 교체
+  eye_show: "b130623bad9bf035e273501b404bf7a245af1460", // 비밀번호 표시(뜬 눈 ic_비밀번호표시 Line) — 웹 Password 옵션의 표시 중 아이콘(river C4, 2026-09-04). Figma 변형 자체는 위 eye(미표시) 하나만 쓰고, 표시 눈은 웹에서만 별도 스왑한다.
   home:     "6bf422c937034ce15f6814e5c430d8f85953ed4e", // 홈(ic_홈 Solid) 97:292 — V2.2 아이콘 라이브러리. Mobile Bottom Nav
   mobileHeaderBack: "7190e284d345ae19a679a16ed7bceafbd54073ca", // ic_이전 / Solid — Mobile Header
   mobileHeaderClose: "54469d54f16ed38de2d7b420b0e2195e4cf7c118", // ic_닫기 / Solid — Mobile Header
@@ -1261,24 +1280,63 @@ const fcIconPx = (h: number, _base: number): number => (h <= 28 ? 20 : 24);
 async function buildSearch(maps: BuildMaps, originY: number): Promise<{ set: ComponentSetNode; bottomY: number }> {
   const fc = (k: string) => `color/form-control/${k}`;
   const MAG = `<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="7" cy="7" r="5" stroke="#000" stroke-width="1.3"/><path d="M10.6 10.6L14 14" stroke="#000" stroke-width="1.3" stroke-linecap="round"/></svg>`;
+  // 상태 3종(river D4, 2026-09-04): Default(돋보기만) · Filled(값 있음 — 지우기+돋보기) · Disabled.
+  // 이전 Focus(=selected) 행은 뺐다 — 초점 표시는 Base Input과 같은 웹 :focus-within로만 처리한다(Figma 변형 아님).
   const states = [
     { name: "Default",  bg: "bg/default",  border: "border/default",  txt: "검색",   tc: "text/placeholder", icon: "icon/default" },
-    { name: "Focus",    bg: "bg/selected", border: "border/selected", txt: "검색어", tc: "text/selected",    icon: "icon/default" },
     { name: "Filled",   bg: "bg/default",  border: "border/default",  txt: "검색어", tc: "text/default",     icon: "icon/default" },
     { name: "Disabled", bg: "bg/disabled", border: "border/disabled", txt: "검색",   tc: "text/disabled",    icon: "icon/disabled" },
   ];
+  // Mobile MD 행 신설(river D3, 2026-09-04) — Base Input Mobile 규칙(h48·padL16·padR0)을 그대로 따른다.
   const sizes = [
-    { size: "XXSM", h: 28, font: 12, padL: 12, padR: 8 },
-    { size: "XSM",  h: 34, font: 14, padL: 12, padR: 8 },
-    { size: "MD",   h: 44, font: 14, padL: 16, padR: 12 },
+    { size: "XXSM", brk: "PC",     h: 28, font: 12, padL: 12, padR: 8 },
+    { size: "XSM",  brk: "PC",     h: 34, font: 14, padL: 12, padR: 8 },
+    { size: "MD",   brk: "PC",     h: 44, font: 14, padL: 16, padR: 12 },
+    { size: "MD",   brk: "Mobile", h: 48, font: 14, padL: 16, padR: 0 },
   ];
+  // 누르는 영역(river C3): PC 28×28 · Mobile 48×48 — Base Input wrapSuffixAction과 같은 크기 규칙.
+  // pullInward: Mobile 에서 아이콘 두 개가 나란히 설 때 왼쪽(지우기) 그림을 자기 칸 안쪽 끝에 붙여
+  //   보이는 간격을 좁힌다. 누르는 영역 48×48 은 그대로 두어 탭 정확도를 잃지 않는다(river HD-3 A, 2026-09-07).
+  // hover: PC 만 true — Base Input 의 wrapSuffixAction 과 같은 규칙으로 hit area 배경을 둔다.
+  //   Search 액션에만 hover 면이 없어 Base Input 과 어긋나 있던 것을 맞춘다(river HD-2 "넣자", 2026-09-07).
+  //   Mobile 은 손가락에 hover 가 없으므로 두지 않는다(D7).
+  const wrapAction = (
+    icon: SceneNode,
+    actionName: string,
+    hitSize: number,
+    opts?: { hover?: boolean; pullInward?: boolean },
+  ): FrameNode => {
+    const action = figma.createFrame();
+    action.name = actionName;
+    action.layoutMode = "HORIZONTAL";
+    action.primaryAxisAlignItems = opts?.pullInward ? "MAX" : "CENTER";
+    action.counterAxisAlignItems = "CENTER";
+    action.primaryAxisSizingMode = "FIXED";
+    action.counterAxisSizingMode = "FIXED";
+    action.fills = [];
+    action.resize(hitSize, hitSize);
+    if (opts?.hover !== false) {
+      const hoverBg = figma.createRectangle();
+      hoverBg.name = `${actionName}-hover-bg`;
+      hoverBg.fills = [boundPaint(scv(maps, fc("bg/hover")))];
+      bindRadius(hoverBg, maps, "radius/4");
+      hoverBg.resize(hitSize, hitSize);
+      hoverBg.visible = false;
+      action.appendChild(hoverBg);
+      hoverBg.layoutPositioning = "ABSOLUTE";
+      hoverBg.x = 0;
+      hoverBg.y = 0;
+      hoverBg.constraints = { horizontal: "STRETCH", vertical: "STRETCH" };
+    }
+    action.appendChild(icon);
+    return action;
+  };
   const comps: ComponentNode[] = [];
-  const cells: { comp: ComponentNode; row: number; col: number }[] = [];
-  for (let row = 0; row < sizes.length; row++) {
-    for (let col = 0; col < states.length; col++) {
-      const sc = sizes[row], st = states[col];
+  const cells: { comp: ComponentNode; size: string; brk: string; state: string }[] = [];
+  for (const sc of sizes) {
+    for (const st of states) {
       const comp = figma.createComponent();
-      comp.name = `State=${st.name}, Size=${sc.size}`;
+      comp.name = `Size=${sc.size}, State=${st.name}, Break=${sc.brk}`;
       comp.layoutMode = "HORIZONTAL";
       comp.primaryAxisAlignItems = "SPACE_BETWEEN";
       comp.counterAxisAlignItems = "CENTER";
@@ -1289,46 +1347,48 @@ async function buildSearch(maps: BuildMaps, originY: number): Promise<{ set: Com
       comp.strokes = [boundPaint(scv(maps, fc(st.border)))];
       comp.strokeWeight = 1; comp.strokeAlign = "INSIDE";
       const textNode = await makeBoundText(st.txt, sc.font, "Regular", scv(maps, fc(st.tc)));
-      if (st.name === "Focus") {
-        // Focus(=selected): [검색어 + 커서] 좌측 / [삭제(close) + 돋보기] 우측. 삭제는 돋보기 왼쪽(MVP4.2 순서).
-        const lead = figma.createFrame();
-        lead.name = "lead"; lead.fills = [];
-        lead.layoutMode = "HORIZONTAL"; lead.counterAxisAlignItems = "CENTER";
-        lead.primaryAxisSizingMode = "AUTO"; lead.counterAxisSizingMode = "AUTO";
-        lead.itemSpacing = 4;
-        lead.appendChild(textNode);
-        lead.appendChild(makeCaret(scv(maps, fc("text-cursor"))));
-        comp.appendChild(lead);
+      const actionHitSize = sc.brk === "Mobile" ? 48 : 28;
+      if (st.name === "Filled") {
+        // Filled(=값 있음): [검색어] 좌측 / [지우기][돋보기] 우측. 지우기는 돋보기 왼쪽(정본 trail 순서 유지).
+        comp.appendChild(textNode);
         const trail = figma.createFrame();
         trail.name = "trail"; trail.fills = [];
         trail.layoutMode = "HORIZONTAL"; trail.counterAxisAlignItems = "CENTER";
         trail.primaryAxisSizingMode = "AUTO"; trail.counterAxisSizingMode = "AUTO";
-        trail.itemSpacing = 4;
-        trail.appendChild(await makeClearIcon(scv(maps, fc("icon/default")), fcIconPx(sc.h, 0)));
-        trail.appendChild(await makeIconInstance("search", scv(maps, fc(st.icon)), fcIconPx(sc.h, 0), MAG));
+        // PC 4px(spacing/4). Mobile 은 0 — 48×48 칸을 맞붙이고 왼쪽 그림만 안쪽으로 당긴다(river HD-3 A).
+        trail.itemSpacing = sc.brk === "Mobile" ? 0 : 4;
+        const searchIsMobile = sc.brk === "Mobile";
+        // 왼쪽(지우기)만 안쪽으로 당긴다. 오른쪽(돋보기)은 칸 끝 12px 자리를 지켜야 하므로 가운데 정렬 유지.
+        trail.appendChild(wrapAction(await makeClearIcon(scv(maps, fc("icon/default")), fcIconPx(sc.h, 0)), "clear-action", actionHitSize, { hover: !searchIsMobile, pullInward: searchIsMobile }));
+        trail.appendChild(wrapAction(await makeIconInstance("search", scv(maps, fc(st.icon)), fcIconPx(sc.h, 0), MAG), "search-action", actionHitSize, { hover: !searchIsMobile }));
         comp.appendChild(trail);
       } else {
         comp.appendChild(textNode);
-        comp.appendChild(await makeIconInstance("search", scv(maps, fc(st.icon)), fcIconPx(sc.h, 0), MAG));
+        comp.appendChild(wrapAction(await makeIconInstance("search", scv(maps, fc(st.icon)), fcIconPx(sc.h, 0), MAG), "search-action", actionHitSize, { hover: sc.brk !== "Mobile" }));
       }
       comp.resize(160, sc.h);
       setLightMode(comp, maps);
       comps.push(comp);
-      cells.push({ comp, row, col });
+      cells.push({ comp, size: sc.size, brk: sc.brk, state: st.name });
     }
   }
   const set = figma.combineAsVariants(comps, figma.currentPage);
   set.name = "Search Input";
   set.x = 0; set.y = originY;
-  const opts: SpecOpts = {
+  const opts: GroupedSpecOpts = {
     title: "Search Input",
+    platforms: [
+      { name: "PC",     sizes: ["XXSM", "XSM", "MD"] },
+      { name: "Mobile", sizes: ["MD"] },
+    ],
+    rowLabels: [""],
     colHeaders: states.map((s) => s.name),
-    rowLabels: sizes.map((s) => s.size),
-    cellAt: (r, c) => cells.find((x) => x.row === r && x.col === c)?.comp ?? null,
-    lightX: SPEC_LIGHT_X, darkX: SPEC_DARK_X, originY, cellW: 176, cellH: 60,
+    cellAt: (platName, sizeName, _ri, ci) =>
+      cells.find((x) => x.size === sizeName && x.brk === platName && x.state === states[ci].name)?.comp ?? null,
+    offsetX: 0, lightX: SPEC_LIGHT_X, darkX: SPEC_DARK_X, originY, cellW: 176, cellH: 60, rowLabelW: 0,
   };
-  let bottomY = await decorateSetFlat(set, opts, maps);
-  try { bottomY = Math.max(bottomY, await buildSpec(opts, maps)); } catch (e) { console.warn(e); }
+  let bottomY = await decorateSetGrouped(set, opts, maps);
+  try { bottomY = Math.max(bottomY, await buildGroupedSpec(opts, maps)); } catch (e) { console.warn(e); }
   return { set, bottomY };
 }
 
