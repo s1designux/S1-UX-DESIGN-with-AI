@@ -4137,15 +4137,36 @@ async function buildTimePickerMobileBottomSheet(maps: BuildMaps, originY: number
   const ACCENT = "color/text/state/accent"; // 휠 숫자색(전 셀 동일 — 위/아래는 마스크로 흐려짐)
 
   // 시간 휠 한 컬럼(세로 나열 텍스트). align = counterAxisAlignItems(MIN/CENTER/MAX).
+  // 열 폭 — river 승인 2026-09-07("권장안으로 적용해봐"). 종전엔 폭을 주지 않고 글자에 맡겼는데(hug),
+  //   그러면 **정지 그림에서만** 성립하는 폭이 나온다: 시 열 샘플이 7·8·9 한 자리라 20 이었다.
+  //   실제 휠은 1~12 를 굴리므로 두 자리가 필요하고, 웹은 그 값을 정본에서 못 받아 64/48/24 를
+  //   임의로 지어 썼다(river 제보 2026-09-07 — 좌우 여백이 원본과 달라 보인 원인).
+  //   그래서 폭을 정본에 못 박는다. 시·분은 두 자리 안전폭 40(브라우저 실측 "59"=39.9), 콜론 8,
+  //   오전오후 56(hug 실측과 동일). 열 폭 합 144, 간격 36+32+32=100 → 콘텐츠 244.
+  //   좌우 여백 = wheelWrap 패딩 24 + 남는 폭 절반 (360 − 24×2 − 244) / 2 = 24 + 34 = 58.
+  //   ⚠ 좌우 여백은 원본 정지 그림의 68 이 아니라 58 이 된다 — 시 열이 20→40 으로 넓어진 만큼이며,
+  //     정지 그림을 굴러가는 목록으로 옮기면 피할 수 없다(river 확인 후 승인).
+  const WHEEL_COL_W: Record<string, number> = { ampm: 56, hour: 40, colon: 8, minute: 40 };
+
   const makeWheelCol = async (name: string, labels: string[], gap: number, align: "MIN" | "CENTER" | "MAX"): Promise<FrameNode> => {
     const col = figma.createFrame();
     col.name = name; col.fills = [];
-    col.layoutMode = "VERTICAL"; col.primaryAxisSizingMode = "AUTO"; col.counterAxisSizingMode = "AUTO";
+    col.layoutMode = "VERTICAL"; col.primaryAxisSizingMode = "AUTO"; col.counterAxisSizingMode = "FIXED";
     col.primaryAxisAlignItems = "CENTER"; col.counterAxisAlignItems = align; col.itemSpacing = gap;
     for (const lb of labels) {
       // 휠 숫자 = Pretendard Regular 32 → title/32R 텍스트 스타일 바인딩(makeBoundText 가 textStyleKey 로 매핑).
       const t = await makeBoundText(lb, 32, "Regular", scv(maps, ACCENT));
       col.appendChild(t);
+    }
+    // 폭 지정 실패를 삼키지 않는다 — 삼키면 Figma 기본 폭 100 이 남아 4열 합이 시트 360 을 넘고,
+    //   그 상태가 조용히 캔버스에 굳는다(🤖 component-verifier 2026-09-07 권고).
+    const w = WHEEL_COL_W[name];
+    if (w) {
+      try {
+        col.resize(w, col.height);
+      } catch (e) {
+        throw new Error(`[time-picker sheet] 휠 열 "${name}" 폭(${w}) 지정 실패: ${String(e)}`);
+      }
     }
     return col;
   };

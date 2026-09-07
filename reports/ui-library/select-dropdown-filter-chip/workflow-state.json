@@ -306,6 +306,19 @@
       "quote": "승인",
       "decision": "오케스트레이터가 pages/ui-review.html 을 실제로 열어 Select 목록 열기·값 선택, Dropdown 체크박스·전체 선택, Filter Chip 제목+값 표시 동작을 화면으로 보여주고 승인받았다.",
       "integrityNote": "6-promotion.md·migration.json 에 이미 'river 승인 2026-09-01' 로 기록돼 있었으나, river 본인에게 재확인한 결과 '기억 안 남'으로 답해 그 근거를 인정하지 않고 이번 세션의 실제 확인을 유효 승인으로 기록한다."
+    },
+    {
+      "id": "D22",
+      "topic": "드롭다운 목록 최대 폭 320px 확정 + 넘치는 옵션은 말줄임(…)",
+      "decidedBy": "river",
+      "decidedAt": "2026-09-07",
+      "quote": "애초에 너무 옵션글이 길어지지 않도록 제한해야함. 320으로 확정하되 글이 넘어가는 경우 줄임말(...)표시되도록 수정.",
+      "decision": "max-width:320px 를 river 결정으로 확정하고, 320 초과 시 동작을 줄바꿈에서 말줄임(text-overflow:ellipsis)으로 바꾼다. 2026-09-01 의 '줄바꿈' 지시를 이 결정이 대체한다.",
+      "background": "정본 승인 감사(reports/canon-approval-audit-2026-09-07.md) HD-3 후속. 상한을 두라는 지시는 river 2026-09-01 04:54 발화('너무 넓어지지 않도록 제한 필요')에 실재했고, 숫자 320 과 셀렉트까지 건 적용 범위만 ⭐ 가 정한 것이었다. 판단 재료·상한값 비교 렌더는 reports/ui-library/dropdown-max-width/.",
+      "openItems": [
+        "HD-3b — 이 상한을 셀렉트에도 걸지, 필터칩에만 걸지 미결(트리거가 320보다 넓으면 목록이 좁게 뜬다 · 실측 420 vs 320)",
+        "잘린 글자를 마우스 올림(title)으로 보여줄지 미결 — ⭐ 가 임의로 만들지 않았다"
+      ]
     }
   ],
   "blockers": [
@@ -422,7 +435,7 @@
   },
   "handoff": {
     "lastActor": "orchestrator",
-    "updatedAt": "2026-09-03",
-    "summary": "0~6 단계 전부 완료. 2026-09-03 river 가 pages/ui-review.html 실물 화면(Select 목록 열기·값 선택, Dropdown 체크박스·전체 선택, Filter Chip 제목+값 표시)을 직접 보고 검수본 07 을 승인했다(D21). 남아 있던 두 막힘도 그 자리에서 정리했다 — B1(Gate 13)은 2026-09-02 🤖 component-verifier 재검증으로 이미 해소돼 있었고 2026-09-03 gate:check 재실행으로 확인만 했다(D19). B3(chevron 오토레이아웃 래퍼)는 회전 아이콘 전반 영향 검증이 필요한 별도 작업이라 river 결정으로 이번 범위에서 제외하고 뒤로 미뤘다(D20) — 커밋·완료를 막지 않는 backlog 로 남는다. 과거 6-promotion.md·migration.json 에 있던 'river 승인 2026-09-01' 서술은 river 본인 확인 결과 근거가 없어(기억 안 남) 무효 처리하고 이번 결정으로 대체했다(D21 integrityNote)."
+    "updatedAt": "2026-09-07",
+    "summary": "D22(드롭다운 최대 폭 320 확정 + 말줄임) 반영. dropdown.css 를 줄바꿈→말줄임으로 바꾸고 dist 재빌드, ui:zip·board:refresh(D-08) 까지 갱신해 gate:check PASSED. 기계검사 6종 초록, PC/Mobile·Light/Dark 렌더 확인 완료. 남은 것은 river UX 검수와 미결 2건(HD-3b 적용 범위 · 잘린 글자 title 노출). ui:state 의 정본 지문 2건 불일치는 다른 세션의 time-picker 정본 수정 때문이며 dropdown 과 겹치지 않음을 diff 로 확인했다(지문은 손대지 않음)."
   }
 }

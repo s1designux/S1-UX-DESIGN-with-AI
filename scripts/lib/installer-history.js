@@ -123,6 +123,23 @@ async function resolveAnchor(curFp) {
   return { anchorSha: null, anchorFp: null, releaseDate, landedSha: landed && landed.sha, walked: commits.length, dirty };
 }
 
+
+/** 작업트리가 더럽더라도, **그 스코프가 실제로 바뀌었을 때만** 오늘로 본다.
+ *  종전엔 정본 소스 4개 중 하나라도 더러우면 카드 4장이 전부 오늘로 찍혔다.
+ *  그 상태로 zip 을 만들고 커밋하면, 커밋 뒤 재계산값(그 스코프가 마지막으로 바뀐 날)과
+ *  영구히 어긋나 Gate 6c 가 계속 빨간불이 된다 — 실제로 반복됐다(river 지적 2026-09-07).
+ *  판정을 느슨하게 하는 게 아니라 정확하게 만드는 것이다: 정말 그 스코프를 고친 채 커밋 전이면
+ *  종전과 똑같이 오늘로 찍힌다. */
+async function dirtyChanged(scopeOf, curScope) {
+  if (!isDirty()) return false;
+  try {
+    const head = await fingerprintAt('HEAD');
+    return scopeOf(head) !== curScope;
+  } catch (e) {
+    return true; // HEAD 지문을 못 얻으면 종전대로 보수적으로 '바뀐 것'으로 본다
+  }
+}
+
 /** 특정 토큰 스코프의 지문이 마지막으로 바뀐 커밋 날짜(KST) — 카드 날짜용. */
 async function lastChangeDate(curFp, scopeFilter) {
   const scope = (fp) => JSON.stringify(
@@ -130,7 +147,7 @@ async function lastChangeDate(curFp, scopeFilter) {
   );
   const cur = scope(curFp);
   const commits = sourceCommits();
-  if (isDirty()) return kstDate(Date.now());
+  if (await dirtyChanged(scope, cur)) return kstDate(Date.now());
   let prev = null;
   for (const c of commits) {
     const fp = await fingerprintAt(c.sha);
@@ -142,9 +159,10 @@ async function lastChangeDate(curFp, scopeFilter) {
 
 /** 컴포넌트 시각 사양이 마지막으로 바뀐 커밋 날짜(KST) — Component Set 카드용. */
 async function lastSpecChangeDate(curFp) {
-  const cur = [...curFp.spec].sort().join('\n');
+  const specOf = (fp) => [...fp.spec].sort().join('\n');
+  const cur = specOf(curFp);
   const commits = sourceCommits();
-  if (isDirty()) return kstDate(Date.now());
+  if (await dirtyChanged(specOf, cur)) return kstDate(Date.now());
   let prev = null;
   for (const c of commits) {
     const fp = await fingerprintAt(c.sha);

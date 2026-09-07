@@ -276,6 +276,7 @@ export function init(root) {
 
   // ── 모바일 휠 바텀시트 모드 (신규) ───────────────────────────────────────────
   const wheelColByKind = {};
+  let centerWheelDefault = null;
   let tabApi = null;
   let sheetLastFocused = null;
 
@@ -293,13 +294,32 @@ export function init(root) {
     }
     sheet.hidden = true;
 
-    // 초기 표시 — 각 열의 첫 값(또는 이미 마크업에 채워진 값)을 중앙으로 스크롤한다.
-    for (const kind of ["ampm", "hour", "minute"]) {
-      const col = wheelColByKind[kind];
-      if (!col) continue;
-      const cells = getWheelCells(col);
-      scrollCellToCenter(col, cells[0]);
-    }
+    /* 초기 표시 — 아직 고른 값이 없으면 **지금 시각**을 가운데에 놓는다(river 결정 2026-09-07).
+       종전엔 각 열의 첫 값을 중앙에 두어 그 위가 통째로 비어 보였다.
+       분은 소비자가 정한 간격(minuteStep)에 맞춰 가장 가까운 아래 눈금으로 내린다 —
+       목록에 없는 값을 가리키면 가운데가 비기 때문이다.
+       트리거 값은 바뀌지 않는다: "적용"을 눌러야 값이 남는 동작은 그대로다. */
+    const wheelNow = () => {
+      const now = new Date();
+      const h24 = now.getHours();
+      const minute = pad2(Math.floor(now.getMinutes() / minuteStep) * minuteStep);
+      if (type === "12h") {
+        const h12 = h24 % 12 === 0 ? 12 : h24 % 12;
+        return { ampm: h24 < 12 ? "오전" : "오후", hour: String(h12), minute };
+      }
+      return { ampm: "오전", hour: pad2(h24), minute };
+    };
+    centerWheelDefault = () => {
+      const target = wheelNow();
+      for (const kind of ["ampm", "hour", "minute"]) {
+        const col = wheelColByKind[kind];
+        if (!col) continue;
+        const cells = getWheelCells(col);
+        const wanted = cells.find((c) => c.dataset.value === target[kind]);
+        scrollCellToCenter(col, wanted ?? cells[0]);
+      }
+    };
+    centerWheelDefault();
     const colonCol = wheelColByKind.colon;
     if (colonCol) scrollCellToCenter(colonCol, getWheelCells(colonCol)[Math.floor(getWheelCells(colonCol).length / 2)]);
 
@@ -394,6 +414,10 @@ export function init(root) {
     } else if (hasWheelSheet) {
       sheetLastFocused = trigger; // 항상 자기 트리거로 복귀(document.activeElement 는 클릭 방식에 따라 신뢰 불가)
       sheet.hidden = false;
+      /* 시트가 닫혀 있는 동안에는 열 높이가 0 이라 스크롤 위치가 잡히지 않는다 — 화면에 붙은 뒤
+         한 번 더 잡아야 기본값이 실제로 가운데에 온다(실측 2026-09-07). 이미 고른 값이 있으면
+         그 자리를 지킨다: 트리거가 값을 들고 있을 때(data-filled)는 다시 잡지 않는다. */
+      if (centerWheelDefault && trigger.dataset.filled !== "true") centerWheelDefault();
       document.body.style.overflow = "hidden";
       document.addEventListener("keydown", handleSheetKeydown, true);
       const firstFocusable = sheetPanel ? sheetFocusables(sheetPanel)[0] : null;

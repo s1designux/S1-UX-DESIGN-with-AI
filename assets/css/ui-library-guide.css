@@ -150,11 +150,15 @@
   width: 100%;
 }
 
+/* Action 영역의 인풋은 폭을 고정한다. 부모(.comp-action-top)가 align-items:flex-start 라
+   폭이 내용에 맞춰 줄어들어, 값을 입력해 지우기 아이콘(Mobile 48px)이 나타나는 순간
+   필드가 168px → 216px 로 넓어졌다(river 제보 2026-09-07 · 실측 delta 48px).
+   실제 서비스에서 인풋은 부모 폭을 따르지 글자 수를 따르지 않는다. */
 .uilg-input-action {
   display: grid;
   gap: var(--spacing-8);
-  max-width: 240px;
   min-height: 60px;
+  width: 240px;
 }
 
 .uilg-option-chips {
@@ -288,6 +292,10 @@
    트리거가 칸 한가운데 놓여 달력 오른쪽 끝이 칸 밖으로 (칸너비-180)/2 만큼 더 나가고,
    MD(356) 열에서는 카드 밖까지 삐져나간다. Date Picker 만 칸을 왼쪽 정렬해 달력이 칸 안에서 시작하게 한다. */
 [data-guide-component="date-picker"] .comp-state-cell { justify-content: flex-start; }
+
+/* 칸을 왼쪽 정렬했으면 그 칸의 열 제목도 왼쪽에서 시작해야 한다 — 제목만 가운데(.matrix-col-header)에
+   남아 「단일 선택 / 기간 선택」이 아래 컴포넌트보다 오른쪽으로 밀려 보였다(river 제보 2026-09-07). */
+[data-guide-component="date-picker"] .matrix-col-header { text-align: left; }
 
 [data-s1-component="select"] [data-s1-part="trigger"][data-force-state="hover"] {
   background: var(--color-form-control-bg-hover);
@@ -722,4 +730,49 @@
   .uilg-rules { padding: var(--spacing-16); }
   .uilg-code-toolbar { align-items: stretch; padding-right: 0; }
   .uilg-copy { margin: var(--spacing-6) var(--spacing-8); }
+}
+
+/* ── 한 화면 안의 여러 상자(기본 인풋·패스워드·서치) ──
+   상자마다 「실제 동작과 상태」 + 「개발 코드」가 한 벌이다(river 결정 HD-A, 2026-09-07).
+   상자가 경계를 그으므로 블록 사이 가로선은 두지 않는다. */
+.uilg-demo-block + .uilg-demo-block { margin-block-start: var(--spacing-32, 32px); }
+
+/* ── 바텀시트를 휴대폰 목업 안에 가둔다(river 지시 2026-09-07) ──
+   배포본에서 시트는 position:fixed 다 — 실제 서비스에서 화면 전체를 덮는 것이 맞는 동작이라
+   그대로 둔다. 안내 화면에서만 목업 화면을 기준 상자로 삼아 absolute 로 바꿔,
+   시트가 브라우저 전체가 아니라 휴대폰 안에서 올라오게 한다. */
+.uilg-phone-screen { position: relative; }
+
+/* 시트의 기준 상자는 휴대폰 「화면」이어야 한다. 배포본은 트리거 아래 팝오버(PC)를 위해
+   컴포넌트 뿌리에 position:relative 를 두는데, 그대로 두면 absolute 시트가 트리거 크기(308×48)에
+   갇힌다(실측 2026-09-07). 목업 안에서는 팝오버를 쓰지 않으므로 뿌리를 기준에서 뺀다.
+   ⚠️ 시트를 가진 두 부품만 지목한다. 처음에 `[data-s1-component]` 로 넓게 걸었더니 시트 안에 조립된
+   Line Tab 의 뿌리까지 static 이 되어, 탭 밑줄(::before, absolute bottom:0)이 기준을 잃고
+   시트 바닥으로 404px 날아갔다(🤖 component-verifier 2026-09-07 A-1 실측). */
+.uilg-phone [data-s1-component="time-picker"],
+.uilg-phone [data-s1-component="date-picker"] { position: static; }
+
+.uilg-phone [data-s1-part="sheet"] { position: absolute; z-index: 2; }
+
+/* 목업 화면 위에 트리거를 얹는 자리 — 실제 화면처럼 위쪽에서 시작한다. */
+.uilg-phone-stage {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-12);
+  height: 100%;
+  padding: var(--spacing-16);
+}
+
+.uilg-phone-row { display: flex; flex-wrap: wrap; gap: var(--spacing-24); }
+.uilg-phone-item { display: grid; gap: var(--spacing-8); justify-items: start; max-width: 360px; }
+.uilg-phone-item .matrix-col-header { text-align: left; }
+
+/* ── 달력 칸·타일의 hover 표본 ──
+   hover 는 손이 닿아야 보이는 상태라 표에 세우려면 표식이 필요하다. 값은 배포본의 hover 규칙을
+   그대로 가리킨다(date-picker.css:334·377) — 새 색을 만들지 않는다. 안내 화면 전용이다. */
+.uilg [data-s1-part="cell"][data-force-state="hover"] [data-s1-part="cell-inner"] {
+  background: var(--color-date-picker-cell-bg-hover);
+}
+.uilg [data-s1-part="tile"][data-force-state="hover"]:not([aria-selected="true"]) {
+  background: var(--color-date-picker-tile-bg-hover);
 }

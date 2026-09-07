@@ -109,10 +109,10 @@ const componentConfig = {
   },
   "time-picker": {
     title: "Time Picker",
-    description: "시각을 고를 때 사용합니다. 트리거를 누르면 시·분 목록이 열리고, 확인을 눌러야 값이 트리거에 남습니다.",
+    description: "시각을 고를 때 사용합니다. PC는 트리거 아래 시·분 목록이 열리고, Mobile은 하단 시트가 올라옵니다. 값은 확인(모바일은 적용)을 눌러야 남습니다.",
     approvedScope: {
       pc: "상태 5종 · PC 3크기(XXSM 28 · XSM 34 · MD 44) · 24시간제 · 오전오후 2유형 · 확인을 눌러야 값이 적용",
-      mobile: "상태 5종 · 24시간제 · 오전오후 2유형 · 확인을 눌러야 값이 적용 · 휠 바텀시트 옵션(data-mobile-ui=wheel, TimeOnly·DateTime)"
+      mobile: "상태 5종 · 휠 바텀시트(시간만 · 시작 일시 2유형) · 적용을 눌러야 값이 적용"
     },
     runtime: S1UI.timePicker
   },
@@ -129,7 +129,20 @@ const componentConfig = {
 
 let controlId = 0;
 
+/* 한 컴포넌트 화면 안에서 상자를 여럿으로 가르는 선언(river 결정 HD-A, 2026-09-07).
+   example / exampleMobile 은 배포본 manifest 의 htmlContract.breakExamples 키를 가리킨다 —
+   경로를 여기에 적지 않는다(배포본 선언이 정본). */
+const demoBlockConfig = {
+  input: [
+    { key: "base", title: "기본 인풋", note: "한 줄 정보를 입력받는 기본 형태입니다. 상태 7종과 지우기 동작을 함께 봅니다.", example: "pc", exampleMobile: "mobile" },
+    { key: "password", title: "패스워드 필드", note: "기본 인풋에 눈 액션을 더한 형태입니다. 마크업은 기본 인풋과 다릅니다.", example: "password", exampleMobile: "password-mobile" },
+    { key: "search", title: "서치 인풋", note: "기본 인풋에 돋보기 액션을 더한 형태입니다. 마크업은 기본 인풋과 다릅니다.", example: "search", exampleMobile: "search-mobile" }
+  ]
+};
+
 let inputId = 0;
+
+const declaredExamples = (manifest) => manifest.htmlContract?.breakExamples ?? {};
 
 const urls = (id) => ({
   manifest: new URL(`../../ui-library/dist/components/${id}.manifest.json`, import.meta.url),
@@ -680,6 +693,11 @@ function inputStateMatrix() {
     </div>`;
   }
 
+  /* 열 너비. Mobile 은 누르는 영역이 48×48 이라 아이콘 하나만 있어도 180px 중 116px 만 글자에 남고
+     placeholder("비밀번호를 입력하세요" 125px)가 잘렸다(river 제보 2026-09-07 · 실측 have 114 < need 125).
+     같은 표의 옆 칸도 같은 너비를 쓴다 — 한 칸만 넓히면 칸마다 필드 크기가 달라 보인다. */
+  const colWidth = (breakName) => (breakName === "mobile" ? "200px" : "180px");
+
   /* ── 3) 상태: 메시지 없음 1행 + 메시지 있음 1행 ── */
   function stateSection(breakName) {
     const size = breakName === "mobile" ? "md" : "xsm";
@@ -695,7 +713,7 @@ function inputStateMatrix() {
       ).join("");
 
     return `<div class="uilg-demo-group">
-      <div class="comp-state-matrix uilg-input-constrained" style="grid-template-columns: repeat(${cols}, 180px);">
+      <div class="comp-state-matrix uilg-input-constrained" style="grid-template-columns: repeat(${cols}, ${colWidth(breakName)});">
         ${header}
         ${noMsgCells}
         ${withMsgCells}
@@ -717,13 +735,12 @@ function inputStateMatrix() {
       `<div class="comp-state-cell">${passwordMarkup({ isPreview: true, ...opts })}</div>`
     ).join("");
     return `<div class="uilg-variant-block">
-      <div class="variant-label">Password Field</div>
       <p class="uilg-demo-note">Base Input 조립 — type=password + 눈 액션. 크기·상태·break는 Base Input과 동일합니다. 트레일 순서는 [눈][지우기](2px 간격)입니다.</p>
       <div class="comp-action-top">
         <div class="matrix-col-header-action">Action</div>
         <div class="uilg-input-action">${passwordMarkup({ breakName, size, isPreview: false })}</div>
       </div>
-      <div class="comp-state-matrix uilg-input-constrained" style="grid-template-columns: repeat(${cells.length}, 180px);">
+      <div class="comp-state-matrix uilg-input-constrained" style="grid-template-columns: repeat(${cells.length}, ${colWidth(breakName)});">
         ${header}${row}
       </div>
     </div>`;
@@ -741,49 +758,42 @@ function inputStateMatrix() {
       `<div class="comp-state-cell">${searchMarkup({ isPreview: true, ...opts })}</div>`
     ).join("");
     return `<div class="uilg-variant-block">
-      <div class="variant-label">Search Input</div>
       <p class="uilg-demo-note">Base Input 조립 — data-mode="search" + 돋보기 액션. 상태는 Default·값 있음·Disabled 3종뿐입니다(river 결정). 돋보기 클릭 또는 Enter로 s1:input:search 이벤트가 발생합니다 — 아래 실제로 눌러보기에서 확인하세요.</p>
       <div class="comp-action-top">
         <div class="matrix-col-header-action">Action</div>
         <div class="uilg-input-action">${searchMarkup({ breakName, size, isPreview: false })}</div>
         <p class="uilg-demo-note" data-search-live-note>검색을 실행하면 여기에 값이 표시됩니다.</p>
       </div>
-      <div class="comp-state-matrix uilg-input-constrained" style="grid-template-columns: repeat(${cells.length}, 180px);">
+      <div class="comp-state-matrix uilg-input-constrained" style="grid-template-columns: repeat(${cells.length}, ${colWidth(breakName)});">
         ${header}${row}
       </div>
     </div>`;
   }
 
-  const pcContent = `
-    ${actionSection("pc")}
-    ${sizeSection()}
-    <hr class="uilg-separator" style="margin-block: 12px 16px;">
-    ${stateSection("pc")}
-    <hr class="uilg-separator">
-    ${passwordSection("pc")}
-    <hr class="uilg-separator">
-    ${searchSection("pc")}`;
-
-  /* §A-5 가 막는 것은 「한 표로 합쳐야 할 유형」을 가로선으로 가르는 것이다.
-     Password·Search 는 서로 모양이 달라 한 표로 합칠 수 없는 별개 섹션이므로 PC 와 같이 가로선으로 구분한다
-     (river 결정 HD-7, 2026-09-07 — 모바일에만 선이 없어 제목이 앞 표에 붙어 보였다). */
-  const mobileContent = `
-    ${actionSection("mobile")}
-    ${stateSection("mobile")}
-    <hr class="uilg-separator">
-    ${passwordSection("mobile")}
-    <hr class="uilg-separator">
-    ${searchSection("mobile")}`;
-
-  return `
+  /* 기본 인풋·패스워드·서치는 각각 독립된 상자로 갈라 그 상자 밑에 자기 개발 코드를 단다
+     (river 결정 HD-A, 2026-09-07). 세 형태는 같은 부품(data-s1-component="input")이지만
+     붙여넣는 마크업은 서로 다르다 — 한 상자에 섞여 있으면 어느 코드가 어느 형태의 것인지 알 수 없다.
+     상자가 이미 경계를 그으므로 블록 사이 가로선은 두지 않는다. */
+  const platformWrap = (pcContent, mobileContent) => `
     <div class="platform-section platform-section-pc">
       <div class="preview-area">${pcContent}</div>
     </div>
     <div class="platform-section platform-section-mobile">
-      <div class="preview-area">
-        ${mobileContent}
-      </div>
+      <div class="preview-area">${mobileContent}</div>
     </div>`;
+
+  return {
+    base: platformWrap(
+      `${actionSection("pc")}
+       ${sizeSection()}
+       <hr class="uilg-separator" style="margin-block: 12px 16px;">
+       ${stateSection("pc")}`,
+      `${actionSection("mobile")}
+       ${stateSection("mobile")}`
+    ),
+    password: platformWrap(passwordSection("pc"), passwordSection("mobile")),
+    search: platformWrap(searchSection("pc"), searchSection("mobile"))
+  };
 }
 
 
@@ -1662,7 +1672,7 @@ function timePickerPanel(type, pick) {
       <div data-s1-part="footer"><button type="button" data-s1-part="confirm"${complete ? "" : " disabled"}>확인</button></div>`;
 }
 
-function timePickerMarkup({ size = "md", breakName = "pc", type = "24h", state = "default", isPreview = false, panelState = "시 Selected" } = {}) {
+function timePickerMarkup({ size = "md", breakName = "pc", type = "24h", state = "default", isPreview = false, panelState = "시 Selected", sheetMode = false } = {}) {
   /* 정본 Focus = 드롭다운이 열린 상태(manifest states.focus). */
   const open = state === "focus";
   const filled = state === "filled";
@@ -1673,6 +1683,19 @@ function timePickerMarkup({ size = "md", breakName = "pc", type = "24h", state =
   /* 정본 Focus 변형의 트리거 문구는 값이 아니라 placeholder 다 — 값이 보이는 것은 Filled 뿐이다. */
   const value = filled ? (type === "12h" ? "오전 09:30" : "09:30") : "시간 선택";
   const step = type === "12h" ? "5" : "1";
+  /* Mobile 은 트리거를 누르면 목록 패널이 아니라 휠 바텀시트가 열린다(river 결정 2026-09-07).
+     상태 표본도 그 형태를 따라야 한다 — 옛 목록 마크업(aria-haspopup=listbox + panel)을 그대로 두면
+     겉모습은 같아도 접근성 의미와 개발 코드가 화면과 어긋난다(🤖 component-verifier 2026-09-07 A-2).
+     표본은 열리지 않으므로 시트 본체는 만들지 않고 트리거만 낸다. */
+  if (sheetMode) {
+    return `<div data-guide-sample="set" data-s1-component="time-picker" data-size="${size}" data-break="${breakName}" data-type="${type}" data-minute-step="${step}" data-mobile-ui="wheel" class="${preview}">
+      <button type="button" data-s1-part="trigger" aria-haspopup="dialog" aria-expanded="false"${filled ? ' data-filled="true"' : ""}${disabled ? " disabled" : ""}${force} aria-label="시간">
+        <span data-s1-part="value">${value}</span>
+        <span data-s1-part="icon" aria-hidden="true"></span>
+      </button>
+    </div>`;
+  }
+
   return `<div data-guide-sample="set" data-s1-component="time-picker" data-size="${size}" data-break="${breakName}" data-type="${type}" data-minute-step="${step}" class="${preview}">
       <button type="button" data-s1-part="trigger" aria-haspopup="listbox" aria-expanded="${open}"${filled ? ' data-filled="true"' : ""}${disabled ? " disabled" : ""}${force} aria-label="시간">
         <span data-s1-part="value">${value}</span>
@@ -1689,7 +1712,10 @@ function timePickerWheelMarkup({ content = "time-only" } = {}) {
   const sheetTitleId = `guide-time-picker-wheel-title-${timePickerWheelId}`;
   const title = content === "date-time" ? "시작 일시" : "시간 선택";
   const triggerLabel = content === "date-time" ? "시작 일시 선택" : "시간 선택";
-  const type = content === "date-time" ? "12h" : "24h";
+  /* 모바일 시트는 24시간제를 제공하지 않는다 — 오전/오후 열이 들어간 12시간제 휠 하나뿐이다
+     (river 결정 2026-09-07). 정본도 두 변형 모두 4열(오전/오후·시·콜론·분)이다
+     (build-components.ts:4276-4283). */
+  const type = "12h";
   const tabs = content === "date-time" ? `
       <div data-s1-part="tabs" data-s1-component="tab" data-size="sm" data-break="mobile" role="tablist" aria-label="날짜·시간 선택">
         <button type="button" data-s1-part="tab" role="tab" aria-selected="false" data-value="date">날짜</button>
@@ -1703,7 +1729,8 @@ function timePickerWheelMarkup({ content = "time-only" } = {}) {
       <div data-s1-part="wheel-col" data-column="hour" role="listbox" aria-label="시"></div>
       <div data-s1-part="wheel-col" data-column="colon" aria-hidden="true"></div>
       <div data-s1-part="wheel-col" data-column="minute" role="listbox" aria-label="분"></div>`
-    : `<div data-s1-part="wheel-col" data-column="hour" role="listbox" aria-label="시"></div>
+    : `<div data-s1-part="wheel-col" data-column="ampm" role="listbox" aria-label="오전오후"></div>
+      <div data-s1-part="wheel-col" data-column="hour" role="listbox" aria-label="시"></div>
       <div data-s1-part="wheel-col" data-column="colon" aria-hidden="true"></div>
       <div data-s1-part="wheel-col" data-column="minute" role="listbox" aria-label="분"></div>`;
   return `<div data-guide-sample="set" data-s1-component="time-picker" data-size="md" data-break="mobile" data-type="${type}" data-minute-step="1" data-mobile-ui="wheel" data-mobile-content="${content}">
@@ -1734,20 +1761,22 @@ function timePickerStateMatrix() {
   const pcSizes = [["xxsm", "XXSM", "28px"], ["xsm", "XSM", "34px"], ["md", "MD", "44px"]];
   /* Mobile 은 크기가 하나뿐이라 크기를 축으로 세우지 않는다 — 그 자리에 유형(24h·12h)을 넣는다
      (표출 정책 _meta.uiLibraryGuideLayout.stateMatrix.singleValueAxis, river 확정 2026-09-02). */
-  const mobileCols = [["24h", "24시간제"], ["12h", "오전·오후"]];
+  /* 모바일은 24시간제를 제공하지 않는다 — 오전/오후 휠 하나뿐이다(river 결정 2026-09-07).
+     유형이 한 가지가 됐으므로 표의 축으로 세우지 않는다(값이 하나뿐인 축 금지, river 확정 2026-09-02). */
+  const mobileCols = [["12h", ""]];
   /* 열 = 정본 트리거 상태 전수(5종 — manifest canonicalStateMap). */
   const states = [
     ["Default", "default"],
     ["Hover", "hover", "검수 표시"],
     ["Filled", "filled", "값 선택됨"],
     ["Disabled", "disabled"],
-    ["Focus", "focus", "목록 열림"]
+    ["Focus", "focus", "열림"]
   ];
 
   /* PC 는 열=크기(유형은 24h 고정), Mobile 은 열=유형(크기는 md 고정). */
   const cellFor = (breakName, axis) => (key, state) => axis === "size"
     ? timePickerMarkup({ size: key, breakName, type: "24h", state, isPreview: true })
-    : timePickerMarkup({ size: "md", breakName, type: key, state, isPreview: true });
+    : timePickerMarkup({ size: "md", breakName, type: key, state, isPreview: true, sheetMode: breakName === "mobile" });
 
   function actionSection(breakName, cols, axis) {
     const live = (key) => axis === "size"
@@ -1808,29 +1837,25 @@ function timePickerStateMatrix() {
     <hr class="uilg-separator">
     ${cellBlock}`;
 
-  /* 유형(표 안 열)은 그대로 표에서 함께 본다 — 그 사이를 가로선으로 가르지 않는다(§A-5).
-     아래 cellBlock·휠 바텀시트는 합칠 수 없는 별개 섹션이라 PC 와 같이 가로선으로 구분한다
-     (river 결정 HD-7, 2026-09-07). */
-  /* 모바일 휠 바텀시트 — 정본 buildTimePickerMobileBottomSheet(D1 해소, 2026-09-03). data-mobile-ui="wheel"
-     옵션이며 기본 목록 드롭다운(위 표)과 별개로 열린다. Content=TimeOnly/DateTime 두 변형 모두 실제로 눌러본다. */
-  const wheelBlock = `<div class="uilg-variant-block">
-      <div class="variant-label">모바일 휠 바텀시트 — 시간만(TimeOnly)</div>
-      <p class="uilg-demo-note">트리거를 누르면 실제로 열립니다. 화살표 키 또는 스크롤로 시·분을 고르고 적용을 누릅니다. 위/아래는 흐림 마스크로 자연스럽게 사라집니다.</p>
-      <div class="comp-state-cell">${timePickerWheelMarkup({ content: "time-only" })}</div>
-    </div>
-    <hr class="uilg-separator">
-    <div class="uilg-variant-block">
-      <div class="variant-label">모바일 휠 바텀시트 — 시작 일시(DateTime)</div>
-      <p class="uilg-demo-note">날짜·시간 탭(승인된 Line Tab 재사용)으로 전환됩니다. 날짜 화면 자체는 이 컴포넌트 범위 밖입니다.</p>
-      <div class="comp-state-cell">${timePickerWheelMarkup({ content: "date-time" })}</div>
+  /* 모바일은 트리거를 누르면 휠 바텀시트가 열린다(river 결정 2026-09-07 — 목록 드롭다운을 뒤집었다).
+     시트는 화면 아래에서 올라오는 것이라 지면에 눕혀 두면 실제 모습을 알 수 없다. 그래서 트리거와
+     그 다음 동작을 모두 휴대폰 목업 안에 얹는다(river 지시: "모바일에서 실제 보는듯하게").
+     목업 크롬은 이미 Mobile Header·Bottom Nav 안내 화면이 쓰던 것을 그대로 재사용한다(phoneMockup). */
+  const wheelPhone = (label, note, content) => `<div class="uilg-phone-item">
+      <div class="matrix-col-header">${label}</div>
+      ${phoneMockup(`<div class="uilg-phone-stage">${timePickerWheelMarkup({ content })}</div>`)}
+      <p class="uilg-demo-note">${note}</p>
     </div>`;
 
-  const mobileContent = `${actionSection("mobile", mobileCols, "type")}
-    ${sizeStateGrid(mobileCols, states, cellFor("mobile", "type"), { tall: true })}
-    <hr class="uilg-separator">
-    ${cellBlock}
-    <hr class="uilg-separator">
-    ${wheelBlock}`;
+  const mobileContent = `<div class="comp-action-top">
+      <div class="matrix-col-header-action">Action</div>
+      <div class="uilg-phone-row">
+        ${wheelPhone("시간만(TimeOnly)", "시·분을 스크롤 또는 화살표 키로 고르고 <strong>적용</strong>을 누릅니다.", "time-only")}
+        ${wheelPhone("시작 일시(DateTime)", "날짜·시간 탭(승인된 Line Tab 재사용)으로 전환됩니다. 날짜 화면 자체는 이 컴포넌트 범위 밖입니다.", "date-time")}
+      </div>
+      <p class="uilg-demo-note">트리거를 누르면 휴대폰 화면 안에서 바텀시트가 올라옵니다. Esc 또는 닫기로 닫습니다.</p>
+    </div>
+    ${sizeStateGrid(mobileCols, states, cellFor("mobile", "type"), { tall: true })}`;
 
   return `
     <div class="platform-section platform-section-pc">
@@ -2032,6 +2057,64 @@ function datePickerStateMatrix() {
       <p class="uilg-demo-note">작은 달력은 날짜칸 33·글자 12·헤더 18로 줄어듭니다. 고르는 값이 따로 있지는 않고, 입력창 크기가 그대로 달력 크기가 됩니다.</p>
     </div>`;
 
+  /* 최하위 요소 — 정본이 별도 컴포넌트 세트로 선언한 두 부품이다(📖 source-reader 2026-09-07 판독):
+       · Calendar Cell(buildCalendarCell, build-components.ts:3520-3612)
+         Type=Standard → Default·Hover·Today·Selected·Disabled
+         Type=Range    → Default·Start·End·Disabled
+       · Calendar Tile(buildCalendarTile, :3615-3646) → Default·Hover·Selected·Disabled
+     정본에 있는 상태만 그대로 옮긴다 — 새 상태를 만들지 않는다. hover 는 손이 닿아야 보이는 상태라
+     표에서는 data-force-state="hover" 로 세워 둔다(저장소가 이미 쓰는 방식). */
+  const cellSample = (label, attrs, num = "17") => `<div class="comp-state-cell">
+      <div data-guide-sample="part" data-s1-component="date-picker" data-size="md" class="is-preview">
+        <button type="button" data-s1-part="cell"${attrs} tabindex="-1">
+          <span data-s1-part="cell-inner"><span data-s1-part="cell-num">${num}</span></span>
+        </button>
+      </div>
+    </div>`;
+
+  const cellStates = [
+    ["Default", ' data-state="default"'],
+    ["Hover", ' data-state="default" data-force-state="hover"'],
+    ["Today", ' data-state="today"'],
+    ["Selected", ' data-state="selected"'],
+    ["Disabled", ' data-state="disabled" disabled']
+  ];
+  const rangeStates = [
+    ["Default", ' data-state="range-mid" data-range-band="mid"'],
+    ["Start", ' data-state="today" data-range-band="start"'],
+    ["End", ' data-state="selected" data-range-band="end"'],
+    ["Disabled", ' data-state="range-disabled" disabled']
+  ];
+  const tileStates = [
+    ["Default", ""],
+    ["Hover", ' data-force-state="hover"'],
+    ["Selected", ' aria-selected="true"'],
+    ["Disabled", " disabled"]
+  ];
+
+  const partBlock = `<div class="uilg-variant-block">
+      <div class="variant-label">날짜 칸 상태 — 하나씩 고르는 달력(Type=Standard)</div>
+      <div class="comp-state-matrix" style="grid-template-columns: repeat(${cellStates.length}, 96px);">
+        ${cellStates.map(([label]) => `<div class="matrix-col-header">${label}</div>`).join("")}
+        ${cellStates.map(([, attrs]) => cellSample("", attrs)).join("")}
+      </div>
+    </div>
+    <div class="uilg-variant-block">
+      <div class="variant-label">날짜 칸 상태 — 기간을 고르는 달력(Type=Range)</div>
+      <div class="comp-state-matrix" style="grid-template-columns: repeat(${rangeStates.length}, 96px);">
+        ${rangeStates.map(([label]) => `<div class="matrix-col-header">${label}</div>`).join("")}
+        ${rangeStates.map(([, attrs]) => cellSample("", attrs)).join("")}
+      </div>
+      <p class="uilg-demo-note">시작·끝 사이 칸은 뒤에 옅은 띠가 깔립니다. 시작 칸은 띠가 오른쪽으로만, 끝 칸은 왼쪽으로만 이어집니다.</p>
+    </div>
+    <div class="uilg-variant-block">
+      <div class="variant-label">월·년 칸 상태</div>
+      <div class="comp-state-matrix" style="grid-template-columns: repeat(${tileStates.length}, 96px);">
+        ${tileStates.map(([label]) => `<div class="matrix-col-header">${label}</div>`).join("")}
+        ${tileStates.map(([, attrs]) => `<div class="comp-state-cell"><div data-guide-sample="part" data-s1-component="date-picker" data-size="md" class="is-preview"><button type="button" data-s1-part="tile"${attrs.includes("aria-selected") ? attrs : ` aria-selected="false"${attrs}`} tabindex="-1">1월</button></div></div>`).join("")}
+      </div>
+    </div>`;
+
   const pcContent = `${actionSection()}
     ${/* 열 너비 = 열리는 달력의 실제 폭. XXSM·XSM 은 작은 달력(267), MD 는 큰 달력(356)이라
           균등 분할(minmax(140px,1fr))로 두면 MD 칸의 달력만 카드 밖으로 삐져나가 옆·아래 내용과 겹친다
@@ -2044,16 +2127,48 @@ function datePickerStateMatrix() {
     ${viewBlock("year", "Year")}
     ${viewBlock("month", "Month")}
     <hr class="uilg-separator">
-    ${rangeBlock}`;
+    ${rangeBlock}
+    <hr class="uilg-separator">
+    ${partBlock}`;
 
-  const mobileContent = `<div class="uilg-variant-block">
-      <div class="variant-label">모바일 트리거 — 누르면 바텀시트가 열립니다(M7)</div>
-      <div class="comp-state-matrix" style="grid-template-columns: 120px repeat(${mobileCols.length}, minmax(150px, 1fr));">
-        <div class="matrix-col-header" style="grid-column:1"></div>${mobileCols.map(([, label]) => `<div class="matrix-col-header">${label}</div>`).join("")}
-        <div class="matrix-row-label">Date Picker</div>${mobileCols.map(([mode]) => `<div class="comp-state-cell">${datePickerMarkup({ size: "md", breakName: "mobile", mode })}</div>`).join("")}
-      </div>
-      <p class="uilg-demo-note">모바일은 팝오버 대신 하단 시트가 열리고, 같은 캘린더 + &quot;적용&quot; 버튼으로 구성됩니다.</p>
+  /* 모바일 시트도 Time Picker 와 같이 휴대폰 목업 안에서 올라온다(river 지시 2026-09-07) —
+     시트는 화면 아래에서 올라오는 것이라 지면에 눕혀 두면 실제 모습을 알 수 없다.
+     열 제목(단일 선택·기간 선택)은 목업 바로 위에 붙어 아래 컴포넌트와 같은 자리에서 시작한다. */
+  const mobilePhone = ([mode, label]) => `<div class="uilg-phone-item">
+      <div class="matrix-col-header">${label}</div>
+      ${phoneMockup(`<div class="uilg-phone-stage">${datePickerMarkup({ size: "md", breakName: "mobile", mode })}</div>`)}
     </div>`;
+
+  /* Mobile 도 PC 와 같은 층을 갖춘다 — Action 만 두면 상태값과 그 아래 층(캘린더 뷰·기간 선택)이
+     통째로 빠진다(river 제보 2026-09-07). 층 구성은 PC 와 같고, 형태만 모바일 시트다. */
+  const mobileViewBlock = (view, label) => `<div class="uilg-variant-block">
+      <div class="variant-label">캘린더 — ${label}</div>
+      <div class="comp-state-cell">${datePickerMarkup({ size: "md", breakName: "mobile", mode: "single", state: "open", isPreview: true, view })}</div>
+    </div>`;
+
+  const mobileRangeBlock = `<div class="uilg-variant-block">
+      <div class="variant-label">기간 선택 — 완료(17~22일)</div>
+      <div class="comp-state-cell">${datePickerMarkup({ size: "md", breakName: "mobile", mode: "range", state: "open", isPreview: true, rangeOpts: { start: 17, end: 22 } })}</div>
+    </div>
+    <div class="uilg-variant-block">
+      <div class="variant-label">기간 선택 — hover 미리보기(D6, 시작일만 고른 상태)</div>
+      <div class="comp-state-cell">${datePickerMarkup({ size: "md", breakName: "mobile", mode: "range", state: "open", isPreview: true, rangeOpts: { start: 17, end: null, hoverEnd: 22 } })}</div>
+    </div>`;
+
+  const mobileContent = `<div class="comp-action-top">
+      <div class="matrix-col-header-action">Action</div>
+      <div class="uilg-phone-row">${mobileCols.map(mobilePhone).join("")}</div>
+      <p class="uilg-demo-note">트리거를 누르면 휴대폰 화면 안에서 하단 시트가 올라옵니다 — 팝오버 대신 같은 캘린더 + &quot;적용&quot; 버튼으로 구성됩니다.</p>
+    </div>
+    ${sizeStateGrid(mobileCols, states, cellFor("mobile", "type"), { tall: true })}
+    <hr class="uilg-separator">
+    ${mobileViewBlock("date", "Date")}
+    ${mobileViewBlock("year", "Year")}
+    ${mobileViewBlock("month", "Month")}
+    <hr class="uilg-separator">
+    ${mobileRangeBlock}
+    <hr class="uilg-separator">
+    ${partBlock}`;
 
   return `
     <div class="platform-section platform-section-pc">
@@ -2161,7 +2276,8 @@ function usageGuide(id, registry) {
 
 /* ── Code viewer ── */
 
-function codeViewer(id) {
+function codeViewer(id, key = "") {
+  const uid = key ? `${id}-${key}` : id;
   /* 보고 있는 화면의 마크업만 보여준다 — Mobile 화면에서 PC 코드를 복사하는 사고를 막는다
      (river 결정 2026-09-01). 코드 위 안내 문구는 두지 않는다(river 결정 2026-09-02). */
   const tabs = [
@@ -2170,14 +2286,14 @@ function codeViewer(id) {
     ["js", "JavaScript"]
   ];
   return `
-    <section class="uilg-code" aria-labelledby="${id}-code-title">
+    <section class="uilg-code" aria-labelledby="${uid}-code-title">
       <div class="uilg-code-toolbar">
         <div class="uilg-code-tabs" role="tablist" aria-label="${componentConfig[id].title} 코드">
-          ${tabs.map(([key, label], index) => `<button type="button" class="uilg-code-tab" role="tab" data-guide-tab="${key}" aria-selected="${index === 0}" aria-controls="${id}-code-${key}">${label}</button>`).join("")}
+          ${tabs.map(([tabKey, label], index) => `<button type="button" class="uilg-code-tab" role="tab" data-guide-tab="${tabKey}" aria-selected="${index === 0}" aria-controls="${uid}-code-${tabKey}">${label}</button>`).join("")}
         </div>
         <button type="button" class="uilg-copy">현재 코드 복사</button>
       </div>
-      ${tabs.map(([key], index) => `<div class="uilg-code-panel${index === 0 ? " is-active" : ""}" id="${id}-code-${key}" role="tabpanel"><pre data-guide-code="${key}"></pre></div>`).join("")}
+      ${tabs.map(([tabKey], index) => `<div class="uilg-code-panel${index === 0 ? " is-active" : ""}" id="${uid}-code-${tabKey}" role="tabpanel"><pre data-guide-code="${tabKey}"></pre></div>`).join("")}
     </section>`;
 }
 
@@ -2247,6 +2363,36 @@ async function mountGuide(id) {
       ? await fetchText(sourceUrls.htmlMobile)
       : htmlPc;
 
+    /* 상자(demo + 개발 코드) 목록. 기본은 한 상자다.
+       상자를 여럿 두는 컴포넌트는 stateMatrix 가 객체를 돌려주고, 각 상자의 예제 파일은
+       배포본 manifest 의 htmlContract.breakExamples 선언을 그대로 쓴다 — 새 이름을 만들지 않는다. */
+    const matrix = stateMatrix(id);
+    const blocks = [];
+    if (typeof matrix === "string") {
+      const mainExample = hasMobileExample && platform === "mobile"
+        ? declaredExamples(manifest).mobile?.distribution
+        : declaredExamples(manifest).pc?.distribution;
+      blocks.push({ key: "", uid: id, title: "실제 동작과 상태", note: scopeText, matrix, html, first: true, example: mainExample ?? `examples/${id}.html` });
+    } else {
+      const declared = manifest.htmlContract?.breakExamples ?? {};
+      const parts = demoBlockConfig[id] ?? [];
+      for (const [index, part] of parts.entries()) {
+        const exampleKey = platform === "mobile" && declared[part.exampleMobile] ? part.exampleMobile : part.example;
+        const distribution = declared[exampleKey]?.distribution;
+        if (!distribution) throw new Error(`${id} ${part.key} 상자의 예제 선언(${exampleKey})이 배포본 manifest 에 없습니다.`);
+        blocks.push({
+          key: part.key,
+          uid: `${id}-${part.key}`,
+          title: part.title,
+          note: part.note,
+          matrix: matrix[part.key],
+          html: await fetchText(new URL(`../../ui-library/dist/${distribution}`, import.meta.url)),
+          example: distribution,
+          first: index === 0
+        });
+      }
+    }
+
     // 실제 동작·상태를 먼저 보이고, 설명 문서는 그 뒤에 둔다.
     const overview = (data) => componentOverview(id, data);
     const fragment = document.createElement("div");
@@ -2265,28 +2411,45 @@ async function mountGuide(id) {
           <span class="uilg-badge">실제 dist 사용</span>
         </div>
       </header>
-      <section class="uilg-demo preview-area" aria-labelledby="${id}-demo-title">
-        <div class="uilg-demo-head">
-          <div><h2 class="uilg-section-title" id="${id}-demo-title">실제 동작과 상태</h2><p class="uilg-demo-note">${scopeText}</p></div>
-          <p class="uilg-status-text">이 설명 화면과 배포 파일은 같은 <strong>ui-library/dist</strong>를 사용합니다.</p>
-        </div>
-        ${stateMatrix(id)}
-      </section>
-      <section aria-labelledby="${id}-code-heading">
-        <div class="uilg-title-group">
-          <h2 class="uilg-section-title" id="${id}-code-heading">개발 코드</h2>
-        </div>
-        ${codeViewer(id)}
-      </section>
+      ${blocks.map((block) => `
+      <div class="uilg-demo-block" data-guide-block="${block.key || "main"}" data-guide-example="${block.example}">
+        <section class="uilg-demo preview-area" aria-labelledby="${block.uid}-demo-title">
+          <div class="uilg-demo-head">
+            <div><h2 class="uilg-section-title" id="${block.uid}-demo-title">${block.title}</h2><p class="uilg-demo-note">${block.note}</p></div>
+            ${block.first ? `<p class="uilg-status-text">이 설명 화면과 배포 파일은 같은 <strong>ui-library/dist</strong>를 사용합니다.</p>` : ""}
+          </div>
+          ${block.matrix}
+        </section>
+        <section aria-labelledby="${block.uid}-code-heading">
+          <div class="uilg-title-group">
+            <h2 class="uilg-section-title" id="${block.uid}-code-heading">개발 코드</h2>
+          </div>
+          ${codeViewer(id, block.key)}
+        </section>
+      </div>`).join("")}
       ${overview(registry)}`;
 
     section.replaceChildren(fragment);
-    wireCodeViewer(section, { html, css, js });
+    /* 상자마다 자기 마크업을 단다 — CSS·JavaScript 는 부품 하나라 세 상자가 같은 것을 가리킨다. */
+    for (const block of blocks) {
+      const scope = section.querySelector(`[data-guide-block="${block.key || "main"}"]`);
+      if (scope) wireCodeViewer(scope, { html: block.html, css, js });
+    }
     if (id === "toggle" || id === "chip" || id === "select" || id === "dropdown" || id === "filter-chip" || id === "tab" || id === "pagination" || id === "multi-toggle" || id === "table" || id === "time-picker" || id === "date-picker") {
       /* 미리보기 칸(.is-preview)은 init 하지 않는다 — 런타임이 패널을 다시 닫아
          Open/Selected 칸이 사라진다. Action 영역의 실물만 살린다. */
       section.querySelectorAll(`[data-s1-component="${id}"]:not(.is-preview)`).forEach((root) => config.runtime.init(root));
     }
+    /* 목업 안에서 열리는 시트는 페이지를 덮지 않는다 — 그런데 배포본은 시트를 열 때
+       document.body 의 스크롤을 잠근다(실제 서비스에서는 화면 전체를 덮으므로 맞는 동작이다).
+       안내 화면에서는 그 잠금 때문에 시트를 하나 열어 두면 페이지 전체가 멈춘다(river 제보 2026-09-07).
+       배포본을 고치지 않고, 목업 안에서 열린 경우에만 잠금을 되돌린다. */
+    if (id === "time-picker" || id === "date-picker") {
+      section.addEventListener(`s1:${id}:open`, (event) => {
+        if (event.target.closest(".uilg-phone")) document.body.style.overflow = "";
+      });
+    }
+
     if (id === "table") {
       /* Action 영역에 조립한 페이지네이션·보기 셀렉박스는 각자의 배포본 런타임으로 살린다.
          (Table 은 이 둘을 소유하지 않는다 — river 결정 2026-09-02) */

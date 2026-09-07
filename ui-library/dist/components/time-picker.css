@@ -331,14 +331,23 @@
 }
 
 /* 휠 — 4열(오전오후·시·콜론·분), 32px Regular, 전 셀 동일 accent 색(build-components.ts 3864-3882).
-   실제 스크롤 동작(scroll-snap)은 정본에 없는 웹 전용 메커니즘이다 — 정적 스펙 샘플을 실제로
-   작동하는 목록으로 옮기며 오케스트레이터가 정한 값(행 높이 44px·창 높이 272px)이다(notInCanon.wheelScrollMechanism). */
+   수치는 전부 정본에서 내려온다: 열 폭 WHEEL_COL_W(56/40/8/40) · 열 간격 36/32/32 ·
+   항목 높이 42 · 휠 창 270(Figma 원본 실측 node 2386:57682, river 승인 2026-09-07).
+   **웹 전용으로 남는 것은 스크롤 메커니즘뿐이다** — 정본은 정지 그림이라 굴러가는 목록의
+   중앙 판정·snap 규정이 없다(notInCanon.wheelScrollMechanism). */
 [data-s1-component="time-picker"] [data-s1-part="wheel"] {
   display: flex;
-  height: 272px;
+  /* 열 간격은 정본이 평탄하지 않다 — 오전오후↔시각묶음 36, 시↔콜론↔분 32
+     (build-components.ts:4275·4280 주석이 그 이유까지 적어 둔다). 기본을 32 로 두고
+     오전오후 다음 열에만 4 를 더해 36 을 만든다. 종전 웹은 간격 규칙이 아예 없었다. */
+  column-gap: var(--spacing-32);
+  height: 270px; /* 정본 그대로 — 위아래 여백 40 + 열 높이 190(항목 42 × 3 + 간격 32 × 2) */
   justify-content: center;
   padding-inline: var(--spacing-24);
   position: relative;
+}
+[data-s1-component="time-picker"] [data-s1-part="wheel-col"][data-column="ampm"] + [data-s1-part="wheel-col"] {
+  margin-inline-start: var(--spacing-4);
 }
 [data-s1-component="time-picker"] [data-s1-part="wheel-col"] {
   box-sizing: border-box;
@@ -347,28 +356,36 @@
   height: 100%;
   overflow-y: auto;
   overflow-x: hidden;
-  padding-block: 114px; /* (창 272 - 행 44) / 2 — 첫/끝 칸도 정중앙까지 스크롤되게 여백을 준다 */
+  /* 행 간격 32 는 정본 값이다(build-components.ts makeWheelCol gap 인자 :4276-4283).
+     종전 웹은 행을 44px 통짜로 잡아 간격이 정본보다 30px 가까이 좁았다(river 제보 2026-09-07).
+     여백 = (창 270 − 항목 42) / 2 = 114 — 첫/끝 항목도 정중앙까지 스크롤된다. 정수로 떨어진다. */
+  padding-block: 114px;
+  row-gap: var(--spacing-32);
   scroll-snap-type: y mandatory;
   scrollbar-width: none;
   text-align: center;
 }
 [data-s1-component="time-picker"] [data-s1-part="wheel-col"]::-webkit-scrollbar { display: none; }
-[data-s1-component="time-picker"] [data-s1-part="wheel-col"][data-column="ampm"] { width: 64px; }
+/* 열 폭 = 정본 WHEEL_COL_W (build-components.ts, river 승인 2026-09-07).
+   종전 웹은 64/48/24 를 임의로 박아 넣어 휠 덩어리가 원본보다 60px 넓었고, 그만큼 좌우 여백이
+   좁아 보였다(river 제보 2026-09-07). 이제 값의 출처가 정본 한 곳이다. */
+[data-s1-component="time-picker"] [data-s1-part="wheel-col"][data-column="ampm"] { width: 56px; }
 [data-s1-component="time-picker"] [data-s1-part="wheel-col"][data-column="hour"],
-[data-s1-component="time-picker"] [data-s1-part="wheel-col"][data-column="minute"] { width: 48px; }
+[data-s1-component="time-picker"] [data-s1-part="wheel-col"][data-column="minute"] { width: 40px; }
 [data-s1-component="time-picker"] [data-s1-part="wheel-col"][data-column="colon"] {
   flex: 0 0 auto;
   overflow: hidden;
   padding-block: 0;
+  row-gap: 0;
   pointer-events: none;
   scroll-snap-type: none;
-  width: 24px;
+  width: 8px;
 }
 [data-s1-component="time-picker"] [data-s1-part="wheel-cell"] {
   align-items: center;
   color: var(--color-text-state-accent);
   display: flex;
-  flex: 0 0 44px;
+  flex: 0 0 42px; /* 정본 텍스트 높이 그대로(Figma 실측 42) — 소수점 없이 피치 74(42+32)가 맞는다 */
   font-family: "Pretendard", sans-serif;
   font-size: var(--font-size-32);
   /* 호스트 페이지 상속 차단 — 정본 텍스트 스타일은 전부 130% 이고(10px 만 140%, 여기선 미사용),

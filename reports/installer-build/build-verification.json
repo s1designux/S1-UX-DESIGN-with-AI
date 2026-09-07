@@ -1,9 +1,9 @@
 {
   "sourceFile": "plugins/figma-vars-installer/src/build-components.ts",
-  "sourceHash": "sha256:67e126ffb53f27266831b1897e821956e6fed04096e42c662fff398b3e9a617b",
+  "sourceHash": "sha256:d970fac8a8b313170461ea41c99d8c7979ff67ff7481dad772bed7c1b6ca2994",
   "verifiedBy": "component-verifier",
   "verdict": "pass",
   "changeType": "structural",
-  "verifiedAt": "2026-09-07T00:57:33.788Z",
-  "notes": "델타 재검증(2026-09-07 2회차). river D7·D8·D11 의 build-components.ts 반영을 diff 전량 대조: wrapSuffixAction/wrapAction 에 opts{hover,pullInward} 신설, 5개 호출부 전부 Mobile 판별 인자 정확(password:hover=!isMobile+pullInward, clear:hover=!isMobile, Search Filled clear:hover+pullInward, Search Filled search:hover, Search Default/Disabled search:hover). PC 경로 무변경 확인(hover!==false 기본 유지·CENTER 정렬·itemSpacing 2/4 유지) — 2026-09-02 철회 과잉 사고 유형 없음. D11 hover-bg 는 buildInput 과 동일 사양(bg/hover 바인딩·radius/4·visible=false·ABSOLUTE·STRETCH·icon 앞 삽입). Mobile itemSpacing 0 + MAX 정렬의 기하 결과 = 글리프 간격 12px·hit 48x48·겹침 0 으로 브라우저 실측 일치. buildSearch GroupedSpecOpts.cellAt 인자 순서(platformName,size,ri,ci) 정의부와 일치, 4행x3열=12셀 = 생성 컴포넌트 수 일치(스펙시트 빈칸 위험 없음). 결정론 게이트 재실행 exit0: installer:check·components:keycheck·components:anatomy·components:iconpolicy. 한계: Figma 캔버스 실물 렌더 육안 미검증(코드 레벨만)."
+  "verifiedAt": "2026-09-07T08:05:35.135Z",
+  "notes": "time-picker 모바일 바텀시트 휠 열 폭 WHEEL_COL_W(56/40/8/40) 신설 + counterAxisSizingMode=FIXED + resize 실패 throw. 주석 산식 24+(360-48-244)/2=58 을 코드 상수(SHEET_W 360·wheelWrap padding 24·itemSpacing 36·timeGroup 32)와 대조 후 헤드리스 렌더 실측으로 확인: marginL/R 58, contentSpan 244, gaps 36/32/32, cols 56/40/8/40, wheelH 270, cellH 42. river 승인 인용 '권장안으로 적용해봐' 를 세션기록 human 발화(2026-09-07T07:26:45.149Z)에서 직접 확인. 기계검사 재실행 exit 0: ui:build:check·installer:check·components:keycheck·components:anatomy·components:iconpolicy·ui:contract·ui:guide:render + 파생 재생성 --check 11종."
 }
