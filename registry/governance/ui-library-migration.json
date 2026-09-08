@@ -1,7 +1,7 @@
 {
   "_meta": {
     "id": "ui-library-migration",
-    "updatedAt": "2026-09-03",
+    "updatedAt": "2026-09-08",
     "purpose": "기존 컴포넌트 상태와 신규 웹 UI 라이브러리 승인·이행 상태를 분리 기록한다."
   },
   "records": [
@@ -609,6 +609,63 @@
       "note": "3-build 완료, 4-verification·river 승인 대기. 정본 buildSearch 구조 변경(상태 4→3·Mobile 신설·hit area) 포함 — 하드룰 H1② 에 따라 🤖 component-verifier 검증이 필요하다. uiLibraryStatus 는 draft 로 시작.",
       "approvedBy": "river",
       "approvedAt": "2026-09-07"
+    },
+    {
+      "id": "assist-button",
+      "kind": "core-component",
+      "legacyStatus": "not-in-legacy-web",
+      "uiLibraryStatus": "draft",
+      "dependencies": [
+        "tokens.css",
+        "typography.css"
+      ],
+      "lastVerified": null,
+      "reverifyTrigger": "정본 State·token·HTML part·CSS selector 변경",
+      "evidence": [
+        "reports/ui-library/assist-text-modal-content/3-build.md"
+      ],
+      "riverApproval": null,
+      "promotionDecision": "build 단계만 완료(⭐ 자가 배선) — 🤖 component-verifier 원본대조와 river UX 승인 전. status=draft로 정직 기록.",
+      "note": "ui-library/src manifest.json 의 status 필드는 이전 세션이 approved 로 이미 표시했으나, 이 migration 레코드는 독립검증·river 승인 여부를 별도로 추적한다(자가인증 금지)."
+    },
+    {
+      "id": "text-button",
+      "kind": "core-component",
+      "legacyStatus": "not-in-legacy-web",
+      "uiLibraryStatus": "draft",
+      "dependencies": [
+        "tokens.css",
+        "typography.css"
+      ],
+      "lastVerified": null,
+      "reverifyTrigger": "정본 Variant·State·token·HTML part·CSS selector 변경",
+      "evidence": [
+        "reports/ui-library/assist-text-modal-content/3-build.md"
+      ],
+      "riverApproval": null,
+      "promotionDecision": "build 단계만 완료(⭐ 자가 배선) — 🤖 component-verifier 원본대조와 river UX 승인 전. status=draft로 정직 기록.",
+      "note": "ui-library/src manifest.json 의 status 필드는 이전 세션이 approved 로 이미 표시했으나, 이 migration 레코드는 독립검증·river 승인 여부를 별도로 추적한다(자가인증 금지)."
+    },
+    {
+      "id": "modal-content",
+      "kind": "core-component",
+      "legacyStatus": "not-in-legacy-web",
+      "uiLibraryStatus": "draft",
+      "dependencies": [
+        "tokens.css",
+        "typography.css",
+        "button.css",
+        "button.js",
+        "close.svg"
+      ],
+      "lastVerified": null,
+      "reverifyTrigger": "정본 Size·Footer·geometry·token·HTML part·CSS selector·JavaScript(초점 가둠·Esc·스크롤 잠금) 변경 · 높이 규칙(grow→85vh→내부 스크롤) 변경",
+      "evidence": [
+        "reports/ui-library/assist-text-modal-content/3-build.md"
+      ],
+      "riverApproval": null,
+      "promotionDecision": "build 단계만 완료(⭐ 자가 배선) — 🤖 component-verifier 원본대조와 river UX 승인 전. status=draft로 정직 기록.",
+      "note": "ui-library/src manifest.json 의 status 필드는 이전 세션이 approved 로 이미 표시했으나, 이 migration 레코드는 독립검증·river 승인 여부를 별도로 추적한다(자가인증 금지). 푸터 버튼은 코어 Button 배포본을 조립한다(coreComponents: button)."
     }
   ]
 }

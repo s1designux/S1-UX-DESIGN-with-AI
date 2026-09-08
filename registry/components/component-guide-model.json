@@ -209,9 +209,9 @@
       "memberOrder": 1,
       "category": "Actions",
       "name": "Assist Button",
-      "visibility": "internal",
-      "sectionId": null,
-      "reason": "보조 버튼(한 크기 h32 전용) — Figma·설치기 정본만 신설하며 손관리 components 페이지는 별도 웹 UI 라이브러리 작업 전까지 제외. river 지시 2026-09-08 '버튼에 섞여서 표출되면 안돼. 별도 컴포넌트야' 에 따라 Button 섹션에 넣지 않는다. Text Button 과 같은 분류 근거."
+      "visibility": "public",
+      "sectionId": "assist-button",
+      "reason": null
     },
     {
       "order": 19,
@@ -220,9 +220,9 @@
       "memberOrder": 2,
       "category": "Actions",
       "name": "Text Button",
-      "visibility": "internal",
-      "sectionId": null,
-      "reason": "배경·테두리 없는 글자 버튼 — Figma·설치기 정본만 신설하며 손관리 components 페이지는 별도 웹 UI 라이브러리 작업 전까지 제외(river 승인 2026-09-08 '나머지 9건은 추천안대로 진행하세요' — 계획서 D-13 ② 웹 반영은 후속). Mobile Header·Modal 과 같은 분류 근거."
+      "visibility": "public",
+      "sectionId": "text-button",
+      "reason": null
     },
     {
       "order": 20,
@@ -517,9 +517,9 @@
       "memberOrder": 1,
       "category": "Modal",
       "name": "Modal Content",
-      "visibility": "internal",
-      "sectionId": null,
-      "reason": "콘텐츠 계열 모달(입력창·표·이미지가 들어가는 큰 팝업, MD·LG·XL) — 확인 계열 Modal 과 별개 컴포넌트다(river 결정 2026-07-15 계열 분리). Figma·설치기 정본만 신설하며 손관리 components 페이지는 별도 웹 UI 라이브러리 작업 전까지 제외. Modal 과 같은 분류 근거."
+      "visibility": "public",
+      "sectionId": "modal-content",
+      "reason": null
     },
     {
       "order": 47,
@@ -83377,7 +83377,7 @@
     },
     {
       "name": "Assist Button",
-      "gridMembership": "internal",
+      "gridMembership": "public",
       "variantCount": 4,
       "axes": {
         "State": [
@@ -84034,7 +84034,7 @@
     },
     {
       "name": "Text Button",
-      "gridMembership": "internal",
+      "gridMembership": "public",
       "variantCount": 8,
       "axes": {
         "Variant": [
@@ -84147,7 +84147,7 @@
                   "gap": null
                 },
                 "text": {
-                  "characters": "보조버튼",
+                  "characters": "텍스트버튼",
                   "fontSize": 14,
                   "fontStyle": "Medium",
                   "fontFamily": "Pretendard",
@@ -84280,7 +84280,7 @@
                   "gap": null
                 },
                 "text": {
-                  "characters": "보조버튼",
+                  "characters": "텍스트버튼",
                   "fontSize": 14,
                   "fontStyle": "Medium",
                   "fontFamily": "Pretendard",
@@ -84413,7 +84413,7 @@
                   "gap": null
                 },
                 "text": {
-                  "characters": "보조버튼",
+                  "characters": "텍스트버튼",
                   "fontSize": 14,
                   "fontStyle": "Medium",
                   "fontFamily": "Pretendard",
@@ -84546,7 +84546,7 @@
                   "gap": null
                 },
                 "text": {
-                  "characters": "보조버튼",
+                  "characters": "텍스트버튼",
                   "fontSize": 14,
                   "fontStyle": "Medium",
                   "fontFamily": "Pretendard",
@@ -84679,7 +84679,7 @@
                   "gap": null
                 },
                 "text": {
-                  "characters": "보조버튼",
+                  "characters": "텍스트버튼",
                   "fontSize": 14,
                   "fontStyle": "Medium",
                   "fontFamily": "Pretendard",
@@ -84812,7 +84812,7 @@
                   "gap": null
                 },
                 "text": {
-                  "characters": "보조버튼",
+                  "characters": "텍스트버튼",
                   "fontSize": 14,
                   "fontStyle": "Medium",
                   "fontFamily": "Pretendard",
@@ -84945,7 +84945,7 @@
                   "gap": null
                 },
                 "text": {
-                  "characters": "보조버튼",
+                  "characters": "텍스트버튼",
                   "fontSize": 14,
                   "fontStyle": "Medium",
                   "fontFamily": "Pretendard",
@@ -85078,7 +85078,7 @@
                   "gap": null
                 },
                 "text": {
-                  "characters": "보조버튼",
+                  "characters": "텍스트버튼",
                   "fontSize": 14,
                   "fontStyle": "Medium",
                   "fontFamily": "Pretendard",
@@ -96276,7 +96276,7 @@
             "type": "COMPONENT",
             "name": "Size=XXSM, Type=Text, State=Default",
             "dimensions": {
-              "width": 140,
+              "width": 100,
               "height": 120
             },
             "position": {
@@ -96402,7 +96402,7 @@
                     "type": "INSTANCE",
                     "name": "ddl-row",
                     "dimensions": {
-                      "width": 140,
+                      "width": 100,
                       "height": 28
                     },
                     "position": {
@@ -96528,7 +96528,7 @@
                     "type": "INSTANCE",
                     "name": "ddl-row",
                     "dimensions": {
-                      "width": 140,
+                      "width": 100,
                       "height": 28
                     },
                     "position": {
@@ -96654,7 +96654,7 @@
                     "type": "INSTANCE",
                     "name": "ddl-row",
                     "dimensions": {
-                      "width": 140,
+                      "width": 100,
                       "height": 28
                     },
                     "position": {
@@ -96780,7 +96780,7 @@
                     "type": "INSTANCE",
                     "name": "ddl-row",
                     "dimensions": {
-                      "width": 140,
+                      "width": 100,
                       "height": 28
                     },
                     "position": {
@@ -96925,7 +96925,7 @@
             "type": "COMPONENT",
             "name": "Size=XXSM, Type=Checkbox, State=Default",
             "dimensions": {
-              "width": 140,
+              "width": 100,
               "height": 120
             },
             "position": {
@@ -97051,7 +97051,7 @@
                     "type": "INSTANCE",
                     "name": "ddl-row",
                     "dimensions": {
-                      "width": 140,
+                      "width": 100,
                       "height": 28
                     },
                     "position": {
@@ -97104,7 +97104,7 @@
                         "type": "FRAME",
                         "name": "option",
                         "dimensions": {
-                          "width": 140,
+                          "width": 100,
                           "height": 27
                         },
                         "position": {
@@ -97294,7 +97294,7 @@
                         "type": "RECTANGLE",
                         "name": "divider",
                         "dimensions": {
-                          "width": 140,
+                          "width": 100,
                           "height": 1
                         },
                         "position": {
@@ -97360,7 +97360,7 @@
                     "type": "INSTANCE",
                     "name": "ddl-row",
                     "dimensions": {
-                      "width": 140,
+                      "width": 100,
                       "height": 28
                     },
                     "position": {
@@ -97600,7 +97600,7 @@
                     "type": "INSTANCE",
                     "name": "ddl-row",
                     "dimensions": {
-                      "width": 140,
+                      "width": 100,
                       "height": 28
                     },
                     "position": {
@@ -97780,7 +97780,7 @@
                     "type": "INSTANCE",
                     "name": "ddl-row",
                     "dimensions": {
-                      "width": 140,
+                      "width": 100,
                       "height": 28
                     },
                     "position": {
@@ -97979,7 +97979,7 @@
             "type": "COMPONENT",
             "name": "Size=XSM, Type=Text, State=Default",
             "dimensions": {
-              "width": 140,
+              "width": 100,
               "height": 144
             },
             "position": {
@@ -98105,7 +98105,7 @@
                     "type": "INSTANCE",
                     "name": "ddl-row",
                     "dimensions": {
-                      "width": 140,
+                      "width": 100,
                       "height": 34
                     },
                     "position": {
@@ -98231,7 +98231,7 @@
                     "type": "INSTANCE",
                     "name": "ddl-row",
                     "dimensions": {
-                      "width": 140,
+                      "width": 100,
                       "height": 34
                     },
                     "position": {
@@ -98357,7 +98357,7 @@
                     "type": "INSTANCE",
                     "name": "ddl-row",
                     "dimensions": {
-                      "width": 140,
+                      "width": 100,
                       "height": 34
                     },
                     "position": {
@@ -98483,7 +98483,7 @@
                     "type": "INSTANCE",
                     "name": "ddl-row",
                     "dimensions": {
-                      "width": 140,
+                      "width": 100,
                       "height": 34
                     },
                     "position": {
@@ -98628,7 +98628,7 @@
             "type": "COMPONENT",
             "name": "Size=XSM, Type=Checkbox, State=Default",
             "dimensions": {
-              "width": 140,
+              "width": 100,
               "height": 144
             },
             "position": {
@@ -98754,7 +98754,7 @@
                     "type": "INSTANCE",
                     "name": "ddl-row",
                     "dimensions": {
-                      "width": 140,
+                      "width": 100,
                       "height": 34
                     },
                     "position": {
@@ -98807,7 +98807,7 @@
                         "type": "FRAME",
                         "name": "option",
                         "dimensions": {
-                          "width": 140,
+                          "width": 100,
                           "height": 33
                         },
                         "position": {
@@ -98997,7 +98997,7 @@
                         "type": "RECTANGLE",
                         "name": "divider",
                         "dimensions": {
-                          "width": 140,
+                          "width": 100,
                           "height": 1
                         },
                         "position": {
@@ -99063,7 +99063,7 @@
                     "type": "INSTANCE",
                     "name": "ddl-row",
                     "dimensions": {
-                      "width": 140,
+                      "width": 100,
                       "height": 34
                     },
                     "position": {
@@ -99303,7 +99303,7 @@
                     "type": "INSTANCE",
                     "name": "ddl-row",
                     "dimensions": {
-                      "width": 140,
+                      "width": 100,
                       "height": 34
                     },
                     "position": {
@@ -99483,7 +99483,7 @@
                     "type": "INSTANCE",
                     "name": "ddl-row",
                     "dimensions": {
-                      "width": 140,
+                      "width": 100,
                       "height": 34
                     },
                     "position": {
@@ -99682,7 +99682,7 @@
             "type": "COMPONENT",
             "name": "Size=MD, Type=Text, State=Default",
             "dimensions": {
-              "width": 140,
+              "width": 100,
               "height": 184
             },
             "position": {
@@ -99808,7 +99808,7 @@
                     "type": "INSTANCE",
                     "name": "ddl-row",
                     "dimensions": {
-                      "width": 140,
+                      "width": 100,
                       "height": 44
                     },
                     "position": {
@@ -99934,7 +99934,7 @@
                     "type": "INSTANCE",
                     "name": "ddl-row",
                     "dimensions": {
-                      "width": 140,
+                      "width": 100,
                       "height": 44
                     },
                     "position": {
@@ -100060,7 +100060,7 @@
                     "type": "INSTANCE",
                     "name": "ddl-row",
                     "dimensions": {
-                      "width": 140,
+                      "width": 100,
                       "height": 44
                     },
                     "position": {
@@ -100186,7 +100186,7 @@
                     "type": "INSTANCE",
                     "name": "ddl-row",
                     "dimensions": {
-                      "width": 140,
+                      "width": 100,
                       "height": 44
                     },
                     "position": {
@@ -100331,7 +100331,7 @@
             "type": "COMPONENT",
             "name": "Size=MD, Type=Checkbox, State=Default",
             "dimensions": {
-              "width": 140,
+              "width": 100,
               "height": 184
             },
             "position": {
@@ -100457,7 +100457,7 @@
                     "type": "INSTANCE",
                     "name": "ddl-row",
                     "dimensions": {
-                      "width": 140,
+                      "width": 100,
                       "height": 44
                     },
                     "position": {
@@ -100510,7 +100510,7 @@
                         "type": "FRAME",
                         "name": "option",
                         "dimensions": {
-                          "width": 140,
+                          "width": 100,
                           "height": 43
                         },
                         "position": {
@@ -100700,7 +100700,7 @@
                         "type": "RECTANGLE",
                         "name": "divider",
                         "dimensions": {
-                          "width": 140,
+                          "width": 100,
                           "height": 1
                         },
                         "position": {
@@ -100766,7 +100766,7 @@
                     "type": "INSTANCE",
                     "name": "ddl-row",
                     "dimensions": {
-                      "width": 140,
+                      "width": 100,
                       "height": 44
                     },
                     "position": {
@@ -101006,7 +101006,7 @@
                     "type": "INSTANCE",
                     "name": "ddl-row",
                     "dimensions": {
-                      "width": 140,
+                      "width": 100,
                       "height": 44
                     },
                     "position": {
@@ -101186,7 +101186,7 @@
                     "type": "INSTANCE",
                     "name": "ddl-row",
                     "dimensions": {
-                      "width": 140,
+                      "width": 100,
                       "height": 44
                     },
                     "position": {
@@ -101419,7 +101419,7 @@
             "type": "COMPONENT",
             "name": "Size=XXSM, Type=Text, State=Default",
             "dimensions": {
-              "width": 140,
+              "width": 100,
               "height": 28
             },
             "position": {
@@ -101563,7 +101563,7 @@
             "type": "COMPONENT",
             "name": "Size=XXSM, Type=Text, State=Hover",
             "dimensions": {
-              "width": 140,
+              "width": 100,
               "height": 28
             },
             "position": {
@@ -101707,7 +101707,7 @@
             "type": "COMPONENT",
             "name": "Size=XXSM, Type=Text, State=Selected",
             "dimensions": {
-              "width": 140,
+              "width": 100,
               "height": 28
             },
             "position": {
@@ -101851,7 +101851,7 @@
             "type": "COMPONENT",
             "name": "Size=XXSM, Type=Checkbox, State=Default",
             "dimensions": {
-              "width": 140,
+              "width": 100,
               "height": 28
             },
             "position": {
@@ -102049,7 +102049,7 @@
             "type": "COMPONENT",
             "name": "Size=XXSM, Type=Checkbox, State=Hover",
             "dimensions": {
-              "width": 140,
+              "width": 100,
               "height": 28
             },
             "position": {
@@ -102247,7 +102247,7 @@
             "type": "COMPONENT",
             "name": "Size=XXSM, Type=Checkbox, State=Selected",
             "dimensions": {
-              "width": 140,
+              "width": 100,
               "height": 28
             },
             "position": {
@@ -102505,7 +102505,7 @@
             "type": "COMPONENT",
             "name": "Size=XXSM, Type=Checkbox+All, State=Default",
             "dimensions": {
-              "width": 140,
+              "width": 100,
               "height": 28
             },
             "position": {
@@ -102558,7 +102558,7 @@
                 "type": "FRAME",
                 "name": "option",
                 "dimensions": {
-                  "width": 140,
+                  "width": 100,
                   "height": 27
                 },
                 "position": {
@@ -102748,7 +102748,7 @@
                 "type": "RECTANGLE",
                 "name": "divider",
                 "dimensions": {
-                  "width": 140,
+                  "width": 100,
                   "height": 1
                 },
                 "position": {
@@ -102822,7 +102822,7 @@
             "type": "COMPONENT",
             "name": "Size=XXSM, Type=Checkbox+All, State=Hover",
             "dimensions": {
-              "width": 140,
+              "width": 100,
               "height": 28
             },
             "position": {
@@ -102875,7 +102875,7 @@
                 "type": "FRAME",
                 "name": "option",
                 "dimensions": {
-                  "width": 140,
+                  "width": 100,
                   "height": 27
                 },
                 "position": {
@@ -103065,7 +103065,7 @@
                 "type": "RECTANGLE",
                 "name": "divider",
                 "dimensions": {
-                  "width": 140,
+                  "width": 100,
                   "height": 1
                 },
                 "position": {
@@ -103139,7 +103139,7 @@
             "type": "COMPONENT",
             "name": "Size=XXSM, Type=Checkbox+All, State=Selected",
             "dimensions": {
-              "width": 140,
+              "width": 100,
               "height": 28
             },
             "position": {
@@ -103192,7 +103192,7 @@
                 "type": "FRAME",
                 "name": "option",
                 "dimensions": {
-                  "width": 140,
+                  "width": 100,
                   "height": 27
                 },
                 "position": {
@@ -103442,7 +103442,7 @@
                 "type": "RECTANGLE",
                 "name": "divider",
                 "dimensions": {
-                  "width": 140,
+                  "width": 100,
                   "height": 1
                 },
                 "position": {
@@ -103516,7 +103516,7 @@
             "type": "COMPONENT",
             "name": "Size=XSM, Type=Text, State=Default",
             "dimensions": {
-              "width": 140,
+              "width": 100,
               "height": 34
             },
             "position": {
@@ -103660,7 +103660,7 @@
             "type": "COMPONENT",
             "name": "Size=XSM, Type=Text, State=Hover",
             "dimensions": {
-              "width": 140,
+              "width": 100,
               "height": 34
             },
             "position": {
@@ -103804,7 +103804,7 @@
             "type": "COMPONENT",
             "name": "Size=XSM, Type=Text, State=Selected",
             "dimensions": {
-              "width": 140,
+              "width": 100,
               "height": 34
             },
             "position": {
@@ -103948,7 +103948,7 @@
             "type": "COMPONENT",
             "name": "Size=XSM, Type=Checkbox, State=Default",
             "dimensions": {
-              "width": 140,
+              "width": 100,
               "height": 34
             },
             "position": {
@@ -104146,7 +104146,7 @@
             "type": "COMPONENT",
             "name": "Size=XSM, Type=Checkbox, State=Hover",
             "dimensions": {
-              "width": 140,
+              "width": 100,
               "height": 34
             },
             "position": {
@@ -104344,7 +104344,7 @@
             "type": "COMPONENT",
             "name": "Size=XSM, Type=Checkbox, State=Selected",
             "dimensions": {
-              "width": 140,
+              "width": 100,
               "height": 34
             },
             "position": {
@@ -104602,7 +104602,7 @@
             "type": "COMPONENT",
             "name": "Size=XSM, Type=Checkbox+All, State=Default",
             "dimensions": {
-              "width": 140,
+              "width": 100,
               "height": 34
             },
             "position": {
@@ -104655,7 +104655,7 @@
                 "type": "FRAME",
                 "name": "option",
                 "dimensions": {
-                  "width": 140,
+                  "width": 100,
                   "height": 33
                 },
                 "position": {
@@ -104845,7 +104845,7 @@
                 "type": "RECTANGLE",
                 "name": "divider",
                 "dimensions": {
-                  "width": 140,
+                  "width": 100,
                   "height": 1
                 },
                 "position": {
@@ -104919,7 +104919,7 @@
             "type": "COMPONENT",
             "name": "Size=XSM, Type=Checkbox+All, State=Hover",
             "dimensions": {
-              "width": 140,
+              "width": 100,
               "height": 34
             },
             "position": {
@@ -104972,7 +104972,7 @@
                 "type": "FRAME",
                 "name": "option",
                 "dimensions": {
-                  "width": 140,
+                  "width": 100,
                   "height": 33
                 },
                 "position": {
@@ -105162,7 +105162,7 @@
                 "type": "RECTANGLE",
                 "name": "divider",
                 "dimensions": {
-                  "width": 140,
+                  "width": 100,
                   "height": 1
                 },
                 "position": {
@@ -105236,7 +105236,7 @@
             "type": "COMPONENT",
             "name": "Size=XSM, Type=Checkbox+All, State=Selected",
             "dimensions": {
-              "width": 140,
+              "width": 100,
               "height": 34
             },
             "position": {
@@ -105289,7 +105289,7 @@
                 "type": "FRAME",
                 "name": "option",
                 "dimensions": {
-                  "width": 140,
+                  "width": 100,
                   "height": 33
                 },
                 "position": {
@@ -105539,7 +105539,7 @@
                 "type": "RECTANGLE",
                 "name": "divider",
                 "dimensions": {
-                  "width": 140,
+                  "width": 100,
                   "height": 1
                 },
                 "position": {
@@ -105613,7 +105613,7 @@
             "type": "COMPONENT",
             "name": "Size=MD, Type=Text, State=Default",
             "dimensions": {
-              "width": 140,
+              "width": 100,
               "height": 44
             },
             "position": {
@@ -105757,7 +105757,7 @@
             "type": "COMPONENT",
             "name": "Size=MD, Type=Text, State=Hover",
             "dimensions": {
-              "width": 140,
+              "width": 100,
               "height": 44
             },
             "position": {
@@ -105901,7 +105901,7 @@
             "type": "COMPONENT",
             "name": "Size=MD, Type=Text, State=Selected",
             "dimensions": {
-              "width": 140,
+              "width": 100,
               "height": 44
             },
             "position": {
@@ -106045,7 +106045,7 @@
             "type": "COMPONENT",
             "name": "Size=MD, Type=Checkbox, State=Default",
             "dimensions": {
-              "width": 140,
+              "width": 100,
               "height": 44
             },
             "position": {
@@ -106243,7 +106243,7 @@
             "type": "COMPONENT",
             "name": "Size=MD, Type=Checkbox, State=Hover",
             "dimensions": {
-              "width": 140,
+              "width": 100,
               "height": 44
             },
             "position": {
@@ -106441,7 +106441,7 @@
             "type": "COMPONENT",
             "name": "Size=MD, Type=Checkbox, State=Selected",
             "dimensions": {
-              "width": 140,
+              "width": 100,
               "height": 44
             },
             "position": {
@@ -106699,7 +106699,7 @@
             "type": "COMPONENT",
             "name": "Size=MD, Type=Checkbox+All, State=Default",
             "dimensions": {
-              "width": 140,
+              "width": 100,
               "height": 44
             },
             "position": {
@@ -106752,7 +106752,7 @@
                 "type": "FRAME",
                 "name": "option",
                 "dimensions": {
-                  "width": 140,
+                  "width": 100,
                   "height": 43
                 },
                 "position": {
@@ -106942,7 +106942,7 @@
                 "type": "RECTANGLE",
                 "name": "divider",
                 "dimensions": {
-                  "width": 140,
+                  "width": 100,
                   "height": 1
                 },
                 "position": {
@@ -107016,7 +107016,7 @@
             "type": "COMPONENT",
             "name": "Size=MD, Type=Checkbox+All, State=Hover",
             "dimensions": {
-              "width": 140,
+              "width": 100,
               "height": 44
             },
             "position": {
@@ -107069,7 +107069,7 @@
                 "type": "FRAME",
                 "name": "option",
                 "dimensions": {
-                  "width": 140,
+                  "width": 100,
                   "height": 43
                 },
                 "position": {
@@ -107259,7 +107259,7 @@
                 "type": "RECTANGLE",
                 "name": "divider",
                 "dimensions": {
-                  "width": 140,
+                  "width": 100,
                   "height": 1
                 },
                 "position": {
@@ -107333,7 +107333,7 @@
             "type": "COMPONENT",
             "name": "Size=MD, Type=Checkbox+All, State=Selected",
             "dimensions": {
-              "width": 140,
+              "width": 100,
               "height": 44
             },
             "position": {
@@ -107386,7 +107386,7 @@
                 "type": "FRAME",
                 "name": "option",
                 "dimensions": {
-                  "width": 140,
+                  "width": 100,
                   "height": 43
                 },
                 "position": {
@@ -107636,7 +107636,7 @@
                 "type": "RECTANGLE",
                 "name": "divider",
                 "dimensions": {
-                  "width": 140,
+                  "width": 100,
                   "height": 1
                 },
                 "position": {
@@ -146495,8 +146495,8 @@
                 "type": "INSTANCE",
                 "name": "dropdown",
                 "dimensions": {
-                  "width": 140,
-                  "height": 120
+                  "width": 100,
+                  "height": 0
                 },
                 "position": {
                   "x": 220,
@@ -146601,7 +146601,7 @@
                         "type": "INSTANCE",
                         "name": "ddl-row",
                         "dimensions": {
-                          "width": 140,
+                          "width": 100,
                           "height": 28
                         },
                         "position": {
@@ -146727,7 +146727,7 @@
                         "type": "INSTANCE",
                         "name": "ddl-row",
                         "dimensions": {
-                          "width": 140,
+                          "width": 100,
                           "height": 28
                         },
                         "position": {
@@ -146853,7 +146853,7 @@
                         "type": "INSTANCE",
                         "name": "ddl-row",
                         "dimensions": {
-                          "width": 140,
+                          "width": 100,
                           "height": 28
                         },
                         "position": {
@@ -146979,7 +146979,7 @@
                         "type": "INSTANCE",
                         "name": "ddl-row",
                         "dimensions": {
-                          "width": 140,
+                          "width": 100,
                           "height": 28
                         },
                         "position": {
@@ -148449,8 +148449,8 @@
                 "type": "INSTANCE",
                 "name": "dropdown",
                 "dimensions": {
-                  "width": 140,
-                  "height": 144
+                  "width": 100,
+                  "height": 0
                 },
                 "position": {
                   "x": 220,
@@ -148555,7 +148555,7 @@
                         "type": "INSTANCE",
                         "name": "ddl-row",
                         "dimensions": {
-                          "width": 140,
+                          "width": 100,
                           "height": 34
                         },
                         "position": {
@@ -148681,7 +148681,7 @@
                         "type": "INSTANCE",
                         "name": "ddl-row",
                         "dimensions": {
-                          "width": 140,
+                          "width": 100,
                           "height": 34
                         },
                         "position": {
@@ -148807,7 +148807,7 @@
                         "type": "INSTANCE",
                         "name": "ddl-row",
                         "dimensions": {
-                          "width": 140,
+                          "width": 100,
                           "height": 34
                         },
                         "position": {
@@ -148933,7 +148933,7 @@
                         "type": "INSTANCE",
                         "name": "ddl-row",
                         "dimensions": {
-                          "width": 140,
+                          "width": 100,
                           "height": 34
                         },
                         "position": {
@@ -150403,8 +150403,8 @@
                 "type": "INSTANCE",
                 "name": "dropdown",
                 "dimensions": {
-                  "width": 140,
-                  "height": 184
+                  "width": 100,
+                  "height": 0
                 },
                 "position": {
                   "x": 220,
@@ -150509,7 +150509,7 @@
                         "type": "INSTANCE",
                         "name": "ddl-row",
                         "dimensions": {
-                          "width": 140,
+                          "width": 100,
                           "height": 44
                         },
                         "position": {
@@ -150635,7 +150635,7 @@
                         "type": "INSTANCE",
                         "name": "ddl-row",
                         "dimensions": {
-                          "width": 140,
+                          "width": 100,
                           "height": 44
                         },
                         "position": {
@@ -150761,7 +150761,7 @@
                         "type": "INSTANCE",
                         "name": "ddl-row",
                         "dimensions": {
-                          "width": 140,
+                          "width": 100,
                           "height": 44
                         },
                         "position": {
@@ -150887,7 +150887,7 @@
                         "type": "INSTANCE",
                         "name": "ddl-row",
                         "dimensions": {
-                          "width": 140,
+                          "width": 100,
                           "height": 44
                         },
                         "position": {
@@ -152357,8 +152357,8 @@
                 "type": "INSTANCE",
                 "name": "dropdown",
                 "dimensions": {
-                  "width": 140,
-                  "height": 184
+                  "width": 100,
+                  "height": 0
                 },
                 "position": {
                   "x": 220,
@@ -152463,7 +152463,7 @@
                         "type": "INSTANCE",
                         "name": "ddl-row",
                         "dimensions": {
-                          "width": 140,
+                          "width": 100,
                           "height": 44
                         },
                         "position": {
@@ -152589,7 +152589,7 @@
                         "type": "INSTANCE",
                         "name": "ddl-row",
                         "dimensions": {
-                          "width": 140,
+                          "width": 100,
                           "height": 44
                         },
                         "position": {
@@ -152715,7 +152715,7 @@
                         "type": "INSTANCE",
                         "name": "ddl-row",
                         "dimensions": {
-                          "width": 140,
+                          "width": 100,
                           "height": 44
                         },
                         "position": {
@@ -152841,7 +152841,7 @@
                         "type": "INSTANCE",
                         "name": "ddl-row",
                         "dimensions": {
-                          "width": 140,
+                          "width": 100,
                           "height": 44
                         },
                         "position": {
@@ -310661,7 +310661,7 @@
     },
     {
       "name": "Modal Content",
-      "gridMembership": "internal",
+      "gridMembership": "public",
       "variantCount": 6,
       "axes": {
         "Size": [
@@ -310990,12 +310990,12 @@
                 },
                 "text": null,
                 "appearance": {
-                  "fill": "color/bg/level-2",
+                  "fill": "color/bg/level-3",
                   "stroke": null,
                   "fillPaints": [
                     {
                       "type": "SOLID",
-                      "__tokenKey": "color/bg/level-2",
+                      "__tokenKey": "color/bg/level-3",
                       "color": {
                         "r": 0,
                         "g": 0,
@@ -311187,12 +311187,12 @@
                     },
                     "text": null,
                     "appearance": {
-                      "fill": "color/bg/level-2",
+                      "fill": "color/bg/level-3",
                       "stroke": null,
                       "fillPaints": [
                         {
                           "type": "SOLID",
-                          "__tokenKey": "color/bg/level-2",
+                          "__tokenKey": "color/bg/level-3",
                           "color": {
                             "r": 0,
                             "g": 0,
@@ -311801,12 +311801,12 @@
                 },
                 "text": null,
                 "appearance": {
-                  "fill": "color/bg/level-2",
+                  "fill": "color/bg/level-3",
                   "stroke": null,
                   "fillPaints": [
                     {
                       "type": "SOLID",
-                      "__tokenKey": "color/bg/level-2",
+                      "__tokenKey": "color/bg/level-3",
                       "color": {
                         "r": 0,
                         "g": 0,
@@ -311998,12 +311998,12 @@
                     },
                     "text": null,
                     "appearance": {
-                      "fill": "color/bg/level-2",
+                      "fill": "color/bg/level-3",
                       "stroke": null,
                       "fillPaints": [
                         {
                           "type": "SOLID",
-                          "__tokenKey": "color/bg/level-2",
+                          "__tokenKey": "color/bg/level-3",
                           "color": {
                             "r": 0,
                             "g": 0,
@@ -312746,12 +312746,12 @@
                 },
                 "text": null,
                 "appearance": {
-                  "fill": "color/bg/level-2",
+                  "fill": "color/bg/level-3",
                   "stroke": null,
                   "fillPaints": [
                     {
                       "type": "SOLID",
-                      "__tokenKey": "color/bg/level-2",
+                      "__tokenKey": "color/bg/level-3",
                       "color": {
                         "r": 0,
                         "g": 0,
@@ -312943,12 +312943,12 @@
                     },
                     "text": null,
                     "appearance": {
-                      "fill": "color/bg/level-2",
+                      "fill": "color/bg/level-3",
                       "stroke": null,
                       "fillPaints": [
                         {
                           "type": "SOLID",
-                          "__tokenKey": "color/bg/level-2",
+                          "__tokenKey": "color/bg/level-3",
                           "color": {
                             "r": 0,
                             "g": 0,
@@ -313557,12 +313557,12 @@
                 },
                 "text": null,
                 "appearance": {
-                  "fill": "color/bg/level-2",
+                  "fill": "color/bg/level-3",
                   "stroke": null,
                   "fillPaints": [
                     {
                       "type": "SOLID",
-                      "__tokenKey": "color/bg/level-2",
+                      "__tokenKey": "color/bg/level-3",
                       "color": {
                         "r": 0,
                         "g": 0,
@@ -313754,12 +313754,12 @@
                     },
                     "text": null,
                     "appearance": {
-                      "fill": "color/bg/level-2",
+                      "fill": "color/bg/level-3",
                       "stroke": null,
                       "fillPaints": [
                         {
                           "type": "SOLID",
-                          "__tokenKey": "color/bg/level-2",
+                          "__tokenKey": "color/bg/level-3",
                           "color": {
                             "r": 0,
                             "g": 0,
@@ -314502,12 +314502,12 @@
                 },
                 "text": null,
                 "appearance": {
-                  "fill": "color/bg/level-2",
+                  "fill": "color/bg/level-3",
                   "stroke": null,
                   "fillPaints": [
                     {
                       "type": "SOLID",
-                      "__tokenKey": "color/bg/level-2",
+                      "__tokenKey": "color/bg/level-3",
                       "color": {
                         "r": 0,
                         "g": 0,
@@ -314699,12 +314699,12 @@
                     },
                     "text": null,
                     "appearance": {
-                      "fill": "color/bg/level-2",
+                      "fill": "color/bg/level-3",
                       "stroke": null,
                       "fillPaints": [
                         {
                           "type": "SOLID",
-                          "__tokenKey": "color/bg/level-2",
+                          "__tokenKey": "color/bg/level-3",
                           "color": {
                             "r": 0,
                             "g": 0,
@@ -315313,12 +315313,12 @@
                 },
                 "text": null,
                 "appearance": {
-                  "fill": "color/bg/level-2",
+                  "fill": "color/bg/level-3",
                   "stroke": null,
                   "fillPaints": [
                     {
                       "type": "SOLID",
-                      "__tokenKey": "color/bg/level-2",
+                      "__tokenKey": "color/bg/level-3",
                       "color": {
                         "r": 0,
                         "g": 0,
@@ -315510,12 +315510,12 @@
                     },
                     "text": null,
                     "appearance": {
-                      "fill": "color/bg/level-2",
+                      "fill": "color/bg/level-3",
                       "stroke": null,
                       "fillPaints": [
                         {
                           "type": "SOLID",
-                          "__tokenKey": "color/bg/level-2",
+                          "__tokenKey": "color/bg/level-3",
                           "color": {
                             "r": 0,
                             "g": 0,
@@ -316821,8 +316821,8 @@
                 "type": "INSTANCE",
                 "name": "dropdown",
                 "dimensions": {
-                  "width": 140,
-                  "height": 120
+                  "width": 100,
+                  "height": 0
                 },
                 "position": {
                   "x": 220,
@@ -316927,7 +316927,7 @@
                         "type": "INSTANCE",
                         "name": "ddl-row",
                         "dimensions": {
-                          "width": 140,
+                          "width": 100,
                           "height": 28
                         },
                         "position": {
@@ -317053,7 +317053,7 @@
                         "type": "INSTANCE",
                         "name": "ddl-row",
                         "dimensions": {
-                          "width": 140,
+                          "width": 100,
                           "height": 28
                         },
                         "position": {
@@ -317179,7 +317179,7 @@
                         "type": "INSTANCE",
                         "name": "ddl-row",
                         "dimensions": {
-                          "width": 140,
+                          "width": 100,
                           "height": 28
                         },
                         "position": {
@@ -317305,7 +317305,7 @@
                         "type": "INSTANCE",
                         "name": "ddl-row",
                         "dimensions": {
-                          "width": 140,
+                          "width": 100,
                           "height": 28
                         },
                         "position": {
@@ -319023,8 +319023,8 @@
                 "type": "INSTANCE",
                 "name": "dropdown",
                 "dimensions": {
-                  "width": 140,
-                  "height": 120
+                  "width": 100,
+                  "height": 0
                 },
                 "position": {
                   "x": 220,
@@ -319129,7 +319129,7 @@
                         "type": "INSTANCE",
                         "name": "ddl-row",
                         "dimensions": {
-                          "width": 140,
+                          "width": 100,
                           "height": 28
                         },
                         "position": {
@@ -319255,7 +319255,7 @@
                         "type": "INSTANCE",
                         "name": "ddl-row",
                         "dimensions": {
-                          "width": 140,
+                          "width": 100,
                           "height": 28
                         },
                         "position": {
@@ -319381,7 +319381,7 @@
                         "type": "INSTANCE",
                         "name": "ddl-row",
                         "dimensions": {
-                          "width": 140,
+                          "width": 100,
                           "height": 28
                         },
                         "position": {
@@ -319507,7 +319507,7 @@
                         "type": "INSTANCE",
                         "name": "ddl-row",
                         "dimensions": {
-                          "width": 140,
+                          "width": 100,
                           "height": 28
                         },
                         "position": {
@@ -321154,8 +321154,8 @@
                 "type": "INSTANCE",
                 "name": "dropdown",
                 "dimensions": {
-                  "width": 140,
-                  "height": 120
+                  "width": 100,
+                  "height": 0
                 },
                 "position": {
                   "x": 220,
@@ -321260,7 +321260,7 @@
                         "type": "INSTANCE",
                         "name": "ddl-row",
                         "dimensions": {
-                          "width": 140,
+                          "width": 100,
                           "height": 28
                         },
                         "position": {
@@ -321386,7 +321386,7 @@
                         "type": "INSTANCE",
                         "name": "ddl-row",
                         "dimensions": {
-                          "width": 140,
+                          "width": 100,
                           "height": 28
                         },
                         "position": {
@@ -321512,7 +321512,7 @@
                         "type": "INSTANCE",
                         "name": "ddl-row",
                         "dimensions": {
-                          "width": 140,
+                          "width": 100,
                           "height": 28
                         },
                         "position": {
@@ -321638,7 +321638,7 @@
                         "type": "INSTANCE",
                         "name": "ddl-row",
                         "dimensions": {
-                          "width": 140,
+                          "width": 100,
                           "height": 28
                         },
                         "position": {
@@ -323356,8 +323356,8 @@
                 "type": "INSTANCE",
                 "name": "dropdown",
                 "dimensions": {
-                  "width": 140,
-                  "height": 120
+                  "width": 100,
+                  "height": 0
                 },
                 "position": {
                   "x": 220,
@@ -323462,7 +323462,7 @@
                         "type": "INSTANCE",
                         "name": "ddl-row",
                         "dimensions": {
-                          "width": 140,
+                          "width": 100,
                           "height": 28
                         },
                         "position": {
@@ -323588,7 +323588,7 @@
                         "type": "INSTANCE",
                         "name": "ddl-row",
                         "dimensions": {
-                          "width": 140,
+                          "width": 100,
                           "height": 28
                         },
                         "position": {
@@ -323714,7 +323714,7 @@
                         "type": "INSTANCE",
                         "name": "ddl-row",
                         "dimensions": {
-                          "width": 140,
+                          "width": 100,
                           "height": 28
                         },
                         "position": {
@@ -323840,7 +323840,7 @@
                         "type": "INSTANCE",
                         "name": "ddl-row",
                         "dimensions": {
-                          "width": 140,
+                          "width": 100,
                           "height": 28
                         },
                         "position": {
@@ -325487,8 +325487,8 @@
                 "type": "INSTANCE",
                 "name": "dropdown",
                 "dimensions": {
-                  "width": 140,
-                  "height": 144
+                  "width": 100,
+                  "height": 0
                 },
                 "position": {
                   "x": 220,
@@ -325593,7 +325593,7 @@
                         "type": "INSTANCE",
                         "name": "ddl-row",
                         "dimensions": {
-                          "width": 140,
+                          "width": 100,
                           "height": 34
                         },
                         "position": {
@@ -325719,7 +325719,7 @@
                         "type": "INSTANCE",
                         "name": "ddl-row",
                         "dimensions": {
-                          "width": 140,
+                          "width": 100,
                           "height": 34
                         },
                         "position": {
@@ -325845,7 +325845,7 @@
                         "type": "INSTANCE",
                         "name": "ddl-row",
                         "dimensions": {
-                          "width": 140,
+                          "width": 100,
                           "height": 34
                         },
                         "position": {
@@ -325971,7 +325971,7 @@
                         "type": "INSTANCE",
                         "name": "ddl-row",
                         "dimensions": {
-                          "width": 140,
+                          "width": 100,
                           "height": 34
                         },
                         "position": {
@@ -327689,8 +327689,8 @@
                 "type": "INSTANCE",
                 "name": "dropdown",
                 "dimensions": {
-                  "width": 140,
-                  "height": 144
+                  "width": 100,
+                  "height": 0
                 },
                 "position": {
                   "x": 220,
@@ -327795,7 +327795,7 @@
                         "type": "INSTANCE",
                         "name": "ddl-row",
                         "dimensions": {
-                          "width": 140,
+                          "width": 100,
                           "height": 34
                         },
                         "position": {
@@ -327921,7 +327921,7 @@
                         "type": "INSTANCE",
                         "name": "ddl-row",
                         "dimensions": {
-                          "width": 140,
+                          "width": 100,
                           "height": 34
                         },
                         "position": {
@@ -328047,7 +328047,7 @@
                         "type": "INSTANCE",
                         "name": "ddl-row",
                         "dimensions": {
-                          "width": 140,
+                          "width": 100,
                           "height": 34
                         },
                         "position": {
@@ -328173,7 +328173,7 @@
                         "type": "INSTANCE",
                         "name": "ddl-row",
                         "dimensions": {
-                          "width": 140,
+                          "width": 100,
                           "height": 34
                         },
                         "position": {
@@ -329820,8 +329820,8 @@
                 "type": "INSTANCE",
                 "name": "dropdown",
                 "dimensions": {
-                  "width": 140,
-                  "height": 144
+                  "width": 100,
+                  "height": 0
                 },
                 "position": {
                   "x": 220,
@@ -329926,7 +329926,7 @@
                         "type": "INSTANCE",
                         "name": "ddl-row",
                         "dimensions": {
-                          "width": 140,
+                          "width": 100,
                           "height": 34
                         },
                         "position": {
@@ -330052,7 +330052,7 @@
                         "type": "INSTANCE",
                         "name": "ddl-row",
                         "dimensions": {
-                          "width": 140,
+                          "width": 100,
                           "height": 34
                         },
                         "position": {
@@ -330178,7 +330178,7 @@
                         "type": "INSTANCE",
                         "name": "ddl-row",
                         "dimensions": {
-                          "width": 140,
+                          "width": 100,
                           "height": 34
                         },
                         "position": {
@@ -330304,7 +330304,7 @@
                         "type": "INSTANCE",
                         "name": "ddl-row",
                         "dimensions": {
-                          "width": 140,
+                          "width": 100,
                           "height": 34
                         },
                         "position": {
@@ -332022,8 +332022,8 @@
                 "type": "INSTANCE",
                 "name": "dropdown",
                 "dimensions": {
-                  "width": 140,
-                  "height": 144
+                  "width": 100,
+                  "height": 0
                 },
                 "position": {
                   "x": 220,
@@ -332128,7 +332128,7 @@
                         "type": "INSTANCE",
                         "name": "ddl-row",
                         "dimensions": {
-                          "width": 140,
+                          "width": 100,
                           "height": 34
                         },
                         "position": {
@@ -332254,7 +332254,7 @@
                         "type": "INSTANCE",
                         "name": "ddl-row",
                         "dimensions": {
-                          "width": 140,
+                          "width": 100,
                           "height": 34
                         },
                         "position": {
@@ -332380,7 +332380,7 @@
                         "type": "INSTANCE",
                         "name": "ddl-row",
                         "dimensions": {
-                          "width": 140,
+                          "width": 100,
                           "height": 34
                         },
                         "position": {
@@ -332506,7 +332506,7 @@
                         "type": "INSTANCE",
                         "name": "ddl-row",
                         "dimensions": {
-                          "width": 140,
+                          "width": 100,
                           "height": 34
                         },
                         "position": {
@@ -334153,8 +334153,8 @@
                 "type": "INSTANCE",
                 "name": "dropdown",
                 "dimensions": {
-                  "width": 140,
-                  "height": 144
+                  "width": 100,
+                  "height": 0
                 },
                 "position": {
                   "x": 220,
@@ -334259,7 +334259,7 @@
                         "type": "INSTANCE",
                         "name": "ddl-row",
                         "dimensions": {
-                          "width": 140,
+                          "width": 100,
                           "height": 34
                         },
                         "position": {
@@ -334385,7 +334385,7 @@
                         "type": "INSTANCE",
                         "name": "ddl-row",
                         "dimensions": {
-                          "width": 140,
+                          "width": 100,
                           "height": 34
                         },
                         "position": {
@@ -334511,7 +334511,7 @@
                         "type": "INSTANCE",
                         "name": "ddl-row",
                         "dimensions": {
-                          "width": 140,
+                          "width": 100,
                           "height": 34
                         },
                         "position": {
@@ -334637,7 +334637,7 @@
                         "type": "INSTANCE",
                         "name": "ddl-row",
                         "dimensions": {
-                          "width": 140,
+                          "width": 100,
                           "height": 34
                         },
                         "position": {
@@ -336355,8 +336355,8 @@
                 "type": "INSTANCE",
                 "name": "dropdown",
                 "dimensions": {
-                  "width": 140,
-                  "height": 144
+                  "width": 100,
+                  "height": 0
                 },
                 "position": {
                   "x": 220,
@@ -336461,7 +336461,7 @@
                         "type": "INSTANCE",
                         "name": "ddl-row",
                         "dimensions": {
-                          "width": 140,
+                          "width": 100,
                           "height": 34
                         },
                         "position": {
@@ -336587,7 +336587,7 @@
                         "type": "INSTANCE",
                         "name": "ddl-row",
                         "dimensions": {
-                          "width": 140,
+                          "width": 100,
                           "height": 34
                         },
                         "position": {
@@ -336713,7 +336713,7 @@
                         "type": "INSTANCE",
                         "name": "ddl-row",
                         "dimensions": {
-                          "width": 140,
+                          "width": 100,
                           "height": 34
                         },
                         "position": {
@@ -336839,7 +336839,7 @@
                         "type": "INSTANCE",
                         "name": "ddl-row",
                         "dimensions": {
-                          "width": 140,
+                          "width": 100,
                           "height": 34
                         },
                         "position": {
@@ -338486,8 +338486,8 @@
                 "type": "INSTANCE",
                 "name": "dropdown",
                 "dimensions": {
-                  "width": 140,
-                  "height": 144
+                  "width": 100,
+                  "height": 0
                 },
                 "position": {
                   "x": 220,
@@ -338592,7 +338592,7 @@
                         "type": "INSTANCE",
                         "name": "ddl-row",
                         "dimensions": {
-                          "width": 140,
+                          "width": 100,
                           "height": 34
                         },
                         "position": {
@@ -338718,7 +338718,7 @@
                         "type": "INSTANCE",
                         "name": "ddl-row",
                         "dimensions": {
-                          "width": 140,
+                          "width": 100,
                           "height": 34
                         },
                         "position": {
@@ -338844,7 +338844,7 @@
                         "type": "INSTANCE",
                         "name": "ddl-row",
                         "dimensions": {
-                          "width": 140,
+                          "width": 100,
                           "height": 34
                         },
                         "position": {
@@ -338970,7 +338970,7 @@
                         "type": "INSTANCE",
                         "name": "ddl-row",
                         "dimensions": {
-                          "width": 140,
+                          "width": 100,
                           "height": 34
                         },
                         "position": {
@@ -340688,8 +340688,8 @@
                 "type": "INSTANCE",
                 "name": "dropdown",
                 "dimensions": {
-                  "width": 140,
-                  "height": 144
+                  "width": 100,
+                  "height": 0
                 },
                 "position": {
                   "x": 220,
@@ -340794,7 +340794,7 @@
                         "type": "INSTANCE",
                         "name": "ddl-row",
                         "dimensions": {
-                          "width": 140,
+                          "width": 100,
                           "height": 34
                         },
                         "position": {
@@ -340920,7 +340920,7 @@
                         "type": "INSTANCE",
                         "name": "ddl-row",
                         "dimensions": {
-                          "width": 140,
+                          "width": 100,
                           "height": 34
                         },
                         "position": {
@@ -341046,7 +341046,7 @@
                         "type": "INSTANCE",
                         "name": "ddl-row",
                         "dimensions": {
-                          "width": 140,
+                          "width": 100,
                           "height": 34
                         },
                         "position": {
@@ -341172,7 +341172,7 @@
                         "type": "INSTANCE",
                         "name": "ddl-row",
                         "dimensions": {
-                          "width": 140,
+                          "width": 100,
                           "height": 34
                         },
                         "position": {

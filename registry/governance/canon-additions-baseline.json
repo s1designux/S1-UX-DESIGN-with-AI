@@ -2,7 +2,7 @@
   "_note": "정본(textstyles-data.ts · vars-data.ts)의 항목 이름 전집합. Gate 34 가 여기 없는 신설을 차단한다. ⭐ 는 스스로 이 목록에 추가할 수 없고, 사용자 승인(--approve)만이 편입한다.",
   "_why": "CLAUDE.md §⚖️ 하드룰 H7. 2026-08-03: ⭐ 가 사용자가 거부한 스타일 신설을 자기 규칙을 만들어 강행했는데, 32개 게이트 전부가 \"정본→파생 일치\"만 봐서 아무도 못 잡았다.",
   "_updated": "2026-09-08",
-  "count": 627,
+  "count": 637,
   "items": [
     "color:base/black",
     "color:base/home-bg",
@@ -554,6 +554,10 @@
     "textstyle:title/24B",
     "textstyle:title/32B",
     "textstyle:title/32R",
+    "uistate:assist-button.default",
+    "uistate:assist-button.disabled",
+    "uistate:assist-button.hover",
+    "uistate:assist-button.pressed",
     "uistate:button.default",
     "uistate:button.disabled",
     "uistate:button.hover",
@@ -590,6 +594,8 @@
     "uistate:input.readOnly",
     "uistate:mobile-bottom-nav.selected",
     "uistate:mobile-bottom-nav.unselected",
+    "uistate:modal-content.closed",
+    "uistate:modal-content.open",
     "uistate:modal.closed",
     "uistate:modal.open",
     "uistate:multi-toggle.default",
@@ -617,6 +623,10 @@
     "uistate:table.default",
     "uistate:table.hover",
     "uistate:table.selected",
+    "uistate:text-button.default",
+    "uistate:text-button.disabled",
+    "uistate:text-button.hover",
+    "uistate:text-button.pressed",
     "uistate:textarea.default",
     "uistate:textarea.disabled",
     "uistate:textarea.filled",
@@ -950,6 +960,126 @@
       "evidence": {
         "transcript": "a25e1cff-3579-4537-8f73-d2d938a553a2.jsonl",
         "at": "2026-09-03T05:40:44.756Z"
+      },
+      "recordedBy": "orchestrator"
+    },
+    {
+      "item": "uistate:assist-button.hover",
+      "by": "river",
+      "reason": "신규 웹 컴포넌트 3종(보조 버튼·텍스트 버튼·콘텐츠 모달)의 상태 이름 — 정본 상태축과 1:1, river 승인 2026-09-08",
+      "approvedAt": "2026-09-08T13:43:15.763Z",
+      "quote": "승인할게, 텍스트버튼 문구도 정본에서 고치고 지금 커밋해줘",
+      "evidence": {
+        "transcript": "35e73826-c191-4458-96a0-0d3593056e03.jsonl",
+        "at": "2026-09-08T13:42:00.958Z"
+      },
+      "recordedBy": "orchestrator"
+    },
+    {
+      "item": "uistate:assist-button.pressed",
+      "by": "river",
+      "reason": "신규 웹 컴포넌트 3종(보조 버튼·텍스트 버튼·콘텐츠 모달)의 상태 이름 — 정본 상태축과 1:1, river 승인 2026-09-08",
+      "approvedAt": "2026-09-08T13:43:16.162Z",
+      "quote": "승인할게, 텍스트버튼 문구도 정본에서 고치고 지금 커밋해줘",
+      "evidence": {
+        "transcript": "35e73826-c191-4458-96a0-0d3593056e03.jsonl",
+        "at": "2026-09-08T13:42:00.958Z"
+      },
+      "recordedBy": "orchestrator"
+    },
+    {
+      "item": "uistate:assist-button.disabled",
+      "by": "river",
+      "reason": "신규 웹 컴포넌트 3종(보조 버튼·텍스트 버튼·콘텐츠 모달)의 상태 이름 — 정본 상태축과 1:1, river 승인 2026-09-08",
+      "approvedAt": "2026-09-08T13:43:16.567Z",
+      "quote": "승인할게, 텍스트버튼 문구도 정본에서 고치고 지금 커밋해줘",
+      "evidence": {
+        "transcript": "35e73826-c191-4458-96a0-0d3593056e03.jsonl",
+        "at": "2026-09-08T13:42:00.958Z"
+      },
+      "recordedBy": "orchestrator"
+    },
+    {
+      "item": "uistate:text-button.default",
+      "by": "river",
+      "reason": "신규 웹 컴포넌트 3종(보조 버튼·텍스트 버튼·콘텐츠 모달)의 상태 이름 — 정본 상태축과 1:1, river 승인 2026-09-08",
+      "approvedAt": "2026-09-08T13:43:16.970Z",
+      "quote": "승인할게, 텍스트버튼 문구도 정본에서 고치고 지금 커밋해줘",
+      "evidence": {
+        "transcript": "35e73826-c191-4458-96a0-0d3593056e03.jsonl",
+        "at": "2026-09-08T13:42:00.958Z"
+      },
+      "recordedBy": "orchestrator"
+    },
+    {
+      "item": "uistate:text-button.hover",
+      "by": "river",
+      "reason": "신규 웹 컴포넌트 3종(보조 버튼·텍스트 버튼·콘텐츠 모달)의 상태 이름 — 정본 상태축과 1:1, river 승인 2026-09-08",
+      "approvedAt": "2026-09-08T13:43:17.370Z",
+      "quote": "승인할게, 텍스트버튼 문구도 정본에서 고치고 지금 커밋해줘",
+      "evidence": {
+        "transcript": "35e73826-c191-4458-96a0-0d3593056e03.jsonl",
+        "at": "2026-09-08T13:42:00.958Z"
+      },
+      "recordedBy": "orchestrator"
+    },
+    {
+      "item": "uistate:text-button.pressed",
+      "by": "river",
+      "reason": "신규 웹 컴포넌트 3종(보조 버튼·텍스트 버튼·콘텐츠 모달)의 상태 이름 — 정본 상태축과 1:1, river 승인 2026-09-08",
+      "approvedAt": "2026-09-08T13:43:17.766Z",
+      "quote": "승인할게, 텍스트버튼 문구도 정본에서 고치고 지금 커밋해줘",
+      "evidence": {
+        "transcript": "35e73826-c191-4458-96a0-0d3593056e03.jsonl",
+        "at": "2026-09-08T13:42:00.958Z"
+      },
+      "recordedBy": "orchestrator"
+    },
+    {
+      "item": "uistate:text-button.disabled",
+      "by": "river",
+      "reason": "신규 웹 컴포넌트 3종(보조 버튼·텍스트 버튼·콘텐츠 모달)의 상태 이름 — 정본 상태축과 1:1, river 승인 2026-09-08",
+      "approvedAt": "2026-09-08T13:43:18.184Z",
+      "quote": "승인할게, 텍스트버튼 문구도 정본에서 고치고 지금 커밋해줘",
+      "evidence": {
+        "transcript": "35e73826-c191-4458-96a0-0d3593056e03.jsonl",
+        "at": "2026-09-08T13:42:00.958Z"
+      },
+      "recordedBy": "orchestrator"
+    },
+    {
+      "item": "uistate:modal-content.open",
+      "by": "river",
+      "reason": "신규 웹 컴포넌트 3종(보조 버튼·텍스트 버튼·콘텐츠 모달)의 상태 이름 — 정본 상태축과 1:1, river 승인 2026-09-08",
+      "approvedAt": "2026-09-08T13:43:18.594Z",
+      "quote": "승인할게, 텍스트버튼 문구도 정본에서 고치고 지금 커밋해줘",
+      "evidence": {
+        "transcript": "35e73826-c191-4458-96a0-0d3593056e03.jsonl",
+        "at": "2026-09-08T13:42:00.958Z"
+      },
+      "recordedBy": "orchestrator"
+    },
+    {
+      "item": "uistate:modal-content.closed",
+      "by": "river",
+      "reason": "신규 웹 컴포넌트 3종(보조 버튼·텍스트 버튼·콘텐츠 모달)의 상태 이름 — 정본 상태축과 1:1, river 승인 2026-09-08",
+      "approvedAt": "2026-09-08T13:43:18.999Z",
+      "quote": "승인할게, 텍스트버튼 문구도 정본에서 고치고 지금 커밋해줘",
+      "evidence": {
+        "transcript": "35e73826-c191-4458-96a0-0d3593056e03.jsonl",
+        "at": "2026-09-08T13:42:00.958Z"
+      },
+      "recordedBy": "orchestrator"
+    },
+    {
+      "item": "uistate:assist-button.default",
+      "by": "river",
+      "reason": "신규 웹 컴포넌트 3종의 상태 이름 — river 승인 2026-09-08",
+      "approvedAt": "2026-09-08T13:43:45.533Z",
+      "quote": "승인할게, 텍스트버튼 문구도 정본에서 고치고 지금 커밋해줘",
+      "evidence": {
+        "transcript": "35e73826-c191-4458-96a0-0d3593056e03.jsonl",
+        "at": "2026-09-08T13:42:00.958Z"
       },
       "recordedBy": "orchestrator"
     }

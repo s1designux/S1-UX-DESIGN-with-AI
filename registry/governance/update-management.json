@@ -314,6 +314,48 @@
         "html": ""
       },
       "note": "루트 A 신규 편입(2026-07-15). 공통 팝업 셸 — modal_small \"삭제\" 라이트 기준 Core(shell). buildModalShell Footer=Dual 1변형, 코어 Button(XXSM)+ic_닫기 재사용·신규토큰 0. 빌드 직후 — component-verifier 독립 검증(원본 대조) 대기, 통과 시 verify→new. 다크 그림자·나머지 4 State 미룸."
+    },
+    {
+      "id": "assist-button",
+      "origin": "A",
+      "sourceNode": "V2.4 yE5UCFEbmXJBlYJWB24Lz2 / 540:4650",
+      "verify": "none",
+      "verifyDate": "",
+      "mobile": "na",
+      "dates": {
+        "installer": "",
+        "tokens": "",
+        "html": ""
+      },
+      "note": "루트 A(레거시 pc_assist_button) 신규 편입(2026-09-08). 웹 UI 라이브러리 빌드 직후(⭐ ui-library-builder) — component-verifier 독립 검증(원본 대조) 대기, 통과 시 verify→new."
+    },
+    {
+      "id": "text-button",
+      "origin": "A",
+      "sourceNode": "V2.4 yE5UCFEbmXJBlYJWB24Lz2 / 540:4705",
+      "verify": "none",
+      "verifyDate": "",
+      "mobile": "na",
+      "dates": {
+        "installer": "",
+        "tokens": "",
+        "html": ""
+      },
+      "note": "루트 A(레거시 pc_text_button) 신규 편입(2026-09-08). 웹 UI 라이브러리 빌드 직후(⭐ ui-library-builder) — component-verifier 독립 검증(원본 대조) 대기, 통과 시 verify→new."
+    },
+    {
+      "id": "modal-content",
+      "origin": "A",
+      "sourceNode": "V2.4 yE5UCFEbmXJBlYJWB24Lz2 / 540:5815",
+      "verify": "none",
+      "verifyDate": "",
+      "mobile": "na",
+      "dates": {
+        "installer": "",
+        "tokens": "",
+        "html": ""
+      },
+      "note": "루트 A(레거시 pc_modal) 신규 편입(2026-09-08). 웹 UI 라이브러리 빌드 직후(⭐ ui-library-builder) — component-verifier 독립 검증(원본 대조) 대기, 통과 시 verify→new."
     }
   ],
   "patterns": [

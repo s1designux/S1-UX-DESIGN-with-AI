@@ -13,6 +13,18 @@ const componentConfig = {
     approvedScope: { pc: "Primary · Secondary · Blue Line · PC 3크기 · Mobile 1크기", mobile: "Primary · Secondary · Blue Line · 상태 4종" },
     runtime: S1UI.button
   },
+  "assist-button": {
+    title: "Assist Button",
+    description: "본문 옆이나 목록 행 안처럼 좁은 자리에서 쓰는 보조 동작 버튼입니다. 코어 Button과 별도 컴포넌트이며 크기는 h32 하나뿐입니다.",
+    approvedScope: "상태 4종(Default·Hover·Pressed·Disabled) · 크기 축 없음(h32 고정) · variant 없음 · JavaScript 불필요",
+    runtime: S1UI.assistButton
+  },
+  "text-button": {
+    title: "Text Button",
+    description: "배경·테두리 없는 글자형 링크 버튼입니다. Primary·Secondary 두 색 중 하나를 고르고, Hover·Pressed는 밑줄로만 표시됩니다.",
+    approvedScope: "Primary · Secondary × 상태 4종 · 크기 축 없음(글자 크기만큼만 차지) · JavaScript 불필요",
+    runtime: S1UI.textButton
+  },
   checkbox: {
     title: "Checkbox",
     description: "여러 항목을 각각 켜고 끌 때 사용합니다. 라벨은 선택 사항이며, 붙이면 라벨을 눌러도 선택됩니다.",
@@ -94,6 +106,12 @@ const componentConfig = {
       mobile: "버튼 1개(Single) · 2개(Dual) · 패널 300 · 닫기 없음 · Esc 닫기 · 초점 가둠"
     },
     runtime: S1UI.modal
+  },
+  "modal-content": {
+    title: "Modal Content",
+    description: "입력창·표·이미지처럼 큰 콘텐츠가 들어가는 팝업입니다. 확인 계열 Modal과 별도 컴포넌트이며 PC 전용입니다.",
+    approvedScope: "MD·LG·XL 3크기 × Single·Dual 버튼 · 제목·닫기·푸터 버튼은 확인 계열과 같은 규칙 · 콘텐츠는 회색 자리표시 박스 · 콘텐츠가 늘면 최대 85vh까지 커진 뒤 본문 안에서 스크롤 · PC 전용 · Esc 닫기 · 초점 가둠",
+    runtime: S1UI.modalContent
   },
   "mobile-bottom-nav": {
     title: "Bottom Nav",
@@ -377,6 +395,103 @@ function buttonStateMatrix() {
     </div>
     <div class="platform-section platform-section-mobile">
       <div class="preview-area">${mobileContent}</div>
+    </div>`;
+}
+
+/* ── State matrix: Assist Button ──
+   정본 buildAssistButtonSet 은 크기·variant 축이 없다 — State(Default·Hover·Pressed·Disabled) 4가지뿐이다.
+   Pressed = Hover(코어 Button 정본 규칙)라 CSS 는 :hover·:active 를 합쳐 표현하고,
+   미리보기 칸(마우스를 받지 않는 .is-preview)은 data-force-state 로 같은 모양을 재현한다. */
+
+function assistButtonMarkup({ disabled = false, forceState = "", isPreview = false, label = "보조버튼" } = {}) {
+  const preview = isPreview ? " is-preview" : "";
+  const force = forceState ? ` data-force-state="${forceState}"` : "";
+  return `<button type="button" data-s1-component="assist-button"${disabled ? " disabled" : ""}${force} class="${preview}"><span data-s1-part="label">${escapeHtml(label)}</span></button>`;
+}
+
+function assistButtonStateMatrix() {
+  const states = ["default", "hover", "pressed", "disabled"];
+  const stateLabels = ["Default", "Hover", "Pressed", "Disabled"];
+
+  function actionSection() {
+    return `<div class="comp-action-top">
+      <div class="matrix-col-header-action">Action</div>
+      <div class="uilg-control-action">${assistButtonMarkup({})}</div>
+      <p class="uilg-demo-note">본문 옆이나 목록 행 안처럼 좁은 자리에서 쓰는 보조 동작입니다. 크기 축이 없고 h32 하나뿐입니다.</p>
+    </div>`;
+  }
+
+  function stateSection() {
+    const header = `<div class="matrix-col-header" style="grid-column:1"></div>` +
+      stateLabels.map((label) => `<div class="matrix-col-header">${label}</div>`).join("");
+    const row = `<div class="matrix-row-label">Assist Button</div>` +
+      states.map((state) => `<div class="comp-state-cell">${assistButtonMarkup({
+        isPreview: true,
+        disabled: state === "disabled",
+        forceState: state === "hover" || state === "pressed" ? state : ""
+      })}</div>`).join("");
+    return `<div class="comp-state-matrix" style="grid-template-columns: 110px repeat(${states.length}, minmax(104px, 1fr));">${header}${row}</div>`;
+  }
+
+  const content = `${actionSection()}
+    ${stateSection()}`;
+
+  return `
+    <div class="platform-section platform-section-pc">
+      <div class="preview-area">${content}</div>
+    </div>
+    <div class="platform-section platform-section-mobile">
+      <div class="preview-area">${content}</div>
+    </div>`;
+}
+
+/* ── State matrix: Text Button ──
+   정본 buildTextButtonSet 은 크기 축이 없다 — Variant(Primary·Secondary) × State(Default·Hover·Pressed·Disabled).
+   Variant 를 한 표의 행으로 두면(river 확정 A-5) Mobile 에서도 크기 라벨·블록 분리 없이 같은 표 하나로 본다. */
+
+function textButtonMarkup({ variant = "primary", disabled = false, forceState = "", isPreview = false, label = "텍스트버튼" } = {}) {
+  const preview = isPreview ? " is-preview" : "";
+  const force = forceState ? ` data-force-state="${forceState}"` : "";
+  return `<button type="button" data-s1-component="text-button" data-variant="${variant}"${disabled ? " disabled" : ""}${force} class="${preview}"><span data-s1-part="label">${escapeHtml(label)}</span></button>`;
+}
+
+function textButtonStateMatrix() {
+  const variants = [["primary", "Primary"], ["secondary", "Secondary"]];
+  const states = ["default", "hover", "pressed", "disabled"];
+  const stateLabels = ["Default", "Hover", "Pressed", "Disabled"];
+
+  function actionSection() {
+    return `<div class="comp-action-top">
+      <div class="matrix-col-header-action">Action</div>
+      <div class="uilg-control-action">${textButtonMarkup({ variant: "primary" })}</div>
+      <p class="uilg-demo-note">배경·테두리가 없는 글자형 링크 동작입니다. 크기 축이 없고 글자 크기만큼만(hug) 차지합니다.</p>
+    </div>`;
+  }
+
+  function stateSection() {
+    const header = `<div class="matrix-col-header" style="grid-column:1"></div>` +
+      stateLabels.map((label) => `<div class="matrix-col-header">${label}</div>`).join("");
+    const rows = variants.map(([variant, vLabel]) =>
+      `<div class="matrix-row-label">${vLabel}</div>` +
+      states.map((state) => `<div class="comp-state-cell">${textButtonMarkup({
+        variant,
+        isPreview: true,
+        disabled: state === "disabled",
+        forceState: state === "hover" || state === "pressed" ? state : ""
+      })}</div>`).join("")
+    ).join("");
+    return `<div class="comp-state-matrix" style="grid-template-columns: 110px repeat(${states.length}, minmax(104px, 1fr));">${header}${rows}</div>`;
+  }
+
+  const content = `${actionSection()}
+    ${stateSection()}`;
+
+  return `
+    <div class="platform-section platform-section-pc">
+      <div class="preview-area">${content}</div>
+    </div>
+    <div class="platform-section platform-section-mobile">
+      <div class="preview-area">${content}</div>
     </div>`;
 }
 
@@ -1457,6 +1572,88 @@ function modalStateMatrix() {
     </div>`;
 }
 
+/* ── State matrix: Modal Content ──
+   정본 buildModalContent 의 변형은 Size(MD·LG·XL) × Footer(Single·Dual) 6가지뿐이고 PC 전용이다
+   (breaks.mobile 없음 — river 지시 2026-09-08 "확인계열은 360으로만, 컨텐츠계열은 MD 이상부터").
+   Action 은 실제로 열리는 진짜 모달(딤이 화면을 덮는다)이고, 아래 칸은 지면에 눕혀 보여주는 검수 표시다. */
+
+let modalContentId = 0;
+
+function modalContentMarkup({ size = "md", footer = "dual", isPreview = false } = {}) {
+  modalContentId += 1;
+  const titleId = `guide-modal-content-title-${modalContentId}`;
+  const preview = isPreview ? " is-preview" : "";
+  const tabindex = isPreview ? ' tabindex="-1"' : "";
+  const buttons = footer === "dual"
+    ? `<button type="button" data-s1-component="button" data-variant="secondary" data-size="xxsm" data-modal-close${tabindex}><span data-s1-part="label">취소</span></button>` +
+      `<button type="button" data-s1-component="button" data-variant="primary" data-size="xxsm" data-modal-close${tabindex}><span data-s1-part="label">확인</span></button>`
+    : `<button type="button" data-s1-component="button" data-variant="primary" data-size="xxsm" data-modal-close${tabindex}><span data-s1-part="label">확인</span></button>`;
+  return `<div data-s1-component="modal-content" data-size="${size}" data-footer="${footer}" class="${preview}"${isPreview ? "" : " hidden"}>
+      <div data-s1-part="overlay"></div>
+      <div data-s1-part="panel" role="dialog" aria-modal="true" aria-labelledby="${titleId}" tabindex="-1">
+        <div data-s1-part="header">
+          <h2 data-s1-part="title" id="${titleId}">제목 영역</h2>
+          <button type="button" data-s1-part="close" aria-label="닫기" data-modal-close${tabindex}></button>
+        </div>
+        <div data-s1-part="content-area">
+          <div data-s1-part="content">
+            <span data-s1-part="content-label">컨텐츠 영역</span>
+          </div>
+        </div>
+        <div data-s1-part="footer">${buttons}</div>
+      </div>
+    </div>`;
+}
+
+/* 6칸(Size 3 × Footer 2)을 실제 폭 그대로 놓으면 XL(1200)이 한 칸을 다 차지해 한 화면에 Single 열 하나만
+   보이고 세로도 3239px 로 늘어져 크기 비교가 안 됐다(river 2026-09-08 지적). 실제 폭 값(520/1000/1200 등)은
+   손대지 않고 "표시만" transform:scale 로 축소한다 — 520:1000:1200 비율이 그대로 유지되어 오히려
+   크기 비교표의 목적(상대적 크기 차이를 한눈에)에 맞다. 실물 "모달 열기" 버튼(Action 스트립)은 축소하지 않는다. */
+const MODAL_CONTENT_PREVIEW_SCALE = 0.3;
+/* is-preview 오버라이드(ui-library-guide.css)가 modal-content 바깥 여백으로 spacing-24(24px)를
+   사방에 준다 — 스케일 전 실제 렌더 크기 = 패널 w/h + 그 24px×2. 축소 전 자리를 이 값으로 예약해야
+   칸이 잘리거나 옆 칸을 침범하지 않는다. */
+const MODAL_CONTENT_PREVIEW_PAD = 24;
+
+function modalContentStateMatrix() {
+  const sizes = [["md", "MD", 520, 336], ["lg", "LG", 1000, 587], ["xl", "XL", 1200, 587]];
+  const footers = [["single", "Single"], ["dual", "Dual"]];
+  const scale = MODAL_CONTENT_PREVIEW_SCALE;
+  const pad2 = MODAL_CONTENT_PREVIEW_PAD * 2;
+
+  const action = `<div class="comp-action-top">
+    <div class="matrix-col-header-action">Action</div>
+    <div class="uilg-modal-content-action">
+      <button type="button" data-s1-component="button" data-variant="secondary" data-size="md" data-modal-open><span data-s1-part="label">콘텐츠 모달 열기</span></button>
+      ${modalContentMarkup({ size: "lg", footer: "dual" })}
+    </div>
+    <p class="uilg-demo-note">눌러서 열어 보세요. 본문은 입력창·표·이미지가 들어갈 자리표시입니다(실제 화면에서 교체). 콘텐츠가 늘면 패널이 커지다가 화면 높이의 85%에서 멈추고 본문 안에서만 스크롤합니다.</p>
+  </div>`;
+
+  const header = `<div class="matrix-col-header" style="grid-column:1"></div>` +
+    footers.map(([, label]) => `<div class="matrix-col-header">${label}</div>`).join("");
+  const rows = sizes.map(([size, sLabel, w, h]) => {
+    const outerW = w + pad2;
+    const outerH = h + pad2;
+    const scaledW = Math.round(outerW * scale);
+    const scaledH = Math.round(outerH * scale);
+    const cells = footers.map(([footer]) => `<div class="comp-state-cell">
+      <div class="uilg-modal-content-scale" style="width:${scaledW}px;height:${scaledH}px;">
+        <div class="uilg-modal-content-scale-inner" style="width:${outerW}px;transform:scale(${scale});">${modalContentMarkup({ size, footer, isPreview: true })}</div>
+      </div>
+    </div>`).join("");
+    return `<div class="matrix-row-label">${sLabel}<span>${w}×${h}</span></div>${cells}`;
+  }).join("");
+  const maxScaledW = Math.round((1200 + pad2) * scale);
+  const grid = `<div class="comp-state-matrix" style="grid-template-columns: 110px repeat(${footers.length}, minmax(${maxScaledW + 16}px, 1fr));">${header}${rows}</div>`;
+
+  return `
+    <div class="platform-section">
+      <div class="preview-area">${action}
+      ${grid}</div>
+    </div>`;
+}
+
 /* ── Mobile Bottom Nav — 탭 아이템 1칸(60×60). 360×780 모바일 목업은 안내 화면 전용 크롬이다(D6).
    목업 크롬(휴대폰 테두리·상태바 그림·화면 내용 스켈레톤)은 dist 부품이 아니므로 data-s1-component 을
    갖지 않는다 — 부품 표본에는 data-guide-sample="part", 조립 표본에는 "set" 을 붙인다(부품 표본 격리). */
@@ -1966,8 +2163,9 @@ function datePickerMarkup({ size = "md", breakName = "pc", mode = "single", stat
   const force = state === "hover" ? ' data-force-state="hover"' : "";
   const preview = isPreview ? " is-preview" : "";
   const panelHidden = isPreview ? (open ? "" : " hidden") : " hidden";
+  /* 표시 형식 YY.MM.DD(정본 그대로) · 기간 구분자 ~ — river 결정 2026-09-08(M-9). */
   const value = mode === "range"
-    ? (filled || open ? "26.01.17 - 26.01.22" : "YY.MM.DD")
+    ? (filled || open ? "26.01.17 ~ 26.01.22" : "YY.MM.DD")
     : (filled || open ? "26.01.17" : "YY.MM.DD");
   const calendarOpenInner = dpCalendar(view, mode === "range" ? { range: rangeOpts || { start: 17, end: 22 }, hoverEnd: (rangeOpts && rangeOpts.hoverEnd) || null } : {});
   /* V-2: pages/ui-review.html 의 F-2 수정과 같은 분기를 여기에도 넣는다 — mobile 은 panel 이 아니라
@@ -2194,6 +2392,9 @@ function stateMatrix(id) {
   if (id === "multi-toggle") return multiToggleStateMatrix();
   if (id === "table") return tableStateMatrix();
   if (id === "modal") return modalStateMatrix();
+  if (id === "modal-content") return modalContentStateMatrix();
+  if (id === "assist-button") return assistButtonStateMatrix();
+  if (id === "text-button") return textButtonStateMatrix();
   if (id === "mobile-bottom-nav") return mobileBottomNavStateMatrix();
   if (id === "mobile-header") return mobileHeaderStateMatrix();
   if (id === "time-picker") return timePickerStateMatrix();
@@ -2474,6 +2675,23 @@ async function mountGuide(id) {
         });
       });
     }
+    if (id === "modal-content") {
+      /* Action 영역의 진짜 콘텐츠 모달만 배선한다. 미리보기 칸(.is-preview)은 지면에 눕혀 둔 표시라
+         init 하지 않는다 — init 하면 배경 스크롤이 잠긴 채로 남는다. */
+      section.querySelectorAll(".uilg-modal-content-action").forEach((area) => {
+        const root = area.querySelector('[data-s1-component="modal-content"]');
+        const trigger = area.querySelector("[data-modal-open]");
+        if (!root || !trigger) return;
+        /* 배포본 계약대로 모달은 body 바로 아래에 둔다(manifest.htmlContract.placement). */
+        document.body.append(root);
+        const api = config.runtime.init(root);
+        trigger.addEventListener("click", () => api?.open());
+        root.querySelectorAll("[data-modal-close]").forEach((button) => {
+          if (button.dataset.s1Part === "close") return;   /* 닫기(X)는 런타임이 이미 배선한다 */
+          button.addEventListener("click", () => api?.close({ reason: "footer-button" }));
+        });
+      });
+    }
     if (id === "mobile-header") {
       /* 옵션칩으로 고른 유형을 목업 헤더 슬롯에 다시 그린다. 배포본은 런타임이 없는 정적 크롬이라
          init 은 필요 없고, 화면이 마크업만 갈아끼운다(부품 경계 그대로). */
@@ -2540,6 +2758,6 @@ async function mountGuide(id) {
   }
 }
 
-const guideComponents = ["input", "button", "checkbox", "radio", "toggle", "chip", "select", "dropdown", "filter-chip", "tab", "pagination", "textarea", "multi-toggle", "modal", "table", "mobile-bottom-nav", "mobile-header", "time-picker", "date-picker"];
+const guideComponents = ["input", "button", "assist-button", "text-button", "checkbox", "radio", "toggle", "chip", "select", "dropdown", "filter-chip", "tab", "pagination", "textarea", "multi-toggle", "modal", "modal-content", "table", "mobile-bottom-nav", "mobile-header", "time-picker", "date-picker"];
 await Promise.all(guideComponents.map(mountGuide));
 document.dispatchEvent(new CustomEvent("s1:component-guide:ready", { detail: { components: guideComponents } }));

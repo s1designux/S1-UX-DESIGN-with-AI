@@ -667,7 +667,9 @@ async function buildTextButtonSet(maps: BuildMaps, originY: number): Promise<{ s
       comp.counterAxisAlignItems = "CENTER";
       comp.fills = [];                        // 배경 없음(원본 그대로)
       const disabled = state === "Disabled";
-      const label = await makeBoundText("보조버튼", 14, "Medium",
+      // 라벨 글자는 "텍스트버튼" — 보조 버튼에서 복사해 오며 "보조버튼" 이 그대로 남아 있었다(river 지시
+      //   2026-09-08 "텍스트버튼 문구도 정본에서 고치고"). 웹 배포본은 처음부터 "텍스트버튼" 이었다.
+      const label = await makeBoundText("텍스트버튼", 14, "Medium",
         scv(maps, disabled ? "color/text/state/disabled" : v.color), "body/14M");
       // Hover·Pressed = 밑줄. 색은 Default 와 같다.
       if (state === "Hover" || state === "Pressed") {
@@ -1659,6 +1661,8 @@ async function buildSelect(maps: BuildMaps, originY: number): Promise<{ set: Com
           const ddInst = ddComp.createInstance();
           ddInst.name = "dropdown";
           comp.appendChild(ddInst);
+          // 목록 폭 = 트리거 폭 — 규칙 ③(river 2026-09-08). 셀렉트 트리거는 항상 140 이라 하한 100 에 걸리지 않는다.
+          try { ddInst.resize(Math.max(DD_MIN_W, trigger.width), ddInst.height); } catch (e) { /* mock 환경 no-op */ }
         }
       }
       setLightMode(comp, maps);
@@ -1711,12 +1715,17 @@ async function buildSelect(maps: BuildMaps, originY: number): Promise<{ set: Com
 //   ③ 트리거가 100px 이상이면 목록 폭 = 트리거 폭  ④ 최대 폭 상한 없음
 //   ⑤ 폭을 넘는 옵션 글자는 말줄임(…) — 아래 fillRow 의 textTruncation 이 담당한다.
 //
-//   ※ 여기 리터럴 140 은 위 규칙과 어긋나지 않는다 — 정본은 트리거도 목록도 140 으로 만들므로
-//     규칙 ③(트리거 폭과 동일)에 그대로 부합한다. 100 은 하한일 뿐이라 정본 숫자를 바꿀 이유가 없다.
+//   ※ 목록(패널·옵션 줄)은 하한 100px 그대로 만든다 — river 결정 2026-09-08:
+//     "100이 최소값이니까 피그마에도 최소값으로 표출되는게 맞아". 종전 리터럴 140 을 100 으로 내렸다.
+//     셀렉트 트리거(buildSelectBox 의 trigger.resize(140, …))는 웹 select.css 의 min-width:140px 과
+//     한 벌이라 그대로 둔다 — 규칙 ③(목록 폭 = 트리거 폭)은 트리거가 더 넓을 때의 이야기다.
 //   ※ ①~④ 의 「트리거 폭을 따라간다」는 Figma 컴포넌트가 고정 폭이라 캔버스로 표현할 수 없다.
-//     그래서 정본에는 GUI 로 보이는 ⑤(말줄임)만 반영하고, 폭 연동 규칙은 기계가독 사양으로 남긴다
+//     그래서 정본에는 GUI 로 보이는 ⑤(말줄임)와 하한 100 만 반영하고, 폭 연동 규칙은 기계가독 사양으로 남긴다
 //     → registry/components/dropdown.json 의 guide.panelWidthRule (웹 구현·실측값 포함).
 //   경위(320 상한 → 폐기 → 하한 140 → 100 확정) = reports/ui-library/dropdown-max-width/ · workflow-state D22~D27.
+/** 드롭다운 목록(패널·옵션 줄·구분선)의 폭 = 규칙 ①의 최소값. 트리거가 더 넓으면 웹에서 트리거 폭을 따라간다. */
+const DD_MIN_W = 100;
+
 async function buildDropdownList(maps: BuildMaps, originY: number): Promise<{ set: ComponentSetNode; bottomY: number }> {
   const dd = (k: string) => `color/dropdown/${k}`;
   const states = [
@@ -1752,7 +1761,7 @@ async function buildDropdownList(maps: BuildMaps, originY: number): Promise<{ se
     host.paddingLeft = 12; host.paddingRight = 12; host.paddingTop = 0; host.paddingBottom = 0;
     host.itemSpacing = ty.checkbox ? CHK_GAP : 0;
     host.fills = [boundPaint(scv(maps, dd(st.bg)))];
-    host.resize(140, rowH);
+    host.resize(DD_MIN_W, rowH);
     if (ty.checkbox) {
       // 이번 빌드에서 만든 Checkbox(BUILT_COMPS) → 캔버스에 이미 있는 Checkbox 세트(재설치 시 skip 됨) 순으로 찾는다.
       //   BUILT_COMPS 만 보면 "Checkbox 는 그대로 두고 Dropdown List 만 다시 만드는" 흔한 재설치에서
@@ -1816,7 +1825,7 @@ async function buildDropdownList(maps: BuildMaps, originY: number): Promise<{ se
           comp.primaryAxisSizingMode = "FIXED"; comp.counterAxisSizingMode = "FIXED";
           comp.paddingLeft = 0; comp.paddingRight = 0; comp.paddingTop = 0; comp.paddingBottom = 0;
           comp.fills = [];
-          comp.resize(140, sz.h);
+          comp.resize(DD_MIN_W, sz.h);
           const row = figma.createFrame();
           row.name = "option";
           await fillRow(row, sz, ty, st, sz.h - 1);
@@ -1824,7 +1833,7 @@ async function buildDropdownList(maps: BuildMaps, originY: number): Promise<{ se
           try { (row as any).layoutAlign = "STRETCH"; } catch (e) { /* mock */ }
           const div = figma.createRectangle();
           div.name = "divider";
-          div.resize(140, 1);
+          div.resize(DD_MIN_W, 1);
           div.fills = [boundPaint(scv(maps, "color/dropdown/list/border"))]; // 패널 테두리색 재사용(새 토큰 0)
           comp.appendChild(div);
           try { (div as any).layoutAlign = "STRETCH"; } catch (e) { /* mock */ }
@@ -1904,7 +1913,7 @@ async function buildDropdown(maps: BuildMaps, originY: number): Promise<{ set: C
     // 파서·토큰 오류는 try 밖에서 던지게 둔다(그림자가 조용히 사라지는 것 방지). try 는 대입만 감싼다.
     const ddEffects = shadowEffects("shadow/dropdown");
     try { (comp as any).effects = ddEffects; } catch (e) { /* 환경 미지원 */ }
-    comp.resize(140, 4 * sz.h + 8);
+    comp.resize(DD_MIN_W, 4 * sz.h + 8);
 
     const optionRows: SceneNode[] = [];
     // 4행 — Text: Default·Hover·Selected·Default / Checkbox: 전체선택·Selected·Default·Hover
@@ -1938,7 +1947,7 @@ async function buildDropdown(maps: BuildMaps, originY: number): Promise<{ set: C
         row.name = "ddl-row";
         row.layoutMode = "HORIZONTAL"; row.counterAxisAlignItems = "CENTER";
         row.primaryAxisSizingMode = "FIXED"; row.counterAxisSizingMode = "FIXED";
-        row.resize(140, sz.h); row.paddingLeft = 12; row.paddingRight = 12;
+        row.resize(DD_MIN_W, sz.h); row.paddingLeft = 12; row.paddingRight = 12;
         row.paddingTop = 0; row.paddingBottom = 0;
         row.fills = [boundPaint(scv(maps, dd(`option/bg/${sn}`)))];
         row.appendChild(await makeBoundText("옵션", sz.h <= 28 ? 12 : 14, "Regular", scv(maps, dd(`option/label/${sn}`))));
@@ -2530,6 +2539,8 @@ async function buildFilterChip(maps: BuildMaps, originY: number): Promise<{ set:
                 (selectedRow as InstanceNode).swapComponent(defaultRowComp);
               }
               comp.appendChild(ddInst);
+              // 목록 폭 = max(하한 100, 칩 폭) — 규칙 ②③(river 2026-09-08). 칩은 hug 라 라벨 길이에 따라 달라진다.
+              try { ddInst.resize(Math.max(DD_MIN_W, chip.width), ddInst.height); } catch (e) { /* mock 환경 no-op */ }
             }
           }
           setLightMode(comp, maps);
@@ -5267,7 +5278,7 @@ async function buildModalShell(maps: BuildMaps, originY: number): Promise<{ set:
 //      360 은 확인 계열 폭이라 콘텐츠 계열로 성립하지 않는다)
 //   ③"레거시의 height를 적정사이즈로 반영" → 레거시 실측 높이를 고정값으로 준다(MD 336 · LG 587 · XL 587).
 //      본문이 회색 자리표시 박스라 높이가 정해져 있어야 크기별 차이가 드러난다.
-//   ④"body의 샘플 텍스트 대신 회색계열 박스+안내문구로 컨텐츠 영역 이라고 표출" → 본문 = `color/bg/level-2` 박스 +
+//   ④"body의 샘플 텍스트 대신 회색계열 박스+안내문구로 컨텐츠 영역 이라고 표출" → 본문 = 회색 자리표시 박스(`color/bg/level-3` — river 2026-09-08 다크 대비 지시) +
 //      가운데 "컨텐츠 영역" 안내문구(`color/text/body/tertiary`). 실제 화면에서는 이 자리에 입력창·표·이미지가 들어간다.
 //   ⑤"하단 푸터 버튼은 확인계열에 따르면 돼. 타이틀도" → **제목 16B · 버튼 XXSM h28** 로 확인 계열과 통일.
 //      레거시 pc_modal 은 제목18B·버튼h34 였으나 river 가 정본을 확인 계열에 맞추기로 결정했다 —
@@ -5349,7 +5360,11 @@ async function buildModalContent(maps: BuildMaps, originY: number): Promise<{ se
       body.name = "content"; body.layoutMode = "VERTICAL";
       body.primaryAxisSizingMode = "FIXED"; body.counterAxisSizingMode = "FIXED";
       body.primaryAxisAlignItems = "CENTER"; body.counterAxisAlignItems = "CENTER";
-      body.fills = [boundPaint(scv(maps, "color/bg/level-2"))];
+      // 자리표시 박스 면 — 다크에서 `bg/level-2` 는 패널 면(`surface/raised`)과 같은 `gray-dark/100` 이라
+      //   박스가 통째로 안 보였다(🤖 component-verifier 2026-09-08 C-1). river 지시 2026-09-08
+      //   "다크모드에서는 컨텐츠 영역 박스가 모달 배경과 같아서 구분이 안되네. 한단계 밝은 톤으로" →
+      //   한 단계 밝은 `bg/level-3`(dark gray-dark/200). 새 토큰 0건. 라이트도 gray/50→gray/100 으로 한 단계 진해진다.
+      body.fills = [boundPaint(scv(maps, "color/bg/level-3"))];
       bindRadius(body, maps, "radius/4");
       comp.appendChild(body);
       try { body.layoutAlign = "STRETCH"; body.layoutGrow = 1; } catch (e) { /* */ }

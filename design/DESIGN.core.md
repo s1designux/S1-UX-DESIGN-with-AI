@@ -182,6 +182,117 @@ agentContractDefaults:
   missingDefinitionResponse: "DESIGN_SYSTEM_GAP: <missing definition>"
 ```
 
+### Assist Button
+
+한 크기(h32)만 있는 보조 버튼. 코어 Button 과 별도 컴포넌트다 — 크기 축이 하나뿐이라 Button 의 4크기 체계에 끼워 넣으면 있지도 않은 크기가 만들어진다(river 지시 2026-09-08).
+
+**언제 쓰나**
+- 본문 옆이나 목록 행 안처럼 좁은 자리에서, 눈에 덜 띄는 보조 동작 하나를 둘 때.
+- 코어 Button 의 4크기(MD·XSM·XXSM·LG) 어디에도 맞지 않는, 원본에 정의된 고정 32px 자리.
+
+**쓰지 말아야 할 때**
+- 화면의 주 액션(저장·확인 등)에는 코어 Button 을 쓴다.
+- 배경·테두리가 없는 링크형 액션은 Text Button 을 쓴다.
+
+**구성 (Anatomy)**
+
+| 요소 | 역할 |
+| --- | --- |
+| 라벨 | 버튼 텍스트. body/14M. |
+| 컨테이너 | 배경·테두리·반경. Secondary 배경/테두리 토큰을 빌려 쓰고 글자·hover 테두리만 전용 토큰. |
+
+| variant | default | hover | pressed | disabled |
+| --- | --- | --- | --- | --- |
+| default | — | — | — | — |
+
+#### Agent-readable contract
+
+```yaml
+agent:
+  component: "Assist Button"
+  variantAxes:
+    State:
+      - "Default"
+      - "Hover"
+      - "Pressed"
+      - "Disabled"
+  states:
+    builder:
+      - "Default"
+      - "Hover"
+      - "Pressed"
+      - "Disabled"
+    metadata: "unknown"
+  behavior:
+    platform: "PC"
+    status: "not-defined"
+  geometry:
+    common:
+      target: "root"
+      width: 60
+      height: 32
+      layoutMode: "HORIZONTAL"
+      primaryAxisSizingMode: "AUTO"
+      counterAxisSizingMode: "FIXED"
+      primaryAxisAlignItems: "CENTER"
+      counterAxisAlignItems: "CENTER"
+      paddingTop: "0"
+      paddingRight: "spacing/12"
+      paddingBottom: "0"
+      paddingLeft: "spacing/12"
+      minWidth: "60"
+      topLeftRadius: "radius/4"
+      topRightRadius: "radius/4"
+      bottomLeftRadius: "radius/4"
+      bottomRightRadius: "radius/4"
+      strokeWeight: "1"
+      strokeAlign: "INSIDE"
+    variants:
+      -
+        when: "all"
+  composition:
+    mustReuse: "not-defined"
+    mustNotCreate: "not-defined"
+    declaredParts: "not-defined"
+  constraints: "unknown"
+  tokens:
+    figmaSemanticBindings:
+      - "color/button/bg/disabled"
+      - "color/button/bg/secondary--default"
+      - "color/button/bg/secondary--hover"
+      - "color/button/border/assist--hover"
+      - "color/button/border/disabled"
+      - "color/button/border/secondary--default"
+      - "color/button/label/assist--default"
+      - "color/button/label/assist--hover"
+      - "color/button/label/disabled"
+      - "radius/4"
+      - "spacing/12"
+    aliasChains: "not-defined"
+  figma:
+    status: "available"
+    identifiers:
+      componentSetKey: "(미발행)"
+      fileKey: "cysG5U1udpQqVagYY1hWHW"
+    variants: "figma-unconfirmed"
+  icons:
+    allowed: "figma-unconfirmed"
+    slots: "unknown"
+```
+
+_Do_
+- 크기는 h32 하나만 쓴다 — 임의로 다른 높이를 만들지 않는다.
+- 색은 Semantic 경유 토큰으로만 참조한다.
+
+_Don't_
+- 코어 Button 의 variant 로 편입하지 않는다(river 결정 2026-09-08 — 버튼 목록에 섞여 표출되면 안 된다).
+- 아이콘 부착형(레거시 icon_lead·icon_trail)을 임의로 추가하지 않는다 — 이번 범위 밖.
+
+**접근성 (a11y)**
+- 네이티브 <button type="button"> 를 쓴다.
+- 상태는 :hover·:active·[disabled] 로 표현하고 별도 data 상태를 만들지 않는다.
+- 포커스 표시는 브라우저 기본값을 그대로 쓴다(정본에 별도 focus 표현이 없다).
+
 ### Button
 
 Core interactive button component. Primary / Secondary / Blue-line variants with PC 3 sizes and Mobile 1 size.
@@ -1175,7 +1286,7 @@ agent:
   geometry:
     common:
       target: "root"
-      width: 140
+      width: 100
       layoutMode: "VERTICAL"
       primaryAxisSizingMode: "AUTO"
       counterAxisSizingMode: "FIXED"
@@ -2418,6 +2529,152 @@ _Don't_
 - Esc 로 닫을 수 있게 한다. PC 는 헤더의 닫기(X) 버튼에 '닫기' 이름을 준다.
 - 열려 있는 동안 배경 스크롤을 잠근다. 모달이 여럿이면 마지막 하나가 닫힐 때 되돌린다.
 
+### Modal Content
+
+콘텐츠 계열 모달 그릇 6종(Size MD|LG|XL × Footer Single|Dual). 입력창·표·이미지가 들어가는 큰 팝업. 확인 계열 Modal 과 별개 컴포넌트다(river 결정 2026-07-15 계열 분리). 제목·닫기·푸터 버튼은 확인 계열과 같은 규칙(16B·XXSM h28·close), 크기와 본문 내용물만 다르다.
+
+**언제 쓰나**
+- 입력창·표·이미지처럼 확인 계열(짧은 텍스트)보다 큰 본문이 필요할 때.
+- Single=알림/설명체 1버튼, Dual=확인/질문체 2버튼(확인 계열과 같은 규칙).
+
+**쓰지 말아야 할 때**
+- 짧은 확인 문구 하나면 확인 계열 Modal 을 쓴다.
+- 페이지 전체를 차지하는 다단계 폼은 별도 페이지를 고려한다.
+
+**구성 (Anatomy)**
+
+| 요소 | 역할 |
+| --- | --- |
+| 딤(overlay) | 뒤 배경을 덮는 color-overlay 딤. 확인 계열과 같은 토큰. |
+| 헤더 | 제목(16B) + 닫기(X). 확인 계열과 같은 규칙 — 제목 항상 존재. |
+| 본문(content-area) | 입력창·표·이미지 등 콘텐츠가 들어가는 자리. 유일하게 스크롤되는 영역. |
+| 본문 자리표시(content) | 회색 박스 + '컨텐츠 영역' 안내문구. 실제 화면에서는 이 자리를 실제 콘텐츠로 교체한다. |
+| 푸터 | 코어 Button 1개(Single) 또는 2개(Dual), XXSM h28. 확인 계열과 같은 규칙. |
+
+| variant | default | hover | pressed | disabled |
+| --- | --- | --- | --- | --- |
+| default | — | — | — | — |
+
+#### Agent-readable contract
+
+```yaml
+agent:
+  component: "Modal Content"
+  variantAxes:
+    Size:
+      - "MD"
+      - "LG"
+      - "XL"
+    Footer:
+      - "Single"
+      - "Dual"
+  states:
+    builder: "not-defined"
+    metadata: "unknown"
+  behavior:
+    platform: "PC"
+    status: "not-defined"
+  geometry:
+    common:
+      target: "root"
+      layoutMode: "VERTICAL"
+      primaryAxisSizingMode: "FIXED"
+      counterAxisSizingMode: "FIXED"
+      counterAxisAlignItems: "CENTER"
+      itemSpacing: "32"
+      paddingTop: "spacing/20"
+      paddingBottom: "spacing/20"
+      topLeftRadius: "radius/8"
+      topRightRadius: "radius/8"
+      bottomLeftRadius: "radius/8"
+      bottomRightRadius: "radius/8"
+      strokeWeight: "1"
+      strokeAlign: "INSIDE"
+    variants:
+      -
+        when:
+          Size: "MD"
+        width: 520
+        height: 336
+      -
+        when:
+          Size: "LG"
+        width: 1000
+        height: 587
+      -
+        when:
+          Size: "XL"
+        width: 1200
+        height: 587
+  composition:
+    mustReuse:
+      - "Button"
+      - "button"
+    mustNotCreate: "not-defined"
+    declaredParts:
+      - "content"
+      - "content-area"
+      - "footer"
+      - "header"
+  constraints: "unknown"
+  tokens:
+    figmaSemanticBindings:
+      - "border-width/1"
+      - "color/bg/level-3"
+      - "color/button/bg/primary--default"
+      - "color/button/bg/secondary--default"
+      - "color/button/border/primary--default"
+      - "color/button/border/secondary--default"
+      - "color/button/label/primary--default"
+      - "color/button/label/secondary--default"
+      - "color/modal/panel/border"
+      - "color/surface/raised"
+      - "color/text/body/tertiary"
+      - "color/text/title/primary"
+      - "radius/4"
+      - "radius/8"
+      - "spacing/20"
+      - "spacing/24"
+      - "spacing/32"
+      - "spacing/8"
+    aliasChains: "not-defined"
+  figma:
+    status: "available"
+    identifiers:
+      componentSetKey: "(미발행)"
+      fileKey: "cysG5U1udpQqVagYY1hWHW"
+    variants:
+      size:
+        - "MD"
+        - "LG"
+        - "XL"
+      footer:
+        - "single"
+        - "dual"
+  icons:
+    allowed:
+      - "close (확인 계열 Modal 과 동일 자산 재사용 — 신규 등록 없음)"
+    slots: "unknown"
+```
+
+_Do_
+- 크기는 MD(520)·LG(1000)·XL(1200) 중에서 고른다 — SM(360)은 확인 계열 폭이라 채택하지 않는다.
+- 닫기 아이콘은 확인 계열 Modal 과 같은 close 부품을 재사용한다.
+- 본문이 정본 최소 높이를 넘으면 패널이 자라다가 화면 85% 에서 멈추고 그 다음은 본문 안에서만 스크롤한다.
+
+_Don't_
+- 본문에 샘플 문장을 넣지 않는다 — 회색 자리표시 박스 + '컨텐츠 영역' 문구만 둔다(river 지시 2026-09-08).
+- 확인 계열 Modal 과 그릇을 공유하지 않는다 — 별개 컴포넌트다.
+- 패널 폭(520/1000/1200)을 임의로 바꾸지 않는다. 좁은 화면 대응은 max-width 상한만 쓴다.
+
+**접근성 (a11y)**
+- 패널을 role=dialog · aria-modal=true 로 표시하고, aria-labelledby 로 제목을 연결한다.
+- 열릴 때 패널 안 첫 초점 요소로 초점을 옮기고, 닫힐 때 열기 전 초점 자리로 되돌린다.
+- 열려 있는 동안 Tab·Shift+Tab 은 패널 안에서만 순환한다(초점 가둠).
+- Esc 로 닫을 수 있게 한다. 헤더의 닫기(X) 버튼에 '닫기' 이름을 준다.
+- 열려 있는 동안 배경 스크롤을 잠근다.
+- 본문(content-area)은 넘치면 스크롤되며, 키보드로도 스크롤 가능해야 한다(브라우저 기본 스크롤 동작을 막지 않는다).
+
 ### Multi Toggle
 
 여러 선택지 중 하나를 고르는 분절 컨트롤(segmented control). 정본은 두 세트다 — 셀 정의 'Multi Toggle Element'(position×state×size, 32 variants)와 그 셀 인스턴스 3개를 묶은 조합형 'Multi Toggle'(Size×Selected, 6 variants).
@@ -3596,6 +3853,98 @@ _Don't_
 - 선택은 native checkbox 의 Tab 이동·Space 조작을 그대로 쓴다. 방향키 격자 이동은 채택하지 않는다(river 결정 2026-09-02).
 - 정렬 기능이 범위 밖이라 aria-sort 는 쓰지 않는다(river 결정 2026-09-02).
 
+### Text Button
+
+배경·테두리 없이 글자만 있는 버튼. 구조가 코어 Button 과 전혀 달라(고정 크기·배경·테두리가 전부 없음) 별도 컴포넌트다.
+
+**언제 쓰나**
+- 링크에 가까운 가벼운 보조 동작(더보기·자세히 등)을 텍스트만으로 표시할 때.
+- Primary 는 강조가 필요한 텍스트 액션, Secondary 는 덜 중요한 텍스트 액션.
+
+**쓰지 말아야 할 때**
+- 배경·테두리가 있는 버튼이 필요하면 코어 Button 또는 Assist Button 을 쓴다.
+- 페이지 이동 전용 링크는 <a> 를 우선 고려한다.
+
+**구성 (Anatomy)**
+
+| 요소 | 역할 |
+| --- | --- |
+| 라벨 | 버튼 텍스트. body/14M. 배경·테두리 없음(hug). |
+
+| variant | default | hover | pressed | disabled |
+| --- | --- | --- | --- | --- |
+| default | — | — | — | — |
+
+#### Agent-readable contract
+
+```yaml
+agent:
+  component: "Text Button"
+  variantAxes:
+    Variant:
+      - "Primary"
+      - "Secondary"
+    State:
+      - "Default"
+      - "Hover"
+      - "Pressed"
+      - "Disabled"
+  states:
+    builder:
+      - "Default"
+      - "Hover"
+      - "Pressed"
+      - "Disabled"
+    metadata: "unknown"
+  behavior:
+    platform: "PC"
+    status: "not-defined"
+  geometry:
+    common:
+      target: "root"
+      layoutMode: "HORIZONTAL"
+      primaryAxisSizingMode: "AUTO"
+      counterAxisSizingMode: "AUTO"
+      primaryAxisAlignItems: "CENTER"
+      counterAxisAlignItems: "CENTER"
+    variants:
+      -
+        when: "all"
+  composition:
+    mustReuse: "not-defined"
+    mustNotCreate: "not-defined"
+    declaredParts: "not-defined"
+  constraints: "unknown"
+  tokens:
+    figmaSemanticBindings:
+      - "color/text/body/tertiary"
+      - "color/text/state/accent"
+      - "color/text/state/disabled"
+    aliasChains: "not-defined"
+  figma:
+    status: "available"
+    identifiers:
+      componentSetKey: "(미발행)"
+      fileKey: "cysG5U1udpQqVagYY1hWHW"
+    variants: "figma-unconfirmed"
+  icons:
+    allowed: "figma-unconfirmed"
+    slots: "unknown"
+```
+
+_Do_
+- Hover·Pressed 는 색을 바꾸지 않고 밑줄만 더한다(원본 그대로).
+- 색은 Primary=color/text/state/accent, Secondary=color/text/body/tertiary 만 쓴다.
+
+_Don't_
+- 코어 Button 의 variant 로 편입하지 않는다 — 구조(배경·테두리·고정 크기)가 아예 없다.
+- 레거시 B m_subbutton(글자+화살표, 모바일)을 임의로 함께 만들지 않는다 — 원본 색이 raw hex 라 색 매핑 결정이 별도로 필요하다(river 결정 2026-09-08 ④, 범위 밖).
+
+**접근성 (a11y)**
+- 네이티브 <button type="button"> 를 쓴다.
+- 상태는 :hover·:active·[disabled] 로 표현하고 별도 data 상태를 만들지 않는다.
+- 포커스 표시는 브라우저 기본값을 그대로 쓴다.
+
 ### Textarea
 
 멀티라인 텍스트 입력 컴포넌트. HD-6(2026-05-12)에서 Inputbox_large → Textarea로 분리 확정. --input-* 토큰 공유 결정(2026-05-20).
@@ -4177,4 +4526,4 @@ DESIGN_SYSTEM_GAP:
 - 적용 해석 순서(뒤가 앞을 덮음): core → service(extends core) → role → platform → theme. 기본값: service=core · role=user · platform=web · theme=light.
 - 서비스 분기(예: vms 영상관제)는 core 를 상속하고 차이분만 덮는다.
 
-<!-- generated-stamp: 9b67ce157454 · 손편집 금지 -->
+<!-- generated-stamp: 73a52ce8bcb6 · 손편집 금지 -->

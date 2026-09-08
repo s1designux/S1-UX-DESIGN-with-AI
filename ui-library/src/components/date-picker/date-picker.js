@@ -24,7 +24,8 @@ function parseISO(value) {
   return Number.isNaN(d.getTime()) ? null : d;
 }
 
-// M6: 표시는 정본 트리거 그대로 YY.MM.DD, 값 입출력은 YYYY-MM-DD(ISO).
+/* M6: 표시는 정본 트리거 그대로 YY.MM.DD(2자리 연도), 값 입출력은 YYYY-MM-DD(ISO).
+   2026-09-08 river 지시로 4자리(YYYY.MM.DD)를 한 번 넣었다가 같은 날 원복했다 — 감사 문서 §9 M-8. */
 function formatDisplay(date) {
   const yy = pad2(date.getFullYear() % 100);
   return `${yy}.${pad2(date.getMonth() + 1)}.${pad2(date.getDate())}`;
@@ -336,8 +337,8 @@ export function init(root) {
       trigger.dataset.filled = s.selected ? "true" : "false";
     } else {
       const { start, end } = s.selected || {};
-      if (start && end) { value.textContent = `${formatDisplay(start)} - ${formatDisplay(end)}`; trigger.dataset.filled = "true"; }
-      else if (start) { value.textContent = `${formatDisplay(start)} - `; trigger.dataset.filled = "true"; }
+      if (start && end) { value.textContent = `${formatDisplay(start)} ~ ${formatDisplay(end)}`; trigger.dataset.filled = "true"; }
+      else if (start) { value.textContent = `${formatDisplay(start)} ~ `; trigger.dataset.filled = "true"; }
       else { value.textContent = root.dataset.placeholder || "YY.MM.DD"; trigger.dataset.filled = "false"; }
     }
   };

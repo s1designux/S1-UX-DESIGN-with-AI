@@ -74,17 +74,41 @@
   gap: var(--spacing-8);          /* 정본 Dual itemSpacing = 8 */
 }
 
-/* 닫기 — 정본은 PC 헤더에만 close 아이콘 24px(color/icon/gray-dark)을 둔다. */
+/* 닫기 — 정본은 PC 헤더에만 close 아이콘 24px(color/icon/gray-dark)을 둔다.
+   버튼 자체(24×24)가 누르는 영역이자 hover 네모다 — 아이콘은 ::after 로 분리해 배경을 가릴 필요를 없앤다. */
 [data-s1-component="modal"] [data-s1-part="close"] {
+  align-items: center;
   appearance: none;
-  background: var(--color-icon-gray-dark);
+  background: transparent;
   border: 0;
+  border-radius: var(--radius-control-sm);
+  box-sizing: border-box;
   cursor: pointer;
+  display: inline-flex;
   flex: none;
   height: var(--sizing-24);
-  mask: url("../assets/icons/close.svg") center / contain no-repeat;
+  justify-content: center;
   padding: 0;
   width: var(--sizing-24);
+}
+
+[data-s1-component="modal"] [data-s1-part="close"]::after {
+  background: var(--color-icon-gray-dark);
+  content: "";
+  display: block;
+  height: 100%;
+  mask: url("../assets/icons/close.svg") center / contain no-repeat;
+  width: 100%;
+}
+
+/* hover — river 지시 2026-09-08. modal-content(콘텐츠 계열) 와 같은 close 부품이라 동일 규칙을 적용한다.
+   새 토큰 없이 color/control/bg/hover 재사용. 정본에는 없는 웹 추가분(§두 갈래 분류 (b)).
+   Mobile 은 정본에 close 자체가 없지만(위 주석) 셀렉터 안전을 위해 Input 과 같은 방식으로 명시 제외한다
+   (river 지시 2026-09-07 — 손가락엔 hover 가 없고 48×48 히트영역이 통째로 칠해지는 문제 재발 방지). */
+@media (hover: hover) {
+  [data-s1-component="modal"]:not([data-break="mobile"]) [data-s1-part="close"]:hover {
+    background: var(--color-control-bg-hover);
+  }
 }
 
 /* ── Break=PC — 폭 360 · 좌우 여백은 패널이 아니라 내부 블록이 24씩 가진다(정본 paddingLeft/Right=0) ── */

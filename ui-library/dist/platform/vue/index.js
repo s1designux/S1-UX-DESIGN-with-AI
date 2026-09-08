@@ -18,3 +18,6 @@ export { default as S1MobileBottomNav } from "./MobileBottomNav.vue";
 export { default as S1MobileHeader } from "./MobileHeader.vue";
 export { default as S1TimePicker } from "./TimePicker.vue";
 export { default as S1DatePicker } from "./DatePicker.vue";
+export { default as S1AssistButton } from "./AssistButton.vue";
+export { default as S1TextButton } from "./TextButton.vue";
+export { default as S1ModalContent } from "./ModalContent.vue";

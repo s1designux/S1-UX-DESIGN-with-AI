@@ -217,6 +217,38 @@
       padding: 24px;
       position: relative;
     }
+    /* Modal Content 정적 표본 — 모달과 같은 처리(지면에 눕힘). 크기가 MD 520 ~ XL 1200 까지 걸쳐 있어
+       한 줄에 하나씩 놓고(1fr), 좁은 화면에서 XL(1200) 패널이 칸보다 크면 슬롯을 가로 스크롤한다.
+       이 CSS 는 이 페이지 것이고 dist 에 넣지 않는다 — 색·크기·간격·높이 규칙은 그대로 dist 가 그린다. */
+    [data-component-id="modal-content"] .review-grid { grid-template-columns: 1fr; }
+    [data-component-id="modal-content"] .review-component-slot { overflow-x: auto; }
+    [data-s1-component="modal-content"].is-review-inline {
+      inset: auto;
+      padding: 24px;
+      position: relative;
+    }
+    /* A-1 수정(1회차): 패널은 이 페이지에서 flex 항목(부모 display:flex)이라 기본 flex-shrink:1 때문에
+       LG(1000)·XL(1200) 이 슬롯 폭에 맞춰 줄어들어 실제 정본 폭이 드러나지 않았다.
+       flex-shrink:0 으로 정본 폭(520/1000/1200) 그대로 그리고, 넘치는 만큼은
+       위 overflow-x:auto 로 슬롯 안에서만 가로 스크롤되게 한다. 폭 값 자체는 건드리지 않는다.
+       "실제로 열어보기"(진짜 팝업) 칸만 지금도 이 방식(실제 크기)을 유지한다 — "높이 규칙 확인" 칸은
+       LG(1000) 가 슬롯(608px) 보다 넓어 D-1(3회차)에서 A-2 와 같은 축소 표시로 옮겼다. */
+    [data-s1-component="modal-content"].is-review-inline [data-s1-part="panel"] {
+      flex-shrink: 0;
+    }
+    /* A-2 수정(2회차): 크기×푸터 6칸 비교표는 슬롯 폭(608px)이 XL(1200)보다 훨씬 좁아서,
+       flex-shrink:0 + overflow-x:auto 여도 부모가 justify-content:center 라 왼쪽으로 넘친 부분은
+       스크롤로 닿지 못했다(음수 scrollLeft 불가) — 제목·닫기·푸터가 통째로 안 보였다.
+       components.html 크기 비교표(ui-library-guide.js modalContentStateMatrix)가 이미 쓰는 축소 표시
+       방식을 그대로 가져온다: 폭 값 자체(520/1000/1200)는 그대로 두고, "표시 배율"만 transform:scale
+       로 줄인다 — outer 는 축소된 자리를 예약(레이아웃), inner 는 실제 크기로 그린 뒤 시각만 줄어든다.
+       dist 에 넣지 않는다(안내 화면 전용 표시 방식과 같은 원칙). */
+    .review-modal-content-scale { overflow: hidden; }
+    .review-modal-content-scale-inner { transform-origin: top left; }
+    /* D-2 수정(4회차): 「높이 규칙 확인」칸 전용 — zoom 은 레이아웃까지 축소하므로 이 래퍼는
+       크기를 지정하지 않는다(내용이 줄어든 만큼 스스로 줄어든다). 상세 사유는 위 JS
+       scaledModalContentOverflowSample() 주석. */
+    .review-modal-content-zoom { display: inline-block; }
 
     .review-control-group {
       border: 0;
@@ -432,6 +464,7 @@
         <span class="review-badge">Modal (신규)</span>
         <span class="review-badge">Table (신규)</span>
         <span class="review-badge">Password Field · Search Input (신규 — Input 옵션)</span>
+        <span class="review-badge">Assist Button · Text Button · Modal Content (신규)</span>
         <span class="review-badge">검수본 2026-09-04 · 11</span>
       </div>
     </header>
@@ -618,6 +651,30 @@
         <p class="review-note">정본 상태 4종(Default·Filled·Open·Disabled) + <strong>웹에서만 더한 Hover 1종</strong>(정본 Date Picker 세트에 마우스오버 상태가 없습니다 — river 승인 대기) × PC 3크기(XXSM 28·XSM 34·MD 44). Hover는 마우스를 올려 확인합니다. 패널은 Date·Year·Month 3화면(build-components.ts buildCalendar)이고, <strong>달력 크기는 입력창을 따라갑니다</strong> — MD 입력창은 큰 달력(356×352), XSM·XXSM 입력창은 <strong>작은 달력(267×266)</strong>이 열립니다(river 지시 2026-09-04로 신설, 아래 크기별 Open 표본에서 확인). 헤더 라벨은 연도·월을 각각 누를 수 있게 <strong>둘로 나눴습니다</strong>(D5). 요일은 <strong>일요일 시작</strong>입니다(D3 — 시각 정본은 월요일 시작이라 갈라진 지점, CU-1로 기록). 기간 선택은 시작일만 고른 상태에서 커서까지 미리 칠해집니다(D6). Mobile은 팝오버 대신 하단 시트가 열립니다(M7).</p>
       </div>
       <div class="review-matrix" id="date-picker-review-matrix"></div>
+    </section>
+
+    <section class="review-section" aria-labelledby="assist-button-review-title" data-component-id="assist-button">
+      <div>
+        <h2 class="review-section-title" id="assist-button-review-title">18. Assist Button</h2>
+        <p class="review-note">Button과 별개 컴포넌트입니다(river 결정 2026-09-08). 정본 상태 4종(Default·Hover·Pressed·Disabled)이며 <strong>Pressed는 Hover와 같은 모양</strong>입니다(코어 Button과 같은 규칙). 크기 축이 없어 높이 32px 고정입니다.</p>
+      </div>
+      <div class="review-matrix" id="assist-button-review-matrix"></div>
+    </section>
+
+    <section class="review-section" aria-labelledby="text-button-review-title" data-component-id="text-button">
+      <div>
+        <h2 class="review-section-title" id="text-button-review-title">19. Text Button</h2>
+        <p class="review-note">Button과 별개 컴포넌트입니다(river 결정 2026-09-08). 배경·테두리가 없고 Primary·Secondary 두 색만 있습니다. Hover·Pressed는 색이 바뀌지 않고 <strong>밑줄만</strong> 붙습니다. 크기 축이 없습니다.</p>
+      </div>
+      <div class="review-matrix" id="text-button-review-matrix"></div>
+    </section>
+
+    <section class="review-section" aria-labelledby="modal-content-review-title" data-component-id="modal-content">
+      <div>
+        <h2 class="review-section-title" id="modal-content-review-title">20. Modal Content</h2>
+        <p class="review-note">확인 계열 Modal과 별개 컴포넌트입니다. 정본 변형 6가지(Size MD·LG·XL × Footer Single·Dual)를 그대로 옮겼습니다. 본문은 정본과 같은 회색 자리표시("컨텐츠 영역")이고, 실제 화면에서는 이 자리를 입력창·표·이미지로 바꿔 넣습니다. <strong>높이는 고정이 아니라 최소값입니다</strong> — 콘텐츠가 늘면 패널이 커지다가 화면의 85%에서 멈추고, 그 뒤로는 본문(회색 영역) 안에서만 스크롤됩니다(제목·버튼은 항상 보입니다). PC 전용입니다.</p>
+      </div>
+      <div class="review-matrix" id="modal-content-review-matrix"></div>
     </section>
     </div>
 
@@ -1355,6 +1412,153 @@
         </article>`;
     }
 
+    /* ── Assist Button — Button 과 별개 컴포넌트(river 2026-09-08). 크기 축 없음(h32). 상태 4종, Pressed = Hover. ── */
+    function assistButtonMarkup(disabled = false, text = "보조버튼") {
+      return `<button type="button" data-s1-component="assist-button"${disabled ? " disabled" : ""}><span data-s1-part="label">${text}</span></button>`;
+    }
+
+    function renderAssistButtonPanel(combo) {
+      return `
+        <article class="review-panel" data-theme="${combo.theme}">
+          <div class="review-panel-heading"><h3 class="review-panel-title">${combo.label}</h3><p class="review-panel-description">정본 상태 4종(Default·Hover·Pressed·Disabled) · 크기 축 없음(h32 고정) · Pressed = Hover</p></div>
+          <div class="review-group">
+            <h4 class="review-group-title">실제 상태 체험</h4>
+            <p class="review-panel-description">Tab으로 Focus, 마우스로 Hover, 누르는 동안 Pressed를 확인합니다.</p>
+            <div class="review-button-row">${assistButtonMarkup(false, "직접 확인")}${assistButtonMarkup(true, "비활성")}</div>
+          </div>
+        </article>`;
+    }
+
+    /* ── Text Button — Button 과 별개 컴포넌트(river 2026-09-08). 배경·테두리 없음. Hover·Pressed는 밑줄만. ── */
+    function textButtonMarkup(variant, disabled = false, text = "텍스트버튼") {
+      return `<button type="button" data-s1-component="text-button" data-variant="${variant}"${disabled ? " disabled" : ""}><span data-s1-part="label">${text}</span></button>`;
+    }
+
+    function renderTextButtonPanel(combo) {
+      const variants = [{ id: "primary", label: "Primary" }, { id: "secondary", label: "Secondary" }];
+      const rows = variants.map((variant) => `
+        <div class="review-sample">
+          <p class="review-state-label">${variant.label} · Default / Disabled</p>
+          <div class="review-button-row">${textButtonMarkup(variant.id, false, "직접 확인")}${textButtonMarkup(variant.id, true, "비활성")}</div>
+        </div>`).join("");
+
+      return `
+        <article class="review-panel" data-theme="${combo.theme}">
+          <div class="review-panel-heading"><h3 class="review-panel-title">${combo.label}</h3><p class="review-panel-description">정본 상태 4종(Default·Hover·Pressed·Disabled) × Variant 2종(Primary·Secondary) · 배경·테두리 없음(hug) · Hover·Pressed는 밑줄만</p></div>
+          <div class="review-group">
+            <h4 class="review-group-title">실제 상태 체험</h4>
+            <p class="review-panel-description">Tab으로 Focus, 마우스로 Hover, 누르는 동안 Pressed(밑줄)를 확인합니다.</p>
+            ${rows}
+          </div>
+        </article>`;
+    }
+
+    /* ── Modal Content — 확인 계열 Modal 과 별개 컴포넌트. 축 = Size(MD·LG·XL) × Footer(Single·Dual).
+       높이는 최소값 — 콘텐츠가 늘면 커지다가 85vh 에서 멈추고 content-area 안에서만 스크롤한다. ── */
+    function modalContentMarkup({ size, footer, statik = false, overflow = false }) {
+      uniqueId += 1;
+      const titleId = `review-modal-content-title-${uniqueId}`;
+      const title = "제목 영역";
+      const labels = footer === "dual" ? ["취소", "확인"] : ["확인"];
+      const tab = statik ? ' tabindex="-1"' : "";
+      const buttons = labels.map((label, index) => {
+        const variant = labels.length === 2 && index === 0 ? "secondary" : "primary";
+        return `<button type="button" data-s1-component="button" data-variant="${variant}" data-size="xxsm" data-modal-content-close${tab}><span data-s1-part="label">${label}</span></button>`;
+      }).join("");
+      const close = `<button type="button" data-s1-part="close" aria-label="닫기"${tab}></button>`;
+      const staticAttrs = statik ? ' data-review-static="true" class="is-review-inline"' : "";
+      const contentInner = overflow
+        ? `<div data-s1-part="content" style="min-height:900px;"><span data-s1-part="content-label">컨텐츠 영역 (스크롤 확인을 위해 일부러 늘림)</span></div>`
+        : `<div data-s1-part="content"><span data-s1-part="content-label">컨텐츠 영역</span></div>`;
+      return `<div data-s1-component="modal-content" data-size="${size}" data-footer="${footer}"${staticAttrs}${statik ? "" : " hidden"}>
+          <div data-s1-part="overlay"></div>
+          <div data-s1-part="panel" role="dialog" aria-modal="true" aria-labelledby="${titleId}" tabindex="-1">
+            <div data-s1-part="header"><h2 data-s1-part="title" id="${titleId}">${title}</h2>${close}</div>
+            <div data-s1-part="content-area">${contentInner}</div>
+            <div data-s1-part="footer">${buttons}</div>
+          </div>
+        </div>`;
+    }
+
+    /* A-2 수정: 크기×푸터 6칸 비교표 전용 축소 표시. components.html 크기 비교표와 같은 배율 원리 —
+       outer 폭 = 패널 폭 + is-review-inline 패딩(24×2), 슬롯 실폭(608px) 안에 XL(1200+48=1248) 이
+       들어오려면 배율 ≤ 608/1248 ≈ 0.487 이 필요해 0.45 를 쓴다(여유 확보). MD·LG 도 함께 줄어
+       세 크기가 같은 배율로 비교된다. */
+    const MODAL_CONTENT_REVIEW_SCALE = 0.45;
+    const MODAL_CONTENT_REVIEW_PAD = 24;
+    const MODAL_CONTENT_REVIEW_DIMS = { md: [520, 336], lg: [1000, 587], xl: [1200, 587] };
+
+    function scaledModalContentSample(label, size, footer) {
+      const [w, h] = MODAL_CONTENT_REVIEW_DIMS[size];
+      const scale = MODAL_CONTENT_REVIEW_SCALE;
+      const pad2 = MODAL_CONTENT_REVIEW_PAD * 2;
+      const outerW = w + pad2;
+      const outerH = h + pad2;
+      const scaledW = Math.round(outerW * scale);
+      const scaledH = Math.round(outerH * scale);
+      const markup = modalContentMarkup({ size, footer, statik: true });
+      return `<div class="review-sample">
+        <p class="review-state-label">${label} <span>(${w}×${h})</span></p>
+        <div class="review-component-slot">
+          <div class="review-modal-content-scale" style="width:${scaledW}px;height:${scaledH}px;">
+            <div class="review-modal-content-scale-inner" style="width:${outerW}px;height:${outerH}px;transform:scale(${scale});">${markup}</div>
+          </div>
+        </div>
+      </div>`;
+    }
+
+    /* D-2 수정(4회차): 「높이 규칙 확인」칸의 예약 높이를 calc((85vh+48)×0.45) 로 손계산했더니
+       실제 패널 높이(정본 CSS: min 587 / 자연높이 / max 85vh 중 더 작은 쪽 — clamp)와 어긋났다.
+       뷰포트가 크면(자연높이 < 85vh) 예약이 남아 빈 칸이 생기고, 뷰포트가 작으면(587 이 85vh 를
+       넘어서는 구간, ≈667px 미만) 예약이 모자라 푸터 버튼이 잘렸다(river 4회차 검증 D-2).
+       transform:scale 은 그리기만 축소하고 레이아웃 크기는 원본 그대로라 예약 높이를 손으로 맞혀야
+       했던 것이 원인 — zoom 은 레이아웃 자체를 축소해서 그리므로 예약 높이 계산이 필요 없다:
+       패널이 min·자연·85vh 중 무엇이 되든 이 래퍼의 자리도 브라우저가 그만큼 자동으로 줄인다.
+       크롬·사파리·파이어폭스(126+) 지원. */
+    function scaledModalContentOverflowSample() {
+      const scale = MODAL_CONTENT_REVIEW_SCALE;
+      const markup = modalContentMarkup({ size: "lg", footer: "dual", statik: true, overflow: true });
+      return `<div class="review-component-slot">
+        <div class="review-modal-content-zoom" style="zoom:${scale};">${markup}</div>
+      </div>`;
+    }
+
+    function renderModalContentPanel(combo) {
+      const sizeFooterCells = [
+        ["MD · Single", "md", "single"],
+        ["MD · Dual", "md", "dual"],
+        ["LG · Single", "lg", "single"],
+        ["LG · Dual", "lg", "dual"],
+        ["XL · Single", "xl", "single"],
+        ["XL · Dual", "xl", "dual"]
+      ].map(([label, size, footer]) => scaledModalContentSample(label, size, footer)).join("");
+
+      return `
+        <article class="review-panel" data-theme="${combo.theme}">
+          <div class="review-panel-heading"><h3 class="review-panel-title">${combo.label}</h3><p class="review-panel-description">정본 변형 6가지(Size MD·LG·XL × Footer Single·Dual) · PC 전용</p></div>
+          <div class="review-group">
+            <h4 class="review-group-title">실제로 열어보기</h4>
+            <p class="review-panel-description">누르면 화면 전체를 덮는 진짜 팝업이 뜹니다. Esc로 닫히고 닫으면 초점이 이 버튼으로 돌아옵니다.</p>
+            <div class="review-component-slot">
+              <button type="button" data-s1-component="button" data-variant="secondary" data-size="md" data-modal-content-open><span data-s1-part="label">모달 열기</span></button>
+              ${modalContentMarkup({ size: "md", footer: "dual" })}
+            </div>
+          </div>
+          <hr class="review-separator">
+          <div class="review-group">
+            <h4 class="review-group-title">높이 규칙 확인 — 콘텐츠가 넘치면 내부 스크롤</h4>
+            <p class="review-panel-description">이 칸은 회색 콘텐츠 영역을 일부러 길게 늘렸습니다. 패널은 화면 높이의 85%에서 멈추고, 그 뒤로는 콘텐츠 영역 안에서만 스크롤됩니다 — 제목·버튼은 그대로 보입니다. 표시는 0.45배로 줄었지만(실제 폭·비율은 정본 그대로) 스크롤 동작은 그대로입니다 — 마우스 휠로 본문을 직접 스크롤해서 확인하세요.</p>
+            ${scaledModalContentOverflowSample()}
+          </div>
+          <hr class="review-separator">
+          <div class="review-group">
+            <h4 class="review-group-title">크기 3종 비교 (표시만 축소 · 폭 값은 실제 그대로)</h4>
+            <p class="review-panel-description">칸 안에 넣기 위해 화면 표시만 0.45배로 줄였습니다(실제 폭·비율은 정본 그대로). 칸마다 실제 치수를 괄호로 남겼습니다.</p>
+            <div class="review-grid">${sizeFooterCells}</div>
+          </div>
+        </article>`;
+    }
+
     /* ── Mobile Bottom Nav — 탭 아이템 1칸(60×60). 상태 축(unselected·selected)만 있다. ── */
     function mobileBottomNavItemMarkup({ selected = false, label = "라벨" } = {}) {
       return `<button type="button" data-s1-component="mobile-bottom-nav" role="tab" aria-selected="${selected}">
@@ -1752,6 +1956,9 @@
     document.querySelector("#multi-toggle-review-matrix").innerHTML = controlThemes.map(renderMultiTogglePanel).join("");
     document.querySelector("#modal-review-matrix").innerHTML = combinations.map(renderModalPanel).join("");
     document.querySelector("#table-review-matrix").innerHTML = controlThemes.map(renderTablePanel).join("");
+    document.querySelector("#assist-button-review-matrix").innerHTML = controlThemes.map(renderAssistButtonPanel).join("");
+    document.querySelector("#text-button-review-matrix").innerHTML = controlThemes.map(renderTextButtonPanel).join("");
+    document.querySelector("#modal-content-review-matrix").innerHTML = controlThemes.map(renderModalContentPanel).join("");
     document.querySelectorAll('[data-s1-component="input"]').forEach((root) => S1UI.input.init(root));
     document.querySelectorAll('[data-s1-component="toggle"]').forEach((root) => S1UI.toggle.init(root));
     document.querySelectorAll('[data-s1-component="chip"]').forEach((root) => S1UI.chip.init(root));
@@ -1776,6 +1983,16 @@
       root.querySelectorAll("[data-modal-close]").forEach((button) => button.addEventListener("click", () => api?.close({ reason: "footer-button" })));
     });
 
+    /* Modal Content 도 정적 표본(data-review-static)은 초기화하지 않는다 — Modal 과 같은 이유. */
+    document.querySelectorAll('[data-s1-component="modal-content"]:not([data-review-static])').forEach((root) => {
+      const opener = root.parentElement?.querySelector("[data-modal-content-open]");
+      /* 배포본 계약대로 body 바로 아래로 옮긴다(contentSlots.placement) — 검수 지면 안에 두면 위 요소가 모달을 덮는다. */
+      document.body.append(root);
+      const api = S1UI.modalContent.init(root);
+      opener?.addEventListener("click", () => api?.open());
+      root.querySelectorAll("[data-modal-content-close]").forEach((button) => button.addEventListener("click", () => api?.close({ reason: "footer-button" })));
+    });
+
     /* Search Input — Enter·돋보기 클릭 둘 다 s1:input:search 를 낸다(river D2). 실제로 눈으로 확인. */
     document.addEventListener("s1:input:search", (event) => {
       const status = event.target.closest("article.review-panel")?.querySelector("[data-search-live-status]");
@@ -1786,7 +2003,7 @@
     document.addEventListener("focusin", (event) => {
       const component = event.target.closest("[data-s1-component]");
       if (!component) return;
-      const names = { input: "Base Input", button: "Button", checkbox: "Checkbox", radio: "Radio", toggle: "Toggle", chip: "Chip", select: "Select Box", dropdown: "Dropdown", "filter-chip": "Filter Chip", textarea: "Textarea", "multi-toggle": "Multi Toggle", modal: "Modal", table: "Table" };
+      const names = { input: "Base Input", button: "Button", checkbox: "Checkbox", radio: "Radio", toggle: "Toggle", chip: "Chip", select: "Select Box", dropdown: "Dropdown", "filter-chip": "Filter Chip", textarea: "Textarea", "multi-toggle": "Multi Toggle", modal: "Modal", table: "Table", "assist-button": "Assist Button", "text-button": "Text Button", "modal-content": "Modal Content" };
       const name = names[component.dataset.s1Component] || component.dataset.s1Component;
       const size = component.dataset.size ? ` · ${component.dataset.size.toUpperCase()}` : "";
       focusStatus.textContent = `현재 초점: ${name}${size}`;

@@ -19,6 +19,7 @@
 .uilg * { box-sizing: border-box; }
 
 .uilg > section,
+.uilg-demo-block,
 .uilg-title-group,
 .uilg-code-panel {
   min-width: 0;
@@ -366,6 +367,51 @@
   border-color: var(--color-button-border-blue-line--hover);
   color: var(--color-button-label-blue-line--hover);
 }
+
+/* ── Assist Button forced state CSS (preview only) — dist :hover/:active 와 같은 토큰만 쓴다 ── */
+
+[data-s1-component="assist-button"][data-force-state="hover"],
+[data-s1-component="assist-button"][data-force-state="pressed"] {
+  background: var(--color-button-bg-secondary--hover);
+  border-color: var(--color-button-border-assist--hover);
+  color: var(--color-button-label-assist--hover);
+}
+
+/* ── Text Button forced state CSS (preview only) — Hover·Pressed 는 밑줄만(색 불변, dist 규칙 그대로) ── */
+
+[data-s1-component="text-button"][data-force-state="hover"],
+[data-s1-component="text-button"][data-force-state="pressed"] {
+  text-decoration: underline;
+}
+
+/* ── Modal Content 안내 화면 전용 ──
+   Modal 과 같은 이유·같은 방식(위 §Modal 안내 화면 전용 참고) — position:fixed 인 배포본을
+   상태 칸 안에 눕혀 보여준다. 이 CSS 는 dist 에 넣지 않는다(cssContract.previewNote). */
+.uilg [data-s1-component="modal-content"].is-preview {
+  inset: auto;
+  padding: var(--spacing-24);
+  position: relative;
+}
+
+.uilg-modal-content-action { display: flex; }
+
+/* ── Modal Content 크기 비교표 축소 표시 (river 2026-09-08 지적 — 실제 폭 그대로면 한 화면에
+   Single 열 하나만 보이고 세로 3239px 로 늘어져 MD·LG·XL 비교가 안 됐다) ──
+   실제 폭 값은 JS(ui-library-guide.js modalContentStateMatrix)가 그대로 유지하고, 이 CSS 는
+   "표시 배율"만 담당한다 — outer 는 축소된 자리를 예약(레이아웃 크기), inner 는 실제 크기로 그려진 뒤
+   transform:scale 로 시각만 줄어든다(레이아웃 크기는 그대로라 outer 로 자리를 다시 잡아야 한다).
+   dist 에 넣지 않는다(안내 화면 전용 표시 방식, cssContract.previewNote 와 같은 원칙). */
+.uilg-modal-content-scale {
+  overflow: hidden;
+}
+.uilg-modal-content-scale-inner {
+  transform-origin: top left;
+}
+/* 칸 안에서 왼쪽 정렬 — 크기 차이를 왼쪽 기준으로 비교(가운데 정렬이면 큰 칸일수록 시작점이 안쪽으로 밀려
+   비교가 어렵다). 행 레이블의 실제 치수(예: 520×336)도 이 섹션에서만 켠다 — 축소 표시라 글자 크기가
+   시각적 크기의 근거가 안 되므로 숫자로 사실을 남긴다. */
+#modal-content .comp-state-cell { justify-content: flex-start; }
+#modal-content .matrix-row-label span { display: block; }
 
 /* ── Code viewer ── */
 

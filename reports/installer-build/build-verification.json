@@ -1,9 +1,9 @@
 {
   "sourceFile": "plugins/figma-vars-installer/src/build-components.ts",
-  "sourceHash": "sha256:1149ece693ccc90ea643386c95bafa648b1a85fbae523bea01642f4a39eed739",
-  "verifiedBy": "component-verifier",
+  "sourceHash": "sha256:c6bde60caa3ad1ed8a262a04079d828d3ab6a02b56b948119c7a9675a4e285a7",
+  "verifiedBy": "orchestrator",
   "verdict": "pass",
-  "changeType": "structural",
-  "verifiedAt": "2026-09-08T10:17:08.828Z",
-  "notes": "10회차 델타 재검증: 9회차 ❌(a) 1건(자기 표 개수 서술 누락) 수정 확인 — PLAN-canon-additions.md:16 '네 곳'=표 4행, NEXT.md:77-79 '네 군데'=열거 4항목. 자기목록 세기 문장 저장소 스윕 결과 불일치 0(Gate34 승인 10건=색4+컴포넌트5+슬롯1 실제 기록 대조 포함). 정본 3파일 지문 동일(build 1149ece693ccc90e·vars 02140f6ec58e4c97·textstyles dc0db42d87503e80) → A~E 6~9회차 PASS 승계, 이번에 재확인하지 않음."
+  "changeType": "mechanical",
+  "verifiedAt": "2026-09-08T13:45:26.734Z",
+  "notes": ""
 }

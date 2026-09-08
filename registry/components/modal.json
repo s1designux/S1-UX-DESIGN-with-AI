@@ -226,7 +226,8 @@
     "close-icon": "color/icon/gray-dark",
     "panel-radius": "radius/8 (공유 --radius-modal-md 와 동일값)",
     "overlay": "color/overlay (딤 — 모달 사용 시 적용, EX03 rgba 예외)",
-    "shadow": "shadow/raised (--shadow-raised) — 2026-07-29 신설 완료. Light 2겹 `0 4px 6px -2px rgba(0,0,0,0.06), 0 12px 20px -4px rgba(0,0,0,0.10)` / Dark 2겹 `0 8px 8px -4px rgba(0,0,0,1), 0 20px 24px -4px rgba(0,0,0,1)` (겹 수는 표면 위계 — 라이트·다크 동일 2겹, 차이는 alpha·기하). 정의=tokens/semantic.md §9-A · rgba 승인=token-exceptions EX07 · 경위=reports/shadow-token-infra-backlog.md. 웹 CSS 는 Modal 셀렉터 부재로 미적용(다음 단계)."
+    "shadow": "shadow/raised (--shadow-raised) — 2026-07-29 신설 완료. Light 2겹 `0 4px 6px -2px rgba(0,0,0,0.06), 0 12px 20px -4px rgba(0,0,0,0.10)` / Dark 2겹 `0 8px 8px -4px rgba(0,0,0,1), 0 20px 24px -4px rgba(0,0,0,1)` (겹 수는 표면 위계 — 라이트·다크 동일 2겹, 차이는 alpha·기하). 정의=tokens/semantic.md §9-A · rgba 승인=token-exceptions EX07 · 경위=reports/shadow-token-infra-backlog.md. 웹 CSS 는 Modal 셀렉터 부재로 미적용(다음 단계).",
+    "close-hover-bg": "color/control/bg/hover — river 지시 2026-09-08. 정본에 없는 웹 추가분(§두 갈래 분류 (b)), 새 토큰 0건. PC 전용(Mobile 은 close 자체가 없다)."
   },
   "reuses": {
     "coreComponents": [

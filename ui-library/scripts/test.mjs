@@ -15,7 +15,7 @@ const read = (relative) => readFile(path.join(libraryRoot, relative), "utf8");
 const build = spawnSync(process.execPath, [path.join(libraryRoot, "scripts/build.mjs"), "--check"], { encoding: "utf8" });
 if (build.status !== 0) failures.push(`build freshness: ${build.stderr || build.stdout}`);
 
-const componentIds = ["input", "button", "checkbox", "radio", "toggle", "chip", "dropdown", "select", "filter-chip", "tab", "pagination", "textarea", "multi-toggle", "modal", "table", "mobile-bottom-nav", "mobile-header", "time-picker", "date-picker"];
+const componentIds = ["input", "button", "checkbox", "radio", "toggle", "chip", "dropdown", "select", "filter-chip", "tab", "pagination", "textarea", "multi-toggle", "modal", "table", "mobile-bottom-nav", "mobile-header", "time-picker", "date-picker", "assist-button", "text-button", "modal-content"];
 const individualCss = [];
 for (const id of componentIds) {
   const css = await read(`dist/components/${id}.css`);
@@ -321,6 +321,40 @@ for (const id of componentIds) {
     }
     if (/box-shadow:\s*inset 0 calc\(-1 \* var\(--border-width-1\)\)/.test(css) || /border-bottom:\s*var\(--border-width-2\)/.test(css)) failures.push("tab must not draw its baseline inside the reserved indicator space");
   }
+  /* Assist Button — 정본 buildAssistButtonSet(build-components.ts:582). 크기 축 없음(h32 하나),
+     variant 축 없음. 배경·기본 테두리는 Button Secondary 토큰을 그대로 빌려 쓴다(전용 토큰 아님). */
+  if (id === "assist-button") {
+    if (manifest.jsRequired !== false) failures.push("assist-button must remain jsRequired=false; native semantics carry the behavior");
+    if (manifest.sizes.length || manifest.variants.length) failures.push("assist-button has no canonical size/variant axis; both must stay empty");
+    const base = css.match(/\[data-s1-component="assist-button"\]\s*\{([^}]*)\}/);
+    if (!base || !base[1].includes("height: var(--sizing-32);") || !base[1].includes("min-width: var(--sizing-60);")) {
+      failures.push("assist-button geometry differs from canon (h32, min-width 60)");
+    }
+    if (!css.includes("var(--color-button-bg-secondary--default)") || !css.includes("var(--color-button-border-secondary--default)")) {
+      failures.push("assist-button default face must reuse the core Button secondary tokens");
+    }
+    if (!css.includes("var(--color-button-border-assist--hover)") || !css.includes("var(--color-button-label-assist--default)") || !css.includes("var(--color-button-label-assist--hover)")) {
+      failures.push("assist-button must use the 3 dedicated assist tokens (border-hover/label-default/label-hover)");
+    }
+    if (!css.includes(":is(:hover, :active):not(:disabled)")) failures.push("assist-button pressed state must equal hover (canon rule)");
+    if (!css.includes("var(--color-button-bg-disabled)") || !css.includes("var(--color-button-border-disabled)") || !css.includes("var(--color-button-label-disabled)")) {
+      failures.push("assist-button disabled state must reuse the core Button disabled tokens");
+    }
+  }
+  /* Text Button — 정본 buildTextButtonSet(build-components.ts:668). Variant(Primary|Secondary) × State 4 = 8변형,
+     크기 축 없음(hug). Hover·Pressed 는 색을 바꾸지 않고 밑줄만 더한다. */
+  if (id === "text-button") {
+    if (manifest.jsRequired !== false) failures.push("text-button must remain jsRequired=false; underline is pure CSS");
+    if (manifest.sizes.length) failures.push("text-button has no canonical size axis; sizes must stay empty");
+    if (JSON.stringify(manifest.variants) !== JSON.stringify(["primary", "secondary"])) failures.push("text-button variants differ from canon");
+    if (!css.includes("var(--color-text-state-accent)") || !css.includes("var(--color-text-body-tertiary)")) {
+      failures.push("text-button variant colors must reuse the canonical text tokens");
+    }
+    if (!/:is\(:hover, :active\):not\(:disabled\)\s*\{[^}]*text-decoration:\s*underline;/.test(css)) {
+      failures.push("text-button hover/pressed must add underline without changing color");
+    }
+    if (!css.includes("var(--color-text-state-disabled)")) failures.push("text-button disabled state must use the canonical disabled text token");
+  }
   /* Modal — 정본 buildModalShell(4438). 변형은 Break × Footer 4가지뿐이고 크기·상태 축이 없다.
      PC 만 닫기(X)를 갖고 Mobile 은 갖지 않는다. 접근성은 river 표준안(2026-09-02) 범위를 계약으로 못박는다. */
   if (id === "modal") {
@@ -347,6 +381,43 @@ for (const id of componentIds) {
     if (mobileExample.includes('data-s1-part="close"')) failures.push("modal Mobile has no close button in canon");
     if (!mobileExample.includes('data-size="lg"')) failures.push("modal Mobile footer must reuse core Button LG");
     if (!example.includes('data-size="xxsm"')) failures.push("modal PC footer must reuse core Button XXSM");
+  }
+  /* Modal Content — 정본 buildModalContent(5439). 확인 계열 Modal 과 별개 컴포넌트, PC 전용.
+     변형은 Size(MD·LG·XL) × Footer(Single·Dual) 6가지. 정본의 336/587 은 웹에서 "최소 높이"로 구현하고
+     grow→85vh 상한→content-area 내부 스크롤 규칙을 CSS 로 표현한다(reports/modal-content-family-backlog.md). */
+  if (id === "modal-content") {
+    if (manifest.jsRequired !== true) failures.push("modal-content open/close, focus trap and scroll lock require the declared runtime");
+    if (JSON.stringify(manifest.sizes) !== JSON.stringify(["md", "lg", "xl"])) failures.push("modal-content sizes differ from canon");
+    if (JSON.stringify(manifest.variants) !== JSON.stringify(["single", "dual"])) failures.push("modal-content variants differ from canon Footer axis");
+    if (JSON.stringify(manifest.breaks) !== JSON.stringify({ pc: ["md", "lg", "xl"], mobile: [] })) failures.push("modal-content must stay PC-only in canon");
+    for (const [size, width, minHeight] of [["md", "520px", "336px"], ["lg", "1000px", "587px"], ["xl", "1200px", "587px"]]) {
+      const rule = css.match(new RegExp(`\\[data-s1-component="modal-content"\\]\\[data-size="${size}"\\] \\[data-s1-part="panel"\\]\\s*\\{([^}]*)\\}`));
+      if (!rule) { failures.push(`modal-content ${size} panel rule is missing`); continue; }
+      if (!rule[1].includes(`width: ${width};`)) failures.push(`modal-content ${size} panel width differs from canon`);
+      if (!rule[1].includes(`min-height: ${minHeight};`)) failures.push(`modal-content ${size} panel must use ${minHeight} as a MINIMUM height, not a fixed height`);
+    }
+    const panelRule = css.match(/\[data-s1-component="modal-content"\] \[data-s1-part="panel"\]\s*\{([^}]*)\}/);
+    if (!panelRule || !panelRule[1].includes("max-height: 85vh;")) failures.push("modal-content panel must cap growth at 85vh (height rule)");
+    if (!panelRule || !/max-width:\s*calc\(100vw - 48px\);/.test(panelRule[1])) failures.push("modal-content panel must keep a max-width cap so it never overflows a narrow viewport");
+    const contentAreaRule = css.match(/\[data-s1-component="modal-content"\] \[data-s1-part="content-area"\]\s*\{([^}]*)\}/);
+    if (!contentAreaRule || !contentAreaRule[1].includes("overflow-y: auto;") || !contentAreaRule[1].includes("min-height: 0;")) {
+      failures.push("modal-content content-area must be the only scrollable region (overflow-y:auto + min-height:0)");
+    }
+    if (!css.includes("var(--color-modal-panel-border)") || !css.includes("var(--shadow-raised)") || !css.includes("var(--color-surface-raised)")) {
+      failures.push("modal-content panel is not bound to the canonical surface/border/shadow tokens (shared with Modal)");
+    }
+    if (!css.includes("var(--color-overlay)")) failures.push("modal-content dim must use the canonical color/overlay token");
+    if (!css.includes("var(--color-bg-level-3)") || !css.includes("var(--color-text-body-tertiary)")) {
+      failures.push("modal-content placeholder box must use bg/level-3 and text/body/tertiary tokens (no new tokens)");
+    }
+    if (!css.includes('mask: url("../assets/icons/close.svg")')) failures.push("modal-content close button must reuse the canonical close icon asset (shared with Modal, no re-registration)");
+    if (!example.includes('role="dialog"') || !example.includes('aria-modal="true"') || !example.includes("aria-labelledby=")) {
+      failures.push("modal-content example must expose dialog semantics with a labelled title");
+    }
+    if (!example.includes('data-s1-part="close"')) failures.push("modal-content example must include the canonical close button");
+    if (!example.includes("컨텐츠 영역")) failures.push("modal-content example body must stay the gray placeholder box + '컨텐츠 영역' copy — no sample sentences (river 2026-09-08)");
+    if (!example.includes('data-size="md"')) failures.push("modal-content example must declare a canonical size");
+    if (!example.includes('data-size="xxsm"')) failures.push("modal-content footer must reuse core Button XXSM (same as confirm-family Modal)");
   }
   /* Time Picker — 정본 buildTimePicker(트리거)·buildTimePickerDropdown(패널)·buildTimePickerCell(칸).
      전용 색 토큰 0개(form-control·dropdown semantic 재사용) — select 와 달리 dropdown 코어를 자식으로 조립하지 않는다. */
@@ -384,8 +455,8 @@ for (const id of componentIds) {
     failures.push("input runtime lifecycle is incomplete");
   }
   if (id === "button" && (module.jsRequired !== false || module.runtime !== null)) failures.push("button module unexpectedly requires runtime");
-  if ((id === "checkbox" || id === "radio" || id === "textarea") && (module.jsRequired !== false || module.runtime !== null)) failures.push(`${id} module unexpectedly requires runtime`);
-  if ((id === "toggle" || id === "chip" || id === "dropdown" || id === "select" || id === "filter-chip" || id === "tab" || id === "pagination" || id === "multi-toggle" || id === "modal" || id === "table" || id === "time-picker") && (module.jsRequired !== true || typeof module.init !== "function" || typeof module.destroy !== "function")) {
+  if ((id === "checkbox" || id === "radio" || id === "textarea" || id === "assist-button" || id === "text-button") && (module.jsRequired !== false || module.runtime !== null)) failures.push(`${id} module unexpectedly requires runtime`);
+  if ((id === "toggle" || id === "chip" || id === "dropdown" || id === "select" || id === "filter-chip" || id === "tab" || id === "pagination" || id === "multi-toggle" || id === "modal" || id === "modal-content" || id === "table" || id === "time-picker") && (module.jsRequired !== true || typeof module.init !== "function" || typeof module.destroy !== "function")) {
     failures.push(`${id} runtime lifecycle is incomplete`);
   }
 }

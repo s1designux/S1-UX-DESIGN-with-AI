@@ -552,6 +552,64 @@
       "changeFromCurrent": "신규 화면 — 사이트에 Mobile Header 섹션이 없었다(harnessStatus not-started). Navigation 분류에 새로 둔다.",
       "note": "river 결정(D5)으로 StatusBar·Platform 축을 배포본에서 뺐다 — AppBar 56px 만, Type 6종. Action(사용 예시)은 360×780 모바일 목업 위에서 보여주고, Type 6종 상태 매트릭스는 나란히 비교해야 해서 평면 목록으로 둔다(river 결정 2026-09-02 HD-2 선택지 A — D6 의 \"목업 위\"는 사용 예시를 가리킨다). 목업은 안내 화면 전용 크롬이며 dist 부품이 아니다.",
       "managedBy": "ui-library-guide"
+    },
+    "assist-button": {
+      "platform": "pc+mobile",
+      "archetype": "button-full",
+      "actionRequired": true,
+      "sizePlacement": "none",
+      "sizes": [],
+      "states": [
+        "default",
+        "hover",
+        "pressed",
+        "disabled"
+      ],
+      "variants": [],
+      "statesLayout": "row",
+      "note": "크기·variant 축이 없다 — State 4종을 한 표에서 본다(river 지시 2026-09-08, h32 하나뿐).",
+      "managedBy": "ui-library-guide"
+    },
+    "text-button": {
+      "platform": "pc+mobile",
+      "archetype": "button-full",
+      "actionRequired": true,
+      "sizePlacement": "none",
+      "sizes": [],
+      "states": [
+        "default",
+        "hover",
+        "pressed",
+        "disabled"
+      ],
+      "variants": [
+        "primary",
+        "secondary"
+      ],
+      "statesLayout": "row",
+      "note": "Variant(Primary·Secondary)를 행으로 두고 State 를 열로 둔다 — 크기 축이 없어 Mobile 도 같은 표 하나.",
+      "managedBy": "ui-library-guide"
+    },
+    "modal-content": {
+      "platform": "pc",
+      "archetype": "current-plus-action",
+      "actionRequired": true,
+      "sizePlacement": "matrix-rows",
+      "sizes": [
+        "md",
+        "lg",
+        "xl"
+      ],
+      "states": [],
+      "extraAxes": {
+        "footer": [
+          "single",
+          "dual"
+        ]
+      },
+      "statesLayout": "matrix",
+      "note": "정본에 상태 축이 없다 — Size(행) × Footer(열) 매트릭스. Action 은 실제로 열리는 콘텐츠 모달이고 상태 칸은 지면에 눕혀 보여주는 검수 표시다(페이지 전용 CSS). PC 전용(river 지시 2026-09-08).",
+      "managedBy": "ui-library-guide"
     }
   }
 }

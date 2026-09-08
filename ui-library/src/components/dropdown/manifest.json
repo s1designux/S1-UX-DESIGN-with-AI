@@ -2,7 +2,7 @@
   "id": "dropdown",
   "version": "0.1.0",
   "status": "approved",
-  "canonicalFingerprint": "c2a8547e03e34ac7f6e80a86c4131d20b98a419d48153ee9a428b31875ebe346",
+  "canonicalFingerprint": "ca753837e9116df28e401a555fe2f276cfeafb0df2c5ffe2951f0483f18e7fe6",
   "canonicalSources": [
     "plugins/figma-vars-installer/src/build-components.ts",
     "plugins/figma-vars-installer/src/vars-data.ts",
@@ -25,10 +25,10 @@
       "radius": "--radius-4",
       "border": "--border-width-1",
       "shadow": "--shadow-dropdown",
-      "minWidth": "140px (literal, not a token) — build-components.ts 는 트리거·패널·옵션 행을 전부 resize(140, …) 로 만든다. 별도 최소 규정이 없을 때는 설치기 기본값이 최소 크기라는 river 결정(2026-09-01)에 따라 웹 최소 폭으로 확정.",
-      "maxWidth": "320px (literal, not a token) — river 결정(2026-09-01): 옵션 글자가 길면 320px 까지 넓어지고, 그 이상은 줄바꿈한다(말줄임 아님). 정본에 320 에 대응하는 sizing 토큰이 없어 리터럴 px 로 표현했다(140 도 정본이 토큰이 아닌 리터럴로 씀).",
-      "widthGrowth": "width:max-content(1차 수정은 width:auto 로 두어 블록 요소가 부모 폭을 채우는 바람에 내용에 따라 커지지 않는 결함이 있었다 — river 2차 지시 2026-09-01 로 정정). select 는 트리거 폭에 맞추는 기존 동작을 유지해야 해서 select.css 가 자식 dropdown 의 width 만 100% 로 되돌린다(select.css:104-112, 배치 담당 범위). dropdown 자신의 min/max-width(140/320) clamp 는 그대로 유지된다.",
-      "source": "build-components.ts buildDropdown 1720-1728"
+      "minWidth": "100px (literal, not a token) — 목록 최소 폭(river 최종 확정 2026-09-07). 2026-09-08 river 결정으로 Figma 정본 build-components.ts 도 패널·옵션 행을 DD_MIN_W=100 으로 만든다(셀렉트 트리거만 140 유지).",
+      "maxWidth": "없음 — 상한 320px 은 폐기됐다(river 확정 2026-09-07). 폭을 넘는 옵션 글자는 줄바꿈이 아니라 말줄임(…) 으로 처리한다.",
+      "widthGrowth": "소비자(select.css·filter-chip.css)가 width:100% 로 트리거 폭을 물려주고, min-width:100px 이 하한을 잡는다 — 트리거가 100 미만이면 목록은 100px, 100 이상이면 목록 = 트리거 폭(규칙 ②③). dropdown 코어 단독 사용 시에만 width:max-content.",
+      "source": "build-components.ts buildDropdown(패널) · buildDropdownList(옵션 행) — 폭 상수 DD_MIN_W"
     },
     "option": {
       "xxsm": {
@@ -67,7 +67,7 @@
     "panelStateAxis": "정본 buildDropdown 은 패널 자체의 state 축이 없다(항상 State=Default) — 상태는 옵션 행이 담당한다. 패널에 별도 open/closed 시각 변형을 만들지 않았다.",
     "optionFocus": "정본에 focus 변형이 없다. 2026-09-02 river 결정으로 웹에서도 만들지 않으며, 키보드 초점은 브라우저 기본 표시에 맡긴다.",
     "mixed": "「전체 선택」의 aria-checked 는 true/false 만 쓴다. 정본에 부분선택(mixed) 모양이 없다(river 결정 2026-08-31, D2).",
-    "widthClamp": "패널·옵션 폭의 min/max(140px/320px)는 정본에 이름 붙은 sizing 토큰이 없어 리터럴 px 로 뒀다 — 정본 build-components.ts 자체도 140 을 토큰이 아닌 resize() 리터럴로 쓴다(river 결정 2026-09-01)."
+    "widthClamp": "패널·옵션 폭의 하한 100px 은 정본에 이름 붙은 sizing 토큰이 없어 리터럴 px 로 뒀다 — 정본 build-components.ts 도 상수 DD_MIN_W=100 리터럴로 쓴다(river 결정 2026-09-08)."
   },
   "parts": [
     "option",

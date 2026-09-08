@@ -1,0 +1,476 @@
+<title>메커니즘 승인 9건</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+  :root{
+    --ground:#F6F7F9; --surface:#FFFFFF; --surface-sunk:#F0F2F5;
+    --ink:#171A1F; --ink-mid:#3D4550; --muted:#616A78; --line:#E1E5EA; --line-soft:#EDF0F3;
+    --accent:#1F5FBF; --accent-soft:#E8F0FC; --accent-ink:#17498F;
+    --amber:#A96A12; --amber-soft:#FBF0DC;
+    --green:#2C7A5A; --green-soft:#E4F2EB;
+    --clash:#B4453C; --clash-soft:#FAE9E7;
+    --on-accent:#FFFFFF;
+    --shadow:0 1px 2px rgba(23,26,31,.05), 0 8px 20px -12px rgba(23,26,31,.18);
+    --radius:10px;
+    --sans:"IBM Plex Sans KR", system-ui, -apple-system, "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+    --mono:"IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --ground:#101318; --surface:#191D24; --surface-sunk:#141821;
+      --ink:#E8EBEF; --ink-mid:#C2C9D3; --muted:#98A1AE; --line:#2A303A; --line-soft:#232833;
+      --accent:#6BA3F0; --accent-soft:#17243A; --accent-ink:#9CC3F7;
+      --amber:#D9A254; --amber-soft:#2E2413;
+      --green:#67BF9B; --green-soft:#14261F;
+      --clash:#E38178; --clash-soft:#2E1917;
+    --on-accent:#0E1319;
+      --on-accent:#0E1319;
+      --shadow:0 1px 2px rgba(0,0,0,.4), 0 8px 24px -14px rgba(0,0,0,.7);
+    }
+  }
+  :root[data-theme="dark"]{
+    --ground:#101318; --surface:#191D24; --surface-sunk:#141821;
+    --ink:#E8EBEF; --ink-mid:#C2C9D3; --muted:#98A1AE; --line:#2A303A; --line-soft:#232833;
+    --accent:#6BA3F0; --accent-soft:#17243A; --accent-ink:#9CC3F7;
+    --amber:#D9A254; --amber-soft:#2E2413;
+    --green:#67BF9B; --green-soft:#14261F;
+    --clash:#E38178; --clash-soft:#2E1917;
+    --shadow:0 1px 2px rgba(0,0,0,.4), 0 8px 24px -14px rgba(0,0,0,.7);
+  }
+
+  *{box-sizing:border-box}
+  body{
+    margin:0; background:var(--ground); color:var(--ink);
+    font-family:var(--sans); font-size:15px; line-height:1.65;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:780px; margin:0 auto; padding:0 20px 80px}
+
+  /* ── 머리말 ───────────────────────────────── */
+  header.top{padding:52px 0 28px}
+  .eyebrow{
+    font-family:var(--mono); font-size:11.5px; font-weight:500; letter-spacing:.14em;
+    text-transform:uppercase; color:var(--muted); margin:0 0 12px;
+  }
+  h1{
+    font-size:clamp(26px,5.2vw,34px); line-height:1.28; font-weight:700;
+    letter-spacing:-.018em; margin:0 0 14px; text-wrap:balance;
+  }
+  .lede{font-size:15.5px; color:var(--ink-mid); margin:0; max-width:60ch}
+  .lede strong{font-weight:600; color:var(--ink)}
+
+  /* ── 진행 막대 ─────────────────────────────── */
+  .status{
+    position:sticky; top:0; z-index:20; margin:26px -20px 0; padding:11px 20px;
+    background:color-mix(in srgb, var(--ground) 88%, transparent);
+    backdrop-filter:blur(10px); border-bottom:1px solid var(--line);
+    display:flex; align-items:center; gap:14px; flex-wrap:wrap;
+  }
+  .status .count{font-size:13.5px; font-weight:600; white-space:nowrap}
+  .status .count b{font-family:var(--mono); font-weight:500; color:var(--accent)}
+  .bar{flex:1 1 140px; height:5px; min-width:110px; border-radius:99px; background:var(--line); overflow:hidden}
+  .bar i{display:block; height:100%; width:0%; background:var(--accent); transition:width .35s ease}
+  .savehint{font-size:12px; color:var(--muted); white-space:nowrap}
+
+  /* ── 묶음 ─────────────────────────────────── */
+  section.group{margin-top:44px}
+  .ghead{display:flex; align-items:baseline; gap:10px; flex-wrap:wrap; margin-bottom:6px}
+  .ghead h2{font-size:18px; font-weight:600; letter-spacing:-.012em; margin:0}
+  .gtag{
+    font-family:var(--mono); font-size:11px; font-weight:500; padding:2px 7px;
+    border-radius:5px; white-space:nowrap;
+  }
+  .gtag.clash{background:var(--clash-soft); color:var(--clash)}
+  .gtag.product{background:var(--amber-soft); color:var(--amber)}
+  .gtag.std{background:var(--green-soft); color:var(--green)}
+  .gnote{margin:0 0 18px; font-size:13.5px; color:var(--muted); max-width:62ch}
+
+  .bulk{
+    display:flex; align-items:center; gap:12px; flex-wrap:wrap;
+    margin:0 0 18px; padding:11px 14px; border-radius:var(--radius);
+    background:var(--green-soft); border:1px solid color-mix(in srgb, var(--green) 26%, transparent);
+  }
+  .bulk p{margin:0; font-size:13.5px; color:var(--ink-mid); flex:1 1 240px}
+  .bulk button{
+    font-family:var(--sans); font-size:13.5px; font-weight:600; cursor:pointer;
+    padding:7px 14px; border-radius:7px; border:1px solid var(--green);
+    background:var(--surface); color:var(--green);
+  }
+  .bulk button:hover{background:var(--surface-sunk)}
+
+  /* ── 카드 ─────────────────────────────────── */
+  .card{
+    background:var(--surface); border:1px solid var(--line); border-radius:var(--radius);
+    padding:20px 20px 16px; margin-bottom:14px; box-shadow:var(--shadow);
+  }
+  .card[data-answered="1"]{border-color:color-mix(in srgb, var(--accent) 42%, var(--line))}
+  .chead{display:flex; align-items:baseline; gap:9px; margin-bottom:13px; flex-wrap:wrap}
+  .mid{
+    font-family:var(--mono); font-size:11.5px; font-weight:500; color:var(--accent-ink);
+    background:var(--accent-soft); padding:2px 7px; border-radius:5px; white-space:nowrap;
+  }
+  .chead h3{font-size:16.5px; font-weight:600; letter-spacing:-.012em; margin:0; flex:1 1 auto; text-wrap:balance}
+  .comp{font-family:var(--mono); font-size:11.5px; color:var(--muted); white-space:nowrap}
+
+  dl{margin:0 0 15px; display:grid; grid-template-columns:auto 1fr; gap:7px 13px; align-items:baseline}
+  dt{
+    font-size:11.5px; font-weight:600; color:var(--muted); white-space:nowrap;
+    letter-spacing:.02em; padding-top:1px;
+  }
+  dd{margin:0; font-size:14.5px; color:var(--ink-mid); line-height:1.6}
+  dd .lit{
+    font-family:var(--mono); font-size:13px; background:var(--surface-sunk);
+    padding:1px 5px; border-radius:4px; color:var(--ink); white-space:nowrap;
+  }
+  dd.warn{color:var(--clash)}
+  @media (max-width:540px){
+    dl{grid-template-columns:1fr; gap:2px 0}
+    dt{margin-top:9px}
+  }
+
+  .choices{display:flex; gap:8px; flex-wrap:wrap; padding-top:13px; border-top:1px solid var(--line-soft)}
+  .choices button{
+    font-family:var(--sans); font-size:14px; font-weight:500; cursor:pointer; text-align:left;
+    padding:8px 13px; border-radius:8px; border:1px solid var(--line);
+    background:var(--surface); color:var(--ink-mid); transition:.13s ease;
+    flex:1 1 auto; min-width:0;
+  }
+  .choices button:hover{border-color:var(--accent); color:var(--accent); background:var(--accent-soft)}
+  .choices button[aria-pressed="true"]{
+    background:var(--accent); border-color:var(--accent); color:var(--on-accent); font-weight:600;
+  }
+  .choices button.hold[aria-pressed="true"]{background:var(--muted); border-color:var(--muted); color:var(--surface)}
+  .choices button:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+
+  .memo{margin-top:11px; display:none}
+  .card[data-answered="1"] .memo{display:block}
+  .memo input{
+    width:100%; font-family:var(--sans); font-size:13.5px; padding:8px 11px;
+    border-radius:7px; border:1px solid var(--line); background:var(--surface-sunk); color:var(--ink);
+  }
+  .memo input:focus-visible{outline:2px solid var(--accent); outline-offset:1px; border-color:var(--accent)}
+  .memo input::placeholder{color:var(--muted)}
+
+  /* ── 덧붙임 ───────────────────────────────── */
+  .extra{
+    margin-top:44px; padding:20px; border-radius:var(--radius);
+    background:var(--surface-sunk); border:1px dashed var(--line);
+  }
+  .extra h2{font-size:16px; font-weight:600; margin:0 0 4px}
+  .extra > p{margin:0 0 16px; font-size:13.5px; color:var(--muted); max-width:62ch}
+  .extra .item{padding:13px 0; border-top:1px solid var(--line)}
+  .extra .item h4{margin:0 0 4px; font-size:14.5px; font-weight:600}
+  .extra .item p{margin:0; font-size:13.5px; color:var(--ink-mid)}
+
+  .banner{
+    margin:20px 0 0; padding:11px 14px; border-radius:8px; font-size:13.5px;
+    background:var(--amber-soft); color:var(--amber);
+    border:1px solid color-mix(in srgb, var(--amber) 30%, transparent);
+  }
+  footer.foot{margin-top:40px; font-size:12.5px; color:var(--muted); line-height:1.7}
+  footer.foot code{font-family:var(--mono); font-size:11.5px}
+  @media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+
+<div class="wrap">
+<header class="top">
+  <p class="eyebrow">정본 승인 감사 · HD-5 후속</p>
+  <h1>제가 임의로 정했던 동작 9건</h1>
+  <p class="lede">정본(Figma·설치기 코드)에 규정이 없어서 <strong>제가 판단해 정한 동작</strong>들입니다.
+  HD-5 결정에 따라 이제 river 님 승인 대상입니다. <strong>지금 다 잘 돌아가고 있고, 안 정하면 현재 동작이 그대로 유지됩니다</strong> — 급한 건 아닙니다.</p>
+</header>
+
+<div class="status">
+  <span class="count"><b id="done">0</b> / 9 결정함</span>
+  <span class="bar"><i id="fill"></i></span>
+  <span class="savehint" id="hint">누르면 바로 저장됩니다</span>
+</div>
+
+<!-- ── 그룹 1 ── -->
+<section class="group">
+  <div class="ghead">
+    <h2>정본과 웹이 어긋나 있는 것</h2><span class="gtag clash">1건 · 손봐야 정리됨</span>
+  </div>
+  <p class="gnote">나머지 8건은 "지금대로 두자"로 끝나지만, 이 1건은 어느 쪽으로 정하든 <strong>고칠 것이 남습니다.</strong></p>
+
+  <div class="card" data-id="m7">
+    <div class="chead"><span class="mid">M-7</span><h3>선택한 날짜에 마우스를 올렸을 때 색</h3><span class="comp">달력</span></div>
+    <dl>
+      <dt>무엇</dt><dd>이미 고른 날짜에 마우스를 올리면 조금 더 진한 파랑으로 바뀝니다.</dd>
+      <dt>왜 결정이<br>필요한가</dt><dd class="warn">그 색은 <strong>색표(정본)에는 값이 있는데, Figma 컴포넌트에는 연결돼 있지 않습니다.</strong> 웹만 쓰고 있어서 Figma와 웹이 서로 다른 상태입니다.</dd>
+      <dt>안 정하면</dt><dd>Figma엔 없고 웹에만 있는 채로 계속 갑니다 — 나중에 누가 봐도 어느 쪽이 맞는지 모릅니다.</dd>
+    </dl>
+    <div class="choices">
+      <button data-c="A">A · 웹이 맞다 → Figma에도 연결</button>
+      <button data-c="B">B · 안 쓴다 → 웹에서 뺀다</button>
+      <button data-c="hold" class="hold">보류</button>
+    </div>
+    <div class="memo"><input type="text" placeholder="덧붙일 말 (선택)"></div>
+  </div>
+</section>
+
+<!-- ── 그룹 2 ── -->
+<section class="group">
+  <div class="ghead">
+    <h2>제품 판단이 들어가는 것</h2><span class="gtag product">3건 · 취향·정책</span>
+  </div>
+  <p class="gnote">기술적으로는 어느 쪽이든 되고, <strong>어느 쪽이 더 나은 경험인가</strong>의 문제입니다.</p>
+
+  <div class="card" data-id="m2">
+    <div class="chead"><span class="mid">M-2</span><h3>돌림판에서 '적용' 버튼이 처음부터 눌리는 것</h3><span class="comp">시간 선택</span></div>
+    <dl>
+      <dt>무엇</dt><dd>시간 고르는 방식이 두 가지입니다. <strong>목록</strong>에서 고르는 방식은 시·분을 다 골라야 '확인'이 활성화됩니다. <strong>돌림판(휠)</strong> 방식은 열자마자 '적용'이 눌립니다.</dd>
+      <dt>왜 결정이<br>필요한가</dt><dd>두 방식의 규칙이 서로 다릅니다. 제 근거는 "돌림판은 열자마자 가운데에 항상 값이 있어서 <em>아직 안 골랐음</em> 상태가 없다"였습니다.</dd>
+      <dt>안 정하면</dt><dd>지금대로 — 돌림판은 항상 적용 가능.</dd>
+    </dl>
+    <div class="choices">
+      <button data-c="A">A · 지금대로 (항상 눌림)</button>
+      <button data-c="B">B · 한 번은 돌려야 눌리게</button>
+      <button data-c="hold" class="hold">보류</button>
+    </div>
+    <div class="memo"><input type="text" placeholder="덧붙일 말 (선택)"></div>
+  </div>
+
+  <div class="card" data-id="m9">
+    <div class="chead"><span class="mid">M-9</span><h3>기간을 고를 때 칸에 보이는 문구</h3><span class="comp">달력</span></div>
+    <dl>
+      <dt>무엇</dt><dd>기간을 다 고르면 <span class="lit">26.09.01 - 26.09.08</span>, 시작만 골랐으면 <span class="lit">26.09.01 - </span> 로 보입니다.</dd>
+      <dt>왜 결정이<br>필요한가</dt><dd>정본에 기간 문구 규정이 없어 제가 정했습니다. <strong>제가 이걸 "승인 안 받아도 되는 것"이라고 스스로 판정했었는데</strong>, 바로 그 판정이 HD-5를 만든 계기였습니다. 그래서 다시 올립니다.</dd>
+      <dt>안 정하면</dt><dd>지금 문구 그대로.</dd>
+    </dl>
+    <div class="choices">
+      <button data-c="A">A · 지금대로 (<span class="lit">-</span> 사용)</button>
+      <button data-c="B">B · 물결표로 (<span class="lit">~</span>)</button>
+      <button data-c="hold" class="hold">보류</button>
+    </div>
+    <div class="memo"><input type="text" placeholder="다른 문구를 원하시면 여기에 적어주세요"></div>
+  </div>
+
+  <div class="card" data-id="m10">
+    <div class="chead"><span class="mid">M-10</span><h3>목록이 열려 있는 동안 고른 값이 흐리게 보이는 것</h3><span class="comp">셀렉트</span></div>
+    <dl>
+      <dt>무엇</dt><dd>값을 고른 뒤 목록을 다시 열면, <strong>열려 있는 동안은</strong> '열림' 모양(흐린 글자)으로 보이고 닫으면 고른 값이 진하게 돌아옵니다.</dd>
+      <dt>왜 결정이<br>필요한가</dt><dd>정본은 '열림'과 '값 있음'을 각각만 정해두고, <strong>둘이 겹칠 때</strong> 어느 쪽으로 보일지가 없습니다.</dd>
+      <dt>안 정하면</dt><dd>지금대로 — 열려 있으면 '열림' 모양이 이깁니다.</dd>
+    </dl>
+    <div class="choices">
+      <button data-c="A">A · 지금대로 (열림 우선)</button>
+      <button data-c="B">B · 고른 값이 계속 진하게</button>
+      <button data-c="hold" class="hold">보류</button>
+    </div>
+    <div class="memo"><input type="text" placeholder="덧붙일 말 (선택)"></div>
+  </div>
+</section>
+
+<!-- ── 그룹 3 ── -->
+<section class="group">
+  <div class="ghead">
+    <h2>웹에서 흔히 쓰는 표준 동작</h2><span class="gtag std">5건 · 확인만</span>
+  </div>
+  <p class="gnote">정본에 규정이 없어 제가 정했지만, <strong>웹에서 일반적으로 그렇게 하는 방식</strong>을 따랐습니다. 바꿀 이유가 없다면 한 번에 넘기셔도 됩니다.</p>
+
+  <div class="bulk">
+    <p>5건 모두 "지금대로 인정"으로 한 번에 처리합니다.</p>
+    <button id="bulkok">5건 한 번에 인정</button>
+  </div>
+
+  <div class="card" data-id="m3">
+    <div class="chead"><span class="mid">M-3</span><h3>목록이 길면 세로로 굴려 보는 것</h3><span class="comp">시간 선택</span></div>
+    <dl>
+      <dt>무엇</dt><dd>시간 목록이 길면 세로 스크롤로 봅니다.</dd>
+      <dt>왜 결정이<br>필요한가</dt><dd>정본은 그림이라 넘치는 부분이 <strong>잘려만</strong> 있고 굴리는 동작 규정이 없습니다.</dd>
+      <dt>안 정하면</dt><dd>지금대로 — 일반 세로 스크롤.</dd>
+    </dl>
+    <div class="choices">
+      <button data-c="A">A · 지금대로</button>
+      <button data-c="B">B · 다른 방식을 원한다</button>
+      <button data-c="hold" class="hold">보류</button>
+    </div>
+    <div class="memo"><input type="text" placeholder="덧붙일 말 (선택)"></div>
+  </div>
+
+  <div class="card" data-id="m4">
+    <div class="chead"><span class="mid">M-4</span><h3>달력이 열리는 위치</h3><span class="comp">달력</span></div>
+    <dl>
+      <dt>무엇</dt><dd>날짜 칸 <strong>바로 아래 8px</strong> 띄워 열립니다. 화면 아래 공간이 모자라면 <strong>위로 뒤집혀</strong> 열립니다.</dd>
+      <dt>왜 결정이<br>필요한가</dt><dd>정본은 "아래에 붙는다"까지만 있고, 간격 값과 뒤집기 규정이 없습니다.</dd>
+      <dt>안 정하면</dt><dd>지금대로 — 8px, 공간 없으면 위로.</dd>
+    </dl>
+    <div class="choices">
+      <button data-c="A">A · 지금대로</button>
+      <button data-c="B">B · 간격을 바꾸고 싶다</button>
+      <button data-c="hold" class="hold">보류</button>
+    </div>
+    <div class="memo"><input type="text" placeholder="원하는 간격이 있으면 적어주세요"></div>
+  </div>
+
+  <div class="card" data-id="m5">
+    <div class="chead"><span class="mid">M-5</span><h3>화살표를 한 번 누를 때 움직이는 크기</h3><span class="comp">달력</span></div>
+    <dl>
+      <dt>무엇</dt><dd>날짜 화면에서는 <strong>한 달</strong>, 월 화면에서는 <strong>1년</strong>, 연 화면에서는 <strong>12년</strong>씩 넘어갑니다.</dd>
+      <dt>왜 결정이<br>필요한가</dt><dd>정본은 화살표 그림을 세 화면이 공용으로 쓰는데, 각 화면에서 얼마씩 움직이는지가 없습니다.</dd>
+      <dt>안 정하면</dt><dd>지금대로.</dd>
+    </dl>
+    <div class="choices">
+      <button data-c="A">A · 지금대로</button>
+      <button data-c="B">B · 다르게 하고 싶다</button>
+      <button data-c="hold" class="hold">보류</button>
+    </div>
+    <div class="memo"><input type="text" placeholder="덧붙일 말 (선택)"></div>
+  </div>
+
+  <div class="card" data-id="m6">
+    <div class="chead"><span class="mid">M-6</span><h3>달력을 키보드로 쓰는 방법</h3><span class="comp">달력</span></div>
+    <dl>
+      <dt>무엇</dt><dd>화살표 = 날짜 이동, Home/End = 그 주의 처음·끝, PageUp/Down = 달 넘김, Enter = 선택, Esc = 닫기.</dd>
+      <dt>왜 결정이<br>필요한가</dt><dd>정본에 키보드 규정이 없어, <strong>이미 승인된</strong> 셀렉트·시간 선택의 키 규칙을 달력 격자로 넓혔습니다.</dd>
+      <dt>안 정하면</dt><dd>지금대로. 마우스를 못 쓰는 분에게 필요한 부분이라 없애는 건 권하지 않습니다.</dd>
+    </dl>
+    <div class="choices">
+      <button data-c="A">A · 지금대로</button>
+      <button data-c="B">B · 다르게 하고 싶다</button>
+      <button data-c="hold" class="hold">보류</button>
+    </div>
+    <div class="memo"><input type="text" placeholder="덧붙일 말 (선택)"></div>
+  </div>
+
+  <div class="card" data-id="m8">
+    <div class="chead"><span class="mid">M-8</span><h3>날짜 값을 주고받는 형식</h3><span class="comp">달력</span></div>
+    <dl>
+      <dt>무엇</dt><dd>화면에 <strong>보이는</strong> 것은 <span class="lit">26.09.08</span> (정본 그대로). 프로그램끼리 <strong>주고받는</strong> 값은 <span class="lit">2026-09-08</span> 입니다.</dd>
+      <dt>왜 결정이<br>필요한가</dt><dd>보이는 형식은 정본에 있지만, 주고받는 값 형식은 규칙이 없어 국제표준(ISO)을 골랐습니다. 개발자에게 전달되는 부분입니다.</dd>
+      <dt>안 정하면</dt><dd>지금대로 — 보이는 건 그대로, 값은 국제표준.</dd>
+    </dl>
+    <div class="choices">
+      <button data-c="A">A · 지금대로</button>
+      <button data-c="B">B · 다른 형식을 원한다</button>
+      <button data-c="hold" class="hold">보류</button>
+    </div>
+    <div class="memo"><input type="text" placeholder="덧붙일 말 (선택)"></div>
+  </div>
+</section>
+
+<!-- ── 덧붙임 ── -->
+<div class="extra">
+  <h2>정리하다가 추가로 찾은 것 2건</h2>
+  <p>감사 문서의 9건 목록에는 없었지만, 코드를 읽다 나왔습니다. <strong>지금 결정하실 것은 아니고</strong>, 알고만 계시면 됩니다.</p>
+  <div class="item">
+    <h4>달력의 한 주가 어느 요일에 시작하는지가 갈라져 있습니다</h4>
+    <p>웹과 설명 문서는 <strong>일요일</strong> 시작인데, Figma 컴포넌트는 <strong>월요일</strong> 시작으로 그려져 있습니다.
+    이미 <span class="lit">CU-1</span> 로 기록돼 있고 "Figma 반영은 별도 작업"으로 미뤄져 있습니다. 승인 대기가 아니라 <strong>정본끼리 어긋난 것</strong>이라, 언젠가 한쪽으로 맞춰야 합니다.</p>
+  </div>
+  <div class="item">
+    <h4>'날짜+시간' 컴포넌트의 날짜 탭이 아직 빈 자리입니다</h4>
+    <p>탭 전환만 되고 안에 실제 달력이 안 들어가 있습니다(안내 문구만 있는 자리표시자).
+    정본도 탭 조립까지만 규정하고 날짜 화면 자체가 없어서 그대로 뒀습니다. 실제로 쓰시려면 별도 작업이 필요합니다.</p>
+  </div>
+</div>
+
+<div class="banner" id="ro" hidden>이 화면은 <strong>보기 전용</strong>으로 열렸습니다 — 누른 값이 저장되지 않습니다. 결정 내용을 대화로 알려주세요.</div>
+
+<footer class="foot">
+  근거는 저장소의 각 컴포넌트 <code>manifest.json</code> 의 <code>notInCanon</code> 항목을 그대로 읽어 정리했습니다 —
+  <code>ui-library/src/components/{time-picker, date-picker, select}</code>.<br>
+  감사 원본: <code>reports/canon-approval-audit-2026-09-07.md</code> §3 · M-1(휠 수치)과 M-11(드롭다운 폭)은 이미 해소돼 목록에서 빠졌습니다.
+</footer>
+</div>
+
+<script>
+(function(){
+  var IDS = ["m7","m2","m9","m10","m3","m4","m5","m6","m8"];
+  var BULK = ["m3","m4","m5","m6","m8"];
+  var state = {};      // id -> {choice, note}
+  var db = null;
+  var cards = {};
+
+  document.querySelectorAll(".card").forEach(function(c){ cards[c.dataset.id] = c; });
+
+  function render(id){
+    var card = cards[id]; if(!card) return;
+    var s = state[id] || {};
+    card.dataset.answered = s.choice ? "1" : "0";
+    card.querySelectorAll(".choices button").forEach(function(b){
+      b.setAttribute("aria-pressed", String(s.choice === b.dataset.c));
+    });
+    var inp = card.querySelector(".memo input");
+    if(inp && document.activeElement !== inp) inp.value = s.note || "";
+  }
+
+  function tally(){
+    var n = IDS.filter(function(i){ return state[i] && state[i].choice; }).length;
+    document.getElementById("done").textContent = n;
+    document.getElementById("fill").style.width = (n/IDS.length*100) + "%";
+  }
+
+  function paintAll(){ IDS.forEach(render); tally(); }
+
+  function save(id){
+    var s = state[id]; if(!s) return;
+    if(!db) return;
+    db.doc("decisions/" + id)
+      .set({ choice: s.choice || "", note: s.note || "", at: new Date().toISOString() })
+      .catch(function(e){
+        var h = document.getElementById("hint");
+        h.textContent = (e && e.code === "revoked") ? "저장 권한이 없습니다" : "저장하지 못했습니다 — 다시 눌러보세요";
+      });
+  }
+
+  // 클릭 — db 없이도 화면에는 즉시 반영된다.
+  document.querySelectorAll(".card").forEach(function(card){
+    var id = card.dataset.id;
+    card.querySelectorAll(".choices button").forEach(function(btn){
+      btn.addEventListener("click", function(){
+        var s = state[id] || (state[id] = {});
+        s.choice = (s.choice === btn.dataset.c) ? "" : btn.dataset.c;
+        render(id); tally(); save(id);
+      });
+    });
+    var inp = card.querySelector(".memo input");
+    if(inp){
+      var t = null;
+      inp.addEventListener("input", function(){
+        var s = state[id] || (state[id] = {});
+        s.note = inp.value;
+        clearTimeout(t); t = setTimeout(function(){ save(id); }, 600);
+      });
+    }
+  });
+
+  document.getElementById("bulkok").addEventListener("click", function(){
+    BULK.forEach(function(id){
+      var s = state[id] || (state[id] = {});
+      s.choice = "A"; render(id); save(id);
+    });
+    tally();
+  });
+
+  paintAll();
+
+  // 저장소 연결 — 없으면 보기 전용으로 알린다.
+  if (window.claude && typeof window.claude.use === "function") {
+    window.claude.use("db").then(function(d){
+      if(!d){ document.getElementById("ro").hidden = false; document.getElementById("hint").textContent = "보기 전용"; return; }
+      db = d;
+      db.collection("decisions").onSnapshot(function(snap){
+        snap.docs.forEach(function(doc){
+          var v = doc.data() || {};
+          var cur = state[doc.id] || (state[doc.id] = {});
+          if(document.activeElement !== (cards[doc.id] && cards[doc.id].querySelector(".memo input"))){
+            cur.note = v.note || "";
+          }
+          cur.choice = v.choice || "";
+        });
+        paintAll();
+      }, function(){
+        document.getElementById("hint").textContent = "연결이 끊겼습니다 — 새로고침 해주세요";
+      });
+    }).catch(function(){
+      document.getElementById("ro").hidden = false;
+    });
+  } else {
+    document.getElementById("ro").hidden = false;
+    document.getElementById("hint").textContent = "보기 전용";
+  }
+})();
+</script>

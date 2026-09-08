@@ -9,6 +9,8 @@
   <link rel="stylesheet" href="../dist/assets/css/typography.css">
   <link rel="stylesheet" href="../dist/components/input.css">
   <link rel="stylesheet" href="../dist/components/button.css">
+  <link rel="stylesheet" href="../dist/components/assist-button.css">
+  <link rel="stylesheet" href="../dist/components/text-button.css">
   <link rel="stylesheet" href="../dist/components/checkbox.css">
   <link rel="stylesheet" href="../dist/components/radio.css">
   <link rel="stylesheet" href="../dist/components/toggle.css">
@@ -22,6 +24,7 @@
   <link rel="stylesheet" href="../dist/components/multi-toggle.css">
   <link rel="stylesheet" href="../dist/components/table.css">
   <link rel="stylesheet" href="../dist/components/modal.css">
+  <link rel="stylesheet" href="../dist/components/modal-content.css">
   <link rel="stylesheet" href="../dist/components/mobile-bottom-nav.css">
   <link rel="stylesheet" href="../dist/components/mobile-header.css">
   <link rel="stylesheet" href="../dist/components/time-picker.css">
@@ -51,6 +54,8 @@
       </div>
     </div>
     <button type="button" data-s1-component="button" data-variant="primary" data-size="md"><span data-s1-part="label">확인</span></button>
+    <button type="button" data-s1-component="assist-button"><span data-s1-part="label">보조버튼</span></button>
+    <button type="button" data-s1-component="text-button" data-variant="primary"><span data-s1-part="label">텍스트버튼</span></button>
     <div data-s1-component="checkbox">
       <input type="checkbox" id="consumer-agree" data-s1-part="control">
       <label data-s1-part="label" for="consumer-agree">선택 항목</label>
@@ -173,6 +178,25 @@
         </div>
       </div>
     </div>
+    <button type="button" data-s1-component="button" data-variant="secondary" data-size="md" data-consumer-open-modal-content><span data-s1-part="label">콘텐츠 모달 열기</span></button>
+    <div data-s1-component="modal-content" data-size="md" data-footer="dual" hidden>
+      <div data-s1-part="overlay"></div>
+      <div data-s1-part="panel" role="dialog" aria-modal="true" aria-labelledby="consumer-modal-content-title" tabindex="-1">
+        <div data-s1-part="header">
+          <h2 data-s1-part="title" id="consumer-modal-content-title">제목 영역</h2>
+          <button type="button" data-s1-part="close" aria-label="닫기"></button>
+        </div>
+        <div data-s1-part="content-area">
+          <div data-s1-part="content">
+            <span data-s1-part="content-label">컨텐츠 영역</span>
+          </div>
+        </div>
+        <div data-s1-part="footer">
+          <button type="button" data-s1-component="button" data-variant="secondary" data-size="xxsm" data-consumer-close-modal-content><span data-s1-part="label">취소</span></button>
+          <button type="button" data-s1-component="button" data-variant="primary" data-size="xxsm" data-consumer-close-modal-content><span data-s1-part="label">확인</span></button>
+        </div>
+      </div>
+    </div>
     <!-- 정본은 "탭 한 칸"만 부품으로 만들고 4칸 바는 부품이 아니다(build-components.ts:2979).
          바의 가로 배열·배경은 화면 소유라 이 빈 소비자 화면에서는 일부러 칠하지 않는다 —
          여기서 증명할 것은 "배포본만으로 탭 한 칸이 제대로 보이나"이고, 부품이 아닌 것을
@@ -226,6 +250,8 @@
     import "../dist/components/mobile-header.js";
     import { init as initInput } from "../dist/components/input.js";
     import "../dist/components/button.js";
+    import "../dist/components/assist-button.js";
+    import "../dist/components/text-button.js";
     import "../dist/components/checkbox.js";
     import "../dist/components/radio.js";
     import { init as initToggle } from "../dist/components/toggle.js";
@@ -239,6 +265,7 @@
     import { init as initMultiToggle } from "../dist/components/multi-toggle.js";
     import { init as initTable } from "../dist/components/table.js";
     import { init as initModal } from "../dist/components/modal.js";
+    import { init as initModalContent } from "../dist/components/modal-content.js";
     import { init as initTimePicker } from "../dist/components/time-picker.js";
     import { init as initDatePicker } from "../dist/components/date-picker.js";
     document.querySelectorAll('[data-s1-component="input"]').forEach((root) => initInput(root));
@@ -257,6 +284,10 @@
     const consumerModalApi = initModal(consumerModal);
     document.querySelector("[data-consumer-open-modal]")?.addEventListener("click", () => consumerModalApi?.open());
     consumerModal?.querySelectorAll("[data-consumer-close-modal]").forEach((button) => button.addEventListener("click", () => consumerModalApi?.close({ reason: "footer-button" })));
+    const consumerModalContent = document.querySelector('[data-s1-component="modal-content"]');
+    const consumerModalContentApi = initModalContent(consumerModalContent);
+    document.querySelector("[data-consumer-open-modal-content]")?.addEventListener("click", () => consumerModalContentApi?.open());
+    consumerModalContent?.querySelectorAll("[data-consumer-close-modal-content]").forEach((button) => button.addEventListener("click", () => consumerModalContentApi?.close({ reason: "footer-button" })));
   </script>
 </body>
 </html>

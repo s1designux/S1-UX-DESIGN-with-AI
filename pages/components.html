@@ -1789,6 +1789,8 @@
         </div>
         <div class="comp-nav">
           <button class="comp-nav-btn is-active" data-category="actions" data-platforms="pc mobile" onclick="showSection('button', this)">Button</button>
+          <button class="comp-nav-btn" data-category="actions" data-platforms="pc mobile" onclick="showSection('assist-button', this)">Assist Button</button>
+          <button class="comp-nav-btn" data-category="actions" data-platforms="pc mobile" onclick="showSection('text-button', this)">Text Button</button>
           <button class="comp-nav-btn" data-category="selection" data-platforms="pc mobile" onclick="showSection('checkbox', this)">Checkbox</button>
           <button class="comp-nav-btn" data-category="selection" data-platforms="pc mobile" onclick="showSection('radio', this)">Radio</button>
           <button class="comp-nav-btn" data-category="selection" data-platforms="pc mobile" onclick="showSection('toggle', this)">Toggle</button>
@@ -1811,6 +1813,7 @@
           <button class="comp-nav-btn" data-category="navigation" data-platforms="pc" onclick="showSection('footer', this)" disabled>Footer</button>
           <button class="comp-nav-btn" data-category="navigation" data-platforms="pc" onclick="showSection('login-gnb', this)" disabled>Login GNB</button>
           <button class="comp-nav-btn" data-category="overlay" data-platforms="pc mobile" onclick="showSection('modal', this)">Modal</button>
+          <button class="comp-nav-btn" data-category="overlay" data-platforms="pc" onclick="showSection('modal-content', this)">Modal Content</button>
         </div><!-- /comp-nav -->
       </div><!-- /component-filter -->
 
@@ -1870,6 +1873,12 @@
 
       <!-- Approved Button guide: ui-library-guide.js renders from ui-library/dist -->
       <section class="comp-section is-active" id="button" data-cov-states="default,hover,pressed,disabled" data-cov-sizes="md,xsm,xxsm,lg" data-cov-variants="primary,secondary,blue-line"></section>
+
+      <!-- Approved Assist Button guide: ui-library-guide.js renders from ui-library/dist -->
+      <section class="comp-section" id="assist-button" data-cov-states="default,hover,pressed,disabled"></section>
+
+      <!-- Approved Text Button guide: ui-library-guide.js renders from ui-library/dist -->
+      <section class="comp-section" id="text-button" data-cov-states="default,hover,pressed,disabled" data-cov-variants="primary,secondary"></section>
 
       <!-- Approved Textarea guide: ui-library-guide.js renders from ui-library/dist -->
       <section class="comp-section" id="textarea" data-cov-states="default,focus,filled,disabled,readonly"></section>
@@ -2461,6 +2470,9 @@
       <!-- ═══ MODAL ═══ -->
       <!-- Approved Modal guide: ui-library-guide.js renders from ui-library/dist -->
       <section class="comp-section" id="modal" data-cov-breaks="pc,mobile" data-cov-footer="single,dual"></section>
+
+      <!-- Approved Modal Content guide: ui-library-guide.js renders from ui-library/dist -->
+      <section class="comp-section" id="modal-content" data-cov-sizes="md,lg,xl" data-cov-footer="single,dual"></section>
 
 
       <!-- Approved Table guide: ui-library-guide.js renders from ui-library/dist -->

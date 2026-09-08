@@ -2,7 +2,7 @@
   "id": "modal",
   "version": "0.1.0",
   "status": "approved",
-  "canonicalFingerprint": "a0d04611bebf49ae9db66c3ca825c753199f23debfa98cd2a78f6d071a060fd4",
+  "canonicalFingerprint": "a4eff731714533c9e4da483dde973338dd72b7c6c7c51c9983a0f3360f94b4cf",
   "canonicalSources": [
     "plugins/figma-vars-installer/src/build-components.ts",
     "plugins/figma-vars-installer/src/vars-data.ts",
@@ -66,7 +66,8 @@
     "overlayClickToClose": "딤 클릭 닫기는 정본·등록부 어디에도 없다. river 가 표준 범위(A)를 택했으므로 이번 배포에 넣지 않는다.",
     "motion": "정본이 여닫기 모션을 정의하지 않는다.",
     "contentFamily": "긴 본문·스크롤이 필요한 콘텐츠 계열 Modal 은 별개 컴포넌트다(reports/modal-content-family-backlog.md).",
-    "closedState": "웹 상태 closed 는 정본에 대응이 없다 — 피그마는 정지 화면이라 '닫힌 모달'을 그릴 수 없기 때문이며, 웹이 임의로 만든 상태가 아니라 플랫폼 표준 표출 상태다(HTML dialog[open] · [hidden]). river 결정 2026-09-08(④A): 「화면에서만 있는 표출 상태」로 표시하고 정본에는 상태 축을 만들지 않는다. canonicalStateMap 의 Default→open 은 정본의 유일한 그림이 열린 모달이라는 뜻이다."
+    "closedState": "웹 상태 closed 는 정본에 대응이 없다 — 피그마는 정지 화면이라 '닫힌 모달'을 그릴 수 없기 때문이며, 웹이 임의로 만든 상태가 아니라 플랫폼 표준 표출 상태다(HTML dialog[open] · [hidden]). river 결정 2026-09-08(④A): 「화면에서만 있는 표출 상태」로 표시하고 정본에는 상태 축을 만들지 않는다. canonicalStateMap 의 Default→open 은 정본의 유일한 그림이 열린 모달이라는 뜻이다.",
+    "closeHover": "정본에 닫기(X) hover 표시가 없다. river 지시 2026-09-08 — PC 에서 닫기 버튼(24×24, 누르는 영역=아이콘 영역) hover 시 color/control/bg/hover 배경을 표시한다(§두 갈래 분류 (b) 사전 등록된 개선, 새 토큰 0건). modal-content 와 같은 close 부품이라 동일 규칙을 적용했다. Mobile 은 정본에 close 자체가 없어(closeOnMobile 참고) hover 도 없다."
   },
   "parts": [
     "overlay",
