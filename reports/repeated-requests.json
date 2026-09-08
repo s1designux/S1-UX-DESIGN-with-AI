@@ -1077,6 +1077,36 @@
         }
       ],
       "automationNote": "3회 초과 도달. 승격 후보 — Gate 34 의 --quote 근거 검증을 '정본 주석이 승인을 주장할 때'까지 넓히는 검사기(주석에서 'river 승인|결정' 문구를 뽑아 승인 원장·세션 기록과 대조)로 승격 검토. 2026-09-07 river 결정 HD-5 로 '⭐ 가 정한 메커니즘'도 승인 대상이 되었으므로 그 목록과 함께 묶을 것."
+    },
+    {
+      "id": "handover-inventory-misses-enforcers",
+      "category": "scope-completeness",
+      "label": "인계받은 '고칠 곳 목록'이 그 이름을 강제하는 검사기·대상 식별자를 빠뜨린다",
+      "description": "앞 단계(또는 앞 세션)가 만든 실측 목록을 그대로 이어받아 착수하면, 목록이 정본·파생만 세고 ①그 이름을 하드코딩해 강제하는 검사기 ②대상 자체를 가리키는 식별자(node id·componentKey)의 최신성을 빠뜨린 채로 넘어온다. 목록이 '실측'이라 불리기 때문에 이어받는 쪽이 다시 세지 않고, 검사기는 개명 후에야 실패하거나(운 좋은 경우) 조용히 0건 매칭으로 죽는다(나쁜 경우).",
+      "count": 1,
+      "promotionStatus": "watch",
+      "occurrences": [
+        {
+          "date": "2026-09-08",
+          "summary": "Input State Editing→Focus 개명. 인계 목록 19곳에 검사기 2곳(component-anatomy-check.js 의 State=Editing 정규식, design-md-agent-contract-check.js 의 기대 목록)이 빠져 있었다 — 전자는 개명 후 '매칭 variant 0개(selector 부패)'로 Gate 11 을 실패시킨다. 또 인계된 componentKey 14386ca6… 는 다른 파일의 레거시 세트(112 variant·축 오타 Lable)를 가리켰고, 현재 정본과 일치하는 세트는 2386:52176(56 variant)이었다. 덤으로 '개명하면 시안 17곳이 따라온다'는 전제도 어긋나 있었다 — 시안들은 Label 축이 있던 구버전 세트를 인스턴스하고 있었다."
+        }
+      ],
+      "automationNote": "승격 전 관찰. 후보: 정본의 variant 축 값 이름을 바꿀 때 scripts/** 에서 그 문자열을 하드코딩한 곳을 찾아 보고하는 검사기(개명 전 사전 경고). 대상 식별자는 이름이 아니라 정본 축 구성(variantAxes)과 대조해 확정하는 절차."
+    },
+    {
+      "id": "agent-substitutes-own-scan-for-canonical-procedure",
+      "category": "procedure-adherence",
+      "label": "에이전트가 정본 절차서 대신 자기 방식으로 스캔해, 검사 결과를 축소 보고한다",
+      "description": "H2(토큰)·H3(폰트) 같은 하드룰의 집행은 '정해진 스캔 절차를 그대로 돌렸는가'에 달려 있다. 그런데 실행 에이전트가 절차서의 코드 대신 더 단순한 자기 방식으로 스캔하면, 절차서가 이미 막아둔 함정(figma.mixed 세그먼트 등)에 그대로 빠져 '위반 0건/소수건'이라는 잘못된 안심을 만든다. 절차서에는 결함이 없어 문서를 아무리 읽어도 원인이 안 보이고, 독립 검증자가 재스캔해야만 드러난다.",
+      "count": 1,
+      "promotionStatus": "watch",
+      "occurrences": [
+        {
+          "date": "2026-09-08",
+          "summary": "Input 시안 교체. 🪞 screen-rebuilder 가 t.fontName 을 직접 읽어 mixed 인 Noto Sans KR 3건(1587:2217·2245·2276)을 놓치고 '비-Pretendard 2건'으로 보고. 🤖 component-verifier 가 getStyledTextSegments 로 재스캔해 실제 5건임을 적발. 절차서 figma-font-scan.md:31 은 처음부터 올바른 방법을 명시하고 있었다 — 문서 결함이 아니라 미준수."
+        }
+      ],
+      "automationNote": "승격 전 관찰. 후보: 스캔 절차서의 코드를 문서에 붙여넣는 대신 실행 가능한 스크립트(scripts/)로 빼서 에이전트가 '직접 짜지 않고 호출'하게 만든다. 그러면 미준수가 구조적으로 불가능해진다."
     }
   ]
 }

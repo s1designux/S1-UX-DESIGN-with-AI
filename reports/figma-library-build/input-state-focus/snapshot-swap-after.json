@@ -1,0 +1,1021 @@
+{
+  "capturedAt": "2026-09-08",
+  "capturedBy": "screen-rebuilder (🪞)",
+  "phase": "after",
+  "file": "cysG5U1udpQqVagYY1hWHW",
+  "page": "173:2431",
+  "instances": [
+    {
+      "id": "1564:31",
+      "name": "Input / ID",
+      "masterId": "2410:13636",
+      "masterName": "Size=MD, State=Default, Message=Off, Break=Mobile",
+      "setId": "2410:13831",
+      "componentProperties": {
+        "Password Icon": false,
+        "Size": "MD",
+        "State": "Default",
+        "Message": "Off",
+        "Break": "Mobile"
+      },
+      "x": 20,
+      "y": 161,
+      "w": 320,
+      "h": 48,
+      "parent": {
+        "id": "1564:26",
+        "childIndex": 2,
+        "childCount": 11
+      },
+      "textOverrides": [
+        {
+          "n": "입력",
+          "c": "아이디를 입력해 주세요."
+        }
+      ]
+    },
+    {
+      "id": "1564:36",
+      "name": "Input / Password",
+      "masterId": "2410:13636",
+      "masterName": "Size=MD, State=Default, Message=Off, Break=Mobile",
+      "setId": "2410:13831",
+      "componentProperties": {
+        "Password Icon": true,
+        "Size": "MD",
+        "State": "Default",
+        "Message": "Off",
+        "Break": "Mobile"
+      },
+      "x": 20,
+      "y": 221,
+      "w": 320,
+      "h": 48,
+      "parent": {
+        "id": "1564:26",
+        "childIndex": 4,
+        "childCount": 11
+      },
+      "textOverrides": [
+        {
+          "n": "입력",
+          "c": "비밀번호를 입력해 주세요."
+        }
+      ]
+    },
+    {
+      "id": "1564:109",
+      "name": "Input / ID",
+      "masterId": "2410:13699",
+      "masterName": "Size=MD, State=Focus, Message=Off, Break=Mobile",
+      "setId": "2410:13831",
+      "componentProperties": {
+        "Password Icon": false,
+        "Size": "MD",
+        "State": "Focus",
+        "Message": "Off",
+        "Break": "Mobile"
+      },
+      "x": 20,
+      "y": 161,
+      "w": 320,
+      "h": 48,
+      "parent": {
+        "id": "1564:104",
+        "childIndex": 2,
+        "childCount": 9
+      },
+      "textOverrides": [
+        {
+          "n": "텍스트",
+          "c": "s1desig"
+        }
+      ]
+    },
+    {
+      "id": "1564:127",
+      "name": "Input / Password",
+      "masterId": "2410:13636",
+      "masterName": "Size=MD, State=Default, Message=Off, Break=Mobile",
+      "setId": "2410:13831",
+      "componentProperties": {
+        "Password Icon": true,
+        "Size": "MD",
+        "State": "Default",
+        "Message": "Off",
+        "Break": "Mobile"
+      },
+      "x": 20,
+      "y": 221,
+      "w": 320,
+      "h": 48,
+      "parent": {
+        "id": "1564:104",
+        "childIndex": 4,
+        "childCount": 9
+      },
+      "textOverrides": [
+        {
+          "n": "입력",
+          "c": "비밀번호를 입력해 주세요."
+        }
+      ]
+    },
+    {
+      "id": "1564:180",
+      "name": "Input / ID",
+      "masterId": "2410:13663",
+      "masterName": "Size=MD, State=Filled, Message=Off, Break=Mobile",
+      "setId": "2410:13831",
+      "componentProperties": {
+        "Password Icon": false,
+        "Size": "MD",
+        "State": "Filled",
+        "Message": "Off",
+        "Break": "Mobile"
+      },
+      "x": 20,
+      "y": 161,
+      "w": 320,
+      "h": 48,
+      "parent": {
+        "id": "1564:175",
+        "childIndex": 2,
+        "childCount": 9
+      },
+      "textOverrides": [
+        {
+          "n": "텍스트",
+          "c": "s1design"
+        }
+      ]
+    },
+    {
+      "id": "1564:185",
+      "name": "Input / Password",
+      "masterId": "2410:13699",
+      "masterName": "Size=MD, State=Focus, Message=Off, Break=Mobile",
+      "setId": "2410:13831",
+      "componentProperties": {
+        "Password Icon": true,
+        "Size": "MD",
+        "State": "Focus",
+        "Message": "Off",
+        "Break": "Mobile"
+      },
+      "x": 20,
+      "y": 221,
+      "w": 320,
+      "h": 48,
+      "parent": {
+        "id": "1564:175",
+        "childIndex": 4,
+        "childCount": 9
+      },
+      "textOverrides": [
+        {
+          "n": "텍스트",
+          "c": "••••••••"
+        }
+      ]
+    },
+    {
+      "id": "1567:766",
+      "name": "Input / ID",
+      "masterId": "2410:13663",
+      "masterName": "Size=MD, State=Filled, Message=Off, Break=Mobile",
+      "setId": "2410:13831",
+      "componentProperties": {
+        "Password Icon": false,
+        "Size": "MD",
+        "State": "Filled",
+        "Message": "Off",
+        "Break": "Mobile"
+      },
+      "x": 20,
+      "y": 161,
+      "w": 320,
+      "h": 48,
+      "parent": {
+        "id": "1567:761",
+        "childIndex": 2,
+        "childCount": 11
+      },
+      "textOverrides": [
+        {
+          "n": "텍스트",
+          "c": "s1design"
+        }
+      ]
+    },
+    {
+      "id": "1567:771",
+      "name": "Input / Password",
+      "masterId": "2410:13663",
+      "masterName": "Size=MD, State=Filled, Message=Off, Break=Mobile",
+      "setId": "2410:13831",
+      "componentProperties": {
+        "Password Icon": true,
+        "Size": "MD",
+        "State": "Filled",
+        "Message": "Off",
+        "Break": "Mobile"
+      },
+      "x": 20,
+      "y": 221,
+      "w": 320,
+      "h": 48,
+      "parent": {
+        "id": "1567:761",
+        "childIndex": 4,
+        "childCount": 11
+      },
+      "textOverrides": [
+        {
+          "n": "텍스트",
+          "c": "••••••••"
+        }
+      ]
+    },
+    {
+      "id": "1566:353",
+      "name": "Input / ID",
+      "masterId": "2410:13735",
+      "masterName": "Size=MD, State=Error, Message=Off, Break=Mobile",
+      "setId": "2410:13831",
+      "componentProperties": {
+        "Password Icon": false,
+        "Size": "MD",
+        "State": "Error",
+        "Message": "Off",
+        "Break": "Mobile"
+      },
+      "x": 20,
+      "y": 161,
+      "w": 320,
+      "h": 48,
+      "parent": {
+        "id": "1566:348",
+        "childIndex": 2,
+        "childCount": 11
+      },
+      "textOverrides": [
+        {
+          "n": "텍스트",
+          "c": "s1design"
+        }
+      ]
+    },
+    {
+      "id": "1566:358",
+      "name": "Input / Password",
+      "masterId": "2410:13748",
+      "masterName": "Size=MD, State=Error, Message=On, Break=Mobile",
+      "setId": "2410:13831",
+      "componentProperties": {
+        "Password Icon": true,
+        "Size": "MD",
+        "State": "Error",
+        "Message": "On",
+        "Break": "Mobile"
+      },
+      "x": 20,
+      "y": 221,
+      "w": 320,
+      "h": 86,
+      "parent": {
+        "id": "1566:348",
+        "childIndex": 4,
+        "childCount": 11
+      },
+      "textOverrides": [
+        {
+          "n": "텍스트",
+          "c": "••••••••"
+        },
+        {
+          "n": "안내 메세지",
+          "c": "아이디 또는 비밀번호가 없거나 잘못 입력되었습니다.\n확인 후 다시 로그인 해주세요. (1/5)"
+        }
+      ]
+    },
+    {
+      "id": "1566:425",
+      "name": "Input / ID",
+      "masterId": "2410:13663",
+      "masterName": "Size=MD, State=Filled, Message=Off, Break=Mobile",
+      "setId": "2410:13831",
+      "componentProperties": {
+        "Password Icon": false,
+        "Size": "MD",
+        "State": "Filled",
+        "Message": "Off",
+        "Break": "Mobile"
+      },
+      "x": 20,
+      "y": 161,
+      "w": 320,
+      "h": 48,
+      "parent": {
+        "id": "1566:420",
+        "childIndex": 2,
+        "childCount": 11
+      },
+      "textOverrides": [
+        {
+          "n": "텍스트",
+          "c": "s1design"
+        }
+      ]
+    },
+    {
+      "id": "1566:430",
+      "name": "Input / Password",
+      "masterId": "2410:13663",
+      "masterName": "Size=MD, State=Filled, Message=Off, Break=Mobile",
+      "setId": "2410:13831",
+      "componentProperties": {
+        "Password Icon": true,
+        "Size": "MD",
+        "State": "Filled",
+        "Message": "Off",
+        "Break": "Mobile"
+      },
+      "x": 20,
+      "y": 221,
+      "w": 320,
+      "h": 48,
+      "parent": {
+        "id": "1566:420",
+        "childIndex": 4,
+        "childCount": 11
+      },
+      "textOverrides": [
+        {
+          "n": "텍스트",
+          "c": "••••••••"
+        }
+      ]
+    },
+    {
+      "id": "1566:511",
+      "name": "Input / ID",
+      "masterId": "2410:13663",
+      "masterName": "Size=MD, State=Filled, Message=Off, Break=Mobile",
+      "setId": "2410:13831",
+      "componentProperties": {
+        "Password Icon": false,
+        "Size": "MD",
+        "State": "Filled",
+        "Message": "Off",
+        "Break": "Mobile"
+      },
+      "x": 20,
+      "y": 161,
+      "w": 320,
+      "h": 48,
+      "parent": {
+        "id": "1566:506",
+        "childIndex": 2,
+        "childCount": 11
+      },
+      "textOverrides": [
+        {
+          "n": "텍스트",
+          "c": "s1design"
+        }
+      ]
+    },
+    {
+      "id": "1566:516",
+      "name": "Input / Password",
+      "masterId": "2410:13663",
+      "masterName": "Size=MD, State=Filled, Message=Off, Break=Mobile",
+      "setId": "2410:13831",
+      "componentProperties": {
+        "Password Icon": true,
+        "Size": "MD",
+        "State": "Filled",
+        "Message": "Off",
+        "Break": "Mobile"
+      },
+      "x": 20,
+      "y": 221,
+      "w": 320,
+      "h": 48,
+      "parent": {
+        "id": "1566:506",
+        "childIndex": 4,
+        "childCount": 11
+      },
+      "textOverrides": [
+        {
+          "n": "텍스트",
+          "c": "••••••••"
+        }
+      ]
+    },
+    {
+      "id": "1566:595",
+      "name": "Input / ID",
+      "masterId": "2410:13663",
+      "masterName": "Size=MD, State=Filled, Message=Off, Break=Mobile",
+      "setId": "2410:13831",
+      "componentProperties": {
+        "Password Icon": false,
+        "Size": "MD",
+        "State": "Filled",
+        "Message": "Off",
+        "Break": "Mobile"
+      },
+      "x": 20,
+      "y": 161,
+      "w": 320,
+      "h": 48,
+      "parent": {
+        "id": "1566:590",
+        "childIndex": 2,
+        "childCount": 11
+      },
+      "textOverrides": [
+        {
+          "n": "텍스트",
+          "c": "s1design"
+        }
+      ]
+    },
+    {
+      "id": "1566:600",
+      "name": "Input / Password",
+      "masterId": "2410:13663",
+      "masterName": "Size=MD, State=Filled, Message=Off, Break=Mobile",
+      "setId": "2410:13831",
+      "componentProperties": {
+        "Password Icon": true,
+        "Size": "MD",
+        "State": "Filled",
+        "Message": "Off",
+        "Break": "Mobile"
+      },
+      "x": 20,
+      "y": 221,
+      "w": 320,
+      "h": 48,
+      "parent": {
+        "id": "1566:590",
+        "childIndex": 4,
+        "childCount": 11
+      },
+      "textOverrides": [
+        {
+          "n": "텍스트",
+          "c": "••••••••"
+        }
+      ]
+    },
+    {
+      "id": "1566:679",
+      "name": "Input / ID",
+      "masterId": "2410:13663",
+      "masterName": "Size=MD, State=Filled, Message=Off, Break=Mobile",
+      "setId": "2410:13831",
+      "componentProperties": {
+        "Password Icon": false,
+        "Size": "MD",
+        "State": "Filled",
+        "Message": "Off",
+        "Break": "Mobile"
+      },
+      "x": 20,
+      "y": 161,
+      "w": 320,
+      "h": 48,
+      "parent": {
+        "id": "1566:674",
+        "childIndex": 2,
+        "childCount": 11
+      },
+      "textOverrides": [
+        {
+          "n": "텍스트",
+          "c": "s1design"
+        }
+      ]
+    },
+    {
+      "id": "1566:684",
+      "name": "Input / Password",
+      "masterId": "2410:13663",
+      "masterName": "Size=MD, State=Filled, Message=Off, Break=Mobile",
+      "setId": "2410:13831",
+      "componentProperties": {
+        "Password Icon": true,
+        "Size": "MD",
+        "State": "Filled",
+        "Message": "Off",
+        "Break": "Mobile"
+      },
+      "x": 20,
+      "y": 221,
+      "w": 320,
+      "h": 48,
+      "parent": {
+        "id": "1566:674",
+        "childIndex": 4,
+        "childCount": 11
+      },
+      "textOverrides": [
+        {
+          "n": "텍스트",
+          "c": "••••••••"
+        }
+      ]
+    },
+    {
+      "id": "1567:680",
+      "name": "Input / ID",
+      "masterId": "2410:13663",
+      "masterName": "Size=MD, State=Filled, Message=Off, Break=Mobile",
+      "setId": "2410:13831",
+      "componentProperties": {
+        "Password Icon": false,
+        "Size": "MD",
+        "State": "Filled",
+        "Message": "Off",
+        "Break": "Mobile"
+      },
+      "x": 20,
+      "y": 161,
+      "w": 320,
+      "h": 48,
+      "parent": {
+        "id": "1567:675",
+        "childIndex": 2,
+        "childCount": 11
+      },
+      "textOverrides": [
+        {
+          "n": "텍스트",
+          "c": "s1design"
+        }
+      ]
+    },
+    {
+      "id": "1567:685",
+      "name": "Input / Password",
+      "masterId": "2410:13663",
+      "masterName": "Size=MD, State=Filled, Message=Off, Break=Mobile",
+      "setId": "2410:13831",
+      "componentProperties": {
+        "Password Icon": true,
+        "Size": "MD",
+        "State": "Filled",
+        "Message": "Off",
+        "Break": "Mobile"
+      },
+      "x": 20,
+      "y": 221,
+      "w": 320,
+      "h": 48,
+      "parent": {
+        "id": "1567:675",
+        "childIndex": 4,
+        "childCount": 11
+      },
+      "textOverrides": [
+        {
+          "n": "텍스트",
+          "c": "••••••••"
+        }
+      ]
+    },
+    {
+      "id": "1989:550",
+      "name": "ID Input",
+      "masterId": "2410:13721",
+      "masterName": "Size=MD, State=Focus, Message=On, Break=Mobile",
+      "setId": "2410:13831",
+      "componentProperties": {
+        "Password Icon": false,
+        "Size": "MD",
+        "State": "Focus",
+        "Message": "On",
+        "Break": "Mobile"
+      },
+      "x": 20,
+      "y": 106,
+      "w": 320,
+      "h": 70,
+      "parent": {
+        "id": "1989:548",
+        "childIndex": 1,
+        "childCount": 2
+      },
+      "textOverrides": [
+        {
+          "n": "텍스트",
+          "c": "s1design"
+        },
+        {
+          "n": "안내 메세지",
+          "c": "영어 소문자, 숫자를 조합하여 4~12자 입력해 주세요."
+        }
+      ]
+    },
+    {
+      "id": "1858:18032",
+      "name": "Password Input",
+      "masterId": "2410:13721",
+      "masterName": "Size=MD, State=Focus, Message=On, Break=Mobile",
+      "setId": "2410:13831",
+      "componentProperties": {
+        "Password Icon": true,
+        "Size": "MD",
+        "State": "Focus",
+        "Message": "On",
+        "Break": "Mobile"
+      },
+      "x": 20,
+      "y": 122,
+      "w": 320,
+      "h": 70,
+      "parent": {
+        "id": "1858:18029",
+        "childIndex": 3,
+        "childCount": 6
+      },
+      "textOverrides": [
+        {
+          "n": "텍스트",
+          "c": ""
+        },
+        {
+          "n": "안내 메세지",
+          "c": "영문, 숫자, 특수문자를 조합하여 8~15자로 입력해 주세요."
+        }
+      ]
+    },
+    {
+      "id": "1858:18061",
+      "name": "Password Confirm Input",
+      "masterId": "2410:13636",
+      "masterName": "Size=MD, State=Default, Message=Off, Break=Mobile",
+      "setId": "2410:13831",
+      "componentProperties": {
+        "Password Icon": true,
+        "Size": "MD",
+        "State": "Default",
+        "Message": "Off",
+        "Break": "Mobile"
+      },
+      "x": 20,
+      "y": 246,
+      "w": 320,
+      "h": 48,
+      "parent": {
+        "id": "1858:18029",
+        "childIndex": 5,
+        "childCount": 6
+      },
+      "textOverrides": [
+        {
+          "n": "입력",
+          "c": "입력해 주세요"
+        }
+      ]
+    },
+    {
+      "id": "1989:18940",
+      "name": "Local Part Input",
+      "masterId": "2410:13699",
+      "masterName": "Size=MD, State=Focus, Message=Off, Break=Mobile",
+      "setId": "2410:13831",
+      "componentProperties": {
+        "Password Icon": false,
+        "Size": "MD",
+        "State": "Focus",
+        "Message": "Off",
+        "Break": "Mobile"
+      },
+      "x": 20,
+      "y": 106,
+      "w": 140,
+      "h": 48,
+      "parent": {
+        "id": "1989:18938",
+        "childIndex": 1,
+        "childCount": 5
+      },
+      "textOverrides": [
+        {
+          "n": "텍스트",
+          "c": "텍스트"
+        }
+      ]
+    },
+    {
+      "id": "1989:18961",
+      "name": "Domain Input",
+      "masterId": "2410:13636",
+      "masterName": "Size=MD, State=Default, Message=Off, Break=Mobile",
+      "setId": "2410:13831",
+      "componentProperties": {
+        "Password Icon": false,
+        "Size": "MD",
+        "State": "Default",
+        "Message": "Off",
+        "Break": "Mobile"
+      },
+      "x": 20,
+      "y": 164,
+      "w": 320,
+      "h": 48,
+      "parent": {
+        "id": "1989:18938",
+        "childIndex": 4,
+        "childCount": 5
+      },
+      "textOverrides": [
+        {
+          "n": "입력",
+          "c": "도메인을 입력해 주세요."
+        }
+      ]
+    },
+    {
+      "id": "1858:18433",
+      "name": "ID Input",
+      "masterId": "2410:13721",
+      "masterName": "Size=MD, State=Focus, Message=On, Break=Mobile",
+      "setId": "2410:13831",
+      "componentProperties": {
+        "Password Icon": false,
+        "Size": "MD",
+        "State": "Focus",
+        "Message": "On",
+        "Break": "Mobile"
+      },
+      "x": 20,
+      "y": 106,
+      "w": 320,
+      "h": 70,
+      "parent": {
+        "id": "1858:18431",
+        "childIndex": 1,
+        "childCount": 2
+      },
+      "textOverrides": [
+        {
+          "n": "텍스트",
+          "c": "s1design"
+        },
+        {
+          "n": "안내 메세지",
+          "c": "영어 소문자, 숫자를 조합하여 4~12자 입력해 주세요."
+        }
+      ]
+    },
+    {
+      "id": "1996:7",
+      "name": "Password Input",
+      "masterId": "2410:13721",
+      "masterName": "Size=MD, State=Focus, Message=On, Break=Mobile",
+      "setId": "2410:13831",
+      "componentProperties": {
+        "Password Icon": true,
+        "Size": "MD",
+        "State": "Focus",
+        "Message": "On",
+        "Break": "Mobile"
+      },
+      "x": 20,
+      "y": 122,
+      "w": 320,
+      "h": 70,
+      "parent": {
+        "id": "1996:4",
+        "childIndex": 3,
+        "childCount": 6
+      },
+      "textOverrides": [
+        {
+          "n": "텍스트",
+          "c": ""
+        },
+        {
+          "n": "안내 메세지",
+          "c": "영문, 숫자, 특수문자를 조합하여 8~15자로 입력해 주세요."
+        }
+      ]
+    },
+    {
+      "id": "1996:8",
+      "name": "Password Confirm Input",
+      "masterId": "2410:13636",
+      "masterName": "Size=MD, State=Default, Message=Off, Break=Mobile",
+      "setId": "2410:13831",
+      "componentProperties": {
+        "Password Icon": true,
+        "Size": "MD",
+        "State": "Default",
+        "Message": "Off",
+        "Break": "Mobile"
+      },
+      "x": 20,
+      "y": 246,
+      "w": 320,
+      "h": 48,
+      "parent": {
+        "id": "1996:4",
+        "childIndex": 5,
+        "childCount": 6
+      },
+      "textOverrides": [
+        {
+          "n": "입력",
+          "c": "입력해 주세요"
+        }
+      ]
+    },
+    {
+      "id": "1996:19305",
+      "name": "Local Part Input",
+      "masterId": "2410:13699",
+      "masterName": "Size=MD, State=Focus, Message=Off, Break=Mobile",
+      "setId": "2410:13831",
+      "componentProperties": {
+        "Password Icon": false,
+        "Size": "MD",
+        "State": "Focus",
+        "Message": "Off",
+        "Break": "Mobile"
+      },
+      "x": 20,
+      "y": 106,
+      "w": 140,
+      "h": 48,
+      "parent": {
+        "id": "1996:19303",
+        "childIndex": 1,
+        "childCount": 5
+      },
+      "textOverrides": [
+        {
+          "n": "텍스트",
+          "c": "텍스트"
+        }
+      ]
+    },
+    {
+      "id": "1996:19308",
+      "name": "Domain Input",
+      "masterId": "2410:13636",
+      "masterName": "Size=MD, State=Default, Message=Off, Break=Mobile",
+      "setId": "2410:13831",
+      "componentProperties": {
+        "Password Icon": false,
+        "Size": "MD",
+        "State": "Default",
+        "Message": "Off",
+        "Break": "Mobile"
+      },
+      "x": 20,
+      "y": 164,
+      "w": 320,
+      "h": 48,
+      "parent": {
+        "id": "1996:19303",
+        "childIndex": 4,
+        "childCount": 5
+      },
+      "textOverrides": [
+        {
+          "n": "입력",
+          "c": "도메인을 입력해 주세요."
+        }
+      ]
+    }
+  ],
+  "createdLabelNodes": [
+    {
+      "id": "2429:4332",
+      "chars": "비밀번호",
+      "forInstance": "1858:18032",
+      "parent": "1858:18029 Content",
+      "x": 20,
+      "y": 98,
+      "w": 48,
+      "h": 18,
+      "childIndex": 2,
+      "nodeName": "라벨",
+      "type": "TEXT",
+      "fontName": {
+        "family": "Pretendard",
+        "style": "Medium"
+      },
+      "fontSize": 14,
+      "textStyle": "body/14M",
+      "textStyleId": "S:0b8aad8ca7e2cfac03033ed19607a4d2fb76aa2a,",
+      "fillVariable": "color/form-control/label/default",
+      "fillVariableId": "VariableID:8:1061",
+      "rawHex": false,
+      "textAutoResize": "WIDTH_AND_HEIGHT",
+      "textAlign": [
+        "LEFT",
+        "TOP"
+      ],
+      "source": "plugins/figma-vars-installer/src/pattern-data.ts:447-452 fieldLabel() · :519 · :524 (정본) — 교체 전 실측값과 완전 일치",
+      "tempFontUsed": false
+    },
+    {
+      "id": "2429:4345",
+      "chars": "비밀번호 확인",
+      "forInstance": "1858:18061",
+      "parent": "1858:18029 Content",
+      "x": 20,
+      "y": 222,
+      "w": 75,
+      "h": 18,
+      "childIndex": 4,
+      "nodeName": "라벨",
+      "type": "TEXT",
+      "fontName": {
+        "family": "Pretendard",
+        "style": "Medium"
+      },
+      "fontSize": 14,
+      "textStyle": "body/14M",
+      "textStyleId": "S:0b8aad8ca7e2cfac03033ed19607a4d2fb76aa2a,",
+      "fillVariable": "color/form-control/label/default",
+      "fillVariableId": "VariableID:8:1061",
+      "rawHex": false,
+      "textAutoResize": "WIDTH_AND_HEIGHT",
+      "textAlign": [
+        "LEFT",
+        "TOP"
+      ],
+      "source": "plugins/figma-vars-installer/src/pattern-data.ts:447-452 fieldLabel() · :519 · :524 (정본) — 교체 전 실측값과 완전 일치",
+      "tempFontUsed": false
+    },
+    {
+      "id": "2429:4368",
+      "chars": "비밀번호",
+      "forInstance": "1996:7",
+      "parent": "1996:4 Content",
+      "x": 20,
+      "y": 98,
+      "w": 48,
+      "h": 18,
+      "childIndex": 2,
+      "nodeName": "라벨",
+      "type": "TEXT",
+      "fontName": {
+        "family": "Pretendard",
+        "style": "Medium"
+      },
+      "fontSize": 14,
+      "textStyle": "body/14M",
+      "textStyleId": "S:0b8aad8ca7e2cfac03033ed19607a4d2fb76aa2a,",
+      "fillVariable": "color/form-control/label/default",
+      "fillVariableId": "VariableID:8:1061",
+      "rawHex": false,
+      "textAutoResize": "WIDTH_AND_HEIGHT",
+      "textAlign": [
+        "LEFT",
+        "TOP"
+      ],
+      "source": "plugins/figma-vars-installer/src/pattern-data.ts:447-452 fieldLabel() · :519 · :524 (정본) — 교체 전 실측값과 완전 일치",
+      "tempFontUsed": false
+    },
+    {
+      "id": "2429:4381",
+      "chars": "비밀번호 확인",
+      "forInstance": "1996:8",
+      "parent": "1996:4 Content",
+      "x": 20,
+      "y": 222,
+      "w": 75,
+      "h": 18,
+      "childIndex": 4,
+      "nodeName": "라벨",
+      "type": "TEXT",
+      "fontName": {
+        "family": "Pretendard",
+        "style": "Medium"
+      },
+      "fontSize": 14,
+      "textStyle": "body/14M",
+      "textStyleId": "S:0b8aad8ca7e2cfac03033ed19607a4d2fb76aa2a,",
+      "fillVariable": "color/form-control/label/default",
+      "fillVariableId": "VariableID:8:1061",
+      "rawHex": false,
+      "textAutoResize": "WIDTH_AND_HEIGHT",
+      "textAlign": [
+        "LEFT",
+        "TOP"
+      ],
+      "source": "plugins/figma-vars-installer/src/pattern-data.ts:447-452 fieldLabel() · :519 · :524 (정본) — 교체 전 실측값과 완전 일치",
+      "tempFontUsed": false
+    }
+  ]
+}

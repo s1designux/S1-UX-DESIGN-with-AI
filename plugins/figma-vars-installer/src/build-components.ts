@@ -907,7 +907,7 @@ async function buildInput(maps: BuildMaps, originY: number, originX: number = IN
   const states = [
     { name: "Default",   bg: "bg/default",  border: "border/default",  txt: "입력",   tc: "text/placeholder" },
     { name: "Filled",    bg: "bg/default",  border: "border/default",  txt: "텍스트", tc: "text/default" },
-    { name: "Editing",   bg: "bg/selected", border: "border/selected", txt: "텍스트", tc: "text/selected" },
+    { name: "Focus",     bg: "bg/selected", border: "border/selected", txt: "텍스트", tc: "text/selected" },
     { name: "Error",     bg: "bg/default",  border: "border/error",    txt: "텍스트", tc: "text/default" },
     { name: "Correct",   bg: "bg/default",  border: "border/correct",  txt: "텍스트", tc: "text/default" },
     { name: "Read-Only", bg: "bg/disabled", border: "border/default",  txt: "텍스트", tc: "text/read-only" },
@@ -979,8 +979,8 @@ async function buildInput(maps: BuildMaps, originY: number, originX: number = IN
           // 트레일링 아이콘(눈·삭제)은 우측에 [눈][×] 순으로 인접 클러스터. (검증기 적발 정렬 수정 2026-06-19)
           field.primaryAxisAlignItems = "MIN";
           let clearIcon: SceneNode | null = null;
-          if (st.name === "Editing") {
-            // Editing(=selected): [텍스트 + 커서] 좌측(grow), 트레일링 = [눈][삭제]. Figma 정본 564:3757 icon=on.
+          if (st.name === "Focus") {
+            // Focus(=selected): [텍스트 + 커서] 좌측(grow), 트레일링 = [눈][삭제]. Figma 정본 564:3757 icon=on.
             const lead = figma.createFrame();
             lead.name = "lead"; lead.fills = [];
             lead.layoutMode = "HORIZONTAL"; lead.counterAxisAlignItems = "CENTER";
@@ -992,7 +992,7 @@ async function buildInput(maps: BuildMaps, originY: number, originX: number = IN
             lead.layoutGrow = 1; lead.layoutSizingHorizontal = "FILL"; // 좌측 채움 → 트레일링 우측 고정
             clearIcon = await makeClearIcon(scv(maps, fc("icon/default")), fcIconPx(sc.h, 0)); // 눈 뒤에 append
           } else {
-            // 비-Editing 상태: 텍스트가 좌측을 채우고(layoutGrow=1) 눈 아이콘이 우측 HUG.
+            // 비-Focus 상태: 텍스트가 좌측을 채우고(layoutGrow=1) 눈 아이콘이 우측 HUG.
             textNode.layoutGrow = 1;
             field.appendChild(textNode);
           }
@@ -1017,7 +1017,7 @@ async function buildInput(maps: BuildMaps, originY: number, originX: number = IN
           // 보이는 간격을 좁힌다(river HD-3 A). 칸은 겹치지 않는다.
           trail.itemSpacing = isMobile ? 0 : 2;
           trail.appendChild(passwordAction);
-          if (clearIcon) trail.appendChild(wrapSuffixAction(clearIcon, "clear-action", actionHitSize, { hover: !isMobile })); // Editing: 각 action hit area 독립
+          if (clearIcon) trail.appendChild(wrapSuffixAction(clearIcon, "clear-action", actionHitSize, { hover: !isMobile })); // Focus: 각 action hit area 독립
           field.appendChild(trail);
           field.resize(200, sc.h); // Input 예외 — 넓은 필드
           const comp = figma.createComponent();
@@ -1111,7 +1111,7 @@ function makeFillIcon(svg: string, fillVar: Variable): FrameNode {
   return node;
 }
 
-// 입력 커서(캐럿) — Editing/Focus 상태에서 텍스트 뒤 깜빡이는 세로선. 색=color/form-control/text-cursor(호출부 바인딩, blue/400·dark blue-dark/350). Figma 564:3757.
+// 입력 커서(캐럿) — Focus 상태에서 텍스트 뒤 깜빡이는 세로선. 색=color/form-control/text-cursor(호출부 바인딩, blue/400·dark blue-dark/350). Figma 564:3757.
 // 높이 = 16px(토큰 사이즈 기준, 사용자 결정 2026-06-19). 이름 "caret" 은 Anatomy Gate(11) 가 검증한다.
 function makeCaret(colorVar: Variable): RectangleNode {
   const caret = figma.createRectangle();

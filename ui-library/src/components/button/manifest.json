@@ -2,7 +2,7 @@
   "id": "button",
   "version": "0.1.0",
   "status": "approved",
-  "canonicalFingerprint": "5b04e56eb61697b438f6ced72780500095b83a255b65f46d87f258c3995c8e1f",
+  "canonicalFingerprint": "d856acb53f672e1afc0d0e58891a8b1e1eabefacc1913e016ee0b7022d04c624",
   "canonicalSources": [
     "plugins/figma-vars-installer/src/build-components.ts",
     "plugins/figma-vars-installer/src/vars-data.ts",
@@ -42,6 +42,12 @@
     "hover": ":hover",
     "pressed": ":active",
     "disabled": "disabled"
+  },
+  "canonicalStateMap": {
+    "Default": "default",
+    "Hover": "hover",
+    "Pressed": "pressed",
+    "Disabled": "disabled"
   },
   "parts": [
     "label"

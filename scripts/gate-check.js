@@ -411,7 +411,7 @@ try {
 }
 
 // ── Gate 11: Component Anatomy ────────────────────────────────────
-// 상태별 필수 하위 요소(Editing 의 caret·selected 의 clear 아이콘 등)를 빌더가 실제로
+// 상태별 필수 하위 요소(Focus 의 caret·selected 의 clear 아이콘 등)를 빌더가 실제로
 // 생성하는지 강제. 토큰만 보던 게이트들의 "구조 사각지대" — caret·close 누락 2회 유출 차단.
 // esbuild 번들 + recording mock 실행이 필요해 별도 프로세스로 호출(spawnSync).
 gateHeader('[Gate 11] 부품해부 검사기 (Component Anatomy)');

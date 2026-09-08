@@ -162,7 +162,7 @@ const HELPER_LINKS: PNode = {
   ],
 };
 
-type InputState = "Default" | "Editing" | "Filled" | "Error";
+type InputState = "Default" | "Focus" | "Filled" | "Error";
 
 function input(
   which: "ID" | "Password",
@@ -325,7 +325,7 @@ export const MOBILE_LOGIN: PatternDef = {
 
     screen("APP/LOGIN/2 · 아이디 입력 중 (키보드)", 520, 100, 412,
       loginBody(
-        input("ID", "Editing", 48, [["0.0.0", "s1desig"]]),
+        input("ID", "Focus", 48, [["0.0.0", "s1desig"]]),
         input("Password", "Default", 48, [["0.0", "비밀번호를 입력해 주세요."]]),
         button("로그인", "Primary", "Disabled"),
         false,
@@ -335,7 +335,7 @@ export const MOBILE_LOGIN: PatternDef = {
     screen("APP/LOGIN/3 · 비밀번호 입력 중 (키보드)", 960, 100, 412,
       loginBody(
         input("ID", "Filled", 48, [["0.0", "s1design"]]),
-        input("Password", "Editing", 48, [["0.0.0", "••••••••"]]),
+        input("Password", "Focus", 48, [["0.0.0", "••••••••"]]),
         button("로그인", "Primary", "Default"),
         false,
       ),
@@ -501,7 +501,7 @@ function agreements(): PNode {
 function idInput(): PNode {
   return {
     t: "INST", n: "ID Input", set: "Input", x: 20, y: 106, w: 320, h: 70,
-    pr: { "Password Icon": false, Size: "MD", State: "Editing", Message: "On", Break: "Mobile" },
+    pr: { "Password Icon": false, Size: "MD", State: "Focus", Message: "On", Break: "Mobile" },
     ov: [["0.0.0", "s1design"], ["1", "영어 소문자, 숫자를 조합하여 4~12자 입력해 주세요."]],
     szOv: [["0", "FILL", "FIXED"]],
   };
@@ -518,7 +518,7 @@ function passwordContent(): PNode {
         tar: "NONE", ta: ["LEFT", "TOP"], ts: "body/14M" },
       fieldLabel("비밀번호", 20, 98, 48),
       { t: "INST", n: "Password Input", set: "Input", x: 20, y: 122, w: 320, h: 70,
-        pr: { "Password Icon": true, Size: "MD", State: "Editing", Message: "On", Break: "Mobile" },
+        pr: { "Password Icon": true, Size: "MD", State: "Focus", Message: "On", Break: "Mobile" },
         ov: [["0.0.0", ""], ["1", "영문, 숫자, 특수문자를 조합하여 8~15자로 입력해 주세요."]],
         szOv: [["0", "FILL", "FIXED"]] },
       fieldLabel("비밀번호 확인", 20, 222, 75),
@@ -537,7 +537,7 @@ function emailContent(): PNode {
     c: [
       pageTitle("이메일을\n입력해 주세요", 62),
       { t: "INST", n: "Local Part Input", set: "Input", x: 20, y: 106, w: 140, h: 48,
-        pr: { "Password Icon": false, Size: "MD", State: "Editing", Message: "Off", Break: "Mobile" },
+        pr: { "Password Icon": false, Size: "MD", State: "Focus", Message: "Off", Break: "Mobile" },
         szOv: [["0", "FILL", "FIXED"]] },
       { t: "TEXT", n: "Email At", x: 170, y: 119, w: 20, h: 21,
         fillVar: "color/text/title/primary", chars: "@", tar: "HEIGHT", ta: ["LEFT", "TOP"], ts: "body/16R" },

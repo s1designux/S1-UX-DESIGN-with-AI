@@ -1,0 +1,1467 @@
+{
+  "capturedAt": "2026-09-08",
+  "capturedBy": "screen-rebuilder (🪞)",
+  "method": "use_figma read-only (Plugin API componentProperties / getMainComponentAsync / absoluteBoundingBox)",
+  "purpose": "변경 전 구조 스냅샷 — Input 인스턴스 30개 정본 세트 교체 착수 전",
+  "file": "cysG5U1udpQqVagYY1hWHW",
+  "page": "173:2431",
+  "baseline": "existing-nodes",
+  "targetSet": {
+    "id": "2410:13831",
+    "name": "Input",
+    "page": "5:5706 Core",
+    "axes": [
+      "Size",
+      "State",
+      "Message",
+      "Break"
+    ],
+    "variantCount": 56,
+    "booleanProps": [
+      "Password Icon#2410:26",
+      "Password Action Hover#2410:83",
+      "Clear Action Hover#2410:140"
+    ]
+  },
+  "findings": {
+    "allSizeMD": true,
+    "allBreakMobile": true,
+    "labelOnCount": 4,
+    "labelOffCount": 26,
+    "previouslyUnverified15": "본 스냅샷에서 전수 확인 완료 — App Login 20개 전부 Label=Off",
+    "loginParentsAreAutoLayout": "LoginBody 는 VERTICAL 오토레이아웃(itemSpacing 0) — x/y 는 계산 결과이며 절대좌표가 아니다",
+    "signupParentsAbsolute": "Content 프레임은 layoutMode NONE — 절대좌표"
+  },
+  "labelMeasured": [
+    {
+      "instance": "1858:18032",
+      "textId": "I1858:18032;1654:42199",
+      "chars": "비밀번호",
+      "relX": 0,
+      "relY": 0,
+      "w": 48,
+      "h": 18,
+      "fontName": {
+        "family": "Pretendard",
+        "style": "Medium"
+      },
+      "fontSize": 14,
+      "textStyle": "body/14M",
+      "textStyleId": "S:0b8aad8ca7e2cfac03033ed19607a4d2fb76aa2a,",
+      "fillVariable": "color/form-control/label/default",
+      "fillVariableId": "VariableID:8:1061",
+      "textAutoResize": "WIDTH_AND_HEIGHT",
+      "textAlign": [
+        "LEFT",
+        "TOP"
+      ],
+      "gapToField": 6,
+      "fieldRelY": 24
+    },
+    {
+      "instance": "1858:18061",
+      "textId": "I1858:18061;1654:42050",
+      "chars": "비밀번호 확인",
+      "relX": 0,
+      "relY": 0,
+      "w": 75,
+      "h": 18,
+      "fontName": {
+        "family": "Pretendard",
+        "style": "Medium"
+      },
+      "fontSize": 14,
+      "textStyle": "body/14M",
+      "textStyleId": "S:0b8aad8ca7e2cfac03033ed19607a4d2fb76aa2a,",
+      "fillVariable": "color/form-control/label/default",
+      "fillVariableId": "VariableID:8:1061",
+      "textAutoResize": "WIDTH_AND_HEIGHT",
+      "textAlign": [
+        "LEFT",
+        "TOP"
+      ],
+      "gapToField": 6,
+      "fieldRelY": 24
+    },
+    {
+      "instance": "1996:7",
+      "textId": "I1996:7;1654:42199",
+      "chars": "비밀번호",
+      "relX": 0,
+      "relY": 0,
+      "w": 48,
+      "h": 18,
+      "fontName": {
+        "family": "Pretendard",
+        "style": "Medium"
+      },
+      "fontSize": 14,
+      "textStyle": "body/14M",
+      "textStyleId": "S:0b8aad8ca7e2cfac03033ed19607a4d2fb76aa2a,",
+      "fillVariable": "color/form-control/label/default",
+      "fillVariableId": "VariableID:8:1061",
+      "textAutoResize": "WIDTH_AND_HEIGHT",
+      "textAlign": [
+        "LEFT",
+        "TOP"
+      ],
+      "gapToField": 6,
+      "fieldRelY": 24
+    },
+    {
+      "instance": "1996:8",
+      "textId": "I1996:8;1654:42050",
+      "chars": "비밀번호 확인",
+      "relX": 0,
+      "relY": 0,
+      "w": 75,
+      "h": 18,
+      "fontName": {
+        "family": "Pretendard",
+        "style": "Medium"
+      },
+      "fontSize": 14,
+      "textStyle": "body/14M",
+      "textStyleId": "S:0b8aad8ca7e2cfac03033ed19607a4d2fb76aa2a,",
+      "fillVariable": "color/form-control/label/default",
+      "fillVariableId": "VariableID:8:1061",
+      "textAutoResize": "WIDTH_AND_HEIGHT",
+      "textAlign": [
+        "LEFT",
+        "TOP"
+      ],
+      "gapToField": 6,
+      "fieldRelY": 24
+    }
+  ],
+  "labelCanonCrossCheck": {
+    "source": "plugins/figma-vars-installer/src/pattern-data.ts:447-452 (fieldLabel) · :519 · :524",
+    "canon": {
+      "name": "라벨",
+      "h": 18,
+      "fillVar": "color/form-control/label/default",
+      "textStyle": "body/14M",
+      "textAutoResize": "WIDTH_AND_HEIGHT",
+      "align": [
+        "LEFT",
+        "TOP"
+      ],
+      "gapBelow": 6
+    },
+    "canonPlacements": [
+      {
+        "chars": "비밀번호",
+        "x": 20,
+        "y": 98,
+        "w": 48,
+        "inputY": 122
+      },
+      {
+        "chars": "비밀번호 확인",
+        "x": 20,
+        "y": 222,
+        "w": 75,
+        "inputY": 246
+      }
+    ],
+    "result": "실측값과 정본이 100% 일치 — 정본을 그대로 적용한다"
+  },
+  "instances": [
+    {
+      "id": "1564:31",
+      "name": "Input / ID",
+      "x": 20,
+      "y": 161,
+      "w": 320,
+      "h": 48,
+      "componentProperties": {
+        "Password Icon": false,
+        "Size": "MD",
+        "State": "Default",
+        "Label": "Off",
+        "Message": "Off",
+        "Break": "Mobile"
+      },
+      "mainComponent": {
+        "id": "1546:10603",
+        "name": "Size=MD, State=Default, Label=Off, Message=Off, Break=Mobile",
+        "setId": "1546:10988",
+        "setName": "Input",
+        "orphanSet": true
+      },
+      "parent": {
+        "id": "1564:26",
+        "name": "LoginBody",
+        "type": "FRAME",
+        "layoutMode": "VERTICAL",
+        "itemSpacing": 0,
+        "paddingTop": 61,
+        "paddingLeft": 20,
+        "childIndex": 2,
+        "childCount": 11
+      },
+      "layoutPositioning": "AUTO",
+      "layoutSizingHorizontal": "FIXED",
+      "layoutSizingVertical": "HUG",
+      "textOverrides": [
+        {
+          "n": "입력",
+          "c": "아이디를 입력해 주세요."
+        }
+      ]
+    },
+    {
+      "id": "1564:36",
+      "name": "Input / Password",
+      "x": 20,
+      "y": 221,
+      "w": 320,
+      "h": 48,
+      "componentProperties": {
+        "Password Icon": true,
+        "Size": "MD",
+        "State": "Default",
+        "Label": "Off",
+        "Message": "Off",
+        "Break": "Mobile"
+      },
+      "mainComponent": {
+        "id": "1546:10603",
+        "name": "Size=MD, State=Default, Label=Off, Message=Off, Break=Mobile",
+        "setId": "1546:10988",
+        "setName": "Input",
+        "orphanSet": true
+      },
+      "parent": {
+        "id": "1564:26",
+        "name": "LoginBody",
+        "type": "FRAME",
+        "layoutMode": "VERTICAL",
+        "itemSpacing": 0,
+        "paddingTop": 61,
+        "paddingLeft": 20,
+        "childIndex": 4,
+        "childCount": 11
+      },
+      "layoutPositioning": "AUTO",
+      "layoutSizingHorizontal": "FIXED",
+      "layoutSizingVertical": "HUG",
+      "textOverrides": [
+        {
+          "n": "입력",
+          "c": "비밀번호를 입력해 주세요."
+        }
+      ]
+    },
+    {
+      "id": "1564:109",
+      "name": "Input / ID",
+      "x": 20,
+      "y": 161,
+      "w": 320,
+      "h": 48,
+      "componentProperties": {
+        "Password Icon": false,
+        "Size": "MD",
+        "State": "Editing",
+        "Label": "Off",
+        "Message": "Off",
+        "Break": "Mobile"
+      },
+      "mainComponent": {
+        "id": "1546:10715",
+        "name": "Size=MD, State=Editing, Label=Off, Message=Off, Break=Mobile",
+        "setId": "1546:10988",
+        "setName": "Input",
+        "orphanSet": true
+      },
+      "parent": {
+        "id": "1564:104",
+        "name": "LoginBody",
+        "type": "FRAME",
+        "layoutMode": "VERTICAL",
+        "itemSpacing": 0,
+        "paddingTop": 61,
+        "paddingLeft": 20,
+        "childIndex": 2,
+        "childCount": 9
+      },
+      "layoutPositioning": "AUTO",
+      "layoutSizingHorizontal": "FIXED",
+      "layoutSizingVertical": "HUG",
+      "textOverrides": [
+        {
+          "n": "텍스트",
+          "c": "s1desig"
+        }
+      ]
+    },
+    {
+      "id": "1564:127",
+      "name": "Input / Password",
+      "x": 20,
+      "y": 221,
+      "w": 320,
+      "h": 48,
+      "componentProperties": {
+        "Password Icon": true,
+        "Size": "MD",
+        "State": "Default",
+        "Label": "Off",
+        "Message": "Off",
+        "Break": "Mobile"
+      },
+      "mainComponent": {
+        "id": "1546:10603",
+        "name": "Size=MD, State=Default, Label=Off, Message=Off, Break=Mobile",
+        "setId": "1546:10988",
+        "setName": "Input",
+        "orphanSet": true
+      },
+      "parent": {
+        "id": "1564:104",
+        "name": "LoginBody",
+        "type": "FRAME",
+        "layoutMode": "VERTICAL",
+        "itemSpacing": 0,
+        "paddingTop": 61,
+        "paddingLeft": 20,
+        "childIndex": 4,
+        "childCount": 9
+      },
+      "layoutPositioning": "AUTO",
+      "layoutSizingHorizontal": "FIXED",
+      "layoutSizingVertical": "HUG",
+      "textOverrides": [
+        {
+          "n": "입력",
+          "c": "비밀번호를 입력해 주세요."
+        }
+      ]
+    },
+    {
+      "id": "1564:180",
+      "name": "Input / ID",
+      "x": 20,
+      "y": 161,
+      "w": 320,
+      "h": 48,
+      "componentProperties": {
+        "Password Icon": false,
+        "Size": "MD",
+        "State": "Filled",
+        "Label": "Off",
+        "Message": "Off",
+        "Break": "Mobile"
+      },
+      "mainComponent": {
+        "id": "1546:10655",
+        "name": "Size=MD, State=Filled, Label=Off, Message=Off, Break=Mobile",
+        "setId": "1546:10988",
+        "setName": "Input",
+        "orphanSet": true
+      },
+      "parent": {
+        "id": "1564:175",
+        "name": "LoginBody",
+        "type": "FRAME",
+        "layoutMode": "VERTICAL",
+        "itemSpacing": 0,
+        "paddingTop": 61,
+        "paddingLeft": 20,
+        "childIndex": 2,
+        "childCount": 9
+      },
+      "layoutPositioning": "AUTO",
+      "layoutSizingHorizontal": "FIXED",
+      "layoutSizingVertical": "HUG",
+      "textOverrides": [
+        {
+          "n": "텍스트",
+          "c": "s1design"
+        }
+      ]
+    },
+    {
+      "id": "1564:185",
+      "name": "Input / Password",
+      "x": 20,
+      "y": 221,
+      "w": 320,
+      "h": 48,
+      "componentProperties": {
+        "Password Icon": true,
+        "Size": "MD",
+        "State": "Editing",
+        "Label": "Off",
+        "Message": "Off",
+        "Break": "Mobile"
+      },
+      "mainComponent": {
+        "id": "1546:10715",
+        "name": "Size=MD, State=Editing, Label=Off, Message=Off, Break=Mobile",
+        "setId": "1546:10988",
+        "setName": "Input",
+        "orphanSet": true
+      },
+      "parent": {
+        "id": "1564:175",
+        "name": "LoginBody",
+        "type": "FRAME",
+        "layoutMode": "VERTICAL",
+        "itemSpacing": 0,
+        "paddingTop": 61,
+        "paddingLeft": 20,
+        "childIndex": 4,
+        "childCount": 9
+      },
+      "layoutPositioning": "AUTO",
+      "layoutSizingHorizontal": "FIXED",
+      "layoutSizingVertical": "HUG",
+      "textOverrides": [
+        {
+          "n": "텍스트",
+          "c": "••••••••"
+        }
+      ]
+    },
+    {
+      "id": "1567:766",
+      "name": "Input / ID",
+      "x": 20,
+      "y": 161,
+      "w": 320,
+      "h": 48,
+      "componentProperties": {
+        "Password Icon": false,
+        "Size": "MD",
+        "State": "Filled",
+        "Label": "Off",
+        "Message": "Off",
+        "Break": "Mobile"
+      },
+      "mainComponent": {
+        "id": "1546:10655",
+        "name": "Size=MD, State=Filled, Label=Off, Message=Off, Break=Mobile",
+        "setId": "1546:10988",
+        "setName": "Input",
+        "orphanSet": true
+      },
+      "parent": {
+        "id": "1567:761",
+        "name": "LoginBody",
+        "type": "FRAME",
+        "layoutMode": "VERTICAL",
+        "itemSpacing": 0,
+        "paddingTop": 61,
+        "paddingLeft": 20,
+        "childIndex": 2,
+        "childCount": 11
+      },
+      "layoutPositioning": "AUTO",
+      "layoutSizingHorizontal": "FIXED",
+      "layoutSizingVertical": "HUG",
+      "textOverrides": [
+        {
+          "n": "텍스트",
+          "c": "s1design"
+        }
+      ]
+    },
+    {
+      "id": "1567:771",
+      "name": "Input / Password",
+      "x": 20,
+      "y": 221,
+      "w": 320,
+      "h": 48,
+      "componentProperties": {
+        "Password Icon": true,
+        "Size": "MD",
+        "State": "Filled",
+        "Label": "Off",
+        "Message": "Off",
+        "Break": "Mobile"
+      },
+      "mainComponent": {
+        "id": "1546:10655",
+        "name": "Size=MD, State=Filled, Label=Off, Message=Off, Break=Mobile",
+        "setId": "1546:10988",
+        "setName": "Input",
+        "orphanSet": true
+      },
+      "parent": {
+        "id": "1567:761",
+        "name": "LoginBody",
+        "type": "FRAME",
+        "layoutMode": "VERTICAL",
+        "itemSpacing": 0,
+        "paddingTop": 61,
+        "paddingLeft": 20,
+        "childIndex": 4,
+        "childCount": 11
+      },
+      "layoutPositioning": "AUTO",
+      "layoutSizingHorizontal": "FIXED",
+      "layoutSizingVertical": "HUG",
+      "textOverrides": [
+        {
+          "n": "텍스트",
+          "c": "••••••••"
+        }
+      ]
+    },
+    {
+      "id": "1566:353",
+      "name": "Input / ID",
+      "x": 20,
+      "y": 161,
+      "w": 320,
+      "h": 48,
+      "componentProperties": {
+        "Password Icon": false,
+        "Size": "MD",
+        "State": "Error",
+        "Label": "Off",
+        "Message": "Off",
+        "Break": "Mobile"
+      },
+      "mainComponent": {
+        "id": "1546:10791",
+        "name": "Size=MD, State=Error, Label=Off, Message=Off, Break=Mobile",
+        "setId": "1546:10988",
+        "setName": "Input",
+        "orphanSet": true
+      },
+      "parent": {
+        "id": "1566:348",
+        "name": "LoginBody",
+        "type": "FRAME",
+        "layoutMode": "VERTICAL",
+        "itemSpacing": 0,
+        "paddingTop": 61,
+        "paddingLeft": 20,
+        "childIndex": 2,
+        "childCount": 11
+      },
+      "layoutPositioning": "AUTO",
+      "layoutSizingHorizontal": "FIXED",
+      "layoutSizingVertical": "HUG",
+      "textOverrides": [
+        {
+          "n": "텍스트",
+          "c": "s1design"
+        }
+      ]
+    },
+    {
+      "id": "1566:358",
+      "name": "Input / Password",
+      "x": 20,
+      "y": 221,
+      "w": 320,
+      "h": 86,
+      "componentProperties": {
+        "Password Icon": true,
+        "Size": "MD",
+        "State": "Error",
+        "Label": "Off",
+        "Message": "On",
+        "Break": "Mobile"
+      },
+      "mainComponent": {
+        "id": "1546:10803",
+        "name": "Size=MD, State=Error, Label=Off, Message=On, Break=Mobile",
+        "setId": "1546:10988",
+        "setName": "Input",
+        "orphanSet": true
+      },
+      "parent": {
+        "id": "1566:348",
+        "name": "LoginBody",
+        "type": "FRAME",
+        "layoutMode": "VERTICAL",
+        "itemSpacing": 0,
+        "paddingTop": 61,
+        "paddingLeft": 20,
+        "childIndex": 4,
+        "childCount": 11
+      },
+      "layoutPositioning": "AUTO",
+      "layoutSizingHorizontal": "FIXED",
+      "layoutSizingVertical": "HUG",
+      "textOverrides": [
+        {
+          "n": "텍스트",
+          "c": "••••••••"
+        },
+        {
+          "n": "안내 메세지",
+          "c": "아이디 또는 비밀번호가 없거나 잘못 입력되었습니다.\n확인 후 다시 로그인 해주세요. (1/5)"
+        }
+      ]
+    },
+    {
+      "id": "1566:425",
+      "name": "Input / ID",
+      "x": 20,
+      "y": 161,
+      "w": 320,
+      "h": 48,
+      "componentProperties": {
+        "Password Icon": false,
+        "Size": "MD",
+        "State": "Filled",
+        "Label": "Off",
+        "Message": "Off",
+        "Break": "Mobile"
+      },
+      "mainComponent": {
+        "id": "1546:10655",
+        "name": "Size=MD, State=Filled, Label=Off, Message=Off, Break=Mobile",
+        "setId": "1546:10988",
+        "setName": "Input",
+        "orphanSet": true
+      },
+      "parent": {
+        "id": "1566:420",
+        "name": "LoginBody",
+        "type": "FRAME",
+        "layoutMode": "VERTICAL",
+        "itemSpacing": 0,
+        "paddingTop": 61,
+        "paddingLeft": 20,
+        "childIndex": 2,
+        "childCount": 11
+      },
+      "layoutPositioning": "AUTO",
+      "layoutSizingHorizontal": "FIXED",
+      "layoutSizingVertical": "HUG",
+      "textOverrides": [
+        {
+          "n": "텍스트",
+          "c": "s1design"
+        }
+      ]
+    },
+    {
+      "id": "1566:430",
+      "name": "Input / Password",
+      "x": 20,
+      "y": 221,
+      "w": 320,
+      "h": 48,
+      "componentProperties": {
+        "Password Icon": true,
+        "Size": "MD",
+        "State": "Filled",
+        "Label": "Off",
+        "Message": "Off",
+        "Break": "Mobile"
+      },
+      "mainComponent": {
+        "id": "1546:10655",
+        "name": "Size=MD, State=Filled, Label=Off, Message=Off, Break=Mobile",
+        "setId": "1546:10988",
+        "setName": "Input",
+        "orphanSet": true
+      },
+      "parent": {
+        "id": "1566:420",
+        "name": "LoginBody",
+        "type": "FRAME",
+        "layoutMode": "VERTICAL",
+        "itemSpacing": 0,
+        "paddingTop": 61,
+        "paddingLeft": 20,
+        "childIndex": 4,
+        "childCount": 11
+      },
+      "layoutPositioning": "AUTO",
+      "layoutSizingHorizontal": "FIXED",
+      "layoutSizingVertical": "HUG",
+      "textOverrides": [
+        {
+          "n": "텍스트",
+          "c": "••••••••"
+        }
+      ]
+    },
+    {
+      "id": "1566:511",
+      "name": "Input / ID",
+      "x": 20,
+      "y": 161,
+      "w": 320,
+      "h": 48,
+      "componentProperties": {
+        "Password Icon": false,
+        "Size": "MD",
+        "State": "Filled",
+        "Label": "Off",
+        "Message": "Off",
+        "Break": "Mobile"
+      },
+      "mainComponent": {
+        "id": "1546:10655",
+        "name": "Size=MD, State=Filled, Label=Off, Message=Off, Break=Mobile",
+        "setId": "1546:10988",
+        "setName": "Input",
+        "orphanSet": true
+      },
+      "parent": {
+        "id": "1566:506",
+        "name": "LoginBody",
+        "type": "FRAME",
+        "layoutMode": "VERTICAL",
+        "itemSpacing": 0,
+        "paddingTop": 61,
+        "paddingLeft": 20,
+        "childIndex": 2,
+        "childCount": 11
+      },
+      "layoutPositioning": "AUTO",
+      "layoutSizingHorizontal": "FIXED",
+      "layoutSizingVertical": "HUG",
+      "textOverrides": [
+        {
+          "n": "텍스트",
+          "c": "s1design"
+        }
+      ]
+    },
+    {
+      "id": "1566:516",
+      "name": "Input / Password",
+      "x": 20,
+      "y": 221,
+      "w": 320,
+      "h": 48,
+      "componentProperties": {
+        "Password Icon": true,
+        "Size": "MD",
+        "State": "Filled",
+        "Label": "Off",
+        "Message": "Off",
+        "Break": "Mobile"
+      },
+      "mainComponent": {
+        "id": "1546:10655",
+        "name": "Size=MD, State=Filled, Label=Off, Message=Off, Break=Mobile",
+        "setId": "1546:10988",
+        "setName": "Input",
+        "orphanSet": true
+      },
+      "parent": {
+        "id": "1566:506",
+        "name": "LoginBody",
+        "type": "FRAME",
+        "layoutMode": "VERTICAL",
+        "itemSpacing": 0,
+        "paddingTop": 61,
+        "paddingLeft": 20,
+        "childIndex": 4,
+        "childCount": 11
+      },
+      "layoutPositioning": "AUTO",
+      "layoutSizingHorizontal": "FIXED",
+      "layoutSizingVertical": "HUG",
+      "textOverrides": [
+        {
+          "n": "텍스트",
+          "c": "••••••••"
+        }
+      ]
+    },
+    {
+      "id": "1566:595",
+      "name": "Input / ID",
+      "x": 20,
+      "y": 161,
+      "w": 320,
+      "h": 48,
+      "componentProperties": {
+        "Password Icon": false,
+        "Size": "MD",
+        "State": "Filled",
+        "Label": "Off",
+        "Message": "Off",
+        "Break": "Mobile"
+      },
+      "mainComponent": {
+        "id": "1546:10655",
+        "name": "Size=MD, State=Filled, Label=Off, Message=Off, Break=Mobile",
+        "setId": "1546:10988",
+        "setName": "Input",
+        "orphanSet": true
+      },
+      "parent": {
+        "id": "1566:590",
+        "name": "LoginBody",
+        "type": "FRAME",
+        "layoutMode": "VERTICAL",
+        "itemSpacing": 0,
+        "paddingTop": 61,
+        "paddingLeft": 20,
+        "childIndex": 2,
+        "childCount": 11
+      },
+      "layoutPositioning": "AUTO",
+      "layoutSizingHorizontal": "FIXED",
+      "layoutSizingVertical": "HUG",
+      "textOverrides": [
+        {
+          "n": "텍스트",
+          "c": "s1design"
+        }
+      ]
+    },
+    {
+      "id": "1566:600",
+      "name": "Input / Password",
+      "x": 20,
+      "y": 221,
+      "w": 320,
+      "h": 48,
+      "componentProperties": {
+        "Password Icon": true,
+        "Size": "MD",
+        "State": "Filled",
+        "Label": "Off",
+        "Message": "Off",
+        "Break": "Mobile"
+      },
+      "mainComponent": {
+        "id": "1546:10655",
+        "name": "Size=MD, State=Filled, Label=Off, Message=Off, Break=Mobile",
+        "setId": "1546:10988",
+        "setName": "Input",
+        "orphanSet": true
+      },
+      "parent": {
+        "id": "1566:590",
+        "name": "LoginBody",
+        "type": "FRAME",
+        "layoutMode": "VERTICAL",
+        "itemSpacing": 0,
+        "paddingTop": 61,
+        "paddingLeft": 20,
+        "childIndex": 4,
+        "childCount": 11
+      },
+      "layoutPositioning": "AUTO",
+      "layoutSizingHorizontal": "FIXED",
+      "layoutSizingVertical": "HUG",
+      "textOverrides": [
+        {
+          "n": "텍스트",
+          "c": "••••••••"
+        }
+      ]
+    },
+    {
+      "id": "1566:679",
+      "name": "Input / ID",
+      "x": 20,
+      "y": 161,
+      "w": 320,
+      "h": 48,
+      "componentProperties": {
+        "Password Icon": false,
+        "Size": "MD",
+        "State": "Filled",
+        "Label": "Off",
+        "Message": "Off",
+        "Break": "Mobile"
+      },
+      "mainComponent": {
+        "id": "1546:10655",
+        "name": "Size=MD, State=Filled, Label=Off, Message=Off, Break=Mobile",
+        "setId": "1546:10988",
+        "setName": "Input",
+        "orphanSet": true
+      },
+      "parent": {
+        "id": "1566:674",
+        "name": "LoginBody",
+        "type": "FRAME",
+        "layoutMode": "VERTICAL",
+        "itemSpacing": 0,
+        "paddingTop": 61,
+        "paddingLeft": 20,
+        "childIndex": 2,
+        "childCount": 11
+      },
+      "layoutPositioning": "AUTO",
+      "layoutSizingHorizontal": "FIXED",
+      "layoutSizingVertical": "HUG",
+      "textOverrides": [
+        {
+          "n": "텍스트",
+          "c": "s1design"
+        }
+      ]
+    },
+    {
+      "id": "1566:684",
+      "name": "Input / Password",
+      "x": 20,
+      "y": 221,
+      "w": 320,
+      "h": 48,
+      "componentProperties": {
+        "Password Icon": true,
+        "Size": "MD",
+        "State": "Filled",
+        "Label": "Off",
+        "Message": "Off",
+        "Break": "Mobile"
+      },
+      "mainComponent": {
+        "id": "1546:10655",
+        "name": "Size=MD, State=Filled, Label=Off, Message=Off, Break=Mobile",
+        "setId": "1546:10988",
+        "setName": "Input",
+        "orphanSet": true
+      },
+      "parent": {
+        "id": "1566:674",
+        "name": "LoginBody",
+        "type": "FRAME",
+        "layoutMode": "VERTICAL",
+        "itemSpacing": 0,
+        "paddingTop": 61,
+        "paddingLeft": 20,
+        "childIndex": 4,
+        "childCount": 11
+      },
+      "layoutPositioning": "AUTO",
+      "layoutSizingHorizontal": "FIXED",
+      "layoutSizingVertical": "HUG",
+      "textOverrides": [
+        {
+          "n": "텍스트",
+          "c": "••••••••"
+        }
+      ]
+    },
+    {
+      "id": "1567:680",
+      "name": "Input / ID",
+      "x": 20,
+      "y": 161,
+      "w": 320,
+      "h": 48,
+      "componentProperties": {
+        "Password Icon": false,
+        "Size": "MD",
+        "State": "Filled",
+        "Label": "Off",
+        "Message": "Off",
+        "Break": "Mobile"
+      },
+      "mainComponent": {
+        "id": "1546:10655",
+        "name": "Size=MD, State=Filled, Label=Off, Message=Off, Break=Mobile",
+        "setId": "1546:10988",
+        "setName": "Input",
+        "orphanSet": true
+      },
+      "parent": {
+        "id": "1567:675",
+        "name": "LoginBody",
+        "type": "FRAME",
+        "layoutMode": "VERTICAL",
+        "itemSpacing": 0,
+        "paddingTop": 61,
+        "paddingLeft": 20,
+        "childIndex": 2,
+        "childCount": 11
+      },
+      "layoutPositioning": "AUTO",
+      "layoutSizingHorizontal": "FIXED",
+      "layoutSizingVertical": "HUG",
+      "textOverrides": [
+        {
+          "n": "텍스트",
+          "c": "s1design"
+        }
+      ]
+    },
+    {
+      "id": "1567:685",
+      "name": "Input / Password",
+      "x": 20,
+      "y": 221,
+      "w": 320,
+      "h": 48,
+      "componentProperties": {
+        "Password Icon": true,
+        "Size": "MD",
+        "State": "Filled",
+        "Label": "Off",
+        "Message": "Off",
+        "Break": "Mobile"
+      },
+      "mainComponent": {
+        "id": "1546:10655",
+        "name": "Size=MD, State=Filled, Label=Off, Message=Off, Break=Mobile",
+        "setId": "1546:10988",
+        "setName": "Input",
+        "orphanSet": true
+      },
+      "parent": {
+        "id": "1567:675",
+        "name": "LoginBody",
+        "type": "FRAME",
+        "layoutMode": "VERTICAL",
+        "itemSpacing": 0,
+        "paddingTop": 61,
+        "paddingLeft": 20,
+        "childIndex": 4,
+        "childCount": 11
+      },
+      "layoutPositioning": "AUTO",
+      "layoutSizingHorizontal": "FIXED",
+      "layoutSizingVertical": "HUG",
+      "textOverrides": [
+        {
+          "n": "텍스트",
+          "c": "••••••••"
+        }
+      ]
+    },
+    {
+      "id": "1989:550",
+      "name": "ID Input",
+      "x": 20,
+      "y": 106,
+      "w": 320,
+      "h": 70,
+      "componentProperties": {
+        "Password Icon": false,
+        "Size": "MD",
+        "State": "Editing",
+        "Label": "Off",
+        "Message": "On",
+        "Break": "Mobile"
+      },
+      "mainComponent": {
+        "id": "1654:42156",
+        "name": "Size=MD, State=Editing, Label=Off, Message=On, Break=Mobile",
+        "setId": "1654:42409",
+        "setName": "Input",
+        "orphanSet": true
+      },
+      "parent": {
+        "id": "1989:548",
+        "name": "Content",
+        "type": "FRAME",
+        "layoutMode": "NONE",
+        "childIndex": 1,
+        "childCount": 2
+      },
+      "layoutPositioning": "AUTO",
+      "layoutSizingHorizontal": "FIXED",
+      "layoutSizingVertical": "HUG",
+      "textOverrides": [
+        {
+          "n": "텍스트",
+          "c": "s1design"
+        },
+        {
+          "n": "안내 메세지",
+          "c": "영어 소문자, 숫자를 조합하여 4~12자 입력해 주세요."
+        }
+      ]
+    },
+    {
+      "id": "1858:18032",
+      "name": "Password Input",
+      "x": 20,
+      "y": 98,
+      "w": 320,
+      "h": 94,
+      "componentProperties": {
+        "Password Icon": true,
+        "Size": "MD",
+        "State": "Editing",
+        "Label": "On",
+        "Message": "On",
+        "Break": "Mobile"
+      },
+      "mainComponent": {
+        "id": "1654:42198",
+        "name": "Size=MD, State=Editing, Label=On, Message=On, Break=Mobile",
+        "setId": "1654:42409",
+        "setName": "Input",
+        "orphanSet": true
+      },
+      "parent": {
+        "id": "1858:18029",
+        "name": "Content",
+        "type": "FRAME",
+        "layoutMode": "NONE",
+        "childIndex": 2,
+        "childCount": 4
+      },
+      "layoutPositioning": "AUTO",
+      "layoutSizingHorizontal": "FIXED",
+      "layoutSizingVertical": "HUG",
+      "textOverrides": [
+        {
+          "n": "라벨",
+          "c": "비밀번호"
+        },
+        {
+          "n": "텍스트",
+          "c": ""
+        },
+        {
+          "n": "안내 메세지",
+          "c": "영문, 숫자, 특수문자를 조합하여 8~15자로 입력해 주세요."
+        }
+      ]
+    },
+    {
+      "id": "1858:18061",
+      "name": "Password Confirm Input",
+      "x": 20,
+      "y": 222,
+      "w": 320,
+      "h": 72,
+      "componentProperties": {
+        "Password Icon": true,
+        "Size": "MD",
+        "State": "Default",
+        "Label": "On",
+        "Message": "Off",
+        "Break": "Mobile"
+      },
+      "mainComponent": {
+        "id": "1654:42049",
+        "name": "Size=MD, State=Default, Label=On, Message=Off, Break=Mobile",
+        "setId": "1654:42409",
+        "setName": "Input",
+        "orphanSet": true
+      },
+      "parent": {
+        "id": "1858:18029",
+        "name": "Content",
+        "type": "FRAME",
+        "layoutMode": "NONE",
+        "childIndex": 3,
+        "childCount": 4
+      },
+      "layoutPositioning": "AUTO",
+      "layoutSizingHorizontal": "FIXED",
+      "layoutSizingVertical": "HUG",
+      "textOverrides": [
+        {
+          "n": "라벨",
+          "c": "비밀번호 확인"
+        },
+        {
+          "n": "입력",
+          "c": "입력해 주세요"
+        }
+      ]
+    },
+    {
+      "id": "1989:18940",
+      "name": "Local Part Input",
+      "x": 20,
+      "y": 106,
+      "w": 140,
+      "h": 48,
+      "componentProperties": {
+        "Password Icon": false,
+        "Size": "MD",
+        "State": "Editing",
+        "Label": "Off",
+        "Message": "Off",
+        "Break": "Mobile"
+      },
+      "mainComponent": {
+        "id": "1654:42136",
+        "name": "Size=MD, State=Editing, Label=Off, Message=Off, Break=Mobile",
+        "setId": "1654:42409",
+        "setName": "Input",
+        "orphanSet": true
+      },
+      "parent": {
+        "id": "1989:18938",
+        "name": "Content",
+        "type": "FRAME",
+        "layoutMode": "NONE",
+        "childIndex": 1,
+        "childCount": 5
+      },
+      "layoutPositioning": "AUTO",
+      "layoutSizingHorizontal": "FIXED",
+      "layoutSizingVertical": "HUG",
+      "textOverrides": [
+        {
+          "n": "텍스트",
+          "c": "텍스트"
+        }
+      ]
+    },
+    {
+      "id": "1989:18961",
+      "name": "Domain Input",
+      "x": 20,
+      "y": 164,
+      "w": 320,
+      "h": 48,
+      "componentProperties": {
+        "Password Icon": false,
+        "Size": "MD",
+        "State": "Default",
+        "Label": "Off",
+        "Message": "Off",
+        "Break": "Mobile"
+      },
+      "mainComponent": {
+        "id": "1654:42024",
+        "name": "Size=MD, State=Default, Label=Off, Message=Off, Break=Mobile",
+        "setId": "1654:42409",
+        "setName": "Input",
+        "orphanSet": true
+      },
+      "parent": {
+        "id": "1989:18938",
+        "name": "Content",
+        "type": "FRAME",
+        "layoutMode": "NONE",
+        "childIndex": 4,
+        "childCount": 5
+      },
+      "layoutPositioning": "AUTO",
+      "layoutSizingHorizontal": "FIXED",
+      "layoutSizingVertical": "HUG",
+      "textOverrides": [
+        {
+          "n": "입력",
+          "c": "도메인을 입력해 주세요."
+        }
+      ]
+    },
+    {
+      "id": "1858:18433",
+      "name": "ID Input",
+      "x": 20,
+      "y": 106,
+      "w": 320,
+      "h": 70,
+      "componentProperties": {
+        "Password Icon": false,
+        "Size": "MD",
+        "State": "Editing",
+        "Label": "Off",
+        "Message": "On",
+        "Break": "Mobile"
+      },
+      "mainComponent": {
+        "id": "1654:42156",
+        "name": "Size=MD, State=Editing, Label=Off, Message=On, Break=Mobile",
+        "setId": "1654:42409",
+        "setName": "Input",
+        "orphanSet": true
+      },
+      "parent": {
+        "id": "1858:18431",
+        "name": "Content",
+        "type": "FRAME",
+        "layoutMode": "NONE",
+        "childIndex": 1,
+        "childCount": 2
+      },
+      "layoutPositioning": "AUTO",
+      "layoutSizingHorizontal": "FIXED",
+      "layoutSizingVertical": "HUG",
+      "textOverrides": [
+        {
+          "n": "텍스트",
+          "c": "s1design"
+        },
+        {
+          "n": "안내 메세지",
+          "c": "영어 소문자, 숫자를 조합하여 4~12자 입력해 주세요."
+        }
+      ]
+    },
+    {
+      "id": "1996:7",
+      "name": "Password Input",
+      "x": 20,
+      "y": 98,
+      "w": 320,
+      "h": 94,
+      "componentProperties": {
+        "Password Icon": true,
+        "Size": "MD",
+        "State": "Editing",
+        "Label": "On",
+        "Message": "On",
+        "Break": "Mobile"
+      },
+      "mainComponent": {
+        "id": "1654:42198",
+        "name": "Size=MD, State=Editing, Label=On, Message=On, Break=Mobile",
+        "setId": "1654:42409",
+        "setName": "Input",
+        "orphanSet": true
+      },
+      "parent": {
+        "id": "1996:4",
+        "name": "Content",
+        "type": "FRAME",
+        "layoutMode": "NONE",
+        "childIndex": 2,
+        "childCount": 4
+      },
+      "layoutPositioning": "AUTO",
+      "layoutSizingHorizontal": "FIXED",
+      "layoutSizingVertical": "HUG",
+      "textOverrides": [
+        {
+          "n": "라벨",
+          "c": "비밀번호"
+        },
+        {
+          "n": "텍스트",
+          "c": ""
+        },
+        {
+          "n": "안내 메세지",
+          "c": "영문, 숫자, 특수문자를 조합하여 8~15자로 입력해 주세요."
+        }
+      ]
+    },
+    {
+      "id": "1996:8",
+      "name": "Password Confirm Input",
+      "x": 20,
+      "y": 222,
+      "w": 320,
+      "h": 72,
+      "componentProperties": {
+        "Password Icon": true,
+        "Size": "MD",
+        "State": "Default",
+        "Label": "On",
+        "Message": "Off",
+        "Break": "Mobile"
+      },
+      "mainComponent": {
+        "id": "1654:42049",
+        "name": "Size=MD, State=Default, Label=On, Message=Off, Break=Mobile",
+        "setId": "1654:42409",
+        "setName": "Input",
+        "orphanSet": true
+      },
+      "parent": {
+        "id": "1996:4",
+        "name": "Content",
+        "type": "FRAME",
+        "layoutMode": "NONE",
+        "childIndex": 3,
+        "childCount": 4
+      },
+      "layoutPositioning": "AUTO",
+      "layoutSizingHorizontal": "FIXED",
+      "layoutSizingVertical": "HUG",
+      "textOverrides": [
+        {
+          "n": "라벨",
+          "c": "비밀번호 확인"
+        },
+        {
+          "n": "입력",
+          "c": "입력해 주세요"
+        }
+      ]
+    },
+    {
+      "id": "1996:19305",
+      "name": "Local Part Input",
+      "x": 20,
+      "y": 106,
+      "w": 140,
+      "h": 48,
+      "componentProperties": {
+        "Password Icon": false,
+        "Size": "MD",
+        "State": "Editing",
+        "Label": "Off",
+        "Message": "Off",
+        "Break": "Mobile"
+      },
+      "mainComponent": {
+        "id": "1654:42136",
+        "name": "Size=MD, State=Editing, Label=Off, Message=Off, Break=Mobile",
+        "setId": "1654:42409",
+        "setName": "Input",
+        "orphanSet": true
+      },
+      "parent": {
+        "id": "1996:19303",
+        "name": "Content",
+        "type": "FRAME",
+        "layoutMode": "NONE",
+        "childIndex": 1,
+        "childCount": 5
+      },
+      "layoutPositioning": "AUTO",
+      "layoutSizingHorizontal": "FIXED",
+      "layoutSizingVertical": "HUG",
+      "textOverrides": [
+        {
+          "n": "텍스트",
+          "c": "텍스트"
+        }
+      ]
+    },
+    {
+      "id": "1996:19308",
+      "name": "Domain Input",
+      "x": 20,
+      "y": 164,
+      "w": 320,
+      "h": 48,
+      "componentProperties": {
+        "Password Icon": false,
+        "Size": "MD",
+        "State": "Default",
+        "Label": "Off",
+        "Message": "Off",
+        "Break": "Mobile"
+      },
+      "mainComponent": {
+        "id": "1654:42024",
+        "name": "Size=MD, State=Default, Label=Off, Message=Off, Break=Mobile",
+        "setId": "1654:42409",
+        "setName": "Input",
+        "orphanSet": true
+      },
+      "parent": {
+        "id": "1996:19303",
+        "name": "Content",
+        "type": "FRAME",
+        "layoutMode": "NONE",
+        "childIndex": 4,
+        "childCount": 5
+      },
+      "layoutPositioning": "AUTO",
+      "layoutSizingHorizontal": "FIXED",
+      "layoutSizingVertical": "HUG",
+      "textOverrides": [
+        {
+          "n": "입력",
+          "c": "도메인을 입력해 주세요."
+        }
+      ]
+    }
+  ]
+}

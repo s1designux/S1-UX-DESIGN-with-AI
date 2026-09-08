@@ -2,7 +2,7 @@
   "id": "date-picker",
   "version": "0.1.0",
   "status": "approved",
-  "canonicalFingerprint": "eb7dee24d08b834d9a3584554db941b500154b6aa1c828ca3881d6e6211077ca",
+  "canonicalFingerprint": "8191ac5303d27dc65aa00a407b4af86cf5e420bce31161132e145e1588683073",
   "canonicalSources": [
     "plugins/figma-vars-installer/src/build-components.ts",
     "plugins/figma-vars-installer/src/vars-data.ts",
@@ -149,7 +149,8 @@
     "disabledDates": "registry HD-6(확정) — data-disabled-dates=\"YYYY-MM-DD,...\" 속성으로 비활성 날짜를 주입한다. 비활성 기준 자체는 서비스 레벨 결정.",
     "todayCellHover": "river 지시 2026-09-04 — 정본 buildCalendarCell 은 Standard 셀에만 hover 를 두고 '오늘' 셀 hover 는 규정이 없다. 웹은 오늘 셀에 마우스를 올리면 채움만 일반 hover 색(cell/bg/hover)으로 바뀌고 파란 테두리(cell/border/today)는 그대로 둔다. 새 토큰 0건.",
     "selectedCellHoverBorder": "river 지시 2026-09-04 — 선택 셀 hover 시 채움이 cell/bg/selected-hover(blue/500)로 바뀌는데 테두리는 cell/border/today(blue/400)에 남아 밝은 링이 보였다. hover 상태에서는 테두리도 채움과 같은 변수를 쓴다. 새 토큰 0건.",
-    "cellNumberOpticalCentering": "river 지시 2026-09-04 — 원 안 숫자가 중앙보다 약 0.5px 위로 보이는 문제. flex 중앙정렬은 줄상자를 중앙에 놓지만 폰트의 위/아래 여백 비대칭(Pretendard ascent 0.9375em·descent 0.25em)과 숫자에 하강획이 없는 탓에 잉크는 중앙이 아니다(어긋난 양 = (ascent−descent−capHeight)/2, line-height 와 무관). CSS text-box: trim-both cap alphabetic 으로 줄상자를 잉크상자로 잘라 보정값 없이 중앙에 놓는다. 미지원 브라우저는 무시하고 기존 모양 유지."
+    "cellNumberOpticalCentering": "river 지시 2026-09-04 — 원 안 숫자가 중앙보다 약 0.5px 위로 보이는 문제. flex 중앙정렬은 줄상자를 중앙에 놓지만 폰트의 위/아래 여백 비대칭(Pretendard ascent 0.9375em·descent 0.25em)과 숫자에 하강획이 없는 탓에 잉크는 중앙이 아니다(어긋난 양 = (ascent−descent−capHeight)/2, line-height 와 무관). CSS text-box: trim-both cap alphabetic 으로 줄상자를 잉크상자로 잘라 보정값 없이 중앙에 놓는다. 미지원 브라우저는 무시하고 기존 모양 유지.",
+    "triggerHoverState": "웹 상태 hover 는 정본 Date Picker 세트의 State 축(default·filled·open·disabled)에 없는 웹 추가분이다. river 승인 2026-09-04(승인 원장 uistate:date-picker.hover, 인용문 검증 완료). 새 토큰 0건 — 기존 color/form-control/bg/hover 만 쓴다."
   },
   "parts": [
     "trigger",

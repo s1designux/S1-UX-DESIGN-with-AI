@@ -39,13 +39,13 @@ const componentConfig = {
   },
   dropdown: {
     title: "Dropdown",
-    description: "Select·Filter Chip이 열었을 때 나오는 목록입니다. 글자 유형과 체크박스 유형이 있고, 체크박스 유형은 승인된 Checkbox 배포본을 그대로 조립합니다.",
+    description: "Select·Filter Chip이 열었을 때 나오는 목록입니다. 글자 유형과 체크박스 유형이 있고, 체크박스 유형은 승인된 Checkbox 배포본을 그대로 조립합니다. 목록 폭은 트리거(칩·셀렉트) 폭을 따르되 최소 100px이며, 트리거가 100px보다 좁으면 100px로 열립니다. 폭을 넘는 옵션 글자는 말줄임(…)되고 마우스를 올리면 전체가 보입니다.",
     approvedScope: "유형 3가지(글자 · 체크박스 · 체크박스+전체 선택) · 3크기(XXSM 28 · XSM 34 · MD 44) · 옵션 행 상태 3종 · 패널 자체는 상태 축 없음",
     runtime: S1UI.dropdown
   },
   "filter-chip": {
     title: "Filter Chip",
-    description: "목록에서 조건을 골라 거는 칩입니다. 눌러서 열고(Selected), 값을 고르면 닫히면서 칩에 값이 남습니다(Complete).",
+    description: "목록에서 조건을 골라 거는 칩입니다. 눌러서 열고(Selected), 값을 고르면 닫히면서 칩에 값이 남습니다(Complete). 열린 목록의 폭은 칩 폭과 같고, 칩이 100px보다 좁으면 목록은 100px로 열립니다.",
     approvedScope: { pc: "Line · Solid × 제목 있음/없음 × 상태 5종 · PC 2크기(SM 28 · MD 34) · Mobile 1크기(MD 30) · 목록 크기 SM·MD 모두 XSM(34px)", mobile: "Line · Solid × 제목 있음/없음 × 상태 5종 · 목록은 Dropdown 배포본을 조립" },
     runtime: S1UI.filterChip
   },
@@ -647,7 +647,7 @@ function inputStateMatrix() {
   const states = [
     { label: "Default", opts: {} },
     { label: "Filled", opts: { value: "홍길동" } },
-    { label: "Editing", opts: { value: "홍길", forceState: "editing" } },
+    { label: "Focus", opts: { value: "홍길", forceState: "focus" } },
     { label: "Error", opts: { state: "error", value: "ㅎ" } },
     { label: "Correct", opts: { state: "correct", value: "홍길동" } },
     { label: "Read-only", opts: { state: "readonly", value: "변경할 수 없는 값" } },

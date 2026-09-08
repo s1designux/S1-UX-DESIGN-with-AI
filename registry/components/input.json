@@ -61,7 +61,7 @@
   "a11y": [
     "suffix 액션(지우기·검색·비밀번호 표시전환)에는 각각 aria-label 을 단다(예: 검색어 지우기, 비밀번호 보기/숨기기).",
     "비밀번호 표시전환 토글은 aria-pressed 로 표시·숨김 상태를 노출한다.",
-    "Editing 상태의 지우기(clear) 버튼은 값이 있고 Input 또는 지우기 버튼에 초점이 있을 때만 노출한다(hidden 속성 제어).",
+    "Focus 상태의 지우기(clear) 버튼은 값이 있고 Input 또는 지우기 버튼에 초점이 있을 때만 노출한다(hidden 속성 제어).",
     "suffix 액션의 실제 누르는 영역은 PC 28×28px, Mobile 48×48px이며 액션마다 독립된 button 영역을 가진다. Mobile 에서 액션이 둘 보일 때는 누르는 영역을 맞붙이고(간격 0) 왼쪽 아이콘 그림만 자기 영역 안쪽 끝으로 당겨 보이는 간격을 좁힌다 — 영역 48×48 과 겹치지 않음은 그대로다(river 결정 2026-09-07, 실측 28px→12px).",
     "Mobile break 에서는 suffix 액션에 hover 배경을 내지 않는다 — 손가락에는 hover 가 없고, PC 브라우저로 모바일 화면을 볼 때 48×48 영역이 통째로 칠해져 혼란을 준다(river 지시 2026-09-07).",
     "suffix 액션의 키보드 초점 표시는 브라우저 기본 표시에 맡긴다 — 정본에 focus 표현이 없어 웹에서 따로 만들지 않는다(2026-09-02 river 결정).",
@@ -210,7 +210,7 @@
       "Mobile suffix action이 있으면 Input 높이는 최소 48px다."
     ],
     "baseClearAction": {
-      "state": "Editing",
+      "state": "Focus",
       "icon": "remove",
       "visibility": "값이 있고 Input 또는 clear action에 focus가 있을 때 노출",
       "interaction": "누르면 값을 지우고 input event를 발생시킨 뒤 Input으로 focus를 돌려준다.",

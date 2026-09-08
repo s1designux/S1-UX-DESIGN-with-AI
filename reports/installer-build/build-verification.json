@@ -1,9 +1,9 @@
 {
   "sourceFile": "plugins/figma-vars-installer/src/build-components.ts",
-  "sourceHash": "sha256:d970fac8a8b313170461ea41c99d8c7979ff67ff7481dad772bed7c1b6ca2994",
+  "sourceHash": "sha256:eb2a6e29713555e646891669cf0634de99cb7f0350d6e0f8ee9adc94274bb119",
   "verifiedBy": "component-verifier",
   "verdict": "pass",
   "changeType": "structural",
-  "verifiedAt": "2026-09-07T08:05:35.135Z",
-  "notes": "time-picker 모바일 바텀시트 휠 열 폭 WHEEL_COL_W(56/40/8/40) 신설 + counterAxisSizingMode=FIXED + resize 실패 throw. 주석 산식 24+(360-48-244)/2=58 을 코드 상수(SHEET_W 360·wheelWrap padding 24·itemSpacing 36·timeGroup 32)와 대조 후 헤드리스 렌더 실측으로 확인: marginL/R 58, contentSpan 244, gaps 36/32/32, cols 56/40/8/40, wheelH 270, cellH 42. river 승인 인용 '권장안으로 적용해봐' 를 세션기록 human 발화(2026-09-07T07:26:45.149Z)에서 직접 확인. 기계검사 재실행 exit 0: ui:build:check·installer:check·components:keycheck·components:anatomy·components:iconpolicy·ui:contract·ui:guide:render + 파생 재생성 --check 11종."
+  "verifiedAt": "2026-09-08T03:43:59.173Z",
+  "notes": "Input State 축 값 Editing→Focus 개명. 🤖 component-verifier 2회 독립 검증: (1) 정본 세트 2410:13831 56 variant·축 4개·State 7값이 component-facts.json 과 정확히 일치, Editing 잔존 0건, Focus 8개 전부 caret·remove 보유, 폰트 84개 전량 Pretendard(데이터 스캔). (2) 시안 30개 교체 후 화면 동일성 좌표 검증 통과, 라벨 4개가 pattern-data.ts fieldLabel() 과 100% 일치, 색 Variable 바인딩. 미해결 ❌ 1건은 decorateSetFlat 의 raw #FFFFFF 로 2026-06-11 선존·전 세트 공통이며 river 가 별도 건으로 분리 결정(2026-09-08). 보고서 4-verification.md · 6-swap-verification.md"
 }

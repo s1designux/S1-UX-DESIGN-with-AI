@@ -6,7 +6,7 @@ const instances = new WeakMap();
 function refresh(root, control, clearAction, isSearch) {
   const editable = !control.disabled && !control.readOnly;
   /* Search 는 값이 있으면 초점 여부와 무관하게 지우기를 보인다("값 있음" 상태, river D4).
-     Base·Password 는 기존 그대로 focus-within(Editing) 일 때만 보인다. */
+     Base·Password 는 기존 그대로 focus-within(Focus) 일 때만 보인다. */
   const show = isSearch
     ? editable && control.value.length > 0
     : editable && root.matches(":focus-within") && control.value.length > 0;

@@ -3,7 +3,7 @@
  * Component Anatomy Check (Gate 11)
  * ─────────────────────────────────────────────────────────────────────────
  * build-components.ts 빌더가 각 상태(variant)에서 **반드시 포함해야 하는 하위 요소**
- * (예: Editing 상태의 입력 커서 "caret", selected 상태의 삭제 아이콘 "clear")를
+ * (예: Focus 상태의 입력 커서 "caret", selected 상태의 삭제 아이콘 "clear")를
  * 실제로 생성하는지 기계 검증한다.
  *
  * 왜 필요한가 (도입 사유 2026-06-19):
@@ -36,7 +36,7 @@ const BC = path.join(ROOT, "plugins/figma-vars-installer/src/build-components.ts
 // require: 그 variant 서브트리에 반드시 존재해야 하는 노드 이름들
 // 아이콘 노드는 role 이름으로 기록됨(makeIconInstance): 삭제 아이콘 = "remove", 돋보기 = "search" 등.
 const ANATOMY = [
-  { set: "Input",        variant: /(^|,\s*)State=Editing(,|$)/, require: ["caret", "remove"], label: "Input / State=Editing" },
+  { set: "Input",        variant: /(^|,\s*)State=Focus(,|$)/,   require: ["caret", "remove"], label: "Input / State=Focus" },
   // Search Input 상태 4→3(Default/Filled/Disabled) 로 축소(river D4, 2026-09-04) — Focus 행을 뺐고
   // 검색창 caret 도 함께 뺐다(웹 :focus-within 로만 표시). 값 있음(Filled) 이 이제 지우기+돋보기를 낸다.
   { set: "Search Input", variant: /(^|,\s*)State=Filled(,|$)/,  require: ["remove", "search"], label: "Search Input / State=Filled" },

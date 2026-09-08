@@ -191,11 +191,11 @@
 }
 
 /* Forced editing (focus) state for static preview */
-[data-s1-component="input"][data-force-state="editing"] [data-s1-part="field"] {
+[data-s1-component="input"][data-force-state="focus"] [data-s1-part="field"] {
   background: var(--color-form-control-bg-selected);
   border-color: var(--color-form-control-border-selected);
 }
-[data-s1-component="input"][data-force-state="editing"] [data-s1-part="control"] {
+[data-s1-component="input"][data-force-state="focus"] [data-s1-part="control"] {
   color: var(--color-form-control-text-selected);
 }
 

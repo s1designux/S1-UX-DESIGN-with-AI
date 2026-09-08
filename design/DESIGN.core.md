@@ -1285,6 +1285,7 @@ _Do_
 - 트리거 테두리는 form-control 토큰을 참조한다.
 - 체크박스 유형의 체크박스는 코어 Checkbox 컴포넌트를 그대로 배치한다(Figma=인스턴스, 코드=.s1-checkbox).
 - 다중 선택은 고르는 즉시 적용하고 목록을 열어 둔다.
+- 목록 폭은 트리거(칩·셀렉트) 폭을 따르되 100px 밑으로 내려가지 않는다 — guide.panelWidthRule 참조.
 
 _Don't_
 - 목록 배경에 surface-default 를 쓰지 않는다(D002 결정: raised).
@@ -1292,6 +1293,7 @@ _Don't_
 - 드롭다운 전용 체크박스를 새로 만들지 않는다(코어 재사용 규칙).
 - 체크박스 유형에서 선택된 줄의 글자를 강조하지 않는다 — 체크 표시가 이미 선택을 표현한다(2026-08-14 결정).
 - 다중 선택에서 옵션을 고를 때 목록을 닫지 않는다.
+- 목록에 임의의 최대 폭 상한을 두지 않는다(2026-09-07 river 결정으로 상한 폐기).
 
 **접근성 (a11y)**
 - 트리거는 aria-expanded 로 열림 상태를 노출한다.
@@ -1768,7 +1770,7 @@ agent:
     State:
       - "Default"
       - "Filled"
-      - "Editing"
+      - "Focus"
       - "Error"
       - "Correct"
       - "Read-Only"
@@ -1783,7 +1785,7 @@ agent:
     builder:
       - "Default"
       - "Filled"
-      - "Editing"
+      - "Focus"
       - "Error"
       - "Correct"
       - "Read-Only"
@@ -1984,7 +1986,7 @@ _Don't_
 **접근성 (a11y)**
 - suffix 액션(지우기·검색·비밀번호 표시전환)에는 각각 aria-label 을 단다(예: 검색어 지우기, 비밀번호 보기/숨기기).
 - 비밀번호 표시전환 토글은 aria-pressed 로 표시·숨김 상태를 노출한다.
-- Editing 상태의 지우기(clear) 버튼은 값이 있고 Input 또는 지우기 버튼에 초점이 있을 때만 노출한다(hidden 속성 제어).
+- Focus 상태의 지우기(clear) 버튼은 값이 있고 Input 또는 지우기 버튼에 초점이 있을 때만 노출한다(hidden 속성 제어).
 - suffix 액션의 실제 누르는 영역은 PC 28×28px, Mobile 48×48px이며 액션마다 독립된 button 영역을 가진다. Mobile 에서 액션이 둘 보일 때는 누르는 영역을 맞붙이고(간격 0) 왼쪽 아이콘 그림만 자기 영역 안쪽 끝으로 당겨 보이는 간격을 좁힌다 — 영역 48×48 과 겹치지 않음은 그대로다(river 결정 2026-09-07, 실측 28px→12px).
 - Mobile break 에서는 suffix 액션에 hover 배경을 내지 않는다 — 손가락에는 hover 가 없고, PC 브라우저로 모바일 화면을 볼 때 48×48 영역이 통째로 칠해져 혼란을 준다(river 지시 2026-09-07).
 - suffix 액션의 키보드 초점 표시는 브라우저 기본 표시에 맡긴다 — 정본에 focus 표현이 없어 웹에서 따로 만들지 않는다(2026-09-02 river 결정).
@@ -4174,4 +4176,4 @@ DESIGN_SYSTEM_GAP:
 - 적용 해석 순서(뒤가 앞을 덮음): core → service(extends core) → role → platform → theme. 기본값: service=core · role=user · platform=web · theme=light.
 - 서비스 분기(예: vms 영상관제)는 core 를 상속하고 차이분만 덮는다.
 
-<!-- generated-stamp: a51636a26a47 · 손편집 금지 -->
+<!-- generated-stamp: e565599e0b9b · 손편집 금지 -->

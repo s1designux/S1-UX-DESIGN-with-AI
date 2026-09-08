@@ -35,7 +35,7 @@ expect('미해결 component alias 표시 누락', button.includes('status: "unre
 expect('Button PC click/disabled 행동 계약 누락', button.includes('invoke the assigned action once') && button.includes('disabled=true'));
 
 const input = section('Input');
-expect('Input builder state 누락', ['Default', 'Filled', 'Editing', 'Error', 'Correct', 'Read-Only', 'Disabled'].every((x) => input.includes(`- "${x}"`)));
+expect('Input builder state 누락', ['Default', 'Filled', 'Focus', 'Error', 'Correct', 'Read-Only', 'Disabled'].every((x) => input.includes(`- "${x}"`)));
 const inputBuilderStates = between(input, 'builder:', 'metadata:');
 expect('Input hover가 builder state로 재유입', !inputBuilderStates.includes('- "Hover"'));
 expect('Input mobile 48 geometry 누락', input.includes('height: 48'));

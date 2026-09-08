@@ -13,8 +13,9 @@
  *   8. components:facts:write build-components 실제 실행 → component-facts.json
  *   9. components:guide-model:write build-components 실제 scene graph → component-guide-model.json
  *  10. design:md:write        tokens.css+component facts+registry → DESIGN.core/vms.md
- *  11. tokens:sync-prompt     tokens.css + design/*.md → install-prompt.html (10 뒤여야 함)
- *  12. installer:build        vars-data+textstyles-data → 설치기 zip (+ ~/s1-ux-design-guide-installer)
+ *  11. build:bundle           registry/** → assets/js/registry-data-bundle.js (8·9 뒤여야 함 — 사이트가 읽는 번들)
+ *  12. tokens:sync-prompt     tokens.css + design/*.md → install-prompt.html (10 뒤여야 함)
+ *  13. installer:build        vars-data+textstyles-data → 설치기 zip (+ ~/s1-ux-design-guide-installer)
  *
  * pages/components.html은 손관리 화면이다. 이 명령은 사이트를 생성하거나 덮어쓰지 않는다.
  *
@@ -46,29 +47,32 @@ console.log('\n🔧 Token Reconcile — 정본 → 파생 표면 재생성\n');
 // 0단계: 텍스트 스타일 정본(textstyles-data.ts) → typography.css.
 //   2026-08-03 편입 — 종전 우산은 vars-data 만 봐서 **텍스트 스타일을 추가해도 파생이 안 따라왔다**.
 //   Gate 35 가 그 어긋남을 잡는다.
-run('1/15 typo:gen              (textstyles-data → assets/css/typography.css)', 'npm run --silent typo:gen');
-run('2/15 tokens:gen            (vars-data → tokens.css Semantic)', 'npm run --silent tokens:gen');
-run('3/15 tokens:gen:foundation (vars-data → tokens.css Foundation)', 'npm run --silent tokens:gen:foundation');
-run('4/15 color:gen             (vars-data → foundation.html 색 팔레트)', 'npm run --silent color:gen');
-run('5/15 number:gen            (vars-data → foundation.html number 5종)', 'npm run --silent number:gen');
-run('6/15 registry:foundation:gen (vars-data → registry/tokens/foundation.colors.json)', 'npm run --silent registry:foundation:gen');
-run('7/15 page:gen              (tokens.css → semantic.html SEMANTIC_PAGE)', 'npm run --silent page:gen');
-run('8/15 components:facts:write (build-components → component-facts.json)', 'npm run --silent components:facts:write');
-run('9/15 components:guide-model:write (build-components → component-guide-model.json)', 'npm run --silent components:guide-model:write');
-run('10/15 design:md:write       (tokens+facts+registry → DESIGN.core/vms.md)', 'npm run --silent design:md:write');
-run('11/15 tokens:sync-prompt   (tokens.css+design md → install-prompt.html)', 'npm run --silent tokens:sync-prompt');
+run('1/16 typo:gen              (textstyles-data → assets/css/typography.css)', 'npm run --silent typo:gen');
+run('2/16 tokens:gen            (vars-data → tokens.css Semantic)', 'npm run --silent tokens:gen');
+run('3/16 tokens:gen:foundation (vars-data → tokens.css Foundation)', 'npm run --silent tokens:gen:foundation');
+run('4/16 color:gen             (vars-data → foundation.html 색 팔레트)', 'npm run --silent color:gen');
+run('5/16 number:gen            (vars-data → foundation.html number 5종)', 'npm run --silent number:gen');
+run('6/16 registry:foundation:gen (vars-data → registry/tokens/foundation.colors.json)', 'npm run --silent registry:foundation:gen');
+run('7/16 page:gen              (tokens.css → semantic.html SEMANTIC_PAGE)', 'npm run --silent page:gen');
+run('8/16 components:facts:write (build-components → component-facts.json)', 'npm run --silent components:facts:write');
+run('9/16 components:guide-model:write (build-components → component-guide-model.json)', 'npm run --silent components:guide-model:write');
+run('10/16 design:md:write       (tokens+facts+registry → DESIGN.core/vms.md)', 'npm run --silent design:md:write');
+// registry/** → 사이트가 읽는 단일 번들. 이게 빠져 있어 정본을 고쳐도 안내 화면이 옛 이름을
+//   그대로 보여주는 구멍이 있었다(2026-09-08 Input Editing→Focus 검증에서 🤖 가 적발).
+run('11/16 build:bundle        (registry/** → assets/js/registry-data-bundle.js)', 'npm run --silent build:bundle');
+run('12/16 tokens:sync-prompt   (tokens.css+design md → install-prompt.html)', 'npm run --silent tokens:sync-prompt');
 // UI 라이브러리와 개발자 전달본 — 토큰 표면을 다 만든 뒤 마지막에 돌린다.
 //   ⚠️ 토큰 '값'이 바뀌면 ui:build 는 일부러 멈춘다("canonicalFingerprint is stale").
 //      컴포넌트가 그 값을 쓰고 있으므로 사람이 다시 확인하고 각 manifest 지문을 갱신해야
 //      배포본을 다시 만들 수 있다는 뜻이다. 여기서 멈춰도 위 토큰 표면 재생성은 이미 끝나 있다.
-run('12/15 ui:build             (tokens.css+manifest → dist + 툴별 전달본 6종)', 'npm run --silent ui:build');
-run('13/15 ui:zip               (dist → assets/downloads/s1-ui-dev-package.zip)', 'npm run --silent ui:zip');
-run('14/15 devpanel:gen         (dist+zip → install-prompt.html 개발자 패널)', 'npm run --silent devpanel:gen');
+run('13/16 ui:build             (tokens.css+manifest → dist + 툴별 전달본 6종)', 'npm run --silent ui:build');
+run('14/16 ui:zip               (dist → assets/downloads/s1-ui-dev-package.zip)', 'npm run --silent ui:zip');
+run('15/16 devpanel:gen         (dist+zip → install-prompt.html 개발자 패널)', 'npm run --silent devpanel:gen');
 
 if (!skipInstaller) {
-  run('15/15 installer:build       (vars-data → 설치기 zip)', 'npm run --silent installer:build');
+  run('16/16 installer:build       (vars-data → 설치기 zip)', 'npm run --silent installer:build');
 } else {
-  console.log('\n▶ 15/15 installer:build — 건너뜀(--no-installer)');
+  console.log('\n▶ 16/16 installer:build — 건너뜀(--no-installer)');
 }
 
 console.log('\n──────────────────────────────────────────────');

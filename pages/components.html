@@ -715,8 +715,8 @@
       background: var(--color-form-control-bg-disabled); border-color: var(--color-form-control-border-default);
     }
     .s1-input-wrap.is-readonly input { color: var(--color-form-control-text-read-only); cursor: default; }
-    /* Editing — 입력 중(포커스 + 캐럿). 정적 데모용 1px 세로 캐럿 */
-    /* 정본(build-components.ts buildInput, State=Editing) = bg/selected · border/selected · text/selected */
+    /* Focus — 입력 중(포커스 + 캐럿). 정적 데모용 1px 세로 캐럿 */
+    /* 정본(build-components.ts buildInput, State=Focus) = bg/selected · border/selected · text/selected */
     .s1-input-wrap.is-editing .s1-input-field {
       border-color: var(--color-form-control-border-selected);
       background: var(--color-form-control-bg-selected);
@@ -1859,7 +1859,7 @@
 
 
       <!-- Approved Input guide: ui-library-guide.js renders from ui-library/dist -->
-      <section class="comp-section" id="input" data-cov-states="default,filled,editing,error,correct,read-only,disabled" data-cov-sizes="xxsm,xsm,md" data-cov-labels="off,on" data-cov-messages="off,on"></section>
+      <section class="comp-section" id="input" data-cov-states="default,filled,focus,error,correct,read-only,disabled" data-cov-sizes="xxsm,xsm,md" data-cov-labels="off,on" data-cov-messages="off,on"></section>
 
       <!-- ═══ CHIP ═══ -->
       <!-- Approved Chip guide: ui-library-guide.js renders from ui-library/dist -->
