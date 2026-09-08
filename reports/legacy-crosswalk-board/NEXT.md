@@ -58,33 +58,34 @@ river 가 고른 3건:
 
 > 보조 버튼 다크 글자색은 한 단계 옅은 #8A8C96 으로, 모바일 상단바는 홈+타이틀+아이콘 1개 한 종류 추가로, 하위메뉴 2단 글자는 #555555 로 승인합니다. 나머지 9건은 추천안대로 진행하세요.
 
-Gate 34 승인 기록에 쓸 인용 조각(그대로 복사해 쓸 것 — 셋 다 실재 확인됨):
+Gate 34 승인 **10건** 기록 완료(색 4 + 컴포넌트 5 + 슬롯 속성 1). 인용 조각 4종 모두 세션기록의 사람 발화에 실재함을 검증했다.
 
-| 대상 | `--quote` 에 넣을 조각 |
+### ✅ 시공 완료 (2026-09-08) — 커밋 대기
+
+신규 컴포넌트 **5** · 신규 색 **4** · 기존 세트 변경 **1**. 자세한 것은 **`WIP-canon-additions.md`**.
+
+| 무엇 | 결과 |
 |---|---|
-| 보조 버튼 토큰 6개 | `보조 버튼 다크 글자색은 한 단계 옅은 #8A8C96 으로` |
-| Mobile Header 유형 1종 | `모바일 상단바는 홈+타이틀+아이콘 1개 한 종류 추가로` |
-| GNB Sub Menu 세트 2개 | `하위메뉴 2단 글자는 #555555 로 승인합니다` |
-| Text Button 세트 · Modal Size 축 | `나머지 9건은 추천안대로 진행하세요` |
+| `Assist Button` | 별도 세트 · 크기 1종(60×32) · State 4. **Button 의 variant 가 아니다** |
+| `Text Button` | 별도 세트 · Variant 2 × State 4 |
+| `Modal Content` | 콘텐츠 계열 별도 세트 · Size(MD·LG·XL) × Footer 2 |
+| `Modal`(확인 계열) | **크기 축 없음** — PC 360 · Mobile 300. 한때 크기 축을 붙였다가 철회 |
+| `GNB Sub Menu` · `GNB Sub Menu Item` | **A 기준**(540:6398 regular) |
+| `Mobile Header` | `Home / Title + 1 Icon` 추가(6→7종) |
+| 신규 색 **4** | `border/assist--hover` · `label/assist--{default,hover}` · `navigation/submenu/label/default` |
 
-**⛔ 남은 차단 요인 — 같은 작업트리를 다른 세션이 쓰는 중.**
-`build-components.ts`(09:14 수정) · `pattern-data.ts` · `pages/components.html` · `registry/components/{select,dropdown,filter-chip,input}.json` 등 **미커밋 95개**가 남아 있고,
-그 세션은 09:50 에도 파일을 쓰고 있었다(살아 있음 — 유령 작업 아님). `gate:check` 는 그 작업 때문에 error 50건으로 실패 중이다(Gate 13·19 등).
+⚠️ **착수 전 계획서(`PLAN-canon-additions.md`)와 다른 곳이 네 군데 있다** — 그 문서 상단 배너 참조.
+보조 버튼(variant → 별도 세트) · 모달 크기(확인 계열 → 콘텐츠 계열) · GNB 기준 원본(B → A) ·
+보조 버튼 전용 색(6개 → **3개**, 배경·기본테두리는 secondary 차용).
 
-기억된 정본 지침 그대로 따른다: **같은 파일을 동시에 고치지 않는다. 그 세션이 커밋할 때까지 편집 대기.**
-(2026-07-13 재발 기록 — 개별 `git add` 로도 못 막았다. index 가 세션 간 공유라 커밋 순간 남의 파일이 딸려 간다.)
-**커밋은 반드시 경로 지정형으로:** `git commit -- <path1> <path2> …`
+### 남은 일
 
-### 시공 순서 (다른 세션이 커밋한 직후 실행)
-
-1. 정본 편집 → 새 이름이 생기면 Gate 34 가 잡는다 → 위 표의 조각으로 건별 승인 기록
-   `node scripts/canon-addition-check.js --approve --by river --reason "…" --quote "<위 표의 조각>"`
-2. 새 토큰 6개(`vars-data.ts`, 보조 버튼 bg·border·label 의 default/hover) → `npm run tokens:reconcile`
-   · **2단 글자 토큰은 신설하지 않는다**(⑩ 확정 — 기존 `color/navigation/label/default` 재사용)
-3. `build-components.ts` — Assist variant · Text Button 세트 · Modal Size 축 · 상단바 1종 · GNB Sub Menu 2세트
-4. 🤖 `component-verifier` 실제 spawn → Gate 13 기록 (⭐ 자가검증 금지)
-5. `components:facts:write` · `guide-model:write` · `installer:build` → Figma 설치 후 렌더 대조
-6. `npm run board:refresh` → Gate 전체 통과 후 커밋
+1. 🤖 `component-verifier` 로 **Gate 13** 통과 — 유일하게 남은 빨강이다. **작업트리를 멈춘 상태로** 돌린다.
+2. `gate:check` 초록 확인 → **경로 지정 커밋** `git commit -- <path1> <path2> …`
+   (같은 폴더를 다른 세션이 쓴다. `git add` 후 커밋하면 남의 파일이 딸려 간다 — 2026-07-13 실제 사고)
+3. `npm run board:refresh` 후 검수판 아티팩트 재게시(스크립트는 게시 못 함)
+4. **웹 배포본·안내 페이지에 새 컴포넌트 5개가 없다** — 별도 작업("웹 업데이트 해줘")
+5. **Figma 캔버스에 실제 설치해 본 적 없다** — 설치기 zip 에는 들어가 있다
 
 ## 그 밖에 열려 있는 것 (③ 과 별개)
 

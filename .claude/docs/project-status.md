@@ -32,11 +32,13 @@
 > **정리(2026-06-19):** 완료 항목(구 1·4·7·8·10·15)은 「변경 이력」 표·git 히스토리·각 reports에 보존돼 본 목록에서 제거했다. 아래는 **활성 미결만** 남긴 것이다.
 
 ```
-0-A. **레거시 대응 검수판 — 정본 보강 4건 (river 지시 2026-09-04, 다음 차례)**
+0-A. **레거시 대응 검수판 — 정본 보강 4건 (river 지시 2026-09-04) — 2026-09-08 시공 완료**
    - 인계서: `reports/legacy-crosswalk-board/NEXT.md` — **새 세션은 이 파일만 읽으면 이어서 할 수 있다**
-   - 남은 것: D-13 보조/텍스트 버튼 · D-15 모달 크기 축 · D-17 모바일 상단바 유형(⚠️ river 확인 먼저) · D-18 GNB 하위메뉴 깊이
-   - 넷 다 **정본 신설**이라 건별로 river 승인 후 착수(하드룰 H6② · Gate 34 `--quote`)
-   - 결정 정본: `reports/legacy-crosswalk-board/crosswalk.json` · 검수판 Gate 47 이 신선도 감시
+   - 결과: 신규 컴포넌트 **5**(Assist Button · Text Button · Modal Content · GNB Sub Menu · GNB Sub Menu Item) ·
+     신규 색 **4** · `Mobile Header` 유형 1종 추가. Gate 34 승인 기록 완료.
+     ⚠️ D-15 는 "모달 크기 축"이 아니라 **콘텐츠 계열 모달 신설**로 끝났다 — 확인 계열 Modal 은 크기 축이 없다(PC 360 · Mobile 300).
+   - 남은 것: **웹 배포본·안내 페이지에 새 컴포넌트 5개 없음**(별도 작업 "웹 업데이트 해줘") · Figma 캔버스 실물 설치 확인
+   - 결정 정본: `reports/legacy-crosswalk-board/crosswalk.json` · 시공 기록: `WIP-canon-additions.md` · 검수판 Gate 47 이 신선도 감시
 
 0. **개발자 배포 탭 공개 — UI 라이브러리 dist 연동을 다 끝낸 뒤에 연다 (river 결정 2026-09-02)**
    - 진입점: pages/install-prompt.html 의 「개발자」 탭 (현재 "준비 중", 2026-08-12 부터 의도적으로 비움)

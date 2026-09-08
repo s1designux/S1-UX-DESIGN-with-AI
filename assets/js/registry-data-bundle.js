@@ -10973,7 +10973,7 @@ window.REGISTRY_BUNDLE = {
             "트리거 폭을 넘는 옵션 글자는 말줄임(…)하고, 마우스를 올리면 전체 글자를 보여준다."
           ],
           "webImplementation": "dropdown.css 의 min-width:100px + 소비자(select.css·filter-chip.css)의 width:100% 조합. 말줄임은 dropdown.css 의 text-overflow:ellipsis, 마우스 올림 안내는 dropdown.js 의 syncEllipsisTitles(잘린 옵션에만 title 부여).",
-          "figmaCanonNote": "Figma 정본(build-components.ts)은 패널을 resize(140, …) 고정 폭으로 만든다. 「트리거 폭을 따라간다」는 Figma 컴포넌트로 표현할 수 없어 GUI 로 보이는 항목(옵션 글자 말줄임·폭 값)만 정본에 반영하고, 폭 연동 규칙은 이 사양으로만 남긴다.",
+          "figmaCanonNote": "Figma 정본(build-components.ts)은 트리거·패널을 모두 resize(140, …) 고정 폭으로 만든다. 140 은 하한 100 보다 크고 규칙 ③(트리거 폭과 동일)에 부합하므로 정본 폭 숫자는 바꾸지 않았다. 「트리거 폭을 따라간다」는 Figma 컴포넌트가 고정 폭이라 캔버스로 표현할 수 없어 정본에는 GUI 로 보이는 말줄임만 반영했다(2026-09-08: buildDropdownList 의 옵션 텍스트에 layoutGrow=1 · textAutoResize=HEIGHT · textTruncation=ENDING · maxLines=1). 폭 연동 규칙은 이 사양으로만 남는다.",
           "measuredAt": "2026-09-07",
           "measured": {
             "filterChipTriggerPx": {

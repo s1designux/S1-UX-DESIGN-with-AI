@@ -124,6 +124,8 @@ object S1Tokens {
         const val colorButtonBgSecondaryDefault: Long = 0xFFFFFFFF
         /** --color-button-bg-secondary--hover = #F5F5F5 */
         const val colorButtonBgSecondaryHover: Long = 0xFFF5F5F5
+        /** --color-button-border-assist--hover = #D9D9D9 */
+        const val colorButtonBorderAssistHover: Long = 0xFFD9D9D9
         /** --color-button-border-blue-line--default = #1D6CEB */
         const val colorButtonBorderBlueLineDefault: Long = 0xFF1D6CEB
         /** --color-button-border-blue-line--hover = #1D6CEB */
@@ -138,6 +140,10 @@ object S1Tokens {
         const val colorButtonBorderSecondaryDefault: Long = 0xFFD9D9D9
         /** --color-button-border-secondary--hover = #D9D9D9 */
         const val colorButtonBorderSecondaryHover: Long = 0xFFD9D9D9
+        /** --color-button-label-assist--default = #757575 */
+        const val colorButtonLabelAssistDefault: Long = 0xFF757575
+        /** --color-button-label-assist--hover = #757575 */
+        const val colorButtonLabelAssistHover: Long = 0xFF757575
         /** --color-button-label-blue-line--default = #1D6CEB */
         const val colorButtonLabelBlueLineDefault: Long = 0xFF1D6CEB
         /** --color-button-label-blue-line--hover = #2747B9 */
@@ -442,6 +448,8 @@ object S1Tokens {
         const val colorNavigationLabelHover: Long = 0xFF1D6CEB
         /** --color-navigation-label-selected = #1D6CEB */
         const val colorNavigationLabelSelected: Long = 0xFF1D6CEB
+        /** --color-navigation-submenu-label-default = #353535 */
+        const val colorNavigationSubmenuLabelDefault: Long = 0xFF353535
         /** --color-orange-100 = #FDDBBF */
         const val colorOrange100: Long = 0xFFFDDBBF
         /** --color-orange-150 = #FEC6A0 */
@@ -802,6 +810,8 @@ object S1Tokens {
         const val colorButtonBgSecondaryDefault: Long = 0xFF1C1D23
         /** --color-button-bg-secondary--hover = #24252C */
         const val colorButtonBgSecondaryHover: Long = 0xFF24252C
+        /** --color-button-border-assist--hover = #3E4049 */
+        const val colorButtonBorderAssistHover: Long = 0xFF3E4049
         /** --color-button-border-blue-line--default = #3070D8 */
         const val colorButtonBorderBlueLineDefault: Long = 0xFF3070D8
         /** --color-button-border-blue-line--hover = #3070D8 */
@@ -816,6 +826,10 @@ object S1Tokens {
         const val colorButtonBorderSecondaryDefault: Long = 0xFF3E4049
         /** --color-button-border-secondary--hover = #3E4049 */
         const val colorButtonBorderSecondaryHover: Long = 0xFF3E4049
+        /** --color-button-label-assist--default = #8A8C96 */
+        const val colorButtonLabelAssistDefault: Long = 0xFF8A8C96
+        /** --color-button-label-assist--hover = #8A8C96 */
+        const val colorButtonLabelAssistHover: Long = 0xFF8A8C96
         /** --color-button-label-blue-line--default = #3070D8 */
         const val colorButtonLabelBlueLineDefault: Long = 0xFF3070D8
         /** --color-button-label-blue-line--hover = #3070D8 */
@@ -1024,6 +1038,8 @@ object S1Tokens {
         const val colorNavigationLabelHover: Long = 0xFF3070D8
         /** --color-navigation-label-selected = #3070D8 */
         const val colorNavigationLabelSelected: Long = 0xFF3070D8
+        /** --color-navigation-submenu-label-default = #ECEDF0 */
+        const val colorNavigationSubmenuLabelDefault: Long = 0xFFECEDF0
         /** --color-overlay = rgba(0,0,0,0.75) */
         const val colorOverlay: Long = 0xBF000000
         /** --color-overlay-wheel-fade = #1C1D23 */

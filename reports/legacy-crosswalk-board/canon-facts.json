@@ -75,7 +75,7 @@
         "Disabled": "disabled"
       },
       "absentCombinations": [],
-      "sourceFingerprint": "ac1d3ae36c072c7c2588d95a579f266fab3784026bd1c2c8adb2edaff999f8a8"
+      "sourceFingerprint": "05aaf6360f8ef5e607a39e90315b48864fba6efc334b43f6ab0776e13b67a902"
     },
     "checkbox": {
       "id": "checkbox",
@@ -103,7 +103,7 @@
         "Dis+Checked": "disabledChecked"
       },
       "absentCombinations": [],
-      "sourceFingerprint": "190b48fed260d4d96c126cbbe5648b87e247dd7307a15f865978bb2e15cf1a4a"
+      "sourceFingerprint": "af2b8fceab45c95794c3c3b9664efd239c860d8f86b633d68fc2be1a55b8b262"
     },
     "chip": {
       "id": "chip",
@@ -168,7 +168,7 @@
           "reason": "정본에 Mobile MD 조합이 없다. CSS 는 정본 3조합만 정의한다."
         }
       ],
-      "sourceFingerprint": "3f3924dbd5c49adac70f14947c0eba38e360b4a3f980f5110410c8c2c9440c91"
+      "sourceFingerprint": "4474b5722ae31e823b94c9e3d445864fc62848f8ff98ae5f61389042b420efe8"
     },
     "date-picker": {
       "id": "date-picker",
@@ -238,7 +238,7 @@
         "Disabled": "disabled"
       },
       "absentCombinations": [],
-      "sourceFingerprint": "172ecb5563a13d73e60a359c02c46a377177b54ef665389c91ea6d6120a1101b"
+      "sourceFingerprint": "9ef927cfbbf477b9b98a36e4ba308a8bb6c8732fdcbb7c82ea06cb29384699a9"
     },
     "dropdown": {
       "id": "dropdown",
@@ -274,7 +274,7 @@
           "reason": "정본 buildDropdown 은 패널 자체의 state 축이 없다(항상 State=Default) — 상태는 옵션 행이 담당한다. 패널에 별도 open/closed 시각 변형을 만들지 않았다."
         }
       ],
-      "sourceFingerprint": "fc49e4481af65f9e1dd53df4b00f741194064a0e04746ae2bcfc5a203fff662e"
+      "sourceFingerprint": "0f64facf2925e91b3429be63f68d2c0312c71f87622f0e7d57744b8ef7d22dba"
     },
     "filter-chip": {
       "id": "filter-chip",
@@ -341,7 +341,7 @@
           "reason": "정본에 Error 상태가 없다."
         }
       ],
-      "sourceFingerprint": "e720ff9eef82882e45dfa4a8e5f7f09ee66a669f6849213a7d8d54dd85a598df"
+      "sourceFingerprint": "a29b81c877528cb1b57edbc46d6c87d093598cd7f70a0221290678371c147d28"
     },
     "input": {
       "id": "input",
@@ -415,7 +415,7 @@
         "Disabled": "disabled"
       },
       "absentCombinations": [],
-      "sourceFingerprint": "b348f2c8b0608d37e4b1a2d12738c3a90b9b1e790ee6b7c504865ec9bbc0e04e"
+      "sourceFingerprint": "4adb516cf99255ec8a1a86860f6ca8996bc1148074bca5a0a0468cf991c4bfb7"
     },
     "mobile-bottom-nav": {
       "id": "mobile-bottom-nav",
@@ -440,7 +440,7 @@
           "reason": "정본에 hover·disabled 상태가 없다(D2). unselected·selected 2가지만 만든다."
         }
       ],
-      "sourceFingerprint": "a59b870f71762f54594507fa2abf78f1b054dbd9feda1920992efd4617a149ff"
+      "sourceFingerprint": "d15c63cae742cba696c8dfec1f8795df4995bedd0425baa6e61fadc51e89272a"
     },
     "mobile-header": {
       "id": "mobile-header",
@@ -466,7 +466,7 @@
           "reason": "StatusBar 제외로 App/Web 차이(상태바 높이만 다름)가 사라져 Platform 축도 함께 뺀다 — Type 6종 1축만 배포한다."
         }
       ],
-      "sourceFingerprint": "2a4183ff9d696d144444c46a9b6044908760798e3b4b8fa54396dd9781138f7a"
+      "sourceFingerprint": "b7e50f9e2bbc35cfe1982b3fdfc2187ee280d48277e07e6cbf29e33ecfff0b58"
     },
     "modal": {
       "id": "modal",
@@ -500,7 +500,7 @@
           "reason": "정본에 크기 축이 없다 — Break(PC·Mobile)가 패널 폭과 밀도를 결정한다."
         }
       ],
-      "sourceFingerprint": "62adbba3c5fd08ee989045565a9a4aef6263dc8866a0f5d8a1b7654574c28e67"
+      "sourceFingerprint": "16b10d0c4087d096a86b95a6eb1b2c9150f590620ff66156c60cdb22988c5d1d"
     },
     "multi-toggle": {
       "id": "multi-toggle",
@@ -529,7 +529,7 @@
         "Disabled": "disabled"
       },
       "absentCombinations": [],
-      "sourceFingerprint": "074ae2267d286e99380a9cc964d9ada2d43834ab329a95d689fd58faf4a5facb"
+      "sourceFingerprint": "9aa0693361f7e6bc73b1ddc9b72f8b875b69b5115b5768fbcce8a3e221f79cdc"
     },
     "pagination": {
       "id": "pagination",
@@ -559,7 +559,7 @@
         "Pagination Cell · Selected": "selected"
       },
       "absentCombinations": [],
-      "sourceFingerprint": "108b72979967bc80a2bf6570681f637d4098c6341de2230ac9bca3c03a1f165b"
+      "sourceFingerprint": "af9c4b0a39268ca7c8205f692e0679461f0a393c5fecaeb4ac1c85fdc228288c"
     },
     "radio": {
       "id": "radio",
@@ -587,7 +587,7 @@
         "Dis+Selected": "disabledSelected"
       },
       "absentCombinations": [],
-      "sourceFingerprint": "ba3d1193d8fa0c4c6422d33c2a5ed4a6230c80e0207537b3f567cda379be3bc5"
+      "sourceFingerprint": "061f0a32dd690f6f2993db0367119b59cca6c62d805acce23693613f1928fd85"
     },
     "select": {
       "id": "select",
@@ -666,7 +666,7 @@
           "reason": "정본에 Error 상태가 없다."
         }
       ],
-      "sourceFingerprint": "9596c18d5219963aec5704da5b498cecb339895e8ab755247783c7e2e34fffaa"
+      "sourceFingerprint": "dc19fcb289a321f64f2d67cfe00b219540b36bab4b6a280ffd2772f31197c584"
     },
     "tab": {
       "id": "tab",
@@ -732,7 +732,7 @@
         "Selected": "selected"
       },
       "absentCombinations": [],
-      "sourceFingerprint": "f1bcc90ac5d3e75610dc4c1dd75668cc73a64c2c7e5dd3cca07a6a80bdf4652a"
+      "sourceFingerprint": "2e2f34baf47d17e42f0ded97f8d71043663eaa79a2923315a09b96991dbbb6cf"
     },
     "table": {
       "id": "table",
@@ -793,7 +793,7 @@
           "reason": "정본·Registry 모두 모바일 표 표출 규칙이 없다. 이번 배포는 PC 만 선언한다."
         }
       ],
-      "sourceFingerprint": "9e5130e91478c2980ca3755a384b6cf63000d811d9f60a98dd696a85daf6c08c"
+      "sourceFingerprint": "1cc3067a76c03c39f8bf7b99ef7b13dc07f6bd80a35d6222e63b216d3cadd7e6"
     },
     "textarea": {
       "id": "textarea",
@@ -826,7 +826,7 @@
           "reason": "정본은 State 축만 있고 sm/md/lg 같은 크기 축이 없다."
         }
       ],
-      "sourceFingerprint": "56a7f2719015a7c7f55c27bb4e79efdb85c94ad5386f67f98d0181d588eea08d"
+      "sourceFingerprint": "ae9119cd8aafc4db0bd27b13e9796bc49ae5605370de69ad21ee82410f4914c5"
     },
     "time-picker": {
       "id": "time-picker",
@@ -904,7 +904,7 @@
           "reason": "정본에 focus 변형이 없다. 2026-09-02 river 결정으로 웹에서도 만들지 않으며, 키보드 초점은 브라우저 기본 표시에 맡긴다."
         }
       ],
-      "sourceFingerprint": "2c53029b69b60f68488e04d514444ffb70ec0e005212553594f23ebb649ea03c"
+      "sourceFingerprint": "1c7f56d6ef39cc9152bc1cf9eeaf0d01717fbb833c91aa3d43c86ed5e072b269"
     },
     "toggle": {
       "id": "toggle",
@@ -930,7 +930,7 @@
         "Pressed=On, State=Disabled": "disabledOn"
       },
       "absentCombinations": [],
-      "sourceFingerprint": "9aa8d89ae1da5d0c54affdee2203c69f06cc2655aec3113a3803d5c345e98fcc"
+      "sourceFingerprint": "0d906ac9d332d101595320f2401a709a7451bed4f0998a3880abaf5fd021c4e8"
     }
   }
 }

@@ -1,8 +1,8 @@
 {
   "_note": "정본(textstyles-data.ts · vars-data.ts)의 항목 이름 전집합. Gate 34 가 여기 없는 신설을 차단한다. ⭐ 는 스스로 이 목록에 추가할 수 없고, 사용자 승인(--approve)만이 편입한다.",
   "_why": "CLAUDE.md §⚖️ 하드룰 H7. 2026-08-03: ⭐ 가 사용자가 거부한 스타일 신설을 자기 규칙을 만들어 강행했는데, 32개 게이트 전부가 \"정본→파생 일치\"만 봐서 아무도 못 잡았다.",
-  "_updated": "2026-09-04",
-  "count": 617,
+  "_updated": "2026-09-08",
+  "count": 627,
   "items": [
     "color:base/black",
     "color:base/home-bg",
@@ -63,6 +63,7 @@
     "color:color/button/bg/primary--hover",
     "color:color/button/bg/secondary--default",
     "color:color/button/bg/secondary--hover",
+    "color:color/button/border/assist--hover",
     "color:color/button/border/blue-line--default",
     "color:color/button/border/blue-line--hover",
     "color:color/button/border/disabled",
@@ -70,6 +71,8 @@
     "color:color/button/border/primary--hover",
     "color:color/button/border/secondary--default",
     "color:color/button/border/secondary--hover",
+    "color:color/button/label/assist--default",
+    "color:color/button/label/assist--hover",
     "color:color/button/label/blue-line--default",
     "color:color/button/label/blue-line--hover",
     "color:color/button/label/disabled",
@@ -180,6 +183,7 @@
     "color:color/navigation/label/default-alt",
     "color:color/navigation/label/hover",
     "color:color/navigation/label/selected",
+    "color:color/navigation/submenu/label/default",
     "color:color/overlay",
     "color:color/overlay/wheel-fade",
     "color:color/pagination/control/bg/default",
@@ -385,6 +389,7 @@
     "color:yellow/450",
     "color:yellow/50",
     "color:yellow/500",
+    "component:Assist Button",
     "component:Bottom Sheet",
     "component:Bottom Sheet Option",
     "component:Button",
@@ -401,6 +406,8 @@
     "component:Filter Chip",
     "component:Footer",
     "component:GNB",
+    "component:GNB Sub Menu",
+    "component:GNB Sub Menu Item",
     "component:GNB Utility Icon",
     "component:Input",
     "component:Language Icon",
@@ -410,6 +417,7 @@
     "component:Mobile Bottom Nav",
     "component:Mobile Header",
     "component:Modal",
+    "component:Modal Content",
     "component:Multi Toggle",
     "component:Multi Toggle Element",
     "component:NavBar",
@@ -422,6 +430,7 @@
     "component:Table",
     "component:Table Cell",
     "component:Text Area",
+    "component:Text Button",
     "component:Time Picker",
     "component:Time Picker Cell",
     "component:Time Picker Dropdown",
@@ -429,6 +438,7 @@
     "component:Toggle",
     "component:WebTabBar",
     "componentprop:Clear Action Hover",
+    "componentprop:Columns",
     "componentprop:Content",
     "componentprop:Items",
     "componentprop:Menus",
@@ -689,18 +699,6 @@
       "reapprovedAt": "2026-09-02T23:20:38.307Z"
     },
     {
-      "item": "componentprop:Menu",
-      "by": "river",
-      "reason": "GNB 메뉴타이틀 자리를 Figma 슬롯으로 교체(기본 내용=기존 예시 텍스트 유지)",
-      "approvedAt": "2026-09-03T05:53:08.849Z",
-      "quote": "gnb메뉴의 메뉴타이틀 부분을 슬롯 기능으로 교체하고싶어",
-      "evidence": {
-        "transcript": "a25e1cff-3579-4537-8f73-d2d938a553a2.jsonl",
-        "at": "2026-09-03T05:40:44.756Z"
-      },
-      "recordedBy": "orchestrator"
-    },
-    {
       "item": "componentprop:Menus",
       "by": "river",
       "reason": "GNB 바에서 메뉴가 놓이는 자리 전체를 슬롯화 — 메뉴 개수 증감 대응(기본 내용=기존 메뉴 3개)",
@@ -817,6 +815,141 @@
       "evidence": {
         "transcript": "0f17309f-7886-4dab-9762-809b832cefe8.jsonl",
         "at": "2026-09-04T00:31:06.140Z"
+      },
+      "recordedBy": "orchestrator"
+    },
+    {
+      "item": "color:color/button/border/assist--hover",
+      "by": "river",
+      "reason": "보조 버튼(레거시 A pc_assist_button 540:4650) 전용 색 3종(border/assist--hover · label/assist--default · label/assist--hover). 배경과 기본 테두리는 원본처럼 secondary 토큰을 빌려 쓴다 — 한때 6개 한 벌로 만들었다가 river 결정으로 원본 구조대로 줄였다. 라이트는 원본 실측 그대로(흰 배경·gray/200 테두리·gray/500 글자), 다크는 원본에 없어 river 가 결정 화면에서 '한 단계 옅게'를 직접 선택했다. 배경·테두리는 secondary 다크 규칙을 따르고 글자는 gray-dark/700 — secondary 글자 gray-dark/800 보다 한 단계 옅어 라이트와 같은 위계가 된다.",
+      "approvedAt": "2026-09-08T04:56:42.542Z",
+      "quote": "보조 버튼 다크 글자색은 한 단계 옅은 #8A8C96 으로",
+      "evidence": {
+        "transcript": "c3b60cc1-1b4e-4601-8fdf-d421c0094474.jsonl",
+        "at": "2026-09-08T00:58:03.205Z"
+      },
+      "recordedBy": "orchestrator"
+    },
+    {
+      "item": "color:color/button/label/assist--default",
+      "by": "river",
+      "reason": "보조 버튼(레거시 A pc_assist_button 540:4650) 전용 색 3종(border/assist--hover · label/assist--default · label/assist--hover). 배경과 기본 테두리는 원본처럼 secondary 토큰을 빌려 쓴다 — 한때 6개 한 벌로 만들었다가 river 결정으로 원본 구조대로 줄였다. 라이트는 원본 실측 그대로(흰 배경·gray/200 테두리·gray/500 글자), 다크는 원본에 없어 river 가 결정 화면에서 '한 단계 옅게'를 직접 선택했다. 배경·테두리는 secondary 다크 규칙을 따르고 글자는 gray-dark/700 — secondary 글자 gray-dark/800 보다 한 단계 옅어 라이트와 같은 위계가 된다.",
+      "approvedAt": "2026-09-08T04:56:43.607Z",
+      "quote": "보조 버튼 다크 글자색은 한 단계 옅은 #8A8C96 으로",
+      "evidence": {
+        "transcript": "c3b60cc1-1b4e-4601-8fdf-d421c0094474.jsonl",
+        "at": "2026-09-08T00:58:03.205Z"
+      },
+      "recordedBy": "orchestrator"
+    },
+    {
+      "item": "color:color/button/label/assist--hover",
+      "by": "river",
+      "reason": "보조 버튼(레거시 A pc_assist_button 540:4650) 전용 색 3종(border/assist--hover · label/assist--default · label/assist--hover). 배경과 기본 테두리는 원본처럼 secondary 토큰을 빌려 쓴다 — 한때 6개 한 벌로 만들었다가 river 결정으로 원본 구조대로 줄였다. 라이트는 원본 실측 그대로(흰 배경·gray/200 테두리·gray/500 글자), 다크는 원본에 없어 river 가 결정 화면에서 '한 단계 옅게'를 직접 선택했다. 배경·테두리는 secondary 다크 규칙을 따르고 글자는 gray-dark/700 — secondary 글자 gray-dark/800 보다 한 단계 옅어 라이트와 같은 위계가 된다.",
+      "approvedAt": "2026-09-08T04:56:44.695Z",
+      "quote": "보조 버튼 다크 글자색은 한 단계 옅은 #8A8C96 으로",
+      "evidence": {
+        "transcript": "c3b60cc1-1b4e-4601-8fdf-d421c0094474.jsonl",
+        "at": "2026-09-08T00:58:03.205Z"
+      },
+      "recordedBy": "orchestrator"
+    },
+    {
+      "item": "color:color/navigation/submenu/label/default",
+      "by": "river",
+      "reason": "GNB 하위메뉴 펼침 패널의 **1단** 항목 글자(기준 원본 = A gnb list(yE5UCFEbmXJBlYJWB24Lz2 / 540:6423 변형 regular) 실측 #353535 = gray/800). 상단바 메뉴 글자(navigation/label/default gray/600 · default-alt gray/700)보다 진해 기존 토큰으로 대체하면 원본 값이 바뀐다. river 결정 ⑨(구조=별도 패널 세트) 추천안 설명에 포함돼 있던 신설이다. 2단 항목은 river 결정 ⑩ 에 따라 새 토큰 없이 기존 navigation/label/default(#555555)를 그대로 쓴다. ※ 2026-09-08 river 지시 \"A로 가\" 로 기준 원본이 B(vHg5UOMMYI77RHH6vVVppu 5:10245)에서 A 로 교체됐고, 제목 Bold16·항목 Medium16·들여쓰기 없음·간격 24 로 전부 다시 만들었다.",
+      "approvedAt": "2026-09-08T04:56:45.757Z",
+      "quote": "나머지 9건은 추천안대로 진행하세요",
+      "evidence": {
+        "transcript": "c3b60cc1-1b4e-4601-8fdf-d421c0094474.jsonl",
+        "at": "2026-09-08T00:58:03.205Z"
+      },
+      "recordedBy": "orchestrator"
+    },
+    {
+      "item": "component:Text Button",
+      "by": "river",
+      "reason": "텍스트 버튼 세트(레거시 A pc_text_button 540:4705). 배경·테두리·최소폭·고정 높이가 전부 없어 코어 Button 세트에 넣을 수 없다(SIZE_CONFIG·variantSlots 가 하나도 적용되지 않음). 색은 기존 text 토큰 3종 재사용 — 새 색 0건. river 결정 ④ 의 추천안 A(PC 텍스트 버튼만 신설, 모바일 m_subbutton 은 색 매핑 결정이 따로 필요해 별건).",
+      "approvedAt": "2026-09-08T04:56:46.821Z",
+      "quote": "나머지 9건은 추천안대로 진행하세요",
+      "evidence": {
+        "transcript": "c3b60cc1-1b4e-4601-8fdf-d421c0094474.jsonl",
+        "at": "2026-09-08T00:58:03.205Z"
+      },
+      "recordedBy": "orchestrator"
+    },
+    {
+      "item": "component:GNB Sub Menu",
+      "by": "river",
+      "reason": "GNB 하위메뉴 펼침 패널(기준 원본 A gnb list 540:6398 sub menu=1depth·2depth). river 가 결정 화면에서 2단 글자색을 색표에 있는 #555555 로 직접 골랐고(D-18), 구조는 결정 ⑨ 추천안대로 GNB 바에 축을 붙이지 않고 별도 세트로 만들었다. 색·그림자·구분선 모두 기존 정본 토큰 재사용(새 그림자·새 선 색 0건, river C-3 '정본기준에 맞게 제작'). ※ 2026-09-08 river 지시 \"A로 가\" 로 기준 원본이 B(vHg5UOMMYI77RHH6vVVppu 5:10245)에서 A 로 교체됐고, 제목 Bold16·항목 Medium16·들여쓰기 없음·간격 24 로 전부 다시 만들었다.",
+      "approvedAt": "2026-09-08T05:19:08.706Z",
+      "quote": "나머지 9건은 추천안대로 진행하세요",
+      "evidence": {
+        "transcript": "c3b60cc1-1b4e-4601-8fdf-d421c0094474.jsonl",
+        "at": "2026-09-08T00:58:03.205Z"
+      },
+      "recordedBy": "orchestrator",
+      "reapprovedAt": "2026-09-08T05:42:08.055Z"
+    },
+    {
+      "item": "component:GNB Sub Menu Item",
+      "by": "river",
+      "reason": "GNB 하위메뉴 펼침 패널(기준 원본 A gnb list 540:6398 sub menu=1depth·2depth). river 가 결정 화면에서 2단 글자색을 색표에 있는 #555555 로 직접 골랐고(D-18), 구조는 결정 ⑨ 추천안대로 GNB 바에 축을 붙이지 않고 별도 세트로 만들었다. 색·그림자·구분선 모두 기존 정본 토큰 재사용(새 그림자·새 선 색 0건, river C-3 '정본기준에 맞게 제작'). ※ 2026-09-08 river 지시 \"A로 가\" 로 기준 원본이 B(vHg5UOMMYI77RHH6vVVppu 5:10245)에서 A 로 교체됐고, 제목 Bold16·항목 Medium16·들여쓰기 없음·간격 24 로 전부 다시 만들었다.",
+      "approvedAt": "2026-09-08T05:19:09.761Z",
+      "quote": "나머지 9건은 추천안대로 진행하세요",
+      "evidence": {
+        "transcript": "c3b60cc1-1b4e-4601-8fdf-d421c0094474.jsonl",
+        "at": "2026-09-08T00:58:03.205Z"
+      },
+      "recordedBy": "orchestrator",
+      "reapprovedAt": "2026-09-08T05:42:09.020Z"
+    },
+    {
+      "item": "componentprop:Columns",
+      "by": "river",
+      "reason": "GNB Sub Menu 패널의 '컬럼이 놓이는 자리' 슬롯 속성. GNB 바의 Menus 슬롯(river 지시 2026-09-03 '메뉴 개수를 넣고 빼서 조절')과 같은 방식으로, 하위메뉴 수와 깊이를 인스턴스로 조절하게 한다. 결정 ⑨ 추천안(별도 패널 세트) 구현에 필요한 자리다.",
+      "approvedAt": "2026-09-08T05:19:20.819Z",
+      "quote": "나머지 9건은 추천안대로 진행하세요",
+      "evidence": {
+        "transcript": "c3b60cc1-1b4e-4601-8fdf-d421c0094474.jsonl",
+        "at": "2026-09-08T00:58:03.205Z"
+      },
+      "recordedBy": "orchestrator",
+      "reapprovedAt": "2026-09-08T05:42:09.993Z"
+    },
+    {
+      "item": "component:Assist Button",
+      "by": "river",
+      "reason": "보조 버튼을 코어 Button 의 variant 가 아니라 별도 컴포넌트 세트로 만든다. 크기가 h32 하나뿐이라 크기 축 4개인 Button 에 끼우면 있지도 않은 크기 3개가 생겨 축이 거짓이 된다. 2026-09-08 에 실제로 Button variant 로 만들었다가 river 가 지적해 분리했다. 색은 이미 승인된 assist 전용 토큰 3개 + secondary 차용을 그대로 쓰고 새 색 0건.",
+      "approvedAt": "2026-09-08T05:37:12.915Z",
+      "quote": "보조버튼은 한사이즈밖에 없고 버튼에 섞여서 표출되면 안돼. 별도 컴포넌트야",
+      "evidence": {
+        "transcript": "c3b60cc1-1b4e-4601-8fdf-d421c0094474.jsonl",
+        "at": "2026-09-08T05:35:14.170Z"
+      },
+      "recordedBy": "orchestrator"
+    },
+    {
+      "item": "component:Modal Content",
+      "by": "river",
+      "reason": "콘텐츠 계열 모달 신설. 레거시 A pc_modal(540:5815)의 크기 체계는 확인 계열(6706:4218)이 아니라 이 계열 것이며, 두 계열 분리는 river 결정 2026-07-15 로 이미 확정돼 있었다(reports/modal-content-family-backlog.md). 2026-09-08 에 ⭐ 가 그 4크기를 확인 계열에 잘못 붙였다가 river 지시로 철회하고 여기로 옮겼다. river 가 네 가지를 지정: 확인계열 360 단일 · 콘텐츠계열 MD 이상(MD520·LG1000·XL1200) · 레거시 높이 반영(336·587·587) · 본문은 샘플 문장 대신 회색 박스+'컨텐츠 영역' 안내문구. 새 색·새 그림자 0건 — 전부 기존 정본 토큰 재사용.",
+      "approvedAt": "2026-09-08T07:26:17.248Z",
+      "quote": "확인계열은 360으로만",
+      "evidence": {
+        "transcript": "716cbe2c-74f0-4de0-9377-1756d4fac6e7.jsonl",
+        "at": "2026-09-08T07:23:42.905Z"
+      },
+      "recordedBy": "orchestrator"
+    },
+    {
+      "item": "componentprop:Menu",
+      "by": "river",
+      "reason": "GNB 메뉴타이틀 자리를 Figma 슬롯으로 교체(기본 내용=기존 예시 텍스트 유지)",
+      "approvedAt": "2026-09-03T05:53:08.849Z",
+      "quote": "gnb메뉴의 메뉴타이틀 부분을 슬롯 기능으로 교체하고싶어",
+      "evidence": {
+        "transcript": "a25e1cff-3579-4537-8f73-d2d938a553a2.jsonl",
+        "at": "2026-09-03T05:40:44.756Z"
       },
       "recordedBy": "orchestrator"
     }

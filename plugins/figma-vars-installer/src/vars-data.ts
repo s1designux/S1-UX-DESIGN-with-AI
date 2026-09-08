@@ -500,6 +500,13 @@ export const SEMANTIC_COLOR: Record<string, SemanticColorEntry> = {
   "color/button/bg/primary--hover": { light: "blue/500", dark: "blue-dark/250" },
   "color/button/bg/secondary--default": { light: "base/white", dark: "gray-dark/100" },
   "color/button/bg/secondary--hover": { light: "gray/50", dark: "gray-dark/200" },
+  // assist(보조 버튼) — 레거시 A pc_assist_button(540:4650) 이 **실제로 쓰는 전용 토큰만** 만든다.
+  //   원본은 배경(기본·hover)과 테두리(기본)를 secondary 것으로 그대로 빌려 쓰고, 전용 이름은 3개뿐이다:
+  //   border/assist--hover · label/assist--default · label/assist--hover.
+  //   ⚠️ 2026-09-08 에 ⭐ 가 빈칸 없는 6개 한 벌로 만들었다가 river 결정으로 **원본 구조대로 3개로 줄였다**
+  //     ("원본은 3개" 를 알린 뒤 river 가 B(원본 충실)를 선택). 값은 6개였을 때와 한 톨도 다르지 않다 —
+  //     지운 3개가 secondary 와 값이 완전히 같았기 때문이다.
+  "color/button/border/assist--hover": { light: "gray/200", dark: "gray-dark/500" },
   "color/button/border/blue-line--default": { light: "blue/400", dark: "blue-dark/300" },
   "color/button/border/blue-line--hover": { light: "blue/400", dark: "blue-dark/300" },
   "color/button/border/disabled": { light: "gray/200", dark: "gray-dark/300" },
@@ -507,6 +514,11 @@ export const SEMANTIC_COLOR: Record<string, SemanticColorEntry> = {
   "color/button/border/primary--hover": { light: "blue/500", dark: "blue-dark/250" },
   "color/button/border/secondary--default": { light: "gray/200", dark: "gray-dark/500" },
   "color/button/border/secondary--hover": { light: "gray/200", dark: "gray-dark/500" },
+  // 보조 버튼 글자 — 라이트는 원본 실측 #757575(gray/500). 다크는 원본에 없어 river 가 결정 화면에서
+  //   "한 단계 옅게"(#8A8C96 = gray-dark/700)를 직접 골랐다 — secondary 글자(gray-dark/800)보다 한 단계 옅어
+  //   라이트와 같은 위계가 된다.
+  "color/button/label/assist--default": { light: "gray/500", dark: "gray-dark/700" },
+  "color/button/label/assist--hover": { light: "gray/500", dark: "gray-dark/700" },
   "color/button/label/blue-line--default": { light: "blue/400", dark: "blue-dark/300" },
   "color/button/label/blue-line--hover": { light: "blue/500", dark: "blue-dark/300" },
   "color/button/label/disabled": { light: "gray/300", dark: "gray-dark/600" },
@@ -611,6 +623,12 @@ export const SEMANTIC_COLOR: Record<string, SemanticColorEntry> = {
   "color/navigation/label/default-alt": { light: "gray/700", dark: "gray-dark/700" },
   "color/navigation/label/hover": { light: "blue/400", dark: "blue-dark/300" },
   "color/navigation/label/selected": { light: "blue/400", dark: "blue-dark/300" },
+  // 하위메뉴(펼침 패널)의 **카테고리 제목** 글자 — 기준 원본 = A `gnb list`(yE5UCFEbmXJBlYJWB24Lz2 / 540:6423
+  //   변형 regular) 실측 #353535 = gray/800, 원본 변수 color/text/title/secondary. (river 지시 2026-09-08 "A로 가"
+  //   — 그전 B gnb(5:10245) 기준은 폐기됐다.)
+  //   상단바 메뉴 글자(label/default gray/600 · default-alt gray/700)보다 진한 값이라 기존 토큰으로 대체할 수 없다.
+  //   그 아래 **항목** 글자는 새 토큰을 만들지 않고 label/default(gray/600, #555555)를 그대로 쓴다 — river 결정 2026-09-08.
+  "color/navigation/submenu/label/default": { light: "gray/800", dark: "gray-dark/900" },
 
   // ── overlay ────────────────────────────────
   "color/overlay": { light: "rgba(0,0,0,0.5)", dark: "rgba(0,0,0,0.75)" },

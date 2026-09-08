@@ -2150,6 +2150,7 @@ agent:
   variantAxes:
     Type:
       - "Home / Title"
+      - "Home / Title + 1 Icon"
       - "Home / Title + Subtitle + 1 Icon"
       - "Standard / Title"
       - "Standard / Title + Close"
@@ -4176,4 +4177,4 @@ DESIGN_SYSTEM_GAP:
 - 적용 해석 순서(뒤가 앞을 덮음): core → service(extends core) → role → platform → theme. 기본값: service=core · role=user · platform=web · theme=light.
 - 서비스 분기(예: vms 영상관제)는 core 를 상속하고 차이분만 덮는다.
 
-<!-- generated-stamp: e565599e0b9b · 손편집 금지 -->
+<!-- generated-stamp: 9b67ce157454 · 손편집 금지 -->

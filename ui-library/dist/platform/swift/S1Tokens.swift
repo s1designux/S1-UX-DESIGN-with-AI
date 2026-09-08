@@ -125,6 +125,8 @@ public enum S1Tokens {
         public static let colorButtonBgSecondaryDefault: UInt32 = 0xFFFFFFFF
         /// --color-button-bg-secondary--hover = #F5F5F5
         public static let colorButtonBgSecondaryHover: UInt32 = 0xFFF5F5F5
+        /// --color-button-border-assist--hover = #D9D9D9
+        public static let colorButtonBorderAssistHover: UInt32 = 0xFFD9D9D9
         /// --color-button-border-blue-line--default = #1D6CEB
         public static let colorButtonBorderBlueLineDefault: UInt32 = 0xFF1D6CEB
         /// --color-button-border-blue-line--hover = #1D6CEB
@@ -139,6 +141,10 @@ public enum S1Tokens {
         public static let colorButtonBorderSecondaryDefault: UInt32 = 0xFFD9D9D9
         /// --color-button-border-secondary--hover = #D9D9D9
         public static let colorButtonBorderSecondaryHover: UInt32 = 0xFFD9D9D9
+        /// --color-button-label-assist--default = #757575
+        public static let colorButtonLabelAssistDefault: UInt32 = 0xFF757575
+        /// --color-button-label-assist--hover = #757575
+        public static let colorButtonLabelAssistHover: UInt32 = 0xFF757575
         /// --color-button-label-blue-line--default = #1D6CEB
         public static let colorButtonLabelBlueLineDefault: UInt32 = 0xFF1D6CEB
         /// --color-button-label-blue-line--hover = #2747B9
@@ -443,6 +449,8 @@ public enum S1Tokens {
         public static let colorNavigationLabelHover: UInt32 = 0xFF1D6CEB
         /// --color-navigation-label-selected = #1D6CEB
         public static let colorNavigationLabelSelected: UInt32 = 0xFF1D6CEB
+        /// --color-navigation-submenu-label-default = #353535
+        public static let colorNavigationSubmenuLabelDefault: UInt32 = 0xFF353535
         /// --color-orange-100 = #FDDBBF
         public static let colorOrange100: UInt32 = 0xFFFDDBBF
         /// --color-orange-150 = #FEC6A0
@@ -803,6 +811,8 @@ public enum S1Tokens {
         public static let colorButtonBgSecondaryDefault: UInt32 = 0xFF1C1D23
         /// --color-button-bg-secondary--hover = #24252C
         public static let colorButtonBgSecondaryHover: UInt32 = 0xFF24252C
+        /// --color-button-border-assist--hover = #3E4049
+        public static let colorButtonBorderAssistHover: UInt32 = 0xFF3E4049
         /// --color-button-border-blue-line--default = #3070D8
         public static let colorButtonBorderBlueLineDefault: UInt32 = 0xFF3070D8
         /// --color-button-border-blue-line--hover = #3070D8
@@ -817,6 +827,10 @@ public enum S1Tokens {
         public static let colorButtonBorderSecondaryDefault: UInt32 = 0xFF3E4049
         /// --color-button-border-secondary--hover = #3E4049
         public static let colorButtonBorderSecondaryHover: UInt32 = 0xFF3E4049
+        /// --color-button-label-assist--default = #8A8C96
+        public static let colorButtonLabelAssistDefault: UInt32 = 0xFF8A8C96
+        /// --color-button-label-assist--hover = #8A8C96
+        public static let colorButtonLabelAssistHover: UInt32 = 0xFF8A8C96
         /// --color-button-label-blue-line--default = #3070D8
         public static let colorButtonLabelBlueLineDefault: UInt32 = 0xFF3070D8
         /// --color-button-label-blue-line--hover = #3070D8
@@ -1025,6 +1039,8 @@ public enum S1Tokens {
         public static let colorNavigationLabelHover: UInt32 = 0xFF3070D8
         /// --color-navigation-label-selected = #3070D8
         public static let colorNavigationLabelSelected: UInt32 = 0xFF3070D8
+        /// --color-navigation-submenu-label-default = #ECEDF0
+        public static let colorNavigationSubmenuLabelDefault: UInt32 = 0xFFECEDF0
         /// --color-overlay = rgba(0,0,0,0.75)
         public static let colorOverlay: UInt32 = 0xBF000000
         /// --color-overlay-wheel-fade = #1C1D23

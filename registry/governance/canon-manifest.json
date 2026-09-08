@@ -189,6 +189,15 @@
           ]
         },
         {
+          "path": "assets/js/registry-data-bundle.js",
+          "kind": "generated",
+          "regen": [
+            "build:bundle"
+          ],
+          "gates": [],
+          "_note": "registry/** 를 하나로 묶어 사이트(pages/*.html)가 읽는 번들. 2026-09-08 tokens:reconcile 11/16 단계로 편입 — 그전에는 자동 연동이 없어 정본을 고쳐도 안내 화면이 옛 이름을 그대로 보여줬다(Input Editing→Focus 검증에서 🤖 가 적발)."
+        },
+        {
           "path": "assets/downloads/s1-ux-design-guide-installer.zip",
           "kind": "generated",
           "regen": [

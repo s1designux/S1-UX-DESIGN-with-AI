@@ -37,6 +37,9 @@ const PROP_CLASS = {
   textAlignHorizontal: 'VISUAL', textAlignVertical: 'VISUAL', textAutoResize: 'VISUAL',
   // 말줄임(…) — 2026-09-07 드롭다운 옵션에 도입(river 결정). 눈에 보이는 차이라 VISUAL.
   textTruncation: 'VISUAL', maxLines: 'VISUAL',
+  // 밑줄 — 2026-09-08 Text Button hover/pressed 에 도입(레거시 A pc_text_button 540:4705 실측).
+  //   상태를 색이 아니라 밑줄로 구분하는 유일한 컴포넌트라, 이게 빠지면 4개 상태가 전부 같아 보인다. VISUAL.
+  textDecoration: 'VISUAL',
   // ── 배치 ──
   layoutMode: 'LAYOUT', primaryAxisSizingMode: 'LAYOUT', counterAxisSizingMode: 'LAYOUT',
   primaryAxisAlignItems: 'LAYOUT', counterAxisAlignItems: 'LAYOUT',

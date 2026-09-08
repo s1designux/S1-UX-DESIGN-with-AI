@@ -188,6 +188,10 @@ type SizeId = "MD" | "XSM" | "XXSM" | "LG";
 type StateId = "Default" | "Hover" | "Pressed" | "Disabled";
 type VariantId = "primary" | "secondary" | "blue-line";
 
+// 보조 버튼(assist)은 **이 세트에 넣지 않는다** — river 지시 2026-09-08:
+//   "보조버튼은 한사이즈밖에 없고 버튼에 섞여서 표출되면 안돼. 별도 컴포넌트야".
+//   크기 축이 4개인 Button 과 달리 보조 버튼은 한 크기(h32)뿐이라 같은 세트에 두면 축이 거짓이 된다.
+//   → 별도 세트 `Assist Button`(buildAssistButtonSet) 참조.
 const VARIANTS: VariantId[] = ["primary", "secondary", "blue-line"];
 // Figma Variant 속성 표기 (에스원 GUI 참고 파일 케이스)
 const VARIANT_LABEL: Record<VariantId, string> = {
@@ -549,6 +553,145 @@ export async function buildButtonSet(
     console.warn("[SW Installer] Dark 스펙 프레임 실패 (세트는 정상):", e);
   }
   figma.viewport.scrollAndZoomIntoView([set]);
+  return { set, bottomY };
+}
+
+// ── Assist Button — 보조 버튼 (한 크기 전용) ──────────────────────────────────
+// 레거시 정본: A `pc_assist_button`(yE5UCFEbmXJBlYJWB24Lz2 / 540:4650) — 🤖 figma-inspector 2026-09-07 실측.
+// river 지시 2026-09-08: **"보조버튼은 한사이즈밖에 없고 버튼에 섞여서 표출되면 안돼. 별도 컴포넌트야"**
+//
+// 왜 코어 Button 세트에 넣지 않나: **크기가 하나뿐이다.** Button 은 크기 축이 4개(MD·XSM·XXSM·LG)라
+//   거기에 variant 로 끼워 넣으면 있지도 않은 크기 3개가 만들어져 축이 거짓이 된다.
+//   (2026-09-08 에 실제로 Button variant 로 한 번 만들었다가 river 지적으로 별도 세트로 뺐다.)
+//
+// 크기 = **h32 하나**. 원본 실측 그대로다 — 정본 Button 의 28·34·44·48 중 무엇으로도 바꾸지 않는다.
+//   river 가 같은 날 정한 원칙: "컴포넌트가 모두 동일한 크기 기준을 가지지 않아 … 그 안에서 나름 구분한거야."
+//   그래서 크기 축 자체를 두지 않는다(Text Button 과 같은 구조).
+// 실측값(원본 그대로): 높이 32 · 좌우 패딩 12 · 최소 폭 60 · 반경 4 · 폰트 14 Medium.
+// 색 — **원본이 쓰는 그대로**(river 결정 2026-09-08 "원본 충실"):
+//   배경(기본·hover)과 테두리(기본)는 **Secondary 토큰을 그대로 빌려 쓴다** — 원본 540:4651 이 그렇게 바인딩돼 있다.
+//   보조 버튼 전용 토큰은 **3개뿐**: border/assist--hover · label/assist--default · label/assist--hover.
+//   Disabled → Button 과 같은 공통 disabled 토큰(bg·border·label).
+//   ⚠️ hover 배경: 원본은 변수가 아니라 흰색 위 검정 5% 겹침(≈#F2F2F2)이다. 정본은 색표에 있는
+//     bg/secondary--hover(gray/50 #F5F5F5)를 쓴다 — 계획서 D-13 에 사전 등록된 근사(§두 갈래 분류 (b)).
+//   다크 글자색은 river 가 결정 화면에서 직접 고른 값(일반 버튼보다 한 단계 옅게 = gray-dark/700).
+// Pressed 는 원본에 없다 → 코어 Button 의 정본 규칙(pressed = hover)을 그대로 따른다.
+// 범위 밖(river 결정 ②): 레거시의 앞/뒤 아이콘 변형(icon_lead·icon_trail)은 이번에 만들지 않는다.
+const ASSIST_BUTTON_STATES: StateId[] = ["Default", "Hover", "Pressed", "Disabled"];
+
+async function buildAssistButtonSet(maps: BuildMaps, originY: number): Promise<{ set: ComponentSetNode; bottomY: number }> {
+  const comps: ComponentNode[] = [];
+  const byKey = new Map<string, ComponentNode>();
+  for (const state of ASSIST_BUTTON_STATES) {
+    const comp = figma.createComponent();
+    comp.name = `State=${state}`;
+    comp.layoutMode = "HORIZONTAL";
+    comp.primaryAxisSizingMode = "AUTO"; comp.counterAxisSizingMode = "FIXED";
+    comp.primaryAxisAlignItems = "CENTER"; comp.counterAxisAlignItems = "CENTER";
+    comp.paddingTop = 0; comp.paddingBottom = 0;
+    const padVar = requireVar(maps.foundationNumber, "spacing/12", "Foundation Number"); // 실측 12 = spacing/12 정확히 일치
+    comp.setBoundVariable("paddingLeft", padVar);
+    comp.setBoundVariable("paddingRight", padVar);
+    comp.resize(60, 32);                    // 최소 폭 60 · 높이 32 (원본 실측)
+    try { (comp as unknown as { minWidth: number }).minWidth = 60; } catch (e) { /* 환경 미지원 */ }
+    bindRadius(comp, maps, "radius/4");     // 실측 4 = radius/button/md 와 같은 값
+    // Disabled 는 Button 과 같은 공통 토큰, 나머지는 assist 전용 토큰.
+    const hover = state !== "Default";   // Hover·Pressed 는 같은 면(코어 Button 규칙)
+    const slot = state === "Disabled"
+      ? { bg: "color/button/bg/disabled", border: "color/button/border/disabled", label: "color/button/label/disabled" }
+      : {
+          // 배경·기본 테두리는 원본처럼 Secondary 토큰을 빌려 쓴다(전용 토큰을 만들지 않는다).
+          bg: `color/button/bg/secondary--${hover ? "hover" : "default"}`,
+          border: hover ? "color/button/border/assist--hover" : "color/button/border/secondary--default",
+          label: `color/button/label/assist--${hover ? "hover" : "default"}`,
+        };
+    comp.fills = [boundPaint(scv(maps, slot.bg))];
+    comp.strokes = [boundPaint(scv(maps, slot.border))];
+    comp.strokeWeight = 1; comp.strokeAlign = "INSIDE";
+    comp.appendChild(await makeBoundText("보조버튼", 14, "Medium", scv(maps, slot.label), "body/14M"));
+    setLightMode(comp, maps);
+    comps.push(comp); byKey.set(state, comp);
+    BUILT_COMPS[`AssistButton:${state}`] = comp;
+  }
+  const set = figma.combineAsVariants(comps, figma.currentPage);
+  set.name = "Assist Button"; set.x = 0; set.y = originY;
+  BUILT_SETS["Assist Button"] = set;
+  const opts: SpecOpts = {
+    title: "Assist Button",
+    colHeaders: ASSIST_BUTTON_STATES,
+    rowLabels: [""],                        // 크기 축이 없으므로 행은 하나다
+    cellAt: (_r, c) => byKey.get(ASSIST_BUTTON_STATES[c]) ?? null,
+    lightX: SPEC_LIGHT_X, darkX: SPEC_DARK_X, originY, cellW: 132, cellH: 56, rowLabelW: 16,
+  };
+  let bottomY = await decorateSetFlat(set, opts, maps);
+  try { bottomY = Math.max(bottomY, await buildSpec(opts, maps)); } catch (e) { console.warn(e); }
+  return { set, bottomY };
+}
+
+// ── Text Button — 배경·테두리 없는 글자 버튼 ─────────────────────────────────
+// 레거시 정본: A `pc_text_button`(yE5UCFEbmXJBlYJWB24Lz2 / 540:4705) — 🤖 figma-inspector 2026-09-07 실측.
+// river 승인 2026-09-08("나머지 9건은 추천안대로 진행하세요", 결정 ④).
+//
+// 왜 코어 Button 세트에 넣지 않나: 구조가 다르다. 배경·테두리·최소폭·고정 높이가 **전부 없고** 글자만 있다.
+//   Button 의 SIZE_CONFIG(높이·패딩·최소폭)와 variantSlots(bg/border/label 3슬롯)가 하나도 적용되지 않으므로
+//   같은 세트에 넣으면 축만 늘고 의미가 비게 된다. 그래서 별도 세트로 만든다.
+//
+// 축 = Variant(Primary|Secondary) × State(Default|Hover|Pressed|Disabled) = 8변형.
+// 실측값(원본 그대로): 폰트 14 Medium 공통 · 패딩 0 · 반경 없음 · 아이콘 없음.
+//   Primary  기본 #1d6ceb = color/text/state/accent
+//   Secondary 기본 #757575 = color/text/body/tertiary
+//   Disabled 공통 #c4c4c4 = color/text/state/disabled
+//   Hover 는 **색을 바꾸지 않고 밑줄만** 더한다(원본 그대로).
+//   Pressed 는 원본에 없다 → 코어 Button 의 정본 규칙(pressed = hover)을 그대로 따른다.
+// 새 토큰 0건 — 색은 전부 기존 text 토큰 재사용.
+//
+// 범위 밖(river 결정 ④ = 추천안 A): 레거시 B `m_subbutton`(글자+화살표, 모바일)은 이번에 만들지 않는다.
+//   원본 색이 raw hex(#000·#7f7f7f·#bfbfbf)라 정본 색표에 같은 값이 없어 색 매핑 결정이 따로 필요하다.
+const TEXT_BUTTON_VARIANTS: { name: string; color: string }[] = [
+  { name: "Primary", color: "color/text/state/accent" },
+  { name: "Secondary", color: "color/text/body/tertiary" },
+];
+const TEXT_BUTTON_STATES = ["Default", "Hover", "Pressed", "Disabled"];
+
+async function buildTextButtonSet(maps: BuildMaps, originY: number): Promise<{ set: ComponentSetNode; bottomY: number }> {
+  const comps: ComponentNode[] = [];
+  const byKey = new Map<string, ComponentNode>();
+  for (const v of TEXT_BUTTON_VARIANTS) {
+    for (const state of TEXT_BUTTON_STATES) {
+      const comp = figma.createComponent();
+      comp.name = `Variant=${v.name}, State=${state}`;
+      comp.layoutMode = "HORIZONTAL";
+      comp.primaryAxisSizingMode = "AUTO";   // 폭·높이 모두 글자에 맞춘다(hug) — 원본에 고정 크기가 없다.
+      comp.counterAxisSizingMode = "AUTO";
+      comp.primaryAxisAlignItems = "CENTER";
+      comp.counterAxisAlignItems = "CENTER";
+      comp.fills = [];                        // 배경 없음(원본 그대로)
+      const disabled = state === "Disabled";
+      const label = await makeBoundText("보조버튼", 14, "Medium",
+        scv(maps, disabled ? "color/text/state/disabled" : v.color), "body/14M");
+      // Hover·Pressed = 밑줄. 색은 Default 와 같다.
+      if (state === "Hover" || state === "Pressed") {
+        try { label.textDecoration = "UNDERLINE"; } catch (e) { /* 환경 미지원(mock) */ }
+      }
+      comp.appendChild(label);
+      setLightMode(comp, maps);
+      comps.push(comp);
+      byKey.set(`${v.name}:${state}`, comp);
+      BUILT_COMPS[`TextButton:${v.name}:${state}`] = comp;
+    }
+  }
+  const set = figma.combineAsVariants(comps, figma.currentPage);
+  set.name = "Text Button"; set.x = 0; set.y = originY;
+  BUILT_SETS["Text Button"] = set;
+  const opts: SpecOpts = {
+    title: "Text Button",
+    colHeaders: TEXT_BUTTON_STATES,
+    rowLabels: TEXT_BUTTON_VARIANTS.map((v) => v.name),
+    cellAt: (r, c) => byKey.get(`${TEXT_BUTTON_VARIANTS[r].name}:${TEXT_BUTTON_STATES[c]}`) ?? null,
+    lightX: SPEC_LIGHT_X, darkX: SPEC_DARK_X, originY, cellW: 132, cellH: 48, rowLabelW: 96,
+  };
+  let bottomY = await decorateSetFlat(set, opts, maps);
+  try { bottomY = Math.max(bottomY, await buildSpec(opts, maps)); } catch (e) { console.warn(e); }
   return { set, bottomY };
 }
 
@@ -3141,8 +3284,14 @@ async function buildMobileBottomNav(maps: BuildMaps, originY: number): Promise<{
 //   'alt' 는 네이밍 체계상 쓰지 않기로 한 말이라, 실체 그대로 "Home / Title" 로 개명한다.
 //   (삭제한 "Home / Title + 2 Icons" 가 비운 이름 자리를 그대로 쓴다)
 // 2026-08-25 river: 나열 순서는 Home 먼저, 그 다음 Standard.
+// 2026-09-08 river 승인: "모바일 상단바는 홈+타이틀+아이콘 1개 한 종류 추가로".
+//   없앤 두 유형(①"Home / Title + 2 Icons" 삭제 ②앱바 미채택)의 자리를 이 한 종류가 대신한다.
+//   ⚠️ 이 조합은 레거시 A(540:6112)·B 어디에도 없다 — 🤖 figma-inspector 2026-09-07 실측으로 확인했다.
+//   원본의 아이콘 1개짜리는 항상 부제와 펼침 화살표를 달고 있어(=아래 Subtitle 유형) 그것과 다른 조합이다.
+//   따라서 원본을 옮긴 것이 아니라 "Home / Title" 에 알림 아이콘 자리 하나를 더한 신설이다.
 const MOBILE_HEADER_TYPES = [
   "Home / Title",
+  "Home / Title + 1 Icon",
   "Home / Title + Subtitle + 1 Icon",
   "Standard / Title",
   "Standard / Title + Close",
@@ -3285,9 +3434,15 @@ async function buildMobileHeaderVariant(
     appBar.appendChild(copy);
     appBar.appendChild(await makeMobileHeaderIconSlot("Notification", "mobileHeaderNotification", iconDark, scv(maps, "color/icon/red")));
   } else {
+    // Home / Title · Home / Title + 1 Icon — 부제도 펼침 화살표도 없는 한 줄 제목.
     const title = makeMobileHeaderGrowFrame("Title", "MIN");
     title.appendChild(await makeBoundText("홈 타이틀", 18, "Bold", titleColor, "title/18B"));
     appBar.appendChild(title);
+    // 알림 아이콘 1개 — Subtitle 유형과 같은 아이콘·같은 32px 자리·같은 빨간 점(color/icon/red).
+    if (type === "Home / Title + 1 Icon") {
+      appBar.itemSpacing = 8;
+      appBar.appendChild(await makeMobileHeaderIconSlot("Notification", "mobileHeaderNotification", iconDark, scv(maps, "color/icon/red")));
+    }
   }
 
   setLightMode(comp, maps);
@@ -3311,20 +3466,28 @@ async function buildMobileHeader(maps: BuildMaps, originY: number): Promise<{ se
   set.name = "Mobile Header";
   set.x = 0; set.y = originY;
   BUILT_SETS["Mobile Header"] = set;
+  // 계열별 목록 — 종전에는 열 인덱스를 c / c+2 로 계산해 "Home 2종 + Standard 4종"에 묶여 있었다.
+  //   유형이 늘면 조용히 어긋나므로(2026-09-08 Home 3종이 됨) 계열로 갈라 인덱스 산식을 없앤다.
+  const HOME_TYPES = MOBILE_HEADER_TYPES.filter((t) => t.startsWith("Home /"));
+  const STD_TYPES = MOBILE_HEADER_TYPES.filter((t) => !t.startsWith("Home /"));
+  const typeAt = (r: number, c: number): MobileHeaderType | undefined =>
+    (r % 2 === 0 ? HOME_TYPES : STD_TYPES)[c];
   const opts: SpecOpts = {
     title: "Mobile Header",
-    // Platform별로 Home 2종, Standard 4종을 나눠 완전 조합을 한눈에 검수한다.
+    // Platform별로 Home 계열, Standard 계열을 나눠 완전 조합을 한눈에 검수한다.
     // 폭이 긴 스펙이므로 Dark 는 Light 오른쪽이 아니라 바로 아래에 둔다.
-    colHeaders: ["", "", "", ""],
+    // 열 수는 계열 길이에서 유도한다 — 고정하면 계열이 늘 때 마지막 유형이 조용히 사라진다.
+    //   (🤖 component-verifier 2026-09-08 지적: 인덱스 산식은 없앴지만 열 수 고정은 같은 실패 모양으로 남아 있었다.)
+    colHeaders: new Array(Math.max(HOME_TYPES.length, STD_TYPES.length)).fill(""),
     rowLabels: ["App / Home", "App / Standard", "Web / Home", "Web / Standard"],
     cellAt: (r, c) => {
       const platform = r < 2 ? "App" : "Web";
-      const type = r % 2 === 0 ? MOBILE_HEADER_TYPES[c] : MOBILE_HEADER_TYPES[c + 2];
+      const type = typeAt(r, c);
       return type ? (byKey.get(`${platform}:${type}`) ?? null) : null;
     },
     cellLabelAt: (r, c) => {
       const platform = r < 2 ? "App" : "Web";
-      const type = r % 2 === 0 ? MOBILE_HEADER_TYPES[c] : MOBILE_HEADER_TYPES[c + 2];
+      const type = typeAt(r, c);
       const comp = type ? byKey.get(`${platform}:${type}`) : null;
       return comp ? comp.name.replace(/^Type=/, "").replace(/, Platform=(App|Web)$/, "") : null;
     },
@@ -3476,6 +3639,184 @@ async function buildGNB(maps: BuildMaps, originY: number): Promise<{ set: Compon
   try { bottomY = Math.max(bottomY, await buildGroupedSpec(menuOpts, maps)); } catch (e) { console.warn(e); }
 
   return { set: barSet, bottomY };
+}
+
+// ── GNB Sub Menu / GNB Sub Menu Item — 상단바 아래 펼침 하위메뉴 ────────────────
+// ★ 기준 원본 = **A `gnb list`(yE5UCFEbmXJBlYJWB24Lz2 / 540:6398, 변형 regular 540:6423)** — river 결정 2026-09-08 "A로 가".
+//   처음엔 B `gnb`(vHg5UOMMYI77RHH6vVVppu / 5:10245)를 기준으로 만들었으나(2단 14px·들여쓰기 8·간격 16),
+//   river 가 A 노드를 짚어 대조를 요구했고 두께·크기가 달라 A 로 바꿨다. ⭐ 가 540:6423·540:6458 을 직접 읽음.
+//   A 실측: 제목(1단) Bold 16 title/16B #353535 · 항목(2단) Medium 16 title/16M #555 · 들여쓰기 없음 ·
+//          컬럼 안 세로 간격 24(spacing/stack/lg) · 컬럼 사이 72 · 패널 1920 흰 배경 · 하단선 1px line/gray/subtle ·
+//          그림자 0 4px 4px 15% · regular = 위 32/아래 64 · compact = 상하 24 · 컬럼 묶음 **가운데 정렬**(px 320).
+//   river 승인 2026-09-08(결정 ⑨·⑩ + C-2/C-3). 굵기(C-1)는 A 실측이 확정을 대신한다.
+//
+// ★ 값 정하는 규칙 (river 지시 "정본기준에 맞게 제작"):
+//   레거시의 raw 수치를 그대로 베끼지 않고 **측정값마다 가장 가까운 정본 토큰**에 매핑한다.
+//   (river 가 D-06 에서 준 "높이 매칭, 없으면 가장 가까운 값" 규칙을 간격에도 그대로 적용)
+//   매핑 내역 — 왼쪽이 A 실측, 오른쪽이 이 코드가 쓰는 정본 토큰:
+//     컬럼 안 세로 간격    24  → spacing/24     (정확히 일치)
+//     2단 들여쓰기          0  → 없음           (A 는 들여쓰기가 없다 — B 의 8 을 버림)
+//     패널 위/아래 여백 regular 32/64 → spacing/32 · spacing/64 (정확히 일치) — Depth=2depth 변형
+//     패널 상하 여백   compact 24     → spacing/24 (정확히 일치)             — Depth=1depth 변형
+//     컬럼 사이 간격        72  → spacing/80     (정본 토큰 64·80 의 정중앙이라 "가장 가까운 값" 규칙으로는
+//                                                못 고른다. river 가 64·72·80 세 안을 렌더로 비교해 **80 확정**, 2026-09-08)
+//     그림자   0 4px 4px 15%  → shadow/dropdown (정본 그림자 재사용 · 새 그림자 토큰 0건, river C-3)
+//     패널 하단선 1px line/gray/subtle → 같은 정본 토큰 (A 는 상단 구분선이 아니라 하단선이다)
+//   좌우 여백: A 는 px 320 에 컬럼 묶음을 **가운데 정렬**한다 — 여백 값이 아니라 정렬 규칙이다.
+//     그래서 패널을 CENTER 정렬로 만들고 좌우 여백은 GNB 바와 같은 spacing/24 를 최소값으로만 둔다.
+//
+// ★ 색 (river 결정 ⑩·C-2):
+//     1단 글자 = color/navigation/submenu/label/default (라이트 gray/800 = 실측 #353535 와 일치)
+//     2단 글자 = color/navigation/label/default        (라이트 gray/600 = #555555 — 실측 #646464 는
+//                색표에 없어 river 가 색표에 있는 값으로 결정. 새 색 신설 0건)
+//     선택됨   = color/navigation/label/selected (1단·2단 동일 — 2단 선택 표본이 원본에 없어 river 가 1단과 같게 결정)
+//     Hover    = 선택됨과 같은 색. 원본에 hover 상태가 없다 → §두 갈래 분류 (b) 사전 등록된 개선
+//                (GNB Menu 도 같은 이유로 hover 를 갖고 있어 그 규칙을 그대로 따른다)
+//
+// ★ 굵기·크기 (A 실측 그대로): 1단(카테고리 제목) **Bold 16 = title/16B** · 2단(항목) **Medium 16 = title/16M**.
+//     B 실측(둘 다 Regular, 2단 14)과 달랐고 river 가 "A로 가"로 확정했다. C-1(Medium)은 2단에 그대로 부합한다.
+//
+// ★ 구조: A 는 제목과 항목을 한 컬럼 안 **형제**로 나열한다(자식 중첩·들여쓰기 없음). 이 코드도 같다.
+//     (B 는 2단을 자식 레이어로 넣었는데, A 로 바꾸면서 그 차이 자체가 사라졌다.)
+//   Depth 축의 뜻: Item 의 1depth = 카테고리 제목(Bold) · 2depth = 항목(Medium).
+//                 패널의 1depth = 항목 목록만 · 2depth = 제목 + 항목 목록(A regular).
+const GNB_SUBMENU_DEPTHS = ["1depth", "2depth"] as const;
+const GNB_SUBMENU_STATES = ["Default", "Hover", "Selected"];
+
+async function buildGNBSubMenuItem(maps: BuildMaps, originY: number): Promise<{ set: ComponentSetNode; bottomY: number }> {
+  const navc = (k: string) => `color/navigation/${k}`;
+  const comps: ComponentNode[] = [];
+  const byKey = new Map<string, ComponentNode>();
+  for (const depth of GNB_SUBMENU_DEPTHS) {
+    const first = depth === "1depth";
+    for (const state of GNB_SUBMENU_STATES) {
+      const comp = figma.createComponent();
+      comp.name = `Depth=${depth}, State=${state}`;
+      comp.layoutMode = "HORIZONTAL";
+      comp.primaryAxisSizingMode = "AUTO"; comp.counterAxisSizingMode = "AUTO";
+      comp.counterAxisAlignItems = "CENTER";
+      comp.fills = [];
+      // A 는 들여쓰기가 없다(B 의 8px 을 버림). 제목·항목 모두 16 — 제목은 Bold(title/16B), 항목은 Medium(title/16M).
+      const colorKey = state === "Default"
+        ? (first ? "submenu/label/default" : "label/default")
+        : "label/selected";
+      comp.appendChild(first
+        ? await makeBoundText("카테고리 제목", 16, "Bold", scv(maps, navc(colorKey)), "title/16B")
+        : await makeBoundText("하위 메뉴", 16, "Medium", scv(maps, navc(colorKey)), "title/16M"));
+      setLightMode(comp, maps);
+      comps.push(comp); byKey.set(`${depth}:${state}`, comp);
+      BUILT_COMPS[`GNBSubMenuItem:${depth}:${state}`] = comp;
+    }
+  }
+  const set = figma.combineAsVariants(comps, figma.currentPage);
+  set.name = "GNB Sub Menu Item"; set.x = 0; set.y = originY;
+  BUILT_SETS["GNB Sub Menu Item"] = set;
+  const opts: SpecOpts = {
+    title: "GNB Sub Menu Item",
+    colHeaders: GNB_SUBMENU_STATES,
+    rowLabels: GNB_SUBMENU_DEPTHS.map((d) => d),
+    cellAt: (r, c) => byKey.get(`${GNB_SUBMENU_DEPTHS[r]}:${GNB_SUBMENU_STATES[c]}`) ?? null,
+    lightX: SPEC_LIGHT_X, darkX: SPEC_DARK_X, originY, cellW: 160, cellH: 44, rowLabelW: 96,
+  };
+  let bottomY = await decorateSetFlat(set, opts, maps);
+  try { bottomY = Math.max(bottomY, await buildSpec(opts, maps)); } catch (e) { console.warn(e); }
+  return { set, bottomY };
+}
+
+async function buildGNBSubMenu(maps: BuildMaps, originY: number): Promise<{ set: ComponentSetNode; bottomY: number }> {
+  const PANEL_W = 1920;             // GNB 바와 같은 폭(정본 BAR_W)
+  const COLUMN_COUNT = 4;           // 실측 1depth 4컬럼
+  const itemComp = async (depth: string, state: string): Promise<SceneNode> => {
+    const c = BUILT_COMPS[`GNBSubMenuItem:${depth}:${state}`]
+      ?? await reuseVariant("GNB Sub Menu Item", `GNBSubMenuItem:${depth}:${state}`, [`Depth=${depth}`, `State=${state}`]);
+    if (c) return c.createInstance();
+    throw new Error("GNB Sub Menu 는 GNB Sub Menu Item 정본이 먼저 필요합니다.");
+  };
+  const comps: ComponentNode[] = [];
+  for (const depth of GNB_SUBMENU_DEPTHS) {
+    const twoLevel = depth === "2depth";
+    const comp = figma.createComponent();
+    comp.name = `Depth=${depth}`;
+    comp.layoutMode = "HORIZONTAL";
+    comp.primaryAxisSizingMode = "FIXED"; comp.counterAxisSizingMode = "AUTO";
+    comp.primaryAxisAlignItems = "CENTER";   // A: 컬럼 묶음 가운데 정렬(justify-center) — 좌우 여백은 정렬 규칙이지 값이 아니다
+    comp.counterAxisAlignItems = "MIN";
+    comp.itemSpacing = 0;
+    comp.fills = [boundPaint(scv(maps, "color/navigation/bg"))];
+    const num = (t: string): Variable => requireVar(maps.foundationNumber, t, "Foundation Number");
+    // A 실측 그대로: regular(제목+항목) 위 32 / 아래 64 · compact(항목만) 상하 24. 전부 정본 토큰과 정확히 일치.
+    comp.setBoundVariable("paddingTop", num(twoLevel ? "spacing/32" : "spacing/24"));
+    comp.setBoundVariable("paddingBottom", num(twoLevel ? "spacing/64" : "spacing/24"));
+    comp.setBoundVariable("paddingLeft", num("spacing/24"));   // 최소 여백 — 실제 위치는 CENTER 정렬이 정한다
+    comp.setBoundVariable("paddingRight", num("spacing/24"));
+    // A: 패널 하단선 1px line/gray/subtle (GNB 바 하단선과 같은 토큰). 두 변형 공통.
+    comp.strokes = [boundPaint(scv(maps, "color/line/gray/subtle"))];
+    comp.strokeWeight = 1; comp.strokeAlign = "INSIDE";
+    comp.strokeTopWeight = 0; comp.strokeLeftWeight = 0; comp.strokeRightWeight = 0; comp.strokeBottomWeight = 1;
+    comp.resize(PANEL_W, 100);
+    // 그림자 = 정본 shadow/dropdown 재사용(river C-3) — 새 그림자 토큰을 만들지 않는다.
+    try { (comp as any).effects = boundShadowEffects(maps, "shadow/dropdown"); } catch (e) { /* 환경 미지원 */ }
+
+    // 컬럼 묶음 = Figma 슬롯("Columns") — 메뉴 개수를 넣고 빼서 조절한다(GNB 바 "Menus" 슬롯과 같은 방식).
+    const columns: SceneNode[] = [];
+    for (let ci = 0; ci < COLUMN_COUNT; ci++) {
+      const col = figma.createFrame();
+      col.name = "column";
+      col.layoutMode = "VERTICAL";
+      col.primaryAxisSizingMode = "AUTO"; col.counterAxisSizingMode = "AUTO";
+      col.counterAxisAlignItems = "MIN";
+      // 24 = A `regular`(540:6423) 실측(spacing/stack/lg). A 의 `compact` 판은 20 이지만 두 깊이를 한 리듬으로
+      //   통일한다 — river 결정 2026-09-08(24·20 을 렌더로 비교해 24 확정).
+      col.itemSpacing = 24;
+      col.setBoundVariable("itemSpacing", requireVar(maps.foundationNumber, "spacing/24", "Foundation Number"));
+      col.fills = [];
+      if (twoLevel) {
+        // A regular 그대로: 카테고리 제목(1depth, Bold) 하나 + 항목(2depth, Medium) 여러 개. 첫 컬럼 첫 항목만 Selected.
+        col.appendChild(await itemComp("1depth", "Default"));
+        col.appendChild(await itemComp("2depth", ci === 0 ? "Selected" : "Default"));
+        col.appendChild(await itemComp("2depth", "Default"));
+        col.appendChild(await itemComp("2depth", "Default"));
+        col.appendChild(await itemComp("2depth", "Default"));
+      } else {
+        // 항목 목록만(A compact 계열). 첫 컬럼 첫 항목만 Selected.
+        col.appendChild(await itemComp("2depth", ci === 0 ? "Selected" : "Default"));
+        col.appendChild(await itemComp("2depth", "Default"));
+        col.appendChild(await itemComp("2depth", "Default"));
+      }
+      columns.push(col);
+    }
+    const wrap = await makeSlot(comp, "Columns",
+      "하위메뉴 컬럼이 놓이는 자리. 기본은 4컬럼이며, GNB Sub Menu Item 인스턴스를 넣고 빼서 메뉴 수와 깊이를 조절한다.",
+      columns, BUILT_SETS["GNB Sub Menu Item"] ? [{ type: "COMPONENT_SET", key: BUILT_SETS["GNB Sub Menu Item"].key }] : [],
+      { layoutMode: "HORIZONTAL", primaryAxisSizingMode: "AUTO", counterAxisSizingMode: "AUTO",
+        primaryAxisAlignItems: "MIN", counterAxisAlignItems: "MIN", itemSpacing: 80 });  // A 실측 72 → spacing/80 (아래 바인딩 참조)
+    // makeSlot 은 itemSpacing 을 숫자로 대입만 하고 변수에 묶지 않는다 — 여기서 직접 바인딩한다.
+    //   (🤖 component-verifier 2026-09-08 적발: 매핑표는 spacing/80 이라 적었는데 코드는 생짜 80 이었다.)
+    try { wrap.setBoundVariable("itemSpacing", requireVar(maps.foundationNumber, "spacing/80", "Foundation Number")); } catch (e) { /* 환경 미지원 */ }
+    // ⚠️ layoutGrow 를 걸지 않는다 — 걸면 슬롯이 안쪽 폭을 다 차지해 부모의 CENTER 가 정렬할 여백을 잃고
+    //   슬롯 자신의 MIN 이 컬럼을 좌측에 붙인다(🤖 component-verifier 2026-09-08 적발). 슬롯은 hug 로 두고
+    //   가운데 정렬은 부모(primaryAxisAlignItems=CENTER)가 한다 — GNB 바의 Menus 슬롯과 같은 방식.
+
+    setLightMode(comp, maps);
+    comps.push(comp);
+  }
+  const set = figma.combineAsVariants(comps, figma.currentPage);
+  set.name = "GNB Sub Menu"; set.x = 0; set.y = originY;
+  BUILT_SETS["GNB Sub Menu"] = set;
+  const opts: SpecOpts = {
+    title: "GNB Sub Menu",
+    colHeaders: [""],
+    rowLabels: GNB_SUBMENU_DEPTHS.map((d) => d),
+    cellAt: (r, _c) => comps[r] ?? null,
+    // 폭 1920 — GNB 바와 같은 이유로 다크 스펙을 우측이 아니라 아래에 쌓는다.
+    lightX: SPEC_LIGHT_X, darkX: SPEC_DARK_X, originY, cellW: PANEL_W + 40, cellH: 320, rowLabelW: 160,
+    leftAlignCells: true,
+  };
+  const lightBottom = await decorateSetFlat(set, opts, maps);
+  opts.darkOffset = { x: 0, y: lightBottom + 80 };
+  let bottomY = lightBottom;
+  try { bottomY = Math.max(bottomY, await buildSpec(opts, maps)); } catch (e) { console.warn(e); }
+  return { set, bottomY };
 }
 
 // ── Date Picker — 트리거(form-control 재사용) + 캘린더 패널(color/date-picker/*) ─
@@ -4723,7 +5064,11 @@ async function buildBottomSheet(maps: BuildMaps, originY: number): Promise<{ set
 
 // ── Modal (공통 팝업 셸) — 딤 위 팝업. 헤더+본문+푸터, 코어 Button 재사용. ───────
 //   PC 원본 V2.4 modal_small(6706:4218), Mobile 원본 Mobile V2.32(1102:97650) 기준.
-//   변형축 = Break(PC|Mobile) × Footer(Single|Dual). 시각 차이가 명확한 4개만 정본화한다.
+//   변형축 = Break(PC|Mobile) × Footer(Single|Dual). **크기 축은 없다 — 폭은 PC 360 · Mobile 300 하나씩.**
+//   ⚠️ 2026-09-08 에 레거시 pc_modal(540:5815)의 4크기(sm·md·lg·xl)를 여기에 붙였다가 **철회**했다.
+//     그 4크기는 이 확인 계열이 아니라 **콘텐츠 계열(Modal Content)** 것이다 — 두 계열은 river 결정 2026-07-15 로
+//     이미 갈라져 있었고(정본 노드: 확인=6706:4218 · 콘텐츠=540:5815), 확인 계열은 제목16·버튼h28·폭360 단일이다.
+//     river 재확인 2026-09-08: **"확인계열은 360으로만."** → 크기 축은 buildModalContent 로 옮겼다.
 //   테두리 = color/modal/panel/border. 그림자 = shadow/raised — **라이트·다크 모두 2겹**(2026-07-29 결정).
 //     옛 실측 "라이트 그림자 없음"(P8YvnCdGkQLDNVQhW74ZZW / 8177:264277)은 사실이나 의도가 아닌
 //     '누락'으로 판정돼, 라이트에도 그림자를 부여했다. 겹 수를 양쪽 2겹으로 맞춘 이유는 Figma 가
@@ -4735,6 +5080,8 @@ async function buildBottomSheet(maps: BuildMaps, originY: number): Promise<{ set
 async function buildModalShell(maps: BuildMaps, originY: number): Promise<{ set: ComponentSetNode; bottomY: number }> {
   type ModalBreak = "PC" | "Mobile";
   type ModalFooter = "Single" | "Dual";
+  const MODAL_PC_WIDTH = 360;
+  const MODAL_MOBILE_WIDTH = 300;
 
   // 본문이 놓이는 자리를 Figma 슬롯("Content")으로 만든다 — 글자뿐 아니라 이미지·텍스트에리어 등
   //   무엇이든 넣을 수 있게 한다. (river 지시·결정 2026-09-03: 제목과 닫기(X)는 슬롯에 넣지 않고 고정)
@@ -4816,7 +5163,7 @@ async function buildModalShell(maps: BuildMaps, originY: number): Promise<{ set:
     const comp = figma.createComponent();
     comp.name = `Break=${brk}, Footer=${footer}`;
     comp.layoutMode = "VERTICAL"; comp.primaryAxisSizingMode = "AUTO"; comp.counterAxisSizingMode = "FIXED";
-    comp.resize(mobile ? 300 : 360, 100);
+    comp.resize(mobile ? MODAL_MOBILE_WIDTH : MODAL_PC_WIDTH, 100);
     comp.itemSpacing = mobile ? 30 : 32;
     comp.paddingTop = 20; comp.paddingBottom = 20;
     comp.paddingLeft = mobile ? 20 : 0; comp.paddingRight = mobile ? 20 : 0;
@@ -4864,12 +5211,26 @@ async function buildModalShell(maps: BuildMaps, originY: number): Promise<{ set:
     return comp;
   };
 
-  const pcSingle = await buildModalVariant("PC", "Single", "제목 영역", "요청하신 작업이 정상적으로 처리되었습니다.\n변경된 내용은 목록에서 확인하실 수 있어요.");
-  const pcDual = await buildModalVariant("PC", "Dual", "제목 영역", "변경한 내용이 저장되지 않고 사라집니다.\n정말 이 작업을 진행하시겠어요?");
-  const mobileSingle = await buildModalVariant("Mobile", "Single", "업데이트 안내", "보다 안정적인 서비스 이용을 위해 최신\n버전으로 업데이트해 주세요.");
-  const mobileDual = await buildModalVariant("Mobile", "Dual", "자동 로그인 설정", "로그인되었어요.\n다음부터 자동으로 로그인할까요?");
+  // 예시 문구는 크기와 무관하게 계열별로 한 벌만 쓴다(문구는 UX라이팅 영역, 컴포넌트가 아니다).
+  const COPY = {
+    "PC:Single":     { title: "제목 영역",       body: "요청하신 작업이 정상적으로 처리되었습니다.\n변경된 내용은 목록에서 확인하실 수 있어요." },
+    "PC:Dual":       { title: "제목 영역",       body: "변경한 내용이 저장되지 않고 사라집니다.\n정말 이 작업을 진행하시겠어요?" },
+    "Mobile:Single": { title: "업데이트 안내",   body: "보다 안정적인 서비스 이용을 위해 최신\n버전으로 업데이트해 주세요." },
+    "Mobile:Dual":   { title: "자동 로그인 설정", body: "로그인되었어요.\n다음부터 자동으로 로그인할까요?" },
+  } as Record<string, { title: string; body: string }>;
+  const FOOTERS: ModalFooter[] = ["Single", "Dual"];
+  const modalComps: ComponentNode[] = [];
+  const modalByKey = new Map<string, ComponentNode>();
+  for (const brk of ["PC", "Mobile"] as ModalBreak[]) {
+    for (const footer of FOOTERS) {
+      const copy = COPY[`${brk}:${footer}`];
+      const comp = await buildModalVariant(brk, footer, copy.title, copy.body);
+      modalComps.push(comp);
+      modalByKey.set(`${brk}:${footer}`, comp);
+    }
+  }
 
-  const set = figma.combineAsVariants([pcSingle, pcDual, mobileSingle, mobileDual], figma.currentPage);
+  const set = figma.combineAsVariants(modalComps, figma.currentPage);
   set.name = "Modal";
   set.x = 0; set.y = originY;
   BUILT_SETS["Modal"] = set;
@@ -4879,9 +5240,7 @@ async function buildModalShell(maps: BuildMaps, originY: number): Promise<{ set:
     platforms: [{ name: "PC", sizes: [""] }, { name: "Mobile", sizes: [""] }],
     colHeaders: ["Single", "Dual"],
     rowLabels: [""],
-    cellAt: (platform, _size, _r, c) => platform === "PC"
-      ? (c === 0 ? pcSingle : pcDual)
-      : (c === 0 ? mobileSingle : mobileDual),
+    cellAt: (platform, _size, _r, c) => modalByKey.get(`${platform}:${FOOTERS[c]}`) ?? null,
     lightX: SPEC_LIGHT_X, darkX: SPEC_DARK_X, originY, cellW: 400, cellH: 260, rowLabelW: 16,
     shadowMode: true,
   };
@@ -4889,6 +5248,162 @@ async function buildModalShell(maps: BuildMaps, originY: number): Promise<{ set:
   try { bottomY = Math.max(bottomY, await buildGroupedSpec(opts, maps)); } catch (e) { console.warn(e); }
   // 세트 외부(변형 컨테이너) 배경 = bg/level-3 — 패널 surface/raised 가 라이트 흰색이라 흰 섹션에 묻힘 방지.
   //   Bottom Sheet 동일 패턴. decorateSetFlat 이 set.fills 를 덮으므로 반드시 그 이후에 적용.
+  set.fills = [boundPaint(scv(maps, "color/bg/level-3"))];
+  return { set, bottomY };
+}
+
+// ── Modal Content (콘텐츠 계열) — 입력창·표·이미지가 들어가는 큰 팝업 ──────────────
+// 레거시 정본: A `pc_modal`(yE5UCFEbmXJBlYJWB24Lz2 / 540:5815) — 🤖 figma-inspector 2026-09-07 실측.
+// **확인 계열(buildModalShell, 정본 노드 6706:4218)과 별개 컴포넌트다** — river 결정 2026-07-15 로 두 계열이 갈렸고
+//   2026-09-08 에 ⭐ 가 이 4크기를 확인 계열에 잘못 붙였다가 river 재지시로 여기로 옮겼다.
+//   확인 계열 = 폭360 단일 · 짧은 확인 문구
+//   콘텐츠 계열 = 크기축 있음 · 본문 자리에 콘텐츠
+//   **제목과 푸터 버튼은 두 계열이 같다** — river 지시 2026-09-08 "하단 푸터 버튼은 확인계열에 따르면 돼. 타이틀도".
+//     즉 제목 16B · 버튼 XXSM h28 로 확인 계열과 통일한다. 두 계열의 차이는 **크기(폭·높이)와 본문 내용물**뿐이다.
+//
+// river 지시 2026-09-08 (4줄 그대로 반영):
+//   ①"확인계열은 360으로만" → 확인 계열에서 Size 축 철회
+//   ②"컨텐츠계열은 MD 이상부터 쓸 수 있도록" → **SM 없음. MD·LG·XL 3크기**(레거시 sm 360 은 채택하지 않는다 —
+//      360 은 확인 계열 폭이라 콘텐츠 계열로 성립하지 않는다)
+//   ③"레거시의 height를 적정사이즈로 반영" → 레거시 실측 높이를 고정값으로 준다(MD 336 · LG 587 · XL 587).
+//      본문이 회색 자리표시 박스라 높이가 정해져 있어야 크기별 차이가 드러난다.
+//   ④"body의 샘플 텍스트 대신 회색계열 박스+안내문구로 컨텐츠 영역 이라고 표출" → 본문 = `color/bg/level-2` 박스 +
+//      가운데 "컨텐츠 영역" 안내문구(`color/text/body/tertiary`). 실제 화면에서는 이 자리에 입력창·표·이미지가 들어간다.
+//   ⑤"하단 푸터 버튼은 확인계열에 따르면 돼. 타이틀도" → **제목 16B · 버튼 XXSM h28** 로 확인 계열과 통일.
+//      레거시 pc_modal 은 제목18B·버튼h34 였으나 river 가 정본을 확인 계열에 맞추기로 결정했다 —
+//      §두 갈래 분류 (b) 사전 등록된 개선(레거시는 정답지가 아니라 개선 대상).
+//
+// 레거시 실측(원본 그대로): 폭 md 520 · lg 1000 · xl 1200 / 높이 md 336 · lg 587 · xl 587 /
+//   상하 패딩 20(spacing/20) · 푸터 좌우 24(spacing/24) · 닫기 24px.
+//   ⚠️ 세 크기는 폭·높이만 다르고 안쪽 밀도(패딩·간격·글자·버튼)는 전부 같다.
+//   레거시와 일부러 다른 곳은 **제목·버튼 둘뿐**이다 — 레거시 18B·h34 대신 확인 계열 16B·XXSM h28(위 ⑤).
+//   나머지(패딩 20 · 간격 32 · 푸터 버튼 간격 8 · 닫기 24)는 레거시 실측 그대로다.
+// 색은 전부 Semantic 경유. 패널 면·테두리·그림자는 확인 계열과 같은 토큰을 쓴다(같은 딤 위 팝업이므로).
+const MODAL_CONTENT_SIZES = ["MD", "LG", "XL"] as const;
+type ModalContentSize = typeof MODAL_CONTENT_SIZES[number];
+const MODAL_CONTENT_GEO: Record<ModalContentSize, { w: number; h: number }> = {
+  MD: { w: 520, h: 336 },
+  LG: { w: 1000, h: 587 },
+  XL: { w: 1200, h: 587 },
+};
+
+async function buildModalContent(maps: BuildMaps, originY: number): Promise<{ set: ComponentSetNode; bottomY: number }> {
+  type MCFooter = "Single" | "Dual";
+  const FOOTERS: MCFooter[] = ["Single", "Dual"];
+  const num = (t: string): Variable => requireVar(maps.foundationNumber, t, "Foundation Number");
+
+  // 푸터 버튼 = 코어 Button XXSM(h28) — 확인 계열과 **같은** 버튼이다(river 지시 2026-09-08).
+  const footerButton = async (variant: "primary" | "secondary", label: string): Promise<InstanceNode> => {
+    const vLabel = variant === "primary" ? "Primary" : "Secondary";
+    const comp = await getReuseComp(`Button:${variant}:XXSM:Default`, "Button",
+      [`Variant=${vLabel}`, "Size=XXSM", "State=Default"]);
+    if (!comp) throw new Error(`[buildModalContent] 코어 Button 인스턴스 미발견: Button:${variant}:XXSM:Default — 빌드 중단, 우회 안 함`);
+    const inst = comp.createInstance();
+    inst.name = variant;
+    await setInstanceLabel(inst, label);
+    return inst;
+  };
+
+  const comps: ComponentNode[] = [];
+  const byKey = new Map<string, ComponentNode>();
+  for (const size of MODAL_CONTENT_SIZES) {
+    for (const footer of FOOTERS) {
+      const geo = MODAL_CONTENT_GEO[size];
+      const comp = figma.createComponent();
+      comp.name = `Size=${size}, Footer=${footer}`;
+      comp.layoutMode = "VERTICAL";
+      comp.primaryAxisSizingMode = "FIXED"; comp.counterAxisSizingMode = "FIXED";
+      comp.counterAxisAlignItems = "CENTER";
+      comp.setBoundVariable("paddingTop", num("spacing/20"));
+      comp.setBoundVariable("paddingBottom", num("spacing/20"));
+      // 헤더·본문·푸터 사이 간격 32 — 레거시 실측(540:5826·5837·5849 세 크기 전부)이자 확인 계열과 같은 값이다.
+      //   (🤖 component-verifier 2026-09-08 적발: 근거 없이 20 이었다.)
+      comp.itemSpacing = 32;
+      comp.setBoundVariable("itemSpacing", num("spacing/32"));
+      comp.resize(geo.w, geo.h);
+      comp.fills = [boundPaint(scv(maps, "color/surface/raised"))];
+      bindRadius(comp, maps, "radius/8");
+      comp.strokes = [boundPaint(scv(maps, "color/modal/panel/border"))];
+      comp.strokeWeight = 1; comp.strokeAlign = "INSIDE";
+      comp.clipsContent = true;
+      try { (comp as any).effects = boundShadowEffects(maps, "shadow/raised"); } catch (e) { /* 환경 미지원 */ }
+
+      // ── 헤더: 제목 16B(확인 계열과 같음, river 지시 ⑤) + 닫기(X) ──
+      const header = figma.createFrame();
+      header.name = "header"; header.fills = [];
+      header.layoutMode = "HORIZONTAL"; header.primaryAxisSizingMode = "FIXED"; header.counterAxisSizingMode = "AUTO";
+      header.primaryAxisAlignItems = "SPACE_BETWEEN"; header.counterAxisAlignItems = "CENTER";
+      header.setBoundVariable("paddingLeft", num("spacing/24"));
+      header.setBoundVariable("paddingRight", num("spacing/24"));
+      comp.appendChild(header);
+      try { header.layoutAlign = "STRETCH"; } catch (e) { /* */ }
+      header.appendChild(await makeBoundText("제목 영역", 16, "Bold", scv(maps, "color/text/title/primary"), "title/16B"));
+      // 닫기(X) = 확인 계열 Modal·바텀시트와 **같은 라이브러리 부품**(`close`) — river 결정 2026-09-08.
+      //   레거시 pc_modal 은 모바일 상단바와 같은 부품을 쓰지만, 그러면 모달 두 계열이 서로 다른 부품을
+      //   가리키게 된다. 그림은 두 부품이 동일하다(내보낸 SVG 가 바이트 동일). §두 갈래 분류 (b).
+      header.appendChild(await makeIconInstance("close", scv(maps, "color/icon/gray-dark"), 24, CLOSE_ICON_SVG));
+
+      // ── 본문: 회색 자리표시 박스 + "컨텐츠 영역" 안내문구 (river 지시 ④) ──
+      //   실제 화면에서는 이 자리에 입력창·표·이미지가 들어간다. 샘플 문장을 넣지 않는다.
+      const body = figma.createFrame();
+      body.name = "content"; body.layoutMode = "VERTICAL";
+      body.primaryAxisSizingMode = "FIXED"; body.counterAxisSizingMode = "FIXED";
+      body.primaryAxisAlignItems = "CENTER"; body.counterAxisAlignItems = "CENTER";
+      body.fills = [boundPaint(scv(maps, "color/bg/level-2"))];
+      bindRadius(body, maps, "radius/4");
+      comp.appendChild(body);
+      try { body.layoutAlign = "STRETCH"; body.layoutGrow = 1; } catch (e) { /* */ }
+      body.appendChild(await makeBoundText("컨텐츠 영역", 14, "Medium", scv(maps, "color/text/body/tertiary"), "body/14M"));
+      // 좌우 여백은 패널 안쪽 24 — 본문 박스가 그만큼 안으로 들어온다.
+      const bodyWrap = figma.createFrame();
+      bodyWrap.name = "content-area"; bodyWrap.fills = [];
+      bodyWrap.layoutMode = "VERTICAL"; bodyWrap.primaryAxisSizingMode = "FIXED"; bodyWrap.counterAxisSizingMode = "FIXED";
+      bodyWrap.setBoundVariable("paddingLeft", num("spacing/24"));
+      bodyWrap.setBoundVariable("paddingRight", num("spacing/24"));
+      comp.insertChild(1, bodyWrap);
+      try { bodyWrap.layoutAlign = "STRETCH"; bodyWrap.layoutGrow = 1; } catch (e) { /* */ }
+      bodyWrap.appendChild(body);
+      try { body.layoutAlign = "STRETCH"; body.layoutGrow = 1; } catch (e) { /* */ }
+
+      // ── 푸터: 우측 정렬, 코어 Button XXSM h28(확인 계열과 같음, river 지시 ⑤) ──
+      const footerFrame = figma.createFrame();
+      footerFrame.name = "footer"; footerFrame.fills = [];
+      footerFrame.layoutMode = "HORIZONTAL"; footerFrame.primaryAxisSizingMode = "FIXED"; footerFrame.counterAxisSizingMode = "AUTO";
+      footerFrame.primaryAxisAlignItems = "MAX"; footerFrame.counterAxisAlignItems = "CENTER";
+      footerFrame.setBoundVariable("paddingLeft", num("spacing/24"));
+      footerFrame.setBoundVariable("paddingRight", num("spacing/24"));
+      footerFrame.itemSpacing = 8;
+      footerFrame.setBoundVariable("itemSpacing", num("spacing/8"));
+      comp.appendChild(footerFrame);
+      try { footerFrame.layoutAlign = "STRETCH"; } catch (e) { /* */ }
+      if (footer === "Dual") {
+        footerFrame.appendChild(await footerButton("secondary", "취소"));
+        footerFrame.appendChild(await footerButton("primary", "확인"));
+      } else {
+        footerFrame.appendChild(await footerButton("primary", "확인"));
+      }
+
+      setLightMode(comp, maps);
+      setShadowMode(comp, maps, maps.semanticShadowLightModeId);
+      comps.push(comp); byKey.set(`${size}:${footer}`, comp);
+    }
+  }
+  const set = figma.combineAsVariants(comps, figma.currentPage);
+  set.name = "Modal Content"; set.x = 0; set.y = originY;
+  BUILT_SETS["Modal Content"] = set;
+  const opts: GroupedSpecOpts = {
+    title: "Modal Content",
+    platforms: [{ name: "PC", sizes: MODAL_CONTENT_SIZES as unknown as string[] }],
+    colHeaders: ["Single", "Dual"],
+    rowLabels: [""],
+    cellAt: (_p, size, _r, c) => byKey.get(`${size}:${FOOTERS[c]}`) ?? null,
+    // XL 1200 을 담아야 해서 셀이 크다 — GNB 와 같은 이유로 다크 스펙을 아래에 쌓는다.
+    lightX: SPEC_LIGHT_X, darkX: SPEC_DARK_X, originY, cellW: 1240, cellH: 640, rowLabelW: 16,
+    shadowMode: true,
+  };
+  let bottomY = await decorateSetGrouped(set, opts, maps);
+  opts.darkOffset = { x: 0, y: bottomY + 80 };
+  try { bottomY = Math.max(bottomY, await buildGroupedSpec(opts, maps)); } catch (e) { console.warn(e); }
   set.fills = [boundPaint(scv(maps, "color/bg/level-3"))];
   return { set, bottomY };
 }
@@ -5929,10 +6444,10 @@ async function buildMultiToggle(maps: BuildMaps, originY: number): Promise<{ set
 export const COMPONENT_CATEGORIES_GRID: { name: string; members: string[] }[][] = [
   [
     { name: "Platform",     members: ["StatusBar", "NavBar", "CI", "LoginGNB", "WebTabBar", "Footer"] },
-    { name: "Navigation",   members: ["GNB", "GNB Utility Icon", "Language Icon", "Mobile Bottom Nav", "Mobile Header"] },
+    { name: "Navigation",   members: ["GNB", "GNB Sub Menu", "GNB Sub Menu Item", "GNB Utility Icon", "Language Icon", "Mobile Bottom Nav", "Mobile Header"] },
     { name: "Line Tab",     members: ["Line Tab Set", "Line Tab"] },
     { name: "Pagination",   members: ["Pagination", "Pagination Cell"] },
-    { name: "Actions",      members: ["Button"] },
+    { name: "Actions",      members: ["Button", "Assist Button", "Text Button"] },
     { name: "Selection",    members: ["Checkbox", "Radio", "Toggle", "Multi Toggle", "Multi Toggle Element"] },
     // Dropdown 섹션 = Form Control 에서 분리(사용자 결정 2026-06-26). Selection 아래에 세로 스택 배치(stage 2 STACKED).
     //   Form Control 보다 GRID 앞에 둬서 Select Box(Form Control)의 Dropdown 의존(BUILD_DEPENDENCIES)이 빌드순서로 충족됨.
@@ -5948,7 +6463,7 @@ export const COMPONENT_CATEGORIES_GRID: { name: string; members: string[] }[][] 
     //   빌드는 BUILD_DEPENDENCIES 로 요소(Option)·Checkbox·Radio·Button 이 먼저(카테고리를 Selection·Actions 뒤에 둠).
     { name: "Bottom Sheet", members: ["Bottom Sheet", "Bottom Sheet Option"] },
     // Modal(overlay): 공통 팝업 셸. 코어 Button(Actions, 앞 카테고리)을 인스턴스로 부착 → 카테고리 순서로 선빌드 보장.
-    { name: "Modal",        members: ["Modal"] },
+    { name: "Modal",        members: ["Modal", "Modal Content"] },
   ],
   // Filter Chip은 별도로 (Chip 아래에 배치될 예정)
   [
@@ -5987,7 +6502,9 @@ export const BUILD_DEPENDENCIES: Record<string, string[]> = {
   "Time Picker": ["Time Picker Dropdown"], // Focus 상태가 Time Picker Dropdown 인스턴스 부착
   "GNB": ["GNB Utility Icon"],        // GNB 바 유틸 영역이 GNB Utility Icon all-on 인스턴스 부착
   "GNB Utility Icon": ["Language Icon"], // language=on 변형이 Language Icon 인스턴스 부착
-  "Mobile Header": ["StatusBar"],  // StatusBar / Platform=App 정본 인스턴스 부착(Platform 카테고리 선빌드)
+  "Mobile Header": ["StatusBar"],
+  // 하위메뉴 패널이 항목 세트의 변형을 인스턴스로 붙인다 → 항목이 먼저 빌드돼야 한다.
+  "GNB Sub Menu": ["GNB Sub Menu Item"],
   "Pagination": ["Pagination Cell"],  // 완성 바가 Pagination Cell(Arrow·Edge·Number) 인스턴스 조합
   "Multi Toggle": ["Multi Toggle Element"], // 조합형태가 Multi Toggle Element 셀 인스턴스 사용 → 요소 먼저 빌드
   "Date Picker": ["Calendar"],        // Open 상태가 Calendar 패널 인스턴스 부착(BUILT_COMPS["Calendar:Date"])
@@ -6007,7 +6524,8 @@ export const BUILD_DEPENDENCIES: Record<string, string[]> = {
   // Bottom Sheet 컨테이너 = Bottom Sheet Option(Text) 리스트 + Button 인스턴스 부착 → 둘 다 선빌드.
   //   Option 은 같은 카테고리(요소 먼저), Button 은 Actions 카테고리(그리드 순서로 선빌드).
   "Bottom Sheet": ["Bottom Sheet Option", "Button"],
-  "Modal": ["Button"],                // 푸터가 코어 Button(XXSM) 인스턴스 부착 → Button 선빌드(Actions 카테고리 앞이라 순서로도 보장)
+  "Modal": ["Button"],
+  "Modal Content": ["Button"],                // 푸터가 코어 Button(XXSM h28) 인스턴스 부착 → Button 선빌드
   // Bottom Sheet Option 의 Checkbox/Radio 행 = Checkbox·Radio 컴포넌트 인스턴스 부착(Selection 카테고리 선빌드).
   "Bottom Sheet Option": ["Checkbox", "Radio"],
 };
@@ -6123,6 +6641,8 @@ export async function buildAllComponents(
   // 컴포넌트 빌더 — 이름 → (originY) => {set, bottomY}. Input 은 originX=0(섹션 컬럼 좌측정렬).
   const runners: { [name: string]: (oy: number) => Promise<{ set: ComponentSetNode; bottomY: number }> } = {
     "Button":               (oy) => buildButtonSet(maps, onProgress, 92, 97, oy),
+    "Assist Button":        (oy) => buildAssistButtonSet(maps, oy),
+    "Text Button":          (oy) => buildTextButtonSet(maps, oy),
     "Checkbox":             (oy) => buildCheckbox(maps, oy),
     "Radio":                (oy) => buildRadio(maps, oy),
     "Toggle":               (oy) => buildToggle(maps, oy),
@@ -6142,6 +6662,7 @@ export async function buildAllComponents(
     "Bottom Sheet":         (oy) => buildBottomSheet(maps, oy),
     "Bottom Sheet Option":  (oy) => buildBottomSheetOption(maps, oy),
     "Modal":                (oy) => buildModalShell(maps, oy),
+    "Modal Content":        (oy) => buildModalContent(maps, oy),
     "Calendar Cell":        (oy) => buildCalendarCellLayout(maps, oy),
     "Calendar Tile":        (oy) => buildCalendarTileLayout(maps, oy),
     "Time Picker":          (oy) => buildTimePicker(maps, oy),
@@ -6156,6 +6677,8 @@ export async function buildAllComponents(
     "Mobile Bottom Nav":    (oy) => buildMobileBottomNav(maps, oy),
     "Mobile Header":        (oy) => buildMobileHeader(maps, oy),
     "GNB":                  (oy) => buildGNB(maps, oy),
+    "GNB Sub Menu":         (oy) => buildGNBSubMenu(maps, oy),
+    "GNB Sub Menu Item":    (oy) => buildGNBSubMenuItem(maps, oy),
     "Pagination":           (oy) => buildPaginationBar(maps, oy),
     "Pagination Cell":      (oy) => buildPaginationCell(maps, oy),
     "StatusBar":            (oy) => buildStatusBar(maps, oy),

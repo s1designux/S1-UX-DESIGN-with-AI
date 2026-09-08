@@ -11,6 +11,19 @@
 > 정본 현재 상태는 ⭐ 가 `build-components.ts`·`vars-data.ts` 를 직접 grep 한 것이다(단일 값·이름 조회 — H5 예외).
 > **레거시 hex → Foundation 이름 대응은 `vars-data.ts` FOUNDATION 표에서 같은 hex 를 찾은 것이며, 없는 hex 는 "없음"으로 적고 추측하지 않았다.**
 
+> ## ⚠️ 이 문서는 **착수 전 계획서**다 — 시공 결과와 다른 곳이 있다
+>
+> 아래 **네 곳**은 시공 중 river 결정으로 **바뀌었다.** 지금 정본이 무엇인지는 **`WIP-canon-additions.md`** 를 보라.
+>
+> | 계획서 | 실제 정본 | 왜 |
+> |---|---|---|
+> | 보조 버튼 = Button 의 variant (48→64) | **`Assist Button` 별도 세트**(크기 1종 60×32) | "한사이즈밖에 없고 버튼에 섞이면 안돼. 별도 컴포넌트야" |
+> | `Modal` 에 Size 축 추가(4→10변형) | **철회.** `Modal` 은 360 단일 · 새 세트 **`Modal Content`**(MD·LG·XL) | 4크기는 콘텐츠 계열 것이었다 — "확인계열은 360으로만" |
+> | GNB 하위메뉴 = B 기준(1단 `body/16M` · 2단 14px `#646464`) | **A 기준**(1단 Bold16 `title/16B` · 2단 Medium16 `title/16M` #555) | "A로 가" |
+> | 보조 버튼 새 토큰 6개 | **3개** — 배경·기본테두리는 secondary 차용 | 원본이 그렇게 돼 있다 |
+>
+> 그 밖에 결정 ①(보조 버튼 높이 32→XSM 34)도 별도 세트가 되면서 **레거시 32 를 그대로** 쓴다.
+
 ---
 
 ## ✅ 확정된 12건 (2026-09-08)
@@ -72,7 +85,9 @@ river 가 결정 화면에서 3건을 직접 고르고, 나머지 9건은 추천
 ### 이렇게 만들게요
 
 **① 보조 버튼 = Button 세트에 variant `Assist` 추가** (primary·secondary·blue-line → 4종). 크기·상태 축은 기존 그대로(MD·XSM·XXSM·LG × Default·Hover·Pressed·Disabled) → 변형 48 → 64.
-- 새 토큰 6개(`vars-data.ts`): `color/button/bg/assist--default|--hover` · `border/assist--default|--hover` · `label/assist--default|--hover`.
+- ~~새 토큰 6개~~ → **시공 결과 3개**(`border/assist--hover` · `label/assist--default` · `label/assist--hover`).
+  원본은 배경(기본·hover)과 테두리(기본)를 secondary 토큰에서 빌려 쓴다 — river 가 "원본은 3개"를 듣고 원본 충실을 선택.
+  아래 값 선언은 그대로 유효하다(지운 3개가 secondary 와 값이 완전히 같아 **보이는 색은 안 바뀐다**).
   - 라이트 값 = 레거시 그대로: bg white / gray/50 · border gray/200 / gray/200 · label gray/500 / gray/500.
   - **다크 값은 레거시에 없다** → Secondary 의 다크 규칙을 그대로 따르는 안: bg gray-dark/100 / gray-dark/200 · border gray-dark/500 / gray-dark/500 · label = `text/body/tertiary` 다크와 같은 gray-dark/700. (제안이며 승인 사항)
 - Pressed = Hover (정본 Button 규칙).

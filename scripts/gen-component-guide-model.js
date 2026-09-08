@@ -19,7 +19,9 @@ async function main() {
   const model = await buildGuideModel({ buildSource });
   const next = stableJson(model);
 
-  if (model.componentCount !== 43) throw new Error(`정본 grid 항목은 43개여야 합니다. 현재 ${model.componentCount}개`);
+  // 정본 grid 항목 수 — 컴포넌트가 늘거나 줄면 여기서 멈춰 사람이 알아채게 하는 가드다(자동 추종 금지).
+  //   43 → 48: 2026-09-08 river 승인 5건 — Assist Button · Text Button · GNB Sub Menu · GNB Sub Menu Item · Modal Content.
+  if (model.componentCount !== 48) throw new Error(`정본 grid 항목은 48개여야 합니다. 현재 ${model.componentCount}개`);
   const invalid = model.componentIndex.filter((item) => !['public', 'internal', 'excluded'].includes(item.visibility));
   if (invalid.length) throw new Error(`공개/내부/제외 미분류: ${invalid.map((item) => item.name).join(', ')}`);
 

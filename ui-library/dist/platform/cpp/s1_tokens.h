@@ -70,6 +70,7 @@ constexpr std::uint32_t S1_COLOR_BUTTON_BG_PRIMARY_DEFAULT = 0xFF1D6CEBu; // --c
 constexpr std::uint32_t S1_COLOR_BUTTON_BG_PRIMARY_HOVER = 0xFF2747B9u; // --color-button-bg-primary--hover = #2747B9
 constexpr std::uint32_t S1_COLOR_BUTTON_BG_SECONDARY_DEFAULT = 0xFFFFFFFFu; // --color-button-bg-secondary--default = #FFFFFF
 constexpr std::uint32_t S1_COLOR_BUTTON_BG_SECONDARY_HOVER = 0xFFF5F5F5u; // --color-button-bg-secondary--hover = #F5F5F5
+constexpr std::uint32_t S1_COLOR_BUTTON_BORDER_ASSIST_HOVER = 0xFFD9D9D9u; // --color-button-border-assist--hover = #D9D9D9
 constexpr std::uint32_t S1_COLOR_BUTTON_BORDER_BLUE_LINE_DEFAULT = 0xFF1D6CEBu; // --color-button-border-blue-line--default = #1D6CEB
 constexpr std::uint32_t S1_COLOR_BUTTON_BORDER_BLUE_LINE_HOVER = 0xFF1D6CEBu; // --color-button-border-blue-line--hover = #1D6CEB
 constexpr std::uint32_t S1_COLOR_BUTTON_BORDER_DISABLED = 0xFFD9D9D9u; // --color-button-border-disabled = #D9D9D9
@@ -77,6 +78,8 @@ constexpr std::uint32_t S1_COLOR_BUTTON_BORDER_PRIMARY_DEFAULT = 0xFF1D6CEBu; //
 constexpr std::uint32_t S1_COLOR_BUTTON_BORDER_PRIMARY_HOVER = 0xFF2747B9u; // --color-button-border-primary--hover = #2747B9
 constexpr std::uint32_t S1_COLOR_BUTTON_BORDER_SECONDARY_DEFAULT = 0xFFD9D9D9u; // --color-button-border-secondary--default = #D9D9D9
 constexpr std::uint32_t S1_COLOR_BUTTON_BORDER_SECONDARY_HOVER = 0xFFD9D9D9u; // --color-button-border-secondary--hover = #D9D9D9
+constexpr std::uint32_t S1_COLOR_BUTTON_LABEL_ASSIST_DEFAULT = 0xFF757575u; // --color-button-label-assist--default = #757575
+constexpr std::uint32_t S1_COLOR_BUTTON_LABEL_ASSIST_HOVER = 0xFF757575u; // --color-button-label-assist--hover = #757575
 constexpr std::uint32_t S1_COLOR_BUTTON_LABEL_BLUE_LINE_DEFAULT = 0xFF1D6CEBu; // --color-button-label-blue-line--default = #1D6CEB
 constexpr std::uint32_t S1_COLOR_BUTTON_LABEL_BLUE_LINE_HOVER = 0xFF2747B9u; // --color-button-label-blue-line--hover = #2747B9
 constexpr std::uint32_t S1_COLOR_BUTTON_LABEL_DISABLED = 0xFFC4C4C4u; // --color-button-label-disabled = #C4C4C4
@@ -229,6 +232,7 @@ constexpr std::uint32_t S1_COLOR_NAVIGATION_LABEL_DEFAULT = 0xFF555555u; // --co
 constexpr std::uint32_t S1_COLOR_NAVIGATION_LABEL_DEFAULT_ALT = 0xFF434343u; // --color-navigation-label-default-alt = #434343
 constexpr std::uint32_t S1_COLOR_NAVIGATION_LABEL_HOVER = 0xFF1D6CEBu; // --color-navigation-label-hover = #1D6CEB
 constexpr std::uint32_t S1_COLOR_NAVIGATION_LABEL_SELECTED = 0xFF1D6CEBu; // --color-navigation-label-selected = #1D6CEB
+constexpr std::uint32_t S1_COLOR_NAVIGATION_SUBMENU_LABEL_DEFAULT = 0xFF353535u; // --color-navigation-submenu-label-default = #353535
 constexpr std::uint32_t S1_COLOR_ORANGE_100 = 0xFFFDDBBFu; // --color-orange-100 = #FDDBBF
 constexpr std::uint32_t S1_COLOR_ORANGE_150 = 0xFFFEC6A0u; // --color-orange-150 = #FEC6A0
 constexpr std::uint32_t S1_COLOR_ORANGE_200 = 0xFFFFB482u; // --color-orange-200 = #FFB482
@@ -410,6 +414,7 @@ constexpr std::uint32_t S1_COLOR_BUTTON_BG_PRIMARY_DEFAULT = 0xFF3070D8u; // --c
 constexpr std::uint32_t S1_COLOR_BUTTON_BG_PRIMARY_HOVER = 0xFF2A65C8u; // --color-button-bg-primary--hover = #2A65C8
 constexpr std::uint32_t S1_COLOR_BUTTON_BG_SECONDARY_DEFAULT = 0xFF1C1D23u; // --color-button-bg-secondary--default = #1C1D23
 constexpr std::uint32_t S1_COLOR_BUTTON_BG_SECONDARY_HOVER = 0xFF24252Cu; // --color-button-bg-secondary--hover = #24252C
+constexpr std::uint32_t S1_COLOR_BUTTON_BORDER_ASSIST_HOVER = 0xFF3E4049u; // --color-button-border-assist--hover = #3E4049
 constexpr std::uint32_t S1_COLOR_BUTTON_BORDER_BLUE_LINE_DEFAULT = 0xFF3070D8u; // --color-button-border-blue-line--default = #3070D8
 constexpr std::uint32_t S1_COLOR_BUTTON_BORDER_BLUE_LINE_HOVER = 0xFF3070D8u; // --color-button-border-blue-line--hover = #3070D8
 constexpr std::uint32_t S1_COLOR_BUTTON_BORDER_DISABLED = 0xFF2E2F38u; // --color-button-border-disabled = #2E2F38
@@ -417,6 +422,8 @@ constexpr std::uint32_t S1_COLOR_BUTTON_BORDER_PRIMARY_DEFAULT = 0xFF3070D8u; //
 constexpr std::uint32_t S1_COLOR_BUTTON_BORDER_PRIMARY_HOVER = 0xFF2A65C8u; // --color-button-border-primary--hover = #2A65C8
 constexpr std::uint32_t S1_COLOR_BUTTON_BORDER_SECONDARY_DEFAULT = 0xFF3E4049u; // --color-button-border-secondary--default = #3E4049
 constexpr std::uint32_t S1_COLOR_BUTTON_BORDER_SECONDARY_HOVER = 0xFF3E4049u; // --color-button-border-secondary--hover = #3E4049
+constexpr std::uint32_t S1_COLOR_BUTTON_LABEL_ASSIST_DEFAULT = 0xFF8A8C96u; // --color-button-label-assist--default = #8A8C96
+constexpr std::uint32_t S1_COLOR_BUTTON_LABEL_ASSIST_HOVER = 0xFF8A8C96u; // --color-button-label-assist--hover = #8A8C96
 constexpr std::uint32_t S1_COLOR_BUTTON_LABEL_BLUE_LINE_DEFAULT = 0xFF3070D8u; // --color-button-label-blue-line--default = #3070D8
 constexpr std::uint32_t S1_COLOR_BUTTON_LABEL_BLUE_LINE_HOVER = 0xFF3070D8u; // --color-button-label-blue-line--hover = #3070D8
 constexpr std::uint32_t S1_COLOR_BUTTON_LABEL_DISABLED = 0xFF55575Fu; // --color-button-label-disabled = #55575F
@@ -521,6 +528,7 @@ constexpr std::uint32_t S1_COLOR_NAVIGATION_LABEL_DEFAULT = 0xFF55575Fu; // --co
 constexpr std::uint32_t S1_COLOR_NAVIGATION_LABEL_DEFAULT_ALT = 0xFF8A8C96u; // --color-navigation-label-default-alt = #8A8C96
 constexpr std::uint32_t S1_COLOR_NAVIGATION_LABEL_HOVER = 0xFF3070D8u; // --color-navigation-label-hover = #3070D8
 constexpr std::uint32_t S1_COLOR_NAVIGATION_LABEL_SELECTED = 0xFF3070D8u; // --color-navigation-label-selected = #3070D8
+constexpr std::uint32_t S1_COLOR_NAVIGATION_SUBMENU_LABEL_DEFAULT = 0xFFECEDF0u; // --color-navigation-submenu-label-default = #ECEDF0
 constexpr std::uint32_t S1_COLOR_OVERLAY = 0xBF000000u; // --color-overlay = rgba(0,0,0,0.75)
 constexpr std::uint32_t S1_COLOR_OVERLAY_WHEEL_FADE = 0xFF1C1D23u; // --color-overlay-wheel-fade = #1C1D23
 constexpr std::uint32_t S1_COLOR_PAGINATION_CONTROL_BG_DEFAULT = 0xFF1C1D23u; // --color-pagination-control-bg-default = #1C1D23

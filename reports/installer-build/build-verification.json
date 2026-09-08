@@ -1,9 +1,9 @@
 {
   "sourceFile": "plugins/figma-vars-installer/src/build-components.ts",
-  "sourceHash": "sha256:702481d5344f5c98855088829aacca7354fe1e69ff296d3c8af84f21f1da3787",
+  "sourceHash": "sha256:1149ece693ccc90ea643386c95bafa648b1a85fbae523bea01642f4a39eed739",
   "verifiedBy": "component-verifier",
   "verdict": "pass",
   "changeType": "structural",
-  "verifiedAt": "2026-09-08T04:04:28.374Z",
-  "notes": "드롭다운 옵션 말줄임(layoutGrow/textAutoResize/textTruncation/maxLines) + 폭규칙 주석. 지문 diff 로 회귀 범위 확인: 바뀐 시각사양 10행 전부 Dropdown List 옵션 글자, 토큰 diff 0·노드 4809 동일·세트 46 동일. PROP_CLASS VISUAL 등록은 약화 아님(specRows 가 VISUAL/LAYOUT 동등 포함, 지문에 실제 반영 확인). 보고서 reports/ui-library/select-dropdown-filter-chip/4-verification-installer-2026-09-08.md"
+  "verifiedAt": "2026-09-08T10:17:08.828Z",
+  "notes": "10회차 델타 재검증: 9회차 ❌(a) 1건(자기 표 개수 서술 누락) 수정 확인 — PLAN-canon-additions.md:16 '네 곳'=표 4행, NEXT.md:77-79 '네 군데'=열거 4항목. 자기목록 세기 문장 저장소 스윕 결과 불일치 0(Gate34 승인 10건=색4+컴포넌트5+슬롯1 실제 기록 대조 포함). 정본 3파일 지문 동일(build 1149ece693ccc90e·vars 02140f6ec58e4c97·textstyles dc0db42d87503e80) → A~E 6~9회차 PASS 승계, 이번에 재확인하지 않음."
 }
