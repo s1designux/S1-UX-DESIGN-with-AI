@@ -41,54 +41,50 @@
 
 ---
 
-## ▶ 다음에 할 일 — ③ 정본 보강 4건
+## ▶ 다음에 할 일 — ③ 정본 보강 4건 **시공** (결정 끝남)
 
-river 지시(2026-09-04): **"①확인만 하면 되는 것 → ②D-09 카드 다시 짜기 → ③정본 보강 4건(건별 계획 확인 후)"**
-①②는 끝났다. **③은 2026-09-07 레거시 실측(🤖 figma-inspector)을 마치고 계획서 `PLAN-canon-additions.md` 를 올렸다 — river 가 그 안의 결정 1~12 에 답하면 건별로 승인 기록 후 착수한다.**
+**2026-09-08: 결정 12건이 전부 닫혔다.** river 가 결정 화면에서 3건을 직접 고르고 9건은 추천안으로 확정했다.
+시공 사양 = `PLAN-canon-additions.md` 의 「✅ 확정된 12건」 표와 그 아래 각 건의 '이렇게 만들게요'.
+결정 화면 = <https://claude.ai/code/artifact/b76d3281-5e63-453a-894b-dabc971a1bd4> (답 원본은 그 아티팩트의 `collection "decisions"`).
 
-> ⚠️ **네 건 모두 정본(`build-components.ts`)에 없던 것을 만드는 일이다.**
-> 하드룰 H6② — ⭐ 가 정본에 새 항목을 임의로 만들지 않는다. **건별로 "이렇게 만들게요"를 river 에게 보이고 승인받은 뒤** 착수한다.
-> 승인은 `node scripts/canon-addition-check.js --approve --by river --reason "…" --quote "<river 실제 발화 그대로>"` 로 기록하고 **Gate 34** 가 집행한다.
-> `--quote` 는 세션기록의 사람 발화에 실재해야 통과한다. 아래 각 건의 「river 원문」을 그대로 쓸 수 있다.
+river 가 고른 3건:
+- **보조 버튼 다크 글자색 = `#8A8C96`** (일반 버튼 `#B8BABF` 보다 한 단계 옅게 — 라이트와 같은 위계)
+- **모바일 상단바 = `Home / Title + 1 Icon` 1종 추가** (⭐ 해석 확인됨: 없앤 둘 = 아이콘 2개 버전 + 앱바)
+- **하위메뉴 2단 글자색 = `#555555`** (색표에 있는 값 — 새 색 만들지 않음. 레거시 `#646464` 는 채택 안 함)
 
-### D-13 — 보조 버튼 · 텍스트 버튼을 정본에 추가
+### ✅ 승인 확보됨 (2026-09-08) · ⛔ 남은 차단 요인 하나
 
-- **river 원문:** `정본에 추가하는 작업 추후 진행해야함`
-- **레거시:** `pc_assist_button` · `pc_text_button` · `m_subbutton`
-- **정본 현재:** Button variants = `primary` · `secondary` · `blue-line` (`build-components.ts` 상단 VARIANTS). 대응 없음.
-- **정해야 할 것:** 새 variant 이름 · 각 상태(default/hover/pressed/disabled)의 색 토큰 · 크기 축을 기존 그대로 쓸지.
-- **주의:** 색은 반드시 Semantic 경유(HEX 금지). 정본에 토큰이 없으면 만들지 말고 needs-decision.
+**river 승인 발화(2026-09-08T00:58Z, 세션 기록에 실재 — 게이트 검색으로 4개 문구 전부 확인함):**
 
-### D-15 — 모달에 크기 축 추가
+> 보조 버튼 다크 글자색은 한 단계 옅은 #8A8C96 으로, 모바일 상단바는 홈+타이틀+아이콘 1개 한 종류 추가로, 하위메뉴 2단 글자는 #555555 로 승인합니다. 나머지 9건은 추천안대로 진행하세요.
 
-- **river 원문:** `크기는 지금도 있어야 함 — 정본 보강 대상`
-- **레거시:** A PC 모달 `sm` · `md` · `lg` · `xl` 4크기 + 용도별 모달(삭제·입력취소 등)
-- **정본 현재:** `buildModalShell`(`build-components.ts:4629`) — 변형축은 `Break=PC|Mobile, Footer=…` 뿐이고 **크기 축 없음**. 폭은 코드에 리터럴(PC 360 · Mobile 300).
-  배포본 매니페스트도 `sizeAxis: "정본에 크기 축이 없다 — Break(PC·Mobile)가 패널 폭과 밀도를 결정한다"` 라고 선언한다.
-- **정해야 할 것:** 크기 이름(레거시 sm/md/lg/xl 을 그대로 쓸지) · 각 크기의 폭 · Break 축과 어떻게 겹치는지.
-- **주의:** 지금 Break 축이 폭을 정하고 있으므로 **축이 둘로 늘어난다.** 배포본 매니페스트 선언문도 함께 고쳐야 한다.
+Gate 34 승인 기록에 쓸 인용 조각(그대로 복사해 쓸 것 — 셋 다 실재 확인됨):
 
-### D-17 — 모바일 상단바 '홈 + 타이틀 + 아이콘' 유형 (⚠️ 애매)
+| 대상 | `--quote` 에 넣을 조각 |
+|---|---|
+| 보조 버튼 토큰 6개 | `보조 버튼 다크 글자색은 한 단계 옅은 #8A8C96 으로` |
+| Mobile Header 유형 1종 | `모바일 상단바는 홈+타이틀+아이콘 1개 한 종류 추가로` |
+| GNB Sub Menu 세트 2개 | `하위메뉴 2단 글자는 #555555 로 승인합니다` |
+| Text Button 세트 · Modal Size 축 | `나머지 9건은 추천안대로 진행하세요` |
 
-- **river 원문:** `아이콘 두개있는 버전과 앱바는 사용하지않음.  그런데 다시보니 홈+타이틀+아이콘 유형이 누락됨. 제작후 삭제된 두개유형은 홈+타이틀+아이콘 유형으로 변경하면됨`
-- **정본 현재:** `MOBILE_HEADER_TYPES`(`build-components.ts:3059`) 6종 —
-  `Home / Title` · `Home / Title + Subtitle + 1 Icon` · `Standard / Title` · `Standard / Title + Close` · `Standard / No Title` · `Standard / No Title + Close`
-- **확인된 이력:** `build-components.ts:3053` 주석 — **2026-08-25 river: "Home / Title + 2 Icons" 는 실제로 쓰지 않는 기준이라 삭제.** (삭제 기록은 **이 한 종류뿐**)
-- **⚠️ 먼저 river 에게 확인할 것 (추측 금지):**
-  1. river 는 **"삭제된 두 개 유형"** 이라고 했는데 코드에는 **삭제 기록이 한 종류뿐**이다. 나머지 하나가 무엇인지 확인해야 한다.
-  2. 필요한 것이 `Home / Title + 1 Icon`(부제 없음)인지, 기존 `Home / Title + Subtitle + 1 Icon` 을 고치라는 것인지 확인해야 한다.
-- **주의:** 이건 **2026-08-25 결정을 뒤집는 방향**일 수 있다. 확인 없이 손대지 말 것.
+**⛔ 남은 차단 요인 — 같은 작업트리를 다른 세션이 쓰는 중.**
+`build-components.ts`(09:14 수정) · `pattern-data.ts` · `pages/components.html` · `registry/components/{select,dropdown,filter-chip,input}.json` 등 **미커밋 95개**가 남아 있고,
+그 세션은 09:50 에도 파일을 쓰고 있었다(살아 있음 — 유령 작업 아님). `gate:check` 는 그 작업 때문에 error 50건으로 실패 중이다(Gate 13·19 등).
 
-### D-18 — GNB 하위메뉴 깊이 축 추가
+기억된 정본 지침 그대로 따른다: **같은 파일을 동시에 고치지 않는다. 그 세션이 커밋할 때까지 편집 대기.**
+(2026-07-13 재발 기록 — 개별 `git add` 로도 못 막았다. index 가 세션 간 공유라 커밋 순간 남의 파일이 딸려 간다.)
+**커밋은 반드시 경로 지정형으로:** `git commit -- <path1> <path2> …`
 
-- **river 원문:** `하위메뉴 깊이에 대한 내용도 추가 필요`
-- **레거시:** A `gnb list`(메뉴 목록) · B `gnb` 의 `1depth/2depth` 축
-- **정본 현재:** `buildGNB`(`build-components.ts:3256`) — GNB 바 변형은 `Align=…, Size=…`, 자식 세트 `GNB Menu` 변형은 `Size=…, State=…`. **깊이 축 없음.**
-  메뉴 자리는 Figma 슬롯("Menus")으로 개수 조절만 된다(river 지시 2026-09-03).
-- **정해야 할 것:** 깊이를 GNB Menu 의 변형축으로 넣을지, 별도 컴포넌트(하위메뉴 패널)로 만들지 · 2depth 의 모양·색.
-- **주의:** GNB 는 웹 배포본(dist)에 없다 — Figma 정본·설치기만 있다.
+### 시공 순서 (다른 세션이 커밋한 직후 실행)
 
----
+1. 정본 편집 → 새 이름이 생기면 Gate 34 가 잡는다 → 위 표의 조각으로 건별 승인 기록
+   `node scripts/canon-addition-check.js --approve --by river --reason "…" --quote "<위 표의 조각>"`
+2. 새 토큰 6개(`vars-data.ts`, 보조 버튼 bg·border·label 의 default/hover) → `npm run tokens:reconcile`
+   · **2단 글자 토큰은 신설하지 않는다**(⑩ 확정 — 기존 `color/navigation/label/default` 재사용)
+3. `build-components.ts` — Assist variant · Text Button 세트 · Modal Size 축 · 상단바 1종 · GNB Sub Menu 2세트
+4. 🤖 `component-verifier` 실제 spawn → Gate 13 기록 (⭐ 자가검증 금지)
+5. `components:facts:write` · `guide-model:write` · `installer:build` → Figma 설치 후 렌더 대조
+6. `npm run board:refresh` → Gate 전체 통과 후 커밋
 
 ## 그 밖에 열려 있는 것 (③ 과 별개)
 
@@ -98,6 +94,7 @@ river 지시(2026-09-04): **"①확인만 하면 되는 것 → ②D-09 카드 �
 | **D-09** 시간 선택 | 층 맞춰 재구성 완료. 트리거의 `selected`·`completed` 대응 + 정본에 없는 **셀렉트형 트리거** 처리 → river 결정 대기 |
 | **D-11** 달력 부품 | 칸·타일·연월 화면 다 있음(확인 완료). **화살표만** 정본은 헤더 안 아이콘, 레거시는 별도 컴포넌트 → 별도 컴포넌트로 만들지 river 결정 대기 |
 | **D-19** 폼 묶음 | river: `패턴으로 볼지 컴포넌트로 볼지 모호해서 논의 필요` — 미결 |
+| **D-13·15·17·18** | 결정 끝남(2026-09-08) — 위 ③ 참조. 남은 것은 승인 인용문과 작업트리 정리뿐 |
 
 ---
 
