@@ -74,8 +74,8 @@
     {
       "role": "component-visual",
       "path": "plugins/figma-vars-installer/src/build-components.ts",
-      "sha256": "2beb813ff18d9f7670bd11baa876950fee0d7a715ba6994162c9ccfe56c6a27e",
-      "note": "2026-09-01 갱신 — 변경 두 갈래: 이번 작업의 buildFilterChip 매핑 1줄(river 결정 D12⑤) + 이번 작업과 무관한 buildNavBar 구조 변경(다른 세션). 후자는 Toggle·Chip·Select·Dropdown·Filter Chip 어느 빌더도 건드리지 않아 이전 검증을 superseded 하지 않는다."
+      "sha256": "702481d5344f5c98855088829aacca7354fe1e69ff296d3c8af84f21f1da3787",
+      "note": "2026-09-08 갱신 — 이 작업의 D28(드롭다운 옵션 말줄임 + 폭 규칙 주석) 반영분. 🤖 component-verifier 시나리오 D 가 지문 대조로 회귀 0 을 확인했다(커밋 a9533e3)."
     },
     {
       "role": "token-values",
@@ -90,22 +90,26 @@
     {
       "role": "ui-library-contract",
       "path": "registry/governance/ui-library-code-contract.json",
-      "sha256": "63dc0f64c6ea834218119f8629379ee48cfac6c8df8b36e39d78f51405807c85"
+      "sha256": "2e13ba2efab71036f9d8c2d740f7da24343e0bbeff655f35ae5b6631c9ca0c27",
+      "note": "2026-09-08 갱신 — 이 작업의 D28(드롭다운 옵션 말줄임 + 폭 규칙 주석) 반영분. 🤖 component-verifier 시나리오 D 가 지문 대조로 회귀 0 을 확인했다(커밋 a9533e3)."
     },
     {
       "role": "component-meaning-select",
       "path": "registry/components/select.json",
-      "sha256": "1b2ef0ff97b51dccb66fed707e89f65efd4fec1f8371ab3e12fa11e9ca69dbc4"
+      "sha256": "dffd118ed1527bfca170b8eb8ea05f681dd74b01a2a3242f830b6946c8529f17",
+      "note": "2026-09-08 갱신 — 이 작업의 D28(드롭다운 옵션 말줄임 + 폭 규칙 주석) 반영분. 🤖 component-verifier 시나리오 D 가 지문 대조로 회귀 0 을 확인했다(커밋 a9533e3)."
     },
     {
       "role": "component-meaning-dropdown",
       "path": "registry/components/dropdown.json",
-      "sha256": "aaa770cfb6ec988f327f67cf2ad4f6f08317e9f6fe8b6ca9d5c197ea0ae513f6"
+      "sha256": "f5c5b46794ef87261fa3e6a5c1b884b372f5d194d33eb81c679959351c75bc9d",
+      "note": "2026-09-08 갱신 — 이 작업의 D28(드롭다운 옵션 말줄임 + 폭 규칙 주석) 반영분. 🤖 component-verifier 시나리오 D 가 지문 대조로 회귀 0 을 확인했다(커밋 a9533e3)."
     },
     {
       "role": "component-meaning-filter-chip",
       "path": "registry/components/filter-chip.json",
-      "sha256": "822ca18dcfe7465744f890c01765da8564d42ff77fe22cbf31881bd654b3b7ba"
+      "sha256": "cfa6635c881b7e41644d415330e182b2392b257c73ee1e3fa53b9d0df8b9e04d",
+      "note": "2026-09-08 갱신 — 이 작업의 D28(드롭다운 옵션 말줄임 + 폭 규칙 주석) 반영분. 🤖 component-verifier 시나리오 D 가 지문 대조로 회귀 0 을 확인했다(커밋 a9533e3)."
     },
     {
       "role": "dependency-meaning-checkbox",
@@ -145,7 +149,9 @@
     "verificationFixture": "reports/ui-library/select-dropdown-filter-chip/matrix-fixture.html",
     "independentVerification": "reports/ui-library/select-dropdown-filter-chip/4-verification-independent.md",
     "humanReview": "reports/ui-library/select-dropdown-filter-chip/5-human-review.md",
-    "reviewPageFix": "reports/ui-library/select-dropdown-filter-chip/5-review-page-fix.md"
+    "reviewPageFix": "reports/ui-library/select-dropdown-filter-chip/5-review-page-fix.md",
+    "promotion": "reports/ui-library/select-dropdown-filter-chip/6-promotion-2026-09-08.md",
+    "peerWorkPreserved": "reports/handoff/peer-wip-adoptInto-2026-09-08.patch"
   },
   "decisions": [
     {
@@ -557,6 +563,6 @@
   "handoff": {
     "lastActor": "orchestrator",
     "updatedAt": "2026-09-08",
-    "summary": "D22~D28 완료. 드롭다운 폭 규칙(최소 100 · 트리거 100 미만이면 100 · 이상이면 트리거 폭 · 상한 없음 · 말줄임 + 마우스 올림 안내)이 웹 배포본·registry·안내 페이지·정본 주석에 모두 기록됐고, GUI 로 보이는 말줄임은 정본과 설치기 zip 에 반영됐다. 🤖 component-verifier 시나리오 D 가 PASS(회귀 0 을 지문으로 증명), Gate 13 기록 완료, gate:check 게이트 50개 PASSED. 남은 것은 river UX 최종 검수와 Figma 캔버스 재설치(MCP 인증 필요). 커밋은 하지 않았다."
+    "summary": "커밋 a9533e3 로 승격 완료. 드롭다운 폭 규칙(최소 100 · 트리거 100 미만이면 100 · 이상이면 트리거 폭 · 상한 없음 · 말줄임 + 마우스 올림 안내)이 웹 배포본·registry·안내 페이지·정본 주석에 기록됐고, GUI 로 보이는 말줄임은 정본과 설치기 zip 에 반영됐다. 🤖 시나리오 D PASS · Gate 13 기록 · gate:check 게이트 50개 PASSED. 남은 것은 Figma 캔버스 재설치(river·MCP 인증 필요)와 🟡-3(주석 인용 id 표기, 다음 정본 편집 때)."
   }
 }
