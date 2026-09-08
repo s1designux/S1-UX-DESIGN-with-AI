@@ -1,7 +1,31 @@
 {
-  "generatedAt": "2026-09-01T07:10:36.915Z",
-  "totalCount": 81,
+  "generatedAt": "2026-09-08T13:55:56.286Z",
+  "totalCount": 82,
   "reports": [
+    {
+      "id": "modal-content-family-backlog",
+      "filename": "modal-content-family-backlog.md",
+      "title": "Modal Content (콘텐츠 계열) — 별건 백로그",
+      "stage": "Audit",
+      "category": "audit",
+      "status": "complete",
+      "sourcePath": "reports/modal-content-family-backlog.md",
+      "updatedAt": "2026-09-08",
+      "summary": "**상태: 2026-09-08 Figma 정본·설치기 착수 완료** — `build-components.ts buildModalContent`, 세트명 `Modal Content`,",
+      "fileSizeKB": 5.4
+    },
+    {
+      "id": "canon-approval-audit-2026-09-07",
+      "filename": "canon-approval-audit-2026-09-07.md",
+      "title": "정본 승인 감사 — 2026-09-07 (river 결정 포함)",
+      "stage": "Audit",
+      "category": "audit",
+      "status": "archive",
+      "sourcePath": "reports/canon-approval-audit-2026-09-07.md",
+      "updatedAt": "2026-09-07",
+      "summary": "**읽기 전용 감사였다** — 감사 과정에서 정본·파생을 한 글자도 고치지 않았다.",
+      "fileSizeKB": 20
+    },
     {
       "id": "button-sync-check",
       "filename": "button-sync-check.md",
@@ -10,7 +34,7 @@
       "category": "audit",
       "status": "archive",
       "sourcePath": "reports/button-sync-check.md",
-      "updatedAt": "2026-09-01",
+      "updatedAt": "2026-09-02",
       "summary": "- **Variants:** primary, secondary, blue-line",
       "fileSizeKB": 3.2
     },
@@ -231,18 +255,6 @@
       "fileSizeKB": 9.4
     },
     {
-      "id": "modal-content-family-backlog",
-      "filename": "modal-content-family-backlog.md",
-      "title": "Modal Content (콘텐츠 계열) — 별건 백로그",
-      "stage": "Audit",
-      "category": "audit",
-      "status": "archive",
-      "sourcePath": "reports/modal-content-family-backlog.md",
-      "updatedAt": "2026-07-15",
-      "summary": "**상태: 미착수.** 확인 계열(`registry/components/modal.json`, compact 텍스트-확인)과 **구분되는 별개 컴포넌트**.",
-      "fileSizeKB": 3.3
-    },
-    {
       "id": "mvp-t2-token-sync",
       "filename": "mvp-t2-token-sync.md",
       "title": "MVP-T2 Token Sync Plugin Report",
@@ -336,7 +348,7 @@
       "sourcePath": "reports/changelog-archive.md",
       "updatedAt": "2026-06-17",
       "summary": "이 파일은 CLAUDE.md `변경 이력` 표의 **상세 보존본**이다. 컨텍스트 비용을 줄이기 위해 CLAUDE.md 본문에서 분리했다.",
-      "fileSizeKB": 72.1
+      "fileSizeKB": 79.2
     },
     {
       "id": "harness-audit-2026-06-17",
