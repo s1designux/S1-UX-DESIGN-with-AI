@@ -80,16 +80,21 @@
     },
     {
       "id": "D-06",
-      "분류": "변환 규칙 확정",
-      "kind": "rule",
+      "분류": "대응 확정",
+      "kind": "mapping",
       "무엇": "로그인 입력창의 pc-sm 크기",
       "컴포넌트": "input",
       "레거시": "A Login input · pc-sm",
-      "정본": "PC XXSM(28)·XSM(34)·MD(44) 중 높이로 매칭",
+      "정본": "PC XSM(34) — 레거시 pc-sm 높이 34px 와 정확히 일치",
       "quote": "레거시 pc-sm의 height 값을 보고 최신데이터와 비교하여 매칭하면됨. 혹시나 최신데이터 높이값중 매칭되는게 없다면 가장 가까운 height값으로 지정하면 됨",
       "by": "river",
       "date": "2026-09-04",
-      "note": "river 가 이름 대응 대신 '높이 값으로 매칭, 없으면 가장 가까운 높이' 규칙을 줬다. 레거시 pc-sm 실제 높이를 Figma 원본에서 읽어야 확정된다 — 아직 안 읽었다."
+      "note": "river 가 '높이 값으로 매칭, 없으면 가장 가까운 높이' 규칙을 줬다. 2026-09-07 🤖 figma-inspector 가 A 540:3328 을 get_metadata 로 실측: mobile 48 · pc-md 44 · pc-sm 34 · pc-xsm 28. pc-sm 은 상태(complete/default/disabled/error/selected)·아이콘 유무와 무관하게 전부 34px. 정본 PC 크기 XXSM(28)·XSM(34)·MD(44) 중 XSM 이 정확히 일치하므로 '가장 가까운 높이' 예외는 쓰지 않았다. 덤으로 pc-md→MD(44)·pc-xsm→XXSM(28)·mobile→Mobile MD(48) 도 높이가 일치한다.",
+      "확인": {
+        "by": "🤖 figma-inspector",
+        "date": "2026-09-07",
+        "source": "A yE5UCFEbmXJBlYJWB24Lz2 540:3328 (get_metadata)"
+      }
     },
     {
       "id": "D-07",
