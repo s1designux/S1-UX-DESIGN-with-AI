@@ -2,7 +2,7 @@
   "_meta": {
     "description": "사용자가 반복 요청한 패턴 추적 파일. count >= 3 이면 자동 감사 규칙 승격 후보.",
     "promotionThreshold": 3,
-    "updatedAt": "2026-09-07",
+    "updatedAt": "2026-09-08",
     "note": "이 JSON 이 단일 정본이다. CLAUDE.md 에 있던 승격 현황 표는 2026-08-03 에 삭제했다(정본과 드리프트 중이었음)."
   },
   "patterns": [
@@ -37,7 +37,7 @@
       "category": "component-canonical-expansion",
       "label": "기존 컴포넌트 정본에 새 축(사이즈·유형) 기준 추가",
       "description": "기존 컴포넌트의 variant 축(크기·유형)에 없던 값을 사용자 승인 기준으로 신설하고, 세트·웹 가이드·registry·검사기까지 함께 동기화하는 요청",
-      "count": 4,
+      "count": 5,
       "promotionStatus": "promotion-candidate",
       "occurrences": [
         {
@@ -55,6 +55,10 @@
         {
           "date": "2026-09-04",
           "summary": "Date Picker 달력에 SM(267×266) 크기 신설 — 정본에 Size 축이 아예 없던 컴포넌트(Calendar·Calendar Cell·Calendar Tile 3세트)에 축을 새로 얹은 사례. 표출 규칙은 river 결정으로 '입력창 크기를 따라간다'(MD→MD · XSM·XXSM→SM)라 종전 '캘린더 패널은 사이즈 불변' 주석을 대체했다. 축 신설이 만든 파급: 캐시·variant 복원 함수·소비자 조회 키·스펙시트 행·재설치 이관(옛 세트를 제거하지 않고 이름만 Size=MD 로 고쳐 편입 후 빠진 크기 append)까지 10곳, 그리고 build-components.ts 를 건드리는 순간 19개 컴포넌트 manifest 의 canonicalFingerprint 가 전부 stale 이 됐다."
+        },
+        {
+          "date": "2026-09-08",
+          "summary": "보조 버튼을 크기 축 4개짜리 Button 의 variant 로 넣었다가 river 지적으로 별도 세트로 분리. 크기가 h32 하나뿐인 것을 크기 축이 있는 세트에 넣으면 있지도 않은 크기 3개가 생긴다."
         }
       ],
       "automationNote": "3회 도달 시 컴포넌트별 축(사이즈·유형) 신설을 정본→세트→facts→웹→registry→behavior→검사 규칙까지 대조하는 전용 체크리스트 또는 Gate 승격 검토."
@@ -342,7 +346,7 @@
       "category": "canonical-discipline",
       "label": "파생 표면(웹 가이드) 값을 정본과 저울질하거나 판정 근거로 씀",
       "description": "웹 가이드는 프로토타입 잔재라 판정 근거가 아닌데, ⭐ 가 '웹 24 vs 정본 16 중 어느 쪽?'·'탭 굵기 Bold/Medium 중 어느 쪽?'을 반복해 묻고, '웹이 20px 이라 바뀝니다'를 비용처럼 서술했다. 사용자가 세 번 교정. 원인은 문서에 정본↔파생 판정 우선순위가 없었고, 「두 갈래 분류」(레거시↔정본 규칙)가 넓게 오독될 여지가 있었던 것.",
-      "count": 3,
+      "count": 4,
       "promotionStatus": "promoted",
       "promotedRule": "CLAUDE.md §⚖️ 하드룰 H6 「정본 우선」 — 파생 값은 증거가 아니다. '파생 A vs 정본 B 중 뭐?'는 성립하지 않는 질문이며 그 형태로 묻는 것 자체가 위반. + 「두 갈래 분류」에 적용 범위(레거시↔정본 한정) 명시.",
       "automationNote": "저울질은 추론 실패라 기계가 못 잡는다. 대신 **틀린 질문 형태를 금지**해 위반이 사용자 눈에 즉시 보이게 했다.",
@@ -358,6 +362,10 @@
         {
           "date": "2026-08-03",
           "summary": "'웹이 20px 이라 바뀝니다'를 비용처럼 서술 → '자꾸 왜 웹가이드를 들먹거리는지 모르겠어'"
+        },
+        {
+          "date": "2026-09-08",
+          "summary": "정본에 Modal Size 축을 넣고도 파생 2곳(registry/components/modal.json · ui-library modal manifest)이 '정본에 크기 축이 없다'고 거짓 서술한 채 남았다. 어떤 게이트도 못 잡았고 🤖 가 잡았다."
         }
       ]
     },
@@ -457,7 +465,7 @@
       "category": "canonical-discipline",
       "label": "선언(canon-manifest)이 있는데도 도구가 파일명 글자 맞추기로 분류·묶음",
       "description": "파이프라인 지도 왼쪽 칸이 typeLabel(파일명 정규식)로 묶여서 ①registry 의 서로 다른 index.json 3개가 한 덩어리가 되고 ②알파벳 순서 때문에 진짜 값 정본(vars-data)이 잡동사니 아래로 밀리고 ③canon-manifest 가 build-components 의 생성 표면이라고 선언한 component-facts.json·component-guide-model.json 이 장부 글롭에 먼저 걸려 '손편집 장부'로 표시됐다. 같은 파일군의 scan-system-map.js 는 이미 '이름으로 억지 매칭 금지, 판정은 생성기 write 유무로만' 원칙을 명시하고 있었는데 지도 본체는 그 원칙을 안 따르고 있었다. 교정: 층 구분은 canon-manifest 의 선언 구획으로, 상하는 실측 배선(import·정의한 이름 사용·색인 경로 참조)으로만. [2026-08-13 재발] 새로 만든 Gate 39 에서도 같은 실수를 반복했다 — 클래스 접두사를 s1- 로 가정해 ds-filter-chip·s1-timepicker 를 놓쳤고, var() 를 건너뛰어 토큰 경유 값을 못 봤다. 교훈: 손편집 화면을 기계로 읽을 때 이름 규칙이 하나라고 가정하지 말고, 선언으로 두고 매 실행 자가검증한다.",
-      "count": 4,
+      "count": 5,
       "promotionStatus": "promotion-candidate",
       "occurrences": [
         {
@@ -475,6 +483,10 @@
         {
           "date": "2026-09-03",
           "summary": "검수기 컴포넌트 교체가 '이름 글자 맞추기'만으로 대상을 정해, secondary 버튼이 primary 로·글자 테이블 헤더가 체크박스 헤더로 바뀌었다(river 보고). 이름으로 세트를 찾은 뒤 어느 변형인지는 정하지 않고 lenient 로 기본 변형에 떨어뜨린 것이 원인. 교체 대상을 '세트'가 아니라 '사용자가 화면에서 보고 고른 변형 하나'로 바꾸고, 변형 추정은 ①레거시 variantProperties ②레거시 이름에 적힌 값 두 근거로만 하며 못 좁히면 조용히 기본값을 쓰지 않고 '변형을 고르세요'로 세워 교체 버튼을 잠근다. 이름을 모르는 작업자를 위해 지금 모습→바뀔 모습 PNG 미리보기를 붙였다(자동·수동·모듈 세 목록 공통)"
+        },
+        {
+          "date": "2026-09-08",
+          "summary": "레거시 pc_modal 의 4크기를 확인 계열 Modal 에 붙였다. 그 크기는 2026-07-15 river 결정으로 갈라 둔 **콘텐츠 계열** 것이었고, 확인 계열의 정본 노드는 modal_small(6706:4218) 이었다. ⭐ 가 river 에게 '알림창 5종은 별개 규격이라 범위 밖'이라고 거꾸로 보고해 잘못된 전제로 승인을 받았다."
         }
       ]
     },
@@ -1107,6 +1119,48 @@
         }
       ],
       "automationNote": "승격 전 관찰. 후보: 스캔 절차서의 코드를 문서에 붙여넣는 대신 실행 가능한 스크립트(scripts/)로 빼서 에이전트가 '직접 짜지 않고 호출'하게 만든다. 그러면 미준수가 구조적으로 불가능해진다."
+    },
+    {
+      "id": "comment-contradicts-code",
+      "category": "verification",
+      "label": "주석·문서만 고치고 코드는 그대로(또는 그 반대)",
+      "count": 1,
+      "promotionStatus": "watch",
+      "recommendedRule": "정본 편집 후 '주석이 말하는 값'과 '코드가 쓰는 값'을 같은 커밋 안에서 대조한다. 값·이름을 바꾸면 그 줄 위 주석을 반드시 함께 읽는다.",
+      "occurrences": [
+        {
+          "date": "2026-09-08",
+          "summary": "정본 보강 작업에서 3회. ①Modal Content 주석은 '제목 18B·버튼 XSM'인데 코드는 16B·XXSM(river 지시는 코드에만 반영) ②GNB 컬럼 간격 매핑표는 spacing/80 인데 코드는 생짜 80(바인딩 없음) ③빌드 의존 선언에 Mobile Header 주석이 딸려 붙음. 전부 🤖 component-verifier 가 잡았고 기계검사는 전부 초록이었다."
+        }
+      ]
+    },
+    {
+      "id": "basis-source-swap-leaves-stale-figures",
+      "category": "canon-governance",
+      "label": "기준 원본이 바뀌었는데 옛 수치 서술이 다른 파일에 남는다",
+      "count": 1,
+      "promotionStatus": "watch",
+      "recommendedRule": "기준 원본·구조를 바꾸면 그 즉시 옛 근거를 인용한 **모든 표면**을 grep 으로 훑는다(주석·승인 reason·계획서·인계서·백로그). 철회한 사양은 지우지 말고 '철회됨'으로 표시해 다음 사람이 되돌리지 않게 한다.",
+      "occurrences": [
+        {
+          "date": "2026-09-08",
+          "summary": "GNB 하위메뉴 기준을 river 지시로 B(5:10245) → A(540:6398) 로 갈아엎었는데 옛 B 실측값이 vars-data 주석·build-components 주석·승인 대장 reason·WIP 문서 4곳에 남았다. 2회에 걸쳐 잡혔다. 또 철회된 'Modal Size 축'이 crosswalk·NEXT·PLAN·backlog 에 살아남아 인계서가 다음 세션에게 river 가 거부한 것을 지시하는 상태가 됐다."
+        }
+      ]
+    },
+    {
+      "id": "counts-copied-from-docs-not-recomputed",
+      "category": "verification",
+      "label": "개수를 기계로 다시 세지 않고 문서에서 베껴 어긋난다",
+      "count": 1,
+      "promotionStatus": "watch",
+      "recommendedRule": "완료 보고·인계서의 모든 개수는 문서에서 베끼지 말고 **기계로 다시 뽑는다**(HEAD 차집합·목록 길이). 자기 아래 표·열거를 세는 문장은 그 항목 수와 함께 검산한다.",
+      "occurrences": [
+        {
+          "date": "2026-09-08",
+          "summary": "정본 보강 완료 보고에서 3라운드 연속 개수가 틀렸다. '신규 색 7'(실제 4) · 'Gate 34 기록 13건'(실제 10) · '정본 보강 6건'(실제 4) · '새 컴포넌트 4개'(실제 5) · 배너 문장 '세 곳'인데 자기 표는 4줄. 매번 앞 회차 문서의 숫자를 그대로 옮겨 적은 것이 원인이었다."
+        }
+      ]
     }
   ]
 }
