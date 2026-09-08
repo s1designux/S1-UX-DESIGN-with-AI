@@ -85,18 +85,18 @@
   "handoff": {
     "lastActor": "orchestrator",
     "updatedAt": "2026-09-08",
-    "summary": "3종 웹 배포본·안내 화면·검수 화면 구현 완료. 🤖 component-verifier 5회(1 전수 + 4 델타) — 잡힌 ❌(a) 5건 전부 수정(검수 화면 폭 찌그러짐·패널 도달 불가·높이규칙 칸·예약높이 어긋남·정본 미반영). river 지적 2건(닫기 hover·다크 자리표시 대비) 반영. 남은 것은 river 결정 3건과 그 뒤 전수 재검증이다."
+    "summary": "3종 웹 배포본·안내 화면·검수 화면 완료. 🤖 component-verifier 5회 + 다른 세션 verifier 의 정본 델타 검증까지 반영. river 승인으로 Gate 34 10건 기록·정본 라벨 교정 후 커밋 1baff4c·15f91eb. 남은 것은 river 의 실제 화면 UX 검수(5-human-review)뿐이다."
   },
-  "currentPhase": "4-verification",
+  "currentPhase": "5-human-review",
   "workflowStatus": "in-progress",
   "uiLibraryStatus": "draft",
-  "lastCompletedCheckpoint": 3,
-  "nextAction": "river 결정 3건(Gate 34 승인 10건 · 정본 Text Button 라벨 문구 · 커밋 여부) 후 전수 재검증 → 5-human-review.",
+  "lastCompletedCheckpoint": 4,
+  "nextAction": "river 가 실제 화면(pages/ui-review.html)에서 UX 검수 후 승인하면 6-promotion(uiLibraryStatus=approved) 으로 닫는다.",
   "canonicalInputs": [
     {
       "role": "component-visual",
       "path": "plugins/figma-vars-installer/src/build-components.ts",
-      "sha256": "b74c713ae120c550ada14148939e3a3ca8e0896efc53c3470937ccab5a621c2c"
+      "sha256": "c6bde60caa3ad1ed8a262a04079d828d3ab6a02b56b948119c7a9675a4e285a7"
     },
     {
       "role": "token-values",
@@ -157,6 +157,13 @@
       "by": "orchestrator",
       "what": "서브에이전트가 기록한 Gate 34 승인 10건을 되돌렸다.",
       "why": "인용문 '승인할게, A로 진행해줘' 가 이 작업·이 항목에 대한 river 발화가 아니라 다른 세션 기록에서 끌어온 것이었다. 승인은 river 에게 다시 올린다(하드룰 H6②)."
+    },
+    {
+      "id": "D7",
+      "at": "2026-09-08",
+      "by": "river",
+      "what": "Gate 34 웹 상태 이름 10건 승인 · 정본 Text Button 라벨 '보조버튼'→'텍스트버튼' 교정 · 지금 커밋.",
+      "why": "river 발화 '승인할게, 텍스트버튼 문구도 정본에서 고치고 지금 커밋해줘' (2026-09-08). 승인은 그 발화를 인용해 canon-additions-baseline 에 기록했다."
     }
   ],
   "blockers": [],
@@ -169,17 +176,17 @@
     {
       "id": "Q2",
       "what": "Gate 34 — 웹 상태 이름 10건(assist-button 4 · text-button 4 · modal-content open/closed) 에 river 승인이 필요하다. 없으면 커밋이 막힌다.",
-      "status": "open"
+      "status": "resolved"
     },
     {
       "id": "Q3",
       "what": "정본 Text Button 의 라벨 글자가 '보조버튼' 으로 들어가 있다(Assist Button 과 같은 글자). 웹은 '텍스트버튼' 으로 냈다. 정본 문구를 고칠지 결정 필요.",
-      "status": "open"
+      "status": "resolved"
     },
     {
       "id": "Q4",
       "what": "다른 세션이 같은 폴더에서 build-components.ts 를 편집·되돌리는 중이라 이 작업의 정본 수정이 한 번 삼켜졌다(재적용함). 커밋 시점을 정해야 한다.",
-      "status": "open"
+      "status": "resolved"
     }
   ]
 }
