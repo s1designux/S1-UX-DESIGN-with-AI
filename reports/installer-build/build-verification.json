@@ -1,9 +1,9 @@
 {
   "sourceFile": "plugins/figma-vars-installer/src/build-components.ts",
-  "sourceHash": "sha256:eb2a6e29713555e646891669cf0634de99cb7f0350d6e0f8ee9adc94274bb119",
+  "sourceHash": "sha256:702481d5344f5c98855088829aacca7354fe1e69ff296d3c8af84f21f1da3787",
   "verifiedBy": "component-verifier",
   "verdict": "pass",
   "changeType": "structural",
-  "verifiedAt": "2026-09-08T03:43:59.173Z",
-  "notes": "Input State 축 값 Editing→Focus 개명. 🤖 component-verifier 2회 독립 검증: (1) 정본 세트 2410:13831 56 variant·축 4개·State 7값이 component-facts.json 과 정확히 일치, Editing 잔존 0건, Focus 8개 전부 caret·remove 보유, 폰트 84개 전량 Pretendard(데이터 스캔). (2) 시안 30개 교체 후 화면 동일성 좌표 검증 통과, 라벨 4개가 pattern-data.ts fieldLabel() 과 100% 일치, 색 Variable 바인딩. 미해결 ❌ 1건은 decorateSetFlat 의 raw #FFFFFF 로 2026-06-11 선존·전 세트 공통이며 river 가 별도 건으로 분리 결정(2026-09-08). 보고서 4-verification.md · 6-swap-verification.md"
+  "verifiedAt": "2026-09-08T04:04:28.374Z",
+  "notes": "드롭다운 옵션 말줄임(layoutGrow/textAutoResize/textTruncation/maxLines) + 폭규칙 주석. 지문 diff 로 회귀 범위 확인: 바뀐 시각사양 10행 전부 Dropdown List 옵션 글자, 토큰 diff 0·노드 4809 동일·세트 46 동일. PROP_CLASS VISUAL 등록은 약화 아님(specRows 가 VISUAL/LAYOUT 동등 포함, 지문에 실제 반영 확인). 보고서 reports/ui-library/select-dropdown-filter-chip/4-verification-installer-2026-09-08.md"
 }

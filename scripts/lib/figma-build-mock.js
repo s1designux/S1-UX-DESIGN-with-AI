@@ -35,6 +35,8 @@ const PROP_CLASS = {
   visible: 'VISUAL', isMask: 'VISUAL', rotation: 'VISUAL',
   characters: 'VISUAL', fontSize: 'VISUAL', fontName: 'VISUAL',
   textAlignHorizontal: 'VISUAL', textAlignVertical: 'VISUAL', textAutoResize: 'VISUAL',
+  // 말줄임(…) — 2026-09-07 드롭다운 옵션에 도입(river 결정). 눈에 보이는 차이라 VISUAL.
+  textTruncation: 'VISUAL', maxLines: 'VISUAL',
   // ── 배치 ──
   layoutMode: 'LAYOUT', primaryAxisSizingMode: 'LAYOUT', counterAxisSizingMode: 'LAYOUT',
   primaryAxisAlignItems: 'LAYOUT', counterAxisAlignItems: 'LAYOUT',

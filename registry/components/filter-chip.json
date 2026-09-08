@@ -3,7 +3,7 @@
     "id": "filter-chip",
     "name": "Filter Chip",
     "category": "selection",
-    "updatedAt": "2026-08-01",
+    "updatedAt": "2026-09-07",
     "version": "0.1.0",
     "tokenStatus": "stable",
     "codeStatus": "implemented",
@@ -37,11 +37,26 @@
     ]
   },
   "anatomy": [
-    { "part": "트리거(알약)", "role": "cornerRadius 999 의 가로 배치 컨테이너. 테두리 1px INSIDE." },
-    { "part": "타이틀", "role": "Title=On 일 때만. 무엇을 거는 필터인지(예: '정렬'). 비활성이 아니면 선택 색으로 보인다." },
-    { "part": "값 라벨", "role": "현재 선택된 값(예: '최신순'). Complete 상태에서는 확정된 값을 보여준다." },
-    { "part": "화살표", "role": "20px 라이브러리 chevron 인스턴스. 닫힘=아래, 열림=위." },
-    { "part": "드롭다운", "role": "Selected 상태에서만 붙는 Dropdown 컴포넌트 인스턴스. 트리거 아래 8px 간격." }
+    {
+      "part": "트리거(알약)",
+      "role": "cornerRadius 999 의 가로 배치 컨테이너. 테두리 1px INSIDE."
+    },
+    {
+      "part": "타이틀",
+      "role": "Title=On 일 때만. 무엇을 거는 필터인지(예: '정렬'). 비활성이 아니면 선택 색으로 보인다."
+    },
+    {
+      "part": "값 라벨",
+      "role": "현재 선택된 값(예: '최신순'). Complete 상태에서는 확정된 값을 보여준다."
+    },
+    {
+      "part": "화살표",
+      "role": "20px 라이브러리 chevron 인스턴스. 닫힘=아래, 열림=위."
+    },
+    {
+      "part": "드롭다운",
+      "role": "Selected 상태에서만 붙는 Dropdown 컴포넌트 인스턴스. 트리거 아래 8px 간격."
+    }
   ],
   "doDont": {
     "do": [
@@ -60,79 +75,250 @@
     "타이틀과 값이 함께 읽히도록 접근 가능한 이름을 구성한다(예: '정렬, 최신순').",
     "Esc 로 드롭다운을 닫을 수 있어야 한다."
   ],
-  "states": ["default", "hover", "selected", "complete", "disabled"],
+  "states": [
+    "default",
+    "hover",
+    "selected",
+    "complete",
+    "disabled"
+  ],
   "stateNotes": {
     "selected": "드롭다운이 열린 상태. 이때만 Dropdown 인스턴스가 붙는다.",
     "complete": "선택이 끝나 드롭다운이 닫힌 상태. 색은 default 와 같고 값 라벨만 확정값으로 바뀐다."
   },
   "sizing": {
-    "pc-sm": { "height": 28, "fontSize": 14, "paddingLeft": 12, "paddingRight": 6 },
-    "pc-md": { "height": 34, "fontSize": 14, "paddingLeft": 16, "paddingRight": 8 },
-    "mobile-md": { "height": 30, "fontSize": 14, "paddingLeft": 12, "paddingRight": 6 }
+    "pc-sm": {
+      "height": 28,
+      "fontSize": 14,
+      "paddingLeft": 12,
+      "paddingRight": 6
+    },
+    "pc-md": {
+      "height": 34,
+      "fontSize": 14,
+      "paddingLeft": 16,
+      "paddingRight": 8
+    },
+    "mobile-md": {
+      "height": 30,
+      "fontSize": 14,
+      "paddingLeft": 12,
+      "paddingRight": 6
+    }
   },
   "variants": {
     "line": {
       "description": "테두리형. 배경은 흰색, 선택 시 테두리·라벨이 파랑.",
       "cssModifier": "",
       "tokens": [
-        { "name": "--color-chip-line-bg-default", "semanticRef": "color/chip/line/bg/default", "state": "default·complete", "property": "background" },
-        { "name": "--color-chip-line-bg-hover", "semanticRef": "color/chip/line/bg/hover", "state": "hover", "property": "background" },
-        { "name": "--color-chip-line-bg-selected", "semanticRef": "color/chip/line/bg/selected", "state": "selected", "property": "background" },
-        { "name": "--color-chip-line-bg-disabled", "semanticRef": "color/chip/line/bg/disabled", "state": "disabled", "property": "background" },
-        { "name": "--color-chip-line-border-default", "semanticRef": "color/chip/line/border/default", "state": "default·hover·complete", "property": "border-color" },
-        { "name": "--color-chip-line-border-selected", "semanticRef": "color/chip/line/border/selected", "state": "selected", "property": "border-color" },
-        { "name": "--color-chip-line-border-disabled", "semanticRef": "color/chip/line/border/disabled", "state": "disabled", "property": "border-color" },
-        { "name": "--color-chip-line-label-default", "semanticRef": "color/chip/line/label/default", "state": "default·hover·selected·complete", "property": "text-color·arrow-color" },
-        { "name": "--color-chip-line-label-selected", "semanticRef": "color/chip/line/label/selected", "state": "title=on·not-disabled", "property": "value-label-color" },
-        { "name": "--color-chip-line-label-disabled", "semanticRef": "color/chip/line/label/disabled", "state": "disabled", "property": "text-color·arrow-color" }
+        {
+          "name": "--color-chip-line-bg-default",
+          "semanticRef": "color/chip/line/bg/default",
+          "state": "default·complete",
+          "property": "background"
+        },
+        {
+          "name": "--color-chip-line-bg-hover",
+          "semanticRef": "color/chip/line/bg/hover",
+          "state": "hover",
+          "property": "background"
+        },
+        {
+          "name": "--color-chip-line-bg-selected",
+          "semanticRef": "color/chip/line/bg/selected",
+          "state": "selected",
+          "property": "background"
+        },
+        {
+          "name": "--color-chip-line-bg-disabled",
+          "semanticRef": "color/chip/line/bg/disabled",
+          "state": "disabled",
+          "property": "background"
+        },
+        {
+          "name": "--color-chip-line-border-default",
+          "semanticRef": "color/chip/line/border/default",
+          "state": "default·hover·complete",
+          "property": "border-color"
+        },
+        {
+          "name": "--color-chip-line-border-selected",
+          "semanticRef": "color/chip/line/border/selected",
+          "state": "selected",
+          "property": "border-color"
+        },
+        {
+          "name": "--color-chip-line-border-disabled",
+          "semanticRef": "color/chip/line/border/disabled",
+          "state": "disabled",
+          "property": "border-color"
+        },
+        {
+          "name": "--color-chip-line-label-default",
+          "semanticRef": "color/chip/line/label/default",
+          "state": "default·hover·selected·complete",
+          "property": "text-color·arrow-color"
+        },
+        {
+          "name": "--color-chip-line-label-selected",
+          "semanticRef": "color/chip/line/label/selected",
+          "state": "title=on·not-disabled",
+          "property": "value-label-color"
+        },
+        {
+          "name": "--color-chip-line-label-disabled",
+          "semanticRef": "color/chip/line/label/disabled",
+          "state": "disabled",
+          "property": "text-color·arrow-color"
+        }
       ]
     },
     "solid": {
       "description": "면형. 배경이 회색이고 선택 시 파랑으로 채워진다.",
       "cssModifier": "ds-filter-chip--solid",
       "tokens": [
-        { "name": "--color-chip-solid-bg-default", "semanticRef": "color/chip/solid/bg/default", "state": "default·complete", "property": "background" },
-        { "name": "--color-chip-solid-bg-hover", "semanticRef": "color/chip/solid/bg/hover", "state": "hover", "property": "background·border-color", "note": "hover 는 테두리도 이 값을 쓴다(배경색과 동일화)." },
-        { "name": "--color-chip-solid-bg-selected", "semanticRef": "color/chip/solid/bg/selected", "state": "selected", "property": "background" },
-        { "name": "--color-chip-solid-bg-disabled", "semanticRef": "color/chip/solid/bg/disabled", "state": "disabled", "property": "background" },
-        { "name": "--color-chip-solid-border-default", "semanticRef": "color/chip/solid/border/default", "state": "default·complete", "property": "border-color" },
-        { "name": "--color-chip-solid-border-selected", "semanticRef": "color/chip/solid/border/selected", "state": "selected", "property": "border-color" },
-        { "name": "--color-chip-solid-border-disabled", "semanticRef": "color/chip/solid/border/disabled", "state": "disabled", "property": "border-color" },
-        { "name": "--color-chip-solid-label-default", "semanticRef": "color/chip/solid/label/default", "state": "default·hover·complete", "property": "text-color·arrow-color" },
-        { "name": "--color-chip-solid-label-selected", "semanticRef": "color/chip/solid/label/selected", "state": "selected", "property": "text-color·arrow-color" },
-        { "name": "--color-chip-solid-label-disabled", "semanticRef": "color/chip/solid/label/disabled", "state": "disabled", "property": "text-color·arrow-color" }
+        {
+          "name": "--color-chip-solid-bg-default",
+          "semanticRef": "color/chip/solid/bg/default",
+          "state": "default·complete",
+          "property": "background"
+        },
+        {
+          "name": "--color-chip-solid-bg-hover",
+          "semanticRef": "color/chip/solid/bg/hover",
+          "state": "hover",
+          "property": "background·border-color",
+          "note": "hover 는 테두리도 이 값을 쓴다(배경색과 동일화)."
+        },
+        {
+          "name": "--color-chip-solid-bg-selected",
+          "semanticRef": "color/chip/solid/bg/selected",
+          "state": "selected",
+          "property": "background"
+        },
+        {
+          "name": "--color-chip-solid-bg-disabled",
+          "semanticRef": "color/chip/solid/bg/disabled",
+          "state": "disabled",
+          "property": "background"
+        },
+        {
+          "name": "--color-chip-solid-border-default",
+          "semanticRef": "color/chip/solid/border/default",
+          "state": "default·complete",
+          "property": "border-color"
+        },
+        {
+          "name": "--color-chip-solid-border-selected",
+          "semanticRef": "color/chip/solid/border/selected",
+          "state": "selected",
+          "property": "border-color"
+        },
+        {
+          "name": "--color-chip-solid-border-disabled",
+          "semanticRef": "color/chip/solid/border/disabled",
+          "state": "disabled",
+          "property": "border-color"
+        },
+        {
+          "name": "--color-chip-solid-label-default",
+          "semanticRef": "color/chip/solid/label/default",
+          "state": "default·hover·complete",
+          "property": "text-color·arrow-color"
+        },
+        {
+          "name": "--color-chip-solid-label-selected",
+          "semanticRef": "color/chip/solid/label/selected",
+          "state": "selected",
+          "property": "text-color·arrow-color"
+        },
+        {
+          "name": "--color-chip-solid-label-disabled",
+          "semanticRef": "color/chip/solid/label/disabled",
+          "state": "disabled",
+          "property": "text-color·arrow-color"
+        }
       ]
     }
   },
-  "subVariants": ["label-only", "with-title"],
+  "subVariants": [
+    "label-only",
+    "with-title"
+  ],
   "dependencies": {
-    "coreComponents": ["Dropdown"],
+    "coreComponents": [
+      "Dropdown"
+    ],
     "note": "State=Selected 에서 Dropdown 인스턴스를 부착한다(BUILD_DEPENDENCIES)."
   },
   "figma": {
     "componentSetKey": "",
     "figmaNodeId": "540:3226",
     "propertyMap": {
-      "Size": ["SM", "MD"],
-      "Break": ["PC", "Mobile"],
-      "Variant": ["Line", "Solid"],
-      "Title": ["Off", "On"],
-      "State": ["Default", "Hover", "Selected", "Complete", "Disabled"]
+      "Size": [
+        "SM",
+        "MD"
+      ],
+      "Break": [
+        "PC",
+        "Mobile"
+      ],
+      "Variant": [
+        "Line",
+        "Solid"
+      ],
+      "Title": [
+        "Off",
+        "On"
+      ],
+      "State": [
+        "Default",
+        "Hover",
+        "Selected",
+        "Complete",
+        "Disabled"
+      ]
     },
     "_note": "노드ID 는 build-components.ts:1869 주석의 V2.4 표기가 유일한 근거이며 원본 대조 리포트는 아직 없다(reports/figma-library-build 에 filter-chip 디렉터리 없음). componentSetKey 는 Plugin 연동 전까지 보류."
   },
   "origin": {
     "classification": "tbd",
     "note": "Chip 과 토큰을 공유하지만 별개 세트. Figma 원본 대조 리포트가 없어 Ⓐ/Ⓑ 판정 불가 — 원본 재측정 필요 여부는 river 결정 대기.",
-    "legacySource": { "canonicalSet": "540:3226", "_note": "코드 주석 기반. 미검증." }
+    "legacySource": {
+      "canonicalSet": "540:3226",
+      "_note": "코드 주석 기반. 미검증."
+    }
   },
   "guide": {
-    "sampleLabels": ["최신순", "과거순", "인기순"],
+    "sampleLabels": [
+      "최신순",
+      "과거순",
+      "인기순"
+    ],
     "sampleTitle": "정렬",
     "webTag": "button",
     "interactionPattern": "disclosure-listbox",
     "mobileInteractionPattern": "dialog-single-select",
-    "accessibility": { "role": "button", "popupRole": "listbox", "keyboard": ["Enter", "Space", "Escape", "ArrowDown", "ArrowUp"], "attributes": ["aria-haspopup", "aria-expanded"] }
+    "accessibility": {
+      "role": "button",
+      "popupRole": "listbox",
+      "keyboard": [
+        "Enter",
+        "Space",
+        "Escape",
+        "ArrowDown",
+        "ArrowUp"
+      ],
+      "attributes": [
+        "aria-haspopup",
+        "aria-expanded"
+      ]
+    },
+    "panelWidthRuleRef": "열린 목록의 폭은 칩 폭을 따른다 — 칩이 100px 보다 좁으면 목록은 100px(river 결정 2026-09-07). 규칙 정본은 registry/components/dropdown.json 의 guide.panelWidthRule."
   },
-  "governance": { "owner": "design-system", "deprecated": false, "replacement": null }
+  "governance": {
+    "owner": "design-system",
+    "deprecated": false,
+    "replacement": null
+  }
 }

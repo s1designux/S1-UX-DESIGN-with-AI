@@ -2,7 +2,7 @@
   "id": "button",
   "version": "0.1.0",
   "status": "approved",
-  "canonicalFingerprint": "5b04e56eb61697b438f6ced72780500095b83a255b65f46d87f258c3995c8e1f",
+  "canonicalFingerprint": "3391dcaa19ec81d0118bfab46065812ec6d458af3c2254c32bca9833385ac744",
   "canonicalSources": [
     "plugins/figma-vars-installer/src/build-components.ts",
     "plugins/figma-vars-installer/src/vars-data.ts",
@@ -42,6 +42,12 @@
     "hover": ":hover",
     "pressed": ":active",
     "disabled": "disabled"
+  },
+  "canonicalStateMap": {
+    "Default": "default",
+    "Hover": "hover",
+    "Pressed": "pressed",
+    "Disabled": "disabled"
   },
   "parts": [
     "label"
@@ -139,5 +145,5 @@
     "runtime": "none",
     "reason": "Native button semantics provide the complete approved behavior."
   },
-  "sourceFingerprint": "db1733ab9057abe8ba5bc79d87dd6fb5e0c4b4cbde91f2f73b9a12500c5ddd3e"
+  "sourceFingerprint": "ac1d3ae36c072c7c2588d95a579f266fab3784026bd1c2c8adb2edaff999f8a8"
 }

@@ -100,11 +100,13 @@
   display: none;
 }
 
-/* 자식 dropdown 코어는 기본값이 내용만큼 커지는 width:max-content(filter-chip 용) 인데,
-   select 는 트리거 폭(=panel 폭 100%)에 맞추는 기존 동작을 유지한다 — river 2차 지시(2026-09-01)에서
-   "트리거보다 목록이 좁아 보이거나 어긋나 보이면 안 된다"고 명시했고, select 트리거는 이제 min-width:140px 로
-   항상 140 이상이라 dropdown 의 min-width:140px 하한과 충돌하지 않는다(패널이 140 미만으로 좁아질 일이 없다).
-   min/max-width(140~320)는 dropdown.css 가 그대로 소유해 계속 clamp 한다 — select.css 는 배치(폭 100%)만 담당. */
+/* 자식 dropdown 코어의 기본값은 트리거가 없을 때를 위한 width:max-content 이므로, 트리거가 있는 select 는
+   이를 100% 로 덮어 「목록 폭 = 트리거 폭」을 만든다 — **river 결정 2026-09-07(번복 확정)**:
+   "드롭다운은 상단 트리거의 크기에 따라서 동일하게 반영되되 트리거 자체가 너무 좁은 경우에는 전에 내가
+   잡았던 기준으로 너무 작아지지 않게끔 제공". select 트리거는 min-width:140px(정본 resize(140,…)) 라 하한(100)에 걸릴 일이 없다.
+   하한 100 은 dropdown.css 가 소유한다 — select.css 는 배치(폭 100%)만 담당.
+   ※ 종전 주석에 있던 "river 2차 지시에서 '트리거보다 목록이 좁아 보이면 안 된다'고 명시" 라는 서술은
+     2026-09-07 세션 기록 대조 결과 **사람 발화에서 확인되지 않아** 삭제했다(⭐ 자기 진술이었다). */
 [data-s1-component="select"] [data-s1-part="panel"] [data-s1-component="dropdown"] {
   width: 100%;
 }

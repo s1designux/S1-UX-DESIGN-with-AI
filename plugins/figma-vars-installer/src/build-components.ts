@@ -1561,6 +1561,19 @@ async function buildSelect(maps: BuildMaps, originY: number): Promise<{ set: Com
 //   ▸ 구분선은 패널이 아니라 "전체 선택 줄"이 들고 있다 — 패널을 건드리지 않아야 이 패널을 쓰는
 //     Select Box·Filter Chip 이 영향을 안 받는다.
 // 새 토큰 0건 — 색은 전부 기존 color/dropdown/* · color/control/* 재사용.
+// ── 드롭다운 목록 폭 규칙 (river 최종 확정 2026-09-07) ───────────────────────────
+//   river 원문: "드롭다운은 최소 100px / 칩이 드롭다운보다 width값이 작은경우 드롭다운은 100px로 보여진다 /
+//               칩의 width가 100px이상이 되는경우 드롭다운의 width는 칩의 width와 동일하게 표출된다"
+//   ① 목록 최소 폭 100px  ② 트리거(칩·셀렉트)가 100px 미만이면 목록은 100px
+//   ③ 트리거가 100px 이상이면 목록 폭 = 트리거 폭  ④ 최대 폭 상한 없음
+//   ⑤ 폭을 넘는 옵션 글자는 말줄임(…) — 아래 fillRow 의 textTruncation 이 담당한다.
+//
+//   ※ 여기 리터럴 140 은 위 규칙과 어긋나지 않는다 — 정본은 트리거도 목록도 140 으로 만들므로
+//     규칙 ③(트리거 폭과 동일)에 그대로 부합한다. 100 은 하한일 뿐이라 정본 숫자를 바꿀 이유가 없다.
+//   ※ ①~④ 의 「트리거 폭을 따라간다」는 Figma 컴포넌트가 고정 폭이라 캔버스로 표현할 수 없다.
+//     그래서 정본에는 GUI 로 보이는 ⑤(말줄임)만 반영하고, 폭 연동 규칙은 기계가독 사양으로 남긴다
+//     → registry/components/dropdown.json 의 guide.panelWidthRule (웹 구현·실측값 포함).
+//   경위(320 상한 → 폐기 → 하한 140 → 100 확정) = reports/ui-library/dropdown-max-width/ · workflow-state D22~D27.
 async function buildDropdownList(maps: BuildMaps, originY: number): Promise<{ set: ComponentSetNode; bottomY: number }> {
   const dd = (k: string) => `color/dropdown/${k}`;
   const states = [
@@ -1633,7 +1646,16 @@ async function buildDropdownList(maps: BuildMaps, originY: number): Promise<{ se
     }
     // 체크 유형은 선택돼도 라벨 강조 없음(체크 표시가 선택을 표현) — 사용자 결정 2026-08-14.
     const labelKey = ty.checkbox && st.label === "option/label/selected" ? "option/label/default" : st.label;
-    host.appendChild(await makeBoundText(ty.text, sz.font, "Regular", scv(maps, dd(labelKey))));
+    // 옵션 글자 — 행 폭을 채우고 넘치면 말줄임(…). river 결정 2026-09-07:
+    //   "폭을 넘는 옵션 글자는 말줄임 표시하고, 마우스를 올리면 전체를 보여준다"(마우스 올림은 웹 전용).
+    //   layoutGrow=1 로 폭을 레이아웃에 맡기지 않으면 텍스트가 hug 라 행 밖으로 삐져나간다.
+    //   웹 배포본의 text-overflow:ellipsis 와 같은 결과를 캔버스에서도 보이게 하는 설정이다.
+    const label = await makeBoundText(ty.text, sz.font, "Regular", scv(maps, dd(labelKey)));
+    label.layoutGrow = 1;
+    label.textAutoResize = "HEIGHT";
+    label.textTruncation = "ENDING";
+    label.maxLines = 1;
+    host.appendChild(label);
   };
 
   const comps: ComponentNode[] = [];
@@ -2257,6 +2279,9 @@ async function buildTable(maps: BuildMaps, originY: number): Promise<{ set: Comp
 //  · 4 그룹 = Variant(Line/Solid) × Title(없음/있음). Selected = 드롭다운 펼침(패널 표출).
 //  · Line: bg/border/label = chip/line/*. Solid: chip/solid/*. arrow = 같은 state 의 label 색에 정합.
 //  · Complete = 값 선택됨(과거순). Title 있는 Line 은 값 라벨이 selected(파랑).
+// 칩을 눌러 열리는 목록의 폭은 「칩 폭과 동일, 단 칩이 100px 미만이면 100px」이다(river 확정 2026-09-07).
+//   칩은 아래에서 primaryAxisSizingMode="AUTO"(내용 크기)로 만들므로 캔버스에서는 칩마다 폭이 다르다 —
+//   폭 연동은 웹에서만 성립하고 정본에는 규칙만 남긴다. 사양 = registry/components/dropdown.json guide.panelWidthRule.
 async function buildFilterChip(maps: BuildMaps, originY: number): Promise<{ set: ComponentSetNode; bottomY: number }> {
   // 화살표: 기본=아래↓, 선택됨(open)=위↑
   const arrowDown = `<svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M6 9L12 15L18 9" stroke="#000" stroke-width="2" stroke-linecap="square"/></svg>`;

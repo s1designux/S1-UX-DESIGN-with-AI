@@ -1,0 +1,62 @@
+<!doctype html><meta charset="utf-8"><title>드롭다운 폭 최종 규칙 검증</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+<link rel="stylesheet" href="../../../ui-library/dist/assets/css/tokens.css">
+<link rel="stylesheet" href="../../../ui-library/dist/s1-ui.css">
+<style>
+body{font-family:Pretendard,sans-serif;margin:0;padding:24px 28px;color:#111}
+h1{font-size:21px;margin:0 0 4px}.sub{color:#666;font-size:13px;margin-bottom:20px;line-height:1.6}
+table{border-collapse:collapse;font-size:14px;margin-bottom:26px}th,td{border:1px solid #ccc;padding:7px 10px}
+th{background:#f4f4f4}.ok{color:#0a7d32;font-weight:700}.ng{color:#c00;font-weight:700}
+.row{display:flex;gap:34px;flex-wrap:wrap}.box{padding:14px;background:#fafafa;border:1px solid #eee;border-radius:6px;height:200px}
+.cap{font-size:13px;font-weight:700;margin-bottom:8px}
+</style>
+<body>
+<h1>드롭다운 폭 — river 최종 규칙 검증</h1>
+<div class="sub">① 목록 최소 100px　② 트리거가 100 미만이면 목록 100　③ 트리거가 100 이상이면 목록 = 트리거 폭<br>배포본(ui-library/dist) CSS 를 그대로 소비해 실제로 그린 뒤 잰 값입니다.</div>
+<div id="t"></div>
+<h2 style="font-size:16px">실제 안내 화면에 쓰는 칩</h2>
+<div class="row" id="live"></div>
+<script>
+const opts=["최신순","인기순","과거순"];
+const dd=(size="xsm")=>`<div data-s1-component="dropdown" data-type="text" data-size="${size}" role="listbox" aria-label="예">${opts.map((l,i)=>`<div data-s1-part="option" role="option" aria-selected="${i===0}"><span data-s1-part="option-label">${l}</span></div>`).join('')}</div>`;
+function chip({w,size="md",title="off",brk="pc"}){
+ const d=document.createElement('div');
+ d.innerHTML=`<div data-s1-component="filter-chip" data-variant="line" data-size="${size}" data-break="${brk}" data-title="${title}" data-state="open" style="position:relative;display:inline-block${w?`;width:${w}px`:''}">
+  <button type="button" data-s1-part="trigger" style="width:100%">${title==='on'?'<span data-s1-part="title">정렬</span>':''}<span data-s1-part="value">최신순</span><span data-s1-part="icon"></span></button>
+  <div data-s1-part="panel">${dd()}</div></div>`;
+ return d.firstElementChild;
+}
+function sel(w){
+ const d=document.createElement('div');
+ d.innerHTML=`<div data-s1-component="select" data-size="md" data-state="open" style="position:relative;width:${w}px">
+  <button type="button" data-s1-part="trigger"><span data-s1-part="value">최신순</span><span data-s1-part="icon"></span></button>
+  <div data-s1-part="panel">${dd("md")}</div></div>`;
+ return d.firstElementChild;
+}
+const host=document.createElement('div');host.style.cssText='position:absolute;visibility:hidden';document.body.appendChild(host);
+function measure(node){host.appendChild(node);
+ const t=node.querySelector('[data-s1-part="trigger"]').getBoundingClientRect().width;
+ const p=node.querySelector('[data-s1-component="dropdown"]').getBoundingClientRect().width;
+ node.remove();return {t:+t.toFixed(1),p:+p.toFixed(1)};}
+const cases=[
+ ["필터칩",'칩 60px(강제)',chip({w:60})],["필터칩",'실제 SM·제목없음',chip({size:"sm"})],["필터칩",'실제 MD·제목없음',chip({})],
+ ["필터칩",'칩 99px(강제)',chip({w:99})],["필터칩",'칩 100px(경계)',chip({w:100})],
+ ["필터칩",'실제 SM·제목있음',chip({size:"sm",title:"on"})],["필터칩",'실제 MD·제목있음',chip({title:"on"})],["필터칩",'실제 Mobile MD·제목있음',chip({title:"on",brk:"mobile"})],["필터칩",'칩 160px(강제)',chip({w:160})],
+ ["필터칩",'칩 320px(강제)',chip({w:320})],
+ ["셀렉트",'트리거 180px',sel(180)],["셀렉트",'트리거 460px',sel(460)]
+];
+let rows='<table><tr><th>컴포넌트<th>경우<th>트리거 폭<th>목록 폭<th>규칙상 기대값<th>판정';
+for(const [comp,label,node] of cases){
+ const {t,p}=measure(node);
+ const expect=Math.max(100,Math.round(t));
+ const pass=Math.abs(p-expect)<1.5;
+ rows+=`<tr><td>${comp}<td>${label}<td>${t}px<td><b>${p}px</b><td>${expect}px<td>${pass?'<span class="ok">✅ 일치</span>':'<span class="ng">❌ 어긋남</span>'}`;
+}
+document.getElementById('t').innerHTML=rows+'</table>';
+const live=document.getElementById('live');
+for(const [cap,node] of [['제목 없는 칩(86.3px) → 목록 100px(하한)',chip({})],['제목 있는 칩(114.5px) → 목록 114.5px(칩과 동일)',chip({title:"on"})]]){
+ const w=document.createElement('div');w.className='col';
+ w.innerHTML=`<div class="cap">${cap}</div>`;
+ const b=document.createElement('div');b.className='box';b.appendChild(node);w.appendChild(b);live.appendChild(w);
+}
+</script>

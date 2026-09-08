@@ -1,15 +1,18 @@
 /* Dropdown — 정본 buildDropdown(패널)·buildDropdownList(옵션 행) 기준.
    패널 자체는 State 축이 없다(항상 Default) — 상태는 옵션 행이 담당한다.
    체크박스 유형 옵션은 코어 checkbox 배포본을 그대로 내부에 배치한다(복제 금지).
-   폭 — 정본 build-components.ts 는 트리거·패널·옵션 행을 전부 resize(140, …) 로 만든다(별도 최소 규정이
-   없을 때는 설치기 기본값이 최소 크기 — river 결정 2026-09-01).
-   최대 320px — 상한을 두라는 지시는 river 2026-09-01 04:54 "필터칩에서 … 드롭다운 width값이 너무 작아지거나
-   너무 넓어지지 않도록 제한 필요". **숫자 320 은 river 결정 2026-09-07** (그 전까지는 ⭐ 가 정한 값이었고
-   근거 조사·상한값 비교는 reports/ui-library/dropdown-max-width/NEEDS-DECISION.md).
-   320 을 넘는 옵션은 **말줄임(…)** 으로 자른다 — river 결정 2026-09-07 "애초에 옵션글이 너무 길어지지 않도록
-   제한해야 한다"(2026-09-01 의 '줄바꿈' 지시를 이 결정이 대체한다).
-   정본에 대응 토큰이 없어 리터럴 px 로 둔다(정본도 140 을 토큰이 아닌 리터럴로 쓴다).
-   ⚠️ 미결(HD-3b): 이 상한을 셀렉트에도 걸지, 필터칩에만 걸지는 아직 river 결정 전이다. */
+
+   ── 폭 규칙 (river 최종 확정 2026-09-07) ────────────────────────────────
+   ① **목록 최소 폭 = 100px.** 어떤 경우에도 이보다 좁아지지 않는다.
+   ② **트리거(칩·셀렉트)가 100px 보다 좁으면 목록은 100px 로 뜬다.**
+   ③ **트리거가 100px 이상이면 목록 폭 = 트리거 폭과 동일.**
+   ④ 최대 폭 상한은 없다 — 폭을 트리거가 정하므로 상한이 따로 필요 없다.
+   ⑤ 트리거 폭을 넘는 긴 옵션은 **말줄임(…)**, 마우스를 올리면 전체 글자를 보여준다(dropdown.js).
+   river 원문: "드롭다운은 최소 100px / 칩이 드롭다운보다 width값이 작은경우 드롭다운은 100px로 보여진다 /
+   칩의 width가 100px이상이 되는경우 드롭다운의 width는 칩의 width와 동일하게 표출된다".
+   ①~③ 은 min-width:100px + 소비자(select·filter-chip)의 width:100% 조합 하나로 전부 성립한다.
+   경위(320 상한 → 폐기 → 하한 140 → 100 확정) = reports/ui-library/dropdown-max-width/ · workflow-state D22~D27.
+   ※ 100 은 정본 리터럴 140(설치기 기본 크기)과 다른 값이다 — river 가 별도로 정한 웹 표출 기준이다. */
 
 [data-s1-component="dropdown"] {
   background: var(--color-dropdown-list-bg);
@@ -19,13 +22,11 @@
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
-  max-width: 320px;
-  min-width: 140px;
+  min-width: 100px;
   padding-block: var(--spacing-4);
-  width: max-content; /* river 2차 지시(2026-09-01): "넓어지되" 긴 글은 줄바꿈 — width:auto 는 블록 요소라 부모 폭을
-     채우기로 동작해 내용을 따라 커지지 않았다(1차 수정의 결함). max-content + min/max-width 조합으로
-     내용만큼 커지되 140~320 사이로 clamp 되고, 320 을 넘으면 option-label 의 말줄임(…)이 담당한다.
-     select 는 트리거 폭에 맞추는 기존 동작을 유지해야 해서 select.css 가 이 값을 100% 로 되돌린다(배치 담당 범위). */
+  width: max-content; /* 트리거 없이 코어만 단독으로 쓸 때의 값(폭을 정해 줄 트리거가 없으므로 내용만큼).
+     트리거가 있는 소비자(select·filter-chip)는 이 값을 width:100% 로 덮어 「목록 폭 = 트리거 폭」을 만든다.
+     width:auto 를 쓰지 않는 이유 — 블록 요소라 부모 폭 채우기로 동작해 내용을 따라 커지지 않는다(2026-09-01 실측). */
 }
 
 /* 사이즈 축 — Size=XXSM/XSM/MD (build-components.ts buildDropdownList 1570-1574).
@@ -91,9 +92,10 @@
   color: var(--color-dropdown-option-label-selected);
 }
 
-/* river 결정 2026-09-07: 최대 폭(320px)을 넘는 긴 옵션은 줄바꿈이 아니라 **말줄임(…)** 으로 자른다.
+/* river 결정 2026-09-07: 폭(=트리거 폭, 최소 100)을 넘는 긴 옵션은 줄바꿈이 아니라 **말줄임(…)** 으로 자른다.
    min-width:0 은 flex item 기본값(auto)이 축소를 막는 것을 해제하기 위함 — 이게 없으면 말줄임이 걸리지 않는다.
-   ⚠️ 잘린 글자를 마우스 올림(title)으로 보여줄지는 정하지 않았다 — ⭐ 가 임의로 만들지 않는다(needs-decision). */
+   잘린 글자는 마우스 올림으로 전체를 보여준다 — river 결정 2026-09-07. 실제로 잘린 옵션에만 붙이며,
+   폭 측정이 필요해 dropdown.js 의 syncEllipsisTitles 가 담당한다(정적 HTML만 쓰고 런타임을 안 붙이면 안내도 없다). */
 [data-s1-component="dropdown"] [data-s1-part="option"] [data-s1-part="option-label"] {
   min-width: 0;
   overflow: hidden;

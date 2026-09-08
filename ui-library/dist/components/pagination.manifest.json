@@ -2,7 +2,7 @@
   "id": "pagination",
   "version": "0.1.0",
   "status": "approved",
-  "canonicalFingerprint": "ef4cd58b3572874efe2874703597c47fe3cad684f3d0a0406df9a97be68d265e",
+  "canonicalFingerprint": "19cbfdfb929538d406e16029b60fbbcf9675e26a72181ed332e9cc072bbb5fca",
   "canonicalSources": [
     "plugins/figma-vars-installer/src/build-components.ts",
     "plugins/figma-vars-installer/src/vars-data.ts",
@@ -23,6 +23,13 @@
     "last": "next/last disabled",
     "middle": "all arrows enabled",
     "selected": "aria-current=page"
+  },
+  "canonicalStateMap": {
+    "Single": "single",
+    "First": "first",
+    "Last": "last",
+    "Middle": "middle",
+    "Pagination Cell · Selected": "selected"
   },
   "parts": [
     "arrow-group",
@@ -115,5 +122,5 @@
     "runtime": "components/pagination/pagination.js",
     "reason": "현재 페이지와 양 끝 비활성 상태를 동기화한다."
   },
-  "sourceFingerprint": "2e86fa4cdd590faebd4d8a1123d4bf4c6adee2e67801e04ff73db0bf53e58aca"
+  "sourceFingerprint": "108b72979967bc80a2bf6570681f637d4098c6341de2230ac9bca3c03a1f165b"
 }

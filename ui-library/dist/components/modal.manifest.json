@@ -2,7 +2,7 @@
   "id": "modal",
   "version": "0.1.0",
   "status": "approved",
-  "canonicalFingerprint": "66f9929e3c27edabd4a685146478fd4962b786dcaf4baff68f9ad959fc602caa",
+  "canonicalFingerprint": "6bf086be4f7506b2c40ba721a7f5eb897e45474c40aa0305c2e82488273091f1",
   "canonicalSources": [
     "plugins/figma-vars-installer/src/build-components.ts",
     "plugins/figma-vars-installer/src/vars-data.ts",
@@ -65,7 +65,8 @@
     "closeOnMobile": "정본 Mobile 변형에는 닫기(X)가 없다. 웹도 만들지 않는다.",
     "overlayClickToClose": "딤 클릭 닫기는 정본·등록부 어디에도 없다. river 가 표준 범위(A)를 택했으므로 이번 배포에 넣지 않는다.",
     "motion": "정본이 여닫기 모션을 정의하지 않는다.",
-    "contentFamily": "긴 본문·스크롤이 필요한 콘텐츠 계열 Modal 은 별개 컴포넌트다(reports/modal-content-family-backlog.md)."
+    "contentFamily": "긴 본문·스크롤이 필요한 콘텐츠 계열 Modal 은 별개 컴포넌트다(reports/modal-content-family-backlog.md).",
+    "closedState": "웹 상태 closed 는 정본에 대응이 없다 — 피그마는 정지 화면이라 '닫힌 모달'을 그릴 수 없기 때문이며, 웹이 임의로 만든 상태가 아니라 플랫폼 표준 표출 상태다(HTML dialog[open] · [hidden]). river 결정 2026-09-08(④A): 「화면에서만 있는 표출 상태」로 표시하고 정본에는 상태 축을 만들지 않는다. canonicalStateMap 의 Default→open 은 정본의 유일한 그림이 열린 모달이라는 뜻이다."
   },
   "parts": [
     "overlay",
@@ -224,5 +225,5 @@
     "scrollLockNote": "배경 스크롤 잠금은 열린 모달 수를 세어 마지막 하나가 닫힐 때만 원래 값으로 되돌린다 — 모달이 여럿 있는 화면에서 스크롤이 잠긴 채 남는 사고를 막는다.",
     "prewiredOpenNote": "이미 열린 채로 들어온 마크업(검수 화면·정적 예시)도 init 시점에 Escape·초점 가둠·스크롤 잠금을 배선한다."
   },
-  "sourceFingerprint": "9f4ffba60701a91ebbdde2d6bb95e671d10b54ecc9f6b29ec2607e929c0b8bc0"
+  "sourceFingerprint": "62adbba3c5fd08ee989045565a9a4aef6263dc8866a0f5d8a1b7654574c28e67"
 }

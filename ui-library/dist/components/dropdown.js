@@ -35,6 +35,25 @@ function syncSelectAll(options) {
   setChecked(selectAll, allChecked);
 }
 
+// 말줄임(…)된 옵션만 마우스 올림으로 전체 글자를 보여준다 — river 결정 2026-09-07
+// ("말줄임된 글자는 마우스 올림으로 보여주고"). 잘리지 않은 옵션에는 붙이지 않는다(불필요한 툴팁 방지).
+// 폭은 목록이 실제로 보일 때만 잴 수 있다(닫힌 패널은 display:none 이라 0). 그래서 ResizeObserver 로
+// 패널이 열려 크기가 생기는 순간과 트리거 폭이 바뀌는 순간에 다시 잰다.
+// 접근성 이름은 옵션 자신의 텍스트가 이미 제공한다 — title 은 눈으로 보는 사용자를 위한 보조다.
+function syncEllipsisTitles(root) {
+  for (const option of getOptions(root)) {
+    const label = option.querySelector('[data-s1-part="option-label"]');
+    if (!label) continue;
+    const truncated = label.scrollWidth > label.clientWidth + 1;
+    const text = label.textContent.trim();
+    if (truncated) {
+      if (label.getAttribute("title") !== text) label.setAttribute("title", text);
+    } else if (label.hasAttribute("title")) {
+      label.removeAttribute("title");
+    }
+  }
+}
+
 export function init(root) {
   if (!(root instanceof Element) || root.dataset.s1Component !== componentId) return null;
   if (instances.has(root)) return instances.get(root);
@@ -129,6 +148,12 @@ export function init(root) {
   root.addEventListener("click", handleClick);
   root.addEventListener("keydown", handleKeydown);
 
+  syncEllipsisTitles(root);
+  const sizeObserver = typeof ResizeObserver === "function"
+    ? new ResizeObserver(() => syncEllipsisTitles(root))
+    : null;
+  sizeObserver?.observe(root);
+
   const api = Object.freeze({
     get options() { return getOptions(root); },
     focusActive() {
@@ -136,9 +161,12 @@ export function init(root) {
       const active = list.find((option) => option.tabIndex === 0) || list[0];
       active?.focus();
     },
+    // 옵션을 소비자가 다시 그렸을 때 말줄임 안내를 다시 계산한다.
+    refresh() { syncEllipsisTitles(root); },
     destroy() {
       root.removeEventListener("click", handleClick);
       root.removeEventListener("keydown", handleKeydown);
+      sizeObserver?.disconnect();
       instances.delete(root);
     }
   });

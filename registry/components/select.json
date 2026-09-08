@@ -3,7 +3,7 @@
     "id": "select",
     "name": "Select",
     "category": "Core",
-    "updatedAt": "2026-05-19",
+    "updatedAt": "2026-09-07",
     "version": "0.2.0",
     "tokenStatus": "stable",
     "codeStatus": "implemented",
@@ -55,22 +55,52 @@
   ],
   "tokenDecision": "Select는 --dropdown-* 토큰을 재사용한다. --select-* 신규 토큰 불필요.",
   "tokenRef": "registry/components/dropdown.json",
-  "states": ["default", "hover", "open", "filled", "disabled"],
-  "optionStates": ["default", "hover", "selected"],
+  "states": [
+    "default",
+    "hover",
+    "open",
+    "filled",
+    "disabled"
+  ],
+  "optionStates": [
+    "default",
+    "hover",
+    "selected"
+  ],
   "sizes": {
-    "pc-md":   { "height": "44px", "token": "--sizing-44",  "cssModifier": null,                      "fontSize": "14px" },
-    "pc-xsm":  { "height": "34px", "token": "--sizing-34",  "cssModifier": "s1-select-wrap--xsm",     "fontSize": "14px" },
-    "pc-xxsm": { "height": "28px", "token": "--sizing-28", "cssModifier": "s1-select-wrap--xxsm",    "fontSize": "12px" },
-    "mobile":  { "height": "48px", "token": "--sizing-48",  "cssModifier": "s1-select-wrap--mobile",  "fontSize": "14px" }
+    "pc-md": {
+      "height": "44px",
+      "token": "--sizing-44",
+      "cssModifier": null,
+      "fontSize": "14px"
+    },
+    "pc-xsm": {
+      "height": "34px",
+      "token": "--sizing-34",
+      "cssModifier": "s1-select-wrap--xsm",
+      "fontSize": "14px"
+    },
+    "pc-xxsm": {
+      "height": "28px",
+      "token": "--sizing-28",
+      "cssModifier": "s1-select-wrap--xxsm",
+      "fontSize": "12px"
+    },
+    "mobile": {
+      "height": "48px",
+      "token": "--sizing-48",
+      "cssModifier": "s1-select-wrap--mobile",
+      "fontSize": "14px"
+    }
   },
   "cssClasses": {
-    "wrap":      "s1-select-wrap",
-    "trigger":   "s1-select-trigger",
-    "chevron":   "s1-select-chevron",
-    "list":      "s1-select-list",
-    "option":    "s1-select-option",
-    "stateOpen":     "is-open",
-    "stateFilled":   "has-value",
+    "wrap": "s1-select-wrap",
+    "trigger": "s1-select-trigger",
+    "chevron": "s1-select-chevron",
+    "list": "s1-select-list",
+    "option": "s1-select-option",
+    "stateOpen": "is-open",
+    "stateFilled": "has-value",
     "stateDisabled": "is-disabled",
     "optionSelected": "is-selected"
   },
@@ -82,7 +112,18 @@
     "componentKey": "2b522174bf5ff44a437a5d706ee15ff3f1c2b787",
     "propertyMap": {}
   },
-  "guide": { "sampleLabel": "지역", "samplePlaceholder": "지역을 선택하세요", "sampleOptions": ["서울", "부산", "제주"], "webTag": "button", "interactionPattern": "single-select-listbox" },
+  "guide": {
+    "sampleLabel": "지역",
+    "samplePlaceholder": "지역을 선택하세요",
+    "sampleOptions": [
+      "서울",
+      "부산",
+      "제주"
+    ],
+    "webTag": "button",
+    "interactionPattern": "single-select-listbox",
+    "panelWidthRuleRef": "열린 목록의 폭은 트리거 폭과 동일하다 — 트리거가 min-width 140px 라 목록 하한(100px)에는 걸리지 않는다. 규칙 정본은 registry/components/dropdown.json 의 guide.panelWidthRule."
+  },
   "governance": {
     "owner": "Design System Team",
     "deprecated": false,

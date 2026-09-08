@@ -1,0 +1,44 @@
+<!doctype html><meta charset="utf-8"><title>필터칩 목록 폭 — 두 안 비교</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+<link rel="stylesheet" href="../../../ui-library/dist/assets/css/tokens.css">
+<link rel="stylesheet" href="../../../ui-library/dist/s1-ui.css">
+<style>
+ body{font-family:Pretendard,sans-serif;margin:0;padding:24px 28px;background:#fff;color:#111}
+ h1{font-size:22px;margin:0 0 6px}.sub{color:#666;font-size:13px;margin-bottom:22px;line-height:1.6}
+ h2{font-size:17px;margin:30px 0 12px;border-top:2px solid #111;padding-top:10px}
+ .row{display:flex;gap:40px;flex-wrap:wrap}
+ .card{flex:0 0 auto;width:320px}
+ .cap{font-size:13px;font-weight:700;margin-bottom:10px}
+ .box{padding:14px;background:#fafafa;border:1px solid #eee;border-radius:6px;height:230px}
+ .note{font-size:12px;color:#555;margin-top:8px;line-height:1.5}
+ .warn{color:#c00;font-weight:700}.ok{color:#0a7d32;font-weight:700}
+ /* B안: 하한 없이 칩 폭과 완전 동일 */
+ .optB [data-s1-component="filter-chip"] [data-s1-part="panel"] [data-s1-component="dropdown"]{min-width:0}
+</style>
+<body>
+<h1>필터칩 — 목록 폭을 칩에 맞추는 두 가지 방법</h1>
+<div class="sub">실제 안내 화면의 칩은 <b>74~103px</b> 입니다. 지금 규칙(하한 140px)에서는 모든 칩이 하한에 걸려 목록이 항상 140px 로 뜹니다 — 그래서 “칩 폭과 동일”이 실제로 한 번도 작동하지 않았습니다.</div>
+<h2>제목 없는 칩 (74px)</h2><div class="row" id="r1"></div>
+<h2>제목 있는 칩 (103px)</h2><div class="row" id="r2"></div>
+<script>
+const opts=["최신순","인기순","과거순"];
+function chipHTML(title){
+ return `<div data-s1-component="filter-chip" data-variant="line" data-size="md" data-title="${title}" data-state="open" style="position:relative;display:inline-block">
+  <button type="button" data-s1-part="trigger">${title==='on'?'<span data-s1-part="title">정렬</span>':''}<span data-s1-part="value">최신순</span><span data-s1-part="icon"></span></button>
+  <div data-s1-part="panel"><div data-s1-component="dropdown" data-type="text" data-size="xsm" role="listbox">
+   ${opts.map((l,i)=>`<div data-s1-part="option" role="option" aria-selected="${i===0}"><span data-s1-part="option-label">${l}</span></div>`).join('')}
+  </div></div></div>`;
+}
+function card(cls,cap,title,note){return `<div class="card ${cls}"><div class="cap">${cap}</div><div class="box">${chipHTML(title)}</div><p class="note">${note}</p></div>`;}
+document.getElementById('r1').innerHTML=
+ card('optA','A안 — 지금 규칙 (하한 140px)','off','')+card('optB','B안 — 칩 폭과 완전 동일 (하한 없음)','off','');
+document.getElementById('r2').innerHTML=
+ card('optA','A안 — 지금 규칙 (하한 140px)','on','')+card('optB','B안 — 칩 폭과 완전 동일 (하한 없음)','on','');
+for(const r of ['r1','r2'])for(const c of document.getElementById(r).children){
+ const t=c.querySelector('[data-s1-part="trigger"]').getBoundingClientRect().width;
+ const p=c.querySelector('[data-s1-component="dropdown"]').getBoundingClientRect().width;
+ const same=Math.abs(p-t)<1;
+ c.querySelector('.note').innerHTML=`실측 — 칩 <b>${t.toFixed(0)}px</b> · 목록 <b>${p.toFixed(0)}px</b> → `+
+  (same?'<span class="ok">같음 ✓</span>':`<span class="warn">목록이 ${Math.round(p-t)}px 넓음</span>`);
+}
+</script>

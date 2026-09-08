@@ -94,7 +94,7 @@ window.REGISTRY_BUNDLE = {
           "name": "SW Foundation Colors",
           "version": "2.4",
           "status": "stable",
-          "updatedAt": "2026-09-02",
+          "updatedAt": "2026-09-08",
           "source": "plugins/figma-vars-installer/src/vars-data.ts (FOUNDATION_COLOR)",
           "description": "Official SW Design System V2.4 foundation color foundation. Raw HEX values are allowed here only.",
           "generated": true,
@@ -10437,7 +10437,7 @@ window.REGISTRY_BUNDLE = {
         "tokenStatus": "stable",
         "codeStatus": "implemented",
         "darkModeStatus": "stable",
-        "a11yStatus": "partial",
+        "a11yStatus": "complete",
         "harnessStatus": "implemented",
         "figmaNodeId": "540:3794",
         "figmaNote": "2026-05-20 MVP-F1 플러그인 스캔으로 COMPONENT_SET nodeId 540:3794 확인. Section 노드 6456:4033은 figma.figmaSectionNodeId에 보존. mobile bottomsheet 540:3836 확인.",
@@ -10514,7 +10514,11 @@ window.REGISTRY_BUNDLE = {
             "pc-xsm(h34)",
             "pc-xxsm(h28)"
           ],
-          "panel": "popover — figma-unconfirmed"
+          "panel": "popover — 달력 크기 2벌: MD 356×352(md 트리거) · SM 267×266(xsm·xxsm 트리거). 달력 크기는 트리거 크기를 따라간다(river 결정 2026-09-04 \"입력창이 작으면 달력도 자동으로 작게\"). 종전 '캘린더 패널은 사이즈 불변(356 단일)'(2026-06-25)을 대체. 정본 = build-components.ts CAL_GEO.",
+          "calendarSizes": [
+            "md(356×352)",
+            "sm(267×266 · 연/월 화면은 267×276)"
+          ]
         },
         "mobile": {
           "sizes": [
@@ -10591,7 +10595,12 @@ window.REGISTRY_BUNDLE = {
         "outerCell": "44×44px",
         "innerCircle": "30×30px, border-radius: radius-full (50%)",
         "padding": "5px",
-        "note": "PC popover cell geometry figma-unconfirmed — mobile 동일 구조 적용 추정"
+        "note": "PC popover cell geometry figma-unconfirmed — mobile 동일 구조 적용 추정",
+        "outerCellSm": "33×33 (231÷7) — Figma 원본 3381:15306 실측 2026-09-04",
+        "innerCircleSm": "22.5×22.5 radius-full, 테두리 1 INSIDE — 원본 3381:15316",
+        "tileSm": "68×40 radius-4 — 원본 6434:270661 · 가로 간격 7(세로 12 은 md 와 공통)",
+        "textStyleSm": "요일·날짜 숫자·타일 라벨 = body/12M(자간 0). md 는 title/16M(자간 -2) — 자간까지 다르다",
+        "rangeBandSm": "h22.5 y5.25 · 중간 x0 w33 · 시작 x16.5 w16.5 · 끝 x0 w16.5 — 원본 6434:272680·272679·272682"
       },
       "figma": {
         "componentSetKey": "",
@@ -10642,7 +10651,8 @@ window.REGISTRY_BUNDLE = {
           }
         },
         "status": "partial",
-        "note": "Section 2 (6456:4033) 성공. datepicker_input frame (540:3794), mobile bottomsheet (540:3836) 확인. PC calendar popup panel 별도 노드 조회 미완료 (figma-unconfirmed). 2026-05-12. → RESOLVED 2026-07-09: PC calendar = 540:4216 pc_datepicker_calendar (V2.4 파일 positive resolve 확인, 5 states: default_button/default/year select/month select/year range select). time-picker registry에서 이관 — Figma 원본 이름이 datepicker(오염 정리). V3.0 promotion pending (date-picker 전체 V2.4→V3.0 이행 시 함께)."
+        "note": "Section 2 (6456:4033) 성공. datepicker_input frame (540:3794), mobile bottomsheet (540:3836) 확인. PC calendar popup panel 별도 노드 조회 미완료 (figma-unconfirmed). 2026-05-12. → RESOLVED 2026-07-09: PC calendar = 540:4216 pc_datepicker_calendar (V2.4 파일 positive resolve 확인, 5 states: default_button/default/year select/month select/year range select). time-picker registry에서 이관 — Figma 원본 이름이 datepicker(오염 정리). V3.0 promotion pending (date-picker 전체 V2.4→V3.0 이행 시 함께).",
+        "figmaCalendarSizeSourceNote": "SM 크기 실측 출처 = 파일 P8YvnCdGkQLDNVQhW74ZZW(UI사양서 GUI_관계사용 UVIS시스템 리뉴얼 관리자용) 세트 1980:49662 pc_timepicker_calendar. river 가 링크로 직접 지정한 파일이며, 우리 워크플로 기준 파일(cysG5U… V3.0 TEST)·DS 2.4(yE5U…)와는 다른 제3의 파일이다. 같은 세트가 V3.0 TEST 에도 있는지는 미확인."
       },
       "cssClass": {
         "wrapper": "s1-date-picker",
@@ -10723,7 +10733,7 @@ window.REGISTRY_BUNDLE = {
         "id": "dropdown",
         "name": "Dropdown",
         "category": "Core",
-        "updatedAt": "2026-08-14",
+        "updatedAt": "2026-09-07",
         "version": "0.1.0",
         "tokenStatus": "stable",
         "codeStatus": "implemented",
@@ -10773,14 +10783,16 @@ window.REGISTRY_BUNDLE = {
           "목록 배경은 surface-raised(떠 있는 표면)를 쓴다.",
           "트리거 테두리는 form-control 토큰을 참조한다.",
           "체크박스 유형의 체크박스는 코어 Checkbox 컴포넌트를 그대로 배치한다(Figma=인스턴스, 코드=.s1-checkbox).",
-          "다중 선택은 고르는 즉시 적용하고 목록을 열어 둔다."
+          "다중 선택은 고르는 즉시 적용하고 목록을 열어 둔다.",
+          "목록 폭은 트리거(칩·셀렉트) 폭을 따르되 100px 밑으로 내려가지 않는다 — guide.panelWidthRule 참조."
         ],
         "dont": [
           "목록 배경에 surface-default 를 쓰지 않는다(D002 결정: raised).",
           "옵션 hover/selected 색을 raw 로 칠하지 않는다.",
           "드롭다운 전용 체크박스를 새로 만들지 않는다(코어 재사용 규칙).",
           "체크박스 유형에서 선택된 줄의 글자를 강조하지 않는다 — 체크 표시가 이미 선택을 표현한다(2026-08-14 결정).",
-          "다중 선택에서 옵션을 고를 때 목록을 닫지 않는다."
+          "다중 선택에서 옵션을 고를 때 목록을 닫지 않는다.",
+          "목록에 임의의 최대 폭 상한을 두지 않는다(2026-09-07 river 결정으로 상한 폐기)."
         ]
       },
       "a11y": [
@@ -10946,7 +10958,41 @@ window.REGISTRY_BUNDLE = {
         ],
         "webTag": "div",
         "interactionPattern": "listbox-panel",
-        "boundaryNote": "트리거와 expanded 상태는 Select Box가 담당한다."
+        "boundaryNote": "트리거와 expanded 상태는 Select Box가 담당한다.",
+        "panelWidthRule": {
+          "decidedBy": "river",
+          "decidedAt": "2026-09-07",
+          "quote": "드롭다운은 최소 100px / 칩이 드롭다운보다 width값이 작은경우 드롭다운은 100px로 보여진다 / 칩의 width가 100px이상이 되는경우 드롭다운의 width는 칩의 width와 동일하게 표출된다",
+          "minWidthPx": 100,
+          "maxWidthPx": null,
+          "rule": [
+            "목록(패널) 최소 폭은 100px 이며 어떤 경우에도 이보다 좁아지지 않는다.",
+            "트리거(필터칩·셀렉트)가 100px 보다 좁으면 목록은 100px 로 표출된다.",
+            "트리거가 100px 이상이면 목록 폭은 트리거 폭과 동일하다.",
+            "최대 폭 상한은 없다 — 폭을 트리거가 정한다.",
+            "트리거 폭을 넘는 옵션 글자는 말줄임(…)하고, 마우스를 올리면 전체 글자를 보여준다."
+          ],
+          "webImplementation": "dropdown.css 의 min-width:100px + 소비자(select.css·filter-chip.css)의 width:100% 조합. 말줄임은 dropdown.css 의 text-overflow:ellipsis, 마우스 올림 안내는 dropdown.js 의 syncEllipsisTitles(잘린 옵션에만 title 부여).",
+          "figmaCanonNote": "Figma 정본(build-components.ts)은 패널을 resize(140, …) 고정 폭으로 만든다. 「트리거 폭을 따라간다」는 Figma 컴포넌트로 표현할 수 없어 GUI 로 보이는 항목(옵션 글자 말줄임·폭 값)만 정본에 반영하고, 폭 연동 규칙은 이 사양으로만 남긴다.",
+          "measuredAt": "2026-09-07",
+          "measured": {
+            "filterChipTriggerPx": {
+              "pc-sm-titleOff": 80.3,
+              "pc-md-titleOff": 86.3,
+              "pc-sm-titleOn": 108.5,
+              "pc-md-titleOn": 114.5,
+              "mobile-md-titleOn": 108.5
+            },
+            "resultPanelPx": {
+              "pc-sm-titleOff": 100,
+              "pc-md-titleOff": 100,
+              "pc-sm-titleOn": 108.5,
+              "pc-md-titleOn": 114.5,
+              "mobile-md-titleOn": 108.5
+            },
+            "evidence": "reports/ui-library/dropdown-max-width/final-rule-check.png (12경우 전수 일치)"
+          }
+        }
       },
       "governance": {
         "owner": "Design System Team",
@@ -10959,7 +11005,7 @@ window.REGISTRY_BUNDLE = {
         "id": "filter-chip",
         "name": "Filter Chip",
         "category": "selection",
-        "updatedAt": "2026-08-01",
+        "updatedAt": "2026-09-07",
         "version": "0.1.0",
         "tokenStatus": "stable",
         "codeStatus": "implemented",
@@ -11269,7 +11315,8 @@ window.REGISTRY_BUNDLE = {
             "aria-haspopup",
             "aria-expanded"
           ]
-        }
+        },
+        "panelWidthRuleRef": "열린 목록의 폭은 칩 폭을 따른다 — 칩이 100px 보다 좁으면 목록은 100px(river 결정 2026-09-07). 규칙 정본은 registry/components/dropdown.json 의 guide.panelWidthRule."
       },
       "governance": {
         "owner": "design-system",
@@ -11309,7 +11356,7 @@ window.REGISTRY_BUNDLE = {
         },
         {
           "part": "메뉴 슬롯",
-          "role": "size md/sm/xsm × default/hover/selected."
+          "role": "size md/sm/xsm × default/hover/selected. 메뉴들이 놓이는 자리 전체가 GNB 바의 Figma 슬롯 'Menus' — 기본은 메뉴 3개이고, 인스턴스를 넣고 빼서 메뉴 수를 늘리고 줄인다 (river 지시 2026-09-03)."
         },
         {
           "part": "유틸리티",
@@ -11565,11 +11612,13 @@ window.REGISTRY_BUNDLE = {
       "usage": {
         "whenToUse": [
           "한 줄 텍스트·숫자를 입력받을 때 — 로그인·검색·필터·설정 폼 등.",
-          "라벨·도움말과 함께 쓰려면 Input Slots(라벨/헬퍼 조합) 패턴으로 감싼다."
+          "라벨·도움말과 함께 쓰려면 Input Slots(라벨/헬퍼 조합) 패턴으로 감싼다.",
+          "안내메시지(helper)는 필요한 화면에서만 켠다 — 계정 관련 화면(로그인·비밀번호 변경·회원가입)처럼 입력 규칙을 미리 알려야 하는 곳이 대표적이다. 일반 입력·검색에는 넣지 않는다(river 결정 2026-09-07)."
         ],
         "whenNotToUse": [
           "여러 줄 입력은 Textarea 를 쓴다.",
-          "선택지 중 하나를 고르는 입력은 Select·Dropdown, 날짜·시간은 DatePicker·TimePicker 를 쓴다."
+          "선택지 중 하나를 고르는 입력은 Select·Dropdown, 날짜·시간은 DatePicker·TimePicker 를 쓴다.",
+          "안내메시지가 필요하다는 이유로 '계정용 인풋' 같은 별도 컴포넌트를 만들지 않는다 — 안내메시지는 켜고 끄는 선택 슬롯이다. 업계 관행도 검색만 별도 컴포넌트로 가르고, 쓰이는 화면으로는 가르지 않는다(river 결정 2026-09-07)."
         ]
       },
       "anatomy": [
@@ -11594,20 +11643,26 @@ window.REGISTRY_BUNDLE = {
         "do": [
           "색·테두리는 form-control 역할 토큰(--color-form-control-*)을 통해 참조한다.",
           "focus 는 파란 테두리(--input-focus-border)로만 표시하고 배경은 바꾸지 않는다.",
-          "라벨은 form-control 밖 제목 텍스트 토큰(--color-text-title-secondary)을 쓴다."
+          "라벨은 form-control 밖 제목 텍스트 토큰(--color-text-title-secondary)을 쓴다.",
+          "안내메시지는 규칙을 알려야 하는 화면에서만 켠다. 끌 때는 message 요소와 aria-describedby 를 함께 뺀다."
         ],
         "dont": [
-          "Input field 전체에 hover 상태를 만들지 않는다 — HD-2에서 제거됨. suffix action의 독립 Hover 배경은 예외다.",
+          "Input field 전체에 hover 상태를 만들지 않는다 — HD-2에서 제거됨. suffix action의 독립 Hover 배경은 예외이며, 그마저도 PC 에서만 낸다(Mobile 제외, river 지시 2026-09-07).",
           "filled·error·focus 에 별도 배경색을 넣지 않는다 — 배경은 default 와 동일, 구분은 텍스트·테두리 색으로만.",
-          "correct(성공) 테두리를 초록으로 칠하지 않는다 — 원본은 파란색(border-selected)."
+          "correct(성공) 테두리를 초록으로 칠하지 않는다 — 원본은 파란색(border-selected).",
+          "모든 입력칸에 안내메시지를 기본으로 깔지 않는다 — 읽을 것이 늘어 정작 필요한 곳의 규칙 안내가 묻힌다."
         ]
       },
       "a11y": [
         "suffix 액션(지우기·검색·비밀번호 표시전환)에는 각각 aria-label 을 단다(예: 검색어 지우기, 비밀번호 보기/숨기기).",
         "비밀번호 표시전환 토글은 aria-pressed 로 표시·숨김 상태를 노출한다.",
-        "Editing 상태의 지우기(clear) 버튼은 값이 있고 Input 또는 지우기 버튼에 초점이 있을 때만 노출한다(hidden 속성 제어).",
-        "suffix 액션의 실제 누르는 영역은 PC 28×28px, Mobile 48×48px이며 액션마다 독립된 button 영역을 가진다.",
-        "suffix 액션의 키보드 포커스는 각 hit area 안쪽 2px outline으로 표시한다."
+        "Focus 상태의 지우기(clear) 버튼은 값이 있고 Input 또는 지우기 버튼에 초점이 있을 때만 노출한다(hidden 속성 제어).",
+        "suffix 액션의 실제 누르는 영역은 PC 28×28px, Mobile 48×48px이며 액션마다 독립된 button 영역을 가진다. Mobile 에서 액션이 둘 보일 때는 누르는 영역을 맞붙이고(간격 0) 왼쪽 아이콘 그림만 자기 영역 안쪽 끝으로 당겨 보이는 간격을 좁힌다 — 영역 48×48 과 겹치지 않음은 그대로다(river 결정 2026-09-07, 실측 28px→12px).",
+        "Mobile break 에서는 suffix 액션에 hover 배경을 내지 않는다 — 손가락에는 hover 가 없고, PC 브라우저로 모바일 화면을 볼 때 48×48 영역이 통째로 칠해져 혼란을 준다(river 지시 2026-09-07).",
+        "suffix 액션의 키보드 초점 표시는 브라우저 기본 표시에 맡긴다 — 정본에 focus 표현이 없어 웹에서 따로 만들지 않는다(2026-09-02 river 결정).",
+        "입력칸에 키보드 초점이 들어오면 field 테두리를 정본 Selected 색으로 바꾼다. error·correct·read-only 에서도 같다(2026-09-04 river 지시).",
+        "Tab 으로 들어온 초점은 커서를 값 끝에 둔다. 마우스로 눌러 들어온 초점은 누른 자리를 유지한다(2026-09-04 river 지시).",
+        "disabled 입력칸은 초점을 받지 않고 tab 순서에서 건너뛴다(native disabled)."
       ],
       "platforms": {
         "pc-md": {
@@ -11777,7 +11832,7 @@ window.REGISTRY_BUNDLE = {
           "Mobile suffix action이 있으면 Input 높이는 최소 48px다."
         ],
         "baseClearAction": {
-          "state": "Editing",
+          "state": "Focus",
           "icon": "remove",
           "visibility": "값이 있고 Input 또는 clear action에 focus가 있을 때 노출",
           "interaction": "누르면 값을 지우고 input event를 발생시킨 뒤 Input으로 focus를 돌려준다.",
@@ -11869,7 +11924,7 @@ window.REGISTRY_BUNDLE = {
                   "figmaNodeId": "135:6692",
                   "icon": "ic_비밀번호미표시 / ic_비밀번호표시(미확인)",
                   "visibility": "always",
-                  "position": "left",
+                  "position": "leftmost-in-group",
                   "ariaLabel": "비밀번호 보기 / 비밀번호 숨기기",
                   "ariaPressed": true,
                   "description": "항상 표시. 비밀번호 표시/숨김 전환. 숨김 = ic_비밀번호미표시 아이콘, 표시 = eye-off(Figma 노드명 미확인)."
@@ -13563,7 +13618,7 @@ window.REGISTRY_BUNDLE = {
         "id": "time-picker",
         "name": "TimePicker",
         "category": "Core",
-        "updatedAt": "2026-09-02",
+        "updatedAt": "2026-09-03",
         "version": "0.3.0",
         "tokenStatus": "stable",
         "codeStatus": "implemented",
@@ -13581,7 +13636,8 @@ window.REGISTRY_BUNDLE = {
           "pc-xxsm (h28) size만 font-size 12px. 나머지는 모두 14px.",
           "HD-TPS-1 확정: --color-form-control-border-disabled를 border-subtle(#E9E9E9)→control-border-default(#D9D9D9)로 변경. Figma form-control/border/disabled 기준 통일. Input·Select·DatePicker 공유 영향.",
           "Time Picker Input 정본 20종만 이 가이드의 상위 구성으로 표출한다."
-        ]
+        ],
+        "uiLibraryStatus": "approved"
       },
       "usage": {
         "whenToUse": [
@@ -13647,10 +13703,11 @@ window.REGISTRY_BUNDLE = {
         "pc-md": "44px (var(--sizing-44))",
         "pc-xsm": "34px (var(--sizing-34))",
         "pc-xxsm": "28px (var(--sizing-28))",
-        "minWidth": "78px",
+        "minWidth": "150px (정본 build-components.ts:2359 trigger.resize(150, sc.h) — 크기 루프 안이라 XXSM·XSM·MD(PC)·MD(Mobile) 4조합 전부 150)",
         "dropdownOptionHeight": "32px",
         "radius": "var(--radius-control-xs) — 4px",
-        "font": "Pretendard Regular 14px (xxsm: 12px)"
+        "font": "Pretendard Regular 14px (xxsm: 12px)",
+        "_minWidthNote": "2026-09-03 정정: 이전 값 78px 은 정본 어디에도 없었고 pages/components.html 의 레거시 손관리 CSS 에서 온 숫자였다. 웹 배포본 1회차가 이 필드를 근거로 78 을 써서 river 가 '입력칸이 좁다·Filled 에서 줄어든다'를 지적했다(독립 검증 3회차 ❌). H6① — 정본과 파생이 다르면 파생을 고친다."
       },
       "states": [
         "default",
@@ -13779,7 +13836,7 @@ window.REGISTRY_BUNDLE = {
         "deprecated": false,
         "replacement": null
       },
-      "updatedAt": "2026-09-02"
+      "updatedAt": "2026-09-03"
     },
     "toggle": {
       "_meta": {
@@ -14536,7 +14593,7 @@ window.REGISTRY_BUNDLE = {
         "id": "select",
         "name": "Select",
         "category": "Core",
-        "updatedAt": "2026-05-19",
+        "updatedAt": "2026-09-07",
         "version": "0.2.0",
         "tokenStatus": "stable",
         "codeStatus": "implemented",
@@ -14654,7 +14711,8 @@ window.REGISTRY_BUNDLE = {
           "제주"
         ],
         "webTag": "button",
-        "interactionPattern": "single-select-listbox"
+        "interactionPattern": "single-select-listbox",
+        "panelWidthRuleRef": "열린 목록의 폭은 트리거 폭과 동일하다 — 트리거가 min-width 140px 라 목록 하한(100px)에는 걸리지 않는다. 규칙 정본은 registry/components/dropdown.json 의 guide.panelWidthRule."
       },
       "governance": {
         "owner": "Design System Team",

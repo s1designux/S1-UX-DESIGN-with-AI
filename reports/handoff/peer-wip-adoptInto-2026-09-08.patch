@@ -1,0 +1,241 @@
+--- a/plugins/figma-vars-installer/src/build-components.ts
++++ b/plugins/figma-vars-installer/src/build-components.ts
+@@ -668,8 +668,142 @@
+   if (opts.stackDarkBelow && opts.darkOffset?.y === undefined) frame.y = opts.originY + H + 80;
+   setMode(frame, maps, modeId);
+   return Math.max(opts.originY, frame.y + H);
++}
++
++// ── 세트 upsert — 재설치가 인스턴스 연결을 끊지 않게 하는 공통 지점 ────────────
++//   문제: figma.combineAsVariants 는 **항상 새 세트·새 variant** 를 만든다. 세트를 다시 만들면
++//   id·key 가 새로 발급되므로, 그 세트를 쓰던 시안의 인스턴스는 전부 옛 세대(삭제된 마스터)를
++//   가리킨 채 남는다. 실측: 2026-09-08 재설치에서 Core 페이지 노드 2141개 중 2140개 교체.
++//
++//   해법: 같은 이름의 세트가 **이번 설치 전부터 있었다면**, 세트 껍데기와 variant 노드를 그대로
++//   두고 **자식 내용만 새로 그린 것으로 갈아끼운다**(adoptInto). variant 의 key 가 살아남으므로
++//   인스턴스 연결이 유지된다.
++//
++//   적용 범위는 REFRESH_TARGETS 로 좁힌다(river 승인 = "A-단계": 소비자가 붙은 세트부터).
++//   목록에 없는 이름은 종전과 100% 동일하게 새로 만든다 — 즉 이 함수는 기본값이 무변경이다.
++let REFRESH_TARGETS: Set<string> = new Set();
++function setRefreshTargets(names: Iterable<string>): void { REFRESH_TARGETS = new Set(names); }
++
++/** variant 노드에서 그대로 옮겨야 하는 표면 속성(자식이 아닌 껍데기 자신의 모양). */
++const ADOPT_PROPS = [
++  "fills", "strokes", "strokeWeight", "strokeAlign", "strokeTopWeight", "strokeBottomWeight",
++  "strokeLeftWeight", "strokeRightWeight", "dashPattern", "opacity", "blendMode", "effects",
++  "cornerRadius", "topLeftRadius", "topRightRadius", "bottomLeftRadius", "bottomRightRadius",
++  "clipsContent", "layoutMode", "layoutWrap", "primaryAxisSizingMode", "counterAxisSizingMode",
++  "primaryAxisAlignItems", "counterAxisAlignItems", "itemSpacing", "counterAxisSpacing",
++  "paddingLeft", "paddingRight", "paddingTop", "paddingBottom", "layoutAlign", "layoutGrow",
++  "constraints", "minWidth", "maxWidth", "minHeight", "maxHeight",
++  "strokesIncludedInLayout", "itemReverseZIndex", "description", "documentationLinks",
++];
++// ⚠️ explicitVariableModes 는 **읽기전용**이라 대입해도 아무 일이 없다(🤖 verifier 지적).
++//    모드 핀은 아래 adoptInto 가 setExplicitVariableModeForCollection 으로 따로 옮긴다.
++
++/** 새로 그린 variant → 갈아끼워진 기존 variant. 호출부가 참조를 재지정하는 데 쓴다. */
++let LAST_ADOPTED: Map<ComponentNode, ComponentNode> = new Map();
++/** 갱신으로 버려진 노드 참조를 살아있는 노드로 바꾼다(갱신이 아니었으면 그대로). */
++function adoptedNode(c: ComponentNode): ComponentNode { return LAST_ADOPTED.get(c) || c; }
++
++/** 새로 그린 variant(fresh)의 내용을 기존 variant(old) 안으로 이식하고 fresh 는 버린다. */
++function adoptInto(old: ComponentNode, fresh: ComponentNode): void {
++  // 1) 기존 자식 제거 — 남기면 새 내용과 겹친다.
++  for (const c of [...old.children]) { try { c.remove(); } catch (e) { /* ignore */ } }
++  // 2) 껍데기 속성 이식. layoutMode 를 자식보다 **먼저** 넣어야 오토레이아웃 배치가 맞는다.
++  for (const k of ADOPT_PROPS) {
++    try {
++      const v = (fresh as any)[k];
++      if (v !== undefined && v !== null) (old as any)[k] = v;
++    } catch (e) { /* 읽기전용/미지원 속성은 건너뛴다 */ }
++  }
++  try { old.resize(fresh.width, fresh.height); } catch (e) { /* skip */ }
++  // 2-b) 껍데기 자신에 걸린 **숫자·색 Variable 바인딩**을 원시값이 아니라 바인딩으로 옮긴다.
++  //   위 ADOPT_PROPS 복사는 padding·radius·strokeWeight 를 숫자로만 옮겨 바인딩이 리터럴로 죽는다
++  //   (🤖 verifier 지적 — 목록을 Button 등으로 넓히는 순간 하드룰 H2 위반).
++  //   fills/strokes 는 paint 객체 안에 자기 boundVariables 를 갖고 통째로 복사되므로 여기서 제외.
++  try {
++    const bv = (fresh as any).boundVariables || {};
++    for (const field of Object.keys(bv)) {
++      const alias = bv[field];
++      if (!alias || Array.isArray(alias) || !alias.id) continue;
++      const v = figma.variables.getVariableById(alias.id);
++      if (v) (old as any).setBoundVariable(field, v);
++    }
++  } catch (e) { /* 바인딩 이식 실패는 값 복사분으로 남는다 */ }
++  // 2-c) Appearance 모드 핀(Light/Dark) — 읽기전용 속성이라 대입이 아니라 API 로 옮긴다.
++  try {
++    const modes = (fresh as any).explicitVariableModes || {};
++    for (const cid of Object.keys(modes)) {
++      (old as unknown as { setExplicitVariableModeForCollection: (c: string, m: string) => void })
++        .setExplicitVariableModeForCollection(cid, modes[cid]);
++    }
++  } catch (e) { /* skip */ }
++  // 3) 자식을 **이동**(복제 아님) — componentPropertyReferences 등 자식에 걸린 배선이 그대로 온다.
++  for (const c of [...fresh.children]) { try { old.appendChild(c); } catch (e) { /* ignore */ } }
++  // 4) 세트 안에서의 자리(variant 격자 좌표)도 새로 계산된 값을 따른다.
++  try { old.x = fresh.x; old.y = fresh.y; } catch (e) { /* skip */ }
++  try { fresh.remove(); } catch (e) { /* ignore */ }
+ }
+ 
++/** 이름으로 기존 세트를 찾는다(섹션 안에 들어가 있을 수 있어 재귀 탐색). */
++function findSetByName(name: string): ComponentSetNode | null {
++  try {
++    const r = figma.currentPage.findAll((n) => n.type === "COMPONENT_SET" && n.name === name);
++    if (Array.isArray(r) && r.length) return r[0] as ComponentSetNode;
++  } catch (e) { /* mock/no-page */ }
++  return null;
++}
++
++/**
++ * combineAsVariants 의 대체 — REFRESH_TARGETS 에 든 이름이고 기존 세트가 있으면 제자리 갱신,
++ * 아니면 종전대로 새 세트를 만든다. 반환 타입·후속 사용법은 combineAsVariants 와 동일.
++ */
++function upsertSet(comps: ComponentNode[], name: string): ComponentSetNode {
++  const prev = REFRESH_TARGETS.has(name) ? findSetByName(name) : null;
++  if (!prev) {
++    const s = figma.combineAsVariants(comps, figma.currentPage);
++    s.name = name;
++    return s;
++  }
++  const byName = new Map<string, ComponentNode>();
++  for (const c of prev.children) {
++    if (c.type === "COMPONENT") byName.set(c.name, c as ComponentNode);
++  }
++  const keep = new Set<string>();
++  LAST_ADOPTED = new Map();
++  // ⚠️ combineAsVariants 는 "넘긴 comps 가 곧 세트의 자식"이라는 계약을 갖는다. 갱신 경로는 fresh 를
++  //   버리므로 그 계약이 깨진다 — 호출부가 fresh 를 계속 쓰면 **제거된 노드 접근 예외**로 죽는다
++  //   (🤖 verifier 가 잡은 치명 결함). 그래서 comps 배열 자체를 살아있는 노드로 **제자리 치환**하고,
++  //   배열 밖에 따로 참조를 들고 있는 호출부는 adoptedNode() 로 재지정하게 한다.
++  for (let i = 0; i < comps.length; i++) {
++    const fresh = comps[i];
++    keep.add(fresh.name);
++    const old = byName.get(fresh.name);
++    if (old) { adoptInto(old, fresh); LAST_ADOPTED.set(fresh, old); comps[i] = old; }
++    else { try { prev.appendChild(fresh); } catch (e) { /* ignore */ } } // 새로 생긴 variant
++  }
++  // 정본에서 사라진 variant 는 세트에서도 제거한다(껍데기만 남기면 유령 variant 가 된다).
++  for (const entry of Array.from(byName.entries())) {
++    if (!keep.has(entry[0])) { try { entry[1].remove(); } catch (e) { /* ignore */ } }
++  }
++  prev.name = name;
++  return prev;
++}
++
++/**
++ * set.addComponentProperty 의 대체 — 제자리 갱신된 세트에는 그 속성이 이미 있어서
++ * 다시 추가하면 예외가 난다. 있으면 기존 id 를 돌려주고, 없을 때만 새로 만든다.
++ */
++function ensureComponentProperty(
++  set: ComponentSetNode, name: string, type: "BOOLEAN" | "TEXT" | "INSTANCE_SWAP", def: any
++): string {
++  try {
++    const defs = (set as any).componentPropertyDefinitions || {};
++    for (const key of Object.keys(defs)) {
++      if (key === name || key.indexOf(name + "#") === 0) return key;
++    }
++  } catch (e) { /* mock */ }
++  return set.addComponentProperty(name, type as any, def);
++}
++
+ /** 컴포넌트 세트 원본을 Light 평면 스펙처럼 꾸민다(라벨은 캔버스 정렬). 반환=최하단 Y. */
+ async function decorateSetFlat(set: ComponentSetNode, opts: SpecOpts, maps: BuildMaps): Promise<number> {
+   const rowLabelW = opts.rowLabelW ?? 96;
+@@ -1039,14 +1173,16 @@
+       }
+     }
+   }
+-  const set = figma.combineAsVariants(comps, figma.currentPage);
+-  set.name = "Input";
++  const set = upsertSet(comps, "Input");
++  // 제자리 갱신이면 cells 가 들고 있는 참조도 살아있는 노드로 재지정한다(comps 는 upsertSet 이 처리).
++  //   이걸 빠뜨리면 아래 스펙 시트가 제거된 노드를 만져 예외로 죽는다.
++  for (const cell of cells) cell.comp = adoptedNode(cell.comp);
+   // Password Icon BOOLEAN — 비밀번호 인풋일 때만 눈 아이콘 표시. 기본 false(꺼짐).
+   // 모든 variant 의 field>trail>eye 레이어 visible 을 이 속성에 바인딩(레이어명 eye 통일 필수).
+   // eye 가 trail 클러스터 하위로 들어가 직계 자식이 아니므로 findOne(재귀)로 탐색.
+-  const pwIconPropId = set.addComponentProperty("Password Icon", "BOOLEAN", false);
+-  const pwHoverPropId = set.addComponentProperty("Password Action Hover", "BOOLEAN", false);
+-  const clearHoverPropId = set.addComponentProperty("Clear Action Hover", "BOOLEAN", false);
++  const pwIconPropId = ensureComponentProperty(set, "Password Icon", "BOOLEAN", false);
++  const pwHoverPropId = ensureComponentProperty(set, "Password Action Hover", "BOOLEAN", false);
++  const clearHoverPropId = ensureComponentProperty(set, "Clear Action Hover", "BOOLEAN", false);
+   for (const c of comps) {
+     const f = c.findChild((n: SceneNode) => n.name === "field") as FrameNode | null;
+     const passwordAction = f ? f.findOne((n: SceneNode) => n.name === "password-action") : null;
+@@ -6079,6 +6215,15 @@
+     const r = page.findAll((n) => n.type === "COMPONENT_SET");
+     if (Array.isArray(r)) existing = new Set((r as ComponentSetNode[]).map((n) => n.name));
+   } catch (e) { /* mock/no-page → fresh */ }
++
++  // ── 제자리 갱신 대상 (river 승인 "A-단계", 2026-09-08) ────────────────────────
++  //   종전: 같은 이름 세트가 이미 있으면 **통째로 건너뛴다**(skipped). 그래서 정본을 고쳐도
++  //   반영되지 않고, 반영하려면 [재설치 — 지우고 처음부터] 뿐이었다. 그 경로는 세트를 삭제·재생성해
++  //   variant key 를 새로 발급하므로 그 세트를 쓰던 시안 인스턴스가 전부 끊긴다.
++  //   → 아래 이름들은 건너뛰지 않고 **기존 세트 껍데기를 유지한 채 내용만 갱신**한다(upsertSet).
++  //   목록에 없는 이름은 종전 동작(스킵) 그대로 — 한 번에 전 세트로 넓히지 않는다.
++  const REFRESH_IN_PLACE = new Set<string>(["Input"]);
++  setRefreshTargets(Array.from(REFRESH_IN_PLACE).filter((n) => existing.has(n)));
+ 
+   // 컴포넌트 전체 풋프린트(세트 + 스펙 프레임) 이름 — 기존 항목 건너뛸 때 y 전진/중복정리용
+   const footprint = (p: string): string[] => {
+@@ -6197,14 +6342,40 @@
+       }
+       done++;
+       const isDepSet = name === "Calendar Cell" || name === "Calendar Tile";
+-      if (existing.has(name) && !isDepSet) {
++      const refreshing = existing.has(name) && REFRESH_IN_PLACE.has(name);
++      if (existing.has(name) && !isDepSet && !refreshing) {
+         const rb = regionBottom(name);
+         if (rb != null) catY = rb + 140;
+         skipped.push(name);
+         continue;
+       }
+       if (onProgress) onProgress(`${name} 생성 중…`, 92 + Math.round((done / TOTAL) * 8));
+-      removeByNames(footprint(name));
++      // 제자리 갱신 중이면 **세트 자신은 지우지 않는다** — 지우면 갱신할 대상이 사라진다.
++      //   스펙 시트(— Spec Light/Dark)는 소비자가 없는 장식이라 종전대로 지우고 다시 그린다.
++      if (refreshing) {
++        // 종전 경로(스킵)는 여기 도달조차 안 했다. 갱신은 스펙 시트를 다시 그리므로 옛 시트를 지워야
++        //   하는데, removeByNames 는 **최상위만** 훑어 이미 섹션 안에 들어간 시트를 못 찾는다
++        //   → 동명 프레임이 겹쳐 쌓인다(🤖 verifier 지적). 갱신일 때만 재귀로 지운다.
++        const dead = new Set(footprint(name).filter((f) => f !== name));
++        try {
++          const r = page.findAll((n) => dead.has(n.name));
++          if (Array.isArray(r)) for (const n of r) { try { n.remove(); } catch (e) { /* ignore */ } }
++        } catch (e) { /* mock/no-page */ }
++      } else {
++        removeByNames(footprint(name));
++      }
++      // 갱신 대상 세트의 원래 자리(부모 섹션·좌표)를 기억한다. 빌더는 세트를 새로 만든다는 전제로
++      //   set.x/y 를 이번 실행의 레이아웃 좌표로 덮어쓰므로, 갱신일 때는 원래 자리로 되돌린다.
++      let anchor: { node: ComponentSetNode; parent: BaseNode & ChildrenMixin; x: number; y: number } | null = null;
++      if (refreshing) {
++        try {
++          const found = page.findAll((n) => n.type === "COMPONENT_SET" && n.name === name);
++          const node = (Array.isArray(found) ? found[0] : null) as ComponentSetNode | null;
++          if (node && node.parent) {
++            anchor = { node, parent: node.parent as BaseNode & ChildrenMixin, x: node.x, y: node.y };
++          }
++        } catch (e) { /* mock/no-page */ }
++      }
+       // 건별 try/catch — 컴포넌트 1개가 실패해도 나머지를 계속 만든다(2026-08-01 신설).
+       //   종전엔 이 자리에 방어가 없어 **1개 실패 = 전체 설치 중단**이었다. 뒤 컴포넌트는
+       //   하나도 안 생기고, 앞서 만든 것만 캔버스에 남은 반쪽 상태가 됐다.
+@@ -6225,6 +6396,14 @@
+ 
+       try {
+         const res = await run(catY);
++        // 제자리 갱신이면 세트를 원래 부모(섹션)·원래 좌표로 되돌린다 — 자리 이동은 시안이 아니라
++        //   가이드 페이지 배치를 흐트러뜨리는 부작용이므로, 갱신은 "내용만" 바뀌게 한다.
++        if (anchor && res.set === anchor.node) {
++          try {
++            if (anchor.node.parent !== anchor.parent) anchor.parent.appendChild(anchor.node);
++            anchor.node.x = anchor.x; anchor.node.y = anchor.y;
++          } catch (e) { /* ignore */ }
++        }
+         created += res.set.children.length;
+         added.push(name);
+         catY = res.bottomY + 140;

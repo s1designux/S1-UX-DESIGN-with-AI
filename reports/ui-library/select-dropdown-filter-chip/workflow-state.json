@@ -318,6 +318,113 @@
       "openItems": [
         "HD-3b — 이 상한을 셀렉트에도 걸지, 필터칩에만 걸지 미결(트리거가 320보다 넓으면 목록이 좁게 뜬다 · 실측 420 vs 320)",
         "잘린 글자를 마우스 올림(title)으로 보여줄지 미결 — ⭐ 가 임의로 만들지 않았다"
+      ],
+      "supersededBy": "D23",
+      "status": "superseded — 같은 날 river 가 번복했다(상한 320 폐기). 말줄임(…) 부분은 D23 이 그대로 이어받는다."
+    },
+    {
+      "id": "D23",
+      "topic": "드롭다운 목록 폭 = 트리거 폭 (하한 140px) · 최대 폭 상한 폐기",
+      "decidedBy": "river",
+      "decidedAt": "2026-09-07",
+      "quote": "번복할게. 드롭다운은 상단 트리거의 크기에 따라서 동일하게 반영되되 트리거 자체가 너무 좁은 경우에는 전에 내가 잡았던 기준으로 너무 작아지지 않게끔 제공",
+      "decision": "① 목록 폭 = 트리거 폭과 동일(select·filter-chip 이 width:100% 로 넘긴다) ② 하한 140px(정본 resize(140,…) 값)은 dropdown.css 가 소유 ③ max-width:320px 상한 폐기 ④ 트리거 폭을 넘는 긴 옵션은 말줄임(…) 유지(D22 에서 이어받음).",
+      "supersedes": "D22",
+      "changed": [
+        "ui-library/src/components/dropdown/dropdown.css — max-width 제거, 주석 전면 갱신",
+        "ui-library/src/components/filter-chip/filter-chip.css — min-width:100% → width:100%(칩 폭과 동일)",
+        "ui-library/src/components/select/select.css — 주석 정정(확인되지 않은 river 인용 삭제)"
+      ],
+      "verified": "기계검사 6종 + gate:check PASSED. 렌더 실측 — 셀렉트 트리거 180/300/460 전부 목록과 같음, 필터칩 칩 62px→목록 140px(하한 받침)·칩 200/320→같음, 긴 옵션은 트리거 폭에서 말줄임. 화면 reports/ui-library/dropdown-max-width/compare-after.png",
+      "openItems": [
+        "잘린 글자를 마우스 올림(title)으로 보여줄지 미결 — ⭐ 가 임의로 만들지 않았다"
+      ]
+    },
+    {
+      "id": "D24",
+      "topic": "필터칩 목록 폭 = 칩 폭과 완전 동일(하한 해제) · 칩 폭 지정은 미지원",
+      "decidedBy": "river",
+      "decidedAt": "2026-09-07",
+      "quote": "B로 가고, 칩에 폭 주는 건 지원 안 함",
+      "decision": "① 필터칩 스코프에서 dropdown 하한 140px 을 해제(min-width:0) — 목록 폭 = 칩 폭과 완전 동일. ② 칩 자체에 폭을 지정하는 사용은 지원하지 않는다(정본대로 칩은 내용 크기 hug, 화살표는 라벨 뒤). 셀렉트는 코어 하한 140 유지.",
+      "refines": "D23",
+      "why": "D23 적용 후 river 가 '칩 드롭다운이 칩 width와 동일하지 않다'고 제보. 실측 결과 실제 칩이 74px(제목없음)·103px(제목있음)로 전부 하한 140 에 걸려 「칩 폭과 동일」 규칙이 한 번도 작동하지 않았다. ⭐ 가 하한을 규칙에 넣을 때 실제 칩 폭을 재지 않은 잘못이다.",
+      "alsoReported": "river 가 지적한 '칩 화살표가 오른쪽 끝으로 안 간다'는 정본 buildFilterChip 이 칩을 primaryAxisSizingMode=AUTO(hug)로 만들기 때문에 실제 배포본에서는 생기지 않는 상황이었다(⭐ 의 비교 하네스가 칩 폭을 강제로 넓혀 만든 화면). river 결정으로 넓은 칩 지원 자체를 하지 않기로 해 코드 변경 없음.",
+      "verified": "기계검사 6종 + gate:check PASSED. 실측 — 칩 74/103px 4종 전부 목록과 같음, 셀렉트 180/300/460 전부 같음, 긴 옵션은 트리거 폭에서 말줄임. 화면 chip-width-options.png · compare-after.png · screens/13-chip-width-parity-pc.png",
+      "sideEffect": "칩이 아주 좁으면(테스트 62px) 3글자 옵션도 말줄임된다 — 실제 안내 화면의 칩(74·103px)에서는 '최신순' 등이 잘리지 않음을 렌더로 확인했다.",
+      "openItems": [
+        "잘린 글자를 마우스 올림(title)으로 보여줄지 미결 — ⭐ 가 임의로 만들지 않았다"
+      ]
+    },
+    {
+      "id": "D25",
+      "topic": "말줄임된 옵션은 마우스 올림으로 전체 글자 표시 · 독립 검증 생략",
+      "decidedBy": "river",
+      "decidedAt": "2026-09-07",
+      "quote": "말줄임된 글자는 마우스 올림으로 보여주고, 독립 검증은 생략해. 내가 직접 볼게",
+      "decision": "① dropdown.js 에 syncEllipsisTitles 추가 — 실제로 잘린 옵션에만 title 을 붙이고, 잘리지 않으면 떼어낸다. 닫힌 패널은 폭이 0 이라 ResizeObserver 로 열리는 순간 다시 잰다. api.refresh() 로 소비자가 옵션을 다시 그린 뒤 재계산할 수 있다. ② 이번 변경의 🤖 독립 검증(component-verifier 시나리오 F)은 river 결정으로 생략한다.",
+      "verified": "기계검사 6종 + gate:check PASSED. 실제 배포본 JS 를 구동해 확인 — 목록 600px(안 잘림)=title 없음 · 200px(잘림)=title 있음, 4건 전부 일치. 필터칩을 실제 클릭해 닫힘→열림 시에도 잘린 옵션에만 붙는 것을 확인.",
+      "limitation": "정적 HTML 만 쓰고 런타임(dropdown.js)을 붙이지 않으면 마우스 올림 안내는 없다 — 폭 측정이 필요해 CSS 만으로는 불가능하다. dropdown.css 주석에 명시했다."
+    },
+    {
+      "id": "D26",
+      "topic": "필터칩 화살표를 칩 오른쪽 끝으로",
+      "decidedBy": "river",
+      "decidedAt": "2026-09-07",
+      "quote": "여전히 칩의 라벨과 화살표아이콘이 좌우 between으로 벌어지지 않는데?",
+      "decision": "filter-chip.css 에서 트리거 안 아이콘에 margin-left:auto 를 준다. 칩은 정본대로 내용 크기(hug)라 평소에는 남는 공간이 없어 보이는 결과가 바뀌지 않고, 칩에 폭이 주어진 경우에만 화살표가 오른쪽 끝으로 밀린다.",
+      "why": "river 가 두 차례 지적. 확인 결과 실제 안내 화면·배포본의 칩은 폭을 갖지 않아(정본 primaryAxisSizingMode=AUTO) 그 현상이 나오지 않았고, river 가 본 것은 ⭐ 의 비교 화면이 칩 폭을 200·320px 로 강제한 칸이었다. 미지원(D24)이라도 폭이 주어졌을 때 어색하지 않도록 정렬만 보강한다.",
+      "notSpaceBetween": "justify-content:space-between 을 쓰지 않았다 — 제목 있는 칩은 아이템이 3개(제목·값·화살표)라 제목과 값 사이까지 벌어진다. 아이콘에만 margin-left:auto.",
+      "verified": "기존 칩 5종(sm/md × 제목 유무 × PC/Mobile) 변경 전후 실측 동일 — 칩 폭 80.3/108.5/86.3/114.5/108.5px, 아이콘 왼쪽 위치 53.3/81.5/57.3/85.5/81.5px 로 소수점까지 일치(회귀 0). 폭 200·320px 칩에서는 화살표가 오른쪽 끝으로 이동함을 렌더로 확인. 기계검사 6종 + gate:check PASSED.",
+      "coveredByWaiver": "D25 의 독립 검증 생략 결정 범위에 포함(river: 내가 직접 볼게)"
+    },
+    {
+      "id": "D27",
+      "topic": "드롭다운 폭 최종 확정 — 최소 100px · 트리거 100 미만이면 100 · 이상이면 트리거 폭",
+      "decidedBy": "river",
+      "decidedAt": "2026-09-07",
+      "quote": "다시 최종으로 정리할게. -드롭다운은 최소 100px -칩이 드롭다운보다 width값이 작은경우 드롭다운은 100px로 보여진다 -칩의 width가 100px이상이 되는경우 드롭다운의 width는 칩의 width와 동일하게 표출된다",
+      "decision": "dropdown.css min-width:140px → 100px. filter-chip.css 의 하한 해제(min-width:0)를 없애 코어 하한 100 이 적용되게 한다. 세 규칙은 min-width:100px + 소비자 width:100% 조합 하나로 성립한다. 상한 없음·말줄임·마우스 올림 안내는 유지.",
+      "supersedes": "D24(필터칩 하한 해제) · D23 의 하한 140 부분",
+      "verified": "12경우 전수 실측 일치 — 칩 60/99px→목록 100 · 실제 칩 SM 80.3·MD 86.3(제목없음)→100 · 칩 100px→100 · 실제 칩 SM 108.5·MD 114.5·Mobile 108.5(제목있음)→칩과 동일 · 칩 160/320→동일 · 셀렉트 180/460→동일. 화면 reports/ui-library/dropdown-max-width/final-rule-check.png",
+      "correction": "이전 보고에서 실제 칩 폭을 74·103px 로 말했는데, 그 측정은 화면 구분(data-break) 속성을 빠뜨려 padding 규칙이 적용되지 않은 값이었다. 올바른 값은 SM 80.3·108.5 / MD 86.3·114.5 / Mobile MD 108.5px 이다. 결론(제목 없는 칩은 하한에 걸리고 제목 있는 칩은 칩 폭과 같다)은 바뀌지 않는다.",
+      "recordedIn": [
+        "ui-library/src/components/dropdown/dropdown.css 헤더 주석(규칙 전문 + river 원문)",
+        "registry/components/dropdown.json guide.panelWidthRule (기계가독 사양 + 실측값)",
+        "registry/components/filter-chip.json · select.json guide.panelWidthRuleRef",
+        "assets/js/ui-library-guide.js — 안내 페이지 사용자용 설명(dropdown·filter-chip)"
+      ],
+      "pending": "정본 build-components.ts 주석 반영은 하지 않았다 — 다른 세션이 같은 파일을 미커밋 편집 중(입력칸 Editing→Focus)이라, 지금 손대면 Gate 13(해시 기준)에서 남의 변경까지 함께 인증하게 된다. 그 세션이 커밋한 뒤 주석 1건 기계적 수정으로 처리할 것. Figma 설치기에는 river 지시대로 GUI 로 보이는 항목(옵션 글자 말줄임)만 반영 대상이다."
+    },
+    {
+      "id": "D28",
+      "topic": "정본·설치기 마무리 — 옵션 말줄임 반영 + 폭 규칙 주석",
+      "decidedBy": "river",
+      "decidedAt": "2026-09-07",
+      "quote": "다른 세션 커밋되면 정본 주석이랑 설치기까지 마무리해줘",
+      "executedAt": "2026-09-08",
+      "changed": [
+        "plugins/figma-vars-installer/src/build-components.ts — buildDropdownList.fillRow 의 옵션 텍스트에 layoutGrow=1 · textAutoResize=HEIGHT · textTruncation=ENDING · maxLines=1 (GUI 로 보이는 말줄임)",
+        "같은 파일 — buildDropdownList·buildFilterChip 위에 폭 규칙 주석(river 원문 + 규칙 ①~⑤ + Figma 표현 한계)",
+        "scripts/lib/figma-build-mock.js — PROP_CLASS 에 textTruncation·maxLines 를 VISUAL 로 등록(미등록 시 installer:build 가 차단)",
+        "ui-library/src/components/*/manifest.json 19개 — canonicalFingerprint 갱신(정본 변경에 따른 후속)",
+        "assets/downloads/s1-ux-design-guide-installer.zip · s1-ui-dev-package.zip · 개발자 패널 · 검수판 45칸 재생성",
+        "ui-library/src/components/dropdown/dropdown.css 95행 주석 140→100 정정 · registry figmaCanonNote 정정(둘 다 🤖 지적)"
+      ],
+      "notChanged": "정본 폭 리터럴 140 은 유지했다 — 정본은 트리거도 목록도 140 으로 만들어 규칙 ③(트리거 폭과 동일)에 부합하고, 100 은 하한일 뿐이라 바꿀 이유가 없다. 🤖 가 이 논리를 검토해 성립 판정했다.",
+      "independentVerification": {
+        "actor": "component-verifier",
+        "scenario": "D",
+        "verdict": "PASS",
+        "at": "2026-09-08",
+        "report": "reports/ui-library/select-dropdown-filter-chip/4-verification-installer-2026-09-08.md",
+        "gate13": "기록됨 — structural · sha256:702481d5344f",
+        "keyFindings": "(A) 4속성 조합이 실제로 말줄임을 만든다(행이 FIXED 140 이라 함정 해당 없음, 체크박스 18+gap8 뒤 라벨 90px 양수) (B) HEAD vs 작업트리 지문 대조 — 바뀐 시각사양 10행 전부 Dropdown List 옵션 글자, 토큰 diff 0, Time Picker Dropdown 등 타 컴포넌트 회귀 0 (C) PROP_CLASS 는 VISUAL/LAYOUT 이 동등하게 지문에 포함돼 약화 아님(지문에 실제로 찍힌 것까지 확인) (D) 웹↔정본 서술 모순 없음 (E) 임의 생성 0건",
+        "notVerified": "실제 Figma 캔버스에 설치해 … 로 잘리는지는 육안 미검증(코드 레벨 판정)"
+      },
+      "openItems": [
+        "🤖 지적 🟡-3: build-components.ts 1650-1651 의 따옴표 문장은 D22+D25 를 합친 요약이라 결정 id 표기를 다는 편이 낫다 — 방금 Gate 13 에 기록한 해시를 깨지 않으려 이번엔 손대지 않았다(다음 정본 편집 때 함께 처리)",
+        "Figma 캔버스 실제 반영 — MCP 인증이 끊겨 이 세션에서 불가. river 가 Figma 에서 설치기를 재실행해야 한다"
       ]
     }
   ],
@@ -423,7 +530,21 @@
           "items": "states.hover src·dist 문자 단위 일치 · manifest 내부 모순 0 · 렌더 해시 1·2회차와 동일(문자열 수정뿐) · 검사 6종 PASS"
         }
       ],
-      "report": "reports/ui-library/select-dropdown-filter-chip/4-verification-independent.md"
+      "report": "reports/ui-library/select-dropdown-filter-chip/4-verification-independent.md",
+      "waiver2026_09_07": {
+        "decidedBy": "river",
+        "quote": "독립 검증은 생략해. 내가 직접 볼게",
+        "scope": "D23·D24·D25·D26 (드롭다운 폭 = 트리거 폭 · 필터칩 하한 해제 · 말줄임 title · 칩 화살표 오른쪽 끝)",
+        "reason": "CSS 3개 파일 + dropdown.js 1개 함수 범위의 변경이고, 계약 riskBasedIndependentVerification.optionalWhen(정본 대조·실제 렌더 측정·자동 검사 완료된 단순 코어 변경)에 해당한다. river 가 화면을 직접 보기로 했다.",
+        "implementerRenderPass": [
+          "reports/ui-library/dropdown-max-width/compare-after.png",
+          "reports/ui-library/dropdown-max-width/chip-width-options.png",
+          "reports/ui-library/select-dropdown-filter-chip/screens/13-chip-width-parity-pc.png",
+          "reports/ui-library/select-dropdown-filter-chip/screens/11-dropdown-ellipsis-pc-light.png",
+          "reports/ui-library/select-dropdown-filter-chip/screens/11-dropdown-ellipsis-pc-dark.png"
+        ],
+        "machineChecks": "ui:contract · ui:build:check · ui:test:check · ui:icons · ui:icons:origin · ui:guide:render · gate:check(게이트 50개) 전부 통과"
+      }
     },
     "riverApproval": {
       "status": "approved",
@@ -435,7 +556,7 @@
   },
   "handoff": {
     "lastActor": "orchestrator",
-    "updatedAt": "2026-09-07",
-    "summary": "D22(드롭다운 최대 폭 320 확정 + 말줄임) 반영. dropdown.css 를 줄바꿈→말줄임으로 바꾸고 dist 재빌드, ui:zip·board:refresh(D-08) 까지 갱신해 gate:check PASSED. 기계검사 6종 초록, PC/Mobile·Light/Dark 렌더 확인 완료. 남은 것은 river UX 검수와 미결 2건(HD-3b 적용 범위 · 잘린 글자 title 노출). ui:state 의 정본 지문 2건 불일치는 다른 세션의 time-picker 정본 수정 때문이며 dropdown 과 겹치지 않음을 diff 로 확인했다(지문은 손대지 않음)."
+    "updatedAt": "2026-09-08",
+    "summary": "D22~D28 완료. 드롭다운 폭 규칙(최소 100 · 트리거 100 미만이면 100 · 이상이면 트리거 폭 · 상한 없음 · 말줄임 + 마우스 올림 안내)이 웹 배포본·registry·안내 페이지·정본 주석에 모두 기록됐고, GUI 로 보이는 말줄임은 정본과 설치기 zip 에 반영됐다. 🤖 component-verifier 시나리오 D 가 PASS(회귀 0 을 지문으로 증명), Gate 13 기록 완료, gate:check 게이트 50개 PASSED. 남은 것은 river UX 최종 검수와 Figma 캔버스 재설치(MCP 인증 필요). 커밋은 하지 않았다."
   }
 }

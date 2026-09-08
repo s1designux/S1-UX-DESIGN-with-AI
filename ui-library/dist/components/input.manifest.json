@@ -6,7 +6,7 @@
   "modes": [
     "search"
   ],
-  "canonicalFingerprint": "8cd8e9328ab08d3989b5fe5aac6b6ffa62756fc350fb3c943999ca9dea905629",
+  "canonicalFingerprint": "d19ce7651666490d9e617394e54b069cd9a8dfc2d922f859b556f86db29f6105",
   "canonicalSources": [
     "plugins/figma-vars-installer/src/build-components.ts",
     "plugins/figma-vars-installer/src/vars-data.ts",
@@ -40,6 +40,15 @@
     "correct": "root[data-state=correct]",
     "readOnly": "control[readonly]",
     "disabled": "control[disabled]"
+  },
+  "canonicalStateMap": {
+    "Default": "default",
+    "Filled": "filled",
+    "Focus": "focus",
+    "Error": "error",
+    "Correct": "correct",
+    "Read-Only": "readOnly",
+    "Disabled": "disabled"
   },
   "actionStates": {
     "hover": "@media (hover: hover)에서 action:hover:not(:disabled); color/form-control/bg/hover 배경을 해당 hit area에만 표시"
@@ -165,7 +174,7 @@
       "id": "remove",
       "sourceKey": "24b2df622d341e0af21cd4b23b4a7d23b97a5ea7",
       "asset": "assets/icons/remove.svg",
-      "use": "Editing clear action",
+      "use": "Focus clear action",
       "accessibleNamePolicy": "decorative icon inside a button named 입력 내용 지우기"
     },
     {
@@ -253,7 +262,7 @@
       "destroy removes listeners and hides clear action"
     ],
     "controlMode": "uncontrolled",
-    "behavior": "Editing에서 값이 있을 때 remove action을 보이고, 실행하면 값 삭제·input event 발생·Input focus 복귀. Password 옵션(type=password + action[data-action=password])이 있으면 누를 때마다 type 을 password↔text 로 바꾸고 aria-pressed·aria-label 을 맞춘 뒤 focus 를 되돌린다. Search 옵션(root[data-mode=search] + action[data-action=search])이 있으면 클릭 또는 Enter(IME 조합 제외)에서 s1:input:search 를 발화하고, clear 표시 조건은 focus 와 무관하게 값 유무만 본다."
+    "behavior": "Focus에서 값이 있을 때 remove action을 보이고, 실행하면 값 삭제·input event 발생·Input focus 복귀. Password 옵션(type=password + action[data-action=password])이 있으면 누를 때마다 type 을 password↔text 로 바꾸고 aria-pressed·aria-label 을 맞춘 뒤 focus 를 되돌린다. Search 옵션(root[data-mode=search] + action[data-action=search])이 있으면 클릭 또는 Enter(IME 조합 제외)에서 s1:input:search 를 발화하고, clear 표시 조건은 focus 와 무관하게 값 유무만 본다."
   },
-  "sourceFingerprint": "72d296ff25b47bee310e771fb0e01712c4ac872b7de3ea4d9eaffbfed614ad29"
+  "sourceFingerprint": "b348f2c8b0608d37e4b1a2d12738c3a90b9b1e790ee6b7c504865ec9bbc0e04e"
 }
