@@ -27,6 +27,8 @@ const argv = process.argv.slice(2);
 const DRY = argv.includes('--dry-run');
 const NO_PUSH = argv.includes('--no-push');
 const MAIN_BRANCH = 'main';
+/** 설치기 재생성이 같이 건드리는 추적 파일 — 재생성 뒤 깃 상태로 되돌린다(아래 5b 참고). */
+const INSTALLER_ZIP = 'assets/downloads/s1-ux-design-guide-installer.zip';
 
 /** 부딪힌 파일에 붙이는 힌트 — 자동 생성 파일은 손으로 풀지 말고 재생성한다. */
 const REGEN_HINTS = [
@@ -185,7 +187,11 @@ if (foldDirty.length) {
 step('5b/6 본 폴더: 깃에 안 담기는 생성물 재생성 (Figma 플러그인)');
 const rebuild = run('npm', ['run', '--silent', 'installer:build'], MAIN);
 if (rebuild.code === 0) {
-  console.log('   ✅ 설치기 dist·zip 재생성 — 원래 등록해 둔 플러그인이 바로 새 것을 읽는다');
+  // 이 재생성의 목적은 **깃에 안 담기는 dist** 하나다. 같이 만들어지는 zip 은 추적 대상이라
+  //   압축 시각 때문에 바이트가 달라져 본 폴더를 더럽히고, 다음 합치기가 1단계에서 막힌다
+  //   (2026-09-09 실측). 내용은 방금 합친 커밋과 같으므로 zip 만 깃 상태로 되돌린다.
+  git(['checkout', '--', INSTALLER_ZIP], MAIN);
+  console.log('   ✅ 설치기 dist 재생성 — 원래 등록해 둔 플러그인이 바로 새 것을 읽는다');
 } else {
   console.error('   ⚠️ 설치기 dist 재생성 실패 — main 합치기는 끝났습니다. 본 폴더에서 `npm run installer:build` 를 직접 돌리세요.');
   console.error(`      ${(rebuild.err || rebuild.out || '').split('\n').filter(Boolean).slice(-3).join('\n      ')}`);
