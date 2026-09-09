@@ -141,6 +141,7 @@
     "wt:list": "git worktree list",
     "rr": "node scripts/repeated-requests.js",
     "rr:check": "node scripts/repeated-requests.js check",
+    "ui:react": "node ui-library/scripts/react-parity-check.mjs",
     "kotlin:parity": "node scripts/kotlin-compose-parity-check.js",
     "kotlin:lint": "node scripts/kotlin-compose-lint.js",
     "kotlin:preview": "node scripts/kotlin-compose-preview-page.js"

@@ -940,7 +940,7 @@ function dropdownMarkup({ type = "text", size = "md", withAll = false, ariaLabel
         { label: "제주", selected: false }
       ].map((row) => dropdownOptionMarkup(type, row)).join("");
   const allRow = withAll
-    ? dropdownOptionMarkup(type, { label: "전체 선택", selected: false, selectAll: true, value: "all" }) + '<div data-s1-part="divider"></div>'
+    ? dropdownOptionMarkup(type, { label: "전체", selected: false, selectAll: true, value: "all" }) + '<div data-s1-part="divider"></div>'
     : "";
   const listRole = type === "text" ? ' role="listbox"' : "";
   const preview = isPreview ? " is-preview" : "";

@@ -1,0 +1,9 @@
+{
+  "sourceFile": "plugins/figma-vars-installer/src/build-components.ts",
+  "sourceHash": "sha256:76b2c830500782c0c6957ecc2ed170fd63d1adde29867c256fb436454941b27d",
+  "verifiedBy": "component-verifier",
+  "verdict": "pass",
+  "changeType": "structural",
+  "verifiedAt": "2026-09-09T05:35:09.401Z",
+  "notes": "델타 재검증 6회차. ⑥ Table Cell 행순서 뒤집기 세 곳(생성루프·BUILT_COMPS 등록·rowLabels)을 mock 실행으로 직접 확인 — 세트 순서 Left·XSM→Left·SM→Left·MD→Center·XSM→Center·SM→Center·MD, 스펙 행라벨 순서 동일, 고유키 24=variant 24 로 1:1, Table 합성본은 각 Size variant 가 자기 크기·Align=Left 셀만 사용(어긋남 0). Time Picker Type 축은 Focus 패널 폭 24h=121·12h=194 로 분기 확인(폴백 미발동). installer:check·keycheck·anatomy·iconpolicy·ui:contract·ui:test·devpanel:check·ui:zip:check 전부 통과, scenario SC_RUNS=3 재설치 2·3회차 동일(섹션 치수·세트 49 불변). gate:check error 는 이 게이트 1건뿐. 범위 밖 별건: assets/js/registry-data-bundle.js 파생 미재생성(❌a, 보고서 참조)."
+}

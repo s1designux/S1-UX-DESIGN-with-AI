@@ -2,9 +2,9 @@
   "note": "자동 생성물 — ZIP 이 현재 배포본에서 나왔는지 확인하는 지문입니다.",
   "zip": "s1-ui-dev-package.zip",
   "version": "0.1.0",
-  "canonicalFingerprint": "77dd585a59eb492cc1952a786e5b033becea126e531d9d1092b6f7bbd5d3efae",
-  "distFingerprint": "4e3423f57f63114eb408905091db9f8a27fce302988a38c75e711720b48fff8c",
-  "readmeFingerprint": "bd128a4826bad3b7de3c3da328ca3525e0e754fef8da61202e0af2f799d2465d",
+  "canonicalFingerprint": "41b501163b453cdae06413d5ebd015feaeb4ed388b638f6fd5077ba3e44a1e61",
+  "distFingerprint": "9832085ac9f69eab7627fed4cdc056e9da2eaf0be9ecebcb3be9c0d96f1faa6c",
+  "readmeFingerprint": "99c5a8f4f3c94fa11c03a7f19531fce039db1c4bd5caac95ccbcad539f07b324",
   "components": [
     "input",
     "button",
@@ -30,5 +30,49 @@
     "modal-content"
   ],
   "tokenCount": 481,
-  "zipFingerprint": "2c328449c7a8fe63f1d1a7a52876f7fd708f4f382c8f080d113944f0a470c556"
+  "zipFingerprint": "cf62e9122f62679176a21e855171395111ce1ce62da3a09f041e793a0d950f71",
+  "packages": {
+    "html-css-js": {
+      "zip": "s1-ui-html-css-js.zip",
+      "title": "HTML · CSS · JavaScript",
+      "files": 130,
+      "sizeKB": 239,
+      "zipFingerprint": "a61f186f7b5d0b974ed6b80a97bbbf829062465d5ecad12293e825e893f17c56"
+    },
+    "react": {
+      "zip": "s1-ui-react.zip",
+      "title": "React · Next.js",
+      "files": 76,
+      "sizeKB": 158,
+      "zipFingerprint": "ddc1e272a38b808bdb496bef236b025fce0ad588c21f623c538c57168176bb33"
+    },
+    "vue": {
+      "zip": "s1-ui-vue.zip",
+      "title": "Vue",
+      "files": 72,
+      "sizeKB": 170,
+      "zipFingerprint": "3111d741b88e8b6c013d411809d4900fefda1b59c710f9541491988a4dfc62a4"
+    },
+    "kotlin": {
+      "zip": "s1-ui-kotlin.zip",
+      "title": "Kotlin (Android)",
+      "files": 32,
+      "sizeKB": 84,
+      "zipFingerprint": "3849753a6220247cf54007c3281fcbe579bdcb4ee4c65add1eaa9867dd22fb3a"
+    },
+    "swift": {
+      "zip": "s1-ui-swift.zip",
+      "title": "Swift (iOS)",
+      "files": 5,
+      "sizeKB": 39,
+      "zipFingerprint": "c22c303bff2207440670bd262ae753615d89bbd145b59f4db9a96f25afaf637e"
+    },
+    "cpp": {
+      "zip": "s1-ui-cpp.zip",
+      "title": "C++",
+      "files": 5,
+      "sizeKB": 39,
+      "zipFingerprint": "be231172711a932bd913af98e6324ebb711ac1328367be6cf31df94ac398e170"
+    }
+  }
 }

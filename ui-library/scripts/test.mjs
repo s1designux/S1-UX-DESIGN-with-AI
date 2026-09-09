@@ -673,28 +673,29 @@ for (const id of approvedIds) {
   if (JSON.stringify(entry.requiredParts) !== JSON.stringify(manifest.htmlContract.requiredParts ?? [])) failures.push(`${id} contract required parts differ from the manifest`);
   if (entry.canonicalFingerprint !== manifest.canonicalFingerprint) failures.push(`${id} contract fingerprint differs from the manifest`);
 
-  /* 껍데기가 들고 있는 마크업이 실제 배포 예제와 글자 단위로 같아야 한다.
-     여기가 어긋나면 React·Vue 개발자만 다른 화면을 보게 된다. */
+  /* 전달본이 들고 있는 마크업이 실제 배포 예제와 같아야 한다.
+     여기가 어긋나면 React·Vue 개발자만 다른 화면을 보게 된다.
+     Vue 는 마크업 문자열을 그대로 들고 있어 글자 단위로 대조한다.
+     React 는 JSX 트리로 옮겼으므로 글자 대조가 성립하지 않는다 — 실제로 그려서 대조하는
+     react-parity-check.mjs 가 그 몫을 한다(아래 ② 에서 함께 돈다). */
   const reactText = await read(`dist/platform/react/${id}.jsx`);
   const vueName = id.split("-").map((part) => part[0].toUpperCase() + part.slice(1)).join("");
   const vueText = await read(`dist/platform/vue/${vueName}.vue`);
-  const markupBlock = /export const MARKUPS = (\{[\s\S]*?\n\});/.exec(reactText);
   const vueMarkupBlock = /const MARKUPS = (\{[\s\S]*?\n\});/.exec(vueText);
-  if (!markupBlock || !vueMarkupBlock) { failures.push(`${id} wrapper does not expose MARKUPS`); continue; }
-  const reactMarkups = JSON.parse(markupBlock[1]);
+  if (!vueMarkupBlock) { failures.push(`${id} Vue wrapper does not expose MARKUPS`); continue; }
   const vueMarkups = JSON.parse(vueMarkupBlock[1]);
-  if (JSON.stringify(reactMarkups) !== JSON.stringify(vueMarkups)) failures.push(`${id} React and Vue wrappers carry different markup`);
   const declaredExamples = Object.entries(manifest.htmlContract.breakExamples ?? { pc: { distribution: `examples/${id}.html` } });
   for (const [breakName, spec] of declaredExamples) {
     /* 예제 파일은 인스턴스 1개가 아닐 수 있다(변형 나열·화면 소유 껍데기).
        껍데기는 그 안의 승인된 인스턴스 하나와 글자 단위로 같아야 한다. */
     const deployed = extractInstance(await read(`dist/${spec.distribution}`), id).trim();
-    if (reactMarkups[breakName] !== deployed) failures.push(`${id} ${breakName} wrapper markup differs from the approved instance in ${spec.distribution}`);
-    if (!/^<[a-zA-Z][^>]*data-s1-component\s*=\s*["']/.test(reactMarkups[breakName])) {
+    if (vueMarkups[breakName] !== deployed) failures.push(`${id} ${breakName} wrapper markup differs from the approved instance in ${spec.distribution}`);
+    if (!/^<[a-zA-Z][^>]*data-s1-component\s*=\s*["']/.test(vueMarkups[breakName])) {
       failures.push(`${id} ${breakName} wrapper markup does not start at the component root`);
     }
+    if (!reactText.includes(`data-s1-component="${id}"`)) failures.push(`${id} React component does not render the component root`);
   }
-  if (Object.keys(reactMarkups).length !== declaredExamples.length) failures.push(`${id} wrapper markup set differs from the declared examples`);
+  if (Object.keys(vueMarkups).length !== declaredExamples.length) failures.push(`${id} wrapper markup set differs from the declared examples`);
   if (manifest.jsRequired && !reactText.includes("init(root)")) failures.push(`${id} React wrapper does not run the approved runtime`);
   if (manifest.jsRequired && !vueText.includes("init(element)")) failures.push(`${id} Vue wrapper does not run the approved runtime`);
 }
@@ -735,8 +736,13 @@ for (const entry of platformContract.components) {
       });
     } catch (error) {
       const detail = (error.errors ?? []).slice(0, 5).map((item) => `${item.location?.file ?? "?"}: ${item.text}`).join("\n");
-      failures.push(`React 껍데기가 번들되지 않습니다:\n${detail || error.message}`);
+      failures.push(`React 전달본이 번들되지 않습니다:\n${detail || error.message}`);
     }
+
+    /* 문법이 맞는 것과 "승인된 마크업이 그대로 나오는 것"은 다른 문제다.
+       실제로 그려서 예제와 대조하고, 데이터·슬롯·폼·자식 통로가 열려 있는지까지 본다. */
+    const parity = spawnSync(process.execPath, [path.join(libraryRoot, "scripts/react-parity-check.mjs")], { encoding: "utf8" });
+    if (parity.status !== 0) failures.push(`${(parity.stdout || "")}${(parity.stderr || "")}`.trim());
   }
 
   // ③ Vue 껍데기 (SFC 컴파일)

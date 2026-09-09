@@ -2,7 +2,7 @@
   "_meta": {
     "note": "자동 생성물 — 손으로 고치지 마세요. 정본을 고치고 `npm run tokens:reconcile` 또는 `npm run ui:build` 를 실행하세요.",
     "purpose": "Compose 부품이 배포본 CSS 의 어느 선언을 읽었고 어느 선언을 읽지 않았는지 드러낸다.",
-    "rule": "unreadDeclarations 는 표시·배치 규칙이어야 한다. 색·치수가 여기 남으면 부품이 그만큼 정본과 다르다."
+    "rule": "reason=pc-only 는 안드로이드가 쓰지 않는 PC 조합이라 안 읽은 것이고, reason=display-rule 은 값이 아니라 표시·배치 규칙이라 부품 뼈대가 직접 담당하는 것이다. 둘 중 어느 쪽도 아닌 색·치수가 남으면 부품이 그만큼 정본과 다르다는 뜻이다."
   },
   "icons": [
     "check",
@@ -167,8 +167,15 @@
         "placeholder"
       ],
       "unreadPcOnly": 19,
-      "unreadDisplayRules": 2,
+      "unreadDisplayRules": 3,
       "unreadDeclarations": [
+        {
+          "selector": "[data-s1-component=\"input\"][data-mode=\"search\"], [data-s1-component=\"input\"][data-mode=\"search\"] [data-s1-part=\"field\"]",
+          "media": null,
+          "property": "min-width",
+          "value": "200px",
+          "reason": "display-rule"
+        },
         {
           "selector": "[data-s1-component=\"input\"] [data-s1-part=\"action\"][hidden]",
           "media": null,

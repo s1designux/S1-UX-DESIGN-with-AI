@@ -4,6 +4,7 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import iconGeometryCheck from "../../scripts/ui-library-icon-geometry-check.js";
 import { buildPlatformOutputs } from "./platform.mjs";
+import { buildPreviewPage } from "./preview.mjs";
 
 const libraryRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const repositoryRoot = path.resolve(libraryRoot, "..");
@@ -153,6 +154,22 @@ async function createOutputs() {
   /* 툴별 전달 산출물 — 같은 빌드·같은 지문에서 생성한다.
      dist 를 매번 통째로 지우므로 여기서 함께 만들지 않으면 조용히 낡는다. */
   const behaviorLedger = JSON.parse(await read(path.join(repositoryRoot, "registry/components/component-behavior.pc.json")));
+
+  /* "언제 쓰나 / 이럴 땐 다른 걸" — 고를 때 필요한 말은 registry 가 정본이다.
+     개발자에게 나가는 자료에도 그대로 싣는다(옮겨 적지 않는다). */
+  const usageById = {};
+  for (const { id } of componentOutputs) {
+    const registry = JSON.parse(await read(path.join(repositoryRoot, `registry/components/${id}.json`)));
+    if (!registry.usage) throw new Error(`registry/components/${id}.json 에 usage 가 없습니다 — 고르기 안내를 만들 수 없습니다.`);
+    usageById[id] = registry.usage;
+  }
+  outputs.set("preview.html", buildPreviewPage({
+    componentOutputs,
+    usageById,
+    version: distManifest.version,
+    canonicalFingerprint: distManifest.canonicalFingerprint
+  }));
+
   const platformOutputs = buildPlatformOutputs({
     componentOutputs,
     tokensCss,
@@ -160,6 +177,7 @@ async function createOutputs() {
     distManifest,
     behaviorLedger,
     iconAssets,
+    usageById,
     fingerprints: {
       "assets/css/tokens.css": hash(tokensCss),
       "assets/css/typography.css": hash(typographyCss)

@@ -1,0 +1,9 @@
+{
+  "sourceFile": "plugins/figma-vars-installer/src/build-components.ts",
+  "sourceHash": "sha256:61ec4adc7c9153f22cecf0c932f15c74699a6ccca7ec777ca01460681275c29b",
+  "verifiedBy": "component-verifier",
+  "verdict": "pass",
+  "changeType": "structural",
+  "verifiedAt": "2026-09-09T07:49:13.456Z",
+  "notes": "Bottom Sheet 다크 사본에 모드를 만드는 시점에 주입(buildContent/makeFooterButton darkModeId). 전 페이지 노드 전수 대조(HEAD vs 작업본, 5229개 동일): 바뀐 노드는 Bottom Sheet {None,Single,Dual} — Dark 사본 안 21개(사본 뿌리3·close3·option12·footer버튼3)뿐, 마스터 51개 컴포넌트 세트 트리는 심층 바이트 동일. Date Picker Mobile Bottom Sheet 오염 없음(closeIcon 4곳 중 5043행만 darkModeId, 4511/4716/5253 무변경). darkModeId 는 asComponent=true 에서 undefined 로 마스터 미도달(전수 diff 로 증명). installer:check/keycheck/anatomy/iconpolicy 종료코드 0, gate:check error 는 Gate 13 하나. 멱등성(runs=1/2) 노드수 HEAD 와 동일(5157/4973). NOT_VERIFIED: 이 변경이 river 스크린샷 결함의 실제 원인을 고쳤는지는 미확인 — 두 mock 모두 FrameNode.findAll 을 stub 으로 처리해(canvas-mock.js:278) buildSpec 의 기존 findAll(INSTANCE) 후처리를 실행하지 못하므로 '변경 전 재현' 측정은 mock 산물이며, 실제 Figma 에서는 HEAD 도 이미 dark 로 덮였을 가능성이 높다. river 3칸이 서로 달랐던 것(특히 Dual 공백)도 이 원인 하나로 설명되지 않는다."
+}

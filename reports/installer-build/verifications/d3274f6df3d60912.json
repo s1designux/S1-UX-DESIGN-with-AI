@@ -1,0 +1,9 @@
+{
+  "sourceFile": "plugins/figma-vars-installer/src/build-components.ts",
+  "sourceHash": "sha256:d3274f6df3d60912b23504a3d3fd2a524252aa962f64a9a1e2ea7b4c335a9552",
+  "verifiedBy": "component-verifier",
+  "verdict": "pass",
+  "changeType": "structural",
+  "verifiedAt": "2026-09-09T04:29:25.971Z",
+  "notes": "3차 델타 재검증(시나리오 D). 2차 ❌(a) 재현·해소 확인: build-components.ts:6828 catY = Math.max(catY, rb + 140). 6회 연속 설치에서 15섹션 x/w/h/kids 전부 불변(Date Picker 17764/3376/4654/64), 세트 49 불변, loose 0. 독립 겹침 측정: 부품겹침 0 · 섹션겹침 0 · 섹션밖자식 0 (6런 전부). HEAD 대조로 결함 재현: HEAD run2/3 에서 부품겹침 13/19, 섹션밖자식 54, DP 1432x996 붕괴 — NEW 에서 소멸. 실패주입 4세트(GNB외3 / Chip / Table+Cell / Input) × HEAD·NEW: NEW 는 run1=run2 완전 동일, 타 카테고리 잠식 0. 회귀대조 5058노드 중 543 차이, 전부 props.name undefined→'<세트> — Spec Deco', 그 밖 속성 차이 0, unknownProps 0. installer:check exit 0, gate:check error 는 Gate 13 뿐. code.ts 레거시 스왑 3분기 제거 후 잔존 참조 0. 남은 항목: (b) 카테고리 섹션명↔멤버명 동명 충돌로 regionBottom 이 빈 옛 SECTION bbox 를 집는 사례 10건(실측 probe) — Math.max 가 흡수해 6런 산출 영향 0, 비차단. needs-decision: 사용자가 세트를 제 섹션 밖으로 옮긴 경우 canvasNodes() 2단 사정거리 밖(HEAD 대비 악화 아님, river 결정)."
+}
