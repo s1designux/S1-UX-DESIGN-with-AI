@@ -14,6 +14,7 @@
  * 출력: install-prompt.html 의 <!-- DEV-PANEL:START --> ~ <!-- DEV-PANEL:END --> 구간
  */
 
+const crypto = require('crypto');
 const fs = require('fs');
 const path = require('path');
 
@@ -21,6 +22,7 @@ const ROOT = path.join(__dirname, '..');
 const PAGE = path.join(ROOT, 'pages', 'install-prompt.html');
 const DIST = path.join(ROOT, 'ui-library', 'dist');
 const STAMP = path.join(ROOT, 'assets', 'downloads', 's1-ui-dev-package.stamp.json');
+const UPDATES = path.join(ROOT, 'assets', 'downloads', 'platform-updates.json');
 const REPOSITORY = 'https://github.com/s1designux/S1-UX-DESIGN-with-AI';
 const START = '<!-- DEV-PANEL:START — 자동 생성(npm run devpanel:gen). 손으로 고치지 마세요. -->';
 const END = '<!-- DEV-PANEL:END -->';
@@ -42,12 +44,68 @@ if (stamp.distFingerprint && stamp.canonicalFingerprint !== manifest.canonicalFi
 
 const approved = manifest.components.filter((component) => component.status === 'approved');
 
+/* ── 툴별 "마지막으로 바뀐 날" ───────────────────────────────────────────
+   빌드는 날짜를 남기지 않는다(같은 정본이면 같은 결과여야 하므로). 그래서 툴마다
+   전달본 내용의 지문을 떠서 장부에 적어 두고, 지문이 달라진 날만 날짜를 새로 적는다.
+   → 내용이 그대로면 날짜도 그대로다(다시 만들어도 화면이 흔들리지 않는다). */
+const TOOL_SOURCES = {
+  'html-css-js': ['s1-ui.css', 's1-ui.js', 's1-ui.auto.js', 'components', 'examples', 'assets'],
+  react: ['platform/react'],
+  vue: ['platform/vue'],
+  kotlin: ['platform/kotlin', 'platform/behavior.json'],
+  swift: ['platform/swift', 'platform/behavior.json'],
+  cpp: ['platform/cpp', 'platform/behavior.json']
+};
+
+function collectFiles(target, into = []) {
+  const absolute = path.join(DIST, target);
+  if (!fs.existsSync(absolute)) return into;
+  if (fs.statSync(absolute).isDirectory()) {
+    for (const entry of fs.readdirSync(absolute).sort()) collectFiles(path.join(target, entry), into);
+    return into;
+  }
+  into.push(absolute);
+  return into;
+}
+
+function toolFingerprint(key) {
+  const digest = crypto.createHash('sha256');
+  for (const source of TOOL_SOURCES[key] ?? []) {
+    for (const file of collectFiles(source)) {
+      digest.update(path.relative(DIST, file));
+      digest.update('\0');
+      digest.update(fs.readFileSync(file));
+      digest.update('\0');
+    }
+  }
+  return digest.digest('hex');
+}
+
+const today = new Date().toISOString().slice(0, 10);
+const ledger = fs.existsSync(UPDATES) ? JSON.parse(fs.readFileSync(UPDATES, 'utf8')) : { note: '자동 생성물 — 툴별 전달본이 마지막으로 바뀐 날. 지문이 달라진 날만 갱신된다.', tools: {} };
+const updatedAt = {};
+let ledgerChanged = false;
+for (const key of Object.keys(TOOL_SOURCES)) {
+  const fingerprint = toolFingerprint(key);
+  const known = ledger.tools[key];
+  if (!known || known.fingerprint !== fingerprint) {
+    ledger.tools[key] = { fingerprint, date: today };
+    ledgerChanged = true;
+  }
+  updatedAt[key] = ledger.tools[key].date;
+}
+if (ledgerChanged && !checkOnly) fs.writeFileSync(UPDATES, `${JSON.stringify(ledger, null, 2)}\n`);
+if (ledgerChanged && checkOnly) {
+  console.error('❌ 툴별 전달본이 바뀌었는데 갱신 날짜가 적히지 않았습니다 — `npm run devpanel:gen` 을 실행하세요.');
+  process.exit(1);
+}
+
 /* 툴 카드 — 무엇을 주는지, 어디까지 되는지, 첫 줄을 어떻게 시작하는지. */
 const TOOL_CARDS = [
   {
     key: 'html-css-js',
     title: 'HTML · CSS · JavaScript',
-    note: '퍼블리싱 · jQuery · JSP·PHP 같은 서버 렌더링',
+    note: `${approved.length}종 전부 · 퍼블리싱 · jQuery · JSP·PHP 같은 서버 렌더링`,
     support: 'full',
     supportLabel: '컴포넌트 그대로 사용',
     code: `<link rel="stylesheet" href="s1-ui/assets/css/tokens.css">
@@ -62,7 +120,7 @@ const TOOL_CARDS = [
   {
     key: 'react',
     title: 'React · Next.js',
-    note: 'JSX 빌드 도구 필요 · 서버 렌더링·타입 정의 포함',
+    note: `${approved.length}종 전부 · JSX 빌드 도구 필요 · 서버 렌더링·타입 정의 포함`,
     support: 'full',
     supportLabel: '컴포넌트 그대로 사용',
     code: `import { S1Button, S1Input, S1Table }
@@ -80,7 +138,7 @@ const TOOL_CARDS = [
   {
     key: 'vue',
     title: 'Vue',
-    note: 'SFC(.vue) 빌드 도구가 필요합니다',
+    note: `${approved.length}종 전부 · SFC(.vue) 빌드 도구가 필요합니다`,
     support: 'full',
     supportLabel: '컴포넌트 그대로 사용',
     code: `import { S1Button } from "./s1-ui/platform/vue";
@@ -145,7 +203,10 @@ function toolCard(tool) {
                 <div class="devtool-title">${escape(tool.title)}</div>
                 <div class="devtool-note">${escape(tool.note)}</div>
               </div>
-              ${badge}
+              <div class="devtool-head-right">
+                ${badge}
+                <span class="devtool-updated">업데이트 ${escape(updatedAt[tool.key] ?? '—')}</span>
+              </div>
             </div>
             <pre class="devtool-code"><code>${escape(tool.code)}</code></pre>
             <div class="devtool-foot">
@@ -170,21 +231,19 @@ const panel = `${START}
                 <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
                   <div class="step-title">S1 UI 라이브러리 배포본 <span class="ver-badge">${escape(manifest.version)}</span></div>
                 </div>
-                <div class="step-desc">디자인에서 승인한 컴포넌트 ${approved.length}종과 토큰 ${platform.tokenCount}개를 그대로 담은 웹 배포본입니다. 색·크기·동작을 새로 만들지 말고 이 안에 있는 것을 쓰세요 <strong style="color:#c2410c;">— 지금은 화면만 공개돼 있고 받기는 준비 중입니다</strong></div>
+                <div class="step-desc">디자인에서 승인한 컴포넌트 ${approved.length}종과 토큰 ${platform.tokenCount}개를 그대로 담은 웹 배포본입니다. 색·크기·동작을 새로 만들지 말고 이 안에 있는 것을 쓰세요</div>
               </div>
-              <!-- 배포 준비 전이라 받기는 막아 둔다(river 지시 2026-09-04). 화면 구성만 먼저 연다.
-                   열 때는 이 버튼을 a.download-btn 으로 되돌리면 된다 — 파일 경로는 이미 만들어져 있다. -->
-              <span class="download-btn download-btn-disabled" style="margin-left:auto;" aria-disabled="true" title="배포 준비 중입니다">
+              <!-- 받기 공개 (river 지시 2026-09-09). 다시 막을 때는 span.download-btn-disabled 로 되돌린다. -->
+              <a class="download-btn" style="margin-left:auto;" href="../assets/downloads/${escape(stamp.zip)}" download>
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
                 ZIP 다운로드
-                <em class="download-soon">준비 중</em>
-              </span>
+              </a>
             </div>
             <div class="devget-row">
               <div class="devget-item">
                 <div class="devget-label">항상 최신으로 쓰려면</div>
                 <div class="devget-body">저장소를 그대로 참조하면 디자인이 고칠 때 같이 최신이 됩니다.
-                  <span class="devget-pending">${REPOSITORY.replace('https://', '')}/ui-library/dist — 공개 준비 중</span>
+                  <a class="devget-link" href="${REPOSITORY}/tree/main/ui-library/dist" target="_blank" rel="noopener">${REPOSITORY.replace('https://', '')}/ui-library/dist ↗</a>
                 </div>
               </div>
               <div class="devget-item">
@@ -215,7 +274,7 @@ ${TOOL_CARDS.map(toolCard).join('\n')}
             <div class="step-header">
               <div>
                 <div class="step-title">들어있는 컴포넌트 ${approved.length}종</div>
-                <div class="step-desc">마크업은 상상하지 말고 <code>examples/</code> 폴더의 파일을 복사해서 쓰세요. 모바일용은 <code>*.mobile.html</code> 입니다</div>
+                <div class="step-desc">아래 ${approved.length}종이 모두 들어 있습니다. HTML 은 <code>examples/</code> 폴더의 파일을 복사해서 쓰고(모바일용은 <code>*.mobile.html</code>), React·Vue 는 이름 앞에 <code>S1</code> 을 붙여 부릅니다 — <code>input → S1Input</code> · <code>date-picker → S1DatePicker</code></div>
               </div>
             </div>
             <div class="devcomp-list">
