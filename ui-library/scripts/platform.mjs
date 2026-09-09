@@ -16,6 +16,8 @@
  *   JSON 은 원본 이름을 그대로 유지해 정본으로 되짚을 수 있게 한다.
  */
 
+import { buildReactComponent, buildReactPackage, buildReactReadme, buildReactRuntime, buildReactTypes, reactComponentFacts } from "./react.mjs";
+
 const GENERATED_NOTE = "자동 생성물 — 손으로 고치지 마세요. 정본을 고치고 `npm run tokens:reconcile` 또는 `npm run ui:build` 를 실행하세요.";
 
 /* ── 1. tokens.css 판독 ──────────────────────────────────────────────── */
@@ -499,90 +501,6 @@ function wrapperFacts({ id, manifest, example, exampleByBreak }) {
   };
 }
 
-export function buildReactComponent(component) {
-  const facts = wrapperFacts(component);
-  const runtimeImport = facts.jsRequired
-    ? `import { init, destroy } from "../../components/${facts.id}.js";`
-    : `// ${facts.id} 는 JavaScript 런타임이 없다 — 브라우저 기본 동작만 쓴다.`;
-  const eventProps = facts.events.map(({ propName }) => propName);
-  const signature = ["variant", "size", "breakName = DEFAULT_BREAK", "parts", "className", "style", ...eventProps, "...rest"].join(", ");
-  const eventEffect = facts.events.length === 0
-    ? ""
-    : `
-  useEffect(() => {
-    const root = rootRef.current;
-    if (!root) return undefined;
-    const props = { ${eventProps.join(", ")} };
-    const bound = ${JSON.stringify(facts.events.map(({ eventName, propName }) => [eventName, propName]))}
-      .map(([eventName, propName]) => [eventName, props[propName]])
-      .filter(([, handler]) => typeof handler === "function");
-    for (const [eventName, handler] of bound) root.addEventListener(eventName, handler);
-    return () => { for (const [eventName, handler] of bound) root.removeEventListener(eventName, handler); };
-  });
-`;
-  return `/* ${GENERATED_NOTE} */
-/* ${facts.componentName} — 승인된 배포본을 그대로 마운트하는 React 껍데기.
-   마크업을 새로 쓰지 않는다. MARKUPS 는 dist/examples/${facts.id}*.html 안의 승인된 인스턴스를 그대로 도려낸 것이다.
-   host 는 display:contents 라 레이아웃에 끼어들지 않는다. */
-import { useEffect, useRef } from "react";
-${runtimeImport}
-
-export const MARKUPS = ${JSON.stringify(facts.markups, null, 2)};
-export const DEFAULT_BREAK = ${JSON.stringify(facts.defaultBreak)};
-export const BREAKS = ${JSON.stringify(Object.keys(facts.markups))};
-export const VARIANTS = ${JSON.stringify(facts.variants)};
-export const SIZES = ${JSON.stringify(facts.sizes)};
-export const PARTS = ${JSON.stringify(facts.parts)};
-/* variant·size 를 담는 속성 이름은 컴포넌트마다 다르다 — 승인된 마크업에서 읽어 온 것이다.
-   null 이면 그 축이 마크업 속성으로 드러나지 않아 prop 으로 바꿀 수 없다는 뜻이다. */
-export const VARIANT_ATTRIBUTE = ${JSON.stringify(facts.variantAttribute)};
-export const SIZE_ATTRIBUTE = ${JSON.stringify(facts.sizeAttribute)};
-
-function assertAllowed(label, value, allowed) {
-  if (value === undefined || allowed.length === 0 || allowed.includes(value)) return;
-  throw new Error(\`[s1-ui] ${facts.id}: 승인되지 않은 \${label} "\${value}". 쓸 수 있는 값: \${allowed.join(", ")}\`);
-}
-
-export default function ${facts.componentName}({ ${signature} }) {
-  const hostRef = useRef(null);
-  const rootRef = useRef(null);
-  assertAllowed("variant", variant, VARIANTS);
-  assertAllowed("size", size, SIZES);
-  assertAllowed("breakName", breakName, BREAKS);
-
-  useEffect(() => {
-    const host = hostRef.current;
-    host.innerHTML = MARKUPS[breakName] ?? MARKUPS[DEFAULT_BREAK];
-    const root = host.firstElementChild;
-    rootRef.current = root;
-${facts.jsRequired ? "    init(root);\n" : ""}    return () => {
-${facts.jsRequired ? "      destroy(root);\n" : ""}      host.innerHTML = "";
-      rootRef.current = null;
-    };
-  }, [breakName]);
-
-  useEffect(() => {
-    const root = rootRef.current;
-    if (!root) return;
-    if (variant !== undefined && VARIANT_ATTRIBUTE) root.setAttribute(VARIANT_ATTRIBUTE, variant);
-    if (size !== undefined && SIZE_ATTRIBUTE) root.setAttribute(SIZE_ATTRIBUTE, size);
-    if (className) root.className = className;
-    if (style) Object.assign(root.style, style);
-    for (const [key, value] of Object.entries(rest)) {
-      if (value === undefined || value === null || value === false) root.removeAttribute(key);
-      else root.setAttribute(key, value === true ? "" : String(value));
-    }
-    for (const [name, text] of Object.entries(parts ?? {})) {
-      const target = root.querySelector(\`[data-s1-part="\${name}"]\`);
-      if (target) target.textContent = text;
-    }
-  });
-${eventEffect}
-  return <div ref={hostRef} style={{ display: "contents" }} />;
-}
-`;
-}
-
 export function buildVueComponent(component) {
   const facts = wrapperFacts(component);
   const runtimeImport = facts.jsRequired
@@ -714,6 +632,11 @@ export function buildPlatformOutputs({ componentOutputs, tokensCss, typographyCs
     outputs.set(`platform/react/${component.id}.jsx`, buildReactComponent(component));
     outputs.set(`platform/vue/${pascalId(component.id)}.vue`, buildVueComponent(component));
   }
+  const reactFacts = approved.map((component) => reactComponentFacts(component));
+  outputs.set("platform/react/runtime.js", buildReactRuntime());
+  outputs.set("platform/react/package.json", buildReactPackage(distManifest.version));
+  outputs.set("platform/react/index.d.ts", buildReactTypes(reactFacts));
+  outputs.set("platform/react/README.md", buildReactReadme(reactFacts));
   outputs.set("platform/react/index.js", `/* ${GENERATED_NOTE} */\n${approved.map(({ id }) => `export { default as S1${pascalId(id)} } from "./${id}.jsx";`).join("\n")}\n`);
   outputs.set("platform/vue/index.js", `/* ${GENERATED_NOTE} */\n${approved.map(({ id }) => `export { default as S1${pascalId(id)} } from "./${pascalId(id)}.vue";`).join("\n")}\n`);
 
@@ -723,7 +646,7 @@ export function buildPlatformOutputs({ componentOutputs, tokensCss, typographyCs
     generatedAt: null,
     platforms: {
       "html-css-js": { entry: "s1-ui.css · s1-ui.auto.js", componentSupport: "full", lint: true },
-      react: { entry: "platform/react/index.js", componentSupport: "full", lint: true, requires: "JSX 빌드 도구" },
+      react: { entry: "platform/react/index.js", componentSupport: "full", lint: true, requires: "JSX 빌드 도구", note: "진짜 React 컴포넌트 — 서버 렌더링·데이터 목록·자식 요소·폼 연결을 지원한다." },
       vue: { entry: "platform/vue/index.js", componentSupport: "full", lint: true, requires: "SFC 빌드 도구" },
       kotlin: { entry: "platform/kotlin/S1Tokens.kt", componentSupport: "tokens-only", lint: false },
       swift: { entry: "platform/swift/S1Tokens.swift", componentSupport: "tokens-only", lint: false },
