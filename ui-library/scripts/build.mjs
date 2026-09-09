@@ -159,6 +159,7 @@ async function createOutputs() {
     typographyCss,
     distManifest,
     behaviorLedger,
+    iconAssets,
     fingerprints: {
       "assets/css/tokens.css": hash(tokensCss),
       "assets/css/typography.css": hash(typographyCss)

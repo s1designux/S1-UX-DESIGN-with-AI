@@ -1,0 +1,958 @@
+<!doctype html>
+<html lang="ko" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kotlin(Compose) 부품 검수 — S1 Design System</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+<link rel="stylesheet" href="../../../ui-library/dist/assets/css/tokens.css">
+<link rel="stylesheet" href="../../../ui-library/dist/assets/css/typography.css">
+<link rel="stylesheet" href="../../../ui-library/dist/s1-ui.css">
+<style>
+  /* 상태 흉내 — 검수 화면에서만 쓰는 사본 규칙. 값이 아니라 "언제 보이는가"만 바꾼다. */
+  body { background: var(--color-bg-level-1); color: var(--color-text-body-primary); font-family: "Pretendard", sans-serif; margin: 0; padding: 32px; }
+  header { margin-bottom: 32px; }
+  h1 { font-size: 24px; margin: 0 0 8px; }
+  .lead { color: var(--color-text-body-secondary, var(--color-text-body-primary)); font-size: 14px; line-height: 1.6; margin: 0 0 4px; max-width: 900px; }
+  .toolbar { display: flex; gap: 8px; margin: 16px 0 0; }
+  .toolbar button { border: 1px solid var(--color-border-default, #ddd); background: var(--color-bg-level-0); color: inherit; border-radius: 6px; cursor: pointer; font: inherit; padding: 6px 12px; }
+  .toolbar button[aria-pressed="true"] { background: var(--color-blue-400); color: #fff; }
+  section { background: var(--color-bg-level-0); border-radius: 12px; margin-bottom: 24px; padding: 20px 24px; }
+  h2 { font-size: 18px; margin: 0 0 4px; }
+  .meta { color: var(--color-text-body-primary); font-size: 12px; margin: 0 0 12px; opacity: .7; }
+  table { border-collapse: collapse; width: 100%; }
+  th { font-size: 12px; opacity: .7; padding: 6px 8px; text-align: left; }
+  td { border-top: 1px solid var(--color-bg-level-3); padding: 12px 8px; vertical-align: middle; }
+  td.key { white-space: nowrap; width: 1%; }
+  td.key code { font-size: 12px; }
+  td.sample { width: 42%; }
+  .chip { align-items: center; background: var(--color-bg-level-1); border-radius: 999px; display: inline-flex; font-size: 11px; gap: 4px; margin: 2px 4px 2px 0; padding: 3px 8px; }
+  .chip i { border: 1px solid rgba(0,0,0,.15); border-radius: 3px; display: inline-block; height: 12px; width: 12px; }
+  .chip code { font-size: 10px; opacity: .75; }
+  .ok { color: var(--color-text-state-correct); font-size: 12px; margin: 12px 0 0; }
+  .warn { color: var(--color-text-state-caution); font-size: 12px; margin: 12px 0 4px; }
+  .unread { font-size: 11px; margin: 0; opacity: .8; padding-left: 18px; }
+  .unread span { opacity: .6; }
+  nav { display: flex; flex-wrap: wrap; gap: 8px; margin: 16px 0 24px; }
+  nav a { background: var(--color-bg-level-0); border-radius: 999px; color: inherit; font-size: 12px; padding: 4px 12px; text-decoration: none; }
+  /* 검수 화면 전용 받침 — 모달은 화면 전체를 덮는 부품이라 표 안에 눕혀 놓는다.
+     값은 건드리지 않고 자리만 바꾼다(딤은 검수에 방해라 감춘다). */
+  .sample [data-s1-component="modal"] { display: inline-flex; inset: auto; position: relative; z-index: 0; }
+  .sample [data-s1-component="modal"] [data-s1-part="overlay"] { display: none; }
+  .sample [data-s1-component="select"] [data-s1-part="panel"] { display: none; }
+</style>
+</head>
+<body>
+<header>
+  <h1>Kotlin(Compose) 부품 검수</h1>
+  <p class="lead">왼쪽은 <b>승인된 웹 배포본</b>이 그 상태에서 실제로 그리는 모습이고, 오른쪽은 <b>안드로이드 부품이 쓰는 값</b>입니다.</p>
+  <p class="lead">두 값이 같다는 것은 기계가 이미 확인했습니다 — 브라우저가 계산한 값과 표의 값을 전부 맞춰 봤고 어긋난 곳이 없습니다.</p>
+  <p class="lead">그래서 여기서 봐 주실 것은 하나입니다: <b>이 모양이 안드로이드에 그대로 나가도 되는지.</b></p>
+  <div class="toolbar">
+    <button type="button" id="light" aria-pressed="true">라이트</button>
+    <button type="button" id="dark" aria-pressed="false">다크</button>
+  </div>
+</header>
+<nav><a href="#button">button</a><a href="#chip">chip</a><a href="#checkbox">checkbox</a><a href="#radio">radio</a><a href="#toggle">toggle</a><a href="#tab">tab</a><a href="#select">select</a><a href="#dropdown">dropdown</a><a href="#input">input</a><a href="#modal">modal</a></nav>
+
+    <section id="button">
+      <h2>button</h2>
+      <p class="meta">승인 조합 36가지</p>
+      <table>
+        <thead><tr><th>조합</th><th>승인된 웹 배포본이 그리는 모습</th><th>Compose 가 쓰는 값</th></tr></thead>
+        <tbody>
+      <tr>
+        <td class="key"><code>primary|md|default</code></td>
+        <td class="sample"><button data-s1-component="button" data-variant="primary" data-size="md" type="button"><span data-s1-part="label">확인</span></button></td>
+        <td class="values"><span class="chip"><i style="background:#1D6CEB"></i>배경 <code>--color-button-bg-primary--default</code></span><span class="chip"><i style="background:#FFFFFF"></i>글자 <code>--color-button-label-primary--default</code></span><span class="chip"><i style="background:#1D6CEB"></i>테두리 <code>--color-button-border-primary--default</code></span><span class="chip">높이 <b>44dp</b></span><span class="chip">최소폭 <b>80dp</b></span><span class="chip">모서리 <b>4dp</b></span><span class="chip">테두리 <b>1dp</b></span><span class="chip">좌우여백 <b>16dp</b></span><span class="chip">글자크기 <b>14sp</b></span><span class="chip">굵기 <b>500</b></span></td>
+      </tr>
+      <tr>
+        <td class="key"><code>primary|md|hover</code></td>
+        <td class="sample"><button data-s1-component="button" data-variant="primary" data-size="md" type="button" data-force-hover><span data-s1-part="label">확인</span></button></td>
+        <td class="values"><span class="chip"><i style="background:#2747B9"></i>배경 <code>--color-button-bg-primary--hover</code></span><span class="chip"><i style="background:#FFFFFF"></i>글자 <code>--color-button-label-primary--hover</code></span><span class="chip"><i style="background:#2747B9"></i>테두리 <code>--color-button-border-primary--hover</code></span><span class="chip">높이 <b>44dp</b></span><span class="chip">최소폭 <b>80dp</b></span><span class="chip">모서리 <b>4dp</b></span><span class="chip">테두리 <b>1dp</b></span><span class="chip">좌우여백 <b>16dp</b></span><span class="chip">글자크기 <b>14sp</b></span><span class="chip">굵기 <b>500</b></span></td>
+      </tr>
+      <tr>
+        <td class="key"><code>primary|md|disabled</code></td>
+        <td class="sample"><button data-s1-component="button" data-variant="primary" data-size="md" type="button" disabled><span data-s1-part="label">확인</span></button></td>
+        <td class="values"><span class="chip"><i style="background:#F5F5F5"></i>배경 <code>--color-button-bg-disabled</code></span><span class="chip"><i style="background:#C4C4C4"></i>글자 <code>--color-button-label-disabled</code></span><span class="chip"><i style="background:#D9D9D9"></i>테두리 <code>--color-button-border-disabled</code></span><span class="chip">높이 <b>44dp</b></span><span class="chip">최소폭 <b>80dp</b></span><span class="chip">모서리 <b>4dp</b></span><span class="chip">테두리 <b>1dp</b></span><span class="chip">좌우여백 <b>16dp</b></span><span class="chip">글자크기 <b>14sp</b></span><span class="chip">굵기 <b>500</b></span></td>
+      </tr>
+      <tr>
+        <td class="key"><code>secondary|md|default</code></td>
+        <td class="sample"><button data-s1-component="button" data-variant="secondary" data-size="md" type="button"><span data-s1-part="label">취소</span></button></td>
+        <td class="values"><span class="chip"><i style="background:#FFFFFF"></i>배경 <code>--color-button-bg-secondary--default</code></span><span class="chip"><i style="background:#353535"></i>글자 <code>--color-button-label-secondary--default</code></span><span class="chip"><i style="background:#D9D9D9"></i>테두리 <code>--color-button-border-secondary--default</code></span><span class="chip">높이 <b>44dp</b></span><span class="chip">최소폭 <b>80dp</b></span><span class="chip">모서리 <b>4dp</b></span><span class="chip">테두리 <b>1dp</b></span><span class="chip">좌우여백 <b>16dp</b></span><span class="chip">글자크기 <b>14sp</b></span><span class="chip">굵기 <b>500</b></span></td>
+      </tr>
+      <tr>
+        <td class="key"><code>secondary|md|hover</code></td>
+        <td class="sample"><button data-s1-component="button" data-variant="secondary" data-size="md" type="button" data-force-hover><span data-s1-part="label">취소</span></button></td>
+        <td class="values"><span class="chip"><i style="background:#F5F5F5"></i>배경 <code>--color-button-bg-secondary--hover</code></span><span class="chip"><i style="background:#353535"></i>글자 <code>--color-button-label-secondary--hover</code></span><span class="chip"><i style="background:#D9D9D9"></i>테두리 <code>--color-button-border-secondary--hover</code></span><span class="chip">높이 <b>44dp</b></span><span class="chip">최소폭 <b>80dp</b></span><span class="chip">모서리 <b>4dp</b></span><span class="chip">테두리 <b>1dp</b></span><span class="chip">좌우여백 <b>16dp</b></span><span class="chip">글자크기 <b>14sp</b></span><span class="chip">굵기 <b>500</b></span></td>
+      </tr>
+      <tr>
+        <td class="key"><code>secondary|md|disabled</code></td>
+        <td class="sample"><button data-s1-component="button" data-variant="secondary" data-size="md" type="button" disabled><span data-s1-part="label">취소</span></button></td>
+        <td class="values"><span class="chip"><i style="background:#F5F5F5"></i>배경 <code>--color-button-bg-disabled</code></span><span class="chip"><i style="background:#C4C4C4"></i>글자 <code>--color-button-label-disabled</code></span><span class="chip"><i style="background:#D9D9D9"></i>테두리 <code>--color-button-border-disabled</code></span><span class="chip">높이 <b>44dp</b></span><span class="chip">최소폭 <b>80dp</b></span><span class="chip">모서리 <b>4dp</b></span><span class="chip">테두리 <b>1dp</b></span><span class="chip">좌우여백 <b>16dp</b></span><span class="chip">글자크기 <b>14sp</b></span><span class="chip">굵기 <b>500</b></span></td>
+      </tr>
+      <tr>
+        <td class="key"><code>blue-line|md|default</code></td>
+        <td class="sample"><button data-s1-component="button" data-variant="blue-line" data-size="md" type="button"><span data-s1-part="label">취소</span></button></td>
+        <td class="values"><span class="chip"><i style="background:#FFFFFF"></i>배경 <code>--color-button-bg-blue-line--default</code></span><span class="chip"><i style="background:#1D6CEB"></i>글자 <code>--color-button-label-blue-line--default</code></span><span class="chip"><i style="background:#1D6CEB"></i>테두리 <code>--color-button-border-blue-line--default</code></span><span class="chip">높이 <b>44dp</b></span><span class="chip">최소폭 <b>80dp</b></span><span class="chip">모서리 <b>4dp</b></span><span class="chip">테두리 <b>1dp</b></span><span class="chip">좌우여백 <b>16dp</b></span><span class="chip">글자크기 <b>14sp</b></span><span class="chip">굵기 <b>500</b></span></td>
+      </tr>
+      <tr>
+        <td class="key"><code>blue-line|md|hover</code></td>
+        <td class="sample"><button data-s1-component="button" data-variant="blue-line" data-size="md" type="button" data-force-hover><span data-s1-part="label">취소</span></button></td>
+        <td class="values"><span class="chip"><i style="background:#E2F1FF"></i>배경 <code>--color-button-bg-blue-line--hover</code></span><span class="chip"><i style="background:#2747B9"></i>글자 <code>--color-button-label-blue-line--hover</code></span><span class="chip"><i style="background:#1D6CEB"></i>테두리 <code>--color-button-border-blue-line--hover</code></span><span class="chip">높이 <b>44dp</b></span><span class="chip">최소폭 <b>80dp</b></span><span class="chip">모서리 <b>4dp</b></span><span class="chip">테두리 <b>1dp</b></span><span class="chip">좌우여백 <b>16dp</b></span><span class="chip">글자크기 <b>14sp</b></span><span class="chip">굵기 <b>500</b></span></td>
+      </tr>
+      <tr>
+        <td class="key"><code>blue-line|md|disabled</code></td>
+        <td class="sample"><button data-s1-component="button" data-variant="blue-line" data-size="md" type="button" disabled><span data-s1-part="label">취소</span></button></td>
+        <td class="values"><span class="chip"><i style="background:#F5F5F5"></i>배경 <code>--color-button-bg-disabled</code></span><span class="chip"><i style="background:#C4C4C4"></i>글자 <code>--color-button-label-disabled</code></span><span class="chip"><i style="background:#D9D9D9"></i>테두리 <code>--color-button-border-disabled</code></span><span class="chip">높이 <b>44dp</b></span><span class="chip">최소폭 <b>80dp</b></span><span class="chip">모서리 <b>4dp</b></span><span class="chip">테두리 <b>1dp</b></span><span class="chip">좌우여백 <b>16dp</b></span><span class="chip">글자크기 <b>14sp</b></span><span class="chip">굵기 <b>500</b></span></td>
+      </tr>
+      <tr>
+        <td class="key"><code>primary|xsm|default</code></td>
+        <td class="sample"><button data-s1-component="button" data-variant="primary" data-size="xsm" type="button"><span data-s1-part="label">확인</span></button></td>
+        <td class="values"><span class="chip"><i style="background:#1D6CEB"></i>배경 <code>--color-button-bg-primary--default</code></span><span class="chip"><i style="background:#FFFFFF"></i>글자 <code>--color-button-label-primary--default</code></span><span class="chip"><i style="background:#1D6CEB"></i>테두리 <code>--color-button-border-primary--default</code></span><span class="chip">높이 <b>34dp</b></span><span class="chip">최소폭 <b>64dp</b></span><span class="chip">모서리 <b>4dp</b></span><span class="chip">테두리 <b>1dp</b></span><span class="chip">좌우여백 <b>8dp</b></span><span class="chip">글자크기 <b>14sp</b></span><span class="chip">굵기 <b>500</b></span></td>
+      </tr>
+      <tr>
+        <td class="key"><code>primary|xsm|hover</code></td>
+        <td class="sample"><button data-s1-component="button" data-variant="primary" data-size="xsm" type="button" data-force-hover><span data-s1-part="label">확인</span></button></td>
+        <td class="values"><span class="chip"><i style="background:#2747B9"></i>배경 <code>--color-button-bg-primary--hover</code></span><span class="chip"><i style="background:#FFFFFF"></i>글자 <code>--color-button-label-primary--hover</code></span><span class="chip"><i style="background:#2747B9"></i>테두리 <code>--color-button-border-primary--hover</code></span><span class="chip">높이 <b>34dp</b></span><span class="chip">최소폭 <b>64dp</b></span><span class="chip">모서리 <b>4dp</b></span><span class="chip">테두리 <b>1dp</b></span><span class="chip">좌우여백 <b>8dp</b></span><span class="chip">글자크기 <b>14sp</b></span><span class="chip">굵기 <b>500</b></span></td>
+      </tr>
+      <tr>
+        <td class="key"><code>primary|xsm|disabled</code></td>
+        <td class="sample"><button data-s1-component="button" data-variant="primary" data-size="xsm" type="button" disabled><span data-s1-part="label">확인</span></button></td>
+        <td class="values"><span class="chip"><i style="background:#F5F5F5"></i>배경 <code>--color-button-bg-disabled</code></span><span class="chip"><i style="background:#C4C4C4"></i>글자 <code>--color-button-label-disabled</code></span><span class="chip"><i style="background:#D9D9D9"></i>테두리 <code>--color-button-border-disabled</code></span><span class="chip">높이 <b>34dp</b></span><span class="chip">최소폭 <b>64dp</b></span><span class="chip">모서리 <b>4dp</b></span><span class="chip">테두리 <b>1dp</b></span><span class="chip">좌우여백 <b>8dp</b></span><span class="chip">글자크기 <b>14sp</b></span><span class="chip">굵기 <b>500</b></span></td>
+      </tr>
+      <tr>
+        <td class="key"><code>secondary|xsm|default</code></td>
+        <td class="sample"><button data-s1-component="button" data-variant="secondary" data-size="xsm" type="button"><span data-s1-part="label">취소</span></button></td>
+        <td class="values"><span class="chip"><i style="background:#FFFFFF"></i>배경 <code>--color-button-bg-secondary--default</code></span><span class="chip"><i style="background:#353535"></i>글자 <code>--color-button-label-secondary--default</code></span><span class="chip"><i style="background:#D9D9D9"></i>테두리 <code>--color-button-border-secondary--default</code></span><span class="chip">높이 <b>34dp</b></span><span class="chip">최소폭 <b>64dp</b></span><span class="chip">모서리 <b>4dp</b></span><span class="chip">테두리 <b>1dp</b></span><span class="chip">좌우여백 <b>8dp</b></span><span class="chip">글자크기 <b>14sp</b></span><span class="chip">굵기 <b>500</b></span></td>
+      </tr>
+      <tr>
+        <td class="key"><code>secondary|xsm|hover</code></td>
+        <td class="sample"><button data-s1-component="button" data-variant="secondary" data-size="xsm" type="button" data-force-hover><span data-s1-part="label">취소</span></button></td>
+        <td class="values"><span class="chip"><i style="background:#F5F5F5"></i>배경 <code>--color-button-bg-secondary--hover</code></span><span class="chip"><i style="background:#353535"></i>글자 <code>--color-button-label-secondary--hover</code></span><span class="chip"><i style="background:#D9D9D9"></i>테두리 <code>--color-button-border-secondary--hover</code></span><span class="chip">높이 <b>34dp</b></span><span class="chip">최소폭 <b>64dp</b></span><span class="chip">모서리 <b>4dp</b></span><span class="chip">테두리 <b>1dp</b></span><span class="chip">좌우여백 <b>8dp</b></span><span class="chip">글자크기 <b>14sp</b></span><span class="chip">굵기 <b>500</b></span></td>
+      </tr>
+      <tr>
+        <td class="key"><code>secondary|xsm|disabled</code></td>
+        <td class="sample"><button data-s1-component="button" data-variant="secondary" data-size="xsm" type="button" disabled><span data-s1-part="label">취소</span></button></td>
+        <td class="values"><span class="chip"><i style="background:#F5F5F5"></i>배경 <code>--color-button-bg-disabled</code></span><span class="chip"><i style="background:#C4C4C4"></i>글자 <code>--color-button-label-disabled</code></span><span class="chip"><i style="background:#D9D9D9"></i>테두리 <code>--color-button-border-disabled</code></span><span class="chip">높이 <b>34dp</b></span><span class="chip">최소폭 <b>64dp</b></span><span class="chip">모서리 <b>4dp</b></span><span class="chip">테두리 <b>1dp</b></span><span class="chip">좌우여백 <b>8dp</b></span><span class="chip">글자크기 <b>14sp</b></span><span class="chip">굵기 <b>500</b></span></td>
+      </tr>
+      <tr>
+        <td class="key"><code>blue-line|xsm|default</code></td>
+        <td class="sample"><button data-s1-component="button" data-variant="blue-line" data-size="xsm" type="button"><span data-s1-part="label">취소</span></button></td>
+        <td class="values"><span class="chip"><i style="background:#FFFFFF"></i>배경 <code>--color-button-bg-blue-line--default</code></span><span class="chip"><i style="background:#1D6CEB"></i>글자 <code>--color-button-label-blue-line--default</code></span><span class="chip"><i style="background:#1D6CEB"></i>테두리 <code>--color-button-border-blue-line--default</code></span><span class="chip">높이 <b>34dp</b></span><span class="chip">최소폭 <b>64dp</b></span><span class="chip">모서리 <b>4dp</b></span><span class="chip">테두리 <b>1dp</b></span><span class="chip">좌우여백 <b>8dp</b></span><span class="chip">글자크기 <b>14sp</b></span><span class="chip">굵기 <b>500</b></span></td>
+      </tr>
+      <tr>
+        <td class="key"><code>blue-line|xsm|hover</code></td>
+        <td class="sample"><button data-s1-component="button" data-variant="blue-line" data-size="xsm" type="button" data-force-hover><span data-s1-part="label">취소</span></button></td>
+        <td class="values"><span class="chip"><i style="background:#E2F1FF"></i>배경 <code>--color-button-bg-blue-line--hover</code></span><span class="chip"><i style="background:#2747B9"></i>글자 <code>--color-button-label-blue-line--hover</code></span><span class="chip"><i style="background:#1D6CEB"></i>테두리 <code>--color-button-border-blue-line--hover</code></span><span class="chip">높이 <b>34dp</b></span><span class="chip">최소폭 <b>64dp</b></span><span class="chip">모서리 <b>4dp</b></span><span class="chip">테두리 <b>1dp</b></span><span class="chip">좌우여백 <b>8dp</b></span><span class="chip">글자크기 <b>14sp</b></span><span class="chip">굵기 <b>500</b></span></td>
+      </tr>
+      <tr>
+        <td class="key"><code>blue-line|xsm|disabled</code></td>
+        <td class="sample"><button data-s1-component="button" data-variant="blue-line" data-size="xsm" type="button" disabled><span data-s1-part="label">취소</span></button></td>
+        <td class="values"><span class="chip"><i style="background:#F5F5F5"></i>배경 <code>--color-button-bg-disabled</code></span><span class="chip"><i style="background:#C4C4C4"></i>글자 <code>--color-button-label-disabled</code></span><span class="chip"><i style="background:#D9D9D9"></i>테두리 <code>--color-button-border-disabled</code></span><span class="chip">높이 <b>34dp</b></span><span class="chip">최소폭 <b>64dp</b></span><span class="chip">모서리 <b>4dp</b></span><span class="chip">테두리 <b>1dp</b></span><span class="chip">좌우여백 <b>8dp</b></span><span class="chip">글자크기 <b>14sp</b></span><span class="chip">굵기 <b>500</b></span></td>
+      </tr>
+      <tr>
+        <td class="key"><code>primary|xxsm|default</code></td>
+        <td class="sample"><button data-s1-component="button" data-variant="primary" data-size="xxsm" type="button"><span data-s1-part="label">확인</span></button></td>
+        <td class="values"><span class="chip"><i style="background:#1D6CEB"></i>배경 <code>--color-button-bg-primary--default</code></span><span class="chip"><i style="background:#FFFFFF"></i>글자 <code>--color-button-label-primary--default</code></span><span class="chip"><i style="background:#1D6CEB"></i>테두리 <code>--color-button-border-primary--default</code></span><span class="chip">높이 <b>28dp</b></span><span class="chip">최소폭 <b>56dp</b></span><span class="chip">모서리 <b>4dp</b></span><span class="chip">테두리 <b>1dp</b></span><span class="chip">좌우여백 <b>8dp</b></span><span class="chip">글자크기 <b>12sp</b></span><span class="chip">굵기 <b>500</b></span></td>
+      </tr>
+      <tr>
+        <td class="key"><code>primary|xxsm|hover</code></td>
+        <td class="sample"><button data-s1-component="button" data-variant="primary" data-size="xxsm" type="button" data-force-hover><span data-s1-part="label">확인</span></button></td>
+        <td class="values"><span class="chip"><i style="background:#2747B9"></i>배경 <code>--color-button-bg-primary--hover</code></span><span class="chip"><i style="background:#FFFFFF"></i>글자 <code>--color-button-label-primary--hover</code></span><span class="chip"><i style="background:#2747B9"></i>테두리 <code>--color-button-border-primary--hover</code></span><span class="chip">높이 <b>28dp</b></span><span class="chip">최소폭 <b>56dp</b></span><span class="chip">모서리 <b>4dp</b></span><span class="chip">테두리 <b>1dp</b></span><span class="chip">좌우여백 <b>8dp</b></span><span class="chip">글자크기 <b>12sp</b></span><span class="chip">굵기 <b>500</b></span></td>
+      </tr>
+      <tr>
+        <td class="key"><code>primary|xxsm|disabled</code></td>
+        <td class="sample"><button data-s1-component="button" data-variant="primary" data-size="xxsm" type="button" disabled><span data-s1-part="label">확인</span></button></td>
+        <td class="values"><span class="chip"><i style="background:#F5F5F5"></i>배경 <code>--color-button-bg-disabled</code></span><span class="chip"><i style="background:#C4C4C4"></i>글자 <code>--color-button-label-disabled</code></span><span class="chip"><i style="background:#D9D9D9"></i>테두리 <code>--color-button-border-disabled</code></span><span class="chip">높이 <b>28dp</b></span><span class="chip">최소폭 <b>56dp</b></span><span class="chip">모서리 <b>4dp</b></span><span class="chip">테두리 <b>1dp</b></span><span class="chip">좌우여백 <b>8dp</b></span><span class="chip">글자크기 <b>12sp</b></span><span class="chip">굵기 <b>500</b></span></td>
+      </tr>
+      <tr>
+        <td class="key"><code>secondary|xxsm|default</code></td>
+        <td class="sample"><button data-s1-component="button" data-variant="secondary" data-size="xxsm" type="button"><span data-s1-part="label">취소</span></button></td>
+        <td class="values"><span class="chip"><i style="background:#FFFFFF"></i>배경 <code>--color-button-bg-secondary--default</code></span><span class="chip"><i style="background:#353535"></i>글자 <code>--color-button-label-secondary--default</code></span><span class="chip"><i style="background:#D9D9D9"></i>테두리 <code>--color-button-border-secondary--default</code></span><span class="chip">높이 <b>28dp</b></span><span class="chip">최소폭 <b>56dp</b></span><span class="chip">모서리 <b>4dp</b></span><span class="chip">테두리 <b>1dp</b></span><span class="chip">좌우여백 <b>8dp</b></span><span class="chip">글자크기 <b>12sp</b></span><span class="chip">굵기 <b>500</b></span></td>
+      </tr>
+      <tr>
+        <td class="key"><code>secondary|xxsm|hover</code></td>
+        <td class="sample"><button data-s1-component="button" data-variant="secondary" data-size="xxsm" type="button" data-force-hover><span data-s1-part="label">취소</span></button></td>
+        <td class="values"><span class="chip"><i style="background:#F5F5F5"></i>배경 <code>--color-button-bg-secondary--hover</code></span><span class="chip"><i style="background:#353535"></i>글자 <code>--color-button-label-secondary--hover</code></span><span class="chip"><i style="background:#D9D9D9"></i>테두리 <code>--color-button-border-secondary--hover</code></span><span class="chip">높이 <b>28dp</b></span><span class="chip">최소폭 <b>56dp</b></span><span class="chip">모서리 <b>4dp</b></span><span class="chip">테두리 <b>1dp</b></span><span class="chip">좌우여백 <b>8dp</b></span><span class="chip">글자크기 <b>12sp</b></span><span class="chip">굵기 <b>500</b></span></td>
+      </tr>
+      <tr>
+        <td class="key"><code>secondary|xxsm|disabled</code></td>
+        <td class="sample"><button data-s1-component="button" data-variant="secondary" data-size="xxsm" type="button" disabled><span data-s1-part="label">취소</span></button></td>
+        <td class="values"><span class="chip"><i style="background:#F5F5F5"></i>배경 <code>--color-button-bg-disabled</code></span><span class="chip"><i style="background:#C4C4C4"></i>글자 <code>--color-button-label-disabled</code></span><span class="chip"><i style="background:#D9D9D9"></i>테두리 <code>--color-button-border-disabled</code></span><span class="chip">높이 <b>28dp</b></span><span class="chip">최소폭 <b>56dp</b></span><span class="chip">모서리 <b>4dp</b></span><span class="chip">테두리 <b>1dp</b></span><span class="chip">좌우여백 <b>8dp</b></span><span class="chip">글자크기 <b>12sp</b></span><span class="chip">굵기 <b>500</b></span></td>
+      </tr>
+      <tr>
+        <td class="key"><code>blue-line|xxsm|default</code></td>
+        <td class="sample"><button data-s1-component="button" data-variant="blue-line" data-size="xxsm" type="button"><span data-s1-part="label">취소</span></button></td>
+        <td class="values"><span class="chip"><i style="background:#FFFFFF"></i>배경 <code>--color-button-bg-blue-line--default</code></span><span class="chip"><i style="background:#1D6CEB"></i>글자 <code>--color-button-label-blue-line--default</code></span><span class="chip"><i style="background:#1D6CEB"></i>테두리 <code>--color-button-border-blue-line--default</code></span><span class="chip">높이 <b>28dp</b></span><span class="chip">최소폭 <b>56dp</b></span><span class="chip">모서리 <b>4dp</b></span><span class="chip">테두리 <b>1dp</b></span><span class="chip">좌우여백 <b>8dp</b></span><span class="chip">글자크기 <b>12sp</b></span><span class="chip">굵기 <b>500</b></span></td>
+      </tr>
+      <tr>
+        <td class="key"><code>blue-line|xxsm|hover</code></td>
+        <td class="sample"><button data-s1-component="button" data-variant="blue-line" data-size="xxsm" type="button" data-force-hover><span data-s1-part="label">취소</span></button></td>
+        <td class="values"><span class="chip"><i style="background:#E2F1FF"></i>배경 <code>--color-button-bg-blue-line--hover</code></span><span class="chip"><i style="background:#2747B9"></i>글자 <code>--color-button-label-blue-line--hover</code></span><span class="chip"><i style="background:#1D6CEB"></i>테두리 <code>--color-button-border-blue-line--hover</code></span><span class="chip">높이 <b>28dp</b></span><span class="chip">최소폭 <b>56dp</b></span><span class="chip">모서리 <b>4dp</b></span><span class="chip">테두리 <b>1dp</b></span><span class="chip">좌우여백 <b>8dp</b></span><span class="chip">글자크기 <b>12sp</b></span><span class="chip">굵기 <b>500</b></span></td>
+      </tr>
+      <tr>
+        <td class="key"><code>blue-line|xxsm|disabled</code></td>
+        <td class="sample"><button data-s1-component="button" data-variant="blue-line" data-size="xxsm" type="button" disabled><span data-s1-part="label">취소</span></button></td>
+        <td class="values"><span class="chip"><i style="background:#F5F5F5"></i>배경 <code>--color-button-bg-disabled</code></span><span class="chip"><i style="background:#C4C4C4"></i>글자 <code>--color-button-label-disabled</code></span><span class="chip"><i style="background:#D9D9D9"></i>테두리 <code>--color-button-border-disabled</code></span><span class="chip">높이 <b>28dp</b></span><span class="chip">최소폭 <b>56dp</b></span><span class="chip">모서리 <b>4dp</b></span><span class="chip">테두리 <b>1dp</b></span><span class="chip">좌우여백 <b>8dp</b></span><span class="chip">글자크기 <b>12sp</b></span><span class="chip">굵기 <b>500</b></span></td>
+      </tr>
+      <tr>
+        <td class="key"><code>primary|lg|default</code></td>
+        <td class="sample"><button data-s1-component="button" data-variant="primary" data-size="lg" type="button"><span data-s1-part="label">확인</span></button></td>
+        <td class="values"><span class="chip"><i style="background:#1D6CEB"></i>배경 <code>--color-button-bg-primary--default</code></span><span class="chip"><i style="background:#FFFFFF"></i>글자 <code>--color-button-label-primary--default</code></span><span class="chip"><i style="background:#1D6CEB"></i>테두리 <code>--color-button-border-primary--default</code></span><span class="chip">높이 <b>48dp</b></span><span class="chip">최소폭 <b>80dp</b></span><span class="chip">모서리 <b>4dp</b></span><span class="chip">테두리 <b>1dp</b></span><span class="chip">좌우여백 <b>16dp</b></span><span class="chip">글자크기 <b>16sp</b></span><span class="chip">굵기 <b>500</b></span></td>
+      </tr>
+      <tr>
+        <td class="key"><code>primary|lg|hover</code></td>
+        <td class="sample"><button data-s1-component="button" data-variant="primary" data-size="lg" type="button" data-force-hover><span data-s1-part="label">확인</span></button></td>
+        <td class="values"><span class="chip"><i style="background:#2747B9"></i>배경 <code>--color-button-bg-primary--hover</code></span><span class="chip"><i style="background:#FFFFFF"></i>글자 <code>--color-button-label-primary--hover</code></span><span class="chip"><i style="background:#2747B9"></i>테두리 <code>--color-button-border-primary--hover</code></span><span class="chip">높이 <b>48dp</b></span><span class="chip">최소폭 <b>80dp</b></span><span class="chip">모서리 <b>4dp</b></span><span class="chip">테두리 <b>1dp</b></span><span class="chip">좌우여백 <b>16dp</b></span><span class="chip">글자크기 <b>16sp</b></span><span class="chip">굵기 <b>500</b></span></td>
+      </tr>
+      <tr>
+        <td class="key"><code>primary|lg|disabled</code></td>
+        <td class="sample"><button data-s1-component="button" data-variant="primary" data-size="lg" type="button" disabled><span data-s1-part="label">확인</span></button></td>
+        <td class="values"><span class="chip"><i style="background:#F5F5F5"></i>배경 <code>--color-button-bg-disabled</code></span><span class="chip"><i style="background:#C4C4C4"></i>글자 <code>--color-button-label-disabled</code></span><span class="chip"><i style="background:#D9D9D9"></i>테두리 <code>--color-button-border-disabled</code></span><span class="chip">높이 <b>48dp</b></span><span class="chip">최소폭 <b>80dp</b></span><span class="chip">모서리 <b>4dp</b></span><span class="chip">테두리 <b>1dp</b></span><span class="chip">좌우여백 <b>16dp</b></span><span class="chip">글자크기 <b>16sp</b></span><span class="chip">굵기 <b>500</b></span></td>
+      </tr>
+      <tr>
+        <td class="key"><code>secondary|lg|default</code></td>
+        <td class="sample"><button data-s1-component="button" data-variant="secondary" data-size="lg" type="button"><span data-s1-part="label">취소</span></button></td>
+        <td class="values"><span class="chip"><i style="background:#FFFFFF"></i>배경 <code>--color-button-bg-secondary--default</code></span><span class="chip"><i style="background:#353535"></i>글자 <code>--color-button-label-secondary--default</code></span><span class="chip"><i style="background:#D9D9D9"></i>테두리 <code>--color-button-border-secondary--default</code></span><span class="chip">높이 <b>48dp</b></span><span class="chip">최소폭 <b>80dp</b></span><span class="chip">모서리 <b>4dp</b></span><span class="chip">테두리 <b>1dp</b></span><span class="chip">좌우여백 <b>16dp</b></span><span class="chip">글자크기 <b>16sp</b></span><span class="chip">굵기 <b>500</b></span></td>
+      </tr>
+      <tr>
+        <td class="key"><code>secondary|lg|hover</code></td>
+        <td class="sample"><button data-s1-component="button" data-variant="secondary" data-size="lg" type="button" data-force-hover><span data-s1-part="label">취소</span></button></td>
+        <td class="values"><span class="chip"><i style="background:#F5F5F5"></i>배경 <code>--color-button-bg-secondary--hover</code></span><span class="chip"><i style="background:#353535"></i>글자 <code>--color-button-label-secondary--hover</code></span><span class="chip"><i style="background:#D9D9D9"></i>테두리 <code>--color-button-border-secondary--hover</code></span><span class="chip">높이 <b>48dp</b></span><span class="chip">최소폭 <b>80dp</b></span><span class="chip">모서리 <b>4dp</b></span><span class="chip">테두리 <b>1dp</b></span><span class="chip">좌우여백 <b>16dp</b></span><span class="chip">글자크기 <b>16sp</b></span><span class="chip">굵기 <b>500</b></span></td>
+      </tr>
+      <tr>
+        <td class="key"><code>secondary|lg|disabled</code></td>
+        <td class="sample"><button data-s1-component="button" data-variant="secondary" data-size="lg" type="button" disabled><span data-s1-part="label">취소</span></button></td>
+        <td class="values"><span class="chip"><i style="background:#F5F5F5"></i>배경 <code>--color-button-bg-disabled</code></span><span class="chip"><i style="background:#C4C4C4"></i>글자 <code>--color-button-label-disabled</code></span><span class="chip"><i style="background:#D9D9D9"></i>테두리 <code>--color-button-border-disabled</code></span><span class="chip">높이 <b>48dp</b></span><span class="chip">최소폭 <b>80dp</b></span><span class="chip">모서리 <b>4dp</b></span><span class="chip">테두리 <b>1dp</b></span><span class="chip">좌우여백 <b>16dp</b></span><span class="chip">글자크기 <b>16sp</b></span><span class="chip">굵기 <b>500</b></span></td>
+      </tr>
+      <tr>
+        <td class="key"><code>blue-line|lg|default</code></td>
+        <td class="sample"><button data-s1-component="button" data-variant="blue-line" data-size="lg" type="button"><span data-s1-part="label">취소</span></button></td>
+        <td class="values"><span class="chip"><i style="background:#FFFFFF"></i>배경 <code>--color-button-bg-blue-line--default</code></span><span class="chip"><i style="background:#1D6CEB"></i>글자 <code>--color-button-label-blue-line--default</code></span><span class="chip"><i style="background:#1D6CEB"></i>테두리 <code>--color-button-border-blue-line--default</code></span><span class="chip">높이 <b>48dp</b></span><span class="chip">최소폭 <b>80dp</b></span><span class="chip">모서리 <b>4dp</b></span><span class="chip">테두리 <b>1dp</b></span><span class="chip">좌우여백 <b>16dp</b></span><span class="chip">글자크기 <b>16sp</b></span><span class="chip">굵기 <b>500</b></span></td>
+      </tr>
+      <tr>
+        <td class="key"><code>blue-line|lg|hover</code></td>
+        <td class="sample"><button data-s1-component="button" data-variant="blue-line" data-size="lg" type="button" data-force-hover><span data-s1-part="label">취소</span></button></td>
+        <td class="values"><span class="chip"><i style="background:#E2F1FF"></i>배경 <code>--color-button-bg-blue-line--hover</code></span><span class="chip"><i style="background:#2747B9"></i>글자 <code>--color-button-label-blue-line--hover</code></span><span class="chip"><i style="background:#1D6CEB"></i>테두리 <code>--color-button-border-blue-line--hover</code></span><span class="chip">높이 <b>48dp</b></span><span class="chip">최소폭 <b>80dp</b></span><span class="chip">모서리 <b>4dp</b></span><span class="chip">테두리 <b>1dp</b></span><span class="chip">좌우여백 <b>16dp</b></span><span class="chip">글자크기 <b>16sp</b></span><span class="chip">굵기 <b>500</b></span></td>
+      </tr>
+      <tr>
+        <td class="key"><code>blue-line|lg|disabled</code></td>
+        <td class="sample"><button data-s1-component="button" data-variant="blue-line" data-size="lg" type="button" disabled><span data-s1-part="label">취소</span></button></td>
+        <td class="values"><span class="chip"><i style="background:#F5F5F5"></i>배경 <code>--color-button-bg-disabled</code></span><span class="chip"><i style="background:#C4C4C4"></i>글자 <code>--color-button-label-disabled</code></span><span class="chip"><i style="background:#D9D9D9"></i>테두리 <code>--color-button-border-disabled</code></span><span class="chip">높이 <b>48dp</b></span><span class="chip">최소폭 <b>80dp</b></span><span class="chip">모서리 <b>4dp</b></span><span class="chip">테두리 <b>1dp</b></span><span class="chip">좌우여백 <b>16dp</b></span><span class="chip">글자크기 <b>16sp</b></span><span class="chip">굵기 <b>500</b></span></td>
+      </tr></tbody>
+      </table>
+      <p class="ok">배포본 CSS 의 모든 선언을 읽었습니다.</p>
+    </section>
+    <section id="chip">
+      <h2>chip</h2>
+      <p class="meta">승인 조합 24가지</p>
+      <table>
+        <thead><tr><th>조합</th><th>승인된 웹 배포본이 그리는 모습</th><th>Compose 가 쓰는 값</th></tr></thead>
+        <tbody>
+      <tr>
+        <td class="key"><code>line|sm|pc|default</code></td>
+        <td class="sample"><button data-s1-component="chip" data-variant="line" data-size="sm" data-break="pc" aria-pressed="false" type="button"><span data-s1-part="label">칩</span></button></td>
+        <td class="values"><span class="chip"><i style="background:#FFFFFF"></i>배경 <code>--color-chip-line-bg-default</code></span><span class="chip"><i style="background:#757575"></i>글자 <code>--color-chip-line-label-default</code></span><span class="chip"><i style="background:#C4C4C4"></i>테두리 <code>--color-chip-line-border-default</code></span><span class="chip">높이 <b>28dp</b></span><span class="chip">모서리 <b>9999dp</b></span><span class="chip">테두리 <b>1dp</b></span><span class="chip">좌우여백 <b>16dp</b></span><span class="chip">글자크기 <b>12sp</b></span><span class="chip">굵기 <b>500</b></span></td>
+      </tr>
+      <tr>
+        <td class="key"><code>line|sm|pc|hover</code></td>
+        <td class="sample"><button data-s1-component="chip" data-variant="line" data-size="sm" data-break="pc" aria-pressed="false" type="button" data-force-hover><span data-s1-part="label">칩</span></button></td>
+        <td class="values"><span class="chip"><i style="background:#FAFAFA"></i>배경 <code>--color-chip-line-bg-hover</code></span><span class="chip"><i style="background:#757575"></i>글자 <code>--color-chip-line-label-default</code></span><span class="chip"><i style="background:#C4C4C4"></i>테두리 <code>--color-chip-line-border-default</code></span><span class="chip">높이 <b>28dp</b></span><span class="chip">모서리 <b>9999dp</b></span><span class="chip">테두리 <b>1dp</b></span><span class="chip">좌우여백 <b>16dp</b></span><span class="chip">글자크기 <b>12sp</b></span><span class="chip">굵기 <b>500</b></span></td>
+      </tr>
+      <tr>
+        <td class="key"><code>line|sm|pc|selected</code></td>
+        <td class="sample"><button data-s1-component="chip" data-variant="line" data-size="sm" data-break="pc" aria-pressed="true" type="button"><span data-s1-part="label">칩</span></button></td>
+        <td class="values"><span class="chip"><i style="background:#FFFFFF"></i>배경 <code>--color-chip-line-bg-selected</code></span><span class="chip"><i style="background:#1D6CEB"></i>글자 <code>--color-chip-line-label-selected</code></span><span class="chip"><i style="background:#1D6CEB"></i>테두리 <code>--color-chip-line-border-selected</code></span><span class="chip">높이 <b>28dp</b></span><span class="chip">모서리 <b>9999dp</b></span><span class="chip">테두리 <b>1dp</b></span><span class="chip">좌우여백 <b>16dp</b></span><span class="chip">글자크기 <b>12sp</b></span><span class="chip">굵기 <b>500</b></span></td>
+      </tr>
+      <tr>
+        <td class="key"><code>line|sm|pc|disabled</code></td>
+        <td class="sample"><button data-s1-component="chip" data-variant="line" data-size="sm" data-break="pc" aria-pressed="false" type="button" disabled><span data-s1-part="label">칩</span></button></td>
+        <td class="values"><span class="chip"><i style="background:#F5F5F5"></i>배경 <code>--color-chip-line-bg-disabled</code></span><span class="chip"><i style="background:#C4C4C4"></i>글자 <code>--color-chip-line-label-disabled</code></span><span class="chip"><i style="background:#E9E9E9"></i>테두리 <code>--color-chip-line-border-disabled</code></span><span class="chip">높이 <b>28dp</b></span><span class="chip">모서리 <b>9999dp</b></span><span class="chip">테두리 <b>1dp</b></span><span class="chip">좌우여백 <b>16dp</b></span><span class="chip">글자크기 <b>12sp</b></span><span class="chip">굵기 <b>500</b></span></td>
+      </tr>
+      <tr>
+        <td class="key"><code>solid|sm|pc|default</code></td>
+        <td class="sample"><button data-s1-component="chip" data-variant="solid" data-size="sm" data-break="pc" aria-pressed="false" type="button"><span data-s1-part="label">칩</span></button></td>
+        <td class="values"><span class="chip"><i style="background:#F5F5F5"></i>배경 <code>--color-chip-solid-bg-default</code></span><span class="chip"><i style="background:#353535"></i>글자 <code>--color-chip-solid-label-default</code></span><span class="chip"><i style="background:#F5F5F5"></i>테두리 <code>--color-chip-solid-border-default</code></span><span class="chip">높이 <b>28dp</b></span><span class="chip">모서리 <b>9999dp</b></span><span class="chip">테두리 <b>1dp</b></span><span class="chip">좌우여백 <b>16dp</b></span><span class="chip">글자크기 <b>12sp</b></span><span class="chip">굵기 <b>500</b></span></td>
+      </tr>
+      <tr>
+        <td class="key"><code>solid|sm|pc|hover</code></td>
+        <td class="sample"><button data-s1-component="chip" data-variant="solid" data-size="sm" data-break="pc" aria-pressed="false" type="button" data-force-hover><span data-s1-part="label">칩</span></button></td>
+        <td class="values"><span class="chip"><i style="background:#E9E9E9"></i>배경 <code>--color-chip-solid-bg-hover</code></span><span class="chip"><i style="background:#353535"></i>글자 <code>--color-chip-solid-label-default</code></span><span class="chip"><i style="background:#E9E9E9"></i>테두리 <code>--color-chip-solid-bg-hover</code></span><span class="chip">높이 <b>28dp</b></span><span class="chip">모서리 <b>9999dp</b></span><span class="chip">테두리 <b>1dp</b></span><span class="chip">좌우여백 <b>16dp</b></span><span class="chip">글자크기 <b>12sp</b></span><span class="chip">굵기 <b>500</b></span></td>
+      </tr>
+      <tr>
+        <td class="key"><code>solid|sm|pc|selected</code></td>
+        <td class="sample"><button data-s1-component="chip" data-variant="solid" data-size="sm" data-break="pc" aria-pressed="true" type="button"><span data-s1-part="label">칩</span></button></td>
+        <td class="values"><span class="chip"><i style="background:#1D6CEB"></i>배경 <code>--color-chip-solid-bg-selected</code></span><span class="chip"><i style="background:#FFFFFF"></i>글자 <code>--color-chip-solid-label-selected</code></span><span class="chip"><i style="background:#1D6CEB"></i>테두리 <code>--color-chip-solid-border-selected</code></span><span class="chip">높이 <b>28dp</b></span><span class="chip">모서리 <b>9999dp</b></span><span class="chip">테두리 <b>1dp</b></span><span class="chip">좌우여백 <b>16dp</b></span><span class="chip">글자크기 <b>12sp</b></span><span class="chip">굵기 <b>500</b></span></td>
+      </tr>
+      <tr>
+        <td class="key"><code>solid|sm|pc|disabled</code></td>
+        <td class="sample"><button data-s1-component="chip" data-variant="solid" data-size="sm" data-break="pc" aria-pressed="false" type="button" disabled><span data-s1-part="label">칩</span></button></td>
+        <td class="values"><span class="chip"><i style="background:#F5F5F5"></i>배경 <code>--color-chip-solid-bg-disabled</code></span><span class="chip"><i style="background:#C4C4C4"></i>글자 <code>--color-chip-solid-label-disabled</code></span><span class="chip"><i style="background:#F5F5F5"></i>테두리 <code>--color-chip-solid-border-disabled</code></span><span class="chip">높이 <b>28dp</b></span><span class="chip">모서리 <b>9999dp</b></span><span class="chip">테두리 <b>1dp</b></span><span class="chip">좌우여백 <b>16dp</b></span><span class="chip">글자크기 <b>12sp</b></span><span class="chip">굵기 <b>500</b></span></td>
+      </tr>
+      <tr>
+        <td class="key"><code>line|md|pc|default</code></td>
+        <td class="sample"><button data-s1-component="chip" data-variant="line" data-size="md" data-break="pc" aria-pressed="false" type="button"><span data-s1-part="label">칩</span></button></td>
+        <td class="values"><span class="chip"><i style="background:#FFFFFF"></i>배경 <code>--color-chip-line-bg-default</code></span><span class="chip"><i style="background:#757575"></i>글자 <code>--color-chip-line-label-default</code></span><span class="chip"><i style="background:#C4C4C4"></i>테두리 <code>--color-chip-line-border-default</code></span><span class="chip">높이 <b>34dp</b></span><span class="chip">모서리 <b>9999dp</b></span><span class="chip">테두리 <b>1dp</b></span><span class="chip">좌우여백 <b>16dp</b></span><span class="chip">글자크기 <b>14sp</b></span><span class="chip">굵기 <b>500</b></span></td>
+      </tr>
+      <tr>
+        <td class="key"><code>line|md|pc|hover</code></td>
+        <td class="sample"><button data-s1-component="chip" data-variant="line" data-size="md" data-break="pc" aria-pressed="false" type="button" data-force-hover><span data-s1-part="label">칩</span></button></td>
+        <td class="values"><span class="chip"><i style="background:#FAFAFA"></i>배경 <code>--color-chip-line-bg-hover</code></span><span class="chip"><i style="background:#757575"></i>글자 <code>--color-chip-line-label-default</code></span><span class="chip"><i style="background:#C4C4C4"></i>테두리 <code>--color-chip-line-border-default</code></span><span class="chip">높이 <b>34dp</b></span><span class="chip">모서리 <b>9999dp</b></span><span class="chip">테두리 <b>1dp</b></span><span class="chip">좌우여백 <b>16dp</b></span><span class="chip">글자크기 <b>14sp</b></span><span class="chip">굵기 <b>500</b></span></td>
+      </tr>
+      <tr>
+        <td class="key"><code>line|md|pc|selected</code></td>
+        <td class="sample"><button data-s1-component="chip" data-variant="line" data-size="md" data-break="pc" aria-pressed="true" type="button"><span data-s1-part="label">칩</span></button></td>
+        <td class="values"><span class="chip"><i style="background:#FFFFFF"></i>배경 <code>--color-chip-line-bg-selected</code></span><span class="chip"><i style="background:#1D6CEB"></i>글자 <code>--color-chip-line-label-selected</code></span><span class="chip"><i style="background:#1D6CEB"></i>테두리 <code>--color-chip-line-border-selected</code></span><span class="chip">높이 <b>34dp</b></span><span class="chip">모서리 <b>9999dp</b></span><span class="chip">테두리 <b>1dp</b></span><span class="chip">좌우여백 <b>16dp</b></span><span class="chip">글자크기 <b>14sp</b></span><span class="chip">굵기 <b>500</b></span></td>
+      </tr>
+      <tr>
+        <td class="key"><code>line|md|pc|disabled</code></td>
+        <td class="sample"><button data-s1-component="chip" data-variant="line" data-size="md" data-break="pc" aria-pressed="false" type="button" disabled><span data-s1-part="label">칩</span></button></td>
+        <td class="values"><span class="chip"><i style="background:#F5F5F5"></i>배경 <code>--color-chip-line-bg-disabled</code></span><span class="chip"><i style="background:#C4C4C4"></i>글자 <code>--color-chip-line-label-disabled</code></span><span class="chip"><i style="background:#E9E9E9"></i>테두리 <code>--color-chip-line-border-disabled</code></span><span class="chip">높이 <b>34dp</b></span><span class="chip">모서리 <b>9999dp</b></span><span class="chip">테두리 <b>1dp</b></span><span class="chip">좌우여백 <b>16dp</b></span><span class="chip">글자크기 <b>14sp</b></span><span class="chip">굵기 <b>500</b></span></td>
+      </tr>
+      <tr>
+        <td class="key"><code>solid|md|pc|default</code></td>
+        <td class="sample"><button data-s1-component="chip" data-variant="solid" data-size="md" data-break="pc" aria-pressed="false" type="button"><span data-s1-part="label">칩</span></button></td>
+        <td class="values"><span class="chip"><i style="background:#F5F5F5"></i>배경 <code>--color-chip-solid-bg-default</code></span><span class="chip"><i style="background:#353535"></i>글자 <code>--color-chip-solid-label-default</code></span><span class="chip"><i style="background:#F5F5F5"></i>테두리 <code>--color-chip-solid-border-default</code></span><span class="chip">높이 <b>34dp</b></span><span class="chip">모서리 <b>9999dp</b></span><span class="chip">테두리 <b>1dp</b></span><span class="chip">좌우여백 <b>16dp</b></span><span class="chip">글자크기 <b>14sp</b></span><span class="chip">굵기 <b>500</b></span></td>
+      </tr>
+      <tr>
+        <td class="key"><code>solid|md|pc|hover</code></td>
+        <td class="sample"><button data-s1-component="chip" data-variant="solid" data-size="md" data-break="pc" aria-pressed="false" type="button" data-force-hover><span data-s1-part="label">칩</span></button></td>
+        <td class="values"><span class="chip"><i style="background:#E9E9E9"></i>배경 <code>--color-chip-solid-bg-hover</code></span><span class="chip"><i style="background:#353535"></i>글자 <code>--color-chip-solid-label-default</code></span><span class="chip"><i style="background:#E9E9E9"></i>테두리 <code>--color-chip-solid-bg-hover</code></span><span class="chip">높이 <b>34dp</b></span><span class="chip">모서리 <b>9999dp</b></span><span class="chip">테두리 <b>1dp</b></span><span class="chip">좌우여백 <b>16dp</b></span><span class="chip">글자크기 <b>14sp</b></span><span class="chip">굵기 <b>500</b></span></td>
+      </tr>
+      <tr>
+        <td class="key"><code>solid|md|pc|selected</code></td>
+        <td class="sample"><button data-s1-component="chip" data-variant="solid" data-size="md" data-break="pc" aria-pressed="true" type="button"><span data-s1-part="label">칩</span></button></td>
+        <td class="values"><span class="chip"><i style="background:#1D6CEB"></i>배경 <code>--color-chip-solid-bg-selected</code></span><span class="chip"><i style="background:#FFFFFF"></i>글자 <code>--color-chip-solid-label-selected</code></span><span class="chip"><i style="background:#1D6CEB"></i>테두리 <code>--color-chip-solid-border-selected</code></span><span class="chip">높이 <b>34dp</b></span><span class="chip">모서리 <b>9999dp</b></span><span class="chip">테두리 <b>1dp</b></span><span class="chip">좌우여백 <b>16dp</b></span><span class="chip">글자크기 <b>14sp</b></span><span class="chip">굵기 <b>500</b></span></td>
+      </tr>
+      <tr>
+        <td class="key"><code>solid|md|pc|disabled</code></td>
+        <td class="sample"><button data-s1-component="chip" data-variant="solid" data-size="md" data-break="pc" aria-pressed="false" type="button" disabled><span data-s1-part="label">칩</span></button></td>
+        <td class="values"><span class="chip"><i style="background:#F5F5F5"></i>배경 <code>--color-chip-solid-bg-disabled</code></span><span class="chip"><i style="background:#C4C4C4"></i>글자 <code>--color-chip-solid-label-disabled</code></span><span class="chip"><i style="background:#F5F5F5"></i>테두리 <code>--color-chip-solid-border-disabled</code></span><span class="chip">높이 <b>34dp</b></span><span class="chip">모서리 <b>9999dp</b></span><span class="chip">테두리 <b>1dp</b></span><span class="chip">좌우여백 <b>16dp</b></span><span class="chip">글자크기 <b>14sp</b></span><span class="chip">굵기 <b>500</b></span></td>
+      </tr>
+      <tr>
+        <td class="key"><code>line|sm|mobile|default</code></td>
+        <td class="sample"><button data-s1-component="chip" data-variant="line" data-size="sm" data-break="mobile" aria-pressed="false" type="button"><span data-s1-part="label">칩</span></button></td>
+        <td class="values"><span class="chip"><i style="background:#FFFFFF"></i>배경 <code>--color-chip-line-bg-default</code></span><span class="chip"><i style="background:#757575"></i>글자 <code>--color-chip-line-label-default</code></span><span class="chip"><i style="background:#C4C4C4"></i>테두리 <code>--color-chip-line-border-default</code></span><span class="chip">높이 <b>30dp</b></span><span class="chip">모서리 <b>9999dp</b></span><span class="chip">테두리 <b>1dp</b></span><span class="chip">좌우여백 <b>12dp</b></span><span class="chip">글자크기 <b>14sp</b></span><span class="chip">굵기 <b>500</b></span></td>
+      </tr>
+      <tr>
+        <td class="key"><code>line|sm|mobile|hover</code></td>
+        <td class="sample"><button data-s1-component="chip" data-variant="line" data-size="sm" data-break="mobile" aria-pressed="false" type="button" data-force-hover><span data-s1-part="label">칩</span></button></td>
+        <td class="values"><span class="chip"><i style="background:#FAFAFA"></i>배경 <code>--color-chip-line-bg-hover</code></span><span class="chip"><i style="background:#757575"></i>글자 <code>--color-chip-line-label-default</code></span><span class="chip"><i style="background:#C4C4C4"></i>테두리 <code>--color-chip-line-border-default</code></span><span class="chip">높이 <b>30dp</b></span><span class="chip">모서리 <b>9999dp</b></span><span class="chip">테두리 <b>1dp</b></span><span class="chip">좌우여백 <b>12dp</b></span><span class="chip">글자크기 <b>14sp</b></span><span class="chip">굵기 <b>500</b></span></td>
+      </tr>
+      <tr>
+        <td class="key"><code>line|sm|mobile|selected</code></td>
+        <td class="sample"><button data-s1-component="chip" data-variant="line" data-size="sm" data-break="mobile" aria-pressed="true" type="button"><span data-s1-part="label">칩</span></button></td>
+        <td class="values"><span class="chip"><i style="background:#FFFFFF"></i>배경 <code>--color-chip-line-bg-selected</code></span><span class="chip"><i style="background:#1D6CEB"></i>글자 <code>--color-chip-line-label-selected</code></span><span class="chip"><i style="background:#1D6CEB"></i>테두리 <code>--color-chip-line-border-selected</code></span><span class="chip">높이 <b>30dp</b></span><span class="chip">모서리 <b>9999dp</b></span><span class="chip">테두리 <b>1dp</b></span><span class="chip">좌우여백 <b>12dp</b></span><span class="chip">글자크기 <b>14sp</b></span><span class="chip">굵기 <b>500</b></span></td>
+      </tr>
+      <tr>
+        <td class="key"><code>line|sm|mobile|disabled</code></td>
+        <td class="sample"><button data-s1-component="chip" data-variant="line" data-size="sm" data-break="mobile" aria-pressed="false" type="button" disabled><span data-s1-part="label">칩</span></button></td>
+        <td class="values"><span class="chip"><i style="background:#F5F5F5"></i>배경 <code>--color-chip-line-bg-disabled</code></span><span class="chip"><i style="background:#C4C4C4"></i>글자 <code>--color-chip-line-label-disabled</code></span><span class="chip"><i style="background:#E9E9E9"></i>테두리 <code>--color-chip-line-border-disabled</code></span><span class="chip">높이 <b>30dp</b></span><span class="chip">모서리 <b>9999dp</b></span><span class="chip">테두리 <b>1dp</b></span><span class="chip">좌우여백 <b>12dp</b></span><span class="chip">글자크기 <b>14sp</b></span><span class="chip">굵기 <b>500</b></span></td>
+      </tr>
+      <tr>
+        <td class="key"><code>solid|sm|mobile|default</code></td>
+        <td class="sample"><button data-s1-component="chip" data-variant="solid" data-size="sm" data-break="mobile" aria-pressed="false" type="button"><span data-s1-part="label">칩</span></button></td>
+        <td class="values"><span class="chip"><i style="background:#F5F5F5"></i>배경 <code>--color-chip-solid-bg-default</code></span><span class="chip"><i style="background:#353535"></i>글자 <code>--color-chip-solid-label-default</code></span><span class="chip"><i style="background:#F5F5F5"></i>테두리 <code>--color-chip-solid-border-default</code></span><span class="chip">높이 <b>30dp</b></span><span class="chip">모서리 <b>9999dp</b></span><span class="chip">테두리 <b>1dp</b></span><span class="chip">좌우여백 <b>12dp</b></span><span class="chip">글자크기 <b>14sp</b></span><span class="chip">굵기 <b>500</b></span></td>
+      </tr>
+      <tr>
+        <td class="key"><code>solid|sm|mobile|hover</code></td>
+        <td class="sample"><button data-s1-component="chip" data-variant="solid" data-size="sm" data-break="mobile" aria-pressed="false" type="button" data-force-hover><span data-s1-part="label">칩</span></button></td>
+        <td class="values"><span class="chip"><i style="background:#E9E9E9"></i>배경 <code>--color-chip-solid-bg-hover</code></span><span class="chip"><i style="background:#353535"></i>글자 <code>--color-chip-solid-label-default</code></span><span class="chip"><i style="background:#E9E9E9"></i>테두리 <code>--color-chip-solid-bg-hover</code></span><span class="chip">높이 <b>30dp</b></span><span class="chip">모서리 <b>9999dp</b></span><span class="chip">테두리 <b>1dp</b></span><span class="chip">좌우여백 <b>12dp</b></span><span class="chip">글자크기 <b>14sp</b></span><span class="chip">굵기 <b>500</b></span></td>
+      </tr>
+      <tr>
+        <td class="key"><code>solid|sm|mobile|selected</code></td>
+        <td class="sample"><button data-s1-component="chip" data-variant="solid" data-size="sm" data-break="mobile" aria-pressed="true" type="button"><span data-s1-part="label">칩</span></button></td>
+        <td class="values"><span class="chip"><i style="background:#1D6CEB"></i>배경 <code>--color-chip-solid-bg-selected</code></span><span class="chip"><i style="background:#FFFFFF"></i>글자 <code>--color-chip-solid-label-selected</code></span><span class="chip"><i style="background:#1D6CEB"></i>테두리 <code>--color-chip-solid-border-selected</code></span><span class="chip">높이 <b>30dp</b></span><span class="chip">모서리 <b>9999dp</b></span><span class="chip">테두리 <b>1dp</b></span><span class="chip">좌우여백 <b>12dp</b></span><span class="chip">글자크기 <b>14sp</b></span><span class="chip">굵기 <b>500</b></span></td>
+      </tr>
+      <tr>
+        <td class="key"><code>solid|sm|mobile|disabled</code></td>
+        <td class="sample"><button data-s1-component="chip" data-variant="solid" data-size="sm" data-break="mobile" aria-pressed="false" type="button" disabled><span data-s1-part="label">칩</span></button></td>
+        <td class="values"><span class="chip"><i style="background:#F5F5F5"></i>배경 <code>--color-chip-solid-bg-disabled</code></span><span class="chip"><i style="background:#C4C4C4"></i>글자 <code>--color-chip-solid-label-disabled</code></span><span class="chip"><i style="background:#F5F5F5"></i>테두리 <code>--color-chip-solid-border-disabled</code></span><span class="chip">높이 <b>30dp</b></span><span class="chip">모서리 <b>9999dp</b></span><span class="chip">테두리 <b>1dp</b></span><span class="chip">좌우여백 <b>12dp</b></span><span class="chip">글자크기 <b>14sp</b></span><span class="chip">굵기 <b>500</b></span></td>
+      </tr></tbody>
+      </table>
+      <p class="ok">배포본 CSS 의 모든 선언을 읽었습니다.</p>
+    </section>
+    <section id="checkbox">
+      <h2>checkbox</h2>
+      <p class="meta">승인 조합 5가지</p>
+      <table>
+        <thead><tr><th>조합</th><th>승인된 웹 배포본이 그리는 모습</th><th>Compose 가 쓰는 값</th></tr></thead>
+        <tbody>
+      <tr>
+        <td class="key"><code>default</code></td>
+        <td class="sample"><div data-s1-component="checkbox"><input data-s1-part="control" type="checkbox"><span data-s1-part="label">선택 항목</span></div></td>
+        <td class="values"><span class="chip"><i style="background:#FFFFFF"></i>배경 <code>--color-control-bg-default</code></span><span class="chip"><i style="background:#FFFFFF"></i>글자 <code>--color-control-indicator-selected</code></span><span class="chip"><i style="background:#D9D9D9"></i>테두리 <code>--color-control-border-default</code></span><span class="chip">높이 <b>18dp</b></span><span class="chip">모서리 <b>2dp</b></span><span class="chip">테두리 <b>1dp</b></span><span class="chip">좌우여백 <b>0dp</b></span></td>
+      </tr>
+      <tr>
+        <td class="key"><code>hover</code></td>
+        <td class="sample"><div data-s1-component="checkbox"><input data-s1-part="control" type="checkbox" data-force-hover><span data-s1-part="label">선택 항목</span></div></td>
+        <td class="values"><span class="chip"><i style="background:#F5F5F5"></i>배경 <code>--color-control-bg-hover</code></span><span class="chip"><i style="background:#FFFFFF"></i>글자 <code>--color-control-indicator-selected</code></span><span class="chip"><i style="background:#D9D9D9"></i>테두리 <code>--color-control-border-default</code></span><span class="chip">높이 <b>18dp</b></span><span class="chip">모서리 <b>2dp</b></span><span class="chip">테두리 <b>1dp</b></span><span class="chip">좌우여백 <b>0dp</b></span></td>
+      </tr>
+      <tr>
+        <td class="key"><code>checked</code></td>
+        <td class="sample"><div data-s1-component="checkbox"><input data-s1-part="control" type="checkbox" checked><span data-s1-part="label">선택 항목</span></div></td>
+        <td class="values"><span class="chip"><i style="background:#1D6CEB"></i>배경 <code>--color-control-bg-selected</code></span><span class="chip"><i style="background:#FFFFFF"></i>글자 <code>--color-control-indicator-selected</code></span><span class="chip"><i style="background:#1D6CEB"></i>테두리 <code>--color-control-border-selected</code></span><span class="chip">높이 <b>18dp</b></span><span class="chip">모서리 <b>2dp</b></span><span class="chip">테두리 <b>1dp</b></span><span class="chip">좌우여백 <b>0dp</b></span></td>
+      </tr>
+      <tr>
+        <td class="key"><code>disabled</code></td>
+        <td class="sample"><div data-s1-component="checkbox"><input data-s1-part="control" type="checkbox" disabled><span data-s1-part="label">선택 항목</span></div></td>
+        <td class="values"><span class="chip"><i style="background:#E9E9E9"></i>배경 <code>--color-control-bg-disabled</code></span><span class="chip"><i style="background:#FFFFFF"></i>글자 <code>--color-control-indicator-selected</code></span><span class="chip"><i style="background:#D9D9D9"></i>테두리 <code>--color-control-border-disabled</code></span><span class="chip">높이 <b>18dp</b></span><span class="chip">모서리 <b>2dp</b></span><span class="chip">테두리 <b>1dp</b></span><span class="chip">좌우여백 <b>0dp</b></span></td>
+      </tr>
+      <tr>
+        <td class="key"><code>disabledChecked</code></td>
+        <td class="sample"><div data-s1-component="checkbox"><input data-s1-part="control" type="checkbox" checked disabled><span data-s1-part="label">선택 항목</span></div></td>
+        <td class="values"><span class="chip"><i style="background:#E9E9E9"></i>배경 <code>--color-control-bg-disabled</code></span><span class="chip"><i style="background:#C4C4C4"></i>글자 <code>--color-control-indicator-disabled</code></span><span class="chip"><i style="background:#D9D9D9"></i>테두리 <code>--color-control-border-disabled</code></span><span class="chip">높이 <b>18dp</b></span><span class="chip">모서리 <b>2dp</b></span><span class="chip">테두리 <b>1dp</b></span><span class="chip">좌우여백 <b>0dp</b></span></td>
+      </tr></tbody>
+      </table>
+      <p class="ok">배포본 CSS 의 모든 선언을 읽었습니다.</p>
+    </section>
+    <section id="radio">
+      <h2>radio</h2>
+      <p class="meta">승인 조합 5가지</p>
+      <table>
+        <thead><tr><th>조합</th><th>승인된 웹 배포본이 그리는 모습</th><th>Compose 가 쓰는 값</th></tr></thead>
+        <tbody>
+      <tr>
+        <td class="key"><code>default</code></td>
+        <td class="sample"><div data-s1-component="radio"><input data-s1-part="control" type="checkbox"><span data-s1-part="label">항목</span></div></td>
+        <td class="values"><span class="chip"><i style="background:#FFFFFF"></i>배경 <code>--color-control-bg-default</code></span><span class="chip"><i style="background:#1D6CEB"></i>글자 <code>--color-control-indicator-selected-alt</code></span><span class="chip"><i style="background:#D9D9D9"></i>테두리 <code>--color-control-border-default</code></span><span class="chip">높이 <b>18dp</b></span><span class="chip">모서리 <b>9999dp</b></span><span class="chip">테두리 <b>1dp</b></span><span class="chip">좌우여백 <b>0dp</b></span></td>
+      </tr>
+      <tr>
+        <td class="key"><code>hover</code></td>
+        <td class="sample"><div data-s1-component="radio"><input data-s1-part="control" type="checkbox" data-force-hover><span data-s1-part="label">항목</span></div></td>
+        <td class="values"><span class="chip"><i style="background:#F5F5F5"></i>배경 <code>--color-control-bg-hover</code></span><span class="chip"><i style="background:#1D6CEB"></i>글자 <code>--color-control-indicator-selected-alt</code></span><span class="chip"><i style="background:#D9D9D9"></i>테두리 <code>--color-control-border-default</code></span><span class="chip">높이 <b>18dp</b></span><span class="chip">모서리 <b>9999dp</b></span><span class="chip">테두리 <b>1dp</b></span><span class="chip">좌우여백 <b>0dp</b></span></td>
+      </tr>
+      <tr>
+        <td class="key"><code>checked</code></td>
+        <td class="sample"><div data-s1-component="radio"><input data-s1-part="control" type="checkbox" checked><span data-s1-part="label">항목</span></div></td>
+        <td class="values"><span class="chip"><i style="background:#FFFFFF"></i>배경 <code>--color-control-bg-default</code></span><span class="chip"><i style="background:#1D6CEB"></i>글자 <code>--color-control-indicator-selected-alt</code></span><span class="chip"><i style="background:#1D6CEB"></i>테두리 <code>--color-control-border-selected</code></span><span class="chip">높이 <b>18dp</b></span><span class="chip">모서리 <b>9999dp</b></span><span class="chip">테두리 <b>1dp</b></span><span class="chip">좌우여백 <b>0dp</b></span></td>
+      </tr>
+      <tr>
+        <td class="key"><code>disabled</code></td>
+        <td class="sample"><div data-s1-component="radio"><input data-s1-part="control" type="checkbox" disabled><span data-s1-part="label">항목</span></div></td>
+        <td class="values"><span class="chip"><i style="background:#E9E9E9"></i>배경 <code>--color-control-bg-disabled</code></span><span class="chip"><i style="background:#1D6CEB"></i>글자 <code>--color-control-indicator-selected-alt</code></span><span class="chip"><i style="background:#D9D9D9"></i>테두리 <code>--color-control-border-disabled</code></span><span class="chip">높이 <b>18dp</b></span><span class="chip">모서리 <b>9999dp</b></span><span class="chip">테두리 <b>1dp</b></span><span class="chip">좌우여백 <b>0dp</b></span></td>
+      </tr>
+      <tr>
+        <td class="key"><code>disabledChecked</code></td>
+        <td class="sample"><div data-s1-component="radio"><input data-s1-part="control" type="checkbox" checked disabled><span data-s1-part="label">항목</span></div></td>
+        <td class="values"><span class="chip"><i style="background:#E9E9E9"></i>배경 <code>--color-control-bg-disabled</code></span><span class="chip"><i style="background:#C4C4C4"></i>글자 <code>--color-control-indicator-disabled</code></span><span class="chip"><i style="background:#D9D9D9"></i>테두리 <code>--color-control-border-disabled</code></span><span class="chip">높이 <b>18dp</b></span><span class="chip">모서리 <b>9999dp</b></span><span class="chip">테두리 <b>1dp</b></span><span class="chip">좌우여백 <b>0dp</b></span></td>
+      </tr></tbody>
+      </table>
+      <p class="ok">배포본 CSS 의 모든 선언을 읽었습니다.</p>
+    </section>
+    <section id="toggle">
+      <h2>toggle</h2>
+      <p class="meta">승인 조합 4가지</p>
+      <table>
+        <thead><tr><th>조합</th><th>승인된 웹 배포본이 그리는 모습</th><th>Compose 가 쓰는 값</th></tr></thead>
+        <tbody>
+      <tr>
+        <td class="key"><code>off</code></td>
+        <td class="sample"><button data-s1-component="toggle" role="switch" aria-checked="false" type="button"><span data-s1-part="knob"></span></button></td>
+        <td class="values"><span class="chip"><i style="background:#C4C4C4"></i>배경 <code>--color-control-indicator-unselected</code></span><span class="chip">높이 <b>20dp</b></span><span class="chip">모서리 <b>9999dp</b></span><span class="chip">테두리 <b>0dp</b></span><span class="chip">좌우여백 <b>0dp</b></span></td>
+      </tr>
+      <tr>
+        <td class="key"><code>on</code></td>
+        <td class="sample"><button data-s1-component="toggle" role="switch" aria-checked="true" type="button"><span data-s1-part="knob"></span></button></td>
+        <td class="values"><span class="chip"><i style="background:#1D6CEB"></i>배경 <code>--color-control-bg-selected</code></span><span class="chip">높이 <b>20dp</b></span><span class="chip">모서리 <b>9999dp</b></span><span class="chip">테두리 <b>0dp</b></span><span class="chip">좌우여백 <b>0dp</b></span></td>
+      </tr>
+      <tr>
+        <td class="key"><code>disabledOff</code></td>
+        <td class="sample"><button data-s1-component="toggle" role="switch" aria-checked="false" type="button" disabled><span data-s1-part="knob"></span></button></td>
+        <td class="values"><span class="chip"><i style="background:#E9E9E9"></i>배경 <code>--color-control-bg-disabled</code></span><span class="chip">높이 <b>20dp</b></span><span class="chip">모서리 <b>9999dp</b></span><span class="chip">테두리 <b>0dp</b></span><span class="chip">좌우여백 <b>0dp</b></span></td>
+      </tr>
+      <tr>
+        <td class="key"><code>disabledOn</code></td>
+        <td class="sample"><button data-s1-component="toggle" role="switch" aria-checked="true" type="button" disabled><span data-s1-part="knob"></span></button></td>
+        <td class="values"><span class="chip"><i style="background:#E9E9E9"></i>배경 <code>--color-control-bg-disabled</code></span><span class="chip">높이 <b>20dp</b></span><span class="chip">모서리 <b>9999dp</b></span><span class="chip">테두리 <b>0dp</b></span><span class="chip">좌우여백 <b>0dp</b></span></td>
+      </tr></tbody>
+      </table>
+      <p class="ok">배포본 CSS 의 모든 선언을 읽었습니다.</p>
+    </section>
+    <section id="tab">
+      <h2>tab</h2>
+      <p class="meta">승인 조합 12가지</p>
+      <table>
+        <thead><tr><th>조합</th><th>승인된 웹 배포본이 그리는 모습</th><th>Compose 가 쓰는 값</th></tr></thead>
+        <tbody>
+      <tr>
+        <td class="key"><code>md|pc|default</code></td>
+        <td class="sample"><div data-s1-component="tab" data-size="md" data-break="pc" role="tablist"><button data-s1-part="tab" role="tab" aria-selected="false" type="button">탭 메뉴</button></div></td>
+        <td class="values"><span class="chip"><i style="background:#555555"></i>글자 <code>--color-navigation-label-default</code></span><span class="chip">높이 <b>44dp</b></span><span class="chip">최소폭 <b>76dp</b></span><span class="chip">테두리 <b>0dp</b></span><span class="chip">좌우여백 <b>16dp</b></span><span class="chip">글자크기 <b>18sp</b></span><span class="chip">굵기 <b>500</b></span></td>
+      </tr>
+      <tr>
+        <td class="key"><code>md|pc|hover</code></td>
+        <td class="sample"><div data-s1-component="tab" data-size="md" data-break="pc" role="tablist"><button data-s1-part="tab" role="tab" aria-selected="false" type="button" data-force-hover>탭 메뉴</button></div></td>
+        <td class="values"><span class="chip"><i style="background:#1D6CEB"></i>글자 <code>--color-navigation-label-hover</code></span><span class="chip">높이 <b>44dp</b></span><span class="chip">최소폭 <b>76dp</b></span><span class="chip">테두리 <b>0dp</b></span><span class="chip">좌우여백 <b>16dp</b></span><span class="chip">글자크기 <b>18sp</b></span><span class="chip">굵기 <b>500</b></span></td>
+      </tr>
+      <tr>
+        <td class="key"><code>md|pc|selected</code></td>
+        <td class="sample"><div data-s1-component="tab" data-size="md" data-break="pc" role="tablist"><button data-s1-part="tab" role="tab" aria-selected="true" type="button">탭 메뉴</button></div></td>
+        <td class="values"><span class="chip"><i style="background:#1D6CEB"></i>글자 <code>--color-navigation-label-selected</code></span><span class="chip">높이 <b>44dp</b></span><span class="chip">최소폭 <b>76dp</b></span><span class="chip">테두리 <b>0dp</b></span><span class="chip">좌우여백 <b>16dp</b></span><span class="chip">글자크기 <b>18sp</b></span><span class="chip">굵기 <b>500</b></span></td>
+      </tr>
+      <tr>
+        <td class="key"><code>sm|pc|default</code></td>
+        <td class="sample"><div data-s1-component="tab" data-size="sm" data-break="pc" role="tablist"><button data-s1-part="tab" role="tab" aria-selected="false" type="button">탭 메뉴</button></div></td>
+        <td class="values"><span class="chip"><i style="background:#555555"></i>글자 <code>--color-navigation-label-default</code></span><span class="chip">높이 <b>42dp</b></span><span class="chip">최소폭 <b>76dp</b></span><span class="chip">테두리 <b>0dp</b></span><span class="chip">좌우여백 <b>16dp</b></span><span class="chip">글자크기 <b>16sp</b></span><span class="chip">굵기 <b>500</b></span></td>
+      </tr>
+      <tr>
+        <td class="key"><code>sm|pc|hover</code></td>
+        <td class="sample"><div data-s1-component="tab" data-size="sm" data-break="pc" role="tablist"><button data-s1-part="tab" role="tab" aria-selected="false" type="button" data-force-hover>탭 메뉴</button></div></td>
+        <td class="values"><span class="chip"><i style="background:#1D6CEB"></i>글자 <code>--color-navigation-label-hover</code></span><span class="chip">높이 <b>42dp</b></span><span class="chip">최소폭 <b>76dp</b></span><span class="chip">테두리 <b>0dp</b></span><span class="chip">좌우여백 <b>16dp</b></span><span class="chip">글자크기 <b>16sp</b></span><span class="chip">굵기 <b>500</b></span></td>
+      </tr>
+      <tr>
+        <td class="key"><code>sm|pc|selected</code></td>
+        <td class="sample"><div data-s1-component="tab" data-size="sm" data-break="pc" role="tablist"><button data-s1-part="tab" role="tab" aria-selected="true" type="button">탭 메뉴</button></div></td>
+        <td class="values"><span class="chip"><i style="background:#1D6CEB"></i>글자 <code>--color-navigation-label-selected</code></span><span class="chip">높이 <b>42dp</b></span><span class="chip">최소폭 <b>76dp</b></span><span class="chip">테두리 <b>0dp</b></span><span class="chip">좌우여백 <b>16dp</b></span><span class="chip">글자크기 <b>16sp</b></span><span class="chip">굵기 <b>500</b></span></td>
+      </tr>
+      <tr>
+        <td class="key"><code>xsm|pc|default</code></td>
+        <td class="sample"><div data-s1-component="tab" data-size="xsm" data-break="pc" role="tablist"><button data-s1-part="tab" role="tab" aria-selected="false" type="button">탭 메뉴</button></div></td>
+        <td class="values"><span class="chip"><i style="background:#555555"></i>글자 <code>--color-navigation-label-default</code></span><span class="chip">높이 <b>40dp</b></span><span class="chip">최소폭 <b>76dp</b></span><span class="chip">테두리 <b>0dp</b></span><span class="chip">좌우여백 <b>16dp</b></span><span class="chip">글자크기 <b>14sp</b></span><span class="chip">굵기 <b>500</b></span></td>
+      </tr>
+      <tr>
+        <td class="key"><code>xsm|pc|hover</code></td>
+        <td class="sample"><div data-s1-component="tab" data-size="xsm" data-break="pc" role="tablist"><button data-s1-part="tab" role="tab" aria-selected="false" type="button" data-force-hover>탭 메뉴</button></div></td>
+        <td class="values"><span class="chip"><i style="background:#1D6CEB"></i>글자 <code>--color-navigation-label-hover</code></span><span class="chip">높이 <b>40dp</b></span><span class="chip">최소폭 <b>76dp</b></span><span class="chip">테두리 <b>0dp</b></span><span class="chip">좌우여백 <b>16dp</b></span><span class="chip">글자크기 <b>14sp</b></span><span class="chip">굵기 <b>500</b></span></td>
+      </tr>
+      <tr>
+        <td class="key"><code>xsm|pc|selected</code></td>
+        <td class="sample"><div data-s1-component="tab" data-size="xsm" data-break="pc" role="tablist"><button data-s1-part="tab" role="tab" aria-selected="true" type="button">탭 메뉴</button></div></td>
+        <td class="values"><span class="chip"><i style="background:#1D6CEB"></i>글자 <code>--color-navigation-label-selected</code></span><span class="chip">높이 <b>40dp</b></span><span class="chip">최소폭 <b>76dp</b></span><span class="chip">테두리 <b>0dp</b></span><span class="chip">좌우여백 <b>16dp</b></span><span class="chip">글자크기 <b>14sp</b></span><span class="chip">굵기 <b>500</b></span></td>
+      </tr>
+      <tr>
+        <td class="key"><code>sm|mobile|default</code></td>
+        <td class="sample"><div data-s1-component="tab" data-size="sm" data-break="mobile" role="tablist"><button data-s1-part="tab" role="tab" aria-selected="false" type="button">탭 메뉴</button></div></td>
+        <td class="values"><span class="chip"><i style="background:#555555"></i>글자 <code>--color-navigation-label-default</code></span><span class="chip">높이 <b>32dp</b></span><span class="chip">최소폭 <b>76dp</b></span><span class="chip">테두리 <b>0dp</b></span><span class="chip">좌우여백 <b>16dp</b></span><span class="chip">글자크기 <b>16sp</b></span><span class="chip">굵기 <b>500</b></span></td>
+      </tr>
+      <tr>
+        <td class="key"><code>sm|mobile|hover</code></td>
+        <td class="sample"><div data-s1-component="tab" data-size="sm" data-break="mobile" role="tablist"><button data-s1-part="tab" role="tab" aria-selected="false" type="button" data-force-hover>탭 메뉴</button></div></td>
+        <td class="values"><span class="chip"><i style="background:#1D6CEB"></i>글자 <code>--color-navigation-label-hover</code></span><span class="chip">높이 <b>32dp</b></span><span class="chip">최소폭 <b>76dp</b></span><span class="chip">테두리 <b>0dp</b></span><span class="chip">좌우여백 <b>16dp</b></span><span class="chip">글자크기 <b>16sp</b></span><span class="chip">굵기 <b>500</b></span></td>
+      </tr>
+      <tr>
+        <td class="key"><code>sm|mobile|selected</code></td>
+        <td class="sample"><div data-s1-component="tab" data-size="sm" data-break="mobile" role="tablist"><button data-s1-part="tab" role="tab" aria-selected="true" type="button">탭 메뉴</button></div></td>
+        <td class="values"><span class="chip"><i style="background:#1D6CEB"></i>글자 <code>--color-navigation-label-selected</code></span><span class="chip">높이 <b>32dp</b></span><span class="chip">최소폭 <b>76dp</b></span><span class="chip">테두리 <b>0dp</b></span><span class="chip">좌우여백 <b>16dp</b></span><span class="chip">글자크기 <b>16sp</b></span><span class="chip">굵기 <b>500</b></span></td>
+      </tr></tbody>
+      </table>
+      <p class="warn">Compose 가 값으로 읽지 않은 선언 1건 — 모두 표시·배치 규칙이라 부품 뼈대가 직접 담당합니다.</p>
+         <ul class="unread"><li><code>display: none</code> <span>[data-s1-component=&quot;tab&quot;] [role=&quot;tabpanel&quot;][hidden]</span></li></ul>
+    </section>
+    <section id="select">
+      <h2>select</h2>
+      <p class="meta">승인 조합 20가지</p>
+      <table>
+        <thead><tr><th>조합</th><th>승인된 웹 배포본이 그리는 모습</th><th>Compose 가 쓰는 값</th></tr></thead>
+        <tbody>
+      <tr>
+        <td class="key"><code>xxsm|pc|default</code></td>
+        <td class="sample"><div data-s1-component="select" data-size="xxsm" data-break="pc"><button data-s1-part="trigger" type="button" aria-haspopup="listbox" aria-expanded="false"><span data-s1-part="value">선택</span><span data-s1-part="icon"></span></button><div data-s1-part="panel"></div></div></td>
+        <td class="values"><span class="chip"><i style="background:#FFFFFF"></i>배경 <code>--color-form-control-bg-default</code></span><span class="chip"><i style="background:#757575"></i>글자 <code>--color-form-control-text-placeholder</code></span><span class="chip"><i style="background:#D9D9D9"></i>테두리 <code>--color-form-control-border-default</code></span><span class="chip">높이 <b>28dp</b></span><span class="chip">최소폭 <b>140dp</b></span><span class="chip">모서리 <b>4dp</b></span><span class="chip">테두리 <b>1dp</b></span><span class="chip">좌우여백 <b>16/8dp</b></span><span class="chip">글자크기 <b>12sp</b></span><span class="chip">굵기 <b>400</b></span></td>
+      </tr>
+      <tr>
+        <td class="key"><code>xxsm|pc|hover</code></td>
+        <td class="sample"><div data-s1-component="select" data-size="xxsm" data-break="pc"><button data-s1-part="trigger" type="button" aria-haspopup="listbox" aria-expanded="false" data-force-hover><span data-s1-part="value">선택</span><span data-s1-part="icon"></span></button><div data-s1-part="panel"></div></div></td>
+        <td class="values"><span class="chip"><i style="background:#FAFAFA"></i>배경 <code>--color-form-control-bg-hover</code></span><span class="chip"><i style="background:#757575"></i>글자 <code>--color-form-control-text-placeholder</code></span><span class="chip"><i style="background:#D9D9D9"></i>테두리 <code>--color-form-control-border-default</code></span><span class="chip">높이 <b>28dp</b></span><span class="chip">최소폭 <b>140dp</b></span><span class="chip">모서리 <b>4dp</b></span><span class="chip">테두리 <b>1dp</b></span><span class="chip">좌우여백 <b>16/8dp</b></span><span class="chip">글자크기 <b>12sp</b></span><span class="chip">굵기 <b>400</b></span></td>
+      </tr>
+      <tr>
+        <td class="key"><code>xxsm|pc|filled</code></td>
+        <td class="sample"><div data-s1-component="select" data-size="xxsm" data-break="pc"><button data-s1-part="trigger" type="button" aria-haspopup="listbox" aria-expanded="false" data-filled="true"><span data-s1-part="value">선택</span><span data-s1-part="icon"></span></button><div data-s1-part="panel"></div></div></td>
+        <td class="values"><span class="chip"><i style="background:#FFFFFF"></i>배경 <code>--color-form-control-bg-default</code></span><span class="chip"><i style="background:#202020"></i>글자 <code>--color-form-control-text-selected</code></span><span class="chip"><i style="background:#D9D9D9"></i>테두리 <code>--color-form-control-border-default</code></span><span class="chip">높이 <b>28dp</b></span><span class="chip">최소폭 <b>140dp</b></span><span class="chip">모서리 <b>4dp</b></span><span class="chip">테두리 <b>1dp</b></span><span class="chip">좌우여백 <b>16/8dp</b></span><span class="chip">글자크기 <b>12sp</b></span><span class="chip">굵기 <b>400</b></span></td>
+      </tr>
+      <tr>
+        <td class="key"><code>xxsm|pc|open</code></td>
+        <td class="sample"><div data-s1-component="select" data-size="xxsm" data-break="pc"><button data-s1-part="trigger" type="button" aria-haspopup="listbox" aria-expanded="true"><span data-s1-part="value">선택</span><span data-s1-part="icon"></span></button><div data-s1-part="panel"></div></div></td>
+        <td class="values"><span class="chip"><i style="background:#FFFFFF"></i>배경 <code>--color-form-control-bg-selected</code></span><span class="chip"><i style="background:#757575"></i>글자 <code>--color-form-control-text-placeholder</code></span><span class="chip"><i style="background:#1D6CEB"></i>테두리 <code>--color-form-control-border-selected</code></span><span class="chip">높이 <b>28dp</b></span><span class="chip">최소폭 <b>140dp</b></span><span class="chip">모서리 <b>4dp</b></span><span class="chip">테두리 <b>1dp</b></span><span class="chip">좌우여백 <b>16/8dp</b></span><span class="chip">글자크기 <b>12sp</b></span><span class="chip">굵기 <b>400</b></span></td>
+      </tr>
+      <tr>
+        <td class="key"><code>xxsm|pc|disabled</code></td>
+        <td class="sample"><div data-s1-component="select" data-size="xxsm" data-break="pc"><button data-s1-part="trigger" type="button" aria-haspopup="listbox" aria-expanded="false" disabled><span data-s1-part="value">선택</span><span data-s1-part="icon"></span></button><div data-s1-part="panel"></div></div></td>
+        <td class="values"><span class="chip"><i style="background:#F5F5F5"></i>배경 <code>--color-form-control-bg-disabled</code></span><span class="chip"><i style="background:#C4C4C4"></i>글자 <code>--color-form-control-text-disabled</code></span><span class="chip"><i style="background:#E9E9E9"></i>테두리 <code>--color-form-control-border-disabled</code></span><span class="chip">높이 <b>28dp</b></span><span class="chip">최소폭 <b>140dp</b></span><span class="chip">모서리 <b>4dp</b></span><span class="chip">테두리 <b>1dp</b></span><span class="chip">좌우여백 <b>16/8dp</b></span><span class="chip">글자크기 <b>12sp</b></span><span class="chip">굵기 <b>400</b></span></td>
+      </tr>
+      <tr>
+        <td class="key"><code>xsm|pc|default</code></td>
+        <td class="sample"><div data-s1-component="select" data-size="xsm" data-break="pc"><button data-s1-part="trigger" type="button" aria-haspopup="listbox" aria-expanded="false"><span data-s1-part="value">선택</span><span data-s1-part="icon"></span></button><div data-s1-part="panel"></div></div></td>
+        <td class="values"><span class="chip"><i style="background:#FFFFFF"></i>배경 <code>--color-form-control-bg-default</code></span><span class="chip"><i style="background:#757575"></i>글자 <code>--color-form-control-text-placeholder</code></span><span class="chip"><i style="background:#D9D9D9"></i>테두리 <code>--color-form-control-border-default</code></span><span class="chip">높이 <b>34dp</b></span><span class="chip">최소폭 <b>140dp</b></span><span class="chip">모서리 <b>4dp</b></span><span class="chip">테두리 <b>1dp</b></span><span class="chip">좌우여백 <b>16/8dp</b></span><span class="chip">글자크기 <b>14sp</b></span><span class="chip">굵기 <b>400</b></span></td>
+      </tr>
+      <tr>
+        <td class="key"><code>xsm|pc|hover</code></td>
+        <td class="sample"><div data-s1-component="select" data-size="xsm" data-break="pc"><button data-s1-part="trigger" type="button" aria-haspopup="listbox" aria-expanded="false" data-force-hover><span data-s1-part="value">선택</span><span data-s1-part="icon"></span></button><div data-s1-part="panel"></div></div></td>
+        <td class="values"><span class="chip"><i style="background:#FAFAFA"></i>배경 <code>--color-form-control-bg-hover</code></span><span class="chip"><i style="background:#757575"></i>글자 <code>--color-form-control-text-placeholder</code></span><span class="chip"><i style="background:#D9D9D9"></i>테두리 <code>--color-form-control-border-default</code></span><span class="chip">높이 <b>34dp</b></span><span class="chip">최소폭 <b>140dp</b></span><span class="chip">모서리 <b>4dp</b></span><span class="chip">테두리 <b>1dp</b></span><span class="chip">좌우여백 <b>16/8dp</b></span><span class="chip">글자크기 <b>14sp</b></span><span class="chip">굵기 <b>400</b></span></td>
+      </tr>
+      <tr>
+        <td class="key"><code>xsm|pc|filled</code></td>
+        <td class="sample"><div data-s1-component="select" data-size="xsm" data-break="pc"><button data-s1-part="trigger" type="button" aria-haspopup="listbox" aria-expanded="false" data-filled="true"><span data-s1-part="value">선택</span><span data-s1-part="icon"></span></button><div data-s1-part="panel"></div></div></td>
+        <td class="values"><span class="chip"><i style="background:#FFFFFF"></i>배경 <code>--color-form-control-bg-default</code></span><span class="chip"><i style="background:#202020"></i>글자 <code>--color-form-control-text-selected</code></span><span class="chip"><i style="background:#D9D9D9"></i>테두리 <code>--color-form-control-border-default</code></span><span class="chip">높이 <b>34dp</b></span><span class="chip">최소폭 <b>140dp</b></span><span class="chip">모서리 <b>4dp</b></span><span class="chip">테두리 <b>1dp</b></span><span class="chip">좌우여백 <b>16/8dp</b></span><span class="chip">글자크기 <b>14sp</b></span><span class="chip">굵기 <b>400</b></span></td>
+      </tr>
+      <tr>
+        <td class="key"><code>xsm|pc|open</code></td>
+        <td class="sample"><div data-s1-component="select" data-size="xsm" data-break="pc"><button data-s1-part="trigger" type="button" aria-haspopup="listbox" aria-expanded="true"><span data-s1-part="value">선택</span><span data-s1-part="icon"></span></button><div data-s1-part="panel"></div></div></td>
+        <td class="values"><span class="chip"><i style="background:#FFFFFF"></i>배경 <code>--color-form-control-bg-selected</code></span><span class="chip"><i style="background:#757575"></i>글자 <code>--color-form-control-text-placeholder</code></span><span class="chip"><i style="background:#1D6CEB"></i>테두리 <code>--color-form-control-border-selected</code></span><span class="chip">높이 <b>34dp</b></span><span class="chip">최소폭 <b>140dp</b></span><span class="chip">모서리 <b>4dp</b></span><span class="chip">테두리 <b>1dp</b></span><span class="chip">좌우여백 <b>16/8dp</b></span><span class="chip">글자크기 <b>14sp</b></span><span class="chip">굵기 <b>400</b></span></td>
+      </tr>
+      <tr>
+        <td class="key"><code>xsm|pc|disabled</code></td>
+        <td class="sample"><div data-s1-component="select" data-size="xsm" data-break="pc"><button data-s1-part="trigger" type="button" aria-haspopup="listbox" aria-expanded="false" disabled><span data-s1-part="value">선택</span><span data-s1-part="icon"></span></button><div data-s1-part="panel"></div></div></td>
+        <td class="values"><span class="chip"><i style="background:#F5F5F5"></i>배경 <code>--color-form-control-bg-disabled</code></span><span class="chip"><i style="background:#C4C4C4"></i>글자 <code>--color-form-control-text-disabled</code></span><span class="chip"><i style="background:#E9E9E9"></i>테두리 <code>--color-form-control-border-disabled</code></span><span class="chip">높이 <b>34dp</b></span><span class="chip">최소폭 <b>140dp</b></span><span class="chip">모서리 <b>4dp</b></span><span class="chip">테두리 <b>1dp</b></span><span class="chip">좌우여백 <b>16/8dp</b></span><span class="chip">글자크기 <b>14sp</b></span><span class="chip">굵기 <b>400</b></span></td>
+      </tr>
+      <tr>
+        <td class="key"><code>md|pc|default</code></td>
+        <td class="sample"><div data-s1-component="select" data-size="md" data-break="pc"><button data-s1-part="trigger" type="button" aria-haspopup="listbox" aria-expanded="false"><span data-s1-part="value">선택</span><span data-s1-part="icon"></span></button><div data-s1-part="panel"></div></div></td>
+        <td class="values"><span class="chip"><i style="background:#FFFFFF"></i>배경 <code>--color-form-control-bg-default</code></span><span class="chip"><i style="background:#757575"></i>글자 <code>--color-form-control-text-placeholder</code></span><span class="chip"><i style="background:#D9D9D9"></i>테두리 <code>--color-form-control-border-default</code></span><span class="chip">높이 <b>44dp</b></span><span class="chip">최소폭 <b>140dp</b></span><span class="chip">모서리 <b>4dp</b></span><span class="chip">테두리 <b>1dp</b></span><span class="chip">좌우여백 <b>16/8dp</b></span><span class="chip">글자크기 <b>14sp</b></span><span class="chip">굵기 <b>400</b></span></td>
+      </tr>
+      <tr>
+        <td class="key"><code>md|pc|hover</code></td>
+        <td class="sample"><div data-s1-component="select" data-size="md" data-break="pc"><button data-s1-part="trigger" type="button" aria-haspopup="listbox" aria-expanded="false" data-force-hover><span data-s1-part="value">선택</span><span data-s1-part="icon"></span></button><div data-s1-part="panel"></div></div></td>
+        <td class="values"><span class="chip"><i style="background:#FAFAFA"></i>배경 <code>--color-form-control-bg-hover</code></span><span class="chip"><i style="background:#757575"></i>글자 <code>--color-form-control-text-placeholder</code></span><span class="chip"><i style="background:#D9D9D9"></i>테두리 <code>--color-form-control-border-default</code></span><span class="chip">높이 <b>44dp</b></span><span class="chip">최소폭 <b>140dp</b></span><span class="chip">모서리 <b>4dp</b></span><span class="chip">테두리 <b>1dp</b></span><span class="chip">좌우여백 <b>16/8dp</b></span><span class="chip">글자크기 <b>14sp</b></span><span class="chip">굵기 <b>400</b></span></td>
+      </tr>
+      <tr>
+        <td class="key"><code>md|pc|filled</code></td>
+        <td class="sample"><div data-s1-component="select" data-size="md" data-break="pc"><button data-s1-part="trigger" type="button" aria-haspopup="listbox" aria-expanded="false" data-filled="true"><span data-s1-part="value">선택</span><span data-s1-part="icon"></span></button><div data-s1-part="panel"></div></div></td>
+        <td class="values"><span class="chip"><i style="background:#FFFFFF"></i>배경 <code>--color-form-control-bg-default</code></span><span class="chip"><i style="background:#202020"></i>글자 <code>--color-form-control-text-selected</code></span><span class="chip"><i style="background:#D9D9D9"></i>테두리 <code>--color-form-control-border-default</code></span><span class="chip">높이 <b>44dp</b></span><span class="chip">최소폭 <b>140dp</b></span><span class="chip">모서리 <b>4dp</b></span><span class="chip">테두리 <b>1dp</b></span><span class="chip">좌우여백 <b>16/8dp</b></span><span class="chip">글자크기 <b>14sp</b></span><span class="chip">굵기 <b>400</b></span></td>
+      </tr>
+      <tr>
+        <td class="key"><code>md|pc|open</code></td>
+        <td class="sample"><div data-s1-component="select" data-size="md" data-break="pc"><button data-s1-part="trigger" type="button" aria-haspopup="listbox" aria-expanded="true"><span data-s1-part="value">선택</span><span data-s1-part="icon"></span></button><div data-s1-part="panel"></div></div></td>
+        <td class="values"><span class="chip"><i style="background:#FFFFFF"></i>배경 <code>--color-form-control-bg-selected</code></span><span class="chip"><i style="background:#757575"></i>글자 <code>--color-form-control-text-placeholder</code></span><span class="chip"><i style="background:#1D6CEB"></i>테두리 <code>--color-form-control-border-selected</code></span><span class="chip">높이 <b>44dp</b></span><span class="chip">최소폭 <b>140dp</b></span><span class="chip">모서리 <b>4dp</b></span><span class="chip">테두리 <b>1dp</b></span><span class="chip">좌우여백 <b>16/8dp</b></span><span class="chip">글자크기 <b>14sp</b></span><span class="chip">굵기 <b>400</b></span></td>
+      </tr>
+      <tr>
+        <td class="key"><code>md|pc|disabled</code></td>
+        <td class="sample"><div data-s1-component="select" data-size="md" data-break="pc"><button data-s1-part="trigger" type="button" aria-haspopup="listbox" aria-expanded="false" disabled><span data-s1-part="value">선택</span><span data-s1-part="icon"></span></button><div data-s1-part="panel"></div></div></td>
+        <td class="values"><span class="chip"><i style="background:#F5F5F5"></i>배경 <code>--color-form-control-bg-disabled</code></span><span class="chip"><i style="background:#C4C4C4"></i>글자 <code>--color-form-control-text-disabled</code></span><span class="chip"><i style="background:#E9E9E9"></i>테두리 <code>--color-form-control-border-disabled</code></span><span class="chip">높이 <b>44dp</b></span><span class="chip">최소폭 <b>140dp</b></span><span class="chip">모서리 <b>4dp</b></span><span class="chip">테두리 <b>1dp</b></span><span class="chip">좌우여백 <b>16/8dp</b></span><span class="chip">글자크기 <b>14sp</b></span><span class="chip">굵기 <b>400</b></span></td>
+      </tr>
+      <tr>
+        <td class="key"><code>md|mobile|default</code></td>
+        <td class="sample"><div data-s1-component="select" data-size="md" data-break="mobile"><button data-s1-part="trigger" type="button" aria-haspopup="listbox" aria-expanded="false"><span data-s1-part="value">선택</span><span data-s1-part="icon"></span></button><div data-s1-part="panel"></div></div></td>
+        <td class="values"><span class="chip"><i style="background:#FFFFFF"></i>배경 <code>--color-form-control-bg-default</code></span><span class="chip"><i style="background:#757575"></i>글자 <code>--color-form-control-text-placeholder</code></span><span class="chip"><i style="background:#D9D9D9"></i>테두리 <code>--color-form-control-border-default</code></span><span class="chip">높이 <b>48dp</b></span><span class="chip">최소폭 <b>140dp</b></span><span class="chip">모서리 <b>4dp</b></span><span class="chip">테두리 <b>1dp</b></span><span class="chip">좌우여백 <b>16/8dp</b></span><span class="chip">글자크기 <b>14sp</b></span><span class="chip">굵기 <b>400</b></span></td>
+      </tr>
+      <tr>
+        <td class="key"><code>md|mobile|hover</code></td>
+        <td class="sample"><div data-s1-component="select" data-size="md" data-break="mobile"><button data-s1-part="trigger" type="button" aria-haspopup="listbox" aria-expanded="false" data-force-hover><span data-s1-part="value">선택</span><span data-s1-part="icon"></span></button><div data-s1-part="panel"></div></div></td>
+        <td class="values"><span class="chip"><i style="background:#FAFAFA"></i>배경 <code>--color-form-control-bg-hover</code></span><span class="chip"><i style="background:#757575"></i>글자 <code>--color-form-control-text-placeholder</code></span><span class="chip"><i style="background:#D9D9D9"></i>테두리 <code>--color-form-control-border-default</code></span><span class="chip">높이 <b>48dp</b></span><span class="chip">최소폭 <b>140dp</b></span><span class="chip">모서리 <b>4dp</b></span><span class="chip">테두리 <b>1dp</b></span><span class="chip">좌우여백 <b>16/8dp</b></span><span class="chip">글자크기 <b>14sp</b></span><span class="chip">굵기 <b>400</b></span></td>
+      </tr>
+      <tr>
+        <td class="key"><code>md|mobile|filled</code></td>
+        <td class="sample"><div data-s1-component="select" data-size="md" data-break="mobile"><button data-s1-part="trigger" type="button" aria-haspopup="listbox" aria-expanded="false" data-filled="true"><span data-s1-part="value">선택</span><span data-s1-part="icon"></span></button><div data-s1-part="panel"></div></div></td>
+        <td class="values"><span class="chip"><i style="background:#FFFFFF"></i>배경 <code>--color-form-control-bg-default</code></span><span class="chip"><i style="background:#202020"></i>글자 <code>--color-form-control-text-selected</code></span><span class="chip"><i style="background:#D9D9D9"></i>테두리 <code>--color-form-control-border-default</code></span><span class="chip">높이 <b>48dp</b></span><span class="chip">최소폭 <b>140dp</b></span><span class="chip">모서리 <b>4dp</b></span><span class="chip">테두리 <b>1dp</b></span><span class="chip">좌우여백 <b>16/8dp</b></span><span class="chip">글자크기 <b>14sp</b></span><span class="chip">굵기 <b>400</b></span></td>
+      </tr>
+      <tr>
+        <td class="key"><code>md|mobile|open</code></td>
+        <td class="sample"><div data-s1-component="select" data-size="md" data-break="mobile"><button data-s1-part="trigger" type="button" aria-haspopup="listbox" aria-expanded="true"><span data-s1-part="value">선택</span><span data-s1-part="icon"></span></button><div data-s1-part="panel"></div></div></td>
+        <td class="values"><span class="chip"><i style="background:#FFFFFF"></i>배경 <code>--color-form-control-bg-selected</code></span><span class="chip"><i style="background:#757575"></i>글자 <code>--color-form-control-text-placeholder</code></span><span class="chip"><i style="background:#1D6CEB"></i>테두리 <code>--color-form-control-border-selected</code></span><span class="chip">높이 <b>48dp</b></span><span class="chip">최소폭 <b>140dp</b></span><span class="chip">모서리 <b>4dp</b></span><span class="chip">테두리 <b>1dp</b></span><span class="chip">좌우여백 <b>16/8dp</b></span><span class="chip">글자크기 <b>14sp</b></span><span class="chip">굵기 <b>400</b></span></td>
+      </tr>
+      <tr>
+        <td class="key"><code>md|mobile|disabled</code></td>
+        <td class="sample"><div data-s1-component="select" data-size="md" data-break="mobile"><button data-s1-part="trigger" type="button" aria-haspopup="listbox" aria-expanded="false" disabled><span data-s1-part="value">선택</span><span data-s1-part="icon"></span></button><div data-s1-part="panel"></div></div></td>
+        <td class="values"><span class="chip"><i style="background:#F5F5F5"></i>배경 <code>--color-form-control-bg-disabled</code></span><span class="chip"><i style="background:#C4C4C4"></i>글자 <code>--color-form-control-text-disabled</code></span><span class="chip"><i style="background:#E9E9E9"></i>테두리 <code>--color-form-control-border-disabled</code></span><span class="chip">높이 <b>48dp</b></span><span class="chip">최소폭 <b>140dp</b></span><span class="chip">모서리 <b>4dp</b></span><span class="chip">테두리 <b>1dp</b></span><span class="chip">좌우여백 <b>16/8dp</b></span><span class="chip">글자크기 <b>14sp</b></span><span class="chip">굵기 <b>400</b></span></td>
+      </tr></tbody>
+      </table>
+      <p class="warn">Compose 가 값으로 읽지 않은 선언 2건 — 모두 표시·배치 규칙이라 부품 뼈대가 직접 담당합니다.</p>
+         <ul class="unread"><li><code>display: none</code> <span>[data-s1-component=&quot;select&quot;] [data-s1-part=&quot;panel&quot;][hidden]</span></li><li><code>width: 100%</code> <span>[data-s1-component=&quot;select&quot;] [data-s1-part=&quot;panel&quot;] [data-s1-component=&quot;dropdown&quot;]</span></li></ul>
+    </section>
+    <section id="dropdown">
+      <h2>dropdown</h2>
+      <p class="meta">승인 조합 18가지</p>
+      <table>
+        <thead><tr><th>조합</th><th>승인된 웹 배포본이 그리는 모습</th><th>Compose 가 쓰는 값</th></tr></thead>
+        <tbody>
+      <tr>
+        <td class="key"><code>text|xxsm|default</code></td>
+        <td class="sample"><div data-s1-component="dropdown" data-type="text" data-size="xxsm"><div data-s1-part="option" role="option" aria-selected="false" data-select-all="true"></div><div data-s1-part="divider"></div><div data-s1-part="option" role="option" aria-selected="false"><span data-s1-part="option-label">항목 이름</span></div></div></td>
+        <td class="values"><span class="chip"><i style="background:#FFFFFF"></i>배경 <code>--color-dropdown-option-bg-default</code></span><span class="chip"><i style="background:#353535"></i>글자 <code>--color-dropdown-option-label-default</code></span><span class="chip">좌우여백 <b>12dp</b></span><span class="chip">글자크기 <b>12sp</b></span><span class="chip">굵기 <b>400</b></span></td>
+      </tr>
+      <tr>
+        <td class="key"><code>text|xxsm|hover</code></td>
+        <td class="sample"><div data-s1-component="dropdown" data-type="text" data-size="xxsm"><div data-s1-part="option" role="option" aria-selected="false" data-select-all="true"></div><div data-s1-part="divider"></div><div data-s1-part="option" role="option" aria-selected="false" data-force-hover><span data-s1-part="option-label">항목 이름</span></div></div></td>
+        <td class="values"><span class="chip"><i style="background:#F5F5F5"></i>배경 <code>--color-dropdown-option-bg-hover</code></span><span class="chip"><i style="background:#202020"></i>글자 <code>--color-dropdown-option-label-hover</code></span><span class="chip">좌우여백 <b>12dp</b></span><span class="chip">글자크기 <b>12sp</b></span><span class="chip">굵기 <b>400</b></span></td>
+      </tr>
+      <tr>
+        <td class="key"><code>text|xxsm|selected</code></td>
+        <td class="sample"><div data-s1-component="dropdown" data-type="text" data-size="xxsm"><div data-s1-part="option" role="option" aria-selected="true" data-select-all="true"></div><div data-s1-part="divider"></div><div data-s1-part="option" role="option" aria-selected="true"><span data-s1-part="option-label">항목 이름</span></div></div></td>
+        <td class="values"><span class="chip"><i style="background:#FFFFFF"></i>배경 <code>--color-dropdown-option-bg-default</code></span><span class="chip"><i style="background:#1D6CEB"></i>글자 <code>--color-dropdown-option-label-selected</code></span><span class="chip">좌우여백 <b>12dp</b></span><span class="chip">글자크기 <b>12sp</b></span><span class="chip">굵기 <b>400</b></span></td>
+      </tr>
+      <tr>
+        <td class="key"><code>text|xsm|default</code></td>
+        <td class="sample"><div data-s1-component="dropdown" data-type="text" data-size="xsm"><div data-s1-part="option" role="option" aria-selected="false" data-select-all="true"></div><div data-s1-part="divider"></div><div data-s1-part="option" role="option" aria-selected="false"><span data-s1-part="option-label">항목 이름</span></div></div></td>
+        <td class="values"><span class="chip"><i style="background:#FFFFFF"></i>배경 <code>--color-dropdown-option-bg-default</code></span><span class="chip"><i style="background:#353535"></i>글자 <code>--color-dropdown-option-label-default</code></span><span class="chip">좌우여백 <b>12dp</b></span><span class="chip">글자크기 <b>14sp</b></span><span class="chip">굵기 <b>400</b></span></td>
+      </tr>
+      <tr>
+        <td class="key"><code>text|xsm|hover</code></td>
+        <td class="sample"><div data-s1-component="dropdown" data-type="text" data-size="xsm"><div data-s1-part="option" role="option" aria-selected="false" data-select-all="true"></div><div data-s1-part="divider"></div><div data-s1-part="option" role="option" aria-selected="false" data-force-hover><span data-s1-part="option-label">항목 이름</span></div></div></td>
+        <td class="values"><span class="chip"><i style="background:#F5F5F5"></i>배경 <code>--color-dropdown-option-bg-hover</code></span><span class="chip"><i style="background:#202020"></i>글자 <code>--color-dropdown-option-label-hover</code></span><span class="chip">좌우여백 <b>12dp</b></span><span class="chip">글자크기 <b>14sp</b></span><span class="chip">굵기 <b>400</b></span></td>
+      </tr>
+      <tr>
+        <td class="key"><code>text|xsm|selected</code></td>
+        <td class="sample"><div data-s1-component="dropdown" data-type="text" data-size="xsm"><div data-s1-part="option" role="option" aria-selected="true" data-select-all="true"></div><div data-s1-part="divider"></div><div data-s1-part="option" role="option" aria-selected="true"><span data-s1-part="option-label">항목 이름</span></div></div></td>
+        <td class="values"><span class="chip"><i style="background:#FFFFFF"></i>배경 <code>--color-dropdown-option-bg-default</code></span><span class="chip"><i style="background:#1D6CEB"></i>글자 <code>--color-dropdown-option-label-selected</code></span><span class="chip">좌우여백 <b>12dp</b></span><span class="chip">글자크기 <b>14sp</b></span><span class="chip">굵기 <b>400</b></span></td>
+      </tr>
+      <tr>
+        <td class="key"><code>text|md|default</code></td>
+        <td class="sample"><div data-s1-component="dropdown" data-type="text" data-size="md"><div data-s1-part="option" role="option" aria-selected="false" data-select-all="true"></div><div data-s1-part="divider"></div><div data-s1-part="option" role="option" aria-selected="false"><span data-s1-part="option-label">항목 이름</span></div></div></td>
+        <td class="values"><span class="chip"><i style="background:#FFFFFF"></i>배경 <code>--color-dropdown-option-bg-default</code></span><span class="chip"><i style="background:#353535"></i>글자 <code>--color-dropdown-option-label-default</code></span><span class="chip">좌우여백 <b>12dp</b></span><span class="chip">글자크기 <b>14sp</b></span><span class="chip">굵기 <b>400</b></span></td>
+      </tr>
+      <tr>
+        <td class="key"><code>text|md|hover</code></td>
+        <td class="sample"><div data-s1-component="dropdown" data-type="text" data-size="md"><div data-s1-part="option" role="option" aria-selected="false" data-select-all="true"></div><div data-s1-part="divider"></div><div data-s1-part="option" role="option" aria-selected="false" data-force-hover><span data-s1-part="option-label">항목 이름</span></div></div></td>
+        <td class="values"><span class="chip"><i style="background:#F5F5F5"></i>배경 <code>--color-dropdown-option-bg-hover</code></span><span class="chip"><i style="background:#202020"></i>글자 <code>--color-dropdown-option-label-hover</code></span><span class="chip">좌우여백 <b>12dp</b></span><span class="chip">글자크기 <b>14sp</b></span><span class="chip">굵기 <b>400</b></span></td>
+      </tr>
+      <tr>
+        <td class="key"><code>text|md|selected</code></td>
+        <td class="sample"><div data-s1-component="dropdown" data-type="text" data-size="md"><div data-s1-part="option" role="option" aria-selected="true" data-select-all="true"></div><div data-s1-part="divider"></div><div data-s1-part="option" role="option" aria-selected="true"><span data-s1-part="option-label">항목 이름</span></div></div></td>
+        <td class="values"><span class="chip"><i style="background:#FFFFFF"></i>배경 <code>--color-dropdown-option-bg-default</code></span><span class="chip"><i style="background:#1D6CEB"></i>글자 <code>--color-dropdown-option-label-selected</code></span><span class="chip">좌우여백 <b>12dp</b></span><span class="chip">글자크기 <b>14sp</b></span><span class="chip">굵기 <b>400</b></span></td>
+      </tr>
+      <tr>
+        <td class="key"><code>checkbox|xxsm|default</code></td>
+        <td class="sample"><div data-s1-component="dropdown" data-type="checkbox" data-size="xxsm"><div data-s1-part="option" role="checkbox" aria-checked="false" data-select-all="true"></div><div data-s1-part="divider"></div><div data-s1-part="option" role="checkbox" aria-checked="false"><span data-s1-part="option-label">항목 이름</span></div></div></td>
+        <td class="values"><span class="chip"><i style="background:#FFFFFF"></i>배경 <code>--color-dropdown-option-bg-default</code></span><span class="chip"><i style="background:#353535"></i>글자 <code>--color-dropdown-option-label-default</code></span><span class="chip">좌우여백 <b>12dp</b></span><span class="chip">글자크기 <b>12sp</b></span><span class="chip">굵기 <b>400</b></span></td>
+      </tr>
+      <tr>
+        <td class="key"><code>checkbox|xxsm|hover</code></td>
+        <td class="sample"><div data-s1-component="dropdown" data-type="checkbox" data-size="xxsm"><div data-s1-part="option" role="checkbox" aria-checked="false" data-select-all="true"></div><div data-s1-part="divider"></div><div data-s1-part="option" role="checkbox" aria-checked="false" data-force-hover><span data-s1-part="option-label">항목 이름</span></div></div></td>
+        <td class="values"><span class="chip"><i style="background:#F5F5F5"></i>배경 <code>--color-dropdown-option-bg-hover</code></span><span class="chip"><i style="background:#202020"></i>글자 <code>--color-dropdown-option-label-hover</code></span><span class="chip">좌우여백 <b>12dp</b></span><span class="chip">글자크기 <b>12sp</b></span><span class="chip">굵기 <b>400</b></span></td>
+      </tr>
+      <tr>
+        <td class="key"><code>checkbox|xxsm|selected</code></td>
+        <td class="sample"><div data-s1-component="dropdown" data-type="checkbox" data-size="xxsm"><div data-s1-part="option" role="checkbox" aria-checked="true" data-select-all="true"></div><div data-s1-part="divider"></div><div data-s1-part="option" role="checkbox" aria-checked="true"><span data-s1-part="option-label">항목 이름</span></div></div></td>
+        <td class="values"><span class="chip"><i style="background:#FFFFFF"></i>배경 <code>--color-dropdown-option-bg-default</code></span><span class="chip"><i style="background:#353535"></i>글자 <code>--color-dropdown-option-label-default</code></span><span class="chip">좌우여백 <b>12dp</b></span><span class="chip">글자크기 <b>12sp</b></span><span class="chip">굵기 <b>400</b></span></td>
+      </tr>
+      <tr>
+        <td class="key"><code>checkbox|xsm|default</code></td>
+        <td class="sample"><div data-s1-component="dropdown" data-type="checkbox" data-size="xsm"><div data-s1-part="option" role="checkbox" aria-checked="false" data-select-all="true"></div><div data-s1-part="divider"></div><div data-s1-part="option" role="checkbox" aria-checked="false"><span data-s1-part="option-label">항목 이름</span></div></div></td>
+        <td class="values"><span class="chip"><i style="background:#FFFFFF"></i>배경 <code>--color-dropdown-option-bg-default</code></span><span class="chip"><i style="background:#353535"></i>글자 <code>--color-dropdown-option-label-default</code></span><span class="chip">좌우여백 <b>12dp</b></span><span class="chip">글자크기 <b>14sp</b></span><span class="chip">굵기 <b>400</b></span></td>
+      </tr>
+      <tr>
+        <td class="key"><code>checkbox|xsm|hover</code></td>
+        <td class="sample"><div data-s1-component="dropdown" data-type="checkbox" data-size="xsm"><div data-s1-part="option" role="checkbox" aria-checked="false" data-select-all="true"></div><div data-s1-part="divider"></div><div data-s1-part="option" role="checkbox" aria-checked="false" data-force-hover><span data-s1-part="option-label">항목 이름</span></div></div></td>
+        <td class="values"><span class="chip"><i style="background:#F5F5F5"></i>배경 <code>--color-dropdown-option-bg-hover</code></span><span class="chip"><i style="background:#202020"></i>글자 <code>--color-dropdown-option-label-hover</code></span><span class="chip">좌우여백 <b>12dp</b></span><span class="chip">글자크기 <b>14sp</b></span><span class="chip">굵기 <b>400</b></span></td>
+      </tr>
+      <tr>
+        <td class="key"><code>checkbox|xsm|selected</code></td>
+        <td class="sample"><div data-s1-component="dropdown" data-type="checkbox" data-size="xsm"><div data-s1-part="option" role="checkbox" aria-checked="true" data-select-all="true"></div><div data-s1-part="divider"></div><div data-s1-part="option" role="checkbox" aria-checked="true"><span data-s1-part="option-label">항목 이름</span></div></div></td>
+        <td class="values"><span class="chip"><i style="background:#FFFFFF"></i>배경 <code>--color-dropdown-option-bg-default</code></span><span class="chip"><i style="background:#353535"></i>글자 <code>--color-dropdown-option-label-default</code></span><span class="chip">좌우여백 <b>12dp</b></span><span class="chip">글자크기 <b>14sp</b></span><span class="chip">굵기 <b>400</b></span></td>
+      </tr>
+      <tr>
+        <td class="key"><code>checkbox|md|default</code></td>
+        <td class="sample"><div data-s1-component="dropdown" data-type="checkbox" data-size="md"><div data-s1-part="option" role="checkbox" aria-checked="false" data-select-all="true"></div><div data-s1-part="divider"></div><div data-s1-part="option" role="checkbox" aria-checked="false"><span data-s1-part="option-label">항목 이름</span></div></div></td>
+        <td class="values"><span class="chip"><i style="background:#FFFFFF"></i>배경 <code>--color-dropdown-option-bg-default</code></span><span class="chip"><i style="background:#353535"></i>글자 <code>--color-dropdown-option-label-default</code></span><span class="chip">좌우여백 <b>12dp</b></span><span class="chip">글자크기 <b>14sp</b></span><span class="chip">굵기 <b>400</b></span></td>
+      </tr>
+      <tr>
+        <td class="key"><code>checkbox|md|hover</code></td>
+        <td class="sample"><div data-s1-component="dropdown" data-type="checkbox" data-size="md"><div data-s1-part="option" role="checkbox" aria-checked="false" data-select-all="true"></div><div data-s1-part="divider"></div><div data-s1-part="option" role="checkbox" aria-checked="false" data-force-hover><span data-s1-part="option-label">항목 이름</span></div></div></td>
+        <td class="values"><span class="chip"><i style="background:#F5F5F5"></i>배경 <code>--color-dropdown-option-bg-hover</code></span><span class="chip"><i style="background:#202020"></i>글자 <code>--color-dropdown-option-label-hover</code></span><span class="chip">좌우여백 <b>12dp</b></span><span class="chip">글자크기 <b>14sp</b></span><span class="chip">굵기 <b>400</b></span></td>
+      </tr>
+      <tr>
+        <td class="key"><code>checkbox|md|selected</code></td>
+        <td class="sample"><div data-s1-component="dropdown" data-type="checkbox" data-size="md"><div data-s1-part="option" role="checkbox" aria-checked="true" data-select-all="true"></div><div data-s1-part="divider"></div><div data-s1-part="option" role="checkbox" aria-checked="true"><span data-s1-part="option-label">항목 이름</span></div></div></td>
+        <td class="values"><span class="chip"><i style="background:#FFFFFF"></i>배경 <code>--color-dropdown-option-bg-default</code></span><span class="chip"><i style="background:#353535"></i>글자 <code>--color-dropdown-option-label-default</code></span><span class="chip">좌우여백 <b>12dp</b></span><span class="chip">글자크기 <b>14sp</b></span><span class="chip">굵기 <b>400</b></span></td>
+      </tr></tbody>
+      </table>
+      <p class="warn">Compose 가 값으로 읽지 않은 선언 2건 — 모두 표시·배치 규칙이라 부품 뼈대가 직접 담당합니다.</p>
+         <ul class="unread"><li><code>flex: 0 0 auto</code> <span>[data-s1-component=&quot;dropdown&quot;][data-type=&quot;checkbox&quot;] [data-s1-part=&quot;option&quot;] [data-s1-component=&quot;checkbox&quot;]</span></li><li><code>pointer-events: none</code> <span>[data-s1-component=&quot;dropdown&quot;] [data-s1-part=&quot;option&quot;] [data-s1-component=&quot;checkbox&quot;]</span></li></ul>
+    </section>
+    <section id="input">
+      <h2>input</h2>
+      <p class="meta">승인 조합 28가지</p>
+      <table>
+        <thead><tr><th>조합</th><th>승인된 웹 배포본이 그리는 모습</th><th>Compose 가 쓰는 값</th></tr></thead>
+        <tbody>
+      <tr>
+        <td class="key"><code>xxsm|pc|default</code></td>
+        <td class="sample"><div data-s1-component="input" data-size="xxsm" data-break="pc"><span data-s1-part="label"></span><div data-s1-part="field"><input data-s1-part="control"><button data-s1-part="action" type="button" data-action="clear"><span data-s1-part="action-icon"></span></button></div><p data-s1-part="message">변경한 내용이 저장되지 않고 사라집니다.</p></div></td>
+        <td class="values"><span class="chip"><i style="background:#FFFFFF"></i>배경 <code>--color-form-control-bg-default</code></span><span class="chip"><i style="background:#D9D9D9"></i>테두리 <code>--color-form-control-border-default</code></span><span class="chip">높이 <b>28dp</b></span><span class="chip">모서리 <b>4dp</b></span><span class="chip">테두리 <b>1dp</b></span><span class="chip">좌우여백 <b>12/8dp</b></span></td>
+      </tr>
+      <tr>
+        <td class="key"><code>xxsm|pc|filled</code></td>
+        <td class="sample"><div data-s1-component="input" data-size="xxsm" data-break="pc"><span data-s1-part="label"></span><div data-s1-part="field"><input data-s1-part="control"><button data-s1-part="action" type="button" data-action="clear"><span data-s1-part="action-icon"></span></button></div><p data-s1-part="message">변경한 내용이 저장되지 않고 사라집니다.</p></div></td>
+        <td class="values"><span class="chip"><i style="background:#FFFFFF"></i>배경 <code>--color-form-control-bg-default</code></span><span class="chip"><i style="background:#D9D9D9"></i>테두리 <code>--color-form-control-border-default</code></span><span class="chip">높이 <b>28dp</b></span><span class="chip">모서리 <b>4dp</b></span><span class="chip">테두리 <b>1dp</b></span><span class="chip">좌우여백 <b>12/8dp</b></span></td>
+      </tr>
+      <tr>
+        <td class="key"><code>xxsm|pc|focus</code></td>
+        <td class="sample"><div data-s1-component="input" data-size="xxsm" data-break="pc" data-force-focus-within><span data-s1-part="label"></span><div data-s1-part="field"><input data-s1-part="control" data-force-focus data-force-focus-visible><button data-s1-part="action" type="button" data-action="clear"><span data-s1-part="action-icon"></span></button></div><p data-s1-part="message">변경한 내용이 저장되지 않고 사라집니다.</p></div></td>
+        <td class="values"><span class="chip"><i style="background:#FFFFFF"></i>배경 <code>--color-form-control-bg-selected</code></span><span class="chip"><i style="background:#1D6CEB"></i>테두리 <code>--color-form-control-border-selected</code></span><span class="chip">높이 <b>28dp</b></span><span class="chip">모서리 <b>4dp</b></span><span class="chip">테두리 <b>1dp</b></span><span class="chip">좌우여백 <b>12/8dp</b></span></td>
+      </tr>
+      <tr>
+        <td class="key"><code>xxsm|pc|error</code></td>
+        <td class="sample"><div data-s1-component="input" data-size="xxsm" data-break="pc"><span data-s1-part="label"></span><div data-s1-part="field"><input data-s1-part="control" aria-invalid="true"><button data-s1-part="action" type="button" data-action="clear"><span data-s1-part="action-icon"></span></button></div><p data-s1-part="message">변경한 내용이 저장되지 않고 사라집니다.</p></div></td>
+        <td class="values"><span class="chip"><i style="background:#FFFFFF"></i>배경 <code>--color-form-control-bg-default</code></span><span class="chip"><i style="background:#FF4554"></i>테두리 <code>--color-form-control-border-error</code></span><span class="chip">높이 <b>28dp</b></span><span class="chip">모서리 <b>4dp</b></span><span class="chip">테두리 <b>1dp</b></span><span class="chip">좌우여백 <b>12/8dp</b></span></td>
+      </tr>
+      <tr>
+        <td class="key"><code>xxsm|pc|correct</code></td>
+        <td class="sample"><div data-s1-component="input" data-size="xxsm" data-break="pc" data-state="correct"><span data-s1-part="label"></span><div data-s1-part="field"><input data-s1-part="control"><button data-s1-part="action" type="button" data-action="clear"><span data-s1-part="action-icon"></span></button></div><p data-s1-part="message">변경한 내용이 저장되지 않고 사라집니다.</p></div></td>
+        <td class="values"><span class="chip"><i style="background:#FFFFFF"></i>배경 <code>--color-form-control-bg-default</code></span><span class="chip"><i style="background:#1D6CEB"></i>테두리 <code>--color-form-control-border-correct</code></span><span class="chip">높이 <b>28dp</b></span><span class="chip">모서리 <b>4dp</b></span><span class="chip">테두리 <b>1dp</b></span><span class="chip">좌우여백 <b>12/8dp</b></span></td>
+      </tr>
+      <tr>
+        <td class="key"><code>xxsm|pc|readOnly</code></td>
+        <td class="sample"><div data-s1-component="input" data-size="xxsm" data-break="pc"><span data-s1-part="label"></span><div data-s1-part="field"><input data-s1-part="control" readonly><button data-s1-part="action" type="button" data-action="clear"><span data-s1-part="action-icon"></span></button></div><p data-s1-part="message">변경한 내용이 저장되지 않고 사라집니다.</p></div></td>
+        <td class="values"><span class="chip"><i style="background:#F5F5F5"></i>배경 <code>--color-form-control-bg-disabled</code></span><span class="chip"><i style="background:#D9D9D9"></i>테두리 <code>--color-form-control-border-default</code></span><span class="chip">높이 <b>28dp</b></span><span class="chip">모서리 <b>4dp</b></span><span class="chip">테두리 <b>1dp</b></span><span class="chip">좌우여백 <b>12/8dp</b></span></td>
+      </tr>
+      <tr>
+        <td class="key"><code>xxsm|pc|disabled</code></td>
+        <td class="sample"><div data-s1-component="input" data-size="xxsm" data-break="pc"><span data-s1-part="label"></span><div data-s1-part="field"><input data-s1-part="control" disabled><button data-s1-part="action" type="button" data-action="clear"><span data-s1-part="action-icon"></span></button></div><p data-s1-part="message">변경한 내용이 저장되지 않고 사라집니다.</p></div></td>
+        <td class="values"><span class="chip"><i style="background:#F5F5F5"></i>배경 <code>--color-form-control-bg-disabled</code></span><span class="chip"><i style="background:#E9E9E9"></i>테두리 <code>--color-form-control-border-disabled</code></span><span class="chip">높이 <b>28dp</b></span><span class="chip">모서리 <b>4dp</b></span><span class="chip">테두리 <b>1dp</b></span><span class="chip">좌우여백 <b>12/8dp</b></span></td>
+      </tr>
+      <tr>
+        <td class="key"><code>xsm|pc|default</code></td>
+        <td class="sample"><div data-s1-component="input" data-size="xsm" data-break="pc"><span data-s1-part="label"></span><div data-s1-part="field"><input data-s1-part="control"><button data-s1-part="action" type="button" data-action="clear"><span data-s1-part="action-icon"></span></button></div><p data-s1-part="message">변경한 내용이 저장되지 않고 사라집니다.</p></div></td>
+        <td class="values"><span class="chip"><i style="background:#FFFFFF"></i>배경 <code>--color-form-control-bg-default</code></span><span class="chip"><i style="background:#D9D9D9"></i>테두리 <code>--color-form-control-border-default</code></span><span class="chip">높이 <b>34dp</b></span><span class="chip">모서리 <b>4dp</b></span><span class="chip">테두리 <b>1dp</b></span><span class="chip">좌우여백 <b>12/8dp</b></span></td>
+      </tr>
+      <tr>
+        <td class="key"><code>xsm|pc|filled</code></td>
+        <td class="sample"><div data-s1-component="input" data-size="xsm" data-break="pc"><span data-s1-part="label"></span><div data-s1-part="field"><input data-s1-part="control"><button data-s1-part="action" type="button" data-action="clear"><span data-s1-part="action-icon"></span></button></div><p data-s1-part="message">변경한 내용이 저장되지 않고 사라집니다.</p></div></td>
+        <td class="values"><span class="chip"><i style="background:#FFFFFF"></i>배경 <code>--color-form-control-bg-default</code></span><span class="chip"><i style="background:#D9D9D9"></i>테두리 <code>--color-form-control-border-default</code></span><span class="chip">높이 <b>34dp</b></span><span class="chip">모서리 <b>4dp</b></span><span class="chip">테두리 <b>1dp</b></span><span class="chip">좌우여백 <b>12/8dp</b></span></td>
+      </tr>
+      <tr>
+        <td class="key"><code>xsm|pc|focus</code></td>
+        <td class="sample"><div data-s1-component="input" data-size="xsm" data-break="pc" data-force-focus-within><span data-s1-part="label"></span><div data-s1-part="field"><input data-s1-part="control" data-force-focus data-force-focus-visible><button data-s1-part="action" type="button" data-action="clear"><span data-s1-part="action-icon"></span></button></div><p data-s1-part="message">변경한 내용이 저장되지 않고 사라집니다.</p></div></td>
+        <td class="values"><span class="chip"><i style="background:#FFFFFF"></i>배경 <code>--color-form-control-bg-selected</code></span><span class="chip"><i style="background:#1D6CEB"></i>테두리 <code>--color-form-control-border-selected</code></span><span class="chip">높이 <b>34dp</b></span><span class="chip">모서리 <b>4dp</b></span><span class="chip">테두리 <b>1dp</b></span><span class="chip">좌우여백 <b>12/8dp</b></span></td>
+      </tr>
+      <tr>
+        <td class="key"><code>xsm|pc|error</code></td>
+        <td class="sample"><div data-s1-component="input" data-size="xsm" data-break="pc"><span data-s1-part="label"></span><div data-s1-part="field"><input data-s1-part="control" aria-invalid="true"><button data-s1-part="action" type="button" data-action="clear"><span data-s1-part="action-icon"></span></button></div><p data-s1-part="message">변경한 내용이 저장되지 않고 사라집니다.</p></div></td>
+        <td class="values"><span class="chip"><i style="background:#FFFFFF"></i>배경 <code>--color-form-control-bg-default</code></span><span class="chip"><i style="background:#FF4554"></i>테두리 <code>--color-form-control-border-error</code></span><span class="chip">높이 <b>34dp</b></span><span class="chip">모서리 <b>4dp</b></span><span class="chip">테두리 <b>1dp</b></span><span class="chip">좌우여백 <b>12/8dp</b></span></td>
+      </tr>
+      <tr>
+        <td class="key"><code>xsm|pc|correct</code></td>
+        <td class="sample"><div data-s1-component="input" data-size="xsm" data-break="pc" data-state="correct"><span data-s1-part="label"></span><div data-s1-part="field"><input data-s1-part="control"><button data-s1-part="action" type="button" data-action="clear"><span data-s1-part="action-icon"></span></button></div><p data-s1-part="message">변경한 내용이 저장되지 않고 사라집니다.</p></div></td>
+        <td class="values"><span class="chip"><i style="background:#FFFFFF"></i>배경 <code>--color-form-control-bg-default</code></span><span class="chip"><i style="background:#1D6CEB"></i>테두리 <code>--color-form-control-border-correct</code></span><span class="chip">높이 <b>34dp</b></span><span class="chip">모서리 <b>4dp</b></span><span class="chip">테두리 <b>1dp</b></span><span class="chip">좌우여백 <b>12/8dp</b></span></td>
+      </tr>
+      <tr>
+        <td class="key"><code>xsm|pc|readOnly</code></td>
+        <td class="sample"><div data-s1-component="input" data-size="xsm" data-break="pc"><span data-s1-part="label"></span><div data-s1-part="field"><input data-s1-part="control" readonly><button data-s1-part="action" type="button" data-action="clear"><span data-s1-part="action-icon"></span></button></div><p data-s1-part="message">변경한 내용이 저장되지 않고 사라집니다.</p></div></td>
+        <td class="values"><span class="chip"><i style="background:#F5F5F5"></i>배경 <code>--color-form-control-bg-disabled</code></span><span class="chip"><i style="background:#D9D9D9"></i>테두리 <code>--color-form-control-border-default</code></span><span class="chip">높이 <b>34dp</b></span><span class="chip">모서리 <b>4dp</b></span><span class="chip">테두리 <b>1dp</b></span><span class="chip">좌우여백 <b>12/8dp</b></span></td>
+      </tr>
+      <tr>
+        <td class="key"><code>xsm|pc|disabled</code></td>
+        <td class="sample"><div data-s1-component="input" data-size="xsm" data-break="pc"><span data-s1-part="label"></span><div data-s1-part="field"><input data-s1-part="control" disabled><button data-s1-part="action" type="button" data-action="clear"><span data-s1-part="action-icon"></span></button></div><p data-s1-part="message">변경한 내용이 저장되지 않고 사라집니다.</p></div></td>
+        <td class="values"><span class="chip"><i style="background:#F5F5F5"></i>배경 <code>--color-form-control-bg-disabled</code></span><span class="chip"><i style="background:#E9E9E9"></i>테두리 <code>--color-form-control-border-disabled</code></span><span class="chip">높이 <b>34dp</b></span><span class="chip">모서리 <b>4dp</b></span><span class="chip">테두리 <b>1dp</b></span><span class="chip">좌우여백 <b>12/8dp</b></span></td>
+      </tr>
+      <tr>
+        <td class="key"><code>md|pc|default</code></td>
+        <td class="sample"><div data-s1-component="input" data-size="md" data-break="pc"><span data-s1-part="label"></span><div data-s1-part="field"><input data-s1-part="control"><button data-s1-part="action" type="button" data-action="clear"><span data-s1-part="action-icon"></span></button></div><p data-s1-part="message">변경한 내용이 저장되지 않고 사라집니다.</p></div></td>
+        <td class="values"><span class="chip"><i style="background:#FFFFFF"></i>배경 <code>--color-form-control-bg-default</code></span><span class="chip"><i style="background:#D9D9D9"></i>테두리 <code>--color-form-control-border-default</code></span><span class="chip">높이 <b>44dp</b></span><span class="chip">모서리 <b>4dp</b></span><span class="chip">테두리 <b>1dp</b></span><span class="chip">좌우여백 <b>16/12dp</b></span></td>
+      </tr>
+      <tr>
+        <td class="key"><code>md|pc|filled</code></td>
+        <td class="sample"><div data-s1-component="input" data-size="md" data-break="pc"><span data-s1-part="label"></span><div data-s1-part="field"><input data-s1-part="control"><button data-s1-part="action" type="button" data-action="clear"><span data-s1-part="action-icon"></span></button></div><p data-s1-part="message">변경한 내용이 저장되지 않고 사라집니다.</p></div></td>
+        <td class="values"><span class="chip"><i style="background:#FFFFFF"></i>배경 <code>--color-form-control-bg-default</code></span><span class="chip"><i style="background:#D9D9D9"></i>테두리 <code>--color-form-control-border-default</code></span><span class="chip">높이 <b>44dp</b></span><span class="chip">모서리 <b>4dp</b></span><span class="chip">테두리 <b>1dp</b></span><span class="chip">좌우여백 <b>16/12dp</b></span></td>
+      </tr>
+      <tr>
+        <td class="key"><code>md|pc|focus</code></td>
+        <td class="sample"><div data-s1-component="input" data-size="md" data-break="pc" data-force-focus-within><span data-s1-part="label"></span><div data-s1-part="field"><input data-s1-part="control" data-force-focus data-force-focus-visible><button data-s1-part="action" type="button" data-action="clear"><span data-s1-part="action-icon"></span></button></div><p data-s1-part="message">변경한 내용이 저장되지 않고 사라집니다.</p></div></td>
+        <td class="values"><span class="chip"><i style="background:#FFFFFF"></i>배경 <code>--color-form-control-bg-selected</code></span><span class="chip"><i style="background:#1D6CEB"></i>테두리 <code>--color-form-control-border-selected</code></span><span class="chip">높이 <b>44dp</b></span><span class="chip">모서리 <b>4dp</b></span><span class="chip">테두리 <b>1dp</b></span><span class="chip">좌우여백 <b>16/12dp</b></span></td>
+      </tr>
+      <tr>
+        <td class="key"><code>md|pc|error</code></td>
+        <td class="sample"><div data-s1-component="input" data-size="md" data-break="pc"><span data-s1-part="label"></span><div data-s1-part="field"><input data-s1-part="control" aria-invalid="true"><button data-s1-part="action" type="button" data-action="clear"><span data-s1-part="action-icon"></span></button></div><p data-s1-part="message">변경한 내용이 저장되지 않고 사라집니다.</p></div></td>
+        <td class="values"><span class="chip"><i style="background:#FFFFFF"></i>배경 <code>--color-form-control-bg-default</code></span><span class="chip"><i style="background:#FF4554"></i>테두리 <code>--color-form-control-border-error</code></span><span class="chip">높이 <b>44dp</b></span><span class="chip">모서리 <b>4dp</b></span><span class="chip">테두리 <b>1dp</b></span><span class="chip">좌우여백 <b>16/12dp</b></span></td>
+      </tr>
+      <tr>
+        <td class="key"><code>md|pc|correct</code></td>
+        <td class="sample"><div data-s1-component="input" data-size="md" data-break="pc" data-state="correct"><span data-s1-part="label"></span><div data-s1-part="field"><input data-s1-part="control"><button data-s1-part="action" type="button" data-action="clear"><span data-s1-part="action-icon"></span></button></div><p data-s1-part="message">변경한 내용이 저장되지 않고 사라집니다.</p></div></td>
+        <td class="values"><span class="chip"><i style="background:#FFFFFF"></i>배경 <code>--color-form-control-bg-default</code></span><span class="chip"><i style="background:#1D6CEB"></i>테두리 <code>--color-form-control-border-correct</code></span><span class="chip">높이 <b>44dp</b></span><span class="chip">모서리 <b>4dp</b></span><span class="chip">테두리 <b>1dp</b></span><span class="chip">좌우여백 <b>16/12dp</b></span></td>
+      </tr>
+      <tr>
+        <td class="key"><code>md|pc|readOnly</code></td>
+        <td class="sample"><div data-s1-component="input" data-size="md" data-break="pc"><span data-s1-part="label"></span><div data-s1-part="field"><input data-s1-part="control" readonly><button data-s1-part="action" type="button" data-action="clear"><span data-s1-part="action-icon"></span></button></div><p data-s1-part="message">변경한 내용이 저장되지 않고 사라집니다.</p></div></td>
+        <td class="values"><span class="chip"><i style="background:#F5F5F5"></i>배경 <code>--color-form-control-bg-disabled</code></span><span class="chip"><i style="background:#D9D9D9"></i>테두리 <code>--color-form-control-border-default</code></span><span class="chip">높이 <b>44dp</b></span><span class="chip">모서리 <b>4dp</b></span><span class="chip">테두리 <b>1dp</b></span><span class="chip">좌우여백 <b>16/12dp</b></span></td>
+      </tr>
+      <tr>
+        <td class="key"><code>md|pc|disabled</code></td>
+        <td class="sample"><div data-s1-component="input" data-size="md" data-break="pc"><span data-s1-part="label"></span><div data-s1-part="field"><input data-s1-part="control" disabled><button data-s1-part="action" type="button" data-action="clear"><span data-s1-part="action-icon"></span></button></div><p data-s1-part="message">변경한 내용이 저장되지 않고 사라집니다.</p></div></td>
+        <td class="values"><span class="chip"><i style="background:#F5F5F5"></i>배경 <code>--color-form-control-bg-disabled</code></span><span class="chip"><i style="background:#E9E9E9"></i>테두리 <code>--color-form-control-border-disabled</code></span><span class="chip">높이 <b>44dp</b></span><span class="chip">모서리 <b>4dp</b></span><span class="chip">테두리 <b>1dp</b></span><span class="chip">좌우여백 <b>16/12dp</b></span></td>
+      </tr>
+      <tr>
+        <td class="key"><code>md|mobile|default</code></td>
+        <td class="sample"><div data-s1-component="input" data-size="md" data-break="mobile"><span data-s1-part="label"></span><div data-s1-part="field"><input data-s1-part="control"><button data-s1-part="action" type="button" data-action="clear"><span data-s1-part="action-icon"></span></button></div><p data-s1-part="message">변경한 내용이 저장되지 않고 사라집니다.</p></div></td>
+        <td class="values"><span class="chip"><i style="background:#FFFFFF"></i>배경 <code>--color-form-control-bg-default</code></span><span class="chip"><i style="background:#D9D9D9"></i>테두리 <code>--color-form-control-border-default</code></span><span class="chip">높이 <b>48dp</b></span><span class="chip">모서리 <b>4dp</b></span><span class="chip">테두리 <b>1dp</b></span><span class="chip">좌우여백 <b>16/0dp</b></span></td>
+      </tr>
+      <tr>
+        <td class="key"><code>md|mobile|filled</code></td>
+        <td class="sample"><div data-s1-component="input" data-size="md" data-break="mobile"><span data-s1-part="label"></span><div data-s1-part="field"><input data-s1-part="control"><button data-s1-part="action" type="button" data-action="clear"><span data-s1-part="action-icon"></span></button></div><p data-s1-part="message">변경한 내용이 저장되지 않고 사라집니다.</p></div></td>
+        <td class="values"><span class="chip"><i style="background:#FFFFFF"></i>배경 <code>--color-form-control-bg-default</code></span><span class="chip"><i style="background:#D9D9D9"></i>테두리 <code>--color-form-control-border-default</code></span><span class="chip">높이 <b>48dp</b></span><span class="chip">모서리 <b>4dp</b></span><span class="chip">테두리 <b>1dp</b></span><span class="chip">좌우여백 <b>16/0dp</b></span></td>
+      </tr>
+      <tr>
+        <td class="key"><code>md|mobile|focus</code></td>
+        <td class="sample"><div data-s1-component="input" data-size="md" data-break="mobile" data-force-focus-within><span data-s1-part="label"></span><div data-s1-part="field"><input data-s1-part="control" data-force-focus data-force-focus-visible><button data-s1-part="action" type="button" data-action="clear"><span data-s1-part="action-icon"></span></button></div><p data-s1-part="message">변경한 내용이 저장되지 않고 사라집니다.</p></div></td>
+        <td class="values"><span class="chip"><i style="background:#FFFFFF"></i>배경 <code>--color-form-control-bg-selected</code></span><span class="chip"><i style="background:#1D6CEB"></i>테두리 <code>--color-form-control-border-selected</code></span><span class="chip">높이 <b>48dp</b></span><span class="chip">모서리 <b>4dp</b></span><span class="chip">테두리 <b>1dp</b></span><span class="chip">좌우여백 <b>16/0dp</b></span></td>
+      </tr>
+      <tr>
+        <td class="key"><code>md|mobile|error</code></td>
+        <td class="sample"><div data-s1-component="input" data-size="md" data-break="mobile"><span data-s1-part="label"></span><div data-s1-part="field"><input data-s1-part="control" aria-invalid="true"><button data-s1-part="action" type="button" data-action="clear"><span data-s1-part="action-icon"></span></button></div><p data-s1-part="message">변경한 내용이 저장되지 않고 사라집니다.</p></div></td>
+        <td class="values"><span class="chip"><i style="background:#FFFFFF"></i>배경 <code>--color-form-control-bg-default</code></span><span class="chip"><i style="background:#FF4554"></i>테두리 <code>--color-form-control-border-error</code></span><span class="chip">높이 <b>48dp</b></span><span class="chip">모서리 <b>4dp</b></span><span class="chip">테두리 <b>1dp</b></span><span class="chip">좌우여백 <b>16/0dp</b></span></td>
+      </tr>
+      <tr>
+        <td class="key"><code>md|mobile|correct</code></td>
+        <td class="sample"><div data-s1-component="input" data-size="md" data-break="mobile" data-state="correct"><span data-s1-part="label"></span><div data-s1-part="field"><input data-s1-part="control"><button data-s1-part="action" type="button" data-action="clear"><span data-s1-part="action-icon"></span></button></div><p data-s1-part="message">변경한 내용이 저장되지 않고 사라집니다.</p></div></td>
+        <td class="values"><span class="chip"><i style="background:#FFFFFF"></i>배경 <code>--color-form-control-bg-default</code></span><span class="chip"><i style="background:#1D6CEB"></i>테두리 <code>--color-form-control-border-correct</code></span><span class="chip">높이 <b>48dp</b></span><span class="chip">모서리 <b>4dp</b></span><span class="chip">테두리 <b>1dp</b></span><span class="chip">좌우여백 <b>16/0dp</b></span></td>
+      </tr>
+      <tr>
+        <td class="key"><code>md|mobile|readOnly</code></td>
+        <td class="sample"><div data-s1-component="input" data-size="md" data-break="mobile"><span data-s1-part="label"></span><div data-s1-part="field"><input data-s1-part="control" readonly><button data-s1-part="action" type="button" data-action="clear"><span data-s1-part="action-icon"></span></button></div><p data-s1-part="message">변경한 내용이 저장되지 않고 사라집니다.</p></div></td>
+        <td class="values"><span class="chip"><i style="background:#F5F5F5"></i>배경 <code>--color-form-control-bg-disabled</code></span><span class="chip"><i style="background:#D9D9D9"></i>테두리 <code>--color-form-control-border-default</code></span><span class="chip">높이 <b>48dp</b></span><span class="chip">모서리 <b>4dp</b></span><span class="chip">테두리 <b>1dp</b></span><span class="chip">좌우여백 <b>16/0dp</b></span></td>
+      </tr>
+      <tr>
+        <td class="key"><code>md|mobile|disabled</code></td>
+        <td class="sample"><div data-s1-component="input" data-size="md" data-break="mobile"><span data-s1-part="label"></span><div data-s1-part="field"><input data-s1-part="control" disabled><button data-s1-part="action" type="button" data-action="clear"><span data-s1-part="action-icon"></span></button></div><p data-s1-part="message">변경한 내용이 저장되지 않고 사라집니다.</p></div></td>
+        <td class="values"><span class="chip"><i style="background:#F5F5F5"></i>배경 <code>--color-form-control-bg-disabled</code></span><span class="chip"><i style="background:#E9E9E9"></i>테두리 <code>--color-form-control-border-disabled</code></span><span class="chip">높이 <b>48dp</b></span><span class="chip">모서리 <b>4dp</b></span><span class="chip">테두리 <b>1dp</b></span><span class="chip">좌우여백 <b>16/0dp</b></span></td>
+      </tr></tbody>
+      </table>
+      <p class="warn">Compose 가 값으로 읽지 않은 선언 2건 — 모두 표시·배치 규칙이라 부품 뼈대가 직접 담당합니다.</p>
+         <ul class="unread"><li><code>display: none</code> <span>[data-s1-component=&quot;input&quot;] [data-s1-part=&quot;action&quot;][hidden]</span></li><li><code>justify-content: flex-end</code> <span>[data-s1-component=&quot;input&quot;][data-break=&quot;mobile&quot;] [data-s1-part=&quot;action&quot;]:has(+ [data-s1-part=&quot;action&quot;]:not([hidden]))</span></li></ul>
+    </section>
+    <section id="modal">
+      <h2>modal</h2>
+      <p class="meta">승인 조합 4가지</p>
+      <table>
+        <thead><tr><th>조합</th><th>승인된 웹 배포본이 그리는 모습</th><th>Compose 가 쓰는 값</th></tr></thead>
+        <tbody>
+      <tr>
+        <td class="key"><code>pc|single</code></td>
+        <td class="sample"><div data-s1-component="modal" data-break="pc" data-footer="single"><div data-s1-part="overlay"></div><div data-s1-part="panel" role="dialog"><div data-s1-part="content"><div data-s1-part="header"><h2 data-s1-part="title">제목 영역</h2><button data-s1-part="close" type="button"></button><button data-s1-part="close" type="button" data-force-hover></button></div><div data-s1-part="body"><p data-s1-part="message">변경한 내용이 저장되지 않고 사라집니다.</p></div></div><div data-s1-part="footer"><button data-s1-component="button" data-variant="primary" data-size="xxsm" type="button"><span data-s1-part="label">확인</span></button></div></div></div></td>
+        <td class="values"><span class="chip"><i style="background:#FFFFFF"></i>배경 <code>--color-surface-raised</code></span><span class="chip"><i style="background:#D9D9D9"></i>테두리 <code>--color-modal-panel-border</code></span><span class="chip">모서리 <b>8dp</b></span><span class="chip">테두리 <b>1dp</b></span></td>
+      </tr>
+      <tr>
+        <td class="key"><code>pc|dual</code></td>
+        <td class="sample"><div data-s1-component="modal" data-break="pc" data-footer="dual"><div data-s1-part="overlay"></div><div data-s1-part="panel" role="dialog"><div data-s1-part="content"><div data-s1-part="header"><h2 data-s1-part="title">제목 영역</h2><button data-s1-part="close" type="button"></button><button data-s1-part="close" type="button" data-force-hover></button></div><div data-s1-part="body"><p data-s1-part="message">변경한 내용이 저장되지 않고 사라집니다.</p></div></div><div data-s1-part="footer"><button data-s1-component="button" data-variant="secondary" data-size="xxsm" type="button"><span data-s1-part="label">취소</span></button><button data-s1-component="button" data-variant="primary" data-size="xxsm" type="button"><span data-s1-part="label">확인</span></button></div></div></div></td>
+        <td class="values"><span class="chip"><i style="background:#FFFFFF"></i>배경 <code>--color-surface-raised</code></span><span class="chip"><i style="background:#D9D9D9"></i>테두리 <code>--color-modal-panel-border</code></span><span class="chip">모서리 <b>8dp</b></span><span class="chip">테두리 <b>1dp</b></span></td>
+      </tr>
+      <tr>
+        <td class="key"><code>mobile|single</code></td>
+        <td class="sample"><div data-s1-component="modal" data-break="mobile" data-footer="single"><div data-s1-part="overlay"></div><div data-s1-part="panel" role="dialog"><div data-s1-part="content"><div data-s1-part="header"><h2 data-s1-part="title">제목 영역</h2><button data-s1-part="close" type="button"></button><button data-s1-part="close" type="button" data-force-hover></button></div><div data-s1-part="body"><p data-s1-part="message">변경한 내용이 저장되지 않고 사라집니다.</p></div></div><div data-s1-part="footer"><button data-s1-component="button" data-variant="primary" data-size="lg" type="button"><span data-s1-part="label">확인</span></button></div></div></div></td>
+        <td class="values"><span class="chip"><i style="background:#FFFFFF"></i>배경 <code>--color-surface-raised</code></span><span class="chip"><i style="background:#D9D9D9"></i>테두리 <code>--color-modal-panel-border</code></span><span class="chip">모서리 <b>8dp</b></span><span class="chip">테두리 <b>1dp</b></span><span class="chip">좌우여백 <b>20dp</b></span></td>
+      </tr>
+      <tr>
+        <td class="key"><code>mobile|dual</code></td>
+        <td class="sample"><div data-s1-component="modal" data-break="mobile" data-footer="dual"><div data-s1-part="overlay"></div><div data-s1-part="panel" role="dialog"><div data-s1-part="content"><div data-s1-part="header"><h2 data-s1-part="title">제목 영역</h2><button data-s1-part="close" type="button"></button><button data-s1-part="close" type="button" data-force-hover></button></div><div data-s1-part="body"><p data-s1-part="message">변경한 내용이 저장되지 않고 사라집니다.</p></div></div><div data-s1-part="footer"><button data-s1-component="button" data-variant="secondary" data-size="lg" type="button"><span data-s1-part="label">취소</span></button><button data-s1-component="button" data-variant="primary" data-size="lg" type="button"><span data-s1-part="label">확인</span></button></div></div></div></td>
+        <td class="values"><span class="chip"><i style="background:#FFFFFF"></i>배경 <code>--color-surface-raised</code></span><span class="chip"><i style="background:#D9D9D9"></i>테두리 <code>--color-modal-panel-border</code></span><span class="chip">모서리 <b>8dp</b></span><span class="chip">테두리 <b>1dp</b></span><span class="chip">좌우여백 <b>20dp</b></span></td>
+      </tr></tbody>
+      </table>
+      <p class="warn">Compose 가 값으로 읽지 않은 선언 2건 — 모두 표시·배치 규칙이라 부품 뼈대가 직접 담당합니다.</p>
+         <ul class="unread"><li><code>display: none</code> <span>[data-s1-component=&quot;modal&quot;][hidden]</span></li><li><code>flex: 1 1 0</code> <span>[data-s1-component=&quot;modal&quot;][data-break=&quot;mobile&quot;] [data-s1-part=&quot;footer&quot;] &gt; *</span></li></ul>
+    </section>
+<script>
+  /* 상태 흉내 — :hover 같은 것은 스크립트로 켤 수 없어서, 같은 명시도의 속성 규칙을 덧댄다. */
+  const sheet = new CSSStyleSheet ? null : null;
+  const style = document.createElement('style');
+  style.textContent = [...document.styleSheets].map(() => '').join('');
+  document.head.appendChild(style);
+  fetch('../../../ui-library/dist/s1-ui.css').then((response) => response.text()).then((css) => {
+    style.textContent = css
+      .replace(/:focus-within\b/g, '[data-force-focus-within]')
+      .replace(/:focus-visible\b/g, '[data-force-focus-visible]')
+      .replace(/:hover\b/g, '[data-force-hover]')
+      .replace(/:active\b/g, '[data-force-active]')
+      .replace(/@media \(hover: hover\) \{/g, '@media all {');
+  });
+  const light = document.getElementById('light');
+  const dark = document.getElementById('dark');
+  const setTheme = (value) => {
+    document.documentElement.dataset.theme = value;
+    light.setAttribute('aria-pressed', String(value === 'light'));
+    dark.setAttribute('aria-pressed', String(value === 'dark'));
+  };
+  light.addEventListener('click', () => setTheme('light'));
+  dark.addEventListener('click', () => setTheme('dark'));
+</script>
+</body>
+</html>

@@ -24,7 +24,22 @@
     },
     "kotlin": {
       "entry": "platform/kotlin/S1Tokens.kt",
-      "componentSupport": "tokens-only",
+      "componentSupport": "components",
+      "ui": "Jetpack Compose",
+      "components": [
+        "button",
+        "input",
+        "checkbox",
+        "radio",
+        "toggle",
+        "chip",
+        "dropdown",
+        "select",
+        "tab",
+        "modal"
+      ],
+      "sample": "platform/kotlin-sample",
+      "readme": "platform/kotlin/README.md",
       "lint": false
     },
     "swift": {

@@ -140,7 +140,10 @@
     "wt:merge": "node scripts/worktree-merge.js",
     "wt:list": "git worktree list",
     "rr": "node scripts/repeated-requests.js",
-    "rr:check": "node scripts/repeated-requests.js check"
+    "rr:check": "node scripts/repeated-requests.js check",
+    "kotlin:parity": "node scripts/kotlin-compose-parity-check.js",
+    "kotlin:lint": "node scripts/kotlin-compose-lint.js",
+    "kotlin:preview": "node scripts/kotlin-compose-preview-page.js"
   },
   "devDependencies": {
     "@figma/plugin-typings": "^1.97.0",

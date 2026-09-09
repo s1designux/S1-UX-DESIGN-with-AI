@@ -1,0 +1,194 @@
+{
+  "_meta": {
+    "note": "자동 생성물 — 손으로 고치지 마세요. 정본을 고치고 `npm run tokens:reconcile` 또는 `npm run ui:build` 를 실행하세요.",
+    "purpose": "Compose 부품이 배포본 CSS 의 어느 선언을 읽었고 어느 선언을 읽지 않았는지 드러낸다.",
+    "rule": "unreadDeclarations 는 표시·배치 규칙이어야 한다. 색·치수가 여기 남으면 부품이 그만큼 정본과 다르다."
+  },
+  "icons": [
+    "check",
+    "chevron",
+    "close",
+    "eye_hide",
+    "eye_show",
+    "remove",
+    "search"
+  ],
+  "components": [
+    {
+      "component": "button",
+      "combinations": 36,
+      "parts": [
+        "root",
+        "label"
+      ],
+      "unreadDeclarations": []
+    },
+    {
+      "component": "input",
+      "combinations": 28,
+      "parts": [
+        "root",
+        "label",
+        "field",
+        "control",
+        "action",
+        "actionIcon",
+        "message",
+        "placeholder"
+      ],
+      "unreadDeclarations": [
+        {
+          "selector": "[data-s1-component=\"input\"] [data-s1-part=\"action\"][hidden]",
+          "media": null,
+          "property": "display",
+          "value": "none"
+        },
+        {
+          "selector": "[data-s1-component=\"input\"][data-break=\"mobile\"] [data-s1-part=\"action\"]:has(+ [data-s1-part=\"action\"]:not([hidden]))",
+          "media": null,
+          "property": "justify-content",
+          "value": "flex-end"
+        }
+      ]
+    },
+    {
+      "component": "checkbox",
+      "combinations": 5,
+      "parts": [
+        "root",
+        "control",
+        "indicator",
+        "label"
+      ],
+      "unreadDeclarations": []
+    },
+    {
+      "component": "radio",
+      "combinations": 5,
+      "parts": [
+        "root",
+        "control",
+        "indicator",
+        "label"
+      ],
+      "unreadDeclarations": []
+    },
+    {
+      "component": "toggle",
+      "combinations": 4,
+      "parts": [
+        "root",
+        "knob"
+      ],
+      "unreadDeclarations": []
+    },
+    {
+      "component": "chip",
+      "combinations": 24,
+      "parts": [
+        "root",
+        "label"
+      ],
+      "unreadDeclarations": []
+    },
+    {
+      "component": "dropdown",
+      "combinations": 18,
+      "parts": [
+        "root",
+        "option",
+        "optionLabel",
+        "selectAll",
+        "divider"
+      ],
+      "unreadDeclarations": [
+        {
+          "selector": "[data-s1-component=\"dropdown\"][data-type=\"checkbox\"] [data-s1-part=\"option\"] [data-s1-component=\"checkbox\"]",
+          "media": null,
+          "property": "flex",
+          "value": "0 0 auto"
+        },
+        {
+          "selector": "[data-s1-component=\"dropdown\"] [data-s1-part=\"option\"] [data-s1-component=\"checkbox\"]",
+          "media": null,
+          "property": "pointer-events",
+          "value": "none"
+        }
+      ]
+    },
+    {
+      "component": "select",
+      "combinations": 20,
+      "parts": [
+        "root",
+        "trigger",
+        "value",
+        "icon",
+        "panel"
+      ],
+      "unreadDeclarations": [
+        {
+          "selector": "[data-s1-component=\"select\"] [data-s1-part=\"panel\"][hidden]",
+          "media": null,
+          "property": "display",
+          "value": "none"
+        },
+        {
+          "selector": "[data-s1-component=\"select\"] [data-s1-part=\"panel\"] [data-s1-component=\"dropdown\"]",
+          "media": null,
+          "property": "width",
+          "value": "100%"
+        }
+      ]
+    },
+    {
+      "component": "tab",
+      "combinations": 12,
+      "parts": [
+        "root",
+        "baseline",
+        "tab",
+        "indicator"
+      ],
+      "unreadDeclarations": [
+        {
+          "selector": "[data-s1-component=\"tab\"] [role=\"tabpanel\"][hidden]",
+          "media": null,
+          "property": "display",
+          "value": "none"
+        }
+      ]
+    },
+    {
+      "component": "modal",
+      "combinations": 4,
+      "parts": [
+        "root",
+        "overlay",
+        "panel",
+        "content",
+        "header",
+        "title",
+        "body",
+        "message",
+        "footer",
+        "close",
+        "closeIcon"
+      ],
+      "unreadDeclarations": [
+        {
+          "selector": "[data-s1-component=\"modal\"][hidden]",
+          "media": null,
+          "property": "display",
+          "value": "none"
+        },
+        {
+          "selector": "[data-s1-component=\"modal\"][data-break=\"mobile\"] [data-s1-part=\"footer\"] > *",
+          "media": null,
+          "property": "flex",
+          "value": "1 1 0"
+        }
+      ]
+    }
+  ]
+}

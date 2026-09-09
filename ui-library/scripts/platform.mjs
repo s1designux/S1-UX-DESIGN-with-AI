@@ -16,6 +16,9 @@
  *   JSON 은 원본 이름을 그대로 유지해 정본으로 되짚을 수 있게 한다.
  */
 
+import { buildKotlinOutputs, COMPOSE_COMPONENTS } from "./kotlin-compose.mjs";
+import { sampleFiles } from "./kotlin-sample.mjs";
+
 const GENERATED_NOTE = "자동 생성물 — 손으로 고치지 마세요. 정본을 고치고 `npm run tokens:reconcile` 또는 `npm run ui:build` 를 실행하세요.";
 
 /* ── 1. tokens.css 판독 ──────────────────────────────────────────────── */
@@ -690,7 +693,7 @@ watchEffect(() => {
 
 /* ── 6. 전체 묶음 ────────────────────────────────────────────────────── */
 
-export function buildPlatformOutputs({ componentOutputs, tokensCss, typographyCss, distManifest, behaviorLedger, fingerprints }) {
+export function buildPlatformOutputs({ componentOutputs, tokensCss, typographyCss, distManifest, behaviorLedger, fingerprints, iconAssets }) {
   const outputs = new Map();
   const tokenData = readTokens(tokensCss);
   const stable = (value) => `${JSON.stringify(value, null, 2)}\n`;
@@ -699,6 +702,20 @@ export function buildPlatformOutputs({ componentOutputs, tokensCss, typographyCs
   outputs.set("platform/kotlin/S1Tokens.kt", buildKotlin(tokenData));
   outputs.set("platform/swift/S1Tokens.swift", buildSwift(tokenData));
   outputs.set("platform/cpp/s1_tokens.h", buildCppHeader(tokenData));
+  /* Compose 부품 — 값(S1Tokens)만으로는 화면을 못 그린다. 승인 배포본 CSS 를 계산해 부품까지 만든다. */
+  const kotlin = buildKotlinOutputs({ componentOutputs, tokenData, iconAssets });
+  for (const [relative, content] of kotlin.outputs) outputs.set(relative, content);
+  for (const [relative, content] of sampleFiles("com.s1.designsystem", COMPOSE_COMPONENTS)) outputs.set(relative, content);
+  outputs.set("platform/kotlin/coverage.json", stable({
+    _meta: {
+      note: GENERATED_NOTE,
+      purpose: "Compose 부품이 배포본 CSS 의 어느 선언을 읽었고 어느 선언을 읽지 않았는지 드러낸다.",
+      rule: "unreadDeclarations 는 표시·배치 규칙이어야 한다. 색·치수가 여기 남으면 부품이 그만큼 정본과 다르다."
+    },
+    icons: kotlin.icons,
+    components: kotlin.coverage
+  }));
+
   outputs.set("platform/contract.json", stable(buildContract(componentOutputs, distManifest)));
   outputs.set("platform/behavior.json", stable({
     _meta: {
@@ -725,7 +742,15 @@ export function buildPlatformOutputs({ componentOutputs, tokensCss, typographyCs
       "html-css-js": { entry: "s1-ui.css · s1-ui.auto.js", componentSupport: "full", lint: true },
       react: { entry: "platform/react/index.js", componentSupport: "full", lint: true, requires: "JSX 빌드 도구" },
       vue: { entry: "platform/vue/index.js", componentSupport: "full", lint: true, requires: "SFC 빌드 도구" },
-      kotlin: { entry: "platform/kotlin/S1Tokens.kt", componentSupport: "tokens-only", lint: false },
+      kotlin: {
+        entry: "platform/kotlin/S1Tokens.kt",
+        componentSupport: "components",
+        ui: "Jetpack Compose",
+        components: COMPOSE_COMPONENTS,
+        sample: "platform/kotlin-sample",
+        readme: "platform/kotlin/README.md",
+        lint: false
+      },
       swift: { entry: "platform/swift/S1Tokens.swift", componentSupport: "tokens-only", lint: false },
       cpp: { entry: "platform/cpp/s1_tokens.h", componentSupport: "tokens-only", lint: false, note: "UI 프레임워크 미확정 — 상수와 JSON 까지만 제공한다." }
     },
