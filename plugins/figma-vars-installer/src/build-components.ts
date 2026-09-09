@@ -5020,7 +5020,10 @@ async function buildBottomSheet(maps: BuildMaps, originY: number): Promise<{ set
   // 시트와 content가 AUTO 높이로 함께 늘고 줄어든다.
   //   useSlot=false 면 슬롯 대신 **평범한 프레임**에 같은 예시 4행을 넣는다. 다크 검수 화면에서
   //   인스턴스의 슬롯이 비어 보이는 문제 때문에, 다크에는 슬롯 없는 사본을 쓴다(river 결정 A안).
-  const buildContent = async (owner: ComponentNode | FrameNode, useSlot: boolean): Promise<FrameNode> => {
+  //   darkModeId 가 오면(=다크 검수 사본) 안에 만드는 인스턴스마다 **다크를 직접 박는다.**
+  //   부모 프레임에만 다크를 걸면, 옵션 마스터에 걸린 라이트 핀이 부모를 이겨 그 부분만
+  //   흰 채로 남는다(같은 실패를 Mobile Header 안 StatusBar 에서 이미 겪었다 — clearMode 주석 참조).
+  const buildContent = async (owner: ComponentNode | FrameNode, useSlot: boolean, darkModeId?: string): Promise<FrameNode> => {
     const content = figma.createFrame();
     content.name = "content"; content.fills = [];
     content.layoutMode = "VERTICAL"; content.primaryAxisSizingMode = "AUTO"; content.counterAxisSizingMode = "FIXED";
@@ -5037,6 +5040,7 @@ async function buildBottomSheet(maps: BuildMaps, originY: number): Promise<{ set
     header.appendChild(title);
     const closeIcon = await makeIconInstance("close", scv(maps, "color/icon/gray-dark"), 24, CLOSE_ICON_SVG);
     closeIcon.name = "close"; header.appendChild(closeIcon);
+    if (darkModeId) setMode(closeIcon, maps, darkModeId);
     content.appendChild(header);
     try { header.layoutAlign = "STRETCH"; } catch (e) { /* */ }
     // Content Slot: 기본값은 Bottom Sheet Option(Text) 4개(2번째=Selected).
@@ -5059,6 +5063,7 @@ async function buildBottomSheet(maps: BuildMaps, originY: number): Promise<{ set
       const inst = src.createInstance();
       inst.name = "option";
       slot.appendChild(inst);
+      if (darkModeId) setMode(inst, maps, darkModeId);
       try { inst.layoutSizingHorizontal = "FILL"; } catch (e) { /* */ }
     }
     content.appendChild(slot);
@@ -5085,7 +5090,7 @@ async function buildBottomSheet(maps: BuildMaps, originY: number): Promise<{ set
   };
 
   // 버튼 인스턴스(Button 컴포넌트 재사용, 모바일 LG h48). 라벨 교체 + 풀와이드 FILL.
-  const makeFooterButton = async (variant: "primary" | "secondary", label: string): Promise<SceneNode | null> => {
+  const makeFooterButton = async (variant: "primary" | "secondary", label: string, darkModeId?: string): Promise<SceneNode | null> => {
     const vLabel = variant === "primary" ? "Primary" : "Secondary";
     const comp = await getReuseComp(`Button:${variant}:LG:Default`, "Button",
       [`Variant=${vLabel}`, "Size=LG", "State=Default"]);
@@ -5093,6 +5098,7 @@ async function buildBottomSheet(maps: BuildMaps, originY: number): Promise<{ set
     const inst = comp.createInstance();
     inst.name = variant;
     await setInstanceLabel(inst, label);
+    if (darkModeId) setMode(inst, maps, darkModeId);
     return inst;
   };
 
@@ -5119,7 +5125,8 @@ async function buildBottomSheet(maps: BuildMaps, originY: number): Promise<{ set
     const sheetEffects = shadowEffects("shadow/raised-up");   // 오류는 여기서 던진다(삼키지 않음)
     try { (comp as any).effects = sheetEffects; } catch (e) { /* 환경 미지원 */ }
 
-    const content = await buildContent(comp, asComponent);
+    const darkModeId = asComponent ? undefined : maps.semanticDarkModeId;
+    const content = await buildContent(comp, asComponent, darkModeId);
     try { content.layoutAlign = "STRETCH"; } catch (e) { /* */ }
 
     if (v.footer !== "None") {
@@ -5131,14 +5138,15 @@ async function buildBottomSheet(maps: BuildMaps, originY: number): Promise<{ set
       comp.appendChild(footer);
       try { footer.layoutAlign = "STRETCH"; } catch (e) { /* */ }
       if (v.footer === "Dual") {
-        const cancel = await makeFooterButton("secondary", "취소");
+        const cancel = await makeFooterButton("secondary", "취소", darkModeId);
         if (cancel) { footer.appendChild(cancel); try { (cancel as InstanceNode).layoutSizingHorizontal = "FILL"; } catch (e) { /* */ } }
       }
-      const apply = await makeFooterButton("primary", "적용");
+      const apply = await makeFooterButton("primary", "적용", darkModeId);
       if (apply) { footer.appendChild(apply); try { (apply as InstanceNode).layoutSizingHorizontal = "FILL"; } catch (e) { /* */ } }
     }
 
     if (asComponent) setLightMode(comp, maps);
+    else setMode(comp, maps, maps.semanticDarkModeId);   // 사본 뿌리에도 다크를 박아 둔다
     return comp;
   };
 
@@ -5147,7 +5155,15 @@ async function buildBottomSheet(maps: BuildMaps, originY: number): Promise<{ set
   }
   for (const v of variants) {
     // 다크 사본은 마스터를 다 지은 뒤에 만든다(푸터 버튼·옵션 인스턴스가 이미 준비돼 있어야 한다).
-    try { darkCopies.set(byFooter[v.footer].id, await makeSheet(v.footer, false) as FrameNode); } catch (e) { console.warn(e); }
+    try {
+      darkCopies.set(byFooter[v.footer].id, await makeSheet(v.footer, false) as FrameNode);
+    } catch (e) {
+      // 조용히 넘어가면 그 칸만 옛 방식(인스턴스)으로 떨어져 본문이 빈 채로 나온다 — 어느 칸인지 남긴다.
+      console.warn(`[installer] Bottom Sheet 다크 사본 생성 실패(Footer=${v.footer}) — 이 칸은 본문이 비어 보입니다:`, e);
+    }
+  }
+  if (darkCopies.size !== variants.length) {
+    console.warn(`[installer] Bottom Sheet 다크 사본 ${darkCopies.size}/${variants.length}개만 준비됐습니다.`);
   }
 
   const set = figma.combineAsVariants([byFooter["None"], byFooter["Single"], byFooter["Dual"]], figma.currentPage);
