@@ -33,8 +33,11 @@ plugins/ds-apply/skills/ds-apply/references/VERSION.txt
 # Figma Variables 수집 결과 — PAT 정보 포함 가능, 커밋하지 않음
 registry/figma/figma-variable-metadata.local.json
 
-# npm
-node_modules/
+# npm — 슬래시 없이 쓴다. `node_modules/` 는 **디렉터리만** 가리켜, 별도 작업 폴더가 만드는
+# node_modules **symlink** 는 걸러지지 않는다. 그러면 git add -A 가 그 링크를 추적해 버리고,
+# 본 폴더가 그 커밋을 받는 순간 실제 node_modules 폴더(51MB)가 링크로 치환돼 사라진다
+# (2026-09-09 실측 — npm·git 이 ELOOP 로 조용히 실패하고 검문소가 이유 없이 막혔다).
+node_modules
 
 # Figma plugin build output
 plugins/*/dist/
