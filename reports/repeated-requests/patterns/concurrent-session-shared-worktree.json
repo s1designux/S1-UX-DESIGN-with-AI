@@ -1,6 +1,6 @@
 {
   "id": "concurrent-session-shared-worktree",
-  "count": 4,
+  "count": 5,
   "title": "같은 작업트리를 두 세션이 동시에 편집",
   "detail": "다른 세션이 Line Tab·Pagination 을 진행하며 pages/components.html·ui-library-guide.js·registry/components/pagination.json 을 편집 중이라, 공용 검사(gate:check·ui:test)가 내 작업과 무관한 error 를 내고 커밋이 남의 미완성 변경을 삼킬 위험이 생겼다.",
   "occurrences": [
@@ -17,6 +17,10 @@
     {
       "date": "2026-09-09",
       "summary": "2026-09-09 river 결정 A안 — 세션마다 별도 작업 폴더(.claude/worktrees)+브랜치로 갈라 커밋 엉킴을 구조로 차단. 매 작업 부딪히던 장부 2개(반복요청·Gate 13 검증기록)를 낱장화하고 합치기를 npm run wt:merge 한 명령으로 묶음. Gate 34 는 별도 폴더 세션 기록까지 읽도록 배선, Gate 48 신설."
+    },
+    {
+      "date": "2026-09-09",
+      "summary": "2026-09-09 river A안 실행 — 세션마다 별도 작업 폴더+브랜치, 합치기는 wt:merge 한 명령(부딪힘은 작업 폴더에서 해결·본 폴더는 fast-forward·실패 시 자동 원복). 매 작업 부딪히던 장부 2개 낱장화(62패턴 무손실 이관), Gate 34 를 별도 폴더 세션 기록까지 읽도록 배선, Gate 48 신설. 시험 중 실제 사고 1건 재현·차단: 작업 폴더의 node_modules symlink 가 .gitignore(슬래시 포함) 를 빠져나가 커밋됐고, 본 폴더가 그 커밋을 받자 실제 node_modules 51MB 가 링크로 치환돼 사라졌다(npm·git 이 ELOOP 로 조용히 실패). gitignore 수정 + wt:setup 자기참조 방어 2겹 + Gate 48 추적 symlink 차단."
     }
   ],
   "promotionStatus": "promotion-candidate",
