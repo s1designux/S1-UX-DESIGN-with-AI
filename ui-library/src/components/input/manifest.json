@@ -6,7 +6,7 @@
   "modes": [
     "search"
   ],
-  "canonicalFingerprint": "880e6f3ce0e67de1e974692f08a60cc4634207a4eb1e63cca1a38d835e38c437",
+  "canonicalFingerprint": "ab67aa6eda2cb68db3d371d4049db16757a094f9b17e9a4a700dc4ac594163c6",
   "canonicalSources": [
     "plugins/figma-vars-installer/src/build-components.ts",
     "plugins/figma-vars-installer/src/vars-data.ts",
@@ -72,7 +72,8 @@
       "opt-in": "root[data-mode=search] + action[data-action=search] 마크업이 있을 때만 동작(Input 옵션).",
       "execute": "click 또는 control 의 Enter keydown(IME 조합 중 제외) → s1:input:search 발화. 자동완성 없음(정본에 없음).",
       "visibility": "항상 표시 — 값 유무와 무관(river D4)",
-      "trailOrder": "[clear][search], 간격 4px, 돋보기가 가장 오른쪽"
+      "trailOrder": "[clear][search], 간격 4px, 돋보기가 가장 오른쪽",
+      "minWidth": "root 와 field 에 min-width:200px. 정본 build-components.ts 의 SEARCH_MIN_W 와 같은 값이며, 그보다 좁으면 좌우 아이콘이 붙어 보인다(river 지시 2026-09-09). 폭이 넓어지는 것은 제한하지 않는다."
     }
   },
   "parts": [
