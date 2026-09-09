@@ -1,0 +1,7 @@
+{
+  "description": "사용자가 반복 요청한 패턴 추적 파일. count >= 3 이면 자동 감사 규칙 승격 후보.",
+  "promotionThreshold": 3,
+  "updatedAt": "2026-09-09",
+  "note": "이 JSON 이 단일 정본이다. CLAUDE.md 에 있던 승격 현황 표는 2026-08-03 에 삭제했다(정본과 드리프트 중이었음).",
+  "_structure": "낱장 구조 — patterns/<id>.json 이 패턴 1개의 정본, inbox/<브랜치>.jsonl 은 별도 작업 폴더 세션이 적는 낱장(합칠 때 npm run rr -- fold 로 접힌다). 2026-09-09 이관: 여러 세션이 한 파일을 동시에 덮어쓰던 사고를 끊기 위해 파일을 쪼갰다."
+}

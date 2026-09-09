@@ -1,0 +1,14 @@
+{
+  "id": "basis-source-swap-leaves-stale-figures",
+  "category": "canon-governance",
+  "label": "기준 원본이 바뀌었는데 옛 수치 서술이 다른 파일에 남는다",
+  "count": 1,
+  "promotionStatus": "watch",
+  "recommendedRule": "기준 원본·구조를 바꾸면 그 즉시 옛 근거를 인용한 **모든 표면**을 grep 으로 훑는다(주석·승인 reason·계획서·인계서·백로그). 철회한 사양은 지우지 말고 '철회됨'으로 표시해 다음 사람이 되돌리지 않게 한다.",
+  "occurrences": [
+    {
+      "date": "2026-09-08",
+      "summary": "GNB 하위메뉴 기준을 river 지시로 B(5:10245) → A(540:6398) 로 갈아엎었는데 옛 B 실측값이 vars-data 주석·build-components 주석·승인 대장 reason·WIP 문서 4곳에 남았다. 2회에 걸쳐 잡혔다. 또 철회된 'Modal Size 축'이 crosswalk·NEXT·PLAN·backlog 에 살아남아 인계서가 다음 세션에게 river 가 거부한 것을 지시하는 상태가 됐다."
+    }
+  ]
+}

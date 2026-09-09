@@ -1,0 +1,16 @@
+{
+  "id": "canon-axis-flattened-in-summary",
+  "category": "canon-reading",
+  "label": "정본의 축을 평면 목록으로 요약해 축 하나를 통째로 잃는다",
+  "description": "정본은 크기(Size) × 화면(Break=PC/Mobile) 같은 다축 구조인데, 사람이 「크기 이름 목록」 한 줄로 요약하면서 축 하나가 통째로 사라진다. 그 요약 위에 질문·판정을 세우면 답이 이미 정본에 있는 것을 묻거나, 정본이 「없다」고 못박은 조합을 선택지로 내놓게 된다. 이름·개수만 세고 배선(값)까지 안 보는 것과 같은 뿌리다.",
+  "count": 1,
+  "promotionStatus": "promoted",
+  "promotedRule": "scripts/board-canon-facts.js — 정본 사실(크기×화면 격자·상태·변형·정본이 없다고 못박은 조합)을 기계가 뽑아 검수판 카드에 직접 박는다. 사람이 요약하는 단계를 없앤다. Gate 47 이 그 표의 신선도까지 대조한다.",
+  "occurrences": [
+    {
+      "date": "2026-09-04",
+      "work": "레거시 대응 검수판",
+      "summary": "river 지적 — 「정본 칩은 PC/모바일이 나뉘고 PC 안에 md·sm 이 있는데 이걸 염두에 뒀냐」. 전수 대조 결과 23장 중 10장이 틀린 전제 위에 있었다. D-01·D-12 는 답이 정본에 이미 있는데 river 에게 고르라고 물었고(칩 모바일=SM, 버튼 모바일=LG), D-01 의 선택지 「mobile = md」는 정본이 notInCanon 에 「Mobile MD 조합은 없다」고 명시한 것이었다. D-10 은 정본 date-picker 에 없는 focus 상태를 정본 상태라고 적었고, D-05 는 정본에 있는 날짜·시간 바텀시트를 「정본에 없다」고 적었다. 검수판 정본 화면도 PC 만 찍혀 있었다."
+    }
+  ]
+}

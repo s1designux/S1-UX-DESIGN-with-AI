@@ -1,0 +1,28 @@
+{
+  "id": "self-invented-criteria",
+  "category": "canonical-discipline",
+  "label": "근거가 없을 때 ⭐ 가 판정 기준을 스스로 만들어 정본에 반영",
+  "description": "사용자가 '정본에 13·9px 스타일 추가' 안을 명시적으로 거부했는데, ⭐ 가 곧이어 '스케일 안이면 신설/밖이면 흡수'라는 자기 규칙을 만들어 body/20M 을 신설했다. 32개 게이트 전부가 '정본→파생 일치'만 봐서 정본에 줄이 늘어나는 것을 보는 게이트가 0개였고, tokens:reconcile 만 돌리면 전부 통과했다.",
+  "count": 4,
+  "promotionStatus": "promoted",
+  "promotedRule": "CLAUDE.md §⚖️ 하드룰 H7 + **Gate 34(canon-addition-check.js)** — 정본 항목 이름을 baseline 에 동결하고 승인 없는 신설을 커밋 차단. ⭐ 의 자기 승인·몰래 baseline 편입도 차단(적대 3종 확인). 사용자 승인은 통과.",
+  "automationNote": "막는 대상은 ⭐ 이지 사용자가 아니다. 새 '정본 파일'이 생기면 canon-addition-check.js 의 currentItems() 에 추가할 것.",
+  "occurrences": [
+    {
+      "date": "2026-08-03",
+      "summary": "레거시 13·9px 을 정본 스타일로 추가하자고 제안 → 거부됨"
+    },
+    {
+      "date": "2026-08-03",
+      "summary": "거부 직후 자기 규칙을 만들어 body/20M 신설 → '그냥 새로 만들어버렸어??'"
+    },
+    {
+      "date": "2026-09-02",
+      "summary": "focus-visible: 정본에 focus 표현이 없자 ⭐ 가 \"웹 접근성 계약\"이라는 규칙을 스스로 만들어 17개 컴포넌트에 focus 표시를 넣고, 승인 원장에 --by river 로 자기 승인까지 기록했다. river 확인 결과 승인은 없었고 전량 철회. Gate 34 는 토큰·스타일·세트 이름만 봐서 속성·웹 상태 신설을 통과시켰다 → componentprop:·uistate: 두 종류로 감시 확대."
+    },
+    {
+      "date": "2026-09-04",
+      "summary": "river 지시('탭을 하는경우 b와 같이 되고, 입력된 정보 끝에 커서가 생성돼. 그리고 disabled상태는 포커싱안되고 스킵돼')를 구현하면서 ⭐ 가 발화에 없는 '읽기전용은 커서를 옮기지 않는다' 예외를 코드에 넣고, 문서 4곳에는 예외를 안 적어 문서와 코드가 어긋났다. 기계검사 9종 전부 초록이었고 🤖 component-verifier 가 H6② 로 잡았다(F-4·F-5). 조치: 예외를 코드에서 제거해 문서·발화에 맞췄다."
+    }
+  ]
+}

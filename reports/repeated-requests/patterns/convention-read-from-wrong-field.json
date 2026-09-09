@@ -1,0 +1,16 @@
+{
+  "id": "convention-read-from-wrong-field",
+  "category": "derived-surface-quality",
+  "label": "규약이 담긴 자리를 잘못 읽어 화면이 조용히 틀린다",
+  "description": "registry 는 선택 부품을 part 이름의 '(선택)' 으로 표시하는데, 가이드 생성기는 role 문장에 '선택' 이 들어있는지로 판별했다. Radio 의 '원(circle) — 선택 영역' 이 선택 부품으로, Input 의 'suffix 액션 그룹(선택)' 과 'helper 텍스트(선택)' 이 필수 요소로 뒤집혀 나왔다. 승인된 Input 가이드에서도 계속 틀리게 표시되고 있었고 어떤 검사도 잡지 못했다.",
+  "count": 1,
+  "promotionStatus": "tracking",
+  "promotedRule": "(잠정) 파생 생성기는 registry 의 표시 규약이 실제로 담긴 필드를 읽는다 — 문장 안 단어 매칭으로 대체하지 않는다",
+  "automationNote": "3회 도달 시 registry 표시 규약(예: part 의 '(선택)')과 생성기의 판별식을 대조하는 검사로 승격 검토.",
+  "occurrences": [
+    {
+      "date": "2026-08-31",
+      "summary": "Radio 가이드의 원(circle) 이 '선택 가능한 요소' 로 분류됨 → part 기준으로 교정, Input 의 기존 오분류도 함께 해소."
+    }
+  ]
+}

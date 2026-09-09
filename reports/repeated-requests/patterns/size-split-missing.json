@@ -1,0 +1,32 @@
+{
+  "id": "size-split-missing",
+  "category": "harness-completeness",
+  "label": "컴포넌트 HTML 코드탭 사이즈별 분기 누락",
+  "description": "사이즈 variant가 있는 컴포넌트인데 HTML 코드탭에 단일 예시만 있고 각 사이즈별 분기가 없음",
+  "count": 5,
+  "promotionStatus": "promoted",
+  "promotedRule": "RULE-1 SIZE_SPLIT (harness-audit.js)",
+  "occurrences": [
+    {
+      "date": "2026-05-27",
+      "summary": "Table md/sm 사이즈 비교 뷰 없음 → 추가 요청"
+    },
+    {
+      "date": "2026-05-27",
+      "summary": "Table HTML 코드탭에 s1-table--md/sm 분기 없음 → 추가 요청"
+    },
+    {
+      "date": "2026-05-27",
+      "summary": "TimePicker HTML 탭 사이즈 분기 누락 확인 → SIZE_RULES에 추가"
+    },
+    {
+      "date": "2026-06-05",
+      "summary": "TimePicker Select형 sm(h28) 사이즈 누락(md만 구현) → figma-to-code 워크플로우로 sm 추가 + SIZE_RULES tp-select 등록"
+    },
+    {
+      "date": "2026-09-01",
+      "summary": "Mobile 화면의 '개발 코드' 탭이 PC 마크업(data-size=md·data-break=pc)을 그대로 보여줌 — dist/examples/*.html 이 플랫폼 1벌뿐이라 9개 컴포넌트 전체 해당. river 가 '퍼블리셔가 편한가' 로 제기(HD-1)"
+    }
+  ],
+  "automationNote": "harness-audit RULE-1 SIZE_SPLIT으로 완전 커버됨. Button/Chip/Table/TimePicker(input·select)/Tab 등록 완료."
+}

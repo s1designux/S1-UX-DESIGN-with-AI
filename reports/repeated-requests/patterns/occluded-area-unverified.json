@@ -1,0 +1,16 @@
+{
+  "id": "occluded-area-unverified",
+  "category": "verification-blindspot",
+  "label": "오버레이에 가려진 영역이 검증에서 통째로 빠짐",
+  "description": "팝업·모달이 덮은 화면의 배경은 스크린샷 대조로 안 보이므로 검증에서 누락된다. 모바일 로그인 팝업 4개 화면의 보조 버튼만 레거시 문구(`휴대폰 번호로 로그인`)로 남아 있었는데 제작·검증·재검증 어디에도 걸리지 않았고, 사용자가 직접 발견했다. 같은 계열: verification-visual-gap(렌더 안 보고 값만 대조) 의 역방향 — 이쪽은 렌더를 봐도 안 보이는 영역이다.",
+  "count": 1,
+  "promotionStatus": "tracking",
+  "promotedRule": "(잠정) component-verifier 검증 원칙 7 + screen-rebuild 4단계 Layer 1 — 오버레이 노드를 제외한 배경을 기준 화면과 전수 비교",
+  "automationNote": "3회 도달 시 결정론 검사기로 승격 검토 — 오버레이를 가진 화면을 자동 식별하고 기준 화면 대비 배경 diff 를 Gate 로 강제.",
+  "occurrences": [
+    {
+      "date": "2026-08-25",
+      "summary": "river: '팝업이 있는 화면 하위 버튼 라벨이 수정이 안됐다. 가려진 부분도 맞춰줘. 앞으로 팝업에 가려진 부분이 있다면 팝업이 없는 화면에 일괄 맞춰줘야 해'"
+    }
+  ]
+}

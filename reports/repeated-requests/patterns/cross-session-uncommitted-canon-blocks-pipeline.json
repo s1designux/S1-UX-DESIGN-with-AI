@@ -1,0 +1,15 @@
+{
+  "id": "cross-session-uncommitted-canon-blocks-pipeline",
+  "category": "workflow",
+  "label": "같은 폴더의 다른 작업이 미커밋 상태라 파생 재생성이 서로 물고 돎",
+  "description": "한 작업(예: UI 라이브러리)만 손봤는데 설치기·guide model·DESIGN.md 재생성이 아직 커밋되지 않은 다른 작업(정본 편집)까지 함께 굽는다. 결과로 내 변경과 무관한 Gate 실패가 남고, 되돌리려 git checkout 을 쓰면 남의 미커밋 변경을 지운다.",
+  "count": 1,
+  "promotionStatus": "watching",
+  "promotedRule": null,
+  "occurrences": [
+    {
+      "date": "2026-09-04",
+      "summary": "Date Picker 색·정렬 3건 작업 중 설치기 zip 날짜를 고치려 installer:build 실행 → 미커밋 슬롯 작업(build-components.ts +281행)이 설치기에 함께 구워져 Gate 13·19·24 가 새로 실패. 복구하려 component-guide-model.json 에 git checkout 을 써서 다른 세션의 미커밋 상태를 지웠다(재생성으로 메움). 커밋은 보류."
+    }
+  ]
+}

@@ -233,16 +233,19 @@ function findHumanQuote(quote) {
   const needle = norm(quote);
   if (needle.length < 8) return { ok: false, why: '인용문이 너무 짧습니다(8자 이상) — 누구 말인지 특정되지 않습니다.' };
 
-  const home = os.homedir();
-  // 하네스가 쓰는 폴더 이름 규칙: 경로 구분자·점·밑줄을 모두 '-' 로 바꾼다
-  //   /Users/designgroup_02/S1-UX-DESIGN-with-AI → -Users-designgroup-02-S1-UX-DESIGN-with-AI
-  const slug = ROOT.replace(/[/\\._]/g, '-');
-  const dir = path.join(home, '.claude', 'projects', slug);
-  if (!fs.existsSync(dir)) {
-    return { ok: false, why: `세션 기록 폴더를 찾을 수 없습니다: ${dir}\n       근거를 확인할 수 없으므로 승인하지 않습니다(모르면 승인 아님).` };
+  // 세션 기록 폴더 — 본 폴더 것 + 별도 작업 폴더(.claude/worktrees/*) 세션 것 전부.
+  // 하네스 규칙: 경로의 / . _ 를 '-' 로 (본 폴더 → -Users-…-S1-UX-DESIGN-with-AI,
+  // 별도 폴더 → 같은 이름 + --claude-worktrees-<이름>). 실측 2026-09-09. scripts/lib/worktree.js 참조.
+  const dirs = require('./lib/worktree').transcriptDirs(ROOT);
+  if (dirs.length === 0) {
+    const guess = path.join(os.homedir(), '.claude', 'projects', ROOT.replace(/[/\\._]/g, '-'));
+    return { ok: false, why: `세션 기록 폴더를 찾을 수 없습니다: ${guess}\n       근거를 확인할 수 없으므로 승인하지 않습니다(모르면 승인 아님).` };
   }
-  const files = fs.readdirSync(dir).filter((n) => n.endsWith('.jsonl'));
-  for (const name of files) {
+  const files = [];
+  for (const dir of dirs) {
+    for (const n of fs.readdirSync(dir)) if (n.endsWith('.jsonl')) files.push({ dir, name: n });
+  }
+  for (const { dir, name } of files) {
     let lines;
     try { lines = fs.readFileSync(path.join(dir, name), 'utf8').split('\n'); } catch (_) { continue; }
     for (const line of lines) {

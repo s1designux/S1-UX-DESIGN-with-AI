@@ -1,0 +1,18 @@
+{
+  "id": "slot-for-variable-child-count",
+  "category": "canon-structure",
+  "label": "하위 항목 개수를 바꿔야 하는 컴포넌트 → Figma 슬롯 전환 요청",
+  "count": 2,
+  "promotionStatus": "tracking",
+  "occurrences": [
+    {
+      "date": "2026-09-03",
+      "summary": "river 요청 'GNB 메뉴 부분을 슬롯으로' — 메뉴 개수 증감이 목적. 메뉴가 놓이는 줄 전체를 슬롯(Menus)으로 전환."
+    },
+    {
+      "date": "2026-09-03",
+      "summary": "river 요청 '라인탭 세트·드롭다운·멀티토글의 하위 요소를 추가/삭제할 수 있게, 모달 본문은 이미지·텍스트에리어도 들어가게' — 시안 제작 편의가 목적. 항목이 놓이는 자리 전체를 슬롯(Tabs·Options·Items·Content)으로 전환. GNB 회차 교훈(항목 자체가 아니라 항목이 놓이는 '자리'에 슬롯)을 처음부터 적용해 재작업 없음."
+    }
+  ],
+  "note": "반복 신호: '하위 항목 수가 시안마다 달라지는' 컴포넌트는 처음 만들 때부터 항목 컨테이너를 슬롯으로 두는 편이 낫다. 남은 후보 = Pagination(페이지 수)·Table(행/열)·GNB Utility(아이콘 수)·Bottom Sheet 는 이미 슬롯."
+}

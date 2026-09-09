@@ -1,0 +1,15 @@
+{
+  "id": "revocation-sweeps-adjacent-legitimate-code",
+  "category": "governance",
+  "label": "철회가 승인 범위를 넘어 옆에 있던 정당한 구현까지 걷어감",
+  "description": "승인 없이 만들어진 것을 되돌릴 때, 같은 파일·같은 블록에 있던 '정본 토큰으로 만들어진 정당한 구현'까지 문자열·키워드로 함께 지운다. 검사기는 지워진 쪽이 정본 토큰을 쓰던 것인지 구분하지 못해 전부 초록으로 통과하고, 결함은 특정 상태에서만 드러난다. 되돌릴 때는 '무엇을 승인 없이 만들었나'가 아니라 '이 줄이 어느 토큰을 쓰나'로 가려야 한다.",
+  "count": 1,
+  "promotionStatus": "watching",
+  "promotedRule": null,
+  "occurrences": [
+    {
+      "date": "2026-09-04",
+      "summary": "focus-visible 17건 철회(2026-09-02)가 input.css 의 :has(control:focus-visible) → field border-color: --color-form-control-border-selected 규칙까지 함께 지웠다. 이 규칙은 승인 없이 만든 focus 토큰이 아니라 정본 Selected 토큰을 쓰고 있었고 최초 커밋 3997f18 부터 있었다. 결과로 error·correct·read-only 상태에서 키보드 초점이 전혀 보이지 않게 됐다(Dark·Error 와 Read-only 는 초점 전후 계산 스타일 차이 0). 기계검사 9종은 전량 초록이었고 🤖 component-verifier 델타 재검증에서만 잡혔다."
+    }
+  ]
+}

@@ -1,0 +1,25 @@
+{
+  "id": "concurrent-session-shared-worktree",
+  "count": 4,
+  "title": "같은 작업트리를 두 세션이 동시에 편집",
+  "detail": "다른 세션이 Line Tab·Pagination 을 진행하며 pages/components.html·ui-library-guide.js·registry/components/pagination.json 을 편집 중이라, 공용 검사(gate:check·ui:test)가 내 작업과 무관한 error 를 내고 커밋이 남의 미완성 변경을 삼킬 위험이 생겼다.",
+  "occurrences": [
+    {
+      "date": "2026-09-02",
+      "work": "textarea-multi-toggle"
+    },
+    "2026-09-02 modal — Table 세션의 build-components.ts 편집(buildLineTab MD 20→18)으로 모든 컴포넌트 지문이 stale 이 되어 ui:build 가 저장소 전체에서 막힘. tab.css 는 아직 20 이라 지문을 갱신하면 드리프트를 조용히 승인하게 됨.",
+    {
+      "date": "2026-09-02",
+      "work": "mobile-nav-header + time-picker",
+      "note": "두 세션이 같은 폴더에서 병행해 ui-library/package.json·src/index.js·auto-init.js·empty-consumer 2종을 번갈아 편집했다. mobile-nav-header 는 3-build 보고서에 'ui:build 가 tab 지문 stale 로 막힘'을 자기 결함이 아닌 것으로 기록했고, 실제로 나중에 저절로 해소됐다. 남은 상호오염: time-picker 의 clock 아이콘 실패(Gate 43)가 mobile-nav-header 의 커밋을 막고, mobile-nav-header 의 empty-consumer 인라인 style 이 time-picker 의 ui:test 를 막는다 — 서로의 게이트를 볼모로 잡은 상태."
+    },
+    {
+      "date": "2026-09-09",
+      "summary": "2026-09-09 river 결정 A안 — 세션마다 별도 작업 폴더(.claude/worktrees)+브랜치로 갈라 커밋 엉킴을 구조로 차단. 매 작업 부딪히던 장부 2개(반복요청·Gate 13 검증기록)를 낱장화하고 합치기를 npm run wt:merge 한 명령으로 묶음. Gate 34 는 별도 폴더 세션 기록까지 읽도록 배선, Gate 48 신설."
+    }
+  ],
+  "promotionStatus": "promotion-candidate",
+  "automationNote": "3회 도달 — 승격 검토: (1) 작업 착수 시 workflow-state 에 '내가 소유한 파일 목록'을 선언하고, 공용 검사 실패를 소유자별로 갈라 보여주는 검사기 (2) 세션별 git worktree 분리를 기본값으로.",
+  "label": "같은 작업트리를 두 세션이 동시에 편집"
+}

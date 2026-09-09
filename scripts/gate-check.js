@@ -1151,6 +1151,24 @@ try {
   fail(`Gate 47 실행 실패: ${e.message}`);
 }
 
+// ── Gate 48: Session Ledger Split (세션별 장부 구조) ───────────────
+// 여러 세션이 한 장부 파일을 동시에 쓰면 마지막 쓰기가 앞 기록을 조용히 삼킨다
+// (2026-09-08 실제 3종 사고 — Gate 34 승인 10건 소실 · Gate 13 검증 기록 덮어씀).
+// 장부를 낱장으로 쪼갠 뒤에는 "옛 단일 파일이 되살아나지 않는가 · 낱장 형식이 맞는가"를
+// 기계가 지킨다. 접기(fold)는 본 폴더 한 곳에서만 일어난다.
+gateHeader('[Gate 48] 세션장부분리 검사기 (Session Ledger Split)');
+try {
+  const rr = require('./lib/repeated-requests');
+  const problems = rr.check();
+  if (problems.length) for (const p of problems) fail(`Gate 48: ${p}`);
+  else {
+    const pending = rr.loadInbox().reduce((a, s) => a + s.entries.length, 0);
+    pass(`반복요청 장부 낱장 구조 정상 — 패턴 ${rr.loadPatterns().length}개${pending ? ` · 미접힌 낱장 ${pending}건(합칠 때 접힘)` : ''}`);
+  }
+} catch (e) {
+  fail(`Gate 48 실행 실패: ${e.message}`);
+}
+
 // ── Summary ───────────────────────────────────────────────────────
 if (VERBOSE || errors > 0 || warnings > 0) console.log('\n─────────────────────────────────────────────────────');
 const tally = `게이트 ${gates}개 · ✅ ${passes}건${VERBOSE ? '' : ' (상세: --verbose)'}`;

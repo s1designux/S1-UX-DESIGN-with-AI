@@ -135,7 +135,12 @@
     "docs:index": "node scripts/doc-index-build.js",
     "docs:find": "node scripts/doc-find.js",
     "docs:eval": "node scripts/doc-find-eval.js",
-    "docs:eval:paraphrase": "node scripts/doc-find-paraphrase.js"
+    "docs:eval:paraphrase": "node scripts/doc-find-paraphrase.js",
+    "wt:setup": "node scripts/worktree-setup.js",
+    "wt:merge": "node scripts/worktree-merge.js",
+    "wt:list": "git worktree list",
+    "rr": "node scripts/repeated-requests.js",
+    "rr:check": "node scripts/repeated-requests.js check"
   },
   "devDependencies": {
     "@figma/plugin-typings": "^1.97.0",

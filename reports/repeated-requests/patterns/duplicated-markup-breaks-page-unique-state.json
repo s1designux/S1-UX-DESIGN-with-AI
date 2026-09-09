@@ -1,0 +1,25 @@
+{
+  "id": "duplicated-markup-breaks-page-unique-state",
+  "category": "verification-blindspot",
+  "label": "같은 마크업을 두 곳에 붙여 페이지 단위 고유성(id·radio name)이 깨진다",
+  "description": "가이드 화면에서 PC·Mobile 두 섹션에 동일한 마크업 문자열을 넣자 id 와 radio name 이 페이지 안에서 중복됐다. 같은 name 의 라디오는 하나만 선택될 수 있어 먼저 그려진 PC 쪽 선택이 조용히 풀렸고, 자동 검사는 전부 PASS 였다. 실제 렌더 육안 대조에서만 드러났다. 계약의 '동일 컴포넌트를 한 페이지에 여러 번 배치해도 ID 가 충돌하지 않아야 한다' 가 화면 생성 코드에서 깨진 사례다.",
+  "count": 3,
+  "promotionStatus": "tracking",
+  "promotedRule": "(잠정) 여러 곳에 같은 컴포넌트를 그릴 때는 마크업 문자열을 재사용하지 말고 자리마다 새로 생성한다",
+  "automationNote": "3회 도달 시 가이드 페이지의 중복 id·중복 radio name 을 세는 결정론 검사로 승격 검토.",
+  "occurrences": [
+    {
+      "date": "2026-08-31",
+      "summary": "Radio 가이드에서 SELECTED·DIS+SELECTED 칸과 Action 묶음이 모두 미선택으로 보임 — PC·Mobile 동일 마크업으로 인한 name 중복. 플랫폼별 생성으로 분리."
+    },
+    {
+      "date": "2026-09-01",
+      "summary": "안내 페이지(assets/js/ui-library-guide.js)와 검수 화면(pages/ui-review.html)이 드롭다운 마크업 생성 함수를 각자 한 벌씩 들고 있었다. 배포본에 「전체 선택」 식별자(data-select-all)를 추가했는데 두 화면 모두 옛 마크업을 뿜어 동작 검증이 '전체선택 행 0개'로 FAIL. 두 곳을 각각 고쳐야 했다 — 배포본이 바뀌어도 화면 마크업이 자동으로 따라오지 않는 구조."
+    },
+    {
+      "date": "2026-09-02",
+      "work": "textarea-multi-toggle",
+      "note": "검증 지그가 Light·Dark 두 벌에 같은 textarea id 를 써 중복 id 9건. 지그를 theme 별 고유 id 로 수정."
+    }
+  ]
+}

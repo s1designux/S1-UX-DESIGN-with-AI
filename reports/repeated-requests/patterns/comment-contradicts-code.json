@@ -1,0 +1,14 @@
+{
+  "id": "comment-contradicts-code",
+  "category": "verification",
+  "label": "주석·문서만 고치고 코드는 그대로(또는 그 반대)",
+  "count": 1,
+  "promotionStatus": "watch",
+  "recommendedRule": "정본 편집 후 '주석이 말하는 값'과 '코드가 쓰는 값'을 같은 커밋 안에서 대조한다. 값·이름을 바꾸면 그 줄 위 주석을 반드시 함께 읽는다.",
+  "occurrences": [
+    {
+      "date": "2026-09-08",
+      "summary": "정본 보강 작업에서 3회. ①Modal Content 주석은 '제목 18B·버튼 XSM'인데 코드는 16B·XXSM(river 지시는 코드에만 반영) ②GNB 컬럼 간격 매핑표는 spacing/80 인데 코드는 생짜 80(바인딩 없음) ③빌드 의존 선언에 Mobile Header 주석이 딸려 붙음. 전부 🤖 component-verifier 가 잡았고 기계검사는 전부 초록이었다."
+    }
+  ]
+}

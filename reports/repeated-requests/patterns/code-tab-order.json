@@ -1,0 +1,20 @@
+{
+  "id": "code-tab-order",
+  "category": "harness-completeness",
+  "label": "컴포넌트 코드탭 순서·구성 불통일",
+  "description": "HTML → CSS → Token Details 탭 순서가 일부 컴포넌트에서 다르거나 탭이 누락됨",
+  "count": 2,
+  "promotionStatus": "candidate",
+  "promotedRule": null,
+  "occurrences": [
+    {
+      "date": "2026-05-20",
+      "summary": "레이아웃 정합 — HTML·CSS·Token Details 탭 순서 통일 작업"
+    },
+    {
+      "date": "2026-05-27",
+      "summary": "Table HTML 코드탭 단일 예시만 있고 구성 불완전"
+    }
+  ],
+  "automationNote": "각 컴포넌트 섹션에 code-pane HTML/CSS/Token Details가 모두 존재하는지 검사. harness-audit RULE-4 후보."
+}

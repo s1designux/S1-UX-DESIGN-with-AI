@@ -1,0 +1,11 @@
+{
+  "id": "canonical-name-invented-not-verified",
+  "pattern": "정본에 실재하는지 확인하지 않고 그럴듯한 이름(토큰·속성)을 지어 쓰고, 검사기까지 그 이름으로 맞춰 보증을 무력화함. 선언이 무효라 상속으로 화면이 우연히 맞아 보여 사람 눈으로는 안 잡힌다.",
+  "count": 1,
+  "occurrences": [
+    "2026-09-03 time-picker — 안내 화면 .variant-label 의 하드코딩 #111827 을 'R01 HEX 금지에 맞춘다'며 var(--color-text-default) 로 바꿨는데 그 토큰은 정본에도 파생에도 없었다. ui-library/scripts/test.mjs 정규식까지 그 없는 이름으로 고쳐 색 보증이 사라졌다. 🤖 component-verifier 가 렌더 실측(getPropertyValue = 빈 문자열)으로 적발. 실존 토큰 --color-text-title-primary 로 교정."
+  ],
+  "resolution": "2026-09-03 해소 — Gate 45(CSS 변수 참조 검사기) 신설. scripts/css-var-reference-check.js 가 폴백 없는 var(--x) 참조가 tokens.css·typography.css 정의에 닿는지 커밋 시점에 대조한다. 적대 테스트 6종 포함, 실전 시험에서 배포본에 심은 가짜 토큰을 그 줄에서 차단함을 확인했다. 기존 부채 6건은 baseline 동결(전부 안내 화면 CSS, 배포본 0건).",
+  "status": "해소 — Gate 45 가 재발 시 커밋 차단",
+  "label": "정본에 실재하는지 확인하지 않고 그럴듯한 이름(토큰·속성)을 지어 쓰고, 검사기까지 그 이름으로 맞춰 보증을 무력화함"
+}

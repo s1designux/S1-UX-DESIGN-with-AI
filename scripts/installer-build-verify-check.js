@@ -8,7 +8,9 @@
  *       전부 ✅ 라, 구조·시각 미스가 사용자에게 샜다(9줄 전부 ⭐ 표 = 증거).
  *
  * 해법: build-components.ts 의 현재 내용을 sha256 으로 묶어, 그 내용을 검증한
- *       기록(reports/installer-build/build-verification.json)이 없으면 커밋 차단.
+ *       기록(reports/installer-build/verifications/<해시 앞 16자>.json)이 없으면 커밋 차단.
+ *       기록 파일 이름이 곧 해시라 세션(작업 폴더)마다 다른 파일에 쓰인다 — 한 파일을
+ *       여러 세션이 덮어쓰던 사고(2026-09-08) 차단. 옛 기록도 지우지 않고 남는다(감사 이력).
  *       - 일치 + verifiedBy=component-verifier  → ✅ 독립 검증 완료
  *       - 일치 + verifiedBy=orchestrator(자가인증) → ✅ 통과하되 ⚠️ 가시화(구조 변경이면 안 됨)
  *       - 불일치 / 없음 → ❌ 차단: 파일이 바뀌었는데 검증 기록이 그 내용과 다름(stale) 또는 없음
@@ -31,7 +33,8 @@ const crypto = require('crypto');
 
 const ROOT = path.resolve(__dirname, '..');
 const SRC = path.join(ROOT, 'plugins/figma-vars-installer/src/build-components.ts');
-const REC = path.join(ROOT, 'reports/installer-build/build-verification.json');
+const REC_DIR = path.join(ROOT, 'reports/installer-build/verifications');
+const LEGACY_REC = path.join(ROOT, 'reports/installer-build/build-verification.json');
 
 function sourceHash() {
   if (!fs.existsSync(SRC)) return null;
@@ -39,10 +42,19 @@ function sourceHash() {
   return 'sha256:' + crypto.createHash('sha256').update(buf).digest('hex');
 }
 
-function readRecord() {
-  if (!fs.existsSync(REC)) return null;
+/** 해시 → 기록 파일 경로 (파일명 = 해시 앞 16자 → 세션마다 다른 파일에 쓰인다) */
+function recordPath(hash) {
+  return path.join(REC_DIR, `${hash.replace(/^sha256:/, '').slice(0, 16)}.json`);
+}
+
+function readRecord(hash) {
+  const p = recordPath(hash);
+  if (!fs.existsSync(p)) return null;
   try {
-    return JSON.parse(fs.readFileSync(REC, 'utf-8'));
+    const rec = JSON.parse(fs.readFileSync(p, 'utf-8'));
+    // 파일명은 앞 16자뿐이라 본문 해시로 한 번 더 대조한다.
+    if (rec.sourceHash !== hash) return { __invalid: true };
+    return rec;
   } catch {
     return { __invalid: true };
   }
@@ -76,10 +88,11 @@ function record(argv) {
     verifiedAt: new Date().toISOString(),
     notes,
   };
-  fs.mkdirSync(path.dirname(REC), { recursive: true });
-  fs.writeFileSync(REC, JSON.stringify(rec, null, 2) + '\n');
+  const out = recordPath(hash);
+  fs.mkdirSync(REC_DIR, { recursive: true });
+  fs.writeFileSync(out, JSON.stringify(rec, null, 2) + '\n');
   const badge = by === 'component-verifier' ? '🤖 독립 검증' : '⭐ 자가인증';
-  console.log(`✅ 검증 기록 갱신 — ${badge} (${change}) · ${hash.slice(0, 19)}…`);
+  console.log(`✅ 검증 기록 작성 — ${badge} (${change}) · ${path.relative(ROOT, out)}`);
 }
 
 /** 게이트 검사 — gate-check.js 에서 require 해서 호출 */
@@ -89,15 +102,19 @@ function check({ pass, warn, fail }) {
     warn('build-components.ts 없음 — 설치기 빌드 검증 건너뜀');
     return;
   }
-  const rec = readRecord();
-  if (!rec || rec.__invalid) {
-    fail('build-components.ts 검증 기록 없음/손상 — component-verifier 검증 후 기록 필요: '
-      + 'node scripts/installer-build-verify-check.js --record --by component-verifier --verdict pass --notes "..."');
+  if (fs.existsSync(LEGACY_REC)) {
+    fail('옛 단일 기록 reports/installer-build/build-verification.json 이 남아 있음 — 정본은 verifications/<해시>.json (낱장). 지우세요.');
     return;
   }
-  if (rec.sourceHash !== hash) {
-    fail('build-components.ts 가 마지막 검증 이후 변경됨(검증 기록 stale) — 재검증 필요. '
-      + '구조 변경은 ⭐ 단독 금지 → 🤖 component-verifier 로 검증 후 --record. '
+  const rec = readRecord(hash);
+  if (rec && rec.__invalid) {
+    fail(`검증 기록 손상/해시 불일치 — ${path.relative(ROOT, recordPath(hash))}. 다시 --record 하세요.`);
+    return;
+  }
+  if (!rec) {
+    fail('build-components.ts 의 현재 내용에 대한 검증 기록 없음(파일이 바뀌었거나 아직 검증 전) — 재검증 필요. '
+      + '구조 변경은 ⭐ 단독 금지 → 🤖 component-verifier 로 검증 후 --record: '
+      + 'node scripts/installer-build-verify-check.js --record --by component-verifier --verdict pass --notes "...". '
       + '순수 기계적 수정이면 --by orchestrator --change mechanical 로 자가인증(git 가시).');
     return;
   }
@@ -109,7 +126,7 @@ function check({ pass, warn, fail }) {
   }
 }
 
-module.exports = { check, sourceHash, REC };
+module.exports = { check, sourceHash, recordPath, REC_DIR };
 
 // 단독 실행
 if (require.main === module) {

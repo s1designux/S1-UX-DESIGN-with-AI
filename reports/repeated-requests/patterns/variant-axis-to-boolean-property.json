@@ -1,0 +1,16 @@
+{
+  "id": "variant-axis-to-boolean-property",
+  "category": "component-canonical-expansion",
+  "label": "variant 축을 Boolean 컴포넌트 속성으로 전환(조합 폭발 해소)",
+  "description": "켜짐/꺼짐 성격의 표시 여부가 variant 축으로 들어가 조합이 배로 늘고 텍스트 override 가 유실되는 구조를, Boolean 속성 + 레이어 visible 바인딩으로 바꾸는 요청",
+  "count": 1,
+  "promotionStatus": "tracking",
+  "occurrences": [
+    {
+      "date": "2026-08-21",
+      "summary": "Input 의 Message=Off/On 축을 Show message BOOLEAN 으로 전환 검토(B안). Figma TEMP 세트로 실증까지 완료(숨김 시 높이+itemSpacing 6px 회수 확인, 48/70/72/94 실측) 후 **미채택** — 필요했던 조합(Error 테두리+메시지 없음)이 이미 정본에 있었고, 로그인 사양 축소로 요구 자체가 사라졌다. 정본 무변경."
+    }
+  ],
+  "automationNote": "3회 도달 시 'Off/On 2값 축은 Boolean 속성 후보'로 감지하는 검사기(variant 축 감사) 승격 검토.",
+  "outcome": "not-adopted-2026-08-21"
+}

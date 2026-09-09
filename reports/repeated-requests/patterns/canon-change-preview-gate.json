@@ -1,0 +1,16 @@
+{
+  "id": "canon-change-preview-gate",
+  "category": "workflow-governance",
+  "label": "정본 반영 전 Figma 임시(TEMP) 세트로 개선안 선검토 후 승인",
+  "description": "구조 개선 요청 시 정본·설치기·기존 인스턴스를 건드리기 전에 별도 TEMP 컴포넌트 세트로 미리보기를 만들어 사용자 승인을 받고, 승인 후에만 코드 정본에 반영하는 3단계 게이트 요청",
+  "count": 1,
+  "promotionStatus": "tracking",
+  "occurrences": [
+    {
+      "date": "2026-08-21",
+      "summary": "Input 메시지 구조 개선 — TEMP/Input — Show message Preview(1664:7013) 를 Core 페이지 최상위에 별도 생성. 정본(1654:42409 · 112변형)·인스턴스 115건·build-components.ts·registry·설치기 ZIP 무변경 상태로 검토. 결과적으로 **정본 변경 불필요** 결론에 도달 — 미리보기 게이트가 불필요한 정본 변경을 실제로 차단했다."
+    }
+  ],
+  "automationNote": "3회 도달 시 'TEMP/ 접두사 세트는 정본 게이트·설치기 footprint·publish 대상에서 자동 제외되고, 정본 반영 시 삭제 여부를 물어주는' 절차를 스킬/검사기로 승격 검토.",
+  "outcome": "validated-prevented-unneeded-canon-change"
+}

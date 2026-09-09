@@ -7,15 +7,34 @@
           {
             "type": "command",
             "command": "node",
-            "args": ["scripts/figma-code-hex-check.js"],
+            "args": [
+              "scripts/figma-code-hex-check.js"
+            ],
             "statusMessage": "Figma 색 검사(하드코딩 hex 차단)",
             "timeout": 30
           },
           {
             "type": "command",
             "command": "node",
-            "args": ["scripts/figma-code-font-check.js"],
+            "args": [
+              "scripts/figma-code-font-check.js"
+            ],
             "statusMessage": "Figma 폰트 검사(비-Pretendard 차단)",
+            "timeout": 30
+          }
+        ]
+      }
+    ],
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node",
+            "args": [
+              "scripts/worktree-setup.js"
+            ],
+            "statusMessage": "작업 폴더 준비(별도 폴더면 node_modules·기억 연결)",
             "timeout": 30
           }
         ]

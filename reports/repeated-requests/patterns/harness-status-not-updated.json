@@ -1,0 +1,25 @@
+{
+  "id": "harness-status-not-updated",
+  "category": "registry-sync",
+  "label": "구현 완료 후 registry harnessStatus 갱신 누락",
+  "description": "components.html에 harness가 구현됐는데 registry JSON의 harnessStatus가 skeleton으로 남아있음",
+  "count": 3,
+  "promotionStatus": "candidate",
+  "promotedRule": null,
+  "occurrences": [
+    {
+      "date": "2026-05-20",
+      "summary": "Textarea harnessStatus skeleton → implemented 갱신 요청"
+    },
+    {
+      "date": "2026-05-27",
+      "summary": "Table harnessStatus skeleton → implemented 갱신 — 질문 후 파악"
+    },
+    {
+      "date": "2026-08-31",
+      "summary": "Toggle·Chip 웹 배포 착수 시 registry 의 a11yStatus 가 toggle=pending, chip=필드 자체 없음이라 계약상 approved 배포가 막혔다. 구현 상태(codeStatus=implemented)는 진작 채워져 있었는데 접근성 상태만 방치돼 있었다."
+    }
+  ],
+  "automationNote": "registry JSON harnessStatus vs components.html 섹션 존재 여부 비교 검사 필요. Gate 1(Registry)에 추가 가능.",
+  "_previousId": "harnessStatus-not-updated"
+}

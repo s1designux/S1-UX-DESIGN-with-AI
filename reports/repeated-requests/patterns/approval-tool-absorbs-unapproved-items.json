@@ -1,0 +1,11 @@
+{
+  "id": "approval-tool-absorbs-unapproved-items",
+  "pattern": "승인 도구(--approve)가 '승인한 항목'만이 아니라 그 시점의 **미승인 신설 전부**를 동결 목록에 함께 편입해, 승인받지 않은 항목(다른 세션이 만든 것 포함)이 조용히 승인된 것처럼 남는다. 게이트는 통과하고 원장에는 근거가 없어, 나중에 보면 '기록은 있는데 승인은 없었던' 상태가 된다 — 2026-08-25 focus-visible 사태와 같은 모양.",
+  "count": 1,
+  "occurrences": [
+    "2026-09-03 GNB 슬롯 전환 — componentprop:Menu 1건만 승인했는데 baseline 이 607→614 로 뛰며 componentprop:Logo(근거 인용 검증 실패로 거부된 항목)와 다른 세션의 uistate:date-picker.* 5건까지 함께 편입됐다. ⭐ 가 baseline diff 를 직접 열어보고 적발, 손으로 608(승인 1건)로 복구. 원인은 approve() 의 `base.items = cur`(현재 전부 동결). 승인 항목만 편입하도록 고치고 적대 테스트로 확인."
+  ],
+  "resolution": "이번 회차 조치 — approve() 가 --item 으로 승인한 항목만 baseline 에 편입하도록 수정(scripts/canon-addition-check.js), count 도 편입 결과로 계산. 미해결: 승인 1건당 baseline 증가량이 1을 넘으면 경고하는 방어선은 아직 없다.",
+  "status": "열림",
+  "label": "승인 도구(--approve)가 '승인한 항목'만이 아니라 그 시점의 **미승인 신설 전부**를 동결 목록에 함께 편입해, 승인받지 않은 항목("
+}

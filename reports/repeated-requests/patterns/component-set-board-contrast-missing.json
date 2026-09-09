@@ -1,0 +1,15 @@
+{
+  "id": "component-set-board-contrast-missing",
+  "category": "figma-library-presentation",
+  "label": "컴포넌트 세트 보드 배경이 컴포넌트 표면색과 같아 항목이 배경과 분리되지 않음",
+  "description": "흰색 표면 컴포넌트(Modal·Bottom Sheet·Mobile Header 등)를 흰색 보드 위에 올려, 라이트 세트에서 항목 경계가 보이지 않는 문제. 정착된 관행은 보드 fill 을 color/bg/level-3 변수에 바인딩하는 것",
+  "count": 1,
+  "promotionStatus": "tracking",
+  "occurrences": [
+    {
+      "date": "2026-09-01",
+      "summary": "Mobile Header 라이트 컴포넌트 세트(2292:24027) 보드 fill 을 흰색 → color/bg/level-3 변수 바인딩으로 교체 (Modal·Bottom Sheet 와 동일 관행)"
+    }
+  ],
+  "automationNote": "3회 도달 시 '컴포넌트 표면색이 흰색이면 세트 보드는 color/bg/level-3' 를 라이브러리 빌드 체크로 승격 검토."
+}

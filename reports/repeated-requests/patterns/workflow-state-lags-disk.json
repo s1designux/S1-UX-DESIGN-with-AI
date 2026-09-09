@@ -1,0 +1,21 @@
+{
+  "id": "workflow-state-lags-disk",
+  "category": "pipeline-bookkeeping",
+  "label": "구현은 끝났는데 작업 상태 파일이 옛 단계에 멈춰 있다",
+  "description": "빌드 담당(ui-library-builder)은 규칙대로 workflow-state.json 을 건드리지 않고 '오케스트레이터 소관'으로 남긴다. 그런데 오케스트레이터가 그 인계를 받아 갱신하는 시점이 정해져 있지 않아, 디스크에는 구현물·보고서가 다 있는데 상태 파일은 두 단계 전을 가리키는 구간이 생긴다. 그 구간에서는 '어디까지 됐나'를 사람이 물어봐야만 알 수 있고, 재개 시 이미 한 일을 다시 시킬 위험이 있다.",
+  "count": 2,
+  "promotionStatus": "tracking",
+  "occurrences": [
+    {
+      "date": "2026-09-02",
+      "work": "mobile-nav-header + time-picker",
+      "summary": "river 가 '파이프라인 상태 업데이트'를 요청해서야 갱신됐다. mobile-nav-header 는 3-build.md·구현물·아이콘 검증 PASS 가 모두 있는데 상태는 checkpoint 2·nextAction='builder 가 구현하라'였고, time-picker 는 2-canon-readiness 가 '통과'로 끝났고 구현물까지 있는데 상태는 checkpoint 1 이었다."
+    },
+    {
+      "date": "2026-09-02",
+      "work": "mobile-nav-header · ⭐ 자기 훑기 오판",
+      "summary": "상태 파일을 갱신하면서 ⭐ 가 문자열 grep 만으로 '안내 페이지 등재됨' 이라고 적었다. 실제로는 렌더 게이트가 candidate 상태를 막아 안내 문구만 나오는 상태였다. 📖 source-reader 가 실제 렌더로 정정했다 — 하드룰 H5(정본 읽기 위임) 를 상태 기록에도 적용해야 한다는 사례."
+    }
+  ],
+  "automationNote": "3회 도달 시 승격 검토: 3-build.md 등 단계 보고서 파일의 존재와 workflow-state 의 lastCompletedCheckpoint 가 어긋나면 경고하는 결정론 검사기(단계 산출물 ↔ 선언 단계 대조). ui:state 검사기에 붙이면 커밋 검문소에서 자동으로 잡힌다."
+}

@@ -1,0 +1,15 @@
+{
+  "id": "agent-substitutes-own-scan-for-canonical-procedure",
+  "category": "procedure-adherence",
+  "label": "에이전트가 정본 절차서 대신 자기 방식으로 스캔해, 검사 결과를 축소 보고한다",
+  "description": "H2(토큰)·H3(폰트) 같은 하드룰의 집행은 '정해진 스캔 절차를 그대로 돌렸는가'에 달려 있다. 그런데 실행 에이전트가 절차서의 코드 대신 더 단순한 자기 방식으로 스캔하면, 절차서가 이미 막아둔 함정(figma.mixed 세그먼트 등)에 그대로 빠져 '위반 0건/소수건'이라는 잘못된 안심을 만든다. 절차서에는 결함이 없어 문서를 아무리 읽어도 원인이 안 보이고, 독립 검증자가 재스캔해야만 드러난다.",
+  "count": 1,
+  "promotionStatus": "watch",
+  "occurrences": [
+    {
+      "date": "2026-09-08",
+      "summary": "Input 시안 교체. 🪞 screen-rebuilder 가 t.fontName 을 직접 읽어 mixed 인 Noto Sans KR 3건(1587:2217·2245·2276)을 놓치고 '비-Pretendard 2건'으로 보고. 🤖 component-verifier 가 getStyledTextSegments 로 재스캔해 실제 5건임을 적발. 절차서 figma-font-scan.md:31 은 처음부터 올바른 방법을 명시하고 있었다 — 문서 결함이 아니라 미준수."
+    }
+  ],
+  "automationNote": "승격 전 관찰. 후보: 스캔 절차서의 코드를 문서에 붙여넣는 대신 실행 가능한 스크립트(scripts/)로 빼서 에이전트가 '직접 짜지 않고 호출'하게 만든다. 그러면 미준수가 구조적으로 불가능해진다."
+}

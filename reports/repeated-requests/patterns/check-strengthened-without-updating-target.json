@@ -1,0 +1,17 @@
+{
+  "id": "check-strengthened-without-updating-target",
+  "category": "harness-consistency",
+  "label": "검사기만 강화되고 대상 화면·코드는 안 고쳐진 채 남는다",
+  "description": "ui-library/scripts/test.mjs 에 가이드 화면 요구(실제 동작이 설명 문서보다 앞) 가 추가됐는데 assets/js/ui-library-guide.js 는 따라가지 않아, 작업 트리에 실패하는 검사가 그대로 남아 있었다. 다음 작업자가 자기 변경 때문인지 판단할 수 없고, 무관한 작업의 마지막 관문을 막는다. 여러 세션이 같은 작업 폴더를 쓰는 환경에서 특히 잘 생긴다.",
+  "count": 2,
+  "promotionStatus": "tracking",
+  "promotedRule": null,
+  "automationNote": "3회 도달 시 검사기 강화 커밋이 대상 파일 변경을 동반했는지 확인하는 pre-commit 검사로 승격 검토.",
+  "occurrences": [
+    {
+      "date": "2026-08-31",
+      "summary": "Checkbox·Radio 착수 시 npm run ui:test 가 이미 실패 상태였음 — 'actual behavior and states must appear before component documentation'. river 승인으로 함께 해소."
+    },
+    "2026-09-03 time-picker — ui-library/scripts/test.mjs 가 .variant-label 의 하드코딩 #111827 을 정규식으로 못박고 있어, R01(HEX 금지) 위반이 검사기에 의해 보존되고 있었다. 다크에서 글자가 안 읽히는 결함의 직접 원인."
+  ]
+}

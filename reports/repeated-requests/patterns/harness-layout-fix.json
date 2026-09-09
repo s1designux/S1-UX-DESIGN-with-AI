@@ -1,0 +1,32 @@
+{
+  "id": "harness-layout-fix",
+  "category": "harness-ux",
+  "label": "Harness 레이아웃 개선 (spacing · overflow · alignment)",
+  "description": "컴포넌트 매트릭스의 간격·정렬·오버플로우가 잘못되어 수동 수정 요청",
+  "count": 5,
+  "promotionStatus": "promoted",
+  "promotedRule": "RULE-1b CSS_SIZE_SPLIT (harness-audit.js)",
+  "occurrences": [
+    {
+      "date": "2026-05-20",
+      "summary": "레이아웃 정합 — 신규 컴포넌트 코드블록 표준화"
+    },
+    {
+      "date": "2026-05-27",
+      "summary": "Action 열 오른쪽 gap 32px, 상태 열 minmax 전환, Input overflow 해소"
+    },
+    {
+      "date": "2026-05-27",
+      "summary": "버튼 좌측정렬 복원, 우측 빈공간 미사용 수정"
+    },
+    {
+      "date": "2026-08-31",
+      "summary": "Chip 의 Line/Solid variant 블록 사이 구분선 간격이 8px 로 다른 블록(24px)보다 좁아 보였다. 컴포넌트 값이 아니라 assets/css/ui-library-guide.css 공유 규칙(.uilg-variant-block + .uilg-separator)에서 24px 로 고쳐 Button 등 같은 클래스를 쓰는 모든 컴포넌트에 소급 적용되게 했고, component-page-template.md 에 기준을 남겼다."
+    },
+    {
+      "date": "2026-09-07",
+      "context": "모바일 인풋 Action 폭이 타이핑하면 168→216 으로 흔들리고(부모 flex-start 로 폭이 내용에 맞춰짐), 패스워드·서치 상태표가 180px 고정이라 모바일 아이콘 48px 두 개에 밀려 placeholder 가 잘렸다. 데이트피커 모바일 열 제목은 칸만 좌측 정렬돼 제목이 컴포넌트보다 오른쪽으로 밀려 보였다. river 가 화면을 구동하다 직접 발견."
+    }
+  ],
+  "automationNote": "harness-audit RULE-1(SIZE_SPLIT) + CSS_SIZE_SPLIT으로 일부 커버됨. 간격·정렬 자동 검사는 추가 필요."
+}

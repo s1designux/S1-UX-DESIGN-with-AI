@@ -1,0 +1,18 @@
+{
+  "id": "generator-hardcodes-first-case",
+  "category": "build-pipeline",
+  "label": "생성기가 첫 사례를 하드코딩해 뒤에 늘어난 항목이 조용히 빠진다",
+  "count": 2,
+  "promotionStatus": "tracking",
+  "occurrences": [
+    {
+      "date": "2026-08-31",
+      "summary": "ui-library build.mjs 의 s1-ui.auto.js 생성이 input 하나만 하드코딩하고 있었다. 런타임이 있는 Toggle·Chip 을 추가해도 autoInit() 에서 조용히 빠질 구조였고, 검사기는 전부 통과했을 것이다. jsRequired=true 인 컴포넌트를 결정론적으로 모두 넣도록 일반화하고, 빈 HTML 소비자가 autoInit() 경로 자체를 소비하도록 바꿔 회귀를 렌더로 잡게 했다."
+    },
+    {
+      "date": "2026-09-02",
+      "summary": "sync-install-prompt.js 의 업데이트 시각 스탬프 치환 정규식이 `class=\"update-stamp\" data-update-file=` 인접 형태만 잡아, 중간에 style 속성이 낀 설치기 다운로드 스탬프가 자동 갱신에서 조용히 빠져 2026-07-21 값이 고착돼 있었다. 속성 순서·부가 속성과 무관하게 잡고 원래 속성을 보존하도록 일반화."
+    }
+  ],
+  "automationNote": "3회 도달 시 '생성기 안에 컴포넌트 id 문자열이 하드코딩돼 있는지'를 검사하는 결정론 규칙으로 승격 검토."
+}

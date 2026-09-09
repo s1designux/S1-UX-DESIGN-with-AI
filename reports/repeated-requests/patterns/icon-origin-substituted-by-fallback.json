@@ -1,0 +1,12 @@
+{
+  "id": "icon-origin-substituted-by-fallback",
+  "pattern": "웹 아이콘 자산을 라이브러리 원본이 아니라 설치기의 import 실패용 폴백 도형에서 만들어, 원본과 모양이 다른 채로 배포됨. 두 번 다 사람이 눈으로 잡았다(chevron 2026-09-01 · close 2026-09-02).",
+  "count": 2,
+  "occurrences": [
+    "2026-09-01 chevron — 대체용 인라인 SVG 로 만들어 배포했다가 river 지적, V2.2 419:67 실물 내보내기로 교체.",
+    "2026-09-02 close — CLOSE_ICON_SVG(폴백)로 만들었고 river 지적. 원본 잉크 4~20 vs 폴백 6~18."
+  ],
+  "resolution": "2026-09-02 river 지시로 3겹 방지 장치 신설 — ①아이콘 manifest 에 sourceExport(원본 내보내기) 선언 의무화 ②scripts/ui-library-icon-origin-check.js 가 웹 SVG 를 원본 PNG 와 픽셀 대조(임계 0.015, ui:icons·gate:check 편입) ③build-components.ts 폴백 상수에 // icon-fallback-not-canon 표식 + 폴백 유래 자산 차단. 기존 부채는 registry/governance/icon-origin-baseline.json 로 분리.",
+  "status": "해소 — 2026-09-02 3겹 방지 장치 신설 후 재발 시 gate:check 가 자동 차단",
+  "label": "웹 아이콘 자산을 라이브러리 원본이 아니라 설치기의 import 실패용 폴백 도형에서 만들어, 원본과 모양이 다른 채로 배포됨"
+}

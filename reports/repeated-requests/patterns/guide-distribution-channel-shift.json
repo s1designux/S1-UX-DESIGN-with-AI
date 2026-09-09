@@ -1,0 +1,19 @@
+{
+  "id": "guide-distribution-channel-shift",
+  "category": "delivery",
+  "label": "가이드를 「문서 통짜 붙여넣기」로 배포하면 소비자가 디자인시스템을 온전히 구현하지 못함",
+  "description": "Design Guide Download 의 AI프롬프트 탭은 design/*.md 를 이어붙인 약 4,000줄 단일 MD 를 화면에 펼쳐놓고 복사·다운로드하게 했다. 사용자가 실사용에서 「이걸로는 디자인시스템을 온전히 구현하기 어렵다」고 판단해, 가이드 자료를 묶은 공개 저장소(S-1-UX-DESIGN-AI-GUIDELINE)로 배포 경로를 바꿨다. 같은 검토에서 개발자 탭도 tokens.css 649개만 주고 component-tokens.css 155개·typography.css·컴포넌트 실측 사양·PC 동작 계약을 안 주고 있던 것이 드러났다(물감만 주고 도면은 안 준 상태).",
+  "count": 2,
+  "promotionStatus": "tracking",
+  "automationNote": "배포 표면을 새로 만들 때 「소비자가 이걸로 실제 구현이 되는가」를 기준으로 필요한 파일 집합을 먼저 확정할 것. 토큰 CSS 는 tokens.css 단독이 아니라 component-tokens.css·typography.css 를 포함한 3종이 최소 단위다.",
+  "occurrences": [
+    {
+      "date": "2026-08-12",
+      "summary": "AI프롬프트 탭·개발자 탭을 GitHub 저장소 안내 방식으로 교체. 인라인 MD/CSS 블록 제거(5,402줄 → 698줄)"
+    },
+    {
+      "date": "2026-09-04",
+      "summary": "개발자·퍼블리셔 전달 계층 신설 — 같은 원인의 다른 얼굴이다. 이번엔 '문서 붙여넣기'가 아니라 '툴이 달라서 못 쓰는 것'이었다(C++·React·Vue·Kotlin·iOS 혼재). 컴포넌트마다 6벌을 만들지 않고 생성기 4종을 만들어 manifest·tokens.css 에서 자동 생성하도록 했다(dist/platform). React·Vue 껍데기는 마크업을 옮겨 적지 않고 승인 예제 HTML 문자열을 그대로 마운트해 '옮겨 적기 오류'를 구조적으로 0으로 만들었다. 네이티브는 컴포넌트를 줄 수 없다는 한계를 화면에 명시했다. 자가 검사기(s1-ui-lint)와 Gate 46 신설. 부수 발견: 토큰 값이 바뀌면 ui:build 가 멈추는데(기존 안전장치) 그 상태가 아무 게이트에도 안 걸려 낡은 배포본이 커밋될 수 있었다 — platform-tokens-check 로 막았다."
+    }
+  ]
+}

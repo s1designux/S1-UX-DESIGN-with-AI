@@ -1,0 +1,16 @@
+{
+  "id": "guide-section-bypasses-dist-gate",
+  "category": "verification-blindspot",
+  "label": "안내 화면의 어떤 섹션은 배포본 게이트를 아예 타지 않아 승인 전 코드가 승인된 것처럼 보인다",
+  "description": "안내 페이지는 컴포넌트마다 dist 를 fetch 해 배포 상태(verified·approved)를 검사하고 미승인이면 안내 문구로 대체한다. 그런데 그 검사 대상 목록(guideComponents 배열)에 등재되지 않은 컴포넌트는 손편집 정적 마크업이 그대로 표출된다 — 게이트에 '막히는' 게 아니라 '통과하지 않는다'. 결과적으로 미승인 컴포넌트가 승인된 것과 똑같은 모습으로 보이고, 배포본이 바뀌어도 화면이 따라오지 않는다. 자동 검사는 섹션이 존재하므로 전부 PASS 한다.",
+  "count": 1,
+  "promotionStatus": "tracking",
+  "occurrences": [
+    {
+      "date": "2026-09-02",
+      "work": "time-picker",
+      "summary": "time-picker 섹션이 guideComponents(assets/js/ui-library-guide.js:1698) 에 없어 정적 마크업으로 표출됨. 같은 candidate 인 mobile-bottom-nav·mobile-header 는 게이트가 막아 안내 문구가 나오는데 time-picker 만 그냥 보였다. 📖 source-reader 렌더 추적으로 발견."
+    }
+  ],
+  "automationNote": "3회 도달 시 승격 검토: component-guide-model 의 visibility='public'·sectionId 가 있는 컴포넌트가 guideComponents 배열에 빠져 있으면 실패시키는 결정론 검사기. Gate 44(안내 화면 렌더 검사) 에 붙이면 커밋 검문소에서 잡힌다."
+}

@@ -1,0 +1,28 @@
+{
+  "id": "derived-over-canonical",
+  "category": "canonical-discipline",
+  "label": "파생 표면(웹 가이드) 값을 정본과 저울질하거나 판정 근거로 씀",
+  "description": "웹 가이드는 프로토타입 잔재라 판정 근거가 아닌데, ⭐ 가 '웹 24 vs 정본 16 중 어느 쪽?'·'탭 굵기 Bold/Medium 중 어느 쪽?'을 반복해 묻고, '웹이 20px 이라 바뀝니다'를 비용처럼 서술했다. 사용자가 세 번 교정. 원인은 문서에 정본↔파생 판정 우선순위가 없었고, 「두 갈래 분류」(레거시↔정본 규칙)가 넓게 오독될 여지가 있었던 것.",
+  "count": 4,
+  "promotionStatus": "promoted",
+  "promotedRule": "CLAUDE.md §⚖️ 하드룰 H6 「정본 우선」 — 파생 값은 증거가 아니다. '파생 A vs 정본 B 중 뭐?'는 성립하지 않는 질문이며 그 형태로 묻는 것 자체가 위반. + 「두 갈래 분류」에 적용 범위(레거시↔정본 한정) 명시.",
+  "automationNote": "저울질은 추론 실패라 기계가 못 잡는다. 대신 **틀린 질문 형태를 금지**해 위반이 사용자 눈에 즉시 보이게 했다.",
+  "occurrences": [
+    {
+      "date": "2026-08-02",
+      "summary": "웹 24 vs 정본 16 여백을 물음"
+    },
+    {
+      "date": "2026-08-02",
+      "summary": "탭 굵기 Bold vs Medium 을 물음"
+    },
+    {
+      "date": "2026-08-03",
+      "summary": "'웹이 20px 이라 바뀝니다'를 비용처럼 서술 → '자꾸 왜 웹가이드를 들먹거리는지 모르겠어'"
+    },
+    {
+      "date": "2026-09-08",
+      "summary": "정본에 Modal Size 축을 넣고도 파생 2곳(registry/components/modal.json · ui-library modal manifest)이 '정본에 크기 축이 없다'고 거짓 서술한 채 남았다. 어떤 게이트도 못 잡았고 🤖 가 잡았다."
+    }
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "id": "single-value-axis-shown-as-axis",
+  "category": "guide-presentation",
+  "label": "값이 하나뿐인 축(모바일 크기)을 표의 축·라벨로 계속 표출해 화면이 장황해짐",
+  "description": "Mobile 처럼 크기 축이 한 가지뿐인데도 LG·SM·MD 라벨과 크기별 블록 분리를 유지해, 정작 함께 봐야 할 유형(Primary/Secondary/Blue Line, Line/Solid)이 흩어지는 문제",
+  "count": 2,
+  "promotionStatus": "promoted",
+  "occurrences": [
+    {
+      "date": "2026-09-01",
+      "summary": "Button·Chip·Filter Chip·Select 의 Mobile 화면에서 크기 라벨 제거, 유형을 한 표에 모으고 Line/Solid 사이 가로선 삭제 (assets/js/ui-library-guide.js)"
+    },
+    {
+      "date": "2026-09-01",
+      "summary": "river 재지적 — Mobile 화면만 제목↔Action 간격이 24px 넓고, 크기 축 없는 컴포넌트에 '정본에 플랫폼~ PC와 같습니다' 안내문이 남아 있었다. 규칙을 component-presentation-policy platformParity·component-page-template §A 에 정본화하고 ui-library test.mjs 에 결정론 검사 4종 배선(역검사로 발화 확인)."
+    }
+  ],
+  "automationNote": "2026-09-01 승격 완료 — ui-library/scripts/test.mjs 가 ①Mobile 선행 안내문 ②'PC와 같습니다' 문구 ③Mobile 크기 라벨 ④숨은 형제 여백 리셋 누락 을 막는다."
+}

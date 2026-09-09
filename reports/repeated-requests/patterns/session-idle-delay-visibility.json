@@ -1,0 +1,13 @@
+{
+  "id": "session-idle-delay-visibility",
+  "category": "harness-operations",
+  "label": "멈춘 세션이 안 보여서 시간이 새는 것 (진행 중처럼 보이는 대기)",
+  "count": 1,
+  "promotionStatus": "tracking",
+  "occurrences": [
+    {
+      "date": "2026-09-07",
+      "summary": "세션이 진행 중처럼 보였으나 실제로는 2시간 47분 중 6분만 일하고 나머지는 river 답을 기다리며 멈춰 있었음. 원인 진단 후 Notification 훅 + launchd 재알림 감시기(5분 주기·30분 재알림) 설치."
+    }
+  ]
+}

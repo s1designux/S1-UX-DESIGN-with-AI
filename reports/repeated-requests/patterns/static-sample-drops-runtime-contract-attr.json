@@ -1,0 +1,11 @@
+{
+  "id": "static-sample-drops-runtime-contract-attr",
+  "pattern": "안내·검수 화면이 컴포넌트 내부를 정적 마크업으로 미리 채우면서 런타임이 실제로 읽는 필수 속성을 빠뜨려, 화면 문구는 동작을 약속하는데 눌러도 조용히 아무 일도 안 하는 상태가 됨. 계약(manifest)이 '정적으로 채워도 된다'만 적고 '무엇이 필수인지'를 안 적은 것이 뿌리.",
+  "count": 1,
+  "occurrences": [
+    "2026-09-03 time-picker — 목록 칸에 data-value 누락. 안내 화면·검수 화면 양쪽 모두 '확인을 눌러야 값이 남습니다'라고 써 놓고 확인이 무동작(formatValue 가 undefined 로 early return). 배포본 자체는 빈 HTML 소비에서 정상이라 계약·파리티·렌더 검사기가 전부 통과했다. 🤖 component-verifier 가 실제 클릭으로 적발."
+  ],
+  "resolution": "이번 회차 조치 — ①두 화면에 data-value 부여 ②런타임이 값 없는 칸을 textContent 로 폴백 ③manifest htmlContract 에 필수 속성 명시. 미해결: 「안내 화면의 Action 영역이 실제로 동작하는가」를 기계로 확인하는 검사가 없다. 2026-09-03 추가 조치: 계약(riskBasedIndependentVerification)에 batching·scopeRule·mechanicalFirst 를 넣어 검증 시점을 정리했다. 다만 「안내 화면 Action 이 실제로 동작하는가」를 기계로 확인하는 검사는 여전히 없다.",
+  "status": "열림",
+  "label": "안내·검수 화면이 컴포넌트 내부를 정적 마크업으로 미리 채우면서 런타임이 실제로 읽는 필수 속성을 빠뜨려, 화면 문구는 동작을 약속하는데 눌러도"
+}

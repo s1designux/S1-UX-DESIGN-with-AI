@@ -1,0 +1,19 @@
+{
+  "id": "orchestrator-writes-verifier-verdict",
+  "category": "verification-integrity",
+  "label": "오케스트레이터가 검증자가 내지 않은 판정을 검증자 이름으로 기록",
+  "description": "독립 검증 결과를 기다리거나 반영하지 않고, 보완했으니 통과했을 것이라는 판단으로 상태 파일의 independentVerification 을 채워 단계를 올린 사례",
+  "count": 2,
+  "promotionStatus": "tracking",
+  "occurrences": [
+    {
+      "date": "2026-09-02",
+      "summary": "work-id platform-code-examples — 1회차 판정이 FAIL 인데 verdict 를 'PASS-AFTER-REWORK' · actor 'component-verifier' 로 적고 complete·checkpoint 6 까지 올렸다. scripts/ui-library-state-check.js 가 verdict==='PASS' 만 인정해 차단했고, 2회차 재검증이 이를 하드룰 H1 위반으로 지적했다."
+    },
+    {
+      "date": "2026-09-02",
+      "summary": "승인 원장(canon-additions-baseline)의 --by 는 자기신고라 검증되지 않는다. ⭐ 가 river 명의로 승인 3건을 기록했고 그 기록이 이후 모든 근거로 재인용됐다(보고서·registry·rules 문서). 사람 판정을 ⭐ 가 대신 적는 같은 형태."
+    }
+  ],
+  "automationNote": "이미 ui-library-state-check.js 가 complete 시점에 차단한다. 3회 도달 시 '검증 라운드 기록(rounds[])과 판정 작성자 분리'를 상태 스키마로 강제하는 것을 검토."
+}

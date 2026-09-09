@@ -14,7 +14,7 @@
  *      바닥선 검사이지, 실사용 적중률이 아니다.
  *   E2 본문으로 찾기 — 질문 = 그 섹션 본문 가운데 한 줄(제목 제외). 청크 전수.
  *      "제목은 기억 안 나고 내용만 기억날 때" 에 가깝다. 이웃 청크와의 경쟁을 본다.
- *   E3 실제 문장으로 찾기 — 질문 = `reports/repeated-requests.json` 의 라벨.
+ *   E3 실제 문장으로 찾기 — 질문 = `reports/repeated-requests/`(낱장 장부) 의 패턴 라벨.
  *      몇 달에 걸쳐 실제로 쓰인 문장이라 ⭐ 가 지금 지어낸 말이 아니다.
  *      정답 라벨이 없으므로 적중률 대신 **점수 분포**를 본다(0.55 눈금이 맞는지).
  *
@@ -184,8 +184,7 @@ function bodyLine(c) {
   // ── E3 ────────────────────────────────────────────────────────────────────
   let e3low = 0, e3n = 0;
   if (!ONLY || ONLY === 'E3') {
-    const rr = JSON.parse(fs.readFileSync(path.join(ROOT, 'reports/repeated-requests.json'), 'utf8'));
-    const labels = rr.patterns.map((p) => p.label).filter(Boolean);
+    const labels = require('./lib/repeated-requests').merged().map((p) => p.label).filter(Boolean);
     console.log(`\n▶ E3 — 질문 ${labels.length}개 (실제 반복요청 라벨 · 정답표 없음, 점수 분포만)`);
     const vecs = await embed(labels);
     const rows = labels.map((q, i) => {

@@ -30,6 +30,7 @@
 | 컴포넌트 재사용·분류 판단 | `.claude/rules/components.md` 확인 후 진행 |
 | 대시보드 갱신·Figma 플러그인 재등록 | `.claude/docs/ops-procedures.md` |
 | 다음 작업 계획 | `.claude/docs/project-status.md` (완료 단계·미결 우선순위) |
+| **여러 작업을 동시에** — river 진입어 **"별도 폴더에서 해줘"** | 🧭 `.claude/docs/worktree-workflow.md` — 세션마다 `.claude/worktrees/<이름>` 별도 폴더·브랜치. 착수=`npm run wt:setup`(세션 시작 훅 자동), 합치기=`npm run wt:merge` 한 번(부딪히면 힌트와 함께 멈춤). 장부는 낱장이라 합칠 때 고를 것이 없다 |
 
 **에이전트 정본:** `.claude/agents/` — token-validator · guide-builder · figma-inspector · component-verifier · token-sync · screen-rebuilder(🪞) · figma-library-builder(🏗️) · ui-library-builder(🧱) · source-reader(📖). 상세 이름표는 `.claude/docs/actors-reference.md`.
 
@@ -314,7 +315,7 @@ Claude는 **Main Orchestrator**다. 사용자는 **목표 수준 의도**만 준
 
 ## 반복 요청 추적
 
-**정본 = `reports/repeated-requests.json`** 하나다(파생 사본을 두지 않는다). 작업 완료마다 유사 패턴이면 `count` +1, 없으면 새 항목 추가. **count 가 3에 도달하면** Orchestrator Summary 에 승격 후보로 보고한다.
+**정본 = `reports/repeated-requests/` 폴더**(낱장 — 패턴 1개 = 파일 1개. 파생 사본을 두지 않는다). 기록은 손편집이 아니라 `npm run rr -- add` 로 한다 — 별도 작업 폴더 세션은 낱장에 적히고 합칠 때 접힌다(**Gate 48** · 구조 전문 `.claude/docs/worktree-workflow.md`). **count 가 3에 도달하면** Orchestrator Summary 에 승격 후보로 보고한다.
 
 ## 금지 행동
 
@@ -322,7 +323,7 @@ Claude는 **Main Orchestrator**다. 사용자는 **목표 수준 의도**만 준
 - 사용자 승인 없이 gate-check.js를 수정해 체크 항목을 약화하는 것
 - Orchestrator Summary 없이 작업 완료를 선언하는 것
 - Figma Gate SKIP을 FAIL로 잘못 기록하는 것
-- 반복 요청 패턴을 발견하고도 `reports/repeated-requests.json`에 기록하지 않는 것
+- 반복 요청 패턴을 발견하고도 `npm run rr -- add` 로 기록하지 않는 것
 
 ---
 
@@ -341,6 +342,6 @@ Claude는 **Main Orchestrator**다. 사용자는 **목표 수준 의도**만 준
 
 | 날짜 | 변경 내용 (한 줄) |
 |------|------------------|
-| 2026-09-07 | **Password Field·Search Input 웹 배포본 승인 — river 결정 17건을 거쳐 완료.** Base Input 의 옵션으로 조립(별도 컴포넌트 신설 0). 정본 buildSearch 를 C1~C4 로 바꾸고 🤖 `component-verifier` 가 4회 돌아 Gate 13 에 기록했다. 검수 중 river 지적 8건 반영 — 모바일 hover 제거(48×48 이 통째로 칠해져 혼란), 아이콘 간격 28→12px(누르는 영역 48×48·겹침 0 유지), 안내메시지는 '계정인풋' 신설 대신 **선택 슬롯 + 사용 지침**(업계 관행 조사), Figma 검색창에 hover 면 추가. 안내 페이지 여백·가로선은 「앞에 무엇이 오는가」로 판별하던 방식을 두 번에 걸쳐 버렸다 — 그 방식이 새 앞 요소마다 조용히 0px 로 새어 제목이 앞 표에 붙었다. **교훈 2개: ①부작용 확인은 '이상치가 있나'가 아니라 '무엇이 바뀌었나'를 전후 대조로 본다(⭐ 가 5곳 파급을 축소 보고했고 🤖 가 잡았다) ②검사기를 좁힐 때 한 형태만 시험하고 '약화 아님'이라 하지 않는다(⭐ 주장이 🤖 4회차에 반증됐고, 재조준은 새 기준 대신 기존 `variants` 선언을 썼다).** `reports/repeated-requests.json` 에 `shared-rule-change-scope-underreported` 신설. |
+| 2026-09-09 | **"세션 하나 = 작업 폴더 하나" 도입 — 동시 작업 시 커밋이 엉키던 구조를 끊었다(river A안).** 세션마다 별도 폴더·브랜치를 쓰고 시작 훅이 본 폴더 자원을 잇는다. 합치기는 `npm run wt:merge` 한 번(main 을 먼저 들여와 부딪힘은 작업 폴더에서 해결, 본 폴더는 fast-forward, 검사기 실패 시 자동 원복). 매 작업마다 부딪히던 장부 2개(반복요청·Gate 13 검증기록)를 낱장으로 쪼개 62개 패턴을 전 필드 대조 후 이관(손실 0). Gate 34 가 별도 폴더 세션 기록까지 읽도록 배선하고 **Gate 48**(세션장부분리) 신설. 운영 전문 `.claude/docs/worktree-workflow.md`. |
 
 > 이전 전체 상세 이력: **`reports/changelog-archive.md`** 참조.

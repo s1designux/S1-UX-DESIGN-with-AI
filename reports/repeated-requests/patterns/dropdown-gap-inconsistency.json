@@ -1,0 +1,20 @@
+{
+  "id": "dropdown-gap-inconsistency",
+  "category": "css-token",
+  "label": "드롭다운 패널 trigger 간격 불일치",
+  "description": "Select / DatePicker / TimePicker 등 드롭다운 패널의 trigger 하단 간격이 컴포넌트마다 달랐음",
+  "count": 2,
+  "promotionStatus": "candidate",
+  "promotedRule": null,
+  "occurrences": [
+    {
+      "date": "2026-05-27",
+      "summary": "TimePicker Select 드롭다운 gap 이상 → 검수 요청"
+    },
+    {
+      "date": "2026-05-27",
+      "summary": "Select·DatePicker·TimePicker 드롭다운 gap 8px 통일 요청"
+    }
+  ],
+  "automationNote": "각 컴포넌트 드롭다운 패널 top 값이 calc(100% + 8px)인지 검사. harness-audit RULE 추가 가능."
+}
