@@ -1104,7 +1104,10 @@ try {
   const steps = [
     ['배포 ZIP', ['build-ui-package-zip.js', '--check'], 'npm run ui:zip'],
     ['다운로드 화면', ['gen-dev-download-panel.js', '--check'], 'npm run devpanel:gen'],
-    ['색·크기 값 전달본', ['platform-tokens-check.mjs'], 'npm run ui:build']
+    ['색·크기 값 전달본', ['platform-tokens-check.mjs'], 'npm run ui:build'],
+    /* React 는 마크업을 JSX 로 옮긴 것이라, 옮기다 빠진 것이 있으면 사람 눈에는 안 보인다.
+       실제로 그려서 승인 예제와 대조하고, 데이터·슬롯·폼·자식 통로가 열려 있는지도 함께 본다. */
+    ['React 전달본', ['../ui-library/scripts/react-parity-check.mjs'], 'npm run ui:build && npm run ui:react']
   ];
   let handoffFailed = false;
   for (const [label, args, fix] of steps) {

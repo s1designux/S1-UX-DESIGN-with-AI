@@ -62,14 +62,19 @@ const TOOL_CARDS = [
   {
     key: 'react',
     title: 'React · Next.js',
-    note: 'JSX 빌드 도구 필요 · JSX 런타임 automatic',
+    note: 'JSX 빌드 도구 필요 · 서버 렌더링·타입 정의 포함',
     support: 'full',
     supportLabel: '컴포넌트 그대로 사용',
-    code: `import { S1Button } from "./s1-ui/platform/react";
+    code: `import { S1Button, S1Input, S1Table }
+  from "./s1-ui/platform/react";
 
-<S1Button variant="primary" size="md"
-          parts={{ label: "확인" }} />`,
-    files: ['platform/react/'],
+<S1Button variant="primary" parts={{ label: "확인" }} />
+
+<S1Input value={name} onChange={onNameChange} />
+
+<S1Table headerCells={["이름", "부서"]}
+         rows={[["김하늘", "디자인"]]} />`,
+    files: ['platform/react/', 'platform/react/README.md', 'platform/react/index.d.ts'],
     lint: true
   },
   {

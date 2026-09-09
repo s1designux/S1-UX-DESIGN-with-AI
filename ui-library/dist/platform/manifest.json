@@ -14,7 +14,8 @@
       "entry": "platform/react/index.js",
       "componentSupport": "full",
       "lint": true,
-      "requires": "JSX 빌드 도구"
+      "requires": "JSX 빌드 도구",
+      "note": "진짜 React 컴포넌트 — 서버 렌더링·데이터 목록·자식 요소·폼 연결을 지원한다."
     },
     "vue": {
       "entry": "platform/vue/index.js",

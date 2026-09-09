@@ -140,7 +140,8 @@
     "wt:merge": "node scripts/worktree-merge.js",
     "wt:list": "git worktree list",
     "rr": "node scripts/repeated-requests.js",
-    "rr:check": "node scripts/repeated-requests.js check"
+    "rr:check": "node scripts/repeated-requests.js check",
+    "ui:react": "node ui-library/scripts/react-parity-check.mjs"
   },
   "devDependencies": {
     "@figma/plugin-typings": "^1.97.0",
