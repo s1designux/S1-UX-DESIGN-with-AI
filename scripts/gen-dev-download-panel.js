@@ -217,6 +217,11 @@ auto r  = S1_RADIUS_CONTROL_SM;   // 4.0f`,
 ];
 
 function toolCard(tool) {
+  const packageInfo = stamp.packages?.[tool.key];
+  if (!packageInfo) {
+    console.error(`❌ ${tool.key} 묶음이 없습니다 — 먼저 \`npm run ui:zip\` 을 실행하세요.`);
+    process.exit(1);
+  }
   const badge = tool.support === 'full'
     ? '<span class="devtool-badge devtool-badge-full">컴포넌트 그대로 사용</span>'
     : '<span class="devtool-badge devtool-badge-tokens">색·크기 값만</span>';
@@ -241,6 +246,13 @@ function toolCard(tool) {
             <pre class="devtool-code"><code>${escape(tool.code)}</code></pre>
             <div class="devtool-section">들어있는 것</div>
             <p class="devtool-contains">${tool.contains}</p>
+            <div class="devtool-get">
+              <a class="devtool-btn" href="../assets/downloads/${escape(packageInfo.zip)}" download>
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                이 툴만 받기
+              </a>
+              <span class="devtool-size">${packageInfo.sizeKB}KB · 파일 ${packageInfo.files}개</span>
+            </div>
             <div class="devtool-foot">
               <span class="devtool-files">${tool.files.map((file) => `<code>${escape(file)}</code>`).join(' ')}</span>
               ${lint}
