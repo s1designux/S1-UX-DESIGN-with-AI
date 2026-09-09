@@ -608,7 +608,7 @@ watchEffect(() => {
 
 /* ── 6. 전체 묶음 ────────────────────────────────────────────────────── */
 
-export function buildPlatformOutputs({ componentOutputs, tokensCss, typographyCss, distManifest, behaviorLedger, fingerprints }) {
+export function buildPlatformOutputs({ componentOutputs, tokensCss, typographyCss, distManifest, behaviorLedger, fingerprints, usageById = {} }) {
   const outputs = new Map();
   const tokenData = readTokens(tokensCss);
   const stable = (value) => `${JSON.stringify(value, null, 2)}\n`;
@@ -636,7 +636,7 @@ export function buildPlatformOutputs({ componentOutputs, tokensCss, typographyCs
   outputs.set("platform/react/runtime.js", buildReactRuntime());
   outputs.set("platform/react/package.json", buildReactPackage(distManifest.version));
   outputs.set("platform/react/index.d.ts", buildReactTypes(reactFacts));
-  outputs.set("platform/react/README.md", buildReactReadme(reactFacts));
+  outputs.set("platform/react/README.md", buildReactReadme(reactFacts, usageById));
   outputs.set("platform/react/index.js", `/* ${GENERATED_NOTE} */\n${approved.map(({ id }) => `export { default as S1${pascalId(id)} } from "./${id}.jsx";`).join("\n")}\n`);
   outputs.set("platform/vue/index.js", `/* ${GENERATED_NOTE} */\n${approved.map(({ id }) => `export { default as S1${pascalId(id)} } from "./${pascalId(id)}.vue";`).join("\n")}\n`);
 

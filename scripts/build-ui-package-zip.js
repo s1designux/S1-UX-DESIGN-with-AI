@@ -31,20 +31,20 @@ const ZIP_NAME = 's1-ui-dev-package.zip';
 const TOOL_PACKAGES = {
   'html-css-js': {
     title: 'HTML · CSS · JavaScript',
-    include: ['manifest.json', 'component-token-map.json', 'assets', 's1-ui.css', 's1-ui.js', 's1-ui.auto.js', 'components', 'examples', 'tools'],
-    start: ['압축을 풀면 나오는 `s1-ui` 폴더를 프로젝트에 그대로 넣습니다.', '`assets/css/tokens.css` 와 `s1-ui.css` 를 `<head>` 에서 읽힙니다.', '`s1-ui.auto.js` 의 `autoInit()` 을 한 번 부르면 동작이 전부 붙습니다.', '마크업은 `examples/` 폴더의 파일을 복사해서 씁니다(모바일용은 `*.mobile.html`).']
+    include: ['manifest.json', 'component-token-map.json', 'assets', 's1-ui.css', 's1-ui.js', 's1-ui.auto.js', 'components', 'examples', 'tools', 'preview.html'],
+    start: ['압축을 풀면 나오는 `s1-ui` 폴더를 프로젝트에 그대로 넣습니다.', '**`preview.html` 을 브라우저로 열면 컴포넌트 22종이 실제 모습으로 보입니다** — 무엇을 쓸지 여기서 고르세요.', '`assets/css/tokens.css` 와 `s1-ui.css` 를 `<head>` 에서 읽힙니다.', '`s1-ui.auto.js` 의 `autoInit()` 을 한 번 부르면 동작이 전부 붙습니다.', '마크업은 `examples/` 폴더의 파일을 복사해서 씁니다(모바일용은 `*.mobile.html`).']
   },
   react: {
     title: 'React · Next.js',
-    include: ['manifest.json', 'assets', 's1-ui.css', 'components', 'platform/react', 'platform/contract.json', 'tools'],
+    include: ['manifest.json', 'assets', 's1-ui.css', 's1-ui.auto.js', 'components', 'platform/react', 'platform/contract.json', 'tools', 'preview.html'],
     filter: (relative) => !relative.startsWith('components/') || relative.endsWith('.js'),
-    start: ['압축을 풀면 나오는 `s1-ui` 폴더를 프로젝트에 그대로 넣습니다.', '앱 진입 파일에서 `assets/css/tokens.css` 와 `s1-ui.css` 를 한 번 읽힙니다.', '`import { S1Button } from "./s1-ui/platform/react";` 처럼 쓸 것만 꺼내 씁니다.', '받는 값과 쓰는 법은 `platform/react/README.md` 에 있습니다.']
+    start: ['압축을 풀면 나오는 `s1-ui` 폴더를 프로젝트에 그대로 넣습니다.', '**`preview.html` 을 브라우저로 열면 컴포넌트 22종이 실제 모습으로 보입니다** — 무엇을 쓸지 여기서 고르세요.', '앱 진입 파일에서 `assets/css/tokens.css` 와 `s1-ui.css` 를 한 번 읽힙니다.', '`import { S1Button } from "./s1-ui/platform/react";` 처럼 쓸 것만 꺼내 씁니다.', '받는 값과 쓰는 법은 `platform/react/README.md` 에 있습니다.']
   },
   vue: {
     title: 'Vue',
-    include: ['manifest.json', 'assets', 's1-ui.css', 'components', 'platform/vue', 'platform/contract.json', 'tools'],
+    include: ['manifest.json', 'assets', 's1-ui.css', 's1-ui.auto.js', 'components', 'platform/vue', 'platform/contract.json', 'tools', 'preview.html'],
     filter: (relative) => !relative.startsWith('components/') || relative.endsWith('.js'),
-    start: ['압축을 풀면 나오는 `s1-ui` 폴더를 프로젝트에 그대로 넣습니다.', '앱 진입 파일에서 `assets/css/tokens.css` 와 `s1-ui.css` 를 한 번 읽힙니다.', '`import { S1Button } from "./s1-ui/platform/vue";` 처럼 쓸 것만 꺼내 씁니다.']
+    start: ['압축을 풀면 나오는 `s1-ui` 폴더를 프로젝트에 그대로 넣습니다.', '**`preview.html` 을 브라우저로 열면 컴포넌트 22종이 실제 모습으로 보입니다** — 무엇을 쓸지 여기서 고르세요.', '앱 진입 파일에서 `assets/css/tokens.css` 와 `s1-ui.css` 를 한 번 읽힙니다.', '`import { S1Button } from "./s1-ui/platform/vue";` 처럼 쓸 것만 꺼내 씁니다.']
   },
   kotlin: {
     title: 'Kotlin (Android)',

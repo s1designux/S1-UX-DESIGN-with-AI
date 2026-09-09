@@ -528,6 +528,7 @@ export function reactComponentFacts({ id, manifest, example, exampleByBreak }) {
     id,
     componentName: `S1${pascal(id)}`,
     breaks: breaks.map(([name]) => name),
+    sizeBreaks: manifest.breaks ?? null,
     variants,
     sizes,
     parts: (manifest.parts ?? []).map((part) => camel(part)),
@@ -596,19 +597,41 @@ export interface S1BaseProps {
   return `${header}\n${body}\n`;
 }
 
-export function buildReactReadme(factsList) {
+export function buildReactReadme(factsList, usageById = {}) {
+  /* 고를 때 필요한 것을 다 적는다 — 개수가 아니라 실제 값, 그리고 "언제 쓰나".
+     개수만 적으면(size(4)) 파일을 열어봐야 알 수 있어 고르기가 어렵다(river 지적 2026-09-09). */
+  const sizeText = (facts) => {
+    if (facts.sizes.length === 0) return "—";
+    if (facts.sizeBreaks) {
+      const groups = Object.entries(facts.sizeBreaks).filter(([, sizes]) => sizes.length > 0);
+      if (groups.length === 0) return facts.sizes.map((size) => `\`${size}\``).join(" ");
+      return groups
+        .map(([breakName, sizes]) => `${breakName === "mobile" ? "모바일" : "PC"} ${sizes.map((size) => `\`${size}\``).join(" ")}`)
+        .join(" · ");
+    }
+    return facts.sizes.map((size) => `\`${size}\``).join(" ");
+  };
   const rows = factsList.map((facts) => {
     const knobs = [
-      facts.variants.length > 1 ? `variant(${facts.variants.length})` : null,
-      facts.sizes.length > 1 ? `size(${facts.sizes.length})` : null,
-      facts.breaks.length > 1 ? `breakName(${facts.breaks.join("·")})` : null,
-      ...facts.lists.map(({ prop }) => prop),
-      facts.controlProps.length ? "value·onChange" : null,
-      ...facts.events.map(({ propName }) => propName),
-      facts.hasChildrenSlot ? "children" : null
+      ...facts.lists.map(({ prop }) => `\`${prop}\``),
+      facts.controlProps.length ? "`value`·`onChange`" : null,
+      ...facts.events.map(({ propName }) => `\`${propName}\``),
+      facts.hasChildrenSlot ? "`children`" : null
     ].filter(Boolean);
-    return `| \`${facts.componentName}\` | ${knobs.join(" · ") || "parts"} |`;
+    const variantText = facts.variants.length > 1 ? facts.variants.map((variant) => `\`${variant}\``).join(" ") : "—";
+    const breakText = facts.breaks.length > 1 ? facts.breaks.map((name) => `\`${name}\``).join(" ") : "—";
+    const whenToUse = (usageById[facts.id]?.whenToUse ?? []).join(" ");
+    return `| \`${facts.componentName}\` | ${variantText} | ${sizeText(facts)} | ${breakText} | ${knobs.join(" · ") || "`parts`"} | ${whenToUse} |`;
   }).join("\n");
+
+  const avoidRows = factsList
+    .map((facts) => {
+      const lines = usageById[facts.id]?.whenNotToUse ?? [];
+      if (lines.length === 0) return null;
+      return `| \`${facts.componentName}\` | ${lines.join(" ")} |`;
+    })
+    .filter(Boolean)
+    .join("\n");
 
   return `# @s1/ui-react
 
@@ -659,11 +682,21 @@ import { S1Button, S1Input, S1Table } from "@s1/ui-react";
 
 컴포넌트는 서버에서도 같은 마크업을 냅니다. 동작 스크립트(열고 닫기·키보드)는 브라우저에서 붙습니다.
 
-## 5. 컴포넌트와 받는 값
+## 5. 어떤 컴포넌트를 쓸까
 
-| 컴포넌트 | 받는 값 |
-|---|---|
+**먼저 \`preview.html\` 을 브라우저로 열어 보세요.** 22종이 실제 모습으로 그려지고, 크기·변형과 "언제 쓰나"가 함께 보입니다.
+
+| 컴포넌트 | 변형(variant) | 크기(size) | 화면(breakName) | 그 밖에 받는 값 | 언제 쓰나 |
+|---|---|---|---|---|---|
 ${rows}
+
+크기·변형은 위에 적힌 값만 쓸 수 있습니다. 다른 값을 주면 그 자리에서 오류로 알려 줍니다.
+
+### 이럴 땐 다른 걸 쓰세요
+
+| 컴포넌트 | 대신 쓸 것 |
+|---|---|
+${avoidRows}
 
 ## 6. 고치지 마세요
 

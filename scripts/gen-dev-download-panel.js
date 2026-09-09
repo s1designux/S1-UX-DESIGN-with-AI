@@ -111,7 +111,7 @@ const TOOL_CARDS = [
     support: 'full',
     supportLabel: '컴포넌트 그대로 사용',
     install: [
-      '압축을 풀면 나오는 <code>s1-ui</code> 폴더를 프로젝트에 그대로 넣습니다',
+      '압축을 풀면 나오는 <code>s1-ui</code> 폴더를 프로젝트에 그대로 넣습니다 — 안에 있는 <code>preview.html</code> 을 열면 22종이 실제 모습으로 보입니다',
       '아래 두 줄을 <code>&lt;head&gt;</code> 에 넣어 겉모습을 읽힙니다',
       '동작이 있는 컴포넌트는 <code>autoInit()</code> 한 번으로 전부 붙습니다'
     ],
@@ -132,7 +132,7 @@ const TOOL_CARDS = [
     support: 'full',
     supportLabel: '컴포넌트 그대로 사용',
     install: [
-      '압축을 풀면 나오는 <code>s1-ui</code> 폴더를 프로젝트에 그대로 넣습니다',
+      '압축을 풀면 나오는 <code>s1-ui</code> 폴더를 프로젝트에 그대로 넣습니다 — 안에 있는 <code>preview.html</code> 을 열면 22종이 실제 모습으로 보입니다',
       '앱 진입 파일에서 겉모습 CSS 를 한 번 읽힙니다 (<code>tokens.css</code> · <code>s1-ui.css</code>)',
       '쓸 컴포넌트만 이름으로 꺼내 씁니다 — 아래는 그 한 줄입니다'
     ],
@@ -149,7 +149,7 @@ const TOOL_CARDS = [
     support: 'full',
     supportLabel: '컴포넌트 그대로 사용',
     install: [
-      '압축을 풀면 나오는 <code>s1-ui</code> 폴더를 프로젝트에 그대로 넣습니다',
+      '압축을 풀면 나오는 <code>s1-ui</code> 폴더를 프로젝트에 그대로 넣습니다 — 안에 있는 <code>preview.html</code> 을 열면 22종이 실제 모습으로 보입니다',
       '앱 진입 파일에서 겉모습 CSS 를 한 번 읽힙니다 (<code>tokens.css</code> · <code>s1-ui.css</code>)',
       '쓸 컴포넌트만 이름으로 꺼내 씁니다 — 아래는 그 한 줄입니다'
     ],
@@ -318,6 +318,7 @@ ${TOOL_CARDS.map(toolCard).join('\n')}
             <div class="step-header">
               <div>
                 <div class="step-title">들어있는 컴포넌트 ${approved.length}종</div>
+                <div class="step-desc" style="margin-bottom:2px;"><a class="devget-link" href="../ui-library/dist/preview.html" target="_blank" rel="noopener">실제 모습으로 보기 ↗</a> — 크기·변형과 "언제 쓰나"가 함께 보입니다</div>
                 <div class="step-desc">아래 ${approved.length}종이 모두 들어 있습니다. HTML 은 <code>examples/</code> 폴더의 파일을 복사해서 쓰고(모바일용은 <code>*.mobile.html</code>), React·Vue 는 이름 앞에 <code>S1</code> 을 붙여 부릅니다 — <code>input → S1Input</code> · <code>date-picker → S1DatePicker</code></div>
               </div>
             </div>
