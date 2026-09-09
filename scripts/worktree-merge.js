@@ -45,8 +45,11 @@ const REGEN_HINTS = [
 ];
 
 function run(cmd, args, cwd, opts = {}) {
-  const r = spawnSync(cmd, args, { cwd, encoding: 'utf8', stdio: opts.inherit ? 'inherit' : 'pipe', env: process.env });
-  return { code: r.status, out: (r.stdout || '').trim(), err: (r.stderr || '').trim() };
+  const bin = cmd === 'node' ? process.execPath : cmd;   // npm 스크립트 안에서도 같은 node 를 쓴다
+  const r = spawnSync(bin, args, { cwd, encoding: 'utf8', stdio: opts.inherit ? 'inherit' : 'pipe', env: process.env });
+  // 실행 자체가 안 된 경우(status=null) 이유를 잃지 않는다 — 빈 실패 메시지가 나오던 원인.
+  if (r.error) return { code: -1, out: '', err: `실행 실패(${cmd}): ${r.error.message}` };
+  return { code: r.status === null ? -1 : r.status, out: (r.stdout || '').trim(), err: (r.stderr || '').trim() };
 }
 const git = (args, cwd = ROOT, opts) => run('git', args, cwd, opts);
 
@@ -131,8 +134,15 @@ console.log(`   ✅ 커밋 ${newCommits}건 → main`);
 
 function rollback(reason) {
   console.error(`\n❌ ${reason}\n   본 폴더 main 을 합치기 전(${before.slice(0, 7)})으로 되돌립니다. 이 브랜치의 커밋은 그대로 남아 있습니다.`);
-  git(['reset', '--hard', before], MAIN);
+  const r = git(['reset', '--hard', before], MAIN);
   git(['clean', '-fd', 'reports/repeated-requests'], MAIN);
+  const now = git(['rev-parse', MAIN_BRANCH], MAIN).out;
+  if (r.code !== 0 || now !== before) {
+    console.error(`   ⚠️ 되돌리기 실패 — 본 폴더 main 이 ${now.slice(0, 7)} 입니다. 본 폴더에서 직접: git reset --hard ${before.slice(0, 7)}`);
+    if (r.err) console.error(`      (${r.err.split('\n')[0]})`);
+  } else {
+    console.error('   ✅ 되돌림 완료 — 본 폴더는 합치기 전 상태입니다.');
+  }
   process.exit(1);
 }
 
