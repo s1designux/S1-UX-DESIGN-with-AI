@@ -2,7 +2,7 @@
   "id": "select",
   "version": "0.1.0",
   "status": "approved",
-  "canonicalFingerprint": "130ff385f6593013ba774dcf238b31796e366bf0e797ae4bbeaa57f3a41fb08a",
+  "canonicalFingerprint": "a6a5c4afafde58e6bccfeb2e54af40cb094de069d4643bc3f7638412dee2198c",
   "canonicalSources": [
     "plugins/figma-vars-installer/src/build-components.ts",
     "plugins/figma-vars-installer/src/vars-data.ts",
@@ -73,7 +73,7 @@
     "focusAxis": "정본에 focus 변형이 없다. 2026-09-02 river 결정으로 웹에서도 만들지 않으며, 키보드 초점은 브라우저 기본 표시에 맡긴다.",
     "errorAxis": "정본에 Error 상태가 없다.",
     "multiSelect": "정본에 다중 선택 트리거 표시가 없다(2026-08-14 검토에서 철회 — 옵션 행만 갈래를 가진다).",
-    "openFilledCross": "정본은 5개 이산 상태만 정의하고 Open×Filled 교차 셀이 없다. 웹 CSS 는 열렸을 때 항상 Open 시각(placeholder 색)을 보여주고, Filled 시각은 닫힌 뒤에만 적용한다(source order 로 처리, 새 상태 신설 아님)."
+    "openFilledCross": "정본은 5개 이산 상태만 정의하고 Open×Filled 교차 셀이 없다. 웹 CSS 는 열렸을 때 항상 Open 시각(placeholder 색)을 보여주고, Filled 시각은 닫힌 뒤에만 적용한다(source order 로 처리, 새 상태 신설 아님). 메커니즘 승인 화면 M-10 으로 river 에게 제시했으나 **미응답(2026-09-08)** — 승인도 반려도 아니다. 미응답이므로 코드 변경 0건, 지금대로(열림 우선) 유지한다. 감사 기록 = reports/canon-approval-audit-2026-09-07.md §9."
   },
   "parts": [
     "trigger",
@@ -217,5 +217,5 @@
     "singleSelectNote": "select 는 단일 선택이라 조립한 dropdown 이 Type=Text 로 고정된다(정본이 Select Box·Filter Chip 에 항상 Type=Text 패널만 붙인다). 런타임은 s1:dropdown:change 의 detail.type이 \"text\" 일 때만 반응하고 checkbox 유형 변화(전체 선택 포함)는 의도적으로 무시한다 — select 자신이 체크박스 유형 패널을 조립하지 않기 때문이며 방어적 무시가 아니다.",
     "disableCloseContract": "registry/components/component-behavior.pc.json 의 \"Select Box\" 계약(on: disable → close and block trigger clicks, status=verified)을 그대로 구현한다. 클릭 차단은 open() 의 disabled 가드, 자동 닫힘은 trigger 의 disabled 속성 변화를 관찰하는 MutationObserver 가 담당한다(인스턴스마다 자기 trigger 하나만 관찰 — 누적 없음, destroy() 가 disconnect)."
   },
-  "sourceFingerprint": "3900fa9ac6e99efbe1aa115fb21b26e66d4d86fae9c039ffdeade27b73fefeb5"
+  "sourceFingerprint": "7a904cfd281393bf294083600df5c62985bd6a258d597153250bc0ae241956a0"
 }

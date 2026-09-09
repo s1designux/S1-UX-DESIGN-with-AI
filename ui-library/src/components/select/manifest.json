@@ -2,7 +2,7 @@
   "id": "select",
   "version": "0.1.0",
   "status": "approved",
-  "canonicalFingerprint": "130ff385f6593013ba774dcf238b31796e366bf0e797ae4bbeaa57f3a41fb08a",
+  "canonicalFingerprint": "a6a5c4afafde58e6bccfeb2e54af40cb094de069d4643bc3f7638412dee2198c",
   "canonicalSources": [
     "plugins/figma-vars-installer/src/build-components.ts",
     "plugins/figma-vars-installer/src/vars-data.ts",
@@ -73,7 +73,7 @@
     "focusAxis": "정본에 focus 변형이 없다. 2026-09-02 river 결정으로 웹에서도 만들지 않으며, 키보드 초점은 브라우저 기본 표시에 맡긴다.",
     "errorAxis": "정본에 Error 상태가 없다.",
     "multiSelect": "정본에 다중 선택 트리거 표시가 없다(2026-08-14 검토에서 철회 — 옵션 행만 갈래를 가진다).",
-    "openFilledCross": "정본은 5개 이산 상태만 정의하고 Open×Filled 교차 셀이 없다. 웹 CSS 는 열렸을 때 항상 Open 시각(placeholder 색)을 보여주고, Filled 시각은 닫힌 뒤에만 적용한다(source order 로 처리, 새 상태 신설 아님)."
+    "openFilledCross": "정본은 5개 이산 상태만 정의하고 Open×Filled 교차 셀이 없다. 웹 CSS 는 열렸을 때 항상 Open 시각(placeholder 색)을 보여주고, Filled 시각은 닫힌 뒤에만 적용한다(source order 로 처리, 새 상태 신설 아님). 메커니즘 승인 화면 M-10 으로 river 에게 제시했으나 **미응답(2026-09-08)** — 승인도 반려도 아니다. 미응답이므로 코드 변경 0건, 지금대로(열림 우선) 유지한다. 감사 기록 = reports/canon-approval-audit-2026-09-07.md §9."
   },
   "parts": [
     "trigger",

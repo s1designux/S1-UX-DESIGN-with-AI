@@ -819,6 +819,12 @@
 .uilg [data-s1-part="cell"][data-force-state="hover"] [data-s1-part="cell-inner"] {
   background: var(--color-date-picker-cell-bg-hover);
 }
+/* 선택된 칸의 hover — 배포본 date-picker.css 의 [data-state="selected"]:hover 규칙과 같은 값.
+   채움·테두리 둘 다 selected-hover 를 쓴다(정본 State="Selected Hover", 2026-09-09). */
+.uilg [data-s1-part="cell"][data-state="selected"][data-force-state="hover"] [data-s1-part="cell-inner"] {
+  background: var(--color-date-picker-cell-bg-selected-hover);
+  border-color: var(--color-date-picker-cell-bg-selected-hover);
+}
 .uilg [data-s1-part="tile"][data-force-state="hover"]:not([aria-selected="true"]) {
   background: var(--color-date-picker-tile-bg-hover);
 }

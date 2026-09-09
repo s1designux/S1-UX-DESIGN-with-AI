@@ -940,7 +940,7 @@ function dropdownMarkup({ type = "text", size = "md", withAll = false, ariaLabel
         { label: "제주", selected: false }
       ].map((row) => dropdownOptionMarkup(type, row)).join("");
   const allRow = withAll
-    ? dropdownOptionMarkup(type, { label: "전체 선택", selected: false, selectAll: true, value: "all" }) + '<div data-s1-part="divider"></div>'
+    ? dropdownOptionMarkup(type, { label: "전체", selected: false, selectAll: true, value: "all" }) + '<div data-s1-part="divider"></div>'
     : "";
   const listRole = type === "text" ? ' role="listbox"' : "";
   const preview = isPreview ? " is-preview" : "";
@@ -2255,11 +2255,14 @@ function datePickerStateMatrix() {
       <p class="uilg-demo-note">작은 달력은 날짜칸 33·글자 12·헤더 18로 줄어듭니다. 고르는 값이 따로 있지는 않고, 입력창 크기가 그대로 달력 크기가 됩니다.</p>
     </div>`;
 
-  /* 최하위 요소 — 정본이 별도 컴포넌트 세트로 선언한 두 부품이다(📖 source-reader 2026-09-07 판독):
-       · Calendar Cell(buildCalendarCell, build-components.ts:3520-3612)
-         Type=Standard → Default·Hover·Today·Selected·Disabled
+  /* 최하위 요소 — 정본이 별도 컴포넌트 세트로 선언한 두 부품이다(📖 source-reader 2026-09-07 판독,
+     줄번호·상태는 2026-09-09 갱신):
+       · Calendar Cell(calCellCompsForSize, build-components.ts:3895-3979 — 세트 조립은 buildCalendarCell :3996-4003)
+         Type=Standard → Default·Hover·Today·Selected·Selected Hover·Disabled
+           ※ Selected Hover 는 2026-09-09 정본 신설(river 승인 M-7 — 감사문서 §9). 선택된 파란 칸의
+             hover 는 회색이 아니라 한 단계 진한 파랑이고 테두리도 같은 색을 쓴다.
          Type=Range    → Default·Start·End·Disabled
-       · Calendar Tile(buildCalendarTile, :3615-3646) → Default·Hover·Selected·Disabled
+       · Calendar Tile(calTileCompsForSize, :4005-4034 — 세트 조립은 buildCalendarTile :4037-4043) → Default·Hover·Selected·Disabled
      정본에 있는 상태만 그대로 옮긴다 — 새 상태를 만들지 않는다. hover 는 손이 닿아야 보이는 상태라
      표에서는 data-force-state="hover" 로 세워 둔다(저장소가 이미 쓰는 방식). */
   const cellSample = (label, attrs, num = "17") => `<div class="comp-state-cell">
@@ -2275,6 +2278,7 @@ function datePickerStateMatrix() {
     ["Hover", ' data-state="default" data-force-state="hover"'],
     ["Today", ' data-state="today"'],
     ["Selected", ' data-state="selected"'],
+    ["Selected Hover", ' data-state="selected" data-force-state="hover"'],
     ["Disabled", ' data-state="disabled" disabled']
   ];
   const rangeStates = [

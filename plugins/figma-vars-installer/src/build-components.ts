@@ -388,6 +388,13 @@ function specPalette(dark: boolean): Record<string, RGB> {
   };
 }
 
+/** 스펙 배경색. contrast=true 면 한 단계 진한 band 색을 써서, 부품 자체가 바탕색과 같아 묻히는 것을 막는다
+ *  (river 지시 2026-09-09 — Mobile Header 는 흰 바탕 부품이라 흰 스펙 배경에서 안 보였다). */
+function specBg(dark: boolean, contrast?: boolean): RGB {
+  const p = specPalette(dark);
+  return contrast ? p.band : p.bg;
+}
+
 // 레이아웃 출력 콜백 — 스펙 프레임(인스턴스)과 세트 꾸미기(실제 comp 이동)가 같은 레이아웃 코드를 공유.
 interface LayoutEmit {
   text: (s: string, x: number, y: number, w: number, align: "LEFT" | "CENTER", color: RGB, fontSize: number, style: string) => Promise<void>;
@@ -761,6 +768,10 @@ interface SpecOpts {
   /** 셀을 셀폭 중앙배치 대신 좌측(gridLeft)에 정렬. 폭이 크게 다른 variant(Footer PC1920 vs Mobile360)가
    *  좌측 기준으로 일관 정렬되게 한다(라이트·다크 스펙 양쪽 동일 적용). 미지정=기존 중앙배치. */
   leftAlignCells?: boolean;
+  /** 행 사이에 더 주는 세로 여유(px). 부품이 크고 상태가 여러 줄인 스펙에서 다닥다닥 붙는 것을 푼다. */
+  rowGap?: number;
+  /** 스펙 배경을 흰색 대신 옅은 회색(band)으로 깐다. 부품 자체가 흰 바탕이면 흰 배경에 묻혀 안 보인다. */
+  contrastBg?: boolean;
 }
 /** 평면(컬럼×행) 레이아웃을 emit으로 렌더. 반환=총 높이. */
 async function renderFlat(opts: SpecOpts, dark: boolean, emit: LayoutEmit): Promise<number> {
@@ -784,7 +795,7 @@ async function renderFlat(opts: SpecOpts, dark: boolean, emit: LayoutEmit): Prom
     for (let cc = 0; cc < opts.colHeaders.length; cc++) { const cp = opts.cellAt(r, cc); if (cp && cp.height > rowH) rowH = cp.height; }
     // 셀별 유형명 22px + 하단 여유 8px. 두 행이면 기존 수동 스펙과 같은 336px 높이가 된다.
     const cellLabelH = opts.cellLabelAt ? 22 : 0;
-    rowH = (rowH || opts.cellH) + (cellLabelH ? cellLabelH + 8 : 16);
+    rowH = (rowH || opts.cellH) + (cellLabelH ? cellLabelH + 8 : 16) + (opts.rowGap ?? 0);
     const top = y + (cellLabelH || 4);
     if (opts.rowLabels[r]) await emit.text(opts.rowLabels[r], PAD, top, rowLabelW, "LEFT", c.label, 11, "Medium");
     for (let cc = 0; cc < opts.colHeaders.length; cc++) {
@@ -809,7 +820,7 @@ async function buildSpec(opts: SpecOpts, maps: BuildMaps): Promise<number> {
   const modeId = maps.semanticDarkModeId;
   const frame = figma.createFrame();
   frame.name = `${opts.title} — Spec Dark`;
-  frame.fills = [{ type: "SOLID", color: specPalette(true).bg }];
+  frame.fills = [{ type: "SOLID", color: specBg(true, opts.contrastBg) }];
   frame.cornerRadius = 8;
   frame.resize(W, 1600);
   frame.x = opts.darkOffset?.x ?? (opts.stackDarkBelow ? 0 : W + 80); // 폭이 길면 Light 아래, 아니면 기존처럼 우측
@@ -826,7 +837,7 @@ async function decorateSetFlat(set: ComponentSetNode, opts: SpecOpts, maps: Buil
   const rowLabelW = opts.rowLabelW ?? 96;
   const W = specWidth(rowLabelW, opts.colHeaders.length, opts.cellW);
   set.x = 0; set.y = opts.originY;
-  try { set.fills = [{ type: "SOLID", color: specPalette(false).bg }]; } catch (e) { /* skip */ }
+  try { set.fills = [{ type: "SOLID", color: specBg(false, opts.contrastBg) }]; } catch (e) { /* skip */ }
   const H = await renderFlat(opts, false, floatingEmit(opts.originY, 0, set.name));
   set.resize(W, H);
   setLightMode(set, maps);
@@ -1427,6 +1438,9 @@ async function makeClearIcon(colorVar: Variable, size = 0): Promise<SceneNode> {
 // form-control 아이콘 크기 규칙: XXSM(h<=28)=20px, 그 외=24px (2026-06-19 사용자 결정).
 const fcIconPx = (h: number, _base: number): number => (h <= 28 ? 20 : 24);
 
+/** Search Input 최소 폭 — 160 은 좌우 아이콘이 붙어 보인다(river 지시 2026-09-09). */
+const SEARCH_MIN_W = 200;
+
 // ── Search Input (form-control + 돋보기 아이콘) ───────────────────────────────
 async function buildSearch(maps: BuildMaps, originY: number): Promise<{ set: ComponentSetNode; bottomY: number }> {
   const fc = (k: string) => `color/form-control/${k}`;
@@ -1517,7 +1531,10 @@ async function buildSearch(maps: BuildMaps, originY: number): Promise<{ set: Com
         comp.appendChild(textNode);
         comp.appendChild(wrapAction(await makeIconInstance("search", scv(maps, fc(st.icon)), fcIconPx(sc.h, 0), MAG), "search-action", actionHitSize, { hover: sc.brk !== "Mobile" }));
       }
-      comp.resize(160, sc.h);
+      // 최소 폭 200 (river 지시 2026-09-09) — 160 이면 글자 자리가 좁아 좌우 아이콘이 서로 붙어 보인다.
+      //   화면에서 늘려 쓸 수 있게 minWidth 도 함께 걸어 200 아래로 줄지 않게 한다(Button 과 같은 방식).
+      comp.resize(SEARCH_MIN_W, sc.h);
+      try { comp.minWidth = SEARCH_MIN_W; } catch (e) { /* mock */ }
       setLightMode(comp, maps);
       comps.push(comp);
       cells.push({ comp, size: sc.size, brk: sc.brk, state: st.name });
@@ -1536,7 +1553,8 @@ async function buildSearch(maps: BuildMaps, originY: number): Promise<{ set: Com
     colHeaders: states.map((s) => s.name),
     cellAt: (platName, sizeName, _ri, ci) =>
       cells.find((x) => x.size === sizeName && x.brk === platName && x.state === states[ci].name)?.comp ?? null,
-    offsetX: 0, lightX: SPEC_LIGHT_X, darkX: SPEC_DARK_X, originY, cellW: 176, cellH: 60, rowLabelW: 0,
+    // 칸 폭은 부품 폭(200)보다 넓어야 서로 안 붙는다 — SEARCH_MIN_W 를 따라간다.
+    offsetX: 0, lightX: SPEC_LIGHT_X, darkX: SPEC_DARK_X, originY, cellW: SEARCH_MIN_W + 24, cellH: 60, rowLabelW: 0,
   };
   let bottomY = await decorateSetGrouped(set, opts, maps);
   try { bottomY = Math.max(bottomY, await buildGroupedSpec(opts, maps)); } catch (e) { console.warn(e); }
@@ -1744,7 +1762,8 @@ async function buildDropdownList(maps: BuildMaps, originY: number): Promise<{ se
   const types = [
     { name: "Text",         checkbox: false, divider: false, text: "옵션" },
     { name: "Checkbox",     checkbox: true,  divider: false, text: "옵션" },
-    { name: "Checkbox+All", checkbox: true,  divider: true,  text: "전체 선택" },
+    // '전체 선택' → '전체' (river 지시 2026-09-09) — 정본이 기준, 웹 배포본도 이 값을 따른다.
+    { name: "Checkbox+All", checkbox: true,  divider: true,  text: "전체" },
   ];
   const sizes = [
     { size: "XXSM", h: 28, font: 12 },
@@ -2197,9 +2216,12 @@ async function buildTableCell(maps: BuildMaps, originY: number): Promise<{ set: 
   const W = 130;
   const comps: ComponentNode[] = [];
   const cells: { comp: ComponentNode; row: number; col: number }[] = [];
+  // 행 순서 = 정렬(바깥) × 크기(안쪽) — 왼쪽 3칸이 먼저 쭉, 그 다음 가운데 3칸(river 지시 2026-09-09).
+  //   종전에는 크기가 바깥이라 왼쪽·가운데가 한 줄씩 번갈아 나와 크기 사다리를 견주기 어려웠다.
+  //   ⚠️ 산식을 바꿀 때는 아래 BUILT_COMPS 등록 루프와 rowLabels 까지 **세 곳을 함께** 뒤집어야 한다.
   for (let row = 0; row < sizes.length * aligns.length; row++) {
-    const sc = sizes[Math.floor(row / aligns.length)];
-    const al = aligns[row % aligns.length];
+    const al = aligns[Math.floor(row / sizes.length)];
+    const sc = sizes[row % sizes.length];
     for (let col = 0; col < variants.length; col++) {
       const v = variants[col];
       const comp = figma.createComponent();
@@ -2244,8 +2266,8 @@ async function buildTableCell(maps: BuildMaps, originY: number): Promise<{ set: 
   set.x = 0; set.y = originY;
   // Table 에서 인스턴스 재사용 — BUILT_COMPS 등록 (Table.makeTableRow 가 이 키로 조회)
   for (const { comp, row, col } of cells) {
-    const size  = sizes[Math.floor(row / aligns.length)].size;  // "XSM" | "SM" | "MD"
-    const align = aligns[row % aligns.length].key;              // "Left" | "Center"
+    const align = aligns[Math.floor(row / sizes.length)].key;   // "Left" | "Center"
+    const size  = sizes[row % sizes.length].size;               // "XSM" | "SM" | "MD"
     const v     = variants[col];                                // { type, state, … }
     BUILT_COMPS[`TableCell:${size}:${v.type}:${v.state}:${align}`] = comp;
   }
@@ -2253,7 +2275,7 @@ async function buildTableCell(maps: BuildMaps, originY: number): Promise<{ set: 
   const opts: SpecOpts = {
     title: "Table Cell",
     colHeaders: variants.map((v) => v.head),
-    rowLabels: ([] as string[]).concat(...sizes.map((sz) => aligns.map((a) => `${sz.size} · ${a.label}`))),
+    rowLabels: ([] as string[]).concat(...aligns.map((a) => sizes.map((sz) => `${a.label} · ${sz.size}`))),
     cellAt: (r, c) => cells.find((x) => x.row === r && x.col === c)?.comp ?? null,
     lightX: SPEC_LIGHT_X, darkX: SPEC_DARK_X, originY, cellW: 152, cellH: 60, rowLabelW: 80,
   };
@@ -2607,10 +2629,19 @@ async function buildTimePicker(maps: BuildMaps, originY: number): Promise<{ set:
     { size: "MD",   brk: "PC",     h: 44, font: 14, padL: 16, padR: 8 },
     { size: "MD",   brk: "Mobile", h: 48, font: 14, padL: 16, padR: 8 },
   ];
+  // 12시간제 / 24시간제 축 — 웹 배포본의 `data-type="12h" | "24h"` 와 1:1 (river 지시 2026-09-09).
+  //   Time Picker Dropdown 은 이미 Type 축을 갖고 있었는데 트리거에는 없어서, 설치기 결과만 보면
+  //   두 유형을 구분할 수 없었다. 트리거에서 달라지는 것은 ①입력된 시각 표기 ②Focus 때 붙는 드롭다운.
+  const types = [
+    { key: "24h", label: "24시간", filled: "09:30",    disabled: "00:00" },
+    { key: "12h", label: "12시간", filled: "오전 09:30", disabled: "오전 12:00" },
+  ];
   const comps: ComponentNode[] = [];
-  const cells: { comp: ComponentNode; size: string; brk: string; state: string }[] = [];
+  const cells: { comp: ComponentNode; size: string; brk: string; state: string; type: string }[] = [];
+  for (const ty of types) {
   for (const sc of sizes) {
     for (const st of states) {
+      const stTxt = st.name === "Filled" ? ty.filled : st.name === "Disabled" ? ty.disabled : st.txt;
       // 트리거(별도 프레임) — Focus 시 그 아래 드롭다운을 붙이기 위해 컴포넌트를 VERTICAL 로 둔다(Select 방식).
       const trigger = figma.createFrame();
       trigger.name = "trigger";
@@ -2623,17 +2654,18 @@ async function buildTimePicker(maps: BuildMaps, originY: number): Promise<{ set:
       trigger.fills = [boundPaint(scv(maps, fc(st.bg)))];
       trigger.strokes = [boundPaint(scv(maps, fc(st.border)))];
       trigger.strokeWeight = 1; trigger.strokeAlign = "INSIDE";
-      trigger.appendChild(await makeBoundText(st.txt, sc.font, "Regular", scv(maps, fc(st.tc))));
+      trigger.appendChild(await makeBoundText(stTxt, sc.font, "Regular", scv(maps, fc(st.tc))));
       trigger.appendChild(await makeIconInstance("clock", scv(maps, fc(st.icon)), fcIconPx(sc.h, 0), CLOCK));
       trigger.resize(150, sc.h);
 
       const comp = figma.createComponent();
-      comp.name = `Size=${sc.size}, State=${st.name}, Break=${sc.brk}`;
+      comp.name = `Size=${sc.size}, State=${st.name}, Break=${sc.brk}, Type=${ty.key}`;
       comp.layoutMode = "VERTICAL"; comp.primaryAxisSizingMode = "AUTO"; comp.counterAxisSizingMode = "AUTO"; comp.itemSpacing = 4;
       comp.appendChild(trigger);
       if (st.name === "Focus") {
         // Time Picker Dropdown 인스턴스 재사용 (anatomy gate: "dropdown" raw 프레임 금지)
-        const tpdComp = BUILT_COMPS["TPD:focus-default"];
+        //   유형별로 같은 유형의 패널을 붙인다 — 12h 는 오전/오후 열이 있는 패널.
+        const tpdComp = BUILT_COMPS[`TPD:${ty.key}/시 Selected`] ?? BUILT_COMPS["TPD:focus-default"];
         if (tpdComp) {
           const tpdInst = tpdComp.createInstance();
           tpdInst.name = "tpd";
@@ -2642,8 +2674,9 @@ async function buildTimePicker(maps: BuildMaps, originY: number): Promise<{ set:
       }
       setLightMode(comp, maps);
       comps.push(comp);
-      cells.push({ comp, size: sc.size, brk: sc.brk, state: st.name });
+      cells.push({ comp, size: sc.size, brk: sc.brk, state: st.name, type: ty.key });
     }
+  }
   }
   const set = figma.combineAsVariants(comps, figma.currentPage);
   set.name = "Time Picker";
@@ -2651,11 +2684,13 @@ async function buildTimePicker(maps: BuildMaps, originY: number): Promise<{ set:
   const opts: GroupedSpecOpts = {
     title: "Time Picker",
     platforms: [{ name: "PC", sizes: ["XXSM", "XSM", "MD"] }, { name: "Mobile", sizes: ["MD"] }],
-    rowLabels: [""],
+    rowLabels: types.map((t) => t.label),
     colHeaders: states.map((s) => s.name),
-    cellAt: (platName, size, _ri, ci) =>
-      cells.find((x) => x.size === size && x.brk === platName && x.state === states[ci].name)?.comp ?? null,
-    lightX: SPEC_LIGHT_X, darkX: SPEC_DARK_X, originY, cellW: 168, cellH: 250, rowLabelW: 16,
+    cellAt: (platName, size, ri, ci) =>
+      cells.find((x) => x.size === size && x.brk === platName && x.state === states[ci].name
+        && x.type === types[ri].key)?.comp ?? null,
+    // 12h 패널(194)이 24h(121)보다 넓어 칸을 넓힌다 — 좁으면 Focus 열끼리 겹친다.
+    lightX: SPEC_LIGHT_X, darkX: SPEC_DARK_X, originY, cellW: 216, cellH: 250, rowLabelW: 60,
   };
   let bottomY = await decorateSetGrouped(set, opts, maps);
   try { bottomY = Math.max(bottomY, await buildGroupedSpec(opts, maps)); } catch (e) { console.warn(e); }
@@ -3512,6 +3547,10 @@ async function buildMobileHeader(maps: BuildMaps, originY: number): Promise<{ se
     cellW: 384, cellH: 149, rowLabelW: 232,
     leftAlignCells: true,
     stackDarkBelow: true,
+    // 상태끼리 다닥다닥 붙어 어디까지가 한 유형인지 안 보였다(river 지시 2026-09-09).
+    rowGap: 56,
+    // 헤더가 흰 바탕이라 흰 스펙 배경에서 사라진다 → 배경을 한 단계 진하게.
+    contrastBg: true,
   };
   let bottomY = await decorateSetFlat(set, opts, maps);
   try { bottomY = Math.max(bottomY, await buildSpec(opts, maps)); } catch (e) { console.warn(e); }
@@ -3898,18 +3937,24 @@ const CAL_GEO: Record<CalSize, CalGeo> = {
 };
 const CAL_SIZES: CalSize[] = ["MD", "SM"];
 
-// Calendar Cell — axes Size={MD,SM} × Type={Standard,Range} × State. Standard=5(Hover 포함)·Range=4(비대칭).
+// Calendar Cell — axes Size={MD,SM} × Type={Standard,Range} × State. Standard=6(Hover·Selected Hover 포함)·Range=4(비대칭).
 // 숫자 텍스트 layer 이름 = "num". 구조: outer(center) > [Range: 밴드 Rectangle(absolute)] + inner 원(센터) > 숫자.
 async function calCellCompsForSize(maps: BuildMaps, size: CalSize): Promise<Record<string, ComponentNode>> {
   // [innerFill, innerStroke, textKey] (V2.4 실측 — selected stroke = border/today)
   // Hover = Default 와 동일하되 inner 배경만 cell/bg/hover(gray/50) — Calendar Tile Hover(tile/bg/hover) 패턴 미러링.
-  //   Standard 에만 추가 — selected/range 는 (B)유형(파란 배경)이라 회색 hover 로 덮지 않는다.
+  //   Standard 에만 추가 — range 는 (B)유형(파란 배경)이라 회색 hover 로 덮지 않는다.
+  // "Selected Hover" = 선택된 파란 칸의 hover. 회색이 아니라 한 단계 진한 파랑(cell/bg/selected-hover)이고,
+  //   테두리도 같은 변수를 쓴다 — 테두리만 border/today(blue/400)에 남으면 채움(blue/500)보다 밝은 링이 생긴다
+  //   (river 지시 2026-09-04). 웹 date-picker.css 의 [data-state="selected"]:hover 규칙과 한 벌이다.
+  //   정본 배선 근거: river 승인 2026-09-08(메커니즘 승인 화면 M-7, 선택 A="웹이 맞다").
+  //   경위·감사 기록 = reports/canon-approval-audit-2026-09-07.md §9.
   const STD: Record<string, [string, string, string]> = {
-    Default:  ["cell/bg/today",    "cell/bg/today",     "text/secondary"],
-    Hover:    ["cell/bg/hover",    "cell/bg/hover",     "text/secondary"],
-    Today:    ["cell/bg/today",    "cell/border/today", "text/today"],
-    Selected: ["cell/bg/selected", "cell/border/today", "text/selected"],
-    Disabled: ["cell/bg/today",    "cell/bg/today",     "text/disabled"],
+    Default:            ["cell/bg/today",           "cell/bg/today",           "text/secondary"],
+    Hover:              ["cell/bg/hover",           "cell/bg/hover",           "text/secondary"],
+    Today:              ["cell/bg/today",           "cell/border/today",       "text/today"],
+    Selected:           ["cell/bg/selected",        "cell/border/today",       "text/selected"],
+    "Selected Hover":   ["cell/bg/selected-hover",  "cell/bg/selected-hover",  "text/selected"],
+    Disabled:           ["cell/bg/today",           "cell/bg/today",           "text/disabled"],
   };
   // Range: [innerFill, innerStroke, textKey] — 밴드는 absolute, 세로는 CalGeo(bandY·bandH)
   const RNG: Record<string, [string, string, string]> = {
@@ -3954,7 +3999,7 @@ async function calCellCompsForSize(maps: BuildMaps, size: CalSize): Promise<Reco
 
   const g = CAL_GEO[size];
   // Type=Standard (Hover 는 Default 뒤 = 상호작용 순서)
-  for (const state of ["Default", "Hover", "Today", "Selected", "Disabled"]) {
+  for (const state of ["Default", "Hover", "Today", "Selected", "Selected Hover", "Disabled"]) {
     const [f, st, txt] = STD[state];
     const comp = makeOuter(g, `Size=${size}, Type=Standard, State=${state}`);
     comp.appendChild(await makeInner(g, f, st, txt));
@@ -3984,7 +4029,15 @@ async function calCellCompsForSize(maps: BuildMaps, size: CalSize): Promise<Reco
 //   buildDatePicker 폴백이 Size=SM 을 못 찾아 State=Date(=MD 356)로 조용히 떨어진다 → XSM·XXSM 이
 //   계속 큰 달력을 연다. 오류 없이 종전 동작으로 퇴화하는 것이라 파괴적이지는 않지만,
 //   **기존 설치본에서 SM 을 보려면 캔버스의 Calendar 세트를 지우고 다시 설치해야 한다.**
-// Calendar Cell 세트 — 두 크기를 한 세트로 묶는다(축 Size × Type × State = 18 variant).
+// Calendar Cell 세트 — 두 크기를 한 세트로 묶는다(축 Size × Type × State = 20 variant:
+//   Standard 6 + Range 4, × Size 2). Standard 는 2026-09-09 에 "Selected Hover" 가 늘어 6 이 됐다.
+// ⚠️ 위 재설치 이관 한계는 **상태 신설에도 그대로 적용된다** — fillMissingCalSizes 는 빠진 "크기"만
+//   채우고(그 크기의 키가 하나라도 있으면 통째로 skip), 빠진 "상태"는 채우지 않는다. 즉 이미 설치된
+//   파일에 재설치해도 "Selected Hover" variant 는 추가되지 않고, 스펙 표만 6열로 늘어 그 열이 빈다
+//   (오류는 아니다 — renderFlat 은 cellAt 이 null 이면 셀을 건너뛴다).
+//   **기존 설치본에서 이 상태를 보려면 캔버스의 Calendar Cell 세트를 지우고 다시 설치해야 한다.**
+//   상태 단위까지 채우도록 넓히는 것은 기존 인스턴스 보호 규칙과 충돌 검토가 필요해 하지 않았다
+//   (🤖 component-verifier 2026-09-09 (c) 지적, ⭐ 가 (A)=명시 유지 선택).
 async function buildCalendarCell(maps: BuildMaps): Promise<{ set: ComponentSetNode; variants: Record<string, ComponentNode> }> {
   const variants: Record<string, ComponentNode> = {};
   for (const size of CAL_SIZES) Object.assign(variants, await calCellCompsForSize(maps, size));
@@ -5434,7 +5487,7 @@ async function buildModalContent(maps: BuildMaps, originY: number): Promise<{ se
 // CATEGORIES Form 에서 Date Picker 뒤 위치만 결정.
 async function buildCalendarCellLayout(maps: BuildMaps, originY: number): Promise<{ set: ComponentSetNode; bottomY: number }> {
   const { set, variants } = await getOrBuildCalendarCell(maps);
-  // ── 3안: 스펙 표를 Standard(5열)·Range(4열) 두 개로 분리한다 (2026-07-14, river 결정) ──
+  // ── 3안: 스펙 표를 Standard·Range 두 개로 분리한다 (2026-07-14, river 결정 — 당시 5열·4열) ──
   //   근거: 옛 colHeaders "Today / Start"·"Selected / End" 는 서로 무관한 두 상태를 "같은 열 번호"라는
   //   이유만으로 슬래시로 합친 것이라 표가 이미 부정확했다. Hover 추가가 문제를 만든 게 아니라 원래의
   //   무리를 드러냈다 → 억지로 열을 다시 맞추지 않고 표를 분리한다. Range 는 4상태 그대로 불변.
@@ -5442,7 +5495,7 @@ async function buildCalendarCellLayout(maps: BuildMaps, originY: number): Promis
   //   한 세트 노드 위에 두 표를 세로로 쌓으므로(세트는 1개) renderFlat 을 2회 호출하되, 두 번째 표의
   //   셀/라벨을 첫 표 높이(h1)만큼 내려 배치하는 오프셋 emit 을 등록기 로컬로 둔다(floatingEmit.cell 은
   //   오프셋을 안 받아 그대로 쓰면 셀이 겹침).
-  const stdStates = ["Default", "Hover", "Today", "Selected", "Disabled"]; // Hover = Default 뒤(상호작용 순서)
+  const stdStates = ["Default", "Hover", "Today", "Selected", "Selected Hover", "Disabled"]; // Hover 계열은 각자 base 뒤(상호작용 순서)
   const rngStates = ["Default", "Start", "End", "Disabled"];               // Range 불변(4상태)
   const cellW = 80, cellH = 60, rowLabelW = 80;
   const mkOpts = (title: string, states: string[], type: "Standard" | "Range"): SpecOpts => ({
