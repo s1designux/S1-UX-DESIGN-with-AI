@@ -33,8 +33,28 @@ const LOCAL_FILES = [
   'data/.figma-raw-metadata.json',
 ];
 
+/**
+ * 본 폴더의 자원을 이 폴더로 잇는다. **자기 자신을 가리키는 링크는 어떤 경우에도 만들지 않는다** —
+ * 그런 링크가 생기면 그 폴더의 node_modules 가 통째로 사라진 것처럼 되고, npm·git 이
+ * ELOOP 로 조용히 실패한다(2026-09-09 실측: 본 폴더 node_modules 51MB 가 자기참조 링크로 바뀌어
+ * 검문소가 이유 없이 막혔다). 두 겹으로 막는다: ①경로가 같으면 거부 ②이미 자기참조면 치우고 알린다.
+ */
 function linkIfMissing(target, linkPath, label) {
-  if (fs.existsSync(linkPath)) return false;
+  if (path.resolve(target) === path.resolve(linkPath)) {
+    say(`   ⚠️ ${label}: 원본과 대상이 같은 경로 — 연결하지 않음(자기참조 방지)`);
+    return false;
+  }
+  if (fs.existsSync(linkPath) || fs.lstatSync(linkPath, { throwIfNoEntry: false })) {
+    // 이미 있는 것이 자기참조 링크면 치운다(있으면 그 폴더가 통째로 못 쓰게 된다).
+    const st = fs.lstatSync(linkPath, { throwIfNoEntry: false });
+    if (st && st.isSymbolicLink()) {
+      let dest = null;
+      try { dest = fs.readlinkSync(linkPath); } catch (_) {}
+      if (dest && path.resolve(path.dirname(linkPath), dest) === path.resolve(linkPath)) {
+        try { fs.unlinkSync(linkPath); say(`   🩹 ${label}: 자기참조 링크를 치웠습니다 — 본 폴더에서 \`npm install\` 한 번 필요할 수 있습니다`); } catch (_) {}
+      } else return false;
+    } else return false;
+  }
   if (!fs.existsSync(target)) { say(`   ⚠️ ${label}: 본 폴더에 없음(${path.relative(MAIN, target) || target}) — 건너뜀`); return false; }
   try {
     fs.mkdirSync(path.dirname(linkPath), { recursive: true });
@@ -47,6 +67,7 @@ function linkIfMissing(target, linkPath, label) {
 }
 
 function setupLinkedWorktree() {
+  if (path.resolve(ROOT) === path.resolve(MAIN)) return;   // 본 폴더에는 아무것도 잇지 않는다(2중 방어)
   const rel = path.relative(MAIN, ROOT);
   const branch = wt.currentBranch(ROOT);
   const done = [];

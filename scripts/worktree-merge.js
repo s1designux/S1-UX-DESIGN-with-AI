@@ -44,9 +44,21 @@ const REGEN_HINTS = [
   [/^CLAUDE\.md$/, '변경 이력 표는 최근 1건만 남기고, 밀려난 줄은 reports/changelog-archive.md 로'],
 ];
 
+/**
+ * 자식 프로세스 환경 — npm 이 끼워 넣는 PATH 항목(작업 폴더의 node_modules/.bin, 조상 폴더들)을
+ * 뺀 깨끗한 PATH 를 쓴다. 별도 폴더의 node_modules 는 본 폴더로 향하는 symlink 라, npm run 안에서
+ * 그 PATH 로 git/npm 을 찾으면 macOS 가 ELOOP 로 실패했다(2026-09-09 실측 — 실패가 5단계에서
+ * '빈 이유'로 나오던 진짜 원인). node 는 PATH 를 안 타도록 process.execPath 로 고정한다.
+ */
+const CLEAN_PATH = (process.env.PATH || '').split(path.delimiter)
+  .filter((p) => p && !/[\\/]node_modules[\\/]\.bin[\\/]?$/.test(p))
+  .join(path.delimiter);
+const CHILD_ENV = Object.assign({}, process.env, { PATH: CLEAN_PATH });
+for (const k of Object.keys(CHILD_ENV)) if (k.startsWith('npm_')) delete CHILD_ENV[k];
+
 function run(cmd, args, cwd, opts = {}) {
-  const bin = cmd === 'node' ? process.execPath : cmd;   // npm 스크립트 안에서도 같은 node 를 쓴다
-  const r = spawnSync(bin, args, { cwd, encoding: 'utf8', stdio: opts.inherit ? 'inherit' : 'pipe', env: process.env });
+  const bin = cmd === 'node' ? process.execPath : cmd;
+  const r = spawnSync(bin, args, { cwd, encoding: 'utf8', stdio: opts.inherit ? 'inherit' : 'pipe', env: CHILD_ENV });
   // 실행 자체가 안 된 경우(status=null) 이유를 잃지 않는다 — 빈 실패 메시지가 나오던 원인.
   if (r.error) return { code: -1, out: '', err: `실행 실패(${cmd}): ${r.error.message}` };
   return { code: r.status === null ? -1 : r.status, out: (r.stdout || '').trim(), err: (r.stderr || '').trim() };
